@@ -254,6 +254,7 @@ extern d8 C_D8_MID;
 
 #include "FreeItem.hpp"
 
+#include "HashMapEntry.hpp"
 #include "HashMapSlot.hpp"
 #include "HashMap.hpp"
 

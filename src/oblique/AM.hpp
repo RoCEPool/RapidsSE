@@ -56,9 +56,10 @@ namespace BASE {
   class FileMap;
   class Format;
 
-#ifdef WITH_HASHMAP
   class HashMap;
-#endif
+  class HashMapEntry;
+  class HashMapSlot;
+
   class Header;
   class Heap;
   class Heaps;

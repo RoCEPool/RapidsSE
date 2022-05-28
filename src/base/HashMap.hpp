@@ -2,7 +2,6 @@
 /* HashMap.hpp -- HashMap                                                     */
 /*============================================================================*/
 #pragma once
-#define C_INIT_HASHMAP_SIZE 1000
 
 #ifdef WITH_HASHMAP_DEBUG
 #define C_HISTORY_DUR 100
@@ -12,14 +11,12 @@ namespace BASE
 {
   class HashMap : public Object
   {
-  friend HashMapSlot;
 
   private:
     Lock          m_okLock;        // lock for the entire hash map
-    u8            m_uNoOfSlots;
     u8            m_uNoOfEntries;
 
-    HashMapSlot** m_paHashMapSlots;
+    HashMapSlot* m_pHashMapSlot;
 
 #ifdef WITH_HASHMAP_DEBUG
     u8 m_nHistory;
@@ -40,18 +37,20 @@ namespace BASE
     void* operator new(size_t);
     void  operator delete(void* pHashMapAddress);
  
-    HashMap(u8 uNoOfSlots=C_INIT_HASHMAP_SIZE);
+    HashMap(void);
     ~HashMap(void) noexcept(false);
 
     void    vAnalysis(void);
     void    vDeleteKey(void* pKey);
     bool    bExists(void* pKey);
+    HashMapEntry* pGetEntryAtIndex(u8 uIndex);
 
     static u8 uHashFunction(void* pKey, u8 NoOfSlots);
 
-    void    vInsertSlotAtIndex(HashMapSlot* pSlot, u8 uIndex);
+    void    vInsertEntryAtIndex(HashMapEntry* pEntry, u8 uIndex);
     void    vInsertKeyValue(void* pKey, Object* pValue);
-    void    vReHash(void);
+    void    vSetEntryAtIndex(HashMapEntry* pEntry, u8 uIndex);
+//    void    vReHash(void);
     Object* pValueAt(void* pKey);
 
 #ifdef WITH_HASHMAP_DEBUG

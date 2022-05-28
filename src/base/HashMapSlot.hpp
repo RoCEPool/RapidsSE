@@ -2,19 +2,17 @@
 /* HashMapSlot.hpp -- HashMapSlot                                             */
 /*============================================================================*/
 #pragma once
+#define C_INIT_HASHMAP_SIZE 10000
 
 namespace BASE
 {
-  class HashMap;
   class HashMapSlot : public Object
   {
   friend HashMap;
 
   private:
-    void* m_pKeyObject;
-    Object* m_pValObject;
-
-    HashMapSlot* m_pNext;
+    u8 m_uNoOfSlots;
+    HashMapEntry* m_pEntry[C_INIT_HASHMAP_SIZE];
 
     // must be last
     Footer m_xFooter;
@@ -23,8 +21,10 @@ namespace BASE
     void* operator new(size_t);
     void  operator delete(void* pHashMapSlotAddress);
 
-    HashMapSlot(void* pKey, Object* pValue);
+    HashMapSlot(void);
     ~HashMapSlot(void) noexcept(false);
+
+    u8 uGetNoSlots(void);
 
   private:
 
