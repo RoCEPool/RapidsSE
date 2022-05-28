@@ -716,6 +716,16 @@ void AM::LOGICUNIT::vDelete(LogicUnit** ppLogicUnit)
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /*----------------------------------------------------------------------------*/
+/* free a marker                                                               */
+/*----------------------------------------------------------------------------*/
+void AM::MARKER::vFreeMarker(Marker* pMarker)
+{
+  MarkerMgr* pMarkerMgr = gpAttachMap->m_pMarkerMgr;
+
+  pMarkerMgr->vFreeMarker(pMarker);
+}
+
+/*----------------------------------------------------------------------------*/
 /* return the marker manager                                                  */
 /*----------------------------------------------------------------------------*/
 MarkerMgr* AM::MARKER::pMarkerMgr(void)
@@ -723,6 +733,18 @@ MarkerMgr* AM::MARKER::pMarkerMgr(void)
   MarkerMgr* pMarkerMgr = gpAttachMap->m_pMarkerMgr;
 
   return pMarkerMgr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* new a marker                                                               */
+/*----------------------------------------------------------------------------*/
+Marker* AM::MARKER::pNewMarker(eOM eOpMarker)
+{
+  MarkerMgr* pMarkerMgr = gpAttachMap->m_pMarkerMgr;
+
+  Marker* pMarker = pMarkerMgr->pMarker(eOpMarker);
+  
+  return pMarker;
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/

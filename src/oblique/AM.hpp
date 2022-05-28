@@ -17,6 +17,7 @@
 #include "eLA.h"
 #include "eMA.h"
 #include "eOA.h"
+#include "eOM.h"
 #include "ePA.h"
 #include "eYX.h"
 #include "eRA.h"
@@ -174,6 +175,7 @@ namespace STORE {
   class LglPtn;
   class LogicUnit;
 
+  class Marker;
   class MarkerMgr;
 
   class Node;
@@ -354,7 +356,9 @@ namespace OBLIQUE
     class MARKER
     {
     public:
+      static void vFreeMarker(Marker* pMarker);
       static MarkerMgr* pMarkerMgr(void);
+      static Marker* pNewMarker(eOM eOpMarker);
     };
 
     class MASTERLOCK

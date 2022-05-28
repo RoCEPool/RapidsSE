@@ -23,6 +23,7 @@ namespace STORE
     MarkerMgr(void);
    ~MarkerMgr(void) noexcept(false);
   
+    void vFreeMarker(Marker* pMarker);
     Marker* pMarker(eOM eMarker);
   
     Footer* aFooter(void);
