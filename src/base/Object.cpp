@@ -121,10 +121,10 @@ Object* Object::pMemoryCopy(void)
 #ifdef WITH_BUFFER_ID
   if (eClass == CN_ROWBUFFER || eClass == CN_INFOSET || eClass == CN_NAMEDBUFFER) {
     DataBuffer* pDataBuffer = _pDataBuffer(pCopy);
-    i8 iBufferNo = pDataBuffer->iBufferNo();
-    pDataBuffer->vSetBufferNo(iBufferNo);
+    i8 iPoolBufferNo = pDataBuffer->iBufferNo();
+    pDataBuffer->vSetBufferNo(iPoolBufferNo);
     pDataBuffer->vSetBufferId(
-        AM::pFileMap()->oGetNewBufferId());
+        AM::pFileMap()->oGetNewBufferId(iPoolBufferNo));
 #ifdef WITH_HASHMAP
     AM::pHashMap()->vInsertKeyValue(
         (void *) pDataBuffer->oGetBufferId().m_pvAsAddress,

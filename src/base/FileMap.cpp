@@ -52,7 +52,7 @@ FileMap::FileMap(void)
   m_szFilePath = gxCmdLineArgs.m_xSysArgs.m_sPageFilePath;
 
 //  vInitialise();
-#ifdef WITH_BUFFER_ID
+#ifdef WITH_PAGEFILE
   m_pPageFile = new PageFile(m_szFilePath, 0);
 #endif
   _checkInitialised_(CN_FILEMAP);
@@ -81,7 +81,7 @@ RowBuffer* FileMap::pFromDisk(Operand* pOperand)
 
   //---------------------------------------------------------------------------
   // Operand should be a buffer id. Check flag bit.
-#ifdef WITH_BUFFER_ID
+#ifdef WITH_PAGEFILE
   BufferId oBufferId;// TODO Arjun: Code readability
   oBufferId.m_pvAsAddress = (void*) pOperand;
 
@@ -111,7 +111,7 @@ void FileMap::vToDisk(Operand* pOperand)
 
   //---------------------------------------------------------------------------
   // Operand could be an address or a buffer id. Check flag bit.
-#ifdef WITH_BUFFER_ID
+#ifdef WITH_PAGEFILE
   BufferId oBufferId;// TODO Arjun: Code readability
   oBufferId.m_pvAsAddress = (void*) pOperand;
 
@@ -139,11 +139,11 @@ void FileMap::vToDisk(Operand* pOperand)
 /*----------------------------------------------------------------------------*/
 /* Find a free chunk in a page file and return that address                   */
 /*----------------------------------------------------------------------------*/
-BufferId FileMap::oGetNewBufferId(void)
+BufferId FileMap::oGetNewBufferId(i8 iPoolBufferNo)
 {
   //---------------------------------------------------------------------------
   // Figure out which PageFile has space for a new RowBuffer
-
+#ifdef WITH_PAGEFILE
   BufferId oFreeBuffId = m_pPageFile->oNextFreeBufferId();
 
 //  while(oFreeBuffId.m_iAsI8 == C_DATUM_NULL) {
@@ -151,6 +151,9 @@ BufferId FileMap::oGetNewBufferId(void)
 //  }
 
   return oFreeBuffId;
+#else
+  return BufferId::vBufferIdFromNo(iPoolBufferNo);
+#endif
 }
 #endif
 

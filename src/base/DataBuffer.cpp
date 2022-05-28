@@ -40,7 +40,7 @@ DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent)
 
   m_iBufferNo  = iBufferNo();
 #ifdef WITH_BUFFER_ID
-  m_oBufferId = AM::pFileMap()->oGetNewBufferId();
+  m_oBufferId = AM::pFileMap()->oGetNewBufferId(m_iBufferNo);
 #endif
   m_iBucketNo  = C_UNKNOWN;
   m_tLglPtn     = C_UNKNOWN;
