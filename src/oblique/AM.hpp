@@ -174,6 +174,8 @@ namespace STORE {
   class LglPtn;
   class LogicUnit;
 
+  class MarkerMgr;
+
   class Node;
 
   class Op;
@@ -347,6 +349,12 @@ namespace OBLIQUE
     {
     public:
       static Job* pFindJob(JobId tJobId, bool bLockJob=false);
+    };
+
+    class MARKER
+    {
+    public:
+      static MarkerMgr* pMarkerMgr(void);
     };
 
     class MASTERLOCK

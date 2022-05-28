@@ -5,9 +5,11 @@
 #include "BASE.h"
 
 #include "Marker.hpp"
+#include "MarkerMgr.hpp"
 
 #include "eCF.h"
 #include "Job.hpp"
+#include "AM.hpp"
 
 ClassFn __Marker_fn (CN_MARKER,CF_INSPECT,(fpCLASSFN*)Marker::bInspect,-1);
 
