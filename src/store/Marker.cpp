@@ -71,16 +71,19 @@ void Marker::operator delete(void* aAddress)
 Marker::Marker(eOM eOpMarker)
 : Operand(CN_MARKER)
 {
-  _precondition_(_MAGIC_,CN_MARKER);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_MARKER,_FOOTER_);
   
-  m_eOpMarker = eOpMarker;
-  m_eMarker   = MG_ORDINARY;
-  m_pNextItem = nullptr;
+  m_eOpMarker  = eOpMarker;
+  m_eMarker    = MG_ORDINARY;
+  m_pNextItem  = nullptr;
+  m_bDeletable = false;
 
   _checkInitialised_(CN_MARKER);
 
 //  vTrace("new Marker(%s) %p @%lld\n"_Stz,
 //         aOM[m_eOpMarker],this,m_xFooter.iWhenAllocated());
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_MARKER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -122,12 +125,32 @@ bool Marker::bInspect(Object* pObject)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get deletable?                                                             */
+/*----------------------------------------------------------------------------*/
+bool Marker::bDeletable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_MARKER,_FOOTER_);
+
+  return m_bDeletable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set deletable?                                                             */
+/*----------------------------------------------------------------------------*/
+void Marker::vDeletable(bool bDeletable)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_MARKER,_FOOTER_);
+
+  m_bDeletable = bDeletable;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get marker category                                                        */
 /*----------------------------------------------------------------------------*/
 eMG Marker::eMarker(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_MARKER,_FOOTER_);
+
   return m_eMarker;
 }
 
@@ -136,8 +159,8 @@ eMG Marker::eMarker(void)
 /*----------------------------------------------------------------------------*/
 void Marker::vMarker(eMG eMarker)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_MARKER,_FOOTER_);
+
   m_eMarker = eMarker;
 }
 
@@ -146,8 +169,8 @@ void Marker::vMarker(eMG eMarker)
 /*----------------------------------------------------------------------------*/
 Marker* Marker::pNextItem(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_MARKER,_FOOTER_);
+
   return m_pNextItem;
 }
 
@@ -156,8 +179,8 @@ Marker* Marker::pNextItem(void)
 /*----------------------------------------------------------------------------*/
 void Marker::vNextItem(Marker* pNextItem)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_MARKER,_FOOTER_);
+
   m_pNextItem = pNextItem;
 }
 
@@ -166,8 +189,8 @@ void Marker::vNextItem(Marker* pNextItem)
 /*----------------------------------------------------------------------------*/
 eOM Marker::eOpMarker(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_MARKER,_FOOTER_);
+
   return m_eOpMarker;
 }
 
@@ -176,7 +199,7 @@ eOM Marker::eOpMarker(void)
 /*----------------------------------------------------------------------------*/
 void Marker::vOpMarker(eOM eOpMarker)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_MARKER,_FOOTER_);
   
   m_eOpMarker = eOpMarker;
 }
