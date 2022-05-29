@@ -42,6 +42,7 @@ namespace STORE
     void vNextItem(Marker* pNext);
 
     eOM eOpMarker(void);
+    void vOpMarker(eOM eOpMarker);
   };
 
   Marker* _pMarker(void* aAddr);

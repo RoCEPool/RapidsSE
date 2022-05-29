@@ -716,10 +716,12 @@ void AM::LOGICUNIT::vDelete(LogicUnit** ppLogicUnit)
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /*----------------------------------------------------------------------------*/
-/* free a marker                                                               */
+/* free a marker                                                              */
 /*----------------------------------------------------------------------------*/
-void AM::MARKER::vFreeMarker(Marker* pMarker)
+void AM::MARKER::vFreeMarker(Marker* pMarker, Job* pJob)
 {
+  _static_
+
   MarkerMgr* pMarkerMgr = gpAttachMap->m_pMarkerMgr;
 
   pMarkerMgr->vFreeMarker(pMarker);
@@ -730,6 +732,8 @@ void AM::MARKER::vFreeMarker(Marker* pMarker)
 /*----------------------------------------------------------------------------*/
 MarkerMgr* AM::MARKER::pMarkerMgr(void)
 {
+  _static_
+
   MarkerMgr* pMarkerMgr = gpAttachMap->m_pMarkerMgr;
 
   return pMarkerMgr;
@@ -738,11 +742,25 @@ MarkerMgr* AM::MARKER::pMarkerMgr(void)
 /*----------------------------------------------------------------------------*/
 /* new a marker                                                               */
 /*----------------------------------------------------------------------------*/
-Marker* AM::MARKER::pNewMarker(eOM eOpMarker)
+Marker* AM::MARKER::pNewMarker(eOM eOpMarker, Job* pJob)
 {
+  _static_
+
   MarkerMgr* pMarkerMgr = gpAttachMap->m_pMarkerMgr;
 
   Marker* pMarker = pMarkerMgr->pMarker(eOpMarker);
+  if (pMarker)
+    return pMarker;
+  
+  if (pJob) {
+    pMarker = pJob->pNewMarker();
+    if (pMarker) {
+      pMarker->vOpMarker(eOpMarker);
+      return pMarker;
+    }
+  }
+
+  pMarker = new (MG_ORDINARY)Marker(eOpMarker);
   
   return pMarker;
 }
@@ -1071,6 +1089,8 @@ void AM::OP::vPipeToOp(Op* pOp, Operand* pOperand,
 /*----------------------------------------------------------------------------*/
 Job* AM::OLIST::pFindJob(JobId tJobId, bool bLockJob)
 {
+  _static_
+
   Job* pJob = AM::pOriginatingJobs()->pFindJob(tJobId,bLockJob);
     
   return pJob;
@@ -1154,6 +1174,8 @@ void AM::PARCEL::vRecvContents(Parcel* pParcel, Socket* pSocket)
 /*----------------------------------------------------------------------------*/
 Job* AM::PLIST::pFindJob(JobId tJobId, bool bLockJob)
 {
+  _static_
+
   Job* pJob = AM::pParticipatingJobs()->pFindJob(tJobId,bLockJob);
     
   return pJob;
@@ -1302,6 +1324,8 @@ i8 AM::POOL::nTinyHeap(void)
 
 i8 AM::PROCESS::iSePid(void)
 {
+  _static_
+
   return gpAttachMap->m_iSePid;
 }
 
@@ -1536,6 +1560,8 @@ i8 AM::PTNMAP::nPtnsInGrid(void)
 /*----------------------------------------------------------------------------*/
 i8 AM::PTNMAP::nPtnsPerNode(void)
 {
+  _static_
+
   return gpAttachMap->m_pLglPtnMap->nPtnsPerNode();
 }
 
@@ -2072,6 +2098,8 @@ void AM::SYSARGS::vSysMetrics(bool bSysMetrics)
 /*----------------------------------------------------------------------------*/
 i8 AM::SYSARGS::nThreads(void)
 {
+  _static_
+
   return gpAttachMap->m_xSysArgs.m_nThreads;
 }
 
@@ -2080,6 +2108,8 @@ i8 AM::SYSARGS::nThreads(void)
 /*----------------------------------------------------------------------------*/
 void AM::SYSARGS::vThreadsInc(i8 iBy)
 {
+  _static_
+
   gpAttachMap->m_xSysArgs.m_nThreads += iBy;
 }
 

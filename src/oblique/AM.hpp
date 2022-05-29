@@ -356,9 +356,9 @@ namespace OBLIQUE
     class MARKER
     {
     public:
-      static void vFreeMarker(Marker* pMarker);
+      static void vFreeMarker(Marker* pMarker, Job* pJob);
       static MarkerMgr* pMarkerMgr(void);
-      static Marker* pNewMarker(eOM eOpMarker);
+      static Marker* pNewMarker(eOM eOpMarker, Job* pJob);
     };
 
     class MASTERLOCK
