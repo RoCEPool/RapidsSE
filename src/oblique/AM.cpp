@@ -722,9 +722,22 @@ void AM::MARKER::vFreeMarker(Marker* pMarker, Job* pJob)
 {
   _static_
 
-  MarkerMgr* pMarkerMgr = gpAttachMap->m_pMarkerMgr;
+  if (MG_CHAIN == pMarker->eMarker()) {
+    RASSERT(pJob);
+    pJob->vFreeMarker(pMarker);
+  }
+  else
+  if (MG_MANAGER == pMarker->eMarker()) {
+    MarkerMgr* pMarkerMgr = gpAttachMap->m_pMarkerMgr;
+    pMarkerMgr->vFreeMarker(pMarker);
+  }
+  if (MG_ORDINARY == pMarker->eMarker()) {
+    delete pMarker;
+  }
+  else {
+    NEVER_REACH;
+  }
 
-  pMarkerMgr->vFreeMarker(pMarker);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2854,17 +2867,7 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
       
     case CN_MARKER: {
       Marker* pMarker = _pMarker(pOperand);
-      if (MG_CHAIN == pMarker->eMarker()) {
-        RASSERT(pJob);
-        pJob->vFreeMarker(pMarker);
-      }
-      else
-      if (MG_MANAGER == pMarker->eMarker()) {
-        NEVER_REACH;
-      }
-      else {
-        delete pMarker;
-      }
+      AM::MARKER::vFreeMarker(pMarker,pJob);
       break;
     }
 

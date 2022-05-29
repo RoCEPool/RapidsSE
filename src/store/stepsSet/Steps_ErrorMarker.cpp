@@ -107,7 +107,6 @@ void Step::vErrorMarkerNewErrorMarker(void)
   ASSERT (m_pLogicUnit->m_xpErrorMarker.bIsNull());
 
   m_pLogicUnit->m_xpErrorMarker =
-    //new (pOuterJobOfTask())Marker(OM_ERRORMARKER);
     AM::MARKER::pNewMarker(OM_ERRORMARKER,pOuterJobOfTask());
   EXIT();
 }
