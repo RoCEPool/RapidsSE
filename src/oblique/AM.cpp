@@ -3440,36 +3440,6 @@ void AM::vNapUsec(i8 nMicroSeconds, eCN eCallingClass)
 }
 
 /*----------------------------------------------------------------------------*/
-/* duplicate the operand ( marker / streamDef )                               */
-/*----------------------------------------------------------------------------*/
-Operand* AM::pDuplicateOperand(Operand* pOperand)
-{
-  if (pOperand->eGetClassNo() == CN_MARKER) {
-    Marker* pMarker = _pMarker(pOperand);
-    Marker* pNewMarker =
-      new (nullptr)Marker(pMarker->eOpMarker());
-    return pNewMarker;
-  }
-  else {
-    ASSERT(pOperand->eGetClassNo() == CN_STREAMDEF ||
-           pOperand->eGetClassNo() == CN_STREAMDEFRHT);
-
-    if (pOperand->eGetClassNo() == CN_STREAMDEF) {
-      StreamDef* pStreamDef = _pStreamDef(pOperand);
-      StreamDef* pNewStreamDef = new StreamDef(pStreamDef);
-      return pNewStreamDef;
-    }
-    else {
-      ASSERT(pOperand->eGetClassNo() == CN_STREAMDEFRHT);
-      StreamDefRht* pStreamDefRht = _pStreamDefRht(pOperand);
-      StreamDefRht* pNewStreamDefRht = new StreamDefRht(pStreamDefRht);
-      return pNewStreamDefRht;
-    }
-  }
-  
-}
-
-/*----------------------------------------------------------------------------*/
 /* new a universal job for op                                                 */
 /*----------------------------------------------------------------------------*/
 Stz* AM::pOperandName(Operand* pOperand)

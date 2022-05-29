@@ -863,11 +863,6 @@ void Parcel::vPipeBufferViaQueues(Op *pSendOp, Stage* pDstStage)
     i8 i_ThisNode = AM::NODE::iThisNodeId();
     Stream* pDstStream = pDstStage->pGetStream_byNodeId(i_ThisNode);
 
-//    eCN eClass = pOperand->eGetClassNo();
-//    i8 nSize = gxaSizeHeap[eClass].m_nClassSize;
-//
-//    Operand* pDuplicateOperand = (Operand*)Heaps::pAllocate(eClass);
-//    MemLib::vCopy(pDuplicateOperand,pOperand,nSize,eClass);
     Operand* pDuplicateOperand = (Operand*)pOperand->pMemoryCopy();
     eCN eClass = pDuplicateOperand->eGetClassNo();
 
@@ -901,11 +896,6 @@ void Parcel::vPipeBufferViaQueues(Op *pSendOp, Stage* pDstStage)
       if (iDstNodeId != iCurNodeId)
         continue;
       
-//      eCN eClass = pOperand->eGetClassNo();
-//      i8 nSize = gxaSizeHeap[eClass].m_nClassSize;
-//
-//      Operand* pDuplicateOperand = (Operand*)Heaps::pAllocate(eClass);
-//      MemLib::vCopy(pDuplicateOperand,pOperand,nSize,eClass);
       Operand* pDuplicateOperand = (Operand*)pOperand->pMemoryCopy();
       eCN eClass = pDuplicateOperand->eGetClassNo();
 
@@ -927,12 +917,6 @@ void Parcel::vPipeBufferViaQueues(Op *pSendOp, Stage* pDstStage)
   // forward to this node, dst stage is a YS_PTN_STREAM
 
   Op* pDstOp = pDstStage->pPipeDstOp(tDstLglPtn(),0);
-
-//  eCN eClass = pOperand->eGetClassNo();
-//  i8 nSize = gxaSizeHeap[eClass].m_nClassSize;
-//
-//  Operand* pDuplicateOperand = (Operand*)Heaps::pAllocate(eClass);
-//  MemLib::vCopy(pDuplicateOperand,pOperand,nSize,eClass);
 
   Operand* pDuplicateOperand = (Operand*)pOperand->pMemoryCopy();
   eCN eClass = pDuplicateOperand->eGetClassNo();
@@ -964,12 +948,6 @@ void Parcel::vPipeOperandViaQueues(Op *pSendOp, Stage* pDstStage)
     i8 i_ThisNode = AM::NODE::iThisNodeId();
     Stream* pDstStream = pDstStage->pGetStream_byNodeId(i_ThisNode);
 
-//    eCN eClass = pOperand->eGetClassNo();
-//    i8 nSize = gxaSizeHeap[eClass].m_nClassSize;
-//
-//    Operand* pDuplicateOperand = (Operand*)Heaps::pAllocate(eClass);
-//    MemLib::vCopy(pDuplicateOperand,pOperand,nSize,eClass);
-
     Operand* pDuplicateOperand = (Operand*)pOperand->pMemoryCopy();
 
     Task* pCurTask = MY::pTask();
@@ -997,12 +975,6 @@ void Parcel::vPipeOperandViaQueues(Op *pSendOp, Stage* pDstStage)
     if (iDstNodeId != iCurNodeId)
       continue;
     
-//    eCN eClass = pOperand->eGetClassNo();
-//    i8 nSize = gxaSizeHeap[eClass].m_nClassSize;
-//
-//    Operand* pDuplicateOperand = (Operand*)Heaps::pAllocate(eClass);
-//    MemLib::vCopy(pDuplicateOperand,pOperand,nSize,eClass);
-
     Operand* pDuplicateOperand = (Operand*)pOperand->pMemoryCopy();
 
     Task* pCurTask = MY::pTask();

@@ -789,8 +789,7 @@ namespace OBLIQUE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static void vNapMsec(i8 nMilliSeconds, eCN eCallingClass);
     static void vNapUsec(i8 nMicroSeconds, eCN eCallingClass);
-    static Operand* pDuplicateOperand(Operand* pOperand);
-        
+       
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static Stz* pOperandName(Operand* pOperand);
     static i8   nOperandsArg(void);
