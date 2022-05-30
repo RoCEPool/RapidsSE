@@ -729,7 +729,6 @@ void AM::MARKER::vFreeMarker(Marker* pMarker, Job* pJob)
   else
   if (MG_MANAGER == pMarker->eMarker()) {
     MarkerMgr* pMarkerMgr = gpAttachMap->m_pMarkerMgr;
-    //RASSERT(pMarker == pMarkerMgr->pMarker(pMarker->eOpMarker()))
     pMarkerMgr->vFreeMarker(pMarker);
   }
   else

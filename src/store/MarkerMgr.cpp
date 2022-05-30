@@ -56,6 +56,8 @@ void MarkerMgr::vFreeMarker(Marker* pMarker)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MARKERMGR,_FOOTER_);
 
+  RASSERT(pMarker == this->pMarker(pMarker->eOpMarker()))
+
   // do nothing
 }
 
