@@ -759,28 +759,14 @@ MarkerMgr* AM::MARKER::pMarkerMgr(void)
 Marker* AM::MARKER::pNewMarker(eOM eOpMarker, Job* pJob)
 {
   _static_
-
-//  MarkerMgr* pMarkerMgr = gpAttachMap->m_pMarkerMgr;
-//
-//  Marker* pMarker = pMarkerMgr->pMarker(eOpMarker);
-//  if (pMarker)
-//    return pMarker;
-//
-//  if (pJob) {
-//    pMarker = pJob->pNewMarker();
-//    if (pMarker) {
-//      pMarker->vOpMarker(eOpMarker);
-//      return pMarker;
-//    }
-//  }
-//
-//  pMarker = new (MG_ORDINARY)Marker(eOpMarker);
-  
-//  Marker* pMarker =
-//    new (pJob)Marker(eOpMarker);
-
   
   Marker* pMarker;
+  
+//  MarkerMgr* pMarkerMgr = gpAttachMap->m_pMarkerMgr;
+//  pMarker = pMarkerMgr->pMarker(eOpMarker);
+//  if (pMarker)
+//    return pMarker;
+
   if (pJob) {
     pMarker = pJob->pNewMarker(eOpMarker);
     if (pMarker) {

@@ -194,7 +194,7 @@ void Marker::vNextItem(Marker* pNextItem)
 /*----------------------------------------------------------------------------*/
 eOM Marker::eOpMarker(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_MARKER,_FOOTER_);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_MARKER,_FOOTER_);
 
   return m_eOpMarker;
 }
