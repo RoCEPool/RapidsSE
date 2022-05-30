@@ -59,7 +59,6 @@
 /* org_ org */      Path[].discardAll
 /* org_ org */      [job].addRetired
 /* org_ org */
-/* org_ org */      //[job].signalWaiter
 /* org_ ovr */      [job].error@ [job].signalParent
 /* org_ org */
 /* org_ org */      [task].grabLock
@@ -85,7 +84,6 @@
 /* org_ org */    Path[].discardAll
 /* org_ org */    [job].addRetired
 /* org_ org */
-/* org_ org */    //[job].signalWaiter
 /* org_ ovr */    [job].error@ [job].signalParent
 /* org_ ovr */
 /* org_ ovr */    true [job].reapable!
@@ -122,7 +120,6 @@
 /* org_ org */    Path[].discardAll
 /* org_ org */    [job].addRetired
 /* org_ org */
-/* org_ org */    //[job].signalWaiter
 /* org_ ovr */    [job].error@ [job].signalParent
 /* org_ org */
 /* org_ org */    [task].grabLock
@@ -132,10 +129,9 @@
 /* org_ org */  then
 /* org_ org */  Dynamo[].delete
 /* org_ org */
-/* org_ ovr */    "<signalWaiter>" [job].tagSet@ tagSet.hasName not if
+/* org_ ovr */    "<signalParent>" [job].tagSet@ tagSet.hasName not if
 /* org_ org */      //"SIGNALLING PARENT AS NO WAIT" .
 /* org_ ovr */      [job].error@ [job].signalParent
-/* org_ ovr */      //[job].signalWaiter
 /* org_ org */     then
 
 /* ---- --- */  // !!! org !!! org !!! org !!! org !!! org !!! org !!! org !!!
@@ -182,7 +178,6 @@
 ?* org_ org *?    Path[].discardAll
 ?* org_ org *?    [job].addRetired
 ?* org_ org *?
-?* org_ org *?    //[job].signalWaiter
 ?* org_ ovr *?    [job].error@ [job].signalParent
 ?* org_ org *?
 ?* org_ org *?    [task].grabLock
@@ -323,22 +318,6 @@
 /* org_ ovr */  then
 /* org_ ovr */
 /* org_ ovr */
-/* org_ ovr */  // - - - - - - - - -
-/* org_ ovr */  // this job retires
-/* org_ ovr */  // - - - - - - - - -
-/* org_ ovr */  //[job] job(Id).hasCascade@ if
-/* org_ ovr */  //  [ddlLock].testDrop
-/* org_ ovr */  //  [task].grabLock
-/* org_ ovr */  //    "<signalWaiter>" [job].tagSet@ tagSet.hasName if
-/* org_ ovr */  //      [job].error@ [job].signalParent
-/* org_ ovr */        //[job].signalWaiter
-/* org_ ovr */  //    then
-/* org_ ovr */  //    [task].hibernate
-/* org_ ovr */
-/* org_ ovr */  //  HAZARD
-/* org_ ovr */
-/* org_ ovr */  //then
-/* org_ ovr */
 /* org_ ovr */  [ddlLock].testDrop
 /* org_ ovr */  ListedJob[].assertNoRef
 /* org_ ovr */
@@ -351,9 +330,8 @@
 /* org_ ovr */  [job].addRetired
 /* org_ ovr */
 /* org_ ovr */  [task].grabLock
-/* org_ ovr */    "<signalWaiter>" [job].tagSet@ tagSet.hasName if
+/* org_ ovr */    "<signalParent>" [job].tagSet@ tagSet.hasName if
 /* org_ ovr */      [job].error@ [job].signalParent
-/* org_ ovr */      //[job].signalWaiter.
 /* org_ ovr */     else
 /* org_ ovr */       true [job].reapable!
 /* org_ ovr */    then

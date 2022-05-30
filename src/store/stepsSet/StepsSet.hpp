@@ -884,7 +884,6 @@ void vDdlLockAssertNone(void);
 
   void vJobSetOriginId(void);
   void vJobSignalParent(void);
-  void vJobSignalWaiter(void);
   void vJobMutexFetch(void);
   void vJobIdSystemCloserFetch(void);
   void vJobIdSystemCloserStore(void);

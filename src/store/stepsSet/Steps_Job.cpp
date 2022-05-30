@@ -80,7 +80,6 @@ void Step::vAddSteps_Job(void)
 
   vAddStep("[job].setOriginId"_Stz,      &Step::vJobSetOriginId);
   vAddStep("[job].signalParent"_Stz,     &Step::vJobSignalParent);
-  vAddStep("[job].signalWaiter"_Stz,     &Step::vJobSignalWaiter);
 
   vAddStep("[job].tagSet@"_Stz,          &Step::vJobTagSetFetch);
   vAddStep("[job].task@"_Stz,            &Step::vJobTaskFetch);
@@ -904,29 +903,6 @@ void Step::vJobSignalParent(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // clear the error from parent
   pJob->pParentJob()->vJobError(EC_NONE);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  pJob->vMutexSignal();
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* [job].signalWaiter -- signal the actor waiting on this job/session mutex   */
-/*----------------------------------------------------------------------------*/
-void Step::vJobSignalWaiter(void)
-{
-  ENTRY();
-  
-  // there will be a thread waiting on completion of the job
-  // this could be a prompt thread or a java thread via the connector
-  
-  //Job* pJob = MY::pJob();
-  Job* pJob = * m_pJob;
-
-  eJL eJobList = pJob->eJobList();
-  RASSERT(JL_NONE == eJobList || JL_RETIRED == eJobList)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
