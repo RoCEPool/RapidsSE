@@ -41,6 +41,8 @@ namespace BASE
 
     noexcept(false);
 
+    static bool bIsDataBuffer(eCN eClass);
+
     static DataBuffer *pRefdDataBuffer(Rrf &xRef);
 
     static void vRepairList(Object *pObject);

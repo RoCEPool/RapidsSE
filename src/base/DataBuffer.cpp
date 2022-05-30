@@ -70,6 +70,27 @@ DataBuffer::~DataBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* Check if class inherits from DataBuffer                                    */
+/*----------------------------------------------------------------------------*/
+bool DataBuffer::bIsDataBuffer(eCN eClass)
+{
+  _static_
+
+  if (   eClass == CN_INFOSET
+      || eClass == CN_ROWBUFFER
+      || eClass == CN_NAMEDBUFFER
+      || eClass == CN_CSVBUFFER
+      || eClass == CN_CRVBUFFER
+      || eClass == CN_OBJBUFFER
+      || eClass == CN_CRWBUFFER
+      || eClass == CN_ENTBUFFER ) {
+    return true;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the entry buffer that given id references                              */
 /*----------------------------------------------------------------------------*/
 DataBuffer* DataBuffer::pRefdDataBuffer(Rrf& xRef)
