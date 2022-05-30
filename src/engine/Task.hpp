@@ -9,7 +9,7 @@
 #include "eTS.h"
 #include "TraceLock.hpp"
 
-namespace BASE
+namespace ENGINE
 {  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tracing masks

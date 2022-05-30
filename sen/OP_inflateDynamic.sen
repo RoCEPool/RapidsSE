@@ -15,7 +15,7 @@
 
   "
   #include \"tcclib.h\"
-  #include \"../src/base/BaseTypes_tcc.h\"
+  #include \"../src/primitives/BaseTypes_tcc.h\"
   #include \"../src/base/TccStuff.h\"
 
   void vNeverReach(i8 iLine);

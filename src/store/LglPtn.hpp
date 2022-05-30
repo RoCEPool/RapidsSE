@@ -4,6 +4,9 @@
 #pragma once
 
 //class LglPtn : public Gid_t<CN_PTNID>
+namespace STORE
+{
+
 class LglPtn : public SEtype
 {
   private:
@@ -28,6 +31,7 @@ class LglPtn : public SEtype
   void vAsI8(i8 iAsI8);
 };
 
+}
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

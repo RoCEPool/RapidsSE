@@ -6,7 +6,7 @@
 #include "eHS.h"
 #include "ThreadScratch.hpp"
 
-namespace BASE
+namespace ENGINE
 {
   class Thread : public Object,
                  public ListItem_t<Thread>

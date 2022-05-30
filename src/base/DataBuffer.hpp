@@ -12,7 +12,7 @@ namespace BASE
     i8           m_iBufferNo;     // this DataBuffer's buffer number
 
 #ifdef WITH_BUFFER_ID
-    BufferId     m_oBufferId;     // Set wherever bufferno is set, with bit flag set
+    BufferId     m_oBufferId;     // Location to where this buffer can be paged out to in page file on disk
 #endif
 
     LglPtn m_tLglPtn;
@@ -32,6 +32,7 @@ namespace BASE
 #else
     PadWord m__PadToCacheLine[18];
 #endif
+
 
   public:
     DataBuffer(eCN eClass, bool bIsPermanent);
@@ -85,10 +86,11 @@ namespace BASE
     void vIsPermanent(bool bIsPermanent);
 
     i8   iBufferNo(void);
+
+    void     vSetBufferNo(i8 iBufferNo);
 #ifdef WITH_BUFFER_ID
     BufferId oGetBufferId(void);
-    void     vSetBufferId(BufferId oBufferId);
-    void     vSetBufferNo(i8 iBufferNo);
+    void vSetBufferId(BufferId oBufferId);
 #endif
   };
   

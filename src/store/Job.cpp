@@ -58,32 +58,25 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
   m_tOriginId = tOriginId;
 
   m_sJobNm   = szJobNm;
-
-  m_bReapable = false;
+  //m_sEntryPoint
+  //m_oJobTags
+  //m_sFolderPath
   
-  // -- a -------------------
-  
+  m_eJobPhase  = JP_NONE;
+  m_eError_job = EC_NONE;
 
-  m_p_ResponseOp = nullptr;
-  m_oResponseTimer.vStart();
-
-  // -- b -------------------
-  m_bWasReceived     = false;
-  
-  // -- c -------------------
-  m_eJobList  = JL_NONE;
-  m_eJobPhase = JP_NONE;
-  m_eError_job  = EC_NONE;
-  m_eChildError = EC_NONE;
-  m_pOutput = nullptr;
-
-  // m_oJobTags
-  // m_xResult
-
-  // -- e -------------------
-
-  // -- g -------------------
-  m_pTask     = nullptr;
+  /* 00 */ m_noActiveOps.vResetAtomic();
+  /* 01 */ m_eJobList     = JL_NONE;
+  /* 02 */ m_pJobMetrics  = nullptr;
+  /* 03 */ m_pMutex       = nullptr;
+  /* 04 */ m_pOutput      = nullptr;
+  /* 05 */ m_bReapable    = false;
+  /* 06 */ m_p_ResponseOp = nullptr;
+  /* 07 */ m_oResponseTimer.vStart();
+  /* 08 */ m_pStmtList    = nullptr;
+  /* 09 */ m_pTask        = nullptr;
+  /* 10 */ m_bWasReceived = false;
+  /* 11 */ m_pMarkerChain = nullptr;
 
   m_iTscParticipant = 0;
   
@@ -97,13 +90,7 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
   m_iTscCanceled    = 0;
 
   // -- -- -- -- -- --
-      
-  m_pJobMetrics  = nullptr;
-  
-  m_pMutex     = nullptr;
-
-  m_pStmtList = nullptr;
-  
+        
   _checkInitialised_(CN_JOB);
   
   AM::JOBS::vJobsActiveInc();
@@ -170,6 +157,9 @@ Job::~Job(void) noexcept(false)
   
   if (m_pStmtList)
     vStmtListDestroy();
+  
+  if (m_pMarkerChain)
+    delete m_pMarkerChain;
 }
 
 
@@ -452,6 +442,18 @@ void Job::vFolderPath(Stz* szFolderPath)
   m_sFolderPath = szFolderPath;
 }
 
+/*----------------------------------------------------------------------------*/
+/* free given marker                                                          */
+/*----------------------------------------------------------------------------*/
+void Job::vFreeMarker(Marker* pMarker)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+//  if (m_pMarkerChain)
+//    m_pMarkerChain->vPush(pMarker);
+//  else
+    delete pMarker;
+}
 
 /*----------------------------------------------------------------------------*/
 /* grab lock                                                                  */
@@ -864,6 +866,31 @@ void Job::vMutexWait(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* new a marker from the chain                                                */
+/*----------------------------------------------------------------------------*/
+Marker* Job::pNewMarker(eOM eOpMarker)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+      
+  Marker* pMarker = m_pMarkerChain->pPop();
+  
+  if (pMarker)
+    pMarker->vOpMarker(eOpMarker);
+  
+  return pMarker;
+}
+
+/*----------------------------------------------------------------------------*/
+/* new the marker chain                                                       */
+/*----------------------------------------------------------------------------*/
+void Job::vNewMarkerChain(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+      
+  m_pMarkerChain = new MarkerChain;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get output processor                                                       */
 /*----------------------------------------------------------------------------*/
 Output* Job::pOutput(void)
@@ -1091,14 +1118,14 @@ void Job::vPipeout(Operand* pOperand)
   if (pParentJob && pParentJob->m_p_ResponseOp) {
     Task* pCurTask = MY::pTask();
     if (pOperand->eGetClassNo() == CN_EXITOPERAND) {
-      AM::vDeleteOperand(pOperand);
+      AM::vDeleteOperand(pOperand, nullptr);
       pOperand = new ChildExit;
     }
     pParentJob->m_p_ResponseOp->vPipeToThis(pOperand, pCurTask);
   }
   else if (pParentJob) {
     if (pOperand->eGetClassNo() == CN_EXITOPERAND) {
-      AM::vDeleteOperand(pOperand);
+      AM::vDeleteOperand(pOperand, nullptr);
       pOperand = new ChildExit;
     }
     pParentJob->vPipeout(pOperand);
@@ -1154,14 +1181,15 @@ void Job::vPostRecv(void)
   /* 01 */ m_eJobList     = JL_NONE;
   /* 02 */ m_pJobMetrics  = nullptr;
   /* 03 */ m_pMutex       = nullptr;
-  /* 04 */ m_pOutput  = nullptr;
+  /* 04 */ m_pOutput      = nullptr;
   /* 05 */ RASSERT(! m_bReapable);
   /* 06 */ m_p_ResponseOp = nullptr;
   /* 07 */ m_oResponseTimer.vReset();
   /* 08 */ m_pStmtList    = nullptr;
   /* 09 */ m_pTask        = nullptr;
   /* 10 */ m_bWasReceived = true;
-    
+  /* 11 */ m_pMarkerChain = nullptr;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   m_tJobId.vNextJobId();

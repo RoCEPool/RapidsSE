@@ -22,7 +22,7 @@ Object::Object(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 /* macro for standard safe cast function                                      */
 /*----------------------------------------------------------------------------*/
-Object* BASE::_pObject(void* aAddr)
+Object* PRIMITIVES::_pObject(void* aAddr)
 {
   Object* pObject = reinterpret_cast<Object*>(aAddr);
 
@@ -119,12 +119,17 @@ Object* Object::pMemoryCopy(void)
   // when we do a memcpy. Below code extracts the buffer no from the pool buffer that
   // the object lives in and then set that rowbuffer member which was overwritten.
 #ifdef WITH_BUFFER_ID
-  if (eClass == CN_ROWBUFFER) {
-    RowBuffer* pRowBuffer = _pRowBuffer(pCopy);
-    i8 iBufferNo = pRowBuffer->iBufferNo();
-    pRowBuffer->vSetBufferNo(iBufferNo);
-    pRowBuffer->vSetBufferId(
-        BufferId::vBufferIdFromNo(iBufferNo));
+  if (eClass == CN_ROWBUFFER || eClass == CN_INFOSET || eClass == CN_NAMEDBUFFER) {
+    DataBuffer* pDataBuffer = _pDataBuffer(pCopy);
+    i8 iPoolBufferNo = pDataBuffer->iBufferNo();
+    pDataBuffer->vSetBufferNo(iPoolBufferNo);
+    pDataBuffer->vSetBufferId(
+        AM::pFileMap()->oGetNewBufferId(iPoolBufferNo));
+#ifdef WITH_HASHMAP
+    AM::pHashMap()->vInsertKeyValue(
+        (void *) pDataBuffer->oGetBufferId().m_pvAsAddress,
+        (Object *) pCopy);
+#endif
   }
 #endif
 

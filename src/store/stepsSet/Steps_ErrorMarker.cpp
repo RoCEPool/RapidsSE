@@ -40,7 +40,7 @@ void Step::vErrorMarkerDelete(void)
 {
   ENTRY();
 
-  AM::vDeleteOperand(*m_pLogicUnit->m_xpErrorMarker);
+  AM::vDeleteOperand(*m_pLogicUnit->m_xpErrorMarker,nullptr);
 
   m_pLogicUnit->m_xpErrorMarker = nullptr;
 
@@ -106,8 +106,8 @@ void Step::vErrorMarkerNewErrorMarker(void)
 
   ASSERT (m_pLogicUnit->m_xpErrorMarker.bIsNull());
 
-  m_pLogicUnit->m_xpErrorMarker = new Marker(OM_ERRORMARKER);
-
+  m_pLogicUnit->m_xpErrorMarker =
+    AM::MARKER::pNewMarker(OM_ERRORMARKER,pOuterJobOfTask());
   EXIT();
 }
 

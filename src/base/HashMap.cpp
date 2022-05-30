@@ -43,15 +43,15 @@ void HashMap::operator delete(void* pHashMapAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-HashMap::HashMap(u8 uNoOfSlots)
+HashMap::HashMap(void)
 : Object(CN_HASHMAP)
+, m_okLock(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAP,_FOOTER_);
-  m_uNoOfSlots          = C_HASHMAP_SIZE;
-  m_uNoOfEntries        = 0;
 
-  for(u8 i = 0; i < m_uNoOfSlots; i++)
-    m_paMap[i] = nullptr;
+  m_pHashMapSlot = new HashMapSlot();
+  HashMapEntry* test = m_pHashMapSlot->m_pEntry[0];
+  m_uNoOfEntries        = 0;
 
 #ifdef WITH_HASHMAP_DEBUG
   m_nHistory            = 0;
@@ -76,21 +76,7 @@ HashMap::HashMap(u8 uNoOfSlots)
 HashMap::~HashMap(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAP,_FOOTER_);
-  for(u8 i = 0; i < m_uNoOfSlots; i++)
-  {
-    if(m_paMap[i] != nullptr)
-    {
-      HashMapSlot* uIter1 = m_paMap[i];
-      HashMapSlot* uIter2;
-      while(uIter1 != nullptr)
-      {
-        uIter2 = uIter1->m_pNext;
-        delete uIter1;
-        uIter1 = uIter2;
-      }
-    }
-  }
-
+  delete m_pHashMapSlot;
 }
 
 
@@ -106,9 +92,9 @@ void HashMap::vAnalysis(void)
   vTrace("HM: (with %llu buckets/slots and %llu total entries)\n"
          "    Current Load Factor: %f\n"_Stz,
 
-         m_uNoOfSlots,
+         m_pHashMapSlot->uGetNoSlots(),
          m_uNoOfEntries,
-         (d8)m_uNoOfEntries/m_uNoOfSlots);
+         (d8)m_uNoOfEntries/m_pHashMapSlot->uGetNoSlots());
 
 #ifdef WITH_HASHMAP_DEBUG
 
@@ -120,7 +106,7 @@ void HashMap::vAnalysis(void)
 
            xHistory[i].m_uHistoryIndex,
            xHistory[i].m_uCurrTotalEntries,
-           (d8)xHistory[i].m_uCurrTotalEntries/m_uNoOfSlots,
+           (d8)xHistory[i].m_uCurrTotalEntries/m_pHashMapSlot->uGetNoSlots(),
            xHistory[i].m_pKey,
            xHistory[i].m_bDeleted,
            xHistory[i].m_bInserted);
@@ -132,7 +118,7 @@ void HashMap::vAnalysis(void)
 /*----------------------------------------------------------------------------*/
 /* Save current state to history                                              */
 /*----------------------------------------------------------------------------*/
-void HashMap::vAppendHistory(Object* pKey, bool bDeleted, bool bInserted)
+void HashMap::vAppendHistory(void* pKey, bool bDeleted, bool bInserted)
 {
   xHistory[m_nHistory % C_HISTORY_DUR].m_uHistoryIndex     = m_nHistory;
   xHistory[m_nHistory % C_HISTORY_DUR].m_uCurrTotalEntries = m_uNoOfEntries;
@@ -146,11 +132,18 @@ void HashMap::vAppendHistory(Object* pKey, bool bDeleted, bool bInserted)
 /*----------------------------------------------------------------------------*/
 /* delete a given key                                                         */
 /*----------------------------------------------------------------------------*/
-void HashMap::vDeleteKey(Object* pKey)
+void HashMap::vDeleteKey(void* pKey)
 {
-  u8 uIndex = uHashFunction(pKey);
-  HashMapSlot* pIter = m_paMap[uIndex];
-  HashMapSlot* pPrevIter = nullptr;
+  u8 uIndex = uHashFunction(pKey, m_pHashMapSlot->uGetNoSlots());
+
+  m_okLock.vGrabWrite();
+
+  HashMapEntry* pIter = pGetEntryAtIndex(uIndex);
+  HashMapEntry* pPrevIter = nullptr;
+
+#ifdef WITH_HASHMAP_DEBUG
+  vAppendHistory(pKey, true, false);
+#endif
 
   while ( pIter != nullptr ) {
 
@@ -159,7 +152,7 @@ void HashMap::vDeleteKey(Object* pKey)
       if ( pPrevIter != nullptr )
         pPrevIter->m_pNext = pIter->m_pNext;
       else
-        m_paMap[uIndex] = pIter->m_pNext;
+        vSetEntryAtIndex(pIter->m_pNext, uIndex);
       delete pIter;
 
       // Assert before decrement
@@ -167,9 +160,7 @@ void HashMap::vDeleteKey(Object* pKey)
       ASSERT(1 <= m_uNoOfEntries);
       m_uNoOfEntries--;
 
-#ifdef WITH_HASHMAP_DEBUG
-      vAppendHistory(pKey, true, false);
-#endif
+      m_okLock.vDropWrite();
 
       return;
     }
@@ -177,43 +168,75 @@ void HashMap::vDeleteKey(Object* pKey)
     pPrevIter = pIter;
     pIter = pIter->m_pNext;
   }
+  m_okLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
 /* Does the given key exist in the hashmap                                    */
 /*----------------------------------------------------------------------------*/
-bool HashMap::bExists(Object* pKey)
+bool HashMap::bExists(void* pKey)
 {
-  u8 uIndex = uHashFunction(pKey);
-  HashMapSlot* pIter = m_paMap[uIndex];
+  u8 uIndex = uHashFunction(pKey, m_pHashMapSlot->uGetNoSlots());
+
+  m_okLock.vGrabRead();
+
+  HashMapEntry* pIter = pGetEntryAtIndex(uIndex);
 
   while ( pIter != nullptr ) {
 
-    if ( pIter->m_pKeyObject == pKey )
+    if ( pIter->m_pKeyObject == pKey ) {
+      m_okLock.vDropRead();
       return true;
+    }
 
     pIter = pIter->m_pNext;
   }
 
+  m_okLock.vDropRead();
   return false;
+}
+/*----------------------------------------------------------------------------*/
+/* hash key                                                                   */
+/*----------------------------------------------------------------------------*/
+HashMapEntry* HashMap::pGetEntryAtIndex(u8 uIndex)
+{
+  return m_pHashMapSlot->m_pEntry[uIndex];
+}
+/*----------------------------------------------------------------------------*/
+/* hash key                                                                   */
+/*----------------------------------------------------------------------------*/
+u8 HashMap::uHashFunction(void* pKey, u8 NoOfSlots)
+{
+  _static_
+  return ( (u8) pKey % NoOfSlots );
 }
 
 /*----------------------------------------------------------------------------*/
 /* hash key                                                                   */
 /*----------------------------------------------------------------------------*/
-u8 HashMap::uHashFunction(Object* pKey)
+void HashMap::vInsertEntryAtIndex(HashMapEntry* pEntry, u8 uIndex)
 {
-  return ( (u8) pKey % m_uNoOfSlots );
+  pEntry->m_pNext = pGetEntryAtIndex(uIndex);
+  vSetEntryAtIndex(pEntry, uIndex);
+
+  m_uNoOfEntries++;
 }
 
 /*----------------------------------------------------------------------------*/
 /* Insert a key,value at the front of the chain.                              */
 /* Update value if key already exists                                         */
 /*----------------------------------------------------------------------------*/
-void HashMap::vInsertAtFront(Object* pKey, Object* pValue)
+void HashMap::vInsertKeyValue(void* pKey, Object* pValue)
 {
-  u8 uIndex = uHashFunction(pKey);
-  HashMapSlot* pIter = m_paMap[uIndex];
+//  if(m_uNoOfEntries/m_pHashMapSlot->uGetNoSlots() > 0.75) {
+//    vReHash();
+//  }
+
+  u8 uIndex = uHashFunction(pKey, m_pHashMapSlot->uGetNoSlots());
+
+  m_okLock.vGrabWrite();
+
+  HashMapEntry* pIter = pGetEntryAtIndex(uIndex);
 
   while ( pIter != nullptr ) {
 
@@ -224,17 +247,18 @@ void HashMap::vInsertAtFront(Object* pKey, Object* pValue)
       vTrace("Key %p already exists, updating value\n"_Stz, pKey);
       vAppendHistory(pKey, false, true);
 #endif
-
+      m_okLock.vDropWrite();
       return;
     }
 
     pIter = pIter->m_pNext;
   }
 
-  HashMapSlot* pTmpSlot = new HashMapSlot(pKey, pValue);
-  pTmpSlot->m_pNext = m_paMap[uIndex];
-  m_paMap[uIndex] = pTmpSlot;
-  m_uNoOfEntries++;
+  HashMapEntry* pTmpEntry = new HashMapEntry(pKey, pValue);
+
+  vInsertEntryAtIndex(pTmpEntry, uIndex);
+
+  m_okLock.vDropWrite();
 
 #ifdef WITH_HASHMAP_DEBUG
   vAppendHistory(pKey, false, true);
@@ -242,21 +266,78 @@ void HashMap::vInsertAtFront(Object* pKey, Object* pValue)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Create a new Slot array twice the size of the old one. Rehash and move all */
+/* key-value pairs in old slot array to new slot array. Delete old slot array */
+/*----------------------------------------------------------------------------*/
+//void HashMap::vReHash(void)
+//{
+//  // Low memory check?
+//  // Can we lock individual slot chains?
+//
+//  m_okLock.vGrabWrite();
+//
+//  u8 uOldNoOfSlots = m_pHashMapSlot->uGetNoSlots();
+//  m_pHashMapSlot->uGetNoSlots() = m_pHashMapSlot->uGetNoSlots() * 2;
+//
+//  HashMapSlot* paOldHashMapSlots = m_pHashMapSlot;
+//  m_paHashMapSlots = new HashMapSlot[m_pHashMapSlot->uGetNoSlots()];
+//
+//  u8 uCount = m_uNoOfEntries;
+//  for(u8 i = 0; i < uOldNoOfSlots && uCount > 0; i++)
+//  {
+//    HashMapEntry* pEntry = paOldHashMapSlots[i].m_pEntry;
+//    while(pEntry != nullptr && uCount > 0)
+//    {
+//      u8 uIndex = uHashFunction(pEntry->m_pKeyObject, m_pHashMapSlot->uGetNoSlots());
+//
+//      HashMapEntry* pTmpEntry = pEntry->m_pNext;
+//
+//      //Move Slot from old hash map to new hash map
+//      pEntry->m_pNext = m_pHashMapSlot[uIndex].m_pEntry;
+//
+//      m_pHashMapSlot[uIndex].m_pEntry = pEntry;
+//
+//      uCount--;
+//
+//      pEntry = pTmpEntry;
+//    }
+//  }
+//
+//  ASSERT(0 == uCount);
+//
+//  delete paOldHashMapSlots;
+//
+//  m_okLock.vDropWrite();
+//}
+/*----------------------------------------------------------------------------*/
 /* Get value stored at key if it exists                                       */
 /*----------------------------------------------------------------------------*/
-Object* HashMap::pValueAt(Object* pKey)
+void HashMap::vSetEntryAtIndex(HashMapEntry* pEntry, u8 uIndex)
 {
-  u8 uIndex = uHashFunction(pKey);
-  HashMapSlot* pIter = m_paMap[uIndex];
+  m_pHashMapSlot->m_pEntry[uIndex] = pEntry;
+}
+/*----------------------------------------------------------------------------*/
+/* Get value stored at key if it exists                                       */
+/*----------------------------------------------------------------------------*/
+Object* HashMap::pValueAt(void* pKey)
+{
+  u8 uIndex = uHashFunction(pKey, m_pHashMapSlot->uGetNoSlots());
+
+  m_okLock.vGrabRead();
+
+  HashMapEntry* pIter = pGetEntryAtIndex(uIndex);
 
   while ( pIter != nullptr ) {
 
-    if ( pIter->m_pKeyObject == pKey )
+    if ( pIter->m_pKeyObject == pKey ) {
+      m_okLock.vDropRead();
       return pIter->m_pValObject;
+    }
 
     pIter = pIter->m_pNext;
   }
 
+  m_okLock.vDropRead();
   return nullptr;
 }
 

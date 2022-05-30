@@ -54,7 +54,7 @@ namespace STORE
    
     Stz* szDemonNm(void);
     void vDemonNm(Stz* szDemonNm);
-    void vDistribute(Op* pSendOp);
+    void vDistribute(Op* pSendOp, Job* pJob);
     i8   iDstStage(void);
     i8   iDstNode(void);
     LglPtn tDstLglPtn(void);

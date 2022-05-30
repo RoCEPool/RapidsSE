@@ -39,11 +39,9 @@ DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent)
   //LOGGABLE ASSERT(CacheLine::bMultipleCacheLines(sizeof(DataBuffer)));
 
   m_iBufferNo  = iBufferNo();
-
 #ifdef WITH_BUFFER_ID
-  m_oBufferId  = BufferId::vBufferIdFromNo(m_iBufferNo);
+  m_oBufferId = AM::pFileMap()->oGetNewBufferId(m_iBufferNo);
 #endif
-
   m_iBucketNo  = C_UNKNOWN;
   m_tLglPtn     = C_UNKNOWN;
   
@@ -108,7 +106,7 @@ void DataBuffer::vRepairList(Object* pObject)
 
   while (pDataBuffer) {
     pNextDataBuffer = _pDataBuffer(pDataBuffer->pNextLinkedBuffer());
-    AM::vDeleteOperand(pDataBuffer);
+    AM::vDeleteOperand(pDataBuffer,nullptr);
     pDataBuffer = pNextDataBuffer;
   }
 }
@@ -336,9 +334,19 @@ void DataBuffer::vIsPermanent(bool bIsPermanent)
   m_bIsPermanent = bIsPermanent;
 }
 
+/*----------------------------------------------------------------------------*/
+/* set the buffer no                                                          */
+/*----------------------------------------------------------------------------*/
+void DataBuffer::vSetBufferNo(i8 iBufferNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_iBufferNo = iBufferNo;
+}
+
 #ifdef WITH_BUFFER_ID
 /*----------------------------------------------------------------------------*/
-/* get the buffer id of the pool buffer that the object is within             */
+/* get the buffer id of this row buffer                                       */
 /*----------------------------------------------------------------------------*/
 BufferId DataBuffer::oGetBufferId(void)
 {
@@ -356,18 +364,8 @@ void DataBuffer::vSetBufferId(BufferId oBufferId)
 
   m_oBufferId = oBufferId;
 }
-
-/*----------------------------------------------------------------------------*/
-/* set the buffer no                                                          */
-/*----------------------------------------------------------------------------*/
-void DataBuffer::vSetBufferNo(i8 iBufferNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  m_iBufferNo = iBufferNo;
-}
-
 #endif
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

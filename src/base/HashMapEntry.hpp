@@ -1,33 +1,37 @@
 /*============================================================================*/
-/* ThreadVec.hpp -- Vector of Threads                                         */
+/* HashMapEntry.hpp -- HashMapEntry                                           */
 /*============================================================================*/
 #pragma once
 
 namespace BASE
 {
-  class ThreadVec : public VectorNL_t<CN_THREADVEC,Thread,C_MAX_THREADS>
+  class HashMapEntry : public Object
   {
+    friend HashMap;
+    friend HashMapSlot;
+
   private:
-    
-    Lock m_okLock;
-    
+    void* m_pKeyObject;
+    Object* m_pValObject;
+
+    HashMapEntry* m_pNext;
+
     // must be last
-    Footer m_xFooter;    
-    
+    Footer m_xFooter;
+
   public:
     void* operator new(size_t);
-    void  operator delete(void*);
-    
-    ThreadVec(void);
-    ~ThreadVec(void) noexcept(false);
-  
-    void vDropLock(void);
-    void vGrabLock(void);
-    
-    static ThreadVec* _pThreadVec(void* aAddr);
-  
+    void  operator delete(void* pHashMapEntryAddr);
+
+    HashMapEntry(void* pKey, Object* pValue);
+    ~HashMapEntry(void) noexcept(false);
+
+  private:
+
     Footer* aFooter(void);
   };
+
+  HashMapEntry* _pHashMapEntry(void* aAddr);
 }
 
 /*============================================================================*/

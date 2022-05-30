@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace BASE
+namespace PRIMITIVES
 {
   template <class ITEM>
   class ListItem_t

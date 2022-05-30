@@ -130,7 +130,7 @@ void Step::vCsvBufferDelete(void)
 {
   ENTRY();
 
-  AM::vDeleteOperand(*m_pLogicUnit->m_xpCsvBuffer);
+  AM::vDeleteOperand(*m_pLogicUnit->m_xpCsvBuffer,nullptr);
 
   m_pLogicUnit->m_xpCsvBuffer = nullptr;
 

@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-ThreadQueue* BASE::_pThreadQueue(void* aAddr)
+ThreadQueue* ENGINE::_pThreadQueue(void* aAddr)
 {
   ThreadQueue* pThreadQueue = reinterpret_cast<ThreadQueue*>(aAddr);
   

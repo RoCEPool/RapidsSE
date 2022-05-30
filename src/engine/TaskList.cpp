@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-TaskList* BASE::_pTaskList(void* aAddr)
+TaskList* ENGINE::_pTaskList(void* aAddr)
 {
   TaskList* pTaskQueue = reinterpret_cast<TaskList*>(aAddr);
   

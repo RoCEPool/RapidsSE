@@ -28,7 +28,7 @@ extern pthread_key_t giTLS_TaskKey;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Task* BASE::_pTask(void* aAddr)
+Task* ENGINE::_pTask(void* aAddr)
 {
   Task* pTask = reinterpret_cast<Task*>(aAddr);
   
@@ -40,7 +40,7 @@ Task* BASE::_pTask(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Task* BASE::_pTask(i8 iAddr)
+Task* ENGINE::_pTask(i8 iAddr)
 {
   Task* pTask = reinterpret_cast<Task*>(iAddr);
   

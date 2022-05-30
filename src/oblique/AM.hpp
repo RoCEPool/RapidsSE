@@ -17,6 +17,7 @@
 #include "eLA.h"
 #include "eMA.h"
 #include "eOA.h"
+#include "eOM.h"
 #include "ePA.h"
 #include "eYX.h"
 #include "eRA.h"
@@ -27,7 +28,6 @@
 #include "KeyBkt.hpp"
 
 
-class LglPtn;
 
 namespace OBLIQUE {
   class AM;
@@ -37,6 +37,17 @@ using namespace OBLIQUE;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+namespace PRIMITIVES {
+  class Atomic;
+  class Footer;
+  class Header;
+  class Mutex;
+  class Object;
+}
+
+using namespace PRIMITIVES;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 namespace BASE {
          
   class Birth;
@@ -56,10 +67,9 @@ namespace BASE {
   class FileMap;
   class Format;
 
-#ifdef WITH_HASHMAP
   class HashMap;
-#endif
-  class Header;
+  class HashMapEntry;
+  class HashMapSlot;
   class Heap;
   class Heaps;
   class HeapBuffer;
@@ -73,11 +83,9 @@ namespace BASE {
   class Locks;
 
   class MasterLock;
-  class Mutex;
 
   class Now;
 
-  class Object;
   class ObjectSnapshot;
   class Operand;
 
@@ -90,17 +98,12 @@ namespace BASE {
   class Resource;
   class Resources;
 
-  class Schedule;
-  class Scheduler;
   class Socket;
   class Starter;
   class Statistics;
   class String;
 
   class TagSet;
-  class Task;
-  class Thread;
-  class ThreadVec;
   class Timer;
   class Token;
   class TokenVec;
@@ -152,7 +155,6 @@ namespace STORE {
   class Dynamo;
 
   class Encoding;
-  class Engine;
   class EntBuffer;
   class EventHandlers;
 
@@ -170,7 +172,11 @@ namespace STORE {
   class Job;
   class JobList;
 
+  class LglPtn;
   class LogicUnit;
+
+  class Marker;
+  class MarkerMgr;
 
   class Node;
 
@@ -210,6 +216,21 @@ namespace STORE {
 }
 
 using namespace STORE;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+namespace ENGINE {
+  class Engine;
+  class Schedule;
+  class Scheduler;
+  class Task;
+  class TaskList;
+  class Thread;
+  class ThreadQueue;
+  class ThreadVec;
+}
+
+using namespace ENGINE;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -330,6 +351,14 @@ namespace OBLIQUE
     {
     public:
       static Job* pFindJob(JobId tJobId, bool bLockJob=false);
+    };
+
+    class MARKER
+    {
+    public:
+      static void vFreeMarker(Marker* pMarker, Job* pJob);
+      static MarkerMgr* pMarkerMgr(void);
+      static Marker* pNewMarker(eOM eOpMarker, Job* pJob);
     };
 
     class MASTERLOCK
@@ -636,7 +665,7 @@ namespace OBLIQUE
     static i8   nBuckets(void);
     static BufferPool* pBufferPool(void);
     static ClassFlags* pClassFlags(void);
-    static void vDeleteOperand(Operand* pOperand);
+    static void vDeleteOperand(Operand* pOperand, Job* pJob);
     static MasterLock* pDicLock(void);
     static i8   iElapsedSsec(void);
     static i8   iEpoch(void);
@@ -760,8 +789,7 @@ namespace OBLIQUE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static void vNapMsec(i8 nMilliSeconds, eCN eCallingClass);
     static void vNapUsec(i8 nMicroSeconds, eCN eCallingClass);
-    static Operand* pDuplicateOperand(Operand* pOperand);
-        
+       
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static Stz* pOperandName(Operand* pOperand);
     static i8   nOperandsArg(void);

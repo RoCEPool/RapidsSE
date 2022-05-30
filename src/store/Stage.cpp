@@ -102,7 +102,8 @@ void Stage::vCancelPipeline(Task *pTriggeringTask)
     Op *pOp = pStream->pGet(0);
     RASSERT(pOp->szOpNm()->bSame("start"_Stz));
     // append a CANCELMARKER onto first operator
-    pOp->vAppendLeft(new Marker(OM_CANCELMARKER), pTriggeringTask);
+    pOp->vAppendLeft(new (nullptr)Marker(OM_CANCELMARKER),
+                     pTriggeringTask);
   }
 }
 

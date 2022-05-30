@@ -10,6 +10,7 @@
 #include "EventHandlers.hpp"
 #include "SysMetrics.hpp"
 #include "CmdLineArgs.hpp"
+#include "MarkerMgr.hpp"
 #include "eAC.h"
 
 namespace STORE { class InternalTables; class Jobs; class Numbering; }
@@ -22,7 +23,7 @@ namespace STORE
   class AttachMap : public Object
   {
   friend class OBLIQUE::AM;
-  friend class Engine;
+  friend class ENGINE::Engine;
   friend class PROMPT::SePrompt;
 
   private:
@@ -66,6 +67,7 @@ namespace STORE
     i8            m_nJobsThreshold;
     LglPtnMap*    m_pLglPtnMap;
     Locks         m_oLocks;
+    MarkerMgr*    m_pMarkerMgr;
     Numbering*    m_pNumbering;
     Atomic        m_nxOperands;
     Atomic        m_ixQueryNo;
@@ -118,6 +120,8 @@ namespace STORE
     void vIndexEntries(i8 nIndexEntries);
   
     Jobs* pJobs(void);
+  
+    MarkerMgr* pMarkerMgr(void);
   
     void vNextTempName(s32& sName);
   

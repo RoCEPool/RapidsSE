@@ -119,6 +119,7 @@ enum eCN : u2 // Class Number
 
   /* */ CN__H__,
   /* */ CN_HASHMAP,
+  /* */ CN_HASHMAPENTRY,
   /* */ CN_HASHMAPSLOT,
   /* */ CN_HEAPBUFFER,
   /* */ CN_HEAPMEM,
@@ -177,6 +178,8 @@ enum eCN : u2 // Class Number
 
   /* */ CN__M__,
   /* */ CN_MARKER,
+  /* */ CN_MARKERCHAIN,
+  /* */ CN_MARKERMGR,
   /* */ CN_MEDIUMPERSISTENT,
   /* */ CN_MEDIUMTRANSIENT,
   /* */ CN_MEDIUMVIRTUAL,
@@ -527,6 +530,7 @@ static Stz* aCN[]
 
   /* */ "_H__"_Stz,                 // CN__H__
   /* */ "HASHMAP"_Stz,              // CN_HASHMAP
+  /* */ "HASHMAPENTRY"_Stz,         // CN_HASHMAPENTRY
   /* */ "HASHMAPSLOT"_Stz,          // CN_HASHMAPSLOT
   /* */ "HEAPBUFFER"_Stz,           // CN_HEAPBUFFER
   /* */ "HEAPMEM"_Stz,              // CN_HEAPMEM
@@ -585,6 +589,8 @@ static Stz* aCN[]
 
   /* */ "_M__"_Stz,                 // CN__M__
   /* */ "MARKER"_Stz,               // CN_MARKER
+  /* */ "MARKERCHAIN"_Stz,          // CN_MARKERCHAIN
+  /* */ "MARKERMGR"_Stz,            // CN_MARKERMGR
   /* */ "MEDIUMPERSISTENT"_Stz,     // CN_MEDIUMPERSISTENT
   /* */ "MEDIUMTRANSIENT"_Stz,      // CN_MEDIUMTRANSIENT
   /* */ "MEDIUMVIRTUAL"_Stz,        // CN_MEDIUMVIRTUAL

@@ -29,13 +29,13 @@ void* BufferId::vAddressFromId(BufferId oBufferId)
 
 }
 
-BufferId BufferId::vBufferIdFromNo(i8 iBufferNo)
+BufferId BufferId::vBufferIdFromNo(i8 iPoolBufferNo)
 {
   _static_
 
   BufferId oBufferId;
 
-  oBufferId.m_iAsI8 =  iBufferNo;
+  oBufferId.m_iAsI8 =  iPoolBufferNo;
 
   oBufferId.m_bIdFlag = 1;
 
@@ -49,4 +49,17 @@ bool BufferId::bIsAddress(BufferId oBufferId)
 
   return oBufferId.m_bIdFlag == 0;
 
+}
+//TODO Arjun: Check overflow before setting below members
+void BufferId::vSetBuffSubscript(u8 uBuffSubscript)
+{
+  m_uBuffSubscript = uBuffSubscript;
+}
+void BufferId::vSetPageFile(u8 uPageFile)
+{
+  m_uPageFile = uPageFile;
+}
+void BufferId::vSetIdFlag(bool bFlag)
+{
+  m_bIdFlag = bFlag;
 }

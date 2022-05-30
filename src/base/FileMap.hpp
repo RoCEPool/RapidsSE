@@ -15,9 +15,9 @@ namespace BASE
     Stz* m_szFilePath;
     i8 m_iFileSize;
     i8 m_iCreated;
+#ifdef WITH_PAGEFILE
     PageFile* m_pPageFile; // TODO Arjun: Update to list
-    u8 m_uPageFileSubset; // Temporary use this instead of BufferSubset in BufferId
-
+#endif
     // Store start and end address of pageable area?
 
     // must be last
@@ -31,6 +31,9 @@ namespace BASE
     ~FileMap(void);
 
     RowBuffer* pFromDisk(Operand* pOperand);
+#ifdef WITH_BUFFER_ID
+    BufferId oGetNewBufferId(i8 iPoolBufferNo);
+#endif
     void vToDisk(Operand* pOperand);
     static PoolBuffer* pToPoolBuffer(i8 i_PoolBuffer);
 

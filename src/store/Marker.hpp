@@ -4,6 +4,9 @@
 #pragma once
 
 #include "eOM.h"
+#include "eMG.h"
+
+namespace STORE { class MarkerMgr; }
 
 namespace STORE
 {
@@ -11,15 +14,22 @@ namespace STORE
   {
   protected:
     eOM  m_eOpMarker;
-    
+    eMG  m_eMarker;
+
+    Marker* m_pNextItem;
+  
+    b8  m_bDeletable;
+
     // must be last
     Footer m_xFooter;
 
   public:
-    void* operator new(size_t);
+    void* operator new(size_t, eMG eMarker);
+    void* operator new(size_t, Job* pJob);
+    //void* operator new(size_t, MarkerMgr* pMarkerMgr);
     void operator delete(void*);
   
-    Marker(void);
+
     Marker(eOM eOpMarker);
    ~Marker(void) noexcept(false);
     
@@ -27,7 +37,20 @@ namespace STORE
   
     static void vPostRecv(void* aMarker);
 
+    bool bDeletable(void);
+    void vDeletable(bool bDeletable);
+  
+    eMG eMarker(void);
+    void vMarker(eMG eMarker);
+
+    Marker* pNextItem(void);
+    void vNextItem(Marker* pNext);
+
     eOM eOpMarker(void);
+    void vOpMarker(eOM eOpMarker);
+
+  private:
+    Footer* aFooter(void);
   };
 
   Marker* _pMarker(void* aAddr);

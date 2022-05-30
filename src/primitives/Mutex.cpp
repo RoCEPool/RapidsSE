@@ -13,7 +13,7 @@ Atomic gixMutex_err;
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(BASE,Mutex,CN_MUTEX)
+__pCastFunction(PRIMITIVES,Mutex,CN_MUTEX)
 __aNewFunction(Mutex,CN_MUTEX)
 __vDeleteFunction(Mutex,CN_MUTEX)
 __aFooterFunction(Mutex)

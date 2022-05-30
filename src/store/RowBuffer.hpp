@@ -16,7 +16,7 @@ namespace STORE
                     public RowBox_t<C_WSP_ROWBUFFER>
   {
   protected:
-  
+
     bool    m_bDeletable;
     Decider m_oDecider;
   
@@ -60,7 +60,7 @@ namespace STORE
     void vPrintRows(StreamDef* pStreamDef);
   
     void vRestorePointers(void);
-  
+
     void vShow(StreamDef* pStreamDef);
   
     char* azStrArea(void);

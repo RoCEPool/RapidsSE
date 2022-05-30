@@ -105,7 +105,7 @@ void Step::vStreamDefLftDelete(void)
 {
   ENTRY();
 
-  AM::vDeleteOperand(*m_pLogicUnit->m_xpStreamDefLft);
+  AM::vDeleteOperand(*m_pLogicUnit->m_xpStreamDefLft,nullptr);
   
   m_pLogicUnit->m_xpStreamDefLft = nullptr;
   

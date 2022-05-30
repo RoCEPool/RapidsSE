@@ -5,7 +5,7 @@
 
 #include "eRF.h"
 
-namespace BASE
+namespace PRIMITIVES
 {
   class Object : public Header
   {

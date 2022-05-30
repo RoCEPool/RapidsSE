@@ -50,11 +50,10 @@ FileMap::FileMap(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILEMAP);
   m_szFilePath = gxCmdLineArgs.m_xSysArgs.m_sPageFilePath;
-  m_uPageFileSubset = 0;
 
 //  vInitialise();
-#ifdef WITH_BUFFER_ID
-  m_pPageFile = new PageFile(m_szFilePath);
+#ifdef WITH_PAGEFILE
+  m_pPageFile = new PageFile(m_szFilePath, 0);
 #endif
   _checkInitialised_(CN_FILEMAP);
 
@@ -82,7 +81,7 @@ RowBuffer* FileMap::pFromDisk(Operand* pOperand)
 
   //---------------------------------------------------------------------------
   // Operand should be a buffer id. Check flag bit.
-#ifdef WITH_BUFFER_ID
+#ifdef WITH_PAGEFILE
   BufferId oBufferId;// TODO Arjun: Code readability
   oBufferId.m_pvAsAddress = (void*) pOperand;
 
@@ -112,7 +111,7 @@ void FileMap::vToDisk(Operand* pOperand)
 
   //---------------------------------------------------------------------------
   // Operand could be an address or a buffer id. Check flag bit.
-#ifdef WITH_BUFFER_ID
+#ifdef WITH_PAGEFILE
   BufferId oBufferId;// TODO Arjun: Code readability
   oBufferId.m_pvAsAddress = (void*) pOperand;
 
@@ -135,6 +134,28 @@ void FileMap::vToDisk(Operand* pOperand)
   m_pPageFile->vWriteDataBufferToPFile(pRowBuffer);
 #endif
 }
+
+#ifdef WITH_BUFFER_ID
+/*----------------------------------------------------------------------------*/
+/* Find a free chunk in a page file and return that address                   */
+/*----------------------------------------------------------------------------*/
+BufferId FileMap::oGetNewBufferId(i8 iPoolBufferNo)
+{
+  //---------------------------------------------------------------------------
+  // Figure out which PageFile has space for a new RowBuffer
+#ifdef WITH_PAGEFILE
+  BufferId oFreeBuffId = m_pPageFile->oNextFreeBufferId();
+
+//  while(oFreeBuffId.m_iAsI8 == C_DATUM_NULL) {
+//    // This page file is full. Try the next one..
+//  }
+
+  return oFreeBuffId;
+#else
+  return BufferId::vBufferIdFromNo(iPoolBufferNo);
+#endif
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* translate pool buffer number to allocated buffer                           */

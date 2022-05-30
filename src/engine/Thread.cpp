@@ -15,7 +15,7 @@ extern pthread_key_t giTLS_ThreadKey;
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(BASE,Thread,CN_THREAD)
+__pCastFunction(ENGINE,Thread,CN_THREAD)
 __aNewFunction(Thread,CN_THREAD)
 __vDeleteFunction(Thread,CN_THREAD)
 __aFooterFunction(Thread)

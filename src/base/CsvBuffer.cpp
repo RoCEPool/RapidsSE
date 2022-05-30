@@ -78,7 +78,7 @@ void CsvBuffer::vRepairList(Object* pObject)
 
   while (pCsvBuffer) {
     pNextCsvBuffer = pCsvBuffer->pNextBuffer();
-    AM::vDeleteOperand(pCsvBuffer);
+    AM::vDeleteOperand(pCsvBuffer,nullptr);
     pCsvBuffer = pNextCsvBuffer;
   }
 }

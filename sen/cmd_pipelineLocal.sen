@@ -74,6 +74,12 @@
   
   PipeSpec[] assert
 
+
+/* local */  // - - - - - - - - - - - - - -
+/* local */  // new all the markers needed
+/* local */  // - - - - - - - - - - - - - -
+/* local */  [job].newMarkerChain
+
   PipeSpec[] Pipeline[].create
   Pipeline[].spawnOpTasks
   

@@ -6,6 +6,8 @@
 
 #include "Socket.hpp"
 #include "Resources.hpp"
+#include "Marker.hpp"
+#include "AM.hpp"
 
 //#include <pcap/pcap.h>
 #include <arpa/inet.h>
@@ -597,6 +599,40 @@ Object* Socket::pRecvObject(void)
   eCN eClass = pObject->eGetClassNo();
   i8 nSize = gxaSizeHeap[eClass].m_nClassSize;
   
+  
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // markers are special case
+//#ifdef WITH_AM_MARKERS
+
+//  if (CN_MARKER == eClass) {
+//
+//    // copy the object header into the LowBuffer
+//    MemLib::vCopy(m_aLowBuff,pObject,sizeof(Object),eClass);
+//
+//    // receive body into the LowBuffer
+//    i8 nRemainingBytes = gxaSizeHeap[eClass].m_nClassSize - sizeof(Object);
+//    void* aLowBody = aAdd<void*>(m_aLowBuff,sizeof(Object));
+//    bool bResult = bRecvBytes(aLowBody,nRemainingBytes,oSysCall);
+//    UNUSED(bResult);
+//
+//    // new a marker using info from received marker
+//    Marker* pReceivedMarker = (Marker*)m_aLowBuff;
+//    Marker* pMarker = AM::MARKER::pNewMarker(pReceivedMarker->eOpMarker(),
+//                                             nullptr);
+//
+//    m_pTotup->vAdd(eClass,nSize);
+//    vSuccess(true);
+//    return pMarker;
+//  }
+
+//#endif
+
+  
+  
+  
+  
   if (! bLowMem || ! gxaSizeHeap[eClass].m_bLowMemoryDiscard) {
     //vTrace("class:%s\n"_Stz, aCN[eClass]);
     Object* pReceivedObject = Heaps::pAllocate(eClass);
@@ -613,7 +649,20 @@ Object* Socket::pRecvObject(void)
      vSuccess(false);
      return nullptr;
     }
-
+#ifdef WITH_BUFFER_ID
+    if (eClass == CN_ROWBUFFER || eClass == CN_INFOSET || eClass == CN_NAMEDBUFFER) {
+      DataBuffer* pDataBuffer = _pDataBuffer(pReceivedObject);
+      i8 iPoolBufferNo = pDataBuffer->iBufferNo();
+      pDataBuffer->vSetBufferNo(iPoolBufferNo);
+      pDataBuffer->vSetBufferId(
+          AM::pFileMap()->oGetNewBufferId(iPoolBufferNo));
+#ifdef WITH_HASHMAP
+      AM::pHashMap()->vInsertKeyValue(
+          (void *) pDataBuffer->oGetBufferId().m_pvAsAddress,
+          (Object *) pReceivedObject);
+#endif
+    }
+#endif
     pReceivedObject->vRunPostRecv();
 
     m_pTotup->vAdd(eClass,nSize);

@@ -235,6 +235,8 @@
 #include "AdaptorWL.hpp"
 #include "PipeIn.hpp"
 #include "EvMgr.hpp"
+#include "MarkerChain.hpp"
+#include "MarkerMgr.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -364,8 +366,9 @@ SizeHeap gxaSizeHeap[]
   { CN_GRID,                     sizeof(Grid),               HT_T_TINY    ,0 FILL },
 
   { CN__H__,                     'H' - ('A' - 1),            HT_INVALID   ,0 FILL },
-  { CN_HASHMAP,                  sizeof(HashMap),            HT_T_LARGE   ,0 FILL },
-  { CN_HASHMAPSLOT,              sizeof(HashMapSlot),        HT_T_TINY    ,0 FILL },
+  { CN_HASHMAP,                  sizeof(HashMap),            HT_T_TINY    ,0 FILL },
+  { CN_HASHMAPENTRY,             sizeof(HashMapEntry),       HT_T_TINY    ,0 FILL },
+  { CN_HASHMAPSLOT,              sizeof(HashMapSlot),        HT_T_LARGE   ,0 FILL },
   { CN_HEAPBUFFER,               sizeof(HeapBuffer),         HT_INVALID   ,0 FILL },
   { CN_HEAPMEM,                  sizeof(Heaps),              HT_INVALID   ,0 FILL },
 
@@ -423,6 +426,8 @@ SizeHeap gxaSizeHeap[]
 
   { CN__M__,                     'M' - ('A' - 1),            HT_INVALID   ,0 FILL },
   { CN_MARKER,                   sizeof(Marker),             HT_T_TINY    ,0 FILL },
+  { CN_MARKERCHAIN,              sizeof(MarkerChain),        HT_T_TINY    ,0 FILL },
+  { CN_MARKERMGR,                sizeof(MarkerMgr),          HT_T_TINY    ,0 FILL },
   { CN_MEDIUMPERSISTENT,         sizeof(Heap), /*correct*/   HT_INVALID   ,0 FILL },
   { CN_MEDIUMTRANSIENT,          sizeof(Heap), /*correct*/   HT_INVALID   ,0 FILL },
   { CN_MEDIUMVIRTUAL,            sizeof(Heap), /*correct*/   HT_INVALID   ,0 FILL },

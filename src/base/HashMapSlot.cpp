@@ -43,14 +43,17 @@ void HashMapSlot::operator delete(void* pHashMapSlotAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-HashMapSlot::HashMapSlot(Object* pKey, Object* pValue)
+HashMapSlot::HashMapSlot(void)
     : Object(CN_HASHMAPSLOT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAPSLOT,_FOOTER_);
 
-  m_pKeyObject = pKey;
-  m_pValObject = pValue;
-  m_pNext = nullptr;
+  m_uNoOfSlots = C_INIT_HASHMAP_SIZE;
+
+  for(u8 i =0; i < m_uNoOfSlots; i++)
+  {
+    m_pEntry[i] = nullptr;
+  }
 
   _checkInitialised_(CN_HASHMAPSLOT);
 
@@ -63,6 +66,28 @@ HashMapSlot::HashMapSlot(Object* pKey, Object* pValue)
 HashMapSlot::~HashMapSlot(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAPSLOT,_FOOTER_);
+  for(u8 i = 0; i < m_uNoOfSlots; i++)
+  {
+    if(m_pEntry[i] != nullptr)
+    {
+      HashMapEntry* uIter1 = m_pEntry[i];
+      HashMapEntry* uIter2;
+      while(uIter1 != nullptr)
+      {
+        uIter2 = uIter1->m_pNext;
+        delete uIter1;
+        uIter1 = uIter2;
+      }
+    }
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get number of slots                                                        */
+/*----------------------------------------------------------------------------*/
+u8 HashMapSlot::uGetNoSlots(void)
+{
+  return m_uNoOfSlots;
 }
 
 /*----------------------------------------------------------------------------*/
