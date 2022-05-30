@@ -1108,6 +1108,10 @@ void vDdlLockAssertNone(void);
   void vLogicUnitIntStackStore(void);
   void vLogicUnitJobMetricsFetch(void);
   void vLogicUnitJobMetricsStore(void);
+  void vLogicUnitRcvdChildExitFetch(void);
+  void vLogicUnitRcvdChildExitStore(void);
+  void vLogicUnitRcvdEndFetch(void);
+  void vLogicUnitRcvdEndStore(void);
 
   // ErrorMarker[]
   void vMarkerDelete(void);

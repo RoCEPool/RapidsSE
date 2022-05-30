@@ -34,21 +34,19 @@
 
   //"EV_X_CHILDEXIT" .verbose
 
+  true LogicUnit[].RcvdChildExit!
+
   nullptr [job].responseOp!
 
-  Marker[].newExitingMarker
-  Marker[].pipeout
+  LogicUnit[].RcvdEnd@ if
+    Marker[].newEndMarker
+    Marker[].pipeout
+  then
 
   //"transliterate_ChildExit" .
   Pipein[].delete
 
-  [job] assert
-  [task] assert
-
-  // ack the parent job task
-  [op].ackInvokingTask
-
-  false // calling op_loop exits
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -76,13 +74,19 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_M_EXITING ...                                               */
+/* handler for EV_M_END ...                                                   */
 /*----------------------------------------------------------------------------*/
-: transliterate_Exiting \handler
+: transliterate_End \handler
 
-  //"EV_M_EXITING_handler" .verbose
+  //"EV_M_END_handler" .verbose
 
-  PipeIn[].delete
+  true LogicUnit[].RcvdEnd!
+
+  LogicUnit[].RcvdChildExit@ if
+     PipeIn[].pipeout
+  else
+    PipeIn[].delete
+  then
 
   true
 ;
@@ -132,7 +136,7 @@
      exit
   else
     [Op] [job].responseOp!
-    find: transliterate_Exiting       EV_M_EXITING       [op].handler!
+    find: transliterate_End       EV_M_END       [op].handler!
   then
 
   true

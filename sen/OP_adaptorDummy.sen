@@ -23,21 +23,37 @@
 
   0 EV_D_EXITOPERAND EG_ZK LogicUnit[].diaryNote
 
+  true LogicUnit[].RcvdChildExit!
+
   nullptr [job].responseOp!
 
-  Marker[].newExitingMarker
-  Marker[].pipeout
+  LogicUnit[].RcvdEnd@ if
+    Marker[].newEndMarker
+    Marker[].pipeout
+  then
 
   "adaptorDummy_ChildExit" .
   Pipein[].delete
 
-  [job] assert
-  [task] assert
+  true
+;
 
-  // ack the parent job task
-  [op].ackInvokingTask
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_END ...                                                   */
+/*----------------------------------------------------------------------------*/
+: adaptorDummy_End \handler
 
-  false // calling op_loop exits
+  //"EV_M_END" .verbose
+
+  true LogicUnit[].RcvdEnd!
+
+  LogicUnit[].RcvdChildExit@ if
+     PipeIn[].pipeout
+  else
+    PipeIn[].delete
+  then
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -51,13 +67,17 @@
 
   <etc> "sqlCompiler \"%v\"" str.format to sSmt
 
-  [Op] [job].responseOp!
-
   sSmt "FORKING CHILD FOR PIPELINE: %v"  str.format .
 
   // spawn a job for the smt
   STD_NORMALFORK_TAG sSmt api::forkChildNormal not if
-    "Error Code %v" .printf
+    //"Error Code %v" .printf
+    op__execErr
+    true
+    exit
+  else
+    [Op] [job].responseOp!
+    find: adaptorDummy_End       EV_M_END       [op].handler!
   then
 
   Pipein[].pipeout
@@ -96,18 +116,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_M_EXITING ...                                               */
-/*----------------------------------------------------------------------------*/
-: adaptorDummy_Exiting \handler
-
-  //"EV_M_EXITING_handler" .verbose
-
-  PipeIn[].delete
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* handler for EV_D_STRAEMDEF ...                                             */
 /*----------------------------------------------------------------------------*/
 : adaptorDummy_StreamDef \handler
@@ -135,9 +143,7 @@
   find: adaptorDummy_RowBuffer    EV_D_ROWBUFFER     [op].handler!
   find: adaptorDummy_StreamDef    EV_D_STREAMDEF     [op].handler!
 
-  find: adaptorDummy_Exiting      EV_M_EXITING       [op].handler!
   find: adaptorDummy_Start        EV_M_START         [op].handler!
-
   find: adaptorDummy_ChildExit    EV_X_CHILDEXIT     [op].handler!
 
   op__loop
