@@ -48,6 +48,9 @@ namespace STORE
 
     eOM eOpMarker(void);
     void vOpMarker(eOM eOpMarker);
+
+  private:
+    Footer* aFooter(void);
   };
 
   Marker* _pMarker(void* aAddr);

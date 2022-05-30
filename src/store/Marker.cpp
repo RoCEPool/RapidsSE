@@ -17,16 +17,20 @@ ClassFn __Marker_fn (CN_MARKER,CF_INSPECT,(fpCLASSFN*)Marker::bInspect,-1);
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+__pCastFunction(STORE,Marker,CN_MARKER)
+__vDeleteFunction(Marker,CN_MARKER)
+__aFooterFunction(Marker)
+
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Marker* STORE::_pMarker(void* aAddr)
-{
-  Marker* pMarker = reinterpret_cast<Marker*>(aAddr);
-  
-  return pMarker;
-}
-
+//Marker* STORE::_pMarker(void* aAddr)
+//{
+//  Marker* pMarker = reinterpret_cast<Marker*>(aAddr);
+//
+//  return pMarker;
+//}
+//
 /*----------------------------------------------------------------------------*/
 /* allocate from heap                                                         */
 /*----------------------------------------------------------------------------*/
@@ -59,12 +63,12 @@ void* Marker::operator new(size_t, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* free back to the heap                                                      */
 /*----------------------------------------------------------------------------*/
-void Marker::operator delete(void* aAddress)
-{
-  Object* pObject = static_cast<Object*>(aAddress);
-  
-  Heaps::vFree(pObject);
-}
+//void Marker::operator delete(void* aAddress)
+//{
+//  Object* pObject = static_cast<Object*>(aAddress);
+//
+//  Heaps::vFree(pObject);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
