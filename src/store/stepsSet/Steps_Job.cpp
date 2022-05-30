@@ -653,9 +653,14 @@ void Step::vJobPhaseFetch(void)
 void Step::vJobPreExecuteTest(void)
 {
   ENTRY();
-  
-  eEC eError = AM::JOB::ePreExecuteTest(m_pJob);
-  
+
+  Job* pJob = MY::pJob();
+
+  eEC eError = AM::JOB::ePreExecuteTest(pJob);
+
+  //if (pJob->tJobId().uJobNo() == 93)
+  //  eError = EC_LOW_MEMORY;
+
   m_pDataStack->vPushInt(eError);
 
   EXIT();

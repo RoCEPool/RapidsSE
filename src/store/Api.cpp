@@ -590,8 +590,17 @@ eEC Api::eForkJobNormal(JobId& rtChildJobId,
 
     rpChildJob_tbr->vMutexWait();
     rpChildJob_tbr->vMutexUnlock();
+    //vTrace("ForkChild got notification\n"_Stz);
 
     //rpChildJob_tbr->vMutexUnlock();
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check for error from child job
+  eEC eChildError = rpParentJob_tbr->eChildError();
+
+  if (eChildError != EC_NONE) {
+    rpChildJob_tbr->vJobError(eChildError);
+    return eChildError;
+  }
 
     return EC_NONE;
 }

@@ -30,6 +30,12 @@
 /* org_ org */  // - - - - - -
 /* org_ org */  // pre-checks
 /* org_ org */  // - - - - - -
+/* org_ org */
+/* org_ org */  [args].distJob if
+/* org_ org */    "pipeline" "origin"
+/* org_ org */      "org_ org" "running pre-checks"                   [job].trace
+/* org_ org */  then
+/* org_ org */
 /* org_ org */  [job] assert
 /* org_ org */  [job].assertStructure
 /* org_ org */  [job].assertOrdinary
@@ -64,10 +70,43 @@
 /* org_ org */    then
 /* org_ org */  then
 
+
+/* org_ org */  [args].distJob if
+/* org_ org */    "pipeline" "origin"
+/* org_ org */      "org_ org" "preExecuteTest"                    [job].trace
+/* org_ org */  then
+/* org_ org */
+/* org_ org */  [job].preExecuteTest to ErrorCode[]
+/* org_ org */  ErrorCode[] if
+/* org_ org */    ErrorCode[] [job].error!
+/* org_ org */    [ddlLock].testDrop
+/* org_ org */    ListedJob[].assertNoRef
+/* org_ org */
+/* org_ org */    Path[].discardAll
+/* org_ org */    [job].addRetired
+/* org_ org */
+/* org_ org */    //[job].signalWaiter
+/* org_ ovr */    [job].error@ [job].signalParent
+/* org_ ovr */
+/* org_ ovr */    true [job].reapable!
+/* org_ org */
+/* org_ org */    [task].grabLock
+/* org_ org */      [task].retire // does not queue onto exit demon
+/* org_ org */
+/* org_ org */    HAZARD
+/* org_ org */  then
+
+
 /* org_ org */
 /* org_ org */  // - - - - - - - - - - - - - - - - - - - - - - - -
 /* org_ org */  // compile pipeline statement to check its syntax
 /* org_ org */  // - - - - - - - - - - - - - - - - - - - - - - - -
+/* org_ org */
+/* org_ org */  //[args].distJob if
+/* org_ org */  //  "pipeline" "origin"
+/* org_ org */  //    "org_ org" "Dynamo compile"                    [job].trace
+/* org_ org */  //then
+/* org_ org */
 /* org_ org */  Dynamo[].new
 /* org_ org */  <cmd> Dynamo[].compile to ErrorCode[]
 /* org_ org */  ErrorCode[] EC_NONE == if
@@ -77,11 +116,6 @@
 /* org_ org */    // - didnt compile
 /* org_ org */    ErrorCode[] [job].error!
 /* org_ org */    [ddlLock].testDrop
-
-
-
-
-
 /* org_ org */    Dynamo[].delete
 /* org_ org */    ListedJob[].assertNoRef
 /* org_ org */
@@ -95,19 +129,14 @@
 /* org_ org */      [task].retire // does not queue onto exit demon
 /* org_ org */
 /* org_ org */    HAZARD
-
-
-
-
-
 /* org_ org */  then
 /* org_ org */  Dynamo[].delete
 /* org_ org */
-
 /* org_ ovr */    "<signalWaiter>" [job].tagSet@ tagSet.hasName not if
+/* org_ org */      //"SIGNALLING PARENT AS NO WAIT" .
 /* org_ ovr */      [job].error@ [job].signalParent
-/* org_ ovr */      //[job].signalWaiter.
-                  then
+/* org_ ovr */      //[job].signalWaiter
+/* org_ org */     then
 
 /* ---- --- */  // !!! org !!! org !!! org !!! org !!! org !!! org !!! org !!!
 
@@ -123,7 +152,6 @@
 /* org_ org */    "pipeline" "origin"
 /* org_ org */      "org_ org" "lst originator"                      [job].trace
 /* org_ org */  then
-/* org_ org */
 /* org_ org */  "<show_command>" sysargs::tagSet@ tagSet.hasName if
 /* org_ org */    <cmd> .
 /* org_ org */    //<cmd> "pipeline:origin: %v\n" .printf
@@ -131,43 +159,40 @@
 /* org_ org */    //[system].bpa
 /* org_ org */  then
 /* org_ org */
-
-
-
+/* org_ org */
 /* org_ org */
 /* org_ org */  // - - - - - - - - - - - - - - - - - -
 /* org_ org */  // test if distributed job may execute
 /* org_ org */  // - - - - - - - - - - - - - - - - - -
-/* org_ org */  [job].preExecuteTest to ErrorCode[]
-/* org_ org */  ErrorCode[] if
-/* org_ org */    ErrorCode[] [job].error!
-/* org_ org */    [ddlLock].testDrop
-
-
-
-/* org_ ovr */  [job].removeOriginator
-/* org_ ovr */  [job].assertOrdinary
-/* org_ org */  ListedJob[].assertNoRef
 /* org_ org */
-/* org_ org */  Path[].discardAll
-/* org_ org */  [job].addRetired
+/*
+?* org_ org *?  [args].distJob if
+?* org_ org *?    "pipeline" "origin"
+?* org_ org *?      "org_ org" "preExecuteTest"                    [job].trace
+?* org_ org *?  then
+?* org_ org *?
+?* org_ org *?  [job].preExecuteTest to ErrorCode[]
+?* org_ org *?  ErrorCode[] if
+?* org_ org *?    ErrorCode[] [job].error!
+?* org_ org *?    [ddlLock].testDrop
+?* org_ ovr *?    [job].removeOriginator
+?* org_ ovr *?    [job].assertOrdinary
+?* org_ org *?    ListedJob[].assertNoRef
+?* org_ org *?
+?* org_ org *?    Path[].discardAll
+?* org_ org *?    [job].addRetired
+?* org_ org *?
+?* org_ org *?    //[job].signalWaiter
+?* org_ ovr *?    [job].error@ [job].signalParent
+?* org_ org *?
+?* org_ org *?    [task].grabLock
+?* org_ org *?      [task].retire // does not queue onto exit demon
+?* org_ org *?
+?* org_ org *?  HAZARD
+?* org_ org *?  then
+*/
 /* org_ org */
-/* org_ org */  //[job].signalWaiter
-/* org_ ovr */  [job].error@ [job].signalParent
-/* org_ org */
-/* org_ org */  [task].grabLock
-/* org_ org */    [task].retire // does not queue onto exit demon
-/* org_ org */
-/* org_ org */  HAZARD
 
-
-
-
-
-
-/* org_ org */  then
-/* org_ org */
-/* org_ org */
 /* org_ org */  // - - - - - - - - - -
 /* org_ org */  // test if optimising
 /* org_ org */  // - - - - - - - - - -

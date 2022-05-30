@@ -39,7 +39,7 @@
   Marker[].newExitingMarker
   Marker[].pipeout
 
-  "transliterate_ChildExit" .
+  //"transliterate_ChildExit" .
   Pipein[].delete
 
   [job] assert
@@ -121,16 +121,18 @@
   PlanOperand[] sqlCompiler::deletePlan
   PlanOperand[].delete
 
-  [Op] [job].responseOp!
-
-  find: transliterate_Exiting       EV_M_EXITING       [op].handler!
-
   //sPipeline "FORKING CHILD FOR PIPELINE: %v"  str.format .
 
   //sPipeline [op].job@ job(Id).masterJob job(Id).cascade!
 
   STD_NORMALFORK_TAG sPipeline api::forkChildNormal not if
-     "Error Code %v" .printf
+     //"****Error Code %v" .printf
+     op__execErr
+     true
+     exit
+  else
+    [Op] [job].responseOp!
+    find: transliterate_Exiting       EV_M_EXITING       [op].handler!
   then
 
   true

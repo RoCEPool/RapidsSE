@@ -59,7 +59,7 @@ void Step::vApiForkChildBoot(void)
   m_pDataStack->vPopStr(sCmdTagStr,__func__);
 
   if (AM::TRACE::bVerbose(C_VB_API)) {
-    vTrace("ForkChild: %s\n"_Stz,sCmd.szStz());
+    vTrace("ForkChildBoot: %s\n"_Stz,sCmd.szStz());
     vTrace("  CmdTags: %s\n"_Stz,sCmdTagStr.szStz());
   }
   
@@ -125,7 +125,7 @@ void Step::vApiForkChildDemon(void)
   m_pDataStack->vPopStr(sCmdTagStr,__func__);
 
   if (AM::TRACE::bVerbose(C_VB_API)) {
-    vTrace("ForkChild: %s\n"_Stz,sCmd.szStz());
+    vTrace("ForkChildDemon: %s\n"_Stz,sCmd.szStz());
     vTrace("  CmdTags: %s\n"_Stz,sCmdTagStr.szStz());
   }
 
@@ -191,7 +191,7 @@ void Step::vApiForkChildDeputy(void)
   m_pDataStack->vPopStr(sCmdTagStr,__func__);
 
   if (AM::TRACE::bVerbose(C_VB_API)) {
-    vTrace("ForkChild: %s\n"_Stz,sCmd.szStz());
+    vTrace("ForkChildDeputy: %s\n"_Stz,sCmd.szStz());
     vTrace("  CmdTags: %s\n"_Stz,sCmdTagStr.szStz());
   }
 
@@ -257,7 +257,7 @@ void Step::vApiForkChildNormal(void)
   m_pDataStack->vPopStr(sCmdTagStr,__func__);
 
   if (AM::TRACE::bVerbose(C_VB_API)) {
-    vTrace("ForkChild: %s\n"_Stz,sCmd.szStz());
+    vTrace("ForkChildNormal: %s\n"_Stz,sCmd.szStz());
     vTrace("  CmdTags: %s\n"_Stz,sCmdTagStr.szStz());
   }
 
@@ -299,16 +299,18 @@ void Step::vApiForkChildNormal(void)
                                 pChildJob_tbr // TO BE REMOVED
   );
 
-  // come back to this
-  RASSERT(EC_NONE == eError);
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   delete pCmdTagSet;
   delete pCmdTknVec;
   delete pTagTknVec;
 
-  m_pDataStack->vPushInt(true);
+  if (EC_NONE == eError)
+    m_pDataStack->vPushInt(true);
+  else {
+    m_pDataStack->vPushInt(eError);
+    m_pDataStack->vPushInt(false);
+  }
 
   EXIT();
 }
@@ -327,7 +329,7 @@ void Step::vApiForkChildOld(void)
   m_pDataStack->vPopStr(sCmdTagStr,__func__);
 
   if (AM::TRACE::bVerbose(C_VB_API)) {
-    vTrace("ForkChild: %s\n"_Stz,sCmd.szStz());
+    vTrace("ForkChildOld: %s\n"_Stz,sCmd.szStz());
     vTrace("  CmdTags: %s\n"_Stz,sCmdTagStr.szStz());
   }
 
@@ -393,7 +395,7 @@ void Step::vApiForkChild2PC(void)
   m_pDataStack->vPopStr(sCmdTagStr,__func__);
 
   if (AM::TRACE::bVerbose(C_VB_API)) {
-    vTrace("ForkChild: %s\n"_Stz,sCmd.szStz());
+    vTrace("ForkChild2PC: %s\n"_Stz,sCmd.szStz());
     vTrace("  CmdTags: %s\n"_Stz,sCmdTagStr.szStz());
   }
 

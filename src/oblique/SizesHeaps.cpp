@@ -303,7 +303,7 @@ SizeHeap gxaSizeHeap[]
   { CN_CHILDEXIT,                sizeof(ChildExit),          HT_T_TINY    ,0 FILL },
   { CN_CLASSPLACEHOLDER,         sizeof(ClassPlaceHolder),   HT_T_LARGE   ,0 FILL },   
   { CN_CMDLINEARGS,              sizeof(CmdLineArgs),        HT_INVALID   ,0 FILL },
-  { CN_CODEBLOCK,                sizeof(CodeBlock),          HT_T_SMALL   ,0 FILL },
+  { CN_CODEBLOCK,                sizeof(CodeBlock),          HT_T_MEDIUM  ,0 FILL },
   { CN_CODESYNTH,                sizeof(CodeSynth),          HT_T_LARGE   ,0 FILL },
   { CN_COLUMN,                   sizeof(Column),             HT_T_TINY    ,0 FILL },
   { CN_COMBINED,                 sizeof(Combined),           HT_T_LARGE   ,0 FILL },
