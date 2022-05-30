@@ -62,7 +62,8 @@
     PipeSpec[] not assert
       
     [task].grabLock
-    [job].signalWaiter
+    //[job].signalWaiter
+    [job].error@ [job].signalParent
     [task].dropLock
     
     pipelineLocal::termination
@@ -128,7 +129,8 @@
   
   [task].grabLock
   
-    [job].signalWaiter
+    //[job].signalWaiter
+    [job].error@ [job].signalParent
 
     [system].started@ if
     //  "SYSTEM STARTED" .
