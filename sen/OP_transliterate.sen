@@ -129,7 +129,7 @@
 
   //sPipeline [op].job@ job(Id).masterJob job(Id).cascade!
 
-  STD_NORMALFORK_TAG sPipeline api::forkChildNormal not if
+  STD_NORMALFORK_TAG sPipeline api::forkChild not if
      //"****Error Code %v" .printf
      op__execErr
      true

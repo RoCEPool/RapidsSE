@@ -36,6 +36,7 @@ extern AttachMap* gpAttachMap;
 void Step::vAddSteps_Api(void)
 {
   vAddStep("api::forkChild"_Stz,       &Step::vApiForkChild);
+
   vAddStep("api::forkChildBoot"_Stz,   &Step::vApiForkChildBoot);
   vAddStep("api::forkChildDemon"_Stz,  &Step::vApiForkChildDemon);
   vAddStep("api::forkChildNormal"_Stz, &Step::vApiForkChildNormal);
@@ -59,7 +60,7 @@ void Step::vApiForkChild(void)
   m_pDataStack->vPopStr(sCmdTagStr,__func__);
 
   if (AM::TRACE::bVerbose(C_VB_API)) {
-    vTrace("ForkChildDeputy: %s\n"_Stz,sCmd.szStz());
+    vTrace("ForkChild: %s\n"_Stz,sCmd.szStz());
     vTrace("  CmdTags: %s\n"_Stz,sCmdTagStr.szStz());
   }
 
@@ -87,8 +88,10 @@ void Step::vApiForkChild(void)
   JobId tDistId;
   Job* pOuterJob = pOuterJobOfTask();
   tParentId = pOuterJob->tJobId();
-  tOriginId = pOuterJob->tOriginId();
-  tDistId   = pOuterJob->tDistId();
+  //tOriginId = pOuterJob->tOriginId();
+  //tDistId   = pOuterJob->tDistId();
+  RASSERT(tOriginId.bIsUnknown());
+  RASSERT(tDistId.bIsUnknown());
 
   JobId tChildJobId;
   Job* pChildJob_tbr = nullptr;
@@ -98,7 +101,7 @@ void Step::vApiForkChild(void)
                                    pOuterJob,    // TO BE REMOVED
                                    pChildJob_tbr // TO BE REMOVED
   );
-  RASSERT(EC_NONE == eError);
+  //RASSERT(EC_NONE == eError);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -106,7 +109,12 @@ void Step::vApiForkChild(void)
   delete pCmdTknVec;
   delete pTagTknVec;
 
-  m_pDataStack->vPushInt(true);
+  if (EC_NONE == eError)
+    m_pDataStack->vPushInt(true);
+  else {
+    m_pDataStack->vPushInt(eError);
+    m_pDataStack->vPushInt(false);
+  }
 
   EXIT();
 }

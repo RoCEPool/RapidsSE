@@ -108,8 +108,6 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
     THROW("Api::eForkJob: no C_TAG_PATH"_Stz);
   }
 
-  RASSERT(pCmdTagSet->bHasName(C_TAG_WAIT));
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the child job
 
@@ -121,7 +119,16 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
   TagSet* pJobTagSet = rpChildJob_tbr->pJobTags();
   pJobTagSet->vCopy(pCmdTagSet);
 
-  RASSERT(rpChildJob_tbr->bHasTag(C_TAG_WAIT));
+  if ((! pCmdTagSet->bHasName(C_TAG_NOWAIT)) &&
+      (! pCmdTagSet->bHasName(C_TAG_WAIT))) {
+    pCmdTagSet->vDumpSet();
+    THROW("Api::eForkJobOld: neither C_TAG_NOWAIT or C_TAG_WAIT"_Stz);
+  }
+  if (pCmdTagSet->bHasName(C_TAG_NOWAIT) &&
+      pCmdTagSet->bHasName(C_TAG_WAIT)) {
+    pCmdTagSet->vDumpSet();
+    THROW("Api::eForkJobOld: both C_TAG_NOWAIT and C_TAG_WAIT"_Stz);
+  }
 
   sSTMT sCmd;
   pCmdTknVec->vVecToString(sCmd,0,true);
@@ -315,7 +322,7 @@ eEC Api::eForkJobBoot(JobId& rtChildJobId,
     if (! rpChildJob_tbr->bHasStmtList()) {
       return EC_NONE;
     }
-          
+
     rpChildJob_tbr->vCascadeReset();
     
     sSTMT sStmt;
