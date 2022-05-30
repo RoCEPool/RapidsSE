@@ -1104,67 +1104,59 @@ Pipeline* Job::pPipeline(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pipeout the operand                                                        */
+/* pipeout the response operand                                               */
 /*----------------------------------------------------------------------------*/
-void Job::vPipeout(Operand* pOperand)
+void Job::vPipeoutResponse(Operand* pOperand)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
+  // get the parent job
   Job* pParentJob = this->pParentJob();
-  if (pOperand->eGetClassNo() == CN_STREAMDEF) {
-    i8 i = 1;
+
+  // parentJob
+  if (pParentJob) {
+
+    // does parent job have a responseOp ?
+    if (pParentJob->m_p_ResponseOp) {
+
+      // get the current task
+      Task *pCurTask = MY::pTask();
+
+      // is it an EXITOPERAND ?
+      if (pOperand->eGetClassNo() == CN_EXITOPERAND) {
+        AM::vDeleteOperand(pOperand, nullptr);
+        pOperand = new ChildExit;
+      }
+
+      // pipe the operand to the responseOP of parentJob
+      pParentJob->m_p_ResponseOp->vPipeToThis(pOperand, pCurTask);
+
+    } else {
+
+      // is it an EXITOPERAND ?
+
+      if (pOperand->eGetClassNo() == CN_EXITOPERAND) {
+        AM::vDeleteOperand(pOperand, nullptr);
+        pOperand = new ChildExit;
+      }
+
+      // pipe the operand to the parent job
+      pParentJob->vPipeoutResponse(pOperand);
+    }
+    return;
   }
 
-  if (pParentJob && pParentJob->m_p_ResponseOp) {
-    Task* pCurTask = MY::pTask();
-    if (pOperand->eGetClassNo() == CN_EXITOPERAND) {
-      AM::vDeleteOperand(pOperand, nullptr);
-      pOperand = new ChildExit;
-    }
-    pParentJob->m_p_ResponseOp->vPipeToThis(pOperand, pCurTask);
-  }
-  else if (pParentJob) {
-    if (pOperand->eGetClassNo() == CN_EXITOPERAND) {
-      AM::vDeleteOperand(pOperand, nullptr);
-      pOperand = new ChildExit;
-    }
-    pParentJob->vPipeout(pOperand);
-  }
-  else if (m_pOutput) {
+  // does the job have an output object ?
+  if (m_pOutput) {
+
+    // pipe operand to the output object
     m_pOutput->vPipeToThis(pOperand);
   }
   else {
+
+    // nowhere to go, just print response
     vTrace("Job sending response (operand): %s\n"_Stz, aCN[pOperand->eGetClassNo()]);
   }
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* pipeout exit operand to output                                             */
-/*----------------------------------------------------------------------------*/
-void Job::vPipeoutExit(void) {
-
-  _precondition_(_ADDRESS_, _MAGIC_);
-
-  Job* pParentJob = this->pParentJob();
-
-  // get output of this job
-  Output *pOutput = m_pOutput;
-
-  // check if job has output
-  if (m_pOutput) {
-    // pipe out exit to output
-    Operand *pExitOperand = new ExitOperand;
-    pOutput->vPipeToThis(pExitOperand);
-  }
-  else {
-    // job should have a parent
-    RASSERT(pParentJob);
-
-    // pipe out exit to parent output
-    pParentJob->vPipeoutExit();
-  }
-
 }
 
 /*----------------------------------------------------------------------------*/

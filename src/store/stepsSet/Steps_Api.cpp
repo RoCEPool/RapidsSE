@@ -37,9 +37,9 @@ void Step::vAddSteps_Api(void)
 {
   vAddStep("api::forkChild"_Stz,       &Step::vApiForkChild);
 
-  vAddStep("api::forkChildBoot"_Stz,   &Step::vApiForkChildBoot);
+  vAddStep("api::forkChildBoot"_Stz,   &Step::vApiForkChildBoot);  // to go
   vAddStep("api::forkChildDemon"_Stz,  &Step::vApiForkChildDemon);
-  vAddStep("api::forkChildNormal"_Stz, &Step::vApiForkChildNormal);
+  vAddStep("api::forkChildNormal"_Stz, &Step::vApiForkChildNormal); // to go
   vAddStep("api::forkChildOld"_Stz,    &Step::vApiForkChildOld);
   vAddStep("api::forkChild2PC"_Stz,    &Step::vApiForkChild2PC);
   vAddStep("api::reapJobs"_Stz,        &Step::vApiReapJobs);

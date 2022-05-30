@@ -1364,18 +1364,7 @@ void Op::vPipeToOutput(Operand* pOperand)
   RASSERT(pJob);
 
   // pipeout response from job
-  pJob->vPipeout(pOperand);
-
-//  Output* pOutput = pJob->pOutputFind();
-//  RASSERT(pOutput);
-//
-//  Queue* pOutputQueue = pOutput->m_pOutputQueue;
-//
-//  RASSERT(pOutputQueue);
-//
-//  vOpTrace(pOperand,(Stz*)__func__);
-//
-//  IGNORE_RETURN(pOutputQueue->iAppend(pOperand));
+  pJob->vPipeoutResponse(pOperand);
 }
 
 /*----------------------------------------------------------------------------*/
