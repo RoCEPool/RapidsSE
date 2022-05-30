@@ -128,6 +128,7 @@
   
   [task].grabLock
 
+    "<signalParent>" [job].tagSet@ tagSet.hasName assert
     [job].error@ [job].signalParent
 
     [system].started@ if
