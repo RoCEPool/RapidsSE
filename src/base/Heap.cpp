@@ -147,6 +147,10 @@ Object* Heap::pAllocObject(eCN eAllocClass)
   
   //vVerify();
   
+  if (CN_MARKER == eAllocClass) {
+    vTrace("Heap::pAllocObject: allocating CN_MARKER\n"_Stz);
+
+  }
   
   m_okLock.vGrabWrite();
   

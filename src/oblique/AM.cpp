@@ -763,15 +763,14 @@ Marker* AM::MARKER::pNewMarker(eOM eOpMarker, Job* pJob)
   
   Marker* pMarker;
   
-//  MarkerMgr* pMarkerMgr = gpAttachMap->m_pMarkerMgr;
-//  pMarker = pMarkerMgr->pMarker(eOpMarker);
-//  if (pMarker)
-//    return pMarker;
+  MarkerMgr* pMarkerMgr = gpAttachMap->m_pMarkerMgr;
+  pMarker = pMarkerMgr->pMarker(eOpMarker);
+  if (pMarker)
+    return pMarker;
 
   if (pJob) {
     pMarker = pJob->pNewMarker(eOpMarker);
     if (pMarker) {
-      //pMarker->vOpMarker(eOpMarker);
       return pMarker;
     }
   }
