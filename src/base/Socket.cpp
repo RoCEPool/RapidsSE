@@ -614,7 +614,7 @@ Object* Socket::pRecvObject(void)
      return nullptr;
     }
 #ifdef WITH_BUFFER_ID
-    if (eClass == CN_ROWBUFFER || eClass == CN_INFOSET || eClass == CN_NAMEDBUFFER) {
+    if (1 == DataBuffer::bIsDataBuffer(eClass)) {
       DataBuffer* pDataBuffer = _pDataBuffer(pReceivedObject);
       i8 iPoolBufferNo = pDataBuffer->iBufferNo();
       pDataBuffer->vSetBufferNo(iPoolBufferNo);
