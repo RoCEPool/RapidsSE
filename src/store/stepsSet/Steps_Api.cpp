@@ -186,7 +186,7 @@ void Step::vApiForkChildBoot(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* api::forkChildDemon --                                                      */
+/* api::forkChildDemon --                                                     */
 /*----------------------------------------------------------------------------*/
 void Step::vApiForkChildDemon(void)
 {

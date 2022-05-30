@@ -432,69 +432,21 @@ eEC Api::eForkJobDemon(JobId& rtChildJobId,
   rtChildJobId = rpChildJob_tbr->tJobId();
 
   rpChildJob_tbr->vMutexCreate();
-  //rpChildJob_tbr->vOutputCreate();
-  //rpChildJob_tbr->vOutputBeginProc();
-  //rpChildJob_tbr->vOutputEnabled(true);
-  rpChildJob_tbr->vStmtListCreate();
   rpChildJob_tbr->vTaskCreate();
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  rpChildJob_tbr->vMutexLock();
+  RASSERT(MS_LOCKED == rpChildJob_tbr->eMutexSide());
 
-  for (;;) {
+  RASSERT(rpChildJob_tbr->pTask());
 
-    i8 iPid = AM::PROCESS::iSePid();
-    if (!Process::bTestPid(iPid)) {
-      // SE is not running anymore!
-      vTrace("Cannot find pid %lld\n"_Stz, iPid);
-      rtChildJobId = C_UNKNOWN;
-      return EC_SE_NOT_RUNNING;
-    }
+  rpChildJob_tbr->vResponseTimerStart();
 
-    rpChildJob_tbr->vMutexLock();
-    RASSERT(MS_LOCKED == rpChildJob_tbr->eMutexSide());
+  Scheduler::vTaskApi_Add(rpChildJob_tbr->pTask());
 
-    RASSERT(rpChildJob_tbr->pTask());
-
-    rpChildJob_tbr->vResponseTimerStart();
-
-    Scheduler::vTaskApi_Add(rpChildJob_tbr->pTask());
-
-    if (rpChildJob_tbr->bHasTag(C_TAG_NOWAIT)) {
-      RASSERT(! rpChildJob_tbr->bHasTag(C_TAG_WAIT));
-      rpChildJob_tbr->vMutexUnlock();
-      return EC_NONE;
-    }
-
-    RASSERT(rpChildJob_tbr->bHasTag(C_TAG_WAIT));
-    RASSERT(! rpChildJob_tbr->bHasTag(C_TAG_NOWAIT));
-
-
-    rpChildJob_tbr->vMutexWait();
-    rpChildJob_tbr->vMutexUnlock();
-
-    rpChildJob_tbr->vResponseTimerUpdate();
-
-
-    rpChildJob_tbr->pTask()->vCycleTaskLock((Stz*)__func__);
-
-    if (! rpChildJob_tbr->bHasStmtList()) {
-      return EC_NONE;
-    }
-
-    rpChildJob_tbr->vCascadeReset();
-
-    sSTMT sStmt;
-    rpChildJob_tbr->vStmtListPop(sStmt);
-    rpChildJob_tbr->vCmd(sStmt);
-
-    TagSet* pJobTagSet = rpChildJob_tbr->pJobTags();
-    Stz* szEntry = pJobTagSet->szValue(C_TAG_ENTRYPOINT);
-    //vTrace("szEntry: %s\n"_Stz,szEntry);
-
-    rpChildJob_tbr->vEntryPoint(szEntry);
-
-    //AM::pHeaps()->vSetTraceFree(false);
-  }
+  RASSERT(rpChildJob_tbr->bHasTag(C_TAG_NOWAIT));
+  RASSERT(! rpChildJob_tbr->bHasTag(C_TAG_WAIT));
+  rpChildJob_tbr->vMutexUnlock();
+  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
