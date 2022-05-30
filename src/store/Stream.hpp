@@ -56,7 +56,7 @@ namespace STORE
     Pipeline* pPipeline(void);
     i8   i_PtnOfNode(void);
 
-    void vSetInvoker(Task* pInvoker);
+    void vSetJobTask(Task* pJobTask);
     Stage* pStage(void);
     StageSpec* pStageSpec(void);
     void vSpawnOpTasks(void);

@@ -125,9 +125,9 @@ Pipeline* Deck::pPipeline(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* spawn operaator jobs for the pipeline                                      */
+/* spawn operator jobs for the pipeline                                       */
 /*----------------------------------------------------------------------------*/
-void Deck::vSetInvoker(Task* pInvoker)
+void Deck::vSetJobTask(Task* pInvoker)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DECK,_FOOTER_);
   
@@ -139,7 +139,7 @@ void Deck::vSetInvoker(Task* pInvoker)
     for (i8 i_Stream = 0; i_Stream < pStage->nItems(); i_Stream++) {
       Stream* pStream = pStage->pGet(i_Stream);
 
-      pStream->vSetInvoker(pInvoker);
+      pStream->vSetJobTask(pInvoker);
     }
   }
   

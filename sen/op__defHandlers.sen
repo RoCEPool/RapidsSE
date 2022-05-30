@@ -246,8 +246,8 @@
   [job] assert
   [task] assert
 
-  // ack the parent job task
-  [op].ackInvokingTask
+  // ack the job task
+  [op].ackJobTask
   
   false // calling op_loop exits
 ;

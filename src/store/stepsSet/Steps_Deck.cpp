@@ -39,8 +39,8 @@ void Step::vAddSteps_Deck(void)
   
   vAddStep("Deck[].enqueueInvoke?"_Stz, &Step::vDeckEnqueueInvoke);
   vAddStep("Deck[].op0@"_Stz,           &Step::vDeckOp0Fetch);
-  vAddStep("Deck[].opsExeOnNode@"_Stz,     &Step::vDeckOpsExeOnNodeFetch);
-  vAddStep("Deck[].setInvoker"_Stz,     &Step::vDeckSetInvoker);
+  vAddStep("Deck[].opsExeOnNode@"_Stz,  &Step::vDeckOpsExeOnNodeFetch);
+  vAddStep("Deck[].setJobTask"_Stz,     &Step::vDeckSetJobTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -125,15 +125,15 @@ void Step::vDeckOpsExeOnNodeFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Deck[].setInvoker -- set invoker for all tasks in sub-pipeline             */
+/* Deck[].setJobTask -- set jobTask for all ops in sub-pipeline               */
 /*----------------------------------------------------------------------------*/
-void Step::vDeckSetInvoker(void)
+void Step::vDeckSetJobTask(void)
 {
   ENTRY();
 
-  Task* pInvoker = _pTask(m_pDataStack->pPopPtr(__func__));
+  Task* pJobTask = _pTask(m_pDataStack->pPopPtr(__func__));
   
-  m_pLogicUnit->m_xpDeck->vSetInvoker(pInvoker);
+  m_pLogicUnit->m_xpDeck->vSetJobTask(pJobTask);
   
   EXIT();
 }

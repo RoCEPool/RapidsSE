@@ -169,9 +169,9 @@ Pipeline* Vertex::pPipeline(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* spawn operaator jobs for the pipeline                                      */
+/* set job task for the vertex                                                */
 /*----------------------------------------------------------------------------*/
-void Vertex::vSetInvoker(Task* pInvoker)
+void Vertex::vSetJobTask(Task* pJobTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);
   
@@ -182,7 +182,7 @@ void Vertex::vSetInvoker(Task* pInvoker)
     for (i8 i_Stream = 0; i_Stream < pStage->nItems(); i_Stream++) {
       Stream* pStream = pStage->pGet(i_Stream);
 
-      pStream->vSetInvoker(pInvoker);
+      pStream->vSetJobTask(pJobTask);
     }
   }
   

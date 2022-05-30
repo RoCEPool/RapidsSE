@@ -7,7 +7,7 @@
 : start::it_promptOut
 
   // C_TDEF_PROMPTOUT
-  STD_WAIT_PATH_TAG
+  STD_BOOTFORK_TAG
   "
   define table __promptOut (
     promptLine  VARCHAR NOT NULL

@@ -368,7 +368,7 @@ void vDdlLockAssertNone(void);
   void vDeckPulsedFetch(void);
   void vDeckPulsedStore(void);
   void vDeckSet(void);
-  void vDeckSetInvoker(void);
+  void vDeckSetJobTask(void);
   void vDeckSpawnOpTasks(void);
 
   // deck (of op)
@@ -1272,7 +1272,7 @@ void vDdlLockAssertNone(void);
   void vObjectStore(void);
 
   // op
-  void vOpAckInvokingTask(void);
+  void vOpAckJobTask(void);
   void vOpEnqueOperand(void);
   void vOpFindOp(void);
   void vOpGet(void);
