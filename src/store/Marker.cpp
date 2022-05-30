@@ -36,7 +36,7 @@ __aFooterFunction(Marker)
 /*----------------------------------------------------------------------------*/
 void* Marker::operator new(size_t, eMG eMarker)
 {
-  RASSERT(MG_CHAIN == eMarker || MG_MANAGER == eMarker);
+  //RASSERT(MG_CHAIN == eMarker || MG_MANAGER == eMarker);
   
   Marker* pMarker =
     static_cast<Marker*>(Heaps::pAllocate(CN_MARKER));

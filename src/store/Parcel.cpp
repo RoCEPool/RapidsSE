@@ -863,7 +863,7 @@ void Parcel::vPipeBufferViaQueues(Op *pSendOp, Stage* pDstStage)
     i8 i_ThisNode = AM::NODE::iThisNodeId();
     Stream* pDstStream = pDstStage->pGetStream_byNodeId(i_ThisNode);
 
-    Operand* pDuplicateOperand = (Operand*)pOperand->pMemoryCopy();
+    Operand* pDuplicateOperand = pOperand->pDuplicateOperand();
     eCN eClass = pDuplicateOperand->eGetClassNo();
 
     if (gxaSizeHeap[eClass].m_fpPostRecvFn)
@@ -896,7 +896,7 @@ void Parcel::vPipeBufferViaQueues(Op *pSendOp, Stage* pDstStage)
       if (iDstNodeId != iCurNodeId)
         continue;
       
-      Operand* pDuplicateOperand = (Operand*)pOperand->pMemoryCopy();
+      Operand* pDuplicateOperand = pOperand->pDuplicateOperand();
       eCN eClass = pDuplicateOperand->eGetClassNo();
 
       if (gxaSizeHeap[eClass].m_fpPostRecvFn)
@@ -918,7 +918,7 @@ void Parcel::vPipeBufferViaQueues(Op *pSendOp, Stage* pDstStage)
 
   Op* pDstOp = pDstStage->pPipeDstOp(tDstLglPtn(),0);
 
-  Operand* pDuplicateOperand = (Operand*)pOperand->pMemoryCopy();
+  Operand* pDuplicateOperand = pOperand->pDuplicateOperand();
   eCN eClass = pDuplicateOperand->eGetClassNo();
   
   if (gxaSizeHeap[eClass].m_fpPostRecvFn)
@@ -948,7 +948,7 @@ void Parcel::vPipeOperandViaQueues(Op *pSendOp, Stage* pDstStage)
     i8 i_ThisNode = AM::NODE::iThisNodeId();
     Stream* pDstStream = pDstStage->pGetStream_byNodeId(i_ThisNode);
 
-    Operand* pDuplicateOperand = (Operand*)pOperand->pMemoryCopy();
+    Operand* pDuplicateOperand = pOperand->pDuplicateOperand();
 
     Task* pCurTask = MY::pTask();
     
@@ -975,7 +975,7 @@ void Parcel::vPipeOperandViaQueues(Op *pSendOp, Stage* pDstStage)
     if (iDstNodeId != iCurNodeId)
       continue;
     
-    Operand* pDuplicateOperand = (Operand*)pOperand->pMemoryCopy();
+    Operand* pDuplicateOperand = pOperand->pDuplicateOperand();
 
     Task* pCurTask = MY::pTask();
     
