@@ -847,14 +847,14 @@ void Job::vMutexWait(void)
 /*----------------------------------------------------------------------------*/
 /* new a marker from the chain                                                */
 /*----------------------------------------------------------------------------*/
-Marker* Job::pNewMarker(void)
+Marker* Job::pNewMarker(eOM eOpMarker)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
       
   Marker* pMarker = m_pMarkerChain->pPop();
   
-  if (! pMarker)
-    pMarker = new (this)Marker(OM_NONE);
+  if (pMarker)
+    pMarker->vOpMarker(eOpMarker);
   
   return pMarker;
 }

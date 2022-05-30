@@ -47,10 +47,11 @@ void* Marker::operator new(size_t, Job* pJob)
 {
   RASSERT(pJob);
   
-  Marker* pMarker = pJob->pNewMarker();
+  //Marker* pMarker = pJob->pNewMarker();
   
-  if (! pMarker)
-    pMarker =  static_cast<Marker*>(Heaps::pAllocate(CN_MARKER));
+  //if (! pMarker)
+    
+  Marker* pMarker =  static_cast<Marker*>(Heaps::pAllocate(CN_MARKER));
   
   return pMarker;
 }

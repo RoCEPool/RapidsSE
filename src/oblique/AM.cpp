@@ -731,6 +731,7 @@ void AM::MARKER::vFreeMarker(Marker* pMarker, Job* pJob)
     MarkerMgr* pMarkerMgr = gpAttachMap->m_pMarkerMgr;
     pMarkerMgr->vFreeMarker(pMarker);
   }
+  else
   if (MG_ORDINARY == pMarker->eMarker()) {
     delete pMarker;
   }
@@ -775,9 +776,20 @@ Marker* AM::MARKER::pNewMarker(eOM eOpMarker, Job* pJob)
 //
 //  pMarker = new (MG_ORDINARY)Marker(eOpMarker);
   
-  Marker* pMarker =
-    new (pJob)Marker(eOpMarker);
+//  Marker* pMarker =
+//    new (pJob)Marker(eOpMarker);
 
+  
+  Marker* pMarker;
+  if (pJob) {
+    pMarker = pJob->pNewMarker(eOpMarker);
+    if (pMarker) {
+      //pMarker->vOpMarker(eOpMarker);
+      return pMarker;
+    }
+  }
+
+  pMarker = new (MG_ORDINARY)Marker(eOpMarker);
   return pMarker;
 }
 
