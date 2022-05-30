@@ -1097,6 +1097,10 @@ void Job::vPipeout(Operand* pOperand)
     pParentJob->m_p_ResponseOp->vPipeToThis(pOperand, pCurTask);
   }
   else if (pParentJob) {
+    if (pOperand->eGetClassNo() == CN_EXITOPERAND) {
+      AM::vDeleteOperand(pOperand);
+      pOperand = new ChildExit;
+    }
     pParentJob->vPipeout(pOperand);
   }
   else if (m_pOutput) {
