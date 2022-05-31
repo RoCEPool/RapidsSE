@@ -30,15 +30,6 @@ namespace BASE
   
     bool    m_bSuccess;  // success?
   
-//    Object* m_pReceivedObject; // object which was received
-//
-//    char    m_caObjectHeader[sizeof(Object) + 64];
-//    Header* m_aHeader;
-//    Object* m_pObject;
-//  
-//    RejectJob* m_pRejectJob;
-//    void*      m_aLowBuff;  // low memory read area
-
     i8      m_nSends;
     i8      m_nBytesSent;
 
@@ -79,17 +70,13 @@ namespace BASE
   
     bool bIsOpen(void);
   
-//    Object* pReceivedObject(void);
-//    void vReceivedObject(Object* pReceivedObject);
     bool bRecvBufferSize(int nBytes, SysCall& SysCall);
     i8   iRecvBufferSize(void);
-//    Object* pRecvObject(void);
     i8   nRecvs(void);
     void vReset(void);
   
     bool bSendBufferSize(int nBytes, SysCall& SysCall);
     i8   iSendBufferSize(void);
-//    bool bSendObject(Object* pObject, SysCall& SysCall, eSY eSendWhy);//=SY_NONE);
     i8   nSends(void);
     bool bSetNonBlocking(SysCall& SysCall);
     bool bSocket(SysCall& SysCall);
@@ -105,11 +92,6 @@ namespace BASE
     bool bBytesRecv(void* pBuffer, i8 nBytes, SysCall& SysCall);
     bool bBytesSend(void* pBuffer, i8 nBytes, SysCall& SysCall);
   
-    //bool bHeaderRecv(void);
-    //Marker* pMarkerRecv(void);
-    //Object* pObjectRecv(eCN eClass);
-    //Object* pObjectRecv_lowmem(eCN eClass);
-
     Footer* aFooter(void);
   };
   
