@@ -49,8 +49,6 @@ extern SizeHeap  gxaSizeHeap[];
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Socket(void)
 {
-  vAddStep("listen::open"_Stz,       &Step::vSocketListen);
-  vAddStep("listen.accept"_Stz,      &Step::vSocketAccept);
 
   vAddStep("socket::new"_Stz,        &Step::vSocketNew);
   
@@ -70,33 +68,6 @@ void Step::vAddSteps_Socket(void)
   vAddStep("Socket[].success@"_Stz,  &Step::vSocketSuccessFetch);
   vAddStep("Socket[].success!"_Stz,  &Step::vSocketSuccessStore);
 
-}
-
-/*----------------------------------------------------------------------------*/
-/* listen.accept: accept a socket connection                                  */
-/*----------------------------------------------------------------------------*/
-void Step::vSocketAccept(void)
-{
-  ENTRY();
-  
-  SysCall oSysCall;
-  
-  Socket* pListeningSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
-  
-  // accept a connection
-  int iSocketId;
-  bool bResult = pListeningSocket->bAcceptClient(iSocketId, oSysCall);
-  
-  if ( ! bResult )
-    vThrow(FK_CHECK,__func__,__FILE__,__LINE__,
-           "Unable to accept connection: Errno %d"_Stz, oSysCall.iError());
-  
-  // return the socket
-  Socket* pNewSocket = new Socket(this,iSocketId);
-  
-  m_pDataStack->vPushPtr(pNewSocket);
-  
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -235,60 +206,6 @@ void Step::vSocketIsNull(void)
   ENTRY();
   
   m_pDataStack->vPushInt(m_pLogicUnit->m_xpSocket.bIsNull() ? 1 : 0);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* listen::open: listen in for socket connections                           */
-/*----------------------------------------------------------------------------*/
-void Step::vSocketListen(void)
-{
-  ENTRY();
-  
-  SysCall oSysCall;
-  
-  i8 iPort = m_pDataStack->iPopInt(__func__);
-  
-  //- - - - - - - - - - - - - - - - - - -  - - - - - - - - - - - - - - - - - - -
-  // attempt to create server-side listening socket
-  
-  Socket* pSocket = new Socket(this);
-  bool bResult = pSocket->bCreateServer((int)iPort, oSysCall);
-  
-  if ( ! bResult ) {
-    if (oSysCall.iError() == EADDRINUSE) {
-      vThrow(FK_CHECK,__func__,__FILE__,__LINE__,
-             "Address in use (port: %lld). "
-             "Check if another instance of RAPIDSSE is running!"_Stz,
-             iPort);
-    }
-    else
-      vThrow(FK_CHECK,__func__,__FILE__,__LINE__,
-             "Unable to listen for connections: Errno %d"_Stz, oSysCall.iError());
-  }
-  
-  //- - - - - - - - - - - - - - - - - - -  - - - - - - - - - - - - - - - - - - -
-  // test to see what happens when we attempt to create
-  // server-side listening socket when the socket/port is already in use
-  
-//  Socket* pSocket2 = new Socket(this);
-//  bool bResult2 = pSocket2->bCreateServer((int)iPort, oSysCall);
-//
-//  if ( ! bResult2 ) {
-//    if (oSysCall.iError() == EADDRINUSE) {
-//      vThrow(FK_CHECK,__func__,__FILE__,__LINE__,
-//             "Address in use (port: %lld). "
-//             "Check if another instance of RAPIDSSE is running!"_Stz,
-//             iPort);
-//    }
-//    else
-//      vThrow(FK_CHECK,__func__,__FILE__,__LINE__,
-//             "Unable to listen for connections: Errno %d"_Stz, oSysCall.iError());
-//  }
-
-  // return socket
-  m_pDataStack->vPushPtr(pSocket);
   
   EXIT();
 }
