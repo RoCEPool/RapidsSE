@@ -5,9 +5,11 @@
 #include "BASE.h"
 
 #include "Marker.hpp"
+#include "MarkerMgr.hpp"
 
 #include "eCF.h"
 #include "Job.hpp"
+#include "AM.hpp"
 
 ClassFn __Marker_fn (CN_MARKER,CF_INSPECT,(fpCLASSFN*)Marker::bInspect,-1);
 
@@ -15,22 +17,26 @@ ClassFn __Marker_fn (CN_MARKER,CF_INSPECT,(fpCLASSFN*)Marker::bInspect,-1);
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+__pCastFunction(STORE,Marker,CN_MARKER)
+__vDeleteFunction(Marker,CN_MARKER)
+__aFooterFunction(Marker)
+
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Marker* STORE::_pMarker(void* aAddr)
-{
-  Marker* pMarker = reinterpret_cast<Marker*>(aAddr);
-  
-  return pMarker;
-}
-
+//Marker* STORE::_pMarker(void* aAddr)
+//{
+//  Marker* pMarker = reinterpret_cast<Marker*>(aAddr);
+//
+//  return pMarker;
+//}
+//
 /*----------------------------------------------------------------------------*/
 /* allocate from heap                                                         */
 /*----------------------------------------------------------------------------*/
 void* Marker::operator new(size_t, eMG eMarker)
 {
-  RASSERT(MG_CHAIN == eMarker || MG_MANAGER == eMarker);
+  //RASSERT(MG_CHAIN == eMarker || MG_MANAGER == eMarker);
   
   Marker* pMarker =
     static_cast<Marker*>(Heaps::pAllocate(CN_MARKER));
@@ -45,10 +51,11 @@ void* Marker::operator new(size_t, Job* pJob)
 {
   RASSERT(pJob);
   
-  Marker* pMarker = pJob->pNewMarker();
+  //Marker* pMarker = pJob->pNewMarker();
   
-  if (! pMarker)
-    pMarker =  static_cast<Marker*>(Heaps::pAllocate(CN_MARKER));
+  //if (! pMarker)
+    
+  Marker* pMarker =  static_cast<Marker*>(Heaps::pAllocate(CN_MARKER));
   
   return pMarker;
 }
@@ -56,12 +63,12 @@ void* Marker::operator new(size_t, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* free back to the heap                                                      */
 /*----------------------------------------------------------------------------*/
-void Marker::operator delete(void* aAddress)
-{
-  Object* pObject = static_cast<Object*>(aAddress);
-  
-  Heaps::vFree(pObject);
-}
+//void Marker::operator delete(void* aAddress)
+//{
+//  Object* pObject = static_cast<Object*>(aAddress);
+//
+//  Heaps::vFree(pObject);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -69,16 +76,19 @@ void Marker::operator delete(void* aAddress)
 Marker::Marker(eOM eOpMarker)
 : Operand(CN_MARKER)
 {
-  _precondition_(_MAGIC_,CN_MARKER);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_MARKER,_FOOTER_);
   
-  m_eOpMarker = eOpMarker;
-  m_eMarker   = MG_ORDINARY;
-  m_pNextItem = nullptr;
+  m_eOpMarker  = eOpMarker;
+  m_eMarker    = MG_ORDINARY;
+  m_pNextItem  = nullptr;
+  m_bDeletable = false;
 
   _checkInitialised_(CN_MARKER);
 
 //  vTrace("new Marker(%s) %p @%lld\n"_Stz,
 //         aOM[m_eOpMarker],this,m_xFooter.iWhenAllocated());
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_MARKER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -120,12 +130,32 @@ bool Marker::bInspect(Object* pObject)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get deletable?                                                             */
+/*----------------------------------------------------------------------------*/
+bool Marker::bDeletable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_MARKER,_FOOTER_);
+
+  return m_bDeletable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set deletable?                                                             */
+/*----------------------------------------------------------------------------*/
+void Marker::vDeletable(bool bDeletable)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_MARKER,_FOOTER_);
+
+  m_bDeletable = bDeletable;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get marker category                                                        */
 /*----------------------------------------------------------------------------*/
 eMG Marker::eMarker(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_MARKER,_FOOTER_);
+
   return m_eMarker;
 }
 
@@ -134,8 +164,8 @@ eMG Marker::eMarker(void)
 /*----------------------------------------------------------------------------*/
 void Marker::vMarker(eMG eMarker)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_MARKER,_FOOTER_);
+
   m_eMarker = eMarker;
 }
 
@@ -144,8 +174,8 @@ void Marker::vMarker(eMG eMarker)
 /*----------------------------------------------------------------------------*/
 Marker* Marker::pNextItem(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_MARKER,_FOOTER_);
+
   return m_pNextItem;
 }
 
@@ -154,8 +184,8 @@ Marker* Marker::pNextItem(void)
 /*----------------------------------------------------------------------------*/
 void Marker::vNextItem(Marker* pNextItem)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_MARKER,_FOOTER_);
+
   m_pNextItem = pNextItem;
 }
 
@@ -164,9 +194,19 @@ void Marker::vNextItem(Marker* pNextItem)
 /*----------------------------------------------------------------------------*/
 eOM Marker::eOpMarker(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_MARKER,_FOOTER_);
+
   return m_eOpMarker;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the Op marker type                                                     */
+/*----------------------------------------------------------------------------*/
+void Marker::vOpMarker(eOM eOpMarker)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_MARKER,_FOOTER_);
+  
+  m_eOpMarker = eOpMarker;
 }
 
 /*============================================================================*/

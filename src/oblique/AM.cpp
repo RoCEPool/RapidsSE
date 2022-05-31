@@ -56,6 +56,7 @@
 
 #include "LglPtnMap.hpp"
 
+#include "ChildExit.hpp"
 #include "CrwPacker.hpp"
 #include "CrwBuffer.hpp"
 #include "ExitOperand.hpp"
@@ -712,6 +713,73 @@ void AM::LOGICUNIT::vDelete(LogicUnit** ppLogicUnit)
 
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                 MARKER                                     */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* free a marker                                                              */
+/*----------------------------------------------------------------------------*/
+void AM::MARKER::vFreeMarker(Marker* pMarker, Job* pJob)
+{
+  _static_
+
+  if (MG_CHAIN == pMarker->eMarker()) {
+    RASSERT(pJob);
+    pJob->vFreeMarker(pMarker);
+  }
+  else
+  if (MG_MANAGER == pMarker->eMarker()) {
+    MarkerMgr* pMarkerMgr = gpAttachMap->m_pMarkerMgr;
+    pMarkerMgr->vFreeMarker(pMarker);
+  }
+  else
+  if (MG_ORDINARY == pMarker->eMarker()) {
+    delete pMarker;
+  }
+  else {
+    NEVER_REACH;
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* return the marker manager                                                  */
+/*----------------------------------------------------------------------------*/
+MarkerMgr* AM::MARKER::pMarkerMgr(void)
+{
+  _static_
+
+  MarkerMgr* pMarkerMgr = gpAttachMap->m_pMarkerMgr;
+
+  return pMarkerMgr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* new a marker                                                               */
+/*----------------------------------------------------------------------------*/
+Marker* AM::MARKER::pNewMarker(eOM eOpMarker, Job* pJob)
+{
+  _static_
+  
+  Marker* pMarker;
+  
+  MarkerMgr* pMarkerMgr = gpAttachMap->m_pMarkerMgr;
+  pMarker = pMarkerMgr->pMarker(eOpMarker);
+  if (pMarker)
+    return pMarker;
+
+  if (pJob) {
+    pMarker = pJob->pNewMarker(eOpMarker);
+    if (pMarker) {
+      return pMarker;
+    }
+  }
+
+  pMarker = new (MG_ORDINARY)Marker(eOpMarker);
+  return pMarker;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                MASTERLOCK                                  */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
@@ -1035,6 +1103,8 @@ void AM::OP::vPipeToOp(Op* pOp, Operand* pOperand,
 /*----------------------------------------------------------------------------*/
 Job* AM::OLIST::pFindJob(JobId tJobId, bool bLockJob)
 {
+  _static_
+
   Job* pJob = AM::pOriginatingJobs()->pFindJob(tJobId,bLockJob);
     
   return pJob;
@@ -1118,6 +1188,8 @@ void AM::PARCEL::vRecvContents(Parcel* pParcel, Socket* pSocket)
 /*----------------------------------------------------------------------------*/
 Job* AM::PLIST::pFindJob(JobId tJobId, bool bLockJob)
 {
+  _static_
+
   Job* pJob = AM::pParticipatingJobs()->pFindJob(tJobId,bLockJob);
     
   return pJob;
@@ -1266,6 +1338,8 @@ i8 AM::POOL::nTinyHeap(void)
 
 i8 AM::PROCESS::iSePid(void)
 {
+  _static_
+
   return gpAttachMap->m_iSePid;
 }
 
@@ -1500,6 +1574,8 @@ i8 AM::PTNMAP::nPtnsInGrid(void)
 /*----------------------------------------------------------------------------*/
 i8 AM::PTNMAP::nPtnsPerNode(void)
 {
+  _static_
+
   return gpAttachMap->m_pLglPtnMap->nPtnsPerNode();
 }
 
@@ -2036,6 +2112,8 @@ void AM::SYSARGS::vSysMetrics(bool bSysMetrics)
 /*----------------------------------------------------------------------------*/
 i8 AM::SYSARGS::nThreads(void)
 {
+  _static_
+
   return gpAttachMap->m_xSysArgs.m_nThreads;
 }
 
@@ -2044,6 +2122,8 @@ i8 AM::SYSARGS::nThreads(void)
 /*----------------------------------------------------------------------------*/
 void AM::SYSARGS::vThreadsInc(i8 iBy)
 {
+  _static_
+
   gpAttachMap->m_xSysArgs.m_nThreads += iBy;
 }
 
@@ -2739,7 +2819,13 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
   eCN eClass = pOperand->eGetClassNo();
   
   switch(eClass) {
-      
+
+    case CN_CHILDEXIT: {
+      ChildExit* pChildExit = _pChildExit(pOperand);
+      delete pChildExit;
+      break;
+    }
+
     case CN_CRWBUFFER: {
       CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
       
@@ -2785,17 +2871,7 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
       
     case CN_MARKER: {
       Marker* pMarker = _pMarker(pOperand);
-      if (MG_CHAIN == pMarker->eMarker()) {
-        RASSERT(pJob);
-        pJob->vFreeMarker(pMarker);
-      }
-      else
-      if (MG_MANAGER == pMarker->eMarker()) {
-        NEVER_REACH;
-      }
-      else {
-        delete pMarker;
-      }
+      AM::MARKER::vFreeMarker(pMarker,pJob);
       break;
     }
 
@@ -3374,36 +3450,6 @@ void AM::vNapUsec(i8 nMicroSeconds, eCN eCallingClass)
 }
 
 /*----------------------------------------------------------------------------*/
-/* duplicate the operand ( marker / streamDef )                               */
-/*----------------------------------------------------------------------------*/
-Operand* AM::pDuplicateOperand(Operand* pOperand)
-{
-  if (pOperand->eGetClassNo() == CN_MARKER) {
-    Marker* pMarker = _pMarker(pOperand);
-    Marker* pNewMarker =
-      new (nullptr)Marker(pMarker->eOpMarker());
-    return pNewMarker;
-  }
-  else {
-    ASSERT(pOperand->eGetClassNo() == CN_STREAMDEF ||
-           pOperand->eGetClassNo() == CN_STREAMDEFRHT);
-
-    if (pOperand->eGetClassNo() == CN_STREAMDEF) {
-      StreamDef* pStreamDef = _pStreamDef(pOperand);
-      StreamDef* pNewStreamDef = new StreamDef(pStreamDef);
-      return pNewStreamDef;
-    }
-    else {
-      ASSERT(pOperand->eGetClassNo() == CN_STREAMDEFRHT);
-      StreamDefRht* pStreamDefRht = _pStreamDefRht(pOperand);
-      StreamDefRht* pNewStreamDefRht = new StreamDefRht(pStreamDefRht);
-      return pNewStreamDefRht;
-    }
-  }
-  
-}
-
-/*----------------------------------------------------------------------------*/
 /* new a universal job for op                                                 */
 /*----------------------------------------------------------------------------*/
 Stz* AM::pOperandName(Operand* pOperand)
@@ -3471,12 +3517,13 @@ i8 AM::iOperandEvKind(Operand* pOperand)
   switch (eClass_opd) {
 
     case CN_BUCKETMAP:   eOperand = EV_D_BUCKETMAP_dyn; break;
+    case CN_CHILDEXIT:   eOperand = EV_X_CHILDEXIT; break;
     case CN_CRWBUFFER:   eOperand = EV_D_CRWBUFFER; break;
     case CN_CSVBUFFER:   eOperand = EV_D_CSVBUFFER; break;
     case CN_ENTBUFFER:   eOperand = EV_D_ENTBUFFER; break;
-    case CN_EXITOPERAND: eOperand = EV_D_EXITOPERAND;   break;
+    case CN_EXITOPERAND: eOperand = EV_D_EXITOPERAND; break;
     case CN_INDEX:       eOperand = EV_D_INDEX;  break;
-    case CN_INDEXDEF:    eOperand = EV_D_INDEXDEF;  break;
+    case CN_INDEXDEF:    eOperand = EV_D_INDEXDEF; break;
       
     case CN_INFOSET:
     {

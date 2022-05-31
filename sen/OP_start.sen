@@ -97,7 +97,7 @@
 
   //"Operand:- EV_M_EXITED" .verbose
   PipeIn[].delete
-  [op].ackInvokingTask
+  [op].ackJobTask
 
   false
 ;
@@ -155,7 +155,7 @@
 
   // delete the triggered marker
   Pipein[].delete
-  
+
   // pipeline should not be cancelled
   [pipeline].cancelled@ not assert
 

@@ -18,6 +18,8 @@ namespace STORE
 
     Marker* m_pNextItem;
   
+    b8  m_bDeletable;
+
     // must be last
     Footer m_xFooter;
 
@@ -35,6 +37,9 @@ namespace STORE
   
     static void vPostRecv(void* aMarker);
 
+    bool bDeletable(void);
+    void vDeletable(bool bDeletable);
+  
     eMG eMarker(void);
     void vMarker(eMG eMarker);
 
@@ -42,6 +47,10 @@ namespace STORE
     void vNextItem(Marker* pNext);
 
     eOM eOpMarker(void);
+    void vOpMarker(eOM eOpMarker);
+
+  private:
+    Footer* aFooter(void);
   };
 
   Marker* _pMarker(void* aAddr);

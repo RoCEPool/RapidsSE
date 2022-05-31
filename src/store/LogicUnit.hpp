@@ -205,7 +205,10 @@ namespace STORE
     i8   m_iCounter5;   // counter
     i8   m_iCounter6;   // counter
     i8   m_iCounter7;   // counter
-  
+
+    bool m_bRcvdChildExit;
+    bool m_bRcvdEnd;
+
     bool (*m_afFun0)(void*);
     bool (*m_afFun1)(void*);
     bool (*m_afFun2)(void*);

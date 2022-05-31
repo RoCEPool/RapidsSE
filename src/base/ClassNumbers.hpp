@@ -54,6 +54,7 @@ enum eCN : u2 // Class Number
   /* */ CN_CATALOG,
   /* */ CN_CELLSINGLE,
   /* */ CN_CHARSER,
+  /* */ CN_CHILDEXIT,
   /* */ CN_CLASSPLACEHOLDER,
   /* */ CN_CMDLINEARGS,
   /* */ CN_CODEBLOCK,
@@ -464,6 +465,7 @@ static Stz* aCN[]
   /* */ "CATALOG"_Stz,              // CN_CATALOG
   /* */ "CELLSINGLE"_Stz,           // CN_CELLSINGLE
   /* */ "CHARSER"_Stz,              // CN_CHARSER
+  /* */ "CHILDEXIT"_Stz,            // CN_CHILDEXIT
   /* */ "CLASSPLACEHOLDER"_Stz,     // CN_CLASSPLACEHOLDER
   /* */ "CMDLINEARGS"_Stz,          // CN_CMDLINEARGS
   /* */ "CODEBLOCK"_Stz,            // CN_CODEBLOCK

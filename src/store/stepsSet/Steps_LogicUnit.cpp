@@ -52,6 +52,12 @@ void Step::vAddSteps_LogicUnit(void)
 
   vAddStep("LogicUnit[].jobMetrics@"_Stz,   &Step::vLogicUnitJobMetricsFetch);
   vAddStep("LogicUnit[].jobMetrics!"_Stz,   &Step::vLogicUnitJobMetricsStore);
+
+  vAddStep("LogicUnit[].RcvdChildExit@"_Stz,&Step::vLogicUnitRcvdChildExitFetch);
+  vAddStep("LogicUnit[].RcvdChildExit!"_Stz,&Step::vLogicUnitRcvdChildExitStore);
+
+  vAddStep("LogicUnit[].RcvdEnd@"_Stz,      &Step::vLogicUnitRcvdEndFetch);
+  vAddStep("LogicUnit[].RcvdEnd!"_Stz,      &Step::vLogicUnitRcvdEndStore);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -400,6 +406,58 @@ void Step::vLogicUnitJobMetricsStore(void)
   JobMetrics* pJobMetrics = _pJobMetrics(m_pDataStack->pPopPtr(__func__));
 
   m_pLogicUnit->m_xpJobMetrics = pJobMetrics;
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].rcvdChildExit@ -- received child exit fetch                    */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitRcvdChildExitFetch(void)
+{
+  ENTRY();
+
+  m_pDataStack->vPushInt(m_pLogicUnit->m_bRcvdChildExit);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].rcvdChildExits! -- received child exit store                   */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitRcvdChildExitStore(void)
+{
+  ENTRY();
+
+ i8 iRcvdChildExit = m_pDataStack->iPopIntBol(__func__);
+
+  m_pLogicUnit->m_bRcvdChildExit = iRcvdChildExit;
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].rcvdEnd@ -- received end fetch                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitRcvdEndFetch(void)
+{
+  ENTRY();
+
+  m_pDataStack->vPushInt(m_pLogicUnit->m_bRcvdEnd);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].rcvdEnd! -- received end store                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitRcvdEndStore(void)
+{
+  ENTRY();
+
+  i8 iRcvdEnd = m_pDataStack->iPopIntBol(__func__);
+
+  m_pLogicUnit->m_bRcvdEnd = iRcvdEnd;
+
   EXIT();
 }
 

@@ -17,6 +17,7 @@
 #include "eLA.h"
 #include "eMA.h"
 #include "eOA.h"
+#include "eOM.h"
 #include "ePA.h"
 #include "eYX.h"
 #include "eRA.h"
@@ -173,6 +174,9 @@ namespace STORE {
 
   class LglPtn;
   class LogicUnit;
+
+  class Marker;
+  class MarkerMgr;
 
   class Node;
 
@@ -347,6 +351,14 @@ namespace OBLIQUE
     {
     public:
       static Job* pFindJob(JobId tJobId, bool bLockJob=false);
+    };
+
+    class MARKER
+    {
+    public:
+      static void vFreeMarker(Marker* pMarker, Job* pJob);
+      static MarkerMgr* pMarkerMgr(void);
+      static Marker* pNewMarker(eOM eOpMarker, Job* pJob);
     };
 
     class MASTERLOCK
@@ -777,8 +789,7 @@ namespace OBLIQUE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static void vNapMsec(i8 nMilliSeconds, eCN eCallingClass);
     static void vNapUsec(i8 nMicroSeconds, eCN eCallingClass);
-    static Operand* pDuplicateOperand(Operand* pOperand);
-        
+       
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static Stz* pOperandName(Operand* pOperand);
     static i8   nOperandsArg(void);

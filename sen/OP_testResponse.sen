@@ -32,7 +32,7 @@
   [task] assert
 
   // ack the parent job task
-  [op].ackInvokingTask
+  [op].ackJobTask
 
   false // calling op_loop exits
 ;

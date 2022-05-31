@@ -17,24 +17,43 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* on EV_D_EXITOPERAND ...                                   EV_D_EXITOPERAND */
+/* on EV_D_CHILDEXIT ...                                       EV_D_CHILDEXIT */
 /*----------------------------------------------------------------------------*/
-: adaptorDummy_ExitOperand \handler
+: adaptorDummy_ChildExit \handler
 
   0 EV_D_EXITOPERAND EG_ZK LogicUnit[].diaryNote
 
+  true LogicUnit[].RcvdChildExit!
+
   nullptr [job].responseOp!
 
-  "adaptorDummy_ExitOperand" .
+  LogicUnit[].RcvdEnd@ if
+    Marker[].newEndMarker
+    Marker[].pipeout
+  then
+
+  "adaptorDummy_ChildExit" .
   Pipein[].delete
 
-  [job] assert
-  [task] assert
+  true
+;
 
-  // ack the parent job task
-  [op].ackInvokingTask
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_END ...                                                   */
+/*----------------------------------------------------------------------------*/
+: adaptorDummy_End \handler
 
-  false // calling op_loop exits
+  //"EV_M_END" .verbose
+
+  true LogicUnit[].RcvdEnd!
+
+  LogicUnit[].RcvdChildExit@ if
+     PipeIn[].pipeout
+  else
+    PipeIn[].delete
+  then
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -47,14 +66,19 @@
   0 EV_M_START EG_ZK LogicUnit[].diaryNote
 
   <etc> "sqlCompiler \"%v\"" str.format to sSmt
-  sSmt .
+
+  sSmt "FORKING CHILD FOR PIPELINE: %v"  str.format .
 
   // spawn a job for the smt
-  STD_NOWAIT_TAG sSmt api::forkChild not if
-     "Error Code %v" .printf
+  STD_NORMALFORK_TAG sSmt api::forkChildNormal not if
+    //"Error Code %v" .printf
+    op__execErr
+    true
+    exit
+  else
+    [Op] [job].responseOp!
+    find: adaptorDummy_End       EV_M_END       [op].handler!
   then
-
-  //[Op] [job].responseOp!
 
   Pipein[].pipeout
 
@@ -77,13 +101,16 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_M_EXITING ...                                               */
+/* on EV_D_ROWBUFFER ...                                            CRWBUFFER */
 /*----------------------------------------------------------------------------*/
-: adaptorDummy_Exiting \handler
+: adaptorDummy_RowBuffer \handler
 
-  //"EV_M_EXITING_handler" .verbose
+  EC_NONE locals| eError |
 
-  PipeIn[].pipeOut
+  0 EV_D_ROWBUFFER EG_ZK LogicUnit[].diaryNote
+
+  "adaptorDummy_RowBuffer: GOT A ROWBUFFER" .
+  Pipein[].delete
 
   true
 ;
@@ -113,11 +140,11 @@
   op__topology
 
   find: adaptorDummy_CrwBuffer    EV_D_CRWBUFFER     [op].handler!
-  find: adaptorDummy_ExitOperand  EV_D_EXITOPERAND   [op].handler!
+  find: adaptorDummy_RowBuffer    EV_D_ROWBUFFER     [op].handler!
   find: adaptorDummy_StreamDef    EV_D_STREAMDEF     [op].handler!
 
-  find: adaptorDummy_Exiting      EV_M_EXITING       [op].handler!
   find: adaptorDummy_Start        EV_M_START         [op].handler!
+  find: adaptorDummy_ChildExit    EV_X_CHILDEXIT     [op].handler!
 
   op__loop
 

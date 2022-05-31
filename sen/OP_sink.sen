@@ -117,7 +117,7 @@
   Marker[].pipeOut
 
   // ack the invoking task
-  [op].ackInvokingTask
+  [op].ackJobTask
 
   false
 ;

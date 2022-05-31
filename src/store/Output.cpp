@@ -301,7 +301,20 @@ bool Output::bProcessOperand(Operand* pOperand)
   //vTrace("OPERAND: %s\n"_Stz, aCN[eOperandClass]);
 
   switch (eOperandClass) {
-      
+
+    // -- -- -- -- -- --
+
+    case CN_CHILDEXIT: {
+      AM::vDeleteOperand(pOperand,nullptr);
+      m_bToExit = true;
+      if ( !m_bHasError )
+        vPrintResult();
+      m_bHasError = false;
+      bContinue = false;
+      goto L_EXIT;
+      break;
+    }
+
     // -- -- -- -- -- --
       
     case CN_CRWBUFFER: {
@@ -417,16 +430,16 @@ bool Output::bProcessOperand(Operand* pOperand)
 
     // -- -- -- -- -- --
 
-    case CN_EXITOPERAND: {
-      AM::vDeleteOperand(pOperand,nullptr);
-      m_bToExit = true;
-      if ( !m_bHasError )
-        vPrintResult();
-      m_bHasError = false;
-      bContinue = false;
-      goto L_EXIT;
-      break;
-    }
+//    case CN_EXITOPERAND: {
+//      AM::vDeleteOperand(pOperand);
+//      m_bToExit = true;
+//      if ( !m_bHasError )
+//        vPrintResult();
+//      m_bHasError = false;
+//      bContinue = false;
+//      goto L_EXIT;
+//      break;
+//    }
 
     // -- -- -- -- -- --
       

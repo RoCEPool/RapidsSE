@@ -174,18 +174,18 @@ Op::~Op(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* ack the invoking task                                                      */
+/* ack the job task                                                           */
 /*----------------------------------------------------------------------------*/
-void Op::vAckInvokingTask(void)
+void Op::vAckJobTask(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  //Task* pInvokingTask = m_p_PipelineOfOp->pPipelineJob()->pTask();
-  //RASSERT(m_pTask->pInvoker() == pInvokingTask);
+  //Task* pJobTask = m_p_PipelineOfOp->pPipelineJob()->pTask();
+  //RASSERT(m_pTask->pInvoker() == pJobTask);
 
   SP_Op spOp;
   i8 nAcksWereRemaining;
-  Task* pInvokingTask = m_pTask->pInvokingTask();
+  Task* pJobTask = m_pTask->pJobTask();
 
   if (m_bTraceOp) {
 
@@ -207,7 +207,7 @@ void Op::vAckInvokingTask(void)
   if (m_bTraceOp && AM::TRACE::bVBlong())
     spOp.szLeading(this);
 
-  AM::vAckWaitingTask(pInvokingTask, m_pTask, nAcksWereRemaining);
+  AM::vAckWaitingTask(pJobTask, m_pTask, nAcksWereRemaining);
 
   if (m_bTraceOp && AM::TRACE::bVBlong()) {
     vTraceM("%s "
@@ -1671,14 +1671,14 @@ void Op::vSendNode(i8 iSendNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set tags for this op                                                       */
+/* set job task                                                               */
 /*----------------------------------------------------------------------------*/
-void Op::vSetInvoker(Task* pInvoker)
+void Op::vSetJobTask(Task* pJobTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
   if (m_pTask)
-    m_pTask->vInvokingTask(pInvoker);
+    m_pTask->vJobTask(pJobTask);
 }
 
 /*----------------------------------------------------------------------------*/

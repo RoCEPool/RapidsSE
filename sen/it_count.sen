@@ -8,11 +8,11 @@
 
   // C_TDEF_COUNT
   
-  STD_WAIT_PATH_TAG
+  STD_BOOTFORK_TAG
   "
   define table __count ( rowCount INTEGER NOT NULL ) < infoSet > = 1 ;
   "
-  api::forkChild api:executeCheck
+  api::forkChildBoot   api:executeCheck
 
 ;
 

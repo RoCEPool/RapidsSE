@@ -26,7 +26,7 @@
     
 /*
 
-  STD_NOWAIT_TAG sForkCmd api::forkChild if
+  STD_NOWAIT_TAG sForkCmd api::forkChildOld if
     to tForkedJobId
     tForkedJobId "forkCommand: job %v" .printf
   else

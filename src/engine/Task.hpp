@@ -42,7 +42,7 @@ namespace ENGINE
     SMA<Job,CN_JOB> m_pJob; // which job this task is executing
     SMA<Op,CN_OP>   m_pOp;  // ... or which op this task is executing
 
-    SMA<Task, CN_TASK>  m_pInvokingTask;  // task that invoked this task
+    SMA<Task, CN_TASK>  m_pJobTask;  // task that invoked this task
 
     SMA<Thread, CN_THREAD>  m_pThread;  // current thread executing this task
 
@@ -135,8 +135,8 @@ namespace ENGINE
   
     void vGrabTaskLock(Stz* szFunc);
   
-    Task* pInvokingTask(void);
-    void vInvokingTask(Task* pInvokingTask);
+    Task* pJobTask(void);
+    void vJobTask(Task* pJobTask);
     bool bIsLocked(void);
     bool bIsTaskLocked(void);
   

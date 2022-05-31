@@ -31,6 +31,7 @@
 
 #include "SP_Pointer.hpp"
 #include "ExitOperand.hpp"
+#include "ChildExit.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -76,7 +77,7 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
   /* 09 */ m_pTask        = nullptr;
   /* 10 */ m_bWasReceived = false;
   /* 11 */ m_pMarkerChain = nullptr;
-  
+
   m_iTscParticipant = 0;
   
   m_iTscBeginning   = 0;
@@ -270,6 +271,26 @@ void Job::vCascadeReset(void)
   vDrainOutput();
 
   vDebugPoint();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get cjild job error                                                        */
+/*----------------------------------------------------------------------------*/
+eEC Job::eChildError(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_eChildError;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set child job error                                                        */
+/*----------------------------------------------------------------------------*/
+void Job::vChildError(eEC eErrorCode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_eChildError = eErrorCode;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -847,14 +868,14 @@ void Job::vMutexWait(void)
 /*----------------------------------------------------------------------------*/
 /* new a marker from the chain                                                */
 /*----------------------------------------------------------------------------*/
-Marker* Job::pNewMarker(void)
+Marker* Job::pNewMarker(eOM eOpMarker)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
       
   Marker* pMarker = m_pMarkerChain->pPop();
   
-  if (! pMarker)
-    pMarker = new (this)Marker(OM_NONE);
+  if (pMarker)
+    pMarker->vOpMarker(eOpMarker);
   
   return pMarker;
 }
@@ -1090,17 +1111,23 @@ void Job::vPipeout(Operand* pOperand)
   _precondition_(_ADDRESS_,_MAGIC_);
 
   Job* pParentJob = this->pParentJob();
+  if (pOperand->eGetClassNo() == CN_STREAMDEF) {
+    i8 i = 1;
+  }
 
-  if (m_p_ResponseOp) {
+  if (pParentJob && pParentJob->m_p_ResponseOp) {
     Task* pCurTask = MY::pTask();
-    m_p_ResponseOp->vPipeToThis(pOperand, pCurTask);
-
     if (pOperand->eGetClassNo() == CN_EXITOPERAND) {
-      vPipeoutExit();
+      AM::vDeleteOperand(pOperand, nullptr);
+      pOperand = new ChildExit;
     }
-
+    pParentJob->m_p_ResponseOp->vPipeToThis(pOperand, pCurTask);
   }
   else if (pParentJob) {
+    if (pOperand->eGetClassNo() == CN_EXITOPERAND) {
+      AM::vDeleteOperand(pOperand, nullptr);
+      pOperand = new ChildExit;
+    }
     pParentJob->vPipeout(pOperand);
   }
   else if (m_pOutput) {

@@ -194,6 +194,10 @@ namespace STORE
     void vGuardedDeleteComponent(eCN eClassNo,
                                  eCN eDeleterClassNo, Object* pDeleter, Stz* szFunc)
     {
+      UNUSED(eDeleterClassNo);
+      UNUSED(pDeleter);
+      UNUSED(szFunc);
+
       RASSERT(CLASSNO == eClassNo);
       if (m_pComponent)
         delete m_pComponent;

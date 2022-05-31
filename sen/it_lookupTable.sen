@@ -8,7 +8,7 @@
 
   // C_TDEF_LOOKUPTABLE
 
-  STD_WAIT_PATH_TAG
+  STD_BOOTFORK_TAG
   "
   define table __lookupTable (
     catalogName   VARCHAR NOT NULL ,
@@ -17,7 +17,7 @@
   ) < infoSet > = 1 ;
   "
 
-  api::forkChild api:executeCheck
+  api::forkChildBoot   api:executeCheck
 ;
 
 /*============================================================================*/

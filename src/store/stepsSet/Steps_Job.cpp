@@ -81,7 +81,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("[job].responseOp!"_Stz,      &Step::vJobResponseOpStore);
 
   vAddStep("[job].setOriginId"_Stz,      &Step::vJobSetOriginId);
-  vAddStep("[job].signalWaiter"_Stz,     &Step::vJobSignalWaiter);
+  vAddStep("[job].signalParent"_Stz,     &Step::vJobSignalParent);
 
   vAddStep("[job].tagSet@"_Stz,          &Step::vJobTagSetFetch);
   vAddStep("[job].task@"_Stz,            &Step::vJobTaskFetch);
@@ -294,20 +294,24 @@ void Step::vJobAssertOrdinary(void)
            "[job].assertOrdinary: "
            "Job::m_eJobList is not JL_none [Job %s on node %lld]\n"_Stz,
            aCN[m_pJob->eGetClassNo()],AM::pGrid()->iThisNodeId());
-  
-  Job* pJobFound = AM::pOriginatingJobs()->pFindJob(m_pJob->tOriginId());
-  if (pJobFound)
-    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-           "[job].assertOrdinary: "
-           "Job found in OriginatingJobs [Job %s on node %lld]\n"_Stz,
-           aCN[m_pJob->eGetClassNo()],AM::pGrid()->iThisNodeId());
 
-  pJobFound = AM::pParticipatingJobs()->pFindJob(m_pJob->tDistId());
-  if (pJobFound)
-    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-           "[job].assertOrdinary: "
-           "Job found in ParticipatingJobs [Job %s on node %lld]\n"_Stz,
-           aCN[m_pJob->eGetClassNo()],AM::pGrid()->iThisNodeId());
+  if ( ! m_pJob->tOriginId().bIsUnknown() ) {
+    Job *pJobFound = AM::pOriginatingJobs()->pFindJob(m_pJob->tOriginId());
+    if (pJobFound)
+      vThrow(FK_FATAL, __func__, __FILE__, __LINE__,
+             "[job].assertOrdinary: "
+             "Job found in OriginatingJobs [Job %s on node %lld]\n"_Stz,
+             aCN[m_pJob->eGetClassNo()], AM::pGrid()->iThisNodeId());
+  }
+
+  if ( ! m_pJob->tDistId().bIsUnknown() ) {
+    Job *pJobFound = AM::pParticipatingJobs()->pFindJob(m_pJob->tDistId());
+    if (pJobFound)
+      vThrow(FK_FATAL, __func__, __FILE__, __LINE__,
+             "[job].assertOrdinary: "
+             "Job found in ParticipatingJobs [Job %s on node %lld]\n"_Stz,
+             aCN[m_pJob->eGetClassNo()], AM::pGrid()->iThisNodeId());
+  }
 
   EXIT();
 }
@@ -664,9 +668,14 @@ void Step::vJobPhaseFetch(void)
 void Step::vJobPreExecuteTest(void)
 {
   ENTRY();
-  
-  eEC eError = AM::JOB::ePreExecuteTest(m_pJob);
-  
+
+  Job* pJob = MY::pJob();
+
+  eEC eError = AM::JOB::ePreExecuteTest(pJob);
+
+  //if (pJob->tJobId().uJobNo() == 93)
+  //  eError = EC_LOW_MEMORY;
+
   m_pDataStack->vPushInt(eError);
 
   EXIT();
@@ -886,20 +895,30 @@ void Step::vJobSetOriginId(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [job].signalWaiter -- signal the actor waiting on this job/session mutex   */
+/* [job].signalParent -- signal parent job waiting on this job/session mutex  */
 /*----------------------------------------------------------------------------*/
-void Step::vJobSignalWaiter(void)
+void Step::vJobSignalParent(void)
 {
   ENTRY();
-  
-  // there will be a thread waiting on completion of the job
-  // this could be a prompt thread or a java thread via the connector
-  
+
+  // there will be a thread (of parent job) waiting on completion of the job
+  // this could be a prompt thread
+
   //Job* pJob = MY::pJob();
   Job* pJob = * m_pJob;
 
+  eEC eErrorCode = (eEC)m_pDataStack->iPopInt(__func__);
+
   eJL eJobList = pJob->eJobList();
   RASSERT(JL_NONE == eJobList || JL_RETIRED == eJobList)
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the error as childError in parent
+  pJob->pParentJob()->vChildError(eErrorCode);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // clear the error from parent
+  pJob->pParentJob()->vJobError(EC_NONE);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

@@ -8,14 +8,14 @@
 
   // C_TDEF_PROGRESSUNITS
   
-  STD_WAIT_PATH_TAG
+  STD_BOOTFORK_TAG
   "
   define table __progressUnits (
     units      INTEGER NOT NULL
   ) < infoSet > = 1 ;
   "
   
-  api::forkChild api:executeCheck
+  api::forkChildBoot   api:executeCheck
 ;
 
 /*============================================================================*/

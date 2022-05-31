@@ -4,6 +4,8 @@
 
 _nation;
 load nation "../DATA/TPCH/nation.tbl";
+//select * from nation;
+
 
 pipeline rsp
 begin

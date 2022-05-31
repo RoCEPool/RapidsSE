@@ -19,7 +19,7 @@
     [task].isLocked? assert
 
     nAcks if
-      [task] Deck[].setInvoker
+      [task] Deck[].setJobTask
     
       nAcks [task].acksRemaining!
 

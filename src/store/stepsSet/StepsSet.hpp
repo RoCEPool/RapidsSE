@@ -86,7 +86,12 @@ public:
 
 
   // api
-  void vApiForkChild(void);
+  void vApiForkChildBoot(void);
+  void vApiForkChildDemon(void);
+  void vApiForkChildDeputy(void);
+  void vApiForkChildNormal(void);
+  void vApiForkChildOld(void);
+  void vApiForkChild2PC(void);
   void vApiReapJobs(void);
   void vApiSpawnJob(void);
 
@@ -363,7 +368,7 @@ void vDdlLockAssertNone(void);
   void vDeckPulsedFetch(void);
   void vDeckPulsedStore(void);
   void vDeckSet(void);
-  void vDeckSetInvoker(void);
+  void vDeckSetJobTask(void);
   void vDeckSpawnOpTasks(void);
 
   // deck (of op)
@@ -878,7 +883,7 @@ void vDdlLockAssertNone(void);
   void vJobIdShow(void);
 
   void vJobSetOriginId(void);
-  void vJobSignalWaiter(void);
+  void vJobSignalParent(void);
   void vJobMutexFetch(void);
   void vJobNewMarkerChain(void);
 
@@ -1104,6 +1109,10 @@ void vDdlLockAssertNone(void);
   void vLogicUnitIntStackStore(void);
   void vLogicUnitJobMetricsFetch(void);
   void vLogicUnitJobMetricsStore(void);
+  void vLogicUnitRcvdChildExitFetch(void);
+  void vLogicUnitRcvdChildExitStore(void);
+  void vLogicUnitRcvdEndFetch(void);
+  void vLogicUnitRcvdEndStore(void);
 
   // ErrorMarker[]
   void vMarkerDelete(void);
@@ -1264,7 +1273,7 @@ void vDdlLockAssertNone(void);
   void vObjectStore(void);
 
   // op
-  void vOpAckInvokingTask(void);
+  void vOpAckJobTask(void);
   void vOpEnqueOperand(void);
   void vOpFindOp(void);
   void vOpGet(void);

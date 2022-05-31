@@ -39,6 +39,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
   
     eJP    m_eJobPhase;   // current phase: JP_BEGINNING, _BEGUN, ...
     eEC    m_eError_job;  // error when starting job
+    eEC    m_eChildError; // error in child job
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // reset in Job::vPostRecv()
@@ -94,6 +95,8 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vActiveOpsInc(void);
 
     void vCascadeReset(void);
+    eEC eChildError(void);
+    void vChildError(eEC eErrorCode);
     void vCleanupOutput(void);
     Stz* szCmd(void);
     void vCmd(Stz* szCmd);
@@ -150,7 +153,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vMutexUnlock(void);
     void vMutexWait(void);
 
-    Marker* pNewMarker(void);
+    Marker* pNewMarker(eOM eOpMarker);
     void vNewMarkerChain(void);
 
     Output* pOutput(void);

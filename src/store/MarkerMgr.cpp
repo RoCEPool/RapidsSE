@@ -50,6 +50,18 @@ MarkerMgr::~MarkerMgr(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* free a marker                                                              */
+/*----------------------------------------------------------------------------*/
+void MarkerMgr::vFreeMarker(Marker* pMarker)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_MARKERMGR,_FOOTER_);
+
+  RASSERT(pMarker == this->pMarker(pMarker->eOpMarker()))
+
+  // do nothing
+}
+
+/*----------------------------------------------------------------------------*/
 /* get a marker by eOM                                                        */
 /*----------------------------------------------------------------------------*/
 Marker* MarkerMgr::pMarker(eOM eMarker)

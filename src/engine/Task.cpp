@@ -112,7 +112,7 @@ void Task::vTask(void)
   
   m_iDebugMark   = 0;
   m_pProfile     = nullptr;
-  m_pInvokingTask = nullptr;
+  m_pJobTask = nullptr;
   m_pThread      = nullptr;
   
   m_eState       = TS_NONE;
@@ -927,24 +927,24 @@ Input* Task::pInput(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the invoking task (super-op/pipe) of this task (sub-op/pipe)           */
+/* get the job task (super-op/pipe) of this task (sub-op/pipe)                */
 /*----------------------------------------------------------------------------*/
-Task* Task::pInvokingTask(void)
+Task* Task::pJobTask(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  return m_pInvokingTask;
+  return m_pJobTask;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set the invoking task (super-op/pipe) of this task (sub-op/pipe)           */
+/* set the job task (super-op/pipe) of this task (sub-op/pipe)                */
 /*----------------------------------------------------------------------------*/
-void Task::vInvokingTask(Task* pInvokingTask)
+void Task::vJobTask(Task* pJobTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 
-  RASSERT(pInvokingTask);
-  m_pInvokingTask = pInvokingTask;
+  RASSERT(pJobTask);
+  m_pJobTask = pJobTask;
 }
 
 /*----------------------------------------------------------------------------*/

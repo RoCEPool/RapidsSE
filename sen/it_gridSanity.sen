@@ -8,14 +8,14 @@
 
   // C_TDEF_GRIDSANITY
 
-  STD_WAIT_PATH_TAG
+  STD_BOOTFORK_TAG
   "
   define table __gridSanity (
     nodeName   VARCHAR NOT NULL ,
     homogenous BOOLEAN NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::forkChild api:executeCheck
+  api::forkChildBoot   api:executeCheck
 
 ;
 

@@ -8,14 +8,14 @@
 
   // C_TDEF_LISTFOLDER
 
-  STD_WAIT_PATH_TAG
+  STD_BOOTFORK_TAG
   "
   define table __listFolder (
     Name       VARCHAR NOT NULL ,
     Type       VARCHAR NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::forkChild api:executeCheck
+  api::forkChildBoot   api:executeCheck
 
 ;
 

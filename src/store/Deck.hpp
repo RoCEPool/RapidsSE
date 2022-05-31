@@ -33,7 +33,7 @@ namespace STORE
 
     Pipeline* pPipeline(void);
   
-    void vSetInvoker(Task* pInvoker);
+    void vSetJobTask(Task* pJobTask);
     Stage* pStage0(void);
   
     Vertex* pVertex(void);

@@ -195,9 +195,9 @@ Stage* Stream::pStage(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* spawn tasks for all operators for partitions of given node                 */
+/* set job task for the operators                                             */
 /*----------------------------------------------------------------------------*/
-void Stream::vSetInvoker(Task* pInvoker)
+void Stream::vSetJobTask(Task* pJobTask)
 {
   _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
 
@@ -207,7 +207,7 @@ void Stream::vSetInvoker(Task* pInvoker)
     Op* pOp = pGet(i_Op);
     
     if (pOp)
-      pOp->vSetInvoker(pInvoker);
+      pOp->vSetJobTask(pJobTask);
   }
   
 }

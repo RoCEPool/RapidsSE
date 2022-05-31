@@ -28,6 +28,28 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for EV_X_CHILDEXIT ...                                             */
+/*----------------------------------------------------------------------------*/
+: transliterate_ChildExit \handler
+
+  //"EV_X_CHILDEXIT" .verbose
+
+  true LogicUnit[].RcvdChildExit!
+
+  nullptr [job].responseOp!
+
+  LogicUnit[].RcvdEnd@ if
+    Marker[].newEndMarker
+    Marker[].pipeout
+  then
+
+  //"transliterate_ChildExit" .
+  Pipein[].delete
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for EV_M_CLEANING ...                                              */
 /*----------------------------------------------------------------------------*/
 : transliterate_Cleaning \handler
@@ -49,6 +71,24 @@
 : transliterate_EosMarker \handler
  
   EV_M_EOS_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_END ...                                                   */
+/*----------------------------------------------------------------------------*/
+: transliterate_End \handler
+
+  //"EV_M_END_handler" .verbose
+
+  true LogicUnit[].RcvdEnd!
+
+  LogicUnit[].RcvdChildExit@ if
+     PipeIn[].pipeout
+  else
+    PipeIn[].delete
+  then
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -85,11 +125,20 @@
   PlanOperand[] sqlCompiler::deletePlan
   PlanOperand[].delete
 
-  //sPipeline .
+  //sPipeline "FORKING CHILD FOR PIPELINE: %v"  str.format .
 
-  sPipeline [op].job@ job(Id).masterJob job(Id).cascade!
+  //sPipeline [op].job@ job(Id).masterJob job(Id).cascade!
 
-  
+  STD_NORMALFORK_TAG sPipeline api::forkChildNormal not if
+     //"****Error Code %v" .printf
+     op__execErr
+     true
+     exit
+  else
+    [Op] [job].responseOp!
+    find: transliterate_End       EV_M_END       [op].handler!
+  then
+
   true
 ;
 
@@ -102,7 +151,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_M_LEAVE ...                                             */
+/* handler for EV_M_LEAVE ...                                                 */
 /*----------------------------------------------------------------------------*/
 : transliterate_LeaveMarker \handler
 
@@ -142,8 +191,10 @@
   find: transliterate_PlanOperand   EV_D_PLANOPERAND   [op].handler!
   find: transliterate_StartMarker   EV_M_START         [op].handler!
 
-  find: transliterate_StreamSet    EV_D_STREAMSET      [op].handler!
-  find: transliterate_LeaveMarker  EV_M_LEAVE          [op].handler!
+  find: transliterate_StreamSet     EV_D_STREAMSET     [op].handler!
+  find: transliterate_LeaveMarker   EV_M_LEAVE         [op].handler!
+
+  find: transliterate_ChildExit     EV_X_CHILDEXIT     [op].handler!
 
   op__loop
 

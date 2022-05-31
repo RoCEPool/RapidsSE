@@ -40,7 +40,7 @@ namespace STORE
   
     Pipeline* pPipeline(void);
   
-    void vSetInvoker(Task* pInvoker);
+    void vSetJobTask(Task* pJobTask);
     void vSetupJob(void);
     void vSpawnOpTasks(void);
     Stage* pStage0(void);

@@ -142,24 +142,23 @@ void SeDeputy::vDeputyLoop(void)
     TagSet* pInpTagSet   = m_pInput->pInpTagSet();
     
     pInpTagSet->vReplace(C_TAG_WAIT,1);
-    pInpTagSet->vReplace(C_TAG_SIGNALWAITER,1);
+    pInpTagSet->vReplace(C_TAG_SIGNALPARENT,1);
     pInpTagSet->vReplace(C_TAG_PATH,m_sFolderPath);
     pInpTagSet->vReplace(C_TAG_LASTJOBID,m_tLastJobId.iAsI8());
     pInpTagSet->vReplace(C_TAG_SYSTEMCLOSER,m_bSystemCloser);
 
     JobId tChildJobId;
     
-  JobId tParentId;
-  tParentId = m_pRootJob->tJobId();
+    JobId tParentId;
+    tParentId = m_pRootJob->tJobId();
 
-  JobId tOriginId;
-  tOriginId = m_pRootJob->tOriginId();
+    JobId tOriginId;
+    tOriginId = m_pRootJob->tOriginId();
 
-  JobId tDistId;
-  tDistId = m_pRootJob->tDistId();
+    JobId tDistId;
+    tDistId = m_pRootJob->tDistId();
 
-    
-    m_eError = Api::eForkJob(tChildJobId,
+    m_eError = Api::eForkJobDeputy(tChildJobId,
                              pInpTknVec,pInpTagSet,
                              tParentId,tOriginId,tDistId,
                              m_pRootJob, // TO BE REMOVED
@@ -169,7 +168,11 @@ void SeDeputy::vDeputyLoop(void)
     if (EC_NONE != m_eError) {
       m_pSePrompt->vMutexLock(this);
       m_pSePrompt->vMutexSignalAndUnlock(this);
-       continue;
+
+      // if command was invalid we may not have a job
+      if (m_pJob)
+        Api::vReapableJob(m_pJob);
+      continue;
     }
 
     // check if job is inError
