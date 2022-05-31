@@ -31,6 +31,8 @@ namespace STORE
 
     JobId tOriginId(void);
     void vOriginId(JobId tOriginId);
+  
+    bool bReject(void);
 
   private:
     Footer* aFooter(void);

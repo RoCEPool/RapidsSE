@@ -86,6 +86,15 @@ void RejectJob::vOriginId(JobId tOriginId)
   m_tOriginId = tOriginId;
 }
 
+/*----------------------------------------------------------------------------*/
+/* reject job                                                                 */
+/*----------------------------------------------------------------------------*/
+bool RejectJob::bReject(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_REJECTJOB,_FOOTER_);
+
+  return false;
+}
 
 /*============================================================================*/
 /* end                                                                        */
