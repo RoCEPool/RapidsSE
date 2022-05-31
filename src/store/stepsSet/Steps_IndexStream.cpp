@@ -300,7 +300,7 @@ void Step::vIndexStreamScanPopulate(void)
   StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
   RowBuffer* pRowBuffer = _pRowBuffer(m_pDataStack->pPopPtr(__func__));
 
-  pRowBuffer->vStreamDef(pStreamDef);
+  pRowBuffer->vStreamDef_dbuff(pStreamDef);
   IndexStream* pIndexStream = _pIndexStream(*m_pLogicUnit->m_xpIndexStream);
 
   pIndexStream->vScanPopulate(pRowBuffer);
@@ -319,7 +319,7 @@ void Step::vIndexStreamScanPopulateTop(void)
   RowBuffer* pRowBuffer = _pRowBuffer(m_pDataStack->pPopPtr(__func__));
   i8 iTop = m_pDataStack->iPopInt(__func__);
 
-  pRowBuffer->vStreamDef(pStreamDef);
+  pRowBuffer->vStreamDef_dbuff(pStreamDef);
   IndexStream* pIndexStream = _pIndexStream(*m_pLogicUnit->m_xpIndexStream);
 
   pIndexStream->vScanPopulateTop(pRowBuffer, iTop);

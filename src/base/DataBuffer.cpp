@@ -49,8 +49,8 @@ DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent)
   m_oWhenNewed.vNow();
   m_bIsPermanent = bIsPermanent;
   
-  m_pTable = nullptr;
-  m_pStreamDef = nullptr;
+  m_pTable_dbuff = nullptr;
+  m_pStreamDef_dbuff = nullptr;
 
   m_tTxnNo = C_UNKNOWN;
 
@@ -138,42 +138,42 @@ DataBuffer* DataBuffer::pToDataBuffer(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* get the stream def                                                         */
 /*----------------------------------------------------------------------------*/
-StreamDef* DataBuffer::pStreamDef(void)
+StreamDef* DataBuffer::pStreamDef_dbuff(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  return m_pStreamDef;
+  return m_pStreamDef_dbuff;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set the table                                                              */
 /*----------------------------------------------------------------------------*/
-void DataBuffer::vStreamDef(StreamDef* pStreamDef)
+void DataBuffer::vStreamDef_dbuff(StreamDef* pStreamDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  m_pStreamDef = pStreamDef;
+  m_pStreamDef_dbuff = pStreamDef;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get the table                                                              */
 /*----------------------------------------------------------------------------*/
-Table* DataBuffer::pTable(void)
+Table* DataBuffer::pTable_dbuff(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  return m_pTable;
+  return m_pTable_dbuff;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set the table                                                              */
 /*----------------------------------------------------------------------------*/
-void DataBuffer::vTable(Table* pTable)
+void DataBuffer::vTable_dbuff(Table* pTable)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   //vTrace("DataBuffer::vTable\n"_Stz);
-  m_pTable = pTable;
-  vStreamDef(pTable->pStreamDef());
+  m_pTable_dbuff = pTable;
+  vStreamDef_dbuff(pTable->pStreamDef());
 }
 
 /*----------------------------------------------------------------------------*/
