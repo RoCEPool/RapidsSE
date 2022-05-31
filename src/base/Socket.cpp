@@ -581,33 +581,25 @@ Object* Socket::pRecvObject(void)
   if (bLowMem)
      PoolHelper::vPoolAnalyze();
 
-
   m_pObject->vSetWasReceived(true);
   m_pObject->vSetPostRecvRun(false);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // receive the header of the next object
-
-  bool bResult;
-  SysCall oSysCall;
     
   if (! bHeaderRecv()) {
     vSuccess(false);
     return nullptr;
   }
 
+  eCN eClass = m_pObject->eGetClassNo();
+
 //  SP_Header spHeader;
 //  vTrace("%lld: vSocketRecvObject: Header %s\n"_Stz,
 //         AM::iThisNodeId(),
 //         spHeader.sz(aHeader));
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // receive the body of the object (enough memory condition)
 
-  eCN eClass = m_pObject->eGetClassNo();
-  //i8 nSize = gxaSizeHeap[eClass].m_nClassSize;
-  
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // markers are special case
 
@@ -617,47 +609,10 @@ Object* Socket::pRecvObject(void)
     return pMarker;
   }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // receive object normally (or acceptable objects under low memory)
 
-  
-  
-  
-  
   if (! bLowMem || ! gxaSizeHeap[eClass].m_bLowMemoryDiscard) {
-//    //vTrace("class:%s\n"_Stz, aCN[eClass]);
-//    Object* pReceivedObject = Heaps::pAllocate(eClass);
-//    MemLib::vCopy(pReceivedObject,m_pObject,sizeof(Object),eClass);
-//
-//    void* aBody = aAdd<void*>(pReceivedObject,sizeof(Object));
-//    i8 nRemainingBytes = nSize - sizeof(Object);
-//
-//    bResult = bBytesRecv(aBody,nRemainingBytes,oSysCall);
-//    if (! bResult) {
-//     //m_pDataStack->vPushInt(false);
-//     //vReceivedObject(nullptr);
-//     vTrace("Socket::pRecvObject (body) : bRecvBytes returned false\n"_Stz);
-//     vSuccess(false);
-//     return nullptr;
-//    }
-//#ifdef WITH_BUFFER_ID
-//    if (1 == DataBuffer::bIsDataBuffer(eClass)) {
-//      DataBuffer* pDataBuffer = _pDataBuffer(pReceivedObject);
-//      i8 iPoolBufferNo = pDataBuffer->iBufferNo();
-//      pDataBuffer->vSetBufferNo(iPoolBufferNo);
-//      pDataBuffer->vSetBufferId(
-//          AM::pFileMap()->oGetNewBufferId(iPoolBufferNo));
-//#ifdef WITH_HASHMAP
-//      AM::pHashMap()->vInsertKeyValue(
-//          (void *) pDataBuffer->oGetBufferId().m_pvAsAddress,
-//          (Object *) pReceivedObject);
-//#endif
-//    }
-//#endif
-//    pReceivedObject->vRunPostRecv();
-//
-//    m_pTotup->vAdd(eClass,nSize);
-    
-    //vReceivedObject(pReceivedObject);
-    
     Object* pReceivedObject = pObjectRecv(eClass);
     vSuccess(true);
     return pReceivedObject;
@@ -665,19 +620,6 @@ Object* Socket::pRecvObject(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // receive and discard the body of the object (low memory condition)
-//  if (AM::SHOW::bLowMem_Recv())
-//    vTrace("Socket::pRecvObject : LOW MEMORY\n"_Stz);
-
-//  void* aLowBuff = m_aLowBuff;
-//
-//  // copy the object header into the LowBuffer
-//  MemLib::vCopy(aLowBuff,m_pObject,sizeof(Object),eClass);
-//
-//  // recv rest of the buffer into LowBuffer
-//  void* aLowBody = aAdd<void*>(aLowBuff,sizeof(Object));
-//  i8 nRemainingBytes = gxaSizeHeap[eClass].m_nClassSize - sizeof(Object);
-//
-//  bResult = bBytesRecv(aLowBody,nRemainingBytes,oSysCall);
 
   Object* pReceivedObject = pObjectRecv_lowmem(eClass);
   RASSERT(! pReceivedObject);
@@ -1044,7 +986,6 @@ bool Socket::bBytesSend(void* aBytes, i8 nBytes, SysCall& SysCall)
   return true;
 }
 
-
 /*----------------------------------------------------------------------------*/
 /* recv next header from this socket                                          */
 /*----------------------------------------------------------------------------*/
@@ -1139,7 +1080,6 @@ Object* Socket::pObjectRecv(eCN eClass)
   m_pTotup->vAdd(eClass,nSize);
   
   return pReceivedObject;
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1152,44 +1092,9 @@ Object* Socket::pObjectRecv_lowmem(eCN eClass)
   
   SysCall oSysCall;
 
-  i8 nSize = gxaSizeHeap[eClass].m_nClassSize;
-
-//  //vTrace("class:%s\n"_Stz, aCN[eClass]);
-//  Object* pReceivedObject = Heaps::pAllocate(eClass);
-//  MemLib::vCopy(pReceivedObject,m_pObject,sizeof(Object),eClass);
-//
-//  void* aBody = aAdd<void*>(pReceivedObject,sizeof(Object));
-//  i8 nRemainingBytes = nSize - sizeof(Object);
-//
-//  bool bResult = bBytesRecv(aBody,nRemainingBytes,oSysCall);
-//  if (! bResult) {
-//   //m_pDataStack->vPushInt(false);
-//   //vReceivedObject(nullptr);
-//   vTrace("Socket::pRecvObject (body) : bRecvBytes returned false\n"_Stz);
-//   vSuccess(false);
-//   return nullptr;
-//  }
-//#ifdef WITH_BUFFER_ID
-//  if (1 == DataBuffer::bIsDataBuffer(eClass)) {
-//    DataBuffer* pDataBuffer = _pDataBuffer(pReceivedObject);
-//    i8 iPoolBufferNo = pDataBuffer->iBufferNo();
-//    pDataBuffer->vSetBufferNo(iPoolBufferNo);
-//    pDataBuffer->vSetBufferId(
-//        AM::pFileMap()->oGetNewBufferId(iPoolBufferNo));
-//#ifdef WITH_HASHMAP
-//    AM::pHashMap()->vInsertKeyValue(
-//        (void *) pDataBuffer->oGetBufferId().m_pvAsAddress,
-//        (Object *) pReceivedObject);
-//#endif
-//  }
-//#endif
-//  pReceivedObject->vRunPostRecv();
-//
-//  m_pTotup->vAdd(eClass,nSize);
-  
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // receive and discard the body of the object (low memory condition)
+
   if (AM::SHOW::bLowMem_Recv())
     vTrace("Socket::pObjectRecv_lowmem : LOW MEMORY\n"_Stz);
 
@@ -1204,13 +1109,9 @@ Object* Socket::pObjectRecv_lowmem(eCN eClass)
 
   bool bResult = bBytesRecv(aLowBody,nRemainingBytes,oSysCall);
   UNUSED(bResult);
-  
-  //vReceivedObject(nullptr);
-  //vSuccess(true);
-  
+    
   return nullptr;
 }
-
 
 /*============================================================================*/
 /* end                                                                        */
