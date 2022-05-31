@@ -107,6 +107,8 @@ namespace BASE
   
     bool bHeaderRecv(void);
     Marker* pMarkerRecv(void);
+    Object* pObjectRecv(eCN eClass);
+    Object* pObjectRecv_lowmem(eCN eClass);
 
     Footer* aFooter(void);
   };
