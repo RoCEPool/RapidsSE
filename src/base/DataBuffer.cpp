@@ -41,6 +41,9 @@ DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent)
   m_iBufferNo  = iBufferNo();
 #ifdef WITH_BUFFER_ID
   m_oBufferId = AM::pFileMap()->oGetNewBufferId(m_iBufferNo);
+#ifdef WITH_HASHMAP
+  AM::pHashMap()->vInsertKeyValue((void *) m_oBufferId.m_pvAsAddress, (Object *) this);
+#endif
 #endif
   m_iBucketNo  = C_UNKNOWN;
   m_tLglPtn     = C_UNKNOWN;
@@ -63,11 +66,37 @@ DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent)
 DataBuffer::~DataBuffer(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
+#ifdef WITH_BUFFER_ID
+#ifdef WITH_HASHMAP
+  AM::pHashMap()->vDeleteKey((void*)m_oBufferId.m_pvAsAddress);
+#endif
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* Check if class inherits from DataBuffer                                    */
+/*----------------------------------------------------------------------------*/
+bool DataBuffer::bIsDataBuffer(eCN eClass)
+{
+  _static_
+
+  if (   eClass == CN_INFOSET
+      || eClass == CN_ROWBUFFER
+      || eClass == CN_NAMEDBUFFER
+      || eClass == CN_CSVBUFFER
+      || eClass == CN_CRVBUFFER
+      || eClass == CN_OBJBUFFER
+      || eClass == CN_CRWBUFFER
+      || eClass == CN_ENTBUFFER ) {
+    return true;
+  }
+
+  return false;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get the entry buffer that given id references                              */

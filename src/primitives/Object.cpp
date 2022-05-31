@@ -119,7 +119,7 @@ Object* Object::pMemoryCopy(void)
   // when we do a memcpy. Below code extracts the buffer no from the pool buffer that
   // the object lives in and then set that rowbuffer member which was overwritten.
 #ifdef WITH_BUFFER_ID
-  if (eClass == CN_ROWBUFFER || eClass == CN_INFOSET || eClass == CN_NAMEDBUFFER) {
+  if (1 == DataBuffer::bIsDataBuffer(eClass)) {
     DataBuffer* pDataBuffer = _pDataBuffer(pCopy);
     i8 iPoolBufferNo = pDataBuffer->iBufferNo();
     pDataBuffer->vSetBufferNo(iPoolBufferNo);

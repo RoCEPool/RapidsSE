@@ -366,7 +366,7 @@ SizeHeap gxaSizeHeap[]
   { CN_GRID,                     sizeof(Grid),               HT_T_TINY    ,0 FILL },
 
   { CN__H__,                     'H' - ('A' - 1),            HT_INVALID   ,0 FILL },
-  { CN_HASHMAP,                  sizeof(HashMap),            HT_T_TINY    ,0 FILL },
+  { CN_HASHMAP,                  sizeof(HashMap),            HT_T_SMALL   ,0 FILL },
   { CN_HASHMAPENTRY,             sizeof(HashMapEntry),       HT_T_TINY    ,0 FILL },
   { CN_HASHMAPSLOT,              sizeof(HashMapSlot),        HT_T_LARGE   ,0 FILL },
   { CN_HEAPBUFFER,               sizeof(HeapBuffer),         HT_INVALID   ,0 FILL },
