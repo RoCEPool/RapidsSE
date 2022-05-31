@@ -61,51 +61,51 @@ namespace BASE
     Socket(Object* pIsFor, int iSocketId);
    ~Socket(void) noexcept(false);
     
-    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
+//    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
-    bool bAcceptClient(int& pSocketId, SysCall& SysCall);
-    void vAddrInit(sockaddr_in* aAddr, int iPort);
-    void vAddrInit(sockaddr_in* aAddr, Stz* sAddr, int iPort);
-    
-    i8   nBytesRcvd(void);
-    i8   nBytesSent(void);
-  
-    bool bClose(SysCall& SysCall);
-    bool bConnectServer(Stz* sAddr, int iPort, SysCall& SysCall);
-    void vCopy(Socket* pSource);
-    bool bCreateServer(int iPort, SysCall& SysCall);
-  
-    void vDropWrite(void);
-  
-    void vGrabWrite(void);
-  
-    bool bIsOpen(void);
+//    bool bAcceptClient(int& pSocketId, SysCall& SysCall);
+//    void vAddrInit(sockaddr_in* aAddr, int iPort);
+//    void vAddrInit(sockaddr_in* aAddr, Stz* sAddr, int iPort);
+//
+//    i8   nBytesRcvd(void);
+//    i8   nBytesSent(void);
+//
+//    bool bClose(SysCall& SysCall);
+//    bool bConnectServer(Stz* sAddr, int iPort, SysCall& SysCall);
+//    void vCopy(Socket* pSource);
+//    bool bCreateServer(int iPort, SysCall& SysCall);
+//
+//    void vDropWrite(void);
+//
+//    void vGrabWrite(void);
+//
+//    bool bIsOpen(void);
   
     Object* pReceivedObject(void);
     void vReceivedObject(Object* pReceivedObject);
-    bool bRecvBufferSize(int nBytes, SysCall& SysCall);
-    i8   iRecvBufferSize(void);
+//    bool bRecvBufferSize(int nBytes, SysCall& SysCall);
+//    i8   iRecvBufferSize(void);
     Object* pRecvObject(void);
-    i8   nRecvs(void);
-    void vReset(void);
+//    i8   nRecvs(void);
+//    void vReset(void);
   
-    bool bSendBufferSize(int nBytes, SysCall& SysCall);
-    i8   iSendBufferSize(void);
+//    bool bSendBufferSize(int nBytes, SysCall& SysCall);
+//    i8   iSendBufferSize(void);
     bool bSendObject(Object* pObject, SysCall& SysCall, eSY eSendWhy);//=SY_NONE);
-    i8   nSends(void);
-    bool bSetNonBlocking(SysCall& SysCall);
-    bool bSocket(SysCall& SysCall);
-    bool bSuccess(void);
-    void vSuccess(bool bSuccess);
-  
-    bool bTestForData(SysCall& SysCall);
-    Totup* pTotup(void);
-  
-    Totup* pWhyTot(void);
+//    i8   nSends(void);
+//    bool bSetNonBlocking(SysCall& SysCall);
+//    bool bSocket(SysCall& SysCall);
+//    bool bSuccess(void);
+//    void vSuccess(bool bSuccess);
+//
+//    bool bTestForData(SysCall& SysCall);
+//    Totup* pTotup(void);
+//
+//    Totup* pWhyTot(void);
 
   private:
-    bool bBytesRecv(void* pBuffer, i8 nBytes, SysCall& SysCall);
-    bool bBytesSend(void* pBuffer, i8 nBytes, SysCall& SysCall);
+//    bool bBytesRecv(void* pBuffer, i8 nBytes, SysCall& SysCall);
+//    bool bBytesSend(void* pBuffer, i8 nBytes, SysCall& SysCall);
   
     bool bHeaderRecv(void);
     Marker* pMarkerRecv(void);

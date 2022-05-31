@@ -100,7 +100,7 @@ namespace BASE
   
     Totup* pWhyTot(void);
 
-  private:
+  protected:
     bool bBytesRecv(void* pBuffer, i8 nBytes, SysCall& SysCall);
     bool bBytesSend(void* pBuffer, i8 nBytes, SysCall& SysCall);
   
