@@ -256,6 +256,7 @@ enum eCN : u2 // Class Number
   /* */ CN_REAPLOCK,
   /* */ CN_RECORD,
   /* */ CN_RECVWL,
+  /* */ CN_REJECTJOB,
   /* */ CN_RELOP,
   /* */ CN_RESOURCES,
   /* */ CN_RIBBON,
@@ -667,6 +668,7 @@ static Stz* aCN[]
   /* */ "REAPLOCK"_Stz,             // CN_REAPLOCK
   /* */ "RECORD"_Stz,               // CN_RECORD
   /* */ "RECVWL"_Stz,               // CN_RECVWL
+  /* */ "REJECTJOB"_Stz,            // CN_REJECTJOB
   /* */ "RELOP"_Stz,                // CN_RELOP
   /* */ "RESOURCES"_Stz,            // CN_RESOURCES
   /* */ "RIBBON"_Stz,               // CN_RIBBON

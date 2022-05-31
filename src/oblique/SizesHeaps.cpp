@@ -237,6 +237,7 @@
 #include "EvMgr.hpp"
 #include "MarkerChain.hpp"
 #include "MarkerMgr.hpp"
+#include "RejectJob.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -504,6 +505,7 @@ SizeHeap gxaSizeHeap[]
   { CN_REAPLOCK,                 sizeof(ReapLock),           HT_T_TINY    ,0 FILL },
   { CN_RECORD,                   sizeof(Record),             HT_T_MEDIUM  ,0 FILL },
   { CN_RECVWL,                   sizeof(RecvWL),             HT_T_TINY    ,0 FILL },
+  { CN_REJECTJOB,                sizeof(RejectJob),          HT_T_TINY    ,0 FILL },
   { CN_RELOP,                    sizeof(RelOp),              HT_T_TINY    ,0 FILL },
   { CN_RESOURCES,                sizeof(Resources),          HT_T_TINY    ,0 FILL },
   { CN_RIBBON,                   sizeof(Ribbon),             HT_T_SMALL   ,0 FILL },
