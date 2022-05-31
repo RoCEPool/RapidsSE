@@ -588,12 +588,19 @@ Object* Socket::pRecvObject(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // receive the header of the next object
 
+  bool bResult;
   SysCall oSysCall;
-  bool bResult = bRecvBytes(m_aHeader,sizeof(Object),oSysCall);
-  if (! bResult) {
-    //m_pDataStack->vPushInt(false);
-    //vReceivedObject(nullptr);
-    vTrace("Socket::pRecvObject (header) : bRecvBytes returned false\n"_Stz);
+  
+//  bool bResult = bBytesRecv(m_aHeader,sizeof(Object),oSysCall);
+//  if (! bResult) {
+//    //m_pDataStack->vPushInt(false);
+//    //vReceivedObject(nullptr);
+//    vTrace("Socket::pRecvObject (header) : bRecvBytes returned false\n"_Stz);
+//    vSuccess(false);
+//    return nullptr;
+//  }
+  
+  if (! bHeaderRecv()) {
     vSuccess(false);
     return nullptr;
   }
@@ -602,7 +609,7 @@ Object* Socket::pRecvObject(void)
 //  vTrace("%lld: vSocketRecvObject: Header %s\n"_Stz,
 //         AM::iThisNodeId(),
 //         spHeader.sz(aHeader));
-
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // receive the body of the object (enough memory condition)
 
@@ -618,22 +625,26 @@ Object* Socket::pRecvObject(void)
 
   if (CN_MARKER == eClass) {
 
-    // copy the object header into the LowBuffer
-    MemLib::vCopy(m_aLowBuff,m_pObject,sizeof(Object),eClass);
-
-    // receive body into the LowBuffer
-    i8 nRemainingBytes = gxaSizeHeap[eClass].m_nClassSize - sizeof(Object);
-    void* aLowBody = aAdd<void*>(m_aLowBuff,sizeof(Object));
-    bool bResult = bRecvBytes(aLowBody,nRemainingBytes,oSysCall);
-    UNUSED(bResult);
-
-    // new a marker using info from received marker
-    Marker* pReceivedMarker = (Marker*)m_aLowBuff;
-    Marker* pMarker = AM::MARKER::pNewMarker(pReceivedMarker->eOpMarker(),
-                                             nullptr);
-
-    m_pTotup->vAdd(eClass,nSize);
+//    // copy the object header into the LowBuffer
+//    MemLib::vCopy(m_aLowBuff,m_pObject,sizeof(Object),eClass);
+//
+//    // receive body into the LowBuffer
+//    i8 nRemainingBytes = gxaSizeHeap[eClass].m_nClassSize - sizeof(Object);
+//    void* aLowBody = aAdd<void*>(m_aLowBuff,sizeof(Object));
+//    bool bResult = bBytesRecv(aLowBody,nRemainingBytes,oSysCall);
+//    UNUSED(bResult);
+//
+//    // new a marker using info from received marker
+//    Marker* pReceivedMarker = (Marker*)m_aLowBuff;
+//    Marker* pMarker = AM::MARKER::pNewMarker(pReceivedMarker->eOpMarker(),
+//                                             nullptr);
+//
+//    m_pTotup->vAdd(eClass,nSize);
+    
+    Marker* pMarker = pMarkerRecv();
+    
     vSuccess(true);
+    
     return pMarker;
   }
 
@@ -651,7 +662,7 @@ Object* Socket::pRecvObject(void)
     void* aBody = aAdd<void*>(pReceivedObject,sizeof(Object));
     i8 nRemainingBytes = nSize - sizeof(Object);
 
-    bResult = bRecvBytes(aBody,nRemainingBytes,oSysCall);
+    bResult = bBytesRecv(aBody,nRemainingBytes,oSysCall);
     if (! bResult) {
      //m_pDataStack->vPushInt(false);
      //vReceivedObject(nullptr);
@@ -696,7 +707,7 @@ Object* Socket::pRecvObject(void)
   void* aLowBody = aAdd<void*>(aLowBuff,sizeof(Object));
   i8 nRemainingBytes = gxaSizeHeap[eClass].m_nClassSize - sizeof(Object);
 
-  bResult = bRecvBytes(aLowBody,nRemainingBytes,oSysCall);
+  bResult = bBytesRecv(aLowBody,nRemainingBytes,oSysCall);
 
   //vReceivedObject(nullptr);
   vSuccess(true);
@@ -789,7 +800,7 @@ bool Socket::bSendObject(Object* pObject, SysCall& roSysCall, eSY eSendWhy)
   eCN eClass = pObject->eGetClassNo();
   i8 nBytes = gxaSizeHeap[eClass].m_nClassSize;
 
-  bool bResult = bSendBytes(pObject,nBytes,roSysCall);
+  bool bResult = bBytesSend(pObject,nBytes,roSysCall);
 
   if (bResult) {
     m_pTotup->vAdd(eClass,nBytes);
@@ -946,7 +957,7 @@ Totup* Socket::pWhyTot(void)
 /*----------------------------------------------------------------------------*/
 /* recv n bytes from this socket into given buffer                            */
 /*----------------------------------------------------------------------------*/
-bool Socket::bRecvBytes(void* aBytes, i8 nBytes, SysCall& SysCall)
+bool Socket::bBytesRecv(void* aBytes, i8 nBytes, SysCall& SysCall)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
@@ -1002,9 +1013,9 @@ bool Socket::bRecvBytes(void* aBytes, i8 nBytes, SysCall& SysCall)
 }
 
 /*----------------------------------------------------------------------------*/
-/* send a message via a UDP socket                                            */
+/* send n bytes via this socket                                               */
 /*----------------------------------------------------------------------------*/
-bool Socket::bSendBytes(void* aBytes, i8 nBytes, SysCall& SysCall)
+bool Socket::bBytesSend(void* aBytes, i8 nBytes, SysCall& SysCall)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
@@ -1058,6 +1069,55 @@ bool Socket::bSendBytes(void* aBytes, i8 nBytes, SysCall& SysCall)
 
   SysCall.vSuccess();
   return true;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* recv next header from this socket                                          */
+/*----------------------------------------------------------------------------*/
+bool Socket::bHeaderRecv(void)
+{
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
+  SysCall oSysCall;
+  
+  bool bResult = bBytesRecv(m_aHeader,sizeof(Object),oSysCall);
+  if (! bResult) {
+    vTrace("Socket::pRecvObject (header) : bRecvBytes returned false\n"_Stz);
+    vSuccess(false);
+    return false;
+  }
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* complete the recv of next marker from this socket                          */
+/*----------------------------------------------------------------------------*/
+Marker* Socket::pMarkerRecv(void)
+{
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
+  
+  SysCall oSysCall;
+
+  // copy the object header into the LowBuffer
+  MemLib::vCopy(m_aLowBuff,m_pObject,sizeof(Object),CN_SOCKET);
+
+  // receive body into the LowBuffer
+  i8 nRemainingBytes = gxaSizeHeap[CN_MARKER].m_nClassSize - sizeof(Object);
+  void* aLowBody = aAdd<void*>(m_aLowBuff,sizeof(Object));
+  bool bResult = bBytesRecv(aLowBody,nRemainingBytes,oSysCall);
+  UNUSED(bResult);
+
+  // new a marker using info from received marker
+  Marker* pReceivedMarker = (Marker*)m_aLowBuff;
+  Marker* pMarker = AM::MARKER::pNewMarker(pReceivedMarker->eOpMarker(),
+                                           nullptr);
+
+  m_pTotup->vAdd(CN_MARKER,sizeof(CN_MARKER));
+  
+  return pMarker;
 }
 
 /*============================================================================*/

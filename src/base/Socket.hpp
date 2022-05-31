@@ -102,9 +102,12 @@ namespace BASE
     Totup* pWhyTot(void);
 
   private:
-    bool bRecvBytes(void* pBuffer, i8 nBytes, SysCall& SysCall);
-    bool bSendBytes(void* pBuffer, i8 nBytes, SysCall& SysCall);
+    bool bBytesRecv(void* pBuffer, i8 nBytes, SysCall& SysCall);
+    bool bBytesSend(void* pBuffer, i8 nBytes, SysCall& SysCall);
   
+    bool bHeaderRecv(void);
+    Marker* pMarkerRecv(void);
+
     Footer* aFooter(void);
   };
   
