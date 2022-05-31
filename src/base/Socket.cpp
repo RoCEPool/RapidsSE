@@ -32,11 +32,12 @@ __aFooterFunction(Socket)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Socket::Socket(Object* pIsFor)
-: Resource(CN_SOCKET,pIsFor)
-, m_okLock(this)
+: Port(pIsFor)
+//, m_okLock(this)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
+  /*
   m_pIsFor    = pIsFor;
   m_iSocketFd = C_UNKNOWN;
   m_bBlocking = true;
@@ -53,7 +54,7 @@ Socket::Socket(Object* pIsFor)
   m_pObject = reinterpret_cast<Object*>(m_aHeader);
 
   m_aLowBuff   = MemLib::aMallocBlock(C_SIZE_POOL_BUFFER);
-  m_pRejectJob = new RejectJob;  /* test */ m_pRejectJob->tOriginId();
+  m_pRejectJob = new RejectJob;
   
   m_nSends = 0;
   m_nBytesSent = 0;
@@ -67,6 +68,7 @@ Socket::Socket(Object* pIsFor)
   _checkInitialised_(CN_SOCKET);
   
   ++ gixSocket;
+  */
 
   _postcondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
 }
@@ -75,11 +77,12 @@ Socket::Socket(Object* pIsFor)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Socket::Socket(Object* pIsFor, int iSocketId)
-: Resource(CN_SOCKET,pIsFor)
-, m_okLock(this)
+: Port(CN_SOCKET,pIsFor,iSocketId)
+//, m_okLock(this)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
+  /*
   m_pIsFor    = pIsFor;
   m_iSocketFd = iSocketId;
   m_bBlocking = true;
@@ -98,7 +101,7 @@ Socket::Socket(Object* pIsFor, int iSocketId)
   m_pObject = reinterpret_cast<Object*>(m_aHeader);
 
   
-  m_pRejectJob = new RejectJob;  /* test */ m_pRejectJob->tOriginId();
+  m_pRejectJob = new RejectJob;
 
   m_nSends = 0;
   m_nBytesSent = 0;
@@ -112,6 +115,7 @@ Socket::Socket(Object* pIsFor, int iSocketId)
   _checkInitialised_(CN_SOCKET);
   
   ++ gixSocket;
+  */
   
   _postcondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
 }
@@ -123,6 +127,7 @@ Socket::~Socket(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
+  /*
   delete m_pTotup;
   delete m_pWhyTot;
   delete m_pRejectJob;
@@ -134,6 +139,8 @@ Socket::~Socket(void) noexcept(false)
   MemLib::vFreeBlock(m_aLowBuff,C_SIZE_POOL_BUFFER);
   
   -- gixSocket;
+  */
+  
 }
 
 /*----------------------------------------------------------------------------*/

@@ -10,12 +10,14 @@
 #include "Totup.hpp"
 #include "RejectJob.hpp"
 #include "eSY.h"
+#include "Port.hpp"
 
 namespace BASE
 {
-  class Socket : public Resource
+  class Socket : public Port
   {
   public:
+  /*
     Lock    m_okLock;
 
     Object* m_pIsFor;
@@ -46,7 +48,8 @@ namespace BASE
 
     Totup*  m_pTotup;
     Totup*  m_pWhyTot;
-
+*/
+  
     // must be last
     Footer m_xFooter;
         
