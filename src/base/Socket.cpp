@@ -39,8 +39,6 @@ Socket::Socket(Object* pIsFor)
   m_iSocketFd = C_UNKNOWN;
   m_bBlocking = true;
   
-  m_aLowBuff  = MemLib::aMallocBlock(C_SIZE_POOL_BUFFER);
-  
   MemLib::vZero(m__Padding,sizeof(m__Padding),CN_SOCKET);
   
   vAddrInit(&m_xServAddr,nullptr,0);
@@ -48,6 +46,11 @@ Socket::Socket(Object* pIsFor)
   m_bSuccess = false;
   m_pReceivedObject = nullptr;
   
+  MemLib::vZero(m_caObjectHeader,sizeof(m_caObjectHeader),CN_SOCKET);
+  m_aHeader = (Header*) & m_caObjectHeader[0];
+  m_pObject = reinterpret_cast<Object*>(m_aHeader);
+
+  m_aLowBuff   = MemLib::aMallocBlock(C_SIZE_POOL_BUFFER);
   m_pRejectJob = new RejectJob;  /* test */ m_pRejectJob->tOriginId();
   
   m_nSends = 0;
@@ -88,6 +91,11 @@ Socket::Socket(Object* pIsFor, int iSocketId)
   m_bSuccess = false;
   m_pReceivedObject = nullptr;
 
+  MemLib::vZero(m_caObjectHeader,sizeof(m_caObjectHeader),CN_SOCKET);
+  m_aHeader = (Header*) & m_caObjectHeader[0];
+  m_pObject = reinterpret_cast<Object*>(m_aHeader);
+
+  
   m_pRejectJob = new RejectJob;  /* test */ m_pRejectJob->tOriginId();
 
   m_nSends = 0;
@@ -570,21 +578,18 @@ Object* Socket::pRecvObject(void)
   RASSERT(! pReceivedObject());
 
   bool bLowMem = AM::MEMORY::bIsRunningLow();
- if (bLowMem)
-   PoolHelper::vPoolAnalyze();
+  if (bLowMem)
+     PoolHelper::vPoolAnalyze();
 
-  char caObjectHeader[sizeof(Object) + C_1K];
-  Header* aHeader = (Header*) & caObjectHeader[0];
-  Object* pObject = reinterpret_cast<Object*>(&caObjectHeader);
 
-  pObject->vSetWasReceived(true);
-  pObject->vSetPostRecvRun(false);
+  m_pObject->vSetWasReceived(true);
+  m_pObject->vSetPostRecvRun(false);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // receive the header of the next object
 
   SysCall oSysCall;
-  bool bResult = bRecvBytes(aHeader,sizeof(Object),oSysCall);
+  bool bResult = bRecvBytes(m_aHeader,sizeof(Object),oSysCall);
   if (! bResult) {
     //m_pDataStack->vPushInt(false);
     //vReceivedObject(nullptr);
@@ -601,7 +606,7 @@ Object* Socket::pRecvObject(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // receive the body of the object (enough memory condition)
 
-  eCN eClass = pObject->eGetClassNo();
+  eCN eClass = m_pObject->eGetClassNo();
   i8 nSize = gxaSizeHeap[eClass].m_nClassSize;
   
   
@@ -614,7 +619,7 @@ Object* Socket::pRecvObject(void)
   if (CN_MARKER == eClass) {
 
     // copy the object header into the LowBuffer
-    MemLib::vCopy(m_aLowBuff,pObject,sizeof(Object),eClass);
+    MemLib::vCopy(m_aLowBuff,m_pObject,sizeof(Object),eClass);
 
     // receive body into the LowBuffer
     i8 nRemainingBytes = gxaSizeHeap[eClass].m_nClassSize - sizeof(Object);
@@ -641,7 +646,7 @@ Object* Socket::pRecvObject(void)
   if (! bLowMem || ! gxaSizeHeap[eClass].m_bLowMemoryDiscard) {
     //vTrace("class:%s\n"_Stz, aCN[eClass]);
     Object* pReceivedObject = Heaps::pAllocate(eClass);
-    MemLib::vCopy(pReceivedObject,pObject,sizeof(Object),eClass);
+    MemLib::vCopy(pReceivedObject,m_pObject,sizeof(Object),eClass);
 
     void* aBody = aAdd<void*>(pReceivedObject,sizeof(Object));
     i8 nRemainingBytes = nSize - sizeof(Object);
@@ -685,7 +690,7 @@ Object* Socket::pRecvObject(void)
   void* aLowBuff = m_aLowBuff;
 
   // copy the object header into the LowBuffer
-  MemLib::vCopy(aLowBuff,pObject,sizeof(Object),eClass);
+  MemLib::vCopy(aLowBuff,m_pObject,sizeof(Object),eClass);
 
   // recv rest of the buffer into LowBuffer
   void* aLowBody = aAdd<void*>(aLowBuff,sizeof(Object));

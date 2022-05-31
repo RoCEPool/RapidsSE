@@ -23,7 +23,6 @@ namespace BASE
   
     int     m_iSocketFd; // the o/s socket
     bool    m_bBlocking; // is a blocking socket
-    void*   m_aLowBuff;  // low memory read area
 
     union {
       struct sockaddr_in m_xServAddr;
@@ -33,8 +32,13 @@ namespace BASE
     bool    m_bSuccess;  // success?
     Object* m_pReceivedObject; // object which was received
 
-    RejectJob* m_pRejectJob;
+    char    m_caObjectHeader[sizeof(Object) + 64];
+    Header* m_aHeader;
+    Object* m_pObject;
   
+    RejectJob* m_pRejectJob;
+    void*      m_aLowBuff;  // low memory read area
+
     i8      m_nSends;
     i8      m_nBytesSent;
 
@@ -85,7 +89,7 @@ namespace BASE
   
     bool bSendBufferSize(int nBytes, SysCall& SysCall);
     i8   iSendBufferSize(void);
-  bool bSendObject(Object* pObject, SysCall& SysCall, eSY eSendWhy);//=SY_NONE);
+    bool bSendObject(Object* pObject, SysCall& SysCall, eSY eSendWhy);//=SY_NONE);
     i8   nSends(void);
     bool bSetNonBlocking(SysCall& SysCall);
     bool bSocket(SysCall& SysCall);
