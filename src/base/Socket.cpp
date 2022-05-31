@@ -37,16 +37,16 @@ Socket::Socket(Object* pIsFor)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
-  /*
-  m_pIsFor    = pIsFor;
-  m_iSocketFd = C_UNKNOWN;
-  m_bBlocking = true;
+//  m_pIsFor    = pIsFor;
+//  m_iSocketFd = C_UNKNOWN;
+//  m_bBlocking = true;
+//
+//  MemLib::vZero(m__Padding,sizeof(m__Padding),CN_SOCKET);
+//
+//  vAddrInit(&m_xServAddr,nullptr,0);
+//
+//  m_bSuccess = false;
   
-  MemLib::vZero(m__Padding,sizeof(m__Padding),CN_SOCKET);
-  
-  vAddrInit(&m_xServAddr,nullptr,0);
-  
-  m_bSuccess = false;
   m_pReceivedObject = nullptr;
   
   MemLib::vZero(m_caObjectHeader,sizeof(m_caObjectHeader),CN_SOCKET);
@@ -56,19 +56,18 @@ Socket::Socket(Object* pIsFor)
   m_aLowBuff   = MemLib::aMallocBlock(C_SIZE_POOL_BUFFER);
   m_pRejectJob = new RejectJob;
   
-  m_nSends = 0;
-  m_nBytesSent = 0;
-  
-  m_nRecvs = 0;
-  m_nBytesRcvd = 0;
- 
-  m_pTotup  = new Totup;
-  m_pWhyTot = new Totup;
+//  m_nSends = 0;
+//  m_nBytesSent = 0;
+//
+//  m_nRecvs = 0;
+//  m_nBytesRcvd = 0;
+//
+//  m_pTotup  = new Totup;
+//  m_pWhyTot = new Totup;
 
   _checkInitialised_(CN_SOCKET);
   
   ++ gixSocket;
-  */
 
   _postcondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
 }
@@ -82,40 +81,48 @@ Socket::Socket(Object* pIsFor, int iSocketId)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
-  /*
-  m_pIsFor    = pIsFor;
-  m_iSocketFd = iSocketId;
-  m_bBlocking = true;
-  
-  m_aLowBuff  = MemLib::aMallocBlock(C_SIZE_POOL_BUFFER);
-  
-  MemLib::vZero(m__Padding,sizeof(m__Padding),CN_SOCKET);
-  
-  vAddrInit(&m_xServAddr,nullptr,0);
-  
-  m_bSuccess = false;
-  m_pReceivedObject = nullptr;
+//  m_pIsFor    = pIsFor;
+//  m_iSocketFd = iSocketId;
+//  m_bBlocking = true;
+//
+//  m_aLowBuff  = MemLib::aMallocBlock(C_SIZE_POOL_BUFFER);
+//
+//  MemLib::vZero(m__Padding,sizeof(m__Padding),CN_SOCKET);
+//
+//  vAddrInit(&m_xServAddr,nullptr,0);
+//
+//  m_bSuccess = false;
+//  m_pReceivedObject = nullptr;
+//
+//  MemLib::vZero(m_caObjectHeader,sizeof(m_caObjectHeader),CN_SOCKET);
+//  m_aHeader = (Header*) & m_caObjectHeader[0];
+//  m_pObject = reinterpret_cast<Object*>(m_aHeader);
+//
+//
+//  m_pRejectJob = new RejectJob;
+//
+//  m_nSends = 0;
+//  m_nBytesSent = 0;
+//
+//  m_nRecvs = 0;
+//  m_nBytesRcvd = 0;
+//
+//  m_pTotup = new Totup;
+//  m_pWhyTot = new Totup;
 
+  m_pReceivedObject = nullptr;
+  
   MemLib::vZero(m_caObjectHeader,sizeof(m_caObjectHeader),CN_SOCKET);
   m_aHeader = (Header*) & m_caObjectHeader[0];
   m_pObject = reinterpret_cast<Object*>(m_aHeader);
 
-  
+  m_aLowBuff   = MemLib::aMallocBlock(C_SIZE_POOL_BUFFER);
   m_pRejectJob = new RejectJob;
-
-  m_nSends = 0;
-  m_nBytesSent = 0;
-  
-  m_nRecvs = 0;
-  m_nBytesRcvd = 0;
-  
-  m_pTotup = new Totup;
-  m_pWhyTot = new Totup;
 
   _checkInitialised_(CN_SOCKET);
   
   ++ gixSocket;
-  */
+
   
   _postcondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
 }

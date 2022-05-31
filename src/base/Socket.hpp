@@ -17,20 +17,21 @@ namespace BASE
   class Socket : public Port
   {
   public:
-  /*
-    Lock    m_okLock;
-
-    Object* m_pIsFor;
   
-    int     m_iSocketFd; // the o/s socket
-    bool    m_bBlocking; // is a blocking socket
+//    Lock    m_okLock;
+//
+//    Object* m_pIsFor;
+//
+//    int     m_iSocketFd; // the o/s socket
+//    bool    m_bBlocking; // is a blocking socket
+//
+//    union {
+//      struct sockaddr_in m_xServAddr;
+//      i8 m__Padding[16];
+//    };
+//
+//    bool    m_bSuccess;  // success?
 
-    union {
-      struct sockaddr_in m_xServAddr;
-      i8 m__Padding[16];
-    };
-  
-    bool    m_bSuccess;  // success?
     Object* m_pReceivedObject; // object which was received
 
     char    m_caObjectHeader[sizeof(Object) + 64];
@@ -39,16 +40,16 @@ namespace BASE
   
     RejectJob* m_pRejectJob;
     void*      m_aLowBuff;  // low memory read area
+//
+//    i8      m_nSends;
+//    i8      m_nBytesSent;
+//
+//    i8      m_nRecvs;
+//    i8      m_nBytesRcvd;
+//
+//    Totup*  m_pTotup;
+//    Totup*  m_pWhyTot;
 
-    i8      m_nSends;
-    i8      m_nBytesSent;
-
-    i8      m_nRecvs;
-    i8      m_nBytesRcvd;
-
-    Totup*  m_pTotup;
-    Totup*  m_pWhyTot;
-*/
   
     // must be last
     Footer m_xFooter;

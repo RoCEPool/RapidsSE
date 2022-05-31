@@ -47,14 +47,14 @@ Port::Port(Object* pIsFor)
   vAddrInit(&m_xServAddr,nullptr,0);
   
   m_bSuccess = false;
-  m_pReceivedObject = nullptr;
-  
-  MemLib::vZero(m_caObjectHeader,sizeof(m_caObjectHeader),CN_PORT);
-  m_aHeader = (Header*) & m_caObjectHeader[0];
-  m_pObject = reinterpret_cast<Object*>(m_aHeader);
-
-  m_aLowBuff   = MemLib::aMallocBlock(C_SIZE_POOL_BUFFER);
-  m_pRejectJob = new RejectJob;  /* test */ m_pRejectJob->tOriginId();
+//  m_pReceivedObject = nullptr;
+//
+//  MemLib::vZero(m_caObjectHeader,sizeof(m_caObjectHeader),CN_PORT);
+//  m_aHeader = (Header*) & m_caObjectHeader[0];
+//  m_pObject = reinterpret_cast<Object*>(m_aHeader);
+//
+//  m_aLowBuff   = MemLib::aMallocBlock(C_SIZE_POOL_BUFFER);
+//  m_pRejectJob = new RejectJob;  /* test */ m_pRejectJob->tOriginId();
   
   m_nSends = 0;
   m_nBytesSent = 0;
@@ -85,21 +85,21 @@ Port::Port(eCN eClass, Object* pIsFor, int iSocketId)
   m_iSocketFd = iSocketId;
   m_bBlocking = true;
   
-  m_aLowBuff  = MemLib::aMallocBlock(C_SIZE_POOL_BUFFER);
+  //m_aLowBuff  = MemLib::aMallocBlock(C_SIZE_POOL_BUFFER);
   
   MemLib::vZero(m__Padding,sizeof(m__Padding),CN_PORT);
   
   vAddrInit(&m_xServAddr,nullptr,0);
   
   m_bSuccess = false;
-  m_pReceivedObject = nullptr;
+  //m_pReceivedObject = nullptr;
 
-  MemLib::vZero(m_caObjectHeader,sizeof(m_caObjectHeader),CN_PORT);
-  m_aHeader = (Header*) & m_caObjectHeader[0];
-  m_pObject = reinterpret_cast<Object*>(m_aHeader);
+//  MemLib::vZero(m_caObjectHeader,sizeof(m_caObjectHeader),CN_PORT);
+//  m_aHeader = (Header*) & m_caObjectHeader[0];
+//  m_pObject = reinterpret_cast<Object*>(m_aHeader);
 
   
-  m_pRejectJob = new RejectJob;  /* test */ m_pRejectJob->tOriginId();
+  //m_pRejectJob = new RejectJob;  /* test */ m_pRejectJob->tOriginId();
 
   m_nSends = 0;
   m_nBytesSent = 0;
@@ -126,13 +126,13 @@ Port::~Port(void) noexcept(false)
   
   delete m_pTotup;
   delete m_pWhyTot;
-  delete m_pRejectJob;
+  //delete m_pRejectJob;
 
   if (C_UNKNOWN != m_iSocketFd) {
     vTrace("Port %d not closed!\n"_Stz, m_iSocketFd);
   }
   
-  MemLib::vFreeBlock(m_aLowBuff,C_SIZE_POOL_BUFFER);
+  //MemLib::vFreeBlock(m_aLowBuff,C_SIZE_POOL_BUFFER);
   
   -- gixSocket;
 }

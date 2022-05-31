@@ -29,14 +29,15 @@ namespace BASE
     };
   
     bool    m_bSuccess;  // success?
-    Object* m_pReceivedObject; // object which was received
-
-    char    m_caObjectHeader[sizeof(Object) + 64];
-    Header* m_aHeader;
-    Object* m_pObject;
   
-    RejectJob* m_pRejectJob;
-    void*      m_aLowBuff;  // low memory read area
+//    Object* m_pReceivedObject; // object which was received
+//
+//    char    m_caObjectHeader[sizeof(Object) + 64];
+//    Header* m_aHeader;
+//    Object* m_pObject;
+//  
+//    RejectJob* m_pRejectJob;
+//    void*      m_aLowBuff;  // low memory read area
 
     i8      m_nSends;
     i8      m_nBytesSent;
