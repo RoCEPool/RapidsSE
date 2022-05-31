@@ -55,7 +55,7 @@ namespace BASE
     void  operator delete(void*);
     
     Port(Object* pIsFor);
-    Port(Object* pIsFor, int iSocketId);
+    Port(eCN eClass, Object* pIsFor, int iSocketId);
    ~Port(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);

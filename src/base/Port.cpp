@@ -36,7 +36,7 @@ Port::Port(Object* pIsFor)
 : Resource(CN_PORT,pIsFor)
 , m_okLock(this)
 {
-  _precondition_(_MAGIC_,CN_PORT,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
   
   m_pIsFor    = pIsFor;
   m_iSocketFd = C_UNKNOWN;
@@ -69,17 +69,17 @@ Port::Port(Object* pIsFor)
   
   ++ gixSocket;
 
-  _postcondition_(_MAGIC_,CN_PORT,_FOOTER_);
+  _postcondition_(_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Port::Port(Object* pIsFor, int iSocketId)
-: Resource(CN_PORT,pIsFor)
+Port::Port(eCN eClass, Object* pIsFor, int iSocketId)
+: Resource(eClass,pIsFor)
 , m_okLock(this)
 {
-  _precondition_(_MAGIC_,CN_PORT,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
   
   m_pIsFor    = pIsFor;
   m_iSocketFd = iSocketId;
@@ -114,7 +114,7 @@ Port::Port(Object* pIsFor, int iSocketId)
   
   ++ gixSocket;
   
-  _postcondition_(_MAGIC_,CN_PORT,_FOOTER_);
+  _postcondition_(_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -122,7 +122,7 @@ Port::Port(Object* pIsFor, int iSocketId)
 /*----------------------------------------------------------------------------*/
 Port::~Port(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_PORT,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
   
   delete m_pTotup;
   delete m_pWhyTot;
@@ -169,7 +169,7 @@ void Port::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 bool Port::bAcceptClient(int& iSocketId, SysCall& SysCall)
 {
-  _precondition_(_MAGIC_,CN_PORT,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
   
   SysCall.vClear();
   
@@ -201,7 +201,7 @@ bool Port::bAcceptClient(int& iSocketId, SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 void Port::vAddrInit(sockaddr_in* aAddr, int iPort)
 {
-  _precondition_(_MAGIC_,CN_PORT,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
   
   MemLib::vZero(aAddr,sizeof(sockaddr_in),CN_PORT);
   
@@ -215,7 +215,7 @@ void Port::vAddrInit(sockaddr_in* aAddr, int iPort)
 /*----------------------------------------------------------------------------*/
 void Port::vAddrInit(sockaddr_in* aAddr, Stz* sAddr, int iPort)
 {
-  _precondition_(_MAGIC_,CN_PORT,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
   
   MemLib::vZero(aAddr,sizeof(sockaddr_in),CN_PORT);
   
@@ -229,7 +229,7 @@ void Port::vAddrInit(sockaddr_in* aAddr, Stz* sAddr, int iPort)
 /*----------------------------------------------------------------------------*/
 i8 Port::nBytesRcvd(void)
 {
-  _precondition_(_MAGIC_,CN_PORT,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
   
   return m_nBytesRcvd;
 }
@@ -239,7 +239,7 @@ i8 Port::nBytesRcvd(void)
 /*----------------------------------------------------------------------------*/
 i8 Port::nBytesSent(void)
 {
-  _precondition_(_MAGIC_,CN_PORT,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
   
   return m_nBytesSent;
 }
@@ -249,7 +249,7 @@ i8 Port::nBytesSent(void)
 /*----------------------------------------------------------------------------*/
 bool Port::bClose(SysCall& SysCall)
 {
-  _precondition_(_MAGIC_,CN_PORT,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
   
   SysCall.vClear();
   
@@ -283,7 +283,7 @@ bool Port::bClose(SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 bool Port::bConnectServer(Stz* sAddr, int iPort, SysCall& SysCall)
 {
-  _precondition_(_MAGIC_,CN_PORT,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
   
   int iResult;
   int iOpt = 1;
@@ -353,7 +353,7 @@ bool Port::bConnectServer(Stz* sAddr, int iPort, SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 void Port::vCopy(Port* pSource)
 {
-  _precondition_(_MAGIC_,CN_PORT,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
   
   m_iSocketFd = pSource->m_iSocketFd;
   m_bBlocking = pSource->m_bBlocking;
@@ -365,7 +365,7 @@ void Port::vCopy(Port* pSource)
 /*----------------------------------------------------------------------------*/
 bool Port::bCreateServer(int iPortNo, SysCall& SysCall)
 {
-  _precondition_(_MAGIC_,CN_PORT,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
   
   int iResult;
   int iOpt = 1;
@@ -474,7 +474,7 @@ bool Port::bCreateServer(int iPortNo, SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 void Port::vDropWrite(void)
 {
-  _precondition_(_MAGIC_,CN_PORT,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
   
   m_okLock.vDropWrite();
 }
@@ -484,7 +484,7 @@ void Port::vDropWrite(void)
 /*----------------------------------------------------------------------------*/
 void Port::vGrabWrite(void)
 {
-  _precondition_(_MAGIC_,CN_PORT,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
    
   m_okLock.vGrabWrite();
 }
@@ -494,7 +494,7 @@ void Port::vGrabWrite(void)
 /*----------------------------------------------------------------------------*/
 bool Port::bIsOpen(void)
 {
-  _precondition_(_MAGIC_,CN_PORT,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
   
   if (C_UNKNOWN != m_iSocketFd)
     return true;
@@ -507,7 +507,7 @@ bool Port::bIsOpen(void)
 /*----------------------------------------------------------------------------*/
 bool Port::bRecvBufferSize(int nBytes, SysCall& SysCall)
 {
-  _precondition_(_MAGIC_,CN_PORT,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
   
   int iResult;
   int iOpt = nBytes;
@@ -535,7 +535,7 @@ bool Port::bRecvBufferSize(int nBytes, SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 i8 Port::iRecvBufferSize(void)
 {
-  _precondition_(_MAGIC_,CN_PORT,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
   
   int iResult;
   int iOptValue;
@@ -556,7 +556,7 @@ i8 Port::iRecvBufferSize(void)
 /*----------------------------------------------------------------------------*/
 Object* Port::pReceivedObject(void)
 {
-  _precondition_(_MAGIC_,CN_PORT,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
   
   return m_pReceivedObject;
 }
@@ -566,7 +566,7 @@ Object* Port::pReceivedObject(void)
 /*----------------------------------------------------------------------------*/
 void Port::vReceivedObject(Object* pReceivedObject)
 {
-  _precondition_(_MAGIC_,CN_PORT,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
   
   m_pReceivedObject = pReceivedObject;
 }
@@ -576,7 +576,7 @@ void Port::vReceivedObject(Object* pReceivedObject)
 /*----------------------------------------------------------------------------*/
 Object* Port::pRecvObject(void)
 {
-  _precondition_(_MAGIC_,CN_PORT,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
   
   RASSERT(! pReceivedObject());
 
@@ -638,7 +638,7 @@ Object* Port::pRecvObject(void)
 /*----------------------------------------------------------------------------*/
 i8 Port::nRecvs(void)
 {
-  _precondition_(_MAGIC_,CN_PORT,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
   
   return m_nRecvs;
 }
@@ -648,7 +648,7 @@ i8 Port::nRecvs(void)
 /*----------------------------------------------------------------------------*/
 void Port::vReset(void)
 {
-  _precondition_(_MAGIC_,CN_PORT,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
   
   m_nSends = 0;
   m_nBytesSent = 0;
@@ -662,7 +662,7 @@ void Port::vReset(void)
 /*----------------------------------------------------------------------------*/
 bool Port::bSendBufferSize(int nBytes, SysCall& SysCall)
 {
-  _precondition_(_MAGIC_,CN_PORT,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
   
   int iResult;
   int iOpt = nBytes;
@@ -690,7 +690,7 @@ bool Port::bSendBufferSize(int nBytes, SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 i8 Port::iSendBufferSize(void)
 {
-  _precondition_(_MAGIC_,CN_PORT,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
   
   int iResult;
   int iOptValue;
@@ -711,7 +711,7 @@ i8 Port::iSendBufferSize(void)
 /*----------------------------------------------------------------------------*/
 bool Port::bSendObject(Object* pObject, SysCall& roSysCall, eSY eSendWhy)
 {
-  _precondition_(_MAGIC_,CN_PORT,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
   
   roSysCall.vClear();
   
@@ -733,7 +733,7 @@ bool Port::bSendObject(Object* pObject, SysCall& roSysCall, eSY eSendWhy)
 /*----------------------------------------------------------------------------*/
 i8 Port::nSends(void)
 {
-  _precondition_(_MAGIC_,CN_PORT,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
   
   return m_nSends;
 }
@@ -743,7 +743,7 @@ i8 Port::nSends(void)
 /*----------------------------------------------------------------------------*/
 bool Port::bSetNonBlocking(SysCall& SysCall)
 {
-  _precondition_(_MAGIC_,CN_PORT,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
   
   SysCall.vClear();
   
@@ -775,7 +775,7 @@ bool Port::bSetNonBlocking(SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 bool Port::bSocket(SysCall& SysCall)
 {
-  _precondition_(_MAGIC_,CN_PORT,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
   
   SysCall.vClear();
   
@@ -797,7 +797,7 @@ bool Port::bSocket(SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 bool Port::bSuccess(void)
 {
-  _precondition_(_MAGIC_,CN_PORT,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
   
   return m_bSuccess;
 }
@@ -807,7 +807,7 @@ bool Port::bSuccess(void)
 /*----------------------------------------------------------------------------*/
 void Port::vSuccess(bool bSuccess)
 {
-  _precondition_(_MAGIC_,CN_PORT,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
   
   m_bSuccess = bSuccess;
 }
@@ -817,7 +817,7 @@ void Port::vSuccess(bool bSuccess)
 /*----------------------------------------------------------------------------*/
 bool Port::bTestForData(SysCall& SysCall)
 {
-  _precondition_(_MAGIC_,CN_PORT,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
   
   ASSERT(m_bBlocking); // logic check                                  //! fix
   
@@ -851,7 +851,7 @@ bool Port::bTestForData(SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 Totup* Port::pTotup(void)
 {
-  _precondition_(_MAGIC_,CN_PORT,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
   
   return m_pTotup;
 }
@@ -861,7 +861,7 @@ Totup* Port::pTotup(void)
 /*----------------------------------------------------------------------------*/
 Totup* Port::pWhyTot(void)
 {
-  _precondition_(_MAGIC_,CN_PORT,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
   
   return m_pWhyTot;
 }
@@ -877,7 +877,7 @@ Totup* Port::pWhyTot(void)
 /*----------------------------------------------------------------------------*/
 bool Port::bBytesRecv(void* aBytes, i8 nBytes, SysCall& SysCall)
 {
-  _precondition_(_MAGIC_,CN_PORT,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
   
   int nSoFar = 0;
   i8 nMore = nBytes;
@@ -935,7 +935,7 @@ bool Port::bBytesRecv(void* aBytes, i8 nBytes, SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 bool Port::bBytesSend(void* aBytes, i8 nBytes, SysCall& SysCall)
 {
-  _precondition_(_MAGIC_,CN_PORT,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
   
   SysCall.vClear();
   
@@ -994,7 +994,7 @@ bool Port::bBytesSend(void* aBytes, i8 nBytes, SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 bool Port::bHeaderRecv(void)
 {
-  _precondition_(_MAGIC_,CN_PORT,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
   
   SysCall oSysCall;
   
@@ -1013,7 +1013,7 @@ bool Port::bHeaderRecv(void)
 /*----------------------------------------------------------------------------*/
 Marker* Port::pMarkerRecv(void)
 {
-  _precondition_(_MAGIC_,CN_PORT,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
   
   
   SysCall oSysCall;
@@ -1042,7 +1042,7 @@ Marker* Port::pMarkerRecv(void)
 /*----------------------------------------------------------------------------*/
 Object* Port::pObjectRecv(eCN eClass)
 {
-  _precondition_(_MAGIC_,CN_PORT,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
   
   
   SysCall oSysCall;
@@ -1090,7 +1090,7 @@ Object* Port::pObjectRecv(eCN eClass)
 /*----------------------------------------------------------------------------*/
 Object* Port::pObjectRecv_lowmem(eCN eClass)
 {
-  _precondition_(_MAGIC_,CN_PORT,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
   
   
   SysCall oSysCall;
