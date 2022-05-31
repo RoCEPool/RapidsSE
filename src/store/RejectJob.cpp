@@ -26,9 +26,12 @@ RejectJob::RejectJob(void)
 : Object(CN_REJECTJOB)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_REJECTJOB,_FOOTER_);
-  
+    
+  //m_tOriginId
+  m_eError = EC_NONE;
+
   _checkInitialised_(CN_REJECTJOB);
-  
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_REJECTJOB,_FOOTER_);
 }
 
@@ -41,6 +44,48 @@ RejectJob::~RejectJob(void) noexcept(false)
  //  vTrace("delete RejectJob(%s) %p @%lld\n"_Stz,
 //         aOM[m_eOpRejectJob],this,m_xFooter.iWhenAllocated());
 }
+
+
+/*----------------------------------------------------------------------------*/
+/* get error code                                                             */
+/*----------------------------------------------------------------------------*/
+eEC RejectJob::eError(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_REJECTJOB,_FOOTER_);
+
+  return m_eError;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set error code                                                             */
+/*----------------------------------------------------------------------------*/
+void RejectJob::vError(eEC eError)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_REJECTJOB,_FOOTER_);
+
+  m_eError = eError;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get origin job id                                                          */
+/*----------------------------------------------------------------------------*/
+JobId RejectJob::tOriginId(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_REJECTJOB,_FOOTER_);
+
+  return m_tOriginId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set origin job id                                                          */
+/*----------------------------------------------------------------------------*/
+void RejectJob::vOriginId(JobId tOriginId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_REJECTJOB,_FOOTER_);
+
+  m_tOriginId = tOriginId;
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

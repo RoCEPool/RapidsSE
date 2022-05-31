@@ -3,8 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "eOM.h"
-#include "eMG.h"
+#include "eEC.h"
 
 namespace STORE
 {
@@ -12,7 +11,12 @@ namespace STORE
   {
   protected:
 
-    // must be last
+    JobId  m_tOriginId;   // id when job is originator
+  
+    eEC    m_eError;      // error
+
+
+  // must be last
     Footer m_xFooter;
 
   public:
@@ -21,7 +25,13 @@ namespace STORE
   
     RejectJob(void);
    ~RejectJob(void) noexcept(false);
-    
+ 
+    eEC eError(void);
+    void vError(eEC eError);
+
+    JobId tOriginId(void);
+    void vOriginId(JobId tOriginId);
+
   private:
     Footer* aFooter(void);
   };

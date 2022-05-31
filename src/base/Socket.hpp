@@ -9,6 +9,7 @@ static Stz* C_LOOPBACK_IP  = "127.0.0.1"_Stz;
 
 #include "Resource.hpp"
 #include "Totup.hpp"
+#include "RejectJob.hpp"
 #include "eSY.h"
 
 namespace BASE
@@ -32,6 +33,8 @@ namespace BASE
     bool    m_bSuccess;  // success?
     Object* m_pReceivedObject; // object which was received
 
+    RejectJob* m_pRejectJob;
+  
     i8      m_nSends;
     i8      m_nBytesSent;
 

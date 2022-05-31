@@ -48,6 +48,8 @@ Socket::Socket(Object* pIsFor)
   m_bSuccess = false;
   m_pReceivedObject = nullptr;
   
+  m_pRejectJob = new RejectJob;  /* test */ m_pRejectJob->tOriginId();
+  
   m_nSends = 0;
   m_nBytesSent = 0;
   
@@ -86,6 +88,8 @@ Socket::Socket(Object* pIsFor, int iSocketId)
   m_bSuccess = false;
   m_pReceivedObject = nullptr;
 
+  m_pRejectJob = new RejectJob;  /* test */ m_pRejectJob->tOriginId();
+
   m_nSends = 0;
   m_nBytesSent = 0;
   
@@ -111,6 +115,7 @@ Socket::~Socket(void) noexcept(false)
   
   delete m_pTotup;
   delete m_pWhyTot;
+  delete m_pRejectJob;
 
   if (C_UNKNOWN != m_iSocketFd) {
     vTrace("Socket %d not closed!\n"_Stz, m_iSocketFd);
