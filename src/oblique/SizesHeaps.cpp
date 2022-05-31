@@ -238,6 +238,7 @@
 #include "MarkerChain.hpp"
 #include "MarkerMgr.hpp"
 #include "RejectJob.hpp"
+#include "Port.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -481,6 +482,7 @@ SizeHeap gxaSizeHeap[]
   { CN_PLANNODELIST,             sizeof(PlanNodeList),       HT_T_TINY    ,0 FILL },
   { CN_PLANOPERAND,              sizeof(PlanOperand),        HT_T_TINY    ,0 FILL },
   { CN_POT,                      sizeof(Pot),                HT_T_LARGE   ,0 FILL },
+  { CN_PORT,                     sizeof(Port),               HT_T_LARGE   ,0 FILL },
   { CN_PREDICATE,                sizeof(Predicate),          HT_T_TINY    ,0 FILL },
   { CN_PREDICATEVEC,             sizeof(PredicateVec),       HT_T_MEDIUM  ,0 FILL },
   { CN_PRIMITIVENODE,            sizeof(PrimitiveNode),      HT_T_TINY    ,-8 FILL },

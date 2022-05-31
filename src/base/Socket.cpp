@@ -13,6 +13,8 @@
 #include <arpa/inet.h>
 //#include <netinet/in.h>
 
+extern Stz* C_LOOPBACK_IP;
+
 Atomic gixSocket;
 
 extern SizeHeap  gxaSizeHeap[];
