@@ -19,6 +19,7 @@ namespace BASE
     HashMapSlot* m_pHashMapSlot;
 
 #ifdef WITH_HASHMAP_DEBUG
+    u8 m_uCollison;
     u8 m_nHistory;
 
     struct {
