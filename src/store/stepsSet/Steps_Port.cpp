@@ -49,16 +49,16 @@ extern SizeHeap  gxaSizeHeap[];
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Port(void)
 {
-  vAddStep("listen::open"_Stz,       &Step::vSocketListen);
-  vAddStep("listen.accept"_Stz,      &Step::vSocketAccept);
+  vAddStep("port::newListen"_Stz,        &Step::vPortNewListen);
 
+  vAddStep("port.acceptConnection"_Stz,  &Step::vPortAcceptConnection);
 
 }
 
 /*----------------------------------------------------------------------------*/
-/* listen.accept: accept a socket connection                                  */
+/* port.acceptConnection: listen for and accept a socket connection request   */
 /*----------------------------------------------------------------------------*/
-void Step::vSocketAccept(void)
+void Step::vPortAcceptConnection(void)
 {
   ENTRY();
   
@@ -83,9 +83,9 @@ void Step::vSocketAccept(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* listen::open: listen in for socket connections                           */
+/* port::newListen: new a port which can listen & accept socket connections   */
 /*----------------------------------------------------------------------------*/
-void Step::vSocketListen(void)
+void Step::vPortNewListen(void)
 {
   ENTRY();
   

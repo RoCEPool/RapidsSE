@@ -166,6 +166,11 @@ Object* Socket::pRecvObject(void)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // reject job is a special case
+
+  // ...
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // receive object normally (or acceptable objects under low memory)
 
   if (! bLowMem || ! gxaSizeHeap[eClass].m_bLowMemoryDiscard) {
