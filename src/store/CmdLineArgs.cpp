@@ -79,7 +79,6 @@ void CmdLineArgs::vInit(void)
   m_xSysArgs.m_iConnectCode  = C_UNKNOWN;
   m_xSysArgs.m_sGridName     = "SEgrid"_Stz;
   m_xSysArgs.m_sNodeName     = "node"_Stz;
-  m_xSysArgs.m_iNonPageableSize  = (12 * C_SIZE_POOL_BUFFER);
   m_xSysArgs.m_sPageFilePath = "../../tmp/pfile.dat"_Stz;
   m_xSysArgs.m_nPtnsPerNode  = 4;
   m_xSysArgs.m_aRegionAddr   = (void*)C_ADR_REGION;
@@ -551,16 +550,6 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
               C_MAX_NODES);
         return false;
       }
-      continue;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (szArg->bSame("--nonPageable"_Stz)) {
-      if ( ! StrLib::bIsInteger(argv[++i_Arg].azChar()) ) {
-        vTrace("Invalid size of non-pageable area given : %s\n"_Stz,(Stz*)argv[i_Arg]);
-        return false;
-      }
-      m_xSysArgs.m_iNonPageableSize = argv[i_Arg].iToI8();
       continue;
     }
 

@@ -92,7 +92,6 @@ bool Region::bAttach(s32& sRegionName, bool bVerbose, void* aRegionAddr)
 /*----------------------------------------------------------------------------*/
 void Region::vCreate(s32& sRegionName,  bool bVerbose,
                      void* aRegionAddr, i8 iRegionSize,
-                     i8 iNonPageableSize,
                      bool bTouch,       bool bProgress,
                      bool bLock,        bool bRestart,
                      bool bDontFree,    bool bFreeSpecific)
@@ -141,7 +140,6 @@ void Region::vCreate(s32& sRegionName,  bool bVerbose,
            "Engine::vCreate failed to map region!\n"_Stz);
   
   gpBufferPool = new(gaSeShmRegion) BufferPool(sRegionName, iRegionSize,
-                                               iNonPageableSize,
                                                bTouch, bProgress,
                                                bDontFree, bFreeSpecific);
 
