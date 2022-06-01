@@ -59,6 +59,11 @@
 /* org_ org */      Path[].discardAll
 /* org_ org */      [job].addRetired
 /* org_ org */
+/* org_ org */      [args].distJob if
+/* org_ org */        "pipeline" "origin"
+/* org_ org */        "org_ org" "<preCheck> signalling parent"       [job].trace
+/* org_ org */      then
+/* org_ org */
 /* org_ ovr */      [job].error@ [job].signalParent
 /* org_ org */
 /* org_ org */      [task].grabLock
@@ -83,6 +88,11 @@
 /* org_ org */
 /* org_ org */    Path[].discardAll
 /* org_ org */    [job].addRetired
+/* org_ org */
+/* org_ org */      [args].distJob if
+/* org_ org */        "pipeline" "origin"
+/* org_ org */        "org_ org" "preExecuteTest signalling parent"       [job].trace
+/* org_ org */      then
 /* org_ org */
 /* org_ ovr */    [job].error@ [job].signalParent
 /* org_ ovr */
@@ -130,7 +140,12 @@
 /* org_ org */  Dynamo[].delete
 /* org_ org */
 /* org_ ovr */    "<signalParent>" [job].tagSet@ tagSet.hasName not if
-/* org_ org */      //"SIGNALLING PARENT AS NO WAIT" .
+/* org_ org */
+/* org_ org */      [args].distJob if
+/* org_ org */        "pipeline" "origin"
+/* org_ org */        "org_ org" "NO_WAIT signalling parent"       [job].trace
+/* org_ org */      then
+/* org_ org */
 /* org_ ovr */      [job].error@ [job].signalParent
 /* org_ org */     then
 
@@ -331,6 +346,12 @@
 /* org_ ovr */
 /* org_ ovr */  [task].grabLock
 /* org_ ovr */    "<signalParent>" [job].tagSet@ tagSet.hasName if
+/* org_ org */
+/* org_ org */      [args].distJob if
+/* org_ org */        "pipeline" "origin"
+/* org_ org */        "org_ org" "WAIT signalling parent"       [job].trace
+/* org_ org */      then
+/* org_ org */
 /* org_ ovr */      [job].error@ [job].signalParent
 /* org_ ovr */     else
 /* org_ ovr */       true [job].reapable!
