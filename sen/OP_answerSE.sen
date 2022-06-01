@@ -96,7 +96,7 @@
 : answerSE_StartMarker \handler
 
   0 locals| iPort |
-  0 locals| pListeningPort |
+  // 0 locals| pListeningPort |
   0 locals| pAcceptedSocket |
   0 locals| pAnsweredNode |
   0 locals| pConnectorTask |
@@ -115,7 +115,7 @@
   //then
 
   // now create a listening socket
-  iPort port::newListen to pListeningPort
+  iPort port[]::newListen
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -126,7 +126,7 @@
 
     trap::stackDepthZero
 
-    pListeningPort port.acceptConnection to pAcceptedSocket
+    port[].acceptConnection to pAcceptedSocket
 
     AM::SHOW::bConnection if
       iPort "Answered connection on port %v" .printf

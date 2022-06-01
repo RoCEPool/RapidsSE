@@ -214,7 +214,7 @@ void Step::vPortNewListen_reg(void)
 //  }
 
   // return socket
-  m_pDataStack->vPushPtr(pSocket);
+  //m_pDataStack->vPushPtr(pSocket);
   
   EXIT();
 }
