@@ -1668,10 +1668,9 @@ void Engine::vStopSystem(void)
 void Engine::vTestPort(i8 iPort)
 {
   SysCall oSysCall;
-  Port* pSocket;
-
-  pSocket = new Port(gpAttachMap);
-  bool bResult = pSocket->bCreateServer((int)iPort, oSysCall);
+  
+  Port* pPort = new Port(gpAttachMap);
+  bool bResult = pPort->bCreateListeningPort((int)iPort, oSysCall);
   
   if ( ! bResult ) {
     if (oSysCall.iError() == EADDRINUSE) {
@@ -1688,12 +1687,12 @@ void Engine::vTestPort(i8 iPort)
     Process::vExitFailure();
   }
     
-  pSocket->bClose(oSysCall);
+  pPort->bClose(oSysCall);
   
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("Able to open and close port %lld on this machine\n"_Stz, iPort);
 
-  delete pSocket;
+  delete pPort;
 }
 
 /*----------------------------------------------------------------------------*/

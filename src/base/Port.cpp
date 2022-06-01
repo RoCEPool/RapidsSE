@@ -67,8 +67,8 @@ Port::Port(Object* pIsFor)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Port::Port(eCN eClass, Object* pIsFor, int iSocketId)
-: Resource(eClass,pIsFor)
+Port::Port(Object* pIsFor, int iSocketId)
+: Resource(CN_SOCKET,pIsFor)
 , m_okLock(this)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
@@ -129,11 +129,11 @@ void Port::vDump(eCN eClass, Object* pObject, Stz* aTab)
   UNUSED(eClass);
   UNUSED(aTab);
 
-  Port* pSocket = _pPort(pObject);
+  Port* pPort = _pPort(pObject);
 
   vTrace("id %lld %s\n"_Stz,
-         pSocket->m_iSocketFd,
-         pSocket->m_bBlocking ? "blocking"_Stz : "non-blocking"_Stz);
+         pPort->m_iSocketFd,
+         pPort->m_bBlocking ? "blocking"_Stz : "non-blocking"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -356,9 +356,30 @@ void Port::vCopy(Port* pSource)
 
 
 /*----------------------------------------------------------------------------*/
-/* create a listening server socket on this server                            */
+/* create a UDP socket endpoint                                               */
 /*----------------------------------------------------------------------------*/
-bool Port::bCreateServer(int iPortNo, SysCall& roSysCall)
+bool Port::bCreateFdForSocket(SysCall& roSysCall)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  roSysCall.vClear();
+  
+  //m_iSocketFd = socket(AF_INET,SOCK_DGRAM,IPPROTO_UDP);
+  m_iSocketFd = socket(AF_INET,SOCK_STREAM,0);
+
+  if (m_iSocketFd < 0) {
+    roSysCall.vError(errno);
+    return false;
+  }
+  
+  roSysCall.vSuccess();
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* create a listening socket/port on this server                              */
+/*----------------------------------------------------------------------------*/
+bool Port::bCreateListeningPort(int i4PortNo, SysCall& roSysCall)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -390,7 +411,7 @@ bool Port::bCreateServer(int iPortNo, SysCall& roSysCall)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 1) initialize the server sockaddr_in structure
   
-  vAddrInit(&xThisServerAddr,iPortNo);
+  vAddrInit(&xThisServerAddr,i4PortNo);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a socket end-point
@@ -656,27 +677,6 @@ bool Port::bSetNonBlocking(SysCall& roSysCall)
   
   // record socket as non-blocking
   m_bBlocking = true;                                                  //! fix
-  
-  roSysCall.vSuccess();
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* create a UDP socket                                                        */
-/*----------------------------------------------------------------------------*/
-bool Port::bSocket(SysCall& roSysCall)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  roSysCall.vClear();
-  
-  //m_iSocketFd = socket(AF_INET,SOCK_DGRAM,IPPROTO_UDP);
-  m_iSocketFd = socket(AF_INET,SOCK_STREAM,0);
-
-  if (m_iSocketFd < 0) {
-    roSysCall.vError(errno);
-    return false;
-  }
   
   roSysCall.vSuccess();
   return true;

@@ -63,11 +63,11 @@ void Step::vPortAcceptConnection_reg(void)
   
   SysCall oSysCall;
   
-  Port* pListeningSocket = * m_pLogicUnit->m_xpPort;
+  Port* pPort = * m_pLogicUnit->m_xpPort;
   
   // accept a connection
   int iSocketId;
-  bool bResult = pListeningSocket->bAcceptClient(iSocketId, oSysCall);
+  bool bResult = pPort->bAcceptClient(iSocketId, oSysCall);
   
   if ( ! bResult )
     vThrow(FK_CHECK,__func__,__FILE__,__LINE__,
@@ -90,25 +90,25 @@ void Step::vPortNewListen_reg(void)
   
   SysCall oSysCall;
   
-  i8 iPort = m_pDataStack->iPopInt(__func__);
+  i8 iPortNo = m_pDataStack->iPopInt(__func__);
   
   //- - - - - - - - - - - - - - - - - - -  - - - - - - - - - - - - - - - - - - -
-  // attempt to create server-side listening socket
+  // attempt to create server-side listening socket/port
   
   m_pLogicUnit->m_xpPort = new Port(this);
-  Port* pSocket = * m_pLogicUnit->m_xpPort;
-  bool bResult = pSocket->bCreateServer((int)iPort, oSysCall);
+  Port* pPort = * m_pLogicUnit->m_xpPort;
+  bool bResult = pPort->bCreateListeningPort((int)iPortNo, oSysCall);
   
   if ( ! bResult ) {
     if (oSysCall.iError() == EADDRINUSE) {
       vThrow(FK_CHECK,__func__,__FILE__,__LINE__,
              "Address in use (port: %lld). "
              "Check if another instance of RAPIDSSE is running!"_Stz,
-             iPort);
+             iPortNo);
     }
     else
       vThrow(FK_CHECK,__func__,__FILE__,__LINE__,
-             "Unable to listen for connections: Errno %d"_Stz, oSysCall.iError());
+             "Unable to listen for connections: errno=%d"_Stz, oSysCall.iError());
   }
   
   //- - - - - - - - - - - - - - - - - - -  - - - - - - - - - - - - - - - - - - -

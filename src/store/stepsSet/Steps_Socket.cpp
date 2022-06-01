@@ -223,7 +223,7 @@ void Step::vSocketNew(void)
   Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
 
   pSocket = new Socket(pNode,C_UNKNOWN);
-  bool bResult = pSocket->bSocket(oSysCall);
+  bool bResult = pSocket->bCreateFdForSocket(oSysCall);
   
   if ( ! bResult )
     vThrow(FK_CHECK,__func__,__FILE__,__LINE__,
