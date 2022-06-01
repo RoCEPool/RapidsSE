@@ -116,8 +116,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vFreeMarker(Marker* pMarker);
 
     void vGrabLock(void);
-  
-    bool bHasByPromptTag(void);
+
     bool bHasStmtList(void);
     bool bHasTag(Stz* szTagNm);
   
@@ -156,14 +155,10 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     Marker* pNewMarker(eOM eOpMarker);
     void vNewMarkerChain(void);
 
-    Output* pOutput(void);
-    void vOutput(Output* pOutput);
     void vOutputBeginProc(void);
     void vOutputCreate(void);
     void vOutputDestroy(void);
     void vOutputEnabled(bool bEnabled);
-    void vOutputEndProc(void);
-    Output* pOutputFind(void);
     JobId tOriginId(void);
     void vOriginId(JobId tOriginId);
     Job* pOriginJob(void);

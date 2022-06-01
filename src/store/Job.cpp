@@ -479,18 +479,6 @@ bool Job::bHasTag(Stz* szTagNm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* test if this job has a <byPrompt> tag                                      */
-/*----------------------------------------------------------------------------*/
-bool Job::bHasByPromptTag(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  bool bByPrompt = bHasTag(C_TAG_BYPROMPT);
-  
-  return bByPrompt;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get bHasStmtList                                                           */
 /*----------------------------------------------------------------------------*/
 bool Job::bHasStmtList(void)
@@ -891,28 +879,6 @@ void Job::vNewMarkerChain(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get output processor                                                       */
-/*----------------------------------------------------------------------------*/
-Output* Job::pOutput(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_pOutput;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set output processor                                                       */
-/*----------------------------------------------------------------------------*/
-void Job::vOutput(Output* pOutput)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  RASSERT(! m_pOutput);
-  
-  m_pOutput = pOutput;
-}
-
-/*----------------------------------------------------------------------------*/
 /* begin output processor                                                     */
 /*----------------------------------------------------------------------------*/
 void Job::vOutputBeginProc(void)
@@ -951,49 +917,6 @@ void Job::vOutputDestroy(void)
 void Job::vOutputEnabled(bool bEnabled)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* end output processor                                                       */
-/*----------------------------------------------------------------------------*/
-void Job::vOutputEndProc(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_pOutput->vEndProcOneCmd();
-}
-
-/*----------------------------------------------------------------------------*/
-/* find output processor                                                      */
-/*----------------------------------------------------------------------------*/
-Output* Job::pOutputFind(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  Output* pOutput = this->pOutput();
-  if (! pOutput) {
-    Job* pOriginJob = this->pOriginJob();
-    pOutput = pOriginJob->pOutput();
-  }
-
-  return pOutput;
-  
-  /* NOT A GOOD IDEA
-  Output* pOutput = this->pOutput();
-  if (pOutput)
-    return pOutput;
-  
-  for (Job* pOuterJob = this->pOriginJob();
-       pOuterJob;
-       pOuterJob = pOuterJob->pParentJob()) {
-    
-    pOutput = pOuterJob->pOutput();
-    if (pOutput)
-      return pOutput;
-  }
-
-  return nullptr;
-  */
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1416,19 +1339,19 @@ void Job::vCleanupOutput(void)
   }
   else {
     RASSERT(m_pOutput);
-    if (! pOutput()->m_bToExit)
-      pOutput()->vProcessBufferQueue();
+    if (! m_pOutput->m_bToExit)
+      m_pOutput->vProcessBufferQueue();
 
-    pOutput()->m_pOutputQueue->vReset();
-    pOutput()->vEndProcOneCmd();
+    m_pOutput->m_pOutputQueue->vReset();
+    m_pOutput->vEndProcOneCmd();
 
-    if (pOutput()->m_pStreamDef_result) {
-      StreamDef* pStreamDef = pOutput()->m_pStreamDef_result;
-      pOutput()->m_pStreamDef_result = nullptr;
+    if (m_pOutput->m_pStreamDef_result) {
+      StreamDef* pStreamDef = m_pOutput->m_pStreamDef_result;
+      m_pOutput->m_pStreamDef_result = nullptr;
       delete pStreamDef;
     }
 
-    pOutput()->m_bToExit      = false;
+    m_pOutput->m_bToExit      = false;
   }
 }
 
