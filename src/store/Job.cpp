@@ -73,10 +73,9 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
   /* 05 */ m_bReapable    = false;
   /* 06 */ m_p_ResponseOp = nullptr;
   /* 07 */ m_oResponseTimer.vStart();
-  /* 08 */ m_pStmtList    = nullptr;
-  /* 09 */ m_pTask        = nullptr;
-  /* 10 */ m_bWasReceived = false;
-  /* 11 */ m_pMarkerChain = nullptr;
+  /* 08 */ m_pTask        = nullptr;
+  /* 09 */ m_bWasReceived = false;
+  /* 10 */ m_pMarkerChain = nullptr;
 
   m_iTscParticipant = 0;
   
@@ -154,9 +153,6 @@ Job::~Job(void) noexcept(false)
     vMutexDestroy();
   if (m_pOutput)
     vOutputDestroy();
-  
-  if (m_pStmtList)
-    vStmtListDestroy();
   
   if (m_pMarkerChain)
     delete m_pMarkerChain;
@@ -476,19 +472,6 @@ bool Job::bHasTag(Stz* szTagNm)
     return true;
   
   return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get bHasStmtList                                                           */
-/*----------------------------------------------------------------------------*/
-bool Job::bHasStmtList(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  if (m_pStmtList && m_pStmtList->nItems())
-    return true;
-  else
-    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1100,10 +1083,9 @@ void Job::vPostRecv(void)
   /* 05 */ RASSERT(! m_bReapable);
   /* 06 */ m_p_ResponseOp = nullptr;
   /* 07 */ m_oResponseTimer.vReset();
-  /* 08 */ m_pStmtList    = nullptr;
-  /* 09 */ m_pTask        = nullptr;
-  /* 10 */ m_bWasReceived = true;
-  /* 11 */ m_pMarkerChain = nullptr;
+  /* 08 */ m_pTask        = nullptr;
+  /* 09 */ m_bWasReceived = true;
+  /* 10 */ m_pMarkerChain = nullptr;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -1433,59 +1415,6 @@ void Job::vResponseTimerUpdate(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_oResponseTimer.vUpdate();
-}
-
-/*----------------------------------------------------------------------------*/
-/* append cascade to statement list                                           */
-/*----------------------------------------------------------------------------*/
-void Job::vStmtListAppend(Stz* szStmt)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  //vTrace("vStmtListAppend: %s\n"_Stz,szStmt);
-  Statement* pStatement = new Statement(szStmt);
-  
-  m_pStmtList->vAppend(pStatement);
-}
-
-/*----------------------------------------------------------------------------*/
-/* create a statement list for this job                                       */
-/*----------------------------------------------------------------------------*/
-void Job::vStmtListCreate(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  RASSERT(! m_pStmtList);
-  
-  m_pStmtList = new StmtList;
-}
-
-/*----------------------------------------------------------------------------*/
-/* destroy this job's statement list                                          */
-/*----------------------------------------------------------------------------*/
-void Job::vStmtListDestroy(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  RASSERT(m_pStmtList);
-  
-  delete m_pStmtList;
-  m_pStmtList = nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop top statement from statement list                                      */
-/*----------------------------------------------------------------------------*/
-void Job::vStmtListPop(String* pString)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  Statement* pStatement = m_pStmtList->pPop();
-  Stz* szStmt = pStatement->szText();
-  
-  pString->vCopy(szStmt);
-  
-  delete pStatement;
 }
 
 /*----------------------------------------------------------------------------*/

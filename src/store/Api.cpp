@@ -662,7 +662,7 @@ eEC Api::eForkJobNormal(JobId& rtChildJobId,
   //rpChildJob_tbr->vOutputCreate();
   //rpChildJob_tbr->vOutputBeginProc();
   //rpChildJob_tbr->vOutputEnabled(true);
-  rpChildJob_tbr->vStmtListCreate();
+  //rpChildJob_tbr->vStmtListCreate();
   rpChildJob_tbr->vTaskCreate();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -945,7 +945,7 @@ eEC Api::eForkJob2PC(JobId& rtChildJobId,
   rtChildJobId = rpChildJob_tbr->tJobId();
 
   rpChildJob_tbr->vMutexCreate();
-  rpChildJob_tbr->vStmtListCreate();
+  //rpChildJob_tbr->vStmtListCreate();
   rpChildJob_tbr->vTaskCreate();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

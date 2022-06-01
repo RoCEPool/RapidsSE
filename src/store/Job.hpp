@@ -52,10 +52,9 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     /* 05 */ b8      m_bReapable;      // can job be reaped?
     /* 06 */ Op*     m_p_ResponseOp;   // operator to where responses go
     /* 07 */ Timer   m_oResponseTimer; // timer (on origin only)
-    /* 08 */ StmtList* m_pStmtList;    // list of cascade statements
-    /* 09 */ Task*   m_pTask;          // task executing this job
-    /* 10 */ b8      m_bWasReceived;   // was job received over a socket?
-    /* 11 */ MarkerChain* m_pMarkerChain; // chain of free markers
+    /* 08 */ Task*   m_pTask;          // task executing this job
+    /* 09 */ b8      m_bWasReceived;   // was job received over a socket?
+    /* 10 */ MarkerChain* m_pMarkerChain; // chain of free markers
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
 
@@ -117,7 +116,6 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
 
     void vGrabLock(void);
 
-    bool bHasStmtList(void);
     bool bHasTag(Stz* szTagNm);
   
     bool bIsInError(void);
@@ -188,10 +186,6 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vResponseTimerStart(void);
     void vResponseTimerUpdate(void);
 
-    void vStmtListAppend(Stz* szCascade);
-    void vStmtListCreate(void);
-    void vStmtListDestroy(void);
-    void vStmtListPop(String* pString);
     bool bSystemCloser(void);
     void vSystemCloser(bool bSystemCloser);
 

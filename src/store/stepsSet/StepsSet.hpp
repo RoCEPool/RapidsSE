@@ -815,9 +815,6 @@ void vDdlLockAssertNone(void);
   void vJobAssertParticipant(void);
   void vJobAssertReceived(void);
 
-  void vJobIdCascadeFetch(void);
-  void vJobIdCascadeStore(void);
-
   void vJobDistIdFetch(void);
   void vJobDistIdGenerate(void);
   void vJobTrace(void);

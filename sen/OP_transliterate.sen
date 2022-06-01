@@ -4,29 +4,6 @@
 
 " OP_transliterate.sen" .verbose
 
-/******************************************************************************/
-/* cascade experimental code (ray)                                            */
-/******************************************************************************/
-
-: cascadeJob \prompt
-
-  "
-  pipeline cascade
-  begin
-
-  stage stageA on origin :
-    start
-    | pulse once
-    | metaScan tables
-    | rowToList
-    | output
-    | sink
-    | stageA
-
-  end ;
-  " [op].job@ job(Id).masterJob job(Id).cascade!
-;
-
 /*----------------------------------------------------------------------------*/
 /* handler for EV_X_CHILDEXIT ...                                             */
 /*----------------------------------------------------------------------------*/
@@ -126,8 +103,6 @@
   PlanOperand[].delete
 
   //sPipeline "FORKING CHILD FOR PIPELINE: %v"  str.format .
-
-  //sPipeline [op].job@ job(Id).masterJob job(Id).cascade!
 
   STD_NORMALFORK_TAG sPipeline api::forkChild not if
      //"****Error Code %v" .printf

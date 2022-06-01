@@ -30,9 +30,6 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobId(void)
 {
-  vAddStep("job(Id).cascade@"_Stz,       &Step::vJobIdCascadeFetch);
-  vAddStep("job(Id).cascade!"_Stz,       &Step::vJobIdCascadeStore);
-    
   vAddStep("job(Id).folderPath@"_Stz,    &Step::vJobIdFolderPathFetch);
   vAddStep("job(Id).folderPath!"_Stz,    &Step::vJobIdFolderPathStore);
   
@@ -60,40 +57,6 @@ void Step::vAddSteps_JobId(void)
   vAddStep("job(Id).systemCloser!"_Stz,  &Step::vJobIdSystemCloserStore);
 
   vAddStep("job(Id).task@"_Stz,          &Step::vJobIdTaskFetch);
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* job(Id).cascade@ -- fetch sCascade from job                                */
-/*----------------------------------------------------------------------------*/
-void Step::vJobIdCascadeFetch(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-
-  sSTMT sStmt;
-  pJob->vStmtListPop(sStmt);
-  m_pDataStack->vPushStz(sStmt);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job(Id).cascade! -- store sCascade into job                                */
-/*----------------------------------------------------------------------------*/
-void Step::vJobIdCascadeStore(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-
-  s16KB sStmt;
-  m_pDataStack->vPopStr(sStmt,__func__);
-  
-  pJob->vStmtListAppend(sStmt);
-
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -138,7 +101,7 @@ void Step::vJobIdHasCascadeFetch(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
-  m_pDataStack->vPushInt(pJob->bHasStmtList());
+  //m_pDataStack->vPushInt(pJob->bHasStmtList());
   
   EXIT();
 }
