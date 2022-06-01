@@ -62,15 +62,19 @@ void Step::vApiForkChild(void)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+  // populate the tag set
   TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sCmd);
   TokenVec* pTagTknVec = TokenVec::pTokeniseSen(sCmdTagStr);
   TagSet*   pCmdTagSet = new TagSet;
   CmdHelper::vPopulateTagSet(pCmdTagSet,pTagTknVec);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // replace the C_TAG_JOBNM
   Stz* szJobNm = pCmdTknVec->pGet(0)->szChars();
   pCmdTagSet->vReplace(C_TAG_JOBNM,szJobNm);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the C_TAG_PATH
   if (! pCmdTagSet->bHasName(C_TAG_PATH)) {
     if (m_pJob)
       pCmdTagSet->vReplace(C_TAG_PATH,m_pJob->pJobTags()->szValue(C_TAG_PATH));
@@ -79,6 +83,7 @@ void Step::vApiForkChild(void)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // fork the child job
 
   JobId tParentId;
   JobId tOriginId;
@@ -100,7 +105,7 @@ void Step::vApiForkChild(void)
   );
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+  // cleanup
   delete pCmdTagSet;
   delete pCmdTknVec;
   delete pTagTknVec;
