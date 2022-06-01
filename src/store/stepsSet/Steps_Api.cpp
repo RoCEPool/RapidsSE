@@ -436,6 +436,7 @@ void Step::vApiForkChild2PC(void)
 
   JobId tChildJobId;
   Job* pChildJob_tbr = nullptr;
+
   eEC eError = Api::eForkJob2PC(tChildJobId,
                              pCmdTknVec,pCmdTagSet,
                              tParentId,tOriginId,tDistId,
@@ -451,7 +452,29 @@ void Step::vApiForkChild2PC(void)
   delete pTagTknVec;
 
   m_pDataStack->vPushInt(true);
+/*
 
+  eEC eError = Api::eForkJobChild(tChildJobId,
+                                  pCmdTknVec,pCmdTagSet,
+                                  tParentId,tOriginId,tDistId,
+                                  pOuterJob,    // TO BE REMOVED
+                                  pChildJob_tbr // TO BE REMOVED
+  );
+  //RASSERT(EC_NONE == eError);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  delete pCmdTagSet;
+  delete pCmdTknVec;
+  delete pTagTknVec;
+
+  if (EC_NONE == eError)
+    m_pDataStack->vPushInt(true);
+  else {
+    m_pDataStack->vPushInt(eError);
+    m_pDataStack->vPushInt(false);
+  }
+*/
   EXIT();
 }
 

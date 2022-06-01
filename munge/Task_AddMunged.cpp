@@ -27854,7 +27854,7 @@ void Task::vAddMunged(Task* )
     "    [job].removeLocal\n"
     "  then\n"
     "\n"
-    " <pipelineNm> [grid].thisNodeName@ \"(%v) ALL DONE!!!\" .\n"
+    " //<pipelineNm> [grid].thisNodeName@ \"(%v) ALL DONE!!!\" .\n"
     "\n"
     "  [ddlLock].testDrop\n"
     "  ListedJob[].assertNoRef\n"
