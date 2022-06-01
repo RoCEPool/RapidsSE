@@ -87,9 +87,6 @@ public:
 
   // api
   void vApiForkChild(void);
-  void vApiForkChildBoot(void);
-  void vApiForkChildDemon(void);
-  void vApiForkChildNormal(void);
   void vApiForkChildOld(void);
   void vApiForkChild2PC(void);
   void vApiReapJobs(void);
