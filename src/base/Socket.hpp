@@ -34,7 +34,7 @@ namespace BASE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Socket(Object* pIsFor);
+    //Socket(Object* pIsFor);
     Socket(Object* pIsFor, int iSocketId);
    ~Socket(void) noexcept(false);
       

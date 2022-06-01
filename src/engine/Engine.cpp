@@ -522,34 +522,6 @@ void Engine::vCheckPort(void)
   iPort = gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[gxCmdLineArgs.m_xSysArgs.m_i_ThisNode].m_iPortNo;
   
   vTestPort(iPort);
-  
-//  Socket* pSocket = new Socket(gpAttachMap);
-//  bool bResult = pSocket->bCreateServer((int)iPort, oSysCall);
-//
-//  if ( ! bResult ) {
-//    if (oSysCall.iError() == EADDRINUSE) {
-//      vTrace("Address in use (port: %lld). "
-//             "CHECK IF ANOTHER INSTANCE OF RAPIDSSE IS RUNNING!\n"_Stz,
-//             iPort);
-//
-//    }
-//    else {
-//      vTrace("Unable to listen for connections (port: %lld): Errno %d!\n"_Stz,
-//             iPort, oSysCall.iError());
-//    }
-//    //Engine::vStopSystem();
-//    Process::vExitFailure();
-//  }
-//
-//  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
-//    vTrace("Able to open port %lld\n"_Stz, iPort);
-//
-//  pSocket->bClose(oSysCall);
-//
-//  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
-//    vTrace("Closed port %lld\n"_Stz, iPort);
-//
-//  delete pSocket;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1696,9 +1668,9 @@ void Engine::vStopSystem(void)
 void Engine::vTestPort(i8 iPort)
 {
   SysCall oSysCall;
-  Socket* pSocket;
+  Port* pSocket;
 
-  pSocket = new Socket(gpAttachMap);
+  pSocket = new Port(gpAttachMap);
   bool bResult = pSocket->bCreateServer((int)iPort, oSysCall);
   
   if ( ! bResult ) {

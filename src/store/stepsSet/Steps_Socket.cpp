@@ -222,7 +222,7 @@ void Step::vSocketNew(void)
   
   Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
 
-  pSocket = new Socket(pNode);
+  pSocket = new Socket(pNode,C_UNKNOWN);
   bool bResult = pSocket->bSocket(oSysCall);
   
   if ( ! bResult )

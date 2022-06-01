@@ -33,7 +33,7 @@ __aFooterFunction(Port)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Port::Port(Object* pIsFor)
-: Resource(CN_SOCKET,pIsFor)                           // fix: should be CN_PORT
+: Resource(CN_PORT,pIsFor)
 , m_okLock(this)
 {
   _precondition_(_MAGIC_,_FOOTER_);
@@ -71,7 +71,7 @@ Port::Port(eCN eClass, Object* pIsFor, int iSocketId)
 : Resource(eClass,pIsFor)
 , m_okLock(this)
 {
-  _precondition_(_MAGIC_,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
   m_pIsFor    = pIsFor;
   m_iSocketFd = iSocketId;
@@ -97,7 +97,7 @@ Port::Port(eCN eClass, Object* pIsFor, int iSocketId)
   
   ++ gixSocket;
   
-  _postcondition_(_MAGIC_,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
