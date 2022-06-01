@@ -34,7 +34,6 @@ void BufferPool::operator delete(void*)
 /* constructor (new region)                                                   */
 /*----------------------------------------------------------------------------*/
 BufferPool::BufferPool(Stz* aRegionName, i8 iRegionSize,
-                       i8 iNonPageableSize,
                        bool bTouch, bool bProgress,
                        bool bDontFree, bool bFreeSpecific)
 : Object(CN_BUFFERPOOL)
@@ -43,7 +42,6 @@ BufferPool::BufferPool(Stz* aRegionName, i8 iRegionSize,
   gpBufferPool = this;
   
   m_nBuffers = DIV(iRegionSize,C_SIZE_POOL_BUFFER);
-  m_nNonPageableBuffers = DIV(iNonPageableSize, C_SIZE_POOL_BUFFER);
   
   m_pBase  = reinterpret_cast<PoolBuffer*>(this);
   m_pLimit = (PoolBuffer*)aAdd<void*>(m_pBase,iRegionSize);
