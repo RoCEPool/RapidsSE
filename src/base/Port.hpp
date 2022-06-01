@@ -49,6 +49,8 @@ namespace BASE
     Port(Object* pIsFor);
     Port(eCN eClass, Object* pIsFor, int iSocketId);
    ~Port(void) noexcept(false);
+  
+    static void vRepair(Object* pObject);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
