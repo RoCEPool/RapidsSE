@@ -141,6 +141,7 @@ LogicUnit::LogicUnit(void)
 ,         m_xpPipein(this,RF_REPAIR_NONE,  nullptr,                         LR_PIPEIN)
 ,       m_xpPipeline(this,RF_NONE,         nullptr,                       LR_PIPELINE)
 ,    m_xpPlanOperand(this,RF_REPAIR_DELETE,   PlanOperand::vRepair,    LR_PLANOPERAND)
+,           m_xpPort(this,RF_REPAIR_NEVER, nullptr,                           LR_PORT)
 ,            m_xpPot(this,RF_REPAIR_DELETE,           Pot::vRepair,            LR_POT)
 ,    m_xpPreExpStack(this,RF_REPAIR_DELETE,      IntStack::vRepair,    LR_PREEXPSTACK)
 ,         m_xpPtnDef(this,RF_REPAIR_DELETE,        PtnDef::vRepair,         LR_PTNDEF)
@@ -331,6 +332,7 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpPathIdentifier.bIsNull());
   RASSERT(m_xpPipein.bIsNull());
   RASSERT(m_xpPlanOperand.bIsNull());
+  RASSERT(m_xpPort.bIsNull());
   RASSERT(m_xpPot.bIsNull());
   RASSERT(m_xpPtnStream.bIsNull());
 

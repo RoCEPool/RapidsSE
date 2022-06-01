@@ -361,6 +361,8 @@ eEC Api::eForkJobOld(JobId& rtChildJobId,
     //AM::pHeaps()->vSetTraceFree(false);
   }
   */
+  
+  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/

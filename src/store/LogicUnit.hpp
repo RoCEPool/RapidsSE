@@ -145,6 +145,7 @@ namespace STORE
     REG<Operand,        CN_NONE          > m_xpPipein;
     REG<Pipeline,       CN_PIPELINE      > m_xpPipeline;
     REG<Operand,        CN_NONE          > m_xpPlanOperand;
+    REG<Socket,         CN_SOCKET        > m_xpPort;
     REG<Pot,            CN_POT           > m_xpPot;
     REG<IntStack,       CN_INTSTACK      > m_xpPreExpStack;
     REG<PtnDef,         CN_PTNDEF        > m_xpPtnDef;
