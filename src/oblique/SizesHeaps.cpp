@@ -237,6 +237,8 @@
 #include "EvMgr.hpp"
 #include "MarkerChain.hpp"
 #include "MarkerMgr.hpp"
+#include "RejectJob.hpp"
+#include "Port.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -366,7 +368,7 @@ SizeHeap gxaSizeHeap[]
   { CN_GRID,                     sizeof(Grid),               HT_T_TINY    ,0 FILL },
 
   { CN__H__,                     'H' - ('A' - 1),            HT_INVALID   ,0 FILL },
-  { CN_HASHMAP,                  sizeof(HashMap),            HT_T_TINY    ,0 FILL },
+  { CN_HASHMAP,                  sizeof(HashMap),            HT_T_SMALL   ,0 FILL },
   { CN_HASHMAPENTRY,             sizeof(HashMapEntry),       HT_T_TINY    ,0 FILL },
   { CN_HASHMAPSLOT,              sizeof(HashMapSlot),        HT_T_LARGE   ,0 FILL },
   { CN_HEAPBUFFER,               sizeof(HeapBuffer),         HT_INVALID   ,0 FILL },
@@ -480,6 +482,7 @@ SizeHeap gxaSizeHeap[]
   { CN_PLANNODELIST,             sizeof(PlanNodeList),       HT_T_TINY    ,0 FILL },
   { CN_PLANOPERAND,              sizeof(PlanOperand),        HT_T_TINY    ,0 FILL },
   { CN_POT,                      sizeof(Pot),                HT_T_LARGE   ,0 FILL },
+  { CN_PORT,                     sizeof(Port),               HT_T_LARGE   ,0 FILL },
   { CN_PREDICATE,                sizeof(Predicate),          HT_T_TINY    ,0 FILL },
   { CN_PREDICATEVEC,             sizeof(PredicateVec),       HT_T_MEDIUM  ,0 FILL },
   { CN_PRIMITIVENODE,            sizeof(PrimitiveNode),      HT_T_TINY    ,-8 FILL },
@@ -504,6 +507,7 @@ SizeHeap gxaSizeHeap[]
   { CN_REAPLOCK,                 sizeof(ReapLock),           HT_T_TINY    ,0 FILL },
   { CN_RECORD,                   sizeof(Record),             HT_T_MEDIUM  ,0 FILL },
   { CN_RECVWL,                   sizeof(RecvWL),             HT_T_TINY    ,0 FILL },
+  { CN_REJECTJOB,                sizeof(RejectJob),          HT_T_TINY    ,0 FILL },
   { CN_RELOP,                    sizeof(RelOp),              HT_T_TINY    ,0 FILL },
   { CN_RESOURCES,                sizeof(Resources),          HT_T_TINY    ,0 FILL },
   { CN_RIBBON,                   sizeof(Ribbon),             HT_T_SMALL   ,0 FILL },

@@ -87,7 +87,7 @@ void RowTablePtn::vAppendBuffer(RowBuffer* pRowBuffer)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the table in the buffer
-  pRowBuffer->vTable(m_pTable);
+  pRowBuffer->vTable_dbuff(m_pTable);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the root buffer

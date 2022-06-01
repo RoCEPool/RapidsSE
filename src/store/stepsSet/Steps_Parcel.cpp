@@ -316,8 +316,9 @@ void Step::vParcelPipeOut(void)
 
         // put a copy of the operand onto ptn
         
-        Operand* pDuplicateOperand = (Operand*)Heaps::pAllocate(eClass);
-        MemLib::vCopy(pDuplicateOperand,pOperand,nSize,eClass);
+        //Operand* pDuplicateOperand = (Operand*)Heaps::pAllocate(eClass);
+        //MemLib::vCopy(pDuplicateOperand,pOperand,nSize,eClass);
+        Operand* pDuplicateOperand = pOperand->pDuplicateOperand();
 
         if (gxaSizeHeap[eClass].m_fpPostRecvFn)
           gxaSizeHeap[eClass].m_fpPostRecvFn(pDuplicateOperand);

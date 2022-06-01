@@ -1408,6 +1408,10 @@ void vDdlLockAssertNone(void);
   void vPlanNameStore(void);
   void vPlanShow(void);
 
+  // port
+  void vPortAcceptConnection(void);
+  void vPortNewListen(void);
+
   // pot
   void vPotCompleted(void);
   void vPotCompletedPtn(void);
@@ -1750,7 +1754,6 @@ void vDdlLockAssertNone(void);
   void vShellExecute(void);
 
   // socket
-  void vSocketAccept(void);
   void vSocketClose(void);
   void vSocketConnect(void);
   void vSocketGet(void);
@@ -1758,7 +1761,6 @@ void vDdlLockAssertNone(void);
   void vSocketGrabWrite(void);
   void vSocketIsNotNull(void);
   void vSocketIsNull(void);
-  void vSocketListen(void);
   void vSocketObjectFetch(void);
   void vSocketObjectFetchClear(void);
   void vSocketNew(void);

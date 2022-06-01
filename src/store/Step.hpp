@@ -145,6 +145,7 @@ namespace STORE
     static void vAddSteps_PlanOperand(void);
     static void vAddSteps_Pot(void);
     static void vAddSteps_PotRlu(void);
+    static void vAddSteps_Port(void);
     static void vAddSteps_Procedure(void);
     static void vAddSteps_Process(void);
     static void vAddSteps_Profile(void);

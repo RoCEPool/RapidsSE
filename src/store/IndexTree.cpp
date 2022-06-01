@@ -705,7 +705,7 @@ void IndexTree::vInsertEntries(CrwBuffer* pCrwBuffer)
 
   //pEntBuffer->vShow();
 
-  StreamDef* pStreamDef = pCrwBuffer->pStreamDef();
+  StreamDef* pStreamDef = pCrwBuffer->pStreamDef_dbuff();
   i8* aiaColSet = m_pIndexDef->aiaColSet();
 
   EntWrk xEntWrk;
@@ -759,7 +759,7 @@ void IndexTree::vInsertEntries(RowBuffer* pRowBuffer)
 
   //pEntBuffer->vShow();
 
-  StreamDef* pStreamDef = pRowBuffer->pStreamDef();
+  StreamDef* pStreamDef = pRowBuffer->pStreamDef_dbuff();
 
   RASSERT(m_pIndexDef->nColumns() == 1);
   Column* pColumn = m_pIndexDef->pGetColumn(0);
@@ -867,7 +867,7 @@ void IndexTree::vInsertEntriesTop(RowBuffer* pRowBuffer, Ent** ppBottomEnt, i8 i
 
   //pEntBuffer->vShow();
 
-  StreamDef* pStreamDef = pRowBuffer->pStreamDef();
+  StreamDef* pStreamDef = pRowBuffer->pStreamDef_dbuff();
 
   RASSERT(m_pIndexDef->nColumns() == 1);
   Column* pColumn = m_pIndexDef->pGetColumn(0);
@@ -1244,7 +1244,7 @@ bool IndexTree::bVerifyIndex(void)
 void IndexTree::vExtractKey(EntWrk* pEntWrk, CrwBuffer* pCrwBuffer, i8 i_Row)
 {
   // create a row
-  HV_RowSingle hvRowSingle(pCrwBuffer->pStreamDef());
+  HV_RowSingle hvRowSingle(pCrwBuffer->pStreamDef_dbuff());
   
   IndexDef* pIndexDef = m_pIndex->pIndexDef();
   

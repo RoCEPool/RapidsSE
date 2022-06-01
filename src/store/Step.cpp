@@ -162,6 +162,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_PlanOperand();
   Step::vAddSteps_Pot();
   Step::vAddSteps_PotRlu();
+  Step::vAddSteps_Port();
   Step::vAddSteps_Procedure();
   Step::vAddSteps_Process();
   Step::vAddSteps_Profile();

@@ -22,8 +22,8 @@ namespace BASE
     Birth  m_oWhenNewed;    // when was this buffer created?
     b8     m_bIsPermanent;  // is buffer permanent ?
   
-    Table*     m_pTable;
-    StreamDef* m_pStreamDef;
+    Table*     m_pTable_dbuff;
+    StreamDef* m_pStreamDef_dbuff;
 
     tXN m_tTxnNo; // transaction number
 
@@ -41,19 +41,21 @@ namespace BASE
 
     noexcept(false);
 
+    static bool bIsDataBuffer(eCN eClass);
+
     static DataBuffer *pRefdDataBuffer(Rrf &xRef);
 
     static void vRepairList(Object *pObject);
 
     static DataBuffer *pToDataBuffer(void *aAddr);
 
-    void vStreamDef(StreamDef *pStreamDef);
+    void vStreamDef_dbuff(StreamDef *pStreamDef);
 
-    StreamDef *pStreamDef(void);
+    StreamDef *pStreamDef_dbuff(void);
 
-    Table *pTable(void);
+    Table *pTable_dbuff(void);
 
-    void vTable(Table *pTable);
+    void vTable_dbuff(Table *pTable);
 
     tXN tTxnNo(void);
 

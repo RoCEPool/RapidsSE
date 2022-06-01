@@ -54,6 +54,7 @@ HashMap::HashMap(void)
   m_uNoOfEntries        = 0;
 
 #ifdef WITH_HASHMAP_DEBUG
+  m_uCollison           = 0;
   m_nHistory            = 0;
   for(u8 i = 0; i< C_HISTORY_DUR; i++)
   {
@@ -99,6 +100,7 @@ void HashMap::vAnalysis(void)
 #ifdef WITH_HASHMAP_DEBUG
 
   vTrace("HM History:\n"_Stz);
+  vTrace("Key Collisons:%llu\n"_Stz, m_uCollison);
 
   for(u8 i =0; (i < C_HISTORY_DUR) && (i < m_nHistory); i++)
   {
@@ -212,10 +214,16 @@ u8 HashMap::uHashFunction(void* pKey, u8 NoOfSlots)
 }
 
 /*----------------------------------------------------------------------------*/
-/* hash key                                                                   */
+/* given an entry pointer and index, insert into hashmap                      */
 /*----------------------------------------------------------------------------*/
 void HashMap::vInsertEntryAtIndex(HashMapEntry* pEntry, u8 uIndex)
 {
+#ifdef WITH_HASHMAP_DEBUG
+  if(pGetEntryAtIndex(uIndex) != nullptr) {
+    m_uCollison++;
+  }
+#endif
+
   pEntry->m_pNext = pGetEntryAtIndex(uIndex);
   vSetEntryAtIndex(pEntry, uIndex);
 
