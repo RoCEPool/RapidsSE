@@ -496,17 +496,17 @@ eEC Api::eForkJobDeputy(JobId& rtChildJobId,
 
   if (! pCmdTagSet->bHasName(C_TAG_JOBNM)) {
     pCmdTagSet->vDumpSet();
-    THROW("Api::eForkJob: no C_TAG_JOBNM"_Stz);
+    THROW("Api::eForkJobDeputy: no C_TAG_JOBNM"_Stz);
   }
 
   if (! pCmdTagSet->bHasName(C_TAG_ENTRYPOINT)) {
     pCmdTagSet->vDumpSet();
-    THROW("Api::eForkJob: no C_TAG_ENTRYPOINT"_Stz);
+    THROW("Api::eForkJobDeputy: no C_TAG_ENTRYPOINT"_Stz);
   }
 
   if (! pCmdTagSet->bHasName(C_TAG_PATH)) {
     pCmdTagSet->vDumpSet();
-    THROW("Api::eForkJob: no C_TAG_PATH"_Stz);
+    THROW("Api::eForkJobDeputy: no C_TAG_PATH"_Stz);
   }
 
   RASSERT(pCmdTagSet->bHasName(C_TAG_WAIT));

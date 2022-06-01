@@ -910,7 +910,8 @@ void Step::vJobSignalParent(void)
   eEC eErrorCode = (eEC)m_pDataStack->iPopInt(__func__);
 
   eJL eJobList = pJob->eJobList();
-  RASSERT(JL_NONE == eJobList || JL_RETIRED == eJobList)
+
+  RASSERT(JL_NONE == eJobList || JL_RETIRED == eJobList || JL_DEMON == eJobList)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the error as childError in parent

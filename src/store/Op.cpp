@@ -196,7 +196,7 @@ void Op::vAckJobTask(void)
               "%-18s pipelineJob=%p\n"_Stz, spOp.szLeading(this), __func__, pOuterJobOfOp()
       );
     } else {
-      vTrace("Op %s (%s (N%lld) (P%02lld)): acking invoking task\n"_Stz,
+      vTrace("Op %s (%s (N%lld) (P%02lld)): acking invoking job\n"_Stz,
              szOpNm(),
              m_p_Stream->pStage()->szStageNm(),
              iNodeId(),
@@ -217,7 +217,7 @@ void Op::vAckJobTask(void)
   }
 
   if (m_bTraceAck)
-    vTrace("Op %s (%s (N%lld) (P%02lld)): acking invoking task (acksRemaining : %lld)\n"_Stz,
+    vTrace("Op %s (%s (N%lld) (P%02lld)): acking invoking job (acksRemaining : %lld)\n"_Stz,
            szOpNm(),
            m_p_Stream->pStage()->szStageNm(),
            iNodeId(),

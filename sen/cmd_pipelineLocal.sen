@@ -66,7 +66,10 @@
     [task].dropLock
     
     pipelineLocal::termination
-    
+
+    // signal the parent
+    [job].error@ [job].signalParent
+
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -82,8 +85,7 @@
 
   PipeSpec[] Pipeline[].create
   Pipeline[].spawnOpTasks
-  
-  
+
   // run <pre_execute>
 
   "<pre_execute>"
@@ -93,6 +95,7 @@
     sPreExe find
     dup not if
       sPreExe "Unable to find pre execute word: %v" .printf
+      [job].error@ [job].signalParent
       process::quit
     then
       execute
@@ -102,11 +105,15 @@
     then
   then
 
+  "<signalParent>" [job].tagSet@ tagSet.hasName not if
+     //"SIGNALLING PARENT AS NO WAIT" .
+     [job].error@ [job].signalParent
+  then
+
   // add job to the local job list
   [job] job(Id).jobList@ JL_DEMON == not if
     [job].addLocal
   then
-
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // enqueue start-marker to start op to execute the pipeline job
@@ -116,15 +123,13 @@
   nullptr to Deck[]
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   // remove job from the local job list
   [job] job(Id).jobList@ JL_DEMON == not if
     [job].removeLocal
   then
 
-  //<pipelineNm> [grid].thisNodeName@ "(%v) ALL DONE!!!" .
-  
-  
+ <pipelineNm> [grid].thisNodeName@ "(%v) ALL DONE!!!" .
+
   [ddlLock].testDrop
   ListedJob[].assertNoRef
 
@@ -134,8 +139,10 @@
   
   [task].grabLock
 
-    "<signalParent>" [job].tagSet@ tagSet.hasName assert
-    [job].error@ [job].signalParent
+    "<signalParent>" [job].tagSet@ tagSet.hasName if
+      //"pipelineLocal::local SIGNALLING PARENT" .
+      [job].error@ [job].signalParent
+    then
 
     [system].started@ if
     //  "SYSTEM STARTED" .
