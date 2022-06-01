@@ -49,7 +49,7 @@ void Api::vDeleteRootJob(Job*& rpRootJob)
 }
 
 /*----------------------------------------------------------------------------*/
-/* fork a child job for given command (PARENT WAITS)                          */
+/* fork a child job for given command                                         */
 /*----------------------------------------------------------------------------*/
 eEC Api::eForkJobChild(JobId& rtChildJobId,
                         TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
@@ -91,34 +91,26 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // verify tags
-  // C_TAG_JOBNM, C_TAG_ENTRYPOINT, C_TAG_PATH, C_TAG_WAIT
 
+  // C_TAG_JOBNM
   if (! pCmdTagSet->bHasName(C_TAG_JOBNM)) {
     pCmdTagSet->vDumpSet();
     THROW("Api::eForkJob: no C_TAG_JOBNM"_Stz);
   }
 
+  // C_TAG_ENTRYPOINT
   if (! pCmdTagSet->bHasName(C_TAG_ENTRYPOINT)) {
     pCmdTagSet->vDumpSet();
     THROW("Api::eForkJob: no C_TAG_ENTRYPOINT"_Stz);
   }
 
+  // C_TAG_PATH
   if (! pCmdTagSet->bHasName(C_TAG_PATH)) {
     pCmdTagSet->vDumpSet();
     THROW("Api::eForkJob: no C_TAG_PATH"_Stz);
   }
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create the child job
-
-  Stz* szJobNm = pCmdTagSet->szValue(C_TAG_JOBNM);
-  RASSERT(szJobNm);
-
-  rpChildJob_tbr = new Job(szJobNm,tParentId,tOriginId,tDistId);
-
-  TagSet* pJobTagSet = rpChildJob_tbr->pJobTags();
-  pJobTagSet->vCopy(pCmdTagSet);
-
+  // C_TAG_NOWAIT / C_TAG_WAIT
   if ((! pCmdTagSet->bHasName(C_TAG_NOWAIT)) &&
       (! pCmdTagSet->bHasName(C_TAG_WAIT))) {
     pCmdTagSet->vDumpSet();
@@ -130,30 +122,52 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
     THROW("Api::eForkJobOld: both C_TAG_NOWAIT and C_TAG_WAIT"_Stz);
   }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create the child job
+
+  Stz* szJobNm = pCmdTagSet->szValue(C_TAG_JOBNM);
+  RASSERT(szJobNm);
+
+  rpChildJob_tbr = new Job(szJobNm,tParentId,tOriginId,tDistId);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // copy CmdTagSet to the child job tags
+
+  TagSet* pJobTagSet = rpChildJob_tbr->pJobTags();
+  pJobTagSet->vCopy(pCmdTagSet);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // setup the child job
+
+  // sCmd
   sSTMT sCmd;
   pCmdTknVec->vVecToString(sCmd,0,true);
   rpChildJob_tbr->vCmd(sCmd);
 
+  // szEntry
   Stz* szEntry = pJobTagSet->szValue(C_TAG_ENTRYPOINT);
   rpChildJob_tbr->vEntryPoint(szEntry);
 
+  // szFolderPath
   Stz* szFolderPath = pJobTagSet->szValue(C_TAG_PATH);
   rpChildJob_tbr->vFolderPath(szFolderPath);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set up the job
-
+  // create the mutex in the child job
   rpChildJob_tbr->vMutexCreate();
-  //rpChildJob_tbr->vStmtListCreate();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create the task for the child job
   rpChildJob_tbr->vTaskCreate();
   RASSERT(rpChildJob_tbr->pTask());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // lock the mutex
-
   rpChildJob_tbr->vMutexLock();
   RASSERT(MS_LOCKED == rpChildJob_tbr->eMutexSide());
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // start the timer of the child job
   rpChildJob_tbr->vResponseTimerStart();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -162,10 +176,19 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // wait for signal from child job
+  // if C_TAG_WAIT parent gets signalled when child job completes
+  // if C_TAG_NOWAIT parent gets signalled when pretests/ compilation are done
+
   rpChildJob_tbr->vMutexWait();
   rpChildJob_tbr->vMutexUnlock();
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // update the timer of the child job
   rpChildJob_tbr->vResponseTimerUpdate();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // cycle the task lock ?????
+  // NOT SURE????
 
   rpChildJob_tbr->pTask()->vCycleTaskLock((Stz*)__func__);
 
