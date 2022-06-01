@@ -62,8 +62,8 @@ begin
   stage Gs_ORDERS on all partitions :
 
     indexScan 2 Orders IxO_ORDERDATE
-        "lbound timestamp '1993-10-01 00:00:00' >=
-         ubound timestamp '1994-01-01 00:00:00' < "
+        "lbound date '1993-10-01' >=
+         ubound date '1994-01-01' < "
     
     | project 2
         "type INTEGER as _custkey  O_CUSTKEY ,

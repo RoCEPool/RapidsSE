@@ -41,8 +41,8 @@ select
 
 from Orders
 
-where     o_orderdate >= TIMESTAMP '1993-07-01 00:00:00'
-     and o_orderdate <  TIMESTAMP '1993-10-01 00:00:00'
+where     o_orderdate >= DATE '1993-07-01'
+      and o_orderdate <  DATE '1993-10-01'
      and exists
           ( select *
 
@@ -85,8 +85,8 @@ begin
   // ∀ ORDERS π O_ORDERKEY as _orderkey
   stage Gs_ORDERS on all partitions :
     scan orders
-    | filter 2 " type BOOLEAN O_ORDERDATE TIMESTAMP '1993-07-01 00:00:00' >=
-                                 O_ORDERDATE TIMESTAMP '1993-10-01 00:00:00' < and "
+    | filter 2 " type BOOLEAN O_ORDERDATE DATE '1993-07-01' >=
+                              O_ORDERDATE DATE '1993-10-01' < and "
     | project 2 expr type INTEGER as _orderkey O_ORDERKEY ,
                      type VARCHAR as O_ORDERPRIORITY O_ORDERPRIORITY
     | hash 2 expr type INTEGER _orderkey

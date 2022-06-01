@@ -1032,3 +1032,37 @@ time 756ms
 */
 //SELECT 'abcdef' LIKE 'a_c%f' FROM nation LIMIT 1;
 
+
+
+args
+bp
+bye
+cd
+config
+hw
+ls
+print
+pwd
+bye
+cd <directoryName>
+cf <folderName>
+create catalog <catalogName>;
+create schema <schemaName>;
+create table <tableName>;
+create index <indexName>;
+create tenant <tenantName>;
+drop catalog <catalogName>;
+drop schema <schemaName>;
+drop table <tableName>;
+drop tenant <tenantName>;
+lf
+load <tableName> <fileName>
+ls
+lscol <tableName>
+print string
+pwf
+pwd
+space
+tableSizes
+lstbl
+lsidx <tableName>

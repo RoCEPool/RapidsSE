@@ -44,7 +44,7 @@ select
          count(*)                                            as count_order
 
   from LineItem
- where l_shipdate <= TIMESTAMP '1998-09-01 00:00:00'
+ where l_shipdate <= DATE '1998-09-01'
  group by l_returnflag, l_linestatus
  order by l_returnflag, l_linestatus;
 
@@ -63,7 +63,7 @@ select
          count(*)                                            as count_order
 
   from LineItem
- where l_shipdate <= TIMESTAMP '1998-09-01 00:00:00'
+ where l_shipdate <= DATE '1998-09-01'
  group by l_returnflag, l_linestatus;
 
 
@@ -79,7 +79,7 @@ begin
   // ∀ LINEITEM σ L_ORDERKEY as _orderkey
   stage Gs_LINEITEM on all partitions :
     scan lineitem
-    | filter 2 " type BOOLEAN L_SHIPDATE TIMESTAMP '1998-09-01 00:00:00'  <=  "
+    | filter 2 " type BOOLEAN L_SHIPDATE DATE '1998-09-01'  <=  "
     | aggreg 2 "
       type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
       type VARCHAR as L_LINESTATUS L_LINESTATUS ,
