@@ -1409,8 +1409,8 @@ void vDdlLockAssertNone(void);
   void vPlanShow(void);
 
   // port
-  void vPortAcceptConnection(void);
-  void vPortNewListen(void);
+  void vPortAcceptConnection_reg(void);
+  void vPortNewListen_reg(void);
 
   // pot
   void vPotCompleted(void);

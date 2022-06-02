@@ -47,8 +47,10 @@ namespace BASE
     void  operator delete(void*);
     
     Port(Object* pIsFor);
-    Port(eCN eClass, Object* pIsFor, int iSocketId);
+    Port(Object* pIsFor, int iSocketId);
    ~Port(void) noexcept(false);
+  
+    static void vRepair(Object* pObject);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
@@ -62,7 +64,8 @@ namespace BASE
     bool bClose(SysCall& SysCall);
     bool bConnectServer(Stz* sAddr, int iPort, SysCall& SysCall);
     void vCopy(Port* pSource);
-    bool bCreateServer(int iPort, SysCall& SysCall);
+    bool bCreateFdForSocket(SysCall& SysCall);
+    bool bCreateListeningPort(int iPort, SysCall& SysCall);
   
     void vDropWrite(void);
   
@@ -79,7 +82,6 @@ namespace BASE
     i8   iSendBufferSize(void);
     i8   nSends(void);
     bool bSetNonBlocking(SysCall& SysCall);
-    bool bSocket(SysCall& SysCall);
     bool bSuccess(void);
     void vSuccess(bool bSuccess);
   

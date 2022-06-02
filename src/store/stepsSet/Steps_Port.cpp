@@ -49,26 +49,25 @@ extern SizeHeap  gxaSizeHeap[];
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Port(void)
 {
-  vAddStep("port::newListen"_Stz,        &Step::vPortNewListen);
+  vAddStep("Port[]::newListen"_Stz,       &Step::vPortNewListen_reg);
 
-  vAddStep("port.acceptConnection"_Stz,  &Step::vPortAcceptConnection);
-
+  vAddStep("Port[].acceptConnection"_Stz, &Step::vPortAcceptConnection_reg);
 }
 
 /*----------------------------------------------------------------------------*/
-/* port.acceptConnection: listen for and accept a socket connection request   */
+/* Port[].acceptConnection: listen for and accept a socket connection request */
 /*----------------------------------------------------------------------------*/
-void Step::vPortAcceptConnection(void)
+void Step::vPortAcceptConnection_reg(void)
 {
   ENTRY();
   
   SysCall oSysCall;
   
-  Socket* pListeningSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
+  Port* pPort = * m_pLogicUnit->m_xpPort;
   
   // accept a connection
   int iSocketId;
-  bool bResult = pListeningSocket->bAcceptClient(iSocketId, oSysCall);
+  bool bResult = pPort->bAcceptClient(iSocketId, oSysCall);
   
   if ( ! bResult )
     vThrow(FK_CHECK,__func__,__FILE__,__LINE__,
@@ -83,32 +82,33 @@ void Step::vPortAcceptConnection(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* port::newListen: new a port which can listen & accept socket connections   */
+/* Port[]::newListen: new a port which can listen & accept socket connections */
 /*----------------------------------------------------------------------------*/
-void Step::vPortNewListen(void)
+void Step::vPortNewListen_reg(void)
 {
   ENTRY();
   
   SysCall oSysCall;
   
-  i8 iPort = m_pDataStack->iPopInt(__func__);
+  i8 iPortNo = m_pDataStack->iPopInt(__func__);
   
   //- - - - - - - - - - - - - - - - - - -  - - - - - - - - - - - - - - - - - - -
-  // attempt to create server-side listening socket
+  // attempt to create server-side listening socket/port
   
-  Socket* pSocket = new Socket(this);
-  bool bResult = pSocket->bCreateServer((int)iPort, oSysCall);
+  m_pLogicUnit->m_xpPort = new Port(this);
+  Port* pPort = * m_pLogicUnit->m_xpPort;
+  bool bResult = pPort->bCreateListeningPort((int)iPortNo, oSysCall);
   
   if ( ! bResult ) {
     if (oSysCall.iError() == EADDRINUSE) {
       vThrow(FK_CHECK,__func__,__FILE__,__LINE__,
              "Address in use (port: %lld). "
              "Check if another instance of RAPIDSSE is running!"_Stz,
-             iPort);
+             iPortNo);
     }
     else
       vThrow(FK_CHECK,__func__,__FILE__,__LINE__,
-             "Unable to listen for connections: Errno %d"_Stz, oSysCall.iError());
+             "Unable to listen for connections: errno=%d"_Stz, oSysCall.iError());
   }
   
   //- - - - - - - - - - - - - - - - - - -  - - - - - - - - - - - - - - - - - - -
@@ -131,7 +131,7 @@ void Step::vPortNewListen(void)
 //  }
 
   // return socket
-  m_pDataStack->vPushPtr(pSocket);
+  //m_pDataStack->vPushPtr(pSocket);
   
   EXIT();
 }

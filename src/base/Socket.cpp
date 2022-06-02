@@ -31,33 +31,8 @@ __aFooterFunction(Socket)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Socket::Socket(Object* pIsFor)
-: Port(pIsFor)
-{
-  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
-    
-  m_pReceivedObject = nullptr;
-  
-  MemLib::vZero(m_caObjectHeader,sizeof(m_caObjectHeader),CN_SOCKET);
-  m_aHeader = (Header*) & m_caObjectHeader[0];
-  m_pObject = reinterpret_cast<Object*>(m_aHeader);
-
-  m_aLowBuff   = MemLib::aMallocBlock(C_SIZE_POOL_BUFFER);
-  m_pRejectJob = new RejectJob;
-  
-  _checkInitialised_(CN_SOCKET);
-  
-  ++ gixSocket;
-
-  _postcondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
 Socket::Socket(Object* pIsFor, int iSocketId)
-: Port(CN_SOCKET,pIsFor,iSocketId)
-//, m_okLock(this)
+: Port(pIsFor,iSocketId)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
