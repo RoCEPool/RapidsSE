@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# The intent of this script file is to start RapidsSE from its installed environment.
+# The intent of this script file is to install RapidsSE from the installer.
 
-# This script file is called by Bamboo after it has built RapidsSE from source,
-# created the installer, and installed the software locally.
+# This script file is called by the file: ../jobs/testJob.sh
+
 
 ###############################################################################
 ### Environment Variables                                                   ###
@@ -56,9 +56,6 @@ fi
 # Did the script complete successfully or not?
 COMPLETED_SUCCESFULLY=0
 
-# Do we need to stop or force stop RapidsSE?
-STOP_REQ=0
-
 # The path of the config file to be used for installation
 CONFIG_FILE=""
 
@@ -71,15 +68,9 @@ CONFIG_FILE=""
 
 function onExit() {
 
-  if [ "${STOP_REQ}" -eq 1 ]; then
-    # TODO: Stop RapidsSE if it has been installed
-    # First, kill any rogue SE and SETH instances owned by the current user.
-    killRogueInstances
-  fi
-
-  local statusMsg="*** Completed the Start stage                                                ***"
+  local statusMsg="*** Completed the Install stage                                              ***"
   if [ "${COMPLETED_SUCCESFULLY}" -eq 0 ]; then
-    statusMsg="*** Failed the Start stage                                                   ***"
+    statusMsg="*** Failed the Install stage                                                 ***"
   fi
 
   local endTime
@@ -132,7 +123,7 @@ STARTTIME="$(date +%s)"
 
 echo ""
 echo "********************************************************************************"
-echo "*** Beginning the Start stage                                                ***"
+echo "*** Beginning the Install stage                                              ***"
 echo "********************************************************************************"
 echo ""
 
@@ -143,8 +134,28 @@ trap onExit EXIT
 # Collect/validate the parameters
 processArgs "$@"
 
-echo "*** Start Config: ${CONFIG_FILE} ***"
+echo "*** Install Config: ${CONFIG_FILE} ***"
 echo ""
+
+# Locate the installation file
+INSTALLER="$(ls -1 "${OUT_DIR}"/*.run)" || true
+
+if [ -z "${INSTALLER:-}" ]; then
+  errorExit "RapidsSE installation file could not be found in location: ${OUT_DIR}"
+fi
+
+# Simplify the path
+INSTALLER="$(realpath "${INSTALLER}")"
+
+# Install it
+"${INSTALLER}" --quiet --noprogress -- --script --config "${CONFIG_FILE}"
+
+# We need to set up a symbolic link so that the tests can load data.
+# The test files ask SE to load files from ../DATA/TPCH/*. This path
+# is relative to the cwd of SE, which will be something like
+# /opt/rapidsse/NODE1/commands
+# So we need to create /opt/rapidsse/NODE1/DATA and point it to
+# the DATA folder in the current repository path.
 
 # First get the installation dir from the config.
 # To do this, load the config (it is just a bash script file)
@@ -156,14 +167,61 @@ FIRST_NODE="${NODE_LIST[0]}"
 # Get the installation dir of the first node
 INSTALL_DIR="$(nodeCfgGetValue "${FIRST_NODE}" "dir")"
 
-if [ -z "${INSTALL_DIR}" ]; then
+if [ -z "${INSTALL_DIR:-}" ]; then
   errorExit "Couldn't get the installation directory for node ${FIRST_NODE}"
 fi
 
-# Start RapidsSE
-"${INSTALL_DIR}/startSE.sh"
+readonly DATA_SYMLINK_SRC="${INSTALL_DIR}/DATA"
+readonly DATA_SYMLINK_DEST="$(realpath "${PROJ_ROOT}/DATA")"
+
+# Check if the symbolic link already exists
+
+# If the link exists then lets delete and recreate it.
+if [ -e "${DATA_SYMLINK_SRC}" ]; then
+  # Is it a symbolic link?
+  if [ -h "${DATA_SYMLINK_SRC}" ]; then
+    rm -f "${DATA_SYMLINK_SRC}"
+  else 
+    errorExit "Expected to find a symbolic link at path: ${DATA_SYMLINK_SRC}"
+  fi
+fi
+
+echo "Making the symbolic link from ${DATA_SYMLINK_SRC} to ${DATA_SYMLINK_DEST}"
+ln -s "${DATA_SYMLINK_DEST}" "${DATA_SYMLINK_SRC}"
+
+#
+# Now let's do the same but for the ../TPCH symbolic link.
+# This data is much bigger (SF1) so it's not checked in.
+# Instead we must have it somewhere on the system.
+#
+
+readonly TPCH_SYMLINK_SRC="${INSTALL_DIR}/TPCH"
+
+TPCH_SYMLINK_DEST=""
+if ! TPCH_SYMLINK_DEST="$(getTpchDataDir)"; then
+  errorExit "Could not find the TPC-H SF1 data on the system."
+fi
+
+# Check if the data actually exists
+if [ ! -d "${TPCH_SYMLINK_DEST}" ]; then
+  errorExit "TPC-H SF1 data does not exist at: ${TPCH_SYMLINK_DEST}"
+fi
+
+# Check if the symbolic link already exists
+
+# If the link exists then lets delete and recreate it.
+if [ -e "${TPCH_SYMLINK_SRC}" ]; then
+  # Is it a symbolic link?
+  if [ -h "${TPCH_SYMLINK_SRC}" ]; then
+    rm -f "${TPCH_SYMLINK_SRC}"
+  else
+    errorExit "Expected to find a symbolic link at path: ${TPCH_SYMLINK_SRC}"
+  fi
+fi
+
+echo "Making the symbolic link from ${TPCH_SYMLINK_SRC} to ${TPCH_SYMLINK_DEST}"
+ln -s "${TPCH_SYMLINK_DEST}" "${TPCH_SYMLINK_SRC}"
 
 # Set this flag that the script completed successfully.
 # This will be picked up in the exit hook.
 COMPLETED_SUCCESFULLY=1
-

@@ -57,7 +57,7 @@ function printUsageAndExit() {
 
   # Note: not showing the internal parameters (--cluster, --node, --chunks, --offset)
   # so users don't mess with them!
-  
+
   echo ""
   echo "Usage: ./${SCRIPT_NAME} [--config <file>]"
   echo "                        --dir <dirName> [--dir <dirName> ...]"
