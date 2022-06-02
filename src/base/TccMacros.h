@@ -68,8 +68,9 @@
 #define _ASSIGN_IFTRUE(iArgTo)                                              \
  {                                                                          \
   iArg1 = *(--paW);                                                         \
-  if (iArg1 && iArg1 != C_DATUM_NULL)                                       \
+  if (iArg1 && iArg1 != C_DATUM_NULL)    {                                  \
     iArgTo = *(--paW);                                                      \
+  }                                                                         \
   else                                                                      \
     --paW;                                                                  \
  }
@@ -308,17 +309,20 @@
   *(paW++) = iArg1;                                                         \
   *(paW++) = iArg1;
 
-#define _COPYSTR(iArgTo, szAreaTo)                                          \
+#define _DUP_VCH(eErrorCode)                                                \
+  iArg1 = *(--paW);                                                         \
+  *(paW++) = iArg1;                                                         \
+  *(paW++) = iArg1;
+
+#define _COPYSTR(szAreaTo)                                                  \
   {                                                                         \
     iArg1 = *(--paW);                                                       \
     if (iArg1 == C_DATUM_NULL)                                              \
-      arg = iArg1;                                                          \
+      szAreaTo = iArg1;                                                     \
     else {                                                                  \
-        nSrcSize = strlen((char*)a) + 1;                                    \
+        nSrcSize = strlen((char*)iArg1) + 1;                                \
         szDstStz = szAreaTo;                                                \
-        strncpy(szDstStz, (char*)a, nSrcSize);                              \
-        iArgTo = (i8)szDstStz;                                              \
-        aCombinedT->m_racStrAreaP += nSrcSize;                              \
+        strncpy(szDstStz, (char*)iArg1, nSrcSize);                          \
       }                                                                     \
   }
 
@@ -586,7 +590,7 @@
 
 #define _MATCH_LEADING(eErrorCode)                                          \
   {                                                                         \
-    iArg1  = (i8)*(--paW);                                                  \
+    iArg1  = (i8)*(--paW) - 1;                                              \
     szArg1 = (char*)*(--paW);                                               \
     szArg2 = (char*)*(--paW);                                               \
     if (eErrorCode != EC_NONE ||                                            \
@@ -595,21 +599,23 @@
       *(paW++) = C_DATUM_NULL;                                              \
     }                                                                       \
     else {                                                                  \
+      i8 bMatch = 1;                                                        \
       char* r = szArg1;                                                     \
       char* s = szArg2;                                                     \
                                                                             \
       while (iArg1--)                                                       \
       {                                                                     \
         if (*r++ != *s++) {                                                 \
-          *(paW++) = 0;                                                     \
+          bMatch = 0;                                                       \
           break;                                                            \
         }                                                                   \
       }                                                                     \
-      if (iArg1 == 0)                                                       \
+      if (bMatch)                                                           \
         *(paW++) = 1;                                                       \
-    }                                                                       \
-  }
-
+      else                                                                  \
+        *(paW++) = 0;                                                       \
+   }                                                                        \
+}
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // _MATCH_MIDDLE
 // matches given string with middle characters (between 2 %) of the pattern
@@ -699,6 +705,7 @@
       *(paW++) = C_DATUM_NULL;                                              \
     }                                                                       \
     else {                                                                  \
+      i8 bMatch = 1;                                                        \
       char* r = szArg1 + iArg1 - 1;                                         \
       char* s = szArg2;                                                     \
                                                                             \
@@ -709,12 +716,14 @@
       while (*r != '%')                                                     \
       {                                                                     \
         if (*r-- != *s--) {                                                 \
-          *(paW++) = 0;                                                     \
+          bMatch = 0;                                                       \
           break;                                                            \
         }                                                                   \
       }                                                                     \
-      if (*(++r) == '%')                                                    \
+      if (bMatch)                                                           \
         *(paW++) = 1;                                                       \
+      else                                                                  \
+        *(paW++) = 0;                                                       \
     }                                                                       \
   }
 

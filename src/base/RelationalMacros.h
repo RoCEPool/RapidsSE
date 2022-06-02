@@ -1163,7 +1163,7 @@
       *paW++ = 0;                                                          \
     }                                                                      \
     else {                                                                 \
-      if (strcmp((char*)iArg1, (char*)iArg2) == 0)                         \
+      if (strcmp((char*)iArg2, (char*)iArg1) == 0)                         \
         *paW++ = 1;                                                        \
       else                                                                 \
         *paW++ = 0;                                                        \
@@ -1180,7 +1180,7 @@
       *paW++ = 0;                                                          \
     }                                                                      \
     else {                                                                 \
-      if (strcmp((char*)iArg1, (char*)iArg2) >= 0)                         \
+      if (strcmp((char*)iArg2, (char*)iArg1) >= 0)                         \
         *paW++ = 1;                                                        \
       else                                                                 \
         *paW++ = 0;                                                        \
@@ -1197,7 +1197,7 @@
       *paW++ = 0;                                                          \
     }                                                                      \
     else {                                                                 \
-      if (strcmp((char*)iArg1, (char*)iArg2) > 0)                         \
+      if (strcmp((char*)iArg2, (char*)iArg1) > 0)                         \
         *paW++ = 1;                                                        \
       else                                                                 \
         *paW++ = 0;                                                        \
@@ -1214,7 +1214,7 @@
       *paW++ = 0;                                                          \
     }                                                                      \
     else {                                                                 \
-      if (strcmp((char*)iArg1, (char*)iArg2) <= 0)                         \
+      if (strcmp((char*)iArg2, (char*)iArg1) <= 0)                         \
         *paW++ = 1;                                                        \
       else                                                                 \
         *paW++ = 0;                                                        \
@@ -1231,7 +1231,7 @@
       *paW++ = 0;                                                          \
     }                                                                      \
     else {                                                                 \
-      if (strcmp((char*)iArg1, (char*)iArg2) < 0)                         \
+      if (strcmp((char*)iArg2, (char*)iArg1) < 0)                          \
         *paW++ = 1;                                                        \
       else                                                                 \
         *paW++ = 0;                                                        \
@@ -1248,7 +1248,7 @@
       *paW++ = 0;                                                          \
     }                                                                      \
     else {                                                                 \
-      if (strcmp((char*)iArg1, (char*)iArg2) != 0)                         \
+      if (strcmp((char*)iArg2, (char*)iArg1) != 0)                         \
         *paW++ = 1;                                                        \
       else                                                                 \
         *paW++ = 0;                                                        \
