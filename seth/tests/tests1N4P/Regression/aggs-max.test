@@ -77,11 +77,9 @@ rows:
 
 // Source file: ../queries/aggs/max/rmax20.sql
 // Result file: ../queries/aggs/max/results/max20.res
-/* TODO: FIX
 select max(ucolvc), max(colb1) from table1;
 rows:
   ('zzz', 'yellow')
-*/
 
 // Source file: ../queries/aggs/max/rmax17.sql
 // Result file: ../queries/aggs/max/results/max17.res
@@ -187,8 +185,6 @@ ordered rows:
   ('YELLOW', 480)
 */
 
-// TODO: TO FIX
-/*
 select colb1, max(cola1) from table1 group by colb1 order by colb1;
 ordered rows:
   ('AQUA', 74)
@@ -222,7 +218,6 @@ ordered rows:
   ('violet', 'ddd')
   ('tan', 'eee')
   ('violet', 'fff')
-*/
 
 // Source file: ../queries/aggs/max/rmax12.sql
 // Result file: ../queries/aggs/max/results/max12.res

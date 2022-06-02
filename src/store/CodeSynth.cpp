@@ -4117,10 +4117,15 @@ void CodeSynth::vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, e
     case EK_AGGREG:
       // make the column name
       vMakeColumnNmStruct(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
+      pColumn = m_pStreamDefOut->pGetColumn(i_Col);
 
-      if (ePreExp == PE_MIN || ePreExp == PE_MAX)
-        sPush.vSprint("_ASSIGN_IFTRUE(p%s->%s)\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
-        //sPush.vSprint("_COPYSTR(p%s->%s)\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
+      if (ePreExp == PE_MIN || ePreExp == PE_MAX) {
+        if (pColumn->eColumnType() == CT_VARCHAR)
+          sPush.vSprint("_COPYSTR_IFTRUE(aCombinedT->m_racStrAreaAgg, p%s->%s)\n"_Stz,
+                        xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
+        else
+          sPush.vSprint("_ASSIGN_IFTRUE(p%s->%s)\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
+      }
       else
         sPush.vSprint("_ASSIGN(p%s->%s)\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
 
@@ -4141,9 +4146,13 @@ void CodeSynth::vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, e
 
       // make the column name
       vMakeColumnNmStruct(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
-
-      if (ePreExp == PE_MIN || ePreExp == PE_MAX)
-        sPush.vSprint("_ASSIGN_IFTRUE(p%s->%s)\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
+      pColumn = m_pStreamDefOut->pGetColumn(i_Col);
+      if (ePreExp == PE_MIN || ePreExp == PE_MAX) {
+        if (pColumn->eColumnType() == CT_VARCHAR)
+          sPush.vSprint("_COPYSTR_IFTRUE(aCombinedT->m_racStrAreaAgg, p%s->%s)\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
+        else
+          sPush.vSprint("_ASSIGN_IFTRUE(p%s->%s)\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
+      }
       else
         sPush.vSprint("_ASSIGN(p%s->%s)\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
 
@@ -4169,10 +4178,13 @@ void CodeSynth::vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, e
 
       // make the column name
       vMakeColumnNm(m_pStreamDefOut, sColNm, m_eStencilTo, i_Col);
-
-      if (ePreExp == PE_MIN || ePreExp == PE_MAX)
-        //sPush.vSprint("_COPYSTR(aCombinedT->m_aiPayload[%lld])\n"_Stz, i_Col);
-        sPush.vSprint("_ASSIGN_IFTRUE(aCombinedT->m_aiPayload[%lld])\n"_Stz, i_Col);
+      pColumn = m_pStreamDefOut->pGetColumn(i_Col);
+      if (ePreExp == PE_MIN || ePreExp == PE_MAX) {
+        if (pColumn->eColumnType() == CT_VARCHAR)
+          sPush.vSprint("_COPYSTR_IFTRUE(aCombinedT->m_aiPayload[%lld])\n"_Stz, i_Col);
+        else
+          sPush.vSprint("_ASSIGN_IFTRUE(aCombinedT->m_aiPayload[%lld])\n"_Stz, i_Col);
+      }
       else
         sPush.vSprint("_ASSIGN(aCombinedT->m_aiPayload[%lld])\n"_Stz, i_Col);
 

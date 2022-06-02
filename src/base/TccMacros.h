@@ -70,7 +70,7 @@
   iArg1 = *(--paW);                                                         \
   if (iArg1 && iArg1 != C_DATUM_NULL)    {                                  \
     iArgTo = *(--paW);                                                      \
-  }                                                                         \
+    }                                                                       \
   else                                                                      \
     --paW;                                                                  \
  }
@@ -82,6 +82,19 @@
 #define _ASSIGN_TO_ENTSTZ(iArgTo)                                           \
   szArg1 = (char*)*(--paW);                                                 \
   vEntWrk_appendElementEntStz(iArgTo,szArg1);
+
+#define _COPYSTR_IFTRUE(szAreaTo, iArgTo)                                   \
+  {                                                                         \
+    iArg1 = *(--paW);                                                       \
+    iArg2 = *(--paW);                                                       \
+    if (iArg1 && iArg1 != C_DATUM_NULL)    {                                \
+        nSrcSize = strlen((char*)iArg2) + 1;                                \
+        szDstStz = szAreaTo;                                                \
+        strncpy(szDstStz, (char*)iArg2, nSrcSize);                          \
+        iArgTo =  (i8)szDstStz;                                             \
+        szAreaTo += nSrcSize + 1;                                           \
+    }                                                                       \
+  }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // BETWEEN
