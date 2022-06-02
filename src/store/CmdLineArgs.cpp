@@ -264,7 +264,11 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     // Cluster ID, this is to group nodes into a cluster.
     // Should only accept heartbeat from the same cluster.
     if (szArg->bSame("--cid"_Stz)) {
-      m_xSysArgs.m_iClusterID = argv[++i_Arg].iToI8();
+      if ( ! StrLib::bIsInteger(argv[++i_Arg].azChar()) ) {
+        vTrace("Invalid Cluster ID : %s\n"_Stz,(Stz*)argv[i_Arg]);
+        return false;
+      }
+      m_xSysArgs.m_iClusterID = argv[i_Arg].iToI8();
       continue;
     }
     
@@ -536,7 +540,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
         
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--node"_Stz)) {
-      m_xSysArgs.m_xNodeDefn[i_BootNode].m_sNodeName  = (Stz*)argv[++i_Arg];;
+      m_xSysArgs.m_xNodeDefn[i_BootNode].m_sNodeName  = (Stz*)argv[++i_Arg];
       m_xSysArgs.m_xNodeDefn[i_BootNode].m_sIPAddress = (Stz*)argv[++i_Arg];
       if ( ! StrLib::bIsInteger(argv[++i_Arg].azChar()) ) {
         vTrace("Invalid Port number : %s\n"_Stz,(Stz*)argv[i_Arg]);
@@ -546,7 +550,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       i_BootNode++;
       
       if (m_xSysArgs.m_nDefinedNodes > C_MAX_NODES) {
-        vTrace("Maximum number of nodes defineable nodes is %lld\n"_Stz,
+        vTrace("Maximum number of nodes definable nodes is %lld\n"_Stz,
               C_MAX_NODES);
         return false;
       }
@@ -840,8 +844,10 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--threads"_Stz)) {
       m_xSysArgs.m_nThreads = argv[++i_Arg].iToI8();
-      if (m_xSysArgs.m_nThreads > C_MAX_THREADS) {
-        vTrace("Maximum number of thread allowed is %lld\n"_Stz,
+      if ( m_xSysArgs.m_nThreads <= 0 ||
+           m_xSysArgs.m_nThreads > C_MAX_THREADS) {
+        vTrace("Number of thread is %lld is outside the valid range (1 to %lld)\n"_Stz,
+               m_xSysArgs.m_nThreads,
                C_MAX_THREADS);
         return false;
       }
