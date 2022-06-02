@@ -1405,11 +1405,28 @@ void Input::vCollectSenNumber(void)
   
   
   // - handle minus only
-  if (! nIntegerDigits) {
+  if (! nIntegerDigits && ! m_xAnnChar.bIsDot()) {
     vCollectSenName();
     return;
   }
-  
+
+  // . handle dot only
+  if ( ! nIntegerDigits && m_xAnnChar.bIsDot()) {
+    AnnChar xDot = m_xAnnChar;
+
+    // collect next char
+    vGetAnnCharStripped();
+
+    if ( ! m_xAnnChar.bIsDigit() ) {
+      vUngetAnnCharStripped();
+      m_xAnnChar = xDot;
+      vCollectSenName();
+      return;
+    }
+    vUngetAnnCharStripped();
+    m_xAnnChar = xDot;
+  }
+
   // dot indicating fraction digits of decimal number follow
   if (m_xAnnChar.bIsDot()) {
 
@@ -1422,6 +1439,7 @@ void Input::vCollectSenNumber(void)
       nFractionDigits++;
       vGetAnnCharStripped();
     }
+
 
     // terminate the decimal literal
     *z = '\0';
@@ -1619,7 +1637,7 @@ bool Input::bStartCppInteger(void)
   
   if (StrLib::bIsDigit(m_xAnnChar.m_cChar))
     return true;
-  
+
   return false;
 }
 
@@ -1685,7 +1703,7 @@ bool Input::bStartSenInteger(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  if (m_xAnnChar.bIsMinus() || StrLib::bIsDigit(m_xAnnChar.m_cChar))
+  if (m_xAnnChar.bIsMinus() || StrLib::bIsDigit(m_xAnnChar.m_cChar) || m_xAnnChar.bIsDot())
     return true;
   
   return false;
