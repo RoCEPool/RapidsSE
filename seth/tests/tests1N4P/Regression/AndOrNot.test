@@ -261,12 +261,9 @@ rows:
 
 // Source file: ../queries/AndOrNot/raon8.sql
 // Result file: ../queries/AndOrNot/results/aon8.res
-/*
-TODO: FIX
 select count(*) from table1 where not colb1 LIKE 'bl%' or not colb1 LIKE 'BL%' ;
 rows:
   (100)
-*/
 
 // Source file: ../queries/AndOrNot/raon2.sql
 // Result file: ../queries/AndOrNot/results/aon2.res
