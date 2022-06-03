@@ -114,28 +114,29 @@
   stage stageA on origin :
       start
     | pulse once
-    | stageB
+    | next
 
   stage stageB on all nodes :
       chunk      $file   // read chunks of file, produce (seekOffset) =>
     | rdCsvChunk $file   // (seekOffset) => (csvBuffer)
-    | stageC localRobin
+    | next localRobin
 
   stage stageC on all partitions :
       toKeyHshRow $table // (csvBuffer) => (rowBuffer w row+keyHash)
     | toLglPtnRow $table // (rowBuffer) => (rowBuffer x logical partitions)
     | toLglPtnNst        // (rowBuffer) => (rowBuffer w normalised strings)
     | toLglPtnCrw        // (rowBuffer) => (crwBuffer x logical partitions)
-    | stageC hashcast
+    | next hashcast
 
   stage stageD on all partitions :
       insert $table      // (crwBuffer) inserted into table
-    | stageE
+    | next
 
   stage stageE on origin :
-    |  progress 'Load'
+    progress 'Load'
     |  toStatDemon
-    |  respond           // repond to responseOp as per fork
+    | output
+    //|  respond
     |  sink
     |  stageA
 
@@ -158,7 +159,7 @@
       | pulse once
       | eachPathTag
       | pathToDfload2 $table
-      | forkCommand dynamic waitFinished
+      | forkCommand waitFinished
       | waitFinished
       | sink
       | stageA
@@ -181,7 +182,7 @@
       | pulse once
       | eachPathTag
       | pathToDfload2 $table
-      | forkCommand dynamic waitFinished
+      | forkCommand waitFinished
       | waitFinished
       | sink
       | stageA

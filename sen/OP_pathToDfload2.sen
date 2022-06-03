@@ -30,7 +30,7 @@
 
   sPath <tableNm> "dfload2 %v \"%v\"" str.format locals| sCmd |
 
-  //sCmd "pathToDfload2: %v" .printf
+  sCmd "pathToDfload2: %v" .printf
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

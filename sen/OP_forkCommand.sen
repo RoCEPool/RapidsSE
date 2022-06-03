@@ -19,13 +19,7 @@
 
   sForkCmd "  forkCmd=%v" .printf
 
-
-  <responseOpNm> [stream].findOp locals| pResponseOp |
-  
-  pResponseOp op.name@ "  responseOp=%v" .printf
-    
 /*
-
   STD_NOWAIT_TAG sForkCmd api::forkChildOld if
     to tForkedJobId
     tForkedJobId "forkCommand: job %v" .printf
@@ -34,6 +28,23 @@
     eError ErrorCode::decodeError eError "forkCommand: error %v %v" .printf
   then
 */
+
+
+  // spawn a job for the load
+  STD_NORMALFORK_TAG sForkCmd api::forkChild not if
+    //"Error Code %v" .printf
+    op__execErr
+    true
+    exit
+  else
+    //[Op] [job].responseOp!
+    <responseOpNm> [stream].findOp locals| pResponseOp |
+    pResponseOp op.name@ "  responseOp=%v" .printf
+    pResponseOp [job].responseOp!
+
+    // set the new ENDMARKER handler
+    //find: forkCommand_End       EV_M_END       [op].handler!
+  then
 
   true
 ;
@@ -65,7 +76,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: forkCommand :: forkCommand dynamic <responseOpNm> ;
+cmdSyntax: forkCommand :: forkCommand <responseOpNm> ;
 
 : forkCommand_cmdTags _cmdTags tagCopy: op_tags
   tags{
