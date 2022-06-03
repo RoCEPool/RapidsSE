@@ -265,7 +265,8 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     // Should only accept heartbeat from the same cluster.
     if (szArg->bSame("--cid"_Stz)) {
       if ( ! StrLib::bIsInteger(argv[++i_Arg].azChar()) ) {
-        vTrace("Invalid Cluster ID : %s\n"_Stz,(Stz*)argv[i_Arg]);
+        vPrintErrorMarker(argv, i_Arg);
+        vTrace("Invalid cid argument value: %s\n"_Stz,(Stz*)argv[i_Arg]);
         return false;
       }
       m_xSysArgs.m_iClusterID = argv[i_Arg].iToI8();
@@ -413,6 +414,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       i_HeartbeatNode++;
 
       if (i_HeartbeatNode > C_MAX_NODES) {
+        vTrace("Invalid heartbeat parameter\n"_Stz);
         vTrace("Maximum number of nodes allowed in the cluster is %lld\n"_Stz,C_MAX_NODES);
         return false;
       }
@@ -473,10 +475,12 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     if (szArg->bSame("--lvlLevels"_Stz)) {
       m_xSysArgs.m_nLvlLevels = argv[++i_Arg].iToI8();
       if (m_xSysArgs.m_nLvlLevels < C_MIN_LVL_LEVELS) {
+        vTrace("Invalid lvlLevels argument value: %lld\n"_Stz, m_xSysArgs.m_nLvlLevels);
         vTrace("Minimum number of levels allowed is %lld\n"_Stz,C_MIN_LVL_LEVELS);
         return false;
       }
       if (m_xSysArgs.m_nLvlLevels > C_MAX_LVL_LEVELS) {
+        vTrace("Invalid lvlLevels argument value: %lld\n"_Stz, m_xSysArgs.m_nLvlLevels);
         vTrace("Maximum number of levels allowed is %lld\n"_Stz,C_MAX_LVL_LEVELS);
         return false;
       }
@@ -487,10 +491,12 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     if (szArg->bSame("--lvlRatio"_Stz)) {
       m_xSysArgs.m_iLvlRatio = argv[++i_Arg].iToI8();
       if (m_xSysArgs.m_iLvlRatio < C_MIN_LVL_RATIO) {
+        vTrace("Invalid lvlRatio argument value: %lld\n"_Stz, m_xSysArgs.m_iLvlRatio);
         vTrace("Minimum ratio of levels allowed is %lld\n"_Stz,C_MIN_LVL_RATIO);
         return false;
       }
       if (m_xSysArgs.m_iLvlRatio > C_MAX_LVL_RATIO) {
+        vTrace("Invalid lvlRatio argument value: %lld\n"_Stz, m_xSysArgs.m_iLvlRatio);
         vTrace("Maximum ratio of levels allowed is %lld\n"_Stz,C_MAX_LVL_RATIO);
         return false;
       }
@@ -537,23 +543,24 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       m_xSysArgs.m_sNodeName = (Stz*)argv[++i_Arg];
       continue;
     }
-        
+
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--node"_Stz)) {
       m_xSysArgs.m_xNodeDefn[i_BootNode].m_sNodeName  = (Stz*)argv[++i_Arg];
       m_xSysArgs.m_xNodeDefn[i_BootNode].m_sIPAddress = (Stz*)argv[++i_Arg];
       if ( ! StrLib::bIsInteger(argv[++i_Arg].azChar()) ) {
-        vTrace("Invalid Port number : %s\n"_Stz,(Stz*)argv[i_Arg]);
+        vTrace("Invalid node argument Port number: %s\n"_Stz,(Stz*)argv[i_Arg]);
         return false;
       }
       m_xSysArgs.m_xNodeDefn[i_BootNode].m_iPortNo    = argv[i_Arg].iToI8();
       i_BootNode++;
-      
-      if (m_xSysArgs.m_nDefinedNodes > C_MAX_NODES) {
-        vTrace("Maximum number of nodes definable nodes is %lld\n"_Stz,
-              C_MAX_NODES);
-        return false;
-      }
+      //TODO: Arjun check if we are supposed to use i_BootNode here.
+//      if (m_xSysArgs.m_nDefinedNodes > C_MAX_NODES) {
+//        vTrace("Invalid node argument value : %lld\n"_Stz, m_xSysArgs.m_nDefinedNodes);
+//        vTrace("Maximum number of nodes definable nodes is %lld\n"_Stz,
+//              C_MAX_NODES);
+//        return false;
+//      }
       continue;
     }
 
@@ -603,7 +610,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     if (szArg->bSame("--partitionsPerNode"_Stz)) {
 
       if ( ! StrLib::bIsInteger(argv[++i_Arg].azChar()) ) {
-        vTrace("Invalid partitionsPerNode : %s\n"_Stz,(Stz*)argv[i_Arg]);
+        vTrace("Invalid partitionsPerNode argument value: %s\n"_Stz,(Stz*)argv[i_Arg]);
         return false;
       }
 
@@ -748,14 +755,14 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       
       bool bResult = MagLib::bToBytes((Stz*)argv[++i_Arg], m_xSysArgs.m_iRegionSize);
       if (!bResult) {
-        vTrace("Invalid size argument: --size %s\n"_Stz,argv[i_Arg].szStz());
+        vTrace("Invalid size argument value: %s\n"_Stz,argv[i_Arg].szStz());
         return false;
       }
       
       i8 iTotalMemory = MemLib::iGetTotalMemory();
       if (! m_xSysArgs.m_bDeveloper &&
           m_xSysArgs.m_iRegionSize > DIV(C_MAX_SHM_PERCENT * iTotalMemory, 100)) {
-        vTrace("Invalid size argument: --size %s\n"_Stz,argv[i_Arg].szStz());
+        vTrace("Invalid size argument value: %s\n"_Stz,argv[i_Arg].szStz());
         s32 sMag;
         MagLib::vByteMag(iTotalMemory,sMag);
         vTrace("Cannot set size > %lld%% of memory on this node (node has only %s of memory)\n"_Stz,
@@ -843,7 +850,12 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--threads"_Stz)) {
-      m_xSysArgs.m_nThreads = argv[++i_Arg].iToI8();
+      if ( ! StrLib::bIsInteger(argv[++i_Arg].azChar()) ) {
+        vPrintErrorMarker(argv, i_Arg);
+        vTrace("Invalid threads argument value: %s\n"_Stz, (Stz*)argv[i_Arg]);
+        return false;
+      }
+      m_xSysArgs.m_nThreads = argv[i_Arg].iToI8();
       if ( m_xSysArgs.m_nThreads <= 0 ||
            m_xSysArgs.m_nThreads > C_MAX_THREADS) {
         vTrace("Number of thread is %lld is outside the valid range (1 to %lld)\n"_Stz,
@@ -936,6 +948,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    vPrintErrorMarker(argv, i_Arg);
     vTrace("Unrecognized command argument: %s\n"_Stz,argv[i_Arg].szStz());
     return false;
   }
@@ -1049,6 +1062,27 @@ void CmdLineArgs::vPrint(void)
   vTrace("\n"_Stz);
 }
 
+/*----------------------------------------------------------------------------*/
+/* print arguments                                                            */
+/*----------------------------------------------------------------------------*/
+void CmdLineArgs::vPrintErrorMarker(s256* argv, i8 i_Arg)
+{
+  i8 iCount = 0;
+  for(i8 i = 0; i < i_Arg; i++)
+  {
+    iCount += argv[i].nLength() + 1;
+  }
+  for(i8 i = 0; i < iCount; i++)
+  {
+    vTrace(" "_Stz);
+  }
+  vTrace("^"_Stz);
+  for(i8 i = 0; i < argv[i_Arg].nLength() - 1; i++)
+  {
+    vTrace("~"_Stz);
+  }
+  vTrace("\n"_Stz);
+}
 /*----------------------------------------------------------------------------*/
 /* print arguments                                                            */
 /*----------------------------------------------------------------------------*/
