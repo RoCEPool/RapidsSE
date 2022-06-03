@@ -412,6 +412,7 @@ namespace OBLIQUE
     class OBJECT
     {
     public:
+      static void vAssertClassSize(eCN eClassNo, i8 nClassSize);
       static i8 iNextNo(eCN eClassNo);
       static eEC eValidObject(Object* pObject);
     };
