@@ -2,8 +2,7 @@
 
 # The intent of this script file is to invoke SETH against the running RapidsSE.
 
-# This script file is called by Jenkins after it has built RapidsSE from source,
-# created the installer, installed the software locally and started it.
+# This script file is called by the file: ../jobs/testJob.sh
 
 ###############################################################################
 ### Environment Variables                                                   ###
@@ -20,32 +19,50 @@
 
 readonly SCRIPT_NAME=$(basename "$0")
 readonly DIR="$(dirname "$0")"
-readonly PROJ_ROOT="${DIR}/../.."
-readonly BIN_DIR="${PROJ_ROOT}/bin"
-readonly SRC_DIR="${PROJ_ROOT}/src"
-readonly PKG_DIR="${PROJ_ROOT}/installer/packaging"
-readonly OUT_DIR="${PROJ_ROOT}/installer/output"
+readonly PROJ_ROOT="${DIR}/../../.."
 readonly BOOTSTRAP_DIR="${PROJ_ROOT}/bootstrap"
+readonly SETH_BIN_DIR="${PROJ_ROOT}/seth/bin"
+readonly SETH_RESULTS_DIR="${DIR}/../results"
 
 readonly COMMON_FN="${DIR}/common.fn"
 readonly BOOTSTRAP_COMMON_FN="${BOOTSTRAP_DIR}/common.fn"
 
-# Set to 1 to print debug messages in Jenkins.
+# Set to 1 to print debug messages in Bamboo.
 readonly DEBUG=0
 
 # How long to run the seth tests for (in seconds) before declaring that they are hung.
-# Defaulting to 30 minutes.
-readonly SETH_TIMEOUT="3600"
+# Defaulting to 45 minutes.
+readonly SETH_TIMEOUT="2700"
 
 # Maximum disk space utilisation % that we will accept on the current partition
-# before we forcably stop the tests. This is trying to catch situations where
+# before we forcibly stop the tests. This is trying to catch situations where
 # we write to the test log in a tight loop and eat up all disk space.
 readonly MAX_DISK_USED_PCT="90"
 
 
 ###############################################################################
+### Includes                                                                ###
+###############################################################################
+
+# Load other common functions
+
+if [ -z "${__BAMBOO_COMMON_FN:-}" ] ; then
+  #shellcheck source=common.fn
+  source "${COMMON_FN}" || { >&2 echo "Could not load ${COMMON_FN}"; exit 1; }
+fi
+
+if [ -z "${__COMMON_FN:-}" ] ; then
+  #shellcheck source=../../../bootstrap/common.fn
+  source "${BOOTSTRAP_COMMON_FN}" || { >&2 echo "Could not load ${BOOTSTRAP_COMMON_FN}"; exit 1; }
+fi
+
+
+###############################################################################
 ### Significant Global Variables                                            ###
 ###############################################################################
+
+# Did the script complete successfully or not?
+COMPLETED_SUCCESFULLY=0
 
 # Do we need to stop or force stop RapidsSE?
 STOP_REQ=0
@@ -63,15 +80,6 @@ TESTLIST_FILE=""
 ### Functions                                                               ###
 ###############################################################################
 
-# Include a file that contains all of the functions used within.
-#shellcheck source=common.fn
-source "${COMMON_FN}" || { >&2 echo "Could not load ${COMMON_FN}"; exit 1; }
-
-# Load the library that will allow us to extract fields from the cluster config file.
-#shellcheck source=../../bootstrap/common.fn
-source "${BOOTSTRAP_COMMON_FN}" || { >&2 echo "Could not load ${BOOTSTRAP_COMMON_FN}"; exit 1; }
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## An exit hook that runs whether the script is exiting cleanly or in error.
 ## Params: None
 
@@ -82,6 +90,23 @@ function onExit() {
     # First, kill any rogue SE and SETH instances owned by the current user.
     killRogueInstances
   fi
+
+  local statusMsg="*** Completed the Test stage                                                 ***"
+  if [ "${COMPLETED_SUCCESFULLY}" -eq 0 ]; then
+    statusMsg="*** Failed the Test stage                                                    ***"
+  fi
+
+  local endTime
+  local elapsedTime
+  endTime="$(date +%s)"
+  elapsedTime="$(secondsToTime $((endTime - STARTTIME)))"
+
+  echo ""
+  echo "********************************************************************************"
+  echo "${statusMsg}"
+  echo "********************************************************************************"
+  echo "Elapsed time: ${elapsedTime}"
+  echo ""
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -146,6 +171,9 @@ trap onExit EXIT
 # Collect/validate the parameters
 processArgs "$@"
 
+echo "*** Test Config: ${CONFIG_FILE} ***"
+echo "*** Test Build: ${TARGET} ***"
+echo ""
 
 # First get the installation dir from the config.
 # To do this, load the config (it is just a bash script file)
@@ -174,7 +202,7 @@ readonly STATUS_SCRIPT="${INSTALL_DIR}/status.sh"
 
 # Classpath of invoking SETH. SETH is not installed so we must
 # invoke it from the current repository.
-readonly CLASSPATH="${DIR}/..:${DIR}/../*"
+readonly CLASSPATH="${SETH_BIN_DIR}:${SETH_BIN_DIR}/*"
 
 readonly SE_BIN_DIR="${INSTALL_DIR}/bin"
 readonly SE_PATH="${SE_BIN_DIR}/rapidsse"
@@ -189,9 +217,8 @@ export LD_LIBRARY_PATH="${SE_BIN_DIR}:${LD_LIBRARY_PATH:-}"
 # Additional arguments for SETH. Enable as required.
 readonly SETH_ARGS=(
   "--logsteps" 
-  "--resultdir" "$(realpath "${DIR}/results")"
+  "--resultdir" "${SETH_RESULTS_DIR}"
   "--resultname" "results-${TARGET}.xml"
-  "--testsuffix" " (${TARGET})"
   "--resultformat" "junit" 
   "-f" "${TESTLIST_FILE}"
 )
@@ -241,8 +268,8 @@ do
     >&2 echo "Cluster Status:" 1>&2
     >&2 echo "${CLUSTER_OUTPUT}" 1>&2
     >&2 echo "" 1>&2
-    >&2 echo "Here are the last 200 lines of its log file:" 1>&2
-    >&2 tail -n 200 "${SE_LOG_FILE}" 1>&2
+    >&2 echo "Here are the last 250 lines of its log file:" 1>&2
+    >&2 tail -n 250 "${SE_LOG_FILE}" 1>&2
 
     # Clean up the SETH process and its subordinate SE prompt
     SE_PROMPT_PID=$(ps -o pid= --ppid ${SETH_PID})
@@ -312,20 +339,14 @@ SETH_ELAPSED_TIME="$((CURRENT_TIME - SETH_START_TIME))"
 
 if [ "${SETH_ELAPSED_TIME}" -lt 5 ]
 then
-  >&2 echo "SETH finished too quickly (<5 sec). Something must have gone wrong." 1>&2
+  >&2 echo "SETH finished too quickly (<5 sec). Something must have gone wrong or there were little or no tests to be run." 1>&2
   exit 1
 fi
 
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-ENDTIME="$(date +%s)"
-ELAPSEDTIME="$(secondsToTime $((ENDTIME - STARTTIME)))"
-
-echo ""
-echo "********************************************************************************"
-echo "*** Completed the Test stage                                                 ***"
-echo "********************************************************************************"
-echo "Elapsed time: $(secondsToTime "${ELAPSEDTIME}")"
-echo ""
+# Set this flag that the script completed successfully.
+# This will be picked up in the exit hook.
+COMPLETED_SUCCESFULLY=1
 

@@ -1,10 +1,8 @@
 #!/bin/bash
 
-# The intent of this script file is to stop RapidsSE from its installed environment.
+# The intent of this script file is to start RapidsSE from its installed environment.
 
-# This script file is called by Jenkins after it has built RapidsSE from source,
-# created the installer, installed the software locally, started it, and
-# ran some tests.
+# This script file is called by the file: ../jobs/testJob.sh
 
 ###############################################################################
 ### Environment Variables                                                   ###
@@ -21,7 +19,7 @@
 
 readonly SCRIPT_NAME=$(basename "$0")
 readonly DIR="$(dirname "$0")"
-readonly PROJ_ROOT="${DIR}/../.."
+readonly PROJ_ROOT="${DIR}/../../.."
 readonly BIN_DIR="${PROJ_ROOT}/bin"
 readonly SRC_DIR="${PROJ_ROOT}/src"
 readonly PKG_DIR="${PROJ_ROOT}/installer/packaging"
@@ -31,15 +29,34 @@ readonly BOOTSTRAP_DIR="${PROJ_ROOT}/bootstrap"
 readonly COMMON_FN="${DIR}/common.fn"
 readonly BOOTSTRAP_COMMON_FN="${BOOTSTRAP_DIR}/common.fn"
 
-readonly RELATIVE_JENKINS_DIR="seth/jenkins"  # Relative to the project root
-
-# Set to 1 to print debug messages in Jenkins.
+# Set to 1 to print debug messages in Bamboo.
 readonly DEBUG=0
 
+###############################################################################
+### Includes                                                                ###
+###############################################################################
+
+# Load other common functions
+
+if [ -z "${__BAMBOO_COMMON_FN:-}" ] ; then
+  #shellcheck source=common.fn
+  source "${COMMON_FN}" || { >&2 echo "Could not load ${COMMON_FN}"; exit 1; }
+fi
+
+if [ -z "${__COMMON_FN:-}" ] ; then
+  #shellcheck source=../../../bootstrap/common.fn
+  source "${BOOTSTRAP_COMMON_FN}" || { >&2 echo "Could not load ${BOOTSTRAP_COMMON_FN}"; exit 1; }
+fi
 
 ###############################################################################
 ### Significant Global Variables                                            ###
 ###############################################################################
+
+# Did the script complete successfully or not?
+COMPLETED_SUCCESFULLY=0
+
+# Do we need to stop or force stop RapidsSE?
+STOP_REQ=0
 
 # The path of the config file to be used for installation
 CONFIG_FILE=""
@@ -48,22 +65,33 @@ CONFIG_FILE=""
 ### Functions                                                               ###
 ###############################################################################
 
-# Include a file that contains all of the functions used within.
-#shellcheck source=common.fn
-source "${COMMON_FN}" || { >&2 echo "Could not load ${COMMON_FN}"; exit 1; }
-
-# Load the library that will allow us to extract fields from the cluster config file.
-#shellcheck source=../../bootstrap/common.fn
-source "${BOOTSTRAP_COMMON_FN}" || { >&2 echo "Could not load ${BOOTSTRAP_COMMON_FN}"; exit 1; }
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## An exit hook that runs whether the script is exiting cleanly or in error.
 ## Params: None
 
 function onExit() {
-  # We should have shut down cleanly, but just in case we will
-  # kill all RapidsSE instances, SE Prompt and SETH instances too.
-  killRogueInstances
+
+  if [ "${STOP_REQ}" -eq 1 ]; then
+    # TODO: Stop RapidsSE if it has been installed
+    # First, kill any rogue SE and SETH instances owned by the current user.
+    killRogueInstances
+  fi
+
+  local statusMsg="*** Completed the Start stage                                                ***"
+  if [ "${COMPLETED_SUCCESFULLY}" -eq 0 ]; then
+    statusMsg="*** Failed the Start stage                                                   ***"
+  fi
+
+  local endTime
+  local elapsedTime
+  endTime="$(date +%s)"
+  elapsedTime="$(secondsToTime $((endTime - STARTTIME)))"
+
+  echo ""
+  echo "********************************************************************************"
+  echo "${statusMsg}"
+  echo "********************************************************************************"
+  echo "Elapsed time: ${elapsedTime}"
+  echo ""
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -103,7 +131,7 @@ STARTTIME="$(date +%s)"
 
 echo ""
 echo "********************************************************************************"
-echo "*** Beginning the Stop stage                                                 ***"
+echo "*** Beginning the Start stage                                                ***"
 echo "********************************************************************************"
 echo ""
 
@@ -114,6 +142,8 @@ trap onExit EXIT
 # Collect/validate the parameters
 processArgs "$@"
 
+echo "*** Start Config: ${CONFIG_FILE} ***"
+echo ""
 
 # First get the installation dir from the config.
 # To do this, load the config (it is just a bash script file)
@@ -129,17 +159,10 @@ if [ -z "${INSTALL_DIR}" ]; then
   errorExit "Couldn't get the installation directory for node ${FIRST_NODE}"
 fi
 
-# Stop RapidsSE
-"${INSTALL_DIR}/stopSE.sh"
+# Start RapidsSE
+"${INSTALL_DIR}/startSE.sh"
 
-
-ENDTIME="$(date +%s)"
-ELAPSEDTIME="$(secondsToTime $((ENDTIME - STARTTIME)))"
-
-echo ""
-echo "********************************************************************************"
-echo "*** Compelted the Stop stage                                                 ***"
-echo "********************************************************************************"
-echo "Elapsed time: ${ELAPSEDTIME}"
-echo ""
+# Set this flag that the script completed successfully.
+# This will be picked up in the exit hook.
+COMPLETED_SUCCESFULLY=1
 

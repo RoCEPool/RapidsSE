@@ -12,7 +12,7 @@ import septest.errors as errors
 from septest.runners.jobrunner import JobRunner
 
 C_PROG_RUN = "pipenv run python -m septest"
-C_REL_REPO_ROOT = "../"
+C_REL_REPO_ROOT = "../../"
 C_REPO_ROOT = (pathlib.Path.cwd() / C_REL_REPO_ROOT).resolve()
 C_CWD_SUFFIX = "perftest"
 C_DEFAULT_RESULT_DIR = "./results"
