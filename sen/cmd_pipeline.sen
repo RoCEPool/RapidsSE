@@ -74,7 +74,6 @@
 /* org_ org */    then
 /* org_ org */  then
 
-
 /* org_ org */  [args].distJob if
 /* org_ org */    "pipeline" "origin"
 /* org_ org */      "org_ org" "preExecuteTest"                    [job].trace
@@ -104,17 +103,17 @@
 /* org_ org */    HAZARD
 /* org_ org */  then
 
-
 /* org_ org */
 /* org_ org */  // - - - - - - - - - - - - - - - - - - - - - - - -
 /* org_ org */  // compile pipeline statement to check its syntax
 /* org_ org */  // - - - - - - - - - - - - - - - - - - - - - - - -
 /* org_ org */
-/* org_ org */  //[args].distJob if
-/* org_ org */  //  "pipeline" "origin"
-/* org_ org */  //    "org_ org" "Dynamo compile"                    [job].trace
-/* org_ org */  //then
+/* org_ org */  [args].distJob if
+/* org_ org */    "pipeline" "origin"
+/* org_ org */      "org_ org" "Dynamo compile"                    [job].trace
+/* org_ org */  then
 /* org_ org */
+
 /* org_ org */  Dynamo[].new
 /* org_ org */  <cmd> Dynamo[].compile to ErrorCode[]
 /* org_ org */  ErrorCode[] EC_NONE == if
@@ -201,7 +200,6 @@
 ?* org_ org *?  HAZARD
 ?* org_ org *?  then
 */
-/* org_ org */
 
 /* org_ org */  // - - - - - - - - - -
 /* org_ org */  // test if optimising
