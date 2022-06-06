@@ -1644,7 +1644,7 @@ void CodeSynth::vGenerateStencilCastTo(void) {
                     xRowRef[m_eStencilTo].m_szInclude,
                     xRowRef[m_eStencilTo].m_szInclude);
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-      StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_racStrAreaAgg = aCombinedT->m_racStrAreaSavAgg;");
+      //StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_racStrAreaAgg = aCombinedT->m_racStrAreaSavAgg;");
       StrLib::vAppendString(&m_azCodeCrs, "\n    szStrArea = aCombinedT->m_racStrAreaAgg;");
       break;
 

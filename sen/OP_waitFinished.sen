@@ -16,16 +16,16 @@
 /* test                                                                       */
 /*----------------------------------------------------------------------------*/
 : waitFinished_mayProceed
-  
+
   "  : waitFinished_mayProceed" .
 
   Counter1[] Counter0[] "    expected %v processed %v" .printf
-  
+
   Counter0[] not if
     false
     exit
   then
-  
+
   Counter1[] Counter0[] == if
     true
   else
@@ -33,6 +33,51 @@
   then
 ;
 
+/*----------------------------------------------------------------------------*/
+/* on EV_X_CHILDEXIT ...                                       EV_X_CHILDEXIT */
+/*----------------------------------------------------------------------------*/
+: waitFinished_ChildExit \handler
+
+  0 EV_X_CHILDEXIT EG_ZK LogicUnit[].diaryNote
+
+  Counter1[] 1 + to Counter1[]
+
+  waitFinished_mayProceed if
+
+    true LogicUnit[].RcvdChildExit!
+
+    nullptr [job].responseOp!
+
+    LogicUnit[].RcvdEnd@ if
+      Marker[].newEndMarker
+      Marker[].pipeout
+    then
+
+    "waitFinished_ChildExit" .
+  then
+
+  Pipein[].delete
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_END ...                                                   */
+/*----------------------------------------------------------------------------*/
+: waitFinished_End \handler
+
+  //"EV_M_END" .verbose
+
+  true LogicUnit[].RcvdEnd!
+
+  LogicUnit[].RcvdChildExit@ if
+     PipeIn[].pipeout
+  else
+    PipeIn[].delete
+  then
+
+  true
+;
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -56,6 +101,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for EV_M_END ...                                                   */
 /*----------------------------------------------------------------------------*/
+/*
 : waitFinished_End \handler
 
   [EvMgr].curEventNm@ "%v" .printf
@@ -80,10 +126,11 @@
     
   then
 ;
-
+*/
 /*----------------------------------------------------------------------------*/
 /* handler for EV_M_FINISHED_handler ...                                      */
 /*----------------------------------------------------------------------------*/
+/*
 : waitFinished_Finished \handler
 
   [EvMgr].curEventNm@ "%v" .printf
@@ -110,6 +157,7 @@
     
   then
 ;
+*/
 
 /*----------------------------------------------------------------------------*/
 /* handler for EV_M_START ...                                                 */
@@ -118,8 +166,8 @@
   
   [EvMgr].curEventNm@ "%v" .printf
     
-  0 to Counter0[] // tracks the number of EV_M_FINISHED expected
-  0 to Counter1[] // tracks the number of EV_M_FINISHED processed so far
+  0 to Counter0[] // tracks the number of EV_X_CHILDEXIT expected
+  0 to Counter1[] // tracks the number of EV_X_CHILDEXIT processed so far
 
   EV_M_START_handler
 ;
@@ -139,8 +187,10 @@
 
   find: waitFinished_Count     EV_I_COUNT     [op].handler!
   find: waitFinished_End       EV_M_END       [op].handler!
-  find: waitFinished_Finished  EV_M_FINISHED  [op].handler!
+  //find: waitFinished_Finished  EV_M_FINISHED  [op].handler!
   find: waitFinished_Start     EV_M_START     [op].handler!
+
+  find: waitFinished_ChildExit EV_X_CHILDEXIT     [op].handler!
 
   op__loop
 

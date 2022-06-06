@@ -224,6 +224,8 @@ EndDefine
 #define __aNewFunction(CLASSNM,CN) \
   void* CLASSNM::operator new(size_t) \
   { \
+    AM::OBJECT::vAssertClassSize(CN,sizeof(CLASSNM)); \
+  \
     void* pObject = Heaps::pAllocate(CN); \
   \
     return pObject; \

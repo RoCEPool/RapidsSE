@@ -15,7 +15,7 @@
 /*----------------------------------------------------------------------------*/
 
 __pCastFunction(STORE,RejectJob,CN_REJECTJOB)
-__aNewFunction(RejectJob,CN_CHILDEXIT)
+__aNewFunction(RejectJob,CN_REJECTJOB)
 __vDeleteFunction(RejectJob,CN_REJECTJOB)
 __aFooterFunction(RejectJob)
 

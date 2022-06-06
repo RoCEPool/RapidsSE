@@ -82,8 +82,8 @@ C_KEYPAIR_NAME = "aws_rapidsse"
 #
 
 # ---------- Other Constants -------------
-C_PROJ_ROOT = ".."
-C_CLOUD_INIT_SCRIPT = f"{C_PROJ_ROOT}/seth/bamboo/aws/cloud-init-downloader.sh"
+C_PROJ_ROOT = "../.."
+C_CLOUD_INIT_SCRIPT = f"{C_PROJ_ROOT}/bamboo/common/aws/cloud-init-downloader.sh"
 C_CLOUD_INIT_COMPLETE = "/tmp/cloud-init-complete"
 C_SSH_CONNECT_TIMEOUT = 5  # seconds
 C_MSG_PERIOD = 5  # Print updates every 5 seconds

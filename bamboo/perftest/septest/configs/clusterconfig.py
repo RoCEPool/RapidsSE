@@ -17,7 +17,7 @@ class ClusterConfig:
 
     C_PARSER_FILE     = "clusterConfigParser.sh"
     C_PARSER_PATH     = str((pathlib.Path(__file__).parent / C_PARSER_FILE).resolve())
-    C_COMMON_FN_PATH  = "../bootstrap/common.fn"
+    C_COMMON_FN_PATH  = "../../bootstrap/common.fn"
     C_NUM_NODES       = "numNodes"
     C_FIRST_NODE_NAME = "firstNodeName"
     C_SHM             = "shm"
