@@ -33,16 +33,10 @@ void Step::vAddSteps_JobId(void)
   vAddStep("job(Id).folderPath@"_Stz,    &Step::vJobIdFolderPathFetch);
   vAddStep("job(Id).folderPath!"_Stz,    &Step::vJobIdFolderPathStore);
   
-  vAddStep("job(Id).hasCascade@"_Stz,    &Step::vJobIdHasCascadeFetch);
-  
-  vAddStep("job(Id).id@"_Stz,            &Step::vJobIdIdFetch);
-  
   vAddStep("job(Id).jobList@"_Stz,       &Step::vJobIdJobListFetch);
     
   vAddStep("job(Id).lastJobId@"_Stz,     &Step::vJobIdLastJobIdFetch);
   vAddStep("job(Id).lastJobId!"_Stz,     &Step::vJobIdLastJobIdStore);
-  
-  //vAddStep("job(Id).masterJob"_Stz,      &Step::vJobIdMasterJob);
   
   vAddStep("job(Id).name@"_Stz,          &Step::vJobIdNameFetch);
   
@@ -51,8 +45,7 @@ void Step::vAddSteps_JobId(void)
 
   vAddStep("job(Id).reapable@"_Stz,      &Step::vJobIdReapableFetch);
   vAddStep("job(Id).reapable!"_Stz,      &Step::vJobIdReapableStore);
-  
-  vAddStep("job(Id).show"_Stz,           &Step::vJobIdShow);
+
   vAddStep("job(Id).systemCloser?"_Stz,  &Step::vJobIdSystemCloserFetch);
   vAddStep("job(Id).systemCloser!"_Stz,  &Step::vJobIdSystemCloserStore);
 
@@ -90,34 +83,6 @@ void Step::vJobIdFolderPathStore(void)
   m_pDataStack->vPopStr(sFolderPath,__func__);
 
   pJob->vFolderPath(sFolderPath);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job(Id).hasCascade@ -- fetch bHasCascade from session                      */
-/*----------------------------------------------------------------------------*/
-void Step::vJobIdHasCascadeFetch(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-
-  //m_pDataStack->vPushInt(pJob->bHasStmtList());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job(Id).id@ -- fetch the job id of the job                                 */
-/*----------------------------------------------------------------------------*/
-void Step::vJobIdIdFetch(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  m_pDataStack->vPushInt(pJob->tJobId().iAsI8());
   
   EXIT();
 }
@@ -250,21 +215,6 @@ void Step::vJobIdReapableStore(void)
   
   pJob->vReapable(iJobReapable);
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job(Id).show -- show the job                                               */
-/*----------------------------------------------------------------------------*/
-void Step::vJobIdShow(void)
-{
-  ENTRY();
-  
-  RASSERT(0);
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  UNUSED(pJob);
-
   EXIT();
 }
 

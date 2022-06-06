@@ -826,10 +826,7 @@ void vDdlLockAssertNone(void);
 
   void vJobGet(void);
 
-  void vJobIdHasCascadeFetch(void);
-
   void vJobIdFetch(void);
-  void vJobIdIdFetch(void);
 
   void vJobIdJobListFetch(void);
 
@@ -872,7 +869,6 @@ void vDdlLockAssertNone(void);
 
   void vListedJobScheduleNextPhase(void);
   void vJobScheduleNextPhase(void);
-  void vJobIdShow(void);
 
   void vJobSetOriginId(void);
   void vJobSignalParent(void);
