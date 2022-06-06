@@ -98,7 +98,7 @@
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // BETWEEN
-#define _BET_BCDBCD(eErrorCode)                                             \
+#define _BET_BCDBCD(eErrorCode)                                            \
   {                                                                        \
     bcdArg1.m_iAsI8 = *(--paW);                                            \
     bcdArg2.m_iAsI8 = *(--paW);                                            \
@@ -110,18 +110,70 @@
       *(paW++) = 0;                                                        \
     }                                                                      \
     else {                                                                 \
-       if (bcdArg1.m_iMantissa > bcdArg2.m_iMantissa) {                                                  \
+                                                                           \
+        if (bcdArg1.m_iScale != bcdArg2.m_iScale) {                        \
+          *paW++ = bcdArg1.m_iAsI8;                                        \
+          *paW++ = bcdArg2.m_iAsI8;                                        \
+          _RESCALE_BCD_MAX_OF_TWO(eErrorCode)                              \
+          bcdArg2.m_iAsI8 = *(--paW);                                      \
+          bcdArg1.m_iAsI8 = *(--paW);                                      \
+        }                                                                  \
+        \
+        if (bcdArg1.m_iScale != bcdArg3.m_iScale) {                        \
+          *paW++ = bcdArg1.m_iAsI8;                                        \
+          *paW++ = bcdArg3.m_iAsI8;                                        \
+          _RESCALE_BCD_MAX_OF_TWO(eErrorCode)                              \
+          bcdArg3.m_iAsI8 = *(--paW);                                      \
+          bcdArg1.m_iAsI8 = *(--paW);                                      \
+        }                                                                   \
+                                                                           \
+        if (bcdArg2.m_iScale != bcdArg3.m_iScale) {                        \
+          *paW++ = bcdArg2.m_iAsI8;                                        \
+          *paW++ = bcdArg3.m_iAsI8;                                        \
+          _RESCALE_BCD_MAX_OF_TWO(eErrorCode)                              \
+          bcdArg3.m_iAsI8 = *(--paW);                                      \
+          bcdArg2.m_iAsI8 = *(--paW);                                      \
+          }                                                                \
+                                                                           \
+        if (bcdArg1.m_iMantissa > bcdArg2.m_iMantissa) {                   \
         *(paW++) = 0;                                                       \
       }                                                                     \
       else {                                                                \
-        if (bcdArg1.m_iMantissa < bcdArg3.m_iMantissa)                                                  \
+        if (bcdArg1.m_iMantissa < bcdArg3.m_iMantissa)    {                 \
           *(paW++) = 0;                                                     \
+          }                                                                 \
         else                                                                \
+          {                                                                 \
           *(paW++) = 1;                                                     \
-      }                                                                    \
+         }                                                                     \
+      } \
    }                                                                       \
 }
 
+#define _BET_FLTFLT(eErrorCode)                                             \
+  {                                                                         \
+    fltArg1.m_iAsI8 = *(--paW);                                             \
+    fltArg2.m_iAsI8 = *(--paW);                                             \
+    fltArg3.m_iAsI8 = *(--paW);                                             \
+                                                                            \
+    if (eErrorCode != EC_NONE ||                                            \
+        fltArg1.m_iAsI8 == C_DATUM_NULL ||                                  \
+        fltArg2.m_iAsI8 ==  C_DATUM_NULL ||                                 \
+        fltArg3.m_iAsI8 == C_DATUM_NULL) {                                  \
+      *(paW++) = 0;                                                         \
+    }                                                                       \
+    else {                                                                  \
+      if (fltArg1.m_iAsI8 > fltArg2.m_iAsI8) {                              \
+        *(paW++) = 0;                                                       \
+      }                                                                     \
+      else {                                                                \
+        if (fltArg1.m_iAsI8 < fltArg3.m_iAsI8)                              \
+          *(paW++) = 0;                                                     \
+        else                                                                \
+          *(paW++) = 1;                                                     \
+      }                                                                     \
+    }                                                                       \
+  }
 
 #define _BET_INTINT(eErrorCode)                                             \
   {                                                                         \
@@ -146,6 +198,105 @@
       }                                                                     \
     }                                                                       \
   }
+
+#define _BET_DTEDTE(eErrorCode)                                             \
+  {                                                                         \
+    xDte1.m_iAsI8 = *(--paW);                                               \
+    xDte2.m_iAsI8 = *(--paW);                                               \
+    xDte3.m_iAsI8 = *(--paW);                                               \
+    if (eErrorCode != EC_NONE ||                                            \
+        xDte1.m_iAsI8 == C_DATUM_NULL ||                                    \
+        xDte2.m_iAsI8 ==  C_DATUM_NULL ||                                   \
+        xDte3.m_iAsI8 == C_DATUM_NULL) {                                    \
+      *(paW++) = 0;                                                         \
+    }                                                                       \
+    else {                                                                  \
+      if (xDte1.m_iAsI8 > xDte2.m_iAsI8) {                                  \
+        *(paW++) = 0;                                                       \
+      }                                                                     \
+      else {                                                                \
+        if (xDte1.m_iAsI8 < xDte3.m_iAsI8)                                  \
+          *(paW++) = 0;                                                     \
+        else                                                                \
+          *(paW++) = 1;                                                     \
+      }                                                                     \
+    }                                                                       \
+  }
+
+
+#define _BET_TMETME(eErrorCode)                                             \
+  {                                                                         \
+    xTme1.m_iAsI8 = *(--paW);                                               \
+    xTme2.m_iAsI8 = *(--paW);                                               \
+    xTme3.m_iAsI8 = *(--paW);                                               \
+    if (eErrorCode != EC_NONE ||                                            \
+        xTme1.m_iAsI8 == C_DATUM_NULL ||                                    \
+        xTme2.m_iAsI8 ==  C_DATUM_NULL ||                                   \
+        xTme3.m_iAsI8 == C_DATUM_NULL) {                                    \
+      *(paW++) = 0;                                                         \
+    }                                                                       \
+    else {                                                                  \
+      if (xTme1.m_iAsI8 > xTme2.m_iAsI8) {                                  \
+        *(paW++) = 0;                                                       \
+      }                                                                     \
+      else {                                                                \
+        if (xTme1.m_iAsI8 < xTme3.m_iAsI8)                                  \
+          *(paW++) = 0;                                                     \
+        else                                                                \
+          *(paW++) = 1;                                                     \
+      }                                                                     \
+    }                                                                       \
+  }
+
+
+#define _BET_TSPTSP(eErrorCode)                                             \
+  {                                                                         \
+    xTsp1.m_iAsI8 = *(--paW);                                               \
+    xTsp2.m_iAsI8 = *(--paW);                                               \
+    xTsp3.m_iAsI8 = *(--paW);                                               \
+    if (eErrorCode != EC_NONE ||                                            \
+        xTsp1.m_iAsI8 == C_DATUM_NULL ||                                    \
+        xTsp2.m_iAsI8 ==  C_DATUM_NULL ||                                   \
+        xTsp3.m_iAsI8 == C_DATUM_NULL) {                                    \
+      *(paW++) = 0;                                                         \
+    }                                                                       \
+    else {                                                                  \
+      if (xTsp1.m_iAsI8 > xTsp2.m_iAsI8) {                                  \
+        *(paW++) = 0;                                                       \
+      }                                                                     \
+      else {                                                                \
+        if (xTsp1.m_iAsI8 < xTsp3.m_iAsI8)                                  \
+          *(paW++) = 0;                                                     \
+        else                                                                \
+          *(paW++) = 1;                                                     \
+      }                                                                     \
+    }                                                                       \
+  }
+
+#define _BET_VCHVCH(eErrorCode)                                             \
+  {                                                                         \
+    iArg1 = *(--paW);                                                       \
+    iArg2 = *(--paW);                                                       \
+    iArg3 = *(--paW);                                                       \
+    if (eErrorCode != EC_NONE ||                                            \
+        iArg1 == C_DATUM_NULL ||                                            \
+        iArg2 ==  C_DATUM_NULL ||                                           \
+        iArg3 == C_DATUM_NULL) {                                            \
+      *(paW++) = 0;                                                         \
+    }                                                                       \
+    else {                                                                  \
+      if (strcmp((char*)iArg1, (char*)iArg2) > 0) {                         \
+        *(paW++) = 0;                                                       \
+      }                                                                     \
+      else {                                                                \
+        if (strcmp((char*)iArg1, (char*)iArg3) < 0)                         \
+          *(paW++) = 0;                                                     \
+        else                                                                \
+          *(paW++) = 1;                                                     \
+      }                                                                     \
+    }                                                                       \
+  }
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // INEXPR
