@@ -124,8 +124,9 @@ void Step::vJobIdLastJobIdFetch(void)
 void Step::vJobIdLastJobIdStore(void)
 {
   ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+
+  JobId tJobId = m_pDataStack->iPopInt(__func__);
+  Job* pJob = AM::JLIST::pFindJob(tJobId);
 
   i8 iLastJobId = m_pDataStack->iPopInt(__func__);
   

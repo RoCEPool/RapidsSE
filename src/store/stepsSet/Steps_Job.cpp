@@ -692,7 +692,7 @@ void Step::vJobPreExecuteTest(void)
 {
   ENTRY();
 
-  Job* pJob = MY::pJob();
+  Job* pJob = pOuterJobOfTask();;
 
   eEC eError = AM::JOB::ePreExecuteTest(pJob);
 
@@ -764,8 +764,8 @@ void Step::vJobProgressReset(void)
 void Step::vJobProgressSeconds(void)
 {
   ENTRY();
-  
-  Job*  pJob = MY::pJob();
+
+  Job* pJob = pOuterJobOfTask();
     
   Timer* pProgress = pJob->pProgressTimer();
 
@@ -874,9 +874,8 @@ void Step::vJobRemoveRetired(void)
 void Step::vJobResponseOpFetch(void)
 {
   ENTRY();
-  
-  //Job* pJob = * m_pJob;
-  Job* pJob = MY::pJob();
+
+  Job* pJob = pOuterJobOfTask();
 
   m_pDataStack->vPushPtr(pJob->p_ResponseOp());
 
@@ -889,9 +888,8 @@ void Step::vJobResponseOpFetch(void)
 void Step::vJobResponseOpStore(void)
 {
   ENTRY();
-  
-  //Job* pJob = * m_pJob;
-  Job* pJob = MY::pJob();
+
+  Job* pJob = pOuterJobOfTask();
 
   Op* pResponseOp = _pOp(m_pDataStack->pPopPtr(__func__));
 
@@ -906,8 +904,8 @@ void Step::vJobResponseOpStore(void)
 void Step::vJobSetOriginId(void)
 {
   ENTRY();
-  
-  Job* pJob = * m_pJob;
+
+  Job* pJob = pOuterJobOfTask();
   
   JobId tJobId;
 
@@ -927,8 +925,7 @@ void Step::vJobSignalParent(void)
   // there will be a thread (of parent job) waiting on completion of the job
   // this could be a prompt thread
 
-  //Job* pJob = MY::pJob();
-  Job* pJob = * m_pJob;
+  Job* pJob = pOuterJobOfTask();
 
   eEC eErrorCode = (eEC)m_pDataStack->iPopInt(__func__);
 
@@ -957,24 +954,9 @@ void Step::vJobSignalParent(void)
 void Step::vJobTagSetFetch(void)
 {
   ENTRY();
-  
-  //Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  Job* pJob = nullptr;
 
-  if (m_pJob.bIsNotNull()) {
-    //RASSERT(! *m_pOp);
-    pJob = *m_pJob;
-  }
-  else
-  if (m_pOp.bIsNotNull()) {
-    RASSERT(m_pJob.bIsNull());
-    pJob = m_pOp->pOuterJobOfOp();
-  }
-  else {
-    NEVER_REACH;
-  }
-  
+  Job* pJob = pOuterJobOfTask();
+
   m_pDataStack->vPushPtr(pJob->pJobTags());
   
   EXIT();
@@ -986,8 +968,8 @@ void Step::vJobTagSetFetch(void)
 void Step::vJobTaskFetch(void)
 {
   ENTRY();
-  
-  Job* pJob = * m_pJob;
+
+  Job* pJob = pOuterJobOfTask();
 
   m_pDataStack->vPushPtr(pJob->pTask());
   
@@ -1000,7 +982,9 @@ void Step::vJobTaskFetch(void)
 void Step::vJobTrace(void)
 {
   ENTRY();
-    
+
+  Job* pJob = pOuterJobOfTask();
+
   s256 sNote;
   m_pDataStack->vPopStr(sNote,__func__);
   s256 sAtPoint;
@@ -1010,7 +994,7 @@ void Step::vJobTrace(void)
   s256 sAtCmd;
   m_pDataStack->vPopStr(sAtCmd,__func__);
 
-  m_pJob->vJobTrace(sAtCmd,sAtRoutine,sAtPoint,sNote);
+  pJob->vJobTrace(sAtCmd,sAtRoutine,sAtPoint,sNote);
 
   EXIT();
 }
@@ -1021,8 +1005,11 @@ void Step::vJobTrace(void)
 void Step::vJobTscBeginning(void)
 {
   ENTRY();
-  
-  m_pJob->vTscBeginning(Hardware::iReadTsc());
+
+  Job* pJob = pOuterJobOfTask();
+  RASSERT(m_pJob == pJob);
+
+  pJob->vTscBeginning(Hardware::iReadTsc());
   
   EXIT();
 }
@@ -1033,8 +1020,11 @@ void Step::vJobTscBeginning(void)
 void Step::vJobTscBegun(void)
 {
   ENTRY();
-  
-  m_pJob->vTscBegun(Hardware::iReadTsc());
+
+  Job* pJob = pOuterJobOfTask();
+  RASSERT(m_pJob == pJob);
+
+  pJob->vTscBegun(Hardware::iReadTsc());
   
   EXIT();
 }
@@ -1045,8 +1035,11 @@ void Step::vJobTscBegun(void)
 void Step::vJobTscExecuting(void)
 {
   ENTRY();
-  
-  m_pJob->vTscExecuting(Hardware::iReadTsc());
+
+  Job* pJob = pOuterJobOfTask();
+  RASSERT(m_pJob == pJob);
+
+  pJob->vTscExecuting(Hardware::iReadTsc());
   
   EXIT();
 }
@@ -1057,8 +1050,11 @@ void Step::vJobTscExecuting(void)
 void Step::vJobTscExecuted(void)
 {
   ENTRY();
-  
-  m_pJob->vTscExecuted(Hardware::iReadTsc());
+
+  Job* pJob = pOuterJobOfTask();
+  RASSERT(m_pJob == pJob);
+
+  pJob->vTscExecuted(Hardware::iReadTsc());
   
   EXIT();
 }
@@ -1069,8 +1065,11 @@ void Step::vJobTscExecuted(void)
 void Step::vJobTscEnding(void)
 {
   ENTRY();
-  
-  m_pJob->vTscEnding(Hardware::iReadTsc());
+
+  Job* pJob = pOuterJobOfTask();
+  RASSERT(m_pJob == pJob);
+
+  pJob->vTscEnding(Hardware::iReadTsc());
   
   EXIT();
 }
@@ -1081,8 +1080,11 @@ void Step::vJobTscEnding(void)
 void Step::vJobTscEnded(void)
 {
   ENTRY();
-  
-  m_pJob->vTscEnded(Hardware::iReadTsc());
+
+  Job* pJob = pOuterJobOfTask();
+  RASSERT(m_pJob == pJob);
+
+  pJob->vTscEnded(Hardware::iReadTsc());
   
   EXIT();
 }
@@ -1093,8 +1095,11 @@ void Step::vJobTscEnded(void)
 void Step::vJobTscCanceling(void)
 {
   ENTRY();
-  
-  m_pJob->vTscCanceling(Hardware::iReadTsc());
+
+  Job* pJob = pOuterJobOfTask();
+  RASSERT(m_pJob == pJob);
+
+  pJob->vTscCanceling(Hardware::iReadTsc());
   
   EXIT();
 }
@@ -1105,8 +1110,11 @@ void Step::vJobTscCanceling(void)
 void Step::vJobTscCanceled(void)
 {
   ENTRY();
-  
-  m_pJob->vTscCanceled(Hardware::iReadTsc());
+
+  Job* pJob = pOuterJobOfTask();
+  RASSERT(m_pJob == pJob);
+
+  pJob->vTscCanceled(Hardware::iReadTsc());
   
   EXIT();
 }
@@ -1117,8 +1125,11 @@ void Step::vJobTscCanceled(void)
 void Step::vJobTscParticipant(void)
 {
   ENTRY();
+
+  Job* pJob = pOuterJobOfTask();
+  RASSERT(m_pJob == pJob);
   
-  m_pJob->vTscParticipant(Hardware::iReadTsc());
+  pJob->vTscParticipant(Hardware::iReadTsc());
   
   EXIT();
 }
