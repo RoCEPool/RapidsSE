@@ -836,8 +836,6 @@ void vDdlLockAssertNone(void);
   void vJobIdLastJobIdFetch(void);
   void vJobIdLastJobIdStore(void);
 
-  void vJobIdMasterJob(void);
-
   void vJobIdNameFetch(void);
 
   void vJobOriginIdFetch(void);
@@ -878,6 +876,7 @@ void vDdlLockAssertNone(void);
 
   void vJobSetOriginId(void);
   void vJobSignalParent(void);
+  void vJobMasterJobId(void);
   void vJobMutexFetch(void);
   void vJobNewMarkerChain(void);
 

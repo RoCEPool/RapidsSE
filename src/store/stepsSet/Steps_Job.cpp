@@ -54,7 +54,8 @@ void Step::vAddSteps_Job(void)
   vAddStep("[job].error!"_Stz,           &Step::vJobErrorStore);
   
   vAddStep("[job].id@"_Stz,              &Step::vJobIdFetch);
-    
+
+  vAddStep("[job].masterJobId"_Stz,      &Step::vJobMasterJobId);
   vAddStep("[job].mutex@"_Stz,           &Step::vJobMutexFetch);
   
   vAddStep("[job].newMarkerChain"_Stz,   &Step::vJobNewMarkerChain);
@@ -559,6 +560,28 @@ void Step::vJobGet(void)
   m_pDataStack->vPushPtr(pJob);
 
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [job].masterJobId -- get the master job id of this (participant/local) job */
+/*----------------------------------------------------------------------------*/
+void Step::vJobMasterJobId(void)
+{
+  ENTRY();
+
+  Job* pJob = pOuterJobOfTask();
+
+  JobId tJobId = pJob->tOriginId();
+  if ( ! tJobId.bIsUnknown() ) {
+    m_pDataStack->vPushInt(tJobId.iAsI8());
+  }
+  else {
+    tJobId = pJob->tJobId();
+    RASSERT(! tJobId.bIsUnknown() );
+    m_pDataStack->vPushInt(tJobId.iAsI8());
+  }
+
   EXIT();
 }
 

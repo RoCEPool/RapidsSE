@@ -42,7 +42,7 @@ void Step::vAddSteps_JobId(void)
   vAddStep("job(Id).lastJobId@"_Stz,     &Step::vJobIdLastJobIdFetch);
   vAddStep("job(Id).lastJobId!"_Stz,     &Step::vJobIdLastJobIdStore);
   
-  vAddStep("job(Id).masterJob"_Stz,      &Step::vJobIdMasterJob);
+  //vAddStep("job(Id).masterJob"_Stz,      &Step::vJobIdMasterJob);
   
   vAddStep("job(Id).name@"_Stz,          &Step::vJobIdNameFetch);
   
@@ -65,8 +65,9 @@ void Step::vAddSteps_JobId(void)
 void Step::vJobIdFolderPathFetch(void)
 {
   ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+
+  JobId tJobId = m_pDataStack->iPopInt(__func__);
+  Job* pJob = AM::JLIST::pFindJob(tJobId);
 
   Stz* szFolderPath = pJob->szFolderPath();
   
@@ -81,8 +82,9 @@ void Step::vJobIdFolderPathFetch(void)
 void Step::vJobIdFolderPathStore(void)
 {
   ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+
+  JobId tJobId = m_pDataStack->iPopInt(__func__);
+  Job* pJob = AM::JLIST::pFindJob(tJobId);
 
   s256 sFolderPath;
   m_pDataStack->vPopStr(sFolderPath,__func__);
@@ -140,8 +142,9 @@ void Step::vJobIdJobListFetch(void)
 void Step::vJobIdLastJobIdFetch(void)
 {
   ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+
+  JobId tJobId = m_pDataStack->iPopInt(__func__);
+  Job* pJob = AM::JLIST::pFindJob(tJobId);
 
   JobId tLastJobId = pJob->tLastJobId();
   
@@ -166,27 +169,6 @@ void Step::vJobIdLastJobIdStore(void)
   tLastJobId = iLastJobId;
   
   pJob->vLastJobId(tLastJobId);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job(Id).masterJob -- get the master job of this (participant/local) job    */
-/*----------------------------------------------------------------------------*/
-void Step::vJobIdMasterJob(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-
-  Job* pOriginJob = pJob->pOriginJob();
-  if (pOriginJob) {
-    m_pDataStack->vPushPtr(pOriginJob);
-  }
-  else {
-    Job* pLocalJob = pJob;
-    m_pDataStack->vPushPtr(pLocalJob);
-  }
   
   EXIT();
 }
@@ -292,8 +274,9 @@ void Step::vJobIdShow(void)
 void Step::vJobIdSystemCloserFetch(void)
 {
   ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+
+  JobId tJobId = m_pDataStack->iPopInt(__func__);
+  Job* pJob = AM::JLIST::pFindJob(tJobId);
 
   bool bSystemCloser = pJob->bSystemCloser();
   
