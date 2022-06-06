@@ -7,6 +7,7 @@ PLAN_DIR="$(realpath "${DIR}/..")"            # Directory of <repoRoot>/bamboo/m
 REPO_ROOT="$(realpath "${PLAN_DIR}/../..")"   # Directory of the repository root
 
 MODULE="buildrelease"
+CONFIG_FILE="${PLAN_DIR}/configs/release.config"
 
 # Bamboo system variables
 # PLAN_KEY="${bamboo_planKey}"                    # e.g. SE-REL
@@ -26,8 +27,11 @@ ARTIFACT_DIR="${PLAN_DIR}/artifacts"
 mkdir -p "${RESULT_DIR}"
 mkdir -p "${ARTIFACT_DIR}"
 
-# Build the mandatory command line parameters to the python septest script
-PARAMS=("--resultDir" "${RESULT_DIR}" "--artifactDir" "${ARTIFACT_DIR}" "--repoDir" "${REPO_ROOT}")
+# Build the mandatory command line parameters to the python script
+PARAMS=("--resultDir"   "${RESULT_DIR}"
+        "--artifactDir" "${ARTIFACT_DIR}"
+        "--repoDir"     "${REPO_ROOT}"
+        "--config"      "${CONFIG_FILE}")
 
 # Which python to use?
 PYTHON="python3"

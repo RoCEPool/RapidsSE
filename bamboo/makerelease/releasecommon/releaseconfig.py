@@ -1,0 +1,189 @@
+import os.path
+import string
+import configparser
+import pathlib
+from collections import OrderedDict
+
+from errors import ConfigurationError
+
+
+# This is an extension used in ConfigParser to allow config files
+# to have multiple non-unique keys and get the values for this key
+# as a list.
+# Source: https://stackoverflow.com/a/70375875
+class ConfigParserMultiValues(OrderedDict):
+    def __setitem__(self, key, value):
+        if key in self and isinstance(value, list):
+            self[key].extend(value)
+        else:
+            super().__setitem__(key, value)
+
+    @staticmethod
+    def getlist(value):
+        return value.splitlines()
+
+
+class ReleaseConfig:
+    """Encapsulates a release config file and hides how it is implemented and parsed."""
+
+    C_BUILD_SECTION = "build"
+    C_TEST_SECTION = "test"
+    C_INSTANCE_TYPE = "InstanceType"
+    C_IMAGE_ID = "ImageId"
+    C_CLOUD_INIT = "CloudInit"
+
+    def __init__(self, path: string):
+        self.path: string = path
+
+        # Method for reading multiple keys of the same name but with different values
+        # comes from here: https://stackoverflow.com/a/70375875
+        self.parser = configparser.ConfigParser(strict=False,
+                                                empty_lines_in_values=False,
+                                                dict_type=ConfigParserMultiValues,
+                                                converters={"list": ConfigParserMultiValues.getlist})
+        self.parser.read_file(open(path))
+
+        for section in [self.C_TEST_SECTION, self.C_TEST_SECTION]:
+            if not self.parser.has_section(section):
+                raise ConfigurationError(f"Config file is missing the [{section}] header: {path}")
+
+        build_instance = self.get_build_instance()
+        build_image = self.get_build_image()
+        build_cloudinit = self.get_build_cloudinit()
+
+        test_instance = self.get_test_instance()
+        test_image_list = self.get_test_images()
+        test_cloudinit_list = self.get_test_cloudinits()
+
+        if build_instance is None or len(build_instance) == 0:
+            msg = f"Config file field {self.C_INSTANCE_TYPE} in the [{self.C_BUILD_SECTION}] section " \
+                  f"must not be empty in the file: {path}"
+            raise ConfigurationError(msg)
+
+        if build_image is None or len(build_image) == 0:
+            msg = f"Config file field {self.C_IMAGE_ID} in the [{self.C_BUILD_SECTION}] section " \
+                  f"must not be empty in the file: {path}"
+            raise ConfigurationError(msg)
+
+        if build_cloudinit is None or len(build_cloudinit) == 0:
+            msg = f"Config file field {self.C_CLOUD_INIT} in the [{self.C_BUILD_SECTION}] section " \
+                  f"must not be empty in the file: {path}"
+            raise ConfigurationError(msg)
+
+        # Validate the build cloudinit file is resolvable
+        self.__validate_path(build_cloudinit, self.C_BUILD_SECTION, self.C_CLOUD_INIT, self.path)
+
+        if test_instance is None or len(test_instance) == 0:
+            msg = f"Config file field {self.C_INSTANCE_TYPE} in the [{self.C_TEST_SECTION}] section " \
+                  f"must not be empty in the file: {path}"
+            raise ConfigurationError(msg)
+
+        if test_image_list is None or len(test_image_list) == 0:
+            msg = f"Config file field {self.C_IMAGE_ID} in the [{self.C_TEST_SECTION}] section " \
+                  f"must not be empty in the file: {path}"
+            raise ConfigurationError(msg)
+
+        if test_cloudinit_list is None or len(test_cloudinit_list) == 0:
+            msg = f"Config file field {self.C_CLOUD_INIT} in the [{self.C_TEST_SECTION}] section " \
+                  f"must not be empty in the file: {path}"
+            raise ConfigurationError(msg)
+
+        if len(test_image_list) != len(test_cloudinit_list):
+            msg = f"The config file fields {self.C_IMAGE_ID} and {self.C_CLOUD_INIT} in the " \
+                  f"[{self.C_TEST_SECTION}] section must be specified the same number of times in the file: {path}"
+            raise ConfigurationError(msg)
+
+        # Check that all of the cloudinit scripts are resolvable
+        for cloudinit_path in test_cloudinit_list:
+            self.__validate_path(cloudinit_path, self.C_TEST_SECTION, self.C_CLOUD_INIT, self.path)
+
+    def get_build_instance(self) -> string:
+        """Returns the name of the EC2 instance to be used for building SE"""
+        return self.parser.get(self.C_BUILD_SECTION, self.C_INSTANCE_TYPE)
+
+    def get_build_image(self) -> string:
+        """Returns the name of the EC2 image to be used for building SE"""
+        return self.parser.get(self.C_BUILD_SECTION, self.C_IMAGE_ID)
+
+    def get_build_cloudinit(self) -> string:
+        """Returns the name of the cloudinit script to be used for building SE"""
+        # Iterate the cloudinit scripts and check if they have any double quotes
+        cloudinit = self.parser.get(self.C_BUILD_SECTION, self.C_CLOUD_INIT)
+
+        if cloudinit.startswith('"') and cloudinit.endswith('"'):
+            cloudinit = cloudinit[1:-1]
+        elif cloudinit.startswith("'") and cloudinit.endswith("'"):
+            cloudinit = cloudinit[1:-1]
+
+        cloudinit = self.__resolve_path(cloudinit)
+        return cloudinit
+
+    def get_test_instance(self) -> string:
+        """Returns the name of the EC2 instance to be used for testing SE"""
+        return self.parser.get(self.C_TEST_SECTION, self.C_INSTANCE_TYPE)
+
+    def get_test_images(self) -> list:
+        """Returns a list of the name of the EC2 images to be used for testing SE"""
+        # Iterate the images and check if they have any double quotes
+        images = self.parser.getlist(self.C_TEST_SECTION, self.C_IMAGE_ID)
+
+        for i in range(len(images)):
+            s = images[i]
+            if s.startswith('"') and s.endswith('"'):
+                s = s[1:-1]
+            elif s.startswith("'") and s.endswith("'"):
+                s = s[1:-1]
+            images[i] = s
+
+        return images
+
+    def get_test_cloudinits(self) -> list:
+        """Returns a list of the name of the cloudinit scripts to be used for testing SE"""
+        # Iterate the cloudinit scripts and check if they have any double quotes
+        cloudinits = self.parser.getlist(self.C_TEST_SECTION, self.C_CLOUD_INIT)
+
+        for i in range(len(cloudinits)):
+            s = cloudinits[i]
+            if s.startswith('"') and s.endswith('"'):
+                s = s[1:-1]
+            elif s.startswith("'") and s.endswith("'"):
+                s = s[1:-1]
+            cloudinits[i] = self.__resolve_path(s)
+
+        return cloudinits
+
+    def __resolve_path(self, path_str: string) -> string:
+        path_obj = pathlib.Path(path_str)
+        resolved_path = path_obj
+
+        if not path_obj.is_absolute():
+            resolved_path = (os.path.dirname(self.path) / path_obj).resolve()
+
+        assert resolved_path.exists()
+        return str(resolved_path)
+
+    @staticmethod
+    def __validate_path(path_str: string, section_name: string, key_name: string, cfg_file_path: string):
+        """Validates that a path referenced from a config file actually exists and is a file"""
+        if path_str is None:
+            msg = f"Config file field {key_name} in section [{section_name}] must have a valid path " \
+                  f"in file: {cfg_file_path}"
+            raise ConfigurationError(msg)
+
+        path_obj = pathlib.Path(path_str)
+        resolved_path = path_obj
+
+        if not path_obj.is_absolute():
+            resolved_path = (os.path.dirname(cfg_file_path) / path_obj).resolve()
+
+        if not resolved_path.exists():
+            msg = f"The file at {path_str} referenced from field {key_name} " \
+                  f"in section [{section_name}] " \
+                  f"in config file {cfg_file_path} does not exist"
+            raise ConfigurationError(msg)
+
+        if not resolved_path.is_file():
+            msg = f"The file at {path_str} referenced from field " \
+                  f"{key_name} in section [{section_name}] " \
+                  f"in config file {cfg_file_path} is not a file"
+            raise ConfigurationError(msg)
