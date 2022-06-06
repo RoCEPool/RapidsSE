@@ -37,7 +37,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("[job].addOriginator"_Stz,    &Step::vJobAddOriginator);
   vAddStep("[job].addParticipant"_Stz,   &Step::vJobAddParticipant);
   vAddStep("[job].addRetired"_Stz,       &Step::vJobAddRetired);
-  vAddStep("[job].assertBegin"_Stz,      &Step::vJobAssertBegin);
   vAddStep("[job].assertOrdinary"_Stz,   &Step::vJobAssertOrdinary);
   vAddStep("[job].assertOriginator"_Stz, &Step::vJobAssertOriginator);
   vAddStep("[job].assertParticipant"_Stz,&Step::vJobAssertParticipant);
@@ -112,9 +111,11 @@ void Step::vJobAddDemon(void)
   //  AM::pOriginatingJobs()->vGrabLock();
   //  AM::pOriginatingJobs()->vAddJob(pJob);
   //  AM::pOriginatingJobs()->vDropLock();
-  
-  
-  AM::vJob_AddDemon(* m_pJob);
+
+  Job* pJob = pOuterJobOfTask();
+  RASSERT(*m_pJob == pJob);
+
+  AM::vJob_AddDemon(pJob);
   
   //vTrace("%p ID %lld added to originator\n"_Stz, pJob, pJob->iJobId());
     
@@ -129,8 +130,11 @@ void Step::vJobAddLocal(void)
   ENTRY();
   
   //Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  AM::vJob_AddLocal(* m_pJob);
+
+  Job* pJob = pOuterJobOfTask();
+  RASSERT(*m_pJob == pJob);
+
+  AM::vJob_AddLocal(pJob);
   
   //vTrace("%p ID %lld added to originator\n"_Stz, pJob, pJob->iJobId());
     
@@ -150,9 +154,11 @@ void Step::vJobAddOriginator(void)
 //  AM::pOriginatingJobs()->vGrabLock();
 //  AM::pOriginatingJobs()->vAddJob(pJob);
 //  AM::pOriginatingJobs()->vDropLock();
-  
 
-  AM::vJob_AddOriginating(* m_pJob);
+  Job* pJob = pOuterJobOfTask();
+  RASSERT(*m_pJob == pJob);
+
+  AM::vJob_AddOriginating(pJob);
 
   //vTrace("%p ID %lld added to originator\n"_Stz, pJob, pJob->iJobId());
       
@@ -175,7 +181,10 @@ void Step::vJobAddParticipant(void)
   //                                                                        HACK
   //m_pJob->vDistId(m_pJob->tJobId());
 
-  AM::vJob_AddParticipating(* m_pJob);
+  Job* pJob = pOuterJobOfTask();
+  RASSERT(*m_pJob == pJob);
+
+  AM::vJob_AddParticipating(pJob);
 
   //vTrace("%p ID %lld added to participant\n"_Stz, pJob, pJob->iJobId());
     
@@ -194,8 +203,9 @@ void Step::vJobAddRetired(void)
 //  AM::pParticipatingJobs()->vGrabLock();
 //  AM::pParticipatingJobs()->vAddJob(pJob);
 //  AM::pParticipatingJobs()->vDropLock();
-  
-  Job* pJob = * m_pJob;
+
+  Job* pJob = pOuterJobOfTask();
+  RASSERT(*m_pJob == pJob);
   
   RASSERT(pJob->pTask());
   
@@ -211,8 +221,9 @@ void Step::vJobAddRetired(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [job].assertBegin -- assert job is not in originator nor participant set     */
+/* [job].assertBegin -- assert job is not in originator nor participant set   */
 /*----------------------------------------------------------------------------*/
+/*
 void Step::vJobAssertBegin(void)
 {
   ENTRY();
@@ -282,6 +293,7 @@ void Step::vJobAssertBegin(void)
   
   EXIT();
 }
+*/
 
 /*----------------------------------------------------------------------------*/
 /* [job].assertOrdinary -- assert job is not in originator nor participant set*/
@@ -692,7 +704,7 @@ void Step::vJobPreExecuteTest(void)
 {
   ENTRY();
 
-  Job* pJob = pOuterJobOfTask();;
+  Job* pJob = pOuterJobOfTask();
 
   eEC eError = AM::JOB::ePreExecuteTest(pJob);
 
@@ -1128,7 +1140,7 @@ void Step::vJobTscParticipant(void)
 
   Job* pJob = pOuterJobOfTask();
   RASSERT(m_pJob == pJob);
-  
+
   pJob->vTscParticipant(Hardware::iReadTsc());
   
   EXIT();

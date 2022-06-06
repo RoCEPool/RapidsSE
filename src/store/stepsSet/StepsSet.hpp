@@ -805,7 +805,6 @@ void vDdlLockAssertNone(void);
   void vJobAddOriginator(void);
   void vJobAddParticipant(void);
   void vJobAddRetired(void);
-  void vJobAssertBegin(void);
   void vJobAssertStructure(void);
   void vJobAssertOrdinary(void);
   void vJobAssertOriginator(void);
