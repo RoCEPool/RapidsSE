@@ -257,7 +257,7 @@
     *paW++ = C_DATUM_NULL;                                                 \
   }                                                                        \
   else {                                                                   \
-  *paW++ = fltArg2.m_dFlt == fltArg1.m_dFlt ? 1 : 0;                       \
+    *paW++ = fltArg2.m_dFlt == fltArg1.m_dFlt ? 1 : 0;                     \
   }                                                                        \
 }
 

@@ -48,7 +48,8 @@ INCLUDE 'aggs-min.test';
 LOG 'aggs-sum.test ...';
 INCLUDE 'alias.test';
 
-//INCLUDE 'aliasSelAll.test';
+LOG 'aliasSelAll.test ...';
+INCLUDE 'aliasSelAll.test';
 
 LOG 'between.test ...';
 INCLUDE 'between.test';
@@ -64,7 +65,10 @@ INCLUDE 'between.test';
 //INCLUDE 'functions-charlen.test';
 //INCLUDE 'functions-coal.test';
 //INCLUDE 'functions-concat.test';
-//INCLUDE 'functions-extract.test';
+
+LOG 'functions-extract.test ...';
+INCLUDE 'functions-extract.test';
+
 //INCLUDE 'functions-floor.test';
 //INCLUDE 'functions-left.test';
 //INCLUDE 'functions-lower.test';
@@ -74,7 +78,10 @@ INCLUDE 'between.test';
 //INCLUDE 'functions-right.test';
 //INCLUDE 'functions-round.test';
 //INCLUDE 'functions-rtrim.test';
-//INCLUDE 'functions-substr.test';
+
+LOG 'functions-substr.test ...';
+INCLUDE 'functions-substr.test';
+
 //INCLUDE 'functions-trim.test';
 //INCLUDE 'functions-upper.test';
 

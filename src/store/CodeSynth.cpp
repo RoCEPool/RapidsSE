@@ -2911,8 +2911,8 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // get the extract_min expression
-    if (pTkn->bSame("extract_min"_Stz)) {
+    // get the extract_minute expression
+    if (pTkn->bSame("extract_minute"_Stz)) {
       vPushFunc(pExprStack, pExprType, PE_XMN);
       continue;
     }

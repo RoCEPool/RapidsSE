@@ -20,12 +20,10 @@ ordered rows:
 
 // Source file: ../queries/between/rbetween8.sql
 // Result file: ../queries/between/results/between8.res
-//TODO: FIX
-/*
 select ucol, ucolvc, case when cold9 > 0 then scol9 / cold9 else 0 end, case when pcol9 > 0 then ucol / pcol9 else 0 end from table9 where case when pcol9 !=0 and cold9 != 0 then ucol between scol9 / cold9 and ucol / pcol9 else ucol between 10 and 11 end order by ucolvc;
 ordered rows:
-  (183, 'qqq', 0.8774614835220895, 183)
-*/
+  (183, 'qqq', 0.877461, 183)
+
 
 // Source file: ../queries/between/rbetween7.sql
 // Result file: ../queries/between/results/between7.res
@@ -237,27 +235,23 @@ ordered rows:
 
 // Source file: ../queries/between/rbetween12.sql
 // Result file: ../queries/between/results/between12.res
-//TODO: FIX
-/*
 select cold1, ucolvc, cole1 * 0.5, cole1 * 0.3 from table1 where cold1 not between cole1 * 0.1 and cole1 * 5.85 order by ucolvc, cold1;
 ordered rows:
   (193.58, 'bbb', 4.20,  2.52)
-  (130.62, 'eee', 3.18,  1.90)
-  (248.71, 'iii', 4.85,  2.88)
+  (130.62, 'eee', 3.18,  1.91)
+  (248.71, 'iii', 4.81,  2.88)
   (73.44,  'lll', 2.67,  1.60)
-  (167.42, 'mmm', 14.01, 8.40)
-  (108.27, 'nnn', 6.33,  3.79)
-  (239.51, 'nnn', 4.45,  2.66)
-  (241.24, 'nnn', 15.35, 9.20)
-  (94.93,  'qqq', 3.77,  2.25)
+  (167.42, 'mmm', 14.01, 8.41)
+  (108.27, 'nnn', 6.33,  3.80)
+  (239.51, 'nnn', 4.44,  2.66)
+  (241.24, 'nnn', 15.35, 9.21)
+  (94.93,  'qqq', 3.77,  2.26)
   (187.35, 'qqq', 9.74,  5.84)
-  (203.2,  'yyy', 13.82, 8.28)
-*/
+  (203.2,  'yyy', 13.82, 8.29)
+
 
 // Source file: ../queries/between/rbetween11.sql
 // Result file: ../queries/between/results/between11.res
-//TODO: FIX
-/*
 select ucolvc, cold9 from table9 where cold9 not between -245.0 and 245.0 order by ucolvc;
 ordered rows:
   ('ccc', -245.14)
@@ -277,7 +271,7 @@ select colb9, ucolvc from table9 where cold9 between -2.0 and 2.0 order by colb9
 ordered rows:
   ('orange', 'kkk')
   ('peach', 'ggg')
-*/
+
 
 // Source file: ../queries/between/rbetween5.sql
 // Result file: ../queries/between/results/between5.res

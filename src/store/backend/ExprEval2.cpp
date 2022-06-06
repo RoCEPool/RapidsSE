@@ -552,7 +552,7 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
       continue;
     }
 
-    if (pTkn->bSame("EXTRACT_MIN"_Stz)) {
+    if (pTkn->bSame("EXTRACT_MINUTE"_Stz)) {
       ePreExp = PE_XMN;
       pTkn = pTknVec->pNextToken();
       continue;
