@@ -143,14 +143,16 @@ Object* Heap::pAllocObject(eCN eAllocClass)
   ASSERT(gxaSizeHeap[eAllocClass].m_nClassSize < m_nObjectSize);
   UNUSED(eAllocClass);
   
+   //AM::MEMORY::vAssertAllocate();
+   //RASSERT(MY::pJob()->bAllocateMemory());
+   //RASSERT(MY::pOp()->bAllocateMemory());
+
   //static eCN eLastClass = CN_ENUMS;
   
   //vVerify();
   
-  if (CN_MARKER == eAllocClass) {
-    vTrace("Heap::pAllocObject: allocating CN_MARKER\n"_Stz);
-
-  }
+//  if (CN_MARKER == eAllocClass)
+//    vTrace("Heap::pAllocObject: allocating CN_MARKER\n"_Stz);
   
   m_okLock.vGrabWrite();
   

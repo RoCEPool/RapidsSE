@@ -2427,7 +2427,7 @@ PromptFun __Prompt_memoryLeaks (
   "memoryLeaks"_Stz,           // the prompt command
   nullptr,                     // the second word
   bPrompt_memoryLeaks,         // prompt function
-  true,                        // enabled
+  true,                        // runable only by developer
 
   true,                        // visible
   "memoryLeaks"_Stz,           // help
