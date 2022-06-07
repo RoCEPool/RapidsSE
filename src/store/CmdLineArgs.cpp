@@ -416,7 +416,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     // Heartbeat command is here, using the same syntax as --node command, we can finalize
     // the command syntax later, but for now to have the code in place
     if (szArg->bSame("--heartbeat"_Stz)) {
-      if(0 == StrLib::bIsIPAddr(argv[++i_Arg].azChar()))
+      if(0 == StrLib::bIsIPAddr(argv[++i_Arg].azChar()) && 0 == argv[i_Arg].bSame("BROADCAST"_Stz))
       {
         vPrintErrorMarker(argv, i_Arg);
         vTrace("Invalid heartbeat argument value: %s\n"_Stz, (Stz*)argv[i_Arg]);
