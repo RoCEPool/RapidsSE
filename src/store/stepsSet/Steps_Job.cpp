@@ -58,7 +58,8 @@ void Step::vAddSteps_Job(void)
 
   vAddStep("[job].masterJobId"_Stz,      &Step::vJobMasterJobId);
   vAddStep("[job].mutex@"_Stz,           &Step::vJobMutexFetch);
-  
+
+  vAddStep("[job]].name@"_Stz,           &Step::vJobNameFetch);
   vAddStep("[job].newMarkerChain"_Stz,   &Step::vJobNewMarkerChain);
 
   vAddStep("[job].originId@"_Stz,        &Step::vJobOriginIdFetch);
@@ -598,6 +599,21 @@ void Step::vJobMutexFetch(void)
 
   m_pDataStack->vPushInt(pJob->eMutexSide());
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [job].name@ -- get name of job                                             */
+/*----------------------------------------------------------------------------*/
+void Step::vJobNameFetch(void)
+{
+  ENTRY();
+
+  Job* pJob = pOuterJobOfTask();
+
+  s32 szName = pJob->szJobNm();
+  m_pDataStack->vPushStr(szName);
+
   EXIT();
 }
 

@@ -65,10 +65,10 @@
 /*----------------------------------------------------------------------------*/
 /* send job (to the node which is in task)                                    */
 /*----------------------------------------------------------------------------*/
-: job(Id).send params| pJob |
+: job.send params| pJob |
 
 
-  //pJob job(Id).name@ [grid].thisNodeName@ "(%v) job(Id).send %v" .printf
+  // [job].name@ [grid].thisNodeName@ "(%v) job.send %v" .printf
 
   SendNode[] node.sendSocket@ to Socket[]
 
@@ -91,7 +91,7 @@
 
   i_Node [grid].findNodeByNo to SendNode[]
 
-  pJob job(Id).send
+  pJob job.send
   
   nullptr to SendNode[]
 ;
@@ -103,7 +103,7 @@
 
   iNodeId [grid].findNodeByNo to SendNode[]
 
-  pJob job(Id).send
+  pJob job.send
   
   nullptr to SendNode[]
 ;

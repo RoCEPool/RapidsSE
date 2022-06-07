@@ -36,8 +36,6 @@ void Step::vAddSteps_JobId(void)
   vAddStep("job(Id).lastJobId@"_Stz,     &Step::vJobIdLastJobIdFetch);
   vAddStep("job(Id).lastJobId!"_Stz,     &Step::vJobIdLastJobIdStore);
   
-  vAddStep("job(Id).name@"_Stz,          &Step::vJobIdNameFetch);
-  
   vAddStep("job(Id).phase@"_Stz,         &Step::vJobIdPhaseFetch);
   vAddStep("job(Id).pipeToOp0"_Stz,      &Step::vJobIdPipeToOp0);
 
@@ -119,21 +117,6 @@ void Step::vJobIdLastJobIdStore(void)
   tLastJobId = iLastJobId;
   
   pJob->vLastJobId(tLastJobId);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job(Id).name@ -- get name of job                                           */
-/*----------------------------------------------------------------------------*/
-void Step::vJobIdNameFetch(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  s32 szName = pJob->szJobNm();
-  m_pDataStack->vPushStr(szName);
   
   EXIT();
 }

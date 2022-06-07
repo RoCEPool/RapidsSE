@@ -53,7 +53,7 @@
 /* <edd ptp */
 /* <edd ptp */  [job].originNodeId@ [grid].findNodeByNo to SendNode[]
 /* <edd ptp */
-/* <edd ptp */  [job] job(Id).send
+/* <edd ptp */  [job] job.send
 /* <edd ptp */
 /* <edd ptp */  nullptr to SendNode[]
 /* <edd ptp */
