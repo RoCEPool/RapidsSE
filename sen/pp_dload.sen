@@ -9,105 +9,13 @@
 /*----------------------------------------------------------------------------*/
 
 : start::defProc_Dload
-
+ 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dfload
   
   STD_PATH_TAG
   "
   procedure dfload
-    parameters $table $file
-  begin
-
-  stage stageA on origin :
-
-    start              |
- 
-    pulse once    |
-
-    stageB
-
-  stage stageB on all nodes :
-
-    chunk $file        | // read chunks of file, produce (seekOffset) =>
-    // dump seekOffsets 1 |
-
-    rdCsvChunk $file   | // (seekOffset) => (csvBuffer)
-    // dump csvBuffer 0   |
-
-    stageC localRobin
-
-  stage stageC on all partitions :
-
-    toKeyHshRow $table    | // (csvBuffer)  => (rowBuffer)
-    // dump rowBuffer 1   |
-
-    toLglPtnRow $table    | // (rowBuffer)  => (rowBuffer 'ptn)
-    // dump rowBuffer 1   |
-
-    toLglPtnNst           | // (rowBuffer)  => (rowBuffer 'nst)
-    //dump rowBuffer 1   |
-
-    toHshCrw           | // (rowBuffer)  => (crwBuffer 'hsh)
-    //dump rowBuffer 1   |
-
-    stageD hashcast
-
-  stage stageD on all partitions :
-
-    //eatSome |
-
-    insert $table | // (crwBuffer) inserted into table
-
-    stageE
-
-  stage stageE on origin :
-
-    progress 'Load'    |
-
-    toStatDemon        |
-
-    sink               |
-
-    stageA
-
-  end ;
-  "
-  procedure::add
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // dload
-  
-  STD_PATH_TAG
-  "
-  procedure dload
-    parameters $table
-  begin
-
-    stage stageA on origin :
-        start
-      | pulse once
-      | eachPathTag
-      |   toDfload $table
-      | callPipeline
-      | waitPipeline
-      | sink
-      | stageA
-
-  end ;
-  "
-  procedure::add
- 
- 
-  //----------------------------------------------------------------------------
- 
- 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // dfload2
-  
-  STD_PATH_TAG
-  "
-  procedure dfload2
     parameters $table $file
   begin
 
@@ -144,36 +52,13 @@
   "
   procedure::add
 
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // dload2
-  
-  STD_PATH_TAG
-  "
-  procedure dload2
-    parameters $table
-  begin
-
-    stage stageA on origin :
-        start
-      | pulse once
-      | eachPathTag
-      | pathToDfload2 $table
-      | forkCommand waitFinished
-      | waitFinished
-      | sink
-      | stageA
-
-  end ;
-  "
-  procedure::add
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dload_test
   
   STD_PATH_TAG
   "
-  procedure dload_test
+  procedure dload
     parameters $table
   begin
 
@@ -181,7 +66,7 @@
         start
       | pulse once
       | eachPathTag
-      | pathToDfload2 $table
+      | pathToDfload $table
       | forkCommand waitFinished
       | waitFinished
       | sink
