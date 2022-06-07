@@ -41,12 +41,11 @@
     | next
 
   stage stageE on origin :
-    progress 'Load'
-    |  toStatDemon
+      progress 'Load'
+    | toStatDemon
     | output
-    //|  respond
-    |  sink
-    |  stageA
+    | sink
+    | stageA
 
   end ;
   "
