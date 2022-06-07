@@ -416,14 +416,15 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     // Heartbeat command is here, using the same syntax as --node command, we can finalize
     // the command syntax later, but for now to have the code in place
     if (szArg->bSame("--heartbeat"_Stz)) {
-      if(0 == StrLib::bIsIPAddr(argv[++i_Arg].azChar()) && 0 == argv[i_Arg].bSame("BROADCAST"_Stz))
-      {
-        vPrintErrorMarker(argv, i_Arg);
-        vTrace("Invalid heartbeat argument value: %s\n"_Stz, (Stz*)argv[i_Arg]);
-        vTrace("Usage: --heartbeat BROADCAST|<ip-addr> <port>\n"_Stz);
-        return false;
-      }
-      m_xSysArgs.m_xHeartbeatDefn[i_HeartbeatNode].m_sIPAddress = (Stz*)argv[i_Arg];
+      // TODO Arjun: The below needs to check for a valid hostname as well. Will be done at a later date.
+//      if(0 == StrLib::bIsIPAddr(argv[++i_Arg].azChar()) && 0 == argv[i_Arg].bSame("BROADCAST"_Stz))
+//      {
+//        vPrintErrorMarker(argv, i_Arg);
+//        vTrace("Invalid heartbeat argument value: %s\n"_Stz, (Stz*)argv[i_Arg]);
+//        vTrace("Usage: --heartbeat BROADCAST|<ip-addr> <port>\n"_Stz);
+//        return false;
+//      }
+      m_xSysArgs.m_xHeartbeatDefn[i_HeartbeatNode].m_sIPAddress = (Stz*)argv[++i_Arg];
 
       if ( ! StrLib::bIsInteger(argv[++i_Arg].azChar()) ) {
         vPrintErrorMarker(argv, i_Arg);
@@ -562,7 +563,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       return false;
 #endif
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--name"_Stz) || argv[i_Arg].bSame("--nodeName"_Stz)) {
       m_xSysArgs.m_sNodeName = (Stz*)argv[++i_Arg];
@@ -572,20 +573,20 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--node"_Stz)) {
       m_xSysArgs.m_xNodeDefn[i_BootNode].m_sNodeName  = (Stz*)argv[++i_Arg];
-
-      if(0 == StrLib::bIsIPAddr(argv[++i_Arg].azChar()))
-      {
-        vPrintErrorMarker(argv, i_Arg);
-        vTrace("Invalid node argument IP Address: %s\n"_Stz, (Stz*)argv[i_Arg]);
-        vTrace("Usage: --node <ip-addr> <port>\n"_Stz);
-        return false;
-      }
-      m_xSysArgs.m_xNodeDefn[i_BootNode].m_sIPAddress = (Stz*)argv[i_Arg];
+        //TODO Arjun: Below needs to check for a valid hostname as well. Will be done at a later date.
+//      if(0 == StrLib::bIsIPAddr(argv[++i_Arg].azChar()))
+//      {
+//        vPrintErrorMarker(argv, i_Arg);
+//        vTrace("Invalid node argument IP Address: %s\n"_Stz, (Stz*)argv[i_Arg]);
+//        vTrace("Usage: --node <name> <ip-addr> <port>\n"_Stz);
+//        return false;
+//      }
+      m_xSysArgs.m_xNodeDefn[i_BootNode].m_sIPAddress = (Stz*)argv[++i_Arg];
 
       if ( ! StrLib::bIsInteger(argv[++i_Arg].azChar()) ) {
         vPrintErrorMarker(argv, i_Arg);
         vTrace("Invalid node argument Port number: %s\n"_Stz,(Stz*)argv[i_Arg]);
-        vTrace("Usage: --node <ip-addr> <port>\n"_Stz);
+        vTrace("Usage: --node <name> <ip-addr> <port>\n"_Stz);
         return false;
       }
       m_xSysArgs.m_xNodeDefn[i_BootNode].m_iPortNo    = argv[i_Arg].iToI8();
@@ -1178,7 +1179,7 @@ void CmdLineArgs::vPrintStartupInfo(void)
   if (m_xSysArgs.m_bStop)        vTrace("  --stop\n"_Stz);
   if (m_xSysArgs.m_bVerbose)     vTrace("  --verbose\n"_Stz);
 #endif
-  
+
   vTrace("  --name %s\n"_Stz,m_xSysArgs.m_sNodeName.azChar());
   vTrace("  --region %s\n"_Stz,m_xSysArgs.m_sRegionName.azChar());
   
