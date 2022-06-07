@@ -32,8 +32,6 @@ void Step::vAddSteps_JobId(void)
 {
   vAddStep("job(Id).folderPath@"_Stz,    &Step::vJobIdFolderPathFetch);
   vAddStep("job(Id).folderPath!"_Stz,    &Step::vJobIdFolderPathStore);
-  
-  vAddStep("job(Id).jobList@"_Stz,       &Step::vJobIdJobListFetch);
     
   vAddStep("job(Id).lastJobId@"_Stz,     &Step::vJobIdLastJobIdFetch);
   vAddStep("job(Id).lastJobId!"_Stz,     &Step::vJobIdLastJobIdStore);
@@ -83,20 +81,6 @@ void Step::vJobIdFolderPathStore(void)
   m_pDataStack->vPopStr(sFolderPath,__func__);
 
   pJob->vFolderPath(sFolderPath);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job(Id).jobList@ -- fetch job list                                         */
-/*----------------------------------------------------------------------------*/
-void Step::vJobIdJobListFetch(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  m_pDataStack->vPushInt(pJob->eJobList());
   
   EXIT();
 }

@@ -54,6 +54,8 @@ void Step::vAddSteps_Job(void)
   
   vAddStep("[job].id@"_Stz,              &Step::vJobIdFetch);
 
+  vAddStep("[job].jobList@"_Stz,         &Step::vJobListFetch);
+
   vAddStep("[job].masterJobId"_Stz,      &Step::vJobMasterJobId);
   vAddStep("[job].mutex@"_Stz,           &Step::vJobMutexFetch);
   
@@ -546,6 +548,20 @@ void Step::vJobGet(void)
   m_pDataStack->vPushPtr(pJob);
 
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [job]].jobList@ -- fetch job list                                          */
+/*----------------------------------------------------------------------------*/
+void Step::vJobListFetch(void)
+{
+  ENTRY();
+
+  Job* pJob = pOuterJobOfTask();
+
+  m_pDataStack->vPushInt(pJob->eJobList());
+
   EXIT();
 }
 

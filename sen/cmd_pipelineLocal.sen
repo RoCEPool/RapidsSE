@@ -111,7 +111,7 @@
   then
 
   // add job to the local job list
-  [job] job(Id).jobList@ JL_DEMON == not if
+  [job].jobList@ JL_DEMON == not if
     [job].addLocal
   then
 
@@ -124,7 +124,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove job from the local job list
-  [job] job(Id).jobList@ JL_DEMON == not if
+  [job].jobList@ JL_DEMON == not if
     [job].removeLocal
   then
 

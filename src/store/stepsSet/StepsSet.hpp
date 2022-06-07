@@ -827,12 +827,12 @@ void vDdlLockAssertNone(void);
 
   void vJobIdFetch(void);
 
-  void vJobIdJobListFetch(void);
-
   void vJobIdLastJobIdFetch(void);
   void vJobIdLastJobIdStore(void);
 
   void vJobIdNameFetch(void);
+
+  void vJobListFetch(void);
 
   void vJobOriginIdFetch(void);
   void vJobOriginNodeIdFetch(void);
