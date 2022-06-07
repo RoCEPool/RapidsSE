@@ -26,7 +26,7 @@
 #include "eXA.h"
 
 #include "KeyBkt.hpp"
-
+//#include "JobId.hpp"
 
 
 namespace OBLIQUE {
@@ -275,6 +275,8 @@ namespace OBLIQUE
     class DEMON
     {
     public:
+      static void   vExitDemonJobId(JobId tJobId);
+      static JobId tExitDemonJobId(void);
       static void vPipeToOp0(Stz* szDemonNm, Operand* pOperand);
     };
     

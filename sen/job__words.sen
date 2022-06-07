@@ -205,15 +205,16 @@
 /*----------------------------------------------------------------------------*/
 : [exitDemon]:queueJob params| pJob |
 
-  "__exitDemon" find dup if
-  
-    word.object@ locals| pExitDemonJob |
+  //"__exitDemon" find dup if
+  // word.object@ locals| tExitDemonJobId |
 
-    pJob pExitDemonJob job(Id).pipeToOp0
+  AM::DEMON::tExitDemonJobId@ locals| tExitDemonJobId |
+
+  tExitDemonJobId job(Id).isUnknown not if
+
+    pJob tExitDemonJobId job(Id).pipeToOp0
 
   else
-
-    discard
 
     true pJob job(Id).reapable!
 

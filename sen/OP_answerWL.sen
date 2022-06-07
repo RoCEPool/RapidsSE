@@ -20,8 +20,10 @@
   STD_DEMONFORK_TAG str.cat
 
     // receiver demon pipeline
-      receiverWL_procText api::forkChild not if
+    receiverWL_procText api::forkDemon not if
       "Error Code %v" .printf
+    else
+      discard // jobId
     then
 ;
 

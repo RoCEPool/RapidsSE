@@ -99,70 +99,97 @@
   "spawning demons" .verbose
 
   // spawn metrics update
-  STD_DEMONFORK_TAG metricsDemonPipeline api::forkChild not if
+  STD_DEMONFORK_TAG metricsDemonPipeline api::forkDemon not if
     "Error Code %v" .printf
+  else
+    discard
   then
 
   // spawn metrics collect
-  STD_DEMONFORK_TAG collectDemonPipeline api::forkChild not if
+  STD_DEMONFORK_TAG collectDemonPipeline api::forkDemon not if
     "Error Code %v" .printf
+  else
+    discard // jobId
   then
 
   // spawn supervisor demon
-  STD_DEMONFORK_TAG superDemonPipeline api::forkChild not if
+  STD_DEMONFORK_TAG superDemonPipeline api::forkDemon not if
     "Error Code %v" .printf
+  else
+    discard // jobId
   then
 
   // spawn monitor demon
-  STD_DEMONFORK_TAG monDemonPipeline api::forkChild not if
+  STD_DEMONFORK_TAG monDemonPipeline api::forkDemon not if
     "Error Code %v" .printf
+  else
+    discard // jobId
   then
 
   // spawn page out demon
-  //STD_DEMONFORK_TAG pageOutDemonPipeline api::forkChild not if
+  //STD_DEMONFORK_TAG pageOutDemonPipeline api::forkDemon not if
   //  "Error Code %v" .printf
+  //else
+  //  discard // jobId
   //then
 
   // spawn reaper demon
-  STD_DEMONFORK_TAG reaperDemonPipeline api::forkChild not if
+  STD_DEMONFORK_TAG reaperDemonPipeline api::forkDemon not if
     "Error Code %v" .printf
+  else
+      discard // jobId
   then
 
-  //spawn report demon
-  STD_DEMONFORK_TAG exitDemonPipeline api::forkChild not if
+  //spawn reaper demon
+  STD_DEMONFORK_TAG exitDemonPipeline api::forkDemon not if
     "Error Code %v" .printf
+  else
+    AM::DEMON::tExitDemonJobId!
   then
 
   //spawn recurring demon
-  STD_DEMONFORK_TAG recurDemonPipeline api::forkChild not if
+  STD_DEMONFORK_TAG recurDemonPipeline api::forkDemon not if
     "Error Code %v" .printf
+  else
+    discard // jobId
   then
 
   // spawn stat demon
-  STD_DEMONFORK_TAG statDemonPipeline api::forkChild not if
+  STD_DEMONFORK_TAG statDemonPipeline api::forkDemon not if
     "Error Code %v" .printf
+  else
+    discard // jobId
   then
 
   // spawn waker demon
-  STD_DEMONFORK_TAG wakerDemonPipeline api::forkChild not if
+
+  STD_DEMONFORK_TAG wakerDemonPipeline api::forkDemon not if
     "Error Code %v" .printf
+  else
+    discard // jobId
   then
   
   // spawn event demon
-  STD_DEMONFORK_TAG eventDemonPipeline api::forkChild not if
+  STD_DEMONFORK_TAG eventDemonPipeline api::forkDemon not if
     "Error Code %v" .printf
+  else
+    discard // jobId
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // spawn answer demon for SE Adaptor
-  STD_DEMONFORK_TAG answerSE_procText api::forkChild not if
+  STD_DEMONFORK_TAG answerSE_procText api::forkDemon not if
     "Error Code %v" .printf
+  else
+    discard // jobId
   then
 
   // spawn connector demon for SE Adaptor
-  STD_DEMONFORK_TAG connectorSE_procText api::forkChild not if
+  STD_DEMONFORK_TAG connectorSE_procText api::forkDemon not if
     "Error Code %v" .printf
+  else
+    discard // jobId
   then
 
 

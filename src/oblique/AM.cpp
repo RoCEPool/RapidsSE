@@ -244,6 +244,24 @@ Dic* AM::DIC::pRoot(void)
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /*----------------------------------------------------------------------------*/
+/* set jobId of exit demon in AM                                              */
+/*----------------------------------------------------------------------------*/
+void AM::DEMON::vExitDemonJobId(JobId tJobId) {
+  _static_
+
+  gpAttachMap->m_tExitDemonJobId = tJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get jobId of exit demon in AM                                              */
+/*----------------------------------------------------------------------------*/
+JobId AM::DEMON::tExitDemonJobId(void) {
+  _static_
+
+  return gpAttachMap->m_tExitDemonJobId;
+}
+
+/*----------------------------------------------------------------------------*/
 /* pipe given row buffer to named demon                                       */
 /*----------------------------------------------------------------------------*/
 void AM::DEMON::vPipeToOp0(Stz* szDemonNm, Operand* pOperand)

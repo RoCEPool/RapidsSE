@@ -201,6 +201,9 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
     return eChildError;
   }
 
+  // return the jobId
+  rtChildJobId = rpChildJob_tbr->tJobId();
+
   return EC_NONE;
 }
 

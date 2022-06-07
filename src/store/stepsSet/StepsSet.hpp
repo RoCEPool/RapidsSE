@@ -61,6 +61,8 @@ public:
   void vAggTimerTicks(void);
 
   // AM
+  void vAM_ExitDemonJobIdFetch(void);
+  void vAM_ExitDemonJobIdStore(void);
   void vAM_No_Free(void);
   void vAM_Show_Boot(void);
   void vAM_Show_Dir(void);
@@ -87,6 +89,7 @@ public:
 
   // api
   void vApiForkChild(void);
+  void vApiForkDemon(void);
   void vApiForkChildOld(void);
   void vApiForkChild2PC(void);
   void vApiReapJobs(void);
@@ -877,6 +880,7 @@ void vDdlLockAssertNone(void);
 
   void vJobIdSystemCloserFetch(void);
   void vJobIdSystemCloserStore(void);
+  void vJobIdIsUnknown(void);
 
   void vJobTagSetFetch(void);
   void vJobTaskFetch(void);

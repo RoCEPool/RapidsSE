@@ -43,6 +43,8 @@ void Step::vAddSteps_JobId(void)
 
   vAddStep("job(Id).systemCloser?"_Stz,  &Step::vJobIdSystemCloserFetch);
   vAddStep("job(Id).systemCloser!"_Stz,  &Step::vJobIdSystemCloserStore);
+
+  vAddStep("job(Id).isUnknown"_Stz,      &Step::vJobIdIsUnknown);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -125,7 +127,8 @@ void Step::vJobIdPipeToOp0(void)
 {
   ENTRY();
 
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  JobId tJobId = m_pDataStack->iPopInt(__func__);
+  Job* pJob = AM::JLIST::pFindJob(tJobId);
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
   
@@ -199,6 +202,20 @@ void Step::vJobIdSystemCloserStore(void)
     
   pJob->vSystemCloser(iSystemCloser);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job(Id).isUnknown -- is the jobId unknown ?                                */
+/*----------------------------------------------------------------------------*/
+void Step::vJobIdIsUnknown(void)
+{
+  ENTRY();
+
+  JobId tJobId = m_pDataStack->iPopInt(__func__);
+
+  m_pDataStack->vPushInt(tJobId.bIsUnknown());
+
   EXIT();
 }
 

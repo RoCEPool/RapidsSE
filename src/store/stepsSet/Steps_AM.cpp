@@ -13,6 +13,9 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_AM(void)
 {
+  vAddStep("AM::DEMON::tExitDemonJobId@"_Stz, &Step::vAM_ExitDemonJobIdFetch);
+  vAddStep("AM::DEMON::tExitDemonJobId!"_Stz, &Step::vAM_ExitDemonJobIdStore);
+
   vAddStep("AM::SHOW::bBoot"_Stz,           &Step::vAM_Show_Boot);
   vAddStep("AM::SHOW::bDir"_Stz,            &Step::vAM_Show_Dir);
   vAddStep("AM::SHOW::bDir_Failure"_Stz,    &Step::vAM_Show_Dir_Failure);
@@ -37,6 +40,33 @@ void Step::vAddSteps_AM(void)
 
   vAddStep("AM::sysMetricsDisable"_Stz,     &Step::vAM_SysMetricsDisable);
   vAddStep("AM::sysMetricsEnable"_Stz,      &Step::vAM_SysMetricsEnable);
+}
+
+/*----------------------------------------------------------------------------*/
+/* AM::DEMON::tExitDemonJobId@ -- fetch ExitDemon JobId                       */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_ExitDemonJobIdFetch(void)
+{
+  ENTRY();
+
+  JobId tJobId = AM::DEMON::tExitDemonJobId();
+
+  m_pDataStack->vPushInt(tJobId.iAsI8());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AM::DEMON::tExitDemonJobId! -- store the ExitDemon JobId                   */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_ExitDemonJobIdStore(void)
+{
+  ENTRY();
+
+  JobId tJobId = m_pDataStack->iPopInt(__func__);
+  AM::DEMON::vExitDemonJobId(tJobId);
+
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
