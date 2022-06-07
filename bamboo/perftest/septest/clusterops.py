@@ -19,7 +19,7 @@ C_CLUSTER_PROMPT_CMD = "prompt.sh"
 C_CLUSTER_COLLECT_LOGS_CMD = "collectLogs.sh"
 C_CLUSTER_STATUS_CMD = "status.sh"
 
-C_JDBC_DRIVER_DIR = pathlib.Path("../seth/bin")
+C_JDBC_DRIVER_DIR = pathlib.Path("../../seth/bin")
 C_JDBC_DRIVER_GLOB = "rapidsse-jdbc-*.*.*.jar"
 
 # Cached path to the found JDBC driver
@@ -39,9 +39,9 @@ def build_installer() -> pathlib.Path:
     LOG.info("About to invoke the RapidsSE installer packager script to build and package RapidsSE.")
 
     # Note: For debugging only
-    # command = "NO_MOD_CHECK=1 NO_BUILD=1 ../installer/packaging/package.sh"
+    # command = "NO_MOD_CHECK=1 NO_BUILD=1 ../../installer/packaging/package.sh"
 
-    command = "../installer/packaging/package.sh"
+    command = "../../installer/packaging/package.sh"
 
     try:
         subprocess.run(command,
@@ -65,7 +65,7 @@ def find_installer() -> pathlib.Path:
     Throws an assertion error if the installer cannot be found.
     """
     # Find the installer file that was built
-    install_file_path = pathlib.Path("../installer/output").resolve()
+    install_file_path = pathlib.Path("../../installer/output").resolve()
     install_file_glob = "rapidsse-*.run"
 
     run_files_iter = pathlib.Path(install_file_path).glob(install_file_glob)

@@ -6,9 +6,9 @@
 
 /*
 
-  Counter0[] : tracks the number of EV_M_FINISHED expected
+  Counter0[] : tracks the number of EV_X_CHILDEXIT expected
   
-  Counter1[] : tracks the number of EV_M_FINISHED processed so far
+  Counter1[] : tracks the number of EV_X_CHILDEXIT processed so far
 
 */
 
@@ -17,9 +17,7 @@
 /*----------------------------------------------------------------------------*/
 : waitFinished_mayProceed
 
-  "  : waitFinished_mayProceed" .
-
-  Counter1[] Counter0[] "    expected %v processed %v" .printf
+  //Counter1[] Counter0[] "    expected %v processed %v" .printf
 
   Counter0[] not if
     false
@@ -40,8 +38,10 @@
 
   0 EV_X_CHILDEXIT EG_ZK LogicUnit[].diaryNote
 
+  // increment EV_X_CHILDEXIT's processed Counter1
   Counter1[] 1 + to Counter1[]
 
+  // may proceed ?
   waitFinished_mayProceed if
 
     true LogicUnit[].RcvdChildExit!
@@ -53,7 +53,7 @@
       Marker[].pipeout
     then
 
-    "waitFinished_ChildExit" .
+    //"waitFinished_ChildExit" .
   then
 
   Pipein[].delete
@@ -70,6 +70,8 @@
 
   true LogicUnit[].RcvdEnd!
 
+  // if received all child exits then pipeout END
+  //   else wait till all child exits have been received
   LogicUnit[].RcvdChildExit@ if
      PipeIn[].pipeout
   else
@@ -86,85 +88,20 @@
 /* handler for EV_I_COUNT ...                                                 */
 /*----------------------------------------------------------------------------*/
 : waitFinished_Count \handler
-  
-  [EvMgr].curEventNm@ "%v" .printf
 
   PipeIn[]\clear to InfoSet[]
   
   0 C_TDEF_COUNT InfoSet:getCol to Counter0[]
   
-  Counter0[] "  expecting %v commands" .printf
+  //Counter0[] "  expecting %v commands" .printf
 
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_M_END ...                                                   */
-/*----------------------------------------------------------------------------*/
-/*
-: waitFinished_End \handler
-
-  [EvMgr].curEventNm@ "%v" .printf
-
-  PipeIn[].delete
-
-  waitFinished_mayProceed if
-  
-    "  may proceed" .printf
-    
-    Marker[].newEndMarker
-    Marker[].pipeOut
-    true
-    
-  else
-  
-    "  cannot proceed" .printf
-
-    Marker[].newEndMarker
-    Marker[].pipeOut
-    true
-    
-  then
-;
-*/
-/*----------------------------------------------------------------------------*/
-/* handler for EV_M_FINISHED_handler ...                                      */
-/*----------------------------------------------------------------------------*/
-/*
-: waitFinished_Finished \handler
-
-  [EvMgr].curEventNm@ "%v" .printf
-
-  Counter1[] 1 + to Counter1[]
-  
-  PipeIn[].delete
-
-  waitFinished_mayProceed if
-  
-    [EvMgr].curEventNm@ "  %v may proceed" .printf
-    
-    Marker[].newEndMarker
-    Marker[].pipeOut
-    true
-    
-  else
-  
-    [EvMgr].curEventNm@ "  %v cannot proceed" .printf
-
-    Marker[].newEndMarker
-    Marker[].pipeOut
-    true
-    
-  then
-;
-*/
-
-/*----------------------------------------------------------------------------*/
 /* handler for EV_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : waitFinished_Start \handler
-  
-  [EvMgr].curEventNm@ "%v" .printf
     
   0 to Counter0[] // tracks the number of EV_X_CHILDEXIT expected
   0 to Counter1[] // tracks the number of EV_X_CHILDEXIT processed so far
@@ -187,7 +124,6 @@
 
   find: waitFinished_Count     EV_I_COUNT     [op].handler!
   find: waitFinished_End       EV_M_END       [op].handler!
-  //find: waitFinished_Finished  EV_M_FINISHED  [op].handler!
   find: waitFinished_Start     EV_M_START     [op].handler!
 
   find: waitFinished_ChildExit EV_X_CHILDEXIT     [op].handler!
