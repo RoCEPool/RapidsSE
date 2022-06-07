@@ -28,15 +28,6 @@ if [ -f /etc/system-release ]; then
   fi;
 fi
 
-if [ -f /etc/centos-release ]; then
-  OS_VER=$(cat /etc/centos-release)
-  if [[ "${OS_VER}" =~ 'CentOS Linux release 7' ]]; then
-    OS_DIST="${CENTOS7}"
-    OS_USER="${CENTOS7_USER}"
-    OS_HOME_DIR="${CENTOS7_HOME_DIR}"
-  fi;
-fi
-
 if [ -z "${OS_DIST}" ]; then
   >&2 echo "****** Cloud init error *******"
   >&2 echo "COULD NOT DETERMINE THE OS PLATFORM. EXITING EARLY."
@@ -44,6 +35,10 @@ if [ -z "${OS_DIST}" ]; then
   >&2 echo "****** Cloud init error *******"
   exit 1
 fi
+
+echo "OS_DIST = ${OS_DIST}"
+echo "OS_USER = ${OS_USER}"
+echo "OS_HOME_DIR = ${OS_HOME_DIR}"
 
 # -----------------------------------------
 # Create an ec2-user on CentOS 7
@@ -53,6 +48,16 @@ echo
 
 useradd "${OS_USER}"
 usermod -a -G wheel "${OS_USER}"
+
+# Setup passwordless sudo for user ec2-user
+# Wheel group already has this, but not passwordless
+SUDO_FILE="/etc/sudoers.d/ec2-user"
+{
+  echo "# Let ec2-user use sudo without a password"
+  echo "ec2-user	ALL=(ALL)	NOPASSWD: ALL"
+} > "${SUDO_FILE}"
+
+chmod 0400 "${SUDO_FILE}"
 
 # -----------------------------------------
 # Set up SSH. We do this early so that we can still login if something goes wrong later on.
@@ -67,8 +72,7 @@ mkdir -p "${SSH_DIR}" || exit
 
 cat << EOF >> "${SSH_DIR}/authorized_keys"
 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDHlTysxd228irQB6IiQj7LHFCtxLRD2jsYTcNkh9DcIqZ3gKjGIk6OmXE1LMhCBh5Y1e5DHTGeBPIgb2Clcj2N+lZI+H/T42Ysu0hUrllEjTsM35OPZu92azL1WnmZn8VWzGta8+mtDg/2PI8pUn9Z3ZxEoyd6TYm5k/CrZquH93mUT9jKVsNUsMNrwdYdgcJ9W6+K/hAqv87MPr28F7vb8/mQbAaB5d+PeOxrE4wEFl9fw7uh1m28NjXbyOLEbw6F/D3Ev5+3PZ50qKzQ9QFP2xFGHzT9Zk3jI76t1PBv/ZHrQ++XmWmy+CFfIaUVy2Dcf1JwnEH311nw5X83cGOv ${OS_USER}@localhost
-ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDbUdCIFFt3Bq4AuJ1cBq2oB70FRNwi3pGojW7viFMu9n4/3xVczg8wLk4YghsXvQaZCNZDXHZuYqBqb0Vc3Jd5A7Cjsh3ZCmEkvxnlDA57B9ttNNHrsUH51K5tvk41z4KnNvB+idRlr/lxFG57yIMzYmPoJVz7v0ypWQ3jsasXrgCJmbXUQ55hCPx5YMeCFnwIGhdxxlwqoaKK3sPaFyvZMxJlFMzjnj/AUHm4gaTZHTX+AcnV/hPJ2zygZpTxN8yUVDmK7H8xltlSqon97Ab5dkSSORBkJG2S9B9i2j6LUWvnB6rrA23UWoirgTHlzXmzdT+nyP+AgtnoGJ2PacI+D1GXgSZKWLdxTH85YhUC0nKYeOhHlj63ymD2WLHhWigE6G34/C6Byd0pV6STFrnfMT30pIiebL6QzjrpCXQCDON7Y3QHJdDD7f/oVe5mU+Qq0tPxqtNCJzim3XAhpY74AW7NGyu2Fr0/bMGCn6GciZYtIT0IKuaObRPYzGhFmNE= alka@localhost
-ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCihni2+QEiGqJqBRyRa/C6t3esZoAXEMoFal5l3ocIiFxxMs2V02ACju6IjPBz8r+bJ/VNDKey3/3O1NoCXaMr9R0jEUrdfhCKBsIky7p4PLYMDYze+FMxz30Op1hJZ8O5NLhJOufR8jLcLnwsw3rm4jnX/lUM9fU4Pjd989pJ/neu+qE6Vb8inSY9kq5VB7Ksq1Vl/wtkqSpjOOCeqKnbtwxQ5dOHP6nCw6NLkgrSTz7K08DEtSlwJ29nP4FAuPYZD8YQ0p2tq0uLsP/EVCBoO4YGi+bktDhfkqWF9uzrErwpWXgvMzN0emKzYpw+rNZ37FNv9Nc17K9Wy+ssvEscFU129VVk6bF4MPd8lq6y01gOv5NWt3PaylywDsfAYE2RM5W2bAUzld3nt2zn2+H7AQbnZkrw+5QkgtelwEsWHGTM+ciWg/bndno7kS6Ej28k2E/8aTRvbeb5w0W1SIV0e8BY4S8ppDyNvskTWYeGzQoYvqL9GIQz2vE9YeVmPK0= ray@localhost
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCW2/5HwKvFlTKcc/v+l9aE94My4lgLNiQwvPCOrlsdvFNG1eietIefii6juPyQM4tzGbMjD5gqPqU9XPRU9OzZXLsPO/EPUE9ZTCGhQcjIH1/dVBO+01hMsjn9DSW4BhCMKU9UFxw41xgai4ZfJNnJg1qYY8MLKx+dzqPHFuivkRabDPrPQoH3eDQq9VeKZyUSHTcB07Jq0sk0cTa9afhUG/d3NtCwSDgW/9NkccUquMIqTi7396Rkcu2WktLlrDo8mkripSR2yp3wTs5QZ7Lonci/Ftp47GjBWKRdZRVBilYdnibFYnbGqMR800/cLI2lXaWIkkJ0piW5N7EnI/0P aws_rapidsse
 EOF
 
 cat << EOF > ${SSH_DIR}/id_rsa
@@ -102,7 +106,7 @@ zeAErhWRpUkqMr7HoAL+ZaEuzdNZbr6bz+EibfRJxz67Tf68AT6wyQ==
 EOF
 
 cat << EOF > "${SSH_DIR}/id_rsa.pub"
-ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDHlTysxd228irQB6IiQj7LHFCtxLRD2jsYTcNkh9DcIqZ3gKjGIk6OmXE1LMhCBh5Y1e5DHTGeBPIgb2Clcj2N+lZI+H/T42Ysu0hUrllEjTsM35OPZu92azL1WnmZn8VWzGta8+mtDg/2PI8pUn9Z3ZxEoyd6TYm5k/CrZquH93mUT9jKVsNUsMNrwdYdgcJ9W6+K/hAqv87MPr28F7vb8/mQbAaB5d+PeOxrE4wEFl9fw7uh1m28NjXbyOLEbw6F/D3Ev5+3PZ50qKzQ9QFP2xFGHzT9Zk3jI76t1PBv/ZHrQ++XmWmy+CFfIaUVy2Dcf1JwnEH311nw5X83cGOv "${OS_USER}"@$HOSTNAME
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDHlTysxd228irQB6IiQj7LHFCtxLRD2jsYTcNkh9DcIqZ3gKjGIk6OmXE1LMhCBh5Y1e5DHTGeBPIgb2Clcj2N+lZI+H/T42Ysu0hUrllEjTsM35OPZu92azL1WnmZn8VWzGta8+mtDg/2PI8pUn9Z3ZxEoyd6TYm5k/CrZquH93mUT9jKVsNUsMNrwdYdgcJ9W6+K/hAqv87MPr28F7vb8/mQbAaB5d+PeOxrE4wEFl9fw7uh1m28NjXbyOLEbw6F/D3Ev5+3PZ50qKzQ9QFP2xFGHzT9Zk3jI76t1PBv/ZHrQ++XmWmy+CFfIaUVy2Dcf1JwnEH311nw5X83cGOv ${OS_USER}@${HOSTNAME}
 EOF
 
 cat << EOF >> "${SSH_DIR}/known_hosts"
@@ -205,8 +209,8 @@ bash /etc/rc.d/rc.local
 
 # -----------------------------------------
 # Give more memory to /dev/shm. Use 95% of system memory
-echo "Updating size of /dev/shm to 95% of system memory"
 SHM_SIZE=$(cat /proc/meminfo | grep "MemTotal:" | awk '{printf "%d\n", $2/1048576*0.95}')
+echo "Updating size of /dev/shm to 95% of system memory (${SHM_SIZE} GB)"
 {
   echo ""
   echo "# Set /dev/shm to 95% of system memory"
@@ -245,17 +249,19 @@ chmod g+w /opt
 echo
 echo "*** Installing updates and necessary packages ***"
 echo
-amazon-linux-extras install -y epel
 yum update -y
-yum install -y gcc-c++ git git-lfs java-11-amazon-corretto-headless cmake libuuid-devel unzip
-yum install -y nload nethogs bmon iftop iperf3 iotop jq telnet vim
 
 if [ "${OS_DIST}" = "${CENTOS7}" ]; then
   yum install -y epel-release
-  yum install -y libuuid-devel centos-release-scl devtoolset-11-gcc*
+  yum install -y https://packages.endpointdev.com/rhel/7/os/x86_64/endpoint-repo.x86_64.rpm
 fi
 
-git lfs install
+yum install -y gcc-c++ git git-lfs cmake libuuid-devel unzip
+yum install -y centos-release-scl
+yum install -y devtoolset-11-gcc devtoolset-11-gcc-c++ devtoolset-11-libatomic-devel
+yum install -y java-11-openjdk-headless iperf3 iotop telnet vim nload nethogs bmon iftop jq
+
+su ec2-user git lfs install
 
 # -----------------------------------------
 # Vim annoyances
@@ -287,10 +293,12 @@ echo "*** Setting bash preferences ***"
 echo
 
 bash_profile="${OS_HOME_DIR}/.bash_profile"
-echo "" >> "${bash_profile}"
-echo '#export PS1="[\u@\h \W]\$ ' >> "${bash_profile}"
-echo 'export PS1="\[\e[0;33m\]\u\[\e[0m\]@\[\e[0;32m\]\h\[\e[0m\]:\[\e[38;5;033m\]\W\[\e[0m\]\$ "' >> "${bash_profile}"
-echo "" >> "${bash_profile}"
+{
+  echo ""
+  echo '#export PS1="[\u@\h \W]\$ '
+  echo 'export PS1="\[\e[0;33m\]\u\[\e[0m\]@\[\e[0;32m\]\h\[\e[0m\]:\[\e[38;5;033m\]\W\[\e[0m\]\$ "'
+  echo ""
+} >> "${bash_profile}"
 
 # -----------------------------------------
 # Git setup
