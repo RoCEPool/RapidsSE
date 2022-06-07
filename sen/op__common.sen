@@ -420,7 +420,7 @@
     exit
   then
 
-  //pPipelineJob job(Id).jobList@  "Job list %v" .printf
+  //pPipelineJob [job].jobList@  "Job list %v" .printf
 
   // wait till the pipeline job is in a list
   begin
@@ -443,9 +443,9 @@
 
     // wait till the parent job is executing
     begin
-      pPipelineJob job(Id).phase@ JP_EXECUTING == not
+      [job].phase@ JP_EXECUTING == not
     while
-      //pPipelineJob job(Id).phase@ "Job phase %v" .printf
+      //[job].phase@ "Job phase %v" .printf
 
       thread.dedicated@ if
         10 thread::sleepMsec
@@ -457,7 +457,7 @@
 
     // wait till the pipelinetask is in a WAIT state
     // possibilty of execute not have arrived yet
-    pPipelineJob job(Id).task@ locals| pPipelineTask |
+    [job].task@ locals| pPipelineTask |
     begin
       pPipelineTask task.isWaiting?
     not while

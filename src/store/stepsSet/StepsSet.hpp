@@ -843,7 +843,6 @@ void vDdlLockAssertNone(void);
   void vJobIdPipeToOp0(void);
   void vJobPreExecuteTest(void);
   void vJobPhaseFetch(void);
-  void vJobIdPhaseFetch(void);
   void vJobPhaseStore(void);
   void vJobProgress(void);
   void vJobProgressReset(void);
@@ -881,7 +880,6 @@ void vDdlLockAssertNone(void);
 
   void vJobTagSetFetch(void);
   void vJobTaskFetch(void);
-  void vJobIdTaskFetch(void);
 
   void vJobTscBeginning(void);
   void vJobTscBegun(void);

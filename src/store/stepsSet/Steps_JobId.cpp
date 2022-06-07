@@ -35,8 +35,7 @@ void Step::vAddSteps_JobId(void)
     
   vAddStep("job(Id).lastJobId@"_Stz,     &Step::vJobIdLastJobIdFetch);
   vAddStep("job(Id).lastJobId!"_Stz,     &Step::vJobIdLastJobIdStore);
-  
-  vAddStep("job(Id).phase@"_Stz,         &Step::vJobIdPhaseFetch);
+
   vAddStep("job(Id).pipeToOp0"_Stz,      &Step::vJobIdPipeToOp0);
 
   vAddStep("job(Id).reapable@"_Stz,      &Step::vJobIdReapableFetch);
@@ -44,8 +43,6 @@ void Step::vAddSteps_JobId(void)
 
   vAddStep("job(Id).systemCloser?"_Stz,  &Step::vJobIdSystemCloserFetch);
   vAddStep("job(Id).systemCloser!"_Stz,  &Step::vJobIdSystemCloserStore);
-
-  vAddStep("job(Id).task@"_Stz,          &Step::vJobIdTaskFetch);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -117,20 +114,6 @@ void Step::vJobIdLastJobIdStore(void)
   tLastJobId = iLastJobId;
   
   pJob->vLastJobId(tLastJobId);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* jobI(Id).phase@ -- fetch the job phase                                     */
-/*----------------------------------------------------------------------------*/
-void Step::vJobIdPhaseFetch(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-
-  m_pDataStack->vPushInt(pJob->eJobPhase());
   
   EXIT();
 }
@@ -218,22 +201,6 @@ void Step::vJobIdSystemCloserStore(void)
   
   EXIT();
 }
-
-/*----------------------------------------------------------------------------*/
-/* job(Id).task@ -- fetch the task executing the job                              */
-/*----------------------------------------------------------------------------*/
-void Step::vJobIdTaskFetch(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-
-  m_pDataStack->vPushPtr(pJob->pTask());
-  
-  EXIT();
-}
-
-
 
 /*============================================================================*/
 /* end                                                                        */
