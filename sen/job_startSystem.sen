@@ -209,7 +209,7 @@
 
   [job].addRetired
   [task].grabLock
-    [job] [exitDemon]:queueJob
+    [exitDemon]:queueJob
 
     [task].retire
 

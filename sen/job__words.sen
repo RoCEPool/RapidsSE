@@ -74,14 +74,13 @@
 /*----------------------------------------------------------------------------*/
 /* send job to given participating node                                       */
 /*----------------------------------------------------------------------------*/
-: job(Id).forward ( i_Node pJob -- )
+: job.forward ( i_Node -- )
 
-  params| pJob |
   params| i_Node |
 
   i_Node [grid].findNodeByNo to SendNode[]
 
-  pJob job.send
+  [job] job.send
   
   nullptr to SendNode[]
 ;
@@ -193,7 +192,7 @@
 /*----------------------------------------------------------------------------*/
 /* queue given job onto exit demon                                            */
 /*----------------------------------------------------------------------------*/
-: [exitDemon]:queueJob params| pJob |
+: [exitDemon]:queueJob
 
   //"__exitDemon" find dup if
   // word.object@ locals| tExitDemonJobId |
@@ -202,11 +201,11 @@
 
   tExitDemonJobId job(Id).isUnknown not if
 
-    pJob tExitDemonJobId job(Id).pipeToOp0
+    [job] tExitDemonJobId job(Id).pipeToOp0
 
   else
 
-    true pJob job(Id).reapable!
+    true [job].reapable!
 
   then
 
@@ -226,7 +225,7 @@
 
   [job].addRetired
   [task].grabLock
-    [job] [exitDemon]:queueJob
+    [exitDemon]:queueJob
 
     [task].retire
   
@@ -346,7 +345,7 @@
     node_I[].node to pNode
 
     pNode node.sendSocket@ if
-      pNode node.id [job] job(Id).forward
+      pNode node.id job.forward
     else
       "++++++++++++++++++++++++++++++++++ NO SOCKET FOR NODE" .
     then
@@ -386,7 +385,7 @@
     node_I[].node to pNode
 
     pNode node.sendSocket@ if
-      pNode node.id [job] job(Id).forward
+      pNode node.id job.forward
     else
       "++++++++++++++++++++++++++++++++++ NO SOCKET FOR NODE" .
     then

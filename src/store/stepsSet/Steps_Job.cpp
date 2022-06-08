@@ -51,8 +51,6 @@ void Step::vAddSteps_Job(void)
 
   vAddStep("[job].error@"_Stz,           &Step::vJobErrorFetch);
   vAddStep("[job].error!"_Stz,           &Step::vJobErrorStore);
-  
-  vAddStep("[job].id@"_Stz,              &Step::vJobIdFetch);
 
   vAddStep("[job].jobList@"_Stz,         &Step::vJobListFetch);
 
@@ -98,6 +96,9 @@ void Step::vAddSteps_Job(void)
   vAddStep("[job].tscCanceling"_Stz,     &Step::vJobTscCanceling);
   vAddStep("[job].tscCanceled"_Stz,      &Step::vJobTscCanceled);
   vAddStep("[job].tscParticipant"_Stz,   &Step::vJobTscParticipant);
+
+  vAddStep("job::id@"_Stz,               &Step::vJobOtherIdFetch);
+  vAddStep("job::reapable!"_Stz,         &Step::vJobOtherReapableStore);
 }
 
 
@@ -520,19 +521,6 @@ void Step::vJobErrorStore(void)
   
   //pJob->m_xNode[iNode].m_eErrorCode = (eEC)iJobError;
   pJob->vJobError((eEC)iJobError);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* [job].id@ -- fetch the job id of the job                                   */
-/*----------------------------------------------------------------------------*/
-void Step::vJobIdFetch(void)
-{
-  ENTRY();
-
-  Job* pJob = pOuterJobOfTask();
-  m_pDataStack->vPushInt(pJob->tJobId().iAsI8());
   
   EXIT();
 }
@@ -1153,6 +1141,39 @@ void Step::vJobTscParticipant(void)
 
   pJob->vTscParticipant(Hardware::iReadTsc());
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Job Param ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* job::id@ -- fetch the job id of other job (param)                          */
+/*----------------------------------------------------------------------------*/
+void Step::vJobOtherIdFetch(void)
+{
+  ENTRY();
+
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  m_pDataStack->vPushInt(pJob->tJobId().iAsI8());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job::reapable! -- store the job reapable flag for other job (param)        */
+/*----------------------------------------------------------------------------*/
+void Step::vJobOtherReapableStore(void)
+{
+  ENTRY();
+
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+
+  i8 iJobReapable = m_pDataStack->iPopAsInt(__func__);
+
+  pJob->vReapable(iJobReapable);
+
   EXIT();
 }
 

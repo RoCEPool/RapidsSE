@@ -828,12 +828,8 @@ void vDdlLockAssertNone(void);
 
   void vJobGet(void);
 
-  void vJobIdFetch(void);
-
   void vJobIdLastJobIdFetch(void);
   void vJobIdLastJobIdStore(void);
-
-
 
   void vJobListFetch(void);
 
@@ -866,6 +862,9 @@ void vDdlLockAssertNone(void);
   void vJobReportNetwork(void);
   void vJobReportOperands(void);
   void vJobReportOperators(void);
+
+  void vJobOtherReapableStore(void);
+  void vJobOtherIdFetch(void);
 
   void vListedJobScheduleNextPhase(void);
   void vJobScheduleNextPhase(void);
