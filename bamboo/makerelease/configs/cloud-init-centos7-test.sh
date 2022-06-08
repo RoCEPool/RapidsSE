@@ -1,7 +1,7 @@
 #!/bin/bash
 # shellcheck disable=SC2164
 
-# This is a cloud-init script used for configuring a CentOS 7 machine for building & running RapidsSE.
+# This is a cloud-init script used for configuring a CentOS 7 machine for running (not building) RapidsSE.
 # The base64-encoded version of this file must be less than 16kB.
 
 echo
@@ -256,10 +256,14 @@ if [ "${OS_DIST}" = "${CENTOS7}" ]; then
   yum install -y https://packages.endpointdev.com/rhel/7/os/x86_64/endpoint-repo.x86_64.rpm
 fi
 
-yum install -y gcc-c++ git git-lfs cmake libuuid-devel unzip
-yum install -y centos-release-scl
-yum install -y devtoolset-11-gcc devtoolset-11-gcc-c++ devtoolset-11-libatomic-devel
-yum install -y java-11-openjdk-headless iperf3 iotop telnet vim nload nethogs bmon iftop jq
+# Need to have
+yum install -y gcc-c++ git git-lfs libatomic nmap-netcat iproute
+
+# Good to have
+yum install -y vim unzip
+
+# Nice to have
+yum install -y java-11-openjdk-headless iperf3 iotop telnet vim nload nethogs bmon iftop jq unzip
 
 su ec2-user git lfs install
 

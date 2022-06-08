@@ -14,9 +14,17 @@
     * Details on the compilation environment.
     * A list of details on runtime environments.
   * Starts an EC2 instance for the compilation environment.
+  * Gets the current git hash
   * Copies the current repository across to the compilation environment.
+    * Bamboo caches the repository and then clones from that local repository.
+    * Get the url to the local cached repository by running: git remote -v | head -n 1 | awk '{print $2}'
+        * Result must begin with "file://", must be a dir and must be resolvable.
+    * Clone the repository to another local directory with: git clone --no-local <url> <dest>
+    * Copy that <dest> to the remote node.
+    * On the remote node execute: cd <path> && git checkout <hash>
   * Invokes the script to build the installer.
   * Copies the installer from the compilation environment back to the original machine.
+  * Remove the temporary cloned repository.
 
 * Bamboo invokes the jobs/testRelease.sh script.
 * Script sets up python environment and runs the testrelease python module.
