@@ -72,6 +72,7 @@ Op::Op(Stream* p_Stream, OpSpec* p_OpSpec)
   m_pOpTags   = nullptr;
   m_bTraceOp  = false;
   m_bTraceAck = false;
+  m_bAllocate = true;
   
   m_pEvMgr    = new EvMgr;
   
@@ -234,6 +235,16 @@ void Op::vAddWorkDone(i8 iWorkDone)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   m_iWorkDone += iWorkDone;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is memory allocation allowed for this op?                                  */
+/*----------------------------------------------------------------------------*/
+bool Op::bAllocateMemory()
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+
+  return m_bAllocate;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1657,6 +1668,16 @@ void Op::vSendNode(i8 iSendNode)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   m_iSendNode = iSendNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* enable/disable allocation of memory by op                                  */
+/*----------------------------------------------------------------------------*/
+void Op::vSetAllocate(bool bAlloc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+
+  m_bAllocate = bAlloc;
 }
 
 /*----------------------------------------------------------------------------*/

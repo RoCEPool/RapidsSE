@@ -944,6 +944,7 @@ void AM::MEMORY::vAssertAllocate(void)
   _static_
 
   RASSERT(MY::pJob()->bAllocateMemory());
+  RASSERT(MY::pOp()->bAllocateMemory());
 
 }
 

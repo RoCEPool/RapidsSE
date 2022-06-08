@@ -1270,6 +1270,8 @@ void vDdlLockAssertNone(void);
 
   // op
   void vOpAckJobTask(void);
+  void vOpDisableAllocate(void);
+  void vOpEnableAllocate(void);
   void vOpEnqueOperand(void);
   void vOpFindOp(void);
   void vOpGet(void);
