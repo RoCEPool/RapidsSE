@@ -158,7 +158,7 @@ PromptFun __Prompt_attachMap (
   "-- attachMap"_Stz,        // the prompt command
   nullptr,                // the second word
   bPrompt_attachMap,      // prompt function
-  true,                   // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                   // visible
   "attachMap"_Stz,        // help
@@ -189,7 +189,7 @@ PromptFun __Prompt_bp (
   "bp"_Stz,             // the prompt command
   nullptr,              // the second word
   bPrompt_bp,           // prompt function
-  true,                 // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                 // visible
   "bp"_Stz,             // help
@@ -220,7 +220,7 @@ PromptFun __Prompt_bpa (
   "bpa"_Stz,            // the prompt command
   nullptr,              // the second word
   bPrompt_bpa,          // prompt function
-  true,                 // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                 // visible
   "bpa"_Stz,            // help
@@ -445,7 +445,7 @@ PromptFun __Prompt_classes (
   "classes"_Stz,        // the prompt command
   nullptr,              // the second word
   bPrompt_classes,      // prompt function
-  true,                 // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                 // visible
   "classes"_Stz,        // help
@@ -644,7 +644,7 @@ PromptFun __Prompt_constants (
   "constants"_Stz,         // the prompt command
   nullptr,                 // the second word
   bPrompt_constants,       // prompt function
-  true,                    // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                    // visible
   "constants"_Stz,         // help
@@ -698,7 +698,7 @@ PromptFun __Prompt_ddlLock (
   "ddlLock"_Stz,         // the prompt command
   nullptr,               // the second word
   bPrompt_ddlLock,       // prompt function
-  true,                  // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                  // visible
   "ddlLock"_Stz,         // help
@@ -761,7 +761,7 @@ PromptFun __Prompt_dlist (
   "dlist"_Stz,          // the prompt command
   nullptr,              // the second word
   bPrompt_dlist,        // prompt function
-  true,                 // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                 // visible
   "dlist"_Stz,          // help
@@ -791,7 +791,7 @@ PromptFun __Prompt_dsv (
   "dsv"_Stz,            // the prompt command
   nullptr,              // the second word
   bPrompt_dsv,          // prompt function
-  true,                 // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                 // visible
   "dsv"_Stz,            // help
@@ -821,7 +821,7 @@ PromptFun __Prompt_dumpTokens (
   "dumpTokens"_Stz,        // the prompt command
   nullptr,                 // the second word
   bPrompt_dumpTokens,      // prompt function
-  true,                    // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                 // visible
   "errno"_Stz,          // help
@@ -866,7 +866,7 @@ PromptFun __Prompt_edit (
     "edit"_Stz,             // the prompt command
     nullptr,                // the second word
     bPrompt_edit,           // prompt function
-    true,                   // enabled
+    gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
     true,                   // visible
     "edit"_Stz,        // help
@@ -998,7 +998,7 @@ PromptFun __Prompt_executing (
   bPrompt_executing,      // prompt function
   true,                   // enabled
 
-  true,                   // visible
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
   "executing"_Stz,        // help
   ""_Stz                  // description
 );
@@ -1027,7 +1027,7 @@ PromptFun __Prompt_fact (
   "fact"_Stz,         // the prompt command
   nullptr,            // the second word
   bPrompt_fact,       // prompt function
-  true,               // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,               // visible
   "fact"_Stz,         // help
@@ -1135,7 +1135,7 @@ PromptFun __Prompt_fileProc (
   bPrompt_fileProc,      // prompt function
   true,                  // enabled
 
-  true,               // visible
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
   "fileProc"_Stz,     // help
   ""_Stz              // description
 );
@@ -1208,7 +1208,7 @@ PromptFun __Prompt_fileRand (
   bPrompt_fileRand,      // prompt function
   true,                  // enabled
 
-  true,                  // visible
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
   "fileRand"_Stz,        // help
   ""_Stz                 // description
 );
@@ -1327,7 +1327,7 @@ PromptFun __Prompt_floats (
   "floats"_Stz,          // the prompt command
   nullptr,               // the second word
   bPrompt_floats,        // prompt function
-  true,                  // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                  // visible
   "floats"_Stz,          // help
@@ -1451,7 +1451,7 @@ PromptFun __Prompt_flist (
   bPrompt_flist,       // prompt function
   true,                // enabled
 
-  true,                // visible
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
   "flist"_Stz,         // help
   ""_Stz               // description
 );
@@ -1483,7 +1483,7 @@ PromptFun __Prompt_funs (
   "funs"_Stz,            // the prompt command
   nullptr,               // the second word
   bPrompt_funs,          // prompt function
-  true,                  // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                  // visible
   "funs"_Stz,            // help
@@ -1596,7 +1596,7 @@ PromptFun __Prompt_giveMem (
   "giveMem"_Stz,        // the prompt command
   nullptr,              // the second word
   bPrompt_giveMem,      // prompt function
-  true,                 // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                 // visible
   "giveMem"_Stz,        // help
@@ -1620,13 +1620,13 @@ bool PROMPT::bPrompt_giveMem(SePrompt* pPrompt)
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 PromptFun __Prompt_globals (
-  PF_GIVEMEM,           // prompt function
+  PF_GLOBALS,           // prompt function
   "Prompt_globals"_Stz, // name of the prompt function
   "comment"_Stz,        // comment about the function
   "globals"_Stz,        // the prompt command
   nullptr,              // the second word
   bPrompt_globals,      // prompt function
-  true,                 // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                 // visible
   "globals"_Stz,        // help
@@ -1656,7 +1656,7 @@ PromptFun __Prompt_hashDefs (
   "hashDefs"_Stz,       // the prompt command
   nullptr,              // the second word
   bPrompt_hashDefs,     // prompt function
-  true,                 // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                 // visible
   "hashDefs"_Stz,       // help
@@ -1689,7 +1689,7 @@ PromptFun __Prompt_heapSummary (
   "heapSummary"_Stz,        // the prompt command
   nullptr,                  // the second word
   bPrompt_heapSummary,      // prompt function
-  true,                     // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                     // visible
   "heapSummary"_Stz,        // help
@@ -1764,7 +1764,7 @@ PromptFun __Prompt_hexdump (
   "hexdump"_Stz,        // the prompt command
   nullptr,              // the second word
   bPrompt_hexdump,      // prompt function
-  true,                 // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                 // visible
   "hexdump"_Stz,        // help
@@ -1805,7 +1805,7 @@ PromptFun __Prompt_how (
   "how"_Stz,            // the prompt command
   nullptr,              // the second word
   bPrompt_how,          // prompt function
-  true,                 // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                 // visible
   "how"_Stz,            // help
@@ -1893,7 +1893,7 @@ PromptFun __Prompt_indexEntries (
   "indexEntries"_Stz,         // the prompt command
   nullptr,                    // the second word
   bPrompt_indexEntries,       // prompt function
-  true,                       // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                       // visible
   "indexEntries"_Stz,         // help
@@ -1949,7 +1949,7 @@ PromptFun __Prompt_job (
   "job"_Stz,              // the prompt command
   nullptr,                // the second word
   bPrompt_job,            // prompt function
-  true,                   // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                   // visible
   "job"_Stz,              // help
@@ -2004,7 +2004,7 @@ PromptFun __Prompt_jobs (
   "jobs"_Stz,           // the prompt command
   nullptr,              // the second word
   bPrompt_jobs,         // prompt function
-  true,                 // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                 // visible
   "jobs"_Stz,           // help
@@ -2037,7 +2037,7 @@ PromptFun __Prompt_lastJob (
   "lastJob"_Stz,        // the prompt command
   nullptr,              // the second word
   bPrompt_lastJob,      // prompt function
-  true,                 // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                 // visible
   "lastJob"_Stz,        // help
@@ -2073,7 +2073,7 @@ PromptFun __Prompt_limits (
   "limits"_Stz,         // the prompt command
   nullptr,              // the second word
   bPrompt_limits,       // prompt function
-  true,                 // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                 // visible
   "numbers"_Stz,        // help
@@ -2109,7 +2109,7 @@ PromptFun __Prompt_llist (
   "llist"_Stz,          // the prompt command
   nullptr,              // the second word
   bPrompt_llist,        // prompt function
-  true,                 // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                 // visible
   "llist"_Stz,          // help
@@ -2139,7 +2139,7 @@ PromptFun __Prompt_log (
   "log"_Stz,           // the prompt command
   nullptr,             // the second word
   bPrompt_log,         // prompt function
-  true,                // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                // visible
   "log"_Stz,           // help
@@ -2169,7 +2169,7 @@ PromptFun __Prompt_logNote (
   "logNote"_Stz,        // the prompt command
   nullptr,              // the second word
   bPrompt_logNote,      // prompt function
-  true,                 // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                 // visible
   "logNote"_Stz,        // help
@@ -2201,7 +2201,7 @@ PromptFun __Prompt_logSection (
   "logSection"_Stz,        // the prompt command
   nullptr,                 // the second word
   bPrompt_logSection,      // prompt function
-  true,                    // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                    // visible
   "logSection"_Stz,        // help
@@ -2305,7 +2305,7 @@ PromptFun __Prompt_lvl (
   "lvl"_Stz,        // the prompt command
   nullptr,          // the second word
   bPrompt_lvl,      // prompt function
-  true,             // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,             // visible
   "lvl"_Stz,        // help
@@ -2354,7 +2354,7 @@ PromptFun __Prompt_masks (
   "masks"_Stz,          // the prompt command
   nullptr,              // the second word
   bPrompt_masks,        // prompt function
-  true,                 // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                 // visible
   "masks"_Stz,          // help
@@ -2388,7 +2388,7 @@ PromptFun __Prompt_memTest (
   "memTest"_Stz,        // the prompt command
   nullptr,              // the second word
   bPrompt_memTest,      // prompt function
-  true,                 // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                 // visible
   "memTest"_Stz,        // help
@@ -2427,7 +2427,7 @@ PromptFun __Prompt_memoryLeaks (
   "memoryLeaks"_Stz,           // the prompt command
   nullptr,                     // the second word
   bPrompt_memoryLeaks,         // prompt function
-  true,                        // runable only by developer
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                        // visible
   "memoryLeaks"_Stz,           // help
@@ -2631,7 +2631,7 @@ PromptFun __Prompt_mkfifo (
   "mkfifo"_Stz,          // the prompt command
   nullptr,               // the second word
   bPrompt_mkfifo,        // prompt function
-  true,                  // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                  // visible
   "mkfifo"_Stz,          // help
@@ -2707,7 +2707,7 @@ PromptFun __Prompt_numbers (
   "numbers"_Stz,        // the prompt command
   nullptr,              // the second word
   bPrompt_numbers,      // prompt function
-  true,                 // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                 // visible
   "numbers"_Stz,        // help
@@ -2770,7 +2770,7 @@ PromptFun __Prompt_objectList (
   "- objectList"_Stz,         // the prompt command
   nullptr,                  // the second word
   bPrompt_objectList,       // prompt function
-  true,                     // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                     // visible
   "objectList"_Stz,         // help
@@ -2807,7 +2807,7 @@ PromptFun __Prompt_objectValidate (
   "objectValidate"_Stz,         // the prompt command
   nullptr,                      // the second word
   bPrompt_objectValidate,       // prompt function
-  true,                         // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                         // visible
   "objectValidate"_Stz,         // help
@@ -2851,7 +2851,7 @@ PromptFun __Prompt_olist (
   "olist"_Stz,          // the prompt command
   nullptr,              // the second word
   bPrompt_olist,        // prompt function
-  true,                 // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                 // visible
   "olist"_Stz,          // help
@@ -2882,7 +2882,7 @@ PromptFun __Prompt_optimiserLvl (
   "optimiserLvl"_Stz,        // the prompt command
   nullptr,                   // the second word
   bPrompt_optimiserLvl,      // prompt function
-  true,                      // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                      // visible
   "optimiserLvl"_Stz,        // help
@@ -3008,7 +3008,7 @@ PromptFun __Prompt_plist (
   "plist"_Stz,          // the prompt command
   nullptr,              // the second word
   bPrompt_plist,        // prompt function
-  true,                 // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                 // visible
   "plist"_Stz,          // help
@@ -3038,7 +3038,7 @@ PromptFun __Prompt_pmc (
   "pmc"_Stz,            // the prompt command
   nullptr,              // the second word
   bPrompt_pmc,          // prompt function
-  true,                 // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                 // visible
   "pmc"_Stz,            // help
@@ -3253,7 +3253,7 @@ PromptFun __Prompt_procedure (
   "procedure"_Stz,    // the prompt command
   nullptr,            // the second word
   bPrompt_procedure,  // prompt function
-  true,               // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,               // visible
   "procedure"_Stz,    // help
@@ -3291,7 +3291,7 @@ PromptFun __Prompt_prompt (
   "prompt"_Stz,           // the prompt command
   nullptr,                // the second word
   bPrompt_prompt,         // prompt function
-  true,                   // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                   // visible
   "prompt"_Stz,           // help
@@ -3388,7 +3388,7 @@ PromptFun __Prompt_promptDebug (
   "promptDebug"_Stz,        // the prompt command
   nullptr,                  // the second word
   bPrompt_promptDebug,      // prompt function
-  true,                     // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                     // visible
   "promptDebug"_Stz,        // help
@@ -3477,7 +3477,7 @@ PromptFun __Prompt_question (
   "?"_Stz,               // the prompt command
   nullptr,               // the second word
   bPrompt_question,      // prompt function
-  true,                  // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                  // visible
   "?"_Stz,               // help
@@ -3507,7 +3507,7 @@ PromptFun __Prompt_rassert (
   "rassert"_Stz,       // the prompt command
   nullptr,             // the second word
   bPrompt_print,       // prompt function
-  true,                // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                // visible
   "rassert"_Stz,       // help
@@ -3537,7 +3537,7 @@ PromptFun __Prompt_ready (
   "ready"_Stz,            // the prompt command
   nullptr,                // the second word
   bPrompt_ready,          // prompt function
-  true,                   // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                   // visible
   "ready"_Stz,            // help
@@ -3568,7 +3568,7 @@ PromptFun __Prompt_reap (
   "reap"_Stz,                  // the prompt command
   nullptr,                     // the second word
   bPrompt_reap,                // prompt function
-  true,                        // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                        // visible
   "reap"_Stz,                  // help
@@ -3670,7 +3670,7 @@ PromptFun __Prompt_retired (
   "retired"_Stz,        // the prompt command
   nullptr,              // the second word
   bPrompt_retired,      // prompt function
-  true,                 // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                 // visible
   "retired"_Stz,        // help
@@ -3702,7 +3702,7 @@ PromptFun __Prompt_rmfifo (
   "rmfifo"_Stz,          // the prompt command
   nullptr,               // the second word
   bPrompt_rmfifo,        // prompt function
-  true,                  // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                  // visible
   "rmfifo"_Stz,          // help
@@ -3745,7 +3745,7 @@ PromptFun __Prompt_rnd (
   "rnd"_Stz,        // the prompt command
   nullptr,          // the second word
   bPrompt_rnd,      // prompt function
-  true,             // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,             // visible
   "rnd"_Stz,        // help
@@ -3788,7 +3788,7 @@ PromptFun __Prompt_scan (
   "scan"_Stz,           // the prompt command
   nullptr,              // the second word
   bPrompt_scan,         // prompt function
-  true,                 // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   false,                // visible
   "scan"_Stz,           // help
@@ -3842,7 +3842,7 @@ PromptFun __Prompt_explain (
     "explain"_Stz,        // the prompt command
     nullptr,              // the second word
     bPrompt_select,       // prompt function
-    true,                 // enabled
+    gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
     false,                // visible
     "select"_Stz,         // help
@@ -3894,7 +3894,7 @@ PromptFun __Prompt_selfies (
   "__selfies"_Stz,      // the prompt command
   nullptr,              // the second word
   bPrompt_selfies,      // prompt function
-  true,                 // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   false,                // visible
   "ascii"_Stz,          // help
@@ -3939,7 +3939,7 @@ PromptFun __Prompt_setDbg (
   "setDbg"_Stz,        // the prompt command
   nullptr,             // the second word
   bPrompt_setDbg,      // prompt function
-  true,                // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,               // visible
   "setDbg"_Stz,       // help
@@ -3984,7 +3984,7 @@ PromptFun __Prompt_shell (
   "shell"_Stz,        // the prompt command
   nullptr,            // the second word
   bPrompt_shell,      // prompt function
-  true,               // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,               // visible
   "shell"_Stz,        // help
@@ -4135,7 +4135,7 @@ PromptFun __Prompt_show (
   "show"_Stz,        // the prompt command
   nullptr,           // the second word
   bPrompt_show,      // prompt function
-  true,              // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,              // visible
   "show"_Stz,        // help
@@ -4190,7 +4190,7 @@ PromptFun __Prompt_sizes (
   "sizes"_Stz,          // the prompt command
   nullptr,              // the second word
   bPrompt_sizes,        // prompt function
-  true,                 // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                 // visible
   "sizes"_Stz,          // help
@@ -4246,7 +4246,7 @@ PromptFun __Prompt_sleep (
   "sleep"_Stz,        // the prompt command
   nullptr,            // the second word
   bPrompt_sleep,      // prompt function
-  true,               // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,               // visible
   "sleep"_Stz,        // help
@@ -4282,7 +4282,7 @@ PromptFun __Prompt_sleeping (
   "sleeping"_Stz,         // the prompt command
   nullptr,                // the second word
   bPrompt_sleeping,       // prompt function
-  true,                   // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                   // visible
   "sleeping"_Stz,         // help
@@ -4312,7 +4312,7 @@ PromptFun __Prompt_snapshotDelta (
   "snapshotDelta"_Stz,         // the prompt command
   nullptr,                     // the second word
   bPrompt_snapshotDelta,       // prompt function
-  true,                        // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                        // visible
   "snapshotDelta"_Stz,         // help
@@ -4351,7 +4351,7 @@ PromptFun __Prompt_snapshotInspect (
   "snapshotInspect"_Stz,         // the prompt command
   nullptr,                       // the second word
   bPrompt_snapshotInspect,       // prompt function
-  true,                          // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                          // visible
   "snapshotInspect"_Stz,         // help
@@ -4391,7 +4391,7 @@ PromptFun __Prompt_snapshotList (
   "snapshotList"_Stz,         // the prompt command
   nullptr,                    // the second word
   bPrompt_snapshotList,       // prompt function
-  true,                       // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                       // visible
   "snapshotList"_Stz,         // help
@@ -4425,7 +4425,7 @@ PromptFun __Prompt_snapshotNewer (
   "snapshotNewer"_Stz,         // the prompt command
   nullptr,                     // the second word
   bPrompt_snapshotNewer,       // prompt function
-  true,                        // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                        // visible
   "snapshotNewer"_Stz,         // help
@@ -4465,7 +4465,7 @@ PromptFun __Prompt_snapshotObjects (
   "snapshotObjects"_Stz,         // the prompt command
   nullptr,                       // the second word
   bPrompt_snapshotObjects,       // prompt function
-  true,                          // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                          // visible
   "snapshotObjects"_Stz,         // help
@@ -4503,7 +4503,7 @@ PromptFun __Prompt_so (
   "so"_Stz,        // the prompt command
   nullptr,         // the second word
   bPrompt_so,      // prompt function
-  true,            // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                  // visible
   "so"_Stz,              // help
@@ -4617,7 +4617,7 @@ bool PROMPT::bPrompt_start(SePrompt* pPrompt)
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/* Prompt_startComplete -- started has has completed                          */
+/* Prompt_startComplete -- started has completed                              */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 PromptFun __Prompt_startCompleted (
@@ -4627,7 +4627,7 @@ PromptFun __Prompt_startCompleted (
   "startCompleted"_Stz,   // the prompt command
   nullptr,                // the second word
   bPrompt_startCompleted, // prompt function
-  true,                   // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                   // visible
   "startCompleted"_Stz,    // help
@@ -4661,7 +4661,7 @@ PromptFun __Prompt_startNow (
   "startNow"_Stz,         // the prompt command
   nullptr,                // the second word
   bPrompt_startNow,       // prompt function
-  true,                   // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                   // visible
   "startNow"_Stz,         // help
@@ -4724,7 +4724,7 @@ PromptFun __Prompt_startReady (
   "startReady"_Stz,       // the prompt command
   nullptr,                // the second word
   bPrompt_startReady,     // prompt function
-  true,                   // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                   // visible
   "startReady"_Stz,         // help
@@ -4758,7 +4758,7 @@ PromptFun __Prompt_startReset (
   "startReset"_Stz,       // the prompt command
   nullptr,                // the second word
   bPrompt_startReset,     // prompt function
-  true,                   // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                   // visible
   "startReset"_Stz,       // help
@@ -4790,7 +4790,7 @@ PromptFun __Prompt_startStatus (
   "startStatus"_Stz,      // the prompt command
   nullptr,                // the second word
   bPrompt_startStatus,    // prompt function
-  true,                   // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                   // visible
   "startStatus"_Stz,      // help
@@ -4826,7 +4826,7 @@ PromptFun __Prompt_st (
   "stepTiming"_Stz,     // the prompt command
   nullptr,              // the second word
   bPrompt_stepTiming,   // prompt function
-  true,                 // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                 // visible
   "stepTiming"_Stz,     // help
@@ -4920,7 +4920,7 @@ PromptFun __Prompt_store (
   "store"_Stz,        // the prompt command
   nullptr,            // the second word
   bPrompt_store,      // prompt function
-  true,               // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,               // visible
   "store"_Stz,        // help
@@ -5005,7 +5005,7 @@ PromptFun __Prompt_tag (
   "tag"_Stz,              // the prompt command
   nullptr,                // the second word
   bPrompt_tag,            // prompt function
-  true,                   // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                   // visible
   "tag"_Stz,              // help
@@ -5134,7 +5134,7 @@ PromptFun __Prompt_tags (
   "tags"_Stz,             // the prompt command
   nullptr,                // the second word
   bPrompt_tags,           // prompt function
-  true,                   // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                   // visible
   "tags"_Stz,             // help
@@ -5167,7 +5167,7 @@ PromptFun __Prompt_takeMem (
   "takeMem"_Stz,        // the prompt command
   nullptr,              // the second word
   bPrompt_takeMem,      // prompt function
-  true,                 // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                 // visible
   "takeMem"_Stz,        // help
@@ -5210,7 +5210,7 @@ PromptFun __Prompt_taskQueues (
   "taskQueues"_Stz,     // the prompt command
   nullptr,              // the second word
   bPrompt_taskQueues,   // prompt function
-  true,                 // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                 // visible
   "taskQueues"_Stz,     // help
@@ -5246,7 +5246,7 @@ PromptFun __Prompt_tempName (
   "tempName"_Stz,        // the prompt command
   nullptr,               // the second word
   bPrompt_tempName,      // prompt function
-  true,                  // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                  // visible
   "tempName"_Stz,        // help
@@ -5281,7 +5281,7 @@ PromptFun __Prompt_threads (
   "threads"_Stz,        // the prompt command
   nullptr,              // the second word
   bPrompt_threads,      // prompt function
-  true,                 // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                 // visible
   "threads"_Stz,        // help
@@ -5337,7 +5337,7 @@ PromptFun __Prompt_timer (
   "timer"_Stz,             // the prompt command
   nullptr,                 // the second word
   bPrompt_timer,           // prompt function
-  true,                    // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                    // visible
   "timerStart"_Stz,        // help
@@ -5378,7 +5378,7 @@ PromptFun __Prompt_tools (
   "- tools"_Stz,           // the prompt command
   nullptr,               // the second word
   bPrompt_tools,         // prompt function
-  true,                  // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   false,                 // visible
   "tools"_Stz,           // help
@@ -5505,7 +5505,7 @@ PromptFun __Prompt_trackMemory (
   "trackMemory"_Stz,          // the prompt command
   nullptr,                    // the second word
   bPrompt_trackMemory,        // prompt function
-  true,                       // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                       // visible
   "trackMemory"_Stz,          // help
@@ -5543,7 +5543,7 @@ PromptFun __Prompt_uptime (
   "uptime"_Stz,          // the prompt command
   nullptr,               // the second word
   bPrompt_uptime,        // prompt function
-  true,                  // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                  // visible
   "uptime"_Stz,          // help
@@ -5576,7 +5576,7 @@ PromptFun __Prompt_ut_skipList (
   "ut_skipList"_Stz,       // the prompt command
   nullptr,                 // the second word
   bPrompt_ut_skipList,     // prompt function
-  true,                    // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                    // visible
   "ut_skipList"_Stz,       // help
@@ -5708,7 +5708,7 @@ PromptFun __Prompt_wait_bg (
   "wait_bg"_Stz,     // the prompt command
   nullptr,           // the second word
   bPrompt_wait_bg,   // prompt function
-  true,              // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,              // visible
   "wait_bg"_Stz,     // help
@@ -5738,7 +5738,7 @@ PromptFun __Prompt_waiting (
   "waiting"_Stz,          // the prompt command
   nullptr,                // the second word
   bPrompt_waiting,        // prompt function
-  true,                   // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                   // visible
   "waiting"_Stz,          // help
@@ -5768,7 +5768,7 @@ PromptFun __Prompt_with (
   "with"_Stz,          // the prompt command
   nullptr,             // the second word
   bPrompt_with,        // prompt function
-  true,                // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                // visible
   "with"_Stz,       // help
@@ -5811,7 +5811,7 @@ PromptFun __Prompt_without (
   "without"_Stz,        // the prompt command
   nullptr,              // the second word
   bPrompt_without,      // prompt function
-  true,                 // enabled
+  gxCmdLineArgs.m_xSysArgs.m_bDeveloper, // runable only by developer
 
   true,                 // visible
   "with"_Stz,           // help
