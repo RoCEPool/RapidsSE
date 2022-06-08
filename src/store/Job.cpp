@@ -76,6 +76,7 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
   /* 08 */ m_pTask        = nullptr;
   /* 09 */ m_bWasReceived = false;
   /* 10 */ m_pMarkerChain = nullptr;
+  /* 11 */ m_bAllocate    = true;
 
   m_iTscParticipant = 0;
   
@@ -235,6 +236,16 @@ void Job::vActiveOpsInc(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is memory allocation allowed for this job?                                 */
+/*----------------------------------------------------------------------------*/
+bool Job::bAllocateMemory(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_bAllocate;
+}
+
+/*----------------------------------------------------------------------------*/
 /* reset job for cascade reuse                                                */
 /*----------------------------------------------------------------------------*/
 void Job::vCascadeReset(void)
@@ -270,7 +281,7 @@ void Job::vCascadeReset(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get cjild job error                                                        */
+/* get child job error                                                        */
 /*----------------------------------------------------------------------------*/
 eEC Job::eChildError(void)
 {
@@ -1086,6 +1097,7 @@ void Job::vPostRecv(void)
   /* 08 */ m_pTask        = nullptr;
   /* 09 */ m_bWasReceived = true;
   /* 10 */ m_pMarkerChain = nullptr;
+  /* 11 */ m_bAllocate    = true;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -1415,6 +1427,16 @@ void Job::vResponseTimerUpdate(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_oResponseTimer.vUpdate();
+}
+
+/*----------------------------------------------------------------------------*/
+/* enable/disable allocation of memory by job                                 */
+/*----------------------------------------------------------------------------*/
+void Job::vSetAllocate(bool bAlloc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_bAllocate = bAlloc;
 }
 
 /*----------------------------------------------------------------------------*/

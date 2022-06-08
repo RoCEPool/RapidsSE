@@ -55,6 +55,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     /* 08 */ Task*   m_pTask;          // task executing this job
     /* 09 */ b8      m_bWasReceived;   // was job received over a socket?
     /* 10 */ MarkerChain* m_pMarkerChain; // chain of free markers
+    /* 11 */ b8      m_bAllocate;      // can job ask for memory?
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
 
@@ -92,6 +93,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     i8   nActiveOps(void);
     void vActiveOpsDec(void);
     void vActiveOpsInc(void);
+    bool bAllocateMemory(void);
 
     void vCascadeReset(void);
     eEC eChildError(void);
@@ -186,6 +188,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vResponseTimerStart(void);
     void vResponseTimerUpdate(void);
 
+    void vSetAllocate(bool bAlloc);
     bool bSystemCloser(void);
     void vSystemCloser(bool bSystemCloser);
 

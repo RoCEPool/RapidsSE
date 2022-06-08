@@ -812,10 +812,12 @@ void vDdlLockAssertNone(void);
   void vJobAssertParticipant(void);
   void vJobAssertReceived(void);
 
+  void vJobDisableAllocate(void);
   void vJobDistIdFetch(void);
   void vJobDistIdGenerate(void);
   void vJobTrace(void);
 
+  void vJobEnableAllocate(void);
   void vJobEntryPointFetch(void);
   void vJobEntryPointStore(void);
   void vJobErrorFetch(void);
