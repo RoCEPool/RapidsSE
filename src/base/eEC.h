@@ -80,6 +80,7 @@ enum eEC : u2 // error codes
 
   /* _D_ */
   EC_DECIMAL_NOT_SUPPORTED,
+  EC_DISABLED_STATEMENT,
   EC_DIVIDE_BY_ZERO,
   EC_DUPLICATE_COLUMN,
   EC_DUPLICATE_KEY,
@@ -333,6 +334,7 @@ static Stz* aEC[] =
 
   /* _D_ */
   /* EC_DECIMAL_NOT_SUPPORTED         */ (Stz*)"decimal only with scale 2 currently supported",
+  /* EC_DISABLED_STATEMENT            */ (Stz*)"EC_DISABLED_STATEMENT",
   /* EC_DIVIDE_BY_ZERO                */ (Stz*)"divide by zero",
   /* EC_DUPLICATE_COLUMN              */ (Stz*)"duplicate column",
   /* EC_DUPLICATE_KEY                 */ (Stz*)"duplicate key",
@@ -580,6 +582,7 @@ static Stz* aEC2[] = // error code
 
   /* _D_ */
   /* EC_DECIMAL_NOT_SUPPORTED         */ (Stz*)"EC_DECIMAL_NOT_SUPPORTED",
+  /* EC_DISABLED_STATEMENT            */ (Stz*)"EC_DISABLED_STATEMENT",
   /* EC_DIVIDE_BY_ZERO                */ (Stz*)"EC_DIVIDE_BY_ZERO",
   /* EC_DUPLICATE_COLUMN              */ (Stz*)"EC_DUPLICATE_COLUMN",
   /* EC_DUPLICATE_KEY                 */ (Stz*)"EC_DUPLICATE_KEY",
@@ -837,7 +840,8 @@ static Stz* aErrorMsg[] =
 
   /* _D_ */
   /* EC_DECIMAL_NOT_SUPPORTED         */ (Stz*)"decimal only with scale 2 currently supported",
-  /* EC_DECIMAL_NOT_SUPPORTED         */ (Stz*)"divide by zero",
+  /* EC_DISABLED_STATEMENT            */ (Stz*)"statement is temporarily disabled",
+  /* EC_DIVIDE_BY_ZERO                */ (Stz*)"divide by zero",
   /* EC_DUPLICATE_COLUMN              */ (Stz*)"duplicate column",
   /* EC_DUPLICATE_KEY                 */ (Stz*)"duplicate key",
 
