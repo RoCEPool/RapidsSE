@@ -852,9 +852,7 @@ void vDdlLockAssertNone(void);
   void vJobProgressSeconds(void);
 
   void vJobReapableFetch(void);
-  void vJobIdReapableFetch(void);
   void vJobReapableStore(void);
-  void vJobIdReapableStore(void);
   void vJobRemoveLocal(void);
   void vJobRemoveOriginator(void);
   void vJobRemoveParticipant(void);

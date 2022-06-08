@@ -38,9 +38,6 @@ void Step::vAddSteps_JobId(void)
 
   vAddStep("job(Id).pipeToOp0"_Stz,      &Step::vJobIdPipeToOp0);
 
-  vAddStep("job(Id).reapable@"_Stz,      &Step::vJobIdReapableFetch);
-  vAddStep("job(Id).reapable!"_Stz,      &Step::vJobIdReapableStore);
-
   vAddStep("job(Id).systemCloser?"_Stz,  &Step::vJobIdSystemCloserFetch);
   vAddStep("job(Id).systemCloser!"_Stz,  &Step::vJobIdSystemCloserStore);
 
@@ -129,46 +126,16 @@ void Step::vJobIdPipeToOp0(void)
 
   JobId tJobId = m_pDataStack->iPopInt(__func__);
   Job* pJob = AM::JLIST::pFindJob(tJobId);
-  
+
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+
   Pipeline* pPipeline = pJob->pPipeline();
   Op*       pOp0      = pPipeline->pOp0();
 
   pOp0->vAppendLeft(pOperand,this);
 
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job(Id).reapable@ -- fetch the job reapable flag                           */
-/*----------------------------------------------------------------------------*/
-void Step::vJobIdReapableFetch(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-
-  m_pDataStack->vPushInt(pJob->bReapable());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job(Id).reapable! -- store the job reapable flag                           */
-/*----------------------------------------------------------------------------*/
-void Step::vJobIdReapableStore(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  i8 iJobReapable = m_pDataStack->iPopAsInt(__func__);
-  
-  pJob->vReapable(iJobReapable);
-  
   EXIT();
 }
 
@@ -195,8 +162,9 @@ void Step::vJobIdSystemCloserFetch(void)
 void Step::vJobIdSystemCloserStore(void)
 {
   ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+
+  JobId tJobId = m_pDataStack->iPopInt(__func__);
+  Job* pJob = AM::JLIST::pFindJob(tJobId);
 
   i8 iSystemCloser = m_pDataStack->iPopInt(__func__);
     
