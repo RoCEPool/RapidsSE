@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : sysOpened_sysOpened \handler
 
-  false [job].masterJobId job(Id).systemCloser!
+  false [job].masterJobId jobId::systemCloser!
 
   "system opened" .
   

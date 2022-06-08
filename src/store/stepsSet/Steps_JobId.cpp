@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_job(Id).cpp - job step group                                         */
+/* Steps_jobId::cpp - job step group                                         */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -30,22 +30,22 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobId(void)
 {
-  vAddStep("job(Id).folderPath@"_Stz,    &Step::vJobIdFolderPathFetch);
-  vAddStep("job(Id).folderPath!"_Stz,    &Step::vJobIdFolderPathStore);
+  vAddStep("jobId::folderPath@"_Stz,    &Step::vJobIdFolderPathFetch);
+  vAddStep("jobId::folderPath!"_Stz,    &Step::vJobIdFolderPathStore);
     
-  vAddStep("job(Id).lastJobId@"_Stz,     &Step::vJobIdLastJobIdFetch);
-  vAddStep("job(Id).lastJobId!"_Stz,     &Step::vJobIdLastJobIdStore);
+  vAddStep("jobId::lastJobId@"_Stz,     &Step::vJobIdLastJobIdFetch);
+  vAddStep("jobId::lastJobId!"_Stz,     &Step::vJobIdLastJobIdStore);
 
-  vAddStep("job(Id).pipeToOp0"_Stz,      &Step::vJobIdPipeToOp0);
+  vAddStep("jobId::pipeToOp0"_Stz,      &Step::vJobIdPipeToOp0);
 
-  vAddStep("job(Id).systemCloser?"_Stz,  &Step::vJobIdSystemCloserFetch);
-  vAddStep("job(Id).systemCloser!"_Stz,  &Step::vJobIdSystemCloserStore);
+  vAddStep("jobId::systemCloser?"_Stz,  &Step::vJobIdSystemCloserFetch);
+  vAddStep("jobId::systemCloser!"_Stz,  &Step::vJobIdSystemCloserStore);
 
-  vAddStep("job(Id).isUnknown"_Stz,      &Step::vJobIdIsUnknown);
+  vAddStep("jobId::isUnknown"_Stz,      &Step::vJobIdIsUnknown);
 }
 
 /*----------------------------------------------------------------------------*/
-/* job(Id).folderPath@ -- fetch folder path from job                          */
+/* jobId::folderPath@ -- fetch folder path from job                          */
 /*----------------------------------------------------------------------------*/
 void Step::vJobIdFolderPathFetch(void)
 {
@@ -62,7 +62,7 @@ void Step::vJobIdFolderPathFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job(Id).folderPath! -- store folder path into job                          */
+/* jobId::folderPath! -- store folder path into job                          */
 /*----------------------------------------------------------------------------*/
 void Step::vJobIdFolderPathStore(void)
 {
@@ -80,7 +80,7 @@ void Step::vJobIdFolderPathStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job(Id).lastJobId@ -- fetch last job id from job                           */
+/* jobId::lastJobId@ -- fetch last job id from job                           */
 /*----------------------------------------------------------------------------*/
 void Step::vJobIdLastJobIdFetch(void)
 {
@@ -97,7 +97,7 @@ void Step::vJobIdLastJobIdFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job(Id).lastJobId! -- store last job id into job                           */
+/* jobId::lastJobId! -- store last job id into job                           */
 /*----------------------------------------------------------------------------*/
 void Step::vJobIdLastJobIdStore(void)
 {
@@ -118,7 +118,7 @@ void Step::vJobIdLastJobIdStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job(Id).pipeToOp0 -- append operand onto op0 of given job                  */
+/* jobId::pipeToOp0 -- append operand onto op0 of given job                  */
 /*----------------------------------------------------------------------------*/
 void Step::vJobIdPipeToOp0(void)
 {
@@ -140,7 +140,7 @@ void Step::vJobIdPipeToOp0(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job(Id).systemCloser? -- fetch system closer from job                      */
+/* jobId::systemCloser? -- fetch system closer from job                      */
 /*----------------------------------------------------------------------------*/
 void Step::vJobIdSystemCloserFetch(void)
 {
@@ -157,7 +157,7 @@ void Step::vJobIdSystemCloserFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job(Id).systemCloser! -- store system closer into job                      */
+/* jobId::systemCloser! -- store system closer into job                      */
 /*----------------------------------------------------------------------------*/
 void Step::vJobIdSystemCloserStore(void)
 {
@@ -174,7 +174,7 @@ void Step::vJobIdSystemCloserStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job(Id).isUnknown -- is the jobId unknown ?                                */
+/* jobId::isUnknown -- is the jobId unknown ?                                */
 /*----------------------------------------------------------------------------*/
 void Step::vJobIdIsUnknown(void)
 {

@@ -17,7 +17,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // store path into the sessions <path>=<...>
   Path[].depth strVec::toPath
-    [job].masterJobId job(Id).folderPath!
+    [job].masterJobId jobId::folderPath!
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -55,7 +55,7 @@
 /*----------------------------------------------------------------------------*/
 /* send job (to the node which is in task)                                    */
 /*----------------------------------------------------------------------------*/
-: job.send params| pJob |
+: job.send
 
 
   // [job].name@ [grid].thisNodeName@ "(%v) job.send %v" .printf
@@ -64,7 +64,7 @@
 
   Socket[].grabWrite
 
-  pJob Socket[].sendObject discard
+  [job] Socket[].sendObject discard
 
   Socket[].dropWrite
   
@@ -80,7 +80,7 @@
 
   i_Node [grid].findNodeByNo to SendNode[]
 
-  [job] job.send
+  job.send
   
   nullptr to SendNode[]
 ;
@@ -88,7 +88,8 @@
 /*----------------------------------------------------------------------------*/
 /* send job back to originating node                                          */
 /*----------------------------------------------------------------------------*/
-: job(Id).reply params| pJob iNodeId |
+/*
+: jobId::reply params| pJob iNodeId |
 
   iNodeId [grid].findNodeByNo to SendNode[]
 
@@ -96,7 +97,7 @@
   
   nullptr to SendNode[]
 ;
-
+*/
 /*----------------------------------------------------------------------------*/
 /* dispatch received job                                                      */
 /*----------------------------------------------------------------------------*/
@@ -199,9 +200,9 @@
 
   AM::DEMON::tExitDemonJobId@ locals| tExitDemonJobId |
 
-  tExitDemonJobId job(Id).isUnknown not if
+  tExitDemonJobId jobId::isUnknown not if
 
-    [job] tExitDemonJobId job(Id).pipeToOp0
+    [job] tExitDemonJobId jobId::pipeToOp0
 
   else
 

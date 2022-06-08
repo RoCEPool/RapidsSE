@@ -356,13 +356,13 @@
     exit
   then
 
-  //pPipelineJob job(Id).jobList@  "Job list %v" .printf
+  //pPipelineJob jobId::jobList@  "Job list %v" .printf
 
   // wait till the pipeline job is in a list
   begin
-    pPipelineJob job(Id).jobList@ JL_NONE ==
+    pPipelineJob jobId::jobList@ JL_NONE ==
   while
-    //pPipelineJob job(Id).jobList@ "Job list %v" .printf
+    //pPipelineJob jobId::jobList@ "Job list %v" .printf
     
     thread.dedicated@ if
       10 thread::sleepMsec
@@ -375,13 +375,13 @@
 
   // ensure pipeline job is executing and task is waiting
   // for the non-demon jobs
-  pPipelineJob job(Id).jobList@ JL_PARTICIPATING == if
+  pPipelineJob jobId::jobList@ JL_PARTICIPATING == if
 
     // wait till the parent job is executing
     begin
-      pPipelineJob job(Id).phase@ JP_EXECUTING == not
+      pPipelineJob jobId::phase@ JP_EXECUTING == not
     while
-      //pPipelineJob job(Id).phase@ "Job phase %v" .printf
+      //pPipelineJob jobId::phase@ "Job phase %v" .printf
       
       thread.dedicated@ if
         10 thread::sleepMsec
@@ -393,7 +393,7 @@
 
     // wait till the pipelinetask is in a WAIT state
     // possibilty of execute not have arrived yet
-    pPipelineJob job(Id).task@ locals| pPipelineTask |
+    pPipelineJob jobId::task@ locals| pPipelineTask |
     begin
       pPipelineTask task.isWaiting?
     not while
@@ -715,13 +715,13 @@
   begin
     Tub[].completed dup to DataBuffer[]
   while
-    DataBuffer[] pPipelineJob job(Id).pipeToOp0
+    DataBuffer[] pPipelineJob jobId::pipeToOp0
   repeat
 
   begin
     Tub[].dangling dup to DataBuffer[]
   while
-    DataBuffer[] pPipelineJob job(Id).pipeToOp0
+    DataBuffer[] pPipelineJob jobId::pipeToOp0
   repeat
 ;
 
