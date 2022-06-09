@@ -624,6 +624,25 @@ EventHandlers* AM::HANDLERS::pEventHandlers(void)
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /*----------------------------------------------------------------------------*/
+/* get the folderpath of the job                                              */
+/*----------------------------------------------------------------------------*/
+eEC AM::JLIST::eFolderPathSet(JobId tJobId, Stz* szFolderPath)
+{
+  eEC eError = EC_NONE;
+  Job* pJob = AM::JLIST::pFindJob(tJobId,true);
+
+  if (pJob) {
+    pJob->vFolderPath(szFolderPath);
+    pJob->vDropLock();
+  }
+  else {
+    eError = EC_NO_SUCH_JOB;
+  }
+
+  return eError;
+}
+
+/*----------------------------------------------------------------------------*/
 /* find job in jobs list                                                      */
 /*----------------------------------------------------------------------------*/
 bool AM::JLIST::bFindJob(Job* pJob, bool bLockJob)
@@ -631,7 +650,6 @@ bool AM::JLIST::bFindJob(Job* pJob, bool bLockJob)
   Job* pFoundJob = AM::JLIST::pFindJob(pJob->tJobId(),bLockJob);
 
   bool bFound = pFoundJob ? true : false;
-    
   return bFound;
 }
 

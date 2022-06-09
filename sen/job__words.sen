@@ -17,7 +17,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // store path into the sessions <path>=<...>
   Path[].depth strVec::toPath
-    [job].masterJobId jobId::folderPath!
+    [job].masterJobId jobId::folderPath! assert
 ;
 
 /*----------------------------------------------------------------------------*/

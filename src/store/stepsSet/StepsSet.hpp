@@ -848,7 +848,6 @@ void vDdlLockAssertNone(void);
   void vJobErrorFetch(void);
   void vJobErrorStore(void);
 
-  void vJobIdFolderPathFetch(void);
   void vJobIdFolderPathStore(void);
 
   void vJobGet(void);

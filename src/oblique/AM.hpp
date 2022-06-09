@@ -345,6 +345,7 @@ namespace OBLIQUE
     class JLIST
     {
     public:
+      static eEC  eFolderPathSet(JobId tJobId, Stz* szFolderPath);
       static bool bFindJob(Job* pJob, bool bLockJob=false);
       static Job* pFindJob(JobId tJobId, bool bLockJob=false);
       static void vInsertJob(Job* pJob);

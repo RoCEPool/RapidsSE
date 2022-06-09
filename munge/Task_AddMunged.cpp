@@ -12031,7 +12031,7 @@ void Task::vAddMunged(Task* )
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "  // store path into the sessions <path>=<...>\n"
     "  Path[].depth strVec::toPath\n"
-    "    [job].masterJobId jobId::folderPath!\n"
+    "    [job].masterJobId jobId::folderPath! assert\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"

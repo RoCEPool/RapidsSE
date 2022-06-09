@@ -30,7 +30,6 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobId(void)
 {
-  vAddStep("jobId::folderPath@"_Stz,    &Step::vJobIdFolderPathFetch);
   vAddStep("jobId::folderPath!"_Stz,    &Step::vJobIdFolderPathStore);
     
   vAddStep("jobId::lastJobId@"_Stz,     &Step::vJobIdLastJobIdFetch);
@@ -45,37 +44,26 @@ void Step::vAddSteps_JobId(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* jobId::folderPath@ -- fetch folder path from job                          */
-/*----------------------------------------------------------------------------*/
-void Step::vJobIdFolderPathFetch(void)
-{
-  ENTRY();
-
-  JobId tJobId = m_pDataStack->iPopInt(__func__);
-  Job* pJob = AM::JLIST::pFindJob(tJobId);
-
-  Stz* szFolderPath = pJob->szFolderPath();
-  
-  m_pDataStack->vPushStz(szFolderPath);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* jobId::folderPath! -- store folder path into job                          */
+/* jobId::folderPath! -- store folder path into job                           */
 /*----------------------------------------------------------------------------*/
 void Step::vJobIdFolderPathStore(void)
 {
   ENTRY();
 
   JobId tJobId = m_pDataStack->iPopInt(__func__);
-  Job* pJob = AM::JLIST::pFindJob(tJobId);
 
   s256 sFolderPath;
   m_pDataStack->vPopStr(sFolderPath,__func__);
 
-  pJob->vFolderPath(sFolderPath);
-  
+  eEC eError = AM::JLIST::eFolderPathSet(tJobId, sFolderPath);
+
+  if (eError == EC_NONE) {
+    m_pDataStack->vPushInt(true);
+  }
+  else {
+    m_pDataStack->vPushInt(false);
+  }
+
   EXIT();
 }
 
