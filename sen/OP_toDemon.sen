@@ -15,7 +15,7 @@
 
   Marker[].newDataPulse Marker[]
     "__anyDemon" find word.object@
-    jobId::pipeToOp0
+    jobId::pipeToOp0 assert
 ;
 
 /*----------------------------------------------------------------------------*/

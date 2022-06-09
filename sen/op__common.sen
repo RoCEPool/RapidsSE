@@ -715,13 +715,13 @@
   begin
     Tub[].completed dup to DataBuffer[]
   while
-    DataBuffer[] tPipelineJobId jobId::pipeToOp0
+    DataBuffer[] tPipelineJobId jobId::pipeToOp0 assert
   repeat
 
   begin
     Tub[].dangling dup to DataBuffer[]
   while
-    DataBuffer[] tPipelineJobId jobId::pipeToOp0
+    DataBuffer[] tPipelineJobId jobId::pipeToOp0 assert
   repeat
 ;
 

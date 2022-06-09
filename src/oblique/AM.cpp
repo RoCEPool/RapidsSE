@@ -693,6 +693,28 @@ eEC AM::JLIST::eLastJobId(JobId tJobId, JobId& tLastJobId)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the last jobId of the job                                              */
+/*----------------------------------------------------------------------------*/
+eEC AM::JLIST::ePipeToOp0(JobId tJobId, Operand* pOperand, Task* pTask)
+{
+  eEC eError = EC_NONE;
+  Job* pJob = AM::JLIST::pFindJob(tJobId,true);
+
+  if (pJob) {
+    Pipeline* pPipeline = pJob->pPipeline();
+    Op*       pOp0      = pPipeline->pOp0();
+
+    pOp0->vAppendLeft(pOperand,pTask);
+    pJob->vDropLock();
+  }
+  else {
+    eError = EC_NO_SUCH_JOB;
+  }
+
+  return eError;
+}
+
+/*----------------------------------------------------------------------------*/
 /* insert job into jobs list                                                  */
 /*----------------------------------------------------------------------------*/
 void AM::JLIST::vInsertJob(Job* pJob)

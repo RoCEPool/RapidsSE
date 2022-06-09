@@ -31,9 +31,7 @@
 void Step::vAddSteps_JobId(void)
 {
   vAddStep("jobId::folderPath!"_Stz,    &Step::vJobIdFolderPathStore);
-    
   vAddStep("jobId::lastJobId@"_Stz,     &Step::vJobIdLastJobIdFetch);
-
   vAddStep("jobId::pipeToOp0"_Stz,      &Step::vJobIdPipeToOp0);
 
   vAddStep("jobId::systemCloser?"_Stz,  &Step::vJobIdSystemCloserFetch);
@@ -104,10 +102,15 @@ void Step::vJobIdPipeToOp0(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Pipeline* pPipeline = pJob->pPipeline();
-  Op*       pOp0      = pPipeline->pOp0();
+  eEC eError = AM::JLIST::ePipeToOp0(tJobId, pOperand, this);
 
-  pOp0->vAppendLeft(pOperand,this);
+  if (eError == EC_NONE) {
+    m_pDataStack->vPushInt(true);
+  }
+  else {
+    m_pDataStack->vPushInt(false);
+  }
+
 
   EXIT();
 }

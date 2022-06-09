@@ -21,7 +21,7 @@
   InfoSet[]
     "__statDemon" find dup if
       word.object@
-      jobId::pipeToOp0
+      jobId::pipeToOp0 assert
       nullptr to InfoSet[]
     else
       discard discard
@@ -41,7 +41,7 @@
   PipeIn[]
   "__statDemon" find dup if
     word.object@
-    jobId::pipeToOp0
+    jobId::pipeToOp0 assert
     nullptr to PipeIn[]
   else
     discard discard

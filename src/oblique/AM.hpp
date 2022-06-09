@@ -351,6 +351,7 @@ namespace OBLIQUE
       static void vInsertJob(Job* pJob);
       static JobList* pJobsList(void);
       static eEC  eLastJobId(JobId tJobId, JobId& tLastJobId);
+      static eEC  ePipeToOp0(JobId tJobId, Operand* pOperand, Task* pTask);
       static void vRemoveJob(Job* pJob);
     };
   
