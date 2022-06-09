@@ -33,8 +33,6 @@ void Step::vAddSteps_JobId(void)
   vAddStep("jobId::folderPath!"_Stz,    &Step::vJobIdFolderPathStore);
   vAddStep("jobId::lastJobId@"_Stz,     &Step::vJobIdLastJobIdFetch);
   vAddStep("jobId::pipeToOp0"_Stz,      &Step::vJobIdPipeToOp0);
-
-  vAddStep("jobId::systemCloser?"_Stz,  &Step::vJobIdSystemCloserFetch);
   vAddStep("jobId::systemCloser!"_Stz,  &Step::vJobIdSystemCloserStore);
 
   vAddStep("jobId::isUnknown"_Stz,      &Step::vJobIdIsUnknown);
@@ -116,23 +114,6 @@ void Step::vJobIdPipeToOp0(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* jobId::systemCloser? -- fetch system closer from job                      */
-/*----------------------------------------------------------------------------*/
-void Step::vJobIdSystemCloserFetch(void)
-{
-  ENTRY();
-
-  JobId tJobId = m_pDataStack->iPopInt(__func__);
-  Job* pJob = AM::JLIST::pFindJob(tJobId);
-
-  bool bSystemCloser = pJob->bSystemCloser();
-  
-  m_pDataStack->vPushInt(bSystemCloser);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* jobId::systemCloser! -- store system closer into job                      */
 /*----------------------------------------------------------------------------*/
 void Step::vJobIdSystemCloserStore(void)
@@ -143,8 +124,15 @@ void Step::vJobIdSystemCloserStore(void)
   Job* pJob = AM::JLIST::pFindJob(tJobId);
 
   i8 iSystemCloser = m_pDataStack->iPopInt(__func__);
-    
-  pJob->vSystemCloser(iSystemCloser);
+
+  eEC eError = AM::JLIST::eSystemCloserSet(tJobId, iSystemCloser);
+
+  if (eError == EC_NONE) {
+    m_pDataStack->vPushInt(true);
+  }
+  else {
+    m_pDataStack->vPushInt(false);
+  }
   
   EXIT();
 }

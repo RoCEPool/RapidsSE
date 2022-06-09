@@ -353,6 +353,7 @@ namespace OBLIQUE
       static eEC  eLastJobId(JobId tJobId, JobId& tLastJobId);
       static eEC  ePipeToOp0(JobId tJobId, Operand* pOperand, Task* pTask);
       static void vRemoveJob(Job* pJob);
+      static eEC  eSystemCloserSet(JobId tJobId, i8 iSystemCloser);
     };
   
     class JOB

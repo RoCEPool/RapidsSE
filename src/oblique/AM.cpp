@@ -738,6 +738,26 @@ void AM::JLIST::vRemoveJob(Job* pJob)
   gpAttachMap->m_pJobs->pJobsList()->vRemoveJob(pJob);
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* get the last jobId of the job                                              */
+/*----------------------------------------------------------------------------*/
+eEC AM::JLIST::eSystemCloserSet(JobId tJobId, i8 iSystemCloser)
+{
+  eEC eError = EC_NONE;
+  Job* pJob = AM::JLIST::pFindJob(tJobId,true);
+
+  if (pJob) {
+    pJob->vSystemCloser(iSystemCloser);
+    pJob->vDropLock();
+  }
+  else {
+    eError = EC_NO_SUCH_JOB;
+  }
+
+  return eError;
+}
+
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                   JOB                                      */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/

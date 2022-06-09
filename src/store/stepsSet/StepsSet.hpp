@@ -898,7 +898,6 @@ void vDdlLockAssertNone(void);
   void vJobMutexFetch(void);
   void vJobNewMarkerChain(void);
 
-  void vJobIdSystemCloserFetch(void);
   void vJobIdSystemCloserStore(void);
   void vJobIdIsUnknown(void);
 

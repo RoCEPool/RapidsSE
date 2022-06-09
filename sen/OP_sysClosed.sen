@@ -19,7 +19,7 @@
 
   [system].activeJobs "$$$ ActiveJobs %v" .printf
   
-  true [job].masterJobId jobId::systemCloser!
+  true [job].masterJobId jobId::systemCloser! assert
 
   "system closed" .
 
