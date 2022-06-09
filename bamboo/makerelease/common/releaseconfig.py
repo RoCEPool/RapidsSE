@@ -5,6 +5,7 @@ import pathlib
 from collections import OrderedDict
 
 from errors import ConfigurationError
+import ec2
 
 
 # This is an extension used in ConfigParser to allow config files
@@ -60,9 +61,21 @@ class ReleaseConfig:
                   f"must not be empty in the file: {path}"
             raise ConfigurationError(msg)
 
+        # Check that build_instance is a valid instance
+        if not ec2.is_valid_instance_type(build_instance):
+            msg = f"Config file field {self.C_INSTANCE_TYPE} in the [{self.C_BUILD_SECTION}] section " \
+                  f"does not contain a valid EC2 instance type: {build_instance}"
+            raise ConfigurationError(msg)
+
         if build_image is None or len(build_image) == 0:
             msg = f"Config file field {self.C_IMAGE_ID} in the [{self.C_BUILD_SECTION}] section " \
                   f"must not be empty in the file: {path}"
+            raise ConfigurationError(msg)
+
+        # Check that build_image is a valid instance
+        if not ec2.is_valid_image_id(build_image):
+            msg = f"Config file field {self.C_IMAGE_ID} in the [{self.C_BUILD_SECTION}] section " \
+                  f"does not contain a valid EC2 image id: {build_image}"
             raise ConfigurationError(msg)
 
         if build_cloudinit is None or len(build_cloudinit) == 0:
@@ -78,10 +91,23 @@ class ReleaseConfig:
                   f"must not be empty in the file: {path}"
             raise ConfigurationError(msg)
 
+        # Check that test_instance is a valid instance
+        if not ec2.is_valid_instance_type(test_instance):
+            msg = f"Config file field {self.C_INSTANCE_TYPE} in the [{self.C_TEST_SECTION}] section " \
+                  f"does not contain a valid EC2 instance type: {test_instance}"
+            raise ConfigurationError(msg)
+
         if test_image_list is None or len(test_image_list) == 0:
             msg = f"Config file field {self.C_IMAGE_ID} in the [{self.C_TEST_SECTION}] section " \
                   f"must not be empty in the file: {path}"
             raise ConfigurationError(msg)
+
+        # Check that each of the test_images is a valid instance
+        for test_image in test_image_list:
+            if not ec2.is_valid_image_id(test_image):
+                msg = f"Config file field {self.C_IMAGE_ID} in the [{self.C_TEST_SECTION}] section " \
+                      f"does not contain a valid EC2 image id: {test_image}"
+                raise ConfigurationError(msg)
 
         if test_cloudinit_list is None or len(test_cloudinit_list) == 0:
             msg = f"Config file field {self.C_CLOUD_INIT} in the [{self.C_TEST_SECTION}] section " \

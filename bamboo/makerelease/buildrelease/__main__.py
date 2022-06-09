@@ -1,3 +1,4 @@
+import shutil
 import string
 import sys
 import os
@@ -8,7 +9,9 @@ import os.path
 import argparse
 import subprocess
 
-import releasecommon.errors as errors
+import common.errors as errors
+from common.releaseconfig import ReleaseConfig
+from buildrunner import BuildRunner
 
 C_PROG_RUN = "pipenv run python -m buildrelease"
 C_CWD_SUFFIX = "makerelease"
@@ -21,18 +24,59 @@ LOG = logging.getLogger(__name__)
 
 
 def main() -> int:
-    """A simple main entry point for executing the buildrelease test script."""
-    """Run with pipenv run python -m septest"""
-    """from the outer makerelease directory."""
+    """A simple main entry point for executing the buildrelease test script.
+       Run with: pipenv run python -m buildrelease
+       from the outer makerelease directory.
+       Expected arguments:
+         --resultDir    path to write the results file
+         --artifactDir  path to save any artifacts
+         --repoDir      path to the root of the repository
+         --config       path of the file that contains build configuration information
+    """
 
     # Validate the path
     if not os.getcwd().endswith(C_CWD_SUFFIX):
         LOG.error(f"This file must be executed from the following subdirectory of the project root: {C_CWD_SUFFIX}")
         return 1
 
+    # Validate the Python arguments
+    (result_path, artifact_path, repo_path, config_path) = validate_arguments()
+
+    LOG.debug(f"cwd          = {os.getcwd()}")
+    LOG.debug(f"result dir   = {result_path}")
+    LOG.debug(f"artifact dir = {artifact_path}")
+    LOG.debug(f"repo root    = {repo_path}")
+    LOG.debug(f"config file  = {config_path}")
+
+    # Read in the config file and validate it
+    config = ReleaseConfig(str(config_path))
+
+    # Clone the repository.
+    # We do this because bamboo uses a cached repository strategy and the current repo
+    # cannot be copied to another node as it uses hard links for files to fixed paths
+    # on the current node. So instead we will clone the cached repo in full to a temporary
+    # folder and then we can copy that to other nodes and use it. We must remember to
+    # clean up the temporary cloned repo before we exit.
+    clone_repo_path = clone_repo(repo_path)
+
+    try:
+        buildrunner = BuildRunner(result_path, artifact_path, clone_repo_path, config)
+        buildrunner.run()
+
+        # testrunner = TestRunner(result_path, artifact_path, clone_repo_path, config)
+        # testrunner.run()
+
+    finally:
+        # Clean up the cloned repository
+        shutil.rmtree(clone_repo_path, ignore_errors=True)
+
+    return 0
+
+
+def validate_arguments() -> (pathlib.Path, pathlib.Path, pathlib.Path, pathlib.Path):
     # Extract the command line arguments
     arg_parser = argparse.ArgumentParser(C_PROG_RUN, description="Run the buildrelease job")
-    arg_parser.add_argument("--resultDir",   type=str, required=False, default=C_DEFAULT_RESULT_DIR,
+    arg_parser.add_argument("--resultDir", type=str, required=False, default=C_DEFAULT_RESULT_DIR,
                             help="The directory to write results files")
     arg_parser.add_argument("--artifactDir", type=str, required=False, default=C_DEFAULT_ARTIFACT_DIR,
                             help="The directory to store artifacts to be archived")
@@ -46,35 +90,35 @@ def main() -> int:
 
     if not os.path.exists(args.resultDir):
         LOG.error("Result directory does not exist: %s", args.resultDir)
-        return 1
+        sys.exit(1)
 
     if not os.path.isdir(args.resultDir):
         LOG.error("Result path is not a directory: %s", args.resultDir)
-        return 1
+        sys.exit(1)
 
     if not os.path.exists(args.artifactDir):
         LOG.error("Artifact directory does not exist: %s", args.artifactDir)
-        return 1
+        sys.exit(1)
 
     if not os.path.isdir(args.artifactDir):
         LOG.error("Artifact path is not a directory: %s", args.artifactDir)
-        return 1
+        sys.exit(1)
 
     if not os.path.exists(args.repoDir):
         LOG.error("Repository directory does not exist: %s", args.repoDir)
-        return 1
+        sys.exit(1)
 
     if not os.path.isdir(args.repoDir):
         LOG.error("Repository path is not a directory: %s", args.repoDir)
-        return 1
+        sys.exit(1)
 
     if not os.path.exists(args.config):
         LOG.error("Config file does not exist: %s", args.config)
-        return 1
+        sys.exit(1)
 
     if not os.path.isfile(args.config):
         LOG.error("Config file path is not a file: %s", args.config)
-        return 1
+        sys.exit(1)
 
     result_dir = args.resultDir
     if not pathlib.Path.is_absolute(result_dir):
@@ -92,25 +136,26 @@ def main() -> int:
     if not pathlib.Path.is_absolute(config_path):
         config_path = (pathlib.Path.cwd() / config_path).resolve()
 
-    LOG.debug(f"cwd = {os.getcwd()}")
-    LOG.debug(f"result dir = {result_dir}")
-    LOG.debug(f"artifact dir = {artifact_dir}")
-    LOG.debug(f"repo root = {repo_dir}")
-    LOG.debug(f"config file = {config_path}")
+    return result_dir, artifact_dir, repo_dir, config_path
 
-    # jobrunner = JobRunner(job_path,
-    #                       bamboo_plan_key,
-    #                       bamboo_build_num,
-    #                       git_hash,
-    #                       git_branch,
-    #                       invoking_user,
-    #                       archive_metrics,
-    #                       result_path,
-    #                       tags,
-    #                       not no_build)
-    # jobrunner.run_job()
-    return 0
 
+def clone_repo(repo_path: pathlib.Path) -> pathlib.Path:
+    """
+    Clones the repo in full from the cached repo at repo_path.
+    :param repo_path: The current cloned repo that uses hard links to the local
+                      cache and therefore cannot be copied across nodes.
+    :return: the path to the cloned repo that can be copied across nodes.
+    """
+    # Get the current git hash
+
+    # Get the URL to the local cached repo remote. This will be a file:// URL.
+
+    # Clone this repo locally
+
+    # Check out the above git hash
+
+    # Return the path to the cloned repo
+    
 
 if __name__ == '__main__':
     try:

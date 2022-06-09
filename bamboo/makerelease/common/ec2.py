@@ -276,6 +276,15 @@ def __get_session_client():
     return session, client
 
 
+def is_valid_instance_type(instance_type: string) -> bool:
+    (session, client) = __get_session_client()
+    try:
+        __check_instance_type(client, instance_type)
+        return True
+    except botocore.exceptions.ClientError as e:
+        return False
+
+
 def __check_instance_type(client, instance_type: string):
     """
     Check that the instance type is valid.
@@ -285,6 +294,15 @@ def __check_instance_type(client, instance_type: string):
     LOG.info("Validating the instance type: %s", instance_type)
     response = client.describe_instance_types(InstanceTypes=[instance_type])
     LOG.debug(f"Response of describe_instances command:\n{pprint.pformat(response)}")
+
+
+def is_valid_image_id(image_id: string) -> bool:
+    (session, client) = __get_session_client()
+    try:
+        __check_image_id(client, image_id)
+        return True
+    except botocore.exceptions.ClientError as e:
+        return False
 
 
 def __check_image_id(client, image_id: string):
