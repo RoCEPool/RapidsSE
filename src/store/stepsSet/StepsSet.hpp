@@ -853,7 +853,6 @@ void vDdlLockAssertNone(void);
   void vJobGet(void);
 
   void vJobIdLastJobIdFetch(void);
-  void vJobIdLastJobIdStore(void);
 
   void vJobListFetch(void);
 

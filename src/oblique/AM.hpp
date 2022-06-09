@@ -350,6 +350,7 @@ namespace OBLIQUE
       static Job* pFindJob(JobId tJobId, bool bLockJob=false);
       static void vInsertJob(Job* pJob);
       static JobList* pJobsList(void);
+      static eEC  eLastJobId(JobId tJobId, JobId& tLastJobId);
       static void vRemoveJob(Job* pJob);
     };
   

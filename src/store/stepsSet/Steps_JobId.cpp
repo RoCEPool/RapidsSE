@@ -33,7 +33,6 @@ void Step::vAddSteps_JobId(void)
   vAddStep("jobId::folderPath!"_Stz,    &Step::vJobIdFolderPathStore);
     
   vAddStep("jobId::lastJobId@"_Stz,     &Step::vJobIdLastJobIdFetch);
-  vAddStep("jobId::lastJobId!"_Stz,     &Step::vJobIdLastJobIdStore);
 
   vAddStep("jobId::pipeToOp0"_Stz,      &Step::vJobIdPipeToOp0);
 
@@ -74,34 +73,20 @@ void Step::vJobIdLastJobIdFetch(void)
 {
   ENTRY();
 
-  JobId tJobId = m_pDataStack->iPopInt(__func__);
-  Job* pJob = AM::JLIST::pFindJob(tJobId);
-
-  JobId tLastJobId = pJob->tLastJobId();
-  
-  m_pDataStack->vPushInt(tLastJobId.iAsI8());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* jobId::lastJobId! -- store last job id into job                           */
-/*----------------------------------------------------------------------------*/
-void Step::vJobIdLastJobIdStore(void)
-{
-  ENTRY();
-
-  JobId tJobId = m_pDataStack->iPopInt(__func__);
-  Job* pJob = AM::JLIST::pFindJob(tJobId);
-
-  i8 iLastJobId = m_pDataStack->iPopInt(__func__);
-  
   JobId tLastJobId;
-  
-  tLastJobId = iLastJobId;
-  
-  pJob->vLastJobId(tLastJobId);
-  
+
+  JobId tJobId = m_pDataStack->iPopInt(__func__);
+
+  eEC eError = AM::JLIST::eLastJobId(tJobId, tLastJobId);
+
+  if (eError == EC_NONE) {
+    m_pDataStack->vPushInt(true);
+    m_pDataStack->vPushInt(tLastJobId.iAsI8());
+  }
+  else {
+    m_pDataStack->vPushInt(false);
+  }
+
   EXIT();
 }
 

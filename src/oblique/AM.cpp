@@ -674,6 +674,25 @@ JobList* AM::JLIST::pJobsList(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the last jobId of the job                                              */
+/*----------------------------------------------------------------------------*/
+eEC AM::JLIST::eLastJobId(JobId tJobId, JobId& tLastJobId)
+{
+  eEC eError = EC_NONE;
+  Job* pJob = AM::JLIST::pFindJob(tJobId,true);
+
+  if (pJob) {
+    tLastJobId = pJob->tLastJobId();
+    pJob->vDropLock();
+  }
+  else {
+    eError = EC_NO_SUCH_JOB;
+  }
+
+  return eError;
+}
+
+/*----------------------------------------------------------------------------*/
 /* insert job into jobs list                                                  */
 /*----------------------------------------------------------------------------*/
 void AM::JLIST::vInsertJob(Job* pJob)
