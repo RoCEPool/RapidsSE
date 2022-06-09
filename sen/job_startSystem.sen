@@ -102,42 +102,42 @@
   STD_DEMONFORK_TAG metricsDemonPipeline api::forkDemon not if
     "Error Code %v" .printf
   else
-    discard
+    AM::DEMON::tMetricsDemonJobId!
   then
 
   // spawn metrics collect
   STD_DEMONFORK_TAG collectDemonPipeline api::forkDemon not if
     "Error Code %v" .printf
   else
-    discard // jobId
+    AM::DEMON::tCollectDemonJobId!
   then
 
   // spawn supervisor demon
   STD_DEMONFORK_TAG superDemonPipeline api::forkDemon not if
     "Error Code %v" .printf
   else
-    discard // jobId
+    AM::DEMON::tSuperDemonJobId!
   then
 
   // spawn monitor demon
   STD_DEMONFORK_TAG monDemonPipeline api::forkDemon not if
     "Error Code %v" .printf
   else
-    discard // jobId
+    AM::DEMON::tMonDemonJobId!
   then
 
   // spawn page out demon
   //STD_DEMONFORK_TAG pageOutDemonPipeline api::forkDemon not if
   //  "Error Code %v" .printf
   //else
-  //  discard // jobId
+  //  AM::DEMON::tPageOutDemonJobId!
   //then
 
   // spawn reaper demon
   STD_DEMONFORK_TAG reaperDemonPipeline api::forkDemon not if
     "Error Code %v" .printf
   else
-      discard // jobId
+      AM::DEMON::tReaperDemonJobId!
   then
 
   //spawn reaper demon
@@ -151,14 +151,14 @@
   STD_DEMONFORK_TAG recurDemonPipeline api::forkDemon not if
     "Error Code %v" .printf
   else
-    discard // jobId
+    AM::DEMON::tRecurDemonJobId!
   then
 
   // spawn stat demon
   STD_DEMONFORK_TAG statDemonPipeline api::forkDemon not if
     "Error Code %v" .printf
   else
-    discard // jobId
+    AM::DEMON::tStatDemonJobId!
   then
 
   // spawn waker demon
@@ -166,14 +166,14 @@
   STD_DEMONFORK_TAG wakerDemonPipeline api::forkDemon not if
     "Error Code %v" .printf
   else
-    discard // jobId
+    AM::DEMON::tWakerDemonJobId!
   then
   
   // spawn event demon
   STD_DEMONFORK_TAG eventDemonPipeline api::forkDemon not if
     "Error Code %v" .printf
   else
-    discard // jobId
+    AM::DEMON::tEventDemonJobId!
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -182,14 +182,14 @@
   STD_DEMONFORK_TAG answerSE_procText api::forkDemon not if
     "Error Code %v" .printf
   else
-    discard // jobId
+    AM::DEMON::tAnswerDemonJobId!
   then
 
   // spawn connector demon for SE Adaptor
   STD_DEMONFORK_TAG connectorSE_procText api::forkDemon not if
     "Error Code %v" .printf
   else
-    discard // jobId
+    AM::DEMON::tConnectDemonJobId!
   then
 
 

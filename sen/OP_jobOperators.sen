@@ -19,9 +19,12 @@
 
   0 locals| eError |
 
-  "__eventDemon" find dup if
-    word.object@ locals| pEventDemon |
-  else
+  //"__eventDemon" find dup if
+  //  word.object@ locals| pEventDemon |
+
+  AM::DEMON::tEventDemonJobId@ locals| tEventDemonJobId |
+
+  tEventDemonJobId jobId::isUnknown if
     "Cant find __eventDemon" .
     true
     exit
@@ -39,7 +42,7 @@
     exit
   then
 
-  pEventDemon Tub[].pipeToJob
+  tEventDemonJobId Tub[].pipeToJob
 
   Tub[].delete
 
@@ -55,7 +58,7 @@
     exit
   then
 
-  pEventDemon Tub[].pipeToJob
+  tEventDemonJobId Tub[].pipeToJob
 
   Tub[].delete
 

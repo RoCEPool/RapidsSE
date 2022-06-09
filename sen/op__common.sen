@@ -710,18 +710,18 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-: Tub[].pipeToJob params| pPipelineJob |
+: Tub[].pipeToJob params| tPipelineJobId |
 
   begin
     Tub[].completed dup to DataBuffer[]
   while
-    DataBuffer[] pPipelineJob jobId::pipeToOp0
+    DataBuffer[] tPipelineJobId jobId::pipeToOp0
   repeat
 
   begin
     Tub[].dangling dup to DataBuffer[]
   while
-    DataBuffer[] pPipelineJob jobId::pipeToOp0
+    DataBuffer[] tPipelineJobId jobId::pipeToOp0
   repeat
 ;
 

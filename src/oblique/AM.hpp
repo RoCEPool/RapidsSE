@@ -275,8 +275,45 @@ namespace OBLIQUE
     class DEMON
     {
     public:
-      static void   vExitDemonJobId(JobId tJobId);
+      static void  vAnswerDemonJobId(JobId tJobId);
+      static JobId tAnswerDemonJobId(void);
+
+      static void  vCollectDemonJobId(JobId tJobId);
+      static JobId tCollectDemonJobId(void);
+
+      static void  vConnectorDemonJobId(JobId tJobId);
+      static JobId tConnectorDemonJobId(void);
+
+      static void  vEventDemonJobId(JobId tJobId);
+      static JobId tEventDemonJobId(void);
+
+      static void  vExitDemonJobId(JobId tJobId);
       static JobId tExitDemonJobId(void);
+
+      static void  vMetricsDemonJobId(JobId tJobId);
+      static JobId tMetricsDemonJobId(void);
+
+      static void  vMonDemonJobId(JobId tJobId);
+      static JobId tMonDemonJobId(void);
+
+      static void  vPageOutDemonJobId(JobId tJobId);
+      static JobId tPageOutDemonJobId(void);
+
+      static void  vReaperDemonJobId(JobId tJobId);
+      static JobId tReaperDemonJobId(void);
+
+      static void  vRecurDemonJobId(JobId tJobId);
+      static JobId tRecurDemonJobId(void);
+
+      static void  vStatDemonJobId(JobId tJobId);
+      static JobId tStatDemonJobId(void);
+
+      static void  vWakerDemonJobId(JobId tJobId);
+      static JobId tWakerDemonJobId(void);
+
+      static void  vSuperDemonJobId(JobId tJobId);
+      static JobId tSuperDemonJobId(void);
+
       static void vPipeToOp0(Stz* szDemonNm, Operand* pOperand);
     };
     

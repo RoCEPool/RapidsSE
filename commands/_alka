@@ -126,43 +126,39 @@ create table TABLE9 (
   ucol    INTEGER,
   ucolvc  VARCHAR(5)
 );
-Load TABLE9 "../DATA/Load/tbl9data.csv" ;
+Load TABLE9 "../DATA/Load/tbl9data.csv" <escape_char> = "\0";
 
-explain stage transliterate select ucolvc, cold9 from table9 where cold9 not between -245.0 and 245.0 order by ucolvc;
-select colb1, pcol1 from table1 where colb1 not between 'GRE' and 'tangent' order by colb1 , pcol1;
 
-/*
+// BCD
+select 140737488355327.0 from table1;
+//EC_SYNTAX_ERROR; Line: 1; Column: 7; Value is out of range: Max/min decimal precision supported is [2^47, (2^47) - 1] : 140737488355327.0;
 
-args
-bp
-bye
-cd
-config
-hw
-ls
-print
-pwd
-bye
-cd <directoryName>
-cf <folderName>
-create catalog <catalogName>;
-create schema <schemaName>;
-create table <tableName>;
-create index <indexName>;
-create tenant <tenantName>;
-drop catalog <catalogName>;
-drop schema <schemaName>;
-drop table <tableName>;
-drop tenant <tenantName>;
-lf
-load <tableName> <fileName>
-ls
-lscol <tableName>
-print string
-pwf
-pwd
-space
-tableSizes
-lstbl
-lsidx <tableName>
-*/
+select 14073748835532.7 from table1;
+
+// fails
+create table x (
+  dec   DECIMAL(20, 19)
+);
+
+//ok
+create table y (
+  dec   DECIMAL(19, 19)
+);
+
+// scale > precision fails
+create table z (
+  dec   DECIMAL(10, 19)
+);
+
+// ok (64K)
+create table t (
+  v varchar(65536)
+);
+
+// invalid
+create table u (
+  v varchar(65537)
+);
+
+
+// truncate varchar data if size is smaller that the data

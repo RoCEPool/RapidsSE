@@ -244,7 +244,79 @@ Dic* AM::DIC::pRoot(void)
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /*----------------------------------------------------------------------------*/
-/* set jobId of exit demon in AM                                              */
+/* set jobId of the answer demon in AM                                         */
+/*----------------------------------------------------------------------------*/
+void AM::DEMON::vAnswerDemonJobId(JobId tJobId) {
+  _static_
+
+  gpAttachMap->m_tAnswerDemonJobId = tJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get jobId of the answer demon in AM                                         */
+/*----------------------------------------------------------------------------*/
+JobId AM::DEMON::tAnswerDemonJobId(void) {
+  _static_
+
+  return gpAttachMap->m_tAnswerDemonJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set jobId of the collect demon in AM                                       */
+/*----------------------------------------------------------------------------*/
+void AM::DEMON::vCollectDemonJobId(JobId tJobId) {
+  _static_
+
+  gpAttachMap->m_tCollectDemonJobId = tJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get jobId of the collect demon in AM                                       */
+/*----------------------------------------------------------------------------*/
+JobId AM::DEMON::tCollectDemonJobId(void) {
+  _static_
+
+  return gpAttachMap->m_tCollectDemonJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set jobId of the connector demon in AM                                     */
+/*----------------------------------------------------------------------------*/
+void AM::DEMON::vConnectorDemonJobId(JobId tJobId) {
+  _static_
+
+  gpAttachMap->m_tConnectorDemonJobId = tJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get jobId of the connector demon in AM                                     */
+/*----------------------------------------------------------------------------*/
+JobId AM::DEMON::tConnectorDemonJobId(void) {
+  _static_
+
+  return gpAttachMap->m_tConnectorDemonJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set jobId of the event demon in AM                                         */
+/*----------------------------------------------------------------------------*/
+void AM::DEMON::vEventDemonJobId(JobId tJobId) {
+  _static_
+
+  gpAttachMap->m_tEventDemonJobId = tJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get jobId of the event demon in AM                                         */
+/*----------------------------------------------------------------------------*/
+JobId AM::DEMON::tEventDemonJobId(void) {
+  _static_
+
+  return gpAttachMap->m_tEventDemonJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set jobId of the exit demon in AM                                          */
 /*----------------------------------------------------------------------------*/
 void AM::DEMON::vExitDemonJobId(JobId tJobId) {
   _static_
@@ -253,12 +325,156 @@ void AM::DEMON::vExitDemonJobId(JobId tJobId) {
 }
 
 /*----------------------------------------------------------------------------*/
-/* get jobId of exit demon in AM                                              */
+/* get jobId of the exit demon in AM                                          */
 /*----------------------------------------------------------------------------*/
 JobId AM::DEMON::tExitDemonJobId(void) {
   _static_
 
   return gpAttachMap->m_tExitDemonJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set jobId of the metrics demon in AM                                       */
+/*----------------------------------------------------------------------------*/
+void AM::DEMON::vMetricsDemonJobId(JobId tJobId) {
+  _static_
+
+  gpAttachMap->m_tMetricsDemonJobId = tJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get jobId of the metrics demon in AM                                       */
+/*----------------------------------------------------------------------------*/
+JobId AM::DEMON::tMetricsDemonJobId(void) {
+  _static_
+
+  return gpAttachMap->m_tMetricsDemonJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set jobId of the monitor demon in AM                                       */
+/*----------------------------------------------------------------------------*/
+void AM::DEMON::vMonDemonJobId(JobId tJobId) {
+  _static_
+
+  gpAttachMap->m_tMonDemonJobId = tJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get jobId of the monitor demon in AM                                       */
+/*----------------------------------------------------------------------------*/
+JobId AM::DEMON::tMonDemonJobId(void) {
+  _static_
+
+  return gpAttachMap->m_tMonDemonJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set jobId of the pageOut demon in AM                                       */
+/*----------------------------------------------------------------------------*/
+void AM::DEMON::vPageOutDemonJobId(JobId tJobId) {
+  _static_
+
+  gpAttachMap->m_tPageOutDemonJobId = tJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get jobId of the pageOut demon in AM                                       */
+/*----------------------------------------------------------------------------*/
+JobId AM::DEMON::tPageOutDemonJobId(void) {
+  _static_
+
+  return gpAttachMap->m_tPageOutDemonJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set jobId of the reaper demon in AM                                        */
+/*----------------------------------------------------------------------------*/
+void AM::DEMON::vReaperDemonJobId(JobId tJobId) {
+  _static_
+
+  gpAttachMap->m_tReaperDemonJobId = tJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get jobId of the reaper demon in AM                                        */
+/*----------------------------------------------------------------------------*/
+JobId AM::DEMON::tReaperDemonJobId(void) {
+  _static_
+
+  return gpAttachMap->m_tReaperDemonJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set jobId of the recurring demon in AM                                     */
+/*----------------------------------------------------------------------------*/
+void AM::DEMON::vRecurDemonJobId(JobId tJobId) {
+  _static_
+
+  gpAttachMap->m_tRecurDemonJobId = tJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get jobId of the recurring demon in AM                                     */
+/*----------------------------------------------------------------------------*/
+JobId AM::DEMON::tRecurDemonJobId(void) {
+  _static_
+
+  return gpAttachMap->m_tRecurDemonJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set jobId of the statistics demon in AM                                    */
+/*----------------------------------------------------------------------------*/
+void AM::DEMON::vStatDemonJobId(JobId tJobId) {
+  _static_
+
+  gpAttachMap->m_tStatDemonJobId = tJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get jobId of the statistics demon in AM                                    */
+/*----------------------------------------------------------------------------*/
+JobId AM::DEMON::tStatDemonJobId(void) {
+  _static_
+
+  return gpAttachMap->m_tStatDemonJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set jobId of the waker demon in AM                                         */
+/*----------------------------------------------------------------------------*/
+void AM::DEMON::vWakerDemonJobId(JobId tJobId) {
+  _static_
+
+  gpAttachMap->m_tWakerDemonJobId = tJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get jobId of the waker demon in AM                                         */
+/*----------------------------------------------------------------------------*/
+JobId AM::DEMON::tWakerDemonJobId(void) {
+  _static_
+
+  return gpAttachMap->m_tWakerDemonJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set jobId of the super demon in AM                                         */
+/*----------------------------------------------------------------------------*/
+void AM::DEMON::vSuperDemonJobId(JobId tJobId) {
+  _static_
+
+  gpAttachMap->m_tSuperDemonJobId = tJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get jobId of the super demon in AM                                         */
+/*----------------------------------------------------------------------------*/
+JobId AM::DEMON::tSuperDemonJobId(void) {
+  _static_
+
+  return gpAttachMap->m_tSuperDemonJobId;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -61,8 +61,33 @@ public:
   void vAggTimerTicks(void);
 
   // AM
+  void vAM_AnswerDemonJobIdFetch(void);
+  void vAM_AnswerDemonJobIdStore(void);
+  void vAM_CollectDemonJobIdFetch(void);
+  void vAM_CollectDemonJobIdStore(void);
+  void vAM_ConnectorDemonJobIdFetch(void);
+  void vAM_ConnectorDemonJobIdStore(void);
+  void vAM_EventDemonJobIdFetch(void);
+  void vAM_EventDemonJobIdStore(void);
   void vAM_ExitDemonJobIdFetch(void);
   void vAM_ExitDemonJobIdStore(void);
+  void vAM_MetricsDemonJobIdFetch(void);
+  void vAM_MetricsDemonJobIdStore(void);
+  void vAM_MonDemonJobIdFetch(void);
+  void vAM_MonDemonJobIdStore(void);
+  void vAM_PageOutDemonJobIdFetch(void);
+  void vAM_PageOutDemonJobIdStore(void);
+  void vAM_ReaperDemonJobIdFetch(void);
+  void vAM_ReaperDemonJobIdStore(void);
+  void vAM_RecurDemonJobIdFetch(void);
+  void vAM_RecurDemonJobIdStore(void);
+  void vAM_StatDemonJobIdFetch(void);
+  void vAM_StatDemonJobIdStore(void);
+  void vAM_WakerDemonJobIdFetch(void);
+  void vAM_WakerDemonJobIdStore(void);
+  void vAM_SuperDemonJobIdFetch(void);
+  void vAM_SuperDemonJobIdStore(void);
+
   void vAM_No_Free(void);
   void vAM_Show_Boot(void);
   void vAM_Show_Dir(void);

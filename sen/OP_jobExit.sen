@@ -13,13 +13,14 @@
   
   PipeIn[].delete
   
-  "__eventDemon" find dup if
-  word.object@ locals| pEventDemon |
+  //"__eventDemon" find dup if
+  //word.object@ locals| pEventDemon |
 
-      pEventDemon Tub[].pipeToJob
+  AM::DEMON::tEventDemonJobId@ locals| tEventDemonJobId |
 
+  tEventDemonJobId jobId::isUnknown not if
+    tEventDemonJobId Tub[].pipeToJob
   else
-
     discard
 
     // delete all buffers in the TUB
