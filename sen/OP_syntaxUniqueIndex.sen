@@ -90,7 +90,7 @@
     exit
   then
 
-  sSmt Table[] [job] indexDef::parse not if
+  sSmt Table[] indexDef::parse not if
     to errorCode
     errorCode op__execErr
     true
