@@ -6,7 +6,7 @@ DIR="$(dirname $0)"
 PLAN_DIR="$(realpath "${DIR}/..")"            # Directory of <repoRoot>/bamboo/makerelease
 REPO_ROOT="$(realpath "${PLAN_DIR}/../..")"   # Directory of the repository root
 
-MODULE="buildrelease"
+MODULE="releasebuilder"
 CONFIG_FILE="${PLAN_DIR}/configs/release.config"
 
 # Bamboo system variables

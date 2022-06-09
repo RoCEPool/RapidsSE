@@ -13,7 +13,7 @@ import common.errors as errors
 from common.releaseconfig import ReleaseConfig
 from buildrunner import BuildRunner
 
-C_PROG_RUN = "pipenv run python -m buildrelease"
+C_PROG_RUN = "pipenv run python -m releasebuilder"
 C_CWD_SUFFIX = "makerelease"
 
 C_DEFAULT_RESULT_DIR = "./results"
@@ -24,8 +24,8 @@ LOG = logging.getLogger(__name__)
 
 
 def main() -> int:
-    """A simple main entry point for executing the buildrelease test script.
-       Run with: pipenv run python -m buildrelease
+    """A simple main entry point for executing the releasebuilder test script.
+       Run with: pipenv run python -m releasebuilder
        from the outer makerelease directory.
        Expected arguments:
          --resultDir    path to write the results file
@@ -59,6 +59,9 @@ def main() -> int:
     # clean up the temporary cloned repo before we exit.
     clone_repo_path = clone_repo(repo_path)
 
+    # TODO: Create a result object and let the buildrunner and testrunner fill it in appropriately.
+    #       They need to properly handle and capture errors.
+
     try:
         buildrunner = BuildRunner(result_path, artifact_path, clone_repo_path, config)
         buildrunner.run()
@@ -75,7 +78,7 @@ def main() -> int:
 
 def validate_arguments() -> (pathlib.Path, pathlib.Path, pathlib.Path, pathlib.Path):
     # Extract the command line arguments
-    arg_parser = argparse.ArgumentParser(C_PROG_RUN, description="Run the buildrelease job")
+    arg_parser = argparse.ArgumentParser(C_PROG_RUN, description="Run the releasebuilder script")
     arg_parser.add_argument("--resultDir", type=str, required=False, default=C_DEFAULT_RESULT_DIR,
                             help="The directory to write results files")
     arg_parser.add_argument("--artifactDir", type=str, required=False, default=C_DEFAULT_ARTIFACT_DIR,
@@ -155,7 +158,7 @@ def clone_repo(repo_path: pathlib.Path) -> pathlib.Path:
     # Check out the above git hash
 
     # Return the path to the cloned repo
-    
+
 
 if __name__ == '__main__':
     try:
