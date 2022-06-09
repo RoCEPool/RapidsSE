@@ -57,7 +57,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("[job].masterJobId"_Stz,      &Step::vJobMasterJobId);
   vAddStep("[job].mutex@"_Stz,           &Step::vJobMutexFetch);
 
-  vAddStep("[job]].name@"_Stz,           &Step::vJobNameFetch);
+  vAddStep("[job].name@"_Stz,            &Step::vJobNameFetch);
   vAddStep("[job].newMarkerChain"_Stz,   &Step::vJobNewMarkerChain);
 
   vAddStep("[job].originId@"_Stz,        &Step::vJobOriginIdFetch);
