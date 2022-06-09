@@ -1,13 +1,7 @@
 """"Runs the build job"""
-import datetime
-import time
-import os
-import shutil
 import string
 import logging
-import threading
 import pathlib
-import tempfile
 
 import common.ec2 as ec2
 import common.errors as errors
@@ -27,4 +21,14 @@ class BuildRunner:
                  artifact_path: pathlib.Path,
                  repo_path: pathlib.Path,
                  config: ReleaseConfig):
+
+        self.result_path = result_path
+        self.artifact_path = artifact_path
+        self.repo_path = repo_path
+        self.config = config
+
+    def run(self):
+        """
+        Runs the logic that builds SE on a remote node with a particular image.
+        """
         pass

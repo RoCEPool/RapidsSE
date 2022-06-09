@@ -57,3 +57,9 @@ class NotImplementedYet(MakeReleaseError):
     """Errors that come up from unhandled situations"""
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+
+class GitError(MakeReleaseError):
+    """Errors that come up from running git commands"""
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)

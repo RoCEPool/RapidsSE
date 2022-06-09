@@ -1,17 +1,15 @@
 import shutil
-import string
 import sys
 import os
 import pathlib
-import logging
 import logging.config
 import os.path
 import argparse
-import subprocess
 
 import common.errors as errors
 from common.releaseconfig import ReleaseConfig
 from buildrunner import BuildRunner
+import repo
 
 C_PROG_RUN = "pipenv run python -m releasebuilder"
 C_CWD_SUFFIX = "makerelease"
@@ -57,7 +55,7 @@ def main() -> int:
     # on the current node. So instead we will clone the cached repo in full to a temporary
     # folder and then we can copy that to other nodes and use it. We must remember to
     # clean up the temporary cloned repo before we exit.
-    clone_repo_path = clone_repo(repo_path)
+    clone_repo_path = repo.clone_repo(repo_path)
 
     # TODO: Create a result object and let the buildrunner and testrunner fill it in appropriately.
     #       They need to properly handle and capture errors.
@@ -140,24 +138,6 @@ def validate_arguments() -> (pathlib.Path, pathlib.Path, pathlib.Path, pathlib.P
         config_path = (pathlib.Path.cwd() / config_path).resolve()
 
     return result_dir, artifact_dir, repo_dir, config_path
-
-
-def clone_repo(repo_path: pathlib.Path) -> pathlib.Path:
-    """
-    Clones the repo in full from the cached repo at repo_path.
-    :param repo_path: The current cloned repo that uses hard links to the local
-                      cache and therefore cannot be copied across nodes.
-    :return: the path to the cloned repo that can be copied across nodes.
-    """
-    # Get the current git hash
-
-    # Get the URL to the local cached repo remote. This will be a file:// URL.
-
-    # Clone this repo locally
-
-    # Check out the above git hash
-
-    # Return the path to the cloned repo
 
 
 if __name__ == '__main__':
