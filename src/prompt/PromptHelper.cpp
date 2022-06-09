@@ -405,9 +405,9 @@ void PromptHelper::vDisableFuncs(void)
     else if( PF_SHELL == gxPromptCatalog.m_aaFun[i]->m_ePromptFun) {
       gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
     }
-    else if( PF_SHORTCUT == gxPromptCatalog.m_aaFun[i]->m_ePromptFun) {
-      gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-    }
+//    else if( PF_SHORTCUT == gxPromptCatalog.m_aaFun[i]->m_ePromptFun) {
+//      gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
+//    }
     else if( PF_SHOW == gxPromptCatalog.m_aaFun[i]->m_ePromptFun) {
       gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
     }

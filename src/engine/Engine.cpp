@@ -56,6 +56,8 @@
 
 #include "Heart.h"
 
+#include "PromptHelper.hpp"
+
 CmdLineArgs  gxCmdLineArgs;
 EnvFlags     gxEnvFlags;
 FnCatalog    gxFnCatalog;
@@ -105,6 +107,10 @@ void Engine::vMainEntry(void)
   }
 
   vPreliminary();
+
+  if(gxCmdLineArgs.m_xSysArgs.m_bDisablePromptCmds) {
+    PromptHelper::vDisableFuncs();
+  }
 
   vRunCommandLine();
   
