@@ -108,10 +108,6 @@ void Engine::vMainEntry(void)
 
   vPreliminary();
 
-  if(gxCmdLineArgs.m_xSysArgs.m_bDisablePromptCmds) {
-    PromptHelper::vDisableFuncs();
-  }
-
   vRunCommandLine();
   
   vConcluding();
@@ -394,6 +390,10 @@ void Engine::vCallPrompt(void)
 //  pSePrompt->vPromptLoop();
 //
 //  delete pSePrompt;
+
+  if(AM::bDisableCmds()) {
+    PromptHelper::vDisableFuncs();
+  }
   
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("\n>\n> %lld) Calling PROMPT\n>\n"_Stz,giProgressPoint++);
