@@ -5,8 +5,17 @@
 " OP_jobExit.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* add reap activity here                                                     */
+/*----------------------------------------------------------------------------*/
+: reap_activity ( -- )
+
+  false api::reapJobs
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for EV_M_FLUSH ...                                                 */
 /*----------------------------------------------------------------------------*/
+/*
 : jobExit_Flush \handler
 
   //"jobExit_Flush" .
@@ -30,10 +39,12 @@
 
   true
 ;
+*/
 
 /*----------------------------------------------------------------------------*/
 /* handler for EV_D_JOB ...                                                   */
 /*----------------------------------------------------------------------------*/
+/*
 : jobExit_Job \handler
 
   0 locals| eError |
@@ -63,6 +74,7 @@
 
   true
 ;
+*/
 
 /*----------------------------------------------------------------------------*/
 /* initialise                                                                 */
@@ -70,6 +82,23 @@
 : jobExit_initialise
 
   Tub[].new
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_START ...                                                 */
+/*----------------------------------------------------------------------------*/
+: jobExit_StartMarker \handler
+
+  "jobExit Demon Started" .boot
+
+  begin
+
+    // [args].demonSleep thread::sleepSsec
+    1 thread::sleepSsec
+
+    reap_activity
+
+  again
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -81,8 +110,8 @@
 
   op__topology
 
-  find: jobExit_Flush  EV_M_FLUSH [op].handler!
-  find: jobExit_Job    EV_D_JOB   [op].handler!
+  //find: jobExit_Flush       EV_M_FLUSH [op].handler!
+  find: jobExit_StartMarker EV_M_START [op].handler!
 
   jobExit_initialise
   

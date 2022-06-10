@@ -1,22 +1,23 @@
 /*============================================================================*/
-/* dp_reaperDemon.sen -- Reaper Demon                                         */
+/* dp_jobExitDemon.sen -- Job Exit Demon                                      */
 /*============================================================================*/
 
-" dp_reaperDemon.sen" .verbose
+" dp_jobExitDemon.sen" .verbose
+
 
 /*----------------------------------------------------------------------------*/
-/* reaper demon pipeline command                                              */
+/* job exit demon pipeline command                                            */
 /*----------------------------------------------------------------------------*/
-: reaperDemonPipeline
+: jobExitDemonPipeline
 
   "
-    pipelineLocal reaperDemon
+    pipelineLocal exitDemon
       tag \"<pre_execute>\" = \"demon::install\" endTag
     begin
 
       stage stageA on origin :
           start
-        | reap
+        | jobExit
         | eatAll
         | stageA
 

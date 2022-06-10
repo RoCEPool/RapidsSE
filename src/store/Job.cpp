@@ -129,7 +129,7 @@ Job::~Job(void) noexcept(false)
     AM::vNapMsec(10, eGetClassNo());
   }
 
-  RASSERT(m_bReapable);
+  //RASSERT(m_bReapable);
   
   if (m_pJobMetrics) {
     while (m_pJobMetrics) {

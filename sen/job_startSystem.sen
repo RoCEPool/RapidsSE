@@ -133,18 +133,11 @@
   //  AM::DEMON::tPageOutDemonJobId!
   //then
 
-  // spawn reaper demon
-  STD_DEMONFORK_TAG reaperDemonPipeline api::forkDemon not if
+  // spawn jobExit demon
+  STD_DEMONFORK_TAG jobExitDemonPipeline api::forkDemon not if
     "Error Code %v" .printf
   else
-      AM::DEMON::tReaperDemonJobId!
-  then
-
-  //spawn reaper demon
-  STD_DEMONFORK_TAG exitDemonPipeline api::forkDemon not if
-    "Error Code %v" .printf
-  else
-    AM::DEMON::tExitDemonJobId!
+      AM::DEMON::tExitDemonJobId!
   then
 
   //spawn recurring demon
@@ -209,7 +202,7 @@
 
   [job].addExited
   [task].grabLock
-    [exitDemon]:queueJob
+    //[exitDemon]:queueJob
 
     [task].retire
 
