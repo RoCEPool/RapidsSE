@@ -207,7 +207,7 @@
 
   Path[].discardAll
 
-  [job].addRetired
+  [job].addExited
   [task].grabLock
     [exitDemon]:queueJob
 

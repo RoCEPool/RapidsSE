@@ -453,7 +453,7 @@ void Task::vAddAxioms(void)
       \"se_include.sen\" include                \
                                                 \
       [job].removeLocal                         \
-      [job].addRetired                          \
+      [job].addExited                           \
                                                 \
       [task].grabLock                           \
         1 [job].reapable!                       \

@@ -829,10 +829,10 @@ void vDdlLockAssertNone(void);
 
   // job
   void vJobAddDemon(void);
+  void vJobAddExited(void);
   void vJobAddLocal(void);
   void vJobAddOriginator(void);
   void vJobAddParticipant(void);
-  void vJobAddRetired(void);
   void vJobAssertStructure(void);
   void vJobAssertOrdinary(void);
   void vJobAssertOriginator(void);

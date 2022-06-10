@@ -15,7 +15,7 @@
 
   Path[].discardAll
 
-  [job].addRetired
+  [job].addExited
   [task].grabLock
     [task].retire // does not queue onto exit demon
 
@@ -60,7 +60,7 @@
 
     // cross check
     PipeSpec[] not assert
-      
+
     [task].grabLock
     [job].error@ [job].signalParent
     [task].dropLock
@@ -135,7 +135,7 @@
 
   Path[].discardAll
 
-  [job].addRetired
+  [job].addExited
   
   [task].grabLock
 

@@ -57,7 +57,7 @@
 /* org_ org */      ListedJob[].assertNoRef
 /* org_ org */
 /* org_ org */      Path[].discardAll
-/* org_ org */      [job].addRetired
+/* org_ org */      [job].addExited
 /* org_ org */
 /* org_ org */      [args].distJob if
 /* org_ org */        "pipeline" "origin"
@@ -86,7 +86,7 @@
 /* org_ org */    ListedJob[].assertNoRef
 /* org_ org */
 /* org_ org */    Path[].discardAll
-/* org_ org */    [job].addRetired
+/* org_ org */    [job].addExited
 /* org_ org */
 /* org_ org */      [args].distJob if
 /* org_ org */        "pipeline" "origin"
@@ -127,7 +127,7 @@
 /* org_ org */    ListedJob[].assertNoRef
 /* org_ org */
 /* org_ org */    Path[].discardAll
-/* org_ org */    [job].addRetired
+/* org_ org */    [job].addExited
 /* org_ org */
 /* org_ ovr */    [job].error@ [job].signalParent
 /* org_ org */
@@ -190,7 +190,7 @@
 ?* org_ org *?    ListedJob[].assertNoRef
 ?* org_ org *?
 ?* org_ org *?    Path[].discardAll
-?* org_ org *?    [job].addRetired
+?* org_ org *?    [job].addExited
 ?* org_ org *?
 ?* org_ ovr *?    [job].error@ [job].signalParent
 ?* org_ org *?
@@ -340,7 +340,7 @@
 /* org_ ovr */  then
 /* org_ ovr */
 /* org_ ovr */  Path[].discardAll
-/* org_ ovr */  [job].addRetired
+/* org_ ovr */  [job].addExited
 /* org_ ovr */
 /* org_ ovr */  [task].grabLock
 /* org_ ovr */    "<signalParent>" [job].tagSet@ tagSet.hasName if

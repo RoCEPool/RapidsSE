@@ -4805,6 +4805,14 @@ void AM::vJob_AddDemon(Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add job to exited list                                                     */
+/*----------------------------------------------------------------------------*/
+void AM::vJob_AddExited(Job* pJob)
+{
+  AM::pExitedJobs()->vInsertJob(pJob);
+}
+
+/*----------------------------------------------------------------------------*/
 /* add job to local list                                                      */
 /*----------------------------------------------------------------------------*/
 void AM::vJob_AddLocal(Job* pJob)
@@ -4826,14 +4834,6 @@ void AM::vJob_AddOriginating(Job* pJob)
 void AM::vJob_AddParticipating(Job* pJob)
 {
   AM::pParticipatingJobs()->vInsertJob(pJob);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add job to retired list                                                    */
-/*----------------------------------------------------------------------------*/
-void AM::vJob_AddRetired(Job* pJob)
-{
-  AM::pExitedJobs()->vInsertJob(pJob);
 }
 
 /*----------------------------------------------------------------------------*/

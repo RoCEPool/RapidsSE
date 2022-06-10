@@ -33,10 +33,10 @@ void Step::vAddSteps_Job(void)
   vAddStep("[job]"_Stz,                  &Step::vJobGet);
 
   vAddStep("[job].addDemon"_Stz,         &Step::vJobAddDemon);
+  vAddStep("[job].addExited"_Stz,        &Step::vJobAddExited);
   vAddStep("[job].addLocal"_Stz,         &Step::vJobAddLocal);
   vAddStep("[job].addOriginator"_Stz,    &Step::vJobAddOriginator);
   vAddStep("[job].addParticipant"_Stz,   &Step::vJobAddParticipant);
-  vAddStep("[job].addRetired"_Stz,       &Step::vJobAddRetired);
   vAddStep("[job].assertOrdinary"_Stz,   &Step::vJobAssertOrdinary);
   vAddStep("[job].assertOriginator"_Stz, &Step::vJobAssertOriginator);
   vAddStep("[job].assertParticipant"_Stz,&Step::vJobAssertParticipant);
@@ -127,6 +127,35 @@ void Step::vJobAddDemon(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* [job].addExited -- add job to exited job set                               */
+/*----------------------------------------------------------------------------*/
+void Step::vJobAddExited(void)
+{
+  ENTRY();
+
+  //Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+
+//  AM::pParticipatingJobs()->vGrabLock();
+//  AM::pParticipatingJobs()->vAddJob(pJob);
+//  AM::pParticipatingJobs()->vDropLock();
+
+  Job* pJob = pOuterJobOfTask();
+  RASSERT(*m_pJob == pJob);
+
+  RASSERT(pJob->pTask());
+
+//  vTrace("Addingd Job %p ID %lld to retired list\n"_Stz,
+//         pJob,
+//         pJob->iJobId() & 0xFFFFFFFF
+//         );
+
+  AM::vJob_AddExited(pJob);
+
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* [job].addLocal -- add job to local job set                                 */
 /*----------------------------------------------------------------------------*/
 void Step::vJobAddLocal(void)
@@ -191,35 +220,6 @@ void Step::vJobAddParticipant(void)
   AM::vJob_AddParticipating(pJob);
 
   //vTrace("%p ID %lld added to participant\n"_Stz, pJob, pJob->iJobId());
-    
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* [job].addRetired -- add job to retired job set                             */
-/*----------------------------------------------------------------------------*/
-void Step::vJobAddRetired(void)
-{
-  ENTRY();
-  
-  //Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-//  AM::pParticipatingJobs()->vGrabLock();
-//  AM::pParticipatingJobs()->vAddJob(pJob);
-//  AM::pParticipatingJobs()->vDropLock();
-
-  Job* pJob = pOuterJobOfTask();
-  RASSERT(*m_pJob == pJob);
-  
-  RASSERT(pJob->pTask());
-  
-//  vTrace("Addingd Job %p ID %lld to retired list\n"_Stz,
-//         pJob,
-//         pJob->iJobId() & 0xFFFFFFFF
-//         );
-
-  AM::vJob_AddRetired(pJob);
-
     
   EXIT();
 }
