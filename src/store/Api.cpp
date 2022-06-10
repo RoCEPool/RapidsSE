@@ -55,7 +55,8 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
                         TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
                         JobId tParentId, JobId tOriginId, JobId tDistId,
                         Job*& rpParentJob_tbr,
-                        Job*& rpChildJob_tbr)
+                        Job*& rpChildJob_tbr,
+                        bool bReapable)
 {
   _static_
 
@@ -129,6 +130,7 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
   RASSERT(szJobNm);
 
   rpChildJob_tbr = new Job(szJobNm,tParentId,tOriginId,tDistId);
+  rpChildJob_tbr->vReapable(bReapable);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy CmdTagSet to the child job tags

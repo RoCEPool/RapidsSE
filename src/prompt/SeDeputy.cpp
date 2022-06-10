@@ -162,7 +162,8 @@ void SeDeputy::vDeputyLoop(void)
                              pInpTknVec,pInpTagSet,
                              tParentId,tOriginId,tDistId,
                              m_pRootJob, // TO BE REMOVED
-                             m_pJob      // TO BE REMOVED
+                             m_pJob,      // TO BE REMOVED
+                             false // NOT REAPABLE
                              );
     
     if (EC_NONE != m_eError) {

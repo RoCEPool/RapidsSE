@@ -21,7 +21,8 @@ namespace STORE
                            TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
                            JobId tParentId, JobId tOriginId, JobId tDistId,
                            Job*& rpParentJob_tbr,
-                           Job*& rpChildJob_tbr);
+                           Job*& rpChildJob_tbr,
+                           bool bReapable = true);
 
   static eEC  eForkJobOld(JobId& rtChildJobId,
                             TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
