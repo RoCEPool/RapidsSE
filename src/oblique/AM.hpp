@@ -430,6 +430,7 @@ namespace OBLIQUE
     class MEMORY
     {
     public:
+      static void vAssertAllocate(void);
       static bool bIsRunningLow(void);
     };
   

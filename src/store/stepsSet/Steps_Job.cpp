@@ -43,9 +43,11 @@ void Step::vAddSteps_Job(void)
   vAddStep("[job].assertReceived"_Stz,   &Step::vJobAssertReceived);
   vAddStep("[job].assertStructure"_Stz,  &Step::vJobAssertStructure);
 
+  vAddStep("[job].disableAllocate"_Stz,  &Step::vJobDisableAllocate);
   vAddStep("[job].distId@"_Stz,          &Step::vJobDistIdFetch);
   vAddStep("[job].distIdGenerate"_Stz,   &Step::vJobDistIdGenerate);
- 
+
+  vAddStep("[job].enableAllocate"_Stz,   &Step::vJobEnableAllocate);
   vAddStep("[job].entryPoint@"_Stz,      &Step::vJobEntryPointFetch);
   vAddStep("[job].entryPoint!"_Stz,      &Step::vJobEntryPointStore);
 
@@ -436,6 +438,18 @@ void Step::vJobAssertStructure(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* [job].disableAllocate -- disable memory allocation for the job             */
+/*----------------------------------------------------------------------------*/
+void Step::vJobDisableAllocate(void)
+{
+  ENTRY();
+
+  m_pJob->vSetAllocate(false);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* [job].distId@ -- fetch the distributed id of the job                       */
 /*----------------------------------------------------------------------------*/
 void Step::vJobDistIdFetch(void)
@@ -460,6 +474,18 @@ void Step::vJobDistIdGenerate(void)
   Job* pJob = pOuterJobOfTask();
   pJob->vDistIdGenerate();
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [job].enableAllocate -- enable memory allocation for the job               */
+/*----------------------------------------------------------------------------*/
+void Step::vJobEnableAllocate(void)
+{
+  ENTRY();
+
+  m_pJob->vSetAllocate(true);
+
   EXIT();
 }
 

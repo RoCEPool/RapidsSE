@@ -839,10 +839,12 @@ void vDdlLockAssertNone(void);
   void vJobAssertParticipant(void);
   void vJobAssertReceived(void);
 
+  void vJobDisableAllocate(void);
   void vJobDistIdFetch(void);
   void vJobDistIdGenerate(void);
   void vJobTrace(void);
 
+  void vJobEnableAllocate(void);
   void vJobEntryPointFetch(void);
   void vJobEntryPointStore(void);
   void vJobErrorFetch(void);
@@ -1284,6 +1286,8 @@ void vDdlLockAssertNone(void);
 
   // op
   void vOpAckJobTask(void);
+  void vOpDisableAllocate(void);
+  void vOpEnableAllocate(void);
   void vOpEnqueOperand(void);
   void vOpFindOp(void);
   void vOpGet(void);
