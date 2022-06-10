@@ -57,6 +57,7 @@
 /* org_ org */      ListedJob[].assertNoRef
 /* org_ org */
 /* org_ org */      Path[].discardAll
+/* org_ org */      [task].grabLock
 /* org_ org */      [job].addExited
 /* org_ org */
 /* org_ org */      [args].distJob if
@@ -66,7 +67,6 @@
 /* org_ org */
 /* org_ ovr */      [job].error@ [job].signalParent
 /* org_ org */
-/* org_ org */      [task].grabLock
 /* org_ org */        [task].retire // does not queue onto exit demon
 /* org_ org */
 /* org_ org */      HAZARD
@@ -86,6 +86,7 @@
 /* org_ org */    ListedJob[].assertNoRef
 /* org_ org */
 /* org_ org */    Path[].discardAll
+/* org_ org */    [task].grabLock
 /* org_ org */    [job].addExited
 /* org_ org */
 /* org_ org */      [args].distJob if
@@ -97,7 +98,6 @@
 /* org_ ovr */
 /* org_ ovr */    true [job].reapable!
 /* org_ org */
-/* org_ org */    [task].grabLock
 /* org_ org */      [task].retire // does not queue onto exit demon
 /* org_ org */
 /* org_ org */    HAZARD
@@ -127,11 +127,11 @@
 /* org_ org */    ListedJob[].assertNoRef
 /* org_ org */
 /* org_ org */    Path[].discardAll
+/* org_ org */    [task].grabLock
 /* org_ org */    [job].addExited
 /* org_ org */
 /* org_ ovr */    [job].error@ [job].signalParent
 /* org_ org */
-/* org_ org */    [task].grabLock
 /* org_ org */      [task].retire // does not queue onto exit demon
 /* org_ org */
 /* org_ org */    HAZARD
@@ -190,11 +190,11 @@
 ?* org_ org *?    ListedJob[].assertNoRef
 ?* org_ org *?
 ?* org_ org *?    Path[].discardAll
+?* org_ org *?    [task].grabLock
 ?* org_ org *?    [job].addExited
 ?* org_ org *?
 ?* org_ ovr *?    [job].error@ [job].signalParent
 ?* org_ org *?
-?* org_ org *?    [task].grabLock
 ?* org_ org *?      [task].retire // does not queue onto exit demon
 ?* org_ org *?
 ?* org_ org *?  HAZARD
@@ -340,9 +340,9 @@
 /* org_ ovr */  then
 /* org_ ovr */
 /* org_ ovr */  Path[].discardAll
+/* org_ ovr */  [task].grabLock
 /* org_ ovr */  [job].addExited
 /* org_ ovr */
-/* org_ ovr */  [task].grabLock
 /* org_ ovr */    "<signalParent>" [job].tagSet@ tagSet.hasName if
 /* org_ org */
 /* org_ org */      [args].distJob if

@@ -15,8 +15,8 @@
 
   Path[].discardAll
 
-  [job].addExited
   [task].grabLock
+  [job].addExited
     [task].retire // does not queue onto exit demon
 
   HAZARD
@@ -135,9 +135,8 @@
 
   Path[].discardAll
 
-  [job].addExited
-  
   [task].grabLock
+  [job].addExited
 
     "<signalParent>" [job].tagSet@ tagSet.hasName if
       //"pipelineLocal::local SIGNALLING PARENT" .
@@ -148,7 +147,7 @@
     //  "SYSTEM STARTED" .
     else
     //  "SYSTEM NOT STARTED" .
-      true [job].reapable!
+    //  true [job].reapable!
     then
 
     [task].retire // does not queue onto exit demon

@@ -200,8 +200,8 @@
 
   Path[].discardAll
 
-  [job].addExited
   [task].grabLock
+  [job].addExited
     //[exitDemon]:queueJob
 
     [task].retire

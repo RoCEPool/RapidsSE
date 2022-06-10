@@ -230,13 +230,11 @@ bool Jobs::bReapJob(void)
 
   AM::MASTERLOCK::vDropReap(nullptr);
 
-  // delete the reapavle job
-  
+  // cycle the task lock to ensure task has fully entered next state (retired)
   RASSERT(pReapableJob->pTask());
-  pReapableJob->pTask()->vGrabTaskLock((Stz*)__func__);
-  pReapableJob->pTask()->vDropTaskLock((Stz*)__func__);
+  pReapableJob->pTask()->vCycleTaskLock((Stz*)__func__);
 
-
+  // delete the reapable job
   delete pReapableJob;
 
   return TRUE(reaped_a_job);
