@@ -723,6 +723,7 @@ namespace OBLIQUE
     static std::list<Node*>::const_iterator itEndNodes(void);
 
     static JobList* pDemonJobs(void);
+    static JobList* pExitedJobs(void);
 #ifdef WITH_HASHMAP
     static HashMap* pHashMap(void);
 #endif
@@ -739,7 +740,6 @@ namespace OBLIQUE
     static i8   iNextTxId(void);
     static JobList* pOriginatingJobs(void);
     static JobList* pParticipatingJobs(void);
-    static JobList* pRetiredJobs(void);
     static void vProcessExit(void);
     static i8   iSystemUsec(void);
     static i8   iUserUsec(void);

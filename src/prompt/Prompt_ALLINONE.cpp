@@ -2449,8 +2449,8 @@ bool PROMPT::bPrompt_memoryLeaks(SePrompt* pPrompt)
 
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
   i8 iNumTokens = pInpTknVec->nItems();
-  JobList* pRetiredJobs = AM::pRetiredJobs();
-  i8 nRetired = pRetiredJobs->nJobs();
+  JobList* pExitedJobs = AM::pExitedJobs();
+  i8 nRetired = pExitedJobs->nJobs();
   
   bool bFatal = false;
   if (2 == iNumTokens && pInpTknVec->pGet(1)->bSame("fatal"_Stz))
@@ -2556,7 +2556,7 @@ bool PROMPT::bPrompt_memoryLeaks(SePrompt* pPrompt)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  nRetired = pRetiredJobs->nJobs();
+  nRetired = pExitedJobs->nJobs();
   vTrace("Retired Jobs : %lld)\n"_Stz,nRetired);
 
   
@@ -3684,7 +3684,7 @@ bool PROMPT::bPrompt_retired(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
 
-  AM::pRetiredJobs()->vListJobs();
+  AM::pExitedJobs()->vListJobs();
 
   return true;
 }

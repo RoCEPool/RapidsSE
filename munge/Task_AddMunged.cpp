@@ -14648,7 +14648,7 @@ void Task::vAddMunged(Task* )
     "\" se_api.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
-    "/* check the result of an api::forkChildOld call                            */\n"
+    "/* check the result of an api::forkChildOld call                              */\n"
     "/*----------------------------------------------------------------------------*/\n"
     ": api:executeCheck\n"
     "\n"

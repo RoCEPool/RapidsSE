@@ -3058,6 +3058,8 @@ ClassFlags* AM::pClassFlags(void)  { return & gpAttachMap->m_oClassFlags;      }
 
 JobList* AM::pDemonJobs(void) {
   return gpAttachMap->m_pJobs->pDemonJobs();                                }
+JobList* AM::pExitedJobs(void) {
+  return gpAttachMap->m_pJobs->pExitedJobs();                               }
 MasterLock* AM::pDicLock(void)      { return & gpAttachMap->m_oLocks.m_oDicMasterLock;            }
 i8   AM::iElapsedSsec(void)   { return gpAttachMap->m_oBirth.iElapsedSsec();  }
 i8   AM::iEpoch(void)         { return gpAttachMap->m_iEpoch;                 }
@@ -3078,8 +3080,6 @@ JobList* AM::pOriginatingJobs(void) {
   return gpAttachMap->m_pJobs->pOriginatingJobs(); }
 JobList* AM::pParticipatingJobs(void) {
   return gpAttachMap->m_pJobs->pParticipatingJobs(); }
-JobList* AM::pRetiredJobs(void) {
-  return gpAttachMap->m_pJobs->pRetiredJobs(); }
 
 
 void AM::vProcessExit(void)   { return Process::vExitFailure();                      }
@@ -4833,7 +4833,7 @@ void AM::vJob_AddParticipating(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_AddRetired(Job* pJob)
 {
-  AM::pRetiredJobs()->vInsertJob(pJob);
+  AM::pExitedJobs()->vInsertJob(pJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4917,7 +4917,7 @@ void AM::vJob_RemoveParticipating(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_RemoveRetired(Job* pJob)
 {
-  AM::pRetiredJobs()->vRemoveJob(pJob);
+  AM::pExitedJobs()->vRemoveJob(pJob);
 }
 
 /*----------------------------------------------------------------------------*/

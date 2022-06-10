@@ -29,10 +29,10 @@ Jobs::Jobs(void)
   m_pJobsList          = nullptr;
 
   m_pDemonJobs         = nullptr;
+  m_pExitedJobs        = nullptr;
   m_pLocalJobs         = nullptr;
   m_pOriginatingJobs   = nullptr;
   m_pParticipatingJobs = nullptr;
-  m_pRetiredJobs       = nullptr;
 
   _checkInitialised_(CN_JOBS);
   
@@ -66,7 +66,7 @@ void Jobs::vCreateJobLists(void)
   m_pOriginatingJobs   = new JobList(JL_ORIGINATING);
   m_pParticipatingJobs = new JobList(JL_PARTICIPATING);
   
-  m_pRetiredJobs       = new JobList(JL_RETIRED);
+  m_pExitedJobs       = new JobList(JL_RETIRED);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -161,7 +161,7 @@ void Jobs::vReapAllJobs(bool bForce)
   _static_
   
   if (bForce || AM::SYSTEM::bReapEnabled())
-    while (AM::pRetiredJobs()->nJobs())
+    while (AM::pExitedJobs()->nJobs())
       while (bReapJob())
         {;}
 }
@@ -173,24 +173,24 @@ bool Jobs::bReapJob(void)
 {
   _static_
    
-  JobList* pRetiredJobs = AM::pRetiredJobs();
+  JobList* pExitedJobs = AM::pExitedJobs();
 
-  if (! pRetiredJobs->nJobs()) {
+  if (! pExitedJobs->nJobs()) {
     //vTrace("Empty retired list\n"_Stz);
     return FALSE(empty_list);
   }
   
   AM::MASTERLOCK::vGrabReap(nullptr);
-  
-  pRetiredJobs->vGrabLock();
+
+  pExitedJobs->vGrabLock();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Job* pReapableJob = nullptr;
   
-  for (SkipNode* pCursor = pRetiredJobs->pFirst();
+  for (SkipNode* pCursor = pExitedJobs->pFirst();
        pCursor;
-       pCursor = pRetiredJobs->pNext(pCursor)) {
+       pCursor = pExitedJobs->pNext(pCursor)) {
     
     Job* pRetiredJob = _pJob(pCursor->m_pObject);
     
@@ -216,7 +216,7 @@ bool Jobs::bReapJob(void)
     }
   }
 
-  pRetiredJobs->vDropLock();
+  pExitedJobs->vDropLock();
   
   if (! pReapableJob) {
     AM::MASTERLOCK::vDropReap(nullptr);
@@ -224,8 +224,8 @@ bool Jobs::bReapJob(void)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  pRetiredJobs->vRemoveJob(pReapableJob);
+
+  pExitedJobs->vRemoveJob(pReapableJob);
 
   AM::MASTERLOCK::vDropReap(nullptr);
 
@@ -255,13 +255,13 @@ void Jobs::vReapJobsOnce(bool bForce)
 
 
 /*----------------------------------------------------------------------------*/
-/* get retired job list                                                       */
+/* get exited job list                                                        */
 /*----------------------------------------------------------------------------*/
-JobList* Jobs::pRetiredJobs(void)
+JobList* Jobs::pExitedJobs(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBS,_FOOTER_);
 
-  return m_pRetiredJobs;
+  return m_pExitedJobs;
 }
 
 /*============================================================================*/

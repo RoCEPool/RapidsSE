@@ -16,7 +16,7 @@ namespace STORE
     JobList*  m_pLocalJobs;         // jobs per local pipelines
     JobList*  m_pOriginatingJobs;   // jobs per pipelinee on origin
     JobList*  m_pParticipatingJobs; // jobs per pipelines on participating nodes
-    JobList*  m_pRetiredJobs;       // jobs of the above that have ended
+    JobList*  m_pExitedJobs;        // jobs of the above that have exited
                                     //   which are to be finally deleted
 
     // must be last
@@ -43,7 +43,7 @@ namespace STORE
     bool bReapJob(void);
     void vReapJobsOnce(bool bForce = false);
 
-    JobList* pRetiredJobs(void);
+    JobList* pExitedJobs(void);
 
     Footer* aFooter(void);
   };
