@@ -147,7 +147,7 @@
     //  "SYSTEM STARTED" .
     else
     //  "SYSTEM NOT STARTED" .
-    //  true [job].reapable!
+      true [job].reapable!
     then
 
     [task].retire // does not queue onto exit demon

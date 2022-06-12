@@ -212,7 +212,7 @@
   [task].grabLock
   [job].addExited
     //[exitDemon]:queueJob
-
+    true [job].reapable!
     [task].retire
   
   HAZARD

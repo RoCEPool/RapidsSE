@@ -198,8 +198,7 @@ bool Jobs::bReapJob(void)
       i8 nActiveOps = pRetiredJob->nActiveOps();
 //      vTrace("REAP CANDIDATE Job %p Reapable %lld Active Ops %lld\n"_Stz
 //             ,pRetiredJob,(i8)pRetiredJob->m_bReapable,nActiveOps);
-      //if (pRetiredJob->bReapable() && ! nActiveOps) {
-      if ( ! nActiveOps ) {
+      if (pRetiredJob->bReapable() && ! nActiveOps) {
         pReapableJob = pRetiredJob;
         break;
       }
