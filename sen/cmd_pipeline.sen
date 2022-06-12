@@ -96,7 +96,7 @@
 /* org_ org */
 /* org_ ovr */    [job].error@ [job].signalParent
 /* org_ ovr */
-/* org_ ovr */    //true [job].reapable!
+/* org_ ovr */    true [job].reapable!
 /* org_ org */
 /* org_ org */      [task].retire // does not queue onto exit demon
 /* org_ org */
@@ -351,8 +351,8 @@
 /* org_ org */      then
 /* org_ org */
 /* org_ ovr */      [job].error@ [job].signalParent
-/* org_ ovr */     //else
-/* org_ ovr */       //true [job].reapable!
+/* org_ ovr */     else
+/* org_ ovr */       true [job].reapable!
 /* org_ ovr */    then
 /* org_ ovr */
 /* org_ ovr */    //[args].distJob if

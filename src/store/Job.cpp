@@ -70,7 +70,7 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
   /* 02 */ m_pJobMetrics  = nullptr;
   /* 03 */ m_pMutex       = nullptr;
   /* 04 */ m_pOutput      = nullptr;
-  /* 05 */ m_bReapable    = true;
+  /* 05 */ m_bReapable    = false;
   /* 06 */ m_p_ResponseOp = nullptr;
   /* 07 */ m_oResponseTimer.vStart();
   /* 08 */ m_pTask        = nullptr;
@@ -1091,8 +1091,7 @@ void Job::vPostRecv(void)
   /* 02 */ m_pJobMetrics  = nullptr;
   /* 03 */ m_pMutex       = nullptr;
   /* 04 */ m_pOutput      = nullptr;
-  /* 05 */ //RASSERT(! m_bReapable);
-  /* 05 */ m_bReapable    = true;
+  /* 05 */ RASSERT(! m_bReapable);
   /* 06 */ m_p_ResponseOp = nullptr;
   /* 07 */ m_oResponseTimer.vReset();
   /* 08 */ m_pTask        = nullptr;
