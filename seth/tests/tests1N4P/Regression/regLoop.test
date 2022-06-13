@@ -21,10 +21,11 @@ INCLUDE 'regrLoadData.test';
 //LOG 'Running regression tests...';
 
 //------------------------------------------------------------------------------
-//INCLUDE 'AndOrNot.test';
+LOG 'AndOrNot.test ...';
+INCLUDE 'AndOrNot.test';
 
-//LOG 'inNotIn.test ...';
-//INCLUDE 'InNotIn.test';
+LOG 'inNotIn.test ...';
+INCLUDE 'InNotIn.test';
 
 //INCLUDE 'PartKey1way.test';
 //INCLUDE 'PartKey2way.test';
@@ -32,17 +33,26 @@ INCLUDE 'regrLoadData.test';
 //INCLUDE 'Using1way.test';
 //INCLUDE 'aggs-avg.test';
 
-//LOG 'aggs-count.test ...';
-//INCLUDE 'aggs-count.test';
+LOG 'aggs-count.test ...';
+INCLUDE 'aggs-count.test';
 
-//LOG 'aggs-max.test ...';
-//INCLUDE 'aggs-max.test';
+LOG 'aggs-max.test ...';
+INCLUDE 'aggs-max.test';
 
-//INCLUDE 'aggs-min.test';
+LOG 'aggs-min.test ...';
+INCLUDE 'aggs-min.test';
+
+//LOG 'aggs-sum.test ...';
 //INCLUDE 'aggs-sum.test';
-//INCLUDE 'alias.test';
+
+LOG 'aggs-sum.test ...';
+INCLUDE 'alias.test';
+
 //INCLUDE 'aliasSelAll.test';
-//INCLUDE 'between.test';
+
+LOG 'between.test ...';
+INCLUDE 'between.test';
+
 //INCLUDE 'case.test';
 //INCLUDE 'cast.test';
 //INCLUDE 'ctas.test';

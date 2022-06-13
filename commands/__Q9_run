@@ -81,7 +81,7 @@ begin
   stage Gj_ORDERS on all partitions :
     indexJoin 1 orders IxO_ORDERKEY "bound $I1 _orderkey =="
     | project 1 "
-      type TIMESTAMP as l_orderdate J1_O_ORDERDATE ,
+      type DATE as l_orderdate J1_O_ORDERDATE ,
       type DECIMAL as l_quantity L_QUANTITY ,
       type DECIMAL as l_extendedprice L_EXTENDEDPRICE ,
       type DECIMAL as l_discount L_DISCOUNT ,
@@ -90,23 +90,23 @@ begin
 
 stage G_SUM_P on all partitions :
     aggreg 0 "
-      type TIMESTAMP as l_orderdate l_orderdate ,
+      type DATE as l_orderdate l_orderdate ,
       type DECIMAL as amount ) l_extendedprice 1  l_discount -  *  ps_supplycost l_quantity *  - sum
-      groupby type TIMESTAMP l_orderdate"
+      groupby type DATE l_orderdate"
     | next
 
 stage G_SUM_N on all nodes :
     aggreg 0 "
-      type TIMESTAMP as l_orderdate l_orderdate ,
+      type DATE as l_orderdate l_orderdate ,
       type DECIMAL as amount ) amount sum
-      groupby type TIMESTAMP l_orderdate"
+      groupby type DATE l_orderdate"
     | next
 
 stage G_SUM_O on origin :
     aggreg 0 "
-      type TIMESTAMP as o_year l_orderdate ,
+      type DATE as o_year l_orderdate ,
       type DECIMAL as amount ) amount sum
-      groupby type TIMESTAMP l_orderdate"
+      groupby type DATE l_orderdate"
     | next
 
  stage last on origin :

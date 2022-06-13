@@ -70,7 +70,7 @@
   sSmt "FORKING CHILD FOR PIPELINE: %v"  str.format .
 
   // spawn a job for the smt
-  STD_NORMALFORK_TAG sSmt api::forkChildNormal not if
+  STD_NORMALFORK_TAG sSmt api::forkChild not if
     //"Error Code %v" .printf
     op__execErr
     true

@@ -11,8 +11,6 @@
 
   Deck[] assert
   
-  [task].isLocked? not assert
-  
   Deck[].opsExeOnNode@ locals| nAcks |
 
   [task].grabLock

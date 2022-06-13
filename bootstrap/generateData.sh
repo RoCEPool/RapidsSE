@@ -55,15 +55,14 @@ source "${COMMON_FN}" || { >&2 echo "Could not load ${COMMON_FN}"; exit 1; }
 
 function printUsageAndExit() {
 
+  # Note: not showing the internal parameters (--cluster, --node, --chunks, --offset)
+  # so users don't mess with them!
+
   echo ""
-  echo "Usage: ./${SCRIPT_NAME} [--cluster | --node]"
-  echo "                        [--config <file>]"
+  echo "Usage: ./${SCRIPT_NAME} [--config <file>]"
   echo "                        --dir <dirName> [--dir <dirName> ...]"
-  echo "                        [--debug]"
+  echo "                        [--debug] [--norename]"
   echo "Details:"
-  echo "  --cluster           [Default] Generates TPC-H data on all nodes in the cluster."
-  echo "  --node              Generates TPC-H data for the current node only."
-  echo ""
   echo "  --config <file>     Uses a given cluster configuration file."
   echo "                      Default is: ${CONFIG_FILE}"
   echo ""
@@ -71,11 +70,6 @@ function printUsageAndExit() {
   echo ""
   echo "  --dir <dirName>     The name of a directory where output files will be written"
   echo "                      on all nodes."
-  echo ""
-  echo "  --chunks <val>      The total number of ways the data is split."
-  echo "                      Requires --node."
-  echo "  --offset <val>      The first (1-based) chunk number that this node will create."
-  echo "                      Requires --node."
   echo ""
   echo "  --norename          Do not remove the \".1\", \",2\" extensions off the data files."
   echo ""

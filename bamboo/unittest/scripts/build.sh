@@ -1,14 +1,19 @@
 #!/bin/bash
 
-# The intent of this script file is to check any prerequisites and configure
-# any necessary aspects of the system, if applicable.
+# The intent of this script file is to build RapidsSE and produce an installer.
 
-# This script file is called by Bamboo after it has checked out the repository.
+# This script file is called by the file: ../jobs/buildJob.sh
 
 ###############################################################################
 ### Environment Variables                                                   ###
 ###############################################################################
 
+# If these environment variables are defined and are non-null then they will
+# alter how this script executes.
+#
+# NO_BUILD         Do not build the software (assumes it is already built).
+
+# e.g. NO_BUILD=1 ./build.sh
 
 
 ###############################################################################
@@ -17,7 +22,11 @@
 
 readonly SCRIPT_NAME=$(basename "$0")
 readonly DIR="$(dirname "$0")"
-
+readonly PROJ_ROOT="${DIR}/../../.."
+readonly BIN_DIR="${PROJ_ROOT}/bin"
+readonly SRC_DIR="${PROJ_ROOT}/src"
+readonly PKG_DIR="${PROJ_ROOT}/installer/packaging"
+readonly OUT_DIR="${PROJ_ROOT}/installer/output"
 
 readonly COMMON_FN="${DIR}/common.fn"
 
@@ -52,9 +61,9 @@ COMPLETED_SUCCESFULLY=0
 
 function onExit() {
 
-  local statusMsg="*** Completed the Prerequisites stage                                        ***"
+  local statusMsg="*** Completed the Build stage                                                ***"
   if [ "${COMPLETED_SUCCESFULLY}" -eq 0 ]; then
-    statusMsg="*** Failed the Prerequisites stage                                           ***"
+    statusMsg="*** Failed the Build stage                                                   ***"
   fi
 
   local endTime
@@ -76,23 +85,19 @@ function onExit() {
 
 function processArgs() {
 
-  if [ "$#" -gt 0 ]; then
-    errorExit "No arguments are applicable to this script: $*"
+  if [ "$#" -ne 1 ]; then
+    errorExit "Insufficient arguments provided\n" "Usage: ./${SCRIPT_NAME} ( debug | release )"
+  fi
+
+  declare -g TARGET="$1"
+
+  if [[ "${TARGET}" != "debug" && "${TARGET}" != "release" ]]; then
+    errorExit "Parameter 1 must be \"debug\" or \"release\""
   fi
 }
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Checks that we are running on a supported operating system
-## Params: None
-
-function checkOS() {
-  if [ "$(uname)" != "Linux" ]; then
-    errorExit "Unsupported OS. Only Linux is currently supported."
-  fi
-}
-
-
 
 
 ###############################################################################
@@ -102,13 +107,12 @@ function checkOS() {
 # Cause Bash to exit on command errors, unset variables and pipe errors.
 set -eEuo pipefail
 
-
 # Record the start time so we can work out the elapsed time.
 STARTTIME="$(date +%s)"
 
 echo ""
 echo "********************************************************************************"
-echo "*** Beginning the Prerequisites stage                                        ***"
+echo "*** Beginning the Build stage                                                ***"
 echo "********************************************************************************"
 echo ""
 
@@ -119,15 +123,21 @@ trap onExit EXIT
 # Collect/validate the parameters
 processArgs "$@"
 
+echo "*** Build Config: ${TARGET} ***"
+echo ""
 
-# Check for a supported OS
-checkOS
+# First, kill any rogue SE and SETH instances owned by the current user.
+killRogueInstances
 
-# Check that the TPCH data has been installed
-findTpchData
+# Remove any existing installers, if any
+rm -f "${OUT_DIR:?}"/*.run &>/dev/null
 
+# Build RapidsSE for a given target type
+compileSE "${TARGET}"
+
+# Put together the installer
+assembleSE "${TARGET}"
 
 # Set this flag that the script completed successfully.
 # This will be picked up in the exit hook.
 COMPLETED_SUCCESFULLY=1
-

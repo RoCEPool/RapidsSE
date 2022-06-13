@@ -39,8 +39,8 @@ begin
   stage Gs_ORDERS on all partitions :
     scan Orders
     | filter 1
-        "O_ORDERDATE timestamp '1994-01-01 00:00:00' >=
-         O_ORDERDATE timestamp '1995-01-01 00:00:00' <
+        "O_ORDERDATE DATE '1994-01-01' >=
+         O_ORDERDATE DATE '1995-01-01' <
          and"
     | project 1 expr
         type INTEGER as _custkey  O_CUSTKEY ,

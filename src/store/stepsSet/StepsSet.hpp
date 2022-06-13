@@ -86,10 +86,7 @@ public:
 
 
   // api
-  void vApiForkChildBoot(void);
-  void vApiForkChildDemon(void);
-  void vApiForkChildDeputy(void);
-  void vApiForkChildNormal(void);
+  void vApiForkChild(void);
   void vApiForkChildOld(void);
   void vApiForkChild2PC(void);
   void vApiReapJobs(void);
@@ -815,13 +812,12 @@ void vDdlLockAssertNone(void);
   void vJobAssertParticipant(void);
   void vJobAssertReceived(void);
 
-  void vJobIdCascadeFetch(void);
-  void vJobIdCascadeStore(void);
-
+  void vJobDisableAllocate(void);
   void vJobDistIdFetch(void);
   void vJobDistIdGenerate(void);
   void vJobTrace(void);
 
+  void vJobEnableAllocate(void);
   void vJobEntryPointFetch(void);
   void vJobEntryPointStore(void);
   void vJobErrorFetch(void);
@@ -1274,6 +1270,8 @@ void vDdlLockAssertNone(void);
 
   // op
   void vOpAckJobTask(void);
+  void vOpDisableAllocate(void);
+  void vOpEnableAllocate(void);
   void vOpEnqueOperand(void);
   void vOpFindOp(void);
   void vOpGet(void);
@@ -1413,6 +1411,10 @@ void vDdlLockAssertNone(void);
   void vPlanNameFetch(void);
   void vPlanNameStore(void);
   void vPlanShow(void);
+
+  // port
+  void vPortAcceptConnection_reg(void);
+  void vPortNewListen_reg(void);
 
   // pot
   void vPotCompleted(void);
@@ -1756,7 +1758,6 @@ void vDdlLockAssertNone(void);
   void vShellExecute(void);
 
   // socket
-  void vSocketAccept(void);
   void vSocketClose(void);
   void vSocketConnect(void);
   void vSocketGet(void);
@@ -1764,7 +1765,6 @@ void vDdlLockAssertNone(void);
   void vSocketGrabWrite(void);
   void vSocketIsNotNull(void);
   void vSocketIsNull(void);
-  void vSocketListen(void);
   void vSocketObjectFetch(void);
   void vSocketObjectFetchClear(void);
   void vSocketNew(void);

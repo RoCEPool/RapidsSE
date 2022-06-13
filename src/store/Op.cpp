@@ -72,6 +72,7 @@ Op::Op(Stream* p_Stream, OpSpec* p_OpSpec)
   m_pOpTags   = nullptr;
   m_bTraceOp  = false;
   m_bTraceAck = false;
+  m_bAllocate = true;
   
   m_pEvMgr    = new EvMgr;
   
@@ -196,7 +197,7 @@ void Op::vAckJobTask(void)
               "%-18s pipelineJob=%p\n"_Stz, spOp.szLeading(this), __func__, pOuterJobOfOp()
       );
     } else {
-      vTrace("Op %s (%s (N%lld) (P%02lld)): acking invoking task\n"_Stz,
+      vTrace("Op %s (%s (N%lld) (P%02lld)): acking invoking job\n"_Stz,
              szOpNm(),
              m_p_Stream->pStage()->szStageNm(),
              iNodeId(),
@@ -217,7 +218,7 @@ void Op::vAckJobTask(void)
   }
 
   if (m_bTraceAck)
-    vTrace("Op %s (%s (N%lld) (P%02lld)): acking invoking task (acksRemaining : %lld)\n"_Stz,
+    vTrace("Op %s (%s (N%lld) (P%02lld)): acking invoking job (acksRemaining : %lld)\n"_Stz,
            szOpNm(),
            m_p_Stream->pStage()->szStageNm(),
            iNodeId(),
@@ -234,6 +235,16 @@ void Op::vAddWorkDone(i8 iWorkDone)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   m_iWorkDone += iWorkDone;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is memory allocation allowed for this op?                                  */
+/*----------------------------------------------------------------------------*/
+bool Op::bAllocateMemory()
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+
+  return m_bAllocate;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1373,18 +1384,7 @@ void Op::vPipeToOutput(Operand* pOperand)
   RASSERT(pJob);
 
   // pipeout response from job
-  pJob->vPipeout(pOperand);
-
-//  Output* pOutput = pJob->pOutputFind();
-//  RASSERT(pOutput);
-//
-//  Queue* pOutputQueue = pOutput->m_pOutputQueue;
-//
-//  RASSERT(pOutputQueue);
-//
-//  vOpTrace(pOperand,(Stz*)__func__);
-//
-//  IGNORE_RETURN(pOutputQueue->iAppend(pOperand));
+  pJob->vPipeoutResponse(pOperand);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1668,6 +1668,16 @@ void Op::vSendNode(i8 iSendNode)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   m_iSendNode = iSendNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* enable/disable allocation of memory by op                                  */
+/*----------------------------------------------------------------------------*/
+void Op::vSetAllocate(bool bAlloc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+
+  m_bAllocate = bAlloc;
 }
 
 /*----------------------------------------------------------------------------*/

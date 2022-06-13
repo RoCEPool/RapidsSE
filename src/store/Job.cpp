@@ -73,10 +73,10 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
   /* 05 */ m_bReapable    = false;
   /* 06 */ m_p_ResponseOp = nullptr;
   /* 07 */ m_oResponseTimer.vStart();
-  /* 08 */ m_pStmtList    = nullptr;
-  /* 09 */ m_pTask        = nullptr;
-  /* 10 */ m_bWasReceived = false;
-  /* 11 */ m_pMarkerChain = nullptr;
+  /* 08 */ m_pTask        = nullptr;
+  /* 09 */ m_bWasReceived = false;
+  /* 10 */ m_pMarkerChain = nullptr;
+  /* 11 */ m_bAllocate    = true;
 
   m_iTscParticipant = 0;
   
@@ -154,9 +154,6 @@ Job::~Job(void) noexcept(false)
     vMutexDestroy();
   if (m_pOutput)
     vOutputDestroy();
-  
-  if (m_pStmtList)
-    vStmtListDestroy();
   
   if (m_pMarkerChain)
     delete m_pMarkerChain;
@@ -239,6 +236,16 @@ void Job::vActiveOpsInc(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is memory allocation allowed for this job?                                 */
+/*----------------------------------------------------------------------------*/
+bool Job::bAllocateMemory(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_bAllocate;
+}
+
+/*----------------------------------------------------------------------------*/
 /* reset job for cascade reuse                                                */
 /*----------------------------------------------------------------------------*/
 void Job::vCascadeReset(void)
@@ -274,7 +281,7 @@ void Job::vCascadeReset(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get cjild job error                                                        */
+/* get child job error                                                        */
 /*----------------------------------------------------------------------------*/
 eEC Job::eChildError(void)
 {
@@ -476,31 +483,6 @@ bool Job::bHasTag(Stz* szTagNm)
     return true;
   
   return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* test if this job has a <byPrompt> tag                                      */
-/*----------------------------------------------------------------------------*/
-bool Job::bHasByPromptTag(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  bool bByPrompt = bHasTag(C_TAG_BYPROMPT);
-  
-  return bByPrompt;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get bHasStmtList                                                           */
-/*----------------------------------------------------------------------------*/
-bool Job::bHasStmtList(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  if (m_pStmtList && m_pStmtList->nItems())
-    return true;
-  else
-    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -891,28 +873,6 @@ void Job::vNewMarkerChain(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get output processor                                                       */
-/*----------------------------------------------------------------------------*/
-Output* Job::pOutput(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_pOutput;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set output processor                                                       */
-/*----------------------------------------------------------------------------*/
-void Job::vOutput(Output* pOutput)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  RASSERT(! m_pOutput);
-  
-  m_pOutput = pOutput;
-}
-
-/*----------------------------------------------------------------------------*/
 /* begin output processor                                                     */
 /*----------------------------------------------------------------------------*/
 void Job::vOutputBeginProc(void)
@@ -951,49 +911,6 @@ void Job::vOutputDestroy(void)
 void Job::vOutputEnabled(bool bEnabled)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* end output processor                                                       */
-/*----------------------------------------------------------------------------*/
-void Job::vOutputEndProc(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_pOutput->vEndProcOneCmd();
-}
-
-/*----------------------------------------------------------------------------*/
-/* find output processor                                                      */
-/*----------------------------------------------------------------------------*/
-Output* Job::pOutputFind(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  Output* pOutput = this->pOutput();
-  if (! pOutput) {
-    Job* pOriginJob = this->pOriginJob();
-    pOutput = pOriginJob->pOutput();
-  }
-
-  return pOutput;
-  
-  /* NOT A GOOD IDEA
-  Output* pOutput = this->pOutput();
-  if (pOutput)
-    return pOutput;
-  
-  for (Job* pOuterJob = this->pOriginJob();
-       pOuterJob;
-       pOuterJob = pOuterJob->pParentJob()) {
-    
-    pOutput = pOuterJob->pOutput();
-    if (pOutput)
-      return pOutput;
-  }
-
-  return nullptr;
-  */
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1104,67 +1021,59 @@ Pipeline* Job::pPipeline(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pipeout the operand                                                        */
+/* pipeout the response operand                                               */
 /*----------------------------------------------------------------------------*/
-void Job::vPipeout(Operand* pOperand)
+void Job::vPipeoutResponse(Operand* pOperand)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
+  // get the parent job
   Job* pParentJob = this->pParentJob();
-  if (pOperand->eGetClassNo() == CN_STREAMDEF) {
-    i8 i = 1;
+
+  // parentJob
+  if (pParentJob) {
+
+    // does parent job have a responseOp ?
+    if (pParentJob->m_p_ResponseOp) {
+
+      // get the current task
+      Task *pCurTask = MY::pTask();
+
+      // is it an EXITOPERAND ?
+      if (pOperand->eGetClassNo() == CN_EXITOPERAND) {
+        AM::vDeleteOperand(pOperand, nullptr);
+        pOperand = new ChildExit;
+      }
+
+      // pipe the operand to the responseOP of parentJob
+      pParentJob->m_p_ResponseOp->vPipeToThis(pOperand, pCurTask);
+
+    } else {
+
+      // is it an EXITOPERAND ?
+
+      if (pOperand->eGetClassNo() == CN_EXITOPERAND) {
+        AM::vDeleteOperand(pOperand, nullptr);
+        pOperand = new ChildExit;
+      }
+
+      // pipe the operand to the parent job
+      pParentJob->vPipeoutResponse(pOperand);
+    }
+    return;
   }
 
-  if (pParentJob && pParentJob->m_p_ResponseOp) {
-    Task* pCurTask = MY::pTask();
-    if (pOperand->eGetClassNo() == CN_EXITOPERAND) {
-      AM::vDeleteOperand(pOperand, nullptr);
-      pOperand = new ChildExit;
-    }
-    pParentJob->m_p_ResponseOp->vPipeToThis(pOperand, pCurTask);
-  }
-  else if (pParentJob) {
-    if (pOperand->eGetClassNo() == CN_EXITOPERAND) {
-      AM::vDeleteOperand(pOperand, nullptr);
-      pOperand = new ChildExit;
-    }
-    pParentJob->vPipeout(pOperand);
-  }
-  else if (m_pOutput) {
+  // does the job have an output object ?
+  if (m_pOutput) {
+
+    // pipe operand to the output object
     m_pOutput->vPipeToThis(pOperand);
   }
   else {
+
+    // nowhere to go, just print response
     vTrace("Job sending response (operand): %s\n"_Stz, aCN[pOperand->eGetClassNo()]);
   }
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* pipeout exit operand to output                                             */
-/*----------------------------------------------------------------------------*/
-void Job::vPipeoutExit(void) {
-
-  _precondition_(_ADDRESS_, _MAGIC_);
-
-  Job* pParentJob = this->pParentJob();
-
-  // get output of this job
-  Output *pOutput = m_pOutput;
-
-  // check if job has output
-  if (m_pOutput) {
-    // pipe out exit to output
-    Operand *pExitOperand = new ExitOperand;
-    pOutput->vPipeToThis(pExitOperand);
-  }
-  else {
-    // job should have a parent
-    RASSERT(pParentJob);
-
-    // pipe out exit to parent output
-    pParentJob->vPipeoutExit();
-  }
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1185,10 +1094,10 @@ void Job::vPostRecv(void)
   /* 05 */ RASSERT(! m_bReapable);
   /* 06 */ m_p_ResponseOp = nullptr;
   /* 07 */ m_oResponseTimer.vReset();
-  /* 08 */ m_pStmtList    = nullptr;
-  /* 09 */ m_pTask        = nullptr;
-  /* 10 */ m_bWasReceived = true;
-  /* 11 */ m_pMarkerChain = nullptr;
+  /* 08 */ m_pTask        = nullptr;
+  /* 09 */ m_bWasReceived = true;
+  /* 10 */ m_pMarkerChain = nullptr;
+  /* 11 */ m_bAllocate    = true;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -1424,19 +1333,19 @@ void Job::vCleanupOutput(void)
   }
   else {
     RASSERT(m_pOutput);
-    if (! pOutput()->m_bToExit)
-      pOutput()->vProcessBufferQueue();
+    if (! m_pOutput->m_bToExit)
+      m_pOutput->vProcessBufferQueue();
 
-    pOutput()->m_pOutputQueue->vReset();
-    pOutput()->vEndProcOneCmd();
+    m_pOutput->m_pOutputQueue->vReset();
+    m_pOutput->vEndProcOneCmd();
 
-    if (pOutput()->m_pStreamDef_result) {
-      StreamDef* pStreamDef = pOutput()->m_pStreamDef_result;
-      pOutput()->m_pStreamDef_result = nullptr;
+    if (m_pOutput->m_pStreamDef_result) {
+      StreamDef* pStreamDef = m_pOutput->m_pStreamDef_result;
+      m_pOutput->m_pStreamDef_result = nullptr;
       delete pStreamDef;
     }
 
-    pOutput()->m_bToExit      = false;
+    m_pOutput->m_bToExit      = false;
   }
 }
 
@@ -1521,56 +1430,13 @@ void Job::vResponseTimerUpdate(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append cascade to statement list                                           */
+/* enable/disable allocation of memory by job                                 */
 /*----------------------------------------------------------------------------*/
-void Job::vStmtListAppend(Stz* szStmt)
+void Job::vSetAllocate(bool bAlloc)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  //vTrace("vStmtListAppend: %s\n"_Stz,szStmt);
-  Statement* pStatement = new Statement(szStmt);
-  
-  m_pStmtList->vAppend(pStatement);
-}
-
-/*----------------------------------------------------------------------------*/
-/* create a statement list for this job                                       */
-/*----------------------------------------------------------------------------*/
-void Job::vStmtListCreate(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  RASSERT(! m_pStmtList);
-  
-  m_pStmtList = new StmtList;
-}
-
-/*----------------------------------------------------------------------------*/
-/* destroy this job's statement list                                          */
-/*----------------------------------------------------------------------------*/
-void Job::vStmtListDestroy(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  RASSERT(m_pStmtList);
-  
-  delete m_pStmtList;
-  m_pStmtList = nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop top statement from statement list                                      */
-/*----------------------------------------------------------------------------*/
-void Job::vStmtListPop(String* pString)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  Statement* pStatement = m_pStmtList->pPop();
-  Stz* szStmt = pStatement->szText();
-  
-  pString->vCopy(szStmt);
-  
-  delete pStatement;
+  m_bAllocate = bAlloc;
 }
 
 /*----------------------------------------------------------------------------*/

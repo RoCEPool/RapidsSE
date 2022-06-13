@@ -36,6 +36,7 @@ namespace STORE
     TagSet*  m_pOpTags;   // tags for the op
     bool     m_bTraceOp;  // tracing this operator
     bool     m_bTraceAck; // tracing ack of this operator
+    bool     m_bAllocate; // can op ask for memory?
 
     EvMgr*   m_pEvMgr;    // event handlers
          
@@ -71,6 +72,7 @@ namespace STORE
     // - - - - - - - - - - - - - - - -
     void vAckJobTask(void);
     void vAddWorkDone(i8 iWorkDone);
+    bool bAllocateMemory(void);
     void vAppendLeft(Operand* pOperand, Task* pTriggeringTask);
     void vAppendOoO(Operand* pOperand, Task* pTriggeringTask);
     void vAppendToJob(Operand* pOperand);
@@ -155,6 +157,7 @@ namespace STORE
     void vSendCast(eXK eSendCast);
     i8   iSendNode(void);
     void vSendNode(i8 iNde);
+    void vSetAllocate(bool bAlloc);
     void vSpawnTask(void);
     void vSetJobTask(Task* pJobTask);
     void vSetTags(void);

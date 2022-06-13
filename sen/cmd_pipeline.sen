@@ -59,6 +59,11 @@
 /* org_ org */      Path[].discardAll
 /* org_ org */      [job].addRetired
 /* org_ org */
+/* org_ org */      [args].distJob if
+/* org_ org */        "pipeline" "origin"
+/* org_ org */        "org_ org" "<preCheck> signalling parent"       [job].trace
+/* org_ org */      then
+/* org_ org */
 /* org_ ovr */      [job].error@ [job].signalParent
 /* org_ org */
 /* org_ org */      [task].grabLock
@@ -68,7 +73,6 @@
 /* org_ org */
 /* org_ org */    then
 /* org_ org */  then
-
 
 /* org_ org */  [args].distJob if
 /* org_ org */    "pipeline" "origin"
@@ -84,6 +88,11 @@
 /* org_ org */    Path[].discardAll
 /* org_ org */    [job].addRetired
 /* org_ org */
+/* org_ org */      [args].distJob if
+/* org_ org */        "pipeline" "origin"
+/* org_ org */        "org_ org" "preExecuteTest signalling parent"       [job].trace
+/* org_ org */      then
+/* org_ org */
 /* org_ ovr */    [job].error@ [job].signalParent
 /* org_ ovr */
 /* org_ ovr */    true [job].reapable!
@@ -94,17 +103,17 @@
 /* org_ org */    HAZARD
 /* org_ org */  then
 
-
 /* org_ org */
 /* org_ org */  // - - - - - - - - - - - - - - - - - - - - - - - -
 /* org_ org */  // compile pipeline statement to check its syntax
 /* org_ org */  // - - - - - - - - - - - - - - - - - - - - - - - -
 /* org_ org */
-/* org_ org */  //[args].distJob if
-/* org_ org */  //  "pipeline" "origin"
-/* org_ org */  //    "org_ org" "Dynamo compile"                    [job].trace
-/* org_ org */  //then
+/* org_ org */  [args].distJob if
+/* org_ org */    "pipeline" "origin"
+/* org_ org */      "org_ org" "Dynamo compile"                    [job].trace
+/* org_ org */  then
 /* org_ org */
+
 /* org_ org */  Dynamo[].new
 /* org_ org */  <cmd> Dynamo[].compile to ErrorCode[]
 /* org_ org */  ErrorCode[] EC_NONE == if
@@ -130,7 +139,12 @@
 /* org_ org */  Dynamo[].delete
 /* org_ org */
 /* org_ ovr */    "<signalParent>" [job].tagSet@ tagSet.hasName not if
-/* org_ org */      //"SIGNALLING PARENT AS NO WAIT" .
+/* org_ org */
+/* org_ org */      [args].distJob if
+/* org_ org */        "pipeline" "origin"
+/* org_ org */        "org_ org" "NO_WAIT signalling parent"       [job].trace
+/* org_ org */      then
+/* org_ org */
 /* org_ ovr */      [job].error@ [job].signalParent
 /* org_ org */     then
 
@@ -186,7 +200,6 @@
 ?* org_ org *?  HAZARD
 ?* org_ org *?  then
 */
-/* org_ org */
 
 /* org_ org */  // - - - - - - - - - -
 /* org_ org */  // test if optimising
@@ -331,6 +344,12 @@
 /* org_ ovr */
 /* org_ ovr */  [task].grabLock
 /* org_ ovr */    "<signalParent>" [job].tagSet@ tagSet.hasName if
+/* org_ org */
+/* org_ org */      [args].distJob if
+/* org_ org */        "pipeline" "origin"
+/* org_ org */        "org_ org" "WAIT signalling parent"       [job].trace
+/* org_ org */      then
+/* org_ org */
 /* org_ ovr */      [job].error@ [job].signalParent
 /* org_ ovr */     else
 /* org_ ovr */       true [job].reapable!

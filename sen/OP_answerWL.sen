@@ -20,7 +20,7 @@
   STD_DEMONFORK_TAG str.cat
 
     // receiver demon pipeline
-      receiverWL_procText api::forkChildDemon not if
+      receiverWL_procText api::forkChild not if
       "Error Code %v" .printf
     then
 ;
@@ -97,7 +97,6 @@
 : answerWL_StartMarker \handler
 
   0 locals| iPort |
-  0 locals| pListeningSocket |
   0 locals| pAcceptedSocket |
   0 locals| pAnsweredNode |
   0 locals| pConnectorTask |
@@ -116,7 +115,7 @@
   //then
 
   // now create a listening socket
-  iPort listen::open to pListeningSocket
+  iPort Port[]::newListen
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -127,7 +126,7 @@
 
     trap::stackDepthZero
 
-    pListeningSocket listen.accept to pAcceptedSocket
+    Port[].acceptConnection to pAcceptedSocket
 
     AM::SHOW::bConnection if
       iPort "Answered connection on port %v" .printf

@@ -1,15 +1,13 @@
 /*============================================================================*/
-/* OP_pathToDfload2.sen -- Operator Path To Dfload                            */
+/* OP_pathToDfload.sen -- Operator Path To Dfload                             */
 /*============================================================================*/
 
-" OP_pathToDfload2.sen" .verbose
+" OP_pathToDfload.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* handler for EV_I_PATH ... an infoset with __path rows                      */
 /*----------------------------------------------------------------------------*/
-: pathToDfload2_Path \handler
- 
-  // "pathToDfload2_Path" .
+: pathToDfload_Path \handler
 
   PipeIn[]\clear to InfoSet[]
 
@@ -21,16 +19,16 @@
   2 InfoSet[].colVal@ locals| iPathOf | 
   
   // print the __path data
-  //iPathOf iPathNo sPath "pathToDfload2: %v %v %v" .printf
+  //iPathOf iPathNo sPath "pathToDfload: %v %v %v" .printf
 
   InfoSet[].delete
   nullptr to InfoSetRow[]
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  sPath <tableNm> "dfload2 %v \"%v\"" str.format locals| sCmd |
+  sPath <tableNm> "dfload %v \"%v\"" str.format locals| sCmd |
 
-  //sCmd "pathToDfload2: %v" .printf
+  //sCmd "pathToDfload: %v" .printf
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -46,13 +44,13 @@
 /*----------------------------------------------------------------------------*/
 /* execute for call pipeline req                      (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : pathToDfload2_op \operator
+ : pathToDfload_op \operator
 
   _lu_initialise_
 
   op__topology
 
-  find: pathToDfload2_Path  EV_I_PATH  [op].handler!
+  find: pathToDfload_Path  EV_I_PATH  [op].handler!
 
   op__loop
 
@@ -66,12 +64,12 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: pathToDfload2 :: pathToDfload2 <tableNm> ;
+cmdSyntax: pathToDfload :: pathToDfload <tableNm> ;
 
-: pathToDfload2_cmdTags _cmdTags tagCopy: op_tags
+: pathToDfload_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "pathToDfload2_op"
+    <opEntry> = "pathToDfload_op"
   }
 ;
 

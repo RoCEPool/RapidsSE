@@ -1644,7 +1644,7 @@ void CodeSynth::vGenerateStencilCastTo(void) {
                     xRowRef[m_eStencilTo].m_szInclude,
                     xRowRef[m_eStencilTo].m_szInclude);
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-      StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_racStrAreaAgg = aCombinedT->m_racStrAreaSavAgg;");
+      //StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_racStrAreaAgg = aCombinedT->m_racStrAreaSavAgg;");
       StrLib::vAppendString(&m_azCodeCrs, "\n    szStrArea = aCombinedT->m_racStrAreaAgg;");
       break;
 
@@ -3544,15 +3544,31 @@ void CodeSynth::vPushAggCol(TypedStack* pExprStack, TypedStack* pPostStack, ePE 
       break;
 
     case PE_MIN:
-      // duplicate column on stack
-      sOperation = aFM[eMacro_Dup[eExprType]];
-      sOperation.vConcat("(aCombinedT->m_iErrorCode)"_Stz);
-      pExprStack->vPushStz(sOperation);
+      if (eExprKind == EK_AGGGBY) {
 
-      // push col on both stacks
-      sOperation.vSprint("_PSH_COL(%s)"_Stz, sStructColumn.azChar());
-      pExprStack->vPushStr(sOperation);
-      pPostStack->vPushStr(sOperation);
+        // duplicate column on stack
+        sOperation = aFM[eMacro_Dup[eExprType]];
+        sOperation.vConcat("(aCombinedT->m_iErrorCode)"_Stz);
+        pExprStack->vPushStz(sOperation);
+
+        // push col on both stacks
+        sOperation.vSprint("_PSH_COL(aCombinedT->m_aiPayload[%lld])"_Stz, i_Col);
+        pExprStack->vPushStr(sOperation);
+        pPostStack->vPushStr(sOperation);
+      }
+      else {
+        RASSERT(eExprKind == EK_AGGREG ||
+                eExprKind == EK_AGGORD);
+        // duplicate column on stack
+        sOperation = aFM[eMacro_Dup[eExprType]];
+        sOperation.vConcat("(aCombinedT->m_iErrorCode)"_Stz);
+        pExprStack->vPushStz(sOperation);
+
+        // push col on both stacks
+        sOperation.vSprint("_PSH_COL(%s)"_Stz, sStructColumn.azChar());
+        pExprStack->vPushStr(sOperation);
+        pPostStack->vPushStr(sOperation);
+      }
 
       sOperation = aFM[eMacro_Lt[eExprType][eExprType]];
       sOperation.vConcat("(aCombinedT->m_iErrorCode)"_Stz);
@@ -3560,16 +3576,32 @@ void CodeSynth::vPushAggCol(TypedStack* pExprStack, TypedStack* pPostStack, ePE 
       break;
 
     case PE_MAX:
-      // duplicate column on stack
-      sOperation = aFM[eMacro_Dup[eExprType]];
-      sOperation.vConcat("(aCombinedT->m_iErrorCode)"_Stz);
-      pExprStack->vPushStz(sOperation);
+      if (eExprKind == EK_AGGGBY) {
 
-      // push col on both stacks
-      sOperation.vSprint("_PSH_COL(%s)"_Stz, sStructColumn.azChar());
-      pExprStack->vPushStr(sOperation);
-      pPostStack->vPushStr(sOperation);
+        // duplicate column on stack
+        sOperation = aFM[eMacro_Dup[eExprType]];
+        sOperation.vConcat("(aCombinedT->m_iErrorCode)"_Stz);
+        pExprStack->vPushStz(sOperation);
 
+        // push col on both stacks
+        sOperation.vSprint("_PSH_COL(aCombinedT->m_aiPayload[%lld])"_Stz, i_Col);
+        pExprStack->vPushStr(sOperation);
+        pPostStack->vPushStr(sOperation);
+      }
+      else {
+        RASSERT(eExprKind == EK_AGGREG ||
+                eExprKind == EK_AGGORD);
+
+        // duplicate column on stack
+        sOperation = aFM[eMacro_Dup[eExprType]];
+        sOperation.vConcat("(aCombinedT->m_iErrorCode)"_Stz);
+        pExprStack->vPushStz(sOperation);
+
+        // push col on both stacks
+        sOperation.vSprint("_PSH_COL(%s)"_Stz, sStructColumn.azChar());
+        pExprStack->vPushStr(sOperation);
+        pPostStack->vPushStr(sOperation);
+      }
       sOperation = aFM[eMacro_Gt[eExprType][eExprType]];
       sOperation.vConcat("(aCombinedT->m_iErrorCode)"_Stz);
       pExprStack->vPushStr(sOperation);
@@ -4085,9 +4117,15 @@ void CodeSynth::vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, e
     case EK_AGGREG:
       // make the column name
       vMakeColumnNmStruct(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
+      pColumn = m_pStreamDefOut->pGetColumn(i_Col);
 
-      if (ePreExp == PE_MIN || ePreExp == PE_MAX)
-        sPush.vSprint("_ASSIGN_IFTRUE(p%s->%s)\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
+      if (ePreExp == PE_MIN || ePreExp == PE_MAX) {
+        if (pColumn->eColumnType() == CT_VARCHAR)
+          sPush.vSprint("_COPYSTR_IFTRUE(aCombinedT->m_racStrAreaAgg, p%s->%s)\n"_Stz,
+                        xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
+        else
+          sPush.vSprint("_ASSIGN_IFTRUE(p%s->%s)\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
+      }
       else
         sPush.vSprint("_ASSIGN(p%s->%s)\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
 
@@ -4108,9 +4146,13 @@ void CodeSynth::vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, e
 
       // make the column name
       vMakeColumnNmStruct(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
-
-      if (ePreExp == PE_MIN || ePreExp == PE_MAX)
-        sPush.vSprint("_ASSIGN_IFTRUE(p%s->%s)\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
+      pColumn = m_pStreamDefOut->pGetColumn(i_Col);
+      if (ePreExp == PE_MIN || ePreExp == PE_MAX) {
+        if (pColumn->eColumnType() == CT_VARCHAR)
+          sPush.vSprint("_COPYSTR_IFTRUE(aCombinedT->m_racStrAreaAgg, p%s->%s)\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
+        else
+          sPush.vSprint("_ASSIGN_IFTRUE(p%s->%s)\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
+      }
       else
         sPush.vSprint("_ASSIGN(p%s->%s)\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
 
@@ -4136,9 +4178,13 @@ void CodeSynth::vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, e
 
       // make the column name
       vMakeColumnNm(m_pStreamDefOut, sColNm, m_eStencilTo, i_Col);
-
-      if (ePreExp == PE_MIN || ePreExp == PE_MAX)
-        sPush.vSprint("_ASSIGN_IFTRUE(aCombinedT->m_aiPayload[%lld])\n"_Stz, i_Col);
+      pColumn = m_pStreamDefOut->pGetColumn(i_Col);
+      if (ePreExp == PE_MIN || ePreExp == PE_MAX) {
+        if (pColumn->eColumnType() == CT_VARCHAR)
+          sPush.vSprint("_COPYSTR_IFTRUE(aCombinedT->m_aiPayload[%lld])\n"_Stz, i_Col);
+        else
+          sPush.vSprint("_ASSIGN_IFTRUE(aCombinedT->m_aiPayload[%lld])\n"_Stz, i_Col);
+      }
       else
         sPush.vSprint("_ASSIGN(aCombinedT->m_aiPayload[%lld])\n"_Stz, i_Col);
 

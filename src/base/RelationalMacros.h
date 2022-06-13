@@ -8,36 +8,36 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #define _ROUND_BCD(eErrorCode)                                       \
   {                                                                  \
-    bcdArg1.m_iAsI8 = *(--paW);                                      \
-    if (bcdArg1.m_iMantissa % 10 >= 5) {                             \
-      bcdArg1.m_iMantissa = (bcdArg1.m_iMantissa / 10) + 1;          \
+    bcdRound.m_iAsI8 = *(--paW);                                     \
+    if (bcdRound.m_iMantissa % 10 >= 5) {                            \
+      bcdRound.m_iMantissa = (bcdRound.m_iMantissa / 10) + 1;        \
     }                                                                \
     else {                                                           \
-      bcdArg1.m_iMantissa = bcdArg1.m_iMantissa / 10;                \
+      bcdRound.m_iMantissa = bcdRound.m_iMantissa / 10;              \
     }                                                                \
-    bcdArg1.m_iScale--;                                              \
-    *paW++ = bcdArg1.m_iAsI8;                                        \
+    bcdRound.m_iScale--;                                             \
+    *paW++ = bcdRound.m_iAsI8;                                       \
   }
 
 // rescale BCD to max scale of the two bcd's
 // CHECK FOR OVERFLOW !!!
 #define _RESCALE_BCD_MAX_OF_TWO(eErrorCode)                           \
   {                                                                   \
-    bcdArg2.m_iAsI8 = *(--paW);                                       \
-    bcdArg1.m_iAsI8 = *(--paW);                                       \
-    iScaleDiff = bcdArg1.m_iScale - bcdArg2.m_iScale;                 \
+    bcdReScale2.m_iAsI8 = *(--paW);                                   \
+    bcdReScale1.m_iAsI8 = *(--paW);                                   \
+    iScaleDiff = bcdReScale1.m_iScale - bcdReScale2.m_iScale;         \
                                                                       \
     if (iScaleDiff > 0) {                                             \
-      bcdArg2.m_iScale = bcdArg1.m_iScale;                            \
-      bcdArg2.m_iMantissa = bcdArg2.m_iMantissa * iaPow10[iScaleDiff];\
-    }                                                                 \
-    else {                                                            \
-      bcdArg1.m_iScale = bcdArg2.m_iScale;                            \
-      bcdArg1.m_iMantissa = bcdArg1.m_iMantissa * iaPow10[-iScaleDiff];\
-    }                                                                 \
-                                                                      \
-    *paW++ = bcdArg1.m_iAsI8;                                         \
-    *paW++ = bcdArg2.m_iAsI8;                                         \
+      bcdReScale2.m_iScale = bcdReScale1.m_iScale;                               \
+      bcdReScale2.m_iMantissa = bcdReScale2.m_iMantissa * iaPow10[iScaleDiff];   \
+    }                                                                            \
+    else {                                                                       \
+      bcdReScale1.m_iScale = bcdReScale2.m_iScale;                               \
+      bcdReScale1.m_iMantissa = bcdReScale1.m_iMantissa * iaPow10[-iScaleDiff];  \
+    }                                                                   \
+                                                                        \
+    *paW++ = bcdReScale1.m_iAsI8;                                       \
+    *paW++ = bcdReScale2.m_iAsI8;                                       \
   }
 
 //Rescale macro assumes we put the larger scaled argument on the stack first, and then the smaller scaled value.
@@ -1163,7 +1163,7 @@
       *paW++ = 0;                                                          \
     }                                                                      \
     else {                                                                 \
-      if (strcmp((char*)iArg1, (char*)iArg2) == 0)                         \
+      if (strcmp((char*)iArg2, (char*)iArg1) == 0)                         \
         *paW++ = 1;                                                        \
       else                                                                 \
         *paW++ = 0;                                                        \
@@ -1180,7 +1180,7 @@
       *paW++ = 0;                                                          \
     }                                                                      \
     else {                                                                 \
-      if (strcmp((char*)iArg1, (char*)iArg2) >= 0)                         \
+      if (strcmp((char*)iArg2, (char*)iArg1) >= 0)                         \
         *paW++ = 1;                                                        \
       else                                                                 \
         *paW++ = 0;                                                        \
@@ -1197,7 +1197,7 @@
       *paW++ = 0;                                                          \
     }                                                                      \
     else {                                                                 \
-      if (strcmp((char*)iArg1, (char*)iArg2) > 0)                         \
+      if (strcmp((char*)iArg2, (char*)iArg1) > 0)                         \
         *paW++ = 1;                                                        \
       else                                                                 \
         *paW++ = 0;                                                        \
@@ -1214,7 +1214,7 @@
       *paW++ = 0;                                                          \
     }                                                                      \
     else {                                                                 \
-      if (strcmp((char*)iArg1, (char*)iArg2) <= 0)                         \
+      if (strcmp((char*)iArg2, (char*)iArg1) <= 0)                         \
         *paW++ = 1;                                                        \
       else                                                                 \
         *paW++ = 0;                                                        \
@@ -1231,7 +1231,7 @@
       *paW++ = 0;                                                          \
     }                                                                      \
     else {                                                                 \
-      if (strcmp((char*)iArg1, (char*)iArg2) < 0)                         \
+      if (strcmp((char*)iArg2, (char*)iArg1) < 0)                          \
         *paW++ = 1;                                                        \
       else                                                                 \
         *paW++ = 0;                                                        \
@@ -1248,7 +1248,7 @@
       *paW++ = 0;                                                          \
     }                                                                      \
     else {                                                                 \
-      if (strcmp((char*)iArg1, (char*)iArg2) != 0)                         \
+      if (strcmp((char*)iArg2, (char*)iArg1) != 0)                         \
         *paW++ = 1;                                                        \
       else                                                                 \
         *paW++ = 0;                                                        \

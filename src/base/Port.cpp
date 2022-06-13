@@ -33,7 +33,7 @@ __aFooterFunction(Port)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Port::Port(Object* pIsFor)
-: Resource(CN_SOCKET,pIsFor)                           // fix: should be CN_PORT
+: Resource(CN_PORT,pIsFor)
 , m_okLock(this)
 {
   _precondition_(_MAGIC_,_FOOTER_);
@@ -67,11 +67,11 @@ Port::Port(Object* pIsFor)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Port::Port(eCN eClass, Object* pIsFor, int iSocketId)
-: Resource(eClass,pIsFor)
+Port::Port(Object* pIsFor, int iSocketId)
+: Resource(CN_SOCKET,pIsFor)
 , m_okLock(this)
 {
-  _precondition_(_MAGIC_,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
   m_pIsFor    = pIsFor;
   m_iSocketFd = iSocketId;
@@ -97,7 +97,7 @@ Port::Port(eCN eClass, Object* pIsFor, int iSocketId)
   
   ++ gixSocket;
   
-  _postcondition_(_MAGIC_,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -129,16 +129,31 @@ void Port::vDump(eCN eClass, Object* pObject, Stz* aTab)
   UNUSED(eClass);
   UNUSED(aTab);
 
-  Port* pSocket = _pPort(pObject);
+  Port* pPort = _pPort(pObject);
 
   vTrace("id %lld %s\n"_Stz,
-         pSocket->m_iSocketFd,
-         pSocket->m_bBlocking ? "blocking"_Stz : "non-blocking"_Stz);
+         pPort->m_iSocketFd,
+         pPort->m_bBlocking ? "blocking"_Stz : "non-blocking"_Stz);
 }
 
-///////////////////////////////////////////////////////////////////////////////
-//                              tcp/ip support                               //
-///////////////////////////////////////////////////////////////////////////////
+/*----------------------------------------------------------------------------*/
+/* repair the port                                                            */
+/*----------------------------------------------------------------------------*/
+void Port::vRepair(Object* pObject)
+{
+  _static_
+
+  SysCall oSysCall;
+  
+  Port* pPort = _pPort(pObject);
+
+  if (pPort->bIsOpen())
+    pPort->bClose(oSysCall);
+  
+  // delete the rowOnce
+  delete pPort;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -147,11 +162,11 @@ void Port::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* accept a socket connection request from a client                           */
 /*----------------------------------------------------------------------------*/
-bool Port::bAcceptClient(int& iSocketId, SysCall& SysCall)
+bool Port::bAcceptClient(int& iSocketId, SysCall& roSysCall)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  SysCall.vClear();
+  roSysCall.vClear();
   
   sockaddr_in xClientAddr;
   
@@ -166,13 +181,13 @@ bool Port::bAcceptClient(int& iSocketId, SysCall& SysCall)
                          ,&iSize
                          );
   if (C_UNKNOWN == iSocketId) {
-    SysCall.vError(errno);
+    roSysCall.vError(errno);
     return false;
   }
   
   if (AM::bAttached()) AM::pResources()->vIncSocketOpen();
   
-  SysCall.vSuccess();
+  roSysCall.vSuccess();
   return true;
 }
 
@@ -227,16 +242,16 @@ i8 Port::nBytesSent(void)
 /*----------------------------------------------------------------------------*/
 /* close a socket connection (server or client)                               */
 /*----------------------------------------------------------------------------*/
-bool Port::bClose(SysCall& SysCall)
+bool Port::bClose(SysCall& roSysCall)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  SysCall.vClear();
+  roSysCall.vClear();
   
   int iError = shutdown(m_iSocketFd, SHUT_RDWR);
   
   if (iError && ENOTCONN != errno) {
-    SysCall.vError(errno);
+    roSysCall.vError(errno);
     return false;
   }
 
@@ -246,7 +261,7 @@ bool Port::bClose(SysCall& SysCall)
   
   iError = close(m_iSocketFd);
   if (iError) {
-    SysCall.vError(errno);
+    roSysCall.vError(errno);
     return false;
   }
   
@@ -254,27 +269,27 @@ bool Port::bClose(SysCall& SysCall)
   
   if (AM::bAttached()) AM::pResources()->vDecSocketOpen();
   
-  SysCall.vSuccess();
+  roSysCall.vSuccess();
   return true;
 }
 
 /*----------------------------------------------------------------------------*/
 /* connect this client with nominated server                                  */
 /*----------------------------------------------------------------------------*/
-bool Port::bConnectServer(Stz* sAddr, int iPort, SysCall& SysCall)
+bool Port::bConnectServer(Stz* sAddr, int iPort, SysCall& roSysCall)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
   int iResult;
   int iOpt = 1;
   
-  SysCall.vClear();
+  roSysCall.vClear();
   
   if (C_UNKNOWN == m_iSocketFd) {
     m_iSocketFd = socket(AF_INET,SOCK_STREAM,0);
 
     if (m_iSocketFd < 0) {
-      SysCall.vError(errno);
+      roSysCall.vError(errno);
       return false;
     }
     
@@ -285,8 +300,8 @@ bool Port::bConnectServer(Stz* sAddr, int iPort, SysCall& SysCall)
                          ,sizeof(iOpt)
                          );
     if (C_UNKNOWN == iResult) {
-      SysCall.vError(errno);
-      bClose(SysCall);
+      roSysCall.vError(errno);
+      bClose(roSysCall);
       return false;
     }
   }
@@ -316,7 +331,7 @@ bool Port::bConnectServer(Stz* sAddr, int iPort, SysCall& SysCall)
   iResult = connect(m_iSocketFd,(struct sockaddr*)pAddrInfo->ai_addr,sizeof(struct sockaddr));
   
   if (iResult != 0) {
-    SysCall.vError(errno);
+    roSysCall.vError(errno);
     close(m_iSocketFd);
     m_iSocketFd = C_UNKNOWN;
     return false;
@@ -324,7 +339,7 @@ bool Port::bConnectServer(Stz* sAddr, int iPort, SysCall& SysCall)
   
   if (AM::bAttached()) AM::pResources()->vIncSocketOpen();
   
-  SysCall.vSuccess();
+  roSysCall.vSuccess();
   return true;
 }
 
@@ -341,9 +356,30 @@ void Port::vCopy(Port* pSource)
 
 
 /*----------------------------------------------------------------------------*/
-/* create a listening server socket on this server                            */
+/* create a UDP socket endpoint                                               */
 /*----------------------------------------------------------------------------*/
-bool Port::bCreateServer(int iPortNo, SysCall& SysCall)
+bool Port::bCreateFdForSocket(SysCall& roSysCall)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  roSysCall.vClear();
+  
+  //m_iSocketFd = socket(AF_INET,SOCK_DGRAM,IPPROTO_UDP);
+  m_iSocketFd = socket(AF_INET,SOCK_STREAM,0);
+
+  if (m_iSocketFd < 0) {
+    roSysCall.vError(errno);
+    return false;
+  }
+  
+  roSysCall.vSuccess();
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* create a listening socket/port on this server                              */
+/*----------------------------------------------------------------------------*/
+bool Port::bCreateListeningPort(int i4PortNo, SysCall& roSysCall)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -352,7 +388,7 @@ bool Port::bCreateServer(int iPortNo, SysCall& SysCall)
   int iBacklogOf4 = 4;
   sockaddr_in xThisServerAddr;
   
-  SysCall.vClear();
+  roSysCall.vClear();
   
   /*
     refer: $ man 2 listen
@@ -375,7 +411,7 @@ bool Port::bCreateServer(int iPortNo, SysCall& SysCall)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 1) initialize the server sockaddr_in structure
   
-  vAddrInit(&xThisServerAddr,iPortNo);
+  vAddrInit(&xThisServerAddr,i4PortNo);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a socket end-point
@@ -386,7 +422,7 @@ bool Port::bCreateServer(int iPortNo, SysCall& SysCall)
                       );
   
   if (C_UNKNOWN == m_iSocketFd) {
-    SysCall.vError(errno);
+    roSysCall.vError(errno);
     return false;
   }
   
@@ -406,7 +442,7 @@ bool Port::bCreateServer(int iPortNo, SysCall& SysCall)
                        );
 
   if (C_UNKNOWN == iResult) {
-    SysCall.vError(errno);
+    roSysCall.vError(errno);
     return false;
   }
 
@@ -421,7 +457,7 @@ bool Port::bCreateServer(int iPortNo, SysCall& SysCall)
                  );
 
   if (iResult != 0) {
-    SysCall.vError(errno);
+    roSysCall.vError(errno);
     return false;
   }
 
@@ -433,7 +469,7 @@ bool Port::bCreateServer(int iPortNo, SysCall& SysCall)
                    );
   
   if (iResult != 0) {
-    SysCall.vError(errno);
+    roSysCall.vError(errno);
     return false;
   }
   
@@ -445,7 +481,7 @@ bool Port::bCreateServer(int iPortNo, SysCall& SysCall)
   
   if (AM::bAttached()) AM::pResources()->vIncSocketOpen();
   
-  SysCall.vSuccess();
+  roSysCall.vSuccess();
   return true;
 }
 
@@ -485,14 +521,14 @@ bool Port::bIsOpen(void)
 /*----------------------------------------------------------------------------*/
 /* set receive buffer size                                                    */
 /*----------------------------------------------------------------------------*/
-bool Port::bRecvBufferSize(int nBytes, SysCall& SysCall)
+bool Port::bRecvBufferSize(int nBytes, SysCall& roSysCall)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
   int iResult;
   int iOpt = nBytes;
   
-  SysCall.vClear();
+  roSysCall.vClear();
   
   iResult = setsockopt(m_iSocketFd
                        ,SOL_SOCKET
@@ -502,11 +538,11 @@ bool Port::bRecvBufferSize(int nBytes, SysCall& SysCall)
                        );
   
   if (C_UNKNOWN == iResult) {
-    SysCall.vError(errno);
+    roSysCall.vError(errno);
     return false;
   }
   
-  SysCall.vSuccess();
+  roSysCall.vSuccess();
   return true;
 }
 
@@ -558,14 +594,14 @@ void Port::vReset(void)
 /*----------------------------------------------------------------------------*/
 /* set send buffer size                                                       */
 /*----------------------------------------------------------------------------*/
-bool Port::bSendBufferSize(int nBytes, SysCall& SysCall)
+bool Port::bSendBufferSize(int nBytes, SysCall& roSysCall)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
   int iResult;
   int iOpt = nBytes;
   
-  SysCall.vClear();
+  roSysCall.vClear();
   
   iResult = setsockopt(m_iSocketFd
                        ,SOL_SOCKET
@@ -575,11 +611,11 @@ bool Port::bSendBufferSize(int nBytes, SysCall& SysCall)
                        );
   
   if (C_UNKNOWN == iResult) {
-    SysCall.vError(errno);
+    roSysCall.vError(errno);
     return false;
   }
   
-  SysCall.vSuccess();
+  roSysCall.vSuccess();
   return true;
 }
 
@@ -617,16 +653,16 @@ i8 Port::nSends(void)
 /*----------------------------------------------------------------------------*/
 /* set socket to be non-blocking                                              */
 /*----------------------------------------------------------------------------*/
-bool Port::bSetNonBlocking(SysCall& SysCall)
+bool Port::bSetNonBlocking(SysCall& roSysCall)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  SysCall.vClear();
+  roSysCall.vClear();
   
   // get current socket flags
   int iFlags = fcntl(m_iSocketFd,F_GETFL,0);
   if (C_UNKNOWN == iFlags) {
-    SysCall.vError(errno);
+    roSysCall.vError(errno);
     return false;
 
   }
@@ -634,7 +670,7 @@ bool Port::bSetNonBlocking(SysCall& SysCall)
   // set non-blocking
   int iResult = fcntl(m_iSocketFd,F_SETFL,iFlags | O_NONBLOCK);
   if (C_UNKNOWN == iResult) {
-    SysCall.vError(errno);
+    roSysCall.vError(errno);
     return false;
 
   }
@@ -642,28 +678,7 @@ bool Port::bSetNonBlocking(SysCall& SysCall)
   // record socket as non-blocking
   m_bBlocking = true;                                                  //! fix
   
-  SysCall.vSuccess();
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* create a UDP socket                                                        */
-/*----------------------------------------------------------------------------*/
-bool Port::bSocket(SysCall& SysCall)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  SysCall.vClear();
-  
-  //m_iSocketFd = socket(AF_INET,SOCK_DGRAM,IPPROTO_UDP);
-  m_iSocketFd = socket(AF_INET,SOCK_STREAM,0);
-
-  if (m_iSocketFd < 0) {
-    SysCall.vError(errno);
-    return false;
-  }
-  
-  SysCall.vSuccess();
+  roSysCall.vSuccess();
   return true;
 }
 
@@ -691,13 +706,13 @@ void Port::vSuccess(bool bSuccess)
 /*----------------------------------------------------------------------------*/
 /* test if there is data available?                                           */
 /*----------------------------------------------------------------------------*/
-bool Port::bTestForData(SysCall& SysCall)
+bool Port::bTestForData(SysCall& roSysCall)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
   ASSERT(m_bBlocking); // logic check                                  //! fix
   
-  SysCall.vClear();
+  roSysCall.vClear();
   
   char cc;
   
@@ -712,13 +727,13 @@ bool Port::bTestForData(SysCall& SysCall)
   }
   
   if (C_UNKNOWN == nRecv) {
-    SysCall.vError(errno);
+    roSysCall.vError(errno);
     return false;
   }
   
   //! what should nRecv be at this point?
   
-  SysCall.vSuccess();
+  roSysCall.vSuccess();
   return true;
 }
 
@@ -751,7 +766,7 @@ Totup* Port::pWhyTot(void)
 /*----------------------------------------------------------------------------*/
 /* recv n bytes from this socket into given buffer                            */
 /*----------------------------------------------------------------------------*/
-bool Port::bBytesRecv(void* aBytes, i8 nBytes, SysCall& SysCall)
+bool Port::bBytesRecv(void* aBytes, i8 nBytes, SysCall& roSysCall)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -759,7 +774,7 @@ bool Port::bBytesRecv(void* aBytes, i8 nBytes, SysCall& SysCall)
   i8 nMore = nBytes;
   char* pSoFar = (char*)aBytes;
   
-  SysCall.vClear();
+  roSysCall.vClear();
   
   if (nBytes == 0) {
     vTrace("bRecvBytes() asked to recv 0 bytes\n"_Stz);
@@ -777,14 +792,14 @@ bool Port::bBytesRecv(void* aBytes, i8 nBytes, SysCall& SysCall)
     i8 nRecvBytes = recv(m_iSocketFd,pSoFar,nMore,0);
     
     if (C_UNKNOWN == nRecvBytes) {
-      SysCall.vError(errno);
+      roSysCall.vError(errno);
       //vTrace("ERROR1: %lld\n"_Stz, errno);
       return false;
     }
     
     if (0 == nRecvBytes) {
       vTrace("Received 0 bytes; errno %lld\n"_Stz, errno);
-      SysCall.vError(errno); // don't die after this, node can come and goes
+      roSysCall.vError(errno); // don't die after this, node can come and goes
       //vTrace("ERROR2: %lld\n"_Stz, errno);
       return false;
     }
@@ -802,18 +817,18 @@ bool Port::bBytesRecv(void* aBytes, i8 nBytes, SysCall& SysCall)
   m_nRecvs++;
   m_nBytesRcvd += nBytes;
 
-  SysCall.vSuccess();
+  roSysCall.vSuccess();
   return true;
 }
 
 /*----------------------------------------------------------------------------*/
 /* send n bytes via this socket                                               */
 /*----------------------------------------------------------------------------*/
-bool Port::bBytesSend(void* aBytes, i8 nBytes, SysCall& SysCall)
+bool Port::bBytesSend(void* aBytes, i8 nBytes, SysCall& roSysCall)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  SysCall.vClear();
+  roSysCall.vClear();
   
   if (nBytes == 0) {
     vTrace("sendto() sending 0 bytes\n"_Stz);
@@ -834,13 +849,13 @@ bool Port::bBytesSend(void* aBytes, i8 nBytes, SysCall& SysCall)
   
   if (C_UNKNOWN == nSentBytes)
   {
-    SysCall.vError(errno);
+    roSysCall.vError(errno);
     return false;
   }
   
   if (0 == nSentBytes)
   {
-    SysCall.vError(errno);
+    roSysCall.vError(errno);
     return false;
   }
 
@@ -854,14 +869,14 @@ bool Port::bBytesSend(void* aBytes, i8 nBytes, SysCall& SysCall)
       ,nSentBytes
       ,nBytes
       );
-    SysCall.vError(errno);
+    roSysCall.vError(errno);
     return false;
   }
   
   m_nSends++;
   m_nBytesSent += nBytes;
 
-  SysCall.vSuccess();
+  roSysCall.vSuccess();
   return true;
 }
 

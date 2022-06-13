@@ -937,6 +937,18 @@ void AM::MASTERLOCK::vGrabTraceMulti(void)
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /*----------------------------------------------------------------------------*/
+/* are we allowed to allocate memory?                                         */
+/*----------------------------------------------------------------------------*/
+void AM::MEMORY::vAssertAllocate(void)
+{
+  _static_
+
+  RASSERT(MY::pJob()->bAllocateMemory());
+  RASSERT(MY::pOp()->bAllocateMemory());
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* is memory running low?                                                     */
 /*----------------------------------------------------------------------------*/
 bool AM::MEMORY::bIsRunningLow(void)
@@ -1021,6 +1033,17 @@ i8 AM::NODE::iThisNodeId(void)
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                 OBJECT                                     */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* get next object number                                                     */
+/*----------------------------------------------------------------------------*/
+void AM::OBJECT::vAssertClassSize(eCN eClassNo, i8 nClassSize)
+{
+  _static_
+  
+  RASSERT(eClassNo == gxaSizeHeap[eClassNo].m_eClassType);
+  RASSERT(nClassSize == gxaSizeHeap[eClassNo].m_nClassSize);
+}
 
 /*----------------------------------------------------------------------------*/
 /* get next object number                                                     */

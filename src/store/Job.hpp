@@ -52,10 +52,10 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     /* 05 */ b8      m_bReapable;      // can job be reaped?
     /* 06 */ Op*     m_p_ResponseOp;   // operator to where responses go
     /* 07 */ Timer   m_oResponseTimer; // timer (on origin only)
-    /* 08 */ StmtList* m_pStmtList;    // list of cascade statements
-    /* 09 */ Task*   m_pTask;          // task executing this job
-    /* 10 */ b8      m_bWasReceived;   // was job received over a socket?
-    /* 11 */ MarkerChain* m_pMarkerChain; // chain of free markers
+    /* 08 */ Task*   m_pTask;          // task executing this job
+    /* 09 */ b8      m_bWasReceived;   // was job received over a socket?
+    /* 10 */ MarkerChain* m_pMarkerChain; // chain of free markers
+    /* 11 */ b8      m_bAllocate;      // can job ask for memory?
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
 
@@ -93,6 +93,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     i8   nActiveOps(void);
     void vActiveOpsDec(void);
     void vActiveOpsInc(void);
+    bool bAllocateMemory(void);
 
     void vCascadeReset(void);
     eEC eChildError(void);
@@ -116,9 +117,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vFreeMarker(Marker* pMarker);
 
     void vGrabLock(void);
-  
-    bool bHasByPromptTag(void);
-    bool bHasStmtList(void);
+
     bool bHasTag(Stz* szTagNm);
   
     bool bIsInError(void);
@@ -156,14 +155,10 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     Marker* pNewMarker(eOM eOpMarker);
     void vNewMarkerChain(void);
 
-    Output* pOutput(void);
-    void vOutput(Output* pOutput);
     void vOutputBeginProc(void);
     void vOutputCreate(void);
     void vOutputDestroy(void);
     void vOutputEnabled(bool bEnabled);
-    void vOutputEndProc(void);
-    Output* pOutputFind(void);
     JobId tOriginId(void);
     void vOriginId(JobId tOriginId);
     Job* pOriginJob(void);
@@ -174,8 +169,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vParentId(JobId tParentId);
     Job* pParentJob(void);
     Pipeline* pPipeline(void);
-    void vPipeout(Operand* pOperand);
-    void vPipeoutExit(void);
+    void vPipeoutResponse(Operand* pOperand);
     void vPrintJobContents(void);
     void vPrintJobLine(void);
     void vPostRecv(void);
@@ -194,10 +188,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vResponseTimerStart(void);
     void vResponseTimerUpdate(void);
 
-    void vStmtListAppend(Stz* szCascade);
-    void vStmtListCreate(void);
-    void vStmtListDestroy(void);
-    void vStmtListPop(String* pString);
+    void vSetAllocate(bool bAlloc);
     bool bSystemCloser(void);
     void vSystemCloser(bool bSystemCloser);
 

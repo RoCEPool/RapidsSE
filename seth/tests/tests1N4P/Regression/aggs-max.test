@@ -77,11 +77,9 @@ rows:
 
 // Source file: ../queries/aggs/max/rmax20.sql
 // Result file: ../queries/aggs/max/results/max20.res
-/* TODO: FIX
 select max(ucolvc), max(colb1) from table1;
 rows:
   ('zzz', 'yellow')
-*/
 
 // Source file: ../queries/aggs/max/rmax17.sql
 // Result file: ../queries/aggs/max/results/max17.res
@@ -187,10 +185,10 @@ ordered rows:
   ('YELLOW', 480)
 */
 
-// TODO: TO FIX
+//TODO: FIX
 /*
-select colb1, max(cola1) from table1 group by colb1 order by colb1;
-ordered rows:
+select colb1, max(cola1) from table1 group by colb1;
+unordered rows:
   ('AQUA', 74)
   ('BLACK', 485)
   ('BLUE', 353)
@@ -210,10 +208,12 @@ ordered rows:
   ('VIOLET', 295)
   ('WHITE', 411)
   ('YELLOW', 480)
-
+*/
 
 // Source file: ../queries/aggs/max/rmax19.sql
 // Result file: ../queries/aggs/max/results/max19.res
+//TODO: FIX WHEN OPTIMIZER(SORT)
+/*
 select max(colb1), ucolvc from table1 where ucolvc < 'ggg' group by ucolvc order by ucolvc;
 ordered rows:
   ('orange', 'aaa')
@@ -223,6 +223,20 @@ ordered rows:
   ('tan', 'eee')
   ('violet', 'fff')
 */
+
+// Source file: ../queries/aggs/max/rmax19.sql
+// Result file: ../queries/aggs/max/results/max19.res
+//TODO: FIX
+/*
+select max(colb1), ucolvc from table1 where ucolvc < 'ggg' group by ucolvc;
+ordered rows:
+  ('orange', 'aaa')
+  ('orange', 'bbb')
+  ('indigo', 'ccc')
+  ('violet', 'ddd')
+  ('tan', 'eee')
+  ('violet', 'fff')
+  */
 
 // Source file: ../queries/aggs/max/rmax12.sql
 // Result file: ../queries/aggs/max/results/max12.res

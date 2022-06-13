@@ -387,6 +387,7 @@ namespace OBLIQUE
     class MEMORY
     {
     public:
+      static void vAssertAllocate(void);
       static bool bIsRunningLow(void);
     };
   
@@ -412,6 +413,7 @@ namespace OBLIQUE
     class OBJECT
     {
     public:
+      static void vAssertClassSize(eCN eClassNo, i8 nClassSize);
       static i8 iNextNo(eCN eClassNo);
       static eEC eValidObject(Object* pObject);
     };

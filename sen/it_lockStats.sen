@@ -26,7 +26,7 @@
     WritePercent   INTEGER        NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::forkChildBoot   api:executeCheck
+  api::forkChild  api:executeCheck
 
 ;
 

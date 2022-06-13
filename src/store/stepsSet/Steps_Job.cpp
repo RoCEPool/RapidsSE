@@ -44,9 +44,11 @@ void Step::vAddSteps_Job(void)
   vAddStep("[job].assertReceived"_Stz,   &Step::vJobAssertReceived);
   vAddStep("[job].assertStructure"_Stz,  &Step::vJobAssertStructure);
 
+  vAddStep("[job].disableAllocate"_Stz,  &Step::vJobDisableAllocate);
   vAddStep("[job].distId@"_Stz,          &Step::vJobDistIdFetch);
   vAddStep("[job].distIdGenerate"_Stz,   &Step::vJobDistIdGenerate);
- 
+
+  vAddStep("[job].enableAllocate"_Stz,   &Step::vJobEnableAllocate);
   vAddStep("[job].entryPoint@"_Stz,      &Step::vJobEntryPointFetch);
   vAddStep("[job].entryPoint!"_Stz,      &Step::vJobEntryPointStore);
 
@@ -408,6 +410,18 @@ void Step::vJobAssertStructure(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* [job].disableAllocate -- disable memory allocation for the job             */
+/*----------------------------------------------------------------------------*/
+void Step::vJobDisableAllocate(void)
+{
+  ENTRY();
+
+  m_pJob->vSetAllocate(false);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* [job].distId@ -- fetch the distributed id of the job                       */
 /*----------------------------------------------------------------------------*/
 void Step::vJobDistIdFetch(void)
@@ -429,6 +443,18 @@ void Step::vJobDistIdGenerate(void)
   //m_pJob->vDistId(m_pJob->tParentId());
   m_pJob->vDistIdGenerate();
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [job].enableAllocate -- enable memory allocation for the job               */
+/*----------------------------------------------------------------------------*/
+void Step::vJobEnableAllocate(void)
+{
+  ENTRY();
+
+  m_pJob->vSetAllocate(true);
+
   EXIT();
 }
 
@@ -910,7 +936,8 @@ void Step::vJobSignalParent(void)
   eEC eErrorCode = (eEC)m_pDataStack->iPopInt(__func__);
 
   eJL eJobList = pJob->eJobList();
-  RASSERT(JL_NONE == eJobList || JL_RETIRED == eJobList)
+
+  RASSERT(JL_NONE == eJobList || JL_RETIRED == eJobList || JL_DEMON == eJobList)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the error as childError in parent
