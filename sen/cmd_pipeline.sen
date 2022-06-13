@@ -351,10 +351,10 @@
 /* org_ org */      then
 /* org_ org */
 /* org_ ovr */      [job].error@ [job].signalParent
-/* org_ ovr */     else
-/* org_ ovr */       true [job].reapable!
+/* org_ ovr */     //else
+/* org_ ovr */     //  true [job].reapable!
 /* org_ ovr */    then
-/* org_ ovr */
+/* org_ ovr */    true [job].reapable!
 /* org_ ovr */    //[args].distJob if
 /* org_ ovr */    //  "pipeline" "origin"
 /* org_ ovr */    //    "org_ ovr" "signalled..."                  [job].trace

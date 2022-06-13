@@ -276,7 +276,6 @@ Operand* Output::pPopBufferQueue_blocking(void)
   for (;;) {
     
     Operand* pOperand = _pOperand(m_pOutputQueue->pPop());
-    
     if (pOperand)
       return pOperand;
     
@@ -459,7 +458,6 @@ bool Output::bProcessOperand(Operand* pOperand)
     // -- -- -- -- -- --
 
     case CN_STREAMDEF: {
-      //vTrace("Pipeline Job: STREAMMARKER\n"_Stz);
       if ( ! m_pStreamDef_result ) {
         m_pStreamDef_result = _pStreamDef(pOperand);
         

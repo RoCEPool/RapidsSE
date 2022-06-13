@@ -134,6 +134,8 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
   rpChildJob_tbr = new Job(szJobNm,tParentId,tOriginId,tDistId);
   bIsPipeline = rpChildJob_tbr->bIsPipeline();
 
+  //vTrace("FORKING CHILD: %p\n"_Stz, rpChildJob_tbr);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy CmdTagSet to the child job tags
 
@@ -215,6 +217,9 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
 
   // return the jobId
   rtChildJobId = rpChildJob_tbr->tJobId();
+
+  // mark new child job as reapable
+  //Api::vReapableJob(rpChildJob_tbr);
 
   return EC_NONE;
 }

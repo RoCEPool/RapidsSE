@@ -167,6 +167,7 @@ void SeDeputy::vDeputyLoop(void)
 
     bool bIsPipeline;
     bool bIsBackground;
+
     m_eError = Api::eForkJobChild(tChildJobId,
                              pInpTknVec,pInpTagSet,
                              tParentId,tOriginId,tDistId,
@@ -190,9 +191,10 @@ void SeDeputy::vDeputyLoop(void)
     if (bIsPipeline)
       m_pRootJob->vProcessOutput();
 
-    vReportTime();
+    //vReportTime();
 
     m_pRootJob->vResetOutput();
+    m_pRootJob->vCleanupOutput();
 
     if (! bIsBackground) {
       m_pSePrompt->vMutexLock(this);
@@ -205,7 +207,8 @@ void SeDeputy::vDeputyLoop(void)
 //    m_bSystemCloser = m_pJob->bSystemCloser();
     
 
-    Api::vReapableJob(m_pJob);
+    //Api::vReapableJob(m_pJob);
+    m_pJob = nullptr;
   }
   
   m_bTerminated = true;
