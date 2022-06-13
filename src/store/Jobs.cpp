@@ -232,7 +232,17 @@ bool Jobs::bReapJob(void)
   // cycle the task lock to ensure task has fully entered next state (retired)
   RASSERT(pReapableJob->pTask());
   pReapableJob->pTask()->vCycleTaskLock((Stz*)__func__);
+/*
+  vTrace("reaping retired job %p %lld "
+         "%s "
+         "%s "
+         "\n"_Stz
 
+      ,pReapableJob,pReapableJob->tJobId().uJobNo()
+      ,pReapableJob->szJobNm()
+      ,pReapableJob->bReapable() ? "reapable" : "not-reapable"
+  );
+*/
   // delete the reapable job
   delete pReapableJob;
 
