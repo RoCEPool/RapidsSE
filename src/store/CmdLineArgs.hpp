@@ -39,6 +39,7 @@ namespace STORE
     void vInit(void);
     bool bParse(i8 argc, s256 szaArgv[]);
     void vPrint(void);
+    void vPrintErrorMarker(s256* argv, i8 i_Arg);
     void vPrintStartupInfo(void);
     void vPrintHelp(void);
     void vSanityCheck(void);

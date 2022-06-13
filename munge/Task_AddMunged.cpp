@@ -34391,8 +34391,6 @@ void Task::vAddMunged(Task* )
     "\n"
     "  Deck[] assert\n"
     "  \n"
-    "  [task].isLocked? not assert\n"
-    "  \n"
     "  Deck[].opsExeOnNode@ locals| nAcks |\n"
     "\n"
     "  [task].grabLock\n"
