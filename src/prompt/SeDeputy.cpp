@@ -170,21 +170,14 @@ void SeDeputy::vDeputyLoop(void)
       m_pSePrompt->vMutexSignalAndUnlock(this);
 
       // if command was invalid we may not have a job
-      if (m_pJob)
-        Api::vReapableJob(m_pJob);
+//      if (m_pJob)
+//        Api::vReapableJob(m_pJob);
       continue;
     }
 
-    // check if job is inError
-    if (m_pJob->bIsInError()) {
-      vTrace("error: (node%lld) %s\n"_Stz, AM::NODE::iThisNodeId(),
-             aEC[m_pJob->eJobError()]);
-    }
-    else {
-      // process the output bufferQueue
-      if (m_pJob->bIsPipeline())
-        m_pJob->vProcessOutput();
-    }
+    // process the output bufferQueue
+    if (m_pJob->bIsPipeline())
+      m_pJob->vProcessOutput();
 
     vReportTime();
       

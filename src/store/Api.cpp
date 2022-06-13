@@ -197,7 +197,8 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
   eEC eChildError = rpParentJob_tbr->eChildError();
 
   if (eChildError != EC_NONE) {
-    rpChildJob_tbr->vJobError(eChildError);
+    //rpChildJob_tbr->vJobError(eChildError);
+    Api::vReapableJob(rpChildJob_tbr);
     return eChildError;
   }
 
