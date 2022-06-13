@@ -56,7 +56,7 @@ SeDeputy::SeDeputy(i8 i_Deputy, SePrompt* pSePrompt)
   m_bAvailable    = false;
   m_bContinue     = true;
   m_bTerminated   = false;
-  m_bSystemCloser = false;
+  //m_bSystemCloser = false;
 
   m_pRootJob = nullptr;
   m_pJob     = nullptr;
@@ -64,7 +64,7 @@ SeDeputy::SeDeputy(i8 i_Deputy, SePrompt* pSePrompt)
 
   _checkInitialised_(CN_SEDEPUTY);
   
-  m_sFolderPath = C_SE_PATH;
+  //m_sFolderPath = C_SE_PATH;
   
   JobId tParentId;
   RASSERT(tParentId.bIsUnknown());
@@ -76,6 +76,8 @@ SeDeputy::SeDeputy(i8 i_Deputy, SePrompt* pSePrompt)
   RASSERT(tDistId.bIsUnknown());
 
   m_pRootJob = Api::pNewRootJob("SeDeputy"_Stz,tParentId,tOriginId,tDistId);
+  m_pRootJob->vFolderPath(C_SE_PATH);
+  m_pRootJob->vSystemCloser(false);
   m_pRootJob->vOutputCreate();
   m_pRootJob->vOutputBeginProc();
   m_pRootJob->vOutputEnabled(true);
@@ -143,9 +145,14 @@ void SeDeputy::vDeputyLoop(void)
     
     pInpTagSet->vReplace(C_TAG_WAIT,1);
     pInpTagSet->vReplace(C_TAG_SIGNALPARENT,1);
-    pInpTagSet->vReplace(C_TAG_PATH,m_sFolderPath);
-    pInpTagSet->vReplace(C_TAG_LASTJOBID,m_tLastJobId.iAsI8());
-    pInpTagSet->vReplace(C_TAG_SYSTEMCLOSER,m_bSystemCloser);
+
+//    pInpTagSet->vReplace(C_TAG_PATH,m_sFolderPath);
+//    pInpTagSet->vReplace(C_TAG_LASTJOBID,m_tLastJobId.iAsI8());
+//    pInpTagSet->vReplace(C_TAG_SYSTEMCLOSER,m_bSystemCloser);
+
+    pInpTagSet->vReplace(C_TAG_PATH,m_pRootJob->szFolderPath());
+    pInpTagSet->vReplace(C_TAG_LASTJOBID,m_pRootJob->tLastJobId().iAsI8());
+    pInpTagSet->vReplace(C_TAG_SYSTEMCLOSER,m_pRootJob->bSystemCloser());
 
     JobId tChildJobId;
     
@@ -159,13 +166,14 @@ void SeDeputy::vDeputyLoop(void)
     tDistId = m_pRootJob->tDistId();
 
     bool bIsPipeline;
-
+    bool bIsBackground;
     m_eError = Api::eForkJobChild(tChildJobId,
                              pInpTknVec,pInpTagSet,
                              tParentId,tOriginId,tDistId,
                              m_pRootJob, // TO BE REMOVED
                              m_pJob,      // TO BE REMOVED
-                             bIsPipeline
+                             bIsPipeline,
+                             bIsBackground
                              );
     
     if (EC_NONE != m_eError) {
@@ -186,15 +194,15 @@ void SeDeputy::vDeputyLoop(void)
 
     m_pRootJob->vResetOutput();
 
-    if (! m_pJob->bHasTag(C_TAG_BG)) {
+    if (! bIsBackground) {
       m_pSePrompt->vMutexLock(this);
       m_pSePrompt->vMutexSignalAndUnlock(this);
     }
     
     // NEEDS CORRECTION
-    m_sFolderPath   = m_pJob->szFolderPath();
-    m_tLastJobId    = m_pJob->tLastJobId();
-    m_bSystemCloser = m_pJob->bSystemCloser();
+//    m_sFolderPath   = m_pJob->szFolderPath();
+//    m_tLastJobId    = m_pJob->tLastJobId();
+//    m_bSystemCloser = m_pJob->bSystemCloser();
     
 
     Api::vReapableJob(m_pJob);
@@ -267,7 +275,7 @@ JobId SeDeputy::tLastJobId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
 
-  return m_tLastJobId;
+  return m_pRootJob->tLastJobId();;
 }
 
 /*----------------------------------------------------------------------------*/

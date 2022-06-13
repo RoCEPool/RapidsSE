@@ -22,7 +22,8 @@ namespace STORE
                            JobId tParentId, JobId tOriginId, JobId tDistId,
                            Job*& rpParentJob_tbr,
                            Job*& rpChildJob_tbr,
-                           bool& bIsPipeline);
+                           bool& bIsPipeline,
+                           bool& bIsBackground);
 
   static eEC  eForkJobOld(JobId& rtChildJobId,
                             TokenVec* pCmdTknVec, TagSet* pCmdTagSet,

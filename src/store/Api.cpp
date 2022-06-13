@@ -56,7 +56,8 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
                         JobId tParentId, JobId tOriginId, JobId tDistId,
                         Job*& rpParentJob_tbr,
                         Job*& rpChildJob_tbr,
-                        bool& bIsPipeline)
+                        bool& bIsPipeline,
+                        bool& bIsBackground)
 {
   _static_
 
@@ -139,6 +140,8 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
   TagSet* pJobTagSet = rpChildJob_tbr->pJobTags();
   pJobTagSet->vCopy(pCmdTagSet);
 
+  bIsBackground = rpChildJob_tbr->bHasTag(C_TAG_BG);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // setup the child job
 
@@ -204,6 +207,11 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
     Api::vReapableJob(rpChildJob_tbr);
     return eChildError;
   }
+
+  // set some tags in the parent for future child jobs
+  rpParentJob_tbr->vFolderPath(rpChildJob_tbr->szFolderPath());
+  rpParentJob_tbr->vLastJobId(rpChildJob_tbr->tLastJobId());
+  rpParentJob_tbr->vSystemCloser(rpChildJob_tbr->bSystemCloser());
 
   // return the jobId
   rtChildJobId = rpChildJob_tbr->tJobId();

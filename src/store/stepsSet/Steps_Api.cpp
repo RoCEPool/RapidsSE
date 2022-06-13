@@ -99,12 +99,14 @@ void Step::vApiForkChild(void)
   JobId tChildJobId;
   Job* pChildJob_tbr = nullptr;
   bool bIsPipeline;
+  bool bIsBackground;
   eEC eError = Api::eForkJobChild(tChildJobId,
                                    pCmdTknVec,pCmdTagSet,
                                    tParentId,tOriginId,tDistId,
                                    pOuterJob,    // TO BE REMOVED
                                    pChildJob_tbr, // TO BE REMOVED
-                                   bIsPipeline
+                                   bIsPipeline,
+                                   bIsBackground
   );
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -178,12 +180,14 @@ void Step::vApiForkDemon(void)
   JobId tChildJobId;
   Job* pChildJob_tbr = nullptr;
   bool bIsPipeline;
+  bool bIsBackground;
   eEC eError = Api::eForkJobChild(tChildJobId,
                                   pCmdTknVec,pCmdTagSet,
                                   tParentId,tOriginId,tDistId,
                                   pOuterJob,    // TO BE REMOVED
                                   pChildJob_tbr, // TO BE REMOVED
-                                  bIsPipeline
+                                  bIsPipeline,
+                                  bIsBackground
   );
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
