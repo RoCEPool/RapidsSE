@@ -99,7 +99,7 @@ namespace PROMPT
     bool bDumpTokens(void);
     void vDumpTokens(bool bDumpTokens);
     void vDumpInpTknVec(bool bForce);
-    bool bExamineCommand(void);
+    bool bExamineCommand(eEC* eErrorCode);
     SeDeputy* pFindDeputy(void);
     TokenVec* pInpTknVec(void);
     Input* pInputGet(void);
@@ -118,7 +118,7 @@ namespace PROMPT
     bool bOutputEnabled(void);
     void vOutputEnabled(bool bOutputEnabled);
     void vPrintPrompt(void);
-    bool bPromptFunction(void);
+    bool bPromptFunction(eEC* eErrorCode);
     TagSet* pPmtTagSet(void);
     Stz* szRawInput(void);
     bool bReadCommand(void);
@@ -134,7 +134,7 @@ namespace PROMPT
     bool bShortCut(void);
     ShortCutVec* pShortCutVec(void);
     bool bStdIn(void);
-    bool bTagCommand(void);
+    bool bTagCommand(eEC* eErrorCode);
     Timer* pTimer(void);
     Stz* szToDo(void);
     void vToDo(Stz* szToDo);

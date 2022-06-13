@@ -13,7 +13,7 @@ PromptCatalog gxPromptCatalog;
 /*----------------------------------------------------------------------------*/
 /* find prompt function given command                                         */
 /*----------------------------------------------------------------------------*/
-PromptFun* PromptCatalog::pFindFun(Stz* aCommand1, Stz* aCommand2)
+PromptFun* PromptCatalog::pFindFun(Stz* aCommand1, Stz* aCommand2, eEC* eErrorCode)
 {
   _outsideOfPool_
   
@@ -32,12 +32,17 @@ PromptFun* PromptCatalog::pFindFun(Stz* aCommand1, Stz* aCommand2)
         continue;
     }
     
-    if (m_aaFun[i_Fun]->m_bEnabled)
+    if (m_aaFun[i_Fun]->m_bEnabled) {
+      *eErrorCode = EC_NONE;
       return m_aaFun[i_Fun];
-    else
+    }
+    else {
+      *eErrorCode = EC_DISABLED_STATEMENT;
       return nullptr;
+    }
   }
 
+  *eErrorCode = EC_INVALID_COMMAND;
   return nullptr;
 }
 
