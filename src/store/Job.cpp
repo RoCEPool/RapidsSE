@@ -1118,15 +1118,8 @@ void Job::vProcessOutput(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  Job* pParentJob = this->pParentJob();
-
-  if (pParentJob) {
-    pParentJob->vProcessOutput();
-  }
-  else {
-    RASSERT(m_pOutput);
-    m_pOutput->vProcessBufferQueue();
-  }
+  RASSERT(m_pOutput);
+  m_pOutput->vProcessBufferQueue();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1303,18 +1296,9 @@ void Job::vResetOutput(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  //RASSERT( ! m_p_ResponseOp );
-
-  Job* pParentJob = this->pParentJob();
-
-  if (pParentJob) {
-    pParentJob->vResetOutput();
-  }
-  else {
-    RASSERT(m_pOutput);
-    m_pOutput->m_pOutputQueue->vReset();
-    m_pOutput->vEndProcOneCmd();
-  }
+  RASSERT(m_pOutput);
+  m_pOutput->m_pOutputQueue->vReset();
+  m_pOutput->vEndProcOneCmd();
 }
 
 /*----------------------------------------------------------------------------*/

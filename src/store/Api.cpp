@@ -55,7 +55,8 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
                         TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
                         JobId tParentId, JobId tOriginId, JobId tDistId,
                         Job*& rpParentJob_tbr,
-                        Job*& rpChildJob_tbr)
+                        Job*& rpChildJob_tbr,
+                        bool& bIsPipeline)
 {
   _static_
 
@@ -128,7 +129,9 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
   Stz* szJobNm = pCmdTagSet->szValue(C_TAG_JOBNM);
   RASSERT(szJobNm);
 
+
   rpChildJob_tbr = new Job(szJobNm,tParentId,tOriginId,tDistId);
+  bIsPipeline = rpChildJob_tbr->bIsPipeline();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy CmdTagSet to the child job tags

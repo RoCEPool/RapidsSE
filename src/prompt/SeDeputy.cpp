@@ -158,11 +158,14 @@ void SeDeputy::vDeputyLoop(void)
     JobId tDistId;
     tDistId = m_pRootJob->tDistId();
 
+    bool bIsPipeline;
+
     m_eError = Api::eForkJobChild(tChildJobId,
                              pInpTknVec,pInpTagSet,
                              tParentId,tOriginId,tDistId,
                              m_pRootJob, // TO BE REMOVED
-                             m_pJob      // TO BE REMOVED
+                             m_pJob,      // TO BE REMOVED
+                             bIsPipeline
                              );
     
     if (EC_NONE != m_eError) {
@@ -176,12 +179,12 @@ void SeDeputy::vDeputyLoop(void)
     }
 
     // process the output bufferQueue
-    if (m_pJob->bIsPipeline())
-      m_pJob->vProcessOutput();
+    if (bIsPipeline)
+      m_pRootJob->vProcessOutput();
 
     vReportTime();
-      
-    ApiHelper::vResetResults(m_pJob);
+
+    m_pRootJob->vResetOutput();
 
     if (! m_pJob->bHasTag(C_TAG_BG)) {
       m_pSePrompt->vMutexLock(this);
