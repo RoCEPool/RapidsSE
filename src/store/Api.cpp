@@ -599,7 +599,7 @@ void Api::vCallEngineJob(Stz* szJobNm, Stz* szEntryPt, bool bAddAxioms)
   pEngineTask->vDropTaskLock((Stz*)__func__);
 
   //Api::vReapJobsOnce();
-  gpAttachMap->pJobs()->vReapJobsOnce();
+  //gpAttachMap->pJobs()->vReapJobsOnce();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

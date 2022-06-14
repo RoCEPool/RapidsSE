@@ -2492,7 +2492,7 @@ bool PROMPT::bPrompt_memoryLeaks(SePrompt* pPrompt)
   for (i8 iAttempt = 0; iAttempt < C_ATTEMPTS; iAttempt++) {
     
     //Api::vReapJobsOnce();
-    gpAttachMap->pJobs()->vReapJobsOnce();
+    //gpAttachMap->pJobs()->vReapJobsOnce();
 
     i8 nJobsActive    = AM::JOBS::nJobsActive();
     i8 nJobsThreshold = AM::JOBS::nJobsThreshold();
@@ -2512,7 +2512,7 @@ bool PROMPT::bPrompt_memoryLeaks(SePrompt* pPrompt)
   for (i8 iAttempt = 0; iAttempt < C_ATTEMPTS; iAttempt++) {
 
     //Api::vReapJobsOnce();
-    gpAttachMap->pJobs()->vReapJobsOnce();
+    //gpAttachMap->pJobs()->vReapJobsOnce();
 
     nLeaksDetected = 0;
     pPoolSnapshot_curr->vTakeSnapshot();
@@ -5520,7 +5520,7 @@ bool PROMPT::bPrompt_trackMemory(SePrompt* pPrompt)
   RASSERT(pPrompt);
 
   //Api::vReapJobsOnce();
-  gpAttachMap->pJobs()->vReapJobsOnce();
+  //gpAttachMap->pJobs()->vReapJobsOnce();
 
   pPrompt->vTrackMemory(true);
 
