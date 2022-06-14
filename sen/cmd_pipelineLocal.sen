@@ -68,7 +68,7 @@
     pipelineLocal::termination
 
     // signal the parent
-    [job].error@ [job].signalParent
+    //[job].error@ [job].signalParent
 
     true [job].reapable!
 

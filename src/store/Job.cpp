@@ -108,82 +108,90 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
 Job::~Job(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-  
-  if (AM::JLIST::bFindJob(this))
-    AM::JLIST::vRemoveJob(this);
 
-//  if (bHasTag(C_TAG_LIFE) || JK_GENERIC == m_eJobKind) {
-//
-//    SP_TagSet spTagSet;
-//    vPrint("Job Delete: %s\n"_Stz,spTagSet.sz(&m_oJobTags));
-//    //m_oJobTags.vPrint();
-//  }
-    
-  // -- -- -- -- -- --
-  
-  //! this assert may fail if a job completes before its references
-  //! are completely returned
-  while (nReferences() ||
-         (m_pTask && TS_RETIRED != m_pTask->eState()) ) {
-    vTrace("Napping ... job still has references???\n"_Stz);
-    AM::vNapMsec(10, eGetClassNo());
-  }
+  try {
+    if (AM::JLIST::bFindJob(this))
+      AM::JLIST::vRemoveJob(this);
 
-  //RASSERT(m_bReapable);
-  
-  if (m_pJobMetrics) {
-    while (m_pJobMetrics) {
-      JobMetrics* pJobMetricsNext = m_pJobMetrics->pNext();
-      delete m_pJobMetrics;
-      m_pJobMetrics = pJobMetricsNext;
+    //  if (bHasTag(C_TAG_LIFE) || JK_GENERIC == m_eJobKind) {
+    //
+    //    SP_TagSet spTagSet;
+    //    vPrint("Job Delete: %s\n"_Stz,spTagSet.sz(&m_oJobTags));
+    //    //m_oJobTags.vPrint();
+    //  }
+
+    // -- -- -- -- -- --
+
+    //! this assert may fail if a job completes before its references
+    //! are completely returned
+    while (nReferences() ||
+           (m_pTask && TS_RETIRED != m_pTask->eState())) {
+      vTrace("Napping ... job still has references???\n"_Stz);
+      AM::vNapMsec(10, eGetClassNo());
     }
 
+    //RASSERT(m_bReapable);
+
+    if (m_pJobMetrics) {
+      while (m_pJobMetrics) {
+        JobMetrics *pJobMetricsNext = m_pJobMetrics->pNext();
+        delete m_pJobMetrics;
+        m_pJobMetrics = pJobMetricsNext;
+      }
+
+    }
+
+    if (m_pTask) {
+      m_pTask->vGrabTaskLock((Stz *) __func__);
+      m_pTask->vState(TS_DELETING);
+      m_pTask->vDropTaskLock((Stz *) __func__);
+      delete m_pTask;
+
+    }
+
+    AM::JOBS::vJobsActiveDec();
+
+    //if (m_pMutex)
+    //  vMutexDestroy();
+
+    RASSERT(m_pMutex);
+    vMutexDestroy();
+
+    /*
+    i8 iResult;
+
+    iResult = pthread_mutex_destroy(&m_pMutex->m_xMutex);
+    if ( iResult ) {
+      vTrace("UNABLE TO DESTROY MUTEX OF Job: %s:%s\n"_Stz,
+             m_sJobNm.azChar(),
+             m_sEntryPoint.azChar());
+    }
+    RASSERT(! iResult);
+    iResult = pthread_mutexattr_destroy(&m_pMutex->m_xMutexAttr);
+    RASSERT(! iResult);
+
+    iResult = pthread_cond_destroy(&m_pMutex->m_xCond);
+    RASSERT(! iResult);
+    iResult = pthread_condattr_destroy(&m_pMutex->m_xCondAttr);
+    RASSERT(! iResult);
+
+    m_pMutex->m_bAlreadyDestroyed = true;
+
+    vMutexDestroy();
+  */
+
+    if (m_pOutput)
+      vOutputDestroy();
+
+    if (m_pMarkerChain)
+      delete m_pMarkerChain;
   }
-    
-  if (m_pTask) {
-    m_pTask->vGrabTaskLock((Stz*)__func__);
-    m_pTask->vState(TS_DELETING);
-    m_pTask->vDropTaskLock((Stz*)__func__);
-    delete m_pTask;
-
-  }
-  
-  AM::JOBS::vJobsActiveDec();
-
-  //if (m_pMutex)
-  //  vMutexDestroy();
-
-  RASSERT(m_pMutex);
-  vMutexDestroy();
-
-  /*
-  i8 iResult;
-
-  iResult = pthread_mutex_destroy(&m_pMutex->m_xMutex);
-  if ( iResult ) {
-    vTrace("UNABLE TO DESTROY MUTEX OF Job: %s:%s\n"_Stz,
+  catch (...) {
+    vTrace("EXCEPTION in ~JOB: %s %s\n"_Stz,
            m_sJobNm.azChar(),
            m_sEntryPoint.azChar());
+    throw ;
   }
-  RASSERT(! iResult);
-  iResult = pthread_mutexattr_destroy(&m_pMutex->m_xMutexAttr);
-  RASSERT(! iResult);
-
-  iResult = pthread_cond_destroy(&m_pMutex->m_xCond);
-  RASSERT(! iResult);
-  iResult = pthread_condattr_destroy(&m_pMutex->m_xCondAttr);
-  RASSERT(! iResult);
-
-  m_pMutex->m_bAlreadyDestroyed = true;
-
-  vMutexDestroy();
-*/
-
-  if (m_pOutput)
-    vOutputDestroy();
-  
-  if (m_pMarkerChain)
-    delete m_pMarkerChain;
 }
 
 

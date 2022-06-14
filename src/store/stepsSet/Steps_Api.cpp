@@ -104,7 +104,6 @@ void Step::vApiForkChild(void)
                                    pCmdTknVec,pCmdTagSet,
                                    tParentId,tOriginId,tDistId,
                                    pOuterJob,    // TO BE REMOVED
-                                   pChildJob_tbr, // TO BE REMOVED
                                    bIsPipeline,
                                    bIsBackground
   );
@@ -184,8 +183,7 @@ void Step::vApiForkDemon(void)
   eEC eError = Api::eForkJobChild(tChildJobId,
                                   pCmdTknVec,pCmdTagSet,
                                   tParentId,tOriginId,tDistId,
-                                  pOuterJob,    // TO BE REMOVED
-                                  pChildJob_tbr, // TO BE REMOVED
+                                  pOuterJob,
                                   bIsPipeline,
                                   bIsBackground
   );

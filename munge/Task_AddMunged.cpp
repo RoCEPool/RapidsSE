@@ -27513,7 +27513,7 @@ void Task::vAddMunged(Task* )
     "    pipelineLocal::termination\n"
     "\n"
     "    // signal the parent\n"
-    "    [job].error@ [job].signalParent\n"
+    "    //[job].error@ [job].signalParent\n"
     "\n"
     "    true [job].reapable!\n"
     "\n"

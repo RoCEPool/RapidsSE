@@ -59,7 +59,6 @@ SeDeputy::SeDeputy(i8 i_Deputy, SePrompt* pSePrompt)
   //m_bSystemCloser = false;
 
   m_pRootJob = nullptr;
-  m_pJob     = nullptr;
   m_eError   = EC_NONE;
 
   _checkInitialised_(CN_SEDEPUTY);
@@ -130,10 +129,7 @@ void SeDeputy::vDeputyLoop(void)
   
   while (m_bContinue) {
 
-    RASSERT(!m_pJob);
-
     vMutexLock(this);
-    RASSERT(!m_pJob);
     m_bAvailable = true;
     vMutexWaitAndUnlock(this);
   
@@ -171,8 +167,7 @@ void SeDeputy::vDeputyLoop(void)
     m_eError = Api::eForkJobChild(tChildJobId,
                              pInpTknVec,pInpTagSet,
                              tParentId,tOriginId,tDistId,
-                             m_pRootJob, // TO BE REMOVED
-                             m_pJob,      // TO BE REMOVED
+                             m_pRootJob,
                              bIsPipeline,
                              bIsBackground
                              );
@@ -208,7 +203,6 @@ void SeDeputy::vDeputyLoop(void)
     
 
     //Api::vReapableJob(m_pJob);
-    m_pJob = nullptr;
   }
   
   m_bTerminated = true;
@@ -331,7 +325,7 @@ void SeDeputy::vReportTime(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
   //m_pJob->pTagSet()->vPrint();
-  
+  /*
   if (! m_pJob->bHasTag(C_TAG_TIME))
     return;
   
@@ -377,6 +371,7 @@ void SeDeputy::vReportTime(void)
   oTimer.vSet(m_pJob->iResponseTimerStart(),
               m_pJob->iTscEnded());
   vTrace("Ended    %lldus\n"_Stz,oTimer.iMicroseconds());
+   */
 }
 
 /*----------------------------------------------------------------------------*/

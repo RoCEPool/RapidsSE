@@ -55,12 +55,12 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
                         TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
                         JobId tParentId, JobId tOriginId, JobId tDistId,
                         Job*& rpParentJob_tbr,
-                        Job*& rpChildJob_tbr,
                         bool& bIsPipeline,
                         bool& bIsBackground)
 {
   _static_
 
+  Job* pChildJob;
   rtChildJobId = C_UNKNOWN;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -131,18 +131,18 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
   RASSERT(szJobNm);
 
 
-  rpChildJob_tbr = new Job(szJobNm,tParentId,tOriginId,tDistId);
-  bIsPipeline = rpChildJob_tbr->bIsPipeline();
+  pChildJob = new Job(szJobNm,tParentId,tOriginId,tDistId);
+  bIsPipeline = pChildJob->bIsPipeline();
 
   //vTrace("FORKING CHILD: %p\n"_Stz, rpChildJob_tbr);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy CmdTagSet to the child job tags
 
-  TagSet* pJobTagSet = rpChildJob_tbr->pJobTags();
+  TagSet* pJobTagSet = pChildJob->pJobTags();
   pJobTagSet->vCopy(pCmdTagSet);
 
-  bIsBackground = rpChildJob_tbr->bHasTag(C_TAG_BG);
+  bIsBackground = pChildJob->bHasTag(C_TAG_BG);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // setup the child job
@@ -150,15 +150,15 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
   // sCmd
   sSTMT sCmd;
   pCmdTknVec->vVecToString(sCmd,0,true);
-  rpChildJob_tbr->vCmd(sCmd);
+  pChildJob->vCmd(sCmd);
 
   // szEntry
   Stz* szEntry = pJobTagSet->szValue(C_TAG_ENTRYPOINT);
-  rpChildJob_tbr->vEntryPoint(szEntry);
+  pChildJob->vEntryPoint(szEntry);
 
   // szFolderPath
   Stz* szFolderPath = pJobTagSet->szValue(C_TAG_PATH);
-  rpChildJob_tbr->vFolderPath(szFolderPath);
+  pChildJob->vFolderPath(szFolderPath);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the mutex in the child job
@@ -166,8 +166,8 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the task for the child job
-  rpChildJob_tbr->vTaskCreate();
-  RASSERT(rpChildJob_tbr->pTask());
+  pChildJob->vTaskCreate();
+  RASSERT(pChildJob->pTask());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // lock the mutex
@@ -176,11 +176,11 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // start the timer of the child job
-  rpChildJob_tbr->vResponseTimerStart();
+  pChildJob->vResponseTimerStart();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add task to scheduler
-  Scheduler::vTaskApi_Add(rpChildJob_tbr->pTask());
+  Scheduler::vTaskApi_Add(pChildJob->pTask());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // wait for signal from child job
@@ -192,13 +192,13 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // update the timer of the child job
-  rpChildJob_tbr->vResponseTimerUpdate();
+  pChildJob->vResponseTimerUpdate();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cycle the task lock ?????
   // NOT SURE????
 
-  rpChildJob_tbr->pTask()->vCycleTaskLock((Stz*)__func__);
+  pChildJob->pTask()->vCycleTaskLock((Stz*)__func__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check for error from child job
@@ -206,17 +206,17 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
 
   if (eChildError != EC_NONE) {
     //rpChildJob_tbr->vJobError(eChildError);
-    Api::vReapableJob(rpChildJob_tbr);
+    Api::vReapableJob(pChildJob);
     return eChildError;
   }
 
   // set some tags in the parent for future child jobs
-  rpParentJob_tbr->vFolderPath(rpChildJob_tbr->szFolderPath());
-  rpParentJob_tbr->vLastJobId(rpChildJob_tbr->tLastJobId());
-  rpParentJob_tbr->vSystemCloser(rpChildJob_tbr->bSystemCloser());
+  rpParentJob_tbr->vFolderPath(pChildJob->szFolderPath());
+  rpParentJob_tbr->vLastJobId(pChildJob->tLastJobId());
+  rpParentJob_tbr->vSystemCloser(pChildJob->bSystemCloser());
 
   // return the jobId
-  rtChildJobId = rpChildJob_tbr->tJobId();
+  rtChildJobId = pChildJob->tJobId();
 
   // mark new child job as reapable
   //Api::vReapableJob(rpChildJob_tbr);
