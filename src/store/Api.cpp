@@ -134,6 +134,9 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
   pChildJob = new Job(szJobNm,tParentId,tOriginId,tDistId);
   bIsPipeline = pChildJob->bIsPipeline();
 
+  // return the jobId
+  rtChildJobId = pChildJob->tJobId();
+
   //vTrace("FORKING CHILD: %p\n"_Stz, rpChildJob_tbr);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -192,13 +195,18 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // update the timer of the child job
-  pChildJob->vResponseTimerUpdate();
+  //pChildJob->vResponseTimerUpdate();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // transfer the timer of the child job to the parent
-  if (pChildJob->bHasTag(C_TAG_TIME)) {
-    rpParentJob_tbr->vGetTimerFromChild(pChildJob);
-  }
+  //if (pChildJob->bHasTag(C_TAG_TIME)) {
+  //  rpParentJob_tbr->vGetTimerFromChild(pChildJob);
+  //}
+
+  // set some tags in the parent for future child jobs
+  rpParentJob_tbr->vFolderPath(pChildJob->szFolderPath());
+  rpParentJob_tbr->vLastJobId(pChildJob->tLastJobId());
+  rpParentJob_tbr->vSystemCloser(pChildJob->bSystemCloser());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cycle the task lock ?????
@@ -212,17 +220,9 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
 
   if (eChildError != EC_NONE) {
     //rpChildJob_tbr->vJobError(eChildError);
-    Api::vReapableJob(pChildJob);
+    //Api::vReapableJob(pChildJob);
     return eChildError;
   }
-
-  // set some tags in the parent for future child jobs
-  rpParentJob_tbr->vFolderPath(pChildJob->szFolderPath());
-  rpParentJob_tbr->vLastJobId(pChildJob->tLastJobId());
-  rpParentJob_tbr->vSystemCloser(pChildJob->bSystemCloser());
-
-  // return the jobId
-  rtChildJobId = pChildJob->tJobId();
 
   // mark new child job as reapable
   //Api::vReapableJob(rpChildJob_tbr);
