@@ -129,36 +129,4 @@ create table TABLE9 (
 Load TABLE9 "../DATA/Load/tbl9data.csv" <escape_char> = "\0";
 
 
-// BCD
-select 140737488355327.0 from table1;
-//EC_SYNTAX_ERROR; Line: 1; Column: 7; Value is out of range: Max/min decimal precision supported is [2^47, (2^47) - 1] : 140737488355327.0;
-
-select 14073748835532.7 from table1;
-
-// fails
-create table x (
-  dec   DECIMAL(20, 19)
-);
-
-//ok
-create table y (
-  dec   DECIMAL(19, 19)
-);
-
-// scale > precision fails
-create table z (
-  dec   DECIMAL(10, 19)
-);
-
-// ok (64K)
-create table t (
-  v varchar(65536)
-);
-
-// invalid
-create table u (
-  v varchar(65537)
-);
-
-
-// truncate varchar data if size is smaller that the data
+explain stage transliterate select * from datums;

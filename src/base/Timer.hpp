@@ -23,6 +23,8 @@ namespace BASE
     Timer(void);
    ~Timer(void) noexcept(false);
 
+    void operator =(Timer xTimer);
+
     static void vRepair(Object* pObject);
 
     void vReset(void);

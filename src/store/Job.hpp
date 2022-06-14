@@ -41,6 +41,8 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     eEC    m_eError_job;  // error when starting job
     eEC    m_eChildError; // error in child job
 
+    bool   m_bReportTime; // report time
+
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // reset in Job::vPostRecv()
   
@@ -116,6 +118,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vFolderPath(Stz* szFolderPath);
     void vFreeMarker(Marker* pMarker);
 
+    void vGetTimerFromChild(Job* pChildJob);
     void vGrabLock(void);
 
     bool bHasTag(Stz* szTagNm);
@@ -179,6 +182,8 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     bool bReapable(void);
     void vReapable(bool bReapable);
     void vReapableJob(void);
+    void vReportTime(bool bReportTime);
+    bool bReportTime(void);
     void vResetOutput(void);
     void vResetTaskForJob(void);
     Op*  p_ResponseOp(void);

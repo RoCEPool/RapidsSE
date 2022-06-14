@@ -21276,7 +21276,7 @@ void Task::vAddMunged(Task* )
     "/* org_ ovr */    //    \"org_ ovr\" \"signalled...\"                  [job].trace\n"
     "/* org_ ovr */    //then\n"
     "/* org_ ovr */\n"
-    "/* org_ ovr */    [task].retire // does not queue onto exit demon\n"
+    "/* org_ ovr */    [task].retire\n"
     "/* org_ ovr */\n"
     "/* org_ ovr */  HAZARD\n"
     "\n"

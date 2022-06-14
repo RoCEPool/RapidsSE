@@ -360,7 +360,7 @@
 /* org_ ovr */    //    "org_ ovr" "signalled..."                  [job].trace
 /* org_ ovr */    //then
 /* org_ ovr */
-/* org_ ovr */    [task].retire // does not queue onto exit demon
+/* org_ ovr */    [task].retire
 /* org_ ovr */
 /* org_ ovr */  HAZARD
 

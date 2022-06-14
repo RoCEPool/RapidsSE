@@ -195,6 +195,12 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
   pChildJob->vResponseTimerUpdate();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // transfer the timer of the child job to the parent
+  if (pChildJob->bHasTag(C_TAG_TIME)) {
+    rpParentJob_tbr->vGetTimerFromChild(pChildJob);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cycle the task lock ?????
   // NOT SURE????
 

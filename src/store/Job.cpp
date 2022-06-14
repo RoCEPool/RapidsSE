@@ -64,6 +64,8 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
   
   m_eJobPhase  = JP_NONE;
   m_eError_job = EC_NONE;
+  m_eChildError = EC_NONE;
+  m_bReportTime = false;
 
   /* 00 */ m_noActiveOps.vResetAtomic();
   /* 01 */ m_eJobList     = JL_NONE;
@@ -146,7 +148,6 @@ Job::~Job(void) noexcept(false)
       m_pTask->vState(TS_DELETING);
       m_pTask->vDropTaskLock((Stz *) __func__);
       delete m_pTask;
-
     }
 
     AM::JOBS::vJobsActiveDec();
@@ -187,9 +188,13 @@ Job::~Job(void) noexcept(false)
       delete m_pMarkerChain;
   }
   catch (...) {
-    vTrace("EXCEPTION in ~JOB: %s %s\n"_Stz,
+    vTrace("EXCEPTION in ~JOB: %s %s %s %s %s %s\n"_Stz,
            m_sJobNm.azChar(),
-           m_sEntryPoint.azChar());
+           m_sEntryPoint.azChar(),
+           aJP[m_eJobPhase],
+           m_pTask ? (m_pTask->bIsLocked() ? "isLocked" : "notLocked" ): "unknown",
+           aEC[m_eError_job],
+           aEC[m_eError_job]);
     throw ;
   }
 }
@@ -495,6 +500,26 @@ void Job::vFreeMarker(Marker* pMarker)
 //    m_pMarkerChain->vPush(pMarker);
 //  else
     delete pMarker;
+}
+
+/*----------------------------------------------------------------------------*/
+/* update timer from the child job                                            */
+/*----------------------------------------------------------------------------*/
+void Job::vGetTimerFromChild(Job* pChildJob)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_bReportTime = true;
+  m_oResponseTimer = pChildJob->m_oResponseTimer;
+
+  m_iTscBeginning  = pChildJob->m_iTscBeginning;
+  m_iTscBegun      = pChildJob->m_iTscBegun;
+  m_iTscExecuting  = pChildJob->m_iTscExecuting;
+  m_iTscExecuted   = pChildJob->m_iTscExecuted;
+  m_iTscEnding     = pChildJob->m_iTscEnding;
+  m_iTscEnded      = pChildJob->m_iTscEnded;
+  m_iTscCanceling  = pChildJob->m_iTscCanceling;
+  m_iTscCanceled   = pChildJob->m_iTscCanceled;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1322,6 +1347,26 @@ void Job::vReapableJob(void)
   }
   
   vReapable(true);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set reportTime                                                             */
+/*----------------------------------------------------------------------------*/
+void Job::vReportTime(bool bReportTime)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_bReportTime = bReportTime;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get reportTime                                                             */
+/*----------------------------------------------------------------------------*/
+bool Job::bReportTime(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_bReportTime;
 }
 
 /*----------------------------------------------------------------------------*/
