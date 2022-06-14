@@ -198,7 +198,7 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
   // cycle the task lock ?????
   // NOT SURE????
 
-  pChildJob->pTask()->vCycleTaskLock((Stz*)__func__);
+  //pChildJob->pTask()->vCycleTaskLock((Stz*)__func__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check for error from child job
