@@ -16,7 +16,9 @@ PromptCatalog gxPromptCatalog;
 PromptFun* PromptCatalog::pFindFun(Stz* aCommand1, Stz* aCommand2, eEC* eErrorCode)
 {
   _outsideOfPool_
-  
+
+  ASSERT(eErrorCode);
+
   for (i8 i_Fun = 0; i_Fun < m_nFunctions; i_Fun++) {
     
     //vTrace("Find: %s v %s\n"_Stz, m_aaFun[i_Fun]->m_aCommand1->azChar(),
