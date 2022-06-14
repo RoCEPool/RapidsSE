@@ -117,687 +117,145 @@ void PromptHelper::vDisableFuncs(void)
 
   for(i8 i = 0; i < gxPromptCatalog.m_nFunctions; i++)
   {
-    switch(gxPromptCatalog.m_aaFun[i]->m_ePromptFun)
+    PromptFun* pFunc = gxPromptCatalog.m_aaFun[i];
+    switch(pFunc->m_ePromptFun)
     {
-      case PF_ANTLR: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_APIDEMO: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_ARGS: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_ASCII: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_ATTACHMAP: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_BG: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_BP: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_BPA: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_BYE: {
-//        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_CALC: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_CANCEL: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_CD: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_CLASSES: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_CMDS: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_CONFIG: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_CONSTANTS: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_DDLLOCK: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_DELTA: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_DELTARESET: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_DESCRIBE: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_DSV: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_DUMPTOKENS: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_EDIT: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_ENUMS: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_ERRNO: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_EXECUTING: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_FACT: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_FILECAT: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_FILEPROC: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_FILERAND: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_FILESTATS: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_FLOATS: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_FOLDERS: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_FUNS: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_GIVEMEM: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_GLOBALS: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_HASHDEFS: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_HEAPSUMMARY: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_HELP: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_HEXDUMP: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_HOW: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_HW: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_INDEXENTRIES: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_JOB: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_JOBCLASS: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_JOBS: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_LASTJOB: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_LET: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_LIMITS: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_LOG: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_LOGNOTE: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_LOGSECTION: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_LOGWRITE: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_LS: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_LVL: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_MASKS: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_MEMORY: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_MEMORYLEAKS: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_MEMTEST: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_MKFIFO: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_MON: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_MRI: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_NOW: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_NUMBERS: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_OBJECTLIST: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_OBJECTVALIDATE: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_OLIST: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_OPTIMISERLVL: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_OUTPUT: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_OPCAT: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_OPS: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_OPSYS: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_PLIST: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_PMC: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_POW2: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_PREFIXES: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_PRINT: {
-//        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_PROCEDURE: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_PROMPT: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_PROMPTDEBUG: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_PWD: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_QUESTION: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_RASSERT: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_READY: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_REAP: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_RESOURCES: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_RETIRED: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_RMFIFO: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_RND: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_SCAN: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_SE: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_SELECT: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_SELFIES: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_SETDBG: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_SHELL: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_SHORTCUT: {
-//        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_SHOW: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_SINCE: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_SIZES: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_SLEEP: {
-//        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_SLEEPERS: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_SLEEPING: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_SNAPSHOTDELTA: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_SNAPSHOTINSPECT: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_SNAPSHOTLIST: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_SNAPSHOTNEWER: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_SNAPSHOTOBJECTS: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_SO: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_SOCKET: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_ST: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_START: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_STARTCOMPLETED: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_STARTLINE: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_STARTREADY: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_STARTRESET: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_STARTSTATUS: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_STORE: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_TAG: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_TAGS: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_TAKEMEM: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_TASKQUEUES: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_TEMPNAME: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_THREADS: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_TIMER: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_TOOLS: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_TPCH: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_TRACKMEMORY: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_UPTIME: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_UT_SKIPLIST: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_VERBOSE: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_VERSION: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_WAIT_BG: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_WAITING: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_WITH: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      case PF_WITHOUT: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
-
-      default: {
-        gxPromptCatalog.m_aaFun[i]->m_bEnabled = false;
-        continue;
-      }
+      case PF_ANTLR:           { pFunc->m_bEnabled = false; continue; }
+      case PF_APIDEMO:         { pFunc->m_bEnabled = false; continue; }
+      case PF_ARGS:            { pFunc->m_bEnabled = false; continue; }
+      case PF_ASCII:           { pFunc->m_bEnabled = false; continue; }
+      case PF_ATTACHMAP:       { pFunc->m_bEnabled = false; continue; }
+      case PF_BG:              { pFunc->m_bEnabled = false; continue; }
+      case PF_BP:              { pFunc->m_bEnabled = false; continue; }
+      case PF_BPA:             { pFunc->m_bEnabled = false; continue; }
+      case PF_BYE:             {                            continue; }
+      case PF_CALC:            { pFunc->m_bEnabled = false; continue; }
+      case PF_CANCEL:          { pFunc->m_bEnabled = false; continue; }
+      case PF_CD:              { pFunc->m_bEnabled = false; continue; }
+      case PF_CLASSES:         { pFunc->m_bEnabled = false; continue; }
+      case PF_CMDS:            { pFunc->m_bEnabled = false; continue; }
+      case PF_CONFIG:          { pFunc->m_bEnabled = false; continue; }
+      case PF_CONSTANTS:       { pFunc->m_bEnabled = false; continue; }
+      case PF_DDLLOCK:         { pFunc->m_bEnabled = false; continue; }
+      case PF_DELTA:           { pFunc->m_bEnabled = false; continue; }
+      case PF_DELTARESET:      { pFunc->m_bEnabled = false; continue; }
+      case PF_DESCRIBE:        { pFunc->m_bEnabled = false; continue; }
+      case PF_DSV:             { pFunc->m_bEnabled = false; continue; }
+      case PF_DUMPTOKENS:      { pFunc->m_bEnabled = false; continue; }
+      case PF_EDIT:            { pFunc->m_bEnabled = false; continue; }
+      case PF_ENUMS:           { pFunc->m_bEnabled = false; continue; }
+      case PF_ERRNO:           { pFunc->m_bEnabled = false; continue; }
+      case PF_EXECUTING:       { pFunc->m_bEnabled = false; continue; }
+      case PF_FACT:            { pFunc->m_bEnabled = false; continue; }
+      case PF_FILECAT:         { pFunc->m_bEnabled = false; continue; }
+      case PF_FILEPROC:        { pFunc->m_bEnabled = false; continue; }
+      case PF_FILERAND:        { pFunc->m_bEnabled = false; continue; }
+      case PF_FILESTATS:       { pFunc->m_bEnabled = false; continue; }
+      case PF_FLOATS:          { pFunc->m_bEnabled = false; continue; }
+      case PF_FOLDERS:         { pFunc->m_bEnabled = false; continue; }
+      case PF_FUNS:            { pFunc->m_bEnabled = false; continue; }
+      case PF_GIVEMEM:         { pFunc->m_bEnabled = false; continue; }
+      case PF_GLOBALS:         { pFunc->m_bEnabled = false; continue; }
+      case PF_HASHDEFS:        { pFunc->m_bEnabled = false; continue; }
+      case PF_HEAPSUMMARY:     { pFunc->m_bEnabled = false; continue; }
+      case PF_HELP:            { pFunc->m_bEnabled = false; continue; }
+      case PF_HEXDUMP:         { pFunc->m_bEnabled = false; continue; }
+      case PF_HOW:             { pFunc->m_bEnabled = false; continue; }
+      case PF_HW:              { pFunc->m_bEnabled = false; continue; }
+      case PF_INDEXENTRIES:    { pFunc->m_bEnabled = false; continue; }
+      case PF_JOB:             { pFunc->m_bEnabled = false; continue; }
+      case PF_JOBCLASS:        { pFunc->m_bEnabled = false; continue; }
+      case PF_JOBS:            { pFunc->m_bEnabled = false; continue; }
+      case PF_LASTJOB:         { pFunc->m_bEnabled = false; continue; }
+      case PF_LET:             { pFunc->m_bEnabled = false; continue; }
+      case PF_LIMITS:          { pFunc->m_bEnabled = false; continue; }
+      case PF_LOG:             { pFunc->m_bEnabled = false; continue; }
+      case PF_LOGNOTE:         { pFunc->m_bEnabled = false; continue; }
+      case PF_LOGSECTION:      { pFunc->m_bEnabled = false; continue; }
+      case PF_LOGWRITE:        { pFunc->m_bEnabled = false; continue; }
+      case PF_LS:              { pFunc->m_bEnabled = false; continue; }
+      case PF_LVL:             { pFunc->m_bEnabled = false; continue; }
+      case PF_MASKS:           { pFunc->m_bEnabled = false; continue; }
+      case PF_MEMORY:          { pFunc->m_bEnabled = false; continue; }
+      case PF_MEMORYLEAKS:     { pFunc->m_bEnabled = false; continue; }
+      case PF_MEMTEST:         { pFunc->m_bEnabled = false; continue; }
+      case PF_MKFIFO:          { pFunc->m_bEnabled = false; continue; }
+      case PF_MON:             { pFunc->m_bEnabled = false; continue; }
+      case PF_MRI:             { pFunc->m_bEnabled = false; continue; }
+      case PF_NOW:             { pFunc->m_bEnabled = false; continue; }
+      case PF_NUMBERS:         { pFunc->m_bEnabled = false; continue; }
+      case PF_OBJECTLIST:      { pFunc->m_bEnabled = false; continue; }
+      case PF_OBJECTVALIDATE:  { pFunc->m_bEnabled = false; continue; }
+      case PF_OLIST:           { pFunc->m_bEnabled = false; continue; }
+      case PF_OPTIMISERLVL:    { pFunc->m_bEnabled = false; continue; }
+      case PF_OUTPUT:          { pFunc->m_bEnabled = false; continue; }
+      case PF_OPCAT:           { pFunc->m_bEnabled = false; continue; }
+      case PF_OPS:             { pFunc->m_bEnabled = false; continue; }
+      case PF_OPSYS:           { pFunc->m_bEnabled = false; continue; }
+      case PF_PLIST:           { pFunc->m_bEnabled = false; continue; }
+      case PF_PMC:             { pFunc->m_bEnabled = false; continue; }
+      case PF_POW2:            { pFunc->m_bEnabled = false; continue; }
+      case PF_PREFIXES:        { pFunc->m_bEnabled = false; continue; }
+      case PF_PRINT:           {                            continue; }
+      case PF_PROCEDURE:       { pFunc->m_bEnabled = false; continue; }
+      case PF_PROMPT:          { pFunc->m_bEnabled = false; continue; }
+      case PF_PROMPTDEBUG:     { pFunc->m_bEnabled = false; continue; }
+      case PF_PWD:             { pFunc->m_bEnabled = false; continue; }
+      case PF_QUESTION:        { pFunc->m_bEnabled = false; continue; }
+      case PF_RASSERT:         { pFunc->m_bEnabled = false; continue; }
+      case PF_READY:           { pFunc->m_bEnabled = false; continue; }
+      case PF_REAP:            { pFunc->m_bEnabled = false; continue; }
+      case PF_RESOURCES:       { pFunc->m_bEnabled = false; continue; }
+      case PF_RETIRED:         { pFunc->m_bEnabled = false; continue; }
+      case PF_RMFIFO:          { pFunc->m_bEnabled = false; continue; }
+      case PF_RND:             { pFunc->m_bEnabled = false; continue; }
+      case PF_SCAN:            {                            continue; }
+      case PF_SE:              { pFunc->m_bEnabled = false; continue; }
+      case PF_SELECT:          { pFunc->m_bEnabled = false; continue; }
+      case PF_SELFIES:         { pFunc->m_bEnabled = false; continue; }
+      case PF_SETDBG:          { pFunc->m_bEnabled = false; continue; }
+      case PF_SHELL:           { pFunc->m_bEnabled = false; continue; }
+      case PF_SHORTCUT:        {                            continue; }
+      case PF_SHOW:            { pFunc->m_bEnabled = false; continue; }
+      case PF_SINCE:           { pFunc->m_bEnabled = false; continue; }
+      case PF_SIZES:           { pFunc->m_bEnabled = false; continue; }
+      case PF_SLEEP:           {                            continue; }
+      case PF_SLEEPERS:        { pFunc->m_bEnabled = false; continue; }
+      case PF_SLEEPING:        { pFunc->m_bEnabled = false; continue; }
+      case PF_SNAPSHOTDELTA:   { pFunc->m_bEnabled = false; continue; }
+      case PF_SNAPSHOTINSPECT: { pFunc->m_bEnabled = false; continue; }
+      case PF_SNAPSHOTLIST:    { pFunc->m_bEnabled = false; continue; }
+      case PF_SNAPSHOTNEWER:   { pFunc->m_bEnabled = false; continue; }
+      case PF_SNAPSHOTOBJECTS: { pFunc->m_bEnabled = false; continue; }
+      case PF_SO:              { pFunc->m_bEnabled = false; continue; }
+      case PF_SOCKET:          { pFunc->m_bEnabled = false; continue; }
+      case PF_ST:              { pFunc->m_bEnabled = false; continue; }
+      case PF_START:           { pFunc->m_bEnabled = false; continue; }
+      case PF_STARTCOMPLETED:  { pFunc->m_bEnabled = false; continue; }
+      case PF_STARTLINE:       { pFunc->m_bEnabled = false; continue; }
+      case PF_STARTREADY:      { pFunc->m_bEnabled = false; continue; }
+      case PF_STARTRESET:      { pFunc->m_bEnabled = false; continue; }
+      case PF_STARTSTATUS:     { pFunc->m_bEnabled = false; continue; }
+      case PF_STORE:           { pFunc->m_bEnabled = false; continue; }
+      case PF_TAG:             { pFunc->m_bEnabled = false; continue; }
+      case PF_TAGS:            { pFunc->m_bEnabled = false; continue; }
+      case PF_TAKEMEM:         { pFunc->m_bEnabled = false; continue; }
+      case PF_TASKQUEUES:      { pFunc->m_bEnabled = false; continue; }
+      case PF_TEMPNAME:        { pFunc->m_bEnabled = false; continue; }
+      case PF_THREADS:         { pFunc->m_bEnabled = false; continue; }
+      case PF_TIMER:           { pFunc->m_bEnabled = false; continue; }
+      case PF_TOOLS:           { pFunc->m_bEnabled = false; continue; }
+      case PF_TPCH:            { pFunc->m_bEnabled = false; continue; }
+      case PF_TRACKMEMORY:     { pFunc->m_bEnabled = false; continue; }
+      case PF_UPTIME:          { pFunc->m_bEnabled = false; continue; }
+      case PF_UT_SKIPLIST:     { pFunc->m_bEnabled = false; continue; }
+      case PF_VERBOSE:         { pFunc->m_bEnabled = false; continue; }
+      case PF_VERSION:         {                            continue; }
+      case PF_WAIT_BG:         { pFunc->m_bEnabled = false; continue; }
+      case PF_WAITING:         { pFunc->m_bEnabled = false; continue; }
+      case PF_WITH:            { pFunc->m_bEnabled = false; continue; }
+      case PF_WITHOUT:         { pFunc->m_bEnabled = false; continue; }
+      default:                 { NEVER_REACH;                         }
     }
   }
 }
