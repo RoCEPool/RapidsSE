@@ -154,8 +154,9 @@ Job::~Job(void) noexcept(false)
   //  vMutexDestroy();
 
   RASSERT(m_pMutex);
-  //vMutexDestroy();
+  vMutexDestroy();
 
+  /*
   i8 iResult;
 
   iResult = pthread_mutex_destroy(&m_pMutex->m_xMutex);
@@ -176,6 +177,7 @@ Job::~Job(void) noexcept(false)
   m_pMutex->m_bAlreadyDestroyed = true;
 
   vMutexDestroy();
+*/
 
   if (m_pOutput)
     vOutputDestroy();

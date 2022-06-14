@@ -76,8 +76,6 @@ Mutex::Mutex(Object* pIsFor)
   iResult = pthread_cond_init(&m_xCond, &m_xCondAttr);
   RASSERT(! iResult);
 
-  m_bAlreadyDestroyed = false;
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
 #ifdef WITH_STATISTICS_COUNTERS
@@ -103,21 +101,17 @@ Mutex::~Mutex(void) noexcept(false)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if ( ! m_bAlreadyDestroyed) {
+  i8 iResult;
 
-    i8 iResult;
+  iResult = pthread_mutex_destroy(&m_xMutex);
+  RASSERT(! iResult);
+  iResult = pthread_mutexattr_destroy(&m_xMutexAttr);
+  RASSERT(! iResult);
 
-    iResult = pthread_mutex_destroy(&m_xMutex);
-    RASSERT(! iResult);
-    iResult = pthread_mutexattr_destroy(&m_xMutexAttr);
-    RASSERT(! iResult);
-
-    iResult = pthread_cond_destroy(&m_xCond);
-    RASSERT(! iResult);
-    iResult = pthread_condattr_destroy(&m_xCondAttr);
-    RASSERT(! iResult);
-
-  }
+  iResult = pthread_cond_destroy(&m_xCond);
+  RASSERT(! iResult);
+  iResult = pthread_condattr_destroy(&m_xCondAttr);
+  RASSERT(! iResult);
 
 #ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.Mutex.m_nDestroys++;
