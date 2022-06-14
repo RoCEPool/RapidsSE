@@ -979,7 +979,7 @@ void Step::vJobSignalParent(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pJob->vMutexSignal();
+  pJob->pParentJob()->vMutexSignal();
 
   EXIT();
 }

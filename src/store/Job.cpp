@@ -68,7 +68,7 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
   /* 00 */ m_noActiveOps.vResetAtomic();
   /* 01 */ m_eJobList     = JL_NONE;
   /* 02 */ m_pJobMetrics  = nullptr;
-  /* 03 */ m_pMutex       = nullptr;
+  /* 03 */ m_pMutex       = new Mutex(this);
   /* 04 */ m_pOutput      = nullptr;
   /* 05 */ m_bReapable    = false;
   /* 06 */ m_p_ResponseOp = nullptr;
@@ -150,8 +150,12 @@ Job::~Job(void) noexcept(false)
   
   AM::JOBS::vJobsActiveDec();
 
-  if (m_pMutex)
-    vMutexDestroy();
+  //if (m_pMutex)
+  //  vMutexDestroy();
+
+  RASSERT(m_pMutex);
+  vMutexDestroy();
+
   if (m_pOutput)
     vOutputDestroy();
   
@@ -1089,7 +1093,7 @@ void Job::vPostRecv(void)
   /* 00 */ m_noActiveOps.vResetAtomic();
   /* 01 */ m_eJobList     = JL_NONE;
   /* 02 */ m_pJobMetrics  = nullptr;
-  /* 03 */ m_pMutex       = nullptr;
+  /* 03 */ m_pMutex       = new Mutex(this);
   /* 04 */ m_pOutput      = nullptr;
   /* 05 */ RASSERT(! m_bReapable);
   /* 06 */ m_p_ResponseOp = nullptr;

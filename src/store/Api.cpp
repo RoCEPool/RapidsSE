@@ -162,7 +162,7 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the mutex in the child job
-  rpChildJob_tbr->vMutexCreate();
+  //rpChildJob_tbr->vMutexCreate();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the task for the child job
@@ -171,8 +171,8 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // lock the mutex
-  rpChildJob_tbr->vMutexLock();
-  RASSERT(MS_LOCKED == rpChildJob_tbr->eMutexSide());
+  rpParentJob_tbr->vMutexLock();
+  RASSERT(MS_LOCKED == rpParentJob_tbr->eMutexSide());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // start the timer of the child job
@@ -187,8 +187,8 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
   // if C_TAG_WAIT parent gets signalled when child job completes
   // if C_TAG_NOWAIT parent gets signalled when pretests/ compilation are done
 
-  rpChildJob_tbr->vMutexWait();
-  rpChildJob_tbr->vMutexUnlock();
+  rpParentJob_tbr->vMutexWait();
+  rpParentJob_tbr->vMutexUnlock();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // update the timer of the child job
@@ -477,7 +477,7 @@ eEC Api::eForkJob2PC(JobId& rtChildJobId,
 
   rtChildJobId = rpChildJob_tbr->tJobId();
 
-  rpChildJob_tbr->vMutexCreate();
+  //rpChildJob_tbr->vMutexCreate();
   //rpChildJob_tbr->vStmtListCreate();
   rpChildJob_tbr->vTaskCreate();
 
