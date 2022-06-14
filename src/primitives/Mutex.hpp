@@ -35,6 +35,8 @@ namespace PRIMITIVES
     Atomic m_ixUnlock;
     Atomic m_ixTimedout;
 
+    bool m_bAlreadyDestroyed;
+
     // must be last
     Footer m_xFooter;
   
