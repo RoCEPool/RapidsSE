@@ -154,24 +154,7 @@ Job::~Job(void) noexcept(false)
   //  vMutexDestroy();
 
   RASSERT(m_pMutex);
-  //vMutexDestroy();
-
-  i8 iResult;
-
-  iResult = pthread_mutex_destroy(&m_pMutex->m_xMutex);
-  if ( iResult ) {
-    vTrace("UNABLE TO DESTROY MUTEX OF Job: %s:%s\n"_Stz,
-           m_sJobNm.azChar(),
-           m_sEntryPoint.azChar());
-  }
-  RASSERT(! iResult);
-  iResult = pthread_mutexattr_destroy(&m_pMutex->m_xMutexAttr);
-  RASSERT(! iResult);
-
-  iResult = pthread_cond_destroy(&m_pMutex->m_xCond);
-  RASSERT(! iResult);
-  iResult = pthread_condattr_destroy(&m_pMutex->m_xCondAttr);
-  RASSERT(! iResult);
+  vMutexDestroy();
 
   if (m_pOutput)
     vOutputDestroy();
