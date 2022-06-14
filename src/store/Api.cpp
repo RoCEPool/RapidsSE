@@ -483,18 +483,18 @@ eEC Api::eForkJob2PC(JobId& rtChildJobId,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  rpChildJob_tbr->vMutexLock();
-  RASSERT(MS_LOCKED == rpChildJob_tbr->eMutexSide());
+  rpParentJob_tbr->vMutexLock();
+  RASSERT(MS_LOCKED == rpParentJob_tbr->eMutexSide());
 
   RASSERT(rpChildJob_tbr->pTask());
 
-  rpChildJob_tbr->vResponseTimerStart();
+  //rpChildJob_tbr->vResponseTimerStart();
 
   Scheduler::vTaskApi_Add(rpChildJob_tbr->pTask());
 
   RASSERT(rpChildJob_tbr->bHasTag(C_TAG_NOWAIT));
   RASSERT(! rpChildJob_tbr->bHasTag(C_TAG_WAIT));
-  rpChildJob_tbr->vMutexUnlock();
+  rpParentJob_tbr->vMutexUnlock();
   return EC_NONE;
 }
 
