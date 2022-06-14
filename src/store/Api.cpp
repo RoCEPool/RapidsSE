@@ -490,10 +490,11 @@ eEC Api::eForkJob2PC(JobId& rtChildJobId,
 
   //rpChildJob_tbr->vResponseTimerStart();
 
-  Scheduler::vTaskApi_Add(rpChildJob_tbr->pTask());
-
   RASSERT(rpChildJob_tbr->bHasTag(C_TAG_NOWAIT));
   RASSERT(! rpChildJob_tbr->bHasTag(C_TAG_WAIT));
+
+  Scheduler::vTaskApi_Add(rpChildJob_tbr->pTask());
+
   rpParentJob_tbr->vMutexUnlock();
   return EC_NONE;
 }
