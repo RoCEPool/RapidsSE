@@ -104,13 +104,14 @@
 
   //sPipeline "FORKING CHILD FOR PIPELINE: %v"  str.format .
 
+  [Op] [job].responseOp!
   STD_NORMALFORK_TAG sPipeline api::forkChild not if
      //"****Error Code %v" .printf
+     nullptr [job].responseOp!
      op__execErr
      true
      exit
   else
-    [Op] [job].responseOp!
     find: transliterate_End       EV_M_END       [op].handler!
   then
 
