@@ -57,7 +57,9 @@
 #include "ExplainOp.hpp"
 
 #include "TypeSystem.hpp"
+#include "AttachMap.hpp"
 
+extern AttachMap*  gpAttachMap;
 
 using namespace Parser;
 
@@ -130,8 +132,7 @@ void NameValidator::vValidateNames(PlanNode *pRootNode)
 /*----------------------------------------------------------------------------*/
 void NameValidator::vCheckDisabledFunctionality(PlanNode* pRootNode)
 {
-  // TODO: insert global variable in here
-  if (true) {
+  if (!gpAttachMap->bDisablePromptCommands()) {
     return;
   }
 
