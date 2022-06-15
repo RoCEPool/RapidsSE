@@ -872,8 +872,6 @@ void vDdlLockAssertNone(void);
   void vJobProgressReset(void);
   void vJobProgressSeconds(void);
 
-  void vJobReapableFetch(void);
-  void vJobReapableStore(void);
   void vJobRemoveLocal(void);
   void vJobRemoveOriginator(void);
   void vJobRemoveParticipant(void);
@@ -888,7 +886,6 @@ void vDdlLockAssertNone(void);
   void vJobReportOperands(void);
   void vJobReportOperators(void);
 
-  void vJobOtherReapableStore(void);
   void vJobOtherIdFetch(void);
 
   void vListedJobScheduleNextPhase(void);

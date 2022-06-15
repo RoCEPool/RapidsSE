@@ -51,13 +51,12 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     /* 02 */ JobMetrics* m_pJobMetrics;// job metrics chain
     /* 03 */ Mutex*  m_pMutex;         // mutex
     /* 04 */ Output* m_pOutput;        // output processor
-    /* 05 */ b8      m_bReapable;      // can job be reaped?
-    /* 06 */ Op*     m_p_ResponseOp;   // operator to where responses go
-    /* 07 */ Timer   m_oResponseTimer; // timer (on origin only)
-    /* 08 */ Task*   m_pTask;          // task executing this job
-    /* 09 */ b8      m_bWasReceived;   // was job received over a socket?
-    /* 10 */ MarkerChain* m_pMarkerChain; // chain of free markers
-    /* 11 */ b8      m_bAllocate;      // can job ask for memory?
+    /* 05 */ Op*     m_p_ResponseOp;   // operator to where responses go
+    /* 06 */ Timer   m_oResponseTimer; // timer (on origin only)
+    /* 07 */ Task*   m_pTask;          // task executing this job
+    /* 08 */ b8      m_bWasReceived;   // was job received over a socket?
+    /* 09 */ MarkerChain* m_pMarkerChain; // chain of free markers
+    /* 10 */ b8      m_bAllocate;      // can job ask for memory?
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
 
@@ -178,10 +177,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vPostRecv(void);
     void vProcessOutput(void);
     Timer* pProgressTimer(void);
-  
-    bool bReapable(void);
-    void vReapable(bool bReapable);
-    void vReapableJob(void);
+
     void vUpdateParent(bool bUpdateParent);
     bool bUpdateParent(void);
     void vResetOutput(void);

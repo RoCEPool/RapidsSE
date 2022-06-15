@@ -40,8 +40,6 @@ namespace STORE
   static Job* pNewRootJob(Stz* szJobNm,
                             JobId tParentId, JobId tOriginId, JobId tDistId);
 
-  static void vReapableJob(Job*& rpJob);
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
   // internal

@@ -122,38 +122,6 @@ JobList* Jobs::pParticipatingJobs(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set job as reapable                                                        */
-/*----------------------------------------------------------------------------*/
-void Jobs::vReapableJob(Job*& rpJob)
-{
-  _static_
-      
-//  if (rpJob && rpJob->bIsPipeline() && ! rpJob->pOutput()->m_bToExit)
-//    rpJob->pOutput()->vProcessBufferQueue();
-//
-//  rpJob->pOutput()->m_pOutputQueue->vReset();
-//  rpJob->pOutput()->vEndProcOneCmd();
-//
-//  if (rpJob->pOutput()->m_pStreamDef_result) {
-//    StreamDef* pStreamDef = rpJob->pOutput()->m_pStreamDef_result;
-//    rpJob->pOutput()->m_pStreamDef_result = nullptr;
-//    delete pStreamDef;
-//  }
-//
-
-  if (rpJob) {
-
-    if (rpJob->bIsPipeline())
-      rpJob->vCleanupOutput();
-
-    rpJob->vReapable(true);
-
-    rpJob = nullptr;
-  }
-
-}
-
-/*----------------------------------------------------------------------------*/
 /* attempt to reap one job from the retired list                              */
 /*----------------------------------------------------------------------------*/
 void Jobs::vReapAllJobs(bool bForce)
@@ -196,9 +164,8 @@ bool Jobs::bReapJob(void)
     
     if (pRetiredJob) {
       i8 nActiveOps = pRetiredJob->nActiveOps();
-//      vTrace("REAP CANDIDATE Job %p Reapable %lld Active Ops %lld\n"_Stz
-//             ,pRetiredJob,(i8)pRetiredJob->m_bReapable,nActiveOps);
-      //if (pRetiredJob->bReapable() && ! nActiveOps) {
+//      vTrace("REAP CANDIDATE Job %p Active Ops %lld\n"_Stz
+//             ,pRetiredJob, nActiveOps);
       if ( ! nActiveOps ) {
         pReapableJob = pRetiredJob;
         break;
@@ -206,12 +173,12 @@ bool Jobs::bReapJob(void)
       else {
         vTrace("Cant reap retired job %p %lld "
                "%s "
-               "activeOps %lld %s "
+               "activeOps %lld "
                "\n"_Stz
 
                ,pRetiredJob,pRetiredJob->tJobId().uJobNo()
                ,pRetiredJob->szJobNm()
-               ,nActiveOps,pRetiredJob->bReapable() ? "reapable" : "not-reapable"
+               ,nActiveOps
                );
       }
     }

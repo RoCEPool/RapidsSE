@@ -92,7 +92,6 @@
     // signal the parent
     //[job].error@ [job].signalParent
 
-    true [job].reapable!
 *****************************/
     pipelineLocal::termination2
 
@@ -123,7 +122,6 @@
       sPreExe "Unable to find pre execute word: %v" .printf
       [job].updateParent
       [job].signalParent
-      true [job].reapable!
       process::quit
     then
       execute
@@ -178,11 +176,9 @@
     //  "SYSTEM STARTED" .
     else
     //  "SYSTEM NOT STARTED" .
-      true [job].reapable!
     then
 */
 
-    true [job].reapable!
     [task].retire // does not queue onto exit demon
 ;
 

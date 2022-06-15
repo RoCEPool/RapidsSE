@@ -72,13 +72,12 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
   /* 02 */ m_pJobMetrics  = nullptr;
   /* 03 */ m_pMutex       = new Mutex(this);
   /* 04 */ m_pOutput      = nullptr;
-  /* 05 */ m_bReapable    = false;
-  /* 06 */ m_p_ResponseOp = nullptr;
-  /* 07 */ m_oResponseTimer.vStart();
-  /* 08 */ m_pTask        = nullptr;
-  /* 09 */ m_bWasReceived = false;
-  /* 10 */ m_pMarkerChain = nullptr;
-  /* 11 */ m_bAllocate    = true;
+  /* 05 */ m_p_ResponseOp = nullptr;
+  /* 06 */ m_oResponseTimer.vStart();
+  /* 07 */ m_pTask        = nullptr;
+  /* 08 */ m_bWasReceived = false;
+  /* 09 */ m_pMarkerChain = nullptr;
+  /* 10 */ m_bAllocate    = true;
 
   m_iTscParticipant = 0;
   
@@ -1150,13 +1149,12 @@ void Job::vPostRecv(void)
   /* 02 */ m_pJobMetrics  = nullptr;
   /* 03 */ m_pMutex       = new Mutex(this);
   /* 04 */ m_pOutput      = nullptr;
-  /* 05 */ RASSERT(! m_bReapable);
-  /* 06 */ m_p_ResponseOp = nullptr;
-  /* 07 */ m_oResponseTimer.vReset();
-  /* 08 */ m_pTask        = nullptr;
-  /* 09 */ m_bWasReceived = true;
-  /* 10 */ m_pMarkerChain = nullptr;
-  /* 11 */ m_bAllocate    = true;
+  /* 05 */ m_p_ResponseOp = nullptr;
+  /* 06 */ m_oResponseTimer.vReset();
+  /* 07 */ m_pTask        = nullptr;
+  /* 08 */ m_bWasReceived = true;
+  /* 19 */ m_pMarkerChain = nullptr;
+  /* 10 */ m_bAllocate    = true;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -1308,44 +1306,6 @@ Timer* Job::pProgressTimer(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   return & m_oProgressTimer;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is job reapable?                                                           */
-/*----------------------------------------------------------------------------*/
-bool Job::bReapable(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_bReapable;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set job reapable?                                                          */
-/*----------------------------------------------------------------------------*/
-void Job::vReapable(bool bReapable)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_bReapable = bReapable;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set job as reapable                                                        */
-/*----------------------------------------------------------------------------*/
-void Job::vReapableJob(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  if ( ! bIsInError() ) {
-
-    if (bIsPipeline()) {
-      vCleanupOutput();
-    }
-
-  }
-  
-  vReapable(true);
 }
 
 /*----------------------------------------------------------------------------*/

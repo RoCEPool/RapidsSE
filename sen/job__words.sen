@@ -174,29 +174,6 @@
   //HAZARD
 ;
 
-
-/*----------------------------------------------------------------------------*/
-/* queue given job onto exit demon                                            */
-/*----------------------------------------------------------------------------*/
-: [exitDemon]:queueJob
-
-  //"__exitDemon" find dup if
-  // word.object@ locals| tExitDemonJobId |
-
-  AM::DEMON::tExitDemonJobId@ locals| tExitDemonJobId |
-
-  tExitDemonJobId jobId::isUnknown not if
-
-    [job] tExitDemonJobId jobId::pipeToOp0 assert
-
-  else
-
-    true [job].reapable!
-
-  then
-
-;
-
 /*----------------------------------------------------------------------------*/
 /* retire this job and its task                                               */
 /*----------------------------------------------------------------------------*/
@@ -211,8 +188,6 @@
 
   [task].grabLock
   [job].addExited
-    //[exitDemon]:queueJob
-    true [job].reapable!
     [task].retire
   
   HAZARD

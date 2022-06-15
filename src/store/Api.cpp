@@ -41,8 +41,7 @@ extern pthread_key_t giTLS_StepKey;
 void Api::vDeleteRootJob(Job*& rpRootJob)
 {
   _static_
-        
-  rpRootJob->vReapable(true);
+
   delete rpRootJob;
 
   rpRootJob = nullptr;
@@ -476,18 +475,6 @@ eEC Api::eForkJob2PC(JobId& rtChildJobId,
 
   rpParentJob_tbr->vMutexUnlock();
   return EC_NONE;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set job as reapable                                                        */
-/*----------------------------------------------------------------------------*/
-void Api::vReapableJob(Job*& rpJob)
-{
-  _static_
-        
-  rpJob->vReapableJob();
-
-  rpJob = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -74,8 +74,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("[job].progressReset"_Stz,    &Step::vJobProgressReset);
   vAddStep("[job].progressSeconds"_Stz,  &Step::vJobProgressSeconds);
 
-  vAddStep("[job].reapable@"_Stz,        &Step::vJobReapableFetch);
-  vAddStep("[job].reapable!"_Stz,        &Step::vJobReapableStore);
   vAddStep("[job].removeLocal"_Stz,      &Step::vJobRemoveLocal);
   vAddStep("[job].removeOriginator"_Stz, &Step::vJobRemoveOriginator);
   vAddStep("[job].removeParticipant"_Stz,&Step::vJobRemoveParticipant);
@@ -102,7 +100,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("[job].updateParent"_Stz,     &Step::vJobUpdateParent);
 
   vAddStep("job::id@"_Stz,               &Step::vJobOtherIdFetch);
-  vAddStep("job::reapable!"_Stz,         &Step::vJobOtherReapableStore);
 }
 
 
@@ -818,39 +815,6 @@ void Step::vJobProgressSeconds(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* [job].reapable@ -- fetch the job reapable flag                             */
-/*----------------------------------------------------------------------------*/
-void Step::vJobReapableFetch(void)
-{
-  ENTRY();
-
-  Job* pJob = pOuterJobOfTask();
-
-  m_pDataStack->vPushInt(pJob->bReapable());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* [job].reapable! -- store the job reapable flag                             */
-/*----------------------------------------------------------------------------*/
-void Step::vJobReapableStore(void)
-{
-  ENTRY();
-
-  Job* pJob = pOuterJobOfTask();
-
-  if ( ! pJob )
-    AM::SE::vWhereAmI();
-
-  i8 iJobReapable = m_pDataStack->iPopAsInt(__func__);
-  
-  pJob->vReapable(iJobReapable);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* [job].removeLocal -- remove job from local job set                         */
 /*----------------------------------------------------------------------------*/
 void Step::vJobRemoveLocal(void)
@@ -1223,22 +1187,6 @@ void Step::vJobOtherIdFetch(void)
 
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   m_pDataStack->vPushInt(pJob->tJobId().iAsI8());
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job::reapable! -- store the job reapable flag for other job (param)        */
-/*----------------------------------------------------------------------------*/
-void Step::vJobOtherReapableStore(void)
-{
-  ENTRY();
-
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-
-  i8 iJobReapable = m_pDataStack->iPopAsInt(__func__);
-
-  pJob->vReapable(iJobReapable);
 
   EXIT();
 }

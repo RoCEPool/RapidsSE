@@ -456,7 +456,6 @@ void Task::vAddAxioms(void)
       [job].addExited                           \
                                                 \
       [task].grabLock                           \
-        1 [job].reapable!                       \
         TR_RETIRE_THIS_TASK [task].transition!  \
                                                 \
     ;"_Stz;

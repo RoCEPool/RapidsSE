@@ -97,8 +97,6 @@
 /* org_ org */
 /* org_ org */    [job].updateParent
 /* org_ ovr */    [job].signalParent
-/* org_ ovr */
-/* org_ ovr */    true [job].reapable!
 /* org_ org */
 /* org_ org */      [task].retire // does not queue onto exit demon
 /* org_ org */
@@ -332,7 +330,7 @@
 /* org_ ovr */      [job].updateParent
 /* org_ ovr */      [job].signalParent
 /* org_ ovr */    then
-/* org_ ovr */    true [job].reapable!
+/* org_ ovr *
 /* org_ ovr */    [args].distJob if
 /* org_ ovr */      "pipeline" "origin"
 /* org_ ovr */        "org_ ovr" "signalled..."                  [job].trace
