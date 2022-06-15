@@ -41,7 +41,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     eEC    m_eError_job;  // error when starting job
     eEC    m_eChildError; // error in child job
 
-    bool   m_bReportTime; // report time
+    bool   m_bUpdateParent; // update parent
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // reset in Job::vPostRecv()
@@ -182,8 +182,8 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     bool bReapable(void);
     void vReapable(bool bReapable);
     void vReapableJob(void);
-    void vReportTime(bool bReportTime);
-    bool bReportTime(void);
+    void vUpdateParent(bool bUpdateParent);
+    bool bUpdateParent(void);
     void vResetOutput(void);
     void vResetTaskForJob(void);
     Op*  p_ResponseOp(void);

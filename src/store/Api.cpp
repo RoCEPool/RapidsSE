@@ -54,7 +54,8 @@ void Api::vDeleteRootJob(Job*& rpRootJob)
 eEC Api::eForkJobChild(JobId& rtChildJobId,
                         TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
                         JobId tParentId, JobId tOriginId, JobId tDistId,
-                        Job*& rpParentJob_tbr,
+                        Job*  pParentJob,
+                        bool  bUpdateParent,
                         bool& bIsPipeline,
                         bool& bIsBackground)
 {
@@ -67,7 +68,7 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
   // should have a parent (deputy root job)
 
   RASSERT(! tParentId.bIsUnknown());
-  RASSERT(rpParentJob_tbr);
+  RASSERT(pParentJob);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // prepare the new job
@@ -134,6 +135,8 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
   pChildJob = new Job(szJobNm,tParentId,tOriginId,tDistId);
   bIsPipeline = pChildJob->bIsPipeline();
 
+  pChildJob->vUpdateParent(bUpdateParent);
+
   // return the jobId
   rtChildJobId = pChildJob->tJobId();
 
@@ -174,8 +177,8 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // lock the mutex
-  rpParentJob_tbr->vMutexLock();
-  RASSERT(MS_LOCKED == rpParentJob_tbr->eMutexSide());
+  pParentJob->vMutexLock();
+  RASSERT(MS_LOCKED == pParentJob->eMutexSide());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // start the timer of the child job
@@ -190,8 +193,8 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
   // if C_TAG_WAIT parent gets signalled when child job completes
   // if C_TAG_NOWAIT parent gets signalled when pretests/ compilation are done
 
-  rpParentJob_tbr->vMutexWait();
-  rpParentJob_tbr->vMutexUnlock();
+  pParentJob->vMutexWait();
+  pParentJob->vMutexUnlock();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // update the timer of the child job
@@ -204,9 +207,9 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
   //}
 
   // set some tags in the parent for future child jobs
-  rpParentJob_tbr->vFolderPath(pChildJob->szFolderPath());
-  rpParentJob_tbr->vLastJobId(pChildJob->tLastJobId());
-  rpParentJob_tbr->vSystemCloser(pChildJob->bSystemCloser());
+  //pParentJob->vFolderPath(pChildJob->szFolderPath());
+  //pParentJob->vLastJobId(pChildJob->tLastJobId());
+  //pParentJob->vSystemCloser(pChildJob->bSystemCloser());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cycle the task lock ?????
@@ -216,7 +219,7 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check for error from child job
-  eEC eChildError = rpParentJob_tbr->eChildError();
+  eEC eChildError = pParentJob->eChildError();
 
   if (eChildError != EC_NONE) {
     //rpChildJob_tbr->vJobError(eChildError);

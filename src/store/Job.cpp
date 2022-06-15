@@ -65,7 +65,7 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
   m_eJobPhase  = JP_NONE;
   m_eError_job = EC_NONE;
   m_eChildError = EC_NONE;
-  m_bReportTime = false;
+  m_bUpdateParent = false;
 
   /* 00 */ m_noActiveOps.vResetAtomic();
   /* 01 */ m_eJobList     = JL_NONE;
@@ -509,7 +509,6 @@ void Job::vGetTimerFromChild(Job* pChildJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  m_bReportTime = true;
   m_oResponseTimer = pChildJob->m_oResponseTimer;
 
   m_iTscBeginning  = pChildJob->m_iTscBeginning;
@@ -1352,21 +1351,21 @@ void Job::vReapableJob(void)
 /*----------------------------------------------------------------------------*/
 /* set reportTime                                                             */
 /*----------------------------------------------------------------------------*/
-void Job::vReportTime(bool bReportTime)
+void Job::vUpdateParent(bool bUpdateParent)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  m_bReportTime = bReportTime;
+  m_bUpdateParent = bUpdateParent;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get reportTime                                                             */
 /*----------------------------------------------------------------------------*/
-bool Job::bReportTime(void)
+bool Job::bUpdateParent(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  return m_bReportTime;
+  return m_bUpdateParent;
 }
 
 /*----------------------------------------------------------------------------*/

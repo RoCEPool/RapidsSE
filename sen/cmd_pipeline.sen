@@ -59,6 +59,7 @@
 /* org_ org */      Path[].discardAll
 /* org_ org */      [task].grabLock
 /* org_ org */      [job].addExited
+/* org_ org */      [job].updateParent
 /* org_ org */
 /* org_ org */      [args].distJob if
 /* org_ org */        "pipeline" "origin"
@@ -88,6 +89,7 @@
 /* org_ org */    Path[].discardAll
 /* org_ org */    [task].grabLock
 /* org_ org */    [job].addExited
+/* org_ org */    [job].updateParent
 /* org_ org */
 /* org_ org */      [args].distJob if
 /* org_ org */        "pipeline" "origin"
@@ -129,6 +131,7 @@
 /* org_ org */    Path[].discardAll
 /* org_ org */    [task].grabLock
 /* org_ org */    [job].addExited
+/* org_ org */    [job].updateParent
 /* org_ org */
 /* org_ ovr */    [job].error@ [job].signalParent
 /* org_ org */
@@ -342,7 +345,7 @@
 /* org_ ovr */  Path[].discardAll
 /* org_ ovr */  [task].grabLock
 /* org_ ovr */  [job].addExited
-/* org_ ovr */
+/* org_ org */
 /* org_ ovr */    "<signalParent>" [job].tagSet@ tagSet.hasName if
 /* org_ org */
 /* org_ org */      [args].distJob if
@@ -350,6 +353,7 @@
 /* org_ org */        "org_ org" "WAIT signalling parent"       [job].trace
 /* org_ org */      then
 /* org_ org */
+/* org_ ovr */      [job].updateParent
 /* org_ ovr */      [job].error@ [job].signalParent
 /* org_ ovr */     //else
 /* org_ ovr */     //  true [job].reapable!

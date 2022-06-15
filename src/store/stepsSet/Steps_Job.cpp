@@ -99,6 +99,8 @@ void Step::vAddSteps_Job(void)
   vAddStep("[job].tscCanceled"_Stz,      &Step::vJobTscCanceled);
   vAddStep("[job].tscParticipant"_Stz,   &Step::vJobTscParticipant);
 
+  vAddStep("[job].updateParent"_Stz,     &Step::vJobUpdateParent);
+
   vAddStep("job::id@"_Stz,               &Step::vJobOtherIdFetch);
   vAddStep("job::reapable!"_Stz,         &Step::vJobOtherReapableStore);
 }
@@ -1167,6 +1169,52 @@ void Step::vJobTscParticipant(void)
 
   pJob->vTscParticipant(Hardware::iReadTsc());
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [job].updateParent -- update parent job on information from this job       */
+/*----------------------------------------------------------------------------*/
+void Step::vJobUpdateParent(void)
+{
+  ENTRY();
+
+  // there will be a thread (of parent job) waiting on completion of the job
+  // this could be a prompt thread
+
+  eEC eErrorCode;
+  Job* pParentJob;
+  Job* pJob = pOuterJobOfTask();
+
+  if ( ! pJob->bUpdateParent() )
+    goto L_Exit;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // update the timer of this job
+  pJob->vResponseTimerUpdate();
+
+  pParentJob = pJob->pParentJob();
+
+  //eErrorCode = (eEC)m_pDataStack->iPopInt(__func__);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the error as childError in parent
+  //pParentJob->vChildError(eErrorCode);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set some tags in the parent for future child jobs
+  pParentJob->vFolderPath(pJob->szFolderPath());
+  pParentJob->vLastJobId(pJob->tLastJobId());
+  pParentJob->vSystemCloser(pJob->bSystemCloser());
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // transfer the timer of this job to the parent
+  if (pJob->bHasTag(C_TAG_TIME)) {
+    pParentJob->pJobTags()->vInsert(C_TAG_TIME);
+    pParentJob->vGetTimerFromChild(pJob);
+  }
+
+  L_Exit:
   EXIT();
 }
 

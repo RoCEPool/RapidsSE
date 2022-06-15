@@ -17,6 +17,7 @@
 
   [task].grabLock
   [job].addExited
+  [job].updateParent
     [task].retire // does not queue onto exit demon
 
   HAZARD
@@ -140,6 +141,7 @@
 
   [task].grabLock
   [job].addExited
+  [job].updateParent
 
     "<signalParent>" [job].tagSet@ tagSet.hasName if
       //"pipelineLocal::local SIGNALLING PARENT" .

@@ -31,11 +31,10 @@
 void Step::vAddSteps_JobId(void)
 {
   vAddStep("jobId::folderPath!"_Stz,    &Step::vJobIdFolderPathStore);
+  vAddStep("jobId::isUnknown"_Stz,      &Step::vJobIdIsUnknown);
   vAddStep("jobId::lastJobId@"_Stz,     &Step::vJobIdLastJobIdFetch);
   vAddStep("jobId::pipeToOp0"_Stz,      &Step::vJobIdPipeToOp0);
   vAddStep("jobId::systemCloser!"_Stz,  &Step::vJobIdSystemCloserStore);
-
-  vAddStep("jobId::isUnknown"_Stz,      &Step::vJobIdIsUnknown);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -114,6 +113,20 @@ void Step::vJobIdPipeToOp0(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* jobId::isUnknown -- is the jobId unknown ?                                */
+/*----------------------------------------------------------------------------*/
+void Step::vJobIdIsUnknown(void)
+{
+  ENTRY();
+
+  JobId tJobId = m_pDataStack->iPopInt(__func__);
+
+  m_pDataStack->vPushInt(tJobId.bIsUnknown());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* jobId::systemCloser! -- store system closer into job                      */
 /*----------------------------------------------------------------------------*/
 void Step::vJobIdSystemCloserStore(void)
@@ -134,20 +147,6 @@ void Step::vJobIdSystemCloserStore(void)
     m_pDataStack->vPushInt(false);
   }
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* jobId::isUnknown -- is the jobId unknown ?                                */
-/*----------------------------------------------------------------------------*/
-void Step::vJobIdIsUnknown(void)
-{
-  ENTRY();
-
-  JobId tJobId = m_pDataStack->iPopInt(__func__);
-
-  m_pDataStack->vPushInt(tJobId.bIsUnknown());
-
   EXIT();
 }
 

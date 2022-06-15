@@ -149,6 +149,7 @@ void SeDeputy::vDeputyLoop(void)
     pInpTagSet->vReplace(C_TAG_PATH,m_pRootJob->szFolderPath());
     pInpTagSet->vReplace(C_TAG_LASTJOBID,m_pRootJob->tLastJobId().iAsI8());
     pInpTagSet->vReplace(C_TAG_SYSTEMCLOSER,m_pRootJob->bSystemCloser());
+    pInpTagSet->vDelete(C_TAG_TIME);
 
     JobId tChildJobId;
     
@@ -168,6 +169,7 @@ void SeDeputy::vDeputyLoop(void)
                              pInpTknVec,pInpTagSet,
                              tParentId,tOriginId,tDistId,
                              m_pRootJob,
+                             true, /* update parent */
                              bIsPipeline,
                              bIsBackground
                              );
@@ -188,7 +190,6 @@ void SeDeputy::vDeputyLoop(void)
 
     vReportTime();
 
-    m_pRootJob->vReportTime(false);
     m_pRootJob->vResetOutput();
     m_pRootJob->vCleanupOutput();
 
@@ -347,7 +348,7 @@ void SeDeputy::vReportTime(void)
   }
  */
 
-  if ( ! m_pRootJob->bReportTime() )
+  if (! m_pRootJob->bHasTag(C_TAG_TIME))
     return;
 
   vTrace("time %lldms\n\n"_Stz,m_pRootJob->iResponseTimerMsec());

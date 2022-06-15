@@ -211,6 +211,7 @@
 
   [task].grabLock
   [job].addExited
+  [job].updateParent
     //[exitDemon]:queueJob
     true [job].reapable!
     [task].retire
