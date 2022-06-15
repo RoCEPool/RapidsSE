@@ -12,7 +12,7 @@ namespace PROMPT
     PromptFun* m_aaFun[128];  // array of prompt function descriptions
 
   public:
-    PromptFun* pFindFun(Stz* aCommand1, Stz* aCommand2);
+    PromptFun* pFindFun(Stz* aCommand1, Stz* aCommand2, eEC* eErrorCode);
     void vFuns(ePF ePromptFun);
     void vHelp(void);
   };

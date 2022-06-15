@@ -387,6 +387,7 @@ namespace OBLIQUE
     class MEMORY
     {
     public:
+      static void vAssertAllocate(void);
       static bool bIsRunningLow(void);
     };
   
@@ -639,6 +640,7 @@ namespace OBLIQUE
     static bool bDebugIndex(void);
     static bool bDebugMode(void);
     static bool bDeveloper(void);
+    static bool bDisableCmds(void);
     static Stz* szCommand(void);
     static i8   nDummyLoop(void);
     static i8   nDummySleep(void);

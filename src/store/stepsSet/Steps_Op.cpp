@@ -33,6 +33,8 @@ void Step::vAddSteps_Op(void)
   
   vAddStep("[op]"_Stz,                  &Step::vOpGet);
   vAddStep("[op].ackJobTask"_Stz,       &Step::vOpAckJobTask);
+  vAddStep("[op].disableAllocate"_Stz,  &Step::vOpDisableAllocate);
+  vAddStep("[op].enableAllocate"_Stz,   &Step::vOpEnableAllocate);
   vAddStep("[op].eventCountInc"_Stz,    &Step::vOpEventCountInc);
   vAddStep("[op].handlerEntry"_Stz,     &Step::vOpHandlerEntry);
   vAddStep("[op].handlerExit"_Stz,      &Step::vOpHandlerExit);
@@ -60,6 +62,26 @@ void Step::vOpAckJobTask(void)
   ENTRY();
   
   m_pOp->vAckJobTask();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [op].disableAllocate -- disable memory allocation by this op               */
+/*----------------------------------------------------------------------------*/
+void Step::vOpDisableAllocate(void)
+{
+  ENTRY();
+
+  m_pOp->vSetAllocate(false);
+}
+
+/*----------------------------------------------------------------------------*/
+/* [op].enableAllocate -- enable memory allocation by this op               */
+/*----------------------------------------------------------------------------*/
+void Step::vOpEnableAllocate(void)
+{
+  ENTRY();
+
+  m_pOp->vSetAllocate(true);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -85,7 +85,7 @@
   // now delete the InfoSet[]
   InfoSet[].delete
   
-  Counter0[] "Total Units: %v" .printf
+  //Counter0[] "Total Units: %v" .printf
 
   true
 ;

@@ -1,46 +1,42 @@
 /*============================================================================*/
-/* OP_toDfload.sen -- Operator To Dfload                                      */
+/* OP_pathToDfload.sen -- Operator Path To Dfload                             */
 /*============================================================================*/
 
-" OP_toDfload.sen" .verbose
-
-// ... to be coded
+" OP_pathToDfload.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_I_PATH ...                                                  */
+/* handler for EV_I_PATH ... an infoset with __path rows                      */
 /*----------------------------------------------------------------------------*/
-: toDfload_PathInfo \handler
- 
-  "toDfload_PathInfo" .
+: pathToDfload_Path \handler
 
-  PipeIn[] to InfoSet[]
-  nullptr to Pipein[]
+  PipeIn[]\clear to InfoSet[]
 
-  // find the __path table def
-  C_TDEF_PATH op__tableDef_infoSet assert
+  C_TDEF_PATH infoSetRow:getFirstRow
 
-  InfoSet[].firstRow to infoSetRow[]
+  // extract the values
+  0 InfoSet[].colVal@ locals| sPath   |
+  1 InfoSet[].colVal@ locals| iPathNo |
+  2 InfoSet[].colVal@ locals| iPathOf | 
+  
+  // print the __path data
+  //iPathOf iPathNo sPath "pathToDfload: %v %v %v" .printf
 
-  0 InfoSet[].colVal@ locals| sPath | sPath .
-  1 InfoSet[].colVal@ locals| iPathNo | iPathNo .
-  2 InfoSet[].colVal@ locals| iPathOf | iPathOf .
   InfoSet[].delete
+  nullptr to InfoSetRow[]
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  sPath <tableNm> "dfload %v \"%v\"" str.format locals| sRequest |
-  sRequest .
+  sPath <tableNm> "dfload %v \"%v\"" str.format locals| sCmd |
 
-  // find the __callPipeline table def
-  C_TDEF_CALLPIPELINE op__tableDef_infoSet assert
+  //sCmd "pathToDfload: %v" .printf
 
-  // create an infoSet operand
-  infoSetTable[] InfoSet[].new
-    OI_CALLPIPELINE InfoSet[].opInfoset!
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  iPathOf iPathNo sRequest 3 InfoSet[].addRowVargs
-    
-  InfoSet[].pipeOut
+  // temp debug
+  //true exit
+
+  C_TDEF_COMMAND InfoSet:discover
+  sCmd 1 OI_COMMAND InfoSet:pipeoutRow
 
   true
 ;
@@ -48,13 +44,13 @@
 /*----------------------------------------------------------------------------*/
 /* execute for call pipeline req                      (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : toDfload_op \operator
+ : pathToDfload_op \operator
 
   _lu_initialise_
 
   op__topology
 
-  find: toDfload_PathInfo EV_I_PATH [op].handler!
+  find: pathToDfload_Path  EV_I_PATH  [op].handler!
 
   op__loop
 
@@ -68,12 +64,12 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: toDfload :: toDfload <tableNm> ;
+cmdSyntax: pathToDfload :: pathToDfload <tableNm> ;
 
-: toDfload_cmdTags _cmdTags tagCopy: op_tags
+: pathToDfload_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "toDfload_op"
+    <opEntry> = "pathToDfload_op"
   }
 ;
 

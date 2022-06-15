@@ -1299,9 +1299,99 @@ void Task::vAddMunged(Task* )
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [16] OP_print.sen
+  // munge of [16] OP_pathToDfload.sen
 
   gszaMungedText[16] =
+    "\" munged OP_pathToDfload.sen \" .verbose \n"
+    "/*============================================================================*/\n"
+    "/* OP_pathToDfload.sen -- Operator Path To Dfload                             */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    "\" OP_pathToDfload.sen\" .verbose\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* handler for EV_I_PATH ... an infoset with __path rows                      */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": pathToDfload_Path \\handler\n"
+    "\n"
+    "  PipeIn[]\\clear to InfoSet[]\n"
+    "\n"
+    "  C_TDEF_PATH infoSetRow:getFirstRow\n"
+    "\n"
+    "  // extract the values\n"
+    "  0 InfoSet[].colVal@ locals| sPath   |\n"
+    "  1 InfoSet[].colVal@ locals| iPathNo |\n"
+    "  2 InfoSet[].colVal@ locals| iPathOf | \n"
+    "  \n"
+    "  // print the __path data\n"
+    "  //iPathOf iPathNo sPath \"pathToDfload: %v %v %v\" .printf\n"
+    "\n"
+    "  InfoSet[].delete\n"
+    "  nullptr to InfoSetRow[]\n"
+    "\n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "\n"
+    "  sPath <tableNm> \"dfload %v \\\"%v\\\"\" str.format locals| sCmd |\n"
+    "\n"
+    "  //sCmd \"pathToDfload: %v\" .printf\n"
+    "\n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "\n"
+    "  // temp debug\n"
+    "  //true exit\n"
+    "\n"
+    "  C_TDEF_COMMAND InfoSet:discover\n"
+    "  sCmd 1 OI_COMMAND InfoSet:pipeoutRow\n"
+    "\n"
+    "  true\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* execute for call pipeline req                      (on node where spawned) */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    " : pathToDfload_op \\operator\n"
+    "\n"
+    "  _lu_initialise_\n"
+    "\n"
+    "  op__topology\n"
+    "\n"
+    "  find: pathToDfload_Path  EV_I_PATH  [op].handler!\n"
+    "\n"
+    "  op__loop\n"
+    "\n"
+    "  _lu_finalise_\n"
+    "  \n"
+    "  op__retires\n"
+    "  \n"
+    "  HAZARD\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/*                                                                            */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "cmdSyntax: pathToDfload :: pathToDfload <tableNm> ;\n"
+    "\n"
+    ": pathToDfload_cmdTags _cmdTags tagCopy: op_tags\n"
+    "  tags{\n"
+    "    <cmdDesc> = \"--desc for op--\"\n"
+    "    <opEntry> = \"pathToDfload_op\"\n"
+    "  }\n"
+    " ;\n"
+    "\n"
+    "/*============================================================================*/\n"
+    "/* end                                                                        */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    ""_Stz
+  ;
+
+  szSubScriptDef = " 16 CONSTANT OP_pathToDfload.sen "_Stz;
+  vCompileMungedColon(szSubScriptDef);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // munge of [17] OP_print.sen
+
+  gszaMungedText[17] =
     "\" munged OP_print.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_print.sen -- Operator print                                             */\n"
@@ -1371,13 +1461,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 16 CONSTANT OP_print.sen "_Stz;
+  szSubScriptDef = " 17 CONSTANT OP_print.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [17] OP__tpl_localLite.sen
+  // munge of [18] OP__tpl_localLite.sen
 
-  gszaMungedText[17] =
+  gszaMungedText[18] =
     "\" munged OP__tpl_localLite.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP__tpl_locallite.sen -- templates for local lite op                         */\n"
@@ -1493,13 +1583,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 17 CONSTANT OP__tpl_localLite.sen "_Stz;
+  szSubScriptDef = " 18 CONSTANT OP__tpl_localLite.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [18] test_encodingData.sen
+  // munge of [19] test_encodingData.sen
 
-  gszaMungedText[18] =
+  gszaMungedText[19] =
     "\" munged test_encodingData.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* test_encodingData.sen -- generate encoding tests data                      */\n"
@@ -1867,13 +1957,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 18 CONSTANT test_encodingData.sen "_Stz;
+  szSubScriptDef = " 19 CONSTANT test_encodingData.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [19] OP_parser.sen
+  // munge of [20] OP_parser.sen
 
-  gszaMungedText[19] =
+  gszaMungedText[20] =
     "\" munged OP_parser.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_parser.sen -- Parser Op (SQL Compiler)                                  */\n"
@@ -1994,13 +2084,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 19 CONSTANT OP_parser.sen "_Stz;
+  szSubScriptDef = " 20 CONSTANT OP_parser.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [20] OP_metaRecv.sen
+  // munge of [21] OP_metaRecv.sen
 
-  gszaMungedText[20] =
+  gszaMungedText[21] =
     "\" munged OP_metaRecv.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_metaRecv.sen -- Operator meta recv                                      */\n"
@@ -2079,13 +2169,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 20 CONSTANT OP_metaRecv.sen "_Stz;
+  szSubScriptDef = " 21 CONSTANT OP_metaRecv.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [21] pp_scan.sen
+  // munge of [22] pp_scan.sen
 
-  gszaMungedText[21] =
+  gszaMungedText[22] =
     "\" munged pp_scan.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* pp_scan.sen -- define scan related procedures                              */\n"
@@ -2245,13 +2335,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 21 CONSTANT pp_scan.sen "_Stz;
+  szSubScriptDef = " 22 CONSTANT pp_scan.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [22] test_sleep.sen
+  // munge of [23] test_sleep.sen
 
-  gszaMungedText[22] =
+  gszaMungedText[23] =
     "\" munged test_sleep.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* test_sleep.sen -- sleep test                                               */\n"
@@ -2273,13 +2363,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 22 CONSTANT test_sleep.sen "_Stz;
+  szSubScriptDef = " 23 CONSTANT test_sleep.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [23] db_index.sen
+  // munge of [24] db_index.sen
 
-  gszaMungedText[23] =
+  gszaMungedText[24] =
     "\" munged db_index.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* db_index.sen -- index related words                                        */\n"
@@ -2577,13 +2667,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 23 CONSTANT db_index.sen "_Stz;
+  szSubScriptDef = " 24 CONSTANT db_index.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [24] OP_statWrite.sen
+  // munge of [25] OP_statWrite.sen
 
-  gszaMungedText[24] =
+  gszaMungedText[25] =
     "\" munged OP_statWrite.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_statWrite.sen -- Operator statWrite                                     */\n"
@@ -2688,101 +2778,7 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 24 CONSTANT OP_statWrite.sen "_Stz;
-  vCompileMungedColon(szSubScriptDef);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [25] OP_toDfload.sen
-
-  gszaMungedText[25] =
-    "\" munged OP_toDfload.sen \" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* OP_toDfload.sen -- Operator To Dfload                                      */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\" OP_toDfload.sen\" .verbose\n"
-    "\n"
-    "// ... to be coded\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* handler for EV_I_PATH ...                                                  */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": toDfload_PathInfo \\handler\n"
-    " \n"
-    "  \"toDfload_PathInfo\" .\n"
-    "\n"
-    "  PipeIn[] to InfoSet[]\n"
-    "  nullptr to Pipein[]\n"
-    "\n"
-    "  // find the __path table def\n"
-    "  C_TDEF_PATH op__tableDef_infoSet assert\n"
-    "\n"
-    "  InfoSet[].firstRow to infoSetRow[]\n"
-    "\n"
-    "  0 InfoSet[].colVal@ locals| sPath | sPath .\n"
-    "  1 InfoSet[].colVal@ locals| iPathNo | iPathNo .\n"
-    "  2 InfoSet[].colVal@ locals| iPathOf | iPathOf .\n"
-    "  InfoSet[].delete\n"
-    "\n"
-    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "\n"
-    "  sPath <tableNm> \"dfload %v \\\"%v\\\"\" str.format locals| sRequest |\n"
-    "  sRequest .\n"
-    "\n"
-    "  // find the __callPipeline table def\n"
-    "  C_TDEF_CALLPIPELINE op__tableDef_infoSet assert\n"
-    "\n"
-    "  // create an infoSet operand\n"
-    "  infoSetTable[] InfoSet[].new\n"
-    "    OI_CALLPIPELINE InfoSet[].opInfoset!\n"
-    "\n"
-    "  iPathOf iPathNo sRequest 3 InfoSet[].addRowVargs\n"
-    "    \n"
-    "  InfoSet[].pipeOut\n"
-    "\n"
-    "  true\n"
-    " ;\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* execute for call pipeline req                      (on node where spawned) */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    " : toDfload_op \\operator\n"
-    "\n"
-    "  _lu_initialise_\n"
-    "\n"
-    "  op__topology\n"
-    "\n"
-    "  find: toDfload_PathInfo EV_I_PATH [op].handler!\n"
-    "\n"
-    "  op__loop\n"
-    "\n"
-    "  _lu_finalise_\n"
-    "  \n"
-    "  op__retires\n"
-    "  \n"
-    "  HAZARD\n"
-    " ;\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/*                                                                            */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "cmdSyntax: toDfload :: toDfload <tableNm> ;\n"
-    "\n"
-    ": toDfload_cmdTags _cmdTags tagCopy: op_tags\n"
-    "  tags{\n"
-    "    <cmdDesc> = \"--desc for op--\"\n"
-    "    <opEntry> = \"toDfload_op\"\n"
-    "  }\n"
-    " ;\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    ""_Stz
-  ;
-
-  szSubScriptDef = " 25 CONSTANT OP_toDfload.sen "_Stz;
+  szSubScriptDef = " 25 CONSTANT OP_statWrite.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -5707,105 +5703,13 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     "\n"
     ": start::defProc_Dload\n"
-    "\n"
+    " \n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "  // dfload\n"
     "  \n"
     "  STD_PATH_TAG\n"
     "  \"\n"
     "  procedure dfload\n"
-    "    parameters $table $file\n"
-    "  begin\n"
-    "\n"
-    "  stage stageA on origin :\n"
-    "\n"
-    "    start              |\n"
-    " \n"
-    "    pulse once    |\n"
-    "\n"
-    "    stageB\n"
-    "\n"
-    "  stage stageB on all nodes :\n"
-    "\n"
-    "    chunk $file        | // read chunks of file, produce (seekOffset) =>\n"
-    "    // dump seekOffsets 1 |\n"
-    "\n"
-    "    rdCsvChunk $file   | // (seekOffset) => (csvBuffer)\n"
-    "    // dump csvBuffer 0   |\n"
-    "\n"
-    "    stageC localRobin\n"
-    "\n"
-    "  stage stageC on all partitions :\n"
-    "\n"
-    "    toKeyHshRow $table    | // (csvBuffer)  => (rowBuffer)\n"
-    "    // dump rowBuffer 1   |\n"
-    "\n"
-    "    toLglPtnRow $table    | // (rowBuffer)  => (rowBuffer 'ptn)\n"
-    "    // dump rowBuffer 1   |\n"
-    "\n"
-    "    toLglPtnNst           | // (rowBuffer)  => (rowBuffer 'nst)\n"
-    "    //dump rowBuffer 1   |\n"
-    "\n"
-    "    toHshCrw           | // (rowBuffer)  => (crwBuffer 'hsh)\n"
-    "    //dump rowBuffer 1   |\n"
-    "\n"
-    "    stageD hashcast\n"
-    "\n"
-    "  stage stageD on all partitions :\n"
-    "\n"
-    "    //eatSome |\n"
-    "\n"
-    "    insert $table | // (crwBuffer) inserted into table\n"
-    "\n"
-    "    stageE\n"
-    "\n"
-    "  stage stageE on origin :\n"
-    "\n"
-    "    progress 'Load'    |\n"
-    "\n"
-    "    toStatDemon        |\n"
-    "\n"
-    "    sink               |\n"
-    "\n"
-    "    stageA\n"
-    "\n"
-    "  end ;\n"
-    "  \"\n"
-    "  procedure::add\n"
-    "\n"
-    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "  // dload\n"
-    "  \n"
-    "  STD_PATH_TAG\n"
-    "  \"\n"
-    "  procedure dload\n"
-    "    parameters $table\n"
-    "  begin\n"
-    "\n"
-    "    stage stageA on origin :\n"
-    "        start\n"
-    "      | pulse once\n"
-    "      | eachPathTag\n"
-    "      |   toDfload $table\n"
-    "      | callPipeline\n"
-    "      | waitPipeline\n"
-    "      | sink\n"
-    "      | stageA\n"
-    "\n"
-    "  end ;\n"
-    "  \"\n"
-    "  procedure::add\n"
-    " \n"
-    " \n"
-    "  //----------------------------------------------------------------------------\n"
-    " \n"
-    " \n"
-    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "  // dfload2\n"
-    "  \n"
-    "  STD_PATH_TAG\n"
-    "  \"\n"
-    "  procedure dfload2\n"
     "    parameters $table $file\n"
     "  begin\n"
     "\n"
@@ -5831,47 +5735,23 @@ void Task::vAddMunged(Task* )
     "    | next\n"
     "\n"
     "  stage stageE on origin :\n"
-    "    progress 'Load'\n"
-    "    |  toStatDemon\n"
+    "      progress 'Load'\n"
+    "    | toStatDemon\n"
     "    | output\n"
-    "    //|  respond\n"
-    "    |  sink\n"
-    "    |  stageA\n"
+    "    | sink\n"
+    "    | stageA\n"
     "\n"
     "  end ;\n"
     "  \"\n"
     "  procedure::add\n"
     "\n"
-    "\n"
-    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "  // dload2\n"
-    "  \n"
-    "  STD_PATH_TAG\n"
-    "  \"\n"
-    "  procedure dload2\n"
-    "    parameters $table\n"
-    "  begin\n"
-    "\n"
-    "    stage stageA on origin :\n"
-    "        start\n"
-    "      | pulse once\n"
-    "      | eachPathTag\n"
-    "      | pathToDfload2 $table\n"
-    "      | forkCommand waitFinished\n"
-    "      | waitFinished\n"
-    "      | sink\n"
-    "      | stageA\n"
-    "\n"
-    "  end ;\n"
-    "  \"\n"
-    "  procedure::add\n"
     "  \n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "  // dload_test\n"
     "  \n"
     "  STD_PATH_TAG\n"
     "  \"\n"
-    "  procedure dload_test\n"
+    "  procedure dload\n"
     "    parameters $table\n"
     "  begin\n"
     "\n"
@@ -5879,7 +5759,7 @@ void Task::vAddMunged(Task* )
     "        start\n"
     "      | pulse once\n"
     "      | eachPathTag\n"
-    "      | pathToDfload2 $table\n"
+    "      | pathToDfload $table\n"
     "      | forkCommand waitFinished\n"
     "      | waitFinished\n"
     "      | sink\n"
@@ -19365,9 +19245,9 @@ void Task::vAddMunged(Task* )
     "\n"
     "/*\n"
     "\n"
-    "  Counter0[] : tracks the number of EV_M_FINISHED expected\n"
+    "  Counter0[] : tracks the number of EV_X_CHILDEXIT expected\n"
     "  \n"
-    "  Counter1[] : tracks the number of EV_M_FINISHED processed so far\n"
+    "  Counter1[] : tracks the number of EV_X_CHILDEXIT processed so far\n"
     "\n"
     "*/\n"
     "\n"
@@ -19376,9 +19256,7 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": waitFinished_mayProceed\n"
     "\n"
-    "  \"  : waitFinished_mayProceed\" .\n"
-    "\n"
-    "  Counter1[] Counter0[] \"    expected %v processed %v\" .printf\n"
+    "  //Counter1[] Counter0[] \"    expected %v processed %v\" .printf\n"
     "\n"
     "  Counter0[] not if\n"
     "    false\n"
@@ -19399,8 +19277,10 @@ void Task::vAddMunged(Task* )
     "\n"
     "  0 EV_X_CHILDEXIT EG_ZK LogicUnit[].diaryNote\n"
     "\n"
+    "  // increment EV_X_CHILDEXIT's processed Counter1\n"
     "  Counter1[] 1 + to Counter1[]\n"
     "\n"
+    "  // may proceed ?\n"
     "  waitFinished_mayProceed if\n"
     "\n"
     "    true LogicUnit[].RcvdChildExit!\n"
@@ -19412,7 +19292,7 @@ void Task::vAddMunged(Task* )
     "      Marker[].pipeout\n"
     "    then\n"
     "\n"
-    "    \"waitFinished_ChildExit\" .\n"
+    "    //\"waitFinished_ChildExit\" .\n"
     "  then\n"
     "\n"
     "  Pipein[].delete\n"
@@ -19429,6 +19309,8 @@ void Task::vAddMunged(Task* )
     "\n"
     "  true LogicUnit[].RcvdEnd!\n"
     "\n"
+    "  // if received all child exits then pipeout END\n"
+    "  //   else wait till all child exits have been received\n"
     "  LogicUnit[].RcvdChildExit@ if\n"
     "     PipeIn[].pipeout\n"
     "  else\n"
@@ -19445,85 +19327,20 @@ void Task::vAddMunged(Task* )
     "/* handler for EV_I_COUNT ...                                                 */\n"
     "/*----------------------------------------------------------------------------*/\n"
     ": waitFinished_Count \\handler\n"
-    "  \n"
-    "  [EvMgr].curEventNm@ \"%v\" .printf\n"
     "\n"
     "  PipeIn[]\\clear to InfoSet[]\n"
     "  \n"
     "  0 C_TDEF_COUNT InfoSet:getCol to Counter0[]\n"
     "  \n"
-    "  Counter0[] \"  expecting %v commands\" .printf\n"
+    "  //Counter0[] \"  expecting %v commands\" .printf\n"
     "\n"
     "  true\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
-    "/* handler for EV_M_END ...                                                   */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/*\n"
-    ": waitFinished_End \\handler\n"
-    "\n"
-    "  [EvMgr].curEventNm@ \"%v\" .printf\n"
-    "\n"
-    "  PipeIn[].delete\n"
-    "\n"
-    "  waitFinished_mayProceed if\n"
-    "  \n"
-    "    \"  may proceed\" .printf\n"
-    "    \n"
-    "    Marker[].newEndMarker\n"
-    "    Marker[].pipeOut\n"
-    "    true\n"
-    "    \n"
-    "  else\n"
-    "  \n"
-    "    \"  cannot proceed\" .printf\n"
-    "\n"
-    "    Marker[].newEndMarker\n"
-    "    Marker[].pipeOut\n"
-    "    true\n"
-    "    \n"
-    "  then\n"
-    " ;\n"
-    "*/\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* handler for EV_M_FINISHED_handler ...                                      */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/*\n"
-    ": waitFinished_Finished \\handler\n"
-    "\n"
-    "  [EvMgr].curEventNm@ \"%v\" .printf\n"
-    "\n"
-    "  Counter1[] 1 + to Counter1[]\n"
-    "  \n"
-    "  PipeIn[].delete\n"
-    "\n"
-    "  waitFinished_mayProceed if\n"
-    "  \n"
-    "    [EvMgr].curEventNm@ \"  %v may proceed\" .printf\n"
-    "    \n"
-    "    Marker[].newEndMarker\n"
-    "    Marker[].pipeOut\n"
-    "    true\n"
-    "    \n"
-    "  else\n"
-    "  \n"
-    "    [EvMgr].curEventNm@ \"  %v cannot proceed\" .printf\n"
-    "\n"
-    "    Marker[].newEndMarker\n"
-    "    Marker[].pipeOut\n"
-    "    true\n"
-    "    \n"
-    "  then\n"
-    " ;\n"
-    "*/\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
     "/* handler for EV_M_START ...                                                 */\n"
     "/*----------------------------------------------------------------------------*/\n"
     ": waitFinished_Start \\handler\n"
-    "  \n"
-    "  [EvMgr].curEventNm@ \"%v\" .printf\n"
     "    \n"
     "  0 to Counter0[] // tracks the number of EV_X_CHILDEXIT expected\n"
     "  0 to Counter1[] // tracks the number of EV_X_CHILDEXIT processed so far\n"
@@ -19546,7 +19363,6 @@ void Task::vAddMunged(Task* )
     "\n"
     "  find: waitFinished_Count     EV_I_COUNT     [op].handler!\n"
     "  find: waitFinished_End       EV_M_END       [op].handler!\n"
-    "  //find: waitFinished_Finished  EV_M_FINISHED  [op].handler!\n"
     "  find: waitFinished_Start     EV_M_START     [op].handler!\n"
     "\n"
     "  find: waitFinished_ChildExit EV_X_CHILDEXIT     [op].handler!\n"
@@ -24532,47 +24348,29 @@ void Task::vAddMunged(Task* )
     "/* handler for EV_I_COMMAND ...                                               */\n"
     "/*----------------------------------------------------------------------------*/\n"
     ": forkCommand_Command \\handler\n"
-    "\n"
-    "  [EvMgr].curEventNm@ \"%v\" .printf\n"
     "  \n"
     "  0 0 locals| eError tForkedJobId |\n"
     "  \n"
     "  PipeIn[]\\clear to InfoSet[]\n"
     "\n"
+    "  // get the command to be forked\n"
     "  0 C_TDEF_COMMAND InfoSet:getCol locals| sForkCmd |\n"
     "\n"
-    "  sForkCmd \"  forkCmd=%v\" .printf\n"
+    "  //sForkCmd \"  forkCmd=%v\" .printf\n"
     "\n"
-    "/*\n"
-    "  STD_NOWAIT_TAG sForkCmd api::forkChildOld if\n"
-    "    to tForkedJobId\n"
-    "    tForkedJobId \"forkCommand: job %v\" .printf\n"
-    "  else\n"
-    "    to eError\n"
-    "    eError ErrorCode::decodeError eError \"forkCommand: error %v %v\" .printf\n"
-    "  then\n"
-    "*/\n"
-    "\n"
-    "\n"
-    "  // spawn a job for the load\n"
+    "  // fork a child job for the command\n"
     "  STD_NORMALFORK_TAG sForkCmd api::forkChild not if\n"
-    "    //\"Error Code %v\" .printf\n"
     "    op__execErr\n"
     "    true\n"
     "    exit\n"
     "  else\n"
-    "    //[Op] [job].responseOp!\n"
+    "    // set the responseOp for the responses coming from the forked child\n"
     "    <responseOpNm> [stream].findOp locals| pResponseOp |\n"
-    "    pResponseOp op.name@ \"  responseOp=%v\" .printf\n"
     "    pResponseOp [job].responseOp!\n"
-    "\n"
-    "    // set the new ENDMARKER handler\n"
-    "    //find: forkCommand_End       EV_M_END       [op].handler!\n"
     "  then\n"
     "\n"
     "  true\n"
     " ;\n"
-    "\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -28435,7 +28233,7 @@ void Task::vAddMunged(Task* )
     "  // now delete the InfoSet[]\n"
     "  InfoSet[].delete\n"
     "  \n"
-    "  Counter0[] \"Total Units: %v\" .printf\n"
+    "  //Counter0[] \"Total Units: %v\" .printf\n"
     "\n"
     "  true\n"
     " ;\n"
@@ -33887,8 +33685,7 @@ void Task::vAddMunged(Task* )
     "  \"OP_toLglPtnRow.sen\"          include\n"
     "  \"OP_toCsv.sen\"                include\n"
     "  \"OP_toDemon.sen\"              include\n"
-    "  \"OP_toDfload.sen\"             include\n"
-    "  \"OP_pathToDfload2.sen\"        include\n"
+    "  \"OP_pathToDfload.sen\"         include\n"
     "  \"OP_top.sen\"                  include\n"
     "  \"OP_toStatDemon.sen\"          include\n"
     "  \"OP_totalCount.sen\"           include\n"
@@ -34593,8 +34390,6 @@ void Task::vAddMunged(Task* )
     ": deck:invoke\n"
     "\n"
     "  Deck[] assert\n"
-    "  \n"
-    "  [task].isLocked? not assert\n"
     "  \n"
     "  Deck[].opsExeOnNode@ locals| nAcks |\n"
     "\n"
@@ -39862,101 +39657,9 @@ void Task::vAddMunged(Task* )
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [390] OP_pathToDfload2.sen
+  // munge of [390] OP_pageIn.sen
 
   gszaMungedText[390] =
-    "\" munged OP_pathToDfload2.sen \" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* OP_pathToDfload2.sen -- Operator Path To Dfload                            */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\" OP_pathToDfload2.sen\" .verbose\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* handler for EV_I_PATH ... an infoset with __path rows                      */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": pathToDfload2_Path \\handler\n"
-    " \n"
-    "  // \"pathToDfload2_Path\" .\n"
-    "\n"
-    "  PipeIn[]\\clear to InfoSet[]\n"
-    "\n"
-    "  C_TDEF_PATH infoSetRow:getFirstRow\n"
-    "\n"
-    "  // extract the values\n"
-    "  0 InfoSet[].colVal@ locals| sPath   |\n"
-    "  1 InfoSet[].colVal@ locals| iPathNo |\n"
-    "  2 InfoSet[].colVal@ locals| iPathOf | \n"
-    "  \n"
-    "  // print the __path data\n"
-    "  //iPathOf iPathNo sPath \"pathToDfload2: %v %v %v\" .printf\n"
-    "\n"
-    "  InfoSet[].delete\n"
-    "  nullptr to InfoSetRow[]\n"
-    "\n"
-    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "\n"
-    "  sPath <tableNm> \"dfload2 %v \\\"%v\\\"\" str.format locals| sCmd |\n"
-    "\n"
-    "  sCmd \"pathToDfload2: %v\" .printf\n"
-    "\n"
-    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "\n"
-    "  // temp debug\n"
-    "  //true exit\n"
-    "\n"
-    "  C_TDEF_COMMAND InfoSet:discover\n"
-    "  sCmd 1 OI_COMMAND InfoSet:pipeoutRow\n"
-    "\n"
-    "  true\n"
-    " ;\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* execute for call pipeline req                      (on node where spawned) */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    " : pathToDfload2_op \\operator\n"
-    "\n"
-    "  _lu_initialise_\n"
-    "\n"
-    "  op__topology\n"
-    "\n"
-    "  find: pathToDfload2_Path  EV_I_PATH  [op].handler!\n"
-    "\n"
-    "  op__loop\n"
-    "\n"
-    "  _lu_finalise_\n"
-    "  \n"
-    "  op__retires\n"
-    "  \n"
-    "  HAZARD\n"
-    " ;\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/*                                                                            */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "cmdSyntax: pathToDfload2 :: pathToDfload2 <tableNm> ;\n"
-    "\n"
-    ": pathToDfload2_cmdTags _cmdTags tagCopy: op_tags\n"
-    "  tags{\n"
-    "    <cmdDesc> = \"--desc for op--\"\n"
-    "    <opEntry> = \"pathToDfload2_op\"\n"
-    "  }\n"
-    " ;\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    ""_Stz
-  ;
-
-  szSubScriptDef = " 390 CONSTANT OP_pathToDfload2.sen "_Stz;
-  vCompileMungedColon(szSubScriptDef);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [391] OP_pageIn.sen
-
-  gszaMungedText[391] =
     "\" munged OP_pageIn.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_pageIn.sen -- Page In Operator                                          */\n"
@@ -40032,13 +39735,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 391 CONSTANT OP_pageIn.sen "_Stz;
+  szSubScriptDef = " 390 CONSTANT OP_pageIn.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [392] OP_inflateRows.sen
+  // munge of [391] OP_inflateRows.sen
 
-  gszaMungedText[392] =
+  gszaMungedText[391] =
     "\" munged OP_inflateRows.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_inflateRows.sen -- inflate rows from rowBuffer into same                */\n"
@@ -40131,7 +39834,7 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 392 CONSTANT OP_inflateRows.sen "_Stz;
+  szSubScriptDef = " 391 CONSTANT OP_inflateRows.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 }
 
