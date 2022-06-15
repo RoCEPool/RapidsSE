@@ -220,9 +220,12 @@ void SePrompt::vPromptLoop(void)
  
 //    Stz* szRaw = szRawInput();
 //    vTrace("SePrompt got command : %s\n"_Stz,szRaw);
-    
-    if (! bExamineCommand())
+    eEC eErrorCode = EC_NONE;
+    if (! bExamineCommand(&eErrorCode)){
+      if(eErrorCode != EC_NONE)
+        vTrace("error: %s\n"_Stz,aErrorMsg[eErrorCode]);
       continue;
+    }
 
     //vTrace("Prompt-RawInput: %s\n"_Stz,m_pInput->szRawInput());
     
@@ -412,7 +415,7 @@ void SePrompt::vDumpInpTknVec(bool bForce)
 /*----------------------------------------------------------------------------*/
 /* examine command                                                            */
 /*----------------------------------------------------------------------------*/
-bool SePrompt::bExamineCommand(void)
+bool SePrompt::bExamineCommand(eEC* eErrorCode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
     
@@ -422,7 +425,7 @@ bool SePrompt::bExamineCommand(void)
   if (bDumpTokens())
     vDumpInpTknVec(false);
 
-  if (bTagCommand())
+  if (bTagCommand(eErrorCode))
     return false;
   
   if (bShortCut())
@@ -438,7 +441,7 @@ bool SePrompt::bExamineCommand(void)
   if (bIsPromptWord())
     m_pInpTknVec->vInsertToken(0,"docol"_Stz,TN_NAME);
 
-  if (bPromptFunction())
+  if (bPromptFunction(eErrorCode))
     return false;
 
   return true;
@@ -747,15 +750,18 @@ void SePrompt::vPrintPrompt(void)
 /*----------------------------------------------------------------------------*/
 /* potentially execute a prompt function                                      */
 /*----------------------------------------------------------------------------*/
-bool SePrompt::bPromptFunction(void)
+bool SePrompt::bPromptFunction(eEC* eErrorCode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   Timer oTimer;
 
   PromptFun* pPromptDesc =
-    gxPromptCatalog.pFindFun(pTkn(0)->szChars(), pTkn(1)->szChars());
-  
+    gxPromptCatalog.pFindFun(pTkn(0)->szChars(), pTkn(1)->szChars(), eErrorCode);
+
+  if (*eErrorCode == EC_DISABLED_STATEMENT)
+    return true;
+
   if (! pPromptDesc)
     return false;
   
@@ -1093,7 +1099,7 @@ bool SePrompt::bStdIn(void)
 /*----------------------------------------------------------------------------*/
 /* is the tag command ?                                                       */
 /*----------------------------------------------------------------------------*/
-bool SePrompt::bTagCommand(void)
+bool SePrompt::bTagCommand(eEC* eErrorCode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
@@ -1102,7 +1108,7 @@ bool SePrompt::bTagCommand(void)
   if (! pTkn0->bSame("tag"_Stz))
     return false;
   
-  bool b = bPromptFunction();
+  bool b = bPromptFunction(eErrorCode);
   UNUSED(b);
   
   return true;

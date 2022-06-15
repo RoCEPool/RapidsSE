@@ -2745,6 +2745,62 @@ bool StrLib::bIsInteger(char* ps)
   
   return true;
 }
+/*----------------------------------------------------------------------------*/
+/* bIsIPAddr: is the string a valid IP address ?                              */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsIPAddr(const char* ps)
+{
+  _static_
+
+  i8 i = 0;
+  i8 iDotCount = 0;
+  i8 iOctetCount = 0;
+  bool bOctetFlag = false;
+
+  while(*ps && bIsWhite(*ps))
+  {
+    ps++;
+    continue;
+  }
+
+  while(*ps)
+  {
+    i = 0;
+    while (*ps && bIsDigit(*ps)) {
+      i8 j = (*ps++ - '0');
+      i = i * 10 + j;
+      bOctetFlag = true;
+    }
+
+    if(i < 0 || i > 255)
+      return false;
+
+    if(bOctetFlag) {
+      iOctetCount++;
+      bOctetFlag = false;
+    }
+    else
+      return false;
+
+    if(iOctetCount > 4)
+      return false;
+
+    if (*ps && '.' != *ps) {
+      return false;
+    }
+    else if (*ps && '.' == *ps) {
+      ps++;
+      iDotCount++;
+      if(iDotCount > 3)
+        return false;
+    }
+  }
+
+  if(iDotCount != 3 || iOctetCount != 4)
+    return false;
+  else
+    return true;
+}
 
 /*----------------------------------------------------------------------------*/
 /* is char an alphabetic, numeric digit, '_' or '$'?                          */
