@@ -36403,7 +36403,7 @@ void Task::vAddMunged(Task* )
     "  begin\n"
     "\n"
     "    // [args].demonSleep thread::sleepSsec\n"
-    "    1 thread::sleepSsec\n"
+    "    //1 thread::sleepSsec\n"
     "\n"
     "    reap_activity\n"
     "\n"
