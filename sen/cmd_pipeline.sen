@@ -59,13 +59,13 @@
 /* org_ org */      Path[].discardAll
 /* org_ org */      [task].grabLock
 /* org_ org */      [job].addExited
-/* org_ org */      [job].updateParent
 /* org_ org */
 /* org_ org */      [args].distJob if
 /* org_ org */        "pipeline" "origin"
 /* org_ org */        "org_ org" "<preCheck> signalling parent"       [job].trace
 /* org_ org */      then
 /* org_ org */
+/* org_ org */      [job].updateParent
 /* org_ ovr */      [job].error@ [job].signalParent
 /* org_ org */
 /* org_ org */        [task].retire // does not queue onto exit demon
@@ -89,13 +89,13 @@
 /* org_ org */    Path[].discardAll
 /* org_ org */    [task].grabLock
 /* org_ org */    [job].addExited
-/* org_ org */    [job].updateParent
 /* org_ org */
 /* org_ org */      [args].distJob if
 /* org_ org */        "pipeline" "origin"
 /* org_ org */        "org_ org" "preExecuteTest signalling parent"       [job].trace
 /* org_ org */      then
 /* org_ org */
+/* org_ org */    [job].updateParent
 /* org_ ovr */    [job].error@ [job].signalParent
 /* org_ ovr */
 /* org_ ovr */    true [job].reapable!
