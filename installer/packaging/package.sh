@@ -20,6 +20,7 @@ set -Eeo pipefail
 #  NO_MOD_CHECK  - don't check for modified files that haven't been committed.
 #  NO_BUILD      - don't compile the software
 #  NO_SHELLCHECK - don't run shellcheck on the scripts beforehand.
+#  KEEP_OBJECTS  - don't remove build objects afterwards. Implied with NO_BUILD
 
 ###############################################################################
 ### Constants                                                               ###
@@ -29,6 +30,7 @@ readonly ROOT_DIR="${DIR}/../.."
 readonly LAYOUT_DIR="${DIR}/../layout"
 readonly OUTPUT_DIR="${DIR}/../output"
 readonly SOURCE_DIR="${ROOT_DIR}/src"
+readonly OBJECT_DIR="${ROOT_DIR}/build/obj"
 
 readonly MAKESELF_DIR=$(find "${ROOT_DIR}/thirdparty/" -type d -name "makeself*")
 
@@ -219,6 +221,10 @@ if [ -n "${DEBUG}" ] ; then echo "Generating the version file"; fi;
 ### (Optional) Compile the software ###
 if [ -n "${DEBUG}" ] ; then echo "Compiling RapidsSE"; fi;
 
+if [ -n "${NO_BUILD}" ]; then
+  KEEP_OBJECTS=1
+fi
+
 if [ -z "${NO_BUILD}" ] || [ "${NO_BUILD}" -ne 1 ] 
 then
 
@@ -264,6 +270,12 @@ if [ -n "${DEBUG}" ] ; then echo "Generating the run file"; fi;
 OUTPUT_FILE="rapidsse-${SE_VERSION_STR}.run"
 
 "${MAKESELF_DIR}/makeself.sh" "${MAKESELF_ARGS[@]}" "${LAYOUT_DIR}" "${OUTPUT_DIR}/${OUTPUT_FILE}" "RapidsSE files..." "${SETUP_SCRIPT}" 
+
+### Remove object files to reduce disk space requirements
+echo "Cleaning up"
+if [ -n "${KEEP_OBJECTS}" ]; then
+  rm -rf "${OBJECT_DIR}" || true
+fi
 
 FILESIZE="$(du -k "${OUTPUT_DIR}/${OUTPUT_FILE}" | cut -f1)"
 printf "Size of installer: %'d kB\n" "${FILESIZE}"

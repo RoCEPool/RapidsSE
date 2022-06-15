@@ -27,6 +27,7 @@ readonly BIN_DIR="${PROJ_ROOT}/bin"
 readonly SRC_DIR="${PROJ_ROOT}/src"
 readonly PKG_DIR="${PROJ_ROOT}/installer/packaging"
 readonly OUT_DIR="${PROJ_ROOT}/installer/output"
+readonly OBJ_DIR="${PROJ_ROOT}/build/obj"
 
 readonly COMMON_FN="${DIR}/common.fn"
 
@@ -137,6 +138,10 @@ compileSE "${TARGET}"
 
 # Put together the installer
 assembleSE "${TARGET}"
+
+# Remove the object directory and its contents. These are not needed after building SE
+# and end up needlessly consuming lots of disk space for each branch.
+rm -rf "${OBJ_DIR}" || true
 
 # Set this flag that the script completed successfully.
 # This will be picked up in the exit hook.
