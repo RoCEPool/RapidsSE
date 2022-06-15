@@ -81,7 +81,6 @@ C_KEYPAIR_NAME = "aws_rapidsse"
 #
 
 # ---------- Other Constants -------------
-C_USE_CASE_NAME = "MakeRelease"
 # C_PROJ_ROOT = ".."
 # C_CLOUD_INIT_SCRIPT = f"{C_PROJ_ROOT}/seth/bamboo/aws/cloud-init-downloader.sh"
 C_CLOUD_INIT_COMPLETE = "/tmp/cloud-init-complete"
@@ -99,9 +98,27 @@ def describe_instances():
     pprint.pprint(response)
 
 
+def get_image_desc(image_id: string) -> string:
+    session, client = __get_session_client()
+
+    kwargs = {
+        "ImageIds": [image_id],
+        "DryRun": False
+    }
+
+    LOG.info("Getting the OS for the imageId: %s", image_id)
+    response = client.describe_images(**kwargs)
+    LOG.debug(f"Response of describe_images command:\n{pprint.pformat(response)}")
+
+    image_name = response["Images"][0]["Name"]
+    return image_name
+
+
 def start_instances(instance_type: string,
                     image_id: string,
                     cloudinit_path: string,
+                    count: int,
+                    name_prefix: string,
                     timeout_sec: float) -> ([string], [string]):
     """
     Starts up AWS EC2 instances according to the hardware configuration
@@ -120,8 +137,8 @@ def start_instances(instance_type: string,
     # https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ec2.html#EC2.Client.run_instances
     kwargs = {
         "InstanceType": instance_type,
-        "MinCount": 1,
-        "MaxCount": 1,
+        "MinCount": count,
+        "MaxCount": count,
         "InstanceInitiatedShutdownBehavior": "terminate",
         "ImageId": image_id,
         "KeyName": C_KEYPAIR_NAME,
@@ -148,7 +165,7 @@ def start_instances(instance_type: string,
             "ResourceType": "instance",
             "Tags": [
                 {
-                    "Key": C_USE_CASE_NAME,
+                    "Key": name_prefix,
                     "Value": ""
                 }]
         }]}
@@ -206,7 +223,7 @@ def start_instances(instance_type: string,
             "Tags": [
                 {
                     "Key": "Name",
-                    "Value": f"{C_USE_CASE_NAME}{n:02}"
+                    "Value": f"{name_prefix}{n:02}"
                 }
             ]
         }
@@ -281,7 +298,7 @@ def is_valid_instance_type(instance_type: string) -> bool:
     try:
         __check_instance_type(client, instance_type)
         return True
-    except botocore.exceptions.ClientError as e:
+    except botocore.exceptions.ClientError:
         return False
 
 
@@ -301,7 +318,7 @@ def is_valid_image_id(image_id: string) -> bool:
     try:
         __check_image_id(client, image_id)
         return True
-    except botocore.exceptions.ClientError as e:
+    except botocore.exceptions.ClientError:
         return False
 
 

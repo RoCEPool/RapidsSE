@@ -8,14 +8,17 @@ import argparse
 
 import common.errors as errors
 from common.releaseconfig import ReleaseConfig
-from buildrunner import BuildRunner
-import repo
+from releasebuilder.buildrunner import BuildRunner
+import releasebuilder.repo as repo
+import releasebuilder.results as results
 
 C_PROG_RUN = "pipenv run python -m releasebuilder"
 C_CWD_SUFFIX = "makerelease"
 
 C_DEFAULT_RESULT_DIR = "./results"
 C_DEFAULT_ARTIFACT_DIR = "./artifacts"
+C_DEFAULT_RESULT_FILENAME = "results.xml"
+C_TEST_SUITE_NAME = "Release Test"
 
 # Create a main logger
 LOG = logging.getLogger(__name__)
@@ -49,6 +52,9 @@ def main() -> int:
     # Read in the config file and validate it
     config = ReleaseConfig(str(config_path))
 
+    # Create a result object and let the buildrunner and testrunner fill it in appropriately.
+    result_list: [results.TestResult] = []
+
     # Clone the repository.
     # We do this because bamboo uses a cached repository strategy and the current repo
     # cannot be copied to another node as it uses hard links for files to fixed paths
@@ -57,19 +63,20 @@ def main() -> int:
     # clean up the temporary cloned repo before we exit.
     clone_repo_path = repo.clone_repo(repo_path)
 
-    # TODO: Create a result object and let the buildrunner and testrunner fill it in appropriately.
-    #       They need to properly handle and capture errors.
-
     try:
-        buildrunner = BuildRunner(result_path, artifact_path, clone_repo_path, config)
+        buildrunner = BuildRunner(artifact_path, clone_repo_path, config, result_list)
         buildrunner.run()
 
-        # testrunner = TestRunner(result_path, artifact_path, clone_repo_path, config)
+        # testrunner = TestRunner(artifact_path, clone_repo_path, config, result_list)
         # testrunner.run()
 
     finally:
         # Clean up the cloned repository
         shutil.rmtree(clone_repo_path, ignore_errors=True)
+
+        # Write out the results to result_path
+        result_file = result_path / C_DEFAULT_RESULT_FILENAME
+        results.summarise_to_junit(result_list, result_file, C_TEST_SUITE_NAME)
 
     return 0
 

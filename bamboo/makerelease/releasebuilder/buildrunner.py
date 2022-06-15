@@ -1,34 +1,241 @@
 """"Runs the build job"""
-import string
 import logging
 import pathlib
+import subprocess
+import os
+import fnmatch
 
 import common.ec2 as ec2
+import common.ssh as ssh
 import common.errors as errors
 from common.releaseconfig import ReleaseConfig
+from releasebuilder.results import TestResult
 
 LOG = logging.getLogger(__name__)
+
+C_TEST_NAME = "Build Release"
+C_INSTANCE_NAME_PREFIX = "MakeRelease"
+C_INSTANCE_START_TIMEOUT = 300.0
+C_INSTALLER_FILESPEC = "rapidsse-*.run"
 
 # How long should we wait for all of the EC2 instances to be started
 # and be ready to use?
 C_EC2_BOOT_TIMEOUT_SEC = 300
+C_SE_BUILD_TIMEOUT_SEC = 600
 
 
 class BuildRunner:
 
     def __init__(self,
-                 result_path: pathlib.Path,
                  artifact_path: pathlib.Path,
                  repo_path: pathlib.Path,
-                 config: ReleaseConfig):
+                 config: ReleaseConfig,
+                 result_list: [TestResult]):
 
-        self.result_path = result_path
         self.artifact_path = artifact_path
         self.repo_path = repo_path
         self.config = config
+        self.result_list = result_list
+        self.test_result = None
+        self.instance_id = None
+        self.ip_addr = None
+        self.remote_home_dir: pathlib.Path = None
+        self.remote_repo_dir: pathlib.Path = None
+        self.installer_path: pathlib.Path = None
 
     def run(self):
         """
         Runs the logic that builds SE on a remote node with a particular image.
         """
-        pass
+
+        # Create a test result and add it to the list
+        self.__create_test()
+
+        try:
+            # Start the EC2 instance to build SE
+            self.__start_build_instance()
+
+            # Copy the repo to this instance
+            self.__copy_repo_to_instance()
+
+            # Build SE on this instance
+            self.__build_se_remotely()
+
+            # Copy the installer from this instance to the artifacts directory
+            self.__collect_installer()
+
+            # Record the successful test completion
+            self.test_result.set_test_ended(True, False)
+
+        except Exception as e:
+            # Record the failed test completion
+            self.test_result.set_test_ended(False, False, None, str(e))
+
+        finally:
+            self.__stop_build_instances()
+
+    def __create_test(self) -> None:
+        """ Create a test result and add it to the list """
+        self.test_result = TestResult(C_TEST_NAME)
+        self.test_result.set_test_started()
+        self.result_list.append(self.test_result)
+
+    def __start_build_instance(self) -> None:
+        """Start the build EC2 instance and save its instance_id and ip_addr"""
+
+        LOG.debug(f"Getting the image name for image_id: {self.config.get_build_image()}")
+        image_name = ec2.get_image_desc(self.config.get_build_image())
+
+        # Start the EC2 instance to build RapidsSE.
+        LOG.info(f"About to start the instance to build RapidsSE on "
+                 f"(instance type: {self.config.get_build_instance()} ; "
+                 f"image name: {image_name}")
+
+        instance_ids, ip_addrs = ec2.start_instances(self.config.get_build_instance(),
+                                                     self.config.get_build_image(),
+                                                     self.config.get_build_cloudinit(),
+                                                     1,
+                                                     C_INSTANCE_NAME_PREFIX,
+                                                     C_INSTANCE_START_TIMEOUT)
+
+        assert len(instance_ids) == 1
+        assert len(ip_addrs) == 1
+        self.instance_id = instance_ids[0]
+        self.ip_addr = ip_addrs[0]
+
+        # Get the absolute path of the home directory on the remote instance
+        self.remote_home_dir = self.__get_instance_home_dir()
+        self.remote_repo_dir = self.remote_home_dir / "repo"
+
+    def __get_instance_home_dir(self) -> pathlib.Path:
+        """Returns the absolute path of the user's home dir when we SSH to the remote node"""
+        command = "pwd"
+        LOG.debug("About to try to get the home directory of the default user on the remote EC2 instance")
+
+        try:
+            result: subprocess.CompletedProcess = ssh.run_ssh(self.ip_addr, command, 10)
+
+        except subprocess.CalledProcessError as e:
+            msg = f"Error while trying to get the user home directory on host {self.ip_addr}: {command}" \
+                  f"\nStdout Output:\n{e.stdout}" \
+                  f"\nStderr Output:\n{e.stderr}"
+            raise errors.ClusterError(msg) from e
+
+        except subprocess.TimeoutExpired as e:
+            msg = f"Getting the user's home directory timed out after {e.timeout} seconds: " \
+                  f"{command}" \
+                  f"\nStdout Output:\n{e.stdout}" \
+                  f"\nStderr Output:\n{e.stderr}"
+            raise errors.ClusterError(msg) from e
+
+        home_dir = result.stdout.trim()
+        assert home_dir is not None
+        assert len(home_dir) > 0
+
+        LOG.debug(f"Successfully got the home directory of the default user on the remote EC2 instance: {home_dir}")
+        return pathlib.Path(home_dir)
+
+    def __stop_build_instances(self) -> None:
+        """Terminates any previously started EC2 instances"""
+
+        if self.instance_id is None:
+            LOG.info("No EC2 instance to stop")
+            return
+
+        LOG.info(f"About to stop EC2 instance with ID: {self.instance_id}")
+        ec2.terminate_instances([self.instance_id])
+
+    def __copy_repo_to_instance(self) -> None:
+        """Copies the repository from the local machine to the remote instance"""
+
+        command_timeout = 60  # seconds
+        src = str(self.repo_path)
+        dest = f"{self.ip_addr}:{str(self.remote_home_dir)}"
+
+        LOG.debug(f"About to copy a test file from {src} to {dest}")
+
+        try:
+            ssh.run_scp(src, dest, command_timeout, recursive=True)
+
+        except subprocess.CalledProcessError as e:
+            msg = f"Error while copying the repository from {src} to {dest}." \
+                  f"\nStdout Output:\n{e.stdout}" \
+                  f"\nStderr Output:\n{e.stderr}"
+            raise errors.ClusterError(msg) from e
+
+        except subprocess.TimeoutExpired as e:
+            msg = f"Copying the repository from {src} to {dest} timed out after {e.timeout} seconds." \
+                  f"\nStdout Output:\n{e.stdout}" \
+                  f"\nStderr Output:\n{e.stderr}"
+            raise errors.ClusterError(msg) from e
+
+        LOG.info(f"Successfully copied the repository from {src} to {dest}")
+
+    def __build_se_remotely(self) -> None:
+        """Builds SE on the remote EC2 instance"""
+
+        command = str(self.remote_repo_dir / "installer" / "packaging" / "package.sh")
+
+        LOG.debug("About to build RapidsSE on the remote EC2 instance")
+
+        try:
+            ssh.run_ssh(self.ip_addr, command, C_SE_BUILD_TIMEOUT_SEC)
+
+        except subprocess.CalledProcessError as e:
+            msg = f"Error while trying to build RapidsSE on host {self.ip_addr}: {command}" \
+                  f"\nStdout Output:\n{e.stdout}" \
+                  f"\nStderr Output:\n{e.stderr}"
+            raise errors.ClusterError(msg) from e
+
+        except subprocess.TimeoutExpired as e:
+            msg = f"Building RapidsSE timed out after {e.timeout} seconds: " \
+                  f"{command}" \
+                  f"\nStdout Output:\n{e.stdout}" \
+                  f"\nStderr Output:\n{e.stderr}"
+            raise errors.ClusterError(msg) from e
+
+        LOG.debug("Successfully built RapidsSE on the remote EC2 instance")
+
+    def __collect_installer(self) -> None:
+        """Copy the installer from the remote machine to the artifacts directory
+           and remember its location.
+        """
+
+        command_timeout = 60  # seconds
+
+        remote_filespec = str(self.remote_repo_dir / "installer" / "output" / "*.run")
+        src = f"{self.ip_addr}:{remote_filespec}"
+        dest = f"{str(self.artifact_path)}"
+
+        LOG.debug(f"About to copy the RapidsSE installer from {src} to {dest}")
+
+        try:
+            ssh.run_scp(src, dest, command_timeout)
+
+        except subprocess.CalledProcessError as e:
+            msg = f"Error while copying the RapidsSE installer from {src} to {dest}." \
+                  f"\nStdout Output:\n{e.stdout}" \
+                  f"\nStderr Output:\n{e.stderr}"
+            raise errors.ClusterError(msg) from e
+
+        except subprocess.TimeoutExpired as e:
+            msg = f"Copying the RapidsSE installer from {src} to {dest} timed out after {e.timeout} seconds." \
+                  f"\nStdout Output:\n{e.stdout}" \
+                  f"\nStderr Output:\n{e.stderr}"
+            raise errors.ClusterError(msg) from e
+
+        LOG.info(f"Successfully copied the RapidsSE installer from {src} to {dest}")
+
+        for root, dirs, files in os.walk(str(self.artifact_path)):
+            for name in files:
+                if fnmatch.fnmatch(name, C_INSTALLER_FILESPEC):
+                    self.installer_path = pathlib.Path(root) / name
+                    LOG.info(f"The RapidsSE installer is found at {str(self.installer_path)}")
+                    return
+
+        msg = f"Could not find the RapidsSE installer in local directory: {str(self.artifact_path)}"
+        raise errors.ClusterError(msg)
+
+    def get_installer_path(self) -> pathlib.Path:
+        """Returns the path of the local installer file"""
+        return self.installer_path

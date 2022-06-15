@@ -8,30 +8,21 @@
 
 * Bamboo checks out the repository for the given tag or revision.
 * Bamboo invokes the jobs/buildRelease.sh script.
-* Script sets up python environment and runs the buildrelease python module.
+* Script sets up python environment and runs the releasebuilder python module.
 * Python module:
   * Reads config file that contains:
     * Details on the compilation environment.
     * A list of details on runtime environments.
-  * Starts an EC2 instance for the compilation environment.
-  * Gets the current git hash
-  * Copies the current repository across to the compilation environment.
-    * Bamboo caches the repository and then clones from that local repository.
-    * Get the url to the local cached repository by running: git remote -v | head -n 1 | awk '{print $2}'
+  * Clones the repo on the current node
+      * Bamboo caches the repository and then clones from that local repository.
+      * Get the url to the local cached repository by running: git remote -v | head -n 1 | awk '{print $2}'
         * Result must begin with "file://", must be a dir and must be resolvable.
-    * Clone the repository to another local directory with: git clone --no-local <url> <dest>
-    * Copy that <dest> to the remote node.
-    * On the remote node execute: cd <path> && git checkout <hash>
+      * Clone the repository to another local directory with: git clone --no-local <url> <dest>
+  * Starts an EC2 instance for the compilation environment.
+  * Copies the cloned repository across to the compilation environment.
   * Invokes the script to build the installer.
   * Copies the installer from the compilation environment back to the original machine.
-  * Remove the temporary cloned repository.
 
-* Bamboo invokes the jobs/testRelease.sh script.
-* Script sets up python environment and runs the testrelease python module.
-* Python module:
-  * Reads config file that contains:
-    * Details on the compilation environment.
-    * A list of details on runtime environments.
   * For each runtime environment:
     * Starts an EC2 instance for the target environment.
     * Copies across the installer.
@@ -43,3 +34,7 @@
     * Stops SE on the target environment.
     * Collects any log files and copies them back to the original machine.
   * Writes out a JUnix result file (if necessary).
+  * Remove the temporary cloned repository.
+
+Style guide and (some) linting checks can be validated by running:
+  pipenv run flake8 --ignore=E501
