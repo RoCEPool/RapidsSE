@@ -31,6 +31,7 @@ readonly LAYOUT_DIR="${DIR}/../layout"
 readonly OUTPUT_DIR="${DIR}/../output"
 readonly SOURCE_DIR="${ROOT_DIR}/src"
 readonly OBJECT_DIR="${ROOT_DIR}/build/obj"
+readonly BIN_DIR="${ROOT_DIR}/build/bin"
 
 readonly MAKESELF_DIR=$(find "${ROOT_DIR}/thirdparty/" -type d -name "makeself*")
 
@@ -271,10 +272,12 @@ OUTPUT_FILE="rapidsse-${SE_VERSION_STR}.run"
 
 "${MAKESELF_DIR}/makeself.sh" "${MAKESELF_ARGS[@]}" "${LAYOUT_DIR}" "${OUTPUT_DIR}/${OUTPUT_FILE}" "RapidsSE files..." "${SETUP_SCRIPT}" 
 
-### Remove object files to reduce disk space requirements
+### Remove object files, bin dir and layout dir to reduce disk space requirements
 echo "Cleaning up"
 if [ -n "${KEEP_OBJECTS}" ]; then
   rm -rf "${OBJECT_DIR}" || true
+  rm -rf "${LAYOUT_DIR:?}/"* &>/dev/null || true
+  rm -rf "${BIN_DIR:?}/"* &>/dev/null || true
 fi
 
 FILESIZE="$(du -k "${OUTPUT_DIR}/${OUTPUT_FILE}" | cut -f1)"

@@ -28,6 +28,7 @@ readonly SRC_DIR="${PROJ_ROOT}/src"
 readonly PKG_DIR="${PROJ_ROOT}/installer/packaging"
 readonly OUT_DIR="${PROJ_ROOT}/installer/output"
 readonly OBJ_DIR="${PROJ_ROOT}/build/obj"
+readonly LAYOUT_DIR="${PROJ_ROOT}/installer/layout"
 
 readonly COMMON_FN="${DIR}/common.fn"
 
@@ -139,9 +140,15 @@ compileSE "${TARGET}"
 # Put together the installer
 assembleSE "${TARGET}"
 
-# Remove the object directory and its contents. These are not needed after building SE
-# and end up needlessly consuming lots of disk space for each branch.
+# Remove temporary build artifacts.
+# These are not needed after building SE and end up needlessly consuming lots of
+# disk space for each branch.
+# This includes all object files, binaries in the bin/ dir and the installer's
+# layout directory. We keep the installer/output directory because it contains
+# the installer run file.
 rm -rf "${OBJ_DIR}" || true
+rm -rf "${BIN_DIR}" || true
+rm -rf "${LAYOUT_DIR}" || true
 
 # Set this flag that the script completed successfully.
 # This will be picked up in the exit hook.
