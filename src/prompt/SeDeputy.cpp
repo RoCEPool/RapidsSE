@@ -149,7 +149,6 @@ void SeDeputy::vDeputyLoop(void)
     pInpTagSet->vReplace(C_TAG_PATH,m_pRootJob->szFolderPath());
     pInpTagSet->vReplace(C_TAG_LASTJOBID,m_pRootJob->tLastJobId().iAsI8());
     pInpTagSet->vReplace(C_TAG_SYSTEMCLOSER,m_pRootJob->bSystemCloser());
-    pInpTagSet->vDelete(C_TAG_TIME);
 
     JobId tChildJobId;
     
@@ -202,8 +201,8 @@ void SeDeputy::vDeputyLoop(void)
 //    m_sFolderPath   = m_pJob->szFolderPath();
 //    m_tLastJobId    = m_pJob->tLastJobId();
 //    m_bSystemCloser = m_pJob->bSystemCloser();
-    
 
+    pInpTagSet->vDelete(C_TAG_TIME);
     //Api::vReapableJob(m_pJob);
   }
   
