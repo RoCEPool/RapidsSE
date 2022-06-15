@@ -965,19 +965,9 @@ void Step::vJobSignalParent(void)
 
   Job* pJob = pOuterJobOfTask();
 
-  eEC eErrorCode = (eEC)m_pDataStack->iPopInt(__func__);
-
   eJL eJobList = pJob->eJobList();
 
   RASSERT(JL_NONE == eJobList || JL_RETIRED == eJobList || JL_DEMON == eJobList)
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set the error as childError in parent
-  pJob->pParentJob()->vChildError(eErrorCode);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // clear the error from parent
-  pJob->pParentJob()->vJobError(EC_NONE);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -1195,11 +1185,13 @@ void Step::vJobUpdateParent(void)
 
   pParentJob = pJob->pParentJob();
 
-  //eErrorCode = (eEC)m_pDataStack->iPopInt(__func__);
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the error as childError in parent
-  //pParentJob->vChildError(eErrorCode);
+  pJob->pParentJob()->vChildError(pJob->eJobError());
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // clear the error from parent
+  pJob->pParentJob()->vJobError(EC_NONE);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set some tags in the parent for future child jobs

@@ -24,6 +24,26 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* terminate this pipeline                                                    */
+/*----------------------------------------------------------------------------*/
+: pipelineLocal::termination2
+
+  [ddlLock].testDrop
+
+  ListedJob[].assertNoRef
+
+  Path[].discardAll
+
+  [task].grabLock
+  [job].addExited
+  [job].updateParent
+  [job].signalParent
+    [task].retire // does not queue onto exit demon
+
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
 /* execute on local node                                                      */
 /*----------------------------------------------------------------------------*/
 : pipelineLocal::local
@@ -62,6 +82,7 @@
     // cross check
     PipeSpec[] not assert
 
+/****************************
     [task].grabLock
     [job].error@ [job].signalParent
     [task].dropLock
@@ -72,6 +93,8 @@
     //[job].error@ [job].signalParent
 
     true [job].reapable!
+*****************************/
+    pipelineLocal::termination2
 
   then
 
@@ -98,7 +121,8 @@
     sPreExe find
     dup not if
       sPreExe "Unable to find pre execute word: %v" .printf
-      [job].error@ [job].signalParent
+      [job].updateParent
+      [job].signalParent
       true [job].reapable!
       process::quit
     then
@@ -111,7 +135,8 @@
 
   "<signalParent>" [job].tagSet@ tagSet.hasName not if
      //"SIGNALLING PARENT AS NO WAIT" .
-     [job].error@ [job].signalParent
+     [job].updateParent
+     [job].signalParent
   then
 
   // add job to the local job list
@@ -145,7 +170,8 @@
 
     "<signalParent>" [job].tagSet@ tagSet.hasName if
       //"pipelineLocal::local SIGNALLING PARENT" .
-      [job].error@ [job].signalParent
+      [job].updateParent
+      [job].signalParent
     then
 /*
     [system].started@ if

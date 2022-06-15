@@ -131,16 +131,16 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
   Stz* szJobNm = pCmdTagSet->szValue(C_TAG_JOBNM);
   RASSERT(szJobNm);
 
-
   pChildJob = new Job(szJobNm,tParentId,tOriginId,tDistId);
   bIsPipeline = pChildJob->bIsPipeline();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set updateParent flag in child
 
   pChildJob->vUpdateParent(bUpdateParent);
 
   // return the jobId
   rtChildJobId = pChildJob->tJobId();
-
-  //vTrace("FORKING CHILD: %p\n"_Stz, rpChildJob_tbr);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy CmdTagSet to the child job tags
@@ -165,10 +165,6 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
   // szFolderPath
   Stz* szFolderPath = pJobTagSet->szValue(C_TAG_PATH);
   pChildJob->vFolderPath(szFolderPath);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create the mutex in the child job
-  //rpChildJob_tbr->vMutexCreate();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the task for the child job
@@ -197,38 +193,12 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
   pParentJob->vMutexUnlock();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // update the timer of the child job
-  //pChildJob->vResponseTimerUpdate();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // transfer the timer of the child job to the parent
-  //if (pChildJob->bHasTag(C_TAG_TIME)) {
-  //  rpParentJob_tbr->vGetTimerFromChild(pChildJob);
-  //}
-
-  // set some tags in the parent for future child jobs
-  //pParentJob->vFolderPath(pChildJob->szFolderPath());
-  //pParentJob->vLastJobId(pChildJob->tLastJobId());
-  //pParentJob->vSystemCloser(pChildJob->bSystemCloser());
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // cycle the task lock ?????
-  // NOT SURE????
-
-  //pChildJob->pTask()->vCycleTaskLock((Stz*)__func__);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check for error from child job
   eEC eChildError = pParentJob->eChildError();
 
   if (eChildError != EC_NONE) {
-    //rpChildJob_tbr->vJobError(eChildError);
-    //Api::vReapableJob(pChildJob);
     return eChildError;
   }
-
-  // mark new child job as reapable
-  //Api::vReapableJob(rpChildJob_tbr);
 
   return EC_NONE;
 }
