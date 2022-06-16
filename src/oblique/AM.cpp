@@ -738,7 +738,6 @@ void AM::JLIST::vRemoveJob(Job* pJob)
   gpAttachMap->m_pJobs->pJobsList()->vRemoveJob(pJob);
 }
 
-
 /*----------------------------------------------------------------------------*/
 /* get the last jobId of the job                                              */
 /*----------------------------------------------------------------------------*/
@@ -750,6 +749,52 @@ eEC AM::JLIST::eSystemCloserSet(JobId tJobId, i8 iSystemCloser)
   if (pJob) {
     pJob->vSystemCloser(iSystemCloser);
     pJob->vDropLock();
+  }
+  else {
+    eError = EC_NO_SUCH_JOB;
+  }
+
+  return eError;
+}
+
+/*----------------------------------------------------------------------------*/
+/* update the parent job                                                      */
+/*----------------------------------------------------------------------------*/
+eEC AM::JLIST::eUpdateParent(Job* pJob)
+{
+  eEC eError = EC_NONE;
+
+  // get the parent job
+  JobId tParentJobId = pJob->tParentId();
+
+  // find the parent job
+  Job* pParentJob = AM::JLIST::pFindJob(tParentJobId,true);
+
+  // update parent
+  if (pParentJob) {
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // set the error as childError in parent
+    pJob->pParentJob()->vChildError(pJob->eJobError());
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // clear the error from parent
+    pJob->pParentJob()->vJobError(EC_NONE);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // set some tags in the parent for future child jobs
+    pParentJob->vFolderPath(pJob->szFolderPath());
+    pParentJob->vLastJobId(pJob->tLastJobId());
+    pParentJob->vSystemCloser(pJob->bSystemCloser());
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // transfer the timer of this job to the parent
+    if (pJob->bHasTag(C_TAG_TIME)) {
+      pParentJob->pJobTags()->vInsert(C_TAG_TIME);
+      pParentJob->vGetTimerFromChild(pJob);
+    }
+
+    pParentJob->vDropLock();
   }
   else {
     eError = EC_NO_SUCH_JOB;

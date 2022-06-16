@@ -65,7 +65,7 @@
 /* org_ org */        "org_ org" "<preCheck> signalling parent"       [job].trace
 /* org_ org */      then
 /* org_ org */
-/* org_ org */      [job].updateParent
+/* org_ org */      [job].updateParent assert
 /* org_ ovr */      [job].signalParent
 /* org_ org */
 /* org_ org */        [task].retire // does not queue onto exit demon
@@ -95,7 +95,7 @@
 /* org_ org */        "org_ org" "preExecuteTest signalling parent"       [job].trace
 /* org_ org */      then
 /* org_ org */
-/* org_ org */    [job].updateParent
+/* org_ org */    [job].updateParent assert
 /* org_ ovr */    [job].signalParent
 /* org_ org */
 /* org_ org */      [task].retire // does not queue onto exit demon
@@ -129,7 +129,7 @@
 /* org_ org */    Path[].discardAll
 /* org_ org */    [task].grabLock
 /* org_ org */    [job].addExited
-/* org_ org */    [job].updateParent
+/* org_ org */    [job].updateParent assert
 /* org_ org */
 /* org_ ovr */    [job].signalParent
 /* org_ org */
@@ -146,7 +146,7 @@
 /* org_ org */        "org_ org" "NO_WAIT signalling parent"       [job].trace
 /* org_ org */      then
 
-/* org_ org */      [job].updateParent
+/* org_ org */      [job].updateParent assert
 /* org_ ovr */      [job].signalParent
 /* org_ org */     then
 
@@ -327,7 +327,7 @@
 /* org_ org */        "org_ org" "WAIT signalling parent"       [job].trace
 /* org_ org */      then
 /* org_ org */
-/* org_ ovr */      [job].updateParent
+/* org_ ovr */      [job].updateParent assert
 /* org_ ovr */      [job].signalParent
 /* org_ ovr */    then
 /* org_ ovr *

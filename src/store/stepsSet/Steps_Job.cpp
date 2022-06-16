@@ -1147,30 +1147,16 @@ void Step::vJobUpdateParent(void)
   // update the timer of this job
   pJob->vResponseTimerUpdate();
 
-  pParentJob = pJob->pParentJob();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set the error as childError in parent
-  pJob->pParentJob()->vChildError(pJob->eJobError());
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // clear the error from parent
-  pJob->pParentJob()->vJobError(EC_NONE);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set some tags in the parent for future child jobs
-  pParentJob->vFolderPath(pJob->szFolderPath());
-  pParentJob->vLastJobId(pJob->tLastJobId());
-  pParentJob->vSystemCloser(pJob->bSystemCloser());
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // transfer the timer of this job to the parent
-  if (pJob->bHasTag(C_TAG_TIME)) {
-    pParentJob->pJobTags()->vInsert(C_TAG_TIME);
-    pParentJob->vGetTimerFromChild(pJob);
-  }
+  eErrorCode = AM::JLIST::eUpdateParent(pJob);
 
   L_Exit:
+
+  if (eErrorCode == EC_NONE) {
+    m_pDataStack->vPushInt(true);
+  }
+  else {
+    m_pDataStack->vPushInt(false);
+  }
   EXIT();
 }
 

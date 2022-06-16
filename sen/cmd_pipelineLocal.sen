@@ -51,7 +51,7 @@
 
     [task].grabLock
     [job].addExited
-    [job].updateParent
+    [job].updateParent assert
     [job].signalParent
       [task].retire // does not queue onto exit demon
 
@@ -82,7 +82,7 @@
     sPreExe find
     dup not if
       sPreExe "Unable to find pre execute word: %v" .printf
-      [job].updateParent
+      [job].updateParent assert
       [job].signalParent
       process::quit
     then
@@ -95,7 +95,7 @@
 
   "<signalParent>" [job].tagSet@ tagSet.hasName not if
      //"SIGNALLING PARENT AS NO WAIT" .
-     [job].updateParent
+     [job].updateParent assert
      [job].signalParent
   then
 
@@ -126,7 +126,7 @@
 
   [task].grabLock
   [job].addExited
-  [job].updateParent
+  [job].updateParent assert
 
     "<signalParent>" [job].tagSet@ tagSet.hasName if
       //"pipelineLocal::local SIGNALLING PARENT" .
