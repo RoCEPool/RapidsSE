@@ -22,15 +22,20 @@ function updateVersionFile() {
 
   if [[ "${git_version_str}" =~ ${regex} ]]
   then
-    SE_MAJOR_VER="${BASH_REMATCH[1]}"
-    SE_MINOR_VER="${BASH_REMATCH[2]}"
-    SE_PATCH_VER="${BASH_REMATCH[3]}"
-    SE_VER_LABEL="${BASH_REMATCH[4]}"
-    SE_BUILD_NUM="${BASH_REMATCH[5]}"
-    SE_COMMIT_HASH="${BASH_REMATCH[6]}"
+    local SE_MAJOR_VER="${BASH_REMATCH[1]}"
+    local SE_MINOR_VER="${BASH_REMATCH[2]}"
+    local SE_PATCH_VER="${BASH_REMATCH[3]}"
+    local SE_VER_LABEL="${BASH_REMATCH[4]}"
+    local SE_BUILD_NUM="${BASH_REMATCH[5]}"
+    local SE_COMMIT_HASH="${BASH_REMATCH[6]}"
 
   else
     >&2 echo "Could not parse the SE version string: ${git_version_str}"
+    exit 1
+  fi
+
+  if [ "${SE_MAJOR_VER}" -gt 255 ] || [ "${SE_MINOR_VER}" -gt 255 ] || [ "${SE_PATCH_VER}" -gt 255 ]; then
+    >&2 echo "Each component of the SE version number must be less than 256: ${SE_MAJOR_VER}.${SE_MINOR_VER}.${SE_PATCH_VER}"
     exit 1
   fi
 
