@@ -749,6 +749,7 @@ void Step::vSqlCompilerNameValidate(void)
   // where applicable.
   try {
     NameValidator::vValidateNames(pPlanRoot);
+    NameValidator::vCheckDisabledFunctionality(pPlanRoot);
 
   } catch (Parser::SqlException& e) {
     Grid* pGrid = AM::pGrid();
