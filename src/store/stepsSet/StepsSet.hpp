@@ -116,7 +116,6 @@ public:
   void vApiDeleteJob(void);
   void vApiForkChild(void);
   void vApiForkDemon(void);
-  void vApiForkChildOld(void);
   void vApiForkChild2PC(void);
   void vApiReapJobs(void);
   void vApiReapableJobFetch(void);

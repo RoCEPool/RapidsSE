@@ -25,17 +25,10 @@ namespace STORE
                            bool& bIsPipeline,
                            bool& bIsBackground);
 
-  static eEC  eForkJobOld(JobId& rtChildJobId,
-                            TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
-                            JobId tParentId, JobId tOriginId, JobId tDistId,
-                            Job*& rpParentJob_tbr,
-                            Job*& rpChildJob_tbr);
-
   static eEC  eForkJob2PC(JobId& rtChildJobId,
                             TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
                             JobId tParentId, JobId tOriginId, JobId tDistId,
-                            Job*& rpParentJob_tbr,
-                            Job*& rpChildJob_tbr);
+                            Job* pParentJob);
 
   static Job* pNewRootJob(Stz* szJobNm,
                             JobId tParentId, JobId tOriginId, JobId tDistId);

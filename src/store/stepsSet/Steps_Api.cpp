@@ -37,7 +37,6 @@ void Step::vAddSteps_Api(void)
 {
   vAddStep("api::forkChild"_Stz,       &Step::vApiForkChild);
   vAddStep("api::forkDemon"_Stz,       &Step::vApiForkDemon);
-  vAddStep("api::forkChildOld"_Stz,    &Step::vApiForkChildOld);
   vAddStep("api::forkChild2PC"_Stz,    &Step::vApiForkChild2PC);
 
   vAddStep("api::deleteJob"_Stz,       &Step::vApiDeleteJob);
@@ -93,13 +92,10 @@ void Step::vApiForkChild(void)
   JobId tDistId;
   Job* pOuterJob = pOuterJobOfTask();
   tParentId = pOuterJob->tJobId();
-  //tOriginId = pOuterJob->tOriginId();
-  //tDistId   = pOuterJob->tDistId();
   RASSERT(tOriginId.bIsUnknown());
   RASSERT(tDistId.bIsUnknown());
 
   JobId tChildJobId;
-  Job* pChildJob_tbr = nullptr;
   bool bIsPipeline;
   bool bIsBackground;
   eEC eError = Api::eForkJobChild(tChildJobId,
@@ -174,13 +170,10 @@ void Step::vApiForkDemon(void)
   JobId tDistId;
   Job* pOuterJob = pOuterJobOfTask();
   tParentId = pOuterJob->tJobId();
-  //tOriginId = pOuterJob->tOriginId();
-  //tDistId   = pOuterJob->tDistId();
   RASSERT(tOriginId.bIsUnknown());
   RASSERT(tDistId.bIsUnknown());
 
   JobId tChildJobId;
-  Job* pChildJob_tbr = nullptr;
   bool bIsPipeline;
   bool bIsBackground;
   eEC eError = Api::eForkJobChild(tChildJobId,
@@ -206,72 +199,6 @@ void Step::vApiForkDemon(void)
     m_pDataStack->vPushInt(eError);
     m_pDataStack->vPushInt(false);
   }
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* api::forkChildOld -- old (to go)                                           */
-/*----------------------------------------------------------------------------*/
-void Step::vApiForkChildOld(void)
-{
-  ENTRY();
-
-  s48K sCmd;
-  m_pDataStack->vPopStr(sCmd,__func__);
-
-  s48K sCmdTagStr;
-  m_pDataStack->vPopStr(sCmdTagStr,__func__);
-
-  if (AM::TRACE::bVerbose(C_VB_API)) {
-    vTrace("ForkChildOld: %s\n"_Stz,sCmd.szStz());
-    vTrace("  CmdTags: %s\n"_Stz,sCmdTagStr.szStz());
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sCmd);
-  TokenVec* pTagTknVec = TokenVec::pTokeniseSen(sCmdTagStr);
-  TagSet*   pCmdTagSet = new TagSet;
-  CmdHelper::vPopulateTagSet(pCmdTagSet,pTagTknVec);
-
-  Stz* szJobNm = pCmdTknVec->pGet(0)->szChars();
-  pCmdTagSet->vReplace(C_TAG_JOBNM,szJobNm);
-
-  if (! pCmdTagSet->bHasName(C_TAG_PATH)) {
-    if (m_pJob)
-      pCmdTagSet->vReplace(C_TAG_PATH,m_pJob->pJobTags()->szValue(C_TAG_PATH));
-    else
-      pCmdTagSet->vReplace(C_TAG_PATH,C_SE_PATH_ROOT);
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  JobId tParentId;
-  JobId tOriginId;
-  JobId tDistId;
-  Job* pOuterJob = pOuterJobOfTask();
-  tParentId = pOuterJob->tJobId();
-  tOriginId = pOuterJob->tOriginId();
-  tDistId   = pOuterJob->tDistId();
-
-  JobId tChildJobId;
-  Job* pChildJob_tbr = nullptr;
-  eEC eError = Api::eForkJobOld(tChildJobId,
-                             pCmdTknVec,pCmdTagSet,
-                             tParentId,tOriginId,tDistId,
-                             pOuterJob,    // TO BE REMOVED
-                             pChildJob_tbr // TO BE REMOVED
-  );
-  RASSERT(EC_NONE == eError);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  delete pCmdTagSet;
-  delete pCmdTknVec;
-  delete pTagTknVec;
-
-  m_pDataStack->vPushInt(true);
 
   EXIT();
 }
@@ -322,13 +249,11 @@ void Step::vApiForkChild2PC(void)
   tDistId   = pOuterJob->tDistId();
 
   JobId tChildJobId;
-  Job* pChildJob_tbr = nullptr;
 
   eEC eError = Api::eForkJob2PC(tChildJobId,
                              pCmdTknVec,pCmdTagSet,
                              tParentId,tOriginId,tDistId,
-                             pOuterJob,    // TO BE REMOVED
-                             pChildJob_tbr // TO BE REMOVED
+                             pOuterJob
   );
   RASSERT(EC_NONE == eError);
 
@@ -339,29 +264,7 @@ void Step::vApiForkChild2PC(void)
   delete pTagTknVec;
 
   m_pDataStack->vPushInt(true);
-/*
 
-  eEC eError = Api::eForkJobChild(tChildJobId,
-                                  pCmdTknVec,pCmdTagSet,
-                                  tParentId,tOriginId,tDistId,
-                                  pOuterJob,    // TO BE REMOVED
-                                  pChildJob_tbr // TO BE REMOVED
-  );
-  //RASSERT(EC_NONE == eError);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  delete pCmdTagSet;
-  delete pCmdTknVec;
-  delete pTagTknVec;
-
-  if (EC_NONE == eError)
-    m_pDataStack->vPushInt(true);
-  else {
-    m_pDataStack->vPushInt(eError);
-    m_pDataStack->vPushInt(false);
-  }
-*/
   EXIT();
 }
 

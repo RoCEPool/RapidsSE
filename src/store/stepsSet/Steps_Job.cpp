@@ -1136,7 +1136,7 @@ void Step::vJobUpdateParent(void)
   // there will be a thread (of parent job) waiting on completion of the job
   // this could be a prompt thread
 
-  eEC eErrorCode;
+  eEC eErrorCode = EC_NONE;
   Job* pParentJob;
   Job* pJob = pOuterJobOfTask();
 

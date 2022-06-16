@@ -142,10 +142,6 @@ void SeDeputy::vDeputyLoop(void)
     pInpTagSet->vReplace(C_TAG_WAIT,1);
     pInpTagSet->vReplace(C_TAG_SIGNALPARENT,1);
 
-//    pInpTagSet->vReplace(C_TAG_PATH,m_sFolderPath);
-//    pInpTagSet->vReplace(C_TAG_LASTJOBID,m_tLastJobId.iAsI8());
-//    pInpTagSet->vReplace(C_TAG_SYSTEMCLOSER,m_bSystemCloser);
-
     pInpTagSet->vReplace(C_TAG_PATH,m_pRootJob->szFolderPath());
     pInpTagSet->vReplace(C_TAG_LASTJOBID,m_pRootJob->tLastJobId().iAsI8());
     pInpTagSet->vReplace(C_TAG_SYSTEMCLOSER,m_pRootJob->bSystemCloser());
@@ -176,10 +172,6 @@ void SeDeputy::vDeputyLoop(void)
     if (EC_NONE != m_eError) {
       m_pSePrompt->vMutexLock(this);
       m_pSePrompt->vMutexSignalAndUnlock(this);
-
-      // if command was invalid we may not have a job
-//      if (m_pJob)
-//        Api::vReapableJob(m_pJob);
       continue;
     }
 
@@ -196,14 +188,9 @@ void SeDeputy::vDeputyLoop(void)
       m_pSePrompt->vMutexLock(this);
       m_pSePrompt->vMutexSignalAndUnlock(this);
     }
-    
-    // NEEDS CORRECTION
-//    m_sFolderPath   = m_pJob->szFolderPath();
-//    m_tLastJobId    = m_pJob->tLastJobId();
-//    m_bSystemCloser = m_pJob->bSystemCloser();
 
+    // reset the C_TAG_TIME
     pInpTagSet->vDelete(C_TAG_TIME);
-    //Api::vReapableJob(m_pJob);
   }
   
   m_bTerminated = true;
