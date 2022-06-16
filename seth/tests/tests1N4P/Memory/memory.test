@@ -38,7 +38,6 @@ rows:
  ('IDXVEC',  1)
  ('PTNDEF',  1)
  ('SKIPLIST',  2)
- ('SKIPNODE',  5)
  ('STREAMDEF',  1)
  ('TABLE',  1)
  ('TABLEPTN',  4)

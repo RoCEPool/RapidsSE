@@ -93,7 +93,6 @@ void Step::vJobIdPipeToOp0(void)
   ENTRY();
 
   JobId tJobId = m_pDataStack->iPopInt(__func__);
-  Job* pJob = AM::JLIST::pFindJob(tJobId);
 
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
 
@@ -134,7 +133,6 @@ void Step::vJobIdSystemCloserStore(void)
   ENTRY();
 
   JobId tJobId = m_pDataStack->iPopInt(__func__);
-  Job* pJob = AM::JLIST::pFindJob(tJobId);
 
   i8 iSystemCloser = m_pDataStack->iPopInt(__func__);
 

@@ -2489,8 +2489,12 @@ bool PROMPT::bPrompt_memoryLeaks(SePrompt* pPrompt)
   // note: the tracking of memory works with an assumption that
   //       whatever was started after trackingMemory has completed
 
+  // wait for zero jobs in the Exited JOBLIST
+  while (gpAttachMap->pJobs()->bAnyExitedJobs())
+    {;}
+
   for (i8 iAttempt = 0; iAttempt < C_ATTEMPTS; iAttempt++) {
-    
+
     //Api::vReapJobsOnce();
     //gpAttachMap->pJobs()->vReapJobsOnce();
 

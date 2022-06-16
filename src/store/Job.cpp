@@ -127,7 +127,7 @@ Job::~Job(void) noexcept(false)
     //! are completely returned
     while (nReferences() ||
            (m_pTask && TS_RETIRED != m_pTask->eState())) {
-      vTrace("Napping ... job still has references???\n"_Stz);
+      //vTrace("Napping ... job still has references???\n"_Stz);
       AM::vNapMsec(10, eGetClassNo());
     }
 

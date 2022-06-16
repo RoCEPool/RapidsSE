@@ -28,7 +28,8 @@ namespace STORE
     
     Jobs(void);
    ~Jobs(void) noexcept(false);
-  
+
+    bool bAnyExitedJobs(void);
     void vCreateJobLists(void);
   
     JobList* pJobsList(void);
@@ -39,6 +40,7 @@ namespace STORE
     JobList* pParticipatingJobs(void);
 
     void vReapAllJobs(bool bForce = false);
+    Job* pReapableJob(void);
     bool bReapJob(void);
     void vReapJobsOnce(bool bForce = false);
 

@@ -79,7 +79,15 @@ JobList* Jobs::pJobsList(void)
   return m_pJobsList;
 }
 
+/*----------------------------------------------------------------------------*/
+/* any jobs in exited jobs list                                               */
+/*----------------------------------------------------------------------------*/
+bool Jobs::bAnyExitedJobs(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBS,_FOOTER_);
 
+  return m_pExitedJobs->nJobs() ? true : false;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get demon job list                                                         */
@@ -132,6 +140,61 @@ void Jobs::vReapAllJobs(bool bForce)
     while (AM::pExitedJobs()->nJobs())
       while (bReapJob())
         {;}
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next reapable job                                                      */
+/*----------------------------------------------------------------------------*/
+Job* Jobs::pReapableJob(void)
+{
+  _static_
+
+  if (!AM::SYSTEM::bReapEnabled())
+    return nullptr;
+
+  JobList* pExitedJobs = AM::pExitedJobs();
+
+  if (! pExitedJobs->nJobs()) {
+    //vTrace("Empty retired list\n"_Stz);
+    return nullptr;
+  }
+
+  AM::MASTERLOCK::vGrabReap(nullptr);
+
+  pExitedJobs->vGrabLock();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Job* pReapableJob = nullptr;
+
+  for (SkipNode* pCursor = pExitedJobs->pFirst();
+       pCursor;
+       pCursor = pExitedJobs->pNext(pCursor)) {
+
+    Job* pRetiredJob = _pJob(pCursor->m_pObject);
+
+    if (pRetiredJob) {
+      i8 nActiveOps = pRetiredJob->nActiveOps();
+//      vTrace("REAP CANDIDATE Job %p Active Ops %lld\n"_Stz
+//             ,pRetiredJob, nActiveOps);
+      if ( ! nActiveOps ) {
+        pReapableJob = pRetiredJob;
+        break;
+      }
+
+    }
+  }
+
+  pExitedJobs->vDropLock();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  if (pReapableJob) {
+    pExitedJobs->vRemoveJob(pReapableJob);
+  }
+
+  AM::MASTERLOCK::vDropReap(nullptr);
+
+  return pReapableJob;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -9,7 +9,8 @@
 /*----------------------------------------------------------------------------*/
 : reap_activity ( -- )
 
-  false api::reapJobs
+  //false api::reapJobs
+
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -89,14 +90,30 @@
 /*----------------------------------------------------------------------------*/
 : jobExit_StartMarker \handler
 
+   0 locals| pJobToBeDeleted |
   "jobExit Demon Started" .boot
 
   begin
 
-    // [args].demonSleep thread::sleepSsec
-    //1 thread::sleepSsec
+    // get exited job to be deleted
+    api::reapableJob@ to pJobToBeDeleted
 
-    reap_activity
+    begin
+        pJobToBeDeleted
+    while
+      // generate the job report here
+      //pJobToBeDeleted >str "JobReport: %v" str.format .
+
+      // delete the job
+      pJobToBeDeleted api::deleteJob
+
+      // next exited job to be deleted
+      api::reapableJob@ to pJobToBeDeleted
+    repeat
+
+    // sleep for a second
+    // [args].demonSleep thread::sleepSsec
+    1 thread::sleepSsec
 
   again
 ;
