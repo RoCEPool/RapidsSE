@@ -29,7 +29,7 @@ public:
   
   i8   m_iHeader;            //
 
-  u2   m_u2Version;          // version of the packet
+  u4   m_u4Version;          // version of the packet
   i8   m_iSeqNo;             // Do we need this ? Why?
   u2   m_u2DataLen;          // length of data  includes size of itself
   i8   m_iClusterID;         // cluster ID (only accept node that has same cluster ID)
@@ -55,7 +55,7 @@ public:
   i8   m_iFooter;            //   8
   char m_acSpare[16];        // 16
                              // ---
-                             // 496 bytes
+                             // 498 bytes
 };
 
 /*------------------------------------------------------------------------------------*/
