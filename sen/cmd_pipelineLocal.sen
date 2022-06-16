@@ -5,45 +5,6 @@
 " cmd_pipelineLocal.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* terminate this pipeline                                                    */
-/*----------------------------------------------------------------------------*/
-: pipelineLocal::termination
-
-  [ddlLock].testDrop
-
-  ListedJob[].assertNoRef
-
-  Path[].discardAll
-
-  [task].grabLock
-  [job].addExited
-  [job].updateParent
-    [task].retire // does not queue onto exit demon
-
-  HAZARD
-;
-
-/*----------------------------------------------------------------------------*/
-/* terminate this pipeline                                                    */
-/*----------------------------------------------------------------------------*/
-: pipelineLocal::termination2
-
-  [ddlLock].testDrop
-
-  ListedJob[].assertNoRef
-
-  Path[].discardAll
-
-  [task].grabLock
-  [job].addExited
-  [job].updateParent
-  [job].signalParent
-    [task].retire // does not queue onto exit demon
-
-  HAZARD
-;
-
-/*----------------------------------------------------------------------------*/
 /* execute on local node                                                      */
 /*----------------------------------------------------------------------------*/
 : pipelineLocal::local
@@ -82,18 +43,19 @@
     // cross check
     PipeSpec[] not assert
 
-/****************************
+    [ddlLock].testDrop
+
+    ListedJob[].assertNoRef
+
+    Path[].discardAll
+
     [task].grabLock
-    [job].error@ [job].signalParent
-    [task].dropLock
-    
-    pipelineLocal::termination
+    [job].addExited
+    [job].updateParent
+    [job].signalParent
+      [task].retire // does not queue onto exit demon
 
-    // signal the parent
-    //[job].error@ [job].signalParent
-
-*****************************/
-    pipelineLocal::termination2
+    HAZARD
 
   then
 
@@ -168,7 +130,6 @@
 
     "<signalParent>" [job].tagSet@ tagSet.hasName if
       //"pipelineLocal::local SIGNALLING PARENT" .
-      [job].updateParent
       [job].signalParent
     then
 /*
