@@ -152,6 +152,7 @@ namespace BASE
     static bool  bIsFloat(char* azArg);
     static bool  bIsHex(const char c);
     static bool  bIsInteger(char* azArg);
+    static bool  bIsIPAddr(const char* azArg);
     static bool  bIsNameBodyChar(const char c);
     static bool  bIsNameStartChar(const char c);
     static bool  bIsWhite(const char c);

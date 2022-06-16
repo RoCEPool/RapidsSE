@@ -11,6 +11,7 @@ namespace BASE
     static void vEntry(void);
     [[ noreturn ]] static void vExit(i8 iExitStatus);
     [[ noreturn ]] static void vExitFailure(void);
+    [[ noreturn ]] static void vExitStartup(void);
     [[ noreturn ]] static void vExitSuccess(void);
   
     [[ noreturn ]] static void vUnrecoverableError(Stz* szErrorMessage,

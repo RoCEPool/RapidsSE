@@ -56,6 +56,8 @@
 
 #include "Heart.h"
 
+#include "PromptHelper.hpp"
+
 CmdLineArgs  gxCmdLineArgs;
 EnvFlags     gxEnvFlags;
 FnCatalog    gxFnCatalog;
@@ -388,6 +390,10 @@ void Engine::vCallPrompt(void)
 //  pSePrompt->vPromptLoop();
 //
 //  delete pSePrompt;
+
+  if(AM::bDisableCmds()) {
+    PromptHelper::vDisableFuncs();
+  }
   
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("\n>\n> %lld) Calling PROMPT\n>\n"_Stz,giProgressPoint++);

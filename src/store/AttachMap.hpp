@@ -126,6 +126,7 @@ namespace STORE
     u8   uAttachMapState(void);
   
     i8   iCmdNoNext(void);
+    b1   bDisablePromptCommands(void);
 
     eAC  eFindApi(Stz* aApiNm);
   

@@ -123,7 +123,7 @@ int main(int argc, char* argv[])
     
     // parse the command line arguments
     if (! gxCmdLineArgs.bParse(gi_argc,gi_szaArgv))
-      Process::vExitFailure();
+      Process::vExitStartup();
     
     // potentially run utilities
 //    if (gxCmdLineArgs.m_xSysArgs.m_bUtility) {

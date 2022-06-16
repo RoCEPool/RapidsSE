@@ -30,6 +30,9 @@ namespace Parser
     // A SqlException will be thrown if a name cannot be resolved.
     static void vValidateNames(PlanNode* pRootNode);
 
+    // Check to see if any disabled functionality was specified on the command
+    static void vCheckDisabledFunctionality(PlanNode* pRootNode);
+
   private:
     // Walks the graph and validates table names only.
     static void vValidateAllTableNames(QueryNode* pStartingNode, Stz* szStartingNodePath,

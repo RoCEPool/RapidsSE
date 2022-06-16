@@ -5809,7 +5809,7 @@ bool PROMPT::bPrompt_with(SePrompt* pPrompt)
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 PromptFun __Prompt_without (
-  PF_WITH,              // prompt function
+  PF_WITHOUT,              // prompt function
   "Prompt_without"_Stz, // name of the prompt function
   "comment"_Stz,        // comment about the function
   "without"_Stz,        // the prompt command

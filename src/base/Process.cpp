@@ -57,6 +57,16 @@ void Process::vEntry(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* process exit startup                                                       */
+/*----------------------------------------------------------------------------*/
+[[ noreturn ]] void Process::vExitStartup(void)
+{
+  fprintf(stderr,"Calling exit(%lld)\n",(i8)EXIT_FAILURE);
+
+  exit((int)EXIT_FAILURE);
+}
+
+/*----------------------------------------------------------------------------*/
 /* process exit success                                                       */
 /*----------------------------------------------------------------------------*/
 [[ noreturn ]] void Process::vExitSuccess(void)
