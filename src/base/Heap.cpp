@@ -6,6 +6,7 @@
 
 #include "AM.hpp"
 #include "LogicUnit.hpp"
+#include "Job.hpp"
 
 extern BufferPool* gpBufferPool;
 
@@ -210,6 +211,13 @@ Object* Heap::pAllocObject(eCN eAllocClass)
         pLogicUnit->m_xpStats->m_nMaxBytes = nMaxBytes;
     }
   }
+#ifdef WITH_TRACK_JOB_MEM
+  Job* pJob = MY::pJob();
+  if(pJob)
+  {
+    pJob->vTrackObject(eAllocClass);
+  }
+#endif
 
   //bool bSetLogMemory = false;
   

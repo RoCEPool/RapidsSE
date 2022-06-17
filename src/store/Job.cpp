@@ -77,6 +77,13 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
   /* 09 */ m_bWasReceived = false;
   /* 10 */ m_pMarkerChain = nullptr;
   /* 11 */ m_bAllocate    = true;
+#ifdef WITH_TRACK_JOB_MEM
+  /* 12 */
+  for(u8 i = 0; i < CN_ENUMS; i++)
+  {
+    m_aClassTypes[i] = 0;
+  }
+#endif
 
   m_iTscParticipant = 0;
   
@@ -108,6 +115,17 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
 Job::~Job(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
+
+#ifdef WITH_TRACK_JOB_MEM
+  vTrace("-------------------------------\n"_Stz);
+  vTrace("Job: %s\n"_Stz, m_sJobNm.azChar());
+  for(u8 i = 0; i < CN_ENUMS; i++)
+  {
+    if(m_aClassTypes[i])
+      vTrace("%23s  %llu\n"_Stz, aCN[i], m_aClassTypes[i]);
+  }
+  vTrace("-------------------------------\n"_Stz);
+#endif
   
   if (AM::JLIST::bFindJob(this))
     AM::JLIST::vRemoveJob(this);
@@ -1098,7 +1116,13 @@ void Job::vPostRecv(void)
   /* 09 */ m_bWasReceived = true;
   /* 10 */ m_pMarkerChain = nullptr;
   /* 11 */ m_bAllocate    = true;
-
+#ifdef WITH_TRACK_JOB_MEM
+  /* 12 */
+  for(u8 i = 0; i < CN_ENUMS; i++)
+  {
+    m_aClassTypes[i] = 0;
+  }
+#endif
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   m_tJobId.vNextJobId();
@@ -1507,6 +1531,18 @@ void Job::vTaskCreate(void)
   
   vResponseTimerStart();
 }
+
+#ifdef WITH_TRACK_JOB_MEM
+/*----------------------------------------------------------------------------*/
+/* create task for job                                                        */
+/*----------------------------------------------------------------------------*/
+void Job::vTrackObject(eCN eAllocClass)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_aClassTypes[eAllocClass]++;
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* get the participant tsc                                                    */
