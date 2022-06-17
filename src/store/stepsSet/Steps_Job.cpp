@@ -69,6 +69,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("[job].phase@"_Stz,           &Step::vJobPhaseFetch);
   vAddStep("[job].phase!"_Stz,           &Step::vJobPhaseStore);
   vAddStep("[job].preExecuteTest"_Stz,   &Step::vJobPreExecuteTest);
+  vAddStep("[job].printObjectTracker"_Stz,&Step::vJobPrintObjectTracker);
   vAddStep("[job].progress"_Stz,         &Step::vJobProgress);
   vAddStep("[job].progressReset"_Stz,    &Step::vJobProgressReset);
   vAddStep("[job].progressSeconds"_Stz,  &Step::vJobProgressSeconds);
@@ -720,6 +721,21 @@ void Step::vJobPhaseStore(void)
   
   pJob->vJobPhase((eJP)iJobPhase);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [job].printObjectTracker -- object tracker print                           */
+/*----------------------------------------------------------------------------*/
+void Step::vJobPrintObjectTracker(void)
+{
+  ENTRY();
+
+  Job* pJob = * m_pJob;
+#ifdef WITH_OBJECT_TRACKER
+  m_pJob->vObjectTrackerDump();
+#endif
+
   EXIT();
 }
 

@@ -852,6 +852,7 @@ void vDdlLockAssertNone(void);
   void vJobPhaseFetch(void);
   void vJobIdPhaseFetch(void);
   void vJobPhaseStore(void);
+  void vJobPrintObjectTracker(void);
   void vJobProgress(void);
   void vJobProgressReset(void);
   void vJobProgressSeconds(void);

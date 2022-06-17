@@ -883,13 +883,25 @@ void Job::vNewMarkerChain(void)
 
 #ifdef WITH_OBJECT_TRACKER
 /*----------------------------------------------------------------------------*/
-/* begin output processor                                                     */
+/* check if ObjectTracker is allocated                                        */
 /*----------------------------------------------------------------------------*/
 bool Job::bObjectTracker(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
   return m_pObjectTracker != nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* print contents of Object tracker                                           */
+/*----------------------------------------------------------------------------*/
+void Job::vObjectTrackerDump(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  if(bObjectTracker())
+  {
+    m_pObjectTracker->vDump(m_sJobNm);
+  }
 }
 #endif
 /*----------------------------------------------------------------------------*/
@@ -1538,7 +1550,9 @@ void Job::vTrackAllocObject(eCN eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  m_pObjectTracker->vTrackAllocClass(eClassNo);
+  if(bObjectTracker()) {
+    m_pObjectTracker->vTrackAllocClass(eClassNo);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1548,7 +1562,9 @@ void Job::vTrackFreeObject(eCN eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  m_pObjectTracker->vTrackFreeClass(eClassNo);
+  if(bObjectTracker()) {
+    m_pObjectTracker->vTrackFreeClass(eClassNo);
+  }
 }
 #endif
 

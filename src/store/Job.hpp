@@ -160,6 +160,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
 
 #ifdef WITH_OBJECT_TRACKER
     bool bObjectTracker(void);
+    void vObjectTrackerDump(void);
 #endif
     void vOutputBeginProc(void);
     void vOutputCreate(void);
