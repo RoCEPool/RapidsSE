@@ -77,9 +77,7 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
   /* 09 */ m_bWasReceived = false;
   /* 10 */ m_pMarkerChain = nullptr;
   /* 11 */ m_bAllocate    = true;
-#ifdef WITH_OBJECT_TRACKER
   /* 12 */ m_pObjectTracker = nullptr;
-#endif
 
   m_iTscParticipant = 0;
   
@@ -161,10 +159,8 @@ Job::~Job(void) noexcept(false)
   if (m_pMarkerChain)
     delete m_pMarkerChain;
 
-#ifdef WITH_OBJECT_TRACKER
   if(bObjectTracker())
     delete m_pObjectTracker;
-#endif
 
 }
 
@@ -906,7 +902,6 @@ void Job::vNewMarkerChain(void)
   m_pMarkerChain = new MarkerChain;
 }
 
-#ifdef WITH_OBJECT_TRACKER
 /*----------------------------------------------------------------------------*/
 /* check if ObjectTracker is allocated                                        */
 /*----------------------------------------------------------------------------*/
@@ -928,7 +923,6 @@ void Job::vObjectTrackerDump(void)
     m_pObjectTracker->vDump(m_sJobNm);
   }
 }
-#endif
 /*----------------------------------------------------------------------------*/
 /* begin output processor                                                     */
 /*----------------------------------------------------------------------------*/
@@ -1155,9 +1149,8 @@ void Job::vPostRecv(void)
   /* 09 */ m_bWasReceived = true;
   /* 10 */ m_pMarkerChain = nullptr;
   /* 11 */ m_bAllocate    = true;
-#ifdef WITH_OBJECT_TRACKER
   /* 12 */ m_pObjectTracker = nullptr;
-#endif
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   m_tJobId.vNextJobId();
@@ -1579,7 +1572,6 @@ void Job::vTaskCreate(void)
   vResponseTimerStart();
 }
 
-#ifdef WITH_OBJECT_TRACKER
 /*----------------------------------------------------------------------------*/
 /* Track allocated object by this job                                         */
 /*----------------------------------------------------------------------------*/
@@ -1603,7 +1595,6 @@ void Job::vTrackFreeObject(eCN eClassNo)
     m_pObjectTracker->vTrackFreeClass(eClassNo);
   }
 }
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* get the participant tsc                                                    */

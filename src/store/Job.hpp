@@ -56,9 +56,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     /* 09 */ b8      m_bWasReceived;   // was job received over a socket?
     /* 10 */ MarkerChain* m_pMarkerChain; // chain of free markers
     /* 11 */ b8      m_bAllocate;      // can job ask for memory?
-#ifdef WITH_OBJECT_TRACKER
     /* 12 */ ObjectTracker*      m_pObjectTracker;// Frequency count of object types allocated/freed by this Job
-#endif
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
 
@@ -160,10 +158,8 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     Marker* pNewMarker(eOM eOpMarker);
     void vNewMarkerChain(void);
 
-#ifdef WITH_OBJECT_TRACKER
     bool bObjectTracker(void);
     void vObjectTrackerDump(void);
-#endif
     void vOutputBeginProc(void);
     void vOutputCreate(void);
     void vOutputDestroy(void);
@@ -205,10 +201,8 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     Task* pTask(void);
     void vTask(Task* pTask);
     void vTaskCreate(void);
-#ifdef WITH_OBJECT_TRACKER
     void vTrackAllocObject(eCN eClassNo);
     void vTrackFreeObject(eCN eClassNo);
-#endif
     i8   iTscBeginning(void);
     void vTscBeginning(i8 iTsc);
     i8   iTscBegun(void);

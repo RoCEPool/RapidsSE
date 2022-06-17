@@ -759,9 +759,7 @@ void Step::vJobPrintObjectTracker(void)
   ENTRY();
 
   Job* pJob = * m_pJob;
-#ifdef WITH_OBJECT_TRACKER
   m_pJob->vObjectTrackerDump();
-#endif
 
   EXIT();
 }
