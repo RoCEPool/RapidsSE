@@ -77,12 +77,8 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
   /* 09 */ m_bWasReceived = false;
   /* 10 */ m_pMarkerChain = nullptr;
   /* 11 */ m_bAllocate    = true;
-#ifdef WITH_TRACK_JOB_MEM
-  /* 12 */
-  for(u8 i = 0; i < CN_ENUMS; i++)
-  {
-    m_aClassTypes[i] = 0;
-  }
+#ifdef WITH_OBJECT_TRACKER
+  /* 12 */ m_pObjectTracker = new ObjectTracker();
 #endif
 
   m_iTscParticipant = 0;
@@ -115,17 +111,6 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
 Job::~Job(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-
-#ifdef WITH_TRACK_JOB_MEM
-  vTrace("-------------------------------\n"_Stz);
-  vTrace("Job: %s\n"_Stz, m_sJobNm.azChar());
-  for(u8 i = 0; i < CN_ENUMS; i++)
-  {
-    if(m_aClassTypes[i])
-      vTrace("%23s  %llu\n"_Stz, aCN[i], m_aClassTypes[i]);
-  }
-  vTrace("-------------------------------\n"_Stz);
-#endif
   
   if (AM::JLIST::bFindJob(this))
     AM::JLIST::vRemoveJob(this);
@@ -175,6 +160,12 @@ Job::~Job(void) noexcept(false)
   
   if (m_pMarkerChain)
     delete m_pMarkerChain;
+
+#ifdef WITH_OBJECT_TRACKER
+  if(m_pObjectTracker)
+    delete m_pObjectTracker;
+#endif
+
 }
 
 
@@ -890,6 +881,17 @@ void Job::vNewMarkerChain(void)
   m_pMarkerChain = new MarkerChain;
 }
 
+#ifdef WITH_OBJECT_TRACKER
+/*----------------------------------------------------------------------------*/
+/* begin output processor                                                     */
+/*----------------------------------------------------------------------------*/
+bool Job::bObjectTracker(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_pObjectTracker != nullptr;
+}
+#endif
 /*----------------------------------------------------------------------------*/
 /* begin output processor                                                     */
 /*----------------------------------------------------------------------------*/
@@ -1116,12 +1118,8 @@ void Job::vPostRecv(void)
   /* 09 */ m_bWasReceived = true;
   /* 10 */ m_pMarkerChain = nullptr;
   /* 11 */ m_bAllocate    = true;
-#ifdef WITH_TRACK_JOB_MEM
-  /* 12 */
-  for(u8 i = 0; i < CN_ENUMS; i++)
-  {
-    m_aClassTypes[i] = 0;
-  }
+#ifdef WITH_OBJECT_TRACKER
+  /* 12 */ m_pObjectTracker = nullptr;
 #endif
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -1532,15 +1530,25 @@ void Job::vTaskCreate(void)
   vResponseTimerStart();
 }
 
-#ifdef WITH_TRACK_JOB_MEM
+#ifdef WITH_OBJECT_TRACKER
 /*----------------------------------------------------------------------------*/
-/* create task for job                                                        */
+/* Track allocated object by this job                                         */
 /*----------------------------------------------------------------------------*/
-void Job::vTrackObject(eCN eAllocClass)
+void Job::vTrackAllocObject(eCN eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  m_aClassTypes[eAllocClass]++;
+  m_pObjectTracker->vTrackAllocClass(eClassNo);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Track freed object by this job                                             */
+/*----------------------------------------------------------------------------*/
+void Job::vTrackFreeObject(eCN eClassNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_pObjectTracker->vTrackFreeClass(eClassNo);
 }
 #endif
 

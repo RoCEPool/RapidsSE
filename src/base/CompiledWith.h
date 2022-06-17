@@ -89,7 +89,7 @@
 
 #define WITH_API_FORK EndDefine       // RAY
 
-#define WITH_TRACK_JOB_MEM EndDefine
+#define WITH_OBJECT_TRACKER EndDefine
 
 /*============================================================================*/
 /* end                                                                        */

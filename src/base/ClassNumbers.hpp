@@ -202,6 +202,7 @@ enum eCN : u2 // Class Number
   /* */ CN__O__,
   /* */ CN_OBJBUFFER,
   /* */ CN_OBJECTSNAPSHOT,
+  /* */ CN_OBJTRACKER,
   /* */ CN_OUTPUT,
   /* */ CN_OP,
   /* */ CN_OPENFILES,
@@ -615,6 +616,7 @@ static Stz* aCN[]
   /* */ "_O__"_Stz,                 // CN__O__
   /* */ "OBJBUFFER"_Stz,            // CN_OBJBUFFER
   /* */ "OBJECTSNAPSHOT"_Stz,       // CN_OBJECTSNAPSHOT
+  /* */ "OBJTRACKER"_Stz,           // CN_OBJTRACKER
   /* */ "OUTPUT"_Stz,               // CN_OUTPUT
   /* */ "OP"_Stz,                   // CN_OP
   /* */ "OPENFILES"_Stz,            // CN_OPENFILES

@@ -214,6 +214,7 @@ extern d8 C_D8_MID;
 #include "Heaps.hpp"
 #include "Heap.hpp"
 #include "ObjectSnapshot.hpp"
+#include "ObjectTracker.hpp"
 #include "Region.hpp"
 #include "Slab.hpp"
 #include "SlabAllocator.hpp"

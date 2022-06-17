@@ -211,11 +211,11 @@ Object* Heap::pAllocObject(eCN eAllocClass)
         pLogicUnit->m_xpStats->m_nMaxBytes = nMaxBytes;
     }
   }
-#ifdef WITH_TRACK_JOB_MEM
+#ifdef WITH_OBJECT_TRACKER
   Job* pJob = MY::pJob();
-  if(pJob)
+  if(pJob && pJob->bObjectTracker())
   {
-    pJob->vTrackObject(eAllocClass);
+    pJob->vTrackAllocObject(eAllocClass);
   }
 #endif
 
@@ -383,6 +383,14 @@ void Heap::vFreeObject(Object* pObject)
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
   eCN eClassNo = pObject->eGetClassNo();
+
+#ifdef WITH_OBJECT_TRACKER
+  Job* pJob = MY::pJob();
+  if(pJob && pJob->bObjectTracker())
+  {
+    pJob->vTrackFreeObject(eClassNo);
+  }
+#endif
 
 //  if ((Object*)0x2048091aa040 == pObject) {
 //    vTrace("FreeObject:: %p %s:%-3lld (address)\n"_Stz,
