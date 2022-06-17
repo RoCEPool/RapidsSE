@@ -132,13 +132,6 @@
       [job].updateParent assert
       [job].signalParent
     then
-/*
-    [system].started@ if
-    //  "SYSTEM STARTED" .
-    else
-    //  "SYSTEM NOT STARTED" .
-    then
-*/
 
     [task].retire // does not queue onto exit demon
 ;
