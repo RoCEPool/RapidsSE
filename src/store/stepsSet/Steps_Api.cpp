@@ -40,7 +40,6 @@ void Step::vAddSteps_Api(void)
   vAddStep("api::forkChild2PC"_Stz,    &Step::vApiForkChild2PC);
 
   vAddStep("api::deleteJob"_Stz,       &Step::vApiDeleteJob);
-  vAddStep("api::reapJobs"_Stz,        &Step::vApiReapJobs);
   vAddStep("api::reapableJob@"_Stz,    &Step::vApiReapableJobFetch);
   vAddStep("api::spawnJob"_Stz,        &Step::vApiSpawnJob);
 }
@@ -278,21 +277,6 @@ void Step::vApiDeleteJob(void)
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
   delete pJob;
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* api::reapJobs -- reap retired jobs                                         */
-/*----------------------------------------------------------------------------*/
-void Step::vApiReapJobs(void)
-{
-  ENTRY();
-  
-  i8 iForce = (i8)m_pDataStack->iPopBol(__func__);
-
-  //Api::vReapJobsOnce(iForce);
-  gpAttachMap->pJobs()->vReapJobsOnce(iForce);
 
   EXIT();
 }

@@ -118,7 +118,6 @@ public:
   void vApiForkChild(void);
   void vApiForkDemon(void);
   void vApiForkChild2PC(void);
-  void vApiReapJobs(void);
   void vApiReapableJobFetch(void);
   void vApiSpawnJob(void);
 
