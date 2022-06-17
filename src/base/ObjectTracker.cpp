@@ -72,6 +72,20 @@ void ObjectTracker::vDump(Stz* szName)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Reset                                                                      */
+/*----------------------------------------------------------------------------*/
+void ObjectTracker::vReset(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  for(u8 i = 0; i < CN_ENUMS; i++)
+  {
+    m_xClassCount[i].m_uAllocateCount = 0;
+    m_xClassCount[i].m_uFreeCount = 0;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* Increment allocate count for class type                                    */
 /*----------------------------------------------------------------------------*/
 void ObjectTracker::vTrackAllocClass(eCN eClassNo)

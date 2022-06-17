@@ -105,6 +105,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     Stz* szCmd(void);
     void vCmd(Stz* szCmd);
 
+    void vDisableObjectTracker(void);
     JobId tDistId(void);
     void vDistIdGenerate(void);
     i8   iDistNodeId(void);
@@ -112,6 +113,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vDrainOutput(void);
     void vDropLock(void);
 
+    void vEnableObjectTracker(void);
     Stz* szEntryPoint(void);
     void vEntryPoint(Stz* szEntry);
   
@@ -186,6 +188,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     bool bReapable(void);
     void vReapable(bool bReapable);
     void vReapableJob(void);
+    void vResetObjectTracker(void);
     void vResetOutput(void);
     void vResetTaskForJob(void);
     Op*  p_ResponseOp(void);

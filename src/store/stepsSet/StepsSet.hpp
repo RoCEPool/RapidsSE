@@ -813,11 +813,13 @@ void vDdlLockAssertNone(void);
   void vJobAssertReceived(void);
 
   void vJobDisableAllocate(void);
+  void vJobDisableObjectTracker(void);
   void vJobDistIdFetch(void);
   void vJobDistIdGenerate(void);
   void vJobTrace(void);
 
   void vJobEnableAllocate(void);
+  void vJobEnableObjectTracker(void);
   void vJobEntryPointFetch(void);
   void vJobEntryPointStore(void);
   void vJobErrorFetch(void);
@@ -865,6 +867,7 @@ void vDdlLockAssertNone(void);
   void vJobRemoveOriginator(void);
   void vJobRemoveParticipant(void);
   void vJobRemoveRetired(void);
+  void vJobResetObjectTracker(void);
   void vJobResponseOpFetch(void);
   void vJobResponseOpStore(void);
 

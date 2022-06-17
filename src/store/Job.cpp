@@ -78,7 +78,7 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
   /* 10 */ m_pMarkerChain = nullptr;
   /* 11 */ m_bAllocate    = true;
 #ifdef WITH_OBJECT_TRACKER
-  /* 12 */ m_pObjectTracker = new ObjectTracker();
+  /* 12 */ m_pObjectTracker = nullptr;
 #endif
 
   m_iTscParticipant = 0;
@@ -162,7 +162,7 @@ Job::~Job(void) noexcept(false)
     delete m_pMarkerChain;
 
 #ifdef WITH_OBJECT_TRACKER
-  if(m_pObjectTracker)
+  if(bObjectTracker())
     delete m_pObjectTracker;
 #endif
 
@@ -332,6 +332,18 @@ void Job::vCmd(Stz* szCmd)
 }
 
 /*----------------------------------------------------------------------------*/
+/* disable object tracker                                                     */
+/*----------------------------------------------------------------------------*/
+void Job::vDisableObjectTracker(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  if(bObjectTracker()) {
+    delete m_pObjectTracker;
+  }
+  m_pObjectTracker = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get distributed job id                                                     */
 /*----------------------------------------------------------------------------*/
 JobId Job::tDistId(void)
@@ -416,6 +428,19 @@ void Job::vDotPrint(Stz* szText)
          
          ,C_VARGS_END
          );
+}
+
+/*----------------------------------------------------------------------------*/
+/* enable object tracker                                                      */
+/*----------------------------------------------------------------------------*/
+void Job::vEnableObjectTracker(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  if(!bObjectTracker()) {
+    m_pObjectTracker = new ObjectTracker();
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1328,6 +1353,18 @@ void Job::vReapableJob(void)
   }
   
   vReapable(true);
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset object tracker                                                       */
+/*----------------------------------------------------------------------------*/
+void Job::vResetObjectTracker(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  if(bObjectTracker()) {
+    m_pObjectTracker->vReset();
+  }
 }
 
 /*----------------------------------------------------------------------------*/

@@ -27,6 +27,7 @@ namespace BASE
     ~ObjectTracker(void) noexcept(false);
 
     void vDump(Stz* szName);
+    void vReset(void);
     void vTrackAllocClass(eCN eClassNo);
     void vTrackFreeClass(eCN eClassNo);
 
