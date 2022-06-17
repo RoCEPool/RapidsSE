@@ -126,10 +126,10 @@
 
   [task].grabLock
   [job].addExited
-  [job].updateParent assert
 
     "<signalParent>" [job].tagSet@ tagSet.hasName if
       //"pipelineLocal::local SIGNALLING PARENT" .
+      [job].updateParent assert
       [job].signalParent
     then
 /*
