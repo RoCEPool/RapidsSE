@@ -76,10 +76,12 @@ void Step::vAddSteps_AM(void)
 
   vAddStep("AM::sysMetricsDisable"_Stz,            &Step::vAM_SysMetricsDisable);
   vAddStep("AM::sysMetricsEnable"_Stz,             &Step::vAM_SysMetricsEnable);
+
+  vAddStep("AM::SYSTEM::Ready@"_Stz,         &Step::vAM_System_ReadyFetch);
 }
 
 /*----------------------------------------------------------------------------*/
-/* AM::DEMON::tAnswerDemonJobId@ -- fetch AnswerDemon JobId                     */
+/* AM::DEMON::tAnswerDemonJobId@ -- fetch AnswerDemon JobId                   */
 /*----------------------------------------------------------------------------*/
 void Step::vAM_AnswerDemonJobIdFetch(void)
 {
@@ -93,7 +95,7 @@ void Step::vAM_AnswerDemonJobIdFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* AM::DEMON::tAnswerDemonJobId! -- store the AnswerDemon JobId                 */
+/* AM::DEMON::tAnswerDemonJobId! -- store the AnswerDemon JobId               */
 /*----------------------------------------------------------------------------*/
 void Step::vAM_AnswerDemonJobIdStore(void)
 {
@@ -687,6 +689,21 @@ void Step::vAM_SysMetricsEnable(void)
 
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* AM::SYSTEM::Ready@ -- fetch SystemReady                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_System_ReadyFetch(void)
+{
+  ENTRY();
+
+  bool bSystemReady = AM::SYSTEM::bReady();
+
+  m_pDataStack->vPushInt(bSystemReady);
+
+  EXIT();
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

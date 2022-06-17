@@ -110,6 +110,7 @@ public:
   void vAM_ReapEnable(void);
   void vAM_SysMetricsDisable(void);
   void vAM_SysMetricsEnable(void);
+  void vAM_System_ReadyFetch(void);
 
 
   // api

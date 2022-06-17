@@ -167,11 +167,12 @@
   
   //[task].exception .
 
-  "op__failureRecovery" FIND execute
-  
-  //process::quit
-
-  //HAZARD
+  AM::SYSTEM::Ready@ if
+    "op__failureRecovery" FIND execute
+  else
+    process::quit
+    HAZARD
+  then
 ;
 
 /*----------------------------------------------------------------------------*/
