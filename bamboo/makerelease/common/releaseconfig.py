@@ -4,8 +4,8 @@ import configparser
 import pathlib
 from collections import OrderedDict
 
-from errors import ConfigurationError
-import ec2
+from common.errors import ConfigurationError
+import common.ec2 as ec2
 
 
 # This is an extension used in ConfigParser to allow config files
@@ -185,7 +185,7 @@ class ReleaseConfig:
         if not path_obj.is_absolute():
             resolved_path = (os.path.dirname(self.path) / path_obj).resolve()
 
-        assert resolved_path.exists()
+        assert resolved_path.exists(), f"Path does not exist: {str(resolved_path)}"
         return str(resolved_path)
 
     @staticmethod

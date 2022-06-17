@@ -23,7 +23,10 @@ RESULT_DIR="${PLAN_DIR}/results"
 # Directory where artifacts are to be copied to
 ARTIFACT_DIR="${PLAN_DIR}/artifacts"
 
-# Make the directory for results and artifacts if they don't exist
+# Clear and re-make the directory for results and artifacts if they don't exist
+rm -rf "${RESULT_DIR}" &>/dev/null
+rm -rf "${ARTIFACT_DIR}" &>/dev/null
+
 mkdir -p "${RESULT_DIR}"
 mkdir -p "${ARTIFACT_DIR}"
 

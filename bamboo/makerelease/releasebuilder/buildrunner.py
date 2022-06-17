@@ -15,7 +15,7 @@ LOG = logging.getLogger(__name__)
 
 C_TEST_NAME = "Build Release"
 C_INSTANCE_NAME_PREFIX = "MakeRelease"
-C_INSTANCE_START_TIMEOUT = 300.0
+C_INSTANCE_START_TIMEOUT = 480.0
 C_INSTALLER_FILESPEC = "rapidsse-*.run"
 
 # How long should we wait for all of the EC2 instances to be started
@@ -67,9 +67,16 @@ class BuildRunner:
             # Record the successful test completion
             self.test_result.set_test_ended(True, False)
 
+        except errors.MakeReleaseError as e:
+            # Record the failed test completion
+            self.test_result.set_test_ended(False, False, None, str(e))
+            LOG.error(e.msg)
+            LOG.exception(e)
+
         except Exception as e:
             # Record the failed test completion
             self.test_result.set_test_ended(False, False, None, str(e))
+            LOG.exception(e)
 
         finally:
             self.__stop_build_instances()
@@ -119,16 +126,16 @@ class BuildRunner:
             msg = f"Error while trying to get the user home directory on host {self.ip_addr}: {command}" \
                   f"\nStdout Output:\n{e.stdout}" \
                   f"\nStderr Output:\n{e.stderr}"
-            raise errors.ClusterError(msg) from e
+            raise errors.SshError(msg) from e
 
         except subprocess.TimeoutExpired as e:
             msg = f"Getting the user's home directory timed out after {e.timeout} seconds: " \
                   f"{command}" \
                   f"\nStdout Output:\n{e.stdout}" \
                   f"\nStderr Output:\n{e.stderr}"
-            raise errors.ClusterError(msg) from e
+            raise errors.SshError(msg) from e
 
-        home_dir = result.stdout.trim()
+        home_dir = result.stdout.strip()
         assert home_dir is not None
         assert len(home_dir) > 0
 
@@ -150,9 +157,9 @@ class BuildRunner:
 
         command_timeout = 60  # seconds
         src = str(self.repo_path)
-        dest = f"{self.ip_addr}:{str(self.remote_home_dir)}"
+        dest = f"{self.ip_addr}:{str(self.remote_repo_dir)}"
 
-        LOG.debug(f"About to copy a test file from {src} to {dest}")
+        LOG.debug(f"About to copy the repository from {src} to {dest}")
 
         try:
             ssh.run_scp(src, dest, command_timeout, recursive=True)
@@ -161,13 +168,13 @@ class BuildRunner:
             msg = f"Error while copying the repository from {src} to {dest}." \
                   f"\nStdout Output:\n{e.stdout}" \
                   f"\nStderr Output:\n{e.stderr}"
-            raise errors.ClusterError(msg) from e
+            raise errors.SshError(msg) from e
 
         except subprocess.TimeoutExpired as e:
             msg = f"Copying the repository from {src} to {dest} timed out after {e.timeout} seconds." \
                   f"\nStdout Output:\n{e.stdout}" \
                   f"\nStderr Output:\n{e.stderr}"
-            raise errors.ClusterError(msg) from e
+            raise errors.SshError(msg) from e
 
         LOG.info(f"Successfully copied the repository from {src} to {dest}")
 
@@ -185,14 +192,14 @@ class BuildRunner:
             msg = f"Error while trying to build RapidsSE on host {self.ip_addr}: {command}" \
                   f"\nStdout Output:\n{e.stdout}" \
                   f"\nStderr Output:\n{e.stderr}"
-            raise errors.ClusterError(msg) from e
+            raise errors.SshError(msg) from e
 
         except subprocess.TimeoutExpired as e:
             msg = f"Building RapidsSE timed out after {e.timeout} seconds: " \
                   f"{command}" \
                   f"\nStdout Output:\n{e.stdout}" \
                   f"\nStderr Output:\n{e.stderr}"
-            raise errors.ClusterError(msg) from e
+            raise errors.SshError(msg) from e
 
         LOG.debug("Successfully built RapidsSE on the remote EC2 instance")
 
@@ -216,13 +223,13 @@ class BuildRunner:
             msg = f"Error while copying the RapidsSE installer from {src} to {dest}." \
                   f"\nStdout Output:\n{e.stdout}" \
                   f"\nStderr Output:\n{e.stderr}"
-            raise errors.ClusterError(msg) from e
+            raise errors.SshError(msg) from e
 
         except subprocess.TimeoutExpired as e:
             msg = f"Copying the RapidsSE installer from {src} to {dest} timed out after {e.timeout} seconds." \
                   f"\nStdout Output:\n{e.stdout}" \
                   f"\nStderr Output:\n{e.stderr}"
-            raise errors.ClusterError(msg) from e
+            raise errors.SshError(msg) from e
 
         LOG.info(f"Successfully copied the RapidsSE installer from {src} to {dest}")
 

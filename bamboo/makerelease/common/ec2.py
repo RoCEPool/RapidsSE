@@ -10,7 +10,7 @@ import botocore.exceptions
 import boto3
 import base64
 
-import errors
+import common.errors as errors
 
 # ---------- AWS Constants -------------
 C_REGION = "us-east-1"
@@ -110,7 +110,7 @@ def get_image_desc(image_id: string) -> string:
     response = client.describe_images(**kwargs)
     LOG.debug(f"Response of describe_images command:\n{pprint.pformat(response)}")
 
-    image_name = response["Images"][0]["Name"]
+    image_name = response["Images"][0]["Description"]
     return image_name
 
 
@@ -308,9 +308,11 @@ def __check_instance_type(client, instance_type: string):
     If not, then a botocore.exceptions.ClientError is thrown with a message
     that the instance type does not exist.
     """
-    LOG.info("Validating the instance type: %s", instance_type)
+    # LOG.info("Validating the instance type: %s", instance_type)
     response = client.describe_instance_types(InstanceTypes=[instance_type])
-    LOG.debug(f"Response of describe_instances command:\n{pprint.pformat(response)}")
+    # LOG.debug(f"Response of describe_instances command:\n{pprint.pformat(response)}")
+
+    assert response["InstanceTypes"][0]["InstanceType"] == instance_type
 
 
 def is_valid_image_id(image_id: string) -> bool:
@@ -331,10 +333,10 @@ def __check_image_id(client, image_id: string):
 
     LOG.info("Validating the imageId: %s", image_id)
     response = client.describe_images(**kwargs)
-    LOG.debug(f"Response of describe_images command:\n{pprint.pformat(response)}")
+    # LOG.debug(f"Response of describe_images command:\n{pprint.pformat(response)}")
 
-    image_name = response["Images"][0]["Name"]
-    LOG.info(f"Using AMI: {image_name} (image-id: {image_id})")
+    image_desc = response["Images"][0]["Description"]
+    LOG.info(f"Found AMI: {image_desc} (image-id: {image_id})")
     # pprint.pp(response)
 
 
@@ -346,15 +348,20 @@ def __get_boot_script(path_str: string) -> string:
     cloud_init_path = pathlib.Path(path_str)
     assert cloud_init_path.exists()
 
+    LOG.debug(f"Reading cloud-init script from path: {path_str}")
     txt = cloud_init_path.read_text()
 
     encoded_bytes = base64.b64encode(txt.encode("utf-8"))
-    encoded_str = encoded_bytes.decode()
+    LOG.debug(f"Unencoded cloud-init script is {len(txt)} bytes long")
 
-    assert len(encoded_str) > 0
-    assert len(encoded_str) < 16384     # 16 KB AWS limit
+    # encoded_str = encoded_bytes.decode()
+    # LOG.debug(f"Encoded cloud-init script is {len(encoded_str)} bytes long")
+    #
+    # assert len(encoded_str) > 0
+    # assert len(encoded_str) < 16384     # 16 KB AWS limit
 
-    return encoded_str
+    # return encoded_str
+    return txt
 
 
 def __wait_for_instances_to_be_ready(instance_ids: [string], ip_addresses: [string], timeout_sec: float):
@@ -453,6 +460,15 @@ def __wait_for_instances_to_be_running(instance_ids: [string], timeout_sec: floa
     # We timed out
     msg = f"Timed out waiting for {len(instance_ids)} VM instance(s) to be created and enter the 'running' state"
     LOG.error(msg)
+
+    # Terminate the machines here as we haven't passed the instance_ids back to the caller yet.
+    try:
+        terminate_instances(instance_ids)
+    except botocore.exceptions.ClientError:
+        pass
+    except AssertionError:
+        pass
+
     raise errors.Ec2InstanceTimeoutError(msg, instance_ids)
 
 
@@ -510,6 +526,15 @@ def __wait_for_instances_to_accept_ssh(instance_ids: [string], ip_addresses: [st
             msg = f"Timed out waiting for instance at {ip_addr} to accept SSH connections. " + \
                   f"Last error message: {last_error}" if last_error is not None else ""
             LOG.error(msg)
+
+            # Terminate the machines here as we haven't passed the instance_ids back to the caller yet.
+            try:
+                terminate_instances(instance_ids)
+            except botocore.exceptions.ClientError:
+                pass
+            except AssertionError:
+                pass
+
             raise errors.Ec2InstanceTimeoutError(msg, instance_ids)
 
         # Go on to the next host
@@ -571,6 +596,15 @@ def __wait_for_instances_to_finish_booting(instance_ids: [string], ip_addresses:
             msg = f"Timed out waiting for instance at {ip_addr} to complete executing its cloud-init script. " + \
                   f"Last error message: {last_error}" if last_error is not None else ""
             LOG.error(msg)
+
+            # Terminate the machines here as we haven't passed the instance_ids back to the caller yet.
+            try:
+                terminate_instances(instance_ids)
+            except botocore.exceptions.ClientError:
+                pass
+            except AssertionError:
+                pass
+
             raise errors.Ec2InstanceTimeoutError(msg, instance_ids)
 
         # Go on to the next host

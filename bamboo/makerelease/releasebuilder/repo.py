@@ -141,7 +141,7 @@ def __clone_repo(git_remote_url: string) -> pathlib.Path:
     :return: the path to the cloned repo
     """
 
-    dest_path = pathlib.Path(tempfile.mkdtemp(prefix="rapidsse_repo"))
+    dest_path = pathlib.Path(tempfile.mkdtemp(prefix="rapidsse_repo_"))
     LOG.info(f"About to clone the repository so it can be copied to remote nodes. Path: {str(dest_path)}")
 
     git_command = ["git", "clone", "--no-local", git_remote_url, str(dest_path)]

@@ -46,7 +46,7 @@ echo
 echo "*** Creating an new user: ec2-user ***"
 echo
 
-useradd "${OS_USER}"
+useradd "${OS_USER}" || true
 usermod -a -G wheel "${OS_USER}"
 
 # Setup passwordless sudo for user ec2-user

@@ -128,20 +128,20 @@ def validate_arguments() -> (pathlib.Path, pathlib.Path, pathlib.Path, pathlib.P
         LOG.error("Config file path is not a file: %s", args.config)
         sys.exit(1)
 
-    result_dir = args.resultDir
-    if not pathlib.Path.is_absolute(result_dir):
+    result_dir = pathlib.Path(args.resultDir)
+    if not result_dir.is_absolute():
         result_dir = (pathlib.Path.cwd() / result_dir).resolve()
 
-    artifact_dir = args.artifactDir
-    if not pathlib.Path.is_absolute(artifact_dir):
+    artifact_dir = pathlib.Path(args.artifactDir)
+    if not artifact_dir.is_absolute():
         artifact_dir = (pathlib.Path.cwd() / artifact_dir).resolve()
 
-    repo_dir = args.repoDir
-    if not pathlib.Path.is_absolute(repo_dir):
+    repo_dir = pathlib.Path(args.repoDir)
+    if not repo_dir.is_absolute():
         repo_dir = (pathlib.Path.cwd() / repo_dir).resolve()
 
-    config_path = args.config
-    if not pathlib.Path.is_absolute(config_path):
+    config_path = pathlib.Path(args.config)
+    if not config_path.is_absolute():
         config_path = (pathlib.Path.cwd() / config_path).resolve()
 
     return result_dir, artifact_dir, repo_dir, config_path
