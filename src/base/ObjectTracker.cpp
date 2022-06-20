@@ -59,14 +59,20 @@ void ObjectTracker::vDump(Stz* szName)
   vTrace("-------------------------------------------\n"_Stz);
   vTrace("Job: %s\n"_Stz, szName->azChar());
 //  vTrace("            Class type     Alloc   Free   Class size\n\n"_Stz);
-  vTrace("%23s  %7s  %7s  %10s\n\n"_Stz,"Class type", "Alloc", "Free", "Class size");
+  vTrace("%23s  %7s  %7s  %10s %20s %10s\n\n"_Stz,"Class type", "Alloc", "Free", "Class size", "Heap Type", "Usage");
   for(u8 i = 0; i < CN_ENUMS; i++)
   {
     if(m_xClassCount[i].m_uAllocateCount)
-      vTrace("%23s  %7llu  %7llu  %10lld\n"_Stz, aCN[i],
+      vTrace("%23s  %7llu  %7llu  %10lld %20s %10lld\n"_Stz,
+             aCN[i],
              m_xClassCount[i].m_uAllocateCount,
              m_xClassCount[i].m_uFreeCount,
-             gxaSizeHeap[i].m_nClassSize);
+             gxaSizeHeap[i].m_nClassSize,
+             aHT[gxaSizeHeap[i].m_eWhichHeap],
+             ((m_xClassCount[i].m_uAllocateCount -
+                m_xClassCount[i].m_uFreeCount) *
+                gxaSizeHeap[i].m_nClassSize)
+            );
   }
   vTrace("-------------------------------------------\n"_Stz);
 }
