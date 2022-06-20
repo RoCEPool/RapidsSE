@@ -10,7 +10,7 @@ def run_ssh(host: string, command: string, timeout: float = None) -> subprocess.
     """
     Runs a given command on a remote host, returning a subprocess.CompletedProcess object.
     A timeout is an optional value.
-    May throw a subprocess.CalledProcessError or a subprocess.TimeoutExpired exception.
+    May throw a SshError or a subprocess.TimeoutExpired exception.
     """
 
     ssh_command = ["ssh",
@@ -33,7 +33,7 @@ def run_ssh(host: string, command: string, timeout: float = None) -> subprocess.
               f"Return code: {str(result.returncode)}\n" + \
               f"Stdout: {result.stdout}\n" + \
               f"Stderr: {result.stderr}"
-        raise errors.SshError(msg)
+        raise errors.SshError(msg, result.stdout, result.stderr)
 
     return result
 
@@ -70,4 +70,4 @@ def run_scp(src: string, dest: string, timeout: float = None, recursive: bool = 
               f"Return code: {str(result.returncode)}\n" + \
               f"Stdout: {result.stdout}\n" + \
               f"Stderr: {result.stderr}"
-        raise errors.SshError(msg)
+        raise errors.SshError(msg, result.stdout, result.stderr)

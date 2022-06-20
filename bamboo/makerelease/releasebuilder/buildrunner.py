@@ -4,6 +4,7 @@ import pathlib
 import subprocess
 import os
 import fnmatch
+import string
 
 import common.ec2 as ec2
 import common.ssh as ssh
@@ -21,7 +22,7 @@ C_INSTALLER_FILESPEC = "rapidsse-*.run"
 # How long should we wait for all of the EC2 instances to be started
 # and be ready to use?
 C_EC2_BOOT_TIMEOUT_SEC = 300
-C_SE_BUILD_TIMEOUT_SEC = 600
+C_SE_BUILD_TIMEOUT_SEC = 1200
 
 
 class BuildRunner:
@@ -66,6 +67,8 @@ class BuildRunner:
 
             # Record the successful test completion
             self.test_result.set_test_ended(True, False)
+
+            LOG.info("Successfully built RapidsSE.")
 
         except Exception as e:
             # Record the failed test completion
@@ -132,7 +135,7 @@ class BuildRunner:
                   f"{command}" \
                   f"\nStdout Output:\n{e.stdout}" \
                   f"\nStderr Output:\n{e.stderr}"
-            raise errors.SshError(msg) from e
+            raise errors.SshError(msg, e.stdout, e.stderr) from e
 
         home_dir = result.stdout.strip()
         assert home_dir is not None
@@ -182,13 +185,13 @@ class BuildRunner:
                   f"\nCommand: {' '.join(command)}" \
                   f"\nStdout Output:\n{e.stdout}" \
                   f"\nStderr Output:\n{e.stderr}"
-            raise errors.SshError(msg) from e
+            raise errors.SshError(msg, e.stdout, e.stderr) from e
 
         except subprocess.TimeoutExpired as e:
             msg = f"Copying the repository from {src} to {dest} timed out after {e.timeout} seconds." \
                   f"\nStdout Output:\n{e.stdout}" \
                   f"\nStderr Output:\n{e.stderr}"
-            raise errors.SshError(msg) from e
+            raise errors.SshError(msg, e.stdout, e.stderr) from e
 
         LOG.info(f"Successfully copied the repository from {src} to {dest}")
 
@@ -200,20 +203,46 @@ class BuildRunner:
         LOG.debug("About to build RapidsSE on the remote EC2 instance")
 
         try:
-            ssh.run_ssh(self.ip_addr, command, C_SE_BUILD_TIMEOUT_SEC)
+            result = ssh.run_ssh(self.ip_addr, command, C_SE_BUILD_TIMEOUT_SEC)
 
-        except errors.SshError:
-            LOG.error(f"Error while trying to build RapidsSE on host {self.ip_addr}: {command}")
+            # Write build log to the artifact path
+            self.__write_build_log_as_artifact(result.stdout, result.stderr)
+
+        except errors.SshError as e:
+            LOG.error(f"Error while trying to build RapidsSE on host {self.ip_addr}: {command}. "
+                      f"Refer to the build log artifacts.")
+
+            # Write build log to the artifact path
+            self.__write_build_log_as_artifact(result.stdout, result.stderr)
+
+            # Don't display a giant output message
+            e.stdout = None
+            e.stderr = None
             raise
 
         except subprocess.TimeoutExpired as e:
+            # Write build log to the artifact path
+            self.__write_build_log_as_artifact(e.stdout, e.stderr)
+
             msg = f"Building RapidsSE timed out after {e.timeout} seconds: " \
-                  f"{command}" \
-                  f"\nStdout Output:\n{e.stdout}" \
-                  f"\nStderr Output:\n{e.stderr}"
-            raise errors.SshError(msg) from e
+                  f"{command}. Refer to the build log artifacts."
+            raise errors.SshError(msg, None, None) from e
 
         LOG.debug("Successfully built RapidsSE on the remote EC2 instance")
+
+    def __write_build_log_as_artifact(self, stdout: string, stderr: string) -> None:
+        """Writes stdout and stderr out to files in the artifacts directory"""
+        if stdout is not None and len(stdout) > 0:
+            stdout_path: pathlib.Path
+            stdout_path = self.artifact_path / "build_stdout.txt"
+            with open(stdout_path, "w") as f:
+                f.write(stdout)
+
+        if stderr is not None and len(stderr) > 0:
+            stderr_path: pathlib.Path
+            stderr_path = self.artifact_path / "build_stderr.txt"
+            with open(stderr_path, "w") as f:
+                f.write(stderr)
 
     def __collect_installer(self) -> None:
         """Copy the installer from the remote machine to the artifacts directory
@@ -239,7 +268,7 @@ class BuildRunner:
             msg = f"Copying the RapidsSE installer from {src} to {dest} timed out after {e.timeout} seconds." \
                   f"\nStdout Output:\n{e.stdout}" \
                   f"\nStderr Output:\n{e.stderr}"
-            raise errors.SshError(msg) from e
+            raise errors.SshError(msg, e.stdout, e.stderr) from e
 
         LOG.info(f"Successfully copied the RapidsSE installer from {src} to {dest}")
 

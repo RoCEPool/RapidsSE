@@ -41,8 +41,20 @@ class InstallationError(NonTracebackError):
 
 class SshError(TracebackError):
     """Errors that come up from starting/stopping the RapidsSE cluster"""
-    def __init__(self, msg: string, *args, **kwargs):
+    def __init__(self, msg: string, stdout: string, stderr: string, *args, **kwargs):
         super().__init__(msg, *args, **kwargs)
+        self.stdout = stdout
+        self.stderr = stderr
+
+    def __str__(self) -> str:
+        s = super().__str__()
+        if self.stdout is not None:
+            s = s + f"\nStdout: {self.stdout}"
+
+        if self.stderr is not None:
+            s = s + f"\nStderr: {self.stderr}"
+
+        return s
 
 
 class ClusterError(NonTracebackError):

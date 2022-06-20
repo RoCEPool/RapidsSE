@@ -418,8 +418,8 @@ def __wait_for_instances_to_be_running(instance_ids: [string], timeout_sec: floa
     current_time = time.time()
     end_time = current_time + timeout_sec
 
-    # Wait 1 seconds to start with before issuing the first request
-    time.sleep(1.0)
+    # Wait 3 seconds to start with before issuing the first request
+    time.sleep(3.0)
     logged_response = False
     attempts = 0
 
