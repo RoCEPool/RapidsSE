@@ -452,6 +452,7 @@ SizeHeap gxaSizeHeap[]
   { CN__O__,                     'O' - ('A' - 1),            HT_INVALID   ,0 FILL },
   { CN_OBJBUFFER,                sizeof(ObjBuffer),          HT_T_LARGE   ,0 FILL },
   { CN_OBJECTSNAPSHOT,           sizeof(ObjectSnapshot),     HT_T_SMALL   ,0 FILL },
+  { CN_OBJTRACKER,               sizeof(ObjectTracker),      HT_T_MEDIUM  ,0 FILL },
   { CN_OUTPUT,                   sizeof(Output),             HT_T_TINY    ,0 FILL },
   { CN_OP,                       sizeof(Op),                 HT_T_TINY    ,0 FILL },
   { CN_OPENFILES,                sizeof(OpenFiles),          HT_T_TINY    ,0 FILL },
