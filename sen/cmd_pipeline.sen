@@ -57,16 +57,17 @@
 /* org_ org */      ListedJob[].assertNoRef
 /* org_ org */
 /* org_ org */      Path[].discardAll
-/* org_ org */      [job].addRetired
+/* org_ org */      [task].grabLock
+/* org_ org */      [job].addExited
 /* org_ org */
 /* org_ org */      [args].distJob if
 /* org_ org */        "pipeline" "origin"
 /* org_ org */        "org_ org" "<preCheck> signalling parent"       [job].trace
 /* org_ org */      then
 /* org_ org */
-/* org_ ovr */      [job].error@ [job].signalParent
+/* org_ org */      [job].updateParent assert
+/* org_ ovr */      [job].signalParent
 /* org_ org */
-/* org_ org */      [task].grabLock
 /* org_ org */        [task].retire // does not queue onto exit demon
 /* org_ org */
 /* org_ org */      HAZARD
@@ -86,18 +87,17 @@
 /* org_ org */    ListedJob[].assertNoRef
 /* org_ org */
 /* org_ org */    Path[].discardAll
-/* org_ org */    [job].addRetired
+/* org_ org */    [task].grabLock
+/* org_ org */    [job].addExited
 /* org_ org */
 /* org_ org */      [args].distJob if
 /* org_ org */        "pipeline" "origin"
 /* org_ org */        "org_ org" "preExecuteTest signalling parent"       [job].trace
 /* org_ org */      then
 /* org_ org */
-/* org_ ovr */    [job].error@ [job].signalParent
-/* org_ ovr */
-/* org_ ovr */    true [job].reapable!
+/* org_ org */    [job].updateParent assert
+/* org_ ovr */    [job].signalParent
 /* org_ org */
-/* org_ org */    [task].grabLock
 /* org_ org */      [task].retire // does not queue onto exit demon
 /* org_ org */
 /* org_ org */    HAZARD
@@ -127,11 +127,12 @@
 /* org_ org */    ListedJob[].assertNoRef
 /* org_ org */
 /* org_ org */    Path[].discardAll
-/* org_ org */    [job].addRetired
-/* org_ org */
-/* org_ ovr */    [job].error@ [job].signalParent
-/* org_ org */
 /* org_ org */    [task].grabLock
+/* org_ org */    [job].addExited
+/* org_ org */    [job].updateParent assert
+/* org_ org */
+/* org_ ovr */    [job].signalParent
+/* org_ org */
 /* org_ org */      [task].retire // does not queue onto exit demon
 /* org_ org */
 /* org_ org */    HAZARD
@@ -144,8 +145,9 @@
 /* org_ org */        "pipeline" "origin"
 /* org_ org */        "org_ org" "NO_WAIT signalling parent"       [job].trace
 /* org_ org */      then
-/* org_ org */
-/* org_ ovr */      [job].error@ [job].signalParent
+
+/* org_ org */      [job].updateParent assert
+/* org_ ovr */      [job].signalParent
 /* org_ org */     then
 
 /* ---- --- */  // !!! org !!! org !!! org !!! org !!! org !!! org !!! org !!!
@@ -175,31 +177,6 @@
 /* org_ org */  // test if distributed job may execute
 /* org_ org */  // - - - - - - - - - - - - - - - - - -
 /* org_ org */
-/*
-?* org_ org *?  [args].distJob if
-?* org_ org *?    "pipeline" "origin"
-?* org_ org *?      "org_ org" "preExecuteTest"                    [job].trace
-?* org_ org *?  then
-?* org_ org *?
-?* org_ org *?  [job].preExecuteTest to ErrorCode[]
-?* org_ org *?  ErrorCode[] if
-?* org_ org *?    ErrorCode[] [job].error!
-?* org_ org *?    [ddlLock].testDrop
-?* org_ ovr *?    [job].removeOriginator
-?* org_ ovr *?    [job].assertOrdinary
-?* org_ org *?    ListedJob[].assertNoRef
-?* org_ org *?
-?* org_ org *?    Path[].discardAll
-?* org_ org *?    [job].addRetired
-?* org_ org *?
-?* org_ ovr *?    [job].error@ [job].signalParent
-?* org_ org *?
-?* org_ org *?    [task].grabLock
-?* org_ org *?      [task].retire // does not queue onto exit demon
-?* org_ org *?
-?* org_ org *?  HAZARD
-?* org_ org *?  then
-*/
 
 /* org_ org */  // - - - - - - - - - -
 /* org_ org */  // test if optimising
@@ -340,9 +317,9 @@
 /* org_ ovr */  then
 /* org_ ovr */
 /* org_ ovr */  Path[].discardAll
-/* org_ ovr */  [job].addRetired
-/* org_ ovr */
 /* org_ ovr */  [task].grabLock
+/* org_ ovr */  [job].addExited
+/* org_ org */
 /* org_ ovr */    "<signalParent>" [job].tagSet@ tagSet.hasName if
 /* org_ org */
 /* org_ org */      [args].distJob if
@@ -350,17 +327,16 @@
 /* org_ org */        "org_ org" "WAIT signalling parent"       [job].trace
 /* org_ org */      then
 /* org_ org */
-/* org_ ovr */      [job].error@ [job].signalParent
-/* org_ ovr */     else
-/* org_ ovr */       true [job].reapable!
+/* org_ ovr */      [job].updateParent assert
+/* org_ ovr */      [job].signalParent
+/* org_ ovr */    then
+/* org_ ovr *
+/* org_ ovr */    [args].distJob if
+/* org_ ovr */      "pipeline" "origin"
+/* org_ ovr */        "org_ ovr" "signalled..."                  [job].trace
 /* org_ ovr */    then
 /* org_ ovr */
-/* org_ ovr */    //[args].distJob if
-/* org_ ovr */    //  "pipeline" "origin"
-/* org_ ovr */    //    "org_ ovr" "signalled..."                  [job].trace
-/* org_ ovr */    //then
-/* org_ ovr */
-/* org_ ovr */    [task].retire // does not queue onto exit demon
+/* org_ ovr */    [task].retire
 /* org_ ovr */
 /* org_ ovr */  HAZARD
 

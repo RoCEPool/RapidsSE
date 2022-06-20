@@ -13,30 +13,415 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_AM(void)
 {
-  vAddStep("AM::SHOW::bBoot"_Stz,           &Step::vAM_Show_Boot);
-  vAddStep("AM::SHOW::bDir"_Stz,            &Step::vAM_Show_Dir);
-  vAddStep("AM::SHOW::bDir_Failure"_Stz,    &Step::vAM_Show_Dir_Failure);
-  vAddStep("AM::SHOW::bConnection"_Stz,     &Step::vAM_Show_Connection);
-  vAddStep("AM::SHOW::bException"_Stz,      &Step::vAM_Show_Exception);
-  vAddStep("AM::SHOW::bFile"_Stz,           &Step::vAM_Show_File);
-  vAddStep("AM::SHOW::bFile_Failure"_Stz,   &Step::vAM_Show_File_Failure);
-  vAddStep("AM::SHOW::bLowMem"_Stz,         &Step::vAM_Show_LowMem);
-  vAddStep("AM::SHOW::bLowMem_Recv"_Stz,    &Step::vAM_Show_LowMem_Recv);
-  vAddStep("AM::SHOW::bRecurring"_Stz,      &Step::vAM_Show_Recurring);
-  vAddStep("AM::SHOW::bSocket"_Stz,         &Step::vAM_Show_Socket);
-  vAddStep("AM::SHOW::bSocket_Failure"_Stz, &Step::vAM_Show_Socket_Failure);
-  
-  vAddStep("AM::derefMetricsDisable"_Stz,   &Step::vAM_DerefMetricsDisable);
-  vAddStep("AM::derefMetricsEnable"_Stz,    &Step::vAM_DerefMetricsEnable);
-  
-  vAddStep("AM::jobMetricsDisable"_Stz,     &Step::vAM_JobMetricsDisable);
-  vAddStep("AM::jobMetricsEnable"_Stz,      &Step::vAM_JobMetricsEnable);
-  
-  vAddStep("AM::reapDisable"_Stz,           &Step::vAM_ReapDisable);
-  vAddStep("AM::reapEnable"_Stz,            &Step::vAM_ReapEnable);
+  vAddStep("AM::DEMON::tAnswerDemonJobId@"_Stz,    &Step::vAM_AnswerDemonJobIdFetch);
+  vAddStep("AM::DEMON::tAnswerDemonJobId!"_Stz,    &Step::vAM_AnswerDemonJobIdStore);
 
-  vAddStep("AM::sysMetricsDisable"_Stz,     &Step::vAM_SysMetricsDisable);
-  vAddStep("AM::sysMetricsEnable"_Stz,      &Step::vAM_SysMetricsEnable);
+  vAddStep("AM::DEMON::tCollectDemonJobId@"_Stz,   &Step::vAM_CollectDemonJobIdFetch);
+  vAddStep("AM::DEMON::tCollectDemonJobId!"_Stz,   &Step::vAM_CollectDemonJobIdStore);
+
+  vAddStep("AM::DEMON::tConnectDemonJobId@"_Stz,   &Step::vAM_ConnectorDemonJobIdFetch);
+  vAddStep("AM::DEMON::tConnectDemonJobId!"_Stz,   &Step::vAM_ConnectorDemonJobIdStore);
+
+  vAddStep("AM::DEMON::tEventDemonJobId@"_Stz,     &Step::vAM_EventDemonJobIdFetch);
+  vAddStep("AM::DEMON::tEventDemonJobId!"_Stz,     &Step::vAM_EventDemonJobIdStore);
+
+  vAddStep("AM::DEMON::tExitDemonJobId@"_Stz,      &Step::vAM_ExitDemonJobIdFetch);
+  vAddStep("AM::DEMON::tExitDemonJobId!"_Stz,      &Step::vAM_ExitDemonJobIdStore);
+
+  vAddStep("AM::DEMON::tMetricsDemonJobId@"_Stz,   &Step::vAM_MetricsDemonJobIdFetch);
+  vAddStep("AM::DEMON::tMetricsDemonJobId!"_Stz,   &Step::vAM_MetricsDemonJobIdStore);
+
+  vAddStep("AM::DEMON::tMonDemonJobId@"_Stz,       &Step::vAM_MonDemonJobIdFetch);
+  vAddStep("AM::DEMON::tMonDemonJobId!"_Stz,       &Step::vAM_MonDemonJobIdStore);
+
+  vAddStep("AM::DEMON::tPageOutDemonJobId@"_Stz,   &Step::vAM_PageOutDemonJobIdFetch);
+  vAddStep("AM::DEMON::tPageOutDemonJobId!"_Stz,   &Step::vAM_PageOutDemonJobIdStore);
+
+  vAddStep("AM::DEMON::tReaperDemonJobId@"_Stz,    &Step::vAM_ReaperDemonJobIdFetch);
+  vAddStep("AM::DEMON::tReaperDemonJobId!"_Stz,    &Step::vAM_ReaperDemonJobIdStore);
+
+  vAddStep("AM::DEMON::tRecurDemonJobId@"_Stz,     &Step::vAM_RecurDemonJobIdFetch);
+  vAddStep("AM::DEMON::tRecurDemonJobId!"_Stz,     &Step::vAM_RecurDemonJobIdStore);
+
+  vAddStep("AM::DEMON::tStatDemonJobId@"_Stz,      &Step::vAM_StatDemonJobIdFetch);
+  vAddStep("AM::DEMON::tStatDemonJobId!"_Stz,      &Step::vAM_StatDemonJobIdStore);
+
+  vAddStep("AM::DEMON::tWakerDemonJobId@"_Stz,     &Step::vAM_WakerDemonJobIdFetch);
+  vAddStep("AM::DEMON::tWakerDemonJobId!"_Stz,     &Step::vAM_WakerDemonJobIdStore);
+
+  vAddStep("AM::DEMON::tSuperDemonJobId@"_Stz,     &Step::vAM_SuperDemonJobIdFetch);
+  vAddStep("AM::DEMON::tSuperDemonJobId!"_Stz,     &Step::vAM_SuperDemonJobIdStore);
+
+  vAddStep("AM::SHOW::bBoot"_Stz,                  &Step::vAM_Show_Boot);
+  vAddStep("AM::SHOW::bDir"_Stz,                   &Step::vAM_Show_Dir);
+  vAddStep("AM::SHOW::bDir_Failure"_Stz,           &Step::vAM_Show_Dir_Failure);
+  vAddStep("AM::SHOW::bConnection"_Stz,            &Step::vAM_Show_Connection);
+  vAddStep("AM::SHOW::bException"_Stz,             &Step::vAM_Show_Exception);
+  vAddStep("AM::SHOW::bFile"_Stz,                  &Step::vAM_Show_File);
+  vAddStep("AM::SHOW::bFile_Failure"_Stz,          &Step::vAM_Show_File_Failure);
+  vAddStep("AM::SHOW::bLowMem"_Stz,                &Step::vAM_Show_LowMem);
+  vAddStep("AM::SHOW::bLowMem_Recv"_Stz,           &Step::vAM_Show_LowMem_Recv);
+  vAddStep("AM::SHOW::bRecurring"_Stz,             &Step::vAM_Show_Recurring);
+  vAddStep("AM::SHOW::bSocket"_Stz,                &Step::vAM_Show_Socket);
+  vAddStep("AM::SHOW::bSocket_Failure"_Stz,        &Step::vAM_Show_Socket_Failure);
+
+  vAddStep("AM::derefMetricsDisable"_Stz,          &Step::vAM_DerefMetricsDisable);
+  vAddStep("AM::derefMetricsEnable"_Stz,           &Step::vAM_DerefMetricsEnable);
+
+  vAddStep("AM::jobMetricsDisable"_Stz,            &Step::vAM_JobMetricsDisable);
+  vAddStep("AM::jobMetricsEnable"_Stz,             &Step::vAM_JobMetricsEnable);
+
+  vAddStep("AM::reapDisable"_Stz,                  &Step::vAM_ReapDisable);
+  vAddStep("AM::reapEnable"_Stz,                   &Step::vAM_ReapEnable);
+
+  vAddStep("AM::sysMetricsDisable"_Stz,            &Step::vAM_SysMetricsDisable);
+  vAddStep("AM::sysMetricsEnable"_Stz,             &Step::vAM_SysMetricsEnable);
+
+  vAddStep("AM::SYSTEM::Ready@"_Stz,         &Step::vAM_System_ReadyFetch);
+}
+
+/*----------------------------------------------------------------------------*/
+/* AM::DEMON::tAnswerDemonJobId@ -- fetch AnswerDemon JobId                   */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_AnswerDemonJobIdFetch(void)
+{
+  ENTRY();
+
+  JobId tJobId = AM::DEMON::tAnswerDemonJobId();
+
+  m_pDataStack->vPushInt(tJobId.iAsI8());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AM::DEMON::tAnswerDemonJobId! -- store the AnswerDemon JobId               */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_AnswerDemonJobIdStore(void)
+{
+  ENTRY();
+
+  JobId tJobId = m_pDataStack->iPopInt(__func__);
+  AM::DEMON::vAnswerDemonJobId(tJobId);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AM::DEMON::tCollectDemonJobId@ -- fetch CollectDemon JobId                 */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_CollectDemonJobIdFetch(void)
+{
+  ENTRY();
+
+  JobId tJobId = AM::DEMON::tCollectDemonJobId();
+
+  m_pDataStack->vPushInt(tJobId.iAsI8());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AM::DEMON::tCollectDemonJobId! -- store the CollectDemon JobId             */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_CollectDemonJobIdStore(void)
+{
+  ENTRY();
+
+  JobId tJobId = m_pDataStack->iPopInt(__func__);
+  AM::DEMON::vCollectDemonJobId(tJobId);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AM::DEMON::tConnectDemonJobId@ -- fetch ConnectorDemon JobId               */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_ConnectorDemonJobIdFetch(void)
+{
+  ENTRY();
+
+  JobId tJobId = AM::DEMON::tConnectorDemonJobId();
+
+  m_pDataStack->vPushInt(tJobId.iAsI8());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AM::DEMON::tConnectDemonJobId! -- store the ConnectorDemon JobId         */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_ConnectorDemonJobIdStore(void)
+{
+  ENTRY();
+
+  JobId tJobId = m_pDataStack->iPopInt(__func__);
+  AM::DEMON::vConnectorDemonJobId(tJobId);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AM::DEMON::tEventDemonJobId@ -- fetch EventDemon JobId                     */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_EventDemonJobIdFetch(void)
+{
+  ENTRY();
+
+  JobId tJobId = AM::DEMON::tEventDemonJobId();
+
+  m_pDataStack->vPushInt(tJobId.iAsI8());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AM::DEMON::tEventDemonJobId! -- store the EventDemon JobId                 */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_EventDemonJobIdStore(void)
+{
+  ENTRY();
+
+  JobId tJobId = m_pDataStack->iPopInt(__func__);
+  AM::DEMON::vEventDemonJobId(tJobId);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AM::DEMON::tExitDemonJobId@ -- fetch ExitDemon JobId                       */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_ExitDemonJobIdFetch(void)
+{
+  ENTRY();
+
+  JobId tJobId = AM::DEMON::tExitDemonJobId();
+
+  m_pDataStack->vPushInt(tJobId.iAsI8());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AM::DEMON::tExitDemonJobId! -- store the ExitDemon JobId                   */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_ExitDemonJobIdStore(void)
+{
+  ENTRY();
+
+  JobId tJobId = m_pDataStack->iPopInt(__func__);
+  AM::DEMON::vExitDemonJobId(tJobId);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AM::DEMON::tMetricsDemonJobId@ -- fetch MetricsDemon JobId                 */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_MetricsDemonJobIdFetch(void)
+{
+  ENTRY();
+
+  JobId tJobId = AM::DEMON::tMetricsDemonJobId();
+
+  m_pDataStack->vPushInt(tJobId.iAsI8());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AM::DEMON::tMetricsDemonJobId! -- store the MetricsDemon JobId             */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_MetricsDemonJobIdStore(void)
+{
+  ENTRY();
+
+  JobId tJobId = m_pDataStack->iPopInt(__func__);
+  AM::DEMON::vMetricsDemonJobId(tJobId);
+
+  EXIT();
+}
+/*----------------------------------------------------------------------------*/
+/* AM::DEMON::tMonDemonJobId@ -- fetch MonDemon JobId                         */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_MonDemonJobIdFetch(void)
+{
+  ENTRY();
+
+  JobId tJobId = AM::DEMON::tMonDemonJobId();
+
+  m_pDataStack->vPushInt(tJobId.iAsI8());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AM::DEMON::tMonDemonJobId! -- store the MonDemon JobId                     */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_MonDemonJobIdStore(void)
+{
+  ENTRY();
+
+  JobId tJobId = m_pDataStack->iPopInt(__func__);
+  AM::DEMON::vMonDemonJobId(tJobId);
+
+  EXIT();
+}
+/*----------------------------------------------------------------------------*/
+/* AM::DEMON::tPageOutDemonJobId@ -- fetch PageOutDemon JobId                 */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_PageOutDemonJobIdFetch(void)
+{
+  ENTRY();
+
+  JobId tJobId = AM::DEMON::tPageOutDemonJobId();
+
+  m_pDataStack->vPushInt(tJobId.iAsI8());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AM::DEMON::tPageOutDemonJobId! -- store the PageOutDemon JobId             */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_PageOutDemonJobIdStore(void)
+{
+  ENTRY();
+
+  JobId tJobId = m_pDataStack->iPopInt(__func__);
+  AM::DEMON::vPageOutDemonJobId(tJobId);
+
+  EXIT();
+}
+/*----------------------------------------------------------------------------*/
+/* AM::DEMON::tReaperDemonJobId@ -- fetch ReaperDemon JobId                   */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_ReaperDemonJobIdFetch(void)
+{
+  ENTRY();
+
+  JobId tJobId = AM::DEMON::tReaperDemonJobId();
+
+  m_pDataStack->vPushInt(tJobId.iAsI8());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AM::DEMON::tReaperDemonJobId! -- store the ReaperDemon JobId               */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_ReaperDemonJobIdStore(void)
+{
+  ENTRY();
+
+  JobId tJobId = m_pDataStack->iPopInt(__func__);
+  AM::DEMON::vReaperDemonJobId(tJobId);
+
+  EXIT();
+}
+/*----------------------------------------------------------------------------*/
+/* AM::DEMON::tRecurDemonJobId@ -- fetch RecurDemon JobId                     */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_RecurDemonJobIdFetch(void)
+{
+  ENTRY();
+
+  JobId tJobId = AM::DEMON::tRecurDemonJobId();
+
+  m_pDataStack->vPushInt(tJobId.iAsI8());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AM::DEMON::tRecurDemonJobId! -- store the RecurDemon JobId                 */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_RecurDemonJobIdStore(void)
+{
+  ENTRY();
+
+  JobId tJobId = m_pDataStack->iPopInt(__func__);
+  AM::DEMON::vRecurDemonJobId(tJobId);
+
+  EXIT();
+}
+/*----------------------------------------------------------------------------*/
+/* AM::DEMON::tStatDemonJobId@ -- fetch StatDemon JobId                       */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_StatDemonJobIdFetch(void)
+{
+  ENTRY();
+
+  JobId tJobId = AM::DEMON::tStatDemonJobId();
+
+  m_pDataStack->vPushInt(tJobId.iAsI8());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AM::DEMON::tStatDemonJobId! -- store the StattDemon JobId                  */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_StatDemonJobIdStore(void)
+{
+  ENTRY();
+
+  JobId tJobId = m_pDataStack->iPopInt(__func__);
+  AM::DEMON::vStatDemonJobId(tJobId);
+
+  EXIT();
+}
+/*----------------------------------------------------------------------------*/
+/* AM::DEMON::tWakerDemonJobId@ -- fetch WakerDemon JobId                     */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_WakerDemonJobIdFetch(void)
+{
+  ENTRY();
+
+  JobId tJobId = AM::DEMON::tWakerDemonJobId();
+
+  m_pDataStack->vPushInt(tJobId.iAsI8());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AM::DEMON::tWakerDemonJobId! -- store the WakerDemon JobId                 */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_WakerDemonJobIdStore(void)
+{
+  ENTRY();
+
+  JobId tJobId = m_pDataStack->iPopInt(__func__);
+  AM::DEMON::vWakerDemonJobId(tJobId);
+
+  EXIT();
+}
+/*----------------------------------------------------------------------------*/
+/* AM::DEMON::tSuperDemonJobId@ -- fetch SuperDemon JobId                     */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_SuperDemonJobIdFetch(void)
+{
+  ENTRY();
+
+  JobId tJobId = AM::DEMON::tSuperDemonJobId();
+
+  m_pDataStack->vPushInt(tJobId.iAsI8());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AM::DEMON::tSuperDemonJobId! -- store the SuperDemon JobId                 */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_SuperDemonJobIdStore(void)
+{
+  ENTRY();
+
+  JobId tJobId = m_pDataStack->iPopInt(__func__);
+  AM::DEMON::vSuperDemonJobId(tJobId);
+
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -304,6 +689,21 @@ void Step::vAM_SysMetricsEnable(void)
 
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* AM::SYSTEM::Ready@ -- fetch SystemReady                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_System_ReadyFetch(void)
+{
+  ENTRY();
+
+  bool bSystemReady = AM::SYSTEM::bReady();
+
+  m_pDataStack->vPushInt(bSystemReady);
+
+  EXIT();
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

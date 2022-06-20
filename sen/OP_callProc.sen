@@ -10,7 +10,7 @@
 /* handler for EV_D_STREAMSET ...                                             */
 /*----------------------------------------------------------------------------*/
 : callProc_STREAMSET \handler
-
+/*
   "callProc_StreamSet" .
 
   // get the first row of the infoSet (__listTables)
@@ -36,7 +36,7 @@
   repeat
 
   StreamSet[].delete
-
+*/
   true
 ;
 

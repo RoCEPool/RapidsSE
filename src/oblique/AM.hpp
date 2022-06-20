@@ -26,7 +26,7 @@
 #include "eXA.h"
 
 #include "KeyBkt.hpp"
-
+//#include "JobId.hpp"
 
 
 namespace OBLIQUE {
@@ -275,6 +275,45 @@ namespace OBLIQUE
     class DEMON
     {
     public:
+      static void  vAnswerDemonJobId(JobId tJobId);
+      static JobId tAnswerDemonJobId(void);
+
+      static void  vCollectDemonJobId(JobId tJobId);
+      static JobId tCollectDemonJobId(void);
+
+      static void  vConnectorDemonJobId(JobId tJobId);
+      static JobId tConnectorDemonJobId(void);
+
+      static void  vEventDemonJobId(JobId tJobId);
+      static JobId tEventDemonJobId(void);
+
+      static void  vExitDemonJobId(JobId tJobId);
+      static JobId tExitDemonJobId(void);
+
+      static void  vMetricsDemonJobId(JobId tJobId);
+      static JobId tMetricsDemonJobId(void);
+
+      static void  vMonDemonJobId(JobId tJobId);
+      static JobId tMonDemonJobId(void);
+
+      static void  vPageOutDemonJobId(JobId tJobId);
+      static JobId tPageOutDemonJobId(void);
+
+      static void  vReaperDemonJobId(JobId tJobId);
+      static JobId tReaperDemonJobId(void);
+
+      static void  vRecurDemonJobId(JobId tJobId);
+      static JobId tRecurDemonJobId(void);
+
+      static void  vStatDemonJobId(JobId tJobId);
+      static JobId tStatDemonJobId(void);
+
+      static void  vWakerDemonJobId(JobId tJobId);
+      static JobId tWakerDemonJobId(void);
+
+      static void  vSuperDemonJobId(JobId tJobId);
+      static JobId tSuperDemonJobId(void);
+
       static void vPipeToOp0(Stz* szDemonNm, Operand* pOperand);
     };
     
@@ -306,11 +345,16 @@ namespace OBLIQUE
     class JLIST
     {
     public:
+      static eEC  eFolderPathSet(JobId tJobId, Stz* szFolderPath);
       static bool bFindJob(Job* pJob, bool bLockJob=false);
       static Job* pFindJob(JobId tJobId, bool bLockJob=false);
       static void vInsertJob(Job* pJob);
       static JobList* pJobsList(void);
+      static eEC  eLastJobId(JobId tJobId, JobId& tLastJobId);
+      static eEC  ePipeToOp0(JobId tJobId, Operand* pOperand, Task* pTask);
       static void vRemoveJob(Job* pJob);
+      static eEC  eSystemCloserSet(JobId tJobId, i8 iSystemCloser);
+      static eEC  eUpdateParent(Job* pJob);
     };
   
     class JOB
@@ -682,6 +726,7 @@ namespace OBLIQUE
     static std::list<Node*>::const_iterator itEndNodes(void);
 
     static JobList* pDemonJobs(void);
+    static JobList* pExitedJobs(void);
 #ifdef WITH_HASHMAP
     static HashMap* pHashMap(void);
 #endif
@@ -698,7 +743,6 @@ namespace OBLIQUE
     static i8   iNextTxId(void);
     static JobList* pOriginatingJobs(void);
     static JobList* pParticipatingJobs(void);
-    static JobList* pRetiredJobs(void);
     static void vProcessExit(void);
     static i8   iSystemUsec(void);
     static i8   iUserUsec(void);
@@ -872,10 +916,10 @@ namespace OBLIQUE
 
   public:
     static void vJob_AddDemon(Job* pJob);
+    static void vJob_AddExited(Job* pJob);
     static void vJob_AddLocal(Job* pJob);
     static void vJob_AddOriginating(Job* pJob);
     static void vJob_AddParticipating(Job* pJob);
-    static void vJob_AddRetired(Job* pJob);
     static void vJob_DumpDemon(void);
     static void vJob_DumpLocal(void);
     static void vJob_DumpOriginating(void);

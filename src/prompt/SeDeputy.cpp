@@ -56,15 +56,14 @@ SeDeputy::SeDeputy(i8 i_Deputy, SePrompt* pSePrompt)
   m_bAvailable    = false;
   m_bContinue     = true;
   m_bTerminated   = false;
-  m_bSystemCloser = false;
+  //m_bSystemCloser = false;
 
   m_pRootJob = nullptr;
-  m_pJob     = nullptr;
   m_eError   = EC_NONE;
 
   _checkInitialised_(CN_SEDEPUTY);
   
-  m_sFolderPath = C_SE_PATH;
+  //m_sFolderPath = C_SE_PATH;
   
   JobId tParentId;
   RASSERT(tParentId.bIsUnknown());
@@ -76,6 +75,8 @@ SeDeputy::SeDeputy(i8 i_Deputy, SePrompt* pSePrompt)
   RASSERT(tDistId.bIsUnknown());
 
   m_pRootJob = Api::pNewRootJob("SeDeputy"_Stz,tParentId,tOriginId,tDistId);
+  m_pRootJob->vFolderPath(C_SE_PATH);
+  m_pRootJob->vSystemCloser(false);
   m_pRootJob->vOutputCreate();
   m_pRootJob->vOutputBeginProc();
   m_pRootJob->vOutputEnabled(true);
@@ -128,10 +129,7 @@ void SeDeputy::vDeputyLoop(void)
   
   while (m_bContinue) {
 
-    RASSERT(!m_pJob);
-
     vMutexLock(this);
-    RASSERT(!m_pJob);
     m_bAvailable = true;
     vMutexWaitAndUnlock(this);
   
@@ -143,9 +141,10 @@ void SeDeputy::vDeputyLoop(void)
     
     pInpTagSet->vReplace(C_TAG_WAIT,1);
     pInpTagSet->vReplace(C_TAG_SIGNALPARENT,1);
-    pInpTagSet->vReplace(C_TAG_PATH,m_sFolderPath);
-    pInpTagSet->vReplace(C_TAG_LASTJOBID,m_tLastJobId.iAsI8());
-    pInpTagSet->vReplace(C_TAG_SYSTEMCLOSER,m_bSystemCloser);
+
+    pInpTagSet->vReplace(C_TAG_PATH,m_pRootJob->szFolderPath());
+    pInpTagSet->vReplace(C_TAG_LASTJOBID,m_pRootJob->tLastJobId().iAsI8());
+    pInpTagSet->vReplace(C_TAG_SYSTEMCLOSER,m_pRootJob->bSystemCloser());
 
     JobId tChildJobId;
     
@@ -158,50 +157,40 @@ void SeDeputy::vDeputyLoop(void)
     JobId tDistId;
     tDistId = m_pRootJob->tDistId();
 
+    bool bIsPipeline;
+    bool bIsBackground;
+
     m_eError = Api::eForkJobChild(tChildJobId,
                              pInpTknVec,pInpTagSet,
                              tParentId,tOriginId,tDistId,
-                             m_pRootJob, // TO BE REMOVED
-                             m_pJob      // TO BE REMOVED
+                             m_pRootJob,
+                             true, /* update parent */
+                             bIsPipeline,
+                             bIsBackground
                              );
     
     if (EC_NONE != m_eError) {
       m_pSePrompt->vMutexLock(this);
       m_pSePrompt->vMutexSignalAndUnlock(this);
-
-      // if command was invalid we may not have a job
-      if (m_pJob)
-        Api::vReapableJob(m_pJob);
       continue;
     }
 
-    // check if job is inError
-    if (m_pJob->bIsInError()) {
-      vTrace("error: (node%lld) %s\n"_Stz, AM::NODE::iThisNodeId(),
-             aEC[m_pJob->eJobError()]);
-    }
-    else {
-      // process the output bufferQueue
-      if (m_pJob->bIsPipeline())
-        m_pJob->vProcessOutput();
-    }
+    // process the output bufferQueue
+    if (bIsPipeline)
+      m_pRootJob->vProcessOutput();
 
     vReportTime();
-      
-    ApiHelper::vResetResults(m_pJob);
 
-    if (! m_pJob->bHasTag(C_TAG_BG)) {
+    m_pRootJob->vResetOutput();
+    m_pRootJob->vCleanupOutput();
+
+    if (! bIsBackground) {
       m_pSePrompt->vMutexLock(this);
       m_pSePrompt->vMutexSignalAndUnlock(this);
     }
-    
-    // NEEDS CORRECTION
-    m_sFolderPath   = m_pJob->szFolderPath();
-    m_tLastJobId    = m_pJob->tLastJobId();
-    m_bSystemCloser = m_pJob->bSystemCloser();
-    
 
-    Api::vReapableJob(m_pJob);
+    // reset the C_TAG_TIME
+    pInpTagSet->vDelete(C_TAG_TIME);
   }
   
   m_bTerminated = true;
@@ -271,7 +260,7 @@ JobId SeDeputy::tLastJobId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
 
-  return m_tLastJobId;
+  return m_pRootJob->tLastJobId();;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -324,13 +313,14 @@ void SeDeputy::vReportTime(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
   //m_pJob->pTagSet()->vPrint();
-  
-  if (! m_pJob->bHasTag(C_TAG_TIME))
+
+  /*
+  if (! m_pRootJob->bHasTag(C_TAG_TIME))
     return;
   
-  if (m_pJob->bHasTag(C_TAG_SUMMARY)) {
+  if (m_pRootJob->bHasTag(C_TAG_SUMMARY)) {
     
-    Stz* szNote = m_pJob->pJobTags()->szValue(C_TAG_NOTE);
+    Stz* szNote = m_pRootJob->pJobTags()->szValue(C_TAG_NOTE);
     
     Now spNow;
     vTrace("[%s %lldN%lldP%lldT %s %s] "_Stz,
@@ -342,34 +332,39 @@ void SeDeputy::vReportTime(void)
            spNow.sz()
            );
   }
-  
-  vTrace("time %lldms\n\n"_Stz,m_pJob->iResponseTimerMsec());
+ */
+
+  if (! m_pRootJob->bHasTag(C_TAG_TIME))
+    return;
+
+  vTrace("time %lldms\n\n"_Stz,m_pRootJob->iResponseTimerMsec());
   
   Timer oTimer;
 
-  oTimer.vSet(m_pJob->iResponseTimerStart(),
-              m_pJob->iTscBeginning());
+  oTimer.vSet(m_pRootJob->iResponseTimerStart(),
+              m_pRootJob->iTscBeginning());
   vTrace("Begin    %lldus\n"_Stz,oTimer.iMicroseconds());
 
-  oTimer.vSet(m_pJob->iResponseTimerStart(),
-              m_pJob->iTscBegun());
+  oTimer.vSet(m_pRootJob->iResponseTimerStart(),
+              m_pRootJob->iTscBegun());
   vTrace("Begun    %lldus\n"_Stz,oTimer.iMicroseconds());
 
-  oTimer.vSet(m_pJob->iResponseTimerStart(),
-              m_pJob->iTscExecuting());
+  oTimer.vSet(m_pRootJob->iResponseTimerStart(),
+              m_pRootJob->iTscExecuting());
   vTrace("Execute  %lldus\n"_Stz,oTimer.iMicroseconds());
 
-  oTimer.vSet(m_pJob->iResponseTimerStart(),
-              m_pJob->iTscExecuted());
+  oTimer.vSet(m_pRootJob->iResponseTimerStart(),
+              m_pRootJob->iTscExecuted());
   vTrace("Executed %lldus\n"_Stz,oTimer.iMicroseconds());
 
-  oTimer.vSet(m_pJob->iResponseTimerStart(),
-              m_pJob->iTscEnding());
+  oTimer.vSet(m_pRootJob->iResponseTimerStart(),
+              m_pRootJob->iTscEnding());
   vTrace("End      %lldus\n"_Stz,oTimer.iMicroseconds());
 
-  oTimer.vSet(m_pJob->iResponseTimerStart(),
-              m_pJob->iTscEnded());
+  oTimer.vSet(m_pRootJob->iResponseTimerStart(),
+              m_pRootJob->iTscEnded());
   vTrace("Ended    %lldus\n"_Stz,oTimer.iMicroseconds());
+
 }
 
 /*----------------------------------------------------------------------------*/

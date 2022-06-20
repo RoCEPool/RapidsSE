@@ -61,6 +61,33 @@ public:
   void vAggTimerTicks(void);
 
   // AM
+  void vAM_AnswerDemonJobIdFetch(void);
+  void vAM_AnswerDemonJobIdStore(void);
+  void vAM_CollectDemonJobIdFetch(void);
+  void vAM_CollectDemonJobIdStore(void);
+  void vAM_ConnectorDemonJobIdFetch(void);
+  void vAM_ConnectorDemonJobIdStore(void);
+  void vAM_EventDemonJobIdFetch(void);
+  void vAM_EventDemonJobIdStore(void);
+  void vAM_ExitDemonJobIdFetch(void);
+  void vAM_ExitDemonJobIdStore(void);
+  void vAM_MetricsDemonJobIdFetch(void);
+  void vAM_MetricsDemonJobIdStore(void);
+  void vAM_MonDemonJobIdFetch(void);
+  void vAM_MonDemonJobIdStore(void);
+  void vAM_PageOutDemonJobIdFetch(void);
+  void vAM_PageOutDemonJobIdStore(void);
+  void vAM_ReaperDemonJobIdFetch(void);
+  void vAM_ReaperDemonJobIdStore(void);
+  void vAM_RecurDemonJobIdFetch(void);
+  void vAM_RecurDemonJobIdStore(void);
+  void vAM_StatDemonJobIdFetch(void);
+  void vAM_StatDemonJobIdStore(void);
+  void vAM_WakerDemonJobIdFetch(void);
+  void vAM_WakerDemonJobIdStore(void);
+  void vAM_SuperDemonJobIdFetch(void);
+  void vAM_SuperDemonJobIdStore(void);
+
   void vAM_No_Free(void);
   void vAM_Show_Boot(void);
   void vAM_Show_Dir(void);
@@ -83,13 +110,15 @@ public:
   void vAM_ReapEnable(void);
   void vAM_SysMetricsDisable(void);
   void vAM_SysMetricsEnable(void);
+  void vAM_System_ReadyFetch(void);
 
 
   // api
+  void vApiDeleteJob(void);
   void vApiForkChild(void);
-  void vApiForkChildOld(void);
+  void vApiForkDemon(void);
   void vApiForkChild2PC(void);
-  void vApiReapJobs(void);
+  void vApiReapableJobFetch(void);
   void vApiSpawnJob(void);
 
   // arrange
@@ -801,11 +830,10 @@ void vDdlLockAssertNone(void);
 
   // job
   void vJobAddDemon(void);
+  void vJobAddExited(void);
   void vJobAddLocal(void);
   void vJobAddOriginator(void);
   void vJobAddParticipant(void);
-  void vJobAddRetired(void);
-  void vJobAssertBegin(void);
   void vJobAssertStructure(void);
   void vJobAssertOrdinary(void);
   void vJobAssertOriginator(void);
@@ -825,25 +853,15 @@ void vDdlLockAssertNone(void);
   void vJobErrorFetch(void);
   void vJobErrorStore(void);
 
-  void vJobIdFolderPathFetch(void);
   void vJobIdFolderPathStore(void);
 
   void vJobGet(void);
 
-  void vJobIdHasCascadeFetch(void);
-
-  void vJobIdFetch(void);
-  void vJobIdIdFetch(void);
-
-  void vJobIdJobListFetch(void);
-
   void vJobIdLastJobIdFetch(void);
-  void vJobIdLastJobIdStore(void);
 
-  void vJobIdMasterJob(void);
+  void vJobListFetch(void);
 
-  void vJobIdNameFetch(void);
-
+  void vJobNameFetch(void);
   void vJobOriginIdFetch(void);
   void vJobOriginNodeIdFetch(void);
 
@@ -852,17 +870,12 @@ void vDdlLockAssertNone(void);
   void vJobIdPipeToOp0(void);
   void vJobPreExecuteTest(void);
   void vJobPhaseFetch(void);
-  void vJobIdPhaseFetch(void);
   void vJobPhaseStore(void);
   void vJobPrintObjectTracker(void);
   void vJobProgress(void);
   void vJobProgressReset(void);
   void vJobProgressSeconds(void);
 
-  void vJobReapableFetch(void);
-  void vJobIdReapableFetch(void);
-  void vJobReapableStore(void);
-  void vJobIdReapableStore(void);
   void vJobRemoveLocal(void);
   void vJobRemoveOriginator(void);
   void vJobRemoveParticipant(void);
@@ -878,21 +891,23 @@ void vDdlLockAssertNone(void);
   void vJobReportOperands(void);
   void vJobReportOperators(void);
 
+  void vJobOtherIdFetch(void);
+
   void vListedJobScheduleNextPhase(void);
   void vJobScheduleNextPhase(void);
-  void vJobIdShow(void);
 
   void vJobSetOriginId(void);
   void vJobSignalParent(void);
+  void vJobMasterJobId(void);
   void vJobMutexFetch(void);
   void vJobNewMarkerChain(void);
+  void vJobUpdateParent(void);
 
-  void vJobIdSystemCloserFetch(void);
   void vJobIdSystemCloserStore(void);
+  void vJobIdIsUnknown(void);
 
   void vJobTagSetFetch(void);
   void vJobTaskFetch(void);
-  void vJobIdTaskFetch(void);
 
   void vJobTscBeginning(void);
   void vJobTscBegun(void);

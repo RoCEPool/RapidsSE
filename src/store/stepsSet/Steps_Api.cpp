@@ -36,10 +36,11 @@ extern AttachMap* gpAttachMap;
 void Step::vAddSteps_Api(void)
 {
   vAddStep("api::forkChild"_Stz,       &Step::vApiForkChild);
-
-  vAddStep("api::forkChildOld"_Stz,    &Step::vApiForkChildOld);
+  vAddStep("api::forkDemon"_Stz,       &Step::vApiForkDemon);
   vAddStep("api::forkChild2PC"_Stz,    &Step::vApiForkChild2PC);
-  vAddStep("api::reapJobs"_Stz,        &Step::vApiReapJobs);
+
+  vAddStep("api::deleteJob"_Stz,       &Step::vApiDeleteJob);
+  vAddStep("api::reapableJob@"_Stz,    &Step::vApiReapableJobFetch);
   vAddStep("api::spawnJob"_Stz,        &Step::vApiSpawnJob);
 }
 
@@ -90,18 +91,19 @@ void Step::vApiForkChild(void)
   JobId tDistId;
   Job* pOuterJob = pOuterJobOfTask();
   tParentId = pOuterJob->tJobId();
-  //tOriginId = pOuterJob->tOriginId();
-  //tDistId   = pOuterJob->tDistId();
   RASSERT(tOriginId.bIsUnknown());
   RASSERT(tDistId.bIsUnknown());
 
   JobId tChildJobId;
-  Job* pChildJob_tbr = nullptr;
+  bool bIsPipeline;
+  bool bIsBackground;
   eEC eError = Api::eForkJobChild(tChildJobId,
                                    pCmdTknVec,pCmdTagSet,
                                    tParentId,tOriginId,tDistId,
-                                   pOuterJob,    // TO BE REMOVED
-                                   pChildJob_tbr // TO BE REMOVED
+                                   pOuterJob,
+                                   false,
+                                   bIsPipeline,
+                                   bIsBackground
   );
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -121,9 +123,9 @@ void Step::vApiForkChild(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* api::forkChildOld -- old (to go)                                           */
+/* api::forkDemon --                                                          */
 /*----------------------------------------------------------------------------*/
-void Step::vApiForkChildOld(void)
+void Step::vApiForkDemon(void)
 {
   ENTRY();
 
@@ -134,20 +136,24 @@ void Step::vApiForkChildOld(void)
   m_pDataStack->vPopStr(sCmdTagStr,__func__);
 
   if (AM::TRACE::bVerbose(C_VB_API)) {
-    vTrace("ForkChildOld: %s\n"_Stz,sCmd.szStz());
+    vTrace("ForkChild: %s\n"_Stz,sCmd.szStz());
     vTrace("  CmdTags: %s\n"_Stz,sCmdTagStr.szStz());
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+  // populate the tag set
   TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sCmd);
   TokenVec* pTagTknVec = TokenVec::pTokeniseSen(sCmdTagStr);
   TagSet*   pCmdTagSet = new TagSet;
   CmdHelper::vPopulateTagSet(pCmdTagSet,pTagTknVec);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // replace the C_TAG_JOBNM
   Stz* szJobNm = pCmdTknVec->pGet(0)->szChars();
   pCmdTagSet->vReplace(C_TAG_JOBNM,szJobNm);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the C_TAG_PATH
   if (! pCmdTagSet->bHasName(C_TAG_PATH)) {
     if (m_pJob)
       pCmdTagSet->vReplace(C_TAG_PATH,m_pJob->pJobTags()->szValue(C_TAG_PATH));
@@ -156,32 +162,42 @@ void Step::vApiForkChildOld(void)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // fork the child job
 
   JobId tParentId;
   JobId tOriginId;
   JobId tDistId;
   Job* pOuterJob = pOuterJobOfTask();
   tParentId = pOuterJob->tJobId();
-  tOriginId = pOuterJob->tOriginId();
-  tDistId   = pOuterJob->tDistId();
+  RASSERT(tOriginId.bIsUnknown());
+  RASSERT(tDistId.bIsUnknown());
 
   JobId tChildJobId;
-  Job* pChildJob_tbr = nullptr;
-  eEC eError = Api::eForkJobOld(tChildJobId,
-                             pCmdTknVec,pCmdTagSet,
-                             tParentId,tOriginId,tDistId,
-                             pOuterJob,    // TO BE REMOVED
-                             pChildJob_tbr // TO BE REMOVED
+  bool bIsPipeline;
+  bool bIsBackground;
+  eEC eError = Api::eForkJobChild(tChildJobId,
+                                  pCmdTknVec,pCmdTagSet,
+                                  tParentId,tOriginId,tDistId,
+                                  pOuterJob,
+                                  false,
+                                  bIsPipeline,
+                                  bIsBackground
   );
-  RASSERT(EC_NONE == eError);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+  // cleanup
   delete pCmdTagSet;
   delete pCmdTknVec;
   delete pTagTknVec;
 
-  m_pDataStack->vPushInt(true);
+  if (EC_NONE == eError) {
+    m_pDataStack->vPushInt(tChildJobId.iAsI8());
+    m_pDataStack->vPushInt(true);
+  }
+  else {
+    m_pDataStack->vPushInt(eError);
+    m_pDataStack->vPushInt(false);
+  }
 
   EXIT();
 }
@@ -232,13 +248,11 @@ void Step::vApiForkChild2PC(void)
   tDistId   = pOuterJob->tDistId();
 
   JobId tChildJobId;
-  Job* pChildJob_tbr = nullptr;
 
   eEC eError = Api::eForkJob2PC(tChildJobId,
                              pCmdTknVec,pCmdTagSet,
                              tParentId,tOriginId,tDistId,
-                             pOuterJob,    // TO BE REMOVED
-                             pChildJob_tbr // TO BE REMOVED
+                             pOuterJob
   );
   RASSERT(EC_NONE == eError);
 
@@ -249,43 +263,34 @@ void Step::vApiForkChild2PC(void)
   delete pTagTknVec;
 
   m_pDataStack->vPushInt(true);
-/*
 
-  eEC eError = Api::eForkJobChild(tChildJobId,
-                                  pCmdTknVec,pCmdTagSet,
-                                  tParentId,tOriginId,tDistId,
-                                  pOuterJob,    // TO BE REMOVED
-                                  pChildJob_tbr // TO BE REMOVED
-  );
-  //RASSERT(EC_NONE == eError);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  delete pCmdTagSet;
-  delete pCmdTknVec;
-  delete pTagTknVec;
-
-  if (EC_NONE == eError)
-    m_pDataStack->vPushInt(true);
-  else {
-    m_pDataStack->vPushInt(eError);
-    m_pDataStack->vPushInt(false);
-  }
-*/
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* api::reapJobs -- reap retired jobs                                         */
+/* api::deleteJob -- delete a job                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vApiReapJobs(void)
+void Step::vApiDeleteJob(void)
 {
   ENTRY();
-  
-  i8 iForce = (i8)m_pDataStack->iPopBol(__func__);
 
-  //Api::vReapJobsOnce(iForce);
-  gpAttachMap->pJobs()->vReapJobsOnce(iForce);
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+
+  delete pJob;
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* api::reapableJob@ -- fetch a reapable job                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vApiReapableJobFetch(void)
+{
+  ENTRY();
+
+  Job* pJob = gpAttachMap->pJobs()->pReapableJob();
+
+  m_pDataStack->vPushPtr(pJob);
 
   EXIT();
 }

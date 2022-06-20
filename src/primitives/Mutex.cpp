@@ -100,9 +100,9 @@ Mutex::~Mutex(void) noexcept(false)
   //RASSERT(! m_pWaitedBy);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+
   i8 iResult;
-  
+
   iResult = pthread_mutex_destroy(&m_xMutex);
   RASSERT(! iResult);
   iResult = pthread_mutexattr_destroy(&m_xMutexAttr);
@@ -113,7 +113,6 @@ Mutex::~Mutex(void) noexcept(false)
   iResult = pthread_condattr_destroy(&m_xCondAttr);
   RASSERT(! iResult);
 
-    
 #ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.Mutex.m_nDestroys++;
 #endif

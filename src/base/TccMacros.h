@@ -107,7 +107,7 @@
         bcdArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
         bcdArg2.m_iAsI8 ==  C_DATUM_NULL ||                                \
         bcdArg3.m_iAsI8 == C_DATUM_NULL) {                                 \
-      *(paW++) = 0;                                                        \
+      *(paW++) = C_DATUM_NULL;                                             \
     }                                                                      \
     else {                                                                 \
                                                                            \
@@ -125,7 +125,7 @@
           _RESCALE_BCD_MAX_OF_TWO(eErrorCode)                              \
           bcdArg3.m_iAsI8 = *(--paW);                                      \
           bcdArg1.m_iAsI8 = *(--paW);                                      \
-        }                                                                   \
+        }                                                                  \
                                                                            \
         if (bcdArg2.m_iScale != bcdArg3.m_iScale) {                        \
           *paW++ = bcdArg2.m_iAsI8;                                        \
@@ -136,17 +136,16 @@
           }                                                                \
                                                                            \
         if (bcdArg1.m_iMantissa > bcdArg2.m_iMantissa) {                   \
-        *(paW++) = 0;                                                       \
-      }                                                                     \
-      else {                                                                \
-        if (bcdArg1.m_iMantissa < bcdArg3.m_iMantissa)    {                 \
-          *(paW++) = 0;                                                     \
-          }                                                                 \
-        else                                                                \
-          {                                                                 \
-          *(paW++) = 1;                                                     \
-         }                                                                     \
-      } \
+          *(paW++) = 0;                                                    \
+        }                                                                  \
+      else {                                                               \
+        if (bcdArg1.m_iMantissa < bcdArg3.m_iMantissa)    {                \
+          *(paW++) = 0;                                                    \
+        }                                                                  \
+        else {                                                             \
+          *(paW++) = 1;                                                    \
+        }                                                                  \
+      }                                                                    \
    }                                                                       \
 }
 
@@ -160,14 +159,14 @@
         fltArg1.m_iAsI8 == C_DATUM_NULL ||                                  \
         fltArg2.m_iAsI8 ==  C_DATUM_NULL ||                                 \
         fltArg3.m_iAsI8 == C_DATUM_NULL) {                                  \
-      *(paW++) = 0;                                                         \
+      *(paW++) = C_DATUM_NULL;                                              \
     }                                                                       \
     else {                                                                  \
-      if (fltArg1.m_iAsI8 > fltArg2.m_iAsI8) {                              \
+      if (fltArg1.m_dFlt > fltArg2.m_dFlt) {                                \
         *(paW++) = 0;                                                       \
       }                                                                     \
       else {                                                                \
-        if (fltArg1.m_iAsI8 < fltArg3.m_iAsI8)                              \
+        if (fltArg1.m_dFlt < fltArg3.m_dFlt)                                \
           *(paW++) = 0;                                                     \
         else                                                                \
           *(paW++) = 1;                                                     \
@@ -184,7 +183,7 @@
         iArg1 == C_DATUM_NULL ||                                            \
         iArg2 ==  C_DATUM_NULL ||                                           \
         iArg3 == C_DATUM_NULL) {                                            \
-      *(paW++) = 0;                                                         \
+      *(paW++) = C_DATUM_NULL;                                              \
     }                                                                       \
     else {                                                                  \
       if (iArg1 > iArg2) {                                                  \
@@ -208,7 +207,7 @@
         xDte1.m_iAsI8 == C_DATUM_NULL ||                                    \
         xDte2.m_iAsI8 ==  C_DATUM_NULL ||                                   \
         xDte3.m_iAsI8 == C_DATUM_NULL) {                                    \
-      *(paW++) = 0;                                                         \
+      *(paW++) = C_DATUM_NULL;                                              \
     }                                                                       \
     else {                                                                  \
       if (xDte1.m_iAsI8 > xDte2.m_iAsI8) {                                  \
@@ -233,7 +232,7 @@
         xTme1.m_iAsI8 == C_DATUM_NULL ||                                    \
         xTme2.m_iAsI8 ==  C_DATUM_NULL ||                                   \
         xTme3.m_iAsI8 == C_DATUM_NULL) {                                    \
-      *(paW++) = 0;                                                         \
+      *(paW++) = C_DATUM_NULL;                                              \
     }                                                                       \
     else {                                                                  \
       if (xTme1.m_iAsI8 > xTme2.m_iAsI8) {                                  \
@@ -258,7 +257,7 @@
         xTsp1.m_iAsI8 == C_DATUM_NULL ||                                    \
         xTsp2.m_iAsI8 ==  C_DATUM_NULL ||                                   \
         xTsp3.m_iAsI8 == C_DATUM_NULL) {                                    \
-      *(paW++) = 0;                                                         \
+      *(paW++) = C_DATUM_NULL;                                              \
     }                                                                       \
     else {                                                                  \
       if (xTsp1.m_iAsI8 > xTsp2.m_iAsI8) {                                  \
@@ -282,7 +281,7 @@
         iArg1 == C_DATUM_NULL ||                                            \
         iArg2 ==  C_DATUM_NULL ||                                           \
         iArg3 == C_DATUM_NULL) {                                            \
-      *(paW++) = 0;                                                         \
+      *(paW++) = C_DATUM_NULL;                                              \
     }                                                                       \
     else {                                                                  \
       if (strcmp((char*)iArg1, (char*)iArg2) > 0) {                         \

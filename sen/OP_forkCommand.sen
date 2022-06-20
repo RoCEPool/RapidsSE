@@ -18,15 +18,16 @@
 
   //sForkCmd "  forkCmd=%v" .printf
 
+  // set the responseOp for the responses coming from the forked child
+  <responseOpNm> [stream].findOp locals| pResponseOp |
+  pResponseOp [job].responseOp!
+
   // fork a child job for the command
   STD_NORMALFORK_TAG sForkCmd api::forkChild not if
+    nullptr [job].responseOp!
     op__execErr
     true
     exit
-  else
-    // set the responseOp for the responses coming from the forked child
-    <responseOpNm> [stream].findOp locals| pResponseOp |
-    pResponseOp [job].responseOp!
   then
 
   true

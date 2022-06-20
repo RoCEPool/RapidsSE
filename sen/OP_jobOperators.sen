@@ -9,19 +9,22 @@
 /*----------------------------------------------------------------------------*/
 : jobOperators_action
 
-  [op].job@ job(Id).masterJob job(Id).lastJobId@ "Last Job Id %v" .printf
+  [job].masterJobId jobId::lastJobId@ assert "Last Job Id %v" .printf
 
   <jobno> >int locals| iJob |
   
   iJob not if
-    [op].job@ job(Id).masterJob job(Id).lastJobId@ to iJob
+    [job].masterJobId jobId::lastJobId@ assert to iJob
   then
 
   0 locals| eError |
 
-  "__eventDemon" find dup if
-    word.object@ locals| pEventDemon |
-  else
+  //"__eventDemon" find dup if
+  //  word.object@ locals| pEventDemon |
+
+  AM::DEMON::tEventDemonJobId@ locals| tEventDemonJobId |
+
+  tEventDemonJobId jobId::isUnknown if
     "Cant find __eventDemon" .
     true
     exit
@@ -39,7 +42,7 @@
     exit
   then
 
-  pEventDemon Tub[].pipeToJob
+  tEventDemonJobId Tub[].pipeToJob
 
   Tub[].delete
 
@@ -55,7 +58,7 @@
     exit
   then
 
-  pEventDemon Tub[].pipeToJob
+  tEventDemonJobId Tub[].pipeToJob
 
   Tub[].delete
 

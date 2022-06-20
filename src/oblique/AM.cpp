@@ -244,6 +244,240 @@ Dic* AM::DIC::pRoot(void)
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /*----------------------------------------------------------------------------*/
+/* set jobId of the answer demon in AM                                         */
+/*----------------------------------------------------------------------------*/
+void AM::DEMON::vAnswerDemonJobId(JobId tJobId) {
+  _static_
+
+  gpAttachMap->m_tAnswerDemonJobId = tJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get jobId of the answer demon in AM                                         */
+/*----------------------------------------------------------------------------*/
+JobId AM::DEMON::tAnswerDemonJobId(void) {
+  _static_
+
+  return gpAttachMap->m_tAnswerDemonJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set jobId of the collect demon in AM                                       */
+/*----------------------------------------------------------------------------*/
+void AM::DEMON::vCollectDemonJobId(JobId tJobId) {
+  _static_
+
+  gpAttachMap->m_tCollectDemonJobId = tJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get jobId of the collect demon in AM                                       */
+/*----------------------------------------------------------------------------*/
+JobId AM::DEMON::tCollectDemonJobId(void) {
+  _static_
+
+  return gpAttachMap->m_tCollectDemonJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set jobId of the connector demon in AM                                     */
+/*----------------------------------------------------------------------------*/
+void AM::DEMON::vConnectorDemonJobId(JobId tJobId) {
+  _static_
+
+  gpAttachMap->m_tConnectorDemonJobId = tJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get jobId of the connector demon in AM                                     */
+/*----------------------------------------------------------------------------*/
+JobId AM::DEMON::tConnectorDemonJobId(void) {
+  _static_
+
+  return gpAttachMap->m_tConnectorDemonJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set jobId of the event demon in AM                                         */
+/*----------------------------------------------------------------------------*/
+void AM::DEMON::vEventDemonJobId(JobId tJobId) {
+  _static_
+
+  gpAttachMap->m_tEventDemonJobId = tJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get jobId of the event demon in AM                                         */
+/*----------------------------------------------------------------------------*/
+JobId AM::DEMON::tEventDemonJobId(void) {
+  _static_
+
+  return gpAttachMap->m_tEventDemonJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set jobId of the exit demon in AM                                          */
+/*----------------------------------------------------------------------------*/
+void AM::DEMON::vExitDemonJobId(JobId tJobId) {
+  _static_
+
+  gpAttachMap->m_tExitDemonJobId = tJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get jobId of the exit demon in AM                                          */
+/*----------------------------------------------------------------------------*/
+JobId AM::DEMON::tExitDemonJobId(void) {
+  _static_
+
+  return gpAttachMap->m_tExitDemonJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set jobId of the metrics demon in AM                                       */
+/*----------------------------------------------------------------------------*/
+void AM::DEMON::vMetricsDemonJobId(JobId tJobId) {
+  _static_
+
+  gpAttachMap->m_tMetricsDemonJobId = tJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get jobId of the metrics demon in AM                                       */
+/*----------------------------------------------------------------------------*/
+JobId AM::DEMON::tMetricsDemonJobId(void) {
+  _static_
+
+  return gpAttachMap->m_tMetricsDemonJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set jobId of the monitor demon in AM                                       */
+/*----------------------------------------------------------------------------*/
+void AM::DEMON::vMonDemonJobId(JobId tJobId) {
+  _static_
+
+  gpAttachMap->m_tMonDemonJobId = tJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get jobId of the monitor demon in AM                                       */
+/*----------------------------------------------------------------------------*/
+JobId AM::DEMON::tMonDemonJobId(void) {
+  _static_
+
+  return gpAttachMap->m_tMonDemonJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set jobId of the pageOut demon in AM                                       */
+/*----------------------------------------------------------------------------*/
+void AM::DEMON::vPageOutDemonJobId(JobId tJobId) {
+  _static_
+
+  gpAttachMap->m_tPageOutDemonJobId = tJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get jobId of the pageOut demon in AM                                       */
+/*----------------------------------------------------------------------------*/
+JobId AM::DEMON::tPageOutDemonJobId(void) {
+  _static_
+
+  return gpAttachMap->m_tPageOutDemonJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set jobId of the reaper demon in AM                                        */
+/*----------------------------------------------------------------------------*/
+void AM::DEMON::vReaperDemonJobId(JobId tJobId) {
+  _static_
+
+  gpAttachMap->m_tReaperDemonJobId = tJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get jobId of the reaper demon in AM                                        */
+/*----------------------------------------------------------------------------*/
+JobId AM::DEMON::tReaperDemonJobId(void) {
+  _static_
+
+  return gpAttachMap->m_tReaperDemonJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set jobId of the recurring demon in AM                                     */
+/*----------------------------------------------------------------------------*/
+void AM::DEMON::vRecurDemonJobId(JobId tJobId) {
+  _static_
+
+  gpAttachMap->m_tRecurDemonJobId = tJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get jobId of the recurring demon in AM                                     */
+/*----------------------------------------------------------------------------*/
+JobId AM::DEMON::tRecurDemonJobId(void) {
+  _static_
+
+  return gpAttachMap->m_tRecurDemonJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set jobId of the statistics demon in AM                                    */
+/*----------------------------------------------------------------------------*/
+void AM::DEMON::vStatDemonJobId(JobId tJobId) {
+  _static_
+
+  gpAttachMap->m_tStatDemonJobId = tJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get jobId of the statistics demon in AM                                    */
+/*----------------------------------------------------------------------------*/
+JobId AM::DEMON::tStatDemonJobId(void) {
+  _static_
+
+  return gpAttachMap->m_tStatDemonJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set jobId of the waker demon in AM                                         */
+/*----------------------------------------------------------------------------*/
+void AM::DEMON::vWakerDemonJobId(JobId tJobId) {
+  _static_
+
+  gpAttachMap->m_tWakerDemonJobId = tJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get jobId of the waker demon in AM                                         */
+/*----------------------------------------------------------------------------*/
+JobId AM::DEMON::tWakerDemonJobId(void) {
+  _static_
+
+  return gpAttachMap->m_tWakerDemonJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set jobId of the super demon in AM                                         */
+/*----------------------------------------------------------------------------*/
+void AM::DEMON::vSuperDemonJobId(JobId tJobId) {
+  _static_
+
+  gpAttachMap->m_tSuperDemonJobId = tJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get jobId of the super demon in AM                                         */
+/*----------------------------------------------------------------------------*/
+JobId AM::DEMON::tSuperDemonJobId(void) {
+  _static_
+
+  return gpAttachMap->m_tSuperDemonJobId;
+}
+
+/*----------------------------------------------------------------------------*/
 /* pipe given row buffer to named demon                                       */
 /*----------------------------------------------------------------------------*/
 void AM::DEMON::vPipeToOp0(Stz* szDemonNm, Operand* pOperand)
@@ -390,6 +624,25 @@ EventHandlers* AM::HANDLERS::pEventHandlers(void)
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /*----------------------------------------------------------------------------*/
+/* get the folderpath of the job                                              */
+/*----------------------------------------------------------------------------*/
+eEC AM::JLIST::eFolderPathSet(JobId tJobId, Stz* szFolderPath)
+{
+  eEC eError = EC_NONE;
+  Job* pJob = AM::JLIST::pFindJob(tJobId,true);
+
+  if (pJob) {
+    pJob->vFolderPath(szFolderPath);
+    pJob->vDropLock();
+  }
+  else {
+    eError = EC_NO_SUCH_JOB;
+  }
+
+  return eError;
+}
+
+/*----------------------------------------------------------------------------*/
 /* find job in jobs list                                                      */
 /*----------------------------------------------------------------------------*/
 bool AM::JLIST::bFindJob(Job* pJob, bool bLockJob)
@@ -397,7 +650,6 @@ bool AM::JLIST::bFindJob(Job* pJob, bool bLockJob)
   Job* pFoundJob = AM::JLIST::pFindJob(pJob->tJobId(),bLockJob);
 
   bool bFound = pFoundJob ? true : false;
-    
   return bFound;
 }
 
@@ -422,6 +674,47 @@ JobList* AM::JLIST::pJobsList(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the last jobId of the job                                              */
+/*----------------------------------------------------------------------------*/
+eEC AM::JLIST::eLastJobId(JobId tJobId, JobId& tLastJobId)
+{
+  eEC eError = EC_NONE;
+  Job* pJob = AM::JLIST::pFindJob(tJobId,true);
+
+  if (pJob) {
+    tLastJobId = pJob->tLastJobId();
+    pJob->vDropLock();
+  }
+  else {
+    eError = EC_NO_SUCH_JOB;
+  }
+
+  return eError;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the last jobId of the job                                              */
+/*----------------------------------------------------------------------------*/
+eEC AM::JLIST::ePipeToOp0(JobId tJobId, Operand* pOperand, Task* pTask)
+{
+  eEC eError = EC_NONE;
+  Job* pJob = AM::JLIST::pFindJob(tJobId,true);
+
+  if (pJob) {
+    Pipeline* pPipeline = pJob->pPipeline();
+    Op*       pOp0      = pPipeline->pOp0();
+
+    pOp0->vAppendLeft(pOperand,pTask);
+    pJob->vDropLock();
+  }
+  else {
+    eError = EC_NO_SUCH_JOB;
+  }
+
+  return eError;
+}
+
+/*----------------------------------------------------------------------------*/
 /* insert job into jobs list                                                  */
 /*----------------------------------------------------------------------------*/
 void AM::JLIST::vInsertJob(Job* pJob)
@@ -443,6 +736,71 @@ void AM::JLIST::vRemoveJob(Job* pJob)
 //         pJob->tJobId().iJobNo(),
 //         pJob->tJobId().iAsI8());
   gpAttachMap->m_pJobs->pJobsList()->vRemoveJob(pJob);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the last jobId of the job                                              */
+/*----------------------------------------------------------------------------*/
+eEC AM::JLIST::eSystemCloserSet(JobId tJobId, i8 iSystemCloser)
+{
+  eEC eError = EC_NONE;
+  Job* pJob = AM::JLIST::pFindJob(tJobId,true);
+
+  if (pJob) {
+    pJob->vSystemCloser(iSystemCloser);
+    pJob->vDropLock();
+  }
+  else {
+    eError = EC_NO_SUCH_JOB;
+  }
+
+  return eError;
+}
+
+/*----------------------------------------------------------------------------*/
+/* update the parent job                                                      */
+/*----------------------------------------------------------------------------*/
+eEC AM::JLIST::eUpdateParent(Job* pJob)
+{
+  eEC eError = EC_NONE;
+
+  // get the parent job
+  JobId tParentJobId = pJob->tParentId();
+
+  // find the parent job
+  Job* pParentJob = AM::JLIST::pFindJob(tParentJobId,true);
+
+  // update parent
+  if (pParentJob) {
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // set the error as childError in parent
+    pJob->pParentJob()->vChildError(pJob->eJobError());
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // clear the error from parent
+    pJob->pParentJob()->vJobError(EC_NONE);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // set some tags in the parent for future child jobs
+    pParentJob->vFolderPath(pJob->szFolderPath());
+    pParentJob->vLastJobId(pJob->tLastJobId());
+    pParentJob->vSystemCloser(pJob->bSystemCloser());
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // transfer the timer of this job to the parent
+    if (pJob->bHasTag(C_TAG_TIME)) {
+      pParentJob->pJobTags()->vInsert(C_TAG_TIME);
+      pParentJob->vGetTimerFromChild(pJob);
+    }
+
+    pParentJob->vDropLock();
+  }
+  else {
+    eError = EC_NO_SUCH_JOB;
+  }
+
+  return eError;
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -2758,6 +3116,8 @@ ClassFlags* AM::pClassFlags(void)  { return & gpAttachMap->m_oClassFlags;      }
 
 JobList* AM::pDemonJobs(void) {
   return gpAttachMap->m_pJobs->pDemonJobs();                                }
+JobList* AM::pExitedJobs(void) {
+  return gpAttachMap->m_pJobs->pExitedJobs();                               }
 MasterLock* AM::pDicLock(void)      { return & gpAttachMap->m_oLocks.m_oDicMasterLock;            }
 i8   AM::iElapsedSsec(void)   { return gpAttachMap->m_oBirth.iElapsedSsec();  }
 i8   AM::iEpoch(void)         { return gpAttachMap->m_iEpoch;                 }
@@ -2778,8 +3138,6 @@ JobList* AM::pOriginatingJobs(void) {
   return gpAttachMap->m_pJobs->pOriginatingJobs(); }
 JobList* AM::pParticipatingJobs(void) {
   return gpAttachMap->m_pJobs->pParticipatingJobs(); }
-JobList* AM::pRetiredJobs(void) {
-  return gpAttachMap->m_pJobs->pRetiredJobs(); }
 
 
 void AM::vProcessExit(void)   { return Process::vExitFailure();                      }
@@ -4505,6 +4863,14 @@ void AM::vJob_AddDemon(Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add job to exited list                                                     */
+/*----------------------------------------------------------------------------*/
+void AM::vJob_AddExited(Job* pJob)
+{
+  AM::pExitedJobs()->vInsertJob(pJob);
+}
+
+/*----------------------------------------------------------------------------*/
 /* add job to local list                                                      */
 /*----------------------------------------------------------------------------*/
 void AM::vJob_AddLocal(Job* pJob)
@@ -4526,14 +4892,6 @@ void AM::vJob_AddOriginating(Job* pJob)
 void AM::vJob_AddParticipating(Job* pJob)
 {
   AM::pParticipatingJobs()->vInsertJob(pJob);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add job to retired list                                                    */
-/*----------------------------------------------------------------------------*/
-void AM::vJob_AddRetired(Job* pJob)
-{
-  AM::pRetiredJobs()->vInsertJob(pJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4617,7 +4975,7 @@ void AM::vJob_RemoveParticipating(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_RemoveRetired(Job* pJob)
 {
-  AM::pRetiredJobs()->vRemoveJob(pJob);
+  AM::pExitedJobs()->vRemoveJob(pJob);
 }
 
 /*----------------------------------------------------------------------------*/
