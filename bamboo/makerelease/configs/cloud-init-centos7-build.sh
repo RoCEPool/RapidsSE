@@ -53,8 +53,8 @@ usermod -a -G wheel "${OS_USER}"
 # Wheel group already has this, but not passwordless
 SUDO_FILE="/etc/sudoers.d/ec2-user"
 {
-  echo "# Let ec2-user use sudo without a password"
-  echo "ec2-user	ALL=(ALL)	NOPASSWD: ALL"
+  echo "# Let ${OS_USER} use sudo without a password"
+  echo "${OS_USER}	ALL=(ALL)	NOPASSWD: ALL"
 } > "${SUDO_FILE}"
 
 chmod 0400 "${SUDO_FILE}"
@@ -265,9 +265,9 @@ yum install -y devtoolset-11-gcc devtoolset-11-gcc-c++ devtoolset-11-libatomic-d
 # yum install -y libatomic nmap-netcat iproute
 
 # Nice to have
-yum install -y java-11-openjdk-headless iperf3 iotop telnet vim nload nethogs bmon iftop jq
+# yum install -y java-11-openjdk-headless iperf3 iotop telnet vim nload nethogs bmon iftop jq
 
-su ec2-user git lfs install
+sudo -H -u "${OS_USER}" git lfs install
 
 # -----------------------------------------
 # Vim annoyances
@@ -305,10 +305,6 @@ bash_profile="${OS_HOME_DIR}/.bash_profile"
   echo 'export PS1="\[\e[0;33m\]\u\[\e[0m\]@\[\e[0;32m\]\h\[\e[0m\]:\[\e[38;5;033m\]\W\[\e[0m\]\$ "'
   echo ""
 } >> "${bash_profile}"
-
-# -----------------------------------------
-# Git setup
-sudo -H -u "${OS_USER}" git lfs install
 
 # -----------------------------------------
 # Indicate cloud-init has completed by dropping a file in /tmp

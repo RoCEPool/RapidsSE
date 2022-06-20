@@ -350,17 +350,11 @@ def __get_boot_script(path_str: string) -> string:
 
     LOG.debug(f"Reading cloud-init script from path: {path_str}")
     txt = cloud_init_path.read_text()
+    LOG.debug(f"Cloud-init script is {len(txt)} bytes long")
 
-    encoded_bytes = base64.b64encode(txt.encode("utf-8"))
-    LOG.debug(f"Unencoded cloud-init script is {len(txt)} bytes long")
+    assert len(txt) > 0
+    assert len(txt) < 16384     # 16 KB AWS limit
 
-    # encoded_str = encoded_bytes.decode()
-    # LOG.debug(f"Encoded cloud-init script is {len(encoded_str)} bytes long")
-    #
-    # assert len(encoded_str) > 0
-    # assert len(encoded_str) < 16384     # 16 KB AWS limit
-
-    # return encoded_str
     return txt
 
 
@@ -379,21 +373,21 @@ def __wait_for_instances_to_be_ready(instance_ids: [string], ip_addresses: [stri
     # First we need the EC2 instances to change from the pending to the runnable state.
     # This means that they have been created and are either booting or running.
     op_start = current_time
-    __wait_for_instances_to_be_running(instance_ids, time_left)
+    __wait_for_instances_to_be_running(instance_ids, time_left, timeout_sec)
     current_time = time.time()
     LOG.info("All EC2 instances have transitioned from pending to running in %.1f seconds", current_time - op_start)
 
     # Now we need to wait for the machines to listen for SSH connections
     time_left = end_time - current_time
     op_start = current_time
-    __wait_for_instances_to_accept_ssh(instance_ids, ip_addresses, time_left)
+    __wait_for_instances_to_accept_ssh(instance_ids, ip_addresses, time_left, timeout_sec)
     current_time = time.time()
     LOG.info("All EC2 instances have booted enough to accept SSH connections in %.1f seconds", current_time - op_start)
 
     # Now we need to wait for the machines to have completed the cloud-init script.
     time_left = end_time - current_time
     op_start = current_time
-    __wait_for_instances_to_finish_booting(instance_ids, ip_addresses, time_left)
+    __wait_for_instances_to_finish_booting(instance_ids, ip_addresses, time_left, timeout_sec)
     current_time = time.time()
     time_left = end_time - current_time
     LOG.info("All EC2 instances have completed running their cloud-init script in %.1f seconds",
@@ -403,7 +397,7 @@ def __wait_for_instances_to_be_ready(instance_ids: [string], ip_addresses: [stri
     LOG.info("All instances are now ready to be used. Total startup time: %.1f seconds", timeout_sec - time_left)
 
 
-def __wait_for_instances_to_be_running(instance_ids: [string], timeout_sec: float):
+def __wait_for_instances_to_be_running(instance_ids: [string], timeout_sec: float, total_time: float):
     """
     Waits for the newly started instances to transition to a running state.
     Throws an errors.Ec2InstanceTimeoutError if the timeout is exceeded.
@@ -458,7 +452,8 @@ def __wait_for_instances_to_be_running(instance_ids: [string], timeout_sec: floa
         current_time = time.time()
 
     # We timed out
-    msg = f"Timed out waiting for {len(instance_ids)} VM instance(s) to be created and enter the 'running' state"
+    msg = f"Timed out waiting for {len(instance_ids)} VM instance(s) to be created and enter the 'running' state. " + \
+          f"Total time waited = {str(total_time)} seconds."
     LOG.error(msg)
 
     # Terminate the machines here as we haven't passed the instance_ids back to the caller yet.
@@ -472,7 +467,7 @@ def __wait_for_instances_to_be_running(instance_ids: [string], timeout_sec: floa
     raise errors.Ec2InstanceTimeoutError(msg, instance_ids)
 
 
-def __wait_for_instances_to_accept_ssh(instance_ids: [string], ip_addresses: [string], time_left: float):
+def __wait_for_instances_to_accept_ssh(instance_ids: [string], ip_addresses: [string], time_left: float, total_time: float):
     """
     Waits for the newly started instances to accept SSH connections.
     Throws an errors.Ec2InstanceTimeoutError if the timeout is exceeded.
@@ -524,6 +519,7 @@ def __wait_for_instances_to_accept_ssh(instance_ids: [string], ip_addresses: [st
         if current_time >= end_time:
             # We timed out
             msg = f"Timed out waiting for instance at {ip_addr} to accept SSH connections. " + \
+                  f"Total time waited = {str(total_time)} seconds. " + \
                   f"Last error message: {last_error}" if last_error is not None else ""
             LOG.error(msg)
 
@@ -542,7 +538,7 @@ def __wait_for_instances_to_accept_ssh(instance_ids: [string], ip_addresses: [st
     # All hosts are reachable over SSH!
 
 
-def __wait_for_instances_to_finish_booting(instance_ids: [string], ip_addresses: [string], time_left: float):
+def __wait_for_instances_to_finish_booting(instance_ids: [string], ip_addresses: [string], time_left: float, total_time: float):
     """
     Waits for the newly started instances to complete their boot-up cloud-init script.
     Throws an errors.Ec2InstanceTimeoutError if the timeout is exceeded.
@@ -594,6 +590,7 @@ def __wait_for_instances_to_finish_booting(instance_ids: [string], ip_addresses:
         if current_time >= end_time:
             # We timed out
             msg = f"Timed out waiting for instance at {ip_addr} to complete executing its cloud-init script. " + \
+                  f"Total time waited = {str(total_time)} seconds. " + \
                   f"Last error message: {last_error}" if last_error is not None else ""
             LOG.error(msg)
 

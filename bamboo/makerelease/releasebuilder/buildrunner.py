@@ -15,7 +15,7 @@ LOG = logging.getLogger(__name__)
 
 C_TEST_NAME = "Build Release"
 C_INSTANCE_NAME_PREFIX = "MakeRelease"
-C_INSTANCE_START_TIMEOUT = 480.0
+C_INSTANCE_START_TIMEOUT = 600.0
 C_INSTALLER_FILESPEC = "rapidsse-*.run"
 
 # How long should we wait for all of the EC2 instances to be started
@@ -67,19 +67,20 @@ class BuildRunner:
             # Record the successful test completion
             self.test_result.set_test_ended(True, False)
 
-        except errors.MakeReleaseError as e:
-            # Record the failed test completion
-            self.test_result.set_test_ended(False, False, None, str(e))
-            LOG.error(e.msg)
-            LOG.exception(e)
-
         except Exception as e:
             # Record the failed test completion
             self.test_result.set_test_ended(False, False, None, str(e))
-            LOG.exception(e)
+            if hasattr(e, 'msg'):
+                LOG.exception(e.msg)
+            else:
+                LOG.exception("Error occurred during the build phase.")
 
         finally:
-            self.__stop_build_instances()
+            if self.config.get_build_terminate():
+                self.__stop_build_instances()
+            else:
+                LOG.info(f"NOT stopping instance {self.instance_id} at {self.ip_addr} "
+                         f"as instructed by the config file")
 
     def __create_test(self) -> None:
         """ Create a test result and add it to the list """
@@ -122,11 +123,9 @@ class BuildRunner:
         try:
             result: subprocess.CompletedProcess = ssh.run_ssh(self.ip_addr, command, 10)
 
-        except subprocess.CalledProcessError as e:
-            msg = f"Error while trying to get the user home directory on host {self.ip_addr}: {command}" \
-                  f"\nStdout Output:\n{e.stdout}" \
-                  f"\nStderr Output:\n{e.stderr}"
-            raise errors.SshError(msg) from e
+        except errors.SshError:
+            LOG.error(f"Error while trying to get the user home directory on host {self.ip_addr}: {command}")
+            raise
 
         except subprocess.TimeoutExpired as e:
             msg = f"Getting the user's home directory timed out after {e.timeout} seconds: " \
@@ -159,13 +158,28 @@ class BuildRunner:
         src = str(self.repo_path)
         dest = f"{self.ip_addr}:{str(self.remote_repo_dir)}"
 
+        if not src.endswith("/"):
+            src = src + "/"
+
+        if not dest.endswith("/"):
+            dest = dest + "/"
+
+        # We use rsync here because scp doesn't copy hidden files and folders
+        # Ref: https://serverfault.com/questions/21580/how-to-make-scp-copy-hidden-files
+        command = ["rsync", "-avz", "-e", "ssh -q -o BatchMode=yes -o StrictHostKeyChecking=no", src, dest]
+
         LOG.debug(f"About to copy the repository from {src} to {dest}")
 
         try:
-            ssh.run_scp(src, dest, command_timeout, recursive=True)
+            subprocess.run(command,
+                           capture_output=True,
+                           check=True,
+                           timeout=command_timeout,
+                           text=True)
 
         except subprocess.CalledProcessError as e:
             msg = f"Error while copying the repository from {src} to {dest}." \
+                  f"\nCommand: {' '.join(command)}" \
                   f"\nStdout Output:\n{e.stdout}" \
                   f"\nStderr Output:\n{e.stderr}"
             raise errors.SshError(msg) from e
@@ -181,18 +195,16 @@ class BuildRunner:
     def __build_se_remotely(self) -> None:
         """Builds SE on the remote EC2 instance"""
 
-        command = str(self.remote_repo_dir / "installer" / "packaging" / "package.sh")
+        command = "NO_MOD_CHECK=1 DEBUG=1 " + str(self.remote_repo_dir / "installer" / "packaging" / "package.sh")
 
         LOG.debug("About to build RapidsSE on the remote EC2 instance")
 
         try:
             ssh.run_ssh(self.ip_addr, command, C_SE_BUILD_TIMEOUT_SEC)
 
-        except subprocess.CalledProcessError as e:
-            msg = f"Error while trying to build RapidsSE on host {self.ip_addr}: {command}" \
-                  f"\nStdout Output:\n{e.stdout}" \
-                  f"\nStderr Output:\n{e.stderr}"
-            raise errors.SshError(msg) from e
+        except errors.SshError:
+            LOG.error(f"Error while trying to build RapidsSE on host {self.ip_addr}: {command}")
+            raise
 
         except subprocess.TimeoutExpired as e:
             msg = f"Building RapidsSE timed out after {e.timeout} seconds: " \
@@ -219,11 +231,9 @@ class BuildRunner:
         try:
             ssh.run_scp(src, dest, command_timeout)
 
-        except subprocess.CalledProcessError as e:
-            msg = f"Error while copying the RapidsSE installer from {src} to {dest}." \
-                  f"\nStdout Output:\n{e.stdout}" \
-                  f"\nStderr Output:\n{e.stderr}"
-            raise errors.SshError(msg) from e
+        except errors.SshError:
+            LOG.error(f"Error while copying the RapidsSE installer from {src} to {dest}.")
+            raise
 
         except subprocess.TimeoutExpired as e:
             msg = f"Copying the RapidsSE installer from {src} to {dest} timed out after {e.timeout} seconds." \

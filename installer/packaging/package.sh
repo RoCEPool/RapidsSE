@@ -26,9 +26,9 @@ set -Eeo pipefail
 ### Constants                                                               ###
 ###############################################################################
 
-readonly ROOT_DIR="${DIR}/../.."
-readonly LAYOUT_DIR="${DIR}/../layout"
-readonly OUTPUT_DIR="${DIR}/../output"
+readonly ROOT_DIR="$(realpath "${DIR}/../..")"
+readonly LAYOUT_DIR="${ROOT_DIR}/installer/layout"
+readonly OUTPUT_DIR="${ROOT_DIR}/installer/output"
 readonly SOURCE_DIR="${ROOT_DIR}/src"
 readonly OBJECT_DIR="${ROOT_DIR}/build/obj"
 readonly BIN_DIR="${ROOT_DIR}/build/bin"
@@ -40,13 +40,13 @@ readonly GIT_DESCRIBE_CMD=("git" "describe" "--long" "--match=v*")
 readonly GIT_BRANCH_CMD="git rev-parse --abbrev-ref HEAD"
 
 readonly VERSION_FILE="${LAYOUT_DIR}/version"
-readonly CREATE_LAYOUT_FILE="${DIR}/createlayout.sh"
+readonly CREATE_LAYOUT_FILE="${ROOT_DIR}/installer/packaging/createlayout.sh"
 
 readonly SETUP_SCRIPT="./setup.sh"  # relative to the directory of extracted files
 readonly MAKESELF_ARGS=() 
 #readonly MAKESELF_ARGS=( "--bzip2" "--threads" "8")
 
-readonly SHELLCHECK_CMD="${DIR}/shellcheck.sh"
+readonly SHELLCHECK_CMD="${ROOT_DIR}/installer/packaging/shellcheck.sh"
 
 ###############################################################################
 ### Functions                                                               ###
@@ -67,6 +67,11 @@ function extractVersions() {
 
   local regex
   local git_version_str
+
+  # We need to ensure that we are in the repository directory.
+  # (We could have been called from outside the repository)
+  pushd "${PWD}"
+  cd "${ROOT_DIR}"
   
   regex="^v([0-9]+)\.([0-9]+)\.([0-9]+)(-[^-]+)?-([0-9]+)-([[:alnum:]]+)$"
   git_version_str="$(${GIT_DESCRIBE_CMD[*]})"
@@ -81,6 +86,7 @@ function extractVersions() {
     SE_COMMIT_HASH="${BASH_REMATCH[6]}"
 
   else
+    popd
     errorExit "Could not parse the SE version string: ${git_version_str}"
   fi
 
@@ -92,6 +98,8 @@ function extractVersions() {
   then
     SE_VER_LABEL="${SE_VER_LABEL:1}"
   fi
+
+  popd
 }
 
 
@@ -124,161 +132,166 @@ case "${OSTYPE}" in
     ;;
 esac 
 
+# Run everything under a subshell so we can ensure that the current directory
+# is the root of the repository.
+{
+  cd "${ROOT_DIR}"
 
-### Check for any modifications to git-tracked files ###
-if [ -n "${DEBUG}" ] ; then echo "Checking for any modified files to committed to git"; fi;
+  ### Check for any modifications to git-tracked files ###
+  if [ -n "${DEBUG}" ] ; then echo "Checking for any modified files to committed to git"; fi;
 
-# Get an array of modified files (reading lines). Ignore untracked files.
-mapfile -t MODIFIED_FILES < <(${GIT_CHECK_MODIFIED_FILES_CMD})
+  # Get an array of modified files (reading lines). Ignore untracked files.
+  mapfile -t MODIFIED_FILES < <(${GIT_CHECK_MODIFIED_FILES_CMD})
 
-if [[ ${#MODIFIED_FILES[@]} -ne 0 && -z "${NO_MOD_CHECK}" ]]
-then
-  MSG=$(
-    echo "Cannot package SE while there are modified files that haven't been committed to git:"
-    printf '%s\n' "${MODIFIED_FILES[@]}"
-  )
-  errorExit "${MSG}"
-fi
-
-
-### Check for the existence of Makeself ###
-if [ ! -d "${MAKESELF_DIR}" ]
-then
-  errorExit "Couldn't find the directory for the makeself installer: ${MAKESELF_DIR}"
-fi
-
-
-### Run shellcheck against the setup files
-if [[ -z "${NO_SHELLCHECK}" || "${NO_SHELLCHECK}" -ne 1 ]] && (which shellcheck &>/dev/null); then
-  echo "Running ShellCheck..."
-  if ! ${SHELLCHECK_CMD}; then
-    errorExit "Packaging failed due to shellcheck issues with the setup scripts. Please fix these first."
-  fi
-  echo "ShellCheck passed successfully!"
-
-else
-  echo "Skipping ShellCheck"
-fi
-
-
-### Remove & recreate the layout and output directories to have a clean slate ###
-if [ -n "${DEBUG}" ] ; then echo "Cleaning & setting up the layout directory"; fi;
-
-rm -rf "${LAYOUT_DIR:?}/"* &>/dev/null || true
-rm -f  "${OUTPUT_DIR:?}/"*.run &>/dev/null || true
-mkdir -p "${LAYOUT_DIR}"
-mkdir -p "${OUTPUT_DIR}"
-
-
-### Get the version number of SE ###
-if [ -n "${DEBUG}" ] ; then echo "Getting the RapidsSE version number"; fi;
-
-SE_VERSION_STR=""
-SE_MAJOR_VER=""
-SE_MINOR_VER=""
-SE_PATCH_VER=""
-SE_VER_LABEL=""
-SE_BUILD_NUM=""
-SE_COMMIT_HASH=""
-SE_BRANCH="$(${GIT_BRANCH_CMD})"
-
-extractVersions
-
-if [ -n "${DEBUG}" ] 
-then
-  echo "SE_VERSION_STR = ${SE_VERSION_STR}"
-  echo "SE_MAJOR_VER   = ${SE_MAJOR_VER}"
-  echo "SE_MINOR_VER   = ${SE_MINOR_VER}"
-  echo "SE_PATCH_VER   = ${SE_PATCH_VER}"
-  echo "SE_VER_LABEL   = ${SE_VER_LABEL}"
-  echo "SE_BUILD_NUM   = ${SE_BUILD_NUM}"
-  echo "SE_COMMIT_HASH = ${SE_COMMIT_HASH}"
-  echo "SE_BRANCH      = ${SE_BRANCH}"
-fi
-
-
-### Generate version file ###
-if [ -n "${DEBUG}" ] ; then echo "Generating the version file"; fi;
-(
-  echo "# RapidsSE build information:"
-  echo "#   version     ${SE_VERSION_STR}"
-  echo "#   from branch ${SE_BRANCH}"
-  echo "#   by          ${USER}"
-  echo "#   on          ${HOSTNAME}"
-  echo "#   at          $(date)"
-  echo ""
-  echo "SE_VERSION_STR=\"${SE_VERSION_STR}\""
-  echo "SE_MAJOR_VER=\"${SE_MAJOR_VER}\""
-  echo "SE_MINOR_VER=\"${SE_MINOR_VER}\""
-  echo "SE_PATCH_VER=\"${SE_PATCH_VER}\""
-  echo "SE_VER_LABEL=\"${SE_VER_LABEL}\""
-  echo "SE_BUILD_NUM=\"${SE_BUILD_NUM}\""
-  echo "SE_COMMIT_HASH=\"${SE_COMMIT_HASH}\""
-  echo "SE_BRANCH=\"${SE_BRANCH}\""
-)> "${VERSION_FILE}"
-
-
-
-### (Optional) Compile the software ###
-if [ -n "${DEBUG}" ] ; then echo "Compiling RapidsSE"; fi;
-
-if [ -n "${NO_BUILD}" ]; then
-  KEEP_OBJECTS=1
-fi
-
-if [ -z "${NO_BUILD}" ] || [ "${NO_BUILD}" -ne 1 ] 
-then
-
-  gccVersion="$(gcc -dumpversion | cut -f1-2 -d.)"
-  hasOldGcc="$(echo "${gccVersion} < 5" | bc)"
-
-  if [ "${hasOldGcc}" -eq 1 ]; then
-    # Is the Software Collections (SCL) repository installed?
-    if ! which scl &>/dev/null ; then
-      errorExit "A more modern c++ compiler is required. Either install a newer version of gcc or install the software collections (SCL) repository to get a newer gcc."
-    fi
-
-    newestGccVer=$(scl --list | grep devtoolset | cut -d- -f2 | sort -rn | head -n 1)
-
-    if [ -z "${newestGccVer}" ] || ! [[ ${newestGccVer} =~ ^[0-9]+$ ]]; then
-      errorExit "Could not determine the newest version of gcc in SCL library."
-    fi
-
-    echo "Using GCC version ${newestGccVer} from SCL"
-    (
-      cd "${SOURCE_DIR}"
-      scl enable "devtoolset-${newestGccVer}" "make clean && make -j $(nproc)"
+  if [[ ${#MODIFIED_FILES[@]} -ne 0 && -z "${NO_MOD_CHECK}" ]]
+  then
+    MSG=$(
+      echo "Cannot package SE while there are modified files that haven't been committed to git:"
+      printf '%s\n' "${MODIFIED_FILES[@]}"
     )
+    errorExit "${MSG}"
+  fi
+
+
+  ### Check for the existence of Makeself ###
+  if [ ! -d "${MAKESELF_DIR}" ]
+  then
+    errorExit "Couldn't find the directory for the makeself installer: ${MAKESELF_DIR}"
+  fi
+
+
+  ### Run shellcheck against the setup files
+  if [[ -z "${NO_SHELLCHECK}" || "${NO_SHELLCHECK}" -ne 1 ]] && (which shellcheck &>/dev/null); then
+    echo "Running ShellCheck..."
+    if ! ${SHELLCHECK_CMD}; then
+      errorExit "Packaging failed due to shellcheck issues with the setup scripts. Please fix these first."
+    fi
+    echo "ShellCheck passed successfully!"
 
   else
-    (
-      cd "${SOURCE_DIR}"
-      make clean && make -j "$(nproc)"
-    )
+    echo "Skipping ShellCheck"
   fi
-fi
 
 
-### Build the layout directory ###
-if [ -n "${DEBUG}" ] ; then echo "Building the layout"; fi;
+  ### Remove & recreate the layout and output directories to have a clean slate ###
+  if [ -n "${DEBUG}" ] ; then echo "Cleaning & setting up the layout directory"; fi;
 
-source "${CREATE_LAYOUT_FILE}"
-
-
-### Build the installer's run file ###
-if [ -n "${DEBUG}" ] ; then echo "Generating the run file"; fi;
-
-OUTPUT_FILE="rapidsse-${SE_VERSION_STR}.run"
-
-"${MAKESELF_DIR}/makeself.sh" "${MAKESELF_ARGS[@]}" "${LAYOUT_DIR}" "${OUTPUT_DIR}/${OUTPUT_FILE}" "RapidsSE files..." "${SETUP_SCRIPT}" 
-
-### Remove object files, bin dir and layout dir to reduce disk space requirements
-echo "Cleaning up"
-if [ -n "${KEEP_OBJECTS}" ]; then
-  rm -rf "${OBJECT_DIR}" || true
   rm -rf "${LAYOUT_DIR:?}/"* &>/dev/null || true
-  rm -rf "${BIN_DIR:?}/"* &>/dev/null || true
-fi
+  rm -f  "${OUTPUT_DIR:?}/"*.run &>/dev/null || true
+  mkdir -p "${LAYOUT_DIR}"
+  mkdir -p "${OUTPUT_DIR}"
 
-FILESIZE="$(du -k "${OUTPUT_DIR}/${OUTPUT_FILE}" | cut -f1)"
-printf "Size of installer: %'d kB\n" "${FILESIZE}"
+
+  ### Get the version number of SE ###
+  if [ -n "${DEBUG}" ] ; then echo "Getting the RapidsSE version number"; fi;
+
+  SE_VERSION_STR=""
+  SE_MAJOR_VER=""
+  SE_MINOR_VER=""
+  SE_PATCH_VER=""
+  SE_VER_LABEL=""
+  SE_BUILD_NUM=""
+  SE_COMMIT_HASH=""
+  SE_BRANCH="$(${GIT_BRANCH_CMD})"
+
+  extractVersions
+
+  if [ -n "${DEBUG}" ]
+  then
+    echo "SE_VERSION_STR = ${SE_VERSION_STR}"
+    echo "SE_MAJOR_VER   = ${SE_MAJOR_VER}"
+    echo "SE_MINOR_VER   = ${SE_MINOR_VER}"
+    echo "SE_PATCH_VER   = ${SE_PATCH_VER}"
+    echo "SE_VER_LABEL   = ${SE_VER_LABEL}"
+    echo "SE_BUILD_NUM   = ${SE_BUILD_NUM}"
+    echo "SE_COMMIT_HASH = ${SE_COMMIT_HASH}"
+    echo "SE_BRANCH      = ${SE_BRANCH}"
+  fi
+
+
+  ### Generate version file ###
+  if [ -n "${DEBUG}" ] ; then echo "Generating the version file"; fi;
+  (
+    echo "# RapidsSE build information:"
+    echo "#   version     ${SE_VERSION_STR}"
+    echo "#   from branch ${SE_BRANCH}"
+    echo "#   by          ${USER}"
+    echo "#   on          ${HOSTNAME}"
+    echo "#   at          $(date)"
+    echo ""
+    echo "SE_VERSION_STR=\"${SE_VERSION_STR}\""
+    echo "SE_MAJOR_VER=\"${SE_MAJOR_VER}\""
+    echo "SE_MINOR_VER=\"${SE_MINOR_VER}\""
+    echo "SE_PATCH_VER=\"${SE_PATCH_VER}\""
+    echo "SE_VER_LABEL=\"${SE_VER_LABEL}\""
+    echo "SE_BUILD_NUM=\"${SE_BUILD_NUM}\""
+    echo "SE_COMMIT_HASH=\"${SE_COMMIT_HASH}\""
+    echo "SE_BRANCH=\"${SE_BRANCH}\""
+  )> "${VERSION_FILE}"
+
+
+
+  ### (Optional) Compile the software ###
+  if [ -n "${DEBUG}" ] ; then echo "Compiling RapidsSE"; fi;
+
+  if [ -n "${NO_BUILD}" ]; then
+    KEEP_OBJECTS=1
+  fi
+
+  if [ -z "${NO_BUILD}" ] || [ "${NO_BUILD}" -ne 1 ]
+  then
+
+    gccVersion="$(gcc -dumpversion | cut -f1-2 -d.)"
+    hasOldGcc="$(echo "${gccVersion} < 5" | bc)"
+
+    if [ "${hasOldGcc}" -eq 1 ]; then
+      # Is the Software Collections (SCL) repository installed?
+      if ! which scl &>/dev/null ; then
+        errorExit "A more modern c++ compiler is required. Either install a newer version of gcc or install the software collections (SCL) repository to get a newer gcc."
+      fi
+
+      newestGccVer=$(scl --list | grep devtoolset | cut -d- -f2 | sort -rn | head -n 1)
+
+      if [ -z "${newestGccVer}" ] || ! [[ ${newestGccVer} =~ ^[0-9]+$ ]]; then
+        errorExit "Could not determine the newest version of gcc in SCL library."
+      fi
+
+      echo "Using GCC version ${newestGccVer} from SCL"
+      (
+        cd "${SOURCE_DIR}"
+        scl enable "devtoolset-${newestGccVer}" "make clean && make -j $(nproc)"
+      )
+
+    else
+      (
+        cd "${SOURCE_DIR}"
+        make clean && make -j "$(nproc)"
+      )
+    fi
+  fi
+
+
+  ### Build the layout directory ###
+  if [ -n "${DEBUG}" ] ; then echo "Building the layout"; fi;
+
+  source "${CREATE_LAYOUT_FILE}"
+
+
+  ### Build the installer's run file ###
+  if [ -n "${DEBUG}" ] ; then echo "Generating the run file"; fi;
+
+  OUTPUT_FILE="rapidsse-${SE_VERSION_STR}.run"
+
+  "${MAKESELF_DIR}/makeself.sh" "${MAKESELF_ARGS[@]}" "${LAYOUT_DIR}" "${OUTPUT_DIR}/${OUTPUT_FILE}" "RapidsSE files..." "${SETUP_SCRIPT}"
+
+  ### Remove object files, bin dir and layout dir to reduce disk space requirements
+  echo "Cleaning up"
+  if [ -n "${KEEP_OBJECTS}" ]; then
+    rm -rf "${OBJECT_DIR}" || true
+    rm -rf "${LAYOUT_DIR:?}/"* &>/dev/null || true
+    rm -rf "${BIN_DIR:?}/"* &>/dev/null || true
+  fi
+
+  FILESIZE="$(du -k "${OUTPUT_DIR}/${OUTPUT_FILE}" | cut -f1)"
+  printf "Size of installer: %'d kB\n" "${FILESIZE}"
+}

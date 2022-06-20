@@ -32,6 +32,8 @@ class ReleaseConfig:
     C_INSTANCE_TYPE = "InstanceType"
     C_IMAGE_ID = "ImageId"
     C_CLOUD_INIT = "CloudInit"
+    C_TERMINATE = "Terminate"
+    C_TERMINATE_DEFAULT_VAL = True
 
     def __init__(self, path: string):
         self.path: string = path
@@ -144,6 +146,10 @@ class ReleaseConfig:
         cloudinit = self.__resolve_path(cloudinit)
         return cloudinit
 
+    def get_build_terminate(self) -> bool:
+        """Do we shutdown the instance at the end of the build phase?"""
+        return self.parser.getboolean(self.C_BUILD_SECTION, self.C_TERMINATE, fallback=self.C_TERMINATE_DEFAULT_VAL)
+
     def get_test_instance(self) -> string:
         """Returns the name of the EC2 instance to be used for testing SE"""
         return self.parser.get(self.C_TEST_SECTION, self.C_INSTANCE_TYPE)
@@ -213,3 +219,7 @@ class ReleaseConfig:
                   f"{key_name} in section [{section_name}] " \
                   f"in config file {cfg_file_path} is not a file"
             raise ConfigurationError(msg)
+
+    def get_test_terminate(self) -> bool:
+        """Do we shutdown the instance at the end of the test phase?"""
+        return self.parser.getboolean(self.C_TEST_SECTION, self.C_TERMINATE, fallback=self.C_TERMINATE_DEFAULT_VAL)
