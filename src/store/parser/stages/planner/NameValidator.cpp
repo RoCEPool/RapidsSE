@@ -54,9 +54,12 @@
 #include "CteDefs.hpp"
 #include "TableScanOp.hpp"
 #include "ProjectedColumns.hpp"
+#include "ExplainOp.hpp"
 
 #include "TypeSystem.hpp"
+#include "AttachMap.hpp"
 
+extern AttachMap*  gpAttachMap;
 
 using namespace Parser;
 
@@ -121,6 +124,90 @@ void NameValidator::vValidateNames(PlanNode *pRootNode)
 #ifdef WITH_ASSERT_MACRO
   vAssertNamesResolved(pRootNode, pPlanNode);
 #endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* Walks the graph and check if there is any functionality here that is       */
+/* explicitly being disabled at the moment.                                   */
+/*----------------------------------------------------------------------------*/
+void NameValidator::vCheckDisabledFunctionality(PlanNode* pRootNode)
+{
+  if (!gpAttachMap->bDisablePromptCommands()) {
+    return;
+  }
+
+  // In this mode we only want to support simple SELECT * FROM <table> commands.
+  // No fancy-shmancy filters, joins, unions, limits, etc.
+  // No dandy-candy expressions and aggregates, other than simple columnRefs.
+  //
+  // Walk the plan. If we see anything other than these nodes then we will
+  // return an error:
+  //  - ShadowPlan
+  //  - ExplainOp
+  //  - MainSubquery
+  //  - StatementMarker
+  //  - ProjectOp
+  //  - TableScanOp
+
+  // Find the /plan node
+  QueryNode* pPlanNode = ShadowRoot::pPlanRoot(pRootNode);
+  ASSERT(pPlanNode);
+
+  // The plan node should have one or more children that are SubqueryMarker nodes
+  ASSERT(pPlanNode->nChildren() > 0);
+
+  QueryNode* pProjectOp = nullptr;
+
+  auto fPlanVisitor =
+      [&pProjectOp](PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+      if (ProjectOp::bIsOfType(pNode) && !pProjectOp) {
+        // Save the projectOp for later use
+        pProjectOp = _pQueryNode(pNode);
+        return GraphNav::WALK_CONTINUE;
+      }
+
+      if (
+          ShadowPlan::bIsOfType(pNode)      ||
+          ExplainOp::bIsOfType(pNode)       ||
+          MainSubquery::bIsOfType(pNode)    ||
+          StatementMarker::bIsOfType(pNode) ||
+          TableScanOp::bIsOfType(pNode)
+         ) {
+        return GraphNav::WALK_CONTINUE;
+      }
+
+      // Not allowed
+      SemanticException::vThrow(EC_DISABLED_STATEMENT);
+
+      // Prevent a compiler warning here
+      return GraphNav::WALK_CONTINUE;
+  };
+
+  // We only want to walk children and not properties in order to visit each MainSubquery node
+  GraphNav::bGlobalWalk(pPlanNode, false, true, fPlanVisitor, pRootNode);
+
+  // Now inspect the ProjectOp and ensure it only contains columnRefs
+  if (!pProjectOp) {
+    return;
+  }
+
+  ASSERT(ProjectOp::bIsOfType(pProjectOp));
+
+  QueryNode* pProjectedCols = ProjectOp::pProjectedColumns(pProjectOp);
+
+  PlanNodeIter* pIter = pProjectedCols->pNewChildrenIter();
+  while (pIter->bHasNext()) {
+    QueryNode* pProjectedColumn = _pQueryNode(pIter->pNext());
+    QueryNode* pExpr = ProjectedColumn::pExprNode(pProjectedColumn);
+
+    if (!ColumnRef::bIsOfType(pExpr)) {
+      delete pIter;
+      SemanticException::vThrow(EC_DISABLED_STATEMENT);
+    }
+  }
+
+  delete pIter;
 }
 
 /*----------------------------------------------------------------------------*/

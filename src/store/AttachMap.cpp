@@ -161,6 +161,16 @@ i8 AttachMap::iCmdNoNext(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* generate next command no                                                   */
+/*----------------------------------------------------------------------------*/
+b1 AttachMap::bDisablePromptCommands(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
+
+  return m_xSysArgs.m_bDisablePromptCmds;
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump this attachmap                                                        */
 /*----------------------------------------------------------------------------*/
 void AttachMap::vDump(eCN eClass, Object* pObject, Stz* aTab)
