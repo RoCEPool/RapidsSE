@@ -70,6 +70,15 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* check word is a cattablealog                                               */
+/*----------------------------------------------------------------------------*/
+: checkIsTable ( word )
+
+  Folder[].findSymbol if true exit then
+  EC_NOT_A_TABLE false
+;
+
+/*----------------------------------------------------------------------------*/
 /* check given name is the name of a word of \table category               EC */
 /*----------------------------------------------------------------------------*/
 : check::nameIsaTable params| sTableNm | ( t | ec f )
@@ -105,14 +114,15 @@
   check::folderIsTables not if false exit then
 
   // check if tableNm is a word in tables folder
-  sTableNm word::isKnown not if discard EC_NO_SUCH_TABLE false exit then
+  //sTableNm word::isKnown not if discard EC_NO_SUCH_TABLE false exit then
+  sTableNm checkIsTable not if discard EC_NO_SUCH_TABLE false exit then
 
   // push table folder
   sTableNm Path[].pushNamedTableFolder
 
   // check if sTableNm translates to a word of \table category
   sTableNm check::nameIsaTable not if Path[].popNamedTableFolder false exit then
- 
+
   // pop table folder
   Path[].popNamedTableFolder
 
