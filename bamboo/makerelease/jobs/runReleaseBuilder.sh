@@ -23,9 +23,21 @@ RESULT_DIR="${PLAN_DIR}/results"
 # Directory where artifacts are to be copied to
 ARTIFACT_DIR="${PLAN_DIR}/artifacts"
 
+# Set to 1 to skip the building of an installer and go straight to testing one.
+SKIP_BUILD=0
+
+if [ "$#" -gt 0 ]; then
+  if [ "$1" == "--skipBuild" ]; then
+    SKIP_BUILD=1
+  fi
+fi
+
 # Clear and re-make the directory for results and artifacts if they don't exist
 rm -rf "${RESULT_DIR}" &>/dev/null
-rm -rf "${ARTIFACT_DIR}" &>/dev/null
+
+if [ "${SKIP_BUILD}" -ne 1 ]; then
+  rm -rf "${ARTIFACT_DIR}" &>/dev/null
+fi
 
 mkdir -p "${RESULT_DIR}"
 mkdir -p "${ARTIFACT_DIR}"
@@ -35,6 +47,10 @@ PARAMS=("--resultDir"   "${RESULT_DIR}"
         "--artifactDir" "${ARTIFACT_DIR}"
         "--repoDir"     "${REPO_ROOT}"
         "--config"      "${CONFIG_FILE}")
+
+if [ "${SKIP_BUILD}" -eq 1 ]; then
+  PARAMS+=("--skipBuild")
+fi
 
 # Which python to use?
 PYTHON="python3"
@@ -99,4 +115,4 @@ echo
 
 # Run the system
 # shellcheck disable=SC2086
-pipenv run ${PYTHON} -m "${MODULE}" "${PARAMS[@]}" "$@"
+pipenv run ${PYTHON} -m "${MODULE}" "${PARAMS[@]}"

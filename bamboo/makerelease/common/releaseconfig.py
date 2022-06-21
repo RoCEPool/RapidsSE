@@ -30,6 +30,7 @@ class ReleaseConfig:
     C_BUILD_SECTION = "build"
     C_TEST_SECTION = "test"
     C_INSTANCE_TYPE = "InstanceType"
+    C_TEST_NAME = "TestName"
     C_IMAGE_ID = "ImageId"
     C_CLOUD_INIT = "CloudInit"
     C_TERMINATE = "Terminate"
@@ -55,6 +56,7 @@ class ReleaseConfig:
         build_cloudinit = self.get_build_cloudinit()
 
         test_instance = self.get_test_instance()
+        test_name_list = self.get_test_names()
         test_image_list = self.get_test_images()
         test_cloudinit_list = self.get_test_cloudinits()
 
@@ -99,6 +101,11 @@ class ReleaseConfig:
                   f"does not contain a valid EC2 instance type: {test_instance}"
             raise ConfigurationError(msg)
 
+        if test_name_list is None or len(test_name_list) == 0:
+            msg = f"Config file field {self.C_TEST_NAME} in the [{self.C_TEST_SECTION}] section " \
+                  f"must not be empty in the file: {path}"
+            raise ConfigurationError(msg)
+
         if test_image_list is None or len(test_image_list) == 0:
             msg = f"Config file field {self.C_IMAGE_ID} in the [{self.C_TEST_SECTION}] section " \
                   f"must not be empty in the file: {path}"
@@ -114,6 +121,11 @@ class ReleaseConfig:
         if test_cloudinit_list is None or len(test_cloudinit_list) == 0:
             msg = f"Config file field {self.C_CLOUD_INIT} in the [{self.C_TEST_SECTION}] section " \
                   f"must not be empty in the file: {path}"
+            raise ConfigurationError(msg)
+
+        if len(test_name_list) != len(test_image_list):
+            msg = f"The config file fields {self.C_TEST_NAME} and {self.C_IMAGE_ID} in the " \
+                  f"[{self.C_TEST_SECTION}] section must be specified the same number of times in the file: {path}"
             raise ConfigurationError(msg)
 
         if len(test_image_list) != len(test_cloudinit_list):
@@ -153,6 +165,21 @@ class ReleaseConfig:
     def get_test_instance(self) -> string:
         """Returns the name of the EC2 instance to be used for testing SE"""
         return self.parser.get(self.C_TEST_SECTION, self.C_INSTANCE_TYPE)
+
+    def get_test_names(self) -> list:
+        """Returns a list of the names of the test configurations to be used for testing SE"""
+        # Iterate the names and check if they have any double quotes
+        names = self.parser.getlist(self.C_TEST_SECTION, self.C_TEST_NAME)
+
+        for i in range(len(names)):
+            s = names[i]
+            if s.startswith('"') and s.endswith('"'):
+                s = s[1:-1]
+            elif s.startswith("'") and s.endswith("'"):
+                s = s[1:-1]
+            names[i] = s
+
+        return names
 
     def get_test_images(self) -> list:
         """Returns a list of the name of the EC2 images to be used for testing SE"""

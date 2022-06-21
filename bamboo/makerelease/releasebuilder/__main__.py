@@ -5,10 +5,13 @@ import pathlib
 import logging.config
 import os.path
 import argparse
+import fnmatch
 
 import common.errors as errors
 from common.releaseconfig import ReleaseConfig
 from releasebuilder.buildrunner import BuildRunner
+from releasebuilder.buildrunner import C_INSTALLER_FILESPEC
+from releasebuilder.testrunner import TestRunner
 import releasebuilder.repo as repo
 import releasebuilder.results as results
 
@@ -33,6 +36,7 @@ def main() -> int:
          --artifactDir  path to save any artifacts
          --repoDir      path to the root of the repository
          --config       path of the file that contains build configuration information
+         --skipBuild    don't build SE, instead find the pre-built installer. For development purposes only.
     """
 
     # Validate the path
@@ -41,13 +45,14 @@ def main() -> int:
         return 1
 
     # Validate the Python arguments
-    (result_path, artifact_path, repo_path, config_path) = validate_arguments()
+    (result_path, artifact_path, repo_path, config_path, skip_build) = validate_arguments()
 
     LOG.debug(f"cwd          = {os.getcwd()}")
     LOG.debug(f"result dir   = {result_path}")
     LOG.debug(f"artifact dir = {artifact_path}")
     LOG.debug(f"repo root    = {repo_path}")
     LOG.debug(f"config file  = {config_path}")
+    LOG.debug(f"skip build   = {skip_build}")
 
     # Read in the config file and validate it
     config = ReleaseConfig(str(config_path))
@@ -64,19 +69,30 @@ def main() -> int:
     clone_repo_path = repo.clone_repo(repo_path)
 
     try:
-        buildrunner = BuildRunner(artifact_path, clone_repo_path, config, result_list)
-        buildrunner.run()
+        installer_path: pathlib.Path
+        if skip_build:
+            # Find the existing installer
+            installer_path = __find_installer(artifact_path)
 
-        # testrunner = TestRunner(artifact_path, clone_repo_path, config, result_list)
-        # testrunner.run()
+        else:
+            buildrunner = BuildRunner(artifact_path, clone_repo_path, config, result_list)
+            buildrunner.run()
+            installer_path = buildrunner.installer_path
+
+        testrunner = TestRunner(artifact_path, clone_repo_path, config, result_list, installer_path)
+        testrunner.run()
 
     finally:
         # Clean up the cloned repository
+        LOG.debug(f"Cleaning up cloned repository at: {str(clone_repo_path)}")
         shutil.rmtree(clone_repo_path, ignore_errors=True)
 
         # Write out the results to result_path
-        result_file = result_path / C_DEFAULT_RESULT_FILENAME
-        results.summarise_to_junit(result_list, result_file, C_TEST_SUITE_NAME)
+        if len(result_list) > 0:
+            result_file = result_path / C_DEFAULT_RESULT_FILENAME
+            results.summarise_to_junit(result_list, result_file, C_TEST_SUITE_NAME)
+        else:
+            LOG.warning("There are no results to write out.")
 
     return 0
 
@@ -92,6 +108,8 @@ def validate_arguments() -> (pathlib.Path, pathlib.Path, pathlib.Path, pathlib.P
                             help="The root directory of the repository")
     arg_parser.add_argument("--config", type=str, required=True,
                             help="The path of the config file to use")
+    arg_parser.add_argument("--skipBuild", type=bool, required=False, default=False,
+                            help="Skip the building and go straight to testing")
 
     args = arg_parser.parse_args()
     LOG.debug("Got the following arguments:  %s", args)
@@ -144,7 +162,19 @@ def validate_arguments() -> (pathlib.Path, pathlib.Path, pathlib.Path, pathlib.P
     if not config_path.is_absolute():
         config_path = (pathlib.Path.cwd() / config_path).resolve()
 
-    return result_dir, artifact_dir, repo_dir, config_path
+    return result_dir, artifact_dir, repo_dir, config_path, args.skipBuild
+
+
+def __find_installer(artifact_path: pathlib.Path) -> pathlib.Path:
+    """Finds the path of the RapidsSE installer in the artifact directory."""
+    for root, dirs, files in os.walk(artifact_path):
+        for name in files:
+            if fnmatch.fnmatch(name, C_INSTALLER_FILESPEC):
+                installer_path = pathlib.Path(root) / name
+                LOG.info(f"The RapidsSE installer is found at {str(installer_path)}")
+                return installer_path
+
+    assert False, f"RapidsSE installer could not be found in path: {str(artifact_path)}"
 
 
 if __name__ == '__main__':

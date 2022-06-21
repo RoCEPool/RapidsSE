@@ -37,9 +37,9 @@ class BuildRunner:
         self.repo_path = repo_path
         self.config = config
         self.result_list = result_list
-        self.test_result = None
-        self.instance_id = None
-        self.ip_addr = None
+        self.test_result: TestResult = None
+        self.instance_id: string = None
+        self.ip_addr: string = None
         self.remote_home_dir: pathlib.Path = None
         self.remote_repo_dir: pathlib.Path = None
         self.installer_path: pathlib.Path = None
@@ -80,7 +80,7 @@ class BuildRunner:
 
         finally:
             if self.config.get_build_terminate():
-                self.__stop_build_instances()
+                self.__terminate_build_instance()
             else:
                 LOG.info(f"NOT stopping instance {self.instance_id} at {self.ip_addr} "
                          f"as instructed by the config file")
@@ -144,8 +144,8 @@ class BuildRunner:
         LOG.debug(f"Successfully got the home directory of the default user on the remote EC2 instance: {home_dir}")
         return pathlib.Path(home_dir)
 
-    def __stop_build_instances(self) -> None:
-        """Terminates any previously started EC2 instances"""
+    def __terminate_build_instance(self) -> None:
+        """Terminates any previously started EC2 instance"""
 
         if self.instance_id is None:
             LOG.info("No EC2 instance to stop")

@@ -8,6 +8,12 @@ class MakeReleaseError(Exception):
         self.msg = msg
         self.should_print_trace = should_print_trace
 
+    def __str__(self) -> str:
+        s = super().__str__()
+        if self.msg is not None:
+            s = self.msg + "\n" + s
+        return s
+
 
 class TracebackError(MakeReleaseError):
     """Base class of errors that should have their traceback printed"""
