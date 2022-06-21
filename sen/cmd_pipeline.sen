@@ -17,6 +17,10 @@
 /* org_ org */  // - - - - - - - - - - - - - - - - - -
 /* org_ org */  // start as ordinary job on this node
 /* org_ org */  // - - - - - - - - - - - - - - - - - -
+/* org_ org */  "<objectTracker>" [job].tagSet@ tagSet.hasName if
+/* org_ org */    [job].printObjectTracker
+/* org_ org */    [job].disableObjectTracker
+/* org_ org */  then
 /* org_ org */  [args].distJob if
 /* org_ org */    "pipeline" "origin"
 /* org_ org */      "org_ org" "job org"                             [job].trace

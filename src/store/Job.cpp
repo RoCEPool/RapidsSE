@@ -45,7 +45,7 @@ __aFooterFunction(Job)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
+Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId, TagSet* pCmdTagSet)
 : Operand(CN_JOB)
 , CRM<Job>(this)
 , m_okLock(this)
@@ -58,6 +58,16 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
   m_tOriginId = tOriginId;
 
   m_sJobNm   = szJobNm;
+
+  m_pObjectTracker = nullptr;
+
+  // Before the entire Job is created, check the cmd tag set to see if objectTracker
+  // tag is given, to enable object tracking in this job.
+  if(pCmdTagSet != nullptr && pCmdTagSet->bHasName(C_TAG_OBJTRACKER))
+  {
+    vEnableObjectTracker();
+  }
+
   //m_sEntryPoint
   //m_oJobTags
   //m_sFolderPath
@@ -78,7 +88,6 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
   /* 08 */ m_bWasReceived = false;
   /* 09 */ m_pMarkerChain = nullptr;
   /* 10 */ m_bAllocate    = true;
-  /* 11 */ m_pObjectTracker = nullptr;
 
   m_iTscParticipant = 0;
   

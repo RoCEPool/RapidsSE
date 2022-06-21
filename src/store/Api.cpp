@@ -130,7 +130,7 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
   Stz* szJobNm = pCmdTagSet->szValue(C_TAG_JOBNM);
   RASSERT(szJobNm);
 
-  pChildJob = new Job(szJobNm,tParentId,tOriginId,tDistId);
+  pChildJob = new Job(szJobNm,tParentId,tOriginId,tDistId,pCmdTagSet);
   bIsPipeline = pChildJob->bIsPipeline();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
