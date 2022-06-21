@@ -440,9 +440,8 @@ eEC IndexDef::eParse(Table* pTable, Stz* szCmd)
     // -- -- -- -- --
     // process column
     // -- -- -- -- --
-    bool bResult = bAddIdxCol(pTable,i_Col,pTkn->szChars());
-    if ( ! bResult ) {
-      eError = EC_INVALID_INDEX_COLUMN;
+    eError = eAddIdxCol(pTable,i_Col,pTkn->szChars());
+    if ( eError != EC_NONE ) {
       goto L_RETURN;
     }
     m_nColumns++;
@@ -819,21 +818,25 @@ L_RETURN:
 /*----------------------------------------------------------------------------*/
 /* add column to the index column vector                                      */
 /*----------------------------------------------------------------------------*/
-bool IndexDef::bAddIdxCol(Table* pTable, i8 iCol, Stz* szColNm)
+eEC IndexDef::eAddIdxCol(Table* pTable, i8 iCol, Stz* szColNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
   
   Column* pColumn = pTable->pFindColumn(szColNm);
 
   if (! pColumn)
-    return false;
-  
+    return EC_INVALID_INDEX_COLUMN;
+
+  // check if duplicate index column
+  if (pFindColumn(szColNm))
+    return EC_DUPLICATE_COLUMN;
+
   m_xaColumn[iCol].vCopy(pColumn);
   
   m_iaColSet[iCol] = pColumn->iColumnNo();
   m_iaColSet[iCol+1] = -1;
 
-  return true;
+  return EC_NONE;
 }
 
 

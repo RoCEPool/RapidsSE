@@ -74,7 +74,7 @@ namespace STORE
     i8     iSortKeyDatum(void);
   
   private:
-    bool bAddIdxCol(Table* pTable, i8 iCol, Stz* szColNm);
+    eEC eAddIdxCol(Table* pTable, i8 iCol, Stz* szColNm);
   
     Footer* aFooter(void);
   };
