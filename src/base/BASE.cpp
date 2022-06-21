@@ -156,7 +156,12 @@ bool BASE::bTraceWith(Stz* szWith)
   if (szWith->bSame("WITH_DEBUG_VERSION"_Stz))
     return true;
 #endif
-    
+
+#ifdef WITH_OOM_FAULTINJECTION
+  if (szWith->bSame("WITH_OOM_FAULTINJECTION"_Stz))
+    return true;
+#endif
+
 #ifdef WITH_TRACE_ENCODING
   if (szWith->bSame("WITH_TRACE_ENCODING"_Stz))
     return true;

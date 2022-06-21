@@ -26,7 +26,9 @@
 #define WITH_CHECK_INITIALISED EndDefine     // _checkInitialised_()
 #define WITH_CORRECTNESS_ALGEBRA EndDefine   // magic, class, footer, pre, post
 
-#define WITH_LOCK_TRACKING EndDefine       // code for tracking lock activity
+#define WITH_LOCK_TRACKING EndDefine         // code for tracking lock activity
+
+#define WITH_OOM_FAULTINJECTION              // oom fault injectition
 
 //#define WITH_STEP_TIMING EndDefine         // code for timing steps
 
@@ -47,6 +49,8 @@
 //#define WITH_CORRECTNESS_ALGEBRA EndDefine // magic, class, footer, pre, post
 
 #define WITH_LOCK_TRACKING EndDefine       // code for tracking lock activity
+
+//#define WITH_OOM_FAULTINJECTION              // oom fault injectition
 
 //#define WITH_STEP_TIMING EndDefine         // code for timing steps
 
