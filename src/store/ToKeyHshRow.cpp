@@ -1092,7 +1092,7 @@ L_Boolean:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // possible negative form of boolean
 
-  if ('-' == cCurChr) {
+  if (C_MINUS_SIGN == cCurChr) {
     vSIGN_optional();
     if (bIS_DIGIT()) {
       vBOOLEAN_NUMERIC();
