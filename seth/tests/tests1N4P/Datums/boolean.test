@@ -52,7 +52,7 @@ rows:
   
 // check no of rows
 tableScan bolTbl;
-rows: 101
+rows: 102
 
 // dump index bol_idx1
 dumpidx bolTbl bol_idx1;
