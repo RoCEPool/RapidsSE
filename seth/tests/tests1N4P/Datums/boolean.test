@@ -44,7 +44,7 @@ rows:
   ('bol_col8', 'BOOLEAN', 0, 0, true, false)
 
 load bolTbl "../DATA/Datums/boolean.csv" ;
-failure contains: '19 invalid'
+failure contains: '18 invalid'
 
 tableSizes;
 rows:
@@ -52,7 +52,7 @@ rows:
   
 // check no of rows
 tableScan bolTbl;
-rows: 101
+rows: 102
 
 // dump index bol_idx1
 dumpidx bolTbl bol_idx1;
