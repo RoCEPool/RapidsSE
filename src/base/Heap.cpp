@@ -12,6 +12,10 @@ extern BufferPool* gpBufferPool;
 
 extern SizeHeap  gxaSizeHeap[];
 
+extern pthread_key_t gbTLS_FaultInjection;
+extern pthread_key_t giTLS_FaultPoint;
+extern pthread_key_t giTLS_CurrentPoint;
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -154,7 +158,17 @@ Object* Heap::pAllocObject(eCN eAllocClass)
   
 //  if (CN_MARKER == eAllocClass)
 //    vTrace("Heap::pAllocObject: allocating CN_MARKER\n"_Stz);
-  
+
+#ifdef WITH_OOM_FAULTINJECTION
+  bool bFaultInjection = static_cast<bool>(PsxThd::pTlsGet(gbTLS_FaultInjection));
+  if (bFaultInjection) {
+    i8 iFaultPoint = (i8)(PsxThd::pTlsGet(giTLS_FaultPoint));
+    i8 iCurrentPoint = (i8)(PsxThd::pTlsGet(giTLS_CurrentPoint));
+    if (iFaultPoint == iCurrentPoint)
+      THROW_LOWMEMORY_NEW();
+  }
+#endif
+
   m_okLock.vGrabWrite();
   
   // check for free chunks in the heap and extend if none

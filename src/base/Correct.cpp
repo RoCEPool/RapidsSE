@@ -726,6 +726,50 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
 }
 
 /*----------------------------------------------------------------------------*/
+/* throw a low memory exception                                               */
+/*----------------------------------------------------------------------------*/
+[[ noreturn ]] void BASE::vThrowLowMemoryNew(eFK   eFailure,
+                                          const char* azFunc,
+                                          const char* azFilePath,
+                                          i8    iLineNo,
+                                          Stz*  szFormat,...)
+{
+//  if (AM::bDeveloper()) {
+//    fprintf(stderr,
+//            "BASE::vThrow:\n"
+//            "eFailure = %lld\n"
+//            "azFunc = %s\n"
+//            "azFilePath = %s\n"
+//            "iLineNo = %lld\n"
+//            "szFormat = %s\n",
+//            (i8)eFailure,
+//            azFunc,
+//            azFilePath,
+//            (i8)iLineNo,
+//            szFormat->azChar()
+//    );
+//
+//    // put a breakpoint here to trap throws
+//    sleep(0);
+//  }
+
+  char zFileNm[256];
+  StrLib::vSubPath(zFileNm,(char*)azFilePath);
+
+  va_list xArgs;
+  va_start(xArgs,szFormat);
+  char zCondition[256];
+  StrLib::vSprint(zCondition,xArgs,(char*)szFormat);
+  va_end(xArgs);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  LowMemory xLowMemory(eFailure,azFunc,zCondition,zFileNm,iLineNo);
+
+  throw xLowMemory;
+}
+
+/*----------------------------------------------------------------------------*/
 /* throw a reached exception                                                  */
 /*----------------------------------------------------------------------------*/
 [[ noreturn ]] void BASE::vThrowReached(eFK   eFailure,

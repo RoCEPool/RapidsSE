@@ -251,7 +251,7 @@ void SePrompt::vPromptLoop(void)
     m_pCurrentDeputy->vError(EC_NONE);
 
     if (EC_NONE != eError) {
-      vTrace("error: %s\n"_Stz,aEC[eError]);
+      vTrace("\nerror: %s\n\n"_Stz,aEC[eError]);
       if (AM::bDeveloper())
         vDumpInpTknVec(true);
     }

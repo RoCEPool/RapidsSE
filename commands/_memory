@@ -21,4 +21,6 @@ create table datums (
   vch_col15  VARCHAR(32)
 );
 
+trackMemory;
 /FaultInjection drop table datums <faultPoint> = 1;
+memoryLeaks;

@@ -93,7 +93,7 @@ pthread_key_t giTLS_ThreadKey  = C_UNKNOWN;
 pthread_key_t giTLS_TaskKey    = C_UNKNOWN;
 pthread_key_t giTLS_HandlerKey = C_UNKNOWN;
 pthread_key_t giTLS_StepKey    = C_UNKNOWN;
-pthread_key_t giTLS_FaultInjection  = C_UNKNOWN;
+pthread_key_t gbTLS_FaultInjection  = false;
 pthread_key_t giTLS_FaultPoint      = C_UNKNOWN;
 pthread_key_t giTLS_CurrentPoint    = C_UNKNOWN;
 

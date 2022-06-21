@@ -59,6 +59,12 @@ namespace BASE
                                       i8    iLineNo,
                                       Stz*  szFormat,...);
 
+  [[ noreturn ]] void vThrowLowMemoryNew(eFK   eKind,
+                                      const char* azFunc,
+                                      const char* azFilePath,
+                                      i8    iLineNo,
+                                      Stz*  szFormat,...);
+
   [[ noreturn ]] void vThrowReached(eFK   eKind,
                                     const char* azFunc,
                                     const char* azFilePath,

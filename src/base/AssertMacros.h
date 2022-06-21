@@ -108,6 +108,15 @@ EndDefine
 EndDefine
 
 /*----------------------------------------------------------------------------*/
+/* THROW_LOWMEMORY macro                                                      */
+/*----------------------------------------------------------------------------*/
+#define THROW_LOWMEMORY_NEW(void) \
+  BASE::vThrowLowMemoryNew(FK_LOWMEMORY,\
+                        __func__,__FILE__,__LINE__,\
+                        "RUNNING LOW ON MEMORY"_Stz); \
+EndDefine
+
+/*----------------------------------------------------------------------------*/
 /* THROW_EXCEPTION macro                                                      */
 /*----------------------------------------------------------------------------*/
 #define THROW_USER(szDescription) \

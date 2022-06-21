@@ -250,7 +250,11 @@ void BASE::vTraceWith(void)
 #ifdef WITH_DEBUG_VERSION
   vTrace("  WITH_DEBUG_VERSION\n"_Stz);
 #endif
-  
+
+#ifdef WITH_OOM_FAULTINJECTION
+  vTrace("  WITH_OOM_FAULTINJECTION\n"_Stz);
+#endif
+
 #ifdef WITH_TRACE_ENCODING
   vTrace("  WITH_TRACE_ENCODING\n"_Stz);
 #endif
