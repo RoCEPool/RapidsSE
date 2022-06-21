@@ -135,7 +135,7 @@ success
 
 // check no of rows
 tableScan bolTbl;
-rows: 101
+rows: 102
 
 /*
 partitionScan bolTbl 0;
