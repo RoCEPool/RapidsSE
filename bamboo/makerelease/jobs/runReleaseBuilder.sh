@@ -23,14 +23,20 @@ RESULT_DIR="${PLAN_DIR}/results"
 # Directory where artifacts are to be copied to
 ARTIFACT_DIR="${PLAN_DIR}/artifacts"
 
-# Set to 1 to skip the building of an installer and go straight to testing one.
+# Set to 1 to skip the building or testing of an installer.
 SKIP_BUILD=0
+SKIP_TEST=0
 
-if [ "$#" -gt 0 ]; then
+while [ "$#" -gt 0 ]; do
   if [ "$1" == "--skipBuild" ]; then
     SKIP_BUILD=1
+    shift
+
+  elif [ "$1" == "--skipTest" ]; then
+    SKIP_TEST=1
+    shift
   fi
-fi
+done
 
 # Clear and re-make the directory for results and artifacts if they don't exist
 rm -rf "${RESULT_DIR}" &>/dev/null
@@ -50,6 +56,10 @@ PARAMS=("--resultDir"   "${RESULT_DIR}"
 
 if [ "${SKIP_BUILD}" -eq 1 ]; then
   PARAMS+=("--skipBuild")
+fi
+
+if [ "${SKIP_TEST}" -eq 1 ]; then
+  PARAMS+=("--skipTest")
 fi
 
 # Which python to use?

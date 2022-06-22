@@ -37,6 +37,7 @@ def main() -> int:
          --repoDir      path to the root of the repository
          --config       path of the file that contains build configuration information
          --skipBuild    don't build SE, instead find the pre-built installer. For development purposes only.
+         --skipTest     build SE only, don't test it. For development purposes only.
     """
 
     # Validate the path
@@ -45,7 +46,7 @@ def main() -> int:
         return 1
 
     # Validate the Python arguments
-    (result_path, artifact_path, repo_path, config_path, skip_build) = validate_arguments()
+    (result_path, artifact_path, repo_path, config_path, skip_build, skip_test) = validate_arguments()
 
     LOG.debug(f"cwd          = {os.getcwd()}")
     LOG.debug(f"result dir   = {result_path}")
@@ -53,6 +54,7 @@ def main() -> int:
     LOG.debug(f"repo root    = {repo_path}")
     LOG.debug(f"config file  = {config_path}")
     LOG.debug(f"skip build   = {skip_build}")
+    LOG.debug(f"skip test    = {skip_test}")
 
     # Read in the config file and validate it
     config = ReleaseConfig(str(config_path))
@@ -79,8 +81,9 @@ def main() -> int:
             buildrunner.run()
             installer_path = buildrunner.installer_path
 
-        testrunner = TestRunner(artifact_path, clone_repo_path, config, result_list, installer_path)
-        testrunner.run()
+        if not skip_test:
+            testrunner = TestRunner(artifact_path, clone_repo_path, config, result_list, installer_path)
+            testrunner.run()
 
     finally:
         # Clean up the cloned repository
@@ -110,6 +113,8 @@ def validate_arguments() -> (pathlib.Path, pathlib.Path, pathlib.Path, pathlib.P
                             help="The path of the config file to use")
     arg_parser.add_argument("--skipBuild", type=bool, required=False, default=False,
                             help="Skip the building and go straight to testing")
+    arg_parser.add_argument("--skipTest", type=bool, required=False, default=False,
+                            help="Skip the testing phase")
 
     args = arg_parser.parse_args()
     LOG.debug("Got the following arguments:  %s", args)
@@ -162,7 +167,7 @@ def validate_arguments() -> (pathlib.Path, pathlib.Path, pathlib.Path, pathlib.P
     if not config_path.is_absolute():
         config_path = (pathlib.Path.cwd() / config_path).resolve()
 
-    return result_dir, artifact_dir, repo_dir, config_path, args.skipBuild
+    return result_dir, artifact_dir, repo_dir, config_path, args.skipBuild, args.skipTest
 
 
 def __find_installer(artifact_path: pathlib.Path) -> pathlib.Path:
