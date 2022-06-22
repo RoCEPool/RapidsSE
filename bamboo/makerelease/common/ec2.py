@@ -8,7 +8,6 @@ import subprocess
 import botocore
 import botocore.exceptions
 import boto3
-import base64
 
 import common.errors as errors
 

@@ -27,6 +27,17 @@ C_SE_TEST_TIMEOUT_SEC = 1200
 C_SE_INSTALL_TIMEOUT_SEC = 120
 C_TEST_MONITORING_SLEEP_IVL = 10
 
+C_SE_START_CMD = "startSE.sh"
+C_SE_START_TIMEOUT_SEC = 90
+
+C_SE_STOP_CMD = "stopSE.sh"
+C_SE_STOP_TIMEOUT_SEC = 30
+
+C_SE_COLLECT_LOGS_CMD = "collectLogs.sh"
+C_SE_COLLECT_LOGS_TIMEOUT_SEC = 90
+C_SE_COLLECT_LOGS_FILESPEC = "logs-*.tar.gz"
+C_SE_COPY_LOGS_TIMEOUT_SEC = 90
+
 
 class TestRunner:
 
@@ -136,7 +147,7 @@ class InstanceRunner:
                  result_list: [TestResult],
                  local_installer_path: pathlib.Path):
 
-        self.test_name = test_name
+        self.test_name: str = test_name
         self.instance_type = instance_type
         self.image_id = image_id
         self.cloudinit_path = cloudinit_path
@@ -176,15 +187,21 @@ class InstanceRunner:
             # Run the installer using a config file in the repository
             self.__install_se()
 
-            # TODO: Start SE on the remote node
+            # Create a symlink for <install_path>/DATA directory on the remote node
+            self.__create_data_dir_symlink()
+
+            # Start SE on the remote node
+            self.__start_se()
 
             # TODO: Run tests against SE
 
             # TODO: Collect results from the remote node
 
-            # TODO: Stop SE on the remote node
+            # Stop SE on the remote node
+            self.__stop_se()
 
-            # TODO: Collect any log files
+            # Collect any log files
+            self.__collect_logs()
 
             # Mark the test as successful
             self.test_result.set_test_ended(True, False, None, None)
@@ -264,6 +281,8 @@ class InstanceRunner:
         if not dest.endswith("/"):
             dest = dest + "/"
 
+        LOG.debug(f"Test {self.test_name}: Copying repository from {src} to {dest}")
+
         # We use rsync here because scp doesn't copy hidden files and folders
         # Ref: https://serverfault.com/questions/21580/how-to-make-scp-copy-hidden-files
         command = ["rsync", "-avz", "-e", "ssh -q -o BatchMode=yes -o StrictHostKeyChecking=no", src, dest]
@@ -300,6 +319,8 @@ class InstanceRunner:
         src = str(self.local_installer_path)
         dest = f"{self.ip_addr}:{self.remote_installer_path}"
 
+        LOG.debug(f"Test {self.test_name}: Copying installer from {src} to {dest}")
+
         ssh.run_scp(src, dest)
 
     def __copy_cluster_config_to_instance(self) -> None:
@@ -312,10 +333,14 @@ class InstanceRunner:
         src = str(self.local_cluster_config_path)
         dest = f"{self.ip_addr}:{self.remote_cluster_config_path}"
 
+        LOG.debug(f"Test {self.test_name}: Copying cluster config file from {src} to {dest}")
+
         ssh.run_scp(src, dest)
 
     def __install_se(self) -> None:
         """Installs SE using the installer on the remote node"""
+
+        LOG.debug(f"Test {self.test_name}: Installing RapidsSE")
 
         command = f"{str(self.remote_installer_path)} --quiet -- --script " \
                   f"--config {str(self.remote_cluster_config_path)}"
@@ -328,6 +353,107 @@ class InstanceRunner:
                   f"\nStdout Output:\n{e.stdout}" \
                   f"\nStderr Output:\n{e.stderr}"
             raise errors.SshError(msg, e.stdout, e.stderr) from e
+
+    def __create_data_dir_symlink(self) -> None:
+        """Create a symlink on the remote node from <install_dir>/DATA to <repo_root>/DATA"""
+        symlink_path = pathlib.Path(self.cluster_config.get_dir()) / "DATA"
+        dest_path = self.remote_repo_dir / "DATA"
+
+        command = f"ln -s {str(dest_path)} {str(symlink_path)}"
+
+        LOG.info(f"Test {self.test_name}: About to setup the data symlink with the following command: {command}")
+        ssh.run_ssh(self.ip_addr, command)
+
+    def __start_se(self) -> None:
+        """Starts RapidsSE on the remote node"""
+
+        start_command = f"{self.cluster_config.get_dir()}/{C_SE_START_CMD}"
+
+        LOG.info(f"Test {self.test_name}: About to start the RapidsSE cluster with the following command: {start_command}")
+
+        try:
+            ssh.run_ssh(self.ip_addr, start_command, C_SE_START_TIMEOUT_SEC)
+
+        except subprocess.TimeoutExpired as e:
+            msg = f"Test {self.test_name}: Starting of the SE cluster on {self.ip_addr} timed out " \
+                  f"after {e.timeout} seconds." \
+                  f"\nStdout Output:\n{e.stdout}" \
+                  f"\nStderr Output:\n{e.stderr}"
+            raise errors.SshError(msg, e.stdout, e.stderr) from e
+
+        LOG.info(f"Test {self.test_name}: RapidsSE cluster started successfully")
+
+    def __stop_se(self) -> None:
+        """Stops RapidsSE on the remote node"""
+
+        stop_command = f"{self.cluster_config.get_dir()}/{C_SE_STOP_CMD}"
+
+        LOG.info(f"Test {self.test_name}: About to stop the RapidsSE cluster with the following command: {stop_command}")
+
+        try:
+            ssh.run_ssh(self.ip_addr, stop_command, C_SE_STOP_TIMEOUT_SEC)
+
+        except subprocess.TimeoutExpired as e:
+            msg = f"Test {self.test_name}: Stopping of the SE cluster on {self.ip_addr} timed out " \
+                  f"after {e.timeout} seconds." \
+                  f"\nStdout Output:\n{e.stdout}" \
+                  f"\nStderr Output:\n{e.stderr}"
+            raise errors.SshError(msg, e.stdout, e.stderr) from e
+
+        LOG.info(f"Test {self.test_name}: RapidsSE cluster stopped successfully")
+
+    def __collect_logs(self) -> None:
+        """Collect log files from the remote node"""
+
+        collect_logs_command = f"{self.cluster_config.get_dir()}/{C_SE_COLLECT_LOGS_CMD}"
+
+        LOG.info(f"Test {self.test_name}: About to invoke the collection of logs on {self.ip_addr}")
+
+        try:
+            ssh.run_ssh(self.ip_addr, collect_logs_command, C_SE_COLLECT_LOGS_TIMEOUT_SEC)
+
+        except subprocess.TimeoutExpired as e:
+            msg = f"Test {self.test_name}: Collecting of logs from the SE cluster on {self.ip_addr} timed out " \
+                  f"after {e.timeout} seconds." \
+                  f"\nStdout Output:\n{e.stdout}" \
+                  f"\nStderr Output:\n{e.stderr}"
+            raise errors.SshError(msg, e.stdout, e.stderr) from e
+
+        # Now we need to copy these logs back to the artifact directory and rename them for the current test.
+        # Logs would have been written into the home directory. Let's find the exact name and path
+
+        LOG.debug(f"Test {self.test_name}: About to look for the collected logs on {self.ip_addr}")
+
+        find_logs_command = f"find {self.remote_home_dir} -name \"{C_SE_COLLECT_LOGS_FILESPEC}\""
+        result = ssh.run_ssh(self.ip_addr, find_logs_command)
+
+        assert result.stdout is not None
+        assert len(result.stdout) > 0
+
+        src_path: pathlib.Path = pathlib.Path(result.stdout.strip())
+
+        # The destination filename is the original filename with the test name inserted
+        # just before the suffix.
+        # e.g. logs-20220622T12:01:01-CentOS-7.tar.gz
+        dest_filename = f"{src_path.name.removesuffix(src_path.suffix)}-" \
+                        f"{self.test_name.replace(' ', '-')}{src_path.suffix}"
+
+        src = f"{self.ip_addr}:{result.stdout.strip()}"
+        dest = str(self.artifact_path / dest_filename)
+
+        LOG.debug(f"Test {self.test_name}: About to copy the logs from {src} to {dest}")
+
+        try:
+            ssh.run_scp(src, dest, C_SE_COPY_LOGS_TIMEOUT_SEC)
+
+        except subprocess.TimeoutExpired as e:
+            msg = f"Test {self.test_name}: Copying of logs from {src} to {dest} timed out " \
+                  f"after {e.timeout} seconds." \
+                  f"\nStdout Output:\n{e.stdout}" \
+                  f"\nStderr Output:\n{e.stderr}"
+            raise errors.SshError(msg, e.stdout, e.stderr) from e
+
+        LOG.info(f"Test {self.test_name}: Successfully collected logs from {self.ip_addr} to {dest}")
 
     def __terminate_instance(self) -> None:
         """Terminates any previously started EC2 instance"""
