@@ -38,17 +38,26 @@ C_SE_COLLECT_LOGS_TIMEOUT_SEC = 90
 C_SE_COLLECT_LOGS_FILESPEC = "logs-*.tar.gz"
 C_SE_COPY_LOGS_TIMEOUT_SEC = 90
 
+# Paths are relative to the *repository*
+# (because they are used on remote nodes)
+C_TESTLIST_PATH = "bamboo/makerelease/configs/release.testlist"
+C_SETH_RESULT_PATH = "bamboo/unittest/results/results-*.xml"
+C_SETH_TIMEOUT_SEC = 300
+C_COLLECT_RESULTS_TIMEOUT_SEC = 90
+
 
 class TestRunner:
 
     def __init__(self,
                  artifact_path: pathlib.Path,
+                 result_path: pathlib.Path,
                  repo_path: pathlib.Path,
                  config: ReleaseConfig,
                  result_list: [TestResult],
                  installer_path: pathlib.Path):
 
         self.artifact_path = artifact_path
+        self.result_path = result_path
         self.repo_path = repo_path
         self.config = config
         self.result_list = result_list
@@ -78,6 +87,7 @@ class TestRunner:
                                              cluster_config_path,
                                              cluster_config,
                                              self.artifact_path,
+                                             self.result_path,
                                              self.repo_path,
                                              self.result_list,
                                              self.installer_path)
@@ -143,6 +153,7 @@ class InstanceRunner:
                  cluster_config_path: pathlib.Path,
                  cluster_config: ClusterConfig,
                  artifact_path: pathlib.Path,
+                 result_path: pathlib.Path,
                  repo_path: pathlib.Path,
                  result_list: [TestResult],
                  local_installer_path: pathlib.Path):
@@ -154,6 +165,7 @@ class InstanceRunner:
         self.local_cluster_config_path = cluster_config_path
         self.cluster_config = cluster_config
         self.artifact_path = artifact_path
+        self.result_path = result_path
         self.repo_path = repo_path
         self.local_installer_path = local_installer_path
 
@@ -167,6 +179,7 @@ class InstanceRunner:
         self.remote_repo_dir: pathlib.Path = None
         self.remote_installer_path: pathlib.Path = None
         self.remote_cluster_config_path: pathlib.Path = None
+        self.can_collect_artifacts = False  # not yet
 
     def run(self):
         self.test_result.set_test_started()
@@ -192,16 +205,13 @@ class InstanceRunner:
 
             # Start SE on the remote node
             self.__start_se()
+            self.can_collect_artifacts = True
 
-            # TODO: Run tests against SE
-
-            # TODO: Collect results from the remote node
+            # Run tests against SE
+            self.__run_seth_tests()
 
             # Stop SE on the remote node
             self.__stop_se()
-
-            # Collect any log files
-            self.__collect_logs()
 
             # Mark the test as successful
             self.test_result.set_test_ended(True, False, None, None)
@@ -216,6 +226,20 @@ class InstanceRunner:
                 LOG.exception(f"Error occurred during the test phase of test {self.test_name}.")
 
         finally:
+
+            # Collect results from the remote node
+            try:
+                self.__collect_seth_results()
+            except (Exception,):
+                pass    # Ignore any failures here
+
+            # Collect any log files
+            try:
+                self.__collect_logs()
+            except (Exception,):
+                pass    # Ignore any failures here
+
+            # This bit is REALLY important!
             self.__terminate_instance()
 
     def __start_test_instance(self) -> None:
@@ -304,7 +328,8 @@ class InstanceRunner:
             raise errors.SshError(msg, e.stdout, e.stderr) from e
 
         except subprocess.TimeoutExpired as e:
-            msg = f"Test {self.test_name}: Copying the repository from {src} to {dest} timed out after {e.timeout} seconds." \
+            msg = f"Test {self.test_name}: Copying the repository from {src} to {dest} " \
+                  f"timed out after {e.timeout} seconds." \
                   f"\nStdout Output:\n{e.stdout}" \
                   f"\nStderr Output:\n{e.stderr}"
             raise errors.SshError(msg, e.stdout, e.stderr) from e
@@ -369,7 +394,8 @@ class InstanceRunner:
 
         start_command = f"{self.cluster_config.get_dir()}/{C_SE_START_CMD}"
 
-        LOG.info(f"Test {self.test_name}: About to start the RapidsSE cluster with the following command: {start_command}")
+        LOG.info(f"Test {self.test_name}: About to start the RapidsSE cluster with the "
+                 f"following command: {start_command}")
 
         try:
             ssh.run_ssh(self.ip_addr, start_command, C_SE_START_TIMEOUT_SEC)
@@ -383,12 +409,38 @@ class InstanceRunner:
 
         LOG.info(f"Test {self.test_name}: RapidsSE cluster started successfully")
 
+    def __run_seth_tests(self) -> None:
+        """Invokes SETH against the running cluster"""
+
+        # We will reuse the test.sh script from <repo_root>/bamboo/unittest/scripts.
+        # It accepts the following parameters:
+        #   ./test.sh release-${TEST_NAME} path/of/cluster.config path/of/testlistFile
+
+        test_sh_path = self.remote_repo_dir / "bamboo" / "unittest" / "scripts" / "test.sh"
+        target_name = f"release-{self.test_name.replace(' ', '-')}"
+        testlist_path = self.remote_repo_dir / C_TESTLIST_PATH
+
+        command = f"{test_sh_path} {target_name} {str(self.remote_cluster_config_path)} {str(testlist_path)}"
+
+        LOG.info(f"Test {self.test_name}: About to invoke SETH on {self.ip_addr} with the following command: {command}")
+
+        try:
+            ssh.run_ssh(self.ip_addr, command, C_SETH_TIMEOUT_SEC)
+
+        except subprocess.TimeoutExpired as e:
+            msg = f"Test {self.test_name}: Running of SETH tests on {self.ip_addr} timed out " \
+                  f"after {e.timeout} seconds." \
+                  f"\nStdout Output:\n{e.stdout}" \
+                  f"\nStderr Output:\n{e.stderr}"
+            raise errors.SshError(msg, e.stdout, e.stderr) from e
+
     def __stop_se(self) -> None:
         """Stops RapidsSE on the remote node"""
 
         stop_command = f"{self.cluster_config.get_dir()}/{C_SE_STOP_CMD}"
 
-        LOG.info(f"Test {self.test_name}: About to stop the RapidsSE cluster with the following command: {stop_command}")
+        LOG.info(f"Test {self.test_name}: About to stop the RapidsSE cluster with "
+                 f"the following command: {stop_command}")
 
         try:
             ssh.run_ssh(self.ip_addr, stop_command, C_SE_STOP_TIMEOUT_SEC)
@@ -401,6 +453,23 @@ class InstanceRunner:
             raise errors.SshError(msg, e.stdout, e.stderr) from e
 
         LOG.info(f"Test {self.test_name}: RapidsSE cluster stopped successfully")
+
+    def __collect_seth_results(self) -> None:
+        """Collect SETH result files from the remote node and save them in the local results directory"""
+
+        # Results have been written out to <repo_home>/bamboo/unittest/results
+        src = self.remote_repo_dir / C_SETH_RESULT_PATH
+        dest = self.result_path
+
+        try:
+            ssh.run_scp(src, dest, C_COLLECT_RESULTS_TIMEOUT_SEC)
+
+        except subprocess.TimeoutExpired as e:
+            msg = f"Test {self.test_name}: Collecting of SETH results from the SE cluster on {self.ip_addr} " \
+                  f"timed out after {e.timeout} seconds." \
+                  f"\nStdout Output:\n{e.stdout}" \
+                  f"\nStderr Output:\n{e.stderr}"
+            raise errors.SshError(msg, e.stdout, e.stderr) from e
 
     def __collect_logs(self) -> None:
         """Collect log files from the remote node"""
@@ -472,19 +541,38 @@ class InstanceRunner:
         self.test_result.set_test_ended(False, False, None,
                                         f"Test operation timed out after {C_SE_TEST_TIMEOUT_SEC} seconds")
 
-        try:
-            # TODO: Stop SE on the remote node
+        if self.ip_addr is None:
+            return
 
-            # TODO: Collect any log files
-            pass
+        LOG.error(f"Forcibly stopping SE and trying to collect results and artifacts on {self.ip_addr}")
+
+        # Stop SE on the remote node
+        try:
+            self.__stop_se()
+        except (Exception,) as e:
+            # Ignore any failures here
+            LOG.error("Could not stop SE")
+            LOG.exception(e)
+
+        # Collect results from the remote node
+        try:
+            self.__collect_seth_results()
+        except (Exception,) as e:
+            # Ignore any failures here
+            LOG.error("Could not collect SETH results")
+            LOG.exception(e)
+
+        # Collect any log files
+        try:
+            self.__collect_logs()
+        except (Exception,) as e:
+            # Ignore any failures here
+            LOG.error("Could not collect SE log artifacts")
+            LOG.exception(e)
+
+        # Stop the EC2 instance
+        try:
+            self.__terminate_instance()
 
         except (Exception,):
-            pass        # Ignore any exceptions
-
-        finally:
-            # Stop the EC2 instance
-            try:
-                self.__terminate_instance()
-
-            except (Exception,):
-                LOG.error(f"*** Unable to forcibly stop EC2 instance {self.instance_id} ({self.ip_addr}). ***")
+            LOG.error(f"*** UNABLE TO FORCIBLY STOP EC2 INSTANCE {self.instance_id} ({self.ip_addr}). ***")

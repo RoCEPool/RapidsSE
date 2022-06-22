@@ -20,7 +20,7 @@ C_CWD_SUFFIX = "makerelease"
 
 C_DEFAULT_RESULT_DIR = "./results"
 C_DEFAULT_ARTIFACT_DIR = "./artifacts"
-C_DEFAULT_RESULT_FILENAME = "results.xml"
+C_DEFAULT_RESULT_FILENAME = "buildResults.xml"
 C_TEST_SUITE_NAME = "Release Test"
 
 # Create a main logger
@@ -82,7 +82,7 @@ def main() -> int:
             installer_path = buildrunner.installer_path
 
         if not skip_test:
-            testrunner = TestRunner(artifact_path, clone_repo_path, config, result_list, installer_path)
+            testrunner = TestRunner(artifact_path, result_path, clone_repo_path, config, result_list, installer_path)
             testrunner.run()
 
     finally:

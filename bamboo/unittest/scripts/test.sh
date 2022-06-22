@@ -73,7 +73,7 @@ TARGET=""
 # The path of the config file to be used for installation
 CONFIG_FILE=""
 
-# This is the colleciton of tests that are actually run by bamboo.
+# This is the collection of tests that are actually run by bamboo.
 TESTLIST_FILE=""
 
 ###############################################################################
