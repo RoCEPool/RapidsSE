@@ -1908,7 +1908,7 @@ void CodeSynth::vPayloadInsert(ePL ePayload, i8 iTopCount) {
 }
 
 /*----------------------------------------------------------------------------*/
-/* generate code for payload pouplate                                         */
+/* generate code for payload populate                                         */
 /*----------------------------------------------------------------------------*/
 void CodeSynth::vPayloadPopulate(ePL ePayload) {
 
@@ -2608,9 +2608,11 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
   Token *pTkn;
 
   i8 i_Col = 0;
+  i8 i_ColPL = 0;
   i8 i_ExprStack = 0;
   i8 i_DupCtr = 1;
   i8 iGbyCols;
+  i8 iGkyCols = 0;
   eDM eCastType;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2635,7 +2637,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
     pTkn = m_pTokenVec->pGet(i_Tkn);
 
-/*
+
 #ifdef WITH_DEBUG_VERSION
     vTrace("TKN: %s\n"_Stz, pTkn->azChars());
 
@@ -2650,30 +2652,43 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     }
     vTrace("--------------------------------------\n"_Stz);
 #endif
-*/
+
 
     if (pTkn->bSame(","_Stz)) {
       // skip the comma
-
-      if (ePreExp == PE_GBY)
-        iGbyCols++;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working ExprStack to normal expstack
       if (ePreExp != PE_GBY)
         pExprStack = m_pExprStack;
 
-      // push assign column
-      vPushAssignCol(pExprStack, pPostStack, eExprKind, ePreExp, i_Col,
-                     i_DupCtr);
+      if (ePreExp == PE_GBY) {
+        // push assign column
+        vPushAssignCol(pExprStack, pPostStack, eExprKind, ePreExp, iGbyCols, i_ColPL, i_DupCtr);
+        iGbyCols++;
+      }
+      else
+        vPushAssignCol(pExprStack, pPostStack, eExprKind, ePreExp, i_Col, i_ColPL, i_DupCtr);
+
+      if (ePreExp == PE_GKY)
+        iGkyCols++;
 
       if (ePreExp == PE_GBY && eExprKind == EK_ORDGROUPBY)
         if (iGbyCols >= 2)
           m_pOrdAggStack->vPushStz("_AND_BOLBOL(aCombinedT->m_iErrorCode)"_Stz);
 
-      if (ePreExp != PE_GKY || (ePreExp == PE_GKY && eExprKind == EK_AGGORD))
+      if (ePreExp != PE_GKY ||
+         (ePreExp == PE_GKY && eExprKind == EK_AGGORD))
+
+        //if  ((ePreExp != PE_GBY && eExprKind != EK_AGGORD) ||
+        //   (ePreExp == PE_GKY && eExprKind == EK_AGGORD))
         i_Col++;
 
+      //if (ePreExp != PE_GBY)
+      //  i_Col++;
+
+      if (ePreExp != PE_GBY && ePreExp != PE_GKY)
+        i_ColPL++;
 
       i_ExprStack++;
 
@@ -2715,11 +2730,10 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     }
 
     if (pTkn->bSame("aggregates"_Stz)) {
-      iGbyCols++;
 
       // push assign column
-      vPushAssignCol(pExprStack, pPostStack, eExprKind, ePreExp, i_Col,
-                     i_DupCtr);
+      vPushAssignCol(pExprStack, pPostStack, eExprKind, ePreExp, iGbyCols, i_ColPL, i_DupCtr);
+      iGbyCols++;
 
       if (eExprKind == EK_GROUPBY)
         eExprKind = EK_AGGGBY;
@@ -2797,7 +2811,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
       // push upperBound assign column
       if (bUpperBound)
-        vPushAssignCol(pExprStack, pPostStack, eExprKind, ePreExp, i_Col, i_DupCtr);
+        vPushAssignCol(pExprStack, pPostStack, eExprKind, ePreExp, i_Col, i_ColPL, i_DupCtr);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working ExprStack to be the lower bound  stack
@@ -2813,7 +2827,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
       // push lowerBound assign column
       if (bLowerBound)
-        vPushAssignCol(pExprStack, pPostStack, eExprKind, ePreExp, i_Col, i_DupCtr);
+        vPushAssignCol(pExprStack, pPostStack, eExprKind, ePreExp, i_Col, i_ColPL, i_DupCtr);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working ExprStack to be the upper bound stack
@@ -3037,8 +3051,10 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // aggregate follows, generate init expressions in the m_aInitStack
-      vPushAggCol(pExprStack, pPostStack, ePreExp, eExprKind, eExprType, i_Col, i_DupCtr);
-
+      if (eExprKind == EK_AGGORD)
+        vPushAggCol(pExprStack, pPostStack, ePreExp, eExprKind, eExprType, i_Col, i_ColPL, i_DupCtr);
+      else
+        vPushAggCol(pExprStack, pPostStack, ePreExp, eExprKind, eExprType, i_Col+iGkyCols, i_ColPL, i_DupCtr);
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working ExprStack
       RASSERT(pPostStack);
@@ -3217,7 +3233,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
   if (pExprStack == pPostStack)
     pExprStack = m_pExprStack;
 
-  vPushAssignCol(pExprStack, pPostStack, eExprKind, ePreExp, i_Col, i_DupCtr);
+  vPushAssignCol(pExprStack, pPostStack, eExprKind, ePreExp, i_Col, i_ColPL, i_DupCtr);
 
 /*
 #ifdef WITH_DEBUG_VERSION
@@ -3471,7 +3487,9 @@ void CodeSynth::vSynthAllocPotRow(TypedStack* pPostStack, Stz* sHashExpr, bool b
 /*----------------------------------------------------------------------------*/
 /* push aggregate column on the exprStack                                     */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vPushAggCol(TypedStack* pExprStack, TypedStack* pPostStack, ePE ePreExp, eEK eExprKind, eDM eExprType, i8 i_Col, i8& i_DupCtr) {
+void CodeSynth::vPushAggCol(TypedStack* pExprStack, TypedStack* pPostStack,
+                            ePE ePreExp, eEK eExprKind,
+                            eDM eExprType,i8 i_Col, i8 i_ColPL, i8& i_DupCtr) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
@@ -3495,7 +3513,13 @@ void CodeSynth::vPushAggCol(TypedStack* pExprStack, TypedStack* pPostStack, ePE 
 
     vInitAgg(ePreExp, eExprType);
 
-    sOperation.vSprint("_ASSIGN(aCombinedT->m_aiPayload[%lld])"_Stz, i_Col);
+    Column* pColumn = m_pStreamDefOut->pGetColumn(i_Col);
+    if (pColumn->eColumnType() == CT_VARCHAR) {
+      sOperation.vSprint("_COPYSTR_PL(&aCombinedT->m_aiPayload[%lld])"_Stz, i_ColPL);
+    }
+    else {
+      sOperation.vSprint("_ASSIGN(aCombinedT->m_aiPayload[%lld])"_Stz, i_ColPL);
+    }
     m_pInitStack->vPushStr(sOperation);
   } else {
     vInitAgg(ePreExp, eExprType);
@@ -3510,7 +3534,7 @@ void CodeSynth::vPushAggCol(TypedStack* pExprStack, TypedStack* pPostStack, ePE 
     case PE_ALL:
       if (eExprKind == EK_AGGGBY) {
         // push col on both stacks
-        sOperation.vSprint("_PSH_COL(aCombinedT->m_aiPayload[%lld])"_Stz, i_Col);
+        sOperation.vSprint("_PSH_COL(aCombinedT->m_aiPayload[%lld])"_Stz, i_ColPL);
         pExprStack->vPushStr(sOperation);
         pPostStack->vPushStr(sOperation);
       }
@@ -3530,7 +3554,7 @@ void CodeSynth::vPushAggCol(TypedStack* pExprStack, TypedStack* pPostStack, ePE 
     case PE_CNT:
       if (eExprKind == EK_AGGGBY) {
         // push col on both stacks
-        sOperation.vSprint("_PSH_COL(aCombinedT->m_aiPayload[%lld])"_Stz, i_Col);
+        sOperation.vSprint("_PSH_COL(aCombinedT->m_aiPayload[%lld])"_Stz, i_ColPL);
         pExprStack->vPushStr(sOperation);
         pPostStack->vPushStr(sOperation);
       }
@@ -3556,7 +3580,7 @@ void CodeSynth::vPushAggCol(TypedStack* pExprStack, TypedStack* pPostStack, ePE 
         pExprStack->vPushStz(sOperation);
 
         // push col on both stacks
-        sOperation.vSprint("_PSH_COL(aCombinedT->m_aiPayload[%lld])"_Stz, i_Col);
+        sOperation.vSprint("_PSH_COL(aCombinedT->m_aiPayload[%lld])"_Stz, i_ColPL);
         pExprStack->vPushStr(sOperation);
         pPostStack->vPushStr(sOperation);
       }
@@ -3588,7 +3612,7 @@ void CodeSynth::vPushAggCol(TypedStack* pExprStack, TypedStack* pPostStack, ePE 
         pExprStack->vPushStz(sOperation);
 
         // push col on both stacks
-        sOperation.vSprint("_PSH_COL(aCombinedT->m_aiPayload[%lld])"_Stz, i_Col);
+        sOperation.vSprint("_PSH_COL(&aCombinedT->m_aiPayload[%lld])"_Stz, i_ColPL);
         pExprStack->vPushStr(sOperation);
         pPostStack->vPushStr(sOperation);
       }
@@ -3614,7 +3638,7 @@ void CodeSynth::vPushAggCol(TypedStack* pExprStack, TypedStack* pPostStack, ePE 
     case PE_SUM:
       if (eExprKind == EK_AGGGBY) {
         // push col on both stacks
-        sOperation.vSprint("_PSH_COL(aCombinedT->m_aiPayload[%lld])"_Stz, i_Col);
+        sOperation.vSprint("_PSH_COL(aCombinedT->m_aiPayload[%lld])"_Stz, i_ColPL);
         pExprStack->vPushStr(sOperation);
         pPostStack->vPushStr(sOperation);
       }
@@ -4107,7 +4131,8 @@ void CodeSynth::vPushRelational(TypedStack* pExprStack, IntStack* pExprType,
 /*----------------------------------------------------------------------------*/
 /* push assign column on the exprStack                                        */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, eEK eExprKind, ePE ePreExp, i8 i_Col, i8& i_DupCtr) {
+void CodeSynth::vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, eEK eExprKind, ePE ePreExp,
+                               i8 i_Col, i8 i_ColPL, i8& i_DupCtr) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
@@ -4145,8 +4170,10 @@ void CodeSynth::vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, e
 
     case EK_AGGORD:
 
-      if (ePreExp == PE_GKY)
+      if (ePreExp == PE_GKY) {
         break;
+      }
+
 
       // make the column name
       vMakeColumnNmStruct(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
@@ -4177,25 +4204,26 @@ void CodeSynth::vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, e
 
     case EK_AGGGBY:
 
-      if (ePreExp == PE_GKY)
+      if (ePreExp == PE_GKY) {
         break;
+      }
 
       // make the column name
       vMakeColumnNm(m_pStreamDefOut, sColNm, m_eStencilTo, i_Col);
       pColumn = m_pStreamDefOut->pGetColumn(i_Col);
       if (ePreExp == PE_MIN || ePreExp == PE_MAX) {
         if (pColumn->eColumnType() == CT_VARCHAR)
-          sPush.vSprint("_COPYSTR_IFTRUE(aCombinedT->m_aiPayload[%lld])\n"_Stz, i_Col);
+          sPush.vSprint("_COPYSTR_IFTRUE_PL(&aCombinedT->m_aiPayload[%lld])\n"_Stz, i_ColPL);
         else
-          sPush.vSprint("_ASSIGN_IFTRUE(aCombinedT->m_aiPayload[%lld])\n"_Stz, i_Col);
+          sPush.vSprint("_ASSIGN_IFTRUE(aCombinedT->m_aiPayload[%lld])\n"_Stz, i_ColPL);
       }
       else
-        sPush.vSprint("_ASSIGN(aCombinedT->m_aiPayload[%lld])\n"_Stz, i_Col);
+        sPush.vSprint("_ASSIGN(aCombinedT->m_aiPayload[%lld])\n"_Stz, i_ColPL);
 
       pExprStack->vPushStz(sPush);
 
       if (pPostStack->nValues() > 1) {
-        sPush.vSprint("_ASSIGN(aCombinedT->m_aiPayload[%lld])\n"_Stz, i_Col);
+        sPush.vSprint("_ASSIGN(aCombinedT->m_aiPayload[%lld])\n"_Stz, i_ColPL);
         pPostStack->vPushStz(sPush);
       }
       else

@@ -96,6 +96,28 @@
     }                                                                       \
   }
 
+#define _COPYSTR_IFTRUE_PL(szAreaTo)                                        \
+  {                                                                         \
+    iArg1 = *(--paW);                                                       \
+    iArg2 = *(--paW);                                                       \
+    if (iArg1 && iArg1 != C_DATUM_NULL)    {                                \
+        nSrcSize = strlen((char*)iArg2) + 1 < 8 ? strlen((char*)iArg2) + 1 : 8 ; \
+        szDstStz = (char*)szAreaTo;                                         \
+        strncpy(szDstStz, (char*)iArg2, nSrcSize);                          \
+    }                                                                       \
+  }
+
+#define _COPYSTR_PL(szAreaTo)                                               \
+  {                                                                         \
+    iArg1 = *(--paW);                                                       \
+    if (iArg1 != C_DATUM_NULL)    {                                         \
+        nSrcSize = strlen((char*)iArg1) + 1 < 8 ? strlen((char*)iArg1) + 1 : 8 ; \
+        szDstStz = (char*)szAreaTo;                                         \
+        strncpy(szDstStz, (char*)iArg1, nSrcSize);                          \
+    }                                                                       \
+  }
+
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // BETWEEN
 #define _BET_BCDBCD(eErrorCode)                                            \
@@ -481,7 +503,7 @@
   {                                                                         \
     iArg1 = *(--paW);                                                       \
     if (iArg1 == C_DATUM_NULL)                                              \
-      szAreaTo = iArg1;                                                     \
+      szAreaTo = (char*)iArg1;                                              \
     else {                                                                  \
         nSrcSize = strlen((char*)iArg1) + 1;                                \
         szDstStz = szAreaTo;                                                \

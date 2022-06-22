@@ -158,12 +158,10 @@ rows:
 
 // Source file: ../queries/aggs/count/rcount18.sql
 // Result file: ../queries/aggs/count/results/count18.res
-//TODO: TO FIX
-/*
 select count(colf9) + avg(cold9) from table9 where colf9 is not null and cold9 is not null;
 rows:
-  (477.31485042735045)
-*/
+  (496.636)
+  //(477.31485042735045)
 
 // Source file: ../queries/aggs/count/rcount14.sql
 // Result file: ../queries/aggs/count/results/count14.res
@@ -219,12 +217,9 @@ rows:
 
 // Source file: ../queries/aggs/count/rcount19.sql
 // Result file: ../queries/aggs/count/results/count19.res
-// TODO: TO FIX
-/*
 select count(cold9) - min(colf9) from table9 where ucolvc < 'indigo';
 rows:
   (189)
-*/
 
 // Source file: ../queries/aggs/count/rcount22.sql
 // Result file: ../queries/aggs/count/results/count22.res

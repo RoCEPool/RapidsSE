@@ -79,8 +79,8 @@ INCLUDE 'functions-extract.test';
 //INCLUDE 'functions-round.test';
 //INCLUDE 'functions-rtrim.test';
 
-LOG 'functions-substr.test ...';
-INCLUDE 'functions-substr.test';
+//LOG 'functions-substr.test ...';
+//INCLUDE 'functions-substr.test';
 
 //INCLUDE 'functions-trim.test';
 //INCLUDE 'functions-upper.test';

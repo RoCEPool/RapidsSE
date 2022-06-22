@@ -17,14 +17,14 @@ ordered rows:
 // Source file: ../queries/functions/substr/rnsubstr2.sql
 // Result file: ../queries/functions/substr/results/nsubstr2.res
 select colb1, substring(colb1,from 2 for 2) from table1 where pcol1 < 1;
-failure: 'Syntax error near 'from''
-
+//failure: 'Syntax error near 'from''
+failure contains: 'EC_SYNTAX_ERROR'
 
 // Source file: ../queries/functions/substr/rnsubstr1.sql
 // Result file: ../queries/functions/substr/results/nsubstr1.res
 select substring(cold1,1,1) from table1 where pcol1 < 1;
-failure: 'Type mismatch in SUBSTRING'
-
+//failure: 'Type mismatch in SUBSTRING'
+failure contains: 'EC_SEMANTIC_ERROR'
 
 // Source file: ../queries/functions/substr/rsubstr1.sql
 // Result file: ../queries/functions/substr/results/substr1.res
