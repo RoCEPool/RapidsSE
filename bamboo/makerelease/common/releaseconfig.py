@@ -6,6 +6,7 @@ from collections import OrderedDict
 
 from common.errors import ConfigurationError
 import common.ec2 as ec2
+from clusterconfig import ClusterConfig
 
 
 # This is an extension used in ConfigParser to allow config files
@@ -33,6 +34,7 @@ class ReleaseConfig:
     C_TEST_NAME = "TestName"
     C_IMAGE_ID = "ImageId"
     C_CLOUD_INIT = "CloudInit"
+    C_CLUSTER_CONFIG = "ClusterConfig"
     C_TERMINATE = "Terminate"
     C_TERMINATE_DEFAULT_VAL = True
 
@@ -58,7 +60,8 @@ class ReleaseConfig:
         test_instance = self.get_test_instance()
         test_name_list = self.get_test_names()
         test_image_list = self.get_test_images()
-        test_cloudinit_list = self.get_test_cloudinits()
+        test_cloudinit_list = self.get_test_cloudinits_paths()
+        test_cluster_config_list = self.get_test_cluster_configs()
 
         if build_instance is None or len(build_instance) == 0:
             msg = f"Config file field {self.C_INSTANCE_TYPE} in the [{self.C_BUILD_SECTION}] section " \
@@ -123,6 +126,11 @@ class ReleaseConfig:
                   f"must not be empty in the file: {path}"
             raise ConfigurationError(msg)
 
+        if test_cluster_config_list is None or len(test_cluster_config_list) == 0:
+            msg = f"Config file field {self.C_CLUSTER_CONFIG} in the [{self.C_TEST_SECTION}] section " \
+                  f"must not be empty in the file: {path}"
+            raise ConfigurationError(msg)
+
         if len(test_name_list) != len(test_image_list):
             msg = f"The config file fields {self.C_TEST_NAME} and {self.C_IMAGE_ID} in the " \
                   f"[{self.C_TEST_SECTION}] section must be specified the same number of times in the file: {path}"
@@ -130,6 +138,11 @@ class ReleaseConfig:
 
         if len(test_image_list) != len(test_cloudinit_list):
             msg = f"The config file fields {self.C_IMAGE_ID} and {self.C_CLOUD_INIT} in the " \
+                  f"[{self.C_TEST_SECTION}] section must be specified the same number of times in the file: {path}"
+            raise ConfigurationError(msg)
+
+        if len(test_image_list) != len(test_cluster_config_list):
+            msg = f"The config file fields {self.C_IMAGE_ID} and {self.C_CLUSTER_CONFIG} in the " \
                   f"[{self.C_TEST_SECTION}] section must be specified the same number of times in the file: {path}"
             raise ConfigurationError(msg)
 
@@ -166,7 +179,7 @@ class ReleaseConfig:
         """Returns the name of the EC2 instance to be used for testing SE"""
         return self.parser.get(self.C_TEST_SECTION, self.C_INSTANCE_TYPE)
 
-    def get_test_names(self) -> list:
+    def get_test_names(self) -> [string]:
         """Returns a list of the names of the test configurations to be used for testing SE"""
         # Iterate the names and check if they have any double quotes
         names = self.parser.getlist(self.C_TEST_SECTION, self.C_TEST_NAME)
@@ -181,7 +194,7 @@ class ReleaseConfig:
 
         return names
 
-    def get_test_images(self) -> list:
+    def get_test_images(self) -> [string]:
         """Returns a list of the name of the EC2 images to be used for testing SE"""
         # Iterate the images and check if they have any double quotes
         images = self.parser.getlist(self.C_TEST_SECTION, self.C_IMAGE_ID)
@@ -196,7 +209,7 @@ class ReleaseConfig:
 
         return images
 
-    def get_test_cloudinits(self) -> list:
+    def get_test_cloudinits_paths(self) -> [pathlib.Path]:
         """Returns a list of the name of the cloudinit scripts to be used for testing SE"""
         # Iterate the cloudinit scripts and check if they have any double quotes
         cloudinits = self.parser.getlist(self.C_TEST_SECTION, self.C_CLOUD_INIT)
@@ -210,6 +223,30 @@ class ReleaseConfig:
             cloudinits[i] = self.__resolve_path(s)
 
         return cloudinits
+
+    def get_test_cluster_configs(self) -> [ClusterConfig]:
+        """Returns a list of ClusterConfig objects which have extracted out
+           the details of each cluster.config file"""
+        config_paths: [pathlib.Path] = self.get_test_cluster_config_paths()
+
+        # Create a list of ClusterConfig objects
+        cluster_configs: [ClusterConfig] = list(map(ClusterConfig, config_paths))
+        return cluster_configs
+
+    def get_test_cluster_config_paths(self) -> [pathlib.Path]:
+        """Returns a list of the name of the cluster.config files to be used for testing SE"""
+        # Iterate the cluster config files and check if they have any double quotes
+        cluster_config_paths = self.parser.getlist(self.C_TEST_SECTION, self.C_CLUSTER_CONFIG)
+
+        for i in range(len(cluster_config_paths)):
+            s = cluster_config_paths[i]
+            if s.startswith('"') and s.endswith('"'):
+                s = s[1:-1]
+            elif s.startswith("'") and s.endswith("'"):
+                s = s[1:-1]
+            cluster_config_paths[i] = self.__resolve_path(s)
+
+        return cluster_config_paths
 
     def __resolve_path(self, path_str: string) -> string:
         path_obj = pathlib.Path(path_str)

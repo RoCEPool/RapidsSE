@@ -12,6 +12,7 @@ import common.ssh as ssh
 import common.errors as errors
 from common.releaseconfig import ReleaseConfig
 from releasebuilder.results import TestResult
+from common.clusterconfig import ClusterConfig
 
 LOG = logging.getLogger(__name__)
 
@@ -23,6 +24,7 @@ C_INSTANCE_START_TIMEOUT = 600.0
 # and be ready to use?
 C_EC2_BOOT_TIMEOUT_SEC = 300
 C_SE_TEST_TIMEOUT_SEC = 1200
+C_SE_INSTALL_TIMEOUT_SEC = 120
 C_TEST_MONITORING_SLEEP_IVL = 10
 
 
@@ -47,17 +49,23 @@ class TestRunner:
         instance_type = self.config.get_build_instance()
         instance_params = list(zip(self.config.get_test_names(),
                                    self.config.get_test_images(),
-                                   self.config.get_test_cloudinits()))
+                                   self.config.get_test_cloudinits_paths(),
+                                   self.config.get_test_cluster_config_paths(),
+                                   self.config.get_test_cluster_configs()))
 
         for param in instance_params:
-            test_name = param[0]
-            image_id = param[1]
-            cloud_init_path = param[2]
+            test_name: string = param[0]
+            image_id: string = param[1]
+            cloud_init_path: pathlib.Path = param[2]
+            cluster_config_path: pathlib.Path = param[3]
+            cluster_config: ClusterConfig = param[4]
 
             instance_runner = InstanceRunner(test_name,
                                              instance_type,
                                              image_id,
                                              pathlib.Path(cloud_init_path),
+                                             cluster_config_path,
+                                             cluster_config,
                                              self.artifact_path,
                                              self.repo_path,
                                              self.result_list,
@@ -121,6 +129,8 @@ class InstanceRunner:
                  instance_type: string,
                  image_id: string,
                  cloudinit_path: pathlib.Path,
+                 cluster_config_path: pathlib.Path,
+                 cluster_config: ClusterConfig,
                  artifact_path: pathlib.Path,
                  repo_path: pathlib.Path,
                  result_list: [TestResult],
@@ -130,6 +140,8 @@ class InstanceRunner:
         self.instance_type = instance_type
         self.image_id = image_id
         self.cloudinit_path = cloudinit_path
+        self.local_cluster_config_path = cluster_config_path
+        self.cluster_config = cluster_config
         self.artifact_path = artifact_path
         self.repo_path = repo_path
         self.local_installer_path = local_installer_path
@@ -143,6 +155,7 @@ class InstanceRunner:
         self.remote_home_dir: pathlib.Path = None
         self.remote_repo_dir: pathlib.Path = None
         self.remote_installer_path: pathlib.Path = None
+        self.remote_cluster_config_path: pathlib.Path = None
 
     def run(self):
         self.test_result.set_test_started()
@@ -157,7 +170,11 @@ class InstanceRunner:
             # Copy across the installer
             self.__copy_installer_to_instance()
 
-            # TODO: Run the installer using a config file in the repository
+            # Copy across the cluster config file
+            self.__copy_cluster_config_to_instance()
+
+            # Run the installer using a config file in the repository
+            self.__install_se()
 
             # TODO: Start SE on the remote node
 
@@ -284,6 +301,33 @@ class InstanceRunner:
         dest = f"{self.ip_addr}:{self.remote_installer_path}"
 
         ssh.run_scp(src, dest)
+
+    def __copy_cluster_config_to_instance(self) -> None:
+        """Copies the cluster config file to the remote instance. Sets remote_cluster_config_path.
+           Assumes we are only running SE nodes on one host, otherwise we would need to edit the
+           cluster config file and change the hostnames to match the machines that were started."""
+
+        self.remote_cluster_config_path = self.remote_home_dir / self.local_cluster_config_path.name
+
+        src = str(self.local_cluster_config_path)
+        dest = f"{self.ip_addr}:{self.remote_cluster_config_path}"
+
+        ssh.run_scp(src, dest)
+
+    def __install_se(self) -> None:
+        """Installs SE using the installer on the remote node"""
+
+        command = f"{str(self.remote_installer_path)} --quiet -- --script " \
+                  f"--config {str(self.remote_cluster_config_path)}"
+
+        try:
+            ssh.run_ssh(self.ip_addr, command, C_SE_INSTALL_TIMEOUT_SEC)
+
+        except subprocess.TimeoutExpired as e:
+            msg = f"Test {self.test_name}: Installation of SE on {self.ip_addr} timed out after {e.timeout} seconds." \
+                  f"\nStdout Output:\n{e.stdout}" \
+                  f"\nStderr Output:\n{e.stderr}"
+            raise errors.SshError(msg, e.stdout, e.stderr) from e
 
     def __terminate_instance(self) -> None:
         """Terminates any previously started EC2 instance"""
