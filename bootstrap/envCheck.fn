@@ -39,6 +39,10 @@ function validateInstallationEnvironment() {
   # Check if all hosts are reachable by SSH.
   validateHostsReachableBySsh
 
+  # Check that the installer is not inside a target installation directory
+  # as that directory will be wiped, including the installer.
+  validateInstallerNotInInstallDir
+
   # Check if SE is running in any of these host:directory combinations.
   validateSENotRunning
 
@@ -118,6 +122,10 @@ function validateNodeAdditionEnvironment() {
 
   # Check if all hosts are reachable by SSH.
   validateHostsReachableBySsh "${nodeNames[@]}"
+
+  # Check that the installer is not inside a target installation directory
+  # as that directory will be wiped, including the installer.
+  validateInstallerNotInInstallDir "${nodeNames[@]}"
 
   # Check if SE is running in any of these host:directory combinations.
   validateSENotRunning "${nodeNames[@]}"
@@ -402,6 +410,106 @@ function validateHostsReachableBySsh() {
   done
 
   debugPrint "Successfully validated that all nodes can be reached by SSH."
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Check that the installer is not inside a target installation directory
+## as that directory will be wiped, including the installer.
+## Params:
+##  $@ - (optional) the list of node names to check. If not set then check all.
+
+function validateInstallerNotInInstallDir() {
+
+  if [ -z "${INSTALL_FILE:-}" ]; then
+    # No install file, no problem!
+    return
+  fi
+
+  if ! [ -f "${INSTALL_FILE}" ]; then
+    # File doesn't exist. This shouldn't happen.
+    return
+  fi
+
+  local -a nodeNames;
+
+    if [ "$#" -eq 0 ]; then
+      nodeNames=( "${NODE_LIST[@]}" )
+    else
+      nodeNames=( "$@" )
+    fi
+
+  local nodeName
+  local host
+  local path
+
+  for nodeName in "${nodeNames[@]}"
+  do
+    host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+    path="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
+
+    # For each node...
+    # We first check if the path of the installer is underneath any of the
+    # installation paths.
+    # If it is then we need to check if the $host represents the current machine.
+    # This is non-trivial because a machine can have multiple addresses that resolve
+    # to it that are distinct from the hostname of the machine. e.g. multiple IP
+    # addresses, DNS A records, DNS C records, fully-qualified names vs non-qualified
+    # names, etc. The easiest thing to do is to create a temporary file locally and
+    # then SSH to each node and see if that file exists. If it does then we are on
+    # that node.
+
+    # Is the path of the installer underneath that of the installation path.
+    # Canonicalise both paths so that symlinks don't give a false result.
+
+    case "$(realpath -e "${INSTALL_FILE}")" in
+
+      $(realpath -e "${path}")*)
+        # Installer IS under the installation path.
+        # We now need to check if $host represents the current machine.
+        if isHostTheCurrentMachine "${host}"; then
+          errorExit "The installer cannot be run when it exists underneath one of the installation paths: ${nodeName} ; ${host}:${path}"
+        fi
+        ;;
+
+      *)
+        # Installer is not under the installation path
+        continue
+        ;;
+    esac
+  done
+
+  # We're all good.
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Returns a zero exit code if the host given by $1 is the same as the current
+## machine, otherwise a non-zero exit code is returned.
+## Params:
+##  $1 - A hostname or IP address to check.
+
+function isHostTheCurrentMachine() {
+  local host="$1"
+
+  # Create a temporary file with a unique and random name
+  local tempfile
+  tempfile="$(mktemp /tmp/tmp.rapidsse.XXXXXXXX)"
+
+  local retVal=1
+
+  # SSH to $host and check for the existence of the file
+  sshArgs=("-o" "PasswordAuthentication=no" "-o" "ConnectTimeout=10" "${host}" "ls" "${tempfile}")
+
+  if ssh "${sshArgs[@]}" 2>&1; then
+    # $host does indeed represent the current machine
+    retVal=0
+  fi
+
+  # Cleanup the temporary file
+  rm -f "${tempfile}"
+
+  return "${retVal}"
 }
 
 
@@ -1811,3 +1919,5 @@ function checkFirewallUdp() {
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+
+}
