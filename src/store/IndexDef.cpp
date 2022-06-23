@@ -622,7 +622,7 @@ i8 IndexDef::iGetColumn(i8 iColSet)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
 
   for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
-    if (m_iaColSet[i_Col] == iColSet);
+    if (m_iaColSet[i_Col] == iColSet)
       return i_Col;
   }
   return C_UNKNOWN;
