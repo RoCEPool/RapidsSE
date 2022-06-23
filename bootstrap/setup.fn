@@ -921,7 +921,13 @@ function askHeartbeat() {
     fi
 
     if [[ ${line} -lt 1 || ${line} -gt 65535 ]]; then
-      echo "Invalid input: port number out of range [1024, 65535]."
+      if [[ ${EUID} -ne 0 ]]; then
+        # Regular user
+        echo "Invalid input: port number out of range [1024, 65535]."
+      else
+        # Superuser
+        echo "Invalid input: port number out of range [1, 65535]."
+      fi
       continue
     fi
 
