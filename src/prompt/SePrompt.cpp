@@ -242,18 +242,20 @@ void SePrompt::vPromptLoop(void)
     vMutexLock(this);
     m_pCurrentDeputy->vDeputiseJob(this);
     vMutexWaitAndUnlock(this);
-    
-    while (! m_pCurrentDeputy->bAvailable())
-      AM::vNapMsec(10,CN_SEPROMPT);
 
-    
-    eEC eError = m_pCurrentDeputy->eError();
-    m_pCurrentDeputy->vError(EC_NONE);
+    if ( ! m_pInpTagSet->bHasName(C_TAG_NOWAIT) ) {
+      while (! m_pCurrentDeputy->bAvailable())
+        AM::vNapMsec(10,CN_SEPROMPT);
 
-    if (EC_NONE != eError) {
-      vTrace("\nerror: %s\n\n"_Stz,aEC[eError]);
-      if (AM::bDeveloper())
-        vDumpInpTknVec(true);
+
+      eEC eError = m_pCurrentDeputy->eError();
+      m_pCurrentDeputy->vError(EC_NONE);
+
+      if (EC_NONE != eError) {
+        vTrace("\nerror: %s\n\n"_Stz,aEC[eError]);
+        if (AM::bDeveloper())
+          vDumpInpTknVec(true);
+      }
     }
     
     m_pCurrentDeputy = nullptr;
@@ -466,8 +468,14 @@ SeDeputy* SePrompt::pFindDeputy(void)
     return pFoundDeputy;
   
   pFoundDeputy = pDeputyCreate();
-  if (pFoundDeputy)
+
+  if (pFoundDeputy) {
+    pFoundDeputy->pInput()->vForkReset();
+    pFoundDeputy->pInput()->vUseStdin();
+    pFoundDeputy->pInput()->vFormCppTokens();
+    pFoundDeputy->pInput()->vUseBegin();
     return pFoundDeputy;
+  }
 
   return nullptr;
 }
@@ -607,13 +615,13 @@ void SePrompt::vNapTillBgJobsCompleted(void)
     while (! pDeputy->bAvailable()) {
       if (bNotice) {
         bNotice = false;
-        vTrace("Waiting on /bg jobs\n"_Stz);
+        vTrace("Waiting on background jobs (/nowait jobs)\n"_Stz);
       }
       AM::vNapMsec(10,CN_SEPROMPT);
     }
   }
   
-  vTrace("No /bg jobs\n"_Stz);
+  vTrace("No /nowait jobs\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

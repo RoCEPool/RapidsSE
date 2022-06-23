@@ -57,8 +57,7 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
                         JobId tParentId, JobId tOriginId, JobId tDistId,
                         Job*  pParentJob,
                         bool  bUpdateParent,
-                        bool& bIsPipeline,
-                        bool& bIsBackground)
+                        bool& bIsPipeline)
 {
   _static_
 
@@ -128,6 +127,7 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
     THROW("Api::eForkJobOld: both C_TAG_NOWAIT and C_TAG_WAIT"_Stz);
   }
 
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the child job
 
@@ -150,8 +150,6 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
 
   TagSet* pJobTagSet = pChildJob->pJobTags();
   pJobTagSet->vCopy(pCmdTagSet);
-
-  bIsBackground = pChildJob->bHasTag(C_TAG_BG);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // setup the child job

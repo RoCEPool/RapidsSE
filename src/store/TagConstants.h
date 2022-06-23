@@ -4,8 +4,7 @@
 #pragma once
 
 static Stz* C_TAGSET_NAME      = "<aTagSetNm>"_Stz;
-  
-static Stz* C_TAG_BG           = "<bg>"_Stz;
+
 static Stz* C_TAG_BYPROMPT     = "<byPrompt>"_Stz;
 static Stz* C_TAG_CMD          = "<cmd>"_Stz;
 static Stz* C_TAG_CMDFILE      = "<cmdFile>"_Stz;

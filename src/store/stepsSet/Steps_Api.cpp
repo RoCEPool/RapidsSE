@@ -96,14 +96,12 @@ void Step::vApiForkChild(void)
 
   JobId tChildJobId;
   bool bIsPipeline;
-  bool bIsBackground;
   eEC eError = Api::eForkJobChild(tChildJobId,
                                    pCmdTknVec,pCmdTagSet,
                                    tParentId,tOriginId,tDistId,
                                    pOuterJob,
                                    false,
-                                   bIsPipeline,
-                                   bIsBackground
+                                   bIsPipeline
   );
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -174,14 +172,12 @@ void Step::vApiForkDemon(void)
 
   JobId tChildJobId;
   bool bIsPipeline;
-  bool bIsBackground;
   eEC eError = Api::eForkJobChild(tChildJobId,
                                   pCmdTknVec,pCmdTagSet,
                                   tParentId,tOriginId,tDistId,
                                   pOuterJob,
                                   false,
-                                  bIsPipeline,
-                                  bIsBackground
+                                  bIsPipeline
   );
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

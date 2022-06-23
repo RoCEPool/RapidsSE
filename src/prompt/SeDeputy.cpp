@@ -128,7 +128,8 @@ void SeDeputy::vDeputyLoop(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
 
   bool bIsPipeline = false;
-  bool bIsBackground = false;
+  bool bPromptWaitCompletion = true;
+  bool bPromptSignalled;
 
   m_pThread->vThisTLSThread();
   RASSERT(AM::THREAD::pThisThread());
@@ -162,8 +163,19 @@ void SeDeputy::vDeputyLoop(void)
 
 #endif
 
-      pInpTagSet->vReplace(C_TAG_WAIT, 1);
-      pInpTagSet->vReplace(C_TAG_SIGNALPARENT, 1);
+      // prompt not yet signalled
+      bPromptSignalled = false;
+
+     if ( pInpTagSet->bHasName(C_TAG_NOWAIT)) {
+       bPromptWaitCompletion = false;
+       pInpTagSet->vDelete(C_TAG_WAIT);
+       pInpTagSet->vDelete(C_TAG_SIGNALPARENT);
+     }
+     else {
+       bPromptWaitCompletion = true;
+       pInpTagSet->vReplace(C_TAG_WAIT, 1);
+       pInpTagSet->vReplace(C_TAG_SIGNALPARENT, 1);
+     }
 
       pInpTagSet->vReplace(C_TAG_PATH, m_pRootJob->szFolderPath());
       pInpTagSet->vReplace(C_TAG_LASTJOBID, m_pRootJob->tLastJobId().iAsI8());
@@ -185,14 +197,20 @@ void SeDeputy::vDeputyLoop(void)
                                     tParentId, tOriginId, tDistId,
                                     m_pRootJob,
                                     true, /* update parent */
-                                    bIsPipeline,
-                                    bIsBackground
+                                    bIsPipeline
       );
 
       if (EC_NONE != m_eError) {
         m_pSePrompt->vMutexLock(this);
         m_pSePrompt->vMutexSignalAndUnlock(this);
         continue;
+      }
+      vTrace("RETURNED##############\n"_Stz);
+
+      if ( ! bPromptWaitCompletion ) {
+        m_pSePrompt->vMutexLock(this);
+        m_pSePrompt->vMutexSignalAndUnlock(this);
+        bPromptSignalled = true;
       }
 
       // process the output bufferQueue
@@ -204,14 +222,15 @@ void SeDeputy::vDeputyLoop(void)
       m_pRootJob->vResetOutput();
       m_pRootJob->vCleanupOutput();
 
-      if (!bIsBackground) {
+      if (bPromptWaitCompletion) {
         m_pSePrompt->vMutexLock(this);
         m_pSePrompt->vMutexSignalAndUnlock(this);
+        bPromptSignalled = true;
       }
 
-      // reset the C_TAG_TIME
+      // reset the C_TAG_TIME and C_TAG_NOWAIT
       pInpTagSet->vDelete(C_TAG_TIME);
-
+      pInpTagSet->vDelete(C_TAG_NOWAIT);
 
       m_bTerminated = true;
 
@@ -219,7 +238,7 @@ void SeDeputy::vDeputyLoop(void)
 
     catch (LowMemory xLowMemory) {
       m_eError = EC_LOW_MEMORY;
-      if (!bIsBackground) {
+      if ( ! bPromptSignalled) {
         m_pSePrompt->vMutexLock(this);
         m_pSePrompt->vMutexSignalAndUnlock(this);
       }
@@ -449,3 +468,4 @@ void SeDeputy::vToDo(Stz* szToDo)
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
+
