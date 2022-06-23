@@ -246,18 +246,17 @@ void SePrompt::vPromptLoop(void)
     if ( ! m_pInpTagSet->bHasName(C_TAG_NOWAIT) ) {
       while (! m_pCurrentDeputy->bAvailable())
         AM::vNapMsec(10,CN_SEPROMPT);
-
-
-      eEC eError = m_pCurrentDeputy->eError();
-      m_pCurrentDeputy->vError(EC_NONE);
-
-      if (EC_NONE != eError) {
-        vTrace("\nerror: %s\n\n"_Stz,aEC[eError]);
-        if (AM::bDeveloper())
-          vDumpInpTknVec(true);
-      }
     }
-    
+
+    eEC eError = m_pCurrentDeputy->eError();
+    m_pCurrentDeputy->vError(EC_NONE);
+
+    if (EC_NONE != eError) {
+      vTrace("\nerror: %s\n\n"_Stz,aEC[eError]);
+      if (AM::bDeveloper())
+        vDumpInpTknVec(true);
+    }
+
     m_pCurrentDeputy = nullptr;
     
     //vLogFreeSpace();

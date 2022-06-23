@@ -205,7 +205,6 @@ void SeDeputy::vDeputyLoop(void)
         m_pSePrompt->vMutexSignalAndUnlock(this);
         continue;
       }
-      vTrace("RETURNED##############\n"_Stz);
 
       if ( ! bPromptWaitCompletion ) {
         m_pSePrompt->vMutexLock(this);
