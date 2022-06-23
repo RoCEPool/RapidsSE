@@ -501,7 +501,7 @@ function isHostTheCurrentMachine() {
   # SSH to $host and check for the existence of the file
   sshArgs=("-o" "PasswordAuthentication=no" "-o" "ConnectTimeout=10" "${host}" "ls" "${tempfile}")
 
-  if ssh "${sshArgs[@]}" 2>&1; then
+  if ssh "${sshArgs[@]}" &>/dev/null; then
     # $host does indeed represent the current machine
     retVal=0
   fi
