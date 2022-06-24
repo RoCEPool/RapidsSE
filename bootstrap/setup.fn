@@ -985,6 +985,17 @@ function askInstallDir() {
       continue
     fi
 
+    # Paths cannot contain quotes - it's just too difficult for all involved
+    if [[ "${line}" =~ [\'\"] ]]; then
+      echo "Invalid input: Path cannot contain single or double quotes."
+      continue
+    fi
+
+    # Warn against whitespace in directory path
+    if [[ "${line}" = *[[:space:]]* ]]; then
+      echo -e "\nWARNING: Path should not contain whitespace. Please consider a path without whitespace."
+    fi
+
     break
   done
 

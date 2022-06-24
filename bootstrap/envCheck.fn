@@ -462,9 +462,9 @@ function validateInstallerNotInInstallDir() {
     # Is the path of the installer underneath that of the installation path.
     # Canonicalise both paths so that symlinks don't give a false result.
 
-    case "$(realpath -e "${INSTALL_FILE}")" in
+    case "$(realpath -m "${INSTALL_FILE}")" in
 
-      $(realpath -e "${path}")*)
+      $(realpath -m "${path}")*)
         # Installer IS under the installation path.
         # We now need to check if $host represents the current machine.
         if isHostTheCurrentMachine "${host}"; then

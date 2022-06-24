@@ -291,7 +291,7 @@ function startRemoteNode() {
   host="$(nodeCfgGetValue "${row}" "${NODE_CFG_HOST_KEY}")"
   dir="$(nodeCfgGetValue "${row}" "${NODE_CFG_DIR_KEY}")"
 
-  remoteCmd="cd ${dir} && ./${START_SCRIPT} --node"
+  remoteCmd="cd \"${dir}\" && ./${START_SCRIPT} --node"
 
   if [ ${DEBUG} -eq 1 ]; then
     remoteCmd="${remoteCmd} --debug"
@@ -538,7 +538,7 @@ function remoteClusterXConnect() {
   host="$(nodeCfgGetValue "${row}" "${NODE_CFG_HOST_KEY}")"
   dir="$(nodeCfgGetValue "${row}" "${NODE_CFG_DIR_KEY}")"
 
-  remoteCmd="cd ${dir} && ./${START_SCRIPT} --node --clusterinit"
+  remoteCmd="cd \"${dir}\" && ./${START_SCRIPT} --node --clusterinit"
 
   if [ ${DEBUG} -eq 1 ]; then
     remoteCmd="${remoteCmd} --debug"
@@ -1211,7 +1211,7 @@ function stopRemoteNode() {
   host="$(nodeCfgGetValue "${row}" "${NODE_CFG_HOST_KEY}")"
   dir="$(nodeCfgGetValue "${row}" "${NODE_CFG_DIR_KEY}")"
 
-  remoteCmd="cd ${dir} && ./${STOP_SCRIPT} --node"
+  remoteCmd="cd \"${dir}\" && ./${STOP_SCRIPT} --node"
 
   if [ ${DEBUG} -eq 1 ]; then
     remoteCmd="${remoteCmd} --debug"
