@@ -689,6 +689,19 @@ JobId Job::tJobId(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add a label to the object tracker                                          */
+/*----------------------------------------------------------------------------*/
+void Job::vLabelObjectTracker(Stz *szLabel)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  if(bObjectTracker())
+  {
+    m_pObjectTracker->vAddLabel(szLabel);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the job list                                                           */
 /*----------------------------------------------------------------------------*/
 eJL Job::eJobList(void)

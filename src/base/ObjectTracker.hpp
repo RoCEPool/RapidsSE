@@ -10,6 +10,8 @@ namespace BASE
 
   public:
 
+    s256 m_sLabel;
+
     struct {
       u8 m_uAllocateCount;      // number of times this class was allocated
       u8 m_uFreeCount;          // number of times this class was freed
@@ -26,6 +28,7 @@ namespace BASE
 
     ~ObjectTracker(void) noexcept(false);
 
+    void vAddLabel(Stz* szLabel);
     void vDump(Stz* szName);
     void vReset(void);
     void vTrackAllocClass(eCN eClassNo);

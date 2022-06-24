@@ -146,6 +146,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     TagSet* pJobTags(void);
     void vJobTrace(Stz* szAtCmd, Stz* szAtRoutine, Stz* szAtPoint, Stz* szNote);
 
+    void  vLabelObjectTracker(Stz* szLabel);
     JobId tLastJobId(void);
     void  vLastJobId(JobId tLastJobId);
 
