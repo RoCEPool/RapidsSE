@@ -549,7 +549,7 @@ function validateSENotRunning() {
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Validate that the port specified for each node is not currently in use.
+## Validate that the TCP port specified for each node is not currently in use.
 ## Params:
 ##  $@ - (optional) the list of node names to check. If not set then check all.
 
@@ -1777,7 +1777,7 @@ function checkFirewallTcp() {
 
 function checkFirewallUdp() {
 
-  [ "$#" -eq 3 ] || errorExit "Invalid number of arguments to function testFirewallTcp()."
+  [ "$#" -eq 3 ] || errorExit "Invalid number of arguments to function testFirewallUdp()."
 
   local client="$1"
   local server="$2"
@@ -1807,7 +1807,7 @@ function checkFirewallUdp() {
 
   if [ "${responseServerSocketInUse:-x}" != "x" ]; then
     printError "Unable to determine if UDP port ${port} is opened in the firewall of host ${server} because the socket is currently being used by another process."
-    exit 2
+    return 2
   fi
 
   debugPrint "The UDP port ${port} does not currently appear to be in use on host ${server}:"
@@ -1835,7 +1835,7 @@ function checkFirewallUdp() {
   local cmdServerPid
   cmdServerTask=( "ssh"
                   "-q" "${server}"
-                  "nc" "-ul" "${port}" ">${responseServerMakeTemp}" "2>/dev/null" "&" "echo" '$!' )
+                  "nc" "-kul" "-w" "0" "${port}" ">${responseServerMakeTemp}" "2>/dev/null" "&" "echo" '$!' )
 
 
   debugPrint "About to execute the following command to start a UDP netcat server on host ${server}:${port} :"
@@ -1914,6 +1914,7 @@ function checkFirewallUdp() {
   fi
 
   # Return the result
+  debugPrint "Returning exit code ${exitCode}"
   return "${exitCode}"
 }
 
