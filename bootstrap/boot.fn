@@ -1284,7 +1284,7 @@ function stopCurrentNode() {
 
     exitSleepTime="0.2"   # How long to sleep (in seconds) between checking if the pid has exited.
     exitGiveUpTime="5"    # After this time (in seconds) just kill the pid.
-    exitIterations="$(bc <<< "${exitGiveUpTime}" / "${exitSleepTime}")"
+    exitIterations="$(bc <<< "${exitGiveUpTime} / ${exitSleepTime}")"
 
     while ps -p "${pid}" &> /dev/null
     do
