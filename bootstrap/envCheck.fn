@@ -462,9 +462,9 @@ function validateInstallerNotInInstallDir() {
     # Is the path of the installer underneath that of the installation path.
     # Canonicalise both paths so that symlinks don't give a false result.
 
-    case "$(realpath -e "${INSTALL_FILE}")" in
+    case "$(realpath -m "${INSTALL_FILE}")" in
 
-      $(realpath -e "${path}")*)
+      $(realpath -m "${path}")*)
         # Installer IS under the installation path.
         # We now need to check if $host represents the current machine.
         if isHostTheCurrentMachine "${host}"; then
@@ -549,7 +549,7 @@ function validateSENotRunning() {
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Validate that the port specified for each node is not currently in use.
+## Validate that the TCP port specified for each node is not currently in use.
 ## Params:
 ##  $@ - (optional) the list of node names to check. If not set then check all.
 
@@ -1566,7 +1566,7 @@ function validateFirewallParallel() {
     port="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HEARTBEAT_KEY}")"
 
     # Skip any sequential hosts
-    if [ "${#sequentialServers[@]}" -eq 0 ] || isValueInArray "${server}" "${sequentialServers[@]:-}"; then
+    if [ "${#sequentialServers[@]}" -ne 0 ] && isValueInArray "${server}" "${sequentialServers[@]:-}"; then
       continue
     fi
 
@@ -1777,7 +1777,7 @@ function checkFirewallTcp() {
 
 function checkFirewallUdp() {
 
-  [ "$#" -eq 3 ] || errorExit "Invalid number of arguments to function testFirewallTcp()."
+  [ "$#" -eq 3 ] || errorExit "Invalid number of arguments to function testFirewallUdp()."
 
   local client="$1"
   local server="$2"
@@ -1807,7 +1807,7 @@ function checkFirewallUdp() {
 
   if [ "${responseServerSocketInUse:-x}" != "x" ]; then
     printError "Unable to determine if UDP port ${port} is opened in the firewall of host ${server} because the socket is currently being used by another process."
-    exit 2
+    return 2
   fi
 
   debugPrint "The UDP port ${port} does not currently appear to be in use on host ${server}:"
@@ -1914,6 +1914,7 @@ function checkFirewallUdp() {
   fi
 
   # Return the result
+  debugPrint "Returning exit code ${exitCode}"
   return "${exitCode}"
 }
 

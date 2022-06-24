@@ -874,7 +874,10 @@ function nodeCfgSetValue() {
 
   # Here be dragons
   #shellcheck disable=2140
-  eval "${NODE_CFG_PREFIX}${nodeName}"["${key}"]="${value}"
+  eval "${NODE_CFG_PREFIX}${nodeName}"["${key}"]="\"${value}\""
+
+  # We need to include escaped quotes around $value because it may contain strings
+  # and this prevents the line from becoming a syntax error.
 }
 
 
