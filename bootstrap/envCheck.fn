@@ -1566,7 +1566,7 @@ function validateFirewallParallel() {
     port="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HEARTBEAT_KEY}")"
 
     # Skip any sequential hosts
-    if [ "${#sequentialServers[@]}" -eq 0 ] || isValueInArray "${server}" "${sequentialServers[@]:-}"; then
+    if [ "${#sequentialServers[@]}" -ne 0 ] && isValueInArray "${server}" "${sequentialServers[@]:-}"; then
       continue
     fi
 
@@ -1835,7 +1835,7 @@ function checkFirewallUdp() {
   local cmdServerPid
   cmdServerTask=( "ssh"
                   "-q" "${server}"
-                  "nc" "-kul" "-w" "0" "${port}" ">${responseServerMakeTemp}" "2>/dev/null" "&" "echo" '$!' )
+                  "nc" "-ul" "${port}" ">${responseServerMakeTemp}" "2>/dev/null" "&" "echo" '$!' )
 
 
   debugPrint "About to execute the following command to start a UDP netcat server on host ${server}:${port} :"
