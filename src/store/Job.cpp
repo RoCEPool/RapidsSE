@@ -78,6 +78,7 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
   /* 08 */ m_bWasReceived = false;
   /* 09 */ m_pMarkerChain = nullptr;
   /* 10 */ m_bAllocate    = true;
+  /* 11 */ m_pObjectTracker = nullptr;
 
   m_iTscParticipant = 0;
   
@@ -185,6 +186,9 @@ Job::~Job(void) noexcept(false)
 
     if (m_pMarkerChain)
       delete m_pMarkerChain;
+
+    if(bObjectTracker())
+      delete m_pObjectTracker;
   }
   catch (...) {
     vTrace("EXCEPTION in ~JOB: %s %s %s %s %s %s\n"_Stz,
@@ -362,6 +366,18 @@ void Job::vCmd(Stz* szCmd)
 }
 
 /*----------------------------------------------------------------------------*/
+/* disable object tracker                                                     */
+/*----------------------------------------------------------------------------*/
+void Job::vDisableObjectTracker(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  if(bObjectTracker()) {
+    delete m_pObjectTracker;
+  }
+  m_pObjectTracker = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get distributed job id                                                     */
 /*----------------------------------------------------------------------------*/
 JobId Job::tDistId(void)
@@ -446,6 +462,19 @@ void Job::vDotPrint(Stz* szText)
          
          ,C_VARGS_END
          );
+}
+
+/*----------------------------------------------------------------------------*/
+/* enable object tracker                                                      */
+/*----------------------------------------------------------------------------*/
+void Job::vEnableObjectTracker(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  if(!bObjectTracker()) {
+    m_pObjectTracker = new ObjectTracker();
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -931,6 +960,27 @@ void Job::vNewMarkerChain(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* check if ObjectTracker is allocated                                        */
+/*----------------------------------------------------------------------------*/
+bool Job::bObjectTracker(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_pObjectTracker != nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* print contents of Object tracker                                           */
+/*----------------------------------------------------------------------------*/
+void Job::vObjectTrackerDump(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  if(bObjectTracker())
+  {
+    m_pObjectTracker->vDump(m_sJobNm);
+  }
+}
+/*----------------------------------------------------------------------------*/
 /* begin output processor                                                     */
 /*----------------------------------------------------------------------------*/
 void Job::vOutputBeginProc(void)
@@ -1155,6 +1205,7 @@ void Job::vPostRecv(void)
   /* 08 */ m_bWasReceived = true;
   /* 19 */ m_pMarkerChain = nullptr;
   /* 10 */ m_bAllocate    = true;
+  /* 11 */ m_pObjectTracker = nullptr;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -1326,6 +1377,18 @@ bool Job::bUpdateParent(void)
   _precondition_(_ADDRESS_,_MAGIC_);
 
   return m_bUpdateParent;
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset object tracker                                                       */
+/*----------------------------------------------------------------------------*/
+void Job::vResetObjectTracker(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  if(bObjectTracker()) {
+    m_pObjectTracker->vReset();
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1529,6 +1592,30 @@ void Job::vTaskCreate(void)
   m_pTask->vSetInxPtr("job::entryPoint"_Stz);
   
   vResponseTimerStart();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Track allocated object by this job                                         */
+/*----------------------------------------------------------------------------*/
+void Job::vTrackAllocObject(eCN eClassNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  if(bObjectTracker()) {
+    m_pObjectTracker->vTrackAllocClass(eClassNo);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Track freed object by this job                                             */
+/*----------------------------------------------------------------------------*/
+void Job::vTrackFreeObject(eCN eClassNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  if(bObjectTracker()) {
+    m_pObjectTracker->vTrackFreeClass(eClassNo);
+  }
 }
 
 /*----------------------------------------------------------------------------*/

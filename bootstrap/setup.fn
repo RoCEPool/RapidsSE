@@ -70,39 +70,43 @@ readonly RESOURCE_DIR="res"
 
 function printSetupUsageAndExit() {
   echo ""
-  echo "Usage: ./<install_file>.run [--node | --cluster]"
-  echo "                            [--interactive | --script]"
+  echo "Usage: ./<install_file>.run [--script]"
   echo "                            [--config <file>]"
-  echo "                            [--basic | --adv | --advanced]"
-  echo "                            [--debug]"
+  echo "                            [--adv | --advanced]"
+  echo "                            [--help]"
   echo "Details:"
-  echo "  --cluster       [Default] Installs RapidsSE on a cluster."
-  echo "  --node          Installs RapidsSE on the current node using a supplied"
-  echo "                  configuration file. The --config and --name options must"
-  echo "                  also be specified."
-  echo ""
-  echo "  --interactive   Uses a wizard to ask questions and prompt for answers"
-  echo "                  in order to build a cluster configuration."
   echo "  --script        Does not prompt the user for input and uses the supplied"
-  echo "                  configuration. The --config option must be specified."
+  echo "                  cluster configuration. The --config option must be specified."
   echo ""
-  echo "  --config <file> Specifies the path to an existing configuration"
+  echo "  --config <file> Specifies the path to an existing cluster configuration"
   echo "                  file that contains the cluster settings."
-  echo ""
-  echo "  --basic         [Default] Hides advanced questions during the cluster"
-  echo "                  installation wizard (if being used)."
   echo "  --adv"
   echo "  --advanced      Asks additional questions during the cluster"
   echo "                  installation wizard."
   echo ""
-  echo "  --installer     Path to the installation *.run file."
-  echo ""
-  echo "  --name          The name of this node in the cluster configuration."
-  echo "                  Valid when specified with the --node option."
-  echo ""
-  echo "  --debug         Displays more messages during execution."
-  echo ""
   echo "  --help          Displays this message."
+
+  # These are options that are supported but not advertised to the end user.
+  # They are used internally as the installation approach is recursive.
+
+#  echo "  --cluster       [Default] Installs RapidsSE on a cluster."
+#  echo "  --node          Installs RapidsSE on the current node using a supplied"
+#  echo "                  configuration file. The --config and --name options must"
+#  echo "                  also be specified."
+#  echo ""
+#  echo "  --interactive   Uses a wizard to ask questions and prompt for answers"
+#  echo "                  in order to build a cluster configuration."
+#  echo ""
+#  echo "  --basic         [Default] Hides advanced questions during the cluster"
+#  echo "                  installation wizard (if being used)."
+#  echo ""
+#  echo "  --installer     Path to the installation *.run file."
+#  echo ""
+#  echo "  --name          The name of this node in the cluster configuration."
+#  echo "                  Valid when specified with the --node option."
+#  echo ""
+#  echo "  --debug         Displays more messages during execution."
+
   exit 1
 }
 
@@ -916,7 +920,13 @@ function askHeartbeat() {
     fi
 
     if [[ ${line} -lt 1 || ${line} -gt 65535 ]]; then
-      echo "Invalid input: port number out of range [1024, 65535]."
+      if [[ ${EUID} -ne 0 ]]; then
+        # Regular user
+        echo "Invalid input: port number out of range [1024, 65535]."
+      else
+        # Superuser
+        echo "Invalid input: port number out of range [1, 65535]."
+      fi
       continue
     fi
 
@@ -972,6 +982,17 @@ function askInstallDir() {
     if [[ "${line:0:1}" != "/" ]]; then
       echo "Invalid input: Path cannot be a relative path."
       continue
+    fi
+
+    # Paths cannot contain quotes - it's just too difficult for all involved
+    if [[ "${line}" =~ [\'\"] ]]; then
+      echo "Invalid input: Path cannot contain single or double quotes."
+      continue
+    fi
+
+    # Warn against whitespace in directory path
+    if [[ "${line}" = *[[:space:]]* ]]; then
+      echo -e "\nWARNING: Path should not contain whitespace. Please consider a path without whitespace."
     fi
 
     break

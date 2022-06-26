@@ -843,7 +843,7 @@ eEC StreamDefBase::eParseColumn(TokenVec* pTknVec, i8 i_Col)
   // -- -- -- -- -- -- -- -- -- -- --
   
   for (i8 i_Search = 0; i_Search < i_Col; i_Search++) {
-    Column* pCol_search = pGetColumn(i_Search++);
+    Column* pCol_search = pGetColumn(i_Search);
     if (pCol_search->szColNm()->bSame(pCol->szColNm())) {
       eError = EC_DUPLICATE_COLUMN;
       return eError;

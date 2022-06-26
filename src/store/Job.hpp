@@ -57,6 +57,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     /* 08 */ b8      m_bWasReceived;   // was job received over a socket?
     /* 09 */ MarkerChain* m_pMarkerChain; // chain of free markers
     /* 10 */ b8      m_bAllocate;      // can job ask for memory?
+    /* 11 */ ObjectTracker*      m_pObjectTracker;// Frequency count of object types allocated/freed by this Job
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
 
@@ -103,6 +104,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     Stz* szCmd(void);
     void vCmd(Stz* szCmd);
 
+    void vDisableObjectTracker(void);
     JobId tDistId(void);
     void vDistIdGenerate(void);
     i8   iDistNodeId(void);
@@ -110,6 +112,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vDrainOutput(void);
     void vDropLock(void);
 
+    void vEnableObjectTracker(void);
     Stz* szEntryPoint(void);
     void vEntryPoint(Stz* szEntry);
   
@@ -157,6 +160,8 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     Marker* pNewMarker(eOM eOpMarker);
     void vNewMarkerChain(void);
 
+    bool bObjectTracker(void);
+    void vObjectTrackerDump(void);
     void vOutputBeginProc(void);
     void vOutputCreate(void);
     void vOutputDestroy(void);
@@ -180,6 +185,8 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
 
     void vUpdateParent(bool bUpdateParent);
     bool bUpdateParent(void);
+
+    void vResetObjectTracker(void);
     void vResetOutput(void);
     void vResetTaskForJob(void);
     Op*  p_ResponseOp(void);
@@ -196,6 +203,8 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     Task* pTask(void);
     void vTask(Task* pTask);
     void vTaskCreate(void);
+    void vTrackAllocObject(eCN eClassNo);
+    void vTrackFreeObject(eCN eClassNo);
     i8   iTscBeginning(void);
     void vTscBeginning(i8 iTsc);
     i8   iTscBegun(void);

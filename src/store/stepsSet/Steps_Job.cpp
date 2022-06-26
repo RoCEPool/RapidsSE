@@ -44,10 +44,12 @@ void Step::vAddSteps_Job(void)
   vAddStep("[job].assertStructure"_Stz,  &Step::vJobAssertStructure);
 
   vAddStep("[job].disableAllocate"_Stz,  &Step::vJobDisableAllocate);
+  vAddStep("[job].disableObjectTracker"_Stz,&Step::vJobDisableObjectTracker);
   vAddStep("[job].distId@"_Stz,          &Step::vJobDistIdFetch);
   vAddStep("[job].distIdGenerate"_Stz,   &Step::vJobDistIdGenerate);
 
   vAddStep("[job].enableAllocate"_Stz,   &Step::vJobEnableAllocate);
+  vAddStep("[job].enableObjectTracker"_Stz,&Step::vJobEnableObjectTracker);
   vAddStep("[job].entryPoint@"_Stz,      &Step::vJobEntryPointFetch);
   vAddStep("[job].entryPoint!"_Stz,      &Step::vJobEntryPointStore);
 
@@ -70,6 +72,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("[job].phase@"_Stz,           &Step::vJobPhaseFetch);
   vAddStep("[job].phase!"_Stz,           &Step::vJobPhaseStore);
   vAddStep("[job].preExecuteTest"_Stz,   &Step::vJobPreExecuteTest);
+  vAddStep("[job].printObjectTracker"_Stz,&Step::vJobPrintObjectTracker);
   vAddStep("[job].progress"_Stz,         &Step::vJobProgress);
   vAddStep("[job].progressReset"_Stz,    &Step::vJobProgressReset);
   vAddStep("[job].progressSeconds"_Stz,  &Step::vJobProgressSeconds);
@@ -78,6 +81,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("[job].removeOriginator"_Stz, &Step::vJobRemoveOriginator);
   vAddStep("[job].removeParticipant"_Stz,&Step::vJobRemoveParticipant);
   vAddStep("[job].removeRetired"_Stz,    &Step::vJobRemoveRetired);
+  vAddStep("[job].resetObjectTracker"_Stz,&Step::vJobResetObjectTracker);
   vAddStep("[job].responseOp@"_Stz,      &Step::vJobResponseOpFetch);
   vAddStep("[job].responseOp!"_Stz,      &Step::vJobResponseOpStore);
 
@@ -449,6 +453,18 @@ void Step::vJobDisableAllocate(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* [job].disableObjectTracker -- disable object tracking for this job         */
+/*----------------------------------------------------------------------------*/
+void Step::vJobDisableObjectTracker(void)
+{
+  ENTRY();
+
+  m_pJob->vDisableObjectTracker();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* [job].distId@ -- fetch the distributed id of the job                       */
 /*----------------------------------------------------------------------------*/
 void Step::vJobDistIdFetch(void)
@@ -484,6 +500,18 @@ void Step::vJobEnableAllocate(void)
   ENTRY();
 
   m_pJob->vSetAllocate(true);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [job].enableObjectTracker -- enable object tracking for this job           */
+/*----------------------------------------------------------------------------*/
+void Step::vJobEnableObjectTracker(void)
+{
+  ENTRY();
+
+  m_pJob->vEnableObjectTracker();
 
   EXIT();
 }
@@ -756,6 +784,19 @@ void Step::vJobPhaseStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* [job].printObjectTracker -- object tracker print                           */
+/*----------------------------------------------------------------------------*/
+void Step::vJobPrintObjectTracker(void)
+{
+  ENTRY();
+
+  Job* pJob = * m_pJob;
+  m_pJob->vObjectTrackerDump();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* [job].progress -- progress print                                           */
 /*----------------------------------------------------------------------------*/
 void Step::vJobProgress(void)
@@ -869,7 +910,19 @@ void Step::vJobRemoveRetired(void)
      
   EXIT();
 }
-  
+
+/*----------------------------------------------------------------------------*/
+/* [job].resetObjectTracker -- reset object tracking for this job             */
+/*----------------------------------------------------------------------------*/
+void Step::vJobResetObjectTracker(void)
+{
+  ENTRY();
+
+  m_pJob->vResetObjectTracker();
+
+  EXIT();
+}
+
 /*----------------------------------------------------------------------------*/
 /* [job].responseOp@ -- fetch response op                                     */
 /*----------------------------------------------------------------------------*/

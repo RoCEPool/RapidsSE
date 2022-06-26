@@ -15,9 +15,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can remove table
-  <tableNm> check::validTableAssembly not if
-    to errorCode
-    errorCode op__execErr
+  <tableNm> op__table if
+    // nothing to do
   then
 
   true
