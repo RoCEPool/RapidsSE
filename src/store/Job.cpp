@@ -66,6 +66,7 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
   m_eError_job = EC_NONE;
   m_eChildError = EC_NONE;
   m_bUpdateParent = false;
+  m_bRejected     = false;
 
   /* 00 */ m_noActiveOps.vResetAtomic();
   /* 01 */ m_eJobList     = JL_NONE;
@@ -1377,6 +1378,26 @@ bool Job::bUpdateParent(void)
   _precondition_(_ADDRESS_,_MAGIC_);
 
   return m_bUpdateParent;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set rejected                                                               */
+/*----------------------------------------------------------------------------*/
+void Job::vRejected(bool bRejected)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_bRejected = bRejected;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get rejected                                                             */
+/*----------------------------------------------------------------------------*/
+bool Job::bRejected(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_bRejected;
 }
 
 /*----------------------------------------------------------------------------*/

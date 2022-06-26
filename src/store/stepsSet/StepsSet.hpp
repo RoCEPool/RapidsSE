@@ -865,6 +865,10 @@ void vDdlLockAssertNone(void);
   void vJobOriginIdFetch(void);
   void vJobOriginNodeIdFetch(void);
 
+  void vRejectJobOriginNodeIdFetch(void);
+  void vRejectJobRejectedJobFetch(void);
+  void vRejectedJobOriginIdFetch(void);
+
   void vJobParentIdFetch(void);
   void vJobParentOriginNodeIdFetch(void);
   void vJobIdPipeToOp0(void);
@@ -876,6 +880,7 @@ void vDdlLockAssertNone(void);
   void vJobProgressReset(void);
   void vJobProgressSeconds(void);
 
+  void vJobRejectedFetch(void);
   void vJobRemoveLocal(void);
   void vJobRemoveOriginator(void);
   void vJobRemoveParticipant(void);
@@ -2146,6 +2151,7 @@ void vDdlLockAssertNone(void);
   void vTaskSleepSsec(void);
   void vTaskSleepUsec(void);
   void vListedJobTaskStateFetch(void);
+  void vListedJobRejected(void);
   void vTaskThreadFetch(void);
   void vTaskTraceFetch(void);
   void vTaskTraceStore(void);

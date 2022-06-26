@@ -77,6 +77,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("[job].progressReset"_Stz,    &Step::vJobProgressReset);
   vAddStep("[job].progressSeconds"_Stz,  &Step::vJobProgressSeconds);
 
+  vAddStep("[job].rejected@"_Stz,        &Step::vJobRejectedFetch);
   vAddStep("[job].removeLocal"_Stz,      &Step::vJobRemoveLocal);
   vAddStep("[job].removeOriginator"_Stz, &Step::vJobRemoveOriginator);
   vAddStep("[job].removeParticipant"_Stz,&Step::vJobRemoveParticipant);
@@ -104,6 +105,10 @@ void Step::vAddSteps_Job(void)
   vAddStep("[job].updateParent"_Stz,     &Step::vJobUpdateParent);
 
   vAddStep("job::id@"_Stz,               &Step::vJobOtherIdFetch);
+
+  vAddStep("rejectJob::originNodeId@"_Stz,    &Step::vRejectJobOriginNodeIdFetch);
+  vAddStep("rejectJob::rejectedJob@"_Stz,     &Step::vRejectJobRejectedJobFetch);
+  vAddStep("RejectedJob::originId@"_Stz,      &Step::vRejectedJobOriginIdFetch);
 }
 
 
@@ -854,6 +859,19 @@ void Step::vJobProgressSeconds(void)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* [job].rejected@ -- fetch job rejected                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vJobRejectedFetch(void)
+{
+  ENTRY();
+
+  Job* pJob = pOuterJobOfTask();
+
+  m_pDataStack->vPushInt(pJob->bRejected());
+
+  EXIT();
+}
 
 /*----------------------------------------------------------------------------*/
 /* [job].removeLocal -- remove job from local job set                         */
@@ -1226,6 +1244,53 @@ void Step::vJobOtherIdFetch(void)
 
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   m_pDataStack->vPushInt(pJob->tJobId().iAsI8());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* rejectJob::originNodeId@ -- fetch the originator node no from rejectJob    */
+/*----------------------------------------------------------------------------*/
+void Step::vRejectJobOriginNodeIdFetch(void)
+{
+  ENTRY();
+
+  RejectJob* pRejectJob = _pRejectJob(m_pDataStack->pPopPtr(__func__));
+  JobId tOriginId = pRejectJob->tOriginId();
+
+  i8 iOriginNodeId = (i8)tOriginId.uNodeId();
+
+  m_pDataStack->vPushInt(iOriginNodeId);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* rejectJob::rejectedJob@ -- fetch the originator node no from rejectJob    */
+/*----------------------------------------------------------------------------*/
+void Step::vRejectJobRejectedJobFetch(void)
+{
+  ENTRY();
+
+  RejectJob* pRejectJob = _pRejectJob(m_pDataStack->pPopPtr(__func__));
+  RejectedJob* pRejectedJob = pRejectJob->pRejectedJob();
+
+  m_pDataStack->vPushPtr(pRejectedJob);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* rejectedJob::originNodeId@ -- fetch the originator node no from rejectedJob*/
+/*----------------------------------------------------------------------------*/
+void Step::vRejectedJobOriginIdFetch(void)
+{
+  ENTRY();
+
+  RejectedJob* pRejectedJob = _pRejectedJob(m_pDataStack->pPopPtr(__func__));
+  JobId tOriginId = pRejectedJob->tOriginId();
+
+  m_pDataStack->vPushInt(tOriginId.iAsI8());
 
   EXIT();
 }

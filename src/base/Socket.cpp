@@ -12,6 +12,7 @@
 //#include <pcap/pcap.h>
 #include <arpa/inet.h>
 //#include <netinet/in.h>
+#include "Job.hpp"
 
 extern Stz* C_LOOPBACK_IP;
 
@@ -149,7 +150,28 @@ Object* Socket::pRecvObject(void)
   // receive object normally (or acceptable objects under low memory)
 
   if (! bLowMem || ! gxaSizeHeap[eClass].m_bLowMemoryDiscard) {
+
     Object* pReceivedObject = pObjectRecv(eClass);
+
+    if (eClass == CN_JOB) {
+      Job* pJob = _pJob(pReceivedObject);
+      vTrace("Recvd Job: %s\n"_Stz, pJob->szJobNm());
+
+//      if (pJob->szJobNm()->bSame("pipeline"_Stz)) {
+//        m_pRejectJob->vOriginId(pJob->tOriginId());
+//        m_pRejectJob->vError(EC_LOW_MEMORY);
+//        delete pJob;
+//        //THROW_LOWMEMORY_NEW();
+//        pReceivedObject = m_pRejectJob;
+//      }
+
+    }
+
+    if (eClass == CN_REJECTEDJOB) {
+      RejectedJob* pRejectedJob = _pRejectedJob(pReceivedObject);
+      vTrace("Recvd RejectedJob\n"_Stz);
+    }
+
     vSuccess(true);
     return pReceivedObject;
   }
@@ -159,7 +181,7 @@ Object* Socket::pRecvObject(void)
 
   Object* pReceivedObject = pObjectRecv_lowmem(eClass);
   RASSERT(! pReceivedObject);
-  
+
   //vReceivedObject(nullptr);
   vSuccess(true);
   

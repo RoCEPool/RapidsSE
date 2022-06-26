@@ -164,6 +164,7 @@ Object* Heap::pAllocObject(eCN eAllocClass)
   if (bFaultInjection) {
     i8 iFaultPoint = (i8)(PsxThd::pTlsGet(giTLS_FaultPoint));
     i8 iCurrentPoint = (i8)(PsxThd::pTlsGet(giTLS_CurrentPoint));
+    vTrace("FI: FP:%lld CP:%lld\n"_Stz, iFaultPoint, iCurrentPoint);
     if (iFaultPoint == iCurrentPoint)
       THROW_LOWMEMORY_NEW();
   }

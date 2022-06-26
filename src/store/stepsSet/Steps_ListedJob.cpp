@@ -25,6 +25,7 @@ void Step::vAddSteps_ListedJob(void)
   vAddStep("ListedJob[].findParticipant?"_Stz, &Step::vListedJobFindParticipant);
   vAddStep("ListedJob[].hasTask"_Stz,          &Step::vListedJobHasTask);
   vAddStep("ListedJob[].references"_Stz,       &Step::vListedJobReferences);
+  vAddStep("ListedJob[].rejected"_Stz,         &Step::vListedJobRejected);
   vAddStep("ListedJob[].returnReference"_Stz,  &Step::vListedJobReturn);
   vAddStep("ListedJob[].scheduleNextPhase"_Stz,&Step::vListedJobScheduleNextPhase);
   vAddStep("ListedJob[].taskAck"_Stz,          &Step::vListedJobTaskAck);
@@ -241,6 +242,19 @@ void Step::vListedJobTaskStateFetch(void)
 }
 
 
+/*----------------------------------------------------------------------------*/
+/* ListedJob[].rejected -- set rejected waiting task of this tasks rejection  */
+/*----------------------------------------------------------------------------*/
+void Step::vListedJobRejected(void)
+{
+  ENTRY();
+
+  Job* pJob = m_pLogicUnit->m_xpListedJob.pReferencedObject();
+
+  pJob->vRejected(true);
+
+  EXIT();
+}
 
 /*============================================================================*/
 /* end                                                                        */

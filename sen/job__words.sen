@@ -86,11 +86,80 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* send rejectJob (to the node which is in task)                              */
+/*----------------------------------------------------------------------------*/
+: rejectedJob.send params| pRejectedJob |
+
+  "rejectedJob.send" .
+
+  Socket[] locals| recvSocket |
+  nullptr to Socket[]
+
+  SendNode[] node.sendSocket@ to Socket[]
+
+  Socket[].grabWrite
+
+  pRejectedJob Socket[].sendObject discard
+
+  Socket[].dropWrite
+
+  nullptr to Socket[]
+  recvSocket to Socket[]
+
+  "rejectedJob.send done" .
+;
+
+/*----------------------------------------------------------------------------*/
+/* send job to given participating node                                       */
+/*----------------------------------------------------------------------------*/
+: rejectJob.forward params| pRejectJob |
+
+  pRejectJob rejectJob::originNodeId@
+  [grid].findNodeByNo to SendNode[]
+
+  pRejectJob rejectJob::rejectedJob@
+  rejectedJob.send
+
+  nullptr to SendNode[]
+;
+
+/*----------------------------------------------------------------------------*/
 /* dispatch received job                                                      */
 /*----------------------------------------------------------------------------*/
 : job:spawn params| pJob |
 
   pJob api::spawnJob
+;
+
+/*----------------------------------------------------------------------------*/
+/* send back rejectJob                                                        */
+/*----------------------------------------------------------------------------*/
+: rejectJob:reply params| pRejectJob |
+
+  "rejectJob:reply" .
+
+  pRejectJob Rejectjob.forward
+
+  "rejectJob:reply done" .
+;
+
+/*----------------------------------------------------------------------------*/
+/* accept a rejecetd job                                                      */
+/*----------------------------------------------------------------------------*/
+: rejectedJob:accept params| pRejectedJob |
+
+  "rejectedJob:accept" .
+
+  // find the originating job
+
+  pRejectedJob RejectedJob::originId@ ListedJob[].findOriginator? if
+
+    ListedJob[].rejected
+    ListedJob[].taskAck
+
+    ListedJob[].returnReference
+
+  then
 ;
 
 /*----------------------------------------------------------------------------*/

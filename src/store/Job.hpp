@@ -42,6 +42,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     eEC    m_eChildError; // error in child job
 
     bool   m_bUpdateParent; // update parent
+    bool   m_bRejected;
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // reset in Job::vPostRecv()
@@ -185,6 +186,9 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
 
     void vUpdateParent(bool bUpdateParent);
     bool bUpdateParent(void);
+
+    void vRejected(bool bRejected);
+    bool bRejected(void);
 
     void vResetObjectTracker(void);
     void vResetOutput(void);
