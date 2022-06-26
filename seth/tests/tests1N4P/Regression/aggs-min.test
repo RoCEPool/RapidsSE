@@ -187,7 +187,7 @@ rows:
 select min(cold9), sum(cold9), avg(cold9), max(cold9) from table9;
 rows:
   //(-249.08, 4420.53, 8.96659229208925, 248.45)
-  (-2.490800e+02, 4.420530e+03,     8.966590e+00, 2.484500e+02)
+  (-2.490800e+02, 4.420530e+03,     8.966592e+00, 2.484500e+02)
 
 
 // Source file: ../queries/aggs/min/rmin11.sql

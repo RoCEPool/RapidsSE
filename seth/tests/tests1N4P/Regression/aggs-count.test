@@ -192,7 +192,7 @@ rows:
 // Result file: ../queries/aggs/count/results/count18.res
 select count(colf9) + avg(cold9) from table9 where colf9 is not null and cold9 is not null;
 rows:
-  (496.636)
+  (496.6358e0)
   //(477.31485042735045)
 
 // Source file: ../queries/aggs/count/rcount14.sql
