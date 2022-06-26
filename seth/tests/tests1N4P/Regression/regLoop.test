@@ -31,7 +31,9 @@ INCLUDE 'InNotIn.test';
 //INCLUDE 'PartKey2way.test';
 //INCLUDE 'Stage9.test';
 //INCLUDE 'Using1way.test';
-//INCLUDE 'aggs-avg.test';
+
+LOG 'aggs-avg.test ...';
+INCLUDE 'aggs-avg.test';
 
 LOG 'aggs-count.test ...';
 INCLUDE 'aggs-count.test';
@@ -42,8 +44,8 @@ INCLUDE 'aggs-max.test';
 LOG 'aggs-min.test ...';
 INCLUDE 'aggs-min.test';
 
-//LOG 'aggs-sum.test ...';
-//INCLUDE 'aggs-sum.test';
+LOG 'aggs-sum.test ...';
+INCLUDE 'aggs-sum.test';
 
 LOG 'aggs-sum.test ...';
 INCLUDE 'alias.test';

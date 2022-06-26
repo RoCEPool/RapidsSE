@@ -24,7 +24,7 @@ failure: 'Invalid nested aggregation'
 
 // Source file: ../queries/aggs/sum/rsum14.sql
 // Result file: ../queries/aggs/sum/results/sum14.res
-//TODO: ENABLE WHEN OPTIMIZER(SORT)
+//TODO: ENABLE WHEN OPTIMIZER (SORT)
 /*
 select colb1, sum(cola1) + 0.38 from table1 where colb1 < 'indigo' group by colb1 order by colb1;
 ordered rows:
@@ -49,7 +49,8 @@ ordered rows:
 
 // Source file: ../queries/aggs/sum/rsum14.sql
 // Result file: ../queries/aggs/sum/results/sum14.res
-//TODO: FIX
+//TODO: FIX WHEN OPTIMISE (separate cast to a different stage)
+// backend unable to handle aggregate and cast in same projection
 /*
 select colb1, sum(cola1) + 0.38 from table1 where colb1 < 'indigo' group by colb1;
 ordered rows:
@@ -72,6 +73,29 @@ ordered rows:
   ('grey', 260.38)
 */
 
+// Source file: ../queries/aggs/sum/rsum14.sql
+// Result file: ../queries/aggs/sum/results/sum14.res
+select colb1, sum(cola1) from table1 where colb1 < 'indigo' group by colb1;
+ordered rows:
+  ('BLACK', 2270)
+  ('BLUE', 547)
+  ('GREEN', 1188)
+  ('ORANGE', 370)
+  ('PINK', 1268)
+  ('PURPLE', 1510)
+  ('RED', 213)
+  ('TEAL', 1455)
+  ('WHITE', 1444)
+  ('YELLOW', 1527)
+  ('aqua', 194)
+  ('black', 364)
+  ('blue', 660)
+  ('brown', 563)
+  ('gold', 700)
+  ('green', 1295)
+  ('grey', 260)
+
+
 // Source file: ../queries/aggs/sum/rsum1.sql
 // Result file: ../queries/aggs/sum/results/sum1.res
 select sum(cola1) from table1;
@@ -81,7 +105,7 @@ rows:
 
 // Source file: ../queries/aggs/sum/rsum23.sql
 // Result file: ../queries/aggs/sum/results/rsum23.res
-//TODO: WHEN SUBQUERIES AND UPPER
+//TODO: WHEN OPTIMISER (SUBQUERIES) AND UPPER
 /*
 select x, y from (select sum(cola1) as x, colb1 as y from table1 where colb1 = upper('pink') group by colb1) as OuterQry;
 rows:
@@ -90,7 +114,7 @@ rows:
 
 // Source file: ../queries/aggs/sum/rsum22.sql
 // Result file: ../queries/aggs/sum/results/rsum22.res
-//TODO: ENABLE WHEN JOINS
+//TODO: ENABLE WHEN OPTIMISER (JOINS)
 /*
 select x, y from (select sum(colf1) as x, sum(colg9) as y from table1 join table9 using (ucol)) as TwoTbs;
 rows:
@@ -105,7 +129,7 @@ failure contains: 'EC_SEMANTIC_ERROR'
 
 // Source file: ../queries/aggs/sum/rsum20.sql
 // Result file: ../queries/aggs/sum/results/sum20.res
-//TODO: ENABLE WHEN OPTIMIZER(SORT)
+//TODO: ENABLE WHEN OPTIMIZER (SORT)
 /*
 select colb1, sum(cold1) - 750 from table1 where colb1 < 'INDIGO' group by colb1 order by colb1;
 ordered rows:
@@ -137,7 +161,7 @@ rows:
 
 // Source file: ../queries/aggs/sum/rsum18.sql
 // Result file: ../queries/aggs/sum/results/sum18.res
-//TODO: ENABLE WHEN OPTIMIZER(SORT)
+//TODO: ENABLE WHEN OPTIMIZER (SORT)
 /*
 select colb1, sum(cold1) + -20 from table1 where colb1 < 'INDIGO' group by colb1 order by colb1;
 ordered rows:
@@ -156,7 +180,7 @@ unordered rows:
 
 // Source file: ../queries/aggs/sum/rsum15.sql
 // Result file: ../queries/aggs/sum/results/sum15.res
-//TODO: ENABLE WHEN OPTIMIZER(SORT)
+//TODO: ENABLE WHEN OPTIMIZER (SORT)
 /*
 select colb1, sum(cold1) / 4 from table1 where colb1 < 'INDIGO' group by colb1 order by colb1;
 ordered rows:
