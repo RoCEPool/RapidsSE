@@ -232,7 +232,6 @@
 /* org_ beg */        "org_ beg" "begun rejected"                  [job].trace
 /* org_ beg */    then
 /* org_ beg */
-                  EC_LOW_MEMORY [job].error!
 /* org_ ovr */  // - - - - - - - - - - - - - - -
 /* org_ ovr */  // pipeline becomes ordinary job
 /* org_ ovr */  // - - - - - - - - - - - - - - -
