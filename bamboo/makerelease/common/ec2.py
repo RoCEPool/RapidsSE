@@ -201,8 +201,8 @@ def start_instances(instance_type: string,
             assert len(response["Instances"]) > 0
 
             for instance in response["Instances"]:
-                instance_id = response["Instances"][0]["InstanceId"]
-                ip_address = response["Instances"][0]["PrivateIpAddress"]
+                instance_id = instance["InstanceId"]
+                ip_address = instance["PrivateIpAddress"]
                 instance_ids.append(instance_id)
                 ip_addresses.append(ip_address)
             break
@@ -213,22 +213,6 @@ def start_instances(instance_type: string,
 
     if last_error is not None:
         raise last_error
-
-    # Set a Name tag for each instance
-    for n, instance_id in enumerate(instance_ids, start=1):
-        kwargs = {
-            "DryRun": False,
-            "Resources": [instance_id],
-            "Tags": [
-                {
-                    "Key": "Name",
-                    "Value": f"{name_prefix}{n:02}"
-                }
-            ]
-        }
-        LOG.debug("About to create a Name tag for instance %s", instance_id)
-        response = client.create_tags(**kwargs)
-        LOG.debug(f"Response of create_tags command:\n{pprint.pformat(response)}")
 
     LOG.info("Started %d machines with the following instance-ids: %s", len(instance_ids), str(instance_ids))
     LOG.info("Private IP addresses assigned: %s", str(ip_addresses))
@@ -357,9 +341,32 @@ def __get_boot_script(path_str: string) -> string:
     return txt
 
 
-def __wait_for_instances_to_be_ready(instance_ids: [string], ip_addresses: [string], timeout_sec: float):
+def __set_instance_names(instance_ids: [string], name_prefix: string, client) -> None:
+    """
+    Sets the 'name' tag of each instance using the prefix and a unique incrementing number.
+    """
+    # Set a Name tag for each instance
+    for n, instance_id in enumerate(instance_ids, start=1):
+        kwargs = {
+            "DryRun": False,
+            "Resources": [instance_id],
+            "Tags": [
+                {
+                    "Key": "Name",
+                    "Value": f"{name_prefix}{n:02}"
+                }
+            ]
+        }
+        LOG.debug("About to create a Name tag for instance %s", instance_id)
+        response = client.create_tags(**kwargs)
+        LOG.debug(f"Response of create_tags command:\n{pprint.pformat(response)}")
+
+
+def __wait_for_instances_to_be_ready(instance_ids: [string], ip_addresses: [string], timeout_sec: float,
+                                     name_prefix: string = None, client=None):
     """
     Waits for the set of instances to be runnable, SSH-able, and finished booting.
+    If name_prefix and client are set then these instances are named when they are ready.
     Throws an errors.Ec2InstanceTimeoutError if the timeout is exceeded.
     """
 
@@ -375,6 +382,9 @@ def __wait_for_instances_to_be_ready(instance_ids: [string], ip_addresses: [stri
     __wait_for_instances_to_be_running(instance_ids, time_left, timeout_sec)
     current_time = time.time()
     LOG.info("All EC2 instances have transitioned from pending to running in %.1f seconds", current_time - op_start)
+
+    if name_prefix is not None and client is not None:
+        __set_instance_names(instance_ids, name_prefix, client)
 
     # Now we need to wait for the machines to listen for SSH connections
     time_left = end_time - current_time
@@ -417,8 +427,8 @@ def __wait_for_instances_to_be_running(instance_ids: [string], timeout_sec: floa
     current_time = time.time()
     end_time = current_time + timeout_sec
 
-    # Wait 3 seconds to start with before issuing the first request
-    time.sleep(3.0)
+    # Wait 1 second to start with before issuing the first request
+    time.sleep(1.0)
     logged_response = False
     attempts = 0
 
