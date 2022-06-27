@@ -465,14 +465,14 @@ Heap* Heaps::pGetHeap(eHT eHeap)
 void Heaps::vInit(void)
 {
   // create the persistent heaps
-//  Persistent.m_pTiny   =
-//    new Heap(CN_TINYPERSISTENT,  C_SIZE_SMALL_OBJECT,  HT_P_TINY);
-//  Persistent.m_pSmall  =
-//    new Heap(CN_SMALLPERSISTENT, C_SIZE_SMALL_OBJECT,  HT_P_SMALL);
-//  Persistent.m_pMedium =
-//    new Heap(CN_MEDIUMPERSISTENT,C_SIZE_MEDIUM_OBJECT, HT_P_MEDIUM);
-//  Persistent.m_pLarge  =
-//    new Heap(CN_LARGEPERSISTENT, C_SIZE_LARGE_OBJECT,  HT_P_LARGE);
+  Persistent.m_pTiny   =
+    new Heap(CN_TINYPERSISTENT,  C_SIZE_SMALL_OBJECT,  HT_P_TINY);
+  Persistent.m_pSmall  =
+    new Heap(CN_SMALLPERSISTENT, C_SIZE_SMALL_OBJECT,  HT_P_SMALL);
+  Persistent.m_pMedium =
+    new Heap(CN_MEDIUMPERSISTENT,C_SIZE_MEDIUM_OBJECT, HT_P_MEDIUM);
+  Persistent.m_pLarge  =
+    new Heap(CN_LARGEPERSISTENT, C_SIZE_LARGE_OBJECT,  HT_P_LARGE);
   // create the transient heaps
   
   Transient.m_pTiny   =
