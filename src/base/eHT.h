@@ -16,7 +16,6 @@ enum eHT // Heap type
   /*  6 */ HT_T_SMALL,
   /*  7 */ HT_T_MEDIUM,
   /*  8 */ HT_T_LARGE,
-  /*  9 */ HT_T_DATA,
 
   /* 10 */ HT_V_TINY,
   /* 11 */ HT_V_SMALL,
