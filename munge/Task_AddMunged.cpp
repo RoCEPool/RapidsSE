@@ -6677,7 +6677,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  find: job:spawn CN_JOB class::postRecvWord!\n"
     "\n"
-    "  find: rejectJob:reply   CN_REJECTJOB class::postRecvWord!\n"
+    "  find: rejectJob:reply    CN_REJECTJOB   class::postRecvWord!\n"
     "  find: rejectedJob:accept CN_REJECTEDJOB class::postRecvWord!\n"
     "\n"
     "  find: parcel.dispatch CN_PARCEL class::postRecvWord!\n"

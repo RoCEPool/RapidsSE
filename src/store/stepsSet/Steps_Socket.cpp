@@ -306,7 +306,7 @@ void Step::vSocketSendObject(void)
   i8 nObjectSize = gxaSizeHeap[eClass].m_nClassSize;
   
   RASSERT(CN_JOB == eClass ||
-          CN_REJECTEDJOB == eClass ||
+          CN_REJECTJOB == eClass ||
           _bIsValidOperand(eClass));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

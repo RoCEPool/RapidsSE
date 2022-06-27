@@ -109,6 +109,8 @@ Object* Socket::pRecvObject(void)
   
   RASSERT(! pReceivedObject());
 
+  L_ReEnter:
+
   bool bLowMem = AM::MEMORY::bIsRunningLow();
   if (bLowMem)
      PoolHelper::vPoolAnalyze();
@@ -157,23 +159,31 @@ Object* Socket::pRecvObject(void)
       Job* pJob = _pJob(pReceivedObject);
       vTrace("Recvd Job: %s\n"_Stz, pJob->szJobNm());
 
-//      if (pJob->szJobNm()->bSame("pipeline"_Stz)) {
-//        m_pRejectJob->vOriginId(pJob->tOriginId());
-//        m_pRejectJob->vError(EC_LOW_MEMORY);
-//        delete pJob;
-//        //THROW_LOWMEMORY_NEW();
-//        pReceivedObject = m_pRejectJob;
-//      }
+      if (pJob->szJobNm()->bSame("pipeline"_Stz)) {
+        m_pRejectJob->vOriginId(pJob->tOriginId());   // NOT RIGHT
+        m_pRejectJob->vError(EC_LOW_MEMORY);
+        delete pJob;
+
+        // send a rejectJob to originating node
+        AM::JOB::vSendReject(m_pRejectJob);
+
+        // go back to receive
+        goto L_ReEnter;
+      }
 
     }
 
-    if (eClass == CN_REJECTEDJOB) {
-      RejectedJob* pRejectedJob = _pRejectedJob(pReceivedObject);
-      vTrace("Recvd RejectedJob\n"_Stz);
+    if (eClass == CN_REJECTJOB) {
+
+      RejectJob* pRejectJob = _pRejectJob(pReceivedObject);
+      vTrace("Recvd RejectJob\n"_Stz);
+
+      // handle the received reject job
+      AM::JOB::vRecvdReject(m_pRejectJob);
     }
 
-    vSuccess(true);
-    return pReceivedObject;
+    // go back to receive
+    goto L_ReEnter;
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -5,9 +5,7 @@
 #include "BASE.h"
 
 #include "RejectJob.hpp"
-#include "RejectedJob.hpp"
 
-#include "eCF.h"
 #include "Job.hpp"
 #include "AM.hpp"
 
@@ -29,8 +27,7 @@ RejectJob::RejectJob(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_REJECTJOB,_FOOTER_);
     
   //m_tOriginId
-
-  m_pRejectedJob = new RejectedJob;
+  m_eError = EC_NONE;
 
   _checkInitialised_(CN_REJECTJOB);
 
@@ -69,7 +66,7 @@ eEC RejectJob::eError(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_REJECTJOB,_FOOTER_);
 
-  return m_pRejectedJob->eError();
+  return m_eError;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -79,7 +76,7 @@ void RejectJob::vError(eEC eError)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_REJECTJOB,_FOOTER_);
 
-  m_pRejectedJob->vError(eError);
+  m_eError = eError;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -89,7 +86,7 @@ JobId RejectJob::tOriginId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_REJECTJOB,_FOOTER_);
 
-  return m_pRejectedJob->tOriginId();
+  return m_tOriginId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -99,17 +96,7 @@ void RejectJob::vOriginId(JobId tOriginId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_REJECTJOB,_FOOTER_);
 
-  m_pRejectedJob->vOriginId(tOriginId);
-}
-
-/*----------------------------------------------------------------------------*/
-/* return rejected job                                                        */
-/*----------------------------------------------------------------------------*/
-RejectedJob* RejectJob::pRejectedJob(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_REJECTJOB,_FOOTER_);
-
-  return m_pRejectedJob;
+  m_tOriginId = tOriginId;
 }
 
 /*============================================================================*/

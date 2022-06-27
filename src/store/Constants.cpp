@@ -268,7 +268,6 @@ void Constants::vAddConstantsCpp(void)
   /*    */ vAddConstant("CN_CRWBUFFER"_Stz,    CN_CRWBUFFER);
   /*    */ vAddConstant("CN_JOB"_Stz,          CN_JOB);
   /*    */ vAddConstant("CN_REJECTJOB"_Stz,    CN_REJECTJOB);
-  /*    */ vAddConstant("CN_REJECTEDJOB"_Stz,  CN_REJECTEDJOB);
   /*    */ vAddConstant("CN_ROWBUFFER"_Stz,    CN_ROWBUFFER);
   /*    */ vAddConstant("CN_STZVAL"_Stz,       CN_STZVAL);
   /*    */ vAddConstant("CN_PARCEL"_Stz,       CN_PARCEL);

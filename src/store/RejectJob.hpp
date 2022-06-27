@@ -4,7 +4,6 @@
 #pragma once
 
 #include "eEC.h"
-#include "RejectedJob.hpp"
 
 namespace STORE
 {
@@ -12,7 +11,9 @@ namespace STORE
   {
   protected:
 
-    RejectedJob* m_pRejectedJob;
+    JobId  m_tOriginId;   // id when job is originator
+
+    eEC    m_eError;      // error
 
   // must be last
     Footer m_xFooter;
@@ -31,8 +32,6 @@ namespace STORE
 
     JobId tOriginId(void);
     void vOriginId(JobId tOriginId);
-  
-    RejectedJob* pRejectedJob(void);
 
   private:
     Footer* aFooter(void);

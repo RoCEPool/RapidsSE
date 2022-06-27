@@ -52,6 +52,8 @@
 #include "RowCoder.hpp"
 #include "HeadLine.hpp"
 
+#include "Socket.hpp"
+
 #include "Crw.hpp"
 
 #include "LglPtnMap.hpp"
@@ -851,6 +853,62 @@ eEC AM::JOB::ePreExecuteTest(Job* pJob)
   return EC_NONE;
 }
 
+/*----------------------------------------------------------------------------*/
+/* handle received rejectJob                                                  */
+/*----------------------------------------------------------------------------*/
+void AM::JOB::vRecvdReject(RejectJob *pRejectJob)
+{
+  _static_;
+
+  // get origin id
+  JobId tOriginId = pRejectJob->tOriginId();
+
+  // get the error
+  eEC eError = pRejectJob->eError();
+
+  Job *pJobFound = AM::pJob_FindOriginating(tOriginId);
+  RASSERT(pJobFound);
+
+  // set the error
+  pJobFound->vJobError(eError);
+
+  // mark as rejected
+  pJobFound->vRejected(true);
+
+  // find the job task
+  Task *pJobTask = pJobFound->pTask();
+
+  // ack the job task
+  i8 nAcksWereRemaining;
+  bool bWasQueued = Scheduler::bTaskCross_AckWaiting(pJobTask, AM::pThisTLSTask(),
+                                                     nAcksWereRemaining);
+  UNUSED(bWasQueued);
+}
+
+/*----------------------------------------------------------------------------*/
+/* send a rejectJob                                                           */
+/*----------------------------------------------------------------------------*/
+void AM::JOB::vSendReject(RejectJob *pRejectJob)
+{
+  _static_;
+
+  // get origin id
+  JobId tOriginId = pRejectJob->tOriginId();
+
+  // get origin node
+  i8 iOriginNodeId = tOriginId.uNodeId();
+
+  // find the node by no
+  Node* pNode = AM::pGrid()->pFindNodeById(iOriginNodeId);
+
+  // get the send socket of the node
+  Socket* pSocket = pNode->pSendSocket();
+  SysCall oSysCall;
+
+  pSocket->vGrabWrite();
+  bool bResult = pSocket->bSendObject(pRejectJob,oSysCall,SY_NONE);
+  pSocket->vDropWrite();
+}
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                   JOB                                      */

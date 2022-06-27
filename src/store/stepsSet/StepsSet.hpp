@@ -865,10 +865,6 @@ void vDdlLockAssertNone(void);
   void vJobOriginIdFetch(void);
   void vJobOriginNodeIdFetch(void);
 
-  void vRejectJobOriginNodeIdFetch(void);
-  void vRejectJobRejectedJobFetch(void);
-  void vRejectedJobOriginIdFetch(void);
-
   void vJobParentIdFetch(void);
   void vJobParentOriginNodeIdFetch(void);
   void vJobIdPipeToOp0(void);
