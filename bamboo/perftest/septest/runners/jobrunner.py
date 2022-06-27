@@ -36,6 +36,10 @@ assert C_SUPPORT_FILES_SRC.exists(), f"Cannot find the supportFiles folder: {str
 # How long to sleep between checking the completion of tests / SE status
 C_TEST_MONITORING_SLEEP_IVL = 2
 
+C_PROJ_ROOT = "../.."
+C_CLOUD_INIT_SCRIPT = f"{C_PROJ_ROOT}/bamboo/common/aws/cloud-init-downloader.sh"
+C_INSTANCE_NAME_PREFIX="PerfTest"
+
 
 class JobRunner:
     """Coordinates and runs a job, specified by a job config file"""
@@ -219,10 +223,16 @@ class JobRunner:
             installer_path = clusterops.find_installer()
 
         # Start up the necessary AWS hosts
-        (self.instance_ids, self.ip_addresses) = ec2.start_instances(self.all_configs.get_hardware(),
-                                                                     C_EC2_BOOT_TIMEOUT_SEC,
-                                                                     self.job_result_id,
-                                                                     self.job_id)
+        (self.instance_ids, self.ip_addresses) = \
+            ec2.start_instances(self.all_configs.get_hardware().get_instance_type(),
+                                self.all_configs.get_hardware().get_image_id(),
+                                C_CLOUD_INIT_SCRIPT,
+                                self.all_configs.get_hardware().get_num_machines(),
+                                C_INSTANCE_NAME_PREFIX,
+                                C_EC2_BOOT_TIMEOUT_SEC,
+                                self.all_configs.get_hardware().get_use_spot_instances(),
+                                self.job_result_id,
+                                self.job_id)
 
         assert len(self.instance_ids) > 0
         assert len(self.ip_addresses) > 0

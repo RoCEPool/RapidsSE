@@ -8,7 +8,6 @@ import subprocess
 import botocore
 import botocore.exceptions
 import boto3
-import base64
 
 import septest.errors as errors
 from septest.configs.hardwareconfig import HardwareConfig
@@ -82,8 +81,6 @@ C_KEYPAIR_NAME = "aws_rapidsse"
 #
 
 # ---------- Other Constants -------------
-C_PROJ_ROOT = "../.."
-C_CLOUD_INIT_SCRIPT = f"{C_PROJ_ROOT}/bamboo/common/aws/cloud-init-downloader.sh"
 C_CLOUD_INIT_COMPLETE = "/tmp/cloud-init-complete"
 C_SSH_CONNECT_TIMEOUT = 5  # seconds
 C_MSG_PERIOD = 5  # Print updates every 5 seconds
@@ -99,8 +96,32 @@ def describe_instances():
     pprint.pprint(response)
 
 
-def start_instances(cfg: HardwareConfig, timeout_sec: float,
-                    job_result_id: int, job_id: int) -> ([string], [string]):
+def get_image_desc(image_id: string) -> string:
+    session, client = __get_session_client()
+
+    kwargs = {
+        "ImageIds": [image_id],
+        "DryRun": False
+    }
+
+    LOG.info("Getting the OS for the imageId: %s", image_id)
+    response = client.describe_images(**kwargs)
+    LOG.debug(f"Response of describe_images command:\n{pprint.pformat(response)}")
+
+    image_name = response["Images"][0]["Description"]
+    return image_name
+
+
+def start_instances(instance_type: string,
+                    image_id: string,
+                    cloudinit_path: string,
+                    count: int,
+                    name_prefix: string,
+                    timeout_sec: float,
+                    use_spot_instances: bool,
+                    job_result_id: int,
+                    job_id: int) -> ([string], [string]):
+
     """
     Starts up AWS EC2 instances according to the hardware configuration
     and waits until they have booted and are ready to be used.
@@ -111,21 +132,21 @@ def start_instances(cfg: HardwareConfig, timeout_sec: float,
 
     session, client = __get_session_client()
 
-    __check_instance_type(client, cfg.get_instance_type())
-    __check_image_id(client, cfg.get_image_id())
+    __check_instance_type(client, instance_type)
+    __check_image_id(client, image_id)
 
-    if cfg.get_use_spot_instances():
+    if use_spot_instances:
         msg = "EC2 spot instances are not supported in septest just yet"
         raise errors.Ec2Error(msg)
 
     # API Reference:
     # https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ec2.html#EC2.Client.run_instances
     kwargs = {
-        "InstanceType": cfg.get_instance_type(),
-        "MinCount": cfg.get_num_machines(),
-        "MaxCount": cfg.get_num_machines(),
+        "InstanceType": instance_type,
+        "MinCount": count,
+        "MaxCount": count,
         "InstanceInitiatedShutdownBehavior": "terminate",
-        "ImageId": cfg.get_image_id(),
+        "ImageId": image_id,
         "KeyName": C_KEYPAIR_NAME,
         "BlockDeviceMappings": [
             {
@@ -141,7 +162,7 @@ def start_instances(cfg: HardwareConfig, timeout_sec: float,
         },
         "SecurityGroupIds": [C_SECURITY_GROUP_ID],
         "SubnetId": C_SUBNET_F,
-        "UserData": __get_boot_script(),
+        "UserData": __get_boot_script(cloudinit_path),
         "DisableApiTermination": False,
         "IamInstanceProfile": {
             "Arn": C_IAM_ROLE_ARN
@@ -150,7 +171,7 @@ def start_instances(cfg: HardwareConfig, timeout_sec: float,
             "ResourceType": "instance",
             "Tags": [
                 {
-                    "Key": "PerfTest",
+                    "Key": name_prefix,
                     "Value": ""
                 },
                 {
@@ -195,8 +216,8 @@ def start_instances(cfg: HardwareConfig, timeout_sec: float,
             assert len(response["Instances"]) > 0
 
             for instance in response["Instances"]:
-                instance_id = response["Instances"][0]["InstanceId"]
-                ip_address = response["Instances"][0]["PrivateIpAddress"]
+                instance_id = instance["InstanceId"]
+                ip_address = instance["PrivateIpAddress"]
                 instance_ids.append(instance_id)
                 ip_addresses.append(ip_address)
             break
@@ -208,27 +229,11 @@ def start_instances(cfg: HardwareConfig, timeout_sec: float,
     if last_error is not None:
         raise last_error
 
-    # Set a Name tag for each instance
-    for n, instance_id in enumerate(instance_ids, start=1):
-        kwargs = {
-            "DryRun": False,
-            "Resources": [instance_id],
-            "Tags": [
-                {
-                    "Key": "Name",
-                    "Value": f"PerfTest{n:02}"
-                }
-            ]
-        }
-        LOG.debug("About to create a Name tag for instance %s", instance_id)
-        response = client.create_tags(**kwargs)
-        LOG.debug(f"Response of create_tags command:\n{pprint.pformat(response)}")
-
     LOG.info("Started %d machines with the following instance-ids: %s", len(instance_ids), str(instance_ids))
     LOG.info("Private IP addresses assigned: %s", str(ip_addresses))
 
     # Wait for all of the instances to be usable
-    __wait_for_instances_to_be_ready(instance_ids, ip_addresses, timeout_sec)
+    __wait_for_instances_to_be_ready(instance_ids, ip_addresses, timeout_sec, name_prefix, client)
 
     return instance_ids, ip_addresses
 
@@ -286,15 +291,35 @@ def __get_session_client():
     return session, client
 
 
+def is_valid_instance_type(instance_type: string) -> bool:
+    (session, client) = __get_session_client()
+    try:
+        __check_instance_type(client, instance_type)
+        return True
+    except botocore.exceptions.ClientError:
+        return False
+
+
 def __check_instance_type(client, instance_type: string):
     """
     Check that the instance type is valid.
     If not, then a botocore.exceptions.ClientError is thrown with a message
     that the instance type does not exist.
     """
-    LOG.info("Validating the instance type: %s", instance_type)
+    # LOG.info("Validating the instance type: %s", instance_type)
     response = client.describe_instance_types(InstanceTypes=[instance_type])
-    LOG.debug(f"Response of describe_instances command:\n{pprint.pformat(response)}")
+    # LOG.debug(f"Response of describe_instances command:\n{pprint.pformat(response)}")
+
+    assert response["InstanceTypes"][0]["InstanceType"] == instance_type
+
+
+def is_valid_image_id(image_id: string) -> bool:
+    (session, client) = __get_session_client()
+    try:
+        __check_image_id(client, image_id)
+        return True
+    except botocore.exceptions.ClientError:
+        return False
 
 
 def __check_image_id(client, image_id: string):
@@ -306,37 +331,56 @@ def __check_image_id(client, image_id: string):
 
     LOG.info("Validating the imageId: %s", image_id)
     response = client.describe_images(**kwargs)
-    LOG.debug(f"Response of describe_images command:\n{pprint.pformat(response)}")
+    # LOG.debug(f"Response of describe_images command:\n{pprint.pformat(response)}")
 
-    image_name = response["Images"][0]["Name"]
-    LOG.info(f"Using AMI: {image_name} (image-id: {image_id})")
+    image_desc = response["Images"][0]["Description"]
+    LOG.info(f"Using AMI: {image_desc} (image-id: {image_id})")
     # pprint.pp(response)
 
 
-def __get_boot_script() -> string:
+def __get_boot_script(path_str: string) -> string:
     """
-    Returns a base-64 encoded script to run when the machine is first created.
-    This reads the file, encodes it and returns the encoded bytes as a string.
+    Returns contents of a script to run when the machine is first created.
     """
-    cloud_init_path = pathlib.Path(C_CLOUD_INIT_SCRIPT)
-    if not cloud_init_path.exists():
-        msg = f"Could not find the local cloud-init script file at: {cloud_init_path.resolve()}"
-        raise errors.Ec2Error(msg)
+    cloud_init_path = pathlib.Path(path_str)
+    assert cloud_init_path.exists()
 
+    LOG.debug(f"Reading cloud-init script from path: {path_str}")
     txt = cloud_init_path.read_text()
+    LOG.debug(f"Cloud-init script is {len(txt)} bytes long")
 
-    encoded_bytes = base64.b64encode(txt.encode("utf-8"))
-    encoded_str = encoded_bytes.decode()
+    assert len(txt) > 0
+    assert len(txt) < 16384     # 16 KB AWS limit
 
-    assert len(encoded_str) > 0
-    assert len(encoded_str) < 16384     # 16 KB AWS limit
-
-    return encoded_str
+    return txt
 
 
-def __wait_for_instances_to_be_ready(instance_ids: [string], ip_addresses: [string], timeout_sec: float):
+def __set_instance_names(instance_ids: [string], name_prefix: string, client) -> None:
+    """
+    Sets the 'name' tag of each instance using the prefix and a unique incrementing number.
+    """
+    # Set a Name tag for each instance
+    for n, instance_id in enumerate(instance_ids, start=1):
+        kwargs = {
+            "DryRun": False,
+            "Resources": [instance_id],
+            "Tags": [
+                {
+                    "Key": "Name",
+                    "Value": f"{name_prefix}{n:02}"
+                }
+            ]
+        }
+        LOG.debug("About to create a Name tag for instance %s", instance_id)
+        response = client.create_tags(**kwargs)
+        LOG.debug(f"Response of create_tags command:\n{pprint.pformat(response)}")
+
+
+def __wait_for_instances_to_be_ready(instance_ids: [string], ip_addresses: [string], timeout_sec: float,
+                                     name_prefix: string = None, client=None):
     """
     Waits for the set of instances to be runnable, SSH-able, and finished booting.
+    If name_prefix and client are set then these instances are named when they are ready.
     Throws an errors.Ec2InstanceTimeoutError if the timeout is exceeded.
     """
 
@@ -349,21 +393,24 @@ def __wait_for_instances_to_be_ready(instance_ids: [string], ip_addresses: [stri
     # First we need the EC2 instances to change from the pending to the runnable state.
     # This means that they have been created and are either booting or running.
     op_start = current_time
-    __wait_for_instances_to_be_running(instance_ids, time_left)
+    __wait_for_instances_to_be_running(instance_ids, time_left, timeout_sec)
     current_time = time.time()
     LOG.info("All EC2 instances have transitioned from pending to running in %.1f seconds", current_time - op_start)
+
+    if name_prefix is not None and client is not None:
+        __set_instance_names(instance_ids, name_prefix, client)
 
     # Now we need to wait for the machines to listen for SSH connections
     time_left = end_time - current_time
     op_start = current_time
-    __wait_for_instances_to_accept_ssh(instance_ids, ip_addresses, time_left)
+    __wait_for_instances_to_accept_ssh(instance_ids, ip_addresses, time_left, timeout_sec)
     current_time = time.time()
     LOG.info("All EC2 instances have booted enough to accept SSH connections in %.1f seconds", current_time - op_start)
 
     # Now we need to wait for the machines to have completed the cloud-init script.
     time_left = end_time - current_time
     op_start = current_time
-    __wait_for_instances_to_finish_booting(instance_ids, ip_addresses, time_left)
+    __wait_for_instances_to_finish_booting(instance_ids, ip_addresses, time_left, timeout_sec)
     current_time = time.time()
     time_left = end_time - current_time
     LOG.info("All EC2 instances have completed running their cloud-init script in %.1f seconds",
@@ -373,7 +420,7 @@ def __wait_for_instances_to_be_ready(instance_ids: [string], ip_addresses: [stri
     LOG.info("All instances are now ready to be used. Total startup time: %.1f seconds", timeout_sec - time_left)
 
 
-def __wait_for_instances_to_be_running(instance_ids: [string], timeout_sec: float):
+def __wait_for_instances_to_be_running(instance_ids: [string], timeout_sec: float, total_time: float):
     """
     Waits for the newly started instances to transition to a running state.
     Throws an errors.Ec2InstanceTimeoutError if the timeout is exceeded.
@@ -394,7 +441,7 @@ def __wait_for_instances_to_be_running(instance_ids: [string], timeout_sec: floa
     current_time = time.time()
     end_time = current_time + timeout_sec
 
-    # Wait 1 seconds to start with before issuing the first request
+    # Wait 1 second to start with before issuing the first request
     time.sleep(1.0)
     logged_response = False
     attempts = 0
@@ -428,12 +475,23 @@ def __wait_for_instances_to_be_running(instance_ids: [string], timeout_sec: floa
         current_time = time.time()
 
     # We timed out
-    msg = f"Timed out waiting for {len(instance_ids)} VM instance(s) to be created and enter the 'running' state"
+    msg = f"Timed out waiting for {len(instance_ids)} VM instance(s) to be created and enter the 'running' state. " + \
+          f"Total time waited = {str(total_time)} seconds."
     LOG.error(msg)
+
+    # Terminate the machines here as we haven't passed the instance_ids back to the caller yet.
+    try:
+        terminate_instances(instance_ids)
+    except botocore.exceptions.ClientError:
+        pass
+    except AssertionError:
+        pass
+
     raise errors.Ec2InstanceTimeoutError(msg, instance_ids)
 
 
-def __wait_for_instances_to_accept_ssh(instance_ids: [string], ip_addresses: [string], time_left: float):
+def __wait_for_instances_to_accept_ssh(instance_ids: [string], ip_addresses: [string], time_left: float,
+                                       total_time: float):
     """
     Waits for the newly started instances to accept SSH connections.
     Throws an errors.Ec2InstanceTimeoutError if the timeout is exceeded.
@@ -485,8 +543,18 @@ def __wait_for_instances_to_accept_ssh(instance_ids: [string], ip_addresses: [st
         if current_time >= end_time:
             # We timed out
             msg = f"Timed out waiting for instance at {ip_addr} to accept SSH connections. " + \
+                  f"Total time waited = {str(total_time)} seconds. " + \
                   f"Last error message: {last_error}" if last_error is not None else ""
             LOG.error(msg)
+
+            # Terminate the machines here as we haven't passed the instance_ids back to the caller yet.
+            try:
+                terminate_instances(instance_ids)
+            except botocore.exceptions.ClientError:
+                pass
+            except AssertionError:
+                pass
+
             raise errors.Ec2InstanceTimeoutError(msg, instance_ids)
 
         # Go on to the next host
@@ -494,7 +562,8 @@ def __wait_for_instances_to_accept_ssh(instance_ids: [string], ip_addresses: [st
     # All hosts are reachable over SSH!
 
 
-def __wait_for_instances_to_finish_booting(instance_ids: [string], ip_addresses: [string], time_left: float):
+def __wait_for_instances_to_finish_booting(instance_ids: [string], ip_addresses: [string], time_left: float,
+                                           total_time: float):
     """
     Waits for the newly started instances to complete their boot-up cloud-init script.
     Throws an errors.Ec2InstanceTimeoutError if the timeout is exceeded.
@@ -546,8 +615,18 @@ def __wait_for_instances_to_finish_booting(instance_ids: [string], ip_addresses:
         if current_time >= end_time:
             # We timed out
             msg = f"Timed out waiting for instance at {ip_addr} to complete executing its cloud-init script. " + \
+                  f"Total time waited = {str(total_time)} seconds. " + \
                   f"Last error message: {last_error}" if last_error is not None else ""
             LOG.error(msg)
+
+            # Terminate the machines here as we haven't passed the instance_ids back to the caller yet.
+            try:
+                terminate_instances(instance_ids)
+            except botocore.exceptions.ClientError:
+                pass
+            except AssertionError:
+                pass
+
             raise errors.Ec2InstanceTimeoutError(msg, instance_ids)
 
         # Go on to the next host

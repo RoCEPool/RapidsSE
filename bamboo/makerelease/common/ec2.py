@@ -80,8 +80,6 @@ C_KEYPAIR_NAME = "aws_rapidsse"
 #
 
 # ---------- Other Constants -------------
-# C_PROJ_ROOT = ".."
-# C_CLOUD_INIT_SCRIPT = f"{C_PROJ_ROOT}/seth/bamboo/aws/cloud-init-downloader.sh"
 C_CLOUD_INIT_COMPLETE = "/tmp/cloud-init-complete"
 C_SSH_CONNECT_TIMEOUT = 5  # seconds
 C_MSG_PERIOD = 5  # Print updates every 5 seconds
@@ -118,7 +116,8 @@ def start_instances(instance_type: string,
                     cloudinit_path: string,
                     count: int,
                     name_prefix: string,
-                    timeout_sec: float) -> ([string], [string]):
+                    timeout_sec: float,
+                    use_spot_instances: bool) -> ([string], [string]):
     """
     Starts up AWS EC2 instances according to the hardware configuration
     and waits until they have booted and are ready to be used.
@@ -131,6 +130,10 @@ def start_instances(instance_type: string,
 
     __check_instance_type(client, instance_type)
     __check_image_id(client, image_id)
+
+    if use_spot_instances:
+        msg = "EC2 spot instances are not supported in septest just yet"
+        raise errors.Ec2Error(msg)
 
     # API Reference:
     # https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ec2.html#EC2.Client.run_instances
@@ -218,7 +221,7 @@ def start_instances(instance_type: string,
     LOG.info("Private IP addresses assigned: %s", str(ip_addresses))
 
     # Wait for all of the instances to be usable
-    __wait_for_instances_to_be_ready(instance_ids, ip_addresses, timeout_sec)
+    __wait_for_instances_to_be_ready(instance_ids, ip_addresses, timeout_sec, name_prefix, client)
 
     return instance_ids, ip_addresses
 
@@ -319,14 +322,13 @@ def __check_image_id(client, image_id: string):
     # LOG.debug(f"Response of describe_images command:\n{pprint.pformat(response)}")
 
     image_desc = response["Images"][0]["Description"]
-    LOG.info(f"Found AMI: {image_desc} (image-id: {image_id})")
+    LOG.info(f"Using AMI: {image_desc} (image-id: {image_id})")
     # pprint.pp(response)
 
 
 def __get_boot_script(path_str: string) -> string:
     """
-    Returns a base-64 encoded script to run when the machine is first created.
-    This reads the file, encodes it and returns the encoded bytes as a string.
+    Returns contents of a script to run when the machine is first created.
     """
     cloud_init_path = pathlib.Path(path_str)
     assert cloud_init_path.exists()
@@ -476,7 +478,8 @@ def __wait_for_instances_to_be_running(instance_ids: [string], timeout_sec: floa
     raise errors.Ec2InstanceTimeoutError(msg, instance_ids)
 
 
-def __wait_for_instances_to_accept_ssh(instance_ids: [string], ip_addresses: [string], time_left: float, total_time: float):
+def __wait_for_instances_to_accept_ssh(instance_ids: [string], ip_addresses: [string], time_left: float,
+                                       total_time: float):
     """
     Waits for the newly started instances to accept SSH connections.
     Throws an errors.Ec2InstanceTimeoutError if the timeout is exceeded.
@@ -547,7 +550,8 @@ def __wait_for_instances_to_accept_ssh(instance_ids: [string], ip_addresses: [st
     # All hosts are reachable over SSH!
 
 
-def __wait_for_instances_to_finish_booting(instance_ids: [string], ip_addresses: [string], time_left: float, total_time: float):
+def __wait_for_instances_to_finish_booting(instance_ids: [string], ip_addresses: [string], time_left: float,
+                                           total_time: float):
     """
     Waits for the newly started instances to complete their boot-up cloud-init script.
     Throws an errors.Ec2InstanceTimeoutError if the timeout is exceeded.
