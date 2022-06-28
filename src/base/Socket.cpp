@@ -109,7 +109,7 @@ Object* Socket::pRecvObject(void)
   
   RASSERT(! pReceivedObject());
 
-  L_ReEnter:
+  static i8 nPipeline = 0;
 
   bool bLowMem = AM::MEMORY::bIsRunningLow();
   if (bLowMem)
@@ -144,46 +144,51 @@ Object* Socket::pRecvObject(void)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // reject job is a special case
+  // receive reject body into m_pRejectJob
 
-  // ...
+  if (eClass == CN_REJECTJOB) {
+
+    // copy the object header into the LowBuffer
+    MemLib::vCopy(m_pRejectJob,m_pObject,sizeof(Object),eClass);
+
+    // recv rest of the buffer into m_pRejectJob
+    void* pRejectJob = aAdd<void*>(m_pRejectJob,sizeof(Object));
+    i8 nRemainingBytes = gxaSizeHeap[eClass].m_nClassSize - sizeof(Object);
+
+    SysCall oSysCall;
+
+    bool bResult = bBytesRecv(pRejectJob,nRemainingBytes,oSysCall);
+    UNUSED(bResult);
+
+    vTrace("Recvd RejectJob\n"_Stz);
+
+    // handle the received reject job
+    AM::JOB::vRecvdReject(m_pRejectJob);
+
+    return nullptr;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // HACK : To simulate lowMemory
+//  if (nPipeline == 0 && eClass == CN_JOB) {
+//    bLowMem = true;
+//    nPipeline++;
+//  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // receive object normally (or acceptable objects under low memory)
 
-  if (! bLowMem || ! gxaSizeHeap[eClass].m_bLowMemoryDiscard) {
+//  if (! bLowMem || ! gxaSizeHeap[eClass].m_bLowMemoryDiscard) {
+//
+//    Object* pReceivedObject = pObjectRecv(eClass);
+//
+//    vSuccess(true);
+//    return pReceivedObject;
+//  }
+
+  if (! bLowMem ) {
 
     Object* pReceivedObject = pObjectRecv(eClass);
-
-//    if (eClass == CN_JOB) {
-//      Job* pJob = _pJob(pReceivedObject);
-//      vTrace("Recvd Job: %s\n"_Stz, pJob->szJobNm());
-//
-//      if (pJob->szJobNm()->bSame("pipeline"_Stz)) {
-//        m_pRejectJob->vOriginId(pJob->tOriginId());   // NOT RIGHT
-//        m_pRejectJob->vError(EC_LOW_MEMORY);
-//        delete pJob;
-//
-//        // send a rejectJob to originating node
-//        AM::JOB::vSendReject(m_pRejectJob);
-//
-//        // go back to receive
-//        goto L_ReEnter;
-//      }
-//
-//    }
-
-    if (eClass == CN_REJECTJOB) {
-
-      RejectJob* pRejectJob = _pRejectJob(pReceivedObject);
-      vTrace("Recvd RejectJob\n"_Stz);
-
-      // handle the received reject job
-      AM::JOB::vRecvdReject(m_pRejectJob);
-
-      // go back to receive
-      goto L_ReEnter;
-    }
 
     vSuccess(true);
     return pReceivedObject;
@@ -333,11 +338,11 @@ Object* Socket::pObjectRecv_lowmem(eCN eClass)
   
   SysCall oSysCall;
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // receive and discard the body of the object (low memory condition)
-
   if (AM::SHOW::bLowMem_Recv())
     vTrace("Socket::pObjectRecv_lowmem : LOW MEMORY\n"_Stz);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // receive and discard the body of the object (low memory condition)
 
   void* aLowBuff = m_aLowBuff;
 
@@ -350,7 +355,25 @@ Object* Socket::pObjectRecv_lowmem(eCN eClass)
 
   bool bResult = bBytesRecv(aLowBody,nRemainingBytes,oSysCall);
   UNUSED(bResult);
-    
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // JOB receieved under low memory needs to send a reject back
+
+  if (eClass == CN_JOB) {
+
+    Job* pJob = _pJob(aLowBuff);
+    vTrace("Recvd Job under lowMem: %s\n"_Stz, Job::szGetJobNm(pJob));
+
+    m_pRejectJob->vOriginId(Job::tGetOriginId(pJob));
+    m_pRejectJob->vError(EC_LOW_MEMORY);
+
+    // send a rejectJob to originating node
+    AM::JOB::vSendReject(m_pRejectJob);
+
+    return nullptr;
+
+  }
+
   return nullptr;
 }
 
