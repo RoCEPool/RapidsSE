@@ -75,6 +75,8 @@ public:
   void vAM_MetricsDemonJobIdStore(void);
   void vAM_MonDemonJobIdFetch(void);
   void vAM_MonDemonJobIdStore(void);
+  void vAM_NodeMonDemonJobIdStore(void);
+  void vAM_NodeMonDemonJobIdFetch(void);
   void vAM_PageOutDemonJobIdFetch(void);
   void vAM_PageOutDemonJobIdStore(void);
   void vAM_ReaperDemonJobIdFetch(void);
@@ -1251,6 +1253,7 @@ void vDdlLockAssertNone(void);
   void vNodeIsThisNode(void);
   void vNodeName(void);
   void vNodeNew(void);
+  void vNodeMonitorDummyCall(void);
   void vNodeId(void);
   void vNodePartitions(void);
   void vNodePort(void);
