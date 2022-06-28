@@ -1090,6 +1090,17 @@ L_Boolean:
   }
 
   // ---- ---- ---- ---- ---- ---- ---- ----
+  // possible negative form of boolean
+
+  if (C_MINUS_SIGN == cCurChr) {
+    vSIGN_optional();
+    if (bIS_DIGIT()) {
+      vBOOLEAN_NUMERIC();
+      goto L_Boolean_recognised;
+    }
+  }
+
+  // ---- ---- ---- ---- ---- ---- ---- ----
   // unrecognisable boolean form
   
   vFIELD_ERROR(EC_CSV_BOOLEAN_INVALID);

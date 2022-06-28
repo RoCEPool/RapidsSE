@@ -44,11 +44,11 @@ rows:
   ('bol_col8', 'BOOLEAN', 0, 0, true, false)
 
 load bolTbl "../DATA/Datums/boolean.csv" ;
-failure contains: '19 invalid'
+failure contains: '18 invalid'
 
 // check no of rows
 tableScan bolTbl;
-rows: 101
+rows: 102
 
 /*
 partitionScan bolTbl 0;
@@ -135,7 +135,7 @@ success
 
 // check no of rows
 tableScan bolTbl;
-rows: 101
+rows: 102
 
 /*
 partitionScan bolTbl 0;
