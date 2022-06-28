@@ -269,10 +269,146 @@ void PoolHelper::vObjectSummary(void)
     
     vTrace("  %20s %-6lld \n"_Stz, aCN[eClass], iCountObjects[eClass]);
   }
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+
   i8 nBlockSize =0;
+
+  nBlockSize = C_SIZE_TINY_OBJECT;
+  MagLib::vByteMag(nBlockSize,sMagHeap);
+  AM::pHeaps()->Persistent.m_pTiny->vAnalyse(iCountObjects);
+  nObjInHeap = 0;
+
+  vTrace("\n"_Stz);
+  vTrace("  Persistent Tiny Heap %s Object Summary:\n"_Stz,sMagHeap.szStz());
+  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
+    eCN eClass = (eCN)i_Index;
+
+    i8 nCntObj = iCountObjects[eClass];
+    if (! nCntObj)
+      continue;
+
+    nObjInHeap    += nCntObj;
+    i8 nObjSize    = gxaSizeHeap[eClass].m_nClassSize;
+    i8 nSumObjSize = nCntObj * nObjSize;
+    i8 iPctUse     = (nObjSize * 100) / nBlockSize;
+
+    MagLib::vByteMag(nSumObjSize,sMagObj);
+
+    if (nObjSize < C_SIZE_TINY_OBJECT / 2)
+      sFlag = " *half again!"_Stz;
+    else
+      sFlag = ""_Stz;
+
+    vTrace("  %20s %-6lld (size %7lldB sum %6s use %2lld%%) %s\n"_Stz,
+           aCN[eClass],nCntObj,nObjSize,sMagObj.szStz(),iPctUse,sFlag.szStz());
+  }
+  MagLib::vByteMag(nObjInHeap*nBlockSize,sMagBlocks);
+  vTrace("  [%lld objects ; %s of blocks]\n"_Stz,nObjInHeap,sMagBlocks.szStz());
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  nBlockSize = C_SIZE_SMALL_OBJECT;
+  MagLib::vByteMag(nBlockSize,sMagHeap);
+  AM::pHeaps()->Persistent.m_pSmall->vAnalyse(iCountObjects);
+  nObjInHeap = 0;
+
+  vTrace("\n"_Stz);
+  vTrace("  Persistent Small Heap %s Object Summary:\n"_Stz,sMagHeap.szStz());
+  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
+    eCN eClass = (eCN)i_Index;
+
+    i8 nCntObj = iCountObjects[eClass];
+    if (! nCntObj)
+      continue;
+
+    nObjInHeap    += nCntObj;
+    i8 nObjSize    = gxaSizeHeap[eClass].m_nClassSize;
+    i8 nSumObjSize = nCntObj * nObjSize;
+    i8 iPctUse     = (nObjSize * 100) / nBlockSize;
+
+    MagLib::vByteMag(nSumObjSize,sMagObj);
+
+    if (nObjSize < C_SIZE_TINY_OBJECT)
+      sFlag = " *into tiny"_Stz;
+    else
+      sFlag = ""_Stz;
+
+    vTrace("  %20s %-6lld (size %7lldB sum %6s use %2lld%%) %s\n"_Stz,
+           aCN[eClass],nCntObj,nObjSize,sMagObj.szStz(),iPctUse,sFlag.szStz());
+  }
+  MagLib::vByteMag(nObjInHeap*nBlockSize,sMagBlocks);
+  vTrace("  [%lld objects ; %s of blocks]\n"_Stz,nObjInHeap,sMagBlocks.szStz());
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  nBlockSize = C_SIZE_MEDIUM_OBJECT;
+  MagLib::vByteMag(nBlockSize,sMagHeap);
+  AM::pHeaps()->Persistent.m_pMedium->vAnalyse(iCountObjects);
+  nObjInHeap = 0;
+
+  vTrace("\n"_Stz);
+  vTrace("  Persistent Medium Heap %s Object Summary:\n"_Stz,sMagHeap.szStz());
+  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
+    eCN eClass = (eCN)i_Index;
+
+    i8 nCntObj = iCountObjects[eClass];
+    if (! nCntObj)
+      continue;
+
+    nObjInHeap    += nCntObj;
+    i8 nObjSize    = gxaSizeHeap[eClass].m_nClassSize;
+    i8 nSumObjSize = nCntObj * nObjSize;
+    i8 iPctUse     = (nObjSize * 100) / nBlockSize;
+
+    MagLib::vByteMag(nSumObjSize,sMagObj);
+
+    if (nObjSize < C_SIZE_SMALL_OBJECT)
+      sFlag = " *into small"_Stz;
+    else
+      sFlag = ""_Stz;
+
+    vTrace("  %20s %-6lld (size %7lldB sum %6s use %2lld%%) %s\n"_Stz,
+           aCN[eClass],nCntObj,nObjSize,sMagObj.szStz(),iPctUse,sFlag.szStz());
+  }
+  MagLib::vByteMag(nObjInHeap*nBlockSize,sMagBlocks);
+  vTrace("  [%lld objects ; %s of blocks]\n"_Stz,nObjInHeap,sMagBlocks.szStz());
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  nBlockSize = C_SIZE_LARGE_OBJECT;
+  MagLib::vByteMag(nBlockSize,sMagHeap);
+  AM::pHeaps()->Persistent.m_pLarge->vAnalyse(iCountObjects);
+  nObjInHeap = 0;
+
+  vTrace("\n"_Stz);
+  vTrace("  Persistent Large Heap %s Object Summary:\n"_Stz,sMagHeap.szStz());
+  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
+    eCN eClass = (eCN)i_Index;
+
+    i8 nCntObj = iCountObjects[eClass];
+    if (! nCntObj)
+      continue;
+
+    nObjInHeap    += nCntObj;
+    i8 nObjSize    = gxaSizeHeap[eClass].m_nClassSize;
+    i8 nSumObjSize = nCntObj * nObjSize;
+    i8 iPctUse     = (nObjSize * 100) / nBlockSize;
+
+    MagLib::vByteMag(nSumObjSize,sMagObj);
+
+    if (nObjSize < C_SIZE_MEDIUM_OBJECT)
+      sFlag = " *into medium"_Stz;
+    else
+      sFlag = ""_Stz;
+
+    vTrace("  %20s %-6lld (size %7lldB sum %6s use %2lld%%) %s\n"_Stz,
+           aCN[eClass],nCntObj,nObjSize,sMagObj.szStz(),iPctUse,sFlag.szStz());
+  }
+  MagLib::vByteMag(nObjInHeap*nBlockSize,sMagBlocks);
+  vTrace("  [%lld objects ; %s of blocks]\n"_Stz,nObjInHeap,sMagBlocks.szStz());
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   nBlockSize = C_SIZE_TINY_OBJECT;
   MagLib::vByteMag(nBlockSize,sMagHeap);
@@ -436,6 +572,58 @@ void PoolHelper::vObjectSnapshot(ObjectSnapshot* pPoolSnapshot)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  AM::pHeaps()->Persistent.m_pTiny->vAnalyse(iCountObjects);
+
+  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
+    eCN eClass = (eCN)i_Index;
+
+    if (iCountObjects[eClass] == 0)
+      continue;
+
+    pPoolSnapshot->m_nObjects[eClass] += iCountObjects[eClass];
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  AM::pHeaps()->Persistent.m_pSmall->vAnalyse(iCountObjects);
+
+  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
+    eCN eClass = (eCN)i_Index;
+
+    if (iCountObjects[eClass] == 0)
+      continue;
+
+    pPoolSnapshot->m_nObjects[eClass] += iCountObjects[eClass];
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  AM::pHeaps()->Persistent.m_pMedium->vAnalyse(iCountObjects);
+
+  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
+    eCN eClass = (eCN)i_Index;
+
+    if (iCountObjects[eClass] == 0)
+      continue;
+
+    pPoolSnapshot->m_nObjects[eClass] += iCountObjects[eClass];
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  AM::pHeaps()->Persistent.m_pLarge->vAnalyse(iCountObjects);
+
+  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
+    eCN eClass = (eCN)i_Index;
+
+    if (iCountObjects[eClass] == 0)
+      continue;
+
+    pPoolSnapshot->m_nObjects[eClass] += iCountObjects[eClass];
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   AM::pHeaps()->Transient.m_pTiny->vAnalyse(iCountObjects);
 
@@ -494,7 +682,11 @@ void PoolHelper::vObjectSnapshot(ObjectSnapshot* pPoolSnapshot)
 void PoolHelper::vObjectValidate(void)
 {
   _static_
-  
+
+  AM::pHeaps()->Persistent.m_pTiny->vValidateContents();
+  AM::pHeaps()->Persistent.m_pSmall->vValidateContents();
+  AM::pHeaps()->Persistent.m_pMedium->vValidateContents();
+  AM::pHeaps()->Persistent.m_pLarge->vValidateContents();
   AM::pHeaps()->Transient.m_pTiny->vValidateContents();
   AM::pHeaps()->Transient.m_pSmall->vValidateContents();
   AM::pHeaps()->Transient.m_pMedium->vValidateContents();
@@ -564,25 +756,25 @@ i8 PoolHelper::iPoolFree(void)
   i8 iTransientLarge =
      AM::pHeaps()->Transient.m_pLarge->nFreeChunks()  * C_SIZE_LARGE_OBJECT;
   
-//  i8 iPersistentTiny =
-//     AM::pHeaps()->Persistent.m_pTiny->nFreeChunks() * C_SIZE_TINY_OBJECT;
-//
-//  i8 iPersistentSmall =
-//     AM::pHeaps()->Persistent.m_pSmall->nFreeChunks() * C_SIZE_SMALL_OBJECT;
-//
-//  i8 iPersistentMedium =
-//     AM::pHeaps()->Persistent.m_pMedium->nFreeChunks() * C_SIZE_MEDIUM_OBJECT;
-//
-//  i8 iPersistentLarge =
-//     AM::pHeaps()->Persistent.m_pLarge->nFreeChunks() * C_SIZE_LARGE_OBJECT;
+  i8 iPersistentTiny =
+     AM::pHeaps()->Persistent.m_pTiny->nFreeChunks() * C_SIZE_TINY_OBJECT;
+
+  i8 iPersistentSmall =
+     AM::pHeaps()->Persistent.m_pSmall->nFreeChunks() * C_SIZE_SMALL_OBJECT;
+
+  i8 iPersistentMedium =
+     AM::pHeaps()->Persistent.m_pMedium->nFreeChunks() * C_SIZE_MEDIUM_OBJECT;
+
+  i8 iPersistentLarge =
+     AM::pHeaps()->Persistent.m_pLarge->nFreeChunks() * C_SIZE_LARGE_OBJECT;
 
   
   i8 iTotalFree = iTransientTiny
                     + iTransientSmall
                     + iTransientMedium
                     + iTransientLarge
-//         + iPersistentTiny
-//         + iPersistentSmall + iPersistentMedium + iPersistentLarge
+         + iPersistentTiny
+         + iPersistentSmall + iPersistentMedium + iPersistentLarge
   ;
   
   return iTotalFree;
@@ -641,29 +833,29 @@ void PoolHelper::vRegionSummary()
          AM::pHeaps()->Transient.m_pLarge->nCurrAllocated(),
          AM::pHeaps()->Transient.m_pLarge->nFreeChunks());
   
-//  vTrace((char*)"  Persistent TinyHeap   (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
-//         sMagTiny.azChar(),
-//         AM::pHeaps()->Persistent.m_pTiny->nBufferCount(),
-//         AM::pHeaps()->Persistent.m_pTiny->nCurrAllocated(),
-//         AM::pHeaps()->Persistent.m_pTiny->nFreeChunks());
-//
-//  vTrace((char*)"  Persistent SmallHeap  (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
-//         sMagSmall.azChar(),
-//         AM::pHeaps()->Persistent.m_pSmall->nBufferCount(),
-//         AM::pHeaps()->Persistent.m_pSmall->nCurrAllocated(),
-//         AM::pHeaps()->Persistent.m_pSmall->nFreeChunks());
-//
-//  vTrace((char*)"  Persistent MediumHeap (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
-//         sMagMedium.azChar(),
-//         AM::pHeaps()->Persistent.m_pMedium->nBufferCount(),
-//         AM::pHeaps()->Persistent.m_pMedium->nCurrAllocated(),
-//         AM::pHeaps()->Persistent.m_pMedium->nFreeChunks());
-//
-//  vTrace((char*)"  Persistent LargeHeap  (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
-//         sMagLarge.azChar(),
-//         AM::pHeaps()->Persistent.m_pLarge->nBufferCount(),
-//         AM::pHeaps()->Persistent.m_pLarge->nCurrAllocated(),
-//         AM::pHeaps()->Persistent.m_pLarge->nFreeChunks());
+  vTrace("  Persistent TinyHeap   (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+         sMagTiny.azChar(),
+         AM::pHeaps()->Persistent.m_pTiny->nBufferCount(),
+         AM::pHeaps()->Persistent.m_pTiny->nCurrAllocated(),
+         AM::pHeaps()->Persistent.m_pTiny->nFreeChunks());
+
+  vTrace("  Persistent SmallHeap  (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+         sMagSmall.azChar(),
+         AM::pHeaps()->Persistent.m_pSmall->nBufferCount(),
+         AM::pHeaps()->Persistent.m_pSmall->nCurrAllocated(),
+         AM::pHeaps()->Persistent.m_pSmall->nFreeChunks());
+
+  vTrace("  Persistent MediumHeap (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+         sMagMedium.azChar(),
+         AM::pHeaps()->Persistent.m_pMedium->nBufferCount(),
+         AM::pHeaps()->Persistent.m_pMedium->nCurrAllocated(),
+         AM::pHeaps()->Persistent.m_pMedium->nFreeChunks());
+
+  vTrace("  Persistent LargeHeap  (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+         sMagLarge.azChar(),
+         AM::pHeaps()->Persistent.m_pLarge->nBufferCount(),
+         AM::pHeaps()->Persistent.m_pLarge->nCurrAllocated(),
+         AM::pHeaps()->Persistent.m_pLarge->nFreeChunks());
 }
 
 /*----------------------------------------------------------------------------*/
