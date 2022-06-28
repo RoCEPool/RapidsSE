@@ -170,10 +170,12 @@ Object* Socket::pRecvObject(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // HACK : To simulate lowMemory
-//  if (nPipeline == 0 && eClass == CN_JOB) {
-//    bLowMem = true;
+//  if (eClass == CN_JOB) {
 //    nPipeline++;
+//    if (nPipeline == 4)
+//      bLowMem = true;
 //  }
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // receive object normally (or acceptable objects under low memory)
@@ -190,6 +192,10 @@ Object* Socket::pRecvObject(void)
 
     Object* pReceivedObject = pObjectRecv(eClass);
 
+//    if (eClass == CN_JOB) {
+//      Job* pJob = _pJob(pReceivedObject);
+//      vTrace("Recvd Job %s : %lld\n"_Stz, Job::szJobNm(pJob), nPipeline);
+//    }
     vSuccess(true);
     return pReceivedObject;
   }
@@ -362,9 +368,9 @@ Object* Socket::pObjectRecv_lowmem(eCN eClass)
   if (eClass == CN_JOB) {
 
     Job* pJob = _pJob(aLowBuff);
-    vTrace("Recvd Job under lowMem: %s\n"_Stz, Job::szGetJobNm(pJob));
+    vTrace("Recvd Job under lowMem: %s\n"_Stz, Job::szJobNm(pJob));
 
-    m_pRejectJob->vOriginId(Job::tGetOriginId(pJob));
+    m_pRejectJob->vOriginId(Job::tOriginId(pJob));
     m_pRejectJob->vError(EC_LOW_MEMORY);
 
     // send a rejectJob to originating node

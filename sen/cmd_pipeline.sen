@@ -223,63 +223,14 @@
 /* org_ beg */    [job]:broadcast
 /* org_ beg */  [task].wait
 /* org_ beg */
-
-
-
 /* org_ beg */  [job].rejected@ if
 /* org_ beg */    [args].distJob if
-/* org_ beg */      "pipeline" "origin"
-/* org_ beg */        "org_ beg" "begun rejected"                  [job].trace
+/* org_ beg */       "pipeline" "origin"
+/* org_ beg */        "org_ beg" "begin rejected"                  [job].trace
 /* org_ beg */    then
-/* org_ beg */
-/* org_ ovr */  // - - - - - - - - - - - - - - -
-/* org_ ovr */  // pipeline becomes ordinary job
-/* org_ ovr */  // - - - - - - - - - - - - - - -
-/* org_ ovr */  [job].removeOriginator
-/* org_ ovr */  [job].assertOrdinary
-/* org_ ovr */  [args].distJob if
-/* org_ ovr */    "pipeline" "origin"
-/* org_ ovr */      "org_ ovr" "lst ordinary again"                  [job].trace
-/* org_ ovr */  then
-/* org_ ovr */
-/* org_ ovr */
-/* org_ ovr */  [ddlLock].testDrop
-/* org_ ovr */  ListedJob[].assertNoRef
-/* org_ ovr */
-/* org_ ovr */  [args].distJob if
-/* org_ ovr */    "pipeline" "origin"
-/* org_ ovr */      "org_ ovr" "retiring as origin..."               [job].trace
-/* org_ ovr */  then
-/* org_ ovr */
-/* org_ ovr */  Path[].discardAll
-/* org_ ovr */  [task].grabLock
-/* org_ ovr */  [job].addExited
-/* org_ org */
-/* org_ ovr */    "<signalParent>" [job].tagSet@ tagSet.hasName if
-/* org_ org */
-/* org_ org */      [args].distJob if
-/* org_ org */        "pipeline" "origin"
-/* org_ org */        "org_ org" "WAIT signalling parent"       [job].trace
-/* org_ org */      then
-/* org_ org */
-/* org_ ovr */      [job].updateParent assert
-/* org_ ovr */      [job].signalParent
-/* org_ ovr */    then
-/* org_ ovr *
-/* org_ ovr */    [args].distJob if
-/* org_ ovr */      "pipeline" "origin"
-/* org_ ovr */        "org_ ovr" "signalled..."                  [job].trace
-/* org_ ovr */    then
-/* org_ ovr */
-/* org_ ovr */    [task].retire
-/* org_ ovr */
-/* org_ ovr */  HAZARD
+/* org_ beg */    [job]:handleReject
 /* org_ beg */  then
 /* org_ beg */
-
-
-
-
 /* org_ beg */  [job].tscBegun
 
 /* ---- --- */  // <<< bgn <<< bgn <<< bgn <<< bgn <<< bgn <<< bgn <<< bgn <<<
@@ -308,6 +259,14 @@
 /* org_ exe */    [grid].knownNodes [task].acksRemaining!
 /* org_ exe */    STD_NOWAIT_TAG "execute" api::forkChild2PC discard
 /* org_ exe */  [task].wait
+/* org_ exe */
+/* org_ exe */  [job].rejected@ if
+/* org_ exe */    [args].distJob if
+/* org_ exe */       "pipeline" "origin"
+/* org_ exe */        "org_ exe" "execute rejected"                  [job].trace
+/* org_ exe */    then
+/* org_ exe */    [job]:handleReject
+/* org_ exe */  then
 /* org_ exe */
 /* org_ exe */  [job].tscExecuted
 /* org_ exe */
@@ -338,6 +297,14 @@
 /* org_ end */    [grid].knownNodes [task].acksRemaining!
 /* org_ end */    STD_NOWAIT_TAG "end" api::forkChild2PC discard
 /* org_ end */  [task].wait
+/* org_ end */
+/* org_ end */  [job].rejected@ if
+/* org_ end */    [args].distJob if
+/* org_ end */       "pipeline" "origin"
+/* org_ end */        "org_ exe" "end rejected"                  [job].trace
+/* org_ end */    then
+/* org_ end */    [job]:handleReject
+/* org_ end */  then
 /* org_ end */
 /* org_ end */  [job].tscEnded
 /* org_ end */

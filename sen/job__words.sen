@@ -360,6 +360,55 @@
   node_I[].delete
 ;
 
+/*----------------------------------------------------------------------------*/
+/* handle a reject on the originating job                                     */
+/*----------------------------------------------------------------------------*/
+: [job]:handleReject ( -- )
+
+  // - - - - - - - - - - - - - - -
+  // pipeline becomes ordinary job
+  // - - - - - - - - - - - - - - -
+  [job].removeOriginator
+  //[job].assertOrdinary
+  [args].distJob if
+    "pipeline" "origin"
+      "org_ ovr" "lst ordinary again"                  [job].trace
+  then
+
+
+  [ddlLock].testDrop
+  ListedJob[].assertNoRef
+
+  [args].distJob if
+    "pipeline" "origin"
+      "org_ ovr" "retiring as origin..."               [job].trace
+  then
+
+  Path[].discardAll
+  [task].grabLock
+  [job].addExited
+
+    "<signalParent>" [job].tagSet@ tagSet.hasName if
+
+      [args].distJob if
+        "pipeline" "origin"
+        "org_ org" "WAIT signalling parent"       [job].trace
+      then
+
+      [job].updateParent assert
+      [job].signalParent
+    then
+
+    [args].distJob if
+      "pipeline" "origin"
+        "org_ ovr" "signalled..."                  [job].trace
+    then
+
+    [task].retire
+
+  HAZARD
+;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

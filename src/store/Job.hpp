@@ -90,8 +90,8 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
 
    ~Job(void) noexcept(false);
 
-    static Stz*  szGetJobNm(Job* pJob);
-    static JobId tGetOriginId(Job* pJob);
+    static Stz*  szJobNm(Job* pJob);
+    static JobId tOriginId(Job* pJob);
     static void vPostRecv(void* aJob);
     static void vPrintJobNode(SkipNode* pNode, int i_Level);
   

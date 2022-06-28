@@ -211,7 +211,7 @@ Job::~Job(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get the job name                                                           */
 /*----------------------------------------------------------------------------*/
-Stz* Job::szGetJobNm(Job* pJob)
+Stz* Job::szJobNm(Job* pJob)
 {
   _static_
 
@@ -221,7 +221,7 @@ Stz* Job::szGetJobNm(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* get origin job id                                                          */
 /*----------------------------------------------------------------------------*/
-JobId Job::tGetOriginId(Job* pJob)
+JobId Job::tOriginId(Job* pJob)
 {
   _static_
 
