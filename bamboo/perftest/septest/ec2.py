@@ -9,8 +9,7 @@ import botocore
 import botocore.exceptions
 import boto3
 
-import septest.errors as errors
-from septest.configs.hardwareconfig import HardwareConfig
+import errors
 
 # ---------- AWS Constants -------------
 C_REGION = "us-east-1"
@@ -119,9 +118,7 @@ def start_instances(instance_type: string,
                     name_prefix: string,
                     timeout_sec: float,
                     use_spot_instances: bool,
-                    job_result_id: int,
-                    job_id: int) -> ([string], [string]):
-
+                    tags: {} = None) -> ([string], [string]):
     """
     Starts up AWS EC2 instances according to the hardware configuration
     and waits until they have booted and are ready to be used.
@@ -173,16 +170,13 @@ def start_instances(instance_type: string,
                 {
                     "Key": name_prefix,
                     "Value": ""
-                },
-                {
-                    "Key": "jobResultId",
-                    "Value": str(job_result_id)
-                },
-                {
-                    "Key": "jobId",
-                    "Value": str(job_id)
                 }]
         }]}
+
+    if tags is not None:
+        for tag_key in tags:
+            tag_val = tags[tag_key]
+            kwargs["TagSpecifications"][0]["Tags"].append({"Key": tag_key, "Value": tag_val})
 
     if LOG.isEnabledFor(logging.DEBUG):
         pp_args = pprint.pformat(kwargs)

@@ -1,8 +1,8 @@
 import string
 
 
-class MakeReleaseError(Exception):
-    """Base class for all errors emanating from MakeRelease"""
+class RapidsError(Exception):
+    """Base class for all application-thrown errors"""
     def __init__(self, msg: string, should_print_trace: bool, *args, **kwargs):
         # super().__init__(*args, **kwargs)
         self.msg = msg
@@ -15,13 +15,13 @@ class MakeReleaseError(Exception):
         return s
 
 
-class TracebackError(MakeReleaseError):
+class TracebackError(RapidsError):
     """Base class of errors that should have their traceback printed"""
     def __init__(self, msg: string, *args, **kwargs):
         super().__init__(msg, True, *args, **kwargs)
 
 
-class NonTracebackError(MakeReleaseError):
+class NonTracebackError(RapidsError):
     """Base class of errors that shouldn't have their traceback printed"""
     def __init__(self, msg: string, *args, **kwargs):
         super().__init__(msg, False, *args, **kwargs)
@@ -31,6 +31,18 @@ class ConfigurationError(NonTracebackError):
     """Errors that come up from an incorrect configuration file"""
     def __init__(self, msg: string, *args, **kwargs):
         super().__init__(msg, *args, **kwargs)
+
+
+class DatabaseError(RapidsError):
+    """General errors to do with storing/retrieving results from the database"""
+    def __init__(self, *args, **kwargs):
+        super().__init__(True, *args, **kwargs)
+
+
+class DatabaseConsistencyError(DatabaseError):
+    """Represents an error with the data in the database"""
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
 
 class CompilationError(NonTracebackError):
@@ -46,7 +58,7 @@ class InstallationError(NonTracebackError):
 
 
 class SshError(TracebackError):
-    """Errors that come up from starting/stopping the RapidsSE cluster"""
+    """Errors that come up from running commands over SSH"""
     def __init__(self, msg: string, stdout: string, stderr: string, *args, **kwargs):
         super().__init__(msg, *args, **kwargs)
         self.stdout = stdout

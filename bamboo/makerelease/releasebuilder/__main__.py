@@ -190,6 +190,6 @@ if __name__ == '__main__':
         LOG.error(e)
         sys.exit(1)
 
-    except errors.MakeReleaseError as e:
+    except errors.RapidsError as e:
         LOG.error(e, exc_info=e.should_print_trace)
         sys.exit(1)

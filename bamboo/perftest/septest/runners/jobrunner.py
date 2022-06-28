@@ -14,6 +14,7 @@ import septest.errors as errors
 import septest.db.jobstart
 import septest.db.jobend
 import septest.clusterops as clusterops
+import septest.testops as testops
 from septest.configs.allconfigs import AllConfigs
 from septest.runners.testrunner import TestRunner
 from septest.results import TestResult
@@ -223,6 +224,8 @@ class JobRunner:
             installer_path = clusterops.find_installer()
 
         # Start up the necessary AWS hosts
+        tags = {"jobResultId": str(job_result_id), "jobId": str(job_id)}
+
         (self.instance_ids, self.ip_addresses) = \
             ec2.start_instances(self.all_configs.get_hardware().get_instance_type(),
                                 self.all_configs.get_hardware().get_image_id(),
@@ -231,8 +234,7 @@ class JobRunner:
                                 C_INSTANCE_NAME_PREFIX,
                                 C_EC2_BOOT_TIMEOUT_SEC,
                                 self.all_configs.get_hardware().get_use_spot_instances(),
-                                self.job_result_id,
-                                self.job_id)
+                                tags)
 
         assert len(self.instance_ids) > 0
         assert len(self.ip_addresses) > 0
@@ -252,19 +254,19 @@ class JobRunner:
         clusterops.run_dummy_statement(self.ip_addresses[0], self.all_configs.cluster_config)
 
         # Copy the JDBC driver to the installation dir of the first host
-        clusterops.copy_jdbc_driver(self.ip_addresses[0], self.all_configs.cluster_config)
+        testops.copy_jdbc_driver(self.ip_addresses[0], self.all_configs.cluster_config)
 
         # Write/Copy a jmeter property file to the installation dir of the first host to
         # set the classpath to find the above JDBC driver.
-        clusterops.write_jmeter_property_file(self.ip_addresses[0], self.all_configs.cluster_config)
+        testops.write_jmeter_property_file(self.ip_addresses[0], self.all_configs.cluster_config)
 
         # Make the common perftests directory, to hold all tests, support files and their metrics
-        clusterops.make_perftests_dir(self.ip_addresses[0], self.all_configs.cluster_config)
+        testops.make_perftests_dir(self.ip_addresses[0], self.all_configs.cluster_config)
 
         # Copy the supportFiles directory to the first host
-        clusterops.copy_support_files(self.ip_addresses[0],
-                                      self.all_configs.cluster_config,
-                                      str(C_SUPPORT_FILES_SRC))
+        testops.copy_support_files(self.ip_addresses[0],
+                                   self.all_configs.cluster_config,
+                                   str(C_SUPPORT_FILES_SRC))
 
     def __run_tests(self):
         """Run each of the tests specified in this job file
@@ -333,9 +335,11 @@ class JobRunner:
 
     def __skip_test(self, test_path: string, test_id: int):
         # Create a test_result for this skipped test and add it to the result list
-        test_result = TestResult(TestRunner.get_test_name_from_path(test_path),
+        test_result = TestResult(test_path,
+                                 TestRunner.get_test_name_from_path(test_path),
                                  test_id,
-                                 self.job_result_id)
+                                 self.job_result_id,
+                                 None)
         test_result.test_passed = None
         test_result.test_skipped = True
         self.test_results.append(test_result)

@@ -2,7 +2,6 @@ import string
 import sys
 import os
 import pathlib
-import logging
 import logging.config
 import os.path
 import argparse
@@ -181,6 +180,6 @@ if __name__ == '__main__':
         LOG.error(e)
         sys.exit(1)
 
-    except errors.SeptestError as e:
+    except errors.RapidsError as e:
         LOG.error(e, exc_info=e.should_print_trace)
         sys.exit(1)

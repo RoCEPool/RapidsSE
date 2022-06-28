@@ -1,7 +1,8 @@
 import subprocess
 import string
 import logging
-import common.errors as errors
+
+import errors
 
 LOG = logging.getLogger(__name__)
 
@@ -42,7 +43,7 @@ def run_scp(src: string, dest: string, timeout: float = None, recursive: bool = 
     """
     Copies a src filespec to a dest filespec using SCP.
     Either src or dest should be in the form "<host>:<path>".
-    May throw a subprocess.CalledProcessError or a subprocess.TimeoutExpired exception.
+    May throw a SshError or a subprocess.TimeoutExpired exception.
     """
 
     scp_command = ["scp",
