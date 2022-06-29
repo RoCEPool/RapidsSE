@@ -4,7 +4,7 @@ import configparser
 import pathlib
 from collections import OrderedDict
 
-from septest.errors import ConfigurationError
+from pyutils.errors import ConfigurationError
 
 
 # This is an extension used in ConfigParser to allow config files

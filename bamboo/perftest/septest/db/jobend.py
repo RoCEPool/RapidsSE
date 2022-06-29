@@ -6,7 +6,7 @@ import logging
 
 import psycopg
 
-import septest.errors as errors
+import pyutils.errors as errors
 import septest.db.dbhelper
 from septest.results import TestResult
 

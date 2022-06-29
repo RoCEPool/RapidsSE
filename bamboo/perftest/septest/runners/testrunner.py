@@ -9,12 +9,10 @@ import subprocess
 import csv
 import decimal
 
-from septest import clusterops
+from pyutils import clusterops, ssh, errors
 from septest import testops
 from septest.results import TestResult
-from septest import errors
-from septest.configs.clusterconfig import ClusterConfig
-from septest import ssh
+from pyutils.clusterconfig import ClusterConfig
 
 LOG = logging.getLogger(__name__)
 

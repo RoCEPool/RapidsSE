@@ -2,7 +2,7 @@
 # This is called by Bamboo. Bamboo will populate the environment with various
 # variables, some of which are used below.
 
-DIR="$(dirname $0)"
+DIR="$(dirname "$0")"
 PLAN_DIR="$(realpath "${DIR}/..")"            # Directory of <repoRoot>/bamboo/makerelease
 REPO_ROOT="$(realpath "${PLAN_DIR}/../..")"   # Directory of the repository root
 

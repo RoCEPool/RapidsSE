@@ -6,10 +6,10 @@ import os
 import fnmatch
 import string
 
-import common.ec2 as ec2
-import common.ssh as ssh
-import common.errors as errors
-from common.releaseconfig import ReleaseConfig
+import pyutils.ec2 as ec2
+import pyutils.ssh as ssh
+import pyutils.errors as errors
+from releaseconfig import ReleaseConfig
 from releasebuilder.results import TestResult
 
 LOG = logging.getLogger(__name__)
@@ -107,7 +107,8 @@ class BuildRunner:
                                                      self.config.get_build_cloudinit(),
                                                      1,
                                                      C_INSTANCE_NAME_PREFIX,
-                                                     C_INSTANCE_START_TIMEOUT)
+                                                     C_INSTANCE_START_TIMEOUT,
+                                                     False)
 
         assert len(instance_ids) == 1
         assert len(ip_addrs) == 1
@@ -213,7 +214,7 @@ class BuildRunner:
                       f"Refer to the build log artifacts.")
 
             # Write build log to the artifact path
-            self.__write_build_log_as_artifact(result.stdout, result.stderr)
+            self.__write_build_log_as_artifact(e.stdout, e.stderr)
 
             # Don't display a giant output message
             e.stdout = None

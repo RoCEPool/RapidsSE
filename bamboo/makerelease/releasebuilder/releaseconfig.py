@@ -4,9 +4,9 @@ import configparser
 import pathlib
 from collections import OrderedDict
 
-from common.errors import ConfigurationError
-import common.ec2 as ec2
-from clusterconfig import ClusterConfig
+from pyutils.errors import ConfigurationError
+import pyutils.ec2 as ec2
+from pyutils.clusterconfig import ClusterConfig
 
 
 # This is an extension used in ConfigParser to allow config files

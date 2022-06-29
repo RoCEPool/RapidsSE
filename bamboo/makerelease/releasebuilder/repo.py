@@ -7,7 +7,7 @@ import os.path
 import tempfile
 import logging
 
-import common.errors
+import pyutils.errors as errors
 
 LOG = logging.getLogger(__name__)
 
@@ -15,7 +15,7 @@ LOG = logging.getLogger(__name__)
 def clone_repo(repo_path: pathlib.Path) -> pathlib.Path:
     """
     Clones the repo in full from the cached repo at repo_path.
-    May throw a common.errors.GitError.
+    May throw a pyutils.errors.GitError.
     :param repo_path: The current cloned repo that uses hard links to the local
                       cache and therefore cannot be copied across nodes.
     :return: the path to the cloned repo that can be copied across nodes.
@@ -33,7 +33,7 @@ def clone_repo(repo_path: pathlib.Path) -> pathlib.Path:
     try:
         __checkout_hash(cloned_repo_path, git_hash)
 
-    except common.errors.GitError:
+    except errors.GitError:
         # Clean up the created directory
         shutil.rmtree(cloned_repo_path)
         raise
@@ -45,7 +45,7 @@ def clone_repo(repo_path: pathlib.Path) -> pathlib.Path:
 def __get_current_git_hash(repo_path: pathlib.Path) -> string:
     """
     Returns the git hash of the repo at repo_path
-    May throw a common.errors.GitError.
+    May throw a pyutils.errors.GitError.
     :param repo_path: path to the root of a repository
     :return: the git hash
     """
@@ -64,7 +64,7 @@ def __get_current_git_hash(repo_path: pathlib.Path) -> string:
     except subprocess.CalledProcessError as e:
         msg = f"Could not get the git hash for the current repository at: {str(repo_path)}" \
               f"\nError message returned: {e.stderr}"
-        raise common.errors.GitError(msg) from e
+        raise errors.GitError(msg) from e
 
     git_hash = result.stdout.strip()
 
@@ -74,7 +74,7 @@ def __get_current_git_hash(repo_path: pathlib.Path) -> string:
     if match is None:
         msg = f"Could not get the git hash for the current repository at: {str(repo_path)}" \
               f"\nGot an invalid git hash: {git_hash}"
-        raise common.errors.GitError(msg)
+        raise errors.GitError(msg)
 
     LOG.info(f"Got current git hash ({git_hash}) of local repo at path: {str(repo_path)}")
     return git_hash
@@ -84,7 +84,7 @@ def __get_git_remote_url(repo_path: pathlib.Path) -> string:
     """
     Returns the URL of the origin remote for the repository given by repo_path.
     This is expected to be a file:// URL because bamboo uses cached git repositories.
-    May throw a common.errors.GitError.
+    May throw a pyutils.errors.GitError.
     :param repo_path: path to the root of the local cloned repository
     :return: the url to the cached remote origin
     """
@@ -103,7 +103,7 @@ def __get_git_remote_url(repo_path: pathlib.Path) -> string:
     except subprocess.CalledProcessError as e:
         msg = f"Could not get the git remote URL for the current repository at: {str(repo_path)}" \
               f"\nError message returned: {e.stderr}"
-        raise common.errors.GitError(msg) from e
+        raise errors.GitError(msg) from e
 
     prefix = "file://"
     git_url = None
@@ -118,16 +118,16 @@ def __get_git_remote_url(repo_path: pathlib.Path) -> string:
     if git_url is None:
         msg = f"Could not find an appropriate git remote URL for the current repository at: {str(repo_path)}" \
               f"\nOutput returned:\n{result.stdout}"
-        raise common.errors.GitError(msg)
+        raise errors.GitError(msg)
 
     # Check that the git_url exists and is a directory
     if not os.path.exists(git_url[len(prefix):]):
         msg = f"Remote git repository URL does not exist at path: {git_url}"
-        raise common.errors.GitError(msg)
+        raise errors.GitError(msg)
 
     if not os.path.isdir(git_url[len(prefix):]):
         msg = f"Remote git repository URL is not a directory: {git_url}"
-        raise common.errors.GitError(msg)
+        raise errors.GitError(msg)
 
     LOG.info(f"Got the remote origin URL of local repo at path {str(repo_path)}. URL is {git_url}")
 
@@ -157,7 +157,7 @@ def __clone_repo(git_remote_url: string) -> pathlib.Path:
         shutil.rmtree(dest_path)
         msg = f"Could not clone the repository at {git_remote_url} to {str(dest_path)}" \
               f"\nError message returned: {e.stderr}"
-        raise common.errors.GitError(msg) from e
+        raise errors.GitError(msg) from e
 
     LOG.info(f"Finished cloning the repository at: {str(dest_path)}")
 
@@ -185,6 +185,6 @@ def __checkout_hash(cloned_repo_path: pathlib.Path, git_hash: string) -> None:
     except subprocess.CalledProcessError as e:
         msg = f"Could not checkout the git hash {git_hash} in repo at path: {str(cloned_repo_path)}" \
               f"\nError message returned: {e.stderr}"
-        raise common.errors.GitError(msg) from e
+        raise errors.GitError(msg) from e
 
     LOG.info(f"Finished checkout of git hash {git_hash} in repo at path: {str(cloned_repo_path)}")

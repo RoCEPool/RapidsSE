@@ -5,9 +5,9 @@ import subprocess
 import tempfile
 import string
 
-import septest.errors as errors
-import septest.ssh as ssh
-from septest.configs.clusterconfig import ClusterConfig
+import pyutils.errors as errors
+import pyutils.ssh as ssh
+from pyutils.clusterconfig import ClusterConfig
 
 LOG = logging.getLogger(__name__)
 

@@ -7,9 +7,9 @@ import psycopg
 
 from septest.configs.jobconfig import JobConfig
 from septest.configs.hardwareconfig import HardwareConfig
-from septest.configs.clusterconfig import ClusterConfig
+from pyutils.clusterconfig import ClusterConfig
 from septest.configs.allconfigs import AllConfigs
-import septest.errors as errors
+import pyutils.errors as errors
 import septest.db.dbhelper
 
 

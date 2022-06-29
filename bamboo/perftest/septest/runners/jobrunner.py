@@ -9,11 +9,11 @@ import threading
 import pathlib
 import tempfile
 
-import septest.ec2 as ec2
-import septest.errors as errors
+import pyutils.ec2 as ec2
+import pyutils.errors as errors
 import septest.db.jobstart
 import septest.db.jobend
-import septest.clusterops as clusterops
+import pyutils.clusterops as clusterops
 import septest.testops as testops
 from septest.configs.allconfigs import AllConfigs
 from septest.runners.testrunner import TestRunner

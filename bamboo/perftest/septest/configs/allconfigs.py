@@ -3,8 +3,8 @@ import logging
 
 from .jobconfig import JobConfig
 from .hardwareconfig import HardwareConfig
-from .clusterconfig import ClusterConfig
-from septest.errors import ConfigurationError
+from pyutils.clusterconfig import ClusterConfig
+from pyutils.errors import ConfigurationError
 
 LOG = logging.getLogger(__name__)
 
