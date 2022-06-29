@@ -181,6 +181,7 @@ Object* Socket::pRecvObject(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // receive object normally (or acceptable objects under low memory)
+  // need to work out the m_bLowMemoryDiscard
 
 //  if (! bLowMem || ! gxaSizeHeap[eClass].m_bLowMemoryDiscard) {
 //
