@@ -257,7 +257,7 @@ if [ "${OS_DIST}" = "${CENTOS7}" ]; then
 fi
 
 # Need to have
-yum install -y gcc-c++ git git-lfs libatomic nmap-netcat iproute
+yum install -y gcc-c++ git git-lfs libatomic nmap-ncat iproute
 
 # Good to have
 yum install -y vim unzip

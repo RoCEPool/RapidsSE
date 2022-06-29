@@ -216,6 +216,8 @@ class InstanceRunner:
             # Mark the test as successful
             self.test_result.set_test_ended(True, False, None, None)
 
+            LOG.info(f"Test {self.test_name}: Finished successfully")
+
         except Exception as e:
             # Record the failed test completion
             self.test_result.set_test_ended(False, False, None, str(e))
@@ -231,14 +233,18 @@ class InstanceRunner:
                 # Collect results from the remote node
                 try:
                     self.__collect_seth_results()
-                except (Exception,):
-                    pass    # Ignore any failures here
+                except (Exception,) as e:
+                    LOG.error("Unable to collect seth results")
+                    LOG.exception(e)
+                    # Otherwise carry on
 
                 # Collect any log files
                 try:
                     self.__collect_logs()
-                except (Exception,):
-                    pass    # Ignore any failures here
+                except (Exception,) as e:
+                    LOG.error("Unable to collect SE logs")
+                    LOG.exception(e)
+                    # Otherwise carry on
 
                 # This bit is REALLY important!
                 self.__terminate_instance()
@@ -428,6 +434,7 @@ class InstanceRunner:
 
         try:
             ssh.run_ssh(self.ip_addr, command, C_SETH_TIMEOUT_SEC)
+            LOG.info(f"Test {self.test_name}: Completed running SETH on {self.ip_addr}")
 
         except subprocess.TimeoutExpired as e:
             msg = f"Test {self.test_name}: Running of SETH tests on {self.ip_addr} timed out " \
@@ -460,8 +467,10 @@ class InstanceRunner:
         """Collect SETH result files from the remote node and save them in the local results directory"""
 
         # Results have been written out to <repo_home>/bamboo/unittest/results
-        src = self.remote_repo_dir / C_SETH_RESULT_PATH
+        src = f"{self.ip_addr}:{str(self.remote_repo_dir / C_SETH_RESULT_PATH)}"
         dest = self.result_path
+
+        LOG.debug(f"About to collect Seth logs from {src} to {dest}")
 
         try:
             ssh.run_scp(src, dest, C_COLLECT_RESULTS_TIMEOUT_SEC)

@@ -72,7 +72,7 @@ def main() -> int:
 
     try:
         installer_path: pathlib.Path
-        
+
         if skip_build:
             LOG.info("Skipping the build stage")
 
