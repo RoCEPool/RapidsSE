@@ -13,12 +13,14 @@
 #include <arpa/inet.h>
 //#include <netinet/in.h>
 #include "Job.hpp"
+#include "CmdLineArgs.hpp"
 
 extern Stz* C_LOOPBACK_IP;
 
 Atomic gixSocket;
 
 extern SizeHeap  gxaSizeHeap[];
+extern CmdLineArgs  gxCmdLineArgs;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -170,11 +172,11 @@ Object* Socket::pRecvObject(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // HACK : To simulate lowMemory
-//  if (eClass == CN_JOB) {
-//    nPipeline++;
-//    if (nPipeline == 4)
-//      bLowMem = true;
-//  }
+  if (eClass == CN_JOB) {
+    nPipeline++;
+    if (nPipeline == gxCmdLineArgs.m_xSysArgs.m_iSocketLowMem)
+      bLowMem = true;
+  }
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -192,10 +194,10 @@ Object* Socket::pRecvObject(void)
 
     Object* pReceivedObject = pObjectRecv(eClass);
 
-//    if (eClass == CN_JOB) {
-//      Job* pJob = _pJob(pReceivedObject);
-//      vTrace("Recvd Job %s : %lld\n"_Stz, Job::szJobNm(pJob), nPipeline);
-//    }
+    if (eClass == CN_JOB) {
+      Job* pJob = _pJob(pReceivedObject);
+      //vTrace("Recvd Job %s : %lld\n"_Stz, Job::szJobNm(pJob), nPipeline);
+    }
     vSuccess(true);
     return pReceivedObject;
   }
