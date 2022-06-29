@@ -39,6 +39,10 @@ function validateInstallationEnvironment() {
   # Check if all hosts are reachable by SSH.
   validateHostsReachableBySsh
 
+  # Check that the installer is not inside a target installation directory
+  # as that directory will be wiped, including the installer.
+  validateInstallerNotInInstallDir
+
   # Check if SE is running in any of these host:directory combinations.
   validateSENotRunning
 
@@ -118,6 +122,10 @@ function validateNodeAdditionEnvironment() {
 
   # Check if all hosts are reachable by SSH.
   validateHostsReachableBySsh "${nodeNames[@]}"
+
+  # Check that the installer is not inside a target installation directory
+  # as that directory will be wiped, including the installer.
+  validateInstallerNotInInstallDir "${nodeNames[@]}"
 
   # Check if SE is running in any of these host:directory combinations.
   validateSENotRunning "${nodeNames[@]}"
@@ -406,6 +414,106 @@ function validateHostsReachableBySsh() {
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Check that the installer is not inside a target installation directory
+## as that directory will be wiped, including the installer.
+## Params:
+##  $@ - (optional) the list of node names to check. If not set then check all.
+
+function validateInstallerNotInInstallDir() {
+
+  if [ -z "${INSTALL_FILE:-}" ]; then
+    # No install file, no problem!
+    return
+  fi
+
+  if ! [ -f "${INSTALL_FILE}" ]; then
+    # File doesn't exist. This shouldn't happen.
+    return
+  fi
+
+  local -a nodeNames;
+
+    if [ "$#" -eq 0 ]; then
+      nodeNames=( "${NODE_LIST[@]}" )
+    else
+      nodeNames=( "$@" )
+    fi
+
+  local nodeName
+  local host
+  local path
+
+  for nodeName in "${nodeNames[@]}"
+  do
+    host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+    path="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
+
+    # For each node...
+    # We first check if the path of the installer is underneath any of the
+    # installation paths.
+    # If it is then we need to check if the $host represents the current machine.
+    # This is non-trivial because a machine can have multiple addresses that resolve
+    # to it that are distinct from the hostname of the machine. e.g. multiple IP
+    # addresses, DNS A records, DNS C records, fully-qualified names vs non-qualified
+    # names, etc. The easiest thing to do is to create a temporary file locally and
+    # then SSH to each node and see if that file exists. If it does then we are on
+    # that node.
+
+    # Is the path of the installer underneath that of the installation path.
+    # Canonicalise both paths so that symlinks don't give a false result.
+
+    case "$(realpath -m "${INSTALL_FILE}")" in
+
+      $(realpath -m "${path}")/*)
+        # Installer IS under the installation path.
+        # We now need to check if $host represents the current machine.
+        if isHostTheCurrentMachine "${host}"; then
+          errorExit "The installer cannot be run when it exists underneath one of the installation paths: ${nodeName} ; ${host}:${path}"
+        fi
+        ;;
+
+      *)
+        # Installer is not under the installation path
+        continue
+        ;;
+    esac
+  done
+
+  # We're all good.
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Returns a zero exit code if the host given by $1 is the same as the current
+## machine, otherwise a non-zero exit code is returned.
+## Params:
+##  $1 - A hostname or IP address to check.
+
+function isHostTheCurrentMachine() {
+  local host="$1"
+
+  # Create a temporary file with a unique and random name
+  local tempfile
+  tempfile="$(mktemp /tmp/tmp.rapidsse.XXXXXXXX)"
+
+  local retVal=1
+
+  # SSH to $host and check for the existence of the file
+  sshArgs=("-o" "PasswordAuthentication=no" "-o" "ConnectTimeout=10" "${host}" "ls" "${tempfile}")
+
+  if ssh "${sshArgs[@]}" &>/dev/null; then
+    # $host does indeed represent the current machine
+    retVal=0
+  fi
+
+  # Cleanup the temporary file
+  rm -f "${tempfile}"
+
+  return "${retVal}"
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Validate that SE is not running on any of the host:dir combinations.
 ## Params:
 ##  $@ - (optional) the list of node names to check. If not set then check all.
@@ -441,7 +549,7 @@ function validateSENotRunning() {
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Validate that the port specified for each node is not currently in use.
+## Validate that the TCP port specified for each node is not currently in use.
 ## Params:
 ##  $@ - (optional) the list of node names to check. If not set then check all.
 
@@ -1458,7 +1566,7 @@ function validateFirewallParallel() {
     port="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HEARTBEAT_KEY}")"
 
     # Skip any sequential hosts
-    if [ "${#sequentialServers[@]}" -eq 0 ] || isValueInArray "${server}" "${sequentialServers[@]:-}"; then
+    if [ "${#sequentialServers[@]}" -ne 0 ] && isValueInArray "${server}" "${sequentialServers[@]:-}"; then
       continue
     fi
 
@@ -1669,7 +1777,7 @@ function checkFirewallTcp() {
 
 function checkFirewallUdp() {
 
-  [ "$#" -eq 3 ] || errorExit "Invalid number of arguments to function testFirewallTcp()."
+  [ "$#" -eq 3 ] || errorExit "Invalid number of arguments to function testFirewallUdp()."
 
   local client="$1"
   local server="$2"
@@ -1699,7 +1807,7 @@ function checkFirewallUdp() {
 
   if [ "${responseServerSocketInUse:-x}" != "x" ]; then
     printError "Unable to determine if UDP port ${port} is opened in the firewall of host ${server} because the socket is currently being used by another process."
-    exit 2
+    return 2
   fi
 
   debugPrint "The UDP port ${port} does not currently appear to be in use on host ${server}:"
@@ -1806,8 +1914,8 @@ function checkFirewallUdp() {
   fi
 
   # Return the result
+  debugPrint "Returning exit code ${exitCode}"
   return "${exitCode}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-

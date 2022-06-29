@@ -35,6 +35,7 @@ static Stz* C_TAG_MEMORYLOG    = "<memoryLog>"_Stz;
 static Stz* C_TAG_NODE         = "<node>"_Stz;
 static Stz* C_TAG_NOTE         = "<note>"_Stz;
 static Stz* C_TAG_NOWAIT       = "<noWait>"_Stz;
+static Stz* C_TAG_OBJTRACKER   = "<objectTracker>"_Stz;
 static Stz* C_TAG_OPERANDLOG   = "<operandLog>"_Stz;
 static Stz* C_TAG_OPTIMISE     = "<optimise>"_Stz;
 static Stz* C_TAG_OPTIMISED    = "<optimised>"_Stz;

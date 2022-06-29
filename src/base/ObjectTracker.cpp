@@ -23,6 +23,8 @@ ObjectTracker::ObjectTracker(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OBJTRACKER,_FOOTER_);
 
+  m_sLabel = ""_Stz;
+
   for(u8 i = 0; i < CN_ENUMS; i++)
   {
     m_xClassCount[i].m_uAllocateCount = 0;
@@ -50,6 +52,17 @@ _precondition_(_ADDRESS_,_MAGIC_,CN_OBJTRACKER,_FOOTER_);
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* Reset                                                                      */
+/*----------------------------------------------------------------------------*/
+void ObjectTracker::vAddLabel(Stz *szLabel)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_sLabel.vReset();
+  m_sLabel.vCopy(szLabel);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Dump contents of this tracker                                              */
 /*----------------------------------------------------------------------------*/
 void ObjectTracker::vDump(Stz* szName)
@@ -57,6 +70,11 @@ void ObjectTracker::vDump(Stz* szName)
   _precondition_(_ADDRESS_,_MAGIC_);
 
   vTrace("-------------------------------------------\n"_Stz);
+
+  if( ! m_sLabel.bIsEmpty()) {
+    vTrace("Label: %s\n"_Stz, m_sLabel.azChar());
+  }
+
   vTrace("Job: %s\n"_Stz, szName->azChar());
 //  vTrace("            Class type     Alloc   Free   Class size\n\n"_Stz);
   vTrace("%23s  %7s  %7s  %10s %20s %10s\n\n"_Stz,"Class type", "Alloc", "Free", "Class size", "Heap Type", "Usage");
@@ -83,6 +101,8 @@ void ObjectTracker::vDump(Stz* szName)
 void ObjectTracker::vReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_sLabel.vReset();
 
   for(u8 i = 0; i < CN_ENUMS; i++)
   {

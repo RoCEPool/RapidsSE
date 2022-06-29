@@ -56,6 +56,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("[job].error@"_Stz,           &Step::vJobErrorFetch);
   vAddStep("[job].error!"_Stz,           &Step::vJobErrorStore);
 
+  vAddStep("[job].labelObjectTracker"_Stz,&Step::vJobLabelObjectTracker);
   vAddStep("[job].jobList@"_Stz,         &Step::vJobListFetch);
 
   vAddStep("[job].masterJobId"_Stz,      &Step::vJobMasterJobId);
@@ -591,6 +592,22 @@ void Step::vJobGet(void)
   m_pDataStack->vPushPtr(pJob);
 
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [job].labelObjectTracker -- Give this object tracker a label               */
+/*----------------------------------------------------------------------------*/
+void Step::vJobLabelObjectTracker(void)
+{
+  ENTRY();
+
+  s256 sEntry;
+  m_pDataStack->vPopStr(sEntry,__func__);
+
+  Job* pJob = * m_pJob;
+  m_pJob->vLabelObjectTracker(sEntry);
+
   EXIT();
 }
 

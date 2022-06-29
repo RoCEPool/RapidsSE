@@ -1711,18 +1711,6 @@ i8 AM::POOL::iUsedSpace(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* get free chunks in data heap                                               */
-/*----------------------------------------------------------------------------*/
-i8 AM::POOL::nDataHeap(void)
-{
-  _static_
-
-  i8 nBufferCount = gpAttachMap->m_xHeaps.Transient.m_pData->nBufferCount();
-  
-  return nBufferCount;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get free chunks in large heap                                              */
 /*----------------------------------------------------------------------------*/
 i8 AM::POOL::nLargeHeap(void)
@@ -2948,10 +2936,13 @@ bool AM::TRACE::bVerbose(Stz* szVBtag)
   TagSet* pTags;
   
   if (! gpAttachMap || gxCmdLineArgs.m_xSysArgs.m_bVerbose != gpAttachMap->m_xSysArgs.m_bVerbose) {
-  
+
     if (gxCmdLineArgs.m_xSysArgs.m_bVerbose)
       return true;
-    
+
+    if (gpAttachMap && gpAttachMap->m_xSysArgs.m_bVerbose)
+      return true;
+
     pTags = & gxCmdLineArgs.m_xSysArgs.m_oArgTags;
     if (pTags) {
       if (pTags->bHasName(szVBtag))
@@ -4187,10 +4178,6 @@ void AM::vBootCheck(void)
       case HT_P_LARGE:
       case HT_T_LARGE:
         ASSERT(iClassSize < C_SIZE_LARGE_OBJECT);
-        continue;
-                
-      case HT_T_DATA:
-        ASSERT(iClassSize < C_SIZE_DATA_OBJECT);
         continue;
                 
       default:

@@ -134,8 +134,16 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
   Stz* szJobNm = pCmdTagSet->szValue(C_TAG_JOBNM);
   RASSERT(szJobNm);
 
-  pChildJob = new Job(szJobNm,tParentId,tOriginId,tDistId);
+  pChildJob = new Job(szJobNm,tParentId,tOriginId,tDistId,pCmdTagSet);
   bIsPipeline = pChildJob->bIsPipeline();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // save child job pointer in thread object till its task is assigned
+  // and accessible via TLS
+
+  Thread* pThread = Thread::pThisTLSThread();
+  if(pThread)
+    pThread->vObject0(pChildJob);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set updateParent flag in child
@@ -171,6 +179,13 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
   // create the task for the child job
   pChildJob->vTaskCreate();
   RASSERT(pChildJob->pTask());
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // now the child job has a task and accessible via TLS,
+  // we can remove its pointer from this thread
+  
+  if(pThread)
+    pThread->vObject0(nullptr);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // lock the mutex
