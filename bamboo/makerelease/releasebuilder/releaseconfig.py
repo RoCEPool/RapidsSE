@@ -220,7 +220,7 @@ class ReleaseConfig:
                 s = s[1:-1]
             elif s.startswith("'") and s.endswith("'"):
                 s = s[1:-1]
-            cloudinits[i] = self.__resolve_path(s)
+            cloudinits[i] = pathlib.Path(self.__resolve_path(s))
 
         return cloudinits
 
@@ -244,7 +244,7 @@ class ReleaseConfig:
                 s = s[1:-1]
             elif s.startswith("'") and s.endswith("'"):
                 s = s[1:-1]
-            cluster_config_paths[i] = self.__resolve_path(s)
+            cluster_config_paths[i] = pathlib.Path(self.__resolve_path(s))
 
         return cluster_config_paths
 

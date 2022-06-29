@@ -226,21 +226,22 @@ class InstanceRunner:
                 LOG.exception(f"Error occurred during the test phase of test {self.test_name}.")
 
         finally:
+            if self.ip_addr is not None:
 
-            # Collect results from the remote node
-            try:
-                self.__collect_seth_results()
-            except (Exception,):
-                pass    # Ignore any failures here
+                # Collect results from the remote node
+                try:
+                    self.__collect_seth_results()
+                except (Exception,):
+                    pass    # Ignore any failures here
 
-            # Collect any log files
-            try:
-                self.__collect_logs()
-            except (Exception,):
-                pass    # Ignore any failures here
+                # Collect any log files
+                try:
+                    self.__collect_logs()
+                except (Exception,):
+                    pass    # Ignore any failures here
 
-            # This bit is REALLY important!
-            self.__terminate_instance()
+                # This bit is REALLY important!
+                self.__terminate_instance()
 
     def __start_test_instance(self) -> None:
         """Starts an EC2 instance to test RapidsSE"""

@@ -179,8 +179,8 @@ def start_instances(instance_type: string,
             kwargs["TagSpecifications"][0]["Tags"].append({"Key": tag_key, "Value": tag_val})
 
     if LOG.isEnabledFor(logging.DEBUG):
-        pp_args = pprint.pformat(kwargs)
-        LOG.debug("About to dry-run start an instance with parameters:\n%s", pp_args)
+        # pp_args = pprint.pformat(kwargs)
+        LOG.debug("About to dry-run start an instance to check for privileges")
 
     # Try a dry run to check for privileges
     try:

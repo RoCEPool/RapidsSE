@@ -72,16 +72,20 @@ def main() -> int:
 
     try:
         installer_path: pathlib.Path
+        
         if skip_build:
+            LOG.info("Skipping the build stage")
+
             # Find the existing installer
             installer_path = __find_installer(artifact_path)
-
         else:
             buildrunner = BuildRunner(artifact_path, clone_repo_path, config, result_list)
             buildrunner.run()
             installer_path = buildrunner.installer_path
 
-        if not skip_test:
+        if skip_test:
+            LOG.info("Skipping the test stage")
+        else:
             testrunner = TestRunner(artifact_path, result_path, clone_repo_path, config, result_list, installer_path)
             testrunner.run()
 
@@ -111,9 +115,9 @@ def validate_arguments() -> (pathlib.Path, pathlib.Path, pathlib.Path, pathlib.P
                             help="The root directory of the repository")
     arg_parser.add_argument("--config", type=str, required=True,
                             help="The path of the config file to use")
-    arg_parser.add_argument("--skipBuild", type=bool, required=False, default=False,
+    arg_parser.add_argument("--skipBuild", action='store_true', required=False, default=False,
                             help="Skip the building and go straight to testing")
-    arg_parser.add_argument("--skipTest", type=bool, required=False, default=False,
+    arg_parser.add_argument("--skipTest", action='store_true', required=False, default=False,
                             help="Skip the testing phase")
 
     args = arg_parser.parse_args()
