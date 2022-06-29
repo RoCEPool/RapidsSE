@@ -231,8 +231,6 @@ void SeDeputy::vDeputyLoop(void)
       pInpTagSet->vDelete(C_TAG_TIME);
       pInpTagSet->vDelete(C_TAG_NOWAIT);
 
-      m_bTerminated = true;
-
     }
 
     catch (LowMemory xLowMemory) {
@@ -249,6 +247,8 @@ void SeDeputy::vDeputyLoop(void)
     PsxThd::vTlsSet(giTLS_CurrentPoint,(void*)C_UNKNOWN);
 #endif
   }
+
+  m_bTerminated = true;
 }
 
 
