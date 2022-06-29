@@ -8,7 +8,7 @@ import argparse
 import fnmatch
 
 import pyutils.errors as errors
-from releaseconfig import ReleaseConfig
+from releasebuilder.releaseconfig import ReleaseConfig
 from releasebuilder.buildrunner import BuildRunner
 from releasebuilder.buildrunner import C_INSTALLER_FILESPEC
 from releasebuilder.testrunner import TestRunner

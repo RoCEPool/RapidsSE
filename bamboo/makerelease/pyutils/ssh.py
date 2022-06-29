@@ -2,7 +2,7 @@ import subprocess
 import string
 import logging
 
-import errors
+import pyutils.errors as errors
 
 LOG = logging.getLogger(__name__)
 

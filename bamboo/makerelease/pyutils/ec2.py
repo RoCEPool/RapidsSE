@@ -9,7 +9,7 @@ import botocore
 import botocore.exceptions
 import boto3
 
-import errors
+import pyutils.errors as errors
 
 # ---------- AWS Constants -------------
 C_REGION = "us-east-1"
@@ -133,7 +133,7 @@ def start_instances(instance_type: string,
     __check_image_id(client, image_id)
 
     if use_spot_instances:
-        msg = "EC2 spot instances are not supported in septest just yet"
+        msg = "EC2 spot instances are not supported just yet"
         raise errors.Ec2Error(msg)
 
     # API Reference:

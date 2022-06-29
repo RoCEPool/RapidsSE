@@ -10,7 +10,7 @@ import subprocess
 import pyutils.ec2 as ec2
 import pyutils.ssh as ssh
 import pyutils.errors as errors
-from releaseconfig import ReleaseConfig
+from releasebuilder.releaseconfig import ReleaseConfig
 from releasebuilder.results import TestResult
 from pyutils.clusterconfig import ClusterConfig
 
