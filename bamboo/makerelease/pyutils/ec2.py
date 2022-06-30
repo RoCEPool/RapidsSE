@@ -82,7 +82,7 @@ C_KEYPAIR_NAME = "aws_rapidsse"
 # ---------- Other Constants -------------
 C_CLOUD_INIT_COMPLETE = "/tmp/cloud-init-complete"
 C_SSH_CONNECT_TIMEOUT = 5  # seconds
-C_MSG_PERIOD = 5  # Print updates every 5 seconds
+C_MSG_PERIOD = 20  # Print updates every 20 seconds
 
 LOG = logging.getLogger(__name__)
 

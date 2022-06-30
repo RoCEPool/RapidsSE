@@ -234,7 +234,7 @@ class InstanceRunner:
                 try:
                     self.__collect_seth_results()
                 except (Exception,) as e:
-                    LOG.error("Unable to collect seth results")
+                    LOG.error(f"Test {self.test_name}: Unable to collect seth results")
                     LOG.exception(e)
                     # Otherwise carry on
 
@@ -242,7 +242,7 @@ class InstanceRunner:
                 try:
                     self.__collect_logs()
                 except (Exception,) as e:
-                    LOG.error("Unable to collect SE logs")
+                    LOG.error(f"Test {self.test_name}: Unable to collect SE logs")
                     LOG.exception(e)
                     # Otherwise carry on
 
@@ -468,7 +468,7 @@ class InstanceRunner:
 
         # Results have been written out to <repo_home>/bamboo/unittest/results
         src = f"{self.ip_addr}:{str(self.remote_repo_dir / C_SETH_RESULT_PATH)}"
-        dest = self.result_path
+        dest = str(self.result_path)
 
         LOG.debug(f"About to collect Seth logs from {src} to {dest}")
 
@@ -562,7 +562,7 @@ class InstanceRunner:
             self.__stop_se()
         except (Exception,) as e:
             # Ignore any failures here
-            LOG.error("Could not stop SE")
+            LOG.error(f"Test {self.test_name}: Could not stop SE")
             LOG.exception(e)
 
         # Collect results from the remote node
@@ -570,7 +570,7 @@ class InstanceRunner:
             self.__collect_seth_results()
         except (Exception,) as e:
             # Ignore any failures here
-            LOG.error("Could not collect SETH results")
+            LOG.error(f"Test {self.test_name}: Could not collect SETH results")
             LOG.exception(e)
 
         # Collect any log files
@@ -578,7 +578,7 @@ class InstanceRunner:
             self.__collect_logs()
         except (Exception,) as e:
             # Ignore any failures here
-            LOG.error("Could not collect SE log artifacts")
+            LOG.error(f"Test {self.test_name}: Could not collect SE log artifacts")
             LOG.exception(e)
 
         # Stop the EC2 instance
@@ -586,4 +586,4 @@ class InstanceRunner:
             self.__terminate_instance()
 
         except (Exception,):
-            LOG.error(f"*** UNABLE TO FORCIBLY STOP EC2 INSTANCE {self.instance_id} ({self.ip_addr}). ***")
+            LOG.error(f"Test {self.test_name}: *** UNABLE TO FORCIBLY STOP EC2 INSTANCE {self.instance_id} ({self.ip_addr}). ***")
