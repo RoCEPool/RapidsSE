@@ -29,7 +29,8 @@
   0 EV_M_START EG_ZK LogicUnit[].diaryNote
 
   <tableNm> <indexNm> op__table_index not if
-    false
+    Pipein[].delete
+    true
     exit
   then
 
