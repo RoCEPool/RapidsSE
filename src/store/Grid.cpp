@@ -5,7 +5,6 @@
 #include "BASE.h"
 #include <algorithm>    // std::find_if  NEED TO REPLACE this std::
 #include "Node.hpp"
-#include "Node_I.hpp"
 #include "Grid.hpp"
 #include "LglPtnMap.hpp"
 #include "CmdLineArgs.hpp"
@@ -160,11 +159,15 @@ void Grid::vDsv(void)
   vTrace("nodes %lld \n"_Stz,
          nKnownNodes());
 
+  for (SkipNode *pSkipNode = m_pNodes->pFirst(0);
+       pSkipNode;
+       pSkipNode = m_pNodes->pNext(pSkipNode, 0)) {
 
-  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
-    Node* pNode = (*oNode_I);
+    Node* pNode = _pNode(pSkipNode->m_pObject);
     if (pNode) pNode->vDsv();
+
   }
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -194,12 +197,15 @@ s16KB Grid::szDumpInfo(void)
                          nKnownNodes());
 
 
+  for (SkipNode *pSkipNode = m_pNodes->pFirst(0);
+       pSkipNode;
+       pSkipNode = m_pNodes->pNext(pSkipNode, 0)) {
 
-  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
-    Node* pNode = (*oNode_I);
+    Node* pNode = _pNode(pSkipNode->m_pObject);
     if (pNode) {
       sDumpBuffer = pNode->szDumpInfo(sDumpBuffer);
     }
+
   }
 
   sDumpBuffer.vCatSprint("%s"_Stz,
@@ -214,8 +220,10 @@ Node* Grid::pFindNodeById(i8 iFindNodeId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 
-  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
-    Node* pNode = (*oNode_I);
+  for (SkipNode *pSkipNode = m_pNodes->pFirst(0);
+       pSkipNode;
+       pSkipNode = m_pNodes->pNext(pSkipNode, 0)) {
+    Node* pNode = _pNode(pSkipNode->m_pObject);
     
     i8 iNodeId = pNode->iNodeId();
     
@@ -234,8 +242,10 @@ Node* Grid::pFindNodeNm(Stz* sNodeNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 
-  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
-    Node* pNode = (*oNode_I);
+  for (SkipNode *pSkipNode = m_pNodes->pFirst(0);
+       pSkipNode;
+       pSkipNode = m_pNodes->pNext(pSkipNode, 0)) {
+    Node* pNode = _pNode(pSkipNode->m_pObject);
     if (pNode && pNode->szNodeNm()->bSame(sNodeNm))
       return pNode;
   }
@@ -251,8 +261,10 @@ Node* Grid::pGetNthNode(i8 i_Node)
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 
   i8 iSeq = 0;
-  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
-    Node* pNode = (*oNode_I);
+  for (SkipNode *pSkipNode = m_pNodes->pFirst(0);
+       pSkipNode;
+       pSkipNode = m_pNodes->pNext(pSkipNode, 0)) {
+    Node* pNode = _pNode(pSkipNode->m_pObject);
     
     if (pNode && i_Node == iSeq++)
       return pNode;
@@ -288,8 +300,10 @@ Node* Grid::pOtherNode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 
-  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
-    Node* pNode = (*oNode_I);
+  for (SkipNode *pSkipNode = m_pNodes->pFirst(0);
+       pSkipNode;
+       pSkipNode = m_pNodes->pNext(pSkipNode, 0)) {
+    Node* pNode = _pNode(pSkipNode->m_pObject);
     
     if (pNode && pNode != m_pThisNode)
       return pNode;
@@ -322,8 +336,10 @@ void Grid::vResetNetwork(void)
   Totup*  pTotup;
   Totup*  pWhyTot;
 
-  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
-    pNode = (*oNode_I);
+  for (SkipNode *pSkipNode = m_pNodes->pFirst(0);
+       pSkipNode;
+       pSkipNode = m_pNodes->pNext(pSkipNode, 0)) {
+    Node* pNode = _pNode(pSkipNode->m_pObject);
     pSndSkt =  pNode->pSendSocket();
     pRcvSkt =  pNode->pRecvSocket();
     
@@ -359,9 +375,11 @@ void Grid::vSeeNodes(void)
   vTrace("  ptns in grid  %lld\n"_Stz,AM::PTNMAP::nPtnsInGrid());
 
   SP_Node spNode;
-  
-  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
-    Node* pNode = *oNode_I;
+
+  for (SkipNode *pSkipNode = m_pNodes->pFirst(0);
+       pSkipNode;
+       pSkipNode = m_pNodes->pNext(pSkipNode, 0)) {
+    Node* pNode = _pNode(pSkipNode->m_pObject);
     vTrace("  %s\n"_Stz,spNode.sz(pNode));
   }
   
@@ -387,9 +405,11 @@ void Grid::vShowGrid(void)
   vTrace("  %lld nodes\n"_Stz,AM::pGrid()->nKnownNodes());
   vTrace("  %lld ptns per node\n"_Stz,AM::PTNMAP::nPtnsPerNode());
   vTrace("  %lld ptns in grid\n"_Stz,AM::PTNMAP::nPtnsInGrid());
-  
-  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
-    pNode = (*oNode_I);
+
+  for (SkipNode *pSkipNode = m_pNodes->pFirst(0);
+       pSkipNode;
+       pSkipNode = m_pNodes->pNext(pSkipNode, 0)) {
+    Node* pNode = _pNode(pSkipNode->m_pObject);
     pSndSkt =  pNode->pSendSocket();
     pRcvSkt =  pNode->pRecvSocket();
 
@@ -454,8 +474,10 @@ void Grid::vShowNetwork(void)
   s32 sRcvBytes;
   s32 sTotBytes;
 
-  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
-    pNode = (*oNode_I);
+  for (SkipNode *pSkipNode = m_pNodes->pFirst(0);
+       pSkipNode;
+       pSkipNode = m_pNodes->pNext(pSkipNode, 0)) {
+    Node* pNode = _pNode(pSkipNode->m_pObject);
     pSndSkt =  pNode->pSendSocket();
     pRcvSkt =  pNode->pRecvSocket();
     
@@ -474,8 +496,10 @@ void Grid::vShowNetwork(void)
          ,sTotBytes.szStz()
          );
 
-  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
-    pNode = (*oNode_I);
+  for (SkipNode *pSkipNode = m_pNodes->pFirst(0);
+       pSkipNode;
+       pSkipNode = m_pNodes->pNext(pSkipNode, 0)) {
+    Node* pNode = _pNode(pSkipNode->m_pObject);
     pSndSkt =  pNode->pSendSocket();
     pRcvSkt =  pNode->pRecvSocket();
 
