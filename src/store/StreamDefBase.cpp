@@ -739,6 +739,10 @@ eEC StreamDefBase::eParse(Stz* szCmd)
   
   pTkn = pTknVec->pNextToken(); dPT();
   m_sStreamDefNm = pTkn->szChars();
+  if (m_sStreamDefNm.nLength() > C_MAX_TABLE_NAME_LENGTH - 1) {
+    eError = EC_MAX_TABLE_NAME_LENGTH;
+    goto L_RETURN;
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Parse: ( <columnDef> ,... )
