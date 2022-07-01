@@ -1,30 +1,30 @@
 #!/bin/bash
 # shellcheck disable=SC2164
 
-# This is a cloud-init script used for configuring a CentOS 7 machine for building (not running) RapidsSE.
+# This is a cloud-init script used for configuring a Ubuntu 18.04 machine for running (not building) RapidsSE.
 # The base64-encoded version of this file must be less than 16kB.
 
 echo
-echo "**************************************************"
-echo "Starting the cloud-init setup script for CentOS 7."
-echo "**************************************************"
+echo "******************************************************"
+echo "Starting the cloud-init setup script for Ubuntu 18.04."
+echo "******************************************************"
 
-readonly CENTOS7="centos7"
-readonly CENTOS7_USER="ec2-user"
-readonly CENTOS7_HOME_DIR="/home/${CENTOS7_USER}"
+readonly UBUNTU18="ubuntu18"
+readonly UBUNTU18_USER="ec2-user"
+readonly UBUNTU18_HOME_DIR="/home/${UBUNTU18_USER}"
 
 OS_DIST="unknown"
 OS_USER="unknown"
 OS_HOME_DIR="unknown"
 
 # Ensure that we are on the right OS
-if [ -f /etc/system-release ]; then
-  OS_VER=$(cat /etc/system-release)
+if [ -f /etc/issue ]; then
+  OS_VER=$(cat /etc/issue)
 
-  if [[ "${OS_VER}" =~ 'CentOS Linux release 7' ]]; then
-    OS_DIST="${CENTOS7}"
-    OS_USER="${CENTOS7_USER}"
-    OS_HOME_DIR="${CENTOS7_HOME_DIR}"
+  if [[ "${OS_VER}" =~ 'Ubuntu 18' ]]; then
+    OS_DIST="${UBUNTU18}"
+    OS_USER="${UBUNTU18_USER}"
+    OS_HOME_DIR="${UBUNTU18_HOME_DIR}"
   fi;
 fi
 
@@ -41,20 +41,20 @@ echo "OS_USER = ${OS_USER}"
 echo "OS_HOME_DIR = ${OS_HOME_DIR}"
 
 # -----------------------------------------
-# Create an ec2-user on CentOS 7
+# Create an ec2-user on Ubuntu 18
 echo
 echo "*** Creating an new user: ec2-user ***"
 echo
 
-useradd "${OS_USER}" || true
-usermod -a -G wheel "${OS_USER}"
+useradd -s /bin/bash -m "${OS_USER}"
+usermod -a -G admin "${OS_USER}"
 
 # Setup passwordless sudo for user ec2-user
 # Wheel group already has this, but not passwordless
 SUDO_FILE="/etc/sudoers.d/ec2-user"
 {
-  echo "# Let ${OS_USER} use sudo without a password"
-  echo "${OS_USER}	ALL=(ALL)	NOPASSWD: ALL"
+  echo "# Let ec2-user use sudo without a password"
+  echo "ec2-user  ALL=(ALL) NOPASSWD: ALL"
 } > "${SUDO_FILE}"
 
 chmod 0400 "${SUDO_FILE}"
@@ -135,7 +135,13 @@ chown -R "${OS_USER}:${OS_USER}" "${SSH_DIR}"
 echo
 echo "*** Installing the SSD mount script ***"
 echo
-cat << 'EOF' >> "/etc/rc.d/rc.local"
+
+RC_LOCAL="/etc/rc.local"
+
+# Delete the exit 0 at the end of the file
+sed -i '/exit 0/d' "${RC_LOCAL}"
+
+cat << 'EOF' >> "${RC_LOCAL}"
 
 # -----------------------------------------
 # Setup the SSDs on each boot
@@ -147,7 +153,7 @@ if ! mount | grep "/mnt/disk1" &>/dev/null; then
   # Get the name of the device (sans "/dev/") that the root filesystem is mounted on.
   # e.g. /dev/nvme0n1 --> nvme0n1
   # We don't want to partition/format this disk!
-  root_device=$(df -h | grep -E "^/dev/" | cut -d ' ' -f 1 | cut -c 6-)
+  root_device=$(df -h | grep -E "^/dev/" | awk '{if($6 == "/") print $1;}' | cut -c 6-)
 
   # Get the list of block devices in the system.
   ssds=($(lsblk -d -n -o NAME))
@@ -160,6 +166,14 @@ if ! mount | grep "/mnt/disk1" &>/dev/null; then
     then
       # ignore this device
       echo "Ignoring root device ${device}"
+      continue
+    fi
+
+    # ignore loop devices
+    if [[ "${device}" =~ ^loop.* ]]
+    then
+      # ignore this device
+      echo "Ignoring loop device ${device}"
       continue
     fi
 
@@ -198,25 +212,30 @@ if ! mount | grep "/mnt/disk1" &>/dev/null; then
     MOUNTS+=("${mount_point}")
   done
 fi
+exit 0
 EOF
 
 # Run the above script
 echo
 echo "*** Running the SSD mount script ***"
 echo
-chmod +x /etc/rc.d/rc.local
-bash /etc/rc.d/rc.local
+chmod +x "${RC_LOCAL}"
+bash "${RC_LOCAL}"
 
 # -----------------------------------------
 # Give more memory to /dev/shm. Use 95% of system memory
+SHM_DEVICE="/dev/shm"
 SHM_SIZE=$(cat /proc/meminfo | grep "MemTotal:" | awk '{printf "%d\n", $2/1048576*0.95}')
-echo "Updating size of /dev/shm to 95% of system memory (${SHM_SIZE} GB)"
+if [ "${SHM_SIZE}" -eq 0 ]; then
+  SHM_SIZE=1
+fi
+echo "Updating size of ${SHM_DEVICE} to 95% of system memory (${SHM_SIZE} GB)"
 {
   echo ""
-  echo "# Set /dev/shm to 95% of system memory"
-  echo "tmpfs     /dev/shm     tmpfs     defaults,size=${SHM_SIZE:-500}g     0 0 "
+  echo "# Set ${SHM_DEVICE} to 95% of system memory"
+  echo "tmpfs     ${SHM_DEVICE}     tmpfs     defaults,size=${SHM_SIZE:-500}g     0 0 "
 } >>/etc/fstab
-mount -o remount /dev/shm
+mount -o remount "${SHM_DEVICE}"
 
 # -----------------------------------------
 # DNS (Route 53) resolution
@@ -241,7 +260,7 @@ echo "192.168.0.5 ci.rapidsdata.com" >> /etc/hosts
 echo
 echo "*** Setting /opt permissions ***"
 echo
-chown root:wheel /opt
+chown root:admin /opt
 chmod g+w /opt
 
 # -----------------------------------------
@@ -249,25 +268,17 @@ chmod g+w /opt
 echo
 echo "*** Installing updates and necessary packages ***"
 echo
-yum update -y
-
-if [ "${OS_DIST}" = "${CENTOS7}" ]; then
-  yum install -y epel-release
-  yum install -y https://packages.endpointdev.com/rhel/7/os/x86_64/endpoint-repo.x86_64.rpm
-fi
+apt-get update -y
+apt-get upgrade -y
 
 # Need to have
-yum install -y gcc-c++ git git-lfs cmake libuuid-devel unzip
-yum install -y centos-release-scl
-yum install -y devtoolset-11-gcc devtoolset-11-gcc-c++ devtoolset-11-libatomic-devel
+apt-get install -y gcc g++ git git-lfs libatomic1 netcat iproute2
 
-# Runtimes
-# yum install -y libatomic nmap-netcat iproute
+# Good to have
+apt-get install -y vim unzip
 
 # Nice to have
-# yum install -y java-11-openjdk-headless iperf3 iotop telnet vim nload nethogs bmon iftop jq
-
-sudo -H -u "${OS_USER}" git lfs install
+apt-get install -y default-jre iperf3 iotop telnet nload nethogs bmon iftop jq
 
 # -----------------------------------------
 # Vim annoyances
@@ -305,6 +316,12 @@ bash_profile="${OS_HOME_DIR}/.bash_profile"
   echo 'export PS1="\[\e[0;33m\]\u\[\e[0m\]@\[\e[0;32m\]\h\[\e[0m\]:\[\e[38;5;033m\]\W\[\e[0m\]\$ "'
   echo ""
 } >> "${bash_profile}"
+
+chown "${OS_USER}:${OS_USER}" "${bash_profile}"
+
+# -----------------------------------------
+# Git setup
+sudo -H -u "${OS_USER}" git lfs install
 
 # -----------------------------------------
 # Indicate cloud-init has completed by dropping a file in /tmp

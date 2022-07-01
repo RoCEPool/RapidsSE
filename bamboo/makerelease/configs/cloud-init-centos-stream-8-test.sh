@@ -1,17 +1,17 @@
 #!/bin/bash
 # shellcheck disable=SC2164
 
-# This is a cloud-init script used for configuring a CentOS 7 machine for running (not building) RapidsSE.
+# This is a cloud-init script used for configuring a CentOS Stream 8 machine for running (not building) RapidsSE.
 # The base64-encoded version of this file must be less than 16kB.
 
 echo
-echo "**************************************************"
-echo "Starting the cloud-init setup script for CentOS 7."
-echo "**************************************************"
+echo "*********************************************************"
+echo "Starting the cloud-init setup script for CentOS Stream 8."
+echo "*********************************************************"
 
-readonly CENTOS7="centos7"
-readonly CENTOS7_USER="ec2-user"
-readonly CENTOS7_HOME_DIR="/home/${CENTOS7_USER}"
+readonly CENTOS8="centos8"
+readonly CENTOS8_USER="ec2-user"
+readonly CENTOS8_HOME_DIR="/home/${CENTOS8_USER}"
 
 OS_DIST="unknown"
 OS_USER="unknown"
@@ -21,10 +21,10 @@ OS_HOME_DIR="unknown"
 if [ -f /etc/system-release ]; then
   OS_VER=$(cat /etc/system-release)
 
-  if [[ "${OS_VER}" =~ 'CentOS Linux release 7' ]]; then
-    OS_DIST="${CENTOS7}"
-    OS_USER="${CENTOS7_USER}"
-    OS_HOME_DIR="${CENTOS7_HOME_DIR}"
+  if [[ "${OS_VER}" =~ 'CentOS Stream release 8' ]]; then
+    OS_DIST="${CENTOS8}"
+    OS_USER="${CENTOS8_USER}"
+    OS_HOME_DIR="${CENTOS8_HOME_DIR}"
   fi;
 fi
 
@@ -41,7 +41,7 @@ echo "OS_USER = ${OS_USER}"
 echo "OS_HOME_DIR = ${OS_HOME_DIR}"
 
 # -----------------------------------------
-# Create an ec2-user on CentOS 7
+# Create an ec2-user on CentOS 8
 echo
 echo "*** Creating an new user: ec2-user ***"
 echo
@@ -54,7 +54,7 @@ usermod -a -G wheel "${OS_USER}"
 SUDO_FILE="/etc/sudoers.d/ec2-user"
 {
   echo "# Let ec2-user use sudo without a password"
-  echo "ec2-user	ALL=(ALL)	NOPASSWD: ALL"
+  echo "ec2-user  ALL=(ALL)  NOPASSWD: ALL"
 } > "${SUDO_FILE}"
 
 chmod 0400 "${SUDO_FILE}"
@@ -210,6 +210,9 @@ bash /etc/rc.d/rc.local
 # -----------------------------------------
 # Give more memory to /dev/shm. Use 95% of system memory
 SHM_SIZE=$(cat /proc/meminfo | grep "MemTotal:" | awk '{printf "%d\n", $2/1048576*0.95}')
+if [ "${SHM_SIZE}" -eq 0 ]; then
+  SHM_SIZE=1
+fi
 echo "Updating size of /dev/shm to 95% of system memory (${SHM_SIZE} GB)"
 {
   echo ""
@@ -251,9 +254,9 @@ echo "*** Installing updates and necessary packages ***"
 echo
 yum update -y
 
-if [ "${OS_DIST}" = "${CENTOS7}" ]; then
+if [ "${OS_DIST}" = "${CENTOS8}" ]; then
   yum install -y epel-release
-  yum install -y https://packages.endpointdev.com/rhel/7/os/x86_64/endpoint-repo.x86_64.rpm
+#  yum install -y https://packages.endpointdev.com/rhel/7/os/x86_64/endpoint-repo.x86_64.rpm
 fi
 
 # Need to have
@@ -263,9 +266,7 @@ yum install -y gcc-c++ git git-lfs libatomic nmap-ncat iproute
 yum install -y vim unzip
 
 # Nice to have
-yum install -y java-11-openjdk-headless iperf3 iotop telnet vim nload nethogs bmon iftop jq unzip
-
-su ec2-user git lfs install
+yum install -y java-11-openjdk-headless iperf3 iotop telnet nload nethogs bmon iftop jq
 
 # -----------------------------------------
 # Vim annoyances
@@ -304,6 +305,8 @@ bash_profile="${OS_HOME_DIR}/.bash_profile"
   echo ""
 } >> "${bash_profile}"
 
+chown "${OS_USER}:${OS_USER}" "${bash_profile}"
+
 # -----------------------------------------
 # Git setup
 sudo -H -u "${OS_USER}" git lfs install
@@ -317,3 +320,4 @@ echo "**************************************"
 echo "Completed the cloud-init setup script!"
 echo "**************************************"
 echo
+

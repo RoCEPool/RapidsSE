@@ -12,6 +12,7 @@ if os.path.exists(C_LOG_CONFIG_FILE):
 
     # This line uses the multiprocessing_logging library to funnel all logging
     # from child processes back to this parent process.
+    # Ref: https://pypi.org/project/multiprocessing-logging/
     multiprocessing_logging.install_mp_handler()
 
 else:
