@@ -6,6 +6,7 @@ import threading
 import datetime
 import time
 import subprocess
+import multiprocessing
 
 import pyutils.ec2 as ec2
 import pyutils.ssh as ssh
@@ -89,31 +90,28 @@ class TestRunner:
                                              self.artifact_path,
                                              self.result_path,
                                              self.repo_path,
-                                             self.result_list,
                                              self.installer_path)
             self.instance_runners.append(instance_runner)
 
             # Create, but don't start the threads yet!
-            instance_thread = threading.Thread(target=instance_runner.run(), daemon=True, name=test_name)
-            self.instance_threads.append(instance_thread)
+            # instance_thread = threading.Thread(target=instance_runner.run(), daemon=True, name=test_name)
+            # self.instance_threads.append(instance_thread)
 
     def run(self):
         """
         Runs the logic that tests SE on a remote node with a particular image.
         """
-        # Start each of the threads and wait for them to complete, with a timeout.
-        for instance_thread in self.instance_threads:
-            instance_thread.start()
+        LOG.debug(f"About to start {len(self.instance_runners)} parallel processes for testing SE.")
+        with multiprocessing.Pool() as pool:
+            instance_results = pool.map(InstanceRunner.run, self.instance_runners)
 
-        # Wait for all threads to complete
-        if not self.__wait_for_tests_to_complete(C_SE_TEST_TIMEOUT_SEC):
-            # Handle the timeout
-            for instance_runner, instance_thread in zip(self.instance_runners, self.instance_threads):
-                if not instance_thread.is_alive():
-                    instance_runner.force_stop()
+        got_errors: bool = False
+        for result in instance_results:
+            self.result_list.append(result)
+            got_errors = got_errors and result.test_passed
 
-        else:
-            LOG.info("Completed testing RapidsSE.")
+        msg = "Completed testing RapidsSE." if got_errors else "Completed testing RapidsSE, with errors."
+        LOG.info(msg)
 
     def __wait_for_tests_to_complete(self, timeout: float) -> bool:
         """
@@ -155,7 +153,6 @@ class InstanceRunner:
                  artifact_path: pathlib.Path,
                  result_path: pathlib.Path,
                  repo_path: pathlib.Path,
-                 result_list: [TestResult],
                  local_installer_path: pathlib.Path):
 
         self.test_name: str = test_name
@@ -171,7 +168,6 @@ class InstanceRunner:
 
         # Create a new result and add it to the list
         self.test_result = TestResult(self.test_name)
-        result_list.append(self.test_result)
 
         self.instance_id: string = None
         self.ip_addr: string = None
@@ -181,9 +177,24 @@ class InstanceRunner:
         self.remote_cluster_config_path: pathlib.Path = None
         self.can_collect_artifacts = False  # not yet
 
-    def run(self):
+    def run(self) -> TestResult:
+        """"""
         self.test_result.set_test_started()
 
+        # We do the work in a thread so that we can watch for a timeout.
+        # The thread doesn't end after a timeout, but we make a daemon thread
+        # so that it does exit when the process exits.
+        instance_thread = threading.Thread(target=self.__run_thread(), daemon=True)
+        instance_thread.start()
+
+        instance_thread.join(C_SE_TEST_TIMEOUT_SEC)
+        if instance_thread.is_alive():
+            self.force_stop()
+
+        return self.test_result
+
+    def __run_thread(self):
+        """"""
         try:
             # Start an EC2 instance and wait for it to become available
             self.__start_test_instance()
