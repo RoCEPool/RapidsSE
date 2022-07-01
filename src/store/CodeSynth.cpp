@@ -3456,15 +3456,15 @@ void CodeSynth::vSynthAllocPotRow(TypedStack* pPostStack, Stz* sHashExpr, bool b
     StrLib::vAppendString(&m_azCodeCrs, "\n    }");
     StrLib::vAppendString(&m_azCodeCrs, "\n");
 
-    StrLib::vAppendString(&m_azCodeCrs, "\nL_Return:");
-    vGenerateGoto("L_ReturnFinal"_Stz);
+    //StrLib::vAppendString(&m_azCodeCrs, "\nL_Return:");
+    //vGenerateGoto("L_ReturnFinal"_Stz);
   }
   else {
     vGenerateGoto(sLabelNext);
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate return
-    StrLib::vAppendString(&m_azCodeCrs, "\n  L_Return:");
-    vGenerateGoto("L_ReturnFinal"_Stz);
+    //StrLib::vAppendString(&m_azCodeCrs, "\n  L_Return:");
+    //vGenerateGoto("L_ReturnFinal"_Stz);
   }
 }
 
@@ -4703,15 +4703,15 @@ void CodeSynth::vSynthAllocTubRow(TypedStack* pPostStack, bool bEosHandler,
     StrLib::vAppendString(&m_azCodeCrs, "\n    }");
     StrLib::vAppendString(&m_azCodeCrs, "\n");
 
-    StrLib::vAppendString(&m_azCodeCrs, "\nL_Return:");
-    vGenerateGoto("L_ReturnFinal"_Stz);
+    //StrLib::vAppendString(&m_azCodeCrs, "\nL_Return:");
+    //vGenerateGoto("L_ReturnFinal"_Stz);
   }
   else {
     vGenerateGoto(sLabelNext);
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate return
-    StrLib::vAppendString(&m_azCodeCrs, "\n  L_Return:");
-    vGenerateGoto("L_ReturnFinal"_Stz);
+    //StrLib::vAppendString(&m_azCodeCrs, "\n  L_Return:");
+    //vGenerateGoto("L_ReturnFinal"_Stz);
   }
 
 }

@@ -29,7 +29,8 @@
   0 EV_M_START EG_ZK LogicUnit[].diaryNote
 
   <tableNm> <indexNm> op__table_index not if
-    false
+    Pipein[].delete
+    true
     exit
   then
 
@@ -52,7 +53,15 @@
   Table[] StreamDefRht[].newFromTable
 
   // generate selectColumns bitmap from filter expr and streamDefRht
-  //<expr> StreamDefRht[].selectColumns to eError
+  <keyExpr> StreamDefLft[].selectColumns to eError
+
+  // check for error
+    eError EC_NONE == not if
+      eError op__execErr
+      true
+      exit
+    then
+
   <expr> nullptr StreamDefRht[] StreamDefOut[].generate to eError
 
   // check for error
