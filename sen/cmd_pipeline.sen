@@ -17,6 +17,12 @@
 /* org_ org */  // - - - - - - - - - - - - - - - - - -
 /* org_ org */  // start as ordinary job on this node
 /* org_ org */  // - - - - - - - - - - - - - - - - - -
+/* org_ org */  "<objectTracker>" [job].tagSet@ tagSet.hasName if
+/* org_ org */    "Initial Job Start" [job].labelObjectTracker
+/* org_ org */    [job].printObjectTracker
+/* org_ org */    [job].resetObjectTracker
+/* org_ org */    "Origin Job Start" [job].labelObjectTracker
+/* org_ org */  then
 /* org_ org */  [args].distJob if
 /* org_ org */    "pipeline" "origin"
 /* org_ org */      "org_ org" "job org"                             [job].trace
@@ -57,16 +63,17 @@
 /* org_ org */      ListedJob[].assertNoRef
 /* org_ org */
 /* org_ org */      Path[].discardAll
-/* org_ org */      [job].addRetired
+/* org_ org */      [task].grabLock
+/* org_ org */      [job].addExited
 /* org_ org */
 /* org_ org */      [args].distJob if
 /* org_ org */        "pipeline" "origin"
 /* org_ org */        "org_ org" "<preCheck> signalling parent"       [job].trace
 /* org_ org */      then
 /* org_ org */
-/* org_ ovr */      [job].error@ [job].signalParent
+/* org_ org */      [job].updateParent assert
+/* org_ ovr */      [job].signalParent
 /* org_ org */
-/* org_ org */      [task].grabLock
 /* org_ org */        [task].retire // does not queue onto exit demon
 /* org_ org */
 /* org_ org */      HAZARD
@@ -86,18 +93,17 @@
 /* org_ org */    ListedJob[].assertNoRef
 /* org_ org */
 /* org_ org */    Path[].discardAll
-/* org_ org */    [job].addRetired
+/* org_ org */    [task].grabLock
+/* org_ org */    [job].addExited
 /* org_ org */
 /* org_ org */      [args].distJob if
 /* org_ org */        "pipeline" "origin"
 /* org_ org */        "org_ org" "preExecuteTest signalling parent"       [job].trace
 /* org_ org */      then
 /* org_ org */
-/* org_ ovr */    [job].error@ [job].signalParent
-/* org_ ovr */
-/* org_ ovr */    true [job].reapable!
+/* org_ org */    [job].updateParent assert
+/* org_ ovr */    [job].signalParent
 /* org_ org */
-/* org_ org */    [task].grabLock
 /* org_ org */      [task].retire // does not queue onto exit demon
 /* org_ org */
 /* org_ org */    HAZARD
@@ -127,11 +133,12 @@
 /* org_ org */    ListedJob[].assertNoRef
 /* org_ org */
 /* org_ org */    Path[].discardAll
-/* org_ org */    [job].addRetired
-/* org_ org */
-/* org_ ovr */    [job].error@ [job].signalParent
-/* org_ org */
 /* org_ org */    [task].grabLock
+/* org_ org */    [job].addExited
+/* org_ org */    [job].updateParent assert
+/* org_ org */
+/* org_ ovr */    [job].signalParent
+/* org_ org */
 /* org_ org */      [task].retire // does not queue onto exit demon
 /* org_ org */
 /* org_ org */    HAZARD
@@ -144,8 +151,9 @@
 /* org_ org */        "pipeline" "origin"
 /* org_ org */        "org_ org" "NO_WAIT signalling parent"       [job].trace
 /* org_ org */      then
-/* org_ org */
-/* org_ ovr */      [job].error@ [job].signalParent
+
+/* org_ org */      [job].updateParent assert
+/* org_ ovr */      [job].signalParent
 /* org_ org */     then
 
 /* ---- --- */  // !!! org !!! org !!! org !!! org !!! org !!! org !!! org !!!
@@ -175,31 +183,6 @@
 /* org_ org */  // test if distributed job may execute
 /* org_ org */  // - - - - - - - - - - - - - - - - - -
 /* org_ org */
-/*
-?* org_ org *?  [args].distJob if
-?* org_ org *?    "pipeline" "origin"
-?* org_ org *?      "org_ org" "preExecuteTest"                    [job].trace
-?* org_ org *?  then
-?* org_ org *?
-?* org_ org *?  [job].preExecuteTest to ErrorCode[]
-?* org_ org *?  ErrorCode[] if
-?* org_ org *?    ErrorCode[] [job].error!
-?* org_ org *?    [ddlLock].testDrop
-?* org_ ovr *?    [job].removeOriginator
-?* org_ ovr *?    [job].assertOrdinary
-?* org_ org *?    ListedJob[].assertNoRef
-?* org_ org *?
-?* org_ org *?    Path[].discardAll
-?* org_ org *?    [job].addRetired
-?* org_ org *?
-?* org_ ovr *?    [job].error@ [job].signalParent
-?* org_ org *?
-?* org_ org *?    [task].grabLock
-?* org_ org *?      [task].retire // does not queue onto exit demon
-?* org_ org *?
-?* org_ org *?  HAZARD
-?* org_ org *?  then
-*/
 
 /* org_ org */  // - - - - - - - - - -
 /* org_ org */  // test if optimising
@@ -244,6 +227,11 @@
 /* org_ beg */  [task].grabLock
 /* org_ beg */    [grid].knownNodes [task].acksRemaining!
 /* org_ beg */    [job]:broadcast
+/* org_ org */    "<objectTracker>" [job].tagSet@ tagSet.hasName if
+/* org_ org */      [job].printObjectTracker
+/* org_ org */      [job].resetObjectTracker
+/* org_ org */      "Broadcast Start" [job].labelObjectTracker
+/* org_ org */    then
 /* org_ beg */  [task].wait
 /* org_ beg */
 /* org_ beg */  [job].tscBegun
@@ -273,6 +261,11 @@
 /* org_ exe */  [task].grabLock
 /* org_ exe */    [grid].knownNodes [task].acksRemaining!
 /* org_ exe */    STD_NOWAIT_TAG "execute" api::forkChild2PC discard
+/* org_ org */    "<objectTracker>" [job].tagSet@ tagSet.hasName if
+/* org_ org */      [job].printObjectTracker
+/* org_ org */      [job].resetObjectTracker
+/* org_ org */      "Execute Start" [job].labelObjectTracker
+/* org_ org */    then
 /* org_ exe */  [task].wait
 /* org_ exe */
 /* org_ exe */  [job].tscExecuted
@@ -303,6 +296,11 @@
 /* org_ end */  [task].grabLock
 /* org_ end */    [grid].knownNodes [task].acksRemaining!
 /* org_ end */    STD_NOWAIT_TAG "end" api::forkChild2PC discard
+/* org_ org */    "<objectTracker>" [job].tagSet@ tagSet.hasName if
+/* org_ org */      [job].printObjectTracker
+/* org_ org */      [job].resetObjectTracker
+/* org_ org */      "End Start" [job].labelObjectTracker
+/* org_ org */    then
 /* org_ end */  [task].wait
 /* org_ end */
 /* org_ end */  [job].tscEnded
@@ -340,9 +338,13 @@
 /* org_ ovr */  then
 /* org_ ovr */
 /* org_ ovr */  Path[].discardAll
-/* org_ ovr */  [job].addRetired
-/* org_ ovr */
 /* org_ ovr */  [task].grabLock
+/* org_ ovr */  [job].addExited
+/* org_ org */  "<objectTracker>" [job].tagSet@ tagSet.hasName if
+/* org_ org */    [job].printObjectTracker
+/* org_ org */    [job].disableObjectTracker
+/* org_ org */  then
+/* org_ org */
 /* org_ ovr */    "<signalParent>" [job].tagSet@ tagSet.hasName if
 /* org_ org */
 /* org_ org */      [args].distJob if
@@ -350,17 +352,16 @@
 /* org_ org */        "org_ org" "WAIT signalling parent"       [job].trace
 /* org_ org */      then
 /* org_ org */
-/* org_ ovr */      [job].error@ [job].signalParent
-/* org_ ovr */     else
-/* org_ ovr */       true [job].reapable!
+/* org_ ovr */      [job].updateParent assert
+/* org_ ovr */      [job].signalParent
+/* org_ ovr */    then
+/* org_ ovr *
+/* org_ ovr */    [args].distJob if
+/* org_ ovr */      "pipeline" "origin"
+/* org_ ovr */        "org_ ovr" "signalled..."                  [job].trace
 /* org_ ovr */    then
 /* org_ ovr */
-/* org_ ovr */    //[args].distJob if
-/* org_ ovr */    //  "pipeline" "origin"
-/* org_ ovr */    //    "org_ ovr" "signalled..."                  [job].trace
-/* org_ ovr */    //then
-/* org_ ovr */
-/* org_ ovr */    [task].retire // does not queue onto exit demon
+/* org_ ovr */    [task].retire
 /* org_ ovr */
 /* org_ ovr */  HAZARD
 

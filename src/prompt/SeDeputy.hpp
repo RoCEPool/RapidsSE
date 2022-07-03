@@ -23,14 +23,13 @@ namespace PROMPT
     b8        m_bAvailable;
     b8        m_bContinue;
     b8        m_bTerminated;
-    b8        m_bSystemCloser; // is this deputy the system closer?
+    //b8        m_bSystemCloser; // is this deputy the system closer?
 
     Job*      m_pRootJob;
-    Job*      m_pJob;
     eEC       m_eError;
   
-    s256      m_sFolderPath;   // folder path
-    JobId     m_tLastJobId;    // last job id
+    //s256      m_sFolderPath;   // folder path
+    //JobId     m_tLastJobId;    // last job id
 
     s4K       m_sToDo;         // prompt to do
 

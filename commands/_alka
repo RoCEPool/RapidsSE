@@ -2,6 +2,29 @@
 /* _alka                                                                      */
 /*============================================================================*/
 
+create table limitRow (col0 VARCHAR(20000));
+load limitRow "../DATA/Load/largeRow_tst.csv";
+
+//select * from limitRow;
+
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0111
+  stage stageMarker0111 on all partitions :
+    scan rapidsse public limitRow
+    | project " type VARCHAR as col0 $1 "
+    | combined 1
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+/*
 create table datums (
   int_col0   INTEGER NOT NULL,
   int_col1   INTEGER,
@@ -42,7 +65,7 @@ create table LineItem
  L_SHIPMODE      CHAR(10)      NOT NULL,
  L_COMMENT       VARCHAR(44)   NOT NULL
  );
-//CREATE INDEX IxL_ORDERKEY ON lineitem(L_ORDERKEY);
+CREATE INDEX IxL_ORDERKEY ON lineitem(L_ORDERKEY);
 //CREATE INDEX IxL ON lineitem(l_returnflag);
 //create index IxL_SHIPDATE  ON Lineitem (l_SHIPDATE)  ;
 
@@ -126,43 +149,6 @@ create table TABLE9 (
   ucol    INTEGER,
   ucolvc  VARCHAR(5)
 );
-Load TABLE9 "../DATA/Load/tbl9data.csv" ;
+Load TABLE9 "../DATA/Load/tbl9data.csv" <escape_char> = "\0";
 
-explain stage transliterate select ucolvc, cold9 from table9 where cold9 not between -245.0 and 245.0 order by ucolvc;
-select colb1, pcol1 from table1 where colb1 not between 'GRE' and 'tangent' order by colb1 , pcol1;
-
-/*
-
-args
-bp
-bye
-cd
-config
-hw
-ls
-print
-pwd
-bye
-cd <directoryName>
-cf <folderName>
-create catalog <catalogName>;
-create schema <schemaName>;
-create table <tableName>;
-create index <indexName>;
-create tenant <tenantName>;
-drop catalog <catalogName>;
-drop schema <schemaName>;
-drop table <tableName>;
-drop tenant <tenantName>;
-lf
-load <tableName> <fileName>
-ls
-lscol <tableName>
-print string
-pwf
-pwd
-space
-tableSizes
-lstbl
-lsidx <tableName>
 */

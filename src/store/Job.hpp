@@ -41,6 +41,8 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     eEC    m_eError_job;  // error when starting job
     eEC    m_eChildError; // error in child job
 
+    bool   m_bUpdateParent; // update parent
+
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // reset in Job::vPostRecv()
   
@@ -49,13 +51,13 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     /* 02 */ JobMetrics* m_pJobMetrics;// job metrics chain
     /* 03 */ Mutex*  m_pMutex;         // mutex
     /* 04 */ Output* m_pOutput;        // output processor
-    /* 05 */ b8      m_bReapable;      // can job be reaped?
-    /* 06 */ Op*     m_p_ResponseOp;   // operator to where responses go
-    /* 07 */ Timer   m_oResponseTimer; // timer (on origin only)
-    /* 08 */ Task*   m_pTask;          // task executing this job
-    /* 09 */ b8      m_bWasReceived;   // was job received over a socket?
-    /* 10 */ MarkerChain* m_pMarkerChain; // chain of free markers
-    /* 11 */ b8      m_bAllocate;      // can job ask for memory?
+    /* 05 */ Op*     m_p_ResponseOp;   // operator to where responses go
+    /* 06 */ Timer   m_oResponseTimer; // timer (on origin only)
+    /* 07 */ Task*   m_pTask;          // task executing this job
+    /* 08 */ b8      m_bWasReceived;   // was job received over a socket?
+    /* 09 */ MarkerChain* m_pMarkerChain; // chain of free markers
+    /* 10 */ b8      m_bAllocate;      // can job ask for memory?
+    /* 11 */ ObjectTracker*      m_pObjectTracker;// Frequency count of object types allocated/freed by this Job
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
 
@@ -83,7 +85,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId);
+    Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId, TagSet* pCmdTagSet = nullptr);
 
    ~Job(void) noexcept(false);
   
@@ -102,6 +104,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     Stz* szCmd(void);
     void vCmd(Stz* szCmd);
 
+    void vDisableObjectTracker(void);
     JobId tDistId(void);
     void vDistIdGenerate(void);
     i8   iDistNodeId(void);
@@ -109,6 +112,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vDrainOutput(void);
     void vDropLock(void);
 
+    void vEnableObjectTracker(void);
     Stz* szEntryPoint(void);
     void vEntryPoint(Stz* szEntry);
   
@@ -116,6 +120,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vFolderPath(Stz* szFolderPath);
     void vFreeMarker(Marker* pMarker);
 
+    void vGetTimerFromChild(Job* pChildJob);
     void vGrabLock(void);
 
     bool bHasTag(Stz* szTagNm);
@@ -141,6 +146,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     TagSet* pJobTags(void);
     void vJobTrace(Stz* szAtCmd, Stz* szAtRoutine, Stz* szAtPoint, Stz* szNote);
 
+    void  vLabelObjectTracker(Stz* szLabel);
     JobId tLastJobId(void);
     void  vLastJobId(JobId tLastJobId);
 
@@ -155,6 +161,8 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     Marker* pNewMarker(eOM eOpMarker);
     void vNewMarkerChain(void);
 
+    bool bObjectTracker(void);
+    void vObjectTrackerDump(void);
     void vOutputBeginProc(void);
     void vOutputCreate(void);
     void vOutputDestroy(void);
@@ -175,10 +183,11 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vPostRecv(void);
     void vProcessOutput(void);
     Timer* pProgressTimer(void);
-  
-    bool bReapable(void);
-    void vReapable(bool bReapable);
-    void vReapableJob(void);
+
+    void vUpdateParent(bool bUpdateParent);
+    bool bUpdateParent(void);
+
+    void vResetObjectTracker(void);
     void vResetOutput(void);
     void vResetTaskForJob(void);
     Op*  p_ResponseOp(void);
@@ -195,6 +204,8 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     Task* pTask(void);
     void vTask(Task* pTask);
     void vTaskCreate(void);
+    void vTrackAllocObject(eCN eClassNo);
+    void vTrackFreeObject(eCN eClassNo);
     i8   iTscBeginning(void);
     void vTscBeginning(i8 iTsc);
     i8   iTscBegun(void);

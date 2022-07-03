@@ -20,7 +20,7 @@
     word.object@ to pDemonJob
 
     "flushDemon_DataPulse B" .
-    Marker[].newFlushMarker Marker[]\clear pDemonJob job(Id).pipeToOp0
+    Marker[].newFlushMarker Marker[]\clear pDemonJob jobId::pipeToOp0 assert
     "flushDemon_DataPulse C" .
 
   else

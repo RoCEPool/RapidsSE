@@ -45,7 +45,7 @@ __aFooterFunction(Job)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
+Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId, TagSet* pCmdTagSet)
 : Operand(CN_JOB)
 , CRM<Job>(this)
 , m_okLock(this)
@@ -58,25 +58,36 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
   m_tOriginId = tOriginId;
 
   m_sJobNm   = szJobNm;
+
+  m_pObjectTracker = nullptr;
+
+  // Before the entire Job is created, check the cmd tag set to see if objectTracker
+  // tag is given, to enable object tracking in this job.
+  if(pCmdTagSet != nullptr && pCmdTagSet->bHasName(C_TAG_OBJTRACKER))
+  {
+    vEnableObjectTracker();
+  }
+
   //m_sEntryPoint
   //m_oJobTags
   //m_sFolderPath
   
   m_eJobPhase  = JP_NONE;
   m_eError_job = EC_NONE;
+  m_eChildError = EC_NONE;
+  m_bUpdateParent = false;
 
   /* 00 */ m_noActiveOps.vResetAtomic();
   /* 01 */ m_eJobList     = JL_NONE;
   /* 02 */ m_pJobMetrics  = nullptr;
-  /* 03 */ m_pMutex       = nullptr;
+  /* 03 */ m_pMutex       = new Mutex(this);
   /* 04 */ m_pOutput      = nullptr;
-  /* 05 */ m_bReapable    = false;
-  /* 06 */ m_p_ResponseOp = nullptr;
-  /* 07 */ m_oResponseTimer.vStart();
-  /* 08 */ m_pTask        = nullptr;
-  /* 09 */ m_bWasReceived = false;
-  /* 10 */ m_pMarkerChain = nullptr;
-  /* 11 */ m_bAllocate    = true;
+  /* 05 */ m_p_ResponseOp = nullptr;
+  /* 06 */ m_oResponseTimer.vStart();
+  /* 07 */ m_pTask        = nullptr;
+  /* 08 */ m_bWasReceived = false;
+  /* 09 */ m_pMarkerChain = nullptr;
+  /* 10 */ m_bAllocate    = true;
 
   m_iTscParticipant = 0;
   
@@ -108,55 +119,96 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
 Job::~Job(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-  
-  if (AM::JLIST::bFindJob(this))
-    AM::JLIST::vRemoveJob(this);
 
-//  if (bHasTag(C_TAG_LIFE) || JK_GENERIC == m_eJobKind) {
-//
-//    SP_TagSet spTagSet;
-//    vPrint("Job Delete: %s\n"_Stz,spTagSet.sz(&m_oJobTags));
-//    //m_oJobTags.vPrint();
-//  }
-    
-  // -- -- -- -- -- --
-  
-  //! this assert may fail if a job completes before its references
-  //! are completely returned
-  while (nReferences() ||
-         (m_pTask && TS_RETIRED != m_pTask->eState()) ) {
-    vTrace("Napping ... job still has references???\n"_Stz);
-    AM::vNapMsec(10, eGetClassNo());
-  }
+  try {
+    if (AM::JLIST::bFindJob(this))
+      AM::JLIST::vRemoveJob(this);
 
-  RASSERT(m_bReapable);
-  
-  if (m_pJobMetrics) {
-    while (m_pJobMetrics) {
-      JobMetrics* pJobMetricsNext = m_pJobMetrics->pNext();
-      delete m_pJobMetrics;
-      m_pJobMetrics = pJobMetricsNext;
+    //  if (bHasTag(C_TAG_LIFE) || JK_GENERIC == m_eJobKind) {
+    //
+    //    SP_TagSet spTagSet;
+    //    vPrint("Job Delete: %s\n"_Stz,spTagSet.sz(&m_oJobTags));
+    //    //m_oJobTags.vPrint();
+    //  }
+
+    // -- -- -- -- -- --
+
+    //! this assert may fail if a job completes before its references
+    //! are completely returned
+    while (nReferences() ||
+           (m_pTask && TS_RETIRED != m_pTask->eState())) {
+      //vTrace("Napping ... job still has references???\n"_Stz);
+      AM::vNapMsec(10, eGetClassNo());
     }
 
-  }
-    
-  if (m_pTask) {
-    m_pTask->vGrabTaskLock((Stz*)__func__);
-    m_pTask->vState(TS_DELETING);
-    m_pTask->vDropTaskLock((Stz*)__func__);
-    delete m_pTask;
+    //RASSERT(m_bReapable);
 
-  }
-  
-  AM::JOBS::vJobsActiveDec();
+    if (m_pJobMetrics) {
+      while (m_pJobMetrics) {
+        JobMetrics *pJobMetricsNext = m_pJobMetrics->pNext();
+        delete m_pJobMetrics;
+        m_pJobMetrics = pJobMetricsNext;
+      }
 
-  if (m_pMutex)
+    }
+
+    if (m_pTask) {
+      m_pTask->vGrabTaskLock((Stz *) __func__);
+      m_pTask->vState(TS_DELETING);
+      m_pTask->vDropTaskLock((Stz *) __func__);
+      delete m_pTask;
+    }
+
+    AM::JOBS::vJobsActiveDec();
+
+    //if (m_pMutex)
+    //  vMutexDestroy();
+
+    RASSERT(m_pMutex);
     vMutexDestroy();
-  if (m_pOutput)
-    vOutputDestroy();
-  
-  if (m_pMarkerChain)
-    delete m_pMarkerChain;
+
+    /*
+    i8 iResult;
+
+    iResult = pthread_mutex_destroy(&m_pMutex->m_xMutex);
+    if ( iResult ) {
+      vTrace("UNABLE TO DESTROY MUTEX OF Job: %s:%s\n"_Stz,
+             m_sJobNm.azChar(),
+             m_sEntryPoint.azChar());
+    }
+    RASSERT(! iResult);
+    iResult = pthread_mutexattr_destroy(&m_pMutex->m_xMutexAttr);
+    RASSERT(! iResult);
+
+    iResult = pthread_cond_destroy(&m_pMutex->m_xCond);
+    RASSERT(! iResult);
+    iResult = pthread_condattr_destroy(&m_pMutex->m_xCondAttr);
+    RASSERT(! iResult);
+
+    m_pMutex->m_bAlreadyDestroyed = true;
+
+    vMutexDestroy();
+  */
+
+    if (m_pOutput)
+      vOutputDestroy();
+
+    if (m_pMarkerChain)
+      delete m_pMarkerChain;
+
+    if(bObjectTracker())
+      delete m_pObjectTracker;
+  }
+  catch (...) {
+    vTrace("EXCEPTION in ~JOB: %s %s %s %s %s %s\n"_Stz,
+           m_sJobNm.azChar(),
+           m_sEntryPoint.azChar(),
+           aJP[m_eJobPhase],
+           m_pTask ? (m_pTask->bIsLocked() ? "isLocked" : "notLocked" ): "unknown",
+           aEC[m_eError_job],
+           aEC[m_eError_job]);
+    throw ;
+  }
 }
 
 
@@ -323,6 +375,18 @@ void Job::vCmd(Stz* szCmd)
 }
 
 /*----------------------------------------------------------------------------*/
+/* disable object tracker                                                     */
+/*----------------------------------------------------------------------------*/
+void Job::vDisableObjectTracker(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  if(bObjectTracker()) {
+    delete m_pObjectTracker;
+  }
+  m_pObjectTracker = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get distributed job id                                                     */
 /*----------------------------------------------------------------------------*/
 JobId Job::tDistId(void)
@@ -410,6 +474,19 @@ void Job::vDotPrint(Stz* szText)
 }
 
 /*----------------------------------------------------------------------------*/
+/* enable object tracker                                                      */
+/*----------------------------------------------------------------------------*/
+void Job::vEnableObjectTracker(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  if(!bObjectTracker()) {
+    m_pObjectTracker = new ObjectTracker();
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the sen entry code                                                     */
 /*----------------------------------------------------------------------------*/
 Stz* Job::szEntryPoint(void)
@@ -460,6 +537,25 @@ void Job::vFreeMarker(Marker* pMarker)
 //    m_pMarkerChain->vPush(pMarker);
 //  else
     delete pMarker;
+}
+
+/*----------------------------------------------------------------------------*/
+/* update timer from the child job                                            */
+/*----------------------------------------------------------------------------*/
+void Job::vGetTimerFromChild(Job* pChildJob)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_oResponseTimer = pChildJob->m_oResponseTimer;
+
+  m_iTscBeginning  = pChildJob->m_iTscBeginning;
+  m_iTscBegun      = pChildJob->m_iTscBegun;
+  m_iTscExecuting  = pChildJob->m_iTscExecuting;
+  m_iTscExecuted   = pChildJob->m_iTscExecuted;
+  m_iTscEnding     = pChildJob->m_iTscEnding;
+  m_iTscEnded      = pChildJob->m_iTscEnded;
+  m_iTscCanceling  = pChildJob->m_iTscCanceling;
+  m_iTscCanceled   = pChildJob->m_iTscCanceled;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -590,6 +686,19 @@ JobId Job::tJobId(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   return m_tJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add a label to the object tracker                                          */
+/*----------------------------------------------------------------------------*/
+void Job::vLabelObjectTracker(Stz *szLabel)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  if(bObjectTracker())
+  {
+    m_pObjectTracker->vAddLabel(szLabel);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -873,6 +982,27 @@ void Job::vNewMarkerChain(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* check if ObjectTracker is allocated                                        */
+/*----------------------------------------------------------------------------*/
+bool Job::bObjectTracker(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_pObjectTracker != nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* print contents of Object tracker                                           */
+/*----------------------------------------------------------------------------*/
+void Job::vObjectTrackerDump(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  if(bObjectTracker())
+  {
+    m_pObjectTracker->vDump(m_sJobNm);
+  }
+}
+/*----------------------------------------------------------------------------*/
 /* begin output processor                                                     */
 /*----------------------------------------------------------------------------*/
 void Job::vOutputBeginProc(void)
@@ -1089,15 +1219,15 @@ void Job::vPostRecv(void)
   /* 00 */ m_noActiveOps.vResetAtomic();
   /* 01 */ m_eJobList     = JL_NONE;
   /* 02 */ m_pJobMetrics  = nullptr;
-  /* 03 */ m_pMutex       = nullptr;
+  /* 03 */ m_pMutex       = new Mutex(this);
   /* 04 */ m_pOutput      = nullptr;
-  /* 05 */ RASSERT(! m_bReapable);
-  /* 06 */ m_p_ResponseOp = nullptr;
-  /* 07 */ m_oResponseTimer.vReset();
-  /* 08 */ m_pTask        = nullptr;
-  /* 09 */ m_bWasReceived = true;
-  /* 10 */ m_pMarkerChain = nullptr;
-  /* 11 */ m_bAllocate    = true;
+  /* 05 */ m_p_ResponseOp = nullptr;
+  /* 06 */ m_oResponseTimer.vReset();
+  /* 07 */ m_pTask        = nullptr;
+  /* 08 */ m_bWasReceived = true;
+  /* 19 */ m_pMarkerChain = nullptr;
+  /* 10 */ m_bAllocate    = true;
+  /* 11 */ m_pObjectTracker = nullptr;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -1118,15 +1248,8 @@ void Job::vProcessOutput(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  Job* pParentJob = this->pParentJob();
-
-  if (pParentJob) {
-    pParentJob->vProcessOutput();
-  }
-  else {
-    RASSERT(m_pOutput);
-    m_pOutput->vProcessBufferQueue();
-  }
+  RASSERT(m_pOutput);
+  m_pOutput->vProcessBufferQueue();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1259,41 +1382,35 @@ Timer* Job::pProgressTimer(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is job reapable?                                                           */
+/* set reportTime                                                             */
 /*----------------------------------------------------------------------------*/
-bool Job::bReapable(void)
+void Job::vUpdateParent(bool bUpdateParent)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_bReapable;
+
+  m_bUpdateParent = bUpdateParent;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set job reapable?                                                          */
+/* get reportTime                                                             */
 /*----------------------------------------------------------------------------*/
-void Job::vReapable(bool bReapable)
+bool Job::bUpdateParent(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_bReapable = bReapable;
+
+  return m_bUpdateParent;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set job as reapable                                                        */
+/* reset object tracker                                                       */
 /*----------------------------------------------------------------------------*/
-void Job::vReapableJob(void)
+void Job::vResetObjectTracker(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  if ( ! bIsInError() ) {
-
-    if (bIsPipeline()) {
-      vCleanupOutput();
-    }
-
+  if(bObjectTracker()) {
+    m_pObjectTracker->vReset();
   }
-  
-  vReapable(true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1303,18 +1420,9 @@ void Job::vResetOutput(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  //RASSERT( ! m_p_ResponseOp );
-
-  Job* pParentJob = this->pParentJob();
-
-  if (pParentJob) {
-    pParentJob->vResetOutput();
-  }
-  else {
-    RASSERT(m_pOutput);
-    m_pOutput->m_pOutputQueue->vReset();
-    m_pOutput->vEndProcOneCmd();
-  }
+  RASSERT(m_pOutput);
+  m_pOutput->m_pOutputQueue->vReset();
+  m_pOutput->vEndProcOneCmd();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1506,6 +1614,30 @@ void Job::vTaskCreate(void)
   m_pTask->vSetInxPtr("job::entryPoint"_Stz);
   
   vResponseTimerStart();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Track allocated object by this job                                         */
+/*----------------------------------------------------------------------------*/
+void Job::vTrackAllocObject(eCN eClassNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  if(bObjectTracker()) {
+    m_pObjectTracker->vTrackAllocClass(eClassNo);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Track freed object by this job                                             */
+/*----------------------------------------------------------------------------*/
+void Job::vTrackFreeObject(eCN eClassNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  if(bObjectTracker()) {
+    m_pObjectTracker->vTrackFreeClass(eClassNo);
+  }
 }
 
 /*----------------------------------------------------------------------------*/

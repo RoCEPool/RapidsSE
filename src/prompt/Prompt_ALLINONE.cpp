@@ -2449,8 +2449,8 @@ bool PROMPT::bPrompt_memoryLeaks(SePrompt* pPrompt)
 
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
   i8 iNumTokens = pInpTknVec->nItems();
-  JobList* pRetiredJobs = AM::pRetiredJobs();
-  i8 nRetired = pRetiredJobs->nJobs();
+  JobList* pExitedJobs = AM::pExitedJobs();
+  i8 nRetired = pExitedJobs->nJobs();
   
   bool bFatal = false;
   if (2 == iNumTokens && pInpTknVec->pGet(1)->bSame("fatal"_Stz))
@@ -2489,10 +2489,14 @@ bool PROMPT::bPrompt_memoryLeaks(SePrompt* pPrompt)
   // note: the tracking of memory works with an assumption that
   //       whatever was started after trackingMemory has completed
 
+  // wait for zero jobs in the Exited JOBLIST
+  while (gpAttachMap->pJobs()->bAnyExitedJobs())
+    {;}
+
   for (i8 iAttempt = 0; iAttempt < C_ATTEMPTS; iAttempt++) {
-    
+
     //Api::vReapJobsOnce();
-    gpAttachMap->pJobs()->vReapJobsOnce();
+    //gpAttachMap->pJobs()->vReapJobsOnce();
 
     i8 nJobsActive    = AM::JOBS::nJobsActive();
     i8 nJobsThreshold = AM::JOBS::nJobsThreshold();
@@ -2512,7 +2516,7 @@ bool PROMPT::bPrompt_memoryLeaks(SePrompt* pPrompt)
   for (i8 iAttempt = 0; iAttempt < C_ATTEMPTS; iAttempt++) {
 
     //Api::vReapJobsOnce();
-    gpAttachMap->pJobs()->vReapJobsOnce();
+    //gpAttachMap->pJobs()->vReapJobsOnce();
 
     nLeaksDetected = 0;
     pPoolSnapshot_curr->vTakeSnapshot();
@@ -2556,7 +2560,7 @@ bool PROMPT::bPrompt_memoryLeaks(SePrompt* pPrompt)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  nRetired = pRetiredJobs->nJobs();
+  nRetired = pExitedJobs->nJobs();
   vTrace("Retired Jobs : %lld)\n"_Stz,nRetired);
 
   
@@ -3684,7 +3688,7 @@ bool PROMPT::bPrompt_retired(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
 
-  AM::pRetiredJobs()->vListJobs();
+  AM::pExitedJobs()->vListJobs();
 
   return true;
 }
@@ -5520,7 +5524,7 @@ bool PROMPT::bPrompt_trackMemory(SePrompt* pPrompt)
   RASSERT(pPrompt);
 
   //Api::vReapJobsOnce();
-  gpAttachMap->pJobs()->vReapJobsOnce();
+  //gpAttachMap->pJobs()->vReapJobsOnce();
 
   pPrompt->vTrackMemory(true);
 

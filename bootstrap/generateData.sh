@@ -342,24 +342,31 @@ function generateClusterData() {
 function makeOutputDirs() {
   local nodeName
   local host
-  local remoteCmd=""
+  local makeDirCmd=""
+  local checkWritableCmd=""
   declare -a sshCmd=()
 
   for nodeName in "${NODE_LIST[@]}"
   do
     host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+
+    makeDirCmd=""
+    checkWritableCmd=""
     
     for dir in "${OUTPUT_DIRS[@]}" 
     do
       # Make the directory if it doesn't exist. Then check if the directory is writable.
-      remoteCmd="${remoteCmd} mkdir -p \"${dir}\" || { echo \"Cannot make directory on host ${host}: ${dir}\"; exit 1; } ; if [ ! -w \"${dir}\" ]; then echo \"Directory is not writable on host ${host}: ${dir}\"; exit 1; fi; true;"
+      makeDirCmd="${makeDirCmd} if ! mkdir -p \"${dir}\"; then echo \"Cannot make directory on host ${host}: ${dir}\"; exit 1; fi ; "
+      checkWritableCmd="${checkWritableCmd} if [ ! -w \"${dir}\" ]; then echo \"Directory is not writable on host ${host}: ${dir}\"; exit 1; fi; "
     done
 
-    sshCmd=( "ssh" "-q" "${host}" "bash -c '${remoteCmd}'" )
-
+    sshCmd=( "ssh" "-q" "${host}" "bash -c '${makeDirCmd}'" )
     debugPrint "About to create output directories on node ${nodeName} with the command: ${sshCmd[*]}"
+    "${sshCmd[@]}" || exit 1
 
-    "${sshCmd[@]}" || errorExit "Could not create output directories on node ${nodeName}."
+    sshCmd=( "ssh" "-q" "${host}" "bash -c '${checkWritableCmd}'" )
+    debugPrint "About to check the writability of output directories on node ${nodeName} with the command: ${sshCmd[*]}"
+    "${sshCmd[@]}" || exit 1
   done
 }
 

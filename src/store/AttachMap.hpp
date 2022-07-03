@@ -94,6 +94,20 @@ namespace STORE
     TxSet*        m_pTxSet;
     Word*         m_pWordRoot;
 
+    JobId         m_tAnswerDemonJobId;
+    JobId         m_tCollectDemonJobId;
+    JobId         m_tConnectorDemonJobId;
+    JobId         m_tEventDemonJobId;
+    JobId         m_tExitDemonJobId;
+    JobId         m_tMetricsDemonJobId;
+    JobId         m_tMonDemonJobId;
+    JobId         m_tPageOutDemonJobId;
+    JobId         m_tReaperDemonJobId;
+    JobId         m_tRecurDemonJobId;
+    JobId         m_tStatDemonJobId;
+    JobId         m_tWakerDemonJobId;
+    JobId         m_tSuperDemonJobId;
+
     // must be last
     Footer m_xFooter;
     

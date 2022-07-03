@@ -6,6 +6,8 @@
 
 #include "AM.hpp"
 #include "LogicUnit.hpp"
+#include "Job.hpp"
+#include "SeDeputy.hpp"
 
 extern BufferPool* gpBufferPool;
 
@@ -210,6 +212,17 @@ Object* Heap::pAllocObject(eCN eAllocClass)
         pLogicUnit->m_xpStats->m_nMaxBytes = nMaxBytes;
     }
   }
+  Job* pJob = MY::pJob();
+  Thread* pThread = MY::pThread();
+
+  if(pJob)
+  {
+    pJob->vTrackAllocObject(eAllocClass);
+  }
+  else if(pThread && pThread->pObject0()) {
+    Job* pJob = _pJob(MY::pThread()->pObject0());
+    pJob->vTrackAllocObject(eAllocClass);
+  }
 
   //bool bSetLogMemory = false;
   
@@ -375,6 +388,12 @@ void Heap::vFreeObject(Object* pObject)
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
   eCN eClassNo = pObject->eGetClassNo();
+
+  Job* pJob = MY::pJob();
+  if(pJob && pJob->bObjectTracker())
+  {
+    pJob->vTrackFreeObject(eClassNo);
+  }
 
 //  if ((Object*)0x2048091aa040 == pObject) {
 //    vTrace("FreeObject:: %p %s:%-3lld (address)\n"_Stz,

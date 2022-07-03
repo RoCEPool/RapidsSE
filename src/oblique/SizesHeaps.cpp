@@ -452,6 +452,7 @@ SizeHeap gxaSizeHeap[]
   { CN__O__,                     'O' - ('A' - 1),            HT_INVALID   ,0 FILL },
   { CN_OBJBUFFER,                sizeof(ObjBuffer),          HT_T_LARGE   ,0 FILL },
   { CN_OBJECTSNAPSHOT,           sizeof(ObjectSnapshot),     HT_T_SMALL   ,0 FILL },
+  { CN_OBJTRACKER,               sizeof(ObjectTracker),      HT_T_MEDIUM  ,0 FILL },
   { CN_OUTPUT,                   sizeof(Output),             HT_T_TINY    ,0 FILL },
   { CN_OP,                       sizeof(Op),                 HT_T_TINY    ,0 FILL },
   { CN_OPENFILES,                sizeof(OpenFiles),          HT_T_TINY    ,0 FILL },
@@ -603,7 +604,7 @@ SizeHeap gxaSizeHeap[]
   { CN_SYSREPORT,                sizeof(SysReport),          HT_T_TINY    ,0 FILL },
 
   { CN__T__,                     'T' - ('A' - 1),            HT_INVALID   ,0 FILL },
-  { CN_TABLE,                    sizeof(Table),              HT_T_TINY    ,0 FILL },
+  { CN_TABLE,                    sizeof(Table),              HT_P_TINY    ,0 FILL },
   { CN_TABLEDEF,                 sizeof(Table),              HT_T_MEDIUM  ,0 FILL },
   { CN_TABLEPTN,                 sizeof(TablePtn),           HT_T_TINY    ,0 FILL },
   { CN_TABLEPTNVEC,              sizeof(TablePtnVec),        HT_T_TINY    ,0 FILL },

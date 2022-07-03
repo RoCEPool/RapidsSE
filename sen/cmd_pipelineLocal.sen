@@ -5,24 +5,6 @@
 " cmd_pipelineLocal.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* terminate this pipeline                                                    */
-/*----------------------------------------------------------------------------*/
-: pipelineLocal::termination
-
-  [ddlLock].testDrop
-
-  ListedJob[].assertNoRef
-
-  Path[].discardAll
-
-  [job].addRetired
-  [task].grabLock
-    [task].retire // does not queue onto exit demon
-
-  HAZARD
-;
-
-/*----------------------------------------------------------------------------*/
 /* execute on local node                                                      */
 /*----------------------------------------------------------------------------*/
 : pipelineLocal::local
@@ -60,15 +42,20 @@
 
     // cross check
     PipeSpec[] not assert
-      
-    [task].grabLock
-    [job].error@ [job].signalParent
-    [task].dropLock
-    
-    pipelineLocal::termination
 
-    // signal the parent
-    [job].error@ [job].signalParent
+    [ddlLock].testDrop
+
+    ListedJob[].assertNoRef
+
+    Path[].discardAll
+
+    [task].grabLock
+    [job].addExited
+    [job].updateParent assert
+    [job].signalParent
+      [task].retire // does not queue onto exit demon
+
+    HAZARD
 
   then
 
@@ -95,7 +82,8 @@
     sPreExe find
     dup not if
       sPreExe "Unable to find pre execute word: %v" .printf
-      [job].error@ [job].signalParent
+      [job].updateParent assert
+      [job].signalParent
       process::quit
     then
       execute
@@ -107,11 +95,12 @@
 
   "<signalParent>" [job].tagSet@ tagSet.hasName not if
      //"SIGNALLING PARENT AS NO WAIT" .
-     [job].error@ [job].signalParent
+     [job].updateParent assert
+     [job].signalParent
   then
 
   // add job to the local job list
-  [job] job(Id).jobList@ JL_DEMON == not if
+  [job].jobList@ JL_DEMON == not if
     [job].addLocal
   then
 
@@ -124,7 +113,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove job from the local job list
-  [job] job(Id).jobList@ JL_DEMON == not if
+  [job].jobList@ JL_DEMON == not if
     [job].removeLocal
   then
 
@@ -135,20 +124,13 @@
 
   Path[].discardAll
 
-  [job].addRetired
-  
   [task].grabLock
+  [job].addExited
 
     "<signalParent>" [job].tagSet@ tagSet.hasName if
       //"pipelineLocal::local SIGNALLING PARENT" .
-      [job].error@ [job].signalParent
-    then
-
-    [system].started@ if
-    //  "SYSTEM STARTED" .
-    else
-    //  "SYSTEM NOT STARTED" .
-      true [job].reapable!
+      [job].updateParent assert
+      [job].signalParent
     then
 
     [task].retire // does not queue onto exit demon

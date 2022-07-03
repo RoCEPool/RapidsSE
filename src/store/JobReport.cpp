@@ -763,13 +763,13 @@ Job* JobReport::pFindOriginalJobId(JobId tJobId)
   _static_
   
   Job* pJob = nullptr;
-  JobList* pRetiredJobs = AM::pRetiredJobs();
+  JobList* pExitedJobs = AM::pExitedJobs();
+
+  pExitedJobs->vGrabLock();
   
-  pRetiredJobs->vGrabLock();
-  
-  for (SkipNode* pScan = pRetiredJobs->pFirst();
+  for (SkipNode* pScan = pExitedJobs->pFirst();
        pScan;
-       pScan = pRetiredJobs->pNext(pScan)) {
+       pScan = pExitedJobs->pNext(pScan)) {
     Job* pJobScan = _pJob(pScan->m_pObject);
     
     JobId tJobNo_test = pJobScan->tJobId();
@@ -786,7 +786,7 @@ Job* JobReport::pFindOriginalJobId(JobId tJobId)
     }
   }
 
-  pRetiredJobs->vDropLock();
+  pExitedJobs->vDropLock();
 
   if (pJob) {
 //    vTrace("Found %p %lld (%s)\n"_Stz
@@ -815,13 +815,13 @@ Job* JobReport::pFindOriginalJobNo(i8 iJobNo)
   // form jobId from NodeId.m_jobNo
   
   Job* pJob = nullptr;
-  JobList* pRetiredJobs = AM::pRetiredJobs();
+  JobList* pExitedJobs = AM::pExitedJobs();
+
+  pExitedJobs->vGrabLock();
   
-  pRetiredJobs->vGrabLock();
-  
-  for (SkipNode* pScan = pRetiredJobs->pFirst();
+  for (SkipNode* pScan = pExitedJobs->pFirst();
        pScan;
-       pScan = pRetiredJobs->pNext(pScan)) {
+       pScan = pExitedJobs->pNext(pScan)) {
     Job* pJobScan = _pJob(pScan->m_pObject);
     
     i8 iJobNo_test = (i8)pJobScan->tJobId().uJobNo();
@@ -838,7 +838,7 @@ Job* JobReport::pFindOriginalJobNo(i8 iJobNo)
     }
   }
 
-  pRetiredJobs->vDropLock();
+  pExitedJobs->vDropLock();
 
   if (pJob) {
 //    vTrace("Found %p %lld (%s)\n"_Stz
@@ -861,13 +861,13 @@ Job* JobReport::pFindParticipantJobId(JobId tJobId)
   _static_
 
   Job* pJob = nullptr;
-  JobList* pRetiredJobs = AM::pRetiredJobs();
+  JobList* pExitedJobs = AM::pExitedJobs();
 
-  pRetiredJobs->vGrabLock();
+  pExitedJobs->vGrabLock();
 
-  for (SkipNode* pScan = pRetiredJobs->pFirst();
+  for (SkipNode* pScan = pExitedJobs->pFirst();
        pScan;
-       pScan = pRetiredJobs->pNext(pScan)) {
+       pScan = pExitedJobs->pNext(pScan)) {
     Job* pJobScan = _pJob(pScan->m_pObject);
 
     JobId tJobId_test = pJobScan->tJobId();
@@ -886,7 +886,7 @@ Job* JobReport::pFindParticipantJobId(JobId tJobId)
     }
   }
 
-  pRetiredJobs->vDropLock();
+  pExitedJobs->vDropLock();
 
   if (pJob) {
 //    vTrace("Found %p %lld (%s)\n"_Stz
@@ -909,13 +909,13 @@ Job* JobReport::pFindParticipantJobNo(i8 iJobNo)
   _static_
 
   Job* pJob = nullptr;
-  JobList* pRetiredJobs = AM::pRetiredJobs();
+  JobList* pExitedJobs = AM::pExitedJobs();
 
-  pRetiredJobs->vGrabLock();
+  pExitedJobs->vGrabLock();
 
-  for (SkipNode* pScan = pRetiredJobs->pFirst();
+  for (SkipNode* pScan = pExitedJobs->pFirst();
        pScan;
-       pScan = pRetiredJobs->pNext(pScan)) {
+       pScan = pExitedJobs->pNext(pScan)) {
     Job* pJobScan = _pJob(pScan->m_pObject);
 
     i8 iJobNo_test = (i8)pJobScan->tJobId().uJobNo();
@@ -934,7 +934,7 @@ Job* JobReport::pFindParticipantJobNo(i8 iJobNo)
     }
   }
 
-  pRetiredJobs->vDropLock();
+  pExitedJobs->vDropLock();
 
   if (pJob) {
 //    vTrace("Found %p %lld (%s)\n"_Stz

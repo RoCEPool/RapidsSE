@@ -147,8 +147,6 @@ void Step::vIndexDefParse(void)
 {
   ENTRY();
   
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
   
   s4K sCmd;
@@ -221,9 +219,7 @@ void Step::vIndexDefSyntax(void)
 void Step::vIndexDefParseTableName(void)
 {
   ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
+
   s4K sCmd;
   m_pDataStack->vPopStr(sCmd,__func__);
   

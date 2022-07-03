@@ -70,6 +70,8 @@ ordered rows:
 
 // Source file: ../queries/cast/rcast3.sql
 // Result file: ../queries/cast/results/cast3.res
+//TODO: ENABLE WHEN JOINS
+/*
 select a.colb1, b.colb9, cast((avg(a.cola1 + b.colg9 + a.cole1 + b.cole9) / 4) as decimal(10,7)) as OverAvg from table1 a join table9 b on pcol1 = pcol9 where lower(a.colb1) like '%ee%' group by a.colb1, b.colb9 order by a.colb1, b.colb9;
 ordered rows:
   ('GREEN', 'PURPLE', 21.1775000)
@@ -82,7 +84,7 @@ ordered rows:
   ('green', 'gold', 135.0775000)
   ('green', 'green', 33.5675000)
   ('green', 'maroon', 114.1800000)
-
+*/
 
 // Source file: ../queries/cast/rcast16.sql
 // Result file: ../queries/cast/results/cast16.res
@@ -103,6 +105,8 @@ ordered rows:
 
 // Source file: ../queries/cast/rcast22.sql
 // Result file: ../queries/cast/results/cast22.res
+//TODO: ENABLE WHEN JOINS
+/*
 select pcol1, cast(colc1 as timestamp), pcol7, cast(colc7 as timestamp) from table1 join table7 on pcol1 = pcol7 where colb1 like 'bl%' order by pcol1, pcol7;
 ordered rows:
   (4, TIMESTAMP '2015-01-07 00:00:00.0', 4, TIMESTAMP '2015-10-17 00:00:00.0')
@@ -111,7 +115,7 @@ ordered rows:
   (62, TIMESTAMP '2015-06-06 00:00:00.0', 62, TIMESTAMP '2015-05-24 00:00:00.0')
   (65, TIMESTAMP '2015-12-18 00:00:00.0', 65, TIMESTAMP '2015-11-28 00:00:00.0')
   (85, TIMESTAMP '2015-03-07 00:00:00.0', 85, TIMESTAMP '2015-11-23 00:00:00.0')
-
+*/
 
 // Source file: ../queries/cast/rcast2.sql
 // Result file: ../queries/cast/results/cast2.res
@@ -180,6 +184,8 @@ ordered rows:
 
 // Source file: ../queries/cast/rcast11.sql
 // Result file: ../queries/cast/results/cast11.res
+//TODO: ENABLE WHEN JOINS
+/*
 select cast(cole1 as integer), cast(cole9 as integer) from table1 join table9 using(ucol) where colb9 in ('orange','violet') order by cola1, colb9;
 ordered rows:
   (88, 59)
@@ -190,7 +196,7 @@ ordered rows:
   (78, 10)
   (128, -85)
   (107, 6)
-
+*/
 
 // Source file: ../queries/cast/rcast1.sql
 // Result file: ../queries/cast/results/rcast1.res

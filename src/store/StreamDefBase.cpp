@@ -739,6 +739,10 @@ eEC StreamDefBase::eParse(Stz* szCmd)
   
   pTkn = pTknVec->pNextToken(); dPT();
   m_sStreamDefNm = pTkn->szChars();
+  if (m_sStreamDefNm.nLength() > C_MAX_TABLE_NAME_LENGTH - 1) {
+    eError = EC_MAX_TABLE_NAME_LENGTH;
+    goto L_RETURN;
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Parse: ( <columnDef> ,... )
@@ -843,7 +847,7 @@ eEC StreamDefBase::eParseColumn(TokenVec* pTknVec, i8 i_Col)
   // -- -- -- -- -- -- -- -- -- -- --
   
   for (i8 i_Search = 0; i_Search < i_Col; i_Search++) {
-    Column* pCol_search = pGetColumn(i_Search++);
+    Column* pCol_search = pGetColumn(i_Search);
     if (pCol_search->szColNm()->bSame(pCol->szColNm())) {
       eError = EC_DUPLICATE_COLUMN;
       return eError;
