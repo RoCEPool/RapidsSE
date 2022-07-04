@@ -1056,12 +1056,12 @@ function validateLibAtomic() {
   do
     host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
 
-    remoteCmd="PATH=\"\${PATH}:/usr/sbin:/sbin\" ldconfig -p | grep libatomic.so.1"
+    remoteCmd="PATH=\${PATH}:/usr/sbin:/sbin ldconfig -p | grep libatomic.so.1"
 
-    sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "'${remoteCmd}'")
+    sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "${remoteCmd}")
 
     # Run it and check if it returned with a success error code
-    if ! ssh "${sshArgs[@]}" &>/dev/null; then
+    if ! response="$(ssh "${sshArgs[@]}" &>/dev/null)"; then
       failedNodes+=("${nodeName}")
       continue
     fi
