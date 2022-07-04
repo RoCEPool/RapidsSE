@@ -87,23 +87,27 @@ function validateInstallationEnvironment() {
 
 function validate3rdPartyTools() {
 
+  local -a nodeNames=()
+
+  [ "$#" -gt 0 ] && nodeNames=("$@")
+
   # Check that gcc is installed and is new enough
-  validateGcc
+  validateGcc "${nodeNames[@]}"
 
   # Check that libAtomic.so.1 is installed
-  validateLibAtomic
+  validateLibAtomic "${nodeNames[@]}"
 
   # Check that bash has the correct version
-  validateBash
+  validateBash "${nodeNames[@]}"
 
   # Check that netcat is installed
-  validateNetcat
+  validateNetcat "${nodeNames[@]}"
 
   # Check that the ss utility is installed
-  validateSs
+  validateSs "${nodeNames[@]}"
 
   # Check that the bc utility is installed
-  validateBc
+  validateBc "${nodeNames[@]}"
 }
 
 
@@ -1031,9 +1035,9 @@ function validateLibAtomic() {
   do
     host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
 
-    remoteCmd="/usr/sbin/ldconfig -p | grep libatomic.so.1"
+    remoteCmd="PATH=\"\${PATH}:/usr/sbin:/sbin\" ldconfig -p | grep libatomic.so.1"
 
-    sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "bash" "-c" "'${remoteCmd}'")
+    sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "'${remoteCmd}'")
 
     # Run it and check if it returned with a success error code
     if ! ssh "${sshArgs[@]}" &>/dev/null; then

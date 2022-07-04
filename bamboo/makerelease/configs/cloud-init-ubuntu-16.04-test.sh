@@ -241,10 +241,10 @@ mount -o remount "${SHM_DEVICE}"
 # DNS (Route 53) resolution
 # This will force unqualified names to tried with the .local domain name and
 # then be looked up in DNS.
-echo
-echo "*** Setting DNS domain name search qualifier ***"
-echo
-echo "search local" >> /etc/resolv.conf
+# echo
+# echo "*** Setting DNS domain name search qualifier ***"
+# echo
+# echo "search local" >> /etc/resolv.conf
 
 # -----------------------------------------
 # /etc/hosts shortcuts

@@ -211,32 +211,6 @@ echo "Updating size of /dev/shm to 95% of system memory (${SHM_SIZE} GB)"
 mount -o remount /dev/shm
 
 # -----------------------------------------
-# DNS (Route 53) resolution
-# This will force unqualified names to tried with the .local domain name and
-# then be looked up in DNS.
-echo
-echo "*** Setting DNS domain name search qualifier ***"
-echo
-echo "search local" >> /etc/resolv.conf
-
-# -----------------------------------------
-# /etc/hosts shortcuts
-echo
-echo "*** Adding 192.168.0.5 as a shortcut for ci.rapidsdata.com to /etc/hosts ***"
-echo
-echo "192.168.0.5 ci.rapidsdata.com" >> /etc/hosts
-# Otherwise it costs us money when we transfer data via the elastic IP associated with
-# this URL.
-
-# -----------------------------------------
-# Change permissions to allow for writing to /opt
-echo
-echo "*** Setting /opt permissions ***"
-echo
-chown root:wheel /opt
-chmod g+w /opt
-
-# -----------------------------------------
 # Apply any package updates
 echo
 echo "*** Installing updates and necessary packages ***"
@@ -298,6 +272,37 @@ chown "${OS_USER}:${OS_USER}" "${bash_profile}"
 # -----------------------------------------
 # Git setup
 sudo -H -u "${OS_USER}" git lfs install
+
+
+# NOTE: Moved these settings to the end because something in the yum update
+#       is resetting permissions in /opt and the file /etc/resolv.conf
+
+# -----------------------------------------
+# DNS (Route 53) resolution
+# This will force unqualified names to tried with the .local domain name and
+# then be looked up in DNS.
+echo
+echo "*** Setting DNS domain name search qualifier ***"
+echo
+echo "search local" >> /etc/resolv.conf
+
+# -----------------------------------------
+# /etc/hosts shortcuts
+echo
+echo "*** Adding 192.168.0.5 as a shortcut for ci.rapidsdata.com to /etc/hosts ***"
+echo
+echo "192.168.0.5 ci.rapidsdata.com" >> /etc/hosts
+# Otherwise it costs us money when we transfer data via the elastic IP associated with
+# this URL.
+
+# -----------------------------------------
+# Change permissions to allow for writing to /opt
+echo
+echo "*** Setting /opt permissions ***"
+echo
+chown root:wheel /opt
+chmod g+w /opt
+
 
 # -----------------------------------------
 # Indicate cloud-init has completed by dropping a file in /tmp
