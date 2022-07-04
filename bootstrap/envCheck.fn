@@ -83,31 +83,52 @@ function validateInstallationEnvironment() {
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Validate that the environment we are installing into has all of the necessary
 ## 3rd party applications and libraries.
-## Params: None
+##  $@ - the array of node names that are being added at this time, or none
+##       for all nodes.
 
 function validate3rdPartyTools() {
 
-  local -a nodeNames=()
+  if [ "$#" -eq 0 ]; then
+    # Check that gcc is installed and is new enough
+    validateGcc
 
-  [ "$#" -gt 0 ] && nodeNames=("$@")
+    # Check that libAtomic.so.1 is installed
+    validateLibAtomic
 
-  # Check that gcc is installed and is new enough
-  validateGcc "${nodeNames[@]}"
+    # Check that bash has the correct version
+    validateBash
 
-  # Check that libAtomic.so.1 is installed
-  validateLibAtomic "${nodeNames[@]}"
+    # Check that netcat is installed
+    validateNetcat
 
-  # Check that bash has the correct version
-  validateBash "${nodeNames[@]}"
+    # Check that the ss utility is installed
+    validateSs
 
-  # Check that netcat is installed
-  validateNetcat "${nodeNames[@]}"
+    # Check that the bc utility is installed
+    validateBc
 
-  # Check that the ss utility is installed
-  validateSs "${nodeNames[@]}"
+  else
+    local -a nodeNames=()
+    nodeNames=("$@")
 
-  # Check that the bc utility is installed
-  validateBc "${nodeNames[@]}"
+    # Check that gcc is installed and is new enough
+    validateGcc "${nodeNames[@]}"
+
+    # Check that libAtomic.so.1 is installed
+    validateLibAtomic "${nodeNames[@]}"
+
+    # Check that bash has the correct version
+    validateBash "${nodeNames[@]}"
+
+    # Check that netcat is installed
+    validateNetcat "${nodeNames[@]}"
+
+    # Check that the ss utility is installed
+    validateSs "${nodeNames[@]}"
+
+    # Check that the bc utility is installed
+    validateBc "${nodeNames[@]}"
+  fi
 }
 
 
