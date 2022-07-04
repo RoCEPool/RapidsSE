@@ -272,7 +272,7 @@ apt-get update -y
 apt-get upgrade -y
 
 # Need to have
-apt-get install -y gcc g++ git git-lfs libatomic1 netcat iproute2
+apt-get install -y gcc g++ git git-lfs libatomic1 netcat iproute2 bc
 
 # Good to have
 apt-get install -y vim unzip

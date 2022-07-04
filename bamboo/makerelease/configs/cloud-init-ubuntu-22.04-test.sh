@@ -273,7 +273,7 @@ DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
 # Ref: https://askubuntu.com/questions/1367139/apt-get-upgrade-auto-restart-services
 
 # Need to have
-DEBIAN_FRONTEND=noninteractive apt-get install -y gcc g++ git git-lfs libatomic1 netcat iproute2
+DEBIAN_FRONTEND=noninteractive apt-get install -y gcc g++ git git-lfs libatomic1 netcat iproute2 bc
 
 # Good to have
 DEBIAN_FRONTEND=noninteractive apt-get install -y vim unzip

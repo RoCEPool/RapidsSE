@@ -272,7 +272,7 @@ apt-get update -y
 apt-get upgrade -y
 
 # Need to have
-apt-get install -y gcc g++ git libatomic1 netcat iproute
+apt-get install -y gcc g++ git libatomic1 netcat iproute bc
 
 curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
 apt-get install -y git-lfs
