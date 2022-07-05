@@ -1,5 +1,4 @@
 import os.path
-import string
 import configparser
 import pathlib
 from collections import OrderedDict
@@ -38,8 +37,8 @@ class ReleaseConfig:
     C_TERMINATE = "Terminate"
     C_TERMINATE_DEFAULT_VAL = True
 
-    def __init__(self, path: string):
-        self.path: string = path
+    def __init__(self, path: str):
+        self.path: str = path
 
         # Method for reading multiple keys of the same name but with different values
         # comes from here: https://stackoverflow.com/a/70375875
@@ -150,15 +149,15 @@ class ReleaseConfig:
         for cloudinit_path in test_cloudinit_list:
             self.__validate_path(cloudinit_path, self.C_TEST_SECTION, self.C_CLOUD_INIT, self.path)
 
-    def get_build_instance(self) -> string:
+    def get_build_instance(self) -> str:
         """Returns the name of the EC2 instance to be used for building SE"""
         return self.parser.get(self.C_BUILD_SECTION, self.C_INSTANCE_TYPE)
 
-    def get_build_image(self) -> string:
+    def get_build_image(self) -> str:
         """Returns the name of the EC2 image to be used for building SE"""
         return self.parser.get(self.C_BUILD_SECTION, self.C_IMAGE_ID)
 
-    def get_build_cloudinit(self) -> string:
+    def get_build_cloudinit(self) -> str:
         """Returns the name of the cloudinit script to be used for building SE"""
         # Iterate the cloudinit scripts and check if they have any double quotes
         cloudinit = self.parser.get(self.C_BUILD_SECTION, self.C_CLOUD_INIT)
@@ -175,11 +174,11 @@ class ReleaseConfig:
         """Do we shutdown the instance at the end of the build phase?"""
         return self.parser.getboolean(self.C_BUILD_SECTION, self.C_TERMINATE, fallback=self.C_TERMINATE_DEFAULT_VAL)
 
-    def get_test_instance(self) -> string:
+    def get_test_instance(self) -> str:
         """Returns the name of the EC2 instance to be used for testing SE"""
         return self.parser.get(self.C_TEST_SECTION, self.C_INSTANCE_TYPE)
 
-    def get_test_names(self) -> [string]:
+    def get_test_names(self) -> [str]:
         """Returns a list of the names of the test configurations to be used for testing SE"""
         # Iterate the names and check if they have any double quotes
         names = self.parser.getlist(self.C_TEST_SECTION, self.C_TEST_NAME)
@@ -194,7 +193,7 @@ class ReleaseConfig:
 
         return names
 
-    def get_test_images(self) -> [string]:
+    def get_test_images(self) -> [str]:
         """Returns a list of the name of the EC2 images to be used for testing SE"""
         # Iterate the images and check if they have any double quotes
         images = self.parser.getlist(self.C_TEST_SECTION, self.C_IMAGE_ID)
@@ -248,7 +247,7 @@ class ReleaseConfig:
 
         return cluster_config_paths
 
-    def __resolve_path(self, path_str: string) -> string:
+    def __resolve_path(self, path_str: str) -> str:
         path_obj = pathlib.Path(path_str)
         resolved_path = path_obj
 
@@ -259,7 +258,7 @@ class ReleaseConfig:
         return str(resolved_path)
 
     @staticmethod
-    def __validate_path(path_str: string, section_name: string, key_name: string, cfg_file_path: string):
+    def __validate_path(path_str: str, section_name: str, key_name: str, cfg_file_path: str):
         """Validates that a path referenced from a config file actually exists and is a file"""
         if path_str is None:
             msg = f"Config file field {key_name} in section [{section_name}] must have a valid path " \

@@ -3,7 +3,6 @@ import pathlib
 import logging
 import subprocess
 import tempfile
-import string
 
 import pyutils.errors as errors
 import pyutils.ssh as ssh
@@ -20,12 +19,12 @@ C_CLUSTER_COLLECT_LOGS_CMD = "collectLogs.sh"
 C_CLUSTER_STATUS_CMD = "status.sh"
 
 
-def build_installer() -> pathlib.Path:
+def build_installer(ctx: str = "") -> pathlib.Path:
     """
     Compiles RapidsSE and builds the installer. Returns the file path of the installer.
     Assumes we are running from the <proj_root>/perftest directory
     """
-    LOG.info("About to invoke the RapidsSE installer packager script to build and package RapidsSE.")
+    LOG.info(f"{ctx}About to invoke the RapidsSE installer packager script to build and package RapidsSE.")
 
     # Note: For debugging only
     # command = "NO_MOD_CHECK=1 NO_BUILD=1 ../../installer/packaging/package.sh"
@@ -40,15 +39,15 @@ def build_installer() -> pathlib.Path:
                        text=True)
 
     except subprocess.CalledProcessError as e:
-        msg = f"Error while compiling RapidsSE and building the installer." \
+        msg = f"{ctx}Error while compiling RapidsSE and building the installer." \
               f"\nStdout Output:\n{e.stdout}" \
               f"\nStderr Output:\n{e.stderr}"
         raise errors.CompilationError(msg) from e
 
-    return find_installer()
+    return find_installer(ctx)
 
 
-def find_installer() -> pathlib.Path:
+def find_installer(ctx: str = "") -> pathlib.Path:
     """
     Attempts to find the RapidsSE installer and returns the path to it.
     Throws an assertion error if the installer cannot be found.
@@ -65,18 +64,19 @@ def find_installer() -> pathlib.Path:
         installer_file = next(run_files_iter)
 
     except StopIteration:
-        assert False, f"Could not find the installation file in path: {install_file_path}"
+        assert False, f"{ctx}Could not find the installation file in path: {install_file_path}"
         pass
 
-    assert next(run_files_iter, None) is None, f"Found more than one installer file in path: {install_file_path}"
+    assert next(run_files_iter, None) is None, f"{ctx}Found more than one installer file in path: {install_file_path}"
     assert installer_file.exists()
 
-    LOG.info(f"Installation file successfully built at: {str(installer_file)}")
+    LOG.info(f"{ctx}Installation file successfully built at: {str(installer_file)}")
     return installer_file
 
 
 def customise_cluster_cfg_hostnames(cluster_cfg_path: pathlib.Path,
-                                    ip_addresses: [string]) \
+                                    ip_addresses: [str],
+                                    ctx: str = "") \
         -> tempfile.NamedTemporaryFile:
     """
     The cluster config file doesn't know ahead of time what the hostnames are going to be
@@ -85,7 +85,7 @@ def customise_cluster_cfg_hostnames(cluster_cfg_path: pathlib.Path,
     Returns a NamedTemporaryFile that will be auto-deleted when it is garbage collected.
     """
 
-    LOG.info("Customising the cluster config file for the hostnames of the AWS instances that were started")
+    LOG.info(f"{ctx}Customising the cluster config file for the hostnames of the AWS instances that were started")
 
     # Get the config file specified in the job
     cluster_cfg_path = pathlib.Path(cluster_cfg_path)
@@ -108,7 +108,7 @@ def customise_cluster_cfg_hostnames(cluster_cfg_path: pathlib.Path,
                 new_lines.append(line)
                 continue
 
-            splits: [string] = line.split("=")
+            splits: [str] = line.split("=")
             if len(splits) != 2:
                 new_lines.append(line)
                 continue
@@ -119,19 +119,19 @@ def customise_cluster_cfg_hostnames(cluster_cfg_path: pathlib.Path,
 
             # It is the line we are looking for!
             next_ip = next(ip_iter, None)
-            assert next_ip is not None, "Mismatch in count of machines started and number of nodes in cluster"
+            assert next_ip is not None, f"{ctx}Mismatch in count of machines started and number of nodes in cluster"
             new_lines.append(f'{splits[0]}="{next_ip}"\n')
 
     new_content = "".join(new_lines)
     config_copy.write(new_content)
     config_copy.flush()
 
-    LOG.info(f"Customised temporary cluster config file written out to {config_copy.name}")
-    LOG.debug(f"Customised config file contents:\n{new_content}")
+    LOG.info(f"{ctx}Customised temporary cluster config file written out to {config_copy.name}")
+    LOG.debug(f"{ctx}Customised config file contents:\n{new_content}")
     return config_copy
 
 
-def install_rapidsse(install_file: pathlib.Path, cluster_config_path: pathlib.Path):
+def install_rapidsse(install_file: pathlib.Path, cluster_config_path: pathlib.Path, ctx: str = ""):
     """
     Installs RapidsSE using the installer file and cluster config
     """
@@ -144,7 +144,7 @@ def install_rapidsse(install_file: pathlib.Path, cluster_config_path: pathlib.Pa
 
     # Note: Can add in "--debug" as a parameter to the above list
 
-    LOG.info(f"About to install the RapidsSE cluster with the following command: {' '.join(command)}")
+    LOG.info(f"{ctx}About to install the RapidsSE cluster with the following command: {' '.join(command)}")
 
     try:
         result = subprocess.run(command,
@@ -155,71 +155,71 @@ def install_rapidsse(install_file: pathlib.Path, cluster_config_path: pathlib.Pa
                                 text=True)
 
     except subprocess.CalledProcessError as e:
-        msg = f"Error while installing RapidsSE." \
+        msg = f"{ctx}Error while installing RapidsSE." \
               f"\nStdout Output:\n{e.stdout}" \
               f"\nStderr Output:\n{e.stderr}"
         raise errors.InstallationError(msg) from e
 
     except subprocess.TimeoutExpired as e:
-        msg = f"Installation of RapidsSE timed out after {e.timeout} seconds." \
+        msg = f"{ctx}Installation of RapidsSE timed out after {e.timeout} seconds." \
               f"\nStdout Output:\n{e.stdout}" \
               f"\nStderr Output:\n{e.stderr}"
         raise errors.InstallationError(msg) from e
 
-    LOG.debug(f"Installation output (stdout):\n{result.stdout}")
+    LOG.debug(f"{ctx}Installation output (stdout):\n{result.stdout}")
 
-    LOG.info("RapidsSE cluster installed successfully")
+    LOG.info(f"{ctx}RapidsSE cluster installed successfully")
 
 
-def start_rapidsse(host: string, cluster_cfg: ClusterConfig):
+def start_rapidsse(host: str, cluster_cfg: ClusterConfig, ctx: str = ""):
 
     start_command = f"{cluster_cfg.get_dir()}/{C_CLUSTER_START_CMD}"
     timeout = 90
 
-    LOG.info(f"About to start the RapidsSE cluster with the following command: {start_command}")
+    LOG.info(f"{ctx}About to start the RapidsSE cluster with the following command: {start_command}")
 
     try:
         result = ssh.run_ssh(host, start_command, timeout)
 
     except errors.SshError as e:
-        msg = f"Error while starting the RapidsSE cluster."
+        msg = f"{ctx}Error while starting the RapidsSE cluster."
         raise errors.ClusterError(msg) from e
 
-    LOG.debug(f"Cluster start output (stdout):\n{result.stdout}")
-    LOG.info("RapidsSE cluster started successfully")
+    LOG.debug(f"{ctx}Cluster start output (stdout):\n{result.stdout}")
+    LOG.info(f"{ctx}RapidsSE cluster started successfully")
 
 
-def run_dummy_statement(host: string, cluster_cfg: ClusterConfig):
+def run_dummy_statement(host: str, cluster_cfg: ClusterConfig, ctx: str = ""):
 
     dummy_command = f"echo -e \"SELECT 1;\nbye;\" | {cluster_cfg.get_dir()}/{C_CLUSTER_PROMPT_CMD}"
     command_timeout = 10  # seconds
 
-    LOG.info(f"About to run a dummy command on the RapidsSE cluster: {dummy_command}")
+    LOG.info(f"{ctx}About to run a dummy command on the RapidsSE cluster: {dummy_command}")
 
     try:
         result = ssh.run_ssh(host, dummy_command, command_timeout)
 
     except errors.SshError as e:
-        msg = f"Error while running a dummy command on the RapidsSE cluster."
+        msg = f"{ctx}Error while running a dummy command on the RapidsSE cluster."
         raise errors.ClusterError(msg) from e
 
     except subprocess.TimeoutExpired as e:
-        msg = f"Execution of a dummy command on the RapidsSE cluster timed out after {e.timeout} seconds." \
+        msg = f"{ctx}Execution of a dummy command on the RapidsSE cluster timed out after {e.timeout} seconds." \
               f"\nStdout Output:\n{e.stdout}" \
               f"\nStderr Output:\n{e.stderr}"
         raise errors.ClusterError(msg) from e
 
-    LOG.debug(f"Cluster dummy command output (stdout):\n{result.stdout}")
-    LOG.info("RapidsSE dummy command ran successfully")
+    LOG.debug(f"{ctx}Cluster dummy command output (stdout):\n{result.stdout}")
+    LOG.info(f"{ctx}RapidsSE dummy command ran successfully")
 
 
-def get_rapidsse_logs(host: string, cluster_cfg: ClusterConfig, dest_path: string):
+def get_rapidsse_logs(host: str, cluster_cfg: ClusterConfig, dest_path: str, ctx: str = ""):
     """
     Gets the log files from each RapidsSE node and copies them to a local directory.
     """
     assert os.path.exists(dest_path), f"dest_path does not exist: {dest_path}"
 
-    LOG.debug("About to collect logs files from the RapidsSE cluster")
+    LOG.debug(f"{ctx}About to collect logs files from the RapidsSE cluster")
 
     command = f"cd {cluster_cfg.get_dir()} && " \
               f"./{C_CLUSTER_COLLECT_LOGS_CMD} >/dev/null && " \
@@ -229,34 +229,34 @@ def get_rapidsse_logs(host: string, cluster_cfg: ClusterConfig, dest_path: strin
         result = ssh.run_ssh(host, command, C_GENERAL_SSH_TIMEOUT_SEC)
 
     except errors.SshError as e:
-        msg = f"Error while collecting the RapidsSE log files."
+        msg = f"{ctx}Error while collecting the RapidsSE log files."
         raise errors.ClusterError(msg) from e
 
     except subprocess.TimeoutExpired as e:
-        msg = f"Collecting the RapidsSE log files timed out after {e.timeout} seconds." \
+        msg = f"{ctx}Collecting the RapidsSE log files timed out after {e.timeout} seconds." \
               f"\nStdout Output:\n{e.stdout}" \
               f"\nStderr Output:\n{e.stderr}"
         raise errors.ClusterError(msg) from e
 
     log_file_name = result.stdout.strip()
     src_file = f"{host}:{cluster_cfg.get_dir()}/{log_file_name}"
-    LOG.debug(f"About to copy the RapidsSE log file from: {src_file}")
+    LOG.debug(f"{ctx}About to copy the RapidsSE log file from: {src_file}")
 
     try:
         ssh.run_scp(src_file, dest_path, C_GENERAL_SSH_TIMEOUT_SEC)
 
     except errors.SshError as e:
-        msg = f"Error while copying RapidsSE log files from the cluster."
+        msg = f"{ctx}Error while copying RapidsSE log files from the cluster."
         raise errors.ClusterError(msg) from e
 
     except subprocess.TimeoutExpired as e:
-        msg = f"Copying of the RapidsSE log files from the cluster timed out after {e.timeout} seconds." \
+        msg = f"{ctx}Copying of the RapidsSE log files from the cluster timed out after {e.timeout} seconds." \
               f"\nStdout Output:\n{e.stdout}" \
               f"\nStderr Output:\n{e.stderr}"
         raise errors.ClusterError(msg) from e
 
 
-def is_rapidsse_running(host: string, cluster_cfg: ClusterConfig) -> (bool, string):
+def is_rapidsse_running(host: str, cluster_cfg: ClusterConfig, ctx: str = "") -> (bool, str):
     """
     Returns a tuple containing a boolean result of whether RapidsSE is running
     and a string with an error message if it is not.
@@ -269,16 +269,16 @@ def is_rapidsse_running(host: string, cluster_cfg: ClusterConfig) -> (bool, stri
         ssh.run_ssh(host, command, 30)
 
     except errors.SshError as e:
-        msg = f"The RapidsSE cluster is not running." \
+        msg = f"{ctx}The RapidsSE cluster is not running." \
               f"\nStdout Output:\n{e.stdout}" \
               f"\nStderr Output:\n{e.stderr}"
         return False, msg
 
     except subprocess.TimeoutExpired as e:
-        msg = f"The RapidsSE cluster may not be running as the status check timed out after {e.timeout} seconds." \
+        msg = f"{ctx}The RapidsSE cluster may not be running as the status check timed out after {e.timeout} seconds." \
               f"\nStdout Output:\n{e.stdout}" \
               f"\nStderr Output:\n{e.stderr}"
         return False, msg
 
-    LOG.debug("RapidsSE is still running!")
+    LOG.debug(f"{ctx}RapidsSE is still running!")
     return True, None

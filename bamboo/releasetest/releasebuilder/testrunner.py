@@ -1,7 +1,6 @@
 """"Runs the test jobs"""
 import logging
 import pathlib
-import string
 import threading
 import datetime
 import time
@@ -75,8 +74,8 @@ class TestRunner:
                                    self.config.get_test_cluster_configs()))
 
         for param in instance_params:
-            test_name: string = param[0]
-            image_id: string = param[1]
+            test_name: str = param[0]
+            image_id: str = param[1]
             cloud_init_path: pathlib.Path = param[2]
             cluster_config_path: pathlib.Path = param[3]
             cluster_config: ClusterConfig = param[4]
@@ -145,9 +144,9 @@ class TestRunner:
 
 class InstanceRunner:
     def __init__(self,
-                 test_name: string,
-                 instance_type: string,
-                 image_id: string,
+                 test_name: str,
+                 instance_type: str,
+                 image_id: str,
                  cloudinit_path: pathlib.Path,
                  cluster_config_path: pathlib.Path,
                  cluster_config: ClusterConfig,
@@ -170,13 +169,15 @@ class InstanceRunner:
         # Create a new result and add it to the list
         self.test_result = TestResult(f"Install & run ({self.test_name})")
 
-        self.instance_id: string = None
-        self.ip_addr: string = None
+        self.instance_id: str = None
+        self.ip_addr: str = None
         self.remote_home_dir: pathlib.Path = None
         self.remote_repo_dir: pathlib.Path = None
         self.remote_installer_path: pathlib.Path = None
         self.remote_cluster_config_path: pathlib.Path = None
         self.can_collect_artifacts = False  # not yet
+
+        self.op_ctx = f"{self.test_name}: "
 
     def run(self) -> TestResult:
         """"""
@@ -268,11 +269,12 @@ class InstanceRunner:
 
         instance_ids, ip_addrs = ec2.start_instances(self.instance_type,
                                                      self.image_id,
-                                                     self.cloudinit_path,
+                                                     str(self.cloudinit_path),
                                                      1,
                                                      C_INSTANCE_NAME_PREFIX,
                                                      C_INSTANCE_START_TIMEOUT,
-                                                     False)
+                                                     False,
+                                                     ctx=self.op_ctx)
 
         assert len(instance_ids) == 1
         assert len(ip_addrs) == 1
@@ -290,7 +292,7 @@ class InstanceRunner:
                   f"on the remote EC2 instance")
 
         try:
-            result: subprocess.CompletedProcess = ssh.run_ssh(self.ip_addr, command, 10)
+            result: subprocess.CompletedProcess = ssh.run_ssh(self.ip_addr, command, 10, ctx=self.op_ctx)
 
         except errors.SshError:
             LOG.error(f"Test {self.test_name}: Error while trying to get the user home directory "
@@ -366,7 +368,7 @@ class InstanceRunner:
 
         LOG.debug(f"Test {self.test_name}: Copying installer from {src} to {dest}")
 
-        ssh.run_scp(src, dest)
+        ssh.run_scp(src, dest, ctx=self.op_ctx)
 
     def __copy_cluster_config_to_instance(self) -> None:
         """Copies the cluster config file to the remote instance. Sets remote_cluster_config_path.
@@ -380,7 +382,7 @@ class InstanceRunner:
 
         LOG.debug(f"Test {self.test_name}: Copying cluster config file from {src} to {dest}")
 
-        ssh.run_scp(src, dest)
+        ssh.run_scp(src, dest, ctx=self.op_ctx)
 
     def __install_se(self) -> None:
         """Installs SE using the installer on the remote node"""
@@ -391,7 +393,7 @@ class InstanceRunner:
                   f"--config {str(self.remote_cluster_config_path)}"
 
         try:
-            ssh.run_ssh(self.ip_addr, command, C_SE_INSTALL_TIMEOUT_SEC)
+            ssh.run_ssh(self.ip_addr, command, C_SE_INSTALL_TIMEOUT_SEC, ctx=self.op_ctx)
 
         except subprocess.TimeoutExpired as e:
             msg = f"Test {self.test_name}: Installation of SE on {self.ip_addr} timed out after {e.timeout} seconds." \
@@ -407,7 +409,7 @@ class InstanceRunner:
         command = f"ln -s {str(dest_path)} {str(symlink_path)}"
 
         LOG.info(f"Test {self.test_name}: About to setup the data symlink with the following command: {command}")
-        ssh.run_ssh(self.ip_addr, command)
+        ssh.run_ssh(self.ip_addr, command, ctx=self.op_ctx)
 
     def __start_se(self) -> None:
         """Starts RapidsSE on the remote node"""
@@ -418,7 +420,7 @@ class InstanceRunner:
                  f"following command: {start_command}")
 
         try:
-            ssh.run_ssh(self.ip_addr, start_command, C_SE_START_TIMEOUT_SEC)
+            ssh.run_ssh(self.ip_addr, start_command, C_SE_START_TIMEOUT_SEC, ctx=self.op_ctx)
 
         except subprocess.TimeoutExpired as e:
             msg = f"Test {self.test_name}: Starting of the SE cluster on {self.ip_addr} timed out " \
@@ -450,7 +452,7 @@ class InstanceRunner:
         LOG.info(f"Test {self.test_name}: About to invoke SETH on {self.ip_addr} with the following command: {command}")
 
         try:
-            ssh.run_ssh(self.ip_addr, command, C_SETH_TIMEOUT_SEC)
+            ssh.run_ssh(self.ip_addr, command, C_SETH_TIMEOUT_SEC, ctx=self.op_ctx)
             LOG.info(f"Test {self.test_name}: Completed running SETH on {self.ip_addr}")
 
         except subprocess.TimeoutExpired as e:
@@ -469,7 +471,7 @@ class InstanceRunner:
                  f"the following command: {stop_command}")
 
         try:
-            ssh.run_ssh(self.ip_addr, stop_command, C_SE_STOP_TIMEOUT_SEC)
+            ssh.run_ssh(self.ip_addr, stop_command, C_SE_STOP_TIMEOUT_SEC, ctx=self.op_ctx)
 
         except subprocess.TimeoutExpired as e:
             msg = f"Test {self.test_name}: Stopping of the SE cluster on {self.ip_addr} timed out " \
@@ -490,7 +492,7 @@ class InstanceRunner:
         LOG.debug(f"About to collect Seth logs from {src} to {dest}")
 
         try:
-            ssh.run_scp(src, dest, C_COLLECT_RESULTS_TIMEOUT_SEC)
+            ssh.run_scp(src, dest, C_COLLECT_RESULTS_TIMEOUT_SEC, ctx=self.op_ctx)
 
         except subprocess.TimeoutExpired as e:
             msg = f"Test {self.test_name}: Collecting of SETH results from the SE cluster on {self.ip_addr} " \
@@ -507,7 +509,7 @@ class InstanceRunner:
         LOG.info(f"Test {self.test_name}: About to invoke the collection of logs on {self.ip_addr}")
 
         try:
-            ssh.run_ssh(self.ip_addr, collect_logs_command, C_SE_COLLECT_LOGS_TIMEOUT_SEC)
+            ssh.run_ssh(self.ip_addr, collect_logs_command, C_SE_COLLECT_LOGS_TIMEOUT_SEC, ctx=self.op_ctx)
 
         except subprocess.TimeoutExpired as e:
             msg = f"Test {self.test_name}: Collecting of logs from the SE cluster on {self.ip_addr} timed out " \
@@ -522,7 +524,7 @@ class InstanceRunner:
         LOG.debug(f"Test {self.test_name}: About to look for the collected logs on {self.ip_addr}")
 
         find_logs_command = f"find {self.remote_home_dir} -name \"{C_SE_COLLECT_LOGS_FILESPEC}\""
-        result = ssh.run_ssh(self.ip_addr, find_logs_command)
+        result = ssh.run_ssh(self.ip_addr, find_logs_command, ctx=self.op_ctx)
 
         assert result.stdout is not None
         assert len(result.stdout) > 0
@@ -541,7 +543,7 @@ class InstanceRunner:
         LOG.debug(f"Test {self.test_name}: About to copy the logs from {src} to {dest}")
 
         try:
-            ssh.run_scp(src, dest, C_SE_COPY_LOGS_TIMEOUT_SEC)
+            ssh.run_scp(src, dest, C_SE_COPY_LOGS_TIMEOUT_SEC, ctx=self.op_ctx)
 
         except subprocess.TimeoutExpired as e:
             msg = f"Test {self.test_name}: Copying of logs from {src} to {dest} timed out " \
@@ -560,7 +562,7 @@ class InstanceRunner:
             return
 
         LOG.info(f"Test {self.test_name}: About to stop EC2 instance with ID: {self.instance_id}")
-        ec2.terminate_instances([self.instance_id])
+        ec2.terminate_instances([self.instance_id], ctx=self.op_ctx)
 
     def force_stop(self) -> None:
         """Forcible terminates an EC2 instance and collects logs if possible"""
@@ -603,4 +605,5 @@ class InstanceRunner:
             self.__terminate_instance()
 
         except (Exception,):
-            LOG.error(f"Test {self.test_name}: *** UNABLE TO FORCIBLY STOP EC2 INSTANCE {self.instance_id} ({self.ip_addr}). ***")
+            LOG.error(f"Test {self.test_name}: *** UNABLE TO FORCIBLY STOP EC2 INSTANCE "
+                      f"{self.instance_id} ({self.ip_addr}). ***")

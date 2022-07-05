@@ -1,7 +1,6 @@
 
 import datetime
 import pathlib
-import string
 import logging
 
 import junit_xml
@@ -15,14 +14,14 @@ class TestResult:
     Holds result information about running a test.
     """
 
-    def __init__(self, test_name: string):
+    def __init__(self, test_name: str):
         self.test_name = test_name
         self.start_time: datetime.datetime = None
         self.end_time: datetime.datetime = None
         self.test_passed: bool = False
         self.test_skipped: bool = True
-        self.stdout: string = None
-        self.stderr: string = None
+        self.stdout: str = None
+        self.stderr: str = None
 
     def set_test_started(self):
         """
@@ -30,7 +29,7 @@ class TestResult:
         """
         self.start_time = datetime.datetime.now()
 
-    def set_test_ended(self, test_passed: bool, test_skipped: bool, stdout: string = None, stderr: string = None):
+    def set_test_ended(self, test_passed: bool, test_skipped: bool, stdout: str = None, stderr: str = None):
         """
         Record when the test has stopped and the result of the test.
         """
@@ -41,7 +40,7 @@ class TestResult:
         self.stderr = stderr
 
 
-def summarise_to_junit(results: [TestResult], dest: pathlib.Path, test_suite: string):
+def summarise_to_junit(results: [TestResult], dest: pathlib.Path, test_suite: str):
     """
     Writes a summary of the tests as a JUnit XML report, so that Bamboo
     can pick it up and intepret it.
@@ -72,7 +71,7 @@ def summarise_to_junit(results: [TestResult], dest: pathlib.Path, test_suite: st
         junit_xml.to_xml_report_file(f, [test_suite])
 
 
-def summarise_to_string(results: [TestResult]) -> string:
+def summarise_to_string(results: [TestResult]) -> str:
     """
     Writes a textual summary of all results and returns it in a string.
     """

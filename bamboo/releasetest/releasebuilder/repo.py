@@ -1,6 +1,5 @@
 import pathlib
 import shutil
-import string
 import subprocess
 import re
 import os.path
@@ -42,7 +41,7 @@ def clone_repo(repo_path: pathlib.Path) -> pathlib.Path:
     return cloned_repo_path
 
 
-def __get_current_git_hash(repo_path: pathlib.Path) -> string:
+def __get_current_git_hash(repo_path: pathlib.Path) -> str:
     """
     Returns the git hash of the repo at repo_path
     May throw a pyutils.errors.GitError.
@@ -80,7 +79,7 @@ def __get_current_git_hash(repo_path: pathlib.Path) -> string:
     return git_hash
 
 
-def __get_git_remote_url(repo_path: pathlib.Path) -> string:
+def __get_git_remote_url(repo_path: pathlib.Path) -> str:
     """
     Returns the URL of the origin remote for the repository given by repo_path.
     This is expected to be a file:// URL because bamboo uses cached git repositories.
@@ -134,7 +133,7 @@ def __get_git_remote_url(repo_path: pathlib.Path) -> string:
     return git_url
 
 
-def __clone_repo(git_remote_url: string) -> pathlib.Path:
+def __clone_repo(git_remote_url: str) -> pathlib.Path:
     """
     Clones the repository from git_remote_url into a temporary directory
     :param git_remote_url: the url of the local cached repository
@@ -164,7 +163,7 @@ def __clone_repo(git_remote_url: string) -> pathlib.Path:
     return dest_path
 
 
-def __checkout_hash(cloned_repo_path: pathlib.Path, git_hash: string) -> None:
+def __checkout_hash(cloned_repo_path: pathlib.Path, git_hash: str) -> None:
     """
     Checks out a given hash on a repo cloned at a given path.
     :param cloned_repo_path: the repo to work on

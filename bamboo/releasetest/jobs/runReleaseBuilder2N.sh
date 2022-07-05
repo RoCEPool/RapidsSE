@@ -1,4 +1,6 @@
 #!/bin/bash
+# Builds and tests the release in a 2 node configuration.
+#
 # This is called by Bamboo. Bamboo will populate the environment with various
 # variables, some of which are used below.
 
@@ -7,7 +9,7 @@ PLAN_DIR="$(realpath "${DIR}/..")"            # Directory of <repoRoot>/bamboo/r
 REPO_ROOT="$(realpath "${PLAN_DIR}/../..")"   # Directory of the repository root
 
 MODULE="releasebuilder"
-CONFIG_FILE="${PLAN_DIR}/configs/release.config"
+CONFIG_FILE="${PLAN_DIR}/configs/release-2N4P.config"
 
 # Bamboo system variables
 # PLAN_KEY="${bamboo_planKey}"                    # e.g. SE-REL

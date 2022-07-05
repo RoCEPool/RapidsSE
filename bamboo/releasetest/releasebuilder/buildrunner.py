@@ -4,7 +4,6 @@ import pathlib
 import subprocess
 import os
 import fnmatch
-import string
 
 import pyutils.ec2 as ec2
 import pyutils.ssh as ssh
@@ -24,6 +23,8 @@ C_INSTALLER_FILESPEC = "rapidsse-*.run"
 C_EC2_BOOT_TIMEOUT_SEC = 300
 C_SE_BUILD_TIMEOUT_SEC = 1200
 
+OP_CTX = f"{C_TEST_NAME}: "
+
 
 class BuildRunner:
 
@@ -38,8 +39,8 @@ class BuildRunner:
         self.config = config
         self.result_list = result_list
         self.test_result: TestResult = None
-        self.instance_id: string = None
-        self.ip_addr: string = None
+        self.instance_id: str = None
+        self.ip_addr: str = None
         self.remote_home_dir: pathlib.Path = None
         self.remote_repo_dir: pathlib.Path = None
         self.installer_path: pathlib.Path = None
@@ -95,7 +96,7 @@ class BuildRunner:
         """Start the build EC2 instance and save its instance_id and ip_addr"""
 
         LOG.debug(f"Getting the image name for image_id: {self.config.get_build_image()}")
-        image_name = ec2.get_image_desc(self.config.get_build_image())
+        image_name = ec2.get_image_desc(self.config.get_build_image(), ctx=OP_CTX)
 
         # Start the EC2 instance to build RapidsSE.
         LOG.info(f"About to start the instance to build RapidsSE on "
@@ -108,7 +109,8 @@ class BuildRunner:
                                                      1,
                                                      C_INSTANCE_NAME_PREFIX,
                                                      C_INSTANCE_START_TIMEOUT,
-                                                     False)
+                                                     False,
+                                                     ctx=OP_CTX)
 
         assert len(instance_ids) == 1
         assert len(ip_addrs) == 1
@@ -125,7 +127,7 @@ class BuildRunner:
         LOG.debug("About to try to get the home directory of the default user on the remote EC2 instance")
 
         try:
-            result: subprocess.CompletedProcess = ssh.run_ssh(self.ip_addr, command, 10)
+            result: subprocess.CompletedProcess = ssh.run_ssh(self.ip_addr, command, 10, ctx=OP_CTX)
 
         except errors.SshError:
             LOG.error(f"Error while trying to get the user home directory on host {self.ip_addr}: {command}")
@@ -153,7 +155,7 @@ class BuildRunner:
             return
 
         LOG.info(f"About to stop EC2 instance with ID: {self.instance_id}")
-        ec2.terminate_instances([self.instance_id])
+        ec2.terminate_instances([self.instance_id], ctx=OP_CTX)
 
     def __copy_repo_to_instance(self) -> None:
         """Copies the repository from the local machine to the remote instance"""
@@ -204,7 +206,7 @@ class BuildRunner:
         LOG.debug("About to build RapidsSE on the remote EC2 instance")
 
         try:
-            result = ssh.run_ssh(self.ip_addr, command, C_SE_BUILD_TIMEOUT_SEC)
+            result = ssh.run_ssh(self.ip_addr, command, C_SE_BUILD_TIMEOUT_SEC, ctx=OP_CTX)
 
             # Write build log to the artifact path
             self.__write_build_log_as_artifact(result.stdout, result.stderr)
@@ -231,7 +233,7 @@ class BuildRunner:
 
         LOG.debug("Successfully built RapidsSE on the remote EC2 instance")
 
-    def __write_build_log_as_artifact(self, stdout: string, stderr: string) -> None:
+    def __write_build_log_as_artifact(self, stdout: str, stderr: str) -> None:
         """Writes stdout and stderr out to files in the artifacts directory"""
         if stdout is not None and len(stdout) > 0:
             stdout_path: pathlib.Path
@@ -259,7 +261,7 @@ class BuildRunner:
         LOG.debug(f"About to copy the RapidsSE installer from {src} to {dest}")
 
         try:
-            ssh.run_scp(src, dest, command_timeout)
+            ssh.run_scp(src, dest, command_timeout, ctx=OP_CTX)
 
         except errors.SshError:
             LOG.error(f"Error while copying the RapidsSE installer from {src} to {dest}.")

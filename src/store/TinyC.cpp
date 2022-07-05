@@ -153,7 +153,7 @@ bool TinyC::bCompile(char* azSrcCode)
   //  1. Run "sudo find / -name libc.so" on the target system and add the path in below.
   //  2. Alternatively, compile tcc on the target system and look in the file
   //     thirdparty/tcc/src/config.mak and look for the line starting with NATIVE_DEFINES+=.
-  //     The path given here will be searched under /usr/lib and a few other locations.
+  //     The path given here will be searched under /usr/lib, /lib and a few other locations.
   //
   // Finally, a note about the file libc.so - it is actually a linker script in plain text!
   // Open it up and it is effectively a redirect to a series of shared and static library files
@@ -167,7 +167,6 @@ bool TinyC::bCompile(char* azSrcCode)
   //   Ubuntu 22 : libc-2.35
   // The compatibility of glibc can be seen here: https://abi-laboratory.pro/?view=timeline&l=glibc
 
-//  tcc_add_library_path(m_aTccState,"/lib/x86_64-linux-gnu");
   tcc_add_library_path(m_aTccState,"/usr/lib/x86_64-linux-gnu");
 
   // Library search path so that dynamically generated code can find the libtcc1.a library

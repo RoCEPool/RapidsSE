@@ -1,5 +1,4 @@
 import subprocess
-import string
 import logging
 
 import pyutils.errors as errors
@@ -7,7 +6,7 @@ import pyutils.errors as errors
 LOG = logging.getLogger(__name__)
 
 
-def run_ssh(host: string, command: string, timeout: float = None) -> subprocess.CompletedProcess:
+def run_ssh(host: str, command: str, timeout: float = None, ctx: str = "") -> subprocess.CompletedProcess:
     """
     Runs a given command on a remote host, returning a subprocess.CompletedProcess object.
     A timeout is an optional value.
@@ -21,7 +20,7 @@ def run_ssh(host: string, command: string, timeout: float = None) -> subprocess.
                    host,
                    command]
 
-    LOG.debug(f"About to run SSH command: {' '.join(ssh_command)}")
+    LOG.debug(f"{ctx}About to run SSH command: {' '.join(ssh_command)}")
 
     result = subprocess.run(ssh_command,
                             capture_output=True,
@@ -30,7 +29,7 @@ def run_ssh(host: string, command: string, timeout: float = None) -> subprocess.
                             text=True)
 
     if result.returncode != 0:
-        msg = f"Error while executing the command: {' '.join(ssh_command)}\n" + \
+        msg = f"{ctx}Error while executing the command: {' '.join(ssh_command)}\n" + \
               f"Return code: {str(result.returncode)}\n" + \
               f"Stdout: {result.stdout}\n" + \
               f"Stderr: {result.stderr}"
@@ -39,7 +38,7 @@ def run_ssh(host: string, command: string, timeout: float = None) -> subprocess.
     return result
 
 
-def run_scp(src: string, dest: string, timeout: float = None, recursive: bool = False):
+def run_scp(src: str, dest: str, timeout: float = None, recursive: bool = False, ctx: str = ""):
     """
     Copies a src filespec to a dest filespec using SCP.
     Either src or dest should be in the form "<host>:<path>".
@@ -58,7 +57,7 @@ def run_scp(src: string, dest: string, timeout: float = None, recursive: bool = 
     scp_command.append(src)
     scp_command.append(dest)
 
-    LOG.debug(f"About to run SCP command: {' '.join(scp_command)}")
+    LOG.debug(f"{ctx}About to run SCP command: {' '.join(scp_command)}")
 
     result = subprocess.run(scp_command,
                             capture_output=True,
@@ -67,7 +66,7 @@ def run_scp(src: string, dest: string, timeout: float = None, recursive: bool = 
                             text=True)
 
     if result.returncode != 0:
-        msg = f"Error while executing the command: {' '.join(scp_command)}\n" + \
+        msg = f"{ctx}Error while executing the command: {' '.join(scp_command)}\n" + \
               f"Return code: {str(result.returncode)}\n" + \
               f"Stdout: {result.stdout}\n" + \
               f"Stderr: {result.stderr}"
