@@ -3,7 +3,7 @@
 # variables, some of which are used below.
 
 DIR="$(dirname "$0")"
-PLAN_DIR="$(realpath "${DIR}/..")"            # Directory of <repoRoot>/bamboo/makerelease
+PLAN_DIR="$(realpath "${DIR}/..")"            # Directory of <repoRoot>/bamboo/releasetest
 REPO_ROOT="$(realpath "${PLAN_DIR}/../..")"   # Directory of the repository root
 
 MODULE="releasebuilder"

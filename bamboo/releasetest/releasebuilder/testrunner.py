@@ -41,7 +41,7 @@ C_SE_COPY_LOGS_TIMEOUT_SEC = 90
 
 # Paths are relative to the *repository*
 # (because they are used on remote nodes)
-C_TESTLIST_PATH = "bamboo/makerelease/configs/release.testlist"
+C_TESTLIST_PATH = "bamboo/releasetest/configs/release.testlist"
 C_SETH_RESULT_PATH = "bamboo/unittest/results/results-*.xml"
 C_SETH_TIMEOUT_SEC = 300
 C_COLLECT_RESULTS_TIMEOUT_SEC = 90

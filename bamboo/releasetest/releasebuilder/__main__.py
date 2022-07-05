@@ -16,7 +16,7 @@ import releasebuilder.repo as repo
 import releasebuilder.results as results
 
 C_PROG_RUN = "pipenv run python -m releasebuilder"
-C_CWD_SUFFIX = "makerelease"
+C_CWD_SUFFIX = "releasetest"
 
 C_DEFAULT_RESULT_DIR = "./results"
 C_DEFAULT_ARTIFACT_DIR = "./artifacts"
@@ -30,7 +30,7 @@ LOG = logging.getLogger(__name__)
 def main() -> int:
     """A simple main entry point for executing the releasebuilder test script.
        Run with: pipenv run python -m releasebuilder
-       from the outer makerelease directory.
+       from the outer releasetest directory.
        Expected arguments:
          --resultDir    path to write the results file
          --artifactDir  path to save any artifacts

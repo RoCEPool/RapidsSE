@@ -1,5 +1,5 @@
 This folder contains the code and configuration for the RapidsSE release automation.
-It is called by Bamboo whenever the makerelease plan is executed.
+It is called by Bamboo whenever the releasetest plan is executed.
 
 Directory layout:
   ./xxx         description 1

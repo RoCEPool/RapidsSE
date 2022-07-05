@@ -15,7 +15,7 @@ from releasebuilder.results import TestResult
 LOG = logging.getLogger(__name__)
 
 C_TEST_NAME = "Build Release"
-C_INSTANCE_NAME_PREFIX = "MakeRelease"
+C_INSTANCE_NAME_PREFIX = "BuildRelease"
 C_INSTANCE_START_TIMEOUT = 600.0
 C_INSTALLER_FILESPEC = "rapidsse-*.run"
 
