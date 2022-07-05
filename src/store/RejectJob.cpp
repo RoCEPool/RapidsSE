@@ -60,6 +60,26 @@ void RejectJob::vPostRecv(void* aReceivedJob)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get dist job id                                                            */
+/*----------------------------------------------------------------------------*/
+JobId RejectJob::tDistId(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_REJECTJOB,_FOOTER_);
+
+  return m_tDistId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set origin job id                                                          */
+/*----------------------------------------------------------------------------*/
+void RejectJob::vDistId(JobId tDistId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_REJECTJOB,_FOOTER_);
+
+  m_tDistId = tDistId;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get error code                                                             */
 /*----------------------------------------------------------------------------*/
 eEC RejectJob::eError(void)

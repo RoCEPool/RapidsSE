@@ -166,7 +166,7 @@ Object* Socket::pRecvObject(void)
 
     // handle the received reject job
     AM::JOB::vRecvdReject(m_pRejectJob);
-
+    nPipeline++;
     return nullptr;
   }
 
@@ -177,19 +177,6 @@ Object* Socket::pRecvObject(void)
     if (nPipeline == gxCmdLineArgs.m_xSysArgs.m_iSocketLowMem)
       bLowMem = true;
   }
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // receive object normally (or acceptable objects under low memory)
-  // need to work out the m_bLowMemoryDiscard
-
-//  if (! bLowMem || ! gxaSizeHeap[eClass].m_bLowMemoryDiscard) {
-//
-//    Object* pReceivedObject = pObjectRecv(eClass);
-//
-//    vSuccess(true);
-//    return pReceivedObject;
-//  }
 
   if (! bLowMem ) {
 
@@ -343,8 +330,7 @@ Object* Socket::pObjectRecv(eCN eClass)
 Object* Socket::pObjectRecv_lowmem(eCN eClass)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
-  
-  
+
   SysCall oSysCall;
 
   if (AM::SHOW::bLowMem_Recv())
@@ -374,10 +360,19 @@ Object* Socket::pObjectRecv_lowmem(eCN eClass)
     vTrace("Recvd Job under lowMem: %s\n"_Stz, Job::szJobNm(pJob));
 
     m_pRejectJob->vOriginId(Job::tOriginId(pJob));
+    m_pRejectJob->vDistId(Job::tDistId(pJob));
     m_pRejectJob->vError(EC_LOW_MEMORY);
 
-    // send a rejectJob to originating node
-    AM::JOB::vSendReject(m_pRejectJob);
+    if (Job::szJobNm(pJob)->bSame("execute"_Stz)) {
+
+      // trigger an execute of the participant pipeline job
+      AM::JOB::vTriggerExecute(Job::tDistId(pJob));
+    }
+    else {
+
+      // send a rejectJob to originating node
+      AM::JOB::vSendReject(m_pRejectJob);
+    }
 
     return nullptr;
 

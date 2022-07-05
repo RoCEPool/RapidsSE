@@ -899,15 +899,42 @@ void AM::JOB::vSendReject(RejectJob *pRejectJob)
   i8 iOriginNodeId = tOriginId.uNodeId();
 
   // find the node by no
-  Node* pNode = AM::pGrid()->pFindNodeById(iOriginNodeId);
+  Node *pNode = AM::pGrid()->pFindNodeById(iOriginNodeId);
 
   // get the send socket of the node
-  Socket* pSocket = pNode->pSendSocket();
+  Socket *pSocket = pNode->pSendSocket();
   SysCall oSysCall;
 
+  // send the rejectJob
   pSocket->vGrabWrite();
-  bool bResult = pSocket->bSendObject(pRejectJob,oSysCall,SY_NONE);
+  bool bResult = pSocket->bSendObject(pRejectJob, oSysCall, SY_NONE);
   pSocket->vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* trigger execution of the pipeline on the participant                       */
+/*----------------------------------------------------------------------------*/
+void AM::JOB::vTriggerExecute(JobId tDistId)
+{
+  _static_;
+
+  // find the participant job
+  Job* pJobParticipant = AM::pJob_FindParticipating(tDistId);
+
+  // get the task of the participant job
+  Task* pTaskParticipant = pJobParticipant->pTask();
+
+  // get the state of the job
+  eTS eState = pTaskParticipant->eState();
+
+  while (pTaskParticipant->eState() != TS_HIBERNATING)
+  {;}
+
+  // cycle the task lock to ensure task has fully entered next state
+  pTaskParticipant->vCycleTaskLock((Stz*)__func__);
+
+  pJobParticipant->vResetTaskForJob();
+  Scheduler::vTaskCross_ScheduleNextPhase(pTaskParticipant, AM::pThisTLSTask());
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/

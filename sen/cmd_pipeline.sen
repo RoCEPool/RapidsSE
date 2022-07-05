@@ -239,6 +239,7 @@
 /* org_ beg */       "pipeline" "origin"
 /* org_ beg */        "org_ beg" "begin rejected"                  [job].trace
 /* org_ beg */    then
+/* org_ beg */    false [job].rejected!
 /* org_ beg */    [job]:handleReject
 /* org_ beg */  then
 /* org_ beg */
@@ -276,13 +277,7 @@
 /* org_ org */    then
 /* org_ exe */  [task].wait
 /* org_ exe */
-/* org_ exe */  [job].rejected@ if
-/* org_ exe */    [args].distJob if
-/* org_ exe */       "pipeline" "origin"
-/* org_ exe */        "org_ exe" "execute rejected"                  [job].trace
-/* org_ exe */    then
-/* org_ exe */    [job]:handleReject
-/* org_ exe */  then
+/* org_ exe */  [job].rejected@ not assert
 /* org_ exe */
 /* org_ exe */  [job].tscExecuted
 /* org_ exe */
@@ -324,6 +319,7 @@
 /* org_ end */       "pipeline" "origin"
 /* org_ end */        "org_ exe" "end rejected"                  [job].trace
 /* org_ end */    then
+/* org_ end */    false [job].rejected!
 /* org_ end */    [job]:handleReject
 /* org_ end */  then
 /* org_ end */

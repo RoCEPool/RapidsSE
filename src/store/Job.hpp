@@ -90,6 +90,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
 
    ~Job(void) noexcept(false);
 
+    static JobId tDistId(Job* pJob);
     static Stz*  szJobNm(Job* pJob);
     static JobId tOriginId(Job* pJob);
     static void vPostRecv(void* aJob);

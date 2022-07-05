@@ -12,7 +12,7 @@ namespace STORE
   protected:
 
     JobId  m_tOriginId;   // id when job is originator
-
+    JobId  m_tDistId;     // distributed job id
     eEC    m_eError;      // error
 
   // must be last
@@ -26,6 +26,9 @@ namespace STORE
    ~RejectJob(void) noexcept(false);
 
     static void vPostRecv(void* aJob);
+
+    JobId tDistId(void);
+    void vDistId(JobId tDistId);
 
     eEC eError(void);
     void vError(eEC eError);

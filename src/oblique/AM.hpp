@@ -366,6 +366,7 @@ namespace OBLIQUE
       static eEC  ePreExecuteTest(Job* pJob);
       static void vRecvdReject(RejectJob* pRejectJob);
       static void vSendReject(RejectJob* pRejectJob);
+      static void vTriggerExecute(JobId tDistId);
     };
   
     class JOBS

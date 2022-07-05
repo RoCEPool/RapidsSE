@@ -79,6 +79,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("[job].progressSeconds"_Stz,  &Step::vJobProgressSeconds);
 
   vAddStep("[job].rejected@"_Stz,        &Step::vJobRejectedFetch);
+  vAddStep("[job].rejected!"_Stz,        &Step::vJobRejectedStore);
   vAddStep("[job].removeLocal"_Stz,      &Step::vJobRemoveLocal);
   vAddStep("[job].removeOriginator"_Stz, &Step::vJobRemoveOriginator);
   vAddStep("[job].removeParticipant"_Stz,&Step::vJobRemoveParticipant);
@@ -885,6 +886,22 @@ void Step::vJobRejectedFetch(void)
 
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* [job].rejected! -- store job rejected                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vJobRejectedStore(void)
+{
+  ENTRY();
+
+  Job* pJob = pOuterJobOfTask();
+  i8 bRejected = m_pDataStack->iPopBol(__func__);
+
+  pJob->vRejected(bRejected);
+
+  EXIT();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* [job].removeLocal -- remove job from local job set                         */
