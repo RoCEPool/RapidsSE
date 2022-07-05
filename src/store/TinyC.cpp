@@ -143,8 +143,32 @@ bool TinyC::bCompile(char* azSrcCode)
   //   1. We always compile releases under CentOS because it seems to be
   //      forward compatible to Ubuntu 20+.
   //   2. We add a library search path that corresponds to where system libraries
-  //      can be found under Ubuntu 20. 
-  tcc_add_library_path(m_aTccState,"/lib/x86_64-linux-gnu");
+  //      can be found under Ubuntu 20.
+  //
+  // On CentOS 7 we find libc.so under /usr/lib64/libc.so
+  // On Ubuntu18 & 20 we find libc.so under /usr/lib/x86_64-linux-gnu/libc.so
+  //
+  // If you get an error message in the log when running a basic select statement that
+  // says "error: library 'c' not found" then you can take these steps to address it:
+  //  1. Run "sudo find / -name libc.so" on the target system and add the path in below.
+  //  2. Alternatively, compile tcc on the target system and look in the file
+  //     thirdparty/tcc/src/config.mak and look for the line starting with NATIVE_DEFINES+=.
+  //     The path given here will be searched under /usr/lib and a few other locations.
+  //
+  // Finally, a note about the file libc.so - it is actually a linker script in plain text!
+  // Open it up and it is effectively a redirect to a series of shared and static library files
+  // such as /lib64/libc.so.6, /usr/lib64/libc_nonshared.a, etc.
+  //
+  // Lastly, (seriously, it really is), here are some details about the version of libc on
+  // different platforms for compatibility purposes.
+  //   CentOS 7  : libc-2.17
+  //   Ubuntu 18 : libc-2.27
+  //   Ubuntu 20 : libc-2.31
+  //   Ubuntu 22 : libc-2.35
+  // The compatibility of glibc can be seen here: https://abi-laboratory.pro/?view=timeline&l=glibc
+
+//  tcc_add_library_path(m_aTccState,"/lib/x86_64-linux-gnu");
+  tcc_add_library_path(m_aTccState,"/usr/lib/x86_64-linux-gnu");
 
   // Library search path so that dynamically generated code can find the libtcc1.a library
   // It's not entirely clear if this is required in addition to

@@ -67,6 +67,9 @@ COMPLETED_SUCCESFULLY=0
 # Do we need to stop or force stop RapidsSE?
 STOP_REQ=0
 
+# Test suffix to use in Junit results
+TEST_SUFFIX=""
+
 # Are we testing debug or release?
 TARGET=""
 
@@ -115,14 +118,24 @@ function onExit() {
 
 function processArgs() {
 
-  if [ "$#" -ne 3  ]; then
-    errorExit "Insufficient arguments provided\n" "Usage: ./${SCRIPT_NAME} {*debug* | *release*} path/of/cluster.config path/of/testlistFile"
+  if [ "$#" -lt 3  ] || [ "$#" -gt 4  ]; then
+    errorExit "Incorrect arguments provided\n" "Usage: ./${SCRIPT_NAME} " \
+              "[ --testsuffix <suffix> ]" \
+              "{ *debug* | *release* } " \
+              "path/of/cluster.config " \
+              "path/of/testlistFile"
+  fi
+
+  if [ "$1" == "--testsuffix" ]; then
+    TEST_SUFFIX="$2"
+    shift
+    shift
   fi
 
   TARGET="$1"
 
   if ! [[ "${TARGET}" = *debug* || "${TARGET}" = *release* ]]; then
-    errorExit "Parameter 1 must contain the substring \"debug\" or \"release\""
+    errorExit "Non-optional parameter 1 must contain the substring \"debug\" or \"release\""
   fi
 
   CONFIG_FILE="$2"
@@ -215,13 +228,19 @@ readonly SE_LOG_FILE="${INSTALL_DIR}/se.log"
 export LD_LIBRARY_PATH="${SE_BIN_DIR}:${LD_LIBRARY_PATH:-}"
 
 # Additional arguments for SETH. Enable as required.
-readonly SETH_ARGS=(
+SETH_ARGS=(
   "--logsteps" 
   "--resultdir" "${SETH_RESULTS_DIR}"
   "--resultname" "results-${TARGET}.xml"
-  "--resultformat" "junit" 
-  "-f" "${TESTLIST_FILE}"
+  "--resultformat" "junit"
 )
+
+if [ -n "${TEST_SUFFIX}" ]; then
+  SETH_ARGS+=("--testsuffix" "${TEST_SUFFIX}")
+fi
+
+SETH_ARGS+=("-f" "${TESTLIST_FILE}")
+
 
 # The SE JDBC URL that tells the JDBC driver how to connect to SE.
 readonly URL="jdbc:rapidsse:${SE_PATH}?extraargs=${SE_ARGS[*]}"

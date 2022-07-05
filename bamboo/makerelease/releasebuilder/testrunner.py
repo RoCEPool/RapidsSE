@@ -167,7 +167,7 @@ class InstanceRunner:
         self.local_installer_path = local_installer_path
 
         # Create a new result and add it to the list
-        self.test_result = TestResult(self.test_name)
+        self.test_result = TestResult(f"Install & run ({self.test_name})")
 
         self.instance_id: string = None
         self.ip_addr: string = None
@@ -439,7 +439,12 @@ class InstanceRunner:
         target_name = f"release-{self.test_name.replace(' ', '-')}"
         testlist_path = self.remote_repo_dir / C_TESTLIST_PATH
 
-        command = f"{test_sh_path} {target_name} {str(self.remote_cluster_config_path)} {str(testlist_path)}"
+        test_suffix = "-" + target_name.replace(" ", "-")
+
+        command = f"{test_sh_path} --testsuffix {test_suffix} " \
+                  f"{target_name} " \
+                  f"{str(self.remote_cluster_config_path)} " \
+                  f"{str(testlist_path)}"
 
         LOG.info(f"Test {self.test_name}: About to invoke SETH on {self.ip_addr} with the following command: {command}")
 
