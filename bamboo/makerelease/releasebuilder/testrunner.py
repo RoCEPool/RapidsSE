@@ -108,9 +108,10 @@ class TestRunner:
         got_errors: bool = False
         for result in instance_results:
             self.result_list.append(result)
-            got_errors = got_errors and result.test_passed
+            got_errors = (got_errors and not result.test_passed)
 
-        msg = "Completed testing RapidsSE." if got_errors else "Completed testing RapidsSE, with errors."
+        msg = "Completed testing RapidsSE." if got_errors is True else \
+              "Completed testing RapidsSE, with install and run errors."
         LOG.info(msg)
 
     def __wait_for_tests_to_complete(self, timeout: float) -> bool:
