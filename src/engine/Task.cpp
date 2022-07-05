@@ -131,6 +131,7 @@ void Task::vTask(void)
   
   // m_oDicStack
   // m_oSaveDicStack
+  m_pSearchWord = new(nullptr) Word(""_Stz);
 
   m_aInxPtr      = nullptr;
   
@@ -166,7 +167,9 @@ Task::~Task(void) noexcept(false)
   ASSERT(! m_oWriteLocks.nItems());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+
+  delete m_pSearchWord;
+
   delete m_pDataStack;
   delete m_pReturnStack;
   delete m_pAuxStack;
@@ -1562,6 +1565,16 @@ void Task::vScheduleWait(void)
   
   RASSERT(bIsLocked());
   m_eTransition = TR_WAIT_FOR_RESUME;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the search word                                                        */
+/*----------------------------------------------------------------------------*/
+Word* Task::pSearchWord(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+
+  return m_pSearchWord;
 }
 
 /*----------------------------------------------------------------------------*/

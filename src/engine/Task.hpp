@@ -71,6 +71,7 @@ namespace ENGINE
 
     DicStack     m_oDicStack;     // dictionary stack
     DicStack     m_oSaveDicStack; // save dictionary stack
+    Word*        m_pSearchWord;   // word used for searching for a word
 
     CodeCell*    m_aInxPtr;       // instruction/cell pointer
 
@@ -171,6 +172,7 @@ namespace ENGINE
     void vScheduleSleep(void);
     void vScheduleYield(void);
     void vScheduleWait(void);
+    Word* pSearchWord(void);
     void vSeeFrameStack(void);
     void vSeeLockSets(void);
     void vSeeLogicUnitRegisters(void);

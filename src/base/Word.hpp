@@ -100,6 +100,7 @@ namespace BASE
     CodeCell* aLastCell(void);
     i8    iLocalNo(void);
     void  vLocalNo(i8 iLocalNo);
+    void vName(Stz* sWordNm);
     Word* pNextWord(void);
     Object* pObject(void);
     void  vObject(Object* pObject);
