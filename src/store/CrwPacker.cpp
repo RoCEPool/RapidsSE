@@ -189,28 +189,12 @@ void CrwPacker::vPackCrw(HeadLine* aHeadLine, Encoding* pEncoding)
     
     METACODE_SPLIT(aColEnc->m_uMetaCode,uHigh,uLow);
     
-    if (MC_STRING_TAIL != uHigh)
+    if (MC_STRING_TAIL == uHigh)
+      goto L_PackVch_Tail;
+    else
       goto L_PackVch_Head;
-    
-    // calculate [TL]
-    i_Tail_rel = aHeadLine->iGetTailRel(aColEnc->m_aTailLine);
-    
-    //      -- HeadLine / OverLine --                -- TailLine --
-    // +--------------------------------+   **********************************
-    // | ...[TL]                        |---* <U><L><Stl> ////////////////// *
-    // +--------------------------------+   **********************************
-    //
-    
-    // put [TL]
-    if (aOverLine) {
-      i_Offset_over = aColEnc->m_i_Offset - nHeadBytes;
-      aOverLine->vPut(i_Offset_over,i_Tail_rel,C_2B);
-    }
-    else {
-      aHeadLine->vPut(aColEnc->m_i_Offset,i_Tail_rel,C_2B);
-    }
-    goto L_RowPacked;
 
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     
   L_PackVch_Head:
     if (MC_STRING_x1  == uHigh)
@@ -251,7 +235,35 @@ void CrwPacker::vPackCrw(HeadLine* aHeadLine, Encoding* pEncoding)
 //                                 aColEnc->m_wDataCode.m_szVch,
 //                                 nStrBytes);
     }
+    goto L_RowPacked;
+
     
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    
+  L_PackVch_Tail:
+
+    // calculate [TL]
+    i_Tail_rel = aHeadLine->iGetTailRel(aColEnc->m_aTailLine);
+    
+    //      -- HeadLine / OverLine --                -- TailLine --
+    // +--------------------------------+   **********************************
+    // | ...[TL]                        |---* <U><L><Stl> ////////////////// *
+    // +--------------------------------+   **********************************
+    //
+    
+    // put [TL]
+    RASSERT(aOverLine);
+    //if (aOverLine) {
+      i_Offset_over = aColEnc->m_i_Offset - nHeadBytes;
+      aOverLine->vPut(i_Offset_over,i_Tail_rel,C_2B);
+    //}
+    //else {
+    //  NEVER_REACH;
+    //  aHeadLine->vPut(aColEnc->m_i_Offset,i_Tail_rel,C_2B);
+    //}
+    goto L_RowPacked;
+
+  
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     
   L_RowPacked:
