@@ -115,6 +115,8 @@ namespace STORE
     eEC eParseRowSize        (TokenVec* pTknVec);
     eEC eParseTableSize      (TokenVec* pTknVec);
 
+    eEC eValidateTableName   (TokenVec* pTknVec);
+
   };
 
   StreamDefBase* _pStreamDefBase(void* aAddr);
