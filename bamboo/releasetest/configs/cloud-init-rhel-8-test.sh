@@ -152,6 +152,14 @@ if ! mount | grep "/mnt/disk1" &>/dev/null; then
       continue
     fi
 
+    # ignore non-nvme devices
+    if ! [[ "${device}" =~ ^nvme.* ]]
+    then
+      # ignore this device
+      echo "Ignoring device ${device}"
+      continue
+    fi
+
     device="/dev/${device}"
 
     echo "Partitioning device ${device}"

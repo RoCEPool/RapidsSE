@@ -169,11 +169,11 @@ if ! mount | grep "/mnt/disk1" &>/dev/null; then
       continue
     fi
 
-    # ignore loop devices
-    if [[ "${device}" =~ ^loop.* ]]
+    # ignore non-nvme devices
+    if ! [[ "${device}" =~ ^nvme.* ]]
     then
       # ignore this device
-      echo "Ignoring loop device ${device}"
+      echo "Ignoring device ${device}"
       continue
     fi
 

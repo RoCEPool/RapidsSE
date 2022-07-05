@@ -236,6 +236,14 @@ if ! mount | grep "/mnt/disk1" &>/dev/null; then
       continue
     fi
 
+    # ignore non-nvme devices
+    if ! [[ "${device}" =~ ^nvme.* ]]
+    then
+      # ignore this device
+      echo "Ignoring device ${device}"
+      continue
+    fi
+
     device="/dev/${device}"
 
     echo "Partitioning device ${device}"
@@ -282,8 +290,11 @@ bash /etc/rc.d/rc.local
 
 # ----------------------------------------------------------------------------------------
 # Give more memory to /dev/shm. Use 95% of system memory
-echo "Updating size of /dev/shm to 95% of system memory"
 SHM_SIZE=$(cat /proc/meminfo | grep "MemTotal:" | awk '{printf "%d\n", $2/1048576*0.95}')
+if [ "${SHM_SIZE}" -eq 0 ]; then
+  SHM_SIZE=1
+fi
+echo "Updating size of /dev/shm to 95% of system memory"
 {
   echo ""
   echo "# Set /dev/shm to 95% of system memory"
