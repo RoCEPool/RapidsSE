@@ -41,6 +41,7 @@ enum eOM // operator markers
   /*    */ OM_LEFTMARKER,
   /*    */ OM_LEFTOUTER_CRWLFT,
   /*    */ OM_LEFTOUTER_ROWLFT,
+  /*    */ OM_LOWMEMORY,
   
   /*    */ OM_NEXTBUFFERMARKER,
   
@@ -99,6 +100,7 @@ static Stz* aOM[]
   /*    */ "LEFTMARKER"_Stz,
   /*    */ "LEFTOUTER_CRWLFT"_Stz,
   /*    */ "LEFTOUTER_ROWLFT"_Stz,
+  /*    */ "LOWMEMORY"_Stz,
   
   /*    */ "NEXTBUFFERMARKER"_Stz,
   

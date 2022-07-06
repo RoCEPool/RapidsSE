@@ -176,6 +176,34 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* low memory exception recovery                                              */
+/*----------------------------------------------------------------------------*/
+: lowMem_recoveryWord
+
+  "lowMem_recoveryWord" .
+
+  //[task].exception .
+
+  AM::SYSTEM::Ready@ if
+    [ddlLock].testDrop
+
+      // toggle to default abnormal handlers
+      //"default_abnormalHandlers" FIND execute
+
+      Marker[].newLowMemory
+      Marker[]
+          nullptr to Marker[]
+
+        [op].pipeout
+    true
+    exit
+  else
+    process::quit
+    HAZARD
+  then
+;
+
+/*----------------------------------------------------------------------------*/
 /* retire this job and its task                                               */
 /*----------------------------------------------------------------------------*/
 : [job]:retireAndExit

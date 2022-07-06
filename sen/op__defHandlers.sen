@@ -93,6 +93,7 @@
 : EV_M_LEAVING_handler          \handler STANDARD_PIPEOUT ;
 : EV_M_LEFTOUTER_CRWLFT_handler \handler STANDARD_PIPEOUT ;
 : EV_M_LEFTOUTER_ROWLFT_handler \handler STANDARD_PIPEOUT ;
+: EV_M_LOWMEMORY_handler        \handler STANDARD_PIPEOUT ;
 : EV_M_NEXTBUFFER_handler       \handler STANDARD_PIPEOUT ;
 : EV_D_SRTBUFFER_handler        \handler STANDARD_PIPEOUT ;
 : EV_M_STARTCRWRHT_handler      \handler STANDARD_PIPEOUT ;
@@ -364,6 +365,7 @@
   defaultHandler EV_M_FLUSH             [op].handler!
   defaultHandler EV_M_LEFTOUTER_CRWLFT  [op].handler!
   defaultHandler EV_M_LEFTOUTER_ROWLFT  [op].handler!
+  defaultHandler EV_M_LOWMEMORY         [op].handler!
   defaultHandler EV_M_NEXTBUFFER        [op].handler!
   defaultHandler EV_M_STARTCRWRHT       [op].handler!
   defaultHandler EV_M_START             [op].handler!

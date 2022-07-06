@@ -70,6 +70,7 @@ void Step::vAddSteps_Marker(void)
   vAddStep("Marker[].newLeaveMarker"_Stz,       &Step::vMarkerNewLeaveMarker);
   vAddStep("Marker[].newLeavingMarker"_Stz,     &Step::vMarkerNewLeavingMarker);
   vAddStep("Marker[].newLeftMarker"_Stz,        &Step::vMarkerNewLeftMarker);
+  vAddStep("Marker[].newLowMemory"_Stz,         &Step::vMarkerNewLowMemory);
   vAddStep("Marker[].newNextBufferMarker"_Stz,  &Step::vMarkerNewNextBufferMarker);
   vAddStep("Marker[].newStartedMarker"_Stz,     &Step::vMarkerNewStartedMarker);
   vAddStep("Marker[].newStartMarker"_Stz,       &Step::vMarkerNewStartMarker);
@@ -486,6 +487,21 @@ void Step::vMarkerNewLeftMarker(void)
 
   m_pLogicUnit->m_xpMarker =
     AM::MARKER::pNewMarker(OM_LEFTMARKER,pOuterJobOfTask());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Marker[].newLowMemory -- new a lowMemory marker                            */
+/*----------------------------------------------------------------------------*/
+void Step::vMarkerNewLowMemory(void)
+{
+  ENTRY();
+
+  ASSERT (m_pLogicUnit->m_xpMarker.bIsNull());
+
+  m_pLogicUnit->m_xpMarker =
+      AM::MARKER::pNewMarker(OM_LOWMEMORY,pOuterJobOfTask());
 
   EXIT();
 }

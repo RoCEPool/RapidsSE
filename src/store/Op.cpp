@@ -600,8 +600,9 @@ bool Op::bIsEventValid(i8 i_OperandKind)
       }
       
       // should have received a EV_M_CANCEL
-      if ( ! m_pEvMgr->m_naEventCount[EV_M_CANCEL]) {
-        vTrace("%s: %s arrived without a prior EV_M_CANCEL\n"_Stz,
+      if ( ! m_pEvMgr->m_naEventCount[EV_M_CANCEL] &&
+           ! m_pEvMgr->m_naEventCount[EV_M_LOWMEMORY]) {
+        vTrace("%s: %s arrived without a prior EV_M_CANCEL / EV_M_LOWMEMORY\n"_Stz,
                szOpNm(), aEV[i_OperandKind]);
         return false;
       }

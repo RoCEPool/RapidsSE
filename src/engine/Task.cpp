@@ -128,6 +128,7 @@ void Task::vTask(void)
   m_nOperandYield = AM::SYSARGS::nOperandYield(); //10;
 
   m_pRecoveryWord  = nullptr;
+  m_pLowMemWord = nullptr;
   
   // m_oDicStack
   // m_oSaveDicStack
@@ -247,7 +248,12 @@ void Task::vTaskLoop(void)
       //   this->vIntAdd();
       //
     }
-    
+
+      // catch lowMemory exception
+    catch (LowMemory xLowMemory) {
+      vLowMemoryHandler();
+    }
+
     // catch exception
     catch (Exception xException) {
       
@@ -348,6 +354,17 @@ void Task::vExceptionHandler(void)
     if (pWord)
       AM::WORD::vDisassemble(pWord,&m_oDicStack,m_aInxPtr);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* caught a low memory exception in vTaskLoop catch(LowMemory...)             */
+/*----------------------------------------------------------------------------*/
+void Task::vLowMemoryHandler(void)
+{
+  _noPreconditions_
+
+  vSetSenLowMemContext();
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1159,6 +1176,35 @@ void Task::vSetSenRecoverContext(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* reset sen execution context for low memory                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vSetSenLowMemContext(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+
+  m_pAuxStack->vReset();
+  m_pDataStack->vReset();
+
+  //Task::vSeeFrameStack();
+
+  while (m_pReturnStack->nValues() > 2) {
+    if (m_pLocalsFrame
+        && m_pLocalsFrame->aDiscardPoint() ==
+           (TypedCell*)m_pReturnStack->aTopVal())
+      vLocalsPop();
+    m_pReturnStack->vDiscardTop();
+  }
+
+  //Task::vSeeFrameStack();
+
+
+  if (MY::pOp())
+    m_aInxPtr = m_pLowMemWord->aFirstCell();
+  else
+    m_aInxPtr = m_pRecoveryWord->aFirstCell();
+}
+
+/*----------------------------------------------------------------------------*/
 /* release all locks in the lock sets                                         */
 /*----------------------------------------------------------------------------*/
 void Task::vReleaseLockSets(void)
@@ -1349,6 +1395,11 @@ void Task::vSetInxPtr(Word* pEntryWord)
   Word* pRecoveryWord = pDicRoot->pFindWord("std_recoveryWord"_Stz);
   if (pRecoveryWord) {
     m_pRecoveryWord = pRecoveryWord;
+  }
+
+  Word* pLowMemWord = pDicRoot->pFindWord("lowMem_recoveryWord"_Stz);
+  if (pLowMemWord) {
+    m_pLowMemWord = pLowMemWord;
   }
 }
 

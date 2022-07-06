@@ -1161,6 +1161,7 @@ void vDdlLockAssertNone(void);
   void vMarkerNewLeaveMarker(void);
   void vMarkerNewLeavingMarker(void);
   void vMarkerNewLeftMarker(void);
+  void vMarkerNewLowMemory(void);
   void vMarkerNewNextBufferMarker(void);
   void vMarkerNewStartedMarker(void);
   void vMarkerNewStartMarker(void);
@@ -1406,6 +1407,8 @@ void vDdlLockAssertNone(void);
   void vPipelineOfOpGet(void);
   void vPipelineOfOpGetAccum(void);
   void vPipelineOfOpGrabDebugLock(void);
+  void vPipelineOfOpLowMemoryFetch(void);
+  void vPipelineOfOpLowMemoryStore(void);
   void vPipelineOfOpPulsedFetch(void);
   void vPipelineOfOpPulsedStore(void);
 

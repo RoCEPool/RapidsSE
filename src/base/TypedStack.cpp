@@ -1018,9 +1018,10 @@ bool TypedStack::bGuard(eCN eClass0)
     return false;
   
   TypedCell* aPeeked = aPeekItem(0);
-  if (eClass0 != aPeeked->eType())
+  if (eClass0 != aPeeked->eType()) {
+    //vTrace("TypedStack::bGuard: %s %s\n"_Stz, aCN[eClass0], aCN[aPeeked->eType()]);
     return false;
-  
+  }
   return true;
 }
 

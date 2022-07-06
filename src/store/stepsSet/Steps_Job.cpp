@@ -450,7 +450,8 @@ void Step::vJobDisableAllocate(void)
 {
   ENTRY();
 
-  m_pJob->vSetAllocate(false);
+  Job* pJob = pOuterJobOfTask();
+  pJob->vSetAllocate(false);
 
   EXIT();
 }
@@ -462,7 +463,8 @@ void Step::vJobDisableObjectTracker(void)
 {
   ENTRY();
 
-  m_pJob->vDisableObjectTracker();
+  Job* pJob = pOuterJobOfTask();
+  pJob->vDisableObjectTracker();
 
   EXIT();
 }

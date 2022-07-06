@@ -68,6 +68,7 @@ namespace ENGINE
     Exception    m_xException;
 
     Word*        m_pRecoveryWord; // sen word called to recover from failure
+    Word*        m_pLowMemWord;   // sen word called to recover from low memory
 
     DicStack     m_oDicStack;     // dictionary stack
     DicStack     m_oSaveDicStack; // save dictionary stack
@@ -105,7 +106,7 @@ namespace ENGINE
     void vTaskLoop(void);
     void vExceptionHandler(void);
     void vExceptionTrace(void);
-
+    void vLowMemoryHandler(void);
     void vDumpOnException(void);
 
     // - - - - - - - - - - - - - -  - - - - - -
@@ -177,6 +178,7 @@ namespace ENGINE
     void vSeeLockSets(void);
     void vSeeLogicUnitRegisters(void);
     SenCompiler* pSenCompiler(void);
+    void vSetSenLowMemContext(void);
     void vSetSenRecoverContext(void);
     void vSetInxPtr(Stz* szEntry);
     void vSetInxPtr(Word* pEntryWordCheck);

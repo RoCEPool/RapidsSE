@@ -427,6 +427,19 @@ bool Output::bProcessOperand(Operand* pOperand)
       break;
     }
 
+      // -- -- -- -- -- --
+
+    case CN_MARKER: {
+
+      Marker *pMarker = _pMarker(pOperand);
+      RASSERT(pMarker->eOpMarker() == OM_LOWMEMORY);
+      if (!m_bHasError) {
+        vTrace("\nerror: SYSTEM RUNNING LOW ON MEMORY\n"_Stz);
+        m_bHasError = true;
+      }
+      break;
+    }
+
     // -- -- -- -- -- --
 
 //    case CN_EXITOPERAND: {

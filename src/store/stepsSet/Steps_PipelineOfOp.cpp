@@ -46,6 +46,8 @@ void Step::vAddSteps_PipelineOfOp(void)
   vAddStep("[pipeline].errored!"_Stz,       &Step::vPipelineOfOpErroredStore);
   vAddStep("[pipeline].getAccum"_Stz,       &Step::vPipelineOfOpGetAccum);
   vAddStep("[pipeline].grabDebugLock"_Stz,  &Step::vPipelineOfOpGrabDebugLock);
+  vAddStep("[pipeline].lowMemory@"_Stz,     &Step::vPipelineOfOpLowMemoryFetch);
+  vAddStep("[pipeline].lowMemory!"_Stz,     &Step::vPipelineOfOpLowMemoryStore);
   vAddStep("[pipeline].pulsed@"_Stz,        &Step::vPipelineOfOpPulsedFetch);
   vAddStep("[pipeline].pulsed!"_Stz,        &Step::vPipelineOfOpPulsedStore);
 }
@@ -91,7 +93,7 @@ void Step::vPipelineOfOpCancelledStore(void)
 
   Pipeline* pPipeline = m_pOp->pPipeline();
   
-  pPipeline->vCancelled(m_pDataStack->iPopInt(__func__));
+  pPipeline->vCancelled(m_pDataStack->iPopBol(__func__));
   
   EXIT();
 }
@@ -216,6 +218,34 @@ void Step::vPipelineOfOpGrabDebugLock(void)
   
   pPipeline->vGrabDebugLock();
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [pipeline].lowMemory@ -- has this pipeline been cancelled?                 */
+/*----------------------------------------------------------------------------*/
+void Step::vPipelineOfOpLowMemoryFetch(void)
+{
+  ENTRY();
+
+  Pipeline* pPipeline = m_pOp->pPipeline();
+
+  //m_pDataStack->vPushInt(pPipeline->bLowMemory());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [pipeline].lowMemory! -- fetch this pipeline's cancelled indicator         */
+/*----------------------------------------------------------------------------*/
+void Step::vPipelineOfOpLowMemoryStore(void)
+{
+  ENTRY();
+
+  Pipeline* pPipeline = m_pOp->pPipeline();
+
+  //pPipeline->vLowMemory(m_pDataStack->iPopBol(__func__));
+
   EXIT();
 }
 

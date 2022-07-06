@@ -8,6 +8,7 @@
 #include "LogicUnit.hpp"
 #include "Job.hpp"
 #include "SeDeputy.hpp"
+#include "Op.hpp"
 
 extern BufferPool* gpBufferPool;
 
@@ -149,9 +150,13 @@ Object* Heap::pAllocObject(eCN eAllocClass)
   ASSERT(gxaSizeHeap[eAllocClass].m_nClassSize < m_nObjectSize);
   UNUSED(eAllocClass);
   
-   //AM::MEMORY::vAssertAllocate();
-   //RASSERT(MY::pJob()->bAllocateMemory());
-   //RASSERT(MY::pOp()->bAllocateMemory());
+  //AM::MEMORY::vAssertAllocate();
+
+  //if ( MY::pJob() && ! MY::pJob()->bAllocateMemory() )
+  //  THROW_LOWMEMORY_NEW();
+
+  //if ( MY::pOp() && ! MY::pOp()->bAllocateMemory() )
+  //  THROW_LOWMEMORY_NEW();
 
   //static eCN eLastClass = CN_ENUMS;
   

@@ -935,6 +935,7 @@ void AM::JOB::vTriggerExecute(JobId tDistId)
 
   pJobParticipant->vResetTaskForJob();
   Scheduler::vTaskCross_ScheduleNextPhase(pTaskParticipant, AM::pThisTLSTask());
+  //pJobParticipant->vSetAllocate(false);
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -1386,8 +1387,8 @@ void AM::MEMORY::vAssertAllocate(void)
 {
   _static_
 
-  RASSERT(MY::pJob()->bAllocateMemory());
-  RASSERT(MY::pOp()->bAllocateMemory());
+  RASSERT( ! MY::pJob() || MY::pJob()->bAllocateMemory());
+  RASSERT( ! MY::pOp() || MY::pOp()->bAllocateMemory());
 
 }
 
@@ -4045,6 +4046,7 @@ i8 AM::iOperandEvKind(Operand* pOperand)
         case OM_LEFTMARKER:         eOperand = EV_M_LEFT;         break;
         case OM_LEFTOUTER_CRWLFT:   eOperand = EV_M_LEFTOUTER_CRWLFT; break;
         case OM_LEFTOUTER_ROWLFT:   eOperand = EV_M_LEFTOUTER_ROWLFT; break;
+        case OM_LOWMEMORY:          eOperand = EV_M_LOWMEMORY;    break;
         case OM_NEXTBUFFERMARKER:   eOperand = EV_M_NEXTBUFFER;   break;
         case OM_STARTEDMARKER:      eOperand = EV_M_STARTED;      break;
         case OM_STARTCRWRHT:        eOperand = EV_M_STARTCRWRHT;  break;
