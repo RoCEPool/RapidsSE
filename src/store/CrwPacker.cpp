@@ -261,6 +261,12 @@ void CrwPacker::vPackCrw(HeadLine* aHeadLine, Encoding* pEncoding)
     //  NEVER_REACH;
     //  aHeadLine->vPut(aColEnc->m_i_Offset,i_Tail_rel,C_2B);
     //}
+    
+    //aByte = ((byte*)aColEnc->m_aTailLine) + C_U_1B + C_L_1B;
+    //nStrBytes = aColEnc->m_nDataSize;
+    //RASSERT(nStrBytes == StrLib::nSize(aColEnc->m_wDataCode.m_szVch->azChar()));
+    //MemLib::vCopy(aByte,aColEnc->m_wDataCode.m_szVch,nStrBytes,CN_ROWCOMPACTOR);
+
     goto L_RowPacked;
 
   

@@ -10,7 +10,15 @@ namespace STORE
     
     Column* m_pCol;    // column
     
-    u1   m_uMetaCode;  // meta code v2 describing the column value
+    union {
+      u1   m_uMetaCode;  // meta code v2 describing the column value
+      
+      struct {
+        u1  m_uLow  : 4;
+        eMC m_uHigh : 4;
+      };
+    };
+    
     Dtm  m_wDataCode;  // column value data bytes
     i8   m_nDataSize;  // complete number of data code bytes, incl <L> etc
     i8   m_i_Offset;   // first byte offset in head+over where the data code is
