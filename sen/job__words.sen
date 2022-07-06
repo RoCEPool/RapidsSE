@@ -355,8 +355,9 @@
 
   //" +++++++++++++++++++++++++++++++++++++++++++++++++++++++ job::entryPoint" .
   
-  [job].entryPoint@ >interpret
-  
+  //[job].entryPoint@ >interpret
+  [job].setInxPtr
+
   HAZARD
 ;
 

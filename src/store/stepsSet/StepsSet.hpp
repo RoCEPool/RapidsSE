@@ -899,6 +899,7 @@ void vDdlLockAssertNone(void);
   void vListedJobScheduleNextPhase(void);
   void vJobScheduleNextPhase(void);
 
+  void vJobSetInxPtr(void);
   void vJobSetOriginId(void);
   void vJobSignalParent(void);
   void vJobMasterJobId(void);

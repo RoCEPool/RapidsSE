@@ -88,6 +88,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("[job].responseOp@"_Stz,      &Step::vJobResponseOpFetch);
   vAddStep("[job].responseOp!"_Stz,      &Step::vJobResponseOpStore);
 
+  vAddStep("[job].setInxPtr"_Stz,        &Step::vJobSetInxPtr);
   vAddStep("[job].setOriginId"_Stz,      &Step::vJobSetOriginId);
   vAddStep("[job].signalParent"_Stz,     &Step::vJobSignalParent);
 
@@ -1002,7 +1003,21 @@ void Step::vJobResponseOpStore(void)
   
   EXIT();
 }
-  
+
+/*----------------------------------------------------------------------------*/
+/* [job].setInxPtr -- set the intruction pointr from entryPoint               */
+/*----------------------------------------------------------------------------*/
+void Step::vJobSetInxPtr(void)
+{
+  ENTRY();
+
+  Job* pJob = pOuterJobOfTask();
+
+  vSetInxPtr(pJob->szEntryPoint());
+
+  EXIT();
+}
+
 /*----------------------------------------------------------------------------*/
 /* [job].setOriginId -- set the origin id of this job                         */
 /*----------------------------------------------------------------------------*/
