@@ -25,8 +25,6 @@ ordered rows:
 
 // Source file: ../queries/case/rcase22.sql
 // Result file: ../queries/case/results/case22.res
-/*
-TODO: FIX
 select ucolvc, cola1, colg1, cola1/colg1 from table1 where cola1 / case when colg1 <= 0 then null else colg1 end > 5 order by cola1;
 ordered rows:
   ('qqq', 93, 13, 7)
@@ -39,7 +37,6 @@ ordered rows:
   ('fff', 400, 61, 6)
   ('uuu', 415, 40, 10)
   ('iii', 491, 81, 6)
-*/
 
 // Source file: ../queries/case/rcase7.sql
 // Result file: ../queries/case/results/case7.res

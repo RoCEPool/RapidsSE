@@ -3123,6 +3123,17 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // else
     if (pTkn->bSame("else"_Stz)) {
+      eDM eColType1 = (eDM) pExprType->iPop();
+      eDM eColType2 = (eDM) pExprType->iPop();
+      if (eColType1 == DM_UNK)
+        pExprType->vPush(eColType2);
+      else if (eColType2 == DM_UNK)
+        pExprType->vPush(eColType1);
+      else {
+        RASSERT(eColType1 == eColType2);
+        pExprType->vPush(eColType1);
+      }
+
       continue;
     }
 
@@ -3146,6 +3157,8 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     if (pTkn->bSame("when"_Stz)) {
       pExprStack->vPushStz("_ASSIGN(bFilterResult)"_Stz);
       pExprStack->vPushStz("if (bFilterResult) {"_Stz);
+      eDM eColType1 = (eDM) pExprType->iPop();
+      RASSERT(eColType1 == DM_BOL);
       continue;
     }
 
