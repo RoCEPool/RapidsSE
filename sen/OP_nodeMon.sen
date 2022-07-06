@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : nodeMon::activity
 
-  NodeMonitor::DummyCall
+  NodeMonitor::InspectGrid
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -21,9 +21,9 @@
 
   begin
 
-    nodeMon::activity
+    NodeMonitor::InspectGrid
 
-    10 thread::sleepMsec
+    10000 thread::sleepMsec
 
   again
 

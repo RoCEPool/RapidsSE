@@ -1254,6 +1254,7 @@ void vDdlLockAssertNone(void);
   void vNodeName(void);
   void vNodeNew(void);
   void vNodeMonitorDummyCall(void);
+  void vNodeMonitorInspectGrid(void);
   void vNodeId(void);
   void vNodePartitions(void);
   void vNodePort(void);
