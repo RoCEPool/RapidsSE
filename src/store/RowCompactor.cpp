@@ -15,6 +15,8 @@
 
 #include "Encoding.hpp"
 
+#include "SP_Encoding.hpp"
+
 #include "Crw.hpp"
 #include "CrwPacker.hpp"
 #include "CrwBuffer.hpp"
@@ -379,7 +381,7 @@ void RowCompactor::vEncodeHeadForRow(Row* pRow)
 
 #ifdef WITH_TRACE_ENCODING
   SP_Encoding spEncoding;
-  vTrace("\nvEncode:\n%s\n"_Stz,spEncoding.sz(m_pEncoding_v1));
+  vTrace("\nvEncode:\n%s\n"_Stz,spEncoding.sz(m_pEncoding));
 #endif
 }
 
@@ -422,7 +424,7 @@ void RowCompactor::vEncodeTailsForRow(Row* pRow)
     //TailStr xFindTail(azStr);
     
 #ifdef WITH_TRACE_ENCODING
-    vDumpTails();
+    //vDumpTails();
 #endif
     
     
@@ -443,7 +445,8 @@ void RowCompactor::vEncodeTailsForRow(Row* pRow)
   }
   
 #ifdef WITH_TRACE_ENCODING
-  vTrace("\nvEncodeTails:\n%s\n"_Stz,spEncoding.sz(m_pEncoding_v1));
+  SP_Encoding spEncoding;
+  vTrace("\nvEncodeTails:\n%s\n"_Stz,spEncoding.sz(m_pEncoding));
 #endif
 }
 
@@ -586,7 +589,7 @@ void RowCompactor::vCreateSampleTail(Column* pCol,
   m_pCrwNub->vSetLastStr(i_Tail);
   
 #ifdef WITH_TRACE_ENCODING
-  vDumpTails();
+  //vDumpTails();
 #endif
   
   //vDebugPoint();
