@@ -208,13 +208,16 @@ bool RowCompactor::bAddRowAsCrw(Row* pRow)
   
   // 1) initially encode head of inflated row into m_pEncoding_v1
   vEncodeHeadForRow(pRow);
-  
+  //m_pEncoding->vDumpEncoding();
+
   // 2) encode tails into m_pEncoding_v1
   //  if (! m_pStreamDef->m_nFixedSized)
     vEncodeTailsForRow(pRow);
-  
+  //m_pEncoding->vDumpEncoding();
+
   // 3) split encoded head between crw head and crw overflow
   m_pEncoding->vSplitOver();
+  //m_pEncoding->vDumpEncoding();
 
   // 4) allot a logical compact row (head & over)
   if (! bAllotCrw()) {
@@ -265,7 +268,7 @@ bool RowCompactor::bAllotCrw(void)
   i8 nBytesNeeded;
   
   if (m_pStreamDef->jRowSize() == 0)
-    nBytesNeeded = m_pEncoding->nBytesNeeded();
+    nBytesNeeded = m_pEncoding->jBytesNeeded();
   else
     nBytesNeeded = m_pStreamDef->jRowSize();
  
@@ -281,7 +284,7 @@ bool RowCompactor::bAllotCrw(void)
   // +================================+
   
   // allot a head line in nub (the <W> is init'd by iAllotHead())
-  m_aHeadLine = m_pCrwNub->aAllotHead(m_pEncoding->m_nHeadSize);
+  m_aHeadLine = m_pCrwNub->aAllotHead(m_pEncoding->m_jHeadSize);
   ASSERT(m_aHeadLine);
 
   // do we allot an over line?
@@ -298,7 +301,7 @@ bool RowCompactor::bAllotCrw(void)
   
   // allot the over line (the <U> is init'd by iAllotOver())
   i8 nOverSize;
-  nOverSize = m_pEncoding->nOverSize();
+  nOverSize = m_pEncoding->jOverSize();
 
   ASSERT(nOverSize > 0);
   m_aOverLine = m_pCrwNub->aAllotOver(nOverSize);

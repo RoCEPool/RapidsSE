@@ -19,6 +19,8 @@ void CrwPacker::vPackCrw(HeadLine* aHeadLine, Encoding* pEncoding)
 {
   _static_
   
+  //pEncoding->vDumpEncoding();
+  
   // note: an OverLine will have been alloted if needed
   
   _ColEnc* aColEnc;
@@ -41,7 +43,7 @@ void CrwPacker::vPackCrw(HeadLine* aHeadLine, Encoding* pEncoding)
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
         
     aColEnc = &pEncoding->xaColEnc[i_Col];
-    nHeadSize = pEncoding->m_nHeadSize;
+    nHeadSize = pEncoding->m_jHeadSize;
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//
     //                            meta code packing                           //
@@ -153,7 +155,7 @@ void CrwPacker::vPackCrw(HeadLine* aHeadLine, Encoding* pEncoding)
     //vPutDataCode_v2(aHeadLine,pEncoding->xaColEnc[i_Col]);
     
     // no data code {D} case
-    if (! aColEnc->m_nDataSize)
+    if (! aColEnc->m_jDataSize)
       goto L_RowPacked;
     
     // non-vch packing as {1..8B} (max of 1 word)
@@ -173,12 +175,12 @@ void CrwPacker::vPackCrw(HeadLine* aHeadLine, Encoding* pEncoding)
 
       aOverLine->vPut(i_Offset_over,
                       aColEnc->m_wDataCode.m_iWrd,
-                      aColEnc->m_nDataSize);
+                      aColEnc->m_jDataSize);
     }
     else {
       aHeadLine->vPut(aColEnc->m_i_Offset,
                       aColEnc->m_wDataCode.m_iWrd,
-                      aColEnc->m_nDataSize);
+                      aColEnc->m_jDataSize);
     }
     goto L_RowPacked;
 
