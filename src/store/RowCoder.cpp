@@ -18,21 +18,7 @@
 /*----------------------------------------------------------------------------*/
 /* calc base offset for column data in head line                              */
 /*----------------------------------------------------------------------------*/
-i8 RowCoder::iBaseOffsetData(StreamDef* pStreamDef)
-{
-  i8 i_OffsetMeta = C_CONTROL_SIZE;
-  
-  i8 nMetaSize = RowCoder::nMetaSize(pStreamDef);
-  
-  i8 i_OffsetData = i_OffsetMeta + nMetaSize;
-
-  return i_OffsetData;
-}
-
-/*----------------------------------------------------------------------------*/
-/* calc base offset for column data in head line                              */
-/*----------------------------------------------------------------------------*/
-i8 RowCoder::iBaseOffsetData(RowPix* pRowPix)
+i8 RowCoder::iDataOffsetBase(RowPix* pRowPix)
 {
   i8 i_OffsetMeta = C_CONTROL_SIZE;
   
@@ -40,6 +26,20 @@ i8 RowCoder::iBaseOffsetData(RowPix* pRowPix)
   
   i8 i_OffsetData = i_OffsetMeta + nMetaSize;
   
+  return i_OffsetData;
+}
+
+/*----------------------------------------------------------------------------*/
+/* calc base offset for column data in head line                              */
+/*----------------------------------------------------------------------------*/
+i8 RowCoder::iDataOffsetBase(StreamDef* pStreamDef)
+{
+  i8 i_OffsetMeta = C_CONTROL_SIZE;
+  
+  i8 nMetaSize = RowCoder::nMetaSize(pStreamDef);
+  
+  i8 i_OffsetData = i_OffsetMeta + nMetaSize;
+
   return i_OffsetData;
 }
 

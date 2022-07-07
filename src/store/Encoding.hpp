@@ -23,10 +23,11 @@ namespace STORE
     i8   m_jDataSize;  // complete number of data code bytes, incl <L> etc
     i8   m_i_Offset;   // first byte offset in head+over where the data code is
     i8   m_i_Till;     // last byte offset in head+over where the data code is
-    bool m_bSplit;     // overflow occurs at this point
+    b8   m_bSplit;     // overflow occurs at this point
     
     i8   m_i_Tail;     // absolute index of tail
-    
+    b8   m_bDuplicate; // tail is a duplicate
+ 
     TailLine *m_aTailLine;  // the tail line
   };
 
@@ -39,7 +40,7 @@ namespace STORE
     i8  m_nColumns;
     i8  m_jHeadSize;
     i8  m_jMetaSize;
-    i8  m_i_BaseOffsetData;
+    i8  m_i_DataOffsetBase;
 
     i8  m_jOverSize;
 
@@ -49,7 +50,8 @@ namespace STORE
     i8  m_i_Offset_next;
 
     i8  m_nExtraTails;
-
+    i8  m_jExtraSize;
+  
     _ColEnc xaColEnc[C_MAX_COLUMNS];
 
     PadWord m__PadToCacheLine[1]; // padding to cache line

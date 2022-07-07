@@ -32,7 +32,7 @@ Encoding::Encoding(StreamDef* pStreamDef)
   
   m_jHeadSize  = nHeadSize(m_pStreamDef);
   m_jMetaSize  = nMetaSize(m_pStreamDef);
-  m_i_BaseOffsetData = iBaseOffsetData(m_pStreamDef);
+  m_i_DataOffsetBase = iDataOffsetBase(m_pStreamDef);
  
   m_jOverSize  = 0;
   
@@ -42,22 +42,26 @@ Encoding::Encoding(StreamDef* pStreamDef)
   m_i_Offset_next = C_UNKNOWN;
 
   m_nExtraTails   = 0;
-
+  m_jExtraSize    = 0;
+  
   // - - - - - - - - - - - - - - - - - -
 
   for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++) {
     
-    xaColEnc[i_Col].m_pCol       = nullptr;
+    _ColEnc& rxColEnc = xaColEnc[i_Col];
     
-    xaColEnc[i_Col].m_uMetaCode  = 0;
-    xaColEnc[i_Col].m_wDataCode  = C_UNKNOWN;
-    xaColEnc[i_Col].m_jDataSize  = C_UNKNOWN;
-    xaColEnc[i_Col].m_i_Offset   = 0;
-    xaColEnc[i_Col].m_i_Till     = 0;
-    xaColEnc[i_Col].m_bSplit     = false;
+    rxColEnc.m_pCol       = nullptr;
     
-    xaColEnc[i_Col].m_i_Tail     = C_UNKNOWN;
-    xaColEnc[i_Col].m_aTailLine  = nullptr;
+    rxColEnc.m_uMetaCode  = 0;
+    rxColEnc.m_wDataCode  = C_UNKNOWN;
+    rxColEnc.m_jDataSize  = C_UNKNOWN;
+    rxColEnc.m_i_Offset   = 0;
+    rxColEnc.m_i_Till     = 0;
+    rxColEnc.m_bSplit     = false;
+    
+    rxColEnc.m_i_Tail     = C_UNKNOWN;
+    rxColEnc.m_aTailLine  = nullptr;
+    rxColEnc.m_bDuplicate = false;
   }
   
   for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
@@ -115,10 +119,11 @@ void Encoding::vDumpEncoding(void)
   vTrace("m_jOverSize        : %lld\n"_Stz, m_jOverSize);
   vTrace("m_jBytesNeeded     : %lld\n"_Stz, m_jBytesNeeded);
   vTrace("m_jMetaSize        : %lld\n"_Stz, m_jMetaSize);
-  vTrace("m_i_BaseOffsetData : %lld\n"_Stz, m_i_BaseOffsetData);
+  vTrace("m_i_DataOffsetBase : %lld\n"_Stz, m_i_DataOffsetBase);
   vTrace("m_nShiftOver       : %lld\n"_Stz, m_nShiftOver);
   vTrace("m_i_Offset_next    : %lld\n"_Stz, m_i_Offset_next);
   vTrace("m_nExtraTails      : %lld\n"_Stz, m_nExtraTails);
+  vTrace("m_jExtraSize       : %lld\n"_Stz, m_jExtraSize);
 
   for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
     
@@ -136,6 +141,7 @@ void Encoding::vDumpEncoding(void)
     vTrace("  m_bSplit         : %lld\n"_Stz, (i8)rxColEnc.m_bSplit);
     vTrace("  m_i_Tail         : %lld\n"_Stz, rxColEnc.m_i_Tail);
     vTrace("  m_aTailLine      : %p\n"_Stz,   rxColEnc.m_aTailLine);
+    vTrace("  m_bDuplicate     : %lld\n"_Stz, (i8)rxColEnc.m_bDuplicate);
 
   }
   
@@ -257,7 +263,7 @@ void Encoding::vInitialEncodingRow(Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
-  m_i_Offset_next = m_i_BaseOffsetData;
+  m_i_Offset_next = m_i_DataOffsetBase;
   
   for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
     
