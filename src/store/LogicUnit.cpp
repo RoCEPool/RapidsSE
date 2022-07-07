@@ -524,7 +524,8 @@ void LogicUnit::vCleanup(void)
     }
     
     // execute register repair
-    if (p_Reg->m_eLogicUnitReg != LR_STATS)
+    if (p_Reg->m_eLogicUnitReg != LR_STATS &&
+        p_Reg->m_eLogicUnitReg != LR_PARCEL)
       p_Reg->vRepair();
   }
 }

@@ -1606,13 +1606,17 @@ void vDdlLockAssertNone(void);
   void vParcelJobIdFetch(void);
   void vParcelLabel(void);
   void vParcelPipeOut(void);
-  void vParcelSendOut(void);
+  void vParcelSendOutOld(void);
 
+  void vParcelAddOperand(void);
   void vParcelDelete(void);
   void vParcelGet(void);
   void vParcelGetAndClear(void);
   void vParcelIsNotNull(void);
   void vParcelIsNull(void);
+  void vParcelNew(void);
+  void vParcelReset(void);
+  void vParcelSendOut(void);
   void vParcelSet(void);
 
   // reg Pipein

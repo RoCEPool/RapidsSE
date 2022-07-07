@@ -12,7 +12,7 @@
   0 locals| pParcel |
 
   PipeIn[]\clear locals| pOperand |
-  
+
   // we do not expect to see a job
   pOperand object.class@ CN_JOB != ASSERT
 
@@ -20,16 +20,19 @@
   //  pOperand object.preSendWord@ execute
   //then
 
+  //ALKA: Never invoked (check with Myvan)
   pOperand object.class@ CN_PARCEL == if
+    assert
     pOperand to pParcel
     pParcel parcel.label
   else
-    pOperand operand.toParcel to pParcel
+    //"OPERAND IS NOT PARCEL" .
+    pOperand Parcel[].addOperand
   then
-  
-  pParcel parcel.sendOut
 
-  pParcel parcel::delete
+  Parcel[].sendOut
+
+  Parcel[].reset
 
   // calling op_loop continues
 
@@ -84,6 +87,8 @@
 
   op__topology
 
+  Parcel[].new
+
   find: PipeIn[].sendTo [op].handlerAll!
 
   find: sendSE_CANCELLING  EV_M_CANCELLING  [op].handler!
@@ -91,6 +96,8 @@
   find: sendSE_EXITING     EV_M_EXITING     [op].handler!
 
   op__loop
+
+  Parcel[].delete
 
   _lu_finalise_
   
