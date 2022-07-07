@@ -109,8 +109,8 @@
   PipeIn[].delete
 
   // pipeout an exit operand to output
-  ExitOperand[].newExitOperand
-  ExitOperand[].pipeToOutput
+  Marker[].newExit
+  Marker[].pipeToOutput
 
   // pipe out and exited marker
   Marker[].newExitedMarker

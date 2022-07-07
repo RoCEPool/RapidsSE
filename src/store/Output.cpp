@@ -137,11 +137,11 @@ void Output::vDrainBufferQueue(void)
       AM::vNapUsec(1000,CN_OUTPUT);
       continue;
     }
-    
-    eCN eOperandClass = pOperand->eGetClassNo();
 
-    if (eOperandClass == CN_EXITOPERAND) {
-      m_bToExit = true;
+    if (pOperand->bIsMarker()) {
+      Marker* pMarker = _pMarker(pOperand);
+      if (pMarker->eOpMarker() == OM_EXIT)
+        m_bToExit = true;
     }
 
     AM::vDeleteOperand(pOperand,nullptr);
@@ -437,8 +437,15 @@ bool Output::bProcessOperand(Operand* pOperand)
           vTrace("\nerror: SYSTEM RUNNING LOW ON MEMORY\n"_Stz);
           m_bHasError = true;
         }
-      }
-      else if (pMarker->eOpMarker() == OM_CHILDEXIT) {
+      } else if (pMarker->eOpMarker() == OM_CHILDEXIT) {
+        m_bToExit = true;
+        if (!m_bHasError)
+          vPrintResult();
+        m_bHasError = false;
+        bContinue = false;
+        goto L_EXIT;
+        break;
+      } else if (pMarker->eOpMarker() == OM_EXIT) {
         m_bToExit = true;
         if ( !m_bHasError )
           vPrintResult();

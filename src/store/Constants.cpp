@@ -654,7 +654,6 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("EV_D_CRWBUFFER"_Stz,       EV_D_CRWBUFFER);
   /*  0 */ vAddConstant("EV_D_CSVBUFFER"_Stz,       EV_D_CSVBUFFER);
   /*  0 */ vAddConstant("EV_D_ENTBUFFER"_Stz,       EV_D_ENTBUFFER);
-  /*  0 */ vAddConstant("EV_D_EXITOPERAND"_Stz,     EV_D_EXITOPERAND);
   /*  0 */ vAddConstant("EV_D_GRID"_Stz,            EV_D_GRID);
   /*  0 */ vAddConstant("EV_D_INDEX"_Stz,           EV_D_INDEX);
   /*  0 */ vAddConstant("EV_D_INDEXDEF"_Stz,        EV_D_INDEXDEF);
@@ -708,6 +707,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("EV_M_ERROR"_Stz,           EV_M_ERROR);
   /*  0 */ vAddConstant("EV_M_ERRORED"_Stz,         EV_M_ERRORED);
   /*  0 */ vAddConstant("EV_M_ERRORING"_Stz,        EV_M_ERRORING);
+  /*  0 */ vAddConstant("EV_M_EXIT"_Stz,            EV_M_EXIT);
   /*  0 */ vAddConstant("EV_M_EXITING"_Stz,         EV_M_EXITING);
   /*  0 */ vAddConstant("EV_M_EXITED"_Stz,          EV_M_EXITED);
   /*  0 */ vAddConstant("EV_M_FINISHED"_Stz,        EV_M_FINISHED);

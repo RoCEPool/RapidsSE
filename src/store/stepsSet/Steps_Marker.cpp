@@ -62,6 +62,7 @@ void Step::vAddSteps_Marker(void)
   vAddStep("Marker[].newEosMarker"_Stz,         &Step::vMarkerNewEosMarker);
   vAddStep("Marker[].newErroringMarker"_Stz,    &Step::vMarkerNewErroringMarker);
   vAddStep("Marker[].newErroredMarker"_Stz,     &Step::vMarkerNewErroredMarker);
+  vAddStep("Marker[].newExit"_Stz,              &Step::vMarkerNewExitMarker);
   vAddStep("Marker[].newExitingMarker"_Stz,     &Step::vMarkerNewExitingMarker);
   vAddStep("Marker[].newExitedMarker"_Stz,      &Step::vMarkerNewExitedMarker);
   vAddStep("Marker[].newFinishedMarker"_Stz,    &Step::vMarkerNewFinishedMarker);
@@ -368,6 +369,21 @@ void Step::vMarkerNewErroredMarker(void)
 
   m_pLogicUnit->m_xpMarker =
     AM::MARKER::pNewMarker(OM_ERROREDMARKER,pOuterJobOfTask());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Marker[].newExitMarker -- new an exit marker                               */
+/*----------------------------------------------------------------------------*/
+void Step::vMarkerNewExitMarker(void)
+{
+  ENTRY();
+
+  ASSERT (m_pLogicUnit->m_xpMarker.bIsNull());
+
+  m_pLogicUnit->m_xpMarker =
+      AM::MARKER::pNewMarker(OM_EXIT,pOuterJobOfTask());
 
   EXIT();
 }

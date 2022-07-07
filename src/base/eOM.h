@@ -29,6 +29,7 @@ enum eOM // operator markers
   /*    */ OM_ERRORMARKER,
   /*    */ OM_ERROREDMARKER,
   /*    */ OM_ERRORINGMARKER,
+  /*    */ OM_EXIT,
   /*    */ OM_EXITING,
   /*    */ OM_EXITED,
   
@@ -89,6 +90,7 @@ static Stz* aOM[]
   /*    */ "ERRORMARKER"_Stz,
   /*    */ "ERROREDMARKER"_Stz,
   /*    */ "ERRORINGMARKER"_Stz,
+  /*    */ "EXIT"_Stz,
   /*    */ "EXITINGMARKER"_Stz,
   /*    */ "EXITEDMARKER"_Stz,
   

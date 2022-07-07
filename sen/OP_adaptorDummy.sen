@@ -17,11 +17,11 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* on EV_D_CHILDEXIT ...                                       EV_D_CHILDEXIT */
+/* on EV_X_CHILDEXIT ...                                       EV_X_CHILDEXIT */
 /*----------------------------------------------------------------------------*/
 : adaptorDummy_ChildExit \handler
 
-  0 EV_D_EXITOPERAND EG_ZK LogicUnit[].diaryNote
+  0 EV_M_EXIT EG_ZK LogicUnit[].diaryNote
 
   true LogicUnit[].RcvdChildExit!
 

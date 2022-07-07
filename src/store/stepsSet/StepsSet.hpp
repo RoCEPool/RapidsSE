@@ -1154,6 +1154,7 @@ void vDdlLockAssertNone(void);
   void vMarkerNewEosMarker(void);
   void vMarkerNewErroringMarker(void);
   void vMarkerNewErroredMarker(void);
+  void vMarkerNewExitMarker(void);
   void vMarkerNewExitingMarker(void);
   void vMarkerNewExitedMarker(void);
   void vMarkerNewFinishedMarker(void);

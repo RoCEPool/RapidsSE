@@ -3979,7 +3979,6 @@ i8 AM::iOperandEvKind(Operand* pOperand)
     case CN_CRWBUFFER:   eOperand = EV_D_CRWBUFFER; break;
     case CN_CSVBUFFER:   eOperand = EV_D_CSVBUFFER; break;
     case CN_ENTBUFFER:   eOperand = EV_D_ENTBUFFER; break;
-    case CN_EXITOPERAND: eOperand = EV_D_EXITOPERAND; break;
     case CN_INDEX:       eOperand = EV_D_INDEX;  break;
     case CN_INDEXDEF:    eOperand = EV_D_INDEXDEF; break;
       
@@ -4035,6 +4034,7 @@ i8 AM::iOperandEvKind(Operand* pOperand)
         case OM_ERRORMARKER:        eOperand = EV_M_ERROR;        break;
         case OM_ERROREDMARKER:      eOperand = EV_M_ERRORED;      break;
         case OM_ERRORINGMARKER:     eOperand = EV_M_ERRORING;     break;
+        case OM_EXIT:               eOperand = EV_M_EXIT;         break;
         case OM_EXITING:            eOperand = EV_M_EXITING;      break;
         case OM_EXITED:             eOperand = EV_M_EXITED;       break;
         case OM_FINISHED:           eOperand = EV_M_FINISHED;     break;

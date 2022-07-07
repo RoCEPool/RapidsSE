@@ -1200,10 +1200,13 @@ void Job::vPipeoutResponse(Operand* pOperand)
       // get the current task
       Task *pCurTask = MY::pTask();
 
-      // is it an EXITOPERAND ?
-      if (pOperand->eGetClassNo() == CN_EXITOPERAND) {
-        AM::vDeleteOperand(pOperand, nullptr);
-        pOperand = AM::MARKER::pNewMarker(OM_CHILDEXIT, pParentJob);
+      // is it an EXIT MARKER ?
+      if (pOperand->bIsMarker()) {
+        Marker* pMarker = _pMarker(pOperand);
+        if (pMarker->eOpMarker() == OM_EXIT) {
+          AM::vDeleteOperand(pOperand, nullptr);
+          pOperand = AM::MARKER::pNewMarker(OM_CHILDEXIT, pParentJob);
+        }
       }
 
       // pipe the operand to the responseOP of parentJob
@@ -1211,11 +1214,14 @@ void Job::vPipeoutResponse(Operand* pOperand)
 
     } else {
 
-      // is it an EXITOPERAND ?
+      // is it an EXIT MARKER ?
 
-      if (pOperand->eGetClassNo() == CN_EXITOPERAND) {
-        AM::vDeleteOperand(pOperand, nullptr);
-        pOperand = new ChildExit;
+      if (pOperand->bIsMarker()) {
+        Marker* pMarker = _pMarker(pOperand);
+        if (pMarker->eOpMarker() == OM_EXIT) {
+          AM::vDeleteOperand(pOperand, nullptr);
+          pOperand = AM::MARKER::pNewMarker(OM_CHILDEXIT, pParentJob);
+        }
       }
 
       // pipe the operand to the parent job

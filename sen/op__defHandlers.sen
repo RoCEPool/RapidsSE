@@ -37,7 +37,6 @@
 : EV_D_CRWBUFFER_handler        \handler STANDARD_PIPEOUT ;
 : EV_D_CSVBUFFER_handler        \handler STANDARD_PIPEOUT ;
 : EV_D_ENTBUFFER_handler        \handler STANDARD_PIPEOUT ;
-: EV_D_EXITOPERAND_handler      \handler STANDARD_PIPEOUT ;
 : EV_D_INDEX_handler            \handler STANDARD_PIPEOUT ;
 : EV_D_INDEXDEF_handler         \handler STANDARD_PIPEOUT ;
 : EV_D_GRID_handler             \handler STANDARD_PIPEOUT ;
@@ -87,6 +86,7 @@
 : EV_M_ENDROWRHT_handler        \handler STANDARD_PIPEOUT ;
 : EV_M_EOS_handler              \handler STANDARD_PIPEOUT ;
 : EV_M_ERRORING_handler         \handler STANDARD_PIPEOUT ;
+: EV_M_EXIT_handler             \handler STANDARD_PIPEOUT ;
 : EV_M_FINISHED_handler         \handler STANDARD_PIPEOUT ;
 : EV_M_FLUSH_handler            \handler STANDARD_PIPEOUT ;
 : EV_M_LEAVE_handler            \handler STANDARD_PIPEOUT ;
@@ -331,7 +331,7 @@
   abnormalHandler EV_M_ENDCRWRHT        [op].handler!
   abnormalHandler EV_M_ENDROWRHT        [op].handler!
   abnormalHandler EV_D_ENTBUFFER        [op].handler!
-  abnormalHandler EV_D_EXITOPERAND      [op].handler!
+  abnormalHandler EV_M_EXIT             [op].handler!
   abnormalHandler EV_D_GRID             [op].handler!
   abnormalHandler EV_D_INDEX            [op].handler!
   abnormalHandler EV_D_INDEXDEF         [op].handler!
