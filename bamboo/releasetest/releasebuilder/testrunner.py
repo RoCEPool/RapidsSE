@@ -6,6 +6,7 @@ import datetime
 import time
 import subprocess
 import multiprocessing
+import random
 
 import pyutils.ec2 as ec2
 import pyutils.ssh as ssh
@@ -13,6 +14,7 @@ import pyutils.errors as errors
 from releasebuilder.releaseconfig import ReleaseConfig
 from releasebuilder.results import TestResult
 from pyutils.clusterconfig import ClusterConfig
+import pyutils.clusterops as clusterops
 
 LOG = logging.getLogger(__name__)
 
@@ -73,12 +75,18 @@ class TestRunner:
                                    self.config.get_test_cluster_config_paths(),
                                    self.config.get_test_cluster_configs()))
 
+        base_cluster_id = random.randint(1, 9223372036854775807) // 1000 * 1000
+        if base_cluster_id < 1000:
+            base_cluster_id = 1000
+
         for param in instance_params:
             test_name: str = param[0]
             image_id: str = param[1]
             cloud_init_path: pathlib.Path = param[2]
             cluster_config_path: pathlib.Path = param[3]
             cluster_config: ClusterConfig = param[4]
+
+            base_cluster_id += 1
 
             instance_runner = InstanceRunner(test_name,
                                              instance_type,
@@ -89,12 +97,9 @@ class TestRunner:
                                              self.artifact_path,
                                              self.result_path,
                                              self.repo_path,
-                                             self.installer_path)
+                                             self.installer_path,
+                                             base_cluster_id)
             self.instance_runners.append(instance_runner)
-
-            # Create, but don't start the threads yet!
-            # instance_thread = threading.Thread(target=instance_runner.run(), daemon=True, name=test_name)
-            # self.instance_threads.append(instance_thread)
 
     def run(self):
         """
@@ -109,7 +114,7 @@ class TestRunner:
             self.result_list.append(result)
             got_errors = (got_errors and not result.test_passed)
 
-        msg = "Completed testing RapidsSE." if got_errors is True else \
+        msg = "Completed testing RapidsSE." if got_errors is False else \
               "Completed testing RapidsSE, with install and run errors."
         LOG.info(msg)
 
@@ -153,7 +158,8 @@ class InstanceRunner:
                  artifact_path: pathlib.Path,
                  result_path: pathlib.Path,
                  repo_path: pathlib.Path,
-                 local_installer_path: pathlib.Path):
+                 local_installer_path: pathlib.Path,
+                 cluster_id: int):
 
         self.test_name: str = test_name
         self.instance_type = instance_type
@@ -165,12 +171,13 @@ class InstanceRunner:
         self.result_path = result_path
         self.repo_path = repo_path
         self.local_installer_path = local_installer_path
+        self.cluster_id = cluster_id
 
         # Create a new result and add it to the list
         self.test_result = TestResult(f"Install & run ({self.test_name})")
 
-        self.instance_id: str = None
-        self.ip_addr: str = None
+        self.instance_ids: [str] = []
+        self.ip_addrs: [str] = []
         self.remote_home_dir: pathlib.Path = None
         self.remote_repo_dir: pathlib.Path = None
         self.remote_installer_path: pathlib.Path = None
@@ -199,16 +206,16 @@ class InstanceRunner:
         """"""
         try:
             # Start an EC2 instance and wait for it to become available
-            self.__start_test_instance()
+            self.__start_test_instances()
 
             # Copy across the repository
-            self.__copy_repo_to_instance()
+            self.__copy_repo_to_all_instances()
 
             # Copy across the installer
-            self.__copy_installer_to_instance()
+            self.__copy_installer_to_first_instance()
 
             # Copy across the cluster config file
-            self.__copy_cluster_config_to_instance()
+            self.__copy_cluster_config_to_first_instance()
 
             # Run the installer using a config file in the repository
             self.__install_se()
@@ -241,7 +248,7 @@ class InstanceRunner:
                 LOG.exception(f"Error occurred during the test phase of test {self.test_name}.")
 
         finally:
-            if self.ip_addr is not None:
+            if len(self.ip_addrs) == 0:
 
                 # Collect results from the remote node
                 try:
@@ -260,26 +267,28 @@ class InstanceRunner:
                     # Otherwise carry on
 
                 # This bit is REALLY important!
-                self.__terminate_instance()
+                self.__terminate_instances()
 
-    def __start_test_instance(self) -> None:
+    def __start_test_instances(self) -> None:
         """Starts an EC2 instance to test RapidsSE"""
         # Start the EC2 instance to test RapidsSE.
-        LOG.info(f"Test {self.test_name}: About to start an instance to test RapidsSE")
+        num_instances = self.cluster_config.get_num_nodes()
+
+        LOG.info(f"Test {self.test_name}: About to start {num_instances} instance(s) to test RapidsSE")
 
         instance_ids, ip_addrs = ec2.start_instances(self.instance_type,
                                                      self.image_id,
                                                      str(self.cloudinit_path),
-                                                     1,
+                                                     num_instances,
                                                      C_INSTANCE_NAME_PREFIX,
                                                      C_INSTANCE_START_TIMEOUT,
                                                      False,
                                                      ctx=self.op_ctx)
 
-        assert len(instance_ids) == 1
-        assert len(ip_addrs) == 1
-        self.instance_id = instance_ids[0]
-        self.ip_addr = ip_addrs[0]
+        assert len(instance_ids) == num_instances
+        assert len(ip_addrs) == num_instances
+        self.instance_ids = instance_ids
+        self.ip_addrs = ip_addrs
 
         # Get the absolute path of the home directory on the remote instance
         self.remote_home_dir = self.__get_instance_home_dir()
@@ -292,11 +301,11 @@ class InstanceRunner:
                   f"on the remote EC2 instance")
 
         try:
-            result: subprocess.CompletedProcess = ssh.run_ssh(self.ip_addr, command, 10, ctx=self.op_ctx)
+            result: subprocess.CompletedProcess = ssh.run_ssh(self.ip_addrs[0], command, 10, ctx=self.op_ctx)
 
         except errors.SshError:
             LOG.error(f"Test {self.test_name}: Error while trying to get the user home directory "
-                      f"on host {self.ip_addr}: {command}")
+                      f"on host {self.ip_addrs[0]}: {command}")
             raise
 
         except subprocess.TimeoutExpired as e:
@@ -314,75 +323,82 @@ class InstanceRunner:
                   f"on the remote EC2 instance: {home_dir}")
         return pathlib.Path(home_dir)
 
-    def __copy_repo_to_instance(self) -> None:
+    def __copy_repo_to_all_instances(self) -> None:
         """Copies the repository from the local machine to the remote instance"""
 
         command_timeout = 60  # seconds
-        src = str(self.repo_path)
-        dest = f"{self.ip_addr}:{str(self.remote_repo_dir)}"
 
-        if not src.endswith("/"):
-            src = src + "/"
+        for ip in self.ip_addrs:
+            src = str(self.repo_path)
+            dest = f"{ip}:{str(self.remote_repo_dir)}"
 
-        if not dest.endswith("/"):
-            dest = dest + "/"
+            if not src.endswith("/"):
+                src = src + "/"
 
-        LOG.debug(f"Test {self.test_name}: Copying repository from {src} to {dest}")
+            if not dest.endswith("/"):
+                dest = dest + "/"
 
-        # We use rsync here because scp doesn't copy hidden files and folders
-        # Ref: https://serverfault.com/questions/21580/how-to-make-scp-copy-hidden-files
-        command = ["rsync", "-avz", "-e", "ssh -q -o BatchMode=yes -o StrictHostKeyChecking=no", src, dest]
+            LOG.debug(f"Test {self.test_name}: Copying repository from {src} to {dest}")
 
-        LOG.debug(f"Test {self.test_name}: About to copy the repository from {src} to {dest}")
+            # We use rsync here because scp doesn't copy hidden files and folders
+            # Ref: https://serverfault.com/questions/21580/how-to-make-scp-copy-hidden-files
+            command = ["rsync", "-avz", "-e", "ssh -q -o BatchMode=yes -o StrictHostKeyChecking=no", src, dest]
 
-        try:
-            subprocess.run(command,
-                           capture_output=True,
-                           check=True,
-                           timeout=command_timeout,
-                           text=True)
+            LOG.debug(f"Test {self.test_name}: About to copy the repository from {src} to {dest}")
 
-        except subprocess.CalledProcessError as e:
-            msg = f"Test {self.test_name}: Error while copying the repository from {src} to {dest}." \
-                  f"\nCommand: {' '.join(command)}" \
-                  f"\nStdout Output:\n{e.stdout}" \
-                  f"\nStderr Output:\n{e.stderr}"
-            raise errors.SshError(msg, e.stdout, e.stderr) from e
+            try:
+                subprocess.run(command,
+                               capture_output=True,
+                               check=True,
+                               timeout=command_timeout,
+                               text=True)
 
-        except subprocess.TimeoutExpired as e:
-            msg = f"Test {self.test_name}: Copying the repository from {src} to {dest} " \
-                  f"timed out after {e.timeout} seconds." \
-                  f"\nStdout Output:\n{e.stdout}" \
-                  f"\nStderr Output:\n{e.stderr}"
-            raise errors.SshError(msg, e.stdout, e.stderr) from e
+            except subprocess.CalledProcessError as e:
+                msg = f"Test {self.test_name}: Error while copying the repository from {src} to {dest}." \
+                      f"\nCommand: {' '.join(command)}" \
+                      f"\nStdout Output:\n{e.stdout}" \
+                      f"\nStderr Output:\n{e.stderr}"
+                raise errors.SshError(msg, e.stdout, e.stderr) from e
 
-        LOG.info(f"Test {self.test_name}: Successfully copied the repository from {src} to {dest}")
+            except subprocess.TimeoutExpired as e:
+                msg = f"Test {self.test_name}: Copying the repository from {src} to {dest} " \
+                      f"timed out after {e.timeout} seconds." \
+                      f"\nStdout Output:\n{e.stdout}" \
+                      f"\nStderr Output:\n{e.stderr}"
+                raise errors.SshError(msg, e.stdout, e.stderr) from e
 
-    def __copy_installer_to_instance(self) -> None:
+            LOG.info(f"Test {self.test_name}: Successfully copied the repository from {src} to {dest}")
+
+    def __copy_installer_to_first_instance(self) -> None:
         """Copies the installer to the remote instance. Sets remote_installer_path"""
 
         self.remote_installer_path = self.remote_home_dir / self.local_installer_path.name
 
         src = str(self.local_installer_path)
-        dest = f"{self.ip_addr}:{self.remote_installer_path}"
+        dest = f"{self.ip_addrs[0]}:{self.remote_installer_path}"
 
         LOG.debug(f"Test {self.test_name}: Copying installer from {src} to {dest}")
 
         ssh.run_scp(src, dest, ctx=self.op_ctx)
 
-    def __copy_cluster_config_to_instance(self) -> None:
+    def __copy_cluster_config_to_first_instance(self) -> None:
         """Copies the cluster config file to the remote instance. Sets remote_cluster_config_path.
            Assumes we are only running SE nodes on one host, otherwise we would need to edit the
            cluster config file and change the hostnames to match the machines that were started."""
 
-        self.remote_cluster_config_path = self.remote_home_dir / self.local_cluster_config_path.name
+        with clusterops.customise_cluster_cfg_hostnames(self.local_cluster_config_path,
+                                                        self.ip_addrs,
+                                                        new_cluster_id=self.cluster_id,
+                                                        ctx=self.op_ctx) as modified_cluster_cfg:
 
-        src = str(self.local_cluster_config_path)
-        dest = f"{self.ip_addr}:{self.remote_cluster_config_path}"
+            self.remote_cluster_config_path = self.remote_home_dir / self.local_cluster_config_path.name
 
-        LOG.debug(f"Test {self.test_name}: Copying cluster config file from {src} to {dest}")
+            src = modified_cluster_cfg.name
+            dest = f"{self.ip_addrs[0]}:{self.remote_cluster_config_path}"
 
-        ssh.run_scp(src, dest, ctx=self.op_ctx)
+            LOG.debug(f"Test {self.test_name}: Copying cluster config file from {src} to {dest}")
+
+            ssh.run_scp(src, dest, ctx=self.op_ctx)
 
     def __install_se(self) -> None:
         """Installs SE using the installer on the remote node"""
@@ -393,10 +409,11 @@ class InstanceRunner:
                   f"--config {str(self.remote_cluster_config_path)}"
 
         try:
-            ssh.run_ssh(self.ip_addr, command, C_SE_INSTALL_TIMEOUT_SEC, ctx=self.op_ctx)
+            ssh.run_ssh(self.ip_addrs[0], command, C_SE_INSTALL_TIMEOUT_SEC, ctx=self.op_ctx)
 
         except subprocess.TimeoutExpired as e:
-            msg = f"Test {self.test_name}: Installation of SE on {self.ip_addr} timed out after {e.timeout} seconds." \
+            ips = ", ".join(self.ip_addrs)
+            msg = f"Test {self.test_name}: Installation of SE on [{ips}] timed out after {e.timeout} seconds." \
                   f"\nStdout Output:\n{e.stdout}" \
                   f"\nStderr Output:\n{e.stderr}"
             raise errors.SshError(msg, e.stdout, e.stderr) from e
@@ -409,7 +426,8 @@ class InstanceRunner:
         command = f"ln -s {str(dest_path)} {str(symlink_path)}"
 
         LOG.info(f"Test {self.test_name}: About to setup the data symlink with the following command: {command}")
-        ssh.run_ssh(self.ip_addr, command, ctx=self.op_ctx)
+        for ip in self.ip_addrs:
+            ssh.run_ssh(ip, command, ctx=self.op_ctx)
 
     def __start_se(self) -> None:
         """Starts RapidsSE on the remote node"""
@@ -420,10 +438,11 @@ class InstanceRunner:
                  f"following command: {start_command}")
 
         try:
-            ssh.run_ssh(self.ip_addr, start_command, C_SE_START_TIMEOUT_SEC, ctx=self.op_ctx)
+            ssh.run_ssh(self.ip_addrs[0], start_command, C_SE_START_TIMEOUT_SEC, ctx=self.op_ctx)
 
         except subprocess.TimeoutExpired as e:
-            msg = f"Test {self.test_name}: Starting of the SE cluster on {self.ip_addr} timed out " \
+            ips = ", ".join(self.ip_addrs)
+            msg = f"Test {self.test_name}: Starting of the SE cluster on [{ips}] timed out " \
                   f"after {e.timeout} seconds." \
                   f"\nStdout Output:\n{e.stdout}" \
                   f"\nStderr Output:\n{e.stderr}"
@@ -449,14 +468,14 @@ class InstanceRunner:
                   f"{str(self.remote_cluster_config_path)} " \
                   f"{str(testlist_path)}"
 
-        LOG.info(f"Test {self.test_name}: About to invoke SETH on {self.ip_addr} with the following command: {command}")
+        LOG.info(f"Test {self.test_name}: About to invoke SETH on {self.ip_addrs[0]} with the following command: {command}")
 
         try:
-            ssh.run_ssh(self.ip_addr, command, C_SETH_TIMEOUT_SEC, ctx=self.op_ctx)
-            LOG.info(f"Test {self.test_name}: Completed running SETH on {self.ip_addr}")
+            ssh.run_ssh(self.ip_addrs[0], command, C_SETH_TIMEOUT_SEC, ctx=self.op_ctx)
+            LOG.info(f"Test {self.test_name}: Completed running SETH on {self.ip_addrs[0]}")
 
         except subprocess.TimeoutExpired as e:
-            msg = f"Test {self.test_name}: Running of SETH tests on {self.ip_addr} timed out " \
+            msg = f"Test {self.test_name}: Running of SETH tests on {self.ip_addrs[0]} timed out " \
                   f"after {e.timeout} seconds." \
                   f"\nStdout Output:\n{e.stdout}" \
                   f"\nStderr Output:\n{e.stderr}"
@@ -471,10 +490,10 @@ class InstanceRunner:
                  f"the following command: {stop_command}")
 
         try:
-            ssh.run_ssh(self.ip_addr, stop_command, C_SE_STOP_TIMEOUT_SEC, ctx=self.op_ctx)
+            ssh.run_ssh(self.ip_addrs[0], stop_command, C_SE_STOP_TIMEOUT_SEC, ctx=self.op_ctx)
 
         except subprocess.TimeoutExpired as e:
-            msg = f"Test {self.test_name}: Stopping of the SE cluster on {self.ip_addr} timed out " \
+            msg = f"Test {self.test_name}: Stopping of the SE cluster on {self.ip_addrs[0]} timed out " \
                   f"after {e.timeout} seconds." \
                   f"\nStdout Output:\n{e.stdout}" \
                   f"\nStderr Output:\n{e.stderr}"
@@ -486,7 +505,7 @@ class InstanceRunner:
         """Collect SETH result files from the remote node and save them in the local results directory"""
 
         # Results have been written out to <repo_home>/bamboo/unittest/results
-        src = f"{self.ip_addr}:{str(self.remote_repo_dir / C_SETH_RESULT_PATH)}"
+        src = f"{self.ip_addrs[0]}:{str(self.remote_repo_dir / C_SETH_RESULT_PATH)}"
         dest = str(self.result_path)
 
         LOG.debug(f"About to collect Seth logs from {src} to {dest}")
@@ -495,7 +514,7 @@ class InstanceRunner:
             ssh.run_scp(src, dest, C_COLLECT_RESULTS_TIMEOUT_SEC, ctx=self.op_ctx)
 
         except subprocess.TimeoutExpired as e:
-            msg = f"Test {self.test_name}: Collecting of SETH results from the SE cluster on {self.ip_addr} " \
+            msg = f"Test {self.test_name}: Collecting of SETH results from the SE cluster on {self.ip_addrs[0]} " \
                   f"timed out after {e.timeout} seconds." \
                   f"\nStdout Output:\n{e.stdout}" \
                   f"\nStderr Output:\n{e.stderr}"
@@ -506,13 +525,13 @@ class InstanceRunner:
 
         collect_logs_command = f"{self.cluster_config.get_dir()}/{C_SE_COLLECT_LOGS_CMD}"
 
-        LOG.info(f"Test {self.test_name}: About to invoke the collection of logs on {self.ip_addr}")
+        LOG.info(f"Test {self.test_name}: About to invoke the collection of logs on {self.ip_addrs[0]}")
 
         try:
-            ssh.run_ssh(self.ip_addr, collect_logs_command, C_SE_COLLECT_LOGS_TIMEOUT_SEC, ctx=self.op_ctx)
+            ssh.run_ssh(self.ip_addrs[0], collect_logs_command, C_SE_COLLECT_LOGS_TIMEOUT_SEC, ctx=self.op_ctx)
 
         except subprocess.TimeoutExpired as e:
-            msg = f"Test {self.test_name}: Collecting of logs from the SE cluster on {self.ip_addr} timed out " \
+            msg = f"Test {self.test_name}: Collecting of logs from the SE cluster on {self.ip_addrs[0]} timed out " \
                   f"after {e.timeout} seconds." \
                   f"\nStdout Output:\n{e.stdout}" \
                   f"\nStderr Output:\n{e.stderr}"
@@ -521,10 +540,10 @@ class InstanceRunner:
         # Now we need to copy these logs back to the artifact directory and rename them for the current test.
         # Logs would have been written into the home directory. Let's find the exact name and path
 
-        LOG.debug(f"Test {self.test_name}: About to look for the collected logs on {self.ip_addr}")
+        LOG.debug(f"Test {self.test_name}: About to look for the collected logs on {self.ip_addrs[0]}")
 
         find_logs_command = f"find {self.remote_home_dir} -name \"{C_SE_COLLECT_LOGS_FILESPEC}\""
-        result = ssh.run_ssh(self.ip_addr, find_logs_command, ctx=self.op_ctx)
+        result = ssh.run_ssh(self.ip_addrs[0], find_logs_command, ctx=self.op_ctx)
 
         assert result.stdout is not None
         assert len(result.stdout) > 0
@@ -537,7 +556,7 @@ class InstanceRunner:
         dest_filename = f"{src_path.name.removesuffix(src_path.suffix)}-" \
                         f"{self.test_name.replace(' ', '-')}{src_path.suffix}"
 
-        src = f"{self.ip_addr}:{result.stdout.strip()}"
+        src = f"{self.ip_addrs[0]}:{result.stdout.strip()}"
         dest = str(self.artifact_path / dest_filename)
 
         LOG.debug(f"Test {self.test_name}: About to copy the logs from {src} to {dest}")
@@ -552,17 +571,18 @@ class InstanceRunner:
                   f"\nStderr Output:\n{e.stderr}"
             raise errors.SshError(msg, e.stdout, e.stderr) from e
 
-        LOG.info(f"Test {self.test_name}: Successfully collected logs from {self.ip_addr} to {dest}")
+        LOG.info(f"Test {self.test_name}: Successfully collected logs from {self.ip_addrs[0]} to {dest}")
 
-    def __terminate_instance(self) -> None:
+    def __terminate_instances(self) -> None:
         """Terminates any previously started EC2 instance"""
 
-        if self.instance_id is None:
+        if self.instance_ids is None:
             LOG.info(f"Test {self.test_name}: No EC2 instance to stop")
             return
 
-        LOG.info(f"Test {self.test_name}: About to stop EC2 instance with ID: {self.instance_id}")
-        ec2.terminate_instances([self.instance_id], ctx=self.op_ctx)
+        ids = ", ".join(self.instance_ids)
+        LOG.info(f"Test {self.test_name}: About to stop EC2 instance(s) with IDs: {ids}")
+        ec2.terminate_instances([self.instance_ids], ctx=self.op_ctx)
 
     def force_stop(self) -> None:
         """Forcible terminates an EC2 instance and collects logs if possible"""
@@ -571,10 +591,12 @@ class InstanceRunner:
         self.test_result.set_test_ended(False, False, None,
                                         f"Test operation timed out after {C_SE_TEST_TIMEOUT_SEC} seconds")
 
-        if self.ip_addr is None:
+        if len(self.ip_addrs) == 0:
             return
 
-        LOG.error(f"Forcibly stopping SE and trying to collect results and artifacts on {self.ip_addr}")
+        ids = ", ".join(self.instance_ids)
+        ips = ", ".join(self.ip_addrs)
+        LOG.error(f"Forcibly stopping SE and trying to collect results and artifacts on [{ips}]")
 
         # Stop SE on the remote node
         try:
@@ -602,8 +624,7 @@ class InstanceRunner:
 
         # Stop the EC2 instance
         try:
-            self.__terminate_instance()
+            self.__terminate_instances()
 
         except (Exception,):
-            LOG.error(f"Test {self.test_name}: *** UNABLE TO FORCIBLY STOP EC2 INSTANCE "
-                      f"{self.instance_id} ({self.ip_addr}). ***")
+            LOG.error(f"Test {self.test_name}: *** UNABLE TO FORCIBLY STOP EC2 INSTANCES {ids} ({ips}). ***")

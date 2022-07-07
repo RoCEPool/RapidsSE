@@ -76,6 +76,7 @@ def find_installer(ctx: str = "") -> pathlib.Path:
 
 def customise_cluster_cfg_hostnames(cluster_cfg_path: pathlib.Path,
                                     ip_addresses: [str],
+                                    new_cluster_id: int = -1,
                                     ctx: str = "") \
         -> tempfile.NamedTemporaryFile:
     """
@@ -113,14 +114,19 @@ def customise_cluster_cfg_hostnames(cluster_cfg_path: pathlib.Path,
                 new_lines.append(line)
                 continue
 
-            if not splits[0].endswith('["host"]'):
-                new_lines.append(line)
+            if splits[0].endswith('["host"]'):
+                # It is the line we are looking for!
+                next_ip = next(ip_iter, None)
+                assert next_ip is not None, f"{ctx}Mismatch in count of machines started and number of nodes in cluster"
+                new_lines.append(f'{splits[0]}="{next_ip}"\n')
                 continue
 
-            # It is the line we are looking for!
-            next_ip = next(ip_iter, None)
-            assert next_ip is not None, f"{ctx}Mismatch in count of machines started and number of nodes in cluster"
-            new_lines.append(f'{splits[0]}="{next_ip}"\n')
+            if new_cluster_id != -1 and splits[0].endswith('["clusterid"]'):
+                new_lines.append(f'{splits[0]}="{str(new_cluster_id)}"\n')
+                continue
+
+            # Everything else
+            new_lines.append(line)
 
     new_content = "".join(new_lines)
     config_copy.write(new_content)

@@ -461,16 +461,11 @@ def __wait_for_instances_to_be_running(instance_ids: [str], timeout_sec: float, 
 
     # Wait 1 second to start with before issuing the first request
     time.sleep(1.0)
-    logged_response = False
     attempts = 0
 
     while current_time < end_time:
         attempts += 1
         response = client.describe_instances(**kwargs)
-
-        if not logged_response:
-            logged_response = True
-            LOG.debug(f"{ctx}Response of describe_instances command:\n{pprint.pformat(response)}")
 
         if attempts % C_MSG_PERIOD == 0:
             LOG.debug(f"{ctx}Time remaining (VM creation): %.1f seconds", end_time - current_time)
