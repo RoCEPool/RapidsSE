@@ -20,9 +20,11 @@ struct SizeHeap
   b8  m_bIgnoreMemoryLeak;  // 05 ignore during memory leak tracking ?
 
   b8  m_bLowMemoryDiscard;  // 06 discard received object when low memory?
-    
+
+  b8  m_bAllocateWhenDisabled;  // TEMP: allocate memory even if disabled
+
   Word* m_pPreSendWord;     // 07 word to execute prior to sending the object
-  
+
   fpPOSTFN* m_fpPostRecvFn; // 08 post receive cpp function
 
   Word* m_pPostRecvWord;    // 09 word to execute after receiving the object

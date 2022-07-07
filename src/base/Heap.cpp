@@ -152,10 +152,12 @@ Object* Heap::pAllocObject(eCN eAllocClass)
   
   //AM::MEMORY::vAssertAllocate();
 
-  //if ( MY::pJob() && ! MY::pJob()->bAllocateMemory() )
-  //  THROW_LOWMEMORY_NEW();
+//  if ( ! gxaSizeHeap[eAllocClass].m_bAllocateWhenDisabled &&
+//       MY::pJob() && ! MY::pJob()->bAllocateMemory() )
+//    THROW_LOWMEMORY_NEW();
 
-  //if ( MY::pOp() && ! MY::pOp()->bAllocateMemory() )
+  //if ( ! gxaSizeHeap[eAllocClass].m_bAllocateWhenDisabled &&
+  //       MY::pOp() && ! MY::pOp()->bAllocateMemory() )
   //  THROW_LOWMEMORY_NEW();
 
   //static eCN eLastClass = CN_ENUMS;

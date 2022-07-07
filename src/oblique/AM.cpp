@@ -935,7 +935,7 @@ void AM::JOB::vTriggerExecute(JobId tDistId)
 
   pJobParticipant->vResetTaskForJob();
   Scheduler::vTaskCross_ScheduleNextPhase(pTaskParticipant, AM::pThisTLSTask());
-  //pJobParticipant->vSetAllocate(false);
+  pJobParticipant->vSetAllocate(false);
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
