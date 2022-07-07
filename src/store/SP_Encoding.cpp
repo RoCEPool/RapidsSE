@@ -66,7 +66,7 @@ void SP_Encoding::vEncoding(Encoding* pEncoding)
                   "HeadSize %lldB <W=%lld> MetaSize %lldB "
                   "BytesNeeded %lldB ShiftOver %lldB\n"_Stz,
                   pEncoding->m_jHeadSize,
-                  MemLib::jQuantaRequired(pEncoding->m_jHeadSize,C_BYTES_PER_WORD),
+                  MemLib::nQuantaRequired(pEncoding->m_jHeadSize,C_BYTES_PER_WORD),
                   pEncoding->m_jMetaSize,
                   pEncoding->m_jBytesNeeded,
                   pEncoding->m_nShiftOver
@@ -121,10 +121,10 @@ void SP_Encoding::vEncoding(Encoding* pEncoding)
 
     StrLib::vAppendPad(&szCrs,caLine,60);
     
-    if (pEncoding->xaColEnc[i_Col].m_i_Till) {
-      StrLib::vAppendDecimal(&szCrs,aColEnc->m_i_Offset);
+    if (pEncoding->xaColEnc[i_Col].m_o_Till) {
+      StrLib::vAppendDecimal(&szCrs,aColEnc->m_o_From);
       StrLib::vAppendString(&szCrs,(char*)".."_Stz);
-      StrLib::vAppendDecimal(&szCrs,aColEnc->m_i_Till);
+      StrLib::vAppendDecimal(&szCrs,aColEnc->m_o_Till);
     }
     
     StrLib::vAppendPad(&szCrs,caLine,70);

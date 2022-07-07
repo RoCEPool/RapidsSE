@@ -105,7 +105,7 @@ namespace BASE
     /*----------------------------------------------------------------------------*/
     /* compute the memory quanta required to hold n bytes                         */
     /*----------------------------------------------------------------------------*/
-    static inline i8 jQuantaRequired(i8 nBytes, i8 jSizeQuanta)
+    static inline i8 nQuantaRequired(i8 nBytes, i8 jSizeQuanta)
     {
       if (! nBytes)
         return 0;

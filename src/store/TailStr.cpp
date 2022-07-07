@@ -129,7 +129,7 @@ void TailStr::vSet(Stz* szStz)
   vL(nL);
   
   i8 nSizeBytes = C_U_1B + C_L_1B + nL;
-  i8 nU = MemLib::jQuantaRequired(nSizeBytes,sizeof(SpaceUnit));
+  i8 nU = MemLib::nQuantaRequired(nSizeBytes,sizeof(SpaceUnit));
   vU(nU);
 }
 

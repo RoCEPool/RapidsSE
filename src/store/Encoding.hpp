@@ -21,8 +21,8 @@ namespace STORE
     
     Dtm  m_wDataCode;  // column value data bytes
     i8   m_jDataSize;  // complete number of data code bytes, incl <L> etc
-    i8   m_i_Offset;   // first byte offset in head+over where the data code is
-    i8   m_i_Till;     // last byte offset in head+over where the data code is
+    i8   m_o_From;     // first byte offset in head+over where the data code is
+    i8   m_o_Till;     // last byte offset in head+over where the data code is
     b8   m_bSplit;     // overflow occurs at this point
     
     i8   m_i_Tail;     // absolute index of tail
@@ -40,15 +40,14 @@ namespace STORE
     i8  m_nColumns;
     i8  m_jHeadSize;
     i8  m_jMetaSize;
-    i8  m_i_DataOffsetBase;
-
     i8  m_jOverSize;
+  
+    i8  m_o_DataOffsetBase;
+    i8  m_o_DataOffsetNext;
 
     i8  m_jBytesNeeded;
     i8  m_nShiftOver;  // by how much a shift occurs
   
-    i8  m_i_Offset_next;
-
     i8  m_nExtraTails;
     i8  m_jExtraSize;
   
@@ -368,7 +367,7 @@ namespace STORE
   {
     _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
     
-    u1 jQuanta;
+    u1 nQuanta;
     
     // null case
     if (bEncodeNul(xColEnc,wColVal))
@@ -389,48 +388,48 @@ namespace STORE
       
     // 1) MC_STRING_x1
     if (jVchSize <= 15) {
-      jQuanta = jVchSize; //MemLib::nQuantaRequired(nS,1);
+      nQuanta = jVchSize; //MemLib::nQuantaRequired(nS,1);
       
       xColEnc.m_wDataCode.m_azStr = (char*)wColVal.m_szVch;
-      xColEnc.m_jDataSize = STRx1(jQuanta);
+      xColEnc.m_jDataSize = STRx1(nQuanta);
       
-      xColEnc.m_uMetaCode = METACODE_FORM(MC_STRING_x1,jQuanta);
+      xColEnc.m_uMetaCode = METACODE_FORM(MC_STRING_x1,nQuanta);
       return;
     }
     
     // 2) MC_STRINGx2
     if (jVchSize <= 45) {
-      jQuanta = MemLib::jQuantaRequired(jVchSize-15,2);
+      nQuanta = MemLib::nQuantaRequired(jVchSize-15,2);
       
       xColEnc.m_wDataCode.m_azStr = (char*)wColVal.m_szVch;
-      xColEnc.m_jDataSize = STRx2(jQuanta);
+      xColEnc.m_jDataSize = STRx2(nQuanta);
       
-      xColEnc.m_uMetaCode = METACODE_FORM(MC_STRING_x2,jQuanta);
+      xColEnc.m_uMetaCode = METACODE_FORM(MC_STRING_x2,nQuanta);
 
       return;
     }
     
     // 3) MC_STRINGx4
     if (jVchSize <= 105) {
-      jQuanta = MemLib::jQuantaRequired(jVchSize-45,4);
+      nQuanta = MemLib::nQuantaRequired(jVchSize-45,4);
       
 
       xColEnc.m_wDataCode.m_azStr = (char*)wColVal.m_szVch;
-      xColEnc.m_jDataSize = STRx4(jQuanta);
+      xColEnc.m_jDataSize = STRx4(nQuanta);
       
-      xColEnc.m_uMetaCode = METACODE_FORM(MC_STRING_x4,jQuanta);
+      xColEnc.m_uMetaCode = METACODE_FORM(MC_STRING_x4,nQuanta);
 
       return;
     }
 
     // 4) MC_STRINGx8
     if (jVchSize <= 225) {
-      jQuanta = MemLib::jQuantaRequired(jVchSize-105,8);
+      nQuanta = MemLib::nQuantaRequired(jVchSize-105,8);
       
       xColEnc.m_wDataCode.m_azStr = (char*)wColVal.m_szVch;
-      xColEnc.m_jDataSize = STRx8(jQuanta);
+      xColEnc.m_jDataSize = STRx8(nQuanta);
       
-      xColEnc.m_uMetaCode = METACODE_FORM(MC_STRING_x8,jQuanta);
+      xColEnc.m_uMetaCode = METACODE_FORM(MC_STRING_x8,nQuanta);
 
       return;
     }
