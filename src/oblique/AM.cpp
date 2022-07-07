@@ -3976,7 +3976,6 @@ i8 AM::iOperandEvKind(Operand* pOperand)
   switch (eClass_opd) {
 
     case CN_BUCKETMAP:   eOperand = EV_D_BUCKETMAP_dyn; break;
-    case CN_CHILDEXIT:   eOperand = EV_X_CHILDEXIT; break;
     case CN_CRWBUFFER:   eOperand = EV_D_CRWBUFFER; break;
     case CN_CSVBUFFER:   eOperand = EV_D_CSVBUFFER; break;
     case CN_ENTBUFFER:   eOperand = EV_D_ENTBUFFER; break;
@@ -4055,6 +4054,8 @@ i8 AM::iOperandEvKind(Operand* pOperand)
         case OM_STREAMDEFRHT:       eOperand = EV_M_STREAMDEFRHT; break;
         case OM_TRIGGER:            eOperand = EV_M_TRIGGER;      break;
         case OM_TRIGGERED:          eOperand = EV_M_TRIGGERED;    break;
+
+        case OM_CHILDEXIT:          eOperand = EV_X_CHILDEXIT;    break;
         default:
           RASSERT(0);
       }

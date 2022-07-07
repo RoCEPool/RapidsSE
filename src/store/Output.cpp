@@ -432,10 +432,23 @@ bool Output::bProcessOperand(Operand* pOperand)
     case CN_MARKER: {
 
       Marker *pMarker = _pMarker(pOperand);
-      RASSERT(pMarker->eOpMarker() == OM_LOWMEMORY);
-      if (!m_bHasError) {
-        vTrace("\nerror: SYSTEM RUNNING LOW ON MEMORY\n"_Stz);
-        m_bHasError = true;
+      if (pMarker->eOpMarker() == OM_LOWMEMORY) {
+        if (!m_bHasError) {
+          vTrace("\nerror: SYSTEM RUNNING LOW ON MEMORY\n"_Stz);
+          m_bHasError = true;
+        }
+      }
+      else if (pMarker->eOpMarker() == OM_CHILDEXIT) {
+        m_bToExit = true;
+        if ( !m_bHasError )
+          vPrintResult();
+        m_bHasError = false;
+        bContinue = false;
+        goto L_EXIT;
+        break;
+      }
+      else {
+        RASSERT(0);
       }
       break;
     }

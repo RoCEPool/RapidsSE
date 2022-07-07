@@ -1203,7 +1203,7 @@ void Job::vPipeoutResponse(Operand* pOperand)
       // is it an EXITOPERAND ?
       if (pOperand->eGetClassNo() == CN_EXITOPERAND) {
         AM::vDeleteOperand(pOperand, nullptr);
-        pOperand = new ChildExit;
+        pOperand = AM::MARKER::pNewMarker(OM_CHILDEXIT, pParentJob);
       }
 
       // pipe the operand to the responseOP of parentJob
