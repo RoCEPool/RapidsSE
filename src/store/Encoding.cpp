@@ -112,10 +112,10 @@ void Encoding::vDumpEncoding(void)
   
   vTrace("m_nColumns         : %lld\n"_Stz, m_nColumns);
   vTrace("m_jHeadSize        : %lld\n"_Stz, m_jHeadSize);
-  vTrace("m_jMetaSize        : %lld\n"_Stz, m_jMetaSize);
-  vTrace("m_i_BaseOffsetData : %lld\n"_Stz, m_i_BaseOffsetData);
   vTrace("m_jOverSize        : %lld\n"_Stz, m_jOverSize);
   vTrace("m_jBytesNeeded     : %lld\n"_Stz, m_jBytesNeeded);
+  vTrace("m_jMetaSize        : %lld\n"_Stz, m_jMetaSize);
+  vTrace("m_i_BaseOffsetData : %lld\n"_Stz, m_i_BaseOffsetData);
   vTrace("m_nShiftOver       : %lld\n"_Stz, m_nShiftOver);
   vTrace("m_i_Offset_next    : %lld\n"_Stz, m_i_Offset_next);
   vTrace("m_nExtraTails      : %lld\n"_Stz, m_nExtraTails);
@@ -188,6 +188,7 @@ void Encoding::vMorphEncoding(_ColEnc* aColEnc)
   }
   
   m_jBytesNeeded += nOffsetAdj;
+  m_jOverSize = m_jBytesNeeded - m_jHeadSize;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -213,7 +214,8 @@ i8 Encoding::jOverSize(void)
   i8 nBytesNeed = this->jBytesNeeded();
   i8 nOverSize  = nBytesNeed - m_jHeadSize;
   
-  return nOverSize;
+  RASSERT(nOverSize == m_jOverSize);
+  return m_jOverSize;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -300,7 +302,6 @@ void Encoding::vInitialEncodingRow(Row* pRow)
   m_jBytesNeeded = m_i_Offset_next;
   
   m_jOverSize = m_jBytesNeeded - m_jHeadSize;
-  RASSERT(jOverSize() == m_jOverSize);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -383,7 +384,8 @@ void Encoding::vSplitAt(i8 i_Col)
   m_nShiftOver = m_jHeadSize - xaColEnc[i_Col].m_i_Offset + C_U_1B + C_M_1B;
   
   m_jBytesNeeded += m_nShiftOver;
-  
+  m_jOverSize = m_jBytesNeeded - m_jHeadSize;
+
   // shift columns into overflow
   for ( ; i_Col < m_nColumns; i_Col++) {
     xaColEnc[i_Col].m_i_Offset += m_nShiftOver;
