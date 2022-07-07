@@ -66,7 +66,7 @@ void SP_Encoding::vEncoding(Encoding* pEncoding)
                   "HeadSize %lldB <W=%lld> MetaSize %lldB "
                   "BytesNeeded %lldB ShiftOver %lldB\n"_Stz,
                   pEncoding->m_jHeadSize,
-                  MemLib::nQuantaRequired(pEncoding->m_jHeadSize,C_BYTES_PER_WORD),
+                  MemLib::jQuantaRequired(pEncoding->m_jHeadSize,C_BYTES_PER_WORD),
                   pEncoding->m_jMetaSize,
                   pEncoding->m_jBytesNeeded,
                   pEncoding->m_nShiftOver

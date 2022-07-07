@@ -208,15 +208,9 @@ bool RowCompactor::bAddRowAsCrw(Row* pRow)
   
   // 1) initially encode head of inflated row into m_pEncoding
   m_pEncoding->vInitialEncodingRow(pRow);
-
-#ifdef WITH_TRACE_ENCODING
-  SP_Encoding spEncoding;
-  vTrace("\nvEncode:\n%s\n"_Stz,spEncoding.sz(m_pEncoding));
-#endif
   //m_pEncoding->vDumpEncoding();
 
   // 2) encode tails into m_pEncoding_v1
-  //  if (! m_pStreamDef->m_nFixedSized)
   vEncodeDupeTailsForRow(pRow);
   //m_pEncoding->vDumpEncoding();
 
@@ -407,9 +401,7 @@ void RowCompactor::vEncodeDupeTailsForRow(Row* pRow)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // attempt to find tail for non-null vch column of minimum length
-    
-    //TailStr xFindTail(azStr);
-    
+        
 #ifdef WITH_TRACE_ENCODING
     //vDumpTails();
 #endif
@@ -431,10 +423,10 @@ void RowCompactor::vEncodeDupeTailsForRow(Row* pRow)
     m_pEncoding->vMorphEncoding(rxColEnc);
   }
   
-#ifdef WITH_TRACE_ENCODING
-  SP_Encoding spEncoding;
-  vTrace("\nvEncodeTails:\n%s\n"_Stz,spEncoding.sz(m_pEncoding));
-#endif
+//#ifdef WITH_TRACE_ENCODING
+//  SP_Encoding spEncoding;
+//  vTrace("\nvEncodeTails:\n%s\n"_Stz,spEncoding.sz(m_pEncoding));
+//#endif
 }
 
 /*----------------------------------------------------------------------------*/

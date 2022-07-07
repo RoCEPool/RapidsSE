@@ -250,10 +250,10 @@ static const i8 C_NULL_1B = 1;// <NULL> '\0' 1B
   __iHigh = (__uCode >> 4); \
   __iLow  = (__uCode &  0x0F);
 
-#define STRx1(__uLow) (__uLow)            //   0B .. |1 * 16 =  16| ..  15B
-#define STRx2(__uLow) ( 16 + 2 * __uLow)  //  16B .. |2 * 16 =  32| ..  47B
-#define STRx4(__uLow) ( 48 + 4 * __uLow)  //  48B .. |4 * 16 =  64| .. 111B
-#define STRx8(__uLow) (112 + 8 * __uLow)  // 112B .. |8 * 16 = 128| .. 239B
+#define STRx1(__uLow) (__uLow)           //   0B .. |  0 + (15*1 =  15)| ..  15B
+#define STRx2(__uLow) ( 15 + 2 * __uLow) //  16B .. | 15 + (15*2 =  30)| ..  45B
+#define STRx4(__uLow) ( 45 + 4 * __uLow) //  46B .. | 45 + (15 4 =  60)| .. 105B
+#define STRx8(__uLow) (105 + 8 * __uLow) // 112B .. |105 + (15*8 = 120)| .. 225B
 
 #define TO_BOUNDARY(addr,nByteBoundary) \
   ( (void*)BITWISE_AND(addr,BITWISE_NOT((nByteBoundary - 1))) )

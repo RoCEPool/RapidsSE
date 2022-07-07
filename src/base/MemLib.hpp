@@ -105,13 +105,13 @@ namespace BASE
     /*----------------------------------------------------------------------------*/
     /* compute the memory quanta required to hold n bytes                         */
     /*----------------------------------------------------------------------------*/
-    static inline i8 nQuantaRequired(i8 nBytes, i8 nSizeQuanta)
+    static inline i8 jQuantaRequired(i8 nBytes, i8 jSizeQuanta)
     {
       if (! nBytes)
         return 0;
       
-      i8 nQuanta = nBytes / nSizeQuanta;
-      if (nBytes % nSizeQuanta)
+      i8 nQuanta = nBytes / jSizeQuanta;
+      if (nBytes % jSizeQuanta)
         nQuanta++;
       
       return nQuanta;

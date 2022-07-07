@@ -134,7 +134,7 @@ void Encoding::vDumpEncoding(void)
     vTrace("  m_eColumnType    : %s\n"_Stz,   aCT[rxColEnc.m_pCol->eColumnType()]);
     vTrace("  m_uHigh          : %s\n"_Stz,   aMC[rxColEnc.m_uHigh]);
     vTrace("  m_uLow           : %lld\n"_Stz, rxColEnc.m_uLow);
-    vTrace("  m_wDataCode      : ???\n"_Stz);
+    vTrace("  m_wDataCode      : %s\n"_Stz,   rxColEnc.m_wDataCode.m_azStr);
     vTrace("  m_jDataSize      : %lld\n"_Stz, rxColEnc.m_jDataSize);
     vTrace("  m_i_Offset       : %lld\n"_Stz, rxColEnc.m_i_Offset);
     vTrace("  m_i_Till         : %lld\n"_Stz, rxColEnc.m_i_Till);
@@ -233,10 +233,6 @@ void Encoding::vSplitOver(void)
   // ray : 30 may 2020 : i added this if to test for pSplitCol.  was crashing
   if (pSplitCol) {
     i8 i_SplitCol = pSplitCol->iColumnNo();
-  
-    // split at that column
-    //vSplitAt(i_SplitCol);
-    
     
     // mark the column where split occurred
     xaColEnc[i_SplitCol].m_bSplit = true;
@@ -308,26 +304,16 @@ void Encoding::vInitialEncodingRow(Row* pRow)
     // - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // compute initial offset and till for this column
     
-    //vOffsetTill(xrColEnc);
     // set the offset of this column
     xrColEnc.m_i_Offset = m_i_Offset_next;
     
-    // get the base size of the encoding
-    //i8 iHigh = METACODE_HIGH(xrColEnc.m_uMetaCode);
-    //i8 iLow  = METACODE_LOW(xrColEnc.m_uMetaCode);
-    //i8 nDataBytes = nDataSizeOfCode(iHigh,iLow);
     
     // if 0B case then till is same as offset
     if (! xrColEnc.m_jDataSize) {
       xrColEnc.m_i_Till = m_i_Offset_next;
       continue;
     }
-      
-//    if (MC_STRING_TAIL == (eMC)iHigh) {
-//      i8 nStrLen = StrLib::nLength(xrColEnc.m_wDataCode.m_szVch->azChar());
-//      nDataBytes += nStrLen + 1;
-//    }
-    
+          
     // set where the next offset will be
     m_i_Offset_next += xrColEnc.m_jDataSize;
     

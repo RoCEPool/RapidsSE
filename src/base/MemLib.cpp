@@ -540,7 +540,7 @@ void MemLib::vRotate(void* avArg, i8 nBytes, i8 nBy)
 /*----------------------------------------------------------------------------*/
 i8 MemLib::nRoundUp(i8 nBytes, i8 nSizeQuanta)
 {
-  i8 nQuanta = nQuantaRequired(nBytes,nSizeQuanta);
+  i8 nQuanta = jQuantaRequired(nBytes,nSizeQuanta);
 
   i8 nRoundedBytes = nQuanta * nSizeQuanta;
   
@@ -612,7 +612,7 @@ void MemLib::vWordDump(void *aAddress, i8 nBytes, i8 iHighlightWord)
 {
   i8 iOffset = 0;
   i8 iWord   = 0;
-  i8 nWords  = MemLib::nQuantaRequired(nBytes,C_BYTES_PER_WORD);
+  i8 nWords  = MemLib::jQuantaRequired(nBytes,C_BYTES_PER_WORD);
 
   // dump a header
   vTrace("\n"_Stz);

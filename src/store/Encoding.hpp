@@ -368,7 +368,7 @@ namespace STORE
   {
     _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
     
-    u1 nQuanta;
+    u1 jQuanta;
     
     // null case
     if (bEncodeNul(xColEnc,wColVal))
@@ -380,7 +380,7 @@ namespace STORE
     char* azDst = (char*)m_xWsp.ayLatter();
     UNUSED(azDst);
     //i8 nS = StrLib::nCopy(azDst,(char*)wColVal.m_szVch) + 1;
-    i8 nS = StrLib::nLength((char*)wColVal.m_szVch) + 1;
+    i8 jVchSize = StrLib::nLength((char*)wColVal.m_szVch) + 1;
 
     // have copied nS bytes into wsp
     //m_xWsp.vTake(nS);
@@ -388,56 +388,56 @@ namespace STORE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       
     // 1) MC_STRING_x1
-    if (nS <= 15) {
-      nQuanta = nS; //MemLib::nQuantaRequired(nS,1);
+    if (jVchSize <= 15) {
+      jQuanta = jVchSize; //MemLib::nQuantaRequired(nS,1);
       
       xColEnc.m_wDataCode.m_azStr = (char*)wColVal.m_szVch;
-      xColEnc.m_jDataSize = STRx1(nQuanta);
+      xColEnc.m_jDataSize = STRx1(jQuanta);
       
-      xColEnc.m_uMetaCode = METACODE_FORM(MC_STRING_x1,nQuanta);
+      xColEnc.m_uMetaCode = METACODE_FORM(MC_STRING_x1,jQuanta);
       return;
     }
     
     // 2) MC_STRINGx2
-    if (nS <= 47) {
-      nQuanta = MemLib::nQuantaRequired(nS-16,2);
+    if (jVchSize <= 45) {
+      jQuanta = MemLib::jQuantaRequired(jVchSize-15,2);
       
       xColEnc.m_wDataCode.m_azStr = (char*)wColVal.m_szVch;
-      xColEnc.m_jDataSize = STRx2(nQuanta);
+      xColEnc.m_jDataSize = STRx2(jQuanta);
       
-      xColEnc.m_uMetaCode = METACODE_FORM(MC_STRING_x2,nQuanta);
+      xColEnc.m_uMetaCode = METACODE_FORM(MC_STRING_x2,jQuanta);
 
       return;
     }
     
     // 3) MC_STRINGx4
-    if (nS <= 111) {
-      nQuanta = MemLib::nQuantaRequired(nS-48,4);
+    if (jVchSize <= 105) {
+      jQuanta = MemLib::jQuantaRequired(jVchSize-45,4);
       
 
       xColEnc.m_wDataCode.m_azStr = (char*)wColVal.m_szVch;
-      xColEnc.m_jDataSize = STRx4(nQuanta);
+      xColEnc.m_jDataSize = STRx4(jQuanta);
       
-      xColEnc.m_uMetaCode = METACODE_FORM(MC_STRING_x4,nQuanta);
+      xColEnc.m_uMetaCode = METACODE_FORM(MC_STRING_x4,jQuanta);
 
       return;
     }
 
     // 4) MC_STRINGx8
-    if (nS <= 239) {
-      nQuanta = MemLib::nQuantaRequired(nS-112,8);
+    if (jVchSize <= 225) {
+      jQuanta = MemLib::jQuantaRequired(jVchSize-105,8);
       
       xColEnc.m_wDataCode.m_azStr = (char*)wColVal.m_szVch;
-      xColEnc.m_jDataSize = STRx8(nQuanta);
+      xColEnc.m_jDataSize = STRx8(jQuanta);
       
-      xColEnc.m_uMetaCode = METACODE_FORM(MC_STRING_x8,nQuanta);
+      xColEnc.m_uMetaCode = METACODE_FORM(MC_STRING_x8,jQuanta);
 
       return;
     }
 
     // 5) MC_STRING_TAIL
     xColEnc.m_wDataCode.m_azStr = (char*)wColVal.m_szVch;
-    xColEnc.m_jDataSize = nS;
+    xColEnc.m_jDataSize = jVchSize;
       
     xColEnc.m_uMetaCode = METACODE_FORM(MC_STRING_TAIL,2);
   }

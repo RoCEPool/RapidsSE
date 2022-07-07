@@ -266,7 +266,7 @@ void* Nub_t<CN,HEAD,OVER,TAIL,DESC>::aGetUnit_rel(HEAD* aHead, i8 i_Tail_rel)
 template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
 i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::nUnits(i8 nBytes)
 {
-  i8 nUnits = MemLib::nQuantaRequired(nBytes,C_SPACEUNIT_QUANTA);
+  i8 nUnits = MemLib::jQuantaRequired(nBytes,C_SPACEUNIT_QUANTA);
 
   return nUnits;
 }
@@ -309,7 +309,7 @@ i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::iAllotHead(i8 nBytes_unrounded)
   if (nFreeAllotableBytes() < nBytes_revised)
     return C_UNKNOWN;
   
-  i8 nWords = MemLib::nQuantaRequired(nBytes_revised,C_HEADLINE_QUANTA);
+  i8 nWords = MemLib::jQuantaRequired(nBytes_revised,C_HEADLINE_QUANTA);
   
   m_nHeadBytes += nBytes_revised;
   m_nHeadWords += nWords;
@@ -385,7 +385,7 @@ i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::iAllotTail(i8 nBytes_unrounded)
   if (nFreeAllotableBytes() < nBytes_unrounded)
     return C_UNKNOWN;
 
-  i8 nUnits = MemLib::nQuantaRequired(nBytes_unrounded,C_SPACEUNIT_QUANTA);
+  i8 nUnits = MemLib::jQuantaRequired(nBytes_unrounded,C_SPACEUNIT_QUANTA);
 
   m_nTailBytes += nBytes_unrounded;
   m_nTailUnits += nUnits;
