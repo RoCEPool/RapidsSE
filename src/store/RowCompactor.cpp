@@ -300,11 +300,10 @@ bool RowCompactor::bAllotCrw(void)
   // +================================+   +--------------------------------+
   
   // allot the over line (the <U> is init'd by iAllotOver())
-  i8 nOverSize;
-  nOverSize = m_pEncoding->jOverSize();
+  i8 jOverSize = m_pEncoding->jOverSize();
 
-  ASSERT(nOverSize > 0);
-  m_aOverLine = m_pCrwNub->aAllotOver(nOverSize);
+  ASSERT(jOverSize > 0);
+  m_aOverLine = m_pCrwNub->aAllotOver(jOverSize);
 
   // +================================+   +--------------------------------+
   // | <W>                       [OL] |---| <U> ////////////////////////// |

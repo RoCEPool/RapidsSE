@@ -169,7 +169,7 @@ void Encoding::vMorphEncoding(_ColEnc* aColEnc)
   ASSERT(C_UNKNOWN != aColEnc->m_i_Tail);
 
   // calc the adjustment required because MC_STR_FIT_1L becoming MC_STR_TAIL_2T
-  ASSERT(aColEnc->m_nDataSize > C_2B);
+  ASSERT(aColEnc->m_jDataSize > C_2B);
   i8 nOffsetAdj = - (aColEnc->m_jDataSize - C_2B);
   ASSERT(nOffsetAdj < 0);
   
@@ -298,6 +298,9 @@ void Encoding::vInitialEncodingRow(Row* pRow)
   } // for i_Col
   
   m_jBytesNeeded = m_i_Offset_next;
+  
+  m_jOverSize = m_jBytesNeeded - m_jHeadSize;
+  RASSERT(jOverSize() == m_jOverSize);
 }
 
 /*----------------------------------------------------------------------------*/
