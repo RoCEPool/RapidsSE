@@ -86,7 +86,6 @@ namespace STORE
     // support functions
     Column* pNonFitting(void);
     void vReset(void);
-    void vSplitAt(i8 i_Col);
     bool bWithinHead(i8 i_Col);
   
   private:

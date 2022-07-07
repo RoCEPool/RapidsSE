@@ -235,7 +235,24 @@ void Encoding::vSplitOver(void)
     i8 i_SplitCol = pSplitCol->iColumnNo();
   
     // split at that column
-    vSplitAt(i_SplitCol);
+    //vSplitAt(i_SplitCol);
+    
+    
+    // mark the column where split occurred
+    xaColEnc[i_SplitCol].m_bSplit = true;
+    
+    // calc the number of bytes needed to shift columns into overflow
+    m_nShiftOver = m_jHeadSize - xaColEnc[i_SplitCol].m_i_Offset + C_U_1B + C_M_1B;
+    
+    m_jBytesNeeded += m_nShiftOver;
+    m_jOverSize = m_jBytesNeeded - m_jHeadSize;
+
+    // shift columns into overflow
+    for ( ; i_SplitCol < m_nColumns; i_SplitCol++) {
+      xaColEnc[i_SplitCol].m_i_Offset += m_nShiftOver;
+      xaColEnc[i_SplitCol].m_i_Till   += m_nShiftOver;
+    }
+
   }
 }
 
@@ -390,29 +407,6 @@ void Encoding::vReset(void)
 #else
   m_xWsp.vInit();
 #endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* split columns at head size for overflow                                    */
-/*----------------------------------------------------------------------------*/
-void Encoding::vSplitAt(i8 i_Col)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
-  
-  // mark the column where split occurred
-  xaColEnc[i_Col].m_bSplit = true;
-  
-  // calc the number of bytes needed to shift columns into overflow
-  m_nShiftOver = m_jHeadSize - xaColEnc[i_Col].m_i_Offset + C_U_1B + C_M_1B;
-  
-  m_jBytesNeeded += m_nShiftOver;
-  m_jOverSize = m_jBytesNeeded - m_jHeadSize;
-
-  // shift columns into overflow
-  for ( ; i_Col < m_nColumns; i_Col++) {
-    xaColEnc[i_Col].m_i_Offset += m_nShiftOver;
-    xaColEnc[i_Col].m_i_Till   += m_nShiftOver;
-  }
 }
 
 /*----------------------------------------------------------------------------*/
