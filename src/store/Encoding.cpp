@@ -152,29 +152,29 @@ void Encoding::vDumpEncoding(void)
 /*----------------------------------------------------------------------------*/
 /* morph the given column encoding (to MC_STRING_TAIL)                        */
 /*----------------------------------------------------------------------------*/
-void Encoding::vMorphEncoding(_ColEnc* aColEnc)
+void Encoding::vMorphEncoding(_ColEnc& rxColEnc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
   //ASSERT(MC_STR_FIT_1L == aColEnc->m_eMetaCode);
-  ASSERT(METACODE_HIGH(aColEnc->m_uMetaCode) >= MC_STRING_x1 ||
-           (METACODE_HIGH(aColEnc->m_uMetaCode) >= MC_STRING_x2 &&
-            METACODE_HIGH(aColEnc->m_uMetaCode) <= MC_STRING_x8));
-  ASSERT(C_UNKNOWN != aColEnc->m_i_Tail);
+  ASSERT(METACODE_HIGH(rxColEnc.m_uMetaCode) >= MC_STRING_x1 ||
+           (METACODE_HIGH(rxColEnc.m_uMetaCode) >= MC_STRING_x2 &&
+            METACODE_HIGH(rxColEnc.m_uMetaCode) <= MC_STRING_x8));
+  ASSERT(C_UNKNOWN != rxColEnc.m_i_Tail);
 
   // calc the adjustment required because MC_STR_FIT_1L becoming MC_STR_TAIL_2T
-  ASSERT(aColEnc->m_jDataSize > C_2B);
-  i8 nOffsetAdj = - (aColEnc->m_jDataSize - C_2B);
+  ASSERT(rxColEnc.m_jDataSize > C_2B);
+  i8 nOffsetAdj = - (rxColEnc.m_jDataSize - C_2B);
   ASSERT(nOffsetAdj < 0);
   
   // morph the given column into a MC_STR_TAIL_2T
-  aColEnc->m_uMetaCode = METACODE_FORM(MC_STRING_TAIL,2);
-  aColEnc->m_wDataCode = aColEnc->m_i_Tail;
-  aColEnc->m_jDataSize = C_2B;
-  aColEnc->m_i_Till   += nOffsetAdj;
+  rxColEnc.m_uMetaCode = METACODE_FORM(MC_STRING_TAIL,2);
+  rxColEnc.m_wDataCode = rxColEnc.m_i_Tail;
+  rxColEnc.m_jDataSize = C_2B;
+  rxColEnc.m_i_Till   += nOffsetAdj;
 
   // adjust remaining columns based on MC_STR_FIT_1L becoming MC_STR_TAIL_2T
-  for (i8 i_RmgCol = (1 + aColEnc->m_pCol->iColumnNo());
+  for (i8 i_RmgCol = (1 + rxColEnc.m_pCol->iColumnNo());
        i_RmgCol < m_nColumns;
        i_RmgCol++) {
     xaColEnc[i_RmgCol].m_i_Offset += nOffsetAdj;

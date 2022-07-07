@@ -217,10 +217,10 @@ bool RowCompactor::bAddRowAsCrw(Row* pRow)
 
   // 2) encode tails into m_pEncoding_v1
   //  if (! m_pStreamDef->m_nFixedSized)
-    vEncodeTailsForRow(pRow);
+  vEncodeDupeTailsForRow(pRow);
   //m_pEncoding->vDumpEncoding();
 
-  // 3) split encoded head between crw head and crw overflow
+  // 3) split encoded head between crw headline and crw overline
   m_pEncoding->vSplitOver();
   //m_pEncoding->vDumpEncoding();
 
@@ -380,27 +380,20 @@ bool RowCompactor::bCreateTail(Stz* szTailStr)
 /*----------------------------------------------------------------------------*/
 /* mark up the encoding of a row with tails                                   */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vEncodeTailsForRow(Row* pRow)
+void RowCompactor::vEncodeDupeTailsForRow(Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
   i8 nCols = m_pStreamDef->nColumns();
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     
-    _ColEnc* aColEnc;
-  
-    aColEnc = & m_pEncoding->xaColEnc[i_Col];
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // test for non-null vch column of minimum length
-    
-    if (DM_VCH != aColEnc->m_pCol->eDatum())
+    _ColEnc& rxColEnc = m_pEncoding->xaColEnc[i_Col];
+    if (DM_VCH != rxColEnc.m_pCol->eDatum())
       continue;
     
     // -- vch column --
     
     Dtm* aColVal = pRow->aColDtm(i_Col);
-    
     if (aColVal->bIsNull())
       continue;
     
@@ -409,7 +402,9 @@ void RowCompactor::vEncodeTailsForRow(Row* pRow)
     Stz* azStr = pRow->szColVal_ofs(i_Col);
     if (StrLib::nLength((char*)azStr) < 8)
       continue;
-    
+
+    // -- non-null >=8 vch column --
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // attempt to find tail for non-null vch column of minimum length
     
@@ -419,7 +414,6 @@ void RowCompactor::vEncodeTailsForRow(Row* pRow)
     //vDumpTails();
 #endif
     
-    
     i8 i_Tail;
     TailLine* aTailLine = m_pCrwNub->aFindTail(azStr, i_Tail);
     if (! aTailLine)
@@ -428,12 +422,13 @@ void RowCompactor::vEncodeTailsForRow(Row* pRow)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // found a matching tail
     
-    // put tial into the encoding
-    aColEnc->m_i_Tail = i_Tail;
-    aColEnc->m_aTailLine = aTailLine;
-    
+    // put tail into the encoding
+    rxColEnc.m_i_Tail     = i_Tail;
+    rxColEnc.m_aTailLine  = aTailLine;
+    rxColEnc.m_bDuplicate = true;
+
     // morph the encoding
-    m_pEncoding->vMorphEncoding(aColEnc);
+    m_pEncoding->vMorphEncoding(rxColEnc);
   }
   
 #ifdef WITH_TRACE_ENCODING

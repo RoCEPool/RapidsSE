@@ -76,7 +76,7 @@ namespace STORE
     void vInitialEncodingRow(Row* pRow);
   
   
-    void vMorphEncoding(_ColEnc* aColEnc);
+    void vMorphEncoding(_ColEnc& rxColEnc);
     bool bOverFlowed(void);
     i8   jOverSize(void);
     void vSplitOver(void);

@@ -54,7 +54,7 @@ namespace STORE
     bool bAddRowAsCrw(Row* pRow);
     bool bAllotCrw(void);
     bool bCreateTail(Stz* szTailStr);
-    void vEncodeTailsForRow(Row* pRow);
+    void vEncodeDupeTailsForRow(Row* pRow);
 
     // - - - - - - - - - - - - - - - - - - - - -
     // Row Sampling (structural order)
