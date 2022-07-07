@@ -54,7 +54,6 @@ namespace STORE
     bool bAddRowAsCrw(Row* pRow);
     bool bAllotCrw(void);
     bool bCreateTail(Stz* szTailStr);
-    void vEncodeHeadForRow(Row* pRow);
     void vEncodeTailsForRow(Row* pRow);
 
     // - - - - - - - - - - - - - - - - - - - - -

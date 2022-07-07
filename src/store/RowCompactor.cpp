@@ -206,8 +206,13 @@ bool RowCompactor::bAddRowAsCrw(Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  // 1) initially encode head of inflated row into m_pEncoding_v1
-  vEncodeHeadForRow(pRow);
+  // 1) initially encode head of inflated row into m_pEncoding
+  m_pEncoding->vInitialEncodingRow(pRow);
+
+#ifdef WITH_TRACE_ENCODING
+  SP_Encoding spEncoding;
+  vTrace("\nvEncode:\n%s\n"_Stz,spEncoding.sz(m_pEncoding));
+#endif
   //m_pEncoding->vDumpEncoding();
 
   // 2) encode tails into m_pEncoding_v1
@@ -370,21 +375,6 @@ bool RowCompactor::bCreateTail(Stz* szTailStr)
   //vDebugPoint();
   
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* encode the head                                                            */
-/*----------------------------------------------------------------------------*/
-void RowCompactor::vEncodeHeadForRow(Row* pRow)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-  m_pEncoding->vEncodeRow(pRow);
-
-#ifdef WITH_TRACE_ENCODING
-  SP_Encoding spEncoding;
-  vTrace("\nvEncode:\n%s\n"_Stz,spEncoding.sz(m_pEncoding));
-#endif
 }
 
 /*----------------------------------------------------------------------------*/

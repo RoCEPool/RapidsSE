@@ -150,18 +150,6 @@ void Encoding::vDumpEncoding(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* encode inflated row                                                        */
-/*----------------------------------------------------------------------------*/
-void Encoding::vEncodeRow(Row* pRow)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
-  
-  vReset();
-  
-  vInitialEncodingRow(pRow);
-}
-
-/*----------------------------------------------------------------------------*/
 /* morph the given column encoding (to MC_STRING_TAIL)                        */
 /*----------------------------------------------------------------------------*/
 void Encoding::vMorphEncoding(_ColEnc* aColEnc)
@@ -263,6 +251,8 @@ void Encoding::vInitialEncodingRow(Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
+  vReset();
+  
   m_i_Offset_next = m_i_DataOffsetBase;
   
   for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
@@ -301,8 +291,31 @@ void Encoding::vInitialEncodingRow(Row* pRow)
     // - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // compute initial offset and till for this column
     
-    vOffsetTill(xrColEnc);
+    //vOffsetTill(xrColEnc);
+    // set the offset of this column
+    xrColEnc.m_i_Offset = m_i_Offset_next;
     
+    // get the base size of the encoding
+    //i8 iHigh = METACODE_HIGH(xrColEnc.m_uMetaCode);
+    //i8 iLow  = METACODE_LOW(xrColEnc.m_uMetaCode);
+    //i8 nDataBytes = nDataSizeOfCode(iHigh,iLow);
+    
+    // if 0B case then till is same as offset
+    if (! xrColEnc.m_jDataSize) {
+      xrColEnc.m_i_Till = m_i_Offset_next;
+      continue;
+    }
+      
+//    if (MC_STRING_TAIL == (eMC)iHigh) {
+//      i8 nStrLen = StrLib::nLength(xrColEnc.m_wDataCode.m_szVch->azChar());
+//      nDataBytes += nStrLen + 1;
+//    }
+    
+    // set where the next offset will be
+    m_i_Offset_next += xrColEnc.m_jDataSize;
+    
+    // set the till byte of the column encoding
+    xrColEnc.m_i_Till = m_i_Offset_next; // - 1;
   } // for i_Col
   
   m_jBytesNeeded = m_i_Offset_next;
@@ -356,17 +369,20 @@ void Encoding::vReset(void)
   //for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++) {
   for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
 
+    _ColEnc& rxColEnc = xaColEnc[i_Col];
+    
     // leave m_pCol
     // leave m_eDatum
     
-    xaColEnc[i_Col].m_wDataCode  = C_UNKNOWN;
-    xaColEnc[i_Col].m_jDataSize  = C_UNKNOWN;
-    xaColEnc[i_Col].m_i_Offset   = 0;
-    xaColEnc[i_Col].m_i_Till     = 0;
-    xaColEnc[i_Col].m_bSplit     = false;
+    rxColEnc.m_wDataCode  = C_UNKNOWN;
+    rxColEnc.m_jDataSize  = C_UNKNOWN;
+    rxColEnc.m_i_Offset   = 0;
+    rxColEnc.m_i_Till     = 0;
+    rxColEnc.m_bSplit     = false;
     
-    xaColEnc[i_Col].m_i_Tail     = C_UNKNOWN;
-    xaColEnc[i_Col].m_aTailLine  = nullptr;
+    rxColEnc.m_i_Tail     = C_UNKNOWN;
+    rxColEnc.m_aTailLine  = nullptr;
+    rxColEnc.m_bDuplicate = false;
   }
   
 #ifdef WITH_CHECK_INITIALISED
