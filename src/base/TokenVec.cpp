@@ -106,11 +106,11 @@ TokenVec* TokenVec::pGetSubVec(TokenVec* pTknVec, Stz* szStart, Stz* szEnd)
 /*----------------------------------------------------------------------------*/
 /* replace tokens                                                             */
 /*----------------------------------------------------------------------------*/
-void TokenVec::vReplace(TokenVec* pThisVec,
+bool TokenVec::bReplace(TokenVec* pThisVec,
                         TokenVec* pFindVec, TokenVec* pWithVec)
 {
   _static_
-  
+
   i8 nTokens = pThisVec->nTokens();
   for (i8 i_Token = 0; i_Token < nTokens; i_Token++) {
     
@@ -120,12 +120,17 @@ void TokenVec::vReplace(TokenVec* pThisVec,
     
     if (C_UNKNOWN == i_Find)
       continue;
-    
+
+    if (pWithVec->nItems() <= i_Find)
+      return false;
+
     Token* pWithToken = pWithVec->pGet(i_Find);
 
     pThisToken->vUpdateChars(pWithToken->szChars(),pThisVec);
     pThisToken->vToken(pWithToken->eToken());
   }
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
