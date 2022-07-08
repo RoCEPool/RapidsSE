@@ -4272,6 +4272,7 @@ bool PROMPT::bPrompt_sleep(SePrompt* pPrompt)
     vTrace("error: sleep : %s\n"_Stz, aEC[EC_INVALID_COMMAND]);
     return false;
   }
+
   if ( ! pInpTknVec->pGet(1)->bIsInteger() ) {
     vTrace("error: sleep : %s\n"_Stz, aEC[EC_INVALID_COMMAND]);
     return false;

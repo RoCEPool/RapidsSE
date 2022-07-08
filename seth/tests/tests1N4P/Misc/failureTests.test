@@ -31,6 +31,12 @@ failure contains: 'invalid command'
 create index;
 failure contains: 'invalid command'
 
+sleep;
+failure contains: 'invalid command'
+
+sleep a;
+failure contains: 'invalid command'
+
 drop table t;
 success
 
