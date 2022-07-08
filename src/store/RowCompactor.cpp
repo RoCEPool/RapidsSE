@@ -208,15 +208,15 @@ bool RowCompactor::bAddRowAsCrw(Row* pRow)
   
   // 1) initially encode head of inflated row into m_pEncoding
   m_pEncoding->vInitialEncodingRow(pRow);
-  m_pEncoding->vDumpEncoding();
+  //m_pEncoding->vDumpEncoding();
 
   // 2) encode tails into m_pEncoding_v1
   vEncodeDupeTailsForRow(pRow);
-  m_pEncoding->vDumpEncoding();
+  //m_pEncoding->vDumpEncoding();
 
   // 3) split encoded head between crw headline and crw overline
   m_pEncoding->vSplitOver();
-  m_pEncoding->vDumpEncoding();
+  //m_pEncoding->vDumpEncoding();
 
   // 4) allot a logical compact row (head & over)
   if (! bAllotCrw()) {
