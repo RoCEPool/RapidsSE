@@ -94,7 +94,7 @@ namespace STORE
   /*--------------------------------------------------------------------------*/
   /* possible null encoding                                                   */
   /*--------------------------------------------------------------------------*/
-  inline bool bEncodeNul(_ColEnc& xColEnc, Dtm wDtm)
+  inline bool bEncodeNul(_ColEnc& rxColEnc, Dtm wDtm)
   {
     _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
     
@@ -102,10 +102,10 @@ namespace STORE
       return false;
     
     // null case : encode as: MC_NULL + {}
-    xColEnc.m_uMetaCode = METACODE_FORM(MC_NULL,0);
+    rxColEnc.m_uMetaCode = METACODE_FORM(MC_NULL,0);
 
-    xColEnc.m_wDataCode.vSetNull();
-    xColEnc.m_jDataBytes = C_0B;
+    rxColEnc.m_wDataCode.vSetNull();
+    rxColEnc.m_jDataBytes = C_0B;
     
     return true;
   }
@@ -113,23 +113,23 @@ namespace STORE
   /*----------------------------------------------------------------------------*/
   /* encode a bcd column value                                                  */
   /*----------------------------------------------------------------------------*/
-  inline void vEncodeBcd(_ColEnc& xColEnc, Dtm wColVal)
+  inline void vEncodeBcd(_ColEnc& rxColEnc, Dtm wColVal)
   {
     _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
     
     // null case
-    if (bEncodeNul(xColEnc,wColVal))
+    if (bEncodeNul(rxColEnc,wColVal))
       return;
 
-    xColEnc.m_wDataCode.m_wBcd.T.m_iAsI8 = wColVal.m_wBcd.T.m_iAsI8;
+    rxColEnc.m_wDataCode.m_wBcd.T.m_iAsI8 = wColVal.m_wBcd.T.m_iAsI8;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     // -1 case -- encode as: MC_BCD_M_ONE + {}
     if (-1 == wColVal.m_wBcd.T.m_iAsI8) {
-      xColEnc.m_jDataBytes = C_0B;
+      rxColEnc.m_jDataBytes = C_0B;
       
-      xColEnc.m_uMetaCode = METACODE_FORM(MC_NEGATIVE,1);
+      rxColEnc.m_uMetaCode = METACODE_FORM(MC_NEGATIVE,1);
       return;
     }
     
@@ -137,9 +137,9 @@ namespace STORE
     
     // 0..10 case -- encode as MC_BCD_ONE..TEN + {}
     if (wColVal.m_wBcd.T.m_iAsI8 >= 0 && wColVal.m_wBcd.T.m_iAsI8 <= 15) {
-      xColEnc.m_jDataBytes = C_0B;
+      rxColEnc.m_jDataBytes = C_0B;
       
-      xColEnc.m_uMetaCode = METACODE_FORM(MC_POSITIVE,wColVal.m_iWrd);
+      rxColEnc.m_uMetaCode = METACODE_FORM(MC_POSITIVE,wColVal.m_iWrd);
 
       return;
     }
@@ -148,50 +148,50 @@ namespace STORE
 
     // general case -- encode as: MC_BCD_1..8B + {D}
     i8 nD = wColVal.iByteMagn();
-    xColEnc.m_jDataBytes = nD;
+    rxColEnc.m_jDataBytes = nD;
     
-    xColEnc.m_uMetaCode = METACODE_FORM(MC_NUMERIC,nD);
+    rxColEnc.m_uMetaCode = METACODE_FORM(MC_NUMERIC,nD);
   }
 
   /*----------------------------------------------------------------------------*/
   /* encode a bol column value                                                  */
   /*----------------------------------------------------------------------------*/
-  inline void vEncodeBol(_ColEnc& xColEnc, Dtm wColVal)
+  inline void vEncodeBol(_ColEnc& rxColEnc, Dtm wColVal)
   {
     _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
     
     // null case
-    if (bEncodeNul(xColEnc,wColVal))
+    if (bEncodeNul(rxColEnc,wColVal))
       return;
     
-    xColEnc.m_wDataCode.m_wBol.T.m_iAsI8 = wColVal.m_wBol.T.m_iAsI8;
+    rxColEnc.m_wDataCode.m_wBol.T.m_iAsI8 = wColVal.m_wBol.T.m_iAsI8;
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     // encode as: MC_BOL_TRUE or MC_BOL_FALSE
     if (wColVal.m_wBol.T.m_iAsI8) {
-      xColEnc.m_jDataBytes = C_0B;
+      rxColEnc.m_jDataBytes = C_0B;
       
-      xColEnc.m_uMetaCode = METACODE_FORM(MC_POSITIVE,1);
+      rxColEnc.m_uMetaCode = METACODE_FORM(MC_POSITIVE,1);
     }
     else {
-      xColEnc.m_jDataBytes = C_0B;
-      xColEnc.m_uMetaCode = METACODE_FORM(MC_POSITIVE,0);
+      rxColEnc.m_jDataBytes = C_0B;
+      rxColEnc.m_uMetaCode = METACODE_FORM(MC_POSITIVE,0);
     }
   }
 
   /*----------------------------------------------------------------------------*/
   /* encode a dte column value                                                  */
   /*----------------------------------------------------------------------------*/
-  inline void vEncodeDte(_ColEnc& xColEnc, Dtm wColVal)
+  inline void vEncodeDte(_ColEnc& rxColEnc, Dtm wColVal)
   {
     _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
     
     // null case
-    if (bEncodeNul(xColEnc,wColVal))
+    if (bEncodeNul(rxColEnc,wColVal))
       return;
     
-    xColEnc.m_wDataCode.m_wDte.T.m_iAsI8 = wColVal.m_wDte.T.m_iAsI8;
+    rxColEnc.m_wDataCode.m_wDte.T.m_iAsI8 = wColVal.m_wDte.T.m_iAsI8;
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
@@ -199,61 +199,61 @@ namespace STORE
     
     i8 iEra = 0;
     vDteIntoEdt(wColVal.m_wDte.T.m_iAsI8,
-                &xColEnc.m_wDataCode.m_wEdt.T.m_iAsI8,iEra);
+                &rxColEnc.m_wDataCode.m_wEdt.T.m_iAsI8,iEra);
     
     if (C_ERA_0 == iEra) {
-      xColEnc.m_uMetaCode = METACODE_FORM(MC_DATE_E0,2);
+      rxColEnc.m_uMetaCode = METACODE_FORM(MC_DATE_E0,2);
     }
     else
     if (C_ERA_1 == iEra) {
-      xColEnc.m_uMetaCode = METACODE_FORM(MC_DATE_E1,2);
+      rxColEnc.m_uMetaCode = METACODE_FORM(MC_DATE_E1,2);
     }
     else {
-      xColEnc.m_uMetaCode = METACODE_FORM(MC_DATE_E2,2);
+      rxColEnc.m_uMetaCode = METACODE_FORM(MC_DATE_E2,2);
     }
     
-    xColEnc.m_jDataBytes = C_2B;
+    rxColEnc.m_jDataBytes = C_2B;
     
   }
 
   /*----------------------------------------------------------------------------*/
   /* encode a flt column value                                                  */
   /*----------------------------------------------------------------------------*/
-  inline void vEncodeFlt(_ColEnc& xColEnc, Dtm wColVal)
+  inline void vEncodeFlt(_ColEnc& rxColEnc, Dtm wColVal)
   {
     _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
     
     // null case
-    if (bEncodeNul(xColEnc,wColVal))
+    if (bEncodeNul(rxColEnc,wColVal))
       return;
     
-    xColEnc.m_wDataCode.m_wFlt.T.m_dFlt = wColVal.m_wFlt.T.m_dFlt;
+    rxColEnc.m_wDataCode.m_wFlt.T.m_dFlt = wColVal.m_wFlt.T.m_dFlt;
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     // general case -- encode as: MC_FLT_1..8B + {D}
     i8 nD = wColVal.iByteMagn();
-    xColEnc.m_jDataBytes = nD;
+    rxColEnc.m_jDataBytes = nD;
     
-    xColEnc.m_uMetaCode = METACODE_FORM(MC_NUMERIC,nD);
+    rxColEnc.m_uMetaCode = METACODE_FORM(MC_NUMERIC,nD);
   }
 
   /*----------------------------------------------------------------------------*/
   /* encode an int column value                                                 */
   /*----------------------------------------------------------------------------*/
-  inline void vEncodeInt(_ColEnc& xColEnc, Dtm wColVal)
+  inline void vEncodeInt(_ColEnc& rxColEnc, Dtm wColVal)
   {
     _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    
     // general case -- encode as: MC_INT_1..8B + {D}
-    xColEnc.m_wDataCode.m_iWrd = wColVal.m_iWrd;
+    rxColEnc.m_wDataCode.m_iWrd = wColVal.m_iWrd;
   
     if (wColVal.m_iWrd > 10) {
-      xColEnc.m_jDataBytes = (u8)IntLib::iByteMagnitude(wColVal.m_iWrd);
+      rxColEnc.m_jDataBytes = (u8)IntLib::iByteMagnitude(wColVal.m_iWrd);
    
-      xColEnc.m_uMetaCode = METACODE_FORM(MC_NUMERIC,xColEnc.m_jDataBytes);
+      rxColEnc.m_uMetaCode = METACODE_FORM(MC_NUMERIC,rxColEnc.m_jDataBytes);
       return;
     }
   
@@ -261,7 +261,7 @@ namespace STORE
     
     // 0..10 case -- encode as MC_INT_ONE..TEN + {}
     if (wColVal.m_iWrd >= 0 && wColVal.m_iWrd <= 10) {
-      xColEnc.m_jDataBytes = C_0B;
+      rxColEnc.m_jDataBytes = C_0B;
       
       u1 uHigh = MC_POSITIVE;
       uHigh <<= 4;
@@ -269,109 +269,109 @@ namespace STORE
       u1 eTest = (uHigh | uLow);
       UNUSED(eTest);
       
-      xColEnc.m_uMetaCode = METACODE_FORM(MC_POSITIVE,wColVal.m_iWrd);
+      rxColEnc.m_uMetaCode = METACODE_FORM(MC_POSITIVE,wColVal.m_iWrd);
       return;
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     // null case
-    if (bEncodeNul(xColEnc,wColVal))
+    if (bEncodeNul(rxColEnc,wColVal))
       return;
         
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     // -1 case -- encode as: MC_INT_M_ONE + {}
     if (-1 == wColVal.m_iWrd) {
-      xColEnc.m_jDataBytes = C_0B;
+      rxColEnc.m_jDataBytes = C_0B;
       
-      xColEnc.m_uMetaCode = METACODE_FORM(MC_NEGATIVE,1);
+      rxColEnc.m_uMetaCode = METACODE_FORM(MC_NEGATIVE,1);
       return;
     }
   
-    xColEnc.m_jDataBytes = IntLib::iByteMagnitude(wColVal.m_iWrd);
+    rxColEnc.m_jDataBytes = IntLib::iByteMagnitude(wColVal.m_iWrd);
 
-    xColEnc.m_uMetaCode = METACODE_FORM(MC_NUMERIC,xColEnc.m_jDataBytes);
+    rxColEnc.m_uMetaCode = METACODE_FORM(MC_NUMERIC,rxColEnc.m_jDataBytes);
 
   }
 
   /*----------------------------------------------------------------------------*/
   /* encode an ivl column value                                                 */
   /*----------------------------------------------------------------------------*/
-  inline void vEncodeIvl(_ColEnc& xColEnc, Dtm wColVal)
+  inline void vEncodeIvl(_ColEnc& rxColEnc, Dtm wColVal)
   {
     _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
     
     // null case
-    if (bEncodeNul(xColEnc,wColVal))
+    if (bEncodeNul(rxColEnc,wColVal))
       return;
     
-    xColEnc.m_wDataCode.m_wIvl.T.m_iAsI8 = wColVal.m_wIvl.T.m_iAsI8;
+    rxColEnc.m_wDataCode.m_wIvl.T.m_iAsI8 = wColVal.m_wIvl.T.m_iAsI8;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     // general case -- encode as: MC_IVL_1..8B : {D}
     i8 nD = wColVal.iByteMagn();
-    xColEnc.m_jDataBytes = nD;
+    rxColEnc.m_jDataBytes = nD;
     
-    xColEnc.m_uMetaCode = METACODE_FORM(MC_NUMERIC,nD);
+    rxColEnc.m_uMetaCode = METACODE_FORM(MC_NUMERIC,nD);
   }
 
   /*----------------------------------------------------------------------------*/
   /* encode a tme column value                                                  */
   /*----------------------------------------------------------------------------*/
-  inline void vEncodeTme(_ColEnc& xColEnc, Dtm wColVal)
+  inline void vEncodeTme(_ColEnc& rxColEnc, Dtm wColVal)
   {
     _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
     
     // null case
-    if (bEncodeNul(xColEnc,wColVal))
+    if (bEncodeNul(rxColEnc,wColVal))
       return;
     
-    xColEnc.m_wDataCode.m_wTme.m_iAsI8 = wColVal.m_wTme.m_iAsI8;
+    rxColEnc.m_wDataCode.m_wTme.m_iAsI8 = wColVal.m_wTme.m_iAsI8;
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     // general case -- encode as: MC_TME_1..8B : {D}
     i8 nD = wColVal.iByteMagn();
-    xColEnc.m_jDataBytes = nD;
+    rxColEnc.m_jDataBytes = nD;
     
-    xColEnc.m_uMetaCode = METACODE_FORM(MC_NUMERIC,nD);
+    rxColEnc.m_uMetaCode = METACODE_FORM(MC_NUMERIC,nD);
   }
 
   /*----------------------------------------------------------------------------*/
   /* encode a tsp column value                                                  */
   /*----------------------------------------------------------------------------*/
-  inline void vEncodeTsp(_ColEnc& xColEnc, Dtm wColVal)
+  inline void vEncodeTsp(_ColEnc& rxColEnc, Dtm wColVal)
   {
     _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
     
     // null case
-    if (bEncodeNul(xColEnc,wColVal))
+    if (bEncodeNul(rxColEnc,wColVal))
       return;
     
-    xColEnc.m_wDataCode.m_wTsp.T.m_iAsI8 = wColVal.m_wTsp.T.m_iAsI8;
+    rxColEnc.m_wDataCode.m_wTsp.T.m_iAsI8 = wColVal.m_wTsp.T.m_iAsI8;
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     // encode as: MC_1..8B : {D}
     i8 nD = 8;
-    xColEnc.m_jDataBytes = nD;
+    rxColEnc.m_jDataBytes = nD;
     
-    xColEnc.m_uMetaCode = METACODE_FORM(MC_NUMERIC,nD);
+    rxColEnc.m_uMetaCode = METACODE_FORM(MC_NUMERIC,nD);
   }
 
   /*----------------------------------------------------------------------------*/
   /* encode a vch column value                                                  */
   /*----------------------------------------------------------------------------*/
-  inline void vEncodeVch(_ColEnc& xColEnc, Dtm wColVal)
+  inline void vEncodeVch(_ColEnc& rxColEnc, Dtm wColVal)
   {
     _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
     
     u1 nQuanta;
     
     // null case
-    if (bEncodeNul(xColEnc,wColVal))
+    if (bEncodeNul(rxColEnc,wColVal))
       return;
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -391,10 +391,10 @@ namespace STORE
     if (jVchSize <= 15) {
       nQuanta = jVchSize; //MemLib::nQuantaRequired(nS,1);
       
-      xColEnc.m_wDataCode.m_azStr = (char*)wColVal.m_szVch;
-      xColEnc.m_jDataBytes = STRx1(nQuanta);
+      rxColEnc.m_wDataCode.m_azStr = (char*)wColVal.m_szVch;
+      rxColEnc.m_jDataBytes = STRx1(nQuanta);
       
-      xColEnc.m_uMetaCode = METACODE_FORM(MC_STRING_x1,nQuanta);
+      rxColEnc.m_uMetaCode = METACODE_FORM(MC_STRING_x1,nQuanta);
       return;
     }
     
@@ -402,10 +402,10 @@ namespace STORE
     if (jVchSize <= 45) {
       nQuanta = MemLib::nQuantaRequired(jVchSize-15,2);
       
-      xColEnc.m_wDataCode.m_azStr = (char*)wColVal.m_szVch;
-      xColEnc.m_jDataBytes = STRx2(nQuanta);
+      rxColEnc.m_wDataCode.m_azStr = (char*)wColVal.m_szVch;
+      rxColEnc.m_jDataBytes = STRx2(nQuanta);
       
-      xColEnc.m_uMetaCode = METACODE_FORM(MC_STRING_x2,nQuanta);
+      rxColEnc.m_uMetaCode = METACODE_FORM(MC_STRING_x2,nQuanta);
 
       return;
     }
@@ -415,10 +415,10 @@ namespace STORE
       nQuanta = MemLib::nQuantaRequired(jVchSize-45,4);
       
 
-      xColEnc.m_wDataCode.m_azStr = (char*)wColVal.m_szVch;
-      xColEnc.m_jDataBytes = STRx4(nQuanta);
+      rxColEnc.m_wDataCode.m_azStr = (char*)wColVal.m_szVch;
+      rxColEnc.m_jDataBytes = STRx4(nQuanta);
       
-      xColEnc.m_uMetaCode = METACODE_FORM(MC_STRING_x4,nQuanta);
+      rxColEnc.m_uMetaCode = METACODE_FORM(MC_STRING_x4,nQuanta);
 
       return;
     }
@@ -427,19 +427,19 @@ namespace STORE
     if (jVchSize <= 225) {
       nQuanta = MemLib::nQuantaRequired(jVchSize-105,8);
       
-      xColEnc.m_wDataCode.m_azStr = (char*)wColVal.m_szVch;
-      xColEnc.m_jDataBytes = STRx8(nQuanta);
+      rxColEnc.m_wDataCode.m_azStr = (char*)wColVal.m_szVch;
+      rxColEnc.m_jDataBytes = STRx8(nQuanta);
       
-      xColEnc.m_uMetaCode = METACODE_FORM(MC_STRING_x8,nQuanta);
+      rxColEnc.m_uMetaCode = METACODE_FORM(MC_STRING_x8,nQuanta);
 
       return;
     }
 
     // 5) MC_STRING_TAIL
-    xColEnc.m_wDataCode.m_azStr = (char*)wColVal.m_szVch;
-    xColEnc.m_jDataBytes = jVchSize;
+    rxColEnc.m_wDataCode.m_azStr = (char*)wColVal.m_szVch;
+    rxColEnc.m_jDataBytes = jVchSize;
       
-    xColEnc.m_uMetaCode = METACODE_FORM(MC_STRING_TAIL,2);
+    rxColEnc.m_uMetaCode = METACODE_FORM(MC_STRING_TAIL,2);
   }
 
   /*--------------------------------------------------------------------------*/

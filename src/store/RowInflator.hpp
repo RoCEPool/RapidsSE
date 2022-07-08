@@ -482,7 +482,7 @@ namespace STORE
         
       case MC_STRING_TAIL: // string in tail -- -- -- -- -- -- -- -- -- -- -- --
         u_Tail_rel = *(u2*)rayDataByte;
-        aTailLine = aHeadLine->aGetTailRel(u_Tail_rel);
+        aTailLine = aHeadLine->aGetTail_rel(u_Tail_rel);
         
         nStrSize = (i8)aTailLine->w8_1B(+ C_U_1B);
         
@@ -1054,7 +1054,7 @@ namespace STORE
         
       case MC_STRING_TAIL: // string in tail -- -- -- -- -- -- -- -- -- -- -- --
         u_Tail_rel = *(u2*)ayDataByte;
-        aTailLine = aHeadLine->aGetTailRel(u_Tail_rel);
+        aTailLine = aHeadLine->aGetTail_rel(u_Tail_rel);
         
         nStrSize = (i8)aTailLine->w8_1B(+ C_U_1B);
         

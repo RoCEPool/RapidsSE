@@ -35,7 +35,7 @@ void CrwPacker::vPackCrw(HeadLine* aHeadLine, Encoding* pEncoding)
 
   i8 o_BaseOffsetMeta = C_CONTROL_SIZE;
 
-  i8 jHeadBytes = aHeadLine->nBytes();
+  i8 jHeadBytes = aHeadLine->jSizeBytes();
   OverLine* aOverLine = nullptr;
 
   i8 nCols = pEncoding->m_nColumns;
@@ -243,7 +243,7 @@ void CrwPacker::vPackCrw(HeadLine* aHeadLine, Encoding* pEncoding)
   L_PackVch_Tail:
 
     // calculate [TL]
-    i_Tail_rel = aHeadLine->iGetTailRel(rxColEnc.m_aTailLine);
+    i_Tail_rel = aHeadLine->iToTail_rel(rxColEnc.m_aTailLine);
     
     //      -- HeadLine / OverLine --                -- TailLine --
     // +--------------------------------+   **********************************

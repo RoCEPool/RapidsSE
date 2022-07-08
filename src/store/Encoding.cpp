@@ -275,12 +275,12 @@ void Encoding::vInitialEncodingRow(Row* pRow)
     
     _ColEnc& xrColEnc = xaColEnc[i_Col];
     
-    Dtm wColVal = pRow->wColDtm(i_Col);
-    
     // - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // encode the column value
     
-    switch (xrColEnc.m_pCol->eDatum()) {
+    eDM eDatum  = xrColEnc.m_pCol->eDatum();
+    Dtm wColVal = pRow->wColDtm(i_Col);
+    switch (eDatum) {
         
       case DM_BCD: vEncodeBcd(xrColEnc,wColVal);  break;
       case DM_BOL: vEncodeBol(xrColEnc,wColVal);  break;
@@ -310,7 +310,6 @@ void Encoding::vInitialEncodingRow(Row* pRow)
     // set the offset of this column
     xrColEnc.m_o_DataFrom = m_o_DataOffsetNext;
     
-    
     // if 0B case then till is same as offset
     if (! xrColEnc.m_jDataBytes) {
       xrColEnc.m_o_DataBreak = m_o_DataOffsetNext;
@@ -321,7 +320,7 @@ void Encoding::vInitialEncodingRow(Row* pRow)
     m_o_DataOffsetNext += xrColEnc.m_jDataBytes;
     
     // set the till byte of the column encoding
-    xrColEnc.m_o_DataBreak = m_o_DataOffsetNext; // - 1;
+    xrColEnc.m_o_DataBreak = m_o_DataOffsetNext;
   } // for i_Col
   
   m_jBytesNeeded = m_o_DataOffsetNext;

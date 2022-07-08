@@ -53,7 +53,7 @@ byte* HeadLine::ayAdrLogical(i8 i_Offset)
   }
   
   // scenario 2: there is an overflow, but getting address from head
-  i8 nHeadBytes = nBytes();
+  i8 nHeadBytes = jSizeBytes();
   if (i_Offset < nHeadBytes - 2) {
     byte* ayAdr = (byte*)this + i_Offset;
     return ayAdr;
@@ -64,18 +64,6 @@ byte* HeadLine::ayAdrLogical(i8 i_Offset)
   i8 i_Offset_over = i_Offset - nHeadBytes;
   byte* ayAdr = (byte*)aOverLine + i_Offset_over;
   return ayAdr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* return size of head in bytes                                               */
-/*----------------------------------------------------------------------------*/
-i8 HeadLine::nBytes(void)
-{
-  _nonProper_
-  
-  i8 nSizeBytes = nWords() * C_BYTES_PER_WORD;
-  
-  return nSizeBytes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -107,7 +95,7 @@ void HeadLine::vDump(void)
 {
   _nonProper_
   
-  i8 nSizeBytes = nBytes();
+  i8 nSizeBytes = jSizeBytes();
   MemLib::vWordDump(this,nSizeBytes);
   
   if (! bHasOverflow())
@@ -121,11 +109,9 @@ void HeadLine::vDump(void)
 /*----------------------------------------------------------------------------*/
 /* calculate free space of a head line                                        */
 /*----------------------------------------------------------------------------*/
-i8 HeadLine::nFreeSpace(StreamDef* pStreamDef)
+i8 HeadLine::jFreeSpaceBytes(StreamDef* pStreamDef)
 {
   _nonProper_
-  
-  i8 nDataBytes;
   
   //MemLib::vWordDump(aHeadLine,m_nHeadBytes);
   
@@ -142,9 +128,9 @@ i8 HeadLine::nFreeSpace(StreamDef* pStreamDef)
   u1 uHigh = METACODE_HIGH(uLastEncoding);
   u1 uLow  = METACODE_LOW(uLastEncoding);
 
-  nDataBytes = RowCoder::nDataSizeOfCode(uHigh,uLow);
+  i8 nDataBytes = RowCoder::nDataSizeOfCode(uHigh,uLow);
   
-  i8 nFreeBytes = nBytes() - i_OfsCrs_ - nDataBytes;
+  i8 nFreeBytes = jSizeBytes() - i_OfsCrs_ - nDataBytes;
   
 //  if (nFreeBytes < 0)
 //    vDebugPoint();
@@ -168,7 +154,7 @@ w8 HeadLine::wGetLogical(i8 i_Offset, i8 nDataSize)
   }
   
   // scenario 2: there is an overflow, but getting bytes from head
-  i8 nHeadBytes = nBytes();
+  i8 nHeadBytes = jSizeBytes();
   if (i_Offset < nHeadBytes - 2) {
     wDataCode = wGet(i_Offset,nDataSize);
     return wDataCode;
@@ -208,7 +194,7 @@ u1 HeadLine::uGetEncMetaCode(Column* pForCol, i8& i_ColCrs_, i8& i_OfsCrs_,
     u1 uLow  = METACODE_LOW(uEncoding);
 
     if (MC_OVERFLOW == uHigh) {
-      i_OfsCrs_ = nBytes() + C_U_1B;
+      i_OfsCrs_ = jSizeBytes() + C_U_1B;
       uEncoding = (u1)wGetLogical(i_OfsCrs_++,C_1B);
       i_OfsCrs_ += RowCoder::nDataSizeOfCode(uHigh,uLow);
     }
@@ -242,7 +228,7 @@ u1 HeadLine::uGetEncMetaCode(Column* pForCol, i8& i_ColCrs_, i8& i_OfsCrs_,
   UNUSED(uLow);
   
   if (MC_OVERFLOW == uHigh) {
-    i_OfsCrs_ = nBytes() + C_U_1B + C_M_1B;
+    i_OfsCrs_ = jSizeBytes() + C_U_1B + C_M_1B;
     OverLine* aOverLine = aGetOver();
     uEncoding = (u1)aOverLine->w8_1B(1);
   }
@@ -253,7 +239,7 @@ u1 HeadLine::uGetEncMetaCode(Column* pForCol, i8& i_ColCrs_, i8& i_OfsCrs_,
 }
 
 /*----------------------------------------------------------------------------*/
-/* get overflow line using relative index [OT]                                */
+/* get overflow line                                                          */
 /*----------------------------------------------------------------------------*/
 OverLine* HeadLine::aGetOver(void)
 {
@@ -266,9 +252,9 @@ OverLine* HeadLine::aGetOver(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get tail line using relative index [FT]                                    */
+/* get relative index of given tail line                                      */
 /*----------------------------------------------------------------------------*/
-i8 HeadLine::iGetTailRel(TailLine* TailLine)
+i8 HeadLine::iToTail_rel(TailLine* TailLine)
 {
   _nonProper_
   
@@ -278,9 +264,9 @@ i8 HeadLine::iGetTailRel(TailLine* TailLine)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get tail line using relative index [FT]                                    */
+/* get tail line using relative index                                         */
 /*----------------------------------------------------------------------------*/
-TailLine* HeadLine::aGetTailRel(i8 i_Tail_rel)
+TailLine* HeadLine::aGetTail_rel(i8 i_Tail_rel)
 {
   _nonProper_
   
@@ -340,7 +326,7 @@ i8 HeadLine::iOverflow2B(void)
 {
   _nonProper_
   
-  i8 nHeadBytes = nBytes();
+  i8 nHeadBytes = jSizeBytes();
   
   i8 iOver2B = w8_2B(nHeadBytes - C_2B);
 
@@ -354,7 +340,7 @@ void HeadLine::vOverflow2B(i8 iOver2B)
 {
   _nonProper_
   
-  i8 nHeadBytes = nBytes();
+  i8 nHeadBytes = jSizeBytes();
   
   v2B(nHeadBytes - C_2B,iOver2B);
 }
@@ -373,7 +359,7 @@ void HeadLine::vPutDataLogical(i8 i_Offset, w8 wDataCode, i8 nDataSize)
   }
   
   // scenario 2: there is an overflow, but putting bytes into head
-  i8 nHeadBytes = nBytes();
+  i8 nHeadBytes = jSizeBytes();
   if (i_Offset < nHeadBytes - 2) {
     vPut(i_Offset,wDataCode,nDataSize);
     return;
@@ -438,9 +424,21 @@ void HeadLine::vSetOver(OverLine* aOverLine)
 }
 
 /*----------------------------------------------------------------------------*/
+/* return size of head in bytes                                               */
+/*----------------------------------------------------------------------------*/
+i8 HeadLine::jSizeBytes(void)
+{
+  _nonProper_
+  
+  i8 jBytes = jSizeWords() * C_BYTES_PER_WORD;
+  
+  return jBytes;
+}
+
+/*----------------------------------------------------------------------------*/
 /* return size of head in units                                               */
 /*----------------------------------------------------------------------------*/
-i8 HeadLine::nUnits(void)
+i8 HeadLine::jSizeUnits(void)
 {
   _nonProper_
   
@@ -450,6 +448,18 @@ i8 HeadLine::nUnits(void)
     nSizeUnits -= 128;
   
   return nSizeUnits;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return size of head in words                                               */
+/*----------------------------------------------------------------------------*/
+i8 HeadLine::jSizeWords(void)
+{
+  _nonProper_
+  
+  i8 nSizeWords = jSizeUnits();
+  
+  return nSizeWords;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -472,18 +482,6 @@ void HeadLine::vW(i8 nWords)
   _nonProper_
   
   v1B(C_HEADLINE_OFS_WORDS,nWords);
-}
-
-/*----------------------------------------------------------------------------*/
-/* return size of head in words                                               */
-/*----------------------------------------------------------------------------*/
-i8 HeadLine::nWords(void)
-{
-  _nonProper_
-  
-  i8 nSizeWords = nUnits();
-  
-  return nSizeWords;
 }
 
 /*============================================================================*/

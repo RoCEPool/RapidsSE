@@ -78,7 +78,7 @@ namespace STORE
     void    vReplicated(bool bReplicated);
     void    vResetPointers(void);
     RowPix* pRowPix(void);
-    i8      jRowSize(void);
+    i8      jRowSizeBytes(void);
   
     void    vStreamDefNm(Stz* szStreamDefNm);
     Stz*    szStreamDefNm(void);
