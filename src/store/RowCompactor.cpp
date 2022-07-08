@@ -378,6 +378,8 @@ void RowCompactor::vEncodeDupeTailsForRow(Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
+  i8 i_Tail;
+  
   i8 nCols = m_pStreamDef->nColumns();
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     
@@ -406,8 +408,7 @@ void RowCompactor::vEncodeDupeTailsForRow(Row* pRow)
     //vDumpTails();
 #endif
     
-    i8 i_Tail;
-    TailLine* aTailLine = m_pCrwNub->aFindTail(azStr, i_Tail);
+    TailLine* aTailLine = m_pCrwNub->aFindTail(azStr,i_Tail);
     
     if (aTailLine) {
       // + found a matching tail
@@ -575,6 +576,153 @@ void RowCompactor::vCreateSampleTail(Column* pCol,
 #endif
   
   //vDebugPoint();
+}
+
+
+
+/*----------------------------------------------------------------------------*/
+/* add given row from row buffer into current crw buffer                      */
+/*----------------------------------------------------------------------------*/
+bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+  i8 nBytesNeeded = 0;
+  i8 o_DataFromNext = 0;
+  i8 jHeadSizeBytes = 0;
+//  i8 jOverSizeBytes = 0;
+//  i8 jAllTailsSizeBytes = 0;
+
+  bool bAllotOver = false;
+  bool bAllotTails = false;
+
+  i8 nCols = m_pStreamDef->nColumns();
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 1) encode all column values: set column meta code, data code and data bytes
+
+  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+    _ColEnc& rxColEnc = m_pEncoding->xaColEnc[i_Col];
+    
+    Dtm wColDtm = pRow->wColDtm(i_Col);
+
+    if (wColDtm.bIsNull()) {
+      // null case
+      rxColEnc.m_uMetaCode = METACODE_FORM(MC_NULL,0);
+      rxColEnc.m_wDataCode.vSetNull();
+      rxColEnc.m_jDataBytes = C_0B;
+      continue;
+    }
+    
+    eDM eDatum  = rxColEnc.m_pCol->eDatum();
+    switch (eDatum) {
+        
+      case DM_BCD:
+        break;
+        
+      case DM_BOL:
+        break;
+        
+      case DM_DTE:
+        break;
+        
+      case DM_FLT:
+        break;
+        
+      case DM_INT:
+        break;
+        
+      case DM_IVL:
+        break;
+        
+      case DM_IVY:
+        NEVER_REACH;
+        break;
+        
+      case DM_TME:
+        break;
+        
+      case DM_TSP:
+        break;
+        
+      case DM_VCH:
+        break;
+        
+      case DM_UNK:
+        NEVER_REACH;
+        break;
+        
+      default:
+        NEVER_REACH;
+        
+    } // switch eDatum
+
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // .) determine column data from & break;
+
+  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+    _ColEnc& rxColEnc = m_pEncoding->xaColEnc[i_Col];
+
+    i8 jDataBytes  = rxColEnc.m_jDataBytes;
+    i8 o_DataFrom  = o_DataFromNext;
+    i8 o_DataBreak = o_DataFrom + jDataBytes;
+
+    if (bAllotOver || o_DataBreak < jHeadSizeBytes) {
+      rxColEnc.m_o_DataFrom  = o_DataFrom;
+      rxColEnc.m_o_DataBreak = o_DataBreak;
+      o_DataFromNext += jDataBytes;
+      continue;
+    }
+    
+    bAllotOver = true;
+    o_DataFromNext = -1;
+    o_DataFrom  = o_DataFromNext;
+    o_DataBreak = o_DataFrom + jDataBytes;
+    
+    rxColEnc.m_o_DataFrom  = o_DataFrom;
+    rxColEnc.m_o_DataBreak = o_DataBreak;
+    o_DataFromNext += jDataBytes;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // .) allot the compact row (head, over and tails)
+
+  if (! m_pCrwNub->bHasSpace(nBytesNeeded)) {
+    m_aHeadLine = nullptr;
+    return false;
+  }
+
+  // allot headline
+  
+  // opt allot overline
+  if (bAllotOver) {
+    
+  }
+  
+  // opt allot tails
+  if (bAllotTails) {
+    for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+      _ColEnc& rxColEnc = m_pEncoding->xaColEnc[i_Col];
+      
+      if (rxColEnc.m_jTailBytes) {
+        
+      }
+    }
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // .) pack encoded row into the compact row
+
+  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+    _ColEnc& rxColEnc = m_pEncoding->xaColEnc[i_Col];
+
+    rxColEnc.m_o_DataFrom = C_UNKNOWN;
+  }
+
+  return false;
 }
 
 /*============================================================================*/

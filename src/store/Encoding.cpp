@@ -222,36 +222,33 @@ void Encoding::vSplitOver(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
+  m_nShiftOver = 0;
+  
   // test if encoding fits in head
-  if (m_jBytesNeeded <= m_jHeadSize) {
-    m_nShiftOver = 0;
+  if (m_jBytesNeeded <= m_jHeadSize)
     return;
-  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // split into head and oveflow
   
   Column* pSplitCol = pNonFitting();
+  if (! pSplitCol)
+    return;
   
-  // ray : 30 may 2020 : i added this if to test for pSplitCol.  was crashing
-  if (pSplitCol) {
-    i8 i_SplitCol = pSplitCol->iColumnNo();
-    
-    // mark the column where split occurred
-    xaColEnc[i_SplitCol].m_bSplit = true;
-    
-    // calc the number of bytes needed to shift columns into overflow
-    m_nShiftOver = m_jHeadSize - xaColEnc[i_SplitCol].m_o_DataFrom + C_U_1B + C_M_1B;
-    
-    m_jBytesNeeded += m_nShiftOver;
-    m_jOverSize = m_jBytesNeeded - m_jHeadSize;
+  i8 i_SplitCol = pSplitCol->iColumnNo();
+  xaColEnc[i_SplitCol].m_bSplit = true;
+  
+  // calc the number of bytes needed to shift columns into overflow
+  m_nShiftOver = m_jHeadSize - xaColEnc[i_SplitCol].m_o_DataFrom + C_U_1B + C_M_1B;
+  
+  m_jBytesNeeded += m_nShiftOver;
 
-    // shift columns into overflow
-    for ( ; i_SplitCol < m_nColumns; i_SplitCol++) {
-      xaColEnc[i_SplitCol].m_o_DataFrom  += m_nShiftOver;
-      xaColEnc[i_SplitCol].m_o_DataBreak += m_nShiftOver;
-    }
+  m_jOverSize = m_jBytesNeeded - m_jHeadSize;
 
+  // shift columns into overflow
+  for ( ; i_SplitCol < m_nColumns; i_SplitCol++) {
+    xaColEnc[i_SplitCol].m_o_DataFrom  += m_nShiftOver;
+    xaColEnc[i_SplitCol].m_o_DataBreak += m_nShiftOver;
   }
 }
 
@@ -305,21 +302,21 @@ void Encoding::vInitialEncodingRow(Row* pRow)
     } // switch eDatum
     
     // - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // compute initial offset and till for this column
+    // compute initial from and break offsets for this column
     
-    // set the offset of this column
+    // set the from offset of this column
     xrColEnc.m_o_DataFrom = m_o_DataOffsetNext;
     
-    // if 0B case then till is same as offset
+    // if 0B case then break offset is same as from offset
     if (! xrColEnc.m_jDataBytes) {
       xrColEnc.m_o_DataBreak = m_o_DataOffsetNext;
       continue;
     }
           
-    // set where the next offset will be
+    // set where the next data offset will be
     m_o_DataOffsetNext += xrColEnc.m_jDataBytes;
     
-    // set the till byte of the column encoding
+    // set the break offset byte of this column
     xrColEnc.m_o_DataBreak = m_o_DataOffsetNext;
   } // for i_Col
   
