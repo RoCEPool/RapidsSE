@@ -248,7 +248,17 @@ def start_instances(instance_type: str,
     LOG.info(f"{ctx}Private IP addresses assigned: {str(ip_addresses)}")
 
     # Wait for all of the instances to be usable
-    __wait_for_instances_to_be_ready(instance_ids, ip_addresses, timeout_sec, name_prefix, client, ctx)
+    try:
+        __wait_for_instances_to_be_ready(instance_ids, ip_addresses, timeout_sec, name_prefix, client, ctx)
+
+    except (Exception,):
+        # Clean up, but try to ignore any errors in the process
+        try:
+            terminate_instances(instance_ids, ctx)
+        except botocore.exceptions.ClientError:
+            pass
+        except AssertionError:
+            pass
 
     return instance_ids, ip_addresses
 
@@ -459,16 +469,30 @@ def __wait_for_instances_to_be_running(instance_ids: [str], timeout_sec: float, 
     current_time = time.time()
     end_time = current_time + timeout_sec
 
-    # Wait 1 second to start with before issuing the first request
     time.sleep(1.0)
     attempts = 0
 
     while current_time < end_time:
+        time.sleep(1.0)
+        current_time = time.time()
+
         attempts += 1
-        response = client.describe_instances(**kwargs)
 
         if attempts % C_MSG_PERIOD == 0:
             LOG.debug(f"{ctx}Time remaining (VM creation): %.1f seconds", end_time - current_time)
+
+        try:
+            response = client.describe_instances(**kwargs)
+        except botocore.exceptions.ClientError as e:
+            # https://boto3.amazonaws.com/v1/documentation/api/latest/guide/error-handling.html
+            if e.response['Error']['Code'] == 'InvalidInstanceID.NotFound':
+                # This can occur because AWS internals are eventually consistent.
+                # So the API endpoint might not know about the instance just yet.
+                # Reference: https://docs.aws.amazon.com/AWSEC2/latest/APIReference/
+                #            query-api-troubleshooting.html#eventual-consistency
+                continue
+            else:
+                raise
 
         assert len(response["Reservations"]) == 1
         instances = response["Reservations"][0]["Instances"]
@@ -483,9 +507,6 @@ def __wait_for_instances_to_be_running(instance_ids: [str], timeout_sec: float, 
         if all_ready:
             LOG.info(f"{ctx}All VM instances have been created are in the 'running' state")
             return
-
-        time.sleep(1.0)
-        current_time = time.time()
 
     # We timed out
     msg = f"{ctx}Timed out waiting for {len(instance_ids)} VM instance(s) to be created and enter the " \
