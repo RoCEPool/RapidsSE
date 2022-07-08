@@ -55,8 +55,8 @@ Encoding::Encoding(StreamDef* pStreamDef)
     rxColEnc.m_uMetaCode  = 0;
     rxColEnc.m_wDataCode  = C_UNKNOWN;
     rxColEnc.m_jDataSize  = C_UNKNOWN;
-    rxColEnc.m_o_From   = 0;
-    rxColEnc.m_o_Till     = 0;
+    rxColEnc.m_o_DataFrom = 0;
+    rxColEnc.m_o_DataBreak= 0;
     rxColEnc.m_bSplit     = false;
     
     rxColEnc.m_i_Tail     = C_UNKNOWN;
@@ -136,8 +136,8 @@ void Encoding::vDumpEncoding(void)
     vTrace("  m_uLow           : %lld\n"_Stz, rxColEnc.m_uLow);
     vTrace("  m_wDataCode      : %s\n"_Stz,   rxColEnc.m_wDataCode.m_azStr);
     vTrace("  m_jDataSize      : %lld\n"_Stz, rxColEnc.m_jDataSize);
-    vTrace("  m_i_Offset       : %lld\n"_Stz, rxColEnc.m_o_From);
-    vTrace("  m_i_Till         : %lld\n"_Stz, rxColEnc.m_o_Till);
+    vTrace("  m_o_DataFrom     : %lld\n"_Stz, rxColEnc.m_o_DataFrom);
+    vTrace("  m_o_DataBreak    : %lld\n"_Stz, rxColEnc.m_o_DataBreak);
     vTrace("  m_bSplit         : %lld\n"_Stz, (i8)rxColEnc.m_bSplit);
     vTrace("  m_i_Tail         : %lld\n"_Stz, rxColEnc.m_i_Tail);
     vTrace("  m_aTailLine      : %p\n"_Stz,   rxColEnc.m_aTailLine);
@@ -171,14 +171,14 @@ void Encoding::vMorphEncoding(_ColEnc& rxColEnc)
   rxColEnc.m_uMetaCode = METACODE_FORM(MC_STRING_TAIL,2);
   rxColEnc.m_wDataCode = rxColEnc.m_i_Tail;
   rxColEnc.m_jDataSize = C_2B;
-  rxColEnc.m_o_Till   += nOffsetAdj;
+  rxColEnc.m_o_DataBreak += nOffsetAdj;
 
   // adjust remaining columns based on MC_STR_FIT_1L becoming MC_STR_TAIL_2T
   for (i8 i_RmgCol = (1 + rxColEnc.m_pCol->iColumnNo());
        i_RmgCol < m_nColumns;
        i_RmgCol++) {
-    xaColEnc[i_RmgCol].m_o_From += nOffsetAdj;
-    xaColEnc[i_RmgCol].m_o_Till   += nOffsetAdj;
+    xaColEnc[i_RmgCol].m_o_DataFrom  += nOffsetAdj;
+    xaColEnc[i_RmgCol].m_o_DataBreak += nOffsetAdj;
   }
   
   m_jBytesNeeded += nOffsetAdj;
@@ -238,15 +238,15 @@ void Encoding::vSplitOver(void)
     xaColEnc[i_SplitCol].m_bSplit = true;
     
     // calc the number of bytes needed to shift columns into overflow
-    m_nShiftOver = m_jHeadSize - xaColEnc[i_SplitCol].m_o_From + C_U_1B + C_M_1B;
+    m_nShiftOver = m_jHeadSize - xaColEnc[i_SplitCol].m_o_DataFrom + C_U_1B + C_M_1B;
     
     m_jBytesNeeded += m_nShiftOver;
     m_jOverSize = m_jBytesNeeded - m_jHeadSize;
 
     // shift columns into overflow
     for ( ; i_SplitCol < m_nColumns; i_SplitCol++) {
-      xaColEnc[i_SplitCol].m_o_From += m_nShiftOver;
-      xaColEnc[i_SplitCol].m_o_Till   += m_nShiftOver;
+      xaColEnc[i_SplitCol].m_o_DataFrom  += m_nShiftOver;
+      xaColEnc[i_SplitCol].m_o_DataBreak += m_nShiftOver;
     }
 
   }
@@ -305,12 +305,12 @@ void Encoding::vInitialEncodingRow(Row* pRow)
     // compute initial offset and till for this column
     
     // set the offset of this column
-    xrColEnc.m_o_From = m_o_DataOffsetNext;
+    xrColEnc.m_o_DataFrom = m_o_DataOffsetNext;
     
     
     // if 0B case then till is same as offset
     if (! xrColEnc.m_jDataSize) {
-      xrColEnc.m_o_Till = m_o_DataOffsetNext;
+      xrColEnc.m_o_DataBreak = m_o_DataOffsetNext;
       continue;
     }
           
@@ -318,7 +318,7 @@ void Encoding::vInitialEncodingRow(Row* pRow)
     m_o_DataOffsetNext += xrColEnc.m_jDataSize;
     
     // set the till byte of the column encoding
-    xrColEnc.m_o_Till = m_o_DataOffsetNext; // - 1;
+    xrColEnc.m_o_DataBreak = m_o_DataOffsetNext; // - 1;
   } // for i_Col
   
   m_jBytesNeeded = m_o_DataOffsetNext;
@@ -343,14 +343,14 @@ Column* Encoding::pNonFitting(void)
   i8 i_LastCol = m_nColumns - 1;
     
   // last column fits? (e.g. 0..31 < 32)
-  if (xaColEnc[i_LastCol].m_o_Till < m_jHeadSize)
+  if (xaColEnc[i_LastCol].m_o_DataBreak < m_jHeadSize)
     return nullptr;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   for (i8 i_Col = i_LastCol - 1; i_Col >= 0; i_Col--) {
 
-    if (xaColEnc[i_Col].m_o_Till < m_jHeadSize - C_OT_2B)
+    if (xaColEnc[i_Col].m_o_DataBreak < m_jHeadSize - C_OT_2B)
       return xaColEnc[ (i_Col + 1) ].m_pCol;
   }
 
@@ -379,8 +379,8 @@ void Encoding::vReset(void)
     
     rxColEnc.m_wDataCode  = C_UNKNOWN;
     rxColEnc.m_jDataSize  = C_UNKNOWN;
-    rxColEnc.m_o_From   = 0;
-    rxColEnc.m_o_Till     = 0;
+    rxColEnc.m_o_DataFrom   = 0;
+    rxColEnc.m_o_DataBreak     = 0;
     rxColEnc.m_bSplit     = false;
     
     rxColEnc.m_i_Tail     = C_UNKNOWN;
@@ -406,7 +406,7 @@ bool Encoding::bWithinHead(i8 i_Col)
   if (i_Col == m_nColumns - 1) {
 
     // last column fits? (e.g. 0..31 < 32)
-    if (xaColEnc[i_Col].m_o_Till < m_jHeadSize)
+    if (xaColEnc[i_Col].m_o_DataBreak < m_jHeadSize)
       return true;
 
     // last column doesnt fit
@@ -418,11 +418,11 @@ bool Encoding::bWithinHead(i8 i_Col)
   
   // this and next column fit? (e.g. 0..31 < 32)
   i8 i_Col_next = i_Col + 1;
-  if (xaColEnc[i_Col_next].m_o_Till < m_jHeadSize)
+  if (xaColEnc[i_Col_next].m_o_DataBreak < m_jHeadSize)
     return true;
  
   // this column plus overflow fit? (e.g. 0..29 + 2 < 32)
-  if (xaColEnc[i_Col].m_o_Till + C_OT_2B < m_jHeadSize)
+  if (xaColEnc[i_Col].m_o_DataBreak + C_OT_2B < m_jHeadSize)
     return true;
 
   // this column doesnt fit

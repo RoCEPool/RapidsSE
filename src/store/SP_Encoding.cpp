@@ -121,10 +121,10 @@ void SP_Encoding::vEncoding(Encoding* pEncoding)
 
     StrLib::vAppendPad(&szCrs,caLine,60);
     
-    if (pEncoding->xaColEnc[i_Col].m_o_Till) {
-      StrLib::vAppendDecimal(&szCrs,aColEnc->m_o_From);
+    if (pEncoding->xaColEnc[i_Col].m_o_DataBreak) {
+      StrLib::vAppendDecimal(&szCrs,aColEnc->m_o_DataFrom);
       StrLib::vAppendString(&szCrs,(char*)".."_Stz);
-      StrLib::vAppendDecimal(&szCrs,aColEnc->m_o_Till);
+      StrLib::vAppendDecimal(&szCrs,aColEnc->m_o_DataBreak);
     }
     
     StrLib::vAppendPad(&szCrs,caLine,70);

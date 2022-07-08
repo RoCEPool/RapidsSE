@@ -21,8 +21,8 @@ namespace STORE
     
     Dtm  m_wDataCode;  // column value data bytes
     i8   m_jDataSize;  // complete number of data code bytes, incl <L> etc
-    i8   m_o_From;     // first byte offset in head+over where the data code is
-    i8   m_o_Till;     // last byte offset in head+over where the data code is
+    i8   m_o_DataFrom; // first byte offset in head+over where the data code is
+    i8   m_o_DataBreak;// byte after last byte offset in head+over where the data code is
     b8   m_bSplit;     // overflow occurs at this point
     
     i8   m_i_Tail;     // absolute index of tail

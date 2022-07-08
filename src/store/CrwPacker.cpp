@@ -171,14 +171,14 @@ void CrwPacker::vPackCrw(HeadLine* aHeadLine, Encoding* pEncoding)
     
     // put {D}
     if (aOverLine) {
-      i_Offset_over = aColEnc->m_o_From - nHeadBytes;
+      i_Offset_over = aColEnc->m_o_DataFrom - nHeadBytes;
 
       aOverLine->vPut(i_Offset_over,
                       aColEnc->m_wDataCode.m_iWrd,
                       aColEnc->m_jDataSize);
     }
     else {
-      aHeadLine->vPut(aColEnc->m_o_From,
+      aHeadLine->vPut(aColEnc->m_o_DataFrom,
                       aColEnc->m_wDataCode.m_iWrd,
                       aColEnc->m_jDataSize);
     }
@@ -221,7 +221,7 @@ void CrwPacker::vPackCrw(HeadLine* aHeadLine, Encoding* pEncoding)
     
     // put <StringZ> (with null terminator)
     if (aOverLine) {
-      i_Offset_over = aColEnc->m_o_From - nHeadBytes;
+      i_Offset_over = aColEnc->m_o_DataFrom - nHeadBytes;
       aByte = ((byte*)aOverLine) + i_Offset_over;
       MemLib::vCopy(aByte,aColEnc->m_wDataCode.m_szVch,nStrBytes,CN_ROWCOMPACTOR);
 
@@ -230,7 +230,7 @@ void CrwPacker::vPackCrw(HeadLine* aHeadLine, Encoding* pEncoding)
 //                                 nStrBytes);
     }
     else {
-      aByte = ((byte*)aHeadLine) + aColEnc->m_o_From;
+      aByte = ((byte*)aHeadLine) + aColEnc->m_o_DataFrom;
       MemLib::vCopy(aByte,aColEnc->m_wDataCode.m_szVch,nStrBytes,CN_ROWCOMPACTOR);
 
 //      aHeadLine->vPutDataLogical(aColEnc->m_i_Offset,
@@ -256,7 +256,7 @@ void CrwPacker::vPackCrw(HeadLine* aHeadLine, Encoding* pEncoding)
     // put [TL]
     RASSERT(aOverLine);
     //if (aOverLine) {
-      i_Offset_over = aColEnc->m_o_From - nHeadBytes;
+      i_Offset_over = aColEnc->m_o_DataFrom - nHeadBytes;
       aOverLine->vPut(i_Offset_over,i_Tail_rel,C_2B);
     //}
     //else {
