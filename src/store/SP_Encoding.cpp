@@ -116,7 +116,7 @@ void SP_Encoding::vEncoding(Encoding* pEncoding)
 
     StrLib::vAppendPad(&szCrs,caLine,50);
     StrLib::vAppendString(&szCrs,(char*)"C_"_Stz);
-    StrLib::vAppendDecimal(&szCrs,aColEnc->m_jDataSize);
+    StrLib::vAppendDecimal(&szCrs,aColEnc->m_jDataBytes);
     StrLib::vAppendString(&szCrs,(char*)"B"_Stz);
 
     StrLib::vAppendPad(&szCrs,caLine,60);

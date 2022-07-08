@@ -54,7 +54,7 @@ Encoding::Encoding(StreamDef* pStreamDef)
     
     rxColEnc.m_uMetaCode  = 0;
     rxColEnc.m_wDataCode  = C_UNKNOWN;
-    rxColEnc.m_jDataSize  = C_UNKNOWN;
+    rxColEnc.m_jDataBytes  = C_UNKNOWN;
     rxColEnc.m_o_DataFrom = 0;
     rxColEnc.m_o_DataBreak= 0;
     rxColEnc.m_bSplit     = false;
@@ -62,6 +62,7 @@ Encoding::Encoding(StreamDef* pStreamDef)
     rxColEnc.m_i_Tail     = C_UNKNOWN;
     rxColEnc.m_aTailLine  = nullptr;
     rxColEnc.m_bDuplicate = false;
+    rxColEnc.m_jTailBytes  = C_UNKNOWN;
   }
   
   for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
@@ -135,13 +136,14 @@ void Encoding::vDumpEncoding(void)
     vTrace("  m_uHigh          : %s\n"_Stz,   aMC[rxColEnc.m_uHigh]);
     vTrace("  m_uLow           : %lld\n"_Stz, rxColEnc.m_uLow);
     vTrace("  m_wDataCode      : %s\n"_Stz,   rxColEnc.m_wDataCode.m_azStr);
-    vTrace("  m_jDataSize      : %lld\n"_Stz, rxColEnc.m_jDataSize);
+    vTrace("  m_jDataBytes     : %lld\n"_Stz, rxColEnc.m_jDataBytes);
     vTrace("  m_o_DataFrom     : %lld\n"_Stz, rxColEnc.m_o_DataFrom);
     vTrace("  m_o_DataBreak    : %lld\n"_Stz, rxColEnc.m_o_DataBreak);
     vTrace("  m_bSplit         : %lld\n"_Stz, (i8)rxColEnc.m_bSplit);
     vTrace("  m_i_Tail         : %lld\n"_Stz, rxColEnc.m_i_Tail);
     vTrace("  m_aTailLine      : %p\n"_Stz,   rxColEnc.m_aTailLine);
     vTrace("  m_bDuplicate     : %lld\n"_Stz, (i8)rxColEnc.m_bDuplicate);
+    vTrace("  m_jTailBytes     : %lld\n"_Stz, rxColEnc.m_jTailBytes);
 
   }
   
@@ -157,20 +159,21 @@ void Encoding::vMorphEncoding(_ColEnc& rxColEnc)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
   //ASSERT(MC_STR_FIT_1L == aColEnc->m_eMetaCode);
-  ASSERT(METACODE_HIGH(rxColEnc.m_uMetaCode) >= MC_STRING_x1 ||
+  ASSERT(  (METACODE_HIGH(rxColEnc.m_uMetaCode) >= MC_STRING_x1)
+         ||
            (METACODE_HIGH(rxColEnc.m_uMetaCode) >= MC_STRING_x2 &&
             METACODE_HIGH(rxColEnc.m_uMetaCode) <= MC_STRING_x8));
   ASSERT(C_UNKNOWN != rxColEnc.m_i_Tail);
 
   // calc the adjustment required because MC_STR_FIT_1L becoming MC_STR_TAIL_2T
   ASSERT(rxColEnc.m_jDataSize > C_2B);
-  i8 nOffsetAdj = - (rxColEnc.m_jDataSize - C_2B);
+  i8 nOffsetAdj = - (rxColEnc.m_jDataBytes - C_2B);
   ASSERT(nOffsetAdj < 0);
   
   // morph the given column into a MC_STR_TAIL_2T
   rxColEnc.m_uMetaCode = METACODE_FORM(MC_STRING_TAIL,2);
   rxColEnc.m_wDataCode = rxColEnc.m_i_Tail;
-  rxColEnc.m_jDataSize = C_2B;
+  rxColEnc.m_jDataBytes = C_2B;
   rxColEnc.m_o_DataBreak += nOffsetAdj;
 
   // adjust remaining columns based on MC_STR_FIT_1L becoming MC_STR_TAIL_2T
@@ -309,13 +312,13 @@ void Encoding::vInitialEncodingRow(Row* pRow)
     
     
     // if 0B case then till is same as offset
-    if (! xrColEnc.m_jDataSize) {
+    if (! xrColEnc.m_jDataBytes) {
       xrColEnc.m_o_DataBreak = m_o_DataOffsetNext;
       continue;
     }
           
     // set where the next offset will be
-    m_o_DataOffsetNext += xrColEnc.m_jDataSize;
+    m_o_DataOffsetNext += xrColEnc.m_jDataBytes;
     
     // set the till byte of the column encoding
     xrColEnc.m_o_DataBreak = m_o_DataOffsetNext; // - 1;
@@ -378,14 +381,15 @@ void Encoding::vReset(void)
     // leave m_eDatum
     
     rxColEnc.m_wDataCode  = C_UNKNOWN;
-    rxColEnc.m_jDataSize  = C_UNKNOWN;
-    rxColEnc.m_o_DataFrom   = 0;
-    rxColEnc.m_o_DataBreak     = 0;
+    rxColEnc.m_jDataBytes  = C_UNKNOWN;
+    rxColEnc.m_o_DataFrom = 0;
+    rxColEnc.m_o_DataBreak= 0;
     rxColEnc.m_bSplit     = false;
     
     rxColEnc.m_i_Tail     = C_UNKNOWN;
     rxColEnc.m_aTailLine  = nullptr;
     rxColEnc.m_bDuplicate = false;
+    rxColEnc.m_jTailBytes  = C_UNKNOWN;
   }
   
 #ifdef WITH_CHECK_INITIALISED

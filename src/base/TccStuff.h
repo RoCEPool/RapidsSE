@@ -172,7 +172,6 @@ struct SpaceUnit_T
 
 static const i8 C_HEADLINE_QUANTA  = C_BYTES_PER_WORD;
 static const i8 C_SPACEUNIT_QUANTA = 2 * C_BYTES_PER_WORD;
-static const i8 C_TAILLINE_QUANTA  = 2 * C_BYTES_PER_WORD;
 
 enum eSI // string inflate
 {

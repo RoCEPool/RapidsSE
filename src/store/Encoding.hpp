@@ -20,14 +20,15 @@ namespace STORE
     };
     
     Dtm  m_wDataCode;  // column value data bytes
-    i8   m_jDataSize;  // complete number of data code bytes, incl <L> etc
+    i8   m_jDataBytes; // complete number of data code bytes, incl <L> etc
     i8   m_o_DataFrom; // first byte offset in head+over where the data code is
     i8   m_o_DataBreak;// byte after last byte offset in head+over where the data code is
     b8   m_bSplit;     // overflow occurs at this point
     
     i8   m_i_Tail;     // absolute index of tail
     b8   m_bDuplicate; // tail is a duplicate
- 
+    i8   m_jTailBytes;  // tail size required (for non-duplicate tails)
+
     TailLine *m_aTailLine;  // the tail line
   };
 
@@ -104,7 +105,7 @@ namespace STORE
     xColEnc.m_uMetaCode = METACODE_FORM(MC_NULL,0);
 
     xColEnc.m_wDataCode.vSetNull();
-    xColEnc.m_jDataSize = C_0B;
+    xColEnc.m_jDataBytes = C_0B;
     
     return true;
   }
@@ -126,7 +127,7 @@ namespace STORE
     
     // -1 case -- encode as: MC_BCD_M_ONE + {}
     if (-1 == wColVal.m_wBcd.T.m_iAsI8) {
-      xColEnc.m_jDataSize = C_0B;
+      xColEnc.m_jDataBytes = C_0B;
       
       xColEnc.m_uMetaCode = METACODE_FORM(MC_NEGATIVE,1);
       return;
@@ -136,7 +137,7 @@ namespace STORE
     
     // 0..10 case -- encode as MC_BCD_ONE..TEN + {}
     if (wColVal.m_wBcd.T.m_iAsI8 >= 0 && wColVal.m_wBcd.T.m_iAsI8 <= 15) {
-      xColEnc.m_jDataSize = C_0B;
+      xColEnc.m_jDataBytes = C_0B;
       
       xColEnc.m_uMetaCode = METACODE_FORM(MC_POSITIVE,wColVal.m_iWrd);
 
@@ -147,7 +148,7 @@ namespace STORE
 
     // general case -- encode as: MC_BCD_1..8B + {D}
     i8 nD = wColVal.iByteMagn();
-    xColEnc.m_jDataSize = nD;
+    xColEnc.m_jDataBytes = nD;
     
     xColEnc.m_uMetaCode = METACODE_FORM(MC_NUMERIC,nD);
   }
@@ -169,12 +170,12 @@ namespace STORE
     
     // encode as: MC_BOL_TRUE or MC_BOL_FALSE
     if (wColVal.m_wBol.T.m_iAsI8) {
-      xColEnc.m_jDataSize = C_0B;
+      xColEnc.m_jDataBytes = C_0B;
       
       xColEnc.m_uMetaCode = METACODE_FORM(MC_POSITIVE,1);
     }
     else {
-      xColEnc.m_jDataSize = C_0B;
+      xColEnc.m_jDataBytes = C_0B;
       xColEnc.m_uMetaCode = METACODE_FORM(MC_POSITIVE,0);
     }
   }
@@ -211,7 +212,7 @@ namespace STORE
       xColEnc.m_uMetaCode = METACODE_FORM(MC_DATE_E2,2);
     }
     
-    xColEnc.m_jDataSize = C_2B;
+    xColEnc.m_jDataBytes = C_2B;
     
   }
 
@@ -232,7 +233,7 @@ namespace STORE
     
     // general case -- encode as: MC_FLT_1..8B + {D}
     i8 nD = wColVal.iByteMagn();
-    xColEnc.m_jDataSize = nD;
+    xColEnc.m_jDataBytes = nD;
     
     xColEnc.m_uMetaCode = METACODE_FORM(MC_NUMERIC,nD);
   }
@@ -250,9 +251,9 @@ namespace STORE
     xColEnc.m_wDataCode.m_iWrd = wColVal.m_iWrd;
   
     if (wColVal.m_iWrd > 10) {
-      xColEnc.m_jDataSize = (u8)IntLib::iByteMagnitude(wColVal.m_iWrd);
+      xColEnc.m_jDataBytes = (u8)IntLib::iByteMagnitude(wColVal.m_iWrd);
    
-      xColEnc.m_uMetaCode = METACODE_FORM(MC_NUMERIC,xColEnc.m_jDataSize);
+      xColEnc.m_uMetaCode = METACODE_FORM(MC_NUMERIC,xColEnc.m_jDataBytes);
       return;
     }
   
@@ -260,7 +261,7 @@ namespace STORE
     
     // 0..10 case -- encode as MC_INT_ONE..TEN + {}
     if (wColVal.m_iWrd >= 0 && wColVal.m_iWrd <= 10) {
-      xColEnc.m_jDataSize = C_0B;
+      xColEnc.m_jDataBytes = C_0B;
       
       u1 uHigh = MC_POSITIVE;
       uHigh <<= 4;
@@ -282,15 +283,15 @@ namespace STORE
     
     // -1 case -- encode as: MC_INT_M_ONE + {}
     if (-1 == wColVal.m_iWrd) {
-      xColEnc.m_jDataSize = C_0B;
+      xColEnc.m_jDataBytes = C_0B;
       
       xColEnc.m_uMetaCode = METACODE_FORM(MC_NEGATIVE,1);
       return;
     }
   
-    xColEnc.m_jDataSize = IntLib::iByteMagnitude(wColVal.m_iWrd);
+    xColEnc.m_jDataBytes = IntLib::iByteMagnitude(wColVal.m_iWrd);
 
-    xColEnc.m_uMetaCode = METACODE_FORM(MC_NUMERIC,xColEnc.m_jDataSize);
+    xColEnc.m_uMetaCode = METACODE_FORM(MC_NUMERIC,xColEnc.m_jDataBytes);
 
   }
 
@@ -311,7 +312,7 @@ namespace STORE
     
     // general case -- encode as: MC_IVL_1..8B : {D}
     i8 nD = wColVal.iByteMagn();
-    xColEnc.m_jDataSize = nD;
+    xColEnc.m_jDataBytes = nD;
     
     xColEnc.m_uMetaCode = METACODE_FORM(MC_NUMERIC,nD);
   }
@@ -333,7 +334,7 @@ namespace STORE
 
     // general case -- encode as: MC_TME_1..8B : {D}
     i8 nD = wColVal.iByteMagn();
-    xColEnc.m_jDataSize = nD;
+    xColEnc.m_jDataBytes = nD;
     
     xColEnc.m_uMetaCode = METACODE_FORM(MC_NUMERIC,nD);
   }
@@ -355,7 +356,7 @@ namespace STORE
     
     // encode as: MC_1..8B : {D}
     i8 nD = 8;
-    xColEnc.m_jDataSize = nD;
+    xColEnc.m_jDataBytes = nD;
     
     xColEnc.m_uMetaCode = METACODE_FORM(MC_NUMERIC,nD);
   }
@@ -391,7 +392,7 @@ namespace STORE
       nQuanta = jVchSize; //MemLib::nQuantaRequired(nS,1);
       
       xColEnc.m_wDataCode.m_azStr = (char*)wColVal.m_szVch;
-      xColEnc.m_jDataSize = STRx1(nQuanta);
+      xColEnc.m_jDataBytes = STRx1(nQuanta);
       
       xColEnc.m_uMetaCode = METACODE_FORM(MC_STRING_x1,nQuanta);
       return;
@@ -402,7 +403,7 @@ namespace STORE
       nQuanta = MemLib::nQuantaRequired(jVchSize-15,2);
       
       xColEnc.m_wDataCode.m_azStr = (char*)wColVal.m_szVch;
-      xColEnc.m_jDataSize = STRx2(nQuanta);
+      xColEnc.m_jDataBytes = STRx2(nQuanta);
       
       xColEnc.m_uMetaCode = METACODE_FORM(MC_STRING_x2,nQuanta);
 
@@ -415,7 +416,7 @@ namespace STORE
       
 
       xColEnc.m_wDataCode.m_azStr = (char*)wColVal.m_szVch;
-      xColEnc.m_jDataSize = STRx4(nQuanta);
+      xColEnc.m_jDataBytes = STRx4(nQuanta);
       
       xColEnc.m_uMetaCode = METACODE_FORM(MC_STRING_x4,nQuanta);
 
@@ -427,7 +428,7 @@ namespace STORE
       nQuanta = MemLib::nQuantaRequired(jVchSize-105,8);
       
       xColEnc.m_wDataCode.m_azStr = (char*)wColVal.m_szVch;
-      xColEnc.m_jDataSize = STRx8(nQuanta);
+      xColEnc.m_jDataBytes = STRx8(nQuanta);
       
       xColEnc.m_uMetaCode = METACODE_FORM(MC_STRING_x8,nQuanta);
 
@@ -436,7 +437,7 @@ namespace STORE
 
     // 5) MC_STRING_TAIL
     xColEnc.m_wDataCode.m_azStr = (char*)wColVal.m_szVch;
-    xColEnc.m_jDataSize = jVchSize;
+    xColEnc.m_jDataBytes = jVchSize;
       
     xColEnc.m_uMetaCode = METACODE_FORM(MC_STRING_TAIL,2);
   }

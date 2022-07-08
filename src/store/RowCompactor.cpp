@@ -408,19 +408,22 @@ void RowCompactor::vEncodeDupeTailsForRow(Row* pRow)
     
     i8 i_Tail;
     TailLine* aTailLine = m_pCrwNub->aFindTail(azStr, i_Tail);
-    if (! aTailLine)
-      continue;
     
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // found a matching tail
+    if (aTailLine) {
+      // + found a matching tail
     
-    // put tail into the encoding
-    rxColEnc.m_i_Tail     = i_Tail;
-    rxColEnc.m_aTailLine  = aTailLine;
-    rxColEnc.m_bDuplicate = true;
+      // put tail into the encoding
+      rxColEnc.m_i_Tail     = i_Tail;
+      rxColEnc.m_aTailLine  = aTailLine;
+      rxColEnc.m_bDuplicate = true;
 
-    // morph the encoding
-    m_pEncoding->vMorphEncoding(rxColEnc);
+      // morph the encoding
+      m_pEncoding->vMorphEncoding(rxColEnc);
+    }
+    else {
+      //  did not find a matching tail
+      continue; // WRONG!
+    }
   }
   
 //#ifdef WITH_TRACE_ENCODING
