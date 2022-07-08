@@ -4267,7 +4267,16 @@ bool PROMPT::bPrompt_sleep(SePrompt* pPrompt)
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
 
   ASSERT(pInpTknVec->pGet(0)->bSame("sleep"_Stz));
-  
+
+  if (pInpTknVec->nItems() != 2) {
+    vTrace("error: sleep : %s\n"_Stz, aEC[EC_INVALID_COMMAND]);
+    return false;
+  }
+  if ( ! pInpTknVec->pGet(1)->bIsInteger() ) {
+    vTrace("error: sleep : %s\n"_Stz, aEC[EC_INVALID_COMMAND]);
+    return false;
+  }
+
   i8 nSeconds = pInpTknVec->pGet(1)->iToI8();
   
   AM::vNapMsec(nSeconds * C_1K,CN_SEPROMPT);
