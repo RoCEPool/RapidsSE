@@ -64,6 +64,7 @@ void Step::vAddSteps_Job(void)
 
   vAddStep("[job].name@"_Stz,            &Step::vJobNameFetch);
   vAddStep("[job].newMarkerChain"_Stz,   &Step::vJobNewMarkerChain);
+  vAddStep("[job].newResponseJobs"_Stz,  &Step::vJobNewResponseJobs);
 
   vAddStep("[job].originId@"_Stz,        &Step::vJobOriginIdFetch);
   vAddStep("[job].originNodeId@"_Stz,    &Step::vJobOriginNodeIdFetch);
@@ -95,6 +96,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("[job].tagSet@"_Stz,          &Step::vJobTagSetFetch);
   vAddStep("[job].task@"_Stz,            &Step::vJobTaskFetch);
   vAddStep("[job].trace"_Stz,            &Step::vJobTrace);
+  vAddStep("[job].triggerExecuted"_Stz,  &Step::vJobTriggerExecuted);
   vAddStep("[job].tscBeginning"_Stz,     &Step::vJobTscBeginning);
   vAddStep("[job].tscBegun"_Stz,         &Step::vJobTscBegun);
   vAddStep("[job].tscExecuting"_Stz,     &Step::vJobTscExecuting);
@@ -695,6 +697,24 @@ void Step::vJobNewMarkerChain(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* [job].newResponseJobs -- new the 2pc response jobs for this job            */
+/*----------------------------------------------------------------------------*/
+void Step::vJobNewResponseJobs(void)
+{
+  ENTRY();
+
+  Job* pJob = pOuterJobOfTask();
+
+  pJob->vExecutedJob(Api::pCreateJob2PC(pJob, "executed"_Stz));
+
+ // pJob->vEndedJob(Api::pCreateJob2PC(pJob, "ended"_Stz));
+ // pJob->vCancelledJob(Api::pCreateJob2PC(pJob, "Cancelled"_Stz));
+
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* [job].originId@ -- fetch the origin id of the job                          */
 /*----------------------------------------------------------------------------*/
 void Step::vJobOriginIdFetch(void)
@@ -1105,6 +1125,22 @@ void Step::vJobTrace(void)
   m_pDataStack->vPopStr(sAtCmd,__func__);
 
   pJob->vJobTrace(sAtCmd,sAtRoutine,sAtPoint,sNote);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [job].triggerExecuted -- trigger the executed 2pc job                      */
+/*----------------------------------------------------------------------------*/
+void Step::vJobTriggerExecuted(void)
+{
+  ENTRY();
+
+  Job* pJob = pOuterJobOfTask();
+
+  Job* pExecutedJob = pJob->pExecutedJob();
+  Api::vTriggerChildJob(pJob, pExecutedJob);
+  pJob->vExecutedJob(nullptr);
 
   EXIT();
 }

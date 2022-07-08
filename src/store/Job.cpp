@@ -78,6 +78,10 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId, TagSet* 
   m_bUpdateParent = false;
   m_bRejected     = false;
 
+  m_pExecutedJob  = nullptr;
+  m_pEndedJob     = nullptr;
+  m_pCancelledJob = nullptr;
+
   /* 00 */ m_noActiveOps.vResetAtomic();
   /* 01 */ m_eJobList     = JL_NONE;
   /* 02 */ m_pJobMetrics  = nullptr;
@@ -190,6 +194,15 @@ Job::~Job(void) noexcept(false)
 
     vMutexDestroy();
   */
+
+    if (m_pExecutedJob)
+      delete m_pExecutedJob;
+
+    if (m_pEndedJob)
+      delete m_pEndedJob;
+
+    if (m_pCancelledJob)
+      delete m_pCancelledJob;
 
     if (m_pOutput)
       vOutputDestroy();
@@ -329,38 +342,23 @@ bool Job::bAllocateMemory(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reset job for cascade reuse                                                */
+/* get 2pc cancelledJob                                                       */
 /*----------------------------------------------------------------------------*/
-void Job::vCascadeReset(void)
+Job* Job::pCancelledJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  vDebugPoint();
-  
-  // -- a -------------------
-  // m_sJobNm;
-  // m_oTimer.vStart();
+  return m_pCancelledJob;
+}
 
-  // -- b -------------------
-  m_bWasReceived     = false;
+/*----------------------------------------------------------------------------*/
+/* set 2pc cancelledJob                                                       */
+/*----------------------------------------------------------------------------*/
+void Job::vCancelledJob(Job* pCancelledJob)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
 
-  // -- c -------------------
-  m_eJobList  = JL_NONE;
-  m_eJobPhase = JP_NONE;
-  
-  // m_oJobTags
-  // m_xResult ???
-  
-  // -- e -------------------
-
-  m_pTask->vState(TS_NONE);
-  m_pTask->vSetInxPtr("job::entryPoint"_Stz);
-
-  //m_pOutput->vDrainBufferQueue();
-
-  vDrainOutput();
-
-  vDebugPoint();
+  m_pCancelledJob = pCancelledJob;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -518,6 +516,26 @@ void Job::vEnableObjectTracker(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get 2pc ended job                                                          */
+/*----------------------------------------------------------------------------*/
+Job* Job::pEndedJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_pEndedJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set 2pc ended job                                                          */
+/*----------------------------------------------------------------------------*/
+void Job::vEndedJob(Job* pEndedJob)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_pEndedJob = pEndedJob;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the sen entry code                                                     */
 /*----------------------------------------------------------------------------*/
 Stz* Job::szEntryPoint(void)
@@ -535,6 +553,26 @@ void Job::vEntryPoint(Stz* szEntry)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_sEntryPoint = szEntry;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get 2pc executedJob                                                        */
+/*----------------------------------------------------------------------------*/
+Job* Job::pExecutedJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_pExecutedJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set 2pc executedJob                                                        */
+/*----------------------------------------------------------------------------*/
+void Job::vExecutedJob(Job* pExecutedJob)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_pExecutedJob = pExecutedJob;
 }
 
 /*----------------------------------------------------------------------------*/

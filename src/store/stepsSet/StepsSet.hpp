@@ -845,6 +845,7 @@ void vDdlLockAssertNone(void);
   void vJobDistIdFetch(void);
   void vJobDistIdGenerate(void);
   void vJobTrace(void);
+  void vJobTriggerExecuted(void);
 
   void vJobEnableAllocate(void);
   void vJobEnableObjectTracker(void);
@@ -905,6 +906,7 @@ void vDdlLockAssertNone(void);
   void vJobMasterJobId(void);
   void vJobMutexFetch(void);
   void vJobNewMarkerChain(void);
+  void vJobNewResponseJobs(void);
   void vJobUpdateParent(void);
 
   void vJobIdSystemCloserStore(void);

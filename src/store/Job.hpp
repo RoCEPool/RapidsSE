@@ -45,6 +45,12 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     bool   m_bRejected;
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // participant job
+    Job*  m_pExecutedJob;
+    Job*  m_pEndedJob;
+    Job*  m_pCancelledJob;
+
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // reset in Job::vPostRecv()
   
     /* 00 */ Atomic  m_noActiveOps;    // number of active ops
@@ -101,13 +107,13 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vActiveOpsInc(void);
     bool bAllocateMemory(void);
 
-    void vCascadeReset(void);
+    Job* pCancelledJob(void);
+    void vCancelledJob(Job* pCancelledJob);
     eEC eChildError(void);
     void vChildError(eEC eErrorCode);
     void vCleanupOutput(void);
     Stz* szCmd(void);
     void vCmd(Stz* szCmd);
-
     void vDisableObjectTracker(void);
     JobId tDistId(void);
     void vDistIdGenerate(void);
@@ -117,9 +123,13 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vDropLock(void);
 
     void vEnableObjectTracker(void);
+    Job* pEndedJob(void);
+    void vEndedJob(Job* pEndedJob);
     Stz* szEntryPoint(void);
     void vEntryPoint(Stz* szEntry);
-  
+    Job* pExecutedJob(void);
+    void vExecutedJob(Job* pExecutedJob);
+
     Stz* szFolderPath(void);
     void vFolderPath(Stz* szFolderPath);
     void vFreeMarker(Marker* pMarker);
