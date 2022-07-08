@@ -3,7 +3,6 @@ import datetime
 import time
 import os
 import shutil
-import string
 import logging
 import threading
 import pathlib
@@ -39,21 +38,21 @@ C_TEST_MONITORING_SLEEP_IVL = 2
 
 C_PROJ_ROOT = "../.."
 C_CLOUD_INIT_SCRIPT = f"{C_PROJ_ROOT}/bamboo/common/aws/cloud-init-downloader.sh"
-C_INSTANCE_NAME_PREFIX="PerfTest"
+C_INSTANCE_NAME_PREFIX = "PerfTest"
 
 
 class JobRunner:
     """Coordinates and runs a job, specified by a job config file"""
 
     def __init__(self,
-                 job_path: string,
-                 bamboo_plan_key: string,
+                 job_path: str,
+                 bamboo_plan_key: str,
                  bamboo_build_num: int,
-                 git_hash: string,
-                 git_branch: string,
-                 invoking_user: string,
+                 git_hash: str,
+                 git_branch: str,
+                 invoking_user: str,
                  archive_metrics: bool,
-                 result_path: string,
+                 result_path: str,
                  tags: dict,
                  build_se: bool = True):
 
@@ -61,21 +60,21 @@ class JobRunner:
         self.all_configs = AllConfigs(job_path)
 
         # The plan key string used by bamboo when this was invoked. e.g. "SE-PERF"
-        self.bamboo_plan_key: string = bamboo_plan_key
+        self.bamboo_plan_key: str = bamboo_plan_key
 
         # The bamboo build number for the above plan key. e.g. 1234
         self.bamboo_build_num: int = bamboo_build_num
 
         # The git hash of the software being tested
-        self.git_hash: string = git_hash
+        self.git_hash: str = git_hash
 
         # The git branch being tested
-        self.git_branch: string = git_branch
+        self.git_branch: str = git_branch
 
         # The user who invoked this performance build. May be 'SYSTEM'
         # if it was invoked on a schedule, otherwise it contains a bamboo
         # username. e.g. "craig.mcintyre"
-        self.invoking_user: string = invoking_user
+        self.invoking_user: str = invoking_user
 
         # Do we want to collect and save the metrics in bamboo afterwards?
         self.archive_metrics = archive_metrics
@@ -96,7 +95,7 @@ class JobRunner:
 
         self.job_result_id = -1     # ID of this result instance running a given job
         self.job_id = -1            # ID of the job definition
-        self.test_tuples: [(string, int)] = None  # tuple of resolved test path and associated test_id
+        self.test_tuples: [(str, int)] = None  # tuple of resolved test path and associated test_id
         self.test_results: [TestResult] = []
 
         self.instance_ids = []  # EC2 instance IDs
@@ -333,7 +332,7 @@ class JobRunner:
         else:
             LOG.info("Completed execution of all tests successfully.")
 
-    def __skip_test(self, test_path: string, test_id: int):
+    def __skip_test(self, test_path: str, test_id: int):
         # Create a test_result for this skipped test and add it to the result list
         test_result = TestResult(test_path,
                                  TestRunner.get_test_name_from_path(test_path),
@@ -354,7 +353,7 @@ class JobRunner:
         shutil.rmtree(self.result_path, ignore_errors=True)
         os.makedirs(self.result_path, exist_ok=True)
 
-    def __make_test_artifact_dir(self, test_id: int, test_path: string) -> string:
+    def __make_test_artifact_dir(self, test_id: int, test_path: str) -> str:
         """
         Make a directory for storing test artifacts and logs.
         """
@@ -365,7 +364,7 @@ class JobRunner:
         os.makedirs(str(artifact_dir), exist_ok=True)
         return str(artifact_dir)
 
-    def __delete_test_artifact_dir(self, test_id: int, test_path: string):
+    def __delete_test_artifact_dir(self, test_id: int, test_path: str):
         """
         Delete the directory (and all content) that stores test artifacts and logs.
         """

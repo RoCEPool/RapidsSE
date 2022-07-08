@@ -468,7 +468,8 @@ class InstanceRunner:
                   f"{str(self.remote_cluster_config_path)} " \
                   f"{str(testlist_path)}"
 
-        LOG.info(f"Test {self.test_name}: About to invoke SETH on {self.ip_addrs[0]} with the following command: {command}")
+        LOG.info(f"Test {self.test_name}: About to invoke SETH on {self.ip_addrs[0]} "
+                 f"with the following command: {command}")
 
         try:
             ssh.run_ssh(self.ip_addrs[0], command, C_SETH_TIMEOUT_SEC, ctx=self.op_ctx)

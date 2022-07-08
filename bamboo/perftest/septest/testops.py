@@ -3,7 +3,6 @@ import pathlib
 import logging
 import subprocess
 import tempfile
-import string
 
 import pyutils.errors as errors
 import pyutils.ssh as ssh
@@ -25,7 +24,7 @@ C_PERF_TESTS_DIR = "perftests"
 C_SUPPORT_FILES_DIR = f"{C_PERF_TESTS_DIR}/supportFiles"
 
 
-def copy_jdbc_driver(host: string, cluster_cfg: ClusterConfig):
+def copy_jdbc_driver(host: str, cluster_cfg: ClusterConfig):
     """
     Copy the RapidsSE JDBC driver to the installation directory of the given host.
     """
@@ -51,7 +50,7 @@ def copy_jdbc_driver(host: string, cluster_cfg: ClusterConfig):
     LOG.info("Copied the JDBC driver successfully")
 
 
-def copy_support_files(host: string, cluster_cfg: ClusterConfig, src_folder: string):
+def copy_support_files(host: str, cluster_cfg: ClusterConfig, src_folder: str):
     """
     Copy the supportFiles directory to the <install_dir>/perftests/supportFiles directory of the given host.
     """
@@ -77,7 +76,7 @@ def copy_support_files(host: string, cluster_cfg: ClusterConfig, src_folder: str
     LOG.info("Copied the test supportFiles folder successfully")
 
 
-def make_perftests_dir(host: string, cluster_cfg: ClusterConfig):
+def make_perftests_dir(host: str, cluster_cfg: ClusterConfig):
     """
     Makes the common perftests directory, to hold all tests, support files and their metrics
     """
@@ -122,7 +121,7 @@ def find_local_jdbc_driver() -> pathlib.Path:
     return C_JDBC_DRIVER
 
 
-def write_jmeter_property_file(host: string, cluster_cfg: ClusterConfig):
+def write_jmeter_property_file(host: str, cluster_cfg: ClusterConfig):
     """
     Generates a JMeter user property file and writes it to the node
     """
@@ -163,7 +162,7 @@ def write_jmeter_property_file(host: string, cluster_cfg: ClusterConfig):
     LOG.info("Copied the JMeter user properties file successfully")
 
 
-def get_remote_jmeter_property_file_path(cluster_cfg: ClusterConfig) -> string:
+def get_remote_jmeter_property_file_path(cluster_cfg: ClusterConfig) -> str:
     """
     Returns the full path and filename of the jmeter user properties file
     to be used when executing jmeter.

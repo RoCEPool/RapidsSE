@@ -1,5 +1,4 @@
 import datetime
-import string
 from decimal import Decimal
 import typing
 import logging
@@ -140,7 +139,7 @@ def __create_metric_result_rows(cur: typing.Union[psycopg.Cursor[typing.Any], ps
 
 def __create_metric_result_row(cur: typing.Union[psycopg.Cursor[typing.Any], psycopg.ServerCursor[typing.Any]],
                                test_result_id: int,
-                               metric_name: string,
+                               metric_name: str,
                                metric_value: Decimal,
                                metric_ts: datetime.datetime):
     """

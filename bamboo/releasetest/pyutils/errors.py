@@ -32,14 +32,14 @@ class ConfigurationError(NonTracebackError):
 
 class DatabaseError(RapidsError):
     """General errors to do with storing/retrieving results from the database"""
-    def __init__(self, *args, **kwargs):
-        super().__init__(True, *args, **kwargs)
+    def __init__(self, msg: str, *args, **kwargs):
+        super().__init__(msg, True, *args, **kwargs)
 
 
 class DatabaseConsistencyError(DatabaseError):
     """Represents an error with the data in the database"""
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, msg: str, *args, **kwargs):
+        super().__init__(msg, *args, **kwargs)
 
 
 class CompilationError(NonTracebackError):

@@ -1,5 +1,4 @@
 import os.path
-import string
 import typing
 import logging
 
@@ -18,12 +17,12 @@ LOG = logging.getLogger(__name__)
 
 
 def record_job_start(all_configs: AllConfigs,
-                     bamboo_plan_key: string,
+                     bamboo_plan_key: str,
                      bamboo_build_num: int,
-                     git_hash: string,
-                     git_branch: string,
-                     invoking_user: string,
-                     tags: {}) -> (int, int, [(string, int)]):
+                     git_hash: str,
+                     git_branch: str,
+                     invoking_user: str,
+                     tags: {}) -> (int, int, [(str, int)]):
     """
     Record records in the database about starting the job.
     Returns a tuple containing the jobResultId of the partial row created in the
@@ -52,7 +51,7 @@ def record_job_start(all_configs: AllConfigs,
 
         # Now create some records for beginning the job
         job_result_id = __create_jobresult_record(cur,
-                                                  job_id,
+                                                  str(job_id),
                                                   bamboo_plan_key,
                                                   bamboo_build_num,
                                                   git_hash,
@@ -230,7 +229,7 @@ def __create_test_records(cur: typing.Union[psycopg.Cursor[typing.Any], psycopg.
        Returns a list of (test_path, test_id) tuples of the test row created or the matching test row found.
     """
 
-    test_tuples: [(string, int)] = []
+    test_tuples: [(str, int)] = []
 
     for test_path in job_config.get_resolved_test_paths():
         test_id = __create_test_record(cur, test_path)
@@ -240,7 +239,7 @@ def __create_test_records(cur: typing.Union[psycopg.Cursor[typing.Any], psycopg.
 
 
 def __create_test_record(cur: typing.Union[psycopg.Cursor[typing.Any], psycopg.ServerCursor[typing.Any]],
-                         test_path: string) -> [int]:
+                         test_path: str) -> [int]:
     test_name = os.path.basename(test_path).rsplit(sep=".", maxsplit=1)[0]
     ext_name = os.path.basename(test_path).rsplit(sep=".", maxsplit=1)[1]
 
@@ -383,12 +382,12 @@ def __create_jobs_record(cur: typing.Union[psycopg.Cursor[typing.Any], psycopg.S
 
 
 def __create_jobresult_record(cur: typing.Union[psycopg.Cursor[typing.Any], psycopg.ServerCursor[typing.Any]],
-                              job_id: string,
-                              bamboo_plan_key: string,
+                              job_id: str,
+                              bamboo_plan_key: str,
                               bamboo_build_num: int,
-                              git_hash: string,
-                              git_branch: string,
-                              invoking_user: string = None) -> int:
+                              git_hash: str,
+                              git_branch: str,
+                              invoking_user: str = None) -> int:
     """
     Create a record in the jobs table to indicate that a job has started.
     Return the jobResultId for this row so it can be updated later.
