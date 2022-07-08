@@ -14,7 +14,7 @@ from releasebuilder.results import TestResult
 LOG = logging.getLogger(__name__)
 
 C_TEST_NAME = "Build Release"
-C_INSTANCE_NAME_PREFIX = "BuildRelease"
+C_INSTANCE_NAME_PREFIX = "ReleaseBuild"
 C_INSTANCE_START_TIMEOUT = 600.0
 C_INSTALLER_FILESPEC = "rapidsse-*.run"
 
@@ -103,11 +103,13 @@ class BuildRunner:
                  f"(instance type: {self.config.get_build_instance()} ; "
                  f"image name: {image_name}")
 
+        name_tag = f"{C_INSTANCE_NAME_PREFIX}-{self.config.get_build_name().replace(' ', '-')}-"
+
         instance_ids, ip_addrs = ec2.start_instances(self.config.get_build_instance(),
                                                      self.config.get_build_image(),
                                                      self.config.get_build_cloudinit(),
                                                      1,
-                                                     C_INSTANCE_NAME_PREFIX,
+                                                     name_tag,
                                                      C_INSTANCE_START_TIMEOUT,
                                                      False,
                                                      ctx=OP_CTX)

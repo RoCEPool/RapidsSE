@@ -325,6 +325,13 @@ chown "${OS_USER}:${OS_USER}" "${bash_profile}"
 sudo -H -u "${OS_USER}" git lfs install
 
 # -----------------------------------------
+# Disable firewall
+echo
+echo "*** Disabling firewall ***"
+echo
+ufw disable
+
+# -----------------------------------------
 # Indicate cloud-init has completed by dropping a file in /tmp
 echo "$(date) Completed cloud-init script" > /tmp/cloud-init-complete
 

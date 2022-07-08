@@ -29,6 +29,7 @@ class ReleaseConfig:
 
     C_BUILD_SECTION = "build"
     C_TEST_SECTION = "test"
+    C_BUILD_NAME = "BuildName"
     C_INSTANCE_TYPE = "InstanceType"
     C_TEST_NAME = "TestName"
     C_IMAGE_ID = "ImageId"
@@ -52,6 +53,7 @@ class ReleaseConfig:
             if not self.parser.has_section(section):
                 raise ConfigurationError(f"Config file is missing the [{section}] header: {path}")
 
+        build_name = self.get_build_name()
         build_instance = self.get_build_instance()
         build_image = self.get_build_image()
         build_cloudinit = self.get_build_cloudinit()
@@ -61,6 +63,11 @@ class ReleaseConfig:
         test_image_list = self.get_test_images()
         test_cloudinit_list = self.get_test_cloudinits_paths()
         test_cluster_config_list = self.get_test_cluster_configs()
+
+        if build_name is None or len(build_name) == 0:
+            msg = f"Config file field {self.C_BUILD_NAME} in the [{self.C_BUILD_SECTION}] section " \
+                  f"must not be empty in the file: {path}"
+            raise ConfigurationError(msg)
 
         if build_instance is None or len(build_instance) == 0:
             msg = f"Config file field {self.C_INSTANCE_TYPE} in the [{self.C_BUILD_SECTION}] section " \
@@ -148,6 +155,10 @@ class ReleaseConfig:
         # Check that all of the cloudinit scripts are resolvable
         for cloudinit_path in test_cloudinit_list:
             self.__validate_path(cloudinit_path, self.C_TEST_SECTION, self.C_CLOUD_INIT, self.path)
+
+    def get_build_name(self) -> str:
+        """Returns the name of the build configuration"""
+        return self.parser.get(self.C_BUILD_SECTION, self.C_BUILD_NAME)
 
     def get_build_instance(self) -> str:
         """Returns the name of the EC2 instance to be used for building SE"""

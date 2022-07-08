@@ -294,4 +294,10 @@ esac
 
   FILESIZE="$(du -k "${OUTPUT_DIR}/${OUTPUT_FILE}" | cut -f1)"
   printf "Size of installer: %'d kB\n" "${FILESIZE}"
+
+  echo
+  echo "Installer checksums:"
+  echo -n "md5:   " && md5sum  "${OUTPUT_DIR}/${OUTPUT_FILE}"
+  echo -n "sha1:  " && sha1sum "${OUTPUT_DIR}/${OUTPUT_FILE}"
+  echo
 }

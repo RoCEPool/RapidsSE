@@ -29,10 +29,7 @@ def run_ssh(host: str, command: str, timeout: float = None, ctx: str = "") -> su
                             text=True)
 
     if result.returncode != 0:
-        msg = f"{ctx}Error while executing the command: {' '.join(ssh_command)}\n" + \
-              f"Return code: {str(result.returncode)}\n" + \
-              f"Stdout: {result.stdout}\n" + \
-              f"Stderr: {result.stderr}"
+        msg = f"{ctx}Error while executing the command: {' '.join(ssh_command)}"
         raise errors.SshError(msg, result.stdout, result.stderr)
 
     return result

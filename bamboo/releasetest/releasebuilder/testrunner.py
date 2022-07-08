@@ -19,7 +19,7 @@ import pyutils.clusterops as clusterops
 LOG = logging.getLogger(__name__)
 
 C_TEST_NAME = "Test Release"
-C_INSTANCE_NAME_PREFIX = "TestRelease"
+C_INSTANCE_NAME_PREFIX = "ReleaseTest"
 C_INSTANCE_START_TIMEOUT = 600.0
 
 # How long should we wait for all of the EC2 instances to be started
@@ -98,7 +98,8 @@ class TestRunner:
                                              self.result_path,
                                              self.repo_path,
                                              self.installer_path,
-                                             base_cluster_id)
+                                             base_cluster_id,
+                                             self.config.get_test_terminate())
             self.instance_runners.append(instance_runner)
 
     def run(self):
@@ -159,7 +160,8 @@ class InstanceRunner:
                  result_path: pathlib.Path,
                  repo_path: pathlib.Path,
                  local_installer_path: pathlib.Path,
-                 cluster_id: int):
+                 cluster_id: int,
+                 terminate: bool):
 
         self.test_name: str = test_name
         self.instance_type = instance_type
@@ -172,6 +174,7 @@ class InstanceRunner:
         self.repo_path = repo_path
         self.local_installer_path = local_installer_path
         self.cluster_id = cluster_id
+        self.terminate = terminate
 
         # Create a new result and add it to the list
         self.test_result = TestResult(f"Install & run ({self.test_name})")
@@ -197,7 +200,7 @@ class InstanceRunner:
         instance_thread.start()
 
         instance_thread.join(C_SE_TEST_TIMEOUT_SEC)
-        if instance_thread.is_alive():
+        if instance_thread.is_alive() and self.terminate:
             self.force_stop()
 
         return self.test_result
@@ -241,18 +244,18 @@ class InstanceRunner:
         except Exception as e:
             # Record the failed test completion
             self.test_result.set_test_ended(False, False, None, str(e))
-
-            if hasattr(e, 'msg'):
-                LOG.exception(f"Test {self.test_name}: " + e.msg)
-            else:
-                LOG.exception(f"Error occurred during the test phase of test {self.test_name}.")
+            LOG.exception(f"Error occurred during the test phase of test {self.test_name}.")
 
         finally:
-            if len(self.ip_addrs) == 0:
+            if len(self.ip_addrs) > 0:
 
                 # Collect results from the remote node
                 try:
                     self.__collect_seth_results()
+                except (errors.SshError,) as e:
+                    LOG.error(f"Test {self.test_name}: Unable to collect seth results: {e.stderr}")
+                    # Otherwise carry on
+
                 except (Exception,) as e:
                     LOG.error(f"Test {self.test_name}: Unable to collect seth results")
                     LOG.exception(e)
@@ -261,6 +264,11 @@ class InstanceRunner:
                 # Collect any log files
                 try:
                     self.__collect_logs()
+
+                except (errors.SshError,) as e:
+                    LOG.error(f"Test {self.test_name}: Unable to collect SE logs: {e.stderr}")
+                    # Otherwise carry on
+
                 except (Exception,) as e:
                     LOG.error(f"Test {self.test_name}: Unable to collect SE logs")
                     LOG.exception(e)
@@ -276,11 +284,13 @@ class InstanceRunner:
 
         LOG.info(f"Test {self.test_name}: About to start {num_instances} instance(s) to test RapidsSE")
 
+        name_tag = f"{C_INSTANCE_NAME_PREFIX}-{self.test_name.replace(' ', '-')}-"
+
         instance_ids, ip_addrs = ec2.start_instances(self.instance_type,
                                                      self.image_id,
                                                      str(self.cloudinit_path),
                                                      num_instances,
-                                                     C_INSTANCE_NAME_PREFIX,
+                                                     name_tag,
                                                      C_INSTANCE_START_TIMEOUT,
                                                      False,
                                                      ctx=self.op_ctx)
@@ -554,8 +564,9 @@ class InstanceRunner:
         # The destination filename is the original filename with the test name inserted
         # just before the suffix.
         # e.g. logs-20220622T12:01:01-CentOS-7.tar.gz
-        dest_filename = f"{src_path.name.removesuffix(src_path.suffix)}-" \
-                        f"{self.test_name.replace(' ', '-')}{src_path.suffix}"
+        suffix = ".tar.gz"
+        dest_filename = f"{src_path.name.removesuffix(suffix)}-" \
+                        f"{self.test_name.replace(' ', '-')}{suffix}"
 
         src = f"{self.ip_addrs[0]}:{result.stdout.strip()}"
         dest = str(self.artifact_path / dest_filename)
@@ -577,13 +588,18 @@ class InstanceRunner:
     def __terminate_instances(self) -> None:
         """Terminates any previously started EC2 instance"""
 
+        if self.terminate is False:
+            LOG.info(f"Test {self.test_name}: Not stopping instances because of the 'terminate' "
+                     f"setting in the test configuration")
+            return
+
         if self.instance_ids is None:
             LOG.info(f"Test {self.test_name}: No EC2 instance to stop")
             return
 
         ids = ", ".join(self.instance_ids)
         LOG.info(f"Test {self.test_name}: About to stop EC2 instance(s) with IDs: {ids}")
-        ec2.terminate_instances([self.instance_ids], ctx=self.op_ctx)
+        ec2.terminate_instances(self.instance_ids, ctx=self.op_ctx)
 
     def force_stop(self) -> None:
         """Forcible terminates an EC2 instance and collects logs if possible"""
