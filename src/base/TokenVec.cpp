@@ -104,7 +104,7 @@ TokenVec* TokenVec::pGetSubVec(TokenVec* pTknVec, Stz* szStart, Stz* szEnd)
 }
 
 /*----------------------------------------------------------------------------*/
-/* replace tokens                                                             */
+/* replace tokens (procedure params)                                          */
 /*----------------------------------------------------------------------------*/
 bool TokenVec::bReplace(TokenVec* pThisVec,
                         TokenVec* pFindVec, TokenVec* pWithVec)
@@ -125,6 +125,11 @@ bool TokenVec::bReplace(TokenVec* pThisVec,
       return false;
 
     Token* pWithToken = pWithVec->pGet(i_Find);
+
+    // SE-93 temp hack: to cater to certain names being "|"
+    // eg create table | (...)
+    if (pWithToken->bSame("|"_Stz))
+      return false;
 
     pThisToken->vUpdateChars(pWithToken->szChars(),pThisVec);
     pThisToken->vToken(pWithToken->eToken());

@@ -9,6 +9,10 @@ failure contains: "Table does not exist"
 lsidx lsidx;
 failure contains: "Table does not exist"
 
+// create table with |
+create table | (i integer);
+failure contains: 'invalid command'
+
 // create a table
 create table t (i integer);
 success
