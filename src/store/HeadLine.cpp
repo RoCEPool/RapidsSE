@@ -370,7 +370,7 @@ void HeadLine::vPutDataLogical(i8 i_Offset, w8 wDataCode, i8 nDataSize)
   OverLine* aOverLine = aGetOver();
   i8 i_Offset_over = i_Offset - nHeadBytes;
   
-  ASSERT(i_Offset_over < aOverLine->nBytes());
+  ASSERT(i_Offset_over < aOverLine->jSizeBytes());
   
   aOverLine->vPut(i_Offset_over,wDataCode,nDataSize);
 }

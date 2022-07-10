@@ -165,8 +165,9 @@ bool RowCompactor::bCompactRow(Row* aRow)
   
   //m_pCrwNub->vDumpTails();
   
-  bool bResult = bAddRowAsCrw(aRow);
-  
+  //bool bResult = bAddRowAsCrw(aRow);
+  bool bResult = bAddRowAsCrw_2(aRow);
+
 //  if (nRows > 1060 && nRows < 1070) {
 //    m_pCrwBuffer->vPrintRows(m_pStreamDef);
 //    SP_Encoding spEncoding;
@@ -771,6 +772,7 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
         azDst = (char*)m_pEncoding->m_xWsp.ayLatter();
         UNUSED(azDst);
 
+        wColDtm.m_szVch = pRow->szColVal_ofs(i_Col);
         jVchSize = StrLib::nLength((char*)wColDtm.m_szVch) + 1;
                   
         // 1) MC_STRING_x1

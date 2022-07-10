@@ -166,7 +166,7 @@ void Encoding::vMorphEncoding(_ColEnc& rxColEnc)
   ASSERT(C_UNKNOWN != rxColEnc.m_i_Tail);
 
   // calc the adjustment required because MC_STR_FIT_1L becoming MC_STR_TAIL_2T
-  ASSERT(rxColEnc.m_jDataSize > C_2B);
+  ASSERT(rxColEnc.m_jDataBytes > C_2B);
   i8 nOffsetAdj = - (rxColEnc.m_jDataBytes - C_2B);
   ASSERT(nOffsetAdj < 0);
   
