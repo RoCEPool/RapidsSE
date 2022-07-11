@@ -137,7 +137,13 @@ void Encoding::vDumpEncoding(void)
     vTrace("  m_bSplit         : %lld\n"_Stz, (i8)rxColEnc.m_bSplit);
     vTrace("  m_uHigh          : %s\n"_Stz,   aMC[rxColEnc.m_uHigh]);
     vTrace("  m_uLow           : %lld\n"_Stz, rxColEnc.m_uLow);
-    vTrace("  m_wDataCode      : %s\n"_Stz,   rxColEnc.m_wDataCode.m_azStr);
+    
+    if (CT_VARCHAR == rxColEnc.m_pCol->eColumnType() &&
+        MC_NULL != rxColEnc.m_uHigh)
+      vTrace("  m_wDataCode      : %s\n"_Stz,   rxColEnc.m_wDataCode.m_azStr);
+    else
+      vTrace("  m_wDataCode      : %lld\n"_Stz,   rxColEnc.m_wDataCode.m_iWrd);
+    
     vTrace("  m_jDataBytes     : %lld\n"_Stz, rxColEnc.m_jDataBytes);
     vTrace("  m_bInOver        : %lld\n"_Stz, (i8)rxColEnc.m_bInOver);
     vTrace("  m_o_DataFrom     : %lld\n"_Stz, rxColEnc.m_o_DataFrom);

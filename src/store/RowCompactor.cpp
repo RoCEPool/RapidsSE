@@ -814,7 +814,7 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
     } // switch eDatum
 
   } // for 1) encode all column values
-  m_pEncoding->vDumpEncoding();
+  //m_pEncoding->vDumpEncoding();
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -856,7 +856,7 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
     }
 
   }
-  m_pEncoding->vDumpEncoding();
+  //m_pEncoding->vDumpEncoding();
 
 
 
@@ -875,7 +875,7 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
     i8 o_DataFrom  = o_DataFromNext;
     i8 o_DataBreak = o_DataFrom + jDataBytes;
 
-    if (bAllotOver || o_DataBreak < jHeadSizeBytes) {
+    if (bAllotOver || o_DataBreak < jHeadSizeBytes - C_OT_2B) {
       rxColEnc.m_bInOver     = bAllotOver;
       rxColEnc.m_o_DataFrom  = o_DataFrom;
       rxColEnc.m_o_DataBreak = o_DataBreak;
@@ -895,11 +895,11 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
     rxColEnc.m_bInOver     = true;
     rxColEnc.m_o_DataFrom  = o_DataFrom;
     rxColEnc.m_o_DataBreak = o_DataBreak;
-    nBytesNeeded   += jDataBytes;
+    nBytesNeeded   += C_OT_2B + C_U_1B + C_M_1B + jDataBytes;
     o_DataFromNext += jDataBytes;
     
   } // for .) determine column data from & break
-  m_pEncoding->vDumpEncoding();
+  //m_pEncoding->vDumpEncoding();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // .) allot the compact row (head, over and tails)
@@ -935,9 +935,9 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
   }
 
   
-  MemLib::vHexDump(aHeadLine,jHeadSizeBytes);
-  if (aOverLine)
-    MemLib::vHexDump(aOverLine,jOverSizeBytes);
+  //MemLib::vHexDump(aHeadLine,jHeadSizeBytes);
+  //if (aOverLine)
+  //  MemLib::vHexDump(aOverLine,jOverSizeBytes);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // .) pack encoded row into the compact row
@@ -1098,10 +1098,13 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
     
   L_RowPacked:
 
-    MemLib::vHexDump(aHeadLine,jHeadSizeBytes);
-    if (aOverLine)
-      MemLib::vHexDump(aOverLine,jOverSizeBytes);
+//    MemLib::vHexDump(aHeadLine,jHeadSizeBytes);
+//    if (aOverLine)
+//      MemLib::vHexDump(aOverLine,jOverSizeBytes);
 
+    if (i_Col == nCols - 1)
+      int iDebug = 1;
+    
     {;}
 
   } // for .) pack encoded row into the compact row
