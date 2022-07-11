@@ -3790,7 +3790,16 @@ void AM::vWriteEvent_vargs(Stz* aFormat, va_list xArgs)
 
   gxEventLogMsgBuffer.bTryWrite(xEventLogMsg);
 
+  // DEBUG
   printf("Size:%lld\n", gxEventLogMsgBuffer.iSize());
+
+  EventLogMsg xEventLogMsg1;
+  gxEventLogMsgBuffer.bTryRead(xEventLogMsg1);
+  char buf[50];
+  struct tm  ts;
+  ts = *localtime((time_t*)&xEventLogMsg1.m_iSincePosixEpoch);
+  strftime(buf, sizeof(buf), "%a %Y-%m-%d %H:%M:%S %Z", &ts);
+  printf("Time: %s Msg:%s\n", buf, xEventLogMsg1.m_sEventMsg);
 
   StrLib::vStrip(caFormatted,'\n');
 
