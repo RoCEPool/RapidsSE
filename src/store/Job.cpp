@@ -94,6 +94,8 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId, TagSet* 
   /* 08 */ m_bWasReceived = false;
   /* 09 */ m_pMarkerChain = nullptr;
   /* 10 */ m_bAllocate    = true;
+  /* 11 */ m_pJobsSkipNode    = new(C_SKIPLIST_LEVELS,nullptr) SkipNode(this);
+  /* 12 */ m_pGenericSkipNode = new(C_SKIPLIST_LEVELS,nullptr) SkipNode(this);
 
   m_iTscParticipant = 0;
   
@@ -129,6 +131,9 @@ Job::~Job(void) noexcept(false)
   try {
     if (AM::JLIST::bFindJob(this))
       AM::JLIST::vRemoveJob(this);
+
+    delete m_pJobsSkipNode;
+    delete m_pGenericSkipNode;
 
     //  if (bHasTag(C_TAG_LIFE) || JK_GENERIC == m_eJobKind) {
     //
@@ -1330,6 +1335,8 @@ void Job::vPostRecv(void)
   /* 19 */ m_pMarkerChain = nullptr;
   /* 10 */ m_bAllocate    = true;
   /* 11 */ m_pObjectTracker = nullptr;
+  /* 11 */ m_pJobsSkipNode    = new(C_SKIPLIST_LEVELS,nullptr) SkipNode(this);
+  /* 12 */ m_pGenericSkipNode = new(C_SKIPLIST_LEVELS,nullptr) SkipNode(this);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

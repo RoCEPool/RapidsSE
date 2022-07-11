@@ -21,7 +21,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
   class Job : public Operand,
               public CRM<Job>
   {
-  private:
+  public:
   
     Lock   m_okLock;      // lock on this job
     
@@ -65,7 +65,9 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     /* 08 */ b8      m_bWasReceived;   // was job received over a socket?
     /* 09 */ MarkerChain* m_pMarkerChain; // chain of free markers
     /* 10 */ b8      m_bAllocate;      // can job ask for memory?
-    /* 11 */ ObjectTracker*      m_pObjectTracker;// Frequency count of object types allocated/freed by this Job
+    /* 11 */ ObjectTracker* m_pObjectTracker;// Frequency count of object types allocated/freed by this Job
+    /* 12 */ SkipNode* m_pJobsSkipNode;     // Jobs list skip node
+    /* 13 */ SkipNode* m_pGenericSkipNode;  // generic list skip node
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
 

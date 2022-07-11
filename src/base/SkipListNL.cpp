@@ -340,7 +340,73 @@ bool SkipListNL::bInsertByKey(void* aObjectInsert,
 #endif
   
   
-  // succesful insert
+  // successful insert
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert object into list                                                    */
+/*----------------------------------------------------------------------------*/
+bool SkipListNL::bInsertByKey(SkipNode* pSkipNode,
+
+                              std::function<bool(void* aScan,
+                                                 bool& bFound
+                              )> bfMoveRightTest,
+
+                              std::function<void(SkipNode* pNode,
+                                                 int i_Level
+                              )> vfPrintNode
+)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
+
+  bool bEqualTo;
+  SkipNode* aPriorVec[C_SKIPLIST_LEVELS];
+
+  // get a positioned prior vector
+  SkipNode* pNode = pPositionPrior(bfMoveRightTest,
+                                   aPriorVec,
+                                   bEqualTo,
+                                   vfPrintNode);
+  RASSERT(pNode); // logic check
+
+  Object* pObjectInsert = (Object*)pSkipNode->m_pObject;
+  //RASSERT( ! pNode->m_pObject || ((Object*)pNode->m_pObject)->eGetClassNo() == pObjectInsert->eGetClassNo() );
+
+  // do not insert duplicates into a list of unique keys
+  if (bEqualTo && m_bUniqueKey) {
+    return false;
+  }
+
+  // choose a random level for the new node
+  i8 iNodeLevel = iRandomLevel();
+  if (iNodeLevel > m_iHeight) {
+    iNodeLevel = ++m_iHeight;
+    aPriorVec[iNodeLevel] = m_pHead;
+  }
+
+  //RJH vTrace("bInsert:position7\n"_Stz);
+  // create new node with inserted object
+  pSkipNode->m_iHeight = iNodeLevel;
+  m_pNewly = pSkipNode;
+  RASSERT(m_pNewly);
+
+  // put new node into the list according the prior vector for random level
+  do {
+    m_pNewly->m_pRight[iNodeLevel] = aPriorVec[iNodeLevel]->m_pRight[iNodeLevel];
+    aPriorVec[iNodeLevel]->m_pRight[iNodeLevel] = m_pNewly;
+  } while (--iNodeLevel >= 0);
+
+  // one more object in the list
+  m_nItems++;
+
+
+#ifdef _VALIDATE_SKIPLIST
+  vValidate();
+#endif
+
+
+  // successful insert
   return true;
 }
 
@@ -572,6 +638,67 @@ bool SkipListNL::bRemoveByKey(void* pObjectRemove,
   // delete the node
   delete pNodeRemove;
   
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove object from list                                                    */
+/*----------------------------------------------------------------------------*/
+bool SkipListNL::bRemoveByKeyNoDelete(void* pObjectRemove,
+
+                              std::function<bool(void* aRightObject,
+                                                 bool& bFound
+                              )> bfMoveRightTest,
+
+                              std::function<void(SkipNode* pNode,
+                                                 int i_Level
+                              )> vfPrintNode
+)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
+
+  // Remove iff UNIQUE KEY
+  RASSERT(m_bUniqueKey);
+
+  bool bEqualTo;
+  SkipNode* aPriorVec[C_SKIPLIST_LEVELS];
+  SkipNode* aPrior;
+
+  SkipNode* pNodePrev = pPositionPrior(bfMoveRightTest,
+                                       aPriorVec,
+                                       bEqualTo,
+                                       vfPrintNode);
+  RASSERT(pNodePrev); // logic check
+
+  if ( ! bEqualTo ) {
+    vTrace("SkipListNL::bRemoveByKey: failed to position on %p\n"_Stz,
+           pObjectRemove);
+
+    vPrintList(vfPrintNode);
+
+    vSkipListDump(this);
+
+    return false;
+  }
+
+  // get node to be removed
+  SkipNode* pNodeRemove = pNodePrev->m_pRight[0];
+  RASSERT(pObjectRemove == pNodeRemove->m_pObject); // logic check
+
+  // cut out the node being removed
+  for (i8 i_Level = 0;
+       i_Level <= m_iHeight &&
+       (aPrior = aPriorVec[i_Level])->m_pRight[i_Level] == pNodeRemove;
+       i_Level++)
+    aPrior->m_pRight[i_Level] = pNodeRemove->m_pRight[i_Level];
+
+  // correct the height if we have removed the last tallest node
+  while ( ! m_pHead->m_pRight[m_iHeight] && m_iHeight > 0 )
+    m_iHeight--;
+
+  // one less object in the list
+  m_nItems--;
+
   return true;
 }
 

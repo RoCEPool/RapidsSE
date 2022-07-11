@@ -72,6 +72,16 @@ namespace BASE
                                          )> vfPrintNode
                       );
 
+    bool bInsertByKey(SkipNode* pSkipNode,
+
+                      std::function<bool(void* aRightObject,
+                                         bool& bFound
+                      )> bfMoveRightTest,
+
+                      std::function<void(SkipNode* pNode,
+                                         int i_Level
+                      )> vfPrintNode
+                     );
   
     i8 nItems(void);
   
@@ -99,6 +109,26 @@ namespace BASE
                                           int i_Level
                                           )> vfPrintNode
                        );
+
+    bool bRemoveByKey(SkipNode* pSkipNode,
+                      std::function<bool(void* aRightObject,
+                                         bool& bFound
+                      )> bfMoveRightTest,
+
+                      std::function<void(SkipNode* pNode,
+                                         int i_Level
+                      )> vfPrintNode
+                     );
+
+    bool bRemoveByKeyNoDelete(void* pObject,
+                      std::function<bool(void* aRightObject,
+                                         bool& bFound
+                      )> bfMoveRightTest,
+
+                      std::function<void(SkipNode* pNode,
+                                         int i_Level
+                      )> vfPrintNode
+    );
 
     bool bValidate(std::function<bool(SkipNode* aLeftNode,
                                       SkipNode* aRightNode
