@@ -611,9 +611,9 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     _ColEnc& rxColEnc = m_pEncoding->xaColEnc[i_Col];
     
-    Dtm wColDtm = pRow->wColDtm(i_Col);
+    rxColEnc.m_wDatum = pRow->wColDtm(i_Col);
 
-    if (wColDtm.bIsNull()) {
+    if (rxColEnc.m_wDatum.bIsNull()) {
       // null case
       rxColEnc.m_uMetaCode = METACODE_FORM(MC_NULL,0);
       rxColEnc.m_wDataCode.vSetNull();
@@ -626,35 +626,35 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
         
       //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case DM_BCD:
-        rxColEnc.m_wDataCode.m_wBcd.T.m_iAsI8 = wColDtm.m_wBcd.T.m_iAsI8;
+        rxColEnc.m_wDataCode.m_wBcd.T.m_iAsI8 = rxColEnc.m_wDatum.m_wBcd.T.m_iAsI8;
 
         // -1 case -- encode as: MC_BCD_M_ONE + {}
-        if (-1 == wColDtm.m_wBcd.T.m_iAsI8) {
+        if (-1 == rxColEnc.m_wDatum.m_wBcd.T.m_iAsI8) {
           rxColEnc.m_jDataBytes = C_0B;
           rxColEnc.m_uMetaCode  = METACODE_FORM(MC_NEGATIVE,1);
           break;
         }
         
         // 0..10 case -- encode as MC_BCD_ONE..TEN + {}
-        if (wColDtm.m_wBcd.T.m_iAsI8 >= 0 && wColDtm.m_wBcd.T.m_iAsI8 <= 15) {
+        if (rxColEnc.m_wDatum.m_wBcd.T.m_iAsI8 >= 0 && rxColEnc.m_wDatum.m_wBcd.T.m_iAsI8 <= 15) {
           rxColEnc.m_jDataBytes = C_0B;
-          rxColEnc.m_uMetaCode  = METACODE_FORM(MC_POSITIVE,wColDtm.m_iWrd);
+          rxColEnc.m_uMetaCode  = METACODE_FORM(MC_POSITIVE,rxColEnc.m_wDatum.m_iWrd);
           break;
         }
 
         // general case -- encode as: MC_BCD_1..8B + {D}
-        nD = wColDtm.iByteMagn();
+        nD = rxColEnc.m_wDatum.iByteMagn();
         rxColEnc.m_jDataBytes = nD;
         rxColEnc.m_uMetaCode  = METACODE_FORM(MC_NUMERIC,nD);
         break;
         
       //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case DM_BOL:
-        rxColEnc.m_wDataCode.m_wBol.T.m_iAsI8 = wColDtm.m_wBol.T.m_iAsI8;
+        rxColEnc.m_wDataCode.m_wBol.T.m_iAsI8 = rxColEnc.m_wDatum.m_wBol.T.m_iAsI8;
         
         // encode as: MC_BOL_TRUE or MC_BOL_FALSE
         rxColEnc.m_jDataBytes = C_0B;
-        if (wColDtm.m_wBol.T.m_iAsI8)
+        if (rxColEnc.m_wDatum.m_wBol.T.m_iAsI8)
           rxColEnc.m_uMetaCode = METACODE_FORM(MC_POSITIVE,1);
         else
           rxColEnc.m_uMetaCode = METACODE_FORM(MC_POSITIVE,0);
@@ -662,10 +662,10 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
         
       //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case DM_DTE:
-        rxColEnc.m_wDataCode.m_wDte.T.m_iAsI8 = wColDtm.m_wDte.T.m_iAsI8;
+        rxColEnc.m_wDataCode.m_wDte.T.m_iAsI8 = rxColEnc.m_wDatum.m_wDte.T.m_iAsI8;
                 
         // encode as: MC_DTE_En_2B + {D}
-        vDteIntoEdt(wColDtm.m_wDte.T.m_iAsI8,
+        vDteIntoEdt(rxColEnc.m_wDatum.m_wDte.T.m_iAsI8,
                     &rxColEnc.m_wDataCode.m_wEdt.T.m_iAsI8,iEra);
         if (C_ERA_0 == iEra)
           rxColEnc.m_uMetaCode = METACODE_FORM(MC_DATE_E0,2);
@@ -679,10 +679,10 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
         
       //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case DM_FLT:
-        rxColEnc.m_wDataCode.m_wFlt.T.m_dFlt = wColDtm.m_wFlt.T.m_dFlt;
+        rxColEnc.m_wDataCode.m_wFlt.T.m_dFlt = rxColEnc.m_wDatum.m_wFlt.T.m_dFlt;
                 
         // general case -- encode as: MC_FLT_1..8B + {D}
-        nD = wColDtm.iByteMagn();
+        nD = rxColEnc.m_wDatum.iByteMagn();
         rxColEnc.m_jDataBytes = nD;
         rxColEnc.m_uMetaCode = METACODE_FORM(MC_NUMERIC,nD);
         break;
@@ -691,29 +691,29 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
       case DM_INT:
         
         // general case -- encode as: MC_INT_1..8B + {D}
-        rxColEnc.m_wDataCode.m_iWrd = wColDtm.m_iWrd;
+        rxColEnc.m_wDataCode.m_iWrd = rxColEnc.m_wDatum.m_iWrd;
       
-        if (wColDtm.m_iWrd > 10) {
-          rxColEnc.m_jDataBytes = (u8)IntLib::iByteMagnitude(wColDtm.m_iWrd);
+        if (rxColEnc.m_wDatum.m_iWrd > 10) {
+          rxColEnc.m_jDataBytes = (u8)IntLib::iByteMagnitude(rxColEnc.m_wDatum.m_iWrd);
        
           rxColEnc.m_uMetaCode = METACODE_FORM(MC_NUMERIC,rxColEnc.m_jDataBytes);
           break;
         }
               
         // 0..10 case -- encode as MC_INT_ONE..TEN + {}
-        if (wColDtm.m_iWrd >= 0 && wColDtm.m_iWrd <= 10) {
+        if (rxColEnc.m_wDatum.m_iWrd >= 0 && rxColEnc.m_wDatum.m_iWrd <= 10) {
           rxColEnc.m_jDataBytes = C_0B;
           
           uHigh = MC_POSITIVE;
           uHigh <<= 4;
-          uLow = (u1)wColDtm.m_iWrd;
+          uLow = (u1)rxColEnc.m_wDatum.m_iWrd;
           
-          rxColEnc.m_uMetaCode = METACODE_FORM(MC_POSITIVE,wColDtm.m_iWrd);
+          rxColEnc.m_uMetaCode = METACODE_FORM(MC_POSITIVE,rxColEnc.m_wDatum.m_iWrd);
           break;
         }
                
         // -1 case -- encode as: MC_INT_M_ONE + {}
-        if (-1 == wColDtm.m_iWrd) {
+        if (-1 == rxColEnc.m_wDatum.m_iWrd) {
           rxColEnc.m_jDataBytes = C_0B;
           
           rxColEnc.m_uMetaCode = METACODE_FORM(MC_NEGATIVE,1);
@@ -721,16 +721,16 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
         }
       
         // -neg??
-        rxColEnc.m_jDataBytes = IntLib::iByteMagnitude(wColDtm.m_iWrd);
+        rxColEnc.m_jDataBytes = IntLib::iByteMagnitude(rxColEnc.m_wDatum.m_iWrd);
         rxColEnc.m_uMetaCode = METACODE_FORM(MC_NUMERIC,rxColEnc.m_jDataBytes);
         break;
         
       //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case DM_IVL:
-        rxColEnc.m_wDataCode.m_wIvl.T.m_iAsI8 = wColDtm.m_wIvl.T.m_iAsI8;
+        rxColEnc.m_wDataCode.m_wIvl.T.m_iAsI8 = rxColEnc.m_wDatum.m_wIvl.T.m_iAsI8;
       
         // general case -- encode as: MC_IVL_1..8B : {D}
-        nD = wColDtm.iByteMagn();
+        nD = rxColEnc.m_wDatum.iByteMagn();
         rxColEnc.m_jDataBytes = nD;
         rxColEnc.m_uMetaCode = METACODE_FORM(MC_NUMERIC,nD);
         break;
@@ -742,17 +742,17 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
         
       //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case DM_TME:
-        rxColEnc.m_wDataCode.m_wTme.m_iAsI8 = wColDtm.m_wTme.m_iAsI8;
+        rxColEnc.m_wDataCode.m_wTme.m_iAsI8 = rxColEnc.m_wDatum.m_wTme.m_iAsI8;
         
         // general case -- encode as: MC_TME_1..8B : {D}
-        nD = wColDtm.iByteMagn();
+        nD = rxColEnc.m_wDatum.iByteMagn();
         rxColEnc.m_jDataBytes = nD;
         rxColEnc.m_uMetaCode = METACODE_FORM(MC_NUMERIC,nD);
         break;
         
       //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case DM_TSP:
-        rxColEnc.m_wDataCode.m_wTsp.T.m_iAsI8 = wColDtm.m_wTsp.T.m_iAsI8;
+        rxColEnc.m_wDataCode.m_wTsp.T.m_iAsI8 = rxColEnc.m_wDatum.m_wTsp.T.m_iAsI8;
                 
         // encode as: MC_1..8B : {D}
         nD = 8;
@@ -762,14 +762,14 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
         
       //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case DM_VCH:
-        wColDtm.m_szVch = pRow->szColVal_ofs(i_Col);
-        azVch = (char*)wColDtm.m_szVch; UNUSED(azVch);
-        rxColEnc.m_jVchSize = StrLib::nLength((char*)wColDtm.m_szVch) + 1;
+        rxColEnc.m_wDatum.m_szVch = pRow->szColVal_ofs(i_Col);
+        azVch = (char*)rxColEnc.m_wDatum.m_szVch; UNUSED(azVch);
+        rxColEnc.m_jVchSize = StrLib::nLength((char*)rxColEnc.m_wDatum.m_szVch) + 1;
                   
         // 1) MC_STRING_x1
         if (rxColEnc.m_jVchSize <= 15) {
           nQuanta = rxColEnc.m_jVchSize; //MemLib::nQuantaRequired(nS,1);
-          rxColEnc.m_wDataCode.m_azStr = (char*)wColDtm.m_szVch;
+          rxColEnc.m_wDataCode.m_azStr = (char*)rxColEnc.m_wDatum.m_szVch;
           rxColEnc.m_jDataBytes = STRx1(nQuanta);
           rxColEnc.m_uMetaCode = METACODE_FORM(MC_STRING_x1,nQuanta);
           break;
@@ -778,7 +778,7 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
         // 2) MC_STRINGx2
         if (rxColEnc.m_jVchSize <= 45) {
           nQuanta = MemLib::nQuantaRequired(rxColEnc.m_jVchSize-15,2);
-          rxColEnc.m_wDataCode.m_azStr = (char*)wColDtm.m_szVch;
+          rxColEnc.m_wDataCode.m_azStr = (char*)rxColEnc.m_wDatum.m_szVch;
           rxColEnc.m_jDataBytes = STRx2(nQuanta);
           rxColEnc.m_uMetaCode = METACODE_FORM(MC_STRING_x2,nQuanta);
           break;
@@ -787,7 +787,7 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
         // 3) MC_STRINGx4
         if (rxColEnc.m_jVchSize <= 105) {
           nQuanta = MemLib::nQuantaRequired(rxColEnc.m_jVchSize-45,4);
-          rxColEnc.m_wDataCode.m_azStr = (char*)wColDtm.m_szVch;
+          rxColEnc.m_wDataCode.m_azStr = (char*)rxColEnc.m_wDatum.m_szVch;
           rxColEnc.m_jDataBytes = STRx4(nQuanta);
           rxColEnc.m_uMetaCode = METACODE_FORM(MC_STRING_x4,nQuanta);
           break;
@@ -796,15 +796,15 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
         // 4) MC_STRINGx8
         if (rxColEnc.m_jVchSize <= 225) {
           nQuanta = MemLib::nQuantaRequired(rxColEnc.m_jVchSize-105,8);
-          rxColEnc.m_wDataCode.m_azStr = (char*)wColDtm.m_szVch;
+          rxColEnc.m_wDataCode.m_azStr = (char*)rxColEnc.m_wDatum.m_szVch;
           rxColEnc.m_jDataBytes = STRx8(nQuanta);
           rxColEnc.m_uMetaCode = METACODE_FORM(MC_STRING_x8,nQuanta);
           break;
         }
 
         // 5) MC_STRING_TAIL
-        rxColEnc.m_wDataCode.m_azStr = (char*)wColDtm.m_szVch;
-        rxColEnc.m_jDataBytes = rxColEnc.m_jVchSize;
+        rxColEnc.m_wDataCode.m_azStr = (char*)rxColEnc.m_wDatum.m_szVch;
+        rxColEnc.m_jDataBytes = C_IT_2B; //rxColEnc.m_jVchSize;
         rxColEnc.m_uMetaCode = METACODE_FORM(MC_STRING_TAIL,2);
         break;
         
@@ -826,41 +826,53 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // .) encode tails
 
+  i8 nExtraTails = 0;
+  i8 jExtraSize  = 0;
+
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     _ColEnc& rxColEnc = m_pEncoding->xaColEnc[i_Col];
 
     if (DM_VCH != rxColEnc.m_pCol->eDatum())
       continue;
 
-    Dtm* aColDtm = pRow->aColDtm(i_Col);
-    if (aColDtm->bIsNull())
+    if (rxColEnc.m_wDatum.bIsNull())
       continue;
 
-    Stz* azStr = pRow->szColVal_ofs(i_Col);
-    if (StrLib::nLength((char*)azStr) < 8)
+    if (rxColEnc.m_uHigh == MC_STRING_x1)
       continue;
+    
+    rxColEnc.m_aTailLine = m_pCrwNub->aFindTail(rxColEnc.m_wDatum.m_szVch,
+                                                rxColEnc.m_i_Tail);
 
-    i8 i_Tail;
-    TailLine* aTailLine = m_pCrwNub->aFindTail(azStr,i_Tail);
-
-    if (aTailLine) {
+    if (rxColEnc.m_aTailLine) {
       // + found a matching tail
     
       // put tail into the encoding
-      rxColEnc.m_i_Tail     = i_Tail;
-      rxColEnc.m_aTailLine  = aTailLine;
       rxColEnc.m_bDuplicate = true;
       
       rxColEnc.m_uMetaCode  = METACODE_FORM(MC_STRING_TAIL,2);
       rxColEnc.m_wDataCode  = C_UNKNOWN;
       rxColEnc.m_jDataBytes = C_2B;
-
-    }
-    else {
-      //  did not find a matching tail
-      continue; // WRONG!
+      
+      continue;
     }
 
+    // did not find a matching tail
+
+    rxColEnc.m_bDuplicate = false;
+
+    if (MC_STRING_x2 == rxColEnc.m_uHigh ||
+        MC_STRING_x4 == rxColEnc.m_uHigh ||
+        MC_STRING_x8 == rxColEnc.m_uHigh)
+      continue;
+      
+    // need a tail
+    
+    i8 nUnits = MemLib::nQuantaRequired(rxColEnc.m_jVchSize,C_SPACEUNIT_QUANTA);
+    rxColEnc.m_jTailBytes = nUnits * C_SPACEUNIT_QUANTA;
+    
+    nExtraTails++;
+    jExtraSize += rxColEnc.m_jTailBytes;
   }
   //m_pEncoding->vDumpEncoding();
 
@@ -880,6 +892,16 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
     i8 jDataBytes  = rxColEnc.m_jDataBytes;
     i8 o_DataFrom  = o_DataFromNext;
     i8 o_DataBreak = o_DataFrom + jDataBytes;
+    
+    if (MC_STRING_TAIL == rxColEnc.m_uHigh) {
+      rxColEnc.m_bInOver     = bAllotOver;
+      rxColEnc.m_o_DataFrom  = o_DataFrom;
+      rxColEnc.m_o_DataBreak = o_DataBreak;
+      nBytesNeeded   += jDataBytes;
+      o_DataFromNext += jDataBytes;
+      continue;
+    }
+    
 
     if (bAllotOver || o_DataBreak < jHeadSizeBytes - C_OT_2B) {
       rxColEnc.m_bInOver     = bAllotOver;
@@ -931,13 +953,20 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
   }
   
   // opt allot non-duplicate tails
-  if (bAllotTails) {
+  if (nExtraTails) {
     for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
       _ColEnc& rxColEnc = m_pEncoding->xaColEnc[i_Col];
       
-      if (rxColEnc.m_jTailBytes) {
-        
-      }
+      if (! rxColEnc.m_jTailBytes)
+        continue;
+      
+      rxColEnc.m_i_Tail    = m_pCrwNub->iAllotTail(rxColEnc.m_jTailBytes);
+      rxColEnc.m_aTailLine = m_pCrwNub->aGetTail(rxColEnc.m_i_Tail);
+
+      i8 i_Tail_rel = aHeadLine->iToTail_rel(rxColEnc.m_aTailLine);
+      
+      rxColEnc.m_wDataCode.m_iWrd = i_Tail_rel;
+
     }
   }
 
@@ -953,7 +982,7 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
   byte* aMetaByte;
   byte* aDataByte;
   i8 o_MetaOffset_head;
-  i8 o_DataOffset_over;
+  //i8 o_DataOffset_over;
   i8 jStrBytes;
   i8 i_Tail_rel;
 
@@ -1083,6 +1112,8 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
     i_Tail_rel = aHeadLine->iToTail_rel(rxColEnc.m_aTailLine);
     rxColEnc.m_wDataCode.m_iWrd = i_Tail_rel;
     
+    RASSERT(2 == rxColEnc.m_jDataBytes);
+    
     //      -- HeadLine / OverLine --                -- TailLine --
     // +--------------------------------+   **********************************
     // | ...[TL]                        |---* <U><L><Stl> ////////////////// *
@@ -1101,6 +1132,8 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
                       rxColEnc.m_jDataBytes);
     }
     
+    rxColEnc.m_aTailLine->vAssign(rxColEnc.m_wDatum.m_szVch);
+
     goto L_RowPacked;
 
   
@@ -1112,8 +1145,8 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
     //if (aOverLine)
     //  MemLib::vHexDump(aOverLine,jOverSizeBytes);
 
-    if (i_Col == nCols - 1)
-      int iDebug = 1;
+    //if (i_Col == nCols - 1)
+    //  int iDebug = 1;
     
     {;}
 

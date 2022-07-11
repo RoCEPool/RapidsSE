@@ -9,7 +9,8 @@ namespace STORE
   struct _ColEnc {
     
     Column* m_pCol;    // column
-    
+    Dtm     m_wDatum;  // column value data bytes
+
     union {
       u1   m_uMetaCode;  // meta code v2 describing the column value
       
@@ -20,7 +21,7 @@ namespace STORE
     };
     
     b8   m_bSplit;     // overflow occurs at this point
-    Dtm  m_wDataCode;  // column value data bytes
+    Dtm  m_wDataCode;  // encoded column value data bytes
     i8   m_jDataBytes; // complete number of data code bytes, incl <L> etc
     i8   m_jVchSize;   //
     

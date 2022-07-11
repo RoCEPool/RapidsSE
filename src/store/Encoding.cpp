@@ -47,11 +47,11 @@ Encoding::Encoding(StreamDef* pStreamDef)
   // - - - - - - - - - - - - - - - - - -
 
   for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++) {
-    
     _ColEnc& rxColEnc = xaColEnc[i_Col];
     
-    rxColEnc.m_pCol       = nullptr;
-    
+    rxColEnc.m_pCol   = nullptr;
+    rxColEnc.m_wDatum = C_UNKNOWN;
+
     rxColEnc.m_uMetaCode  = 0;
     rxColEnc.m_wDataCode  = C_UNKNOWN;
     rxColEnc.m_jDataBytes = C_UNKNOWN;
@@ -65,7 +65,7 @@ Encoding::Encoding(StreamDef* pStreamDef)
     rxColEnc.m_i_Tail     = C_UNKNOWN;
     rxColEnc.m_aTailLine  = nullptr;
     rxColEnc.m_bDuplicate = false;
-    rxColEnc.m_jTailBytes  = C_UNKNOWN;
+    rxColEnc.m_jTailBytes = C_UNKNOWN;
   }
   
   for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
@@ -382,12 +382,11 @@ void Encoding::vReset(void)
 
   //for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++) {
   for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
-
     _ColEnc& rxColEnc = xaColEnc[i_Col];
     
     // leave m_pCol
-    // leave m_eDatum
-    
+    rxColEnc.m_wDatum     = C_UNKNOWN;
+
     rxColEnc.m_wDataCode  = C_UNKNOWN;
     rxColEnc.m_jDataBytes = C_UNKNOWN;
     rxColEnc.m_jVchSize   = C_UNKNOWN;
