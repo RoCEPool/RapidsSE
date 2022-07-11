@@ -810,6 +810,29 @@ eEC AM::JLIST::eUpdateParent(Job* pJob)
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /*----------------------------------------------------------------------------*/
+/* begun recevd on originating node                                           */
+/*----------------------------------------------------------------------------*/
+void AM::JOB::vBegunOnOrigin(JobId tOriginId)
+{
+  _static_;
+
+  // find the originating job
+  Job* pJobParticipant = AM::pJob_FindOriginating(tOriginId);
+
+  Job *pJobFound = AM::pJob_FindOriginating(tOriginId);
+  RASSERT(pJobFound);
+
+  // find the job task
+  Task *pJobTask = pJobFound->pTask();
+
+  // ack the job task
+  i8 nAcksWereRemaining;
+  bool bWasQueued = Scheduler::bTaskCross_AckWaiting(pJobTask, AM::pThisTLSTask(),
+                                                     nAcksWereRemaining);
+  UNUSED(bWasQueued);
+}
+
+/*----------------------------------------------------------------------------*/
 /* has job got given tag?                                                     */
 /*----------------------------------------------------------------------------*/
 bool AM::JOB::bHasTag(Job* pJob, Stz* szTagNm)

@@ -368,6 +368,11 @@ Object* Socket::pObjectRecv_lowmem(eCN eClass)
       // trigger an execute of the participant pipeline job
       AM::JOB::vTriggerExecute(Job::tDistId(pJob));
     }
+    else if (Job::szJobNm(pJob)->bSame("begun"_Stz)) {
+
+      // job has begun on the participant
+      AM::JOB::vBegunOnOrigin(Job::tOriginId(pJob));
+    }
     else {
 
       // send a rejectJob to originating node
