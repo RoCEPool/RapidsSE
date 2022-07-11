@@ -25,7 +25,7 @@ namespace BASE
   
     static TokenVec* pGetSubVec(TokenVec* pTknVec, i8 i_From, i8 i_To);
     static TokenVec* pGetSubVec(TokenVec* pTknVec, Stz* szStart, Stz* szEnd);
-    static void      vReplace(TokenVec* pTknVec,
+    static bool      bReplace(TokenVec* pTknVec,
                               TokenVec* pFindVec, TokenVec* pWithVec);
     static TokenVec* pTokeniseSen(Stz* szString);
 

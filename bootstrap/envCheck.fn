@@ -15,6 +15,8 @@ fi
 readonly GCC_MINIMUM_VERSION="4.8.5"
 readonly BASH_MINIMUM_VERSION="4.2.46"
 
+readonly UDP_SENDER_FILE="udpSender.py"
+readonly UDP_RECEIVER_FILE="udpReceive.py"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Validate that the environment we are installing into is correct before
@@ -75,23 +77,60 @@ function validateInstallationEnvironment() {
   # Check that node names don't contain spaces or special characters and are unique.
   validateNodeNames
 
-  # Check that gcc is installed and is new enough
-  validateGcc
-
-  # Check that libAtomic.so.1 is installed
-  validateLibAtomic
-
-  # Check that bash has the correct version
-  validateBash
-
-  # Check that netcat is installed
-  validateNetcat
-
-  # Check that the ss utility is installed
-  validateSs
-
   # Check that all appropriate ports are opened on firewalls
   validateFirewall
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Validate that the environment we are installing into has all of the necessary
+## 3rd party applications and libraries.
+##  $@ - the array of node names that are being added at this time, or none
+##       for all nodes.
+
+function validate3rdPartyTools() {
+
+  if [ "$#" -eq 0 ]; then
+    # Check that gcc is installed and is new enough
+    validateGcc
+
+    # Check that libAtomic.so.1 is installed
+    validateLibAtomic
+
+    # Check that bash has the correct version
+    validateBash
+
+    # Check that netcat is installed
+    validateNetcat
+
+    # Check that the ss utility is installed
+    validateSs
+
+    # Check that the bc utility is installed
+    validateBc
+
+  else
+    local -a nodeNames=()
+    nodeNames=("$@")
+
+    # Check that gcc is installed and is new enough
+    validateGcc "${nodeNames[@]}"
+
+    # Check that libAtomic.so.1 is installed
+    validateLibAtomic "${nodeNames[@]}"
+
+    # Check that bash has the correct version
+    validateBash "${nodeNames[@]}"
+
+    # Check that netcat is installed
+    validateNetcat "${nodeNames[@]}"
+
+    # Check that the ss utility is installed
+    validateSs "${nodeNames[@]}"
+
+    # Check that the bc utility is installed
+    validateBc "${nodeNames[@]}"
+  fi
 }
 
 
@@ -158,21 +197,6 @@ function validateNodeAdditionEnvironment() {
 
   # Check that node names don't contain spaces or special characters and are unique.
   validateNodeNames
-
-  # Check that gcc is installed and is new enough
-  validateGcc "${nodeNames[@]}"
-
-  # Check that libAtomic.so.1 is installed
-  validateLibAtomic "${nodeNames[@]}"
-
-  # Check that bash has the correct version
-  validateBash "${nodeNames[@]}"
-
-  # Check that netcat is installed
-  validateNetcat "${nodeNames[@]}"
-
-  # Check that the ss utility is installed
-  validateSs "${nodeNames[@]}"
 
   # Check that all appropriate ports are opened on firewalls
   validateFirewall "${nodeNames[@]}"
@@ -1034,12 +1058,12 @@ function validateLibAtomic() {
   do
     host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
 
-    remoteCmd="/usr/sbin/ldconfig -p | grep libatomic.so.1"
+    remoteCmd="PATH=\${PATH}:/usr/sbin:/sbin ldconfig -p | grep libatomic.so.1"
 
-    sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "bash" "-c" "'${remoteCmd}'")
+    sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "${remoteCmd}")
 
     # Run it and check if it returned with a success error code
-    if ! ssh "${sshArgs[@]}" &>/dev/null; then
+    if ! response="$(ssh "${sshArgs[@]}" &>/dev/null)"; then
       failedNodes+=("${nodeName}")
       continue
     fi
@@ -1240,6 +1264,60 @@ function validateSs() {
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Check that bc utility is installed on each node.
+## Params:
+##  $@ - (optional) the list of node names to check. If not set then check all.
+
+function validateBc() {
+
+  local -a nodeNames;
+
+  if [ "$#" -eq 0 ]; then
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    nodeNames=( "$@" )
+  fi
+
+  local nodeName
+  local host
+  local remoteCmd
+  local output
+
+  declare -a sshArgs=()
+  declare -a failedNodes=()
+
+  debugPrint "Validating bc is installed"
+
+  for nodeName in "${nodeNames[@]}"
+  do
+    host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+
+    #shellcheck disable=SC2016
+    remoteCmd="which bc &>/dev/null"
+
+    sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "bash" "-c" "'${remoteCmd}'")
+
+    # Run it and check if it returned with a success error code
+    if ! output="$(ssh "${sshArgs[@]}" || true)" ; then
+      failedNodes+=("${nodeName}")
+      continue
+    fi
+  done
+
+  if [ "${#failedNodes[@]}" -gt 0 ]; then
+    local errMsg="bc is not installed on the following nodes:"
+
+    for nodeName in "${failedNodes[@]}"
+    do
+      host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+      errMsg+="$(printf "\n  %-12s [host: %12s]" "${nodeName}" "${host}")"
+    done
+
+    errorExit "${errMsg}"
+  fi
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Check that the local bash version is new enough.
 ## Params: None
 
@@ -1380,11 +1458,11 @@ function validateFirewallSequential() {
 
       if [ "${tcpResult}" -eq 2 ]; then
         # TCP socket is already in use. This is an error
-        errorList+=( "${server}:${internalPort}  (TCP port already in use by another process on host)" )
+        errorList+=( "${server}:${internalPort}/TCP  (TCP port already in use by another process on host)" )
 
       else
         # Socket is blocked. Add to failed node/socket list
-        errorList+=( "${server}:${internalPort}  (TCP port may be blocked)" )
+        errorList+=( "${server}:${internalPort}/TCP  (TCP port may be blocked)" )
       fi
     fi
 
@@ -1397,11 +1475,15 @@ function validateFirewallSequential() {
 
       if [ "${udpResult}" -eq 2 ] ; then
         # UDP socket is already in use. Add to warning node/socket list
-        warningList+=( "${server}:${heartbeatPort}  (UDP port already in use by another process on host)" )
+        warningList+=( "${server}:${heartbeatPort}/UDP  (UDP port already in use by another process on host)" )
+
+      elif [ "${udpResult}" -eq 3 ] ; then
+        # UDP port was not tested because of a missing pre-requisite.
+        warningList+=( "${server}:${heartbeatPort}/UDP  (UDP port not tested due to missing python interpreter)" )
 
       else
         # Socket is likely blocked. Add to failed node/socket list
-        errorList+=( "${server}:${heartbeatPort}  (UDP port may be blocked)" )
+        errorList+=( "${server}:${heartbeatPort}/UDP  (UDP port may be blocked)" )
       fi
     fi
   done
@@ -1420,22 +1502,28 @@ function validateFirewallSequential() {
       errMsg+="\n  ${host}"
     done
 
+    echo
     printError "${errMsg}"
   fi
 
   if [ "${#warningList[@]}" -gt 0 ]; then
     local warningMsg
-    warningMsg="RapidsSE was not able to determine if the following UDP ports were accessible through the host's firewall."
+    warningMsg="RapidsSE was not able to determine if the following UDP ports were accessible through the host's firewall.\n"
     warningMsg+="RapidsSE requires these ports to be open."
     for host in "${warningList[@]}"; do
       warningMsg+="\n  ${host}"
     done
 
+    echo
     printWarning "${warningMsg}"
   fi
 
   if [ "${#errorList[@]}" -gt 0 ]; then
     exit 1
+  fi
+
+  if [ "${#errorList[@]}" -eq 0 ] && [ "${#warningList[@]}" -gt 0 ]; then 
+    echo -e "\nInstallation can continue with the above warnings, but they may prevent RapidsSE from starting correctly."
   fi
 
   # Otherwise continue on warnings
@@ -1554,7 +1642,7 @@ function validateFirewallParallel() {
   local -a sequentialServers=()
   mapfile -t sequentialServers < <(nonUniqueHosts "${nodeNames[@]}")
 
-  if [ -z "${sequentialServers[@]:-}" ]; then
+  if [ -z "${sequentialServers[*]:-}" ]; then
     sequentialServers=()
   fi
   
@@ -1608,11 +1696,15 @@ function validateFirewallParallel() {
 
         if [ "${udpResult}" -eq 2 ] ; then
           # UDP socket is already in use. Add to warning node/socket list
-          warningList+=( "${server}:${port}  (UDP port already in use by another process on host)" )
+          warningList+=( "${server}:${port}/UDP  (UDP port already in use by another process on host)" )
+
+        elif [ "${udpResult}" -eq 3 ] ; then
+          # UDP port was not tested because of a missing pre-requisite.
+          warningList+=( "${server}:${port}/UDP  (UDP port not tested due to missing python interpreter)" )
 
         else
           # Socket is likely blocked. Add to failed node/socket list
-          errorList+=( "${server}:${port}  (UDP port may be blocked)" )
+          errorList+=( "${server}:${port}/UDP  (UDP port may be blocked)" )
         fi
       fi
     done
@@ -1637,15 +1729,19 @@ function validateFirewallParallel() {
 
       # For TCP this is an error. For UDP it is a warning.
       if [ "${protocol}" = "TCP" ]; then
-        errorList+=( "${server}:${port}  (TCP port already in use by another process on host)" )
+        errorList+=( "${server}:${port}/${protocol}  (TCP port already in use by another process on host)" )
       else
-        warningList+=( "${server}:${port}  (UDP port already in use by another process on host)" )
+        warningList+=( "${server}:${port}/${protocol}  (UDP port already in use by another process on host)" )
       fi
       # TCP socket is already in use. This is an error
 
+    elif [ "${pidResult}" -eq 3 ] && [ "${protocol}" = "UDP"  ]; then
+      # UDP port was not tested because of a missing pre-requisite.
+      warningList+=( "${server}:${port}/${protocol}  (UDP port not tested due to missing python interpreter)" )
+
     else
       # Socket is blocked. Add to failed node/socket list
-      errorList+=( "${server}:${port}  (${protocol} port may be blocked)" )
+      errorList+=( "${server}:${port}/${protocol}  (${protocol} port may be blocked)" )
     fi
   done
 
@@ -1664,22 +1760,28 @@ function validateFirewallParallel() {
       errMsg+="\n  ${host}"
     done
 
+    echo
     printError "${errMsg}"
   fi
 
   if [ "${#warningList[@]}" -gt 0 ]; then
     local warningMsg
-    warningMsg="RapidsSE was not able to determine if the following UDP ports were accessible through the host's firewall."
+    warningMsg="RapidsSE was not able to determine if the following UDP ports were accessible through the host's firewall.\n"
     warningMsg+="RapidsSE requires these ports to be open."
     for host in "${warningList[@]}"; do
       warningMsg+="\n  ${host}"
     done
 
+    echo
     printWarning "${warningMsg}"
   fi
 
   if [ "${#errorList[@]}" -gt 0 ]; then
     exit 1
+  fi
+
+  if [ "${#errorList[@]}" -eq 0 ] && [ "${#warningList[@]}" -gt 0 ]; then
+    echo -e "\nInstallation can continue with the above warnings, but they may prevent RapidsSE from starting correctly."
   fi
 
   # Otherwise continue on warnings
@@ -1699,7 +1801,7 @@ function validateFirewallParallel() {
 
 function checkFirewallTcp() {
 
-  [ "$#" -eq 3 ] || errorExit "Invalid number of arguments to function testFirewallTcp()."
+  [ "$#" -eq 3 ] || errorExit "Invalid number of arguments to function checkFirewallTcp()."
 
   local client="$1"
   local server="$2"
@@ -1771,13 +1873,41 @@ function checkFirewallTcp() {
 ##  $2 - hostname of the server that is listening for the connection and whose
 ##       firewall we are testing for.
 ##  $3 - UDP/IP port number to use.
-## Returns: exit code 0 if the two hostnames can communicate,
-##          exit code 1 if the two hostnames cannot communicate,
-##          exit code 2 if a process is already using the given port on the server
+## Returns: exit code 0 if communication was attempted and the two hostnames can communicate,
+##          exit code 1 if communication was attempted and the two hostnames cannot communicate,
+##          exit code 2 if a process is already using the given port on the host
+##          exit code 3 if communication was not attempted because of a missing pre-requisite
 
 function checkFirewallUdp() {
 
-  [ "$#" -eq 3 ] || errorExit "Invalid number of arguments to function testFirewallUdp()."
+  # I really wanted to do this test using native linux commands using nc. However the mechanism
+  # used needs to work on all platforms, which starts at CentOS 7. The version of nc used on
+  # CentOS 7 is quite old and very different to modern nc versions. Different command line parameters
+  # are supported and the behaviour is vastly different as well. There isn't one common denominator
+  # we can use that will also work in a noisy UDP environment (where nc may receive UDP messages
+  # from other SE clusters on the network).
+  #
+  # So the solution is to use Python, if it is installed, to check the UDP port accessibility
+  # because it's much more consistent to write the code to do so. A CentOS 7 minimal installation
+  # does include a Python interpreter by default. However the Python code needs to work across
+  # a Python 2 and a Python 3 interpreter as some machines will have one or the other. So we
+  # need to write it carefully.
+  #
+  # The idea is to copy a Python script to a client (sender) and copy a separate Python script
+  # to a server (receiver). Invoke both and the server (receiver) will filter out spurious
+  # messages and write the expected message to a file. If that file is non-empty then we've got
+  # successful UDP communication between the two hosts on a given port.
+  #
+  # It's also possible that one or both hosts involved here don't have Python installed. In that
+  # case we will generate a warning but let them continue to install SE. We don't want to have a
+  # hard dependency on Python.
+  #
+  # Its also possible that there is a program already on the server (receiving) node that is
+  # listening on the given UDP port (e.g. from a separate cluster). In that case we cannot
+  # determine if the UDP port is accessible across the firewall because that separate program
+  # will eat any UDP messages we send through, and the test will be indeterminate.
+
+  [ "$#" -eq 3 ] || errorExit "Invalid number of arguments to function checkFirewallUdp()."
 
   local client="$1"
   local server="$2"
@@ -1810,104 +1940,66 @@ function checkFirewallUdp() {
     return 2
   fi
 
-  debugPrint "The UDP port ${port} does not currently appear to be in use on host ${server}:"
+  debugPrint "The UDP port ${port} does not currently appear to be in use on host ${server}."
 
+  # Get the python interpreter to use on the server and client, or an empty string if there is none.
+  local serverPythonPath
+  local clientPythonPath
 
+  serverPythonPath="$(getPythonInterpreter "${server}")"
+  clientPythonPath="$(getPythonInterpreter "${client}")"
 
-  # Generate a string that will be send between client and server
-  local udpMessage="checkFirewallUdp:${server}:${port}:checkFirewallUdp"
-
-
-  # Create a temporary file on the server for saving data that is read off the socket
-  local -a cmdServerMakeTemp=()
-  cmdServerMakeTemp=( "ssh"
-                      "-q" "${server}"
-                      "mktemp" )
-
-  local responseServerMakeTemp
-  responseServerMakeTemp="$("${cmdServerMakeTemp[@]}")"
-
-  debugPrint "Temporary directory on the server for response data is ${server}:${responseServerMakeTemp}"
-
-
-  # Define the command to spawn nc on the server in the background.
-  local -a cmdServerTask=()
-  local cmdServerPid
-  cmdServerTask=( "ssh"
-                  "-q" "${server}"
-                  "nc" "-ul" "${port}" ">${responseServerMakeTemp}" "2>/dev/null" "&" "echo" '$!' )
-
-
-  debugPrint "About to execute the following command to start a UDP netcat server on host ${server}:${port} :"
-  debugPrint "${cmdServerTask[*]}"
-
-  cmdServerPid="$("${cmdServerTask[@]}")"
-
-  # Give the server a little bit of time to load.
-  sleep 1
-
-  # Define the command to spawn a client to try to send a message to the server.
-  # Note that some versions of netcat (*cough* CentOS 7) will return after sending
-  # the data on stdin. Others (*cough* Ubuntu20) will not. And they don't all support the
-  # command line option to exit on stdin EOF (or those arguments are different on
-  # different systems), so let's just save the pid and kill them anyway.
-  local -a cmdClientTask=()
-  local cmdClientPid
-  cmdClientTask=( "ssh"
-                  "-q" "${client}"
-                  "echo" "\"${udpMessage}\"" "|" "nc" "-u" "${server}" "${port}" "&>/dev/null" "&" "echo" '$!' )
-
-
-  debugPrint "About to execute the following command to start a UDP netcat client on host ${client} :"
-  debugPrint "${cmdClientTask[*]}"
-
-  # Run it in the background and collect it's pid.
-  cmdClientPid="$("${cmdClientTask[@]}")"
-
-  # Give the client a little bit of time to send the messages
-  sleep 1
-
-  # Now kill the nc on the remote client.
-  local -a cmdClientKill
-  cmdClientKill=( "ssh" "-q" "${client}" "kill" "-9" "${cmdClientPid}" "&>/dev/null" )
-  "${cmdClientKill[@]}" || true
-
-  # Check what the server read
-  local -a cmdServerReadData=()
-  cmdServerReadData=( "ssh"
-                      "-q" "${server}"
-                      "cat" "${responseServerMakeTemp}" "2>/dev/null" )
-
-  debugPrint "About to execute the following command to read data from server host ${server} :"
-  debugPrint "${cmdServerReadData[*]}"
-
-  local responseServerReadData
-  responseServerReadData="$("${cmdServerReadData[@]}")"
-
-  local exitCode=1;
-
-  if [ "${responseServerReadData:-x}" != "x" ]; then
-    while read -r line || [ -n "${line}" ]; do
-      debugPrint "Read line: ${line}"
-      if [[ "${line}" =~ ${udpMessage} ]]; then
-        exitCode=0
-        break
-      fi
-    done <<< "${responseServerReadData}"
+  if [ -z "${serverPythonPath}" ]; then
+    printWarning "Host ${server} does not have a python interpreter installed. Unable to check accessibility of UDP port ${port} from host ${client} to ${server}."
+    return 3
   fi
 
-  # Kill the server
-  local -a cmdServerKill
-  cmdServerKill=( "ssh" "-q" "${server}" "kill" "-9" "${cmdServerPid}" "&>/dev/null" )
-  "${cmdServerKill[@]}" || true
+  if [ -z "${clientPythonPath}" ]; then
+    printWarning "Host ${client} does not have a python interpreter installed. Unable to check accessibility of UDP port ${port} from host ${client} to ${server}."
+    return 3
+  fi
 
-  # Remove the temporary file
-  local -a cmdServerRemoveTemp=()
-  cmdServerRemoveTemp=( "ssh"
-                      "-q" "${server}"
-                      "rm" "-f" "${responseServerMakeTemp}" "&>/dev/null" )
+  # Make temporary directories on the server and client hosts
+  local serverTmpDir
+  local clientTmpDir
 
-  "${cmdServerRemoveTemp[@]}" || true
+  serverTmpDir="$(makeRemoteTempDir "${server}")" || errorExit "Unable to create a temporary directory on host ${server}"
+  clientTmpDir="$(makeRemoteTempDir "${client}")" || errorExit "Unable to create a temporary directory on host ${client}"
+
+  # Distribute and invoke UDP server and client processes
+  local serverPid
+  local clientPid
+
+  serverPid="$(invokeUdpServer "${server}" "${port}" "${serverTmpDir}" "${serverPythonPath}")"
+  clientPid="$(invokeUdpClient "${client}" "${server}" "${port}" "${clientTmpDir}" "${clientPythonPath}")"
+
+  # Give the client and server a little bit of time to do their thing.
+  sleep 1
+
+  # Check result
+  local exitCode=1
+  local checkResultTimeout=5
+
+  if checkUdpResult "${server}" "${serverTmpDir}" "${checkResultTimeout}" ; then
+    exitCode=0
+  fi
+
+  # Kill the server and client processes
+  local -a killCmd
+  killCmd=( "ssh" "-q" "${server}" "kill" "-9" "${serverPid}" "&>/dev/null" )
+  "${killCmd[@]}" || true
+
+  killCmd=( "ssh" "-q" "${client}" "kill" "-9" "${clientPid}" "&>/dev/null" )
+  "${killCmd[@]}" || true
+
+
+  # Finally, clean up the temporary directory that was created on both server and client
+  local -a cleanupCmd
+  cleanupCmd=( "ssh" "-q" "${server}" "rm" "-rf" "${serverTmpDir}" "&>/dev/null" )
+  "${cleanupCmd[@]}" || true
+
+  cleanupCmd=( "ssh" "-q" "${client}" "rm" "-rf" "${clientTmpDir}" "&>/dev/null" )
+  "${cleanupCmd[@]}" || true
 
   if [ "${exitCode}" -ne 0 ] ; then
     printError "UDP port ${port} may be blocked by a firewall on on host ${server}."
@@ -1919,3 +2011,288 @@ function checkFirewallUdp() {
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Returns the path of the python interpreter on a given node.
+## Params:
+##  $1 - hostname of the node in question.
+## Returns: the path of the python interpreter, or an empty string if there is none.
+
+function getPythonInterpreter() {
+
+  [ "$#" -eq 1 ] || errorExit "Invalid number of arguments to function getPythonInterpreter()."
+
+  local host
+  host="$1"
+
+  local pythonInterpreterPath
+  local -a pythonInterpreterCmd=()
+  pythonInterpreterCmd=( "ssh"
+                         "-q" "${host}"
+                         "which" "python3" "2>/dev/null" "||" "which" "python" "2>/dev/null" )
+
+
+  pythonInterpreterPath="$("${pythonInterpreterCmd[@]}")"
+
+  [ -n "${pythonInterpreterPath}" ] && echo "${pythonInterpreterPath}"
+  return 0
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Makes a temporary directory on a remote node and returns its pathReturns the path of the python interpreter on a given node.
+## Params:
+##  $1 - hostname of the node in question.
+## Returns: the path of the python interpreter, or an empty string if there is none.
+
+function makeRemoteTempDir() {
+
+  [ "$#" -eq 1 ] || errorExit "Invalid number of arguments to function makeRemoteTempDir()."
+
+  local host
+  host="$1"
+
+  local -a makeTempCmd=()
+  makeTempCmd=( "ssh"
+                "-q" "${host}"
+                "mktemp" "-d" )
+
+  local makeTempResponse
+  makeTempResponse="$("${makeTempCmd[@]}")"
+
+  [ -n "${makeTempResponse}" ] && echo "${makeTempResponse}"
+  return 0
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Copies the UDP server to the server host and invokes it
+## Params:
+##  $1 - hostname of the node in question.
+##  $2 - UDP port number of the node in question.
+##  $3 - Temp dir to copy the code to
+##  $4 - Python interpreter path
+
+## Returns: the PID of the server process
+
+function invokeUdpServer() {
+
+  [ "$#" -eq 4 ] || errorExit "Invalid number of arguments to function invokeUdpServer()."
+
+  local server="$1"
+  local port="$2"
+  local tmpDir="$3"
+  local pythonPath="$4"
+
+  local tempFile
+  tempFile="$(mktemp)"
+
+  readonly remotePath="${tmpDir}/${UDP_RECEIVER_FILE}"
+
+  # Write the python code to a temporary file.
+  # Python code works on Python 2 and 3.
+  {
+    cat <<-EOF
+import sys
+import socket
+import os
+
+if len(sys.argv) != 3:
+    print("Usage: {0} host port".format(sys.argv[0]))
+    sys.exit(1)
+
+HOST = sys.argv[1]
+PORT = int(sys.argv[2])
+TEMPLATE = 'checkFirewallUdp:{0}:{1}:checkFirewallUdp'.format(HOST, PORT)
+OUT_FILE = 'dump.txt'
+OUT_PATH = os.path.dirname(os.path.realpath(__file__)) + "/" + OUT_FILE
+
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+s.bind(('', PORT))
+
+with open(OUT_PATH, "a") as f:
+    while 1:
+        (data, address) = s.recvfrom(1024)
+
+        if isinstance(data, bytes):
+            try:
+                data_str = str(data, 'utf-8')
+            except UnicodeDecodeError:
+                continue       # Ignore binary data received
+            except TypeError:  # bytes and str are identical in Python 2
+                data_str = data
+        else:
+            data_str = data
+
+        if data_str and data_str.strip() == TEMPLATE:
+            print("From address: {0} ; Got data: {1}".format(str(address), data_str))
+            f.write(data_str)
+            f.write("\n")
+            f.flush()
+EOF
+  } > "${tempFile}"
+
+  # Copy the temporary file to the remote node
+  local -a copyCmd=()
+  copyCmd=( "scp"
+            "${tempFile}"
+            "${server}:${remotePath}")
+
+#  debugPrint "About to execute the following command to copy the UDP python server code to host ${server} :"
+#  debugPrint "${copyCmd[*]}"
+
+  "${copyCmd[@]}" || true
+
+  # Invoke the python code on the remote node
+  local -a invokeCmd=()
+  invokeCmd=( "ssh"
+              "-q" "${server}"
+              "${pythonPath}" "${remotePath}" "${server}" "${port}" "&>/dev/null" "&" "echo" '$!')
+
+#  debugPrint "About to execute the following command to invoke the UDP python server code on host ${server} :"
+#  debugPrint "${invokeCmd[*]}"
+
+  local serverPid
+  serverPid="$("${invokeCmd[@]}")" || errorExit "Unable to invoke the server UDP port checking code with the command:\n${invokeCmd[*]}"
+
+  # Clean up the local temporary file used
+  rm -f "${tempFile}" || true
+
+  echo "${serverPid}"
+  return 0
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Copies the UDP client to the client host and invokes it
+## Params:
+##  $1 - hostname of the client in question.
+##  $2 - hostname of the server to send UDP packets to
+##  $3 - UDP port number of the node in question.
+##  $4 - Temp dir to copy the code to
+##  $5 - Python interpreter path
+
+## Returns: the PID of the server process
+
+function invokeUdpClient() {
+
+  [ "$#" -eq 5 ] || errorExit "Invalid number of arguments to function invokeUdpClient()."
+
+  local client="$1"
+  local server="$2"
+  local port="$3"
+  local tmpDir="$4"
+  local pythonPath="$5"
+
+  local tempFile
+  tempFile="$(mktemp)"
+
+  readonly remotePath="${tmpDir}/${UDP_SENDER_FILE}"
+
+  # Write the python code to a temporary file.
+  # Python code works on Python 2 and 3.
+  {
+    cat <<-EOF
+import sys
+import socket
+import time
+
+if len(sys.argv) != 3:
+    print("Usage: {0} host port".format(sys.argv[0]))
+    sys.exit(1)
+
+HOST = sys.argv[1]
+PORT = int(sys.argv[2])
+DATA='checkFirewallUdp:{0}:{1}:checkFirewallUdp'.format(HOST, PORT)
+
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+while True:
+#   print("Sending to address {0}:{1} Data: {2}".format(HOST, str(PORT), DATA))
+
+    try:
+        # Python 2
+        s.sendto(DATA, (HOST, PORT))
+    except TypeError:
+        # Python 3
+        s.sendto(bytes(DATA, 'utf-8'), (HOST, PORT))
+
+    time.sleep(1)
+EOF
+  } > "${tempFile}"
+
+  # Copy the temporary file to the remote node
+  local -a copyCmd=()
+  copyCmd=( "scp"
+            "${tempFile}"
+            "${client}:${remotePath}")
+
+#  debugPrint "About to execute the following command to copy the UDP python client code to host ${client} :"
+#  debugPrint "${copyCmd[*]}"
+
+  "${copyCmd[@]}" || true
+
+  # Invoke the python code on the remote node
+  local -a invokeCmd=()
+  invokeCmd=( "ssh"
+              "-q" "${client}"
+              "${pythonPath}" "${remotePath}" "${server}" "${port}" "&>/dev/null" "&" "echo" '$!')
+
+#  debugPrint "About to execute the following command to invoke the UDP python client code on host ${client} :"
+#  debugPrint "${invokeCmd[*]}"
+
+  local clientPid
+  clientPid="$("${invokeCmd[@]}")" || errorExit "Unable to invoke the client UDP port checking code with the command:\n${invokeCmd[*]}"
+
+  # Clean up the local temporary file used
+  rm -f "${tempFile}" || true
+
+  echo "${clientPid}"
+  return 0
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Copies the UDP client to the client host and invokes it
+## Params:
+##  $1 - hostname of the server receiving the UDP packets.
+##  $2 - Temp dir that the server operates in
+##  $3 - Max number of attempts, each 1 second apart
+
+## Returns: nothing. Just check the exit code
+function checkUdpResult() {
+
+  [ "$#" -eq 3 ] || errorExit "Invalid number of arguments to function checkUdpResult()."
+
+  local server="$1"
+  local tmpDir="$2"
+  local maxAttempts="$3"
+
+  local dumpFilePath="${tmpDir}/dump.txt"
+
+  local -a checkCmd=()
+  checkCmd=( "ssh"
+              "-q" "${server}"
+              "wc" "-l" "${dumpFilePath}" "2>/dev/null" "|" "cut" "-d" "' '" "-f" "1")
+
+  local attempts=0
+  local exitCode=0
+
+  while [ "${attempts}" -lt "${maxAttempts}" ]; do
+    attempts=$((attempts + 1))
+
+    debugPrint "About to execute the following command to check the result of the UDP dump file on host ${client} :"
+    debugPrint "${checkCmd[*]}"
+
+    local numLines
+    numLines="$("${checkCmd[@]}")" || errorExit "Unable to check the result of the UDP dump file with the command:\n${checkCmd[*]}"
+
+    if [ -z "${numLines}" ] || [ "${numLines}" -eq 0 ]; then
+      exitCode=1
+
+    else
+      # Success!
+      exitCode=0
+      break
+    fi
+
+    sleep 1
+  done
+
+  return "${exitCode}"
+}
