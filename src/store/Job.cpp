@@ -78,6 +78,7 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId, TagSet* 
   m_bUpdateParent = false;
   m_bRejected     = false;
 
+  m_pBegunJob     = nullptr;
   m_pExecutedJob  = nullptr;
   m_pEndedJob     = nullptr;
   m_pCancelledJob = nullptr;
@@ -140,8 +141,11 @@ Job::~Job(void) noexcept(false)
 
     //! this assert may fail if a job completes before its references
     //! are completely returned
+    // NOTE: TaskState can be TS_NONE for 2PC jobs that never got triggered eg CANCELLED
     while (nReferences() ||
-           (m_pTask && TS_RETIRED != m_pTask->eState())) {
+           (m_pTask &&
+             (TS_RETIRED != m_pTask->eState() &&
+              TS_NONE != m_pTask->eState()))) {
       //vTrace("Napping ... job still has references???\n"_Stz);
       AM::vNapMsec(10, eGetClassNo());
     }
@@ -194,6 +198,9 @@ Job::~Job(void) noexcept(false)
 
     vMutexDestroy();
   */
+
+    if (m_pBegunJob)
+      delete m_pBegunJob;
 
     if (m_pExecutedJob)
       delete m_pExecutedJob;
@@ -339,6 +346,26 @@ bool Job::bAllocateMemory(void)
   _precondition_(_ADDRESS_,_MAGIC_);
 
   return m_bAllocate;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get 2pc begunJob                                                           */
+/*----------------------------------------------------------------------------*/
+Job* Job::pBegunJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_pBegunJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set 2pc begunJob                                                           */
+/*----------------------------------------------------------------------------*/
+void Job::vBegunJob(Job* pBegunJob)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_pBegunJob = pBegunJob;
 }
 
 /*----------------------------------------------------------------------------*/

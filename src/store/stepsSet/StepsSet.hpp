@@ -845,6 +845,9 @@ void vDdlLockAssertNone(void);
   void vJobDistIdFetch(void);
   void vJobDistIdGenerate(void);
   void vJobTrace(void);
+  void vJobTriggerBegun(void);
+  void vJobTriggerEnded(void);
+  void vJobTriggerCancelled(void);
   void vJobTriggerExecuted(void);
 
   void vJobEnableAllocate(void);

@@ -46,6 +46,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // participant job
+    Job*  m_pBegunJob;
     Job*  m_pExecutedJob;
     Job*  m_pEndedJob;
     Job*  m_pCancelledJob;
@@ -106,6 +107,9 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vActiveOpsDec(void);
     void vActiveOpsInc(void);
     bool bAllocateMemory(void);
+
+    Job* pBegunJob(void);
+    void vBegunJob(Job* pBegunJob);
 
     Job* pCancelledJob(void);
     void vCancelledJob(Job* pCancelledJob);

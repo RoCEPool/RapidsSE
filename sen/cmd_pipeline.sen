@@ -485,7 +485,8 @@
 /* _ptp bgn */      "_ptp bgn" "has begun"                           [job].trace
 /* _ptp bgn */  then
 /* _ptp bgn */  1 [task].debugMark!
-/* _ptp bgn */  STD_NOWAIT_TAG "begun" api::forkChild2PC discard
+/* _ptp bgn */  //STD_NOWAIT_TAG "begun" api::forkChild2PC discard
+/* _ptp bgn */  [job].triggerBegun
 /* _ptp bgn */  [ddlLock].testDrop
 /* _ptp bgn */
 /* _ptp bgn */
@@ -629,7 +630,9 @@
 /* _ptp edd */    "pipeline" "ptpEnd"
 /* _ptp edd */      "_ptp edd" "lst ordinary again"                  [job].trace
 /* _ptp edd */  then
-/* _ptp edd */  STD_NOWAIT_TAG "ended" api::forkChild2PC discard
+/* _ptp edd */  //STD_NOWAIT_TAG "ended" api::forkChild2PC discard
+/* _ptp edd */  [job].triggerEnded
+/* _ptp edd */
 /* _ptp edd */  [args].distJob if
 /* _ptp edd */    "pipeline" "ptpEnd"
 /* _ptp edd */      "_ptp edd" "retiring as ptp..."                  [job].trace
@@ -675,7 +678,8 @@
 /* _ptp can */  then
 /* _ptp can */
 /* _ptp can */  // send the cancelled job
-/* _ptp can */  STD_NOWAIT_TAG "cancelled" api::forkChild2PC discard
+/* _ptp can */  //STD_NOWAIT_TAG "cancelled" api::forkChild2PC discard
+/* _ptp can */  [job].triggerCancelled
 /* _ptp can */
 /* _ptp can */  [job]:retireAndExit
 /* _ptp can */

@@ -836,7 +836,7 @@ void Engine::vAllocateWhenDisabled(void)
   //gxaSizeHeap[CN_PARCEL].m_bAllocateWhenDisabled = true;
 
   // AddExited
-  //gxaSizeHeap[CN_SKIPNODE].m_bAllocateWhenDisabled = true;
+  gxaSizeHeap[CN_SKIPNODE].m_bAllocateWhenDisabled = true;
 
   // sink
   //gxaSizeHeap[CN_EXITOPERAND].m_bAllocateWhenDisabled = true;

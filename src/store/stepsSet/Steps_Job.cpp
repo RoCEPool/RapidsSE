@@ -96,6 +96,9 @@ void Step::vAddSteps_Job(void)
   vAddStep("[job].tagSet@"_Stz,          &Step::vJobTagSetFetch);
   vAddStep("[job].task@"_Stz,            &Step::vJobTaskFetch);
   vAddStep("[job].trace"_Stz,            &Step::vJobTrace);
+  vAddStep("[job].triggerBegun"_Stz,     &Step::vJobTriggerBegun);
+  vAddStep("[job].triggerEnded"_Stz,     &Step::vJobTriggerEnded);
+  vAddStep("[job].triggerCancelled"_Stz, &Step::vJobTriggerCancelled);
   vAddStep("[job].triggerExecuted"_Stz,  &Step::vJobTriggerExecuted);
   vAddStep("[job].tscBeginning"_Stz,     &Step::vJobTscBeginning);
   vAddStep("[job].tscBegun"_Stz,         &Step::vJobTscBegun);
@@ -705,11 +708,10 @@ void Step::vJobNewResponseJobs(void)
 
   Job* pJob = pOuterJobOfTask();
 
+  pJob->vBegunJob(Api::pCreateJob2PC(pJob, "begun"_Stz));
+  pJob->vEndedJob(Api::pCreateJob2PC(pJob, "ended"_Stz));
+  pJob->vCancelledJob(Api::pCreateJob2PC(pJob, "Cancelled"_Stz));
   pJob->vExecutedJob(Api::pCreateJob2PC(pJob, "executed"_Stz));
-
- // pJob->vEndedJob(Api::pCreateJob2PC(pJob, "ended"_Stz));
- // pJob->vCancelledJob(Api::pCreateJob2PC(pJob, "Cancelled"_Stz));
-
 
   EXIT();
 }
@@ -1125,6 +1127,54 @@ void Step::vJobTrace(void)
   m_pDataStack->vPopStr(sAtCmd,__func__);
 
   pJob->vJobTrace(sAtCmd,sAtRoutine,sAtPoint,sNote);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [job].triggerBegun -- trigger the begun 2pc job                            */
+/*----------------------------------------------------------------------------*/
+void Step::vJobTriggerBegun(void)
+{
+  ENTRY();
+
+  Job* pJob = pOuterJobOfTask();
+
+  Job* pBegunJob = pJob->pBegunJob();
+  Api::vTriggerChildJob(pJob, pBegunJob);
+  pJob->vBegunJob(nullptr);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [job].triggerCancelled -- trigger the cancelled 2pc job                    */
+/*----------------------------------------------------------------------------*/
+void Step::vJobTriggerCancelled(void)
+{
+  ENTRY();
+
+  Job* pJob = pOuterJobOfTask();
+
+  Job* pCancelledJob = pJob->pCancelledJob();
+  Api::vTriggerChildJob(pJob, pCancelledJob);
+  pJob->vCancelledJob(nullptr);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [job].triggerEnded -- trigger the ended 2pc job                            */
+/*----------------------------------------------------------------------------*/
+void Step::vJobTriggerEnded(void)
+{
+  ENTRY();
+
+  Job* pJob = pOuterJobOfTask();
+
+  Job* pEndedJob = pJob->pEndedJob();
+  Api::vTriggerChildJob(pJob, pEndedJob);
+  pJob->vEndedJob(nullptr);
 
   EXIT();
 }
