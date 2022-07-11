@@ -183,7 +183,7 @@ u1 HeadLine::uGetEncMetaCode(Column* pForCol, i8& i_ColCrs_, i8& i_OfsCrs_,
   if (C_UNKNOWN == i_OfsCrs_ || i_ForCol < i_ColCrs_) {
     
     i_ColCrs_ = 0;
-    i_OfsCrs_ = RowCoder::iDataOffsetBase(pStreamDef);
+    i_OfsCrs_ = RowCoder::oDataFromBase(pStreamDef);
   }
   
   for (i8 i_Col = i_ColCrs_; i_Col < i_ForCol; i_Col++) {

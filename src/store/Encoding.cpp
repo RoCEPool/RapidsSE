@@ -30,9 +30,9 @@ Encoding::Encoding(StreamDef* pStreamDef)
   m_pStreamDef = pStreamDef;
   m_nColumns   = pStreamDef->nColumns();
   
-  m_jHeadSize  = nHeadSize(m_pStreamDef);
+  m_jHeadSize  = jHeadSizeStream(m_pStreamDef);
   m_jMetaSize  = nMetaSize(m_pStreamDef);
-  m_o_DataOffsetBase = iDataOffsetBase(m_pStreamDef);
+  m_o_DataOffsetBase = oDataFromBase(m_pStreamDef);
  
   m_jOverSize  = 0;
   
@@ -58,7 +58,8 @@ Encoding::Encoding(StreamDef* pStreamDef)
     rxColEnc.m_o_DataFrom = 0;
     rxColEnc.m_o_DataBreak= 0;
     rxColEnc.m_bSplit     = false;
-    
+    rxColEnc.m_bInOver    = false;
+
     rxColEnc.m_i_Tail     = C_UNKNOWN;
     rxColEnc.m_aTailLine  = nullptr;
     rxColEnc.m_bDuplicate = false;
@@ -133,13 +134,14 @@ void Encoding::vDumpEncoding(void)
     vTrace("[%02lld]\n"_Stz,i_Col);
     vTrace("  m_sColumnNm      : %s\n"_Stz,   rxColEnc.m_pCol->szColNm());
     vTrace("  m_eColumnType    : %s\n"_Stz,   aCT[rxColEnc.m_pCol->eColumnType()]);
+    vTrace("  m_bSplit         : %lld\n"_Stz, (i8)rxColEnc.m_bSplit);
     vTrace("  m_uHigh          : %s\n"_Stz,   aMC[rxColEnc.m_uHigh]);
     vTrace("  m_uLow           : %lld\n"_Stz, rxColEnc.m_uLow);
     vTrace("  m_wDataCode      : %s\n"_Stz,   rxColEnc.m_wDataCode.m_azStr);
     vTrace("  m_jDataBytes     : %lld\n"_Stz, rxColEnc.m_jDataBytes);
+    vTrace("  m_bInOver        : %lld\n"_Stz, (i8)rxColEnc.m_bInOver);
     vTrace("  m_o_DataFrom     : %lld\n"_Stz, rxColEnc.m_o_DataFrom);
     vTrace("  m_o_DataBreak    : %lld\n"_Stz, rxColEnc.m_o_DataBreak);
-    vTrace("  m_bSplit         : %lld\n"_Stz, (i8)rxColEnc.m_bSplit);
     vTrace("  m_i_Tail         : %lld\n"_Stz, rxColEnc.m_i_Tail);
     vTrace("  m_aTailLine      : %p\n"_Stz,   rxColEnc.m_aTailLine);
     vTrace("  m_bDuplicate     : %lld\n"_Stz, (i8)rxColEnc.m_bDuplicate);
@@ -381,7 +383,8 @@ void Encoding::vReset(void)
     rxColEnc.m_o_DataFrom = 0;
     rxColEnc.m_o_DataBreak= 0;
     rxColEnc.m_bSplit     = false;
-    
+    rxColEnc.m_bInOver    = false;
+
     rxColEnc.m_i_Tail     = C_UNKNOWN;
     rxColEnc.m_aTailLine  = nullptr;
     rxColEnc.m_bDuplicate = false;

@@ -32,7 +32,7 @@ i8 RowCoder::iDataOffsetBase(RowPix* pRowPix)
 /*----------------------------------------------------------------------------*/
 /* calc base offset for column data in head line                              */
 /*----------------------------------------------------------------------------*/
-i8 RowCoder::iDataOffsetBase(StreamDef* pStreamDef)
+i8 RowCoder::oDataFromBase(StreamDef* pStreamDef)
 {
   i8 i_OffsetMeta = C_CONTROL_SIZE;
   
@@ -110,7 +110,7 @@ void RowCoder::vDteFromEdt(i8* awEdtDte_dst, i8 wEdtDte_src, i8 iEraBaseYear)
 /*----------------------------------------------------------------------------*/
 /* calc size of the head line for column vector                               */
 /*----------------------------------------------------------------------------*/
-i8 RowCoder::nHeadSize(StreamDef* pStreamDef)
+i8 RowCoder::jHeadSizeStream(StreamDef* pStreamDef)
 {
   // experiment 1
   //i8 nBytes = sizeof(CacheLine) + (1 * C_BYTES_PER_WORD);

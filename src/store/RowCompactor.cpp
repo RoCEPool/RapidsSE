@@ -588,14 +588,9 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  i8 nBytesNeeded = 0;
-  i8 o_DataFromNext = 0;
-  i8 jHeadSizeBytes = 0;
-//  i8 jOverSizeBytes = 0;
-//  i8 jAllTailsSizeBytes = 0;
-
-  bool bAllotOver = false;
   bool bAllotTails = false;
+  
+  m_pEncoding->vReset();
 
   i8 nCols = m_pStreamDef->nColumns();
   
@@ -603,9 +598,9 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 1) encode all column values: set column meta code, data code and data bytes
 
-  i8 nD; i8 iEra; u1 uHigh; u1 uLow; u1 nQuanta;
-  char* azDst;
-  i8 jVchSize;
+  i8 jVchSize; i8 nD; i8 iEra;
+  u1 uHigh; u1 uLow; u1 nQuanta;
+  char* azVch;
   
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     _ColEnc& rxColEnc = m_pEncoding->xaColEnc[i_Col];
@@ -645,7 +640,6 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
         nD = wColDtm.iByteMagn();
         rxColEnc.m_jDataBytes = nD;
         rxColEnc.m_uMetaCode  = METACODE_FORM(MC_NUMERIC,nD);
-
         break;
         
       //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
@@ -653,14 +647,11 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
         rxColEnc.m_wDataCode.m_wBol.T.m_iAsI8 = wColDtm.m_wBol.T.m_iAsI8;
         
         // encode as: MC_BOL_TRUE or MC_BOL_FALSE
-        if (wColDtm.m_wBol.T.m_iAsI8) {
-          rxColEnc.m_jDataBytes = C_0B;
-          rxColEnc.m_uMetaCode  = METACODE_FORM(MC_POSITIVE,1);
-        }
-        else {
-          rxColEnc.m_jDataBytes = C_0B;
+        rxColEnc.m_jDataBytes = C_0B;
+        if (wColDtm.m_wBol.T.m_iAsI8)
+          rxColEnc.m_uMetaCode = METACODE_FORM(MC_POSITIVE,1);
+        else
           rxColEnc.m_uMetaCode = METACODE_FORM(MC_POSITIVE,0);
-        }
         break;
         
       //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
@@ -668,10 +659,8 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
         rxColEnc.m_wDataCode.m_wDte.T.m_iAsI8 = wColDtm.m_wDte.T.m_iAsI8;
                 
         // encode as: MC_DTE_En_2B + {D}
-        
         vDteIntoEdt(wColDtm.m_wDte.T.m_iAsI8,
                     &rxColEnc.m_wDataCode.m_wEdt.T.m_iAsI8,iEra);
-        
         if (C_ERA_0 == iEra)
           rxColEnc.m_uMetaCode = METACODE_FORM(MC_DATE_E0,2);
         else
@@ -679,7 +668,6 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
           rxColEnc.m_uMetaCode = METACODE_FORM(MC_DATE_E1,2);
         else
           rxColEnc.m_uMetaCode = METACODE_FORM(MC_DATE_E2,2);
-        
         rxColEnc.m_jDataBytes = C_2B;
         break;
         
@@ -690,7 +678,6 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
         // general case -- encode as: MC_FLT_1..8B + {D}
         nD = wColDtm.iByteMagn();
         rxColEnc.m_jDataBytes = nD;
-        
         rxColEnc.m_uMetaCode = METACODE_FORM(MC_NUMERIC,nD);
         break;
         
@@ -769,10 +756,8 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
         
       //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case DM_VCH:
-        azDst = (char*)m_pEncoding->m_xWsp.ayLatter();
-        UNUSED(azDst);
-
         wColDtm.m_szVch = pRow->szColVal_ofs(i_Col);
+        azVch = (char*)wColDtm.m_szVch; UNUSED(azVch);
         jVchSize = StrLib::nLength((char*)wColDtm.m_szVch) + 1;
                   
         // 1) MC_STRING_x1
@@ -829,7 +814,8 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
     } // switch eDatum
 
   } // for 1) encode all column values
-  
+  m_pEncoding->vDumpEncoding();
+
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // .) encode tails
@@ -858,9 +844,11 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
       rxColEnc.m_i_Tail     = i_Tail;
       rxColEnc.m_aTailLine  = aTailLine;
       rxColEnc.m_bDuplicate = true;
+      
+      rxColEnc.m_uMetaCode  = METACODE_FORM(MC_STRING_TAIL,2);
+      rxColEnc.m_wDataCode  = rxColEnc.m_i_Tail;
+      rxColEnc.m_jDataBytes = C_2B;
 
-      // morph the encoding
-      m_pEncoding->vMorphEncoding(rxColEnc);
     }
     else {
       //  did not find a matching tail
@@ -868,53 +856,63 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
     }
 
   }
+  m_pEncoding->vDumpEncoding();
 
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // .) determine column data from & break;
 
+  i8 jHeadSizeBytes = jHeadSizeStream(m_pStreamDef);
+  i8 o_DataFromNext = oDataFromBase(m_pStreamDef);;
+  i8 nBytesNeeded   = o_DataFromNext;
+
+  bool bAllotOver = false;
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     _ColEnc& rxColEnc = m_pEncoding->xaColEnc[i_Col];
-
+    
     i8 jDataBytes  = rxColEnc.m_jDataBytes;
     i8 o_DataFrom  = o_DataFromNext;
     i8 o_DataBreak = o_DataFrom + jDataBytes;
 
     if (bAllotOver || o_DataBreak < jHeadSizeBytes) {
+      rxColEnc.m_bInOver     = bAllotOver;
       rxColEnc.m_o_DataFrom  = o_DataFrom;
       rxColEnc.m_o_DataBreak = o_DataBreak;
+      nBytesNeeded   += jDataBytes;
       o_DataFromNext += jDataBytes;
       continue;
     }
-    
+
+    RASSERT(!bAllotOver);
     bAllotOver = true;
-    o_DataFromNext = -1;
+    rxColEnc.m_bSplit = true;
+
+    o_DataFromNext = C_U_1B + C_M_1B;
     o_DataFrom  = o_DataFromNext;
     o_DataBreak = o_DataFrom + jDataBytes;
     
+    rxColEnc.m_bInOver     = true;
     rxColEnc.m_o_DataFrom  = o_DataFrom;
     rxColEnc.m_o_DataBreak = o_DataBreak;
+    nBytesNeeded   += jDataBytes;
     o_DataFromNext += jDataBytes;
     
   } // for .) determine column data from & break
-  
-  HeadLine* aHeadLine;    // head of crw
-  OverLine* aOverLine;    // over of crw
-  
+  m_pEncoding->vDumpEncoding();
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // .) allot the compact row (head, over and tails)
 
-  if (! m_pCrwNub->bHasSpace(nBytesNeeded)) {
-    aHeadLine = nullptr;
+  if (! m_pCrwNub->bHasSpace(nBytesNeeded))
     return false;
-  }
 
   // allot headline
-  aHeadLine = m_pCrwNub->aAllotHead(jHeadSizeBytes);
+  HeadLine* aHeadLine = m_pCrwNub->aAllotHead(jHeadSizeBytes);
   ASSERT(aHeadLine);
 
   // opt allot overline
+  OverLine* aOverLine = nullptr;    // over of crw
   if (bAllotOver) {
     i8 jOverSize  = nBytesNeeded - jHeadSizeBytes;
 
@@ -922,10 +920,9 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
 
     // link over line into head line
     aHeadLine->vSetOver(aOverLine);
-
   }
   
-  // opt allot tails
+  // opt allot non-duplicate tails
   if (bAllotTails) {
     for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
       _ColEnc& rxColEnc = m_pEncoding->xaColEnc[i_Col];
@@ -1003,17 +1000,15 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
     // +--------------------------------+
     
     // put {D}
-    if (aOverLine) {
-      o_DataOffset_over = rxColEnc.m_o_DataFrom - jHeadSizeBytes;
-
-      aOverLine->vPut(o_DataOffset_over,
-                        rxColEnc.m_wDataCode.m_iWrd,
-                        rxColEnc.m_jDataBytes);
+    if (rxColEnc.m_bInOver) {
+      aOverLine->vPut(rxColEnc.m_o_DataFrom,
+                      rxColEnc.m_wDataCode.m_iWrd,
+                      rxColEnc.m_jDataBytes);
     }
     else {
       aHeadLine->vPut(rxColEnc.m_o_DataFrom,
-                        rxColEnc.m_wDataCode.m_iWrd,
-                        rxColEnc.m_jDataBytes);
+                      rxColEnc.m_wDataCode.m_iWrd,
+                      rxColEnc.m_jDataBytes);
     }
     goto L_RowPacked;
 
@@ -1053,22 +1048,13 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
     // +--------------------------------+
     
     // put <StringZ> (with null terminator)
-    if (aOverLine) {
-      o_DataOffset_over = rxColEnc.m_o_DataFrom - jHeadSizeBytes;
-      aDataByte = ((byte*)aOverLine) + o_DataOffset_over;
+    if (rxColEnc.m_bInOver) {
+      aDataByte = ((byte*)aOverLine) + rxColEnc.m_o_DataFrom;
       MemLib::vCopy(aDataByte,rxColEnc.m_wDataCode.m_szVch,jStrBytes,CN_ROWCOMPACTOR);
-
-//      aHeadLine->vPutDataLogical(aColEnc->m_i_Offset,
-//                                 aColEnc->m_wDataCode.m_szVch,
-//                                 nStrBytes);
     }
     else {
       aDataByte = ((byte*)aHeadLine) + rxColEnc.m_o_DataFrom;
       MemLib::vCopy(aDataByte,rxColEnc.m_wDataCode.m_szVch,jStrBytes,CN_ROWCOMPACTOR);
-
-//      aHeadLine->vPutDataLogical(aColEnc->m_i_Offset,
-//                                 aColEnc->m_wDataCode.m_szVch,
-//                                 nStrBytes);
     }
     goto L_RowPacked;
 
