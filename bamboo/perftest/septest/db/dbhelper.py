@@ -1,5 +1,3 @@
-import string
-
 import boto3
 import pathlib
 
@@ -25,7 +23,7 @@ C_COMMON_CONNECT_PARAMS = {"host": C_ENDPOINT,
                            }
 
 
-def get_auth_token() -> string:
+def get_auth_token() -> str:
     """Returns the authentication token required when making a new connection"""
     assert pathlib.Path(C_SSLCERT_PATH).exists()
 
