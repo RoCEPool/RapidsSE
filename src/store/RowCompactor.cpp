@@ -588,6 +588,12 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
+  static  i8 nRows = 0;
+  
+  nRows++;
+  if (13 == nRows)
+    int iDebugB = 1;
+
   bool bAllotTails = false;
   
   m_pEncoding->vReset();
@@ -598,7 +604,7 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 1) encode all column values: set column meta code, data code and data bytes
 
-  i8 jVchSize; i8 nD; i8 iEra;
+  i8 nD; i8 iEra;
   u1 uHigh; u1 uLow; u1 nQuanta;
   char* azVch;
   
@@ -758,11 +764,11 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
       case DM_VCH:
         wColDtm.m_szVch = pRow->szColVal_ofs(i_Col);
         azVch = (char*)wColDtm.m_szVch; UNUSED(azVch);
-        jVchSize = StrLib::nLength((char*)wColDtm.m_szVch) + 1;
+        rxColEnc.m_jVchSize = StrLib::nLength((char*)wColDtm.m_szVch) + 1;
                   
         // 1) MC_STRING_x1
-        if (jVchSize <= 15) {
-          nQuanta = jVchSize; //MemLib::nQuantaRequired(nS,1);
+        if (rxColEnc.m_jVchSize <= 15) {
+          nQuanta = rxColEnc.m_jVchSize; //MemLib::nQuantaRequired(nS,1);
           rxColEnc.m_wDataCode.m_azStr = (char*)wColDtm.m_szVch;
           rxColEnc.m_jDataBytes = STRx1(nQuanta);
           rxColEnc.m_uMetaCode = METACODE_FORM(MC_STRING_x1,nQuanta);
@@ -770,8 +776,8 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
         }
         
         // 2) MC_STRINGx2
-        if (jVchSize <= 45) {
-          nQuanta = MemLib::nQuantaRequired(jVchSize-15,2);
+        if (rxColEnc.m_jVchSize <= 45) {
+          nQuanta = MemLib::nQuantaRequired(rxColEnc.m_jVchSize-15,2);
           rxColEnc.m_wDataCode.m_azStr = (char*)wColDtm.m_szVch;
           rxColEnc.m_jDataBytes = STRx2(nQuanta);
           rxColEnc.m_uMetaCode = METACODE_FORM(MC_STRING_x2,nQuanta);
@@ -779,8 +785,8 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
         }
         
         // 3) MC_STRINGx4
-        if (jVchSize <= 105) {
-          nQuanta = MemLib::nQuantaRequired(jVchSize-45,4);
+        if (rxColEnc.m_jVchSize <= 105) {
+          nQuanta = MemLib::nQuantaRequired(rxColEnc.m_jVchSize-45,4);
           rxColEnc.m_wDataCode.m_azStr = (char*)wColDtm.m_szVch;
           rxColEnc.m_jDataBytes = STRx4(nQuanta);
           rxColEnc.m_uMetaCode = METACODE_FORM(MC_STRING_x4,nQuanta);
@@ -788,8 +794,8 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
         }
 
         // 4) MC_STRINGx8
-        if (jVchSize <= 225) {
-          nQuanta = MemLib::nQuantaRequired(jVchSize-105,8);
+        if (rxColEnc.m_jVchSize <= 225) {
+          nQuanta = MemLib::nQuantaRequired(rxColEnc.m_jVchSize-105,8);
           rxColEnc.m_wDataCode.m_azStr = (char*)wColDtm.m_szVch;
           rxColEnc.m_jDataBytes = STRx8(nQuanta);
           rxColEnc.m_uMetaCode = METACODE_FORM(MC_STRING_x8,nQuanta);
@@ -798,7 +804,7 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
 
         // 5) MC_STRING_TAIL
         rxColEnc.m_wDataCode.m_azStr = (char*)wColDtm.m_szVch;
-        rxColEnc.m_jDataBytes = jVchSize;
+        rxColEnc.m_jDataBytes = rxColEnc.m_jVchSize;
         rxColEnc.m_uMetaCode = METACODE_FORM(MC_STRING_TAIL,2);
         break;
         
@@ -846,7 +852,7 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
       rxColEnc.m_bDuplicate = true;
       
       rxColEnc.m_uMetaCode  = METACODE_FORM(MC_STRING_TAIL,2);
-      rxColEnc.m_wDataCode  = rxColEnc.m_i_Tail;
+      rxColEnc.m_wDataCode  = C_UNKNOWN;
       rxColEnc.m_jDataBytes = C_2B;
 
     }
@@ -895,12 +901,13 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
     rxColEnc.m_bInOver     = true;
     rxColEnc.m_o_DataFrom  = o_DataFrom;
     rxColEnc.m_o_DataBreak = o_DataBreak;
-    nBytesNeeded   += C_OT_2B + C_U_1B + C_M_1B + jDataBytes;
+    nBytesNeeded   = jHeadSizeBytes + C_U_1B + C_M_1B + jDataBytes;
     o_DataFromNext += jDataBytes;
     
   } // for .) determine column data from & break
   //m_pEncoding->vDumpEncoding();
 
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // .) allot the compact row (head, over and tails)
 
@@ -1053,11 +1060,17 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
     // put <StringZ> (with null terminator)
     if (rxColEnc.m_bInOver) {
       aDataByte = ((byte*)aOverLine) + rxColEnc.m_o_DataFrom;
-      MemLib::vCopy(aDataByte,rxColEnc.m_wDataCode.m_szVch,jStrBytes,CN_ROWCOMPACTOR);
+      MemLib::vCopy(aDataByte,
+                    rxColEnc.m_wDataCode.m_szVch,
+                    rxColEnc.m_jVchSize,
+                    CN_ROWCOMPACTOR);
     }
     else {
       aDataByte = ((byte*)aHeadLine) + rxColEnc.m_o_DataFrom;
-      MemLib::vCopy(aDataByte,rxColEnc.m_wDataCode.m_szVch,jStrBytes,CN_ROWCOMPACTOR);
+      MemLib::vCopy(aDataByte,
+                    rxColEnc.m_wDataCode.m_szVch,
+                    rxColEnc.m_jVchSize,
+                    CN_ROWCOMPACTOR);
     }
     goto L_RowPacked;
 
@@ -1068,6 +1081,7 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
 
     // calculate [TL]
     i_Tail_rel = aHeadLine->iToTail_rel(rxColEnc.m_aTailLine);
+    rxColEnc.m_wDataCode.m_iWrd = i_Tail_rel;
     
     //      -- HeadLine / OverLine --                -- TailLine --
     // +--------------------------------+   **********************************
@@ -1076,21 +1090,17 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
     //
     
     // put [TL]
-    RASSERT(aOverLine);
-    //if (aOverLine) {
-      o_DataOffset_over = rxColEnc.m_o_DataFrom - jHeadSizeBytes;
-      aOverLine->vPut(o_DataOffset_over,i_Tail_rel,C_2B);
-    //}
-    //else {
-    //  NEVER_REACH;
-    //  aHeadLine->vPut(aColEnc->m_i_Offset,i_Tail_rel,C_2B);
-    //}
+    if (rxColEnc.m_bInOver) {
+      aOverLine->vPut(rxColEnc.m_o_DataFrom,
+                      rxColEnc.m_wDataCode.m_iWrd,
+                      rxColEnc.m_jDataBytes);
+    }
+    else {
+      aHeadLine->vPut(rxColEnc.m_o_DataFrom,
+                      rxColEnc.m_wDataCode.m_iWrd,
+                      rxColEnc.m_jDataBytes);
+    }
     
-    //aDataByte = ((byte*)aColEnc->m_aTailLine) + C_U_1B + C_L_1B;
-    //nStrBytes = aColEnc->m_nDataSize;
-    //RASSERT(nStrBytes == StrLib::nSize(aColEnc->m_wDataCode.m_szVch->azChar()));
-    //MemLib::vCopy(aDataByte,aColEnc->m_wDataCode.m_szVch,nStrBytes,CN_ROWCOMPACTOR);
-
     goto L_RowPacked;
 
   
@@ -1098,9 +1108,9 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
     
   L_RowPacked:
 
-//    MemLib::vHexDump(aHeadLine,jHeadSizeBytes);
-//    if (aOverLine)
-//      MemLib::vHexDump(aOverLine,jOverSizeBytes);
+    //MemLib::vHexDump(aHeadLine,jHeadSizeBytes);
+    //if (aOverLine)
+    //  MemLib::vHexDump(aOverLine,jOverSizeBytes);
 
     if (i_Col == nCols - 1)
       int iDebug = 1;

@@ -54,7 +54,9 @@ Encoding::Encoding(StreamDef* pStreamDef)
     
     rxColEnc.m_uMetaCode  = 0;
     rxColEnc.m_wDataCode  = C_UNKNOWN;
-    rxColEnc.m_jDataBytes  = C_UNKNOWN;
+    rxColEnc.m_jDataBytes = C_UNKNOWN;
+    rxColEnc.m_jVchSize   = C_UNKNOWN;
+
     rxColEnc.m_o_DataFrom = 0;
     rxColEnc.m_o_DataBreak= 0;
     rxColEnc.m_bSplit     = false;
@@ -139,12 +141,14 @@ void Encoding::vDumpEncoding(void)
     vTrace("  m_uLow           : %lld\n"_Stz, rxColEnc.m_uLow);
     
     if (CT_VARCHAR == rxColEnc.m_pCol->eColumnType() &&
-        MC_NULL != rxColEnc.m_uHigh)
+        MC_NULL != rxColEnc.m_uHigh &&
+        MC_STRING_TAIL != rxColEnc.m_uHigh)
       vTrace("  m_wDataCode      : %s\n"_Stz,   rxColEnc.m_wDataCode.m_azStr);
     else
       vTrace("  m_wDataCode      : %lld\n"_Stz,   rxColEnc.m_wDataCode.m_iWrd);
     
     vTrace("  m_jDataBytes     : %lld\n"_Stz, rxColEnc.m_jDataBytes);
+    vTrace("  m_jVchSize       : %lld\n"_Stz, rxColEnc.m_jVchSize);
     vTrace("  m_bInOver        : %lld\n"_Stz, (i8)rxColEnc.m_bInOver);
     vTrace("  m_o_DataFrom     : %lld\n"_Stz, rxColEnc.m_o_DataFrom);
     vTrace("  m_o_DataBreak    : %lld\n"_Stz, rxColEnc.m_o_DataBreak);
@@ -385,7 +389,8 @@ void Encoding::vReset(void)
     // leave m_eDatum
     
     rxColEnc.m_wDataCode  = C_UNKNOWN;
-    rxColEnc.m_jDataBytes  = C_UNKNOWN;
+    rxColEnc.m_jDataBytes = C_UNKNOWN;
+    rxColEnc.m_jVchSize   = C_UNKNOWN;
     rxColEnc.m_o_DataFrom = 0;
     rxColEnc.m_o_DataBreak= 0;
     rxColEnc.m_bSplit     = false;
