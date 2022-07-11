@@ -104,10 +104,6 @@ void Engine::vMainEntry(void)
 {
   vHeartInit();
 
-  vEventLog((Stz*)"Delayed %lld seconds\n", gxCmdLineArgs.m_xSysArgs.m_iDelay);
-  vEventLog((Stz*)"Delayed %lld seconds\n", gxCmdLineArgs.m_xSysArgs.m_iDelay);
-  vEventLog((Stz*)"Delayed %lld seconds\n", gxCmdLineArgs.m_xSysArgs.m_iDelay);
-
   if (gxCmdLineArgs.m_xSysArgs.m_iDelay > 0) {
     printf("Delayed %lld seconds\n", gxCmdLineArgs.m_xSysArgs.m_iDelay);
     sleep((unsigned int)gxCmdLineArgs.m_xSysArgs.m_iDelay);

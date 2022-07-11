@@ -3765,46 +3765,38 @@ void AM::vWriteEvent_vargs(Stz* aFormat, va_list xArgs)
 {
   static char caFormatted[C_1MB] = {'\0'};
   EventLogMsg xEventLogMsg;
-  bool bUseLock = (gpAttachMap ? true : false);
-  bool bLowMem  = false; //gpBufferPool ? gpBufferPool->bLowMemory() : false;
-
-  if (bUseLock)
-    gpAttachMap->vTraceLockGrab();
 
   // produce formatted line
   vsnprintf(caFormatted,sizeof(caFormatted) - 3,aFormat->azChar(),xArgs);
 
-  MemLib::vZero(&xEventLogMsg,sizeof(xEventLogMsg),CN_NONE);
   MemLib::vCopy(&xEventLogMsg.m_sEventMsg, caFormatted, sizeof(xEventLogMsg.m_sEventMsg), CN_NONE);
-
+  xEventLogMsg.m_iNodeId = AM::pGrid() ? AM::pGrid()->iThisNodeId() : 0;
   xEventLogMsg.m_iSincePosixEpoch = time(0);;
-  xEventLogMsg.m_u2DataLen =  sizeof(xEventLogMsg.m_iHeader)
-      + sizeof(xEventLogMsg.m_u4Version)
-      + sizeof(xEventLogMsg.m_u2DataLen)
-
-      + sizeof(xEventLogMsg.m_iSincePosixEpoch)
-      + sizeof(xEventLogMsg.m_iNodeId)
-      + sizeof(xEventLogMsg.m_sEventMsg)
-      + sizeof(xEventLogMsg.m_iFooter)
-      + sizeof(xEventLogMsg.m_acSpare);
 
   gxEventLogMsgBuffer.bTryWrite(xEventLogMsg);
 
-  // DEBUG
+}
+
+/*----------------------------------------------------------------------------*/
+/* read event message from ring buffer                                        */
+/*----------------------------------------------------------------------------*/
+void AM::vReadEventMsg(int nMsg)
+{
+
+  EventLogMsg xEventLogMsg;
+
   printf("Size:%lld\n", gxEventLogMsgBuffer.iSize());
 
-  EventLogMsg xEventLogMsg1;
-  gxEventLogMsgBuffer.bTryRead(xEventLogMsg1);
   char buf[50];
   struct tm  ts;
-  ts = *localtime((time_t*)&xEventLogMsg1.m_iSincePosixEpoch);
-  strftime(buf, sizeof(buf), "%a %Y-%m-%d %H:%M:%S %Z", &ts);
-  printf("Time: %s Msg:%s\n", buf, xEventLogMsg1.m_sEventMsg);
 
-  StrLib::vStrip(caFormatted,'\n');
+  for (int i = 0; i < nMsg; i++) {
+    gxEventLogMsgBuffer.bTryRead(xEventLogMsg);
+    ts = *localtime((time_t *) &xEventLogMsg.m_iSincePosixEpoch);
+    strftime(buf, sizeof(buf), "%a %Y-%m-%d %H:%M:%S %Z", &ts);
+    printf("Time: %s Msg:%s\n", buf, xEventLogMsg.m_sEventMsg);
+  }
 
-  if (bUseLock)
-    gpAttachMap->vTraceLockDrop();
 }
 
 /*----------------------------------------------------------------------------*/
