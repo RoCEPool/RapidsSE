@@ -736,14 +736,13 @@ eEC StreamDefBase::eParse(Stz* szCmd)
   // -- -- -- --
   // table name
   // -- -- -- --
-  
-  pTkn = pTknVec->pNextToken(); dPT();
-  m_sStreamDefNm = pTkn->szChars();
-  if (m_sStreamDefNm.nLength() > C_MAX_TABLE_NAME_LENGTH - 1) {
-    eError = EC_MAX_TABLE_NAME_LENGTH;
+
+  eError = eValidateTableName(pTknVec);
+  if (EC_NONE != eError) {
     goto L_RETURN;
   }
   
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Parse: ( <columnDef> ,... )
   
@@ -1407,6 +1406,54 @@ eEC StreamDefBase::eParseTableSize(TokenVec* pTknVec)
   // get size
   m_jTableSize = pTkn->iToI8();
     
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* validate table name                                                        */
+/*----------------------------------------------------------------------------*/
+eEC StreamDefBase::eValidateTableName(TokenVec *pTknVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  // next token should be table name
+  m_sStreamDefNm = pTknVec->pNextToken()->szChars();
+
+  if (m_sStreamDefNm.nLength() > C_MAX_TABLE_NAME_LENGTH - 1) {
+    return EC_MAX_TABLE_NAME_LENGTH;
+  }
+
+  // Check starting character of table name
+  char cStartChar = m_sStreamDefNm.azChar()[0];
+
+  if( !(cStartChar >= 'A' && cStartChar <= 'Z') &&
+      !(cStartChar >= 'a' && cStartChar <= 'z') &&
+      !(cStartChar == '_'))
+  {
+    return EC_SYNTAX_ERROR;
+  }
+
+  // Check for special characters in table name
+  for(i8 i = 33; i <= 47 ; i++)
+  {
+    if( m_sStreamDefNm.bContains(StrLib::szCharToStr(i))) {
+      return EC_SYNTAX_ERROR;
+    }
+  }
+
+  for(i8 i = 58; i <= 64 ; i++)
+  {
+    if( m_sStreamDefNm.bContains(StrLib::szCharToStr(i))) {
+      return EC_SYNTAX_ERROR;
+    }
+  }
+
+  if( m_sStreamDefNm.bContains("|"_Stz) ||
+      m_sStreamDefNm.bContains("^"_Stz) ||
+      m_sStreamDefNm.bContains("~"_Stz)) {
+    return EC_SYNTAX_ERROR;
+  }
+
   return EC_NONE;
 }
 
