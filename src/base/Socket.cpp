@@ -373,6 +373,11 @@ Object* Socket::pObjectRecv_lowmem(eCN eClass)
       // job has begun on the participant
       AM::JOB::vBegunOnOrigin(Job::tOriginId(pJob));
     }
+    else if (Job::szJobNm(pJob)->bSame("executed"_Stz)) {
+
+      // job has executed on the participant
+      AM::JOB::vExecutedOnOrigin(Job::tOriginId(pJob));
+    }
     else {
 
       // send a rejectJob to originating node
