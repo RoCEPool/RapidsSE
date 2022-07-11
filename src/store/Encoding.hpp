@@ -19,12 +19,13 @@ namespace STORE
       };
     };
     
+    b8   m_bSplit;     // overflow occurs at this point
     Dtm  m_wDataCode;  // column value data bytes
     i8   m_jDataBytes; // complete number of data code bytes, incl <L> etc
+
+    b8   m_bInOver;    // in overline (or headline)
     i8   m_o_DataFrom; // first byte offset in head+over where the data code is
     i8   m_o_DataBreak;// byte after last byte offset in head+over where the data code is
-    b8   m_bSplit;     // overflow occurs at this point
-    b8   m_bInOver;    // in overline (or headline)
 
     i8   m_i_Tail;     // absolute index of tail
     b8   m_bDuplicate; // tail is a duplicate

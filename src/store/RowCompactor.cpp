@@ -913,10 +913,11 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
 
   // opt allot overline
   OverLine* aOverLine = nullptr;    // over of crw
+  i8 jOverSizeBytes = 0;
   if (bAllotOver) {
-    i8 jOverSize  = nBytesNeeded - jHeadSizeBytes;
+    jOverSizeBytes  = nBytesNeeded - jHeadSizeBytes;
 
-    aOverLine = m_pCrwNub->aAllotOver(jOverSize);
+    aOverLine = m_pCrwNub->aAllotOver(jOverSizeBytes);
 
     // link over line into head line
     aHeadLine->vSetOver(aOverLine);
@@ -932,8 +933,12 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
       }
     }
   }
+
   
-  
+  MemLib::vHexDump(aHeadLine,jHeadSizeBytes);
+  if (aOverLine)
+    MemLib::vHexDump(aOverLine,jOverSizeBytes);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // .) pack encoded row into the compact row
 
@@ -949,8 +954,6 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
   
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     _ColEnc& rxColEnc = m_pEncoding->xaColEnc[i_Col];
-
-    rxColEnc.m_o_DataFrom = C_UNKNOWN;
     
     if (rxColEnc.m_bSplit)
       goto L_MetaSplit;
@@ -1094,6 +1097,11 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     
   L_RowPacked:
+
+    MemLib::vHexDump(aHeadLine,jHeadSizeBytes);
+    if (aOverLine)
+      MemLib::vHexDump(aOverLine,jOverSizeBytes);
+
     {;}
 
   } // for .) pack encoded row into the compact row
