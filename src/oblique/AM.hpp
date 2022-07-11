@@ -361,8 +361,7 @@ namespace OBLIQUE
     class JOB
     {
     public:
-      static void vBegunOnOrigin(JobId tOriginId);
-      static void vExecutedOnOrigin(JobId tOriginId);
+      static void vAckOriginatingJob(JobId tOriginId);
       static bool bHasTag(Job* pJob, Stz* szTagNm);
       static Stz* szJobNm(Job* pJob);
       static eEC  ePreExecuteTest(Job* pJob);

@@ -359,26 +359,27 @@ Object* Socket::pObjectRecv_lowmem(eCN eClass)
     Job* pJob = _pJob(aLowBuff);
     vTrace("Recvd Job under lowMem: %s\n"_Stz, Job::szJobNm(pJob));
 
-    m_pRejectJob->vOriginId(Job::tOriginId(pJob));
-    m_pRejectJob->vDistId(Job::tDistId(pJob));
-    m_pRejectJob->vError(EC_LOW_MEMORY);
+    if (Job::szJobNm(pJob)->bSame("begun"_Stz) ||
+        Job::szJobNm(pJob)->bSame("executed"_Stz) ||
+        Job::szJobNm(pJob)->bSame("ended"_Stz) ||
+        Job::szJobNm(pJob)->bSame("cancelled"_Stz)) {
 
-    if (Job::szJobNm(pJob)->bSame("execute"_Stz)) {
+      // ack originating job
+      // job has begun/executed/ended/cancelled on the participant
+      AM::JOB::vAckOriginatingJob(Job::tOriginId(pJob));
+    }
+    else if (Job::szJobNm(pJob)->bSame("cancel"_Stz) ||
+             Job::szJobNm(pJob)->bSame("end"_Stz) ||
+             Job::szJobNm(pJob)->bSame("execute"_Stz)) {
 
-      // trigger an execute of the participant pipeline job
+      // trigger an execute/end of the participant pipeline job
       AM::JOB::vTriggerExecute(Job::tDistId(pJob));
     }
-    else if (Job::szJobNm(pJob)->bSame("begun"_Stz)) {
-
-      // job has begun on the participant
-      AM::JOB::vBegunOnOrigin(Job::tOriginId(pJob));
-    }
-    else if (Job::szJobNm(pJob)->bSame("executed"_Stz)) {
-
-      // job has executed on the participant
-      AM::JOB::vExecutedOnOrigin(Job::tOriginId(pJob));
-    }
     else {
+
+      m_pRejectJob->vOriginId(Job::tOriginId(pJob));
+      m_pRejectJob->vDistId(Job::tDistId(pJob));
+      m_pRejectJob->vError(EC_LOW_MEMORY);
 
       // send a rejectJob to originating node
       AM::JOB::vSendReject(m_pRejectJob);
