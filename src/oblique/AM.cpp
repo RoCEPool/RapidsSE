@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 
+#include <EventLog.hpp>
 #include "BASE.h"
 
 
@@ -136,6 +137,7 @@ extern Index*        gpReadApiIndex;
 
 extern SizeHeap      gxaSizeHeap[];
 
+extern RingBuffer<EventLogMsg> gxEventLogMsgBuffer ;
 
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -3756,6 +3758,45 @@ void AM::vWriteTrace_vargs(File* pFile, Stz* aFormat, va_list xArgs)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* write to ring buffer etc                                                    */
+/*----------------------------------------------------------------------------*/
+void AM::vWriteEvent_vargs(Stz* aFormat, va_list xArgs)
+{
+  static char caFormatted[C_1MB] = {'\0'};
+  EventLogMsg xEventLogMsg;
+  bool bUseLock = (gpAttachMap ? true : false);
+  bool bLowMem  = false; //gpBufferPool ? gpBufferPool->bLowMemory() : false;
+
+  if (bUseLock)
+    gpAttachMap->vTraceLockGrab();
+
+  // produce formatted line
+  vsnprintf(caFormatted,sizeof(caFormatted) - 3,aFormat->azChar(),xArgs);
+
+  MemLib::vZero(&xEventLogMsg,sizeof(xEventLogMsg),CN_NONE);
+  MemLib::vCopy(&xEventLogMsg.m_sEventMsg, caFormatted, sizeof(xEventLogMsg.m_sEventMsg), CN_NONE);
+
+  xEventLogMsg.m_iSincePosixEpoch = time(0);;
+  xEventLogMsg.m_u2DataLen =  sizeof(xEventLogMsg.m_iHeader)
+      + sizeof(xEventLogMsg.m_u4Version)
+      + sizeof(xEventLogMsg.m_u2DataLen)
+
+      + sizeof(xEventLogMsg.m_iSincePosixEpoch)
+      + sizeof(xEventLogMsg.m_iNodeId)
+      + sizeof(xEventLogMsg.m_sEventMsg)
+      + sizeof(xEventLogMsg.m_iFooter)
+      + sizeof(xEventLogMsg.m_acSpare);
+
+  gxEventLogMsgBuffer.bTryWrite(xEventLogMsg);
+
+  printf("Size:%lld\n", gxEventLogMsgBuffer.iSize());
+
+  StrLib::vStrip(caFormatted,'\n');
+
+  if (bUseLock)
+    gpAttachMap->vTraceLockDrop();
+}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

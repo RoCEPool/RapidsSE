@@ -896,6 +896,7 @@ namespace OBLIQUE
     static void vWelcomeText(s256& sWelcome);
     static void vWordSeeDoes(Word* pDoesWord, CodeCell* aFip,
                              DicStack* pDicStack, CodeCell* aInxPtr=nullptr);
+    static void vWriteEvent_vargs(Stz* aFormat, va_list xArgs);
     static void vWriteLog(void);
     static void vWriteTrace_vargs(Stz* szFormat, va_list xArgs);
     static void vWriteTrace_vargs(File* pFile, Stz* aFormat, va_list xArgs);

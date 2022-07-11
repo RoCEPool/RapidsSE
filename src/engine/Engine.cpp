@@ -5,6 +5,7 @@
 #include "BASE.h"
 
 #include <signal.h>
+#include <EventLog.hpp>
 
 #include "CmdLineArgs.hpp"
 #include "BucketMap.hpp"
@@ -67,6 +68,8 @@ BufferPool*  gpBufferPool;
 Header*      gaSeShmRegion;
 File*        gpTraceFile;
 
+RingBuffer<EventLogMsg> gxEventLogMsgBuffer(1000);
+
 Stz* gsBuildGitHash;
 Stz* gsBuildDate;
 Stz* gsBuildHostName;
@@ -100,6 +103,10 @@ pthread_key_t giTLS_StepKey    = C_UNKNOWN;
 void Engine::vMainEntry(void)
 {
   vHeartInit();
+
+  vEventLog((Stz*)"Delayed %lld seconds\n", gxCmdLineArgs.m_xSysArgs.m_iDelay);
+  vEventLog((Stz*)"Delayed %lld seconds\n", gxCmdLineArgs.m_xSysArgs.m_iDelay);
+  vEventLog((Stz*)"Delayed %lld seconds\n", gxCmdLineArgs.m_xSysArgs.m_iDelay);
 
   if (gxCmdLineArgs.m_xSysArgs.m_iDelay > 0) {
     printf("Delayed %lld seconds\n", gxCmdLineArgs.m_xSysArgs.m_iDelay);
