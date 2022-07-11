@@ -1,7 +1,6 @@
-import string
 import os.path
 import configparser
-from septest.errors import ConfigurationError
+from pyutils.errors import ConfigurationError
 
 
 class HardwareConfig:
@@ -16,7 +15,7 @@ class HardwareConfig:
 
     C_MAX_INSTANCES = 4
 
-    def __init__(self, path: string):
+    def __init__(self, path: str):
         self.path = path
 
         # Method for reading multiple keys of the same name but with different values
@@ -65,11 +64,11 @@ class HardwareConfig:
             f"  {self.C_TERMINATEONFIN} = {self.get_terminate_on_finish()}"
         return s
 
-    def get_hardware_name(self) -> string:
+    def get_hardware_name(self) -> str:
         """Returns the name of the hardware file without the last extension"""
         return os.path.basename(self.path).rsplit(sep=".", maxsplit=1)[0]
 
-    def get_instance_type(self) -> string:
+    def get_instance_type(self) -> str:
         s = self.parser.get(self.C_SECTION, self.C_INSTANCETYPE)
 
         if s.startswith('"') and s.endswith('"'):
@@ -78,7 +77,7 @@ class HardwareConfig:
             s = s[1:-1]
         return s
 
-    def get_image_id(self) -> string:
+    def get_image_id(self) -> str:
         return self.parser.get(self.C_SECTION, self.C_IMAGEID)
 
     def get_num_machines(self) -> int:

@@ -9,11 +9,10 @@ import subprocess
 import csv
 import decimal
 
-from septest import clusterops
+from pyutils import clusterops, ssh, errors
+from septest import testops
 from septest.results import TestResult
-from septest import errors
-from septest.configs.clusterconfig import ClusterConfig
-from septest import ssh
+from pyutils.clusterconfig import ClusterConfig
 
 LOG = logging.getLogger(__name__)
 
@@ -72,7 +71,7 @@ class TestRunner:
         self.ip_addr = ip_addr
         self.artifact_dir = artifact_dir
         self.remote_test_dir = pathlib.Path(cluster_config.get_dir()).joinpath(
-            clusterops.C_PERF_TESTS_DIR,
+            testops.C_PERF_TESTS_DIR,
             C_TEST_DIR_FMT.format(job_result_id, test_id, test_seq, self.test_name)
         )
         self.remote_test_file = None
@@ -131,10 +130,8 @@ class TestRunner:
         try:
             ssh.run_scp(src, dest, command_timeout)
 
-        except subprocess.CalledProcessError as e:
-            msg = f"Error while copying a test file from {src} to {dest}." \
-                  f"\nStdout Output:\n{e.stdout}" \
-                  f"\nStderr Output:\n{e.stderr}"
+        except errors.SshError as e:
+            msg = f"Error while copying a test file from {src} to {dest}."
             raise errors.ClusterError(msg) from e
 
         except subprocess.TimeoutExpired as e:
@@ -150,7 +147,7 @@ class TestRunner:
         Creates a symbolic link in the remote test dir for the supportFiles folder.
         """
         from_dir = f"{self.remote_test_dir}/{C_SUPPORT_FILES}"
-        target_dir = f"{self.cluster_config.get_dir()}/{clusterops.C_SUPPORT_FILES_DIR}"
+        target_dir = f"{self.cluster_config.get_dir()}/{testops.C_SUPPORT_FILES_DIR}"
         command = f"ln -s {target_dir} {from_dir}"
 
         LOG.debug(f"About to create a symbolic link for the test supportFiles directory on host "
@@ -159,10 +156,8 @@ class TestRunner:
         try:
             ssh.run_ssh(self.ip_addr, command, 10)
 
-        except subprocess.CalledProcessError as e:
-            msg = f"Error while creating the symbolic link on host {self.ip_addr}: {command}" \
-                  f"\nStdout Output:\n{e.stdout}" \
-                  f"\nStderr Output:\n{e.stderr}"
+        except errors.SshError as e:
+            msg = f"Error while creating the symbolic link on host {self.ip_addr}: {command}"
             raise errors.ClusterError(msg) from e
 
         except subprocess.TimeoutExpired as e:
@@ -188,10 +183,8 @@ class TestRunner:
         try:
             ssh.run_ssh(self.ip_addr, mkdir_command, 10)
 
-        except subprocess.CalledProcessError as e:
-            msg = f"Error while creating the following remote directory: {self.ip_addr}:{str(self.remote_test_dir)}" \
-                  f"\nStdout Output:\n{e.stdout}" \
-                  f"\nStderr Output:\n{e.stderr}"
+        except errors.SshError as e:
+            msg = f"Error while creating the following remote directory: {self.ip_addr}:{str(self.remote_test_dir)}"
             raise errors.ClusterError(msg) from e
 
         except subprocess.TimeoutExpired as e:
@@ -208,7 +201,7 @@ class TestRunner:
         Executes the JMeter test file and sets the result and end time of the test.
         """
         # Where did we copy the jmeter properties file to?
-        jmeter_properties_path = clusterops.get_remote_jmeter_property_file_path(self.cluster_config)
+        jmeter_properties_path = testops.get_remote_jmeter_property_file_path(self.cluster_config)
         log_file_path = self.__remote_log_file_path()
         rapidsse_bin_dir = f"{self.cluster_config.get_dir()}/bin"
 
@@ -234,7 +227,7 @@ class TestRunner:
             # Record the test completion result
             self.result.set_test_ended(test_passed=True, test_skipped=False)
 
-        except subprocess.CalledProcessError as e:
+        except errors.SshError as e:
             msg = f"Error while trying to execute JMeter file at {self.ip_addr}:{self.remote_test_file}" \
                   f"\n\nStdout Output:\n{e.stdout}" \
                   f"\n\nStderr Output:\n{e.stderr}\n"
@@ -287,10 +280,8 @@ class TestRunner:
         try:
             ssh.run_scp(src=src_spec, dest=self.artifact_dir, timeout=C_SCP_TIMEOUT_SEC)
 
-        except subprocess.CalledProcessError as e:
-            msg = f"Error while copying metrics from remote path: {src_spec}" \
-                  f"\nStdout Output:\n{e.stdout}" \
-                  f"\nStderr Output:\n{e.stderr}"
+        except errors.SshError as e:
+            msg = f"Error while copying metrics from remote path: {src_spec}"
             raise errors.ClusterError(msg) from e
 
         except subprocess.TimeoutExpired as e:
@@ -525,10 +516,8 @@ class TestRunner:
         try:
             ssh.run_ssh(self.ip_addr, rm_command, 10)
 
-        except subprocess.CalledProcessError as e:
-            msg = f"Error while removing remote test file at {self.remote_test_file}" \
-                  f"\nStdout Output:\n{e.stdout}" \
-                  f"\nStderr Output:\n{e.stderr}"
+        except errors.SshError as e:
+            msg = f"Error while removing remote test file at {self.remote_test_file}"
             raise errors.ClusterError(msg) from e
 
         except subprocess.TimeoutExpired as e:
@@ -555,10 +544,8 @@ class TestRunner:
         try:
             ssh.run_ssh(self.ip_addr, rm_command, 10)
 
-        except subprocess.CalledProcessError as e:
-            msg = f"Error while removing remote supportFiles symbolic link at {link}" \
-                  f"\nStdout Output:\n{e.stdout}" \
-                  f"\nStderr Output:\n{e.stderr}"
+        except errors.SshError as e:
+            msg = f"Error while removing remote supportFiles symbolic link at {link}"
             raise errors.ClusterError(msg) from e
 
         except subprocess.TimeoutExpired as e:

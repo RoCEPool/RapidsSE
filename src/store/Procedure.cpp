@@ -204,9 +204,11 @@ bool Procedure::bTranslateToPipeline(String* pToPipelineStmt,
     
     if (iJotDebug())
       pPrdTxtVec->vListTokens();
-    
-    
-    TokenVec::vReplace(pPrdTxtVec,pPrdPrmVec,pInpArgVec);
+
+    bool bResult = TokenVec::bReplace(pPrdTxtVec,pPrdPrmVec,pInpArgVec);
+    if ( ! bResult )
+      return bResult;
+
     dPV("pPrdTxtVec(r)"_Stz,pPrdTxtVec);
 
     

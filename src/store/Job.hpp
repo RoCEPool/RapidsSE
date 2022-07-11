@@ -85,7 +85,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId);
+    Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId, TagSet* pCmdTagSet = nullptr);
 
    ~Job(void) noexcept(false);
   
@@ -146,6 +146,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     TagSet* pJobTags(void);
     void vJobTrace(Stz* szAtCmd, Stz* szAtRoutine, Stz* szAtPoint, Stz* szNote);
 
+    void  vLabelObjectTracker(Stz* szLabel);
     JobId tLastJobId(void);
     void  vLastJobId(JobId tLastJobId);
 

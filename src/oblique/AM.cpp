@@ -1653,18 +1653,6 @@ i8 AM::POOL::iUsedSpace(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* get free chunks in data heap                                               */
-/*----------------------------------------------------------------------------*/
-i8 AM::POOL::nDataHeap(void)
-{
-  _static_
-
-  i8 nBufferCount = gpAttachMap->m_xHeaps.Transient.m_pData->nBufferCount();
-  
-  return nBufferCount;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get free chunks in large heap                                              */
 /*----------------------------------------------------------------------------*/
 i8 AM::POOL::nLargeHeap(void)
@@ -4132,10 +4120,6 @@ void AM::vBootCheck(void)
       case HT_P_LARGE:
       case HT_T_LARGE:
         ASSERT(iClassSize < C_SIZE_LARGE_OBJECT);
-        continue;
-                
-      case HT_T_DATA:
-        ASSERT(iClassSize < C_SIZE_DATA_OBJECT);
         continue;
                 
       default:

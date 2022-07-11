@@ -781,12 +781,6 @@ void BufferPool::vPrintProgress(void)
          AM::pHeaps()->Transient.m_pLarge->nCurrAllocated(),
          AM::pHeaps()->Transient.m_pLarge->nFreeChunks());
 
-  vTrace("   Transient DataHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
-         sMagData.azChar(),
-         AM::pHeaps()->Transient.m_pData->nBufferCount(),
-         AM::pHeaps()->Transient.m_pData->nCurrAllocated(),
-         AM::pHeaps()->Transient.m_pData->nFreeChunks());
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   vTrace("   Persistent SmallHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,

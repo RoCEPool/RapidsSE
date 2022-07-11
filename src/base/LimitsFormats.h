@@ -32,6 +32,7 @@ static const i8 C_MAX_SHORTCUTS     = 1024;
 static const i8 C_MAX_STAGES        = 256;
 static const i8 C_MAX_STREAMS       = 256;
 static const i8 C_MAX_STREAM_ORDER  = 8;
+static const i8 C_MAX_TABLE_NAME_LENGTH  = 32; // max table name length including null terminator
 static const i8 C_MAX_THREADS       = 4096;
 static const i8 C_MAX_TOKENS        = C_2KB;
 static const i8 C_MAX_VERTEXES      = 256;

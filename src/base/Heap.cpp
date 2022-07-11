@@ -7,6 +7,7 @@
 #include "AM.hpp"
 #include "LogicUnit.hpp"
 #include "Job.hpp"
+#include "SeDeputy.hpp"
 
 extern BufferPool* gpBufferPool;
 
@@ -212,8 +213,14 @@ Object* Heap::pAllocObject(eCN eAllocClass)
     }
   }
   Job* pJob = MY::pJob();
-  if(pJob && pJob->bObjectTracker())
+  Thread* pThread = MY::pThread();
+
+  if(pJob)
   {
+    pJob->vTrackAllocObject(eAllocClass);
+  }
+  else if(pThread && pThread->pObject0()) {
+    Job* pJob = _pJob(MY::pThread()->pObject0());
     pJob->vTrackAllocObject(eAllocClass);
   }
 

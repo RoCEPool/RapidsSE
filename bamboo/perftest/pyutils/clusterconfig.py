@@ -1,4 +1,3 @@
-import string
 import decimal
 import subprocess
 import logging
@@ -7,7 +6,7 @@ import os
 import stat
 import pathlib
 
-from septest.errors import ConfigurationError
+from pyutils.errors import ConfigurationError
 
 LOG = logging.getLogger(__name__)
 
@@ -27,7 +26,7 @@ class ClusterConfig:
     C_PORT            = "port"
     C_PARAMS          = "params"
 
-    def __init__(self, path: string):
+    def __init__(self, path: str):
         self.path = path
         self.num_nodes = -1
         self.first_node_name = ""
@@ -86,14 +85,14 @@ class ClusterConfig:
             f"  params     = \"{self.get_params()}\""
         return s
 
-    def get_cluster_name(self) -> string:
+    def get_cluster_name(self) -> str:
         """Returns the name of the cluster file without the last extension"""
         return os.path.basename(self.path).rsplit(sep=".", maxsplit=1)[0]
 
     def get_num_nodes(self) -> int:
         return self.num_nodes
 
-    def get_first_node_name(self) -> string:
+    def get_first_node_name(self) -> str:
         return self.first_node_name
 
     def get_shared_mem(self) -> decimal:
@@ -105,11 +104,11 @@ class ClusterConfig:
     def get_partitions(self) -> int:
         return self.partitions
 
-    def get_dir(self) -> string:
+    def get_dir(self) -> str:
         return self.dir
 
     def get_port(self) -> int:
         return self.port
 
-    def get_params(self) -> string:
+    def get_params(self) -> str:
         return self.params
