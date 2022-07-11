@@ -641,6 +641,16 @@ void Job::vFreeMarker(Marker* pMarker)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the generic skip node                                                  */
+/*----------------------------------------------------------------------------*/
+SkipNode* Job::pGenericSkipNode(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_pGenericSkipNode;
+}
+
+/*----------------------------------------------------------------------------*/
 /* update timer from the child job                                            */
 /*----------------------------------------------------------------------------*/
 void Job::vGetTimerFromChild(Job* pChildJob)
@@ -882,6 +892,16 @@ void Job::vJobPhase(eJP eJobPhase)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_eJobPhase = eJobPhase;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the jobs skip node                                                     */
+/*----------------------------------------------------------------------------*/
+SkipNode* Job::pJobsSkipNode(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_pJobsSkipNode;
 }
 
 /*----------------------------------------------------------------------------*/

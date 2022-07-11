@@ -21,7 +21,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
   class Job : public Operand,
               public CRM<Job>
   {
-  public:
+  private:
   
     Lock   m_okLock;      // lock on this job
     
@@ -140,6 +140,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vFolderPath(Stz* szFolderPath);
     void vFreeMarker(Marker* pMarker);
 
+    SkipNode* pGenericSkipNode(void);
     void vGetTimerFromChild(Job* pChildJob);
     void vGrabLock(void);
 
@@ -163,6 +164,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vJobNm(Stz* szJobNm);
     eJP  eJobPhase(void);
     void vJobPhase(eJP eJobPhase);
+    SkipNode* pJobsSkipNode(void);
     TagSet* pJobTags(void);
     void vJobTrace(Stz* szAtCmd, Stz* szAtRoutine, Stz* szAtPoint, Stz* szNote);
 
