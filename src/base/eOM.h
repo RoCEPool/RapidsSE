@@ -94,8 +94,6 @@ static Stz* aOM[]
   /*    */ "LEAVEMARKER"_Stz,
   /*    */ "LEAVINGMARKER"_Stz,
   /*    */ "LEFTMARKER"_Stz,
-  /*    */ "LEFTOUTER_CRWLFT"_Stz,
-  /*    */ "LEFTOUTER_ROWLFT"_Stz,
   /*    */ "LOWMEMORY"_Stz,
   
   /*    */ "NEXTBUFFERMARKER"_Stz,
