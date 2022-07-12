@@ -172,22 +172,34 @@ Object* Socket::pRecvObject(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // HACK : To simulate lowMemory
-  if (eClass == CN_JOB) {
+//  if (eClass == CN_JOB) {
+//    nPipeline++;
+//    if (nPipeline == gxCmdLineArgs.m_xSysArgs.m_iSocketLowMem)
+//      bLowMem = true;
+//  }
+
+  try {
+
+    if (!bLowMem) {
+
+      //  if (eClass == CN_JOB) {
     nPipeline++;
     if (nPipeline == gxCmdLineArgs.m_xSysArgs.m_iSocketLowMem)
-      bLowMem = true;
-  }
+      THROW_LOWMEMORY_NEW();
 
-  if (! bLowMem ) {
 
-    Object* pReceivedObject = pObjectRecv(eClass);
+      Object *pReceivedObject = pObjectRecv(eClass);
 
-    if (eClass == CN_JOB) {
-      Job* pJob = _pJob(pReceivedObject);
-      //vTrace("Recvd Job %s : %lld\n"_Stz, Job::szJobNm(pJob), nPipeline);
+      if (eClass == CN_JOB) {
+        Job *pJob = _pJob(pReceivedObject);
+        //vTrace("Recvd Job %s : %lld\n"_Stz, Job::szJobNm(pJob), nPipeline);
+      }
+      vSuccess(true);
+      return pReceivedObject;
     }
-    vSuccess(true);
-    return pReceivedObject;
+  }
+  catch (LowMemory xLowMemory) {
+    // fall thru
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
