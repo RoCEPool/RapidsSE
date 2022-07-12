@@ -1,0 +1,40 @@
+
+* User creates a tag in the git repository and pushes it to origin.
+  * Tag must be named like any of these:
+      v1.0.0
+      v1.0.0-dev1
+      v1.0.0-rc1
+  * This will trigger a build of the "Make Release" plan in Bamboo.
+
+* Bamboo checks out the repository for the given tag or revision.
+* Bamboo invokes the jobs/buildRelease.sh script.
+* Script sets up python environment and runs the releasebuilder python module.
+* Python module:
+  * Reads config file that contains:
+    * Details on the compilation environment.
+    * A list of details on runtime environments.
+  * Clones the repo on the current node
+      * Bamboo caches the repository and then clones from that local repository.
+      * Get the url to the local cached repository by running: git remote -v | head -n 1 | awk '{print $2}'
+        * Result must begin with "file://", must be a dir and must be resolvable.
+      * Clone the repository to another local directory with: git clone --no-local <url> <dest>
+  * Starts an EC2 instance for the compilation environment.
+  * Copies the cloned repository across to the compilation environment.
+  * Invokes the script to build the installer.
+  * Copies the installer from the compilation environment back to the original machine.
+
+  * For each runtime environment:
+    * Starts an EC2 instance for the target environment.
+    * Copies across the installer.
+    * Copies across the cluster config.
+    * Runs the installer.
+    * Starts SE on the target environment.
+    * Runs any tests against the target environment.
+    * Collects any test result files and copies them back to the original machine.
+    * Stops SE on the target environment.
+    * Collects any log files and copies them back to the original machine.
+  * Writes out a JUnix result file (if necessary).
+  * Remove the temporary cloned repository.
+
+Style guide and (some) linting checks can be validated by running:
+  pipenv run flake8 --ignore=E501

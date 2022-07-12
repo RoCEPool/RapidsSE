@@ -3,7 +3,7 @@
 # variables, some of which are used below.
 
 #BASE="$(basename $0)"
-DIR="$(dirname $0)"
+DIR="$(dirname "$0")"
 
 # Which python to use?
 PYTHON="python3"

@@ -335,6 +335,8 @@ function alterConfiguration() {
   validateHostsAreResolvable "${ADDED_NODE_LIST[@]}"
   validateHostsReachableBySsh "${ADDED_NODE_LIST[@]}"
 
+  validate3rdPartyTools "${ADDED_NODE_LIST[@]}"
+
   # Get the number of CPU cores, memory size, SHM size of each node.
   # This populates NODE_CORE_COUNT, NODE_TOTAL_MEM, NODE_TOTAL_SHM and NODE_FREE_SHM
   # and will be used for default values for partitions, threads and
