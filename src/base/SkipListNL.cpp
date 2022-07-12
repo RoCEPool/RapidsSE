@@ -290,7 +290,8 @@ bool SkipListNL::bInsertByKey(void* aObjectInsert,
                               
                               std::function<void(SkipNode* pNode,
                                                  int i_Level
-                                                 )> vfPrintNode
+                                                 )> vfPrintNode,
+                              SkipNode* pSkipNode
                               )
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
@@ -322,7 +323,13 @@ bool SkipListNL::bInsertByKey(void* aObjectInsert,
     
   //RJH vTrace("bInsert:position7\n"_Stz);
   // create new node with inserted object
-  m_pNewly = new(iNodeLevel,m_pSlabAllocator) SkipNode(pObjectInsert);
+  if (pSkipNode) {
+    pSkipNode->m_iHeight = iNodeLevel;
+    m_pNewly = pSkipNode;
+  }
+  else
+    m_pNewly = new(iNodeLevel,m_pSlabAllocator) SkipNode(pObjectInsert);
+
   RASSERT(m_pNewly);
   
   // put new node into the list according the prior vector for random level
@@ -340,72 +347,6 @@ bool SkipListNL::bInsertByKey(void* aObjectInsert,
 #endif
   
   
-  // successful insert
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* insert object into list                                                    */
-/*----------------------------------------------------------------------------*/
-bool SkipListNL::bInsertByKey(SkipNode* pSkipNode,
-
-                              std::function<bool(void* aScan,
-                                                 bool& bFound
-                              )> bfMoveRightTest,
-
-                              std::function<void(SkipNode* pNode,
-                                                 int i_Level
-                              )> vfPrintNode
-)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
-
-  bool bEqualTo;
-  SkipNode* aPriorVec[C_SKIPLIST_LEVELS];
-
-  // get a positioned prior vector
-  SkipNode* pNode = pPositionPrior(bfMoveRightTest,
-                                   aPriorVec,
-                                   bEqualTo,
-                                   vfPrintNode);
-  RASSERT(pNode); // logic check
-
-  Object* pObjectInsert = (Object*)pSkipNode->m_pObject;
-  //RASSERT( ! pNode->m_pObject || ((Object*)pNode->m_pObject)->eGetClassNo() == pObjectInsert->eGetClassNo() );
-
-  // do not insert duplicates into a list of unique keys
-  if (bEqualTo && m_bUniqueKey) {
-    return false;
-  }
-
-  // choose a random level for the new node
-  i8 iNodeLevel = iRandomLevel();
-  if (iNodeLevel > m_iHeight) {
-    iNodeLevel = ++m_iHeight;
-    aPriorVec[iNodeLevel] = m_pHead;
-  }
-
-  //RJH vTrace("bInsert:position7\n"_Stz);
-  // create new node with inserted object
-  pSkipNode->m_iHeight = iNodeLevel;
-  m_pNewly = pSkipNode;
-  RASSERT(m_pNewly);
-
-  // put new node into the list according the prior vector for random level
-  do {
-    m_pNewly->m_pRight[iNodeLevel] = aPriorVec[iNodeLevel]->m_pRight[iNodeLevel];
-    aPriorVec[iNodeLevel]->m_pRight[iNodeLevel] = m_pNewly;
-  } while (--iNodeLevel >= 0);
-
-  // one more object in the list
-  m_nItems++;
-
-
-#ifdef _VALIDATE_SKIPLIST
-  vValidate();
-#endif
-
-
   // successful insert
   return true;
 }

@@ -69,19 +69,10 @@ namespace BASE
                       
                       std::function<void(SkipNode* pNode,
                                          int i_Level
-                                         )> vfPrintNode
-                      );
-
-    bool bInsertByKey(SkipNode* pSkipNode,
-
-                      std::function<bool(void* aRightObject,
-                                         bool& bFound
-                      )> bfMoveRightTest,
-
-                      std::function<void(SkipNode* pNode,
-                                         int i_Level
-                      )> vfPrintNode
+                                         )> vfPrintNode,
+                      SkipNode* pSkipNode = nullptr
                      );
+
   
     i8 nItems(void);
   

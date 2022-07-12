@@ -384,9 +384,10 @@ void JobList::vInsertJob(Job *pJob) {
         return bMoveRight;
       };
 
-      bWasInserted = m_pJobSkipList->bInsertByKey(pJob->pJobsSkipNode(),
+      bWasInserted = m_pJobSkipList->bInsertByKey(pJob,
                                                   bfMoveRightTest,
-                                                  Job::vPrintJobNode);
+                                                  Job::vPrintJobNode,
+                                                  pJob->pJobsSkipNode());
       RASSERT(bWasInserted);
 
       break;
@@ -402,9 +403,10 @@ void JobList::vInsertJob(Job *pJob) {
         return bMoveRight;
       };
 
-      bWasInserted = m_pJobSkipList->bInsertByKey(pJob->pGenericSkipNode(),
+      bWasInserted = m_pJobSkipList->bInsertByKey(pJob,
                                                   bfMoveRightTest,
-                                                  Job::vPrintJobNode);
+                                                  Job::vPrintJobNode,
+                                                  pJob->pGenericSkipNode());
 
       RASSERT(bWasInserted);
       break;
@@ -420,9 +422,10 @@ void JobList::vInsertJob(Job *pJob) {
         return bMoveRight;
       };
 
-      bWasInserted = m_pJobSkipList->bInsertByKey(pJob->pGenericSkipNode(),
+      bWasInserted = m_pJobSkipList->bInsertByKey(pJob,
                                                   bfMoveRightTest,
-                                                  Job::vPrintJobNode);
+                                                  Job::vPrintJobNode,
+                                                  pJob->pGenericSkipNode());
 
       RASSERT(bWasInserted);
       break;
@@ -438,9 +441,10 @@ void JobList::vInsertJob(Job *pJob) {
         return bMoveRight;
       };
 
-      bWasInserted = m_pJobSkipList->bInsertByKey(pJob->pGenericSkipNode(),
+      bWasInserted = m_pJobSkipList->bInsertByKey(pJob,
                                                   bfMoveRightTest,
-                                                  Job::vPrintJobNode);
+                                                  Job::vPrintJobNode,
+                                                  pJob->pGenericSkipNode());
 
       RASSERT(bWasInserted);
       break;
@@ -456,9 +460,10 @@ void JobList::vInsertJob(Job *pJob) {
         return bMoveRight;
       };
 
-      bWasInserted = m_pJobSkipList->bInsertByKey(pJob->pGenericSkipNode(),
+      bWasInserted = m_pJobSkipList->bInsertByKey(pJob,
                                                   bfMoveRightTest,
-                                                  Job::vPrintJobNode);
+                                                  Job::vPrintJobNode,
+                                                  pJob->pGenericSkipNode());
 
       RASSERT(bWasInserted);
       break;
@@ -474,9 +479,10 @@ void JobList::vInsertJob(Job *pJob) {
         return bMoveRight;
       };
 
-      bWasInserted = m_pJobSkipList->bInsertByKey(pJob->pGenericSkipNode(),
+      bWasInserted = m_pJobSkipList->bInsertByKey(pJob,
                                                   bfMoveRightTest,
-                                                  Job::vPrintJobNode);
+                                                  Job::vPrintJobNode,
+                                                  pJob->pGenericSkipNode());
 
       RASSERT(bWasInserted);
       break;
