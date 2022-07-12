@@ -21,7 +21,7 @@
 /*----------------------------------------------------------------------------*/
 : adaptorDummy_ChildExit \handler
 
-  0 EV_M_EXIT EG_ZK LogicUnit[].diaryNote
+  0 EV_X_CHILDEXIT EG_ZK LogicUnit[].diaryNote
 
   true LogicUnit[].RcvdChildExit!
 

@@ -23,8 +23,6 @@ enum eOM // operator markers
   /*    */ OM_ENDMARKER,
   /*    */ OM_ENDEDMARKER,
   /*    */ OM_ENDINGMARKER,
-  /*    */ OM_ENDCRWRHT,
-  /*    */ OM_ENDROWRHT,
   /*    */ OM_EOSMARKER,
   /*    */ OM_ERRORMARKER,
   /*    */ OM_ERROREDMARKER,
@@ -41,8 +39,6 @@ enum eOM // operator markers
   /*    */ OM_LEAVEMARKER,
   /*    */ OM_LEAVINGMARKER,
   /*    */ OM_LEFTMARKER,
-  /*    */ OM_LEFTOUTER_CRWLFT,
-  /*    */ OM_LEFTOUTER_ROWLFT,
   /*    */ OM_LOWMEMORY,
   
   /*    */ OM_NEXTBUFFERMARKER,
@@ -53,9 +49,7 @@ enum eOM // operator markers
   /*    */ OM_RETURNEDMARKER,
   
   /*    */ OM_STARTEDMARKER,
-  /*    */ OM_STARTCRWRHT,
   /*    */ OM_STARTMARKER,
-  /*    */ OM_STARTROWRHT,
   /*    */ OM_STREAMDEFRHT,
   
   /*    */ OM_TRIGGER,
@@ -84,8 +78,6 @@ static Stz* aOM[]
   /*    */ "ENDMARKER"_Stz,
   /*    */ "ENDEDMARKER"_Stz,
   /*    */ "ENDINGMARKER"_Stz,
-  /*    */ "ENDCRWRHT"_Stz,
-  /*    */ "ENDROWRHT"_Stz,
   /*    */ "EOSMARKER"_Stz,
   /*    */ "ERRORMARKER"_Stz,
   /*    */ "ERROREDMARKER"_Stz,
@@ -114,9 +106,7 @@ static Stz* aOM[]
   /*    */ "RETURNEDMARKER"_Stz,
   
   /*    */ "STARTEDMARKER"_Stz,
-  /*    */ "STARTCRWRHT"_Stz,
   /*    */ "STARTMARKER"_Stz,
-  /*    */ "STARTROWRHT"_Stz,
   /*    */ "STREAMDEFRHT"_Stz,
   
   /*    */ "TRIGGER"_Stz,

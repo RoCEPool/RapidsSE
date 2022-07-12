@@ -82,26 +82,20 @@
 : EV_M_DESTROY_handler          \handler STANDARD_PIPEOUT ;
 : EV_M_END_handler              \handler STANDARD_PIPEOUT ;
 : EV_M_ENDING_handler           \handler STANDARD_PIPEOUT ;
-: EV_M_ENDCRWRHT_handler        \handler STANDARD_PIPEOUT ;
-: EV_M_ENDROWRHT_handler        \handler STANDARD_PIPEOUT ;
 : EV_M_EOS_handler              \handler STANDARD_PIPEOUT ;
 : EV_M_ERRORING_handler         \handler STANDARD_PIPEOUT ;
-: EV_M_EXIT_handler             \handler STANDARD_PIPEOUT ;
 : EV_M_FINISHED_handler         \handler STANDARD_PIPEOUT ;
 : EV_M_FLUSH_handler            \handler STANDARD_PIPEOUT ;
 : EV_M_LEAVE_handler            \handler STANDARD_PIPEOUT ;
 : EV_M_LEAVING_handler          \handler STANDARD_PIPEOUT ;
-: EV_M_LEFTOUTER_CRWLFT_handler \handler STANDARD_PIPEOUT ;
-: EV_M_LEFTOUTER_ROWLFT_handler \handler STANDARD_PIPEOUT ;
 : EV_M_LOWMEMORY_handler        \handler STANDARD_PIPEOUT ;
 : EV_M_NEXTBUFFER_handler       \handler STANDARD_PIPEOUT ;
 : EV_D_SRTBUFFER_handler        \handler STANDARD_PIPEOUT ;
-: EV_M_STARTCRWRHT_handler      \handler STANDARD_PIPEOUT ;
 : EV_M_START_handler            \handler STANDARD_PIPEOUT ;
-: EV_M_STARTROWRHT_handler      \handler STANDARD_PIPEOUT ;
 : EV_M_TRIGGER_handler          \handler STANDARD_PIPEOUT ;
 
 : EV_X_CHILDEXIT_handler        \handler STANDARD_PIPEOUT ;
+: EV_X_EXIT_handler             \handler STANDARD_PIPEOUT ;
 
 /*----------------------------------------------------------------------------*/
 /*                       NON-STANDARD EVENT HANDLERS                          */
@@ -328,10 +322,7 @@
   abnormalHandler EV_D_BUCKETMAP_dyn    [op].handler!
   abnormalHandler EV_D_CRWBUFFER        [op].handler!
   abnormalHandler EV_D_CSVBUFFER        [op].handler!
-  abnormalHandler EV_M_ENDCRWRHT        [op].handler!
-  abnormalHandler EV_M_ENDROWRHT        [op].handler!
   abnormalHandler EV_D_ENTBUFFER        [op].handler!
-  abnormalHandler EV_M_EXIT             [op].handler!
   abnormalHandler EV_D_GRID             [op].handler!
   abnormalHandler EV_D_INDEX            [op].handler!
   abnormalHandler EV_D_INDEXDEF         [op].handler!
@@ -345,8 +336,6 @@
   abnormalHandler EV_D_PROFILE          [op].handler!
   abnormalHandler EV_D_ROWBUFFER        [op].handler!
   abnormalHandler EV_D_SRTBUFFER        [op].handler!
-  abnormalHandler EV_M_STARTCRWRHT      [op].handler!
-  abnormalHandler EV_M_STARTROWRHT      [op].handler!
   abnormalHandler EV_D_STREAMDEF        [op].handler!
   abnormalHandler EV_D_STREAMDEFRHT     [op].handler!
   abnormalHandler EV_M_STREAMDEFRHT     [op].handler!
@@ -354,23 +343,17 @@
   abnormalHandler EV_D_TABLE            [op].handler!
 
   abnormalHandler EV_X_CHILDEXIT        [op].handler!
+  abnormalHandler EV_X_EXIT             [op].handler!
 
   // DEFAULT handlers (pipein pipeout) for MARKERS
   defaultHandler EV_M_DATAPULSE         [op].handler!
   defaultHandler EV_M_DESTROY           [op].handler!
-  //defaultHandler EV_M_ENDCRWRHT         [op].handler!
-  //defaultHandler EV_M_ENDROWRHT         [op].handler!
   defaultHandler EV_M_EOS               [op].handler!
   defaultHandler EV_M_FINISHED          [op].handler!
   defaultHandler EV_M_FLUSH             [op].handler!
-  defaultHandler EV_M_LEFTOUTER_CRWLFT  [op].handler!
-  defaultHandler EV_M_LEFTOUTER_ROWLFT  [op].handler!
   defaultHandler EV_M_LOWMEMORY         [op].handler!
   defaultHandler EV_M_NEXTBUFFER        [op].handler!
-  defaultHandler EV_M_STARTCRWRHT       [op].handler!
   defaultHandler EV_M_START             [op].handler!
-  //defaultHandler EV_M_STARTCRWRHT       [op].handler!
-  //defaultHandler EV_M_STARTROWRHT       [op].handler!
   //defaultHandler EV_M_STREAMDEFRHT      [op].handler!
   //defaultHandler EV_M_TRIGGERED         [op].handler!
 

@@ -702,12 +702,9 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("EV_M_END"_Stz,             EV_M_END);
   /*  0 */ vAddConstant("EV_M_ENDED"_Stz,           EV_M_ENDED);
   /*  0 */ vAddConstant("EV_M_ENDING"_Stz,          EV_M_ENDING);
-  /*  0 */ vAddConstant("EV_M_ENDCRWRHT"_Stz,       EV_M_ENDCRWRHT);
-  /*  0 */ vAddConstant("EV_M_ENDROWRHT"_Stz,       EV_M_ENDROWRHT);
   /*  0 */ vAddConstant("EV_M_ERROR"_Stz,           EV_M_ERROR);
   /*  0 */ vAddConstant("EV_M_ERRORED"_Stz,         EV_M_ERRORED);
   /*  0 */ vAddConstant("EV_M_ERRORING"_Stz,        EV_M_ERRORING);
-  /*  0 */ vAddConstant("EV_M_EXIT"_Stz,            EV_M_EXIT);
   /*  0 */ vAddConstant("EV_M_EXITING"_Stz,         EV_M_EXITING);
   /*  0 */ vAddConstant("EV_M_EXITED"_Stz,          EV_M_EXITED);
   /*  0 */ vAddConstant("EV_M_FINISHED"_Stz,        EV_M_FINISHED);
@@ -715,19 +712,16 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("EV_M_LEAVE"_Stz,           EV_M_LEAVE);
   /*  0 */ vAddConstant("EV_M_LEAVING"_Stz,         EV_M_LEAVING);
   /*  0 */ vAddConstant("EV_M_LEFT"_Stz,            EV_M_LEFT);
-  /*  0 */ vAddConstant("EV_M_LEFTOUTER_CRWLFT"_Stz,EV_M_LEFTOUTER_CRWLFT);
-  /*  0 */ vAddConstant("EV_M_LEFTOUTER_ROWLFT"_Stz,EV_M_LEFTOUTER_ROWLFT);
   /*  0 */ vAddConstant("EV_M_LOWMEMORY"_Stz,       EV_M_LOWMEMORY);
   /*  0 */ vAddConstant("EV_M_NEXTBUFFER"_Stz,      EV_M_NEXTBUFFER);
-  /*  0 */ vAddConstant("EV_M_STARTCRWRHT"_Stz,     EV_M_STARTCRWRHT);
   /*  0 */ vAddConstant("EV_M_START"_Stz,           EV_M_START);
-  /*  0 */ vAddConstant("EV_M_STARTROWRHT"_Stz,     EV_M_STARTROWRHT);
   /*  0 */ vAddConstant("EV_M_STARTED"_Stz,         EV_M_STARTED);
   /*  0 */ vAddConstant("EV_M_STREAMDEFRHT"_Stz,    EV_M_STREAMDEFRHT);
   /*  0 */ vAddConstant("EV_M_TRIGGER"_Stz,         EV_M_TRIGGER);
   /*  0 */ vAddConstant("EV_M_TRIGGERED"_Stz,       EV_M_TRIGGERED);
 
   /*  0 */ vAddConstant("EV_X_CHILDEXIT"_Stz,       EV_X_CHILDEXIT);
+  /*  0 */ vAddConstant("EV_X_EXIT"_Stz,            EV_X_EXIT);
 
   /*  0 */ vAddConstant("EV_ENUMS"_Stz,             EV_ENUMS);
 

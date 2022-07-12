@@ -17,11 +17,11 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* on EV_M_EXIT ...                                                 EV_M_EXIT */
+/* on EV_X_EXIT ...                                                 EV_X_EXIT */
 /*----------------------------------------------------------------------------*/
 : testResponse_Exit \handler
 
-  0 EV_M_EXIT EG_ZK LogicUnit[].diaryNote
+  0 EV_X_EXIT EG_ZK LogicUnit[].diaryNote
 
   nullptr [job].responseOp!
 
@@ -104,7 +104,7 @@
   find: testResponse_CrwBuffer    EV_D_CRWBUFFER     [op].handler!
   find: testResponse_StreamDef    EV_D_STREAMDEF     [op].handler!
 
-  find: testResponse_Exit         EV_M_EXIT          [op].handler!
+  find: testResponse_Exit         EV_X_EXIT          [op].handler!
   find: testResponse_Exiting      EV_M_EXITING       [op].handler!
   find: testResponse_Start        EV_M_START         [op].handler!
 

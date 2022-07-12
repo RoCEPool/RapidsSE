@@ -667,34 +667,6 @@ bool Op::bIsEventValid(i8 i_OperandKind)
       }
       break;
 
-    case EV_M_ENDCRWRHT:
-      // should not have received a EV_M_ENDROWRHT already
-      if (m_pEvMgr->m_naEventCount[EV_M_ENDROWRHT]) {
-        vTrace("%s: EV_M_ENDROWRHT already arrived\n"_Stz, szOpNm());
-        return false;
-      }
-
-      // should have received a ~ EV_M_STARTCRWRHT already
-      if (m_pEvMgr->m_naEventCount[i_OperandKind] == m_pEvMgr->m_naEventCount[EV_M_STARTCRWRHT] ) {
-        vTrace("%s: EV_M_STARTCRWRHT not yet arrived\n"_Stz, szOpNm());
-        return false;
-      }
-      break;
-
-    case EV_M_ENDROWRHT:
-      // should not have received a EV_M_ENDCRWRHT already
-      if (m_pEvMgr->m_naEventCount[EV_M_ENDCRWRHT]) {
-        vTrace("%s: EV_M_ENDCRWRHT already arrived\n"_Stz, szOpNm());
-        return false;
-      }
-
-      // should have received a ~ EV_M_STARTROWRHT already
-      if (m_pEvMgr->m_naEventCount[i_OperandKind] == m_pEvMgr->m_naEventCount[EV_M_STARTROWRHT] ) {
-        vTrace("%s: EV_M_STARTROWRHT not yet arrived\n"_Stz, szOpNm());
-        return false;
-      }
-      break;
-
     case EV_M_EOS:
       // should have received a EV_M_START
       if ( ! m_pEvMgr->m_naEventCount[EV_M_START]) {
@@ -822,20 +794,6 @@ bool Op::bIsEventValid(i8 i_OperandKind)
         return false;
       }
       break;
-      
-    case EV_M_STARTCRWRHT:
-      // should not have received a EV_M_STARTROWRHT already
-      if (m_pEvMgr->m_naEventCount[EV_M_STARTROWRHT]) {
-        vTrace("%s: EV_M_STARTROWRHT already arrived\n"_Stz, szOpNm());
-        return false;
-      }
-
-      // should not have received a ~ EV_M_ENDCRWRHT already
-      if (m_pEvMgr->m_naEventCount[i_OperandKind] == m_pEvMgr->m_naEventCount[EV_M_ENDCRWRHT] + 1 ) {
-        vTrace("%s: EV_M_ENDCRWRHT already arrived\n"_Stz, szOpNm());
-        return false;
-      }
-      break;
 
     case EV_M_START:
       // should not have received a EV_M_START already
@@ -843,21 +801,6 @@ bool Op::bIsEventValid(i8 i_OperandKind)
         vTrace("%s: multiple EV_M_START's arrived\n"_Stz, szOpNm());
         return false;
       }
-      break;
-
-    case EV_M_STARTROWRHT:
-      // should not have received a EV_M_STARTCRWRHT already
-      if (m_pEvMgr->m_naEventCount[EV_M_STARTCRWRHT]) {
-        vTrace("%s: EV_M_STARTCRWRHT already arrived\n"_Stz, szOpNm());
-        return false;
-      }
-
-      // should not have received a ~ EV_M_STARTROWRHT already
-      if (m_pEvMgr->m_naEventCount[i_OperandKind] == m_pEvMgr->m_naEventCount[EV_M_ENDROWRHT] + 1 ) {
-        vTrace("%s: EV_M_ENDROWRHT already arrived\n"_Stz, szOpNm());
-        return false;
-      }
-
       break;
 
     case EV_M_STARTED:

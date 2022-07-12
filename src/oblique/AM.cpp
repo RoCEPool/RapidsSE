@@ -4051,13 +4051,10 @@ i8 AM::iOperandEvKind(Operand* pOperand)
         case OM_ENDMARKER:          eOperand = EV_M_END;          break;
         case OM_ENDEDMARKER:        eOperand = EV_M_ENDED;        break;
         case OM_ENDINGMARKER:       eOperand = EV_M_ENDING;       break;
-        case OM_ENDCRWRHT:          eOperand = EV_M_ENDCRWRHT;    break;
-        case OM_ENDROWRHT:          eOperand = EV_M_ENDROWRHT;    break;
         case OM_EOSMARKER:          eOperand = EV_M_EOS;          break;
         case OM_ERRORMARKER:        eOperand = EV_M_ERROR;        break;
         case OM_ERROREDMARKER:      eOperand = EV_M_ERRORED;      break;
         case OM_ERRORINGMARKER:     eOperand = EV_M_ERRORING;     break;
-        case OM_EXIT:               eOperand = EV_M_EXIT;         break;
         case OM_EXITING:            eOperand = EV_M_EXITING;      break;
         case OM_EXITED:             eOperand = EV_M_EXITED;       break;
         case OM_FINISHED:           eOperand = EV_M_FINISHED;     break;
@@ -4066,19 +4063,17 @@ i8 AM::iOperandEvKind(Operand* pOperand)
         case OM_LEAVEMARKER:        eOperand = EV_M_LEAVE;        break;
         case OM_LEAVINGMARKER:      eOperand = EV_M_LEAVING;      break;
         case OM_LEFTMARKER:         eOperand = EV_M_LEFT;         break;
-        case OM_LEFTOUTER_CRWLFT:   eOperand = EV_M_LEFTOUTER_CRWLFT; break;
-        case OM_LEFTOUTER_ROWLFT:   eOperand = EV_M_LEFTOUTER_ROWLFT; break;
         case OM_LOWMEMORY:          eOperand = EV_M_LOWMEMORY;    break;
         case OM_NEXTBUFFERMARKER:   eOperand = EV_M_NEXTBUFFER;   break;
         case OM_STARTEDMARKER:      eOperand = EV_M_STARTED;      break;
-        case OM_STARTCRWRHT:        eOperand = EV_M_STARTCRWRHT;  break;
         case OM_STARTMARKER:        eOperand = EV_M_START;        break;
-        case OM_STARTROWRHT:        eOperand = EV_M_STARTROWRHT;  break;
         case OM_STREAMDEFRHT:       eOperand = EV_M_STREAMDEFRHT; break;
         case OM_TRIGGER:            eOperand = EV_M_TRIGGER;      break;
         case OM_TRIGGERED:          eOperand = EV_M_TRIGGERED;    break;
 
         case OM_CHILDEXIT:          eOperand = EV_X_CHILDEXIT;    break;
+        case OM_EXIT:               eOperand = EV_X_EXIT;         break;
+
         default:
           RASSERT(0);
       }
