@@ -107,27 +107,8 @@ namespace BASE
                        
                        std::function<void(SkipNode* pNode,
                                           int i_Level
-                                          )> vfPrintNode
-                       );
-
-    bool bRemoveByKey(SkipNode* pSkipNode,
-                      std::function<bool(void* aRightObject,
-                                         bool& bFound
-                      )> bfMoveRightTest,
-
-                      std::function<void(SkipNode* pNode,
-                                         int i_Level
-                      )> vfPrintNode
-                     );
-
-    bool bRemoveByKeyNoDelete(void* pObject,
-                      std::function<bool(void* aRightObject,
-                                         bool& bFound
-                      )> bfMoveRightTest,
-
-                      std::function<void(SkipNode* pNode,
-                                         int i_Level
-                      )> vfPrintNode
+                                          )> vfPrintNode,
+                       bool bDeleteNode = true
     );
 
     bool bValidate(std::function<bool(SkipNode* aLeftNode,

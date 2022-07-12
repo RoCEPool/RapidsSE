@@ -578,9 +578,10 @@ void JobList::vRemoveJob(Job *pJob) {
         return bMoveRight;
       };
 
-      bWasRemoved = m_pJobSkipList->bRemoveByKeyNoDelete(pJob,
+      bWasRemoved = m_pJobSkipList->bRemoveByKey(pJob,
                                                  bfMoveRightTest,
-                                                 Job::vPrintJobNode);
+                                                 Job::vPrintJobNode,
+                                                 false);
       break;
     }
       
@@ -594,9 +595,10 @@ void JobList::vRemoveJob(Job *pJob) {
         return bMoveRight;
       };
 
-      bWasRemoved = m_pJobSkipList->bRemoveByKeyNoDelete(pJob,
+      bWasRemoved = m_pJobSkipList->bRemoveByKey(pJob,
                                                  bfMoveRightTest,
-                                                 Job::vPrintJobNode);
+                                                 Job::vPrintJobNode,
+                                                 false);
       break;
     }
 
@@ -610,9 +612,10 @@ void JobList::vRemoveJob(Job *pJob) {
         return bMoveRight;
       };
 
-      bWasRemoved = m_pJobSkipList->bRemoveByKeyNoDelete(pJob,
+      bWasRemoved = m_pJobSkipList->bRemoveByKey(pJob,
                                                  bfMoveRightTest,
-                                                 Job::vPrintJobNode);
+                                                 Job::vPrintJobNode,
+                                                 false);
       break;
     }
       
@@ -626,9 +629,10 @@ void JobList::vRemoveJob(Job *pJob) {
         return bMoveRight;
       };
 
-      bWasRemoved = m_pJobSkipList->bRemoveByKeyNoDelete(pJob,
+      bWasRemoved = m_pJobSkipList->bRemoveByKey(pJob,
                                                  bfMoveRightTest,
-                                                 Job::vPrintJobNode);
+                                                 Job::vPrintJobNode,
+                                                 false);
       break;
     }
       
@@ -642,9 +646,10 @@ void JobList::vRemoveJob(Job *pJob) {
         return bMoveRight;
       };
 
-      bWasRemoved = m_pJobSkipList->bRemoveByKeyNoDelete(pJob,
+      bWasRemoved = m_pJobSkipList->bRemoveByKey(pJob,
                                                  bfMoveRightTest,
-                                                 Job::vPrintJobNode);
+                                                 Job::vPrintJobNode,
+                                                 false);
       break;
     }
       
@@ -658,9 +663,10 @@ void JobList::vRemoveJob(Job *pJob) {
         return bMoveRight;
       };
 
-      bWasRemoved = m_pJobSkipList->bRemoveByKeyNoDelete(pJob,
+      bWasRemoved = m_pJobSkipList->bRemoveByKey(pJob,
                                                  bfMoveRightTest,
-                                                 Job::vPrintJobNode);
+                                                 Job::vPrintJobNode,
+                                                 false);
       break;
     }
       
