@@ -9,6 +9,10 @@
 #include "eTS.h"
 #include "TraceLock.hpp"
 
+namespace BASE {
+  class LocalVars;
+}
+
 namespace ENGINE
 {  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -21,7 +25,8 @@ namespace ENGINE
   typedef LatticeNL_t<CN_LOCKSET,Lock,C_MAX_LOCKS> LockSet;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+ 
+
   class Task : public Object,
                public ListItem_t<Task>
   {
@@ -79,7 +84,8 @@ namespace ENGINE
     TypedStack*  m_pReturnStack;  // return stack
 
     LocalChain*  m_pLocalsFrame;  // locals| | register frame chain
-
+    LocalVars*   m_pLocalVars;
+  
     SenCompiler* m_pSenCompiler;  // sen word compiler
     Input*       m_pInput;        // input stream
 

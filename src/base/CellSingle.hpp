@@ -38,9 +38,7 @@ namespace BASE
  
     char* azChar(void);
   
-   CodeCell* aFip(void);
-
-    Stz*  szStz(void);
+    CodeCell* aFip(void);
 
     d8   dGetColVal(void);
     i8   iGetColVal(void);
@@ -54,9 +52,11 @@ namespace BASE
     void vPutColVal(i8 iColVal);
     void vPutColVal(Object* pObject);
 
-    void vToString(Stz* szDst);
-
+    Stz* szStz(void);
   
+    void vToString(Stz* szDst);
+    TypedCell* aTypedCell(void);
+
   private:
   
     Footer* aFooter(void);

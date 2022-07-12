@@ -4,17 +4,18 @@
 
 #include "BASE.h"
 
-#include "PsxThd.hpp" //?
-#include "TagConstants.h" //?
-#include "Job.hpp" //?
-#include "Op.hpp" //?
-#include "Grid.hpp" //?
+#include "PsxThd.hpp" 
+#include "TagConstants.h"
+#include "Job.hpp"
+#include "Op.hpp"
+#include "Grid.hpp"
 
-#include "SP_Lock.hpp" //?
-#include "SP_Op.hpp" //?
-#include "SP_Timer.hpp" //?
-#include "SP_Word.hpp" //?
-#include "LogicUnit.hpp" //?
+#include "SP_Lock.hpp"
+#include "SP_Op.hpp"
+#include "SP_Timer.hpp"
+#include "SP_Word.hpp"
+#include "LogicUnit.hpp"
+#include "LocalVars.hpp"
 
 #include "MY.hpp"
 #include "HeadsUp.hpp"
@@ -139,6 +140,7 @@ void Task::vTask(void)
   m_pReturnStack = new TypedStack(KK_RETURN_STACK);
 
   m_pLocalsFrame = nullptr;
+  m_pLocalVars   = new LocalVars;
 
   m_pSenCompiler = new SenCompiler;
   m_pInput       = nullptr;
@@ -178,7 +180,8 @@ Task::~Task(void) noexcept(false)
     
     delete pLocalsFrame;
   }
-  
+  delete m_pLocalVars;
+
   delete m_pSenCompiler;
   while (m_pInput) {
     vDeleteInput();

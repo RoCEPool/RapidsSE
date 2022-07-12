@@ -4322,7 +4322,7 @@ void AM::vWordSeeDoes(Word* pDoesWord, CodeCell* aDoes,
       aCell++;
       
       TypedCell* aTypedCell = _aTypedCell(aCell);
-      vTrace(" %lld\n"_Stz,aTypedCell->m_wxValueCell.iGetColVal());
+      vTrace(" %lld\n"_Stz,aTypedCell->m_wxValue.iGetColVal());
       
       i8 iBytes = aTypedCell->nStackUsage();
       aCell = aAdd<CodeCell*>(aCell,iBytes);
@@ -4340,7 +4340,7 @@ void AM::vWordSeeDoes(Word* pDoesWord, CodeCell* aDoes,
       
       TypedCell* aTypedCell = _aTypedCell(aCell);
       vTrace(" %s\n"_Stz
-             ,aTypedCell->m_wxValueCell.iGetColVal() ? "true" : "false");
+             ,aTypedCell->m_wxValue.iGetColVal() ? "true" : "false");
       
       i8 iBytes = aTypedCell->nStackUsage();
       aCell = aAdd<CodeCell*>(aCell,iBytes);
@@ -4357,7 +4357,7 @@ void AM::vWordSeeDoes(Word* pDoesWord, CodeCell* aDoes,
       aCell++;
       
       TypedCell* aTypedCell = _aTypedCell(aCell);
-      vTrace(" %g\n"_Stz,aTypedCell->m_wxValueCell.dGetColVal());
+      vTrace(" %g\n"_Stz,aTypedCell->m_wxValue.dGetColVal());
       
       i8 iBytes = aTypedCell->nStackUsage();
       aCell = aAdd<CodeCell*>(aCell,iBytes);
@@ -4375,7 +4375,7 @@ void AM::vWordSeeDoes(Word* pDoesWord, CodeCell* aDoes,
       
 //      IntVal* aIntVal = _aIntVal(aCell);
       TypedCell* aTypedCell = _aTypedCell(aCell);
-      vTrace(" %lld\n"_Stz,aTypedCell->m_wxValueCell.iGetColVal());
+      vTrace(" %lld\n"_Stz,aTypedCell->m_wxValue.iGetColVal());
       
       i8 iBytes = aTypedCell->nStackUsage();
       aCell = aAdd<CodeCell*>(aCell,iBytes);

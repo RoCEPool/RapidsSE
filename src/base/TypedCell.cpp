@@ -35,7 +35,7 @@ TypedCell::~TypedCell(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 i8 TypedCell::iBcd(void)
 {
-  return m_wxValueCell.iGetColVal();
+  return m_wxValue.iGetColVal();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -44,7 +44,7 @@ i8 TypedCell::iBcd(void)
 void TypedCell::vBcd(i8 iBcd)
 {
   vType(CN_BCDVAL);
-  m_wxValueCell.vPutColVal(iBcd);
+  m_wxValue.vPutColVal(iBcd);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -52,7 +52,7 @@ void TypedCell::vBcd(i8 iBcd)
 /*----------------------------------------------------------------------------*/
 i8 TypedCell::iBol(void)
 {
-  return m_wxValueCell.iGetColVal();
+  return m_wxValue.iGetColVal();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -61,7 +61,7 @@ i8 TypedCell::iBol(void)
 void TypedCell::vBol(i8 iBcd)
 {
   vType(CN_BOLVAL);
-  m_wxValueCell.vPutColVal(iBcd);
+  m_wxValue.vPutColVal(iBcd);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -69,7 +69,7 @@ void TypedCell::vBol(i8 iBcd)
 /*----------------------------------------------------------------------------*/
 i8 TypedCell::iAsInt(void)
 {
-  return m_wxValueCell.iAsI8();
+  return m_wxValue.iAsI8();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -97,7 +97,7 @@ void TypedCell::vStz(Stz* szStz)
   
   i8 nBytesFollowing = StrLib::nCopy(m_caStringArea,szStz->azChar()) + 1;
   
-  m_wxValueCell = nBytesFollowing;
+  m_wxValue = nBytesFollowing;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -136,7 +136,7 @@ void TypedCell::vCopy(TypedCell* aSrcVal, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 CodeCell* TypedCell::aFip(void)
 {
-  return m_wxValueCell.aGetColVal();
+  return m_wxValue.aGetColVal();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -145,7 +145,7 @@ CodeCell* TypedCell::aFip(void)
 void TypedCell::vFip(CodeCell* aFip)
 {
   vType(CN_FIPVAL);
-  m_wxValueCell.vPutColVal(aFip);
+  m_wxValue.vPutColVal(aFip);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -153,7 +153,7 @@ void TypedCell::vFip(CodeCell* aFip)
 /*----------------------------------------------------------------------------*/
 d8 TypedCell::dFlt(void)
 {
-  return m_wxValueCell.dGetColVal();
+  return m_wxValue.dGetColVal();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -162,7 +162,7 @@ d8 TypedCell::dFlt(void)
 void TypedCell::vFlt(d8 dFlt)
 {
   vType(CN_FLTVAL);
-  m_wxValueCell.vPutColVal(dFlt);
+  m_wxValue.vPutColVal(dFlt);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -170,7 +170,7 @@ void TypedCell::vFlt(d8 dFlt)
 /*----------------------------------------------------------------------------*/
 i8 TypedCell::iInt(void)
 {
-  return m_wxValueCell.iGetColVal();
+  return m_wxValue.iGetColVal();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -179,7 +179,7 @@ i8 TypedCell::iInt(void)
 void TypedCell::vInt(i8 iInt)
 {
   vType(CN_INTVAL);
-  m_wxValueCell.vPutColVal(iInt);
+  m_wxValue.vPutColVal(iInt);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -195,7 +195,7 @@ void TypedCell::vMagic(void)
 /*----------------------------------------------------------------------------*/
 Object* TypedCell::pObj(void)
 {
-  return m_wxValueCell.pGetColVal();
+  return m_wxValue.pGetColVal();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -204,7 +204,7 @@ Object* TypedCell::pObj(void)
 void TypedCell::vObj(Object* pObject)
 {
   vType(CN_PTRVAL);
-  m_wxValueCell.vPutColVal(pObject);
+  m_wxValue.vPutColVal(pObject);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -216,11 +216,11 @@ i8 TypedCell::nStackUsage(void)
   
   if (CN_STZVAL == eType())
     nBytes = sizeof(m_wxType)
-               + sizeof(m_wxValueCell)
-               + m_wxValueCell.iGetColVal();
+               + sizeof(m_wxValue)
+               + m_wxValue.iGetColVal();
   else
     nBytes = sizeof(m_wxType)
-               + sizeof(m_wxValueCell);
+               + sizeof(m_wxValue);
 
   return nBytes;
 }
@@ -240,7 +240,7 @@ Stz* TypedCell::szStz(void)
 i8 TypedCell::nStzSize(void)
 {
   ASSERT(CN_STZVAL == eType());
-  return m_wxValueCell.iGetColVal();
+  return m_wxValue.iGetColVal();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -248,7 +248,7 @@ i8 TypedCell::nStzSize(void)
 /*----------------------------------------------------------------------------*/
 void TypedCell::vStzSize(i8 nSize)
 {
-  m_wxValueCell = nSize;
+  m_wxValue = nSize;
 }
 
 /*----------------------------------------------------------------------------*/

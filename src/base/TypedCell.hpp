@@ -3,16 +3,14 @@
 /*============================================================================*/
 #pragma once
 
+#include "TypeValue.hpp"
+
 namespace BASE
 {
-  class TypedCell
+  class TypedCell : public TypeValue
   {
   public:
-  
-    //Dtm  m_wxTypeCell;
-    _Header m_wxType;
-    Dtm     m_wxValueCell;
-  
+    
     char m_caStringArea[C_16KB];
 
   public:

@@ -239,6 +239,8 @@
 #include "MarkerMgr.hpp"
 #include "RejectJob.hpp"
 #include "Port.hpp"
+#include "LocalStrs.hpp"
+#include "LocalVars.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -419,6 +421,8 @@ SizeHeap gxaSizeHeap[]
   { CN_LOCALCHAIN,               sizeof(LocalChain),         HT_T_LARGE   ,0 FILL },
   { CN_LOCALDIR,                 sizeof(LocalDir),           HT_INVALID   ,0 FILL },
   { CN_LOCALFILE,                sizeof(LocalFile),          HT_INVALID   ,0 FILL },
+  { CN_LOCALSTRS,                sizeof(LocalStrs),          HT_T_MEDIUM  ,0 FILL },
+  { CN_LOCALVARS,                sizeof(LocalVars),          HT_T_MEDIUM  ,0 FILL },
   { CN_LOCATION,                 sizeof(BASE::Location),     HT_T_TINY    ,0 FILL },
   { CN_LOCATOR,                  sizeof(Locator),            HT_T_TINY    ,0 FILL },
   { CN_LOCK,                     sizeof(Lock),               HT_INVALID   ,0 FILL },
