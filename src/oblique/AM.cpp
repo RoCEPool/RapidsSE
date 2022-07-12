@@ -1627,6 +1627,9 @@ bool AM::OPERAND::bIsOoO(Operand* pOperand)
     if (pMarker->eOpMarker() == OM_LEAVINGMARKER)
       return true;
 
+    if (pMarker->eOpMarker() == OM_LOWMEMORY)
+      return true;
+
     if (pMarker->eOpMarker() == OM_NEXTBUFFERMARKER)
       return true;
   }

@@ -188,7 +188,12 @@
     [ddlLock].testDrop
 
       // toggle to default abnormal handlers
-      //"default_abnormalHandlers" FIND execute
+      "default_abnormalHandlers" FIND execute
+
+      Pipein[].isNull not if
+        Pipein[].delete
+        nullptr to Pipein[]
+      then
 
       Marker[].newLowMemory
       Marker[]

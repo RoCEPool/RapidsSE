@@ -30,8 +30,8 @@
 #include "SP_Timer.hpp"
 
 #include "SP_Pointer.hpp"
-#include "ExitOperand.hpp"
-#include "ChildExit.hpp"
+
+extern pthread_key_t giTLS_CurrentPoint;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -94,6 +94,11 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId, TagSet* 
   /* 08 */ m_bWasReceived = false;
   /* 09 */ m_pMarkerChain = nullptr;
   /* 10 */ m_bAllocate    = true;
+
+#ifdef WITH_OOM_FAULTINJECTION
+  PsxThd::vTlsSet(giTLS_CurrentPoint,(void*)5);
+#endif
+
   /* 11 */ m_pJobsSkipNode    = new(C_SKIPLIST_LEVELS,nullptr) SkipNode(this);
   /* 12 */ m_pGenericSkipNode = new(C_SKIPLIST_LEVELS,nullptr) SkipNode(this);
 

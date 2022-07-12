@@ -152,10 +152,6 @@ Object* Heap::pAllocObject(eCN eAllocClass)
   
   //AM::MEMORY::vAssertAllocate();
 
-//  if ( ! gxaSizeHeap[eAllocClass].m_bAllocateWhenDisabled &&
-//       MY::pJob() && ! MY::pJob()->bAllocateMemory() )
-//    THROW_LOWMEMORY_NEW();
-
   //if ( ! gxaSizeHeap[eAllocClass].m_bAllocateWhenDisabled &&
   //       MY::pOp() && ! MY::pOp()->bAllocateMemory() )
   //  THROW_LOWMEMORY_NEW();
@@ -167,12 +163,13 @@ Object* Heap::pAllocObject(eCN eAllocClass)
 //  if (CN_MARKER == eAllocClass)
 //    vTrace("Heap::pAllocObject: allocating CN_MARKER\n"_Stz);
 
+
 #ifdef WITH_OOM_FAULTINJECTION
   bool bFaultInjection = static_cast<bool>(PsxThd::pTlsGet(gbTLS_FaultInjection));
   if (bFaultInjection) {
     i8 iFaultPoint = (i8)(PsxThd::pTlsGet(giTLS_FaultPoint));
     i8 iCurrentPoint = (i8)(PsxThd::pTlsGet(giTLS_CurrentPoint));
-    vTrace("FI: FP:%lld CP:%lld\n"_Stz, iFaultPoint, iCurrentPoint);
+    //vTrace("FI: FP:%lld CP:%lld\n"_Stz, iFaultPoint, iCurrentPoint);
     if (iFaultPoint == iCurrentPoint)
       THROW_LOWMEMORY_NEW();
   }
@@ -183,18 +180,31 @@ Object* Heap::pAllocObject(eCN eAllocClass)
   // check for free chunks in the heap and extend if none
   if (! m_pFreeHead ) {
 
-    // check for low memory when allocating a LARGE buffer
-    if (m_eHeap == HT_T_LARGE &&
-        AM::MEMORY::bIsRunningLow() &&
-        gxaSizeHeap[eAllocClass].m_bLowMemoryDiscard) {
+//    // check for low memory when allocating a LARGE buffer
+//    if (m_eHeap == HT_T_LARGE &&
+//        AM::MEMORY::bIsRunningLow() &&
+//        gxaSizeHeap[eAllocClass].m_bLowMemoryDiscard) {
+//      // error: we have run out of space
+//      //vTrace("RUNNING OUT OF MEMORY!!!\n"_Stz);
+//      //vTrace("Heap::pAllocObject: unable to extend heap\n"_Stz);
+//      vTrace("LOW MEMORY encountered : %s %s %lld!!!\n"_Stz,
+//             __FILE__,__func__,(i8)__LINE__);
+//      m_okLock.vDropWrite();
+//      PoolHelper::vPoolAnalyze();
+//      THROW_LOWMEMORY();
+//      return nullptr;
+//    }
+
+    // check for low memory when allocating a buffer
+    if (AM::MEMORY::bIsRunningLow()) {
       // error: we have run out of space
       //vTrace("RUNNING OUT OF MEMORY!!!\n"_Stz);
       //vTrace("Heap::pAllocObject: unable to extend heap\n"_Stz);
       vTrace("LOW MEMORY encountered : %s %s %lld!!!\n"_Stz,
              __FILE__,__func__,(i8)__LINE__);
       m_okLock.vDropWrite();
-      PoolHelper::vPoolAnalyze();
-      THROW_LOWMEMORY();
+      //PoolHelper::vPoolAnalyze();
+      THROW_LOWMEMORY_NEW();
       return nullptr;
     }
 
@@ -205,8 +215,8 @@ Object* Heap::pAllocObject(eCN eAllocClass)
       vTrace("LOW MEMORY encountered : %s %s %lld!!!\n"_Stz,
              __FILE__,__func__,(i8)__LINE__);
       m_okLock.vDropWrite();
-      PoolHelper::vPoolAnalyze();
-      THROW_LOWMEMORY();
+      //PoolHelper::vPoolAnalyze();
+      THROW_LOWMEMORY_NEW();
       return nullptr;
     }
   }
