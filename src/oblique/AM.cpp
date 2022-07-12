@@ -137,7 +137,7 @@ extern Index*        gpReadApiIndex;
 
 extern SizeHeap      gxaSizeHeap[];
 
-extern RingBuffer<EventLogMsg> gxEventLogMsgBuffer ;
+extern RingBuffer<EventLogMsg> gxSignificantEvLogBuffer ;
 
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -3763,17 +3763,18 @@ void AM::vWriteTrace_vargs(File* pFile, Stz* aFormat, va_list xArgs)
 /*----------------------------------------------------------------------------*/
 void AM::vWriteEvent_vargs(Stz* aFormat, va_list xArgs)
 {
-  static char caFormatted[C_1MB] = {'\0'};
+  static char caFormatted[300] = {'\0'};
   EventLogMsg xEventLogMsg;
 
   // produce formatted line
   vsnprintf(caFormatted,sizeof(caFormatted) - 3,aFormat->azChar(),xArgs);
 
-  MemLib::vCopy(&xEventLogMsg.m_sEventMsg, caFormatted, sizeof(xEventLogMsg.m_sEventMsg), CN_NONE);
+  xEventLogMsg.m_sEventMsg.vCopy((Stz*)caFormatted);
+
   xEventLogMsg.m_iNodeId = AM::pGrid() ? AM::pGrid()->iThisNodeId() : 0;
   xEventLogMsg.m_iSincePosixEpoch = time(0);;
 
-  gxEventLogMsgBuffer.bTryWrite(xEventLogMsg);
+  gxSignificantEvLogBuffer.bTryWrite(xEventLogMsg);
 
 }
 
@@ -3785,16 +3786,16 @@ void AM::vReadEventMsg(int nMsg)
 
   EventLogMsg xEventLogMsg;
 
-  printf("Size:%lld\n", gxEventLogMsgBuffer.iSize());
+  printf("Size:%lld\n", gxSignificantEvLogBuffer.iSize());
 
   char buf[50];
   struct tm  ts;
 
   for (int i = 0; i < nMsg; i++) {
-    gxEventLogMsgBuffer.bTryRead(xEventLogMsg);
+    gxSignificantEvLogBuffer.bTryRead(xEventLogMsg);
     ts = *localtime((time_t *) &xEventLogMsg.m_iSincePosixEpoch);
     strftime(buf, sizeof(buf), "%a %Y-%m-%d %H:%M:%S %Z", &ts);
-    printf("Time: %s Msg:%s\n", buf, xEventLogMsg.m_sEventMsg);
+    printf("Time: %s Msg:%s\n", buf, xEventLogMsg.m_sEventMsg.azChar());
   }
 
 }

@@ -68,7 +68,7 @@ BufferPool*  gpBufferPool;
 Header*      gaSeShmRegion;
 File*        gpTraceFile;
 
-RingBuffer<EventLogMsg> gxEventLogMsgBuffer(1000);
+RingBuffer<EventLogMsg> gxSignificantEvLogBuffer(1000);
 
 Stz* gsBuildGitHash;
 Stz* gsBuildDate;
@@ -131,7 +131,6 @@ void Engine::vPreliminary(void)
   //vOpenTrace();
 
   vPrintWelcome();
-  
   
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT)) {
     vTrace("\n"_Stz);
