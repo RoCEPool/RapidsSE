@@ -489,7 +489,7 @@ void Nub_t<CN,HEAD,OVER,TAIL,DESC>::vDumpStrings(void)
     
     TAIL* aTailLine = aGetTail(i_Tail);
     
-    char* azStr = aAdd<char*>(aTailLine,(C_U_1B + C_L_1B));
+    char* azStr = aAdd<char*>(aTailLine,(C_U_1B + C_L_2B));
     
     vTrace("Repeating Str @%lld %p : <U %lld> <L %lld> %s\n"_Stz,
            i_Tail,
@@ -517,7 +517,7 @@ void Nub_t<CN,HEAD,OVER,TAIL,DESC>::vDumpTails(void)
     
     TAIL* aTailLine = aGetTail(i_Tail);
     
-    char* azStr = aAdd<char*>(aTailLine,(C_U_1B + C_L_1B));
+    char* azStr = aAdd<char*>(aTailLine,(C_U_1B + C_L_2B));
     
     vTrace("Tail %lld %p : <U %lld> <L %lld> %s\n"_Stz,
            i_Tail,

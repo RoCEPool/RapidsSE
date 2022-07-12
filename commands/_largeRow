@@ -4,7 +4,8 @@
 
 create table largeRow (col0 VARCHAR(20000));
 
-Load largeRow "../DATA/Load/largeRow2.csv";
+//Load largeRow "../DATA/Load/largeRow2.csv";
+Load largeRow "../DATA/Load/largeRow4000B.csv";
 
 select * from largeRow;
 
