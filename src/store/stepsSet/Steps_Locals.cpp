@@ -36,7 +36,7 @@ void Step::vLocalFetch(void)
   
   i8 iLocal = m_pDataStack->iPopInt(__func__);
   
-  Local* pLocal = m_pLocalsFrame->pLocal(iLocal);
+  CellSingle* pLocal = m_pLocalsFrame->pLocal(iLocal);
   
   m_pDataStack->vPushItem(pLocal->aTypedCell());
   
@@ -54,7 +54,7 @@ void Step::vLocalStore(void)
   
   i8 iLocal = m_pDataStack->iPopInt(__func__);
   
-  Local* pLocal = m_pLocalsFrame->pLocal(iLocal);
+  CellSingle* pLocal = m_pLocalsFrame->pLocal(iLocal);
   
   m_pDataStack->vPopItem(pLocal->aTypedCell(),__func__);
  

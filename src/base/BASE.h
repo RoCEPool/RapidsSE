@@ -347,7 +347,6 @@ extern d8 C_D8_MID;
 
 #include "Dic.hpp"
 #include "DicStack.hpp"
-#include "Local.hpp"
 #include "LocalChain.hpp"
 #include "TypedStack.hpp"
 

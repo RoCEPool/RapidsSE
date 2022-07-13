@@ -165,7 +165,6 @@ enum eCN : u2 // Class Number
   /* */ CN_LIT,
   /* */ CN_LITRECOGNISER,
   /* */ CN_LOADCHUNK,
-  /* */ CN_LOCAL,
   /* */ CN_LOCALCHAIN,
   /* */ CN_LOCALDIR,
   /* */ CN_LOCALFILE,
@@ -581,7 +580,6 @@ static Stz* aCN[]
   /* */ "LIT"_Stz,                  // CN_LIT
   /* */ "LITRECOGNISER"_Stz,        // CN_LITRECOGNISER
   /* */ "LOADCHUNK"_Stz,            // CN_LOADCHUNK
-  /* */ "LOCAL"_Stz,                // CN_LOCAL
   /* */ "LOCALCHAIN"_Stz,           // CN_LOCALCHAIN
   /* */ "LOCALDIR"_Stz,             // CN_LOCALDIR
   /* */ "LOCALFILE"_Stz,            // CN_LOCALFILE

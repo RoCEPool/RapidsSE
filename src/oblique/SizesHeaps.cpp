@@ -417,7 +417,6 @@ SizeHeap gxaSizeHeap[]
   { CN_LIT,                      sizeof(Lit),                HT_T_TINY    ,0 FILL },
   { CN_LITRECOGNISER,            sizeof(LitRecogniser),      HT_T_TINY    ,0 FILL },
   { CN_LOADCHUNK,                sizeof(LoadChunk),          HT_T_LARGE   ,0 FILL },
-  { CN_LOCAL,                    sizeof(Local),              HT_INVALID   ,0 FILL },
   { CN_LOCALCHAIN,               sizeof(LocalChain),         HT_T_LARGE   ,0 FILL },
   { CN_LOCALDIR,                 sizeof(LocalDir),           HT_INVALID   ,0 FILL },
   { CN_LOCALFILE,                sizeof(LocalFile),          HT_INVALID   ,0 FILL },
