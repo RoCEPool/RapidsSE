@@ -60,7 +60,7 @@ void Constants::vAddConstant(Stz* szName, i8 iVal)
   
   pNewWord->vCategory(AM::pConstantRoot());
   
-  CellSingle xVar;
+  SenCell xVar;
   xVar = iVal;
 
   pNewWord->vEncodePush(xVar);
@@ -74,7 +74,7 @@ void Constants::vAddConstant(Stz* szName, Stz* szVal)
 {
   Word* pNewWord = new(AM::DIC::pRoot()) Word(szName);
   
-  CellSingle xVar;
+  SenCell xVar;
   xVar = szVal;
   
   pNewWord->vEncodePush(xVar);

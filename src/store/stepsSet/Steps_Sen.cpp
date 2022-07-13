@@ -252,7 +252,7 @@ void Step::vSenFind(void)
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "No word: %s "_Stz,sWordNm.azChar());
   
-  CellSingle xVar;
+  SenCell xVar;
   xVar = pWord;
 
   if (m_pSenCompiler->bCompiling()) {
@@ -681,7 +681,7 @@ void Step::vSenPostpone(void)
            m_pInput->szChars()->azChar());
   
   
-  CellSingle xVar;
+  SenCell xVar;
   xVar = pCalledWord;
 
   if (pCalledWord->bImmediate()) {
@@ -755,7 +755,7 @@ void Step::vSenProcText(void)
   
   Word* pNewWord = new(pDic) Word(sWordNm);
 
-  CellSingle xVar;
+  SenCell xVar;
   
   xVar = sProcedure;
 

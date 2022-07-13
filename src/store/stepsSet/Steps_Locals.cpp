@@ -36,9 +36,9 @@ void Step::vLocalFetch(void)
   
   i8 iLocal = m_pDataStack->iPopInt(__func__);
   
-  CellSingle* pLocal = m_pLocalsFrame->pLocal(iLocal);
+  SenCell* pLocal = m_pLocalsFrame->pLocal(iLocal);
   
-  m_pDataStack->vPushItem(pLocal->aTypedCell());
+  m_pDataStack->vPushTypeValue(pLocal->aTypeValueArea());
   
   EXIT();
 }
@@ -54,9 +54,9 @@ void Step::vLocalStore(void)
   
   i8 iLocal = m_pDataStack->iPopInt(__func__);
   
-  CellSingle* pLocal = m_pLocalsFrame->pLocal(iLocal);
+  SenCell* pLocal = m_pLocalsFrame->pLocal(iLocal);
   
-  m_pDataStack->vPopItem(pLocal->aTypedCell(),__func__);
+  m_pDataStack->vPopTypeValue(pLocal->aTypeValueArea(),__func__);
  
   EXIT();
 }
@@ -72,7 +72,7 @@ void Step::vLocalsBar(void)
   
   Dic* pDic = m_oDicStack.pPick(0);
 
-  CellSingle xVariable;
+  SenCell xVariable;
   
   for (;;) {
     
@@ -558,7 +558,7 @@ void Step::vLocalsTo(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // handle a local
 
-  CellSingle xVar_LocalNo;
+  SenCell xVar_LocalNo;
   xVar_LocalNo = pLocalWord->iLocalNo();
   
   pCurrentWord->vEncodePush(xVar_LocalNo);

@@ -26,7 +26,7 @@ namespace BASE
   
   };
 
-  TypeValue* _pSenCell(void* aAddr);
+  TypeValue* _pTypeValue(void* aAddr);
 }
 
 /*============================================================================*/

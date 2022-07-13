@@ -205,14 +205,14 @@ void Step::vIndexStreamSeek(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the upper bound key
-  CellSingle xUpperBound;
-  m_pDataStack->vPopItem(xUpperBound,__func__);
+  SenCell xUpperBound;
+  m_pDataStack->vPopTypeValue(xUpperBound,__func__);
   Stz* szUpperKey = xUpperBound.szStz();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the lower bound key
-  CellSingle xLowerBound;
-  m_pDataStack->vPopItem(xLowerBound,__func__);
+  SenCell xLowerBound;
+  m_pDataStack->vPopTypeValue(xLowerBound,__func__);
   Stz* szLowerKey = xLowerBound.szStz();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

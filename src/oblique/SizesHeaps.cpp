@@ -304,7 +304,7 @@ SizeHeap gxaSizeHeap[]
   { CN_CARDCTL,                  sizeof(CardCtl),            HT_T_SMALL   ,0 FILL },
   { CN_CARDREGS,                 sizeof(CardRegs),           HT_T_SMALL   ,0 FILL },
   { CN_CATALOG,                  sizeof(Catalog),            HT_INVALID   ,0 FILL },
-  { CN_CELLSINGLE,               sizeof(CellSingle),         HT_INVALID   ,0 FILL },
+  { CN_CELLSINGLE,               sizeof(SenCell),         HT_INVALID   ,0 FILL },
   { CN_CHARSER,                  sizeof(Charser),            HT_T_LARGE   ,0 FILL },
   { CN_CHILDEXIT,                sizeof(ChildExit),          HT_T_TINY    ,0 FILL },
   { CN_CLASSPLACEHOLDER,         sizeof(ClassPlaceHolder),   HT_T_LARGE   ,0 FILL },   

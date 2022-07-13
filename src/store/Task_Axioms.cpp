@@ -477,7 +477,7 @@ Word* Task::pCompileAxiomColon(s48K& sDefinition)
   Word*     pNewWord;
   fpSTEPFN    fpStepFn;
   Word*     pCalledWord;
-  CellSingle xVariable;
+  SenCell xVariable;
   
   SenCompiler* pSenCompiler = m_pSenCompiler;
   Input* pInput = m_pInput;

@@ -79,13 +79,13 @@ void Step::vDirGetCurrent(void)
 {
   ENTRY();
   
-  CellSingle xDirPath;
+  SenCell xDirPath;
   
   s256 sDirPath;
   
   if (Dir::bGetCurrent(sDirPath)) {
     xDirPath = sDirPath;
-    m_pDataStack->vPushItem(xDirPath);
+    m_pDataStack->vPushTypeValue(xDirPath);
   }
   else {
     vThrow(FK_CHECK,__func__,__FILE__,__LINE__,

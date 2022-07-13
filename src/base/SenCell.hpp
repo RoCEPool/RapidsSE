@@ -7,11 +7,11 @@
 
 namespace BASE
 {
-  class CellSingle : public Object
+  class SenCell : public Object
   {
   protected:
         
-    TypeValueArea m_xTypedCell;
+    TypeValueArea m_xTypeValueArea;
   
 
     // must be last
@@ -21,8 +21,8 @@ namespace BASE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    CellSingle(void);
-   ~CellSingle(void) noexcept(false);
+    SenCell(void);
+   ~SenCell(void) noexcept(false);
   
     // auto conversion
     operator TypeValueArea*(void);
@@ -33,9 +33,7 @@ namespace BASE
     void operator =(Stz* szStz);
   
     eCN  eAnyClass(void);
-  
-    Dtm* aCellAddress(void);
- 
+   
     char* azChar(void);
   
     CodeCell* aFip(void);
@@ -55,14 +53,15 @@ namespace BASE
     Stz* szStz(void);
   
     void vToString(Stz* szDst);
-    TypeValueArea* aTypedCell(void);
+    TypeValue* aTypeValue(void);
+    TypeValueArea* aTypeValueArea(void);
 
   private:
   
     Footer* aFooter(void);
   };
 
-  CellSingle* _pCellSingle(void* aAddr);
+  SenCell* _pSenCell(void* aAddr);
 }
 
 /*============================================================================*/

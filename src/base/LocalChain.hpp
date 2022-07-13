@@ -10,9 +10,9 @@ namespace BASE
   class LocalChain : public Object
   {
   public:
-    LocalChain* m_pNext;             // nest frame in chain
+    LocalChain*     m_pNext;             // nest frame in chain
     TypeValueArea*  m_aDiscardPoint;     // discard point (when in call stack)
-  CellSingle       m_xLocal[C_LOCALS_arguments];  // set of local values
+    SenCell         m_xLocal[C_LOCALS_arguments];  // set of local values
     
     // must be last
     Footer m_xFooter;
@@ -30,7 +30,7 @@ namespace BASE
     void vDiscardPoint(TypeValueArea* aDiscardPoint);
     void vDump(void);
 
-  CellSingle* pLocal(i8 i_Local);
+    SenCell* pLocal(i8 i_Local);
  
     LocalChain* pNext(void);
     void vNext(LocalChain* pLocalSet);

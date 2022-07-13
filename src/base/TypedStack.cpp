@@ -430,7 +430,7 @@ void TypedStack::vPopStr(String* pString, const char* azCallingFunNm)
 /*----------------------------------------------------------------------------*/
 /* pop value from stack                                                       */
 /*----------------------------------------------------------------------------*/
-void TypedStack::vPopItem(TypeValueArea* aTypedCell, const char* azCallingFunNm)
+void TypedStack::vPopTypeValue(TypeValueArea* aTypedCell, const char* azCallingFunNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -553,7 +553,7 @@ void TypedStack::vPushStz(Stz* szStz)
 /*----------------------------------------------------------------------------*/
 /* push value onto stack                                                      */
 /*----------------------------------------------------------------------------*/
-void TypedStack::vPushItem(TypeValueArea* aTypedCell)
+void TypedStack::vPushTypeValue(TypeValueArea* aTypedCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 

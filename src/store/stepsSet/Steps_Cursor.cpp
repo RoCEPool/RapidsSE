@@ -27,11 +27,11 @@ void Step::vCursorFetch(void)
   
   i8 iPeek = 1;
   
-  CellSingle xCursorVar;
+  SenCell xCursorVar;
   
   m_pReturnStack->vPeekItem(iPeek,xCursorVar);
   
-  m_pDataStack->vPushItem(xCursorVar);
+  m_pDataStack->vPushTypeValue(xCursorVar);
   
   EXIT();
 }
@@ -45,8 +45,8 @@ void Step::vCursorStore(void)
   
   i8 iPoke = 1;
   
-  CellSingle xCursorVar;
-  m_pDataStack->vPopItem(xCursorVar,__func__);
+  SenCell xCursorVar;
+  m_pDataStack->vPopTypeValue(xCursorVar,__func__);
   
   m_pReturnStack->vPokeItem(iPoke,xCursorVar);
   

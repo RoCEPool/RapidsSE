@@ -58,6 +58,9 @@ namespace BASE
   
     eCN  eType(void);
     void vType(eCN eType);
+  
+    TypeValue* aTypeValue(void);
+
   };
 
   /*--------------------------------------------------------------------------*/

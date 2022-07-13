@@ -24,9 +24,9 @@ void Step::vShellExecute(void)
 {
   ENTRY();
   
-  CellSingle xCommand;
+  SenCell xCommand;
   
-  m_pDataStack->vPopItem(xCommand,__func__);
+  m_pDataStack->vPopTypeValue(xCommand,__func__);
   
   SysCall oSysCall;
   

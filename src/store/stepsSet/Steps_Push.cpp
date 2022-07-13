@@ -36,7 +36,7 @@ void Step::vPushI(void)
   
   TypeValueArea* aLoopIndex_I = m_pReturnStack->aTopVal();
   
-  m_pDataStack->vPushItem(aLoopIndex_I);
+  m_pDataStack->vPushTypeValue(aLoopIndex_I);
   
   EXIT();
 }
@@ -50,7 +50,7 @@ void Step::vPushJ(void)
   
   TypeValueArea* aLoopIndex_J = m_pReturnStack->aPeekItem(3);
   
-  m_pDataStack->vPushItem(aLoopIndex_J);
+  m_pDataStack->vPushTypeValue(aLoopIndex_J);
   
   EXIT();
 }

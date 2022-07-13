@@ -99,11 +99,11 @@ void Step::vSocketConnect(void)
   ENTRY();
   
   SysCall oSysCall;
-  CellSingle xNodeVar;
+  SenCell xNodeVar;
   
   Socket* pSocket = *m_pLogicUnit->m_xpSocket;
 
-  m_pDataStack->vPopItem(xNodeVar,__func__);
+  m_pDataStack->vPopTypeValue(xNodeVar,__func__);
   
   i8 iPort = m_pDataStack->iPopInt(__func__);
   

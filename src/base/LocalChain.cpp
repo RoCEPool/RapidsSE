@@ -96,7 +96,7 @@ void LocalChain::vDump(void)
 /*----------------------------------------------------------------------------*/
 /* get given local                                                            */
 /*----------------------------------------------------------------------------*/
-CellSingle* LocalChain::pLocal(i8 i_Local)
+SenCell* LocalChain::pLocal(i8 i_Local)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALCHAIN,_FOOTER_);
   

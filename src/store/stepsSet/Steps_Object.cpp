@@ -66,11 +66,11 @@ void Step::vObjectFetch(void)
   
   i8 iPick = 0;
   
-  CellSingle xObjectVar;
+  SenCell xObjectVar;
   
   m_pReturnStack->vPeekItem(iPick,xObjectVar);
   
-  m_pDataStack->vPushItem(xObjectVar);
+  m_pDataStack->vPushTypeValue(xObjectVar);
   
   EXIT();
 }
@@ -134,9 +134,9 @@ void Step::vObjectStore(void)
   
   i8 iPeek = 0;
   
-  CellSingle xObjectVar;
+  SenCell xObjectVar;
   
-  m_pDataStack->vPopItem(xObjectVar,__func__);
+  m_pDataStack->vPopTypeValue(xObjectVar,__func__);
   
   m_pReturnStack->vPokeItem(iPeek,xObjectVar);
   
