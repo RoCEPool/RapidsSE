@@ -1,0 +1,39 @@
+/*----------------------------------------------------------------------------*/
+/* decimal tests -- tests to check decimal load                               */
+/*----------------------------------------------------------------------------*/
+
+create table decTest (
+  dec   DECIMAL(2,2)
+);
+success
+
+load decTest "../DATA/Load/decTest.csv" ;
+failure contains: '6 invalid'
+
+select * from decTest;
+rows:
+ (-0.67)
+ (0.00)
+ (0.00)
+ (0.79)
+ (null)
+ (0.10)
+ (0.22)
+ (0.64)
+
+drop table decTest;
+success
+
+CLEANUP {
+  
+  drop table decTest;
+  mute
+
+  bye;
+  mute
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* end                                                                        */
+/*----------------------------------------------------------------------------*/

@@ -1297,7 +1297,7 @@ L_Decimal:
     vCOLLECT_INT_DIGIT(uUnscaledNumber);
     nDecimalDigits++;
     nPixWholeDigits--;
-    if (nPixWholeDigits < 0)
+    if (uUnscaledNumber && nPixWholeDigits < 0)
       goto L_FieldError;
   }
 
