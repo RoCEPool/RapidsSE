@@ -147,7 +147,7 @@ extern d8 C_D8_MID;
 #include "IntLib.hpp"
 #include "MagLib.hpp"
 #include "Dtm.hpp"
-#include "TypedCell.hpp"
+#include "TypeValueArea.hpp"
 #include "CellSingle.hpp"
 
 #include "HshLib.hpp"

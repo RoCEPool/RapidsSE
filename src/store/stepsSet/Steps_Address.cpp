@@ -49,7 +49,7 @@ void Step::vAddressFetch(void)
 {
   ENTRY();
   
-  TypedCell* aTypedCell = _aTypedCell(m_pDataStack->pPopPtr(__func__));
+  TypeValueArea* aTypedCell = _aTypedCell(m_pDataStack->pPopPtr(__func__));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
@@ -65,7 +65,7 @@ void Step::vAddressStore(void)
 {
   ENTRY();
   
-  TypedCell* aTypedCell = _aTypedCell(m_pDataStack->pPopPtr(__func__));
+  TypeValueArea* aTypedCell = _aTypedCell(m_pDataStack->pPopPtr(__func__));
 
   CellSingle xValToStore;
   m_pDataStack->vPopItem(xValToStore,__func__);

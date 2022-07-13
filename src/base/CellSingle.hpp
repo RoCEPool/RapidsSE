@@ -11,7 +11,7 @@ namespace BASE
   {
   protected:
         
-    TypedCell m_xTypedCell;
+    TypeValueArea m_xTypedCell;
   
 
     // must be last
@@ -25,7 +25,7 @@ namespace BASE
    ~CellSingle(void) noexcept(false);
   
     // auto conversion
-    operator TypedCell*(void);
+    operator TypeValueArea*(void);
 
     void operator =(d8 dFlt);
     void operator =(i8 iInt);
@@ -55,7 +55,7 @@ namespace BASE
     Stz* szStz(void);
   
     void vToString(Stz* szDst);
-    TypedCell* aTypedCell(void);
+    TypeValueArea* aTypedCell(void);
 
   private:
   

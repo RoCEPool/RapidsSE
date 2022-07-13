@@ -42,7 +42,7 @@ CellSingle::~CellSingle(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* auto conversion operator : as TypedCell*                                   */
 /*----------------------------------------------------------------------------*/
-CellSingle::operator TypedCell*(void)
+CellSingle::operator TypeValueArea*(void)
 {
   _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
   
@@ -294,7 +294,7 @@ void CellSingle::vToString(Stz* szStz)
 /*----------------------------------------------------------------------------*/
 /* get address of value nested in the wsp                                     */
 /*----------------------------------------------------------------------------*/
-TypedCell* CellSingle::aTypedCell(void)
+TypeValueArea* CellSingle::aTypedCell(void)
 {
   _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
 

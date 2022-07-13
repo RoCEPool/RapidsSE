@@ -811,7 +811,7 @@ Word* Task::pEventHandler(void)
 
   i8 nItems = m_pReturnStack->nValues();
   for (i8 i_Item = nItems; i_Item >= 0; i_Item--) {
-    TypedCell* aPeekedItem = m_pReturnStack->aPeekItem(i_Item);
+    TypeValueArea* aPeekedItem = m_pReturnStack->aPeekItem(i_Item);
     eCN eType = aPeekedItem->eType();
     if (CN_FIPVAL != eType)
       continue;
@@ -1147,7 +1147,7 @@ void Task::vSetSenRecoverContext(void)
   while (m_pReturnStack->nValues() > 2) {
     if (m_pLocalsFrame
         && m_pLocalsFrame->aDiscardPoint() ==
-             (TypedCell*)m_pReturnStack->aTopVal())
+             (TypeValueArea*)m_pReturnStack->aTopVal())
       vLocalsPop();
     m_pReturnStack->vDiscardTop();
   }

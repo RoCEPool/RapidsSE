@@ -61,7 +61,7 @@ void LocalChain::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* get return point where this local set should be discarded                  */
 /*----------------------------------------------------------------------------*/
-TypedCell* LocalChain::aDiscardPoint(void)
+TypeValueArea* LocalChain::aDiscardPoint(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALCHAIN,_FOOTER_);
   
@@ -71,7 +71,7 @@ TypedCell* LocalChain::aDiscardPoint(void)
 /*----------------------------------------------------------------------------*/
 /* set return point where this local set should be discarded                  */
 /*----------------------------------------------------------------------------*/
-void LocalChain::vDiscardPoint(TypedCell* aDiscardPoint)
+void LocalChain::vDiscardPoint(TypeValueArea* aDiscardPoint)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALCHAIN,_FOOTER_);
   

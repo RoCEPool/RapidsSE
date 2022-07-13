@@ -11,7 +11,7 @@ namespace BASE
   {
   public:
     LocalChain* m_pNext;             // nest frame in chain
-    TypedCell*  m_aDiscardPoint;     // discard point (when in call stack)
+    TypeValueArea*  m_aDiscardPoint;     // discard point (when in call stack)
   CellSingle       m_xLocal[C_LOCALS_arguments];  // set of local values
     
     // must be last
@@ -26,8 +26,8 @@ namespace BASE
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
-    TypedCell* aDiscardPoint(void);
-    void vDiscardPoint(TypedCell* aDiscardPoint);
+    TypeValueArea* aDiscardPoint(void);
+    void vDiscardPoint(TypeValueArea* aDiscardPoint);
     void vDump(void);
 
   CellSingle* pLocal(i8 i_Local);

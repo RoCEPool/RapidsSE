@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* TypedCell.hpp -- Self-Describing / Dynamically Typed Cell                  */
+/* TypeValueArea.hpp -- Self-Describing / Dynamically Typed Value + Area      */
 /*============================================================================*/
 #pragma once
 
@@ -7,15 +7,15 @@
 
 namespace BASE
 {
-  class TypedCell : public TypeValue
+  class TypeValueArea : public TypeValue
   {
   public:
     
     char m_caStringArea[C_16KB];
 
   public:
-    TypedCell(void);
-   ~TypedCell(void) noexcept(false);
+    TypeValueArea(void);
+   ~TypeValueArea(void) noexcept(false);
   
     i8 iAsInt(void);
 
@@ -27,7 +27,7 @@ namespace BASE
 
     char* azChar(void);
   
-    void vCopy(TypedCell* aTypedCell, i8 nBytes=0);
+    void vCopy(TypeValueArea* aTypedCell, i8 nBytes=0);
 
     CodeCell* aFip(void);
     void vFip(CodeCell* aFip);
@@ -63,9 +63,9 @@ namespace BASE
   /*--------------------------------------------------------------------------*/
   /* safe cast                                                                */
   /*--------------------------------------------------------------------------*/
-  inline TypedCell* _aTypedCell(void* aAddr)
+  inline TypeValueArea* _aTypedCell(void* aAddr)
   {
-  TypedCell* aTypedCell = reinterpret_cast<TypedCell*>(aAddr);
+  TypeValueArea* aTypedCell = reinterpret_cast<TypeValueArea*>(aAddr);
 
     return aTypedCell;
   }

@@ -221,7 +221,7 @@ void Step::vSenExit_RT(void)
     Task::vTracePoint("<"_Stz);
   
   if (m_pLocalsFrame
-      && m_pLocalsFrame->aDiscardPoint() == (TypedCell*)m_pReturnStack->aTopVal())
+      && m_pLocalsFrame->aDiscardPoint() == (TypeValueArea*)m_pReturnStack->aTopVal())
     vLocalsPop();
   
   // make sure we don't return to nowhere

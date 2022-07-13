@@ -121,7 +121,7 @@ void TypedStack::vDump(DicStack* pDicStack, Stz* aTitle)
   i8 nValues = this->nValues();
   for (i8 i_Item = 0; i_Item < nValues; i_Item++) {
     
-    TypedCell* aTypedCell = aPeekItem(i_Item);
+    TypeValueArea* aTypedCell = aPeekItem(i_Item);
     eCN eType = aTypedCell->eType();
     i8 nStackUsage = aTypedCell->nStackUsage();
 
@@ -214,16 +214,16 @@ void TypedStack::vDump(DicStack* pDicStack, Stz* aTitle)
 /*----------------------------------------------------------------------------*/
 /* peek at given item on stack                                                */
 /*----------------------------------------------------------------------------*/
-TypedCell* TypedStack::aPeekItem(i8 i_Item)
+TypeValueArea* TypedStack::aPeekItem(i8 i_Item)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  TypedCell* aPeeked = aTopVal();
+  TypeValueArea* aPeeked = aTopVal();
   while (i_Item--) {
     char* aAddress = reinterpret_cast<char*>(aPeeked);
     i8 iSize = aPeeked->nStackUsage();
     aAddress += iSize;
-    aPeeked = reinterpret_cast<TypedCell*>(aAddress);
+    aPeeked = reinterpret_cast<TypeValueArea*>(aAddress);
   }
   
   return aPeeked;
@@ -232,11 +232,11 @@ TypedCell* TypedStack::aPeekItem(i8 i_Item)
 /*----------------------------------------------------------------------------*/
 /* peek at given value on stack                                               */
 /*----------------------------------------------------------------------------*/
-void TypedStack::vPeekItem(i8 i_Item, TypedCell* aTypedCell)
+void TypedStack::vPeekItem(i8 i_Item, TypeValueArea* aTypedCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  TypedCell* aPeeked = aPeekItem(i_Item);
+  TypeValueArea* aPeeked = aPeekItem(i_Item);
   
   aTypedCell->vCopy(aPeeked);
 }
@@ -244,11 +244,11 @@ void TypedStack::vPeekItem(i8 i_Item, TypedCell* aTypedCell)
 /*----------------------------------------------------------------------------*/
 /* poke given value into stack                                                */
 /*----------------------------------------------------------------------------*/
-void TypedStack::vPokeItem(i8 i_Item, TypedCell* aTypedCell)
+void TypedStack::vPokeItem(i8 i_Item, TypeValueArea* aTypedCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  TypedCell* aPoked = aPeekItem(i_Item);
+  TypeValueArea* aPoked = aPeekItem(i_Item);
   
   aPoked->vCopy(aTypedCell);
 }
@@ -418,7 +418,7 @@ void TypedStack::vPopStr(String* pString, const char* azCallingFunNm)
   
   _hazard_();
   
-  TypedCell* aTypedCell = _aTypedCell(aTopVal());
+  TypeValueArea* aTypedCell = _aTypedCell(aTopVal());
   
   pString->vCopy(aTypedCell->szStz());
     
@@ -430,7 +430,7 @@ void TypedStack::vPopStr(String* pString, const char* azCallingFunNm)
 /*----------------------------------------------------------------------------*/
 /* pop value from stack                                                       */
 /*----------------------------------------------------------------------------*/
-void TypedStack::vPopItem(TypedCell* aTypedCell, const char* azCallingFunNm)
+void TypedStack::vPopItem(TypeValueArea* aTypedCell, const char* azCallingFunNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -457,7 +457,7 @@ void TypedStack::vPushBcd(i8 iBcd)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  TypedCell* aTypedCell = aAllotBcdVal();
+  TypeValueArea* aTypedCell = aAllotBcdVal();
   
   aTypedCell->vBcd(iBcd);
 }
@@ -469,7 +469,7 @@ void TypedStack::vPushBol(i8 iBol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  TypedCell* aTypedCell = aAllotBolVal();
+  TypeValueArea* aTypedCell = aAllotBolVal();
   
   aTypedCell->vBol(iBol);
 }
@@ -481,7 +481,7 @@ void TypedStack::vPushFip(CodeCell* aFip)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  TypedCell* aTypedCell = aAllotFipVal();
+  TypeValueArea* aTypedCell = aAllotFipVal();
   
   aTypedCell->vFip(aFip);
 }
@@ -493,7 +493,7 @@ void TypedStack::vPushFlt(d8 dFlt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  TypedCell* aTypedCell = aAllotFltVal();
+  TypeValueArea* aTypedCell = aAllotFltVal();
   
   aTypedCell->vFlt(dFlt);
 }
@@ -505,7 +505,7 @@ void TypedStack::vPushInt(i8 iInt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  TypedCell* aTypedCell = aAllotIntVal();
+  TypeValueArea* aTypedCell = aAllotIntVal();
   
   aTypedCell->vInt(iInt);
 }
@@ -517,7 +517,7 @@ void TypedStack::vPushPtr(Object* pObj)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  TypedCell* aTypedCell = aAllotPtrVal();
+  TypeValueArea* aTypedCell = aAllotPtrVal();
   
   aTypedCell->vObj(pObj);
 }
@@ -530,7 +530,7 @@ void TypedStack::vPushStr(String* pStr)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   i8 nSize = StrLib::nSize(pStr->azStr());
-  TypedCell* aTypedCell = aAllotStzVal(nSize);
+  TypeValueArea* aTypedCell = aAllotStzVal(nSize);
 
   aTypedCell->vStz(pStr->szStz());
 }
@@ -545,7 +545,7 @@ void TypedStack::vPushStz(Stz* szStz)
   //vDump(nullptr,"Before:"_Stz);
   
   i8 nSize = szStz->nSize();
-  TypedCell* aTypedCell = aAllotStzVal(nSize);
+  TypeValueArea* aTypedCell = aAllotStzVal(nSize);
   
   aTypedCell->vStz(szStz);
 }
@@ -553,7 +553,7 @@ void TypedStack::vPushStz(Stz* szStz)
 /*----------------------------------------------------------------------------*/
 /* push value onto stack                                                      */
 /*----------------------------------------------------------------------------*/
-void TypedStack::vPushItem(TypedCell* aTypedCell)
+void TypedStack::vPushItem(TypeValueArea* aTypedCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 
@@ -619,7 +619,7 @@ void TypedStack::vStackContents(s48K& sStackContents)
     
     sStackContents.vCatSprint(" "_Stz);
     
-    TypedCell* aTypedCell = aPeekItem(iValue);
+    TypeValueArea* aTypedCell = aPeekItem(iValue);
     
     eCN eClass = aTypedCell->eType();
     
@@ -700,7 +700,7 @@ bool TypedStack::bTopIsZero(void)
 /*----------------------------------------------------------------------------*/
 /* peek at value on top of stack                                              */
 /*----------------------------------------------------------------------------*/
-TypedCell* TypedStack::aTopVal(void)
+TypeValueArea* TypedStack::aTopVal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -755,7 +755,7 @@ void TypedStack::vValSprint(s48K& sFormat, s48K& sString)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // handle a StzVal, IntVal or a PtrVal
     
-    TypedCell* aTypedCell0 = aPeekItem(0);
+    TypeValueArea* aTypedCell0 = aPeekItem(0);
     eCN eClass = aTypedCell0->eType();
     
     
@@ -892,11 +892,11 @@ i8 TypedStack::nValues(void)
 /*----------------------------------------------------------------------------*/
 /* allot an bcd value on top of stack                                         */
 /*----------------------------------------------------------------------------*/
-TypedCell* TypedStack::aAllotBcdVal(void)
+TypeValueArea* TypedStack::aAllotBcdVal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  TypedCell* aTypedCell = aAllotTypedCell(CN_BOLVAL,C_NO_ADDITIONAL_BYTES);
+  TypeValueArea* aTypedCell = aAllotTypedCell(CN_BOLVAL,C_NO_ADDITIONAL_BYTES);
     
   return aTypedCell;
 }
@@ -904,11 +904,11 @@ TypedCell* TypedStack::aAllotBcdVal(void)
 /*----------------------------------------------------------------------------*/
 /* allot an bol value on top of stack                                         */
 /*----------------------------------------------------------------------------*/
-TypedCell* TypedStack::aAllotBolVal(void)
+TypeValueArea* TypedStack::aAllotBolVal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  TypedCell* aTypedCell = aAllotTypedCell(CN_BOLVAL,C_NO_ADDITIONAL_BYTES);
+  TypeValueArea* aTypedCell = aAllotTypedCell(CN_BOLVAL,C_NO_ADDITIONAL_BYTES);
     
   return aTypedCell;
 }
@@ -916,11 +916,11 @@ TypedCell* TypedStack::aAllotBolVal(void)
 /*----------------------------------------------------------------------------*/
 /* allot a fip value on top of stack                                          */
 /*----------------------------------------------------------------------------*/
-TypedCell* TypedStack::aAllotFipVal(void)
+TypeValueArea* TypedStack::aAllotFipVal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  TypedCell* aTypedCell = aAllotTypedCell(CN_FIPVAL,C_NO_ADDITIONAL_BYTES);
+  TypeValueArea* aTypedCell = aAllotTypedCell(CN_FIPVAL,C_NO_ADDITIONAL_BYTES);
     
   return aTypedCell;
 }
@@ -928,11 +928,11 @@ TypedCell* TypedStack::aAllotFipVal(void)
 /*----------------------------------------------------------------------------*/
 /* allot an flt value on top of stack                                         */
 /*----------------------------------------------------------------------------*/
-TypedCell* TypedStack::aAllotFltVal(void)
+TypeValueArea* TypedStack::aAllotFltVal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  TypedCell* aTypedCell = aAllotTypedCell(CN_FLTVAL,C_NO_ADDITIONAL_BYTES);
+  TypeValueArea* aTypedCell = aAllotTypedCell(CN_FLTVAL,C_NO_ADDITIONAL_BYTES);
     
   return aTypedCell;
 }
@@ -940,11 +940,11 @@ TypedCell* TypedStack::aAllotFltVal(void)
 /*----------------------------------------------------------------------------*/
 /* allot an int value on top of stack                                         */
 /*----------------------------------------------------------------------------*/
-TypedCell* TypedStack::aAllotIntVal(void)
+TypeValueArea* TypedStack::aAllotIntVal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  TypedCell* aTypedCell = aAllotTypedCell(CN_INTVAL,C_NO_ADDITIONAL_BYTES);
+  TypeValueArea* aTypedCell = aAllotTypedCell(CN_INTVAL,C_NO_ADDITIONAL_BYTES);
     
   return aTypedCell;
 }
@@ -952,11 +952,11 @@ TypedCell* TypedStack::aAllotIntVal(void)
 /*----------------------------------------------------------------------------*/
 /* allot a ptr value on top of stack                                          */
 /*----------------------------------------------------------------------------*/
-TypedCell* TypedStack::aAllotPtrVal(void)
+TypeValueArea* TypedStack::aAllotPtrVal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  TypedCell* aTypedCell = aAllotTypedCell(CN_PTRVAL,C_NO_ADDITIONAL_BYTES);
+  TypeValueArea* aTypedCell = aAllotTypedCell(CN_PTRVAL,C_NO_ADDITIONAL_BYTES);
     
   return aTypedCell;
 }
@@ -964,13 +964,13 @@ TypedCell* TypedStack::aAllotPtrVal(void)
 /*----------------------------------------------------------------------------*/
 /* allot a str value on top of stack                                          */
 /*----------------------------------------------------------------------------*/
-TypedCell* TypedStack::aAllotStzVal(i8 nStrSize)
+TypeValueArea* TypedStack::aAllotStzVal(i8 nStrSize)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   i8 nWithAdditionalBytes = nStrSize;
   
-  TypedCell* aTypedCell = aAllotTypedCell(CN_STZVAL,nWithAdditionalBytes);
+  TypeValueArea* aTypedCell = aAllotTypedCell(CN_STZVAL,nWithAdditionalBytes);
     
   return aTypedCell;
 }
@@ -978,7 +978,7 @@ TypedCell* TypedStack::aAllotStzVal(i8 nStrSize)
 /*----------------------------------------------------------------------------*/
 /* allot a value on top of stack                                              */
 /*----------------------------------------------------------------------------*/
-TypedCell* TypedStack::aAllotTypedCell(eCN eType, i8 nWithAdditionalBytes)
+TypeValueArea* TypedStack::aAllotTypedCell(eCN eType, i8 nWithAdditionalBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -1017,7 +1017,7 @@ bool TypedStack::bGuard(eCN eClass0)
   if (nValues() < 1)
     return false;
   
-  TypedCell* aPeeked = aPeekItem(0);
+  TypeValueArea* aPeeked = aPeekItem(0);
   if (eClass0 != aPeeked->eType())
     return false;
   
@@ -1034,11 +1034,11 @@ bool TypedStack::bGuard(eCN eClass0, eCN eClass1)
   if (nValues() < 2)
     return false;
   
-  TypedCell* aPeeked0 = aPeekItem(0);
+  TypeValueArea* aPeeked0 = aPeekItem(0);
   if (eClass0 != aPeeked0->eType())
     return false;
   
-  TypedCell* aPeeked1 = aPeekItem(1);
+  TypeValueArea* aPeeked1 = aPeekItem(1);
   if (eClass1 != aPeeked1->eType())
     return false;
   
@@ -1055,15 +1055,15 @@ bool TypedStack::bGuard(eCN eClass0, eCN eClass1, eCN eClass2)
   if (nValues() < 3)
     return false;
   
-  TypedCell* aPeeked0 = aPeekItem(0);
+  TypeValueArea* aPeeked0 = aPeekItem(0);
   if (eClass0 != aPeeked0->eType())
     return false;
   
-  TypedCell* aPeeked1 = aPeekItem(1);
+  TypeValueArea* aPeeked1 = aPeekItem(1);
   if (eClass1 != aPeeked1->eType())
     return false;
 
-  TypedCell* aPeeked2 = aPeekItem(2);
+  TypeValueArea* aPeeked2 = aPeekItem(2);
   if (eClass2 != aPeeked2->eType())
     return false;
   

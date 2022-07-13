@@ -151,7 +151,7 @@ void Step::vLocalsPush(void)
   
   LocalChain* pLocalsFrame = new LocalChain;
   
-  pLocalsFrame->vDiscardPoint((TypedCell*)m_pReturnStack->aTopVal());
+  pLocalsFrame->vDiscardPoint((TypeValueArea*)m_pReturnStack->aTopVal());
   
   pLocalsFrame->vNext(m_pLocalsFrame);
   
