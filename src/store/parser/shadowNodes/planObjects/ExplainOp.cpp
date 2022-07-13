@@ -526,6 +526,21 @@ b1 ExplainOp::bWithTypes(QueryNode* pNode)
   return pWithTypesNode->bValue();
 }
 
+/*----------------------------------------------------------------------------*/
+/* Sets whether the types of the projected expressions should be printed      */
+/*----------------------------------------------------------------------------*/
+void ExplainOp::vWithTypes(QueryNode* pNode, b1 bWithTypes)
+{
+  ASSERT(bIsOfType(pNode));
+
+  // Get the property
+  QueryNode* pWithTypesNode = _pQueryNode(GraphNav::pFindProperty(const_cast<Stz*>(C_WITHTYPES_PROP), pNode));
+  ASSERT(ShadowNode::bIsExactType(pWithTypesNode, C_WITHTYPES_DEFN));
+
+  Value xValue(bWithTypes);
+  pWithTypesNode->vSetValue(static_cast<Value&&>(xValue));
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
