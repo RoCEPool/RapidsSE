@@ -139,7 +139,7 @@ void Task::vTask(void)
   m_pDataStack   = new TypedStack(KK_DATA_STACK);
   m_pReturnStack = new TypedStack(KK_RETURN_STACK);
 
-  m_pLocalsFrame = nullptr;
+  m_pLocalFrame = nullptr;
   m_pLocalVars   = new LocalVars;
 
   m_pSenCompiler = new SenCompiler;
@@ -173,10 +173,10 @@ Task::~Task(void) noexcept(false)
   delete m_pReturnStack;
   delete m_pAuxStack;
   
-  while (m_pLocalsFrame) {
+  while (m_pLocalFrame) {
     
-    LocalChain* pLocalsFrame = m_pLocalsFrame;
-    m_pLocalsFrame = m_pLocalsFrame->pNext();
+    LocalFrame* pLocalsFrame = m_pLocalFrame;
+    m_pLocalFrame = m_pLocalFrame->pNext();
     
     delete pLocalsFrame;
   }
@@ -764,8 +764,8 @@ void Task::vDump(void)
   m_pReturnStack->vDump(&m_oDicStack,"m_pReturnStack:"_Stz);
   m_pAuxStack->vDump(&m_oDicStack,   "m_pAuxStack:"_Stz);
 
-  if (m_pLocalsFrame)
-    m_pLocalsFrame->vDump();
+  if (m_pLocalFrame)
+    m_pLocalFrame->vDump();
   else
     vTrace("LocalsChain: none\n"_Stz);
   
@@ -1023,9 +1023,9 @@ void Task::vLocalsPop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  LocalChain* pLocalsframe = m_pLocalsFrame;
+  LocalFrame* pLocalsframe = m_pLocalFrame;
   
-  m_pLocalsFrame = m_pLocalsFrame->pNext();
+  m_pLocalFrame = m_pLocalFrame->pNext();
   
   delete pLocalsframe;
 }
@@ -1035,11 +1035,11 @@ void Task::vLocalsPop(void)
 /*----------------------------------------------------------------------------*/
 void Task::vLocalsPush(void)
 {
-  LocalChain* pLocalsframe = new LocalChain;
+  LocalFrame* pLocalsframe = new LocalFrame;
   
-  pLocalsframe->vNext(m_pLocalsFrame);
+  pLocalsframe->vNext(m_pLocalFrame);
   
-  m_pLocalsFrame = pLocalsframe;
+  m_pLocalFrame = pLocalsframe;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1145,8 +1145,8 @@ void Task::vSetSenRecoverContext(void)
   //Task::vSeeFrameStack();
   
   while (m_pReturnStack->nValues() > 2) {
-    if (m_pLocalsFrame
-        && m_pLocalsFrame->aDiscardPoint() ==
+    if (m_pLocalFrame
+        && m_pLocalFrame->aDiscardPoint() ==
              (TypeValueArea*)m_pReturnStack->aTopVal())
       vLocalsPop();
     m_pReturnStack->vDiscardTop();
@@ -1213,10 +1213,10 @@ void Task::vResetSenContext(void)
   m_pDataStack->vReset();
   m_pReturnStack->vReset();
   
-  while (m_pLocalsFrame) {
+  while (m_pLocalFrame) {
     
-    LocalChain* pLocalsFrame = m_pLocalsFrame;
-    m_pLocalsFrame = m_pLocalsFrame->pNext();
+    LocalFrame* pLocalsFrame = m_pLocalFrame;
+    m_pLocalFrame = m_pLocalFrame->pNext();
     
     delete pLocalsFrame;
   }

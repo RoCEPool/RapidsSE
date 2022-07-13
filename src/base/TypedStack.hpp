@@ -54,7 +54,7 @@ namespace BASE
     void vDump(DicStack* pDicStack, Stz* szTitle);
 
     TypeValueArea* aPeekItem(i8 i_Item);
-    void vPeekItem(i8 i_Item, TypeValueArea* aTypedCell);
+    void vPeekTypeValueArea(i8 i_Item, TypeValueArea* aTypedCell);
 
     void vPokeItem(i8 i_Item, TypeValueArea* aTypedCell);
   
@@ -67,7 +67,7 @@ namespace BASE
     i8   iPopIntBol(const char* azCallingFunNm);
     Object* pPopPtr(const char* azCallingFunNm);
     void vPopStr(String* pStr, const char* azCallingFunNm);
-    void vPopTypeValue(TypeValueArea* aTypedCell, const char* azCallingFunNm);
+    void vPopTypeValueArea(TypeValueArea* aTypedCell, const char* azCallingFunNm);
 
     void vPushBcd(i8 iInt);
     void vPushBol(i8 iInt);
@@ -77,7 +77,7 @@ namespace BASE
     void vPushPtr(Object* pObj);
     void vPushStr(String* pStr);
     void vPushStz(Stz* szStz);
-    void vPushTypeValue(TypeValueArea* aTypedCell);
+    void vPushTypeValueArea(TypeValueArea* aTypedCell);
   
     void vReset(void);
     void vRetry(void);

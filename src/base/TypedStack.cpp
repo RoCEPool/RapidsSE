@@ -232,7 +232,7 @@ TypeValueArea* TypedStack::aPeekItem(i8 i_Item)
 /*----------------------------------------------------------------------------*/
 /* peek at given value on stack                                               */
 /*----------------------------------------------------------------------------*/
-void TypedStack::vPeekItem(i8 i_Item, TypeValueArea* aTypedCell)
+void TypedStack::vPeekTypeValueArea(i8 i_Item, TypeValueArea* aTypedCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -430,7 +430,7 @@ void TypedStack::vPopStr(String* pString, const char* azCallingFunNm)
 /*----------------------------------------------------------------------------*/
 /* pop value from stack                                                       */
 /*----------------------------------------------------------------------------*/
-void TypedStack::vPopTypeValue(TypeValueArea* aTypedCell, const char* azCallingFunNm)
+void TypedStack::vPopTypeValueArea(TypeValueArea* aTypedCell, const char* azCallingFunNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -553,7 +553,7 @@ void TypedStack::vPushStz(Stz* szStz)
 /*----------------------------------------------------------------------------*/
 /* push value onto stack                                                      */
 /*----------------------------------------------------------------------------*/
-void TypedStack::vPushTypeValue(TypeValueArea* aTypedCell)
+void TypedStack::vPushTypeValueArea(TypeValueArea* aTypedCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 

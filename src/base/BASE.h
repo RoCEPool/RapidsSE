@@ -347,7 +347,7 @@ extern d8 C_D8_MID;
 
 #include "Dic.hpp"
 #include "DicStack.hpp"
-#include "LocalChain.hpp"
+#include "LocalFrame.hpp"
 #include "TypedStack.hpp"
 
 #include "SenCompiler.hpp"

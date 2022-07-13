@@ -285,10 +285,10 @@ void Step::vTaskPreHibernate(void)
 //  m_pDataStack->vReset();
 //  m_pReturnStack->vReset();
   
-  while (m_pLocalsFrame) {
+  while (m_pLocalFrame) {
     
-    LocalChain* pLocalsFrame = m_pLocalsFrame;
-    m_pLocalsFrame = m_pLocalsFrame->pNext();
+    LocalFrame* pLocalsFrame = m_pLocalFrame;
+    m_pLocalFrame = m_pLocalFrame->pNext();
     
     delete pLocalsFrame;
   }

@@ -52,7 +52,6 @@ enum eCN : u2 // Class Number
   /* */ CN_CARDCTL,
   /* */ CN_CARDREGS,
   /* */ CN_CATALOG,
-  /* */ CN_CELLSINGLE,
   /* */ CN_CHARSER,
   /* */ CN_CHILDEXIT,
   /* */ CN_CLASSPLACEHOLDER,
@@ -297,6 +296,7 @@ enum eCN : u2 // Class Number
   /* */ CN_SEAPI,
   /* */ CN_SEDEPUTY,
   /* */ CN_SEEME,
+  /* */ CN_SENCELL,
   /* */ CN_SENCOMPILER,
   /* */ CN_SENDS,
   /* */ CN_SENDWL,
@@ -467,7 +467,6 @@ static Stz* aCN[]
   /* */ "CARDCTL"_Stz,              // CN_CARDCTL
   /* */ "CARDREGS"_Stz,             // CN_CARDREGS
   /* */ "CATALOG"_Stz,              // CN_CATALOG
-  /* */ "CELLSINGLE"_Stz,           // CN_CELLSINGLE
   /* */ "CHARSER"_Stz,              // CN_CHARSER
   /* */ "CHILDEXIT"_Stz,            // CN_CHILDEXIT
   /* */ "CLASSPLACEHOLDER"_Stz,     // CN_CLASSPLACEHOLDER
@@ -712,6 +711,7 @@ static Stz* aCN[]
   /* */ "SEAPI"_Stz,                // CN_SEAPI
   /* */ "SEDEPUTY"_Stz,             // CN_SEDEPUTY
   /* */ "SEEME"_Stz,                // CN_SEEME
+  /* */ "SENCELL"_Stz,              // CN_SENCELL
   /* */ "SENCOMPILER"_Stz,          // CN_SENCOMPILER
   /* */ "SENDS"_Stz,                // CN_SENDS
   /* */ "SENDWL"_Stz,               // CN_SENDWL

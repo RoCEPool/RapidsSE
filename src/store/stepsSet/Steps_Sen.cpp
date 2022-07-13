@@ -220,8 +220,8 @@ void Step::vSenExit_RT(void)
   if ( (m_iTraceMask & C_TRACE_ROUTINES) )
     Task::vTracePoint("<"_Stz);
   
-  if (m_pLocalsFrame
-      && m_pLocalsFrame->aDiscardPoint() == (TypeValueArea*)m_pReturnStack->aTopVal())
+  if (m_pLocalFrame
+      && m_pLocalFrame->aDiscardPoint() == (TypeValueArea*)m_pReturnStack->aTopVal())
     vLocalsPop();
   
   // make sure we don't return to nowhere

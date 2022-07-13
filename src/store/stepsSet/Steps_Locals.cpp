@@ -32,13 +32,13 @@ void Step::vLocalFetch(void)
 {
   ENTRY();
   
-  if ( ! m_pLocalsFrame ) THROW_DSTACK();
+  if ( ! m_pLocalFrame ) THROW_DSTACK();
   
   i8 iLocal = m_pDataStack->iPopInt(__func__);
   
-  SenCell* pLocal = m_pLocalsFrame->pLocal(iLocal);
+  SenCell* pLocal = m_pLocalFrame->pSenCell(iLocal);
   
-  m_pDataStack->vPushTypeValue(pLocal->aTypeValueArea());
+  m_pDataStack->vPushTypeValueArea(pLocal->aTypeValueArea());
   
   EXIT();
 }
@@ -50,13 +50,13 @@ void Step::vLocalStore(void)
 {
   ENTRY();
   
-  if ( ! m_pLocalsFrame ) THROW_DSTACK();
+  if ( ! m_pLocalFrame ) THROW_DSTACK();
   
   i8 iLocal = m_pDataStack->iPopInt(__func__);
   
-  SenCell* pLocal = m_pLocalsFrame->pLocal(iLocal);
+  SenCell* pLocal = m_pLocalFrame->pSenCell(iLocal);
   
-  m_pDataStack->vPopTypeValue(pLocal->aTypeValueArea(),__func__);
+  m_pDataStack->vPopTypeValueArea(pLocal->aTypeValueArea(),__func__);
  
   EXIT();
 }
@@ -127,11 +127,11 @@ void Step::vLocalsPop(void)
 {
   ENTRY();
   
-  LocalChain* pLocalsFrame = m_pLocalsFrame;
+  LocalFrame* pLocalsFrame = m_pLocalFrame;
   
   if ( ! pLocalsFrame ) THROW_DSTACK();
   
-  m_pLocalsFrame = m_pLocalsFrame->pNext();
+  m_pLocalFrame = m_pLocalFrame->pNext();
   
   delete pLocalsFrame;
   
@@ -149,13 +149,13 @@ void Step::vLocalsPush(void)
     vDebugPoint();
 
   
-  LocalChain* pLocalsFrame = new LocalChain;
+  LocalFrame* pLocalsFrame = new LocalFrame;
   
   pLocalsFrame->vDiscardPoint((TypeValueArea*)m_pReturnStack->aTopVal());
   
-  pLocalsFrame->vNext(m_pLocalsFrame);
+  pLocalsFrame->vNext(m_pLocalFrame);
   
-  m_pLocalsFrame = pLocalsFrame;
+  m_pLocalFrame = pLocalsFrame;
   
   EXIT();
 }

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* CellSingle.hpp -- Segment of Cells                                        */
+/* SenCell.hpp -- SEN Cell                                                    */
 /*============================================================================*/
 #pragma once
 
@@ -10,9 +10,7 @@ namespace BASE
   class SenCell : public Object
   {
   protected:
-        
     TypeValueArea m_xTypeValueArea;
-  
 
     // must be last
     Footer m_xFooter;
@@ -32,7 +30,6 @@ namespace BASE
     void operator =(Object* pObject);
     void operator =(Stz* szStz);
   
-    eCN  eAnyClass(void);
    
     char* azChar(void);
   
@@ -53,6 +50,7 @@ namespace BASE
     Stz* szStz(void);
   
     void vToString(Stz* szDst);
+    eCN  eType(void);
     TypeValue* aTypeValue(void);
     TypeValueArea* aTypeValueArea(void);
 

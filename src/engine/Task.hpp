@@ -83,7 +83,7 @@ namespace ENGINE
     TypedStack*  m_pDataStack;    // data stack
     TypedStack*  m_pReturnStack;  // return stack
 
-    LocalChain*  m_pLocalsFrame;  // locals| | register frame chain
+    LocalFrame*  m_pLocalFrame;   // locals| | register frame chain
     LocalVars*   m_pLocalVars;
   
     SenCompiler* m_pSenCompiler;  // sen word compiler
