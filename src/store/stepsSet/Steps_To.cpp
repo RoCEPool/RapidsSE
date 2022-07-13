@@ -150,7 +150,7 @@ void Step::vToStr(void)
   ENTRY();
   
   SenCell xVar;
-  m_pDataStack->vPopTypeValueArea(xVar,__func__);
+  m_pDataStack->vPopSenCell(xVar,__func__);
   
   s48K sString;
   

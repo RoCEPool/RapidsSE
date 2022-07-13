@@ -23,6 +23,7 @@ namespace BASE
    ~SenCell(void) noexcept(false);
   
     // auto conversion
+    operator SenCell*(void);
     operator TypeValueArea*(void);
 
     void operator =(d8 dFlt);
@@ -47,6 +48,7 @@ namespace BASE
     void vPutColVal(i8 iColVal);
     void vPutColVal(Object* pObject);
 
+    i8   nStackUsage(void);
     Stz* szStz(void);
   
     void vToString(Stz* szDst);

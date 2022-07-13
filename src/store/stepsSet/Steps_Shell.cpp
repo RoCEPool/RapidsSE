@@ -26,7 +26,7 @@ void Step::vShellExecute(void)
   
   SenCell xCommand;
   
-  m_pDataStack->vPopTypeValueArea(xCommand,__func__);
+  m_pDataStack->vPopSenCell(xCommand,__func__);
   
   SysCall oSysCall;
   

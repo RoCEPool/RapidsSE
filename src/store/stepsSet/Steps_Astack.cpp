@@ -96,10 +96,10 @@ void Step::vAstackDup(void)
   // could just copy from stack back into stack
   
   SenCell xValA;
-   m_pAuxStack->vPopTypeValueArea(xValA,__func__);
+   m_pAuxStack->vPopSenCell(xValA,__func__);
   
-   m_pAuxStack->vPushTypeValueArea(xValA);
-   m_pAuxStack->vPushTypeValueArea(xValA);
+   m_pAuxStack->vPushSenCell(xValA);
+   m_pAuxStack->vPushSenCell(xValA);
   
   EXIT();
 }
@@ -117,7 +117,7 @@ void Step::vAstackFetch(void)
   
    m_pAuxStack->vPeekTypeValueArea(0,xVariable);
   
-  m_pDataStack->vPushTypeValueArea(xVariable);
+  m_pDataStack->vPushSenCell(xVariable);
   
   EXIT();
 }
@@ -130,12 +130,12 @@ void Step::vAstackNip(void)
   ENTRY();
   
   SenCell xValA;
-   m_pAuxStack->vPopTypeValueArea(xValA,__func__);
+   m_pAuxStack->vPopSenCell(xValA,__func__);
   
   SenCell xValB;
-   m_pAuxStack->vPopTypeValueArea(xValB,__func__);
+   m_pAuxStack->vPopSenCell(xValB,__func__);
 
-   m_pAuxStack->vPushTypeValueArea(xValA);
+   m_pAuxStack->vPushSenCell(xValA);
   
   EXIT();
 }
@@ -155,7 +155,7 @@ void Step::vAstackPick(void)
   
    m_pAuxStack->vPeekTypeValueArea(iPick,xVariable);
   
-  m_pDataStack->vPushTypeValueArea(xVariable);
+  m_pDataStack->vPushSenCell(xVariable);
   
   EXIT();
 }
@@ -180,25 +180,25 @@ void Step::vAstackReverse(void)
   
   
   switch (nValues) {
-    case 8:  m_pAuxStack->vPopTypeValueArea(xVal8,__func__);
-    case 7:  m_pAuxStack->vPopTypeValueArea(xVal7,__func__);
-    case 6:  m_pAuxStack->vPopTypeValueArea(xVal6,__func__);
-    case 5:  m_pAuxStack->vPopTypeValueArea(xVal5,__func__);
-    case 4:  m_pAuxStack->vPopTypeValueArea(xVal4,__func__);
-    case 3:  m_pAuxStack->vPopTypeValueArea(xVal3,__func__);
-    case 2:  m_pAuxStack->vPopTypeValueArea(xVal2,__func__);
-    case 1:  m_pAuxStack->vPopTypeValueArea(xVal1,__func__);
+    case 8:  m_pAuxStack->vPopSenCell(xVal8,__func__);
+    case 7:  m_pAuxStack->vPopSenCell(xVal7,__func__);
+    case 6:  m_pAuxStack->vPopSenCell(xVal6,__func__);
+    case 5:  m_pAuxStack->vPopSenCell(xVal5,__func__);
+    case 4:  m_pAuxStack->vPopSenCell(xVal4,__func__);
+    case 3:  m_pAuxStack->vPopSenCell(xVal3,__func__);
+    case 2:  m_pAuxStack->vPopSenCell(xVal2,__func__);
+    case 1:  m_pAuxStack->vPopSenCell(xVal1,__func__);
   }
   
   switch (nValues) {
-    case 8:  m_pAuxStack->vPushTypeValueArea(xVal8);
-    case 7:  m_pAuxStack->vPushTypeValueArea(xVal7);
-    case 6:  m_pAuxStack->vPushTypeValueArea(xVal6);
-    case 5:  m_pAuxStack->vPushTypeValueArea(xVal5);
-    case 4:  m_pAuxStack->vPushTypeValueArea(xVal4);
-    case 3:  m_pAuxStack->vPushTypeValueArea(xVal3);
-    case 2:  m_pAuxStack->vPushTypeValueArea(xVal2);
-    case 1:  m_pAuxStack->vPushTypeValueArea(xVal1);
+    case 8:  m_pAuxStack->vPushSenCell(xVal8);
+    case 7:  m_pAuxStack->vPushSenCell(xVal7);
+    case 6:  m_pAuxStack->vPushSenCell(xVal6);
+    case 5:  m_pAuxStack->vPushSenCell(xVal5);
+    case 4:  m_pAuxStack->vPushSenCell(xVal4);
+    case 3:  m_pAuxStack->vPushSenCell(xVal3);
+    case 2:  m_pAuxStack->vPushSenCell(xVal2);
+    case 1:  m_pAuxStack->vPushSenCell(xVal1);
   }
 }
 
@@ -210,16 +210,16 @@ void Step::vAstackRot(void)
   ENTRY();
   
   SenCell xVarA;
-  m_pAuxStack->vPopTypeValueArea(xVarA,__func__);
+  m_pAuxStack->vPopSenCell(xVarA,__func__);
   SenCell xVarB;
-  m_pAuxStack->vPopTypeValueArea(xVarB,__func__);
+  m_pAuxStack->vPopSenCell(xVarB,__func__);
   SenCell xVarC;
-  m_pAuxStack->vPopTypeValueArea(xVarC,__func__);
+  m_pAuxStack->vPopSenCell(xVarC,__func__);
 
   
-  m_pAuxStack->vPushTypeValueArea(xVarB);
-  m_pAuxStack->vPushTypeValueArea(xVarA);
-  m_pAuxStack->vPushTypeValueArea(xVarC);
+  m_pAuxStack->vPushSenCell(xVarB);
+  m_pAuxStack->vPushSenCell(xVarA);
+  m_pAuxStack->vPushSenCell(xVarC);
   
   EXIT();
 }
@@ -232,15 +232,15 @@ void Step::vAstackRotInv(void)
   ENTRY();
   
   SenCell xVarA;
-  m_pAuxStack->vPopTypeValueArea(xVarA,__func__);
+  m_pAuxStack->vPopSenCell(xVarA,__func__);
   SenCell xVarB;
-  m_pAuxStack->vPopTypeValueArea(xVarB,__func__);
+  m_pAuxStack->vPopSenCell(xVarB,__func__);
   SenCell xVarC;
-  m_pAuxStack->vPopTypeValueArea(xVarC,__func__);
+  m_pAuxStack->vPopSenCell(xVarC,__func__);
 
-  m_pAuxStack->vPushTypeValueArea(xVarA);
-  m_pAuxStack->vPushTypeValueArea(xVarC);
-  m_pAuxStack->vPushTypeValueArea(xVarB);
+  m_pAuxStack->vPushSenCell(xVarA);
+  m_pAuxStack->vPushSenCell(xVarC);
+  m_pAuxStack->vPushSenCell(xVarB);
   
   EXIT();
 }
@@ -265,13 +265,13 @@ void Step::vAstackSwap(void)
   ENTRY();
   
   SenCell xValA;
-   m_pAuxStack->vPopTypeValueArea(xValA,__func__);
+   m_pAuxStack->vPopSenCell(xValA,__func__);
   
   SenCell xValB;
-   m_pAuxStack->vPopTypeValueArea(xValB,__func__);
+   m_pAuxStack->vPopSenCell(xValB,__func__);
 
-   m_pAuxStack->vPushTypeValueArea(xValA);
-   m_pAuxStack->vPushTypeValueArea(xValB);
+   m_pAuxStack->vPushSenCell(xValA);
+   m_pAuxStack->vPushSenCell(xValB);
   
   EXIT();
 }
@@ -284,9 +284,9 @@ void Step::vAstackToA(void)
   ENTRY();
   
   SenCell xValOpaque;
-  m_pDataStack->vPopTypeValueArea(xValOpaque,__func__);
+  m_pDataStack->vPopSenCell(xValOpaque,__func__);
   
-   m_pAuxStack->vPushTypeValueArea(xValOpaque);
+   m_pAuxStack->vPushSenCell(xValOpaque);
   
   EXIT();
 }
@@ -299,9 +299,9 @@ void Step::vAstackToD(void)
   ENTRY();
   
   SenCell xVal;
-   m_pAuxStack->vPopTypeValueArea(xVal,__func__);
+   m_pAuxStack->vPopSenCell(xVal,__func__);
   
-  m_pDataStack->vPushTypeValueArea(xVal);
+  m_pDataStack->vPushSenCell(xVal);
   
   EXIT();
 }
@@ -319,7 +319,7 @@ void Step::vAstack0(void)
   
    m_pAuxStack->vPeekTypeValueArea(0,xVariable);
   
-  m_pDataStack->vPushTypeValueArea(xVariable);
+  m_pDataStack->vPushSenCell(xVariable);
   
   EXIT();
 }
@@ -337,7 +337,7 @@ void Step::vAstack1(void)
   
    m_pAuxStack->vPeekTypeValueArea(1,xVariable);
   
-  m_pDataStack->vPushTypeValueArea(xVariable);
+  m_pDataStack->vPushSenCell(xVariable);
   
   EXIT();
 }
@@ -355,7 +355,7 @@ void Step::vAstack2(void)
   
    m_pAuxStack->vPeekTypeValueArea(2,xVariable);
   
-  m_pDataStack->vPushTypeValueArea(xVariable);
+  m_pDataStack->vPushSenCell(xVariable);
   
   EXIT();
 }
@@ -373,7 +373,7 @@ void Step::vAstack3(void)
   
    m_pAuxStack->vPeekTypeValueArea(3,xVariable);
   
-  m_pDataStack->vPushTypeValueArea(xVariable);
+  m_pDataStack->vPushSenCell(xVariable);
   
   EXIT();
 }
@@ -391,7 +391,7 @@ void Step::vAstack4(void)
   
    m_pAuxStack->vPeekTypeValueArea(4,xVariable);
   
-  m_pDataStack->vPushTypeValueArea(xVariable);
+  m_pDataStack->vPushSenCell(xVariable);
   
   EXIT();
 }
@@ -409,7 +409,7 @@ void Step::vAstack5(void)
   
    m_pAuxStack->vPeekTypeValueArea(5,xVariable);
   
-  m_pDataStack->vPushTypeValueArea(xVariable);
+  m_pDataStack->vPushSenCell(xVariable);
   
   EXIT();
 }
@@ -427,7 +427,7 @@ void Step::vAstack6(void)
   
    m_pAuxStack->vPeekTypeValueArea(6,xVariable);
   
-  m_pDataStack->vPushTypeValueArea(xVariable);
+  m_pDataStack->vPushSenCell(xVariable);
   
   EXIT();
 }
@@ -445,7 +445,7 @@ void Step::vAstack7(void)
   
    m_pAuxStack->vPeekTypeValueArea(7,xVariable);
   
-  m_pDataStack->vPushTypeValueArea(xVariable);
+  m_pDataStack->vPushSenCell(xVariable);
   
   EXIT();
 }
@@ -463,7 +463,7 @@ void Step::vAstack8(void)
   
    m_pAuxStack->vPeekTypeValueArea(8,xVariable);
   
-  m_pDataStack->vPushTypeValueArea(xVariable);
+  m_pDataStack->vPushSenCell(xVariable);
   
   EXIT();
 }
@@ -481,7 +481,7 @@ void Step::vAstack9(void)
   
    m_pAuxStack->vPeekTypeValueArea(9,xVariable);
   
-  m_pDataStack->vPushTypeValueArea(xVariable);
+  m_pDataStack->vPushSenCell(xVariable);
   
   EXIT();
 }

@@ -70,7 +70,7 @@ void Step::vObjectFetch(void)
   
   m_pReturnStack->vPeekTypeValueArea(iPick,xObjectVar);
   
-  m_pDataStack->vPushTypeValueArea(xObjectVar);
+  m_pDataStack->vPushSenCell(xObjectVar);
   
   EXIT();
 }
@@ -136,7 +136,7 @@ void Step::vObjectStore(void)
   
   SenCell xObjectVar;
   
-  m_pDataStack->vPopTypeValueArea(xObjectVar,__func__);
+  m_pDataStack->vPopSenCell(xObjectVar,__func__);
   
   m_pReturnStack->vPokeItem(iPeek,xObjectVar);
   

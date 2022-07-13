@@ -42,6 +42,16 @@ SenCell::~SenCell(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* auto conversion operator : as TypedCell*                                   */
 /*----------------------------------------------------------------------------*/
+SenCell::operator SenCell*(void)
+{
+  _precondition_(_MAGIC_,CN_SENCELL,_FOOTER_);
+  
+  return this;
+}
+
+/*----------------------------------------------------------------------------*/
+/* auto conversion operator : as TypedCell*                                   */
+/*----------------------------------------------------------------------------*/
 SenCell::operator TypeValueArea*(void)
 {
   _precondition_(_MAGIC_,CN_SENCELL,_FOOTER_);
@@ -224,6 +234,17 @@ void SenCell::vPutColVal(Object* pObject)
   m_xTypeValueArea.m_wxValue.vPutColVal(pObject);
 }
 
+/*----------------------------------------------------------------------------*/
+/* get how many bytes are needed to push this StzVal on stack                 */
+/*----------------------------------------------------------------------------*/
+i8 SenCell::nStackUsage(void)
+{
+  _precondition_(_MAGIC_,CN_SENCELL,_FOOTER_);
+  
+  i8 nBytes = m_xTypeValueArea.nStackUsage();
+  
+  return nBytes;
+}
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/

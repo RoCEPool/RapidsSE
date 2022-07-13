@@ -4321,7 +4321,7 @@ void AM::vWordSeeDoes(Word* pDoesWord, CodeCell* aDoes,
       vTrace("%p: %s"_Stz,aCell,szStepNm);
       aCell++;
       
-      TypeValueArea* aTypedCell = _aTypedCell(aCell);
+      TypeValueArea* aTypedCell = _aTypeValueArea(aCell);
       vTrace(" %lld\n"_Stz,aTypedCell->m_wxValue.iGetColVal());
       
       i8 iBytes = aTypedCell->nStackUsage();
@@ -4338,7 +4338,7 @@ void AM::vWordSeeDoes(Word* pDoesWord, CodeCell* aDoes,
       vTrace("%p: %s"_Stz,aCell,szStepNm);
       aCell++;
       
-      TypeValueArea* aTypedCell = _aTypedCell(aCell);
+      TypeValueArea* aTypedCell = _aTypeValueArea(aCell);
       vTrace(" %s\n"_Stz
              ,aTypedCell->m_wxValue.iGetColVal() ? "true" : "false");
       
@@ -4356,7 +4356,7 @@ void AM::vWordSeeDoes(Word* pDoesWord, CodeCell* aDoes,
       vTrace("%p: %s"_Stz,aCell,szStepNm);
       aCell++;
       
-      TypeValueArea* aTypedCell = _aTypedCell(aCell);
+      TypeValueArea* aTypedCell = _aTypeValueArea(aCell);
       vTrace(" %g\n"_Stz,aTypedCell->m_wxValue.dGetColVal());
       
       i8 iBytes = aTypedCell->nStackUsage();
@@ -4374,7 +4374,7 @@ void AM::vWordSeeDoes(Word* pDoesWord, CodeCell* aDoes,
       aCell++;
       
 //      IntVal* aIntVal = _aIntVal(aCell);
-      TypeValueArea* aTypedCell = _aTypedCell(aCell);
+      TypeValueArea* aTypedCell = _aTypeValueArea(aCell);
       vTrace(" %lld\n"_Stz,aTypedCell->m_wxValue.iGetColVal());
       
       i8 iBytes = aTypedCell->nStackUsage();
@@ -4391,7 +4391,7 @@ void AM::vWordSeeDoes(Word* pDoesWord, CodeCell* aDoes,
       vTrace("%p: %s"_Stz,aCell,szStepNm);
       aCell++;
       
-      TypeValueArea* aTypedCell = _aTypedCell(aCell);
+      TypeValueArea* aTypedCell = _aTypeValueArea(aCell);
       eCN eClassNo_obj = aTypedCell->pObj()->eGetClassNo();
 
       if (CN_WORD == eClassNo_obj) {
@@ -4416,7 +4416,7 @@ void AM::vWordSeeDoes(Word* pDoesWord, CodeCell* aDoes,
       vTrace("%p: %s"_Stz,aCell,szStepNm);
       aCell++;
       
-      TypeValueArea* aTypedCell = _aTypedCell(aCell);
+      TypeValueArea* aTypedCell = _aTypeValueArea(aCell);
       vTrace(" \"%s\"\n"_Stz,aTypedCell->szStz());
       
       i8 iBytes = aTypedCell->nStackUsage();

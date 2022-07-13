@@ -103,7 +103,7 @@ void Step::vSocketConnect(void)
   
   Socket* pSocket = *m_pLogicUnit->m_xpSocket;
 
-  m_pDataStack->vPopTypeValueArea(xNodeVar,__func__);
+  m_pDataStack->vPopSenCell(xNodeVar,__func__);
   
   i8 iPort = m_pDataStack->iPopInt(__func__);
   

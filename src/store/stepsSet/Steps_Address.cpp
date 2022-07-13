@@ -27,10 +27,10 @@ void Step::vAddressEqual(void)
   ENTRY();
   
   SenCell xAddressA;
-  m_pDataStack->vPopTypeValueArea(xAddressA,__func__);
+  m_pDataStack->vPopSenCell(xAddressA,__func__);
   
   SenCell xAddressB;
-  m_pDataStack->vPopTypeValueArea(xAddressB,__func__);
+  m_pDataStack->vPopSenCell(xAddressB,__func__);
 
   i8 iA = xAddressA.iGetColVal();
   i8 iB = xAddressB.iGetColVal();
@@ -49,11 +49,11 @@ void Step::vAddressFetch(void)
 {
   ENTRY();
   
-  TypeValueArea* aTypedCell = _aTypedCell(m_pDataStack->pPopPtr(__func__));
+  TypeValueArea* aTypeValueArea = _aTypeValueArea(m_pDataStack->pPopPtr(__func__));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-  m_pDataStack->vPushTypeValueArea(aTypedCell);
+  m_pDataStack->vPushTypeValueArea(aTypeValueArea);
   
   EXIT();
 }
@@ -65,10 +65,10 @@ void Step::vAddressStore(void)
 {
   ENTRY();
   
-  TypeValueArea* aTypedCell = _aTypedCell(m_pDataStack->pPopPtr(__func__));
+  TypeValueArea* aTypedCell = _aTypeValueArea(m_pDataStack->pPopPtr(__func__));
 
   SenCell xValToStore;
-  m_pDataStack->vPopTypeValueArea(xValToStore,__func__);
+  m_pDataStack->vPopSenCell(xValToStore,__func__);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     

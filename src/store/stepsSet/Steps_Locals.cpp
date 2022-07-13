@@ -34,11 +34,11 @@ void Step::vLocalFetch(void)
   
   if ( ! m_pLocalFrame ) THROW_DSTACK();
   
-  i8 iLocal = m_pDataStack->iPopInt(__func__);
+  i8 i_Local = m_pDataStack->iPopInt(__func__);
   
-  SenCell* pLocal = m_pLocalFrame->pSenCell(iLocal);
+  SenCell* pSenCell = m_pLocalFrame->pSenCell(i_Local);
   
-  m_pDataStack->vPushTypeValueArea(pLocal->aTypeValueArea());
+  m_pDataStack->vPushSenCell(pSenCell);
   
   EXIT();
 }
@@ -52,11 +52,11 @@ void Step::vLocalStore(void)
   
   if ( ! m_pLocalFrame ) THROW_DSTACK();
   
-  i8 iLocal = m_pDataStack->iPopInt(__func__);
+  i8 i_Local = m_pDataStack->iPopInt(__func__);
   
-  SenCell* pLocal = m_pLocalFrame->pSenCell(iLocal);
+  SenCell* pSenCell = m_pLocalFrame->pSenCell(i_Local);
   
-  m_pDataStack->vPopTypeValueArea(pLocal->aTypeValueArea(),__func__);
+  m_pDataStack->vPopSenCell(pSenCell,__func__);
  
   EXIT();
 }

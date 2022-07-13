@@ -62,7 +62,7 @@ void Step::vEncodeCurrentPush(void)
   Word* pCurrentWord =  m_pSenCompiler->pCurrentWord();
   
   SenCell xVal;
-  m_pDataStack->vPopTypeValueArea(xVal,__func__);
+  m_pDataStack->vPopSenCell(xVal,__func__);
 
   pCurrentWord->vEncodePush(xVal);
   
@@ -97,7 +97,7 @@ void Step::vEncodePush(void)
   Word* pTargetWord = _pWord(m_pDataStack->pPopPtr(__func__));
 
   SenCell xVal;
-  m_pDataStack->vPopTypeValueArea(xVal,__func__);
+  m_pDataStack->vPopSenCell(xVal,__func__);
 
   pTargetWord->vEncodePush(xVal);
   

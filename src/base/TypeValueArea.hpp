@@ -66,11 +66,11 @@ namespace BASE
   /*--------------------------------------------------------------------------*/
   /* safe cast                                                                */
   /*--------------------------------------------------------------------------*/
-  inline TypeValueArea* _aTypedCell(void* aAddr)
+  inline TypeValueArea* _aTypeValueArea(void* aAddr)
   {
-  TypeValueArea* aTypedCell = reinterpret_cast<TypeValueArea*>(aAddr);
+    TypeValueArea* aTypedValueArea = reinterpret_cast<TypeValueArea*>(aAddr);
 
-    return aTypedCell;
+    return aTypedValueArea;
   }
 
 }
