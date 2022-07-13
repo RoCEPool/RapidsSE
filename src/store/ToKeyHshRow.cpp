@@ -1337,10 +1337,6 @@ L_Decimal:
       vACCEPT_CHAR(); // skip remaining digits
   }
 
-  // have we exceeded the max ?
-  if (uScaledNumber > (u8)C_I8_MAX)
-    vFIELD_ERROR(EC_CSV_DECIMAL_TOO_LARGE);
-
   // ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
   //                                                         recognized decimal
     
@@ -1350,11 +1346,15 @@ L_Decimal:
   
   // compute final field value
   iColVal_decimal = bIsNegative ? - uScaledNumber : uScaledNumber;
-  
-  // have we gone below the negative min ?
-  if (iColVal_decimal < C_I8_MIN)
+
+  // have we exceeded the decimal max ?
+  if (iColVal_decimal > C_BCD_MAX)
+    vFIELD_ERROR(EC_CSV_DECIMAL_TOO_LARGE);
+
+  // have we gone below the decimal min ?
+  if (iColVal_decimal < C_BCD_MIN)
     vFIELD_ERROR(EC_CSV_DECIMAL_TOO_SMALL);
-    
+
   // ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡
   //                                                            deposit decimal
     
