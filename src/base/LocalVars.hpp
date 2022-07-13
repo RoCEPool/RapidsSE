@@ -10,7 +10,7 @@ namespace BASE
   struct _LclVar {
     i8      m__dummy0;
     i8      m__dummy1;
-    TypeValue m_xSenCell;
+    TypeValue m_xTypeValue;
   };
 
   static const i8 C_LOCAL_VARS = (C_SIZE_MEDIUM_OBJECT - 128) / sizeof(_LclVar);
