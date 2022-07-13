@@ -7,11 +7,16 @@
 
 namespace BASE
 {
+  //class LocalVars;
+
   class TypeValueLcl : public TypeValue
   {
   public:
     
-    char m_caStringArea[C_16KB];
+    char       m_caStringArea[C_16KB];
+  
+    LocalVars* m_pLocalVars;
+    i8         m_i_Local;
 
   public:
     TypeValueLcl(void);

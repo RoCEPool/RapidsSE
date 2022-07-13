@@ -15,8 +15,11 @@
 /*----------------------------------------------------------------------------*/
 TypeValueLcl::TypeValueLcl(void)
 {
+  m_pLocalVars = nullptr;
+  m_i_Local    = C_UNKNOWN;
+
   #ifdef WITH_CHECK_INITIALISED
-    MemLib::vZero(m_caStringArea,sizeof(m_caStringArea),CN_CELLSINGLE);
+    MemLib::vZero(m_caStringArea,sizeof(m_caStringArea),CN_SENCELL);
   #endif
  }
 
