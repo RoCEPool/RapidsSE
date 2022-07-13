@@ -69,6 +69,7 @@ namespace BASE
     void vPopStr(String* pStr, const char* azCallingFunNm);
     void vPopSenCell(SenCell* aSenCell, const char* azCallingFunNm);
     void vPopTypeValueArea(TypeValueArea* aTypeValueArea, const char* azCallingFunNm);
+    void vPopTypeValueDscr(TypeValueDscr* aTypeValueDscr, const char* azCallingFunNm);
 
     void vPushBcd(i8 iInt);
     void vPushBol(i8 iInt);
@@ -80,6 +81,7 @@ namespace BASE
     void vPushStz(Stz* szStz);
     void vPushSenCell(SenCell* aSenCell);
     void vPushTypeValueArea(TypeValueArea* aSenCell);
+    void vPushTypeValueDscr(TypeValueDscr* aTypeValueDscr);
 
     void vReset(void);
     void vRetry(void);

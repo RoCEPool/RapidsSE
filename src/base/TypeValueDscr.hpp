@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* TypeValueLcl.hpp -- Self-Describing / Dynamically Typed Value + Area      */
+/* TypeValueDscr.hpp -- Type + Value + Descriptor                             */
 /*============================================================================*/
 #pragma once
 
@@ -7,9 +7,12 @@
 
 namespace BASE
 {
-  //class LocalVars;
+  class LocalStr;
+  class LocalStrMedium;
+  class LocalVars;
 
-  class TypeValueLcl : public TypeValue
+//class Local         : public TypeValue
+  class TypeValueDscr : public TypeValue
   {
   public:
     
@@ -18,9 +21,15 @@ namespace BASE
     LocalVars* m_pLocalVars;
     i8         m_i_Local;
 
+    b8         m_bLocalStr;
+    union {
+      LocalStr*        m_pLocalStr;
+      LocalStrMedium*  m_pLocalStrMedium;
+    };
+  
   public:
-    TypeValueLcl(void);
-   ~TypeValueLcl(void) noexcept(false);
+    TypeValueDscr(void);
+   ~TypeValueDscr(void) noexcept(false);
   
     i8 iAsInt(void);
 
@@ -32,7 +41,7 @@ namespace BASE
 
     char* azChar(void);
   
-    void vCopy(TypeValueLcl* aTypedCell, i8 nBytes=0);
+    void vCopy(TypeValueDscr* aTypedCell, i8 nBytes=0);
 
     CodeCell* aFip(void);
     void vFip(CodeCell* aFip);
@@ -71,9 +80,9 @@ namespace BASE
   /*--------------------------------------------------------------------------*/
   /* safe cast                                                                */
   /*--------------------------------------------------------------------------*/
-  inline TypeValueLcl* _aTypeValueLcl(void* aAddr)
+  inline TypeValueDscr* _aTypeValueLcl(void* aAddr)
   {
-  TypeValueLcl* aTypeValueLcl = reinterpret_cast<TypeValueLcl*>(aAddr);
+  TypeValueDscr* aTypeValueLcl = reinterpret_cast<TypeValueDscr*>(aAddr);
 
     return aTypeValueLcl;
   }

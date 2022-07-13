@@ -167,6 +167,7 @@ enum eCN : u2 // Class Number
   /* */ CN_LOCALCHAIN,
   /* */ CN_LOCALDIR,
   /* */ CN_LOCALFILE,
+  /* */ CN_LOCALSTRMEDIUM,
   /* */ CN_LOCALSTRS,
   /* */ CN_LOCALVARS,
   /* */ CN_LOCATION,
@@ -582,6 +583,7 @@ static Stz* aCN[]
   /* */ "LOCALCHAIN"_Stz,           // CN_LOCALCHAIN
   /* */ "LOCALDIR"_Stz,             // CN_LOCALDIR
   /* */ "LOCALFILE"_Stz,            // CN_LOCALFILE
+  /* */ "LOCALSTRMEDIUM"_Stz,       // CN_LOCALSTRMEDIUM
   /* */ "LOCALSTRS"_Stz,            // CN_LOCALSTRS
   /* */ "LOCALVARS"_Stz,            // CN_LOCALVARS
   /* */ "LOCATION"_Stz,             // CN_LOCATION

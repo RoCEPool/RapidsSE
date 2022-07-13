@@ -475,6 +475,16 @@ void TypedStack::vPopTypeValueArea(TypeValueArea* aTypeValueArea,
 }
 
 /*----------------------------------------------------------------------------*/
+/* pop value from stack                                                       */
+/*----------------------------------------------------------------------------*/
+void TypedStack::vPopTypeValueDscr(TypeValueDscr* aTypeValueDscr,
+                                   const char* azCallingFunNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* push BCD onto stack                                                        */
 /*----------------------------------------------------------------------------*/
 void TypedStack::vPushBcd(i8 iBcd)
@@ -612,6 +622,14 @@ void TypedStack::vPushTypeValueArea(TypeValueArea* aTypeValueArea)
   _hazard_();
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* push value onto stack                                                      */
+/*----------------------------------------------------------------------------*/
+void TypedStack::vPushTypeValueDscr(TypeValueDscr* aTypeValueDscr)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -1,10 +1,10 @@
 /*============================================================================*/
-/* TypeValueLcl.cpp -- Self-Describing / Dynamically Typed Value + Area      */
+/* TypeValueDscr.cpp -- Type + Value + Descriptor                             */
 /*============================================================================*/
 
 #include "BASE.h"
 
-#include "TypeValueLcl.hpp"
+#include "TypeValueDscr.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- Lifecycle ---------------------------------------------------------------*/
@@ -13,11 +13,15 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-TypeValueLcl::TypeValueLcl(void)
+TypeValueDscr::TypeValueDscr(void)
 {
   m_pLocalVars = nullptr;
   m_i_Local    = C_UNKNOWN;
+  
+  m_bLocalStr  = false;
 
+  m_pLocalStr  = nullptr;
+  
   #ifdef WITH_CHECK_INITIALISED
     MemLib::vZero(m_caStringArea,sizeof(m_caStringArea),CN_SENCELL);
   #endif
@@ -26,7 +30,7 @@ TypeValueLcl::TypeValueLcl(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-TypeValueLcl::~TypeValueLcl(void) noexcept(false)
+TypeValueDscr::~TypeValueDscr(void) noexcept(false)
 {
  
 }
@@ -38,7 +42,7 @@ TypeValueLcl::~TypeValueLcl(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* return a value                                                             */
 /*----------------------------------------------------------------------------*/
-i8 TypeValueLcl::iBcd(void)
+i8 TypeValueDscr::iBcd(void)
 {
   return m_wxValue.iGetColVal();
 }
@@ -46,7 +50,7 @@ i8 TypeValueLcl::iBcd(void)
 /*----------------------------------------------------------------------------*/
 /* assign a value                                                             */
 /*----------------------------------------------------------------------------*/
-void TypeValueLcl::vBcd(i8 iBcd)
+void TypeValueDscr::vBcd(i8 iBcd)
 {
   vType(CN_BCDVAL);
   m_wxValue.vPutColVal(iBcd);
@@ -55,7 +59,7 @@ void TypeValueLcl::vBcd(i8 iBcd)
 /*----------------------------------------------------------------------------*/
 /* return a value                                                             */
 /*----------------------------------------------------------------------------*/
-i8 TypeValueLcl::iBol(void)
+i8 TypeValueDscr::iBol(void)
 {
   return m_wxValue.iGetColVal();
 }
@@ -63,7 +67,7 @@ i8 TypeValueLcl::iBol(void)
 /*----------------------------------------------------------------------------*/
 /* assign a value                                                             */
 /*----------------------------------------------------------------------------*/
-void TypeValueLcl::vBol(i8 iBcd)
+void TypeValueDscr::vBol(i8 iBcd)
 {
   vType(CN_BOLVAL);
   m_wxValue.vPutColVal(iBcd);
@@ -72,7 +76,7 @@ void TypeValueLcl::vBol(i8 iBcd)
 /*----------------------------------------------------------------------------*/
 /* get integer                                                                */
 /*----------------------------------------------------------------------------*/
-i8 TypeValueLcl::iAsInt(void)
+i8 TypeValueDscr::iAsInt(void)
 {
   return m_wxValue.iAsI8();
 }
@@ -80,7 +84,7 @@ i8 TypeValueLcl::iAsInt(void)
 /*----------------------------------------------------------------------------*/
 /* set type/class of embedded value                                           */
 /*----------------------------------------------------------------------------*/
-void TypeValueLcl::vInit(void)
+void TypeValueDscr::vInit(void)
 {
   vType(CN_NONE);
   vInt(-1);
@@ -96,7 +100,7 @@ void TypeValueLcl::vInit(void)
 /*----------------------------------------------------------------------------*/
 /* assign given str                                                           */
 /*----------------------------------------------------------------------------*/
-void TypeValueLcl::vStz(Stz* szStz)
+void TypeValueDscr::vStz(Stz* szStz)
 {
   vType(CN_STZVAL);
   
@@ -118,7 +122,7 @@ void TypeValueLcl::vStz(Stz* szStz)
 /*----------------------------------------------------------------------------*/
 /* get char*                                                                  */
 /*----------------------------------------------------------------------------*/
-char* TypeValueLcl::azChar(void)
+char* TypeValueDscr::azChar(void)
 {
   ASSERT(CN_STZVAL == eType());
 
@@ -128,7 +132,7 @@ char* TypeValueLcl::azChar(void)
 /*----------------------------------------------------------------------------*/
 /* copy source stack value into this one                                      */
 /*----------------------------------------------------------------------------*/
-void TypeValueLcl::vCopy(TypeValueLcl* aSrcVal, i8 nBytes)
+void TypeValueDscr::vCopy(TypeValueDscr* aSrcVal, i8 nBytes)
 {
   if (! nBytes)
     nBytes = aSrcVal->nStackUsage();
@@ -139,7 +143,7 @@ void TypeValueLcl::vCopy(TypeValueLcl* aSrcVal, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* return a value                                                             */
 /*----------------------------------------------------------------------------*/
-CodeCell* TypeValueLcl::aFip(void)
+CodeCell* TypeValueDscr::aFip(void)
 {
   return m_wxValue.aGetColVal();
 }
@@ -147,7 +151,7 @@ CodeCell* TypeValueLcl::aFip(void)
 /*----------------------------------------------------------------------------*/
 /* assign a value                                                             */
 /*----------------------------------------------------------------------------*/
-void TypeValueLcl::vFip(CodeCell* aFip)
+void TypeValueDscr::vFip(CodeCell* aFip)
 {
   vType(CN_FIPVAL);
   m_wxValue.vPutColVal(aFip);
@@ -156,7 +160,7 @@ void TypeValueLcl::vFip(CodeCell* aFip)
 /*----------------------------------------------------------------------------*/
 /* return a value                                                             */
 /*----------------------------------------------------------------------------*/
-d8 TypeValueLcl::dFlt(void)
+d8 TypeValueDscr::dFlt(void)
 {
   return m_wxValue.dGetColVal();
 }
@@ -164,7 +168,7 @@ d8 TypeValueLcl::dFlt(void)
 /*----------------------------------------------------------------------------*/
 /* assign a value                                                             */
 /*----------------------------------------------------------------------------*/
-void TypeValueLcl::vFlt(d8 dFlt)
+void TypeValueDscr::vFlt(d8 dFlt)
 {
   vType(CN_FLTVAL);
   m_wxValue.vPutColVal(dFlt);
@@ -173,7 +177,7 @@ void TypeValueLcl::vFlt(d8 dFlt)
 /*----------------------------------------------------------------------------*/
 /* return a value                                                             */
 /*----------------------------------------------------------------------------*/
-i8 TypeValueLcl::iInt(void)
+i8 TypeValueDscr::iInt(void)
 {
   return m_wxValue.iGetColVal();
 }
@@ -181,7 +185,7 @@ i8 TypeValueLcl::iInt(void)
 /*----------------------------------------------------------------------------*/
 /* assign a value                                                             */
 /*----------------------------------------------------------------------------*/
-void TypeValueLcl::vInt(i8 iInt)
+void TypeValueDscr::vInt(i8 iInt)
 {
   vType(CN_INTVAL);
   m_wxValue.vPutColVal(iInt);
@@ -190,7 +194,7 @@ void TypeValueLcl::vInt(i8 iInt)
 /*----------------------------------------------------------------------------*/
 /* set magic                                                                  */
 /*----------------------------------------------------------------------------*/
-void TypeValueLcl::vMagic(void)
+void TypeValueDscr::vMagic(void)
 {
   m_wxType.vSetMagic();
 }
@@ -198,7 +202,7 @@ void TypeValueLcl::vMagic(void)
 /*----------------------------------------------------------------------------*/
 /* return a value                                                             */
 /*----------------------------------------------------------------------------*/
-Object* TypeValueLcl::pObj(void)
+Object* TypeValueDscr::pObj(void)
 {
   return m_wxValue.pGetColVal();
 }
@@ -206,7 +210,7 @@ Object* TypeValueLcl::pObj(void)
 /*----------------------------------------------------------------------------*/
 /* assign a value                                                             */
 /*----------------------------------------------------------------------------*/
-void TypeValueLcl::vObj(Object* pObject)
+void TypeValueDscr::vObj(Object* pObject)
 {
   vType(CN_PTRVAL);
   m_wxValue.vPutColVal(pObject);
@@ -215,7 +219,7 @@ void TypeValueLcl::vObj(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* get how many bytes are needed to push this StzVal on stack                 */
 /*----------------------------------------------------------------------------*/
-i8 TypeValueLcl::nStackUsage(void)
+i8 TypeValueDscr::nStackUsage(void)
 {
   i8 nBytes;
   
@@ -233,7 +237,7 @@ i8 TypeValueLcl::nStackUsage(void)
 /*----------------------------------------------------------------------------*/
 /* get adddress of Stz area                                                   */
 /*----------------------------------------------------------------------------*/
-Stz* TypeValueLcl::szStz(void)
+Stz* TypeValueDscr::szStz(void)
 {
   ASSERT(CN_STZVAL == eType());
   return reinterpret_cast<Stz*>(m_caStringArea);
@@ -242,7 +246,7 @@ Stz* TypeValueLcl::szStz(void)
 /*----------------------------------------------------------------------------*/
 /* get size of str                                                            */
 /*----------------------------------------------------------------------------*/
-i8 TypeValueLcl::nStzSize(void)
+i8 TypeValueDscr::nStzSize(void)
 {
   ASSERT(CN_STZVAL == eType());
   return m_wxValue.iGetColVal();
@@ -251,7 +255,7 @@ i8 TypeValueLcl::nStzSize(void)
 /*----------------------------------------------------------------------------*/
 /* set size of str                                                            */
 /*----------------------------------------------------------------------------*/
-void TypeValueLcl::vStzSize(i8 nSize)
+void TypeValueDscr::vStzSize(i8 nSize)
 {
   m_wxValue = nSize;
 }
@@ -259,7 +263,7 @@ void TypeValueLcl::vStzSize(i8 nSize)
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void TypeValueLcl::vToStz(Stz* szDst)
+void TypeValueDscr::vToStz(Stz* szDst)
 {
   if (CN_INTVAL == eType())
     * szDst = iInt();
@@ -277,7 +281,7 @@ void TypeValueLcl::vToStz(Stz* szDst)
 /*----------------------------------------------------------------------------*/
 /* get type/class of embedded value                                           */
 /*----------------------------------------------------------------------------*/
-eCN TypeValueLcl::eType(void)
+eCN TypeValueDscr::eType(void)
 {
   return (eCN)m_wxType.eGetClassNo();
 }
@@ -285,7 +289,7 @@ eCN TypeValueLcl::eType(void)
 /*----------------------------------------------------------------------------*/
 /* set type/class of embedded value                                           */
 /*----------------------------------------------------------------------------*/
-void TypeValueLcl::vType(eCN eType)
+void TypeValueDscr::vType(eCN eType)
 {
   m_wxType.vSetClassNo(eType);
 }
@@ -293,7 +297,7 @@ void TypeValueLcl::vType(eCN eType)
 /*----------------------------------------------------------------------------*/
 /* get address of type+value                                                  */
 /*----------------------------------------------------------------------------*/
-TypeValue* TypeValueLcl::aTypeValue(void)
+TypeValue* TypeValueDscr::aTypeValue(void)
 {
   return this;
 }
