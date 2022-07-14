@@ -856,7 +856,13 @@ function askPort() {
     fi
 
     if [[ ${line} -lt 1 || ${line} -gt 65535 ]]; then
-      echo "Invalid input: port number out of range [1024, 65535]."
+      if [[ ${EUID} -ne 0 ]]; then
+        # Regular user
+        echo "Invalid input: port number out of range [1024, 65535]."
+      else
+        # Superuser
+        echo "Invalid input: port number out of range [1, 65535]."
+      fi
       continue
     fi
 
@@ -1716,7 +1722,7 @@ function distributeFile() {
     local nodeRemotePath="${installDir}/${remotePath}"
 
     # Build the command
-    local cmd=( "scp" "-q" "${localPath}" ""${hostname}":${nodeRemotePath}"  )
+    local cmd=( "scp" "-q" "${localPath}" "${hostname}:${nodeRemotePath}"  )
 
     debugPrint "Distributing file ${localPath} to node ${nodeName} at ${nodeRemotePath}."
     debugPrint "Command: ${cmd[*]}"
