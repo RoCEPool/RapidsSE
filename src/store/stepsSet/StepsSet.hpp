@@ -1080,11 +1080,11 @@ void vDdlLockAssertNone(void);
   void vLoadTableTableStore(void);
 
   // locals
-  void vLocalFetch(void);
-  void vLocalStore(void);
+  void vLocalsFetch(void);
+  void vLocalsStore(void);
   void vLocalsBar(void);
-  void vLocalsPop(void);
-  void vLocalsPush(void);
+  void vLocalsFramePop(void);
+  void vLocalsFramePush(void);
   void vLocalsTo(void);
 
   // lock

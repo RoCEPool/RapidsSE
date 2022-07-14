@@ -38270,7 +38270,7 @@ void Task::vAddMunged(Task* )
     "  then\n"
     "  \n"
     "  senCompiler::locals@ if\n"
-    "    POSTPONE locals.pop\n"
+    "    POSTPONE locals.framePop\n"
     "  then\n"
     "\n"
     "  POSTPONE exit_rt\n"

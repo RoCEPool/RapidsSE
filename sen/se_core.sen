@@ -275,7 +275,7 @@ true find: CASE word.immediate!
   then
   
   senCompiler::locals@ if
-    POSTPONE locals.pop
+    POSTPONE locals.framePop
   then
 
   POSTPONE exit_rt

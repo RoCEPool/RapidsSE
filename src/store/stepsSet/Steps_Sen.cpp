@@ -222,7 +222,7 @@ void Step::vSenExit_RT(void)
   
   if (m_pLocalFrame
       && m_pLocalFrame->aDiscardPoint() == (TypeValueArea*)m_pReturnStack->aTopVal())
-    vLocalsPop();
+    vLocalsFramePop();
   
   // make sure we don't return to nowhere
   ASSERT(m_pReturnStack->nValues());
@@ -817,7 +817,7 @@ void Step::vSenSemicolon(void)
     m_oDicStack.vDiscard();
     
     // enocde locals frame pop
-    pCurrentWord->vEncodeCall("locals.pop"_Stz);
+    pCurrentWord->vEncodeCall("locals.framePop"_Stz);
   }
   
   if (! pCurrentWord->szWordNm()->bSame("exit"_Stz) &&

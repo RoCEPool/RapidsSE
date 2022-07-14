@@ -15,51 +15,17 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Locals(void)
 {
-  vAddStep("local.fetch"_Stz,     &Step::vLocalFetch);
-  vAddStep("local.store"_Stz,     &Step::vLocalStore);
   vAddStep("locals|"_Stz,         &Step::vLocalsBar,        true);
-  vAddStep("locals.pop"_Stz,      &Step::vLocalsPop);
-  vAddStep("locals.push"_Stz,     &Step::vLocalsPush);
-  vAddStep("to"_Stz,              &Step::vLocalsTo,         true);
-  
   vAddStep("params|"_Stz,         &Step::vLocalsBar,        true);
+  vAddStep("to"_Stz,              &Step::vLocalsTo,         true);
+
+  vAddStep("locals.framePop"_Stz, &Step::vLocalsFramePop);
+  vAddStep("locals.framePush"_Stz,&Step::vLocalsFramePush);
+
+  vAddStep("local.fetch"_Stz,     &Step::vLocalsFetch);
+  vAddStep("local.store"_Stz,     &Step::vLocalsStore);
 }
 
-/*----------------------------------------------------------------------------*/
-/* local.fetch -- push locals[n] onto dstack                                  */
-/*----------------------------------------------------------------------------*/
-void Step::vLocalFetch(void)
-{
-  ENTRY();
-  
-  if ( ! m_pLocalFrame ) THROW_DSTACK();
-  
-  i8 i_Local = m_pDataStack->iPopInt(__func__);
-  
-  SenCell* pSenCell = m_pLocalFrame->pSenCell(i_Local);
-  
-  m_pDataStack->vPushSenCell(pSenCell);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* localStore -- pop dstack into locals[n]                                    */
-/*----------------------------------------------------------------------------*/
-void Step::vLocalStore(void)
-{
-  ENTRY();
-  
-  if ( ! m_pLocalFrame ) THROW_DSTACK();
-  
-  i8 i_Local = m_pDataStack->iPopInt(__func__);
-  
-  SenCell* pSenCell = m_pLocalFrame->pSenCell(i_Local);
-  
-  m_pDataStack->vPopSenCell(pSenCell,__func__);
- 
-  EXIT();
-}
 
 /*----------------------------------------------------------------------------*/
 /* locals| -- encode code for: set of local variables              immediate  */
@@ -92,7 +58,7 @@ void Step::vLocalsBar(void)
       m_oDicStack.vPush(pDic);
       
       // enocde locals frame push
-      pCurrentWord->vEncodeCall("locals.push"_Stz);
+      pCurrentWord->vEncodeCall("locals.framePush"_Stz);
     }
     
     // create new word for local variable in current dictionary
@@ -116,46 +82,6 @@ void Step::vLocalsBar(void)
     nLcl++;
     m_pSenCompiler->vLocals(nLcl);
   }
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* locals.pop -- pop locals frame                                             */
-/*----------------------------------------------------------------------------*/
-void Step::vLocalsPop(void)
-{
-  ENTRY();
-  
-  LocalFrame* pLocalsFrame = m_pLocalFrame;
-  
-  if ( ! pLocalsFrame ) THROW_DSTACK();
-  
-  m_pLocalFrame = m_pLocalFrame->pNext();
-  
-  delete pLocalsFrame;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* locals.push -- push locals frame                                           */
-/*----------------------------------------------------------------------------*/
-void Step::vLocalsPush(void)
-{
-  ENTRY();
-  
-  if (m_iDebugMark)
-    vDebugPoint();
-
-  
-  LocalFrame* pLocalsFrame = new LocalFrame;
-  
-  pLocalsFrame->vDiscardPoint((TypeValueArea*)m_pReturnStack->aTopVal());
-  
-  pLocalsFrame->vNext(m_pLocalFrame);
-  
-  m_pLocalFrame = pLocalsFrame;
   
   EXIT();
 }
@@ -565,7 +491,174 @@ void Step::vLocalsTo(void)
   pCurrentWord->vEncodeCall("local.store"_Stz);
   
   EXIT();
- }
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* locals.framePop -- pop locals frame                                        */
+/*----------------------------------------------------------------------------*/
+
+#ifdef WITH_LOCALS_OOM
+void Step::vLocalsFramePop(void)
+{
+  ENTRY();
+  
+  LocalFrame* pLocalsFrame = m_pLocalFrame;
+  
+  if ( ! pLocalsFrame ) THROW_DSTACK();
+  
+  m_pLocalFrame = m_pLocalFrame->pNext();
+  
+  delete pLocalsFrame;
+  
+  EXIT();
+}
+/*----------------------------------------------------------------------------*/
+#else
+void Step::vLocalsFramePop(void)
+{
+  ENTRY();
+  
+  LocalFrame* pLocalsFrame = m_pLocalFrame;
+  
+  if ( ! pLocalsFrame ) THROW_DSTACK();
+  
+  m_pLocalFrame = m_pLocalFrame->pNext();
+  
+  delete pLocalsFrame;
+  
+  EXIT();
+}
+#endif
+
+/*----------------------------------------------------------------------------*/
+/* locals.framePush -- push locals frame                                      */
+/*----------------------------------------------------------------------------*/
+
+#ifdef WITH_LOCALS_OOM
+void Step::vLocalsFramePush(void)
+{
+  ENTRY();
+  
+  if (m_iDebugMark)
+    vDebugPoint();
+
+  
+  LocalFrame* pLocalsFrame = new LocalFrame;
+  
+  pLocalsFrame->vDiscardPoint((TypeValueArea*)m_pReturnStack->aTopVal());
+  
+  pLocalsFrame->vNext(m_pLocalFrame);
+  
+  m_pLocalFrame = pLocalsFrame;
+  
+  EXIT();
+}
+/*----------------------------------------------------------------------------*/
+#else
+void Step::vLocalsFramePush(void)
+{
+  ENTRY();
+  
+  if (m_iDebugMark)
+    vDebugPoint();
+
+  
+  LocalFrame* pLocalsFrame = new LocalFrame;
+  
+  pLocalsFrame->vDiscardPoint((TypeValueArea*)m_pReturnStack->aTopVal());
+  
+  pLocalsFrame->vNext(m_pLocalFrame);
+  
+  m_pLocalFrame = pLocalsFrame;
+  
+  EXIT();
+}
+#endif
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------------*/
+/* locals.fetch -- push local[n] onto dstack                                  */
+/*----------------------------------------------------------------------------*/
+
+#ifdef WITH_LOCALS_OOM
+void Step::vLocalsFetch(void)
+{
+  ENTRY();
+  
+  if ( ! m_pLocalFrame ) THROW_DSTACK();
+  
+  i8 i_Local = m_pDataStack->iPopInt(__func__);
+  
+  SenCell* pSenCell = m_pLocalFrame->pSenCell(i_Local);
+  
+  m_pDataStack->vPushSenCell(pSenCell);
+  
+  EXIT();
+}
+/*----------------------------------------------------------------------------*/
+#else
+void Step::vLocalsFetch(void)
+{
+  ENTRY();
+  
+  if ( ! m_pLocalFrame ) THROW_DSTACK();
+  
+  i8 i_Local = m_pDataStack->iPopInt(__func__);
+  
+  SenCell* pSenCell = m_pLocalFrame->pSenCell(i_Local);
+  
+  m_pDataStack->vPushSenCell(pSenCell);
+  
+  EXIT();
+}
+#endif
+
+/*----------------------------------------------------------------------------*/
+/* localsStore -- pop dstack into local[n]                                    */
+/*----------------------------------------------------------------------------*/
+
+#ifdef WITH_LOCALS_OOM
+void Step::vLocalsStore(void)
+{
+  ENTRY();
+  
+  if ( ! m_pLocalFrame ) THROW_DSTACK();
+  
+  i8 i_Local = m_pDataStack->iPopInt(__func__);
+  
+  SenCell* pSenCell = m_pLocalFrame->pSenCell(i_Local);
+  
+  m_pDataStack->vPopSenCell(pSenCell,__func__);
+ 
+  EXIT();
+}
+/*----------------------------------------------------------------------------*/
+#else
+void Step::vLocalsStore(void)
+{
+  ENTRY();
+  
+  if ( ! m_pLocalFrame ) THROW_DSTACK();
+  
+  i8 i_Local = m_pDataStack->iPopInt(__func__);
+  
+  SenCell* pSenCell = m_pLocalFrame->pSenCell(i_Local);
+  
+  m_pDataStack->vPopSenCell(pSenCell,__func__);
+ 
+  EXIT();
+}
+#endif
 
 /*============================================================================*/
 /* end                                                                        */

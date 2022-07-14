@@ -35,6 +35,10 @@ namespace BASE
     LocalStrs(void);
    ~LocalStrs(void) noexcept(false);
       
+    _LclStr* aAllotLclStr(void* );
+    _LclStr* aGetLclStr(i8 i_Local);
+    void vFreeLclStr(_LclStr* aLclStr);
+
     // must be last
     Footer* aFooter(void);
   };
