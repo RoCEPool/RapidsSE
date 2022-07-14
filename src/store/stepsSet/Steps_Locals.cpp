@@ -58,6 +58,11 @@ void Step::vLocalsBar(void)
       m_oDicStack.vPush(pDic);
       
       // enocde locals frame push
+      xVariable = (i8)12345678;
+      pCurrentWord->vEncodePush(xVariable);
+      
+      m_pSenCompiler->vLocalsMark();
+      
       pCurrentWord->vEncodeCall("locals.framePush"_Stz);
     }
     
@@ -567,6 +572,8 @@ void Step::vLocalsFramePush(void)
   if (m_iDebugMark)
     vDebugPoint();
 
+  i8 nLocals = m_pDataStack->iPopInt(__func__);
+  RASSERT(12345678 == nLocals);
   
   LocalFrame* pLocalsFrame = new LocalFrame;
   

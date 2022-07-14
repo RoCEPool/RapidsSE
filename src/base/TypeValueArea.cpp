@@ -14,7 +14,7 @@
 TypeValueArea::TypeValueArea(void)
 {
   #ifdef WITH_CHECK_INITIALISED
-    MemLib::vZero(m_caStringArea,sizeof(m_caStringArea),CN_CELLSINGLE);
+    MemLib::vZero(m_caStringArea,sizeof(m_caStringArea),CN_SENCELL);
   #endif
  }
 
@@ -83,7 +83,7 @@ void TypeValueArea::vInit(void)
   m_caStringArea[0] = '\0';
   
 #ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_caStringArea,sizeof(m_caStringArea),CN_CELLSINGLE);
+  MemLib::vZero(m_caStringArea,sizeof(m_caStringArea),CN_SENCELL);
 #endif
 
 }

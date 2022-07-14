@@ -23,7 +23,7 @@ TypeValueDscr::TypeValueDscr(void)
   m_pLocalStr  = nullptr;
   
   #ifdef WITH_CHECK_INITIALISED
-    MemLib::vZero(m_caStringArea,sizeof(m_caStringArea),CN_SENCELL);
+    MemLib::vZero(m_caArea_tbr,sizeof(m_caArea_tbr),CN_SENCELL);
   #endif
  }
 
@@ -110,7 +110,7 @@ void TypeValueDscr::vInit(void)
   m_caArea_tbr[0] = '\0';
   
 #ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_caStringArea,sizeof(m_caStringArea),CN_CELLSINGLE);
+  MemLib::vZero(m_caArea_tbr,sizeof(m_caArea_tbr),CN_SENCELL);
 #endif
 
 }
