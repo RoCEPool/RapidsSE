@@ -810,6 +810,8 @@ void Step::vSenSemicolon(void)
   
   if (m_pSenCompiler->nLocals()) {
     
+    m_pSenCompiler->vLocalsUpdate();
+    
     // reset the number of local variables
     m_pSenCompiler->vLocals(0);
     

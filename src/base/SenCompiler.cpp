@@ -140,7 +140,7 @@ void SenCompiler::vLocalsUpdate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SENCOMPILER,_FOOTER_);
   
-  RASSERT(12345678 == * m_aiLocals);
+  //RASSERT(12345678 == * m_aiLocals);
   
   * m_aiLocals = 87654321;
 }

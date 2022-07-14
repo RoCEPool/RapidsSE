@@ -15,15 +15,16 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Locals(void)
 {
-  vAddStep("locals|"_Stz,         &Step::vLocalsBar,        true);
-  vAddStep("params|"_Stz,         &Step::vLocalsBar,        true);
-  vAddStep("to"_Stz,              &Step::vLocalsTo,         true);
+  vAddStep("locals|"_Stz,            &Step::vLocalsBar,        true);
+  vAddStep("params|"_Stz,            &Step::vLocalsBar,        true);
+  vAddStep("to"_Stz,                 &Step::vLocalsTo,         true);
 
-  vAddStep("locals.framePop"_Stz, &Step::vLocalsFramePop);
-  vAddStep("locals.framePush"_Stz,&Step::vLocalsFramePush);
+  vAddStep("locals.framePop"_Stz,    &Step::vLocalsFramePop);
+  vAddStep("locals.framePush"_Stz,   &Step::vLocalsFramePush);
+  vAddStep("locals.frameUpdate"_Stz, &Step::vLocalsFrameUpdate);
 
-  vAddStep("local.fetch"_Stz,     &Step::vLocalsFetch);
-  vAddStep("local.store"_Stz,     &Step::vLocalsStore);
+  vAddStep("local.fetch"_Stz,        &Step::vLocalsFetch);
+  vAddStep("local.store"_Stz,        &Step::vLocalsStore);
 }
 
 
@@ -498,7 +499,6 @@ void Step::vLocalsTo(void)
   EXIT();
 }
 
-
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -573,7 +573,7 @@ void Step::vLocalsFramePush(void)
     vDebugPoint();
 
   i8 nLocals = m_pDataStack->iPopInt(__func__);
-  RASSERT(12345678 == nLocals);
+  RASSERT(87654321 == nLocals);
   
   LocalFrame* pLocalsFrame = new LocalFrame;
   
@@ -582,6 +582,31 @@ void Step::vLocalsFramePush(void)
   pLocalsFrame->vNext(m_pLocalFrame);
   
   m_pLocalFrame = pLocalsFrame;
+  
+  EXIT();
+}
+#endif
+
+/*----------------------------------------------------------------------------*/
+/* locals.frameUpdate -- update the number of locals for a frame              */
+/*----------------------------------------------------------------------------*/
+
+#ifdef WITH_LOCALS_OOM
+void Step::vLocalsFrameUpdate(void)
+{
+  ENTRY();
+
+  m_pSenCompiler->vLocalsUpdate();
+
+  EXIT();
+}
+/*----------------------------------------------------------------------------*/
+#else
+void Step::vLocalsFrameUpdate(void)
+{
+  ENTRY();
+  
+  m_pSenCompiler->vLocalsUpdate();
   
   EXIT();
 }
@@ -666,6 +691,7 @@ void Step::vLocalsStore(void)
   EXIT();
 }
 #endif
+
 
 /*============================================================================*/
 /* end                                                                        */
