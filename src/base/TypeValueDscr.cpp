@@ -40,6 +40,22 @@ TypeValueDscr::~TypeValueDscr(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get pointer to string area                                                 */
+/*----------------------------------------------------------------------------*/
+char* TypeValueDscr::azArea(void)
+{
+  return m_caArea_tbr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get integer                                                                */
+/*----------------------------------------------------------------------------*/
+i8 TypeValueDscr::iAsInt(void)
+{
+  return m_wxValue.iAsI8();
+}
+
+/*----------------------------------------------------------------------------*/
 /* return a value                                                             */
 /*----------------------------------------------------------------------------*/
 i8 TypeValueDscr::iBcd(void)
@@ -74,11 +90,13 @@ void TypeValueDscr::vBol(i8 iBcd)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get integer                                                                */
+/* get char*                                                                  */
 /*----------------------------------------------------------------------------*/
-i8 TypeValueDscr::iAsInt(void)
+char* TypeValueDscr::azChar(void)
 {
-  return m_wxValue.iAsI8();
+  ASSERT(CN_STZVAL == eType());
+
+  return m_caArea_tbr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -89,44 +107,12 @@ void TypeValueDscr::vInit(void)
   vType(CN_NONE);
   vInt(-1);
 
-  m_caStringArea[0] = '\0';
+  m_caArea_tbr[0] = '\0';
   
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m_caStringArea,sizeof(m_caStringArea),CN_CELLSINGLE);
 #endif
 
-}
-
-/*----------------------------------------------------------------------------*/
-/* assign given str                                                           */
-/*----------------------------------------------------------------------------*/
-void TypeValueDscr::vStz(Stz* szStz)
-{
-  vType(CN_STZVAL);
-  
-  i8 nBytesFollowing = StrLib::nCopy(m_caStringArea,szStz->azChar()) + 1;
-  
-  m_wxValue = nBytesFollowing;
-}
-
-/*----------------------------------------------------------------------------*/
-/* assign given str                                                           */
-/*----------------------------------------------------------------------------*/
-//void TypedCell::vStz(char* acnChar, i8 nLength)
-//{
-//  vType(CN_STZVAL);
-//
-//  m_nBytesFollowing = StrLib::nCopy(m_caStz,acnChar) + 1;
-//}
-
-/*----------------------------------------------------------------------------*/
-/* get char*                                                                  */
-/*----------------------------------------------------------------------------*/
-char* TypeValueDscr::azChar(void)
-{
-  ASSERT(CN_STZVAL == eType());
-
-  return m_caStringArea;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -240,8 +226,30 @@ i8 TypeValueDscr::nStackUsage(void)
 Stz* TypeValueDscr::szStz(void)
 {
   ASSERT(CN_STZVAL == eType());
-  return reinterpret_cast<Stz*>(m_caStringArea);
+  return reinterpret_cast<Stz*>(m_caArea_tbr);
 }
+
+/*----------------------------------------------------------------------------*/
+/* assign given str                                                           */
+/*----------------------------------------------------------------------------*/
+void TypeValueDscr::vStz(Stz* szStz)
+{
+  vType(CN_STZVAL);
+  
+  i8 nBytesFollowing = StrLib::nCopy(m_caArea_tbr,szStz->azChar()) + 1;
+  
+  m_wxValue = nBytesFollowing;
+}
+
+/*----------------------------------------------------------------------------*/
+/* assign given str                                                           */
+/*----------------------------------------------------------------------------*/
+//void TypedCell::vStz(char* acnChar, i8 nLength)
+//{
+//  vType(CN_STZVAL);
+//
+//  m_nBytesFollowing = StrLib::nCopy(m_caStz,acnChar) + 1;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get size of str                                                            */
@@ -269,7 +277,7 @@ void TypeValueDscr::vToStz(Stz* szDst)
     * szDst = iInt();
   else
   if (CN_STZVAL == eType())
-    StrLib::vCopy(szDst->azChar(),m_caStringArea);
+    StrLib::vCopy(szDst->azChar(),m_caArea_tbr);
   else
   if (CN_PTRVAL == eType())
     * szDst = reinterpret_cast<void*>(pObj());
@@ -301,8 +309,6 @@ TypeValue* TypeValueDscr::aTypeValue(void)
 {
   return this;
 }
-
-
 
 /*============================================================================*/
 /* end                                                                        */

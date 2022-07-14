@@ -7,8 +7,8 @@
 
 namespace BASE
 {
-  static const i8 C_LOCAL_STRAREA_MEDIUM = (C_SIZE_MEDIUM_OBJECT - 1024)
-                                             - (2 * sizeof(i8));
+  static const i8 C_LOCAL_AREA_MEDIUM = (C_SIZE_MEDIUM_OBJECT - 1024)
+                                          - (2 * sizeof(i8));
 
 //class Local;
   class TypeValueDscr;
@@ -16,10 +16,10 @@ namespace BASE
   class LocalStrMedium : public Object
   {
   public:
-    TypeValueDscr* m_pLocal;
+    TypeValueDscr* m_aLocal;
     i8             m__dummy0;
   
-    char           m_xStrArea[C_LOCAL_STRAREA_MEDIUM];
+    char           m_caArea[C_LOCAL_AREA_MEDIUM];
 
   public:
     LocalStrMedium(void);
@@ -27,6 +27,11 @@ namespace BASE
   
     // auto conversion
     operator LocalStrMedium*(void);
+
+    char* azArea(void);
+
+    TypeValueDscr* aLocal(void);
+    void  vLocal(TypeValueDscr* aLocal);
 
   private:
   

@@ -16,7 +16,7 @@ namespace BASE
   {
   public:
     
-    char       m_caStringArea[C_16KB];
+    char       m_caArea_tbr[C_16KB];
   
     LocalVars* m_pLocalVars;
     i8         m_i_Local;
@@ -31,6 +31,8 @@ namespace BASE
     TypeValueDscr(void);
    ~TypeValueDscr(void) noexcept(false);
   
+    char* azArea(void);
+
     i8    iAsInt(void);
 
     i8    iBcd(void);
@@ -79,11 +81,11 @@ namespace BASE
   /*--------------------------------------------------------------------------*/
   /* safe cast                                                                */
   /*--------------------------------------------------------------------------*/
-  inline TypeValueDscr* _aTypeValueLcl(void* aAddr)
+  inline TypeValueDscr* _aTypeValueDscr(void* aAddr)
   {
-  TypeValueDscr* aTypeValueLcl = reinterpret_cast<TypeValueDscr*>(aAddr);
+  TypeValueDscr* aTypeValueDscr = reinterpret_cast<TypeValueDscr*>(aAddr);
 
-    return aTypeValueLcl;
+    return aTypeValueDscr;
   }
 
 }

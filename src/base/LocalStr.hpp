@@ -7,7 +7,7 @@
 
 namespace BASE
 {
-  static const i8 C_LOCAL_STRAREA  = 512 - (2 * sizeof(i8));
+  static const i8 C_LOCAL_AREA  = 512 - (2 * sizeof(i8));
 
 //class Local;
   class TypeValueDscr;
@@ -15,10 +15,10 @@ namespace BASE
   class LocalStr
   {
   public:
-    TypeValueDscr* m_pLocal;
+    TypeValueDscr* m_aLocal;
     i8             m__dummy0;
   
-    char           m_xStrArea[C_LOCAL_STRAREA];
+    char           m_caArea[C_LOCAL_AREA];
 
   public:
     LocalStr(void);
@@ -26,6 +26,11 @@ namespace BASE
   
     // auto conversion
     operator LocalStr*(void);
+
+    char* azArea(void);
+
+    TypeValueDscr* aLocal(void);
+    void  vLocal(TypeValueDscr* aLocal);
 
   private:
   

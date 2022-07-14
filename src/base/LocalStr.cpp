@@ -12,10 +12,10 @@
 /*----------------------------------------------------------------------------*/
 LocalStr::LocalStr(void)
 {
-  m_pLocal  = nullptr;
+  m_aLocal  = nullptr;
   m__dummy0 = C_UNKNOWN;
 
-  MemLib::vZero(m_xStrArea,sizeof(m_xStrArea),CN_SENCELL);
+  MemLib::vZero(m_caArea,sizeof(m_caArea),CN_SENCELL);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -36,6 +36,30 @@ LocalStr::~LocalStr(void) noexcept(false)
 LocalStr::operator LocalStr*(void)
 {
   return this;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get pointer to string area                                                 */
+/*----------------------------------------------------------------------------*/
+char* LocalStr::azArea(void)
+{
+  return m_caArea;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return a value                                                             */
+/*----------------------------------------------------------------------------*/
+TypeValueDscr* LocalStr::aLocal(void)
+{
+  return m_aLocal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* assign a value                                                             */
+/*----------------------------------------------------------------------------*/
+void LocalStr::vLocal(TypeValueDscr* aLocal)
+{
+  m_aLocal = aLocal;
 }
 
 /*============================================================================*/
