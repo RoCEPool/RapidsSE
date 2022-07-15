@@ -167,16 +167,16 @@ void Text::vSet(Stz* szArg)
   if ( ! m_pTextBuffer ) {
     
     // now allocate a new buffer
-    if (nStringSize < C_SIZE_TINY_TEXT)
+    if (nStringSize < C_TEXT_TINY)
       m_pTextBuffer = new TextTiny();
     
-    else if (nStringSize < C_SIZE_SMALL_TEXT)
+    else if (nStringSize < C_TEXT_SMALL)
       m_pTextBuffer = new TextSmall();
 
-    else if (nStringSize < C_SIZE_MEDIUM_TEXT)
+    else if (nStringSize < C_TEXT_MEDIUM)
       m_pTextBuffer = new TextMedium();
 
-    else if (nStringSize < C_SIZE_LARGE_OBJECT)
+    else if (nStringSize < C_TEXT_LARGE)
       m_pTextBuffer = new TextLarge();
     
     else
@@ -214,16 +214,16 @@ void Text::vNewBuffer(i8 nStringSize)
   ASSERT(! m_pTextBuffer);
   
   // now allocate a new buffer
-  if (nStringSize < C_SIZE_TINY_TEXT)
+  if (nStringSize < C_TEXT_TINY)
     m_pTextBuffer = new TextTiny();
   
-  else if (nStringSize < C_SIZE_SMALL_TEXT)
+  else if (nStringSize < C_TEXT_SMALL)
     m_pTextBuffer = new TextSmall();
 
-  else if (nStringSize < C_SIZE_MEDIUM_TEXT)
+  else if (nStringSize < C_TEXT_MEDIUM)
     m_pTextBuffer = new TextMedium();
 
-  else if (nStringSize < C_SIZE_LARGE_OBJECT)
+  else if (nStringSize < C_TEXT_LARGE)
     m_pTextBuffer = new TextLarge();
   
   else

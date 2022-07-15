@@ -5,11 +5,11 @@
 
 namespace BASE
 {
-  static const i8 C_SIZE_BASE        = 8*C_BYTES_PER_WORD;
-  static const i8 C_SIZE_TINY_TEXT   = C_SIZE_TINY_OBJECT   - C_SIZE_BASE;
-  static const i8 C_SIZE_SMALL_TEXT  = C_SIZE_SMALL_OBJECT  - C_SIZE_BASE;
-  static const i8 C_SIZE_MEDIUM_TEXT = C_SIZE_MEDIUM_OBJECT - C_SIZE_BASE;
-  static const i8 C_SIZE_LARGE_TEXT  = C_SIZE_LARGE_OBJECT  - C_SIZE_BASE;
+  static const i8 C_TEXT_ABSTRACT = 8 * C_BYTES_PER_WORD;
+  static const i8 C_TEXT_TINY     = C_SIZE_TINY_OBJECT   - C_TEXT_ABSTRACT;
+  static const i8 C_TEXT_SMALL    = C_SIZE_SMALL_OBJECT  - C_TEXT_ABSTRACT;
+  static const i8 C_TEXT_MEDIUM   = C_SIZE_MEDIUM_OBJECT - C_TEXT_ABSTRACT;
+  static const i8 C_TEXT_LARGE    = C_SIZE_LARGE_OBJECT  - C_TEXT_ABSTRACT;
   
   class TextAbstract : public Object
   {

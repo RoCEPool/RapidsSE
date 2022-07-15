@@ -40,7 +40,7 @@ void TextMedium::operator delete(void* pTextAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 TextMedium::TextMedium(void)
-: TextAbstract(CN_TEXTMEDIUM, C_SIZE_MEDIUM_TEXT)
+: TextAbstract(CN_TEXTMEDIUM, C_TEXT_MEDIUM)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TEXTMEDIUM);
   
@@ -59,7 +59,7 @@ TextMedium::TextMedium(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 TextMedium::TextMedium(Stz* szText)
-: TextAbstract(CN_TEXTMEDIUM, C_SIZE_MEDIUM_TEXT)
+: TextAbstract(CN_TEXTMEDIUM, C_TEXT_MEDIUM)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TEXTMEDIUM);
   
@@ -69,7 +69,7 @@ TextMedium::TextMedium(Stz* szText)
   m_caText[0] = '\0';
 #endif
   
-  StrLib::vCopyLen(m_caText,szText->azChar(),C_SIZE_MEDIUM_TEXT-1);
+  StrLib::vCopyLen(m_caText,szText->azChar(),C_TEXT_MEDIUM-1);
 
   _checkInitialised_(CN_TEXTMEDIUM);
   

@@ -10,7 +10,7 @@ namespace BASE
   {
   private:
     
-    char  m_caText[C_SIZE_TINY_TEXT];  // text
+    char  m_caText[C_TEXT_TINY];  // text
     
     // must be last
     Footer m_xFooter;

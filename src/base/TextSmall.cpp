@@ -40,7 +40,7 @@ void TextSmall::operator delete(void* pTextAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 TextSmall::TextSmall(void)
-: TextAbstract(CN_TEXTSMALL, C_SIZE_SMALL_TEXT)
+: TextAbstract(CN_TEXTSMALL, C_TEXT_SMALL)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TEXTSMALL);
   

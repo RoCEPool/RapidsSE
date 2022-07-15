@@ -40,7 +40,7 @@ void TextLarge::operator delete(void* pTextAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 TextLarge::TextLarge(void)
-: TextAbstract(CN_TEXTLARGE, C_SIZE_LARGE_TEXT)
+: TextAbstract(CN_TEXTLARGE, C_TEXT_LARGE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TEXTLARGE);
   
@@ -50,7 +50,7 @@ TextLarge::TextLarge(void)
   m_caText[0] = '\0';
 #endif
 
-  _checkInitialised_(C_SIZE_LARGE_TEXT);
+  _checkInitialised_(C_TEXT_LARGE);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TEXTLARGE);
 }
