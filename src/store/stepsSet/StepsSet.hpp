@@ -1081,10 +1081,9 @@ void vDdlLockAssertNone(void);
 
   // locals
   void vLocalsBar(void);
+  void vLocalsFetch(void);
   void vLocalsFramePop(void);
   void vLocalsFramePush(void);
-  void vLocalsFrameUpdate(void);
-  void vLocalsFetch(void);
   void vLocalsStore(void);
   void vLocalsTo(void);
 

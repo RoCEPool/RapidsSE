@@ -142,7 +142,9 @@ void SenCompiler::vLocalsUpdate(void)
   
   //RASSERT(12345678 == * m_aiLocals);
   
-  * m_aiLocals = 87654321;
+  RASSERT(m_nLocals > 0 && m_nLocals <= 24);
+  
+  * m_aiLocals = m_nLocals;
 }
 
 /*----------------------------------------------------------------------------*/
