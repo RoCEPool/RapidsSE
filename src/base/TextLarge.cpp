@@ -40,7 +40,7 @@ void TextLarge::operator delete(void* pTextAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 TextLarge::TextLarge(void)
-: TextBuffer(CN_TEXTLARGE, C_SIZE_LARGE_TEXT)
+: TextAbstract(CN_TEXTLARGE, C_SIZE_LARGE_TEXT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TEXTLARGE);
   

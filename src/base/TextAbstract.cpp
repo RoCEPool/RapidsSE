@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* TextBuffer.cpp -- textBuffer                                               */
+/* TextAbstract.cpp -- Text Abstract Buffer                                   */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -7,9 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-TextBuffer* BASE::_pTextBuffer(void* aAddr)
+TextAbstract* BASE::_pTextBuffer(void* aAddr)
 {
-  TextBuffer* pTextBuffer = reinterpret_cast<TextBuffer*>(aAddr);
+  TextAbstract* pTextBuffer = reinterpret_cast<TextAbstract*>(aAddr);
   
   RASSERT_TYPE(pTextBuffer,CN_TEXT);
   
@@ -19,7 +19,7 @@ TextBuffer* BASE::_pTextBuffer(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-TextBuffer::TextBuffer(eCN eClass, i8 nBufferSize)
+TextAbstract::TextAbstract(eCN eClass, i8 nBufferSize)
 : Object(eClass)
 {
   m_nBufferSize = nBufferSize;
@@ -28,7 +28,7 @@ TextBuffer::TextBuffer(eCN eClass, i8 nBufferSize)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-TextBuffer::~TextBuffer(void) noexcept(false)
+TextAbstract::~TextAbstract(void) noexcept(false)
 {
 
 }
@@ -36,7 +36,7 @@ TextBuffer::~TextBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get size of the buffer                                                     */
 /*----------------------------------------------------------------------------*/
-i8 TextBuffer::nBufferSize(void)
+i8 TextAbstract::nBufferSize(void)
 {
   return m_nBufferSize;
 }

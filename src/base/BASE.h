@@ -276,7 +276,7 @@ extern d8 C_D8_MID;
 #include "SkipListNL.hpp"
 #include "StackNL_t.hpp"
 
-#include "TextBuffer.hpp"
+#include "TextAbstract.hpp"
 #include "TextLarge.hpp"
 #include "TextMedium.hpp"
 #include "TextSmall.hpp"

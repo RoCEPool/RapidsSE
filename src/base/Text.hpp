@@ -9,7 +9,7 @@ namespace BASE
   {
   private:
     i8          m_nSizeText;      // size of the text
-    TextBuffer* m_pTextBuffer;    // text buffer
+    TextAbstract* m_pTextBuffer;    // text buffer
     
     // must be last
     Footer m_xFooter;

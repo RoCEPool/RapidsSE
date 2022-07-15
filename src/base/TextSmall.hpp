@@ -5,7 +5,7 @@
 
 namespace BASE
 {
-  class TextSmall : public TextBuffer
+  class TextSmall : public TextAbstract
   {
   private:
     

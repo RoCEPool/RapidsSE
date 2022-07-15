@@ -40,7 +40,7 @@ void TextMedium::operator delete(void* pTextAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 TextMedium::TextMedium(void)
-: TextBuffer(CN_TEXTMEDIUM, C_SIZE_MEDIUM_TEXT)
+: TextAbstract(CN_TEXTMEDIUM, C_SIZE_MEDIUM_TEXT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TEXTMEDIUM);
   
@@ -59,7 +59,7 @@ TextMedium::TextMedium(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 TextMedium::TextMedium(Stz* szText)
-: TextBuffer(CN_TEXTMEDIUM, C_SIZE_MEDIUM_TEXT)
+: TextAbstract(CN_TEXTMEDIUM, C_SIZE_MEDIUM_TEXT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TEXTMEDIUM);
   

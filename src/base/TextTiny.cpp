@@ -40,7 +40,7 @@ void TextTiny::operator delete(void* pTextAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 TextTiny::TextTiny(void)
-: TextBuffer(CN_TEXTTINY, C_SIZE_TINY_TEXT)
+: TextAbstract(CN_TEXTTINY, C_SIZE_TINY_TEXT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TEXTTINY);
   
