@@ -61,7 +61,7 @@ void Step::vTextGet(void)
     
   RASSERT(m_pLogicUnit->m_xpText.bIsNotNull());
   
-  //m_pDataStack->vPushStz(m_pLogicUnit->m_xpText->szGetStz());
+  m_pDataStack->vPushStz(m_pLogicUnit->m_xpText->szGet());
 
   EXIT();
 }
@@ -74,9 +74,9 @@ void Step::vTextSet(void)
   ENTRY();
     
   if (m_pLogicUnit->m_xpText.bIsNull())
-    m_pLogicUnit->m_xpText = new TextMedium;
+    m_pLogicUnit->m_xpText = new Text(C_32KB);
     
-  //m_pDataStack->vPopStz(m_pLogicUnit->m_xpText->szGetStz(), __func__);
+  m_pDataStack->vPopStz(m_pLogicUnit->m_xpText->szGet(), __func__);
 
   EXIT();
 }

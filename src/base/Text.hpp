@@ -23,6 +23,8 @@ namespace BASE
     Text(Stz* szArg);
    ~Text(void) noexcept(false);
   
+    static void vRepair(Object* pObject);
+
     Text& operator |(Stz* szArg);
     Text& operator |(Text* pArg);
 

@@ -662,6 +662,8 @@ void Step::vLocalsStore(void)
 {
   ENTRY();
   
+  //static i8 nMaxSoFar = 0;
+  
   if ( ! m_pLocalFrame ) THROW_DSTACK();
   
   i8 i_Local = m_pDataStack->iPopInt(__func__);
@@ -670,14 +672,18 @@ void Step::vLocalsStore(void)
   
   m_pDataStack->vPopSenCell(pSenCell,__func__);
   
-//  if (CN_STZVAL == pSenCell->eType()) {
-//    if (pSenCell->nStzSize() > 500) {
+  if (CN_STZVAL == pSenCell->eType()) {
+    i8 nStzSize = pSenCell->nStzSize();
+//    if (nStzSize > nMaxSoFar) {
+//      nMaxSoFar = nStzSize;
 //      vTrace("CN_STZVAL %lldB\n%s\n"_Stz,
-//             pSenCell->nStzSize(),
+//             nStzSize,
 //             pSenCell->szStz());
 //      vSeeFrameStack();
 //    }
-//  }
+    
+    RASSERT(nStzSize < 500);
+  }
  
   EXIT();
 }
