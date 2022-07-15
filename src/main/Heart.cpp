@@ -165,7 +165,8 @@ void vHeartInit(void) {
     if (gxHeartbeatBuffer.bTryRead(xHeartbeat)) {
       // update heartbeat info for the node
 
-      if (xHeartbeat.m_iClusterID == gxCmdLineArgs.m_xSysArgs.m_iClusterID) {
+      if (xHeartbeat.m_uHeader == C_HEARTBEAT_HEADER &&                         // reject stray packets
+          xHeartbeat.m_iClusterID == gxCmdLineArgs.m_xSysArgs.m_iClusterID) {   // reject heartbeats from different clusters
         //vTrace("Try to update heartbeat from Node %s  %lld\n"_Stz, xHeartbeat.m_acNodeName, xHeartbeat.m_iClusterID);
         if (!AM::bPutHeartbeat((Stz *) xHeartbeat.m_acNodeName, xHeartbeat)) {
           // We failed to update the node with heartbeat,

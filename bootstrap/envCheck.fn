@@ -32,11 +32,14 @@ function validateInstallationEnvironment() {
   # Check that all hosts are resolvable.
   validateHostsAreResolvable
 
+  # Check that all heartbeat hosts/IPs are resolvable.
+  validateHeartbeatAddressIsResolvable
+
   # Check that all host/dir combinations are unique.
   validateHostsAndDirsAreUnique
 
-  # Check that all host:port combinations are unique.
-  validateHostsAndPortsAreUnique
+  # Check that all host and {internal_port | client_port} combinations are unique.
+  validateHostsAndAllPortsAreUnique
 
   # Check if all hosts are reachable by SSH.
   validateHostsReachableBySsh
@@ -48,8 +51,11 @@ function validateInstallationEnvironment() {
   # Check if SE is running in any of these host:directory combinations.
   validateSENotRunning
 
-  # Check if the port is not being used on any of the hosts.
-  validatePortsNotInUse
+  # Check if the internal port is not being used on any of the hosts.
+  validateInternalPortNotInUse
+
+  # Check if the client port is not being used on any of the hosts.
+  validateClientPortNotInUse
 
   # TODO: Check if a conflicting SE SHM file exists on any of the hosts.
 
@@ -153,11 +159,14 @@ function validateNodeAdditionEnvironment() {
   # Check that all hosts are resolvable.
   validateHostsAreResolvable "${nodeNames[@]}"
 
+  # Check that all heartbeat addresses are resolvable.
+  validateHeartbeatAddressIsResolvable "${nodeNames[@]}"
+
   # Check that all host/dir combinations are unique.
   validateHostsAndDirsAreUnique
 
-  # Check that all host:port combinations are unique.
-  validateHostsAndPortsAreUnique
+  # Check that all host and {internal_port | client_port} combinations are unique.
+  validateHostsAndAllPortsAreUnique
 
   # Check if all hosts are reachable by SSH.
   validateHostsReachableBySsh "${nodeNames[@]}"
@@ -169,8 +178,11 @@ function validateNodeAdditionEnvironment() {
   # Check if SE is running in any of these host:directory combinations.
   validateSENotRunning "${nodeNames[@]}"
 
-  # Check if the port is not being used on any of the hosts.
-  validatePortsNotInUse "${nodeNames[@]}"
+  # Check if the internal port is not being used on any of the hosts.
+  validateInternalPortNotInUse "${nodeNames[@]}"
+
+  # Check if the client port is not being used on any of the hosts.
+  validateClientPortNotInUse "${nodeNames[@]}"
 
   # TODO: Check if a conflicting SE SHM file exists on any of the hosts.
 
@@ -313,6 +325,143 @@ function validateHostsAreResolvable() {
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Validates that the heartbeat address is resolvable on the current machine. Exits out
+## and writes an error to stderr if not.
+## Params:
+##  $@ - (optional) the list of node names to check. If not set then check all.
+
+# shellcheck disable=SC2120
+function validateHeartbeatAddressIsResolvable() {
+
+  local -a nodeNames;
+
+  if [ "$#" -eq 0 ]; then
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    nodeNames=( "$@" )
+  fi
+
+  local nodeName
+  local heartbeatAddr
+  local output
+  local broadcast="BROADCAST"
+
+  if [ "${NO_RESOLVE_HEARTBEATS:-x}" != "x" ]; then
+    debugPrint "Skipping heartbeat address resolution."
+    return
+  fi
+
+  debugPrint "About to validate that all heartbeat addresses are resolvable."
+
+  for nodeName in "${nodeNames[@]}"
+  do
+    heartbeatAddr="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HEARTBEAT_ADDRESS_KEY}")"
+
+    if [ "${heartbeatAddr,,}" = "${broadcast,,}" ]; then
+      continue
+    fi
+
+    # Check if the heartbeat address is an IP address
+    local re="^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$"
+
+    if [[ "${heartbeatAddr}" =~ ${re} ]]; then
+      # We've got an IPv4 address
+      # Check the quads
+      quad1="$(echo "${heartbeatAddr}" | cut -d. -f1)"
+      quad2="$(echo "${heartbeatAddr}" | cut -d. -f2)"
+      quad3="$(echo "${heartbeatAddr}" | cut -d. -f3)"
+      quad4="$(echo "${heartbeatAddr}" | cut -d. -f4)"
+
+      for i in "${quad1}" "${quad2}" "${quad3}" "${quad4}"
+      do
+        if [ "${i}" -gt 255 ]; then
+          errorExit "Heartbeat address \"${heartbeatAddr}\" is not a valid IPv4 address."
+        fi
+      done
+
+      # Check that this must fall within the multicast range of 224.0.0.0 - 239.255.255.255
+      if [ "${quad1}" -lt 224 ] || [ "${quad1}" -gt 239 ]; then
+        msg="Heartbeat address \"${heartbeatAddr}\" is outside of the valid multicast address "
+        msg+="range of [224.0.0.0, 239.255.255.255]."
+        errorExit "${msg}"
+      fi
+
+      # Check that this should be within the admin, organisation or local scope multicast ranges of:
+      #   Admin scope: 239.0.0.0   - 239.195.255.255
+      #   Org scope:   239.192.0.0 - 239.195.255.255
+      #   Local scope: 239.255.0.0 - 239.255.255.255
+      if [ "${quad1}" -ne 239 ]; then
+        msg="Heartbeat multicast IP address should be in the RFC 2365 administratively scoped address "
+        msg+="range of 239.0.0.0/8 to avoid conflicts with other multicast addresses."
+        printWarning "${msg}"
+      fi
+
+      # This is a valid IPv4 multicast address
+      continue
+
+    elif [[ "${heartbeatAddr}" = *:* ]]; then
+      # We've got an IPv6 address
+      re="^([0-9a-fA-F]{0,4}:){1,7}([0-9a-fA-F]){0,4}$"
+
+      if [[ ! "${heartbeatAddr}" =~ $re ]]; then
+        errorExit "Heartbeat address \"${heartbeatAddr}\" is not a valid IPv6 address."
+      fi
+
+      # This is a valid IPv6 address
+      continue
+    fi
+
+
+    # We must have a hostname to resolve. There are a few different tools that
+    # can be used to resolve it, depending on what is installed.
+
+    # Use getent to resolve the hostname, if available
+    if command -v getent &>/dev/null; then
+
+      output="$(getent hosts "${heartbeatAddr}" | awk '{ print $1; exit }' 2>/dev/null)"
+      if [ -z "${output:-}" ]; then
+        errorExit "Heartbeat address \"${heartbeatAddr}\" is not resolvable."
+      fi
+
+      # heartbeatAddr was resolved.
+      continue
+
+
+    # No getent, then try dig
+    elif command -v dig &>/dev/null; then
+
+      output="$(dig +short +search "${heartbeatAddr}" | awk '{ print ; exit }' 2>/dev/null)"
+      if [ -z "${output:-}" ]; then
+        errorExit "Heartbeat address \"${heartbeatAddr}\" is not resolvable."
+      fi
+
+      # heartbeatAddr was resolved.
+      continue
+
+
+    # No dig, then try nslookup
+    elif command -v nslookup &>/dev/null; then
+
+      output="$(nslookup "${heartbeatAddr}" | awk '/^Address: / { print $2 ; exit }' 2>/dev/null)"
+      if [ -z "${output:-}" ]; then
+        errorExit "Heartbeat address \"${heartbeatAddr}\" is not resolvable."
+      fi
+
+      # heartbeatAddr was resolved.
+      continue
+
+    # No nslookup either. Don't validate the hostnames.
+    else
+      printWarning "Could not validate that the hostnames are resolvable. No [getent|dig|nslookup] tools available."
+    fi
+
+  done
+
+  debugPrint "Successfully validated that all heartbeat addresses are resolvable."
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Validates that there are no duplicate entries with the same host:dir combination.
 ## Params: None
 
@@ -347,10 +496,11 @@ function validateHostsAndDirsAreUnique() {
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Validates that there are no duplicate entries with the same host:port combination.
+## Validates that there are no duplicate entries with the same host:port
+## combination for both internal and client ports.
 ## Params: None
 
-function validateHostsAndPortsAreUnique() {
+function validateHostsAndAllPortsAreUnique() {
 
   local nodeName
   local host
@@ -363,20 +513,30 @@ function validateHostsAndPortsAreUnique() {
   do
 
     host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
-    port="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_PORT_KEY}")"
+    internal_port="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_INTERNAL_PORT_KEY}")"
+    client_port="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_CLIENT_PORT_KEY}")"
 
-    key="${host}:${port}"
+    key1="${host}:${internal_port}"
+    key2="${host}:${client_port}"
+
+    if [ "${internal_port}" -eq "${client_port}" ]; then
+      errorExit "Internal port number cannot be the same as the external port number on ${nodeName}: ${key1}"
+    fi
 
     # Check if the value for this key is not set.
-    if [ "${map[${key}]:-x}" != "x" ]; then
-      errorExit "Non-unique host:port combination for the following nodes:" "${map[${key}]}" "${nodeName}"
+    if [ "${map[${key1}]:-x}" != "x" ]; then
+      errorExit "Non-unique host:internal_port combination for the following nodes:" "${map[${key1}]}" "${nodeName}"
+    fi
+
+    if [ "${map[${key2}]:-x}" != "x" ]; then
+      errorExit "Non-unique host:client_port combination for the following nodes:" "${map[${key2}]}" "${nodeName}"
     fi
 
     # Set the value for this key.
-    map[${key}]="${nodeName}"
+    map[${key1}]="${nodeName}"
   done
 
-  # We're all good. All host:port combinations are unique.
+  # We're all good. All host:{internal|client}_port combinations are unique.
 }
 
 
@@ -573,11 +733,11 @@ function validateSENotRunning() {
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Validate that the TCP port specified for each node is not currently in use.
+## Validate that the TCP internal port specified for each node is not currently in use.
 ## Params:
 ##  $@ - (optional) the list of node names to check. If not set then check all.
 
-function validatePortsNotInUse() {
+function validateInternalPortNotInUse() {
 
   local -a nodeNames;
 
@@ -589,7 +749,7 @@ function validatePortsNotInUse() {
 
   local nodeName
   local host
-  local port
+  local internal_port
   local remoteCmd
   local output
 
@@ -599,9 +759,9 @@ function validatePortsNotInUse() {
   for nodeName in "${nodeNames[@]}"
   do
     host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
-    port="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_PORT_KEY}")"
+    internal_port="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_INTERNAL_PORT_KEY}")"
 
-    remoteCmd="which nc &>/dev/null && nc -z 127.0.0.1 ${port} && echo \"PORT_IN_USE\""
+    remoteCmd="which nc &>/dev/null && nc -z 127.0.0.1 ${internal_port} && echo \"PORT_IN_USE\""
 
     sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "bash" "-c" "'${remoteCmd}'")
 
@@ -614,13 +774,69 @@ function validatePortsNotInUse() {
   done
 
   if [ "${#failedNodes[@]}" -gt 0 ]; then
-    local errMsg="The port specified for RapidsSE is already in use on the following nodes:"
+    local errMsg="The internal port specified for RapidsSE is already in use on the following nodes:"
     
     for nodeName in "${failedNodes[@]}"
     do
       host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
-      port="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_PORT_KEY}")"
-      errMsg+="$(printf "\n  %-12s %12s:%s" "${nodeName}" "${host}" "${port}")"
+      internal_port="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_INTERNAL_PORT_KEY}")"
+      errMsg+="$(printf "\n  %-12s %12s:%s" "${nodeName}" "${host}" "${internal_port}")"
+    done
+
+    errorExit "${errMsg}"
+  fi
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Validate that the TCP client port specified for each node is not currently in use.
+## Params:
+##  $@ - (optional) the list of node names to check. If not set then check all.
+
+function validateClientPortNotInUse() {
+
+  local -a nodeNames;
+
+  if [ "$#" -eq 0 ]; then
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    nodeNames=( "$@" )
+  fi
+
+  local nodeName
+  local host
+  local client_port
+  local remoteCmd
+  local output
+
+  declare -a sshArgs=()
+  declare -a failedNodes=()
+
+  for nodeName in "${nodeNames[@]}"
+  do
+    host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+    client_port="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_CLIENT_PORT_KEY}")"
+
+    remoteCmd="which nc &>/dev/null && nc -z 127.0.0.1 ${client_port} && echo \"PORT_IN_USE\""
+
+    sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "bash" "-c" "'${remoteCmd}'")
+
+    # Run it
+    output="$(ssh "${sshArgs[@]}" || true)"
+
+    if [ "${output}" = "PORT_IN_USE" ]; then
+      failedNodes+=("${nodeName}")
+    fi
+  done
+
+  if [ "${#failedNodes[@]}" -gt 0 ]; then
+    local errMsg="The client port specified for RapidsSE is already in use on the following nodes:"
+    
+    for nodeName in "${failedNodes[@]}"
+    do
+      host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+      client_port="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_CLIENT_PORT_KEY}")"
+      errMsg+="$(printf "\n  %-12s %12s:%s" "${nodeName}" "${host}" "${client_port}")"
     done
 
     errorExit "${errMsg}"
@@ -1442,8 +1658,9 @@ function validateFirewallSequential() {
 
     server="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
     client="${firstHost}"  # by default
-    internalPort="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_PORT_KEY}")"
-    heartbeatPort="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HEARTBEAT_KEY}")"
+    internalPort="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_INTERNAL_PORT_KEY}")"
+    clientPort="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_CLIENT_PORT_KEY}")"
+    heartbeatPort="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HEARTBEAT_PORT_KEY}")"
 
     # Ensure we don't try to test the firewall of the current host from the current host
     if [ "${server}" = "${client}" ]; then
@@ -1452,19 +1669,21 @@ function validateFirewallSequential() {
 
     # Test the main internal TCP port. This either succeeds or fails. Ignore stderr output.
     local tcpResult
-    debugPrint "Sequential TCP: ${server}:${internalPort}"
-    if ! checkFirewallTcp "${client}" "${server}" "${internalPort}" 2>/dev/null ; then
-      tcpResult="$?"
+    for port in "${internalPort}" "${clientPort}"; do
+      debugPrint "Sequential TCP: ${server}:${port}"
+      if ! checkFirewallTcp "${client}" "${server}" "${port}" 2>/dev/null ; then
+        tcpResult="$?"
 
-      if [ "${tcpResult}" -eq 2 ]; then
-        # TCP socket is already in use. This is an error
-        errorList+=( "${server}:${internalPort}/TCP  (TCP port already in use by another process on host)" )
+        if [ "${tcpResult}" -eq 2 ]; then
+          # TCP socket is already in use. This is an error
+          errorList+=( "${server}:${port}/TCP  (TCP port already in use by another process on host)" )
 
-      else
-        # Socket is blocked. Add to failed node/socket list
-        errorList+=( "${server}:${internalPort}/TCP  (TCP port may be blocked)" )
+        else
+          # Socket is blocked. Add to failed node/socket list
+          errorList+=( "${server}:${port}/TCP  (TCP port may be blocked)" )
+        fi
       fi
-    fi
+    done
 
     # Test the heartbeat UDP port. This may be indeterminant if another process
     # is using the socket, so we need to cater for that. Ignore stderr output.
@@ -1616,23 +1835,26 @@ function validateFirewallParallel() {
   for nodeName in "${nodeNames[@]}"; do
     server="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
     client="${firstHost}"  # by default
-    port="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_PORT_KEY}")"
+    internalPort="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_INTERNAL_PORT_KEY}")"
+    clientPort="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_CLIENT_PORT_KEY}")"
 
-    debugPrint "Parallel TCP: ${server}:${port}"
+    for port in "${internalPort}" "${clientPort}"; do
+      debugPrint "Parallel TCP: ${server}:${port}"
 
-    # Ensure we don't try to test the firewall of the current host from the current host
-    if [ "${server}" = "${client}" ]; then
-      client="${alternateHost}"
-    fi
+      # Ensure we don't try to test the firewall of the current host from the current host
+      if [ "${server}" = "${client}" ]; then
+        client="${alternateHost}"
+      fi
 
-    (checkFirewallTcp "${client}" "${server}" "${port}" 2>/dev/null) &
-    pid="$!"
+      (checkFirewallTcp "${client}" "${server}" "${port}" 2>/dev/null) &
+      pid="$!"
 
-    jobPids+=( "${pid}" )
-    jobParams["${pid}_server"]="${server}"
-    jobParams["${pid}_client"]="${client}"
-    jobParams["${pid}_port"]="${port}"
-    jobParams["${pid}_protocol"]="TCP"
+      jobPids+=( "${pid}" )
+      jobParams["${pid}_server"]="${server}"
+      jobParams["${pid}_client"]="${client}"
+      jobParams["${pid}_port"]="${port}"
+      jobParams["${pid}_protocol"]="TCP"
+    done
   done
 
   # The Heartbeat UDP tests all run on the same port, so we only need to consider
@@ -1651,7 +1873,7 @@ function validateFirewallParallel() {
 
     server="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
     client="${firstHost}"  # by default
-    port="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HEARTBEAT_KEY}")"
+    port="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HEARTBEAT_PORT_KEY}")"
 
     # Skip any sequential hosts
     if [ "${#sequentialServers[@]}" -ne 0 ] && isValueInArray "${server}" "${sequentialServers[@]:-}"; then
@@ -1676,7 +1898,7 @@ function validateFirewallParallel() {
   done
 
   # Launch all of the non-unique server name UDP tests sequentially and collate results
-  port="$(nodeCfgGetValue "${nodeNames[0]}" "${NODE_CFG_HEARTBEAT_KEY}")"
+  port="$(nodeCfgGetValue "${nodeNames[0]}" "${NODE_CFG_HEARTBEAT_PORT_KEY}")"
   if [ "${#sequentialServers[@]}" -gt 0 ]; then
     for server in "${sequentialServers[@]}"; do
       client="${firstHost}"  # by default

@@ -17,8 +17,8 @@
 #include "BASE_hb.h"
 
 
-
-
+static const u8 C_HEARTBEAT_HEADER = 0x7461654274726148; // spells "HartBeat"
+                                     //t a e B t r a H
 
 /*----------------------------------------------------------------------------*/
 /* Heartbeat class contains data for heartbeat                                */
@@ -26,8 +26,11 @@
 class Heartbeat {
   
 public:
-  
-  i8   m_iHeader;            //
+
+  union {
+    u8   m_uHeader;          // 8 byte magic signature
+    char m_caHeader[8];
+  };
 
   u4   m_u4Version;          // version of the packet
   i8   m_iSeqNo;             // Do we need this ? Why?

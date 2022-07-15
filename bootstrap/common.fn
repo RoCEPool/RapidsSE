@@ -18,7 +18,7 @@ readonly __COMMON_FN=1
 
 #shellcheck disable=2034
 readonly VERSION_FILE="version"
-readonly CONFIG_DEFAULT_VERSION="2"
+readonly CONFIG_DEFAULT_VERSION="3"
 
 readonly PID_FILENAME="se.pid"
 readonly READY_FILENAME="se.ready"
@@ -32,8 +32,10 @@ readonly NODE_CFG_PREFIX="NODE_CFG_"
 # Names of fields within each node's associative array.
 readonly NODE_CFG_NAME_KEY="name"
 readonly NODE_CFG_HOST_KEY="host"
-readonly NODE_CFG_PORT_KEY="port"
-readonly NODE_CFG_HEARTBEAT_KEY="heartbeat"
+readonly NODE_CFG_INTERNAL_PORT_KEY="internal_port"
+readonly NODE_CFG_CLIENT_PORT_KEY="client_port"
+readonly NODE_CFG_HEARTBEAT_PORT_KEY="heartbeat_port"
+readonly NODE_CFG_HEARTBEAT_ADDRESS_KEY="heartbeat_address"
 readonly NODE_CFG_DIR_KEY="dir"
 readonly NODE_CFG_PARTITIONS_KEY="partitions"
 readonly NODE_CFG_THREADS_KEY="threads"
@@ -46,8 +48,10 @@ readonly NODE_CFG_PARAMS_KEY="params"
 declare -ra NODE_CFG_MANDATORY_KEYS=( \
   "${NODE_CFG_NAME_KEY}" \
   "${NODE_CFG_HOST_KEY}" \
-  "${NODE_CFG_PORT_KEY}" \
-  "${NODE_CFG_HEARTBEAT_KEY}" \
+  "${NODE_CFG_INTERNAL_PORT_KEY}" \
+  "${NODE_CFG_CLIENT_PORT_KEY}" \
+  "${NODE_CFG_HEARTBEAT_PORT_KEY}" \
+  "${NODE_CFG_HEARTBEAT_ADDRESS_KEY}" \
   "${NODE_CFG_DIR_KEY}" \
   "${NODE_CFG_PARTITIONS_KEY}" \
   "${NODE_CFG_THREADS_KEY}" \
