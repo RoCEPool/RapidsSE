@@ -428,6 +428,29 @@ void TypedStack::vPopStr(String* pString, const char* azCallingFunNm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pop stz from stack                                                         */
+/*----------------------------------------------------------------------------*/
+void TypedStack::vPopStz(Stz* szStz, const char* azCallingFunNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuard(CN_STZVAL) )
+    BASE::vThrow(FK_DSTACK,
+                        azCallingFunNm,__FILE__,__LINE__,
+                        "Invalid d-stack"_Stz);
+  
+  _hazard_();
+  
+  TypeValueArea* aTypedCell = _aTypeValueArea(aTopVal());
+  
+  szStz->vCopy(aTypedCell->szStz());
+    
+  vDiscardTop();
+  
+  _hazard_();
+}
+
+/*----------------------------------------------------------------------------*/
 /* pop value from stack                                                       */
 /*----------------------------------------------------------------------------*/
 void TypedStack::vPopSenCell(SenCell* aSenCell, const char* azCallingFunNm)

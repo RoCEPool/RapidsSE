@@ -459,6 +459,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("Text[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Text[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("Timer[]"_Stz)) {
     pCurrentWord->vEncodeCall("Timer[].set"_Stz);
     EXIT();

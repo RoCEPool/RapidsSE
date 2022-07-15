@@ -2228,7 +2228,9 @@ void vDdlLockAssertNone(void);
 
   // text
   void vTextDelete(void);
+  void vTextGet(void);
   void vTextNew(void);
+  void vTextSet(void);
 
   // thread
   void vThreadBind(void);
