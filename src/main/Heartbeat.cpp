@@ -37,9 +37,7 @@ HeartbeatSnd::HeartbeatSnd(const std::string &sAddr, int iPort)
   hints.ai_socktype = SOCK_DGRAM;
   hints.ai_protocol = IPPROTO_UDP;
 
-  std::transform(m_sAddr.begin(), m_sAddr.end(), m_sAddr.begin(), toupper);
-
-  if (m_sAddr.compare("BROADCAST") == 0) {
+  if (strcasecmp(m_sAddr.c_str(), "BROADCAST") == 0) {
     m_sAddr = "255.255.255.255";
   }
   int iRet = getaddrinfo(m_sAddr.c_str(), szPort.c_str(), &hints, &m_pAddrInfo);
