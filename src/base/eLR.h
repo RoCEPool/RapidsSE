@@ -70,9 +70,9 @@ enum eLR // Logic Unit Registers
   /*  */ LR_PATHIDENTIFIER,
   /*  */ LR_PIPEIN,
   /*  */ LR_PIPELINE,
+  /*  */ LR_PLANOPERAND,
   /*  */ LR_PORT,
   /*  */ LR_POT,
-  /*  */ LR_PLANOPERAND,
   /*  */ LR_PREEXPSTACK,
   /*  */ LR_PTNDEF,
   /*  */ LR_PTNSTREAM,
@@ -133,6 +133,7 @@ static Stz* aLR[]
   /*  */ "LR_BUCKETGET"_Stz,
   /*  */ "LR_BUCKETINFO"_Stz,
   
+  /*  */ "LR_CHILDEXIT"_Stz,
   /*  */ "LR_COMBINED"_Stz,
   /*  */ "LR_CRWBUFFER"_Stz,
   /*  */ "LR_CRWTOROW"_Stz,

@@ -18,8 +18,9 @@ void Step::vAddSteps_Text(void)
   vAddStep("text::delete"_Stz,  &Step::vTextDelete);
   vAddStep("text::new"_Stz,     &Step::vTextNew);
   
-  vAddStep("text[].get"_Stz,    &Step::vTextGet);
-  vAddStep("text[].set"_Stz,    &Step::vTextSet);
+  vAddStep("Text[]"_Stz,        &Step::vTextGet);
+  vAddStep("Text[].get"_Stz,    &Step::vTextGet);
+  vAddStep("Text[].set"_Stz,    &Step::vTextSet);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -52,7 +53,7 @@ void Step::vTextNew(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* text[].get -- get text[]                                                   */
+/* Text[].get -- get text[]                                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vTextGet(void)
 {
@@ -60,22 +61,22 @@ void Step::vTextGet(void)
     
   RASSERT(m_pLogicUnit->m_xpText.bIsNotNull());
   
-  m_pDataStack->vPushStz(m_pLogicUnit->m_xpText->szGet());
+  //m_pDataStack->vPushStz(m_pLogicUnit->m_xpText->szGetStz());
 
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* text[].set -- set text[]                                                   */
+/* Text[].set -- set text[]                                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vTextSet(void)
 {
   ENTRY();
     
   if (m_pLogicUnit->m_xpText.bIsNull())
-    m_pLogicUnit->m_xpText = new Text(C_SIZE_MEDIUM_TEXT);
+    m_pLogicUnit->m_xpText = new TextMedium;
     
-  m_pDataStack->vPopStz(m_pLogicUnit->m_xpText->szGet(), __func__);
+  //m_pDataStack->vPopStz(m_pLogicUnit->m_xpText->szGetStz(), __func__);
 
   EXIT();
 }
