@@ -45,7 +45,7 @@ TextTiny::TextTiny(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TEXTTINY);
   
 #ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_caText,C_SIZE_TINY_TEXT,CN_TEXTTINY);
+  MemLib::vZero(m_caText,C_TEXT_TINY,CN_TEXTTINY);
 #else
   m_caText[0] = '\0';
 #endif
@@ -66,7 +66,7 @@ TextTiny::~TextTiny(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get text to given value                                                    */
 /*----------------------------------------------------------------------------*/
-Stz* TextTiny::aGetText(void)
+Stz* TextTiny::szArea(void)
 {
   return (Stz*)&m_caText[0];
 }

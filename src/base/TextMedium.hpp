@@ -20,11 +20,11 @@ namespace BASE
     
     TextMedium(void);
     TextMedium(Stz* szText);
-    virtual ~TextMedium(void) noexcept(false);
+   ~TextMedium(void) noexcept(false);
     
     static void vRepair(Object* pObject);
 
-    virtual Stz* aGetText(void);
+    Stz* szArea(void);
     
     Footer* aFooter(void);
   };

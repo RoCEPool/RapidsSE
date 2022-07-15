@@ -45,7 +45,7 @@ TextMedium::TextMedium(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TEXTMEDIUM);
   
 #ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_caText,C_SIZE_MEDIUM_TEXT,CN_TEXTMEDIUM);
+  MemLib::vZero(m_caText,C_TEXT_MEDIUM,CN_TEXTMEDIUM);
 #else
   m_caText[0] = '\0';
 #endif
@@ -64,7 +64,7 @@ TextMedium::TextMedium(Stz* szText)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TEXTMEDIUM);
   
 #ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_caText,C_SIZE_MEDIUM_TEXT,CN_TEXTMEDIUM);
+  MemLib::vZero(m_caText,C_TEXT_MEDIUM,CN_TEXTMEDIUM);
 #else
   m_caText[0] = '\0';
 #endif
@@ -100,7 +100,7 @@ void TextMedium::vRepair(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* get text to given value                                                    */
 /*----------------------------------------------------------------------------*/
-Stz* TextMedium::aGetText(void)
+Stz* TextMedium::szArea(void)
 {
   return (Stz*)&m_caText[0];
 }

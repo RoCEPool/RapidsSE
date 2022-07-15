@@ -45,7 +45,7 @@ TextLarge::TextLarge(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TEXTLARGE);
   
 #ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_caText,C_SIZE_LARGE_TEXT,CN_TEXTLARGE);
+  MemLib::vZero(m_caText,C_TEXT_LARGE,CN_TEXTLARGE);
 #else
   m_caText[0] = '\0';
 #endif
@@ -66,7 +66,7 @@ TextLarge::~TextLarge(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get text to given value                                                    */
 /*----------------------------------------------------------------------------*/
-Stz* TextLarge::aGetText(void)
+Stz* TextLarge::szArea(void)
 {
   return (Stz*)&m_caText[0];
 }

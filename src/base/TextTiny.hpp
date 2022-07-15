@@ -20,9 +20,9 @@ namespace BASE
     void  operator delete(void* pText);
     
     TextTiny(void);
-    virtual ~TextTiny(void) noexcept(false);
-    
-    virtual Stz* aGetText(void);
+   ~TextTiny(void) noexcept(false);
+  
+    Stz* szArea(void);
     
     Footer* aFooter(void);
   };

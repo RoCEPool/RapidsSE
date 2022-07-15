@@ -19,9 +19,9 @@ namespace BASE
     void  operator delete(void* pText);
     
     TextSmall(void);
-    virtual ~TextSmall(void) noexcept(false);
+   ~TextSmall(void) noexcept(false);
     
-    virtual Stz* aGetText(void);
+    Stz* szArea(void);
     
     Footer* aFooter(void);
   };

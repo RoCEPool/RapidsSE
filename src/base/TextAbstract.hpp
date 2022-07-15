@@ -19,13 +19,11 @@ namespace BASE
   public:
     
     TextAbstract(eCN eClass, i8 nBufferSize);
-    virtual ~TextAbstract(void) noexcept(false);
+   ~TextAbstract(void) noexcept(false);
     
     i8 nBufferSize(void);
-    virtual Stz* aGetText(void) = 0;
+    Stz* szArea(void);
   };
-  
-  TextAbstract* _pTextBuffer(void* aAddr);
 }
 
 /*============================================================================*/

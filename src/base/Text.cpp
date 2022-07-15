@@ -69,7 +69,17 @@ Text::~Text(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TEXT);
   
   if (m_pTextBuffer) {
-    delete m_pTextBuffer;
+    
+    eCN eClass = m_pTextBuffer->eGetClassNo();
+    switch (eClass) {
+      case CN_TEXTTINY  :  delete _pTextTiny(m_pTextBuffer);    break;
+      case CN_TEXTSMALL :  delete _pTextSmall(m_pTextBuffer);   break;
+      case CN_TEXTMEDIUM:  delete _pTextMedium(m_pTextBuffer);  break;
+      case CN_TEXTLARGE :  delete _pTextLarge(m_pTextBuffer);   break;
+
+      default:
+        NEVER_REACH;
+    }
   }
   
 }
@@ -118,7 +128,7 @@ Stz* Text::szGet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TEXT);
 
-  return m_pTextBuffer->aGetText();
+  return m_pTextBuffer->szArea();
 }
 
 /*----------------------------------------------------------------------------*/

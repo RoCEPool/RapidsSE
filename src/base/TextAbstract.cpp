@@ -5,18 +5,6 @@
 #include "BASE.h"
 
 /*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-TextAbstract* BASE::_pTextBuffer(void* aAddr)
-{
-  TextAbstract* pTextBuffer = reinterpret_cast<TextAbstract*>(aAddr);
-  
-  RASSERT_TYPE(pTextBuffer,CN_TEXT);
-  
-  return pTextBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 TextAbstract::TextAbstract(eCN eClass, i8 nBufferSize)
@@ -39,6 +27,16 @@ TextAbstract::~TextAbstract(void) noexcept(false)
 i8 TextAbstract::nBufferSize(void)
 {
   return m_nBufferSize;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get text after buffer                                                      */
+/*----------------------------------------------------------------------------*/
+Stz* TextAbstract::szArea(void)
+{
+  Stz* szArea = (Stz*)( (char*)this + sizeof(TextAbstract) );
+  
+  return szArea;
 }
 
 /*============================================================================*/
