@@ -22,6 +22,8 @@ namespace BASE
     TextMedium(Stz* szText);
     virtual ~TextMedium(void) noexcept(false);
     
+    static void vRepair(Object* pObject);
+
     virtual Stz* aGetText(void);
     
     Footer* aFooter(void);

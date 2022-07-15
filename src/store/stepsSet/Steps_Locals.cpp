@@ -664,6 +664,15 @@ void Step::vLocalsStore(void)
   SenCell* pSenCell = m_pLocalFrame->pSenCell(i_Local);
   
   m_pDataStack->vPopSenCell(pSenCell,__func__);
+  
+//  if (CN_STZVAL == pSenCell->eType()) {
+//    if (pSenCell->nStzSize() > 500) {
+//      vTrace("CN_STZVAL %lldB\n%s\n"_Stz,
+//             pSenCell->nStzSize(),
+//             pSenCell->szStz());
+//      vSeeFrameStack();
+//    }
+//  }
  
   EXIT();
 }

@@ -135,16 +135,6 @@ CodeCell* SenCell::aFip(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get address of column cell                                                 */
-/*----------------------------------------------------------------------------*/
-Stz* SenCell::szStz(void)
-{
-  _precondition_(_MAGIC_,CN_SENCELL,_FOOTER_);
-
-  return (Stz*) m_xTypeValueArea.m_caStringArea;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get float value of given column                                            */
 /*----------------------------------------------------------------------------*/
 d8 SenCell::dGetColVal(void)
@@ -245,6 +235,29 @@ i8 SenCell::nStackUsage(void)
   
   return nBytes;
 }
+
+/*----------------------------------------------------------------------------*/
+/* get address of column cell                                                 */
+/*----------------------------------------------------------------------------*/
+Stz* SenCell::szStz(void)
+{
+  _precondition_(_MAGIC_,CN_SENCELL,_FOOTER_);
+
+  return (Stz*) m_xTypeValueArea.m_caStringArea;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get nStzSize                                                               */
+/*----------------------------------------------------------------------------*/
+i8 SenCell::nStzSize(void)
+{
+  _precondition_(_MAGIC_,CN_SENCELL,_FOOTER_);
+  
+  i8 nBytes = m_xTypeValueArea.nStzSize();
+  
+  return nBytes;
+}
+
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/

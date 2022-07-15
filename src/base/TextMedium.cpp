@@ -85,6 +85,19 @@ TextMedium::~TextMedium(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
+/* repair the text                                                            */
+/*----------------------------------------------------------------------------*/
+void TextMedium::vRepair(Object* pObject)
+{
+  _static_
+
+  TextMedium* pTextMedium = _pTextMedium(pObject);
+
+  delete pTextMedium;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* get text to given value                                                    */
 /*----------------------------------------------------------------------------*/
 Stz* TextMedium::aGetText(void)

@@ -50,7 +50,8 @@ namespace BASE
 
     i8   nStackUsage(void);
     Stz* szStz(void);
-  
+    i8   nStzSize(void);
+
     void vToString(Stz* szDst);
     eCN  eType(void);
     TypeValue* aTypeValue(void);
