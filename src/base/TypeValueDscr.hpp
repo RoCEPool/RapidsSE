@@ -8,7 +8,6 @@
 namespace BASE
 {
   class LocalStr;
-  class LocalStrMedium;
   class LocalVars;
 
 //class Local         : public TypeValue
@@ -24,7 +23,6 @@ namespace BASE
     b8         m_bLocalStr;
     union {
       LocalStr*        m_pLocalStr;
-      LocalStrMedium*  m_pLocalStrMedium;
     };
   
   public:
