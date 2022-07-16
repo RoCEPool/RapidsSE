@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "eSI.h"
+#include "SizeArea.hpp"
 
 namespace BASE
 {
@@ -15,10 +15,12 @@ namespace BASE
   class LocalStr
   {
   public:
-    TypeValueDscr* m_aLocal;
-    i8             m__dummy0;
   
-    char           m_caArea[C_LOCAL_AREA];
+    LocalStrs* m_pLocalStrs;
+    i8         m_i_LclStr;
+    i8         m_i_NextFree;  // C_UNKNOWN indicates end
+    
+    SizeArea   m_xSizeArea;
 
   public:
     LocalStr(void);
@@ -28,9 +30,11 @@ namespace BASE
     operator LocalStr*(void);
 
     char* azArea(void);
+    Stz*  szArea(void);
 
-    TypeValueDscr* aLocal(void);
-    void  vLocal(TypeValueDscr* aLocal);
+    SizeArea* axSizeArea(void);
+  
+    i8 jStrSize(void);
 
   private:
   

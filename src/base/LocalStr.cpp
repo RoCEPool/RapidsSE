@@ -12,10 +12,11 @@
 /*----------------------------------------------------------------------------*/
 LocalStr::LocalStr(void)
 {
-  m_aLocal  = nullptr;
-  m__dummy0 = C_UNKNOWN;
-
-  MemLib::vZero(m_caArea,sizeof(m_caArea),CN_SENCELL);
+  m_pLocalStrs = nullptr;
+  m_i_LclStr   = C_UNKNOWN;
+  m_i_NextFree = C_UNKNOWN;
+  
+  // m_xSizeArea
 }
 
 /*----------------------------------------------------------------------------*/
@@ -39,27 +40,27 @@ LocalStr::operator LocalStr*(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get pointer to string area                                                 */
+/* get string area                                                            */
 /*----------------------------------------------------------------------------*/
 char* LocalStr::azArea(void)
 {
-  return m_caArea;
+  return m_xSizeArea.azArea();
 }
 
 /*----------------------------------------------------------------------------*/
-/* return a value                                                             */
+/* get string area                                                            */
 /*----------------------------------------------------------------------------*/
-TypeValueDscr* LocalStr::aLocal(void)
+Stz* LocalStr::szArea(void)
 {
-  return m_aLocal;
+  return m_xSizeArea.szArea();
 }
 
 /*----------------------------------------------------------------------------*/
-/* assign a value                                                             */
+/* get string size                                                            */
 /*----------------------------------------------------------------------------*/
-void LocalStr::vLocal(TypeValueDscr* aLocal)
+i8 LocalStr::jStrSize(void)
 {
-  m_aLocal = aLocal;
+  return m_xSizeArea.jStrSize();
 }
 
 /*============================================================================*/
