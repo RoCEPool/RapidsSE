@@ -5,6 +5,7 @@
 #include "BASE.h"
 
 #include "LocalVars.hpp"
+#include "LocalStrs.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -24,15 +25,17 @@ LocalVars::LocalVars(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALVARS,_FOOTER_);
   
-  m_pLocalStrs = nullptr;
+  m_pLocalStrs = new LocalStrs(this);
   
-  m_nLocals = 0;
+  m_nLocalsVars = 0;
   
   for (i8 i_LclVar = 0; i_LclVar < C_LOCAL_VARS; i_LclVar++) {
     _LclVar& rxLvlVar = m_xaLclVar[i_LclVar];
 
-    rxLvlVar.m_i_Local       = i_LclVar;
+    rxLvlVar.m_pLocalVars    = this;
+    rxLvlVar.m_i_LclVar    = i_LclVar;
     rxLvlVar.m_aDiscardPoint = nullptr;
+    rxLvlVar.m_aLocalStr     = nullptr;
   }
   
   _checkInitialised_(CN_LOCALVARS);
@@ -46,6 +49,8 @@ LocalVars::LocalVars(void)
 LocalVars::~LocalVars(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALVARS,_FOOTER_);
+  
+  delete m_pLocalStrs;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -53,58 +58,66 @@ LocalVars::~LocalVars(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* remove frame of locals                                                     */
+/* pop top frame of locals                                                    */
 /*----------------------------------------------------------------------------*/
 void LocalVars::vFramePop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALVARS,_FOOTER_);
 
-  RASSERT(m_nLocals);
+  RASSERT(m_nLocalsVars);
   
-  _LclVar& rxLvlVar = m_xaLclVar[m_nLocals - 1];
+  _LclVar& rxLvlVar = m_xaLclVar[m_nLocalsVars - 1];
   void* aDiscardPoint = rxLvlVar.m_aDiscardPoint;
   
-  while (aDiscardPoint == rxLvlVar.m_aDiscardPoint) {
+  while (m_nLocalsVars && aDiscardPoint == rxLvlVar.m_aDiscardPoint) {
+    rxLvlVar = m_xaLclVar[m_nLocalsVars - 1];
+  
+    // test for string
+    // tbd...
     
-    if (! --m_nLocals)
-      break;
-    
-    rxLvlVar = m_xaLclVar[m_nLocals - 1];
+    m_nLocalsVars--;
   }
   
-  RASSERT(m_nLocals >= 0);
-
+  RASSERT(m_nLocalsVars >= 0);
 }
 
 /*----------------------------------------------------------------------------*/
-/* add new frame of locals                                                    */
+/* push new frame of locals                                                   */
 /*----------------------------------------------------------------------------*/
 void LocalVars::vFramePush(i8 nLocals, void* aDiscardPoint)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALVARS,_FOOTER_);
 
+  RASSERT(m_nLocalsVars + nLocals <= C_LOCAL_VARS);
+
   for (i8 iLocal = 0; iLocal < nLocals; iLocal++) {
     
-    i8 i_Local = m_nLocals++;
-    RASSERT(i_Local < C_LOCAL_VARS);
+    i8 i_LclVar = m_nLocalsVars++;
+    RASSERT(i_LclVar < C_LOCAL_VARS);
 
-    _LclVar& rxLvlVar = m_xaLclVar[i_Local];
+    _LclVar& rxLvlVar = m_xaLclVar[i_LclVar];
     
     rxLvlVar.m_aDiscardPoint = aDiscardPoint;
   }
   
-  RASSERT(m_nLocals <= C_LOCAL_VARS);
-
+  RASSERT(m_nLocalsVars <= C_LOCAL_VARS);
 }
 
 /*----------------------------------------------------------------------------*/
-/* get given local                                                            */
+/* get given local of top frame                                               */
 /*----------------------------------------------------------------------------*/
-_LclVar* LocalVars::aGetLocal(i8 i_Local)
+_LclVar* LocalVars::axGetLocal(i8 i_Local)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALVARS,_FOOTER_);
 
-  return nullptr;
+  RASSERT(m_nLocalsVars);
+  RASSERT(i_Local < m_nLocalsVars);
+
+  i8 i_LclVar = (m_nLocalsVars - 1) - i_Local;
+
+  _LclVar* axLvlVar = &m_xaLclVar[i_LclVar];
+
+  return axLvlVar;
 }
 
 /*============================================================================*/

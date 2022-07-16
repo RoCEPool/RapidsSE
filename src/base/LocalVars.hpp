@@ -8,9 +8,11 @@
 namespace BASE
 {
   struct _LclVar {
-    i8        m_i_Local;
-    void*     m_aDiscardPoint;
-    TypeValue m_xTypeValue;
+    LocalVars* m_pLocalVars;
+    i8         m_i_LclVar;
+    void*      m_aDiscardPoint;
+    TypeValue  m_xTypeValue;
+    LocalStr*  m_aLocalStr;
   };
 
   static const i8 C_LOCAL_VARS = (C_SIZE_MEDIUM_OBJECT - 128) / sizeof(_LclVar);
@@ -23,7 +25,7 @@ namespace BASE
   
     LocalStrs* m_pLocalStrs;
   
-    i8 m_nLocals;
+    i8 m_nLocalsVars;
   
     _LclVar m_xaLclVar[C_LOCAL_VARS];
   
@@ -39,7 +41,7 @@ namespace BASE
   
     void vFramePop(void);
     void vFramePush(i8 nLocals, void* aDiscardPoint);
-    _LclVar* aGetLocal(i8 i_Local);
+    _LclVar* axGetLocal(i8 i_Local);
 
     // must be last
     Footer* aFooter(void);

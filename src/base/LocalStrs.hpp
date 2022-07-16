@@ -5,12 +5,23 @@
 
 namespace BASE
 {
-  static const i8 C_LOCAL_STR  = 512 - (2 * sizeof(i8));
+  static const i8 C_LOCAL_STR  = 512 - (8 * sizeof(i8));
+
+  struct _SizeArea {
+    i8         m_jStrSize;
+    char       m_caArea[C_LOCAL_STR];
+  };
 
   struct _LclStr {
-    i8   m__dummy0;
-    i8   m__dummy1;
-    char m__strspace[C_LOCAL_STR];
+    
+    LocalStrs* m_pLocalStrs;
+    i8         m_i_LclStr;
+    i8         m_i_NextFree;  // C_UNKNOWN indicates end
+    
+//    i8         m_jStrSize;
+//    char       m_caArea[C_LOCAL_STR];
+    
+    _SizeArea  m_xSizeArea;
   };
   
   static const i8 C_LOCAL_STRS = (C_SIZE_MEDIUM_OBJECT - 128) / sizeof(_LclStr);
@@ -23,7 +34,9 @@ namespace BASE
     
     LocalVars* m_pLocalVars;
 
-    _LclStr m_xaLclStr[C_LOCAL_STRS];
+    i8         m_i_FirstFree;  // C_UNKNOWN indicates end
+  
+    _LclStr    m_xaLclStr[C_LOCAL_STRS];
 
     // must be last
     Footer m_xFooter;
@@ -32,12 +45,12 @@ namespace BASE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    LocalStrs(void);
+    LocalStrs(LocalVars* pLocalVars);
    ~LocalStrs(void) noexcept(false);
       
-    _LclStr* aAllotLclStr(void* );
-    _LclStr* aGetLclStr(i8 i_Local);
-    void vFreeLclStr(_LclStr* aLclStr);
+    _LclStr* axAllotLclStr(void);
+    void     vFreeLclStr(_LclStr* axLclStr);
+    //_LclStr* axGetLclStr(i_LclStr);
 
     // must be last
     Footer* aFooter(void);

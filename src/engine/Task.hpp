@@ -10,6 +10,7 @@
 #include "TraceLock.hpp"
 
 namespace BASE {
+  class LocalStrs;
   class LocalVars;
 }
 
