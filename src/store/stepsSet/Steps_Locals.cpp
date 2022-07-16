@@ -516,14 +516,8 @@ void Step::vLocalsFramePop(void)
 {
   ENTRY();
   
-  LocalFrame* pLocalsFrame = m_pLocalFrame;
-  
-  if ( ! pLocalsFrame ) THROW_DSTACK();
-  
-  m_pLocalFrame = m_pLocalFrame->pNext();
-  
-  delete pLocalsFrame;
-  
+  m_pLocalVars->vFramePop();
+
   EXIT();
 }
 /*----------------------------------------------------------------------------*/
@@ -556,14 +550,12 @@ void Step::vLocalsFramePush(void)
   if (m_iDebugMark)
     vDebugPoint();
 
+  i8 nLocals = m_pDataStack->iPopInt(__func__);
+  RASSERT(nLocals > 0 && nLocals <= 24);
+
+  TypeValueDesc* aDiscardPoint = (TypeValueDesc*)m_pReturnStack->aTopVal()
   
-  LocalFrame* pLocalsFrame = new LocalFrame;
-  
-  pLocalsFrame->vDiscardPoint((TypeValueArea*)m_pReturnStack->aTopVal());
-  
-  pLocalsFrame->vNext(m_pLocalFrame);
-  
-  m_pLocalFrame = pLocalsFrame;
+  m_pLocalVars->vFramePush(nLocals,aDiscardPoint);
   
   EXIT();
 }
@@ -613,9 +605,9 @@ void Step::vLocalsFetch(void)
   
   i8 i_Local = m_pDataStack->iPopInt(__func__);
   
-  SenCell* pSenCell = m_pLocalFrame->pSenCell(i_Local);
+  _LclVar* aLvlVar = m_pLocalVars->aGetLocal(i_Local);
   
-  m_pDataStack->vPushSenCell(pSenCell);
+  //m_pDataStack->vPushSenCell(pSenCell);
   
   EXIT();
 }
@@ -650,9 +642,9 @@ void Step::vLocalsStore(void)
   
   i8 i_Local = m_pDataStack->iPopInt(__func__);
   
-  SenCell* pSenCell = m_pLocalFrame->pSenCell(i_Local);
-  
-  m_pDataStack->vPopSenCell(pSenCell,__func__);
+  _LclVar* aLvlVar = m_pLocalVars->aGetLocal(i_Local);
+
+  //m_pDataStack->vPopSenCell(pSenCell,__func__);
  
   EXIT();
 }

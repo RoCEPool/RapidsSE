@@ -8,8 +8,8 @@
 namespace BASE
 {
   struct _LclVar {
-    i8 m_i_TopLocal;
-    i8 m__dummy0;
+    i8        m_i_Local;
+    void*     m_aDiscardPoint;
     TypeValue m_xTypeValue;
   };
 
@@ -23,6 +23,8 @@ namespace BASE
   
     LocalStrs* m_pLocalStrs;
   
+    i8 m_nLocals;
+  
     _LclVar m_xaLclVar[C_LOCAL_VARS];
   
     // must be last
@@ -35,10 +37,10 @@ namespace BASE
     LocalVars(void);
    ~LocalVars(void) noexcept(false);
   
-    void vDeleteFrame(void*);
+    void vFramePop(void);
+    void vFramePush(i8 nLocals, void* aDiscardPoint);
     _LclVar* aGetLocal(i8 i_Local);
-    void vNewFrame(void*, i8 nLocals);
-      
+
     // must be last
     Footer* aFooter(void);
   };
