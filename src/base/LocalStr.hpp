@@ -9,9 +9,6 @@ namespace BASE
 {
   static const i8 C_LOCAL_AREA  = 512 - (2 * sizeof(i8));
 
-//class Local;
-  class TypeValueDscr;
-
   class LocalStr
   {
   public:
@@ -32,12 +29,10 @@ namespace BASE
     char* azArea(void);
     Stz*  szArea(void);
 
+    void  vReInitialise(void);
     SizeArea* axSizeArea(void);
   
-    i8 jStrSize(void);
-
-  private:
-  
+    i8 jStrSize(void);  
   };
 
   LocalStr* _pLocalStr(void* aAddr);

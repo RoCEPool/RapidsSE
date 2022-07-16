@@ -29,7 +29,7 @@ LocalStrs::LocalStrs(LocalVars* pLocalVars)
   m_i_FirstFree = C_LOCAL_STRS - 1;
   
   for (i8 i_LclStr = 0; i_LclStr < C_LOCAL_STRS; i_LclStr++) {
-    _LclStr& rxLvlStr = m_xaLclStr[i_LclStr];
+    LocalStr& rxLvlStr = m_xaLocalStr[i_LclStr];
     
     rxLvlStr.m_pLocalStrs = this;
     rxLvlStr.m_i_LclStr   = i_LclStr;
@@ -61,33 +61,30 @@ LocalStrs::~LocalStrs(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* allot a local string                                                       */
 /*----------------------------------------------------------------------------*/
-_LclStr* LocalStrs::axAllotLclStr(void)
+LocalStr* LocalStrs::axAllotLocalStr(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALVARS,_FOOTER_);
 
   RASSERT(C_UNKNOWN != m_i_FirstFree);
   
-  _LclStr* axLclStr = &m_xaLclStr[m_i_FirstFree];
+  LocalStr* axLocalStr = &m_xaLocalStr[m_i_FirstFree];
   
-  m_i_FirstFree = axLclStr->m_i_NextFree;
+  m_i_FirstFree = axLocalStr->m_i_NextFree;
   
-  return axLclStr;
+  return axLocalStr;
 }
 
 /*----------------------------------------------------------------------------*/
 /* free given local string                                                    */
 /*----------------------------------------------------------------------------*/
-void LocalStrs::vFreeLclStr(_LclStr* axLclStr)
+void LocalStrs::vFreeLocalStr(LocalStr* axLocalStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALVARS,_FOOTER_);
 
-  axLclStr->m_xSizeArea.m_jStrSize = 0;
-  MemLib::vZero(axLclStr->m_xSizeArea.m_caArea,
-                sizeof(axLclStr->m_xSizeArea.m_caArea),
-                CN_LOCALSTRS);
+  axLocalStr->vReInitialise();
 
-  axLclStr->m_i_NextFree = m_i_FirstFree;
-  m_i_FirstFree = axLclStr->m_i_LclStr;
+  axLocalStr->m_i_NextFree = m_i_FirstFree;
+  m_i_FirstFree = axLocalStr->m_i_LclStr;
 }
 
 /*============================================================================*/

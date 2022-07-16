@@ -25,6 +25,8 @@ namespace BASE
     char* azArea(void);
     Stz*  szArea(void);
 
+    void vReInitialise(void);
+
     i8    jStrSize(void);
   };
 
