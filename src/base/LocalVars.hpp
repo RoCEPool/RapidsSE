@@ -4,18 +4,11 @@
 #pragma once
 
 #include "TypeValue.hpp"
+#include "LocalVar.hpp"
 
 namespace BASE
 {
-  struct _LclVar {
-    LocalVars* m_pLocalVars;
-    i8         m_i_LclVar;
-    void*      m_aDiscardPoint;
-    TypeValue  m_xTypeValue;
-    LocalStr*  m_aLocalStr;
-  };
-
-  static const i8 C_LOCAL_VARS = (C_SIZE_MEDIUM_OBJECT - 128) / sizeof(_LclVar);
+  static const i8 C_LOCAL_VARS = (C_SIZE_MEDIUM_OBJECT - 128) / sizeof(LocalVar);
 
   class LocalStrs;
 
@@ -27,7 +20,7 @@ namespace BASE
   
     i8 m_nLocalsVars;
   
-    _LclVar m_xaLclVar[C_LOCAL_VARS];
+    LocalVar m_xaLocalVar[C_LOCAL_VARS];
   
     // must be last
     Footer m_xFooter;
@@ -41,7 +34,7 @@ namespace BASE
   
     void vFramePop(void);
     void vFramePush(i8 nLocals, void* aDiscardPoint);
-    _LclVar* axGetLocal(i8 i_Local);
+    LocalVar* axLocalVar(i8 i_Local);
 
     // must be last
     Footer* aFooter(void);

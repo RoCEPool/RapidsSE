@@ -601,11 +601,11 @@ void Step::vLocalsFetch(void)
 {
   ENTRY();
   
-  if ( ! m_pLocalFrame ) THROW_DSTACK();
+  if ( ! m_pLocalVars ) THROW_DSTACK();
   
   i8 i_Local = m_pDataStack->iPopInt(__func__);
   
-  _LclVar* aLvlVar = m_pLocalVars->aGetLocal(i_Local);
+  LocalVar* axLocalVar = m_pLocalVars->axLocalVar(i_Local);
   
   //m_pDataStack->vPushSenCell(pSenCell);
   
@@ -638,11 +638,11 @@ void Step::vLocalsStore(void)
 {
   ENTRY();
   
-  if ( ! m_pLocalFrame ) THROW_DSTACK();
+  if ( ! m_pLocalVars ) THROW_DSTACK();
   
   i8 i_Local = m_pDataStack->iPopInt(__func__);
   
-  _LclVar* aLvlVar = m_pLocalVars->aGetLocal(i_Local);
+  LocalVar* axLocalVar = m_pLocalVars->axLocalVar(i_Local);
 
   //m_pDataStack->vPopSenCell(pSenCell,__func__);
  

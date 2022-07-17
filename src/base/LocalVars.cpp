@@ -29,13 +29,13 @@ LocalVars::LocalVars(void)
   
   m_nLocalsVars = 0;
   
-  for (i8 i_LclVar = 0; i_LclVar < C_LOCAL_VARS; i_LclVar++) {
-    _LclVar& rxLvlVar = m_xaLclVar[i_LclVar];
+  for (i8 i_LocalVar = 0; i_LocalVar < C_LOCAL_VARS; i_LocalVar++) {
+    LocalVar& rxLocalVar = m_xaLocalVar[i_LocalVar];
 
-    rxLvlVar.m_pLocalVars    = this;
-    rxLvlVar.m_i_LclVar    = i_LclVar;
-    rxLvlVar.m_aDiscardPoint = nullptr;
-    rxLvlVar.m_aLocalStr     = nullptr;
+    rxLocalVar.m_pLocalVars    = this;
+    rxLocalVar.m_i_LocalVar    = i_LocalVar;
+    rxLocalVar.m_aDiscardPoint = nullptr;
+    rxLocalVar.m_aLocalStr     = nullptr;
   }
   
   _checkInitialised_(CN_LOCALVARS);
@@ -66,11 +66,11 @@ void LocalVars::vFramePop(void)
 
   RASSERT(m_nLocalsVars);
   
-  _LclVar& rxLvlVar = m_xaLclVar[m_nLocalsVars - 1];
-  void* aDiscardPoint = rxLvlVar.m_aDiscardPoint;
+  LocalVar& rxLocalVar = m_xaLocalVar[m_nLocalsVars - 1];
+  void* aDiscardPoint = rxLocalVar.m_aDiscardPoint;
   
-  while (m_nLocalsVars && aDiscardPoint == rxLvlVar.m_aDiscardPoint) {
-    rxLvlVar = m_xaLclVar[m_nLocalsVars - 1];
+  while (m_nLocalsVars && aDiscardPoint == rxLocalVar.m_aDiscardPoint) {
+    rxLocalVar = m_xaLocalVar[m_nLocalsVars - 1];
   
     // test for string
     // tbd...
@@ -92,12 +92,12 @@ void LocalVars::vFramePush(i8 nLocals, void* aDiscardPoint)
 
   for (i8 iLocal = 0; iLocal < nLocals; iLocal++) {
     
-    i8 i_LclVar = m_nLocalsVars++;
-    RASSERT(i_LclVar < C_LOCAL_VARS);
+    i8 i_LocalVar = m_nLocalsVars++;
+    RASSERT(i_LocalVar < C_LOCAL_VARS);
 
-    _LclVar& rxLvlVar = m_xaLclVar[i_LclVar];
+    LocalVar& rxLocalVar = m_xaLocalVar[i_LocalVar];
     
-    rxLvlVar.m_aDiscardPoint = aDiscardPoint;
+    rxLocalVar.m_aDiscardPoint = aDiscardPoint;
   }
   
   RASSERT(m_nLocalsVars <= C_LOCAL_VARS);
@@ -106,18 +106,18 @@ void LocalVars::vFramePush(i8 nLocals, void* aDiscardPoint)
 /*----------------------------------------------------------------------------*/
 /* get given local of top frame                                               */
 /*----------------------------------------------------------------------------*/
-_LclVar* LocalVars::axGetLocal(i8 i_Local)
+LocalVar* LocalVars::axLocalVar(i8 i_Local)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALVARS,_FOOTER_);
 
   RASSERT(m_nLocalsVars);
   RASSERT(i_Local < m_nLocalsVars);
 
-  i8 i_LclVar = (m_nLocalsVars - 1) - i_Local;
+  i8 i_LocalVar = (m_nLocalsVars - 1) - i_Local;
 
-  _LclVar* axLvlVar = &m_xaLclVar[i_LclVar];
+  LocalVar* axLocalVar = &m_xaLocalVar[i_LocalVar];
 
-  return axLvlVar;
+  return axLocalVar;
 }
 
 /*============================================================================*/

@@ -10,7 +10,7 @@
 LocalVar::LocalVar(void)
 {
   m_pLocalVars    = nullptr;
-  m_i_LclVar      = C_UNKNOWN;
+  m_i_LocalVar    = C_UNKNOWN;
   m_aDiscardPoint = nullptr;
   //m_xTypeValue
   m_aLocalStr     = nullptr;

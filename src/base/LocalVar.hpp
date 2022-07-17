@@ -11,7 +11,7 @@ namespace BASE
   {
   public:
     LocalVars* m_pLocalVars;
-    i8         m_i_LclVar;
+    i8         m_i_LocalVar;
     void*      m_aDiscardPoint;
     TypeValue  m_xTypeValue;
     LocalStr*  m_aLocalStr;
@@ -26,7 +26,7 @@ namespace BASE
 
   };
 
-  LocalVar* _pSizeArea(void* aAddr);
+  LocalVar* _pLocalVar(void* aAddr);
 }
 
 /*============================================================================*/
