@@ -12,6 +12,8 @@ namespace BASE
   //static const i8 C_WSP_STACK = C_SIZE_LARGE_OBJECT - C_1KB;
   static const i8 C_WSP_STACK = C_SIZE_MEDIUM_OBJECT - 256;
 
+  class LocalVar;
+
   class StkTop
   {
   public:
@@ -70,7 +72,7 @@ namespace BASE
     void vPopStz(Stz* szStz, const char* azCallingFunNm);
     void vPopSenCell(SenCell* aSenCell, const char* azCallingFunNm);
     void vPopTypeValueArea(TypeValueArea* aTypeValueArea, const char* azCallingFunNm);
-    void vPopTypeValueDscr(TypeValueDscr* aTypeValueDscr, const char* azCallingFunNm);
+    void vPopLocalVar(LocalVar* axLocalVar, const char* azCallingFunNm);
 
     void vPushBcd(i8 iInt);
     void vPushBol(i8 iInt);
@@ -82,7 +84,7 @@ namespace BASE
     void vPushStz(Stz* szStz);
     void vPushSenCell(SenCell* aSenCell);
     void vPushTypeValueArea(TypeValueArea* aSenCell);
-    void vPushTypeValueDscr(TypeValueDscr* aTypeValueDscr);
+    void vPushLocalVar(LocalVar* axLocalVar);
 
     void vReset(void);
     void vRetry(void);

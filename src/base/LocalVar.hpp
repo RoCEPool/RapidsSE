@@ -7,6 +7,8 @@
 
 namespace BASE
 {
+  class LocalStr;
+
   class LocalVar
   {
   public:
