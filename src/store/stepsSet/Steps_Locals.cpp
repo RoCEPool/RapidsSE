@@ -516,7 +516,19 @@ void Step::vLocalsFramePop(void)
 {
   ENTRY();
   
-  m_pLocalVars->vFramePop();
+  // - - - - - - - - - - - - - - - - - - - -
+//  RASSERT(m_pLocalVars);
+//  m_pLocalVars->vFramePop();
+  // - - - - - - - - - - - - - - - - - - - -
+  
+  
+  LocalFrame* pLocalsFrame = m_pLocalFrame;
+  
+  if ( ! pLocalsFrame ) THROW_DSTACK();
+  
+  m_pLocalFrame = m_pLocalFrame->pNext();
+  
+  delete pLocalsFrame;
 
   EXIT();
 }
@@ -552,10 +564,24 @@ void Step::vLocalsFramePush(void)
 
   i8 nLocals = m_pDataStack->iPopInt(__func__);
   RASSERT(nLocals > 0 && nLocals <= 24);
-
-  TypeValueDesc* aDiscardPoint = (TypeValueDesc*)m_pReturnStack->aTopVal()
   
-  m_pLocalVars->vFramePush(nLocals,aDiscardPoint);
+  
+  // - - - - - - - - - - - - - - - - - - - -
+//
+//  TypeValueDesc* aDiscardPoint = (TypeValueDesc*)m_pReturnStack->aTopVal()
+//
+//  m_pLocalVars->vFramePush(nLocals,aDiscardPoint);
+  // - - - - - - - - - - - - - - - - - - - -
+
+  
+  LocalFrame* pLocalsFrame = new LocalFrame;
+  
+  pLocalsFrame->vDiscardPoint((TypeValueArea*)m_pReturnStack->aTopVal());
+  
+  pLocalsFrame->vNext(m_pLocalFrame);
+  
+  m_pLocalFrame = pLocalsFrame;
+
   
   EXIT();
 }
@@ -601,13 +627,25 @@ void Step::vLocalsFetch(void)
 {
   ENTRY();
   
-  if ( ! m_pLocalVars ) THROW_DSTACK();
+  // - - - - - - - - - - - - - - - - - - - -
+//  if ( ! m_pLocalVars ) THROW_DSTACK();
+//
+//  i8 i_Local = m_pDataStack->iPopInt(__func__);
+//
+//  LocalVar* axLocalVar = m_pLocalVars->axLocalVar(i_Local);
+//
+//  m_pDataStack->vPushSenCell(pSenCell);
+  // - - - - - - - - - - - - - - - - - - - -
+
+  
+  if ( ! m_pLocalFrame ) THROW_DSTACK();
   
   i8 i_Local = m_pDataStack->iPopInt(__func__);
   
-  LocalVar* axLocalVar = m_pLocalVars->axLocalVar(i_Local);
+  SenCell* pSenCell = m_pLocalFrame->pSenCell(i_Local);
   
-  //m_pDataStack->vPushSenCell(pSenCell);
+  m_pDataStack->vPushSenCell(pSenCell);
+
   
   EXIT();
 }
@@ -638,13 +676,38 @@ void Step::vLocalsStore(void)
 {
   ENTRY();
   
-  if ( ! m_pLocalVars ) THROW_DSTACK();
+  // - - - - - - - - - - - - - - - - - - - -
+//  if ( ! m_pLocalVars ) THROW_DSTACK();
+//
+//  i8 i_Local = m_pDataStack->iPopInt(__func__);
+//
+//  LocalVar* axLocalVar = m_pLocalVars->axLocalVar(i_Local);
+//
+//  m_pDataStack->vPopSenCell(pSenCell,__func__);
+  // - - - - - - - - - - - - - - - - - - - -
+
+  
+  if ( ! m_pLocalFrame ) THROW_DSTACK();
   
   i8 i_Local = m_pDataStack->iPopInt(__func__);
   
-  LocalVar* axLocalVar = m_pLocalVars->axLocalVar(i_Local);
+  SenCell* pSenCell = m_pLocalFrame->pSenCell(i_Local);
+  
+  m_pDataStack->vPopSenCell(pSenCell,__func__);
+  
+  if (CN_STZVAL == pSenCell->eType()) {
+    i8 nStzSize = pSenCell->nStzSize();
+//    if (nStzSize > nMaxSoFar) {
+//      nMaxSoFar = nStzSize;
+//      vTrace("CN_STZVAL %lldB\n%s\n"_Stz,
+//             nStzSize,
+//             pSenCell->szStz());
+//      vSeeFrameStack();
+//    }
+    
+    RASSERT(nStzSize < 500);
+  }
 
-  //m_pDataStack->vPopSenCell(pSenCell,__func__);
  
   EXIT();
 }

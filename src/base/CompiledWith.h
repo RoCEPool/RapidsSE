@@ -90,7 +90,7 @@
 #define WITH_API_FORK EndDefine       // RAY
 
 
-//#define WITH_LOCALS_OOM EndDefine     // RAY
+#define WITH_LOCALS_OOM EndDefine     // RAY
 
 
 /*============================================================================*/
