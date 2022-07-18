@@ -391,6 +391,7 @@ function validateHeartbeatAddressIsResolvable() {
       #   Org scope:   239.192.0.0 - 239.195.255.255
       #   Local scope: 239.255.0.0 - 239.255.255.255
       if [ "${quad1}" -ne 239 ]; then
+        echo ""
         msg="Heartbeat multicast IP address should be in the RFC 2365 administratively scoped address "
         msg+="range of 239.0.0.0/8 to avoid conflicts with other multicast addresses."
         printWarning "${msg}"
@@ -452,6 +453,7 @@ function validateHeartbeatAddressIsResolvable() {
 
     # No nslookup either. Don't validate the hostnames.
     else
+      echo ""
       printWarning "Could not validate that the hostnames are resolvable. No [getent|dig|nslookup] tools available."
     fi
 
@@ -520,20 +522,21 @@ function validateHostsAndAllPortsAreUnique() {
     key2="${host}:${client_port}"
 
     if [ "${internal_port}" -eq "${client_port}" ]; then
-      errorExit "Internal port number cannot be the same as the external port number on ${nodeName}: ${key1}"
+      errorExit "Internal port number cannot be the same as the client port number on ${nodeName}: ${key1}"
     fi
 
     # Check if the value for this key is not set.
     if [ "${map[${key1}]:-x}" != "x" ]; then
-      errorExit "Non-unique host:internal_port combination for the following nodes:" "${map[${key1}]}" "${nodeName}"
+      errorExit "Non-unique host:internal_port combination (${key1}) for the following nodes:" "${map[${key1}]}" "${nodeName}"
     fi
 
     if [ "${map[${key2}]:-x}" != "x" ]; then
-      errorExit "Non-unique host:client_port combination for the following nodes:" "${map[${key2}]}" "${nodeName}"
+      errorExit "Non-unique host:client_port combination (${key2}) for the following nodes:" "${map[${key2}]}" "${nodeName}"
     fi
 
     # Set the value for this key.
     map[${key1}]="${nodeName}"
+    map[${key2}]="${nodeName}"
   done
 
   # We're all good. All host:{internal|client}_port combinations are unique.

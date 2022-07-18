@@ -369,7 +369,7 @@ function validateClusterConfig() {
       val="$(nodeCfgGetValue "${nodeName}" "${key}")"
 
       if [ -z "${val:-}" ]; then
-        errorExit "${errMsg}" "Null/unset value for key ${key} of node ${nodeName}."
+        errorExit "${errMsg}" "Missing or empty value for key ${key} of node ${nodeName}."
       fi
     done
 
@@ -927,7 +927,8 @@ function nodeCfgGetValue() {
   local key=$2
 
   local ref="${NODE_CFG_PREFIX}${nodeName}[${key}]"
-  echo "${!ref}"
+
+  echo "${!ref:-}"
 }
 
 
