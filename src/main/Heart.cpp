@@ -37,9 +37,9 @@ void vHeartInit(void) {
     //vTrace("SE Heart (sizeof(Heartbeat)=%lld\n"_Stz, (i8) sizeof(Heartbeat));
 
     int iPort = (int)gxCmdLineArgs.m_xSysArgs.m_xHeartbeatDefn[0].m_iPortNo;
-    char szAddr[32];
+    char szAddr[64];  // allow for a hostname mapping to a multicast address
 
-    if (iPort == 0) {
+    if (iPort <= 0) {
       iPort = 8888;
     }
 
