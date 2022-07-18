@@ -321,6 +321,19 @@ echo "192.168.0.5 ci.rapidsdata.com" >> /etc/hosts
 # this URL.
 
 # ----------------------------------------------------------------------------------------
+# Setting IGMP to v2 instead of v3 (for multicast)
+echo
+echo "*** Setting IGMP to v2 ***"
+echo
+sysctl net.ipv4.conf.eth0.force_igmp_version=2
+{
+  echo
+  echo "# Enable Multicast on AWS"
+  echo "net.ipv4.conf.eth0.force_igmp_version=2"
+  echo
+} >> /etc/sysctl.conf
+
+# ----------------------------------------------------------------------------------------
 # Change permissions to allow for writing to /opt
 echo
 echo "*** Setting /opt permissions ***"
