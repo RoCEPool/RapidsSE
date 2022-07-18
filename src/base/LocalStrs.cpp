@@ -61,7 +61,7 @@ LocalStrs::~LocalStrs(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* allot a local string                                                       */
 /*----------------------------------------------------------------------------*/
-LocalStr* LocalStrs::axAllotLocalStr(void)
+LocalStr* LocalStrs::axAllot(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALVARS,_FOOTER_);
 
@@ -75,9 +75,9 @@ LocalStr* LocalStrs::axAllotLocalStr(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* free given local string                                                    */
+/* revert given local string                                                  */
 /*----------------------------------------------------------------------------*/
-void LocalStrs::vFreeLocalStr(LocalStr* axLocalStr)
+void LocalStrs::vRevert(LocalStr* axLocalStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALVARS,_FOOTER_);
 

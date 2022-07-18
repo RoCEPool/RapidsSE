@@ -3,6 +3,8 @@
 /*============================================================================*/
 
 #include "LocalVar.hpp"
+#include "LocalStr.hpp"
+#include "LocalVars.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -13,7 +15,7 @@ LocalVar::LocalVar(void)
   m_i_LocalVar    = C_UNKNOWN;
   m_aDiscardPoint = nullptr;
   //m_xTypeValue
-  m_aLocalStr     = nullptr;
+  m_axLocalStr     = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -35,6 +37,80 @@ LocalVar::operator LocalVar*(void)
 {
   return this;
 }
+
+
+/*----------------------------------------------------------------------------*/
+/* get string area                                                            */
+/*----------------------------------------------------------------------------*/
+char* LocalVar::azArea(void)
+{
+  return m_axLocalStr->azArea();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get string area                                                            */
+/*----------------------------------------------------------------------------*/
+Stz* LocalVar::szArea(void)
+{
+  return m_axLocalStr->szArea();
+}
+
+/*----------------------------------------------------------------------------*/
+/* allot a localStr                                                           */
+/*----------------------------------------------------------------------------*/
+Stz* LocalVar::szLocalStrAllot(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALVARS,_FOOTER_);
+
+  RASSERT(! m_axLocalStr);
+  m_axLocalStr = m_pLocalVars->axLocalStrAllot();
+  
+  return m_axLocalStr->szArea();
+}
+
+/*----------------------------------------------------------------------------*/
+/* revert a localStr                                                          */
+/*----------------------------------------------------------------------------*/
+void LocalVar::vLocalStrRevert(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALVARS,_FOOTER_);
+
+  m_pLocalVars->vLocalStrRevert(m_axLocalStr);
+  m_axLocalStr = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get stack usage                                                            */
+/*----------------------------------------------------------------------------*/
+i8 LocalVar::nStackUsage(void)
+{
+  return 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get string size                                                            */
+/*----------------------------------------------------------------------------*/
+i8 LocalVar::jStzSize(void)
+{
+  return m_axLocalStr->jStrSize();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get type                                                                   */
+/*----------------------------------------------------------------------------*/
+eCN LocalVar::eType(void)
+{
+  return m_xTypeValue.m_wxType.eGetClassNo();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get pointer to type value                                                  */
+/*----------------------------------------------------------------------------*/
+TypeValue* LocalVar::axTypeValue(void)
+{
+  return & m_xTypeValue;
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

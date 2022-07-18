@@ -5,6 +5,7 @@
 #include "BASE.h"
 
 #include "SP_Word.hpp"
+#include "LocalVar.hpp"
 
 /*
 
@@ -505,6 +506,39 @@ void TypedStack::vPopLocalVar(LocalVar* axLocalVar,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
+  eCN eType_stack = m_rTop.m_aTypeValueArea->eType();
+  eCN eType_local = axLocalVar->eType();
+
+  if (CN_STZVAL == eType_stack) {
+    
+    Stz* szArea;
+    if (CN_STZVAL == eType_local)
+      szArea = axLocalVar->szArea();
+    else
+      szArea = axLocalVar->szLocalStrAllot();
+    
+    MemLib::vCopy(axLocalVar->axTypeValue(),
+                  m_rTop.m_aTypeValueArea,
+                  sizeof(TypeValue),
+                  CN_STACK);
+
+    MemLib::vCopy(szArea,
+                  m_rTop.m_ayStackPtr + sizeof(TypeValue),
+                  sizeof(TypeValue),
+                  CN_STACK);
+  }
+  else {
+    
+    if (CN_STZVAL == eType_local)
+      axLocalVar->vLocalStrRevert();
+    
+    MemLib::vCopy(axLocalVar->axTypeValue(),
+                  m_rTop.m_aTypeValueArea,
+                  sizeof(TypeValue),
+                  CN_STACK);
+  }
+  
+  m_rTop.vRewind();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -653,6 +687,26 @@ void TypedStack::vPushTypeValueArea(TypeValueArea* aTypeValueArea)
 void TypedStack::vPushLocalVar(LocalVar* axLocalVar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+    
+  TypeValue* axTypeValue = axLocalVar->axTypeValue();
+
+  m_rTop.vAdvance(sizeof(TypeValue));
+
+  m_rTop.m_aTypeValueArea->vCopy((TypeValueArea*)axTypeValue,
+                                 sizeof(TypeValue));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // string case
+  
+  if (CN_STZVAL == axLocalVar->eType()) {
+
+    i8 jStzSize = axLocalVar->jStzSize();
+    m_rTop.vAdvance(jStzSize);
+
+    m_rTop.m_aTypeValueArea->vCopy((TypeValueArea*)axLocalVar->szArea(),
+                                   jStzSize);
+
+  }
 }
 
 /*----------------------------------------------------------------------------*/

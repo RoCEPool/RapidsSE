@@ -16,7 +16,7 @@ namespace BASE
     i8         m_i_LocalVar;
     void*      m_aDiscardPoint;
     TypeValue  m_xTypeValue;
-    LocalStr*  m_aLocalStr;
+    LocalStr*  m_axLocalStr;
 
   public:
     LocalVar(void);
@@ -24,8 +24,16 @@ namespace BASE
   
     // auto conversion
     operator LocalVar*(void);
+  
+    char* azArea(void);
+    Stz*  szArea(void);
 
-
+    Stz*  szLocalStrAllot(void);
+    void  vLocalStrRevert(void);
+    i8    nStackUsage(void);
+    i8    jStzSize(void);
+    eCN   eType(void);
+    TypeValue* axTypeValue(void);
   };
 
   LocalVar* _pLocalVar(void* aAddr);

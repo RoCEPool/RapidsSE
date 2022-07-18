@@ -641,7 +641,7 @@ void Step::vLocalsFetch(void)
   LocalVar* axLocalVar = m_pLocalVars->axLocalVar(i_Local);
   UNUSED(axLocalVar);
 
-  m_pDataStack->vPushLocalVar(axLocalVar);
+  //m_pDataStack->vPushLocalVar(axLocalVar);
   // - - - - - - - - - - - - - - - - - - - -
 
   
@@ -689,7 +689,7 @@ void Step::vLocalsStore(void)
   LocalVar* axLocalVar = m_pLocalVars->axLocalVar(i_Local);
   UNUSED(axLocalVar);
 
-  m_pDataStack->vPopLocalVar(axLocalVar,__func__);
+  //m_pDataStack->vPopLocalVar(axLocalVar,__func__);
   // - - - - - - - - - - - - - - - - - - - -
 
   

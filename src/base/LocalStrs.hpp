@@ -28,8 +28,8 @@ namespace BASE
     LocalStrs(LocalVars* pLocalVars);
    ~LocalStrs(void) noexcept(false);
       
-    LocalStr* axAllotLocalStr(void);
-    void     vFreeLocalStr(LocalStr* axLocalStr);
+    LocalStr* axAllot(void);
+    void     vRevert(LocalStr* axLocalStr);
 
     // must be last
     Footer* aFooter(void);

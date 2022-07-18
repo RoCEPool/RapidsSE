@@ -35,7 +35,7 @@ LocalVars::LocalVars(void)
     rxLocalVar.m_pLocalVars    = this;
     rxLocalVar.m_i_LocalVar    = i_LocalVar;
     rxLocalVar.m_aDiscardPoint = nullptr;
-    rxLocalVar.m_aLocalStr     = nullptr;
+    rxLocalVar.m_axLocalStr     = nullptr;
   }
   
   _checkInitialised_(CN_LOCALVARS);
@@ -123,6 +123,28 @@ LocalVar* LocalVars::axLocalVar(i8 i_Local)
   LocalVar* axLocalVar = &m_xaLocalVar[i_LocalVar];
 
   return axLocalVar;
+}
+
+/*----------------------------------------------------------------------------*/
+/* allot a localStr                                                           */
+/*----------------------------------------------------------------------------*/
+LocalStr* LocalVars::axLocalStrAllot(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALVARS,_FOOTER_);
+
+  LocalStr* axLocalStr = m_pLocalStrs->axAllot();
+  
+  return axLocalStr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* revert a localStr                                                          */
+/*----------------------------------------------------------------------------*/
+void LocalVars::vLocalStrRevert(LocalStr* axLocalStr)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALVARS,_FOOTER_);
+
+  m_pLocalStrs->vRevert(axLocalStr);
 }
 
 /*============================================================================*/

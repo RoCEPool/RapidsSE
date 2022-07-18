@@ -34,8 +34,12 @@ namespace BASE
   
     void vFramePop(void);
     void vFramePush(i8 nLocals, void* aDiscardPoint);
+
     LocalVar* axLocalVar(i8 i_Local);
 
+    LocalStr* axLocalStrAllot(void);
+    void vLocalStrRevert(LocalStr* axLocalStr);
+  
     // must be last
     Footer* aFooter(void);
   };
