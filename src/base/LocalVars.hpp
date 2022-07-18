@@ -18,7 +18,7 @@ namespace BASE
   
     LocalStrs* m_pLocalStrs;
   
-    i8 m_nLocalsVars;
+    i8 m_nLocalVars;
   
     LocalVar m_xaLocalVar[C_LOCAL_VARS];
   

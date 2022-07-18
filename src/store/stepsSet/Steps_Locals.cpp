@@ -9,6 +9,7 @@
 #include "Steps.hpp"
 
 #include "TagConstants.h"
+#include "LocalVars.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -517,8 +518,11 @@ void Step::vLocalsFramePop(void)
   ENTRY();
   
   // - - - - - - - - - - - - - - - - - - - -
-//  RASSERT(m_pLocalVars);
-//  m_pLocalVars->vFramePop();
+  if (! m_pLocalVars)
+    vSeeFrameStack();
+  
+  RASSERT(m_pLocalVars);
+  m_pLocalVars->vFramePop();
   // - - - - - - - - - - - - - - - - - - - -
   
   
@@ -567,10 +571,12 @@ void Step::vLocalsFramePush(void)
   
   
   // - - - - - - - - - - - - - - - - - - - -
-//
-//  TypeValueDesc* aDiscardPoint = (TypeValueDesc*)m_pReturnStack->aTopVal()
-//
-//  m_pLocalVars->vFramePush(nLocals,aDiscardPoint);
+  if (! m_pLocalVars)
+    m_pLocalVars = new LocalVars;
+  
+  TypeValueArea* aDiscardPoint = (TypeValueArea*)m_pReturnStack->aTopVal();
+
+  m_pLocalVars->vFramePush(nLocals,aDiscardPoint);
   // - - - - - - - - - - - - - - - - - - - -
 
   
@@ -626,27 +632,26 @@ void Step::vLocalsFramePush(void)
 void Step::vLocalsFetch(void)
 {
   ENTRY();
-  
+
+  i8 i_Local = m_pDataStack->iPopInt(__func__);
+
   // - - - - - - - - - - - - - - - - - - - -
-//  if ( ! m_pLocalVars ) THROW_DSTACK();
-//
-//  i8 i_Local = m_pDataStack->iPopInt(__func__);
-//
-//  LocalVar* axLocalVar = m_pLocalVars->axLocalVar(i_Local);
-//
-//  m_pDataStack->vPushSenCell(pSenCell);
+  RASSERT(m_pLocalVars);
+
+  LocalVar* axLocalVar = m_pLocalVars->axLocalVar(i_Local);
+  UNUSED(axLocalVar);
+
+  m_pDataStack->vPushLocalVar(axLocalVar);
   // - - - - - - - - - - - - - - - - - - - -
 
   
   if ( ! m_pLocalFrame ) THROW_DSTACK();
   
-  i8 i_Local = m_pDataStack->iPopInt(__func__);
   
   SenCell* pSenCell = m_pLocalFrame->pSenCell(i_Local);
   
   m_pDataStack->vPushSenCell(pSenCell);
 
-  
   EXIT();
 }
 /*----------------------------------------------------------------------------*/
@@ -675,21 +680,21 @@ void Step::vLocalsFetch(void)
 void Step::vLocalsStore(void)
 {
   ENTRY();
-  
+
+  i8 i_Local = m_pDataStack->iPopInt(__func__);
+
   // - - - - - - - - - - - - - - - - - - - -
-//  if ( ! m_pLocalVars ) THROW_DSTACK();
-//
-//  i8 i_Local = m_pDataStack->iPopInt(__func__);
-//
-//  LocalVar* axLocalVar = m_pLocalVars->axLocalVar(i_Local);
-//
-//  m_pDataStack->vPopSenCell(pSenCell,__func__);
+  RASSERT(m_pLocalVars);
+
+  LocalVar* axLocalVar = m_pLocalVars->axLocalVar(i_Local);
+  UNUSED(axLocalVar);
+
+  m_pDataStack->vPopLocalVar(axLocalVar,__func__);
   // - - - - - - - - - - - - - - - - - - - -
 
   
   if ( ! m_pLocalFrame ) THROW_DSTACK();
-  
-  i8 i_Local = m_pDataStack->iPopInt(__func__);
+
   
   SenCell* pSenCell = m_pLocalFrame->pSenCell(i_Local);
   
