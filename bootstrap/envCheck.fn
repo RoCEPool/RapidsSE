@@ -1326,7 +1326,6 @@ function validateLibAtomic() {
   fi
 }
 
-#
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Check that bash is installed and is new enough on each node.
@@ -2596,6 +2595,4 @@ function checkUdpResult() {
   done
 
   return "${exitCode}"
-}
-
 }
