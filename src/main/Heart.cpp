@@ -48,7 +48,7 @@ void vHeartInit(void) {
     szAddr[sizeof(szAddr) - 1] = 0;
 
     bool bIsBroadcast = false;
-    if (strcasecmp(szAddr, "BROADCAST") == 0 || strcmp(szAddr, "255.255.255.255")) {
+    if (strcasecmp(szAddr, "BROADCAST") == 0 || strcmp(szAddr, "255.255.255.255") == 0) {
       bIsBroadcast = true;
     }
 
@@ -56,7 +56,6 @@ void vHeartInit(void) {
     HeartbeatSnd *pSender = new HeartbeatSnd(szAddr, iPort, bIsBroadcast);
     PsxThd::iSpawnPosixThread(vHeartSndLoop, pSender);
 
-    strcpy(szAddr, "ANY"); // For receiving Broadcast, any interface is the option
     HeartbeatRcv *pReceiver = new HeartbeatRcv(szAddr, iPort, bIsBroadcast);
     PsxThd::iSpawnPosixThread(vHeartRcvLoop, pReceiver);
 
