@@ -436,8 +436,8 @@ function checkInstallFileVersion() {
 
 function doClusterInstall() {
 
-  # First check the version of bash we are running is sufficient
-  validateLocalBash
+  # First check that we have all the necessary tools for the installation
+  validateLocal3rdPartyTools
 
   # Need to consider if this installation is interactive or scripted, or
   # whether an existing config file is being used.
@@ -579,6 +579,8 @@ function createConfiguration() {
   # This populates NODE_CORE_COUNT, NODE_TOTAL_MEM, NODE_TOTAL_SHM and NODE_FREE_SHM
   # and will be used for default values for partitions, threads and
   # shared memory size later on.
+  # Before we do, we need to validate that all hosts have the necessary 3rd party tools installed.
+  validate3rdPartyTools
   collectHostSizeInfo
   
   # Now we can update the default values for memory size, partitions and threads.

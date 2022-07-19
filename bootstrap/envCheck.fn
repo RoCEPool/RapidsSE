@@ -97,27 +97,42 @@ function validateInstallationEnvironment() {
 function validate3rdPartyTools() {
 
   if [ "$#" -eq 0 ]; then
+
+    # Check that bash has the correct version
+    validateBash
+
     # Check that gcc is installed and is new enough
     validateGcc
 
     # Check that libAtomic.so.1 is installed
     validateLibAtomic
 
-    # Check that bash has the correct version
-    validateBash
-
-    # Check that netcat is installed
-    validateNetcat
-
     # Check that the ss utility is installed
     validateSs
 
-    # Check that the bc utility is installed
-    validateBc
+    # Check that the ldconfig utility is installed
+    validateLdconfig
+
+    # Check that the a number of basic utilities are installed
+    validateCommandLineToolExists "nc"
+    validateCommandLineToolExists "ss"
+    validateCommandLineToolExists "tar"
+    validateCommandLineToolExists "bc"
+    validateCommandLineToolExists "cut"
+    validateCommandLineToolExists "printf"
+    validateCommandLineToolExists "sort"
+    validateCommandLineToolExists "awk"
+
+    # tar, bc, cut, printf, sort, awk
+    # "nslookup" "dig" "getent"
+    # "nproc" "getconf"
 
   else
     local -a nodeNames=()
     nodeNames=("$@")
+
+    # Check that bash has the correct version
+    validateBash "${nodeNames[@]}"
 
     # Check that gcc is installed and is new enough
     validateGcc "${nodeNames[@]}"
@@ -125,14 +140,21 @@ function validate3rdPartyTools() {
     # Check that libAtomic.so.1 is installed
     validateLibAtomic "${nodeNames[@]}"
 
-    # Check that bash has the correct version
-    validateBash "${nodeNames[@]}"
-
-    # Check that netcat is installed
-    validateNetcat "${nodeNames[@]}"
-
     # Check that the ss utility is installed
     validateSs "${nodeNames[@]}"
+
+    # Check that the ldconfig utility is installed
+    validateLdconfig "${nodeNames[@]}"
+
+    # Check that the a number of basic utilities are installed
+    validateCommandLineToolExists "nc" "${nodeNames[@]}"
+    validateCommandLineToolExists "ss" "${nodeNames[@]}"
+    validateCommandLineToolExists "tar" "${nodeNames[@]}"
+    validateCommandLineToolExists "bc" "${nodeNames[@]}"
+    validateCommandLineToolExists "cut" "${nodeNames[@]}"
+    validateCommandLineToolExists "printf" "${nodeNames[@]}"
+    validateCommandLineToolExists "sort" "${nodeNames[@]}"
+    validateCommandLineToolExists "awk" "${nodeNames[@]}"
 
     # Check that the bc utility is installed
     validateBc "${nodeNames[@]}"
@@ -1374,59 +1396,6 @@ function validateBash() {
   fi
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Check that netcat (nc) is installed on each node.
-## Params:
-##  $@ - (optional) the list of node names to check. If not set then check all.
-
-function validateNetcat() {
-
-  local -a nodeNames;
-
-  if [ "$#" -eq 0 ]; then
-    nodeNames=( "${NODE_LIST[@]}" )
-  else
-    nodeNames=( "$@" )
-  fi
-
-  local nodeName
-  local host
-  local remoteCmd
-  local output
-
-  declare -a sshArgs=()
-  declare -a failedNodes=()
-
-  debugPrint "Validating netcat is installed"
-
-  for nodeName in "${nodeNames[@]}"
-  do
-    host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
-
-    #shellcheck disable=SC2016
-    remoteCmd="which nc &>/dev/null"
-
-    sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "bash" "-c" "'${remoteCmd}'")
-
-    # Run it and check if it returned with a success error code
-    if ! output="$(ssh "${sshArgs[@]}" || true)" ; then
-      failedNodes+=("${nodeName}")
-      continue
-    fi
-  done
-
-  if [ "${#failedNodes[@]}" -gt 0 ]; then
-    local errMsg="Netcat is not installed on the following nodes:"
-
-    for nodeName in "${failedNodes[@]}"
-    do
-      host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
-      errMsg+="$(printf "\n  %-12s [host: %12s]" "${nodeName}" "${host}")"
-    done
-
-    errorExit "${errMsg}"
-  fi
-}
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Check that ss utility is installed on each node.
@@ -1483,11 +1452,11 @@ function validateSs() {
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Check that bc utility is installed on each node.
+## Check that ldconfig utility is installed on each node.
 ## Params:
 ##  $@ - (optional) the list of node names to check. If not set then check all.
 
-function validateBc() {
+function validateLdconfig() {
 
   local -a nodeNames;
 
@@ -1505,14 +1474,14 @@ function validateBc() {
   declare -a sshArgs=()
   declare -a failedNodes=()
 
-  debugPrint "Validating bc is installed"
+  debugPrint "Validating ldconfig is installed"
 
   for nodeName in "${nodeNames[@]}"
   do
     host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
 
     #shellcheck disable=SC2016
-    remoteCmd="which bc &>/dev/null"
+    remoteCmd='export PATH=${PATH}:/usr/sbin:/sbin which ldconfig &>/dev/null'
 
     sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "bash" "-c" "'${remoteCmd}'")
 
@@ -1524,7 +1493,7 @@ function validateBc() {
   done
 
   if [ "${#failedNodes[@]}" -gt 0 ]; then
-    local errMsg="bc is not installed on the following nodes:"
+    local errMsg="ldconfig is not installed on the following nodes:"
 
     for nodeName in "${failedNodes[@]}"
     do
@@ -1534,6 +1503,113 @@ function validateBc() {
 
     errorExit "${errMsg}"
   fi
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Check that a given command line tool is installed on each node.
+## Params:
+##  $1 - the name of the tool to check
+##  $@ - (optional) the list of node names to check. If not set then check all.
+
+function validateCommandLineToolExists() {
+
+  local tool="$1"
+  shift
+
+  local -a nodeNames;
+
+  if [ "$#" -eq 0 ]; then
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    nodeNames=( "$@" )
+  fi
+
+  local nodeName
+  local host
+  local remoteCmd
+  local output
+
+  declare -a sshArgs=()
+  declare -a failedNodes=()
+
+  debugPrint "Validating ${tool} is installed"
+
+  for nodeName in "${nodeNames[@]}"
+  do
+    host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+
+    #shellcheck disable=SC2016
+    remoteCmd="which ${tool} &>/dev/null"
+
+    sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "bash" "-c" "'${remoteCmd}'")
+
+    # Run it and check if it returned with a success error code
+    if ! output="$(ssh "${sshArgs[@]}" || true)" ; then
+      failedNodes+=("${nodeName}")
+      continue
+    fi
+  done
+
+  if [ "${#failedNodes[@]}" -gt 0 ]; then
+    local errMsg="${tool} is not installed on the following nodes:"
+
+    for nodeName in "${failedNodes[@]}"
+    do
+      host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+      errMsg+="$(printf "\n  %-12s [host: %12s]" "${nodeName}" "${host}")"
+    done
+
+    errorExit "${errMsg}"
+  fi
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Check that the local machine has the basic 3rd party tools installed.
+## These are used by the installer.
+## Params: None
+
+function validateLocal3rdPartyTools() {
+
+  validateLocalBash
+
+  local mandatoryTools=("ssh" "tar" "bc" "cut" "printf" "sort" "awk")
+  local oneOfDnsTools=("nslookup" "dig" "getent")
+  local oneOfCpuTools=("nproc" "getconf")
+
+  for tool in "${mandatoryTools[@]}"; do
+    if ! which "${tool}" &>/dev/null; then
+      errorExit "Cannot find the command line tool ${tool} needed for the installation."
+    fi
+  done
+
+  # Check for one of the DNS tools: nslookup, dig, getent
+  local gotDnsTool=0
+  for tool in "${oneOfDnsTools[@]}"; do
+    if which "${tool}" &>/dev/null; then
+      gotDnsTool=1
+      break
+    fi
+  done
+
+  if [ "${gotDnsTool}" -eq 0 ]; then
+    prettyList="$(arrayToCommaSeparatedString "${oneOfDnsTools[@]}")"
+    errorExit "At least one of the following tools must be installed for the installation to proceed: ${prettyList}"
+  fi
+
+  # Check for one of the CPU tools: nproc, getconf
+  local gotCpuTool=0
+  for tool in "${oneOfCpuTools[@]}"; do
+    if which "${tool}" &>/dev/null; then
+      gotCpuTool=1
+      break
+    fi
+  done
+
+  if [ "${gotCpuTool}" -eq 0 ]; then
+    prettyList="$(arrayToCommaSeparatedString "${oneOfCpuTools[@]}")"
+    errorExit "At least one of the following tools must be installed for the installation to proceed: ${prettyList}"
+  fi
+
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2520,4 +2596,6 @@ function checkUdpResult() {
   done
 
   return "${exitCode}"
+}
+
 }
