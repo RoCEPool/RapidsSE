@@ -43,16 +43,21 @@ void vHeartInit(void) {
       iPort = 8888;
     }
 
+    //User can put on the command line argument as --heartbeat NODE0 BROADCAST 8888
     strncpy(szAddr, gxCmdLineArgs.m_xSysArgs.m_xHeartbeatDefn[0].m_sIPAddress.azChar(), sizeof(szAddr) - 1);
     szAddr[sizeof(szAddr) - 1] = 0;
 
-    //User can put on the command line argument as --heartbeat NODE0 BROADCAST 8888
+    bool bIsBroadcast = false;
+    if (strcasecmp(szAddr, "BROADCAST") == 0 || strcmp(szAddr, "255.255.255.255")) {
+      bIsBroadcast = true;
+    }
+
     //strcpy(szAddr, "192.168.0.255"); // for DEBUG
-    HeartbeatSnd *pSender = new HeartbeatSnd(szAddr, iPort);
+    HeartbeatSnd *pSender = new HeartbeatSnd(szAddr, iPort, bIsBroadcast);
     PsxThd::iSpawnPosixThread(vHeartSndLoop, pSender);
 
     strcpy(szAddr, "ANY"); // For receiving Broadcast, any interface is the option
-    HeartbeatRcv *pReceiver = new HeartbeatRcv(szAddr, iPort);
+    HeartbeatRcv *pReceiver = new HeartbeatRcv(szAddr, iPort, bIsBroadcast);
     PsxThd::iSpawnPosixThread(vHeartRcvLoop, pReceiver);
 
     // Create Reader thread to maintain the Grid

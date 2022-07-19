@@ -237,7 +237,7 @@ public:
 
 class HeartbeatSnd {
 public:
-  HeartbeatSnd(const std::string &sAddr, int iPort);
+  HeartbeatSnd(const std::string &sAddr, int iPort, bool bIsBroadcast);
 
   ~HeartbeatSnd();
 
@@ -252,6 +252,7 @@ public:
 private:
   int m_iSocket;
   int m_iPort;
+  bool m_bIsBroadcast;
   std::string m_sAddr;
   struct addrinfo *m_pAddrInfo;
 };
@@ -259,7 +260,7 @@ private:
 
 class HeartbeatRcv {
 public:
-  HeartbeatRcv(const std::string &addr, int port);
+  HeartbeatRcv(const std::string &addr, int port, bool bIsBroadcast);
 
   ~HeartbeatRcv();
 
@@ -276,9 +277,10 @@ public:
 private:
   int m_iSocket;
   int m_iPort;
+  bool m_bIsBroadcast;
   std::string m_sAddr;
-  //struct addrinfo     m_AddrInfo;
-  sockaddr_in m_AddrIn;
+  sockaddr_in m_BindAddrIn;
+  struct addrinfo* m_pMulticastAddr;
 };
 
 class Heartbeat_RTE : public std::runtime_error {

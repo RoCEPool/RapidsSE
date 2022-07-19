@@ -14,6 +14,7 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <netdb.h>
+#include <stdio.h>
 
 /**
  * @brief HeartbeatSnd Constructor
@@ -26,8 +27,8 @@
  *
  * @throws Heartbeat_RTE
  */
-HeartbeatSnd::HeartbeatSnd(const std::string &sAddr, int iPort)
-    : m_iPort(iPort), m_sAddr(sAddr) {
+HeartbeatSnd::HeartbeatSnd(const std::string &sAddr, int iPort, bool bIsBroadcast)
+    : m_iPort(iPort),  m_bIsBroadcast(bIsBroadcast), m_sAddr(sAddr) {
 
   std::string szPort = std::to_string(iPort);
 
@@ -37,12 +38,13 @@ HeartbeatSnd::HeartbeatSnd(const std::string &sAddr, int iPort)
   hints.ai_socktype = SOCK_DGRAM;
   hints.ai_protocol = IPPROTO_UDP;
 
-  if (strcasecmp(m_sAddr.c_str(), "BROADCAST") == 0) {
+  if (m_bIsBroadcast) {
     m_sAddr = "255.255.255.255";
   }
+
   int iRet = getaddrinfo(m_sAddr.c_str(), szPort.c_str(), &hints, &m_pAddrInfo);
   if (iRet != 0 || m_pAddrInfo == NULL) {
-    throw Heartbeat_RTE(("Invalid address or port: \"" + m_sAddr + ":" + szPort + "\"").c_str());
+    throw Heartbeat_RTE(("Invalid heartbeat address or port: \"" + m_sAddr + ":" + szPort + "\"").c_str());
   }
 
 
@@ -50,10 +52,9 @@ HeartbeatSnd::HeartbeatSnd(const std::string &sAddr, int iPort)
   //
   struct sockaddr_in addr;
   memset(&addr, 0, sizeof(addr));
+
   addr.sin_family = AF_INET;
-
   addr.sin_addr.s_addr = inet_addr(m_sAddr.c_str());
-
   addr.sin_port = htons(m_iPort);
 
   // create socket
@@ -62,13 +63,37 @@ HeartbeatSnd::HeartbeatSnd(const std::string &sAddr, int iPort)
     throw Heartbeat_RTE("Could not get socket");
   }
 
-  // Set socket to allow broadcast
-  // This also allows us to send to multiple processes in the same machine with a same port
-  int broadcastPermission = 1;
-  if (setsockopt(m_iSocket, SOL_SOCKET, SO_BROADCAST, (void *) &broadcastPermission,
-                 sizeof(broadcastPermission)) < 0)
-    perror("setsockopt(SO_BROADCAST) failed");
+  if (m_bIsBroadcast) {
+    // Set socket to allow broadcast
+    // This also allows us to send to multiple processes in the same machine with a same port
+    int broadcastPermission = 1;
 
+    if (setsockopt(m_iSocket,
+                   SOL_SOCKET,
+                   SO_BROADCAST,
+                   (void*) &broadcastPermission,
+                   sizeof(broadcastPermission)) < 0) {
+
+      char acErrMsg[1024];
+      snprintf(acErrMsg, 1024, "Heartbeat setsockopt(SO_BROADCAST) failed: %s", strerror(errno));
+      throw Heartbeat_RTE(acErrMsg);
+    }
+
+  } else {
+    // Multicast
+    // Set the sending interface
+    in_addr_t iface = INADDR_ANY; /* well, yeah, any */
+    if (setsockopt(m_iSocket,
+                   IPPROTO_IP,
+                   IP_MULTICAST_IF,
+                   (char*)&iface,
+                   sizeof(iface)) != 0) {
+
+      char acErrMsg[1024];
+      snprintf(acErrMsg, 1024, "Heartbeat setsockopt(IP_MULTICAST_IF) failed: %s", strerror(errno));
+      throw Heartbeat_RTE(acErrMsg);
+    }
+  }
 }
 
 HeartbeatSnd::~HeartbeatSnd() {
@@ -85,7 +110,8 @@ int HeartbeatSnd::iSend(const char *pPacket, size_t iSize) {
       pPacket,
       iSize,
       0,
-      m_pAddrInfo->ai_addr, m_pAddrInfo->ai_addrlen
+      m_pAddrInfo->ai_addr,
+      m_pAddrInfo->ai_addrlen
   );
 
 }
@@ -107,56 +133,106 @@ int HeartbeatSnd::iSend(const char *pPacket, size_t iSize) {
  *
  * @throws Heartbeat_RTE
  */
-HeartbeatRcv::HeartbeatRcv(const std::string &sAddr, int iPort)
-    : m_iPort(iPort), m_sAddr(sAddr) {
+HeartbeatRcv::HeartbeatRcv(const std::string &sAddr, int iPort, bool bIsBroadcast)
+    : m_iPort(iPort), m_bIsBroadcast(bIsBroadcast), m_sAddr(sAddr), m_pMulticastAddr(0) {
 
   std::string strPort = std::to_string(iPort);
 
+  if (!m_bIsBroadcast) {
+    // Resolve the multicast address
+    int status;
+    if ((status = getaddrinfo(m_sAddr.c_str(), nullptr, nullptr, &m_pMulticastAddr)) != 0) {
+      char acErrMsg[1024];
+      snprintf(acErrMsg, 1024, "HeartbeatRcv error resolving heartbeat address %s: %s\n",
+               m_sAddr.c_str(),gai_strerror(status));
+      throw Heartbeat_RTE(acErrMsg);
+    }
+  }
+
+
   // create socket
   m_iSocket = socket(AF_INET, SOCK_DGRAM, 0);
+
   if (m_iSocket < 0) {
-    throw Heartbeat_RTE("Could not get socket");
+    throw Heartbeat_RTE("Could not create HeartbeatRcv socket");
   }
+
+  int reuse = 1;
+  if (setsockopt(m_iSocket, SOL_SOCKET, SO_REUSEADDR, (const char *) &reuse, sizeof(reuse)) < 0) {
+    char acErrMsg[1024];
+    snprintf(acErrMsg, 1024, "HeartbeatRcv setsockopt(SO_REUSEADDR) failed: %s", strerror(errno));
+    close(m_iSocket);
+    throw Heartbeat_RTE(acErrMsg);
+  }
+
+  reuse = 1;
+  if (setsockopt(m_iSocket, SOL_SOCKET, SO_REUSEPORT, (const char *) &reuse, sizeof(reuse)) < 0) {
+    char acErrMsg[1024];
+    snprintf(acErrMsg, 1024, "HeartbeatRcv setsockopt(SO_REUSEPORT) failed: %s", strerror(errno));
+    close(m_iSocket);
+    throw Heartbeat_RTE(acErrMsg);
+  }
+
+  // Set socket to allow broadcast mode
+  if (m_bIsBroadcast) {
+    int iBroadcastPermission = 1;
+    if (setsockopt(m_iSocket, SOL_SOCKET, SO_BROADCAST, (void*) &iBroadcastPermission,
+                   sizeof(iBroadcastPermission)) < 0) {
+      char acErrMsg[1024];
+      snprintf(acErrMsg, 1024, "HeartbeatRcv setsockopt(SO_BROADCAST) failed: %s", strerror(errno));
+      close(m_iSocket);
+      throw Heartbeat_RTE(acErrMsg);
+    }
+  }
+
 
   // Set up a SOCKADDR_IN structure that will tell bind that we
   // want to receive datagrams from all interfaces using input port.
 
-  memset(&m_AddrIn, 0, sizeof(m_AddrIn));
-  // The IPv4 family
-  m_AddrIn.sin_family = AF_INET;
-  // Port no.
-  m_AddrIn.sin_port = htons(m_iPort);
-  // From all interface (0.0.0.0)
-  m_AddrIn.sin_addr.s_addr = INADDR_ANY;
+  memset(&m_BindAddrIn, 0, sizeof(m_BindAddrIn));
 
+  m_BindAddrIn.sin_family = AF_INET;          // The IPv4 family
+  m_BindAddrIn.sin_port = htons(m_iPort);     // Port no.
+  m_BindAddrIn.sin_addr.s_addr = INADDR_ANY;  // From all interface (0.0.0.0)
 
-  int reuse = 1;
-  if (setsockopt(m_iSocket, SOL_SOCKET, SO_REUSEADDR, (const char *) &reuse, sizeof(reuse)) < 0)
-    perror("setsockopt(SO_REUSEADDR) failed");
-
-  reuse = 1;
-  if (setsockopt(m_iSocket, SOL_SOCKET, SO_REUSEPORT, (const char *) &reuse, sizeof(reuse)) < 0)
-    perror("setsockopt(SO_REUSEPORT) failed");
-
-  // Set socket to allow broadcast mode
-  int iBroadcastPermission = 1;
-  if (setsockopt(m_iSocket, SOL_SOCKET, SO_BROADCAST, (void *) &iBroadcastPermission,
-                 sizeof(iBroadcastPermission)) < 0)
-    perror("setsockopt(SO_BROADCAST) failed");
-
-
-  int iRet = bind(m_iSocket, (struct sockaddr *) &m_AddrIn, sizeof(m_AddrIn));
+  int iRet = bind(m_iSocket, (struct sockaddr *) &m_BindAddrIn, sizeof(m_BindAddrIn));
   if (iRet != 0) {
     close(m_iSocket);
-    throw Heartbeat_RTE(("could not bind UDP socket with: \"" + sAddr + ":" + strPort + "\"").c_str());
+    throw Heartbeat_RTE(("HeartbeatRcv could not bind UDP socket: \"" + sAddr + ":" + strPort + "\"").c_str());
   }
 
+  // Join the multicast group
+  if (!m_bIsBroadcast) {
+    struct ip_mreq xMulticastRequest;  /* Multicast address join structure */
+
+    /* Specify the multicast group */
+    memcpy(&xMulticastRequest.imr_multiaddr,
+           &((struct sockaddr_in*)(m_pMulticastAddr->ai_addr))->sin_addr,
+           sizeof(xMulticastRequest.imr_multiaddr));
+
+    /* Accept multicast from any interface */
+    xMulticastRequest.imr_interface.s_addr = htonl(INADDR_ANY);
+
+    /* Join the multicast address */
+    if (setsockopt(m_iSocket,
+                   IPPROTO_IP,
+                   IP_ADD_MEMBERSHIP,
+                   (char*) &xMulticastRequest,
+                   sizeof(xMulticastRequest)) != 0 ) {
+
+      char acErrMsg[1024];
+      snprintf(acErrMsg, 1024, "HeartbeatRcv setsockopt(IP_ADD_MEMBERSHIP) failed: %s", strerror(errno));
+      close(m_iSocket);
+      throw Heartbeat_RTE(acErrMsg);
+    }
+  }
 
 }
 
 
 HeartbeatRcv::~HeartbeatRcv() {
 
+  freeaddrinfo(m_pMulticastAddr);
   close(m_iSocket);
 }
 
@@ -165,41 +241,38 @@ HeartbeatRcv::~HeartbeatRcv() {
  * Returns  number of bytes read or -1 if an error occurs.
  */
 int HeartbeatRcv::iRecv(char *pPacket, size_t iSize) {
-  struct sockaddr_in SenderAddr;
-  socklen_t len = sizeof(SenderAddr);
+//  struct sockaddr_in SenderAddr;
+//  socklen_t len = sizeof(SenderAddr);
 
-  struct timeval WaitTime;
+  struct timeval xWaitTime;
   fd_set readfds;
   int iRet;
 
-  WaitTime.tv_sec = 2;
-  WaitTime.tv_usec = 0;
+  xWaitTime.tv_sec = 2;
+  xWaitTime.tv_usec = 0;
 
   FD_ZERO(&readfds);
   FD_SET(m_iSocket, &readfds);
 
-  iRet = select(m_iSocket + 1, &readfds, NULL, NULL, &WaitTime);
+  iRet = select(m_iSocket + 1, &readfds, NULL, NULL, &xWaitTime);
 
   if (iRet > 0 && FD_ISSET(m_iSocket, &readfds)) {
-    iRet = recvfrom(m_iSocket, (char *) pPacket, iSize,
-                    MSG_WAITALL, (struct sockaddr *) &SenderAddr,
-                    (socklen_t *) &len);
+    iRet = recvfrom(m_iSocket,
+                    (char *) pPacket,
+                    iSize,
+                    MSG_WAITALL,
+                    nullptr,  // (struct sockaddr *) &SenderAddr,
+                    nullptr); // (socklen_t *) &len);
 
     // For debug logging only
-    if (iRet > 0) {
-      char *strSenderAddress = inet_ntoa(SenderAddr.sin_addr);
-      unsigned short sPort = ntohs(SenderAddr.sin_port);
-
-      (void)strSenderAddress;
-      (void)sPort;
-      //printf("received from %s %d\n", strSenderAddress, sPort);
-    }
-
-    // We can send back a message to the sender
-    // or track which node send to this one.
-    // sendto(sockfd, (const char *)"Got it", strlen("Got it"),
-    //      MSG_CONFIRM, (const struct sockaddr *) &SenderAddr,
-    //           len);
+//    if (iRet > 0) {
+//      char *strSenderAddress = inet_ntoa(SenderAddr.sin_addr);
+//      unsigned short sPort = ntohs(SenderAddr.sin_port);
+//
+//      (void)strSenderAddress;
+//      (void)sPort;
+//      printf("received from %s %d\n", strSenderAddress, sPort);
+//    }
   }
 
   return iRet;
