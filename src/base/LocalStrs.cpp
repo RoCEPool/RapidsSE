@@ -63,7 +63,7 @@ LocalStrs::~LocalStrs(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 LocalStr* LocalStrs::axAllot(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALVARS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALSTRS,_FOOTER_);
 
   RASSERT(C_UNKNOWN != m_i_FirstFree);
   
@@ -79,7 +79,7 @@ LocalStr* LocalStrs::axAllot(void)
 /*----------------------------------------------------------------------------*/
 void LocalStrs::vRevert(LocalStr* axLocalStr)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALVARS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALSTRS,_FOOTER_);
 
   axLocalStr->vReInitialise();
 

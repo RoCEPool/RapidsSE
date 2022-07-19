@@ -28,12 +28,15 @@ namespace BASE
     char* azArea(void);
     Stz*  szArea(void);
 
-    Stz*  szLocalStrAllot(void);
+    LocalStr* axLocalStr(void);
+    LocalStr* axLocalStrAllot(void);
     void  vLocalStrRevert(void);
     i8    nStackUsage(void);
     i8    jStzSize(void);
     eCN   eType(void);
+    _Header* axType(void);
     TypeValue* axTypeValue(void);
+    Dtm*  axValue(void);
   };
 
   LocalVar* _pLocalVar(void* aAddr);

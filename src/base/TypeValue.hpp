@@ -21,7 +21,9 @@ namespace BASE
     // auto conversion
     operator TypeValue*(void);
 
-  
+    _Header* axType(void);
+    Dtm*     axValue(void);
+
   private:
   
   };

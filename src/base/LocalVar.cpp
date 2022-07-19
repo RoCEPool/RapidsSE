@@ -56,16 +56,22 @@ Stz* LocalVar::szArea(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get localStr                                                               */
+/*----------------------------------------------------------------------------*/
+LocalStr* LocalVar::axLocalStr(void)
+{
+  return m_axLocalStr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* allot a localStr                                                           */
 /*----------------------------------------------------------------------------*/
-Stz* LocalVar::szLocalStrAllot(void)
+LocalStr* LocalVar::axLocalStrAllot(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALVARS,_FOOTER_);
-
   RASSERT(! m_axLocalStr);
   m_axLocalStr = m_pLocalVars->axLocalStrAllot();
   
-  return m_axLocalStr->szArea();
+  return m_axLocalStr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -73,8 +79,6 @@ Stz* LocalVar::szLocalStrAllot(void)
 /*----------------------------------------------------------------------------*/
 void LocalVar::vLocalStrRevert(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALVARS,_FOOTER_);
-
   m_pLocalVars->vLocalStrRevert(m_axLocalStr);
   m_axLocalStr = nullptr;
 }
@@ -104,11 +108,27 @@ eCN LocalVar::eType(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get pointer to type                                                        */
+/*----------------------------------------------------------------------------*/
+_Header* LocalVar::axType(void)
+{
+  return m_xTypeValue.axType();
+}
+
+/*----------------------------------------------------------------------------*/
 /* get pointer to type value                                                  */
 /*----------------------------------------------------------------------------*/
 TypeValue* LocalVar::axTypeValue(void)
 {
   return & m_xTypeValue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get pointer to type                                                        */
+/*----------------------------------------------------------------------------*/
+Dtm* LocalVar::axValue(void)
+{
+  return m_xTypeValue.axValue();
 }
 
 

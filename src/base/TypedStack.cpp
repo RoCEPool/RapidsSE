@@ -1,11 +1,13 @@
 /*============================================================================*/
-/* TypedStack.cpp -- Push/Pop TypedStack of Typed Cells                                 */
+/* TypedStack.cpp -- Push/Pop TypedStack of Typed Cells                       */
 /*============================================================================*/
 
 #include "BASE.h"
 
 #include "SP_Word.hpp"
 #include "LocalVar.hpp"
+#include "LocalStr.hpp"
+#include "SizeArea.hpp"
 
 /*
 
@@ -506,25 +508,35 @@ void TypedStack::vPopLocalVar(LocalVar* axLocalVar,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
+  static i8 nCount = 0;
+  
+  s48K sStackContents;
+  vStackContents(sStackContents);
+  vTrace("POP %02lld>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n%s\n"_Stz,
+         nCount,sStackContents.szStz());
+  
   eCN eType_stack = m_rTop.m_aTypeValueArea->eType();
   eCN eType_local = axLocalVar->eType();
 
   if (CN_STZVAL == eType_stack) {
     
-    Stz* szArea;
+    LocalStr* axLocalStr;
     if (CN_STZVAL == eType_local)
-      szArea = axLocalVar->szArea();
+      axLocalStr = axLocalVar->axLocalStr();
     else
-      szArea = axLocalVar->szLocalStrAllot();
-    
-    MemLib::vCopy(axLocalVar->axTypeValue(),
+      axLocalStr = axLocalVar->axLocalStrAllot();
+        
+    SizeArea* axSizeArea = axLocalStr->axSizeArea();
+    MemLib::vCopy(axLocalVar->axType(),
                   m_rTop.m_aTypeValueArea,
-                  sizeof(TypeValue),
+                  sizeof(_Header),
                   CN_STACK);
 
-    MemLib::vCopy(szArea,
-                  m_rTop.m_ayStackPtr + sizeof(TypeValue),
-                  sizeof(TypeValue),
+    i8 nBytes = aTopVal()->nStackUsage();
+    
+    MemLib::vCopy(axSizeArea,
+                  m_rTop.m_ayStackPtr + sizeof(_Header),
+                  nBytes - sizeof(_Header),
                   CN_STACK);
   }
   else {
@@ -539,6 +551,10 @@ void TypedStack::vPopLocalVar(LocalVar* axLocalVar,
   }
   
   m_rTop.vRewind();
+  
+  vStackContents(sStackContents);
+  vTrace("POP %02lld<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n%s\n"_Stz,
+         nCount++,sStackContents.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -687,27 +703,52 @@ void TypedStack::vPushTypeValueArea(TypeValueArea* aTypeValueArea)
 void TypedStack::vPushLocalVar(LocalVar* axLocalVar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-    
+ 
+  static i8 nCount = 0;
+  
+  s48K sStackContents;
+  vStackContents(sStackContents);
+  vTrace("PUSH %02lld>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n%s\n"_Stz,
+         nCount,sStackContents.szStz());
+
   TypeValue* axTypeValue = axLocalVar->axTypeValue();
-
-  m_rTop.vAdvance(sizeof(TypeValue));
-
-  m_rTop.m_aTypeValueArea->vCopy((TypeValueArea*)axTypeValue,
-                                 sizeof(TypeValue));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // string case
   
   if (CN_STZVAL == axLocalVar->eType()) {
 
-    i8 jStzSize = axLocalVar->jStzSize();
-    m_rTop.vAdvance(jStzSize);
+    i8 jStz = axLocalVar->jStzSize();
+    i8 jSizeStz = sizeof(i8) + jStz;
+    i8 jHeaderSizeStz = sizeof(_Header) + jSizeStz;
 
-    m_rTop.m_aTypeValueArea->vCopy((TypeValueArea*)axLocalVar->szArea(),
-                                   jStzSize);
+    m_rTop.vAdvance(jHeaderSizeStz);
+
+    MemLib::vCopy(m_rTop.m_ayStackPtr,
+                  axLocalVar->axType(),
+                  sizeof(_Header),
+                  CN_STACK);
+                    
+    SizeArea* axSizeArea = axLocalVar->axLocalStr()->axSizeArea();
+  
+    MemLib::vCopy(aAdd<byte*>(m_rTop.m_ayStackPtr,sizeof(_Header)),
+                  axSizeArea,
+                  jSizeStz,
+                  CN_STACK);
 
   }
-}
+  else {
+    
+    m_rTop.vAdvance(sizeof(TypeValue));
+
+    m_rTop.m_aTypeValueArea->vCopy((TypeValueArea*)axTypeValue,
+                                   sizeof(TypeValue));
+
+  }
+  
+  vStackContents(sStackContents);
+  vTrace("PUSH %02lld<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n%s\n"_Stz,
+         nCount++,sStackContents.szStz());}
 
 /*----------------------------------------------------------------------------*/
 /* completely reset stack                                                     */
@@ -747,7 +788,7 @@ void TypedStack::vRetryPoint(void)
 /*----------------------------------------------------------------------------*/
 void TypedStack::vStackContents(s48K& sStackContents)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   sStackContents = ""_Stz;
   

@@ -517,22 +517,11 @@ void Step::vLocalsFramePop(void)
 {
   ENTRY();
   
-  // - - - - - - - - - - - - - - - - - - - -
   if (! m_pLocalVars)
     vSeeFrameStack();
   
   RASSERT(m_pLocalVars);
   m_pLocalVars->vFramePop();
-  // - - - - - - - - - - - - - - - - - - - -
-  
-  
-  LocalFrame* pLocalsFrame = m_pLocalFrame;
-  
-  if ( ! pLocalsFrame ) THROW_DSTACK();
-  
-  m_pLocalFrame = m_pLocalFrame->pNext();
-  
-  delete pLocalsFrame;
 
   EXIT();
 }
@@ -563,32 +552,16 @@ void Step::vLocalsFramePush(void)
 {
   ENTRY();
   
-  if (m_iDebugMark)
-    vDebugPoint();
-
   i8 nLocals = m_pDataStack->iPopInt(__func__);
   RASSERT(nLocals > 0 && nLocals <= 24);
   
-  
-  // - - - - - - - - - - - - - - - - - - - -
-  if (! m_pLocalVars)
+    if (! m_pLocalVars)
     m_pLocalVars = new LocalVars;
   
   TypeValueArea* aDiscardPoint = (TypeValueArea*)m_pReturnStack->aTopVal();
 
   m_pLocalVars->vFramePush(nLocals,aDiscardPoint);
-  // - - - - - - - - - - - - - - - - - - - -
 
-  
-  LocalFrame* pLocalsFrame = new LocalFrame;
-  
-  pLocalsFrame->vDiscardPoint((TypeValueArea*)m_pReturnStack->aTopVal());
-  
-  pLocalsFrame->vNext(m_pLocalFrame);
-  
-  m_pLocalFrame = pLocalsFrame;
-
-  
   EXIT();
 }
 /*----------------------------------------------------------------------------*/
@@ -633,24 +606,14 @@ void Step::vLocalsFetch(void)
 {
   ENTRY();
 
-  i8 i_Local = m_pDataStack->iPopInt(__func__);
-
-  // - - - - - - - - - - - - - - - - - - - -
   RASSERT(m_pLocalVars);
+  
+  i8 i_Local = m_pDataStack->iPopInt(__func__);
 
   LocalVar* axLocalVar = m_pLocalVars->axLocalVar(i_Local);
   UNUSED(axLocalVar);
 
-  //m_pDataStack->vPushLocalVar(axLocalVar);
-  // - - - - - - - - - - - - - - - - - - - -
-
-  
-  if ( ! m_pLocalFrame ) THROW_DSTACK();
-  
-  
-  SenCell* pSenCell = m_pLocalFrame->pSenCell(i_Local);
-  
-  m_pDataStack->vPushSenCell(pSenCell);
+  m_pDataStack->vPushLocalVar(axLocalVar);
 
   EXIT();
 }
@@ -681,39 +644,15 @@ void Step::vLocalsStore(void)
 {
   ENTRY();
 
-  i8 i_Local = m_pDataStack->iPopInt(__func__);
-
-  // - - - - - - - - - - - - - - - - - - - -
   RASSERT(m_pLocalVars);
+  
+  i8 i_Local = m_pDataStack->iPopInt(__func__);
 
   LocalVar* axLocalVar = m_pLocalVars->axLocalVar(i_Local);
   UNUSED(axLocalVar);
 
-  //m_pDataStack->vPopLocalVar(axLocalVar,__func__);
-  // - - - - - - - - - - - - - - - - - - - -
+  m_pDataStack->vPopLocalVar(axLocalVar,__func__);
 
-  
-  if ( ! m_pLocalFrame ) THROW_DSTACK();
-
-  
-  SenCell* pSenCell = m_pLocalFrame->pSenCell(i_Local);
-  
-  m_pDataStack->vPopSenCell(pSenCell,__func__);
-  
-  if (CN_STZVAL == pSenCell->eType()) {
-    i8 nStzSize = pSenCell->nStzSize();
-//    if (nStzSize > nMaxSoFar) {
-//      nMaxSoFar = nStzSize;
-//      vTrace("CN_STZVAL %lldB\n%s\n"_Stz,
-//             nStzSize,
-//             pSenCell->szStz());
-//      vSeeFrameStack();
-//    }
-    
-    RASSERT(nStzSize < 500);
-  }
-
- 
   EXIT();
 }
 /*----------------------------------------------------------------------------*/
