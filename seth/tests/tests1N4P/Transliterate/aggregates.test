@@ -24,6 +24,42 @@ create table nation (
 );
 success
 
+SELECT count(n_regionkey) FROM nation;
+rows:
+  (0)
+
+SELECT SUM(n_regionkey) FROM nation;
+rows:
+  (null)
+
+SELECT MIN(n_regionkey) FROM nation;
+rows:
+  (null)
+
+SELECT MAX(n_regionkey) FROM nation;
+rows:
+  (null)
+
+SELECT AVG(n_regionkey) FROM nation;
+rows:
+ (null)
+
+SELECT count(n_regionkey) FROM nation;
+rows:
+  (0)
+
+SELECT SUM(n_regionkey) FROM nation group by n_nationkey;
+rows: 0
+
+SELECT MIN(n_regionkey) FROM nation group by n_nationkey;
+rows: 0
+
+SELECT MAX(n_regionkey) FROM nation group by n_nationkey;
+rows: 0
+
+SELECT AVG(n_regionkey) FROM nation group by n_nationkey;
+rows: 0
+
 load nation "../DATA/Transliterate/nationAgg.tbl";
 success
 

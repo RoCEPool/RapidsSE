@@ -33,6 +33,9 @@
 #define _PSH_IVY(iArg)  \
   *paW++ = iArg;
 
+#define _PSH_NULL \
+  *paW++ = C_DATUM_NULL;
+
 #define _PSH_TME(iArg)  \
   *paW++ = iArg;
 
@@ -129,7 +132,7 @@
         bcdArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
         bcdArg2.m_iAsI8 ==  C_DATUM_NULL ||                                \
         bcdArg3.m_iAsI8 == C_DATUM_NULL) {                                 \
-      *(paW++) = C_DATUM_NULL;                                             \
+      *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
                                                                            \

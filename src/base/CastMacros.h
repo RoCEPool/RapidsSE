@@ -96,11 +96,11 @@
     *paW++ = C_DATUM_NULL;                                                 \
   }                                                                        \
   else {                                                                   \
-    if(fltArg1.m_iAsI8 > (i8)C_INT_MAX) {                                  \
+    if(fltArg1.m_iAsI8 > (i8)C_I8_MAX) {                                   \
       iErrorCode = EC_ARITHMETIC_OVERFLOW;                                 \
       *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
-    else if(fltArg1.m_iAsI8 < (i8) C_INT_MIN) {                            \
+    else if(fltArg1.m_iAsI8 < (i8) C_I8_MIN) {                             \
       iErrorCode = EC_ARITHMETIC_UNDERFLOW;                                \
       *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
