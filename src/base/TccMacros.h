@@ -931,10 +931,14 @@
       }                                                                     \
       szSrcStz = (char*)(szArg1 + iStart - 1);                              \
       szDstStz = szDstArea;                                                 \
-      while (*szSrcStz)                                                     \
+      nSrcSize = 0;                                                         \
+      while (*szSrcStz) {                                                   \
+        nSrcSize++;                                                         \
         *szDstStz++ = *szSrcStz++;                                          \
+      }                                                                     \
       *szDstStz = '\0';                                                     \
       *(paW++) = (i8)szDstArea;                                             \
+      szDstArea += nSrcSize + 1;                                            \
     }                                                                       \
   }
 
@@ -957,10 +961,12 @@
       }                                                                     \
       szSrcStz = (char*)(szArg1 + iStart - 1);                              \
       szDstStz = szDstArea;                                                 \
+      nSrcSize = iLength;                                                   \
       while (*szSrcStz && iLength--)                                        \
         *szDstStz++ = *szSrcStz++;                                          \
       *szDstStz = '\0';                                                     \
       *(paW++) = (i8)szDstArea;                                             \
+      szDstArea += nSrcSize + 1;                                            \
     }                                                                       \
   }
 
