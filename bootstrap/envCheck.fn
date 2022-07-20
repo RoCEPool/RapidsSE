@@ -1236,7 +1236,7 @@ function validateGcc() {
     sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "bash -c '${remoteCmd}'")
 
     # Run it and check if it returned with a success error code
-    if ! output="$(ssh "${sshArgs[@]}" || true)" ; then
+    if ! output="$(ssh "${sshArgs[@]}")" ; then
       failedNodes+=("${nodeName}")
       continue
     fi
@@ -1362,7 +1362,7 @@ function validateBash() {
     sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "bash -c '${remoteCmd}'")
 
     # Run it and check if it returned with a success error code
-    if ! output="$(ssh "${sshArgs[@]}" || true)" ; then
+    if ! output="$(ssh "${sshArgs[@]}")" ; then
       failedNodes+=("${nodeName}")
       continue
     fi
@@ -1431,7 +1431,7 @@ function validateSs() {
     sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "bash -c '${remoteCmd}'")
 
     # Run it and check if it returned with a success error code
-    if ! output="$(ssh "${sshArgs[@]}" || true)" ; then
+    if ! output="$(ssh "${sshArgs[@]}")" ; then
       failedNodes+=("${nodeName}")
       continue
     fi
@@ -1485,7 +1485,7 @@ function validateLdconfig() {
     sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "bash -c '${remoteCmd}'")
 
     # Run it and check if it returned with a success error code
-    if ! output="$(ssh "${sshArgs[@]}" || true)" ; then
+    if ! output="$(ssh "${sshArgs[@]}")" ; then
       failedNodes+=("${nodeName}")
       continue
     fi
@@ -1543,7 +1543,7 @@ function validateCommandLineToolExists() {
     sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "bash -c '${remoteCmd}'")
 
     # Run it and check if it returned with a success error code
-    if ! output="$(ssh "${sshArgs[@]}" || true)" ; then
+    if ! output="$(ssh "${sshArgs[@]}")" ; then
       failedNodes+=("${nodeName}")
       continue
     fi
