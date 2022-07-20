@@ -4,7 +4,7 @@
 //(889.1800000000001)
 select max(cola1) + max(cold1) + max(cole1) from table1;
 rows:
-  (8.887100e+02)
+  (8.891800e+02)
 
 // Source file: ../queries/aggs/max/rmax21.sql
 // Result file: ../queries/aggs/max/results/max21.res
@@ -214,7 +214,7 @@ ordered rows:
 // Result file: ../queries/aggs/max/results/max12.res
 select max(cold9) + max(cole9) from table9;
 rows:
-  (3.974500e+02)
+  (3.976800e+02)
   //(397.67999999999995)
 
 

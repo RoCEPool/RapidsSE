@@ -202,12 +202,9 @@ rows:
 
 // Source file: ../queries/aggs/min/rmin11.sql
 // Result file: ../queries/aggs/min/results/min11.res
-//TODO: FIX
-/*
 select min(cola1) + min(cold1) + min(cole1) from table1;
 rows:
   (21.34)
-*/
 
 // Source file: ../queries/aggs/min/rmin23.sql
 // Result file: ../queries/aggs/min/results/min23.res
@@ -219,13 +216,10 @@ rows: 0
 
 // Source file: ../queries/aggs/min/rmin12.sql
 // Result file: ../queries/aggs/min/results/min12.res
-//TODO: FIX
-/*
 select min(cold9) + min(cole9) from table9;
 rows:
-  //(-397.27)
-  (-3.970800e+02)
-*/
+  (-397.27)
+
 
 // Source file: ../queries/aggs/min/rmin18.sql
 // Result file: ../queries/aggs/min/results/min18.res

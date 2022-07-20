@@ -58,7 +58,8 @@
     *paW++ = C_DATUM_NULL;                                               \
   }                                                                      \
   else {                                                                 \
-    fltArg1.m_dFlt = (d8)(bcdArg1.m_iMantissa / iaPow10[bcdArg1.m_iScale]); \
+    fltArg1.m_dFlt = (d8)(bcdArg1.m_iMantissa);                          \
+    fltArg1.m_dFlt = fltArg1.m_dFlt / iaPow10[bcdArg1.m_iScale];         \
     *paW++ = fltArg1.m_iAsI8 ;                                           \
   }                                                                      \
 }
@@ -66,25 +67,25 @@
 // INT to Float
 #define _INT_TOFLT(iErrorCode) \
 {                                                                          \
-    fltArg1.m_iAsI8 = *(--paW);                                            \
-    if (iErrorCode != EC_NONE ||                                           \
-    fltArg1.m_iAsI8 == C_DATUM_NULL) {                                     \
-      *paW++ = C_DATUM_NULL;                                               \
-    }                                                                      \
-    else {                                                                 \
-      if(fltArg1.m_dFlt > (d8)C_FLT_MAX) {                                 \
-        iErrorCode = EC_ARITHMETIC_OVERFLOW;                               \
-        *paW++ = C_DATUM_NULL;                                             \
-      }                                                                    \
-      else if(fltArg1.m_dFlt < (d8) C_FLT_MIN) {                           \
-        iErrorCode = EC_ARITHMETIC_UNDERFLOW;                              \
-        *paW++ = C_DATUM_NULL;                                             \
-      }                                                                    \
-      else {                                                               \
-        fltArg2.m_dFlt = fltArg1.m_iAsI8;                                  \
-        *paW++ = fltArg2.m_iAsI8;                                          \
-      }                                                                    \
-    }                                                                      \
+  fltArg1.m_iAsI8 = *(--paW);                                            \
+  if (iErrorCode != EC_NONE ||                                           \
+  fltArg1.m_iAsI8 == C_DATUM_NULL) {                                     \
+    *paW++ = C_DATUM_NULL;                                               \
+  }                                                                      \
+  else {                                                                 \
+    if(fltArg1.m_dFlt > (d8)C_FLT_MAX) {                                 \
+      iErrorCode = EC_ARITHMETIC_OVERFLOW;                               \
+      *paW++ = C_DATUM_NULL;                                             \
+    }                                                                    \
+    else if(fltArg1.m_dFlt < (d8) C_FLT_MIN) {                           \
+      iErrorCode = EC_ARITHMETIC_UNDERFLOW;                              \
+      *paW++ = C_DATUM_NULL;                                             \
+    }                                                                    \
+    else {                                                               \
+      fltArg2.m_dFlt = fltArg1.m_iAsI8;                                  \
+      *paW++ = fltArg2.m_iAsI8;                                          \
+    }                                                                    \
+  }                                                                      \
 }
 
 // Float to int is just drop the decimal digits?
