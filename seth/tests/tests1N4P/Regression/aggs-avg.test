@@ -173,7 +173,7 @@ rows:
 // Result file: ../queries/aggs/avg/results/avg35.res
 select colb1, cast((avg(cola1 + cold1 + ucol)) as decimal(10,7)) from table1 where colb1 = 'black' group by colb1;
 rows:
-  ('black', 405.61)
+  ('black', 405.60666666666)
 
 
 // Source file: ../queries/aggs/avg/ravg24.sql
@@ -254,34 +254,34 @@ ordered rows:
 // Result file: ../queries/aggs/avg/results/avg12.res
 select colb1, avg(cold1) - -1.5 from table1 group by colb1 order by colb1;
 ordered rows:
- ('BLACK',151.51499999999999e0)
- ('BLUE',81.84999999999999e0)
- ('GREEN',141.84999999999999e0)
- ('ORANGE',141.43500000000000e0)
- ('PINK',117.58000000000000e0)
- ('PURPLE',117.56250000000000e0)
- ('RED',144.16999999999999e0)
- ('TEAL',83.54666666666667e0)
- ('WHITE',129.98666666666668e0)
- ('YELLOW',147.81999999999999e0)
- ('aqua',65.35999999999999e0)
- ('black',144.10666666666665e0)
- ('blue',122.39999999999999e0)
- ('brown',107.06666666666666e0)
- ('gold',156.41999999999999e0)
- ('green',122.26000000000002e0)
- ('grey',74.94000000000000e0)
- ('indigo',119.16249999999999e0)
- ('maroon',116.92000000000000e0)
- ('orange',129.74400000000000e0)
- ('peach',164.20999999999998e0)
- ('pink',122.98999999999999e0)
- ('purple',143.36333333333334e0)
- ('red',83.98999999999999e0)
- ('tan',131.63000000000000e0)
- ('teal',118.09750000000001e0)
- ('violet',114.87500000000000e0)
- ('yellow',242.74000000000001e0)
+ ('BLACK',151.515000e+0)
+ ('BLUE',81.850000e+0)
+ ('GREEN',141.850000e+0)
+ ('ORANGE',141.435000e+0)
+ ('PINK',117.580000e+0)
+ ('PURPLE',117.562500e+0)
+ ('RED',144.170000e+0)
+ ('TEAL',83.546667e+0)
+ ('WHITE',129.986667e+0)
+ ('YELLOW',147.820000e+0)
+ ('aqua',65.360000e+0)
+ ('black',144.106667e+0)
+ ('blue',122.400000e+0)
+ ('brown',107.066667e+0)
+ ('gold',156.420000e+0)
+ ('green',122.260000e+0)
+ ('grey',74.940000e+0)
+ ('indigo',119.162500e+0)
+ ('maroon',116.920000e+0)
+ ('orange',129.744000e+0)
+ ('peach',164.210000e+0)
+ ('pink',122.990000e+0)
+ ('purple',143.363333e+0)
+ ('red',83.990000e+0)
+ ('tan',131.630000e+0)
+ ('teal',118.097500e+0)
+ ('violet',114.875000e+0)
+ ('yellow',242.740000e+0)
 
 /*
   ('BLACK', 151.515)
@@ -318,7 +318,7 @@ ordered rows:
 // Result file: ../queries/aggs/avg/results/avg3.res
 select avg(cole1) from table1;
 rows:
-  (76.6034408602150538)
+  (76.60)
   //(76.603440860215)
 
 
@@ -371,34 +371,34 @@ ordered rows:
 // Result file: ../queries/aggs/avg/results/avg10.res
 select colb1, avg(colg1), avg(colg1) - .6 from table1 group by colb1;
 rows:
-  ('BLACK', 33, 32.4)
-  ('BLUE', 13, 12.4)
-  ('GREEN', 30, 29.4)
-  ('ORANGE', 127, 126.4)
-  ('PINK', -33, -33.6)
-  ('PURPLE', -119, -119.6)
-  ('RED', -31, -31.6)
-  ('TEAL', -41, -41.6)
-  ('WHITE', 87, 86.4)
-  ('YELLOW', -1, -1.6)
-  ('aqua', 77, 76.4)
-  ('black', 28, 27.4)
-  ('blue', -60, -60.6)
-  ('brown', -38, -38.6)
-  ('gold', -47, -47.6)
-  ('green', -17, -17.6)
-  ('grey', -152, -152.6)
-  ('indigo', 0, -0.6)
-  ('maroon', 53, 52.4)
-  ('orange', 47, 46.4)
-  ('peach', -95, -95.6)
-  ('pink', -56, -56.6)
-  ('purple', -29, -29.6)
-  ('red', 14, 13.4)
-  ('tan', -17, -17.6)
-  ('teal', -89, -89.6)
-  ('violet', 5, 4.4)
-  ('yellow', 2, 1.4)
+  ('BLACK',33.63,33.03)
+  ('BLUE',13.00,12.40)
+  ('GREEN',30.00,29.40)
+  ('ORANGE',127.50,126.90)
+  ('PINK',-33.00,-33.60)
+  ('PURPLE',-119.00,-119.60)
+  ('RED',-31.00,-31.60)
+  ('TEAL',-41.16,-41.76)
+  ('WHITE',87.67,87.07)
+  ('YELLOW',-1.50,-2.10)
+  ('aqua',77.00,76.40)
+  ('black',28.67,28.07)
+  ('blue',-60.33,-60.93)
+  ('brown',-38.33,-38.93)
+  ('gold',-47.66,-48.26)
+  ('green',-17.60,-18.20)
+  ('grey',-152.00,-152.60)
+  ('indigo',-0.75,-1.35)
+  ('maroon',53.60,53.00)
+  ('orange',47.80,47.20)
+  ('peach',-95.00,-95.60)
+  ('pink',-56.00,-56.60)
+  ('purple',-29.66,-30.26)
+  ('red',14.00,13.40)
+  ('tan',-17.00,-17.60)
+  ('teal',-89.50,-90.10)
+  ('violet',5.00,4.40)
+  ('yellow',2.00,1.40)
 
 
 // Source file: ../queries/aggs/avg/ravg19.sql
@@ -453,7 +453,7 @@ ordered rows:
 // Result file: ../queries/aggs/avg/results/avg2.res
 select cast(avg(cold1) as decimal(10,7)) from table1;
 rows:
-  (124.0108000)
+  (124.0108)
 
 
 // Source file: ../queries/aggs/avg/ravg9.sql
@@ -602,6 +602,35 @@ ordered rows:
 // Result file: ../queries/aggs/avg/results/avg7.res
 select colb1, avg(cole1), avg(cole1) + 1.1 from table1 group by colb1;
 rows:
+  ('BLACK',83.13,84.23)
+  ('BLUE',12.66,13.76)
+  ('GREEN',75.29,76.39)
+  ('ORANGE',58.02,59.12)
+  ('PINK',74.70,75.80)
+  ('PURPLE',64.54,65.64)
+  ('RED',146.09,147.19)
+  ('TEAL',75.44,76.54)
+  ('WHITE',90.94,92.04)
+  ('YELLOW',77.27,78.37)
+  ('aqua',74.71,75.81)
+  ('black',84.10,85.20)
+  ('blue',111.09,112.19)
+  ('brown',79.82,80.92)
+  ('gold',63.42,64.52)
+  ('green',63.67,64.77)
+  ('grey',5.34,6.44)
+  ('indigo',85.30,86.40)
+  ('maroon',82.95,84.05)
+  ('orange',67.68,68.78)
+  ('peach',97.64,98.74)
+  ('pink',22.16,23.26)
+  ('purple',115.59,116.69)
+  ('red',61.67,62.77)
+  ('tan',67.71,68.81)
+  ('teal',100.84,101.94)
+  ('violet',40.10,41.20)
+  ('yellow',30.69,31.79)
+/*
   ('BLACK', 83.127142857142, 84.227142857142)
   ('BLUE', 12.660000000000, 13.760000000000)
   ('GREEN', 75.286000000000, 76.386000000000)
@@ -630,7 +659,7 @@ rows:
   ('teal', 100.842500000000, 101.942500000000)
   ('violet', 40.102500000000, 41.202500000000)
   ('yellow', 30.690000000000, 31.790000000000)
-
+*/
 
 // Source file: ../queries/aggs/avg/ravg23.sql
 // Result file: ../queries/aggs/avg/results/avg23.res
