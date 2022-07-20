@@ -29,10 +29,11 @@
 
   //"Operand:- EV_M_START" .verbose
 
+  PipeIn[].pipeOut
+
   // check if we can scan the table
   <tableNm> <indexNm> op__table_index if
     Table[].tablePtn@ to TablePtn[]
-    PipeIn[].pipeOut
   then
 
   true

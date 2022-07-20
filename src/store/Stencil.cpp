@@ -2579,7 +2579,7 @@ Shape* Stencil::pSketchReturn(void) {
 
   CodeSynth* pCodeSynth = new CodeSynth();
 
-  pCodeSynth->vSynthReturn();
+  //pCodeSynth->vSynthReturn();
   pShape->vCodeSynthB(pCodeSynth);
   return pShape;
 }

@@ -1,7 +1,6 @@
 
 import datetime
 import pathlib
-import string
 from decimal import Decimal
 import logging
 
@@ -16,7 +15,7 @@ class TestResult:
     Holds result information about running a test.
     """
 
-    def __init__(self, test_path: string, test_name: string, test_id: int,
+    def __init__(self, test_path: str, test_name: str, test_id: int,
                  job_result_id: int, remote_dir: pathlib.Path):
         self.test_path = test_path
         self.test_name = test_name
@@ -26,10 +25,10 @@ class TestResult:
         self.end_time: datetime.datetime = None
         self.test_passed: bool = False
         self.test_skipped: bool = True
-        self.metrics: [(string, Decimal)] = []
+        self.metrics: [(str, Decimal)] = []
         self.remote_dir = remote_dir   # where the raw metrics are saved
-        self.stdout: string = None
-        self.stderr: string = None
+        self.stdout: str = None
+        self.stderr: str = None
 
     def set_test_started(self):
         """
@@ -37,7 +36,7 @@ class TestResult:
         """
         self.start_time = datetime.datetime.now()
 
-    def set_test_ended(self, test_passed: bool, test_skipped: bool, stdout: string = None, stderr: string = None):
+    def set_test_ended(self, test_passed: bool, test_skipped: bool, stdout: str = None, stderr: str = None):
         """
         Record when the test has stopped and the result of the test.
         """
@@ -47,7 +46,7 @@ class TestResult:
         self.stdout = stdout
         self.stderr = stderr
 
-    def add_metric(self, name: string, value: Decimal, ts: datetime.datetime = None):
+    def add_metric(self, name: str, value: Decimal, ts: datetime.datetime = None):
         """
         Add a metric to this test result.
         """
@@ -90,7 +89,7 @@ def summarise_to_junit(results: [TestResult], dest: pathlib.Path):
         junit_xml.to_xml_report_file(f, [test_suite])
 
 
-def summarise_to_string(results: [TestResult]) -> string:
+def summarise_to_string(results: [TestResult]) -> str:
     """
     Writes a textual summary of all results and returns it in a string.
     """

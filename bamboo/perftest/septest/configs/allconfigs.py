@@ -1,10 +1,9 @@
-import string
 import logging
 
 from .jobconfig import JobConfig
 from .hardwareconfig import HardwareConfig
-from .clusterconfig import ClusterConfig
-from septest.errors import ConfigurationError
+from pyutils.clusterconfig import ClusterConfig
+from pyutils.errors import ConfigurationError
 
 LOG = logging.getLogger(__name__)
 
@@ -12,7 +11,7 @@ LOG = logging.getLogger(__name__)
 class AllConfigs:
     """A simple class that encapsulates all configuration associated with a job"""
 
-    def __init__(self, job_path: string):
+    def __init__(self, job_path: str):
         self.job_config: JobConfig = None
         self.hardware_config: HardwareConfig = None
         self.cluster_config: ClusterConfig = None
@@ -32,7 +31,7 @@ class AllConfigs:
     def get_cluster(self) -> ClusterConfig:
         return self.cluster_config
 
-    def __load(self, job_path: string) -> None:
+    def __load(self, job_path: str) -> None:
         self.job_config = JobConfig(job_path)
         self.hardware_config = HardwareConfig(self.job_config.get_resolved_hardware_config_path())
         self.cluster_config = ClusterConfig(self.job_config.get_resolved_cluster_config_path())

@@ -1,0 +1,6 @@
+This folder contains reference to a selection of tests that are run when a release is being created.
+The intent is not to be complete in testing all functionality but to ensure that the built version
+of RapidsSE starts and runs some basic statements on the target platforms.
+
+So we want to ensure that it can find and use tiny-c (and therefore gcc) correctly and any other
+resources that are loaded dynamically at runtime.

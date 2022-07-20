@@ -79,10 +79,10 @@ failure contains: 'The number of columns of each subquery do not match: 2 vs 1, 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 EXPLAIN SELECT * FROM unionTbl1 UNION ALL SELECT * FROM unionTbl3;
-failure contains: 'The number of columns of each subquery do not match: INTEGER vs VARCHAR, column ordinal 1, UNION operator'
+failure contains: 'Column types do not match: INTEGER vs VARCHAR, column ordinal 1, UNION operator'
 
 EXPLAIN SELECT col1, col2 FROM unionTbl1 UNION ALL SELECT col1, col2 FROM unionTbl3;
-failure contains: 'The number of columns of each subquery do not match: INTEGER vs VARCHAR, column ordinal 1, UNION operator'
+failure contains: 'Column types do not match: INTEGER vs VARCHAR, column ordinal 1, UNION operator'
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -

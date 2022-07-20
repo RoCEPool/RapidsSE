@@ -163,7 +163,9 @@ void SePrompt::vDump(eCN eClass, Object* pObject, Stz* aTab)
 void SePrompt::vPromptLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
+
+  s4K sCmd;
+
   //
   // prompt commands are of the form:
   //
@@ -231,6 +233,12 @@ void SePrompt::vPromptLoop(void)
     
     Stz* szCmdFile = m_pInput->szPath();
     i8   iCmdLine  = pTkn(0)->iLineNo();
+
+    // output the script file cmd statement being executed
+    if ( ! szCmdFile->bSame("stdin"_Stz) ) {
+      m_pInput->pInpTknVec()->vToTknString(sCmd);
+      vTrace("\n%s\n"_Stz,sCmd.azChar());
+    }
 
     if (*szCmdFile->azChar()) {
       m_pInpTagSet->vInsert(C_TAG_CMDFILE,szCmdFile);

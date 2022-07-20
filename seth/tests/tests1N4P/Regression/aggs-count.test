@@ -21,7 +21,7 @@ rows:
 // Result file: ../queries/aggs/count/results/count7.res
 select count(*), sum(cola1), cast(avg(cold1) as decimal(10,7)) from table1 where colb1 < 'green';
 rows:
-  (60, 14273, 123.30)
+  (60, 14273, 123.303833333333)
   //(60, 14273, 123.3038333)
 
 // Source file: ../queries/aggs/count/rcount15.sql

@@ -1,10 +1,9 @@
 import os.path
-import string
 import configparser
 import pathlib
 from collections import OrderedDict
 
-from septest.errors import ConfigurationError
+from pyutils.errors import ConfigurationError
 
 
 # This is an extension used in ConfigParser to allow config files
@@ -33,8 +32,8 @@ class JobConfig:
     C_CLUSTERCONFIG = "ClusterConfigPath"
     C_TESTPATH = "TestPath"
 
-    def __init__(self, path: string):
-        self.path: string = path
+    def __init__(self, path: str):
+        self.path: str = path
 
         # Method for reading multiple keys of the same name but with different values
         # comes from here: https://stackoverflow.com/a/70375875
@@ -83,7 +82,7 @@ class JobConfig:
             ("\n    ".join(self.get_test_paths())) + "\n  ]"
         return s
 
-    def get_job_name(self) -> string:
+    def get_job_name(self) -> str:
         """Returns the name of the job file without the last extension"""
         return os.path.basename(self.path).rsplit(sep=".", maxsplit=1)[0]
 
@@ -93,7 +92,7 @@ class JobConfig:
     def get_continue_on_test_failure(self) -> bool:
         return self.parser.getboolean(self.C_SECTION, self.C_CONTINUEONFAILURE)
 
-    def get_hardware_config_path(self) -> string:
+    def get_hardware_config_path(self) -> str:
         """Returns the path of the hardware config file as stored in the job config file"""
         s = self.parser.get(self.C_SECTION, self.C_HARDWARECONFIG)
 
@@ -103,7 +102,7 @@ class JobConfig:
             s = s[1:-1]
         return s
 
-    def get_resolved_hardware_config_path(self) -> string:
+    def get_resolved_hardware_config_path(self) -> str:
         """Returns the absolute path of the hardware config file"""
         path_str = self.get_hardware_config_path()
 
@@ -116,7 +115,7 @@ class JobConfig:
         assert resolved_path.exists()
         return str(resolved_path)
 
-    def get_cluster_config_path(self) -> string:
+    def get_cluster_config_path(self) -> str:
         """Returns the path of the cluster config file as stored in the job config file"""
         s = self.parser.get(self.C_SECTION, self.C_CLUSTERCONFIG)
 
@@ -126,7 +125,7 @@ class JobConfig:
             s = s[1:-1]
         return s
 
-    def get_resolved_cluster_config_path(self) -> string:
+    def get_resolved_cluster_config_path(self) -> str:
         """Returns the absolute path of the cluster config file"""
         path_str = self.get_cluster_config_path()
 
@@ -175,7 +174,7 @@ class JobConfig:
         return resolved_test_paths
 
     @staticmethod
-    def __validate_path(path_str: string, key_name: string, job_cfg_file_path: string):
+    def __validate_path(path_str: str, key_name: str, job_cfg_file_path: str):
         """Validates that a path referenced from a config file actually exists and is a file"""
         if path_str is None:
             msg = f"Config file field {key_name} must have a valid path in file: {job_cfg_file_path}"

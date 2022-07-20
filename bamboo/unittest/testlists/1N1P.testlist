@@ -5,6 +5,7 @@
 ../../../seth/tests/dummyTests/testList
 ../../../seth/tests/tests1N4P/Filter/testList
 ../../../seth/tests/tests1N4P/Limit/testList
+../../../seth/tests/tests1N4P/Misc/testList
 ../../../seth/tests/tests1N4P/Projections/testList
 //../../../seth/tests/tests1N1P/Transliterate/testList
 ../../../seth/tests/tests1N4P/BackEnd/testList

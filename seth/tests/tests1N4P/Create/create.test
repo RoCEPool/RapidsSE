@@ -1,0 +1,144 @@
+/*----------------------------------------------------------------------------*/
+/* create table query tests                                                   */
+/*----------------------------------------------------------------------------*/
+
+// (1) create table test starting character
+create table _test (
+  jA  INTEGER
+);
+success
+
+create table 1test (
+  jA  INTEGER
+);
+failure contains: 'EC_SYNTAX_ERROR'
+
+create table ~test (
+  jA  INTEGER
+);
+failure contains: 'EC_SYNTAX_ERROR'
+
+create table &test (
+  jA  INTEGER
+);
+failure contains: 'EC_SYNTAX_ERROR'
+
+create table %test (
+  jA  INTEGER
+);
+failure contains: 'EC_SYNTAX_ERROR'
+
+create table ^test (
+  jA  INTEGER
+);
+failure contains: 'EC_SYNTAX_ERROR'
+
+create table !test (
+  jA  INTEGER
+);
+failure contains: 'EC_SYNTAX_ERROR'
+
+create table *test (
+  jA  INTEGER
+);
+failure contains: 'EC_SYNTAX_ERROR'
+
+create table :test (
+  jA  INTEGER
+);
+failure contains: 'EC_SYNTAX_ERROR'
+
+create table ?test (
+  jA  INTEGER
+);
+failure contains: 'EC_SYNTAX_ERROR'
+
+// (2) create table test special characters within the name
+
+create table t1est (
+  jA  INTEGER
+);
+success
+
+create table t~est (
+  jA  INTEGER
+);
+failure contains: 'EC_INVALID_COMMAND'
+
+create table t&est (
+  jA  INTEGER
+);
+failure contains: 'EC_INVALID_COMMAND'
+
+create table t%est (
+  jA  INTEGER
+);
+failure contains: 'EC_INVALID_COMMAND'
+
+create table t^est (
+  jA  INTEGER
+);
+failure contains: 'EC_INVALID_COMMAND'
+
+create table t!est (
+  jA  INTEGER
+);
+failure contains: 'EC_INVALID_COMMAND'
+
+create table t*est (
+  jA  INTEGER
+);
+failure contains: 'EC_INVALID_COMMAND'
+
+create table t:est (
+  jA  INTEGER
+);
+failure contains: 'EC_INVALID_COMMAND'
+
+create table t?est (
+  jA  INTEGER
+);
+failure contains: 'EC_INVALID_COMMAND'
+
+create table t est (
+  jA  INTEGER
+);
+failure contains: 'EC_INVALID_COMMAND'
+
+// (3) create table test 31 characters and more as table name
+
+// 31 character table name (maximum length allowed)
+create table abcabcabcabcabcabcabcabcabcabca (
+  jA  INTEGER
+);
+success
+
+// 32 character table name
+create table abcabcabcabcabcabcabcabcabcabcab (
+  jA  INTEGER
+);
+failure contains: 'EC_MAX_TABLE_NAME_LENGTH'
+
+// 0 length for varchar
+create table t (
+  c VARCHAR(0)) (
+);
+failure contains: 'EC_INVALID_COMMAND'
+
+// 0 length for char
+create table t (
+  c CHAR(0)) (
+);
+failure contains: 'EC_INVALID_COMMAND'
+
+CLEANUP {
+
+  drop table _test;
+  drop table t1est;
+  drop table abcabcabcabcabcabcabcabcabcabca;
+  mute
+
+  bye;
+  mute
+}
+

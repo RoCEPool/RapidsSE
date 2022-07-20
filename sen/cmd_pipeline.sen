@@ -17,6 +17,12 @@
 /* org_ org */  // - - - - - - - - - - - - - - - - - -
 /* org_ org */  // start as ordinary job on this node
 /* org_ org */  // - - - - - - - - - - - - - - - - - -
+/* org_ org */  "<objectTracker>" [job].tagSet@ tagSet.hasName if
+/* org_ org */    "Initial Job Start" [job].labelObjectTracker
+/* org_ org */    [job].printObjectTracker
+/* org_ org */    [job].resetObjectTracker
+/* org_ org */    "Origin Job Start" [job].labelObjectTracker
+/* org_ org */  then
 /* org_ org */  [args].distJob if
 /* org_ org */    "pipeline" "origin"
 /* org_ org */      "org_ org" "job org"                             [job].trace
@@ -221,6 +227,11 @@
 /* org_ beg */  [task].grabLock
 /* org_ beg */    [grid].knownNodes [task].acksRemaining!
 /* org_ beg */    [job]:broadcast
+/* org_ org */    "<objectTracker>" [job].tagSet@ tagSet.hasName if
+/* org_ org */      [job].printObjectTracker
+/* org_ org */      [job].resetObjectTracker
+/* org_ org */      "Broadcast Start" [job].labelObjectTracker
+/* org_ org */    then
 /* org_ beg */  [task].wait
 /* org_ beg */
 /* org_ beg */  [job].tscBegun
@@ -250,6 +261,11 @@
 /* org_ exe */  [task].grabLock
 /* org_ exe */    [grid].knownNodes [task].acksRemaining!
 /* org_ exe */    STD_NOWAIT_TAG "execute" api::forkChild2PC discard
+/* org_ org */    "<objectTracker>" [job].tagSet@ tagSet.hasName if
+/* org_ org */      [job].printObjectTracker
+/* org_ org */      [job].resetObjectTracker
+/* org_ org */      "Execute Start" [job].labelObjectTracker
+/* org_ org */    then
 /* org_ exe */  [task].wait
 /* org_ exe */
 /* org_ exe */  [job].tscExecuted
@@ -280,6 +296,11 @@
 /* org_ end */  [task].grabLock
 /* org_ end */    [grid].knownNodes [task].acksRemaining!
 /* org_ end */    STD_NOWAIT_TAG "end" api::forkChild2PC discard
+/* org_ org */    "<objectTracker>" [job].tagSet@ tagSet.hasName if
+/* org_ org */      [job].printObjectTracker
+/* org_ org */      [job].resetObjectTracker
+/* org_ org */      "End Start" [job].labelObjectTracker
+/* org_ org */    then
 /* org_ end */  [task].wait
 /* org_ end */
 /* org_ end */  [job].tscEnded
@@ -319,6 +340,10 @@
 /* org_ ovr */  Path[].discardAll
 /* org_ ovr */  [task].grabLock
 /* org_ ovr */  [job].addExited
+/* org_ org */  "<objectTracker>" [job].tagSet@ tagSet.hasName if
+/* org_ org */    [job].printObjectTracker
+/* org_ org */    [job].disableObjectTracker
+/* org_ org */  then
 /* org_ org */
 /* org_ ovr */    "<signalParent>" [job].tagSet@ tagSet.hasName if
 /* org_ org */
