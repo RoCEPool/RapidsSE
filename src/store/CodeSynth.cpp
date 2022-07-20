@@ -2908,6 +2908,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
       i_Tkn++;
       pTkn = m_pTokenVec->pGet(i_Tkn);
       eExprType = StreamDefBase::eDatum(pTkn->szChars());
+      pExprType->vPush(eExprType);
       continue;
     }
 
@@ -3077,6 +3078,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // aggregate follows, generate init expressions in the m_aInitStack
+      eExprType = (eDM)pExprType->iPop();
       vPushAggCol(pExprStack, pPostStack, ePreExp, eExprKind, eExprType, i_Col+iGkyCols, i_ColPL, i_DupCtr);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -3147,17 +3149,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // else
     if (pTkn->bSame("else"_Stz)) {
-//      eDM eColType1 = (eDM) pExprType->iPop();
-//      eDM eColType2 = (eDM) pExprType->iPop();
-//      if (eColType1 == DM_UNK)
-//        pExprType->vPush(eColType2);
-//      else if (eColType2 == DM_UNK)
-//        pExprType->vPush(eColType1);
-//      else {
-//        RASSERT(eColType1 == eColType2);
-//        pExprType->vPush(eColType1);
-//      }
-
+      eDM eColType1 = (eDM) pExprType->iPop();
       continue;
     }
 
@@ -3963,18 +3955,19 @@ void CodeSynth::vPushLogical(TypedStack* pExprStack, IntStack* pExprType,
   // generate the code for the logical operator
   eResult = DM_BOL;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get columnn types
+  eDM eColType1 = (eDM) pExprType->iPop();
+
   if (pTkn->bSame("NOT"_Stz)) {
     sOperation = aFM[FM_NOT_BOLBOL];
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // get columnn types
-    eDM eColType1 = (eDM) pExprType->iPop();
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // expect only booleans or integers
     RASSERT(eColType1 == DM_BOL || eColType1 == DM_INT);
-
-    sOperation.vConcat("(aCombinedT->m_iErrorCode)"_Stz);
+  }
+  else if (pTkn->bSame("isNULL"_Stz)) {
+    sOperation = "_ISNULL"_Stz;
   }
   else {
 
@@ -4004,14 +3997,10 @@ void CodeSynth::vPushLogical(TypedStack* pExprStack, IntStack* pExprType,
 
     }
     else
-    if (pTkn->bSame("isNULL"_Stz)) {
-      sOperation = "_ISNULL"_Stz;
-    }
-    else
       RASSERT(0);
-
-    sOperation.vConcat("(aCombinedT->m_iErrorCode)"_Stz);
   }
+
+  sOperation.vConcat("(aCombinedT->m_iErrorCode)"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push new infix string on the ExprStack
@@ -4465,6 +4454,7 @@ void CodeSynth::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePre
     case PE_BET:
       eExpr1 = (eDM)pTypeStack->iPop();
       eExpr2 = (eDM)pTypeStack->iPop();
+      eExpr3 = (eDM)pTypeStack->iPop();
       sOperation = aFM[eMacro_Bet[eExpr1][eExpr2]];
       sOperation.vConcat("(aCombinedT->m_iErrorCode)"_Stz);
       pExprStack->vPushStz(sOperation);
@@ -4519,6 +4509,7 @@ void CodeSynth::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePre
     case PE_MLE:
       eExpr1 = (eDM)pTypeStack->iPop();
       eExpr2 = (eDM)pTypeStack->iPop();
+      eExpr3 = (eDM)pTypeStack->iPop();
       sOperation.vConcat("_MATCH_LEADING(aCombinedT->m_iErrorCode)"_Stz);
       pExprStack->vPushStz(sOperation);
       pTypeStack->vPush(DM_BOL);
@@ -4561,6 +4552,7 @@ void CodeSynth::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePre
     case PE_MTR:
       eExpr1 = (eDM)pTypeStack->iPop();
       eExpr2 = (eDM)pTypeStack->iPop();
+      eExpr3 = (eDM)pTypeStack->iPop();
       sOperation.vConcat("_MATCH_TRAILING(aCombinedT->m_iErrorCode)"_Stz);
       pExprStack->vPushStz(sOperation);
       pTypeStack->vPush(DM_BOL);
