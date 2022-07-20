@@ -98,6 +98,8 @@ function validate3rdPartyTools() {
 
   if [ "$#" -eq 0 ]; then
 
+    # Customised check for pre-requisites
+
     # Check that bash has the correct version
     validateBash
 
@@ -113,9 +115,8 @@ function validate3rdPartyTools() {
     # Check that the ss utility is installed
     validateSs
 
-    # Check that the a number of basic utilities are installed
+    # Common check that the a number of basic utilities are installed
     validateCommandLineToolExists "nc"
-    validateCommandLineToolExists "ss"
     validateCommandLineToolExists "tar"
     validateCommandLineToolExists "bc"
     validateCommandLineToolExists "cut"
@@ -130,6 +131,8 @@ function validate3rdPartyTools() {
   else
     local -a nodeNames=()
     nodeNames=("$@")
+
+    # Customised check for pre-requisites
 
     # Check that bash has the correct version
     validateBash "${nodeNames[@]}"
@@ -146,9 +149,8 @@ function validate3rdPartyTools() {
     # Check that the ss utility is installed
     validateSs "${nodeNames[@]}"
 
-    # Check that the a number of basic utilities are installed
+    # Common check that the a number of basic utilities are installed
     validateCommandLineToolExists "nc" "${nodeNames[@]}"
-    validateCommandLineToolExists "ss" "${nodeNames[@]}"
     validateCommandLineToolExists "tar" "${nodeNames[@]}"
     validateCommandLineToolExists "bc" "${nodeNames[@]}"
     validateCommandLineToolExists "cut" "${nodeNames[@]}"
