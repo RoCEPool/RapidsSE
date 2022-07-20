@@ -559,9 +559,12 @@ void Step::vLocalsFramePush(void)
     m_pLocalVars = new LocalVars;
   
   TypeValueArea* aDiscardPoint = (TypeValueArea*)m_pReturnStack->aTopVal();
-
-  m_pLocalVars->vFramePush(nLocals,aDiscardPoint);
-
+  
+  if (! m_pLocalVars->bFramePush(nLocals,aDiscardPoint)) {
+    vSeeFrameStack();
+    NEVER_REACH;
+  }
+  
   EXIT();
 }
 /*----------------------------------------------------------------------------*/

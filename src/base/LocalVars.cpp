@@ -111,7 +111,7 @@ void LocalVars::vFramePop(void)
 /*----------------------------------------------------------------------------*/
 /* push new frame of locals                                                   */
 /*----------------------------------------------------------------------------*/
-void LocalVars::vFramePush(i8 nLocals, void* aDiscardPoint)
+bool LocalVars::bFramePush(i8 nLocals, void* aDiscardPoint)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALVARS,_FOOTER_);
 
@@ -124,7 +124,9 @@ void LocalVars::vFramePush(i8 nLocals, void* aDiscardPoint)
     LocalVar& rxLocalVar = m_xaLocalVar[m_nLocalVars - 1];
     void* aDiscardPoint_top = rxLocalVar.m_aDiscardPoint;
 
-    RASSERT(aDiscardPoint != aDiscardPoint_top);
+    //RASSERT(aDiscardPoint != aDiscardPoint_top);
+    if (aDiscardPoint == aDiscardPoint_top)
+      return false;
   }
   
   for (i8 iLocal = 0; iLocal < nLocals; iLocal++) {
@@ -141,6 +143,8 @@ void LocalVars::vFramePush(i8 nLocals, void* aDiscardPoint)
   //vVerify();
 
   RASSERT(m_nLocalVars <= C_LOCAL_VARS);
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

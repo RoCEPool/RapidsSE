@@ -33,7 +33,7 @@ namespace BASE
    ~LocalVars(void) noexcept(false);
   
     void vFramePop(void);
-    void vFramePush(i8 nLocals, void* aDiscardPoint);
+    bool bFramePush(i8 nLocals, void* aDiscardPoint);
 
     LocalVar* axLocalVar(i8 i_Local);
 
