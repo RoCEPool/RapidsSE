@@ -21,6 +21,8 @@ namespace STORE
     s32    m_sGridNm;      // name of this grid
     Node*  m_pThisNode;    // this node pointer
     SkipListNL* m_pNodes;  // skip list of jobs (ordered by job name)
+    bool   m_bHealthy;     // Grid healthy or unhealthy
+    Lock   m_okLock;       // lock
  
     Parcel* m_pParcel;
 
@@ -41,12 +43,19 @@ namespace STORE
                           Stz* szIPAddr, i8 iPortNo, Stz* szRegionNm);
     void vAddNode(Node* pNode);
     void vAdjustPtnMap(void);
+    void vDropRead(void);
+    void vDropWrite(void);
     void vDsv(void);
     s16KB szDumpInfo(void);
     Node* pFindNodeById(i8 iNodeId);
     Node* pFindNodeNm(Stz* pNodeNm);
     Node* pGetNthNode(i8 i_Node);
+    void vGrabRead(void);
+    void vGrabWrite(void);
     Stz* szGridNm(void);
+    bool bHealthy(void);
+    void vHealthy(bool bHealthy);
+    bool bIsLocked(void);
     i8   nKnownNodes(void);
     Node* pOtherNode(void);
     void vRemoveNode(Node* pNode);

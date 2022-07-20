@@ -31,13 +31,14 @@ __aFooterFunction(Grid)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Grid::Grid(Stz* szGridNm)
-: Operand(CN_GRID)
+: Operand(CN_GRID), m_okLock(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
   m_sGridNm   = szGridNm; //"SEgrid"_Stz;
   m_pThisNode = nullptr;
   m_pNodes = new SkipListNL(true,STORE::bNodeCompare);
+  m_bHealthy = true;
     
   m_pParcel = nullptr;
 
@@ -118,8 +119,9 @@ void Grid::vAddDetectedNode(i8 iNodeId, Stz* szNodeNm,
 void Grid::vAddNode(Node* pNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-
+  vGrabWrite();
   bool b = m_pNodes->bInsert(pNode);
+  vDropWrite();
   RASSERT(b);
 
   if (AM::TRACE::bVerbose(C_VB_NODE)) {
@@ -143,12 +145,30 @@ void Grid::vAdjustPtnMap(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* drop read grid lock                                                        */
+/*----------------------------------------------------------------------------*/
+void Grid::vDropRead(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+  m_okLock.vDropRead();
+}
+
+/*----------------------------------------------------------------------------*/
+/* drop write grid lock                                                       */
+/*----------------------------------------------------------------------------*/
+void Grid::vDropWrite(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+  m_okLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump distributed state vector                                              */
 /*----------------------------------------------------------------------------*/
 void Grid::vDsv(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-  
+
   vTrace("\nDsv of Grid: %s\n"_Stz,
          m_sGridNm.szStz());
   
@@ -159,6 +179,8 @@ void Grid::vDsv(void)
   vTrace("nodes %lld \n"_Stz,
          nKnownNodes());
 
+  vGrabRead();
+
   for (SkipNode *pSkipNode = m_pNodes->pFirst(0);
        pSkipNode;
        pSkipNode = m_pNodes->pNext(pSkipNode, 0)) {
@@ -167,6 +189,8 @@ void Grid::vDsv(void)
     if (pNode) pNode->vDsv();
 
   }
+
+  vDropRead();
 
 }
 
@@ -196,6 +220,7 @@ s16KB Grid::szDumpInfo(void)
   sDumpBuffer.vCatSprint("nodes %lld \n"_Stz,
                          nKnownNodes());
 
+  vGrabRead();
 
   for (SkipNode *pSkipNode = m_pNodes->pFirst(0);
        pSkipNode;
@@ -207,6 +232,8 @@ s16KB Grid::szDumpInfo(void)
     }
 
   }
+
+  vDropRead();
 
   sDumpBuffer.vCatSprint("%s"_Stz,
                          "======================================================\n\n"_Stz);
@@ -220,6 +247,8 @@ Node* Grid::pFindNodeById(i8 iFindNodeId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 
+  vGrabRead();
+
   for (SkipNode *pSkipNode = m_pNodes->pFirst(0);
        pSkipNode;
        pSkipNode = m_pNodes->pNext(pSkipNode, 0)) {
@@ -228,9 +257,13 @@ Node* Grid::pFindNodeById(i8 iFindNodeId)
     i8 iNodeId = pNode->iNodeId();
     
     //vTrace("pFindNode %lld (looking for %lld)\n"_Stz,iNodeId,iFindNodeId);
-    if (pNode && iNodeId == iFindNodeId)
+    if (pNode && iNodeId == iFindNodeId) {
+      vDropRead();
       return pNode;
+    }
   }
+
+  vDropRead();
 
   return nullptr;
 }
@@ -242,13 +275,19 @@ Node* Grid::pFindNodeNm(Stz* sNodeNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 
+  vGrabRead();
+
   for (SkipNode *pSkipNode = m_pNodes->pFirst(0);
        pSkipNode;
        pSkipNode = m_pNodes->pNext(pSkipNode, 0)) {
     Node* pNode = _pNode(pSkipNode->m_pObject);
-    if (pNode && pNode->szNodeNm()->bSame(sNodeNm))
+    if (pNode && pNode->szNodeNm()->bSame(sNodeNm)) {
+      vDropRead();
       return pNode;
+    }
   }
+
+  vDropRead();
   
   return nullptr;
 }
@@ -260,17 +299,41 @@ Node* Grid::pGetNthNode(i8 i_Node)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 
+  vGrabRead();
+
   i8 iSeq = 0;
   for (SkipNode *pSkipNode = m_pNodes->pFirst(0);
        pSkipNode;
        pSkipNode = m_pNodes->pNext(pSkipNode, 0)) {
     Node* pNode = _pNode(pSkipNode->m_pObject);
     
-    if (pNode && i_Node == iSeq++)
+    if (pNode && i_Node == iSeq++) {
+      vDropRead();
       return pNode;
+    }
   }
 
+  vDropRead();
+
   return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab lock for read                                                         */
+/*----------------------------------------------------------------------------*/
+void Grid::vGrabRead(void) {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+
+  m_okLock.vGrabRead();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab lock for write                                                        */
+/*----------------------------------------------------------------------------*/
+void Grid::vGrabWrite(void) {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+
+  m_okLock.vGrabWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -281,6 +344,35 @@ Stz* Grid::szGridNm(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
   return m_sGridNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return grid health status                                                  */
+/*----------------------------------------------------------------------------*/
+bool Grid::bHealthy(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+
+  return m_bHealthy;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set grid health status                                                     */
+/*----------------------------------------------------------------------------*/
+void Grid::vHealthy(bool bHealthy)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+
+  m_bHealthy = bHealthy;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is locked ?                                                                */
+/*----------------------------------------------------------------------------*/
+bool Grid::bIsLocked(void) {
+  _precondition_(_ADDRESS_, _MAGIC_, CN_GRID, _FOOTER_);
+
+  return m_okLock.bIsLocked();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -300,14 +392,20 @@ Node* Grid::pOtherNode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 
+  vGrabRead();
+
   for (SkipNode *pSkipNode = m_pNodes->pFirst(0);
        pSkipNode;
        pSkipNode = m_pNodes->pNext(pSkipNode, 0)) {
     Node* pNode = _pNode(pSkipNode->m_pObject);
     
-    if (pNode && pNode != m_pThisNode)
+    if (pNode && pNode != m_pThisNode) {
+      vDropRead();
       return pNode;
+    }
   }
+
+  vDropRead();
 
   return nullptr;
 }
@@ -318,8 +416,9 @@ Node* Grid::pOtherNode(void)
 void Grid::vRemoveNode(Node* pNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-
+  vGrabWrite();
   bool b = m_pNodes->bRemove(pNode);
+  vDropWrite();
   RASSERT(b);
 }
 
@@ -335,6 +434,8 @@ void Grid::vResetNetwork(void)
   Socket* pRcvSkt;
   Totup*  pTotup;
   Totup*  pWhyTot;
+
+  vGrabWrite();
 
   for (SkipNode *pSkipNode = m_pNodes->pFirst(0);
        pSkipNode;
@@ -360,6 +461,9 @@ void Grid::vResetNetwork(void)
     }
     
   }
+
+  vDropWrite();
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -368,7 +472,7 @@ void Grid::vResetNetwork(void)
 void Grid::vSeeNodes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-  
+
   vTrace("See Grid::\n"_Stz);
 
   vTrace("  ptns per node %lld\n"_Stz,AM::PTNMAP::nPtnsPerNode());
@@ -376,13 +480,17 @@ void Grid::vSeeNodes(void)
 
   SP_Node spNode;
 
+  vGrabRead();
+
   for (SkipNode *pSkipNode = m_pNodes->pFirst(0);
        pSkipNode;
        pSkipNode = m_pNodes->pNext(pSkipNode, 0)) {
     Node* pNode = _pNode(pSkipNode->m_pObject);
     vTrace("  %s\n"_Stz,spNode.sz(pNode));
   }
-  
+
+  vDropRead();
+
   vTrace(";;\n\n"_Stz);
 }
 
@@ -392,7 +500,7 @@ void Grid::vSeeNodes(void)
 void Grid::vShowGrid(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-  
+
   Node*   pNode;
   Socket* pSndSkt;
   Socket* pRcvSkt;
@@ -405,6 +513,8 @@ void Grid::vShowGrid(void)
   vTrace("  %lld nodes\n"_Stz,AM::pGrid()->nKnownNodes());
   vTrace("  %lld ptns per node\n"_Stz,AM::PTNMAP::nPtnsPerNode());
   vTrace("  %lld ptns in grid\n"_Stz,AM::PTNMAP::nPtnsInGrid());
+
+  vGrabRead();
 
   for (SkipNode *pSkipNode = m_pNodes->pFirst(0);
        pSkipNode;
@@ -446,6 +556,8 @@ void Grid::vShowGrid(void)
     }
     
   }
+
+  vDropRead();
   
   vTrace(";;\n"_Stz);
 
@@ -457,7 +569,7 @@ void Grid::vShowGrid(void)
 void Grid::vShowNetwork(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-  
+
   Node*   pNode;
   Socket* pSndSkt;
   Socket* pRcvSkt;
@@ -473,6 +585,8 @@ void Grid::vShowNetwork(void)
   s32 sSndBytes;
   s32 sRcvBytes;
   s32 sTotBytes;
+
+  vGrabRead();
 
   for (SkipNode *pSkipNode = m_pNodes->pFirst(0);
        pSkipNode;
@@ -580,6 +694,8 @@ void Grid::vShowNetwork(void)
     }
     
   }
+
+  vDropRead();
   
   vTrace(";;\n"_Stz);
 }
@@ -618,8 +734,9 @@ Node* Grid::pThisNode(void)
 void Grid::vThisNode(Node* pNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-
+  vGrabWrite();
   m_pThisNode = pNode;
+  vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
