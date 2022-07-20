@@ -37,45 +37,64 @@ void Step::vNodeMonitorDummyCall(void)
 void Step::vNodeMonitorInspectGrid(void)
 {
   ENTRY();
-  vTrace("Inspecting Grid...\n"_Stz);
 
   Grid* pGrid = AM::pGrid();
+  pGrid->vGrabRead();
 
   SkipListNL* pNodes = pGrid->pSkipList();
 
-  for (SkipNode *pSkipNode = pNodes->pFirst(0);
-       pSkipNode;
-       pSkipNode = pNodes->pNext(pSkipNode, 0)) {
+  if(0 == pGrid->bHealthy()) {
+    vTrace("Inspecting Grid...\n"_Stz);
 
-    Node* pNode = _pNode(pSkipNode->m_pObject);
-    vTrace("Inspecting Node %s\n"_Stz, pNode->szNodeNm());
-    if(pNode->szNodeNm()->bSame("NODE2"_Stz))
-    {
-      pNode->vSetNodeStatus(5);
-    }
+    for (SkipNode *pSkipNode = pNodes->pFirst(0);
+         pSkipNode;
+         pSkipNode = pNodes->pNext(pSkipNode, 0)) {
 
-    if (pNode && (pNode->iGetNodeStatus() != 0)) {
+      Node *pNode = _pNode(pSkipNode->m_pObject);
+      vTrace("Inspecting %s - %s\n"_Stz,
+             pNode->szNodeNm(),
+             pNode->eState() == NS_ACTIVE ? "running"_Stz : "not running"_Stz);
 
-      vTrace("Node failure, status code: %d\n"_Stz, pNode->iGetNodeStatus());
-      vTrace("Notifying jobs on current node:\n"_Stz);
+      if (pNode && (pNode->eState() == NS_INACTIVE)) {
 
-      JobList* pJobList = AM::JLIST::pJobsList();
-      pJobList->vGrabLock();
+        vTrace("Node failure, status code: %d\n"_Stz, pNode->iGetNodeStatus());
+        vTrace("Notifying jobs on current node:\n"_Stz);
 
-      for (SkipNode* pCursor = pJobList->pFirst();
-           pCursor;
-           pCursor = pJobList->pNext(pCursor)) {
 
-        Job *pJob = _pJob(pCursor->m_pObject);
+        // Notify Origin jobs
+        JobList *pOriginJobList = AM::pOriginatingJobs();
+        pOriginJobList->vGrabLock();
 
-        vTrace("%s\n"_Stz, pJob->szJobNm());
+        for (SkipNode *pCursor = pOriginJobList->pFirst();
+             pCursor;
+             pCursor = pOriginJobList->pNext(pCursor)) {
+
+          Job *pJob = _pJob(pCursor->m_pObject);
+
+          vTrace("%s\n"_Stz, pJob->szJobNm());
+        }
+        pOriginJobList->vDropLock();
+
+
+        // Notify participant jobs
+        JobList* pPtpJobList = AM::pParticipatingJobs();
+        pPtpJobList->vGrabLock();
+
+        for (SkipNode *pCursor = pPtpJobList->pFirst();
+             pCursor;
+             pCursor = pPtpJobList->pNext(pCursor)) {
+
+          Job *pJob = _pJob(pCursor->m_pObject);
+
+          vTrace("%s\n"_Stz, pJob->szJobNm());
+        }
+        pPtpJobList->vDropLock();
+        break;
       }
-      pJobList->vDropLock();
-      // Remove this node from node list to prevent triggering this again..
-      // Or figure out a different way
-      break;
     }
   }
+
+  pGrid->vDropRead();
 
   EXIT();
 }
