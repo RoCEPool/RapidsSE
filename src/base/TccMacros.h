@@ -428,12 +428,12 @@
 
 #define _INX_IVLIVL(eErrorCode)                                             \
   {                                                                         \
-    NEVER_REACH                                                             \
+    iErrorCode = EC_NOT_IMPLEMENTED;                                        \
   }
 
 #define _INX_IVYIVY(eErrorCode)                                             \
   {                                                                         \
-    NEVER_REACH                                                             \
+    iErrorCode = EC_NOT_IMPLEMENTED;                                         \
   }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

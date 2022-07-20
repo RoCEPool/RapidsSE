@@ -3818,7 +3818,11 @@ void CodeSynth::vPushCast(TypedStack* pExprStack, IntStack* pExprType, eDM eCast
     // push result type string on the ExprType stack
     pExprType->vPush((i8) eResult);
   }
+  else
+    pExprType->vPush((i8) eColType1);
+
 }
+
 /*----------------------------------------------------------------------------*/
 /* push column                                                                */
 /*----------------------------------------------------------------------------*/

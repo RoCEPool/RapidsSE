@@ -45,7 +45,7 @@
   }
 
 #define _VCH_TOBCD(iErrorCode) \
-  NEVER_REACH;
+  iErrorCode = EC_NOT_IMPLEMENTED;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  TO FLOAT
@@ -91,9 +91,10 @@
 // Float to int is just drop the decimal digits?
 #define _FLT_TOINT(iErrorCode)                                             \
 {                                                                          \
-  fltArg1.m_iAsI8 = *(--paW);                                              \
-  if (iErrorCode != EC_NONE ||                                             \
-    fltArg1.m_iAsI8 == C_DATUM_NULL) {                                     \
+    iArg1 = *(--paW);                                                      \
+    fltArg1.m_iAsI8 = iArg1;                                               \
+    if (iErrorCode != EC_NONE ||                                           \
+    iArg1 == C_DATUM_NULL) {                                               \
     *paW++ = C_DATUM_NULL;                                                 \
   }                                                                        \
   else {                                                                   \
@@ -106,7 +107,6 @@
       *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
-      fltArg1.m_iAsI8 = iArg1;                                             \
       *paW++ = (i8)fltArg1.m_dFlt;                                         \
     }                                                                      \
   }                                                                        \
@@ -300,11 +300,8 @@
     }                                                                      \
   }
 
-#define _INT_TOINT(iErrorCode) \
-  NEVER_REACH;
-
 #define _VCH_TOINT(iErrorCode) \
-  NEVER_REACH;
+  iErrorCode = EC_NOT_IMPLEMENTED;
 
 
 
@@ -312,31 +309,31 @@
 // TO DATE
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #define _TSP_TODTE(iErrorCode) \
-  NEVER_REACH;
+  iErrorCode = EC_NOT_IMPLEMENTED;
 
 #define _VCH_TODTE(iErrorCode) \
-  NEVER_REACH;
+  iErrorCode = EC_NOT_IMPLEMENTED;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // TO IVL
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #define _VCH_TOIVL(iErrorCode) \
-  NEVER_REACH;
+  iErrorCode = EC_NOT_IMPLEMENTED;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // TO IVY
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #define _VCH_TOIVY(iErrorCode) \
-  NEVER_REACH;
+  iErrorCode = EC_NOT_IMPLEMENTED;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // TO TME
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #define _TSP_TOTME(iErrorCode) \
-  NEVER_REACH;
+  iErrorCode = EC_NOT_IMPLEMENTED;
 
 #define _VCH_TOTME(iErrorCode) \
-  NEVER_REACH;
+  iErrorCode = EC_NOT_IMPLEMENTED;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // TO TSP
@@ -379,13 +376,13 @@
   }
 
 #define _VCH_TOTSP(iErrorCode) \
-  NEVER_REACH;
+  iErrorCode = EC_NOT_IMPLEMENTED;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // TO VCH
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #define _BOL_TOVCH(iErrorCode) \
-  NEVER_REACH;
+  iErrorCode = EC_NOT_IMPLEMENTED;
 
 #define _BCD_TOVCH(iErrorCode, szDstArea)                                  \
   {                                                                        \
@@ -572,10 +569,10 @@
   }
 
 #define _IVL_TOVCH(iErrorCode) \
-  NEVER_REACH;
+  iErrorCode = EC_NOT_IMPLEMENTED;
 
 #define _IVY_TOVCH(iErrorCode) \
-  NEVER_REACH;
+  iErrorCode = EC_NOT_IMPLEMENTED;
 
 #define _TSP_TOVCH(iErrorCode, szDstArea)                                  \
   {                                                                        \
