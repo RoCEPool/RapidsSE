@@ -458,7 +458,8 @@ function doClusterInstall() {
       # TODO: Present summary
       # TODO: Edit ?
 
-      # Validate that the necessary 3rd party applications and libraries are installed
+      # Validate that the necessary 3rd party applications and libraries are installed.
+      # We do this here because they are used in collectHostSizeInfo and other steps.
       validate3rdPartyTools
 
       # Get the number of CPU cores, memory size, SHM size of each node.
@@ -496,7 +497,8 @@ function doClusterInstall() {
       # TODO: Present summary
       # TODO: Edit ?
 
-      # Validate that the necessary 3rd party applications and libraries are installed
+      # Validate that the necessary 3rd party applications and libraries are installed.
+      # We do this here because they are used in collectHostSizeInfo and other steps.
       validate3rdPartyTools
 
       # Get the number of CPU cores, memory size, SHM size of each node.
@@ -533,7 +535,8 @@ function doClusterInstall() {
     # Load and validate config
     loadClusterConfig
 
-    # Validate that the necessary 3rd party applications and libraries are installed
+    # Validate that the necessary 3rd party applications and libraries are installed.
+    # We do this here because they are used in collectHostSizeInfo and other steps.
     validate3rdPartyTools
 
     # Get the number of CPU cores, memory size, SHM size of each node.
@@ -586,11 +589,11 @@ function createConfiguration() {
   # Now we can update the default values for memory size, partitions and threads.
   updateDefaults
 
+  # client port
+  askClientPort
+
   # (advanced) internal port
   askInternalPort
-
-  # (advanced) client port
-  askClientPort
 
   # (advanced) heartbeat address
   askHeartbeatAddress

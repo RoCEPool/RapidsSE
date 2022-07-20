@@ -104,14 +104,14 @@ function validate3rdPartyTools() {
     # Check that gcc is installed and is new enough
     validateGcc
 
-    # Check that libAtomic.so.1 is installed
+    # Check that the ldconfig utility is installed
+    validateLdconfig
+
+    # Check that libAtomic.so.1 is installed (using ldconfig)
     validateLibAtomic
 
     # Check that the ss utility is installed
     validateSs
-
-    # Check that the ldconfig utility is installed
-    validateLdconfig
 
     # Check that the a number of basic utilities are installed
     validateCommandLineToolExists "nc"
@@ -137,14 +137,14 @@ function validate3rdPartyTools() {
     # Check that gcc is installed and is new enough
     validateGcc "${nodeNames[@]}"
 
-    # Check that libAtomic.so.1 is installed
+    # Check that the ldconfig utility is installed
+    validateLdconfig "${nodeNames[@]}"
+
+    # Check that libAtomic.so.1 is installed (using ldconfig)
     validateLibAtomic "${nodeNames[@]}"
 
     # Check that the ss utility is installed
     validateSs "${nodeNames[@]}"
-
-    # Check that the ldconfig utility is installed
-    validateLdconfig "${nodeNames[@]}"
 
     # Check that the a number of basic utilities are installed
     validateCommandLineToolExists "nc" "${nodeNames[@]}"
@@ -788,7 +788,7 @@ function validateInternalPortNotInUse() {
 
     remoteCmd="which nc &>/dev/null && nc -z 127.0.0.1 ${internal_port} && echo \"PORT_IN_USE\""
 
-    sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "bash" "-c" "'${remoteCmd}'")
+    sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "bash -c '${remoteCmd}'")
 
     # Run it
     output="$(ssh "${sshArgs[@]}" || true)"
@@ -844,7 +844,7 @@ function validateClientPortNotInUse() {
 
     remoteCmd="which nc &>/dev/null && nc -z 127.0.0.1 ${client_port} && echo \"PORT_IN_USE\""
 
-    sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "bash" "-c" "'${remoteCmd}'")
+    sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "bash -c '${remoteCmd}'")
 
     # Run it
     output="$(ssh "${sshArgs[@]}" || true)"
@@ -1137,7 +1137,7 @@ function validateInstallDirIsWritable() {
 		EOF
     )"
 
-    sshCmd=( "ssh" "-q" "${host}" "bash" "-c" "'${remoteCmd}'" )
+    sshCmd=( "ssh" "-q" "${host}" "bash -c '${remoteCmd}'" )
 
     debugPrint "About to validate the installation directory on node ${nodeName} with the command: ${sshCmd[*]}"
 
@@ -1233,7 +1233,7 @@ function validateGcc() {
 
     remoteCmd="which gcc &>/dev/null && gcc -dumpversion 2>/dev/null"
 
-    sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "bash" "-c" "'${remoteCmd}'")
+    sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "bash -c '${remoteCmd}'")
 
     # Run it and check if it returned with a success error code
     if ! output="$(ssh "${sshArgs[@]}" || true)" ; then
@@ -1359,7 +1359,7 @@ function validateBash() {
     # shellcheck disable=SC2016
     remoteCmd='which bash &>/dev/null && echo "${BASH_VERSINFO[0]}.${BASH_VERSINFO[1]}.${BASH_VERSINFO[2]}" 2>/dev/null'
 
-    sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "bash" "-c" "'${remoteCmd}'")
+    sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "bash -c '${remoteCmd}'")
 
     # Run it and check if it returned with a success error code
     if ! output="$(ssh "${sshArgs[@]}" || true)" ; then
@@ -1426,9 +1426,9 @@ function validateSs() {
     host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
 
     #shellcheck disable=SC2016
-    remoteCmd='export PATH=${PATH}:/usr/sbin which ss &>/dev/null'
+    remoteCmd='PATH=${PATH}:/usr/sbin which ss &>/dev/null'
 
-    sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "bash" "-c" "'${remoteCmd}'")
+    sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "bash -c '${remoteCmd}'")
 
     # Run it and check if it returned with a success error code
     if ! output="$(ssh "${sshArgs[@]}" || true)" ; then
@@ -1480,9 +1480,9 @@ function validateLdconfig() {
     host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
 
     #shellcheck disable=SC2016
-    remoteCmd='export PATH=${PATH}:/usr/sbin:/sbin which ldconfig &>/dev/null'
+    remoteCmd='PATH=${PATH}:/usr/sbin:/sbin which ldconfig &>/dev/null'
 
-    sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "bash" "-c" "'${remoteCmd}'")
+    sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "bash -c '${remoteCmd}'")
 
     # Run it and check if it returned with a success error code
     if ! output="$(ssh "${sshArgs[@]}" || true)" ; then
@@ -1540,7 +1540,7 @@ function validateCommandLineToolExists() {
     #shellcheck disable=SC2016
     remoteCmd="which ${tool} &>/dev/null"
 
-    sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "bash" "-c" "'${remoteCmd}'")
+    sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "bash -c '${remoteCmd}'")
 
     # Run it and check if it returned with a success error code
     if ! output="$(ssh "${sshArgs[@]}" || true)" ; then
