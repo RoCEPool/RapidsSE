@@ -61,8 +61,8 @@ INCLUDE 'between.test';
 LOG 'case.test ...';
 INCLUDE 'case.test';
 
-//LOG 'cast.test ...';
-//INCLUDE 'cast.test';
+LOG 'cast.test ...';
+INCLUDE 'cast.test';
 
 //INCLUDE 'ctas.test';
 
