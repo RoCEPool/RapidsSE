@@ -56,6 +56,14 @@ Stz* LocalVar::szArea(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get discard point                                                          */
+/*----------------------------------------------------------------------------*/
+void* LocalVar::aDiscardPoint(void)
+{
+  return m_aDiscardPoint;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get localStr                                                               */
 /*----------------------------------------------------------------------------*/
 LocalStr* LocalVar::axLocalStr(void)
@@ -68,19 +76,36 @@ LocalStr* LocalVar::axLocalStr(void)
 /*----------------------------------------------------------------------------*/
 LocalStr* LocalVar::axLocalStrAllot(void)
 {
+  //vTrace("LocalVar: %lld StrAllot\n"_Stz,m_i_LocalVar);
+  
   RASSERT(! m_axLocalStr);
   m_axLocalStr = m_pLocalVars->axLocalStrAllot();
   
+  m_xTypeValue.m_wxType.vSetClassNo(CN_STZVAL);
+  
   return m_axLocalStr;
 }
+
+/*----------------------------------------------------------------------------*/
+/* get local                                                                  */
+/*----------------------------------------------------------------------------*/
+i8 LocalVar::i_LocalVar(void)
+{
+  return m_i_LocalVar;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* revert a localStr                                                          */
 /*----------------------------------------------------------------------------*/
 void LocalVar::vLocalStrRevert(void)
 {
+  //vTrace("LocalVar: %lld StrRevert\n"_Stz,m_i_LocalVar);
+  
   m_pLocalVars->vLocalStrRevert(m_axLocalStr);
   m_axLocalStr = nullptr;
+  
+  m_xTypeValue.m_wxType.vSetClassNo(CN_NONE);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -64,25 +64,48 @@ void LocalVars::vFramePop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALVARS,_FOOTER_);
 
+  static i8 nCall = 0;
+  
   RASSERT(m_nLocalVars);
+  
+  //vVerify();
   
   LocalVar& rxLocalVar = m_xaLocalVar[m_nLocalVars - 1];
   void* aDiscardPoint = rxLocalVar.m_aDiscardPoint;
   
+  i8 nDiscards = 0;
   while (m_nLocalVars) {
-    
-    rxLocalVar = m_xaLocalVar[m_nLocalVars - 1];
+    //vVerify();
+
+    LocalVar& rxLocalVar = m_xaLocalVar[m_nLocalVars - 1];
 
     if (rxLocalVar.m_aDiscardPoint != aDiscardPoint)
       break;
 
+    //vVerify();
+
     // test for string
-    // tbd...
+    eCN eType = rxLocalVar.eType();
+    if (CN_STZVAL == eType)
+      rxLocalVar.vLocalStrRevert();
+
+    //vVerify();
+
+    RASSERT(! rxLocalVar.axLocalStr());
     
+    rxLocalVar.m_aDiscardPoint = nullptr;
+
+    //vVerify();
+
     m_nLocalVars--;
+    nDiscards++;
   }
   
+  //vVerify();
+
   RASSERT(m_nLocalVars >= 0);
+  
+  nCall++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -95,6 +118,15 @@ void LocalVars::vFramePush(i8 nLocals, void* aDiscardPoint)
   RASSERT(nLocals);
   RASSERT(m_nLocalVars + nLocals <= C_LOCAL_VARS);
 
+  //vVerify();
+
+  if (m_nLocalVars) {
+    LocalVar& rxLocalVar = m_xaLocalVar[m_nLocalVars - 1];
+    void* aDiscardPoint_top = rxLocalVar.m_aDiscardPoint;
+
+    RASSERT(aDiscardPoint != aDiscardPoint_top);
+  }
+  
   for (i8 iLocal = 0; iLocal < nLocals; iLocal++) {
     
     i8 i_LocalVar = m_nLocalVars++;
@@ -103,8 +135,11 @@ void LocalVars::vFramePush(i8 nLocals, void* aDiscardPoint)
     LocalVar& rxLocalVar = m_xaLocalVar[i_LocalVar];
     
     rxLocalVar.m_aDiscardPoint = aDiscardPoint;
+    RASSERT(! rxLocalVar.axLocalStr());
   }
   
+  //vVerify();
+
   RASSERT(m_nLocalVars <= C_LOCAL_VARS);
 }
 
@@ -146,6 +181,21 @@ void LocalVars::vLocalStrRevert(LocalStr* axLocalStr)
 
   m_pLocalStrs->vRevert(axLocalStr);
 }
+
+/*----------------------------------------------------------------------------*/
+/* verify                                                                     */
+/*----------------------------------------------------------------------------*/
+//void LocalVars::vVerify(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALVARS,_FOOTER_);
+//  
+//  for (i8 i_LocalVar = 0; i_LocalVar < C_LOCAL_VARS; i_LocalVar++) {
+//    LocalVar& rxLocalVar = m_xaLocalVar[i_LocalVar];
+//
+//    RASSERT(this == rxLocalVar.m_pLocalVars);
+//    RASSERT(i_LocalVar == rxLocalVar.m_i_LocalVar);
+//  }
+//}
 
 /*============================================================================*/
 /* end                                                                        */

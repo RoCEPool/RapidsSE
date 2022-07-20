@@ -608,13 +608,18 @@ void Step::vLocalsFetch(void)
 
   RASSERT(m_pLocalVars);
   
+  //m_pLocalVars->vVerify();
+
   i8 i_Local = m_pDataStack->iPopInt(__func__);
 
   LocalVar* axLocalVar = m_pLocalVars->axLocalVar(i_Local);
-  UNUSED(axLocalVar);
 
+//  vTrace("Pushing i_Local %lld\n"_Stz,i_Local);
+//  vSeeFrameStack();
   m_pDataStack->vPushLocalVar(axLocalVar);
 
+  //m_pLocalVars->vVerify();
+  
   EXIT();
 }
 /*----------------------------------------------------------------------------*/
@@ -646,12 +651,17 @@ void Step::vLocalsStore(void)
 
   RASSERT(m_pLocalVars);
   
+  //m_pLocalVars->vVerify();
+
   i8 i_Local = m_pDataStack->iPopInt(__func__);
 
   LocalVar* axLocalVar = m_pLocalVars->axLocalVar(i_Local);
-  UNUSED(axLocalVar);
 
+//  vTrace("Popping i_Local %lld\n"_Stz,i_Local);
+//  vSeeFrameStack();
   m_pDataStack->vPopLocalVar(axLocalVar,__func__);
+
+  //m_pLocalVars->vVerify();
 
   EXIT();
 }

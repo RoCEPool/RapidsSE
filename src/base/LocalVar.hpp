@@ -28,6 +28,8 @@ namespace BASE
     char* azArea(void);
     Stz*  szArea(void);
 
+    void* aDiscardPoint(void);
+    i8    i_LocalVar(void);
     LocalStr* axLocalStr(void);
     LocalStr* axLocalStrAllot(void);
     void  vLocalStrRevert(void);

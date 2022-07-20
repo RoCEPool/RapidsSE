@@ -39,7 +39,9 @@ namespace BASE
 
     LocalStr* axLocalStrAllot(void);
     void vLocalStrRevert(LocalStr* axLocalStr);
-  
+ 
+    //void vVerify(void);
+
     // must be last
     Footer* aFooter(void);
   };

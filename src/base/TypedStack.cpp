@@ -510,10 +510,11 @@ void TypedStack::vPopLocalVar(LocalVar* axLocalVar,
   
   static i8 nCount = 0;
   
-  s48K sStackContents;
-  vStackContents(sStackContents);
-  vTrace("POP %02lld>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n%s\n"_Stz,
-         nCount,sStackContents.szStz());
+//  s48K sStackContents;
+//  vStackContents(sStackContents);
+//  vTrace("POP %02lld %p %lld %p>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n%s\n"_Stz,
+//         nCount,axLocalVar,axLocalVar->i_LocalVar(),axLocalVar->aDiscardPoint(),
+//         sStackContents.szStz());
   
   eCN eType_stack = m_rTop.m_aTypeValueArea->eType();
   eCN eType_local = axLocalVar->eType();
@@ -527,6 +528,7 @@ void TypedStack::vPopLocalVar(LocalVar* axLocalVar,
       axLocalStr = axLocalVar->axLocalStrAllot();
         
     SizeArea* axSizeArea = axLocalStr->axSizeArea();
+    
     MemLib::vCopy(axLocalVar->axType(),
                   m_rTop.m_aTypeValueArea,
                   sizeof(_Header),
@@ -534,6 +536,11 @@ void TypedStack::vPopLocalVar(LocalVar* axLocalVar,
 
     i8 nBytes = aTopVal()->nStackUsage();
     
+//    vTrace("Copy: %p %p %lld\n"_Stz,
+//           axSizeArea,
+//           m_rTop.m_ayStackPtr + sizeof(_Header),
+//           nBytes - sizeof(_Header));
+
     MemLib::vCopy(axSizeArea,
                   m_rTop.m_ayStackPtr + sizeof(_Header),
                   nBytes - sizeof(_Header),
@@ -552,9 +559,9 @@ void TypedStack::vPopLocalVar(LocalVar* axLocalVar,
   
   m_rTop.vRewind();
   
-  vStackContents(sStackContents);
-  vTrace("POP %02lld<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n%s\n"_Stz,
-         nCount++,sStackContents.szStz());
+//  vStackContents(sStackContents);
+//  vTrace("POP %02lld<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n%s\n"_Stz,
+//         nCount++,sStackContents.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -706,10 +713,11 @@ void TypedStack::vPushLocalVar(LocalVar* axLocalVar)
  
   static i8 nCount = 0;
   
-  s48K sStackContents;
-  vStackContents(sStackContents);
-  vTrace("PUSH %02lld>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n%s\n"_Stz,
-         nCount,sStackContents.szStz());
+//  s48K sStackContents;
+//  vStackContents(sStackContents);
+//  vTrace("PUSH %02lld %p %lld %p>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n%s\n"_Stz,
+//         nCount,axLocalVar,axLocalVar->i_LocalVar(),axLocalVar->aDiscardPoint(),
+//         sStackContents.szStz());
 
   TypeValue* axTypeValue = axLocalVar->axTypeValue();
 
@@ -746,9 +754,11 @@ void TypedStack::vPushLocalVar(LocalVar* axLocalVar)
 
   }
   
-  vStackContents(sStackContents);
-  vTrace("PUSH %02lld<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n%s\n"_Stz,
-         nCount++,sStackContents.szStz());}
+//  vStackContents(sStackContents);
+//  vTrace("PUSH %02lld<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n%s\n"_Stz,
+//         nCount++,sStackContents.szStz());
+  
+}
 
 /*----------------------------------------------------------------------------*/
 /* completely reset stack                                                     */

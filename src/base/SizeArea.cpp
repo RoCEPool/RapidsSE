@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 SizeArea::SizeArea(void)
 {
-  m_jStrSize = 0;
+  m_jStrSize = 1;
   MemLib::vZero(m_caArea,sizeof(m_caArea),CN_LOCALSTRS);
 }
 
@@ -54,7 +54,7 @@ Stz* SizeArea::szArea(void)
 /*----------------------------------------------------------------------------*/
 void SizeArea::vReInitialise(void)
 {
-  m_jStrSize = 0;
+  m_jStrSize = 1;
   MemLib::vZero(m_caArea,sizeof(m_caArea),CN_LOCALSTRS);
 }
 
