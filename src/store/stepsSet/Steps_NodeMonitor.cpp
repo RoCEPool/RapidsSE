@@ -43,7 +43,7 @@ void Step::vNodeMonitorInspectGrid(void)
 
   SkipListNL* pNodes = pGrid->pSkipList();
 
-  if(0 == pGrid->bHealthy()) {
+  if ( ! pGrid->bHealthy() ) {
     vTrace("Inspecting Grid...\n"_Stz);
 
     for (SkipNode *pSkipNode = pNodes->pFirst(0);
@@ -58,10 +58,11 @@ void Step::vNodeMonitorInspectGrid(void)
       if (pNode && (pNode->eState() == NS_INACTIVE)) {
 
         vTrace("Node failure, status code: %d\n"_Stz, pNode->iGetNodeStatus());
-        vTrace("Notifying jobs on current node:\n"_Stz);
 
 
         // Notify Origin jobs
+        vTrace("Notifying Origin jobs on current node:\n"_Stz);
+
         JobList *pOriginJobList = AM::pOriginatingJobs();
         pOriginJobList->vGrabLock();
 
@@ -72,11 +73,14 @@ void Step::vNodeMonitorInspectGrid(void)
           Job *pJob = _pJob(pCursor->m_pObject);
 
           vTrace("%s\n"_Stz, pJob->szJobNm());
+          pJob->vOriginJobNodeFailure();
         }
         pOriginJobList->vDropLock();
 
 
         // Notify participant jobs
+        vTrace("Notifying Participating jobs on current node:\n"_Stz);
+
         JobList* pPtpJobList = AM::pParticipatingJobs();
         pPtpJobList->vGrabLock();
 
@@ -87,6 +91,7 @@ void Step::vNodeMonitorInspectGrid(void)
           Job *pJob = _pJob(pCursor->m_pObject);
 
           vTrace("%s\n"_Stz, pJob->szJobNm());
+          pJob->vPtpJobNodeFailure();
         }
         pPtpJobList->vDropLock();
         break;

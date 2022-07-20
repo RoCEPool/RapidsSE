@@ -1090,6 +1090,17 @@ Job* Job::pOriginJob(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Notify job of node failure (on origin only)                                */
+/*----------------------------------------------------------------------------*/
+void Job::vOriginJobNodeFailure(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  RASSERT(bIsOnOrigin());
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* get name of node this came from                                            */
 /*----------------------------------------------------------------------------*/
 Stz* Job::szOriginNodeNm(void)
@@ -1379,6 +1390,16 @@ Timer* Job::pProgressTimer(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   return & m_oProgressTimer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Notify job of node failure (participant jobs only)                         */
+/*----------------------------------------------------------------------------*/
+void Job::vPtpJobNodeFailure(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  RASSERT(bIsParticipant());
 }
 
 /*----------------------------------------------------------------------------*/
