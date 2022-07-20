@@ -1247,6 +1247,7 @@ void vDdlLockAssertNone(void);
   void vNetworkShow(void);
 
   // node (of grid)
+  void vNodeCleanup(void);
   void vNodeForget(void);
   void vNodeGet(void);
   void vNodeIP(void);
