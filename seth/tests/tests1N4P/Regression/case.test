@@ -809,8 +809,6 @@ ordered rows:
 
 // Source file: ../queries/case/case26.sql
 // Result file: none
-//TODO: FIX
-
 select colb1, cola1, colf1 from table1 where cola1 / case when colf1 < 5 then cola1 when colf1 >= 5 and colf1 < 8 then 10 when colf1 >= 8 and colf1 < 15 then 2 end > 0 order by cola1;
 //failure: 'Result file missing'
 rows: 91
