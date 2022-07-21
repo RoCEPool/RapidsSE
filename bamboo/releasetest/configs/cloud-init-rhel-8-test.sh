@@ -230,7 +230,7 @@ if [ "${OS_DIST}" = "${RHEL8}" ]; then
 fi
 
 # Need to have
-yum install -y gcc-c++ git git-lfs libatomic nmap-ncat iproute bc
+yum install -y gcc-c++ git git-lfs libatomic nmap-ncat iproute bc ncurses
 
 # Good to have
 yum install -y vim unzip
