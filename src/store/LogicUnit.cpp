@@ -174,6 +174,7 @@ LogicUnit::LogicUnit(void)
 ,          m_xpTable(this,RF_SET_NULL,     nullptr,                          LR_TABLE)
 ,       m_xpTablePtn(this,RF_SET_NULL,     nullptr,                       LR_TABLEPTN)
 ,         m_xpTagSet(this,RF_REPAIR_DELETE,        TagSet::vRepair,         LR_TAGSET)
+,           m_xpText(this,RF_REPAIR_DELETE,          Text::vRepair,          LR_TEXT)
 ,          m_xpTimer(this,RF_REPAIR_DELETE,         Timer::vRepair,          LR_TIMER)
 ,          m_xpTinyC(this,RF_REPAIR_DELETE,         TinyC::vRepair,          LR_TINYC)
 ,    m_xpToKeyHshRow(this,RF_REPAIR_DELETE,   ToKeyHshRow::vRepairList,LR_TOKEYHSHROW)
@@ -355,6 +356,7 @@ LogicUnit::~LogicUnit(void) noexcept(false)
 
   RASSERT(m_xpTable.bIsNull());
   RASSERT(m_xpTablePtn.bIsNull());
+  RASSERT(m_xpText.bIsNull());
   RASSERT(m_xpTimer.bIsNull());
   RASSERT(m_xpToLglPtnCrw.bIsNull());
   RASSERT(m_xpToLglPtnRow.bIsNull());

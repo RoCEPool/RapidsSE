@@ -16,7 +16,7 @@
 /*----------------------------------------------------------------------------*/
 : folder.isEmpty ( pFolder -- true | error false )
 
-  dup execute dic.wordCount if EC_FOLDER_NOT_EMPTY false exit_rt then
+  dup execute dic.wordCount if EC_FOLDER_NOT_EMPTY false exit then
 
   true
 ;
@@ -26,7 +26,7 @@
 /*----------------------------------------------------------------------------*/
 : folder.notUsed ( pFolder -- true | error false )
 
-  folder.hasRef if EC_FOLDER_IN_USE false exit_rt then
+  folder.hasRef if EC_FOLDER_IN_USE false exit then
 
   true
 ;
@@ -109,7 +109,7 @@ dicLock.dropwrite
 
   sFolderNm find locals| pWord |
 
-  pWord not if exit_rt then
+  pWord not if exit then
 
   pWord word.object@ locals| pDic |
   0 pWord word.object!

@@ -364,7 +364,7 @@ void Step::vFileReadText(void)
   
   Stz* szDst = pText->szGet();
   
-  i8 nReadBytes = pFile->nReadBytes(szDst,C_SIZE_LARGE_TEXT);
+  i8 nReadBytes = pFile->nReadBytes(szDst,C_TEXT_LARGE);
 
   szDst->azChar()[nReadBytes] = '\0';
   

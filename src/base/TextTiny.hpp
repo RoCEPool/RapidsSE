@@ -6,11 +6,11 @@
 namespace BASE
 {
   
-  class TextTiny : public TextBuffer
+  class TextTiny : public TextAbstract
   {
   private:
     
-    char  m_caText[C_SIZE_TINY_TEXT];  // text
+    char  m_caText[C_TEXT_TINY];  // text
     
     // must be last
     Footer m_xFooter;
@@ -20,9 +20,9 @@ namespace BASE
     void  operator delete(void* pText);
     
     TextTiny(void);
-    virtual ~TextTiny(void) noexcept(false);
-    
-    virtual Stz* aGetText(void);
+   ~TextTiny(void) noexcept(false);
+  
+    Stz* szArea(void);
     
     Footer* aFooter(void);
   };

@@ -151,17 +151,13 @@
 /*----------------------------------------------------------------------------*/
 /* handler for EV_D_STREAMDEF ...                                             */
 /*----------------------------------------------------------------------------*/
-/*
 : insert_StreamDef \handler
 
   //"Operand:- EV_D_STREAMDEF" .verbose
   PipeIn[].delete
-  Table[] StreamDefOut[].newFromTable
-  StreamDefOut[].pipeOut
   
   true
 ;
-*/
 
 /*----------------------------------------------------------------------------*/
 /* execute for insert                                 (on node where spawned) */
@@ -179,7 +175,7 @@
   find: insert_DataBuffer    EV_D_CRWBUFFER    [op].handler!
   find: insert_EosMarker     EV_M_EOS          [op].handler!
   find: insert_DataBuffer    EV_D_ROWBUFFER    [op].handler!
-  //find: insert_StreamDef   EV_D_STREAMDEF    [op].handler!
+  find: insert_StreamDef     EV_D_STREAMDEF    [op].handler!
   find: insert_StartMarker   EV_M_START        [op].handler!
 
   op__loop

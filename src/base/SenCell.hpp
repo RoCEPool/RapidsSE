@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* CellSingle.hpp -- Segment of Cells                                        */
+/* SenCell.hpp -- SEN Cell                                                    */
 /*============================================================================*/
 #pragma once
 
@@ -7,12 +7,10 @@
 
 namespace BASE
 {
-  class CellSingle : public Object
+  class SenCell : public Object
   {
   protected:
-        
-    TypedCell m_xTypedCell;
-  
+    TypeValueArea m_xTypeValueArea;
 
     // must be last
     Footer m_xFooter;
@@ -21,26 +19,22 @@ namespace BASE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    CellSingle(void);
-   ~CellSingle(void) noexcept(false);
+    SenCell(void);
+   ~SenCell(void) noexcept(false);
   
     // auto conversion
-    operator TypedCell*(void);
+    operator SenCell*(void);
+    operator TypeValueArea*(void);
 
     void operator =(d8 dFlt);
     void operator =(i8 iInt);
     void operator =(Object* pObject);
     void operator =(Stz* szStz);
   
-    eCN  eAnyClass(void);
-  
-    Dtm* aCellAddress(void);
- 
+   
     char* azChar(void);
   
-   CodeCell* aFip(void);
-
-    Stz*  szStz(void);
+    CodeCell* aFip(void);
 
     d8   dGetColVal(void);
     i8   iGetColVal(void);
@@ -54,15 +48,21 @@ namespace BASE
     void vPutColVal(i8 iColVal);
     void vPutColVal(Object* pObject);
 
-    void vToString(Stz* szDst);
+    i8   nStackUsage(void);
+    Stz* szStz(void);
+    i8   nStzSize(void);
 
-  
+    void vToString(Stz* szDst);
+    eCN  eType(void);
+    TypeValue* aTypeValue(void);
+    TypeValueArea* aTypeValueArea(void);
+
   private:
   
     Footer* aFooter(void);
   };
 
-  CellSingle* _pCellSingle(void* aAddr);
+  SenCell* _pSenCell(void* aAddr);
 }
 
 /*============================================================================*/

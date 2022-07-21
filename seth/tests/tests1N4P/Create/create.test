@@ -119,6 +119,18 @@ create table abcabcabcabcabcabcabcabcabcabcab (
 );
 failure contains: 'EC_MAX_TABLE_NAME_LENGTH'
 
+// 0 length for varchar
+create table t (
+  c VARCHAR(0)) (
+);
+failure contains: 'EC_INVALID_COMMAND'
+
+// 0 length for char
+create table t (
+  c CHAR(0)) (
+);
+failure contains: 'EC_INVALID_COMMAND'
+
 CLEANUP {
 
   drop table _test;

@@ -5,26 +5,15 @@ if ! which shellcheck &>/dev/null; then
   exit 1
 fi
 
-# Files to be checked
-#declare -a FILES
-#FILES+=("../../bootstrap/setup.sh")
-#FILES+=("../../bootstrap/setup.fn")
-#FILES+=("../../bootstrap/envCheck.fn")
-#FILES+=("../../bootstrap/common.fn")
-#FILES+=("../../bootstrap/boot.fn")
-#FILES+=("../../bootstrap/startSE.sh")
-#FILES+=("../../bootstrap/stopSE.sh")
-#FILES+=("../../bootstrap/prompt.sh")
-#FILES+=("../../bootstrap/generateData.sh")
-#FILES+=("../../bootstrap/collectLogs.sh")
-#FILES+=("../../bootstrap/addNode.sh")
+DIR="$(dirname "$0")"
+PROJ_DIR="${DIR}/../.."
 
-#shellcheck -s bash -P ../../bootstrap "${FILES[@]}"
-shellcheck -s bash -x -P ../../bootstrap "../../bootstrap/setup.sh"
-shellcheck -s bash -x -P ../../bootstrap "../../bootstrap/startSE.sh"
-shellcheck -s bash -x -P ../../bootstrap "../../bootstrap/stopSE.sh"
-shellcheck -s bash -x -P ../../bootstrap "../../bootstrap/prompt.sh"
-shellcheck -s bash -x -P ../../bootstrap "../../bootstrap/generateData.sh"
-shellcheck -s bash -x -P ../../bootstrap "../../bootstrap/collectLogs.sh"
-shellcheck -s bash -x -P ../../bootstrap -e SC2031 "../../bootstrap/addNode.sh"
-shellcheck -s bash -x -P ../../bootstrap -e SC2031 "../../bootstrap/removeNode.sh"
+# Files to be checked
+shellcheck -s bash -x -P "${PROJ_DIR}"/bootstrap "${PROJ_DIR}/bootstrap/setup.sh"
+shellcheck -s bash -x -P "${PROJ_DIR}"/bootstrap "${PROJ_DIR}/bootstrap/startSE.sh"
+shellcheck -s bash -x -P "${PROJ_DIR}"/bootstrap "${PROJ_DIR}/bootstrap/stopSE.sh"
+shellcheck -s bash -x -P "${PROJ_DIR}"/bootstrap "${PROJ_DIR}/bootstrap/prompt.sh"
+shellcheck -s bash -x -P "${PROJ_DIR}"/bootstrap "${PROJ_DIR}/bootstrap/generateData.sh"
+shellcheck -s bash -x -P "${PROJ_DIR}"/bootstrap "${PROJ_DIR}/bootstrap/collectLogs.sh"
+shellcheck -s bash -x -P "${PROJ_DIR}"/bootstrap -e SC2031 "${PROJ_DIR}/bootstrap/addNode.sh"
+shellcheck -s bash -x -P "${PROJ_DIR}"/bootstrap -e SC2031 "${PROJ_DIR}/bootstrap/removeNode.sh"

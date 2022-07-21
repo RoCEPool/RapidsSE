@@ -37,7 +37,7 @@ namespace BASE
     void* aAppend(CodeCell* aJumpTo);
     void  vAppend(CodeCell* aJumpTo);
     void  vAppend(fpSTEPFN* afpStep);
-    void  vAppend(TypedCell* aTypedCell);
+    void  vAppend(TypeValueArea* aTypedCell);
   
     void  vReset(void);
   
