@@ -1248,6 +1248,7 @@ void vDdlLockAssertNone(void);
 
   // node (of grid)
   void vNodeCleanup(void);
+  void vNodeConnectRetry(void);
   void vNodeForget(void);
   void vNodeGet(void);
   void vNodeIP(void);

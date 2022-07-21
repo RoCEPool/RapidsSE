@@ -27,6 +27,7 @@ void Step::vAddSteps_Node(void)
   vAddStep("Node[].set"_Stz,       &Step::vNodeSet);
 
   vAddStep("node.cleanup"_Stz,      &Step::vNodeCleanup);
+  vAddStep("node.connectRetry"_Stz, &Step::vNodeConnectRetry);
   vAddStep("node.forget"_Stz,      &Step::vNodeForget);
   vAddStep("node.IP"_Stz,          &Step::vNodeIP);
   vAddStep("node.isThisNode"_Stz,  &Step::vNodeIsThisNode);
@@ -135,6 +136,22 @@ void Step::vNodeCleanup(void)
   }
 
   pGrid->vDropWrite();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* node.connectRetry -- Number of connect retry attempts                      */
+/*----------------------------------------------------------------------------*/
+void Step::vNodeConnectRetry(void)
+{
+  ENTRY();
+
+  Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
+
+  pNode->vRetryDecrement();
+
+  m_pDataStack->vPushInt(pNode->iRetry());
 
   EXIT();
 }
