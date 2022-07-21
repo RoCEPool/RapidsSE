@@ -869,7 +869,7 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
     // need a tail
     
     i8 nUnits = MemLib::nQuantaRequired(rxColEnc.m_jVchSize,C_SPACEUNIT_QUANTA);
-    rxColEnc.m_jTailBytes = nUnits * C_SPACEUNIT_QUANTA;
+    rxColEnc.m_jTailBytes = nUnits * C_SPACEUNIT_QUANTA + C_U_1B + C_L_2B + 1;
     
     nExtraTails++;
     jExtraSize += rxColEnc.m_jTailBytes;
