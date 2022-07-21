@@ -94,18 +94,25 @@ int main(int argc, char* argv[])
     s256 sSeArgs;
     sVarName = "SE_ARGS"_Stz;
     if (! Env::bGet(sVarName,sSeArgs)) {
+      // ********************************************************************************
+      // NOTE: These are the default arguments used if the SE binary is executed without
+      //       specifying any command line arguments. An end user is likely to do this.
+      //       So let's choose options that are safe for them, not what is convenient
+      //       for us developers.
+      //       That's why we don't name it NODE1 - it might interfere with another
+      //       cluster running on the machine. The --killPrev also ensures that there is
+      //       only one instance of this running on the current machine.
+      // ********************************************************************************
       sSeArgs =
         "--start "
         "--prompt "
-        "--verbose "
-        "--developer "
+        "--metadata "
         "--killPrev "
-        "--name NODE0 "
-        "--node NODE0 127.0.0.1 5540 "
-        //"--node NODE1 127.0.0.1 5541 "
-        //"--node NODE2 127.0.0.1 5542 "
-        //"--node NODE3 127.0.0.1 5543 "
-        "--log "
+        "--munged "
+        "--name SINGLENODE "
+        "--node SINGLENODE 127.0.0.1 5541 "
+        "--heartbeat BROADCAST 8888 "
+        "--cid 9999999"
         ""_Stz;
     }
     vTrace("CmdLineArgs: %s\n"_Stz,sSeArgs.szStz());
