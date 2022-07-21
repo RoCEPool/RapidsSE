@@ -903,7 +903,7 @@ void Expr::vSuperAggregate(QueryNode* pExpr, PlanNode* pRootNode)
       // DECIMAL if x is an INTEGER.
       //
       // First get the resulting type of the original AVG operation.
-      TypeId xAvgTypeId = Expr::xTypeId(pExpr, pRootNode);
+      TypeId xAvgTypeId = Expr::xTypeId(pAgg, pRootNode);
       eCT eAvgType = xAvgTypeId.eCTVal();
 
       // Now check if it is the same type as the numerator and denominator

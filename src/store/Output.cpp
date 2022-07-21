@@ -47,6 +47,7 @@ Output::Output(void)
   m_pStreamDef_result = nullptr;
   m_bToExit           = false;
   m_bHasError         = false;
+  m_bLoadResult       = false;
 
   m_bFileOut          = false;
   m_pFileOut          = nullptr;
@@ -220,19 +221,18 @@ void Output::vPrintResult(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
 
-  if (*m_ixRowsInvalid   ||
-      *m_ixRowsSkipped ) {
+  if (m_bLoadResult) {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // success / error
-    if (*m_ixRowsInvalid   ||
-        *m_ixRowsSkipped )
+    if (*m_ixRowsInvalid ||
+        *m_ixRowsSkipped)
       vTrace("error: %lld rows loaded (%lld invalid rows %lld skipped rows)\n"_Stz,
              *m_ixRowsProcessed -
              *m_ixRowsSkipped,
              *m_ixRowsInvalid,
              *m_ixRowsSkipped);
     else
-      vTrace("\nsuccess: %lld rows loaded (%lld invalid rows %lld skipped rows)\n"_Stz,
+      vTrace("success: %lld rows loaded (%lld invalid rows %lld skipped rows)\n"_Stz,
              *m_ixRowsProcessed -
              *m_ixRowsSkipped,
              *m_ixRowsInvalid,
@@ -253,13 +253,14 @@ void Output::vPrintResult(void)
 //      vTrace("NOT READY\n"_Stz);
 
     if (AM::SYSTEM::bReady()) // || ! AM::SHOW::bBoot())
-      vTrace("\nsuccess: %lld rows fetched\n"_Stz,
+      vTrace("success: %lld rows fetched\n"_Stz,
              *m_ixRowsProcessed);
   }
 
   m_ixRowsProcessed = 0;
   m_ixRowsInvalid   = 0;
   m_ixRowsSkipped   = 0;
+  m_bLoadResult     = false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -391,14 +392,15 @@ bool Output::bProcessOperand(Operand* pOperand)
         AM::vDeleteOperand(pOperand,nullptr);
       }
       else if (pInfoSet->szBufferNm()->bSame(C_TDEF_LOADRESULT)) {
-        
+
+        m_bLoadResult = true;
         Row* pInfoRow = pInfoSet->pFirstRow();
 
         i8 iRowsProcessed = pInfoRow->iColVal_int(0);
         i8 iRowsInvalid   = pInfoRow->iColVal_int(1);
         i8 iRowsSkipped   = pInfoRow->iColVal_int(2);
 
-        m_ixRowsProcessed += iRowsProcessed;
+        m_ixRowsProcessed    += iRowsProcessed;
         m_ixRowsInvalid   += iRowsInvalid;
         m_ixRowsSkipped   += iRowsSkipped;
 

@@ -290,7 +290,7 @@ void Word::vEncodeJump(Stz* aWordNm, CodeCell* aCell)
 /*----------------------------------------------------------------------------*/
 /* encode call to named word which has a value argument                       */
 /*----------------------------------------------------------------------------*/
-void Word::vEncodePush(TypedCell* aTypedCell)
+void Word::vEncodePush(TypeValueArea* aTypedCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   

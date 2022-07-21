@@ -40,12 +40,12 @@ void TextSmall::operator delete(void* pTextAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 TextSmall::TextSmall(void)
-: TextBuffer(CN_TEXTSMALL, C_SIZE_SMALL_TEXT)
+: TextAbstract(CN_TEXTSMALL, C_TEXT_SMALL)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TEXTSMALL);
   
 #ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_caText,C_SIZE_SMALL_TEXT,CN_TEXTSMALL);
+  MemLib::vZero(m_caText,C_TEXT_SMALL,CN_TEXTSMALL);
 #else
   m_caText[0] = '\0';
 #endif
@@ -66,7 +66,7 @@ TextSmall::~TextSmall(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get text to given value                                                    */
 /*----------------------------------------------------------------------------*/
-Stz* TextSmall::aGetText(void)
+Stz* TextSmall::szArea(void)
 {
   return (Stz*)&m_caText[0];
 }

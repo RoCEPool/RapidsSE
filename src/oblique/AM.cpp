@@ -4430,8 +4430,8 @@ void AM::vWordSeeDoes(Word* pDoesWord, CodeCell* aDoes,
       vTrace("%p: %s"_Stz,aCell,szStepNm);
       aCell++;
       
-      TypedCell* aTypedCell = _aTypedCell(aCell);
-      vTrace(" %lld\n"_Stz,aTypedCell->m_wxValueCell.iGetColVal());
+      TypeValueArea* aTypedCell = _aTypeValueArea(aCell);
+      vTrace(" %lld\n"_Stz,aTypedCell->m_wxValue.iGetColVal());
       
       i8 iBytes = aTypedCell->nStackUsage();
       aCell = aAdd<CodeCell*>(aCell,iBytes);
@@ -4447,9 +4447,9 @@ void AM::vWordSeeDoes(Word* pDoesWord, CodeCell* aDoes,
       vTrace("%p: %s"_Stz,aCell,szStepNm);
       aCell++;
       
-      TypedCell* aTypedCell = _aTypedCell(aCell);
+      TypeValueArea* aTypedCell = _aTypeValueArea(aCell);
       vTrace(" %s\n"_Stz
-             ,aTypedCell->m_wxValueCell.iGetColVal() ? "true" : "false");
+             ,aTypedCell->m_wxValue.iGetColVal() ? "true" : "false");
       
       i8 iBytes = aTypedCell->nStackUsage();
       aCell = aAdd<CodeCell*>(aCell,iBytes);
@@ -4465,8 +4465,8 @@ void AM::vWordSeeDoes(Word* pDoesWord, CodeCell* aDoes,
       vTrace("%p: %s"_Stz,aCell,szStepNm);
       aCell++;
       
-      TypedCell* aTypedCell = _aTypedCell(aCell);
-      vTrace(" %g\n"_Stz,aTypedCell->m_wxValueCell.dGetColVal());
+      TypeValueArea* aTypedCell = _aTypeValueArea(aCell);
+      vTrace(" %g\n"_Stz,aTypedCell->m_wxValue.dGetColVal());
       
       i8 iBytes = aTypedCell->nStackUsage();
       aCell = aAdd<CodeCell*>(aCell,iBytes);
@@ -4483,8 +4483,8 @@ void AM::vWordSeeDoes(Word* pDoesWord, CodeCell* aDoes,
       aCell++;
       
 //      IntVal* aIntVal = _aIntVal(aCell);
-      TypedCell* aTypedCell = _aTypedCell(aCell);
-      vTrace(" %lld\n"_Stz,aTypedCell->m_wxValueCell.iGetColVal());
+      TypeValueArea* aTypedCell = _aTypeValueArea(aCell);
+      vTrace(" %lld\n"_Stz,aTypedCell->m_wxValue.iGetColVal());
       
       i8 iBytes = aTypedCell->nStackUsage();
       aCell = aAdd<CodeCell*>(aCell,iBytes);
@@ -4500,7 +4500,7 @@ void AM::vWordSeeDoes(Word* pDoesWord, CodeCell* aDoes,
       vTrace("%p: %s"_Stz,aCell,szStepNm);
       aCell++;
       
-      TypedCell* aTypedCell = _aTypedCell(aCell);
+      TypeValueArea* aTypedCell = _aTypeValueArea(aCell);
       eCN eClassNo_obj = aTypedCell->pObj()->eGetClassNo();
 
       if (CN_WORD == eClassNo_obj) {
@@ -4525,7 +4525,7 @@ void AM::vWordSeeDoes(Word* pDoesWord, CodeCell* aDoes,
       vTrace("%p: %s"_Stz,aCell,szStepNm);
       aCell++;
       
-      TypedCell* aTypedCell = _aTypedCell(aCell);
+      TypeValueArea* aTypedCell = _aTypeValueArea(aCell);
       vTrace(" \"%s\"\n"_Stz,aTypedCell->szStz());
       
       i8 iBytes = aTypedCell->nStackUsage();

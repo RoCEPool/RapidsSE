@@ -220,9 +220,9 @@ void Step::vSenExit_RT(void)
   if ( (m_iTraceMask & C_TRACE_ROUTINES) )
     Task::vTracePoint("<"_Stz);
   
-  if (m_pLocalsFrame
-      && m_pLocalsFrame->aDiscardPoint() == (TypedCell*)m_pReturnStack->aTopVal())
-    vLocalsPop();
+  if (m_pLocalFrame
+      && m_pLocalFrame->aDiscardPoint() == (TypeValueArea*)m_pReturnStack->aTopVal())
+    vLocalsFramePop();
   
   // make sure we don't return to nowhere
   ASSERT(m_pReturnStack->nValues());
@@ -252,7 +252,7 @@ void Step::vSenFind(void)
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "No word: %s "_Stz,sWordNm.azChar());
   
-  CellSingle xVar;
+  SenCell xVar;
   xVar = pWord;
 
   if (m_pSenCompiler->bCompiling()) {
@@ -681,7 +681,7 @@ void Step::vSenPostpone(void)
            m_pInput->szChars()->azChar());
   
   
-  CellSingle xVar;
+  SenCell xVar;
   xVar = pCalledWord;
 
   if (pCalledWord->bImmediate()) {
@@ -755,7 +755,7 @@ void Step::vSenProcText(void)
   
   Word* pNewWord = new(pDic) Word(sWordNm);
 
-  CellSingle xVar;
+  SenCell xVar;
   
   xVar = sProcedure;
 
@@ -810,6 +810,8 @@ void Step::vSenSemicolon(void)
   
   if (m_pSenCompiler->nLocals()) {
     
+    m_pSenCompiler->vLocalsUpdate();
+    
     // reset the number of local variables
     m_pSenCompiler->vLocals(0);
     
@@ -817,7 +819,7 @@ void Step::vSenSemicolon(void)
     m_oDicStack.vDiscard();
     
     // enocde locals frame pop
-    pCurrentWord->vEncodeCall("locals.pop"_Stz);
+    pCurrentWord->vEncodeCall("locals.framePop"_Stz);
   }
   
   if (! pCurrentWord->szWordNm()->bSame("exit"_Stz) &&

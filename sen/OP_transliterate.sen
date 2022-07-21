@@ -73,17 +73,17 @@
 /*----------------------------------------------------------------------------*/
 : transliterate_PlanOperand \handler
 
- 0 0 locals| sPipeline sOperatorName |
+  0 locals| sOperatorName |
 
   PipeIn[]\clear to PlanOperand[]
 
-  PlanOperand[] sqlCompiler::transliterate to sPipeline
+  PlanOperand[] sqlCompiler::transliterate to Text[]
 
   "transliterate" to sOperatorName
   PlanOperand[] sOperatorName sqlCompiler::hasExplain if
 
     // execute special explain for this operator
-    PlanOperand[] sPipeline sOperatorName sqlCompiler::doExplainTliterate
+    PlanOperand[] Text[] sOperatorName sqlCompiler::doExplainTliterate
 
     // pipeout explain
     StreamSet[].isNull not assert
@@ -102,10 +102,10 @@
   PlanOperand[] sqlCompiler::deletePlan
   PlanOperand[].delete
 
-  //sPipeline "FORKING CHILD FOR PIPELINE: %v"  str.format .
+  //Text[] "FORKING CHILD FOR PIPELINE: %v"  str.format .
 
   [Op] [job].responseOp!
-  STD_NORMALFORK_TAG sPipeline api::forkChild not if
+  STD_NORMALFORK_TAG Text[] api::forkChild not if
      //"****Error Code %v" .printf
      nullptr [job].responseOp!
      op__execErr

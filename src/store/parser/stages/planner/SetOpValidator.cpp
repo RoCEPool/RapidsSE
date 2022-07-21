@@ -231,7 +231,7 @@ void SetOpValidator::vValidateSetOp(QueryNode* pStatementMarker, PlanNode *pRoot
       delete pProjectedColumns1;
       delete pProjectedColumns2;
 
-      SemanticException::vThrow(EC_COLUMN_COUNT_MISMATCH,
+      SemanticException::vThrow(EC_COLUMN_TYPE_MISMATCH,
                                 ": %s vs %s, column ordinal %lld, %s operator"_Stz,
                                 aCT[xType1.eCTVal()],
                                 aCT[xType2.eCTVal()],

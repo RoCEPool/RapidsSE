@@ -60,6 +60,7 @@ void Step::vSupervisorCollectInfo(void)
 
   MemLib::vZero(&xHeartbeat,sizeof(xHeartbeat),CN_NODE);
 
+  xHeartbeat.m_uHeader = C_HEARTBEAT_HEADER;
   xHeartbeat.m_u4Version = AM::iVersionNumber();
   xHeartbeat.m_iClusterID = gxCmdLineArgs.m_xSysArgs.m_iClusterID;
   xHeartbeat.m_iSeqNo = ++iSeq;
@@ -97,7 +98,8 @@ void Step::vSupervisorCollectInfo(void)
          sResident_magn.azChar());
   */
 
-  xHeartbeat.m_u2DataLen = sizeof(xHeartbeat.m_iHeader)
+  xHeartbeat.m_u2DataLen =
+        sizeof(xHeartbeat.m_uHeader)
       + sizeof(xHeartbeat.m_u4Version)
       + sizeof(xHeartbeat.m_u2DataLen)
       + sizeof(xHeartbeat.m_iClusterID)
