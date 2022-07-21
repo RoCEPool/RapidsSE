@@ -43,6 +43,7 @@
 --  (215) Select with grand total aggregates, WHERE, HAVING, ORDER BY, LIMIT clauses & post-project
 --  (216) Select with grand total aggregates, WHERE, ORDER BY & LIMIT clauses
 --  (217) Select with grand total aggregates, WHERE, ORDER BY, LIMIT clauses & post-project
+--  (218) Select with casted grand total aggregates & post-project
 --
 --  (300) Select with GROUP BY aggregates
 --  (301) Select with GROUP BY aggregates & WHERE clause
@@ -62,7 +63,8 @@
 --  (315) Select with GROUP BY aggregates, WHERE, HAVING, ORDER BY, LIMIT clauses & post-project
 --  (316) Select with GROUP BY aggregates, WHERE, ORDER BY & LIMIT clauses
 --  (317) Select with GROUP BY aggregates, WHERE, ORDER BY, LIMIT clauses & post-project
---
+--  (318) Select with casted GROUP BY aggregates & post-project
+
 --  (400) UNION ALL of two simple selects with no aggregates
 --  (401) UNION ALL of two simple selects with WHERE clauses
 --  (402) UNION ALL of two selects with grand total aggregates
@@ -1724,6 +1726,40 @@ rows: (*,'partitionExplain','
 )
 
 
+--  (218) Select with casted grand total aggregates & post-project
+--
+-- Note: This catches issues with the aggregate not being the root of a projected column,
+--       just like SE-101 did.
+EXPLAIN STAGE partitionExplain
+SELECT CAST((AVG(c2) * 0.35) AS DECIMAL)
+FROM t1;
+
+rows: (*,'partitionExplain','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT CAST((AVG(c2) * 0.35) AS DECIMAL) FROM t1"
+
+-> -> projectOp
+      » location: origin
+      » column: (Expr = CAST(((SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (CAST(SUM(SUM(COUNT(rapidsse.public.t1.c2))) AS FLOAT))) * 3.500000e-01 AS DECIMAL) ; Ordinal Expr = CAST(((SUM($1)) / (CAST(SUM($2) AS FLOAT))) * 3.500000e-01 AS DECIMAL))
+
+-> -> -> projectOp
+         » location: all nodes
+         » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($1))
+         » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($2))
+
+-> -> -> -> projectOp
+            » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
+            » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
+
+-> -> -> -> -> tableScanOp
+               » location: all partitions
+               » table: (rapidsse.public.t1)'
+)
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  GROUP BY SELECTs
@@ -2845,6 +2881,51 @@ rows: (*,'partitionExplain','
 -> -> -> -> -> -> -> -> -> tableScanOp
                            » location: all partitions
                            » table: (rapidsse.public.t1)'
+)
+
+
+--  (318) Select with casted GROUP BY aggregates & post-project
+--
+-- Note: This catches issues with the aggregate not being the root of a projected column,
+--       just like SE-101 did.
+EXPLAIN STAGE partitionExplain
+SELECT CAST((AVG(c2) * 0.35) AS DECIMAL)
+FROM t1
+GROUP BY c4;
+
+rows: (*,'partitionExplain','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT CAST((AVG(c2) * 0.35) AS DECIMAL) FROM t1 GROUP BY c4"
+
+-> -> projectOp
+      » column: (Expr = CAST(((SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (CAST(SUM(SUM(COUNT(rapidsse.public.t1.c2))) AS FLOAT))) * 3.500000e-01 AS DECIMAL) ; Ordinal Expr = $1)
+
+-> -> -> aggregateOp
+         » location: origin
+         » column: (Expr = CAST(((SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (CAST(SUM(SUM(COUNT(rapidsse.public.t1.c2))) AS FLOAT))) * 3.500000e-01 AS DECIMAL) ; Ordinal Expr = CAST(((SUM($1)) / (CAST(SUM($2) AS FLOAT))) * 3.500000e-01 AS DECIMAL))
+         » column: (Expr = rapidsse.public.t1.c4 ; Ordinal Expr = $3)
+         » group by: (Expr = rapidsse.public.t1.c4 ; Ordinal Expr = $3)
+
+-> -> -> -> aggregateOp
+            » location: all nodes
+            » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($1))
+            » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($2))
+            » column: (Expr = rapidsse.public.t1.c4 ; Ordinal Expr = $3)
+            » group by: (Expr = rapidsse.public.t1.c4 ; Ordinal Expr = $3)
+
+-> -> -> -> -> aggregateOp
+               » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
+               » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
+               » column: (Expr = rapidsse.public.t1.c4 ; Ordinal Expr = $4)
+               » group by: (Expr = rapidsse.public.t1.c4 ; Ordinal Expr = $4)
+
+-> -> -> -> -> -> tableScanOp
+                  » location: all partitions
+                  » table: (rapidsse.public.t1)'
 )
 
 

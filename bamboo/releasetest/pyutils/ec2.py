@@ -393,7 +393,7 @@ def __set_instance_names(instance_ids: [str], name_prefix: str, client, ctx: str
             "Tags": [
                 {
                     "Key": "Name",
-                    "Value": f"{name_prefix}{n:02}"
+                    "Value": f"{name_prefix}#{n:02}"
                 }
             ]
         }

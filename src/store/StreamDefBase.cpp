@@ -1136,7 +1136,11 @@ eEC StreamDefBase::eParseColumnVarchar(TokenVec* pTknVec, Column* pCol)
   
   // get size
   iSize = pTkn->iToI8();
-  
+
+  // check if size is 0
+  if (iSize == 0)
+    return EC_INVALID_COMMAND;
+
   pTkn = pTknVec->pNextToken(); dPT();
   
   if (! pTkn->bSame(")"_Stz))
