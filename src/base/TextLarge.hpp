@@ -5,11 +5,11 @@
 
 namespace BASE
 {
-  class TextLarge : public TextBuffer
+  class TextLarge : public TextAbstract
   {
   private:
     
-    char  m_caText[C_SIZE_LARGE_TEXT];  // text
+    char  m_caText[C_TEXT_LARGE];  // text
     
     // must be last
     Footer m_xFooter;
@@ -19,9 +19,9 @@ namespace BASE
     void  operator delete(void* pText);
     
     TextLarge(void);
-    virtual ~TextLarge(void) noexcept(false);
+   ~TextLarge(void) noexcept(false);
     
-    virtual Stz* aGetText(void);
+    Stz* szArea(void);
     
     Footer* aFooter(void);
   };

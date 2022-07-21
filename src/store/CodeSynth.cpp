@@ -4887,7 +4887,7 @@ void CodeSynth::vGenerateExprCode(TypedStack* pTypedStack, Stz* sIndent)
 
   i8 nExpr = pTypedStack ? pTypedStack->nValues() - 1 : C_UNKNOWN ;
 
-  TypedCell *pTypedCell;
+  TypeValueArea* pTypedCell;
   while ( nExpr >= 0) {
     pTypedCell = pTypedStack->aPeekItem(nExpr--);
     Stz* sExpr = pTypedCell->szStz();
@@ -5042,7 +5042,7 @@ Stz* CodeSynth::szInfix(TypedStack* pExprStack, i8 iProject)
 
   s256 sInfix;
 
-  TypedCell *pTypedCell = pExprStack->aPeekItem(iProject);
+  TypeValueArea* pTypedCell = pExprStack->aPeekItem(iProject);
 
   if (pTypedCell->eType() == CN_PTRVAL) {
     Token *Tkn = _pToken(pTypedCell->pObj());
@@ -5061,7 +5061,7 @@ void CodeSynth::vGetInfix(s4K &szInfix, TypedStack* pExprStack, i8 iProject)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
-  TypedCell *pTypedCell = pExprStack->aPeekItem(iProject);
+  TypeValueArea* pTypedCell = pExprStack->aPeekItem(iProject);
 
   if (pTypedCell->eType() == CN_PTRVAL) {
     Token *Tkn = _pToken(pTypedCell->pObj());

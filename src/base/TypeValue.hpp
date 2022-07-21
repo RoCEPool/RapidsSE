@@ -1,31 +1,34 @@
 /*============================================================================*/
-/* Local.hpp -- Forth Local                                                   */
+/* TypeValue.hpp -- Type + Value                                              */
 /*============================================================================*/
 #pragma once
 
+#include "eSI.h"
+
 namespace BASE
 {
-  class Local : public Object
+  class TypeValue
   {
-  private:
-    TypedCell m_xTypeCell;
-  
-    // must be last
-    Footer m_xFooter;
-  
   public:
-    void* operator new(size_t);
-    Local(void);
-  
-    operator TypedCell*(void); // auto conversion operator
+    _Header m_wxType;
+    Dtm     m_wxValue;
 
-    TypedCell* aTypedCell(void);
+
+  public:
+    TypeValue(void);
+   ~TypeValue(void) noexcept(false);
+  
+    // auto conversion
+    operator TypeValue*(void);
+
+    _Header* axType(void);
+    Dtm*     axValue(void);
 
   private:
-    Footer* aFooter(void);
-  };
   
-  Local* _pLocal(void* aAddr);
+  };
+
+  TypeValue* _pTypeValue(void* aAddr);
 }
 
 /*============================================================================*/

@@ -255,6 +255,27 @@ echo "192.168.0.5 ci.rapidsdata.com" >> /etc/hosts
 # Otherwise it costs us money when we transfer data via the elastic IP associated with
 # this URL.
 
+# ----------------------------------------------------------------------------------------
+# Setting IGMP to v2 instead of v3 (for multicast) for all network devices
+echo
+echo "*** Setting IGMP to v2 ***"
+echo
+
+{
+  echo
+  echo "# Enable Multicast on AWS"
+} >> /etc/sysctl.conf
+
+# Get a list of all network devices
+mapfile -t netDevices < <(ip -o -4 addr | awk '{print $2}')
+
+for device in "${netDevices[@]}"; do
+  sysctl net.ipv4.conf."${device}".force_igmp_version=2
+  echo "net.ipv4.conf.${device}.force_igmp_version=2" >> /etc/sysctl.conf
+done
+
+echo "" >> /etc/sysctl.conf
+
 # -----------------------------------------
 # Change permissions to allow for writing to /opt
 echo
@@ -272,7 +293,7 @@ apt-get update -y
 apt-get upgrade -y
 
 # Need to have
-apt-get install -y gcc g++ git libatomic1 netcat iproute bc
+apt-get install -y gcc g++ git libatomic1 netcat iproute bc ncurses-bin
 
 curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
 apt-get install -y git-lfs

@@ -60,7 +60,7 @@ void Constants::vAddConstant(Stz* szName, i8 iVal)
   
   pNewWord->vCategory(AM::pConstantRoot());
   
-  CellSingle xVar;
+  SenCell xVar;
   xVar = iVal;
 
   pNewWord->vEncodePush(xVar);
@@ -74,7 +74,7 @@ void Constants::vAddConstant(Stz* szName, Stz* szVal)
 {
   Word* pNewWord = new(AM::DIC::pRoot()) Word(szName);
   
-  CellSingle xVar;
+  SenCell xVar;
   xVar = szVal;
   
   pNewWord->vEncodePush(xVar);
@@ -190,7 +190,7 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("C_MAX_COLUMNS"_Stz,       C_MAX_COLUMNS);
   vAddConstant("C_MAX_RECORD"_Stz,        C_MAX_RECORD);
   vAddConstant("C_MAX_PATH"_Stz,          C_MAX_PATH);
-  vAddConstant("C_SIZE_LARGE_TEXT"_Stz,   C_SIZE_LARGE_TEXT);
+  vAddConstant("C_TEXT_LARGE"_Stz,        C_TEXT_LARGE);
 
   // var args
   vAddConstant("C_VARGS_BEGIN"_Stz,       C_VARGS_BEGIN);

@@ -5,11 +5,11 @@
 
 namespace BASE
 {
-  class TextMedium : public TextBuffer
+  class TextMedium : public TextAbstract
   {
   private:
     
-    char  m_caText[C_SIZE_MEDIUM_TEXT];  // text
+    char  m_caText[C_TEXT_MEDIUM];  // text
     
     // must be last
     Footer m_xFooter;
@@ -20,9 +20,9 @@ namespace BASE
     
     TextMedium(void);
     TextMedium(Stz* szText);
-    virtual ~TextMedium(void) noexcept(false);
+   ~TextMedium(void) noexcept(false);
     
-    virtual Stz* aGetText(void);
+    Stz* szArea(void);
     
     Footer* aFooter(void);
   };

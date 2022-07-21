@@ -34,9 +34,9 @@ void Step::vPushI(void)
 {
   ENTRY();
   
-  TypedCell* aLoopIndex_I = m_pReturnStack->aTopVal();
+  TypeValueArea* aLoopIndex_I = m_pReturnStack->aTopVal();
   
-  m_pDataStack->vPushItem(aLoopIndex_I);
+  m_pDataStack->vPushTypeValueArea(aLoopIndex_I);
   
   EXIT();
 }
@@ -48,9 +48,9 @@ void Step::vPushJ(void)
 {
   ENTRY();
   
-  TypedCell* aLoopIndex_J = m_pReturnStack->aPeekItem(3);
+  TypeValueArea* aLoopIndex_J = m_pReturnStack->aPeekItem(3);
   
-  m_pDataStack->vPushItem(aLoopIndex_J);
+  m_pDataStack->vPushTypeValueArea(aLoopIndex_J);
   
   EXIT();
 }
@@ -78,7 +78,7 @@ void Step::vPushBcdVal(void)
     ASSERT(m_iTraceMask);
   }
     
-  TypedCell* aTypedCell = _aTypedCell(& m_aInxPtr->m_xTypedValue);
+  TypeValueArea* aTypedCell = _aTypeValueArea(& m_aInxPtr->m_xTypedValue);
   
   m_pDataStack->vPushBcd(aTypedCell->iBcd());
   
@@ -98,7 +98,7 @@ void Step::vPushBolVal(void)
     ASSERT(m_iTraceMask);
   }
     
-  TypedCell* aTypedCell = _aTypedCell(& m_aInxPtr->m_xTypedValue);
+  TypeValueArea* aTypedCell = _aTypeValueArea(& m_aInxPtr->m_xTypedValue);
   
   m_pDataStack->vPushBol(aTypedCell->iBol());
   
@@ -118,7 +118,7 @@ void Step::vPushFipVal(void)
     ASSERT(m_iTraceMask);
   }
   
-  TypedCell* aTypedCell = _aTypedCell(& m_aInxPtr->m_xTypedValue);
+  TypeValueArea* aTypedCell = _aTypeValueArea(& m_aInxPtr->m_xTypedValue);
   
   m_pDataStack->vPushFip(aTypedCell->aFip());
   
@@ -138,7 +138,7 @@ void Step::vPushFltVal(void)
     ASSERT(m_iTraceMask);
   }
   
-  TypedCell* aTypedCell = _aTypedCell(& m_aInxPtr->m_xTypedValue);
+  TypeValueArea* aTypedCell = _aTypeValueArea(& m_aInxPtr->m_xTypedValue);
   
   m_pDataStack->vPushFlt(aTypedCell->dFlt());
   
@@ -158,7 +158,7 @@ void Step::vPushIntVal(void)
     ASSERT(m_iTraceMask);
   }
     
-  TypedCell* aTypedCell = _aTypedCell(& m_aInxPtr->m_xTypedValue);
+  TypeValueArea* aTypedCell = _aTypeValueArea(& m_aInxPtr->m_xTypedValue);
   
   m_pDataStack->vPushInt(aTypedCell->iInt());
   
@@ -178,7 +178,7 @@ void Step::vPushPtrVal(void)
     ASSERT(m_iTraceMask);
   }
   
-  TypedCell* aTypedCell = _aTypedCell(& m_aInxPtr->m_xTypedValue);
+  TypeValueArea* aTypedCell = _aTypeValueArea(& m_aInxPtr->m_xTypedValue);
   
   m_pDataStack->vPushPtr(aTypedCell->pObj());
   
@@ -198,7 +198,7 @@ void Step::vPushStzVal(void)
     ASSERT(m_iTraceMask);
   }
   
-  TypedCell* aTypedCell = _aTypedCell(& m_aInxPtr->m_xTypedValue);
+  TypeValueArea* aTypedCell = _aTypeValueArea(& m_aInxPtr->m_xTypedValue);
   
 //  if (aStzVal->szStz()->bContains("/liteOp/_PulseMarker"_Stz)) {
 //    vTrace("vPushStzVal: %s"_Stz,aStzVal->szStz());

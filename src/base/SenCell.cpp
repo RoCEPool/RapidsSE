@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* CellSingle.cpp -- Segment of Cells                                        */
+/* SenCell.cpp -- SEN Cell                                                    */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -9,30 +9,30 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(BASE,CellSingle,CN_CELLSINGLE)
-__aNewFunction(CellSingle,CN_CELLSINGLE)
-__vDeleteFunction(CellSingle,CN_CELLSINGLE)
-__aFooterFunction(CellSingle)
+__pCastFunction(BASE,SenCell,CN_SENCELL)
+__aNewFunction(SenCell,CN_SENCELL)
+__vDeleteFunction(SenCell,CN_SENCELL)
+__aFooterFunction(SenCell)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-CellSingle::CellSingle(void)
-: Object(CN_CELLSINGLE)
+SenCell::SenCell(void)
+: Object(CN_SENCELL)
 {
-  _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SENCELL,_FOOTER_);
     
-  _checkInitialised_(CN_CELLSINGLE);
+  _checkInitialised_(CN_SENCELL);
   
-  _postcondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_SENCELL,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-CellSingle::~CellSingle(void) noexcept(false)
+SenCell::~SenCell(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SENCELL,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -42,54 +42,64 @@ CellSingle::~CellSingle(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* auto conversion operator : as TypedCell*                                   */
 /*----------------------------------------------------------------------------*/
-CellSingle::operator TypedCell*(void)
+SenCell::operator SenCell*(void)
 {
-  _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SENCELL,_FOOTER_);
   
-  return & m_xTypedCell;
+  return this;
+}
+
+/*----------------------------------------------------------------------------*/
+/* auto conversion operator : as TypedCell*                                   */
+/*----------------------------------------------------------------------------*/
+SenCell::operator TypeValueArea*(void)
+{
+  _precondition_(_MAGIC_,CN_SENCELL,_FOOTER_);
+  
+  return & m_xTypeValueArea;
 }
 
 /*----------------------------------------------------------------------------*/
 /* assignment operator (float)                                                */
 /*----------------------------------------------------------------------------*/
-void CellSingle::operator =(d8 dColVal)
+void SenCell::operator =(d8 dColVal)
 {
-  _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SENCELL,_FOOTER_);
   
   vPutColVal(dColVal);
-  m_xTypedCell.vType(CN_FLTVAL);
+  m_xTypeValueArea.vType(CN_FLTVAL);
 }
 
 /*----------------------------------------------------------------------------*/
 /* assignment operator (integer)                                              */
 /*----------------------------------------------------------------------------*/
-void CellSingle::operator =(i8 iColVal)
+void SenCell::operator =(i8 iColVal)
 {
-  _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SENCELL,_FOOTER_);
   
   vPutColVal(iColVal);
   
-  m_xTypedCell.vType(CN_INTVAL);
+  m_xTypeValueArea.vType(CN_INTVAL);
 }
 
 /*----------------------------------------------------------------------------*/
 /* assignment operator (string)                                               */
 /*----------------------------------------------------------------------------*/
-void CellSingle::operator =(Object* pObject)
+void SenCell::operator =(Object* pObject)
 {
-  _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SENCELL,_FOOTER_);
   
   vPutColVal(pObject);
 
-  m_xTypedCell.vType(CN_PTRVAL);
+  m_xTypeValueArea.vType(CN_PTRVAL);
 }
 
 /*----------------------------------------------------------------------------*/
 /* assignment operator (string)                                               */
 /*----------------------------------------------------------------------------*/
-void CellSingle::operator =(Stz* szColVal)
+void SenCell::operator =(Stz* szColVal)
 {
-  _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SENCELL,_FOOTER_);
   
 //  StzVal* aStzVal = (StzVal*) & m_xTypedCell;
 //
@@ -97,7 +107,7 @@ void CellSingle::operator =(Stz* szColVal)
 //
 //  m_xTypedCell.vType(CN_STZVAL);
   
-  m_xTypedCell.vStz(szColVal);
+  m_xTypeValueArea.vStz(szColVal);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -105,65 +115,33 @@ void CellSingle::operator =(Stz* szColVal)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get class of embedded value                                                */
+/* get address of column cell                                                 */
 /*----------------------------------------------------------------------------*/
-eCN CellSingle::eAnyClass(void)
+char* SenCell::azChar(void)
 {
-  _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
-  
-  return m_xTypedCell.eType();
+  _precondition_(_MAGIC_,CN_SENCELL,_FOOTER_);
+
+  return m_xTypeValueArea.m_caStringArea;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get address of column cell                                                 */
 /*----------------------------------------------------------------------------*/
-Dtm* CellSingle::aCellAddress(void)
+CodeCell* SenCell::aFip(void)
 {
-  _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
-  
-  Dtm* aColCell = & m_xTypedCell.m_wxValueCell;
-  
-  return aColCell;
-}
+  _precondition_(_MAGIC_,CN_SENCELL,_FOOTER_);
 
-/*----------------------------------------------------------------------------*/
-/* get address of column cell                                                 */
-/*----------------------------------------------------------------------------*/
-char* CellSingle::azChar(void)
-{
-  _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
-
-  return m_xTypedCell.m_caStringArea;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get address of column cell                                                 */
-/*----------------------------------------------------------------------------*/
-CodeCell* CellSingle::aFip(void)
-{
-  _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
-
-  return m_xTypedCell.aFip();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get address of column cell                                                 */
-/*----------------------------------------------------------------------------*/
-Stz* CellSingle::szStz(void)
-{
-  _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
-
-  return (Stz*) m_xTypedCell.m_caStringArea;
+  return m_xTypeValueArea.aFip();
 }
 
 /*----------------------------------------------------------------------------*/
 /* get float value of given column                                            */
 /*----------------------------------------------------------------------------*/
-d8 CellSingle::dGetColVal(void)
+d8 SenCell::dGetColVal(void)
 {
-  _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SENCELL,_FOOTER_);
   
-  d8 dColVal = m_xTypedCell.m_wxValueCell.dGetColVal();
+  d8 dColVal = m_xTypeValueArea.m_wxValue.dGetColVal();
   
   return dColVal;
 }
@@ -171,11 +149,11 @@ d8 CellSingle::dGetColVal(void)
 /*----------------------------------------------------------------------------*/
 /* get integer value of given column                                          */
 /*----------------------------------------------------------------------------*/
-i8 CellSingle::iGetColVal(void)
+i8 SenCell::iGetColVal(void)
 {
-  _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SENCELL,_FOOTER_);
   
-  i8 iColVal = m_xTypedCell.m_wxValueCell.iGetColVal();
+  i8 iColVal = m_xTypeValueArea.m_wxValue.iGetColVal();
   
   return iColVal;
 }
@@ -183,13 +161,13 @@ i8 CellSingle::iGetColVal(void)
 /*----------------------------------------------------------------------------*/
 /* get string value of given column                                           */
 /*----------------------------------------------------------------------------*/
-Stz* CellSingle::szGetColVal(void)
+Stz* SenCell::szGetColVal(void)
 {
-  _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SENCELL,_FOOTER_);
   
   RASSERT(0);
   
-  Stz* szColVal = m_xTypedCell.m_wxValueCell.szGetColVal_offset();
+  Stz* szColVal = m_xTypeValueArea.m_wxValue.szGetColVal_offset();
 
   return szColVal;
 }
@@ -197,11 +175,11 @@ Stz* CellSingle::szGetColVal(void)
 /*----------------------------------------------------------------------------*/
 /* does cell contain an int val                                               */
 /*----------------------------------------------------------------------------*/
-bool CellSingle::bIsIntVal(void)
+bool SenCell::bIsIntVal(void)
 {
-  _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SENCELL,_FOOTER_);
   
-  bool b = eAnyClass() == CN_INTVAL ? true : false;
+  bool b = eType() == CN_INTVAL ? true : false;
 
   return b;
 }
@@ -209,9 +187,9 @@ bool CellSingle::bIsIntVal(void)
 /*----------------------------------------------------------------------------*/
 /* print the strings                                                          */
 /*----------------------------------------------------------------------------*/
-void CellSingle::vPrintString(void)
+void SenCell::vPrintString(void)
 {
-  _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SENCELL,_FOOTER_);
 
   // ... TBC
 }
@@ -219,66 +197,102 @@ void CellSingle::vPrintString(void)
 /*----------------------------------------------------------------------------*/
 /* put float value into given column                                          */
 /*----------------------------------------------------------------------------*/
-void CellSingle::vPutColVal(d8 dColVal)
+void SenCell::vPutColVal(d8 dColVal)
 {
-  _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SENCELL,_FOOTER_);
   
-  m_xTypedCell.m_wxValueCell.vPutColVal(dColVal);
+  m_xTypeValueArea.m_wxValue.vPutColVal(dColVal);
 }
 
 /*----------------------------------------------------------------------------*/
 /* put integer value of given column                                          */
 /*----------------------------------------------------------------------------*/
-void CellSingle::vPutColVal(i8 iColVal)
+void SenCell::vPutColVal(i8 iColVal)
 {
-  _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SENCELL,_FOOTER_);
   
-  m_xTypedCell.m_wxValueCell.vPutColVal(iColVal);
+  m_xTypeValueArea.m_wxValue.vPutColVal(iColVal);
 }
 
 /*----------------------------------------------------------------------------*/
 /* put string value of given column                                           */
 /*----------------------------------------------------------------------------*/
-void CellSingle::vPutColVal(Object* pObject)
+void SenCell::vPutColVal(Object* pObject)
 {
-  _precondition_(_MAGIC_,CN_CELLSINGLE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SENCELL,_FOOTER_);
   
-  m_xTypedCell.m_wxValueCell.vPutColVal(pObject);
+  m_xTypeValueArea.m_wxValue.vPutColVal(pObject);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get how many bytes are needed to push this StzVal on stack                 */
+/*----------------------------------------------------------------------------*/
+i8 SenCell::nStackUsage(void)
+{
+  _precondition_(_MAGIC_,CN_SENCELL,_FOOTER_);
+  
+  i8 nBytes = m_xTypeValueArea.nStackUsage();
+  
+  return nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get address of column cell                                                 */
+/*----------------------------------------------------------------------------*/
+Stz* SenCell::szStz(void)
+{
+  _precondition_(_MAGIC_,CN_SENCELL,_FOOTER_);
+
+  return (Stz*) m_xTypeValueArea.m_caStringArea;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get nStzSize                                                               */
+/*----------------------------------------------------------------------------*/
+i8 SenCell::nStzSize(void)
+{
+  _precondition_(_MAGIC_,CN_SENCELL,_FOOTER_);
+  
+  i8 nBytes = m_xTypeValueArea.nStzSize();
+  
+  return nBytes;
 }
 
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void CellSingle::vToString(Stz* szStz)
+void SenCell::vToString(Stz* szStz)
 {
-  eCN eClass = this->eAnyClass();
+  _precondition_(_MAGIC_,CN_SENCELL,_FOOTER_);
+  
+  eCN eClass = this->eType();
   
   switch (eClass) {
             
     case CN_FIPVAL: {
-//      FipVal* aFipVal = _aFipVal(&m_xTypedCell.m_wxValueCell);
+//      FipVal* aFipVal = _aFipVal(&m_xTypedCell.m_wxValue);
 //      aFipVal->vToStz(szStz);
-      m_xTypedCell.vToStz(szStz);
+      m_xTypeValueArea.vToStz(szStz);
       break;
     }
       
     case CN_INTVAL: {
-//      IntVal* aIntVal = _aIntVal(&m_xTypedCell.m_wxValueCell);
+//      IntVal* aIntVal = _aIntVal(&m_xTypedCell.m_wxValue);
 //      aIntVal->vToStz(szStz);
-      m_xTypedCell.vToStz(szStz);
+      m_xTypeValueArea.vToStz(szStz);
       break;
     }
       
     case CN_PTRVAL: {
-//      PtrVal* aPtrVal = _aPtrVal(&m_xTypedCell.m_wxValueCell);
+//      PtrVal* aPtrVal = _aPtrVal(&m_xTypedCell.m_wxValue);
 //      aPtrVal->vToStz(szStz);
-      m_xTypedCell.vToStz(szStz);
+      m_xTypeValueArea.vToStz(szStz);
       break;
     }
       
     case CN_STZVAL: {
-      //StzVal* aStzVal = _aStzVal(&m_xTypedCell.m_wxValueCell);
-      m_xTypedCell.vToStz(szStz);
+      //StzVal* aStzVal = _aStzVal(&m_xTypedCell.m_wxValue);
+      m_xTypeValueArea.vToStz(szStz);
       break;
     }
             
@@ -287,6 +301,36 @@ void CellSingle::vToString(Stz* szStz)
       NEVER_REACH;
       break;
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* get class of embedded value                                                */
+/*----------------------------------------------------------------------------*/
+eCN SenCell::eType(void)
+{
+  _precondition_(_MAGIC_,CN_SENCELL,_FOOTER_);
+  
+  return m_xTypeValueArea.eType();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get address of value nested in the wsp                                     */
+/*----------------------------------------------------------------------------*/
+TypeValue* SenCell::aTypeValue(void)
+{
+  _precondition_(_MAGIC_,CN_SENCELL,_FOOTER_);
+
+  return m_xTypeValueArea.aTypeValue();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get address of value nested in the wsp                                     */
+/*----------------------------------------------------------------------------*/
+TypeValueArea* SenCell::aTypeValueArea(void)
+{
+  _precondition_(_MAGIC_,CN_SENCELL,_FOOTER_);
+
+  return & m_xTypeValueArea;
 }
 
 

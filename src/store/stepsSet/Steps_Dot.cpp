@@ -35,8 +35,8 @@ void Step::vDot(void)
 //  HeadsUp oHeadsUp((Stz*)__func__);
 //  MY::pTask()->vSeeFrameStack();
   
-  CellSingle xVariable;
-  m_pDataStack->vPopItem(xVariable,__func__);
+  SenCell xVariable;
+  m_pDataStack->vPopSenCell(xVariable,__func__);
   
   if (xVariable.bIsIntVal()) {
     i8 iVal = xVariable.iGetColVal();
@@ -57,8 +57,8 @@ void Step::vDotBoot(void)
 {
   ENTRY();
   
-  CellSingle xVariable;
-  m_pDataStack->vPopItem(xVariable,__func__);
+  SenCell xVariable;
+  m_pDataStack->vPopSenCell(xVariable,__func__);
   
   if (AM::SHOW::bBoot()) {
 
@@ -110,8 +110,8 @@ void Step::vDotPut(void)
 {
   ENTRY();
   
-  CellSingle xVariable;
-  m_pDataStack->vPopItem(xVariable,__func__);
+  SenCell xVariable;
+  m_pDataStack->vPopSenCell(xVariable,__func__);
   
   if (xVariable.bIsIntVal())
     vTrace("%lld"_Stz,xVariable.iGetColVal());
@@ -140,8 +140,8 @@ void Step::vDotVerbose(void)
 {
   ENTRY();
   
-  CellSingle xVariable;
-  m_pDataStack->vPopItem(xVariable,__func__);
+  SenCell xVariable;
+  m_pDataStack->vPopSenCell(xVariable,__func__);
   
   if (AM::TRACE::bVerbose(C_VB_BOOT,C_VB_SEN)) {
     vTrace("[%p %s] %s\n"_Stz,
