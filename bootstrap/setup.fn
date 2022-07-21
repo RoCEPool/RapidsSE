@@ -628,7 +628,8 @@ function createConfiguration() {
 ## Params: None
 
 function displaySetupWelcome() {
-  clear
+  clear &>/dev/null || { echo; echo; }
+
   #shellcheck disable=1090
   source "${VERSION_FILE}"
 
