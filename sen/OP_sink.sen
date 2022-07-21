@@ -163,8 +163,7 @@
   //"Operand:- EV_M_LOWMEMORY" .verbose
 
   // mark pipeline as running low on memory
-  //true [pipeline].lowMemory!
-      true [pipeline].cancelled!
+  true [pipeline].lowMemory!
   PipeIn[].pipeOut
 
   true
@@ -197,10 +196,10 @@
   then
 
   // check if sink has seen low memory
-  //[pipeline].lowMemory@ if
-  //  true
-  //  exit
-  //then
+  [pipeline].lowMemory@ if
+    true
+    exit
+  then
 
   Marker[].newTriggeredMarker
   Marker[].pipeOut

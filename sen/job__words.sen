@@ -187,19 +187,28 @@
   AM::SYSTEM::Ready@ if
     [ddlLock].testDrop
 
-      // toggle to default abnormal handlers
-      "default_abnormalHandlers" FIND execute
+    // toggle to default abnormal handlers
+    "default_abnormalHandlers" FIND execute
 
-      Pipein[].isNull not if
-        Pipein[].delete
-        nullptr to Pipein[]
-      then
+    Pipein[].isNull not if
+      Pipein[].delete
+      nullptr to Pipein[]
+    then
+
+    // not already detected low memory ?
+    [pipeline].lowMemory@ not if
+
+      "PIPELINE DETECTED LOW MEMORY!!!" .
 
       Marker[].newLowMemory
       Marker[]
           nullptr to Marker[]
 
-        [op].pipeout
+      [op].pipeout
+    else
+      "PIPELINE ALREADY DETECTED LOW MEMORY!!!" .
+    then
+
     true
     exit
   else

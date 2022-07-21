@@ -230,7 +230,7 @@ void Step::vPipelineOfOpLowMemoryFetch(void)
 
   Pipeline* pPipeline = m_pOp->pPipeline();
 
-  //m_pDataStack->vPushInt(pPipeline->bLowMemory());
+  m_pDataStack->vPushInt(pPipeline->bLowMemory());
 
   EXIT();
 }
@@ -244,7 +244,7 @@ void Step::vPipelineOfOpLowMemoryStore(void)
 
   Pipeline* pPipeline = m_pOp->pPipeline();
 
-  //pPipeline->vLowMemory(m_pDataStack->iPopBol(__func__));
+  pPipeline->vLowMemory(m_pDataStack->iPopBol(__func__));
 
   EXIT();
 }
