@@ -221,7 +221,7 @@ rows: (*,'explainPlan','
 
 -- Decimal with mantissa > 140,737,488,355,327  ((2^47)-1)
 EXPLAIN with_types SELECT 140737488355328. FROM nation;
-failure contains: 'Value is out of range: Max/min decimal precision supported is [2^47, (2^47) - 1]'
+failure contains: 'Value is out of range: Max/min decimal precision supported is [-1,407,374,883,553.28, 1,407,374,883,553.27]'
 
 
 -- Decimal with mantissa == -140,737,488,355,328   (-2^47)
@@ -243,21 +243,21 @@ rows: (*,'explainPlan','
 
 -- Decimal with mantissa < -140,737,488,355,328   (-2^47)
 EXPLAIN with_types SELECT -140737488355329. FROM nation;
-failure contains: 'Value is out of range: Max/min decimal precision supported is [2^47, (2^47) - 1]'
+failure contains: 'Value is out of range: Max/min decimal precision supported is [-1,407,374,883,553.28, 1,407,374,883,553.27]'
 
 
 -- Decimal cast to a float is above max float value (1e37)
 -- TODO: Currently we cannot test for this because the maximum decimal literal
 --       that we can input is limited to a mantissa of (2^47)-1
 EXPLAIN with_types SELECT  10000000000000000000000000000000000000. + 1e0 FROM nation;
-failure contains: 'Value is out of range: Max/min decimal precision supported is [2^47, (2^47) - 1]'
+failure contains: 'Value is out of range: Max/min decimal precision supported is [-1,407,374,883,553.28, 1,407,374,883,553.27]'
 
 
 -- Decimal cast to a float is less than min float value (1e37)
 -- TODO: Currently we cannot test for this because the minimum decimal literal
 --       that we can input is limited to a mantissa of -2^47
 EXPLAIN with_types SELECT -10000000000000000000000000000000000000. - 1e0 FROM nation;
-failure contains: 'Value is out of range: Max/min decimal precision supported is [2^47, (2^47) - 1]'
+failure contains: 'Value is out of range: Max/min decimal precision supported is [-1,407,374,883,553.28, 1,407,374,883,553.27]'
 
 
 
