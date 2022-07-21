@@ -13,7 +13,6 @@ fi
 # Copy binaries
 mkdir -p "${LAYOUT_DIR}/bin"
 cp "${ROOT_DIR}/bin/rapidsse"       "${LAYOUT_DIR}/bin"
-cp "${ROOT_DIR}/bin/libRapidsSE.so" "${LAYOUT_DIR}/bin"
 cp "${ROOT_DIR}/bin/se.man"         "${LAYOUT_DIR}/bin"
 
 # commands directory
