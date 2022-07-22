@@ -10,6 +10,8 @@
 
 //#include "Heart.h"
 #include "Engine.hpp"
+#include "Mersenne.hpp"
+
 
 
 extern Stz* gsBuildGitHash;
@@ -64,7 +66,9 @@ int main(int argc, char* argv[])
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   gxCmdLineArgs.vInit();
-  
+
+  // Initialise the random number generator
+  Mersenne::init_genrand64(TickingDevice::iGetTick());
 
   TlsKeys::vInit();
 
@@ -103,7 +107,8 @@ int main(int argc, char* argv[])
       //       cluster running on the machine. The --killPrev also ensures that there is
       //       only one instance of this running on the current machine.
       // ********************************************************************************
-      sSeArgs =
+      u8 uRndClusterId = RndLib::uInteger(C_I8_MAX);
+      sSeArgs.vSprint(
         "--start "
         "--prompt "
         "--metadata "
@@ -112,8 +117,9 @@ int main(int argc, char* argv[])
         "--name SINGLENODE "
         "--node SINGLENODE 127.0.0.1 5541 "
         "--heartbeat BROADCAST 8888 "
-        "--cid 9999999"
-        ""_Stz;
+        "--cid %llu"
+        ""_Stz,
+        uRndClusterId);
     }
     vTrace("CmdLineArgs: %s\n"_Stz,sSeArgs.szStz());
     
