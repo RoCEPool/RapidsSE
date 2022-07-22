@@ -195,19 +195,7 @@ Object* Heap::pAllocObject(eCN eAllocClass)
 //      return nullptr;
 //    }
 
-    // check for low memory when allocating a buffer
-    if (AM::MEMORY::bIsRunningLow()) {
-      // error: we have run out of space
-      //vTrace("RUNNING OUT OF MEMORY!!!\n"_Stz);
-      //vTrace("Heap::pAllocObject: unable to extend heap\n"_Stz);
-      vTrace("LOW MEMORY encountered : %s %s %lld!!!\n"_Stz,
-             __FILE__,__func__,(i8)__LINE__);
-      m_okLock.vDropWrite();
-      //PoolHelper::vPoolAnalyze();
-      THROW_LOWMEMORY_NEW();
-      return nullptr;
-    }
-
+    // other buffers
     if (! bExtendHeap()) {
       // error: we have run out of space
       //vTrace("RUNNING OUT OF MEMORY!!!\n"_Stz);
@@ -639,6 +627,10 @@ bool Heap::bExtendHeap(void)
   
   // check that we are free to extend this heap
   if ( m_bFixedHeap )
+    return false;
+
+  // check if any free buffers in the pool
+  if ( ! (HeapBuffer*)gpBufferPool->nFreeCount())
     return false;
 
   // get a free buffer from buffer pool
