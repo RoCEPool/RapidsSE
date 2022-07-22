@@ -377,6 +377,30 @@
   //EV_M_TRIGGERED
 ;
 
+/*----------------------------------------------------------------------------*/
+/*                 LOWMEMORY EVENT HANDLERS                                   */
+/*----------------------------------------------------------------------------*/
+: default_lowMemHandlers
+
+  find: ABNORMAL_PIPEIN_DELETE  locals| abnormalHandler |
+
+  abnormalHandler EV_I_CALLPIPELINE_handler     [op].handler!
+  abnormalHandler EV_I_COMMAND_handler          [op].handler!
+  abnormalHandler EV_I_COMPILEERRORS_handler    [op].handler!
+  abnormalHandler EV_I_COUNT_handler            [op].handler!
+  abnormalHandler EV_I_EXECERRORS_handler       [op].handler!
+  abnormalHandler EV_I_FORKCOMMAND_handler      [op].handler!
+  abnormalHandler EV_I_LOADRESULT_handler       [op].handler!
+  abnormalHandler EV_I_LOCKSTATS_handler        [op].handler!
+  abnormalHandler EV_I_NODEINFO_handler         [op].handler!
+  abnormalHandler EV_I_PATH_handler             [op].handler!
+  abnormalHandler EV_I_PROGRESSUNITS_handler    [op].handler!
+  abnormalHandler EV_I_PROMPTOUT_handler        [op].handler!
+  abnormalHandler EV_I_RETURNPIPELINE_handler   [op].handler!
+  abnormalHandler EV_I_SEEKOFFSETS_handler      [op].handler!
+  abnormalHandler EV_I_TOTALUNITS_handler       [op].handler!
+
+;
 
 /*----------------------------------------------------------------------------*/
 /*                       ABNORMAL EVENT HANDLERS                              */

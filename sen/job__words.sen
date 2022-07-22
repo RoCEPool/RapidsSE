@@ -188,7 +188,11 @@
     [ddlLock].testDrop
 
     // toggle to default abnormal handlers
-    "default_abnormalHandlers" FIND execute
+    [op].isSend not if
+      [op].opName@ "TOGGLING TO ABNORMAL HANDLERS FOR OP %v" str.format .
+      "default_abnormalHandlers" FIND execute
+      "default_lowMemHandlers" FIND execute
+    then
 
     Pipein[].isNull not if
       Pipein[].delete

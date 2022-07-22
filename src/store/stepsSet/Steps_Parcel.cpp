@@ -540,7 +540,7 @@ void Step::vParcelReset(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*Pparcel[].sendOut -- send parcel out to next operator in pipeline           */
+/* parcel[].sendOut -- send parcel out to next operator in pipeline           */
 /*----------------------------------------------------------------------------*/
 void Step::vParcelSendOut(void)
 {

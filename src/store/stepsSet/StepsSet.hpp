@@ -1307,6 +1307,7 @@ void vDdlLockAssertNone(void);
   void vOpHandlerStore(void);
   void vOpHandlerAllStore(void);
   void vOpIsEventValid(void);
+  void vOpIsSend(void);
   void vOpEventCountInc(void);
   void vOpNameFetch(void);
   void vOpOpNameFetch(void);
