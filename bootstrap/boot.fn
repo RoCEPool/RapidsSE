@@ -372,9 +372,6 @@ function startCurrentNode() {
   startCmd+=("${paramsArray[@]}")
 
 
-  # Set the library path so the RapidsSE library can be found and loaded
-  export LD_LIBRARY_PATH="${EXE_DIR}:${LD_LIBRARY_PATH:-}"
-
   # SE environment variables
   export SE_ENV_METACLUE=1
   export SE_ENV_INTKEY=1
@@ -588,9 +585,6 @@ function localClusterXConnect() {
   cmd+=("--appendTrace")
 
   debugPrint "\nAbout to execute the cluster status command: ${cmd[*]}"
-
-  # Set the library path so the RapidsSE library can be found and loaded
-  export LD_LIBRARY_PATH="${EXE_DIR}:${LD_LIBRARY_PATH:-}"
 
   local cmdOutputFile="${ROOT_DIR}/clusterStatus.log"
 
@@ -846,9 +840,6 @@ function runLocalPromptCommand() {
   cmd+=("--appendTrace")
 
   debugPrint "\nAbout to execute the following cluster prompt command: ${cmd[*]}"
-
-  # Set the library path so the RapidsSE library can be found and loaded
-  export LD_LIBRARY_PATH="${EXE_DIR}:${LD_LIBRARY_PATH:-}"
 
   local cmdOutputFile="${ROOT_DIR}/.lastPromptCommand.log"
 
@@ -1271,10 +1262,6 @@ function stopCurrentNode() {
     stopCmd+=("--commands")
     stopCmd+=("${ROOT_DIR}/commands")
     stopCmd+=("--appendTrace")
-
-
-    # Set the library path so the RapidsSE library can be found and loaded
-    export LD_LIBRARY_PATH="${EXE_DIR}:${LD_LIBRARY_PATH:-}"
 
 
     if [ ${DEBUG} -eq 1 ]; then
