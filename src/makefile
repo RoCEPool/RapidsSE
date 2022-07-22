@@ -134,7 +134,7 @@ INCLUDES = $(SRC_INCLUDES) $(THIRDPARTY_INCLUDES)
 
 # Linker libraries
 LIBS = -lpthread -ltcc -ldl -lantlr4-runtime $(strip $(LINUX_LIBS) $(DARWIN_LIBS))
-LIB_DIRS = -L$(TARGET_PATH) -L../thirdparty/tcc/lib -L../thirdparty/antlr/lib $(strip $(LINUX_LIB_DIRS) $(DARWIN_LIB_DIRS))
+LIB_DIRS = -L../thirdparty/tcc/lib -L../thirdparty/antlr/lib $(strip $(LINUX_LIB_DIRS) $(DARWIN_LIB_DIRS))
 
 # ThirdParty compiled library targets
 ANTLR_LIB := ../thirdparty/antlr/lib/libantlr4-runtime.a
@@ -181,7 +181,7 @@ $(TARGET_EXE): $(OBJECTS) $(DEPFILES) $(COMPILED_LIBS)
 	@echo ""
 	@echo "Linking the rapidsse executable..."
 	@echo ""
-	$(CPP) $(CPPFLAGS_ARCH) $(LDFLAGS) $(LIB_DIRS) $(LIBS) -o $(TARGET_EXE) $(OBJECTS)
+	$(CPP) $(CPPFLAGS_ARCH) $(LDFLAGS) $(LIB_DIRS) -o $(TARGET_EXE) $(OBJECTS) $(LIBS) 
 	@echo "$(BUILD_CONFIG)" > $(call targetConfigFile, $(TARGET_EXE))
 
 # Compile source .cpp files into object files
@@ -268,7 +268,6 @@ $(firstword $(JSON5_GRAMMAR_CPP)) : $(JSON5_GRAMMAR)
 # us whether it was written as a debug or release.
 buildConfigCheck : FORCE
 	@./checkBuildConfig.sh $(TARGET_EXE) $(call targetConfigFile, $(TARGET_EXE)) $(BUILD_CONFIG)
-#	@./checkBuildConfig.sh $(TARGET_LIBRARY) $(call targetConfigFile, $(TARGET_LIBRARY)) $(BUILD_CONFIG)
 
 # Generic rule to make any thirdparty libraries that are built from source
 # and then linked against by RapidsSE. Add the dependencies here and then
