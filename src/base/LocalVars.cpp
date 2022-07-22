@@ -60,7 +60,7 @@ LocalVars::~LocalVars(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* pop top frame of locals                                                    */
 /*----------------------------------------------------------------------------*/
-void LocalVars::vFramePop(void)
+void LocalVars::vFramePop(void* aDiscardPoint_return)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALVARS,_FOOTER_);
 
@@ -72,6 +72,8 @@ void LocalVars::vFramePop(void)
   
   LocalVar& rxLocalVar = m_xaLocalVar[m_nLocalVars - 1];
   void* aDiscardPoint = rxLocalVar.m_aDiscardPoint;
+  
+  RASSERT(aDiscardPoint == aDiscardPoint_return);
   
   i8 nDiscards = 0;
   while (m_nLocalVars) {
