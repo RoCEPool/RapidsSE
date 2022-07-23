@@ -58,6 +58,22 @@ LocalVars::~LocalVars(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* return top-most discard point                                              */
+/*----------------------------------------------------------------------------*/
+void* LocalVars::aDiscardPoint(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALVARS,_FOOTER_);
+  
+  if (! m_nLocalVars)
+    return nullptr;
+  
+  LocalVar& rxLocalVar = m_xaLocalVar[m_nLocalVars - 1];
+  void* aDiscardPoint = rxLocalVar.m_aDiscardPoint;
+
+  return aDiscardPoint;
+}
+
+/*----------------------------------------------------------------------------*/
 /* pop top frame of locals                                                    */
 /*----------------------------------------------------------------------------*/
 void LocalVars::vFramePop(void* aDiscardPoint_return)
