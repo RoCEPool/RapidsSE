@@ -212,7 +212,6 @@ class TestRunner:
         # <install_dir>/bin directory because the rapidsse executable has a dependency on
         # the file "../bin/libRapidsse.dylib"
         jmeter_command = f"cd {self.remote_test_dir} && " \
-                         f"LD_LIBRARY_PATH={rapidsse_bin_dir} " \
                          f"{C_JMETER_BINARY} -n " \
                          f"-p {jmeter_properties_path} " \
                          f"-t {self.remote_test_file} " \

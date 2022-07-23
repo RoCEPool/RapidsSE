@@ -58,9 +58,25 @@ LocalVars::~LocalVars(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* return top-most discard point                                              */
+/*----------------------------------------------------------------------------*/
+void* LocalVars::aDiscardPoint(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALVARS,_FOOTER_);
+  
+  if (! m_nLocalVars)
+    return nullptr;
+  
+  LocalVar& rxLocalVar = m_xaLocalVar[m_nLocalVars - 1];
+  void* aDiscardPoint = rxLocalVar.m_aDiscardPoint;
+
+  return aDiscardPoint;
+}
+
+/*----------------------------------------------------------------------------*/
 /* pop top frame of locals                                                    */
 /*----------------------------------------------------------------------------*/
-void LocalVars::vFramePop(void)
+void LocalVars::vFramePop(void* aDiscardPoint_return)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALVARS,_FOOTER_);
 
@@ -72,6 +88,8 @@ void LocalVars::vFramePop(void)
   
   LocalVar& rxLocalVar = m_xaLocalVar[m_nLocalVars - 1];
   void* aDiscardPoint = rxLocalVar.m_aDiscardPoint;
+  
+  RASSERT(aDiscardPoint == aDiscardPoint_return);
   
   i8 nDiscards = 0;
   while (m_nLocalVars) {

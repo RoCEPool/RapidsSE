@@ -225,8 +225,6 @@ readonly SE_PATH="${SE_BIN_DIR}/rapidsse"
 readonly SE_ARGS=("--name" "${FIRST_NODE_NAME}" "--munged" "--commands" "${INSTALL_DIR}/commands" "--appendTrace")
 readonly SE_LOG_FILE="${INSTALL_DIR}/se.log"
 
-export LD_LIBRARY_PATH="${SE_BIN_DIR}:${LD_LIBRARY_PATH:-}"
-
 # Additional arguments for SETH. Enable as required.
 SETH_ARGS=(
   "--logsteps" 
