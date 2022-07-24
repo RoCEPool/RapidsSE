@@ -89,6 +89,12 @@ void SenCompiler::vEncodeEnter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SENCOMPILER,_FOOTER_);
   
+  SenCell xVariable;
+
+  xVariable = m_pCurrent->szWordNm();
+  m_pCurrent->vEncodePush(xVariable);
+
+  m_pCurrent->vEncodeCall("enterTrace"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -98,6 +104,14 @@ void SenCompiler::vEncodeExit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SENCOMPILER,_FOOTER_);
  
+  if (m_bEnterExitTrace) {
+    SenCell xVariable;
+
+    xVariable = m_pCurrent->szWordNm();
+    m_pCurrent->vEncodePush(xVariable);
+    m_pCurrent->vEncodeCall("exitTrace"_Stz);
+  }
+  
   m_pCurrent->vEncodeCall("exit_RT"_Stz);
 }
 
