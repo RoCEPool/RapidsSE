@@ -192,9 +192,11 @@
       [op].opName@ "TOGGLING TO ABNORMAL HANDLERS FOR OP %v" str.format .
       "default_abnormalHandlers" FIND execute
       "default_lowMemHandlers" FIND execute
+      [op].opName@ "TOGGLED TO ABNORMAL HANDLERS FOR OP %v" str.format .
     then
 
     Pipein[].isNull not if
+      "deleting pipein!!!" .
       Pipein[].delete
       nullptr to Pipein[]
     then
@@ -209,12 +211,13 @@
           nullptr to Marker[]
 
       [op].pipeout
+      "PIPED OUT LOW MEMORY!!!" .
     else
       "PIPELINE ALREADY DETECTED LOW MEMORY!!!" .
     then
 
     true
-    exit
+
   else
     process::quit
     HAZARD

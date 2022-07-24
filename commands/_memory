@@ -25,8 +25,8 @@ trackMemory;
 /FaultInjection drop table datums <faultPoint> = 1;
 memoryLeaks;
 
-*/
 
+*/
 create table LineItem
 (
  L_ORDERKEY      INTEGER       NOT NULL,
@@ -46,5 +46,28 @@ create table LineItem
  L_SHIPMODE      CHAR(10)      NOT NULL,
  L_COMMENT       VARCHAR(44)   NOT NULL
  );
- /time load lineitem "<tpch_dir>/lineitem.<suffix>";
- /time load lineitem "<tpch_dir>/lineitem.<suffix>";
+
+ ///FaultInjection drop table lineitem <faultPoint> = 1;
+
+//verbose enable;
+///FaultInjection load lineitem "<tpch_dir>/lineitem.<suffix>" <faultPoint> = 7 ;
+load lineitem "<tpch_dir>/lineitem.<suffix>";
+
+/*
+/FaultInjection
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+  stage stageMarker0111 on all partitions :
+    chunk "../DATA/Load/decTest.csv"
+    | next
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end
+<faultPoint> = 7 ;
+*/

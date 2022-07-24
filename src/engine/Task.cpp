@@ -1203,23 +1203,40 @@ void Task::vSetSenLowMemContext(void)
   m_pAuxStack->vReset();
   m_pDataStack->vReset();
 
-  //Task::vSeeFrameStack();
+  Task::vSeeFrameStack();
 
   while (m_pReturnStack->nValues() > 2) {
+
+#ifdef WITH_LOCALS_OOM
+
+    if (m_pLocalVars) {
+      void* aDiscardPoint_return = m_pReturnStack->aTopVal();
+      if (m_pLocalVars->aDiscardPoint() == aDiscardPoint_return) {
+        m_pLocalVars->vFramePop(aDiscardPoint_return);
+      }
+    }
+
+#else
+
     if (m_pLocalFrame
         && m_pLocalFrame->aDiscardPoint() ==
-           (TypeValueArea*)m_pReturnStack->aTopVal())
+             (TypeValueArea*)m_pReturnStack->aTopVal())
       vLocalsPop();
+
+#endif
+
     m_pReturnStack->vDiscardTop();
   }
 
-  //Task::vSeeFrameStack();
+  Task::vSeeFrameStack();
 
 
   if (MY::pOp())
     m_aInxPtr = m_pLowMemWord->aFirstCell();
   else
     m_aInxPtr = m_pRecoveryWord->aFirstCell();
+
+  Task::vSeeFrameStack();
 }
 
 /*----------------------------------------------------------------------------*/

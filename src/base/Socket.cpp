@@ -112,10 +112,11 @@ Object* Socket::pRecvObject(void)
   RASSERT(! pReceivedObject());
 
   static i8 nPipeline = 0;
+  bool bLowMem = false;
 
-  bool bLowMem = AM::MEMORY::bIsRunningLow();
-  if (bLowMem)
-     PoolHelper::vPoolAnalyze();
+ // bool bLowMem = AM::MEMORY::bIsRunningLow();
+ // if (bLowMem)
+ //    PoolHelper::vPoolAnalyze();
 
   m_pObject->vSetWasReceived(true);
   m_pObject->vSetPostRecvRun(false);

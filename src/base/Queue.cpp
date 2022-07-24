@@ -57,6 +57,8 @@ Queue::Queue(eCN eClass)
   m_pTopBuffer = nullptr;
   m_pEndBuffer = nullptr;
 
+  vExpand();
+
   _checkInitialised_(CN_QUEUE);
   
   _postcondition_(_ADDRESS_,_MAGIC_,eClass);

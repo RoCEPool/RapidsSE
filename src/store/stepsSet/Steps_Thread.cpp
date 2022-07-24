@@ -29,6 +29,9 @@ void Step::vAddSteps_Thread(void)
   vAddStep("thread.dedicated@"_Stz,       &Step::vThreadDedicatedFetch);
   vAddStep("thread.dedicated!"_Stz,       &Step::vThreadDedicatedStore);
   vAddStep("thread.dump"_Stz,             &Step::vThreadDump);
+  vAddStep("thread.faultCurrent!"_Stz,    &Step::vThreadFaultCurrentStore);
+  vAddStep("thread.faultInjection!"_Stz,  &Step::vThreadFaultInjectionStore);
+  vAddStep("thread.faultPoint!"_Stz,      &Step::vThreadFaultPointStore);
   vAddStep("thread.id"_Stz,               &Step::vThreadId);
 }
 
@@ -136,6 +139,51 @@ void Step::vThreadEnableRealtime(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* thread.faultCurrent! -- store faultCurrent                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vThreadFaultCurrentStore(void)
+{
+  ENTRY();
+
+  i8 iFaultCurrent = m_pDataStack->iPopInt(__func__);
+#ifdef WITH_OOM_FAULTINJECTION
+  PsxThd::vTlsSet(giTLS_CurrentPoint,(void*)iFaultCurrent);
+#endif
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* thread.faultInjection! -- store faultInjection                             */
+/*----------------------------------------------------------------------------*/
+void Step::vThreadFaultInjectionStore(void)
+{
+  ENTRY();
+
+  i8 iFaultInjection = m_pDataStack->iPopBol(__func__);
+#ifdef WITH_OOM_FAULTINJECTION
+  PsxThd::vTlsSet(gbTLS_FaultInjection,(void*)iFaultInjection);
+#endif
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* thread.faultPoint! -- store faultPoint                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vThreadFaultPointStore(void)
+{
+  ENTRY();
+
+  i8 iFaultPoint = m_pDataStack->iPopInt(__func__);
+#ifdef WITH_OOM_FAULTINJECTION
+  PsxThd::vTlsSet(giTLS_FaultPoint,(void*)iFaultPoint);
+#endif
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* thread.id -- get the id of thread                                          */
 /*----------------------------------------------------------------------------*/
 void Step::vThreadId(void)
@@ -148,7 +196,6 @@ void Step::vThreadId(void)
   
   EXIT();
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* thread::sleepMsec -- sleep for n milliseconds                              */

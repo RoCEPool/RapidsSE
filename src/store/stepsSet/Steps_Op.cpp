@@ -264,7 +264,7 @@ void Step::vOpIsSend(void)
 {
   ENTRY();
 
-  if ( m_pOp->szOpNm()->bSame("sendOP"_Stz))
+  if ( m_pOp->szOpNm()->bSame("sendSE"_Stz))
     m_pDataStack->vPushInt(true);
   else
     m_pDataStack->vPushInt(false);

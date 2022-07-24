@@ -164,16 +164,16 @@ Object* Heap::pAllocObject(eCN eAllocClass)
 //    vTrace("Heap::pAllocObject: allocating CN_MARKER\n"_Stz);
 
 
-#ifdef WITH_OOM_FAULTINJECTION
-  bool bFaultInjection = static_cast<bool>(PsxThd::pTlsGet(gbTLS_FaultInjection));
-  if (bFaultInjection) {
-    i8 iFaultPoint = (i8)(PsxThd::pTlsGet(giTLS_FaultPoint));
-    i8 iCurrentPoint = (i8)(PsxThd::pTlsGet(giTLS_CurrentPoint));
-    //vTrace("FI: FP:%lld CP:%lld\n"_Stz, iFaultPoint, iCurrentPoint);
-    if (iFaultPoint == iCurrentPoint)
-      THROW_LOWMEMORY_NEW();
-  }
-#endif
+//#ifdef WITH_OOM_FAULTINJECTION
+//  bool bFaultInjection = static_cast<bool>(PsxThd::pTlsGet(gbTLS_FaultInjection));
+//  if (bFaultInjection) {
+//    i8 iFaultPoint = (i8)(PsxThd::pTlsGet(giTLS_FaultPoint));
+//    i8 iCurrentPoint = (i8)(PsxThd::pTlsGet(giTLS_CurrentPoint));
+//    vTrace("FI: FP:%lld CP:%lld\n"_Stz, iFaultPoint, iCurrentPoint);
+//    if (iFaultPoint == iCurrentPoint)
+//      THROW_LOWMEMORY_NEW();
+//  }
+//#endif
 
   m_okLock.vGrabWrite();
   
