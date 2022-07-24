@@ -1752,6 +1752,8 @@ void vDdlLockAssertNone(void);
   void vSenCompilerCurrentFetch(void);
   void vSenCompilerCurrentStore(void);
   void vSenCompilerDiscarding(void);
+  void vSenCompilerEnterExitFetch(void);
+  void vSenCompilerEnterExitStore(void);
   void vSenCompilerInterpreting(void);
   void vSenCompilerIsCompiling(void);
   void vSenCompilerIsDiscarding(void);

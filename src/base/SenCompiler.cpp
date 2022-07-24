@@ -28,6 +28,8 @@ SenCompiler::SenCompiler(void)
   m_nLocals    = 0;
   m_aiLocals   = nullptr;
   
+  m_bEnterExitTrace = false;
+  
   for (i8 i_Nested = 0; i_Nested < C_MAX_NESTED_WORDS; i_Nested++)
     m_paWord[i_Nested] = nullptr;
 
@@ -78,6 +80,26 @@ void SenCompiler::vCurrentWord(Word* pWord)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SENCOMPILER,_FOOTER_);
   
   m_pCurrent = pWord;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get enter/exit trace of word                                               */
+/*----------------------------------------------------------------------------*/
+bool SenCompiler::bExterExitTrace(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SENCOMPILER,_FOOTER_);
+  
+  return m_bEnterExitTrace;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set enter/exit trace of word                                               */
+/*----------------------------------------------------------------------------*/
+void SenCompiler::vExterExitTrace(bool bExterExitTrace)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SENCOMPILER,_FOOTER_);
+  
+  m_bEnterExitTrace = bExterExitTrace;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -29,6 +29,9 @@ void Step::vAddSteps_SenCompiler(void)
   vAddStep("senCompiler::nested@"_Stz,        &Step::vSenCompilerNestedFetch);
   vAddStep("senCompiler::nested!"_Stz,        &Step::vSenCompilerNestedStore);
 
+  vAddStep("senCompiler::enterExitTrace@"_Stz,&Step::vSenCompilerNestedFetch);
+  vAddStep("senCompiler::enterExitTrace!"_Stz,&Step::vSenCompilerNestedStore);
+
   
   vAddStep("["_Stz,     &Step::vSenCompilerInterpreting,    true);
   vAddStep("]"_Stz,     &Step::vSenCompilerCompiling);
@@ -316,6 +319,35 @@ void Step::vSenCompilerCondEnd(void)
 
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* senCompiler::enterExitTrace@ -- fetch enter exit trace                     */
+/*----------------------------------------------------------------------------*/
+void Step::vSenCompilerEnterExitFetch(void)
+{
+  ENTRY();
+    
+  b8 bEnterExit = m_pSenCompiler->bExterExitTrace();
+    
+  m_pDataStack->vPushInt(bEnterExit);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* senCompiler::enterExitTrace! -- store enter exit trace                     */
+/*----------------------------------------------------------------------------*/
+void Step::vSenCompilerEnterExitStore(void)
+{
+  ENTRY();
+  
+  b8 bEnterExit = m_pDataStack->iPopInt(__func__);
+    
+  m_pSenCompiler->vExterExitTrace(bEnterExit);
+  
+  EXIT();
+}
+
 
 /*============================================================================*/
 /* end                                                                        */
