@@ -31,6 +31,8 @@ void Step::vAddSteps_SenCompiler(void)
 
   vAddStep("senCompiler::enterExitTrace@"_Stz,&Step::vSenCompilerNestedFetch);
   vAddStep("senCompiler::enterExitTrace!"_Stz,&Step::vSenCompilerNestedStore);
+  
+  vAddStep("senCompiler::encodeEnter"_Stz,    &Step::vSenCompilerEncodeEnter);
 
   
   vAddStep("["_Stz,     &Step::vSenCompilerInterpreting,    true);
@@ -327,7 +329,7 @@ void Step::vSenCompilerEnterExitFetch(void)
 {
   ENTRY();
     
-  b8 bEnterExit = m_pSenCompiler->bExterExitTrace();
+  b8 bEnterExit = m_pSenCompiler->bEnterExitTrace();
     
   m_pDataStack->vPushInt(bEnterExit);
   
@@ -343,10 +345,23 @@ void Step::vSenCompilerEnterExitStore(void)
   
   b8 bEnterExit = m_pDataStack->iPopInt(__func__);
     
-  m_pSenCompiler->vExterExitTrace(bEnterExit);
+  m_pSenCompiler->vEnterExitTrace(bEnterExit);
   
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* senCompiler::encodeEnter -- encode sen function enter                      */
+/*----------------------------------------------------------------------------*/
+void Step::vSenCompilerEncodeEnter(void)
+{
+  ENTRY();
+  
+  m_pSenCompiler->vEncodeEnter();
+  
+  EXIT();
+}
+
 
 
 /*============================================================================*/

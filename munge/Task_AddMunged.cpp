@@ -20568,6 +20568,8 @@ void Task::vAddMunged(Task* )
     ": \\enterExitTrace immediate\n"
     "\n"
     "  true senCompiler::enterExitTrace!\n"
+    "  \n"
+    "  senCompiler::encodeEnter\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"

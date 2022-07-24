@@ -33,8 +33,10 @@ namespace BASE
     bool  bCompiling(void);
     Word* pCurrentWord(void);
     void  vCurrentWord(Word* pWord);
-    bool  bExterExitTrace(void);
-    void  vExterExitTrace(bool bExterExitTrace);
+    void  vEncodeEnter(void);
+    void  vEncodeExit(void);
+    bool  bEnterExitTrace(void);
+    void  vEnterExitTrace(bool bExterExitTrace);
     bool  bInterpreting(void);
     i8    nLocals(void);
     void  vLocals(i8 nLocals);

@@ -21,7 +21,9 @@ void Step::vAddSteps_Sen(void)
   vAddStep("("_Stz,                &Step::vSenComment,          true );
   vAddStep(">createInRoot"_Stz,    &Step::vSenCreateFromInRoot);
   vAddStep("doColon"_Stz,          &Step::vSenDoColon);
+  vAddStep("enterTrace"_Stz,       &Step::vSenEnterTrace);
   vAddStep("execute"_Stz,          &Step::vSenExecute);
+  vAddStep("exitTrace"_Stz,        &Step::vSenExitTrace);
   vAddStep("exit_rt"_Stz,          &Step::vSenExit_RT);
   vAddStep("find:"_Stz,            &Step::vSenFind,             true);
   vAddStep("hazard"_Stz,           &Step::vSenHazard);
@@ -169,6 +171,22 @@ void Step::vSenDoColon(void)
 
 
 /*----------------------------------------------------------------------------*/
+/* enterTrace -- trace entry of sen function                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vSenEnterTrace(void)
+{
+  ENTRY();
+  
+  SenCell xVariable;
+  m_pDataStack->vPopSenCell(xVariable,__func__);
+  
+  Stz* szVal = xVariable.szStz();
+  vTrace(">>> %s"_Stz,szVal);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* execute -- execute word on data stack                                      */
 /*----------------------------------------------------------------------------*/
 void Step::vSenExecute(void)
@@ -205,6 +223,22 @@ void Step::vSenExecute(void)
       NEVER_REACH;
   }
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* exitTrace -- trace exit of sen function                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vSenExitTrace(void)
+{
+  ENTRY();
+  
+  SenCell xVariable;
+  m_pDataStack->vPopSenCell(xVariable,__func__);
+  
+  Stz* szVal = xVariable.szStz();
+  vTrace("<<< %s"_Stz,szVal);
+
   EXIT();
 }
 
@@ -827,14 +861,14 @@ void Step::vSenSemicolon(void)
     
     if (m_oDicStack.pFindWord(pCurrentWord->szExitHook())) {
       pCurrentWord->vEncodeCall(pCurrentWord->szExitHook());
-      pCurrentWord->vEncodeCall("exit_rt"_Stz);
+      m_pSenCompiler->vEncodeExit();
     }
     else
-      pCurrentWord->vEncodeCall("exit_RT"_Stz);
+      m_pSenCompiler->vEncodeExit();
   }
   else
-    pCurrentWord->vEncodeCall("exit_rt"_Stz);
-  
+    m_pSenCompiler->vEncodeExit();
+
   i8 iUsed = pCurrentWord->nCodeBlockUsed();
   if (iUsed > iMaxUsed)
     iMaxUsed = iUsed;

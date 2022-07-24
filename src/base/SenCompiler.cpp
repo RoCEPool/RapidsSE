@@ -83,9 +83,28 @@ void SenCompiler::vCurrentWord(Word* pWord)
 }
 
 /*----------------------------------------------------------------------------*/
+/* encode entry to sen function                                               */
+/*----------------------------------------------------------------------------*/
+void SenCompiler::vEncodeEnter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SENCOMPILER,_FOOTER_);
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* encode exit of sen function                                                */
+/*----------------------------------------------------------------------------*/
+void SenCompiler::vEncodeExit(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SENCOMPILER,_FOOTER_);
+ 
+  m_pCurrent->vEncodeCall("exit_RT"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get enter/exit trace of word                                               */
 /*----------------------------------------------------------------------------*/
-bool SenCompiler::bExterExitTrace(void)
+bool SenCompiler::bEnterExitTrace(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SENCOMPILER,_FOOTER_);
   
@@ -95,7 +114,7 @@ bool SenCompiler::bExterExitTrace(void)
 /*----------------------------------------------------------------------------*/
 /* set enter/exit trace of word                                               */
 /*----------------------------------------------------------------------------*/
-void SenCompiler::vExterExitTrace(bool bExterExitTrace)
+void SenCompiler::vEnterExitTrace(bool bExterExitTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SENCOMPILER,_FOOTER_);
   

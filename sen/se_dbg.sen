@@ -340,6 +340,8 @@
 : \enterExitTrace immediate
 
   true senCompiler::enterExitTrace!
+  
+  senCompiler::encodeEnter
 ;
 
 /*============================================================================*/
