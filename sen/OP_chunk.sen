@@ -21,7 +21,7 @@
 /*----------------------------------------------------------------------------*/
 /* on EV_M_DATAPULSE ...                                                      */
 /*----------------------------------------------------------------------------*/
-: chunk_DataPulse \handler \enterExitTrace
+: chunk_DataPulse \handler // \enterExitTrace
 
   //"Operand:- EV_M_DATAPULSE" .verbose
   PipeIn[].pipeOut
