@@ -128,7 +128,7 @@ void TailStr::vSet(Stz* szStz)
   
   vL(nL);
   
-  i8 nSizeBytes = C_U_1B + C_L_1B + nL;
+  i8 nSizeBytes = C_U_1B + C_L_2B + nL;
   i8 nU = MemLib::nQuantaRequired(nSizeBytes,sizeof(SpaceUnit));
   vU(nU);
 }
@@ -138,7 +138,7 @@ void TailStr::vSet(Stz* szStz)
 /*----------------------------------------------------------------------------*/
 Stz* TailStr::sz(void)
 {
-  Stz* szStz = (Stz*) &m_yaByte[C_U_1B + C_L_1B];
+  Stz* szStz = (Stz*) &m_yaByte[C_U_1B + C_L_2B];
   
   return szStz;
 }

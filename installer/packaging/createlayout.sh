@@ -13,7 +13,6 @@ fi
 # Copy binaries
 mkdir -p "${LAYOUT_DIR}/bin"
 cp "${ROOT_DIR}/bin/rapidsse"       "${LAYOUT_DIR}/bin"
-cp "${ROOT_DIR}/bin/libRapidsSE.so" "${LAYOUT_DIR}/bin"
 cp "${ROOT_DIR}/bin/se.man"         "${LAYOUT_DIR}/bin"
 
 # commands directory
@@ -70,8 +69,8 @@ cp "${ROOT_DIR}/bootstrap/boot.fn"               "${LAYOUT_DIR}"
 cp "${ROOT_DIR}/bootstrap/status.sh"             "${LAYOUT_DIR}"
 cp "${ROOT_DIR}/bootstrap/prompt.sh"             "${LAYOUT_DIR}"
 cp "${ROOT_DIR}/bootstrap/collectLogs.sh"        "${LAYOUT_DIR}"
-cp "${ROOT_DIR}/bootstrap/addNode.sh"            "${LAYOUT_DIR}"
-cp "${ROOT_DIR}/bootstrap/removeNode.sh"         "${LAYOUT_DIR}"
+# cp "${ROOT_DIR}/bootstrap/addNode.sh"            "${LAYOUT_DIR}"
+# cp "${ROOT_DIR}/bootstrap/removeNode.sh"         "${LAYOUT_DIR}"
 
 # Resources
 mkdir -p "${LAYOUT_DIR}/res"

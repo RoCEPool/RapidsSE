@@ -69,9 +69,31 @@ Text::~Text(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TEXT);
   
   if (m_pTextBuffer) {
-    delete m_pTextBuffer;
+    
+    eCN eClass = m_pTextBuffer->eGetClassNo();
+    switch (eClass) {
+      case CN_TEXTTINY  :  delete _pTextTiny(m_pTextBuffer);    break;
+      case CN_TEXTSMALL :  delete _pTextSmall(m_pTextBuffer);   break;
+      case CN_TEXTMEDIUM:  delete _pTextMedium(m_pTextBuffer);  break;
+      case CN_TEXTLARGE :  delete _pTextLarge(m_pTextBuffer);   break;
+
+      default:
+        NEVER_REACH;
+    }
   }
   
+}
+
+/*----------------------------------------------------------------------------*/
+/* repair the text                                                            */
+/*----------------------------------------------------------------------------*/
+void Text::vRepair(Object* pObject)
+{
+  _static_
+
+  Text* pText = _pText(pObject);
+
+  delete pText;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -118,7 +140,7 @@ Stz* Text::szGet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TEXT);
 
-  return m_pTextBuffer->aGetText();
+  return m_pTextBuffer->szArea();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -167,16 +189,16 @@ void Text::vSet(Stz* szArg)
   if ( ! m_pTextBuffer ) {
     
     // now allocate a new buffer
-    if (nStringSize < C_SIZE_TINY_TEXT)
+    if (nStringSize < C_TEXT_TINY)
       m_pTextBuffer = new TextTiny();
     
-    else if (nStringSize < C_SIZE_SMALL_TEXT)
+    else if (nStringSize < C_TEXT_SMALL)
       m_pTextBuffer = new TextSmall();
 
-    else if (nStringSize < C_SIZE_MEDIUM_TEXT)
+    else if (nStringSize < C_TEXT_MEDIUM)
       m_pTextBuffer = new TextMedium();
 
-    else if (nStringSize < C_SIZE_LARGE_OBJECT)
+    else if (nStringSize < C_TEXT_LARGE)
       m_pTextBuffer = new TextLarge();
     
     else
@@ -214,16 +236,16 @@ void Text::vNewBuffer(i8 nStringSize)
   ASSERT(! m_pTextBuffer);
   
   // now allocate a new buffer
-  if (nStringSize < C_SIZE_TINY_TEXT)
+  if (nStringSize < C_TEXT_TINY)
     m_pTextBuffer = new TextTiny();
   
-  else if (nStringSize < C_SIZE_SMALL_TEXT)
+  else if (nStringSize < C_TEXT_SMALL)
     m_pTextBuffer = new TextSmall();
 
-  else if (nStringSize < C_SIZE_MEDIUM_TEXT)
+  else if (nStringSize < C_TEXT_MEDIUM)
     m_pTextBuffer = new TextMedium();
 
-  else if (nStringSize < C_SIZE_LARGE_OBJECT)
+  else if (nStringSize < C_TEXT_LARGE)
     m_pTextBuffer = new TextLarge();
   
   else

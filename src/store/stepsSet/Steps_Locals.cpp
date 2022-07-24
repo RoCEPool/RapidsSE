@@ -9,57 +9,24 @@
 #include "Steps.hpp"
 
 #include "TagConstants.h"
+#include "LocalVars.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Locals(void)
 {
-  vAddStep("local.fetch"_Stz,     &Step::vLocalFetch);
-  vAddStep("local.store"_Stz,     &Step::vLocalStore);
-  vAddStep("locals|"_Stz,         &Step::vLocalsBar,        true);
-  vAddStep("locals.pop"_Stz,      &Step::vLocalsPop);
-  vAddStep("locals.push"_Stz,     &Step::vLocalsPush);
-  vAddStep("to"_Stz,              &Step::vLocalsTo,         true);
-  
-  vAddStep("params|"_Stz,         &Step::vLocalsBar,        true);
+  vAddStep("locals|"_Stz,            &Step::vLocalsBar,        true);
+  vAddStep("params|"_Stz,            &Step::vLocalsBar,        true);
+  vAddStep("to"_Stz,                 &Step::vLocalsTo,         true);
+
+  vAddStep("locals.framePop"_Stz,    &Step::vLocalsFramePop);
+  vAddStep("locals.framePush"_Stz,   &Step::vLocalsFramePush);
+
+  vAddStep("local.fetch"_Stz,        &Step::vLocalsFetch);
+  vAddStep("local.store"_Stz,        &Step::vLocalsStore);
 }
 
-/*----------------------------------------------------------------------------*/
-/* local.fetch -- push locals[n] onto dstack                                  */
-/*----------------------------------------------------------------------------*/
-void Step::vLocalFetch(void)
-{
-  ENTRY();
-  
-  if ( ! m_pLocalsFrame ) THROW_DSTACK();
-  
-  i8 iLocal = m_pDataStack->iPopInt(__func__);
-  
-  Local* pLocal = m_pLocalsFrame->pLocal(iLocal);
-  
-  m_pDataStack->vPushItem(pLocal->aTypedCell());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* localStore -- pop dstack into locals[n]                                    */
-/*----------------------------------------------------------------------------*/
-void Step::vLocalStore(void)
-{
-  ENTRY();
-  
-  if ( ! m_pLocalsFrame ) THROW_DSTACK();
-  
-  i8 iLocal = m_pDataStack->iPopInt(__func__);
-  
-  Local* pLocal = m_pLocalsFrame->pLocal(iLocal);
-  
-  m_pDataStack->vPopItem(pLocal->aTypedCell(),__func__);
- 
-  EXIT();
-}
 
 /*----------------------------------------------------------------------------*/
 /* locals| -- encode code for: set of local variables              immediate  */
@@ -72,7 +39,7 @@ void Step::vLocalsBar(void)
   
   Dic* pDic = m_oDicStack.pPick(0);
 
-  CellSingle xVariable;
+  SenCell xVariable;
   
   for (;;) {
     
@@ -92,7 +59,12 @@ void Step::vLocalsBar(void)
       m_oDicStack.vPush(pDic);
       
       // enocde locals frame push
-      pCurrentWord->vEncodeCall("locals.push"_Stz);
+      xVariable = (i8)12345678;
+      pCurrentWord->vEncodePush(xVariable);
+      
+      m_pSenCompiler->vLocalsMark();
+      
+      pCurrentWord->vEncodeCall("locals.framePush"_Stz);
     }
     
     // create new word for local variable in current dictionary
@@ -116,46 +88,6 @@ void Step::vLocalsBar(void)
     nLcl++;
     m_pSenCompiler->vLocals(nLcl);
   }
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* locals.pop -- pop locals frame                                             */
-/*----------------------------------------------------------------------------*/
-void Step::vLocalsPop(void)
-{
-  ENTRY();
-  
-  LocalChain* pLocalsFrame = m_pLocalsFrame;
-  
-  if ( ! pLocalsFrame ) THROW_DSTACK();
-  
-  m_pLocalsFrame = m_pLocalsFrame->pNext();
-  
-  delete pLocalsFrame;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* locals.push -- push locals frame                                           */
-/*----------------------------------------------------------------------------*/
-void Step::vLocalsPush(void)
-{
-  ENTRY();
-  
-  if (m_iDebugMark)
-    vDebugPoint();
-
-  
-  LocalChain* pLocalsFrame = new LocalChain;
-  
-  pLocalsFrame->vDiscardPoint((TypedCell*)m_pReturnStack->aTopVal());
-  
-  pLocalsFrame->vNext(m_pLocalsFrame);
-  
-  m_pLocalsFrame = pLocalsFrame;
   
   EXIT();
 }
@@ -528,6 +460,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("Text[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Text[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("Timer[]"_Stz)) {
     pCurrentWord->vEncodeCall("Timer[].set"_Stz);
     EXIT();
@@ -558,14 +495,225 @@ void Step::vLocalsTo(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // handle a local
 
-  CellSingle xVar_LocalNo;
+  SenCell xVar_LocalNo;
   xVar_LocalNo = pLocalWord->iLocalNo();
   
   pCurrentWord->vEncodePush(xVar_LocalNo);
   pCurrentWord->vEncodeCall("local.store"_Stz);
   
   EXIT();
- }
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* locals.framePop -- pop locals frame                                        */
+/*----------------------------------------------------------------------------*/
+
+#ifdef WITH_LOCALS_OOM
+void Step::vLocalsFramePop(void)
+{
+  ENTRY();
+    
+  RASSERT(0 == m_pReturnStack->nValues() ||
+          CN_FIPVAL == m_pReturnStack->aTopVal()->eType());
+
+  if (! m_pLocalVars)
+    vSeeFrameStack();
+  
+  RASSERT(m_pLocalVars);
+  
+  void* aDiscardPoint_return;
+  if (0 == m_pReturnStack->nValues())
+    aDiscardPoint_return = nullptr;
+  else
+    aDiscardPoint_return = m_pReturnStack->aTopVal();
+  
+  m_pLocalVars->vFramePop(aDiscardPoint_return);
+
+  EXIT();
+}
+/*----------------------------------------------------------------------------*/
+#else
+void Step::vLocalsFramePop(void)
+{
+  ENTRY();
+  
+  LocalFrame* pLocalsFrame = m_pLocalFrame;
+  
+  if ( ! pLocalsFrame ) THROW_DSTACK();
+  
+  m_pLocalFrame = m_pLocalFrame->pNext();
+  
+  delete pLocalsFrame;
+  
+  EXIT();
+}
+#endif
+
+/*----------------------------------------------------------------------------*/
+/* locals.framePush -- push locals frame                                      */
+/*----------------------------------------------------------------------------*/
+
+#ifdef WITH_LOCALS_OOM
+void Step::vLocalsFramePush(void)
+{
+  ENTRY();
+  
+  i8 nLocals = m_pDataStack->iPopInt(__func__);
+  RASSERT(nLocals > 0 && nLocals <= 24);
+  
+    if (! m_pLocalVars)
+    m_pLocalVars = new LocalVars;
+  
+  TypeValueArea* axDiscardPoint = m_pReturnStack->aTopVal();
+  
+  RASSERT(0 == m_pReturnStack->nValues() ||
+          CN_FIPVAL == axDiscardPoint->eType());
+  
+  if (! m_pLocalVars->bFramePush(nLocals,axDiscardPoint)) {
+    vSeeFrameStack();
+    NEVER_REACH;
+  }
+  
+  EXIT();
+}
+/*----------------------------------------------------------------------------*/
+#else
+void Step::vLocalsFramePush(void)
+{
+  ENTRY();
+  
+  if (m_iDebugMark)
+    vDebugPoint();
+
+  i8 nLocals = m_pDataStack->iPopInt(__func__);
+  RASSERT(nLocals > 0 && nLocals <= 24);
+  
+  //if (nLocals > 4)
+  //  vTrace("nLocals %lld\n"_Stz,nLocals);
+
+  LocalFrame* pLocalsFrame = new LocalFrame;
+  
+  pLocalsFrame->vDiscardPoint((TypeValueArea*)m_pReturnStack->aTopVal());
+  
+  pLocalsFrame->vNext(m_pLocalFrame);
+  
+  m_pLocalFrame = pLocalsFrame;
+  
+  EXIT();
+}
+#endif
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------------*/
+/* locals.fetch -- push local[n] onto dstack                                  */
+/*----------------------------------------------------------------------------*/
+
+#ifdef WITH_LOCALS_OOM
+void Step::vLocalsFetch(void)
+{
+  ENTRY();
+
+  RASSERT(m_pLocalVars);
+  
+  //m_pLocalVars->vVerify();
+
+  i8 i_Local = m_pDataStack->iPopInt(__func__);
+
+  LocalVar* axLocalVar = m_pLocalVars->axLocalVar(i_Local);
+
+//  vTrace("Pushing i_Local %lld\n"_Stz,i_Local);
+//  vSeeFrameStack();
+  m_pDataStack->vPushLocalVar(axLocalVar);
+
+  //m_pLocalVars->vVerify();
+  
+  EXIT();
+}
+/*----------------------------------------------------------------------------*/
+#else
+void Step::vLocalsFetch(void)
+{
+  ENTRY();
+  
+  if ( ! m_pLocalFrame ) THROW_DSTACK();
+  
+  i8 i_Local = m_pDataStack->iPopInt(__func__);
+  
+  SenCell* pSenCell = m_pLocalFrame->pSenCell(i_Local);
+  
+  m_pDataStack->vPushSenCell(pSenCell);
+  
+  EXIT();
+}
+#endif
+
+/*----------------------------------------------------------------------------*/
+/* localsStore -- pop dstack into local[n]                                    */
+/*----------------------------------------------------------------------------*/
+
+#ifdef WITH_LOCALS_OOM
+void Step::vLocalsStore(void)
+{
+  ENTRY();
+
+  RASSERT(m_pLocalVars);
+  
+  //m_pLocalVars->vVerify();
+
+  i8 i_Local = m_pDataStack->iPopInt(__func__);
+
+  LocalVar* axLocalVar = m_pLocalVars->axLocalVar(i_Local);
+
+//  vTrace("Popping i_Local %lld\n"_Stz,i_Local);
+//  vSeeFrameStack();
+  m_pDataStack->vPopLocalVar(axLocalVar,__func__);
+
+  //m_pLocalVars->vVerify();
+
+  EXIT();
+}
+/*----------------------------------------------------------------------------*/
+#else
+void Step::vLocalsStore(void)
+{
+  ENTRY();
+  
+  //static i8 nMaxSoFar = 0;
+  
+  if ( ! m_pLocalFrame ) THROW_DSTACK();
+  
+  i8 i_Local = m_pDataStack->iPopInt(__func__);
+  
+  SenCell* pSenCell = m_pLocalFrame->pSenCell(i_Local);
+  
+  m_pDataStack->vPopSenCell(pSenCell,__func__);
+  
+  if (CN_STZVAL == pSenCell->eType()) {
+    i8 nStzSize = pSenCell->nStzSize();
+//    if (nStzSize > nMaxSoFar) {
+//      nMaxSoFar = nStzSize;
+//      vTrace("CN_STZVAL %lldB\n%s\n"_Stz,
+//             nStzSize,
+//             pSenCell->szStz());
+//      vSeeFrameStack();
+//    }
+    
+    RASSERT(nStzSize < 500);
+  }
+ 
+  EXIT();
+}
+#endif
+
 
 /*============================================================================*/
 /* end                                                                        */

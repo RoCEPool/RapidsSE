@@ -1198,7 +1198,7 @@ void CmdLineArgs::vPrintStartupInfo(void)
   s32 sSizeMag;
   MagLib::vByteMag(m_xSysArgs.m_iRegionSize,sSizeMag);
   vTrace("  --size %s\n"_Stz,sSizeMag.azChar());
-  
+
   for (i8 i_Index = 0; i_Index < m_xSysArgs.m_nDefinedNodes; i_Index++) {
     vTrace("  --node %s %s %lld\n"_Stz,
       m_xSysArgs.m_xNodeDefn[i_Index].m_sNodeName.azChar(),
@@ -1211,7 +1211,8 @@ void CmdLineArgs::vPrintStartupInfo(void)
            m_xSysArgs.m_xHeartbeatDefn[i_Index].m_sIPAddress.azChar(),
            m_xSysArgs.m_xHeartbeatDefn[i_Index].m_iPortNo);
   }
-  
+
+  vTrace("  --cid %lld\n"_Stz,m_xSysArgs.m_iClusterID);
   vTrace("  --partitionsPerNode %lld\n"_Stz,m_xSysArgs.m_nPtnsPerNode);
   vTrace("  --threads %lld\n"_Stz,m_xSysArgs.m_nThreads);
 
@@ -1223,6 +1224,9 @@ void CmdLineArgs::vPrintStartupInfo(void)
   }
   
   if (m_xSysArgs.m_bMetadata) vTrace("  --metadata\n"_Stz);
+  if (m_xSysArgs.m_bKillPrev) vTrace("  --killPrev\n"_Stz);
+  if (m_xSysArgs.m_bMunged) vTrace("  --munged\n"_Stz);
+  if (m_xSysArgs.m_bMetadata) vTrace("  --metadata\n"_Stz);
 
 #ifdef WITH_DEBUG_VERSION
   vTrace("  --commands %s\n"_Stz,m_xSysArgs.m_sCommandsDir.azChar());
@@ -1231,14 +1235,6 @@ void CmdLineArgs::vPrintStartupInfo(void)
 #endif
   
   if (m_xSysArgs.m_bDeveloper) vTrace("  --developer\n"_Stz);
-  
-  for (i8 i_Node = 0; i_Node < m_xSysArgs.m_nDefinedNodes; i_Node++)
-    vTrace("  --node %s ip %s port %lld\n"_Stz,
-           m_xSysArgs.m_xNodeDefn[i_Node].m_sNodeName.szStz(),
-           m_xSysArgs.m_xNodeDefn[i_Node].m_sIPAddress.szStz(),
-           m_xSysArgs.m_xNodeDefn[i_Node].m_iPortNo);
-    
-
   
   BASE::vTraceWith();
 }

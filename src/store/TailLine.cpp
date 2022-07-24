@@ -63,7 +63,7 @@ i8 TailLine::nWords(void)
 /*----------------------------------------------------------------------------*/
 i8 TailLine::iL(void)
 {
-  i8 nUnits = w8_1B(+ C_U_1B);
+  i8 nUnits = w8_2B(+ C_U_1B);
   
   return nUnits;
 }
@@ -73,7 +73,7 @@ i8 TailLine::iL(void)
 /*----------------------------------------------------------------------------*/
 void TailLine::vL(i8 nL)
 {
-  v1B(+ C_U_1B,nL);
+  v2B(+ C_U_1B,nL);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -134,7 +134,7 @@ Stz* TailLine::sz(void)
   // **********************************
   //
   
-  Stz* szStz = (Stz*) &T.m_yaByte[C_U_1B + C_L_1B];
+  Stz* szStz = (Stz*) &T.m_yaByte[C_U_1B + C_L_2B];
   
   return szStz;
 }

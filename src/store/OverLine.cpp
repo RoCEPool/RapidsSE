@@ -34,17 +34,17 @@ OverLine::~OverLine(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* return size of overflow line in bytes                                      */
 /*----------------------------------------------------------------------------*/
-i8 OverLine::nBytes(void)
+i8 OverLine::jSizeBytes(void)
 {
-  i8 nSizeBytes = nUnits() * sizeof(SpaceUnit);
+  i8 nSizeBytes = jSizeUnits() * sizeof(SpaceUnit);
 
   return nSizeBytes;
 }
 
 /*----------------------------------------------------------------------------*/
-/* return size of overflow in units                                           */
+/* return size of overflow line in units                                      */
 /*----------------------------------------------------------------------------*/
-i8 OverLine::nUnits(void)
+i8 OverLine::jSizeUnits(void)
 {
   i8 nSizeUnits = w8_1B(0);
   
@@ -54,9 +54,9 @@ i8 OverLine::nUnits(void)
 /*----------------------------------------------------------------------------*/
 /* return size of overflow line in words                                      */
 /*----------------------------------------------------------------------------*/
-i8 OverLine::nWords(void)
+i8 OverLine::jSizeWords(void)
 {
-  i8 nSizeWords = nBytes() / C_BYTES_PER_WORD;
+  i8 nSizeWords = jSizeBytes() / C_BYTES_PER_WORD;
 
   return nSizeWords;
 }
@@ -87,7 +87,7 @@ void OverLine::vU(i8 nUnits)
 /*----------------------------------------------------------------------------*/
 void OverLine::vDump(void)
 {
-  i8 nSizeBytes = nBytes();
+  i8 nSizeBytes = jSizeBytes();
   MemLib::vWordDump(this,nSizeBytes);
 }
 

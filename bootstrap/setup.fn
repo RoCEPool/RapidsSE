@@ -48,8 +48,10 @@ readonly __SETUP_FN=1
 
 # Default values
 readonly NODE_CFG_DEFAULT_NAME_PREFIX="NODE"
-readonly NODE_CFG_DEFAULT_PORT="5541"       # TCP
-readonly NODE_CFG_DEFAULT_HEARTBEAT="8888"  # UDP
+readonly NODE_CFG_DEFAULT_INTERNAL_PORT="5541"   # TCP
+readonly NODE_CFG_DEFAULT_CLIENT_PORT="9123"     # TCP
+readonly NODE_CFG_DEFAULT_HEARTBEAT_PORT="8888"  # UDP
+readonly NODE_CFG_DEFAULT_HEARTBEAT_ADDRESS="BROADCAST" # Or a multicast address
 readonly NODE_CFG_DEFAULT_DIR="/opt/rapidsse"
          NODE_CFG_DEFAULT_PARTITIONS="8"  # per node. Non-const.
          NODE_CFG_DEFAULT_THREADS="16"    # per node. Non-const.
@@ -434,8 +436,8 @@ function checkInstallFileVersion() {
 
 function doClusterInstall() {
 
-  # First check the version of bash we are running is sufficient
-  validateLocalBash
+  # First check that we have all the necessary tools for the installation
+  validateLocal3rdPartyTools
 
   # Need to consider if this installation is interactive or scripted, or
   # whether an existing config file is being used.
@@ -456,7 +458,8 @@ function doClusterInstall() {
       # TODO: Present summary
       # TODO: Edit ?
 
-      # Validate that the necessary 3rd party applications and libraries are installed
+      # Validate that the necessary 3rd party applications and libraries are installed.
+      # We do this here because they are used in collectHostSizeInfo and other steps.
       validate3rdPartyTools
 
       # Get the number of CPU cores, memory size, SHM size of each node.
@@ -494,7 +497,8 @@ function doClusterInstall() {
       # TODO: Present summary
       # TODO: Edit ?
 
-      # Validate that the necessary 3rd party applications and libraries are installed
+      # Validate that the necessary 3rd party applications and libraries are installed.
+      # We do this here because they are used in collectHostSizeInfo and other steps.
       validate3rdPartyTools
 
       # Get the number of CPU cores, memory size, SHM size of each node.
@@ -531,7 +535,8 @@ function doClusterInstall() {
     # Load and validate config
     loadClusterConfig
 
-    # Validate that the necessary 3rd party applications and libraries are installed
+    # Validate that the necessary 3rd party applications and libraries are installed.
+    # We do this here because they are used in collectHostSizeInfo and other steps.
     validate3rdPartyTools
 
     # Get the number of CPU cores, memory size, SHM size of each node.
@@ -577,16 +582,27 @@ function createConfiguration() {
   # This populates NODE_CORE_COUNT, NODE_TOTAL_MEM, NODE_TOTAL_SHM and NODE_FREE_SHM
   # and will be used for default values for partitions, threads and
   # shared memory size later on.
+  # Before we do, we need to validate that all hosts have the necessary 3rd party tools installed.
+  validate3rdPartyTools
   collectHostSizeInfo
   
   # Now we can update the default values for memory size, partitions and threads.
   updateDefaults
 
-  # (advanced) port
-  askPort
+  # client port
+  askClientPort
 
-  # (advanced) heartbeat
-  askHeartbeat
+  # (advanced) internal port
+  askInternalPort
+
+  # (advanced) heartbeat address
+  askHeartbeatAddress
+
+  # Validate that the heartbeat address is resolvable
+  validateHeartbeatAddressIsResolvable
+
+  # (advanced) heartbeat port
+  askHeartbeatPort
 
   # installation directory
   askInstallDir
@@ -612,7 +628,8 @@ function createConfiguration() {
 ## Params: None
 
 function displaySetupWelcome() {
-  clear
+  clear &>/dev/null || { echo; echo; }
+
   #shellcheck disable=1090
   source "${VERSION_FILE}"
 
@@ -801,14 +818,15 @@ function askHostnames() {
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Ask the user to enter a default port number that each SE instance will listen on.
+## Ask the user to enter a default port number that each SE instance will listen on
+## for internal inter-node connections.
 ## This only runs when ADV_WIZARD=1.
 ## Params:
 ##  $@ - (optional) a list of node names to set the port value for.
 ##       If not set then all nodes will be updated
 
 # shellcheck disable=SC2120
-function askPort() {
+function askInternalPort() {
 
   local -a nodeNames
   if [ "$#" -eq 0 ]; then
@@ -818,7 +836,7 @@ function askPort() {
   fi
 
   if [ ${ADV_WIZARD} -ne 1 ]; then
-    specificNodeCfgsSetValue "${NODE_CFG_PORT_KEY}" "${NODE_CFG_DEFAULT_PORT}" "${nodeNames[@]}"
+    specificNodeCfgsSetValue "${NODE_CFG_INTERNAL_PORT_KEY}" "${NODE_CFG_DEFAULT_INTERNAL_PORT}" "${nodeNames[@]}"
     return
   fi
 
@@ -836,12 +854,12 @@ function askPort() {
   do
 
     echo ""
-    echo -n "Enter a TCP port number for node communication [default: ${NODE_CFG_DEFAULT_PORT}] : "
+    echo -n "Enter a TCP port number for inter-node communication [default: ${NODE_CFG_DEFAULT_INTERNAL_PORT}] : "
     IFS=$'\n' read -r line
 
     if [ -z "${line:-}" ]; then
       # Accepting the default value
-      line="${NODE_CFG_DEFAULT_PORT}"
+      line="${NODE_CFG_DEFAULT_INTERNAL_PORT}"
       break
     fi
 
@@ -856,7 +874,13 @@ function askPort() {
     fi
 
     if [[ ${line} -lt 1 || ${line} -gt 65535 ]]; then
-      echo "Invalid input: port number out of range [1024, 65535]."
+      if [[ ${EUID} -ne 0 ]]; then
+        # Regular user
+        echo "Invalid input: port number out of range [1024, 65535]."
+      else
+        # Superuser
+        echo "Invalid input: port number out of range [1, 65535]."
+      fi
       continue
     fi
 
@@ -869,7 +893,167 @@ function askPort() {
   done
 
   # Set the value for all relevant nodes
-  specificNodeCfgsSetValue "${NODE_CFG_PORT_KEY}" "${line}" "${nodeNames[@]}"
+  specificNodeCfgsSetValue "${NODE_CFG_INTERNAL_PORT_KEY}" "${line}" "${nodeNames[@]}"
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Ask the user to enter a default port number that each SE instance will listen on
+## for client connections.
+## Params:
+##  $@ - (optional) a list of node names to set the port value for.
+##       If not set then all nodes will be updated
+
+# shellcheck disable=SC2120
+function askClientPort() {
+
+  local -a nodeNames
+  if [ "$#" -eq 0 ]; then
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    nodeNames=( "$@" )
+  fi
+
+  echo ""
+  echo "Client Port Number"
+  echo "--------------------"
+  echo ""
+  echo "The client port number is the TCP/IP port that external clients and drivers "
+  echo "(such as JDBC) use to communicate with RapidsSE via its wire line protocol."
+
+  local line
+  local re="^-?[0-9]+$"
+
+  while true
+  do
+
+    echo ""
+    echo -n "Enter a TCP port number for client communication [default: ${NODE_CFG_DEFAULT_CLIENT_PORT}] : "
+    IFS=$'\n' read -r line
+
+    if [ -z "${line:-}" ]; then
+      # Accepting the default value
+      line="${NODE_CFG_DEFAULT_CLIENT_PORT}"
+      break
+    fi
+
+    if [[ "${line}" = *[[:space:]]* ]]; then
+      echo "Invalid input: port number cannot contain whitespace."
+      continue
+    fi
+
+    if ! [[ ${line} =~ ${re} ]]; then
+      echo "Invalid input: port number must be an integer."
+      continue
+    fi
+
+    if [[ ${line} -lt 1 || ${line} -gt 65535 ]]; then
+      if [[ ${EUID} -ne 0 ]]; then
+        # Regular user
+        echo "Invalid input: port number out of range [1024, 65535]."
+      else
+        # Superuser
+        echo "Invalid input: port number out of range [1, 65535]."
+      fi
+      continue
+    fi
+
+    if [[ ${line} -lt 1024 && ${EUID} -ne 0 ]]; then
+      echo "Invalid input: Cannot use a port number less than 1024 as a non-root user."
+      continue
+    fi
+
+    break
+  done
+
+  # Set the value for all relevant nodes
+  specificNodeCfgsSetValue "${NODE_CFG_CLIENT_PORT_KEY}" "${line}" "${nodeNames[@]}"
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Ask the user to enter an IP or hostname that each SE instance will use
+## to share status information and heartbeat messages on. This is either a
+## multicast IP address or the word BROADCAST.
+## This only runs when ADV_WIZARD=1.
+##  $@ - (optional) a list of node names to set the port value for.
+##       If not set then all nodes will be updated
+
+# shellcheck disable=SC2120
+function askHeartbeatAddress() {
+
+  local -a nodeNames
+  if [ "$#" -eq 0 ]; then
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    nodeNames=( "$@" )
+  fi
+
+  if [ ${ADV_WIZARD} -ne 1 ]; then
+    specificNodeCfgsSetValue "${NODE_CFG_HEARTBEAT_ADDRESS_KEY}" "${NODE_CFG_DEFAULT_HEARTBEAT_ADDRESS}" "${nodeNames[@]}"
+    return
+  fi
+
+  echo ""
+  echo "Heartbeat Address"
+  echo "-----------------"
+  echo ""
+  echo "The heartbeat address is the IP or hostname that RapidsSE sends messages to "
+  echo "to share status information with other nodes in the cluster. It is either a "
+  echo "multicast IP address (if supported), or the word BROADCAST."
+
+  local line
+
+  declare -a loopbackHosts=()
+  loopbackHosts=("localhost" "127.0.0.1" "::1")
+
+  local gotLoopback=0
+  local broadcast="BROADCAST"
+
+  while true
+  do
+
+    echo ""
+    echo -n "Enter a UDP heartbeat IP/hostname address for node communication [default: ${NODE_CFG_DEFAULT_HEARTBEAT_ADDRESS}] : "
+    IFS=$'\n' read -r line
+
+    if [ -z "${line:-}" ]; then
+      # Accepting the default value
+      line="${NODE_CFG_DEFAULT_HEARTBEAT_ADDRESS}"
+      break
+    fi
+
+    # Check for the word BROADCAST in a different case
+    if [ "${line,,}" = "${broadcast,,}" ]; then
+      # Use uppercase to be consistent
+      line="${broadcast}"
+      break
+    fi
+
+    if [[ "${line}" = *[[:space:]]* ]]; then
+      echo "Invalid input: hostname/IP cannot contain whitespace."
+      continue
+    fi
+
+    gotLoopback=0
+    for addr in "${loopbackHosts[@]}"
+    do
+      if [ "${line}" = "${addr}" ]; then
+        echo "Invalid input: heartbeat address cannot be a loopback name/address."
+        gotLoopback=1
+        break;
+      fi
+    done
+
+    if [ "${gotLoopback}" -eq 1 ]; then
+      continue
+    fi
+
+    break
+  done
+
+  # Set the value for all nodes
+  specificNodeCfgsSetValue "${NODE_CFG_HEARTBEAT_ADDRESS_KEY}" "${line}" "${nodeNames[@]}"
 }
 
 
@@ -881,7 +1065,7 @@ function askPort() {
 ##       If not set then all nodes will be updated
 
 # shellcheck disable=SC2120
-function askHeartbeat() {
+function askHeartbeatPort() {
 
   local -a nodeNames
   if [ "$#" -eq 0 ]; then
@@ -891,7 +1075,7 @@ function askHeartbeat() {
   fi
 
   if [ ${ADV_WIZARD} -ne 1 ]; then
-    specificNodeCfgsSetValue "${NODE_CFG_HEARTBEAT_KEY}" "${NODE_CFG_DEFAULT_HEARTBEAT}" "${nodeNames[@]}"
+    specificNodeCfgsSetValue "${NODE_CFG_HEARTBEAT_PORT_KEY}" "${NODE_CFG_DEFAULT_HEARTBEAT_PORT}" "${nodeNames[@]}"
     return
   fi
 
@@ -909,12 +1093,12 @@ function askHeartbeat() {
   do
 
     echo ""
-    echo -n "Enter a UDP heartbeat port number for node communication [default: ${NODE_CFG_DEFAULT_HEARTBEAT}] : "
+    echo -n "Enter a UDP heartbeat port number for node communication [default: ${NODE_CFG_DEFAULT_HEARTBEAT_PORT}] : "
     IFS=$'\n' read -r line
 
     if [ -z "${line:-}" ]; then
       # Accepting the default value
-      line="${NODE_CFG_DEFAULT_HEARTBEAT}"
+      line="${NODE_CFG_DEFAULT_HEARTBEAT_PORT}"
       break
     fi
 
@@ -948,7 +1132,7 @@ function askHeartbeat() {
   done
 
   # Set the value for all nodes
-  specificNodeCfgsSetValue "${NODE_CFG_HEARTBEAT_KEY}" "${line}" "${nodeNames[@]}"
+  specificNodeCfgsSetValue "${NODE_CFG_HEARTBEAT_PORT_KEY}" "${line}" "${nodeNames[@]}"
 }
 
 
@@ -1716,7 +1900,7 @@ function distributeFile() {
     local nodeRemotePath="${installDir}/${remotePath}"
 
     # Build the command
-    local cmd=( "scp" "-q" "${localPath}" ""${hostname}":${nodeRemotePath}"  )
+    local cmd=( "scp" "-q" "${localPath}" "${hostname}:${nodeRemotePath}"  )
 
     debugPrint "Distributing file ${localPath} to node ${nodeName} at ${nodeRemotePath}."
     debugPrint "Command: ${cmd[*]}"

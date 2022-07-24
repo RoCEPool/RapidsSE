@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* TypedCell.cpp -- Self-Describing / Dynamically Typed Cell                  */
+/* TypeValueArea.cpp -- Self-Describing / Dynamically Typed Value + Area      */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -11,17 +11,17 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-TypedCell::TypedCell(void)
+TypeValueArea::TypeValueArea(void)
 {
   #ifdef WITH_CHECK_INITIALISED
-    MemLib::vZero(m_caStringArea,sizeof(m_caStringArea),CN_CELLSINGLE);
+    MemLib::vZero(m_caStringArea,sizeof(m_caStringArea),CN_SENCELL);
   #endif
  }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-TypedCell::~TypedCell(void) noexcept(false)
+TypeValueArea::~TypeValueArea(void) noexcept(false)
 {
  
 }
@@ -31,51 +31,51 @@ TypedCell::~TypedCell(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* return a value                                                             */
-/*----------------------------------------------------------------------------*/
-i8 TypedCell::iBcd(void)
-{
-  return m_wxValueCell.iGetColVal();
-}
-
-/*----------------------------------------------------------------------------*/
-/* assign a value                                                             */
-/*----------------------------------------------------------------------------*/
-void TypedCell::vBcd(i8 iBcd)
-{
-  vType(CN_BCDVAL);
-  m_wxValueCell.vPutColVal(iBcd);
-}
-
-/*----------------------------------------------------------------------------*/
-/* return a value                                                             */
-/*----------------------------------------------------------------------------*/
-i8 TypedCell::iBol(void)
-{
-  return m_wxValueCell.iGetColVal();
-}
-
-/*----------------------------------------------------------------------------*/
-/* assign a value                                                             */
-/*----------------------------------------------------------------------------*/
-void TypedCell::vBol(i8 iBcd)
-{
-  vType(CN_BOLVAL);
-  m_wxValueCell.vPutColVal(iBcd);
-}
-
-/*----------------------------------------------------------------------------*/
 /* get integer                                                                */
 /*----------------------------------------------------------------------------*/
-i8 TypedCell::iAsInt(void)
+i8 TypeValueArea::iAsInt(void)
 {
-  return m_wxValueCell.iAsI8();
+  return m_wxValue.iAsI8();
+}
+
+/*----------------------------------------------------------------------------*/
+/* return a value                                                             */
+/*----------------------------------------------------------------------------*/
+i8 TypeValueArea::iBcd(void)
+{
+  return m_wxValue.iGetColVal();
+}
+
+/*----------------------------------------------------------------------------*/
+/* assign a value                                                             */
+/*----------------------------------------------------------------------------*/
+void TypeValueArea::vBcd(i8 iBcd)
+{
+  vType(CN_BCDVAL);
+  m_wxValue.vPutColVal(iBcd);
+}
+
+/*----------------------------------------------------------------------------*/
+/* return a value                                                             */
+/*----------------------------------------------------------------------------*/
+i8 TypeValueArea::iBol(void)
+{
+  return m_wxValue.iGetColVal();
+}
+
+/*----------------------------------------------------------------------------*/
+/* assign a value                                                             */
+/*----------------------------------------------------------------------------*/
+void TypeValueArea::vBol(i8 iBcd)
+{
+  vType(CN_BOLVAL);
+  m_wxValue.vPutColVal(iBcd);
 }
 
 /*----------------------------------------------------------------------------*/
 /* set type/class of embedded value                                           */
 /*----------------------------------------------------------------------------*/
-void TypedCell::vInit(void)
+void TypeValueArea::vInit(void)
 {
   vType(CN_NONE);
   vInt(-1);
@@ -83,7 +83,7 @@ void TypedCell::vInit(void)
   m_caStringArea[0] = '\0';
   
 #ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_caStringArea,sizeof(m_caStringArea),CN_CELLSINGLE);
+  MemLib::vZero(m_caStringArea,sizeof(m_caStringArea),CN_SENCELL);
 #endif
 
 }
@@ -91,13 +91,13 @@ void TypedCell::vInit(void)
 /*----------------------------------------------------------------------------*/
 /* assign given str                                                           */
 /*----------------------------------------------------------------------------*/
-void TypedCell::vStz(Stz* szStz)
+void TypeValueArea::vStz(Stz* szStz)
 {
   vType(CN_STZVAL);
   
   i8 nBytesFollowing = StrLib::nCopy(m_caStringArea,szStz->azChar()) + 1;
   
-  m_wxValueCell = nBytesFollowing;
+  m_wxValue = nBytesFollowing;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -113,7 +113,7 @@ void TypedCell::vStz(Stz* szStz)
 /*----------------------------------------------------------------------------*/
 /* get char*                                                                  */
 /*----------------------------------------------------------------------------*/
-char* TypedCell::azChar(void)
+char* TypeValueArea::azChar(void)
 {
   ASSERT(CN_STZVAL == eType());
 
@@ -123,7 +123,7 @@ char* TypedCell::azChar(void)
 /*----------------------------------------------------------------------------*/
 /* copy source stack value into this one                                      */
 /*----------------------------------------------------------------------------*/
-void TypedCell::vCopy(TypedCell* aSrcVal, i8 nBytes)
+void TypeValueArea::vCopy(TypeValueArea* aSrcVal, i8 nBytes)
 {
   if (! nBytes)
     nBytes = aSrcVal->nStackUsage();
@@ -134,58 +134,58 @@ void TypedCell::vCopy(TypedCell* aSrcVal, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* return a value                                                             */
 /*----------------------------------------------------------------------------*/
-CodeCell* TypedCell::aFip(void)
+CodeCell* TypeValueArea::aFip(void)
 {
-  return m_wxValueCell.aGetColVal();
+  return m_wxValue.aGetColVal();
 }
 
 /*----------------------------------------------------------------------------*/
 /* assign a value                                                             */
 /*----------------------------------------------------------------------------*/
-void TypedCell::vFip(CodeCell* aFip)
+void TypeValueArea::vFip(CodeCell* aFip)
 {
   vType(CN_FIPVAL);
-  m_wxValueCell.vPutColVal(aFip);
+  m_wxValue.vPutColVal(aFip);
 }
 
 /*----------------------------------------------------------------------------*/
 /* return a value                                                             */
 /*----------------------------------------------------------------------------*/
-d8 TypedCell::dFlt(void)
+d8 TypeValueArea::dFlt(void)
 {
-  return m_wxValueCell.dGetColVal();
+  return m_wxValue.dGetColVal();
 }
 
 /*----------------------------------------------------------------------------*/
 /* assign a value                                                             */
 /*----------------------------------------------------------------------------*/
-void TypedCell::vFlt(d8 dFlt)
+void TypeValueArea::vFlt(d8 dFlt)
 {
   vType(CN_FLTVAL);
-  m_wxValueCell.vPutColVal(dFlt);
+  m_wxValue.vPutColVal(dFlt);
 }
 
 /*----------------------------------------------------------------------------*/
 /* return a value                                                             */
 /*----------------------------------------------------------------------------*/
-i8 TypedCell::iInt(void)
+i8 TypeValueArea::iInt(void)
 {
-  return m_wxValueCell.iGetColVal();
+  return m_wxValue.iGetColVal();
 }
 
 /*----------------------------------------------------------------------------*/
 /* assign a value                                                             */
 /*----------------------------------------------------------------------------*/
-void TypedCell::vInt(i8 iInt)
+void TypeValueArea::vInt(i8 iInt)
 {
   vType(CN_INTVAL);
-  m_wxValueCell.vPutColVal(iInt);
+  m_wxValue.vPutColVal(iInt);
 }
 
 /*----------------------------------------------------------------------------*/
 /* set magic                                                                  */
 /*----------------------------------------------------------------------------*/
-void TypedCell::vMagic(void)
+void TypeValueArea::vMagic(void)
 {
   m_wxType.vSetMagic();
 }
@@ -193,34 +193,34 @@ void TypedCell::vMagic(void)
 /*----------------------------------------------------------------------------*/
 /* return a value                                                             */
 /*----------------------------------------------------------------------------*/
-Object* TypedCell::pObj(void)
+Object* TypeValueArea::pObj(void)
 {
-  return m_wxValueCell.pGetColVal();
+  return m_wxValue.pGetColVal();
 }
 
 /*----------------------------------------------------------------------------*/
 /* assign a value                                                             */
 /*----------------------------------------------------------------------------*/
-void TypedCell::vObj(Object* pObject)
+void TypeValueArea::vObj(Object* pObject)
 {
   vType(CN_PTRVAL);
-  m_wxValueCell.vPutColVal(pObject);
+  m_wxValue.vPutColVal(pObject);
 }
 
 /*----------------------------------------------------------------------------*/
 /* get how many bytes are needed to push this StzVal on stack                 */
 /*----------------------------------------------------------------------------*/
-i8 TypedCell::nStackUsage(void)
+i8 TypeValueArea::nStackUsage(void)
 {
   i8 nBytes;
   
   if (CN_STZVAL == eType())
     nBytes = sizeof(m_wxType)
-               + sizeof(m_wxValueCell)
-               + m_wxValueCell.iGetColVal();
+               + sizeof(m_wxValue)
+               + m_wxValue.iGetColVal();
   else
     nBytes = sizeof(m_wxType)
-               + sizeof(m_wxValueCell);
+               + sizeof(m_wxValue);
 
   return nBytes;
 }
@@ -228,7 +228,7 @@ i8 TypedCell::nStackUsage(void)
 /*----------------------------------------------------------------------------*/
 /* get adddress of Stz area                                                   */
 /*----------------------------------------------------------------------------*/
-Stz* TypedCell::szStz(void)
+Stz* TypeValueArea::szStz(void)
 {
   ASSERT(CN_STZVAL == eType());
   return reinterpret_cast<Stz*>(m_caStringArea);
@@ -237,24 +237,24 @@ Stz* TypedCell::szStz(void)
 /*----------------------------------------------------------------------------*/
 /* get size of str                                                            */
 /*----------------------------------------------------------------------------*/
-i8 TypedCell::nStzSize(void)
+i8 TypeValueArea::nStzSize(void)
 {
   ASSERT(CN_STZVAL == eType());
-  return m_wxValueCell.iGetColVal();
+  return m_wxValue.iGetColVal();
 }
 
 /*----------------------------------------------------------------------------*/
 /* set size of str                                                            */
 /*----------------------------------------------------------------------------*/
-void TypedCell::vStzSize(i8 nSize)
+void TypeValueArea::vStzSize(i8 nSize)
 {
-  m_wxValueCell = nSize;
+  m_wxValue = nSize;
 }
 
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void TypedCell::vToStz(Stz* szDst)
+void TypeValueArea::vToStz(Stz* szDst)
 {
   if (CN_INTVAL == eType())
     * szDst = iInt();
@@ -272,7 +272,7 @@ void TypedCell::vToStz(Stz* szDst)
 /*----------------------------------------------------------------------------*/
 /* get type/class of embedded value                                           */
 /*----------------------------------------------------------------------------*/
-eCN TypedCell::eType(void)
+eCN TypeValueArea::eType(void)
 {
   return (eCN)m_wxType.eGetClassNo();
 }
@@ -280,11 +280,18 @@ eCN TypedCell::eType(void)
 /*----------------------------------------------------------------------------*/
 /* set type/class of embedded value                                           */
 /*----------------------------------------------------------------------------*/
-void TypedCell::vType(eCN eType)
+void TypeValueArea::vType(eCN eType)
 {
   m_wxType.vSetClassNo(eType);
 }
 
+/*----------------------------------------------------------------------------*/
+/* get address of type+value                                                  */
+/*----------------------------------------------------------------------------*/
+TypeValue* TypeValueArea::aTypeValue(void)
+{
+  return this;
+}
 
 /*============================================================================*/
 /* end                                                                        */

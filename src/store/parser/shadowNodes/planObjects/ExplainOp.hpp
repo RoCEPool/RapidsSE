@@ -68,6 +68,7 @@ namespace Parser
 
     // Returns true if the types of the projected expressions should be printed
     static b1 bWithTypes(QueryNode* pNode);
+    static void vWithTypes(QueryNode* pNode, b1 bWithTypes);
 
   protected:
 

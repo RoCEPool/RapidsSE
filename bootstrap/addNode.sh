@@ -352,10 +352,10 @@ function alterConfiguration() {
   updateDefaults
 
   # (advanced) port
-  askPort "${ADDED_NODE_LIST[@]}"
+  askInternalPort "${ADDED_NODE_LIST[@]}"
 
   # Copy the same heartbeat value from the first node
-  copyValue "${NODE_CFG_HEARTBEAT_KEY}" "${ADDED_NODE_LIST[@]}"
+  copyValue "${NODE_CFG_HEARTBEAT_PORT_KEY}" "${ADDED_NODE_LIST[@]}"
 
   # installation directory
   askInstallDir "${ADDED_NODE_LIST[@]}"

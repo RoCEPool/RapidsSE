@@ -19,35 +19,35 @@ void CrwPacker::vPackCrw(HeadLine* aHeadLine, Encoding* pEncoding)
 {
   _static_
   
+  //pEncoding->vDumpEncoding();
+  
   // note: an OverLine will have been alloted if needed
   
-  _ColEnc* aColEnc;
-  i8 nHeadSize;
   u1 uMetaCode;
   u1 uHigh;
   u1 uLow;
-  i8 nStrBytes;
+  i8 jStrBytes;
   i8 i_Tail_rel;
-  i8 i_Offset;
-  i8 i_Offset_over;
-  byte* aByte;
-  
-  i8 i_BaseOffsetMeta = C_CONTROL_SIZE;
+  i8 o_MetaOffset_head;
+  i8 o_DataOffset_over;
+  byte* aMetaByte;
+  byte* aDataByte;
 
-  i8 nHeadBytes = aHeadLine->nBytes();
+  i8 o_BaseOffsetMeta = C_CONTROL_SIZE;
+
+  i8 jHeadBytes = aHeadLine->jSizeBytes();
   OverLine* aOverLine = nullptr;
 
   i8 nCols = pEncoding->m_nColumns;
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
         
-    aColEnc = &pEncoding->xaColEnc[i_Col];
-    nHeadSize = pEncoding->m_nHeadSize;
+    _ColEnc& rxColEnc = pEncoding->xaColEnc[i_Col];
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//
     //                            meta code packing                           //
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//
 
-    if (aColEnc->m_bSplit)
+    if (rxColEnc.m_bSplit)
       goto L_MetaSplit;
 
     /*
@@ -80,9 +80,9 @@ void CrwPacker::vPackCrw(HeadLine* aHeadLine, Encoding* pEncoding)
     // set <M> for this column
     //aHeadLine->vMetaCode(i_Col,aColEnc->m_uMetaCode);
     
-    i_Offset = i_BaseOffsetMeta + i_Col;
-    aByte = ((byte*)aHeadLine) + i_Offset;
-    *aByte = aColEnc->m_uMetaCode;
+    o_MetaOffset_head = o_BaseOffsetMeta + i_Col;
+    aMetaByte = ((byte*)aHeadLine) + o_MetaOffset_head;
+    *aMetaByte = rxColEnc.m_uMetaCode;
 
     
     goto L_DataPack;
@@ -123,9 +123,9 @@ void CrwPacker::vPackCrw(HeadLine* aHeadLine, Encoding* pEncoding)
     // set <MC_OVERFLOW_2T> for this column
     uMetaCode = METACODE_FORM(MC_OVERFLOW,2);
 //    aHeadLine->vMetaCode(i_Col,uMetaCode);
-    i_Offset = i_BaseOffsetMeta + i_Col;
-    aByte = ((byte*)aHeadLine) + i_Offset;
-    *aByte = uMetaCode;
+    o_MetaOffset_head = o_BaseOffsetMeta + i_Col;
+    aMetaByte = ((byte*)aHeadLine) + o_MetaOffset_head;
+    *aMetaByte = uMetaCode;
 
 
     aOverLine = aHeadLine->aGetOver();
@@ -139,8 +139,8 @@ void CrwPacker::vPackCrw(HeadLine* aHeadLine, Encoding* pEncoding)
     // +--------------------------------+   +--------------------------------+
     
     // put <M> into over line
-    aByte = ((byte*)aOverLine) + C_U_1B;
-    *aByte = aColEnc->m_uMetaCode;
+    aMetaByte = ((byte*)aOverLine) + C_U_1B;
+    *aMetaByte = rxColEnc.m_uMetaCode;
 
     goto L_DataPack;
     
@@ -153,11 +153,11 @@ void CrwPacker::vPackCrw(HeadLine* aHeadLine, Encoding* pEncoding)
     //vPutDataCode_v2(aHeadLine,pEncoding->xaColEnc[i_Col]);
     
     // no data code {D} case
-    if (! aColEnc->m_nDataSize)
+    if (! rxColEnc.m_jDataBytes)
       goto L_RowPacked;
     
     // non-vch packing as {1..8B} (max of 1 word)
-    if (DM_VCH == aColEnc->m_pCol->eDatum())
+    if (DM_VCH == rxColEnc.m_pCol->eDatum())
       goto L_PackVch;
     
     //vPutData_Bytes_v2(aHeadLine,pEncoding->xaColEnc[i_Col]);
@@ -169,16 +169,16 @@ void CrwPacker::vPackCrw(HeadLine* aHeadLine, Encoding* pEncoding)
     
     // put {D}
     if (aOverLine) {
-      i_Offset_over = aColEnc->m_i_Offset - nHeadBytes;
+      o_DataOffset_over = rxColEnc.m_o_DataFrom - jHeadBytes;
 
-      aOverLine->vPut(i_Offset_over,
-                      aColEnc->m_wDataCode.m_iWrd,
-                      aColEnc->m_nDataSize);
+      aOverLine->vPut(o_DataOffset_over,
+                      rxColEnc.m_wDataCode.m_iWrd,
+                      rxColEnc.m_jDataBytes);
     }
     else {
-      aHeadLine->vPut(aColEnc->m_i_Offset,
-                      aColEnc->m_wDataCode.m_iWrd,
-                      aColEnc->m_nDataSize);
+      aHeadLine->vPut(rxColEnc.m_o_DataFrom,
+                      rxColEnc.m_wDataCode.m_iWrd,
+                      rxColEnc.m_jDataBytes);
     }
     goto L_RowPacked;
 
@@ -187,43 +187,27 @@ void CrwPacker::vPackCrw(HeadLine* aHeadLine, Encoding* pEncoding)
   L_PackVch:
     // vch packing
     
-    METACODE_SPLIT(aColEnc->m_uMetaCode,uHigh,uLow);
+    METACODE_SPLIT(rxColEnc.m_uMetaCode,uHigh,uLow);
     
-    if (MC_STRING_TAIL != uHigh)
+    if (MC_STRING_TAIL == uHigh)
+      goto L_PackVch_Tail;
+    else
       goto L_PackVch_Head;
-    
-    // calculate [TL]
-    i_Tail_rel = aHeadLine->iGetTailRel(aColEnc->m_aTailLine);
-    
-    //      -- HeadLine / OverLine --                -- TailLine --
-    // +--------------------------------+   **********************************
-    // | ...[TL]                        |---* <U><L><Stl> ////////////////// *
-    // +--------------------------------+   **********************************
-    //
-    
-    // put [TL]
-    if (aOverLine) {
-      i_Offset_over = aColEnc->m_i_Offset - nHeadBytes;
-      aOverLine->vPut(i_Offset_over,i_Tail_rel,C_2B);
-    }
-    else {
-      aHeadLine->vPut(aColEnc->m_i_Offset,i_Tail_rel,C_2B);
-    }
-    goto L_RowPacked;
 
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     
   L_PackVch_Head:
     if (MC_STRING_x1  == uHigh)
-      nStrBytes = STRx1(uLow);
+      jStrBytes = STRx1(uLow);
     else
     if (MC_STRING_x2  == uHigh)
-      nStrBytes = STRx2(uLow);
+      jStrBytes = STRx2(uLow);
     else
     if (MC_STRING_x4  == uHigh)
-      nStrBytes = STRx4(uLow);
+      jStrBytes = STRx4(uLow);
     else
     if (MC_STRING_x8  == uHigh)
-      nStrBytes = STRx8(uLow);
+      jStrBytes = STRx8(uLow);
     else {
       RASSERT(0);
     }
@@ -235,23 +219,57 @@ void CrwPacker::vPackCrw(HeadLine* aHeadLine, Encoding* pEncoding)
     
     // put <StringZ> (with null terminator)
     if (aOverLine) {
-      i_Offset_over = aColEnc->m_i_Offset - nHeadBytes;
-      aByte = ((byte*)aOverLine) + i_Offset_over;
-      MemLib::vCopy(aByte,aColEnc->m_wDataCode.m_szVch,nStrBytes,CN_ROWCOMPACTOR);
+      o_DataOffset_over = rxColEnc.m_o_DataFrom - jHeadBytes;
+      aDataByte = ((byte*)aOverLine) + o_DataOffset_over;
+      MemLib::vCopy(aDataByte,rxColEnc.m_wDataCode.m_szVch,jStrBytes,CN_ROWCOMPACTOR);
 
 //      aHeadLine->vPutDataLogical(aColEnc->m_i_Offset,
 //                                 aColEnc->m_wDataCode.m_szVch,
 //                                 nStrBytes);
     }
     else {
-      aByte = ((byte*)aHeadLine) + aColEnc->m_i_Offset;
-      MemLib::vCopy(aByte,aColEnc->m_wDataCode.m_szVch,nStrBytes,CN_ROWCOMPACTOR);
+      aDataByte = ((byte*)aHeadLine) + rxColEnc.m_o_DataFrom;
+      MemLib::vCopy(aDataByte,rxColEnc.m_wDataCode.m_szVch,jStrBytes,CN_ROWCOMPACTOR);
 
 //      aHeadLine->vPutDataLogical(aColEnc->m_i_Offset,
 //                                 aColEnc->m_wDataCode.m_szVch,
 //                                 nStrBytes);
     }
+    goto L_RowPacked;
+
     
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    
+  L_PackVch_Tail:
+
+    // calculate [TL]
+    i_Tail_rel = aHeadLine->iToTail_rel(rxColEnc.m_aTailLine);
+    
+    //      -- HeadLine / OverLine --                -- TailLine --
+    // +--------------------------------+   **********************************
+    // | ...[TL]                        |---* <U><L><Stl> ////////////////// *
+    // +--------------------------------+   **********************************
+    //
+    
+    // put [TL]
+    RASSERT(aOverLine);
+    //if (aOverLine) {
+      o_DataOffset_over = rxColEnc.m_o_DataFrom - jHeadBytes;
+      aOverLine->vPut(o_DataOffset_over,i_Tail_rel,C_2B);
+    //}
+    //else {
+    //  NEVER_REACH;
+    //  aHeadLine->vPut(aColEnc->m_i_Offset,i_Tail_rel,C_2B);
+    //}
+    
+    //aDataByte = ((byte*)aColEnc->m_aTailLine) + C_U_1B + C_L_2B;
+    //nStrBytes = aColEnc->m_nDataSize;
+    //RASSERT(nStrBytes == StrLib::nSize(aColEnc->m_wDataCode.m_szVch->azChar()));
+    //MemLib::vCopy(aDataByte,aColEnc->m_wDataCode.m_szVch,nStrBytes,CN_ROWCOMPACTOR);
+
+    goto L_RowPacked;
+
+  
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     
   L_RowPacked:

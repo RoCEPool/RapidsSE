@@ -17,8 +17,8 @@
 #include "BASE_hb.h"
 
 
-
-
+static const u8 C_HEARTBEAT_HEADER = 0x7461654274726148; // spells "HartBeat"
+                                     //t a e B t r a H
 
 /*----------------------------------------------------------------------------*/
 /* Heartbeat class contains data for heartbeat                                */
@@ -26,8 +26,11 @@
 class Heartbeat {
   
 public:
-  
-  i8   m_iHeader;            //
+
+  union {
+    u8   m_uHeader;          // 8 byte magic signature
+    char m_caHeader[8];
+  };
 
   u4   m_u4Version;          // version of the packet
   i8   m_iSeqNo;             // Do we need this ? Why?
@@ -234,7 +237,7 @@ public:
 
 class HeartbeatSnd {
 public:
-  HeartbeatSnd(const std::string &sAddr, int iPort);
+  HeartbeatSnd(const std::string &sAddr, int iPort, bool bIsBroadcast);
 
   ~HeartbeatSnd();
 
@@ -249,6 +252,7 @@ public:
 private:
   int m_iSocket;
   int m_iPort;
+  bool m_bIsBroadcast;
   std::string m_sAddr;
   struct addrinfo *m_pAddrInfo;
 };
@@ -256,7 +260,7 @@ private:
 
 class HeartbeatRcv {
 public:
-  HeartbeatRcv(const std::string &addr, int port);
+  HeartbeatRcv(const std::string &addr, int port, bool bIsBroadcast);
 
   ~HeartbeatRcv();
 
@@ -273,9 +277,10 @@ public:
 private:
   int m_iSocket;
   int m_iPort;
+  bool m_bIsBroadcast;
   std::string m_sAddr;
-  //struct addrinfo     m_AddrInfo;
-  sockaddr_in m_AddrIn;
+  sockaddr_in m_BindAddrIn;
+  struct addrinfo* m_pMulticastAddr;
 };
 
 class Heartbeat_RTE : public std::runtime_error {

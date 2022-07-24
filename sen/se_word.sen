@@ -19,7 +19,7 @@
 /*----------------------------------------------------------------------------*/
 : word::isKnown ( <"wordNm"> )
   find
-  not if EC_NO_SUCH_WORD false exit_rt then
+  not if EC_NO_SUCH_WORD false exit then
   true
 ;
 

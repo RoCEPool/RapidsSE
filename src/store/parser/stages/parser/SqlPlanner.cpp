@@ -3164,7 +3164,7 @@ Bcd SqlPlanner::xCleanDecimal(Stz* szStr, i8 iLine, i8 iColumn)
     // iDecimal > (2^47 - 1) || iDecimal < (-2^47)
     SyntaxException::vThrow(iLine, iColumn,
                             EC_VALUE_OUT_OF_RANGE,
-                            ": Max/min decimal precision supported is [2^47, (2^47) - 1] : %s"_Stz, szStr);
+                            ": Max/min decimal precision supported is [-1,407,374,883,553.28, 1,407,374,883,553.27] : %s"_Stz, szStr);
   }
 
 

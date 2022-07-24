@@ -482,12 +482,12 @@ namespace STORE
         
       case MC_STRING_TAIL: // string in tail -- -- -- -- -- -- -- -- -- -- -- --
         u_Tail_rel = *(u2*)rayDataByte;
-        aTailLine = aHeadLine->aGetTailRel(u_Tail_rel);
+        aTailLine = aHeadLine->aGetTail_rel(u_Tail_rel);
         
-        nStrSize = (i8)aTailLine->w8_1B(+ C_U_1B);
+        nStrSize = (i8)aTailLine->w8_2B(+ C_U_1B);
         
         if (SI_STRAREA_OFS == eStrInflateRule) {
-          memcpy(racStrArea,( (char*)aTailLine + C_U_1B + C_L_1B ),(size_t)nStrSize);
+          memcpy(racStrArea,( (char*)aTailLine + C_U_1B + C_L_2B ),(size_t)nStrSize);
 
           i8 i_Ofs = - nDifference(racStrArea,rayDstByte);
           aiCellValue = (i8*)rayDstByte;
@@ -500,7 +500,7 @@ namespace STORE
         else
         if (SI_STRAREA_ADR == eStrInflateRule) {
           
-          memcpy(racStrArea,( (char*)aTailLine + C_U_1B + C_L_1B ),(size_t)nStrSize);
+          memcpy(racStrArea,( (char*)aTailLine + C_U_1B + C_L_2B ),(size_t)nStrSize);
 
           aacCellValue = (char**)rayDstByte;
           *aacCellValue = racStrArea;
@@ -1054,13 +1054,13 @@ namespace STORE
         
       case MC_STRING_TAIL: // string in tail -- -- -- -- -- -- -- -- -- -- -- --
         u_Tail_rel = *(u2*)ayDataByte;
-        aTailLine = aHeadLine->aGetTailRel(u_Tail_rel);
+        aTailLine = aHeadLine->aGetTail_rel(u_Tail_rel);
         
-        nStrSize = (i8)aTailLine->w8_1B(+ C_U_1B);
+        nStrSize = (i8)aTailLine->w8_2B(+ C_U_1B);
         
         if (SI_CELLARRAY_ADR == (eSI)ieStrInflateRule) {
           aacCellValue = (char**)ayDstByte;
-          *aacCellValue = ((char*)aTailLine) + C_U_1B + C_L_1B;
+          *aacCellValue = ((char*)aTailLine) + C_U_1B + C_L_2B;
           ayDstByte += 8;
           ayDataByte += 2;
         }
@@ -1068,7 +1068,7 @@ namespace STORE
         if (SI_STRAREA_ADR == (eSI)ieStrInflateRule) {
           
           memcpy(acStrArea,
-                 ( (char*)aTailLine + C_U_1B + C_L_1B ),
+                 ( (char*)aTailLine + C_U_1B + C_L_2B ),
                  (size_t)nStrSize);
           
           aacCellValue = (char**)ayDstByte;

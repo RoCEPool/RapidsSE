@@ -95,7 +95,7 @@ i8 CrvBuffer::iAddCrwVersion(Rrf xwRef, Crw* pCrw)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRVBUFFER,_FOOTER_);
   
-  i8 nCrwBytes = m_pStreamDef->jRowSize();
+  i8 nCrwBytes = m_pStreamDef->jRowSizeBytes();
   i8 nTotalBytesNeeded = Crv::nCrvBytesNeed(nCrwBytes);
   
   if (! bHasSpace(nTotalBytesNeeded)) {
@@ -164,7 +164,7 @@ Crv* CrvBuffer::aGetCrv(i8 i_Crv)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRVBUFFER,_FOOTER_);
   
-  i8 nCrwBytes = m_pStreamDef->jRowSize();
+  i8 nCrwBytes = m_pStreamDef->jRowSizeBytes();
   i8 nSizeCrv  = Crv::nCrvBytesNeed(nCrwBytes);
   
   i8 i_Offset  = nSizeCrv * i_Crv;

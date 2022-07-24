@@ -136,9 +136,6 @@ function startPrompt() {
   promptCmd+=("${ROOT_DIR}/commands")
   promptCmd+=("--appendTrace")
 
-  # Set the library path so the RapidsSE library can be found and loaded
-  export LD_LIBRARY_PATH="${EXE_DIR}:${LD_LIBRARY_PATH}"
-
   # Run the prompt
   "${promptCmd[@]}"
 }

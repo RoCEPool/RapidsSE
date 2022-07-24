@@ -1,25 +1,13 @@
 /*============================================================================*/
-/* TextBuffer.cpp -- textBuffer                                               */
+/* TextAbstract.cpp -- Text Abstract Buffer                                   */
 /*============================================================================*/
 
 #include "BASE.h"
 
 /*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-TextBuffer* BASE::_pTextBuffer(void* aAddr)
-{
-  TextBuffer* pTextBuffer = reinterpret_cast<TextBuffer*>(aAddr);
-  
-  RASSERT_TYPE(pTextBuffer,CN_TEXT);
-  
-  return pTextBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-TextBuffer::TextBuffer(eCN eClass, i8 nBufferSize)
+TextAbstract::TextAbstract(eCN eClass, i8 nBufferSize)
 : Object(eClass)
 {
   m_nBufferSize = nBufferSize;
@@ -28,7 +16,7 @@ TextBuffer::TextBuffer(eCN eClass, i8 nBufferSize)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-TextBuffer::~TextBuffer(void) noexcept(false)
+TextAbstract::~TextAbstract(void) noexcept(false)
 {
 
 }
@@ -36,9 +24,19 @@ TextBuffer::~TextBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get size of the buffer                                                     */
 /*----------------------------------------------------------------------------*/
-i8 TextBuffer::nBufferSize(void)
+i8 TextAbstract::nBufferSize(void)
 {
   return m_nBufferSize;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get text after buffer                                                      */
+/*----------------------------------------------------------------------------*/
+Stz* TextAbstract::szArea(void)
+{
+  Stz* szArea = (Stz*)( (char*)this + sizeof(TextAbstract) );
+  
+  return szArea;
 }
 
 /*============================================================================*/

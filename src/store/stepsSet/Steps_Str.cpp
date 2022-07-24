@@ -148,11 +148,11 @@ void Step::vStrEqual(void)
 {
   ENTRY();
   
-  CellSingle xStringA;
-  m_pDataStack->vPopItem(xStringA,__func__);
+  SenCell xStringA;
+  m_pDataStack->vPopSenCell(xStringA,__func__);
   
-  CellSingle xStringB;
-  m_pDataStack->vPopItem(xStringB,__func__);
+  SenCell xStringB;
+  m_pDataStack->vPopSenCell(xStringB,__func__);
 
   // get the arguments
   
@@ -307,11 +307,11 @@ void Step::vStrPrepend(void)
   s48K xStrA;
   
   //! the use of A and B here doesnt seem intuitive
-  CellSingle xValB;
-  m_pDataStack->vPopItem(xValB,__func__);
+  SenCell xValB;
+  m_pDataStack->vPopSenCell(xValB,__func__);
  
-  CellSingle xValA;
-  m_pDataStack->vPopItem(xValA,__func__);
+  SenCell xValA;
+  m_pDataStack->vPopSenCell(xValA,__func__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // first string A
@@ -528,11 +528,11 @@ void Step::vStrSame(void)
 {
   ENTRY();
   
-  CellSingle xStringA;
-  m_pDataStack->vPopItem(xStringA,__func__);
+  SenCell xStringA;
+  m_pDataStack->vPopSenCell(xStringA,__func__);
   
-  CellSingle xStringB;
-  m_pDataStack->vPopItem(xStringB,__func__);
+  SenCell xStringB;
+  m_pDataStack->vPopSenCell(xStringB,__func__);
 
   // get the arguments
   

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* LocalChain.cpp -- Locals Frame Chain                                       */
+/* LocalFrame.cpp -- Locals Frame Chain                                       */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -9,16 +9,16 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(BASE,LocalChain,CN_LOCALCHAIN)
-__aNewFunction(LocalChain,CN_LOCALCHAIN)
-__vDeleteFunction(LocalChain,CN_LOCALCHAIN)
-__aFooterFunction(LocalChain)
+__pCastFunction(BASE,LocalFrame,CN_LOCALCHAIN)
+__aNewFunction(LocalFrame,CN_LOCALCHAIN)
+__vDeleteFunction(LocalFrame,CN_LOCALCHAIN)
+__aFooterFunction(LocalFrame)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-LocalChain::LocalChain(void)
+LocalFrame::LocalFrame(void)
 : Object(CN_LOCALCHAIN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALCHAIN,_FOOTER_);
@@ -35,7 +35,7 @@ LocalChain::LocalChain(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-LocalChain::~LocalChain(void) noexcept(false)
+LocalFrame::~LocalFrame(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALCHAIN,_FOOTER_);
 }
@@ -43,13 +43,13 @@ LocalChain::~LocalChain(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* dump register frame                                                        */
 /*----------------------------------------------------------------------------*/
-void LocalChain::vDump(eCN eClass, Object* pObject, Stz* aTab)
+void LocalFrame::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   UNUSED(eClass);
   UNUSED(aTab);
   
-  LocalChain* pLocalSet = _pLocalChain(pObject);
-  UNUSED(pLocalSet);
+  LocalFrame* pLocalFrame = _pLocalFrame(pObject);
+  UNUSED(pLocalFrame);
 
   vTrace("\n"_Stz);
 }
@@ -61,7 +61,7 @@ void LocalChain::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* get return point where this local set should be discarded                  */
 /*----------------------------------------------------------------------------*/
-TypedCell* LocalChain::aDiscardPoint(void)
+TypeValueArea* LocalFrame::aDiscardPoint(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALCHAIN,_FOOTER_);
   
@@ -71,7 +71,7 @@ TypedCell* LocalChain::aDiscardPoint(void)
 /*----------------------------------------------------------------------------*/
 /* set return point where this local set should be discarded                  */
 /*----------------------------------------------------------------------------*/
-void LocalChain::vDiscardPoint(TypedCell* aDiscardPoint)
+void LocalFrame::vDiscardPoint(TypeValueArea* aDiscardPoint)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALCHAIN,_FOOTER_);
   
@@ -81,7 +81,7 @@ void LocalChain::vDiscardPoint(TypedCell* aDiscardPoint)
 /*----------------------------------------------------------------------------*/
 /* dump the local chain                                                       */
 /*----------------------------------------------------------------------------*/
-void LocalChain::vDump(void)
+void LocalFrame::vDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALCHAIN,_FOOTER_);
   
@@ -96,19 +96,19 @@ void LocalChain::vDump(void)
 /*----------------------------------------------------------------------------*/
 /* get given local                                                            */
 /*----------------------------------------------------------------------------*/
-Local* LocalChain::pLocal(i8 i_Local)
+SenCell* LocalFrame::pSenCell(i8 i_Local)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALCHAIN,_FOOTER_);
   
-  ASSERT(i_Local >= 0 && i_Local < C_LOCALS_arguments);
+  ASSERT(i_Local >= 0 && i_Local < C_LOCALS_PER_FRAME);
   
-  return &m_xLocal[i_Local];
+  return &m_xaSenCell[i_Local];
 }
 
 /*----------------------------------------------------------------------------*/
 /* get next set of locals                                                     */
 /*----------------------------------------------------------------------------*/
-LocalChain* LocalChain::pNext(void)
+LocalFrame* LocalFrame::pNext(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALCHAIN,_FOOTER_);
   
@@ -118,7 +118,7 @@ LocalChain* LocalChain::pNext(void)
 /*----------------------------------------------------------------------------*/
 /* set next set of locals                                                     */
 /*----------------------------------------------------------------------------*/
-void LocalChain::vNext(LocalChain* pNext)
+void LocalFrame::vNext(LocalFrame* pNext)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALCHAIN,_FOOTER_);
   

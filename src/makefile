@@ -58,10 +58,10 @@ CPPFLAGS = -std=c++14 -Wall -Wextra -g -O3 $(strip $(LINUX_CPPFLAGS) $(MACOS_CPP
 CPPFLAGS_DEBUG = -std=c++14 -DWITH_DEBUG_VERSION -Wall -Wno-unused -O0 -g3 $(strip $(LINUX_CPPFLAGS_DEBUG) $(DARWIN_CPPFLAGS_DEBUG))
 
 CFLAGS = -Wall -Wextra -g -O3 $(strip $(LINUX_CPPFLAGS) $(MACOS_CFLAGS))
-CFLAGS_DEBUG =  -DWITH_DEBUG_VERSION -Wall -Wno-unused -O0 -g3 $(strip $(LINUX_CFLAGS_DEBUG) $(DARWIN_CPPFLAGS_DEBUG))
+CFLAGS_DEBUG = -DWITH_DEBUG_VERSION -Wall -Wno-unused -O0 -g3 $(strip $(LINUX_CFLAGS_DEBUG) $(DARWIN_CPPFLAGS_DEBUG))
 
-LDFLAGS = -shared -O3 $(strip $(LINUX_LDFLAGS) $(DARWIN_LDFLAGS))
-LDFLAGS_DEBUG = -shared -Og -g3 $(strip $(LINUX_LDFLAGS_DEBUG) $(DARWIN_LDFLAGS_DEBUG))
+LDFLAGS = -O3 $(strip $(LINUX_LDFLAGS) $(DARWIN_LDFLAGS))
+LDFLAGS_DEBUG = -Og -g3 $(strip $(LINUX_LDFLAGS_DEBUG) $(DARWIN_LDFLAGS_DEBUG))
 
 PICFLAGS = -fPIC
 DIR_GUARD=@mkdir -p $(@D)
@@ -69,14 +69,12 @@ DIR_GUARD=@mkdir -p $(@D)
 # Target Files
 TARGET_PATH = ../bin
 TARGET_EXE = $(TARGET_PATH)/rapidsse
-TARGET_LIBRARY = $(TARGET_PATH)/libRapidsSE.$(strip $(LINUX_LIBRARY_EXT) $(DARWIN_LIBRARY_EXT))
 
 # Man pages
 MAN_PAGES=se.man
 
 # Source Files
 SRC_DIR := .
-MAIN_CPP := $(shell find $(SRC_DIR) -name "main.cpp")
 SOURCES := $(shell find $(SRC_DIR) -name "*.cpp")
 SOURCES += $(wildcard $(SRC_DIR)/../munge/*.cpp)
 SOURCES += $(wildcard $(SRC_DIR)/../thirdparty/xxhash/*.cpp)
@@ -87,7 +85,6 @@ JSON5_GRAMMAR_CPP := $(wildcard $(SRC_DIR)/../thirdparty/antlr/generated/json5*.
 SOURCES += $(SQL_GRAMMAR_CPP)
 SOURCES += $(JSON5_GRAMMAR_CPP)
 
-SOURCES := $(filter-out $(MAIN_CPP), $(SOURCES))
 C_SOURCES += $(wildcard $(SRC_DIR)/../combined/*.c)
 S_SOURCES := $(shell find $(SRC_DIR) -name "*.s")
 
@@ -122,15 +119,13 @@ ifndef BUILD_CONFIG
   export OBJ_DIR
 endif
 
-# Object Files for library
+# Object Files
 OBJECTS := $(patsubst %.cpp, $(OBJ_DIR)/%.o, $(SOURCES))
 OBJECTS += $(patsubst $(SRC_DIR)/%.c,   $(OBJ_DIR)/%.obj, $(C_SOURCES))
 OBJECTS += $(patsubst $(SRC_DIR)/%.s,   $(OBJ_DIR)/%.obj, $(S_SOURCES))
-MAIN_O  := $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(MAIN_CPP))
 
 # Dependency Files for library
 DEPFILES  = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.d, $(SOURCES))
-DEPFILES += $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.d, $(MAIN_CPP))
 
 # Include directories
 SRC_INCLUDES := $(shell find . -type d | awk '{print "-I"$$0}')
@@ -139,8 +134,7 @@ INCLUDES = $(SRC_INCLUDES) $(THIRDPARTY_INCLUDES)
 
 # Linker libraries
 LIBS = -lpthread -ltcc -ldl -lantlr4-runtime $(strip $(LINUX_LIBS) $(DARWIN_LIBS))
-RAPIDS_LIBS = -lRapidsSE
-LIB_DIRS = -L$(TARGET_PATH) -L../thirdparty/tcc/lib -L../thirdparty/antlr/lib $(strip $(LINUX_LIB_DIRS) $(DARWIN_LIB_DIRS))
+LIB_DIRS = -L../thirdparty/tcc/lib -L../thirdparty/antlr/lib $(strip $(LINUX_LIB_DIRS) $(DARWIN_LIB_DIRS))
 
 # ThirdParty compiled library targets
 ANTLR_LIB := ../thirdparty/antlr/lib/libantlr4-runtime.a
@@ -167,7 +161,7 @@ main-build : pre-build
 
 pre-build : version thirdparty grammar buildConfigCheck
 
-target : $(TARGET_EXE) $(TARGET_LIBRARY)
+target : $(TARGET_EXE)
 
 # Debug builds
 debug : export CPPFLAGS = $(CPPFLAGS_DEBUG)
@@ -178,24 +172,16 @@ debug : all
 # Explicit release builds (the default)
 release : all
 
-# RapidsSE dynamic library
-$(TARGET_LIBRARY): $(OBJECTS) $(DEPFILES) $(COMPILED_LIBS)
-	$(DIR_GUARD)
-	@echo ""
-	@echo "Linking the rapidsse dynamic library..."
-	@echo ""
-	$(CPP) $(CPPFLAGS_ARCH) $(LDFLAGS) $(LIB_DIRS) $(LIBS) -o $(TARGET_LIBRARY) $(OBJECTS)
-	@echo "$(BUILD_CONFIG)" > $(call targetConfigFile, $(TARGET_LIBRARY))
 
 # RapidsSE executable
-$(TARGET_EXE): $(TARGET_LIBRARY) $(MAIN_O) $(COMPILED_LIBS)
+$(TARGET_EXE): $(OBJECTS) $(DEPFILES) $(COMPILED_LIBS)
 	$(DIR_GUARD)
 	@echo ""
 	cp $(MAN_PAGES) $(TARGET_PATH)
 	@echo ""
 	@echo "Linking the rapidsse executable..."
 	@echo ""
-	$(CPP) $(CPPFLAGS_ARCH) $(MAIN_O) $(LIB_DIRS) $(RAPIDS_LIBS) $(LIBS) -o $(TARGET_EXE)
+	$(CPP) $(CPPFLAGS_ARCH) $(LDFLAGS) $(LIB_DIRS) -o $(TARGET_EXE) $(OBJECTS) $(LIBS) 
 	@echo "$(BUILD_CONFIG)" > $(call targetConfigFile, $(TARGET_EXE))
 
 # Compile source .cpp files into object files
@@ -281,7 +267,6 @@ $(firstword $(JSON5_GRAMMAR_CPP)) : $(JSON5_GRAMMAR)
 # for the presence of a file that was written out with the binary that tells
 # us whether it was written as a debug or release.
 buildConfigCheck : FORCE
-	@./checkBuildConfig.sh $(TARGET_LIBRARY) $(call targetConfigFile, $(TARGET_LIBRARY)) $(BUILD_CONFIG)
 	@./checkBuildConfig.sh $(TARGET_EXE) $(call targetConfigFile, $(TARGET_EXE)) $(BUILD_CONFIG)
 
 # Generic rule to make any thirdparty libraries that are built from source
@@ -315,9 +300,7 @@ distclean : clean
 #To remove RapidsSE-generated files only
 clean :
 	rm -f $(TARGET_EXE) 
-	rm -f $(TARGET_LIBRARY) 
-	rm -f $(call targetConfigFile, $(TARGET_EXE)) 
-	rm -f $(call targetConfigFile, $(TARGET_LIBRARY))
+	rm -f $(call targetConfigFile, $(TARGET_EXE))
 	rm -rf $(BASE_OBJ_DIR)
 
 # Makefile debugging rule to print makefile variables.

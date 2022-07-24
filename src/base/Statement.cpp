@@ -47,7 +47,7 @@ Statement::Statement(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STATEMENT);
   
 #ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_caText,C_SIZE_MEDIUM_TEXT,CN_STATEMENT);
+  MemLib::vZero(m_caText,C_TEXT_MEDIUM,CN_STATEMENT);
 #else
   m_caText[0] = '\0';
 #endif
@@ -66,12 +66,12 @@ Statement::Statement(Stz* szText)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STATEMENT);
   
 #ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_caText,C_SIZE_MEDIUM_TEXT,CN_STATEMENT);
+  MemLib::vZero(m_caText,C_TEXT_MEDIUM,CN_STATEMENT);
 #else
   m_caText[0] = '\0';
 #endif
   
-  StrLib::vCopyLen(m_caText,szText->azChar(),C_SIZE_MEDIUM_TEXT-1);
+  StrLib::vCopyLen(m_caText,szText->azChar(),C_TEXT_MEDIUM-1);
 
   _checkInitialised_(CN_STATEMENT);
   
