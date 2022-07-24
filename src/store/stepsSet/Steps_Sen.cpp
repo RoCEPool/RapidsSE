@@ -181,7 +181,7 @@ void Step::vSenEnterTrace(void)
   m_pDataStack->vPopSenCell(xVariable,__func__);
   
   Stz* szVal = xVariable.szStz();
-  vTrace(">>> %s"_Stz,szVal);
+  vTrace(">>> %s\n"_Stz,szVal);
 
   EXIT();
 }
@@ -237,7 +237,7 @@ void Step::vSenExitTrace(void)
   m_pDataStack->vPopSenCell(xVariable,__func__);
   
   Stz* szVal = xVariable.szStz();
-  vTrace("<<< %s"_Stz,szVal);
+  vTrace("<<< %s\n"_Stz,szVal);
 
   EXIT();
 }
@@ -877,6 +877,7 @@ void Step::vSenSemicolon(void)
 //         iMaxUsed,
 //         pCurrentWord->szWordNm());
   
+  m_pSenCompiler->vEnterExitTrace(false);
   m_pSenCompiler->vMode(CM_INTERPRETING);
     
   //m_pSenCompiler->vCurrentWord(nullptr);

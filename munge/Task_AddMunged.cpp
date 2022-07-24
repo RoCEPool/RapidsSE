@@ -4555,7 +4555,7 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     "/* on EV_M_DATAPULSE ...                                                      */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": chunk_DataPulse \\handler\n"
+    ": chunk_DataPulse \\handler \\enterExitTrace\n"
     "\n"
     "  //\"Operand:- EV_M_DATAPULSE\" .verbose\n"
     "  PipeIn[].pipeOut\n"

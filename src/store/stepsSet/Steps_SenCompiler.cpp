@@ -29,8 +29,8 @@ void Step::vAddSteps_SenCompiler(void)
   vAddStep("senCompiler::nested@"_Stz,        &Step::vSenCompilerNestedFetch);
   vAddStep("senCompiler::nested!"_Stz,        &Step::vSenCompilerNestedStore);
 
-  vAddStep("senCompiler::enterExitTrace@"_Stz,&Step::vSenCompilerNestedFetch);
-  vAddStep("senCompiler::enterExitTrace!"_Stz,&Step::vSenCompilerNestedStore);
+  vAddStep("senCompiler::enterExitTrace@"_Stz,&Step::vSenCompilerEnterExitFetch);
+  vAddStep("senCompiler::enterExitTrace!"_Stz,&Step::vSenCompilerEnterExitStore);
   
   vAddStep("senCompiler::encodeEnter"_Stz,    &Step::vSenCompilerEncodeEnter);
 
@@ -343,7 +343,7 @@ void Step::vSenCompilerEnterExitStore(void)
 {
   ENTRY();
   
-  b8 bEnterExit = m_pDataStack->iPopInt(__func__);
+  b8 bEnterExit = m_pDataStack->iPopBol(__func__);
     
   m_pSenCompiler->vEnterExitTrace(bEnterExit);
   
