@@ -1,0 +1,70 @@
+/*============================================================================*/
+/* OP_logRoll.sen -- Log Roll Operator                                        */
+/*============================================================================*/
+
+" OP_logRoll.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* put the logging periodic activity here                                     */
+/*----------------------------------------------------------------------------*/
+: logging::activity
+
+  //"Logging Activity" .
+
+  Logging::testPrint
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_START ...                                                 */
+/*----------------------------------------------------------------------------*/
+: logging_StartMarker \handler
+
+  "Logging Demon Started" .boot
+
+  begin
+
+    logging::activity
+    60 thread::sleepSsec
+
+  again
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for logging req                            (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: logging_op \operator
+
+  _lu_initialise_
+
+  "<testTag>" [job].tagSet@ tagSet.hasName if
+      <testTag> .
+  then
+
+  op__topology
+
+  find: logging_StartMarker ZK_M_START [op].handler!
+
+  op__loop
+
+  _lu_finalise_
+
+  op__retires
+
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: logging :: logging ;
+
+: logging_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    //<dedicatedThd> = 1
+    <opEntry> = "logging_op"
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
