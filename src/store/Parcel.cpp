@@ -916,18 +916,23 @@ void Parcel::vPipeBufferViaQueues(Op *pSendOp, Stage* pDstStage)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // forward to this node, dst stage is a YS_PTN_STREAM
 
-  Op* pDstOp = pDstStage->pPipeDstOp(tDstLglPtn(),0);
+  try {
+    Op* pDstOp = pDstStage->pPipeDstOp(tDstLglPtn(),0);
 
-  Operand* pDuplicateOperand = pOperand->pDuplicateOperand();
-  eCN eClass = pDuplicateOperand->eGetClassNo();
-  
-  if (gxaSizeHeap[eClass].m_fpPostRecvFn)
-    gxaSizeHeap[eClass].m_fpPostRecvFn(pDuplicateOperand);
-  
-  Task* pCurTask = MY::pTask();
-  
-  AM::OP::vPipeToOp(pDstOp,pDuplicateOperand,pCurTask);
+    Operand* pDuplicateOperand = pOperand->pDuplicateOperand();
+    eCN eClass = pDuplicateOperand->eGetClassNo();
 
+    if (gxaSizeHeap[eClass].m_fpPostRecvFn)
+      gxaSizeHeap[eClass].m_fpPostRecvFn(pDuplicateOperand);
+
+    Task* pCurTask = MY::pTask();
+
+    AM::OP::vPipeToOp(pDstOp,pDuplicateOperand,pCurTask);
+  }
+  catch (LowMemory xLowMemory) {
+    // do nothing
+    vTrace("vPipeBufferViaQueues: ran into LOWMEMORY\n"_Stz);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
