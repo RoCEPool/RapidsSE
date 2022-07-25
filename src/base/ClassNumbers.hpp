@@ -52,7 +52,6 @@ enum eCN : u2 // Class Number
   /* */ CN_CARDCTL,
   /* */ CN_CARDREGS,
   /* */ CN_CATALOG,
-  /* */ CN_CELLSINGLE,
   /* */ CN_CHARSER,
   /* */ CN_CHILDEXIT,
   /* */ CN_CLASSPLACEHOLDER,
@@ -165,10 +164,11 @@ enum eCN : u2 // Class Number
   /* */ CN_LIT,
   /* */ CN_LITRECOGNISER,
   /* */ CN_LOADCHUNK,
-  /* */ CN_LOCAL,
   /* */ CN_LOCALCHAIN,
   /* */ CN_LOCALDIR,
   /* */ CN_LOCALFILE,
+  /* */ CN_LOCALSTRS,
+  /* */ CN_LOCALVARS,
   /* */ CN_LOCATION,
   /* */ CN_LOCATOR,
   /* */ CN_LOCK,
@@ -296,6 +296,7 @@ enum eCN : u2 // Class Number
   /* */ CN_SEAPI,
   /* */ CN_SEDEPUTY,
   /* */ CN_SEEME,
+  /* */ CN_SENCELL,
   /* */ CN_SENCOMPILER,
   /* */ CN_SENDS,
   /* */ CN_SENDWL,
@@ -466,7 +467,6 @@ static Stz* aCN[]
   /* */ "CARDCTL"_Stz,              // CN_CARDCTL
   /* */ "CARDREGS"_Stz,             // CN_CARDREGS
   /* */ "CATALOG"_Stz,              // CN_CATALOG
-  /* */ "CELLSINGLE"_Stz,           // CN_CELLSINGLE
   /* */ "CHARSER"_Stz,              // CN_CHARSER
   /* */ "CHILDEXIT"_Stz,            // CN_CHILDEXIT
   /* */ "CLASSPLACEHOLDER"_Stz,     // CN_CLASSPLACEHOLDER
@@ -579,10 +579,11 @@ static Stz* aCN[]
   /* */ "LIT"_Stz,                  // CN_LIT
   /* */ "LITRECOGNISER"_Stz,        // CN_LITRECOGNISER
   /* */ "LOADCHUNK"_Stz,            // CN_LOADCHUNK
-  /* */ "LOCAL"_Stz,                // CN_LOCAL
   /* */ "LOCALCHAIN"_Stz,           // CN_LOCALCHAIN
   /* */ "LOCALDIR"_Stz,             // CN_LOCALDIR
   /* */ "LOCALFILE"_Stz,            // CN_LOCALFILE
+  /* */ "LOCALSTRS"_Stz,            // CN_LOCALSTRS
+  /* */ "LOCALVARS"_Stz,            // CN_LOCALVARS
   /* */ "LOCATION"_Stz,             // CN_LOCATION
   /* */ "LOCATOR"_Stz,              // CN_LOCATOR
   /* */ "LOCK"_Stz,                 // CN_LOCK
@@ -710,6 +711,7 @@ static Stz* aCN[]
   /* */ "SEAPI"_Stz,                // CN_SEAPI
   /* */ "SEDEPUTY"_Stz,             // CN_SEDEPUTY
   /* */ "SEEME"_Stz,                // CN_SEEME
+  /* */ "SENCELL"_Stz,              // CN_SENCELL
   /* */ "SENCOMPILER"_Stz,          // CN_SENCOMPILER
   /* */ "SENDS"_Stz,                // CN_SENDS
   /* */ "SENDWL"_Stz,               // CN_SENDWL

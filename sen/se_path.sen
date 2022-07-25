@@ -25,7 +25,7 @@
 
   Path[].popAllFolders
 
-  dup not if discard exit_rt then
+  dup not if discard exit then
 
   0 do
 
@@ -86,9 +86,9 @@
 /*----------------------------------------------------------------------------*/
 : word.checkIsAFolder params| pWord |
 
-  pWord not if EC_NO_SUCH_FOLDER false exit_rt then
+  pWord not if EC_NO_SUCH_FOLDER false exit then
 
-  pWord word.category@ find: \folder equal if true exit_rt then
+  pWord word.category@ find: \folder equal if true exit then
 
   EC_NOT_A_FOLDER false
 ;

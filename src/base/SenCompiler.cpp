@@ -26,6 +26,8 @@ SenCompiler::SenCompiler(void)
   m_eMode      = CM_INTERPRETING;
 
   m_nLocals    = 0;
+  m_aiLocals   = nullptr;
+  
   for (i8 i_Nested = 0; i_Nested < C_MAX_NESTED_WORDS; i_Nested++)
     m_paWord[i_Nested] = nullptr;
 
@@ -115,6 +117,34 @@ void SenCompiler::vLocals(i8 nLocals)
     nMaxLocals = nLocals;
 //    vTrace("                                                      MaxLocals %lld\n"_Stz,nMaxLocals);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* mark where nlocals                                                         */
+/*----------------------------------------------------------------------------*/
+void SenCompiler::vLocalsMark(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SENCOMPILER,_FOOTER_);
+  
+  byte* ayLatter = m_pCurrent->pCodeBlock()->ayWspLatter();
+  
+  m_aiLocals = (i8*) (ayLatter - 8);
+  
+  RASSERT(12345678 == * m_aiLocals);
+}
+
+/*----------------------------------------------------------------------------*/
+/* update nLocals                                                             */
+/*----------------------------------------------------------------------------*/
+void SenCompiler::vLocalsUpdate(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SENCOMPILER,_FOOTER_);
+  
+  //RASSERT(12345678 == * m_aiLocals);
+  
+  RASSERT(m_nLocals > 0 && m_nLocals <= 24);
+  
+  * m_aiLocals = m_nLocals;
 }
 
 /*----------------------------------------------------------------------------*/

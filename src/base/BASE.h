@@ -147,8 +147,8 @@ extern d8 C_D8_MID;
 #include "IntLib.hpp"
 #include "MagLib.hpp"
 #include "Dtm.hpp"
-#include "TypedCell.hpp"
-#include "CellSingle.hpp"
+#include "TypeValueArea.hpp"
+#include "SenCell.hpp"
 
 #include "HshLib.hpp"
 
@@ -275,7 +275,7 @@ extern d8 C_D8_MID;
 #include "SkipListNL.hpp"
 #include "StackNL_t.hpp"
 
-#include "TextBuffer.hpp"
+#include "TextAbstract.hpp"
 #include "TextLarge.hpp"
 #include "TextMedium.hpp"
 #include "TextSmall.hpp"
@@ -347,8 +347,7 @@ extern d8 C_D8_MID;
 
 #include "Dic.hpp"
 #include "DicStack.hpp"
-#include "Local.hpp"
-#include "LocalChain.hpp"
+#include "LocalFrame.hpp"
 #include "TypedStack.hpp"
 
 #include "SenCompiler.hpp"

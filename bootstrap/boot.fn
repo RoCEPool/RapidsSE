@@ -40,12 +40,14 @@ readonly STOP_SCRIPT="stopSE.sh"
 readonly COLLECTLOGS_SCRIPT="collectLogs.sh"
 
 readonly DEFAULT_BOOT_TIMEOUT="60" # seconds
-readonly DEFAULT_CLUSTER_XCONNECT_TIMEOUT="15"  # seconds, or -1 to wait indefinitely
+readonly DEFAULT_CLUSTER_XCONNECT_BROADCAST_TIMEOUT="15"  # seconds, or -1 to wait indefinitely
+readonly DEFAULT_CLUSTER_XCONNECT_MULTICAST_TIMEOUT="45"  # seconds, or -1 to wait indefinitely
 readonly DEFAULT_CLUSTER_REBALANCE_TIMEOUT="-1" # seconds, or -1 to wait indefinitely
 readonly DEFAULT_CLUSTER_FORGET_NODE_TIMEOUT="-1" # seconds, or -1 to wait indefinitely
 
 readonly REBALANCE_COMMAND="rebalance"
 readonly FORGET_NODE_COMMAND="forgetNode"
+readonly HEARTBEAT_BROADCAST="BROADCAST"
 
 ###############################################################################
 ### Functions                                                               ###
@@ -326,8 +328,10 @@ function startCurrentNode() {
   local params
 
   host="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_HOST_KEY}")"
-  port="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_PORT_KEY}")"
-  heartbeat="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_HEARTBEAT_KEY}")"
+  internal_port="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_INTERNAL_PORT_KEY}")"
+  clientPort="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_CLIENT_PORT_KEY}")"
+  heartbeatPort="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_HEARTBEAT_PORT_KEY}")"
+  heartbeatAddress="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_HEARTBEAT_ADDRESS_KEY}")"
   dir="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_DIR_KEY}")"
   partitions="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_PARTITIONS_KEY}")"
   threads="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_THREADS_KEY}")"
@@ -351,7 +355,7 @@ function startCurrentNode() {
   startCmd+=("--node")
   startCmd+=("${CURRENT_NODE_NAME}")
   startCmd+=("${host}")
-  startCmd+=("${port}")
+  startCmd+=("${internal_port}")
   startCmd+=("--name")
   startCmd+=("${CURRENT_NODE_NAME}")
   startCmd+=("--start")
@@ -363,13 +367,10 @@ function startCurrentNode() {
   startCmd+=("--cid")
   startCmd+=("${clusterId}")
   startCmd+=("--heartbeat")
-  startCmd+=("BROADCAST")
-  startCmd+=("${heartbeat}")
+  startCmd+=("${heartbeatAddress}")
+  startCmd+=("${heartbeatPort}")
   startCmd+=("${paramsArray[@]}")
 
-
-  # Set the library path so the RapidsSE library can be found and loaded
-  export LD_LIBRARY_PATH="${EXE_DIR}:${LD_LIBRARY_PATH:-}"
 
   # SE environment variables
   export SE_ENV_METACLUE=1
@@ -511,9 +512,9 @@ function buildNodeArguments() {
   for row in "${NODE_LIST[@]}"
   do
     host="$(nodeCfgGetValue "${row}" "${NODE_CFG_HOST_KEY}")"
-    port="$(nodeCfgGetValue "${row}" "${NODE_CFG_PORT_KEY}")"
+    internal_port="$(nodeCfgGetValue "${row}" "${NODE_CFG_INTERNAL_PORT_KEY}")"
 
-    nodeArgs+=("--node" "${row}" "${host}" "${port}")
+    nodeArgs+=("--node" "${row}" "${host}" "${internal_port}")
   done
  
   echo "${nodeArgs[@]}"
@@ -585,9 +586,6 @@ function localClusterXConnect() {
 
   debugPrint "\nAbout to execute the cluster status command: ${cmd[*]}"
 
-  # Set the library path so the RapidsSE library can be found and loaded
-  export LD_LIBRARY_PATH="${EXE_DIR}:${LD_LIBRARY_PATH:-}"
-
   local cmdOutputFile="${ROOT_DIR}/clusterStatus.log"
 
   local startTime
@@ -597,8 +595,20 @@ function localClusterXConnect() {
   startTime="$(date +%s)"
   currentTime="${startTime}"
 
-  if [ "${DEFAULT_CLUSTER_XCONNECT_TIMEOUT}" -ge 0 ]; then
-    endTime="$((startTime + DEFAULT_CLUSTER_XCONNECT_TIMEOUT))"
+  # If we have a broadcast heartbeat address then we can use a shorted cluster
+  # cross-connect than if we were using a multicast address.
+  local xconnectTimeout
+  local heartbeatAddress
+  heartbeatAddress="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_HEARTBEAT_ADDRESS_KEY}")"
+
+  if [ "${heartbeatAddress}" = "${HEARTBEAT_BROADCAST}" ]; then
+    xconnectTimeout="${DEFAULT_CLUSTER_XCONNECT_BROADCAST_TIMEOUT}"
+  else
+    xconnectTimeout="${DEFAULT_CLUSTER_XCONNECT_MULTICAST_TIMEOUT}"
+  fi
+
+  if [ "${xconnectTimeout}" -ge 0 ]; then
+    endTime="$((startTime + xconnectTimeout))"
   else
     # No timeout. Let's set a really big value instead. Say, one day.
     endTime="$((startTime + 86400))"
@@ -830,9 +840,6 @@ function runLocalPromptCommand() {
   cmd+=("--appendTrace")
 
   debugPrint "\nAbout to execute the following cluster prompt command: ${cmd[*]}"
-
-  # Set the library path so the RapidsSE library can be found and loaded
-  export LD_LIBRARY_PATH="${EXE_DIR}:${LD_LIBRARY_PATH:-}"
 
   local cmdOutputFile="${ROOT_DIR}/.lastPromptCommand.log"
 
@@ -1255,10 +1262,6 @@ function stopCurrentNode() {
     stopCmd+=("--commands")
     stopCmd+=("${ROOT_DIR}/commands")
     stopCmd+=("--appendTrace")
-
-
-    # Set the library path so the RapidsSE library can be found and loaded
-    export LD_LIBRARY_PATH="${EXE_DIR}:${LD_LIBRARY_PATH:-}"
 
 
     if [ ${DEBUG} -eq 1 ]; then

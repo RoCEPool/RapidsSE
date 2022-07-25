@@ -23,13 +23,13 @@ namespace STORE
   class RowCoder
   {
   public:
-    static i8   iBaseOffsetData(StreamDef* pStreamDef);
-    static i8   iBaseOffsetData(RowPix* pRowPix);
+    static i8   oDataFromBase(StreamDef* pStreamDef);
+    static i8   iDataOffsetBase(RowPix* pRowPix);
     static i8   iDteFromEdt(i8 wEdtDte, i8 iEra);
     static void vDteFromEdt(i8* awEdtDte_rpl, i8 iEra);
     static void vDteFromEdt(i8* awEdtDte_dst, i8 wEdtDte_src, i8 iEra);
     //static void vDteIntoEdt(i8 wDte_src, i8* awEdt_dst, i8& iEra_);
-    static i8   nHeadSize(StreamDef* pStreamDef);
+    static i8   jHeadSizeStream(StreamDef* pStreamDef);
     static i8   nMetaSize(StreamDef* pStreamDef);
     static i8   nMetaSize(RowPix* pRowPix);
   
