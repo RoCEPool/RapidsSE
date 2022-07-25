@@ -158,6 +158,7 @@ assert::stack_0
   "OP_listTenants.sen"          include
   "OP_locks.sen"                include
   "OP_locksReset.sen"           include
+  "OP_logRoll.sen"              include
 
 "m" .verbose
 

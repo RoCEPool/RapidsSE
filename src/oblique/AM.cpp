@@ -334,6 +334,24 @@ JobId AM::DEMON::tExitDemonJobId(void) {
 }
 
 /*----------------------------------------------------------------------------*/
+/* set jobId of the logging demon in AM                                       */
+/*----------------------------------------------------------------------------*/
+void AM::DEMON::vLoggingDemonJobId(JobId tJobId) {
+  _static_
+
+  gpAttachMap->m_tLoggingDemonJobId = tJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get jobId of the logging demon in AM                                       */
+/*----------------------------------------------------------------------------*/
+JobId AM::DEMON::tLoggingDemonJobId(void) {
+  _static_
+
+  return gpAttachMap->m_tLoggingDemonJobId;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set jobId of the metrics demon in AM                                       */
 /*----------------------------------------------------------------------------*/
 void AM::DEMON::vMetricsDemonJobId(JobId tJobId) {

@@ -71,6 +71,8 @@ public:
   void vAM_EventDemonJobIdStore(void);
   void vAM_ExitDemonJobIdFetch(void);
   void vAM_ExitDemonJobIdStore(void);
+  void vAM_LoggingDemonJobIdFetch(void);
+  void vAM_LoggingDemonJobIdStore(void);
   void vAM_MetricsDemonJobIdFetch(void);
   void vAM_MetricsDemonJobIdStore(void);
   void vAM_MonDemonJobIdFetch(void);
@@ -1204,6 +1206,9 @@ void vDdlLockAssertNone(void);
   void vExitOperandPipeOut(void);
   void vExitOperandPipeToOutput(void);
   void vExitOperandSet(void);
+
+  // Log
+  void vLogRollTestPrint(void);
 
   // memory
   void vMemoryByteDump(void);

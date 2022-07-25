@@ -11,7 +11,7 @@
 
   //"Logging Activity" .
 
-  Logging::testPrint
+  LogRoll::testPrint
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -42,7 +42,7 @@
 
   op__topology
 
-  find: logging_StartMarker ZK_M_START [op].handler!
+  find: logging_StartMarker EV_M_START [op].handler!
 
   op__loop
 

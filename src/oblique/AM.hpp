@@ -290,6 +290,9 @@ namespace OBLIQUE
       static void  vExitDemonJobId(JobId tJobId);
       static JobId tExitDemonJobId(void);
 
+      static void  vLoggingDemonJobId(JobId tJobId);
+      static JobId tLoggingDemonJobId(void);
+
       static void  vMetricsDemonJobId(JobId tJobId);
       static JobId tMetricsDemonJobId(void);
 

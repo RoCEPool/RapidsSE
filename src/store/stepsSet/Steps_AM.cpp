@@ -28,6 +28,9 @@ void Step::vAddSteps_AM(void)
   vAddStep("AM::DEMON::tExitDemonJobId@"_Stz,      &Step::vAM_ExitDemonJobIdFetch);
   vAddStep("AM::DEMON::tExitDemonJobId!"_Stz,      &Step::vAM_ExitDemonJobIdStore);
 
+  vAddStep("AM::DEMON::tLoggingDemonJobId@"_Stz,   &Step::vAM_LoggingDemonJobIdFetch);
+  vAddStep("AM::DEMON::tLoggingDemonJobId!"_Stz,   &Step::vAM_LoggingDemonJobIdStore);
+
   vAddStep("AM::DEMON::tMetricsDemonJobId@"_Stz,   &Step::vAM_MetricsDemonJobIdFetch);
   vAddStep("AM::DEMON::tMetricsDemonJobId!"_Stz,   &Step::vAM_MetricsDemonJobIdStore);
 
@@ -211,6 +214,33 @@ void Step::vAM_ExitDemonJobIdStore(void)
 
   JobId tJobId = m_pDataStack->iPopInt(__func__);
   AM::DEMON::vExitDemonJobId(tJobId);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AM::DEMON::tLoggingDemonJobId@ -- fetch LoggingDemon JobId                 */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_LoggingDemonJobIdFetch(void)
+{
+  ENTRY();
+
+  JobId tJobId = AM::DEMON::tLoggingDemonJobId();
+
+  m_pDataStack->vPushInt(tJobId.iAsI8());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AM::DEMON::tLoggingDemonJobId! -- store the LoggingDemon JobId             */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_LoggingDemonJobIdStore(void)
+{
+  ENTRY();
+
+  JobId tJobId = m_pDataStack->iPopInt(__func__);
+  AM::DEMON::vLoggingDemonJobId(tJobId);
 
   EXIT();
 }

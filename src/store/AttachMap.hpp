@@ -99,6 +99,7 @@ namespace STORE
     JobId         m_tConnectorDemonJobId;
     JobId         m_tEventDemonJobId;
     JobId         m_tExitDemonJobId;
+    JobId         m_tLoggingDemonJobId;
     JobId         m_tMetricsDemonJobId;
     JobId         m_tMonDemonJobId;
     JobId         m_tPageOutDemonJobId;

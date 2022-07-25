@@ -169,6 +169,13 @@
     AM::DEMON::tEventDemonJobId!
   then
 
+  // spawn logging demon
+    STD_DEMONFORK_TAG loggingDemonPipeline api::forkDemon not if
+      "Error Code %v" .printf
+    else
+      AM::DEMON::tLoggingDemonJobId!
+    then
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // spawn answer demon for SE Adaptor
