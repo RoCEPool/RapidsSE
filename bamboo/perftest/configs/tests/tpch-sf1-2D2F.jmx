@@ -722,9 +722,6 @@ For machines with mounted SSD drives, data is written to /mnt/disk&lt;1..n&gt;/d
 For machines with no SSD drives, data is written to &lt;installDir&gt;/data/tpch/sf&lt;?&gt;.
 
 The data for each table is in its own directory as a single file &lt;table&gt;.tbl.
-<<<<<<< Updated upstream
-e.g. /mnt/disk1/data1/tpch/sf1/lineitem/lineitem.tbl</stringProp>
-=======
 e.g. /mnt/disk1/data1/tpch/sf1/lineitem/lineitem.tbl
 
 If the --partitionsPerDisk option is given then there are multiple files per disk. If there are two disks and two partitionsPerDisk then this data will look like this:
@@ -732,7 +729,6 @@ If the --partitionsPerDisk option is given then there are multiple files per dis
   /mnt/disk1/data2/tpch/sf1/lineitem/lineitem.tbl
   /mnt/disk2/data1/tpch/sf1/lineitem/lineitem.tbl
   /mnt/disk2/data2/tpch/sf1/lineitem/lineitem.tbl</stringProp>
->>>>>>> Stashed changes
               <stringProp name="SystemSampler.stdout">prepareTpchData.out</stringProp>
               <stringProp name="SystemSampler.stderr">prepareTpchData.err</stringProp>
             </SystemSampler>
@@ -1038,13 +1034,7 @@ dload lineitem paths
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="loadNation" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-<<<<<<< Updated upstream
-              <stringProp name="query">load nation paths
-  &quot;/mnt/disk1/data1/tpch/sf1/nation/nation.tbl&quot;
-;</stringProp>
-=======
               <stringProp name="query">load nation &quot;/mnt/disk1/data1/tpch/sf1/nation/nation.tbl&quot; ;</stringProp>
->>>>>>> Stashed changes
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -1071,13 +1061,7 @@ dload lineitem paths
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="loadRegion" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-<<<<<<< Updated upstream
-              <stringProp name="query">load region paths
-  &quot;/mnt/disk1/data1/tpch/sf1/region/region.tbl&quot;
-;</stringProp>
-=======
               <stringProp name="query">load region &quot;/mnt/disk1/data1/tpch/sf1/region/region.tbl&quot; ;</stringProp>
->>>>>>> Stashed changes
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -1131,11 +1115,7 @@ dload lineitem paths
                   <connectTime>true</connectTime>
                 </value>
               </objProp>
-<<<<<<< Updated upstream
-              <stringProp name="filename">createIndexes.csv</stringProp>
-=======
               <stringProp name="filename">loadData.csv</stringProp>
->>>>>>> Stashed changes
             </ResultCollector>
             <hashTree/>
           </hashTree>
