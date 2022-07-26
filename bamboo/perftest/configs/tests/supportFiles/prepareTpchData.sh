@@ -10,13 +10,13 @@
 # as possible.
 #
 # Assuming there is at least 1 SSD then data will be written out to:
-#   /mnt/disk<1..N>/data/tpch/sf<N>/<tableName>/<tableName>.tbl
+#   /mnt/disk<1..N>/data<N>/tpch/sf<N>/<tableName>/<tableName>.tbl
 #
 # (The non-partitioned nation and region tables will be written out to the
 #  first disk of each node).
 #
 # If there are no SSDs then data will be written out to:
-#   <installDir>/data/tpch/sf<N>/<tableName>/<tableName>.tbl
+#   <installDir>/data1/tpch/sf<N>/<tableName>/<tableName>.tbl
 #
 # Assumptions:
 #  (1) All nodes have the same hardware.
@@ -77,6 +77,10 @@ START_IDX=0
 TARGETS=()
 INSTALL_DIR=""
 
+# How many ways do we split the data for a given disk?
+# This allows for multiple paths of data per disk.
+PTNS_PER_DISK=1
+
 ###############################################################################
 ### Functions                                                               ###
 ###############################################################################
@@ -93,10 +97,11 @@ function printUsageAndExit() {
   echo "Details:"
   echo "  --sf <scaleFactor>  The scale factor of the TPC-H data to be copied."
   echo ""
-  echo "  --copyData                <internal use> Runs the script in copyData mode to download and layout the data."
-  echo "  --installDir              <internal use> The RapidsSE installation directory on the current node."
-  echo "  --start                   <internal use> The 1-based start index of the data chunks to copy on this node."
-  echo "  --target <path> <count>   <internal use> How many chunks to put on a given target path."
+  echo "  --copyData                  <internal use> Runs the script in copyData mode to download and layout the data."
+  echo "  --installDir                <internal use> The RapidsSE installation directory on the current node."
+  echo "  --start                     <internal use> The 1-based start index of the data chunks to copy on this node."
+  echo "  --target <path> <count>     <internal use> How many chunks to put on a given target path."
+  echo "  --partitionsPerDisk <count> <internal use, default=1> How many ways to split the data for each disk." # Multiple paths per disk
   echo ""
   echo "  --help              Displays this message."
   exit 1
@@ -124,6 +129,7 @@ function processArgs() {
   local argInstallDir=0
   local argStart=0
   local argTarget=0
+  local argPtnsPerDisk=0
 
   while [[ $# -gt 0 ]]
   do
@@ -165,6 +171,13 @@ function processArgs() {
         shift # past second value
         ;;
 
+      --partitionsPerDisk)
+        argPtnsPerDisk=1
+        PTNS_PER_DISK="$2"
+        shift # past argument
+        shift # past value
+        ;;
+
       --help|-h)
         shift
         printUsageAndExit
@@ -189,6 +202,11 @@ function processArgs() {
 
   if [[ "${SF}" -le 0 ]]; then
     printError "Scale factor must be a positive integer only."
+    printUsageAndExit
+  fi
+
+  if [[ "${PTNS_PER_DISK}" -le 0 ]]; then
+    printError "partitionsPerDisk must be a positive integer only."
     printUsageAndExit
   fi
 
@@ -313,6 +331,7 @@ function getDataChunks() {
 
 function getBaseOutputPaths() {
   local i=0
+  local j
   local mountPoint
   local arbitraryMaximum
 
@@ -330,8 +349,14 @@ function getBaseOutputPaths() {
       break
     fi
 
-    # Add it to the list and keep looking for more drives
-    BASE_OUTPUT_PATHS+=("${mountPoint}")
+    j=0
+    while [ "$j" -lt "${PTNS_PER_DISK}" ]; do
+      j=$((j+1))
+
+      # Add it to the list and keep looking for more drives
+      BASE_OUTPUT_PATHS+=("${mountPoint}/data${j}")
+    done
+
   done
 
   if [ "${#BASE_OUTPUT_PATHS[@]}" -eq 0 ]; then
@@ -380,7 +405,7 @@ function printChunksPerPath() {
   local chunksForCurrentPath
 
   local pathExt
-  pathExt="/data/tpch/sf${SF}"
+  pathExt="/tpch/sf${SF}"
 
   readonly fmtStr="  %-40s    %-7s\n"
 
@@ -432,7 +457,7 @@ function copyScriptToNodes() {
 
 function invokeScriptOnNodes() {
 
-  commonArgs=("--copyData" "--sf" "${SF}")
+  local commonArgs=("--copyData" "--sf" "${SF}" "--partitionsPerDisk" "${PTNS_PER_DISK}")
 
   local chunkIdx=-1
   local chunkCount=1
@@ -443,7 +468,7 @@ function invokeScriptOnNodes() {
   local installDir
 
   local pathExt
-  pathExt="/data/tpch/sf${SF}"
+  pathExt="/tpch/sf${SF}"
 
   for nodeName in "${NODE_LIST[@]}";
   do

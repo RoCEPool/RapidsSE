@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.4.3">
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.5">
   <hashTree>
     <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="true">
       <stringProp name="TestPlan.comments">DEPENDENCIES:
 *****************
 1. Must execute in a 2 node cluster
-2. Must execute on nodes with 4 SSDs at /mnt/disk&lt;1..4&gt;</stringProp>
+2. Must execute on nodes with 4 SSDs at /mnt/disk&lt;1..4&gt;
+
+c5ad.8xlarge</stringProp>
       <boolProp name="TestPlan.functional_mode">false</boolProp>
       <boolProp name="TestPlan.tearDown_on_shutdown">true</boolProp>
       <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
@@ -477,7 +479,7 @@ group by
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createLineitemIdx1" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">create index lineitem_idx1 on lineitem (l_shipdate);</stringProp>
+              <stringProp name="query">CREATE INDEX lineitem_idx1 ON lineitem (l_shipdate);</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -490,7 +492,7 @@ group by
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createLineitemIdx2" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">create index lineitem_idx2 on lineitem (l_orderkey);</stringProp>
+              <stringProp name="query">CREATE INDEX lineitem_idx2 ON lineitem (l_orderkey);</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -503,7 +505,7 @@ group by
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createOrdersIdx1" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">create index orders_idx1 ON orders(O_CUSTKEY);</stringProp>
+              <stringProp name="query">CREATE INDEX orders_idx1 ON orders(o_custkey);</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -516,7 +518,7 @@ group by
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createOrdersIdx2" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">create index orders_idx2 ON orders(O_ORDERKEY);</stringProp>
+              <stringProp name="query">CREATE INDEX orders_idx2 ON orders(o_orderkey);</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -529,7 +531,7 @@ group by
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createPartsuppIdx1" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">create index partsupp_idx1 ON partsupp(PS_PARTKEY);</stringProp>
+              <stringProp name="query">CREATE INDEX partsupp_idx1 ON partsupp(ps_partkey);</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -543,7 +545,7 @@ group by
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createPartsuppIdx2" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">create index partsupp_idx2 ON partsupp(PS_SUPPKEY);</stringProp>
+              <stringProp name="query">CREATE INDEX partsupp_idx2 ON partsupp(ps_suppkey);</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -557,7 +559,7 @@ group by
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createPartIdx1" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">create index part_idx1 ON part(P_PARTKEY);</stringProp>
+              <stringProp name="query">CREATE INDEX part_idx1 ON part(p_partkey);</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -571,7 +573,7 @@ group by
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createCustomerIdx1" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">create index customer_idx1 ON customer(C_CUSTKEY);</stringProp>
+              <stringProp name="query">CREATE INDEX customer_idx1 ON customer(c_custkey);</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -584,7 +586,7 @@ group by
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createCustomerIdx2" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">create index customer_idx2 ON customer(C_NATIONKEY);</stringProp>
+              <stringProp name="query">CREATE INDEX customer_idx2 ON customer(c_nationkey);</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -597,7 +599,7 @@ group by
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createSupplierIdx1" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">create index supplier_idx1 ON supplier(S_SUPPKEY);</stringProp>
+              <stringProp name="query">CREATE INDEX supplier_idx1 ON supplier(s_suppkey);</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -610,7 +612,7 @@ group by
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createSupplierIdx2" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">create index supplier_idx2 ON supplier(S_NATIONKEY);</stringProp>
+              <stringProp name="query">CREATE INDEX supplier_idx2 ON supplier(s_nationkey);</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -623,7 +625,7 @@ group by
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createNationIdx1" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">create index nation_idx1 ON nation(N_NATIONKEY);</stringProp>
+              <stringProp name="query">CREATE INDEX nation_idx1 ON nation(n_nationkey);</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -636,7 +638,7 @@ group by
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createRegionIdx1" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">create index region_idx1 ON region(R_REGIONKEY);</stringProp>
+              <stringProp name="query">CREATE INDEX region_idx1 ON region(r_regionkey);</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -695,7 +697,17 @@ group by
                   </elementProp>
                   <elementProp name="" elementType="Argument">
                     <stringProp name="Argument.name"></stringProp>
-                    <stringProp name="Argument.value">1</stringProp>
+                    <stringProp name="Argument.value">${SF}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                  <elementProp name="" elementType="Argument">
+                    <stringProp name="Argument.name"></stringProp>
+                    <stringProp name="Argument.value">--partitionsPerDisk</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                  <elementProp name="" elementType="Argument">
+                    <stringProp name="Argument.name"></stringProp>
+                    <stringProp name="Argument.value">2</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                   </elementProp>
                 </collectionProp>
@@ -710,7 +722,7 @@ For machines with mounted SSD drives, data is written to /mnt/disk&lt;1..n&gt;/d
 For machines with no SSD drives, data is written to &lt;installDir&gt;/data/tpch/sf&lt;?&gt;.
 
 The data for each table is in its own directory as a single file &lt;table&gt;.tbl.
-e.g. /mnt/disk1/data/tpch/sf1/lineitem/lineitem.tbl</stringProp>
+e.g. /mnt/disk1/data1/tpch/sf1/lineitem/lineitem.tbl</stringProp>
               <stringProp name="SystemSampler.stdout">prepareTpchData.out</stringProp>
               <stringProp name="SystemSampler.stderr">prepareTpchData.err</stringProp>
             </SystemSampler>
@@ -758,7 +770,10 @@ e.g. /mnt/disk1/data/tpch/sf1/lineitem/lineitem.tbl</stringProp>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="loadLineitem" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">dload lineitem paths
-  &quot;/opt/rapidsse/data/tpch/sf1/lineitem/lineitem.tbl&quot;
+  &quot;/mnt/disk1/data1/tpch/${SF}/lineitem/lineitem.tbl&quot;
+  &quot;/mnt/disk1/data2/tpch/${SF}/lineitem/lineitem.tbl&quot;
+  &quot;/mnt/disk2/data1/tpch/${SF}/lineitem/lineitem.tbl&quot;
+  &quot;/mnt/disk2/data2/tpch/${SF}/lineitem/lineitem.tbl&quot;
 ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -768,11 +783,13 @@ e.g. /mnt/disk1/data/tpch/sf1/lineitem/lineitem.tbl</stringProp>
               <stringProp name="resultSetMaxRows"></stringProp>
               <stringProp name="resultVariable"></stringProp>
               <stringProp name="variableNames"></stringProp>
-              <stringProp name="TestPlan.comments">For a multi-node setup with 2 local SSDs the command would look like this:
+              <stringProp name="TestPlan.comments">For a multi-node setup with 2 local SSDs and 2 data partitions per disk the command would look like this:
 
 dload lineitem paths
-  &quot;/mnt/disk1/data/tpch/sf1/lineitem/lineitem.tbl&quot;
-  &quot;/mnt/disk2/data/tpch/sf1/lineitem/lineitem.tbl&quot;
+  &quot;/mnt/disk1/data1/tpch/sf1/lineitem/lineitem.tbl&quot;
+  &quot;/mnt/disk1/data2/tpch/sf1/lineitem/lineitem.tbl&quot;
+  &quot;/mnt/disk2/data1/tpch/sf1/lineitem/lineitem.tbl&quot;
+  &quot;/mnt/disk2/data2/tpch/sf1/lineitem/lineitem.tbl&quot;
 ;</stringProp>
             </JDBCSampler>
             <hashTree/>
@@ -805,7 +822,10 @@ dload lineitem paths
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="loadOrders" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">dload orders paths
-  &quot;/opt/rapidsse/data/tpch/sf1/orders/orders.tbl&quot;
+  &quot;/mnt/disk1/data1/tpch/${SF}/orders/orders.tbl&quot;
+  &quot;/mnt/disk1/data2/tpch/${SF}/orders/orders.tbl&quot;
+  &quot;/mnt/disk2/data1/tpch/${SF}/orders/orders.tbl&quot;
+  &quot;/mnt/disk2/data2/tpch/${SF}/orders/orders.tbl&quot;
 ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -846,7 +866,10 @@ dload lineitem paths
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="loadPartsupp" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">dload partsupp paths
-  &quot;/opt/rapidsse/data/tpch/sf1/partsupp/partsupp.tbl&quot;
+  &quot;/mnt/disk1/data1/tpch/${SF}/partsupp/partsupp.tbl&quot;
+  &quot;/mnt/disk1/data2/tpch/${SF}/partsupp/partsupp.tbl&quot;
+  &quot;/mnt/disk2/data1/tpch/${SF}/partsupp/partsupp.tbl&quot;
+  &quot;/mnt/disk2/data2/tpch/${SF}/partsupp/partsupp.tbl&quot;
 ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -887,7 +910,10 @@ dload lineitem paths
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="loadPart" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">dload part paths
-  &quot;/opt/rapidsse/data/tpch/sf1/part/part.tbl&quot;
+  &quot;/mnt/disk1/data1/tpch/${SF}/part/part.tbl&quot;
+  &quot;/mnt/disk1/data2/tpch/${SF}/part/part.tbl&quot;
+  &quot;/mnt/disk2/data1/tpch/${SF}/part/part.tbl&quot;
+  &quot;/mnt/disk2/data2/tpch/${SF}/part/part.tbl&quot;
 ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -915,7 +941,10 @@ dload lineitem paths
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="loadCustomer" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">dload customer paths
-  &quot;/opt/rapidsse/data/tpch/sf1/customer/customer.tbl&quot;
+  &quot;/mnt/disk1/data1/tpch/${SF}/customer/customer.tbl&quot;
+  &quot;/mnt/disk1/data2/tpch/${SF}/customer/customer.tbl&quot;
+  &quot;/mnt/disk2/data1/tpch/${SF}/customer/customer.tbl&quot;
+  &quot;/mnt/disk2/data2/tpch/${SF}/customer/customer.tbl&quot;
 ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -956,7 +985,10 @@ dload lineitem paths
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="loadSupplier" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">dload supplier paths
-  &quot;/opt/rapidsse/data/tpch/sf1/supplier/supplier.tbl&quot;
+  &quot;/mnt/disk1/data1/tpch/${SF}/supplier/supplier.tbl&quot;
+  &quot;/mnt/disk1/data2/tpch/${SF}/supplier/supplier.tbl&quot;
+  &quot;/mnt/disk2/data1/tpch/${SF}/supplier/supplier.tbl&quot;
+  &quot;/mnt/disk2/data2/tpch/${SF}/supplier/supplier.tbl&quot;
 ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -997,7 +1029,7 @@ dload lineitem paths
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="loadNation" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">load nation paths
-  &quot;/opt/rapidsse/data/tpch/sf1/nation/nation.tbl&quot;
+  &quot;/mnt/disk1/data1/tpch/sf1/nation/nation.tbl&quot;
 ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -1026,7 +1058,7 @@ dload lineitem paths
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="loadRegion" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">load region paths
-  &quot;/opt/rapidsse/data/tpch/sf1/region/region.tbl&quot;
+  &quot;/mnt/disk1/data1/tpch/sf1/region/region.tbl&quot;
 ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -1170,7 +1202,7 @@ dload lineitem paths
             </hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="countPart" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">SELECT COUNT(*) FROM partsupp;</stringProp>
+              <stringProp name="query">SELECT COUNT(*) FROM part;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
