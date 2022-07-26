@@ -163,9 +163,9 @@
 /*----------------------------------------------------------------------------*/
 : std_recoveryWord
 
-  //"std_recoveryWord" .
+  "std_recoveryWord" .
   
-  //[task].exception .
+  [task].exception .
 
   AM::SYSTEM::Ready@ if
     "op__failureRecovery" FIND execute
@@ -193,7 +193,10 @@
       "default_abnormalHandlers" FIND execute
       "default_lowMemHandlers" FIND execute
       [op].opName@ "TOGGLED TO ABNORMAL HANDLERS FOR OP %v" str.format .
+    else
+      Parcel[].reset
     then
+
 
     Pipein[].isNull not if
       "deleting pipein!!!" .

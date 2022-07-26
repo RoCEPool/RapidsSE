@@ -30,7 +30,7 @@
   nullptr to recvdObject[]
 
   Socket[].recvObject
-  
+  /*
   Socket[].success@ not if
     false
     exit
@@ -39,19 +39,31 @@
   Socket[].object@\clear to recvdObject[]
 
   Socket[].success@
+  */
+
+  Socket[].success@ if
+    Socket[].object@\clear to recvdObject[]
+  then
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
 /* recv loop: receive a job (possibly with operand), dispatch it              */
 /*----------------------------------------------------------------------------*/
 : recvSE_dispatch ( -- )
-
+/*
   // null object (low memory)
   recvdObject[].isNull if
     exit
   then
     
   recvdObject[] recvdObject[] object.postRecvWord@ execute
+  */
+
+  recvdObject[].isNull not if
+    recvdObject[] recvdObject[] object.postRecvWord@ execute
+  then
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -80,7 +92,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for EV_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
-: recvSE_StartMarker \handler
+: recvSE_StartMarker \handler \enterExitTrace
 
   "Receiver Demon Started" .boot
 
