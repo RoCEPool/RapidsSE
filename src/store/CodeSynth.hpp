@@ -62,15 +62,14 @@ namespace STORE {
 
     ~CodeSynth(void) noexcept(false);
 
+    TypedStack *pInitStack(void);
+
     static void vMakeColumnNm(StreamDef *pStreamDef, Stz *szColumn, eSR eStencilRow, i8 i_Column);
     static void vMakeColumnNm(StreamDef* pStreamDef, s256& sColNm, i8& i_DupCtr, i8 i_Column);
     static void vMakeColumnNmStruct(StreamDef* pStreamDef, s256& sColNm, i8& i_DupCtr, i8 i_Column);
     static void vMakeColumnNmStruct_O(StreamDef* pStreamDef, s256& sColNm, i8& i_DupCtr, i8 i_Column);
     static void vMakeIdxColNmStruct(IndexDef* pIndexDef, s256& sColNm, i8 i_Column);
     static void vMakeIdxColNmStruct_O(IndexDef* pIndexDef, s256& sColNm, i8 i_Column);
-    void vPostStack(TypedStack *pPostStack);
-
-    TypedStack *pPostStack(void);
 
     void vAppendFragment(Stz *szFragment);
 
@@ -89,10 +88,10 @@ namespace STORE {
     TypedStack* pSynthAggGby(Stz *sProjectExpr, Stz *sLabel, Stz *sLabelLoop);
 
     void vSynthAllocTubRow(TypedStack* pPostStack, bool bEosHandler, Stz *sLabel, Stz *sLabelNext,
-                           Stz* sLabelOrdAgg);
+                           Stz* sLabelOrdAgg, TypedStack* pInitStack = nullptr);
 
     void vSynthAllocPotRow(TypedStack* pPostStack, Stz *sHashExpr, bool bEosHandler,
-                           Stz *sLabel, Stz *sLabelNext, Stz* sLabelOrdAgg);
+                           Stz *sLabel, Stz *sLabelNext, Stz* sLabelOrdAgg, TypedStack* pInitStack = nullptr);
 
     void vSynthEos(IndexDef *pIndexDef, TypedStack* pPostStack, Stz* sLabelNext);
 
@@ -158,7 +157,7 @@ namespace STORE {
 
     void vGenerateSort(void);
 
-    void vGenerateStencilCast(void);
+    void vGenerateStencilCast(TypedStack* pInitStack = nullptr);
     void vGenerateStencilCastTo(void);
     void vGenerateErrorCheck(Stz* sIndent);
 
@@ -180,9 +179,10 @@ namespace STORE {
     void vPayloadToBuffer(IndexDef *pIndexDef, TypedStack* pPostStack);
     void vPayloadTraversal(IndexDef *pIndexDef, TypedStack* pPostStack, Stz* sLabelNext);
 
-    void vPushAggCol(TypedStack *pExprStack, TypedStack* pPostStack, ePE ePreExp, eEK eExprKind, eDM eExprType, i8 i_Col, i8& i_DupCtr);
+    void vPushAggCol(TypedStack *pExprStack, TypedStack* pPostStack, ePE ePreExp, eEK eExprKind, eDM eExprType,
+                     i8 i_Col, i8 iColPL, i8& i_DupCtr);
     void vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, eEK eExprKind,
-                        ePE ePreExp, i8 i_Col, i8& i_DupCtr);
+                        ePE ePreExp, i8 i_Col, i8 i_ColPL, i8& i_DupCtr);
     void vPushArithmetic(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn);
     void vPushCast(TypedStack *pExprStack, IntStack *pTypeStack, eDM eCastType);
     void vPushColumn(TypedStack *pExprStack, IntStack *pTypeStack, StreamDef* pStreamDef, Token *pTkn);

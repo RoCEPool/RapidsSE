@@ -446,6 +446,39 @@ static eDM eMacro_CmpResult[DM_ENUMS][DM_ENUMS] = {
 /* 10 UNK  */ { DM_NONE, DM_BOL,   DM_BOL,   DM_BOL,       DM_BOL,     DM_BOL,       DM_BOL,     DM_BOL,   DM_BOL,       DM_BOL,     DM_BOL,  DM_BOL    }
 };
 
+static eFM eMacro_Gta[DM_ENUMS][DM_ENUMS] = {
+    //   NONE     BCD            BOL           DTE           FLT            INT            IVL           IVY           TME           TSP           VCH           UNK
+/*  0 NONE */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV    },
+/*  1 BCD  */ { FM_OPR_INVINV, FM_GTA_BCDBCD,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV    },
+/*  2 BOL  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_GTA_BOLBOL,      FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV    },
+/*  3 DTE  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,      FM_GTA_DTEDTE,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV    },
+/*  4 FLT  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_GTA_FLTFLT,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV    },
+/*  5 INT  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,       FM_GTA_INTINT,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV    },
+/*  6 IVL  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_GTA_IVLIVL,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV    },
+/*  6 IVY  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_GTA_IVYIVY,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV    },
+/*  7 TME  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_GTA_TMETME,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV    },
+/*  8 TSP  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_GTA_TSPTSP,      FM_OPR_INVINV,      FM_OPR_INVINV    },
+/*  9 VCH  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_GTA_VCHVCH,      FM_OPR_INVINV    },
+/* 10 UNK  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV    }
+};
+
+static eFM eMacro_Lta[DM_ENUMS][DM_ENUMS] = {
+    //   NONE     BCD            BOL           DTE           FLT            INT            IVL           IVY           TME           TSP            VCH           UNK
+/*  0 NONE */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV    },
+/*  1 BCD  */ { FM_OPR_INVINV, FM_LTA_BCDBCD,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV    },
+/*  2 BOL  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_LTA_BOLBOL,      FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV    },
+/*  3 DTE  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,      FM_LTA_DTEDTE,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV    },
+/*  4 FLT  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_LTA_FLTFLT,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV    },
+/*  5 INT  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,       FM_LTA_INTINT,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV    },
+/*  6 IVL  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_LTA_IVLIVL,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV    },
+/*  6 IVY  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_LTA_IVYIVY,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV    },
+/*  7 TME  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_LTA_TMETME,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV    },
+/*  8 TSP  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_LTA_TSPTSP,      FM_OPR_INVINV,      FM_OPR_INVINV    },
+/*  9 VCH  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_LTA_VCHVCH,      FM_OPR_INVINV    },
+/* 10 UNK  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV    }
+};
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

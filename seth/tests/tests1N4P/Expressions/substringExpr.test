@@ -54,6 +54,35 @@ rows:
  ('UN')
  ('UN')
 
+// Extract from a columnRef
+SELECT SUBSTRING(n_name, 1, 2), n_name FROM nation;
+rows:
+ ('AL','ALGERIA')
+ ('AR','ARGENTINA')
+ ('BR','BRAZIL')
+ ('CA','CANADA')
+ ('EG','EGYPT')
+ ('ET','ETHIOPIA')
+ ('FR','FRANCE')
+ ('GE','GERMANY')
+ ('IN','INDIA')
+ ('IN','INDONESIA')
+ ('IR','IRAN')
+ ('IR','IRAQ')
+ ('JA','JAPAN')
+ ('JO','JORDAN')
+ ('KE','KENYA')
+ ('MO','MOROCCO')
+ ('MO','MOZAMBIQUE')
+ ('PE','PERU')
+ ('CH','CHINA')
+ ('RO','ROMANIA')
+ ('SA','SAUDI ARABIA')
+ ('VI','VIETNAM')
+ ('RU','RUSSIA')
+ ('UN','UNITED KINGDOM')
+ ('UN','UNITED STATES')
+
 // Extract from a literal
 SELECT SUBSTRING('abcdef', 1, 2) FROM nation;
 rows:
@@ -85,7 +114,7 @@ rows:
 
 
 // Extract from a subquery
-//ALKA: COME BACK TO THIS
+//TODO: FIX WHEN SUBQUERIES
 //SELECT SUBSTRING((SELECT n_name FROM nation LIMIT 1), 1, 2) FROM nation;
 
 
@@ -272,6 +301,36 @@ rows:
  ('RUSSIA')
  ('UNITED KINGDOM')
  ('UNITED STATES')
+
+// Leave off the length parameter
+SELECT n_name, SUBSTRING(n_name, 2) FROM nation;
+rows:
+ ('ALGERIA','LGERIA')
+ ('ARGENTINA','RGENTINA')
+ ('BRAZIL','RAZIL')
+ ('CANADA','ANADA')
+ ('EGYPT','GYPT')
+ ('ETHIOPIA','THIOPIA')
+ ('FRANCE','RANCE')
+ ('GERMANY','ERMANY')
+ ('INDIA','NDIA')
+ ('INDONESIA','NDONESIA')
+ ('IRAN','RAN')
+ ('IRAQ','RAQ')
+ ('JAPAN','APAN')
+ ('JORDAN','ORDAN')
+ ('KENYA','ENYA')
+ ('MOROCCO','OROCCO')
+ ('MOZAMBIQUE','OZAMBIQUE')
+ ('PERU','ERU')
+ ('CHINA','HINA')
+ ('ROMANIA','OMANIA')
+ ('SAUDI ARABIA','AUDI ARABIA')
+ ('VIETNAM','IETNAM')
+ ('RUSSIA','USSIA')
+ ('UNITED KINGDOM','NITED KINGDOM')
+ ('UNITED STATES','NITED STATES')
+
 
 // Test that a zero length returns an empty string
 SELECT SUBSTRING(n_name, 1, 0) FROM nation LIMIT 1;

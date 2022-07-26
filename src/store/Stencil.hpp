@@ -134,7 +134,7 @@ static const i8 C_MAX_SHAPES = 32;
     void vSetupTop(Combined* pCombined, Stream* pStream, Op* pOp);
 
     void vSketchEosFilter(Combined* pCombined, Stream* pStream, Op* pOp);
-    void vSketchEosProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp);
+    void vSketchEosProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp, TypedStack* pInitStack);
     void vSketchEosProjectGby(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSketchEosTop(Combined* pCombined, Stream* pStream, Op* pOp);

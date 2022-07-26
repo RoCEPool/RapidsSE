@@ -2,29 +2,7 @@
 /* _alka                                                                      */
 /*============================================================================*/
 
-create table limitRow (col0 VARCHAR(20000));
-load limitRow "../DATA/Load/largeRow_tst.csv";
 
-//select * from limitRow;
-
-pipeline unamed
-begin
-  stage stageStart on origin :
-    start
-    | pulse once
-    | stageMarker0111
-  stage stageMarker0111 on all partitions :
-    scan rapidsse public limitRow
-    | project " type VARCHAR as col0 $1 "
-    | combined 1
-    | stageLast
-  stage stageLast on origin :
-    output
-    | sink
-    | stageStart
-end ;
-
-/*
 create table datums (
   int_col0   INTEGER NOT NULL,
   int_col1   INTEGER,
@@ -97,7 +75,7 @@ create index IxR_NAME on REGION (R_NAME);
 create index IxL_PARTKEY ON lineitem(L_PARTKEY);
 
 ///time load region "<tpch_dir>/region.<suffix>";
-///time load nation "<tpch_dir>/nation.<suffix>";
+/time load nation "<tpch_dir>/nation.<suffix>";
 /time load lineitem "<tpch_dir>/lineitem.<suffix>";
 ///time load orders "<tpch_dir>/orders.<suffix>";
 ///time load part "<tpch_dir>/part.<suffix>";
@@ -125,6 +103,21 @@ create table TABLE1 (
 );
 Load TABLE1 "../DATA/Load/tbl1data.csv" ;
 
+create table TABLE3 (
+  pcol3   INTEGER NOT NULL,
+  scol3   INTEGER NOT NULL,
+  tcol3   INTEGER NOT NULL,
+  unicol3 INTEGER NOT NULL,
+  cola2   INTEGER,
+  cola1   INTEGER,
+  ucol    INTEGER,
+  cola3   INTEGER,
+  colb3   VARCHAR(25),
+  colc3   TIMESTAMP
+);
+
+Load TABLE3 "../DATA/Load/tbl3data.csv" ;
+
 create table TABLE4 (
   pcol4   INTEGER NOT NULL,
   scol4   INTEGER NOT NULL,
@@ -151,4 +144,9 @@ create table TABLE9 (
 );
 Load TABLE9 "../DATA/Load/tbl9data.csv" <escape_char> = "\0";
 
-*/
+//select substring(colb9,2,2), colb9 from table9 where colb9 = 'GREEN';
+
+EXPLAIN stage transliterate
+  select substring(colb9,2,2), colb9 from table9 where colb9 = 'GREEN';
+
+  SELECT SUBSTRING(n_name, 1, 2), n_name FROM nation;
