@@ -407,10 +407,10 @@ void *aIndexTree_positionLT(void* aIndexTree, void* aKey);
 void* aRowBuffer_GetCellArray(void* aRowBuffer, i8 iRow);
 void  vRowSingle_Print(void* pRowSingle);
 
-void* aPot_AllotRow(void* pPot, i8 iMixIn, char** aazStrArea);
+void* aPot_AllotRow(void* pPot, i8 iMixIn, char** aazStrArea, i8* piErrorCode);
 void  vPot_RowStrSize(void* pPot, i8 iMixin, i8 nRowStrSize);
 
-void* aTub_AllotRow(void* pTub, char** aazStrArea);
+void* aTub_AllotRow(void* pTub, char** aazStrArea, i8* piErrorCode);
 void  vTub_RowStrSize(void* pTub, i8 nRowStrSize);
 
 i8    StrLib_iLike2(char* azStr, char* azRegExp);

@@ -51,7 +51,10 @@ create table LineItem
 
 //verbose enable;
 ///FaultInjection load lineitem "<tpch_dir>/lineitem.<suffix>" <faultPoint> = 7 ;
+
 load lineitem "<tpch_dir>/lineitem.<suffix>";
+select l_orderkey, L_SHIPDATE, L_COMMENT from lineitem;
+
 
 /*
 /FaultInjection
