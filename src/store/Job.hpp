@@ -45,6 +45,11 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     bool   m_bRejected;
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // originating job
+    Job*  m_pExecuteJob;
+    Job*  m_pEndJob;
+
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // participant job
     Job*  m_pBegunJob;
     Job*  m_pExecutedJob;
@@ -129,10 +134,14 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vDropLock(void);
 
     void vEnableObjectTracker(void);
+    Job* pEndJob(void);
+    void vEndJob(Job* pEndJob);
     Job* pEndedJob(void);
     void vEndedJob(Job* pEndedJob);
     Stz* szEntryPoint(void);
     void vEntryPoint(Stz* szEntry);
+    Job* pExecuteJob(void);
+    void vExecuteJob(Job* pExecuteJob);
     Job* pExecutedJob(void);
     void vExecutedJob(Job* pExecutedJob);
 

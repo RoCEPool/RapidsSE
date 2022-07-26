@@ -222,6 +222,12 @@
 /* org_ beg */      "org_ beg" "brd job as begin"                  [job].trace
 /* org_ beg */  then
 /* org_ beg */
+/* org_ beg */  // - - - - - - - - - - - - - -
+/* org_ beg */  // new the 2pc originating jobs
+/* org_ beg */  // - - - - - - - - - - - - - -
+/* org_ beg */  [job].new2PCOriginJobs
+/* org_ beg */
+/* org_ beg */
 /* org_ beg */  "pipeline:ptpBegin" [job].entryPoint!
 /* org_ beg */
 /* org_ beg */  [task].grabLock
@@ -269,7 +275,8 @@
 /* org_ exe */
 /* org_ exe */  [task].grabLock
 /* org_ exe */    [grid].knownNodes [task].acksRemaining!
-/* org_ exe */    STD_NOWAIT_TAG "execute" api::forkChild2PC discard
+/* org_ exe */    //STD_NOWAIT_TAG "execute" api::forkChild2PC discard
+/* org_ exe */    [job].triggerExecute
 /* org_ org */    "<objectTracker>" [job].tagSet@ tagSet.hasName if
 /* org_ org */      [job].printObjectTracker
 /* org_ org */      [job].resetObjectTracker
@@ -306,7 +313,8 @@
 /* org_ end */
 /* org_ end */  [task].grabLock
 /* org_ end */    [grid].knownNodes [task].acksRemaining!
-/* org_ end */    STD_NOWAIT_TAG "end" api::forkChild2PC discard
+/* org_ end */    //STD_NOWAIT_TAG "end" api::forkChild2PC discard
+/* org_ end */    [job].triggerEnd
 /* org_ end */    "<objectTracker>" [job].tagSet@ tagSet.hasName if
 /* org_ end */      [job].printObjectTracker
 /* org_ end */      [job].resetObjectTracker
@@ -426,7 +434,7 @@
 /* _ptp beg */  // - - - - - - - - - - - - - -
 /* _ptp beg */  // new the 2pc response jobs
 /* _ptp beg */  // - - - - - - - - - - - - - -
-/* _ptp beg */  [job].newResponseJobs
+/* _ptp beg */  [job].new2PCParticipantJobs
 /* _ptp beg */
 /* _ptp beg */
 /* _ptp beg */  // - - - - - - - - - - -

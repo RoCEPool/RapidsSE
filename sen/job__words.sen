@@ -58,7 +58,7 @@
 : job.send
 
 
-  // [job].name@ [grid].thisNodeName@ "(%v) job.send %v" .printf
+  //[job].name@ [grid].thisNodeName@ "(%v) job.send %v" .printf
 
   SendNode[] node.sendSocket@ to Socket[]
 
@@ -187,21 +187,21 @@
   AM::SYSTEM::Ready@ if
     [ddlLock].testDrop
 
-    // toggle to default abnormal handlers
-    [op].isSend not if
-      [op].opName@ "TOGGLING TO ABNORMAL HANDLERS FOR OP %v" str.format .
-      "default_abnormalHandlers" FIND execute
-      "default_lowMemHandlers" FIND execute
-      [op].opName@ "TOGGLED TO ABNORMAL HANDLERS FOR OP %v" str.format .
-    else
-      Parcel[].reset
-    then
-
-
     Pipein[].isNull not if
       "deleting pipein!!!" .
       Pipein[].delete
       nullptr to Pipein[]
+    then
+
+    [op].isSend if
+      Parcel[].reset
+      true
+      exit
+    then
+
+    [op].isRecv if
+      true
+      exit
     then
 
     // not already detected low memory ?
@@ -218,6 +218,12 @@
     else
       "PIPELINE ALREADY DETECTED LOW MEMORY!!!" .
     then
+
+    // toggle to default abnormal handlers
+    [op].opName@ "TOGGLING TO ABNORMAL HANDLERS FOR OP %v" str.format .
+    "default_abnormalHandlers" FIND execute
+    "default_lowMemHandlers" FIND execute
+    [op].opName@ "TOGGLED TO ABNORMAL HANDLERS FOR OP %v" str.format .
 
     true
 

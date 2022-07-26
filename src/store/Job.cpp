@@ -78,6 +78,9 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId, TagSet* 
   m_bUpdateParent = false;
   m_bRejected     = false;
 
+  m_pExecuteJob   = nullptr;
+  m_pEndJob       = nullptr;
+
   m_pBegunJob     = nullptr;
   m_pExecutedJob  = nullptr;
   m_pEndedJob     = nullptr;
@@ -208,6 +211,12 @@ Job::~Job(void) noexcept(false)
 
     vMutexDestroy();
   */
+
+    if (m_pExecuteJob)
+      delete m_pExecuteJob;
+
+    if (m_pEndJob)
+      delete m_pEndJob;
 
     if (m_pBegunJob)
       delete m_pBegunJob;
@@ -553,6 +562,26 @@ void Job::vEnableObjectTracker(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get 2pc end job                                                            */
+/*----------------------------------------------------------------------------*/
+Job* Job::pEndJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_pEndJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set 2pc end job                                                            */
+/*----------------------------------------------------------------------------*/
+void Job::vEndJob(Job* pEndJob)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_pEndJob = pEndJob;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get 2pc ended job                                                          */
 /*----------------------------------------------------------------------------*/
 Job* Job::pEndedJob(void)
@@ -590,6 +619,26 @@ void Job::vEntryPoint(Stz* szEntry)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_sEntryPoint = szEntry;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get 2pc executeJob                                                         */
+/*----------------------------------------------------------------------------*/
+Job* Job::pExecuteJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_pExecuteJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set 2pc executJob                                                          */
+/*----------------------------------------------------------------------------*/
+void Job::vExecuteJob(Job* pExecuteJob)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_pExecuteJob = pExecuteJob;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1358,6 +1407,18 @@ void Job::vPostRecv(void)
   
   m_okLock.vResetLock();
   m_okLock.vResetStats();
+
+  // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+  // originating job
+  m_pExecuteJob  = nullptr;
+  m_pEndJob  = nullptr;
+
+  // - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+  // participant job
+  m_pBegunJob  = nullptr;
+  m_pExecutedJob  = nullptr;
+  m_pEndedJob  = nullptr;
+  m_pCancelledJob  = nullptr;
 
   /* 00 */ m_noActiveOps.vResetAtomic();
   /* 01 */ m_eJobList     = JL_NONE;

@@ -42,6 +42,7 @@ void Step::vAddSteps_Op(void)
   vAddStep("[op].handler!"_Stz,         &Step::vOpHandlerStore);
   vAddStep("[op].handlerAll!"_Stz,      &Step::vOpHandlerAllStore);
   vAddStep("[op].isEventValid"_Stz,     &Step::vOpIsEventValid);
+  vAddStep("[op].isRecv"_Stz,           &Step::vOpIsRecv);
   vAddStep("[op].isSend"_Stz,           &Step::vOpIsSend);
   vAddStep("[op].job@"_Stz,             &Step::vOpJobFetch);
   vAddStep("[op].opName@"_Stz,          &Step::vOpOpNameFetch);
@@ -254,6 +255,21 @@ void Step::vOpIsEventValid(void)
   
   m_pDataStack->vPushInt(bValid);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [op].isRecv -- check if operand is the recv OP                             */
+/*----------------------------------------------------------------------------*/
+void Step::vOpIsRecv(void)
+{
+  ENTRY();
+
+  if ( m_pOp->szOpNm()->bSame("recvSE"_Stz))
+    m_pDataStack->vPushInt(true);
+  else
+    m_pDataStack->vPushInt(false);
+
   EXIT();
 }
 
