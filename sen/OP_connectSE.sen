@@ -81,7 +81,9 @@
     node_I[].node to Node[]
 
     Node[] node.sendSocket@ not if
-      connectSE_attemptConnect
+      Node[] node.connectRetry if
+        connectSE_attemptConnect
+      then
     then
     
     nullptr to Node[]

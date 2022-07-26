@@ -21,6 +21,7 @@ namespace STORE
     i8  m_nPtnsInNode; // degree of parallelism
     s32 m_sIPAddr;     // ip address of node
     i8  m_iPortNo;     // port number of node
+    i8 m_nRetry;       // number of retries to connect
   
     eNS m_eState;      // node state
   
@@ -79,6 +80,8 @@ namespace STORE
     Stz* szRegionNm(void);
     i8   qRegionSize(void);
     void vRegionSize(i8 qRegionSize);
+    i8 iRetry(void);
+    void vRetryDecrement(void);
 
 
     Socket* pSendSocket(void);

@@ -372,6 +372,24 @@ JobId AM::DEMON::tMonDemonJobId(void) {
 }
 
 /*----------------------------------------------------------------------------*/
+/* set jobId of the nodeMon demon in AM                                       */
+/*----------------------------------------------------------------------------*/
+void AM::DEMON::vNodeMonDemonJobId(JobId tJobId) {
+  _static_
+
+  gpAttachMap->m_tNodeMonDemonJobId = tJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get jobId of the nodeMon demon in AM                                       */
+/*----------------------------------------------------------------------------*/
+JobId AM::DEMON::tNodeMonDemonJobId(void) {
+  _static_
+
+  return gpAttachMap->m_tNodeMonDemonJobId;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set jobId of the pageOut demon in AM                                       */
 /*----------------------------------------------------------------------------*/
 void AM::DEMON::vPageOutDemonJobId(JobId tJobId) {
