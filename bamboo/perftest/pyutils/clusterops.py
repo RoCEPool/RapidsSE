@@ -11,8 +11,8 @@ from pyutils.clusterconfig import ClusterConfig
 LOG = logging.getLogger(__name__)
 
 # How long to wait before killing the RapidsSE installation?
-C_INSTALL_TIMEOUT_SEC = 60
-C_GENERAL_SSH_TIMEOUT_SEC = 60
+C_INSTALL_TIMEOUT_SEC = 120
+C_GENERAL_SSH_TIMEOUT_SEC = 120
 C_CLUSTER_START_CMD = "startSE.sh"
 C_CLUSTER_PROMPT_CMD = "prompt.sh"
 C_CLUSTER_COLLECT_LOGS_CMD = "collectLogs.sh"

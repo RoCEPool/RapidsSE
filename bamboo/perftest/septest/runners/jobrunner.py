@@ -200,6 +200,9 @@ class JobRunner:
     def __setup_job(self):
         """Do all the pre-requisites before we can start to run the tests"""
 
+        # Clear out any contents of the result and artifacts directory
+        self.__delete_results_dir_contents()
+
         (job_result_id, job_id, test_tuples) = \
             septest.db.jobstart.record_job_start(self.all_configs,
                                                  self.bamboo_plan_key,
@@ -212,9 +215,6 @@ class JobRunner:
         self.job_result_id = job_result_id
         self.job_id = job_id
         self.test_tuples = test_tuples
-
-        # Clear out any contents of the result and artifacts directory
-        self.__delete_results_dir_contents()
 
         # Compile RapidsSE and build the installer
         if self.build_se:

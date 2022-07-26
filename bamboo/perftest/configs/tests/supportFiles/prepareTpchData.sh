@@ -96,12 +96,12 @@ function printUsageAndExit() {
   echo ""
   echo "Details:"
   echo "  --sf <scaleFactor>  The scale factor of the TPC-H data to be copied."
+  echo "  --partitionsPerDisk <count>  How many ways to split the data for each disk. Default=1" # Multiple paths per disk
   echo ""
   echo "  --copyData                  <internal use> Runs the script in copyData mode to download and layout the data."
   echo "  --installDir                <internal use> The RapidsSE installation directory on the current node."
   echo "  --start                     <internal use> The 1-based start index of the data chunks to copy on this node."
   echo "  --target <path> <count>     <internal use> How many chunks to put on a given target path."
-  echo "  --partitionsPerDisk <count> <internal use, default=1> How many ways to split the data for each disk." # Multiple paths per disk
   echo ""
   echo "  --help              Displays this message."
   exit 1
@@ -260,11 +260,6 @@ function processArgs() {
   else
     # Not running in copyData mode. Check that certain arguments have not been specified.
 
-    if [[ "${argInstallDir}" -eq 1 ]]; then
-      printError "The --installDir argument can only be specified in conjunction with the --copyData argument."
-      printUsageAndExit
-    fi
-
     if [[ "${argStart}" -eq 1 ]]; then
       printError "The --start argument can only be specified in conjunction with the --copyData argument."
       printUsageAndExit
@@ -407,12 +402,12 @@ function printChunksPerPath() {
   local pathExt
   pathExt="/tpch/sf${SF}"
 
-  readonly fmtStr="  %-40s    %-7s\n"
+  readonly fmtStr="  %-40s    %-7s    %-7s\n"
 
   echo "The following paths will each get these number of data chunks:"
   # shellcheck disable=SC2059
-  printf "${fmtStr}" "Path" "#Chunks"
-  echo "  ----------------------------------------    -------"
+  printf "${fmtStr}" "Path" "#Chunks" "Index"
+  echo "  ----------------------------------------    -------    -------"
 
 
   for nodeName in "${NODE_LIST[@]}";
@@ -425,7 +420,7 @@ function printChunksPerPath() {
       chunksForCurrentPath="${CHUNKS_PER_NODEPATH[${chunkIdx}]}"
 
       # shellcheck disable=SC2059
-      printf "${fmtStr}" "${dir}${pathExt}" "${chunksForCurrentPath}"
+      printf "${fmtStr}" "${host}:${dir}${pathExt}" "${chunksForCurrentPath}" "${chunkIdx}"
     done
   done
 }
@@ -457,7 +452,7 @@ function copyScriptToNodes() {
 
 function invokeScriptOnNodes() {
 
-  local commonArgs=("--copyData" "--sf" "${SF}" "--partitionsPerDisk" "${PTNS_PER_DISK}")
+  local commonArgs=("--copyData" "--sf" "${SF}")
 
   local chunkIdx=-1
   local chunkCount=1
@@ -484,14 +479,15 @@ function invokeScriptOnNodes() {
       chunkIdx=$((chunkIdx + 1))
       chunksForCurrentPath="${CHUNKS_PER_NODEPATH[${chunkIdx}]}"
 
+      nodeArgs+=("--target" "${dir}${pathExt}" "${chunksForCurrentPath}")
+
       # Increment the chunk count, which sets the starting index for the next node
       chunkCount=$((chunkCount + chunksForCurrentPath))
-
-      nodeArgs+=("--target" "${dir}${pathExt}" "${chunksForCurrentPath}")
     done
 
     # Invoke the script in the background
     echo "Invoking script on host: ${host}"
+    echo ssh "-o" "BatchMode=yes" "-o" "StrictHostKeyChecking=no" "${host}" "/tmp/${SCRIPT_NAME}" "${commonArgs[@]}" "${nodeArgs[@]}" &
     ssh "-o" "BatchMode=yes" "-o" "StrictHostKeyChecking=no" "${host}" "/tmp/${SCRIPT_NAME}" "${commonArgs[@]}" "${nodeArgs[@]}" &
 
   done
@@ -528,6 +524,12 @@ function makeTargets() {
   while [ "${i}" -lt "${#TARGETS[@]}" ]
   do
     dir="${TARGETS[$i]}"
+
+    # Delete the directory if it already exists
+    if [ -d "${dir}" ]; then
+      rm -rf "${dir}"
+    fi
+
     mkdir -p "${dir}"
 
     i=$((i + 2))
@@ -556,7 +558,8 @@ function downloadData() {
     local includes=()
     for j in $(seq "${index}" "$((index + count - 1))" )
     do
-      includes+=("--include" "*.tbl.${j}.gz")
+      paddedNum="$(printf "%03d" "${j}")"
+      includes+=("--include" "*.tbl.${paddedNum}.gz")
     done
 
     # Do the download in the background
@@ -566,6 +569,7 @@ function downloadData() {
     } &
 
     i=$((i + 2))
+    index=$((index + count))
   done
 
   # Also download the nation and region tables onto the first target on each node
@@ -625,7 +629,7 @@ function processData() {
         else
           # Tables: lineitem, orders, supplier, customer, part, parsupp
           # Decompress file, append to a single file and then remove the compressed file.
-          find . -name "${tableName}.tbl.*.gz" -print0 | xargs -0 gunzip -c >> "${tableName}.tbl"
+          find . -name "${tableName}.tbl.*.gz" -print | sort | xargs gunzip -c >> "${tableName}.tbl"
           rm -f "${tableName}"*.gz
         fi
 
