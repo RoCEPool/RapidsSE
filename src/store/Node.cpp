@@ -32,6 +32,7 @@ Node::Node(i8 iNodeId, Stz* szNodeNm, i8 nPtnsInNode,
   m_nPtnsInNode = nPtnsInNode;
   m_sIPAddr     = szIpAddr;
   m_iPortNo     = iPortNo;
+  m_nRetry      = C_MAX_CONN_RETRIES;
   
   m_eState      = NS_INACTIVE;
   
@@ -331,6 +332,27 @@ void Node::vRegionSize(i8 qRegionSize)
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
   
   m_qRegionSize = qRegionSize;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set known region size                                                      */
+/*----------------------------------------------------------------------------*/
+i8 Node::iRetry(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
+
+  return m_nRetry;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set known region size                                                      */
+/*----------------------------------------------------------------------------*/
+void Node::vRetryDecrement()
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
+
+  if(m_nRetry > 0)
+    m_nRetry--;
 }
 
 /*----------------------------------------------------------------------------*/
