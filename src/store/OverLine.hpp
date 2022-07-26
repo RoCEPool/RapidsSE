@@ -15,9 +15,9 @@ namespace STORE
     OverLine(void);
     ~OverLine(void) noexcept(false);
   
-    i8 nBytes(void);
-    i8 nUnits(void);
-    i8 nWords(void);
+    i8 jSizeBytes(void);
+    i8 jSizeUnits(void);
+    i8 jSizeWords(void);
   
     void vDump(void);
 

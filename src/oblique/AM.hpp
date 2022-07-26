@@ -296,6 +296,9 @@ namespace OBLIQUE
       static void  vMonDemonJobId(JobId tJobId);
       static JobId tMonDemonJobId(void);
 
+      static void  vNodeMonDemonJobId(JobId tJobId);
+      static JobId tNodeMonDemonJobId(void);
+
       static void  vPageOutDemonJobId(JobId tJobId);
       static JobId tPageOutDemonJobId(void);
 

@@ -516,12 +516,22 @@ void Step::vLocalsTo(void)
 void Step::vLocalsFramePop(void)
 {
   ENTRY();
-  
+    
+  RASSERT(0 == m_pReturnStack->nValues() ||
+          CN_FIPVAL == m_pReturnStack->aTopVal()->eType());
+
   if (! m_pLocalVars)
     vSeeFrameStack();
   
   RASSERT(m_pLocalVars);
-  m_pLocalVars->vFramePop();
+  
+  void* aDiscardPoint_return;
+  if (0 == m_pReturnStack->nValues())
+    aDiscardPoint_return = nullptr;
+  else
+    aDiscardPoint_return = m_pReturnStack->aTopVal();
+  
+  m_pLocalVars->vFramePop(aDiscardPoint_return);
 
   EXIT();
 }
@@ -558,9 +568,12 @@ void Step::vLocalsFramePush(void)
     if (! m_pLocalVars)
     m_pLocalVars = new LocalVars;
   
-  TypeValueArea* aDiscardPoint = (TypeValueArea*)m_pReturnStack->aTopVal();
+  TypeValueArea* axDiscardPoint = m_pReturnStack->aTopVal();
   
-  if (! m_pLocalVars->bFramePush(nLocals,aDiscardPoint)) {
+  RASSERT(0 == m_pReturnStack->nValues() ||
+          CN_FIPVAL == axDiscardPoint->eType());
+  
+  if (! m_pLocalVars->bFramePush(nLocals,axDiscardPoint)) {
     vSeeFrameStack();
     NEVER_REACH;
   }

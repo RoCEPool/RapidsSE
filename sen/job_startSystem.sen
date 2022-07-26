@@ -161,6 +161,14 @@
   else
     AM::DEMON::tWakerDemonJobId!
   then
+
+  // spawn nodeMon demon
+
+//  STD_DEMONFORK_TAG nodeMonDemonPipeline api::forkDemon not if
+//    "Error Code %v" .printf
+//  else
+//    AM::DEMON::tNodeMonDemonJobId!
+//  then
   
   // spawn event demon
   STD_DEMONFORK_TAG eventDemonPipeline api::forkDemon not if

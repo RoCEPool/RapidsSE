@@ -52,10 +52,10 @@ namespace STORE
     // Row CrwPacker
   
     bool bAddRowAsCrw(Row* pRow);
+    bool bAddRowAsCrw_2(Row* pRow);
     bool bAllotCrw(void);
     bool bCreateTail(Stz* szTailStr);
-    void vEncodeHeadForRow(Row* pRow);
-    void vEncodeTailsForRow(Row* pRow);
+    void vEncodeDupeTailsForRow(Row* pRow);
 
     // - - - - - - - - - - - - - - - - - - - - -
     // Row Sampling (structural order)

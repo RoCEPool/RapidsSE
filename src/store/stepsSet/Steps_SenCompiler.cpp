@@ -29,6 +29,11 @@ void Step::vAddSteps_SenCompiler(void)
   vAddStep("senCompiler::nested@"_Stz,        &Step::vSenCompilerNestedFetch);
   vAddStep("senCompiler::nested!"_Stz,        &Step::vSenCompilerNestedStore);
 
+  vAddStep("senCompiler::enterExitTrace@"_Stz,&Step::vSenCompilerEnterExitFetch);
+  vAddStep("senCompiler::enterExitTrace!"_Stz,&Step::vSenCompilerEnterExitStore);
+  
+  vAddStep("senCompiler::encodeEnter"_Stz,    &Step::vSenCompilerEncodeEnter);
+
   
   vAddStep("["_Stz,     &Step::vSenCompilerInterpreting,    true);
   vAddStep("]"_Stz,     &Step::vSenCompilerCompiling);
@@ -316,6 +321,48 @@ void Step::vSenCompilerCondEnd(void)
 
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* senCompiler::enterExitTrace@ -- fetch enter exit trace                     */
+/*----------------------------------------------------------------------------*/
+void Step::vSenCompilerEnterExitFetch(void)
+{
+  ENTRY();
+    
+  b8 bEnterExit = m_pSenCompiler->bEnterExitTrace();
+    
+  m_pDataStack->vPushInt(bEnterExit);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* senCompiler::enterExitTrace! -- store enter exit trace                     */
+/*----------------------------------------------------------------------------*/
+void Step::vSenCompilerEnterExitStore(void)
+{
+  ENTRY();
+  
+  b8 bEnterExit = m_pDataStack->iPopBol(__func__);
+    
+  m_pSenCompiler->vEnterExitTrace(bEnterExit);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* senCompiler::encodeEnter -- encode sen function enter                      */
+/*----------------------------------------------------------------------------*/
+void Step::vSenCompilerEncodeEnter(void)
+{
+  ENTRY();
+  
+  m_pSenCompiler->vEncodeEnter();
+  
+  EXIT();
+}
+
+
 
 /*============================================================================*/
 /* end                                                                        */

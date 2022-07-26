@@ -22,17 +22,16 @@ namespace STORE
     ~HeadLine(void) noexcept(false);
   
     byte* ayAdrLogical(i8 i_Offset);
-    i8   nBytes(void);
     void vDelete(void);
     bool bIsDeleted(void);
     void vDump(void);
-    i8   nFreeSpace(StreamDef* pStreamDef);
+    i8   jFreeSpaceBytes(StreamDef* pStreamDef);
     w8   wGetLogical(i8 i_Offset, i8 nDataSize);
     u1   uGetEncMetaCode(Column* pCol,  i8& i_ColCrs_, i8& i_OfsCrs_,
                       StreamDef* pStreamDef);
     OverLine* aGetOver(void);
-    i8   iGetTailRel(TailLine* TailLine);
-    TailLine* aGetTailRel(i8 i_Tail_rel);
+    i8   iToTail_rel(TailLine* TailLine);
+    TailLine* aGetTail_rel(i8 i_Tail_rel);
     bool bHasOverflow(void);
     void vHasOverflow(void);
     void vMetaCode(i8 i_Col, u1 uMetaCode);
@@ -43,10 +42,11 @@ namespace STORE
     void vPutDataLogical(i8 i_Offset, w8 wDataCode, i8 nDataSize);
     void vPutDataLogical(i8 i_Offset, Stz* szString, i8 nLength);
     void vSetOver(OverLine* aOverLine);
-    i8   nUnits(void);
+    i8   jSizeBytes(void);
+    i8   jSizeUnits(void);
+    i8   jSizeWords(void);
     i8   nW(void);
     void vW(i8 nWords);
-    i8   nWords(void);
 
     // inline functions
   

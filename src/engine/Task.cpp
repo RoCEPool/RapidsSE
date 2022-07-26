@@ -1145,10 +1145,25 @@ void Task::vSetSenRecoverContext(void)
   //Task::vSeeFrameStack();
   
   while (m_pReturnStack->nValues() > 2) {
+    
+#ifdef WITH_LOCALS_OOM
+    
+    if (m_pLocalVars) {
+      void* aDiscardPoint_return = m_pReturnStack->aTopVal();
+      if (m_pLocalVars->aDiscardPoint() == aDiscardPoint_return) {
+        m_pLocalVars->vFramePop(aDiscardPoint_return);
+      }
+    }
+
+#else
+    
     if (m_pLocalFrame
         && m_pLocalFrame->aDiscardPoint() ==
              (TypeValueArea*)m_pReturnStack->aTopVal())
       vLocalsPop();
+
+#endif
+    
     m_pReturnStack->vDiscardTop();
   }
   

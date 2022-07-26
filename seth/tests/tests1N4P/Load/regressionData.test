@@ -338,14 +338,16 @@ success
 //predicateFetch limitRow;
 //rows: 0
 
-Load limitRow "../DATA/Load/largeRow2.csv";
+//Load limitRow "../DATA/Load/largeRow2.csv";
+Load limitRow "../DATA/Load/largeRow4000B.csv";
 //failure contains: '1 invalid'
 success;
 
 tableScan limitRow;
 rows: 1
 
-Load limitRow "../DATA/Load/largeRow3.csv";
+//Load limitRow "../DATA/Load/largeRow3.csv";
+Load limitRow "../DATA/Load/largeRow4000B.csv";
 //failure contains: '1 invalid'
 success;
 

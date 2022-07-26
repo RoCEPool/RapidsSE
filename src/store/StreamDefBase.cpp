@@ -490,7 +490,7 @@ RowPix* StreamDefBase::pRowPix(void)
 /*----------------------------------------------------------------------------*/
 /* get fixed row size                                                         */
 /*----------------------------------------------------------------------------*/
-i8 StreamDefBase::jRowSize(void)
+i8 StreamDefBase::jRowSizeBytes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
