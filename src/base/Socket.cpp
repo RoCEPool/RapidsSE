@@ -188,19 +188,56 @@ Object* Socket::pRecvObject(void)
     if (nPipeline == gxCmdLineArgs.m_xSysArgs.m_iSocketLowMem)
       THROW_LOWMEMORY_NEW();
 
-
       Object *pReceivedObject = pObjectRecv(eClass);
 
-      if (eClass == CN_JOB) {
-        Job *pJob = _pJob(pReceivedObject);
-        //vTrace("Recvd Job %s : %lld\n"_Stz, Job::szJobNm(pJob), nPipeline);
+      try {
+        pReceivedObject->vRunPostRecv();
       }
+      catch (LowMemory xLowMemory) {
+        // received the object but was unable to execute postRecv
+        if (eClass == CN_JOB) {
+          Job *pJob = _pJob(pReceivedObject);
+          vTrace("Recvd Job %s : Unable to execute postRecv (lowmem)\n"_Stz, Job::szJobNm(pJob));
+
+          if (Job::szJobNm(pJob)->bSame("begun"_Stz) ||
+              Job::szJobNm(pJob)->bSame("executed"_Stz) ||
+              Job::szJobNm(pJob)->bSame("ended"_Stz) ||
+              Job::szJobNm(pJob)->bSame("cancelled"_Stz)) {
+
+            // ack originating job
+            // job has begun/executed/ended/cancelled on the participant
+            AM::JOB::vAckOriginatingJob(Job::tOriginId(pJob));
+          }
+          else if (Job::szJobNm(pJob)->bSame("cancel"_Stz) ||
+                   Job::szJobNm(pJob)->bSame("end"_Stz) ||
+                   Job::szJobNm(pJob)->bSame("execute"_Stz)) {
+
+            // trigger an execute/end of the participant pipeline job
+            AM::JOB::vTriggerExecute(Job::tDistId(pJob));
+          }
+          else {
+
+            m_pRejectJob->vOriginId(Job::tOriginId(pJob));
+            m_pRejectJob->vDistId(Job::tDistId(pJob));
+            m_pRejectJob->vError(EC_LOW_MEMORY);
+
+            // send a rejectJob to originating node
+            AM::JOB::vSendReject(m_pRejectJob);
+          }
+
+          delete pReceivedObject;
+
+        }
+        return nullptr;
+      }
+
       vSuccess(true);
       return pReceivedObject;
     }
   }
   catch (LowMemory xLowMemory) {
     // fall thru
+    i8 i = 1;
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -295,45 +332,51 @@ Marker* Socket::pMarkerRecv(void)
 Object* Socket::pObjectRecv(eCN eClass)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
-  
-  
-  SysCall oSysCall;
 
-  i8 nSize = gxaSizeHeap[eClass].m_nClassSize;
+  Object *pReceivedObject = nullptr;
 
-  //vTrace("class:%s\n"_Stz, aCN[eClass]);
-  Object* pReceivedObject = Heaps::pAllocate(eClass);
-  MemLib::vCopy(pReceivedObject,m_pObject,sizeof(Object),eClass);
+  try {
 
-  void* aBody = aAdd<void*>(pReceivedObject,sizeof(Object));
-  i8 nRemainingBytes = nSize - sizeof(Object);
+    SysCall oSysCall;
 
-  bool bResult = bBytesRecv(aBody,nRemainingBytes,oSysCall);
-  if (! bResult) {
-   //m_pDataStack->vPushInt(false);
-   //vReceivedObject(nullptr);
-   vTrace("Socket::pRecvObject (body) : bRecvBytes returned false\n"_Stz);
-   vSuccess(false);
-   return nullptr;
-  }
+    i8 nSize = gxaSizeHeap[eClass].m_nClassSize;
+
+    //vTrace("class:%s\n"_Stz, aCN[eClass]);
+    pReceivedObject = Heaps::pAllocate(eClass);
+    MemLib::vCopy(pReceivedObject, m_pObject, sizeof(Object), eClass);
+
+    void *aBody = aAdd<void *>(pReceivedObject, sizeof(Object));
+    i8 nRemainingBytes = nSize - sizeof(Object);
+
+    bool bResult = bBytesRecv(aBody, nRemainingBytes, oSysCall);
+    if (!bResult) {
+      //m_pDataStack->vPushInt(false);
+      //vReceivedObject(nullptr);
+      vTrace("Socket::pRecvObject (body) : bRecvBytes returned false\n"_Stz);
+      vSuccess(false);
+      return nullptr;
+    }
 #ifdef WITH_BUFFER_ID
-  if (1 == DataBuffer::bIsDataBuffer(eClass)) {
-    DataBuffer* pDataBuffer = _pDataBuffer(pReceivedObject);
-    i8 iPoolBufferNo = pDataBuffer->iBufferNo();
-    pDataBuffer->vSetBufferNo(iPoolBufferNo);
-    pDataBuffer->vSetBufferId(
-        AM::pFileMap()->oGetNewBufferId(iPoolBufferNo));
+    if (1 == DataBuffer::bIsDataBuffer(eClass)) {
+      DataBuffer* pDataBuffer = _pDataBuffer(pReceivedObject);
+      i8 iPoolBufferNo = pDataBuffer->iBufferNo();
+      pDataBuffer->vSetBufferNo(iPoolBufferNo);
+      pDataBuffer->vSetBufferId(
+          AM::pFileMap()->oGetNewBufferId(iPoolBufferNo));
 #ifdef WITH_HASHMAP
-    AM::pHashMap()->vInsertKeyValue(
-        (void *) pDataBuffer->oGetBufferId().m_pvAsAddress,
-        (Object *) pReceivedObject);
+      AM::pHashMap()->vInsertKeyValue(
+          (void *) pDataBuffer->oGetBufferId().m_pvAsAddress,
+          (Object *) pReceivedObject);
 #endif
-  }
+    }
 #endif
-  pReceivedObject->vRunPostRecv();
 
-  m_pTotup->vAdd(eClass,nSize);
-  
+    m_pTotup->vAdd(eClass, nSize);
+  }
+  catch (LowMemory xLowMemory) {
+    THROW_LOWMEMORY_NEW();
+  }
+
   return pReceivedObject;
 }
 

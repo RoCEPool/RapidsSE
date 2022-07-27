@@ -436,6 +436,7 @@ bool Output::bProcessOperand(Operand* pOperand)
       Marker *pMarker = _pMarker(pOperand);
       if (pMarker->eOpMarker() == OM_LOWMEMORY) {
         if (!m_bHasError) {
+          vTrace("RowsProcessed: %lld\n"_Stz, *m_ixRowsProcessed);
           vTrace("\nerror: SYSTEM RUNNING LOW ON MEMORY\n"_Stz);
           m_bHasError = true;
         }
@@ -483,10 +484,12 @@ bool Output::bProcessOperand(Operand* pOperand)
 //          vTrace("[[RowBuffer %s ; Row=%lld]]\n"_Stz,
 //                 spDataBuffer.sz(pRowBuffer),
 //                 pRowBuffer->nRows());
-      m_ixRowsProcessed += pRowBuffer->nRows();
-      vTrace("\n"_Stz);
-      pRowBuffer->vPrintRows(m_pFileOut,nullptr);
-      AM::vDeleteOperand(pOperand,nullptr);
+      if ( ! m_bHasError ) {
+        m_ixRowsProcessed += pRowBuffer->nRows();
+        vTrace("\n"_Stz);
+        pRowBuffer->vPrintRows(m_pFileOut, nullptr);
+      }
+      AM::vDeleteOperand(pOperand, nullptr);
       break;
     }
             

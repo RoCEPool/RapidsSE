@@ -81,33 +81,34 @@
 /* org_ org */    then
 /* org_ org */  then
 
-/* org_ org */  [args].distJob if
-/* org_ org */    "pipeline" "origin"
-/* org_ org */      "org_ org" "preExecuteTest"                    [job].trace
-/* org_ org */  then
-/* org_ org */
-/* org_ org */  [job].preExecuteTest to ErrorCode[]
-/* org_ org */  ErrorCode[] if
-/* org_ org */    ErrorCode[] [job].error!
-/* org_ org */    [ddlLock].testDrop
-/* org_ org */    ListedJob[].assertNoRef
-/* org_ org */
-/* org_ org */    Path[].discardAll
-/* org_ org */    [task].grabLock
-/* org_ org */    [job].addExited
-/* org_ org */
-/* org_ org */      [args].distJob if
-/* org_ org */        "pipeline" "origin"
-/* org_ org */        "org_ org" "preExecuteTest signalling parent"       [job].trace
-/* org_ org */      then
-/* org_ org */
-/* org_ org */    [job].updateParent assert
-/* org_ ovr */    [job].signalParent
-/* org_ org */
-/* org_ org */      [task].retire // does not queue onto exit demon
-/* org_ org */
-/* org_ org */    HAZARD
-/* org_ org */  then
+/* org_ org *  [args].distJob if
+* org_ org *    "pipeline" "origin"
+* org_ org *      "org_ org" "preExecuteTest"                    [job].trace
+* org_ org *  then
+* org_ org *  "TADA1" .
+* org_ org *  [job].preExecuteTest to ErrorCode[]
+* org_ org *  ErrorCode[] if
+* org_ org *    ErrorCode[] [job].error!
+* org_ org *    [ddlLock].testDrop
+* org_ org *    ListedJob[].assertNoRef
+* org_ org *    "TADA2" .
+* org_ org *    Path[].discardAll
+* org_ org *    [task].grabLock
+* org_ org *    [job].addExited
+* org_ org *    "TADA3" .
+* org_ org *      [args].distJob if
+* org_ org *        "pipeline" "origin"
+* org_ org *        "org_ org" "preExecuteTest signalling parent"       [job].trace
+* org_ org *      then
+* org_ org *
+* org_ org *    [job].updateParent assert
+* org_ ovr *    [job].signalParent
+* org_ org *
+* org_ org *      [task].retire // does not queue onto exit demon
+* org_ org *
+* org_ org *    HAZARD
+* org_ org *  then
+•/
 
 /* org_ org */
 /* org_ org */  // - - - - - - - - - - - - - - - - - - - - - - - -
