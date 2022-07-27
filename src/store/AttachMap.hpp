@@ -89,6 +89,7 @@ namespace STORE
     Word*         m_pTenants;
     TempName      m_oTempName;
     File*         m_pTraceFile;
+    i8            m_iTraceFileCount;
     TraceLock      m_oTraceLock;
     TraceMultiLock m_oTraceMultiLock;
     TxSet*        m_pTxSet;
@@ -158,6 +159,7 @@ namespace STORE
 
     File* pTraceFile(void);
     void  vTraceFile(File* pTraceFile);
+    Stz* szTraceFilePath(void);
     void vTraceLockDrop(void);
     void vTraceLockGrab(void);
     void vTraceMultiLockDrop(void);

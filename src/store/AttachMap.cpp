@@ -99,6 +99,7 @@ AttachMap::AttachMap(bool bNoFree)
   m_pTxSet          = new TxSet;
 
   m_pTraceFile      = nullptr;
+  m_iTraceFileCount = 0;
   
   Step::vAddStep("\\word"_Stz,&Step::vWord);
   AM::vRootWord(m_pDicRoot->pFindWord("\\word"_Stz));
@@ -521,6 +522,19 @@ void AttachMap::vTraceFile(File* pTraceFile)
   _precondition_(_MAGIC_,CN_ATTACHMAP,_FOOTER_);
   
   m_pTraceFile = pTraceFile;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get trace file path                                                        */
+/*----------------------------------------------------------------------------*/
+Stz* AttachMap::szTraceFilePath(void)
+{
+  _precondition_(_MAGIC_,CN_ATTACHMAP,_FOOTER_);
+
+  if(m_sTraceFile.bIsEmpty())
+    return nullptr;
+  else
+    return m_sTraceFile.szStz();
 }
 
 /*----------------------------------------------------------------------------*/

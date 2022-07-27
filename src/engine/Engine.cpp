@@ -572,20 +572,29 @@ void Engine::vCreateFileNames(void)
 {
   
   // "SEgrid" to be gxCmdLineArgs.m_xSysArgs.m_sGridName.szStz()
+
+  gpAttachMap->vTraceLockGrab();
+
 #ifdef WITH_DEBUG_VERSION
-  gpAttachMap->m_sTraceFile.vSprint("../tmp/SE_Trace_%s_%s_Debug.txt"_Stz,
-                                    "SEgrid"_Stz, gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz());
+  gpAttachMap->m_sTraceFile.vSprint("../tmp/SE_Trace_%s_%s_Debug%d.txt"_Stz,
+                                    "SEgrid"_Stz,
+                                    gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz(),
+                                    gpAttachMap->m_iTraceFileCount);
   gpAttachMap->m_sLogRegion.vSprint("SE_Log_%s_Debug"_Stz,"SEgrid"_Stz);
   gpAttachMap->m_sLogCsvFile.vSprint("../tmp/SE_Log_%s_Debug.csv"_Stz,"SEgrid"_Stz);
   gpAttachMap->m_sLogTxtFile.vSprint("../tmp/SE_Log_%s_Debug.txt"_Stz,"SEgrid"_Stz);
 #else
-  gpAttachMap->m_sTraceFile.vSprint("../tmp/SE_Trace_%s_%s.txt"_Stz,
-                                    "SEgrid"_Stz, gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz());
+  gpAttachMap->m_sTraceFile.vSprint("../tmp/SE_Trace_%s_%s%d.txt"_Stz,
+                                    "SEgrid"_Stz,
+                                    gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz(),
+                                    gpAttachMap->m_iTraceFileCount);
   gpAttachMap->m_sLogRegion.vSprint("SE_Log_%s"_Stz, "SEgrid"_Stz);
   gpAttachMap->m_sLogCsvFile.vSprint("../tmp/SE_Log_%s.csv"_Stz, "SEgrid"_Stz);
   gpAttachMap->m_sLogTxtFile.vSprint("../tmp/SE_Log_%s.txt"_Stz, "SEgrid"_Stz);
 #endif
-  
+
+  gpAttachMap->vTraceLockDrop();
+
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT)) {
     vTrace("Trace file path: %s\n"_Stz,gpAttachMap->m_sTraceFile.szStz());
     vTrace("Log file path (csv): %s\n"_Stz,gpAttachMap->m_sLogCsvFile.szStz());
@@ -1040,13 +1049,22 @@ void Engine::vOpenTrace(bool bPrompt)
   if (bPrompt) {
     gpTraceFile = new(C_VIA_MALLOC) File(nullptr);
 
-    bool bOpened = gpTraceFile->bOpenAppend(sTracePath);
-    RASSERT(bOpened);
+    if(gpAttachMap && gpAttachMap->szTraceFilePath() != nullptr) {
+      bool bOpened = gpTraceFile->bOpenAppend(gpAttachMap->szTraceFilePath());
+      RASSERT(bOpened);
 
-    vTrace("Opened trace file %s for append\n"_Stz
+        vTrace("Opened trace file %s for append\n"_Stz
+               ,gpAttachMap->szTraceFilePath()
+               );
+    }
+    else {
+      bool bOpened = gpTraceFile->bOpenAppend(sTracePath);
+      RASSERT(bOpened);
 
-           ,sTracePath.szStz()
-           );
+      vTrace("Opened trace file %s for append\n"_Stz
+          ,sTracePath.szStz()
+      );
+    }
   }
   else {
   
@@ -1058,14 +1076,22 @@ void Engine::vOpenTrace(bool bPrompt)
     gpAttachMap->vTraceFile(gpTraceFile);
     
     bool bOpened;
+    if(gpAttachMap->szTraceFilePath() != nullptr) {
+      bOpened = gpTraceFile->bOpenWrite(gpAttachMap->szTraceFilePath());
+      RASSERT(bOpened);
+      vTrace("Opened trace file %s for write\n"_Stz
 
-    bOpened = gpTraceFile->bOpenWrite(sTracePath);
-    RASSERT(bOpened);
-    
-    vTrace("Opened trace file %s for write\n"_Stz
+          ,gpAttachMap->szTraceFilePath()
+      );
+    }
+    else {
+      bOpened = gpTraceFile->bOpenWrite(sTracePath);
+      RASSERT(bOpened);
+      vTrace("Opened trace file %s for write\n"_Stz
 
-           ,sTracePath.szStz()
-           );
+          ,sTracePath.szStz()
+      );
+    }
   }
 }
 
