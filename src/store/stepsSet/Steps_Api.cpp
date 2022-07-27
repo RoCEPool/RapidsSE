@@ -299,16 +299,23 @@ void Step::vApiSpawnJob(void)
   ENTRY();
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
+
   Task* pTask = pJob->pTask();
+  /*
   RASSERT(! pTask);
-//  if ( pTask) {
-//    vTrace("****Job: %s has a task in api::spawnJob\n"_Stz,pJob->szJobNm());
-//    RASSERT(QK_NONE == pTask->eQueue());
-//    RASSERT(TR_NONE == pTask->eTransition());
-//  }
-  
+  //  if ( pTask) {
+  //    vTrace("****Job: %s has a task in api::spawnJob\n"_Stz,pJob->szJobNm());
+  //    RASSERT(QK_NONE == pTask->eQueue());
+  //    RASSERT(TR_NONE == pTask->eTransition());
+  //  }
+
   pJob->vTaskCreate();
+
+ */
+
+  if ( ! pTask )
+    pJob->vTaskCreate();
+
   Scheduler::vTaskApi_Add(pJob->pTask());
 
   EXIT();
