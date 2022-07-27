@@ -33,6 +33,9 @@
 #define _PSH_IVY(iArg)  \
   *paW++ = iArg;
 
+#define _PSH_NULL \
+  *paW++ = C_DATUM_NULL;
+
 #define _PSH_TME(iArg)  \
   *paW++ = iArg;
 
@@ -96,6 +99,28 @@
     }                                                                       \
   }
 
+#define _COPYSTR_IFTRUE_PL(szAreaTo)                                        \
+  {                                                                         \
+    iArg1 = *(--paW);                                                       \
+    iArg2 = *(--paW);                                                       \
+    if (iArg1 && iArg1 != C_DATUM_NULL)    {                                \
+        nSrcSize = strlen((char*)iArg2) + 1 < 8 ? strlen((char*)iArg2) + 1 : 8 ; \
+        szDstStz = (char*)szAreaTo;                                         \
+        strncpy(szDstStz, (char*)iArg2, nSrcSize);                          \
+    }                                                                       \
+  }
+
+#define _COPYSTR_PL(szAreaTo)                                               \
+  {                                                                         \
+    iArg1 = *(--paW);                                                       \
+    if (iArg1 != C_DATUM_NULL)    {                                         \
+        nSrcSize = strlen((char*)iArg1) + 1 < 8 ? strlen((char*)iArg1) + 1 : 8 ; \
+        szDstStz = (char*)szAreaTo;                                         \
+        strncpy(szDstStz, (char*)iArg1, nSrcSize);                          \
+    }                                                                       \
+  }
+
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // BETWEEN
 #define _BET_BCDBCD(eErrorCode)                                            \
@@ -107,7 +132,7 @@
         bcdArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
         bcdArg2.m_iAsI8 ==  C_DATUM_NULL ||                                \
         bcdArg3.m_iAsI8 == C_DATUM_NULL) {                                 \
-      *(paW++) = C_DATUM_NULL;                                             \
+      *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
                                                                            \
@@ -403,12 +428,12 @@
 
 #define _INX_IVLIVL(eErrorCode)                                             \
   {                                                                         \
-    NEVER_REACH                                                             \
+    iErrorCode = EC_NOT_IMPLEMENTED;                                        \
   }
 
 #define _INX_IVYIVY(eErrorCode)                                             \
   {                                                                         \
-    NEVER_REACH                                                             \
+    iErrorCode = EC_NOT_IMPLEMENTED;                                         \
   }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -481,7 +506,7 @@
   {                                                                         \
     iArg1 = *(--paW);                                                       \
     if (iArg1 == C_DATUM_NULL)                                              \
-      szAreaTo = iArg1;                                                     \
+      szAreaTo = (char*)iArg1;                                              \
     else {                                                                  \
         nSrcSize = strlen((char*)iArg1) + 1;                                \
         szDstStz = szAreaTo;                                                \
@@ -906,10 +931,14 @@
       }                                                                     \
       szSrcStz = (char*)(szArg1 + iStart - 1);                              \
       szDstStz = szDstArea;                                                 \
-      while (*szSrcStz)                                                     \
+      nSrcSize = 0;                                                         \
+      while (*szSrcStz) {                                                   \
+        nSrcSize++;                                                         \
         *szDstStz++ = *szSrcStz++;                                          \
+      }                                                                     \
       *szDstStz = '\0';                                                     \
       *(paW++) = (i8)szDstArea;                                             \
+      szDstArea += nSrcSize + 1;                                            \
     }                                                                       \
   }
 
@@ -932,10 +961,12 @@
       }                                                                     \
       szSrcStz = (char*)(szArg1 + iStart - 1);                              \
       szDstStz = szDstArea;                                                 \
+      nSrcSize = iLength;                                                   \
       while (*szSrcStz && iLength--)                                        \
         *szDstStz++ = *szSrcStz++;                                          \
       *szDstStz = '\0';                                                     \
       *(paW++) = (i8)szDstArea;                                             \
+      szDstArea += nSrcSize + 1;                                            \
     }                                                                       \
   }
 

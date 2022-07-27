@@ -75,7 +75,8 @@ begin
     stage stageD on origin :
     output | sink | stageA
 end;
-rows: 0
+rows:
+ (null)
 
 //------------------------------------------------------------------------------
 load lineitem "../DATA/TPCH/lineitem10.csv";

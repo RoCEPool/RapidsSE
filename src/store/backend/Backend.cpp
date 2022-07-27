@@ -959,7 +959,13 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
     }
 
     if (CaseExpr::bIsOfType(pOrdinalExpr)) {
-      sPipeline->vCatSprint(" } "_Stz);
+
+      QueryNode* pSymbolicExpr = Expr::pOrdinalToSymbolic(pOrdinalExpr, pBackend->m_pColExprList,
+                                                          pBackend->m_pPlanRoot);
+      eCT eType = CaseExpr::xTypeId(pSymbolicExpr, pBackend->m_pPlanRoot).eCTVal();
+
+      sPipeline->vCatSprint(" } type %s"_Stz, aCT[eType]);
+      delete pSymbolicExpr;
 
       // get the when expr
       ConditionalQueryNodeIter *pWhenIter = CaseExpr::pWhenExprIter(_pQueryNode(pOrdinalExpr));
