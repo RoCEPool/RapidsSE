@@ -776,10 +776,10 @@ If the --partitionsPerDisk option is given then there are multiple files per dis
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="loadLineitem" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">dload lineitem paths
-  &quot;/mnt/disk1/data1/tpch/${SF}/lineitem/lineitem.tbl&quot;
-  &quot;/mnt/disk1/data2/tpch/${SF}/lineitem/lineitem.tbl&quot;
-  &quot;/mnt/disk2/data1/tpch/${SF}/lineitem/lineitem.tbl&quot;
-  &quot;/mnt/disk2/data2/tpch/${SF}/lineitem/lineitem.tbl&quot;
+  &quot;/mnt/disk1/data1/tpch/sf${SF}/lineitem/lineitem.tbl&quot;
+  &quot;/mnt/disk1/data2/tpch/sf${SF}/lineitem/lineitem.tbl&quot;
+  &quot;/mnt/disk2/data1/tpch/sf${SF}/lineitem/lineitem.tbl&quot;
+  &quot;/mnt/disk2/data2/tpch/sf${SF}/lineitem/lineitem.tbl&quot;
 ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -828,10 +828,10 @@ dload lineitem paths
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="loadOrders" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">dload orders paths
-  &quot;/mnt/disk1/data1/tpch/${SF}/orders/orders.tbl&quot;
-  &quot;/mnt/disk1/data2/tpch/${SF}/orders/orders.tbl&quot;
-  &quot;/mnt/disk2/data1/tpch/${SF}/orders/orders.tbl&quot;
-  &quot;/mnt/disk2/data2/tpch/${SF}/orders/orders.tbl&quot;
+  &quot;/mnt/disk1/data1/tpch/sf${SF}/orders/orders.tbl&quot;
+  &quot;/mnt/disk1/data2/tpch/sf${SF}/orders/orders.tbl&quot;
+  &quot;/mnt/disk2/data1/tpch/sf${SF}/orders/orders.tbl&quot;
+  &quot;/mnt/disk2/data2/tpch/sf${SF}/orders/orders.tbl&quot;
 ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -872,10 +872,10 @@ dload lineitem paths
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="loadPartsupp" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">dload partsupp paths
-  &quot;/mnt/disk1/data1/tpch/${SF}/partsupp/partsupp.tbl&quot;
-  &quot;/mnt/disk1/data2/tpch/${SF}/partsupp/partsupp.tbl&quot;
-  &quot;/mnt/disk2/data1/tpch/${SF}/partsupp/partsupp.tbl&quot;
-  &quot;/mnt/disk2/data2/tpch/${SF}/partsupp/partsupp.tbl&quot;
+  &quot;/mnt/disk1/data1/tpch/sf${SF}/partsupp/partsupp.tbl&quot;
+  &quot;/mnt/disk1/data2/tpch/sf${SF}/partsupp/partsupp.tbl&quot;
+  &quot;/mnt/disk2/data1/tpch/sf${SF}/partsupp/partsupp.tbl&quot;
+  &quot;/mnt/disk2/data2/tpch/sf${SF}/partsupp/partsupp.tbl&quot;
 ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -916,10 +916,10 @@ dload lineitem paths
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="loadPart" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">dload part paths
-  &quot;/mnt/disk1/data1/tpch/${SF}/part/part.tbl&quot;
-  &quot;/mnt/disk1/data2/tpch/${SF}/part/part.tbl&quot;
-  &quot;/mnt/disk2/data1/tpch/${SF}/part/part.tbl&quot;
-  &quot;/mnt/disk2/data2/tpch/${SF}/part/part.tbl&quot;
+  &quot;/mnt/disk1/data1/tpch/sf${SF}/part/part.tbl&quot;
+  &quot;/mnt/disk1/data2/tpch/sf${SF}/part/part.tbl&quot;
+  &quot;/mnt/disk2/data1/tpch/sf${SF}/part/part.tbl&quot;
+  &quot;/mnt/disk2/data2/tpch/sf${SF}/part/part.tbl&quot;
 ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -947,10 +947,10 @@ dload lineitem paths
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="loadCustomer" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">dload customer paths
-  &quot;/mnt/disk1/data1/tpch/${SF}/customer/customer.tbl&quot;
-  &quot;/mnt/disk1/data2/tpch/${SF}/customer/customer.tbl&quot;
-  &quot;/mnt/disk2/data1/tpch/${SF}/customer/customer.tbl&quot;
-  &quot;/mnt/disk2/data2/tpch/${SF}/customer/customer.tbl&quot;
+  &quot;/mnt/disk1/data1/tpch/sf${SF}/customer/customer.tbl&quot;
+  &quot;/mnt/disk1/data2/tpch/sf${SF}/customer/customer.tbl&quot;
+  &quot;/mnt/disk2/data1/tpch/sf${SF}/customer/customer.tbl&quot;
+  &quot;/mnt/disk2/data2/tpch/sf${SF}/customer/customer.tbl&quot;
 ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -991,10 +991,10 @@ dload lineitem paths
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="loadSupplier" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">dload supplier paths
-  &quot;/mnt/disk1/data1/tpch/${SF}/supplier/supplier.tbl&quot;
-  &quot;/mnt/disk1/data2/tpch/${SF}/supplier/supplier.tbl&quot;
-  &quot;/mnt/disk2/data1/tpch/${SF}/supplier/supplier.tbl&quot;
-  &quot;/mnt/disk2/data2/tpch/${SF}/supplier/supplier.tbl&quot;
+  &quot;/mnt/disk1/data1/tpch/sf${SF}/supplier/supplier.tbl&quot;
+  &quot;/mnt/disk1/data2/tpch/sf${SF}/supplier/supplier.tbl&quot;
+  &quot;/mnt/disk2/data1/tpch/sf${SF}/supplier/supplier.tbl&quot;
+  &quot;/mnt/disk2/data2/tpch/sf${SF}/supplier/supplier.tbl&quot;
 ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
@@ -1034,7 +1034,7 @@ dload lineitem paths
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="loadNation" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">load nation &quot;/mnt/disk1/data1/tpch/sf1/nation/nation.tbl&quot; ;</stringProp>
+              <stringProp name="query">load nation &quot;/mnt/disk1/data1/tpch/sf${SF}/nation/nation.tbl&quot; ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -1061,7 +1061,7 @@ dload lineitem paths
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="loadRegion" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">load region &quot;/mnt/disk1/data1/tpch/sf1/region/region.tbl&quot; ;</stringProp>
+              <stringProp name="query">load region &quot;/mnt/disk1/data1/tpch/sf${SF}/region/region.tbl&quot; ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -1343,7 +1343,7 @@ dload lineitem paths
                   <success>true</success>
                   <label>true</label>
                   <code>false</code>
-                  <message>false</message>
+                  <message>true</message>
                   <threadName>false</threadName>
                   <dataType>false</dataType>
                   <encoding>false</encoding>

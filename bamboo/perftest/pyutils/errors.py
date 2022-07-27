@@ -52,6 +52,29 @@ class InstallationError(NonTracebackError):
         super(InstallationError, self).__init__(msg)
 
 
+class SubProcessError(TracebackError):
+    """Errors that come up from running commands as local subprocesses"""
+    def __init__(self, msg: str, stdout: str, stderr: str):
+        super(SubProcessError, self).__init__(msg)
+        self.stdout = stdout
+        self.stderr = stderr
+
+    def __reduce__(self):
+        # For pickleability of the exception in a multi-process environment
+        # Reference: https://stackoverflow.com/a/36342588
+        return SubProcessError, (self.args[0], self.stdout, self.stderr)
+
+    def __str__(self) -> str:
+        s = super(SubProcessError, self).__str__()
+        if self.stdout is not None:
+            s = s + f"\nStdout: {self.stdout}"
+
+        if self.stderr is not None:
+            s = s + f"\nStderr: {self.stderr}"
+
+        return s
+    
+
 class SshError(TracebackError):
     """Errors that come up from running commands over SSH"""
     def __init__(self, msg: str, stdout: str, stderr: str):

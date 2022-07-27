@@ -7,6 +7,7 @@ import logging
 import threading
 import pathlib
 import tempfile
+import subprocess
 
 import pyutils.ec2 as ec2
 import pyutils.errors as errors
@@ -364,6 +365,26 @@ class JobRunner:
         os.makedirs(str(artifact_dir), exist_ok=True)
         return str(artifact_dir)
 
+    def __compress_test_artifact_dir(self, test_id: int, test_path: str):
+        """
+        Compress the directory (and all content) that stores test artifacts and logs.
+        """
+        artifact_name = C_TEST_ARTIFACT_FMT.format(test_id, TestRunner.get_test_name_from_path(test_path))
+        artifact_dir = pathlib.Path(self.result_path) / artifact_name
+
+        LOG.debug(f"Compressing artifact dir: {str(artifact_dir)}")
+        command = f"cd {self.result_path} && tar cvzf {artifact_name}.tar.gz {artifact_name}"
+
+        result = subprocess.run(command,
+                                capture_output=True,
+                                check=False,
+                                text=True,
+                                shell=True)
+
+        if result.returncode != 0:
+            msg = f"Error while executing the local command: {command}"
+            raise errors.SubProcessError(msg, result.stdout, result.stderr)
+
     def __delete_test_artifact_dir(self, test_id: int, test_path: str):
         """
         Delete the directory (and all content) that stores test artifacts and logs.
@@ -386,7 +407,9 @@ class JobRunner:
             if test_result.test_passed is False:
                 collect_logs = True
 
-            elif self.archive_metrics is False:     # test must have passed
+            if self.archive_metrics:
+                self.__compress_test_artifact_dir(test_result.test_id, test_result.test_path)
+            else:     # test must have passed
                 self.__delete_test_artifact_dir(test_result.test_id, test_result.test_path)
 
         # Need to gather SE logs if any test fails.

@@ -10,4 +10,4 @@ export bamboo_buildNumber="-1"
 export bamboo_ManualBuildTriggerReason_userName="craig.mcintyre"
 export bamboo_archiveMetrics="0"
 
-"${DIR}/runPerftest.sh" --nobuild
+"${DIR}/runPerftest.sh" --nobuild --archiveMetrics
