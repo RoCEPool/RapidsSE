@@ -258,12 +258,16 @@
     Path[].discardAll
     [task].grabLock
 
-    [job].removeFromList
+    [job].jobList@ JL_NONE != if
+      [job].removeFromList
+    then
+
     [job].addExited
     [job].updateParent assert
     [job].signalParent
     [task].retire // does not queue onto exit demon
     HAZARD
+
   else
     process::quit
     HAZARD
