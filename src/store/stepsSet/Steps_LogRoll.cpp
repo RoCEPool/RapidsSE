@@ -7,22 +7,30 @@
 #include "EnterExit.h"
 #include "StepAccum.hpp"
 #include "Steps.hpp"
+#include "Engine.hpp"
 
 extern Stz *gsBuildGitHash;
+extern AttachMap*    gpAttachMap;
+extern File*         gpTraceFile;
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_LogRoll(void) {
-  vAddStep("LogRoll::testPrint"_Stz, &Step::vLogRollTestPrint);
+  vAddStep("LogRoll::traceRoll"_Stz, &Step::vLogRollTraceRoll);
 }
 
 /*----------------------------------------------------------------------------*/
-/* LogRoll::testPrint -- test print for logging demon                         */
+/* LogRoll::traceRoll -- roll over log file                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vLogRollTestPrint(void) {
+void Step::vLogRollTraceRoll(void) {
   ENTRY();
-  vTrace("Log Roll Demon test print...\n"_Stz);
+  if ( ! gpTraceFile || ! gpAttachMap) {
+    return;
+  }
+
+  Engine::vRollTrace();
+
   EXIT();
 }
 

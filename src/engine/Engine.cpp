@@ -1166,6 +1166,7 @@ void Engine::vPrintConstants(void)
   vTrace("  C_MAX_KEY            = %lld\n"_Stz,C_MAX_KEY);
   vTrace("  C_MAX_KEYBUCKETS     = %lld\n"_Stz,C_MAX_KEYBUCKETS);
   vTrace("  C_MAX_LOG_ENTRIES    = %lld\n"_Stz,C_MAX_LOG_ENTRIES);
+  vTrace("  C_MAX_LOG_FILES      = %lld\n"_Stz,C_MAX_LOG_FILES);
   vTrace("  C_MAX_LOG_NOTE       = %lld\n"_Stz,C_MAX_LOG_NOTE);
   vTrace("  C_MAX_LVL_LEVELS     = %lld\n"_Stz,C_MAX_LVL_LEVELS);
   vTrace("  C_MAX_LVL_RATIO      = %lld\n"_Stz,C_MAX_LVL_RATIO);
@@ -1430,6 +1431,71 @@ void Engine::vPrintWelcome(void)
   if (gxCmdLineArgs.m_xSysArgs.m_bWelcome && ! gxCmdLineArgs.m_xSysArgs.m_bStatus) {
     vTrace("%s\n"_Stz,sWelcome.szStz());
     vTrace("%s\n"_Stz,sCopyright.szStz());
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* roll over to new log file if current too big. Delete oldest (keep only recent)*/
+/*----------------------------------------------------------------------------*/
+void Engine::vRollTrace(void)
+{
+  if(gpTraceFile->iSize() < 1000)
+    return;
+
+#ifdef WITH_DEBUG_VERSION
+  vTrace("Opening new trace file\n"_Stz);
+#endif
+
+  gpAttachMap->vTraceLockGrab();
+
+  gpTraceFile->vClose();
+
+  gpAttachMap->m_iTraceFileCount++;
+#ifdef WITH_DEBUG_VERSION
+  gpAttachMap->m_sTraceFile.vSprint("../tmp/SE_Trace_%s_%s_Debug%d.txt"_Stz,
+                                    "SEgrid"_Stz,
+                                    gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz(),
+                                    gpAttachMap->m_iTraceFileCount);
+#else
+  gpAttachMap->m_sTraceFile.vSprint("../tmp/SE_Trace_%s_%s%d.txt"_Stz,
+                                    "SEgrid"_Stz,
+                                    gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz(),
+                                    gpAttachMap->m_iTraceFileCount);
+#endif
+
+  bool bOpened = gpTraceFile->bOpenWrite(gpAttachMap->szTraceFilePath());
+  RASSERT(bOpened);
+
+  gpAttachMap->vTraceLockDrop();
+
+  // Only keep the last n number of log files
+
+  if(gpAttachMap->m_iTraceFileCount >= C_MAX_LOG_FILES)
+  {
+    i8 iOldCount = gpAttachMap->m_iTraceFileCount - C_MAX_LOG_FILES;
+    RASSERT(iOldCount >= 0);
+
+    s256 sOldTrace;
+#ifdef WITH_DEBUG_VERSION
+    sOldTrace.vSprint("../tmp/SE_Trace_%s_%s_Debug%d.txt"_Stz,
+                   "SEgrid"_Stz,
+                   gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz(),
+                   iOldCount);
+#else
+    sOldTrace.vSprint("../tmp/SE_Trace_%s_%s%d.txt"_Stz,
+                      "SEgrid"_Stz,
+                      gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz(),
+                      iOldCount);
+#endif
+    //Delete sOldTrace
+    if (File::bExists(const_cast<Stz*>(sOldTrace.szStz()), false)) {
+
+      bool bRemoved = File::bRemove(const_cast<Stz*>(sOldTrace.szStz()));
+#ifdef WITH_DEBUG_VERSION
+      if(bRemoved)
+        vTrace("Deleted old trace file %s\n"_Stz, sOldTrace.szStz());
+#endif
+    }
   }
 }
 

@@ -54,6 +54,7 @@ namespace ENGINE
     static void vPrintStatus(void);
     static void vPrintTime(void);
     static void vPrintWelcome(void);
+    static void vRollTrace(void);
     static void vSanityCheck(void);
     static void vSignalHandler(int iSignal);
     static void vStartSystem(void);

@@ -11,7 +11,7 @@
 
   //"Logging Activity" .
 
-  LogRoll::testPrint
+  LogRoll::traceRoll
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -24,7 +24,7 @@
   begin
 
     logging::activity
-    60 thread::sleepSsec
+    10 thread::sleepSsec
 
   again
 ;

@@ -1208,7 +1208,7 @@ void vDdlLockAssertNone(void);
   void vExitOperandSet(void);
 
   // Log
-  void vLogRollTestPrint(void);
+  void vLogRollTraceRoll(void);
 
   // memory
   void vMemoryByteDump(void);
