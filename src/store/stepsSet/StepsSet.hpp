@@ -2180,6 +2180,7 @@ void vDdlLockAssertNone(void);
   void vTaskTraceFetch(void);
   void vTaskTraceStore(void);
   void vTaskTransitionStore(void);
+  void vTaskThrowLowMemory(void);
   void vTaskWait(void);
   void vTaskYield(void);
   void vTaskYield_opLoop(void);

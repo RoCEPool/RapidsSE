@@ -5,6 +5,23 @@
 " OP_combined.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_CANCELLINGMARKER ...                                        */
+/*----------------------------------------------------------------------------*/
+: combined_CancellingMarker \handler
+
+  Pipein[]\clear to Marker[]
+
+  "Scan_CancellingMarker DRAINING PIPEIN" .
+  PipeIn[].drain
+
+  Tub[].deleteAllBuffers
+  Pot[].deleteAllBuffers
+
+  Marker[].pipeOut
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* on EV_M_CLEANING ...                                                   END */
 /*----------------------------------------------------------------------------*/
 : combined_Cleaning \handler
@@ -313,6 +330,7 @@
 
   op__topology
 
+  find: combined_CancellingMarker  EV_M_CANCELLING [op].handler!
   find: combined_Cleaning      EV_M_CLEANING      [op].handler!
   find: combined_CrwBuffer     EV_D_CRWBUFFER     [op].handler!
   find: combined_DataPulse     EV_M_DATAPULSE     [op].handler!

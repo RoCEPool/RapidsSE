@@ -181,6 +181,12 @@ void Step::vParcelPipeOut(void)
   
   Operand* pOperand = pParcel->pGetOperand();
 
+  if ( ! pOperand ) {
+    delete pParcel;
+    EXIT();
+    return;
+  }
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pipeing out to a demon
   if (C_UNKNOWN == pParcel->iPipelineJobId()) {

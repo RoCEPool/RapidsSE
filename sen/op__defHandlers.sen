@@ -88,7 +88,7 @@
 : EV_M_FLUSH_handler            \handler STANDARD_PIPEOUT ;
 : EV_M_LEAVE_handler            \handler STANDARD_PIPEOUT ;
 : EV_M_LEAVING_handler          \handler STANDARD_PIPEOUT ;
-: EV_M_LOWMEMORY_handler        \handler STANDARD_PIPEOUT ;
+//: EV_M_LOWMEMORY_handler        \handler STANDARD_PIPEOUT ;
 : EV_M_NEXTBUFFER_handler       \handler STANDARD_PIPEOUT ;
 : EV_D_SRTBUFFER_handler        \handler STANDARD_PIPEOUT ;
 : EV_M_START_handler            \handler STANDARD_PIPEOUT ;
@@ -278,6 +278,24 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* default handler for EV_M_LOWMEMORY operand                     (pipes out) */
+/*----------------------------------------------------------------------------*/
+: EV_M_LOWMEMORY_handler \handler
+
+  //"EV_M_LOWMEMORY_handler" .verbose
+
+  [op].opName@ "TOGGLING TO ABNORMAL HANDLERS FOR OP %v" str.format .
+  "default_abnormalHandlers" FIND execute
+  "default_lowMemHandlers" FIND execute
+  [op].opName@ "TOGGLED TO ABNORMAL HANDLERS FOR OP %v" str.format .
+
+
+  PipeIn[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* default handler for EV_M_STARTED operand      (deletes pipein operand)     */
 /*----------------------------------------------------------------------------*/
 : EV_M_STARTED_handler \handler
@@ -342,7 +360,7 @@
   abnormalHandler EV_D_STREAMSET        [op].handler!
   abnormalHandler EV_D_TABLE            [op].handler!
 
-  abnormalHandler EV_X_CHILDEXIT        [op].handler!
+  //abnormalHandler  EV_X_CHILDEXIT        [op].handler!
   abnormalHandler EV_X_EXIT             [op].handler!
 
   // DEFAULT handlers (pipein pipeout) for MARKERS
