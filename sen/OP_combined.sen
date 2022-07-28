@@ -11,11 +11,16 @@
 
   Pipein[]\clear to Marker[]
 
-  "Scan_CancellingMarker DRAINING PIPEIN" .
+  "combined_CancellingMarker DRAINING PIPEIN" .
   PipeIn[].drain
 
-  Tub[].deleteAllBuffers
-  Pot[].deleteAllBuffers
+  Tub[].isNull not if
+    Tub[].deleteAllBuffers
+  then
+
+  Tub[].isNull not if
+    Pot[].deleteAllBuffers
+  then
 
   Marker[].pipeOut
   true
@@ -161,6 +166,20 @@
   EV_M_EOS EG_ZK PD_PIPE_OUT 0 EV_M_EOS EG_ZK LogicUnit[].diaryAction
 
   EV_M_EOS_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_ERRORING ...                                              */
+/*----------------------------------------------------------------------------*/
+: combined_ErroringMarker \handler
+
+  Pipein[]\clear to Marker[]
+
+  "combined_ErroringMarker DRAINING PIPEIN" .
+  PipeIn[].drain
+
+  Marker[].pipeOut
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -335,6 +354,7 @@
   find: combined_CrwBuffer     EV_D_CRWBUFFER     [op].handler!
   find: combined_DataPulse     EV_M_DATAPULSE     [op].handler!
   find: combined_EosMarker     EV_M_EOS           [op].handler!
+  find: combined_ErroringMarker EV_M_ERRORING     [op].handler!
   find: combined_RowBuffer     EV_D_ROWBUFFER     [op].handler!
   find: combined_StartMarker   EV_M_START         [op].handler!
 

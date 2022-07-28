@@ -887,6 +887,7 @@ void vDdlLockAssertNone(void);
 
   void vJobRejectedFetch(void);
   void vJobRejectedStore(void);
+  void vJobRemoveFromList(void);
   void vJobRemoveLocal(void);
   void vJobRemoveOriginator(void);
   void vJobRemoveParticipant(void);
@@ -1639,6 +1640,7 @@ void vDdlLockAssertNone(void);
   void vPipeinGet(void);
   void vPipeinGetAndClear(void);
   void vPipeinIsBuffer(void);
+  void vPipeinIsMarker(void);
   void vPipeinIsNull(void);
   void vPipeinKind(void);
   void vPipeinNext(void);
@@ -2369,6 +2371,7 @@ void vDdlLockAssertNone(void);
   void vTubDelete(void);
   void vTubGet(void);
   void vTubIsEmpty(void);
+  void vTubIsNull(void);
   void vTubNew(void);
 
   // tx

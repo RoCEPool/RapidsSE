@@ -151,7 +151,10 @@ PoolBuffer* BufferPool::pAllocHeapBuffer(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
   FreePoolBuffer* pHeapBuffer = pPopFreePoolBuffer();
-  
+
+  if ( ! pHeapBuffer )
+    THROW_LOWMEMORY_NEW();
+
   ++m_ixHeapBuffers;
   
   return _pPoolBuffer(pHeapBuffer);
@@ -163,7 +166,9 @@ PoolBuffer* BufferPool::pAllocHeapBuffer(void)
 PoolBuffer* BufferPool::pAllocLongerBuffer(i8 nBuffers)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
-  
+
+  RASSERT(0);
+
   FreePoolBuffer* pLongerBuffer = pPopFreePoolBuffer();
   
   ++m_ixOtherBuffers;
@@ -186,7 +191,10 @@ PoolBuffer* BufferPool::pAllocOtherBuffer(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
   FreePoolBuffer* pOtherBuffer = pPopFreePoolBuffer();
-  
+
+  if ( ! pOtherBuffer )
+    THROW_LOWMEMORY_NEW();
+
   ++m_ixOtherBuffers;
 
   return _pPoolBuffer(pOtherBuffer);

@@ -130,7 +130,8 @@ void Task::vTask(void)
 
   m_pRecoveryWord  = nullptr;
   m_pLowMemWord = nullptr;
-  
+  m_pJobLowMemWord = nullptr;
+
   // m_oDicStack
   // m_oSaveDicStack
   m_pSearchWord = new(nullptr) Word(""_Stz);
@@ -1234,7 +1235,7 @@ void Task::vSetSenLowMemContext(void)
   if (MY::pOp())
     m_aInxPtr = m_pLowMemWord->aFirstCell();
   else
-    m_aInxPtr = m_pRecoveryWord->aFirstCell();
+    m_aInxPtr = m_pJobLowMemWord->aFirstCell();
 
   Task::vSeeFrameStack();
 }
@@ -1435,6 +1436,12 @@ void Task::vSetInxPtr(Word* pEntryWord)
   Word* pLowMemWord = pDicRoot->pFindWord("lowMem_recoveryWord"_Stz);
   if (pLowMemWord) {
     m_pLowMemWord = pLowMemWord;
+  }
+
+
+  Word* pJobLowMemWord = pDicRoot->pFindWord("JobLowMemory_recoveryWord"_Stz);
+  if (pJobLowMemWord) {
+    m_pJobLowMemWord = pJobLowMemWord;
   }
 }
 

@@ -27,6 +27,7 @@ void Step::vAddSteps_Pipein(void)
   vAddStep("PipeIn[].bideNext"_Stz,       &Step::vPipeinBideNext);
   vAddStep("PipeIn[].delete"_Stz,         &Step::vPipeinDelete);
   vAddStep("PipeIn[].isBuffer"_Stz,       &Step::vPipeinIsBuffer);
+  vAddStep("PipeIn[].isMarker"_Stz,       &Step::vPipeinIsMarker);
   vAddStep("PipeIn[].isNull"_Stz,         &Step::vPipeinIsNull);
   vAddStep("PipeIn[].kind"_Stz,           &Step::vPipeinKind);
   vAddStep("PipeIn[].next"_Stz,           &Step::vPipeinNext);
@@ -155,6 +156,20 @@ void Step::vPipeinIsBuffer(void)
   Operand* pOperand = *m_pLogicUnit->m_xpPipein;
 
   m_pDataStack->vPushInt(pOperand->bIsBuffer() ? 1 : 0);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* PipeIn[].isMarker -- is operand null ?                                       */
+/*----------------------------------------------------------------------------*/
+void Step::vPipeinIsMarker(void)
+{
+  ENTRY();
+
+  Operand* pOperand = _pOperand(*m_pLogicUnit->m_xpPipein);;
+
+  m_pDataStack->vPushInt(pOperand->bIsMarker() ? 1 : 0);
 
   EXIT();
 }

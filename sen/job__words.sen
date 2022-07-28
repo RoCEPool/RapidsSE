@@ -187,10 +187,19 @@
   AM::SYSTEM::Ready@ if
     [ddlLock].testDrop
 
+
     Pipein[].isNull not if
-      "deleting pipein!!!" .
-      Pipein[].delete
-      nullptr to Pipein[]
+      Pipein[].isMarker if
+        //Pipein[].pipeOut
+        PipeIn[]
+            nullptr to PipeIn[]
+
+          [op].pipeout
+      else
+        "deleting pipein!!!" .
+        Pipein[].delete
+        nullptr to Pipein[]
+      then
     then
 
     [op].isSend if
@@ -227,6 +236,34 @@
 
     true
 
+  else
+    process::quit
+    HAZARD
+  then
+;
+
+/*----------------------------------------------------------------------------*/
+/* standard exception recovery                                                */
+/*----------------------------------------------------------------------------*/
+: JobLowMemory_recoveryWord
+
+  "JobLowMemory_recoveryWord" .
+
+  //[task].exception .
+
+  AM::SYSTEM::Ready@ if
+
+    EC_LOW_MEMORY [job].error!
+
+    Path[].discardAll
+    [task].grabLock
+
+    [job].removeFromList
+    [job].addExited
+    [job].updateParent assert
+    [job].signalParent
+    [task].retire // does not queue onto exit demon
+    HAZARD
   else
     process::quit
     HAZARD

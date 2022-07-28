@@ -82,6 +82,7 @@ void Step::vAddSteps_Job(void)
 
   vAddStep("[job].rejected@"_Stz,        &Step::vJobRejectedFetch);
   vAddStep("[job].rejected!"_Stz,        &Step::vJobRejectedStore);
+  vAddStep("[job].removeFromList"_Stz,    &Step::vJobRemoveFromList);
   vAddStep("[job].removeLocal"_Stz,      &Step::vJobRemoveLocal);
   vAddStep("[job].removeOriginator"_Stz, &Step::vJobRemoveOriginator);
   vAddStep("[job].removeParticipant"_Stz,&Step::vJobRemoveParticipant);
@@ -945,6 +946,27 @@ void Step::vJobRejectedStore(void)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* [job].removeFromList -- remove job from job list it is in                  */
+/*----------------------------------------------------------------------------*/
+void Step::vJobRemoveFromList(void)
+{
+  ENTRY();
+
+  Job* pJob = pOuterJobOfTask();
+
+  eJL eJobList = pJob->eJobList();
+  switch (eJobList) {
+    case JL_LOCAL:         AM::vJob_RemoveLocal(pJob);         break;
+    case JL_NONE:                                              break;
+    case JL_ORIGINATING:   AM::vJob_RemoveOriginating(pJob);   break;
+    case JL_PARTICIPATING: AM::vJob_RemoveParticipating(pJob); break;
+    default:
+      NEVER_REACH;
+  }
+
+  EXIT();
+}
 
 /*----------------------------------------------------------------------------*/
 /* [job].removeLocal -- remove job from local job set                         */
