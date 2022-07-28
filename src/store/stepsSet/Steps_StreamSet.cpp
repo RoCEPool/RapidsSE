@@ -624,7 +624,9 @@ void Step::vStreamSetAddSizeIndex(void)
   
   // get the streamDef from the table
   StreamDef* pStreamDef = pTable->pStreamDef();
-  
+
+  i8 iSize = m_pDataStack->iPopInt(__func__);
+
   s256 sSize;
   m_pDataStack->vPopStr(sSize, __func__);
   
@@ -633,6 +635,7 @@ void Step::vStreamSetAddSizeIndex(void)
   Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                     C_VARGS_BEGIN,
                                     AM::pGrid()->pThisNode()->szNodeNm(),
+                                    iSize,
                                     sSize.azChar(),
                                     C_VARGS_END);
   //ASSERT(pRow);
@@ -655,7 +658,9 @@ void Step::vStreamSetAddSizeTable(void)
   
   // get the streamDef from the table
   StreamDef* pStreamDef = pStreamSetTable->pStreamDef();
-  
+
+  i8 iSize = m_pDataStack->iPopInt(__func__);
+
   s256 sSize;
   m_pDataStack->vPopStr(sSize, __func__);
   
@@ -664,6 +669,7 @@ void Step::vStreamSetAddSizeTable(void)
   Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                     C_VARGS_BEGIN,
                                     AM::pGrid()->pThisNode()->szNodeNm(),
+                                    iSize,
                                     sSize.azChar(),
                                     C_VARGS_END);
   //ASSERT(pRow);
@@ -710,8 +716,11 @@ void Step::vStreamSetAddSpaceInfo(void)
   Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                     C_VARGS_BEGIN,
                                     pGrid->pThisNode()->szNodeNm(),
+                                    iTotalSpace,
                                     sTotalSpace.azChar(),
+                                    iInUseSpace,
                                     sInUseSpace.azChar(),
+                                    iTotalFreeSpace,
                                     sTotalFreeSpace.azChar(),
                                     C_VARGS_END);
   //ASSERT(pRow);
