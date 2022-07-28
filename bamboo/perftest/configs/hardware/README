@@ -1,8 +1,19 @@
-# This folder contains unique hardware configurations used in the SE
-# performance tests.
+This folder contains unique hardware configurations used in the SE performance tests.
 
-# Each hardware configuration is known by it's unique file name. 
-# It is very important that this filename not change once it has
-# been used, as this filename gets saved with the performance results
-# and will be used in queries to filter and return particular 
-# performance data.
+Each hardware configuration is known by it's unique file name. It is very important that
+this filename not change once it has been used, as this filename gets saved with the
+performance results and will be used in queries to filter and return particular
+performance data.
+
+The naming convention used is trying to clearly identify the main parameters of the
+hardware configuration, being instance type and number of nodes. This is more useful
+and reusable than a naming convention of the purpose of the config file. e.g. It is
+more useful to have file named r5dn.16xlarge-6N.config than one named tpch-sf1000.config
+as the former could be reused for other purposes whereas a user needs to open the latter
+and look at its contents to get more information.
+
+Please think carefully about how hardware configs are named as they are saved in the
+database with their configuration to guard against the case where a regular repeating
+hardware config is unknowingly changed in such a way that the results of other jobs using
+it are affected. We need to ensure that configurations are consistent and hence they should
+be treated as being immutable.

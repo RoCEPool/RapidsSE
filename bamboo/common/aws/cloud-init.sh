@@ -289,8 +289,8 @@ chmod +x /etc/rc.d/rc.local
 bash /etc/rc.d/rc.local
 
 # ----------------------------------------------------------------------------------------
-# Give more memory to /dev/shm. Use 95% of system memory
-SHM_SIZE=$(cat /proc/meminfo | grep "MemTotal:" | awk '{printf "%d\n", $2/1048576*0.95}')
+# Give more memory to /dev/shm. Use 95% of system memory, or mem-10GB, whichever is larger.
+SHM_SIZE=$(cat /proc/meminfo | grep "MemTotal:" | awk '{m1 = $2/1048576*0.95; m2 = $2/1048576 - 10; if (m1 > m2) {m3 = m1} else {m3 = m2}; printf "%d\n", m3}')
 if [ "${SHM_SIZE}" -eq 0 ]; then
   SHM_SIZE=1
 fi
