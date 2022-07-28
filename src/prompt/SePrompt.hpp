@@ -56,6 +56,7 @@ namespace PROMPT
   
     Op*       m_pPrintOp;    // the companion print op
 
+    Word*     m_pSearchWord;
     // -- -- -- -- -- --
     // delete
   

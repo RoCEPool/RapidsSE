@@ -82,7 +82,8 @@ SePrompt::SePrompt(bool bOneCommand)
   m_pInpTagSet = nullptr;
 
   m_pPrintOp = nullptr;
-  
+  m_pSearchWord = new(nullptr) Word(""_Stz);
+
   m_oTimer.vStart();
   
   _checkInitialised_(CN_SEPROMPT);
@@ -129,7 +130,8 @@ SePrompt::~SePrompt(void) noexcept(false)
       m_paSeDeputy[i_Deputy] = nullptr;
     }
   }
-  
+  delete m_pSearchWord;
+
   delete m_pSnapshotAtTrackingMemory;
   delete m_pSnapshotAtMemoryLeaks;
   delete m_pSnapshotObjects;
@@ -521,12 +523,12 @@ bool SePrompt::bIsPromptWord(void)
   
   Dic* pDicRoot = AM::DIC::pRoot();
 
-  Word* pWord = pDicRoot->pFindWord(sWordNm);
+  Word* pWord = pDicRoot->pFindWord(m_pSearchWord, sWordNm);
   
   if (! pWord)
     return false;
     
-  Word* pPromptCatg = pDicRoot->pFindWord("\\prompt"_Stz);
+  Word* pPromptCatg = pDicRoot->pFindWord(m_pSearchWord, "\\prompt"_Stz);
   if (pPromptCatg == pWord->pCategory())
     return true;
   
