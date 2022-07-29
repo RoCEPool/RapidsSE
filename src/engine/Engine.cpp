@@ -832,7 +832,7 @@ void Engine::vKillPrev(void)
 /*----------------------------------------------------------------------------*/
 void Engine::vAllocateWhenDisabled(void)
 {
-  gxaSizeHeap[CN_LOCALCHAIN].m_bAllocateWhenDisabled = true;
+  //gxaSizeHeap[CN_LOCALCHAIN].m_bAllocateWhenDisabled = true;
   //gxaSizeHeap[CN_PARCEL].m_bAllocateWhenDisabled = true;
 
   // AddExited

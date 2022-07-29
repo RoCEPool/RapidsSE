@@ -21233,7 +21233,7 @@ void Task::vAddMunged(Task* )
     "/* org_ org */      \"org_ org\" \"Dynamo compile\"                    [job].trace\n"
     "/* org_ org */  then\n"
     "/* org_ org */\n"
-    "\n"
+    "//[task].throwLowMemory\n"
     "/* org_ org */  Dynamo[].new\n"
     "/* org_ org */  <cmd> Dynamo[].compile to ErrorCode[]\n"
     "/* org_ org */  ErrorCode[] EC_NONE == if\n"
