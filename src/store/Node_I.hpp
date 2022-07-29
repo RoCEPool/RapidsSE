@@ -27,12 +27,15 @@ namespace STORE
     
     Node_I(void);
    ~Node_I(void) noexcept(false);
-    
+
+    static void vRepair(Object* pObject);
+
     Node* operator ->(void); // arrow operator
     operator Node*(void);    // auto conversion
     Node* operator *(void);  // dereference
 
     void  vFirst(void);
+    void  vInit(void);
     bool  bMore(void);
     void  vNext(void);
     i8    i_Node(void);

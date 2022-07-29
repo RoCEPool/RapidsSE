@@ -25,7 +25,7 @@
 
   0 locals| pNode |
 
-  C_ALL node_I[].new
+  node_I[].init
 
   begin
     node_I[].node to pNode
@@ -40,7 +40,7 @@
     node_i[].more while
   repeat
 
-  node_I[].delete
+  //node_I[].delete
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

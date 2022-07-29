@@ -1283,6 +1283,7 @@ void vDdlLockAssertNone(void);
 
   // node iterator
   void vNode_IDelete(void);
+  void vNode_IInit(void);
   void vNode_IMore(void);
   void vNode_INext(void);
   void vNode_INode(void);

@@ -1428,8 +1428,10 @@ void AM::MEMORY::vAssertAllocate(void)
 {
   _static_
 
-  RASSERT( ! MY::pJob() || MY::pJob()->bAllocateMemory());
-  RASSERT( ! MY::pOp() || MY::pOp()->bAllocateMemory());
+  Job* pJob = MY::pJob();
+  Op* pOp = MY::pOp();
+  RASSERT( ! pJob || pJob->bAllocateMemory());
+  RASSERT( ! pOp || pOp->bAllocateMemory());
 
 }
 

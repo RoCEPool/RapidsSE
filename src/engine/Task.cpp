@@ -113,7 +113,7 @@ void Task::vTask(void)
   
   m_iDebugMark   = 0;
   m_pProfile     = nullptr;
-  m_pJobTask = nullptr;
+  m_pJobTask     = nullptr;
   m_pThread      = nullptr;
   
   m_eState       = TS_NONE;
@@ -153,7 +153,7 @@ void Task::vTask(void)
   _checkInitialised_(CN_TASK);
   
   m_pLogicUnit = new LogicUnit;
-    
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 }
 

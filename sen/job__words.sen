@@ -394,6 +394,7 @@
 /*----------------------------------------------------------------------------*/
 /* distribute current originating job to all nodes as participating job       */
 /*----------------------------------------------------------------------------*/
+/*
 : [job]:distributeBegin ( -- )
 
   // send the job to each connected node in the grid
@@ -418,7 +419,7 @@
 
   node_I[].delete
 ;
-
+*/
 /*----------------------------------------------------------------------------*/
 /* entry point                                                                */
 /*----------------------------------------------------------------------------*/
@@ -440,8 +441,10 @@
 : [job]:broadcast
 
   0 locals| pNode |
-  
-  C_ALL node_I[].new
+
+  //C_ALL node_I[].new
+
+  node_I[].init
 
   begin
     node_I[].node to pNode
@@ -457,7 +460,7 @@
   while
   repeat
 
-  node_I[].delete
+  //node_I[].delete
 ;
 
 /*----------------------------------------------------------------------------*/

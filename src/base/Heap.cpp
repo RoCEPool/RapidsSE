@@ -149,8 +149,8 @@ Object* Heap::pAllocObject(eCN eAllocClass)
   
   ASSERT(gxaSizeHeap[eAllocClass].m_nClassSize < m_nObjectSize);
   UNUSED(eAllocClass);
-  
-  //AM::MEMORY::vAssertAllocate();
+
+  AM::MEMORY::vAssertAllocate();
 
   //if ( ! gxaSizeHeap[eAllocClass].m_bAllocateWhenDisabled &&
   //       MY::pOp() && ! MY::pOp()->bAllocateMemory() )

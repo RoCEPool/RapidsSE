@@ -20,7 +20,7 @@ namespace STORE
   
     s32    m_sGridNm;      // name of this grid
     Node*  m_pThisNode;    // this node pointer
-    SkipListNL* m_pNodes;  // skip list of jobs (ordered by job name)
+    SkipListNL* m_pNodes;  // skip list of nodes (ordered by job name)
     bool   m_bHealthy;     // Grid healthy or unhealthy
     Lock   m_okLock;       // lock
  
