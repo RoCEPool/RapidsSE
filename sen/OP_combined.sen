@@ -175,8 +175,8 @@
 
   Pipein[]\clear to Marker[]
 
-  "combined_ErroringMarker DRAINING PIPEIN" .
-  PipeIn[].drain
+  //"combined_ErroringMarker DRAINING PIPEIN" .
+  //PipeIn[].drain
 
   Marker[].pipeOut
   true
