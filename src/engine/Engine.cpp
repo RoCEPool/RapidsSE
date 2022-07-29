@@ -1034,64 +1034,47 @@ bool Engine::bOpenPool(s32& sPoolName)
 /*----------------------------------------------------------------------------*/
 void Engine::vOpenTrace(bool bPrompt)
 {
-  s256 sTracePath;
+  if (bPrompt) {
+    s256 sTracePath;
 
 #ifdef WITH_DEBUG_VERSION
-  sTracePath.vSprint("../tmp/SE_Trace_%s_%s_Debug.txt"_Stz,
-                     "SEgrid"_Stz,
-                     gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz());
+    sTracePath.vSprint("../tmp/SE_Trace_%s_%s_Debug_pid%lld.txt"_Stz,
+                     "SEprompt"_Stz,
+                     gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz(),
+                     Process::iGetPid());
 #else
-  sTracePath.vSprint("../tmp/SE_Trace_%s_%s.txt"_Stz,
-                     "SEgrid"_Stz,
-                     gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz());
+    sTracePath.vSprint("../tmp/SE_Trace_%s_%s_pid%lld.txt"_Stz,
+                       "SEprompt"_Stz,
+                       gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz(),
+                       Process::iGetPid());
 #endif
 
-  if (bPrompt) {
     gpTraceFile = new(C_VIA_MALLOC) File(nullptr);
 
-    if(gpAttachMap && gpAttachMap->szTraceFilePath() != nullptr) {
-      bool bOpened = gpTraceFile->bOpenAppend(gpAttachMap->szTraceFilePath());
-      RASSERT(bOpened);
+    bool bOpened = gpTraceFile->bOpenWrite(sTracePath);
+    RASSERT(bOpened);
 
-        vTrace("Opened trace file %s for append\n"_Stz
-               ,gpAttachMap->szTraceFilePath()
-               );
-    }
-    else {
-      bool bOpened = gpTraceFile->bOpenAppend(sTracePath);
-      RASSERT(bOpened);
-
-      vTrace("Opened trace file %s for append\n"_Stz
-          ,sTracePath.szStz()
-      );
-    }
+    vTrace("Opened prompt trace file %s for write\n"_Stz
+        ,sTracePath.szStz()
+    );
   }
   else {
-  
-    //if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
-    //  vTrace("\n*\n* Opening Trace File\n*\n"_Stz);
     
     gpTraceFile = new(C_VIA_MALLOC) File(nullptr);
     
     gpAttachMap->vTraceFile(gpTraceFile);
     
     bool bOpened;
-    if(gpAttachMap->szTraceFilePath() != nullptr) {
-      bOpened = gpTraceFile->bOpenWrite(gpAttachMap->szTraceFilePath());
-      RASSERT(bOpened);
-      vTrace("Opened trace file %s for write\n"_Stz
 
-          ,gpAttachMap->szTraceFilePath()
-      );
-    }
-    else {
-      bOpened = gpTraceFile->bOpenWrite(sTracePath);
-      RASSERT(bOpened);
-      vTrace("Opened trace file %s for write\n"_Stz
+    RASSERT(gpAttachMap->szTraceFilePath() != nullptr);
 
-          ,sTracePath.szStz()
-      );
-    }
+    bOpened = gpTraceFile->bOpenWrite(gpAttachMap->szTraceFilePath());
+    RASSERT(bOpened);
+
+    vTrace("Opened trace file %s for write\n"_Stz
+
+        ,gpAttachMap->szTraceFilePath()
+    );
   }
 }
 
