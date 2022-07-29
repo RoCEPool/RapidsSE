@@ -120,7 +120,7 @@
 /* org_ org */      "org_ org" "Dynamo compile"                    [job].trace
 /* org_ org */  then
 /* org_ org */
-
+//[task].throwLowMemory
 /* org_ org */  Dynamo[].new
 /* org_ org */  <cmd> Dynamo[].compile to ErrorCode[]
 /* org_ org */  ErrorCode[] EC_NONE == if
@@ -227,6 +227,17 @@
 /* org_ beg */  // new the 2pc originating jobs
 /* org_ beg */  // - - - - - - - - - - - - - -
 /* org_ beg */  [job].new2PCOriginJobs
+/* org_ beg */
+/* org_ beg */
+/* org_ beg */
+/* org_ beg */  // - - - - - - - - - - - - - - - -  - -
+/* org_ beg */  // - - - - - - - - - - - - - - - -  - -
+/* org_ beg */  // JOB NOT TO ALLLOCATE ANY MORE MEMORY
+/* org_ beg */  // - - - - - - - - - - - - - -  - - - -
+/* org_ beg */  [job].disableAllocate
+/* org_ beg */  // - - - - - - - - - - - - - - - -  - -
+/* org_ beg */  // - - - - - - - - - - - - - - - -  - -
+/* org_ beg */
 /* org_ beg */
 /* org_ beg */
 /* org_ beg */  "pipeline:ptpBegin" [job].entryPoint!
