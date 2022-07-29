@@ -255,6 +255,19 @@ bool File::bRemove(Stz* szFilePath)
 }
 
 /*----------------------------------------------------------------------------*/
+/* rename file                                                                */
+/*----------------------------------------------------------------------------*/
+bool File::bRename(Stz* szOldPath, Stz* szNewPath)
+{
+  if(rename(szOldPath->azChar(), szNewPath->azChar()) == 0)
+  {
+    return true;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get size of named file                                                     */
 /*----------------------------------------------------------------------------*/
 i8 File::nSize(Stz* szFilePath)
