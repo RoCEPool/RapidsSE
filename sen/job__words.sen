@@ -72,6 +72,26 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* send the reject job                                                        */
+/*----------------------------------------------------------------------------*/
+: job.sendRejectJob
+
+  [job].originNodeId@ [grid].findNodeByNo to SendNode[]
+
+  SendNode[] node.sendSocket@ to Socket[]
+
+  Socket[].grabWrite
+
+  [job].rejectJob@ Socket[].sendObject discard
+
+  Socket[].dropWrite
+
+  nullptr to Socket[]
+
+  nullptr to SendNode[]
+;
+
+/*----------------------------------------------------------------------------*/
 /* send job to given participating node                                       */
 /*----------------------------------------------------------------------------*/
 : job.forward ( i_Node -- )
@@ -254,6 +274,30 @@
   AM::SYSTEM::Ready@ if
 
     EC_LOW_MEMORY [job].error!
+
+    [job].phase@ .
+
+    [job].phase@ JP_NONE == if
+      [job].jobList@ JL_NONE == assert
+      [job].rejectJobSetup
+      EC_LOW_MEMORY [job].rejectJobError!
+      job.sendRejectJob
+      Path[].discardAll
+      [task].grabLock
+      [job].addExited
+      [task].retire
+    then
+
+    [job].phase@ JP_BEGINNING == if
+      [job].jobList@ JL_NONE == assert
+      [job].rejectJobSetup
+      EC_LOW_MEMORY [job].rejectJobError!
+      job.sendRejectJob
+      Path[].discardAll
+      [task].grabLock
+      [job].addExited
+      [task].retire
+    then
 
     Path[].discardAll
     [task].grabLock

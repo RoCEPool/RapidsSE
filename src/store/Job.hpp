@@ -57,6 +57,10 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     Job*  m_pCancelledJob;
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // reject job
+    RejectJob*  m_pRejectJob;
+
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // reset in Job::vPostRecv()
   
     /* 00 */ Atomic  m_noActiveOps;    // number of active ops
@@ -222,6 +226,8 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
 
     void vRejected(bool bRejected);
     bool bRejected(void);
+
+    RejectJob* pRejectJob(void);
 
     void vResetObjectTracker(void);
     void vResetOutput(void);

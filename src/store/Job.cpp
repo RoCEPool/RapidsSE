@@ -85,6 +85,7 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId, TagSet* 
   m_pExecutedJob  = nullptr;
   m_pEndedJob     = nullptr;
   m_pCancelledJob = nullptr;
+  m_pRejectJob    =  new RejectJob;
 
   /* 00 */ m_noActiveOps.vResetAtomic();
   /* 01 */ m_eJobList     = JL_NONE;
@@ -229,6 +230,8 @@ Job::~Job(void) noexcept(false)
 
     if (m_pCancelledJob)
       delete m_pCancelledJob;
+
+    delete m_pRejectJob;
 
     if (m_pOutput)
       vOutputDestroy();
@@ -1420,6 +1423,8 @@ void Job::vPostRecv(void)
   m_pEndedJob  = nullptr;
   m_pCancelledJob  = nullptr;
 
+  m_pRejectJob = new RejectJob;
+
   /* 00 */ m_noActiveOps.vResetAtomic();
   /* 01 */ m_eJobList     = JL_NONE;
   /* 02 */ m_pJobMetrics  = nullptr;
@@ -1630,13 +1635,23 @@ void Job::vRejected(bool bRejected)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get rejected                                                             */
+/* get rejected                                                               */
 /*----------------------------------------------------------------------------*/
 bool Job::bRejected(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
   return m_bRejected;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get RejectJob                                                              */
+/*----------------------------------------------------------------------------*/
+RejectJob* Job::pRejectJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_pRejectJob;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -82,7 +82,10 @@ void Step::vAddSteps_Job(void)
 
   vAddStep("[job].rejected@"_Stz,        &Step::vJobRejectedFetch);
   vAddStep("[job].rejected!"_Stz,        &Step::vJobRejectedStore);
-  vAddStep("[job].removeFromList"_Stz,    &Step::vJobRemoveFromList);
+  vAddStep("[job].rejectJobError!"_Stz,  &Step::vJobRejectJobErrorStore);
+  vAddStep("[job].rejectJob@"_Stz,       &Step::vJobRejectJobFetch);
+  vAddStep("[job].rejectJobSetup"_Stz,   &Step::vJobRejectJobSetup);
+  vAddStep("[job].removeFromList"_Stz,   &Step::vJobRemoveFromList);
   vAddStep("[job].removeLocal"_Stz,      &Step::vJobRemoveLocal);
   vAddStep("[job].removeOriginator"_Stz, &Step::vJobRemoveOriginator);
   vAddStep("[job].removeParticipant"_Stz,&Step::vJobRemoveParticipant);
@@ -625,7 +628,7 @@ void Step::vJobLabelObjectTracker(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [job]].jobList@ -- fetch job list                                          */
+/* [job].jobList@ -- fetch job list                                           */
 /*----------------------------------------------------------------------------*/
 void Step::vJobListFetch(void)
 {
@@ -731,6 +734,10 @@ void Step::vJobNew2PCParticipantJobs(void)
   pJob->vEndedJob(Api::pCreateJob2PC(pJob, "ended"_Stz));
   pJob->vCancelledJob(Api::pCreateJob2PC(pJob, "Cancelled"_Stz));
   pJob->vExecutedJob(Api::pCreateJob2PC(pJob, "executed"_Stz));
+
+  // set up the rejectJob
+  pJob->pRejectJob()->vOriginId(Job::tOriginId(pJob));
+  pJob->pRejectJob()->vDistId(Job::tDistId(pJob));
 
   EXIT();
 }
@@ -945,6 +952,52 @@ void Step::vJobRejectedStore(void)
 
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* [job].rejectJobError! -- store reject job error                            */
+/*----------------------------------------------------------------------------*/
+void Step::vJobRejectJobErrorStore(void)
+{
+  ENTRY();
+
+  Job* pJob = pOuterJobOfTask();
+ eEC eRejectError = (eEC) m_pDataStack->iPopInt(__func__);
+
+  pJob->pRejectJob()->vError(eRejectError);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [job].rejectJob@ -- fetch reject job                                       */
+/*----------------------------------------------------------------------------*/
+void Step::vJobRejectJobFetch(void)
+{
+  ENTRY();
+
+  Job* pJob = pOuterJobOfTask();
+
+  m_pDataStack->vPushPtr(pJob->pRejectJob());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [job].rejectJobSetup -- set up the rejectJob                               */
+/*----------------------------------------------------------------------------*/
+void Step::vJobRejectJobSetup(void)
+{
+  ENTRY();
+
+  Job* pJob = pOuterJobOfTask();
+
+  // set up the rejectJob
+  pJob->pRejectJob()->vOriginId(Job::tOriginId(pJob));
+  pJob->pRejectJob()->vDistId(Job::tDistId(pJob));
+
+  EXIT();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* [job].removeFromList -- remove job from job list it is in                  */
@@ -1421,7 +1474,7 @@ void Step::vJobUpdateParent(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // update the timer of this job
-  pJob->vResponseTimerUpdate();
+  //pJob->vResponseTimerUpdate();
 
   eErrorCode = AM::JLIST::eUpdateParent(pJob);
 

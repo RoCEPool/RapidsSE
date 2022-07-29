@@ -437,7 +437,6 @@
 /* _ptp beg */  [job].assertStructure
 /* _ptp beg */  ListedJob[].assertNoRef
 /* _ptp beg */
-/* _ptp beg */
 /* _ptp beg */  // - - - - - - - - - - - - - -
 /* _ptp beg */  // new all the markers needed
 /* _ptp beg */  // - - - - - - - - - - - - - -
@@ -461,6 +460,7 @@
 /* _ptp beg */  // - - - - -
 /* _ptp beg */  <path> str.toStrVec Path[].set
 /* _ptp beg */
+/* _ptp beg */  //[task].throwLowMemory
 /* _ptp beg */
 /* _ptp beg */  // - - - - - - - - - - - - - - - - - - -
 /* _ptp beg */  // compile pipeline statement into spec
@@ -480,7 +480,17 @@
 /* _ptp beg */  PipeSpec[] Pipeline[].create
 /* _ptp beg */  // Pipeline[].dump
 /* _ptp beg */  Pipeline[].spawnOpTasks
-
+/* _ptp beg */
+/* _ptp beg */
+/* _ptp beg */  // - - - - - - - - - - - - - - - -  - -
+/* _ptp beg */  // - - - - - - - - - - - - - - - -  - -
+/* _ptp beg */  // JOB NOT TO ALLLOCATE ANY MORE MEMORY
+/* _ptp beg */  // - - - - - - - - - - - - - -  - - - -
+/* _ptp beg */  //[job].disableAllocate
+/* _ptp beg */  // - - - - - - - - - - - - - - - -  - -
+/* _ptp beg */  // - - - - - - - - - - - - - - - -  - -
+/* _ptp beg */
+/* _ptp beg */
 /* ---- --- */  // !!! bgn !!! bgn !!! bgn !!! bgn !!! bgn !!! bgn !!! bgn !!!
 
 /* _ptp bgn */  // - - - - - - - - - - - - - - - -
