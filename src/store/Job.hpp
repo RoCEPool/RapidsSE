@@ -170,6 +170,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     JobId tOriginId(void);
     void vOriginId(JobId tOriginId);
     Job* pOriginJob(void);
+    void vOriginJobNodeFailure(void);
     i8   iOriginNodeId(void);
     Stz* szOriginNodeNm(void);
   
@@ -183,6 +184,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vPostRecv(void);
     void vProcessOutput(void);
     Timer* pProgressTimer(void);
+    void vPtpJobNodeFailure(void);
 
     void vUpdateParent(bool bUpdateParent);
     bool bUpdateParent(void);

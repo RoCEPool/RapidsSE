@@ -28,6 +28,8 @@ SenCompiler::SenCompiler(void)
   m_nLocals    = 0;
   m_aiLocals   = nullptr;
   
+  m_bEnterExitTrace = false;
+  
   for (i8 i_Nested = 0; i_Nested < C_MAX_NESTED_WORDS; i_Nested++)
     m_paWord[i_Nested] = nullptr;
 
@@ -78,6 +80,59 @@ void SenCompiler::vCurrentWord(Word* pWord)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SENCOMPILER,_FOOTER_);
   
   m_pCurrent = pWord;
+}
+
+/*----------------------------------------------------------------------------*/
+/* encode entry to sen function                                               */
+/*----------------------------------------------------------------------------*/
+void SenCompiler::vEncodeEnter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SENCOMPILER,_FOOTER_);
+  
+  SenCell xVariable;
+
+  xVariable = m_pCurrent->szWordNm();
+  m_pCurrent->vEncodePush(xVariable);
+
+  m_pCurrent->vEncodeCall("enterTrace"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* encode exit of sen function                                                */
+/*----------------------------------------------------------------------------*/
+void SenCompiler::vEncodeExit(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SENCOMPILER,_FOOTER_);
+ 
+  if (m_bEnterExitTrace) {
+    SenCell xVariable;
+
+    xVariable = m_pCurrent->szWordNm();
+    m_pCurrent->vEncodePush(xVariable);
+    m_pCurrent->vEncodeCall("exitTrace"_Stz);
+  }
+  
+  m_pCurrent->vEncodeCall("exit_RT"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get enter/exit trace of word                                               */
+/*----------------------------------------------------------------------------*/
+bool SenCompiler::bEnterExitTrace(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SENCOMPILER,_FOOTER_);
+  
+  return m_bEnterExitTrace;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set enter/exit trace of word                                               */
+/*----------------------------------------------------------------------------*/
+void SenCompiler::vEnterExitTrace(bool bExterExitTrace)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SENCOMPILER,_FOOTER_);
+  
+  m_bEnterExitTrace = bExterExitTrace;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -32,6 +32,7 @@
   Socket[].recvObject
   
   Socket[].success@ not if
+    false
     exit
   then
   
@@ -89,7 +90,7 @@
   // loop, receiving and executing jobs
   recvSE_loop
 
-  HAZARD
+  <ansNode> >int >ptr node.cleanup
 ;
 
 /*----------------------------------------------------------------------------*/

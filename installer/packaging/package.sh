@@ -48,6 +48,9 @@ readonly MAKESELF_ARGS=()
 
 readonly SHELLCHECK_CMD="${ROOT_DIR}/installer/packaging/shellcheck.sh"
 
+readonly CHECKSUM_MD5_FILE="${OUTPUT_DIR}/checksum.md5"
+readonly CHECKSUM_SHA1_FILE="${OUTPUT_DIR}/checksum.sha1"
+
 ###############################################################################
 ### Functions                                                               ###
 ###############################################################################
@@ -295,9 +298,12 @@ esac
   FILESIZE="$(du -k "${OUTPUT_DIR}/${OUTPUT_FILE}" | cut -f1)"
   printf "Size of installer: %'d kB\n" "${FILESIZE}"
 
+  # Generate checksum files
+  md5sum  "${OUTPUT_DIR}/${OUTPUT_FILE}" > "${CHECKSUM_MD5_FILE}"
+  sha1sum "${OUTPUT_DIR}/${OUTPUT_FILE}" > "${CHECKSUM_SHA1_FILE}"
   echo
   echo "Installer checksums:"
-  echo -n "md5:   " && md5sum  "${OUTPUT_DIR}/${OUTPUT_FILE}"
-  echo -n "sha1:  " && sha1sum "${OUTPUT_DIR}/${OUTPUT_FILE}"
+  echo -n "md5:   " && cat "${CHECKSUM_MD5_FILE}"
+  echo -n "sha1:  " && cat "${CHECKSUM_SHA1_FILE}"
   echo
 }
