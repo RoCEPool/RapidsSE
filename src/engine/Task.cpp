@@ -1189,9 +1189,14 @@ void Task::vSetSenRecoverContext(void)
   }
   
   //Task::vSeeFrameStack();
-  
 
-  m_aInxPtr = m_pRecoveryWord->aFirstCell();
+  if (MY::pOp())
+    m_aInxPtr = m_pRecoveryWord->aFirstCell();
+  else {
+    //TODO: ALKA COME BACK AND FIX
+    Process::vExitFailure();
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
