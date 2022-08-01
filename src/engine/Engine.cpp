@@ -1046,7 +1046,7 @@ void Engine::vOpenTrace(bool bPrompt)
 
     gpTraceFile = new(C_VIA_MALLOC) File(nullptr);
 
-    bool bOpened = gpTraceFile->bOpenWrite(sTracePath);
+    bool bOpened = gpTraceFile->bOpenAppend(sTracePath);
     RASSERT(bOpened);
 
     vTrace("Opened prompt trace file %s for write\n"_Stz
