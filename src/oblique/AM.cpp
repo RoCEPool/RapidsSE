@@ -4122,21 +4122,25 @@ void AM::vBootCheck(void)
         
       case HT_P_TINY:
       case HT_T_TINY:
+      case HT_V_TINY:
         ASSERT(iClassSize < C_SIZE_TINY_OBJECT);
         continue;
         
       case HT_P_SMALL:
       case HT_T_SMALL:
+      case HT_V_SMALL:
         ASSERT(iClassSize < C_SIZE_SMALL_OBJECT);
         continue;
         
       case HT_P_MEDIUM:
       case HT_T_MEDIUM:
+      case HT_V_MEDIUM:
         ASSERT(iClassSize < C_SIZE_MEDIUM_OBJECT);
         continue;
         
       case HT_P_LARGE:
       case HT_T_LARGE:
+      case HT_V_LARGE:
         ASSERT(iClassSize < C_SIZE_LARGE_OBJECT);
         continue;
                 

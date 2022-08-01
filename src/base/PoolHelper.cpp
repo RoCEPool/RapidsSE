@@ -1000,6 +1000,47 @@ void PoolHelper::vValidateEnums(void)
                  eClass,aCN[eClass]);
         }
         break;
+        // virtual -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+      case HT_V_TINY:
+        if (iSize >= C_SIZE_SMALL_OBJECT) {
+          vTrace("Heaps::vValidateEnums: virtual tiny class %lld %s is too big\n"_Stz,
+                 eClass,aCN[eClass]);
+          vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+                 "Heaps::vValidateEnums: virtual tiny class %lld %s is too big\n"_Stz,
+                 eClass,aCN[eClass]);
+        }
+        break;
+
+      case HT_V_SMALL:
+        if (iSize >= C_SIZE_SMALL_OBJECT) {
+          vTrace("Heaps::vValidateEnums: virtual small class %lld %s is too big\n"_Stz,
+                 eClass,aCN[eClass]);
+          vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+                 "Heaps::vValidateEnums: virtual small class %lld %s is too big\n"_Stz,
+                 eClass,aCN[eClass]);
+        }
+        break;
+
+      case HT_V_MEDIUM:
+        if (iSize >= C_SIZE_MEDIUM_OBJECT) {
+          vTrace("Heaps::vValidateEnums: virtual medium class %lld %s is too big\n"_Stz,
+                 eClass,aCN[eClass]);
+          vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+                 "Heaps::vValidateEnums: virtual medium class %lld %s is too big\n"_Stz,
+                 eClass,aCN[eClass]);
+        }
+        break;
+
+      case HT_V_LARGE:
+        if (iSize >= C_SIZE_LARGE_OBJECT) {
+          vTrace("Heaps::vValidateEnums: virtual large class %lld %s is too big\n"_Stz,
+                 eClass,aCN[eClass]);
+          vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+                 "Heaps::vValidateEnums: virtual large class %lld %s is too big\n"_Stz,
+                 eClass,aCN[eClass]);
+        }
+        break;
                 
       default:
         vTrace("Heaps::vValidateEnums: Invalid which heap: eHeap %lld\n"_Stz,
