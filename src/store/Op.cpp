@@ -127,7 +127,7 @@ Op::~Op(void) noexcept(false)
       vTrace("Operand Queue for OP %s has %s\n"_Stz, szOpNm(), AM::pOperandName(pOperand));
       pOperand = m_pPipeIn->pQueueLeft()->pPopQueue();
     }
-    RASSERT(0);
+    //RASSERT(0);
   }
   if (m_pPipeIn->pQueueRight()->nItems() != 0) {
     vTrace("Operand Queue not empty\n"_Stz);
@@ -1759,6 +1759,26 @@ void Op::vToCmdStr(Stz* szCmdStr)
   szCmdStr->vCopy(szOpNm());
   m_p_OpSpec->pArgTags()->vConcat(szCmdStr);
   //vTrace("%s\n"_Stz, szCmdStr);
+}
+
+/*----------------------------------------------------------------------------*/
+/* unspawn task for this operator                                             */
+/*----------------------------------------------------------------------------*/
+void Op::vUnspawnTask(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+
+  Job* pJob = this->pOuterJobOfOp();
+
+  Task* pTask = this->pTask();
+
+  RASSERT( ! m_pOpTags->bHasName(C_TAG_DEDICATEDTHD) );
+
+  Operand* pOperand = AM::MARKER::pNewMarker(OM_HARDABORT,pJob);
+  vAppendLeft(pOperand,pTask);
+
+  //pTask->vGrabTaskLock((Stz*)__func__);
+  //pTask->vScheduleRetire();
 }
 
 /*----------------------------------------------------------------------------*/

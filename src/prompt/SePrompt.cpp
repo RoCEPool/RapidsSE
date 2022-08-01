@@ -204,72 +204,80 @@ void SePrompt::vPromptLoop(void)
   m_pCurrentDeputy = nullptr;
 
   while (m_bContinue) {
-        
-    if (! m_pCurrentDeputy && ! (m_pCurrentDeputy = pFindDeputy())) {
-      vTrace("No Deputies\n"_Stz);
-      RASSERT(0);
-    }
-    
-    m_pInput     = m_pCurrentDeputy->pInput();
-    m_pInpTknVec = m_pInput->pInpTknVec();
-    m_pInpTagSet = m_pInput->pInpTagSet();
-    
-    Stz* szToDo = this->szToDo();
-    
-    if (! *szToDo->azChar())
-      m_pInput->vRawInputClear();
-    
-    if (! bReadCommand())
-      continue;
- 
+
+    try {
+
+      if (!m_pCurrentDeputy && !(m_pCurrentDeputy = pFindDeputy())) {
+        vTrace("No Deputies\n"_Stz);
+        RASSERT(0);
+      }
+
+      m_pInput = m_pCurrentDeputy->pInput();
+      m_pInpTknVec = m_pInput->pInpTknVec();
+      m_pInpTagSet = m_pInput->pInpTagSet();
+
+      Stz *szToDo = this->szToDo();
+
+      if (!*szToDo->azChar())
+        m_pInput->vRawInputClear();
+
+      if (!bReadCommand())
+        continue;
+
 //    Stz* szRaw = szRawInput();
 //    vTrace("SePrompt got command : %s\n"_Stz,szRaw);
-    eEC eErrorCode = EC_NONE;
-    if (! bExamineCommand(&eErrorCode)){
-      if(eErrorCode != EC_NONE)
-        vTrace("error: %s\n"_Stz,aErrorMsg[eErrorCode]);
+      eEC eErrorCode = EC_NONE;
+      if (!bExamineCommand(&eErrorCode)) {
+        if (eErrorCode != EC_NONE)
+          vTrace("error: %s\n"_Stz, aErrorMsg[eErrorCode]);
+        continue;
+      }
+
+      //vTrace("Prompt-RawInput: %s\n"_Stz,m_pInput->szRawInput());
+
+      Stz *szCmdFile = m_pInput->szPath();
+      i8 iCmdLine = pTkn(0)->iLineNo();
+
+      // output the script file cmd statement being executed
+      if (!szCmdFile->bSame("stdin"_Stz)) {
+        m_pInput->pInpTknVec()->vToTknString(sCmd);
+        vTrace("\n%s\n"_Stz, sCmd.azChar());
+      }
+
+      if (*szCmdFile->azChar()) {
+        m_pInpTagSet->vInsert(C_TAG_CMDFILE, szCmdFile);
+        m_pInpTagSet->vInsert(C_TAG_CMDLINE, iCmdLine);
+      }
+
+      m_pInpTagSet->vCopy(&m_oPmtTagSet);
+
+      vMutexLock(this);
+      m_pCurrentDeputy->vDeputiseJob(this);
+      vMutexWaitAndUnlock(this);
+
+      if (!m_pInpTagSet->bHasName(C_TAG_NOWAIT)) {
+        while (!m_pCurrentDeputy->bAvailable())
+          AM::vNapMsec(10, CN_SEPROMPT);
+      }
+
+      eEC eError = m_pCurrentDeputy->eError();
+      m_pCurrentDeputy->vError(EC_NONE);
+
+      if (EC_NONE != eError) {
+        vTrace("\nerror: %s\n\n"_Stz, aEC[eError]);
+        if (AM::bDeveloper())
+          vDumpInpTknVec(true);
+      }
+
+      m_pCurrentDeputy = nullptr;
+
+      //vLogFreeSpace();
+
+    }
+    catch (LowMemory xLowMemory) {
+      vTrace("error: Prompt got low memory exception\n"_Stz);
       continue;
     }
-
-    //vTrace("Prompt-RawInput: %s\n"_Stz,m_pInput->szRawInput());
-    
-    Stz* szCmdFile = m_pInput->szPath();
-    i8   iCmdLine  = pTkn(0)->iLineNo();
-
-    // output the script file cmd statement being executed
-    if ( ! szCmdFile->bSame("stdin"_Stz) ) {
-      m_pInput->pInpTknVec()->vToTknString(sCmd);
-      vTrace("\n%s\n"_Stz,sCmd.azChar());
-    }
-
-    if (*szCmdFile->azChar()) {
-      m_pInpTagSet->vInsert(C_TAG_CMDFILE,szCmdFile);
-      m_pInpTagSet->vInsert(C_TAG_CMDLINE,iCmdLine);
-    }
-
-    m_pInpTagSet->vCopy(& m_oPmtTagSet);
-
-    vMutexLock(this);
-    m_pCurrentDeputy->vDeputiseJob(this);
-    vMutexWaitAndUnlock(this);
-
-    if ( ! m_pInpTagSet->bHasName(C_TAG_NOWAIT) ) {
-      while (! m_pCurrentDeputy->bAvailable())
-        AM::vNapMsec(10,CN_SEPROMPT);
-    }
-
-    eEC eError = m_pCurrentDeputy->eError();
-    m_pCurrentDeputy->vError(EC_NONE);
-
-    if (EC_NONE != eError) {
-      vTrace("\nerror: %s\n\n"_Stz,aEC[eError]);
-      if (AM::bDeveloper())
-        vDumpInpTknVec(true);
-    }
-
-    m_pCurrentDeputy = nullptr;
-    
-    //vLogFreeSpace();
 
   } // while
 }

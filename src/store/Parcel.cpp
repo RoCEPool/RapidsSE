@@ -953,6 +953,10 @@ void Parcel::vPipeOperandViaQueues(Op *pSendOp, Stage* pDstStage)
     i8 i_ThisNode = AM::NODE::iThisNodeId();
     Stream* pDstStream = pDstStage->pGetStream_byNodeId(i_ThisNode);
 
+//    if (pOperand->bIsMarker()) {
+//      Marker* pMarker = _pMarker(pOperand);
+//      vTrace("MARKER: %s\n"_Stz, aOM[pMarker->eOpMarker()]);
+//    }
     Operand* pDuplicateOperand = pOperand->pDuplicateOperand();
 
     Task* pCurTask = MY::pTask();

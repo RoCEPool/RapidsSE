@@ -47,6 +47,8 @@ namespace STORE
     i8   nStages(void);
     Stream* pStream0(void);
 
+    void vUnspawnOpTasks(void);
+
     VertexSpec* pVertexSpec(void);
 
   private:

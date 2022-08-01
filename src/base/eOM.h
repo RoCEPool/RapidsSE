@@ -33,7 +33,9 @@ enum eOM // operator markers
   
   /*    */ OM_FINISHED,
   /*    */ OM_FLUSH,
-  
+
+  /*    */ OM_HARDABORT,
+
   /*    */ OM_INVOKEMARKER,
   
   /*    */ OM_LEAVEMARKER,
@@ -88,7 +90,8 @@ static Stz* aOM[]
   
   /*    */ "FINISHED"_Stz,
   /*    */ "FLUSH"_Stz,
-  
+
+  /*    */ "HARDABORT"_Stz,
   /*    */ "INVOKEMARKER"_Stz,
   
   /*    */ "LEAVEMARKER"_Stz,

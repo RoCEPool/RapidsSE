@@ -170,7 +170,8 @@ namespace STORE
     void vTask(Task* pTask);
     i8   nTmpIndexSize(void);
     void vToCmdStr(Stz* szCmdStr);
-  
+
+    void vUnspawnTask(void);
     void vVerifyOpComposition(void);
   
     void vWorkQuanta(i8 iWorkQuanta);

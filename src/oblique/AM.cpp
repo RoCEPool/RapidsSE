@@ -4086,6 +4086,7 @@ i8 AM::iOperandEvKind(Operand* pOperand)
         case OM_EXITED:             eOperand = EV_M_EXITED;       break;
         case OM_FINISHED:           eOperand = EV_M_FINISHED;     break;
         case OM_FLUSH:              eOperand = EV_M_FLUSH;        break;
+        case OM_HARDABORT:          eOperand = EV_M_HARDABORT;    break;
         case OM_INVOKEMARKER:       eOperand = EV_M_INVOKE;       break;
         case OM_LEAVEMARKER:        eOperand = EV_M_LEAVE;        break;
         case OM_LEAVINGMARKER:      eOperand = EV_M_LEAVING;      break;

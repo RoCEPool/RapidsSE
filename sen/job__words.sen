@@ -236,7 +236,7 @@
     // not already detected low memory ?
     [pipeline].lowMemory@ not if
 
-      "PIPELINE DETECTED LOW MEMORY!!!" .
+      [job] >str "%v PIPELINE DETECTED LOW MEMORY!!!" str.format .
 
       Marker[].newLowMemory
       Marker[]
@@ -245,7 +245,7 @@
       [op].pipeout
       "PIPED OUT LOW MEMORY!!!" .
     else
-      "PIPELINE ALREADY DETECTED LOW MEMORY!!!" .
+      [job] >str "%v PIPELINE ALREADY DETECTED LOW MEMORY!!!" str.format .
     then
 
     // toggle to default abnormal handlers
@@ -281,6 +281,7 @@
       [job].jobList@ JL_NONE == assert
       [job].rejectJobSetup
       EC_LOW_MEMORY [job].rejectJobError!
+      "SENDING REJECT" .
       job.sendRejectJob
       Path[].discardAll
       [task].grabLock
@@ -292,6 +293,7 @@
       [job].jobList@ JL_NONE == assert
       [job].rejectJobSetup
       EC_LOW_MEMORY [job].rejectJobError!
+      "JP_BEGINNING SENDING REJECT" .
       job.sendRejectJob
       Path[].discardAll
       [task].grabLock
@@ -538,10 +540,10 @@
     [job].tagSet@ tagSet.asStr .
     //"<signalParent>" [job].tagSet@ tagSet.hasName not if
 
-      [args].distJob if
+      //[args].distJob if
         "pipeline" "origin"
         "org_ org" "WAIT/NO_WAIT signalling parent"       [job].trace
-      then
+      //then
 
       [job].updateParent assert
       [job].signalParent

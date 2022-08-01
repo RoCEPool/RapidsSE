@@ -1164,7 +1164,10 @@ void Step::vJobSignalParent(void)
 
   eJL eJobList = pJob->eJobList();
 
-  //RASSERT(JL_NONE == eJobList || JL_RETIRED == eJobList || JL_DEMON == eJobList)
+  RASSERT(JL_NONE        == eJobList ||
+          JL_ORIGINATING == eJobList ||
+          JL_RETIRED     == eJobList ||
+          JL_DEMON       == eJobList)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
