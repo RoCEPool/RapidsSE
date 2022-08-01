@@ -187,16 +187,19 @@ $(TARGET_EXE): $(OBJECTS) $(DEPFILES) $(COMPILED_LIBS)
 # Compile source .cpp files into object files
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(OBJ_DIR)/%.d
 	$(DIR_GUARD)
+	@echo "Compiling file: $@"
 	$(CPP) -c $(CPPFLAGS_ARCH) $(CPPFLAGS) $(PICFLAGS) $(INCLUDES)  $< -o $@
 
 # Compile source .c files into object files
 $(OBJ_DIR)/%.obj: $(SRC_DIR)/%.c $(OBJ_DIR)/%.d
 	$(DIR_GUARD)
+	@echo "Compiling file: $@"
 	$(CPP) -c $(CPPFLAGS_ARCH) $(CFLAGS) $(PICFLAGS) $(INCLUDES)  $< -o $@
 
 # Compile assembly files into objects
 $(OBJ_DIR)/%.obj: $(SRC_DIR)/%.s 
 	$(DIR_GUARD)
+	@echo "Compiling file: $@"
 	$(CPP) -c $(CPPFLAGS_ARCH) $(CPPFLAGS) $(PICFLAGS) $(INCLUDES)  $< -o $@
 
 # Include all of the generated dependency rules from all .d files.
