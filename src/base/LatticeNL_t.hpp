@@ -132,7 +132,7 @@ LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::LatticeNL_t(Task* pTask)
 
   for (i8 i_Scan = 0; i_Scan < MAX_ITEMS; i_Scan++) {
     m_pItem[i_Scan]      = nullptr;
-    m_i_NextItem[i_Scan] = C_UNKNOWN;
+    m_i_NextItem[i_Scan] = -9;
     m_i_NextFree[i_Scan] = i_Scan + 1;
   }
   m_i_NextFree[MAX_ITEMS - 1] = C_UNKNOWN;
@@ -396,7 +396,7 @@ i8 LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::i_PopFree(void)
   
   m_nFreeCells--;
   
-  m_i_NextFree[i_Free] = C_UNKNOWN;
+  m_i_NextFree[i_Free] = -9;
   
   //vDumpFrees();
 
@@ -466,11 +466,10 @@ void LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::vRemoveItem(ITEM* pItem,
   }
   else {
     // prev is set to items next
-    //m_i_NextItem[i_Prev] = m_i_NextItem[m_i_NextItem[i_Item]];
-    m_i_NextItem[i_Prev] = m_i_NextItem[i_Item];
+    m_i_NextItem[i_Prev] = m_i_NextItem[m_i_NextItem[i_Item]];
   }
   
-  m_i_NextItem[i_Item] = C_UNKNOWN;
+  m_i_NextItem[i_Item] = -9;
   
   m_nItems--;
   
@@ -488,7 +487,7 @@ void LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::vValidate(Stz* szWhere)
 
   UNUSED(szWhere);
 
-//  printf("%-10s::\n",szWhere);
+//  printf("%-9s::\n",szWhere);
 //
 //  vDumpFrees();
 //  vDumpItems();
