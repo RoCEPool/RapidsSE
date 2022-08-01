@@ -146,16 +146,13 @@
 /* org_ org */  then
 /* org_ org */  Dynamo[].delete
 /* org_ org */
-/* org_ ovr */    "<signalParent>" [job].tagSet@ tagSet.hasName not if
-/* org_ org */
-/* org_ org */      [args].distJob if
-/* org_ org */        "pipeline" "origin"
-/* org_ org */        "org_ org" "NO_WAIT signalling parent"       [job].trace
-/* org_ org */      then
 
-/* org_ org */      [job].updateParent assert
-/* org_ ovr */      [job].signalParent
-/* org_ org */     then
+
+
+
+
+
+
 
 /* ---- --- */  // !!! org !!! org !!! org !!! org !!! org !!! org !!! org !!!
 
@@ -260,8 +257,20 @@
 /* org_ beg */    then
 /* org_ beg */    false [job].rejected!
 /* org_ beg */    [job]:handleReject
-/* org_ beg */  then
 /* org_ beg */
+/* org_ beg */  else
+/* org_ ovr */    "<signalParent>" [job].tagSet@ tagSet.hasName not if
+/* org_ org */
+/* org_ org */      [args].distJob if
+/* org_ org */        "pipeline" "origin"
+/* org_ org */        "org_ org" "NO_WAIT signalling parent"       [job].trace
+/* org_ org */      then
+/* org_ org */
+/* org_ org */      [job].updateParent assert
+/* org_ ovr */      [job].signalParent
+/* org_ org */     then
+/* org_ org */  then
+/* org_ org */
 /* org_ beg */  [job].tscBegun
 
 /* ---- --- */  // <<< bgn <<< bgn <<< bgn <<< bgn <<< bgn <<< bgn <<< bgn <<<
@@ -335,15 +344,16 @@
 /* org_ end */    then
 /* org_ end */  [task].wait
 /* org_ end */
-/* org_ end */  [job].rejected@ if
-/* org_ end */    [args].distJob if
-/* org_ end */       "pipeline" "origin"
-/* org_ end */        "org_ exe" "end rejected"                  [job].trace
-/* org_ end */    then
-/* org_ end */    false [job].rejected!
-/* org_ end */    [job]:handleReject
-/* org_ end */  then
-/* org_ end */
+/* org_ end */  //[job].rejected@ if
+/* org_ end */  //  [args].distJob if
+/* org_ end */  //     "pipeline" "origin"
+/* org_ end */  //      "org_ exe" "end rejected"                  [job].trace
+/* org_ end */  //  then
+/* org_ end */  //  false [job].rejected!
+/* org_ end */  //  [job]:handleReject
+/* org_ end */  //then
+/* org_ end */  [job].rejected@ not assert
+
 /* org_ end */  [job].tscEnded
 /* org_ end */
 
@@ -486,7 +496,7 @@
 /* _ptp beg */  // - - - - - - - - - - - - - - - -  - -
 /* _ptp beg */  // JOB NOT TO ALLLOCATE ANY MORE MEMORY
 /* _ptp beg */  // - - - - - - - - - - - - - -  - - - -
-/* _ptp beg */  //[job].disableAllocate
+/* _ptp beg */  [job].disableAllocate
 /* _ptp beg */  // - - - - - - - - - - - - - - - -  - -
 /* _ptp beg */  // - - - - - - - - - - - - - - - -  - -
 /* _ptp beg */

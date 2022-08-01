@@ -535,21 +535,23 @@
   [task].grabLock
   [job].addExited
 
-    "<signalParent>" [job].tagSet@ tagSet.hasName if
+    [job].tagSet@ tagSet.asStr .
+    //"<signalParent>" [job].tagSet@ tagSet.hasName not if
 
       [args].distJob if
         "pipeline" "origin"
-        "org_ org" "WAIT signalling parent"       [job].trace
+        "org_ org" "WAIT/NO_WAIT signalling parent"       [job].trace
       then
 
       [job].updateParent assert
       [job].signalParent
-    then
 
-    [args].distJob if
-      "pipeline" "origin"
-        "org_ ovr" "signalled..."                  [job].trace
-    then
+      [args].distJob if
+        "pipeline" "origin"
+          "org_ ovr" "signalled..."                  [job].trace
+      then
+
+    //then
 
     [task].retire
 

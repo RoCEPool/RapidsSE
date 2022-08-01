@@ -100,7 +100,7 @@ void Step::vApiForkChild(void)
                                    pCmdTknVec,pCmdTagSet,
                                    tParentId,tOriginId,tDistId,
                                    pOuterJob,
-                                   false,
+                                   true,
                                    bIsPipeline
   );
 
