@@ -1034,17 +1034,14 @@ void Engine::vOpenTrace(bool bPrompt)
 {
   if (bPrompt) {
     s256 sTracePath;
-
 #ifdef WITH_DEBUG_VERSION
-    sTracePath.vSprint("../tmp/SE_Trace_%s_%s_Debug_pid%lld.txt"_Stz,
+    sTracePath.vSprint("../tmp/SE_Trace_%s_%s_Debug.txt"_Stz,
                      "SEprompt"_Stz,
-                     gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz(),
-                     Process::iGetPid());
+                     gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz());
 #else
-    sTracePath.vSprint("../tmp/SE_Trace_%s_%s_pid%lld.txt"_Stz,
+    sTracePath.vSprint("../tmp/SE_Trace_%s_%s.txt"_Stz,
                        "SEprompt"_Stz,
-                       gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz(),
-                       Process::iGetPid());
+                       gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz());
 #endif
 
     gpTraceFile = new(C_VIA_MALLOC) File(nullptr);
