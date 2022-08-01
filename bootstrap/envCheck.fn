@@ -96,6 +96,10 @@ function validateInstallationEnvironment() {
 
 function validate3rdPartyTools() {
 
+  if [ "${DEBUG}" -eq 1 ]; then
+    debugPrint "Validating pre-requisite tools exist on each node."
+  fi
+
   if [ "$#" -eq 0 ]; then
 
     # Customised check for pre-requisites

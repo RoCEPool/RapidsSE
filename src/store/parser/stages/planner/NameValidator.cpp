@@ -55,6 +55,18 @@
 #include "TableScanOp.hpp"
 #include "ProjectedColumns.hpp"
 #include "ExplainOp.hpp"
+#include "LimitOp.hpp"
+#include "OrderOp.hpp"
+#include "UnionOp.hpp"
+#include "AggregateOp.hpp"
+
+#include "BetweenExpr.hpp"
+#include "ExistsExpr.hpp"
+#include "InExpr.hpp"
+#include "LikeExpr.hpp"
+#include "CaseExpr.hpp"
+#include "ExtractExpr.hpp"
+#include "SubstringExpr.hpp"
 
 #include "TypeSystem.hpp"
 #include "AttachMap.hpp"
@@ -136,18 +148,23 @@ void NameValidator::vCheckDisabledFunctionality(PlanNode* pRootNode)
     return;
   }
 
-  // In this mode we only want to support simple SELECT * FROM <table> commands.
-  // No fancy-shmancy filters, joins, unions, limits, etc.
-  // No dandy-candy expressions and aggregates, other than simple columnRefs.
+  // In this mode we only want to support reasonably simple SELECT statements.
+  // We want to disable these Sql operators:
+  //  - Subqueries
+  //  - Joins
+  //  - Limits
+  //  - Order By
+  //  - Unions
+  //  - Group by part of aggregates
   //
-  // Walk the plan. If we see anything other than these nodes then we will
-  // return an error:
-  //  - ShadowPlan
-  //  - ExplainOp
-  //  - MainSubquery
-  //  - StatementMarker
-  //  - ProjectOp
-  //  - TableScanOp
+  // We also want to disable these expression operators:
+  //  - Between
+  //  - Exists
+  //  - In
+  //  - Like
+  //  - Case
+  //  - Extract
+  //  - Substring
 
   // Find the /plan node
   QueryNode* pPlanNode = ShadowRoot::pPlanRoot(pRootNode);
@@ -156,58 +173,64 @@ void NameValidator::vCheckDisabledFunctionality(PlanNode* pRootNode)
   // The plan node should have one or more children that are SubqueryMarker nodes
   ASSERT(pPlanNode->nChildren() > 0);
 
-  QueryNode* pProjectOp = nullptr;
 
-  auto fPlanVisitor =
-      [&pProjectOp](PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+  // Visitor lambda to validate the sql operators to start with (ignore expressions for now).
+  auto fSqlOpVisitor =
+      [](PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
-      if (ProjectOp::bIsOfType(pNode) && !pProjectOp) {
-        // Save the projectOp for later use
-        pProjectOp = _pQueryNode(pNode);
-        return GraphNav::WALK_CONTINUE;
+      Stz* pszDisabledFeature = nullptr;
+
+      if      (TableSubquery::bIsOfType(pNode))   { pszDisabledFeature = ": Table subquery"_Stz;      }
+      else if (ExprSubquery::bIsOfType(pNode))    { pszDisabledFeature = ": Expression subquery"_Stz; }
+      else if (      JoinOp::bIsOfType(pNode))    { pszDisabledFeature = ": Table Join"_Stz;          }
+      else if (     LimitOp::bIsOfType(pNode))    { pszDisabledFeature = ": Limit"_Stz;               }
+      else if (     OrderOp::bIsOfType(pNode))    { pszDisabledFeature = ": Order By"_Stz;            }
+      else if (     UnionOp::bIsOfType(pNode))    { pszDisabledFeature = ": Union"_Stz;               }
+      else if ( AggregateOp::bIsOfType(pNode) && AggregateOp::nGroups(_pQueryNode(pNode)) > 0)
+                                                  { pszDisabledFeature = ": Group By"_Stz;            }
+
+      if (pszDisabledFeature) {
+        // Not currently allowed
+        SemanticException::vThrow(EC_DISABLED_STATEMENT, pszDisabledFeature);
       }
 
-      if (
-          ShadowPlan::bIsOfType(pNode)      ||
-          ExplainOp::bIsOfType(pNode)       ||
-          MainSubquery::bIsOfType(pNode)    ||
-          StatementMarker::bIsOfType(pNode) ||
-          TableScanOp::bIsOfType(pNode)
-         ) {
-        return GraphNav::WALK_CONTINUE;
-      }
-
-      // Not allowed
-      SemanticException::vThrow(EC_DISABLED_STATEMENT);
-
-      // Prevent a compiler warning here
+      // Carry on
       return GraphNav::WALK_CONTINUE;
   };
 
-  // We only want to walk children and not properties in order to visit each MainSubquery node
-  GraphNav::bGlobalWalk(pPlanNode, false, true, fPlanVisitor, pRootNode);
+  // Visitor lambda to validate expressions only.
+  auto fExprVisitor =
+      [](PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
-  // Now inspect the ProjectOp and ensure it only contains columnRefs
-  if (!pProjectOp) {
-    return;
-  }
+        if (!Expr::bIsOfType(pNode)) {
+          // Only interested in expressions here
+          return GraphNav::WALK_CONTINUE;
+        }
 
-  ASSERT(ProjectOp::bIsOfType(pProjectOp));
+        Stz* pszDisabledFeature = nullptr;
 
-  QueryNode* pProjectedCols = ProjectOp::pProjectedColumns(pProjectOp);
+        if      (   BetweenExpr::bIsOfType(pNode))  { pszDisabledFeature = ": BETWEEN expression"_Stz;   }
+        else if (   ExistsExpr::bIsOfType(pNode))   { pszDisabledFeature = ": EXISTS expression"_Stz;    }
+        else if (       InExpr::bIsOfType(pNode))   { pszDisabledFeature = ": IN expression"_Stz;        }
+        else if (     LikeExpr::bIsOfType(pNode))   { pszDisabledFeature = ": LIKE expression"_Stz;      }
+        else if (     CaseExpr::bIsOfType(pNode))   { pszDisabledFeature = ": CASE expression"_Stz;      }
+        else if (  ExtractExpr::bIsOfType(pNode))   { pszDisabledFeature = ": EXTRACT expression"_Stz;   }
+        else if (SubstringExpr::bIsOfType(pNode))   { pszDisabledFeature = ": SUBSTRING expression"_Stz; }
 
-  PlanNodeIter* pIter = pProjectedCols->pNewChildrenIter();
-  while (pIter->bHasNext()) {
-    QueryNode* pProjectedColumn = _pQueryNode(pIter->pNext());
-    QueryNode* pExpr = ProjectedColumn::pExprNode(pProjectedColumn);
+        if (pszDisabledFeature) {
+          // Not currently allowed
+          SemanticException::vThrow(EC_DISABLED_STATEMENT, pszDisabledFeature);
+        }
 
-    if (!ColumnRef::bIsOfType(pExpr)) {
-      delete pIter;
-      SemanticException::vThrow(EC_DISABLED_STATEMENT);
-    }
-  }
+        // Carry on
+        return GraphNav::WALK_CONTINUE;
+      };
 
-  delete pIter;
+  // Walk the graph and look for sql operators that are disabled.
+  GraphNav::bGlobalWalk(pPlanNode, false, true, fSqlOpVisitor, pRootNode);
+
+  // Now walk the graph and check for expressions that are disabled
+  GraphNav::bGlobalWalk(pPlanNode, true,  true, fExprVisitor,  pRootNode);
 }
 
 /*----------------------------------------------------------------------------*/
