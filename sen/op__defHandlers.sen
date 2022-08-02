@@ -264,6 +264,7 @@
 : EV_M_HARDABORT_handler \handler
 
   "EV_M_HARDABORT_handler" .verbose
+  //[op].opName@ "OP %v exiting got EV_M_HARDABORT" .
 
   PipeIn[].delete
   

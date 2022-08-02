@@ -275,9 +275,25 @@
 
     EC_LOW_MEMORY [job].error!
 
-    [job].phase@ .
+    [job].jobList@ [job].phase@ [job] >str "JOB %v phase %v list %v" str.format .
 
     [job].phase@ JP_NONE == if
+
+      // originating job
+      [job].jobList@ JL_ORIGINATING == if
+        "removing job from originator list" .
+        [job].removeOriginator
+        Path[].discardAll
+        [task].grabLock
+        [job].addExited
+        [job].updateParent assert
+        "Notifying parent" .
+        [job].signalParent
+        [task].retire
+        HAZARD
+      then
+
+      // participant job
       [job].jobList@ JL_NONE == assert
       [job].rejectJobSetup
       EC_LOW_MEMORY [job].rejectJobError!
@@ -287,9 +303,12 @@
       [task].grabLock
       [job].addExited
       [task].retire
+      HAZARD
     then
 
     [job].phase@ JP_BEGINNING == if
+
+      //participant job
       [job].jobList@ JL_NONE == assert
       [job].rejectJobSetup
       EC_LOW_MEMORY [job].rejectJobError!
@@ -299,20 +318,8 @@
       [task].grabLock
       [job].addExited
       [task].retire
+      HAZARD
     then
-
-    Path[].discardAll
-    [task].grabLock
-
-    [job].jobList@ JL_NONE != if
-      [job].removeFromList
-    then
-
-    [job].addExited
-    [job].updateParent assert
-    [job].signalParent
-    [task].retire // does not queue onto exit demon
-    HAZARD
 
   else
     process::quit

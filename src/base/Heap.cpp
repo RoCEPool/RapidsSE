@@ -200,8 +200,11 @@ Object* Heap::pAllocObject(eCN eAllocClass)
       // error: we have run out of space
       //vTrace("RUNNING OUT OF MEMORY!!!\n"_Stz);
       //vTrace("Heap::pAllocObject: unable to extend heap\n"_Stz);
-      vTrace("LOW MEMORY encountered : %s %s %lld!!!\n"_Stz,
-             __FILE__,__func__,(i8)__LINE__);
+      vTrace("************************************************\n"_Stz);
+      vTrace("LOW MEMORY encountered : %s %s %lld %s!!!\n"_Stz,
+             __FILE__,__func__,(i8)__LINE__, aCN[eAllocClass]);
+      vThreadCallStackDump();
+      vTrace("************************************************\n"_Stz);
       m_okLock.vDropWrite();
       //PoolHelper::vPoolAnalyze();
       THROW_LOWMEMORY_NEW();

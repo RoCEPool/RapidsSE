@@ -110,6 +110,20 @@
 * org_ org *  then
 •/
 
+/* org_ org */  // - - - - - - - - - - - - - - - - - -
+/* org_ org */  // become the originator on this node
+/* org_ org */  // - - - - - - - - - - - - - - - - - -
+/* org_ org */  [job].setOriginId
+/* org_ org */  [job].distIdGenerate
+/* org_ org */  [job].addOriginator
+/* org_ org */  [job].assertOriginator
+/* org_ org */
+/* org_ org */  [args].distJob if
+/* org_ org */    "pipeline" "origin"
+/* org_ org */      "org_ org" "lst originator"                      [job].trace
+/* org_ org */  then
+
+
 /* org_ org */
 /* org_ org */  // - - - - - - - - - - - - - - - - - - - - - - - -
 /* org_ org */  // compile pipeline statement to check its syntax
@@ -156,18 +170,24 @@
 
 /* ---- --- */  // !!! org !!! org !!! org !!! org !!! org !!! org !!! org !!!
 
-/* org_ org */  // - - - - - - - - - - - - - - - - - -
-/* org_ org */  // become the originator on this node
-/* org_ org */  // - - - - - - - - - - - - - - - - - -
-/* org_ org */  [job].setOriginId
-/* org_ org */  [job].distIdGenerate
-/* org_ org */  [job].addOriginator
-/* org_ org */  [job].assertOriginator
-/* org_ org */
-/* org_ org */  [args].distJob if
-/* org_ org */    "pipeline" "origin"
-/* org_ org */      "org_ org" "lst originator"                      [job].trace
-/* org_ org */  then
+
+/* org_ org *  // - - - - - - - - - - - - - - - - - -
+* org_ org *  // become the originator on this node
+* org_ org *  // - - - - - - - - - - - - - - - - - -
+* org_ org *  [job].setOriginId
+* org_ org *  [job].distIdGenerate
+* org_ org *  [job].addOriginator
+* org_ org *  [job].assertOriginator
+* org_ org *
+* org_ org *  [args].distJob if
+* org_ org *    "pipeline" "origin"
+* org_ org *      "org_ org" "lst originator"                      [job].trace
+* org_ org *  then
+*/
+
+
+
+
 /* org_ org */  "<show_command>" sysargs::tagSet@ tagSet.hasName if
 /* org_ org */    <cmd> .
 /* org_ org */    //<cmd> "pipeline:origin: %v\n" .printf

@@ -150,31 +150,64 @@ CodeSynth::CodeSynth(StreamDef* pStreamDefLft, StreamDef* pStreamDefRht, IndexDe
   MemLib::vZero(m_caCode,sizeof(m_caCode),CN_CODESYNTH);
 #endif
 
-  m_caCode[0]   = '\0';
-  m_azCodeCrs   = m_caCode;
   m_pTokenVec   = nullptr;
 
-  m_pExprStack  = new TypedStack(KK_DATA_STACK);
-  m_pNullStack  = new TypedStack(KK_DATA_STACK);
-  m_pGbyStack = new TypedStack(KK_DATA_STACK);
-  m_pOrdAggStack = new TypedStack(KK_DATA_STACK);
-  m_pLowerStack = new TypedStack(KK_DATA_STACK);
-  m_pUpperStack = new TypedStack(KK_DATA_STACK);
-  m_pInitStack  = new TypedStack(KK_DATA_STACK);
+  m_pExprStack   = nullptr;
+  m_pNullStack   = nullptr;
+  m_pGbyStack    = nullptr;
+  m_pOrdAggStack = nullptr;
+  m_pLowerStack  = nullptr;
+  m_pUpperStack  = nullptr;
+  m_pInitStack   = nullptr;
 
   m_sLowerPosition = ""_Stz;
   m_sUpperPosition = ""_Stz;
 
-  m_pPreExpStack = pPreExpStack;
-  m_pStreamDefLft = pStreamDefLft;
-  m_pStreamDefOut = pStreamDefRht;
-  m_pIndexDef     = pIndexDef;
-  m_eStencilFrom  = eStencilFrom;
-  m_eStencilTo    = eStencilTo;
+  m_pPreExpStack  = nullptr;
+  m_pStreamDefLft = nullptr;
+  m_pStreamDefOut = nullptr;
+  m_pIndexDef     = nullptr;
 
-  m_iLimitRows    = 0;
+  try {
+    m_caCode[0]   = '\0';
+    m_azCodeCrs   = m_caCode;
+    m_pTokenVec   = nullptr;
 
-  _checkInitialised_(CN_CODESYNTH);
+    m_pExprStack  = new TypedStack(KK_DATA_STACK);
+    m_pNullStack  = new TypedStack(KK_DATA_STACK);
+    m_pGbyStack = new TypedStack(KK_DATA_STACK);
+    m_pOrdAggStack = new TypedStack(KK_DATA_STACK);
+    m_pLowerStack = new TypedStack(KK_DATA_STACK);
+    m_pUpperStack = new TypedStack(KK_DATA_STACK);
+    m_pInitStack  = new TypedStack(KK_DATA_STACK);
+
+    m_sLowerPosition = ""_Stz;
+    m_sUpperPosition = ""_Stz;
+
+    m_pPreExpStack = pPreExpStack;
+    m_pStreamDefLft = pStreamDefLft;
+    m_pStreamDefOut = pStreamDefRht;
+    m_pIndexDef     = pIndexDef;
+    m_eStencilFrom  = eStencilFrom;
+    m_eStencilTo    = eStencilTo;
+
+    m_iLimitRows    = 0;
+
+    _checkInitialised_(CN_CODESYNTH);
+  }
+  catch (LowMemory xLowMemory) {
+    delete m_pTokenVec;
+
+    delete m_pExprStack;
+    delete m_pNullStack;
+    delete m_pGbyStack;
+    delete m_pOrdAggStack;
+    delete m_pLowerStack;
+    delete m_pUpperStack;
+    delete m_pInitStack;
+    THROW_LOWMEMORY_NEW();
+  }
+
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
 }
