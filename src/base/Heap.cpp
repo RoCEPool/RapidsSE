@@ -148,6 +148,7 @@ Object* Heap::pAllocObject(eCN eAllocClass)
   Thread* pThread = MY::pThread();
   
   if (pThread && pThread->iMallocWatch()) {
+    vTrace("allocating %s\n"_Stz,aCN[eAllocClass]);
     i8 iDebug = 1;
     UNUSED(iDebug);
   }

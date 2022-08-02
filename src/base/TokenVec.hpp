@@ -27,7 +27,7 @@ namespace BASE
     static TokenVec* pGetSubVec(TokenVec* pTknVec, Stz* szStart, Stz* szEnd);
     static bool      bReplace(TokenVec* pTknVec,
                               TokenVec* pFindVec, TokenVec* pWithVec);
-    static TokenVec* pTokeniseSen(Stz* szString);
+    //static TokenVec* pTokeniseSen(Stz* szString);
 
     void vAdvanceCurr(bool bIncItems);
     void vAppendToken(Stz* szArgChars, eTN eToken);

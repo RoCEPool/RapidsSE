@@ -141,16 +141,16 @@ bool TokenVec::bReplace(TokenVec* pThisVec,
 /*----------------------------------------------------------------------------*/
 /* tokenise given string                                                      */
 /*----------------------------------------------------------------------------*/
-TokenVec* TokenVec::pTokeniseSen(Stz* szString)
-{
-  _static_
-  
-  TokenVec* pTknVec = new TokenVec;
-  
-  pTknVec->vTokeniseSen(szString);
-  
-  return pTknVec;
-}
+//TokenVec* TokenVec::pTokeniseSen(Stz* szString)
+//{
+//  _static_
+//  
+//  TokenVec* pTknVec = new TokenVec;
+//  
+//  pTknVec->vTokeniseSen(szString);
+//  
+//  return pTknVec;
+//}
 
 
 /*----------------------------------------------------------------------------*/

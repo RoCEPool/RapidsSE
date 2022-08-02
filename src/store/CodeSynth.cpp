@@ -2649,7 +2649,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tokenize the expression
-  m_pTokenVec = TokenVec::pTokeniseSen((Stz *) sExpr);
+  m_pTokenVec = AM::TOKENISE::pTokeniseSen((Stz *) sExpr);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the ExprType stack

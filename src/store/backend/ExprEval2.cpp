@@ -25,7 +25,7 @@ eEC ExprEval2::eGenerateSelectColumns(StreamDefBase* pStreamDefIn, Stz* sExpr, u
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tokenise the expr
-  TokenVec *pTknVec = TokenVec::pTokeniseSen(sExpr);
+  TokenVec *pTknVec = AM::TOKENISE::pTokeniseSen(sExpr);
 
   // get the next token
   Token* pTkn = pTknVec->pNextToken();
@@ -203,7 +203,7 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tokenise the expr
-  TokenVec *pTknVec = TokenVec::pTokeniseSen(sExpr);
+  TokenVec *pTknVec = AM::TOKENISE::pTokeniseSen(sExpr);
 
   // create a new columnExpr
   Column *pColumnExpr =  new Column;

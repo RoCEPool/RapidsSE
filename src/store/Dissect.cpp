@@ -1098,7 +1098,7 @@ Card_RpnTerms* Dissect::pToRpnTerms(Stz* szRpnExpr)
   
   Card_RpnTerms* pCard_RpnTerms = new Card_RpnTerms;
     
-  TokenVec* pTokenVec = TokenVec::pTokeniseSen(szRpnExpr);
+  TokenVec* pTokenVec = AM::TOKENISE::pTokeniseSen(szRpnExpr);
     
   i8 nTokens = pTokenVec->nItems();
   for (i8 i_Tkn = 0; i_Tkn < nTokens; i_Tkn++) {

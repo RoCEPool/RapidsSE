@@ -657,6 +657,13 @@ namespace OBLIQUE
       static Timer* pSinceTimer(void);
     };
 
+    class TOKENISE
+    {
+    public:
+      static TokenVec* pTokeniseSen(Stz* szString);
+      static TokenVec* pTokeniseSen(Stz* szString, Input* pInput);
+    };
+
     class TRACE
     {
     public:

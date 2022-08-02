@@ -229,7 +229,7 @@ eEC PtnDef::eParse(Stz* szCmd)
   //m_sCmd = szCmd;
   
   // tokenise the command
-  TokenVec* pTknVec = TokenVec::pTokeniseSen(szCmd);
+  TokenVec* pTknVec = AM::TOKENISE::pTokeniseSen(szCmd);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Parse: Create Table <tableNm>

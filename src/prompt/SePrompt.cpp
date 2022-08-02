@@ -201,6 +201,9 @@ void SePrompt::vPromptLoop(void)
   
   m_pCurrentDeputy = nullptr;
 
+  Thread* pThread = MY::pThread();
+  //pThread->vMallocWatch(1);
+  
   while (m_bContinue) {
         
     if (! m_pCurrentDeputy && ! (m_pCurrentDeputy = pFindDeputy())) {
