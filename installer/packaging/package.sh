@@ -262,13 +262,13 @@ esac
       echo "Using GCC version ${newestGccVer} from SCL"
       (
         cd "${SOURCE_DIR}"
-        scl enable "devtoolset-${newestGccVer}" "make clean && make -j $(nproc) -s"
+        scl enable "devtoolset-${newestGccVer}" "make clean && make -s -j $(nproc)"
       )
 
     else
       (
         cd "${SOURCE_DIR}"
-        make clean && make -j "$(nproc) -s"
+        make clean && make -s  -j "$(nproc)"
       )
     fi
   fi
