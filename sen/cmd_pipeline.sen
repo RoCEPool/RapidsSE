@@ -145,6 +145,7 @@
 /* org_ org */    ErrorCode[] [job].error!
 /* org_ org */    [ddlLock].testDrop
 /* org_ org */    Dynamo[].delete
+/* org_ org */    [job].removeOriginator
 /* org_ org */    ListedJob[].assertNoRef
 /* org_ org */
 /* org_ org */    Path[].discardAll

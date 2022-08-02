@@ -1361,6 +1361,13 @@ void Job::vPipeoutResponse(Operand* pOperand)
       // is it an EXIT MARKER ?
       if (pOperand->bIsMarker()) {
         Marker* pMarker = _pMarker(pOperand);
+
+        if (pMarker->eOpMarker() == OM_LOWMEMORY) {
+          //vTrace("PARENT RESPONSE: LOWMEMORY IGNORED\n"_Stz);
+          return;
+        }
+
+
         if (pMarker->eOpMarker() == OM_EXIT) {
           AM::vDeleteOperand(pOperand, nullptr);
           pOperand = AM::MARKER::pNewMarker(OM_CHILDEXIT, pParentJob);
@@ -1376,6 +1383,7 @@ void Job::vPipeoutResponse(Operand* pOperand)
 
       if (pOperand->bIsMarker()) {
         Marker* pMarker = _pMarker(pOperand);
+
         if (pMarker->eOpMarker() == OM_EXIT) {
           AM::vDeleteOperand(pOperand, nullptr);
           pOperand = AM::MARKER::pNewMarker(OM_CHILDEXIT, pParentJob);

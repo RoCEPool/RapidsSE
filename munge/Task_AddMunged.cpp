@@ -21349,6 +21349,7 @@ void Task::vAddMunged(Task* )
     "/* org_ org */    ErrorCode[] [job].error!\n"
     "/* org_ org */    [ddlLock].testDrop\n"
     "/* org_ org */    Dynamo[].delete\n"
+    "/* org_ org */    [job].removeOriginator\n"
     "/* org_ org */    ListedJob[].assertNoRef\n"
     "/* org_ org */\n"
     "/* org_ org */    Path[].discardAll\n"

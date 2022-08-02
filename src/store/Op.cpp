@@ -127,7 +127,7 @@ Op::~Op(void) noexcept(false)
       vTrace("Operand Queue for OP %s has %s\n"_Stz, szOpNm(), AM::pOperandName(pOperand));
       pOperand = m_pPipeIn->pQueueLeft()->pPopQueue();
     }
-    //RASSERT(0);
+    RASSERT(0);
   }
   if (m_pPipeIn->pQueueRight()->nItems() != 0) {
     vTrace("Operand Queue not empty\n"_Stz);
