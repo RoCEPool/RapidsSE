@@ -21312,7 +21312,7 @@ void Task::vAddMunged(Task* )
     "* org_ org *\n"
     "* org_ org *    HAZARD\n"
     "* org_ org *  then\n"
-    "•/\n"
+    "*/\n"
     "\n"
     "/* org_ org */  // - - - - - - - - - - - - - - - - - -\n"
     "/* org_ org */  // become the originator on this node\n"
