@@ -265,8 +265,14 @@ void Heaps::vFree(Object* pObject, bool bPersistent)
 //  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  pObject = aAdd<Object*>(pObject,gxaSizeHeap[eFreeClass].m_nVtableAdjust);
+
+  if( gxaSizeHeap[eFreeClass].m_eWhichHeap == HT_V_TINY   ||
+      gxaSizeHeap[eFreeClass].m_eWhichHeap == HT_V_SMALL  ||
+      gxaSizeHeap[eFreeClass].m_eWhichHeap == HT_V_MEDIUM ||
+      gxaSizeHeap[eFreeClass].m_eWhichHeap == HT_V_LARGE ) {
+
+    pObject = aAdd<Object*>(pObject,-8);
+  }
   
   if ((pHeaps->m_bTraceFree || eFreeClass == pHeaps->m_eTraceFree)
       && (! pHeaps->m_pTaskFree || (MY::pTask() == pHeaps->m_pTaskFree))) {
