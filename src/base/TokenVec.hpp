@@ -72,7 +72,7 @@ namespace BASE
     void vStripSemicolon(void);
     void vTrimTokens(i8 i_Tkn);
     void vTokeniseSen(Stz* szString);
-    void vTokeniseCpp(Stz* szString);
+    //void vTokeniseCpp(Stz* szString);
     i8   nTokens(void);
     void vUpdateToken(Token* pDstToken, Stz* szArgChars);
     i8   nUsedByteSpace(void);
