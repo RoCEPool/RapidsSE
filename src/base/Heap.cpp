@@ -401,12 +401,12 @@ void Heap::vFreeObject(Object* pObject)
     pJob->vTrackFreeObject(eClassNo);
   }
   
-  Thread* pThread = MY::pThread();
+  //Thread* pThread = MY::pThread();
   
-  if (pThread && pThread->iMallocWatch()) {
-    i8 iDebug = 1;
-    UNUSED(iDebug);
-  }
+  //if (pThread && pThread->iMallocWatch()) {
+  //  i8 iDebug = 1;
+  //  UNUSED(iDebug);
+  //}
 
 
 //  if ((Object*)0x2048091aa040 == pObject) {
