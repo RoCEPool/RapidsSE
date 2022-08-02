@@ -201,8 +201,8 @@ void SePrompt::vPromptLoop(void)
   
   m_pCurrentDeputy = nullptr;
 
-  Thread* pThread = MY::pThread();
-  //pThread->vMallocWatch(1);
+//  Thread* pThread = MY::pThread();
+//  pThread->vMallocWatch(1);
   
   while (m_bContinue) {
         
@@ -845,7 +845,7 @@ bool SePrompt::bReadCommand(void)
     gxCmdLineArgs.m_xSysArgs.m_bInitial = false;
     
     s4K szInitial = AM::szInitial();
-    m_pInpTknVec->vTokeniseSen(szInitial);
+    AM::TOKENISE::vTokeniseSen(m_pInpTknVec,szInitial,nullptr);
     m_pInpTknVec->vStripSemicolon();
     m_pInpTknVec->vIntegrityCheck();
     return true;
@@ -858,7 +858,7 @@ bool SePrompt::bReadCommand(void)
     m_bOneRun = true;
     
     s4K szCommand = AM::szCommand();
-    m_pInpTknVec->vTokeniseSen(szCommand);
+    AM::TOKENISE::vTokeniseSen(m_pInpTknVec,szCommand,nullptr);
     m_pInpTknVec->vStripSemicolon();
     m_pInpTknVec->vIntegrityCheck();
     return true;
@@ -868,7 +868,7 @@ bool SePrompt::bReadCommand(void)
   // special case: a previous command has requested to prompt to do something
   
   if (* this->szToDo()->azChar()) {
-    m_pInpTknVec->vTokeniseSen(this->szToDo());
+    AM::TOKENISE::vTokeniseSen(m_pInpTknVec,this->szToDo(),nullptr);
     m_pInpTknVec->vStripSemicolon();
 
     vToDo(""_Stz);
@@ -1212,7 +1212,7 @@ bool SePrompt::bTranslateProcedure(void)
     return false;
     
   m_pInpTknVec->vSoftReset();
-  m_pInpTknVec->vTokeniseSen(sPipelineSmt);
+  AM::TOKENISE::vTokeniseSen(m_pInpTknVec,sPipelineSmt,nullptr);
   
   return false;
 }

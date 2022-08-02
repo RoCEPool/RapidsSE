@@ -2885,8 +2885,8 @@ TokenVec* AM::TOKENISE::pTokeniseSen(Stz* szString)
  
   TokenVec* pTknVec = new TokenVec;
 
-  pTknVec->vTokeniseSen(szString);
-
+  //pTknVec->vTokeniseSen(szString);
+  AM::TOKENISE::vTokeniseSen(pTknVec,szString,nullptr);
   return pTknVec;
 }
 

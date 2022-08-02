@@ -146,12 +146,12 @@ Object* Heap::pAllocObject(eCN eAllocClass)
   
   Job* pJob = MY::pJob();
   Thread* pThread = MY::pThread();
-  
-  if (pThread && pThread->iMallocWatch()) {
-    vTrace("allocating %s\n"_Stz,aCN[eAllocClass]);
-    i8 iDebug = 1;
-    UNUSED(iDebug);
-  }
+//
+//  if (pThread && pThread->iMallocWatch()) {
+//    vTrace("allocating %s\n"_Stz,aCN[eAllocClass]);
+//    i8 iDebug = 1;
+//    UNUSED(iDebug);
+//  }
   
    //AM::MEMORY::vAssertAllocate();
    //RASSERT(MY::pJob()->bAllocateMemory());

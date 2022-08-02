@@ -317,7 +317,7 @@ void Stream::vCreateOps(void)
     //vTrace("<><><> %s\n"_Stz,sOpCmd.azChar());
 
     TokenVec* pTknVec = new TokenVec;
-    pTknVec->vTokeniseSen(sOpCmd);
+    AM::TOKENISE::vTokeniseSen(pTknVec,sOpCmd,nullptr);
 
     bool b = CmdHelper::bParseCmd(pTknVec,pOp_0->pOpTags());
     UNUSED(b);
