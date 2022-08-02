@@ -1655,9 +1655,10 @@ void Op::vSpawnTask(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
       
   Job* pJob = this->pOuterJobOfOp();
-  pJob->vActiveOpsInc();
   
   vCreateTaskForOp();
+  pJob->vActiveOpsInc();
+
   Task* pTask = this->pTask();
   
   if (m_pOpTags->bHasName(C_TAG_DEDICATEDTHD))
@@ -1774,8 +1775,12 @@ void Op::vUnspawnTask(void)
 
   RASSERT( ! m_pOpTags->bHasName(C_TAG_DEDICATEDTHD) );
 
-  Operand* pOperand = AM::MARKER::pNewMarker(OM_HARDABORT,pJob);
-  vAppendLeft(pOperand,pTask);
+  if (pTask) {
+    vTrace("Sending HARDABORT to OP %s\n"_Stz, m_p_OpSpec->szOpNm());
+
+    Operand *pOperand = AM::MARKER::pNewMarker(OM_HARDABORT, pJob);
+    vAppendLeft(pOperand, pTask);
+  }
 
   //pTask->vGrabTaskLock((Stz*)__func__);
   //pTask->vScheduleRetire();
