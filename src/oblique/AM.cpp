@@ -2877,7 +2877,7 @@ i8 AM::THREAD::iThisThreadNo(void)
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /*----------------------------------------------------------------------------*/
-/* long verbose format                                                        */
+/* tokenise string                                                            */
 /*----------------------------------------------------------------------------*/
 TokenVec* AM::TOKENISE::pTokeniseSen(Stz* szString)
 {
@@ -2888,6 +2888,35 @@ TokenVec* AM::TOKENISE::pTokeniseSen(Stz* szString)
   pTknVec->vTokeniseSen(szString);
 
   return pTknVec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* tokenise string                                                            */
+/*----------------------------------------------------------------------------*/
+void AM::TOKENISE::vTokeniseSen(TokenVec* pTknVec, Stz* szString, Input* )
+{
+  _static_
+
+  pTknVec->vSoftReset();
+  pTknVec->vIntegrityCheck();
+
+  Input* pInput = new Input(nullptr);
+  pInput->vUseString(szString);
+  pInput->vFormSenTokens();
+  pInput->vUseBegin();
+
+  for (i8 i_Token = 0; ; i_Token++) {
+
+    pInput->vReadToken();
+    if (TN_NULL == pInput->eToken())
+      break;
+
+    pTknVec->vAppendToken(pInput->szChars(),pInput->eToken());
+  }
+
+  pInput->vUseEnd();
+  while (pInput)
+    pInput = pInput->pDeleteInput();
 }
 
 
