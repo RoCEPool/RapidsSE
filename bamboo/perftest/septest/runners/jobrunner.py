@@ -113,6 +113,9 @@ class JobRunner:
         # Is the test ending early due to an abnormality (timeout, crash, etc)?
         self.abnormal_exit = False
 
+        # was SE installed successfully
+        self.se_installed = False
+
     def run_job(self):
         """Runs the job and all of its tests"""
 
@@ -163,9 +166,6 @@ class JobRunner:
                         self.current_test_runner.result.set_test_ended(False, False, stderr=errmsg)
                         self.test_results.append(self.current_test_runner.result)
 
-            # (3) Gather results, logs and artifacts
-            self.__gather_artifacts()
-
         except errors.Ec2InstanceTimeoutError as e:
             LOG.error(e)
             last_error = e
@@ -179,6 +179,9 @@ class JobRunner:
             raise
 
         finally:
+            # (3) Gather results, logs and artifacts
+            self.__gather_artifacts()
+
             # (4) Cleanup
             self.__cleanup_job()
 
@@ -246,6 +249,7 @@ class JobRunner:
 
         # Install the cluster using the cluster config
         clusterops.install_rapidsse(installer_path, pathlib.Path(self.custom_cluster_config.name))
+        self.se_installed = True
 
         # Start the cluster on the remote nodes
         clusterops.start_rapidsse(self.ip_addresses[0], self.all_configs.cluster_config)
@@ -402,6 +406,14 @@ class JobRunner:
         # If a test fails, or if self.archive_metrics is true then we keep those artifacts.
 
         collect_logs = False
+
+        if not self.se_installed:
+            # Something went wrong before or during installation. There are no logs to capture.
+            return
+
+        if len(self.test_results) == 0:
+            # No test results. Something must have gone wrong, perhaps with starting SE.
+            collect_logs = True
 
         for test_result in self.test_results:
             if test_result.test_passed is False:
