@@ -122,15 +122,15 @@ Task::Task(Stz* szTaskNm, Op* pOp)
 
   m_pLogicUnit = nullptr;
 
-  _checkInitialised_(CN_TASK);
-
-  m_pLogicUnit = new LogicUnit;
+  m_pLogicUnit = nullptr;
 
   try {
     vTask();
 
     m_sTaskNm = szTaskNm;
     m_pOp     = pOp;
+
+    _checkInitialised_(CN_TASK);
   }
   catch (LowMemory xLowMemory) {
     delete m_pSearchWord;

@@ -96,30 +96,78 @@ Stencil::Stencil(void)
   m_xStageOps.m_sLabelOrdAgg = ""_Stz;
   m_xStageOps.m_sHashExpr = ""_Stz;
 
-  m_pBannerHead  = new CodeSynth;
-  m_pBannerTail  = new CodeSynth;
+  m_pBannerHead  = nullptr;
+  m_pBannerTail  = nullptr;
 
-  m_pPreliminary     = new CodeSynth;
-  m_pPreliminaryFun0 = new CodeSynth;
-  m_pPreliminaryFun1 = new CodeSynth;
-  m_pPreliminaryFun2 = new CodeSynth;
-  m_pPreliminaryEos = new CodeSynth;
+  m_pPreliminary     = nullptr;
+  m_pPreliminaryFun0 = nullptr;
+  m_pPreliminaryFun1 = nullptr;
+  m_pPreliminaryFun2 = nullptr;
+  m_pPreliminaryEos = nullptr;
 
-  m_pConcluding     = new CodeSynth;
-  m_pConcludingFun0 = new CodeSynth;
-  m_pConcludingFun1 = new CodeSynth;
-  m_pConcludingFun2 = new CodeSynth;
-  m_pConcludingEos  = new CodeSynth;
-  m_pOpHeader    = new CodeSynth;
-  m_pOpSource    = new CodeSynth;
-  m_pEmptyFun0   = new CodeSynth;
-  m_pEmptyFun1   = new CodeSynth;
-  m_pEmptyFun2   = new CodeSynth;
+  m_pConcluding     = nullptr;
+  m_pConcludingFun0 = nullptr;
+  m_pConcludingFun1 = nullptr;
+  m_pConcludingFun2 = nullptr;
+  m_pConcludingEos  = nullptr;
+  m_pOpHeader    = nullptr;
+  m_pOpSource    = nullptr;
+  m_pEmptyFun0   = nullptr;
+  m_pEmptyFun1   = nullptr;
+  m_pEmptyFun2   = nullptr;
 
   m_pShapeCRW    = nullptr;
   m_pShapeROW    = nullptr;
   m_pShapeIDX    = nullptr;
-  m_pShapeEOS    = new Shape;
+  m_pShapeEOS    = nullptr;
+
+  try {
+    m_pBannerHead  = new CodeSynth;
+    m_pBannerTail  = new CodeSynth;
+
+    m_pPreliminary     = new CodeSynth;
+    m_pPreliminaryFun0 = new CodeSynth;
+    m_pPreliminaryFun1 = new CodeSynth;
+    m_pPreliminaryFun2 = new CodeSynth;
+    m_pPreliminaryEos = new CodeSynth;
+
+    m_pConcluding     = new CodeSynth;
+    m_pConcludingFun0 = new CodeSynth;
+    m_pConcludingFun1 = new CodeSynth;
+    m_pConcludingFun2 = new CodeSynth;
+    m_pConcludingEos  = new CodeSynth;
+    m_pOpHeader    = new CodeSynth;
+    m_pOpSource    = new CodeSynth;
+    m_pEmptyFun0   = new CodeSynth;
+    m_pEmptyFun1   = new CodeSynth;
+    m_pEmptyFun2   = new CodeSynth;
+    m_pShapeEOS    = new Shape;
+  }
+  catch (LowMemory xLowMemory) {
+
+    delete m_pBannerHead;
+    delete m_pBannerTail;
+    delete m_pPreliminary;
+    delete m_pPreliminaryFun0;
+    delete m_pPreliminaryFun1;
+    delete m_pPreliminaryFun2;
+    delete m_pPreliminaryEos;
+    delete m_pConcluding;
+    delete m_pConcludingFun0;
+    delete m_pConcludingFun1;
+    delete m_pConcludingFun2;
+    delete m_pConcludingEos;
+    delete m_pOpHeader;
+    delete m_pOpSource;
+    delete m_pEmptyFun0;
+    delete m_pEmptyFun1;
+    delete m_pEmptyFun2;
+
+    delete m_pShapeEOS;
+
+    THROW_LOWMEMORY_NEW();
+  }
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append banner head
