@@ -98,10 +98,68 @@ Task::Task(Stz* szTaskNm, Op* pOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 
-  vTask();
+  m_pProfile     = nullptr;
+  m_pJobTask     = nullptr;
+  m_pThread      = nullptr;
 
-  m_sTaskNm = szTaskNm;
-  m_pOp     = pOp;
+  m_pRecoveryWord  = nullptr;
+  m_pLowMemWord = nullptr;
+  m_pJobLowMemWord = nullptr;
+
+  m_pSearchWord = nullptr;
+
+  m_aInxPtr      = nullptr;
+
+  m_pAuxStack    = nullptr;
+  m_pDataStack   = nullptr;
+  m_pReturnStack = nullptr;
+
+  m_pLocalFrame = nullptr;
+  m_pLocalVars   = nullptr;
+
+  m_pSenCompiler = nullptr;
+  m_pInput       = nullptr;
+
+  m_pLogicUnit = nullptr;
+
+  _checkInitialised_(CN_TASK);
+
+  m_pLogicUnit = new LogicUnit;
+
+  try {
+    vTask();
+
+    m_sTaskNm = szTaskNm;
+    m_pOp     = pOp;
+  }
+  catch (LowMemory xLowMemory) {
+    delete m_pSearchWord;
+
+    delete m_pDataStack;
+    delete m_pReturnStack;
+    delete m_pAuxStack;
+
+    while (m_pLocalFrame) {
+
+      LocalFrame* pLocalsFrame = m_pLocalFrame;
+      m_pLocalFrame = m_pLocalFrame->pNext();
+
+      delete pLocalsFrame;
+    }
+    delete m_pLocalVars;
+
+    delete m_pSenCompiler;
+    while (m_pInput) {
+      vDeleteInput();
+    }
+
+    delete m_pProfile;
+    m_pProfile = nullptr;
+
+    delete m_pLogicUnit;
+    THROW_LOWMEMORY_NEW();
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
