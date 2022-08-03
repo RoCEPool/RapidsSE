@@ -576,15 +576,13 @@ void Engine::vCreateFileNames(void)
   gpAttachMap->vTraceLockGrab();
 
 #ifdef WITH_DEBUG_VERSION
-  gpAttachMap->m_sTraceFile.vSprint("../tmp/SE_Trace_%s_%s_Debug.txt"_Stz,
-                                    "SEgrid"_Stz,
+  gpAttachMap->m_sTraceFile.vSprint("../se_%s_Debug.txt"_Stz,
                                     gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz());
   gpAttachMap->m_sLogRegion.vSprint("SE_Log_%s_Debug"_Stz,"SEgrid"_Stz);
   gpAttachMap->m_sLogCsvFile.vSprint("../tmp/SE_Log_%s_Debug.csv"_Stz,"SEgrid"_Stz);
   gpAttachMap->m_sLogTxtFile.vSprint("../tmp/SE_Log_%s_Debug.txt"_Stz,"SEgrid"_Stz);
 #else
-  gpAttachMap->m_sTraceFile.vSprint("../tmp/SE_Trace_%s_%s.txt"_Stz,
-                                    "SEgrid"_Stz,
+  gpAttachMap->m_sTraceFile.vSprint("../se_%s.txt"_Stz,
                                     gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz());
   gpAttachMap->m_sLogRegion.vSprint("SE_Log_%s"_Stz, "SEgrid"_Stz);
   gpAttachMap->m_sLogCsvFile.vSprint("../tmp/SE_Log_%s.csv"_Stz, "SEgrid"_Stz);
@@ -1413,7 +1411,7 @@ void Engine::vPrintWelcome(void)
 }
 
 /*---------------------------------------------------------------------------------*/
-/* roll over to new trace file if current too big. Delete oldest (keep only recent)*/
+/* roll over to new trace file. Delete oldest (keep only recent)                   */
 /* trace file indexes go from: current name, 0, 1, 2, 3... highest index is oldest */
 /* rename trace files from oldest to newest 2->3, 1->2, 0->1                       */
 /* close current trace file. Rename with 0                                         */
@@ -1421,33 +1419,22 @@ void Engine::vPrintWelcome(void)
 /*---------------------------------------------------------------------------------*/
 void Engine::vRollTrace(void)
 {
-  if(gpTraceFile->iSize() < C_MAX_LOG_ENTRIES)
-    return;
-
-#ifdef WITH_DEBUG_VERSION
-  vTrace("Rolling over trace file\n"_Stz);
-#endif
-
   // Increment trace file indexes by 1, making room for the latest trace file 0
   for(i8 i = gpAttachMap->m_iTraceFileCount - 1; i >= 0; i--)
   {
     s256 sOldTrace, sNewTrace;
 #ifdef WITH_DEBUG_VERSION
-    sOldTrace.vSprint("../tmp/SE_Trace_%s_%s_Debug%d.txt"_Stz,
-                   "SEgrid"_Stz,
+    sOldTrace.vSprint("../se_%s_Debug%d.txt"_Stz,
                    gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz(),
                    i);
-    sNewTrace.vSprint("../tmp/SE_Trace_%s_%s_Debug%d.txt"_Stz,
-                   "SEgrid"_Stz,
+    sNewTrace.vSprint("../se_%s_Debug%d.txt"_Stz,
                    gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz(),
                    i+1);
 #else
-    sOldTrace.vSprint("../tmp/SE_Trace_%s_%s%d.txt"_Stz,
-                      "SEgrid"_Stz,
+    sOldTrace.vSprint("../se_%s_%d.txt"_Stz,
                       gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz(),
                       i);
-    sNewTrace.vSprint("../tmp/SE_Trace_%s_%s%d.txt"_Stz,
-                      "SEgrid"_Stz,
+    sNewTrace.vSprint("../se_%s_%d.txt"_Stz,
                       gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz(),
                       i+1);
 #endif
@@ -1456,20 +1443,15 @@ void Engine::vRollTrace(void)
     RASSERT(bRenamed);
   }
 
-  // Grab the current trace file lock and rename it with 0 index
-  gpAttachMap->vTraceLockGrab();
-
   gpTraceFile->vClose();
 
   s256 sNewTrace;
 #ifdef WITH_DEBUG_VERSION
-  sNewTrace.vSprint("../tmp/SE_Trace_%s_%s_Debug%d.txt"_Stz,
-                 "SEgrid"_Stz,
+  sNewTrace.vSprint("../se_%s_Debug%d.txt"_Stz,
                  gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz(),
                  0);
 #else
-  sNewTrace.vSprint("../tmp/SE_Trace_%s_%s%d.txt"_Stz,
-                    "SEgrid"_Stz,
+  sNewTrace.vSprint("../se_%s_%d.txt"_Stz,
                     gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz(),
                     0);
 #endif
@@ -1480,8 +1462,6 @@ void Engine::vRollTrace(void)
   bool bOpened = gpTraceFile->bOpenWrite(gpAttachMap->szTraceFilePath());
   RASSERT(bOpened);
 
-  gpAttachMap->vTraceLockDrop();
-
   gpAttachMap->m_iTraceFileCount++;
 
   // If the total number of trace files exceeds the max, delete the oldest trace file
@@ -1489,13 +1469,11 @@ void Engine::vRollTrace(void)
   {
     s256 sOldTrace;
 #ifdef WITH_DEBUG_VERSION
-    sOldTrace.vSprint("../tmp/SE_Trace_%s_%s_Debug%d.txt"_Stz,
-                   "SEgrid"_Stz,
+    sOldTrace.vSprint("../se_%s_Debug%d.txt"_Stz,
                    gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz(),
                    gpAttachMap->m_iTraceFileCount-1);
 #else
-    sOldTrace.vSprint("../tmp/SE_Trace_%s_%s%d.txt"_Stz,
-                      "SEgrid"_Stz,
+    sOldTrace.vSprint("../se_%s_%d.txt"_Stz,
                       gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz(),
                       gpAttachMap->m_iTraceFileCount-1);
 #endif
@@ -1506,11 +1484,6 @@ void Engine::vRollTrace(void)
       RASSERT(bRemoved);
 
       gpAttachMap->m_iTraceFileCount--;
-
-#ifdef WITH_DEBUG_VERSION
-      if(bRemoved)
-        vTrace("Deleted old trace file %s\n"_Stz, sOldTrace.szStz());
-#endif
     }
   }
 }

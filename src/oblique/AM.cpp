@@ -3723,46 +3723,18 @@ void AM::vWriteTrace_vargs(Stz* aFormat, va_list xArgs)
   fflush(stdout);
   
   if (gpTraceFile) {
+    // If trace file exists, calculate length of message
+    i8 iMaxLen = gpTraceFile->iSize() + strlen(caFormatted) + 12; // 12 because of the Low memory message that may be printed
+
+    // If the message exceeds the max length of the trace file, roll over
+    if( iMaxLen > C_MAX_LOG_ENTRIES )
+    {
+      Engine::vRollTrace();
+    }
+
     gpTraceFile->vSeekEnd();
     gpTraceFile->vPrint("%s%s"_Stz,bLowMem ? "LOW-MEMORY! " : "",caFormatted);
     gpTraceFile->vFlush();
-  }
-  
-  StrLib::vStrip(caFormatted,'\n');
-    
-  if (bUseLock)
-    gpAttachMap->vTraceLockDrop();
-}
-
-/*----------------------------------------------------------------------------*/
-/* write to trace file etc                                                    */
-/*----------------------------------------------------------------------------*/
-void AM::vWriteTrace_vargs(File* pFile, Stz* aFormat, va_list xArgs)
-{
-  static char caFormatted[C_1MB] = {'\0'};
-  
-  bool bUseLock = (gpAttachMap ? true : false);
-  bool bLowMem  = AM::MEMORY::bIsRunningLow();
-  
-  if (bUseLock)
-    gpAttachMap->vTraceLockGrab();
-
-  // produce formatted line
-  vsnprintf(caFormatted,sizeof(caFormatted) - 3,aFormat->azChar(),xArgs);
-  
-  // print formatted line
-  fprintf(stdout,"%s%s",bLowMem ? "LOW-MEMORY! " : "",caFormatted);
-  fflush(stdout);
-  
-  if (gpTraceFile) {
-    gpTraceFile->vSeekEnd();
-    gpTraceFile->vPrint("%s%s"_Stz,bLowMem ? "LOW-MEMORY! " : "",caFormatted);
-    gpTraceFile->vFlush();
-  }
-  
-  if (pFile) {
-    pFile->vPrint("%s"_Stz,caFormatted);
-    pFile->vFlush();
   }
   
   StrLib::vStrip(caFormatted,'\n');
