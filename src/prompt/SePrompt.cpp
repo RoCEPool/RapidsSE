@@ -843,7 +843,7 @@ bool SePrompt::bReadCommand(void)
     gxCmdLineArgs.m_xSysArgs.m_bInitial = false;
     
     s4K szInitial = AM::szInitial();
-    AM::TOKENISE::vTokeniseSen(m_pInpTknVec,szInitial,nullptr);
+    AM::TOKENISE::vTokeniseSen(m_pInpTknVec,szInitial);
     m_pInpTknVec->vStripSemicolon();
     m_pInpTknVec->vIntegrityCheck();
     return true;
@@ -856,7 +856,7 @@ bool SePrompt::bReadCommand(void)
     m_bOneRun = true;
     
     s4K szCommand = AM::szCommand();
-    AM::TOKENISE::vTokeniseSen(m_pInpTknVec,szCommand,nullptr);
+    AM::TOKENISE::vTokeniseSen(m_pInpTknVec,szCommand);
     m_pInpTknVec->vStripSemicolon();
     m_pInpTknVec->vIntegrityCheck();
     return true;
@@ -866,7 +866,7 @@ bool SePrompt::bReadCommand(void)
   // special case: a previous command has requested to prompt to do something
   
   if (* this->szToDo()->azChar()) {
-    AM::TOKENISE::vTokeniseSen(m_pInpTknVec,this->szToDo(),nullptr);
+    AM::TOKENISE::vTokeniseSen(m_pInpTknVec,this->szToDo());
     m_pInpTknVec->vStripSemicolon();
 
     vToDo(""_Stz);
@@ -1210,7 +1210,7 @@ bool SePrompt::bTranslateProcedure(void)
     return false;
     
   m_pInpTknVec->vSoftReset();
-  AM::TOKENISE::vTokeniseSen(m_pInpTknVec,sPipelineSmt,nullptr);
+  AM::TOKENISE::vTokeniseSen(m_pInpTknVec,sPipelineSmt);
   
   return false;
 }

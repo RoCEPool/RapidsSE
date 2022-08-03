@@ -93,7 +93,7 @@ void Step::vTokenVecTokenise(void)
   s48K sString;
   m_pDataStack->vPopStr(sString,__func__);
   
-  AM::TOKENISE::vTokeniseSen(pTknVec,sString,nullptr);
+  AM::TOKENISE::vTokeniseSen(pTknVec,sString);
 
   EXIT();
 }

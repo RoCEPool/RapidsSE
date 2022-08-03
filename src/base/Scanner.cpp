@@ -27,7 +27,7 @@ Scanner::Scanner(Stz* szStatement)
   
   _checkInitialised_(CN_SCANNER);
   
-  AM::TOKENISE::vTokeniseSen(m_pTknVec,szStatement,nullptr);
+  AM::TOKENISE::vTokeniseSen(m_pTknVec,szStatement);
 
 //  m_pTknVec->vDumpVec(0);
   

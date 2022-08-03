@@ -30,6 +30,18 @@ namespace BASE
    ~Token(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
+  
+    static bool bStartCppInteger(char cArg);
+    static bool bStartCppName(char cArg);
+    static bool bStartCppOther(char cArg);
+    static bool bStartCppString(char cArg);
+    static bool bEndCppString(char cArg);
+
+    static bool bStartSenInteger(char cArg);
+    static bool bStartSenName(char cArg);
+    static bool bStartSenString(char cArg);
+    static bool bStartSenTag(char cArg);
+    static bool bEndSenString(char cArg);
 
     void  vUpdateChars(Stz* szArg, TokenVec* pExoTknVec);
     void  vCopyToken_restricted(Token* pToken_src, TokenVec* pExoTknVec);

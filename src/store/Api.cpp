@@ -80,7 +80,7 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
   sSTMT sMaybePipelineSmt;
   if (Procedure::bTranslateToPipeline(sMaybePipelineSmt.pString(),pCmdTknVec)) {
     pCmdTknVec->vSoftReset();
-    AM::TOKENISE::vTokeniseSen(pCmdTknVec,sMaybePipelineSmt,nullptr);
+    AM::TOKENISE::vTokeniseSen(pCmdTknVec,sMaybePipelineSmt);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -247,7 +247,7 @@ eEC Api::eForkJob2PC(JobId& rtChildJobId,
   sSTMT sMaybePipelineSmt;
   if (Procedure::bTranslateToPipeline(sMaybePipelineSmt.pString(),pCmdTknVec)) {
     pCmdTknVec->vSoftReset();
-    AM::TOKENISE::vTokeniseSen(pCmdTknVec,sMaybePipelineSmt,nullptr);
+    AM::TOKENISE::vTokeniseSen(pCmdTknVec,sMaybePipelineSmt);
   }
 
   if (! CmdHelper::bParseCmd(pCmdTknVec,pCmdTagSet)) {

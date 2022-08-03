@@ -2570,6 +2570,84 @@ bool StrLib::bIsAlphaDigit(const char c)
 }
 
 /*----------------------------------------------------------------------------*/
+/* bIsAmpersand: is char an ampersand?                                        */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsAmpersand(const char c)
+{
+  _static_
+  
+  if (c == '&')
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsAsterisk: is char an asterisk?                                          */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsAsterisk(const char c)
+{
+  _static_
+  
+  if (c == '*')
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsAt: is char an at?                                                      */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsAt(const char c)
+{
+  _static_
+  
+  if (c == '@')
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsBackQuote: is char an back quote?                                       */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsBackQuote(const char c)
+{
+  _static_
+  
+  if (c == '`')
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsBackSlash: is char an back slash?                                       */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsBackSlash(const char c)
+{
+  _static_
+  
+  if (c == '\\')
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsBlank: is char a blank?                                                 */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsBlank(const char c)
+{
+  _static_
+  
+  if (c == ' ')
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bIsBoolean: is the string a boolean sequence ?                             */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bIsBoolean(char* ps)
@@ -2580,6 +2658,71 @@ bool StrLib::bIsBoolean(char* ps)
   if (StrLib::bEqualTo(ps,"false",C_NO_CASE)) return true;
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsCircumflex: is char a circumflex?                                       */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsCircumflex(const char c)
+{
+  _static_
+  
+  if (c == '^')
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsCloseBrace: is char a close brace?                                      */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsCloseBrace(const char c)
+{
+  _static_
+  
+  if (c == '}')
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsCloseBracket: is char a close bracket?                                  */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsCloseBracket(const char c)
+{
+  _static_
+  
+  if (c == ']')
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsCloseParenthesis: is char a close parenthesis?                          */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsCloseParenthesis(const char c)
+{
+  _static_
+  
+  if (c == ')')
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsColon: is char a colon?                                                 */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsColon(const char c)
+{
+  _static_
+  
+  if (c == ':')
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2631,6 +2774,45 @@ bool StrLib::bIsDigit(const char c)
 }
 
 /*----------------------------------------------------------------------------*/
+/* bIsDollar: is char a dollar sign?                                          */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsDollar(const char c)
+{
+  _static_
+  
+  if (c == '$')
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsDot: is char a dot?                                                     */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsDot(const char c)
+{
+  _static_
+  
+  if ('.' == c)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsDoubleQuote: is char a double quote?                                    */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsDoubleQuote(const char c)
+{
+  _static_
+  
+  if (c == '"')
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bIsEmpty: does the string have zero content?                               */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bIsEmpty(char* ps)
@@ -2638,6 +2820,19 @@ bool StrLib::bIsEmpty(char* ps)
   _static_
 
   return (*ps == 0);
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsEqual: is char an equal?                                                */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsEqual(const char c)
+{
+  _static_
+  
+  if (c == '=')
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2655,6 +2850,19 @@ bool StrLib::bIsEscapable(const char cArg)
   if ('\t' == cArg) return true;
   
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsExclamation: is char an exclamation?                                    */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsExclamation(const char c)
+{
+  _static_
+  
+  if (c == '!')
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2710,6 +2918,32 @@ bool StrLib::bIsFloat(char* ps) {
     return false;
 
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsGreaterThan: is char a greater than?                                    */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsGreaterThan(const char c)
+{
+  _static_
+  
+  if (c == '>')
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsHash: is char a hash?                                                   */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsHash(const char c)
+{
+  _static_
+  
+  if (c == '#')
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2803,6 +3037,32 @@ bool StrLib::bIsIPAddr(const char* ps)
 }
 
 /*----------------------------------------------------------------------------*/
+/* bIsLessThan: is char a less than?                                          */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsLessThan(const char c)
+{
+  _static_
+  
+  if (c == '<')
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsMinus: is char a minus sign?                                            */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsMinus(const char c)
+{
+  _static_
+  
+  if (c == '-')
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is char an alphabetic, numeric digit, '_' or '$'?                          */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bIsNameBodyChar(const char c)
@@ -2823,6 +3083,188 @@ bool StrLib::bIsNameStartChar(const char c)
   _static_
   
   if (isalpha(c) || '_' == c || '$' == c)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsNull: is char a null?                                                   */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsNull(const char c)
+{
+  _static_
+  
+  if (c == '\0')
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsCloseBrace: is char an open brace?                                      */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsOpenBrace(const char c)
+{
+  _static_
+  
+  if (c == '{')
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsCloseBracket: is char an open bracket?                                  */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsOpenBracket(const char c)
+{
+  _static_
+  
+  if (c == '[')
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsCloseParenthesis: is char an open parenthesis?                          */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsOpenParenthesis(const char c)
+{
+  _static_
+  
+  if (c == '(')
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsPercent: is char a percent?                                             */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsPercent(const char c)
+{
+  _static_
+  
+  if ('%' == c)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsPipe: is char a pipe?                                                   */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsPipe(const char c)
+{
+  _static_
+  
+  if ('|' == c)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsMinus: is char a plus sign?                                             */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsPlus(const char c)
+{
+  _static_
+  
+  if (c == '+')
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsQuestion: is char a question?                                           */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsQuestion(const char c)
+{
+  _static_
+  
+  if ('?' == c)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsSemicolon: is char a semicolon?                                         */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsSemicolon(const char c)
+{
+  _static_
+  
+  if (';' == c)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsSign: is char a plus or minus?                                          */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsSign(const char c)
+{
+  _static_
+  
+  if (bIsPlus(c) || bIsMinus(c))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsSlash: is char a slash?                                                 */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsSlash(const char c)
+{
+  _static_
+  
+  if ('/' == c)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsSignleQuote: is char a single quote?                                    */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsSingleQuote(const char c)
+{
+  _static_
+  
+  if (c == '\'')
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsTilde: is char a tilde?                                                 */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsTilde(const char c)
+{
+  _static_
+  
+  if ('~' == c)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsUnderscore: is char an underscore?                                      */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsUnderscore(const char c)
+{
+  _static_
+  
+  if ('_' == c)
     return true;
   else
     return false;

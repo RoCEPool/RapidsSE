@@ -2886,27 +2886,23 @@ TokenVec* AM::TOKENISE::pTokeniseSen(Stz* szString)
   TokenVec* pTknVec = new TokenVec;
 
   //pTknVec->vTokeniseSen(szString);
-  AM::TOKENISE::vTokeniseSen(pTknVec,szString,nullptr);
+  AM::TOKENISE::vTokeniseSen(pTknVec,szString);
   return pTknVec;
 }
 
 /*----------------------------------------------------------------------------*/
 /* tokenise string                                                            */
 /*----------------------------------------------------------------------------*/
-void AM::TOKENISE::vTokeniseSen(TokenVec* pTknVec, Stz* szString,
-                                Input* pInput_arg)
+void AM::TOKENISE::vTokeniseSen(TokenVec* pTknVec, Stz* szString)
 {
   _static_
   
-  RASSERT(! pInput_arg);
-
   pTknVec->vSoftReset();
   pTknVec->vIntegrityCheck();
 
   Input* pInput = nullptr;
   
-  if (! pInput_arg)
-    pInput = new Input(nullptr);
+  pInput = new Input(nullptr);
   
   pInput->vUseString(szString);
   pInput->vFormSenTokens();
@@ -2923,10 +2919,26 @@ void AM::TOKENISE::vTokeniseSen(TokenVec* pTknVec, Stz* szString,
 
   pInput->vUseEnd();
   
-  if (! pInput_arg) {
-    while (pInput)
-      pInput = pInput->pDeleteInput();
-  }
+  while (pInput)
+    pInput = pInput->pDeleteInput();
+}
+
+/*----------------------------------------------------------------------------*/
+/* tokenise string                                                            */
+/*----------------------------------------------------------------------------*/
+void AM::TOKENISE::vTokeniseSen_2(TokenVec* pTknVec, Stz* szString)
+{
+  _static_
+  
+  pTknVec->vSoftReset();
+  pTknVec->vIntegrityCheck();
+
+  s4K sString;
+  
+  char* aCrs = szString->azChar();
+  
+  while (StrLib::bExtractString(&aCrs,sString.azChar()))
+    {;}
 }
 
 

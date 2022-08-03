@@ -74,6 +74,147 @@ void Token::vDump(eCN eClass, Object* pObject, Stz* aTab)
          pToken->azChars());
 }
 
+/*----------------------------------------------------------------------------*/
+/* test for start of normal integer                                           */
+/*----------------------------------------------------------------------------*/
+bool Token::bStartCppInteger(char cArg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  if (StrLib::bIsDigit(cArg))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for start of normal name                                              */
+/*----------------------------------------------------------------------------*/
+bool Token::bStartCppName(char cArg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  //if ('$' == cArg)
+  //  return true;
+  
+  if (StrLib::bIsNameStartChar(cArg))
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for start of normal other                                             */
+/*----------------------------------------------------------------------------*/
+bool Token::bStartCppOther(char cArg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  if (! StrLib::bIsNameBodyChar(cArg))
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for start of normal string                                            */
+/*----------------------------------------------------------------------------*/
+bool Token::bStartCppString(char cArg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  if (StrLib::bIsDoubleQuote(cArg))
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for end of normal string                                              */
+/*----------------------------------------------------------------------------*/
+bool Token::bEndCppString(char cArg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  if (StrLib::bIsDoubleQuote(cArg))
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for start of Sen integer                                              */
+/*----------------------------------------------------------------------------*/
+bool Token::bStartSenInteger(char cArg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  if (StrLib::bIsMinus(cArg) || StrLib::bIsDigit(cArg) || StrLib::bIsDot(cArg))
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for start of Sen name                                                 */
+/*----------------------------------------------------------------------------*/
+bool Token::bStartSenName(char cArg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  if (bStartSenInteger(cArg) || bStartSenString(cArg))
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for start of Sen string                                               */
+/*----------------------------------------------------------------------------*/
+bool Token::bStartSenString(char cArg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  if (StrLib::bIsDoubleQuote(cArg))
+    return true;
+  
+// 2020-Feb-26 RJH: I commented this out as I don't think we have 'string'
+//                  in sen literals
+  if (StrLib::bIsSingleQuote(cArg))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for start of Sen tag                                                  */
+/*----------------------------------------------------------------------------*/
+bool Token::bStartSenTag(char cArg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  if (StrLib::bIsLessThan(cArg))
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for end of Sen string                                                 */
+/*----------------------------------------------------------------------------*/
+bool Token::bEndSenString(char cArg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  if (StrLib::bIsDoubleQuote(cArg))
+    return true;
+
+  if (StrLib::bIsSingleQuote(cArg))
+    return true;
+
+  return false;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Restricted --------------------------------------------------------------*/

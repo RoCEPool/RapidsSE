@@ -661,9 +661,8 @@ namespace OBLIQUE
     {
     public:
       static TokenVec* pTokeniseSen(Stz* szString);
-      static TokenVec* pTokeniseSen(Stz* szString, Input* pInput);
-      static void vTokeniseSen(TokenVec* pTknVec, Stz* szString,
-                               Input* pInput=nullptr);
+      static void vTokeniseSen(TokenVec* pTknVec, Stz* szString);
+      static void vTokeniseSen_2(TokenVec* pTknVec, Stz* szString);
     };
 
     class TRACE
