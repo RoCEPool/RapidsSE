@@ -258,13 +258,11 @@ class TestRunner:
 
         for csv_metric in csv_list:
             assert os.path.exists(csv_metric)
-            if not self.__parse_csv_metrics(csv_metric):
-                return
+            self.__parse_csv_metrics(csv_metric)
 
         for tsv_metric in tsv_list:
             assert os.path.exists(tsv_metric)
-            if not self.__parse_tsv_metric(tsv_metric):
-                return
+            self.__parse_tsv_metric(tsv_metric)
 
         LOG.info(f"Extracted a total of {str(len(self.result.metrics))} metrics")
 

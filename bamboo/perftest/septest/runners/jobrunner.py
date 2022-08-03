@@ -419,7 +419,7 @@ class JobRunner:
             if test_result.test_passed is False:
                 collect_logs = True
 
-            if self.archive_metrics:
+            if self.archive_metrics or test_result.test_passed is False:
                 self.__compress_test_artifact_dir(test_result.test_id, test_result.test_path)
 
             self.__delete_test_artifact_dir(test_result.test_id, test_result.test_path)
