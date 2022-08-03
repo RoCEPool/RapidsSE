@@ -279,6 +279,20 @@
 
     [job].phase@ JP_NONE == if
 
+     // local job
+     [job].jobList@ JL_LOCAL == if
+       "removing job from loacl list" .
+       [job].removeLocal
+       Path[].discardAll
+       [task].grabLock
+       [job].addExited
+       [job].updateParent assert
+       "Notifying parent" .
+       [job].signalParent
+       [task].retire
+       HAZARD
+     then
+
       // originating job
       [job].jobList@ JL_ORIGINATING == if
         "removing job from originator list" .

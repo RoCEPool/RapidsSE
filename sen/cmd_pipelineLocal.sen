@@ -25,6 +25,9 @@
     //[system].bpa
   then
 
+  // add job to the local job list
+  [job].addLocal
+
   Dynamo[].new
   <cmd> Dynamo[].compile to ErrorCode[]
   ErrorCode[] EC_NONE == if
@@ -99,10 +102,15 @@
      [job].signalParent
   then
 
+
+/*
   // add job to the local job list
   [job].jobList@ JL_DEMON == not if
     [job].addLocal
   then
+*/
+
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // enqueue start-marker to start op to execute the pipeline job

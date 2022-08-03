@@ -134,7 +134,7 @@
 /* org_ org */      "org_ org" "Dynamo compile"                    [job].trace
 /* org_ org */  then
 /* org_ org */
-//[task].throwLowMemory
+
 /* org_ org */  Dynamo[].new
 /* org_ org */  <cmd> Dynamo[].compile to ErrorCode[]
 /* org_ org */  ErrorCode[] EC_NONE == if
