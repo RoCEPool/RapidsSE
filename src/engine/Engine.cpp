@@ -545,7 +545,8 @@ void Engine::vCloseTrace(void)
 {
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("** trace file closed: %s\n"_Stz, gpAttachMap->m_sTraceFile.szStz());
-  gpTraceFile->vClose();
+  if(gpTraceFile)
+    gpTraceFile->vClose();
   //delete gpTraceFile;
   
   gpTraceFile = nullptr;

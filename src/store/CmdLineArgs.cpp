@@ -504,21 +504,21 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--logFile"_Stz)) {
-//      if (m_xSysArgs.m_bStart) {
-//        vPrintErrorMarker(argv, i_Arg);
-//        vTrace("Incorrect argument: --start with %s\n"_Stz,argv[i_Arg].szStz());
-//        return false;
-//      }
-//      if (m_xSysArgs.m_bStatus) {
-//        vPrintErrorMarker(argv, i_Arg);
-//        vTrace("Incorrect argument: --status with %s\n"_Stz,argv[i_Arg].szStz());
-//        return false;
-//      }
-//      if (m_xSysArgs.m_bStop) {
-//        vPrintErrorMarker(argv, i_Arg);
-//        vTrace("Incorrect argument: --stop with %s\n"_Stz,argv[i_Arg].szStz());
-//        return false;
-//      }
+      if (m_xSysArgs.m_bStart) {
+        vPrintErrorMarker(argv, i_Arg);
+        vTrace("Incorrect argument: --start with %s\n"_Stz,argv[i_Arg].szStz());
+        return false;
+      }
+      if (m_xSysArgs.m_bStatus) {
+        vPrintErrorMarker(argv, i_Arg);
+        vTrace("Incorrect argument: --status with %s\n"_Stz,argv[i_Arg].szStz());
+        return false;
+      }
+      if (m_xSysArgs.m_bStop) {
+        vPrintErrorMarker(argv, i_Arg);
+        vTrace("Incorrect argument: --stop with %s\n"_Stz,argv[i_Arg].szStz());
+        return false;
+      }
 
       m_xSysArgs.m_sLogFile = (Stz*)argv[++i_Arg];
       continue;
@@ -1046,14 +1046,14 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // if not in prompt mode, log file path should not be given
-//  if ( ! m_xSysArgs.m_sLogFile.bIsEmpty() ) {
-//
-//    if( ! m_xSysArgs.m_bPrompt && ! m_xSysArgs.m_bSethScript)
-//    {
-//      vTrace("Incorrect argument: --logFile, can only specify log file path with --prompt or --script\n"_Stz);
-//      return false;
-//    }
-//  }
+  if ( ! m_xSysArgs.m_sLogFile.bIsEmpty() ) {
+
+    if( ! m_xSysArgs.m_bPrompt && ! m_xSysArgs.m_bSethScript)
+    {
+      vTrace("Incorrect argument: --logFile, can only specify log file path with --prompt or --script\n"_Stz);
+      return false;
+    }
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
