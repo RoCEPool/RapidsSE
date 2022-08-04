@@ -12,6 +12,7 @@
 .idea/
 /se.ready
 /se_NODE*
+/se_prompt.txt
 
 # For the Bamboo box
 /TPCH/

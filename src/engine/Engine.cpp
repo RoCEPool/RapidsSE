@@ -1031,24 +1031,16 @@ bool Engine::bOpenPool(s32& sPoolName)
 void Engine::vOpenTrace(bool bPrompt)
 {
   if (bPrompt) {
-    s256 sTracePath;
-#ifdef WITH_DEBUG_VERSION
-    sTracePath.vSprint("../tmp/SE_Trace_%s_%s_Debug.txt"_Stz,
-                     "SEprompt"_Stz,
-                     gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz());
-#else
-    sTracePath.vSprint("../tmp/SE_Trace_%s_%s.txt"_Stz,
-                       "SEprompt"_Stz,
-                       gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz());
-#endif
+    if(gxCmdLineArgs.m_xSysArgs.m_sLogFile.bIsEmpty())
+      return;
 
     gpTraceFile = new(C_VIA_MALLOC) File(nullptr);
 
-    bool bOpened = gpTraceFile->bOpenAppend(sTracePath);
+    bool bOpened = gpTraceFile->bOpenAppend(gxCmdLineArgs.m_xSysArgs.m_sLogFile);
     RASSERT(bOpened);
 
     vTrace("Opened prompt trace file %s for write\n"_Stz
-        ,sTracePath.szStz()
+        ,gxCmdLineArgs.m_xSysArgs.m_sLogFile.szStz()
     );
   }
   else {

@@ -78,6 +78,7 @@ void CmdLineArgs::vInit(void)
   
   m_xSysArgs.m_iConnectCode  = C_UNKNOWN;
   m_xSysArgs.m_sGridName     = "SEgrid"_Stz;
+  m_xSysArgs.m_sLogFile      = ""_Stz;
   m_xSysArgs.m_sNodeName     = "node"_Stz;
   m_xSysArgs.m_sPageFilePath = "../../tmp/pfile.dat"_Stz;
   m_xSysArgs.m_nPtnsPerNode  = 4;
@@ -498,6 +499,28 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--lockTracking"_Stz)) {
       m_xSysArgs.m_bLockTracking = true;
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (szArg->bSame("--logFile"_Stz)) {
+      if (m_xSysArgs.m_bStart) {
+        vPrintErrorMarker(argv, i_Arg);
+        vTrace("Incorrect argument: --start with %s\n"_Stz,argv[i_Arg].szStz());
+        return false;
+      }
+      if (m_xSysArgs.m_bStatus) {
+        vPrintErrorMarker(argv, i_Arg);
+        vTrace("Incorrect argument: --status with %s\n"_Stz,argv[i_Arg].szStz());
+        return false;
+      }
+      if (m_xSysArgs.m_bStop) {
+        vPrintErrorMarker(argv, i_Arg);
+        vTrace("Incorrect argument: --stop with %s\n"_Stz,argv[i_Arg].szStz());
+        return false;
+      }
+
+      m_xSysArgs.m_sLogFile = (Stz*)argv[++i_Arg];
       continue;
     }
     
@@ -1018,6 +1041,18 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     vPrintErrorMarker(argv, i_Arg);
     vTrace("Unrecognized command argument: %s\n"_Stz,argv[i_Arg].szStz());
     return false;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // if not in prompt mode, log file path should not be given
+  if ( ! m_xSysArgs.m_sLogFile.bIsEmpty() ) {
+
+    if( ! m_xSysArgs.m_bPrompt && ! m_xSysArgs.m_bSethScript)
+    {
+      vTrace("Incorrect argument: --logFile, can only specify log file path with --prompt or --script\n"_Stz);
+      return false;
+    }
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
