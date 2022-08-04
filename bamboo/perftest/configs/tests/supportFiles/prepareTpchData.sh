@@ -10,13 +10,13 @@
 # as possible.
 #
 # Assuming there is at least 1 SSD then data will be written out to:
-#   /mnt/disk<1..N>/data/tpch/sf<N>/<tableName>/<tableName>.tbl
+#   /mnt/disk<1..N>/data<N>/tpch/sf<N>/<tableName>/<tableName>.tbl
 #
 # (The non-partitioned nation and region tables will be written out to the
 #  first disk of each node).
 #
 # If there are no SSDs then data will be written out to:
-#   <installDir>/data/tpch/sf<N>/<tableName>/<tableName>.tbl
+#   <installDir>/data1/tpch/sf<N>/<tableName>/<tableName>.tbl
 #
 # Assumptions:
 #  (1) All nodes have the same hardware.
@@ -77,6 +77,10 @@ START_IDX=0
 TARGETS=()
 INSTALL_DIR=""
 
+# How many ways do we split the data for a given disk?
+# This allows for multiple paths of data per disk.
+PTNS_PER_DISK=1
+
 ###############################################################################
 ### Functions                                                               ###
 ###############################################################################
@@ -92,11 +96,12 @@ function printUsageAndExit() {
   echo ""
   echo "Details:"
   echo "  --sf <scaleFactor>  The scale factor of the TPC-H data to be copied."
+  echo "  --partitionsPerDisk <count>  How many ways to split the data for each disk. Default=1" # Multiple paths per disk
   echo ""
-  echo "  --copyData                <internal use> Runs the script in copyData mode to download and layout the data."
-  echo "  --installDir              <internal use> The RapidsSE installation directory on the current node."
-  echo "  --start                   <internal use> The 1-based start index of the data chunks to copy on this node."
-  echo "  --target <path> <count>   <internal use> How many chunks to put on a given target path."
+  echo "  --copyData                  <internal use> Runs the script in copyData mode to download and layout the data."
+  echo "  --installDir                <internal use> The RapidsSE installation directory on the current node."
+  echo "  --start                     <internal use> The 1-based start index of the data chunks to copy on this node."
+  echo "  --target <path> <count>     <internal use> How many chunks to put on a given target path."
   echo ""
   echo "  --help              Displays this message."
   exit 1
@@ -124,6 +129,7 @@ function processArgs() {
   local argInstallDir=0
   local argStart=0
   local argTarget=0
+  local argPtnsPerDisk=0
 
   while [[ $# -gt 0 ]]
   do
@@ -165,6 +171,13 @@ function processArgs() {
         shift # past second value
         ;;
 
+      --partitionsPerDisk)
+        argPtnsPerDisk=1
+        PTNS_PER_DISK="$2"
+        shift # past argument
+        shift # past value
+        ;;
+
       --help|-h)
         shift
         printUsageAndExit
@@ -189,6 +202,11 @@ function processArgs() {
 
   if [[ "${SF}" -le 0 ]]; then
     printError "Scale factor must be a positive integer only."
+    printUsageAndExit
+  fi
+
+  if [[ "${PTNS_PER_DISK}" -le 0 ]]; then
+    printError "partitionsPerDisk must be a positive integer only."
     printUsageAndExit
   fi
 
@@ -241,11 +259,6 @@ function processArgs() {
 
   else
     # Not running in copyData mode. Check that certain arguments have not been specified.
-
-    if [[ "${argInstallDir}" -eq 1 ]]; then
-      printError "The --installDir argument can only be specified in conjunction with the --copyData argument."
-      printUsageAndExit
-    fi
 
     if [[ "${argStart}" -eq 1 ]]; then
       printError "The --start argument can only be specified in conjunction with the --copyData argument."
@@ -313,6 +326,7 @@ function getDataChunks() {
 
 function getBaseOutputPaths() {
   local i=0
+  local j
   local mountPoint
   local arbitraryMaximum
 
@@ -330,8 +344,14 @@ function getBaseOutputPaths() {
       break
     fi
 
-    # Add it to the list and keep looking for more drives
-    BASE_OUTPUT_PATHS+=("${mountPoint}")
+    j=0
+    while [ "$j" -lt "${PTNS_PER_DISK}" ]; do
+      j=$((j+1))
+
+      # Add it to the list and keep looking for more drives
+      BASE_OUTPUT_PATHS+=("${mountPoint}/data${j}")
+    done
+
   done
 
   if [ "${#BASE_OUTPUT_PATHS[@]}" -eq 0 ]; then
@@ -380,14 +400,14 @@ function printChunksPerPath() {
   local chunksForCurrentPath
 
   local pathExt
-  pathExt="/data/tpch/sf${SF}"
+  pathExt="/tpch/sf${SF}"
 
-  readonly fmtStr="  %-40s    %-7s\n"
+  readonly fmtStr="  %-40s    %-7s    %-7s\n"
 
   echo "The following paths will each get these number of data chunks:"
   # shellcheck disable=SC2059
-  printf "${fmtStr}" "Path" "#Chunks"
-  echo "  ----------------------------------------    -------"
+  printf "${fmtStr}" "Path" "#Chunks" "Index"
+  echo "  ----------------------------------------    -------    -------"
 
 
   for nodeName in "${NODE_LIST[@]}";
@@ -400,7 +420,7 @@ function printChunksPerPath() {
       chunksForCurrentPath="${CHUNKS_PER_NODEPATH[${chunkIdx}]}"
 
       # shellcheck disable=SC2059
-      printf "${fmtStr}" "${dir}${pathExt}" "${chunksForCurrentPath}"
+      printf "${fmtStr}" "${host}:${dir}${pathExt}" "${chunksForCurrentPath}" "${chunkIdx}"
     done
   done
 }
@@ -432,7 +452,7 @@ function copyScriptToNodes() {
 
 function invokeScriptOnNodes() {
 
-  commonArgs=("--copyData" "--sf" "${SF}")
+  local commonArgs=("--copyData" "--sf" "${SF}")
 
   local chunkIdx=-1
   local chunkCount=1
@@ -443,7 +463,7 @@ function invokeScriptOnNodes() {
   local installDir
 
   local pathExt
-  pathExt="/data/tpch/sf${SF}"
+  pathExt="/tpch/sf${SF}"
 
   for nodeName in "${NODE_LIST[@]}";
   do
@@ -459,14 +479,15 @@ function invokeScriptOnNodes() {
       chunkIdx=$((chunkIdx + 1))
       chunksForCurrentPath="${CHUNKS_PER_NODEPATH[${chunkIdx}]}"
 
+      nodeArgs+=("--target" "${dir}${pathExt}" "${chunksForCurrentPath}")
+
       # Increment the chunk count, which sets the starting index for the next node
       chunkCount=$((chunkCount + chunksForCurrentPath))
-
-      nodeArgs+=("--target" "${dir}${pathExt}" "${chunksForCurrentPath}")
     done
 
     # Invoke the script in the background
     echo "Invoking script on host: ${host}"
+    echo ssh "-o" "BatchMode=yes" "-o" "StrictHostKeyChecking=no" "${host}" "/tmp/${SCRIPT_NAME}" "${commonArgs[@]}" "${nodeArgs[@]}" &
     ssh "-o" "BatchMode=yes" "-o" "StrictHostKeyChecking=no" "${host}" "/tmp/${SCRIPT_NAME}" "${commonArgs[@]}" "${nodeArgs[@]}" &
 
   done
@@ -503,6 +524,12 @@ function makeTargets() {
   while [ "${i}" -lt "${#TARGETS[@]}" ]
   do
     dir="${TARGETS[$i]}"
+
+    # Delete the directory if it already exists
+    if [ -d "${dir}" ]; then
+      rm -rf "${dir}"
+    fi
+
     mkdir -p "${dir}"
 
     i=$((i + 2))
@@ -531,7 +558,8 @@ function downloadData() {
     local includes=()
     for j in $(seq "${index}" "$((index + count - 1))" )
     do
-      includes+=("--include" "*.tbl.${j}.gz")
+      paddedNum="$(printf "%03d" "${j}")"
+      includes+=("--include" "*.tbl.${paddedNum}.gz")
     done
 
     # Do the download in the background
@@ -541,6 +569,7 @@ function downloadData() {
     } &
 
     i=$((i + 2))
+    index=$((index + count))
   done
 
   # Also download the nation and region tables onto the first target on each node
@@ -600,7 +629,7 @@ function processData() {
         else
           # Tables: lineitem, orders, supplier, customer, part, parsupp
           # Decompress file, append to a single file and then remove the compressed file.
-          find . -name "${tableName}.tbl.*.gz" -print0 | xargs -0 gunzip -c >> "${tableName}.tbl"
+          find . -name "${tableName}.tbl.*.gz" -print | sort | xargs gunzip -c >> "${tableName}.tbl"
           rm -f "${tableName}"*.gz
         fi
 

@@ -262,13 +262,13 @@ esac
       echo "Using GCC version ${newestGccVer} from SCL"
       (
         cd "${SOURCE_DIR}"
-        scl enable "devtoolset-${newestGccVer}" "make clean && make -j $(nproc)"
+        scl enable "devtoolset-${newestGccVer}" "make clean && make -s -j $(nproc)"
       )
 
     else
       (
         cd "${SOURCE_DIR}"
-        make clean && make -j "$(nproc)"
+        make clean && make -s  -j "$(nproc)"
       )
     fi
   fi
@@ -289,7 +289,7 @@ esac
 
   ### Remove object files, bin dir and layout dir to reduce disk space requirements
   echo "Cleaning up"
-  if [ -n "${KEEP_OBJECTS}" ]; then
+  if [ -z "${KEEP_OBJECTS}" ]; then
     rm -rf "${OBJECT_DIR}" || true
     rm -rf "${LAYOUT_DIR:?}/"* &>/dev/null || true
     rm -rf "${BIN_DIR:?}/"* &>/dev/null || true
