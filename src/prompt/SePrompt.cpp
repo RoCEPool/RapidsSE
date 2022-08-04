@@ -180,7 +180,7 @@ void SePrompt::vPromptLoop(void)
   //Thread* pThreadTest = AM::THREAD::pThisThread();
 
   
-  ASSERT(0 == m_pInput->iDepth());
+  ASSERT(0 == m_pInput_deputy->iDepth());
   m_pInput_deputy->vUseStdin();
   m_pInput_deputy->vFormCppTokens();
   m_pInput_deputy->vUseBegin();

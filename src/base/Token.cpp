@@ -255,7 +255,7 @@ eTN Token::eCollectSenNumber(char** aazCrs, Stz* szString)
   i8 nExponentDigits = 0;
 
   // we have seen a minus or a digit
-  ASSERT(bStartSenInteger(cArg));
+  ASSERT(bStartSenInteger(**aazCrs));
 
   // by default we are collectin an integer
   eTN eToken = TN_INTEGER;
@@ -371,10 +371,10 @@ eTN Token::eCollectSenNumber(char** aazCrs, Stz* szString)
   if (StrLib::bIsNull(**aazCrs) || StrLib::bIsWhite(**aazCrs) || bStartSenString(**aazCrs) ) {
     
     // push back the unconsumed char
-    (*aazCrs)--;
+    //(*aazCrs)--;
     
     // terminate
-    *z = '\0';
+    //*z = '\0';
     return eToken;
   }
   
@@ -420,6 +420,9 @@ eTN Token::eCollectSenString(char** aazCrs, Stz* szString)
   // terminate the strlit
   *z = '\0';
   
+  if ( **aazCrs == cStartQuote )
+    (*aazCrs)++;
+
   return TN_STRING;
 }
 
@@ -454,9 +457,9 @@ eTN Token::eCollectSenTag(char** aazCrs, Stz* szString)
   }
   
   // push back the unconsumed char
-  (*aazCrs)--;
+  //(*aazCrs)--;
 
-  // terminate a namelit
+  // terminate a tag name
   *z = '\0';
 
   return TN_TAG;
@@ -469,7 +472,7 @@ eTN Token::eCollectSenToken(char** aazCrs, Stz* szString)
 {
   _static_
 
-  StrLib::vSkipSpaces(aazCrs);
+  StrLib::vSkipWhite(aazCrs);
   if (! **aazCrs)
     return TN_NONE;
   
