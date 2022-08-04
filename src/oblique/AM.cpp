@@ -2937,8 +2937,13 @@ void AM::TOKENISE::vTokeniseSen_2(TokenVec* pTknVec, Stz* szString)
   
   char* aCrs = szString->azChar();
   
-  while (StrLib::bExtractString(&aCrs,sString.azChar()))
-    {;}
+  for (;;) {
+    eTN eToken = Token::eCollectSenToken(&aCrs,sString);
+    if (TN_NONE == eToken)
+      break;
+    
+    pTknVec->vAppendToken(sString,eToken);
+  }
 }
 
 

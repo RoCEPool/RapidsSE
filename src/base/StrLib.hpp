@@ -190,7 +190,8 @@ namespace BASE
     static bool  bIsTilde(const char c);
     static bool  bIsUnderscore(const char c);
     static bool  bIsWhite(const char c);
-  
+    static bool  bIsX(const char c);
+
     static char* acLast(const char* s);
     //static i8    nLength(const char* s);
     static i8    nLength(const char* s, const char cTerm, i8 iMax);

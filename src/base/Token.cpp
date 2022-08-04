@@ -79,7 +79,7 @@ void Token::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 bool Token::bStartCppInteger(char cArg)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  _static_
   
   if (StrLib::bIsDigit(cArg))
     return true;
@@ -92,8 +92,8 @@ bool Token::bStartCppInteger(char cArg)
 /*----------------------------------------------------------------------------*/
 bool Token::bStartCppName(char cArg)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
-  
+  _static_
+
   //if ('$' == cArg)
   //  return true;
   
@@ -108,8 +108,8 @@ bool Token::bStartCppName(char cArg)
 /*----------------------------------------------------------------------------*/
 bool Token::bStartCppOther(char cArg)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
-  
+  _static_
+
   if (! StrLib::bIsNameBodyChar(cArg))
     return true;
   
@@ -121,8 +121,8 @@ bool Token::bStartCppOther(char cArg)
 /*----------------------------------------------------------------------------*/
 bool Token::bStartCppString(char cArg)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
-  
+  _static_
+
   if (StrLib::bIsDoubleQuote(cArg))
     return true;
   
@@ -134,8 +134,8 @@ bool Token::bStartCppString(char cArg)
 /*----------------------------------------------------------------------------*/
 bool Token::bEndCppString(char cArg)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
-  
+  _static_
+
   if (StrLib::bIsDoubleQuote(cArg))
     return true;
   
@@ -147,8 +147,8 @@ bool Token::bEndCppString(char cArg)
 /*----------------------------------------------------------------------------*/
 bool Token::bStartSenInteger(char cArg)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
-  
+  _static_
+
   if (StrLib::bIsMinus(cArg) || StrLib::bIsDigit(cArg) || StrLib::bIsDot(cArg))
     return true;
   
@@ -160,8 +160,8 @@ bool Token::bStartSenInteger(char cArg)
 /*----------------------------------------------------------------------------*/
 bool Token::bStartSenName(char cArg)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
-  
+  _static_
+
   if (bStartSenInteger(cArg) || bStartSenString(cArg))
     return false;
   
@@ -173,8 +173,8 @@ bool Token::bStartSenName(char cArg)
 /*----------------------------------------------------------------------------*/
 bool Token::bStartSenString(char cArg)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
-  
+  _static_
+
   if (StrLib::bIsDoubleQuote(cArg))
     return true;
   
@@ -191,8 +191,8 @@ bool Token::bStartSenString(char cArg)
 /*----------------------------------------------------------------------------*/
 bool Token::bStartSenTag(char cArg)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
-  
+  _static_
+
   if (StrLib::bIsLessThan(cArg))
     return true;
   
@@ -204,8 +204,8 @@ bool Token::bStartSenTag(char cArg)
 /*----------------------------------------------------------------------------*/
 bool Token::bEndSenString(char cArg)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
-  
+  _static_
+
   if (StrLib::bIsDoubleQuote(cArg))
     return true;
 
@@ -213,6 +213,280 @@ bool Token::bEndSenString(char cArg)
     return true;
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect Sen name                                                           */
+/*----------------------------------------------------------------------------*/
+eTN Token::eCollectSenName(char** ps, Stz* szString)
+{
+  _static_
+
+  char *azChars = StrLib::zNullTerminator(szString->azChar());
+  char *z = azChars;
+  
+  // collect the characters of the name
+  while ( **ps && !StrLib::bIsWhite(**ps) && !bStartSenString(**ps) ) {
+    *z++ = **ps;
+    (*ps)++;
+  }
+  
+  // terminate name
+  *z = '\0';
+
+  if (StrLib::bIsBoolean(szString->azChar()))
+    return TN_BOOLEAN;
+  else
+    return TN_NAME;
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect Sen number (integer, decimal, float)                               */
+/*----------------------------------------------------------------------------*/
+eTN Token::eCollectSenNumber(char** ps, Stz* szString)
+{
+  _static_
+
+  char *azChars = StrLib::zNullTerminator(szString->azChar());
+  char *z = azChars;
+
+  i8 nIntegerDigits  = 0;
+  i8 nFractionDigits = 0;
+  i8 nExponentDigits = 0;
+
+  // we have seen a minus or a digit
+  ASSERT(bStartSenInteger(cArg));
+
+  // by default we are collectin an integer
+  eTN eToken = TN_INTEGER;
+
+  // - start parsing an integer
+  
+  // collect leading sign
+  if (StrLib::bIsSign(**ps)) {
+    *z++ = **ps;
+    (*ps)++;
+  }
+  
+  // collect initial digits of an integer
+  while (StrLib::bIsDigit(**ps)) {
+    *z++ = **ps;
+    nIntegerDigits++;
+    (*ps)++;
+  }
+  *z = '\0';
+
+  // 0x hex number?
+  if (1 == nIntegerDigits && StrLib::bIsX(**ps)) {
+
+    // add the 'x'
+    *z++ = **ps;
+    
+    // collect the hex digits
+    (*ps)++;
+    while (StrLib::bIsHex(**ps)) {
+      *z++ = **ps;
+      nIntegerDigits++;
+      (*ps)++;
+    }
+    *z = '\0';
+  }
+  
+
+  // - handle minus only
+  if (! nIntegerDigits && ! StrLib::bIsDot(**ps)) {
+    eToken = eCollectSenName(ps,szString);
+    return eToken;
+  }
+
+  // . handle dot only
+  if ( ! nIntegerDigits && StrLib::bIsDot(**ps)) {
+
+    // collect next char
+    (*ps)++;
+
+    if ( ! StrLib::bIsDigit(**ps) ) {
+      (*ps)--;
+      eToken = eCollectSenName(ps,szString);
+      return eToken;
+    }
+    (*ps)--;
+  }
+
+  // dot indicating fraction digits of decimal number follow
+  if (StrLib::bIsDot(**ps)) {
+
+    *z++ = **ps;
+    (*ps)++;
+
+    // collect digits after decimal
+    while (StrLib::bIsDigit(**ps)) {
+      *z++ = **ps;
+      nFractionDigits++;
+      (*ps)++;
+    }
+
+
+    // terminate the decimal literal
+    *z = '\0';
+    
+    eToken = TN_DECIMAL;
+  }
+  
+
+  // an e|E indicating a float number ?
+  if ('e' == **ps || 'E' == **ps) {
+    
+    *z++ = **ps;
+    (*ps)++;
+
+    // collect optional sign after E
+    if (StrLib::bIsSign(**ps)) {
+      *z++ = **ps;
+      (*ps)++;
+    }
+
+
+    // collect digits after E
+    while (StrLib::bIsDigit(**ps)) {
+      *z++ = **ps;
+      nExponentDigits++;
+      (*ps)++;
+    }
+
+    // terminate the float literal
+    *z = '\0';
+    
+    if (! nExponentDigits) {
+      eToken = eCollectSenName(ps,szString);
+      return eToken;
+    }
+    
+    eToken = TN_FLOAT;
+  }
+  
+  // - handle the case where we have a name like 1_ugh
+  
+  // just a number?
+  if (StrLib::bIsNull(**ps) || StrLib::bIsWhite(**ps) || bStartSenString(**ps) ) {
+    
+    // push back the unconsumed char
+    (*ps)--;
+    
+    // terminate
+    *z = '\0';
+    return eToken;
+  }
+  
+  // its actually a name; complete parsing name
+  eToken = eCollectSenName(ps,szString);
+  return eToken;
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect Sen string                                                         */
+/*----------------------------------------------------------------------------*/
+eTN Token::eCollectSenString(char** ps, Stz* szString)
+{
+  _static_
+
+  char *azChars = StrLib::zNullTerminator(szString->azChar());
+  char *z = azChars;
+    
+  // skip the leading '"' or '\''
+  char cStartQuote = **ps;
+  (*ps)++;
+
+  // collect the chars within the string
+  while ( **ps && **ps != cStartQuote ) {
+  
+    //vTrace(">>%c<<\n"_Stz,**ps);
+        
+    if (StrLib::bIsBackSlash(**ps)) {
+      (*ps)++;
+      // translate \n into new line
+      if ('n' == **ps)
+         *z++ = '\n';
+      else
+        *z++ = **ps;
+      (*ps)++;
+    }
+    else {
+      *z++ = **ps;
+      (*ps)++;
+    }
+  }
+ 
+  // terminate the strlit
+  *z = '\0';
+  
+  return TN_STRING;
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect Sen tag                                                            */
+/*----------------------------------------------------------------------------*/
+eTN Token::eCollectSenTag(char** ps, Stz* szString)
+{
+  _static_
+
+  char *azChars = StrLib::zNullTerminator(szString->azChar());
+  char *z = azChars;
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  if (! **ps || StrLib::bIsWhite(**ps) || bStartSenString(**ps) ) {
+    // push back the unconsumed char
+    (*ps)--;
+
+    // terminate name
+    *z = '\0';
+    
+    return TN_NAME;
+  }
+     
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // collect the characters of the name
+  
+  while ( **ps && !StrLib::bIsWhite(**ps) && !bStartSenString(**ps) ) {
+    *z++ = **ps;
+    (*ps)++;
+  }
+  
+  // push back the unconsumed char
+  (*ps)--;
+
+  // terminate a namelit
+  *z = '\0';
+
+  return TN_TAG;
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect next sen token                                                     */
+/*----------------------------------------------------------------------------*/
+eTN Token::eCollectSenToken(char** ps, Stz* szString)
+{
+  _static_
+
+  StrLib::vSkipSpaces(ps);
+  if (! **ps)
+    return TN_NONE;
+  
+  
+  if (bStartSenInteger(**ps)) {
+    //vCollectSenNumber();
+    return TN_NONE;
+  }
+  
+  if (bStartSenString(**ps)) {
+    //vCollectSenString();
+    return TN_STRING;
+  }
+
+  //vCollectSenName();
+
+  return TN_NONE;
 }
 
 
