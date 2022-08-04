@@ -2935,10 +2935,10 @@ void AM::TOKENISE::vTokeniseSen_2(TokenVec* pTknVec, Stz* szString)
 
   s4K sString;
   
-  char* aCrs = szString->azChar();
+  char* azCrs = szString->azChar();
   
   for (;;) {
-    eTN eToken = Token::eCollectSenToken(&aCrs,sString);
+    eTN eToken = Token::eCollectSenToken(&azCrs,sString);
     if (TN_NONE == eToken)
       break;
     
