@@ -2897,8 +2897,8 @@ void AM::TOKENISE::vTokeniseSen(TokenVec* pTknVec, Stz* szString)
 {
   _static_
   
-  //vTokeniseSen_2(pTknVec,szString);
-  //return;
+  vTokeniseSen_2(pTknVec,szString);
+  return;
   
   pTknVec->vSoftReset();
   pTknVec->vIntegrityCheck();
@@ -2940,7 +2940,7 @@ void AM::TOKENISE::vTokeniseSen_2(TokenVec* pTknVec, Stz* szString)
   
   char* azCrs = szString->azChar();
 
-  vTrace("%s\n"_Stz,szString);
+  //vTrace("%s\n"_Stz,szString);
 
   for (;;) {
     sToken.vReset();
@@ -2949,7 +2949,7 @@ void AM::TOKENISE::vTokeniseSen_2(TokenVec* pTknVec, Stz* szString)
     if (TN_NONE == eToken)
       break;
     
-    vTrace("  %12s %s\n"_Stz,aTN[eToken],sToken.szStz());
+    //vTrace("  %12s %s\n"_Stz,aTN[eToken],sToken.szStz());
     
     pTknVec->vAppendToken(sToken,eToken);
   }

@@ -2726,9 +2726,42 @@ bool StrLib::bIsColon(const char c)
 }
 
 /*----------------------------------------------------------------------------*/
+/* bIsCommentBlock: is arg a block comment?                                   */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsCommentBlock(char* aaCrs)
+{
+  _static_
+  
+  if (! bIsSlash(*aaCrs))
+    return false;
+
+  if (! bIsAsterisk(*(aaCrs + 1)))
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsCommentLine: is arg a line comment?                                     */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsCommentLine(char* aaCrs)
+{
+  _static_
+  
+  if (! bIsSlash(*aaCrs))
+    return false;
+
+  if (! bIsSlash(*(aaCrs + 1)))
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bIsDecimal: is string a decimal no ?                                       */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bIsDecimal(char* ps) {
+bool StrLib::bIsDecimal(char* ps)
+{
   _static_
 
   bool bDecimalPoint = false;
@@ -3083,6 +3116,19 @@ bool StrLib::bIsNameStartChar(const char c)
   _static_
   
   if (isalpha(c) || '_' == c || '$' == c)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsNewLine: is char a new line?                                            */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsNewLine(const char c)
+{
+  _static_
+  
+  if (c == '\n')
     return true;
   else
     return false;
@@ -4012,24 +4058,61 @@ i8 StrLib::nSize(const char* s)
 }
 
 /*----------------------------------------------------------------------------*/
-/* skip digit sequence in substr                                              */
+/* skip line comment                                                          */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bSkipNonDigit(char** ps)
+void StrLib::vSkipCommentLine(char** aaCrs)
 {
   _static_
   
-  char *s = *ps;
-  
-  for ( ; *s; s++)
-    if (isdigit(*s))
+  RASSERT(bIsSlash(**aaCrs));
+  (*aaCrs)++;
+  RASSERT(bIsSlash(**aaCrs));
+  (*aaCrs)++;
+
+  while (! bIsNull(**aaCrs)) {
+    if (bIsNewLine(**aaCrs)) {
+      (*aaCrs)++;
       break;
+    }
+    (*aaCrs)++;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* skip white space and comments                                              */
+/*----------------------------------------------------------------------------*/
+void StrLib::vSkipCommentsEtc(char **aazCrs)
+{
+  _static_
   
-  *ps = s;
+  for (;;) {
+    StrLib::vSkipWhite(aazCrs);
+    if (! **aazCrs)
+      return;
+
+    if (StrLib::bIsCommentLine(*aazCrs)) {
+      StrLib::vSkipCommentLine(aazCrs);
+      continue;
+    }
   
-  if (*s)
-    return true;
-  else
-    return false;
+    break;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* skip non digit sequence in substr                                          */
+/*----------------------------------------------------------------------------*/
+void StrLib::vSkipDigits(char** aaSrc)
+{
+  _static_
+  
+  char *aSrc = *aaSrc;
+  
+  for ( ; *aSrc; aSrc++)
+    if ( ! isdigit(*aSrc) )
+      break;
+
+  *aaSrc = aSrc;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4067,19 +4150,24 @@ bool StrLib::bSkipNonAlnum(char** ps)
 }
 
 /*----------------------------------------------------------------------------*/
-/* skip non digit sequence in substr                                          */
+/* skip digit sequence in substr                                              */
 /*----------------------------------------------------------------------------*/
-void StrLib::vSkipDigits(char** aaSrc)
+bool StrLib::bSkipNonDigit(char** ps)
 {
   _static_
   
-  char *aSrc = *aaSrc;
+  char *s = *ps;
   
-  for ( ; *aSrc; aSrc++)
-    if ( ! isdigit(*aSrc) )
+  for ( ; *s; s++)
+    if (isdigit(*s))
       break;
-
-  *aaSrc = aSrc;
+  
+  *ps = s;
+  
+  if (*s)
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/

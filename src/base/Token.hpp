@@ -43,12 +43,13 @@ namespace BASE
     static bool bStartSenTag(char cArg);
     static bool bEndSenString(char cArg);
 
-    static eTN eCollectSenName(char** ps, Stz* szString);
-    static eTN eCollectSenNumber(char** ps, Stz* szString);
-    static eTN eCollectSenString(char** ps, Stz* szString);
-    static eTN eCollectSenTag(char** ps, Stz* szString);
 
-    static eTN eCollectSenToken(char** ps, Stz* szString);
+    static eTN eCollectSenName(char** aazCrs, Stz* szString);
+    static eTN eCollectSenNumber(char** aazCrs, Stz* szString);
+    static eTN eCollectSenString(char** aazCrs, Stz* szString);
+    static eTN eCollectSenTag(char** aazCrs, Stz* szString);
+
+    static eTN eCollectSenToken(char** aazCrs, Stz* szString);
 
     void  vUpdateChars(Stz* szArg, TokenVec* pExoTknVec);
     void  vCopyToken_restricted(Token* pToken_src, TokenVec* pExoTknVec);

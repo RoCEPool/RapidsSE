@@ -155,6 +155,8 @@ namespace BASE
     static bool  bIsCloseBracket(const char c);
     static bool  bIsCloseParenthesis(const char c);
     static bool  bIsCircumflex(const char c);
+    static bool  bIsCommentBlock(char* ps);
+    static bool  bIsCommentLine(char* ps);
     static bool  bIsColon(const char c);
     static bool  bIsDecimal(char* ps);
     static bool  bIsDigit(const char c);
@@ -175,13 +177,14 @@ namespace BASE
     static bool  bIsMinus(const char c);
     static bool  bIsNameBodyChar(const char c);
     static bool  bIsNameStartChar(const char c);
+    static bool  bIsNewLine(const char c);
+    static bool  bIsNull(const char c);
     static bool  bIsOpenBrace(const char c);
     static bool  bIsOpenBracket(const char c);
     static bool  bIsOpenParenthesis(const char c);
     static bool  bIsPercent(const char c);
     static bool  bIsPipe(const char c);
     static bool  bIsQuestion(const char c);
-    static bool  bIsNull(const char c);
     static bool  bIsPlus(const char c);
     static bool  bIsSemicolon(const char c);
     static bool  bIsSign(const char c);
@@ -230,6 +233,9 @@ namespace BASE
 
     static bool  bSame(const char* s1, const char* s2);
     static i8    nSize(const char* s);
+    static void  vSkipCommentBlock(char** ps);
+    static void  vSkipCommentLine(char** ps);
+    static void  vSkipCommentsEtc(char** aazCrs);
     static void  vSkipDigits(char** ps);
     static bool  bSkipEOL(char** ps);
     static bool  bSkipLeading(char** ps, char cEnclosedBy_Leading);

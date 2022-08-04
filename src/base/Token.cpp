@@ -281,9 +281,9 @@ eTN Token::eCollectSenNumber(char** aazCrs, Stz* szString)
 
     // add the 'x'
     *z++ = **aazCrs;
-    
-    // collect the hex digits
     (*aazCrs)++;
+
+    // collect the hex digits
     while (StrLib::bIsHex(**aazCrs)) {
       *z++ = **aazCrs;
       nIntegerDigits++;
@@ -472,7 +472,7 @@ eTN Token::eCollectSenToken(char** aazCrs, Stz* szString)
 {
   _static_
 
-  StrLib::vSkipWhite(aazCrs);
+  StrLib::vSkipCommentsEtc(aazCrs);
   if (! **aazCrs)
     return TN_NONE;
   
