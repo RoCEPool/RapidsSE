@@ -158,13 +158,8 @@ void NameValidator::vCheckDisabledFunctionality(PlanNode* pRootNode)
   //  - Group by part of aggregates
   //
   // We also want to disable these expression operators:
-  //  - Between
   //  - Exists
   //  - In
-  //  - Like
-  //  - Case
-  //  - Extract
-  //  - Substring
 
   // Find the /plan node
   QueryNode* pPlanNode = ShadowRoot::pPlanRoot(pRootNode);
@@ -209,13 +204,8 @@ void NameValidator::vCheckDisabledFunctionality(PlanNode* pRootNode)
 
         Stz* pszDisabledFeature = nullptr;
 
-        if      (   BetweenExpr::bIsOfType(pNode))  { pszDisabledFeature = ": BETWEEN expression"_Stz;   }
-        else if (   ExistsExpr::bIsOfType(pNode))   { pszDisabledFeature = ": EXISTS expression"_Stz;    }
+        if      (   ExistsExpr::bIsOfType(pNode))   { pszDisabledFeature = ": EXISTS expression"_Stz;    }
         else if (       InExpr::bIsOfType(pNode))   { pszDisabledFeature = ": IN expression"_Stz;        }
-        else if (     LikeExpr::bIsOfType(pNode))   { pszDisabledFeature = ": LIKE expression"_Stz;      }
-        else if (     CaseExpr::bIsOfType(pNode))   { pszDisabledFeature = ": CASE expression"_Stz;      }
-        else if (  ExtractExpr::bIsOfType(pNode))   { pszDisabledFeature = ": EXTRACT expression"_Stz;   }
-        else if (SubstringExpr::bIsOfType(pNode))   { pszDisabledFeature = ": SUBSTRING expression"_Stz; }
 
         if (pszDisabledFeature) {
           // Not currently allowed
