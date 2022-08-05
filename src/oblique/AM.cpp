@@ -2024,8 +2024,8 @@ i8 AM::SCHEDULER::nIdleThreads(void)
 void AM::SE::vWhereAmI(void)
 {
   _static_
-  
-  printf("AM::SE::vWhereAmI()\n");
+
+  vTrace("AM::SE::vWhereAmI()\n"_Stz);
   
   HeadsUp oHeadsUp((Stz*)__func__);
   
@@ -4167,13 +4167,13 @@ InternalTables* AM::pInternalTables(void) {
 
 void AM::vPrintGlobals(void)
 {
-  printf("gxCmdLineArgs     @%p\n",&gxCmdLineArgs);
-  printf("\n");
+  vTrace("gxCmdLineArgs     @%p\n"_Stz,&gxCmdLineArgs);
+  vTrace("\n"_Stz);
 
-  printf("gpAttachMap     @%p : %p\n",&gpAttachMap,  gpAttachMap);
-  printf("gpBufferPool    @%p : %p\n",&gpBufferPool, gpBufferPool);
-  printf("gaSeShmRegion   @%p : %p\n",&gaSeShmRegion,gaSeShmRegion);
-  printf("gpTraceFile     @%p : %p\n",&gpTraceFile,  gpTraceFile);
+  vTrace("gpAttachMap     @%p : %p\n"_Stz,&gpAttachMap,  gpAttachMap);
+  vTrace("gpBufferPool    @%p : %p\n"_Stz,&gpBufferPool, gpBufferPool);
+  vTrace("gaSeShmRegion   @%p : %p\n"_Stz,&gaSeShmRegion,gaSeShmRegion);
+  vTrace("gpTraceFile     @%p : %p\n"_Stz,&gpTraceFile,  gpTraceFile);
 }
 
 Index* AM::pReadApiIndex(void) { return gpReadApiIndex; }

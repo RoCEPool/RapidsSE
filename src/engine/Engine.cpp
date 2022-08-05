@@ -102,7 +102,7 @@ void Engine::vMainEntry(void)
   vHeartInit();
 
   if (gxCmdLineArgs.m_xSysArgs.m_iDelay > 0) {
-    printf("Delayed %lld seconds\n", gxCmdLineArgs.m_xSysArgs.m_iDelay);
+    vTrace("Delayed %lld seconds\n"_Stz, gxCmdLineArgs.m_xSysArgs.m_iDelay);
     sleep((unsigned int)gxCmdLineArgs.m_xSysArgs.m_iDelay);
   }
 
@@ -609,7 +609,7 @@ void Engine::vCreateTmpDir(void)
     bool bMade = Dir::bMake("../tmp"_Stz);
     
     if (! bMade && !Dir::bExists("../tmp"_Stz)) {
-      fprintf(stderr,"Unable to make ../tmp directory\n");
+      vTrace("Unable to make ../tmp directory\n"_Stz);
       Process::vExitFailure();
     }
   }
@@ -657,11 +657,11 @@ void Engine::vErrorHandler(Error* pError)
   
   char* acEnd;
   
-  fprintf(stderr, "%s: line %lld\n",
+  vTrace("%s: line %lld\n"_Stz,
           pError->aErrorMsg()->azChar(),
           pError->iLineNo());
-  
-  fprintf(stderr, "%s: line %lld in %s\n",
+
+  vTrace("%s: line %lld in %s\n"_Stz,
          pError->aErrorMsg()->azChar(),
          pError->iLineNo(),
          (char*)pError->aFileName());
