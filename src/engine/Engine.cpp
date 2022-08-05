@@ -576,19 +576,15 @@ void Engine::vCreateFileNames(void)
 
   gpAttachMap->vTraceLockGrab();
 
-#ifdef WITH_DEBUG_VERSION
-  gpAttachMap->m_sTraceFile.vSprint("../se_%s_Debug.txt"_Stz,
+  if (gxCmdLineArgs.m_xSysArgs.m_bDeveloper)
+    gpAttachMap->m_sTraceFile.vSprint("../se_%s.log"_Stz,
                                     gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz());
-  gpAttachMap->m_sLogRegion.vSprint("SE_Log_%s_Debug"_Stz,"SEgrid"_Stz);
-  gpAttachMap->m_sLogCsvFile.vSprint("../tmp/SE_Log_%s_Debug.csv"_Stz,"SEgrid"_Stz);
-  gpAttachMap->m_sLogTxtFile.vSprint("../tmp/SE_Log_%s_Debug.txt"_Stz,"SEgrid"_Stz);
-#else
-  gpAttachMap->m_sTraceFile.vSprint("../se_%s.txt"_Stz,
-                                    gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz());
+  else
+    gpAttachMap->m_sTraceFile.vSprint("../se.log"_Stz);
+
   gpAttachMap->m_sLogRegion.vSprint("SE_Log_%s"_Stz, "SEgrid"_Stz);
   gpAttachMap->m_sLogCsvFile.vSprint("../tmp/SE_Log_%s.csv"_Stz, "SEgrid"_Stz);
   gpAttachMap->m_sLogTxtFile.vSprint("../tmp/SE_Log_%s.txt"_Stz, "SEgrid"_Stz);
-#endif
 
   gpAttachMap->vTraceLockDrop();
 
@@ -1416,21 +1412,18 @@ void Engine::vRollTrace(void)
   for(i8 i = gpAttachMap->m_iTraceFileCount - 1; i >= 0; i--)
   {
     s256 sOldTrace, sNewTrace;
-#ifdef WITH_DEBUG_VERSION
-    sOldTrace.vSprint("../se_%s_Debug%d.txt"_Stz,
-                   gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz(),
-                   i);
-    sNewTrace.vSprint("../se_%s_Debug%d.txt"_Stz,
-                   gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz(),
-                   i+1);
-#else
-    sOldTrace.vSprint("../se_%s_%d.txt"_Stz,
-                      gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz(),
-                      i);
-    sNewTrace.vSprint("../se_%s_%d.txt"_Stz,
-                      gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz(),
-                      i+1);
-#endif
+    if (gxCmdLineArgs.m_xSysArgs.m_bDeveloper) {
+      sOldTrace.vSprint("../se_%s_%d.log"_Stz,
+                        gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz(),
+                        i);
+      sNewTrace.vSprint("../se_%s_%d.log"_Stz,
+                        gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz(),
+                        i+1);
+    }
+    else {
+      sOldTrace.vSprint("../se_%d.log"_Stz, i);
+      sNewTrace.vSprint("../se_%d.log"_Stz, i+1);
+    }
 
     bool bRenamed = File::bRename(sOldTrace.szStz(), sNewTrace.szStz());
     RASSERT(bRenamed);
@@ -1439,15 +1432,15 @@ void Engine::vRollTrace(void)
   gpTraceFile->vClose();
 
   s256 sNewTrace;
-#ifdef WITH_DEBUG_VERSION
-  sNewTrace.vSprint("../se_%s_Debug%d.txt"_Stz,
-                 gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz(),
-                 0);
-#else
-  sNewTrace.vSprint("../se_%s_%d.txt"_Stz,
-                    gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz(),
-                    0);
-#endif
+
+  if(gxCmdLineArgs.m_xSysArgs.m_bDeveloper) {
+    sNewTrace.vSprint("../se_%s_%d.log"_Stz,
+                      gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz(),
+                      0);
+  }
+  else {
+    sNewTrace.vSprint("../se_%d.log"_Stz, 0);
+  }
 
   File::bRename(gpAttachMap->szTraceFilePath(), sNewTrace.szStz());
 
@@ -1461,15 +1454,16 @@ void Engine::vRollTrace(void)
   if(gpAttachMap->m_iTraceFileCount > C_MAX_LOG_FILES)
   {
     s256 sOldTrace;
-#ifdef WITH_DEBUG_VERSION
-    sOldTrace.vSprint("../se_%s_Debug%d.txt"_Stz,
-                   gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz(),
-                   gpAttachMap->m_iTraceFileCount-1);
-#else
-    sOldTrace.vSprint("../se_%s_%d.txt"_Stz,
-                      gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz(),
-                      gpAttachMap->m_iTraceFileCount-1);
-#endif
+
+    if(gxCmdLineArgs.m_xSysArgs.m_bDeveloper) {
+      sOldTrace.vSprint("../se_%s_%d.log"_Stz,
+                        gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz(),
+                        gpAttachMap->m_iTraceFileCount-1);
+    }
+    else {
+      sOldTrace.vSprint("../se_%d.log"_Stz,
+                        gpAttachMap->m_iTraceFileCount-1);
+    }
 
     if (File::bExists(const_cast<Stz*>(sOldTrace.szStz()), false)) {
 

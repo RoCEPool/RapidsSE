@@ -11,8 +11,7 @@
 /bin/
 .idea/
 /se.ready
-/se_NODE*
-/se_prompt.txt
+/se*.log
 
 # For the Bamboo box
 /TPCH/
