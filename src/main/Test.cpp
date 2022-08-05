@@ -2,6 +2,8 @@
 /* test.cpp - general testing                                                 */
 /*============================================================================*/
   
+// dummy commit
+
 #include "BASE.h"
 
 #include "Test.hpp"
