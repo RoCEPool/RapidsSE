@@ -151,7 +151,7 @@ Object* Socket::pRecvObject(void)
 
   if (eClass == CN_REJECTJOB) {
 
-    // copy the object header into the LowBuffer
+    // copy the object header into the m_pRejectJob
     MemLib::vCopy(m_pRejectJob,m_pObject,sizeof(Object),eClass);
 
     // recv rest of the buffer into m_pRejectJob

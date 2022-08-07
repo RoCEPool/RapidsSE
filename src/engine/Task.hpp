@@ -73,9 +73,9 @@ namespace ENGINE
 
     Exception    m_xException;
 
-    Word*        m_pRecoveryWord; // sen word called to recover from failure
-    Word*        m_pLowMemWord;   // sen word called to recover from low memory
-    Word*        m_pJobLowMemWord;
+    Word*        m_pRecoveryWord;   // sen word called to recover from failure
+    Word*        m_pOpLowMemWord;   // sen word called to recover from low memory in OP
+    Word*        m_pJobLowMemWord;  // sen word called to recover from low memory in JOB
 
     DicStack     m_oDicStack;     // dictionary stack
     DicStack     m_oSaveDicStack; // save dictionary stack

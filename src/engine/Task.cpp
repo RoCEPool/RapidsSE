@@ -103,7 +103,7 @@ Task::Task(Stz* szTaskNm, Op* pOp)
   m_pThread      = nullptr;
 
   m_pRecoveryWord  = nullptr;
-  m_pLowMemWord = nullptr;
+  m_pOpLowMemWord  = nullptr;
   m_pJobLowMemWord = nullptr;
 
   m_pSearchWord = nullptr;
@@ -187,7 +187,7 @@ void Task::vTask(void)
   m_nOperandYield = AM::SYSARGS::nOperandYield(); //10;
 
   m_pRecoveryWord  = nullptr;
-  m_pLowMemWord = nullptr;
+  m_pOpLowMemWord  = nullptr;
   m_pJobLowMemWord = nullptr;
 
   // m_oDicStack
@@ -1296,7 +1296,7 @@ void Task::vSetSenLowMemContext(void)
 
 
   if (MY::pOp())
-    m_aInxPtr = m_pLowMemWord->aFirstCell();
+    m_aInxPtr = m_pOpLowMemWord->aFirstCell();
   else
     m_aInxPtr = m_pJobLowMemWord->aFirstCell();
 
@@ -1496,9 +1496,9 @@ void Task::vSetInxPtr(Word* pEntryWord)
     m_pRecoveryWord = pRecoveryWord;
   }
 
-  Word* pLowMemWord = pDicRoot->pFindWord("lowMem_recoveryWord"_Stz);
-  if (pLowMemWord) {
-    m_pLowMemWord = pLowMemWord;
+  Word* pOpLowMemWord = pDicRoot->pFindWord("OpLowMem_recoveryWord"_Stz);
+  if (pOpLowMemWord) {
+    m_pOpLowMemWord = pOpLowMemWord;
   }
 
 

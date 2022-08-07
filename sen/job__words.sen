@@ -198,9 +198,9 @@
 /*----------------------------------------------------------------------------*/
 /* low memory exception recovery                                              */
 /*----------------------------------------------------------------------------*/
-: lowMem_recoveryWord
+: OpLowMem_recoveryWord
 
-  "lowMem_recoveryWord" .
+  "OpLowMem_recoveryWord" .
 
   //[task].exception .
 
