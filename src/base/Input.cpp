@@ -37,6 +37,8 @@ Input::Input(Input* pNext)
   m_pCurrTkn = nullptr;
   m_pInpTagSet  = new TagSet;
 
+  m_pCharser_spares = new Charser(nullptr);
+  
   // debugging aids
   d_iDebugMode               = false;
   
@@ -48,6 +50,8 @@ Input::Input(Input* pNext)
   d_nUseBegin                = 0;
 
   _checkInitialised_(CN_INPUT);
+  
+  
     
   _postcondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
 }
@@ -62,6 +66,9 @@ Input::~Input(void) noexcept(false)
   while (m_pCharser)
     RASSERT(bPopCharser());
   
+  while (m_pCharser_spares)
+    m_pCharser_spares = m_pCharser_spares->pDeleteCharser();
+
   RASSERT(! m_pNext);
 
   delete m_pInpTagSet;
@@ -86,6 +93,16 @@ void Input::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* allocate a charser from spares                                             */
+/*----------------------------------------------------------------------------*/
+Charser* Input::pAllocCharser(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  return new Charser(m_pCharser);
+}
 
 /*----------------------------------------------------------------------------*/
 /* get chars of current token                                                 */
@@ -234,6 +251,16 @@ void Input::vFormSenTokens(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* allocate a charser from spares                                             */
+/*----------------------------------------------------------------------------*/
+void Input::vFreeCharser(Charser* pCharser)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  delete pCharser;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get input tag set                                                          */
 /*----------------------------------------------------------------------------*/
 TagSet* Input::pInpTagSet(void)
@@ -334,9 +361,7 @@ void Input::vPushCharser(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  Charser* pNewCharser = new Charser(m_pCharser);
-  
-  m_pCharser = pNewCharser;
+  m_pCharser = pAllocCharser();
   
   m_pCharser->vDebugMode(d_iDebugMode);
 }
