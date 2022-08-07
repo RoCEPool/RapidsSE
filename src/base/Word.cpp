@@ -87,19 +87,23 @@ Word::Word(Stz* szWordNm)
   m_iTrace     = 0;
   m_pWrdTagSet = nullptr;
 
-  m_pCodeBlock    = new CodeBlock(this);
-  
+  m_pCodeBlock  = nullptr; // new CodeBlock(this);
+  m_aInxPtr     = nullptr; // aFirstCell();
+
   m_fpIntrinsic = gfpDoColon;
-  m_aInxPtr     = aFirstCell();
 
   _setFooter_();
   
   _checkInitialised_(CN_WORD);
   
-  if (m_pDic)
+  if (m_pDic) {
+    m_pCodeBlock = new CodeBlock(this);
+    m_aInxPtr     = aFirstCell();
     m_pDic->vAddWord(this);
-  else
+  }
+  else {
     vDebugPoint();
+  }
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 }

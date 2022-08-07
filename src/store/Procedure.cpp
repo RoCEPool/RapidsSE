@@ -117,7 +117,7 @@ bool Procedure::bTranslateToPipeline(String* pToPipelineStmt,
   
   Stz* szPrdText = pWrdTagSet->szValue("procText"_Stz);
   
-  TokenVec* pPrdTxtVec = TokenVec::pTokeniseSen(szPrdText);
+  TokenVec* pPrdTxtVec = AM::TOKENISE::pTokeniseSen(szPrdText);
   
   //pProcVec->vDumpTokens();
   

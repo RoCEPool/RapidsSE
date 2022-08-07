@@ -1,8 +1,18 @@
-# This folder contains unique job configurations used in the SE
-# performance tests.
+This folder contains unique job configurations used in the SE performance tests.
 
-# Each job configuration is known by it's unique file name. 
-# It is very important that this filename not change once it has
-# been used, as this filename gets saved with the performance results
-# and will be used in queries to filter and return particular 
-# performance data.
+Each job configuration is known by it's unique file name.  It is very important that
+this filename not change once it has been used, as this filename gets saved with the
+performance results and will be used in queries to filter and return particular
+performance data.
+
+The naming convention being used is trying to clearly identify the purpose of the job,
+followed by any clarifying features or remarks. e.g. a job may start with:
+  "daily-"      to indicate that this job is repeatedly run on a periodic basis.
+  "debug-"      to indicate that this job is purely for debugging purposes only.
+  "experiment-" to indicate that something is being tried here and the results
+                are likely a one-off.
+
+Please think carefully about how jobs are named as they are saved in the database with
+their configuration to guard against the case where a regular repeating job is unknowingly
+changed in such a way that the results are affected. We need to ensure that configurations
+are consistent and hence they should be treated as being immutable.

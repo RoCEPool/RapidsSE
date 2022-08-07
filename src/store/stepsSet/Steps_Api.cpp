@@ -64,8 +64,8 @@ void Step::vApiForkChild(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // populate the tag set
-  TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sCmd);
-  TokenVec* pTagTknVec = TokenVec::pTokeniseSen(sCmdTagStr);
+  TokenVec* pCmdTknVec = AM::TOKENISE::pTokeniseSen(sCmd);
+  TokenVec* pTagTknVec = AM::TOKENISE::pTokeniseSen(sCmdTagStr);
   TagSet*   pCmdTagSet = new TagSet;
   CmdHelper::vPopulateTagSet(pCmdTagSet,pTagTknVec);
 
@@ -142,8 +142,8 @@ void Step::vApiForkDemon(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // populate the tag set
-  TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sCmd);
-  TokenVec* pTagTknVec = TokenVec::pTokeniseSen(sCmdTagStr);
+  TokenVec* pCmdTknVec = AM::TOKENISE::pTokeniseSen(sCmd);
+  TokenVec* pTagTknVec = AM::TOKENISE::pTokeniseSen(sCmdTagStr);
   TagSet*   pCmdTagSet = new TagSet;
   CmdHelper::vPopulateTagSet(pCmdTagSet,pTagTknVec);
 
@@ -222,8 +222,8 @@ void Step::vApiForkChild2PC(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sCmd);
-  TokenVec* pTagTknVec = TokenVec::pTokeniseSen(sCmdTagStr);
+  TokenVec* pCmdTknVec = AM::TOKENISE::pTokeniseSen(sCmd);
+  TokenVec* pTagTknVec = AM::TOKENISE::pTokeniseSen(sCmdTagStr);
   TagSet*   pCmdTagSet = new TagSet;
   CmdHelper::vPopulateTagSet(pCmdTagSet,pTagTknVec);
 

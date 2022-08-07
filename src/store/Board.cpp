@@ -253,7 +253,7 @@ void Board::vPrintBoard(Stz* szCue)
     pTknVec = nullptr;
   }
   
-  pTknVec = TokenVec::pTokeniseSen(sInput);
+  pTknVec = AM::TOKENISE::pTokeniseSen(sInput);
   
   i8 nTokens = pTknVec->nTokens();
   

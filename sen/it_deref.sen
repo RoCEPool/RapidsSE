@@ -18,10 +18,10 @@
   define table se__derefMetrics
   (
   
-    objectNo     INTEGER NOT NULL , //
-    classNm      VARCHAR NOT NULL , //
-    tsc          INTEGER NOT NULL , //
-    action       VARCHAR NOT NULL   //
+    objectNo     INTEGER NOT NULL ,
+    classNm      VARCHAR NOT NULL ,
+    tsc          INTEGER NOT NULL ,
+    action       VARCHAR NOT NULL  
     
   ) < internal > = 1 ;
   "

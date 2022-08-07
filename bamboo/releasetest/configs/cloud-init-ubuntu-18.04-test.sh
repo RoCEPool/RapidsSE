@@ -223,9 +223,9 @@ chmod +x "${RC_LOCAL}"
 bash "${RC_LOCAL}"
 
 # -----------------------------------------
-# Give more memory to /dev/shm. Use 95% of system memory
+# Give more memory to /dev/shm. Use 95% of system memory, or mem-10GB, whichever is larger.
+SHM_SIZE=$(cat /proc/meminfo | grep "MemTotal:" | awk '{m1 = $2/1048576*0.95; m2 = $2/1048576 - 10; if (m1 > m2) {m3 = m1} else {m3 = m2}; printf "%d\n", m3}')
 SHM_DEVICE="/dev/shm"
-SHM_SIZE=$(cat /proc/meminfo | grep "MemTotal:" | awk '{printf "%d\n", $2/1048576*0.95}')
 if [ "${SHM_SIZE}" -eq 0 ]; then
   SHM_SIZE=1
 fi

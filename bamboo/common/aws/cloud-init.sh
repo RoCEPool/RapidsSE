@@ -67,6 +67,8 @@ cat << EOF >> "${SSH_DIR}/authorized_keys"
 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDHlTysxd228irQB6IiQj7LHFCtxLRD2jsYTcNkh9DcIqZ3gKjGIk6OmXE1LMhCBh5Y1e5DHTGeBPIgb2Clcj2N+lZI+H/T42Ysu0hUrllEjTsM35OPZu92azL1WnmZn8VWzGta8+mtDg/2PI8pUn9Z3ZxEoyd6TYm5k/CrZquH93mUT9jKVsNUsMNrwdYdgcJ9W6+K/hAqv87MPr28F7vb8/mQbAaB5d+PeOxrE4wEFl9fw7uh1m28NjXbyOLEbw6F/D3Ev5+3PZ50qKzQ9QFP2xFGHzT9Zk3jI76t1PBv/ZHrQ++XmWmy+CFfIaUVy2Dcf1JwnEH311nw5X83cGOv ${OS_USER}@localhost
 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDbUdCIFFt3Bq4AuJ1cBq2oB70FRNwi3pGojW7viFMu9n4/3xVczg8wLk4YghsXvQaZCNZDXHZuYqBqb0Vc3Jd5A7Cjsh3ZCmEkvxnlDA57B9ttNNHrsUH51K5tvk41z4KnNvB+idRlr/lxFG57yIMzYmPoJVz7v0ypWQ3jsasXrgCJmbXUQ55hCPx5YMeCFnwIGhdxxlwqoaKK3sPaFyvZMxJlFMzjnj/AUHm4gaTZHTX+AcnV/hPJ2zygZpTxN8yUVDmK7H8xltlSqon97Ab5dkSSORBkJG2S9B9i2j6LUWvnB6rrA23UWoirgTHlzXmzdT+nyP+AgtnoGJ2PacI+D1GXgSZKWLdxTH85YhUC0nKYeOhHlj63ymD2WLHhWigE6G34/C6Byd0pV6STFrnfMT30pIiebL6QzjrpCXQCDON7Y3QHJdDD7f/oVe5mU+Qq0tPxqtNCJzim3XAhpY74AW7NGyu2Fr0/bMGCn6GciZYtIT0IKuaObRPYzGhFmNE= alka@localhost
 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCihni2+QEiGqJqBRyRa/C6t3esZoAXEMoFal5l3ocIiFxxMs2V02ACju6IjPBz8r+bJ/VNDKey3/3O1NoCXaMr9R0jEUrdfhCKBsIky7p4PLYMDYze+FMxz30Op1hJZ8O5NLhJOufR8jLcLnwsw3rm4jnX/lUM9fU4Pjd989pJ/neu+qE6Vb8inSY9kq5VB7Ksq1Vl/wtkqSpjOOCeqKnbtwxQ5dOHP6nCw6NLkgrSTz7K08DEtSlwJ29nP4FAuPYZD8YQ0p2tq0uLsP/EVCBoO4YGi+bktDhfkqWF9uzrErwpWXgvMzN0emKzYpw+rNZ37FNv9Nc17K9Wy+ssvEscFU129VVk6bF4MPd8lq6y01gOv5NWt3PaylywDsfAYE2RM5W2bAUzld3nt2zn2+H7AQbnZkrw+5QkgtelwEsWHGTM+ciWg/bndno7kS6Ej28k2E/8aTRvbeb5w0W1SIV0e8BY4S8ppDyNvskTWYeGzQoYvqL9GIQz2vE9YeVmPK0= ray@localhost
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDEUoYT5R3u9Yzl1UuOH1o4La+Mo3cjbJqrAbWsBvzjFAASRl4FdSrn1jrnpo2kNZd31Ca7N1D8iSiaarBwXZoYWyBo+q6vr4LD8JrJZ0UwHPRI++wqQEkc9c2LSDWKfqfNfbo4MK4BxjS1cYvIEiOwbZKD9REAN83OQFQEfYrElA7iwA4Fr6iEkr5kOPbH8MeXHh1U5NMTVQZ2/mYbcmxA89NmDOcbHm5LnYNzxuUr9IujIQAWi/sKQVqj2E6G7DM7fDUrNmifbCRW8+vHcD+WXQS7c7e/PV3q2ZOWZAjD85eCCV/vTi5Fk7r0Em6LvDpMyd084DafKnPiyxxpyL2d/8DAQq9Rq29bM0aeml4K41WSXC6mCnlY0SI7gYSutmoL23sm9qNSeu994udFRowUf9DSnRoBWUmMJ/UKc6qsaCJl8h8DgIkF2YGs/pmWzgW4w5WsCfyUfiox8d+cgt96TH0Tn4EPsmqaPr72liw2ziZJpv8eUZAJD5SuvANFvxc= arjun@localhost
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCx0tjHnu1xFYPEveMebvgzxLrjZ9Z2rbctSvzxkW08rUbt3Mjx9Iz5CY3IDX/yI+rv8AgGTu7BpdSSgilfYiBKJm3PEysmWB4I/CV4BUEiTU1Oxm1DnfulTYD2rrJZFG1rUv9W48w7T8tvcGGdHqyUEyqB3xUezqXVc8xtFsZaoFzQlQ7soahri71Wnx1jkeAO9ILew09V3iq+qGGv+YKEEZBVZDq7tUqwvt4qQzY4yp8pHSmsBxc/1CbGW++eXebsWADL2G7NM4MeAKXsPWEWZ6cBeDcBFqp6xMqXEV6eli+eQoH1kj6+dmbPGGlFIhamN4CunlhjGeY212b4BRtenMwydFsOIU+9sLEl6WGYWI8oXs2CviQfzNs1+R71OIZ6nGVlfkWi8bj0luJLP9HCUYf3ysstAzazgTzgQf9lc+CywYOn07DhEAad/0C5tFnAWwtQ7Ul+KO8V02Aqh5etSCQl2mqdEKfct6cySXdjrfq8948Jz3cQsSYaGgxzlS8= myvan@localhost
 EOF
 
 cat << EOF > ${SSH_DIR}/id_rsa
@@ -289,8 +291,8 @@ chmod +x /etc/rc.d/rc.local
 bash /etc/rc.d/rc.local
 
 # ----------------------------------------------------------------------------------------
-# Give more memory to /dev/shm. Use 95% of system memory
-SHM_SIZE=$(cat /proc/meminfo | grep "MemTotal:" | awk '{printf "%d\n", $2/1048576*0.95}')
+# Give more memory to /dev/shm. Use 95% of system memory, or mem-10GB, whichever is larger.
+SHM_SIZE=$(cat /proc/meminfo | grep "MemTotal:" | awk '{m1 = $2/1048576*0.95; m2 = $2/1048576 - 10; if (m1 > m2) {m3 = m1} else {m3 = m2}; printf "%d\n", m3}')
 if [ "${SHM_SIZE}" -eq 0 ]; then
   SHM_SIZE=1
 fi

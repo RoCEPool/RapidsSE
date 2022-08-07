@@ -7,6 +7,7 @@ import logging
 import threading
 import pathlib
 import tempfile
+import subprocess
 
 import pyutils.ec2 as ec2
 import pyutils.errors as errors
@@ -112,6 +113,9 @@ class JobRunner:
         # Is the test ending early due to an abnormality (timeout, crash, etc)?
         self.abnormal_exit = False
 
+        # was SE installed successfully
+        self.se_installed = False
+
     def run_job(self):
         """Runs the job and all of its tests"""
 
@@ -162,9 +166,6 @@ class JobRunner:
                         self.current_test_runner.result.set_test_ended(False, False, stderr=errmsg)
                         self.test_results.append(self.current_test_runner.result)
 
-            # (3) Gather results, logs and artifacts
-            self.__gather_artifacts()
-
         except errors.Ec2InstanceTimeoutError as e:
             LOG.error(e)
             last_error = e
@@ -178,6 +179,9 @@ class JobRunner:
             raise
 
         finally:
+            # (3) Gather results, logs and artifacts
+            self.__gather_artifacts()
+
             # (4) Cleanup
             self.__cleanup_job()
 
@@ -200,6 +204,9 @@ class JobRunner:
     def __setup_job(self):
         """Do all the pre-requisites before we can start to run the tests"""
 
+        # Clear out any contents of the result and artifacts directory
+        self.__delete_results_dir_contents()
+
         (job_result_id, job_id, test_tuples) = \
             septest.db.jobstart.record_job_start(self.all_configs,
                                                  self.bamboo_plan_key,
@@ -212,9 +219,6 @@ class JobRunner:
         self.job_result_id = job_result_id
         self.job_id = job_id
         self.test_tuples = test_tuples
-
-        # Clear out any contents of the result and artifacts directory
-        self.__delete_results_dir_contents()
 
         # Compile RapidsSE and build the installer
         if self.build_se:
@@ -245,6 +249,7 @@ class JobRunner:
 
         # Install the cluster using the cluster config
         clusterops.install_rapidsse(installer_path, pathlib.Path(self.custom_cluster_config.name))
+        self.se_installed = True
 
         # Start the cluster on the remote nodes
         clusterops.start_rapidsse(self.ip_addresses[0], self.all_configs.cluster_config)
@@ -364,6 +369,26 @@ class JobRunner:
         os.makedirs(str(artifact_dir), exist_ok=True)
         return str(artifact_dir)
 
+    def __compress_test_artifact_dir(self, test_id: int, test_path: str):
+        """
+        Compress the directory (and all content) that stores test artifacts and logs.
+        """
+        artifact_name = C_TEST_ARTIFACT_FMT.format(test_id, TestRunner.get_test_name_from_path(test_path))
+        artifact_dir = pathlib.Path(self.result_path) / artifact_name
+
+        LOG.debug(f"Compressing artifact dir: {str(artifact_dir)}")
+        command = f"cd {self.result_path} && tar cvzf {artifact_name}.tar.gz {artifact_name}"
+
+        result = subprocess.run(command,
+                                capture_output=True,
+                                check=False,
+                                text=True,
+                                shell=True)
+
+        if result.returncode != 0:
+            msg = f"Error while executing the local command: {command}"
+            raise errors.SubProcessError(msg, result.stdout, result.stderr)
+
     def __delete_test_artifact_dir(self, test_id: int, test_path: str):
         """
         Delete the directory (and all content) that stores test artifacts and logs.
@@ -382,12 +407,22 @@ class JobRunner:
 
         collect_logs = False
 
+        if not self.se_installed:
+            # Something went wrong before or during installation. There are no logs to capture.
+            return
+
+        if len(self.test_results) == 0:
+            # No test results. Something must have gone wrong, perhaps with starting SE.
+            collect_logs = True
+
         for test_result in self.test_results:
             if test_result.test_passed is False:
                 collect_logs = True
 
-            elif self.archive_metrics is False:     # test must have passed
-                self.__delete_test_artifact_dir(test_result.test_id, test_result.test_path)
+            if self.archive_metrics or test_result.test_passed is False:
+                self.__compress_test_artifact_dir(test_result.test_id, test_result.test_path)
+
+            self.__delete_test_artifact_dir(test_result.test_id, test_result.test_path)
 
         # Need to gather SE logs if any test fails.
         if collect_logs:

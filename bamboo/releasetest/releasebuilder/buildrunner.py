@@ -278,11 +278,14 @@ class BuildRunner:
         LOG.info(f"Successfully copied the RapidsSE installer from {src} to {dest}")
 
         for root, dirs, files in os.walk(str(self.artifact_path)):
+            if self.installer_path is not None:
+                break
+                
             for name in files:
                 if fnmatch.fnmatch(name, C_INSTALLER_FILESPEC):
                     self.installer_path = pathlib.Path(root) / name
                     LOG.info(f"The RapidsSE installer is found at {str(self.installer_path)}")
-                    return
+                    break
 
         if self.installer_path is None:
             msg = f"Could not find the RapidsSE installer in local directory: {str(self.artifact_path)}"

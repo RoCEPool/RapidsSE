@@ -27,7 +27,7 @@ namespace BASE
     static TokenVec* pGetSubVec(TokenVec* pTknVec, Stz* szStart, Stz* szEnd);
     static bool      bReplace(TokenVec* pTknVec,
                               TokenVec* pFindVec, TokenVec* pWithVec);
-    static TokenVec* pTokeniseSen(Stz* szString);
+    //static TokenVec* pTokeniseSen(Stz* szString);
 
     void vAdvanceCurr(bool bIncItems);
     void vAppendToken(Stz* szArgChars, eTN eToken);
@@ -71,8 +71,8 @@ namespace BASE
     void vStripSingleQuotes(void);
     void vStripSemicolon(void);
     void vTrimTokens(i8 i_Tkn);
-    void vTokeniseSen(Stz* szString);
-    void vTokeniseCpp(Stz* szString);
+    //void vTokeniseSen(Stz* szString);
+    //void vTokeniseCpp(Stz* szString);
     i8   nTokens(void);
     void vUpdateToken(Token* pDstToken, Stz* szArgChars);
     i8   nUsedByteSpace(void);

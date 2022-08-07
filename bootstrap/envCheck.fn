@@ -935,8 +935,9 @@ function validateShmAgainstRAM() {
     host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
     nodeShm="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_MEM_KEY}")"
     ram="${NODE_TOTAL_MEM[${nodeName}]}"
-  
-    if [ "$(echo "${nodeShm} > (0.95 * ${ram})" | bc -l)" -eq 1 ]; then
+
+    if [ "$(echo "${nodeShm} > (0.95 * ${ram})" | bc -l)" -eq 1 ] &&
+       [ "$(echo "${nodeShm} > (${ram} - 10)" | bc -l)" -eq 1 ]; then  
       errorExit "The shared memory allocated for RapidsSE (${nodeShm}GB) on ${nodeName} [host ${host}] exceeds 95% of total RAM on that host (${ram}GB)."
     fi
   done

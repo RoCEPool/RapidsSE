@@ -413,7 +413,7 @@ static Stz* aEC[] =
 
   /* _M_ */
   /* EC_MAX_INDEXES                   */ (Stz*)"max allowed indexes already created",
-  /* EC_MAX_COLUMNS                   */ (Stz*)"max 150 columns supported in a table",
+  /* EC_MAX_COLUMNS                   */ (Stz*)"max 48 columns supported in a table",
   /* EC_MAX_ROW_LENGTH                */ (Stz*)"max row length allowed is 16k bytes",
   /* EC_MAX_TABLE_NAME_LENGTH         */ (Stz*)"max table name length allowed is 31 bytes",
 
@@ -921,7 +921,7 @@ static Stz* aErrorMsg[] =
 
   /* _M_ */
   /* EC_MAX_INDEXES                   */ (Stz*)"max allowed indexes already created",
-  /* EC_MAX_COLUMNS                   */ (Stz*)"max 150 columns supported in a table",
+  /* EC_MAX_COLUMNS                   */ (Stz*)"max 48 columns supported in a table",
   /* EC_MAX_ROW_LENGTH                */ (Stz*)"max row length allowed is 16k bytes",
   /* EC_MAX_TABLE_NAME_LENGTH         */ (Stz*)"max table name length allowed is 31 bytes",
 

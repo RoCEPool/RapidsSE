@@ -144,19 +144,57 @@ namespace BASE
     
     static bool  bIsAlpha(const char c);
     static bool  bIsAlphaDigit(const char c);
+    static bool  bIsAmpersand(const char c);
+    static bool  bIsAsterisk(const char c);
+    static bool  bIsAt(const char c);
+    static bool  bIsBackQuote(const char c);
+    static bool  bIsBackSlash(const char c);
+    static bool  bIsBlank(const char c);
     static bool  bIsBoolean(char* azArg);
+    static bool  bIsCloseBrace(const char c);
+    static bool  bIsCloseBracket(const char c);
+    static bool  bIsCloseParenthesis(const char c);
+    static bool  bIsCircumflex(const char c);
+    static bool  bIsCommentBlock(char* ps);
+    static bool  bIsCommentLine(char* ps);
+    static bool  bIsColon(const char c);
     static bool  bIsDecimal(char* ps);
     static bool  bIsDigit(const char c);
+    static bool  bIsDollar(const char c);
+    static bool  bIsDot(const char c);
+    static bool  bIsDoubleQuote(const char c);
     static bool  bIsEmpty(char* azArg);
+    static bool  bIsEqual(const char c);
     static bool  bIsEscapable(const char cArg);
+    static bool  bIsExclamation(const char c);
     static bool  bIsFloat(char* azArg);
+    static bool  bIsGreaterThan(const char c);
+    static bool  bIsHash(const char c);
     static bool  bIsHex(const char c);
     static bool  bIsInteger(char* azArg);
     static bool  bIsIPAddr(const char* azArg);
+    static bool  bIsLessThan(const char c);
+    static bool  bIsMinus(const char c);
     static bool  bIsNameBodyChar(const char c);
     static bool  bIsNameStartChar(const char c);
+    static bool  bIsNewLine(const char c);
+    static bool  bIsNull(const char c);
+    static bool  bIsOpenBrace(const char c);
+    static bool  bIsOpenBracket(const char c);
+    static bool  bIsOpenParenthesis(const char c);
+    static bool  bIsPercent(const char c);
+    static bool  bIsPipe(const char c);
+    static bool  bIsQuestion(const char c);
+    static bool  bIsPlus(const char c);
+    static bool  bIsSemicolon(const char c);
+    static bool  bIsSign(const char c);
+    static bool  bIsSingleQuote(const char c);
+    static bool  bIsSlash(const char c);
+    static bool  bIsTilde(const char c);
+    static bool  bIsUnderscore(const char c);
     static bool  bIsWhite(const char c);
-   
+    static bool  bIsX(const char c);
+
     static char* acLast(const char* s);
     //static i8    nLength(const char* s);
     static i8    nLength(const char* s, const char cTerm, i8 iMax);
@@ -195,6 +233,9 @@ namespace BASE
 
     static bool  bSame(const char* s1, const char* s2);
     static i8    nSize(const char* s);
+    static void  vSkipCommentBlock(char** ps);
+    static void  vSkipCommentLine(char** ps);
+    static void  vSkipCommentsEtc(char** aazCrs);
     static void  vSkipDigits(char** ps);
     static bool  bSkipEOL(char** ps);
     static bool  bSkipLeading(char** ps, char cEnclosedBy_Leading);

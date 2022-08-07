@@ -2873,6 +2873,90 @@ i8 AM::THREAD::iThisThreadNo(void)
 
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                  TOKENISE                                  */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* tokenise string                                                            */
+/*----------------------------------------------------------------------------*/
+TokenVec* AM::TOKENISE::pTokeniseSen(Stz* szString)
+{
+  _static_
+ 
+  TokenVec* pTknVec = new TokenVec;
+
+  //pTknVec->vTokeniseSen(szString);
+  AM::TOKENISE::vTokeniseSen(pTknVec,szString);
+  return pTknVec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* tokenise string                                                            */
+/*----------------------------------------------------------------------------*/
+void AM::TOKENISE::vTokeniseSen(TokenVec* pTknVec, Stz* szString)
+{
+  _static_
+  
+  vTokeniseSen_2(pTknVec,szString);
+  return;
+  
+  pTknVec->vSoftReset();
+  pTknVec->vIntegrityCheck();
+
+  Input* pInput = nullptr;
+  
+  pInput = new Input(nullptr);
+  
+  pInput->vUseString(szString);
+  pInput->vFormSenTokens();
+  pInput->vUseBegin();
+
+  for (i8 i_Token = 0; ; i_Token++) {
+
+    pInput->vReadToken();
+    if (TN_NULL == pInput->eToken())
+      break;
+
+    pTknVec->vAppendToken(pInput->szChars(),pInput->eToken());
+  }
+
+  pInput->vUseEnd();
+  
+  while (pInput)
+    pInput = pInput->pDeleteInput();
+}
+
+/*----------------------------------------------------------------------------*/
+/* tokenise string                                                            */
+/*----------------------------------------------------------------------------*/
+void AM::TOKENISE::vTokeniseSen_2(TokenVec* pTknVec, Stz* szString)
+{
+  _static_
+  
+  pTknVec->vSoftReset();
+  pTknVec->vIntegrityCheck();
+
+  s4K sToken;
+  
+  char* azCrs = szString->azChar();
+
+  //vTrace("%s\n"_Stz,szString);
+
+  for (;;) {
+    sToken.vReset();
+    
+    eTN eToken = Token::eCollectSenToken(&azCrs,sToken);
+    if (TN_NONE == eToken)
+      break;
+    
+    //vTrace("  %12s %s\n"_Stz,aTN[eToken],sToken.szStz());
+    
+    pTknVec->vAppendToken(sToken,eToken);
+  }
+}
+
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                    TRACE                                   */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
@@ -4122,21 +4206,25 @@ void AM::vBootCheck(void)
         
       case HT_P_TINY:
       case HT_T_TINY:
+      case HT_V_TINY:
         ASSERT(iClassSize < C_SIZE_TINY_OBJECT);
         continue;
         
       case HT_P_SMALL:
       case HT_T_SMALL:
+      case HT_V_SMALL:
         ASSERT(iClassSize < C_SIZE_SMALL_OBJECT);
         continue;
         
       case HT_P_MEDIUM:
       case HT_T_MEDIUM:
+      case HT_V_MEDIUM:
         ASSERT(iClassSize < C_SIZE_MEDIUM_OBJECT);
         continue;
         
       case HT_P_LARGE:
       case HT_T_LARGE:
+      case HT_V_LARGE:
         ASSERT(iClassSize < C_SIZE_LARGE_OBJECT);
         continue;
                 
