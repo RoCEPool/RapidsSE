@@ -1431,6 +1431,30 @@ void Job::vPostRecv(void)
   m_pEndedJob  = nullptr;
   m_pCancelledJob  = nullptr;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // First set all nullptr's then allocate as allocate mail fail
+  // and we try to cleanup an invalid pointer which was recvd over the socket
+
+  m_pRejectJob = nullptr;
+
+  /* 00 */ m_noActiveOps.vResetAtomic();
+  /* 01 */ m_eJobList     = JL_NONE;
+  /* 02 */ m_pJobMetrics  = nullptr;
+  /* 03 */ m_pMutex       = nullptr;
+  /* 04 */ m_pOutput      = nullptr;
+  /* 05 */ m_p_ResponseOp = nullptr;
+  /* 06 */ m_oResponseTimer.vReset();
+  /* 07 */ m_pTask        = nullptr;
+  /* 08 */ m_bWasReceived = true;
+  /* 19 */ m_pMarkerChain = nullptr;
+  /* 10 */ m_bAllocate    = true;
+  /* 11 */ m_pObjectTracker = nullptr;
+  /* 11 */ m_pJobsSkipNode    = nullptr;
+  /* 12 */ m_pGenericSkipNode = nullptr;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Now allocate the members of the job for this node after recv
+
   m_pRejectJob = new RejectJob;
 
   /* 00 */ m_noActiveOps.vResetAtomic();
