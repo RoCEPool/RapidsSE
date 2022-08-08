@@ -119,7 +119,12 @@ function copyLogs() {
     local installDir
     installDir="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
 
-    cp "${installDir}/se.log" "${outputDir}/se.${nodeName}.log" || true
+    cp "${installDir}"/se*.log "${outputDir}" || true
+
+    for f in "${outputDir}"/se*.log; do
+      mv "$f" "$(echo "$f" | sed s/.log/.${nodename}.log/)" || true
+    done
+
     cp "${installDir}/clusterStatus.log" "${outputDir}/clusterStatus.${nodeName}.log" || true
   done
 
