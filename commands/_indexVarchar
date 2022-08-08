@@ -1,0 +1,23 @@
+/*============================================================================*/
+/* _indexVarchar - test index / groupby with longer varchars                  */
+/*============================================================================*/
+
+create table T (a VARCHAR(128), b integer);
+
+//create index idxA on T(a);
+
+load T "../DATA/Index/SE_128_Long_Varchars.csv";
+
+//select * from T;
+
+//select count(*), a from T group by a;
+
+select * from T order by b;
+
+select a from T order by b;
+
+drop table T;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
