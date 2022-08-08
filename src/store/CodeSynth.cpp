@@ -1925,13 +1925,15 @@ void CodeSynth::vPayloadInsert(ePL ePayload, i8 iTopCount) {
 
     case PL_GBY:
     case PL_SRT:
-      StrLib::vAppendString(&m_azCodeCrs, "\n      aEntInserted = aIndexTree_insertEnt(aCombinedT->m_aIndexTreePL, aCombinedT->m_aEntIntPL);");
+      StrLib::vAppendString(&m_azCodeCrs, "\n      aEntInserted = aIndexTree_insertEnt(aCombinedT->m_aIndexTreePL, aCombinedT->m_aEntIntPL, &aCombinedT->m_iErrorCode);");
+      vGenerateErrorCheck(" "_Stz);
       break;
 
     case PL_TOP:
-      sCopy.vSprint("\n      aEntInserted = aIndexTree_insertEntTop(aCombinedT->m_aIndexTreePL, aCombinedT->m_aEntIntPL, &aCombinedT->m_aEntBottomPL,%lld);"_Stz,
+      sCopy.vSprint("\n      aEntInserted = aIndexTree_insertEntTop(aCombinedT->m_aIndexTreePL, aCombinedT->m_aEntIntPL, &aCombinedT->m_aEntBottomPL,%lld, &aCombinedT->m_iErrorCode);"_Stz,
                     iTopCount);
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+      vGenerateErrorCheck(" "_Stz);
       break;
 
     default:
@@ -2047,7 +2049,9 @@ void CodeSynth::vPayloadStore(IndexDef* pIndexDef) {
 
 
   StrLib::vAppendString(&m_azCodeCrs, "\n      // insert key in the payload");
-  StrLib::vAppendString(&m_azCodeCrs, "\n      aEntFound = aIndexTree_insertEnt(aCombinedT->m_aIndexTreePL, aCombinedT->m_aEntIntPL);");
+  StrLib::vAppendString(&m_azCodeCrs, "\n      aEntFound = aIndexTree_insertEnt(aCombinedT->m_aIndexTreePL, aCombinedT->m_aEntIntPL,&aCombinedT->m_iErrorCode);");
+
+  vGenerateErrorCheck(" "_Stz);
 
   StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_aiPayload = (i8 *) ((char *) aEntFound");
 

@@ -397,8 +397,8 @@ void vEntWrk_print(void* pEntWrk, void* pIndexDef);
 
 void* aIndexTree_begin(void* pIndexTree, void** ppEntBuffer);
 void* aIndexTree_findEntry(void* aIndexTree, void* aKey);
-void* aIndexTree_insertEnt(void* aIndexDef, void* aEnt);
-void* aIndexTree_insertEntTop(void* aIndexTree, void* aEnt, void** aaEntBottom, i8 iTopCount);
+void* aIndexTree_insertEnt(void* aIndexDef, void* aEnt, i8* piErrorCode);
+void* aIndexTree_insertEntTop(void* aIndexTree, void* aEnt, void** aaEntBottom, i8 iTopCount, i8* piErrorCode);
 void* aIndexTree_positionGE(void* aIndexTree, void** aaEntBuffer, void* aKey);
 void* aIndexTree_positionGT(void* aIndexTree, void** aaEntBuffer, void* aKey);
 void *aIndexTree_positionLE(void* aIndexTree, void* aKey);

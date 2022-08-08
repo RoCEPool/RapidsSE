@@ -129,11 +129,12 @@ void* aIndexTree_begin(void* pIndexTree, void** ppEntBuffer) {
 void* aIndexTree_findEntry(void* aIndexTree, void* aKey) {
   return (void*)IndexTree::aFindEntry((IndexTree*) aIndexTree, (Key*) aKey);
 }
-void* aIndexTree_insertEnt(void* aIndexTree, void* aEnt) {
-  return IndexTree::aInsertEnt((IndexTree*)aIndexTree, (Ent*)aEnt);
+void* aIndexTree_insertEnt(void* aIndexTree, void* aEnt, i8* piErrorCode) {
+  return IndexTree::aInsertEnt((IndexTree*)aIndexTree, (Ent*)aEnt, piErrorCode);
 }
-void* aIndexTree_insertEntTop(void* aIndexTree, void* aEnt, void** aaEntBottom, i8 iTopCount) {
-  return IndexTree::aInsertEntTop((IndexTree*)aIndexTree, (Ent*)aEnt, (Ent**)aaEntBottom, iTopCount);
+void* aIndexTree_insertEntTop(void* aIndexTree, void* aEnt, void** aaEntBottom, i8 iTopCount, i8* piErrorCode) {
+  return IndexTree::aInsertEntTop((IndexTree*)aIndexTree, (Ent*)aEnt, (Ent**)aaEntBottom,
+                                  iTopCount, piErrorCode);
 }
 void* aIndexTree_positionGE(void* aIndexTree, void** aaEntBuffer, void* aKey) {
   return IndexTree::aPositionGE((IndexTree*) aIndexTree, (EntBuffer**) aaEntBuffer, (Key*) aKey);
@@ -177,26 +178,38 @@ Ent* IndexTree::aIndexBegin(IndexTree* pIndexTree, EntBuffer** ppEntBuffer)
 /*----------------------------------------------------------------------------*/
 /* insert an entry for given row into this index at level 0                   */
 /*----------------------------------------------------------------------------*/
-Ent* IndexTree::aInsertEnt(IndexTree* pIndexTree, Ent* pEnt)
+Ent* IndexTree::aInsertEnt(IndexTree* pIndexTree, Ent* pEnt, i8* piErrorCode)
 {
   _static_
 
-  Ent* aInsertedEntry = pIndexTree->aInsertEntry(pEnt);
+  try {
+    Ent *aInsertedEntry = pIndexTree->aInsertEntry(pEnt);
 
-  //pIndexTree->vDump(false);
+    //pIndexTree->vDump(false);
 
-  return aInsertedEntry;
+    return aInsertedEntry;
+  }
+  catch (LowMemory xLowMemory) {
+    *piErrorCode = EC_LOW_MEMORY;
+    return nullptr;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
 /* insert an entry for given row into this index at level 0                   */
 /*----------------------------------------------------------------------------*/
-Ent* IndexTree::aInsertEntTop(IndexTree* pIndexTree, Ent* pEnt, Ent** ppEntBottom, i8 iTopCount)
+Ent* IndexTree::aInsertEntTop(IndexTree* pIndexTree, Ent* pEnt, Ent** ppEntBottom,
+                              i8 iTopCount, i8* piErrorCode)
 {
   _static_
 
-  return pIndexTree->pInsertEntTop_(pEnt, ppEntBottom, iTopCount);
-
+  try {
+    return pIndexTree->pInsertEntTop_(pEnt, ppEntBottom, iTopCount);
+  }
+  catch (LowMemory xLowMemory) {
+    *piErrorCode = EC_LOW_MEMORY;
+    return nullptr;
+}
 }
 
 /*----------------------------------------------------------------------------*/
