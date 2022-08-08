@@ -3724,11 +3724,12 @@ void AM::vWriteTrace_vargs(Stz* aFormat, va_list xArgs)
   
   if (gpTraceFile) {
     i8 iBootOptions = Engine::eDecodeCommandLine();
+    Now spNow;
 
     // Roll over trace file only if we are SE main
     if(iBootOptions == BO_START || iBootOptions == BO_START_PROMPT) {
       // Calculate length of message
-      i8 iMaxLen = gpTraceFile->iSize() + strlen(caFormatted) + 12; // 12 because of the low memory message that may be printed
+      i8 iMaxLen = gpTraceFile->iSize() + strlen(spNow.sz()->azChar()) + strlen(caFormatted) + 15;
 
       // If the message exceeds the max length of the trace file, roll over
       if( iMaxLen > C_MAX_LOG_ENTRIES ) {
@@ -3737,7 +3738,7 @@ void AM::vWriteTrace_vargs(Stz* aFormat, va_list xArgs)
     }
 
     gpTraceFile->vSeekEnd();
-    gpTraceFile->vPrint("%s%s"_Stz,bLowMem ? "LOW-MEMORY! " : "",caFormatted);
+    gpTraceFile->vPrint("[%s] %s%s"_Stz,spNow.sz(),bLowMem ? "LOW-MEMORY! " : "",caFormatted);
     gpTraceFile->vFlush();
   }
   
