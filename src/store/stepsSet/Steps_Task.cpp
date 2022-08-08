@@ -466,7 +466,7 @@ void Step::vTaskThrowLowMemory(void)
 {
   ENTRY();
 
-  THROW_LOWMEMORY_NEW();
+  THROW_LOWMEMORY();
 
   EXIT();
 }

@@ -165,7 +165,7 @@ Stencil::Stencil(void)
 
     delete m_pShapeEOS;
 
-    THROW_LOWMEMORY_NEW();
+    throw xLowMemory;
   }
 
 

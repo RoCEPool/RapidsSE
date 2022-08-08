@@ -154,7 +154,7 @@ Object* Heap::pAllocObject(eCN eAllocClass)
 
   //if ( ! gxaSizeHeap[eAllocClass].m_bAllocateWhenDisabled &&
   //       MY::pOp() && ! MY::pOp()->bAllocateMemory() )
-  //  THROW_LOWMEMORY_NEW();
+  //  THROW_LOWMEMORY();
 
   //static eCN eLastClass = CN_ENUMS;
   
@@ -171,7 +171,7 @@ Object* Heap::pAllocObject(eCN eAllocClass)
 //    i8 iCurrentPoint = (i8)(PsxThd::pTlsGet(giTLS_CurrentPoint));
 //    vTrace("FI: FP:%lld CP:%lld\n"_Stz, iFaultPoint, iCurrentPoint);
 //    if (iFaultPoint == iCurrentPoint)
-//      THROW_LOWMEMORY_NEW();
+//      THROW_LOWMEMORY();
 //  }
 //#endif
 
@@ -207,7 +207,7 @@ Object* Heap::pAllocObject(eCN eAllocClass)
       vTrace("************************************************\n"_Stz);
       m_okLock.vDropWrite();
       //PoolHelper::vPoolAnalyze();
-      THROW_LOWMEMORY_NEW();
+      THROW_LOWMEMORY();
       return nullptr;
     }
   }

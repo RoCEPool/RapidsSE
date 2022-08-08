@@ -157,7 +157,7 @@ Task::Task(Stz* szTaskNm, Op* pOp)
     m_pProfile = nullptr;
 
     delete m_pLogicUnit;
-    THROW_LOWMEMORY_NEW();
+    throw xLowMemory;
   }
 
 }

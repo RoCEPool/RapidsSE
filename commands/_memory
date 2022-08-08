@@ -1,7 +1,12 @@
 /*============================================================================*/
 /* _alka                                                                      */
 /*============================================================================*/
-/*
+select * from dummy;
+
+//verbose enable;
+trackMemory;
+
+print "----------------------------------------------------------";
 create table datums (
   int_col0   INTEGER NOT NULL,
   int_col1   INTEGER,
@@ -20,13 +25,70 @@ create table datums (
   vch_col14  VARCHAR(32),
   vch_col15  VARCHAR(32)
 );
-
-trackMemory;
-/FaultInjection drop table datums <faultPoint> = 1;
+lstbl;
+drop table datums;
 memoryLeaks;
 
+/*
 
+print "----------------------------------------------------------";
+load datums "../DATA/DataTypes/dataTypes.csv" ;
+print "----------------------------------------------------------";
+
+select 0.0 < dec_col7 from datums;
+print "----------------------------------------------------------";
+select 0.0 > dec_col7 from datums;
+print "----------------------------------------------------------";
+select 0.0 < dec_col6 from datums;
+print "----------------------------------------------------------";
+select 0.0 > dec_col6 from datums;
+print "----------------------------------------------------------";
+select 0.0 < dec_col7 from datums;
+print "----------------------------------------------------------";
+
+select dec_col6 from datums order by dec_col6;
+print "----------------------------------------------------------";
+select dec_col6 from datums where dec_col6 > 47.04;
+print "----------------------------------------------------------";
+select dec_col6 from datums where dec_col6 = 47.04;
+print "----------------------------------------------------------";
+select dec_col6 from datums where dec_col6 = 41.04;
+print "----------------------------------------------------------";
+select dec_col6 from datums where dec_col6 = 41.04;
+print "----------------------------------------------------------";
+select dec_col6 from datums where dec_col6 = 41.04;
+print "----------------------------------------------------------";
+select dec_col6 from datums where dec_col6 = 41.04;
+print "----------------------------------------------------------";
+select dec_col6 from datums where dec_col6 = 41.04;
+print "----------------------------------------------------------";
+select dec_col6 from datums where dec_col6 = 41.04;
+print "----------------------------------------------------------";
+select dec_col6 from datums where dec_col6 = 41.04;
+print "----------------------------------------------------------";
+
+drop table datums;
+print "----------------------------------------------------------";
+memoryLeaks;
+print "----------------------------------------------------------";
 */
+
+/*
+Recvd Job under lowMem: pipeline
+Recvd RejectJob
+vJobTrace -   pipeline : origin         @ org_ beg # begin rejected           - J5979.0072 P5979.0070 :: O5979.0072 D5979.0073
+vJobTrace -   pipeline : origin         @ org_ ovr # lst ordinary again       - J5979.0072 P5979.0070 :: O5979.0072 D5979.0073
+vJobTrace -   pipeline : origin         @ org_ ovr # retiring as origin...    - J5979.0072 P5979.0070 :: O5979.0072 D5979.0073
+vJobTrace -   pipeline : origin         @ org_ org # WAIT signalling parent   - J5979.0072 P5979.0070 :: O5979.0072 D5979.0073
+vJobTrace -   pipeline : origin         @ org_ ovr # signalled...             - J5979.0072 P5979.0070 :: O5979.0072 D5979.0073
+
+error: low memory
+
+/FaultInjection drop table datums <faultPoint> = 1;
+
+
+
+
 create table LineItem
 (
  L_ORDERKEY      INTEGER       NOT NULL,
@@ -49,22 +111,55 @@ create table LineItem
 
  ///FaultInjection drop table lineitem <faultPoint> = 1;
 
-//verbose enable;
-///FaultInjection load lineitem "<tpch_dir>/lineitem.<suffix>" <faultPoint> = 7 ;
 
-load lineitem "<tpch_dir>/lineitem.<suffix>";
-load lineitem "<tpch_dir>/lineitem.<suffix>";
-load lineitem "<tpch_dir>/lineitem.<suffix>";
-load lineitem "<tpch_dir>/lineitem.<suffix>";
-load lineitem "<tpch_dir>/lineitem.<suffix>";
-load lineitem "<tpch_dir>/lineitem.<suffix>";
-load lineitem "<tpch_dir>/lineitem.<suffix>";
+///FaultInjection load lineitem "<tpch_dir>/lineitem.<suffix>" <faultPoint> = 6 ;
 load lineitem "<tpch_dir>/lineitem.<suffix>";
 
-//select l_orderkey, L_SHIPDATE, L_COMMENT from lineitem;
+//count lineitem;
+//select count(*) from lineitem;
+
+verbose enable;
+select l_orderkey/0 from lineitem;
+select l_orderkey/0 from lineitem;
+select l_orderkey/0 from lineitem;
+select l_orderkey/0 from lineitem;
+select l_orderkey/0 from lineitem;
+select l_orderkey/0 from lineitem;
 
 
-/*
+explain stage transliterate select l_orderkey, L_SHIPDATE, L_COMMENT from lineitem where l_orderkey > 2;
+
+
+verbose enable;
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+  stage stageMarker0391 on all partitions :
+    scan rapidsse public LineItem
+    | project " type INTEGER as l_orderkey $1 , type DATE as l_shipdate $11 , type VARCHAR as l_comment $16 "
+    | combined 0
+    | next
+  stage stageMarkerXYZ on all partitions :
+    filter " type BOOLEAN  $1 2  >  "
+    | combined 0
+    | next
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+
+select l_orderkey, L_SHIPDATE, L_COMMENT from lineitem;
+select l_orderkey, L_SHIPDATE, L_COMMENT from lineitem;
+select l_orderkey, L_SHIPDATE, L_COMMENT from lineitem;
+select l_orderkey, L_SHIPDATE, L_COMMENT from lineitem;
+
+verbose enable;
+
 /FaultInjection
 pipeline unamed
 begin
@@ -81,4 +176,7 @@ begin
     | stageStart
 end
 <faultPoint> = 7 ;
+
+
+
 */

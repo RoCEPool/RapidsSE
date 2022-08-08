@@ -205,7 +205,8 @@ CodeSynth::CodeSynth(StreamDef* pStreamDefLft, StreamDef* pStreamDefRht, IndexDe
     delete m_pLowerStack;
     delete m_pUpperStack;
     delete m_pInitStack;
-    THROW_LOWMEMORY_NEW();
+
+    throw xLowMemory;
   }
 
 

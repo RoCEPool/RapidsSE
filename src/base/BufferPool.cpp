@@ -153,7 +153,7 @@ PoolBuffer* BufferPool::pAllocHeapBuffer(void)
   FreePoolBuffer* pHeapBuffer = pPopFreePoolBuffer();
 
   if ( ! pHeapBuffer )
-    THROW_LOWMEMORY_NEW();
+    THROW_LOWMEMORY();
 
   ++m_ixHeapBuffers;
   
@@ -193,7 +193,7 @@ PoolBuffer* BufferPool::pAllocOtherBuffer(void)
   FreePoolBuffer* pOtherBuffer = pPopFreePoolBuffer();
 
   if ( ! pOtherBuffer )
-    THROW_LOWMEMORY_NEW();
+    THROW_LOWMEMORY();
 
   ++m_ixOtherBuffers;
 

@@ -422,7 +422,7 @@ void Pipeline::vSpawnOpTasks(void)
   }
   catch (LowMemory xLowMemory) {
     m_pVertexRoot->vUnspawnOpTasks();
-    THROW_LOWMEMORY_NEW();
+    throw xLowMemory;
   }
 }
 

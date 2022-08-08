@@ -114,10 +114,6 @@ Object* Socket::pRecvObject(void)
   static i8 nPipeline = 0;
   bool bLowMem = false;
 
- // bool bLowMem = AM::MEMORY::bIsRunningLow();
- // if (bLowMem)
- //    PoolHelper::vPoolAnalyze();
-
   m_pObject->vSetWasReceived(true);
   m_pObject->vSetPostRecvRun(false);
 
@@ -173,48 +169,46 @@ Object* Socket::pRecvObject(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // HACK : To simulate lowMemory
-//  if (eClass == CN_JOB) {
-//    nPipeline++;
-//    if (nPipeline == gxCmdLineArgs.m_xSysArgs.m_iSocketLowMem)
-//      bLowMem = true;
-//  }
+  //  if (eClass == CN_JOB) {
+  //    nPipeline++;
+  //    if (nPipeline == gxCmdLineArgs.m_xSysArgs.m_iSocketLowMem)
+  //      bLowMem = true;
+  //  }
 
   try {
 
-    if (!bLowMem) {
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // HACK : To simulate lowMemory
+    //nPipeline++;
+    //if (nPipeline == gxCmdLineArgs.m_xSysArgs.m_iSocketLowMem)
+    //  THROW_LOWMEMORY();
 
-      //  if (eClass == CN_JOB) {
-    nPipeline++;
-    if (nPipeline == gxCmdLineArgs.m_xSysArgs.m_iSocketLowMem)
-      THROW_LOWMEMORY_NEW();
+    Object *pReceivedObject = pObjectRecv(eClass);
 
-      Object *pReceivedObject = pObjectRecv(eClass);
-
-      try {
-        pReceivedObject->vRunPostRecv();
-      }
-      catch (LowMemory xLowMemory) {
-
-        // received the object but was unable to execute postRecv
-
-        // postRecv can get lowMemory only for JOB
-        // no other objects receieved allocate memory in postRecv functions
-        RASSERT(eClass == CN_JOB);
-        Job *pJob = _pJob(pReceivedObject);
-        vTrace("Recvd Job %s : Unable to execute postRecv (lowmem)\n"_Stz, Job::szJobNm(pJob));
-
-        // execute the 2PC commands directly
-        vJobRecv_lowmem(pJob);
-
-        // delete the job
-        delete pJob;
-
-        return nullptr;
-      }
-
-      vSuccess(true);
-      return pReceivedObject;
+    try {
+      pReceivedObject->vRunPostRecv();
     }
+    catch (LowMemory xLowMemory) {
+
+      // received the object but was unable to execute postRecv
+
+      // postRecv can get lowMemory only for JOB
+      // no other objects receieved allocate memory in postRecv functions
+      RASSERT(eClass == CN_JOB);
+      Job *pJob = _pJob(pReceivedObject);
+      vTrace("Recvd Job %s : Unable to execute postRecv (lowmem)\n"_Stz, Job::szJobNm(pJob));
+
+      // execute the 2PC commands directly
+      vJobRecv_lowmem(pJob);
+
+      // delete the job
+      delete pJob;
+
+      return nullptr;
+    }
+
+    vSuccess(true);
+    return pReceivedObject;
   }
   catch (LowMemory xLowMemory) {
     // fall thru
@@ -226,7 +220,6 @@ Object* Socket::pRecvObject(void)
   Object* pReceivedObject = pObjectRecv_lowmem(eClass);
   RASSERT(! pReceivedObject);
 
-  //vReceivedObject(nullptr);
   vSuccess(true);
   
   return pReceivedObject;
@@ -364,8 +357,6 @@ Object* Socket::pObjectRecv(eCN eClass)
 
     bool bResult = bBytesRecv(aBody, nRemainingBytes, oSysCall);
     if (!bResult) {
-      //m_pDataStack->vPushInt(false);
-      //vReceivedObject(nullptr);
       vTrace("Socket::pRecvObject (body) : bRecvBytes returned false\n"_Stz);
       vSuccess(false);
       return nullptr;
@@ -388,7 +379,7 @@ Object* Socket::pObjectRecv(eCN eClass)
     m_pTotup->vAdd(eClass, nSize);
   }
   catch (LowMemory xLowMemory) {
-    THROW_LOWMEMORY_NEW();
+    throw xLowMemory;
   }
 
   return pReceivedObject;
