@@ -2897,42 +2897,6 @@ void AM::TOKENISE::vTokeniseSen(TokenVec* pTknVec, Stz* szString)
 {
   _static_
   
-  vTokeniseSen_2(pTknVec,szString);
-  return;
-  
-  pTknVec->vSoftReset();
-  pTknVec->vIntegrityCheck();
-
-  Input* pInput = nullptr;
-  
-  pInput = new Input(nullptr);
-  
-  pInput->vUseString(szString);
-  pInput->vFormSenTokens();
-  pInput->vUseBegin();
-
-  for (i8 i_Token = 0; ; i_Token++) {
-
-    pInput->vReadToken();
-    if (TN_NULL == pInput->eToken())
-      break;
-
-    pTknVec->vAppendToken(pInput->szChars(),pInput->eToken());
-  }
-
-  pInput->vUseEnd();
-  
-  while (pInput)
-    pInput = pInput->pDeleteInput();
-}
-
-/*----------------------------------------------------------------------------*/
-/* tokenise string                                                            */
-/*----------------------------------------------------------------------------*/
-void AM::TOKENISE::vTokeniseSen_2(TokenVec* pTknVec, Stz* szString)
-{
-  _static_
-  
   pTknVec->vSoftReset();
   pTknVec->vIntegrityCheck();
 

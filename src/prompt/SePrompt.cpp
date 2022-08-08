@@ -908,7 +908,7 @@ bool SePrompt::bRedirectFromFile(void)
   bool b = m_pInput_deputy->bUseFile(szPath);
   UNUSED(b);
   
-  m_pInput_deputy->vUseBegin();
+  //m_pInput_deputy->vUseBegin();
 
   return true;
 }
