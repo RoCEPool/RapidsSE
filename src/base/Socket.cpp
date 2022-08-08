@@ -196,15 +196,19 @@ Object* Socket::pRecvObject(void)
       catch (LowMemory xLowMemory) {
 
         // received the object but was unable to execute postRecv
-        if (eClass == CN_JOB) {
-          Job *pJob = _pJob(pReceivedObject);
-          vTrace("Recvd Job %s : Unable to execute postRecv (lowmem)\n"_Stz, Job::szJobNm(pJob));
 
-          vJobRecv_lowmem(pJob);
+        // postRecv can get lowMemory only for JOB
+        // no other objects receieved allocate memory in postRecv functions
+        RASSERT(eClass == CN_JOB);
+        Job *pJob = _pJob(pReceivedObject);
+        vTrace("Recvd Job %s : Unable to execute postRecv (lowmem)\n"_Stz, Job::szJobNm(pJob));
 
-          //delete pReceivedObject;
+        // execute the 2PC commands directly
+        vJobRecv_lowmem(pJob);
 
-        }
+        // delete the job
+        delete pJob;
+
         return nullptr;
       }
 
@@ -284,17 +288,20 @@ void Socket::vJobRecv_lowmem(Job* pJob) {
       Job::szJobNm(pJob)->bSame("ended"_Stz) ||
       Job::szJobNm(pJob)->bSame("cancelled"_Stz)) {
 
-    // ack originating job
     // job has begun/executed/ended/cancelled on the participant
+    // ack originating job
     AM::JOB::vAckOriginatingJob(Job::tOriginId(pJob));
+
   } else if (Job::szJobNm(pJob)->bSame("cancel"_Stz) ||
              Job::szJobNm(pJob)->bSame("end"_Stz) ||
              Job::szJobNm(pJob)->bSame("execute"_Stz)) {
 
     // trigger an execute/end of the participant pipeline job
     AM::JOB::vTriggerExecute(Job::tDistId(pJob));
+
   } else {
 
+    // received a pipeline job, just reject it
     m_pRejectJob->vOriginId(Job::tOriginId(pJob));
     m_pRejectJob->vDistId(Job::tDistId(pJob));
     m_pRejectJob->vError(EC_LOW_MEMORY);
