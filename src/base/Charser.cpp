@@ -528,6 +528,29 @@ i8 Charser::iDepth(void)
   return m_iDepth;
 }
 
+/*----------------------------------------------------------------------------*/
+/* reset this charser                                                         */
+/*----------------------------------------------------------------------------*/
+void Charser::vReset(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
+  
+  if (m_pSrcFile->bIsOpen())
+    m_pSrcFile->vClose();
+  
+  m_bUseOpened = true;
+  m_bUseBegun  = true;
+  
+  m_bUseClosed = true;
+  m_bUseEnded  = true;
+  
+  m_pSrcFile = new File(this);
+  
+  m_acRawInput = nullptr;
+
+  vResetCharser();
+}
+
 //
 // Debug ///////////////////////////////////////////////////////////////////////
 //

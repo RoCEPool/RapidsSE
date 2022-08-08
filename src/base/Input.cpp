@@ -37,7 +37,7 @@ Input::Input(Input* pNext)
   m_pCurrTkn = nullptr;
   m_pInpTagSet  = new TagSet;
 
-  m_pCharser_spares = new Charser(nullptr);
+  m_pCharser_spares = nullptr;
   
   // debugging aids
   d_iDebugMode               = false;
@@ -100,8 +100,13 @@ void Input::vDump(eCN eClass, Object* pObject, Stz* aTab)
 Charser* Input::pAllocCharser(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+    
+  if (m_pCharser_spares)
+    m_pCharser_spares = m_pCharser_spares->pNext();
+  else
+    m_pCharser = new Charser(m_pCharser);
   
-  return new Charser(m_pCharser);
+  return m_pCharser;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -257,6 +262,8 @@ void Input::vFreeCharser(Charser* pCharser)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
+  pCharser->vReset();
+  
   delete pCharser;
 }
 
@@ -361,7 +368,10 @@ void Input::vPushCharser(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  m_pCharser = pAllocCharser();
+  Charser* pCharser = pAllocCharser();
+  
+//  pCharser->vNext(m_pCharser);
+//  m_pCharser = pCharser;
   
   m_pCharser->vDebugMode(d_iDebugMode);
 }
