@@ -52,7 +52,9 @@ Input::Input(Input* pNext)
   _checkInitialised_(CN_INPUT);
   
   
-    
+  for (i8 i_Charser = 0; i_Charser < 3; i_Charser++)
+    m_pCharser_spares = new Charser(m_pCharser_spares);
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
 }
 
@@ -97,16 +99,21 @@ void Input::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* allocate a charser from spares                                             */
 /*----------------------------------------------------------------------------*/
-Charser* Input::pAllocCharser(void)
+void Input::vAllocCharser(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+      
+  if (m_pCharser_spares) {
     
-  if (m_pCharser_spares)
+    Charser* pCharser_spare = m_pCharser_spares;
     m_pCharser_spares = m_pCharser_spares->pNext();
-  else
+
+    pCharser_spare->vNext(m_pCharser);
+    m_pCharser = pCharser_spare;
+  }
+  else {
     m_pCharser = new Charser(m_pCharser);
-  
-  return m_pCharser;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -258,13 +265,17 @@ void Input::vFormSenTokens(void)
 /*----------------------------------------------------------------------------*/
 /* allocate a charser from spares                                             */
 /*----------------------------------------------------------------------------*/
-void Input::vFreeCharser(Charser* pCharser)
+void Input::vFreeCharser(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  pCharser->vReset();
+  Charser* pCharser = m_pCharser->pNext();
   
-  delete pCharser;
+  m_pCharser->vReset();
+  m_pCharser->vNext(m_pCharser_spares);
+  m_pCharser_spares = m_pCharser;
+
+  m_pCharser = pCharser;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -356,8 +367,10 @@ bool Input::bPopCharser(void)
   if (! m_pCharser)
     return false;
   
-  m_pCharser = m_pCharser->pDeleteCharser();
-    
+//  m_pCharser = m_pCharser->pDeleteCharser();
+//
+  vFreeCharser();
+  
   return true;
 }
 
@@ -368,11 +381,10 @@ void Input::vPushCharser(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  Charser* pCharser = pAllocCharser();
+  vAllocCharser();
   
-//  pCharser->vNext(m_pCharser);
-//  m_pCharser = pCharser;
-  
+  m_pCharser->vUseBegin();
+    
   m_pCharser->vDebugMode(d_iDebugMode);
 }
 

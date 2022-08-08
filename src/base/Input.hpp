@@ -45,7 +45,7 @@ namespace BASE
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
-    Charser* pAllocCharser(void);
+    void vAllocCharser(void);
     Stz* szChars(void);
     void vDebugMode(i8 iDebugMode);
     Input* pDeleteInput(void);
@@ -56,7 +56,7 @@ namespace BASE
     void vForkReset(void);
     void vFormCppTokens(void);
     void vFormSenTokens(void);
-    void vFreeCharser(Charser* pCharser);
+    void vFreeCharser(void);
     TagSet* pInpTagSet(void);
     TokenVec* pInpTknVec(void);
     void vInspect(void);

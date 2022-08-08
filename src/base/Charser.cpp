@@ -538,15 +538,15 @@ void Charser::vReset(void)
   if (m_pSrcFile->bIsOpen())
     m_pSrcFile->vClose();
   
-  m_bUseOpened = true;
-  m_bUseBegun  = true;
-  
-  m_bUseClosed = true;
-  m_bUseEnded  = true;
-  
-  m_pSrcFile = new File(this);
-  
-  m_acRawInput = nullptr;
+//  m_bUseOpened = true;
+//  m_bUseBegun  = true;
+//  
+//  m_bUseClosed = true;
+//  m_bUseEnded  = true;
+//  
+//  m_pSrcFile = new File(this);
+//  
+//  m_acRawInput = nullptr;
 
   vResetCharser();
 }
@@ -640,8 +640,8 @@ void Charser::vResetCharser(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CHARSER,_FOOTER_);
   
-  ASSERT((m_bUseOpened && m_bUseClosed) || (! m_bUseOpened && !m_bUseClosed));
-  ASSERT(m_bUseEnded);
+  //ASSERT((m_bUseOpened && m_bUseClosed) || (! m_bUseOpened && !m_bUseClosed));
+  //ASSERT(m_bUseEnded);
 
   // source definition
   m_eSource    = IS_NONE;
