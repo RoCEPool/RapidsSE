@@ -276,6 +276,8 @@ void SePrompt::vPromptLoop(void)
     }
     catch (LowMemory xLowMemory) {
       vTrace("error: Prompt got low memory exception\n"_Stz);
+      Thread* pThread = Thread::pThisTLSThread();
+      pThread->pPsxThd()->vSleepMsec(300,CN_SEPROMPT);
       continue;
     }
 

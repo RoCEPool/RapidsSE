@@ -131,9 +131,7 @@ void Step::vPotIsNull(void)
 {
   ENTRY();
 
-  Pot* pPot = _pPot(*m_pLogicUnit->m_xpPot);
-
-  m_pDataStack->vPushInt(pPot == nullptr ? 1 : 0);
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpPot.bIsNull() ? 1 : 0);
 
   EXIT();
 }

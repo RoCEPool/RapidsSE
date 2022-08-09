@@ -30,6 +30,7 @@ void Step::vAddSteps_Pipein(void)
   vAddStep("PipeIn[].isMarker"_Stz,       &Step::vPipeinIsMarker);
   vAddStep("PipeIn[].isNull"_Stz,         &Step::vPipeinIsNull);
   vAddStep("PipeIn[].kind"_Stz,           &Step::vPipeinKind);
+  vAddStep("PipeIn[].name"_Stz,           &Step::vPipeinName);
   vAddStep("PipeIn[].next"_Stz,           &Step::vPipeinNext);
   vAddStep("PipeIn[].peek"_Stz,           &Step::vPipeinPeek);
   vAddStep("PipeIn[].pipeToOutput"_Stz,   &Step::vPipeinPipeToOutput);
@@ -195,6 +196,32 @@ void Step::vPipeinKind(void)
 
   eEV ePipeInOperand = m_pLogicUnit->m_ePipeInOperand;
   m_pDataStack->vPushInt(ePipeInOperand);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* PipeIn[].name -- get name of operand                                       */
+/*----------------------------------------------------------------------------*/
+void Step::vPipeinName(void)
+{
+  ENTRY();
+
+  RASSERT( ! m_pLogicUnit->m_xpPipein.bIsNull() );
+
+  Operand* pOperand = _pOperand(*m_pLogicUnit->m_xpPipein);
+
+  s256 azName;
+  if (pOperand->bIsMarker()) {
+    Marker* pMarker = _pMarker(pOperand);
+    azName = aOM[pMarker->eOpMarker()];
+    m_pDataStack->vPushStr(azName);
+  }
+  else {
+    azName = aCN[pOperand->eGetClassNo()];
+    m_pDataStack->vPushStr(azName);
+  }
+
 
   EXIT();
 }

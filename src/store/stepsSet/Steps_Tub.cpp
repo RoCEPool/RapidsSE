@@ -123,7 +123,7 @@ void Step::vTubIsNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpStreamSet.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpTub.bIsNull() ? 1 : 0);
 
   EXIT();
 }

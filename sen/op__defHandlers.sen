@@ -9,6 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : ABNORMAL_PIPEIN_DELETE
 
+  //PipeIn[].name [op].ptnId@ "ABNORMAL_PIPEIN_DELETE P%v %v" str.format .
   PipeIn[].delete
 
   // calling op_loop continues
@@ -31,6 +32,7 @@
 /*----------------------------------------------------------------------------*/
 : STANDARD_PIPEOUT
 
+  //PipeIn[].name "DEFAULT HANDLER %v" str.format .
   PipeIn[]\clear [op].pipeout
   
   // calling op_loop continues
@@ -308,10 +310,10 @@
 
   //"EV_M_LOWMEMORY_handler" .verbose
 
-  [op].opName@ "TOGGLING TO ABNORMAL HANDLERS FOR OP %v" str.format .
+  //[op].opName@ "TOGGLING TO ABNORMAL HANDLERS FOR OP %v" str.format .
   "default_abnormalHandlers" FIND execute
   "default_lowMemHandlers" FIND execute
-  [op].opName@ "TOGGLED TO ABNORMAL HANDLERS FOR OP %v" str.format .
+  //[op].opName@ "TOGGLED TO ABNORMAL HANDLERS FOR OP %v" str.format .
 
 
   PipeIn[].pipeOut
@@ -426,7 +428,7 @@
 /*----------------------------------------------------------------------------*/
 : default_lowMemHandlers
 
-  [op].opName@ "SETTING default_lowMemHandlers for OP %v" str.format .
+  //[op].opName@ "SETTING default_lowMemHandlers for OP %v" str.format .
   find: ABNORMAL_PIPEIN_DELETE  locals| abnormalHandler |
 
   abnormalHandler EV_I_COMMAND          [op].handler!
@@ -445,7 +447,7 @@
   abnormalHandler EV_I_SEEKOFFSETS      [op].handler!
   abnormalHandler EV_I_TOTALUNITS       [op].handler!
 
-  [op].opName@ "DONE SETTING default_lowMemHandlers for OP %v" str.format .
+  //[op].opName@ "DONE SETTING default_lowMemHandlers for OP %v" str.format .
 ;
 
 /*----------------------------------------------------------------------------*/

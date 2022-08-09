@@ -11,18 +11,21 @@
 
   Pipein[]\clear to Marker[]
 
-  "combined_CancellingMarker DRAINING PIPEIN" .
-  PipeIn[].drain
+  //PipeIn[].drain
 
   Tub[].isNull not if
     Tub[].deleteAllBuffers
   then
 
-  Tub[].isNull not if
+  Pot[].isNull not if
     Pot[].deleteAllBuffers
   then
 
   Marker[].pipeOut
+
+  "default_abnormalHandlers" FIND execute
+  "default_lowMemHandlers" FIND execute
+
   true
 ;
 
@@ -73,7 +76,7 @@
             nullptr to Marker[]
 
         [op].pipeout
-        "CombinedOP PIPED OUT LOW MEMORY!!!" .
+        //"CombinedOP PIPED OUT LOW MEMORY!!!" .
       else
         "CombinedOP ALREADY DETECTED LOW MEMORY!!!" .
       then
@@ -81,7 +84,7 @@
       "COMBINEDOP TOGGLING TO ABNORMAL HANDLERS FOR OP"  .
       "default_abnormalHandlers" FIND execute
       "default_lowMemHandlers" FIND execute
-      "COMBINEDOP TOGGLED TO ABNORMAL HANDLERS FOR OP" .
+      //"COMBINEDOP TOGGLED TO ABNORMAL HANDLERS FOR OP" .
     else
       errorCode op__execErr
     then

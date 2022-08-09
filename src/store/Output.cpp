@@ -437,7 +437,7 @@ bool Output::bProcessOperand(Operand* pOperand)
       if (pMarker->eOpMarker() == OM_LOWMEMORY) {
         if (!m_bHasError) {
           vTrace("RowsProcessed: %lld\n"_Stz, *m_ixRowsProcessed);
-          vTrace("\nerror: SYSTEM RUNNING LOW ON MEMORY\n"_Stz);
+          vTrace("\nerror: low memory\n"_Stz);
           m_bHasError = true;
         }
       } else if (pMarker->eOpMarker() == OM_CHILDEXIT) {

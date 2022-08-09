@@ -1473,7 +1473,6 @@ Operand* Op::pPopOoOLeft(void)
           ,pRowBuffer->nRows()
           );
   }
-
   return pOperand;
 
 }
@@ -1781,9 +1780,6 @@ void Op::vUnspawnTask(void)
     Operand *pOperand = AM::MARKER::pNewMarker(OM_HARDABORT, pJob);
     vAppendLeft(pOperand, pTask);
   }
-
-  //pTask->vGrabTaskLock((Stz*)__func__);
-  //pTask->vScheduleRetire();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -2699,7 +2699,7 @@ bool AM::SYSTEM::bPassesLowMem(Job* pJob)
   
   PoolHelper::vPoolAnalyze();
 
-  pJob->pJobTags()->vContentDump();
+  //pJob->pJobTags()->vContentDump();
   
   if (pJob->bHasTag(C_TAG_LOWMEMORY))
     return true;

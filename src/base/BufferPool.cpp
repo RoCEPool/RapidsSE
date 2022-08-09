@@ -724,8 +724,8 @@ FreePoolBuffer* BufferPool::pPopFreePoolBuffer(void)
   // test for empty free chain
   if (C_NIL == m_iFreeHead) {
     ASSERT( ! m_nFreeCount );
-    vTrace("NODE%lld: RUNNING OUT OF MEMORY!!!\n"_Stz, AM::NODE::iThisNodeId());
-    vTrace("BufferPool::pAllocBuffer: zero free buffers\n"_Stz);
+    vTrace("NODE%lld: BUFFERPOOL RUNNING OUT OF MEMORY!!!\n"_Stz, AM::NODE::iThisNodeId());
+    //vTrace("BufferPool::pAllocBuffer: zero free buffers\n"_Stz);
     m_okLock.vDropWrite();                                                // 🔵
     return nullptr;
   }

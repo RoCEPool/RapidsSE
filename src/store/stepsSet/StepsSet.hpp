@@ -1647,6 +1647,7 @@ void vDdlLockAssertNone(void);
   void vPipeinIsMarker(void);
   void vPipeinIsNull(void);
   void vPipeinKind(void);
+  void vPipeinName(void);
   void vPipeinNext(void);
   void vPipeinPeek(void);
   void vPipeinPipeToOutput(void);

@@ -304,7 +304,7 @@ void Task::vTaskLoop(void)
 
       //
       // for example if the step function is:
-      //   void Step::vIntAdd(void) { ... }
+      //   void Step::vIntAdd(void) { ... }OP_sendSE
       //
       // then it is the dynamic equivalent of:
       //   this->vIntAdd();
@@ -1267,7 +1267,7 @@ void Task::vSetSenLowMemContext(void)
   m_pAuxStack->vReset();
   m_pDataStack->vReset();
 
-  Task::vSeeFrameStack();
+  //Task::vSeeFrameStack();
 
   while (m_pReturnStack->nValues() > 2) {
 
@@ -1292,7 +1292,7 @@ void Task::vSetSenLowMemContext(void)
     m_pReturnStack->vDiscardTop();
   }
 
-  Task::vSeeFrameStack();
+  //Task::vSeeFrameStack();
 
 
   if (MY::pOp())
@@ -1300,7 +1300,7 @@ void Task::vSetSenLowMemContext(void)
   else
     m_aInxPtr = m_pJobLowMemWord->aFirstCell();
 
-  Task::vSeeFrameStack();
+  //Task::vSeeFrameStack();
 }
 
 /*----------------------------------------------------------------------------*/

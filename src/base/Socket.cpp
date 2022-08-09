@@ -202,7 +202,7 @@ Object* Socket::pRecvObject(void)
       vJobRecv_lowmem(pJob);
 
       // delete the job
-      delete pJob;
+      //delete pJob;
 
       return nullptr;
     }

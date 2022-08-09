@@ -11,8 +11,8 @@
 
   Pipein[]\clear to Marker[]
 
-  "Scan_CancellingMarker DRAINING PIPEIN" .
-  PipeIn[].drain
+  //"Scan_CancellingMarker DRAINING PIPEIN" .
+  //PipeIn[].drain
 
   Marker[].pipeOut
   true

@@ -1364,6 +1364,7 @@ void Job::vPipeoutResponse(Operand* pOperand)
 
         if (pMarker->eOpMarker() == OM_LOWMEMORY) {
           //vTrace("PARENT RESPONSE: LOWMEMORY IGNORED\n"_Stz);
+          pParentJob->m_p_ResponseOp->vPipeToThis(pOperand, pCurTask);
           return;
         }
 
