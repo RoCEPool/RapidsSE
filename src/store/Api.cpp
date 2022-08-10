@@ -74,7 +74,7 @@ Job* Api::pCreateJob2PC(Job* pParentJob, Stz* sCmd)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // prepare job
 
-  TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sCmd);
+  TokenVec* pCmdTknVec = AM::TOKENISE::pTokeniseSen(sCmd);
   TagSet*   pCmdTagSet = new TagSet;
   pCmdTagSet->vAppend(C_TAG_NOWAIT, 1);
 
@@ -84,7 +84,7 @@ Job* Api::pCreateJob2PC(Job* pParentJob, Stz* sCmd)
   sSTMT sMaybePipelineSmt;
   if (Procedure::bTranslateToPipeline(sMaybePipelineSmt.pString(),pCmdTknVec)) {
     pCmdTknVec->vSoftReset();
-    pCmdTknVec->vTokeniseSen(sMaybePipelineSmt);
+    AM::TOKENISE::vTokeniseSen(pCmdTknVec,sMaybePipelineSmt);
   }
 
   if (! CmdHelper::bParseCmd(pCmdTknVec,pCmdTagSet)) {
@@ -181,7 +181,7 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
   sSTMT sMaybePipelineSmt;
   if (Procedure::bTranslateToPipeline(sMaybePipelineSmt.pString(),pCmdTknVec)) {
     pCmdTknVec->vSoftReset();
-    pCmdTknVec->vTokeniseSen(sMaybePipelineSmt);
+    AM::TOKENISE::vTokeniseSen(pCmdTknVec,sMaybePipelineSmt);
   }
 #ifdef WITH_OOM_FAULTINJECTION
   PsxThd::vTlsSet(giTLS_CurrentPoint,(void*)1);
@@ -349,7 +349,7 @@ eEC Api::eForkJob2PC(JobId& rtChildJobId,
   sSTMT sMaybePipelineSmt;
   if (Procedure::bTranslateToPipeline(sMaybePipelineSmt.pString(),pCmdTknVec)) {
     pCmdTknVec->vSoftReset();
-    pCmdTknVec->vTokeniseSen(sMaybePipelineSmt);
+    AM::TOKENISE::vTokeniseSen(pCmdTknVec,sMaybePipelineSmt);
   }
 
   if (! CmdHelper::bParseCmd(pCmdTknVec,pCmdTagSet)) {

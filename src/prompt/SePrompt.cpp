@@ -57,7 +57,6 @@ SePrompt::SePrompt(bool bOneCommand)
   
   m_pThread   = AM::THREAD::pNewThread();
   
-  
   m_iDivisionNo = 0;
   m_iSectionNo  = 0;
   m_bContinue   = true;
@@ -76,10 +75,9 @@ SePrompt::SePrompt(bool bOneCommand)
   }
   
   m_pCurrentDeputy = nullptr;
-  
-  m_pInput     = nullptr;
-  m_pInpTknVec = nullptr;
-  m_pInpTagSet = nullptr;
+  m_pInput_deputy  = nullptr;
+  m_pInpTknVec     = nullptr;
+  m_pInpTagSet     = nullptr;
 
   m_pPrintOp = nullptr;
   m_pSearchWord = new(nullptr) Word(""_Stz);
@@ -94,7 +92,7 @@ SePrompt::SePrompt(bool bOneCommand)
   
   m_pCurrentDeputy = pDeputyCreate();
   
-  m_pInput = m_pCurrentDeputy->pInput();
+  m_pInput_deputy = m_pCurrentDeputy->pInput();
 
   vToDo("_seprompt"_Stz);
   
@@ -104,11 +102,11 @@ SePrompt::SePrompt(bool bOneCommand)
     //m_oPmtTagSet.vInsert(C_PMT_TRCFILE);
   }
 
-  m_pInput->vDebugMode(gxCmdLineArgs.m_xSysArgs.m_iPromptDebug);
+  m_pInput_deputy->vDebugMode(gxCmdLineArgs.m_xSysArgs.m_iPromptDebug);
 
   // reset stdin as on Linux when another process(prompt)
   //   accesses the stdin , its not a valid fp
-  m_pInput->vForkReset();
+  m_pInput_deputy->vForkReset();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -184,10 +182,10 @@ void SePrompt::vPromptLoop(void)
   //Thread* pThreadTest = AM::THREAD::pThisThread();
 
   
-  ASSERT(0 == m_pInput->iDepth());
-  m_pInput->vUseStdin();
-  m_pInput->vFormCppTokens();
-  m_pInput->vUseBegin();
+  ASSERT(0 == m_pInput_deputy->iDepth());
+  m_pInput_deputy->vUseStdin();
+  m_pInput_deputy->vFormCppTokens();
+  m_pInput_deputy->vUseBegin();
   //m_pInput->vInspect();
 
   //if (m_iDebugMode) {
@@ -203,29 +201,31 @@ void SePrompt::vPromptLoop(void)
   
   m_pCurrentDeputy = nullptr;
 
+  Thread* pThread = MY::pThread();
+  pThread->vMallocWatch(1);
+  
   while (m_bContinue) {
 
     try {
+    if (! m_pCurrentDeputy && ! (m_pCurrentDeputy = pFindDeputy())) {
+      vTrace("No Deputies\n"_Stz);
+      RASSERT(0);
+    }
 
-      if (!m_pCurrentDeputy && !(m_pCurrentDeputy = pFindDeputy())) {
-        vTrace("No Deputies\n"_Stz);
-        RASSERT(0);
-      }
+    m_pInput_deputy = m_pCurrentDeputy->pInput();
+    m_pInpTknVec    = m_pInput_deputy->pInpTknVec();
+    m_pInpTagSet    = m_pInput_deputy->pInpTagSet();
 
-      m_pInput = m_pCurrentDeputy->pInput();
-      m_pInpTknVec = m_pInput->pInpTknVec();
-      m_pInpTagSet = m_pInput->pInpTagSet();
+    Stz* szToDo = this->szToDo();
 
-      Stz *szToDo = this->szToDo();
+    if (! *szToDo->azChar())
+      m_pInput_deputy->vRawInputClear();
 
-      if (!*szToDo->azChar())
-        m_pInput->vRawInputClear();
+    if (! bReadCommand())
+      continue;
 
-      if (!bReadCommand())
-        continue;
-
-//    Stz* szRaw = szRawInput();
-//    vTrace("SePrompt got command : %s\n"_Stz,szRaw);
+    //    Stz* szRaw = szRawInput();
+    //    vTrace("SePrompt got command : %s\n"_Stz,szRaw);
       eEC eErrorCode = EC_NONE;
       if (!bExamineCommand(&eErrorCode)) {
         if (eErrorCode != EC_NONE)
@@ -235,13 +235,13 @@ void SePrompt::vPromptLoop(void)
 
       //vTrace("Prompt-RawInput: %s\n"_Stz,m_pInput->szRawInput());
 
-      Stz *szCmdFile = m_pInput->szPath();
-      i8 iCmdLine = pTkn(0)->iLineNo();
+      Stz* szCmdFile = m_pInput_deputy->szPath();
+      i8   iCmdLine  = pTkn(0)->iLineNo();
 
       // output the script file cmd statement being executed
-      if (!szCmdFile->bSame("stdin"_Stz)) {
-        m_pInput->pInpTknVec()->vToTknString(sCmd);
-        vTrace("\n%s\n"_Stz, sCmd.azChar());
+      if ( ! szCmdFile->bSame("stdin"_Stz) ) {
+        m_pInput_deputy->pInpTknVec()->vToTknString(sCmd);
+        vTrace("\n%s\n"_Stz,sCmd.azChar());
       }
 
       if (*szCmdFile->azChar()) {
@@ -276,8 +276,7 @@ void SePrompt::vPromptLoop(void)
     }
     catch (LowMemory xLowMemory) {
       vTrace("error: Prompt got low memory exception\n"_Stz);
-      Thread* pThread = Thread::pThisTLSThread();
-      pThread->pPsxThd()->vSleepMsec(300,CN_SEPROMPT);
+      RASSERT(0);
       continue;
     }
 
@@ -359,9 +358,9 @@ void SePrompt::vDebugMode(i8 iDebugMode)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   if (iDebugMode > 1)
-    m_pInput->vDebugMode(iDebugMode);
+    m_pInput_deputy->vDebugMode(iDebugMode);
   else
-    m_pInput->vDebugMode(0);
+    m_pInput_deputy->vDebugMode(0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -371,7 +370,7 @@ void SePrompt::vDivision(Stz* szDivision)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  m_pInput->vDivision(szDivision);
+  m_pInput_deputy->vDivision(szDivision);
   
   m_iSectionNo = 0;
 }
@@ -516,7 +515,7 @@ Input* SePrompt::pInputGet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return m_pInput;
+  return m_pInput_deputy;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -821,7 +820,7 @@ Stz* SePrompt::szRawInput(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  Stz* szRaw = m_pInput->szRawInput();
+  Stz* szRaw = m_pInput_deputy->szRawInput();
   
   return szRaw;
 }
@@ -861,7 +860,7 @@ bool SePrompt::bReadCommand(void)
     gxCmdLineArgs.m_xSysArgs.m_bInitial = false;
     
     s4K szInitial = AM::szInitial();
-    m_pInpTknVec->vTokeniseSen(szInitial);
+    AM::TOKENISE::vTokeniseSen(m_pInpTknVec,szInitial);
     m_pInpTknVec->vStripSemicolon();
     m_pInpTknVec->vIntegrityCheck();
     return true;
@@ -874,7 +873,7 @@ bool SePrompt::bReadCommand(void)
     m_bOneRun = true;
     
     s4K szCommand = AM::szCommand();
-    m_pInpTknVec->vTokeniseSen(szCommand);
+    AM::TOKENISE::vTokeniseSen(m_pInpTknVec,szCommand);
     m_pInpTknVec->vStripSemicolon();
     m_pInpTknVec->vIntegrityCheck();
     return true;
@@ -884,7 +883,7 @@ bool SePrompt::bReadCommand(void)
   // special case: a previous command has requested to prompt to do something
   
   if (* this->szToDo()->azChar()) {
-    m_pInpTknVec->vTokeniseSen(this->szToDo());
+    AM::TOKENISE::vTokeniseSen(m_pInpTknVec,this->szToDo());
     m_pInpTknVec->vStripSemicolon();
 
     vToDo(""_Stz);
@@ -895,7 +894,7 @@ bool SePrompt::bReadCommand(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // special case:
   
-  if (m_bOneCommand && m_pInput->bIsStdin()) {
+  if (m_bOneCommand && m_pInput_deputy->bIsStdin()) {
     m_pInpTknVec->vIntegrityCheck();
     m_bContinue = false;
     return false;
@@ -904,7 +903,7 @@ bool SePrompt::bReadCommand(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // general case
   
-  m_pInput->vReadCommand();
+  m_pInput_deputy->vReadCommand();
   m_pInpTknVec->vIntegrityCheck();
   
   return true;
@@ -922,11 +921,11 @@ bool SePrompt::bRedirectFromFile(void)
   if (! File::bExists(szPath, false))
     return false;
       
-  m_pInput->vPushCharser();
-  bool b = m_pInput->bUseFile(szPath);
+  m_pInput_deputy->vPushCharser();
+  bool b = m_pInput_deputy->bUseFile(szPath);
   UNUSED(b);
   
-  m_pInput->vUseBegin();
+  //m_pInput_deputy->vUseBegin();
 
   return true;
 }
@@ -1033,7 +1032,7 @@ void SePrompt::vSection(Stz* szSection)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  m_pInput->vSection(szSection);
+  m_pInput_deputy->vSection(szSection);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1117,7 +1116,7 @@ bool SePrompt::bStdIn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  if (m_pInput->bIsStdin())
+  if (m_pInput_deputy->bIsStdin())
     return true;
   else
     return false;
@@ -1228,7 +1227,7 @@ bool SePrompt::bTranslateProcedure(void)
     return false;
     
   m_pInpTknVec->vSoftReset();
-  m_pInpTknVec->vTokeniseSen(sPipelineSmt);
+  AM::TOKENISE::vTokeniseSen(m_pInpTknVec,sPipelineSmt);
   
   return false;
 }

@@ -12,7 +12,8 @@
   "
   define table __sizeTable (
     NodeName  VARCHAR NOT NULL ,
-    size      VARCHAR NOT NULL
+    size      INTEGER NOT NULL ,
+    sizeStr   VARCHAR NOT NULL
   ) < infoSet > = 1 ;
   "
   api::forkChild  api:executeCheck

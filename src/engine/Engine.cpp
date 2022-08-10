@@ -280,6 +280,7 @@ void Engine::vRunCommandLine(void)
         vOpenTrace(false);
         vStartSystem();
         AM::SYSTEM::vSystemReady(); // Process has completed the boot sequence
+        vTrace("\nNodeId %lld\n\n"_Stz,AM::NODE::iThisNodeId());
         vWaitStop();
         break;
         
@@ -287,6 +288,7 @@ void Engine::vRunCommandLine(void)
         vOpenTrace(false);
         vStartSystem();
         AM::SYSTEM::vSystemReady(); // Process has completed the boot sequence
+        vTrace("\nNodeId %lld\n\n"_Stz,AM::NODE::iThisNodeId());
 #ifdef WITH_APPLE
         if (! gxCmdLineArgs.m_xSysArgs.m_bNoMunge )
           vMungeCheck();

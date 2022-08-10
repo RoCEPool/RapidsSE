@@ -106,7 +106,8 @@ rows: (*,'explainPlan','
 
 // Can we run a basic aggregate (no data)?
 SELECT COUNT(*) FROM nation;
-rows: 0
+rows:
+  (0)
 
 
 // Now lets load some basic data
@@ -157,7 +158,8 @@ success
 
 // Validate that there are no more rows in the table
 SELECT COUNT(*) FROM nation;
-rows: 0
+rows:
+  (0)
 
 
 // Drop an index

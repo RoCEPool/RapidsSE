@@ -30,6 +30,8 @@ namespace ENGINE
   
     ThreadScratch*  m_pThreadScratch;  // thread scratch area
 
+    i8       m_iMallocWatch;  // malloc watch
+  
     // must be last
     Footer m_xFooter;
     
@@ -57,6 +59,8 @@ namespace ENGINE
     void vOutline(s4K& sOutline);
     void vLoop_dedicated(void);
     void vLoop_general(void);
+    i8   iMallocWatch(void);
+    void vMallocWatch(i8 iMallocWatch);
     Mutex* pMutex(void);
     Object* pObject0(void);
     void  vObject0(Object* pObject0);

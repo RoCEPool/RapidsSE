@@ -32,16 +32,13 @@ namespace PROMPT
     i8          m_nDeputies;    // current number of deputies
     SeDeputy*   m_paSeDeputy[C_MAX_DEPUTY];
 
-
     SeDeputy*   m_pCurrentDeputy;
-  
-    TagSet      m_oPmtTagSet;   // tag set which controls this prompt
-  
-    Input*      m_pInput;       // current input from current deputy
-    TokenVec*   m_pInpTknVec;   // token vector from deputy->ssn->input
-    TagSet*     m_pInpTagSet;   // extra tags gleaned from the prompt command
- 
+    Input*      m_pInput_deputy; // current input from current deputy
+    TokenVec*   m_pInpTknVec;    // token vector from deputy->ssn->input
+    TagSet*     m_pInpTagSet;    // extra tags gleaned from the prompt command
 
+    TagSet      m_oPmtTagSet;    // tag set which controls this prompt
+  
     // -- -- -- -- -- --
   
     // object delta reporting

@@ -148,6 +148,7 @@ Object* Heap::pAllocObject(eCN eAllocClass)
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   ASSERT(gxaSizeHeap[eAllocClass].m_nClassSize < m_nObjectSize);
+
   UNUSED(eAllocClass);
 
   AM::MEMORY::vAssertAllocate();
@@ -155,6 +156,21 @@ Object* Heap::pAllocObject(eCN eAllocClass)
   //if ( ! gxaSizeHeap[eAllocClass].m_bAllocateWhenDisabled &&
   //       MY::pOp() && ! MY::pOp()->bAllocateMemory() )
   //  THROW_LOWMEMORY();
+
+  
+  Job* pJob = MY::pJob();
+  Thread* pThread = MY::pThread();
+  
+//  if (pThread && pThread->iMallocWatch()) {
+//    vTrace("allocating %s"_Stz,aCN[eAllocClass]);
+//    vTrace("\n"_Stz);
+//    i8 iDebug = 1;
+//    UNUSED(iDebug);
+//  }
+  
+   //AM::MEMORY::vAssertAllocate();
+   //RASSERT(MY::pJob()->bAllocateMemory());
+   //RASSERT(MY::pOp()->bAllocateMemory());
 
   //static eCN eLastClass = CN_ENUMS;
   
@@ -235,10 +251,8 @@ Object* Heap::pAllocObject(eCN eAllocClass)
         pLogicUnit->m_xpStats->m_nMaxBytes = nMaxBytes;
     }
   }
-  Job* pJob = MY::pJob();
-  Thread* pThread = MY::pThread();
 
-  if(pJob)
+  if (pJob)
   {
     pJob->vTrackAllocObject(eAllocClass);
   }
@@ -417,6 +431,14 @@ void Heap::vFreeObject(Object* pObject)
   {
     pJob->vTrackFreeObject(eClassNo);
   }
+  
+  //Thread* pThread = MY::pThread();
+  
+  //if (pThread && pThread->iMallocWatch()) {
+  //  i8 iDebug = 1;
+  //  UNUSED(iDebug);
+  //}
+
 
 //  if ((Object*)0x2048091aa040 == pObject) {
 //    vTrace("FreeObject:: %p %s:%-3lld (address)\n"_Stz,

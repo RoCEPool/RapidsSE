@@ -11,10 +11,13 @@
   STD_BOOTFORK_TAG
   "
   define table __space (
-    nodeName   VARCHAR NOT NULL ,
-    totalSpace VARCHAR NOT NULL ,
-    inUseSpace VARCHAR NOT NULL ,
-    freeSpace  VARCHAR NOT NULL
+    nodeName      VARCHAR NOT NULL ,
+    totalSpace    INTEGER NOT NULL ,
+    totalSpaceStr VARCHAR NOT NULL ,
+    inUseSpace    INTEGER NOT NULL ,
+    inUseSpaceStr VARCHAR NOT NULL ,
+    freeSpace     INTEGER NOT NULL ,
+    freeSpaceStr  VARCHAR NOT NULL
   ) < infoSet > = 1 ;
   "
   api::forkChild  api:executeCheck
