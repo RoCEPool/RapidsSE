@@ -13,7 +13,7 @@
 #include "Mersenne.hpp"
 
 
-
+File*        gpTraceFile;
 extern Stz* gsBuildGitHash;
 extern Stz* gsBuildDate;
 extern Stz* gsBuildHostName;
@@ -49,6 +49,19 @@ extern i8   giProgressPoint;
 /*----------------------------------------------------------------------------*/
 int main(int argc, char* argv[])
 {
+  // Move the trace here
+  // Get rid of se_error.log
+  // Global file pointer
+  // If error here, direct to se.log from stderr
+
+//  if (argc > 1) {
+//    for (i8 i_Arg = 0; i_Arg < argc; i_Arg++) {
+//      if(((Stz*)argv[i_Arg])->bSame("--start"_Stz)) {
+//        Engine::vTraceStart();
+//      }
+//    }
+//  }
+
   //char* s = readline ("Enter a line: ");
 
 //  printf("sizeof(Table) %lld\n",(i8)sizeof(Table));

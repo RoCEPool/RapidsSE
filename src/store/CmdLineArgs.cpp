@@ -1206,9 +1206,10 @@ void CmdLineArgs::vPrintStartupInfo(void)
     vTrace("  Not compiled with MUNGE\n"_Stz);
 #endif
   }
-  
 
-  vTrace("\nArgs:\n"_Stz);
+
+  vTrace("\n"_Stz);
+  vTrace("Args:\n"_Stz);
   
 #ifdef WITH_DEBUG_VERSION
   if (m_xSysArgs.m_bAppendTrace) vTrace("  --appendTrace\n"_Stz);

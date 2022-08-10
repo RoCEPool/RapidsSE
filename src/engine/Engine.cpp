@@ -65,7 +65,7 @@ FnCatalog    gxFnCatalog;
 AttachMap*   gpAttachMap;
 BufferPool*  gpBufferPool;
 Header*      gaSeShmRegion;
-File*        gpTraceFile;
+extern File* gpTraceFile;
 
 Stz* gsBuildGitHash;
 Stz* gsBuildDate;
@@ -296,7 +296,6 @@ void Engine::vRunCommandLine(void)
         while (gpAttachMap->uAttachMapState() != C_READY) {
           AM::vNapMsec(1,CN_NONE);
         }
-        vOpenTrace(true);
         vCallPrompt();
         break;
         
@@ -307,19 +306,16 @@ void Engine::vRunCommandLine(void)
         while (gpAttachMap->uAttachMapState() != C_READY) {
           AM::vNapMsec(1,CN_NONE);
         }
-        vOpenTrace(true);
         vCallPrompt();
         break;
         
       case BO_START:
-        vOpenTrace(false);
         vStartSystem();
         AM::SYSTEM::vSystemReady(); // Process has completed the boot sequence
         vWaitStop();
         break;
         
       case BO_START_PROMPT:
-        vOpenTrace(false);
         vStartSystem();
         AM::SYSTEM::vSystemReady(); // Process has completed the boot sequence
 #ifdef WITH_APPLE
