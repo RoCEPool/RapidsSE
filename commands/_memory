@@ -26,10 +26,6 @@ create table datums (
   vch_col15  VARCHAR(32)
 );
 lstbl;
-drop table datums;
-memoryLeaks;
-
-/*
 
 print "----------------------------------------------------------";
 load datums "../DATA/DataTypes/dataTypes.csv" ;
@@ -70,19 +66,9 @@ print "----------------------------------------------------------";
 drop table datums;
 print "----------------------------------------------------------";
 memoryLeaks;
-print "----------------------------------------------------------";
-*/
+
 
 /*
-Recvd Job under lowMem: pipeline
-Recvd RejectJob
-vJobTrace -   pipeline : origin         @ org_ beg # begin rejected           - J5979.0072 P5979.0070 :: O5979.0072 D5979.0073
-vJobTrace -   pipeline : origin         @ org_ ovr # lst ordinary again       - J5979.0072 P5979.0070 :: O5979.0072 D5979.0073
-vJobTrace -   pipeline : origin         @ org_ ovr # retiring as origin...    - J5979.0072 P5979.0070 :: O5979.0072 D5979.0073
-vJobTrace -   pipeline : origin         @ org_ org # WAIT signalling parent   - J5979.0072 P5979.0070 :: O5979.0072 D5979.0073
-vJobTrace -   pipeline : origin         @ org_ ovr # signalled...             - J5979.0072 P5979.0070 :: O5979.0072 D5979.0073
-
-error: low memory
 
 /FaultInjection drop table datums <faultPoint> = 1;
 
