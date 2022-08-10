@@ -175,6 +175,9 @@ Object* Socket::pRecvObject(void)
   //      bLowMem = true;
   //  }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // receive object body
+
   try {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -192,17 +195,22 @@ Object* Socket::pRecvObject(void)
 
       // received the object but was unable to execute postRecv
 
-      // postRecv can get lowMemory only for JOB
-      // no other objects receieved allocate memory in postRecv functions
+      //
+      // RunPostRecv can get lowMemory only for JOB
+      //
+
+      // no other objects received allocate memory in postRecv functions
+      // to handle when this changes
+
       RASSERT(eClass == CN_JOB);
       Job *pJob = _pJob(pReceivedObject);
       vTrace("Recvd Job %s : Unable to execute postRecv (lowmem)\n"_Stz, Job::szJobNm(pJob));
 
-      // execute the 2PC commands directly
+      // execute the 2PC commands directly for job received/ send reject
       vJobRecv_lowmem(pJob);
 
       // delete the job
-      //delete pJob;
+      delete pJob;
 
       return nullptr;
     }
@@ -342,25 +350,24 @@ Object* Socket::pObjectRecv(eCN eClass)
 
   Object *pReceivedObject = nullptr;
 
-  try {
 
-    SysCall oSysCall;
+  SysCall oSysCall;
 
-    i8 nSize = gxaSizeHeap[eClass].m_nClassSize;
+  i8 nSize = gxaSizeHeap[eClass].m_nClassSize;
 
-    //vTrace("class:%s\n"_Stz, aCN[eClass]);
-    pReceivedObject = Heaps::pAllocate(eClass);
-    MemLib::vCopy(pReceivedObject, m_pObject, sizeof(Object), eClass);
+  //vTrace("class:%s\n"_Stz, aCN[eClass]);
+  pReceivedObject = Heaps::pAllocate(eClass);
+  MemLib::vCopy(pReceivedObject, m_pObject, sizeof(Object), eClass);
 
-    void *aBody = aAdd<void *>(pReceivedObject, sizeof(Object));
-    i8 nRemainingBytes = nSize - sizeof(Object);
+  void *aBody = aAdd<void *>(pReceivedObject, sizeof(Object));
+  i8 nRemainingBytes = nSize - sizeof(Object);
 
-    bool bResult = bBytesRecv(aBody, nRemainingBytes, oSysCall);
-    if (!bResult) {
-      vTrace("Socket::pRecvObject (body) : bRecvBytes returned false\n"_Stz);
-      vSuccess(false);
-      return nullptr;
-    }
+  bool bResult = bBytesRecv(aBody, nRemainingBytes, oSysCall);
+  if (!bResult) {
+    vTrace("Socket::pRecvObject (body) : bRecvBytes returned false\n"_Stz);
+    vSuccess(false);
+    return nullptr;
+  }
 #ifdef WITH_BUFFER_ID
     if (1 == DataBuffer::bIsDataBuffer(eClass)) {
       DataBuffer* pDataBuffer = _pDataBuffer(pReceivedObject);
@@ -376,11 +383,7 @@ Object* Socket::pObjectRecv(eCN eClass)
     }
 #endif
 
-    m_pTotup->vAdd(eClass, nSize);
-  }
-  catch (LowMemory xLowMemory) {
-    throw xLowMemory;
-  }
+  m_pTotup->vAdd(eClass, nSize);
 
   return pReceivedObject;
 }
@@ -413,15 +416,18 @@ Object* Socket::pObjectRecv_lowmem(eCN eClass)
   UNUSED(bResult);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // JOB receieved under low memory needs to send a reject back
+  // JOB received under low memory
 
   if (eClass == CN_JOB) {
 
     Job* pJob = _pJob(aLowBuff);
     vTrace("Recvd Job under lowMem: %s\n"_Stz, Job::szJobNm(pJob));
 
+    // execute the 2PC commands directly for job received
     vJobRecv_lowmem(pJob);
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // Nothing to do for other objects received under low memory
     return nullptr;
 
   }
