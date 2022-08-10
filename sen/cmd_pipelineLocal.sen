@@ -102,6 +102,13 @@
      [job].signalParent
   then
 
+/* local */  // - - - - - - - - - - - - - - - -  - -
+/* local */  // - - - - - - - - - - - - - - - -  - -
+/* local */  // JOB NOT TO ALLLOCATE ANY MORE MEMORY
+/* local */  // - - - - - - - - - - - - - -  - - - -
+/* local */  [job].disableAllocate
+/* local */  // - - - - - - - - - - - - - - - -  - -
+/* local */  // - - - - - - - - - - - - - - - -  - -
 
 /*
   // add job to the local job list
