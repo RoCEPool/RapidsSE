@@ -184,11 +184,11 @@ Job::~Job(void) noexcept(false)
 
     AM::JOBS::vJobsActiveDec();
 
-    //if (m_pMutex)
-    //  vMutexDestroy();
+    if (m_pMutex)
+      vMutexDestroy();
 
-    RASSERT(m_pMutex);
-    vMutexDestroy();
+    //RASSERT(m_pMutex);
+    //vMutexDestroy();
 
     /*
     i8 iResult;
