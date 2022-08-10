@@ -1453,6 +1453,8 @@ void Job::vPostRecv(void)
   /* 11 */ m_pJobsSkipNode    = nullptr;
   /* 12 */ m_pGenericSkipNode = nullptr;
 
+  m_tJobId.vNextJobId();
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Now allocate the members of the job for this node after recv
 
@@ -1467,8 +1469,7 @@ void Job::vPostRecv(void)
   m_pTask->vSetInxPtr("job::entryPoint"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  m_tJobId.vNextJobId();
+
   AM::JLIST::vInsertJob(this);
 
   if (AM::SYSARGS::bDistJob())
