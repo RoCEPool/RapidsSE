@@ -25,7 +25,7 @@
       pSteps->vGrabWrite(); \
       if (! __pStepAccum) \
         __pStepAccum = pSteps->pAllocAccum((Stz*)__func__); \
-        pSteps->vDropWrite(); \
+      pSteps->vDropWrite(); \
       } \
     \
     __pStepAccum->vEnter(__iEnterCycles,__iEnterMisses); \
