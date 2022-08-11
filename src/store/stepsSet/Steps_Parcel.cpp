@@ -565,7 +565,12 @@ void Step::vParcelSendOut(void)
     pLogicUnit->m_xpStats->m_nObjectsSent += pParcel->nItems();
   }
 
-  pParcel->vDistribute(pCurrOp,pOuterJobOfTask());
+  try {
+    pParcel->vDistribute(pCurrOp,pOuterJobOfTask());
+  }
+  catch (LowMemory xLowMemory) {
+    vTrace("vDistributeBy: ran into LOWMEMORY\n"_Stz);
+  }
 
   EXIT();
 }

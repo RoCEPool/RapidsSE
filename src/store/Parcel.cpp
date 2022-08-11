@@ -356,7 +356,9 @@ void Parcel::vDistribute(Op *pSendOp, Job* pJob)
 
   // delete the operand
   if (m_bDeleteOperand)
-    AM::vDeleteOperand(pOperand,pJob);
+    AM::vDeleteOperand(pOperand, pJob);
+
+
 }
 
 
@@ -863,6 +865,8 @@ void Parcel::vPipeBufferViaQueues(Op *pSendOp, Stage* pDstStage)
     i8 i_ThisNode = AM::NODE::iThisNodeId();
     Stream* pDstStream = pDstStage->pGetStream_byNodeId(i_ThisNode);
 
+    //THROW_LOWMEMORY();
+
     Operand* pDuplicateOperand = pOperand->pDuplicateOperand();
     eCN eClass = pDuplicateOperand->eGetClassNo();
 
@@ -916,7 +920,7 @@ void Parcel::vPipeBufferViaQueues(Op *pSendOp, Stage* pDstStage)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // forward to this node, dst stage is a YS_PTN_STREAM
 
-  try {
+  //try {
     Op* pDstOp = pDstStage->pPipeDstOp(tDstLglPtn(),0);
 
     Operand* pDuplicateOperand = pOperand->pDuplicateOperand();
@@ -928,11 +932,11 @@ void Parcel::vPipeBufferViaQueues(Op *pSendOp, Stage* pDstStage)
     Task* pCurTask = MY::pTask();
 
     AM::OP::vPipeToOp(pDstOp,pDuplicateOperand,pCurTask);
-  }
-  catch (LowMemory xLowMemory) {
-    // do nothing
-    vTrace("vPipeBufferViaQueues: ran into LOWMEMORY\n"_Stz);
-  }
+//  }
+//  catch (LowMemory xLowMemory) {
+//    // do nothing
+//    vTrace("vPipeBufferViaQueues: ran into LOWMEMORY\n"_Stz);
+//  }
 }
 
 /*----------------------------------------------------------------------------*/

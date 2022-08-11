@@ -9,6 +9,8 @@
 /*----------------------------------------------------------------------------*/
 : PipeIn[].sendTo \handler
 
+
+/*
   0 locals| pParcel |
 
   PipeIn[]\clear locals| pOperand |
@@ -20,15 +22,31 @@
   //  pOperand object.preSendWord@ execute
   //then
 
-  //ALKA: Never invoked (check with Myvan)
   pOperand object.class@ CN_PARCEL == if
-    assert
     pOperand to pParcel
     pParcel parcel.label
   else
-    //"OPERAND IS NOT PARCEL" .
-    pOperand Parcel[].addOperand
+    pOperand operand.toParcel to pParcel
   then
+
+  pParcel parcel.sendOut
+
+  pParcel parcel::delete
+
+  // calling op_loop continues
+
+  true
+  //stk
+*/
+
+  0 locals| pParcel |
+
+  PipeIn[]\clear locals| pOperand |
+
+  // we do not expect to see a job
+  pOperand object.class@ CN_JOB != ASSERT
+
+  pOperand Parcel[].addOperand
 
   Parcel[].sendOut
 
@@ -37,7 +55,6 @@
   // calling op_loop continues
 
   true
-  //stk
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -49,9 +66,6 @@
 : sendSE_CANCELLING \handler
 
   PipeIn[].sendTo discard
-
-  //"SendSE draining the pipe" .
-  //PipeIn[].drain
 
   true
 ;

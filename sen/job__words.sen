@@ -222,13 +222,16 @@
       then
     then
 
-    [op].isSend if
-      Parcel[].reset
-      true
-      exit
-    then
+    [op].isSend not assert
+
+    //[op].isSend if
+    //  Parcel[].reset
+    //  true
+    //  exit
+    //then
 
     [op].isRecv not assert
+
     //[op].isRecv if
     //  true
     //  exit

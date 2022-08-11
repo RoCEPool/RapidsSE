@@ -247,9 +247,12 @@
 
   PipeIn[].pipeOut
 
-  <tableNm> op__table if
-    Table[].tablePtn@ to TablePtn[]
+  <tableNm> op__table not if
+    true
+    exit
   then
+
+  Table[].tablePtn@ to TablePtn[]
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the plan for the fetch
