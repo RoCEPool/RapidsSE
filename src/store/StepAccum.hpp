@@ -15,6 +15,8 @@ namespace STORE
     i8   m_nMaxCycles;  // maximum cycles
     i8   m_nSumMisses;  // total llc misses
     i8   m_nMaxMisses;  // maximum llc misses
+    i8   m_iHeapsAlloc[12]; // total allocs done during per heap type this step
+    i8   m_iHeapsFree[12];  // total frees done during per heap type this step
 
     // must be last
     Footer m_xFooter;
@@ -25,6 +27,8 @@ namespace STORE
   
     void vEnter(i8& nEnterCycles, i8& nEnterMisses);
     void vExit(i8 nEnterCycles, i8 nEnterMisses);
+    void vHeapAllocCount(i8 iWhichHeap);
+    void vHeapFreeCount(i8 iWhichHeap);
     void vPrint(File* pFile);
     void vPrintAll(File* pFile);
     void vReset(void);

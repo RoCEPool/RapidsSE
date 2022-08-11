@@ -26,8 +26,8 @@
       if (! __pStepAccum) \
         __pStepAccum = pSteps->pAllocAccum((Stz*)__func__); \
       pSteps->vDropWrite(); \
-      } \
-    \
+      }         \
+    MY::vStepAccum(__pStepAccum);\
     __pStepAccum->vEnter(__iEnterCycles,__iEnterMisses); \
     \
   } \
@@ -47,7 +47,7 @@ EndDefine
   \
   if (__pStepAccum) \
     __pStepAccum->vExit(__iEnterCycles,__iEnterMisses); \
-  \
+  MY::vStepAccum(nullptr);\
 EndDefine
 
 

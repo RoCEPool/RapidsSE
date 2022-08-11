@@ -79,6 +79,22 @@ void StepAccum::vExit(i8 nEnterCycles, i8 nEnterMisses)
 /*----------------------------------------------------------------------------*/
 /* print to given file                                                        */
 /*----------------------------------------------------------------------------*/
+void StepAccum::vHeapAllocCount(i8 iWhichHeap)
+{
+  m_iHeapsAlloc[iWhichHeap]++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* print to given file                                                        */
+/*----------------------------------------------------------------------------*/
+void StepAccum::vHeapFreeCount(i8 iWhichHeap)
+{
+  m_iHeapsFree[iWhichHeap]++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* print to given file                                                        */
+/*----------------------------------------------------------------------------*/
 void StepAccum::vPrint(File* pFile)
 {
   if (0 == m_nInvoked)
