@@ -153,11 +153,6 @@ Object* Heap::pAllocObject(eCN eAllocClass)
 
   AM::MEMORY::vAssertAllocate();
 
-  //if ( ! gxaSizeHeap[eAllocClass].m_bAllocateWhenDisabled &&
-  //       MY::pOp() && ! MY::pOp()->bAllocateMemory() )
-  //  THROW_LOWMEMORY();
-
-  
   Job* pJob = MY::pJob();
   Thread* pThread = MY::pThread();
   

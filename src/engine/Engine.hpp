@@ -18,7 +18,6 @@ namespace ENGINE
     static void vRunCommandLine(void);
     static void vConcluding(void);
 
-    static void vAllocateWhenDisabled(void);
     static void vAttachRegion(void);
     static void vBootCheck(void);
     static void vCallPrompt(void);

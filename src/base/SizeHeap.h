@@ -19,8 +19,6 @@ struct SizeHeap
 
   b8  m_bLowMemoryDiscard;  // 05 discard received object when low memory?
 
-  b8  m_bAllocateWhenDisabled;  // TEMP: allocate memory even if disabled
-
   Word* m_pPreSendWord;     // 06 word to execute prior to sending the object
 
   fpPOSTFN* m_fpPostRecvFn; // 07 post receive cpp function

@@ -830,23 +830,6 @@ void Engine::vKillPrev(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set allocate when disabled                                                 */
-/*----------------------------------------------------------------------------*/
-void Engine::vAllocateWhenDisabled(void)
-{
-  //gxaSizeHeap[CN_LOCALCHAIN].m_bAllocateWhenDisabled = true;
-  //gxaSizeHeap[CN_PARCEL].m_bAllocateWhenDisabled = true;
-
-  // AddExited
-  //gxaSizeHeap[CN_SKIPNODE].m_bAllocateWhenDisabled = true;
-
-  // sink
-  //gxaSizeHeap[CN_EXITOPERAND].m_bAllocateWhenDisabled = true;
-  //gxaSizeHeap[CN_CHILDEXIT].m_bAllocateWhenDisabled = true;
-
-}
-
-/*----------------------------------------------------------------------------*/
 /* set low-memory receive discards                                            */
 /*----------------------------------------------------------------------------*/
 void Engine::vLowMemoryDiscard(void)
@@ -1544,10 +1527,6 @@ void Engine::vStartSystem(void)
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("  Adding PostRecv Functions\n"_Stz);
   vPostRecvFns();
-
-  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
-    vTrace("  Adding Allocate Memory when disabled\n"_Stz);
-  vAllocateWhenDisabled();
 
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("  Adding LowMemory Discard\n"_Stz);
