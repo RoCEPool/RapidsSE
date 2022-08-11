@@ -228,10 +228,11 @@
       exit
     then
 
-    [op].isRecv if
-      true
-      exit
-    then
+    [op].isRecv not assert
+    //[op].isRecv if
+    //  true
+    //  exit
+    //then
 
     // not already detected low memory ?
     [pipeline].lowMemory@ not if

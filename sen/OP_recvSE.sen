@@ -76,10 +76,10 @@
     trap::stackDepthZero
 
     // receive next object(s)
-    recvSE_recvNext
-    not if
-      exit
-    then
+    recvSE_recvNext assert
+    //not if
+    //  exit
+    //then
         
     recvSE_dispatch
 
