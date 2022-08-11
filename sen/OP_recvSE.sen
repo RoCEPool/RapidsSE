@@ -26,11 +26,12 @@
 /* recv next object(s)                                                        */
 /*----------------------------------------------------------------------------*/
 : recvSE_recvNext
-  
+
+/*
   nullptr to recvdObject[]
 
   Socket[].recvObject
-  /*
+
   Socket[].success@ not if
     false
     exit
@@ -39,7 +40,10 @@
   Socket[].object@\clear to recvdObject[]
 
   Socket[].success@
-  */
+*/
+
+  nullptr to recvdObject[]
+  Socket[].recvObject
 
   Socket[].success@ if
     Socket[].object@\clear to recvdObject[]
@@ -59,7 +63,7 @@
   then
     
   recvdObject[] recvdObject[] object.postRecvWord@ execute
-  */
+*/
 
   recvdObject[].isNull not if
     recvdObject[] recvdObject[] object.postRecvWord@ execute
@@ -71,19 +75,33 @@
 /*----------------------------------------------------------------------------*/
 : recvSE_loop ( -- )
 
+/*
   begin
 
     trap::stackDepthZero
 
     // receive next object(s)
     recvSE_recvNext assert
-    //not if
-    //  exit
-    //then
+    not if
+      exit
+    then
         
     recvSE_dispatch
 
   again
+
+*/
+
+  begin
+
+    trap::stackDepthZero
+
+    // receive next object(s)
+    recvSE_recvNext assert
+    recvSE_dispatch
+
+  again
+
 ;
 
 /*----------------------------------------------------------------------------*/
