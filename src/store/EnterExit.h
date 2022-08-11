@@ -25,7 +25,7 @@
       pSteps->vGrabWrite(); \
       if (! __pStepAccum) \
         __pStepAccum = pSteps->pAllocAccum((Stz*)__func__); \
-        pSteps->vDropWrite(); \
+      pSteps->vDropWrite(); \
       } \
     \
     __pStepAccum->vEnter(__iEnterCycles,__iEnterMisses); \
@@ -35,9 +35,8 @@
   if (C_TRACE_STEPS && m_iTraceMask) \
     printf("%s\n",__func__); \
   \
-  vCheckBreakPt(); \
   \
-  PsxThd::vTlsSet(giTLS_StepKey,__func__); \
+  PsxThd::vTlsSet(giTLS_StepKey,(Stz*)__func__); \
   \
 EndDefine
 

@@ -830,7 +830,7 @@ void Step::vJobProgress(void)
   
   vTrace("%s %lldus\n"_Stz
          ,sPrint.szStz()
-         ,pProgress->iMicroseconds())
+         ,pProgress->iMicroseconds());
 
   EXIT();
 }
