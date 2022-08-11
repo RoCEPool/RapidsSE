@@ -890,7 +890,6 @@ void vDdlLockAssertNone(void);
   void vJobRejectJobErrorStore(void);
   void vJobRejectJobFetch(void);
   void vJobRejectJobSetup(void);
-  void vJobRemoveFromList(void);
   void vJobRemoveLocal(void);
   void vJobRemoveOriginator(void);
   void vJobRemoveParticipant(void);
