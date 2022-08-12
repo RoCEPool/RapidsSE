@@ -1378,7 +1378,7 @@ void Stencil::vSetupOrdAgg(Combined* pCombined, Stream* pStream, Op* pOp) {
   pCombined->aCombinedT()->m_aRowCellArrayAgg =
       (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleAgg,
                                       &pCombined->aCombinedT()->m_racStrAreaAgg);
-  pCombined->aCombinedT()->m_racStrAreaSavAgg = pCombined->aCombinedT()->m_racStrAreaAgg;
+  pCombined->aCombinedT()->m_racStrAreaAggSav = pCombined->aCombinedT()->m_racStrAreaAgg;
 
   // get the indexDef
   IndexDef *pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
@@ -1415,7 +1415,7 @@ void Stencil::vSetupProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp) {
   pCombined->aCombinedT()->m_aRowCellArrayAgg =
       (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleAgg,
                                       &pCombined->aCombinedT()->m_racStrAreaAgg);
-  pCombined->aCombinedT()->m_racStrAreaSavAgg = pCombined->aCombinedT()->m_racStrAreaAgg;
+  pCombined->aCombinedT()->m_racStrAreaAggSav = pCombined->aCombinedT()->m_racStrAreaAgg;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1434,7 +1434,7 @@ void Stencil::vSetupProjectExp(Combined* pCombined, Stream* pStream, Op* pOp) {
   pCombined->aCombinedT()->m_aRowCellArrayP =
       (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleP,
                                       &pCombined->aCombinedT()->m_racStrAreaP);
-  pCombined->aCombinedT()->m_racStrAreaSavP = pCombined->aCombinedT()->m_racStrAreaP;
+  pCombined->aCombinedT()->m_racStrAreaPSav = pCombined->aCombinedT()->m_racStrAreaP;
 
 }
 
@@ -1486,7 +1486,7 @@ void Stencil::vSetupSort(Combined* pCombined, Stream* pStream, Op* pOp) {
     pCombined->aCombinedT()->m_aRowCellArrayP =
         (byte *) RowSingle::aGetCellArray((RowSingle *) pCombined->aCombinedT()->m_aRowSingleP,
                                           &pCombined->aCombinedT()->m_racStrAreaP);
-    pCombined->aCombinedT()->m_racStrAreaSavP = pCombined->aCombinedT()->m_racStrAreaP;
+    pCombined->aCombinedT()->m_racStrAreaPSav = pCombined->aCombinedT()->m_racStrAreaP;
   }
 
   // delete the indexdef in the LU of OP

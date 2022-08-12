@@ -335,14 +335,14 @@ struct Combined_T
   void*   m_aRowSingleP;
   void*   m_aRowCellArrayP;
   char*   m_racStrAreaP;
-  char*   m_racStrAreaSavP;
+  char*   m_racStrAreaPSav;
 
   // project (agg)
   i8      m_iRowsProcessed;
   void*   m_aRowSingleAgg;
   void*   m_aRowCellArrayAgg;
   char*   m_racStrAreaAgg;
-  char*   m_racStrAreaSavAgg;
+  char*   m_racStrAreaAggSav;
 
   // ordered aggregates
   i8      m_iHasOrdAggRow;
