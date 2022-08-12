@@ -36,7 +36,9 @@ namespace STORE
     void vGrabWrite(void);
     void vReset(void);
     void vShow(Stz* szStepNm);
+    void vShowAll(void);
     void vWrite(Stz* szPath);
+    void vWriteAll(void);
     void vWriteSingleStep(Stz* szPath, Stz* szStepNm);
 
   

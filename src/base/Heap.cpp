@@ -235,6 +235,7 @@ Object* Heap::pAllocObject(eCN eAllocClass)
   if(MY::pStepAccum())
   {
     MY::pStepAccum()->vHeapAllocCount(m_eHeap);
+    MY::pStepAccum()->m_nSumAllocs++;
   }
 
   //bool bSetLogMemory = false;
@@ -411,6 +412,7 @@ void Heap::vFreeObject(Object* pObject)
   if(MY::pStepAccum())
   {
     MY::pStepAccum()->vHeapFreeCount(m_eHeap);
+    MY::pStepAccum()->m_nSumFrees++;
   }
 
   //Thread* pThread = MY::pThread();

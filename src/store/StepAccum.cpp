@@ -24,6 +24,17 @@ StepAccum::StepAccum(void)
   m_nSumMisses = 0;
   m_nMaxMisses = 0;
 
+  m_nSumAllocs = 0;
+  m_nMaxAllocs = 0;
+  m_nSumFrees = 0;
+  m_nMaxFrees = 0;
+
+  for(i8 i = 0; i < 12; i++)
+  {
+    m_iHeapsAlloc[i] = 0;
+    m_iHeapsFree[i] = 0;
+  }
+
   _checkInitialised_(CN_STEPACCUM);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STEPACCUM,_FOOTER_);
@@ -74,6 +85,14 @@ void StepAccum::vExit(i8 nEnterCycles, i8 nEnterMisses)
 #else
   // do nothing
 #endif
+  if(m_nSumAllocs > m_nMaxAllocs)
+    m_nMaxAllocs = m_nSumAllocs;
+
+  if(m_nSumFrees > m_nMaxFrees)
+    m_nMaxFrees = m_nSumFrees;
+
+  m_nSumAllocs = 0;
+  m_nSumFrees = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -81,7 +100,8 @@ void StepAccum::vExit(i8 nEnterCycles, i8 nEnterMisses)
 /*----------------------------------------------------------------------------*/
 void StepAccum::vHeapAllocCount(i8 iWhichHeap)
 {
-  m_iHeapsAlloc[iWhichHeap]++;
+  RASSERT(iWhichHeap > 0);
+  m_iHeapsAlloc[iWhichHeap-1]++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -89,7 +109,8 @@ void StepAccum::vHeapAllocCount(i8 iWhichHeap)
 /*----------------------------------------------------------------------------*/
 void StepAccum::vHeapFreeCount(i8 iWhichHeap)
 {
-  m_iHeapsFree[iWhichHeap]++;
+  RASSERT(iWhichHeap > 0);
+  m_iHeapsFree[iWhichHeap-1]++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -193,23 +214,17 @@ void StepAccum::vPrintAll(File* pFile)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-//            0    1      2      3       4     5     6     7
-//  vTrace("  %24s %12lld %12lld %8lldns %8lld %8lld %8lld %8lld\n"_Stz,
-//          m_szStepNm,               // 0
-//          m_nInvoked,              // 1
-//
-//          m_nSumCycles,            // 2
-//          nCyclesPerInvoke,        // 3
-//          nNanosecondsPerInvoke,   // 4
-//          nMaxNanosecondsForInvoke,// 5
-//
-//          m_nSumMisses,            // 6
-//          m_nMaxMisses             // 7
-//          );
-
-  //            0   1     2     3     4     5     6     7
-  pFile->vPrint("%s, %lld, %lld, %lld, %lld, %lld, %lld, %lld\n"_Stz,
-               m_szStepNm,               // 0
+  pFile->vPrint("%s, %lld, "
+                "%lld, %lld, %lld, %lld, "
+                "%lld, %lld, "
+                "%lld, %lld, "
+                "%lld, %lld, %lld, %lld, "
+                "%lld, %lld, %lld, %lld, "
+                "%lld, %lld, %lld, %lld, "
+                "%lld, %lld, %lld, %lld, "
+                "%lld, %lld, %lld, %lld, "
+                "%lld, %lld, %lld, %lld\n"_Stz,
+               m_szStepNm,              // 0
                m_nInvoked,              // 1
                
                m_nSumCycles,            // 2
@@ -218,7 +233,40 @@ void StepAccum::vPrintAll(File* pFile)
                nMaxNanosecondsForInvoke,// 5
                
                m_nSumMisses,            // 6
-               m_nMaxMisses             // 7
+               m_nMaxMisses,            // 7
+
+               m_nMaxAllocs,            // 8
+               m_nMaxFrees,             // 9
+
+               m_iHeapsAlloc[0],        // 10 p_tiny
+               m_iHeapsAlloc[1],        // 11 p_small
+               m_iHeapsAlloc[2],        // 12 p_medium
+               m_iHeapsAlloc[3],        // 13 p_large
+
+               m_iHeapsAlloc[4],        // 14 t_tiny
+               m_iHeapsAlloc[5],        // 15 t_small
+               m_iHeapsAlloc[6],        // 16 t_medium
+               m_iHeapsAlloc[7],        // 17 t_large
+
+               m_iHeapsAlloc[8],        // 18 v_tiny
+               m_iHeapsAlloc[9],        // 19 v_small
+               m_iHeapsAlloc[10],       // 20 v_medium
+               m_iHeapsAlloc[11],       // 21 v_large
+
+               m_iHeapsFree[0],         // 22 p_tiny
+               m_iHeapsFree[1],         // 23 p_small
+               m_iHeapsFree[2],         // 24 p_medium
+               m_iHeapsFree[3],         // 25 p_large
+
+               m_iHeapsFree[4],         // 26 t_tiny
+               m_iHeapsFree[5],         // 27 t_small
+               m_iHeapsFree[6],         // 28 t_medium
+               m_iHeapsFree[7],         // 29 t_large
+
+               m_iHeapsFree[8],         // 30 v_tiny
+               m_iHeapsFree[9],         // 31 v_small
+               m_iHeapsFree[10],        // 32 v_medium
+               m_iHeapsFree[11]         // 33 v_large
                );
 }
 
@@ -299,6 +347,20 @@ void StepAccum::vShow(void)
            AM::szBuild(),
 
           C_VARGS_END);
+
+  vTrace("        %7s, %7s, %7s, %7s, %7s, %7s, %7s, %7s, %7s, %7s, %7s, %7s, \n"_Stz,
+         "P_T", "P_S", "P_M", "P_L", "T_T", "T_S", "T_M", "T_L", "V_T", "V_S", "V_M", "V_L");
+
+  vTrace("Allocs: %7lld, %7lld, %7lld, %7lld, %7lld, %7lld, %7lld, %7lld, %7lld, %7lld, %7lld, %7lld\n"_Stz,
+         m_iHeapsAlloc[0], m_iHeapsAlloc[1], m_iHeapsAlloc[2], m_iHeapsAlloc[3],
+         m_iHeapsAlloc[4], m_iHeapsAlloc[5], m_iHeapsAlloc[6], m_iHeapsAlloc[7],
+         m_iHeapsAlloc[8], m_iHeapsAlloc[9], m_iHeapsAlloc[10], m_iHeapsAlloc[11]);
+
+  vTrace("Frees:  %7lld, %7lld, %7lld, %7lld, %7lld, %7lld, %7lld, %7lld, %7lld, %7lld, %7lld, %7lld\n\n"_Stz,
+         m_iHeapsFree[0], m_iHeapsFree[1], m_iHeapsFree[2], m_iHeapsFree[3],
+         m_iHeapsFree[4], m_iHeapsFree[5], m_iHeapsFree[6], m_iHeapsFree[7],
+         m_iHeapsFree[8], m_iHeapsFree[9], m_iHeapsFree[10], m_iHeapsFree[11]);
+
 }
 
 /*----------------------------------------------------------------------------*/
