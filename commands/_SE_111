@@ -11,7 +11,7 @@ create table SE_111(
   ftimestamp timestamp
  ) ;
 
-load SE_111 "../DATA/Load/SE_111.csv";
+load SE_111 "../DATA/JIRA/SE_111.csv";
 
 select * from SE_111;
 

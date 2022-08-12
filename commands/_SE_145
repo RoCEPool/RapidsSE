@@ -8,7 +8,7 @@ create table SE_145(
   c float
  ) ;
 
-load SE_145 "../DATA/Load/SE_145.csv";
+load SE_145 "../DATA/JIRA/SE_145.csv";
 
 select * from SE_145;
 
