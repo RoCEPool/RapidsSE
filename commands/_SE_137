@@ -1,0 +1,17 @@
+/*============================================================================*/
+/* _SE_137                                                                        */
+/*============================================================================*/
+
+create table comp_like_2(a varchar,b varchar,c varchar);
+load comp_like_2 "../DATA/JIRA/comp_like_2.csv";
+select * from comp_like_2 where a like '12*23';
+
+/*
+issue：
+
+The expected result is:
+('12*23','A0203','a''b''c''d')
+
+The actual result is:
+('abc^123','A0201','a\b\c\d')
+*/
