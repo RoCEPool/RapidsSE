@@ -67,8 +67,8 @@
        *paW++ = C_DATUM_NULL;                                              \
     }                                                                      \
     else {                                                                 \
-      *paW++ =  (!iArg1 && iArg2) ||                              \
-          (iArg1 && !iArg2) ? 1 : 0;                             \
+      *paW++ =  (!iArg1 && iArg2) ||                                       \
+          (iArg1 && !iArg2) ? 1 : 0;                                       \
     }                                                                      \
   }
 
