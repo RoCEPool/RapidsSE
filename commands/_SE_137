@@ -4,7 +4,7 @@
 
 create table SE_137a (a varchar);
 
-load SE_137a "../DATA/JIRA/SE_137a.csv";
+load SE_137a "../DATA/JIRA/SE_137a1.csv";
 
 select * from SE_137a;
 

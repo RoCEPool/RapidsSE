@@ -979,7 +979,27 @@ char StrLib::cEscapeFor(const char cArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* cEscapeInsert: convert a special character to escaped character form       */
+/* insert cWith before any instance of cChar in azStr                         */
+/*----------------------------------------------------------------------------*/
+void StrLib::vEscapeInsert(char* azStr, char cChar, char cWith)
+{
+  _static_
+
+  char* azCrs = azStr;
+
+  while (*azCrs) {
+    if (cChar != *azCrs) {
+      azCrs++;
+      continue;
+    }
+
+    vInsertChar(azCrs,cWith);
+    azCrs += 2;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert a special character to escaped character form                      */
 /*----------------------------------------------------------------------------*/
 char StrLib::cEscapeInverse(const char cArg)
 {
@@ -2544,6 +2564,25 @@ i8 StrLib::iHexToInw(const char c)
 }
 
 /*----------------------------------------------------------------------------*/
+/* insert char at start of given str                                          */
+/*----------------------------------------------------------------------------*/
+void StrLib::vInsertChar(char* azAt, char cArg)
+{
+  _static_
+
+  char* azCrs = azNullTerminator(azAt);
+
+  *(azCrs+1) = *azCrs;
+
+  while (azCrs != azAt) {
+    azCrs--;
+    *(azCrs+1) = *azCrs;
+  }
+
+  *azAt = cArg;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bIsAlpha: is char an alphabetic character?                                 */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bIsAlpha(const char c)
@@ -3477,7 +3516,11 @@ i8 StrLib::iLike2(char* azStr, char* azRegExp)
   // null terminate the new regular expression
   *R++ = '\0';
 
-  return bMatch(azStr, sMatchRegExp.azChar());
+  //StrLib::vEscapeInsert(sMatchRegExp.azChar(),'*','\\');
+
+  bool bDidMatch = bMatch(azStr, sMatchRegExp.azChar());
+
+  return bDidMatch;
 }
 
 
@@ -3577,11 +3620,14 @@ bool StrLib::bMatch(char* azStr, char* azRegExp)
 /*----------------------------------------------------------------------------*/
 bool StrLib::bMatchHere(char* azStr, char* azRegExp)
 {
+  //vTrace("bMatchHere: %s : %s\n"_Stz,azStr,azRegExp);
 
-  //if (azRegExp[0] == '\0')
   if (azRegExp[0] == '\0' && *azStr == '\0')
     return true;
 
+  //if (azRegExp[0] == '\\')
+  //  azRegExp++;
+  //else
   if (azRegExp[1] == '*')
     return bMatchStar(azStr,azRegExp+2,azRegExp[0]);
   
@@ -3632,7 +3678,7 @@ char* StrLib::sNew(const char* sFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* get ptr to null terminator                                                 */
 /*----------------------------------------------------------------------------*/
-char* StrLib::zNullTerminator(char* s)
+char* StrLib::azNullTerminator(char* s)
 {
   _static_
   
@@ -3690,7 +3736,7 @@ void StrLib::vPad(char* azDst, i8 iToLength, const char cWith)
   if (iCurrLength >= iToLength)
     return;
   
-  char* z = zNullTerminator(azDst);
+  char* z = azNullTerminator(azDst);
   i8 nChars = iToLength - iCurrLength;
   
   for (i8 iChar = 0; iChar < nChars; iChar++)
