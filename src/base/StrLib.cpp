@@ -985,6 +985,7 @@ void StrLib::vEscapeInsert(char* azStr, char cChar, char cWith)
 {
   _static_
 
+
   char* azCrs = azStr;
 
   while (*azCrs) {
@@ -993,7 +994,10 @@ void StrLib::vEscapeInsert(char* azStr, char cChar, char cWith)
       continue;
     }
 
+    vTrace("vEscapeInsert: %s "_Stz,azStr);
     vInsertChar(azCrs,cWith);
+    vTrace("-- %s \n"_Stz,azStr);
+
     azCrs += 2;
   }
 }
@@ -3479,10 +3483,16 @@ i8 StrLib::iLike2(char* azStr, char* azRegExp)
 
    */
 
-  s256 sMatchRegExp;
+  s256 sEscapedRegExp = azRegExp;
+  StrLib::vEscapeInsert(sEscapedRegExp.azChar(),'*','\\');
 
-  char *r = azRegExp;
+  s256 sMatchRegExp;
+  char *r = sEscapedRegExp.azChar();
   char *R = sMatchRegExp.azChar();
+
+//  s256 sMatchRegExp;
+//  char *r = azRegExp;
+//  char *R = sMatchRegExp.azChar();
 
   // handle empty string and empty regular expression
   if (*azStr == '\0' && *r == '\0') {
@@ -3497,26 +3507,24 @@ i8 StrLib::iLike2(char* azStr, char* azRegExp)
   // iterate the regular expression
   while (*r) {
 
-    // replace '%' with '.*'
     if (*r == '%') {
+      // replace '%' with '.*'
       *R++ = '.';
       *R++ = '*';
     }
-
-      // replace '_' with '.'
     else if (*r == '_') {
+      // replace '_' with '.'
       *R++ = '.';
     }
-    else
+    else {
       *R++ = *r;
+    }
 
     r++;
   }
 
   // null terminate the new regular expression
   *R++ = '\0';
-
-  //StrLib::vEscapeInsert(sMatchRegExp.azChar(),'*','\\');
 
   bool bDidMatch = bMatch(azStr, sMatchRegExp.azChar());
 
@@ -3618,16 +3626,16 @@ bool StrLib::bMatch(char* azStr, char* azRegExp)
 /*----------------------------------------------------------------------------*/
 /* bMatchHere: search for regexp at beginning of string                       */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bMatchHere(char* azStr, char* azRegExp)
-{
+bool StrLib::bMatchHere(char* azStr, char* azRegExp) {
   //vTrace("bMatchHere: %s : %s\n"_Stz,azStr,azRegExp);
 
   if (azRegExp[0] == '\0' && *azStr == '\0')
     return true;
 
-  //if (azRegExp[0] == '\\')
-  //  azRegExp++;
-  //else
+  if (azRegExp[0] == '\\') {
+    return bMatchHere(azStr,azRegExp+1);
+  }
+
   if (azRegExp[1] == '*')
     return bMatchStar(azStr,azRegExp+2,azRegExp[0]);
   
@@ -3635,8 +3643,8 @@ bool StrLib::bMatchHere(char* azStr, char* azRegExp)
     return (*azStr == '\0');
   
   if (*azStr != '\0' && (azRegExp[0] == '.' || azRegExp[0] == *azStr))
-    return bMatchHere(azStr+1,azRegExp+1);
-  
+  return bMatchHere(azStr+1,azRegExp+1);
+
   return false;
 }
 
