@@ -417,6 +417,23 @@ void ToKeyHshRow::vNewRowBuffer(void)
     } \
   }
 
+#define vSKIP_TILL_LINE_END() \
+  { \
+    for (;;) { \
+      if (cCurChr && cCurChr == m_cLineEnd && \
+          m_cLineEnd2nd && cNxtChr == m_cLineEnd2nd) { \
+        break; \
+      } \
+      else \
+      if (cCurChr && cCurChr == m_cLineEnd && \
+          ! m_cLineEnd2nd) { \
+        break; \
+      } \
+      else \
+        vACCEPT_CHAR(); \
+    } \
+  }
+
 #define vSKIP_RECORD_LINE_END() \
   { \
     if (cCurChr && cCurChr == m_cRecordTerminator) \
@@ -967,6 +984,7 @@ L_NextFieldInRecord:
   if (++i_Fld >= nCols) {
     if (iTraceBits & C_BIT_TestMoreFields)
       vTrace("L_NextFieldInRecord: end-of-fields\n"_Stz);
+    vSKIP_TILL_LINE_END();
     goto L_RecordEndLineEnd;
   }
   
