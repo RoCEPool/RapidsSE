@@ -2114,9 +2114,11 @@ L_Varchar_unquoted:
   *acVchDst++ = '\0';
 
   // its not an enclosed varchar so we consider it to be valid
-  if (nVchChars >= nPixLength)
+  if (nVchChars >= nPixLength) {
     nVchChars = nPixLength;
-  
+    *(azColVal_varchar + nVchChars) = '\0';
+  }
+
   goto L_Varchar_depositValue;
   
   
@@ -2226,9 +2228,11 @@ L_Varchar_singleQuotedTerminate:
   *acVchDst++ = '\0';
 
   // its not an enclosed varchar so we consider it to be valid
-  if (nVchChars >= nPixLength)
+  if (nVchChars >= nPixLength) {
     nVchChars = nPixLength;
-  
+    *(azColVal_varchar + nVchChars) = '\0';
+  }
+
   vWHITE_SPACE_trailing(EC_CSV_TIMESTAMP_INVALID);
 
   goto L_Varchar_depositValue;
@@ -2340,9 +2344,11 @@ L_Varchar_doubleQuotedTerminate:
   *acVchDst++ = '\0';
 
   // its not an enclosed varchar so we consider it to be valid
-  if (nVchChars >= nPixLength)
+  if (nVchChars >= nPixLength) {
     nVchChars = nPixLength;
-    
+    *(azColVal_varchar + nVchChars) = '\0';
+  }
+
   vWHITE_SPACE_trailing(EC_CSV_TIMESTAMP_INVALID);
 
   goto L_Varchar_depositValue;
@@ -2411,9 +2417,11 @@ L_Varchar_userEnclosed:
   *acVchDst++ = '\0';
 
   // its not an enclosed varchar so we consider it to be valid
-  if (nVchChars >= nPixLength)
+  if (nVchChars >= nPixLength) {
     nVchChars = nPixLength;
-  
+    *(azColVal_varchar + nVchChars) = '\0';
+  }
+
   vWHITE_SPACE_trailing(EC_CSV_VARCHAR_INVALID);
   
   goto L_Varchar_depositValue;

@@ -65,7 +65,7 @@ Encoding::Encoding(StreamDef* pStreamDef)
     rxColEnc.m_i_Tail     = C_UNKNOWN;
     rxColEnc.m_aTailLine  = nullptr;
     rxColEnc.m_bDuplicate = false;
-    rxColEnc.m_jTailBytes = C_UNKNOWN;
+    rxColEnc.m_jTailBytes = 0;
   }
   
   for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
@@ -398,7 +398,7 @@ void Encoding::vReset(void)
     rxColEnc.m_i_Tail     = C_UNKNOWN;
     rxColEnc.m_aTailLine  = nullptr;
     rxColEnc.m_bDuplicate = false;
-    rxColEnc.m_jTailBytes  = C_UNKNOWN;
+    rxColEnc.m_jTailBytes = 0;
   }
   
 #ifdef WITH_CHECK_INITIALISED
