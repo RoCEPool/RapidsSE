@@ -267,6 +267,19 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* job signal parent and exit                                                 */
+/*----------------------------------------------------------------------------*/
+: Job_signalAndExit
+   Path[].discardAll
+   [task].grabLock
+   [job].addExited
+   [job].updateParent assert
+   [job].signalParent
+   [task].retire
+   HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
 /* standard exception recovery                                                */
 /*----------------------------------------------------------------------------*/
 : JobLowMemory_recoveryWord

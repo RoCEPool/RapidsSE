@@ -828,9 +828,6 @@ void Step::vJobPreExecuteTest(void)
 
   eEC eError = AM::JOB::ePreExecuteTest(pJob);
 
-  //if (pJob->tJobId().uJobNo() == 93)
-  //  eError = EC_LOW_MEMORY;
-
   m_pDataStack->vPushInt(eError);
 
   EXIT();
