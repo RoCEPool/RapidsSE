@@ -81,7 +81,7 @@
         "CombinedOP ALREADY DETECTED LOW MEMORY!!!" .
       then
 
-      "COMBINEDOP TOGGLING TO ABNORMAL HANDLERS FOR OP"  .
+      //"COMBINEDOP TOGGLING TO ABNORMAL HANDLERS FOR OP"  .
       "default_abnormalHandlers" FIND execute
       "default_lowMemHandlers" FIND execute
       //"COMBINEDOP TOGGLED TO ABNORMAL HANDLERS FOR OP" .
@@ -220,10 +220,10 @@
         "CombinedOP ALREADY DETECTED LOW MEMORY!!!" .
       then
 
-      "COMBINEDOP TOGGLING TO ABNORMAL HANDLERS FOR OP"  .
+      //"COMBINEDOP TOGGLING TO ABNORMAL HANDLERS FOR OP"  .
       "default_abnormalHandlers" FIND execute
       "default_lowMemHandlers" FIND execute
-      "COMBINEDOP TOGGLED TO ABNORMAL HANDLERS FOR OP" .
+      //"COMBINEDOP TOGGLED TO ABNORMAL HANDLERS FOR OP" .
     else
       errorCode op__execErr
     then
