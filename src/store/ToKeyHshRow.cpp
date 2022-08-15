@@ -984,7 +984,7 @@ L_NextFieldInRecord:
   if (++i_Fld >= nCols) {
     if (iTraceBits & C_BIT_TestMoreFields)
       vTrace("L_NextFieldInRecord: end-of-fields\n"_Stz);
-    vSKIP_TILL_LINE_END();
+    //vSKIP_TILL_LINE_END();
     goto L_RecordEndLineEnd;
   }
   
