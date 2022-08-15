@@ -134,6 +134,19 @@ void Steps::vShow(Stz* szStepNm)
 /*----------------------------------------------------------------------------*/
 /* write steps to given file                                                  */
 /*----------------------------------------------------------------------------*/
+void Steps::vShowAll(void)
+{
+  m_okLock.vGrabWrite();
+
+  for (i8 i_Step = 0; i_Step < m_iNext; i_Step++)
+    m_xStepAccum[i_Step].vShow();
+
+  m_okLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* write steps to given file                                                  */
+/*----------------------------------------------------------------------------*/
 void Steps::vWrite(Stz* szPath)
 {
   File* pFile = new File(nullptr);
@@ -162,6 +175,48 @@ void Steps::vWrite(Stz* szPath)
   
   pFile->vClose();
   
+  delete pFile;
+}
+
+/*----------------------------------------------------------------------------*/
+/* write all steps to given file                                              */
+/*----------------------------------------------------------------------------*/
+void Steps::vWriteAll(void)
+{
+  File* pFile = new(C_VIA_MALLOC) File(nullptr);
+
+  Now oNow;
+
+  s256 sFilePath;
+
+  sFilePath.vCatSprint("../tmp/Steps_%s.csv"_Stz,oNow.sz());
+  vTrace("%s\n"_Stz, sFilePath.szStz());
+
+  bool bOpened = pFile->bOpenWrite(sFilePath.szStz());
+  if (! bOpened) {
+    vTrace("Unable to open Steps file: %s\n"_Stz,pFile->sFilePath().szStz());
+    return;
+  }
+
+  m_okLock.vGrabWrite();
+
+  pFile->vPrint("Step Name, Invoked, Total Cycles, Cycles Per Invoke, "
+                "ns Per Invoke, Max ns, Total Misses, Max Misses, Max Allocs, Max Frees, "
+                "P_Tiny Alloc, P_Small Alloc, P_Medium Alloc, P_Large Alloc, "
+                "T_Tiny Alloc, T_Small Alloc, T_Medium Alloc, T_Large Alloc, "
+                "V_Tiny Alloc, V_Small Alloc, V_Medium Alloc, V_Large Alloc, "
+                "P_Tiny Frees, P_Small Frees, P_Medium Frees, P_Large Frees, "
+                "T_Tiny Frees, T_Small Frees, T_Medium Frees, T_Large Frees, "
+                "V_Tiny Frees, V_Small Frees, V_Medium Frees, V_Large Frees \n"_Stz);
+  for (i8 i_Step = 0; i_Step < m_iNext; i_Step++)
+    m_xStepAccum[i_Step].vPrintAll(pFile);
+
+  m_okLock.vDropWrite();
+
+  vTrace("Written: %s\n"_Stz,pFile->sFilePath().szStz());
+
+  pFile->vClose();
+
   delete pFile;
 }
 

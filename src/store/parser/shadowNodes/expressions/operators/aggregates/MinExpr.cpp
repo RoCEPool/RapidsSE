@@ -29,7 +29,7 @@ static Stz* C_MIN_EXPR_DEFN = "/__root__/definitions/object/expr/operator/aggreg
 static eCT aeTypeCalculus[CT_ENUMS] =
 
 //    NONE     BOOLEAN       CHAR        DATE     DECIMAL     FLOAT     INTEGER     INTERVAL_DT     INTERVAL_YM     TIME     TIMESTAMP     VARCHAR     UNKNOWN
-    { CT_NONE, CT_NONE/*X*/, CT_VARCHAR, CT_DATE, CT_DECIMAL, CT_FLOAT, CT_INTEGER, CT_NONE/*X*/,   CT_NONE/*X*/,   CT_TIME, CT_TIMESTAMP, CT_VARCHAR, CT_NONE/*X*/ };
+    { CT_NONE, CT_NONE/*X*/, CT_VARCHAR, CT_DATE, CT_DECIMAL, CT_FLOAT, CT_INTEGER, CT_NONE/*X*/,   CT_NONE/*X*/,   CT_TIME, CT_TIMESTAMP, CT_VARCHAR, CT_UNKNOWN/*X*/ };
 
 // References:
 //  If MAX or MIN is specified, then the declared type of the result is the

@@ -1,10 +1,17 @@
 /*============================================================================*/
-/* _SE_137                                                                        */
+/* _SE_137 like escape                                                        */
 /*============================================================================*/
 
-create table comp_like_2(a varchar,b varchar,c varchar);
-load comp_like_2 "../DATA/JIRA/comp_like_2.csv";
-select * from comp_like_2 where a like '12*23';
+create table SE_137a (a varchar);
+
+load SE_137a "../DATA/JIRA/SE_137a1.csv";
+
+select * from SE_137a;
+
+select * from SE_137a where a like '12*23';
+
+drop table SE_137a;
+
 
 /*
 issue：
@@ -15,3 +22,7 @@ The expected result is:
 The actual result is:
 ('abc^123','A0201','a\b\c\d')
 */
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

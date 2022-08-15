@@ -12,6 +12,8 @@
 #include "Grid.hpp"
 #include "Pipeline.hpp"
 
+extern pthread_key_t giTLS_StepAccum;
+
 /*----------------------------------------------------------------------------*/
 /* get elapsed time since boot in nanoseconds                                 */
 /*----------------------------------------------------------------------------*/
@@ -440,6 +442,32 @@ Pipeline* MY::pPipeline(void)
     return nullptr;
   
   return pOp->pPipeline();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current step accum                                                     */
+/*----------------------------------------------------------------------------*/
+StepAccum* MY::pStepAccum(void)
+{
+  _static_
+
+  if (C_UNKNOWN == (i8)giTLS_StepAccum)
+    return nullptr;
+
+  StepAccum* pStepAccum = static_cast<StepAccum*>(PsxThd::pTlsGet(giTLS_StepAccum));
+
+  return pStepAccum;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set current step accum                                                     */
+/*----------------------------------------------------------------------------*/
+void MY::vStepAccum(StepAccum* pStepAccum)
+{
+  _static_
+
+  PsxThd::vTlsSet(giTLS_StepAccum,pStepAccum);
+
 }
 
 /*----------------------------------------------------------------------------*/

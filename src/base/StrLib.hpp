@@ -81,6 +81,7 @@ namespace BASE
     static void  vEscapeDblQuote(const char* sArg, char* sEscaped);
     static char  cEscapeFor(const char cArg);
     static char  cEscapeInverse(const char cArg);
+    static void  vEscapeInsert(char* azStr, char cChar, char cWith);
     static char  cEscapeProcessing(char** aaSrc, char cEscapeChar);
     static bool  bEscapedSpecial(const char cArg);
     static bool  bExtractArg(char** ps, char* pPath);
@@ -141,7 +142,8 @@ namespace BASE
     static i8    iGleanInt(char* azArg);
   
     static i8    iHexToInw(const char c);
-    
+
+    static void  vInsertChar(char* azAt, char cArg);
     static bool  bIsAlpha(const char c);
     static bool  bIsAlphaDigit(const char c);
     static bool  bIsAmpersand(const char c);
@@ -208,7 +210,7 @@ namespace BASE
     static bool  bMatchStar(char* azStr, char* azRegExp, char cChr);
 
     static char* sNew(const char* azFormat, ...);
-    static char* zNullTerminator(char* s);
+    static char* azNullTerminator(char* s);
 
     static i8    iOccurrence(char* ps, const char cArg);
     static bool  bOneOf(char** asaSet, char* sWord);

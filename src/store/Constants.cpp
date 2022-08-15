@@ -374,6 +374,7 @@ void Constants::vAddConstantsCpp(void)
   /* 33 */ vAddConstant("EC_NO_SUCH_WORD"_Stz,       EC_NO_SUCH_WORD);
   
   /* 34 */ vAddConstant("EC_NODE_EXISTS"_Stz,        EC_NODE_EXISTS);
+  /* 34 */ vAddConstant("EC_NODE_LOSS"_Stz,          EC_NODE_LOSS);
   
   /* 34 */ vAddConstant("EC_NOT_A_CATALOG"_Stz,      EC_NOT_A_CATALOG);
   /* 35 */ vAddConstant("EC_NOT_A_FOLDER"_Stz,       EC_NOT_A_FOLDER);
