@@ -29,7 +29,7 @@ static Stz* C_AVG_EXPR_DEFN = "/__root__/definitions/object/expr/operator/aggreg
 static eCT aeTypeCalculus[CT_ENUMS] =
 
 //    NONE     BOOLEAN   CHAR     DATE     DECIMAL     FLOAT     INTEGER     INTERVAL_DT   INTERVAL_YM   TIME     TIMESTAMP  VARCHAR  UNKNOWN
-    { CT_NONE, CT_NONE,  CT_NONE, CT_NONE, CT_DECIMAL, CT_FLOAT, CT_DECIMAL, CT_NONE/*X*/, CT_NONE/*X*/, CT_NONE, CT_NONE,   CT_NONE, CT_NONE };
+    { CT_NONE, CT_NONE,  CT_NONE, CT_NONE, CT_DECIMAL, CT_FLOAT, CT_DECIMAL, CT_NONE/*X*/, CT_NONE/*X*/, CT_NONE, CT_NONE,   CT_NONE, CT_UNKNOWN };
 
 // References:
 //
