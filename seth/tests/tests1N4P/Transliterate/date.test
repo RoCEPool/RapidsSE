@@ -25,7 +25,7 @@ vch_col15  VARCHAR(32)
 success
 
 load datums "../DATA/Transliterate/date.csv" ;
-failure contains: "10 invalid rows"
+success
 
 //------------------------------------------------------------------------------
 select int_col0 from datums where dte_col4 > DATE '2010-11-01';
