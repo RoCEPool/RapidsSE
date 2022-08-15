@@ -2697,7 +2697,7 @@ bool AM::SYSTEM::bPassesLowMem(Job* pJob)
     return true;
   }
   
-  PoolHelper::vPoolAnalyze();
+  //PoolHelper::vPoolAnalyze();
 
   //pJob->pJobTags()->vContentDump();
   

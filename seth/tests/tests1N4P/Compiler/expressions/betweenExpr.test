@@ -167,8 +167,8 @@ rows: (*,'explainPlan','
       » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> filterOp
-         » expr: (1.230000e+00 BETWEEN 1.000000e-01 AND 1.500000e+00)
-         » ordinal expr: (1.230000e+00 BETWEEN 1.000000e-01 AND 1.500000e+00)
+         » expr: (1.2300000000e+00 BETWEEN 1.0000000000e-01 AND 1.5000000000e+00)
+         » ordinal expr: (1.2300000000e+00 BETWEEN 1.0000000000e-01 AND 1.5000000000e+00)
 
 -> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)')

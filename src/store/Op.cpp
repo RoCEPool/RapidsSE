@@ -1775,7 +1775,7 @@ void Op::vUnspawnTask(void)
   RASSERT( ! m_pOpTags->bHasName(C_TAG_DEDICATEDTHD) );
 
   if (pTask) {
-    vTrace("Sending HARDABORT to OP %s\n"_Stz, m_p_OpSpec->szOpNm());
+    //vTrace("Sending HARDABORT to OP %s\n"_Stz, m_p_OpSpec->szOpNm());
 
     Operand *pOperand = AM::MARKER::pNewMarker(OM_HARDABORT, pJob);
     vAppendLeft(pOperand, pTask);

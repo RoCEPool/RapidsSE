@@ -25,6 +25,25 @@
     //[system].bpa
   then
 
+  [job].preExecuteTest to ErrorCode[]
+  ErrorCode[] if
+    ErrorCode[] [job].error!
+    [ddlLock].testDrop
+
+    ListedJob[].assertNoRef
+
+    Path[].discardAll
+
+    [task].grabLock
+    [job].addExited
+    [job].updateParent assert
+    [job].signalParent
+      [task].retire // does not queue onto exit demon
+
+    HAZARD
+  then
+
+
   // add job to the local job list
   [job].addLocal
 

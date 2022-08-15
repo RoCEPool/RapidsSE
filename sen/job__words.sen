@@ -253,7 +253,7 @@
     then
 
     // toggle to default abnormal handlers
-    [op].opName@ "TOGGLING TO ABNORMAL HANDLERS FOR OP %v" str.format .
+    //[op].opName@ "TOGGLING TO ABNORMAL HANDLERS FOR OP %v" str.format .
     "default_abnormalHandlers" FIND execute
     "default_lowMemHandlers" FIND execute
     //[op].opName@ "TOGGLED TO ABNORMAL HANDLERS FOR OP %v" str.format .
@@ -264,6 +264,19 @@
     process::quit
     HAZARD
   then
+;
+
+/*----------------------------------------------------------------------------*/
+/* job signal parent and exit                                                 */
+/*----------------------------------------------------------------------------*/
+: Job_signalAndExit
+   Path[].discardAll
+   [task].grabLock
+   [job].addExited
+   [job].updateParent assert
+   [job].signalParent
+   [task].retire
+   HAZARD
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -303,6 +303,7 @@ void Stream::vUnspawnOpTasks(void)
 
   if (iOnNodeId == iThisNodeId) {
     // for each operator in the stage ptn
+    vTrace("Sending HARDABORT to Operators!!!\n"_Stz);
     for (i8 i_Op = nItems() - 1; i_Op >= 0; i_Op--) {
 
       Op* pOp = pGet(i_Op);

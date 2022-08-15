@@ -161,6 +161,11 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
 {
   _static_
 
+  if( AM::pGrid() &&
+    ! AM::pGrid()->bHealthy()) {
+    return EC_NODE_LOSS;
+  }
+
   Job* pChildJob;
   rtChildJobId = C_UNKNOWN;
 

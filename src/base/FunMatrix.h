@@ -64,7 +64,7 @@ static eFM eMacro_ExtractMinute[DM_ENUMS] =
     { FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_MINUTE_TME, FM_MINUTE_TSP, FM_OPR_INV, FM_OPR_INV    };
 
 static eFM eMacro_ExtractSecond[DM_ENUMS] =
-    // NONE    BCD         BOL         DTE         FLT         INT         IVL         IVY         TME            TSP            VCH         UNK
+    // NONE       BCD         BOL         DTE         FLT         INT         IVL         IVY         TME            TSP            VCH         UNK
     { FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_SECOND_TME, FM_SECOND_TSP, FM_OPR_INV, FM_OPR_INV    };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

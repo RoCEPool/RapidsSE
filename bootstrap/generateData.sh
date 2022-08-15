@@ -360,11 +360,11 @@ function makeOutputDirs() {
       checkWritableCmd="${checkWritableCmd} if [ ! -w \"${dir}\" ]; then echo \"Directory is not writable on host ${host}: ${dir}\"; exit 1; fi; "
     done
 
-    sshCmd=( "ssh" "-q" "${host}" "bash -c '${makeDirCmd}'" )
+    sshCmd=( "ssh" "${SSH_COMMON_OPTIONS[@]}" "${host}" "bash -c '${makeDirCmd}'" )
     debugPrint "About to create output directories on node ${nodeName} with the command: ${sshCmd[*]}"
     "${sshCmd[@]}" || exit 1
 
-    sshCmd=( "ssh" "-q" "${host}" "bash -c '${checkWritableCmd}'" )
+    sshCmd=( "ssh" "${SSH_COMMON_OPTIONS[@]}" "${host}" "bash -c '${checkWritableCmd}'" )
     debugPrint "About to check the writability of output directories on node ${nodeName} with the command: ${sshCmd[*]}"
     "${sshCmd[@]}" || exit 1
   done
@@ -404,7 +404,7 @@ function invokeNodeGeneration() {
     remoteCmd="${remoteCmd} --debug"
   fi
  
-  sshCmd=( "ssh" "-q" "${host}" "bash" "-c" "'${remoteCmd}'" )
+  sshCmd=( "ssh" "${SSH_COMMON_OPTIONS[@]}" "${host}" "bash" "-c" "'${remoteCmd}'" )
 
   debugPrint "About to generate TPC-H data on node ${nodeName} with the command: ${sshCmd[*]}"
 
