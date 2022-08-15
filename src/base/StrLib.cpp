@@ -3484,6 +3484,7 @@ i8 StrLib::iLike2(char* azStr, char* azRegExp)
    */
 
   s256 sEscapedRegExp = azRegExp;
+  StrLib::vInsertChar(sEscapedRegExp.azChar(),'^');
   StrLib::vEscapeInsert(sEscapedRegExp.azChar(),'*','\\');
 
   s256 sMatchRegExp;
@@ -3643,7 +3644,7 @@ bool StrLib::bMatchHere(char* azStr, char* azRegExp) {
     return (*azStr == '\0');
   
   if (*azStr != '\0' && (azRegExp[0] == '.' || azRegExp[0] == *azStr))
-  return bMatchHere(azStr+1,azRegExp+1);
+    return bMatchHere(azStr+1,azRegExp+1);
 
   return false;
 }
