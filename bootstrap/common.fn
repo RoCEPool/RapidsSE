@@ -65,7 +65,7 @@ declare -ra NODE_CFG_ALL_KEYS=( \
   "${NODE_CFG_PARAMS_KEY}" \
 )
 
-declare -ra SSH_MULTIPLEX_OPTIONS=( "-o" "ControlMaster=auto" "-o" "ControlPath=~/.ssh/ssh_mux_%h_%p_%r" "-o" "ControlPersist=3m" )
+declare -ra SSH_MULTIPLEX_OPTIONS=( "-o" "ControlMaster=auto" "-o" "ControlPath=~/.ssh/rapidsse_mux_%h_%p_%r" "-o" "ControlPersist=3m" )
 
 if [ -z "${NO_SSH_MULTIPLEX:-}" ] || [ "${NO_SSH_MULTIPLEX}" -eq 0 ] ; then
   declare -ra SSH_COMMON_OPTIONS=( "-q" "-o" "StrictHostKeyChecking=no" "${SSH_MULTIPLEX_OPTIONS[@]}" )
