@@ -200,6 +200,7 @@ namespace STORE {
   class Stage;
   class StageVec;
   class Step;
+  class StepAccum;
   class Steps;
   class Stream;
   class StreamDef;

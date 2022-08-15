@@ -8,6 +8,7 @@
 #include "LogicUnit.hpp"
 #include "Job.hpp"
 #include "SeDeputy.hpp"
+#include "StepAccum.hpp"
 #include "Op.hpp"
 
 extern BufferPool* gpBufferPool;
@@ -229,6 +230,12 @@ Object* Heap::pAllocObject(eCN eAllocClass)
     pJob->vTrackAllocObject(eAllocClass);
   }
 
+  if(MY::pStepAccum())
+  {
+    MY::pStepAccum()->vHeapAllocCount(m_eHeap);
+    MY::pStepAccum()->m_nSumAllocs++;
+  }
+
   //bool bSetLogMemory = false;
   
 
@@ -399,7 +406,13 @@ void Heap::vFreeObject(Object* pObject)
   {
     pJob->vTrackFreeObject(eClassNo);
   }
-  
+
+  if(MY::pStepAccum())
+  {
+    MY::pStepAccum()->vHeapFreeCount(m_eHeap);
+    MY::pStepAccum()->m_nSumFrees++;
+  }
+
   //Thread* pThread = MY::pThread();
   
   //if (pThread && pThread->iMallocWatch()) {
