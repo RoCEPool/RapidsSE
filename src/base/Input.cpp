@@ -924,7 +924,7 @@ void Input::vCollectCppName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  char *azChars = StrLib::zNullTerminator(m_pCurrTkn->azChars());
+  char *azChars = StrLib::azNullTerminator(m_pCurrTkn->azChars());
   char *z = azChars;
 
   ASSERT(bStartCppName());
@@ -951,7 +951,7 @@ void Input::vCollectCppNumber(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  char *azChars = StrLib::zNullTerminator(m_pCurrTkn->azChars());
+  char *azChars = StrLib::azNullTerminator(m_pCurrTkn->azChars());
   char *z = azChars;
 
   i8 iNoDigits = 0;
@@ -1019,7 +1019,7 @@ void Input::vCollectCppOther(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  char *azChars = StrLib::zNullTerminator(m_pCurrTkn->azChars());
+  char *azChars = StrLib::azNullTerminator(m_pCurrTkn->azChars());
   char *z = azChars;
 
   ASSERT(bStartCppOther());
@@ -1250,7 +1250,7 @@ void Input::vCollectCppString(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  char *azChars = StrLib::zNullTerminator(m_pCurrTkn->azChars());
+  char *azChars = StrLib::azNullTerminator(m_pCurrTkn->azChars());
   char *z = azChars;
 
   ASSERT(bStartSenString());
@@ -1375,7 +1375,7 @@ void Input::vCollectSenName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  char *azChars = StrLib::zNullTerminator(m_pCurrTkn->azChars());
+  char *azChars = StrLib::azNullTerminator(m_pCurrTkn->azChars());
   char *z = azChars;
 
   //ASSERT(bStartSenName());
@@ -1405,7 +1405,7 @@ void Input::vCollectSenNumber(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  char *azChars = StrLib::zNullTerminator(m_pCurrTkn->azChars());
+  char *azChars = StrLib::azNullTerminator(m_pCurrTkn->azChars());
   char *z = azChars;
 
   i8 nIntegerDigits  = 0;
@@ -1554,7 +1554,7 @@ void Input::vCollectSenString(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  char *azChars = StrLib::zNullTerminator(m_pCurrTkn->azChars());
+  char *azChars = StrLib::azNullTerminator(m_pCurrTkn->azChars());
   char *z = azChars;
 
   ASSERT(bStartSenString());
@@ -1594,7 +1594,7 @@ void Input::vCollectSenTag(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  char *azChars = StrLib::zNullTerminator(m_pCurrTkn->azChars());
+  char *azChars = StrLib::azNullTerminator(m_pCurrTkn->azChars());
   char *z = azChars;
 
   ASSERT(bStartSenTag());

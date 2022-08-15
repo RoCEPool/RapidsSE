@@ -88,7 +88,9 @@ RowCompactor::~RowCompactor(void) noexcept(false)
   vTrace("\n"_Stz);
 #endif
   
-  delete m_pSampleSet;
+  //delete m_pSampleSet;
+  if (m_pSampleSet)
+    AM::vDeleteOperand(m_pSampleSet, nullptr);
 }
 
 /*----------------------------------------------------------------------------*/

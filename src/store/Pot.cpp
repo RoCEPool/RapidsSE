@@ -22,8 +22,8 @@ __aFooterFunction(Pot)
 /*----------------------------------------------------------------------------*/
 /* allot a new row                                                            */
 /*----------------------------------------------------------------------------*/
-void* aPot_AllotRow(void* pPot, i8 iMixIn, char** aazStrArea) {
-  return Pot::aAllotRow((Pot*)pPot, iMixIn, (char**)aazStrArea);
+void* aPot_AllotRow(void* pPot, i8 iMixIn, char** aazStrArea, i8* piErrorCode) {
+  return Pot::aAllotRow((Pot*)pPot, iMixIn, (char**)aazStrArea, piErrorCode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -66,41 +66,48 @@ Pot::~Pot(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* create new destination row (possible new row slab)                         */
 /*----------------------------------------------------------------------------*/
-void* Pot::aAllotRow(Pot* pPot, i8 iMixIn, char** aazStrArea)
+void* Pot::aAllotRow(Pot* pPot, i8 iMixIn, char** aazStrArea, i8* piErrorCode)
 {
   _static_;
 
-  Row* aDstRow;
+  try {
+    Row* aDstRow;
 
-  i8 iKeyHsh = HshLib::iHash((byte*)&iMixIn,sizeof(iMixIn));
-  KeyBkt tKeyBkt = KeyBkt::tToKeyBkt(iKeyHsh);
-  LglPtn tLglPtn = AM::BKTMAP::tLglPtnOf(tKeyBkt);
+    i8 iKeyHsh = HshLib::iHash((byte*)&iMixIn,sizeof(iMixIn));
+    KeyBkt tKeyBkt = KeyBkt::tToKeyBkt(iKeyHsh);
+    LglPtn tLglPtn = AM::BKTMAP::tLglPtnOf(tKeyBkt);
 
-  // get row buffer for given partition (new a first buffer if ncessary)
-  RowBuffer* pDstRowBuffer = _pRowBuffer(pPot->m_paBufferChain[tLglPtn]);
-  if (! pDstRowBuffer) {
+    // get row buffer for given partition (new a first buffer if ncessary)
+    RowBuffer* pDstRowBuffer = _pRowBuffer(pPot->m_paBufferChain[tLglPtn]);
+    if (! pDstRowBuffer) {
 
-    pDstRowBuffer = new RowBuffer;
-    pDstRowBuffer->vCopyRowPix(pPot->m_pRowPix);
-    pPot->vAddBuffer(tLglPtn,pDstRowBuffer);
-  }
+      pDstRowBuffer = new RowBuffer;
+      pDstRowBuffer->vCopyRowPix(pPot->m_pRowPix);
+      pPot->vAddBuffer(tLglPtn,pDstRowBuffer);
+    }
 
-  // new a row in row buffer (new another row buffer if necessary)
-  aDstRow = pDstRowBuffer->pAllotRow();
-  if (! aDstRow) {
-    pDstRowBuffer = new RowBuffer;
-    pDstRowBuffer->vCopyRowPix(pPot->m_pRowPix);
-    pPot->vAddBuffer(tLglPtn,pDstRowBuffer);
-    //vTrace("Repld: %p %lld rows\n"_Stz,pDstRowBuffer,pDstRowBuffer->nRows());
+    // new a row in row buffer (new another row buffer if necessary)
     aDstRow = pDstRowBuffer->pAllotRow();
-    ASSERT(aDstRow);
+    if (! aDstRow) {
+      pDstRowBuffer = new RowBuffer;
+      pDstRowBuffer->vCopyRowPix(pPot->m_pRowPix);
+      pPot->vAddBuffer(tLglPtn,pDstRowBuffer);
+      //vTrace("Repld: %p %lld rows\n"_Stz,pDstRowBuffer,pDstRowBuffer->nRows());
+      aDstRow = pDstRowBuffer->pAllotRow();
+      ASSERT(aDstRow);
+    }
+
+    pDstRowBuffer->vLglPtn(tLglPtn);
+
+    *aazStrArea = pDstRowBuffer->azDepositString_begin();
+
+    return aDstRow->aCellArray();;
+
   }
-
-  pDstRowBuffer->vLglPtn(tLglPtn);
-
-  *aazStrArea = pDstRowBuffer->azDepositString_begin();
-
-  return aDstRow->aCellArray();;
+  catch (LowMemory xLowMemory) {
+    *piErrorCode = EC_LOW_MEMORY;
+    return nullptr;
+  }
 }
 
 /*----------------------------------------------------------------------------*/

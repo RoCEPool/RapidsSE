@@ -65,6 +65,7 @@ void CsvBuffer::vPostRecv(void* aCsvBuffer)
   _static_
   
   CsvBuffer* pCsvBuffer = _pCsvBuffer(aCsvBuffer);
+  UNUSED(pCsvBuffer);
 }
 
 /*----------------------------------------------------------------------------*/

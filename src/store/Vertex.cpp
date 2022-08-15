@@ -237,18 +237,17 @@ void Vertex::vSetupJob(void)
 void Vertex::vSpawnOpTasks(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);
-  
+
   for (i8 i_Stage = 0; i_Stage < nStages(); i_Stage++) {
-    
+
     Stage* pStage = m_pDeck->pGet(i_Stage);
-    
+
     for (i8 i_Stream = 0; i_Stream < pStage->nItems(); i_Stream++) {
       Stream* pStream = pStage->pGet(i_Stream);
 
       pStream->vSpawnOpTasks();
     }
   }
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -298,6 +297,24 @@ Stream* Vertex::pStream0(void)
   return pStream0;
 }
 
+/*----------------------------------------------------------------------------*/
+/* unspawn operaator jobs for the pipeline                                    */
+/*----------------------------------------------------------------------------*/
+void Vertex::vUnspawnOpTasks(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);
+
+  for (i8 i_Stage = 0; i_Stage < nStages(); i_Stage++) {
+
+    Stage* pStage = m_pDeck->pGet(i_Stage);
+
+    for (i8 i_Stream = 0; i_Stream < pStage->nItems(); i_Stream++) {
+      Stream* pStream = pStage->pGet(i_Stream);
+
+      pStream->vUnspawnOpTasks();
+    }
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/

@@ -109,6 +109,7 @@ namespace STORE
     bool m_bRLUDiary;        // RLU diary
     bool m_bRLUTimer;        // RLU timer
     bool m_bShmLock;         // lock shared memory pages in memory
+    i8   m_iSocketLowMem;    // socket recv low memory test
     bool m_bSysMetrics;      // collect sys metrics
     i8   m_nThreads;         // number of general threads
     bool m_bTouch;           // touch all shm pages during region create

@@ -39,13 +39,17 @@ void Step::vAddSteps_Parcel(void)
   vAddStep("parcel.jobid@"_Stz,           &Step::vParcelJobIdFetch);
   vAddStep("parcel.label"_Stz,            &Step::vParcelLabel);
   vAddStep("parcel.pipeOut"_Stz,          &Step::vParcelPipeOut);
-  vAddStep("parcel.sendOut"_Stz,          &Step::vParcelSendOut);
+  vAddStep("parcel.sendOut"_Stz,          &Step::vParcelSendOutOld);
 
   vAddStep("Parcel[]"_Stz,                &Step::vParcelGet);
+  vAddStep("Parcel[].addOperand"_Stz,     &Step::vParcelAddOperand);
   vAddStep("Parcel[]\\clear"_Stz,         &Step::vParcelGetAndClear);
   vAddStep("Parcel[].delete"_Stz,         &Step::vParcelDelete);
   vAddStep("Parcel[].isNotNull"_Stz,      &Step::vParcelIsNotNull);
   vAddStep("Parcel[].isNull"_Stz,         &Step::vParcelIsNull);
+  vAddStep("Parcel[].new"_Stz,            &Step::vParcelNew);
+  vAddStep("Parcel[].reset"_Stz,          &Step::vParcelReset);
+  vAddStep("Parcel[].sendOut"_Stz,        &Step::vParcelSendOut);
   vAddStep("Parcel[].set"_Stz,            &Step::vParcelSet);
 }
 
@@ -177,6 +181,12 @@ void Step::vParcelPipeOut(void)
   
   Operand* pOperand = pParcel->pGetOperand();
 
+  if ( ! pOperand ) {
+    delete pParcel;
+    EXIT();
+    return;
+  }
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pipeing out to a demon
   if (C_UNKNOWN == pParcel->iPipelineJobId()) {
@@ -256,7 +266,7 @@ void Step::vParcelPipeOut(void)
   i8 nCopies = AM::PTNMAP::nPtnsPerNode();
 
   eCN eClass = pOperand->eGetClassNo();
-  i8 nSize = gxaSizeHeap[eClass].m_nClassSize;
+  //i8 nSize = gxaSizeHeap[eClass].m_nClassSize;
 
   RowBuffer* pRowBuffer_shared = nullptr;
   if (CN_ROWBUFFER == eOperandClass)
@@ -395,7 +405,7 @@ void Step::vParcelPipeOut(void)
 /*----------------------------------------------------------------------------*/
 /* parcel.sendOut -- send parcel out to next operator in pipeline             */
 /*----------------------------------------------------------------------------*/
-void Step::vParcelSendOut(void)
+void Step::vParcelSendOutOld(void)
 {
   ENTRY();
     
@@ -418,13 +428,41 @@ void Step::vParcelSendOut(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Parcel[].addOperand -- add operand to parcel                               */
+/*----------------------------------------------------------------------------*/
+void Step::vParcelAddOperand(void)
+{
+  ENTRY();
+
+  // revised job/op model
+  Op* pOp = *m_pOp;
+  OpSpec* pOpSpec = pOp->pOpSpec();
+
+  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+
+  Parcel* pParcel =  *m_pLogicUnit->m_xpParcel;
+
+  pParcel->vAddItem(pOperand);
+
+  pParcel->vLabel(pOp->pOuterJobOfOp()->tDistId().iAsI8(),
+                  pOpSpec->eParcelForward());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* Parcel[].delete -- parcel delete                                           */
 /*----------------------------------------------------------------------------*/
 void Step::vParcelDelete(void)
 {
   ENTRY();
 
-  AM::vDeleteOperand(*m_pLogicUnit->m_xpParcel,pOuterJobOfTask());
+  //AM::vDeleteOperand(*m_pLogicUnit->m_xpParcel,pOuterJobOfTask());
+
+  //ALKA: added (check with Myvan)
+  Parcel* pParcel = _pParcel(*m_pLogicUnit->m_xpParcel);
+  delete pParcel;
+  // end
 
   m_pLogicUnit->m_xpParcel = nullptr;
 
@@ -477,6 +515,62 @@ void Step::vParcelIsNull(void)
   ENTRY();
 
   m_pDataStack->vPushInt(m_pLogicUnit->m_xpParcel.bIsNull() ? 1 : 0);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Parcel[].new -- new a parcel                                               */
+/*----------------------------------------------------------------------------*/
+void Step::vParcelNew(void)
+{
+  ENTRY();
+
+  m_pLogicUnit->m_xpParcel = new Parcel;
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Parcel[].reset -- parcel reset                                             */
+/*----------------------------------------------------------------------------*/
+void Step::vParcelReset(void)
+{
+  ENTRY();
+
+  Parcel* pParcel = *m_pLogicUnit->m_xpParcel;
+
+  pParcel->vReset();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* parcel[].sendOut -- send parcel out to next operator in pipeline           */
+/*----------------------------------------------------------------------------*/
+void Step::vParcelSendOut(void)
+{
+  ENTRY();
+
+  Parcel* pParcel = *m_pLogicUnit->m_xpParcel;
+
+  // revised job/op model
+  Op* pCurrOp = *m_pOp;
+
+  // CAUTION NOTE: Cannot access LU of OP after sending out operand
+  // On LINUX it moves very fast and the OP/Task/LU could disappear underneath it
+  LogicUnit* pLogicUnit = pCurrOp->pOpLogicUnit();
+  if (pLogicUnit && pLogicUnit->m_xpStats.bIsNotNull()) {
+    pLogicUnit->m_xpStats->m_nParcelSends++;
+    pLogicUnit->m_xpStats->m_nObjectsSent += pParcel->nItems();
+  }
+
+  try {
+    pParcel->vDistribute(pCurrOp,pOuterJobOfTask());
+  }
+  catch (LowMemory xLowMemory) {
+    vTrace("vDistributeBy: ran into LOWMEMORY\n"_Stz);
+  }
 
   EXIT();
 }

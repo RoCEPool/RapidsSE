@@ -5,6 +5,31 @@
 " OP_combined.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_CANCELLINGMARKER ...                                        */
+/*----------------------------------------------------------------------------*/
+: combined_CancellingMarker \handler
+
+  Pipein[]\clear to Marker[]
+
+  //PipeIn[].drain
+
+  Tub[].isNull not if
+    Tub[].deleteAllBuffers
+  then
+
+  Pot[].isNull not if
+    Pot[].deleteAllBuffers
+  then
+
+  Marker[].pipeOut
+
+  "default_abnormalHandlers" FIND execute
+  "default_lowMemHandlers" FIND execute
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* on EV_M_CLEANING ...                                                   END */
 /*----------------------------------------------------------------------------*/
 : combined_Cleaning \handler
@@ -35,10 +60,35 @@
   Pipein[]\clear to CrwBuffer[]
   CrwBuffer[] Fun0[] 0 Combined[].execute not if
     to errorCode
+
+    // cleanup
     CrwBuffer[].delete
     Tub[].deleteAllBuffers
     Pot[].deleteAllBuffers
-    errorCode op__execErr
+
+    errorCode EC_LOW_MEMORY == if
+
+      // not already detected low memory ?
+      [pipeline].lowMemory@ not if
+
+        Marker[].newLowMemory
+        Marker[]
+            nullptr to Marker[]
+
+        [op].pipeout
+        //"CombinedOP PIPED OUT LOW MEMORY!!!" .
+      else
+        "CombinedOP ALREADY DETECTED LOW MEMORY!!!" .
+      then
+
+      "COMBINEDOP TOGGLING TO ABNORMAL HANDLERS FOR OP"  .
+      "default_abnormalHandlers" FIND execute
+      "default_lowMemHandlers" FIND execute
+      //"COMBINEDOP TOGGLED TO ABNORMAL HANDLERS FOR OP" .
+    else
+      errorCode op__execErr
+    then
+
     true
     exit
   then
@@ -122,6 +172,20 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for EV_M_ERRORING ...                                              */
+/*----------------------------------------------------------------------------*/
+: combined_ErroringMarker \handler
+
+  Pipein[]\clear to Marker[]
+
+  //"combined_ErroringMarker DRAINING PIPEIN" .
+  //PipeIn[].drain
+
+  Marker[].pipeOut
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* on EV_D_ROWBUFFER ...                                            ROWBUFFER */
 /*----------------------------------------------------------------------------*/
 : combined_RowBuffer \handler
@@ -135,10 +199,35 @@
   Pipein[]\clear to RowBuffer[]
   RowBuffer[] Fun1[] 0 Combined[].execute not if
     to errorCode
+
+    // cleanup
     RowBuffer[].delete
     Tub[].deleteAllBuffers
     Pot[].deleteAllBuffers
-    errorCode op__execErr
+
+    errorCode EC_LOW_MEMORY == if
+
+      // not already detected low memory ?
+      [pipeline].lowMemory@ not if
+
+        Marker[].newLowMemory
+        Marker[]
+            nullptr to Marker[]
+
+        [op].pipeout
+        "CombinedOP PIPED OUT LOW MEMORY!!!" .
+      else
+        "CombinedOP ALREADY DETECTED LOW MEMORY!!!" .
+      then
+
+      "COMBINEDOP TOGGLING TO ABNORMAL HANDLERS FOR OP"  .
+      "default_abnormalHandlers" FIND execute
+      "default_lowMemHandlers" FIND execute
+      "COMBINEDOP TOGGLED TO ABNORMAL HANDLERS FOR OP" .
+    else
+      errorCode op__execErr
+    then
+
     true
     exit
   then
@@ -263,10 +352,12 @@
 
   op__topology
 
+  find: combined_CancellingMarker  EV_M_CANCELLING [op].handler!
   find: combined_Cleaning      EV_M_CLEANING      [op].handler!
   find: combined_CrwBuffer     EV_D_CRWBUFFER     [op].handler!
   find: combined_DataPulse     EV_M_DATAPULSE     [op].handler!
   find: combined_EosMarker     EV_M_EOS           [op].handler!
+  find: combined_ErroringMarker EV_M_ERRORING     [op].handler!
   find: combined_RowBuffer     EV_D_ROWBUFFER     [op].handler!
   find: combined_StartMarker   EV_M_START         [op].handler!
 

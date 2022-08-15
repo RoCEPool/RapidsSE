@@ -80,7 +80,8 @@ SePrompt::SePrompt(bool bOneCommand)
   m_pInpTagSet     = nullptr;
 
   m_pPrintOp = nullptr;
-  
+  m_pSearchWord = new(nullptr) Word(""_Stz);
+
   m_oTimer.vStart();
   
   _checkInitialised_(CN_SEPROMPT);
@@ -127,7 +128,8 @@ SePrompt::~SePrompt(void) noexcept(false)
       m_paSeDeputy[i_Deputy] = nullptr;
     }
   }
-  
+  delete m_pSearchWord;
+
   delete m_pSnapshotAtTrackingMemory;
   delete m_pSnapshotAtMemoryLeaks;
   delete m_pSnapshotObjects;
@@ -203,71 +205,80 @@ void SePrompt::vPromptLoop(void)
   pThread->vMallocWatch(1);
   
   while (m_bContinue) {
-        
+
+    try {
     if (! m_pCurrentDeputy && ! (m_pCurrentDeputy = pFindDeputy())) {
       vTrace("No Deputies\n"_Stz);
       RASSERT(0);
     }
-    
+
     m_pInput_deputy = m_pCurrentDeputy->pInput();
     m_pInpTknVec    = m_pInput_deputy->pInpTknVec();
     m_pInpTagSet    = m_pInput_deputy->pInpTagSet();
-    
+
     Stz* szToDo = this->szToDo();
-    
+
     if (! *szToDo->azChar())
       m_pInput_deputy->vRawInputClear();
-    
+
     if (! bReadCommand())
       continue;
- 
-//    Stz* szRaw = szRawInput();
-//    vTrace("SePrompt got command : %s\n"_Stz,szRaw);
-    eEC eErrorCode = EC_NONE;
-    if (! bExamineCommand(&eErrorCode)){
-      if(eErrorCode != EC_NONE)
-        vTrace("error: %s\n"_Stz,aErrorMsg[eErrorCode]);
+
+    //    Stz* szRaw = szRawInput();
+    //    vTrace("SePrompt got command : %s\n"_Stz,szRaw);
+      eEC eErrorCode = EC_NONE;
+      if (!bExamineCommand(&eErrorCode)) {
+        if (eErrorCode != EC_NONE)
+          vTrace("error: %s\n"_Stz, aErrorMsg[eErrorCode]);
+        continue;
+      }
+
+      //vTrace("Prompt-RawInput: %s\n"_Stz,m_pInput->szRawInput());
+
+      Stz* szCmdFile = m_pInput_deputy->szPath();
+      i8   iCmdLine  = pTkn(0)->iLineNo();
+
+      // output the script file cmd statement being executed
+      if ( ! szCmdFile->bSame("stdin"_Stz) ) {
+        m_pInput_deputy->pInpTknVec()->vToTknString(sCmd);
+        vTrace("\n%s\n"_Stz,sCmd.azChar());
+      }
+
+      if (*szCmdFile->azChar()) {
+        m_pInpTagSet->vInsert(C_TAG_CMDFILE, szCmdFile);
+        m_pInpTagSet->vInsert(C_TAG_CMDLINE, iCmdLine);
+      }
+
+      m_pInpTagSet->vCopy(&m_oPmtTagSet);
+
+      vMutexLock(this);
+      m_pCurrentDeputy->vDeputiseJob(this);
+      vMutexWaitAndUnlock(this);
+
+      if (!m_pInpTagSet->bHasName(C_TAG_NOWAIT)) {
+        while (!m_pCurrentDeputy->bAvailable())
+          AM::vNapMsec(10, CN_SEPROMPT);
+      }
+
+      eEC eError = m_pCurrentDeputy->eError();
+      m_pCurrentDeputy->vError(EC_NONE);
+
+      if (EC_NONE != eError) {
+        vTrace("\nerror: %s\n\n"_Stz, aEC[eError]);
+        if (AM::bDeveloper())
+          vDumpInpTknVec(true);
+      }
+
+      m_pCurrentDeputy = nullptr;
+
+      //vLogFreeSpace();
+
+    }
+    catch (LowMemory xLowMemory) {
+      vTrace("error: Prompt got low memory exception\n"_Stz);
+      RASSERT(0);
       continue;
     }
-
-    //vTrace("Prompt-RawInput: %s\n"_Stz,m_pInput->szRawInput());
-    
-    Stz* szCmdFile = m_pInput_deputy->szPath();
-    i8   iCmdLine  = pTkn(0)->iLineNo();
-
-    // output the script file cmd statement being executed
-    if ( ! szCmdFile->bSame("stdin"_Stz) ) {
-      m_pInput_deputy->pInpTknVec()->vToTknString(sCmd);
-      vTrace("\n%s\n"_Stz,sCmd.azChar());
-    }
-
-    if (*szCmdFile->azChar()) {
-      m_pInpTagSet->vInsert(C_TAG_CMDFILE,szCmdFile);
-      m_pInpTagSet->vInsert(C_TAG_CMDLINE,iCmdLine);
-    }
-
-    m_pInpTagSet->vCopy(& m_oPmtTagSet);
-
-    vMutexLock(this);
-    m_pCurrentDeputy->vDeputiseJob(this);
-    vMutexWaitAndUnlock(this);
-    
-    while (! m_pCurrentDeputy->bAvailable())
-      AM::vNapMsec(10,CN_SEPROMPT);
-
-    
-    eEC eError = m_pCurrentDeputy->eError();
-    m_pCurrentDeputy->vError(EC_NONE);
-
-    if (EC_NONE != eError) {
-      vTrace("error: %s\n"_Stz,aEC[eError]);
-      if (AM::bDeveloper())
-        vDumpInpTknVec(true);
-    }
-    
-    m_pCurrentDeputy = nullptr;
-    
-    //vLogFreeSpace();
 
   } // while
 }
@@ -475,8 +486,14 @@ SeDeputy* SePrompt::pFindDeputy(void)
     return pFoundDeputy;
   
   pFoundDeputy = pDeputyCreate();
-  if (pFoundDeputy)
+
+  if (pFoundDeputy) {
+    pFoundDeputy->pInput()->vForkReset();
+    pFoundDeputy->pInput()->vUseStdin();
+    pFoundDeputy->pInput()->vFormCppTokens();
+    pFoundDeputy->pInput()->vUseBegin();
     return pFoundDeputy;
+  }
 
   return nullptr;
 }
@@ -515,12 +532,12 @@ bool SePrompt::bIsPromptWord(void)
   
   Dic* pDicRoot = AM::DIC::pRoot();
 
-  Word* pWord = pDicRoot->pFindWord(sWordNm);
+  Word* pWord = pDicRoot->pFindWord(m_pSearchWord, sWordNm);
   
   if (! pWord)
     return false;
     
-  Word* pPromptCatg = pDicRoot->pFindWord("\\prompt"_Stz);
+  Word* pPromptCatg = pDicRoot->pFindWord(m_pSearchWord, "\\prompt"_Stz);
   if (pPromptCatg == pWord->pCategory())
     return true;
   
@@ -616,13 +633,13 @@ void SePrompt::vNapTillBgJobsCompleted(void)
     while (! pDeputy->bAvailable()) {
       if (bNotice) {
         bNotice = false;
-        vTrace("Waiting on /bg jobs\n"_Stz);
+        vTrace("Waiting on background jobs (/nowait jobs)\n"_Stz);
       }
       AM::vNapMsec(10,CN_SEPROMPT);
     }
   }
   
-  vTrace("No /bg jobs\n"_Stz);
+  vTrace("No /nowait jobs\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

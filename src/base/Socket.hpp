@@ -46,6 +46,7 @@ namespace BASE
   private:
   
     bool    bHeaderRecv(void);
+    void    vJobRecv_lowmem(Job* pJob);
     Marker* pMarkerRecv(void);
     Object* pObjectRecv(eCN eClass);
     Object* pObjectRecv_lowmem(eCN eClass);

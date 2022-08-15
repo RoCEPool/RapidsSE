@@ -9,10 +9,12 @@
 /*----------------------------------------------------------------------------*/
 : PipeIn[].sendTo \handler
 
+
+/*
   0 locals| pParcel |
 
   PipeIn[]\clear locals| pOperand |
-  
+
   // we do not expect to see a job
   pOperand object.class@ CN_JOB != ASSERT
 
@@ -26,7 +28,7 @@
   else
     pOperand operand.toParcel to pParcel
   then
-  
+
   pParcel parcel.sendOut
 
   pParcel parcel::delete
@@ -35,6 +37,24 @@
 
   true
   //stk
+*/
+
+  0 locals| pParcel |
+
+  PipeIn[]\clear locals| pOperand |
+
+  // we do not expect to see a job
+  pOperand object.class@ CN_JOB != ASSERT
+
+  pOperand Parcel[].addOperand
+
+  Parcel[].sendOut
+
+  Parcel[].reset
+
+  // calling op_loop continues
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -46,8 +66,6 @@
 : sendSE_CANCELLING \handler
 
   PipeIn[].sendTo discard
-
-  PipeIn[].drain
 
   true
 ;
@@ -84,13 +102,18 @@
 
   op__topology
 
+  Parcel[].new
+
   find: PipeIn[].sendTo [op].handlerAll!
 
   find: sendSE_CANCELLING  EV_M_CANCELLING  [op].handler!
   find: sendSE_CLEANING    EV_M_CLEANING    [op].handler!
   find: sendSE_EXITING     EV_M_EXITING     [op].handler!
+  find: EV_M_HARDABORT_handler  EV_M_HARDABORT  [op].handler!
 
   op__loop
+
+  Parcel[].delete
 
   _lu_finalise_
   

@@ -188,6 +188,7 @@ namespace STORE {
   class PtnStm_cursor;
   class PtnStream;
 
+  class RejectJob;
   class Row;
   class RowBuffer;
   class RowCompactor;
@@ -364,9 +365,13 @@ namespace OBLIQUE
     class JOB
     {
     public:
+      static void vAckOriginatingJob(JobId tOriginId);
       static bool bHasTag(Job* pJob, Stz* szTagNm);
       static Stz* szJobNm(Job* pJob);
       static eEC  ePreExecuteTest(Job* pJob);
+      static void vRecvdReject(RejectJob* pRejectJob);
+      static void vSendReject(RejectJob* pRejectJob);
+      static void vTriggerExecute(JobId tDistId);
     };
   
     class JOBS

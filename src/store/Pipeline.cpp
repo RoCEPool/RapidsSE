@@ -56,6 +56,7 @@ Pipeline::Pipeline(Job*        pPipelineJob,
   m_pOpToPulse    = nullptr;
   
   m_bCancelled    = false;
+  m_bLowMemory    = false;
     
   m_ixAccum0 = 0;
   m_ixAccum1 = 0;
@@ -242,6 +243,29 @@ void Pipeline::vGrabDebugLock(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pipeline has run into low memory                                           */
+/*----------------------------------------------------------------------------*/
+void Pipeline::vLowMemory(bool bLowMemory)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+
+  m_bLowMemory = bLowMemory;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is pipeline running low on memory                                          */
+/*----------------------------------------------------------------------------*/
+bool Pipeline::bLowMemory(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+
+  if (m_bLowMemory)
+    vDebugPoint();
+
+  return m_bLowMemory;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the originating node                                                   */
 /*----------------------------------------------------------------------------*/
 i8 Pipeline::iOriginNodeId(void)
@@ -393,7 +417,13 @@ void Pipeline::vSpawnOpTasks(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
 
-  m_pVertexRoot->vSpawnOpTasks();
+  try {
+    m_pVertexRoot->vSpawnOpTasks();
+  }
+  catch (LowMemory xLowMemory) {
+    m_pVertexRoot->vUnspawnOpTasks();
+    throw xLowMemory;
+  }
 }
 
 /*----------------------------------------------------------------------------*/

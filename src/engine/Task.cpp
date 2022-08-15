@@ -98,10 +98,68 @@ Task::Task(Stz* szTaskNm, Op* pOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 
-  vTask();
+  m_pProfile     = nullptr;
+  m_pJobTask     = nullptr;
+  m_pThread      = nullptr;
 
-  m_sTaskNm = szTaskNm;
-  m_pOp     = pOp;
+  m_pRecoveryWord  = nullptr;
+  m_pOpLowMemWord  = nullptr;
+  m_pJobLowMemWord = nullptr;
+
+  m_pSearchWord = nullptr;
+
+  m_aInxPtr      = nullptr;
+
+  m_pAuxStack    = nullptr;
+  m_pDataStack   = nullptr;
+  m_pReturnStack = nullptr;
+
+  m_pLocalFrame = nullptr;
+  m_pLocalVars   = nullptr;
+
+  m_pSenCompiler = nullptr;
+  m_pInput       = nullptr;
+
+  m_pLogicUnit = nullptr;
+
+  m_pLogicUnit = nullptr;
+
+  try {
+    vTask();
+
+    m_sTaskNm = szTaskNm;
+    m_pOp     = pOp;
+
+    _checkInitialised_(CN_TASK);
+  }
+  catch (LowMemory xLowMemory) {
+    delete m_pSearchWord;
+
+    delete m_pDataStack;
+    delete m_pReturnStack;
+    delete m_pAuxStack;
+
+    while (m_pLocalFrame) {
+
+      LocalFrame* pLocalsFrame = m_pLocalFrame;
+      m_pLocalFrame = m_pLocalFrame->pNext();
+
+      delete pLocalsFrame;
+    }
+    delete m_pLocalVars;
+
+    delete m_pSenCompiler;
+    while (m_pInput) {
+      vDeleteInput();
+    }
+
+    delete m_pProfile;
+    m_pProfile = nullptr;
+
+    delete m_pLogicUnit;
+    throw xLowMemory;
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -113,7 +171,7 @@ void Task::vTask(void)
   
   m_iDebugMark   = 0;
   m_pProfile     = nullptr;
-  m_pJobTask = nullptr;
+  m_pJobTask     = nullptr;
   m_pThread      = nullptr;
   
   m_eState       = TS_NONE;
@@ -129,9 +187,12 @@ void Task::vTask(void)
   m_nOperandYield = AM::SYSARGS::nOperandYield(); //10;
 
   m_pRecoveryWord  = nullptr;
-  
+  m_pOpLowMemWord  = nullptr;
+  m_pJobLowMemWord = nullptr;
+
   // m_oDicStack
   // m_oSaveDicStack
+  m_pSearchWord = new(nullptr) Word(""_Stz);
 
   m_aInxPtr      = nullptr;
   
@@ -150,7 +211,7 @@ void Task::vTask(void)
   _checkInitialised_(CN_TASK);
   
   m_pLogicUnit = new LogicUnit;
-    
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 }
 
@@ -168,7 +229,9 @@ Task::~Task(void) noexcept(false)
   ASSERT(! m_oWriteLocks.nItems());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+
+  delete m_pSearchWord;
+
   delete m_pDataStack;
   delete m_pReturnStack;
   delete m_pAuxStack;
@@ -241,13 +304,18 @@ void Task::vTaskLoop(void)
 
       //
       // for example if the step function is:
-      //   void Step::vIntAdd(void) { ... }
+      //   void Step::vIntAdd(void) { ... }OP_sendSE
       //
       // then it is the dynamic equivalent of:
       //   this->vIntAdd();
       //
     }
-    
+
+      // catch lowMemory exception
+    catch (LowMemory xLowMemory) {
+      vLowMemoryHandler();
+    }
+
     // catch exception
     catch (Exception xException) {
       
@@ -348,6 +416,17 @@ void Task::vExceptionHandler(void)
     if (pWord)
       AM::WORD::vDisassemble(pWord,&m_oDicStack,m_aInxPtr);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* caught a low memory exception in vTaskLoop catch(LowMemory...)             */
+/*----------------------------------------------------------------------------*/
+void Task::vLowMemoryHandler(void)
+{
+  _noPreconditions_
+
+  vSetSenLowMemContext();
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1168,9 +1247,60 @@ void Task::vSetSenRecoverContext(void)
   }
   
   //Task::vSeeFrameStack();
-  
 
-  m_aInxPtr = m_pRecoveryWord->aFirstCell();
+  if (MY::pOp())
+    m_aInxPtr = m_pRecoveryWord->aFirstCell();
+  else {
+    //TODO: ALKA COME BACK AND FIX
+    Process::vExitFailure();
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset sen execution context for low memory                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vSetSenLowMemContext(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+
+  m_pAuxStack->vReset();
+  m_pDataStack->vReset();
+
+  //Task::vSeeFrameStack();
+
+  while (m_pReturnStack->nValues() > 2) {
+
+#ifdef WITH_LOCALS_OOM
+
+    if (m_pLocalVars) {
+      void* aDiscardPoint_return = m_pReturnStack->aTopVal();
+      if (m_pLocalVars->aDiscardPoint() == aDiscardPoint_return) {
+        m_pLocalVars->vFramePop(aDiscardPoint_return);
+      }
+    }
+
+#else
+
+    if (m_pLocalFrame
+        && m_pLocalFrame->aDiscardPoint() ==
+             (TypeValueArea*)m_pReturnStack->aTopVal())
+      vLocalsPop();
+
+#endif
+
+    m_pReturnStack->vDiscardTop();
+  }
+
+  //Task::vSeeFrameStack();
+
+
+  if (MY::pOp())
+    m_aInxPtr = m_pOpLowMemWord->aFirstCell();
+  else
+    m_aInxPtr = m_pJobLowMemWord->aFirstCell();
+
+  //Task::vSeeFrameStack();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1364,6 +1494,17 @@ void Task::vSetInxPtr(Word* pEntryWord)
   Word* pRecoveryWord = pDicRoot->pFindWord("std_recoveryWord"_Stz);
   if (pRecoveryWord) {
     m_pRecoveryWord = pRecoveryWord;
+  }
+
+  Word* pOpLowMemWord = pDicRoot->pFindWord("OpLowMem_recoveryWord"_Stz);
+  if (pOpLowMemWord) {
+    m_pOpLowMemWord = pOpLowMemWord;
+  }
+
+
+  Word* pJobLowMemWord = pDicRoot->pFindWord("JobLowMemory_recoveryWord"_Stz);
+  if (pJobLowMemWord) {
+    m_pJobLowMemWord = pJobLowMemWord;
   }
 }
 
@@ -1580,6 +1721,16 @@ void Task::vScheduleWait(void)
   
   RASSERT(bIsLocked());
   m_eTransition = TR_WAIT_FOR_RESUME;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the search word                                                        */
+/*----------------------------------------------------------------------------*/
+Word* Task::pSearchWord(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+
+  return m_pSearchWord;
 }
 
 /*----------------------------------------------------------------------------*/

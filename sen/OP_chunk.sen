@@ -15,6 +15,8 @@
   //  File0[].get file.delete
   //then
 
+  0 thread.faultCurrent!
+
   EV_M_CLEANING_handler
 ;
 
@@ -24,8 +26,13 @@
 : chunk_DataPulse \handler // \enterExitTrace
 
   //"Operand:- EV_M_DATAPULSE" .verbose
+
+  //"*******chunk_DataPulse:- EV_M_DATAPULSE" .
+
   PipeIn[].pipeOut
-  
+
+  7 thread.faultCurrent!
+
   File0[].isOpen? not if
     true
     exit

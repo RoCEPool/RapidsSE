@@ -256,6 +256,9 @@ void TypeValueArea::vStzSize(i8 nSize)
 /*----------------------------------------------------------------------------*/
 void TypeValueArea::vToStz(Stz* szDst)
 {
+  if (CN_BOLVAL == eType())
+    * szDst = iBol();
+  else
   if (CN_INTVAL == eType())
     * szDst = iInt();
   else

@@ -63,12 +63,12 @@
     iArg1 = *(--paW);                                                      \
     iArg2 = *(--paW);                                                      \
                                                                            \
-    if (iArg1 == C_DATUM_NULL || iArg2 == C_DATUM_NULL) {                  \                                         \
+    if (iArg1 == C_DATUM_NULL || iArg2 == C_DATUM_NULL) {                  \
        *paW++ = C_DATUM_NULL;                                              \
     }                                                                      \
     else {                                                                 \
-      *paW++ =  !iBolValue1 && iBolValue2) ||                              \
-          (iBolValue1 && !iBolValue2) ? 1 : 0;                             \
+      *paW++ =  (!iArg1 && iArg2) ||                                       \
+          (iArg1 && !iArg2) ? 1 : 0;                                       \
     }                                                                      \
   }
 

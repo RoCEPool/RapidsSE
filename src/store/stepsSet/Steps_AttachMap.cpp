@@ -74,8 +74,8 @@ void Step::vAttachMapIsLowMemory(void)
   
   bool bIsLow = AM::MEMORY::bIsRunningLow();
   
-  if (bIsLow)
-    PoolHelper::vPoolAnalyze();
+  //if (bIsLow)
+  //  PoolHelper::vPoolAnalyze();
 
   
   m_pDataStack->vPushInt(bIsLow);

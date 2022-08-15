@@ -25,6 +25,9 @@
     //[system].bpa
   then
 
+  // add job to the local job list
+  [job].addLocal
+
   Dynamo[].new
   <cmd> Dynamo[].compile to ErrorCode[]
   ErrorCode[] EC_NONE == if
@@ -99,10 +102,22 @@
      [job].signalParent
   then
 
+/* local */  // - - - - - - - - - - - - - - - -  - -
+/* local */  // - - - - - - - - - - - - - - - -  - -
+/* local */  // JOB NOT TO ALLLOCATE ANY MORE MEMORY
+/* local */  // - - - - - - - - - - - - - -  - - - -
+/* local */  [job].disableAllocate
+/* local */  // - - - - - - - - - - - - - - - -  - -
+/* local */  // - - - - - - - - - - - - - - - -  - -
+
+/*
   // add job to the local job list
   [job].jobList@ JL_DEMON == not if
     [job].addLocal
   then
+*/
+
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // enqueue start-marker to start op to execute the pipeline job

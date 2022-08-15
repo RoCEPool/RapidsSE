@@ -138,11 +138,11 @@ void Output::vDrainBufferQueue(void)
       AM::vNapUsec(1000,CN_OUTPUT);
       continue;
     }
-    
-    eCN eOperandClass = pOperand->eGetClassNo();
 
-    if (eOperandClass == CN_EXITOPERAND) {
-      m_bToExit = true;
+    if (pOperand->bIsMarker()) {
+      Marker* pMarker = _pMarker(pOperand);
+      if (pMarker->eOpMarker() == OM_EXIT)
+        m_bToExit = true;
     }
 
     AM::vDeleteOperand(pOperand,nullptr);
@@ -429,6 +429,40 @@ bool Output::bProcessOperand(Operand* pOperand)
       break;
     }
 
+      // -- -- -- -- -- --
+
+    case CN_MARKER: {
+
+      Marker *pMarker = _pMarker(pOperand);
+      if (pMarker->eOpMarker() == OM_LOWMEMORY) {
+        if (!m_bHasError) {
+          vTrace("RowsProcessed: %lld\n"_Stz, *m_ixRowsProcessed);
+          vTrace("\nerror: low memory\n"_Stz);
+          m_bHasError = true;
+        }
+      } else if (pMarker->eOpMarker() == OM_CHILDEXIT) {
+        m_bToExit = true;
+        if (!m_bHasError)
+          vPrintResult();
+        m_bHasError = false;
+        bContinue = false;
+        goto L_EXIT;
+        break;
+      } else if (pMarker->eOpMarker() == OM_EXIT) {
+        m_bToExit = true;
+        if ( !m_bHasError )
+          vPrintResult();
+        m_bHasError = false;
+        bContinue = false;
+        goto L_EXIT;
+        break;
+      }
+      else {
+        RASSERT(0);
+      }
+      break;
+    }
+
     // -- -- -- -- -- --
 
 //    case CN_EXITOPERAND: {
@@ -450,10 +484,12 @@ bool Output::bProcessOperand(Operand* pOperand)
 //          vTrace("[[RowBuffer %s ; Row=%lld]]\n"_Stz,
 //                 spDataBuffer.sz(pRowBuffer),
 //                 pRowBuffer->nRows());
-      m_ixRowsProcessed += pRowBuffer->nRows();
-      vTrace("\n"_Stz);
-      pRowBuffer->vPrintRows(m_pFileOut,nullptr);
-      AM::vDeleteOperand(pOperand,nullptr);
+      if ( ! m_bHasError ) {
+        m_ixRowsProcessed += pRowBuffer->nRows();
+        vTrace("\n"_Stz);
+        pRowBuffer->vPrintRows(m_pFileOut, nullptr);
+      }
+      AM::vDeleteOperand(pOperand, nullptr);
       break;
     }
             

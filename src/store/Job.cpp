@@ -30,8 +30,8 @@
 #include "SP_Timer.hpp"
 
 #include "SP_Pointer.hpp"
-#include "ExitOperand.hpp"
-#include "ChildExit.hpp"
+
+extern pthread_key_t giTLS_CurrentPoint;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -76,6 +76,16 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId, TagSet* 
   m_eError_job = EC_NONE;
   m_eChildError = EC_NONE;
   m_bUpdateParent = false;
+  m_bRejected     = false;
+
+  m_pExecuteJob   = nullptr;
+  m_pEndJob       = nullptr;
+
+  m_pBegunJob     = nullptr;
+  m_pExecutedJob  = nullptr;
+  m_pEndedJob     = nullptr;
+  m_pCancelledJob = nullptr;
+  m_pRejectJob    =  new RejectJob;
 
   /* 00 */ m_noActiveOps.vResetAtomic();
   /* 01 */ m_eJobList     = JL_NONE;
@@ -88,6 +98,13 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId, TagSet* 
   /* 08 */ m_bWasReceived = false;
   /* 09 */ m_pMarkerChain = nullptr;
   /* 10 */ m_bAllocate    = true;
+
+#ifdef WITH_OOM_FAULTINJECTION
+  PsxThd::vTlsSet(giTLS_CurrentPoint,(void*)5);
+#endif
+
+  /* 11 */ m_pJobsSkipNode    = new(C_SKIPLIST_LEVELS,nullptr) SkipNode(this);
+  /* 12 */ m_pGenericSkipNode = new(C_SKIPLIST_LEVELS,nullptr) SkipNode(this);
 
   m_iTscParticipant = 0;
   
@@ -124,6 +141,9 @@ Job::~Job(void) noexcept(false)
     if (AM::JLIST::bFindJob(this))
       AM::JLIST::vRemoveJob(this);
 
+    delete m_pJobsSkipNode;
+    delete m_pGenericSkipNode;
+
     //  if (bHasTag(C_TAG_LIFE) || JK_GENERIC == m_eJobKind) {
     //
     //    SP_TagSet spTagSet;
@@ -135,8 +155,11 @@ Job::~Job(void) noexcept(false)
 
     //! this assert may fail if a job completes before its references
     //! are completely returned
+    // NOTE: TaskState can be TS_NONE for 2PC jobs that never got triggered eg CANCELLED
     while (nReferences() ||
-           (m_pTask && TS_RETIRED != m_pTask->eState())) {
+           (m_pTask &&
+             (TS_RETIRED != m_pTask->eState() &&
+              TS_NONE != m_pTask->eState()))) {
       //vTrace("Napping ... job still has references???\n"_Stz);
       AM::vNapMsec(10, eGetClassNo());
     }
@@ -161,11 +184,11 @@ Job::~Job(void) noexcept(false)
 
     AM::JOBS::vJobsActiveDec();
 
-    //if (m_pMutex)
-    //  vMutexDestroy();
+    if (m_pMutex)
+      vMutexDestroy();
 
-    RASSERT(m_pMutex);
-    vMutexDestroy();
+    //RASSERT(m_pMutex);
+    //vMutexDestroy();
 
     /*
     i8 iResult;
@@ -189,6 +212,26 @@ Job::~Job(void) noexcept(false)
 
     vMutexDestroy();
   */
+
+    if (m_pExecuteJob)
+      delete m_pExecuteJob;
+
+    if (m_pEndJob)
+      delete m_pEndJob;
+
+    if (m_pBegunJob)
+      delete m_pBegunJob;
+
+    if (m_pExecutedJob)
+      delete m_pExecutedJob;
+
+    if (m_pEndedJob)
+      delete m_pEndedJob;
+
+    if (m_pCancelledJob)
+      delete m_pCancelledJob;
+
+    delete m_pRejectJob;
 
     if (m_pOutput)
       vOutputDestroy();
@@ -215,6 +258,36 @@ Job::~Job(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get dist job id                                                            */
+/*----------------------------------------------------------------------------*/
+JobId Job::tDistId(Job* pJob)
+{
+  _static_
+
+  return pJob->m_tDistId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the job name                                                           */
+/*----------------------------------------------------------------------------*/
+Stz* Job::szJobNm(Job* pJob)
+{
+  _static_
+
+  return pJob->m_sJobNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get origin job id                                                          */
+/*----------------------------------------------------------------------------*/
+JobId Job::tOriginId(Job* pJob)
+{
+  _static_
+
+  return pJob->m_tOriginId;
+}
 
 /*----------------------------------------------------------------------------*/
 /* post recv function                                                         */
@@ -298,38 +371,43 @@ bool Job::bAllocateMemory(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reset job for cascade reuse                                                */
+/* get 2pc begunJob                                                           */
 /*----------------------------------------------------------------------------*/
-void Job::vCascadeReset(void)
+Job* Job::pBegunJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  vDebugPoint();
-  
-  // -- a -------------------
-  // m_sJobNm;
-  // m_oTimer.vStart();
+  return m_pBegunJob;
+}
 
-  // -- b -------------------
-  m_bWasReceived     = false;
+/*----------------------------------------------------------------------------*/
+/* set 2pc begunJob                                                           */
+/*----------------------------------------------------------------------------*/
+void Job::vBegunJob(Job* pBegunJob)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
 
-  // -- c -------------------
-  m_eJobList  = JL_NONE;
-  m_eJobPhase = JP_NONE;
-  
-  // m_oJobTags
-  // m_xResult ???
-  
-  // -- e -------------------
+  m_pBegunJob = pBegunJob;
+}
 
-  m_pTask->vState(TS_NONE);
-  m_pTask->vSetInxPtr("job::entryPoint"_Stz);
+/*----------------------------------------------------------------------------*/
+/* get 2pc cancelledJob                                                       */
+/*----------------------------------------------------------------------------*/
+Job* Job::pCancelledJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
 
-  //m_pOutput->vDrainBufferQueue();
+  return m_pCancelledJob;
+}
 
-  vDrainOutput();
+/*----------------------------------------------------------------------------*/
+/* set 2pc cancelledJob                                                       */
+/*----------------------------------------------------------------------------*/
+void Job::vCancelledJob(Job* pCancelledJob)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
 
-  vDebugPoint();
+  m_pCancelledJob = pCancelledJob;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -487,6 +565,46 @@ void Job::vEnableObjectTracker(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get 2pc end job                                                            */
+/*----------------------------------------------------------------------------*/
+Job* Job::pEndJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_pEndJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set 2pc end job                                                            */
+/*----------------------------------------------------------------------------*/
+void Job::vEndJob(Job* pEndJob)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_pEndJob = pEndJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get 2pc ended job                                                          */
+/*----------------------------------------------------------------------------*/
+Job* Job::pEndedJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_pEndedJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set 2pc ended job                                                          */
+/*----------------------------------------------------------------------------*/
+void Job::vEndedJob(Job* pEndedJob)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_pEndedJob = pEndedJob;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the sen entry code                                                     */
 /*----------------------------------------------------------------------------*/
 Stz* Job::szEntryPoint(void)
@@ -504,6 +622,46 @@ void Job::vEntryPoint(Stz* szEntry)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_sEntryPoint = szEntry;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get 2pc executeJob                                                         */
+/*----------------------------------------------------------------------------*/
+Job* Job::pExecuteJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_pExecuteJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set 2pc executJob                                                          */
+/*----------------------------------------------------------------------------*/
+void Job::vExecuteJob(Job* pExecuteJob)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_pExecuteJob = pExecuteJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get 2pc executedJob                                                        */
+/*----------------------------------------------------------------------------*/
+Job* Job::pExecutedJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_pExecutedJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set 2pc executedJob                                                        */
+/*----------------------------------------------------------------------------*/
+void Job::vExecutedJob(Job* pExecutedJob)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_pExecutedJob = pExecutedJob;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -537,6 +695,16 @@ void Job::vFreeMarker(Marker* pMarker)
 //    m_pMarkerChain->vPush(pMarker);
 //  else
     delete pMarker;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the generic skip node                                                  */
+/*----------------------------------------------------------------------------*/
+SkipNode* Job::pGenericSkipNode(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_pGenericSkipNode;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -781,6 +949,16 @@ void Job::vJobPhase(eJP eJobPhase)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_eJobPhase = eJobPhase;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the jobs skip node                                                     */
+/*----------------------------------------------------------------------------*/
+SkipNode* Job::pJobsSkipNode(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_pJobsSkipNode;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1180,10 +1358,21 @@ void Job::vPipeoutResponse(Operand* pOperand)
       // get the current task
       Task *pCurTask = MY::pTask();
 
-      // is it an EXITOPERAND ?
-      if (pOperand->eGetClassNo() == CN_EXITOPERAND) {
-        AM::vDeleteOperand(pOperand, nullptr);
-        pOperand = new ChildExit;
+      // is it an EXIT MARKER ?
+      if (pOperand->bIsMarker()) {
+        Marker* pMarker = _pMarker(pOperand);
+
+        if (pMarker->eOpMarker() == OM_LOWMEMORY) {
+          //vTrace("PARENT RESPONSE: LOWMEMORY IGNORED\n"_Stz);
+          pParentJob->m_p_ResponseOp->vPipeToThis(pOperand, pCurTask);
+          return;
+        }
+
+
+        if (pMarker->eOpMarker() == OM_EXIT) {
+          AM::vDeleteOperand(pOperand, nullptr);
+          pOperand = AM::MARKER::pNewMarker(OM_CHILDEXIT, pParentJob);
+        }
       }
 
       // pipe the operand to the responseOP of parentJob
@@ -1191,11 +1380,15 @@ void Job::vPipeoutResponse(Operand* pOperand)
 
     } else {
 
-      // is it an EXITOPERAND ?
+      // is it an EXIT MARKER ?
 
-      if (pOperand->eGetClassNo() == CN_EXITOPERAND) {
-        AM::vDeleteOperand(pOperand, nullptr);
-        pOperand = new ChildExit;
+      if (pOperand->bIsMarker()) {
+        Marker* pMarker = _pMarker(pOperand);
+
+        if (pMarker->eOpMarker() == OM_EXIT) {
+          AM::vDeleteOperand(pOperand, nullptr);
+          pOperand = AM::MARKER::pNewMarker(OM_CHILDEXIT, pParentJob);
+        }
       }
 
       // pipe the operand to the parent job
@@ -1227,22 +1420,56 @@ void Job::vPostRecv(void)
   m_okLock.vResetLock();
   m_okLock.vResetStats();
 
+  // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+  // originating job
+  m_pExecuteJob  = nullptr;
+  m_pEndJob  = nullptr;
+
+  // - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+  // participant job
+  m_pBegunJob  = nullptr;
+  m_pExecutedJob  = nullptr;
+  m_pEndedJob  = nullptr;
+  m_pCancelledJob  = nullptr;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // First set all nullptr's then allocate as allocate mail fail
+  // and we try to cleanup an invalid pointer which was recvd over the socket
+
+  m_pRejectJob = nullptr;
+
   /* 00 */ m_noActiveOps.vResetAtomic();
   /* 01 */ m_eJobList     = JL_NONE;
   /* 02 */ m_pJobMetrics  = nullptr;
-  /* 03 */ m_pMutex       = new Mutex(this);
+  /* 03 */ m_pMutex       = nullptr;
   /* 04 */ m_pOutput      = nullptr;
   /* 05 */ m_p_ResponseOp = nullptr;
-  /* 06 */ m_oResponseTimer.vReset();
+  /* 06 */ m_oResponseTimer.vStart();   // vReset
   /* 07 */ m_pTask        = nullptr;
   /* 08 */ m_bWasReceived = true;
   /* 19 */ m_pMarkerChain = nullptr;
   /* 10 */ m_bAllocate    = true;
   /* 11 */ m_pObjectTracker = nullptr;
+  /* 11 */ m_pJobsSkipNode    = nullptr;
+  /* 12 */ m_pGenericSkipNode = nullptr;
+
+  m_tJobId.vNextJobId();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  m_tJobId.vNextJobId();
+  // Now allocate the members of the job for this node after recv
+
+  m_pRejectJob = new RejectJob;
+
+  /* 00 */ m_noActiveOps.vResetAtomic();
+  /* 03 */ m_pMutex       = new Mutex(this);
+  /* 07 */ m_pTask        = m_pTask = new Task(szJobNm(),this);
+  /* 11 */ m_pJobsSkipNode    = new(C_SKIPLIST_LEVELS,nullptr) SkipNode(this);
+  /* 12 */ m_pGenericSkipNode = new(C_SKIPLIST_LEVELS,nullptr) SkipNode(this);
+
+  m_pTask->vSetInxPtr("job::entryPoint"_Stz);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   AM::JLIST::vInsertJob(this);
 
   if (AM::SYSARGS::bDistJob())
@@ -1420,6 +1647,36 @@ bool Job::bUpdateParent(void)
   _precondition_(_ADDRESS_,_MAGIC_);
 
   return m_bUpdateParent;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set rejected                                                               */
+/*----------------------------------------------------------------------------*/
+void Job::vRejected(bool bRejected)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_bRejected = bRejected;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get rejected                                                               */
+/*----------------------------------------------------------------------------*/
+bool Job::bRejected(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_bRejected;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get RejectJob                                                              */
+/*----------------------------------------------------------------------------*/
+RejectJob* Job::pRejectJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_pRejectJob;
 }
 
 /*----------------------------------------------------------------------------*/

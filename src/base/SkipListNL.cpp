@@ -290,7 +290,8 @@ bool SkipListNL::bInsertByKey(void* aObjectInsert,
                               
                               std::function<void(SkipNode* pNode,
                                                  int i_Level
-                                                 )> vfPrintNode
+                                                 )> vfPrintNode,
+                              SkipNode* pSkipNode
                               )
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
@@ -322,7 +323,13 @@ bool SkipListNL::bInsertByKey(void* aObjectInsert,
     
   //RJH vTrace("bInsert:position7\n"_Stz);
   // create new node with inserted object
-  m_pNewly = new(iNodeLevel,m_pSlabAllocator) SkipNode(pObjectInsert);
+  if (pSkipNode) {
+    pSkipNode->m_iHeight = iNodeLevel;
+    m_pNewly = pSkipNode;
+  }
+  else
+    m_pNewly = new(iNodeLevel,m_pSlabAllocator) SkipNode(pObjectInsert);
+
   RASSERT(m_pNewly);
   
   // put new node into the list according the prior vector for random level
@@ -340,7 +347,7 @@ bool SkipListNL::bInsertByKey(void* aObjectInsert,
 #endif
   
   
-  // succesful insert
+  // successful insert
   return true;
 }
 
@@ -522,7 +529,8 @@ bool SkipListNL::bRemoveByKey(void* pObjectRemove,
                               
                               std::function<void(SkipNode* pNode,
                                                  int i_Level
-                                                 )> vfPrintNode
+                                                 )> vfPrintNode,
+                              bool bDeleteNode
                               )
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
@@ -570,7 +578,8 @@ bool SkipListNL::bRemoveByKey(void* pObjectRemove,
   m_nItems--;
 
   // delete the node
-  delete pNodeRemove;
+  if (bDeleteNode)
+    delete pNodeRemove;
   
   return true;
 }

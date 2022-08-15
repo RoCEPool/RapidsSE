@@ -13,8 +13,9 @@ namespace STORE
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // external API functions
-  
 
+
+  static Job* pCreateJob2PC(Job* pParentJob, Stz* sCmd);
   static void vDeleteRootJob(Job*& rpJob);
 
   static eEC  eForkJobChild(JobId& rtChildJobId,
@@ -22,8 +23,7 @@ namespace STORE
                            JobId tParentId, JobId tOriginId, JobId tDistId,
                            Job* pParentJob,
                            bool bUpdateParent,
-                           bool& bIsPipeline,
-                           bool& bIsBackground);
+                           bool& bIsPipeline);
 
   static eEC  eForkJob2PC(JobId& rtChildJobId,
                             TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
@@ -32,6 +32,8 @@ namespace STORE
 
   static Job* pNewRootJob(Stz* szJobNm,
                             JobId tParentId, JobId tOriginId, JobId tDistId);
+
+  static void vTriggerChildJob(Job* pParentJob, Job* pChildJob);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     

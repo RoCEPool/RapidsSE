@@ -22,6 +22,7 @@ void Step::vAddSteps_Tub(void)
   vAddStep("tub[].delete"_Stz,        &Step::vTubDelete);
   vAddStep("tub[].get"_Stz,           &Step::vTubGet);
   vAddStep("tub[].isEmpty"_Stz,       &Step::vTubIsEmpty);
+  vAddStep("tub[].isNull"_Stz,        &Step::vTubIsNull);
   vAddStep("tub[].new"_Stz,           &Step::vTubNew);
 }
 
@@ -111,6 +112,18 @@ void Step::vTubIsEmpty(void)
   bool bIsEmpty = pTub->bIsEmpty();
   
   m_pDataStack->vPushInt((i8)bIsEmpty);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* tub[].isNull -- test if tub is null                                        */
+/*----------------------------------------------------------------------------*/
+void Step::vTubIsNull(void)
+{
+  ENTRY();
+
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpTub.bIsNull() ? 1 : 0);
 
   EXIT();
 }

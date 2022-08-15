@@ -230,7 +230,7 @@ bool Sends::bExitingDone(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
   
   if (m_iExitingMarkers > m_iSends)
-    vTrace("Warning: ConsumeOp EV_M_EXITING EV_M_EXIT %lld; expected %lld\n"_Stz,
+    vTrace("Warning: ConsumeOp EV_M_EXITING %lld; expected %lld\n"_Stz,
            m_iExitingMarkers, m_iSends);
   
   if (m_iExitingMarkers == m_iSends) {

@@ -267,9 +267,10 @@ void Constants::vAddConstantsCpp(void)
   // CN_ : class number
   /*    */ vAddConstant("CN_CRWBUFFER"_Stz,    CN_CRWBUFFER);
   /*    */ vAddConstant("CN_JOB"_Stz,          CN_JOB);
+  /*    */ vAddConstant("CN_REJECTJOB"_Stz,    CN_REJECTJOB);
   /*    */ vAddConstant("CN_ROWBUFFER"_Stz,    CN_ROWBUFFER);
   /*    */ vAddConstant("CN_STZVAL"_Stz,       CN_STZVAL);
-  /*    */ vAddConstant("CN_PARCEL"_Stz,  CN_PARCEL);
+  /*    */ vAddConstant("CN_PARCEL"_Stz,       CN_PARCEL);
 
   
   // CT_ : columne type
@@ -654,7 +655,6 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("EV_D_CRWBUFFER"_Stz,       EV_D_CRWBUFFER);
   /*  0 */ vAddConstant("EV_D_CSVBUFFER"_Stz,       EV_D_CSVBUFFER);
   /*  0 */ vAddConstant("EV_D_ENTBUFFER"_Stz,       EV_D_ENTBUFFER);
-  /*  0 */ vAddConstant("EV_D_EXITOPERAND"_Stz,     EV_D_EXITOPERAND);
   /*  0 */ vAddConstant("EV_D_GRID"_Stz,            EV_D_GRID);
   /*  0 */ vAddConstant("EV_D_INDEX"_Stz,           EV_D_INDEX);
   /*  0 */ vAddConstant("EV_D_INDEXDEF"_Stz,        EV_D_INDEXDEF);
@@ -703,8 +703,6 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("EV_M_END"_Stz,             EV_M_END);
   /*  0 */ vAddConstant("EV_M_ENDED"_Stz,           EV_M_ENDED);
   /*  0 */ vAddConstant("EV_M_ENDING"_Stz,          EV_M_ENDING);
-  /*  0 */ vAddConstant("EV_M_ENDCRWRHT"_Stz,       EV_M_ENDCRWRHT);
-  /*  0 */ vAddConstant("EV_M_ENDROWRHT"_Stz,       EV_M_ENDROWRHT);
   /*  0 */ vAddConstant("EV_M_ERROR"_Stz,           EV_M_ERROR);
   /*  0 */ vAddConstant("EV_M_ERRORED"_Stz,         EV_M_ERRORED);
   /*  0 */ vAddConstant("EV_M_ERRORING"_Stz,        EV_M_ERRORING);
@@ -712,21 +710,20 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("EV_M_EXITED"_Stz,          EV_M_EXITED);
   /*  0 */ vAddConstant("EV_M_FINISHED"_Stz,        EV_M_FINISHED);
   /*  0 */ vAddConstant("EV_M_FLUSH"_Stz,           EV_M_FLUSH);
+  /*  0 */ vAddConstant("EV_M_HARDABORT"_Stz,       EV_M_HARDABORT);
   /*  0 */ vAddConstant("EV_M_LEAVE"_Stz,           EV_M_LEAVE);
   /*  0 */ vAddConstant("EV_M_LEAVING"_Stz,         EV_M_LEAVING);
   /*  0 */ vAddConstant("EV_M_LEFT"_Stz,            EV_M_LEFT);
-  /*  0 */ vAddConstant("EV_M_LEFTOUTER_CRWLFT"_Stz,EV_M_LEFTOUTER_CRWLFT);
-  /*  0 */ vAddConstant("EV_M_LEFTOUTER_ROWLFT"_Stz,EV_M_LEFTOUTER_ROWLFT);
+  /*  0 */ vAddConstant("EV_M_LOWMEMORY"_Stz,       EV_M_LOWMEMORY);
   /*  0 */ vAddConstant("EV_M_NEXTBUFFER"_Stz,      EV_M_NEXTBUFFER);
-  /*  0 */ vAddConstant("EV_M_STARTCRWRHT"_Stz,     EV_M_STARTCRWRHT);
   /*  0 */ vAddConstant("EV_M_START"_Stz,           EV_M_START);
-  /*  0 */ vAddConstant("EV_M_STARTROWRHT"_Stz,     EV_M_STARTROWRHT);
   /*  0 */ vAddConstant("EV_M_STARTED"_Stz,         EV_M_STARTED);
   /*  0 */ vAddConstant("EV_M_STREAMDEFRHT"_Stz,    EV_M_STREAMDEFRHT);
   /*  0 */ vAddConstant("EV_M_TRIGGER"_Stz,         EV_M_TRIGGER);
   /*  0 */ vAddConstant("EV_M_TRIGGERED"_Stz,       EV_M_TRIGGERED);
 
   /*  0 */ vAddConstant("EV_X_CHILDEXIT"_Stz,       EV_X_CHILDEXIT);
+  /*  0 */ vAddConstant("EV_X_EXIT"_Stz,            EV_X_EXIT);
 
   /*  0 */ vAddConstant("EV_ENUMS"_Stz,             EV_ENUMS);
 
