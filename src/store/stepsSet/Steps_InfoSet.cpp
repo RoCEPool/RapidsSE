@@ -786,6 +786,12 @@ void Step::vInfoSetRdCsvChunk(void)
   pCsvFile->vSeek(iOffset);
   pCsvBuffer->vTake(nBytes);
   i8 nBytesRead = pCsvFile->nReadBytes(azInto,nBytes);
+
+//  if (nBytesRead != nBytes) {
+//    nBytesRead = pCsvFile->nReadBytes(azInto,nBytes);
+//    ASSERT(nBytesRead == nBytes);
+//  }
+
   ASSERT(nBytesRead == nBytes);
   UNUSED(nBytesRead);
   
