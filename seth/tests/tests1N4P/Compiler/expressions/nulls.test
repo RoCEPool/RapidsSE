@@ -135,7 +135,19 @@ rows: (*,'explainPlan','
 
 
 EXPLAIN with_types SELECT -NULL FROM nation;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: -NULL'
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT -NULL FROM nation"
+
+-> -> projectOp
+      » column: (Expr = -NULL ; Ordinal Expr = -NULL) ; type: NULL
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
