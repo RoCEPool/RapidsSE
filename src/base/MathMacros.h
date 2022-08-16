@@ -366,7 +366,6 @@
       fltArg2.m_dFlt < (d8)C_FLT_MIN) {                                  \
       eErrorCode = EC_ARITHMETIC_UNDERFLOW;                              \
       *paW++ = C_DATUM_NULL;                                             \
-    printf("%g %g %g UNDERFLOW\n", fltArg1.m_dFlt, fltArg2.m_dFlt, C_FLT_MIN); \
     }                                                                    \
     else {                                                               \
       fltArg1.m_dFlt += fltArg2.m_dFlt;                                  \
@@ -422,7 +421,8 @@
     *paW++ = C_DATUM_NULL;                                               \
   }                                                                      \
   else {                                                                 \
-    *paW++ = -fltArg1.m_iAsI8;                                           \
+    fltArg1.m_dFlt = (double)(-1)*fltArg1.m_dFlt;                        \
+    *paW++ = fltArg1.m_iAsI8;                                            \
   }                                                                      \
 }
 
