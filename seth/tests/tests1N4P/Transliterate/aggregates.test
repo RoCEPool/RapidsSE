@@ -142,13 +142,13 @@ SELECT MAX(null+n_regionkey) FROM nation;
 rows:
   (null)
 
-//SELECT AVG(n_regionkey+null) FROM nation;
-//rows:
-// (null)
+SELECT AVG(n_regionkey+null) FROM nation;
+rows:
+ (null)
 
-//SELECT AVG(null+n_regionkey) FROM nation;
-//rows:
-// (null)
+SELECT AVG(null+n_regionkey) FROM nation;
+rows:
+ (null)
 
 -- basic select of grouped columnRef and aggregation
 -- we see INDIA twice because they are coming from different partitions (different nationKey)

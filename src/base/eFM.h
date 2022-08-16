@@ -84,6 +84,7 @@ enum eFM : u2 // function macros
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cast operators
 
+  /*  */ FM_ANY_TOUNK,          // any to unk
   /*  */ FM_BCD_TOFLT,          // bcd to flt
   /*  */ FM_BCD_TOINT,          // bcd to int
   /*  */ FM_BCD_TOUNK,          // bcd to unk
@@ -414,6 +415,7 @@ static Stz* aFM[]
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cast operators
 
+  /*  */ "_ANY_TOUNK"_Stz,
   /*  */ "_BCD_TOFLT"_Stz,
   /*  */ "_BCD_TOINT"_Stz,
   /*  */ "_BCD_TOUNK"_Stz,
