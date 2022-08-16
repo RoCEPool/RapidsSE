@@ -624,6 +624,7 @@
   {                                                                        \
     iArg2 = *(--paW);                                                      \
     iArg1 = *(--paW);                                                      \
+    printf("%lld %lld %lld %lld\n", iArg1, iArg2, C_I8_MIN, C_I8_MAX);   \
     if (eErrorCode != EC_NONE ||                                           \
         iArg1 == C_DATUM_NULL ||                                           \
         iArg2 == C_DATUM_NULL) {                                           \
@@ -718,6 +719,17 @@
     *paW++ = C_DATUM_NULL;                                                 \
   }
 
+#define _SUM_ANYUNK(eErrorCode)                                            \
+  {                                                                        \
+    iArg2 = *(--paW);                                                      \
+    iArg1 = *(--paW);                                                      \
+    if (eErrorCode != EC_NONE) {                                           \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    *paW++ = iArg1;                                                        \
+  }
+
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  ANY and UNKNOWN
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -748,6 +760,16 @@
     iArg2 = *(--paW);                                                      \
     iArg1 = *(--paW);                                                      \
     *paW++ = C_DATUM_NULL;                                                 \
+  }
+
+#define _SUM_UNKANY(eErrorCode)                                            \
+  {                                                                        \
+    iArg2 = *(--paW);                                                      \
+    iArg1 = *(--paW);                                                      \
+    if (eErrorCode != EC_NONE) {                                           \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    *paW++ = iArg2;                                                      \
   }
 
 /*============================================================================*/

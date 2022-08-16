@@ -62,9 +62,11 @@ enum eFM : u2 // function macros
   /*  */ FM_SUB_UNKANY,           // unk + any
 
   // sum
+  /*  */ FM_SUM_ANYUNK,           // sum(any,unk)
   /*  */ FM_SUM_BCDBCD,           // sum(bcd,bcd)
   /*  */ FM_SUM_FLTFLT,           // sum(flt,flt)
   /*  */ FM_SUM_INTINT,           // sum(int,int)
+  /*  */ FM_SUM_UNKANY,           // sum(unk,any)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // between operators
@@ -252,6 +254,7 @@ enum eFM : u2 // function macros
   /*  */ FM_GT_VCHVCH,        // vch > vch
 
   // greater than for aggreagtes
+  /*  */ FM_GTA_ANYUNK,        // any > unk
   /*  */ FM_GTA_BCDBCD,        // bcd > bcd
   /*  */ FM_GTA_BOLBOL,        // bol > bol
   /*  */ FM_GTA_DTEDTE,        // dte > bcd
@@ -261,6 +264,7 @@ enum eFM : u2 // function macros
   /*  */ FM_GTA_IVYIVY,        // ivy > ivy
   /*  */ FM_GTA_TMETME,        // tme > tme
   /*  */ FM_GTA_TSPTSP,        // tsp > tsp
+  /*  */ FM_GTA_UNKANY,        // unk > any
   /*  */ FM_GTA_VCHVCH,        // vch > vch
 
   // less than equal
@@ -292,6 +296,7 @@ enum eFM : u2 // function macros
   /*  */ FM_LT_VCHVCH,        // vch < vch
 
   // less than for aggregates
+  /*  */ FM_LTA_ANYUNK,        // any < unk
   /*  */ FM_LTA_BCDBCD,        // bcd < bcd
   /*  */ FM_LTA_BOLBOL,        // bol < bol
   /*  */ FM_LTA_DTEDTE,        // dte < bcd
@@ -301,6 +306,7 @@ enum eFM : u2 // function macros
   /*  */ FM_LTA_IVYIVY,        // ivy < ivy
   /*  */ FM_LTA_TMETME,        // tme < tme
   /*  */ FM_LTA_TSPTSP,        // tsp < tsp
+  /*  */ FM_LTA_UNKANY,        // unk < any
   /*  */ FM_LTA_VCHVCH,        // vch < vch
 
   // not equal
@@ -386,9 +392,11 @@ static Stz* aFM[]
   /*  */ "_SUB_UNKANY"_Stz,
 
   // sum
+  /*  */ "_SUM_ANYUNK"_Stz,
   /*  */ "_SUM_BCDBCD"_Stz,
   /*  */ "_SUM_FLTFLT"_Stz,
   /*  */ "_SUM_INTINT"_Stz,
+  /*  */ "_SUM_UNKANY"_Stz,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // between operators
@@ -574,6 +582,7 @@ static Stz* aFM[]
   /*  */ "_GT_VCHVCH"_Stz,
 
   // greater than aggregate
+  /*  */ "_GTA_ANYUNK"_Stz,
   /*  */ "_GTA_BCDBCD"_Stz,
   /*  */ "_GTA_BOLBOL"_Stz,
   /*  */ "_GTA_DTEDTE"_Stz,
@@ -583,6 +592,7 @@ static Stz* aFM[]
   /*  */ "_GTA_IVYIVY"_Stz,
   /*  */ "_GTA_TMETME"_Stz,
   /*  */ "_GTA_TSPTSP"_Stz,
+  /*  */ "_GTA_UNKANY"_Stz,
   /*  */ "_GTA_VCHVCH"_Stz,
 
   // less than
@@ -614,6 +624,7 @@ static Stz* aFM[]
   /*  */ "_LT_VCHVCH"_Stz,
 
   // less than aggregates
+  /*  */ "_LTA_ANYUNK"_Stz,
   /*  */ "_LTA_BCDBCD"_Stz,
   /*  */ "_LTA_BOLBOL"_Stz,
   /*  */ "_LTA_DTEDTE"_Stz,
@@ -623,6 +634,7 @@ static Stz* aFM[]
   /*  */ "_LTA_IVYIVY"_Stz,
   /*  */ "_LTA_TMETME"_Stz,
   /*  */ "_LTA_TSPTSP"_Stz,
+  /*  */ "_LTA_UNKANY"_Stz,
   /*  */ "_LTA_VCHVCH"_Stz,
 
     // not equal

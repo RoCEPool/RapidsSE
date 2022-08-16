@@ -959,7 +959,14 @@
     bcdArg2.m_iAsI8 = *(--paW);                                            \
     *paW++ = C_DATUM_NULL;                                                 \
   }
-  
+
+#define _GTA_ANYUNK(eErrorCode)                                            \
+  {                                                                        \
+    bcdArg1.m_iAsI8 = *(--paW);                                            \
+    bcdArg2.m_iAsI8 = *(--paW);                                            \
+    *paW++ = 1;                                                            \
+  }
+
 #define _GE_ANYUNK(eErrorCode)                                             \
   {                                                                        \
     bcdArg1.m_iAsI8 = *(--paW);                                            \
@@ -973,7 +980,14 @@
     bcdArg2.m_iAsI8 = *(--paW);                                            \
     *paW++ = C_DATUM_NULL;                                                 \
   }
-  
+
+#define _LTA_ANYUNK(eErrorCode)                                            \
+  {                                                                        \
+    bcdArg1.m_iAsI8 = *(--paW);                                            \
+    bcdArg2.m_iAsI8 = *(--paW);                                            \
+    *paW++ = 1;                                                            \
+  }
+
 #define _LE_ANYUNK(eErrorCode)                                             \
   {                                                                        \
     bcdArg1.m_iAsI8 = *(--paW);                                            \
@@ -1002,6 +1016,13 @@
     *paW++ = C_DATUM_NULL;                                                 \
   }
 
+#define _GTA_UNKANY(eErrorCode)                                            \
+  {                                                                        \
+    bcdArg1.m_iAsI8 = *(--paW);                                            \
+    bcdArg2.m_iAsI8 = *(--paW);                                            \
+    *paW++ = 0;                                                            \
+  }
+
 #define _GE_UNKANY(eErrorCode)                                             \
   {                                                                        \
     bcdArg1.m_iAsI8 = *(--paW);                                            \
@@ -1014,6 +1035,13 @@
     bcdArg1.m_iAsI8 = *(--paW);                                            \
     bcdArg2.m_iAsI8 = *(--paW);                                            \
     *paW++ = C_DATUM_NULL;                                                 \
+  }
+
+#define _LTA_UNKANY(eErrorCode)                                            \
+  {                                                                        \
+    bcdArg1.m_iAsI8 = *(--paW);                                            \
+    bcdArg2.m_iAsI8 = *(--paW);                                            \
+    *paW++ = 0;                                                            \
   }
 
 #define _LE_UNKANY(eErrorCode)                                             \
