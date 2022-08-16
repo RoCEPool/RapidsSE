@@ -1739,7 +1739,10 @@ bool Input::bEndCppString(void)
   
   if (m_xAnnChar.bIsDoubleQuote())
     return true;
-  
+
+  if (m_xAnnChar.bIsNewLine())
+    return true;
+
   return false;
 }
 

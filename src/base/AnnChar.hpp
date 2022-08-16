@@ -34,6 +34,7 @@ namespace BASE
     bool bIsLessThan(void);
     bool bIsGreaterThan(void);
     bool bIsMinus(void);
+    bool bIsNewLine(void);
     bool bIsNull(void);
     bool bIsOpenBrace(void);
     bool bIsOpenBracket(void);
