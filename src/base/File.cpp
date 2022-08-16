@@ -97,7 +97,10 @@ File::File(Object* pIsFor)
   //m_sPath
   //m_sOpenMode
   m_aFile = nullptr;
-  
+
+  m_bIsOpen = false;
+  m_aFile_check = nullptr;
+
   m_oSysCall.vClear();
 
   _checkInitialised_(CN_FILE);
@@ -302,9 +305,14 @@ void File::vClose(void)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
- 
+
+  errno = 0;
   i8 iResult = fclose(m_aFile);
+
   m_aFile = nullptr;
+
+  m_bIsOpen = false;
+  m_aFile_check = nullptr;
 
   if ((char)EOF == iResult) {
     m_oSysCall.vError(errno);
@@ -636,12 +644,16 @@ bool File::bOpenMode(Stz* szFilePath, Stz* szOpenMode)
   m_oSysCall.vClear();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+
+  RASSERT(! m_aFile_check);
+  RASSERT(! m_bIsOpen);
+
   m_sPath   = szFilePath;
   m_sOpenMode   = szOpenMode;
   
   //printf("File Open : %s : %s\n",m_sPath.azChar(),szOpenMode->azChar());
 
+  errno = 0;
   m_aFile = fopen(m_sPath.azChar(),m_sOpenMode.azChar());
   
   if (! m_aFile) {
@@ -649,13 +661,25 @@ bool File::bOpenMode(Stz* szFilePath, Stz* szOpenMode)
     //fprintf(stderr, "OpenMode failed\n");
     vTrace("File::bOpen: fopen(%s,%s) error; errno=%d\n"_Stz,
           m_sPath.azChar(),m_sOpenMode.azChar(),errno);
+    RASSERT(! m_aFile_check);
+    RASSERT(! m_bIsOpen);
     return false;
   }
-  
+
+  if (errno)
+    vTrace("File::bOpen: fopen(%s,%s) error; errno=%d %s\n"_Stz,
+           m_sPath.azChar(),m_sOpenMode.azChar(),errno,SysCall::azError(errno));
+
+  RASSERT(! errno);
+
+  m_aFile_check = m_aFile;
+  m_bIsOpen = true;
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (! m_iViaMalloc && AM::bAttached()) AM::pResources()->vIncFileOpen();
-      
+
+  RASSERT(m_aFile_check);
+  RASSERT(m_bIsOpen);
   return true;
 }
 
@@ -774,6 +798,9 @@ i8 File::nReadBytes(void* aDst, i8 nBytes)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
+  RASSERT(m_bIsOpen);
+  RASSERT(m_aFile_check == m_aFile);
+
   m_oSysCall.vClear();
 
 #ifdef WITH_STATISTICS_COUNTERS
@@ -785,6 +812,19 @@ i8 File::nReadBytes(void* aDst, i8 nBytes)
 #ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.File.m_nReadBytes += nBytesRead;
 #endif
+
+  if (! nBytesRead) {
+    vTrace("nReadBytes: error %lld %s\n"_Stz,errno,SysCall::azError(errno));
+
+    char caTest[64000];
+    nBytesRead = fread(caTest,1,nBytes,m_aFile);
+
+    vClose();
+
+    if (errno)
+      vTrace("nReadBytes: error %lld %s\n"_Stz,errno,SysCall::azError(errno));
+
+  }
 
   LogicUnit* pLogicUnit = MY::pOpLogicUnit();
   if (pLogicUnit) {
