@@ -216,7 +216,10 @@ QueryNode* LiteralExpr::pCoerceTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNo
     case CT_INTEGER:
       if (eTargetType == CT_DECIMAL) {
         Bcd xBcd;
-        xBcd.vSet(pExpr->iValue(), 0);
+        // TODO: (Craig) When we support precision/scale calculus the coercision to
+        //       a decimal should include the correct scale. For now we have a fixed
+        //       scale of 2 so it is hard coded like that.
+        xBcd.vSet(pExpr->iValue() * 100, 2);
         return DecimalLiteral::pCreate(xBcd);
 
       } else if (eTargetType == CT_FLOAT) {
