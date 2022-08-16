@@ -42,7 +42,7 @@ static eCT aeTypeCalculus[CT_ENUMS][CT_ENUMS] = {
 /*  8 TIME       */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,      CT_NONE,    CT_NONE,      CT_NONE,      CT_NONE,      CT_NONE,      CT_NONE,      CT_NONE, CT_NONE    },
 /*  9 TIMESTAMP  */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,      CT_NONE,    CT_NONE,      CT_NONE,      CT_NONE,      CT_NONE,      CT_NONE,      CT_NONE, CT_NONE    },
 /* 10 VARCHAR    */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,      CT_NONE,    CT_NONE,      CT_NONE,      CT_NONE,      CT_NONE,      CT_NONE,      CT_NONE, CT_NONE    },
-/* 11 UNKNOWN    */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,      CT_NONE,    CT_UNKNOWN,   CT_NONE,      CT_NONE,      CT_NONE,      CT_NONE,      CT_NONE, CT_NONE    }
+/* 11 UNKNOWN    */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,      CT_NONE,    CT_UNKNOWN,   CT_NONE,      CT_NONE,      CT_NONE,      CT_NONE,      CT_NONE, CT_UNKNOWN }
 };
 
 // References:

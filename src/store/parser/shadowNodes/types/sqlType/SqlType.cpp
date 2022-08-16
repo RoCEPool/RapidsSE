@@ -173,6 +173,7 @@ void SqlType::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
   else if ( SqlTimestamp::bIsOfType(pNode))     {  SqlTimestamp::vDescribe(pNode, sBuf, pRootNode); }
   else if (SqlIntervalDT::bIsOfType(pNode))     { SqlIntervalDT::vDescribe(pNode, sBuf, pRootNode); }
   else if (SqlIntervalYM::bIsOfType(pNode))     { SqlIntervalYM::vDescribe(pNode, sBuf, pRootNode); }
+  else if (   SqlUnknown::bIsOfType(pNode))     {    SqlUnknown::vDescribe(pNode, sBuf, pRootNode); }
   else {
     // Need to add in manual polymorphism here
     NEVER_REACH
