@@ -164,6 +164,7 @@ void CmdLineArgs::vInit(void)
   m_xSysArgs.m_bRLUDiary        = false;
   m_xSysArgs.m_bRLUTimer        = false;
   m_xSysArgs.m_bShmLock         = false;
+  m_xSysArgs.m_iSocketLowMem    = C_UNKNOWN;
   m_xSysArgs.m_bSysMetrics      = false;
   m_xSysArgs.m_i_ThisNode       = C_UNKNOWN;
   m_xSysArgs.m_nThreads         = 12;
@@ -850,7 +851,13 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
             
       continue;
     }
-    
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (szArg->bSame("--socketLowMem"_Stz)) {
+      m_xSysArgs.m_iSocketLowMem = argv[++i_Arg].iToI8();
+      continue;
+    }
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--start"_Stz)) {
       

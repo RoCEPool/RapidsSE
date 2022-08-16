@@ -299,11 +299,14 @@ esac
   printf "Size of installer: %'d kB\n" "${FILESIZE}"
 
   # Generate checksum files
-  md5sum  "${OUTPUT_DIR}/${OUTPUT_FILE}" > "${CHECKSUM_MD5_FILE}"
-  sha1sum "${OUTPUT_DIR}/${OUTPUT_FILE}" > "${CHECKSUM_SHA1_FILE}"
-  echo
-  echo "Installer checksums:"
-  echo -n "md5:   " && cat "${CHECKSUM_MD5_FILE}"
-  echo -n "sha1:  " && cat "${CHECKSUM_SHA1_FILE}"
-  echo
+  (
+    cd "${OUTPUT_DIR}"
+    md5sum  "${OUTPUT_FILE}" > "${CHECKSUM_MD5_FILE}"
+    sha1sum "${OUTPUT_FILE}" > "${CHECKSUM_SHA1_FILE}"
+    echo
+    echo "Installer checksums:"
+    echo -n "md5:   " && cat "${CHECKSUM_MD5_FILE}"
+    echo -n "sha1:  " && cat "${CHECKSUM_SHA1_FILE}"
+    echo
+  )
 }

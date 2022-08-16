@@ -44,13 +44,15 @@
     else
 
       // check for low memory
+      /*
       attachMap::isLowMemory if
         //InfoSet[].delete
         EC_LOW_MEMORY op__execErr
         true
         exit
       then
-      
+      */
+
       infoSetRow[].get InfoSet[].rdCsvChunk to CsvBuffer[]
       CsvBuffer[].pipeOut
       InfoSet[].nextRow to infoSetRow[]

@@ -4905,7 +4905,19 @@ bool PROMPT::bPrompt_stepTiming(SePrompt* pPrompt)
     AM::pSteps()->vShow(sStepNm);
     return true;
   }
-  
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // show all step timings
+  if ( pInpTknVec->pGet(1)->bSame("showAll"_Stz) && nTokens == 2) {
+
+    if (! AM::pSteps()) {
+      vTrace("Step timing not started\n"_Stz);
+      return true;
+    }
+    AM::pSteps()->vShowAll();
+    return true;
+  }
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // write step timings to given file
   if ( pInpTknVec->pGet(1)->bSame("write"_Stz) && nTokens == 3) {
@@ -4917,6 +4929,18 @@ bool PROMPT::bPrompt_stepTiming(SePrompt* pPrompt)
       return true;
     }
     AM::pSteps()->vWrite(sPath);
+    return true;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // write step timings to given file
+  if ( pInpTknVec->pGet(1)->bSame("writeAll"_Stz) && nTokens == 2) {
+
+    if (! AM::pSteps()) {
+      vTrace("Step timing not started\n"_Stz);
+      return true;
+    }
+    AM::pSteps()->vWriteAll();
     return true;
   }
   
@@ -5719,7 +5743,7 @@ PromptFun __Prompt_wait_bg (
   PF_WAIT_BG,        // prompt function
   "Prompt_wait_bg"_Stz,  // name of the prompt function
   "comment"_Stz,     // comment about the function
-  "wait_bg"_Stz,     // the prompt command
+  "wait"_Stz,        // the prompt command
   nullptr,           // the second word
   bPrompt_wait_bg,   // prompt function
   true,              // enabled

@@ -222,7 +222,7 @@ eTN Token::eCollectSenName(char** aazCrs, Stz* szString)
 {
   _static_
 
-  char *azChars = StrLib::zNullTerminator(szString->azChar());
+  char *azChars = StrLib::azNullTerminator(szString->azChar());
   char *z = azChars;
   
   // collect the characters of the name
@@ -247,7 +247,7 @@ eTN Token::eCollectSenNumber(char** aazCrs, Stz* szString)
 {
   _static_
 
-  char *azChars = StrLib::zNullTerminator(szString->azChar());
+  char *azChars = StrLib::azNullTerminator(szString->azChar());
   char *z = azChars;
 
   i8 nIntegerDigits  = 0;
@@ -390,7 +390,7 @@ eTN Token::eCollectSenString(char** aazCrs, Stz* szString)
 {
   _static_
 
-  char *azChars = StrLib::zNullTerminator(szString->azChar());
+  char *azChars = StrLib::azNullTerminator(szString->azChar());
   char *z = azChars;
     
   // skip the leading '"' or '\''
@@ -433,7 +433,7 @@ eTN Token::eCollectSenTag(char** aazCrs, Stz* szString)
 {
   _static_
 
-  char *azChars = StrLib::zNullTerminator(szString->azChar());
+  char *azChars = StrLib::azNullTerminator(szString->azChar());
   char *z = azChars;
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

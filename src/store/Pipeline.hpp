@@ -43,6 +43,7 @@ namespace STORE
     bool m_bPulsedLimit;
     Op*  m_pOpToPulse;
     bool m_bCancelled;
+    bool m_bLowMemory;
         
     // must be last
     Footer m_xFooter;
@@ -67,6 +68,8 @@ namespace STORE
     void vErrored(bool bErrored);
     i8   iGetAccum(i8 i_Accum);
     void vGrabDebugLock(void);
+    void vLowMemory(bool bLowMemory);
+    bool bLowMemory(void);
     i8   iOriginNodeId(void);
     Op*  pOp0(void);
     i8   nOpsOnNode(i8 iNode);

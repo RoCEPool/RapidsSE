@@ -20,6 +20,8 @@ namespace BASE
 
     Charser*  m_pCharser;   // charser
     AnnChar   m_xAnnChar;   // annotated char from charser
+  
+    Charser*  m_pCharser_spares;  // set of spare charsers
 
     // some debugging aids
     i8        d_iDebugMode;    // debug mode?
@@ -43,6 +45,7 @@ namespace BASE
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
+    void vAllocCharser(void);
     Stz* szChars(void);
     void vDebugMode(i8 iDebugMode);
     Input* pDeleteInput(void);
@@ -53,6 +56,7 @@ namespace BASE
     void vForkReset(void);
     void vFormCppTokens(void);
     void vFormSenTokens(void);
+    void vFreeCharser(void);
     TagSet* pInpTagSet(void);
     TokenVec* pInpTknVec(void);
     void vInspect(void);

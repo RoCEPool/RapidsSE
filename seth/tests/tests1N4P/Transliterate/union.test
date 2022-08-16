@@ -83,7 +83,7 @@ success;
 //------------------------------------------------------------------------------
 // load the orders table
 load Orders "../DATA/TPCH/orders10.csv";
-failure contains: '4 invalid'
+success
 
 //------------------------------------------------------------------------------
 // data in second table

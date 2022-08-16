@@ -417,6 +417,23 @@ void ToKeyHshRow::vNewRowBuffer(void)
     } \
   }
 
+#define vSKIP_TILL_LINE_END() \
+  { \
+    while (cCurChr) { \
+      if (cCurChr && cCurChr == m_cLineEnd && \
+          m_cLineEnd2nd && cNxtChr == m_cLineEnd2nd) { \
+        break; \
+      } \
+      else \
+      if (cCurChr && cCurChr == m_cLineEnd && \
+          ! m_cLineEnd2nd) { \
+        break; \
+      } \
+      else \
+        vACCEPT_CHAR(); \
+    } \
+  }
+
 #define vSKIP_RECORD_LINE_END() \
   { \
     if (cCurChr && cCurChr == m_cRecordTerminator) \
@@ -967,6 +984,7 @@ L_NextFieldInRecord:
   if (++i_Fld >= nCols) {
     if (iTraceBits & C_BIT_TestMoreFields)
       vTrace("L_NextFieldInRecord: end-of-fields\n"_Stz);
+    vSKIP_TILL_LINE_END();
     goto L_RecordEndLineEnd;
   }
   
@@ -2114,9 +2132,11 @@ L_Varchar_unquoted:
   *acVchDst++ = '\0';
 
   // its not an enclosed varchar so we consider it to be valid
-  if (nVchChars >= nPixLength)
+  if (nVchChars >= nPixLength) {
     nVchChars = nPixLength;
-  
+    *(azColVal_varchar + nVchChars) = '\0';
+  }
+
   goto L_Varchar_depositValue;
   
   
@@ -2226,9 +2246,11 @@ L_Varchar_singleQuotedTerminate:
   *acVchDst++ = '\0';
 
   // its not an enclosed varchar so we consider it to be valid
-  if (nVchChars >= nPixLength)
+  if (nVchChars >= nPixLength) {
     nVchChars = nPixLength;
-  
+    *(azColVal_varchar + nVchChars) = '\0';
+  }
+
   vWHITE_SPACE_trailing(EC_CSV_TIMESTAMP_INVALID);
 
   goto L_Varchar_depositValue;
@@ -2340,9 +2362,11 @@ L_Varchar_doubleQuotedTerminate:
   *acVchDst++ = '\0';
 
   // its not an enclosed varchar so we consider it to be valid
-  if (nVchChars >= nPixLength)
+  if (nVchChars >= nPixLength) {
     nVchChars = nPixLength;
-    
+    *(azColVal_varchar + nVchChars) = '\0';
+  }
+
   vWHITE_SPACE_trailing(EC_CSV_TIMESTAMP_INVALID);
 
   goto L_Varchar_depositValue;
@@ -2411,9 +2435,11 @@ L_Varchar_userEnclosed:
   *acVchDst++ = '\0';
 
   // its not an enclosed varchar so we consider it to be valid
-  if (nVchChars >= nPixLength)
+  if (nVchChars >= nPixLength) {
     nVchChars = nPixLength;
-  
+    *(azColVal_varchar + nVchChars) = '\0';
+  }
+
   vWHITE_SPACE_trailing(EC_CSV_VARCHAR_INVALID);
   
   goto L_Varchar_depositValue;

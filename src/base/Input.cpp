@@ -37,6 +37,8 @@ Input::Input(Input* pNext)
   m_pCurrTkn = nullptr;
   m_pInpTagSet  = new TagSet;
 
+  m_pCharser_spares = nullptr;
+  
   // debugging aids
   d_iDebugMode               = false;
   
@@ -48,7 +50,11 @@ Input::Input(Input* pNext)
   d_nUseBegin                = 0;
 
   _checkInitialised_(CN_INPUT);
-    
+  
+  
+  for (i8 i_Charser = 0; i_Charser < 3; i_Charser++)
+    m_pCharser_spares = new Charser(m_pCharser_spares);
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
 }
 
@@ -62,6 +68,9 @@ Input::~Input(void) noexcept(false)
   while (m_pCharser)
     RASSERT(bPopCharser());
   
+  while (m_pCharser_spares)
+    m_pCharser_spares = m_pCharser_spares->pDeleteCharser();
+
   RASSERT(! m_pNext);
 
   delete m_pInpTagSet;
@@ -86,6 +95,26 @@ void Input::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* allocate a charser from spares                                             */
+/*----------------------------------------------------------------------------*/
+void Input::vAllocCharser(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+      
+  if (m_pCharser_spares) {
+    
+    Charser* pCharser_spare = m_pCharser_spares;
+    m_pCharser_spares = m_pCharser_spares->pNext();
+
+    pCharser_spare->vNext(m_pCharser);
+    m_pCharser = pCharser_spare;
+  }
+  else {
+    m_pCharser = new Charser(m_pCharser);
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /* get chars of current token                                                 */
@@ -234,6 +263,22 @@ void Input::vFormSenTokens(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* allocate a charser from spares                                             */
+/*----------------------------------------------------------------------------*/
+void Input::vFreeCharser(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  Charser* pCharser = m_pCharser->pNext();
+  
+  m_pCharser->vReset();
+  m_pCharser->vNext(m_pCharser_spares);
+  m_pCharser_spares = m_pCharser;
+
+  m_pCharser = pCharser;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get input tag set                                                          */
 /*----------------------------------------------------------------------------*/
 TagSet* Input::pInpTagSet(void)
@@ -322,8 +367,10 @@ bool Input::bPopCharser(void)
   if (! m_pCharser)
     return false;
   
-  m_pCharser = m_pCharser->pDeleteCharser();
-    
+//  m_pCharser = m_pCharser->pDeleteCharser();
+//
+  vFreeCharser();
+  
   return true;
 }
 
@@ -334,10 +381,10 @@ void Input::vPushCharser(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  Charser* pNewCharser = new Charser(m_pCharser);
+  vAllocCharser();
   
-  m_pCharser = pNewCharser;
-  
+  m_pCharser->vUseBegin();
+    
   m_pCharser->vDebugMode(d_iDebugMode);
 }
 
@@ -877,7 +924,7 @@ void Input::vCollectCppName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  char *azChars = StrLib::zNullTerminator(m_pCurrTkn->azChars());
+  char *azChars = StrLib::azNullTerminator(m_pCurrTkn->azChars());
   char *z = azChars;
 
   ASSERT(bStartCppName());
@@ -904,7 +951,7 @@ void Input::vCollectCppNumber(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  char *azChars = StrLib::zNullTerminator(m_pCurrTkn->azChars());
+  char *azChars = StrLib::azNullTerminator(m_pCurrTkn->azChars());
   char *z = azChars;
 
   i8 iNoDigits = 0;
@@ -972,7 +1019,7 @@ void Input::vCollectCppOther(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  char *azChars = StrLib::zNullTerminator(m_pCurrTkn->azChars());
+  char *azChars = StrLib::azNullTerminator(m_pCurrTkn->azChars());
   char *z = azChars;
 
   ASSERT(bStartCppOther());
@@ -1203,7 +1250,7 @@ void Input::vCollectCppString(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  char *azChars = StrLib::zNullTerminator(m_pCurrTkn->azChars());
+  char *azChars = StrLib::azNullTerminator(m_pCurrTkn->azChars());
   char *z = azChars;
 
   ASSERT(bStartSenString());
@@ -1328,7 +1375,7 @@ void Input::vCollectSenName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  char *azChars = StrLib::zNullTerminator(m_pCurrTkn->azChars());
+  char *azChars = StrLib::azNullTerminator(m_pCurrTkn->azChars());
   char *z = azChars;
 
   //ASSERT(bStartSenName());
@@ -1358,7 +1405,7 @@ void Input::vCollectSenNumber(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  char *azChars = StrLib::zNullTerminator(m_pCurrTkn->azChars());
+  char *azChars = StrLib::azNullTerminator(m_pCurrTkn->azChars());
   char *z = azChars;
 
   i8 nIntegerDigits  = 0;
@@ -1507,7 +1554,7 @@ void Input::vCollectSenString(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  char *azChars = StrLib::zNullTerminator(m_pCurrTkn->azChars());
+  char *azChars = StrLib::azNullTerminator(m_pCurrTkn->azChars());
   char *z = azChars;
 
   ASSERT(bStartSenString());
@@ -1547,7 +1594,7 @@ void Input::vCollectSenTag(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  char *azChars = StrLib::zNullTerminator(m_pCurrTkn->azChars());
+  char *azChars = StrLib::azNullTerminator(m_pCurrTkn->azChars());
   char *z = azChars;
 
   ASSERT(bStartSenTag());

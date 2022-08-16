@@ -130,8 +130,8 @@ LogicUnit::LogicUnit(void)
 
 ,    m_xpNamedBuffer(this,RF_REPAIR_DELETE,   NamedBuffer::vRepairList,LR_NAMEDBUFFER)
 ,           m_xpNode(this,RF_REPAIR_NEVER, nullptr,                           LR_NODE)
-,         m_xpNode_I(this,RF_SET_NULL,     nullptr,                         LR_NODE_I)
-,            m_xpNow(this,RF_REPAIR_DELETE,           Now::vRepair,            LR_NOW)
+,         m_xpNode_I(this,RF_REPAIR_NEVER, nullptr,                         LR_NODE_I)
+,            m_xpNow(this,RF_REPAIR_DELETE,   Now::vRepair,                    LR_NOW)
 
 ,             m_xpOp(this,RF_NONE,         nullptr,                             LR_OP)
 ,     m_xpOperandOoO(this,RF_REPAIR_NONE,  nullptr,                     LR_OPERANDOOO)
@@ -271,7 +271,9 @@ LogicUnit::LogicUnit(void)
   
   for (i8 i_UnusedReg = m_nRegs ; i_UnusedReg < C_MAX_REGS; i_UnusedReg++)
     m_paReg[i_UnusedReg] = nullptr;
-  
+
+  m_xpNode_I = new Node_I;
+
   _checkInitialised_(CN_LOGICUNIT);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
@@ -326,7 +328,9 @@ LogicUnit::~LogicUnit(void) noexcept(false)
 
   RASSERT(m_xpNamedBuffer.bIsNull());
   RASSERT(m_xpNode.bIsNull());
-  RASSERT(m_xpNode_I.bIsNull());
+
+  if ( ! m_xpNode_I.bIsNull() )
+    delete *m_xpNode_I;
 
   RASSERT(m_xpOperandOoO.bIsNull());
 
@@ -526,7 +530,9 @@ void LogicUnit::vCleanup(void)
     }
     
     // execute register repair
-    if (p_Reg->m_eLogicUnitReg != LR_STATS)
+    if (p_Reg->m_eLogicUnitReg != LR_STATS  &&
+        p_Reg->m_eLogicUnitReg != LR_NODE_I &&
+        p_Reg->m_eLogicUnitReg != LR_PARCEL)
       p_Reg->vRepair();
   }
 }

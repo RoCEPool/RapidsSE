@@ -26,6 +26,9 @@ extern Stz*          gsBuildGitHash;
 extern CmdLineArgs   gxCmdLineArgs;
 extern PromptCatalog gxPromptCatalog;
 
+extern pthread_key_t gbTLS_FaultInjection;
+extern pthread_key_t giTLS_FaultPoint;
+extern pthread_key_t giTLS_CurrentPoint;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -123,76 +126,128 @@ void* SeDeputy::aEntryPoint(void* pArg)
 void SeDeputy::vDeputyLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
-    
+
+  bool bIsPipeline = false;
+  bool bPromptWaitCompletion = true;
+  bool bPromptSignalled;
+
   m_pThread->vThisTLSThread();
   RASSERT(AM::THREAD::pThisThread());
   
   while (m_bContinue) {
 
-    vMutexLock(this);
-    m_bAvailable = true;
-    vMutexWaitAndUnlock(this);
-  
-    if (! m_bContinue)
-      break;
-        
-    TokenVec* pInpTknVec = m_pInput->pInpTknVec();
-    TagSet* pInpTagSet   = m_pInput->pInpTagSet();
-    
-    pInpTagSet->vReplace(C_TAG_WAIT,1);
-    pInpTagSet->vReplace(C_TAG_SIGNALPARENT,1);
+    try {
 
-    pInpTagSet->vReplace(C_TAG_PATH,m_pRootJob->szFolderPath());
-    pInpTagSet->vReplace(C_TAG_LASTJOBID,m_pRootJob->tLastJobId().iAsI8());
-    pInpTagSet->vReplace(C_TAG_SYSTEMCLOSER,m_pRootJob->bSystemCloser());
+      vMutexLock(this);
+      m_bAvailable = true;
+      vMutexWaitAndUnlock(this);
 
-    JobId tChildJobId;
-    
-    JobId tParentId;
-    tParentId = m_pRootJob->tJobId();
+      if (!m_bContinue)
+        break;
 
-    JobId tOriginId;
-    tOriginId = m_pRootJob->tOriginId();
+      TokenVec *pInpTknVec = m_pInput->pInpTknVec();
+      TagSet *pInpTagSet = m_pInput->pInpTagSet();
 
-    JobId tDistId;
-    tDistId = m_pRootJob->tDistId();
+#ifdef WITH_OOM_FAULTINJECTION
 
-    bool bIsPipeline;
-    bool bIsBackground;
+      if (pInpTagSet->bHasName(C_TAG_FAULTINJECTION)) {
 
-    m_eError = Api::eForkJobChild(tChildJobId,
-                             pInpTknVec,pInpTagSet,
-                             tParentId,tOriginId,tDistId,
-                             m_pRootJob,
-                             true, /* update parent */
-                             bIsPipeline,
-                             bIsBackground
-                             );
-    
-    if (EC_NONE != m_eError) {
-      m_pSePrompt->vMutexLock(this);
-      m_pSePrompt->vMutexSignalAndUnlock(this);
-      continue;
+        RASSERT(pInpTagSet->bHasName(C_TAG_FAULTPOINT));
+        i8 iFaultPoint =  StrLib::iToI8((char*)pInpTagSet->szValue(C_TAG_FAULTPOINT));
+        RASSERT(iFaultPoint);
+
+        PsxThd::vTlsSet(gbTLS_FaultInjection,(void*)true);
+        PsxThd::vTlsSet(giTLS_FaultPoint,(void*)iFaultPoint);
+        //PsxThd::vTlsSet(giTLS_CurrentPoint,(void*)1);
+      }
+
+#endif
+
+      // prompt not yet signalled
+      bPromptSignalled = false;
+
+     if ( pInpTagSet->bHasName(C_TAG_NOWAIT)) {
+       bPromptWaitCompletion = false;
+       pInpTagSet->vDelete(C_TAG_WAIT);
+       pInpTagSet->vDelete(C_TAG_SIGNALPARENT);
+     }
+     else {
+       bPromptWaitCompletion = true;
+       pInpTagSet->vReplace(C_TAG_WAIT, 1);
+       pInpTagSet->vReplace(C_TAG_SIGNALPARENT, 1);
+     }
+
+      pInpTagSet->vReplace(C_TAG_PATH, m_pRootJob->szFolderPath());
+      pInpTagSet->vReplace(C_TAG_LASTJOBID, m_pRootJob->tLastJobId().iAsI8());
+      pInpTagSet->vReplace(C_TAG_SYSTEMCLOSER, m_pRootJob->bSystemCloser());
+
+      JobId tChildJobId;
+
+      JobId tParentId;
+      tParentId = m_pRootJob->tJobId();
+
+      JobId tOriginId;
+      tOriginId = m_pRootJob->tOriginId();
+
+      JobId tDistId;
+      tDistId = m_pRootJob->tDistId();
+
+      m_eError = Api::eForkJobChild(tChildJobId,
+                                    pInpTknVec, pInpTagSet,
+                                    tParentId, tOriginId, tDistId,
+                                    m_pRootJob,
+                                    true, /* update parent */
+                                    bIsPipeline
+      );
+
+      if (EC_NONE != m_eError) {
+        m_pSePrompt->vMutexLock(this);
+        m_pSePrompt->vMutexSignalAndUnlock(this);
+        continue;
+      }
+
+      if ( ! bPromptWaitCompletion ) {
+        m_pSePrompt->vMutexLock(this);
+        m_pSePrompt->vMutexSignalAndUnlock(this);
+        bPromptSignalled = true;
+      }
+
+      // process the output bufferQueue
+      if (bIsPipeline)
+        m_pRootJob->vProcessOutput();
+
+      vReportTime();
+
+      m_pRootJob->vResetOutput();
+      m_pRootJob->vCleanupOutput();
+
+      if (bPromptWaitCompletion) {
+        m_pSePrompt->vMutexLock(this);
+        m_pSePrompt->vMutexSignalAndUnlock(this);
+        bPromptSignalled = true;
+      }
+
+      // reset the C_TAG_TIME and C_TAG_NOWAIT
+      pInpTagSet->vDelete(C_TAG_TIME);
+      pInpTagSet->vDelete(C_TAG_NOWAIT);
+
     }
 
-    // process the output bufferQueue
-    if (bIsPipeline)
-      m_pRootJob->vProcessOutput();
-
-    vReportTime();
-
-    m_pRootJob->vResetOutput();
-    m_pRootJob->vCleanupOutput();
-
-    if (! bIsBackground) {
-      m_pSePrompt->vMutexLock(this);
-      m_pSePrompt->vMutexSignalAndUnlock(this);
+    catch (LowMemory xLowMemory) {
+      m_eError = EC_LOW_MEMORY;
+      if ( ! bPromptSignalled) {
+        m_pSePrompt->vMutexLock(this);
+        m_pSePrompt->vMutexSignalAndUnlock(this);
+      }
     }
 
-    // reset the C_TAG_TIME
-    pInpTagSet->vDelete(C_TAG_TIME);
+#ifdef WITH_OOM_FAULTINJECTION
+    PsxThd::vTlsSet(gbTLS_FaultInjection,(void*)false);
+    PsxThd::vTlsSet(giTLS_FaultPoint,(void*)C_UNKNOWN);
+    PsxThd::vTlsSet(giTLS_CurrentPoint,(void*)C_UNKNOWN);
+#endif
   }
-  
+
   m_bTerminated = true;
 }
 
@@ -412,3 +467,4 @@ void SeDeputy::vToDo(Stz* szToDo)
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
+

@@ -52,6 +52,8 @@
 #include "RowCoder.hpp"
 #include "HeadLine.hpp"
 
+#include "Socket.hpp"
+
 #include "Crw.hpp"
 
 #include "LglPtnMap.hpp"
@@ -826,6 +828,29 @@ eEC AM::JLIST::eUpdateParent(Job* pJob)
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /*----------------------------------------------------------------------------*/
+/* ack originating job                                                        */
+/*----------------------------------------------------------------------------*/
+void AM::JOB::vAckOriginatingJob(JobId tOriginId)
+{
+  _static_;
+
+  // find the originating job
+  Job* pJobParticipant = AM::pJob_FindOriginating(tOriginId);
+
+  Job *pJobFound = AM::pJob_FindOriginating(tOriginId);
+  RASSERT(pJobFound);
+
+  // find the job task
+  Task *pJobTask = pJobFound->pTask();
+
+  // ack the job task
+  i8 nAcksWereRemaining;
+  bool bWasQueued = Scheduler::bTaskCross_AckWaiting(pJobTask, AM::pThisTLSTask(),
+                                                     nAcksWereRemaining);
+  UNUSED(bWasQueued);
+}
+
+/*----------------------------------------------------------------------------*/
 /* has job got given tag?                                                     */
 /*----------------------------------------------------------------------------*/
 bool AM::JOB::bHasTag(Job* pJob, Stz* szTagNm)
@@ -869,6 +894,90 @@ eEC AM::JOB::ePreExecuteTest(Job* pJob)
   return EC_NONE;
 }
 
+/*----------------------------------------------------------------------------*/
+/* handle received rejectJob                                                  */
+/*----------------------------------------------------------------------------*/
+void AM::JOB::vRecvdReject(RejectJob *pRejectJob)
+{
+  _static_;
+
+  // get origin id
+  JobId tOriginId = pRejectJob->tOriginId();
+
+  // get the error
+  eEC eError = pRejectJob->eError();
+
+  Job *pJobFound = AM::pJob_FindOriginating(tOriginId);
+  RASSERT(pJobFound);
+
+  // set the error
+  pJobFound->vJobError(eError);
+
+  // mark as rejected
+  pJobFound->vRejected(true);
+
+  // find the job task
+  Task *pJobTask = pJobFound->pTask();
+
+  // ack the job task
+  i8 nAcksWereRemaining;
+  bool bWasQueued = Scheduler::bTaskCross_AckWaiting(pJobTask, AM::pThisTLSTask(),
+                                                     nAcksWereRemaining);
+  UNUSED(bWasQueued);
+}
+
+/*----------------------------------------------------------------------------*/
+/* send a rejectJob                                                           */
+/*----------------------------------------------------------------------------*/
+void AM::JOB::vSendReject(RejectJob *pRejectJob)
+{
+  _static_;
+
+  // get origin id
+  JobId tOriginId = pRejectJob->tOriginId();
+
+  // get origin node
+  i8 iOriginNodeId = tOriginId.uNodeId();
+
+  // find the node by no
+  Node *pNode = AM::pGrid()->pFindNodeById(iOriginNodeId);
+
+  // get the send socket of the node
+  Socket *pSocket = pNode->pSendSocket();
+  SysCall oSysCall;
+
+  // send the rejectJob
+  pSocket->vGrabWrite();
+  bool bResult = pSocket->bSendObject(pRejectJob, oSysCall, SY_NONE);
+  pSocket->vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* trigger execution of the pipeline on the participant                       */
+/*----------------------------------------------------------------------------*/
+void AM::JOB::vTriggerExecute(JobId tDistId)
+{
+  _static_;
+
+  // find the participant job
+  Job* pJobParticipant = AM::pJob_FindParticipating(tDistId);
+
+  // get the task of the participant job
+  Task* pTaskParticipant = pJobParticipant->pTask();
+
+  // get the state of the job
+  eTS eState = pTaskParticipant->eState();
+
+  while (pTaskParticipant->eState() != TS_HIBERNATING)
+  {;}
+
+  // cycle the task lock to ensure task has fully entered next state
+  pTaskParticipant->vCycleTaskLock((Stz*)__func__);
+
+  pJobParticipant->vResetTaskForJob();
+  Scheduler::vTaskCross_ScheduleNextPhase(pTaskParticipant, AM::pThisTLSTask());
+  pJobParticipant->vSetAllocate(false);
+}
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                   JOB                                      */
@@ -1319,8 +1428,14 @@ void AM::MEMORY::vAssertAllocate(void)
 {
   _static_
 
-  RASSERT(MY::pJob()->bAllocateMemory());
-  RASSERT(MY::pOp()->bAllocateMemory());
+  Job* pJob = MY::pJob();
+  Op* pOp = MY::pOp();
+
+  if ( ! pOp ) {
+    RASSERT( ! pJob || pJob->bAllocateMemory() );
+  }
+
+  RASSERT( ! pOp || pOp->bAllocateMemory() );
 
 }
 
@@ -1534,6 +1649,9 @@ bool AM::OPERAND::bIsOoO(Operand* pOperand)
       return true;
 
     if (pMarker->eOpMarker() == OM_LEAVINGMARKER)
+      return true;
+
+    if (pMarker->eOpMarker() == OM_LOWMEMORY)
       return true;
 
     if (pMarker->eOpMarker() == OM_NEXTBUFFERMARKER)
@@ -2579,9 +2697,9 @@ bool AM::SYSTEM::bPassesLowMem(Job* pJob)
     return true;
   }
   
-  PoolHelper::vPoolAnalyze();
+  //PoolHelper::vPoolAnalyze();
 
-  pJob->pJobTags()->vContentDump();
+  //pJob->pJobTags()->vContentDump();
   
   if (pJob->bHasTag(C_TAG_LOWMEMORY))
     return true;
@@ -2894,42 +3012,6 @@ TokenVec* AM::TOKENISE::pTokeniseSen(Stz* szString)
 /* tokenise string                                                            */
 /*----------------------------------------------------------------------------*/
 void AM::TOKENISE::vTokeniseSen(TokenVec* pTknVec, Stz* szString)
-{
-  _static_
-  
-  vTokeniseSen_2(pTknVec,szString);
-  return;
-  
-  pTknVec->vSoftReset();
-  pTknVec->vIntegrityCheck();
-
-  Input* pInput = nullptr;
-  
-  pInput = new Input(nullptr);
-  
-  pInput->vUseString(szString);
-  pInput->vFormSenTokens();
-  pInput->vUseBegin();
-
-  for (i8 i_Token = 0; ; i_Token++) {
-
-    pInput->vReadToken();
-    if (TN_NULL == pInput->eToken())
-      break;
-
-    pTknVec->vAppendToken(pInput->szChars(),pInput->eToken());
-  }
-
-  pInput->vUseEnd();
-  
-  while (pInput)
-    pInput = pInput->pDeleteInput();
-}
-
-/*----------------------------------------------------------------------------*/
-/* tokenise string                                                            */
-/*----------------------------------------------------------------------------*/
-void AM::TOKENISE::vTokeniseSen_2(TokenVec* pTknVec, Stz* szString)
 {
   _static_
   
@@ -3372,7 +3454,7 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
       
     case CN_ROWBUFFER: {
       RowBuffer* pRowBuffer = _pRowBuffer(pOperand);
-      // permament row buffers not to be deleted
+      // permanent row buffers not to be deleted
       if (pRowBuffer->bIsPermanent())
         break;
       pRowBuffer->vDecidedDelete();
@@ -3992,11 +4074,9 @@ i8 AM::iOperandEvKind(Operand* pOperand)
   switch (eClass_opd) {
 
     case CN_BUCKETMAP:   eOperand = EV_D_BUCKETMAP_dyn; break;
-    case CN_CHILDEXIT:   eOperand = EV_X_CHILDEXIT; break;
     case CN_CRWBUFFER:   eOperand = EV_D_CRWBUFFER; break;
     case CN_CSVBUFFER:   eOperand = EV_D_CSVBUFFER; break;
     case CN_ENTBUFFER:   eOperand = EV_D_ENTBUFFER; break;
-    case CN_EXITOPERAND: eOperand = EV_D_EXITOPERAND; break;
     case CN_INDEX:       eOperand = EV_D_INDEX;  break;
     case CN_INDEXDEF:    eOperand = EV_D_INDEXDEF; break;
       
@@ -4046,8 +4126,6 @@ i8 AM::iOperandEvKind(Operand* pOperand)
         case OM_ENDMARKER:          eOperand = EV_M_END;          break;
         case OM_ENDEDMARKER:        eOperand = EV_M_ENDED;        break;
         case OM_ENDINGMARKER:       eOperand = EV_M_ENDING;       break;
-        case OM_ENDCRWRHT:          eOperand = EV_M_ENDCRWRHT;    break;
-        case OM_ENDROWRHT:          eOperand = EV_M_ENDROWRHT;    break;
         case OM_EOSMARKER:          eOperand = EV_M_EOS;          break;
         case OM_ERRORMARKER:        eOperand = EV_M_ERROR;        break;
         case OM_ERROREDMARKER:      eOperand = EV_M_ERRORED;      break;
@@ -4056,20 +4134,22 @@ i8 AM::iOperandEvKind(Operand* pOperand)
         case OM_EXITED:             eOperand = EV_M_EXITED;       break;
         case OM_FINISHED:           eOperand = EV_M_FINISHED;     break;
         case OM_FLUSH:              eOperand = EV_M_FLUSH;        break;
+        case OM_HARDABORT:          eOperand = EV_M_HARDABORT;    break;
         case OM_INVOKEMARKER:       eOperand = EV_M_INVOKE;       break;
         case OM_LEAVEMARKER:        eOperand = EV_M_LEAVE;        break;
         case OM_LEAVINGMARKER:      eOperand = EV_M_LEAVING;      break;
         case OM_LEFTMARKER:         eOperand = EV_M_LEFT;         break;
-        case OM_LEFTOUTER_CRWLFT:   eOperand = EV_M_LEFTOUTER_CRWLFT; break;
-        case OM_LEFTOUTER_ROWLFT:   eOperand = EV_M_LEFTOUTER_ROWLFT; break;
+        case OM_LOWMEMORY:          eOperand = EV_M_LOWMEMORY;    break;
         case OM_NEXTBUFFERMARKER:   eOperand = EV_M_NEXTBUFFER;   break;
         case OM_STARTEDMARKER:      eOperand = EV_M_STARTED;      break;
-        case OM_STARTCRWRHT:        eOperand = EV_M_STARTCRWRHT;  break;
         case OM_STARTMARKER:        eOperand = EV_M_START;        break;
-        case OM_STARTROWRHT:        eOperand = EV_M_STARTROWRHT;  break;
         case OM_STREAMDEFRHT:       eOperand = EV_M_STREAMDEFRHT; break;
         case OM_TRIGGER:            eOperand = EV_M_TRIGGER;      break;
         case OM_TRIGGERED:          eOperand = EV_M_TRIGGERED;    break;
+
+        case OM_CHILDEXIT:          eOperand = EV_X_CHILDEXIT;    break;
+        case OM_EXIT:               eOperand = EV_X_EXIT;         break;
+
         default:
           RASSERT(0);
       }

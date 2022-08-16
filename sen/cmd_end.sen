@@ -12,7 +12,7 @@
 /* on participating node                                                      */
 /*----------------------------------------------------------------------------*/
 : end:onParticipant
-  // "end:end" .
+   //"end:onParticipant" .
 
 /* >end ptp */  [args].distJob if
 /* >end ptp */    "end" "onParticipant" ">end ptp"

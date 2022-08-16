@@ -83,6 +83,7 @@ extern d8 C_D8_MID;
 
 #include "eFK.h"
 #include "Exception.hpp"
+#include "LowMemory.hpp"
 
 #include "Footer.hpp"
 #include "Header.hpp"

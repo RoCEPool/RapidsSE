@@ -90,14 +90,14 @@ Combined::Combined(LogicUnit* pLogicUnit)
   m_xCombinedT.m_aRowSingleP    = nullptr;
   m_xCombinedT.m_aRowCellArrayP = nullptr;
   m_xCombinedT.m_racStrAreaP    = nullptr;
-  m_xCombinedT.m_racStrAreaSavP = nullptr;
+  m_xCombinedT.m_racStrAreaPSav = nullptr;
 
   // project (agg)
   m_xCombinedT.m_iRowsProcessed = 0;
   m_xCombinedT.m_aRowSingleAgg  = nullptr;
   m_xCombinedT.m_aRowCellArrayAgg = nullptr;
   m_xCombinedT.m_racStrAreaAgg  = nullptr;
-  m_xCombinedT.m_racStrAreaSavAgg  = nullptr;
+  m_xCombinedT.m_racStrAreaAggSav  = nullptr;
 
   // project (gby/payload)
   m_xCombinedT.m_nAggRows = 0;

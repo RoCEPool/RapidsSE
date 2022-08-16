@@ -61,7 +61,8 @@ namespace STORE
     StageSpec* pStageSpec(void);
     void vSpawnOpTasks(void);
     Stz* szStreamNm(void);
- 
+    void vUnspawnOpTasks(void);
+
   private:
     void vCreateOps();
     void vSynthesiseName(void);

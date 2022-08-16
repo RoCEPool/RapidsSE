@@ -18,8 +18,8 @@ __aFooterFunction(Tub)
 /*----------------------------------------------------------------------------*/
 /* allot a new row                                                            */
 /*----------------------------------------------------------------------------*/
-void* aTub_AllotRow(void* pTub, char** aazStrArea) {
-  return Tub::aAllotRow((Tub*)pTub, (char**)aazStrArea);
+void* aTub_AllotRow(void* pTub, char** aazStrArea, i8* piErrorCode) {
+  return Tub::aAllotRow((Tub*)pTub, (char**)aazStrArea, piErrorCode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -77,34 +77,40 @@ void Tub::vRepair(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* allot a new row                                                            */
 /*----------------------------------------------------------------------------*/
-void* Tub::aAllotRow(Tub* pTub, char** aazStrArea)
+void* Tub::aAllotRow(Tub* pTub, char** aazStrArea, i8* piErrorCode)
 {
   _static_
-  
-  RASSERT(CN_TUB == pTub->eGetClassNo());
-  
-  RowPix* pRowPix = pTub->pRowPix();
-  
-  RowBuffer* pRowBuffer = _pRowBuffer(pTub->pWorkingBuffer());
-  if (! pRowBuffer) {
-    pRowBuffer = new RowBuffer;
-    pRowBuffer->vCopyRowPix(pRowPix);
-    pTub->vAddBuffer(pRowBuffer);
+
+  try {
+    RASSERT(CN_TUB == pTub->eGetClassNo());
+
+    RowPix* pRowPix = pTub->pRowPix();
+
+    RowBuffer* pRowBuffer = _pRowBuffer(pTub->pWorkingBuffer());
+    if (! pRowBuffer) {
+      pRowBuffer = new RowBuffer;
+      pRowBuffer->vCopyRowPix(pRowPix);
+      pTub->vAddBuffer(pRowBuffer);
+    }
+
+    Row* pRow = pRowBuffer->pAllotRow();
+
+    if (! pRow) {
+      pRowBuffer = new RowBuffer;
+      pTub->vAddBuffer(pRowBuffer);
+      pRowBuffer->vCopyRowPix(pRowPix);
+      pRow = pRowBuffer->pAllotRow();
+      ASSERT(pRow);
+    }
+
+    *aazStrArea = pRowBuffer->azDepositString_begin();
+
+    return pRow->aCellArray();
   }
-
-  Row* pRow = pRowBuffer->pAllotRow();
-
-  if (! pRow) {
-    pRowBuffer = new RowBuffer;
-    pTub->vAddBuffer(pRowBuffer);
-    pRowBuffer->vCopyRowPix(pRowPix);
-    pRow = pRowBuffer->pAllotRow();
-    ASSERT(pRow);
+  catch (LowMemory xLowMemory) {
+    *piErrorCode = EC_LOW_MEMORY;
+    return nullptr;
   }
-  
-  *aazStrArea = pRowBuffer->azDepositString_begin();
-
-  return pRow->aCellArray();
 }
 
 /*----------------------------------------------------------------------------*/

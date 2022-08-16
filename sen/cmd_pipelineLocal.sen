@@ -24,6 +24,28 @@
     <cmd> "pipelineLocal::origin: %v\n" .printf
     //[system].bpa
   then
+/*
+  [job].preExecuteTest to ErrorCode[]
+  ErrorCode[] if
+    ErrorCode[] [job].error!
+    [ddlLock].testDrop
+
+    ListedJob[].assertNoRef
+
+    Path[].discardAll
+
+    [task].grabLock
+    [job].addExited
+    [job].updateParent assert
+    [job].signalParent
+      [task].retire // does not queue onto exit demon
+
+    HAZARD
+  then
+*/
+
+  // add job to the local job list
+  [job].addLocal
 
   Dynamo[].new
   <cmd> Dynamo[].compile to ErrorCode[]
@@ -99,10 +121,22 @@
      [job].signalParent
   then
 
+/* local */  // - - - - - - - - - - - - - - - -  - -
+/* local */  // - - - - - - - - - - - - - - - -  - -
+/* local */  // JOB NOT TO ALLLOCATE ANY MORE MEMORY
+/* local */  // - - - - - - - - - - - - - -  - - - -
+/* local */  [job].disableAllocate
+/* local */  // - - - - - - - - - - - - - - - -  - -
+/* local */  // - - - - - - - - - - - - - - - -  - -
+
+/*
   // add job to the local job list
   [job].jobList@ JL_DEMON == not if
     [job].addLocal
   then
+*/
+
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // enqueue start-marker to start op to execute the pipeline job

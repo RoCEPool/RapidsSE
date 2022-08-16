@@ -85,7 +85,50 @@ JobList* Jobs::pJobsList(void)
 bool Jobs::bAnyExitedJobs(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBS,_FOOTER_);
+/*
+  if (m_pExitedJobs->nJobs()) {
+    AM::MASTERLOCK::vGrabReap(nullptr);
 
+    m_pExitedJobs->vGrabLock();
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    Job* pReapableJob = nullptr;
+
+    for (SkipNode* pCursor = m_pExitedJobs->pFirst();
+         pCursor;
+         pCursor = m_pExitedJobs->pNext(pCursor)) {
+
+      Job* pRetiredJob = _pJob(pCursor->m_pObject);
+
+      if (pRetiredJob) {
+        i8 nActiveOps = pRetiredJob->nActiveOps();
+//      vTrace("REAP CANDIDATE Job %p Active Ops %lld\n"_Stz
+//             ,pRetiredJob, nActiveOps);
+        if ( ! nActiveOps ) {
+          pReapableJob = pRetiredJob;
+          break;
+        }
+        else {
+          vTrace("Cant reap retired job %p %lld "
+                 "%s "
+                 "activeOps %lld "
+                 "\n"_Stz
+
+              ,pRetiredJob,pRetiredJob->tJobId().uJobNo()
+              ,pRetiredJob->szJobNm()
+              ,nActiveOps
+          );
+          pRetiredJob->pJobTags()->vContentDump();
+        }
+      }
+    }
+
+    m_pExitedJobs->vDropLock();
+
+    AM::MASTERLOCK::vDropReap(nullptr);
+  }
+  */
   return m_pExitedJobs->nJobs() ? true : false;
 }
 

@@ -26,6 +26,18 @@ SysCall::~SysCall(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get error string of given error no                                         */
+/*----------------------------------------------------------------------------*/
+char* SysCall::azError(i8 iErrNo)
+{
+  _static_;
+
+  char* azErr = strerror((int)iErrNo);
+
+  return azErr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* clear previous state                                                       */
 /*----------------------------------------------------------------------------*/
 void SysCall::vClear(void)

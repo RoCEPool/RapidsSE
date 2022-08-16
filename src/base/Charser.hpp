@@ -110,7 +110,8 @@ namespace BASE
     Charser* pNext(void);
     void     vNext(Charser* pNext);
     i8       iDepth(void);
-    
+    void     vReset(void);
+
     // debug
     i8       nLoaded(void);
     AnnChar* aRegOne(void);

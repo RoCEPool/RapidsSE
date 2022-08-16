@@ -106,6 +106,50 @@ SELECT SUM(n_regionkey) FROM nation;
 rows: 
   (53)
 
+SELECT count(n_regionkey) FROM nation;
+rows:
+  (25)
+
+SELECT count(n_regionkey+null) FROM nation;
+rows:
+  (null)
+
+SELECT count(null+n_regionkey) FROM nation;
+rows:
+  (null)
+
+SELECT SUM(n_regionkey+null) FROM nation;
+rows:
+  (null)
+
+SELECT SUM(null+n_regionkey) FROM nation;
+rows:
+  (null)
+
+SELECT MIN(n_regionkey+null) FROM nation;
+rows:
+  (null)
+
+SELECT MIN(null+n_regionkey) FROM nation;
+rows:
+  (null)
+
+SELECT MAX(n_regionkey+null) FROM nation;
+rows:
+  (null)
+
+SELECT MAX(null+n_regionkey) FROM nation;
+rows:
+  (null)
+
+SELECT AVG(n_regionkey+null) FROM nation;
+rows:
+ (null)
+
+SELECT AVG(null+n_regionkey) FROM nation;
+rows:
+ (null)
+
 -- basic select of grouped columnRef and aggregation
 -- we see INDIA twice because they are coming from different partitions (different nationKey)
 -- and we don't have a super aggregation in place

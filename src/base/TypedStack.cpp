@@ -1206,11 +1206,11 @@ bool TypedStack::bGuard(eCN eClass0)
   
   if (nValues() < 1)
     return false;
-  
+
   TypeValueArea* aPeeked = aPeekItem(0);
   if (eClass0 != aPeeked->eType())
     return false;
-  
+
   return true;
 }
 

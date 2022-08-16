@@ -689,7 +689,7 @@ void Step::vInfoSetNew(void)
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
   
   StreamDef* pStreamDef = pTable->pStreamDef();
-  
+
   m_pLogicUnit->m_xpInfoSet = new InfoSet(pStreamDef);
   
   EXIT();
@@ -765,7 +765,11 @@ void Step::vInfoSetRdCsvChunk(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create new csvBuffer and set csvMeta
-  
+
+#ifdef WITH_OOM_FAULTINJECTION
+  PsxThd::vTlsSet(giTLS_CurrentPoint,(void*)6);
+#endif
+
   CsvBuffer* pCsvBuffer = new CsvBuffer;
   
   CsvMeta* pCsvMeta = pCsvBuffer->pCsvMeta();
@@ -782,6 +786,12 @@ void Step::vInfoSetRdCsvChunk(void)
   pCsvFile->vSeek(iOffset);
   pCsvBuffer->vTake(nBytes);
   i8 nBytesRead = pCsvFile->nReadBytes(azInto,nBytes);
+
+//  if (nBytesRead != nBytes) {
+//    nBytesRead = pCsvFile->nReadBytes(azInto,nBytes);
+//    ASSERT(nBytesRead == nBytes);
+//  }
+
   ASSERT(nBytesRead == nBytes);
   UNUSED(nBytesRead);
   

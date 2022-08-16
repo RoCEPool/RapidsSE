@@ -682,7 +682,7 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
 }
 
 /*----------------------------------------------------------------------------*/
-/* throw a user exception                                                     */
+/* throw a low memory exception                                               */
 /*----------------------------------------------------------------------------*/
 [[ noreturn ]] void BASE::vThrowLowMemory(eFK   eFailure,
                                           const char* azFunc,
@@ -720,9 +720,9 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Exception xException(eFailure,azFunc,zCondition,zFileNm,iLineNo);
+  LowMemory xLowMemory(eFailure,azFunc,zCondition,zFileNm,iLineNo);
 
-  vThrow_toHandler(xException);
+  throw xLowMemory;
 }
 
 /*----------------------------------------------------------------------------*/

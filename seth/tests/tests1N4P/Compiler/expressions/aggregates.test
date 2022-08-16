@@ -320,6 +320,77 @@ rows: (*,'partitionExplain','
          » table: (rapidsse.public.nation)')
 
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Aggregates of NULL data type
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+-- SUM of a NULL data type
+EXPLAIN SELECT SUM(n_nationkey + NULL) FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT SUM(n_nationkey + NULL) FROM nation"
+
+-> -> projectOp
+      » column: (Expr = SUM(rapidsse.public.nation.n_nationkey + NULL) ; Ordinal Expr = SUM($1 + NULL))
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+-- AVG of a NULL data type
+EXPLAIN SELECT AVG(n_nationkey + NULL) FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT AVG(n_nationkey + NULL) FROM nation"
+
+-> -> projectOp
+      » column: (Expr = AVG(rapidsse.public.nation.n_nationkey + NULL) ; Ordinal Expr = AVG($1 + NULL))
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+-- MIN of a NULL data type
+EXPLAIN SELECT MIN(n_nationkey + NULL) FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT MIN(n_nationkey + NULL) FROM nation"
+
+-> -> projectOp
+      » column: (Expr = MIN(rapidsse.public.nation.n_nationkey + NULL) ; Ordinal Expr = MIN($1 + NULL))
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+-- MAX of a NULL data type
+EXPLAIN SELECT MAX(n_nationkey + NULL) FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT MAX(n_nationkey + NULL) FROM nation"
+
+-> -> projectOp
+      » column: (Expr = MAX(rapidsse.public.nation.n_nationkey + NULL) ; Ordinal Expr = MAX($1 + NULL))
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Check for memory leaks

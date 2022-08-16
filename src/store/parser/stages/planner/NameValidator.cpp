@@ -181,8 +181,6 @@ void NameValidator::vCheckDisabledFunctionality(PlanNode* pRootNode)
       else if (     LimitOp::bIsOfType(pNode))    { pszDisabledFeature = ": Limit"_Stz;               }
       else if (     OrderOp::bIsOfType(pNode))    { pszDisabledFeature = ": Order By"_Stz;            }
       else if (     UnionOp::bIsOfType(pNode))    { pszDisabledFeature = ": Union"_Stz;               }
-      else if ( AggregateOp::bIsOfType(pNode) && AggregateOp::nGroups(_pQueryNode(pNode)) > 0)
-                                                  { pszDisabledFeature = ": Group By"_Stz;            }
 
       if (pszDisabledFeature) {
         // Not currently allowed

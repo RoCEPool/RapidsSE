@@ -600,8 +600,7 @@ function validateHostsReachableBySsh() {
   do
 
     host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
-    #sshArgs=("-q" "-o" "StrictHostKeyChecking no" "-o" "PasswordAuthentication no" "-o" "ConnectTimeout 10" "${host}" "exit" "0")
-    sshArgs=("-o" "PasswordAuthentication no" "-o" "ConnectTimeout 10" "${host}" "exit" "0")
+    sshArgs=("${SSH_COMMON_OPTIONS[@]}" "-o" "PasswordAuthentication no" "-o" "ConnectTimeout 10" "${host}" "exit" "0")
 
     # Run it, in parallel
     (
@@ -714,7 +713,7 @@ function isHostTheCurrentMachine() {
   local retVal=1
 
   # SSH to $host and check for the existence of the file
-  sshArgs=("-o" "PasswordAuthentication=no" "-o" "ConnectTimeout=10" "${host}" "ls" "${tempfile}")
+  sshArgs=("${SSH_COMMON_OPTIONS[@]}" "-o" "PasswordAuthentication=no" "-o" "ConnectTimeout=10" "${host}" "ls" "${tempfile}")
 
   if ssh "${sshArgs[@]}" &>/dev/null; then
     # $host does indeed represent the current machine
@@ -794,7 +793,7 @@ function validateInternalPortNotInUse() {
 
     remoteCmd="which nc &>/dev/null && nc -z 127.0.0.1 ${internal_port} && echo \"PORT_IN_USE\""
 
-    sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "bash -c '${remoteCmd}'")
+    sshArgs=("${SSH_COMMON_OPTIONS[@]}" "${host}" "bash -c '${remoteCmd}'")
 
     # Run it
     output="$(ssh "${sshArgs[@]}" || true)"
@@ -850,7 +849,7 @@ function validateClientPortNotInUse() {
 
     remoteCmd="which nc &>/dev/null && nc -z 127.0.0.1 ${client_port} && echo \"PORT_IN_USE\""
 
-    sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "bash -c '${remoteCmd}'")
+    sshArgs=("${SSH_COMMON_OPTIONS[@]}" "${host}" "bash -c '${remoteCmd}'")
 
     # Run it
     output="$(ssh "${sshArgs[@]}" || true)"
@@ -1144,7 +1143,7 @@ function validateInstallDirIsWritable() {
 		EOF
     )"
 
-    sshCmd=( "ssh" "-q" "${host}" "bash -c '${remoteCmd}'" )
+    sshCmd=( "ssh" "${SSH_COMMON_OPTIONS[@]}" "${host}" "bash -c '${remoteCmd}'" )
 
     debugPrint "About to validate the installation directory on node ${nodeName} with the command: ${sshCmd[*]}"
 
@@ -1240,7 +1239,7 @@ function validateGcc() {
 
     remoteCmd="which gcc &>/dev/null && gcc -dumpversion 2>/dev/null"
 
-    sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "bash -c '${remoteCmd}'")
+    sshArgs=("${SSH_COMMON_OPTIONS[@]}" "${host}" "bash -c '${remoteCmd}'")
 
     # Run it and check if it returned with a success error code
     if ! output="$(ssh "${sshArgs[@]}")" ; then
@@ -1308,7 +1307,7 @@ function validateLibAtomic() {
 
     remoteCmd="PATH=\${PATH}:/usr/sbin:/sbin ldconfig -p | grep libatomic.so.1"
 
-    sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "${remoteCmd}")
+    sshArgs=("${SSH_COMMON_OPTIONS[@]}" "${host}" "${remoteCmd}")
 
     # Run it and check if it returned with a success error code
     if ! response="$(ssh "${sshArgs[@]}" &>/dev/null)"; then
@@ -1366,7 +1365,7 @@ function validateBash() {
     # shellcheck disable=SC2016
     remoteCmd='which bash &>/dev/null && echo "${BASH_VERSINFO[0]}.${BASH_VERSINFO[1]}.${BASH_VERSINFO[2]}" 2>/dev/null'
 
-    sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "bash -c '${remoteCmd}'")
+    sshArgs=("${SSH_COMMON_OPTIONS[@]}" "${host}" "bash -c '${remoteCmd}'")
 
     # Run it and check if it returned with a success error code
     if ! output="$(ssh "${sshArgs[@]}")" ; then
@@ -1435,7 +1434,7 @@ function validateSs() {
     #shellcheck disable=SC2016
     remoteCmd='PATH=${PATH}:/usr/sbin which ss &>/dev/null'
 
-    sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "bash -c '${remoteCmd}'")
+    sshArgs=("${SSH_COMMON_OPTIONS[@]}" "${host}" "bash -c '${remoteCmd}'")
 
     # Run it and check if it returned with a success error code
     if ! output="$(ssh "${sshArgs[@]}")" ; then
@@ -1489,7 +1488,7 @@ function validateLdconfig() {
     #shellcheck disable=SC2016
     remoteCmd='PATH=${PATH}:/usr/sbin:/sbin which ldconfig &>/dev/null'
 
-    sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "bash -c '${remoteCmd}'")
+    sshArgs=("${SSH_COMMON_OPTIONS[@]}" "${host}" "bash -c '${remoteCmd}'")
 
     # Run it and check if it returned with a success error code
     if ! output="$(ssh "${sshArgs[@]}")" ; then
@@ -1547,7 +1546,7 @@ function validateCommandLineToolExists() {
     #shellcheck disable=SC2016
     remoteCmd="which ${tool} &>/dev/null"
 
-    sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "bash -c '${remoteCmd}'")
+    sshArgs=("${SSH_COMMON_OPTIONS[@]}" "${host}" "bash -c '${remoteCmd}'")
 
     # Run it and check if it returned with a success error code
     if ! output="$(ssh "${sshArgs[@]}")" ; then
@@ -2120,7 +2119,8 @@ function checkFirewallTcp() {
   # used on the server.
   local -a cmdServerSocketInUse=()
   cmdServerSocketInUse+=( "ssh"
-                          "-q" "${server}"
+                          "${SSH_COMMON_OPTIONS[@]}"
+                          "${server}"
                           "nc" "-z" "localhost" "${port}"
                           "&>/dev/null" )
 
@@ -2136,7 +2136,8 @@ function checkFirewallTcp() {
   local -a cmdServerTask=()
   local cmdServerPid
   cmdServerTask+=( "ssh"
-                   "-q" "${server}"
+                   "${SSH_COMMON_OPTIONS[@]}"
+                   "${server}"
                    "nc" "-l" "${port}" "&>/dev/null" "&" "echo" '$!' )
 
   debugPrint "About to execute the following command to start a TCP netcat server on host ${server}:${port} :"
@@ -2151,7 +2152,8 @@ function checkFirewallTcp() {
   local -a cmdClientTask=()
   local exitCode=0
   cmdClientTask+=( "ssh"
-                   "-q" "${client}"
+                   "${SSH_COMMON_OPTIONS[@]}"
+                   "${client}"
                    "nc" "-z" "${server}" "${port}" )
 
   debugPrint "About to execute the following command to start a netcat client on TCP host ${client}:${port} :"
@@ -2165,7 +2167,7 @@ function checkFirewallTcp() {
 
   # Kill nc on the server
   local -a cmdServerKill
-  cmdServerKill=( "ssh" "-q" "${server}" "kill" "-9" "${cmdServerPid}" "&>/dev/null" )
+  cmdServerKill=( "ssh" "${SSH_COMMON_OPTIONS[@]}" "${server}" "kill" "-9" "${cmdServerPid}" "&>/dev/null" )
   "${cmdServerKill[@]}" || true
 
   # Return the appropriate exit code
@@ -2231,7 +2233,8 @@ function checkFirewallUdp() {
   # is in use.
   local -a cmdServerSocketInUse=()
   cmdServerSocketInUse+=( "ssh"
-                          "-q" "${server}"
+                          "${SSH_COMMON_OPTIONS[@]}"
+                          "${server}"
                           "export" 'PATH=${PATH}:/usr/sbin'
                           "&&"
                           "ss" "-lunH" "'( sport = ${port} )'" )
@@ -2293,19 +2296,19 @@ function checkFirewallUdp() {
 
   # Kill the server and client processes
   local -a killCmd
-  killCmd=( "ssh" "-q" "${server}" "kill" "-9" "${serverPid}" "&>/dev/null" )
+  killCmd=( "ssh" "${SSH_COMMON_OPTIONS[@]}" "${server}" "kill" "-9" "${serverPid}" "&>/dev/null" )
   "${killCmd[@]}" || true
 
-  killCmd=( "ssh" "-q" "${client}" "kill" "-9" "${clientPid}" "&>/dev/null" )
+  killCmd=( "ssh" "${SSH_COMMON_OPTIONS[@]}" "${client}" "kill" "-9" "${clientPid}" "&>/dev/null" )
   "${killCmd[@]}" || true
 
 
   # Finally, clean up the temporary directory that was created on both server and client
   local -a cleanupCmd
-  cleanupCmd=( "ssh" "-q" "${server}" "rm" "-rf" "${serverTmpDir}" "&>/dev/null" )
+  cleanupCmd=( "ssh" "${SSH_COMMON_OPTIONS[@]}" "${server}" "rm" "-rf" "${serverTmpDir}" "&>/dev/null" )
   "${cleanupCmd[@]}" || true
 
-  cleanupCmd=( "ssh" "-q" "${client}" "rm" "-rf" "${clientTmpDir}" "&>/dev/null" )
+  cleanupCmd=( "ssh" "${SSH_COMMON_OPTIONS[@]}" "${client}" "rm" "-rf" "${clientTmpDir}" "&>/dev/null" )
   "${cleanupCmd[@]}" || true
 
   if [ "${exitCode}" -ne 0 ] ; then
@@ -2333,7 +2336,8 @@ function getPythonInterpreter() {
   local pythonInterpreterPath
   local -a pythonInterpreterCmd=()
   pythonInterpreterCmd=( "ssh"
-                         "-q" "${host}"
+                         "${SSH_COMMON_OPTIONS[@]}"
+                         "${host}"
                          "which" "python3" "2>/dev/null" "||" "which" "python" "2>/dev/null" )
 
 
@@ -2358,7 +2362,8 @@ function makeRemoteTempDir() {
 
   local -a makeTempCmd=()
   makeTempCmd=( "ssh"
-                "-q" "${host}"
+                "${SSH_COMMON_OPTIONS[@]}"
+                "${host}"
                 "mktemp" "-d" )
 
   local makeTempResponse
@@ -2438,6 +2443,7 @@ EOF
   # Copy the temporary file to the remote node
   local -a copyCmd=()
   copyCmd=( "scp"
+            "${SSH_COMMON_OPTIONS[@]}"
             "${tempFile}"
             "${server}:${remotePath}")
 
@@ -2449,7 +2455,8 @@ EOF
   # Invoke the python code on the remote node
   local -a invokeCmd=()
   invokeCmd=( "ssh"
-              "-q" "${server}"
+              "${SSH_COMMON_OPTIONS[@]}"
+              "${server}"
               "${pythonPath}" "${remotePath}" "${server}" "${port}" "&>/dev/null" "&" "echo" '$!')
 
 #  debugPrint "About to execute the following command to invoke the UDP python server code on host ${server} :"
@@ -2527,6 +2534,7 @@ EOF
   # Copy the temporary file to the remote node
   local -a copyCmd=()
   copyCmd=( "scp"
+            "${SSH_COMMON_OPTIONS[@]}"
             "${tempFile}"
             "${client}:${remotePath}")
 
@@ -2538,7 +2546,8 @@ EOF
   # Invoke the python code on the remote node
   local -a invokeCmd=()
   invokeCmd=( "ssh"
-              "-q" "${client}"
+              "${SSH_COMMON_OPTIONS[@]}"
+              "${client}"
               "${pythonPath}" "${remotePath}" "${server}" "${port}" "&>/dev/null" "&" "echo" '$!')
 
 #  debugPrint "About to execute the following command to invoke the UDP python client code on host ${client} :"
@@ -2574,7 +2583,8 @@ function checkUdpResult() {
 
   local -a checkCmd=()
   checkCmd=( "ssh"
-              "-q" "${server}"
+              "${SSH_COMMON_OPTIONS[@]}"
+              "${server}"
               "wc" "-l" "${dumpFilePath}" "2>/dev/null" "|" "cut" "-d" "' '" "-f" "1")
 
   local attempts=0

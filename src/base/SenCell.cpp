@@ -268,7 +268,14 @@ void SenCell::vToString(Stz* szStz)
   eCN eClass = this->eType();
   
   switch (eClass) {
-            
+
+    case CN_BOLVAL: {
+//      IntVal* aIntVal = _aIntVal(&m_xTypedCell.m_wxValue);
+//      aIntVal->vToStz(szStz);
+      m_xTypeValueArea.vToStz(szStz);
+      break;
+    }
+
     case CN_FIPVAL: {
 //      FipVal* aFipVal = _aFipVal(&m_xTypedCell.m_wxValue);
 //      aFipVal->vToStz(szStz);

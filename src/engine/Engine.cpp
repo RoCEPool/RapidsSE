@@ -93,6 +93,10 @@ pthread_key_t giTLS_ThreadKey  = C_UNKNOWN;
 pthread_key_t giTLS_TaskKey    = C_UNKNOWN;
 pthread_key_t giTLS_HandlerKey = C_UNKNOWN;
 pthread_key_t giTLS_StepKey    = C_UNKNOWN;
+pthread_key_t giTLS_StepAccum  = C_UNKNOWN;
+pthread_key_t gbTLS_FaultInjection  = false;
+pthread_key_t giTLS_FaultPoint      = C_UNKNOWN;
+pthread_key_t giTLS_CurrentPoint    = C_UNKNOWN;
 
 /*----------------------------------------------------------------------------*/
 /* main entry                                                                 */
@@ -277,6 +281,7 @@ void Engine::vRunCommandLine(void)
         vOpenTrace(false);
         vStartSystem();
         AM::SYSTEM::vSystemReady(); // Process has completed the boot sequence
+        vTrace("\nNodeId %lld\n\n"_Stz,AM::NODE::iThisNodeId());
         vWaitStop();
         break;
         
@@ -284,6 +289,7 @@ void Engine::vRunCommandLine(void)
         vOpenTrace(false);
         vStartSystem();
         AM::SYSTEM::vSystemReady(); // Process has completed the boot sequence
+        vTrace("\nNodeId %lld\n\n"_Stz,AM::NODE::iThisNodeId());
 #ifdef WITH_APPLE
         if (! gxCmdLineArgs.m_xSysArgs.m_bNoMunge )
           vMungeCheck();
@@ -1084,6 +1090,7 @@ void Engine::vPostRecvFns(void)
   gxaSizeHeap[CN_MARKER].m_fpPostRecvFn    = (fpPOSTFN*)Marker::vPostRecv;
   gxaSizeHeap[CN_PARCEL].m_fpPostRecvFn    = (fpPOSTFN*)Parcel::vPostRecv;
   gxaSizeHeap[CN_PROFILE].m_fpPostRecvFn   = (fpPOSTFN*)Profile::vPostRecv;
+  gxaSizeHeap[CN_REJECTJOB].m_fpPostRecvFn = (fpPOSTFN*)RejectJob::vPostRecv;
   gxaSizeHeap[CN_ROWBUFFER].m_fpPostRecvFn = (fpPOSTFN*)RowBuffer::vPostRecv;
   gxaSizeHeap[CN_STREAMDEF].m_fpPostRecvFn = (fpPOSTFN*)StreamDef::vPostRecv;
   gxaSizeHeap[CN_STREAMDEFRHT].m_fpPostRecvFn = (fpPOSTFN*)StreamDefRht::vPostRecv;
@@ -1521,7 +1528,7 @@ void Engine::vStartSystem(void)
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("  Adding PostRecv Functions\n"_Stz);
   vPostRecvFns();
-  
+
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("  Adding LowMemory Discard\n"_Stz);
   vLowMemoryDiscard();

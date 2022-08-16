@@ -11,6 +11,7 @@
 #include "eYX.h"
 
 #include "Marker.hpp"
+#include "Stream.hpp"
 
 #include "RowBuffer.hpp"
 
@@ -57,7 +58,7 @@ void Step::vOperandToParcel(void)
   
   // revised job/op model
   Op* pOp = *m_pOp;
-  OpSpec* pOpSpec = pOp->pOpSpec();;
+  OpSpec* pOpSpec = pOp->pOpSpec();
 
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
 

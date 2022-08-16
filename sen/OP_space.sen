@@ -12,6 +12,9 @@
   // find the __ table
   <streamDef> op__tableDef_streamSet assert
 
+  //[op].disableAllocate
+  //[job].disableAllocate
+
   // create a new streamDef
   streamSetTable[] StreamDefLft[].new
 

@@ -12,9 +12,8 @@ namespace STORE
   protected:
 
     JobId  m_tOriginId;   // id when job is originator
-  
+    JobId  m_tDistId;     // distributed job id
     eEC    m_eError;      // error
-
 
   // must be last
     Footer m_xFooter;
@@ -25,14 +24,17 @@ namespace STORE
   
     RejectJob(void);
    ~RejectJob(void) noexcept(false);
- 
+
+    static void vPostRecv(void* aJob);
+
+    JobId tDistId(void);
+    void vDistId(JobId tDistId);
+
     eEC eError(void);
     void vError(eEC eError);
 
     JobId tOriginId(void);
     void vOriginId(JobId tOriginId);
-  
-    bool bReject(void);
 
   private:
     Footer* aFooter(void);

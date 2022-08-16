@@ -25,7 +25,7 @@ namespace STORE
   
   public:
 
-    static void* aAllotRow(Pot* pPot, i8 iMixIn, char** aazStrArea);
+    static void* aAllotRow(Pot* pPot, i8 iMixIn, char** aazStrArea, i8* piErrorCode);
     static void vRowStrSize(Pot* pPot, i8 iMixIn, i8 nRowStrSize);
     static void  vRepair(Object* pObject);
 
@@ -45,7 +45,7 @@ namespace STORE
   };
 
   Pot* _pPot(void* aAddr);
-  void* aPot_AllotRow(Pot* pPot, i8 iMixIn, char** aazStrArea);
+  void* aPot_AllotRow(Pot* pPot, i8 iMixIn, char** aazStrArea, i8* piErrorCode);
   void  vPot_RowStrSize(void* pPot, i8 iPtn, i8 nRowStrSize);
 }
 

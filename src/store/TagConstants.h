@@ -4,8 +4,7 @@
 #pragma once
 
 static Stz* C_TAGSET_NAME      = "<aTagSetNm>"_Stz;
-  
-static Stz* C_TAG_BG           = "<bg>"_Stz;
+
 static Stz* C_TAG_BYPROMPT     = "<byPrompt>"_Stz;
 static Stz* C_TAG_CMD          = "<cmd>"_Stz;
 static Stz* C_TAG_CMDFILE      = "<cmdFile>"_Stz;
@@ -18,6 +17,8 @@ static Stz* C_TAG_DIARYDIR     = "<diaryDir>"_Stz;
 static Stz* C_TAG_DIVISION     = "<division>"_Stz;
 static Stz* C_TAG_ENTRYPOINT   = "<entryPoint>"_Stz;
 static Stz* C_TAG_EXPR         = "<expr>"_Stz;
+static Stz* C_TAG_FAULTINJECTION = "<faultInjection>"_Stz;
+static Stz* C_TAG_FAULTPOINT   = "<faultPoint>"_Stz;
 static Stz* C_TAG_FLOW         = "<flow>"_Stz;
 static Stz* C_TAG_FORCELOG     = "<forceLog>"_Stz;
 static Stz* C_TAG_FREEPCT      = "<freePct>"_Stz;

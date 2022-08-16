@@ -73,10 +73,13 @@ namespace ENGINE
 
     Exception    m_xException;
 
-    Word*        m_pRecoveryWord; // sen word called to recover from failure
+    Word*        m_pRecoveryWord;   // sen word called to recover from failure
+    Word*        m_pOpLowMemWord;   // sen word called to recover from low memory in OP
+    Word*        m_pJobLowMemWord;  // sen word called to recover from low memory in JOB
 
     DicStack     m_oDicStack;     // dictionary stack
     DicStack     m_oSaveDicStack; // save dictionary stack
+    Word*        m_pSearchWord;   // word used for searching for a word
 
     CodeCell*    m_aInxPtr;       // instruction/cell pointer
 
@@ -111,7 +114,7 @@ namespace ENGINE
     void vTaskLoop(void);
     void vExceptionHandler(void);
     void vExceptionTrace(void);
-
+    void vLowMemoryHandler(void);
     void vDumpOnException(void);
 
     // - - - - - - - - - - - - - -  - - - - - -
@@ -178,10 +181,12 @@ namespace ENGINE
     void vScheduleSleep(void);
     void vScheduleYield(void);
     void vScheduleWait(void);
+    Word* pSearchWord(void);
     void vSeeFrameStack(void);
     void vSeeLockSets(void);
     void vSeeLogicUnitRegisters(void);
     SenCompiler* pSenCompiler(void);
+    void vSetSenLowMemContext(void);
     void vSetSenRecoverContext(void);
     void vSetInxPtr(Stz* szEntry);
     void vSetInxPtr(Word* pEntryWordCheck);

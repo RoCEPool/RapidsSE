@@ -150,31 +150,65 @@ CodeSynth::CodeSynth(StreamDef* pStreamDefLft, StreamDef* pStreamDefRht, IndexDe
   MemLib::vZero(m_caCode,sizeof(m_caCode),CN_CODESYNTH);
 #endif
 
-  m_caCode[0]   = '\0';
-  m_azCodeCrs   = m_caCode;
   m_pTokenVec   = nullptr;
 
-  m_pExprStack  = new TypedStack(KK_DATA_STACK);
-  m_pNullStack  = new TypedStack(KK_DATA_STACK);
-  m_pGbyStack = new TypedStack(KK_DATA_STACK);
-  m_pOrdAggStack = new TypedStack(KK_DATA_STACK);
-  m_pLowerStack = new TypedStack(KK_DATA_STACK);
-  m_pUpperStack = new TypedStack(KK_DATA_STACK);
-  m_pInitStack  = new TypedStack(KK_DATA_STACK);
+  m_pExprStack   = nullptr;
+  m_pNullStack   = nullptr;
+  m_pGbyStack    = nullptr;
+  m_pOrdAggStack = nullptr;
+  m_pLowerStack  = nullptr;
+  m_pUpperStack  = nullptr;
+  m_pInitStack   = nullptr;
 
   m_sLowerPosition = ""_Stz;
   m_sUpperPosition = ""_Stz;
 
-  m_pPreExpStack = pPreExpStack;
-  m_pStreamDefLft = pStreamDefLft;
-  m_pStreamDefOut = pStreamDefRht;
-  m_pIndexDef     = pIndexDef;
-  m_eStencilFrom  = eStencilFrom;
-  m_eStencilTo    = eStencilTo;
+  m_pPreExpStack  = nullptr;
+  m_pStreamDefLft = nullptr;
+  m_pStreamDefOut = nullptr;
+  m_pIndexDef     = nullptr;
 
-  m_iLimitRows    = 0;
+  try {
+    m_caCode[0]   = '\0';
+    m_azCodeCrs   = m_caCode;
+    m_pTokenVec   = nullptr;
 
-  _checkInitialised_(CN_CODESYNTH);
+    m_pExprStack  = new TypedStack(KK_DATA_STACK);
+    m_pNullStack  = new TypedStack(KK_DATA_STACK);
+    m_pGbyStack = new TypedStack(KK_DATA_STACK);
+    m_pOrdAggStack = new TypedStack(KK_DATA_STACK);
+    m_pLowerStack = new TypedStack(KK_DATA_STACK);
+    m_pUpperStack = new TypedStack(KK_DATA_STACK);
+    m_pInitStack  = new TypedStack(KK_DATA_STACK);
+
+    m_sLowerPosition = ""_Stz;
+    m_sUpperPosition = ""_Stz;
+
+    m_pPreExpStack = pPreExpStack;
+    m_pStreamDefLft = pStreamDefLft;
+    m_pStreamDefOut = pStreamDefRht;
+    m_pIndexDef     = pIndexDef;
+    m_eStencilFrom  = eStencilFrom;
+    m_eStencilTo    = eStencilTo;
+
+    m_iLimitRows    = 0;
+
+    _checkInitialised_(CN_CODESYNTH);
+  }
+  catch (LowMemory xLowMemory) {
+    delete m_pTokenVec;
+
+    delete m_pExprStack;
+    delete m_pNullStack;
+    delete m_pGbyStack;
+    delete m_pOrdAggStack;
+    delete m_pLowerStack;
+    delete m_pUpperStack;
+    delete m_pInitStack;
+
+    throw xLowMemory;
+  }
+
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
 }
@@ -1593,6 +1627,7 @@ void CodeSynth::vGenerateStencilCast(TypedStack* pInitStack) {
                     xRowRef[m_eStencilFrom].m_szInclude,
                     xRowRef[m_eStencilFrom].m_szInclude);
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+      StrLib::vAppendString(&m_azCodeCrs, "\n    szStrArea = aCombinedT->m_racStrAreaAgg;");
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // initialize aggregate ProjectRow
@@ -1613,6 +1648,8 @@ void CodeSynth::vGenerateStencilCast(TypedStack* pInitStack) {
         xRowRef[m_eStencilFrom].m_szInclude,
         xRowRef[m_eStencilFrom].m_szInclude);
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+      StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_racStrAreaJ = aCombinedT->m_racStrAreaJSav;");
+      StrLib::vAppendString(&m_azCodeCrs, "\n    szStrArea = aCombinedT->m_racStrAreaJ;");
       break;
 
     case SR_IT:
@@ -1620,6 +1657,8 @@ void CodeSynth::vGenerateStencilCast(TypedStack* pInitStack) {
         xRowRef[m_eStencilFrom].m_szInclude,
         xRowRef[m_eStencilFrom].m_szInclude);
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+      StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_racStrAreaT = aCombinedT->m_racStrAreaTSav;");
+      StrLib::vAppendString(&m_azCodeCrs, "\n    szStrArea = aCombinedT->m_racStrAreaT;");
       break;
 
     case SR_PL:
@@ -1627,6 +1666,8 @@ void CodeSynth::vGenerateStencilCast(TypedStack* pInitStack) {
                     xRowRef[m_eStencilFrom].m_szInclude,
                     xRowRef[m_eStencilFrom].m_szInclude);
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+      StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_racPayloadArea = aCombinedT->m_racPayloadAreaSav;");
+      StrLib::vAppendString(&m_azCodeCrs, "\n    szStrArea = aCombinedT->m_racPayloadArea;");
       break;
 
     case SR_PT:
@@ -1634,6 +1675,8 @@ void CodeSynth::vGenerateStencilCast(TypedStack* pInitStack) {
         xRowRef[m_eStencilFrom].m_szInclude,
         xRowRef[m_eStencilFrom].m_szInclude);
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+      StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_racStrAreaP = aCombinedT->m_racStrAreaPSav;");
+      StrLib::vAppendString(&m_azCodeCrs, "\n    szStrArea = aCombinedT->m_racStrAreaP;");
       break;
 
     case SR_TJ:
@@ -1641,6 +1684,8 @@ void CodeSynth::vGenerateStencilCast(TypedStack* pInitStack) {
         xRowRef[m_eStencilFrom].m_szInclude,
         xRowRef[m_eStencilFrom].m_szInclude);
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+      StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_racStrAreaTJ = aCombinedT->m_racStrAreaTJSav;");
+      StrLib::vAppendString(&m_azCodeCrs, "\n    szStrArea = aCombinedT->m_racStrAreaTJ;");
       break;
 
     default:
@@ -1667,7 +1712,7 @@ void CodeSynth::vGenerateStencilCastTo(void) {
                     xRowRef[m_eStencilTo].m_szInclude,
                     xRowRef[m_eStencilTo].m_szInclude);
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-      //StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_racStrAreaAgg = aCombinedT->m_racStrAreaSavAgg;");
+      //StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_racStrAreaAgg = aCombinedT->m_racStrAreaAggSav;");
       StrLib::vAppendString(&m_azCodeCrs, "\n    szStrArea = aCombinedT->m_racStrAreaAgg;");
       break;
 
@@ -1676,7 +1721,7 @@ void CodeSynth::vGenerateStencilCastTo(void) {
                     xRowRef[m_eStencilTo].m_szInclude,
                     xRowRef[m_eStencilTo].m_szInclude);
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-      StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_racStrAreaJ = aCombinedT->m_racStrAreaSavJ;");
+      StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_racStrAreaJ = aCombinedT->m_racStrAreaJSav;");
       StrLib::vAppendString(&m_azCodeCrs, "\n    szStrArea = aCombinedT->m_racStrAreaJ;");
       break;
 
@@ -1685,7 +1730,7 @@ void CodeSynth::vGenerateStencilCastTo(void) {
                     xRowRef[m_eStencilTo].m_szInclude,
                     xRowRef[m_eStencilTo].m_szInclude);
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-      StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_racStrAreaT = aCombinedT->m_racStrAreaSavT;");
+      StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_racStrAreaT = aCombinedT->m_racStrAreaTSav;");
       StrLib::vAppendString(&m_azCodeCrs, "\n    szStrArea = aCombinedT->m_racStrAreaT;");
       break;
 
@@ -1703,7 +1748,7 @@ void CodeSynth::vGenerateStencilCastTo(void) {
                     xRowRef[m_eStencilTo].m_szInclude,
                     xRowRef[m_eStencilTo].m_szInclude);
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-      StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_racStrAreaP = aCombinedT->m_racStrAreaSavP;");
+      StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_racStrAreaP = aCombinedT->m_racStrAreaPSav;");
       StrLib::vAppendString(&m_azCodeCrs, "\n    szStrArea = aCombinedT->m_racStrAreaP;");
       break;
 
@@ -1712,7 +1757,7 @@ void CodeSynth::vGenerateStencilCastTo(void) {
                     xRowRef[m_eStencilTo].m_szInclude,
                     xRowRef[m_eStencilTo].m_szInclude);
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-      StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_racStrAreaTJ = aCombinedT->m_racStrAreaSavTJ;");
+      StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_racStrAreaTJ = aCombinedT->m_racStrAreaTJSav;");
       StrLib::vAppendString(&m_azCodeCrs, "\n    szStrArea = aCombinedT->m_racStrAreaTJ;");
       break;
 
@@ -1891,13 +1936,15 @@ void CodeSynth::vPayloadInsert(ePL ePayload, i8 iTopCount) {
 
     case PL_GBY:
     case PL_SRT:
-      StrLib::vAppendString(&m_azCodeCrs, "\n      aEntInserted = aIndexTree_insertEnt(aCombinedT->m_aIndexTreePL, aCombinedT->m_aEntIntPL);");
+      StrLib::vAppendString(&m_azCodeCrs, "\n      aEntInserted = aIndexTree_insertEnt(aCombinedT->m_aIndexTreePL, aCombinedT->m_aEntIntPL, &aCombinedT->m_iErrorCode);");
+      vGenerateErrorCheck(" "_Stz);
       break;
 
     case PL_TOP:
-      sCopy.vSprint("\n      aEntInserted = aIndexTree_insertEntTop(aCombinedT->m_aIndexTreePL, aCombinedT->m_aEntIntPL, &aCombinedT->m_aEntBottomPL,%lld);"_Stz,
+      sCopy.vSprint("\n      aEntInserted = aIndexTree_insertEntTop(aCombinedT->m_aIndexTreePL, aCombinedT->m_aEntIntPL, &aCombinedT->m_aEntBottomPL,%lld, &aCombinedT->m_iErrorCode);"_Stz,
                     iTopCount);
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+      vGenerateErrorCheck(" "_Stz);
       break;
 
     default:
@@ -2013,7 +2060,9 @@ void CodeSynth::vPayloadStore(IndexDef* pIndexDef) {
 
 
   StrLib::vAppendString(&m_azCodeCrs, "\n      // insert key in the payload");
-  StrLib::vAppendString(&m_azCodeCrs, "\n      aEntFound = aIndexTree_insertEnt(aCombinedT->m_aIndexTreePL, aCombinedT->m_aEntIntPL);");
+  StrLib::vAppendString(&m_azCodeCrs, "\n      aEntFound = aIndexTree_insertEnt(aCombinedT->m_aIndexTreePL, aCombinedT->m_aEntIntPL,&aCombinedT->m_iErrorCode);");
+
+  vGenerateErrorCheck(" "_Stz);
 
   StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_aiPayload = (i8 *) ((char *) aEntFound");
 
@@ -2669,7 +2718,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
     pTkn = m_pTokenVec->pGet(i_Tkn);
 
-
+/*
 #ifdef WITH_DEBUG_VERSION
 //    vTrace("TKN: %s\n"_Stz, pTkn->azChars());
 //
@@ -2684,7 +2733,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 //    }
 //    vTrace("--------------------------------------\n"_Stz);
 #endif
-
+*/
 
     if (pTkn->bSame(","_Stz)) {
       // skip the comma
@@ -3419,8 +3468,10 @@ void CodeSynth::vSynthAllocPotRow(TypedStack* pPostStack, Stz* sHashExpr, bool b
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allocate row from the pot
   StrLib::vAppendString(&m_azCodeCrs, "\n    // allocate a row from the pot");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_aRowPot = (byte*)aPot_AllotRow(aCombinedT->m_pPot,iMixIn,&aCombinedT->m_racPotStrArea);");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_aRowPot = (byte*)aPot_AllotRow(aCombinedT->m_pPot,iMixIn,&aCombinedT->m_racPotStrArea,&aCombinedT->m_iErrorCode);");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
+
+  vGenerateErrorCheck(""_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -4707,7 +4758,9 @@ void CodeSynth::vSynthAllocTubRow(TypedStack* pPostStack, bool bEosHandler,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allocate row from the tub
   StrLib::vAppendString(&m_azCodeCrs, "\n    // allocate a row from the tub");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_aRowTub = (byte*)aTub_AllotRow(aCombinedT->m_pTub,&aCombinedT->m_racTubStrArea);");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_aRowTub = (byte*)aTub_AllotRow(aCombinedT->m_pTub,&aCombinedT->m_racTubStrArea,&aCombinedT->m_iErrorCode);");
+
+  vGenerateErrorCheck(""_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
