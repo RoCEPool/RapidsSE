@@ -24,7 +24,7 @@
     <cmd> "pipelineLocal::origin: %v\n" .printf
     //[system].bpa
   then
-
+/*
   [job].preExecuteTest to ErrorCode[]
   ErrorCode[] if
     ErrorCode[] [job].error!
@@ -42,7 +42,7 @@
 
     HAZARD
   then
-
+*/
 
   // add job to the local job list
   [job].addLocal
