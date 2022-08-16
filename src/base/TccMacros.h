@@ -90,11 +90,12 @@
   {                                                                         \
     iArg1 = *(--paW);                                                       \
     iArg2 = *(--paW);                                                       \
-    if (iArg1 && iArg1 != C_DATUM_NULL)    {                                \
+    if (iArg1 && iArg2 != C_DATUM_NULL)    {                                \
         nSrcSize = strlen((char*)iArg2) + 1;                                \
         szDstStz = szAreaTo;                                                \
         strncpy(szDstStz, (char*)iArg2, nSrcSize);                          \
         iArgTo =  (i8)szDstStz;                                             \
+        printf("COPYING: %p %s\n", szDstStz, szDstStz);                                                \
         szAreaTo += nSrcSize + 1;                                           \
     }                                                                       \
   }
@@ -103,7 +104,7 @@
   {                                                                         \
     iArg1 = *(--paW);                                                       \
     iArg2 = *(--paW);                                                       \
-    if (iArg1 && iArg1 != C_DATUM_NULL)    {                                \
+    if (iArg1 && iArg2 != C_DATUM_NULL)    {                                \
         nSrcSize = strlen((char*)iArg2) + 1 < 8 ? strlen((char*)iArg2) + 1 : 8 ; \
         szDstStz = (char*)szAreaTo;                                         \
         strncpy(szDstStz, (char*)iArg2, nSrcSize);                          \
@@ -493,11 +494,6 @@
   *(paW++) = iArg1;
 
 #define _DUP_TSP(eErrorCode)                                                \
-  iArg1 = *(--paW);                                                         \
-  *(paW++) = iArg1;                                                         \
-  *(paW++) = iArg1;
-
-#define _DUP_UNK(eErrorCode)                                                \
   iArg1 = *(--paW);                                                         \
   *(paW++) = iArg1;                                                         \
   *(paW++) = iArg1;
