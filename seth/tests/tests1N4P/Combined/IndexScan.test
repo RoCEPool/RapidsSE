@@ -87,7 +87,7 @@ begin
 
   stage stageB on all partitions :
     indexScan lineitem lineitem_ord " LBOUND $I1 2 >= UBOUND $I1 26 <= "
-    | project "type INTEGER $1"
+    | project " type INTEGER $1 "
     | combined 0
     | stageC
 
@@ -127,7 +127,7 @@ begin
 
   stage stageB on all partitions :
     indexScan lineitem lineitem_ord " LBOUND $I1 2 >= UBOUND $I1 26 <= "
-    | project "type INTEGER $1"
+    | project " type INTEGER $1 "
     | combined 0
     | stageC
 
@@ -145,8 +145,8 @@ begin
     start | pulse once | stageB
 
   stage stageB on all partitions :
-    indexScan lineitem lineitem_ship " LBOUND $I1 DATE '1970-01-01' >= UBOUND $I1 DATE '1994-01-01' <="
-    | project "type INTEGER $1"
+    indexScan lineitem lineitem_ship " LBOUND $I1 DATE '1970-01-01' >= UBOUND $I1 DATE '1994-01-01' <= "
+    | project "type INTEGER $1 "
     | combined 0
     | stageC
 
@@ -195,10 +195,10 @@ begin
     start | pulse once | stageB
   stage stageB on all partitions :
     indexScan lineitem lineitem_ord " LBOUND $I1 2 >= UBOUND $I1 26 <= "
-    | aggreg "groupby type INTEGER L_PARTKEY
+    | aggreg " groupby type INTEGER L_PARTKEY
                 aggregates type INTEGER as PKEY $K1 ,
                 type INTEGER as SUM_KEY ) L_ORDERKEY sum ,
-                type INTEGER as CNT_KEY ) L_ORDERKEY count"
+                type INTEGER as CNT_KEY ) L_ORDERKEY count "
     | combined 0
     | next
   stage stageC on all nodes :
