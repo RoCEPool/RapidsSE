@@ -131,7 +131,7 @@ ordered rows:
 
 // Source file: ../queries/aggs/max/rmax14.sql
 // Result file: none
-//TODO: CHECK WITH COMPILER
+//TODO: ENABLE WHEN CONCAT
 select min(colb1) + min(ucolvc) from table1;
 //failure: 'Result file missing'
 failure contains: 'EC_SEMANTIC_ERROR'
