@@ -950,6 +950,27 @@ i8 Op::iNodeId(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* send EV_M_NODELOSSABORT to this operator                                   */
+/*----------------------------------------------------------------------------*/
+void Op::vNodeLossAbort(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+
+  Job* pJob = this->pOuterJobOfOp();
+
+  Task* pTask = this->pTask();
+
+  RASSERT( ! m_pOpTags->bHasName(C_TAG_DEDICATEDTHD) );
+
+  if (pTask) {
+    //vTrace("Sending NODELOSSABORT to OP %s\n"_Stz, m_p_OpSpec->szOpNm());
+
+    Operand *pOperand = AM::MARKER::pNewMarker(OM_NODELOSSABORT, pJob);
+    vAppendLeft(pOperand, pTask);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* get i_Op                                                                   */
 /*----------------------------------------------------------------------------*/
 i8 Op::i_Op(void)
@@ -1258,7 +1279,11 @@ Pipeline* Op::pPipeline(void)
 void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-    
+
+  // skip pipeing out if pipeline has been aborted due to node loss
+  if ( pPipeline()->bNodeLossAbort() )
+    return;
+
   vOpTrace(pOperand,(Stz*)__func__);
   
   if (pOperand->bIsBuffer()) {
@@ -1323,7 +1348,11 @@ void Op::vPipeToThis(Operand* pOperand, Task* pTriggeringTask)
 void Op::vPipeToOutput(Operand* pOperand)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
+  // skip pipeing out if pipeline has been aborted due to node loss
+  if ( pPipeline()->bNodeLossAbort() )
+    return;
+
   Job* pJob = MY::pJob();
   RASSERT(pJob);
 

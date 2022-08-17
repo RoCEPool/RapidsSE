@@ -1648,6 +1648,9 @@ bool AM::OPERAND::bIsOoO(Operand* pOperand)
     if (pMarker->eOpMarker() == OM_ERRORINGMARKER)
       return true;
 
+    if (pMarker->eOpMarker() == OM_HARDABORT)
+      return true;
+
     if (pMarker->eOpMarker() == OM_LEAVINGMARKER)
       return true;
 
@@ -1655,6 +1658,9 @@ bool AM::OPERAND::bIsOoO(Operand* pOperand)
       return true;
 
     if (pMarker->eOpMarker() == OM_NEXTBUFFERMARKER)
+      return true;
+
+    if (pMarker->eOpMarker() == OM_NODELOSSABORT)
       return true;
   }
 
@@ -4141,6 +4147,7 @@ i8 AM::iOperandEvKind(Operand* pOperand)
         case OM_LEFTMARKER:         eOperand = EV_M_LEFT;         break;
         case OM_LOWMEMORY:          eOperand = EV_M_LOWMEMORY;    break;
         case OM_NEXTBUFFERMARKER:   eOperand = EV_M_NEXTBUFFER;   break;
+        case OM_NODELOSSABORT:      eOperand = EV_M_NODELOSSABORT; break;
         case OM_STARTEDMARKER:      eOperand = EV_M_STARTED;      break;
         case OM_STARTMARKER:        eOperand = EV_M_START;        break;
         case OM_STREAMDEFRHT:       eOperand = EV_M_STREAMDEFRHT; break;

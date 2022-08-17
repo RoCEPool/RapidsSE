@@ -57,6 +57,92 @@ extern AttachMap* gpAttachMap;
 //using namespace Parser;
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/* Prompt_abortJobs.cpp -- abort the current jobs running on thi node         */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+PromptFun __Prompt_abortJobs (
+    PF_OLIST,             // prompt function
+    "Prompt_jobsAbort"_Stz, // name of the prompt function
+    "comment"_Stz,        // comment about the function
+    "abortJobs"_Stz,      // the prompt command
+    nullptr,              // the second word
+    bPrompt_abortJobs,    // prompt function
+    true,                 // enabled
+
+    true,                 // visible
+    "olist"_Stz,          // help
+    ""_Stz                // description
+);
+
+/*----------------------------------------------------------------------------*/
+/* prompt function                                                            */
+/*----------------------------------------------------------------------------*/
+bool PROMPT::bPrompt_abortJobs(SePrompt* pPrompt)
+{
+  RASSERT(pPrompt);
+  Task* pThisTask = MY::pTask();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Notify participant jobs
+  vTrace("Aborting Participating jobs pipelines on current node:\n"_Stz);
+
+  JobList* pPtpJobList = AM::pParticipatingJobs();
+  pPtpJobList->vGrabLock();
+
+  for (SkipNode *pCursor = pPtpJobList->pFirst();
+       pCursor;
+       pCursor = pPtpJobList->pNext(pCursor)) {
+
+    Job *pJob = _pJob(pCursor->m_pObject);
+
+    vTrace("%s\n"_Stz, pJob->szJobNm());
+
+    pJob->vPtpJobNodeFailure();
+  }
+
+  pPtpJobList->vDropLock();
+
+/*
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Notify Originating jobs
+  vTrace("Notifying Originating jobs on current node:\n"_Stz);
+
+  JobList *pOriginJobList = AM::pOriginatingJobs();
+
+  while (pOriginJobList->nJobs()) {
+
+    pOriginJobList->vGrabLock();
+
+    SkipNode *pCursor = pOriginJobList->pFirst();
+
+    Job *pJob = _pJob(pCursor->m_pObject);
+
+    vTrace("Notifying Origin job %p %s J%04lld.%04lld\n"_Stz,
+           pJob,
+           pJob->szJobNm(),
+           pJob->tJobId().uNodeId(),
+           pJob->tJobId().uJobNo());
+    pJob->vOriginJobNodeFailure();
+
+    // ack the waiting job
+    Task* pTask = pJob->pTask();
+
+    pJob->vJobError(EC_NODE_LOSS);
+    pTask->vGrabTaskLock((Stz*)__func__);
+
+    eEC eErrorCode = AM::JLIST::eUpdateParent(pJob);
+    pJob->pParentJob()->vMutexSignal();
+    pTask->vDropTaskLock((Stz*)__func__);
+    pOriginJobList->vDropLock();
+    AM::vJob_RemoveOriginating(pJob);
+    AM::vJob_AddExited(pJob);
+
+  }
+*/
+  return true;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /* Prompt_args.cpp -- show command line arguments                             */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 

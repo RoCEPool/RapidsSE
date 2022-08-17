@@ -239,7 +239,7 @@ void Step::vJobAddParticipant(void)
 
   AM::vJob_AddParticipating(pJob);
 
-  //vTrace("%p ID %lld added to participant\n"_Stz, pJob, pJob->iJobId());
+  vTrace("%p ID %lld added to participant\n"_Stz, pJob, pJob->tJobId().iAsI8());
     
   EXIT();
 }

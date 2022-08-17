@@ -30,6 +30,7 @@ void vHuh(d8 d);
 
 namespace PROMPT
 {
+  bool bPrompt_abortJobs(SePrompt* pPrompt);
   bool bPrompt_args(SePrompt* pPrompt);
   bool bPrompt_ascii(SePrompt* pPrompt);
   bool bPrompt_attachMap(SePrompt* pPrompt);

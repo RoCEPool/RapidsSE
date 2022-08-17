@@ -266,10 +266,10 @@
 : EV_M_HARDABORT_handler \handler
 
   "EV_M_HARDABORT_handler" .verbose
-  //[op].opName@ "OP %v exiting got EV_M_HARDABORT" .
+  //[op].opName@ "OP %v exiting got EV_M_HARDABORT" str.format .
 
   PipeIn[].delete
-  
+
   false
 ;
 
@@ -319,6 +319,26 @@
   PipeIn[].pipeOut
 
   true
+;
+
+/*----------------------------------------------------------------------------*/
+/* default handler for EV_M_NODELOSSABORT operand                             */
+/*----------------------------------------------------------------------------*/
+: EV_M_NODELOSSABORT_handler \handler
+
+  "EV_M_NODELOSSABORT_handler" .verbose
+  [op].opName@ "OP %v exiting got EV_M_NODELOSSABORT" str.format .
+
+  PipeIn[].delete
+
+  PipeIn[].drain
+
+  LogicUnit[].cleanup
+
+  // ack the job task
+  [op].ackJobTask
+
+  false
 ;
 
 /*----------------------------------------------------------------------------*/

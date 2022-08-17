@@ -1626,6 +1626,9 @@ void Job::vPtpJobNodeFailure(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
+  Pipeline* pPipeline = this->pPipeline();
+  pPipeline->vNodeLossAbort();
+
   RASSERT(bIsParticipant());
 }
 
