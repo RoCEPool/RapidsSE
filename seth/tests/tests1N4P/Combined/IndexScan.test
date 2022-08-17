@@ -16,7 +16,7 @@ begin
     | project " type INTEGER x "
     | combined 0
     | stageC
-  stage stageC on origin:
+  stage stageC on origin :
     output | sink | stageA
 end ;
 failure contains: 'Table does not exist'
@@ -53,7 +53,7 @@ begin
     | project " type INTEGER l_orderkey "
     | combined 0
     | stageC
-  stage stageC on origin:
+  stage stageC on origin :
     output | sink | stageA
 end ;
 failure contains: 'no such index'
@@ -91,7 +91,7 @@ begin
     | combined 0
     | stageC
 
-  stage stageC on origin:
+  stage stageC on origin :
     output | sink | stageA
 end ;
 
@@ -112,7 +112,7 @@ begin
     indexScan lineitem lineitem_ord " LBOUND $I1 2 >= UBOUND $I1 26 <= "
     | combined 0
     | stageC
-  stage stageC on origin:
+  stage stageC on origin :
     output | sink | stageA
 end ;
 
@@ -131,7 +131,7 @@ begin
     | combined 0
     | stageC
 
-  stage stageC on origin:
+  stage stageC on origin :
     output | sink | stageA
 end ;
 
@@ -150,7 +150,7 @@ begin
     | combined 0
     | stageC
 
-  stage stageC on origin:
+  stage stageC on origin :
     output | sink | stageA
 end ;
 
@@ -181,7 +181,7 @@ begin
     | combined 0
     | next
 
-  stage stageC on origin:
+  stage stageC on origin :
     output | sink | stageA
 end ;
 
@@ -215,7 +215,7 @@ begin
               type INTEGER as CNT_KEY ) CNT_KEY sum "
    | combined 0
    | next
-  stage stageLast on origin:
+  stage stageLast on origin :
     output | sink | stageA
 end ;
 
@@ -232,7 +232,7 @@ begin
     | filter " type BOOLEAN L_PARTKEY 20 <= "
     | combined 0
     | next
-  stage stageLast on origin:
+  stage stageLast on origin :
     output | sink | stageA
 end ;
 

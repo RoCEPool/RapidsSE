@@ -178,7 +178,7 @@ begin
     | combined 0
     | next
 
-  stage stageLast on origin:
+  stage stageLast on origin :
     output | sink | stageA
 end ;
 rows:
@@ -201,7 +201,7 @@ begin
     | combined 0
     | next
 
-   stage stageLast on origin:
+   stage stageLast on origin :
      output | sink | stageA
 end ;
 rows:
@@ -225,7 +225,7 @@ begin
     | combined 0
     | next
 
-  stage stageLast on origin:
+  stage stageLast on origin :
     output | sink | stageA
 end ;
 rows:
@@ -250,7 +250,7 @@ begin
     | combined 0
     | next
 
-  stage stageLast on origin:
+  stage stageLast on origin :
     output | sink | stageA
 end ;
 rows:
@@ -274,7 +274,7 @@ begin
     | combined 0
     | next
 
-  stage stageLast on origin:
+  stage stageLast on origin :
     output | sink | stageA
 end ;
 rows:
@@ -297,7 +297,7 @@ begin
     | combined 0
     | next
 
-  stage stageLast on origin:
+  stage stageLast on origin :
      output | sink | stageA
 end ;
 rows:
@@ -322,7 +322,7 @@ begin
     | combined 0
     | next
 
-  stage stageLast on origin:
+  stage stageLast on origin :
      output | sink | stageA
 end ;
 rows:

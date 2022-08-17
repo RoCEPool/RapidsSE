@@ -30,7 +30,7 @@ begin
     | combined 0
     | stageC
 
-  stage stageC on origin:
+  stage stageC on origin :
     output | sink | stageA
 end ;
 
@@ -68,7 +68,7 @@ begin
     | project "type VARCHAR $2"
     | combined 0
     | stageC
-  stage stageC on origin:
+  stage stageC on origin :
     output | sink | stageA
 end ;
 
@@ -88,7 +88,7 @@ begin
     | project "type INTEGER N_NATIONKEY"
     | combined 0
     | stageC
-  stage stageC on origin:
+  stage stageC on origin :
     output | sink | stageA
 end ;
 rows: 0
@@ -108,7 +108,7 @@ begin
       | project "type VARCHAR $2"
       | combined 0
       | stageD
-  stage stageD on origin:
+  stage stageD on origin :
     output | sink | stageA
 end ;
 
