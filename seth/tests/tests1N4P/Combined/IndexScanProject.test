@@ -32,7 +32,7 @@ begin
 
   stage stageC on origin:
     output | sink | stageA
-end;
+end ;
 
 rows:
   (2)
@@ -70,7 +70,7 @@ begin
     | stageC
   stage stageC on origin:
     output | sink | stageA
-end;
+end ;
 
 rows: 3
 /*
@@ -90,7 +90,7 @@ begin
     | stageC
   stage stageC on origin:
     output | sink | stageA
-end;
+end ;
 rows: 0
 
 
@@ -110,7 +110,7 @@ begin
       | stageD
   stage stageD on origin:
     output | sink | stageA
-end;
+end ;
 
 rows:
  ('RUSSIA')

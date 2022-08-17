@@ -38,7 +38,9 @@ Input::Input(Input* pNext)
   m_pInpTagSet  = new TagSet;
 
   m_pCharser_spares = nullptr;
-  
+
+  m_bRevertToCpp = false;
+
   // debugging aids
   d_iDebugMode               = false;
   
@@ -243,13 +245,40 @@ void Input::vForkReset(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set normal cpp tokens                                                      */
+/* collecting cpp tokens?                                                     */
+/*----------------------------------------------------------------------------*/
+bool Input::bFormCppTokens(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+
+  if (UF_CPP_TOKENS == m_eTknForm)
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set cpp tokens                                                             */
 /*----------------------------------------------------------------------------*/
 void Input::vFormCppTokens(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   m_eTknForm = UF_CPP_TOKENS;
+}
+
+/*----------------------------------------------------------------------------*/
+/* collecting sen tokens?                                                     */
+/*----------------------------------------------------------------------------*/
+bool Input::bFormSenTokens(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+
+  if (UF_SEN_TOKENS == m_eTknForm)
+    return true;
+
+  return false;
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -510,6 +539,10 @@ void Input::vReadCommand(void)
   
   
 L_Exit:
+
+  vTestRevertToCpp();
+
+
   if (d_iDebugMode) {
     i8 i = iJotSummary(':',(Stz*)__func__,"TokenVec:"_Stz);
     UNUSED(i);
@@ -720,7 +753,7 @@ void Input::vCollectOneToken(void)
     vJot2('>',(Stz*)__func__,""_Stz);
   }
   
-  if (UF_CPP_TOKENS == m_eTknForm)
+  if (bFormCppTokens())
     vCollectCpp();
   else
     vCollectSen();
@@ -759,7 +792,9 @@ void Input::vCollectVecFirstLine(void)
     
     if (d_iDebugMode)
       m_pInpTknVec->vDumpVec(16);
+
     vCollectOneToken();
+
     if (d_iDebugMode)
       m_pInpTknVec->vDumpVec(16);
 
@@ -821,7 +856,10 @@ void Input::vCollectVecTillSemicolon(void)
     vCursorAdvance();
     
     vCollectOneToken();
-    
+
+    if (TN_NULL == m_pCurrTkn->eToken())
+      m_pInpTknVec->vDumpVec(0);
+
     ASSERT(TN_NULL != m_pCurrTkn->eToken());
     
     // look for terminal
@@ -915,6 +953,9 @@ void Input::vCollectCpp(void)
     default:
       NEVER_REACH;
    }
+
+   // test for collecting a pipeline and switch to sen tokens
+  vTestSwitchToSen();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1740,7 +1781,7 @@ bool Input::bEndCppString(void)
   if (m_xAnnChar.bIsDoubleQuote())
     return true;
 
-  if (m_xAnnChar.bIsNewLine())
+  if (bFormCppTokens() && m_xAnnChar.bIsNewLine())
     return true;
 
   return false;
@@ -1941,6 +1982,32 @@ void Input::vCursorRewind(void)
   pTkn->vReset();
     
   m_pCurrTkn = m_pInpTknVec->pCurrToken();
+}
+
+/*----------------------------------------------------------------------------*/
+/* revert to cpp tokens                                                       */
+/*----------------------------------------------------------------------------*/
+void Input::vTestRevertToCpp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+
+  if (m_bRevertToCpp) {
+    m_bRevertToCpp = false;
+    vFormCppTokens();
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* switch to cpp tokens                                                       */
+/*----------------------------------------------------------------------------*/
+void Input::vTestSwitchToSen(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+
+  if (m_pCurrTkn && 0 == m_pCurrTkn->i_Token() && m_pCurrTkn->bIsPipeline()) {
+    m_bRevertToCpp = true;
+    vFormSenTokens();
+  }
 }
 
 /*============================================================================*/

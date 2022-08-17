@@ -23,6 +23,8 @@ namespace BASE
   
     Charser*  m_pCharser_spares;  // set of spare charsers
 
+    b8        m_bRevertToCpp; // revert to cpp tokens after read command
+
     // some debugging aids
     i8        d_iDebugMode;    // debug mode?
   
@@ -54,7 +56,9 @@ namespace BASE
     Stz* szDivision(void);
     void vDump(void);
     void vForkReset(void);
+    bool bFormCppTokens(void);
     void vFormCppTokens(void);
+    bool bFormSenTokens(void);
     void vFormSenTokens(void);
     void vFreeCharser(void);
     TagSet* pInpTagSet(void);
@@ -127,8 +131,11 @@ namespace BASE
     void vCursorRewind(void);
 
     bool bHitEOF(void);
-    
-    Footer* aFooter(void);
+
+    void vTestRevertToCpp();
+    void vTestSwitchToSen();
+
+      Footer* aFooter(void);
   };
   
   Input* _pInput(void* aAddr);
