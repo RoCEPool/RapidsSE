@@ -397,7 +397,8 @@ void Step::vInfoSetChunkFile(void)
   char* pReadBlock = (char*)MemLib::aMallocBlock(C_CHUNKBLOCK);
   
   i8 nChunkBytes;
-  
+  i8 nSumBytes = 0;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // process chunks till eof or till we get C_MAX_SEEKOFFSETS
   
@@ -476,10 +477,16 @@ void Step::vInfoSetChunkFile(void)
     
     if (pRow) {
       nRows++;
+
+      if (MY::pJob()->pJobTags()->bHasName("<OP_Chunk>"_Stz))
+        vTrace("<OP_Chunk>: i_ChunkLoc %lld nChunkBytes %lld\n"_Stz,
+               i_ChunkLoc,nChunkBytes);
       
       pRow->vColVal_int(0,i_ChunkLoc);
       pRow->vColVal_int(1,nChunkBytes);
-      
+
+      nSumBytes += nChunkBytes;
+
       // advance to start of next chunk
       i_ChunkLoc = i_EndChunkLoc + 1;
     }
@@ -498,7 +505,12 @@ void Step::vInfoSetChunkFile(void)
   
   // free the read block
   MemLib::vFreeBlock(pReadBlock, C_2K);
-  
+
+  if (MY::pJob()->pJobTags()->bHasName("<OP_Chunk>"_Stz))
+    vTrace("<OP_Chunk>: nSumBytes %lld\n"_Stz,nSumBytes);
+
+  m_pDataStack->vPushInt(nSumBytes);
+
   EXIT();
 }
 
@@ -801,7 +813,10 @@ void Step::vInfoSetRdCsvChunk(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // return the CsvBuffer
-  
+
+  m_pDataStack->vPushInt(nBytes);
+  m_pDataStack->vPushInt(iOffset);
+
   m_pDataStack->vPushPtr(pCsvBuffer);
  
   EXIT();

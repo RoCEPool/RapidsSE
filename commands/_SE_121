@@ -10,7 +10,10 @@ _part
 //                 "/users/shared/rapidsse/jira/part.tbl.4"
 //;
 
-dload part paths "/users/shared/rapidsse/jira/part.tbl.1";
+// /op_chunk
+/op_rdCsvChunk
+load part "/users/shared/rapidsse/jira/part.tbl.1";
+
 count part;
 select count(*) from part;
 

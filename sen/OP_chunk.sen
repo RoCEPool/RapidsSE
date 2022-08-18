@@ -55,9 +55,15 @@
 
     // create an infoSet operand
     infoSetTable[] InfoSet[].new
-    InfoSet[].chunkFile
+    InfoSet[].chunkFile counter2[] + to counter2[]
+
     InfoSet[].pipeOut
   repeat
+
+  "<OP_chunk>" [job].tagSet@ tagSet.hasName if
+    counter2[] "OP_chunk: totalBytes %v\n" .putf
+  then
+
 
   // send EOSMARKER
   Marker[].newEosMarker
@@ -89,6 +95,10 @@
 
     // create a streamDef for C_TDEF_TOTALUNITS
     C_TDEF_TOTALUNITS op__tableDef_infoSet assert
+
+    "<OP_chunk>" [job].tagSet@ tagSet.hasName if
+      iFileSizeMb sFileNm "OP_chunk: %v : %vMB\n" .putf
+    then
 
     // create an infoSet operand for C_TDEF_TOTALUNITS
     infoSetTable[] InfoSet[].new
