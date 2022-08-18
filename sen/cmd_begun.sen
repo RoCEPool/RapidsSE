@@ -30,6 +30,11 @@
 /* <bgn org */
 /* <bgn org */  then
 /* <bgn org */
+/* <bgn org */  [args].distJob if
+/* <bgn org */    "begun" "onOrigin" "<bgn org"
+/* <bgn org */      "<bgn origin" "exiting"                           [job].trace
+/* <bgn org */  then
+/* <bgn org */
 /* <bgn org */  [job]:retireAndExit
 /* <bgn org */  HAZARD
 ;

@@ -87,22 +87,29 @@ bool PROMPT::bPrompt_abortJobs(SePrompt* pPrompt)
   vTrace("Aborting Participating jobs pipelines on current node:\n"_Stz);
 
   JobList* pPtpJobList = AM::pParticipatingJobs();
-  pPtpJobList->vGrabLock();
 
-  for (SkipNode *pCursor = pPtpJobList->pFirst();
-       pCursor;
-       pCursor = pPtpJobList->pNext(pCursor)) {
+  while (pPtpJobList->nJobs()) {
+
+    pPtpJobList->vGrabLock();
+
+    SkipNode *pCursor = pPtpJobList->pFirst();
+
+    if (!pCursor) {
+      pPtpJobList->vDropLock();
+      continue;
+    }
 
     Job *pJob = _pJob(pCursor->m_pObject);
 
     vTrace("%s\n"_Stz, pJob->szJobNm());
 
     pJob->vPtpJobNodeFailure();
-  }
 
-  pPtpJobList->vDropLock();
+    pPtpJobList->vDropLock();
+    pPtpJobList->vRemoveJob(pJob);
+ }
 
-/*
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Notify Originating jobs
   vTrace("Notifying Originating jobs on current node:\n"_Stz);
@@ -115,30 +122,48 @@ bool PROMPT::bPrompt_abortJobs(SePrompt* pPrompt)
 
     SkipNode *pCursor = pOriginJobList->pFirst();
 
+    if ( ! pCursor ) {
+      pOriginJobList->vDropLock();
+      continue;
+    }
+
     Job *pJob = _pJob(pCursor->m_pObject);
 
-    vTrace("Notifying Origin job %p %s J%04lld.%04lld\n"_Stz,
-           pJob,
-           pJob->szJobNm(),
-           pJob->tJobId().uNodeId(),
-           pJob->tJobId().uJobNo());
+
     pJob->vOriginJobNodeFailure();
 
     // ack the waiting job
     Task* pTask = pJob->pTask();
 
     pJob->vJobError(EC_NODE_LOSS);
-    pTask->vGrabTaskLock((Stz*)__func__);
+    pJob->vRejected(true);
 
-    eEC eErrorCode = AM::JLIST::eUpdateParent(pJob);
-    pJob->pParentJob()->vMutexSignal();
-    pTask->vDropTaskLock((Stz*)__func__);
+    //pTask->vGrabTaskLock((Stz*)__func__);
+
+    bool bAmDecider = false;
+    if (pTask->eState() == TS_WAITING) {
+      vTrace("Notifying Origin job %p %s J%04lld.%04lld\n"_Stz,
+             pJob,
+             pJob->szJobNm(),
+             pJob->tJobId().uNodeId(),
+             pJob->tJobId().uJobNo());
+      i8 nAcksRemainaing;
+      while ( ! bAmDecider ) {
+        vTrace("abortJob acking ...\n"_Stz);
+        bAmDecider = Scheduler::bTaskCross_AckWaiting(pTask, pThisTask, nAcksRemainaing);
+      }
+      RASSERT(nAcksRemainaing == 0);
+      vTrace("Notified Origin job %p %s J%04lld.%04lld\n"_Stz,
+             pJob,
+             pJob->szJobNm(),
+             pJob->tJobId().uNodeId(),
+             pJob->tJobId().uJobNo());
+    }
+    //else
+    //  pTask->vDropTaskLock((Stz*)__func__);
     pOriginJobList->vDropLock();
-    AM::vJob_RemoveOriginating(pJob);
-    AM::vJob_AddExited(pJob);
-
   }
-*/
+
   return true;
 }
 

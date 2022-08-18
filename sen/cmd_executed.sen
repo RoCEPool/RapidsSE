@@ -30,6 +30,11 @@
 /* <exd org */
 /* <exd org */  then
 /* <exd org */
+/* <exd org */  [args].distJob if
+/* <exd org */    "executed" "onOrigin" "<bgn org"
+/* <exd org */      "<exd origin" "exiting"                           [job].trace
+/* <exd org */  then
+/* <exd org */
 /* <exd org */  [job]:retireAndExit
 /* <exd org */  HAZARD
 ;

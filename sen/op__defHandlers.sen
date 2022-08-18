@@ -270,6 +270,8 @@
 
   PipeIn[].delete
 
+  LogicUnit[].cleanup
+
   false
 ;
 

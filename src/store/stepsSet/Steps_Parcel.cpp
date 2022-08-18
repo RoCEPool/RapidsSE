@@ -569,7 +569,7 @@ void Step::vParcelSendOut(void)
     pParcel->vDistribute(pCurrOp,pOuterJobOfTask());
   }
   catch (LowMemory xLowMemory) {
-    vTrace("vDistributeBy: ran into LOWMEMORY\n"_Stz);
+    vTrace("vDistribute: ran into LOWMEMORY\n"_Stz);
   }
 
   EXIT();

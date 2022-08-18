@@ -11,8 +11,9 @@ namespace STORE
   {
   private:
     eJL  m_eJobList;  // which job list
-    Lock m_okLock;     // lock
-  
+    Lock m_okLock;    // lock
+    bool m_bLatch;    // list latch
+
     SkipListNL* m_pJobSkipList; // skip list of jobs (ordered by job id)
   
     // must be last
@@ -38,6 +39,7 @@ namespace STORE
     SkipNode* pFirst(void);
     void   vGrabLock(void);
     void   vInsertJob(Job* pJob);
+    void   vLatch(bool bLatch);
     bool   bIsLocked(void);
     void   vListJobs(void);
     i8     nJobs(void);

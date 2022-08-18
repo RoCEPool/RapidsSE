@@ -267,12 +267,11 @@
 /* org_ org */    then
 /* org_ beg */  [task].wait
 /* org_ beg */
-/* org_ beg */  [job].rejected@ if
+/* org_ beg */  [job].error@ if
 /* org_ beg */    [args].distJob if
 /* org_ beg */       "pipeline" "origin"
-/* org_ beg */        "org_ beg" "begin rejected"                  [job].trace
+/* org_ beg */        "org_ beg" "begin rejected/aborted"                  [job].trace
 /* org_ beg */    then
-/* org_ beg */    false [job].rejected!
 /* org_ beg */    [job]:handleReject
 /* org_ beg */
 /* org_ beg */  else
@@ -323,8 +322,14 @@
 /* org_ org */    then
 /* org_ exe */  [task].wait
 /* org_ exe */
-/* org_ exe */  [job].rejected@ not assert
-/* org_ exe */
+/* org_ exe */  [job].error@ if
+/* org_ exe */    [args].distJob if
+/* org_ exe */       "pipeline" "origin"
+/* org_ exe */        "org_ exe" "end rejected/aborted"                  [job].trace
+/* org_ exe */    then
+/* org_ exe */    [job]:handleReject
+/* org_ exe */  then
+
 /* org_ exe */  [job].tscExecuted
 /* org_ exe */
 
@@ -361,15 +366,14 @@
 /* org_ end */    then
 /* org_ end */  [task].wait
 /* org_ end */
-/* org_ end */  //[job].rejected@ if
-/* org_ end */  //  [args].distJob if
-/* org_ end */  //     "pipeline" "origin"
-/* org_ end */  //      "org_ exe" "end rejected"                  [job].trace
-/* org_ end */  //  then
-/* org_ end */  //  false [job].rejected!
-/* org_ end */  //  [job]:handleReject
-/* org_ end */  //then
-/* org_ end */  [job].rejected@ not assert
+/* org_ end */  [job].error@ if
+/* org_ end */    [args].distJob if
+/* org_ end */       "pipeline" "origin"
+/* org_ end */        "org_ exe" "end rejected/aborted"                  [job].trace
+/* org_ end */    then
+/* org_ end */    //false [job].rejected!
+/* org_ end */    [job]:handleReject
+/* org_ end */  then
 
 /* org_ end */  [job].tscEnded
 /* org_ end */
@@ -623,6 +627,8 @@
 /* _ptp exd */  ListedJob[].assertNoRef
 /* _ptp exd */
 /* _ptp exd */
+//4 thread::sleepSsec
+
 /* _ptp exd */  // - - - - - - - - - - - - - - -
 /* _ptp exd */  // reply executed to originator
 /* _ptp exd */  // - - - - - - - - - - - - - - -

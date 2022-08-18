@@ -75,14 +75,17 @@ void Step::vListedJobFindOriginator(void)
   tJobId = m_pDataStack->iPopAsInt(__func__);
 
   Job* pJobFound = AM::pJob_FindOriginating(tJobId);
-  RASSERT(pJobFound);
 
+  if ( pJobFound ) {
 
-  //! borrow the job ref [ this needs to be done under lock ]
-  pJobFound->vBorrowRefBy(&m_pLogicUnit->m_xpListedJob);
+    //! borrow the job ref [ this needs to be done under lock ]
+    pJobFound->vBorrowRefBy(&m_pLogicUnit->m_xpListedJob);
 
-
-  m_pDataStack->vPushPtr(pJobFound);
+    m_pDataStack->vPushBol(true);
+  }
+  else {
+    m_pDataStack->vPushBol(false);
+  }
 
   EXIT();
 }
