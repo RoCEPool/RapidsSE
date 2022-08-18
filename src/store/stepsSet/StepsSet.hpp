@@ -885,8 +885,6 @@ void vDdlLockAssertNone(void);
   void vJobProgressReset(void);
   void vJobProgressSeconds(void);
 
-  void vJobRejectedFetch(void);
-  void vJobRejectedStore(void);
   void vJobRejectJobErrorStore(void);
   void vJobRejectJobFetch(void);
   void vJobRejectJobSetup(void);
@@ -2181,7 +2179,6 @@ void vDdlLockAssertNone(void);
   void vTaskSleepSsec(void);
   void vTaskSleepUsec(void);
   void vListedJobTaskStateFetch(void);
-  void vListedJobRejected(void);
   void vTaskThreadFetch(void);
   void vTaskTraceFetch(void);
   void vTaskTraceStore(void);

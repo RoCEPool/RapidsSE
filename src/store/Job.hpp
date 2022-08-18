@@ -42,7 +42,6 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     eEC    m_eChildError; // error in child job
 
     bool   m_bUpdateParent; // update parent
-    bool   m_bRejected;
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // originating job

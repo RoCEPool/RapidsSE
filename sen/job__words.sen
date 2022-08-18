@@ -548,9 +548,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handle a reject on the originating job                                     */
+/* handle a failure on the originating job (LOWMEM / NODELOSS)                */
 /*----------------------------------------------------------------------------*/
-: [job]:handleReject ( -- )
+: [job]:handleFailure ( -- )
 
   // - - - - - - - - - - - - - - -
   // pipeline becomes ordinary job

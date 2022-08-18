@@ -136,7 +136,6 @@ bool PROMPT::bPrompt_abortJobs(SePrompt* pPrompt)
     Task* pTask = pJob->pTask();
 
     pJob->vJobError(EC_NODE_LOSS);
-    pJob->vRejected(true);
 
     //pTask->vGrabTaskLock((Stz*)__func__);
 

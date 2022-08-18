@@ -913,9 +913,6 @@ void AM::JOB::vRecvdReject(RejectJob *pRejectJob)
   // set the error
   pJobFound->vJobError(eError);
 
-  // mark as rejected
-  pJobFound->vRejected(true);
-
   // find the job task
   Task *pJobTask = pJobFound->pTask();
 

@@ -80,8 +80,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("[job].progressReset"_Stz,    &Step::vJobProgressReset);
   vAddStep("[job].progressSeconds"_Stz,  &Step::vJobProgressSeconds);
 
-  vAddStep("[job].rejected@"_Stz,        &Step::vJobRejectedFetch);
-  vAddStep("[job].rejected!"_Stz,        &Step::vJobRejectedStore);
   vAddStep("[job].rejectJobError!"_Stz,  &Step::vJobRejectJobErrorStore);
   vAddStep("[job].rejectJob@"_Stz,       &Step::vJobRejectJobFetch);
   vAddStep("[job].rejectJobSetup"_Stz,   &Step::vJobRejectJobSetup);
@@ -916,35 +914,6 @@ void Step::vJobProgressSeconds(void)
   i8 iSeconds = pProgress->iSeconds();
 
   m_pDataStack->vPushInt(iSeconds);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* [job].rejected@ -- fetch job rejected                                      */
-/*----------------------------------------------------------------------------*/
-void Step::vJobRejectedFetch(void)
-{
-  ENTRY();
-
-  Job* pJob = pOuterJobOfTask();
-
-  m_pDataStack->vPushInt(pJob->bRejected());
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* [job].rejected! -- store job rejected                                      */
-/*----------------------------------------------------------------------------*/
-void Step::vJobRejectedStore(void)
-{
-  ENTRY();
-
-  Job* pJob = pOuterJobOfTask();
-  i8 bRejected = m_pDataStack->iPopBol(__func__);
-
-  pJob->vRejected(bRejected);
 
   EXIT();
 }
