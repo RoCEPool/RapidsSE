@@ -38,6 +38,7 @@ namespace BASE
     static i8    nBurstArgs(Stz* szaArgv[], Stz* szArgStr);
 
     static Stz*  szCharToStr(char cArg);
+    static void  vCheckIsNot(char cArg, char cIsNot);
     static void  vClick(char* aArg);
     static bool  bClip(char* aArg, i8 iLen);
     static void  vComma(char* psDst, i8 iArg);
@@ -49,9 +50,7 @@ namespace BASE
     static void  vConcat(char* psDst, const char* psArg1, const char* psArg2);
     static char* wConcat(const char* s1, const char* s2);
     static void  vConcat(char* pWS, i8 i);
-  
     static void  vConcat(Stz* szDst, Stz* szArg);
-  
     static bool  bContains(char* s, const char cArg);
     static bool  bContains(char* s, const char* sArg);
     static i8    nCopy(char* psDst, const char* psSrc);

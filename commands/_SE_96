@@ -15,7 +15,11 @@ create table SE_96(
 
 load SE_96 "../DATA/JIRA/SE_96.csv";
 
-//load SE_96 "../DATA/JIRA/SE_96.csv";
+load SE_96 "../DATA/JIRA/SE_96.csv";
+
+load SE_96 "../DATA/JIRA/SE_96.csv";
+
+load SE_96 "../DATA/JIRA/SE_96.csv";
 
 select * from SE_96;
 
