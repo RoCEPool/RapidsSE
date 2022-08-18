@@ -1,0 +1,25 @@
+/*============================================================================*/
+/* _SE_121 - dload miising rows                                               */
+/*============================================================================*/
+
+_part
+
+//dload part paths "/users/shared/rapidsse/jira/part.tbl.1"
+//                 "/users/shared/rapidsse/jira/part.tbl.2"
+//                 "/users/shared/rapidsse/jira/part.tbl.3"
+//                 "/users/shared/rapidsse/jira/part.tbl.4"
+//;
+
+dload part paths "/users/shared/rapidsse/jira/part.tbl.1";
+count part;
+select count(*) from part;
+
+//dload part paths "/users/shared/rapidsse/jira/part.tbl.2";
+//count part;
+//select count(*) from part;
+
+drop table part;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
