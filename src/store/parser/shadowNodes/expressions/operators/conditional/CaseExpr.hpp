@@ -20,6 +20,9 @@ namespace Parser
     static QueryNode* pCreate(QueryNode* pElseExpr);
     static void vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode);
 
+    // Represent the expression as types instead of names (e.g. INTEGER + INTEGER)
+    static void vDescribeAsTypes(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode);
+
     // Add a WHEN expression to the start of this CASE expression
     static void vPushWhenExpr(QueryNode* pCaseExpr, QueryNode* pWhenExpr);
 

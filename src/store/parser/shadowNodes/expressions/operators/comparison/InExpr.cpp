@@ -121,6 +121,54 @@ void InExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
   sBuf.vCatSprint("%s IN %s"_Stz, sLeftExprBuf.szStz(), sRightExprBuf.szStz());
 }
 
+/*----------------------------------------------------------------------------*/
+/* Represent the expression as types instead of names. Append to the buffer   */
+/*----------------------------------------------------------------------------*/
+void InExpr::vDescribeAsTypes(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  i8 nChildren = pNode->nChildren();
+  ASSERT(nChildren > 0);
+
+  s2K sLeftExprBuf;
+  s2K sRightExprBuf;
+
+  sLeftExprBuf.vConcat(Expr::xTypeId(pLeftExpr(pNode), pRootNode).szTypeName());
+
+  if (nChildren == 2 && SubqueryRefExpr::bIsOfType(pNode->pSecondChild())) {
+    QueryNode* pChild = _pQueryNode(pNode->pSecondChild());
+    ASSERT(Expr::bIsOfType(pChild));
+
+    sRightExprBuf.vConcat(Expr::xTypeId(pChild, pRootNode).szTypeName());
+
+  } else {
+    sRightExprBuf.vConcat("("_Stz);
+
+    PlanNodeIter* pIter = pRightExprIter(pNode);
+    b1 bIsFirst = true;
+
+    while (pIter->bHasNext()) {
+      QueryNode* pChild = _pQueryNode(pIter->pNext());
+      ASSERT(Expr::bIsOfType(pChild));
+
+      if (bIsFirst) {
+        bIsFirst = false;
+      } else {
+        sRightExprBuf.vConcat(", "_Stz);
+      }
+
+      sRightExprBuf.vConcat(Expr::xTypeId(pChild, pRootNode).szTypeName());
+    }
+
+    delete pIter;
+    sRightExprBuf.vConcat(")"_Stz);
+  }
+
+  sBuf.vCatSprint("%s IN %s"_Stz, sLeftExprBuf.szStz(), sRightExprBuf.szStz());
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* Returns true if the given node is derived from the expr definition         */

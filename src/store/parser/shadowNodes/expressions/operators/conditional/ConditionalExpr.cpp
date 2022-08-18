@@ -39,6 +39,19 @@ void ConditionalExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
   else NEVER_REACH
 }
 
+/*----------------------------------------------------------------------------*/
+/* Represent the expression as types instead of names. Append to the buffer   */
+/*----------------------------------------------------------------------------*/
+void ConditionalExpr::vDescribeAsTypes(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  if      (CaseExpr::bIsOfType(pNode))    { CaseExpr::vDescribeAsTypes(pNode, sBuf, pRootNode); }
+  else if (WhenExpr::bIsOfType(pNode))    { WhenExpr::vDescribeAsTypes(pNode, sBuf, pRootNode); }
+  else if (ElseExpr::bIsOfType(pNode))    { ElseExpr::vDescribeAsTypes(pNode, sBuf, pRootNode); }
+  else NEVER_REACH
+}
 
 /*----------------------------------------------------------------------------*/
 /* Returns true if the given node is derived from the expr definition         */

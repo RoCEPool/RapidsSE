@@ -86,6 +86,23 @@ void WhenExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Represent the expression as types instead of names. Append to the buffer   */
+/*----------------------------------------------------------------------------*/
+void WhenExpr::vDescribeAsTypes(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pTestExpr = WhenExpr::pPredicateExpr(_pQueryNode(pNode));
+  QueryNode* pResultExpr = WhenExpr::pResultExpr(_pQueryNode(pNode));
+
+  sBuf.vConcat("WHEN "_Stz);
+  sBuf.vConcat(Expr::xTypeId(pTestExpr, pRootNode).szTypeName());
+  sBuf.vConcat(" THEN "_Stz);
+  sBuf.vConcat(Expr::xTypeId(pResultExpr, pRootNode).szTypeName());
+}
+
+/*----------------------------------------------------------------------------*/
 /* Retrieve the expression to be tested                                       */
 /*----------------------------------------------------------------------------*/
 QueryNode* WhenExpr::pPredicateExpr(QueryNode *pNode)
