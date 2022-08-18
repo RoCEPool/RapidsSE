@@ -46,7 +46,7 @@ void Step::vAddSteps_InfoSet(void)
   vAddStep("InfoSet[].addRowCount"_Stz,      &Step::vInfoSetAddRowCount);
   vAddStep("InfoSet[].addRowVargs"_Stz,      &Step::vInfoSetAddRowVargs);
   vAddStep("InfoSet[].addTotalUnits"_Stz,    &Step::vInfoSetAddTotalUnits);
-  vAddStep("InfoSet[].chunkFile"_Stz,        &Step::vInfoSetChunkFile);
+  vAddStep("InfoSet[].chunkFile"_Stz,        &Step::vInfoSetChunkFile_2);
   vAddStep("InfoSet[].colVal@"_Stz,          &Step::vInfoSetColValFetch);
   vAddStep("InfoSet[].delete"_Stz,           &Step::vInfoSetDelete);
   vAddStep("InfoSet[].firstRow"_Stz,         &Step::vInfoSetFirstRow);
@@ -530,8 +530,6 @@ void Step::vInfoSetChunkFile_2(void)
   // get the file we are chunking
   File* pFile = _pFile(*m_pLogicUnit->m_xpFile0);
 
-  // get the file offset of next chunk
-  i8 i_ChunkOfs = m_pLogicUnit->m_iCounter0;
 
   // get the file offset of the EOF
   i8 i_EofOfs = m_pLogicUnit->m_iCounter1;
@@ -547,6 +545,9 @@ void Step::vInfoSetChunkFile_2(void)
 
   for (;;) {
 
+    // get the file offset of next chunk
+    i8 i_ChunkOfs = m_pLogicUnit->m_iCounter0;
+
     RASSERT (i_ChunkOfs < i_EofOfs);
 
     // allot row for seek offset info
@@ -560,7 +561,7 @@ void Step::vInfoSetChunkFile_2(void)
       nChunkBytes = i_EofOfs - i_ChunkOfs;
 
       // end of file
-      i_ChunkOfs = i_EofOfs;
+      m_pLogicUnit->m_iCounter0 = i_EofOfs;
     }
     else {
       // -not final chunk in file
@@ -592,17 +593,24 @@ void Step::vInfoSetChunkFile_2(void)
       i8 i_EndChunkLoc = i_ChunkOfs + nChunkBytes - 1;
 
       // advance to start of next chunk
-      i_ChunkOfs = i_EndChunkLoc + 1;
+      m_pLogicUnit->m_iCounter0 = i_EndChunkLoc + 1;
     }
+
+    if (MY::pJob()->pJobTags()->bHasName("<OP_Chunk>"_Stz))
+      vTrace("<OP_Chunk>: i_ChunkOfs %lld nChunkBytes %lld\n"_Stz,
+             i_ChunkOfs,nChunkBytes);
 
     pSeekOffsetRow->vColVal_int(0,i_ChunkOfs);
     pSeekOffsetRow->vColVal_int(1,nChunkBytes);
 
-    if (nRowsInSeekOffsets >= C_MAX_SEEKOFFSETS)
+    nSumBytes += nChunkBytes;
+
+    if (++nRowsInSeekOffsets >= C_MAX_SEEKOFFSETS)
       break;
-    if (i_ChunkOfs >= i_EofOfs)
+    if (m_pLogicUnit->m_iCounter0 >= i_EofOfs)
       break;
   }
+
 
   // free the read block
   MemLib::vFreeBlock(aLastBlock, C_CHUNK_BLOCK);
