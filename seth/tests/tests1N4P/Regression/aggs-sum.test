@@ -16,11 +16,9 @@ rows:
 
 // Source file: ../queries/aggs/sum/rnsum4.sql
 // Result file: ../queries/aggs/sum/results/nsum4.res
-//TODO: COMPILER CRAIG TO FIX
-/*
 select sum(avg( cola1 + colf1 + colg1 )) from table1;
-failure: 'Invalid nested aggregation'
-*/
+failure contains: 'Nested aggregate expressions are not permitted'
+
 
 // Source file: ../queries/aggs/sum/rsum14.sql
 // Result file: ../queries/aggs/sum/results/sum14.res

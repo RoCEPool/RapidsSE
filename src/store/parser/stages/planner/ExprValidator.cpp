@@ -102,6 +102,9 @@ void ExprValidator::vValidateExprs(PlanNode *pRootNode)
     // Validate that all join predicate expressions produce equi-joins
     vValidateJoinPredicatesAreEquiJoins(pRootNode, pStatementMarker);
 
+    // Validate that there are no nested aggregate expressions
+    vValidateNoNestedAggregates(pRootNode, pStatementMarker);
+
     // Validate any aggregate/group-by expressions
     vValidateGroupByExprs(pRootNode, pStatementMarker);
 
@@ -425,6 +428,64 @@ void ExprValidator::vValidateJoinPredicatesAreEquiJoins(PlanNode *pRootNode, Que
   // Walk the node and its children. We're not interested in walking
   // the properties because we are looking for JoinOps
   GraphNav::bBoundedWalk(pStartNode->pFirstChild(), false, true, fVisitor, pRootNode);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Validate that there are no nested aggregate expressions                    */
+/*----------------------------------------------------------------------------*/
+void ExprValidator::vValidateNoNestedAggregates(PlanNode *pRootNode, QueryNode* pStartNode)
+{
+  UNUSED(pRootNode);
+
+  ASSERT(pRootNode);
+  ASSERT(pStartNode);
+
+  // Create an outer and inner visitor for checking for nested aggregates.
+
+  auto fInnerVisitor = [pRootNode](PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+    UNUSED(sPath);
+    UNUSED(iDepth);
+    UNUSED(pvArg);
+
+    QueryNode* pFirstNode = _pQueryNode(pvArg);
+
+    if (pNode == pFirstNode) {
+      // Ignore the first node as this is the outer aggregate.
+      return GraphNav::WALK_CONTINUE;
+    }
+
+    if (AggregateExpr::bIsOfType(pNode)) {
+      // We cannot have nested aggregate expressions
+      s2K sBuf;
+      Expr::vDescribe(pFirstNode, sBuf, pRootNode);
+
+      SemanticException::vThrow(EC_EXPR_NESTED_AGGREGATE,
+                                " : %s"_Stz,
+                                sBuf.szStz());
+    }
+
+    return GraphNav::WALK_CONTINUE;
+  };
+
+  auto fOuterVisitor = [fInnerVisitor](PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    UNUSED(sPath);
+    UNUSED(iDepth);
+    UNUSED(pvArg);
+
+    if (!AggregateExpr::bIsOfType(pNode)) {
+      return GraphNav::WALK_CONTINUE;
+    }
+
+    // We have a potentially outer aggregate. Let's see if there are any inner aggregates.
+    GraphNav::bBoundedWalk(pNode, false, true, fInnerVisitor, pNode);
+
+    // No need to walk the rest of this subtree.
+    return GraphNav::WALK_SKIP_SUBTREE;
+  };
+
+  // Walk the node and its children and properties
+  GraphNav::bBoundedWalk(pStartNode->pFirstChild(), true, true, fOuterVisitor, nullptr);
 }
 
 /*----------------------------------------------------------------------------*/
