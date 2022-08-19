@@ -10,8 +10,8 @@ _part
 //                 "/users/shared/rapidsse/jira/part.tbl.4"
 //;
 
-/op_chunk
-/op_rdCsvChunk
+// /op_chunk
+// /op_rdCsvChunk
 load part "/users/shared/rapidsse/jira/part.tbl.1";
 
 count part;

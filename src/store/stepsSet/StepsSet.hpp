@@ -748,7 +748,6 @@ void vDdlLockAssertNone(void);
   void vInfoSetAddRowVargs(void);
   void vInfoSetAddTotalUnits(void);
   void vInfoSetChunkFile(void);
-  void vInfoSetChunkFile_2(void);
   void vInfoSetColValFetch(void);
   void vInfoSetDelete(void);
   void vInfoSetFirstRow(void);
