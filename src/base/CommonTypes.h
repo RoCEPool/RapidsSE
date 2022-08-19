@@ -30,7 +30,7 @@ static const d8 C_FLT_MIN = -1.797693134862315708145274237317043567981e+308;
 //static const i8 C_ERA_2 = 99; // 1999
 
 static const u8 C_YEAR_BASE  = 1900;
-static const u8 C_YEAR_RANGE = 226;
+static const u8 C_YEAR_RANGE = 255;
 static const u8 C_YEAR_MAX   = C_YEAR_BASE + C_YEAR_RANGE;
 static const u8 C_YEAR_MIN   = C_YEAR_BASE;
 

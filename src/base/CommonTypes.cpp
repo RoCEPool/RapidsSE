@@ -19,12 +19,12 @@ static const i8 C_DAYS_IN_MONTH_LEAP[12] = { 31, 29, 31, 30, 31, 30, 31, 31, 30,
 /*----------------------------------------------------------------------------*/
 b1 Dte::bIsValid(i8 iYear, i8 iMonth, i8 iDay, s256& sErrorBuf) {
   if (iYear > 9999 || iYear < -9999) {
-    sErrorBuf.vCopy("Year value is out of range"_Stz);
+    sErrorBuf.vSprint("Year value is out of range %lld to %lld"_Stz, C_YEAR_MIN, C_YEAR_MAX);
     return false;
   }
 
   if (iMonth > 12 || iMonth < 1) {
-    sErrorBuf.vCopy("Month value is out of range"_Stz);
+    sErrorBuf.vCopy("Month value is out of range 1 to 12"_Stz);
     return false;
   }
 
@@ -44,7 +44,7 @@ b1 Dte::bIsValid(i8 iYear, i8 iMonth, i8 iDay, s256& sErrorBuf) {
 
   // Check that the date is within range of Dte class
   if (iYear < (i8) C_YEAR_MIN || iYear > (i8) C_YEAR_MAX) {
-    sErrorBuf.vCopy("Year value is out of range"_Stz);
+    sErrorBuf.vSprint("Year value is out of range %lld to %lld"_Stz, C_YEAR_MIN, C_YEAR_MAX);
     return false;
   }
 
