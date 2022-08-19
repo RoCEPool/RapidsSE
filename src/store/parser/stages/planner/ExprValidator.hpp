@@ -46,6 +46,9 @@ namespace Parser
     // Validate that all join predicates are equijoins
     static void vValidateJoinPredicatesAreEquiJoins(PlanNode* pRootNode, QueryNode* pStartNode);
 
+    // Validate that there are no nested aggregate expressions
+    static void vValidateNoNestedAggregates(PlanNode* pRootNode, QueryNode* pStartNode);
+
     // Validate that the aggregate and group-by expressions are correctly specified
     static void vValidateGroupByExprs(PlanNode* pRootNode, QueryNode* pStartNode);
 

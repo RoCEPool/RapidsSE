@@ -46,6 +46,22 @@ void AggregateExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Represent the expression as types instead of names. Append to the buffer   */
+/*----------------------------------------------------------------------------*/
+void AggregateExpr::vDescribeAsTypes(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  if      (CountExpr::bIsOfType(pNode))  { CountExpr::vDescribeAsTypes(pNode, sBuf, pRootNode); }
+  else if (  SumExpr::bIsOfType(pNode))  {   SumExpr::vDescribeAsTypes(pNode, sBuf, pRootNode); }
+  else if (  MinExpr::bIsOfType(pNode))  {   MinExpr::vDescribeAsTypes(pNode, sBuf, pRootNode); }
+  else if (  MaxExpr::bIsOfType(pNode))  {   MaxExpr::vDescribeAsTypes(pNode, sBuf, pRootNode); }
+  else if (  AvgExpr::bIsOfType(pNode))  {   AvgExpr::vDescribeAsTypes(pNode, sBuf, pRootNode); }
+  else NEVER_REACH
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns true if the aggregate expression is a distinct expression          */
 /*----------------------------------------------------------------------------*/
 b1 AggregateExpr::bIsDistinct(PlanNode* pNode)

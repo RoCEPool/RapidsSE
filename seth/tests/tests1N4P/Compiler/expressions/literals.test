@@ -260,6 +260,64 @@ EXPLAIN with_types SELECT -10000000000000000000000000000000000000. - 1e0 FROM na
 failure contains: 'Value is out of range: Max/min decimal precision supported is [-1,407,374,883,553.28, 1,407,374,883,553.27]'
 
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Integers
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// For version 1.x we don't support the complete 64 bit integer range.
+// We reserve one value from the top positive range and 2 values from
+// the bottom negative range to represent +/- Inf and NULL.
+
+EXPLAIN SELECT 9223372036854775806 FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT 9223372036854775806 FROM nation"
+
+-> -> projectOp
+      » column: (Expr = 9223372036854775806 ; Ordinal Expr = 9223372036854775806)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+EXPLAIN SELECT -9223372036854775806 FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT -9223372036854775806 FROM nation"
+
+-> -> projectOp
+      » column: (Expr = -9223372036854775806 ; Ordinal Expr = -9223372036854775806)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+EXPLAIN SELECT 9223372036854775807 FROM nation;
+failure contains: 'Invalid format of integer literal: Value of out range: "9223372036854775807". Integer range is -9223372036854775806 to 9223372036854775806'
+
+EXPLAIN SELECT 9223372036854775808 FROM nation;
+failure contains: 'Invalid format of integer literal: Value of out range: "9223372036854775808". Integer range is -9223372036854775806 to 9223372036854775806'
+
+
+EXPLAIN SELECT -9223372036854775807 FROM nation;
+failure contains: 'Invalid format of integer literal: Value of out range: "-9223372036854775807". Integer range is -9223372036854775806 to 9223372036854775806'
+
+EXPLAIN SELECT -9223372036854775808 FROM nation;
+failure contains: 'Invalid format of integer literal: Value of out range: "-9223372036854775808". Integer range is -9223372036854775806 to 9223372036854775806'
+
+
+EXPLAIN SELECT 9223372036854775807000 FROM nation;
+failure contains: 'Invalid format of integer literal: Value of out range: "9223372036854775807000". Integer range is -9223372036854775806 to 9223372036854775806'
+
+EXPLAIN SELECT -9223372036854775807000 FROM nation;
+failure contains: 'Invalid format of integer literal: Value of out range: "-9223372036854775807000". Integer range is -9223372036854775806 to 9223372036854775806'
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Check for memory leaks

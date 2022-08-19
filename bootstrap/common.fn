@@ -65,13 +65,28 @@ declare -ra NODE_CFG_ALL_KEYS=( \
   "${NODE_CFG_PARAMS_KEY}" \
 )
 
-declare -ra SSH_MULTIPLEX_OPTIONS=( "-o" "ControlMaster=auto" "-o" "ControlPath=~/.ssh/rapidsse_mux_%h_%p_%r" "-o" "ControlPersist=3m" )
+declare -ra DEFAULT_SSH_MULTIPLEX_OPTIONS=( "-o" "ControlMaster=auto" "-o" "ControlPath=~/.ssh/rapidsse_mux_%h_%p_%r" "-o" "ControlPersist=3m" )
+declare -ra DEFAULT_SSH_STRICT_HOST_KEY_CHECKING=("-o" "StrictHostKeyChecking=no")
 
-if [ -z "${NO_SSH_MULTIPLEX:-}" ] || [ "${NO_SSH_MULTIPLEX}" -eq 0 ] ; then
-  declare -ra SSH_COMMON_OPTIONS=( "-q" "-o" "StrictHostKeyChecking=no" "${SSH_MULTIPLEX_OPTIONS[@]}" )
+# Note: We use StrictHostKeyChecking=no rather than StrictHostKeyChecking=accept-new because
+#       the accept-new option doesn't exist until OpenSSH v7.6 (Oct 2017) and operating systems
+#       like CentOS 7 only have OpenSSH v7.4.
+
+# Override the SSH multiplex settings if NO_SSH_MULTIPLEX=1
+if [ -z "${NO_SSH_MULTIPLEX:-}" ] || [ "${NO_SSH_MULTIPLEX:-}" -eq 0 ] ; then
+  SSH_MULTIPLEX_OPTIONS=("${DEFAULT_SSH_MULTIPLEX_OPTIONS[@]}")
 else
-  declare -ra SSH_COMMON_OPTIONS=( "-q" "-o" "StrictHostKeyChecking=no" )
+  SSH_MULTIPLEX_OPTIONS=()
 fi
+
+# Override the SSH StrictHostKeyChecking settings if NO_SSH_STRICTHOSTKEYCHECKING=1
+if [ -z "${NO_SSH_STRICTHOSTKEYCHECKING:-}" ] || [ "${NO_SSH_STRICTHOSTKEYCHECKING:-}" -eq 0 ] ; then
+  SSH_STRICTHOSTKEYCHECKING=("${DEFAULT_SSH_STRICT_HOST_KEY_CHECKING[@]}")
+else
+  SSH_STRICTHOSTKEYCHECKING=()
+fi
+
+declare -ra SSH_COMMON_OPTIONS=( "-q" "${SSH_STRICTHOSTKEYCHECKING[@]}" "${SSH_MULTIPLEX_OPTIONS[@]}" )
 
 ###############################################################################
 ### Functions                                                               ###

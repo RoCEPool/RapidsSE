@@ -98,6 +98,31 @@ void MaxExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
   sBuf.vConcat(")"_Stz);
 }
 
+/*----------------------------------------------------------------------------*/
+/* Represent the expression as types instead of names. Append to the buffer   */
+/*----------------------------------------------------------------------------*/
+void MaxExpr::vDescribeAsTypes(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  sBuf.vConcat("MAX("_Stz);
+
+  b1 bDistinct = bIsDistinct(pNode);
+  if (bDistinct) {
+    sBuf.vConcat("DISTINCT("_Stz);
+  }
+
+  ASSERT(pNode->nChildren() == 1);
+  PlanNode* pChildExpr = pNode->pFirstChild();
+  sBuf.vConcat(Expr::xTypeId(_pQueryNode(pChildExpr), pRootNode).szTypeName());
+
+  if (bDistinct) {
+    sBuf.vConcat(")"_Stz);
+  }
+
+  sBuf.vConcat(")"_Stz);
+}
 
 /*----------------------------------------------------------------------------*/
 /* Return the first child expression of this operator                         */
