@@ -3042,8 +3042,18 @@ i8 SqlPlanner::iCleanInt(std::string& sStr)
 
   } catch (std::out_of_range &e) {
     SemanticException::vThrow(EC_INVALID_INTEGER_FORMAT,
-                              ": Value of out range: \"%s\""_Stz,
-                              sStr.c_str());
+                              ": Value of out range: \"%s\". Integer range is %lld to %lld"_Stz,
+                              sStr.c_str(), C_INT_MIN, C_INT_MAX);
+  }
+
+  // Because NULL is represented as a bit pattern, we need to restrict the
+  // literal value range a little bit further. Refer to the definitions in
+  // the file Fragments.cpp (specifically C_DATUM_NULL).
+
+  if (iVal > 9223372036854775806 || iVal < -9223372036854775806) {
+    SemanticException::vThrow(EC_INVALID_INTEGER_FORMAT,
+                              ": Value of out range: \"%s\". Integer range is %lld to %lld"_Stz,
+                              sStr.c_str(), C_INT_MIN, C_INT_MAX);
   }
 
   return iVal;
