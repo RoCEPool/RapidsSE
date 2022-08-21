@@ -329,7 +329,7 @@
 : EV_M_NODELOSSABORT_handler \handler
 
   "EV_M_NODELOSSABORT_handler" .verbose
-  [op].opName@ "OP %v exiting got EV_M_NODELOSSABORT" str.format .
+  [op].opName@ [op].stageNm@ "OP %v:%v exiting got EV_M_NODELOSSABORT" str.format .
 
   PipeIn[].delete
 

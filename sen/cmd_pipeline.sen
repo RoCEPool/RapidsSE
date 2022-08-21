@@ -72,7 +72,7 @@
 /* org_ org */      then
 /* org_ org */
 /* org_ org */      [job].updateParent assert
-/* org_ ovr */      [job].signalParent
+/* org_ org */      [job].signalParent
 /* org_ org */
 /* org_ org */        [task].retire // does not queue onto exit demon
 /* org_ org */

@@ -107,7 +107,15 @@ bool PROMPT::bPrompt_abortJobs(SePrompt* pPrompt)
 
     pPtpJobList->vDropLock();
     pPtpJobList->vRemoveJob(pJob);
- }
+
+    // retire and exit
+    Task* pTask = pJob->pTask();
+    if (pTask) {
+      pTask->vGrabTaskLock((Stz *) __func__);
+      AM::vJob_AddExited(pJob);
+      pTask->vScheduleRetire();
+    }
+  }
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2132,7 +2140,9 @@ bool PROMPT::bPrompt_jobs(SePrompt* pPrompt)
          ,AM::JOBS::nJobsActive()
          ,AM::JOBS::nJobsThreshold()
          );
-  
+
+  AM::JLIST::pJobsList()->vListJobs();;
+
   return true;
 }
 
