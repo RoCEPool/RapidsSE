@@ -47,6 +47,9 @@
 
   Socket[].success@ if
     Socket[].object@\clear to recvdObject[]
+  else
+    false
+    exit
   then
 
   true
@@ -75,13 +78,12 @@
 /*----------------------------------------------------------------------------*/
 : recvSE_loop ( -- )
 
-/*
   begin
 
     trap::stackDepthZero
 
     // receive next object(s)
-    recvSE_recvNext assert
+    recvSE_recvNext
     not if
       exit
     then
@@ -90,7 +92,7 @@
 
   again
 
-*/
+/*
 
   begin
 
@@ -101,7 +103,7 @@
     recvSE_dispatch
 
   again
-
+*/
 ;
 
 /*----------------------------------------------------------------------------*/

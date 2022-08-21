@@ -121,7 +121,6 @@ Object* Socket::pRecvObject(void)
   // receive the header of the next object
     
   if (! bHeaderRecv()) {
-    vSuccess(false);
     return nullptr;
   }
 
@@ -164,6 +163,7 @@ Object* Socket::pRecvObject(void)
     // handle the received reject job
     AM::JOB::vRecvdReject(m_pRejectJob);
     nPipeline++;
+    vSuccess(true);
     return nullptr;
   }
 
@@ -187,6 +187,9 @@ Object* Socket::pRecvObject(void)
     //  THROW_LOWMEMORY();
 
     Object *pReceivedObject = pObjectRecv(eClass);
+    if ( !pReceivedObject ) {
+      return nullptr;
+    }
 
     try {
       pReceivedObject->vRunPostRecv();
@@ -212,6 +215,7 @@ Object* Socket::pRecvObject(void)
       // delete the job
       delete pJob;
 
+      vSuccess(true);
       return nullptr;
     }
 
