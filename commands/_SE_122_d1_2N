@@ -1,0 +1,23 @@
+/*============================================================================*/
+/* _SE_122_d1_2N - dload slow at SF1 (SF1 2N test)                            */
+/*============================================================================*/
+
+_lineitem
+
+/time
+  dload
+    lineitem
+  paths
+    "/users/shared/rapidsse/tpch/sf1_8/lineitem.tbl.1"
+    "/users/shared/rapidsse/tpch/sf1_8/lineitem.tbl.2"
+    "/users/shared/rapidsse/tpch/sf1_8/lineitem.tbl.3"
+    "/users/shared/rapidsse/tpch/sf1_8/lineitem.tbl.4"
+;
+
+count lineitem;
+
+drop table lineitem;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

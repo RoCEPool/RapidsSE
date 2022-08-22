@@ -392,6 +392,8 @@ void SeDeputy::vReportTime(void)
   if (! m_pRootJob->bHasTag(C_TAG_TIME))
     return;
 
+  m_pRootJob->vResponseTimerUpdate();
+
   vTrace("time %lldms\n\n"_Stz,m_pRootJob->iResponseTimerMsec());
   
   Timer oTimer;
