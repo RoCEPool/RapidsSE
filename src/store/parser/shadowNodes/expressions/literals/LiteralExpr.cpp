@@ -55,6 +55,17 @@ void LiteralExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Represent the expression as types instead of names. Append to the buffer   */
+/*----------------------------------------------------------------------------*/
+void LiteralExpr::vDescribeAsTypes(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  sBuf.vConcat(xTypeId(_pQueryNode(pNode), pRootNode).szTypeName());
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns true if the node has a null value. NB: this is disinct from        */
 /* the node representing a NULL literal.                                      */
 /*----------------------------------------------------------------------------*/

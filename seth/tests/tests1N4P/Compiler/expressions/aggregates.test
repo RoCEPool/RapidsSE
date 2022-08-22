@@ -393,6 +393,26 @@ rows: (*,'explainPlan','
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Check for nested aggregates
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+explain select sum(n_nationkey) from nation;
+success
+
+explain select sum(count(n_nationkey)) from nation;
+failure contains: 'Nested aggregate expressions are not permitted'
+
+explain select sum(1 + avg(n_nationkey)) from nation;
+failure contains: 'Nested aggregate expressions are not permitted'
+
+explain select count(1 + 2 % count(n_nationkey)) from nation;
+failure contains: 'Nested aggregate expressions are not permitted'
+
+explain select 2 / (count(1 + 2 % count(n_nationkey))) from nation;
+failure contains: 'Nested aggregate expressions are not permitted'
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Check for memory leaks
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

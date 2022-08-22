@@ -58,6 +58,24 @@ void ExistsExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
   sBuf.vCatSprint("EXISTS %s"_Stz, sSubqueryBuf.szStz());
 }
 
+/*----------------------------------------------------------------------------*/
+/* Represent the expression as types instead of names. Append to the buffer   */
+/*----------------------------------------------------------------------------*/
+void ExistsExpr::vDescribeAsTypes(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+  ASSERT(pNode->nChildren() == 1);
+
+  QueryNode* pSubqueryRef = _pQueryNode(pNode->pFirstChild());
+  ASSERT(SubqueryRefExpr::bIsOfType(pSubqueryRef));
+
+  s2K sSubqueryBuf;
+  Expr::vDescribe(pSubqueryRef, sSubqueryBuf, pRootNode);
+
+  sBuf.vConcat("EXISTS "_Stz);
+  sBuf.vConcat(Expr::xTypeId(pSubqueryRef, pRootNode).szTypeName());
+}
 
 /*----------------------------------------------------------------------------*/
 /* Returns true if the given node is derived from the expr definition         */

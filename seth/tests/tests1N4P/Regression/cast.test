@@ -220,7 +220,7 @@ ordered rows:
 
 // Source file: ../queries/cast/rcast21.sql
 // Result file: ../queries/cast/results/rcast21.res
-//TODO: COMPILER
+//TODO: ENABLE WHEN CONCAT (+) AND ORDER BY IS SUPPORTED
 /*
 select colc1, cast(colc1 as varchar), substring(cast(colc1 as varchar),1,10) + ' DATE' from table1 where colb1 in ('PINK','PURPLE') order by pcol1, colb1;
 ordered rows:
