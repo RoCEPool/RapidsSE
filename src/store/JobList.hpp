@@ -45,7 +45,7 @@ namespace STORE
     i8     nJobs(void);
     SkipNode* pNext(SkipNode* pPrev);
     Job*   pPopJob(void);
-    void   vRemoveJob(Job* pJob);
+    void   vRemoveJob(Job* pJob, bool bLock = true);
   
 
     Footer* aFooter(void);

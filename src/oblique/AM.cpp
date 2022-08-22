@@ -877,6 +877,36 @@ Stz* AM::JOB::szJobNm(Job* pJob)
   return pJob->szJobNm();
 }
 
+/*----------------------------------------------------------------------------*/
+/* get job name                                                               */
+/*----------------------------------------------------------------------------*/
+void AM::JOB::vPtpJobNodeFailure(JobId tJobId)
+{
+  _static_
+
+  // find the job holding onto the lock
+  Job* pJob = AM::pParticipatingJobs()->pFindJob(tJobId,true);
+
+  if ( ! pJob ) {
+    return;
+  }
+
+  pJob->vPtpJobNodeFailure();
+
+  vJob_RemoveParticipating(pJob, false);
+  pJob->vDropLock();
+
+  // retire and exit
+  Task* pTask = pJob->pTask();
+  if (pTask) {
+    pTask->vGrabTaskLock((Stz *) __func__);
+    AM::vJob_AddExited(pJob);
+    pTask->vScheduleRetire();
+  }
+
+  //AM::pParticipatingJobs()->vDropLock();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* test if the job passes all pre-execution requirements                      */
@@ -2891,6 +2921,7 @@ void AM::TASK::vRetire(Task* pTask)
   if (Op* pOp = pTask->pOp()) {
     // retiring op of job
     Job* pJob = pOp->pOuterJobOfOp();
+    //vTrace("--------------OP %s of Stage %s EXITING\n"_Stz, pOp->szOpNm(), pOp->pStage()->szStageNm());
     pJob->vActiveOpsDec();
   }
   else
@@ -5134,17 +5165,17 @@ void AM::vJob_RemoveLocal(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* remove job from originating list                                           */
 /*----------------------------------------------------------------------------*/
-void AM::vJob_RemoveOriginating(Job* pJob)
+void AM::vJob_RemoveOriginating(Job* pJob, bool bLock)
 {
-  AM::pOriginatingJobs()->vRemoveJob(pJob);
+  AM::pOriginatingJobs()->vRemoveJob(pJob, bLock);
 }
 
 /*----------------------------------------------------------------------------*/
 /* remove job from participating list                                         */
 /*----------------------------------------------------------------------------*/
-void AM::vJob_RemoveParticipating(Job* pJob)
+void AM::vJob_RemoveParticipating(Job* pJob, bool bLock)
 {
-  AM::pParticipatingJobs()->vRemoveJob(pJob);
+  AM::pParticipatingJobs()->vRemoveJob(pJob, bLock);
 }
 
 /*----------------------------------------------------------------------------*/

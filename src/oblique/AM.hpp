@@ -368,6 +368,7 @@ namespace OBLIQUE
       static void vAckOriginatingJob(JobId tOriginId);
       static bool bHasTag(Job* pJob, Stz* szTagNm);
       static Stz* szJobNm(Job* pJob);
+      static void vPtpJobNodeFailure(JobId tJobId);
       static eEC  ePreExecuteTest(Job* pJob);
       static void vRecvdReject(RejectJob* pRejectJob);
       static void vSendReject(RejectJob* pRejectJob);
@@ -942,8 +943,8 @@ namespace OBLIQUE
     static Job* pJob_FindOriginating(JobId tJobId);
     static Job* pJob_FindParticipating(JobId tJobId);
     static void vJob_RemoveLocal(Job* pJob);
-    static void vJob_RemoveOriginating(Job* pJob);
-    static void vJob_RemoveParticipating(Job* pJob);
+    static void vJob_RemoveOriginating(Job* pJob, bool bLock = true);
+    static void vJob_RemoveParticipating(Job* pJob, bool bLock = true);
     static void vJob_RemoveRetired(Job* pJob);
 
   };

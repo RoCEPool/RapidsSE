@@ -573,7 +573,7 @@ SkipNode *JobList::pNext(SkipNode *pPrev) {
 /*----------------------------------------------------------------------------*/
 /* remove a job from jobs skip list                                           */
 /*----------------------------------------------------------------------------*/
-void JobList::vRemoveJob(Job *pJob) {
+void JobList::vRemoveJob(Job *pJob, bool bLock) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_JOBLIST, _FOOTER_);
 
 //    vTrace("vRemoveJob %s : %lld.%lld %p\n"_Stz
@@ -586,9 +586,12 @@ void JobList::vRemoveJob(Job *pJob) {
 
   bool bWasRemoved;
 
-  pJob->vGrabLock();
-  
+  if (bLock)
+    pJob->vGrabLock();
+
+
   vGrabLock();
+
   RASSERT(m_okLock.bIsLocked());
 
 
@@ -707,7 +710,8 @@ void JobList::vRemoveJob(Job *pJob) {
 
   vDropLock();
 
-  pJob->vDropLock();
+  if (bLock)
+    pJob->vDropLock();
 
   if (!bWasRemoved) {
     vTrace("------------------------------------\n"_Stz);

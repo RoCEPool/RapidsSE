@@ -101,20 +101,11 @@ bool PROMPT::bPrompt_abortJobs(SePrompt* pPrompt)
 
     Job *pJob = _pJob(pCursor->m_pObject);
 
-    vTrace("%s\n"_Stz, pJob->szJobNm());
-
-    pJob->vPtpJobNodeFailure();
-
+    JobId tJobId = pJob->tDistId();
+    vTrace("%s: %lld\n"_Stz, pJob->szJobNm(), tJobId.iAsI8());
     pPtpJobList->vDropLock();
-    pPtpJobList->vRemoveJob(pJob);
 
-    // retire and exit
-    Task* pTask = pJob->pTask();
-    if (pTask) {
-      pTask->vGrabTaskLock((Stz *) __func__);
-      AM::vJob_AddExited(pJob);
-      pTask->vScheduleRetire();
-    }
+    AM::JOB::vPtpJobNodeFailure(tJobId);
   }
 
 
