@@ -209,7 +209,15 @@ void Step::vJobAddOriginator(void)
   Job* pJob = pOuterJobOfTask();
   RASSERT(*m_pJob == pJob);
 
-  AM::vJob_AddOriginating(pJob);
+  if (AM::pParticipatingJobs()->bLatch()) {
+    vTrace("Unable to append job to OL as list is latched due to NODELOSS\n"_Stz);
+    m_pDataStack->vPushInt(false);
+  }
+  else {
+    AM::vJob_AddOriginating(pJob);
+    m_pDataStack->vPushInt(true);
+  }
+
 
   //vTrace("%p ID %lld added to originator\n"_Stz, pJob, pJob->iJobId());
       
@@ -235,7 +243,14 @@ void Step::vJobAddParticipant(void)
   Job* pJob = pOuterJobOfTask();
   RASSERT(*m_pJob == pJob);
 
-  AM::vJob_AddParticipating(pJob);
+  if (AM::pParticipatingJobs()->bLatch()) {
+    vTrace("Unable to append job to PL as list is latched due to NODELOSS\n"_Stz);
+    m_pDataStack->vPushInt(false);
+  }
+  else {
+    AM::vJob_AddParticipating(pJob);
+    m_pDataStack->vPushInt(true);
+  }
 
   //vTrace("%p ID %lld added to participant\n"_Stz, pJob, pJob->tJobId().iAsI8());
     

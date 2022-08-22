@@ -898,6 +898,8 @@ void AM::JOB::vOriginJobNodeFailure(JobId tJobId)
   // ack the waiting job
   Task* pTask = pJob->pTask();
 
+  pJob->vDropLock();
+
   bool bAmDecider = false;
   if (pTask->eState() == TS_WAITING) {
     vTrace("Notifying Origin job %p %s J%04lld.%04lld\n"_Stz,
@@ -918,8 +920,6 @@ void AM::JOB::vOriginJobNodeFailure(JobId tJobId)
            pJob->tJobId().uJobNo());
   }
 
-  pJob->vDropLock();
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -936,20 +936,29 @@ void AM::JOB::vPtpJobNodeFailure(JobId tJobId)
     return;
   }
 
-  pJob->vPtpJobNodeFailure();
-
-  vJob_RemoveParticipating(pJob, false);
-  pJob->vDropLock();
-
-  // retire and exit
-  Task* pTask = pJob->pTask();
-  if (pTask) {
-    pTask->vGrabTaskLock((Stz *) __func__);
-    AM::vJob_AddExited(pJob);
-    pTask->vScheduleRetire();
+  if (pJob->eJobPhase() == JP_BEGUN ||
+      pJob->eJobPhase() == JP_EXECUTED ||
+      pJob->eJobPhase() == JP_ENDED ) {
+    // trigger an execute of the participant pipeline job
+    AM::JOB::vTriggerExecute(Job::tDistId(pJob));
   }
 
-  //AM::pParticipatingJobs()->vDropLock();
+  pJob->vPtpJobNodeFailure();
+  pJob->vDropLock();
+
+//  vJob_RemoveParticipating(pJob, false);
+//
+//  // retire and exit
+//  Task* pTask = pJob->pTask();
+//
+//  pJob->vDropLock();
+//
+//  if (pTask) {
+//    pTask->vGrabTaskLock((Stz *) __func__);
+//    AM::vJob_AddExited(pJob);
+//    pTask->vScheduleRetire();
+//  }
+
 }
 
 /*----------------------------------------------------------------------------*/

@@ -1630,6 +1630,8 @@ void Job::vPtpJobNodeFailure(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
+  vJobError(EC_NODE_LOSS);
+
   Pipeline* pPipeline = this->pPipeline();
   pPipeline->vNodeLossAbort();
 

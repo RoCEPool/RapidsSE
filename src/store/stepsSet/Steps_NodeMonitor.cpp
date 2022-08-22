@@ -56,7 +56,7 @@ void Step::vNodeMonitorInspectGrid(void)
              pNode->eState() == NS_ACTIVE ? "running"_Stz : "not running"_Stz);
 
       if (pNode && (pNode->eState() == NS_INACTIVE)) {
-
+/*
         vTrace("Node failure, status code: %d\n"_Stz, pNode->iGetNodeStatus());
 
 
@@ -95,6 +95,68 @@ void Step::vNodeMonitorInspectGrid(void)
         }
         pPtpJobList->vDropLock();
         break;
+
+        */
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // Notify participant jobs
+
+        JobList* pPtpJobList = AM::pParticipatingJobs();
+
+        while (pPtpJobList->nJobs()) {
+
+          pPtpJobList->vGrabLock();
+
+          SkipNode *pCursor = pPtpJobList->pFirst();
+
+          if (!pCursor) {
+            pPtpJobList->vDropLock();
+            continue;
+          }
+
+          Job *pJob = _pJob(pCursor->m_pObject);
+
+          if (pJob->eJobError() != EC_NONE) {
+            pPtpJobList->vDropLock();
+            continue;
+          }
+
+          JobId tJobId = pJob->tDistId();
+          vTrace("Aborting Participating jobs pipelines on current node:\n"_Stz);
+          vTrace("%s: %lld\n"_Stz, pJob->szJobNm(), tJobId.iAsI8());
+          pPtpJobList->vDropLock();
+
+          AM::JOB::vPtpJobNodeFailure(tJobId);
+        }
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // Notify Originating jobs
+
+        JobList *pOriginJobList = AM::pOriginatingJobs();
+
+        while (pOriginJobList->nJobs()) {
+
+          vTrace("Notifying Originating jobs on current node:\n"_Stz);
+
+          pOriginJobList->vGrabLock();
+
+          SkipNode *pCursor = pOriginJobList->pFirst();
+
+          if ( ! pCursor ) {
+            pOriginJobList->vDropLock();
+            continue;
+          }
+
+          Job *pJob = _pJob(pCursor->m_pObject);
+
+          JobId tJobId = pJob->tOriginId();
+          vTrace("%s: %lld\n"_Stz, pJob->szJobNm(), tJobId.iAsI8());
+          pOriginJobList->vDropLock();
+
+          AM::JOB::vOriginJobNodeFailure(tJobId);
+        }
+
+
       }
     }
   }

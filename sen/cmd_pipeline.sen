@@ -111,7 +111,10 @@
 /* org_ org */  // - - - - - - - - - - - - - - - - - -
 /* org_ org */  [job].setOriginId
 /* org_ org */  [job].distIdGenerate
-/* org_ org */  [job].addOriginator
+/* org_ org */  [job].addOriginator not if
+/* org_ org */     [job]:retireAndExit
+/* org_ org */  then
+/* org_ org */
 /* org_ org */  [job].assertOriginator
 /* org_ org */
 /* org_ org */  [args].distJob if
@@ -529,7 +532,10 @@
 /* _ptp bgn */  JP_BEGUN [job].phase!
 /* _ptp bgn */  "pipeline:ptpExecute" [job].entryPoint!
 /* _ptp bgn */  [job].tscParticipant
-/* _ptp bgn */  [job].addParticipant
+/* _ptp bgn */  [job].addParticipant not if
+/* _ptp bgn */    [job]:retireAndExit
+/* _ptp bgn */  then
+/* _ptp bgn */
 /* _ptp bgn */  [job].assertParticipant
 /* _ptp bgn */  [job].assertStructure
 /* _ptp bgn */  [args].distJob if

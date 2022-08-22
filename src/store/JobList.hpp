@@ -40,6 +40,7 @@ namespace STORE
     void   vGrabLock(void);
     void   vInsertJob(Job* pJob);
     void   vLatch(bool bLatch);
+    bool   bLatch(void);
     bool   bIsLocked(void);
     void   vListJobs(void);
     i8     nJobs(void);

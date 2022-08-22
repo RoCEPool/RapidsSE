@@ -453,11 +453,6 @@ void JobList::vInsertJob(Job *pJob) {
       
     case JL_ORIGINATING: {
 
-      if (m_bLatch) {
-        vTrace("Unable to append job to OL as list is latched due to NODELOSS\n"_Stz);
-        break;
-      }
-
       tJobId_search = pJob->tOriginId();
 
       auto bfMoveRightTest = [tJobId_search](void *aRightJob, bool &bFoundKey) {
@@ -476,11 +471,6 @@ void JobList::vInsertJob(Job *pJob) {
     }
       
     case JL_PARTICIPATING: {
-
-      if (m_bLatch) {
-        vTrace("Unable to append job to PL as list is latched due to NODELOSS\n"_Stz);
-        break;
-      }
 
       tJobId_search = pJob->tDistId();
 
@@ -519,6 +509,15 @@ void JobList::vLatch(bool bLatch) {
   vGrabLock();
   m_bLatch = bLatch;
   vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the latch of the job list                                              */
+/*----------------------------------------------------------------------------*/
+bool JobList::bLatch() {
+  _precondition_(_ADDRESS_, _MAGIC_, CN_JOBLIST, _FOOTER_);
+
+  return m_bLatch;
 }
 
 /*----------------------------------------------------------------------------*/
