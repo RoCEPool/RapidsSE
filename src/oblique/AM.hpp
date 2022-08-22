@@ -368,6 +368,7 @@ namespace OBLIQUE
       static void vAckOriginatingJob(JobId tOriginId);
       static bool bHasTag(Job* pJob, Stz* szTagNm);
       static Stz* szJobNm(Job* pJob);
+      static void vOriginJobNodeFailure(JobId tJobId);
       static void vPtpJobNodeFailure(JobId tJobId);
       static eEC  ePreExecuteTest(Job* pJob);
       static void vRecvdReject(RejectJob* pRejectJob);

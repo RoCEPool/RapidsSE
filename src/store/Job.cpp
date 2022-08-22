@@ -1275,6 +1275,8 @@ void Job::vOriginJobNodeFailure(void)
 
   RASSERT(bIsOnOrigin());
 
+  vJobError(EC_NODE_LOSS);
+
 }
 
 /*----------------------------------------------------------------------------*/

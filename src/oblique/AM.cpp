@@ -878,7 +878,52 @@ Stz* AM::JOB::szJobNm(Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get job name                                                               */
+/* handle originating job during node failure                                 */
+/*----------------------------------------------------------------------------*/
+void AM::JOB::vOriginJobNodeFailure(JobId tJobId)
+{
+  _static_
+
+  // find the job holding onto the lock
+  Job* pJob = AM::pOriginatingJobs()->pFindJob(tJobId,true);
+
+  if ( ! pJob ) {
+    return;
+  }
+
+  Task* pThisTask = MY::pTask();
+
+  pJob->vOriginJobNodeFailure();
+
+  // ack the waiting job
+  Task* pTask = pJob->pTask();
+
+  bool bAmDecider = false;
+  if (pTask->eState() == TS_WAITING) {
+    vTrace("Notifying Origin job %p %s J%04lld.%04lld\n"_Stz,
+           pJob,
+           pJob->szJobNm(),
+           pJob->tJobId().uNodeId(),
+           pJob->tJobId().uJobNo());
+    i8 nAcksRemainaing;
+    while ( ! bAmDecider ) {
+      vTrace("abortJob acking ...\n"_Stz);
+      bAmDecider = Scheduler::bTaskCross_AckWaiting(pTask, pThisTask, nAcksRemainaing);
+    }
+    RASSERT(nAcksRemainaing == 0);
+    vTrace("Notified Origin job %p %s J%04lld.%04lld\n"_Stz,
+           pJob,
+           pJob->szJobNm(),
+           pJob->tJobId().uNodeId(),
+           pJob->tJobId().uJobNo());
+  }
+
+  pJob->vDropLock();
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* handle participant job during node failure                                 */
 /*----------------------------------------------------------------------------*/
 void AM::JOB::vPtpJobNodeFailure(JobId tJobId)
 {
@@ -906,7 +951,6 @@ void AM::JOB::vPtpJobNodeFailure(JobId tJobId)
 
   //AM::pParticipatingJobs()->vDropLock();
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* test if the job passes all pre-execution requirements                      */

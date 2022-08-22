@@ -128,9 +128,13 @@ bool PROMPT::bPrompt_abortJobs(SePrompt* pPrompt)
 
     Job *pJob = _pJob(pCursor->m_pObject);
 
+    JobId tJobId = pJob->tOriginId();
+    vTrace("%s: %lld\n"_Stz, pJob->szJobNm(), tJobId.iAsI8());
+    pOriginJobList->vDropLock();
 
-    pJob->vOriginJobNodeFailure();
+    AM::JOB::vOriginJobNodeFailure(tJobId);
 
+    /*
     // ack the waiting job
     Task* pTask = pJob->pTask();
 
@@ -157,9 +161,7 @@ bool PROMPT::bPrompt_abortJobs(SePrompt* pPrompt)
              pJob->tJobId().uNodeId(),
              pJob->tJobId().uJobNo());
     }
-    //else
-    //  pTask->vDropTaskLock((Stz*)__func__);
-    pOriginJobList->vDropLock();
+    */
   }
 
   return true;
