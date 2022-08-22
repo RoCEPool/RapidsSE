@@ -219,6 +219,8 @@ enum eCN : u2 // Class Number
   /* */ CN_PARCEL,
   /* */ CN_PATHIDENTIFIER,
   /* */ CN_PATHVEC,
+  /* */ CN_PAYSTR,
+  /* */ CN_PAYSTRBUFFER,
   /* */ CN_PERMIT,
   /* */ CN_PERUSE,
   /* */ CN_PIPEIN,
@@ -634,6 +636,8 @@ static Stz* aCN[]
   /* */ "PARCEL"_Stz,               // CN_PARCEL
   /* */ "PATHIDENTIFIER"_Stz,       // CN_PATHIDENTIFIER
   /* */ "PATHVEC"_Stz,              // CN_PATHVEC
+  /* */ "PAYSTR"_Stz,               // CN_PATHSTR
+  /* */ "PAYSTRBUFFER"_Stz,         // CN_PATHSTRBUFFER
   /* */ "PERMIT"_Stz,               // CN_PERMIT
   /* */ "PERUSE"_Stz,               // CN_PERUSE
   /* */ "PIPEIN"_Stz,               // CN_PIPEIN
