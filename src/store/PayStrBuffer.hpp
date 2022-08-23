@@ -5,10 +5,17 @@
 
 namespace STORE
 {
+  static const i8 C_WSP_PAYSTRBUFFER = C_SIZE_LARGE_OBJECT - C_4KB;
+
   class PayStr;
 
   class PayStrBuffer : public Object
   {
+    PayStrBuffer* m_pFrom;
+    PayStrBuffer* m_pNext;
+
+    Wsp_t<C_WSP_PAYSTRBUFFER> m_xWsp;
+
     // must be last
     Footer m_xFooter;
 
@@ -20,6 +27,15 @@ namespace STORE
    ~PayStrBuffer(void);
 
   public:
+    byte* aAllot(Stz* szStz);
+    byte* aAllot(i8 jSizeStz);
+
+    PayStrBuffer* pFrom(void);
+    void vFrom(PayStrBuffer* pFrom);
+
+    PayStrBuffer* pNext(void);
+    void vNext(PayStrBuffer* pNext);
+
     Footer* aFooter(void);
   };
 

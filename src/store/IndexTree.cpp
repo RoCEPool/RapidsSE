@@ -85,6 +85,7 @@ IndexTree::IndexTree(Index* pIndex, IndexDef* pIndexDef, i8 i_TablePtn)
   m_pIndexDef = pIndexDef ? new IndexDef(pIndexDef) : nullptr;
   m_i_TablePtn = i_TablePtn;
   m_pRootEntBuffer  = nullptr;
+  m_pPayStrBuffer = nullptr;
   
   m_nEntryBuffers  = 0;
   
