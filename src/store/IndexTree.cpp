@@ -366,6 +366,22 @@ Ent* IndexTree::aPositionLT(IndexTree* pIndexTree, Key* aKey)
 /*----------------------------------------------------------------------------*/
 /* analyze table                                                              */
 /*----------------------------------------------------------------------------*/
+PayStr* IndexTree::pAllotPayStr(Stz* szStz)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+
+  if (! m_pPayStrBuffer) {
+    m_pPayStrBuffer = new PayStrBuffer;
+  }
+
+  PayStr* pPayStr = new (m_pPayStrBuffer,szStz) PayStr;
+
+  return pPayStr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* analyze table                                                              */
+/*----------------------------------------------------------------------------*/
 Stz* IndexTree::pAnalyze(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);

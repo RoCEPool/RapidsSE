@@ -7,6 +7,7 @@
 #include "Key.hpp"
 #include "Ent.hpp"
 #include "EntWrk.hpp"
+#include "PayStr.hpp"
 #include "PayStrBuffer.hpp"
 
 namespace STORE
@@ -55,6 +56,7 @@ namespace STORE
     static Ent* aPositionLE(IndexTree* aIndexTree, Key* aKey);
     static Ent* aPositionLT(IndexTree* aIndexTree, Key* aKey);
 
+    PayStr*    pAllotPayStr(Stz* szStz);
     Stz*       pAnalyze(void);
     i8         nBufferCount(void);
     void       vCompact(void);

@@ -77,26 +77,6 @@ byte* PayStrBuffer::aAllot(Stz* szStz)
 }
 
 /*----------------------------------------------------------------------------*/
-/* allot a new paystr                                                         */
-/*----------------------------------------------------------------------------*/
-byte* PayStrBuffer::aAllot(i8 jSizeStz)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PAYSTRBUFFER, _FOOTER_);
-
-  i8 jSize = PayStr::jFullSize(jSizeStz);
-
-  if (m_xWsp.nFree() < jSize)
-    return nullptr;
-
-  byte* ayBytes = m_xWsp.ayAllot(jSize);
-
-  PayStr* aPayStr_allotted = (PayStr*)ayBytes;
-  aPayStr_allotted->m_jArea = jSizeStz;
-
-  return ayBytes;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get from                                                                   */
 /*----------------------------------------------------------------------------*/
 PayStrBuffer* PayStrBuffer::pFrom(void)
@@ -134,6 +114,30 @@ void PayStrBuffer::vNext(PayStrBuffer* pNext)
   _precondition_(_ADDRESS_, _MAGIC_, CN_PAYSTRBUFFER, _FOOTER_);
 
   m_pNext = pNext;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* allot a new paystr                                                         */
+/*----------------------------------------------------------------------------*/
+byte* PayStrBuffer::aAllot(i8 jSizeStz)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PAYSTRBUFFER, _FOOTER_);
+
+  i8 jSize = PayStr::jFullSize(jSizeStz);
+
+  if (m_xWsp.nFree() < jSize)
+    return nullptr;
+
+  byte* ayBytes = m_xWsp.ayAllot(jSize);
+
+  PayStr* aPayStr_allotted = (PayStr*)ayBytes;
+  aPayStr_allotted->m_jArea = jSizeStz;
+
+  return ayBytes;
 }
 
 /*============================================================================*/
