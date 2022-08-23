@@ -31,6 +31,7 @@ PayStrBuffer::PayStrBuffer(void)
     m_xWsp.vZero(CN_CSVBUFFER);
   #endif
 
+  vTrace("PayStrBuffer %p\n"_Stz,this);
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PAYSTRBUFFER,_FOOTER_);
 }
 
@@ -39,7 +40,12 @@ PayStrBuffer::PayStrBuffer(void)
 /*----------------------------------------------------------------------------*/
 PayStrBuffer::~PayStrBuffer(void) noexcept(false)
 {
-_precondition_(_ADDRESS_,_MAGIC_,CN_PAYSTRBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PAYSTRBUFFER,_FOOTER_);
+
+  if (m_pNext)
+    delete m_pNext;
+
+  vTrace("~ PayStrBuffer %p : %lldB free\n"_Stz,this,m_xWsp.nFree());
 }
 
 
@@ -57,7 +63,15 @@ byte* PayStrBuffer::aAllot(Stz* szStz)
 
   i8 jSizeStz = szStz->nSize();
 
-  byte* ayBytes = aAllot(jSizeStz);
+  byte* ayBytes = m_pFrom->aAllot(jSizeStz);
+
+  if (! ayBytes) {
+    PayStrBuffer* pNewPayStrBuffer = new PayStrBuffer;
+    m_pFrom->vNext(pNewPayStrBuffer);
+    m_pFrom = pNewPayStrBuffer;
+
+    ayBytes = m_pFrom->aAllot(jSizeStz);
+  }
 
   return ayBytes;
 }
@@ -70,6 +84,9 @@ byte* PayStrBuffer::aAllot(i8 jSizeStz)
   _precondition_(_ADDRESS_, _MAGIC_, CN_PAYSTRBUFFER, _FOOTER_);
 
   i8 jSize = PayStr::jFullSize(jSizeStz);
+
+  if (m_xWsp.nFree() < jSize)
+    return nullptr;
 
   byte* ayBytes = m_xWsp.ayAllot(jSize);
 

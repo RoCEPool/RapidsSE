@@ -28,7 +28,6 @@ namespace STORE
 
   public:
     byte* aAllot(Stz* szStz);
-    byte* aAllot(i8 jSizeStz);
 
     PayStrBuffer* pFrom(void);
     void vFrom(PayStrBuffer* pFrom);
@@ -37,6 +36,11 @@ namespace STORE
     void vNext(PayStrBuffer* pNext);
 
     Footer* aFooter(void);
+
+  private:
+
+    byte* aAllot(i8 jSizeStz);
+
   };
 
   PayStrBuffer* _pPayStrBuffer(void* aAddr);
