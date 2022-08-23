@@ -50,6 +50,9 @@
 #include "AttachMap.hpp"
 #include "Output.hpp"
 #include "Jobs.hpp"
+#include "Test.hpp"
+#include "PayStr.hpp"
+#include "PayStrBuffer.hpp"
 
 extern CmdLineArgs gxCmdLineArgs;
 extern AttachMap* gpAttachMap;
@@ -5305,6 +5308,38 @@ bool PROMPT::bPrompt_tempName(SePrompt* pPrompt)
     vTrace("%s\n"_Stz,sName.szStz());
   }
   
+  return true;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/* Prompt_test.cpp -- call test                                               */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+PromptFun __Prompt_test (
+        PF_TEMPNAME,           // prompt function
+        "Prompt_test"_Stz,     // name of the prompt function
+        "comment"_Stz,         // comment about the function
+        "test"_Stz,            // the prompt command
+        nullptr,               // the second word
+        bPrompt_test,          // prompt function
+        true,                  // enabled
+
+        true,                  // visible
+        "test"_Stz,            // help
+        ""_Stz                 // description
+);
+
+/*----------------------------------------------------------------------------*/
+/* prompt function                                                            */
+/*----------------------------------------------------------------------------*/
+bool PROMPT::bPrompt_test(SePrompt* pPrompt)
+{
+  TokenVec* pTknVec = pPrompt->pInpTknVec();
+  Stz* szTest = pTknVec->pGet(1)->szChars();
+
+  if (szTest->bSame("test14"_Stz))
+    vTest14();
+
   return true;
 }
 

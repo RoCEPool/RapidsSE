@@ -12,8 +12,8 @@ namespace STORE
   friend class PayStrBuffer;
 
   protected:
-    i8   m_jArea;   // byte length of char area/array
-    char m_caCharArea[1];  // area to hold chars
+    i8   m_jArea;      // byte length of char area/array
+    char m_caArea[8];  // area to hold chars
 
   public:
     static i8 jFullSize(i8 jSizeStz);

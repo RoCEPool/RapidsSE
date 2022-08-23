@@ -19,6 +19,8 @@ void* PayStr::operator new(size_t, PayStrBuffer* pPayStrBuffer, Stz* szStz)
   aPayStr_allotted->vSetClassNo(CN_PAYSTR);
   aPayStr_allotted->aFooter()->vSetFooter();
 
+  StrLib::vCopy(aPayStr_allotted->m_caArea,szStz->azChar());
+
   return aPayStr_allotted;
 }
 
@@ -45,9 +47,9 @@ PayStr::PayStr(void)
 /*----------------------------------------------------------------------------*/
 i8 PayStr::jFullSize(i8 jSizeStz)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PAYSTR);
+  _static_
 
-  i8 jSize = sizeof(PayStr) - 1 + MemLib::nRoundUp(jSizeStz,8) + sizeof(Footer);
+  i8 jSize = sizeof(PayStr) - 8 + MemLib::nRoundUp(jSizeStz,8) + sizeof(Footer);
 
   return jSize;
 }
@@ -64,7 +66,7 @@ i8 PayStr::jSizeOf(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PAYSTR);
 
-  i8 jSizeOf = sizeof(PayStr) - 1 + m_jArea + sizeof(Footer);
+  i8 jSizeOf = sizeof(PayStr) - 8 + m_jArea + sizeof(Footer);
 
   return jSizeOf;
 }
@@ -76,7 +78,7 @@ Stz* PayStr::szStz(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PAYSTR);
 
-  return (Stz*) m_caCharArea;
+  return (Stz*) m_caArea;
 }
 
 /*----------------------------------------------------------------------------*/

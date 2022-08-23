@@ -24,7 +24,7 @@ namespace STORE
     void  operator delete(void*);
 
     PayStrBuffer(void);
-   ~PayStrBuffer(void);
+   ~PayStrBuffer(void) noexcept(false);
 
   public:
     byte* aAllot(Stz* szStz);

@@ -31,8 +31,18 @@ PayStrBuffer::PayStrBuffer(void)
     m_xWsp.vZero(CN_CSVBUFFER);
   #endif
 
-_postcondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_PAYSTRBUFFER,_FOOTER_);
 }
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+PayStrBuffer::~PayStrBuffer(void) noexcept(false)
+{
+_precondition_(_ADDRESS_,_MAGIC_,CN_PAYSTRBUFFER,_FOOTER_);
+}
+
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/

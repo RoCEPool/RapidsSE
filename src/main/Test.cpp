@@ -52,6 +52,9 @@
 
 #include "Flatten.hpp"
 
+#include "PayStr.hpp"
+#include "PayStrBuffer.hpp"
+
 /*----------------------------------------------------------------------------*/
 /* test1                                                                      */
 /*----------------------------------------------------------------------------*/
@@ -1138,7 +1141,19 @@ void vTest13(void)
 /*----------------------------------------------------------------------------*/
 void vTest14(void)
 {
+  vTrace("Test14\n"_Stz);
 
+  PayStrBuffer* pPayStrBuffer = new PayStrBuffer;
+
+  PayStr* pPayStr;
+
+  pPayStr = new (pPayStrBuffer,"a"_Stz) PayStr;
+  vTrace("pPayStrBuffer %p pPayStr %p : %s\n"_Stz,pPayStrBuffer,pPayStr,pPayStr->szStz());
+
+  pPayStr = new (pPayStrBuffer,"b"_Stz) PayStr;
+  vTrace("pPayStrBuffer %p pPayStr %p : %s\n"_Stz,pPayStrBuffer,pPayStr,pPayStr->szStz());
+
+  delete pPayStrBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
