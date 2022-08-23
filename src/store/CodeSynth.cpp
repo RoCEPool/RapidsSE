@@ -3940,7 +3940,7 @@ void CodeSynth::vPushLiteral(TypedStack* pExprStack, IntStack* pTypeStack, Token
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
-  s256 sOperation;
+  s48K sOperation;
   i8 iValue;
   d8 dValue;
 
