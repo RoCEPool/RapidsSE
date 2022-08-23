@@ -16,6 +16,8 @@ static const i8 C_INT_MAX =  9223372036854775806LL;
 
 static const i8 C_BCD_MIN = -140737488355328;
 static const i8 C_BCD_MAX = 140737488355327;
+static const i8 C_BCD_SCALE_MIN = -128;
+static const i8 C_BCD_SCALE_MAX = 127;
 
 // MaxFloat64
 static const d8 C_FLT_MAX = 1.797693134862315708145274237317043567981e+308;

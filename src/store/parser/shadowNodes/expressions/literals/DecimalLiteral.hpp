@@ -33,8 +33,8 @@ namespace Parser
     // Returns the resulting type of the expression operation
     static TypeId xTypeId(QueryNode* pNode, PlanNode* pRootNode);
 
-    // Parse a string into a Bcd, setting bResult to true if successful
-    static Bcd xParseStr(Stz* szStr, b1& bResult);
+    // Parse a string into a Bcd, throwing an exception if there is a problem
+    static Bcd xParseStr(Stz* szStr);
   };
 
 }

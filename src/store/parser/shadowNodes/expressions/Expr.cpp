@@ -1155,8 +1155,17 @@ b1 Expr::bCoerceChildrenToCommonType(QueryNode* pExprCopy, PlanNode* pRootNode)
       pCoercedChild = pChild->pDeepCopy(false);
 
     } else {
-    // Coerce it to the new type. This will create a new expression object.
-      pCoercedChild = Expr::pCoerceTo(xCoercibleTarget, pChild, pRootNode);
+      // Coerce it to the new type. This will create a new expression object.
+      try {
+        pCoercedChild = Expr::pCoerceTo(xCoercibleTarget, pChild, pRootNode);
+
+      } catch (SemanticException& e) {
+        delete pChild;
+        pChildList->vRemoveAll();
+        delete pChildList;
+        delete pExprCopy;
+        throw;
+      }
     }
 
     ASSERT(pCoercedChild);
@@ -1295,7 +1304,9 @@ b1 Expr::bIsImplicitlyCoercibleTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNo
 }
 
 /*----------------------------------------------------------------------------*/
-/* Returns a new expression object which represents pExpr coerced to eTarget  */
+/* Returns a new expression object which represents pExpr coerced to eTarget. */
+/* Note: an exception may be thrown if the expr cannot be coerced because it  */
+/*       falls out of range of the target type.                               */
 /*----------------------------------------------------------------------------*/
 QueryNode* Expr::pCoerceTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNode* pRootNode)
 {
