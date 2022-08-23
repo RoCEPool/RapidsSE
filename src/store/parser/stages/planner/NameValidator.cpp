@@ -2276,13 +2276,19 @@ void NameValidator::vCoerceProjectedExprs(PlanNode* pRootNode, QueryNode* pStart
 
       // We now need to walk this expression tree from the bottom up
       // and check for any necessary coercions.
-      b1 bResult =
-          GraphNav::bBoundedWalkBottomUp(pProjectedExpr,
-                                         false,
-                                         true,
-                                         fExprVisitor,
-                                         pRootNode);
+      b1 bResult;
 
+      try {
+        bResult =
+            GraphNav::bBoundedWalkBottomUp(pProjectedExpr,
+                                           false,
+                                           true,
+                                           fExprVisitor,
+                                           pRootNode);
+      } catch (SemanticException& e) {
+        delete pIter;
+        throw;
+      }
 
       if (!bResult) {
         // If we still haven't been able to correct the problem then abort any

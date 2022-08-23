@@ -4573,6 +4573,64 @@ i8 StrLib::iToI8(const char* s)
 }
 
 /*----------------------------------------------------------------------------*/
+/* convert arg to i8 with overflow checking                                   */
+/*----------------------------------------------------------------------------*/
+i8 StrLib::iToI8(const char* s, bool* bOverflowed)
+{
+  _static_
+
+  i8 i = 0;
+  bool bNegative = false;
+
+  if (*s && '-' == *s) {
+    bNegative = true;
+    s++;
+  }
+
+  // skip leading 0's
+  while (*s && '0' == *s)
+    s++;
+
+  if (*s && ('x' == *s || 'X' == *s)) {
+    const i8 iLimit = C_I8_MAX / 16;
+    const i8 iModulus = bNegative ? -(C_I8_MIN % 16) : C_I8_MAX % 16;
+
+    s++;
+    while (*s && bIsHex(*s)) {
+      i8 j = iHexToInw(*s++);
+
+      if (i > iLimit || (i == iLimit && j > iModulus) ) {
+        *bOverflowed = true;
+        return -1;
+      }
+
+      i = i * 16 + j;
+    }
+  }
+  else {
+    const i8 iLimit = C_I8_MAX / 10;
+    const i8 iModulus = bNegative ? -(C_I8_MIN % 10) : C_I8_MAX % 10;
+
+    while (*s && bIsDigit(*s)) {
+      i8 j = (*s++ - '0');
+
+      if (i > iLimit || (i == iLimit && j > iModulus) ) {
+        *bOverflowed = true;
+        return -1;
+      }
+
+      i = i * 10 + j;
+    }
+  }
+
+  if (bNegative)
+    i *= -1;
+
+  *bOverflowed = false;
+  return i;
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert arg to lower case                                                  */
 /*----------------------------------------------------------------------------*/
 void StrLib::vToLower(char* s)

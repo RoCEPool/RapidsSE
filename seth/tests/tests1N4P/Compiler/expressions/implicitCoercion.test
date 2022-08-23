@@ -1000,6 +1000,73 @@ rows: (*,'explainPlan','
          » table: (rapidsse.public.coercionTest)')
 
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Test out literal coercion also checks for out of range
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// INTEGER to DECIMAL
+explain select -9223372036854775806-1.0 from nation;
+failure contains: 'Integer literal -9223372036854775806 is outside the valid decimal range'
+
+explain select -9223372036854775806*1.0 from nation;
+failure contains: 'Integer literal -9223372036854775806 is outside the valid decimal range'
+
+explain select -9223372036854775806+1.0 from nation;
+failure contains: 'Integer literal -9223372036854775806 is outside the valid decimal range'
+
+explain select -9223372036854775806/1.0 from nation;
+failure contains: 'Integer literal -9223372036854775806 is outside the valid decimal range'
+
+explain select 9223372036854775806-1.0 from nation;
+failure contains: 'Integer literal 9223372036854775806 is outside the valid decimal range'
+
+explain select 9223372036854775806*1.0 from nation;
+failure contains: 'Integer literal 9223372036854775806 is outside the valid decimal range'
+
+explain select 9223372036854775806+1.0 from nation;
+failure contains: 'Integer literal 9223372036854775806 is outside the valid decimal range'
+
+explain select 9223372036854775806/1.0 from nation;
+failure contains: 'Integer literal 9223372036854775806 is outside the valid decimal range'
+
+// VARCHAR to INTEGER
+explain select '-9223372036854775807' + 1 from nation;
+failure contains: 'Integer literal -9223372036854775807 is outside the valid integer range'
+
+explain select  '9223372036854775807' - 1 from nation;
+failure contains: 'Integer literal 9223372036854775807 is outside the valid integer range'
+
+// VARCHAR to DECIMAL
+explain select '-140737488355329' + 1.0 from nation;
+failure contains: 'Value is out of range: -140737488355329: Max/min decimal precision supported is'
+
+explain select  '140737488355329' - 1.0 from nation;
+failure contains: 'Value is out of range: 140737488355329: Max/min decimal precision supported is'
+
+explain select '-140737488355328.123' + 1.0 from nation;
+failure contains: 'Value is out of range: -140737488355328.123: Max/min decimal precision supported is'
+
+explain select  '140737488355327.123' - 1.0 from nation;
+failure contains: 'Value is out of range: 140737488355327.123: Max/min decimal precision supported is'
+
+
+// VARCHAR to FLOAT
+explain select '-1e400' + 1.0e0 from nation;
+failure contains: 'Value is out of range: -1e400: Floating point overflow.'
+
+explain select  '1e400' - 1.0e0 from nation;
+failure contains: 'Value is out of range: 1e400: Floating point overflow.'
+
+explain select '-1e-400' + 1.0e0 from nation;
+failure contains: 'Value is out of range: -1e-400: Floating point underflow.'
+
+explain select '1e-400' + 1.0e0 from nation;
+failure contains: 'Value is out of range: 1e-400: Floating point underflow.'
+
+
+// VARCHAR TO DATE
+// VARCHAR TO TIME
+// VARCHAR TO TIMESTAMP
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Check for memory leaks
