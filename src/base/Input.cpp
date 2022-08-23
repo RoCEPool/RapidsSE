@@ -442,7 +442,7 @@ void Input::vRawInputClear(void)
 /*----------------------------------------------------------------------------*/
 /* read next command from input stream                                        */
 /*----------------------------------------------------------------------------*/
-void Input::vReadCommand(void)
+bool Input::bReadCommand(eEC& eError)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
     
@@ -464,7 +464,9 @@ void Input::vReadCommand(void)
   if (d_iDebugMode)
     m_pInpTknVec->vDumpVec(16);
   
-  vCollectVecFirstLine();
+  if (! bCollectVecFirstLine(eError))
+    goto L_Exit;
+
   //vTrace(" : >>>%s<<<\n"_Stz,m_pCharser->szRawInput());
 
   if (d_iDebugMode)
@@ -512,7 +514,9 @@ void Input::vReadCommand(void)
   if (d_iDebugMode)
     m_pInpTknVec->vDumpVec(16);
   
-  vCollectVecTillSemicolon();
+  if (! bCollectVecTillSemicolon(eError))
+    goto L_Exit;
+
   //vTrace(" : %s\n"_Stz,m_pCharser->szRawInput());
   
   if (d_iDebugMode)
@@ -553,19 +557,24 @@ L_Exit:
 
   //m_pInpTknVec->vDumpVec(0);
 
+  if (eError)
+    return false;
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
 /* read till semicolon                                                        */
 /*----------------------------------------------------------------------------*/
-void Input::vReadTillSemicolon(void)
+bool Input::bReadTillSemicolon(eEC& eError)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   vCursorReset();
 
   for (;;) {
-    vCursorAdvance();
+    if (! bCursorAdvance(eError))
+      return true;
     vCollectOneToken();
     
     // look for terminal
@@ -573,12 +582,13 @@ void Input::vReadTillSemicolon(void)
       break;
   }
 
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
 /* parse next token                                                           */
 /*----------------------------------------------------------------------------*/
-void Input::vReadToken(void)
+bool Input::bReadToken(eEC& eError)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
@@ -586,12 +596,40 @@ void Input::vReadToken(void)
   
   vCursorReset();
 
-  vCursorAdvance();
+  if (! bCursorAdvance(eError))
+    return false;
 
   vCollectOneToken();
   
 //  if (m_pCurrTkn)
 //    m_pCurrTkn->vShow();
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset                                                                      */
+/*----------------------------------------------------------------------------*/
+void Input::vReset(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_INPUT, _FOOTER_);
+
+  m_pInpTknVec->vSoftReset();
+  m_pCurrTkn = nullptr;
+  m_eTknForm = UF_NONE;
+  m_pInpTagSet->vReset();
+
+  while (m_pCharser) {
+    m_pCharser->vResetCharser();
+   RASSERT(bPopCharser());
+  }
+
+  vPushCharser();
+  m_pCharser->vResetCharser();
+
+  vUseStdin();
+  vFormCppTokens();
+  vUseBegin();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -769,7 +807,7 @@ void Input::vCollectOneToken(void)
 /*----------------------------------------------------------------------------*/
 /* collect one line line of tokens from input stream                          */
 /*----------------------------------------------------------------------------*/
-void Input::vCollectVecFirstLine(void)
+bool Input::bCollectVecFirstLine(eEC& eError)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
@@ -790,7 +828,8 @@ void Input::vCollectVecFirstLine(void)
   
   for (;;) {
 
-    vCursorAdvance();
+    if (! bCursorAdvance(eError))
+      return false;
     
     if (d_iDebugMode)
       m_pInpTknVec->vDumpVec(16);
@@ -822,12 +861,14 @@ void Input::vCollectVecFirstLine(void)
     m_pInpTknVec->vListTokens();
     vJot2('<',(Stz*)__func__,""_Stz);
   }
+
+  return true;
  }
 
 /*----------------------------------------------------------------------------*/
 /* collect vector of tokens from input stream till ';'                        */
 /*----------------------------------------------------------------------------*/
-void Input::vCollectVecTillSemicolon(void)
+bool Input::bCollectVecTillSemicolon(eEC& eError)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
@@ -855,7 +896,8 @@ void Input::vCollectVecTillSemicolon(void)
   // get tokens delimited by ';'
   for (;;) {
 
-    vCursorAdvance();
+    if (! bCursorAdvance(eError))
+      return false;
     
     vCollectOneToken();
 
@@ -876,6 +918,8 @@ void Input::vCollectVecTillSemicolon(void)
     m_pInpTknVec->vListTokens();
     vJot2('<',(Stz*)__func__,""_Stz);
   }
+
+  return true;
 }
 
 // collect cpp tokens //////////////////////////////////////////////////////////
@@ -1950,13 +1994,18 @@ bool Input::bHitEOF(void)
 /*----------------------------------------------------------------------------*/
 /* reset the token vector and current token cursor pair                       */
 /*----------------------------------------------------------------------------*/
-void Input::vCursorAdvance(void)
+bool Input::bCursorAdvance(eEC& eError)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_INPUT, _FOOTER_);
 
-  m_pInpTknVec->vAdvanceCurr(true);
-  
+  if (!m_pInpTknVec->bAdvanceCurr(true)) {
+    eError = EC_COMMAND_TOO_LONG;
+    return false;
+  }
+
   m_pCurrTkn = m_pInpTknVec->pCurrToken();
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

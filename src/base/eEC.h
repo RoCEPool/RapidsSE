@@ -42,6 +42,7 @@ enum eEC : u2 // error codes
   EC_CLUSTER_SIZE_MISMATCH,
   EC_COLUMN_COUNT_MISMATCH,         // SQL Compiler Subsystem
   EC_COLUMN_TYPE_MISMATCH,          // SQL Compiler Subsystem
+  EC_COMMAND_TOO_LONG,
   EC_CORRBY_COLUMN_NOT_FOUND,       // SQL Compiler Subsystem
   EC_CORRBY_COLUMN_TYPE_MISMATCH,   // SQL Compiler Subsystem
   EC_CORRBY_NO_COMMON_COLUMNS,      // SQL Compiler Subsystem
@@ -299,6 +300,7 @@ static Stz* aEC[] =
   /* EC_CLUSTER_SIZE_MISMATCH         */ (Stz*)"cluster node size mismatch",
   /* EC_COLUMN_COUNT_MISMATCH         */ (Stz*)"EC_COLUMN_COUNT_MISMATCH",        // SQL Compiler Subsystem
   /* EC_COLUMN_TYPE_MISMATCH          */ (Stz*)"EC_COLUMN_TYPE_MISMATCH",         // SQL Compiler Subsystem
+  /* EC_COMMAND_TOO_LONG              */ (Stz*)"EC_COMMAND_TOO_LONG",
   /* EC_CORRBY_COLUMN_NOT_FOUND       */ (Stz*)"EC_CORRBY_COLUMN_NOT_FOUND",      // SQL Compiler Subsystem
   /* EC_CORRBY_COLUMN_TYPE_MISMATCH   */ (Stz*)"EC_CORRBY_COLUMN_TYPE_MISMATCH",  // SQL Compiler Subsystem
   /* EC_CORRBY_NO_COMMON_COLUMNS      */ (Stz*)"EC_CORRBY_NO_COMMON_COLUMNS",     // SQL Compiler Subsystem

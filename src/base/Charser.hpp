@@ -122,10 +122,11 @@ namespace BASE
   
     void     vRawInputClear(void);
 
+    void vResetCharser(void);
+
   private:
     
-    void vResetCharser(void);
-    
+
     // Character Processing
     void vClearRegs(void);
     void vConsumeFirst(AnnChar& rxAnnChar);
