@@ -813,10 +813,10 @@ static Stz* aErrorMsg[] =
   /* EC_CLUSTER_SIZE_MISMATCH         */ (Stz*)"cluster node size mismatch",
   /* EC_COLUMN_COUNT_MISMATCH         */ (Stz*)"The number of columns of each subquery do not match",   // SQL Compiler Subsystem
   /* EC_COLUMN_TYPE_MISMATCH          */ (Stz*)"Column types do not match",                             // SQL Compiler Subsystem
+  /* EC_COMMAND_TOO_LONG              */ (Stz*)"Command too long",
   /* EC_CORRBY_COLUMN_NOT_FOUND       */ (Stz*)"Column in CORRESPONDING BY list is not found in select list",   // SQL Compiler Subsystem
   /* EC_CORRBY_COLUMN_TYPE_MISMATCH   */ (Stz*)"Column in CORRESPONDING BY list has mismatched types in child queries", // SQL Compiler Subsystem
   /* EC_CORRBY_NO_COMMON_COLUMNS      */ (Stz*)"No common column names of the subqueries could be found for the CORRESPONDING list",  // SQL Compiler Subsystem
-  /* EC_COMMAND_TT_LONG               */ (Stz*)"Command too long",
 
   /* EC_CSV_BOOLEAN_INVALID           */ (Stz*)"EC_CSV_BOOLEAN_INVALID",
   /* EC_CSV_BOOLEAN_TOO_LARGE         */ (Stz*)"EC_CSV_BOOLEAN_TOO_LARGE",
