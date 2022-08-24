@@ -1,0 +1,19 @@
+/*============================================================================*/
+/* _SE_163 - scientific notation                                              */
+/*============================================================================*/
+
+create table SE_163(a varchar);
+
+load SE_163 "../DATA/JIRA/SE_163.csv";
+
+select * from SE_163;
+
+select * from SE_163
+ where a = 'qwertyuiopasdfhjklzxcvbnm1234567890qwertyuiopasdfhjklzxcvbnm1234567890qwertyuiopasdfhjklzxcvbnm1234567890qwertyuiopasdfhjklzxcvbnm1234567890qwertyuiopasdfhjklzxcvbnm1234567890qwertyuiopasdfhjklzxcvbnm1234567890qwertyuiopasdfhjklzxcvbnm1234567890qwertyuiopasdfhjklzxcvbnm1234567890'
+;
+
+drop table SE_163;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
