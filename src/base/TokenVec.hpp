@@ -29,7 +29,7 @@ namespace BASE
                               TokenVec* pFindVec, TokenVec* pWithVec);
     //static TokenVec* pTokeniseSen(Stz* szString);
 
-    void vAdvanceCurr(bool bIncItems);
+    bool bAdvanceCurr(bool bIncItems);
     void vAppendToken(Stz* szArgChars, eTN eToken);
     void vAppendToken(Token* pToken);
     void vAppendVector(TokenVec* pTokenVec);
