@@ -2712,13 +2712,16 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
   // set working ExprStack
   pExprStack = pWorkingStack(EK_NONE, ePreExp, pPostStack);
 
+  if (!pExprStack)
+    pExprStack = m_pExprStack;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // iterate tokens of the expression
   for (i8 i_Tkn = 0; i_Tkn < m_pTokenVec->nItems(); i_Tkn++) {
 
     pTkn = m_pTokenVec->pGet(i_Tkn);
 
-/*
+
 #ifdef WITH_DEBUG_VERSION
 //    vTrace("TKN: %s\n"_Stz, pTkn->azChars());
 //
@@ -2733,7 +2736,6 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 //    }
 //    vTrace("--------------------------------------\n"_Stz);
 #endif
-*/
 
     if (pTkn->bSame(","_Stz)) {
       // skip the comma
