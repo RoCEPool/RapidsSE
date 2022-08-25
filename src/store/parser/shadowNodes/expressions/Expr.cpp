@@ -1096,6 +1096,49 @@ void Expr::vCoerceSubExprs(QueryNode* pExpr, PlanNode* pRootNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Convert a cast of a literal to the new literal value, or throw an exception*/
+/* if this is not possible.                                                   */
+/*----------------------------------------------------------------------------*/
+void Expr::vCoerceCastLiteral(Parser::QueryNode* pExpr, Parser::PlanNode* pRootNode)
+{
+  if (!CastExpr::bIsOfType(pExpr)) {
+    return;
+  }
+
+  QueryNode* pTargetExpr = CastExpr::pTargetExpr(pExpr);
+  TypeId xTargetType = CastExpr::xTypeId(pExpr, pRootNode);
+
+  if (!LiteralExpr::bIsOfType(pTargetExpr)) {
+    return;
+  }
+
+  QueryNode* pLiteralExpr = pTargetExpr;
+
+  if (!bIsImplicitlyCoercibleTo(xTargetType, pLiteralExpr, pRootNode)) {
+    // The problem is in this expression node. Throw an exception
+    s2K sExprDesc;
+    s2K sTypeDesc;
+    Expr::vDescribe(pExpr, sExprDesc, pRootNode);
+    Expr::vDescribeAsTypes(pExpr, sTypeDesc, pRootNode);
+
+    SemanticException::vThrow(EC_EXPR_INVALID_COMBINATION,
+                              ": (%s) in expression (%s)"_Stz,
+                              sTypeDesc.szStz(),
+                              sExprDesc.szStz());
+  }
+
+  // It still might not be coercible because it overflows the target types bounds.
+  // This next call could also generate an exception.
+  QueryNode* pCoercedLiteral = Expr::pCoerceTo(xTargetType, pLiteralExpr, pRootNode);
+  ASSERT(pCoercedLiteral);
+
+  // Convert the pExpr from a CastExpr to the coerced literal
+  pExpr->vTransmogrifyTo(pCoercedLiteral, true);
+
+  delete pCoercedLiteral;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Try to find a common type that all children of pExpr can be coerced to.    */
 /* Return true if the coerced and modified pExpr now returns a value for      */
 /* eType() that is not CT_NONE.                                               */
