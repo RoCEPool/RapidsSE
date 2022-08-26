@@ -159,11 +159,13 @@ void ExprValidator::vExprTypeCoercion(PlanNode *pRootNode, QueryNode* pStartNode
     QueryNode* pExprNode = _pQueryNode(pNode);
 
     // If we come across a CastExpr and it's child is a literal then see if we can
-    // coerce it and replace the cast.
+    // coerce it and replace the cast. This may not replace the cast if the coercion
+    // is not supported implicitly.
     if ( CastExpr::bIsOfType(pExprNode) &&
          LiteralExpr::bIsOfType(CastExpr::pTargetExpr(pExprNode)) ) {
       Expr::vCoerceCastLiteral(pExprNode, pRootNode);
-      return GraphNav::WALK_CONTINUE;
+      // Fall out and keep checking type ID, as the above call may not have
+      // made any changes.
     }
 
     // How do we know if an expr needs to be coerced? One way is to check

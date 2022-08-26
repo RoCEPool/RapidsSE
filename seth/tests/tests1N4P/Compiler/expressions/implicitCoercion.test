@@ -1278,14 +1278,27 @@ rows: (*,'explainPlan','
    » queryText: "select cast(null as varchar) from nation"
 
 -> -> projectOp
-      » column: (Expr = NULL ; Ordinal Expr = NULL)
+      » column: (Expr = CAST(NULL AS VARCHAR) ; Ordinal Expr = CAST(NULL AS VARCHAR))
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.nation)')
 
-// Invalid: string containing a decimal being cast to integer
+// Not a valid implicit coercion: string containing a decimal being cast to integer
+// (Still a valid cast though)
 explain select cast('123.0' as integer) from nation;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (CAST(VARCHAR AS INTEGER)) in expression (CAST(''123.0'' AS INTEGER))'
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "select cast(''123.0'' as integer) from nation"
+
+-> -> projectOp
+      » column: (Expr = CAST(''123.0'' AS INTEGER) ; Ordinal Expr = CAST(''123.0'' AS INTEGER))
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
 
 // Invalid: string to boolean
 explain select cast('true' as boolean) from nation;

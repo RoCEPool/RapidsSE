@@ -41,6 +41,7 @@
 #include "WhenExpr.hpp"
 #include "SubstringExpr.hpp"
 #include "ShadowRoot.hpp"
+#include "NullLiteral.hpp"
 
 #include "NodeNamer.hpp"
 #include "GraphNav.hpp"
@@ -1112,19 +1113,22 @@ void Expr::vCoerceCastLiteral(Parser::QueryNode* pExpr, Parser::PlanNode* pRootN
     return;
   }
 
+  if (NullLiteral::bIsOfType(pTargetExpr)) {
+    // We don't want to convert cast of a NULL to a NULL because we actually lose
+    // type information. e.g. CAST(NULL AS BOOLEAN) is still a boolean column but
+    // with a NULL value. If we replace the CAST with NULL then we actually have a
+    // NULL type being returned.
+    return;
+  }
+
   QueryNode* pLiteralExpr = pTargetExpr;
 
   if (!bIsImplicitlyCoercibleTo(xTargetType, pLiteralExpr, pRootNode)) {
-    // The problem is in this expression node. Throw an exception
-    s2K sExprDesc;
-    s2K sTypeDesc;
-    Expr::vDescribe(pExpr, sExprDesc, pRootNode);
-    Expr::vDescribeAsTypes(pExpr, sTypeDesc, pRootNode);
-
-    SemanticException::vThrow(EC_EXPR_INVALID_COMBINATION,
-                              ": (%s) in expression (%s)"_Stz,
-                              sTypeDesc.szStz(),
-                              sExprDesc.szStz());
+    // There are some casts that are not implicitly coercible but yet are still supported.
+    // e.g Implicit coercion will not cast a float to a decimal, but yet this is still a
+    // valid thing to do with an explicit cast. So don't give an error if we can't do this
+    // coercion implicitly.
+    return;
   }
 
   // It still might not be coercible because it overflows the target types bounds.
