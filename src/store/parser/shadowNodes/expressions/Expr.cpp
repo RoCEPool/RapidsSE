@@ -41,6 +41,7 @@
 #include "WhenExpr.hpp"
 #include "SubstringExpr.hpp"
 #include "ShadowRoot.hpp"
+#include "NullLiteral.hpp"
 
 #include "NodeNamer.hpp"
 #include "GraphNav.hpp"
@@ -1093,6 +1094,52 @@ void Expr::vCoerceSubExprs(QueryNode* pExpr, PlanNode* pRootNode)
   }
 
   delete pExprCopy;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Convert a cast of a literal to the new literal value, or throw an exception*/
+/* if this is not possible.                                                   */
+/*----------------------------------------------------------------------------*/
+void Expr::vCoerceCastLiteral(Parser::QueryNode* pExpr, Parser::PlanNode* pRootNode)
+{
+  if (!CastExpr::bIsOfType(pExpr)) {
+    return;
+  }
+
+  QueryNode* pTargetExpr = CastExpr::pTargetExpr(pExpr);
+  TypeId xTargetType = CastExpr::xTypeId(pExpr, pRootNode);
+
+  if (!LiteralExpr::bIsOfType(pTargetExpr)) {
+    return;
+  }
+
+  if (NullLiteral::bIsOfType(pTargetExpr)) {
+    // We don't want to convert cast of a NULL to a NULL because we actually lose
+    // type information. e.g. CAST(NULL AS BOOLEAN) is still a boolean column but
+    // with a NULL value. If we replace the CAST with NULL then we actually have a
+    // NULL type being returned.
+    return;
+  }
+
+  QueryNode* pLiteralExpr = pTargetExpr;
+
+  if (!bIsImplicitlyCoercibleTo(xTargetType, pLiteralExpr, pRootNode)) {
+    // There are some casts that are not implicitly coercible but yet are still supported.
+    // e.g Implicit coercion will not cast a float to a decimal, but yet this is still a
+    // valid thing to do with an explicit cast. So don't give an error if we can't do this
+    // coercion implicitly.
+    return;
+  }
+
+  // It still might not be coercible because it overflows the target types bounds.
+  // This next call could also generate an exception.
+  QueryNode* pCoercedLiteral = Expr::pCoerceTo(xTargetType, pLiteralExpr, pRootNode);
+  ASSERT(pCoercedLiteral);
+
+  // Convert the pExpr from a CastExpr to the coerced literal
+  pExpr->vTransmogrifyTo(pCoercedLiteral, true);
+
+  delete pCoercedLiteral;
 }
 
 /*----------------------------------------------------------------------------*/

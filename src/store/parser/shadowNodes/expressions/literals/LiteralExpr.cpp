@@ -333,6 +333,15 @@ QueryNode* LiteralExpr::pCoerceTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNo
                                     C_FLT_MAX);
         }
 
+        if (dVal > C_FLT_MAX || dVal < C_FLT_MIN) {
+          // Not an overflow, but still outside the floating point bounds accepted by RapidsSE
+          SemanticException::vThrow(EC_VALUE_OUT_OF_RANGE,
+                                    ": %s: Floating point overflow. Max/min floating point value supported is %10e to %10e"_Stz,
+                                    szStr,
+                                    C_FLT_MIN,
+                                    C_FLT_MAX);
+        }
+
         ASSERT(pEndPtr == nullptr || *pEndPtr == 0);
         return FloatLiteral::pCreate(dVal);
 
