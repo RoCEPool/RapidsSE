@@ -42,24 +42,28 @@ Stz* SP_Flt::sz(d8 dFlt)
 
   if (StrLib::bEqualTo(m_caFormat,"%f")) {
 
-    s32 sFormat;
-
-         if (dFlt >  99999999999999 || dFlt < -99999999999999)
-      sFormat = "%e"_Stz;
-    else if (dFlt >   9999999999999 || dFlt <  -9999999999999)
-      sFormat = "%.1f"_Stz;
-    else if (dFlt >    999999999999 || dFlt <   -999999999999)
-      sFormat = "%.2f"_Stz;
-    else if (dFlt >     99999999999 || dFlt <    -99999999999)
-      sFormat = "%.3f"_Stz;
-    else if (dFlt >      9999999999 || dFlt <     -9999999999)
-      sFormat = "%.4f"_Stz;
-    else if (dFlt >       999999999 || dFlt <      -999999999)
-      sFormat = "%.5f"_Stz;
-    else sFormat = m_caFormat;
+//    s32 sFormat;
+//
+//         if (dFlt >  99999999999999 || dFlt < -99999999999999)
+//      sFormat = "%e"_Stz;
+//    else if (dFlt >   9999999999999 || dFlt <  -9999999999999)
+//      sFormat = "%.1f"_Stz;
+//    else if (dFlt >    999999999999 || dFlt <   -999999999999)
+//      sFormat = "%.2f"_Stz;
+//    else if (dFlt >     99999999999 || dFlt <    -99999999999)
+//      sFormat = "%.3f"_Stz;
+//    else if (dFlt >      9999999999 || dFlt <     -9999999999)
+//      sFormat = "%.4f"_Stz;
+//    else if (dFlt >       999999999 || dFlt <      -999999999)
+//      sFormat = "%.5f"_Stz;
+//    else sFormat = m_caFormat;
+//
+//    StrLib::vSprint(m_caResult,
+//                    sFormat.szStz(),
+//                    dFlt);
 
     StrLib::vSprint(m_caResult,
-                    sFormat.szStz(),
+                    "%.9e"_Stz,
                     dFlt);
 
   }
