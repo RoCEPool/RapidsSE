@@ -209,7 +209,7 @@ void Step::vJobAddOriginator(void)
   Job* pJob = pOuterJobOfTask();
   RASSERT(*m_pJob == pJob);
 
-  if (AM::pParticipatingJobs()->bLatch()) {
+  if (AM::pOriginatingJobs()->bLatch()) {
     vTrace("Unable to append job to OL as list is latched due to NODELOSS\n"_Stz);
     m_pDataStack->vPushInt(false);
   }
@@ -243,8 +243,8 @@ void Step::vJobAddParticipant(void)
   Job* pJob = pOuterJobOfTask();
   RASSERT(*m_pJob == pJob);
 
-  if (AM::pParticipatingJobs()->bLatch()) {
-    vTrace("Unable to append job to PL as list is latched due to NODELOSS\n"_Stz);
+  if (AM::pOriginatingJobs()->bLatch()) {
+    vTrace("Unable to append job to OL as list is latched due to NODELOSS\n"_Stz);
     m_pDataStack->vPushInt(false);
   }
   else {
@@ -1128,7 +1128,14 @@ void Step::vJobSignalParent(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pJob->pParentJob()->vMutexSignal();
+  eEC eErrorCode = AM::JLIST::eSignalParent(pJob);
+
+  if (eErrorCode == EC_NONE) {
+    m_pDataStack->vPushInt(true);
+  }
+  else {
+    m_pDataStack->vPushInt(false);
+  }
 
   EXIT();
 }

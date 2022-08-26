@@ -72,7 +72,7 @@
 /* org_ org */      then
 /* org_ org */
 /* org_ org */      [job].updateParent assert
-/* org_ org */      [job].signalParent
+/* org_ org */      [job].signalParent assert
 /* org_ org */
 /* org_ org */        [task].retire // does not queue onto exit demon
 /* org_ org */
@@ -99,7 +99,7 @@
 /* org_ org */      then
 /* org_ org */
 /* org_ org */    [job].updateParent assert
-/* org_ ovr */    [job].signalParent
+/* org_ ovr */    [job].signalParent assert
 /* org_ org */
 /* org_ org */      [task].retire // does not queue onto exit demon
 /* org_ org */
@@ -152,7 +152,7 @@
 /* org_ org */    [job].addExited
 /* org_ org */    [job].updateParent assert
 /* org_ org */
-/* org_ ovr */    [job].signalParent
+/* org_ ovr */    [job].signalParent assert
 /* org_ org */
 /* org_ org */      [task].retire // does not queue onto exit demon
 /* org_ org */
@@ -276,18 +276,19 @@
 /* org_ beg */        "org_ beg" "begin rejected/nodeLoss"                  [job].trace
 /* org_ beg */    then
 /* org_ beg */    [job]:handleFailure
+/* org_ beg */    HAZARD
+/* org_ beg */  then
 /* org_ beg */
-/* org_ beg */  else
-/* org_ ovr */    "<signalParent>" [job].tagSet@ tagSet.hasName not if
+/* org_ beg */
+/* org_ ovr */  "<signalParent>" [job].tagSet@ tagSet.hasName not if
 /* org_ org */
-/* org_ org */      [args].distJob if
-/* org_ org */        "pipeline" "origin"
-/* org_ org */        "org_ org" "NO_WAIT signalling parent"       [job].trace
-/* org_ org */      then
+/* org_ org */    [args].distJob if
+/* org_ org */      "pipeline" "origin"
+/* org_ org */      "org_ org" "NO_WAIT signalling parent"       [job].trace
+/* org_ org */    then
 /* org_ org */
-/* org_ org */      [job].updateParent assert
-/* org_ ovr */      [job].signalParent
-/* org_ org */     then
+/* org_ org */    [job].updateParent assert
+/* org_ ovr */    [job].signalParent assert
 /* org_ org */  then
 /* org_ org */
 /* org_ beg */  [job].tscBegun
@@ -331,6 +332,7 @@
 /* org_ exe */        "org_ exe" "end nodeLoss"                  [job].trace
 /* org_ exe */    then
 /* org_ exe */    [job]:handleFailure
+/* org_ exe */    HAZARD
 /* org_ exe */  then
 
 /* org_ exe */  [job].tscExecuted
@@ -427,7 +429,7 @@
 /* org_ org */      then
 /* org_ org */
 /* org_ ovr */      [job].updateParent assert
-/* org_ ovr */      [job].signalParent
+/* org_ ovr */      [job].signalParent assert
 /* org_ ovr */    then
 /* org_ ovr *
 /* org_ ovr */    [args].distJob if
@@ -533,9 +535,8 @@
 /* _ptp bgn */  "pipeline:ptpExecute" [job].entryPoint!
 /* _ptp bgn */  [job].tscParticipant
 /* _ptp bgn */  [job].addParticipant not if
-/* _ptp bgn */    [job]:retireAndExit
+/* _ptp bgn */     [job]:retireAndExit
 /* _ptp bgn */  then
-/* _ptp bgn */
 /* _ptp bgn */  [job].assertParticipant
 /* _ptp bgn */  [job].assertStructure
 /* _ptp bgn */  [args].distJob if

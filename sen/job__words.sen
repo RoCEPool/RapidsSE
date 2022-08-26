@@ -62,13 +62,15 @@
 
   SendNode[] node.sendSocket@ to Socket[]
 
-  Socket[].grabWrite
+  Socket[].isNotNull if
+    Socket[].grabWrite
 
-  [job] Socket[].sendObject discard
+    [job] Socket[].sendObject discard
 
-  Socket[].dropWrite
+    Socket[].dropWrite
   
-  nullptr to Socket[]
+    nullptr to Socket[]
+  then
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -80,15 +82,16 @@
 
   SendNode[] node.sendSocket@ to Socket[]
 
-  Socket[].grabWrite
+  Socket[].isNotNull if
 
-  [job].rejectJob@ Socket[].sendObject discard
+    [job].rejectJob@ Socket[].sendObject discard
 
-  Socket[].dropWrite
+    Socket[].dropWrite
 
-  nullptr to Socket[]
+    nullptr to Socket[]
 
-  nullptr to SendNode[]
+    nullptr to SendNode[]
+  then
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -274,7 +277,7 @@
    [task].grabLock
    [job].addExited
    [job].updateParent assert
-   [job].signalParent
+   [job].signalParent assert
    [task].retire
    HAZARD
 ;
@@ -305,7 +308,7 @@
        [job].addExited
        [job].updateParent assert
        //"Notifying parent" .
-       [job].signalParent
+       [job].signalParent assert
        [task].retire
        HAZARD
      then
@@ -319,7 +322,7 @@
         [job].addExited
         [job].updateParent assert
         //"Notifying parent" .
-        [job].signalParent
+        [job].signalParent assert
         [task].retire
         HAZARD
       then
@@ -583,8 +586,8 @@
         "org_ org" "WAIT/NO_WAIT signalling parent"       [job].trace
       then
 
-      [job].updateParent assert
-      [job].signalParent
+      [job].updateParent discard
+      [job].signalParent discard
 
       [args].distJob if
         "pipeline" "origin"

@@ -759,6 +759,32 @@ void AM::JLIST::vRemoveJob(Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
+/* signal the parent job                                                      */
+/*----------------------------------------------------------------------------*/
+eEC AM::JLIST::eSignalParent(Job* pJob)
+{
+  eEC eError = EC_NONE;
+
+  // get the parent job
+  JobId tParentJobId = pJob->tParentId();
+
+  // find the parent job
+  Job* pParentJob = AM::JLIST::pFindJob(tParentJobId,true);
+
+  // signal parent
+  if (pParentJob) {
+
+    pParentJob->vMutexSignal();
+    pParentJob->vDropLock();
+  }
+  else {
+    eError = EC_NO_SUCH_JOB;
+  }
+
+  return eError;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the last jobId of the job                                              */
 /*----------------------------------------------------------------------------*/
 eEC AM::JLIST::eSystemCloserSet(JobId tJobId, i8 iSystemCloser)
@@ -835,10 +861,12 @@ void AM::JOB::vAckOriginatingJob(JobId tOriginId)
   _static_;
 
   // find the originating job
-  Job* pJobParticipant = AM::pJob_FindOriginating(tOriginId);
+  Job *pJobFound = AM::pJob_FindOriginating(tOriginId, true);
 
-  Job *pJobFound = AM::pJob_FindOriginating(tOriginId);
-  RASSERT(pJobFound);
+  //may not be able to find the job if node loss
+  vTrace("vAckOriginatingJob: No originating job (node loss ???)\n"_Stz);
+  if ( ! pJobFound )
+    return;
 
   // find the job task
   Task *pJobTask = pJobFound->pTask();
@@ -847,6 +875,7 @@ void AM::JOB::vAckOriginatingJob(JobId tOriginId)
   i8 nAcksWereRemaining;
   bool bWasQueued = Scheduler::bTaskCross_AckWaiting(pJobTask, AM::pThisTLSTask(),
                                                      nAcksWereRemaining);
+  pJobFound->vDropLock();
   UNUSED(bWasQueued);
 }
 
@@ -895,30 +924,34 @@ void AM::JOB::vOriginJobNodeFailure(JobId tJobId)
 
   pJob->vOriginJobNodeFailure();
 
-  // ack the waiting job
-  Task* pTask = pJob->pTask();
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // fully ack the waiting job
 
-  pJob->vDropLock();
+  Task* pTask = pJob->pTask();
 
   bool bAmDecider = false;
   if (pTask->eState() == TS_WAITING) {
-    vTrace("Notifying Origin job %p %s J%04lld.%04lld\n"_Stz,
+    vTrace("Notifying Origin job %p %s J%04lld.%04lld %s\n"_Stz,
            pJob,
            pJob->szJobNm(),
            pJob->tJobId().uNodeId(),
            pJob->tJobId().uJobNo());
+
     i8 nAcksRemainaing;
     while ( ! bAmDecider ) {
-      vTrace("abortJob acking ...\n"_Stz);
+      vTrace("vOriginJobNodeFailure acking %s...\n"_Stz, aJP[pJob->eJobPhase()]);
       bAmDecider = Scheduler::bTaskCross_AckWaiting(pTask, pThisTask, nAcksRemainaing);
     }
     RASSERT(nAcksRemainaing == 0);
+
     vTrace("Notified Origin job %p %s J%04lld.%04lld\n"_Stz,
            pJob,
            pJob->szJobNm(),
            pJob->tJobId().uNodeId(),
            pJob->tJobId().uJobNo());
   }
+
+  pJob->vDropLock();
 
 }
 
@@ -936,28 +969,12 @@ void AM::JOB::vPtpJobNodeFailure(JobId tJobId)
     return;
   }
 
-  if (pJob->eJobPhase() == JP_BEGUN ||
-      pJob->eJobPhase() == JP_EXECUTED ||
-      pJob->eJobPhase() == JP_ENDED ) {
-    // trigger an execute of the participant pipeline job
-    AM::JOB::vTriggerExecute(Job::tDistId(pJob));
-  }
+  vTrace("**************Job %04lld.%04lld ; %s\n"_Stz,
+         pJob->tDistId().uNodeId(),
+         pJob->tDistId().uJobNo(),
+         aJP[pJob->eJobPhase()]);
 
-  pJob->vPtpJobNodeFailure();
-  pJob->vDropLock();
-
-//  vJob_RemoveParticipating(pJob, false);
-//
-//  // retire and exit
-//  Task* pTask = pJob->pTask();
-//
-//  pJob->vDropLock();
-//
-//  if (pTask) {
-//    pTask->vGrabTaskLock((Stz *) __func__);
-//    AM::vJob_AddExited(pJob);
-//    pTask->vScheduleRetire();
-//  }
+  // TO BE CODED
 
 }
 
@@ -990,8 +1007,12 @@ void AM::JOB::vRecvdReject(RejectJob *pRejectJob)
   // get the error
   eEC eError = pRejectJob->eError();
 
-  Job *pJobFound = AM::pJob_FindOriginating(tOriginId);
-  RASSERT(pJobFound);
+  Job *pJobFound = AM::pJob_FindOriginating(tOriginId, true);
+
+  //may not be able to find the job if node loss
+  vTrace("vAckOriginatingJob: No originating job (node loss ???)\n"_Stz);
+  if ( ! pJobFound )
+    return;
 
   // set the error
   pJobFound->vJobError(eError);
@@ -1004,6 +1025,7 @@ void AM::JOB::vRecvdReject(RejectJob *pRejectJob)
   bool bWasQueued = Scheduler::bTaskCross_AckWaiting(pJobTask, AM::pThisTLSTask(),
                                                      nAcksWereRemaining);
   UNUSED(bWasQueued);
+  pJobFound->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1040,7 +1062,7 @@ void AM::JOB::vTriggerExecute(JobId tDistId)
   _static_;
 
   // find the participant job
-  Job* pJobParticipant = AM::pJob_FindParticipating(tDistId);
+  Job* pJobParticipant = AM::pJob_FindParticipating(tDistId, true);
 
   // get the task of the participant job
   Task* pTaskParticipant = pJobParticipant->pTask();
@@ -1050,6 +1072,8 @@ void AM::JOB::vTriggerExecute(JobId tDistId)
 
   while (pTaskParticipant->eState() != TS_HIBERNATING)
   {;}
+
+  pJobParticipant->vDropLock();
 
   // cycle the task lock to ensure task has fully entered next state
   pTaskParticipant->vCycleTaskLock((Stz*)__func__);
@@ -5190,9 +5214,9 @@ void AM::vJob_DumpParticipating(void)
 /*----------------------------------------------------------------------------*/
 /* find job in originating list                                               */
 /*----------------------------------------------------------------------------*/
-Job* AM::pJob_FindOriginating(JobId tJobId)
+Job* AM::pJob_FindOriginating(JobId tJobId, bool bLock)
 {
-  Job* pJob = AM::pOriginatingJobs()->pFindJob(tJobId);
+  Job* pJob = AM::pOriginatingJobs()->pFindJob(tJobId, bLock);
     
   return pJob;
 }
@@ -5200,9 +5224,9 @@ Job* AM::pJob_FindOriginating(JobId tJobId)
 /*----------------------------------------------------------------------------*/
 /* find job in participating list                                             */
 /*----------------------------------------------------------------------------*/
-Job* AM::pJob_FindParticipating(JobId tJobId)
+Job* AM::pJob_FindParticipating(JobId tJobId, bool bLock)
 {
-  Job* pJob = AM::pParticipatingJobs()->pFindJob(tJobId);
+  Job* pJob = AM::pParticipatingJobs()->pFindJob(tJobId, bLock);
   
   return pJob;
 }

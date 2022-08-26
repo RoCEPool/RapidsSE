@@ -1076,6 +1076,7 @@ void vDdlLockAssertNone(void);
   void vListedJobFindOriginator(void);
   void vListedJobFindParticipant(void);
   void vListedJobHasTask(void);
+  void vListedJobNodeLossFetch(void);
   void vListedJobPointer(void);
   void vListedJobReturn(void);
   void vListedJobReferences(void);
