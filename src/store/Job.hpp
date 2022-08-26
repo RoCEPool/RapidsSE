@@ -41,6 +41,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     eEC    m_eError_job;  // error when starting job
     eEC    m_eChildError; // error in child job
 
+    bool   m_bNodeLoss;     // node loss detected
     bool   m_bUpdateParent; // update parent
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
@@ -194,6 +195,9 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
 
     Marker* pNewMarker(eOM eOpMarker);
     void vNewMarkerChain(void);
+
+    bool  bNodeLoss(void);
+    void  vNodeLoss(bool bNodeLoss);
 
     bool bObjectTracker(void);
     void vObjectTrackerDump(void);

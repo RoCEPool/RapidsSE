@@ -75,6 +75,7 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId, TagSet* 
   m_eJobPhase  = JP_NONE;
   m_eError_job = EC_NONE;
   m_eChildError = EC_NONE;
+  m_bNodeLoss     = false;
   m_bUpdateParent = false;
 
   m_pExecuteJob   = nullptr;
@@ -1159,6 +1160,26 @@ void Job::vNewMarkerChain(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get nodeLoss                                                               */
+/*----------------------------------------------------------------------------*/
+bool Job::bNodeLoss(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_bNodeLoss;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set nodeLoss                                                               */
+/*----------------------------------------------------------------------------*/
+void Job::vNodeLoss(bool bNodeLoss)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_bNodeLoss = bNodeLoss;
+}
+
+/*----------------------------------------------------------------------------*/
 /* check if ObjectTracker is allocated                                        */
 /*----------------------------------------------------------------------------*/
 bool Job::bObjectTracker(void)
@@ -1276,7 +1297,7 @@ void Job::vOriginJobNodeFailure(void)
   RASSERT(bIsOnOrigin());
 
   vJobError(EC_NODE_LOSS);
-
+  vNodeLoss(true);
 }
 
 /*----------------------------------------------------------------------------*/
