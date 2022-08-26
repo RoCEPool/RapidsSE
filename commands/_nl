@@ -1,6 +1,7 @@
 /*============================================================================*/
 /* _nl: node loss                                                             */
 /*============================================================================*/
+trackMemory;
 create table LineItem
 (
  L_ORDERKEY      INTEGER       NOT NULL,
@@ -23,3 +24,4 @@ create table LineItem
 
 //verbose enable;
 load lineitem "../TPCH/SF10/lineitem.tbl";
+
