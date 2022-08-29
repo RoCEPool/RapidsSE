@@ -58,7 +58,7 @@ void Step::vApiForkChild(void)
   m_pDataStack->vPopStr(sCmdTagStr,__func__);
 
   if (AM::TRACE::bVerbose(C_VB_API)) {
-    vTrace("ForkChild: %s\n"_Stz,sCmd.szStz());
+    vTrace("ForkChild (TRANSLITERATE): %s\n"_Stz,sCmd.szStz());
     vTrace("  CmdTags: %s\n"_Stz,sCmdTagStr.szStz());
   }
 

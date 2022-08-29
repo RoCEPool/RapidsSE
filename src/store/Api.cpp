@@ -242,6 +242,10 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
   pChildJob = new Job(szJobNm,tParentId,tOriginId,tDistId,pCmdTagSet);
   bIsPipeline = pChildJob->bIsPipeline();
 
+//  vTrace("eForkJobChild: %04lld.%04lld\n"_Stz,
+//         pChildJob->tJobId().uNodeId(),
+//         pChildJob->tJobId().uJobNo());
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // save child job pointer in thread object till its task is assigned
   // and accessible via TLS

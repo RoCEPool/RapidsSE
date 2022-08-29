@@ -81,8 +81,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("[job].progressReset"_Stz,    &Step::vJobProgressReset);
   vAddStep("[job].progressSeconds"_Stz,  &Step::vJobProgressSeconds);
 
-  vAddStep("[job].rejected@"_Stz,        &Step::vJobRejectedFetch);
-  vAddStep("[job].rejected!"_Stz,        &Step::vJobRejectedStore);
   vAddStep("[job].rejectJobError!"_Stz,  &Step::vJobRejectJobErrorStore);
   vAddStep("[job].rejectJob@"_Stz,       &Step::vJobRejectJobFetch);
   vAddStep("[job].rejectJobSetup"_Stz,   &Step::vJobRejectJobSetup);
@@ -212,7 +210,15 @@ void Step::vJobAddOriginator(void)
   Job* pJob = pOuterJobOfTask();
   RASSERT(*m_pJob == pJob);
 
-  AM::vJob_AddOriginating(pJob);
+  if (AM::pOriginatingJobs()->bLatch()) {
+    vTrace("Unable to append job to OL as list is latched due to NODELOSS\n"_Stz);
+    m_pDataStack->vPushInt(false);
+  }
+  else {
+    AM::vJob_AddOriginating(pJob);
+    m_pDataStack->vPushInt(true);
+  }
+
 
   //vTrace("%p ID %lld added to originator\n"_Stz, pJob, pJob->iJobId());
       
@@ -238,9 +244,16 @@ void Step::vJobAddParticipant(void)
   Job* pJob = pOuterJobOfTask();
   RASSERT(*m_pJob == pJob);
 
-  AM::vJob_AddParticipating(pJob);
+  if (AM::pOriginatingJobs()->bLatch()) {
+    vTrace("Unable to append job to OL as list is latched due to NODELOSS\n"_Stz);
+    m_pDataStack->vPushInt(false);
+  }
+  else {
+    AM::vJob_AddParticipating(pJob);
+    m_pDataStack->vPushInt(true);
+  }
 
-  //vTrace("%p ID %lld added to participant\n"_Stz, pJob, pJob->iJobId());
+  //vTrace("%p ID %lld added to participant\n"_Stz, pJob, pJob->tJobId().iAsI8());
     
   EXIT();
 }
@@ -938,35 +951,6 @@ void Step::vJobProgressSeconds(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [job].rejected@ -- fetch job rejected                                      */
-/*----------------------------------------------------------------------------*/
-void Step::vJobRejectedFetch(void)
-{
-  ENTRY();
-
-  Job* pJob = pOuterJobOfTask();
-
-  m_pDataStack->vPushInt(pJob->bRejected());
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* [job].rejected! -- store job rejected                                      */
-/*----------------------------------------------------------------------------*/
-void Step::vJobRejectedStore(void)
-{
-  ENTRY();
-
-  Job* pJob = pOuterJobOfTask();
-  i8 bRejected = m_pDataStack->iPopBol(__func__);
-
-  pJob->vRejected(bRejected);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* [job].rejectJobError! -- store reject job error                            */
 /*----------------------------------------------------------------------------*/
 void Step::vJobRejectJobErrorStore(void)
@@ -1161,7 +1145,14 @@ void Step::vJobSignalParent(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pJob->pParentJob()->vMutexSignal();
+  eEC eErrorCode = AM::JLIST::eSignalParent(pJob);
+
+  if (eErrorCode == EC_NONE) {
+    m_pDataStack->vPushInt(true);
+  }
+  else {
+    m_pDataStack->vPushInt(false);
+  }
 
   EXIT();
 }

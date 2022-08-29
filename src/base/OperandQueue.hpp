@@ -8,7 +8,9 @@ namespace BASE
   class OperandQueue : public Queue
   {
   private:
-  
+
+    bool m_bLatch;
+
     // must be last
     Footer m_xFooter;
     
@@ -20,6 +22,7 @@ namespace BASE
     ~OperandQueue(void) noexcept(false);
     
     i8        iAppendOperand(Operand* pOperand);
+    void      vLatch(bool bLatch);
     bool      bPeekOoO(void);
     bool      bPeekQueue(void);
     Operand*  pPopOoO(void);

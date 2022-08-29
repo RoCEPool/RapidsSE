@@ -366,7 +366,7 @@ bool PROMPT::bPrompt_cancel(SePrompt* pPrompt)
   tJobId = pInpTknVec->pGet(1)->iToI8();
   
   // find the pipeline job
-  Job* pJob = AM::pJob_FindParticipating(tJobId);
+  Job* pJob = AM::pJob_FindParticipating(tJobId, true);
   
   if ( ! pJob ) {
     vTrace("job %lld not found\n"_Stz, tJobId.iAsI8());
@@ -375,16 +375,18 @@ bool PROMPT::bPrompt_cancel(SePrompt* pPrompt)
   }
   else
     vTrace("Cancelling job %lld\n"_Stz, tJobId.iAsI8());
-  
+
   // get the pipeline from the job
   Pipeline* pPipeline = pJob->pPipeline();
 
   // cancel the pipeline
   if ( ! pPipeline->bCancel(nullptr) ) {
     vTrace("Cancel rejected. Job %lld almost done.\n"_Stz, tJobId.iAsI8());
+    pJob->vDropLock();
     return false;
   }
-  
+
+  pJob->vDropLock();
   return true;
 }
 
@@ -2026,7 +2028,9 @@ bool PROMPT::bPrompt_jobs(SePrompt* pPrompt)
          ,AM::JOBS::nJobsActive()
          ,AM::JOBS::nJobsThreshold()
          );
-  
+
+  AM::JLIST::pJobsList()->vListJobs();;
+
   return true;
 }
 

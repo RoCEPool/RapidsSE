@@ -24,10 +24,18 @@
 /* <bgn org */
 /* <bgn org */  [job].originId@ ListedJob[].findOriginator? if
 /* <bgn org */
-/* <bgn org */    ListedJob[].taskAck
+/* <bgn org */    ListedJob[].nodeLoss@ not if
+/* <bgn org */      ListedJob[].taskState@ TS_WAITING == assert
+/* <bgn org */      ListedJob[].taskAck
+/* <bgn org */    then
 /* <bgn org */
 /* <bgn org */    ListedJob[].returnReference
 /* <bgn org */
+/* <bgn org */  then
+/* <bgn org */
+/* <bgn org */  [args].distJob if
+/* <bgn org */    "begun" "onOrigin" "<bgn org"
+/* <bgn org */      "<bgn origin" "exiting"                           [job].trace
 /* <bgn org */  then
 /* <bgn org */
 /* <bgn org */  [job]:retireAndExit

@@ -72,7 +72,7 @@
 /* org_ org */      then
 /* org_ org */
 /* org_ org */      [job].updateParent assert
-/* org_ ovr */      [job].signalParent
+/* org_ org */      [job].signalParent assert
 /* org_ org */
 /* org_ org */        [task].retire // does not queue onto exit demon
 /* org_ org */
@@ -99,7 +99,7 @@
 /* org_ org */      then
 /* org_ org */
 /* org_ org */    [job].updateParent assert
-/* org_ ovr */    [job].signalParent
+/* org_ ovr */    [job].signalParent assert
 /* org_ org */
 /* org_ org */      [task].retire // does not queue onto exit demon
 /* org_ org */
@@ -111,7 +111,10 @@
 /* org_ org */  // - - - - - - - - - - - - - - - - - -
 /* org_ org */  [job].setOriginId
 /* org_ org */  [job].distIdGenerate
-/* org_ org */  [job].addOriginator
+/* org_ org */  [job].addOriginator not if
+/* org_ org */     [job]:retireAndExit
+/* org_ org */  then
+/* org_ org */
 /* org_ org */  [job].assertOriginator
 /* org_ org */
 /* org_ org */  [args].distJob if
@@ -149,7 +152,7 @@
 /* org_ org */    [job].addExited
 /* org_ org */    [job].updateParent assert
 /* org_ org */
-/* org_ ovr */    [job].signalParent
+/* org_ ovr */    [job].signalParent assert
 /* org_ org */
 /* org_ org */      [task].retire // does not queue onto exit demon
 /* org_ org */
@@ -267,25 +270,25 @@
 /* org_ org */    then
 /* org_ beg */  [task].wait
 /* org_ beg */
-/* org_ beg */  [job].rejected@ if
+/* org_ beg */  [job].error@ if
 /* org_ beg */    [args].distJob if
 /* org_ beg */       "pipeline" "origin"
-/* org_ beg */        "org_ beg" "begin rejected"                  [job].trace
+/* org_ beg */        "org_ beg" "begin rejected/nodeLoss"                  [job].trace
 /* org_ beg */    then
-/* org_ beg */    false [job].rejected!
-/* org_ beg */    [job]:handleReject
+/* org_ beg */    [job]:handleFailure
+/* org_ beg */    HAZARD
+/* org_ beg */  then
 /* org_ beg */
-/* org_ beg */  else
-/* org_ ovr */    "<signalParent>" [job].tagSet@ tagSet.hasName not if
+/* org_ beg */
+/* org_ ovr */  "<signalParent>" [job].tagSet@ tagSet.hasName not if
 /* org_ org */
-/* org_ org */      [args].distJob if
-/* org_ org */        "pipeline" "origin"
-/* org_ org */        "org_ org" "NO_WAIT signalling parent"       [job].trace
-/* org_ org */      then
+/* org_ org */    [args].distJob if
+/* org_ org */      "pipeline" "origin"
+/* org_ org */      "org_ org" "NO_WAIT signalling parent"       [job].trace
+/* org_ org */    then
 /* org_ org */
-/* org_ org */      [job].updateParent assert
-/* org_ ovr */      [job].signalParent
-/* org_ org */     then
+/* org_ org */    [job].updateParent assert
+/* org_ ovr */    [job].signalParent assert
 /* org_ org */  then
 /* org_ org */
 /* org_ beg */  [job].tscBegun
@@ -323,8 +326,15 @@
 /* org_ org */    then
 /* org_ exe */  [task].wait
 /* org_ exe */
-/* org_ exe */  [job].rejected@ not assert
-/* org_ exe */
+/* org_ exe */  [job].error@ if
+/* org_ exe */    [args].distJob if
+/* org_ exe */       "pipeline" "origin"
+/* org_ exe */        "org_ exe" "end nodeLoss"                  [job].trace
+/* org_ exe */    then
+/* org_ exe */    [job]:handleFailure
+/* org_ exe */    HAZARD
+/* org_ exe */  then
+
 /* org_ exe */  [job].tscExecuted
 /* org_ exe */
 
@@ -361,15 +371,13 @@
 /* org_ end */    then
 /* org_ end */  [task].wait
 /* org_ end */
-/* org_ end */  //[job].rejected@ if
-/* org_ end */  //  [args].distJob if
-/* org_ end */  //     "pipeline" "origin"
-/* org_ end */  //      "org_ exe" "end rejected"                  [job].trace
-/* org_ end */  //  then
-/* org_ end */  //  false [job].rejected!
-/* org_ end */  //  [job]:handleReject
-/* org_ end */  //then
-/* org_ end */  [job].rejected@ not assert
+/* org_ end */  [job].error@ if
+/* org_ end */    [args].distJob if
+/* org_ end */       "pipeline" "origin"
+/* org_ end */        "org_ exe" "end nodeLoss"                  [job].trace
+/* org_ end */    then
+/* org_ end */    [job]:handleFailure
+/* org_ end */  then
 
 /* org_ end */  [job].tscEnded
 /* org_ end */
@@ -421,7 +429,7 @@
 /* org_ org */      then
 /* org_ org */
 /* org_ ovr */      [job].updateParent assert
-/* org_ ovr */      [job].signalParent
+/* org_ ovr */      [job].signalParent assert
 /* org_ ovr */    then
 /* org_ ovr *
 /* org_ ovr */    [args].distJob if
@@ -526,7 +534,9 @@
 /* _ptp bgn */  JP_BEGUN [job].phase!
 /* _ptp bgn */  "pipeline:ptpExecute" [job].entryPoint!
 /* _ptp bgn */  [job].tscParticipant
-/* _ptp bgn */  [job].addParticipant
+/* _ptp bgn */  [job].addParticipant not if
+/* _ptp bgn */     [job]:retireAndExit
+/* _ptp bgn */  then
 /* _ptp bgn */  [job].assertParticipant
 /* _ptp bgn */  [job].assertStructure
 /* _ptp bgn */  [args].distJob if
@@ -623,6 +633,8 @@
 /* _ptp exd */  ListedJob[].assertNoRef
 /* _ptp exd */
 /* _ptp exd */
+//4 thread::sleepSsec
+
 /* _ptp exd */  // - - - - - - - - - - - - - - -
 /* _ptp exd */  // reply executed to originator
 /* _ptp exd */  // - - - - - - - - - - - - - - -

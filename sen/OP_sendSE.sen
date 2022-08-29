@@ -109,7 +109,9 @@
   find: sendSE_CANCELLING  EV_M_CANCELLING  [op].handler!
   find: sendSE_CLEANING    EV_M_CLEANING    [op].handler!
   find: sendSE_EXITING     EV_M_EXITING     [op].handler!
-  find: EV_M_HARDABORT_handler  EV_M_HARDABORT  [op].handler!
+
+  find: EV_M_HARDABORT_handler      EV_M_HARDABORT      [op].handler!
+  find: EV_M_NODELOSSABORT_handler  EV_M_NODELOSSABORT  [op].handler!
 
   op__loop
 

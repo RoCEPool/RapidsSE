@@ -44,6 +44,7 @@ enum eOM // operator markers
   /*    */ OM_LOWMEMORY,
   
   /*    */ OM_NEXTBUFFERMARKER,
+  /*    */ OM_NODELOSSABORT,
   
   /*    */ OM_PULSEDMARKER,
   
@@ -100,6 +101,7 @@ static Stz* aOM[]
   /*    */ "LOWMEMORY"_Stz,
   
   /*    */ "NEXTBUFFERMARKER"_Stz,
+  /*    */ "NODELOSSABORT"_Stz,
   
   /*    */ "PULSEDMARKER"_Stz,
   

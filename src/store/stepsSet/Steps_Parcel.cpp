@@ -220,7 +220,7 @@ void Step::vParcelPipeOut(void)
   // find the pipeline
   JobId tPipelineJob;
   tPipelineJob = pParcel->iPipelineJobId();
-  Job* pJob = AM::pJob_FindParticipating(tPipelineJob);
+  Job* pJob = AM::pJob_FindParticipating(tPipelineJob, false);
   Pipeline* pPipeline = pJob->pPipeline();
   
   // get the next stage the send is supposed to send to
@@ -569,7 +569,7 @@ void Step::vParcelSendOut(void)
     pParcel->vDistribute(pCurrOp,pOuterJobOfTask());
   }
   catch (LowMemory xLowMemory) {
-    vTrace("vDistributeBy: ran into LOWMEMORY\n"_Stz);
+    vTrace("vDistribute: ran into LOWMEMORY\n"_Stz);
   }
 
   EXIT();

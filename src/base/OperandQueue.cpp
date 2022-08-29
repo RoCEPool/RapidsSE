@@ -21,7 +21,9 @@ OperandQueue::OperandQueue(void)
 : Queue(CN_OPERANDQUEUE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
-  
+
+  m_bLatch = false;
+
   _checkInitialised_(CN_OPERANDQUEUE);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
@@ -41,8 +43,23 @@ OperandQueue::~OperandQueue(void) noexcept(false)
 i8 OperandQueue::iAppendOperand(Operand* pOperand)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
-  
-  return Queue::iAppend(pOperand);
+
+  if (m_bLatch) {
+    vTrace("Queue latched: not accepting operand\n"_Stz);
+    return Queue::nItems();
+  }
+  else
+    return Queue::iAppend(pOperand);
+}
+
+/*----------------------------------------------------------------------------*/
+/* latch the queue                                                            */
+/*----------------------------------------------------------------------------*/
+void OperandQueue::vLatch(bool bLatch)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
+
+  m_bLatch = bLatch;
 }
 
 /*----------------------------------------------------------------------------*/

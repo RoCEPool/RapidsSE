@@ -14,6 +14,7 @@
 
 #include "Socket.hpp" //?
 #include "LogicUnit.hpp"
+#include "JobList.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -100,6 +101,13 @@ void Step::vNodeCleanup(void)
   pGrid->vGrabWrite();
 
   pGrid->vHealthy(false);
+
+  // latch the job Originating list and Job Participant list
+  JobList* pPtpJobList = AM::pParticipatingJobs();
+  pPtpJobList->vLatch(true);
+
+  JobList* pOriginatingJobList = AM::pOriginatingJobs();
+  pOriginatingJobList->vLatch(true);
 
   pNode->vState(NS_INACTIVE);
 
