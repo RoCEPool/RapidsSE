@@ -80,6 +80,7 @@ namespace BASE
     void vInitialise(bool bTouch, bool bProgress);
     PoolBuffer* pLimit(void);
     bool bLowMemory(void);
+    bool bLowMemoryDist(void);
     void vPoolDump(void);
     Stz* szShmNm(void);
     void vTakeBuffers(i8 nSpareBuffers);

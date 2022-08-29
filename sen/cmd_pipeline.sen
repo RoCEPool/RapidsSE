@@ -85,7 +85,7 @@
 /* org_ org */    "pipeline" "origin"
 /* org_ org */      "org_ org" "preExecuteTest"                    [job].trace
 /* org_ org */  then
-/* org_ org */  [job].preExecuteTest to ErrorCode[]
+/* org_ org */  [job].preExecuteDist to ErrorCode[]
 /* org_ org */  ErrorCode[] if
 /* org_ org */    ErrorCode[] [job].error!
 /* org_ org */    [ddlLock].testDrop

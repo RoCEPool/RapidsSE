@@ -368,7 +368,8 @@ namespace OBLIQUE
       static void vAckOriginatingJob(JobId tOriginId);
       static bool bHasTag(Job* pJob, Stz* szTagNm);
       static Stz* szJobNm(Job* pJob);
-      static eEC  ePreExecuteTest(Job* pJob);
+      static eEC  ePreExecuteDist(Job* pJob);
+      static eEC  ePreExecuteLocal(Job* pJob);
       static void vRecvdReject(RejectJob* pRejectJob);
       static void vSendReject(RejectJob* pRejectJob);
       static void vTriggerExecute(JobId tDistId);
@@ -442,6 +443,7 @@ namespace OBLIQUE
     public:
       static void vAssertAllocate(void);
       static bool bIsRunningLow(void);
+      static bool bIsRunningLowDist(void);
     };
   
     class METRICS
@@ -625,6 +627,7 @@ namespace OBLIQUE
       static i8   nActiveJobs(void);
       static i8   nNanoseconds(void);
       static bool bPassesLowMem(Job* pJob);
+      static bool bPassesLowMemDist(Job* pJob);
       static bool bPassesOpenSystem(Job* pJob);
       static bool bReapEnabled(void);
       static void vReapEnabled(bool bReapEnabled);
