@@ -16,11 +16,9 @@ rows:
 
 // Source file: ../queries/aggs/sum/rnsum4.sql
 // Result file: ../queries/aggs/sum/results/nsum4.res
-//TODO: COMPILER
-/*
 select sum(avg( cola1 + colf1 + colg1 )) from table1;
-failure: 'Invalid nested aggregation'
-*/
+failure contains: 'Nested aggregate expressions are not permitted'
+
 
 // Source file: ../queries/aggs/sum/rsum14.sql
 // Result file: ../queries/aggs/sum/results/sum14.res
@@ -147,12 +145,37 @@ unordered rows:
 
 // Source file: ../queries/aggs/sum/rnsum5.sql
 // Result file: ../queries/aggs/sum/results/nsum5.res
-//TODO: FIX (COMPILER)
-/*
 select colb1, sum(null) from table1 group by colb1;
-//failure: 'Incorrect argument type in SUM'
-failure contains: 'EC_SEMANTIC_ERROR'
-*/
+rows:
+  ('BLACK',null)
+  ('BLUE',null)
+  ('GREEN',null)
+  ('ORANGE',null)
+  ('PINK',null)
+  ('PURPLE',null)
+  ('RED',null)
+  ('TEAL',null)
+  ('WHITE',null)
+  ('YELLOW',null)
+  ('aqua',null)
+  ('black',null)
+  ('blue',null)
+  ('brown',null)
+  ('gold',null)
+  ('green',null)
+  ('grey',null)
+  ('indigo',null)
+  ('maroon',null)
+  ('orange',null)
+  ('peach',null)
+  ('pink',null)
+  ('purple',null)
+  ('red',null)
+  ('tan',null)
+  ('teal',null)
+  ('violet',null)
+  ('yellow',null)
+
 
 // Source file: ../queries/aggs/sum/rsum5.sql
 // Result file: ../queries/aggs/sum/results/sum5.res

@@ -241,6 +241,8 @@
 #include "Port.hpp"
 #include "LocalStrs.hpp"
 #include "LocalVars.hpp"
+#include "PayStr.hpp"
+#include "PayStrBuffer.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -471,6 +473,8 @@ SizeHeap gxaSizeHeap[]
   { CN_PARCEL,                   sizeof(Parcel),             HT_T_TINY    ,FILL },
   { CN_PATHIDENTIFIER,           sizeof(PathIdentifier),     HT_T_MEDIUM  ,FILL },
   { CN_PATHVEC,                  sizeof(PathVec),            HT_T_MEDIUM  ,FILL },
+  { CN_PAYSTR,                   sizeof(PayStr),             HT_INVALID   ,FILL },
+  { CN_PAYSTRBUFFER,             sizeof(PayStrBuffer),       HT_T_LARGE   ,FILL },
   { CN_PERMIT,                   sizeof(Permit),             HT_T_TINY    ,FILL },
   { CN_PERUSE,                   sizeof(Peruse),             HT_T_MEDIUM  ,FILL },
   { CN_PIPEIN,                   sizeof(PipeIn),             HT_T_TINY    ,FILL },

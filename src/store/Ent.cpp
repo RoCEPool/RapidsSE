@@ -71,7 +71,7 @@ Ent::~Ent(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Ent::vPayloadCreate(Ent* aEnt, i8 nPayloadBytes)
 {
-  _static_;
+  _static_
 
   Pay* aPay = aEnt->aPay();
 

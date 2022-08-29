@@ -50,7 +50,7 @@ rows: (*,'explainPlan','
 
 
 EXPLAIN SELECT n_name FROM nation WHERE n_nationkey IN (true, false);
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: rapidsse.public.nation.n_nationkey IN (true, false)'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (INTEGER IN (BOOLEAN, BOOLEAN)) in expression (rapidsse.public.nation.n_nationkey IN (true, false))'
 
 
 EXPLAIN SELECT n_name FROM nation WHERE n_nationkey IN (1, false);

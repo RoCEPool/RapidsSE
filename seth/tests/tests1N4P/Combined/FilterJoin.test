@@ -40,7 +40,7 @@ begin
     | stageC
   stage stageC on origin :
     output | sink | stageA
-end;
+end ;
 
 rows:
  (1,'A',1,'D')
@@ -62,7 +62,7 @@ begin
     | stageC
   stage stageC on origin :
     output | sink | stageA
-end;
+end ;
 
 rows:
  (1,'A',1,'D')
@@ -83,7 +83,7 @@ begin
     | stageC
   stage stageC on origin :
     output | sink | stageA
-end;
+end ;
 
 rows:
  (2,'X',2,'F')
@@ -101,7 +101,7 @@ begin
     | stageC
   stage stageC on origin :
     output | sink | stageA
-end;
+end ;
 
 //------------------------------------------------------------------------------
 // drop the tables

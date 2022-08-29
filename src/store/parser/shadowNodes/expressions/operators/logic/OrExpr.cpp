@@ -105,6 +105,22 @@ void OrExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Represent the expression as types instead of names. Append to the buffer   */
+/*----------------------------------------------------------------------------*/
+void OrExpr::vDescribeAsTypes(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pChild1 = OrExpr::pChild1(_pQueryNode(pNode));
+  QueryNode* pChild2 = OrExpr::pChild2(_pQueryNode(pNode));
+
+  sBuf.vConcat(Expr::xTypeId(pChild1, pRootNode).szTypeName());
+  sBuf.vConcat(" OR "_Stz);
+  sBuf.vConcat(Expr::xTypeId(pChild2, pRootNode).szTypeName());
+}
+
+/*----------------------------------------------------------------------------*/
 /* Return the first child expression of this operator                         */
 /*----------------------------------------------------------------------------*/
 QueryNode* OrExpr::pChild1(QueryNode *pNode)

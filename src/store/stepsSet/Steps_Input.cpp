@@ -119,8 +119,10 @@ void Step::vInputNext(void)
   ENTRY();
   
   // read next token
-  m_pInput->vReadToken();
-  
+  eEC eError = EC_NONE;
+  bool b = m_pInput->bReadToken(eError);
+  UNUSED(b);
+
   // push the token
   s48K sTkn(m_pInput->szChars());
   m_pDataStack->vPushStr(sTkn);
@@ -197,8 +199,12 @@ void Step::vInputPushVecAsStr(void)
 void Step::vInputRead(void)
 {
   ENTRY();
-    
-  m_pInput->vReadToken();
+
+  bool b;
+  eEC eError = EC_NONE;
+
+  b = m_pInput->bReadToken(eError);
+  UNUSED(b);
 
   EXIT();
 }
@@ -236,7 +242,9 @@ void Step::vInputTillSemicolon(void)
   ENTRY();
   
   // read next token
-  m_pInput->vReadTillSemicolon();
+  eEC eError = EC_NONE;
+  bool b = m_pInput->bReadTillSemicolon(eError);
+  UNUSED(b);
     
   EXIT();
 }

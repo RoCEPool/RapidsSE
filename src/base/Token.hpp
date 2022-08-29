@@ -78,6 +78,7 @@ namespace BASE
     bool  bIsName(void);
     bool  bIsNull(void);
     bool  bIsOther(void);
+    bool  bIsPipeline(void);
     bool  bIsRelational(void);
     bool  bIsSemicolon(void);
     bool  bIsString(void);

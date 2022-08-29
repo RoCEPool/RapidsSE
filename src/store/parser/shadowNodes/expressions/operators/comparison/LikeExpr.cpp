@@ -131,6 +131,29 @@ void LikeExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Represent the expression as types instead of names. Append to the buffer   */
+/*----------------------------------------------------------------------------*/
+void LikeExpr::vDescribeAsTypes(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pPredicand = LikeExpr::pPredicand(_pQueryNode(pNode));
+  QueryNode* pPattern   = LikeExpr::pPattern(_pQueryNode(pNode));
+  QueryNode* pEscape    = LikeExpr::pEscape(_pQueryNode(pNode));
+
+  sBuf.vConcat(Expr::xTypeId(pPredicand, pRootNode).szTypeName());
+  sBuf.vConcat(" LIKE "_Stz);
+  sBuf.vConcat(Expr::xTypeId(pPattern, pRootNode).szTypeName());
+
+  if (pEscape) {
+    sBuf.vConcat(" ESCAPE "_Stz);
+
+    sBuf.vConcat(Expr::xTypeId(pEscape, pRootNode).szTypeName());
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* Return the expression being compared                                       */
 /*----------------------------------------------------------------------------*/
 QueryNode* LikeExpr::pPredicand(QueryNode *pNode)

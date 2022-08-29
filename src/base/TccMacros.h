@@ -498,6 +498,11 @@
   *(paW++) = iArg1;                                                         \
   *(paW++) = iArg1;
 
+#define _DUP_UNK(eErrorCode)                                                \
+  iArg1 = *(--paW);                                                         \
+  *(paW++) = iArg1;                                                         \
+  *(paW++) = iArg1;
+
 #define _DUP_VCH(eErrorCode)                                                \
   iArg1 = *(--paW);                                                         \
   *(paW++) = iArg1;                                                         \

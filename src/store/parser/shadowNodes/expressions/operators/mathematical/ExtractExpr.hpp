@@ -21,6 +21,9 @@ namespace Parser
     static QueryNode* pCreate(QueryNode* pExtractField, QueryNode* pExpr);
     static void vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode);
 
+    // Represent the expression as types instead of names (e.g. INTEGER + INTEGER)
+    static void vDescribeAsTypes(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode);
+
     // The enum field to be extracted
     static ExtractField::eEF eExtractField(QueryNode* pNode);
 

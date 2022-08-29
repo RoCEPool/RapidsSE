@@ -85,6 +85,7 @@ IndexTree::IndexTree(Index* pIndex, IndexDef* pIndexDef, i8 i_TablePtn)
   m_pIndexDef = pIndexDef ? new IndexDef(pIndexDef) : nullptr;
   m_i_TablePtn = i_TablePtn;
   m_pRootEntBuffer  = nullptr;
+  m_pPayStrBuffer = nullptr;
   
   m_nEntryBuffers  = 0;
   
@@ -361,6 +362,22 @@ Ent* IndexTree::aPositionLT(IndexTree* pIndexTree, Key* aKey)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* analyze table                                                              */
+/*----------------------------------------------------------------------------*/
+PayStr* IndexTree::pAllotPayStr(Stz* szStz)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+
+  if (! m_pPayStrBuffer) {
+    m_pPayStrBuffer = new PayStrBuffer;
+  }
+
+  PayStr* pPayStr = new (m_pPayStrBuffer,szStz) PayStr;
+
+  return pPayStr;
+}
 
 /*----------------------------------------------------------------------------*/
 /* analyze table                                                              */

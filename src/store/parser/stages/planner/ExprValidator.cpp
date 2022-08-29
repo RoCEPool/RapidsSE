@@ -35,6 +35,7 @@
 #include "ExistsExpr.hpp"
 #include "CaseExpr.hpp"
 #include "WhenExpr.hpp"
+#include "CastExpr.hpp"
 
 #include "TypeSystem.hpp"
 
@@ -102,6 +103,9 @@ void ExprValidator::vValidateExprs(PlanNode *pRootNode)
     // Validate that all join predicate expressions produce equi-joins
     vValidateJoinPredicatesAreEquiJoins(pRootNode, pStatementMarker);
 
+    // Validate that there are no nested aggregate expressions
+    vValidateNoNestedAggregates(pRootNode, pStatementMarker);
+
     // Validate any aggregate/group-by expressions
     vValidateGroupByExprs(pRootNode, pStatementMarker);
 
@@ -154,8 +158,18 @@ void ExprValidator::vExprTypeCoercion(PlanNode *pRootNode, QueryNode* pStartNode
 
     QueryNode* pExprNode = _pQueryNode(pNode);
 
+    // If we come across a CastExpr and it's child is a literal then see if we can
+    // coerce it and replace the cast. This may not replace the cast if the coercion
+    // is not supported implicitly.
+    if ( CastExpr::bIsOfType(pExprNode) &&
+         LiteralExpr::bIsOfType(CastExpr::pTargetExpr(pExprNode)) ) {
+      Expr::vCoerceCastLiteral(pExprNode, pRootNode);
+      // Fall out and keep checking type ID, as the above call may not have
+      // made any changes.
+    }
+
     // How do we know if an expr needs to be coerced? One way is to check
-    // the return type of the expression. It it is invalid it will be set
+    // the return type of the expression. If it is invalid it will be set
     // to CT_NONE. Then we can try to coerce the sub-expressions involved.
     //
     // But this doesn't work for all expressions - there are some special
@@ -165,6 +179,8 @@ void ExprValidator::vExprTypeCoercion(PlanNode *pRootNode, QueryNode* pStartNode
     //
     // Expression coercion might not succeed. In that case we will pick up
     // the error in vValidateExprResultType() and throw an error there.
+    // It can also throw an exception here if we try to coerce a literal
+    // and figure out that it is out of the supported range of the target type.
 
     if (Expr::xTypeId(pExprNode, pRootNode).eCTVal() == CT_NONE) {
       // We might need type coercion here
@@ -425,6 +441,64 @@ void ExprValidator::vValidateJoinPredicatesAreEquiJoins(PlanNode *pRootNode, Que
   // Walk the node and its children. We're not interested in walking
   // the properties because we are looking for JoinOps
   GraphNav::bBoundedWalk(pStartNode->pFirstChild(), false, true, fVisitor, pRootNode);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Validate that there are no nested aggregate expressions                    */
+/*----------------------------------------------------------------------------*/
+void ExprValidator::vValidateNoNestedAggregates(PlanNode *pRootNode, QueryNode* pStartNode)
+{
+  UNUSED(pRootNode);
+
+  ASSERT(pRootNode);
+  ASSERT(pStartNode);
+
+  // Create an outer and inner visitor for checking for nested aggregates.
+
+  auto fInnerVisitor = [pRootNode](PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+    UNUSED(sPath);
+    UNUSED(iDepth);
+    UNUSED(pvArg);
+
+    QueryNode* pFirstNode = _pQueryNode(pvArg);
+
+    if (pNode == pFirstNode) {
+      // Ignore the first node as this is the outer aggregate.
+      return GraphNav::WALK_CONTINUE;
+    }
+
+    if (AggregateExpr::bIsOfType(pNode)) {
+      // We cannot have nested aggregate expressions
+      s2K sBuf;
+      Expr::vDescribe(pFirstNode, sBuf, pRootNode);
+
+      SemanticException::vThrow(EC_EXPR_NESTED_AGGREGATE,
+                                " : %s"_Stz,
+                                sBuf.szStz());
+    }
+
+    return GraphNav::WALK_CONTINUE;
+  };
+
+  auto fOuterVisitor = [fInnerVisitor](PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    UNUSED(sPath);
+    UNUSED(iDepth);
+    UNUSED(pvArg);
+
+    if (!AggregateExpr::bIsOfType(pNode)) {
+      return GraphNav::WALK_CONTINUE;
+    }
+
+    // We have a potentially outer aggregate. Let's see if there are any inner aggregates.
+    GraphNav::bBoundedWalk(pNode, false, true, fInnerVisitor, pNode);
+
+    // No need to walk the rest of this subtree.
+    return GraphNav::WALK_SKIP_SUBTREE;
+  };
+
+  // Walk the node and its children and properties
+  GraphNav::bBoundedWalk(pStartNode->pFirstChild(), true, true, fOuterVisitor, nullptr);
 }
 
 /*----------------------------------------------------------------------------*/

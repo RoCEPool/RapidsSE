@@ -7,6 +7,8 @@
 #include "Key.hpp"
 #include "Ent.hpp"
 #include "EntWrk.hpp"
+#include "PayStr.hpp"
+#include "PayStrBuffer.hpp"
 
 namespace STORE
 {
@@ -24,6 +26,8 @@ namespace STORE
     EntBuffer* m_pRootEntBuffer;    // the root ent buffer
   
     i8 m_nEntryBuffers;  // number of entry buffers
+
+    PayStrBuffer* m_pPayStrBuffer; // buffer(s) for pay strings
 
     i8 m_nTreeDeleteCnt; // insert
     i8 m_nTreeInsertCnt; // insert
@@ -52,6 +56,7 @@ namespace STORE
     static Ent* aPositionLE(IndexTree* aIndexTree, Key* aKey);
     static Ent* aPositionLT(IndexTree* aIndexTree, Key* aKey);
 
+    PayStr*    pAllotPayStr(Stz* szStz);
     Stz*       pAnalyze(void);
     i8         nBufferCount(void);
     void       vCompact(void);

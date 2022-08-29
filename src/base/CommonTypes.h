@@ -7,25 +7,32 @@
 
 typedef i8 tXN; // opaque type for transaction number
 
+// Note: For version 1.x we reserve one value from the largest possible integer
+//       and two values from the smallest possible integer to represent
+//       +/- Infinity as well as NULL values. This will be fixed in version 2.x.
+//       So the valid user range of integers is as follows:
+static const i8 C_INT_MIN = -9223372036854775806LL;
+static const i8 C_INT_MAX =  9223372036854775806LL;
+
 static const i8 C_BCD_MIN = -140737488355328;
 static const i8 C_BCD_MAX = 140737488355327;
+static const i8 C_BCD_SCALE_MIN = -128;
+static const i8 C_BCD_SCALE_MAX = 127;
 
 // MaxFloat64
 static const d8 C_FLT_MAX = 1.797693134862315708145274237317043567981e+308;
-// min Float 64 based on DBL_MIN = 2.2250738585072014e-308
+// This gives a bit pattern of 0x7FEFFFFFFFFFFFFF (note the E in there).
+// min Float 64 based on DBL_MAX = 2.2250738585072014e-308
 // We use the lowest for float/double is negative -C_FLT_MAX
 static const d8 C_FLT_MIN = -1.797693134862315708145274237317043567981e+308;
-
-static const i8 C_INT_MIN = (-9223372036854775807LL - 1);
-static const i8 C_INT_MAX = 9223372036854775807LL;
-
+// This gives a bit pattern of 0xFFEFFFFFFFFFFFFF (note the E in there).
 
 //static const i8 C_ERA_0 =  0; // 1900
 //static const i8 C_ERA_1 = 92; // 1992
 //static const i8 C_ERA_2 = 99; // 1999
 
 static const u8 C_YEAR_BASE  = 1900;
-static const u8 C_YEAR_RANGE = 226;
+static const u8 C_YEAR_RANGE = 255;
 static const u8 C_YEAR_MAX   = C_YEAR_BASE + C_YEAR_RANGE;
 static const u8 C_YEAR_MIN   = C_YEAR_BASE;
 

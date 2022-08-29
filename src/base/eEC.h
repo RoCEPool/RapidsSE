@@ -42,6 +42,7 @@ enum eEC : u2 // error codes
   EC_CLUSTER_SIZE_MISMATCH,
   EC_COLUMN_COUNT_MISMATCH,         // SQL Compiler Subsystem
   EC_COLUMN_TYPE_MISMATCH,          // SQL Compiler Subsystem
+  EC_COMMAND_TOO_LONG,
   EC_CORRBY_COLUMN_NOT_FOUND,       // SQL Compiler Subsystem
   EC_CORRBY_COLUMN_TYPE_MISMATCH,   // SQL Compiler Subsystem
   EC_CORRBY_NO_COMMON_COLUMNS,      // SQL Compiler Subsystem
@@ -94,6 +95,7 @@ enum eEC : u2 // error codes
   EC_EXPR_IS_LIT_IN_GROUPBY_LIST,   // SQL Compiler Subsystem
   EC_EXPR_MUST_BE_BOOLEAN,          // SQL Compiler Subsystem
   EC_EXPR_MUST_BE_EQUIJOIN,         // SQL Compiler Subsystem
+  EC_EXPR_NESTED_AGGREGATE,         // SQL Compiler Subsystem
   EC_EXPR_NOT_IN_GROUPBY_LIST,      // SQL Compiler Subsystem
   EC_EXPR_NOT_PROJECTED,            // SQL Compiler Subsystem
   EC_EXPR_TYPE_INCOMPATIBLE,        // SQL Compiler Subsystem
@@ -298,6 +300,7 @@ static Stz* aEC[] =
   /* EC_CLUSTER_SIZE_MISMATCH         */ (Stz*)"cluster node size mismatch",
   /* EC_COLUMN_COUNT_MISMATCH         */ (Stz*)"EC_COLUMN_COUNT_MISMATCH",        // SQL Compiler Subsystem
   /* EC_COLUMN_TYPE_MISMATCH          */ (Stz*)"EC_COLUMN_TYPE_MISMATCH",         // SQL Compiler Subsystem
+  /* EC_COMMAND_TOO_LONG              */ (Stz*)"EC_COMMAND_TOO_LONG",
   /* EC_CORRBY_COLUMN_NOT_FOUND       */ (Stz*)"EC_CORRBY_COLUMN_NOT_FOUND",      // SQL Compiler Subsystem
   /* EC_CORRBY_COLUMN_TYPE_MISMATCH   */ (Stz*)"EC_CORRBY_COLUMN_TYPE_MISMATCH",  // SQL Compiler Subsystem
   /* EC_CORRBY_NO_COMMON_COLUMNS      */ (Stz*)"EC_CORRBY_NO_COMMON_COLUMNS",     // SQL Compiler Subsystem
@@ -350,6 +353,7 @@ static Stz* aEC[] =
   /* EC_EXPR_IS_LIT_IN_GROUPBY_LIST   */ (Stz*)"EC_EXPR_IS_LIT_IN_GROUPBY_LIST",  // SQL Compiler Subsystem
   /* EC_EXPR_MUST_BE_BOOLEAN          */ (Stz*)"EC_EXPR_MUST_BE_BOOLEAN",         // SQL Compiler Subsystem
   /* EC_EXPR_MUST_BE_EQUIJOIN         */ (Stz*)"EC_EXPR_MUST_BE_EQUIJOIN",        // SQL Compiler Subsystem
+  /* EC_EXPR_NESTED_AGGREGATE         */ (Stz*)"EC_EXPR_NESTED_AGGREGATE",        // SQL Compiler Subsystem
   /* EC_EXPR_NOT_IN_GROUPBY_LIST      */ (Stz*)"EC_EXPR_NOT_IN_GROUPBY_LIST",     // SQL Compiler Subsystem
   /* EC_EXPR_NOT_PROJECTED            */ (Stz*)"EC_EXPR_NOT_PROJECTED",           // SQL Compiler Subsystem
   /* EC_EXPR_TYPE_INCOMPATIBLE        */ (Stz*)"EC_EXPR_TYPE_INCOMPATIBLE",           // SQL Compiler Subsystem
@@ -547,6 +551,7 @@ static Stz* aEC2[] = // error code
   /* EC_CLUSTER_SIZE_MISMATCH         */ (Stz*)"EC_CLUSTER_SIZE_MISMATCH",
   /* EC_COLUMN_COUNT_MISMATCH         */ (Stz*)"EC_COLUMN_COUNT_MISMATCH",          // SQL Compiler Subsystem
   /* EC_COLUMN_TYPE_MISMATCH          */ (Stz*)"EC_COLUMN_TYPE_MISMATCH",           // SQL Compiler Subsystem
+  /* EC_COMMAND_TOO_LONG              */ (Stz*)"EC_COMMAND_TOO_LONG",
   /* EC_CORRBY_COLUMN_NOT_FOUND       */ (Stz*)"EC_CORRBY_COLUMN_NOT_FOUND",        // SQL Compiler Subsystem
   /* EC_CORRBY_COLUMN_TYPE_MISMATCH   */ (Stz*)"EC_CORRBY_COLUMN_TYPE_MISMATCH",    // SQL Compiler Subsystem
   /* EC_CORRBY_NO_COMMON_COLUMNS      */ (Stz*)"EC_CORRBY_NO_COMMON_COLUMNS",       // SQL Compiler Subsystem
@@ -600,6 +605,7 @@ static Stz* aEC2[] = // error code
   /* EC_EXPR_IS_LIT_IN_GROUPBY_LIST   */ (Stz*)"EC_EXPR_IS_LIT_IN_GROUPBY_LIST",    // SQL Compiler Subsystem
   /* EC_EXPR_MUST_BE_BOOLEAN          */ (Stz*)"EC_EXPR_MUST_BE_BOOLEAN",           // SQL Compiler Subsystem
   /* EC_EXPR_MUST_BE_EQUIJOIN         */ (Stz*)"EC_EXPR_MUST_BE_EQUIJOIN",          // SQL Compiler Subsystem
+  /* EC_EXPR_NESTED_AGGREGATE         */ (Stz*)"EC_EXPR_NESTED_AGGREGATE",          // SQL Compiler Subsystem
   /* EC_EXPR_NOT_IN_GROUPBY_LIST      */ (Stz*)"EC_EXPR_NOT_IN_GROUPBY_LIST",       // SQL Compiler Subsystem
   /* EC_EXPR_NOT_PROJECTED            */ (Stz*)"EC_EXPR_NOT_PROJECTED",             // SQL Compiler Subsystem
   /* EC_EXPR_TYPE_INCOMPATIBLE        */ (Stz*)"EC_EXPR_TYPE_INCOMPATIBLE",             // SQL Compiler Subsystem
@@ -807,6 +813,7 @@ static Stz* aErrorMsg[] =
   /* EC_CLUSTER_SIZE_MISMATCH         */ (Stz*)"cluster node size mismatch",
   /* EC_COLUMN_COUNT_MISMATCH         */ (Stz*)"The number of columns of each subquery do not match",   // SQL Compiler Subsystem
   /* EC_COLUMN_TYPE_MISMATCH          */ (Stz*)"Column types do not match",                             // SQL Compiler Subsystem
+  /* EC_COMMAND_TOO_LONG              */ (Stz*)"Command too long",
   /* EC_CORRBY_COLUMN_NOT_FOUND       */ (Stz*)"Column in CORRESPONDING BY list is not found in select list",   // SQL Compiler Subsystem
   /* EC_CORRBY_COLUMN_TYPE_MISMATCH   */ (Stz*)"Column in CORRESPONDING BY list has mismatched types in child queries", // SQL Compiler Subsystem
   /* EC_CORRBY_NO_COMMON_COLUMNS      */ (Stz*)"No common column names of the subqueries could be found for the CORRESPONDING list",  // SQL Compiler Subsystem
@@ -860,6 +867,7 @@ static Stz* aErrorMsg[] =
   /* EC_EXPR_IS_LIT_IN_GROUPBY_LIST   */ (Stz*)"Cannot have a literal expression in the GROUP BY list",    // SQL Compiler Subsystem
   /* EC_EXPR_MUST_BE_BOOLEAN          */ (Stz*)"Predicate expression must have a boolean result",          // SQL Compiler Subsystem
   /* EC_EXPR_MUST_BE_EQUIJOIN         */ (Stz*)"Join predicate expression must be an equi-join and contain an equality comparison",           // SQL Compiler Subsystem
+  /* EC_EXPR_NESTED_AGGREGATE         */ (Stz*)"Nested aggregate expressions are not permitted",           // SQL Compiler Subsystem
   /* EC_EXPR_NOT_IN_GROUPBY_LIST      */ (Stz*)"Expression is not present in the GROUP BY list",           // SQL Compiler Subsystem
   /* EC_EXPR_NOT_PROJECTED            */ (Stz*)"Invalid expression because it is not being projected",     // SQL Compiler Subsystem
   /* EC_EXPR_TYPE_INCOMPATIBLE        */ (Stz*)"Incompatible expression types",                            // SQL Compiler Subsystem

@@ -25,7 +25,7 @@
     //[system].bpa
   then
 /*
-  [job].preExecuteTest to ErrorCode[]
+  [job].preExecuteLocal to ErrorCode[]
   ErrorCode[] if
     ErrorCode[] [job].error!
     [ddlLock].testDrop

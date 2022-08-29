@@ -979,9 +979,25 @@ void AM::JOB::vPtpJobNodeFailure(JobId tJobId)
 }
 
 /*----------------------------------------------------------------------------*/
-/* test if the job passes all pre-execution requirements                      */
+/* test if the job passes all pre-execution requirements for distributed jobs */
 /*----------------------------------------------------------------------------*/
-eEC AM::JOB::ePreExecuteTest(Job* pJob)
+eEC AM::JOB::ePreExecuteDist(Job* pJob)
+{
+  _static_
+
+  if (! AM::SYSTEM::bPassesLowMemDist(pJob))
+    return EC_LOW_MEMORY;
+
+  if (! AM::SYSTEM::bPassesOpenSystem(pJob))
+    return EC_SYSTEM_CLOSED;
+
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test if the job passes all pre-execution requirements for local jobs       */
+/*----------------------------------------------------------------------------*/
+eEC AM::JOB::ePreExecuteLocal(Job* pJob)
 {
   _static_
 
@@ -1093,9 +1109,9 @@ void AM::JOB::vTriggerExecute(JobId tDistId)
 i8 AM::JOBS::nJobsActive(void)
 {
   _static_
-  
+
   i8 nJobs = gpAttachMap->m_nxJobsActive.iVal();
-  
+
   return nJobs;
 }
 
@@ -1105,7 +1121,7 @@ i8 AM::JOBS::nJobsActive(void)
 void AM::JOBS::vJobsActiveDec(void)
 {
   _static_
-  
+
   -- gpAttachMap->m_nxJobsActive;
 }
 
@@ -1115,7 +1131,7 @@ void AM::JOBS::vJobsActiveDec(void)
 void AM::JOBS::vJobsActiveInc(void)
 {
   _static_
-  
+
   ++ gpAttachMap->m_nxJobsActive;
 }
 
@@ -1125,9 +1141,9 @@ void AM::JOBS::vJobsActiveInc(void)
 i8 AM::JOBS::nJobsThreshold(void)
 {
   _static_
-  
+
   i8 nJobs = gpAttachMap->m_nJobsThreshold;
-  
+
   return nJobs;
 }
 
@@ -1137,7 +1153,7 @@ i8 AM::JOBS::nJobsThreshold(void)
 void AM::JOBS::vJobsThreshold(i8 nJobs)
 {
   _static_
-  
+
   gpAttachMap->m_nJobsThreshold = nJobs;
 }
 
@@ -1151,7 +1167,7 @@ void AM::JOBS::vJobsThreshold(i8 nJobs)
 Job* AM::LLIST::pFindJob(JobId tJobId, bool bLockJob)
 {
   Job* pJob = AM::pLocalJobs()->pFindJob(tJobId,bLockJob);
-    
+
   return pJob;
 }
 
@@ -1169,9 +1185,9 @@ void AM::LOCK::vIntendReadUnlocked(Lock* pLock)
   Task* pUnlockingTask = MY::pTask();
   if (! pUnlockingTask)
     return;
-      
+
   LockSet* pReadLocks = pUnlockingTask->pReadLocks();
-  
+
   pReadLocks->vRemove(pLock);
 }
 
@@ -1181,11 +1197,11 @@ void AM::LOCK::vIntendReadUnlocked(Lock* pLock)
 void AM::LOCK::vJustReadLocked(Lock* pLock)
 {
   _static_
-  
+
   Task* pUnlockingTask = MY::pTask();
   if (! pUnlockingTask)
     return;
-      
+
   LockSet* pReadLocks = pUnlockingTask->pReadLocks();
 
   pReadLocks->vAdd(pLock);
@@ -1201,9 +1217,9 @@ void AM::LOCK::vIntendWriteUnlocked(Lock* pLock)
   Task* pUnlockingTask = MY::pTask();
   if (! pUnlockingTask)
     return;
-      
+
   LockSet* pWriteLocks = pUnlockingTask->pWriteLocks();
-  
+
   pWriteLocks->vRemove(pLock);
 }
 
@@ -1213,13 +1229,13 @@ void AM::LOCK::vIntendWriteUnlocked(Lock* pLock)
 void AM::LOCK::vJustWriteLocked(Lock* pLock)
 {
   _static_
-  
+
   Task* pLockingTask = MY::pTask();
   if (! pLockingTask)
     return;
-      
+
   LockSet* pWriteLocks = pLockingTask->pWriteLocks();
-  
+
   pWriteLocks->vAdd(pLock);
 }
 
@@ -1281,7 +1297,7 @@ void AM::LOGICUNIT::vAddReg(LogicUnit* pLogicUnit, void* aReg)
   _static_
 
   pLogicUnit->vAddReg(static_cast< REG<Object,CN_NONE>* >(aReg));
-  
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1290,13 +1306,13 @@ void AM::LOGICUNIT::vAddReg(LogicUnit* pLogicUnit, void* aReg)
 void AM::LOGICUNIT::vDelete(LogicUnit** ppLogicUnit)
 {
   _static_
-  
+
 
   //delete * ppLogicUnit;
-  
+
   LogicUnit* pLogicUnit = * ppLogicUnit;
   * ppLogicUnit = nullptr;
-  
+
   delete pLogicUnit;
 }
 
@@ -1349,9 +1365,9 @@ MarkerMgr* AM::MARKER::pMarkerMgr(void)
 Marker* AM::MARKER::pNewMarker(eOM eOpMarker, Job* pJob)
 {
   _static_
-  
+
   Marker* pMarker;
-  
+
   MarkerMgr* pMarkerMgr = gpAttachMap->m_pMarkerMgr;
   pMarker = pMarkerMgr->pMarker(eOpMarker);
   if (pMarker)
@@ -1378,11 +1394,11 @@ Marker* AM::MARKER::pNewMarker(eOM eOpMarker, Job* pJob)
 void AM::MASTERLOCK::vDropDdlReadLock(LogicUnit* pLogicUnit)
 {
   _static_
-  
+
   RASSERT(LH_HAVE_READ_LOCK == pLogicUnit->m_eDdlLocked);
 
   gpAttachMap->m_oLocks.m_oDdlMasterLock.vDropRead();
-  
+
   pLogicUnit->m_eDdlLocked = LH_HAVE_NO_LOCK;
 }
 
@@ -1392,11 +1408,11 @@ void AM::MASTERLOCK::vDropDdlReadLock(LogicUnit* pLogicUnit)
 void AM::MASTERLOCK::vGrabDdlReadLock(LogicUnit* pLogicUnit)
 {
   _static_
-  
+
   RASSERT(LH_HAVE_NO_LOCK == pLogicUnit->m_eDdlLocked);
-  
+
   gpAttachMap->m_oLocks.m_oDdlMasterLock.vGrabRead();
-  
+
   pLogicUnit->m_eDdlLocked = LH_HAVE_READ_LOCK;
 }
 
@@ -1406,11 +1422,11 @@ void AM::MASTERLOCK::vGrabDdlReadLock(LogicUnit* pLogicUnit)
 void AM::MASTERLOCK::vDropDdlWriteLock(LogicUnit* pLogicUnit)
 {
   _static_
-  
+
   RASSERT(LH_HAVE_WRITE_LOCK == pLogicUnit->m_eDdlLocked);
-  
+
   gpAttachMap->m_oLocks.m_oDdlMasterLock.vDropWrite();
-  
+
   pLogicUnit->m_eDdlLocked = LH_HAVE_NO_LOCK;
 }
 
@@ -1420,11 +1436,11 @@ void AM::MASTERLOCK::vDropDdlWriteLock(LogicUnit* pLogicUnit)
 void AM::MASTERLOCK::vGrabDdlWriteLock(LogicUnit* pLogicUnit)
 {
   _static_
-  
+
   RASSERT(LH_HAVE_NO_LOCK == pLogicUnit->m_eDdlLocked);
 
   gpAttachMap->m_oLocks.m_oDdlMasterLock.vGrabWrite();
-  
+
   pLogicUnit->m_eDdlLocked = LH_HAVE_WRITE_LOCK;
 }
 
@@ -1434,14 +1450,14 @@ void AM::MASTERLOCK::vGrabDdlWriteLock(LogicUnit* pLogicUnit)
 void AM::MASTERLOCK::vDdlLockTestDrop(LogicUnit* pLogicUnit)
 {
   _static_
-  
+
   if (LH_HAVE_READ_LOCK == pLogicUnit->m_eDdlLocked) {
-    
+
     AM::MASTERLOCK::vDropDdlReadLock(pLogicUnit);
   }
   else
   if (LH_HAVE_WRITE_LOCK == pLogicUnit->m_eDdlLocked) {
-    
+
     AM::MASTERLOCK::vDropDdlWriteLock(pLogicUnit);
   }
 }
@@ -1452,9 +1468,9 @@ void AM::MASTERLOCK::vDdlLockTestDrop(LogicUnit* pLogicUnit)
 u8 AM::MASTERLOCK::uDdlLockWord(void)
 {
   _static_
-  
+
   u8 uLockWord = gpAttachMap->m_oLocks.m_oDdlMasterLock.uLockWord();
-  
+
   return uLockWord;
 }
 
@@ -1464,7 +1480,7 @@ u8 AM::MASTERLOCK::uDdlLockWord(void)
 void AM::MASTERLOCK::vDropReap(LogicUnit* pLogicUnit)
 {
   _static_
-  
+
   UNUSED(pLogicUnit);
   gpAttachMap->m_oReapLock.vDropWrite();
 }
@@ -1475,7 +1491,7 @@ void AM::MASTERLOCK::vDropReap(LogicUnit* pLogicUnit)
 void AM::MASTERLOCK::vGrabReap(LogicUnit* pLogicUnit)
 {
   _static_
-  
+
   UNUSED(pLogicUnit);
   gpAttachMap->m_oReapLock.vGrabWrite();
 }
@@ -1486,7 +1502,7 @@ void AM::MASTERLOCK::vGrabReap(LogicUnit* pLogicUnit)
 void AM::MASTERLOCK::vDropTraceLine(void)
 {
   _static_
-  
+
   gpAttachMap->vTraceLockDrop();
 }
 
@@ -1496,7 +1512,7 @@ void AM::MASTERLOCK::vDropTraceLine(void)
 void AM::MASTERLOCK::vGrabTraceLine(void)
 {
   _static_
-  
+
   gpAttachMap->vTraceLockDrop();
 }
 
@@ -1506,7 +1522,7 @@ void AM::MASTERLOCK::vGrabTraceLine(void)
 void AM::MASTERLOCK::vDropTraceMulti(void)
 {
   _static_
-  
+
   gpAttachMap->vTraceMultiLockDrop();
 }
 
@@ -1516,7 +1532,7 @@ void AM::MASTERLOCK::vDropTraceMulti(void)
 void AM::MASTERLOCK::vGrabTraceMulti(void)
 {
   _static_
-  
+
   gpAttachMap->vTraceMultiLockGrab();
 }
 
@@ -1549,13 +1565,29 @@ void AM::MEMORY::vAssertAllocate(void)
 bool AM::MEMORY::bIsRunningLow(void)
 {
   _static_
-  
+
   bool bIsLow = false;
-  
+
   if (gpBufferPool) {
     bIsLow = gpBufferPool->bLowMemory();
   }
-  
+
+  return bIsLow;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is memory running low for a distributed job?                               */
+/*----------------------------------------------------------------------------*/
+bool AM::MEMORY::bIsRunningLowDist(void)
+{
+  _static_
+
+  bool bIsLow = false;
+
+  if (gpBufferPool) {
+    bIsLow = gpBufferPool->bLowMemoryDist();
+  }
+
   return bIsLow;
 }
 
@@ -1569,16 +1601,16 @@ bool AM::MEMORY::bIsRunningLow(void)
 void AM::METRICS::vDerefMetrics(i8 iObjectNo, eCN eClassNo, eDR eAction)
 {
   _static_
- 
+
   if (! AM::SYSARGS::bDerefMetrics())
     return;
-  
+
   Thread* pThread = Thread::pThisTLSThread();
-  
+
   ThreadScratch* pThreadScratch = pThread->pThreadScratch();
 
   i8 iTsc = Hardware::iReadTsc();
-  
+
   pThreadScratch->vAddDerefMetrics(iObjectNo,eClassNo,iTsc,eAction);
 }
 
@@ -1592,7 +1624,7 @@ void AM::METRICS::vDerefMetrics(i8 iObjectNo, eCN eClassNo, eDR eAction)
 bool AM::NO::bFree(void)
 {
   _static_
-  
+
   if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_NO_FREE))
     return true;
   else
@@ -1610,7 +1642,7 @@ bool AM::NO::bFree(void)
 Stz* AM::NODE::szNodeNm(void)
 {
   _static_
-  
+
   return gpAttachMap->m_pGrid->pThisNode()->szNodeNm();
 }
 
@@ -1620,7 +1652,7 @@ Stz* AM::NODE::szNodeNm(void)
 i8 AM::NODE::iThisNodeId(void)
 {
   _static_
-  
+
   return gpAttachMap->m_pGrid->iThisNodeId();
 }
 
@@ -1635,7 +1667,7 @@ i8 AM::NODE::iThisNodeId(void)
 void AM::OBJECT::vAssertClassSize(eCN eClassNo, i8 nClassSize)
 {
   _static_
-  
+
   RASSERT(eClassNo == gxaSizeHeap[eClassNo].m_eClassType);
   RASSERT(nClassSize == gxaSizeHeap[eClassNo].m_nClassSize);
 }
@@ -1646,14 +1678,14 @@ void AM::OBJECT::vAssertClassSize(eCN eClassNo, i8 nClassSize)
 i8 AM::OBJECT::iNextNo(eCN eClassNo)
 {
   _static_
-  
+
   i8 iNo;
-    
+
   if (gpAttachMap && gpAttachMap->m_pNumbering) {
     iNo = gpAttachMap->m_pNumbering->iNextNo(eClassNo);
     if (CN_JOB == eClassNo) {
       i8 iNodeId = AM::GRID::iThisNodeId();
-      
+
       iNo = iNodeId << 48 | iNo;
     }
   }
@@ -1661,7 +1693,7 @@ i8 AM::OBJECT::iNextNo(eCN eClassNo)
     RASSERT(CN_FILE == eClassNo);
     iNo = 0;
   }
-  
+
   return iNo;
 }
 
@@ -1671,11 +1703,11 @@ i8 AM::OBJECT::iNextNo(eCN eClassNo)
 eEC AM::OBJECT::eValidObject(Object* pObject)
 {
   _static_
-  
+
   // valid address in buffer?
   if (! gpBufferPool->bValidAddress(pObject))
     return EC_OBJECT_ADDRESS_INVALID;
-  
+
   // valid class, footer etc?
   eEC eError = pObject->eValidObject();
   if (EC_NONE != eError)
@@ -1724,7 +1756,7 @@ Job* AM::OLIST::pFindJob(JobId tJobId, bool bLockJob)
   _static_
 
   Job* pJob = AM::pOriginatingJobs()->pFindJob(tJobId,bLockJob);
-    
+
   return pJob;
 }
 
@@ -1739,12 +1771,12 @@ Job* AM::OLIST::pFindJob(JobId tJobId, bool bLockJob)
 bool AM::OPERAND::bIsOoO(Operand* pOperand)
 {
   _static_
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // is it a marker ?
-  
+
   if (pOperand->bIsMarker()) {
-  
+
     Marker* pMarker = _pMarker(pOperand);
     if (pMarker->eOpMarker() == OM_CANCELLING)
       return true;
@@ -1770,13 +1802,13 @@ bool AM::OPERAND::bIsOoO(Operand* pOperand)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // is it a infoset ?
-  
+
   if (CN_INFOSET == pOperand->eGetClassNo()) {
     InfoSet* pInfoSet = _pInfoSet(pOperand);
-    
+
     eOI eOpInfoSet = pInfoSet->eOpInfoSet();
     UNUSED(eOpInfoSet);
-    
+
 //    if (OI_PROGRESSUNITS == eOpInfoSet)
 //      return true;
 //    if (OI_SEEKOFFSETS   == eOpInfoSet)
@@ -1785,7 +1817,7 @@ bool AM::OPERAND::bIsOoO(Operand* pOperand)
 //      return true;
 
   }
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   return false;
 }
@@ -1801,7 +1833,7 @@ bool AM::OPERAND::bIsOoO(Operand* pOperand)
 void AM::PARCEL::vRecvContents(Parcel* pParcel, Socket* pSocket)
 {
   _static_
-  
+
   pParcel->vRecvContents(pSocket);
 }
 
@@ -1818,7 +1850,7 @@ Job* AM::PLIST::pFindJob(JobId tJobId, bool bLockJob)
   _static_
 
   Job* pJob = AM::pParticipatingJobs()->pFindJob(tJobId,bLockJob);
-    
+
   return pJob;
 }
 
@@ -1833,9 +1865,9 @@ Job* AM::PLIST::pFindJob(JobId tJobId, bool bLockJob)
 i8 AM::POOL::iFreeSpace(void)
 {
   _static_
-  
+
   i8 nFree = gpBufferPool->iFreeSpace();;
-  
+
   return nFree;
 }
 
@@ -1845,13 +1877,13 @@ i8 AM::POOL::iFreeSpace(void)
 i8 AM::POOL::iPctFree(void)
 {
   _static_
-  
+
   i8 nFree  = iFreeSpace();
   i8 nTotal = iTotalSpace();
-  
+
   i8 iPct = IntLib::iPercent(nFree,nTotal);
 
-  
+
   return iPct;
 }
 
@@ -1861,12 +1893,12 @@ i8 AM::POOL::iPctFree(void)
 i8 AM::POOL::iPctUsed(void)
 {
   _static_
-  
+
   i8 nUsed  = iUsedSpace();
   i8 nTotal = iTotalSpace();
-  
+
   i8 iPct = IntLib::iPercent(nUsed,nTotal);
-  
+
   return iPct;
 }
 
@@ -1876,9 +1908,9 @@ i8 AM::POOL::iPctUsed(void)
 i8 AM::POOL::iTotalSpace(void)
 {
   _static_
-  
+
   i8 nTotal = AM::iRegionSize();
-  
+
   return nTotal;
 }
 
@@ -1888,7 +1920,7 @@ i8 AM::POOL::iTotalSpace(void)
 i8 AM::POOL::iUsedSpace(void)
 {
   _static_
-  
+
   i8 nUsed = AM::iRegionSize()
                - gpBufferPool->iFreeSpace()
                - PoolHelper::iPoolFree()
@@ -1906,7 +1938,7 @@ i8 AM::POOL::nLargeHeap(void)
   _static_
 
   i8 nBufferCount = gpAttachMap->m_xHeaps.Transient.m_pLarge->nBufferCount();
-  
+
   return nBufferCount;
 }
 
@@ -1918,7 +1950,7 @@ i8 AM::POOL::nMediumHeap(void)
   _static_
 
   i8 nBufferCount = gpAttachMap->m_xHeaps.Transient.m_pMedium->nBufferCount();
-  
+
   return nBufferCount;
 }
 
@@ -1930,7 +1962,7 @@ i8 AM::POOL::nSmallHeap(void)
   _static_
 
   i8 nBufferCount = gpAttachMap->m_xHeaps.Transient.m_pSmall->nBufferCount();
-  
+
   return nBufferCount;
 }
 
@@ -1942,7 +1974,7 @@ i8 AM::POOL::nTinyHeap(void)
   _static_
 
   i8 nBufferCount = gpAttachMap->m_xHeaps.Transient.m_pTiny->nBufferCount();
-  
+
   return nBufferCount;
 }
 
@@ -1970,17 +2002,17 @@ bool AM::PROMPT::bToPipelineStmt(String* pAsPipelineStmt,
                                 TokenVec* pFromTokenVec)
 {
   _static_
-  
+
   i8 nTkns = pFromTokenVec->nTokens();
-  
+
   Stz* szOpNm;
   Stz* szOpArg;
-  
+
   char cStageStart   = 'A';
   char cStageCurrent = 'A';
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+
   pAsPipelineStmt->vCopy(
     "pipeline unnamed\n"
     "begin\n"
@@ -1995,12 +2027,12 @@ bool AM::PROMPT::bToPipelineStmt(String* pAsPipelineStmt,
   cStageStart);
 
   ++ cStageCurrent;
-  
+
   pAsPipelineStmt->vCatSprint(
     "  stage stage%c on all partitions :\n"
     ""_Stz,
     cStageCurrent);
-  
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -2009,107 +2041,107 @@ bool AM::PROMPT::bToPipelineStmt(String* pAsPipelineStmt,
     szOpNm = pFromTokenVec->pGet(i_Tkn++)->szChars();
 
     // -- -- -- -- -- -- -- -- -- --
-    
+
     if (szOpNm->bSame("scan"_Stz)) {
-      
+
       szOpArg = pFromTokenVec->pGet(i_Tkn++)->szChars();
 
       pAsPipelineStmt->vCatSprint("    scan %s\n"_Stz,szOpArg);
-      
+
       while (i_Tkn < nTkns) {
         szOpArg = pFromTokenVec->pGet(i_Tkn++)->szChars();
         if (szOpArg->bSame("|"_Stz))
           break;
       }
-      
+
     }
-    
+
     // -- -- -- -- -- -- -- -- -- --
-    
+
     else
     if (szOpNm->bSame("filter"_Stz)) {
-      
+
       pAsPipelineStmt->vCatSprint("    | filter 0"_Stz);
       pAsPipelineStmt->vCatSprint(" \""_Stz);
-      
+
       while (i_Tkn < nTkns) {
         szOpArg = pFromTokenVec->pGet(i_Tkn++)->szChars();
         if (szOpArg->bSame("|"_Stz))
           break;
         pAsPipelineStmt->vCatSprint(" %s"_Stz,szOpArg);
       }
-      
+
       pAsPipelineStmt->vCatSprint(" <>\"\n"_Stz);
     }
-    
+
     // -- -- -- -- -- -- -- -- -- --
-    
+
     else
     if (szOpNm->bSame("project"_Stz)) {
-      
+
       pAsPipelineStmt->vCatSprint("    | project 0"_Stz);
       pAsPipelineStmt->vCatSprint(" \""_Stz);
-      
+
       while (i_Tkn < nTkns) {
         szOpArg = pFromTokenVec->pGet(i_Tkn++)->szChars();
         if (szOpArg->bSame("|"_Stz))
           break;
         pAsPipelineStmt->vCatSprint("%s "_Stz,szOpArg);
       }
-      
+
       pAsPipelineStmt->vCatSprint("\"\n"_Stz);
-            
+
     }
-    
+
     // -- -- -- -- -- -- -- -- -- --
-    
+
     else
     if (szOpNm->bSame("aggreg"_Stz)) {
-      
+
       pAsPipelineStmt->vCatSprint(
         "    | stage%c\n"
         ""_Stz,
         cStageCurrent + 1);
 
       ++ cStageCurrent;
-      
+
       pAsPipelineStmt->vCatSprint(
         "  stage stage%c on origin :\n"
         ""_Stz,
         cStageCurrent);
-      
+
       pAsPipelineStmt->vCatSprint("    aggreg 0"_Stz);
       pAsPipelineStmt->vCatSprint(" \""_Stz);
-      
+
       while (i_Tkn < nTkns) {
         szOpArg = pFromTokenVec->pGet(i_Tkn++)->szChars();
         if (szOpArg->bSame("|"_Stz))
           break;
         pAsPipelineStmt->vCatSprint("%s "_Stz,szOpArg);
       }
-      
+
       pAsPipelineStmt->vCatSprint("\"\n"_Stz);
-            
+
     }
-    
+
     // -- -- -- -- -- -- -- -- -- --
-    
+
     else {
-      
+
       return false;
     }
-    
+
   }
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+
   pAsPipelineStmt->vCatSprint(
     "    | stage%c\n"
     ""_Stz,
     cStageCurrent + 1);
-  
+
   ++ cStageCurrent;
-  
+
   pAsPipelineStmt->vCatSprint(
     "  stage stage%c on origin :\n"
     "    output\n"
@@ -2121,9 +2153,9 @@ bool AM::PROMPT::bToPipelineStmt(String* pAsPipelineStmt,
   pAsPipelineStmt->vConcat(
     "end ;\n"
     ""_Stz);
-  
+
   vTrace("bToPipelineStmt : \n%s\n"_Stz,pAsPipelineStmt->szStz());
-  
+
   return true;
 }
 
@@ -2133,18 +2165,18 @@ bool AM::PROMPT::bToPipelineStmt(String* pAsPipelineStmt,
 InfoSet* AM::PROMPT::pToPromptOut(Stz* szStz)
 {
   _static_
-  
+
   StreamDef* pStreamDef = AM::pInternalTables()->pStreamDef(TI_PROMPTOUT);
   if (! pStreamDef)
     return nullptr;
 
   InfoSet* pInfoSet = new InfoSet(pStreamDef);
   pInfoSet->vOpInfoSet(OI_PROMPTOUT);
-  
+
   Row* pRow = pInfoSet->pAllotRow();
-  
+
   pInfoSet->vDepositRow(pRow,C_VARGS_BEGIN,szStz,C_VARGS_END);
-  
+
   return pInfoSet;
 }
 
@@ -2200,7 +2232,7 @@ i8 AM::PTNMAP::nPtnsPerNode(void)
 LglPtn AM::PTNMAP::tRobinToDtdPtnStream(i8 iRobin)
 {
   _static_
-  
+
   return gpAttachMap->m_pLglPtnMap->tRobinToDtdPtnStream(iRobin);
 }
 
@@ -2210,7 +2242,7 @@ LglPtn AM::PTNMAP::tRobinToDtdPtnStream(i8 iRobin)
 LglPtn AM::PTNMAP::tRobinToLclPtnStream(i8 iRobin)
 {
   _static_
-  
+
   return gpAttachMap->m_pLglPtnMap->tRobinToLclPtnStream(iRobin);
 }
 
@@ -2220,7 +2252,7 @@ LglPtn AM::PTNMAP::tRobinToLclPtnStream(i8 iRobin)
 LglPtn AM::PTNMAP::tRobinToNdePtnNo(i8 iRobin)
 {
   _static_
-  
+
   return gpAttachMap->m_pLglPtnMap->tRobinToNdePtnNo(iRobin);
 }
 
@@ -2234,11 +2266,11 @@ LglPtn AM::PTNMAP::tRobinToNdePtnNo(i8 iRobin)
 i8 AM::SCHEDULER::nIdleThreads(void)
 {
   _static_
-  
+
   Schedule* pSchedule = gpAttachMap->m_pSchedule;
-  
+
   i8 nIdle = pSchedule->nIdleThreads();
-  
+
   return nIdle;
 }
 
@@ -2252,11 +2284,11 @@ i8 AM::SCHEDULER::nIdleThreads(void)
 void AM::SE::vWhereAmI(void)
 {
   _static_
-  
+
   printf("AM::SE::vWhereAmI()\n");
-  
+
   HeadsUp oHeadsUp((Stz*)__func__);
-  
+
 //  SP_Pointer spThread;
 //  Thread* pThread = MY::pThread();
 //  vTrace("Thread %s\n"_Stz,spThread.sz(pThread));
@@ -2278,12 +2310,12 @@ void AM::SE::vWhereAmI(void)
 //  vTrace("LogicUnit %s\n"_Stz,spLogicUnit.sz(pLogicUnit));
 //
 //  vTrace("\n"_Stz);
-  
+
   if (EC_NONE == pTask->eValidObject()) {
     pTask->vDump();
   }
-  
-  
+
+
   AM::pSchedule()->vDumpBidingSet();
   AM::pSchedule()->vDumpExecutingSet();
   AM::pSchedule()->vDumpReadyQueue();
@@ -2306,7 +2338,7 @@ void AM::SE::vWhereAmI(void)
 bool AM::SHOW::bBoot(void)
 {
   _static_
-  
+
   if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_BOOT))
     return true;
   else
@@ -2319,7 +2351,7 @@ bool AM::SHOW::bBoot(void)
 bool AM::SHOW::bDir(void)
 {
   _static_
-  
+
   if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_DIR))
     return true;
   else
@@ -2332,7 +2364,7 @@ bool AM::SHOW::bDir(void)
 bool AM::SHOW::bDir_Failure(void)
 {
   _static_
-  
+
   if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_DIR_FAILURE))
     return true;
   else
@@ -2345,7 +2377,7 @@ bool AM::SHOW::bDir_Failure(void)
 bool AM::SHOW::bConnection(void)
 {
   _static_
-  
+
   if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_CONNECTION))
     return true;
   else
@@ -2358,7 +2390,7 @@ bool AM::SHOW::bConnection(void)
 bool AM::SHOW::bException(void)
 {
   _static_
-  
+
   if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_EXCEPTION))
     return true;
   else
@@ -2371,7 +2403,7 @@ bool AM::SHOW::bException(void)
 bool AM::SHOW::bFile(void)
 {
   _static_
-  
+
   if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_FILE))
     return true;
   else
@@ -2384,7 +2416,7 @@ bool AM::SHOW::bFile(void)
 bool AM::SHOW::bFile_Failure(void)
 {
   _static_
-  
+
   if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_FILE_FAILURE))
     return true;
   else
@@ -2397,7 +2429,7 @@ bool AM::SHOW::bFile_Failure(void)
 bool AM::SHOW::bLowMem(void)
 {
   _static_
-  
+
   if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_LOWMEM))
     return true;
   else
@@ -2410,7 +2442,7 @@ bool AM::SHOW::bLowMem(void)
 bool AM::SHOW::bLowMem_Recv(void)
 {
   _static_
-  
+
   if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_LOWMEM_RECV))
     return true;
   else
@@ -2423,7 +2455,7 @@ bool AM::SHOW::bLowMem_Recv(void)
 bool AM::SHOW::bRecurring(void)
 {
   _static_
-  
+
   if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_RECURRING))
     return true;
   else
@@ -2436,7 +2468,7 @@ bool AM::SHOW::bRecurring(void)
 bool AM::SHOW::bSocket(void)
 {
   _static_
-  
+
   if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_SOCKET))
     return true;
   else
@@ -2449,7 +2481,7 @@ bool AM::SHOW::bSocket(void)
 bool AM::SHOW::bSocket_Failure(void)
 {
   _static_
-  
+
   if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_SOCKET_FAILURE))
     return true;
   else
@@ -2467,9 +2499,9 @@ bool AM::SHOW::bSocket_Failure(void)
 Op* AM::STAGE::pGetOp(Stage* pStage, LglPtn tLglPtn, i8 i_Op)
 {
   _static_
-  
+
   Op* pOp = pStage->pPipeDstOp(tLglPtn,i_Op);
-  
+
   return pOp;
 
 }
@@ -2484,7 +2516,7 @@ Op* AM::STAGE::pGetOp(Stage* pStage, LglPtn tLglPtn, i8 i_Op)
 Starter* AM::STARTER::pStarter(void)
 {
   _static_
-  
+
   return gpAttachMap->m_pStarter;
 }
 
@@ -2498,17 +2530,17 @@ Starter* AM::STARTER::pStarter(void)
 void AM::STR::vReplaceTags(Stz* szDst, Stz* szSrc, TagSet* pTags)
 {
   _static_
-  
+
   szDst->vCopy(szSrc);
-  
+
   i8 nEnames = pTags->nItems();
   for (i8 i_Tag = 0; i_Tag < nEnames; i_Tag++) {
     if (! pTags->bIsString(i_Tag))
       continue;
-    
+
     Stz* szName  = pTags->szName(i_Tag);
     Stz* szValue = pTags->szValue(i_Tag);
-    
+
     IGNORE_RETURN( StrLib::bReplace(szDst->azChar(),
                                     szName->azChar(),
                                     szValue->azChar()) );
@@ -2527,7 +2559,7 @@ void AM::STR::vReplaceTags(Stz* szDst, Stz* szSrc, TagSet* pTags)
 i8 AM::SYSARGS::nDefinedNodes(void)
 {
   _static_
-  
+
   return gpAttachMap->m_xSysArgs.m_nDefinedNodes;
 }
 
@@ -2538,7 +2570,7 @@ i8 AM::SYSARGS::nDefinedNodes(void)
 bool AM::SYSARGS::bDerefMetrics(void)
 {
   _static_
-  
+
   if (gpAttachMap)
     return gpAttachMap->m_xSysArgs.m_bDerefMetrics;
   else
@@ -2551,7 +2583,7 @@ bool AM::SYSARGS::bDerefMetrics(void)
 void AM::SYSARGS::vDerefMetrics(bool bDerefMetrics)
 {
   _static_
-  
+
   gpAttachMap->m_xSysArgs.m_bDerefMetrics = bDerefMetrics;
 }
 
@@ -2561,7 +2593,7 @@ void AM::SYSARGS::vDerefMetrics(bool bDerefMetrics)
 bool AM::SYSARGS::bDistJob(void)
 {
   _static_
-  
+
   if (gpAttachMap)
     return gpAttachMap->m_xSysArgs.m_bDistJob;
   else
@@ -2574,7 +2606,7 @@ bool AM::SYSARGS::bDistJob(void)
 bool AM::SYSARGS::bJobMetrics(void)
 {
   _static_
-  
+
   if (gpAttachMap)
     return gpAttachMap->m_xSysArgs.m_bJobMetrics;
   else
@@ -2587,7 +2619,7 @@ bool AM::SYSARGS::bJobMetrics(void)
 void AM::SYSARGS::vJobMetrics(bool bJobMetrics)
 {
   _static_
-  
+
   gpAttachMap->m_xSysArgs.m_bJobMetrics = bJobMetrics;
 }
 
@@ -2599,7 +2631,7 @@ void AM::SYSARGS::vJobMetrics(bool bJobMetrics)
 bool AM::SYSARGS::bLockTracking(void)
 {
   _static_
-  
+
   if (gpAttachMap)
     return gpAttachMap->m_xSysArgs.m_bLockTracking;
   else
@@ -2612,7 +2644,7 @@ bool AM::SYSARGS::bLockTracking(void)
 void AM::SYSARGS::vLockTracking(bool bLockTracking)
 {
   _static_
-  
+
   gpAttachMap->m_xSysArgs.m_bLockTracking = bLockTracking;
 }
 
@@ -2624,7 +2656,7 @@ void AM::SYSARGS::vLockTracking(bool bLockTracking)
 i8 AM::SYSARGS::nMetricsSleep(void)
 {
   _static_
-  
+
   return gpAttachMap->m_xSysArgs.m_nMetricsSleep;
 }
 
@@ -2634,7 +2666,7 @@ i8 AM::SYSARGS::nMetricsSleep(void)
 void AM::SYSARGS::vMetricsSleep(i8 nMetricsSleep)
 {
   _static_
-  
+
   gpAttachMap->m_xSysArgs.m_nMetricsSleep = nMetricsSleep;
 }
 
@@ -2649,7 +2681,7 @@ void AM::SYSARGS::vMetricsSleep(i8 nMetricsSleep)
 i8 AM::SYSARGS::nOperandYield(void)
 {
   _static_
-  
+
   return gpAttachMap->m_xSysArgs.m_nOperandYield;
 }
 
@@ -2659,7 +2691,7 @@ i8 AM::SYSARGS::nOperandYield(void)
 void AM::SYSARGS::vOperandYield(i8 nOperandYield)
 {
   _static_
-  
+
   gpAttachMap->m_xSysArgs.m_nOperandYield = nOperandYield;
 }
 
@@ -2670,7 +2702,7 @@ void AM::SYSARGS::vOperandYield(i8 nOperandYield)
 i8 AM::SYSARGS::iOptimiserLvl(void)
 {
   _static_
-  
+
   return gpAttachMap->m_xSysArgs.m_iOptimiserLvl;
 }
 
@@ -2680,7 +2712,7 @@ i8 AM::SYSARGS::iOptimiserLvl(void)
 void AM::SYSARGS::vOptimiserLvl(i8 iOptimiserLvl)
 {
   _static_
-  
+
   gpAttachMap->m_xSysArgs.m_iOptimiserLvl = iOptimiserLvl;
 }
 
@@ -2695,7 +2727,7 @@ void AM::SYSARGS::vOptimiserLvl(i8 iOptimiserLvl)
 i8 AM::SYSARGS::nPtnsPerNode(void)
 {
   _static_
-  
+
   return gpAttachMap->m_xSysArgs.m_nPtnsPerNode;
 }
 
@@ -2705,7 +2737,7 @@ i8 AM::SYSARGS::nPtnsPerNode(void)
 bool AM::SYSARGS::bSysMetrics(void)
 {
   _static_
-  
+
   if (gpAttachMap)
     return gpAttachMap->m_xSysArgs.m_bSysMetrics;
   else
@@ -2718,7 +2750,7 @@ bool AM::SYSARGS::bSysMetrics(void)
 void AM::SYSARGS::vSysMetrics(bool bSysMetrics)
 {
   _static_
-  
+
   gpAttachMap->m_xSysArgs.m_bSysMetrics = bSysMetrics;
 }
 
@@ -2748,7 +2780,7 @@ void AM::SYSARGS::vThreadsInc(i8 iBy)
 TagSet* AM::SYSARGS::pTagSet(void)
 {
   _static_
-  
+
   return & gpAttachMap->m_xSysArgs.m_oArgTags;
 }
 
@@ -2773,12 +2805,12 @@ void AM::SYSARGS::vVerbose(bool bVerbose)
 i8 AM::SYSTEM::nActiveJobs(void)
 {
   _static_
-    
+
   i8 nActiveJobs =   gpAttachMap->m_pJobs->pLocalJobs()->nJobs()
                    + gpAttachMap->m_pJobs->pOriginatingJobs()->nJobs()
                    + gpAttachMap->m_pJobs->pParticipatingJobs()->nJobs()
                    ;
-  
+
   return nActiveJobs;
 }
 
@@ -2788,11 +2820,11 @@ i8 AM::SYSTEM::nActiveJobs(void)
 i8 AM::SYSTEM::nNanoseconds(void)
 {
   _static_
-  
+
   gpAttachMap->m_oSince.vUpdate();
-  
+
   i8 nElapsed = gpAttachMap->m_oSince.iNanoseconds();
-    
+
   return nElapsed;
 }
 
@@ -2806,14 +2838,35 @@ bool AM::SYSTEM::bPassesLowMem(Job* pJob)
   if (! AM::MEMORY::bIsRunningLow()) {
     return true;
   }
-  
+
   //PoolHelper::vPoolAnalyze();
 
   //pJob->pJobTags()->vContentDump();
-  
+
   if (pJob->bHasTag(C_TAG_LOWMEMORY))
     return true;
-  
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* passes the low-memory condition?                                           */
+/*----------------------------------------------------------------------------*/
+bool AM::SYSTEM::bPassesLowMemDist(Job* pJob)
+{
+  _static_
+
+  if (! AM::MEMORY::bIsRunningLowDist()) {
+    return true;
+  }
+
+  //PoolHelper::vPoolAnalyze();
+
+  //pJob->pJobTags()->vContentDump();
+
+  if (pJob->bHasTag(C_TAG_LOWMEMORY))
+    return true;
+
   return false;
 }
 

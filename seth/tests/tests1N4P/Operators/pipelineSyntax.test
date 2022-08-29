@@ -10,13 +10,13 @@ success
 pipeline
 begin
 
-  stage stageA on origin:
+  stage stageA on origin :
   start | pulse once | stageB
 
   stage stageB on all partitions:
   scan OpTable | stageC
 
-  stage stageC on origin:
+  stage stageC on origin :
   output | sink | stageA
 
 end
@@ -26,13 +26,13 @@ failure contains: 'invalid command'
 // missing begin
 pipeline testPipeline
 
-  stage stageA on origin:
+  stage stageA on origin :
   start | pulse once | stageB
 
   stage stageB on all partitions:
   scan OpTable | stageC
 
-  stage stageC on origin:
+  stage stageC on origin :
   output | sink | stageA
 
   end
@@ -42,13 +42,13 @@ failure contains: 'invalid command'
 // missing stage
 pipeline testPipeline
 begin
-  stageA on origin:
+  stageA on origin :
   start | pulse once | stageB
 
   stage stageB on all partitions:
   scan OpTable | stageC
 
-  stage stageC on origin:
+  stage stageC on origin :
   output | sink | stageA
 
 end
@@ -58,13 +58,13 @@ failure contains: 'invalid command'
 // missing on
 pipeline testPipeline
 begin
-  stage stageA origin:
+  stage stageA origin :
   start | pulse once | stageB
 
   stage stageB on all partitions:
   scan OpTable | stageC
 
-  stage stageC on origin:
+  stage stageC on origin :
   output | sink | stageA
 
 end
@@ -80,7 +80,7 @@ begin
   stage stageB on all partitions:
   scan OpTable | stageC
 
-  stage stageC on origin:
+  stage stageC on origin :
   output | sink | stageA
 
 end
