@@ -8,7 +8,8 @@ grammar sql ;
 
 // statement / query -----------------------------------------------------------
 statement         : (ANTLR ':')? statementChoice ';' ;
-statementChoice   :  queryStatement | explainStatement | statisticsStatement ;
+statementChoice   :  queryStatement | explainStatement ;
+//statementChoice   :  queryStatement | explainStatement | statisticsStatement ;
 
 queryStatement    : query ;
 explainStatement  : (queryHint)* EXPLAIN  explainOptions* statementChoice ;
@@ -25,12 +26,12 @@ statisticsStatement : (queryHint)* (STATS | STATISTICS) statementChoice ;
 query             : (queryHint)*
                     ( selectQuery
                     | setQuery
-                    | insertQuery
-                    | deleteQuery
-                    | updateQuery
-                    | createQuery
-                    | dropQuery
-                    | truncateQuery
+//                    | insertQuery
+//                    | deleteQuery
+//                    | updateQuery
+//                    | createQuery
+//                    | dropQuery
+//                    | truncateQuery
                     ) ;
 
 queryHint         : HINT_START (hint)? (',' hint)* HINT_END ;

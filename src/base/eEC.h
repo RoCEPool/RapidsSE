@@ -868,7 +868,7 @@ static Stz* aErrorMsg[] =
   /* EC_EXPR_MUST_BE_BOOLEAN          */ (Stz*)"Predicate expression must have a boolean result",          // SQL Compiler Subsystem
   /* EC_EXPR_MUST_BE_EQUIJOIN         */ (Stz*)"Join predicate expression must be an equi-join and contain an equality comparison",           // SQL Compiler Subsystem
   /* EC_EXPR_NESTED_AGGREGATE         */ (Stz*)"Nested aggregate expressions are not permitted",           // SQL Compiler Subsystem
-  /* EC_EXPR_NOT_IN_GROUPBY_LIST      */ (Stz*)"Expression is not present in the GROUP BY list",           // SQL Compiler Subsystem
+  /* EC_EXPR_NOT_IN_GROUPBY_LIST      */ (Stz*)"Expression does not appear in the GROUP BY list or as part of an aggregate", // SQL Compiler Subsystem
   /* EC_EXPR_NOT_PROJECTED            */ (Stz*)"Invalid expression because it is not being projected",     // SQL Compiler Subsystem
   /* EC_EXPR_TYPE_INCOMPATIBLE        */ (Stz*)"Incompatible expression types",                            // SQL Compiler Subsystem
 

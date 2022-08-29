@@ -3177,12 +3177,21 @@ Bcd SqlPlanner::xCleanDecimal(Stz* szStr, i8 iLine, i8 iColumn)
                             ": Max/min decimal precision supported is [-1,407,374,883,553.28, 1,407,374,883,553.27] : %s"_Stz, szStr);
   }
 
-
-
   ASSERT(sizeof(Bcd) == C_BYTES_PER_WORD);
 
   Bcd xBcd;
-  xBcd.vSet(iMantissa, iScale);
+
+  // REVISE: If the value is small enough then represent it with 2 decimal places
+  // so it prints nicely. It should strictly have a scale of 0.
+  if ( iScale == 0 &&
+      (iMantissa * 100) < C_BCD_MAX &&
+      (iMantissa * 100) > C_BCD_MIN ) {
+    xBcd.vSet(iMantissa * 100, 2);
+
+  } else {
+    xBcd.vSet(iMantissa, iScale);
+  }
+
   return xBcd;
 }
 
