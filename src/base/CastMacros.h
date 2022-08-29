@@ -387,8 +387,24 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // TO VCH
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#define _BOL_TOVCH(iErrorCode) \
-  iErrorCode = EC_NOT_IMPLEMENTED;
+#define _BOL_TOVCH(iErrorCode, szDstArea)                                  \
+{                                                                          \
+  iArg1 = *(--paW);                                                        \
+  if (iErrorCode != EC_NONE ||                                             \
+      iArg1 == C_DATUM_NULL) {                                             \
+    *paW++ = C_DATUM_NULL;                                                 \
+  }                                                                        \
+  else {                                                                   \
+    if (iArg1)                                                             \
+      strcpy(szDstArea,"true");                                            \
+    else                                                                   \
+      strcpy(szDstArea,"false");                                           \
+    *paW++ = (i8)szDstArea;                                                \
+    szDstArea += strlen(szDstArea) + 1;                                    \
+  }                                                                        \
+}
+
+
 
 #define _BCD_TOVCH(iErrorCode, szDstArea)                                  \
   {                                                                        \
