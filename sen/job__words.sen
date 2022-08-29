@@ -63,6 +63,7 @@
   SendNode[] node.sendSocket@ to Socket[]
 
   Socket[].isNotNull if
+
     Socket[].grabWrite
 
     [job] Socket[].sendObject discard
@@ -83,6 +84,8 @@
   SendNode[] node.sendSocket@ to Socket[]
 
   Socket[].isNotNull if
+
+    Socket[].grabWrite
 
     [job].rejectJob@ Socket[].sendObject discard
 
