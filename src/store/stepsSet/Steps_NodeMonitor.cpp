@@ -57,7 +57,11 @@ void Step::vNodeMonitorInspectGrid(void)
              pNode->eState() == NS_ACTIVE ? "running"_Stz : "not running"_Stz);
 
       if (pNode && (pNode->eState() == NS_INACTIVE)) {
-/*
+
+       /**
+        ** PARTICIPANT JOBS HANDLING TO BE CODED
+        **
+        **
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // Notify participant jobs
 
@@ -91,7 +95,8 @@ void Step::vNodeMonitorInspectGrid(void)
         }
         pPtpJobList->vDropLock();
 
-*/
+      **/
+
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // Notify Originating jobs
 
@@ -105,10 +110,6 @@ void Step::vNodeMonitorInspectGrid(void)
         while (pCursor) {
 
           Job *pJob = _pJob(pCursor->m_pObject);
-
-          //if (pJob->eJobError() != EC_NONE) {
-          //  continue;
-          //}
 
           // get the next job
           pCursor = pOriginJobList->pNext(pCursor);
