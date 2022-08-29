@@ -879,9 +879,25 @@ Stz* AM::JOB::szJobNm(Job* pJob)
 
 
 /*----------------------------------------------------------------------------*/
-/* test if the job passes all pre-execution requirements                      */
+/* test if the job passes all pre-execution requirements for distributed jobs */
 /*----------------------------------------------------------------------------*/
-eEC AM::JOB::ePreExecuteTest(Job* pJob)
+eEC AM::JOB::ePreExecuteDist(Job* pJob)
+{
+  _static_
+
+  if (! AM::SYSTEM::bPassesLowMemDist(pJob))
+    return EC_LOW_MEMORY;
+
+  if (! AM::SYSTEM::bPassesOpenSystem(pJob))
+    return EC_SYSTEM_CLOSED;
+
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test if the job passes all pre-execution requirements for local jobs       */
+/*----------------------------------------------------------------------------*/
+eEC AM::JOB::ePreExecuteLocal(Job* pJob)
 {
   _static_
 
@@ -1452,6 +1468,22 @@ bool AM::MEMORY::bIsRunningLow(void)
     bIsLow = gpBufferPool->bLowMemory();
   }
   
+  return bIsLow;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is memory running low for a distributed job?                               */
+/*----------------------------------------------------------------------------*/
+bool AM::MEMORY::bIsRunningLowDist(void)
+{
+  _static_
+
+  bool bIsLow = false;
+
+  if (gpBufferPool) {
+    bIsLow = gpBufferPool->bLowMemoryDist();
+  }
+
   return bIsLow;
 }
 
@@ -2704,6 +2736,27 @@ bool AM::SYSTEM::bPassesLowMem(Job* pJob)
   if (pJob->bHasTag(C_TAG_LOWMEMORY))
     return true;
   
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* passes the low-memory condition?                                           */
+/*----------------------------------------------------------------------------*/
+bool AM::SYSTEM::bPassesLowMemDist(Job* pJob)
+{
+  _static_
+
+  if (! AM::MEMORY::bIsRunningLowDist()) {
+    return true;
+  }
+
+  //PoolHelper::vPoolAnalyze();
+
+  //pJob->pJobTags()->vContentDump();
+
+  if (pJob->bHasTag(C_TAG_LOWMEMORY))
+    return true;
+
   return false;
 }
 
