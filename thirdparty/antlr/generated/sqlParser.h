@@ -1,5 +1,5 @@
 
-// Generated from /Users/alka/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
+// Generated from /Users/craig/repos/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
 
 #pragma once
 
@@ -224,7 +224,6 @@ public:
     virtual size_t getRuleIndex() const override;
     QueryStatementContext *queryStatement();
     ExplainStatementContext *explainStatement();
-    StatisticsStatementContext *statisticsStatement();
 
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -368,12 +367,6 @@ public:
     virtual size_t getRuleIndex() const override;
     SelectQueryContext *selectQuery();
     SetQueryContext *setQuery();
-    InsertQueryContext *insertQuery();
-    DeleteQueryContext *deleteQuery();
-    UpdateQueryContext *updateQuery();
-    CreateQueryContext *createQuery();
-    DropQueryContext *dropQuery();
-    TruncateQueryContext *truncateQuery();
     std::vector<QueryHintContext *> queryHint();
     QueryHintContext* queryHint(size_t i);
 

@@ -126,16 +126,16 @@ namespace Parser
     // For usability purposes we will return a syntax error indicating such.
 
     // Statement types not implemented
-    antlrcpp::Any visitStatisticsStatement(sqlParser::StatisticsStatementContext *pCtx) override { __NOT_IMPL("STATISTICS")}
+//    antlrcpp::Any visitStatisticsStatement(sqlParser::StatisticsStatementContext *pCtx) override { __NOT_IMPL("STATISTICS")}
 
     // Query types not implemented
-    antlrcpp::Any visitInsertQuery(sqlParser::InsertQueryContext *pCtx)            override { __NOT_IMPL("INSERT")}
-    antlrcpp::Any visitDeleteQuery(sqlParser::DeleteQueryContext *pCtx)            override { __NOT_IMPL("DELETE")}
-    antlrcpp::Any visitUpdateQuery(sqlParser::UpdateQueryContext *pCtx)            override { __NOT_IMPL("UPDATE")}
-    antlrcpp::Any visitCreateQuery(sqlParser::CreateQueryContext *pCtx)            override { __NOT_IMPL("CREATE")}
-    antlrcpp::Any visitDropTable(sqlParser::DropTableContext *pCtx)                override { __NOT_IMPL("DROP TABLE")}
-    antlrcpp::Any visitDropIndex(sqlParser::DropIndexContext *pCtx)                override { __NOT_IMPL("DROP INDEX")}
-    antlrcpp::Any visitTruncateQuery(sqlParser::TruncateQueryContext *pCtx)        override { __NOT_IMPL("TRUNCATE")}
+//    antlrcpp::Any visitInsertQuery(sqlParser::InsertQueryContext *pCtx)            override { __NOT_IMPL("INSERT")}
+//    antlrcpp::Any visitDeleteQuery(sqlParser::DeleteQueryContext *pCtx)            override { __NOT_IMPL("DELETE")}
+//    antlrcpp::Any visitUpdateQuery(sqlParser::UpdateQueryContext *pCtx)            override { __NOT_IMPL("UPDATE")}
+//    antlrcpp::Any visitCreateQuery(sqlParser::CreateQueryContext *pCtx)            override { __NOT_IMPL("CREATE")}
+//    antlrcpp::Any visitDropTable(sqlParser::DropTableContext *pCtx)                override { __NOT_IMPL("DROP TABLE")}
+//    antlrcpp::Any visitDropIndex(sqlParser::DropIndexContext *pCtx)                override { __NOT_IMPL("DROP INDEX")}
+//    antlrcpp::Any visitTruncateQuery(sqlParser::TruncateQueryContext *pCtx)        override { __NOT_IMPL("TRUNCATE")}
 
     // SelectQuery clauses not implemented
     // distinct is handled in visitSelectExpr
