@@ -50,12 +50,16 @@ void Step::vAddSteps_Sen(void)
 void Step::vSenColon(void)
 {
   ENTRY();
-  
+
+  bool b;
   s256 sWordNm;
-  
+  eEC eError;
+
   m_pSenCompiler->vMode(CM_COMPILING);
   
-  m_pInput->vReadToken();
+  b = m_pInput->bReadToken(eError);
+  UNUSED(b);
+
   sWordNm = m_pInput->szChars();
   
   //vTrace("Colon: %s\n"_Stz,sWordNm.szStz());
@@ -89,9 +93,13 @@ void Step::vSenColon(void)
 void Step::vSenComment(void)
 {
   ENTRY();
-  
+
+  bool b;
+  eEC eError = EC_NONE;
+
   for (;;) {
-    m_pInput->vReadToken();
+    b = m_pInput->bReadToken(eError);
+    UNUSED(b);
     if (m_pInput->szChars()->bEqual(")"_Stz))
       break;
   }
@@ -274,8 +282,12 @@ void Step::vSenExit_RT(void)
 void Step::vSenFind(void)
 {
   ENTRY();
-  
-  m_pInput->vReadToken();
+
+  bool b;
+  eEC eError = EC_NONE;
+
+  b = m_pInput->bReadToken(eError);
+  UNUSED(b);
 
   s32 sWordNm;
   sWordNm = m_pInput->szChars();
@@ -701,11 +713,15 @@ void Step::vSenNop(void)
 void Step::vSenPostpone(void)
 {
   ENTRY();
-  
+
+  bool b;
+  eEC eError = EC_NONE;
+
   Word* pCurrentWord = m_pSenCompiler->pCurrentWord();
   
   // get name of word to be called
-  m_pInput->vReadToken();
+  b = m_pInput->bReadToken(eError);
+  UNUSED(b);
 
   // find the word in dic stack
   Word* pCalledWord = m_oDicStack.pFindWord(m_pInput->szChars());
@@ -746,13 +762,17 @@ void Step::vSenPostpone(void)
 void Step::vSenProcText(void)
 {
   ENTRY();
-  
+
+  bool b;
   s256 sWordNm;
   s4K sProcedure;
-  
+
+  eEC eError = EC_NONE;
+
   // to be coded ...
   for (i8 i_Tkn = 0; /*none*/; i_Tkn++) {
-    m_pInput->vReadToken();
+    b = m_pInput->bReadToken(eError);
+    UNUSED(b);
     if (m_pInput->szChars()->bEqual(";"_Stz))
       break;
     

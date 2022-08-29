@@ -30,6 +30,9 @@ namespace Parser
   private:
     // Coerce any expression types to avoid an invalid result type
     static void vExprTypeCoercion(PlanNode* pRootNode, QueryNode* pStartNode);
+    // TODO: In the above function, check if we have a cast of a literal.
+    //       If so, check that the literal can be cast correctly by coercing it
+    //       and replacing the cast.
 
     // Validate that all expressions do not have an invalid result type
     static void vValidateExprResultType(PlanNode* pRootNode, QueryNode* pStartNode);
@@ -45,6 +48,9 @@ namespace Parser
 
     // Validate that all join predicates are equijoins
     static void vValidateJoinPredicatesAreEquiJoins(PlanNode* pRootNode, QueryNode* pStartNode);
+
+    // Validate that there are no nested aggregate expressions
+    static void vValidateNoNestedAggregates(PlanNode* pRootNode, QueryNode* pStartNode);
 
     // Validate that the aggregate and group-by expressions are correctly specified
     static void vValidateGroupByExprs(PlanNode* pRootNode, QueryNode* pStartNode);

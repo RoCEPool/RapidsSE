@@ -134,29 +134,29 @@ rows: (*,'explainPlan','
 -> -> -> tableScanOp
          » table: (rapidsse.public.nation)')
 
-// Extract from a integer
+// Substring from a integer
 EXPLAIN SELECT SUBSTRING(42, 1, 2) FROM nation;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (SUBSTRING(INTEGER, INTEGER, INTEGER)) in expression (SUBSTRING(42, 1, 2))'
 
-// Extract from a float
+// Substring from a float
 EXPLAIN SELECT SUBSTRING(42.0e0, 1, 2) FROM nation;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (SUBSTRING(FLOAT, INTEGER, INTEGER)) in expression (SUBSTRING(4.2000000000e+01, 1, 2))'
 
-// Extract from a decimal
+// Substring from a decimal
 EXPLAIN SELECT SUBSTRING(42.0, 1, 2) FROM nation;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (SUBSTRING(DECIMAL, INTEGER, INTEGER)) in expression (SUBSTRING(42.0, 1, 2))'
 
-// Extract from a date
+// Substring from a date
 EXPLAIN SELECT SUBSTRING(DATE '2021-11-09', 1, 2) FROM nation;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (SUBSTRING(DATE, INTEGER, INTEGER)) in expression (SUBSTRING(DATE ''2021-11-09'', 1, 2))'
 
-// Extract from a time
+// Substring from a time
 EXPLAIN SELECT SUBSTRING(TIME '16:58:23', 1, 2) FROM nation;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (SUBSTRING(TIME, INTEGER, INTEGER)) in expression (SUBSTRING(TIME ''16:58:23'', 1, 2))'
 
-// Extract from a timestamp
+// Substring from a timestamp
 EXPLAIN SELECT SUBSTRING(TIMESTAMP '2021-11-09 16:58:23.123', 1, 2) FROM nation;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (SUBSTRING(TIMESTAMP, INTEGER, INTEGER)) in expression (SUBSTRING(TIMESTAMP ''2021-11-09 16:58:23.123000'', 1, 2))'
 
 // Extract from a string
 EXPLAIN SELECT SUBSTRING('abcdef', 1, 2) FROM nation;
@@ -193,7 +193,7 @@ rows: (*,'explainPlan','
 
 // Extract with a boolean   FROM argument
 EXPLAIN SELECT SUBSTRING(n_name, true, 2) FROM nation;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (SUBSTRING(VARCHAR, BOOLEAN, INTEGER)) in expression (SUBSTRING(rapidsse.public.nation.n_name, true, 2))'
 
 // Extract with a integer   FROM argument
 EXPLAIN SELECT SUBSTRING(n_name, 1, 2) FROM nation;
@@ -213,27 +213,27 @@ rows: (*,'explainPlan','
 
 // Extract with a float     FROM argument
 EXPLAIN SELECT SUBSTRING(n_name, 1.0e0, 2) FROM nation;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (SUBSTRING(VARCHAR, FLOAT, INTEGER)) in expression (SUBSTRING(rapidsse.public.nation.n_name, 1.0000000000e+00, 2))'
 
 // Extract with a decimal   FROM argument
 EXPLAIN SELECT SUBSTRING(n_name, 1.0, 2) FROM nation;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (SUBSTRING(VARCHAR, DECIMAL, INTEGER)) in expression (SUBSTRING(rapidsse.public.nation.n_name, 1.0, 2))'
 
 // Extract with a date      FROM argument
 EXPLAIN SELECT SUBSTRING(n_name, DATE '2021-11-09', 2) FROM nation;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (SUBSTRING(VARCHAR, DATE, INTEGER)) in expression (SUBSTRING(rapidsse.public.nation.n_name, DATE ''2021-11-09'', 2))'
 
 // Extract with a time      FROM argument
 EXPLAIN SELECT SUBSTRING(n_name, TIME '16:58:23', 2) FROM nation;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (SUBSTRING(VARCHAR, TIME, INTEGER)) in expression (SUBSTRING(rapidsse.public.nation.n_name, TIME ''16:58:23'', 2))'
 
 // Extract with a timestamp FROM argument
 EXPLAIN SELECT SUBSTRING(n_name, TIMESTAMP '2021-11-09 16:58:23.123', 2) FROM nation;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (SUBSTRING(VARCHAR, TIMESTAMP, INTEGER)) in expression (SUBSTRING(rapidsse.public.nation.n_name, TIMESTAMP ''2021-11-09 16:58:23.123000'', 2))'
 
 // Extract with a string    FROM argument
 EXPLAIN SELECT SUBSTRING(n_name, 'abcdef', 2) FROM nation;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (SUBSTRING(VARCHAR, VARCHAR, INTEGER)) in expression (SUBSTRING(rapidsse.public.nation.n_name, ''abcdef'', 2))'
 
 // Extract with a null      FROM argument
 EXPLAIN SELECT SUBSTRING(n_name, NULL, 2) FROM nation;
@@ -254,7 +254,7 @@ rows: (*,'explainPlan','
 
 // Extract with a boolean   LENGTH argument
 EXPLAIN SELECT SUBSTRING(n_name, 1, true) FROM nation;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (SUBSTRING(VARCHAR, INTEGER, BOOLEAN)) in expression (SUBSTRING(rapidsse.public.nation.n_name, 1, true))'
 
 // Extract with a integer   LENGTH argument
 EXPLAIN SELECT SUBSTRING(n_name, 1, 2) FROM nation;
@@ -274,27 +274,27 @@ rows: (*,'explainPlan','
 
 // Extract with a float     LENGTH argument
 EXPLAIN SELECT SUBSTRING(n_name, 1, 2.0e0) FROM nation;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (SUBSTRING(VARCHAR, INTEGER, FLOAT)) in expression (SUBSTRING(rapidsse.public.nation.n_name, 1, 2.0000000000e+00))'
 
 // Extract with a decimal   LENGTH argument
 EXPLAIN SELECT SUBSTRING(n_name, 1, 2.0) FROM nation;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (SUBSTRING(VARCHAR, INTEGER, DECIMAL)) in expression (SUBSTRING(rapidsse.public.nation.n_name, 1, 2.0))'
 
 // Extract with a date      LENGTH argument
 EXPLAIN SELECT SUBSTRING(n_name, 1, DATE '2021-11-09') FROM nation;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (SUBSTRING(VARCHAR, INTEGER, DATE)) in expression (SUBSTRING(rapidsse.public.nation.n_name, 1, DATE ''2021-11-09''))'
 
 // Extract with a time      LENGTH argument
 EXPLAIN SELECT SUBSTRING(n_name, 1, TIME '16:58:23') FROM nation;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (SUBSTRING(VARCHAR, INTEGER, TIME)) in expression (SUBSTRING(rapidsse.public.nation.n_name, 1, TIME ''16:58:23''))'
 
 // Extract with a timestamp LENGTH argument
 EXPLAIN SELECT SUBSTRING(n_name, 1, TIMESTAMP '2021-11-09 16:58:23.123') FROM nation;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (SUBSTRING(VARCHAR, INTEGER, TIMESTAMP)) in expression (SUBSTRING(rapidsse.public.nation.n_name, 1, TIMESTAMP ''2021-11-09 16:58:23.123000''))'
 
 // Extract with a string    LENGTH argument
 EXPLAIN SELECT SUBSTRING(n_name, 1, 'abcdef') FROM nation;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (SUBSTRING(VARCHAR, INTEGER, VARCHAR)) in expression (SUBSTRING(rapidsse.public.nation.n_name, 1, ''abcdef''))'
 
 // Extract with a null      LENGTH argument
 EXPLAIN SELECT SUBSTRING(n_name, 1, NULL) FROM nation;

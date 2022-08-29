@@ -19,33 +19,33 @@
     parameters $table $file
   begin
 
-  stage stageA on origin :
-      start
-    | pulse once
-    | next
+    stage stageA on origin :
+        start
+      | pulse once
+      | next
 
-  stage stageB on all nodes :
-      chunk      $file   // read chunks of file, produce (seekOffset) =>
-    | rdCsvChunk $file   // (seekOffset) => (csvBuffer)
-    | next localRobin
+    stage stageB on all nodes :
+        chunk      $file   // read chunks of file, produce (seekOffset) =>
+      | rdCsvChunk $file   // (seekOffset) => (csvBuffer)
+      | next localRobin
 
-  stage stageC on all partitions :
-      toKeyHshRow $table // (csvBuffer) => (rowBuffer w row+keyHash)
-    | toLglPtnRow $table // (rowBuffer) => (rowBuffer x logical partitions)
-    | toLglPtnNst        // (rowBuffer) => (rowBuffer w normalised strings)
-    | toLglPtnCrw        // (rowBuffer) => (crwBuffer x logical partitions)
-    | next hashcast
+    stage stageC on all partitions :
+        toKeyHshRow $table // (csvBuffer) => (rowBuffer w row+keyHash)
+      | toLglPtnRow $table // (rowBuffer) => (rowBuffer x logical partitions)
+      | toLglPtnNst        // (rowBuffer) => (rowBuffer w normalised strings)
+      | toLglPtnCrw        // (rowBuffer) => (crwBuffer x logical partitions)
+      | next hashcast
 
-  stage stageD on all partitions :
-      insert $table      // (crwBuffer) inserted into table
-    | next
+    stage stageD on all partitions :
+        insert $table      // (crwBuffer) inserted into table
+      | next
 
-  stage stageE on origin :
-      progress 'Load'
-    | toStatDemon
-    | output
-    | sink
-    | stageA
+    stage stageE on origin :
+        progress 'Load'
+      | toStatDemon
+      | output
+      | sink
+      | stageA
 
   end ;
   "
@@ -53,7 +53,7 @@
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // dload_test
+  // dload
   
   STD_PATH_TAG
   "
@@ -68,6 +68,7 @@
       | pathToDfload $table
       | forkCommand waitFinished
       | waitFinished
+      | output
       | sink
       | stageA
 

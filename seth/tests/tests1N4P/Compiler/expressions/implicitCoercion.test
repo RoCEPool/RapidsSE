@@ -1000,6 +1000,309 @@ rows: (*,'explainPlan','
          » table: (rapidsse.public.coercionTest)')
 
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Test out literal coercion also checks for out of range
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// INTEGER to DECIMAL
+explain select -9223372036854775806-1.0 from nation;
+failure contains: 'Integer literal -9223372036854775806 is outside the valid decimal range'
+
+explain select -9223372036854775806*1.0 from nation;
+failure contains: 'Integer literal -9223372036854775806 is outside the valid decimal range'
+
+explain select -9223372036854775806+1.0 from nation;
+failure contains: 'Integer literal -9223372036854775806 is outside the valid decimal range'
+
+explain select -9223372036854775806/1.0 from nation;
+failure contains: 'Integer literal -9223372036854775806 is outside the valid decimal range'
+
+explain select 9223372036854775806-1.0 from nation;
+failure contains: 'Integer literal 9223372036854775806 is outside the valid decimal range'
+
+explain select 9223372036854775806*1.0 from nation;
+failure contains: 'Integer literal 9223372036854775806 is outside the valid decimal range'
+
+explain select 9223372036854775806+1.0 from nation;
+failure contains: 'Integer literal 9223372036854775806 is outside the valid decimal range'
+
+explain select 9223372036854775806/1.0 from nation;
+failure contains: 'Integer literal 9223372036854775806 is outside the valid decimal range'
+
+// VARCHAR to INTEGER
+explain select '-9223372036854775807' + 1 from nation;
+failure contains: 'Integer literal -9223372036854775807 is outside the valid integer range'
+
+explain select  '9223372036854775807' - 1 from nation;
+failure contains: 'Integer literal 9223372036854775807 is outside the valid integer range'
+
+// VARCHAR to DECIMAL
+explain select '-140737488355329' + 1.0 from nation;
+failure contains: 'Value is out of range: -140737488355329: Max/min decimal precision supported is'
+
+explain select  '140737488355329' - 1.0 from nation;
+failure contains: 'Value is out of range: 140737488355329: Max/min decimal precision supported is'
+
+explain select '-140737488355328.123' + 1.0 from nation;
+failure contains: 'Value is out of range: -140737488355328.123: Max/min decimal precision supported is'
+
+explain select  '140737488355327.123' - 1.0 from nation;
+failure contains: 'Value is out of range: 140737488355327.123: Max/min decimal precision supported is'
+
+
+// VARCHAR to FLOAT
+explain select '-1e400' + 1.0e0 from nation;
+failure contains: 'Value is out of range: -1e400: Floating point overflow.'
+
+explain select  '1e400' - 1.0e0 from nation;
+failure contains: 'Value is out of range: 1e400: Floating point overflow.'
+
+explain select '-1e-400' + 1.0e0 from nation;
+failure contains: 'Value is out of range: -1e-400: Floating point underflow.'
+
+explain select '1e-400' + 1.0e0 from nation;
+failure contains: 'Value is out of range: 1e-400: Floating point underflow.'
+
+
+// VARCHAR TO DATE
+// VARCHAR TO TIME
+// VARCHAR TO TIMESTAMP
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Test that a cast of a literal is converted to a coerced literal
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// string to integer
+explain select cast('123' as integer) from nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "select cast(''123'' as integer) from nation"
+
+-> -> projectOp
+      » column: (Expr = 123 ; Ordinal Expr = 123)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+// string to decimal
+explain select cast('123.0' as decimal) from nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "select cast(''123.0'' as decimal) from nation"
+
+-> -> projectOp
+      » column: (Expr = 123.0 ; Ordinal Expr = 123.0)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+// string to float
+explain select cast('123.0e0' as float) from nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "select cast(''123.0e0'' as float) from nation"
+
+-> -> projectOp
+      » column: (Expr = 1.2300000000e+02 ; Ordinal Expr = 1.2300000000e+02)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+// string to date
+explain select cast('2000-01-01' as date) from nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "select cast(''2000-01-01'' as date) from nation"
+
+-> -> projectOp
+      » column: (Expr = DATE ''2000-01-01'' ; Ordinal Expr = DATE ''2000-01-01'')
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+// string to time
+explain select cast('20:01:01' as time) from nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "select cast(''20:01:01'' as time) from nation"
+
+-> -> projectOp
+      » column: (Expr = TIME ''20:01:01'' ; Ordinal Expr = TIME ''20:01:01'')
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+// string to timestamp
+explain select cast('2000-01-01 20:01:01' as timestamp) from nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "select cast(''2000-01-01 20:01:01'' as timestamp) from nation"
+
+-> -> projectOp
+      » column: (Expr = TIMESTAMP ''2000-01-01 20:01:01'' ; Ordinal Expr = TIMESTAMP ''2000-01-01 20:01:01'')
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+// string to string
+explain select cast('123' as varchar) from nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "select cast(''123'' as varchar) from nation"
+
+-> -> projectOp
+      » column: (Expr = ''123'' ; Ordinal Expr = ''123'')
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+// Integer to decimal
+explain select cast(123 as decimal) from nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "select cast(123 as decimal) from nation"
+
+-> -> projectOp
+      » column: (Expr = 123.00 ; Ordinal Expr = 123.00)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+// Integer to float
+explain select cast(123 as float) from nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "select cast(123 as float) from nation"
+
+-> -> projectOp
+      » column: (Expr = 1.2300000000e+02 ; Ordinal Expr = 1.2300000000e+02)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+// Decimal to float
+explain select cast(123.0 as float) from nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "select cast(123.0 as float) from nation"
+
+-> -> projectOp
+      » column: (Expr = 1.2300000000e+02 ; Ordinal Expr = 1.2300000000e+02)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+// Date to timestamp
+explain select cast(date '2000-01-01' as timestamp) from nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "select cast(date ''2000-01-01'' as timestamp) from nation"
+
+-> -> projectOp
+      » column: (Expr = TIMESTAMP ''2000-01-01 00:00:00'' ; Ordinal Expr = TIMESTAMP ''2000-01-01 00:00:00'')
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+// Boolean to string
+explain select cast(true as varchar) from nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "select cast(true as varchar) from nation"
+
+-> -> projectOp
+      » column: (Expr = ''TRUE'' ; Ordinal Expr = ''TRUE'')
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+// null to string
+explain select cast(null as varchar) from nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "select cast(null as varchar) from nation"
+
+-> -> projectOp
+      » column: (Expr = CAST(NULL AS VARCHAR) ; Ordinal Expr = CAST(NULL AS VARCHAR))
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+// Not a valid implicit coercion: string containing a decimal being cast to integer
+// (Still a valid cast though)
+explain select cast('123.0' as integer) from nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "select cast(''123.0'' as integer) from nation"
+
+-> -> projectOp
+      » column: (Expr = CAST(''123.0'' AS INTEGER) ; Ordinal Expr = CAST(''123.0'' AS INTEGER))
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+// Invalid: string to boolean
+explain select cast('true' as boolean) from nation;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (CAST(VARCHAR AS BOOLEAN)) in expression (CAST(''true'' AS BOOLEAN))'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Check for memory leaks

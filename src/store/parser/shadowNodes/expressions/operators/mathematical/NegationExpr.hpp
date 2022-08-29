@@ -20,6 +20,9 @@ namespace Parser
     static QueryNode* pCreate(QueryNode* pExpr1);
     static void vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode);
 
+    // Represent the expression as types instead of names (e.g. INTEGER + INTEGER)
+    static void vDescribeAsTypes(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode);
+
     static QueryNode* pChild1(QueryNode* pNode);
 
     // Returns true if a given node is a given type ** or is derived from that type **

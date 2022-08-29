@@ -473,7 +473,10 @@ Word* Task::pCompileAxiomColon(s48K& sDefinition)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   //vTrace("Compile: %s\n"_Stz,sDefinition.szStz());
-  
+
+  bool b;
+  eEC eError = EC_NONE;
+
   Word*     pNewWord;
   fpSTEPFN    fpStepFn;
   Word*     pCalledWord;
@@ -487,13 +490,15 @@ Word* Task::pCompileAxiomColon(s48K& sDefinition)
   pInput->vUseBegin();
 
   // get axiom:
-  pInput->vReadToken();
+  b = pInput->bReadToken(eError);
+  UNUSED(b);
   Stz* szChars = pInput->szChars();
   ASSERT(szChars->bSame("axiom:"_Stz));
   //vTrace("CompileAxiomaticColon: %s\n"_Stz,szChars);
 
   // get name of word
-  pInput->vReadToken();
+  b = pInput->bReadToken(eError);
+  UNUSED(b);
   szChars = pInput->szChars();
   //vTrace("CompileAxiomaticColon: %s\n"_Stz,szChars);
 
@@ -511,7 +516,8 @@ Word* Task::pCompileAxiomColon(s48K& sDefinition)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pInput->vReadToken();
+  b = pInput->bReadToken(eError);
+  UNUSED(b);
   
   while (TN_NULL != pInput->eToken()) {
     
@@ -585,7 +591,7 @@ Word* Task::pCompileAxiomColon(s48K& sDefinition)
                );
     }
     
-    pInput->vReadToken();
+    b = pInput->bReadToken(eError);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -606,25 +612,29 @@ void Task::vCompileMungedColon(Stz* szDefinition)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   //vTrace("vCompileMungedColon :\n%s\n"_Stz,sDefinition.szStz());
-  
+
+  bool b;
   s48K sValue;
-  
+  eEC eError = EC_NONE;
+
   Input* pInput = m_pInput;
 
   pInput->vUseString(szDefinition);
   pInput->vUseBegin();
   
   // get string
-  pInput->vReadToken();
-  
+  b = pInput->bReadToken(eError);
+  UNUSED(b);
+
   sValue = (Stz*)pInput->szChars()->azChar();
   
   // get CONSTANT
-  pInput->vReadToken();
+  b = pInput->bReadToken(eError);
   //vTrace("CompileConstant: %s\n"_Stz,m_pSenCompiler->szToken()->azChar());
   
   // get name of word
-  pInput->vReadToken();
+  b = pInput->bReadToken(eError);
+  UNUSED(b);
   //vTrace("CompileConstant: %s\n"_Stz,m_pSenCompiler->szToken()->azChar());
 
   Stz* szName = (Stz*)pInput->szChars();
@@ -633,8 +643,9 @@ void Task::vCompileMungedColon(Stz* szDefinition)
   
   AM::vAddConstant(szName,sValue.szStz());
   
-  pInput->vReadToken();
-  
+  b = pInput->bReadToken(eError);
+  UNUSED(b);
+
   pInput->vUseEnd();
 }
 

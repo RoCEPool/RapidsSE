@@ -221,7 +221,8 @@ void SePrompt::vPromptLoop(void)
       if (!*szToDo->azChar())
         m_pInput_deputy->vRawInputClear();
 
-      if (!bReadCommand())
+      m_eInputError = EC_NONE;
+      if (! bReadCommand(m_eInputError))
         continue;
 
       //    Stz* szRaw = szRawInput();
@@ -828,7 +829,7 @@ Stz* SePrompt::szRawInput(void)
 /*----------------------------------------------------------------------------*/
 /* read command from input                                                    */
 /*----------------------------------------------------------------------------*/
-bool SePrompt::bReadCommand(void)
+bool SePrompt::bReadCommand(eEC& eInputError)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
@@ -903,7 +904,9 @@ bool SePrompt::bReadCommand(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // general case
   
-  m_pInput_deputy->vReadCommand();
+  if (! m_pInput_deputy->bReadCommand(eInputError))
+    return false;
+
   m_pInpTknVec->vIntegrityCheck();
   
   return true;

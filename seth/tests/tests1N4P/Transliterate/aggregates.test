@@ -101,22 +101,46 @@ rows:
   ('FRANCE')
   ('GERMANY')
 
+-- basic select of aggregation with having
+SELECT SUM(n_regionkey) FROM nation having SUM(n_regionkey) > 50;
+rows: 
+  (53)
+
+SELECT SUM(n_regionkey)/2 FROM nation having SUM(n_regionkey)/2 > 25;
+rows:
+  (26)
+
+SELECT count(n_regionkey) FROM nation having count(n_regionkey) * 2 = 54;
+rows:
+  (27)
+
+SELECT MIN(n_regionkey) FROM nation having MIN(n_regionkey) != 0;
+rows: 0
+
+SELECT MAX(n_regionkey) FROM nation having MAX(n_regionkey)*2 > 7;
+rows:
+  (4)
+
+SELECT AVG(n_regionkey) FROM nation having AVG(n_regionkey) = 1.96;
+rows:
+ (1.96)
+
 -- basic select of aggregation
 SELECT SUM(n_regionkey) FROM nation;
-rows: 
+rows:
   (53)
 
 SELECT count(n_regionkey) FROM nation;
 rows:
-  (25)
+  (27)
 
 SELECT count(n_regionkey+null) FROM nation;
 rows:
-  (null)
+  (0)
 
 SELECT count(null+n_regionkey) FROM nation;
 rows:
-  (null)
+  (0)
 
 SELECT SUM(n_regionkey+null) FROM nation;
 rows:
@@ -125,7 +149,7 @@ rows:
 SELECT SUM(null+n_regionkey) FROM nation;
 rows:
   (null)
-
+/*
 SELECT MIN(n_regionkey+null) FROM nation;
 rows:
   (null)
@@ -141,7 +165,7 @@ rows:
 SELECT MAX(null+n_regionkey) FROM nation;
 rows:
   (null)
-
+*/
 SELECT AVG(n_regionkey+null) FROM nation;
 rows:
  (null)

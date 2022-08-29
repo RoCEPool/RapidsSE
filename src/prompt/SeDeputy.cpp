@@ -423,6 +423,16 @@ void SeDeputy::vReportTime(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* reset this deputy (after an input error)                                   */
+/*----------------------------------------------------------------------------*/
+void SeDeputy::vReset(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
+
+  m_pInput->vReset();
+}
+
+/*----------------------------------------------------------------------------*/
 /* signal this deputy to terminate                                            */
 /*----------------------------------------------------------------------------*/
 void SeDeputy::vTerminate(void)

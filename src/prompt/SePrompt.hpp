@@ -29,6 +29,8 @@ namespace PROMPT
 
     bool        m_bOutputEnabled; // is output enabled?
 
+    eEC         m_eInputError;  // input error
+
     i8          m_nDeputies;    // current number of deputies
     SeDeputy*   m_paSeDeputy[C_MAX_DEPUTY];
 
@@ -109,7 +111,7 @@ namespace PROMPT
     bool bPromptFunction(eEC* eErrorCode);
     TagSet* pPmtTagSet(void);
     Stz* szRawInput(void);
-    bool bReadCommand(void);
+    bool bReadCommand(eEC& eInputError);
     bool bRedirectFromFile(void);
     void vReportObjects();
     void vReportOther(void);

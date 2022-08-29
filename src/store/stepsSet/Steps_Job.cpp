@@ -74,7 +74,8 @@ void Step::vAddSteps_Job(void)
   vAddStep("[job].parentOriginNodeId@"_Stz, &Step::vJobParentOriginNodeIdFetch);
   vAddStep("[job].phase@"_Stz,           &Step::vJobPhaseFetch);
   vAddStep("[job].phase!"_Stz,           &Step::vJobPhaseStore);
-  vAddStep("[job].preExecuteTest"_Stz,   &Step::vJobPreExecuteTest);
+  vAddStep("[job].preExecuteDist"_Stz,   &Step::vJobPreExecuteDist);
+  vAddStep("[job].preExecuteLocal"_Stz,   &Step::vJobPreExecuteLocal);
   vAddStep("[job].printObjectTracker"_Stz,&Step::vJobPrintObjectTracker);
   vAddStep("[job].progress"_Stz,         &Step::vJobProgress);
   vAddStep("[job].progressReset"_Stz,    &Step::vJobProgressReset);
@@ -818,15 +819,31 @@ void Step::vJobPhaseFetch(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* [job].preExecuteTest -- test if job can be run                             */
+/* [job].preExecuteDist -- test if distributed job can be run                 */
 /*----------------------------------------------------------------------------*/
-void Step::vJobPreExecuteTest(void)
+void Step::vJobPreExecuteDist(void)
 {
   ENTRY();
 
   Job* pJob = pOuterJobOfTask();
 
-  eEC eError = AM::JOB::ePreExecuteTest(pJob);
+  eEC eError = AM::JOB::ePreExecuteDist(pJob);
+
+  m_pDataStack->vPushInt(eError);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [job].preExecuteLocal -- test if local job can be run                      */
+/*----------------------------------------------------------------------------*/
+void Step::vJobPreExecuteLocal(void)
+{
+  ENTRY();
+
+  Job* pJob = pOuterJobOfTask();
+
+  eEC eError = AM::JOB::ePreExecuteLocal(pJob);
 
   m_pDataStack->vPushInt(eError);
 

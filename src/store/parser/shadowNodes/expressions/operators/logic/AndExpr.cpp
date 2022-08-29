@@ -106,6 +106,22 @@ void AndExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Represent the expression as types instead of names. Append to the buffer   */
+/*----------------------------------------------------------------------------*/
+void AndExpr::vDescribeAsTypes(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pChild1 = AndExpr::pChild1(_pQueryNode(pNode));
+  QueryNode* pChild2 = AndExpr::pChild2(_pQueryNode(pNode));
+
+  sBuf.vConcat(Expr::xTypeId(pChild1, pRootNode).szTypeName());
+  sBuf.vConcat(" AND "_Stz);
+  sBuf.vConcat(Expr::xTypeId(pChild2, pRootNode).szTypeName());
+}
+
+/*----------------------------------------------------------------------------*/
 /* Return the first child expression of this operator                         */
 /*----------------------------------------------------------------------------*/
 QueryNode* AndExpr::pChild1(QueryNode *pNode)

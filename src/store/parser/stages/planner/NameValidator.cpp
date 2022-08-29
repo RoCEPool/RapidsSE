@@ -2276,18 +2276,24 @@ void NameValidator::vCoerceProjectedExprs(PlanNode* pRootNode, QueryNode* pStart
 
       // We now need to walk this expression tree from the bottom up
       // and check for any necessary coercions.
-      b1 bResult =
-          GraphNav::bBoundedWalkBottomUp(pProjectedExpr,
-                                         false,
-                                         true,
-                                         fExprVisitor,
-                                         pRootNode);
+      b1 bResult;
 
+      try {
+        bResult =
+            GraphNav::bBoundedWalkBottomUp(pProjectedExpr,
+                                           false,
+                                           true,
+                                           fExprVisitor,
+                                           pRootNode);
+      } catch (SemanticException& e) {
+        delete pIter;
+        throw;
+      }
 
       if (!bResult) {
         // If we still haven't been able to correct the problem then abort any
-        // further coercions. This error will be picked up in vCreateMainSubqueryCteDef().
-        ASSERT(Expr::xTypeId(pProjectedExpr, pRootNode).eCTVal() == CT_NONE);
+        // further coercions. This error will be picked up in vCreateMainSubqueryCteDef()
+        // or ExprValidator::vValidateExprResultType().
         delete pIter;
         return GraphNav::WALK_ABORT;
       }
@@ -2438,19 +2444,19 @@ void NameValidator::vCreateMainSubqueryCteDef(QueryNode* pSubqueryNode, s2K& sSu
 
     eCT eType = Expr::xTypeId(pColExpr, pRootNode).eCTVal();
 
-    if (eType == CT_NONE) {
-      s2K sBuf;
-      Expr::vDescribe(pColExpr, sBuf, pRootNode);
+    // This will check for eType == CT_NONE and nicely print the error
+    try {
+      Expr::vValidateResultType(pColExpr, pRootNode);
 
+    } catch (SqlException& e) {
       delete pCteDef;
       delete pIter;
       pProjectedColumns->vDeleteAll();
       delete pProjectedColumns;
-
-      SemanticException::vThrow(EC_EXPR_INVALID_COMBINATION,
-                                ": %s"_Stz,
-                                sBuf.szStz() );
+      throw;
     }
+
+    ASSERT(eType != CT_NONE);
 
     QueryNode* pTypeNode = SqlType::pCreate(TypeId::xIdOf(eType));
     b1 bNotNull = false;

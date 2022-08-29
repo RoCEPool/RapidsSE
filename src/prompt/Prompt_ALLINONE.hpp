@@ -157,6 +157,7 @@ namespace PROMPT
   bool bPrompt_takeMem(SePrompt* pPrompt);
   bool bPrompt_taskQueues(SePrompt* pPrompt);
   bool bPrompt_tempName(SePrompt* pPrompt);
+  bool bPrompt_test(SePrompt* pPrompt);
   bool bPrompt_threads(SePrompt* pPrompt);
   bool bPrompt_threadsAdd(SePrompt* pPrompt);
   bool bPrompt_timer(SePrompt* pPrompt);

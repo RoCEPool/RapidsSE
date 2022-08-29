@@ -2,6 +2,7 @@
 /* LiteralExpr.cpp - a literal expression                                     */
 /*============================================================================*/
 
+#include <cmath>
 #include "BASE.h"
 #include "LiteralExpr.hpp"
 #include "StringLiteral.hpp"
@@ -19,6 +20,7 @@
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
 #include "SqlException.hpp"
+#include "eEC.h"
 
 using namespace Parser;
 
@@ -52,6 +54,17 @@ void LiteralExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 //else if (IntervalLiteral::bIsOfType(pNode))   {  IntervalLiteral::vDescribe(pNode, sBuf, pRootNode);    }
   else if (     NullLiteral::bIsOfType(pNode))  {      NullLiteral::vDescribe(pNode, sBuf, pRootNode); }
   else NEVER_REACH
+}
+
+/*----------------------------------------------------------------------------*/
+/* Represent the expression as types instead of names. Append to the buffer   */
+/*----------------------------------------------------------------------------*/
+void LiteralExpr::vDescribeAsTypes(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  sBuf.vConcat(xTypeId(_pQueryNode(pNode), pRootNode).szTypeName());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -201,6 +214,9 @@ QueryNode* LiteralExpr::pCoerceTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNo
   TypeId xCurrentTypeId = Expr::xTypeId(pExpr, pRootNode);
   eCT eCurrentType = xCurrentTypeId.eCTVal();
   eCT eTargetType = xTargetTypeId.eCTVal();
+  QueryNode* pResultNode;
+  s2K sBuf;
+  i8 iVal;
 
   // TODO: handle intervals
 
@@ -219,7 +235,28 @@ QueryNode* LiteralExpr::pCoerceTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNo
         // TODO: (Craig) When we support precision/scale calculus the coercision to
         //       a decimal should include the correct scale. For now we have a fixed
         //       scale of 2 so it is hard coded like that.
-        xBcd.vSet(pExpr->iValue() * 100, 2);
+
+        // Test that the integer is not outside the decimal's range
+        iVal = pExpr->iValue();
+        if (iVal > C_BCD_MAX || iVal < C_BCD_MIN) {
+          sBuf.vSprint(
+              ": Integer literal %lld is outside the valid decimal range of %lld to %lld"_Stz,
+              iVal,
+              C_BCD_MIN,
+              C_BCD_MAX);
+          SemanticException::vThrow(EC_VALUE_OUT_OF_RANGE, sBuf);
+        }
+
+        // If the value is small enough then represent it with 2 decimal places
+        // so it prints nicely.
+        if ( (iVal * 100) < C_BCD_MAX &&
+             (iVal * 100) > C_BCD_MIN ) {
+          xBcd.vSet(pExpr->iValue() * 100, 2);
+
+        } else {
+          xBcd.vSet(pExpr->iValue(), 0);
+        }
+
         return DecimalLiteral::pCreate(xBcd);
 
       } else if (eTargetType == CT_FLOAT) {
@@ -251,15 +288,60 @@ QueryNode* LiteralExpr::pCoerceTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNo
       szStr = StringLiteral::szValue(pExpr);
 
       if (eTargetType == CT_INTEGER) {
-        return IntegerLiteral::pCreate(StrLib::iToI8(szStr->azChar()));
+        bool bOverflowed = false;
+        iVal = StrLib::iToI8(szStr->azChar(), &bOverflowed);
+
+        if (bOverflowed) {
+          sBuf.vSprint(
+              ": Integer literal %s is outside the valid integer range of %lld to %lld"_Stz,
+              szStr,
+              C_I8_MIN,
+              C_I8_MAX);
+          SemanticException::vThrow(EC_VALUE_OUT_OF_RANGE, sBuf);        }
+
+        pResultNode = IntegerLiteral::pCreate(iVal);
+        return pResultNode;
 
       } else if (eTargetType == CT_DECIMAL) {
-        pCoercedLiteral = DecimalLiteral::pCreate(DecimalLiteral::xParseStr(szStr, bParseResult));
-        ASSERT(bParseResult);
+        Bcd xBcd = DecimalLiteral::xParseStr(szStr);
+        pCoercedLiteral = DecimalLiteral::pCreate(xBcd);
         return pCoercedLiteral;
 
       } else if (eTargetType == CT_FLOAT) {
         d8 dVal = strtod(szStr->azChar(), &pEndPtr);
+
+        if (dVal == 0 && pEndPtr == szStr->azChar()) {
+          // No conversion occurred
+          SemanticException::vThrow(EC_INVALID_VALUE,
+                                    ": %s: Unable to convert string literal to float literal "_Stz,
+                                    szStr);
+
+        } else if ( (dVal == HUGE_VAL || dVal == -HUGE_VAL) && errno == ERANGE) {
+          // Overflow
+          SemanticException::vThrow(EC_VALUE_OUT_OF_RANGE,
+                                    ": %s: Floating point overflow. Max/min floating point value supported is %10e to %10e"_Stz,
+                                    szStr,
+                                    C_FLT_MIN,
+                                    C_FLT_MAX);
+
+        } else if (dVal == 0 && errno == ERANGE) {
+          // Underflow
+          SemanticException::vThrow(EC_VALUE_OUT_OF_RANGE,
+                                    ": %s: Floating point underflow. Max/min floating point value supported is %10e to %10e"_Stz,
+                                    szStr,
+                                    C_FLT_MIN,
+                                    C_FLT_MAX);
+        }
+
+        if (dVal > C_FLT_MAX || dVal < C_FLT_MIN) {
+          // Not an overflow, but still outside the floating point bounds accepted by RapidsSE
+          SemanticException::vThrow(EC_VALUE_OUT_OF_RANGE,
+                                    ": %s: Floating point overflow. Max/min floating point value supported is %10e to %10e"_Stz,
+                                    szStr,
+                                    C_FLT_MIN,
+                                    C_FLT_MAX);
+        }
+
         ASSERT(pEndPtr == nullptr || *pEndPtr == 0);
         return FloatLiteral::pCreate(dVal);
 

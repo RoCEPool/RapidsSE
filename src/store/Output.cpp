@@ -384,6 +384,11 @@ bool Output::bProcessOperand(Operand* pOperand)
 
           vTrace("\nerror: %s; %s; %s; \n"_Stz,
                  sNodeName, aEC2[eErrorCode], szErrorText);
+
+          m_ixRowsProcessed = 0;
+          m_ixRowsInvalid   = 0;
+          m_ixRowsSkipped   = 0;
+
           m_bHasError = true;
         }
         else {
