@@ -51,6 +51,9 @@
       | stageMarkers            // Removes all StatementMarker nodes from the plan and adds in StageMarker nodes to help the transliteration know when to add a new stage.
       | aggregateSplit          // Simplifies the RLU from needing to handle multiple aggregate calculations for a single projected column by separating the calculations into separate columns.
       | transliterate           // Converts the plan from a graph structure to a pipeline statement.
+
+      | optimise                // DUMMY Optimise the pipeline statement [CURRENTLY IN WRONG PLACE]
+
       | output
       | sink
       | stageA
