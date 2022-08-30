@@ -129,6 +129,8 @@ namespace Parser
     // tree in place.
     static void vCoerceSubExprs(QueryNode* pExpr, PlanNode* pRootNode);
 
+    static void vCoerceCastLiteral(QueryNode* pExpr, PlanNode* pRootNode);
+
   protected:
     // Returns true if the expression is commutative (e.g. A+B = B+A)
     // and the underlying expression children are also symbolically equal.

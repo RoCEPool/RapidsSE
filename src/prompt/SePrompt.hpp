@@ -111,7 +111,7 @@ namespace PROMPT
     bool bPromptFunction(eEC* eErrorCode);
     TagSet* pPmtTagSet(void);
     Stz* szRawInput(void);
-    bool bReadCommand(eEC& eError);
+    bool bReadCommand(eEC& eInputError);
     bool bRedirectFromFile(void);
     void vReportObjects();
     void vReportOther(void);

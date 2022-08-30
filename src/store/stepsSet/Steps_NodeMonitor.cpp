@@ -42,6 +42,7 @@ void Step::vNodeMonitorInspectGrid(void)
   pGrid->vGrabRead();
 
   SkipListNL* pNodes = pGrid->pSkipList();
+  SkipNode *pCursor;
 
   if ( ! pGrid->bHealthy() ) {
     vTrace("Inspecting Grid...\n"_Stz);
@@ -57,47 +58,78 @@ void Step::vNodeMonitorInspectGrid(void)
 
       if (pNode && (pNode->eState() == NS_INACTIVE)) {
 
-        vTrace("Node failure, status code: %d\n"_Stz, pNode->iGetNodeStatus());
-
-
-        // Notify Origin jobs
-        vTrace("Notifying Origin jobs on current node:\n"_Stz);
-
-        JobList *pOriginJobList = AM::pOriginatingJobs();
-        pOriginJobList->vGrabLock();
-
-        for (SkipNode *pCursor = pOriginJobList->pFirst();
-             pCursor;
-             pCursor = pOriginJobList->pNext(pCursor)) {
-
-          Job *pJob = _pJob(pCursor->m_pObject);
-
-          vTrace("%s\n"_Stz, pJob->szJobNm());
-          pJob->vOriginJobNodeFailure();
-        }
-        pOriginJobList->vDropLock();
-
-
+       /**
+        ** PARTICIPANT JOBS HANDLING TO BE CODED
+        **
+        **
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // Notify participant jobs
-        vTrace("Notifying Participating jobs on current node:\n"_Stz);
 
-        JobList* pPtpJobList = AM::pParticipatingJobs();
+        JobList *pPtpJobList = AM::pParticipatingJobs();
+
         pPtpJobList->vGrabLock();
 
-        for (SkipNode *pCursor = pPtpJobList->pFirst();
-             pCursor;
-             pCursor = pPtpJobList->pNext(pCursor)) {
+        pCursor = pPtpJobList->pFirst();
+
+        while (pCursor) {
 
           Job *pJob = _pJob(pCursor->m_pObject);
 
-          vTrace("%s\n"_Stz, pJob->szJobNm());
-          pJob->vPtpJobNodeFailure();
+          //if (pJob->eJobError() != EC_NONE) {
+          //  continue;
+          //}
+
+          // get the next job
+          pCursor = pPtpJobList->pNext(pCursor);
+
+          pPtpJobList->vDropLock();
+
+          JobId tJobId = pJob->tDistId();
+          vTrace("**************Aborting Participating Job %04lld.%04lld ; %s\n"_Stz,
+                 pJob->tDistId().uNodeId(),
+                 pJob->tDistId().uJobNo(),
+                 aJP[pJob->eJobPhase()]);
+
+          AM::JOB::vPtpJobNodeFailure(tJobId);
+          pPtpJobList->vGrabLock();
         }
         pPtpJobList->vDropLock();
-        break;
+
+      **/
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // Notify Originating jobs
+
+
+        JobList *pOriginJobList = AM::pOriginatingJobs();
+
+        pOriginJobList->vGrabLock();
+
+        pCursor = pOriginJobList->pFirst();
+
+        while (pCursor) {
+
+          Job *pJob = _pJob(pCursor->m_pObject);
+
+          // get the next job
+          pCursor = pOriginJobList->pNext(pCursor);
+
+          pOriginJobList->vDropLock();
+
+          JobId tJobId = pJob->tOriginId();
+          vTrace("**************Aborting Originating Job %04lld.%04lld ; %s\n"_Stz,
+                 pJob->tOriginId().uNodeId(),
+                 pJob->tOriginId().uJobNo(),
+                 aJP[pJob->eJobPhase()]);
+
+          AM::JOB::vOriginJobNodeFailure(tJobId);
+          pOriginJobList->vGrabLock();
+        }
+        pOriginJobList->vDropLock();
       }
     }
-  }
+
+    }
 
   pGrid->vDropRead();
 

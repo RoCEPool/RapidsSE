@@ -1133,7 +1133,8 @@ void Engine::vPrintConstants(void)
   vTrace("  C_ENT_END_TICKET     = %llx\n"_Stz,(u8)C_ENT_END_TICKET);
   vTrace("  C_ENT_QUANTA         = %lld\n"_Stz,C_ENT_QUANTA);
   
-  vTrace("  C_LOW_BUFFERS        = %lld\n"_Stz,C_LOW_BUFFERS);
+  vTrace("  C_LOW_BUFFERS          = %lld\n"_Stz,C_LOW_BUFFERS);
+  vTrace("  C_LOW_BUFFERS_DIST_JOB = %lld\n"_Stz,C_LOW_BUFFERS_DIST_JOB);
   
   vTrace("  C_MAX_BCD_PRECISION  = %lld\n"_Stz,C_MAX_BCD_PRECISION);
   vTrace("  C_MAX_COLUMNS        = %lld\n"_Stz,C_MAX_COLUMNS);

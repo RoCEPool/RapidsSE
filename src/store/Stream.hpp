@@ -52,6 +52,7 @@ namespace STORE
     i8   iNodeId(void);
 
     Op*  pOp0(void);
+    void vNodeLossAbort(void);
 
     Pipeline* pPipeline(void);
     i8   i_PtnOfNode(void);

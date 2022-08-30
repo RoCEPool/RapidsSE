@@ -300,7 +300,7 @@ void ToKeyHshRow::vNewRowBuffer(void)
 //--
 
 #define vACCEPT_CHAR() \
-  (cPrvChr = cCurChr, cCurChr = cNxtChr , cNxtChr = *++azCsvCrs)
+  (StrLib::vCheckIsNot(cCurChr,'\0'), cPrvChr = cCurChr, cCurChr = cNxtChr, cNxtChr = *++azCsvCrs)
 
 #define vCOLLECT_INT_DIGIT(uComponent) \
   uComponent = (uComponent * 10) + (cCurChr - '0')
@@ -2584,7 +2584,7 @@ L_FieldError:
   // resynch csv cursor to first char after next record end
   
   // consume up to and include end of line
-  while (! bIS_LINE_END())
+  while (cCurChr && ! bIS_LINE_END())
     vACCEPT_CHAR(); // skip any
   vSKIP_LINE_END();
   

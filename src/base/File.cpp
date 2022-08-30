@@ -960,6 +960,8 @@ void File::vReset(void)
   m_sPath   = ""_Stz;
   m_sOpenMode   = ""_Stz;
   m_aFile       = nullptr;
+  m_aFile_check = nullptr;
+  m_bIsOpen = false;
 }
 
 /*----------------------------------------------------------------------------*/

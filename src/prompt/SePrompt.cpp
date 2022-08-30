@@ -65,8 +65,6 @@ SePrompt::SePrompt(bool bOneCommand)
   m_bOneRun     = false;
   m_bOutputEnabled  = true;
 
-  m_eInputError = EC_NONE;
-
   m_pSnapshotAtTrackingMemory = new ObjectSnapshot;
   m_pSnapshotAtMemoryLeaks = new ObjectSnapshot;
   m_pSnapshotObjects = nullptr;
@@ -223,18 +221,12 @@ void SePrompt::vPromptLoop(void)
       if (!*szToDo->azChar())
         m_pInput_deputy->vRawInputClear();
 
-      if (! bReadCommand(m_eInputError)) {
-        if (m_eInputError) {
-          vTrace("%s\n"_Stz, aEC[m_eInputError]);
-          m_pCurrentDeputy->vReset();
-          m_pCurrentDeputy = nullptr;
-        }
+      m_eInputError = EC_NONE;
+      if (! bReadCommand(m_eInputError))
         continue;
-      }
 
-
-    //    Stz* szRaw = szRawInput();
-    //    vTrace("SePrompt got command : %s\n"_Stz,szRaw);
+      //    Stz* szRaw = szRawInput();
+      //    vTrace("SePrompt got command : %s\n"_Stz,szRaw);
       eEC eErrorCode = EC_NONE;
       if (!bExamineCommand(&eErrorCode)) {
         if (eErrorCode != EC_NONE)
@@ -244,13 +236,13 @@ void SePrompt::vPromptLoop(void)
 
       //vTrace("Prompt-RawInput: %s\n"_Stz,m_pInput->szRawInput());
 
-      Stz* szCmdFile = m_pInput_deputy->szPath();
-      i8   iCmdLine  = pTkn(0)->iLineNo();
+      Stz *szCmdFile = m_pInput_deputy->szPath();
+      i8 iCmdLine = pTkn(0)->iLineNo();
 
       // output the script file cmd statement being executed
-      if ( ! szCmdFile->bSame("stdin"_Stz) ) {
+      if (!szCmdFile->bSame("stdin"_Stz)) {
         m_pInput_deputy->pInpTknVec()->vToTknString(sCmd);
-        vTrace("\n%s\n"_Stz,sCmd.azChar());
+        vTrace("\n%s\n"_Stz, sCmd.azChar());
       }
 
       if (*szCmdFile->azChar()) {
@@ -837,14 +829,12 @@ Stz* SePrompt::szRawInput(void)
 /*----------------------------------------------------------------------------*/
 /* read command from input                                                    */
 /*----------------------------------------------------------------------------*/
-bool SePrompt::bReadCommand(eEC& eError)
+bool SePrompt::bReadCommand(eEC& eInputError)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
 //  s32 sHostName;
 //  Hardware::vHostName(sHostName);
-
-  eError = EC_NONE;
 
   if (bStdIn() && ! *this->szToDo()->azChar()) {
     //vReportOther();
@@ -914,7 +904,7 @@ bool SePrompt::bReadCommand(eEC& eError)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // general case
   
-  if (! m_pInput_deputy->bReadCommand(eError))
+  if (! m_pInput_deputy->bReadCommand(eInputError))
     return false;
 
   m_pInpTknVec->vIntegrityCheck();

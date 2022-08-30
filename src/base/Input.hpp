@@ -70,7 +70,7 @@ namespace BASE
     void vPushCharser(void);
     Stz* szRawInput(void);
     void vRawInputClear(void);
-    bool bReadCommand(eEC& eError);
+    bool bReadCommand(eEC& eInputError);
     bool bReadTillSemicolon(eEC& eError);
     bool bReadToken(eEC& eError);
     void vReset(void);
@@ -90,7 +90,7 @@ namespace BASE
  
   private:    
     void vCollectOneToken(void);
-    bool bCollectVecFirstLine(eEC& eError);
+    bool bCollectVecFirstLine(eEC& eInputError);
     bool bCollectVecTillSemicolon(eEC& eError);
   
     void vCollectCpp(void);

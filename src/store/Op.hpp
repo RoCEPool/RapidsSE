@@ -112,6 +112,7 @@ namespace STORE
     i8   iNextStage(void);
     Stage* pNextStage(void);
     i8   iNodeId(void);
+    void vNodeLossAbort(void);
     
     i8   i_Op(void);
     OperandWatch* pOperandWatch(void);

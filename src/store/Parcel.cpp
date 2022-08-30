@@ -1023,6 +1023,9 @@ void Parcel::vSendParcelViaSocket(Op *pSendOp)
   Socket *pSocket = pDstNode->pSendSocket();
   i8 nObjects = this->nItems();
 
+  if ( ! pSocket )
+    return;
+
   pSocket->vGrabWrite();
 
   //vTrace("vSendParcelViaSocket got a lock, prepared to send %lld Object(s)to Node:%lld Port:%lld \n"_Stz,nObjects, pDstNode->iNodeId(), pDstNode->iPortNo());

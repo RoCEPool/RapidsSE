@@ -247,11 +247,11 @@ QueryNode* LiteralExpr::pCoerceTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNo
           SemanticException::vThrow(EC_VALUE_OUT_OF_RANGE, sBuf);
         }
 
-        // If the value is small enough then represent it with 2 decimal places
-        // so it prints nicely.
+        // REVISE: If the value is small enough then represent it with 2 decimal places
+        // so it prints nicely. It should strictly have a scale of 0.
         if ( (iVal * 100) < C_BCD_MAX &&
              (iVal * 100) > C_BCD_MIN ) {
-          xBcd.vSet(pExpr->iValue() * 100, 2);
+          xBcd.vSet(iVal * 100, 2);
 
         } else {
           xBcd.vSet(pExpr->iValue(), 0);
@@ -328,6 +328,15 @@ QueryNode* LiteralExpr::pCoerceTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNo
           // Underflow
           SemanticException::vThrow(EC_VALUE_OUT_OF_RANGE,
                                     ": %s: Floating point underflow. Max/min floating point value supported is %10e to %10e"_Stz,
+                                    szStr,
+                                    C_FLT_MIN,
+                                    C_FLT_MAX);
+        }
+
+        if (dVal > C_FLT_MAX || dVal < C_FLT_MIN) {
+          // Not an overflow, but still outside the floating point bounds accepted by RapidsSE
+          SemanticException::vThrow(EC_VALUE_OUT_OF_RANGE,
+                                    ": %s: Floating point overflow. Max/min floating point value supported is %10e to %10e"_Stz,
                                     szStr,
                                     C_FLT_MIN,
                                     C_FLT_MAX);

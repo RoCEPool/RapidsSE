@@ -24,10 +24,18 @@
 /* <exd org */
 /* <exd org */  [job].originId@ ListedJob[].findOriginator? if
 /* <exd org */
-/* <exd org */    ListedJob[].taskAck
+/* <exd org */    ListedJob[].nodeLoss@ not if
+/* <exd org */      ListedJob[].taskState@ TS_WAITING == assert
+/* <exd org */      ListedJob[].taskAck
+/* <exd org */    then
 /* <exd org */
 /* <exd org */    ListedJob[].returnReference
 /* <exd org */
+/* <exd org */  then
+/* <exd org */
+/* <exd org */  [args].distJob if
+/* <exd org */    "executed" "onOrigin" "<exd org"
+/* <exd org */      "<exd origin" "exiting"                           [job].trace
 /* <exd org */  then
 /* <exd org */
 /* <exd org */  [job]:retireAndExit

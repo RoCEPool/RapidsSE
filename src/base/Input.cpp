@@ -442,7 +442,7 @@ void Input::vRawInputClear(void)
 /*----------------------------------------------------------------------------*/
 /* read next command from input stream                                        */
 /*----------------------------------------------------------------------------*/
-bool Input::bReadCommand(eEC& eError)
+bool Input::bReadCommand(eEC& eInputError)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
     
@@ -464,7 +464,7 @@ bool Input::bReadCommand(eEC& eError)
   if (d_iDebugMode)
     m_pInpTknVec->vDumpVec(16);
   
-  if (! bCollectVecFirstLine(eError))
+  if (! bCollectVecFirstLine(eInputError))
     goto L_Exit;
 
   //vTrace(" : >>>%s<<<\n"_Stz,m_pCharser->szRawInput());
@@ -514,7 +514,7 @@ bool Input::bReadCommand(eEC& eError)
   if (d_iDebugMode)
     m_pInpTknVec->vDumpVec(16);
   
-  if (! bCollectVecTillSemicolon(eError))
+  if (! bCollectVecTillSemicolon(eInputError))
     goto L_Exit;
 
   //vTrace(" : %s\n"_Stz,m_pCharser->szRawInput());
@@ -557,7 +557,7 @@ L_Exit:
 
   //m_pInpTknVec->vDumpVec(0);
 
-  if (eError)
+  if (eInputError)
     return false;
 
   return true;
@@ -807,7 +807,7 @@ void Input::vCollectOneToken(void)
 /*----------------------------------------------------------------------------*/
 /* collect one line line of tokens from input stream                          */
 /*----------------------------------------------------------------------------*/
-bool Input::bCollectVecFirstLine(eEC& eError)
+bool Input::bCollectVecFirstLine(eEC& eInputError)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
@@ -828,7 +828,7 @@ bool Input::bCollectVecFirstLine(eEC& eError)
   
   for (;;) {
 
-    if (! bCursorAdvance(eError))
+    if (! bCursorAdvance(eInputError))
       return false;
     
     if (d_iDebugMode)

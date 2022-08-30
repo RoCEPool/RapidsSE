@@ -34,7 +34,8 @@ namespace STORE
     bool bCancel(Task* pTriggeringTask);
 
     Deck* pDeck(void);
- 
+
+    void vNodeLossAbort(void);
     Op*  pOp0(void);
     i8   nOpsOnNode(i8 iNode);
   

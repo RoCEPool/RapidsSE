@@ -40,7 +40,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT 1. FROM nation"
 
 -> -> projectOp
-      » column: (Expr = 1. ; Ordinal Expr = 1.) ; type: DECIMAL
+      » column: (Expr = 1.00 ; Ordinal Expr = 1.00) ; type: DECIMAL
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.nation)')
@@ -56,7 +56,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT 0. FROM nation"
 
 -> -> projectOp
-      » column: (Expr = 0. ; Ordinal Expr = 0.) ; type: DECIMAL
+      » column: (Expr = 0.00 ; Ordinal Expr = 0.00) ; type: DECIMAL
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.nation)')
@@ -88,7 +88,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT -1. FROM nation"
 
 -> -> projectOp
-      » column: (Expr = -1. ; Ordinal Expr = -1.) ; type: DECIMAL
+      » column: (Expr = -1.00 ; Ordinal Expr = -1.00) ; type: DECIMAL
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.nation)')
@@ -104,7 +104,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT -0. FROM nation"
 
 -> -> projectOp
-      » column: (Expr = 0. ; Ordinal Expr = 0.) ; type: DECIMAL
+      » column: (Expr = 0.00 ; Ordinal Expr = 0.00) ; type: DECIMAL
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.nation)')
