@@ -127,8 +127,6 @@ int main(int argc, char* argv[])
 
     if (! Engine::bTraceStart())
       Process::vExitStartup();
-
-    // add comment
   }
 
   catch (Exception xException) {
