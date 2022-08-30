@@ -17013,6 +17013,8 @@ void Task::vAddMunged(Task* )
     "  // now create a listening socket\n"
     "  iPort Port[]::newListen\n"
     "\n"
+    "  [system].ready\n"
+    "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "\n"
     "  begin\n"
