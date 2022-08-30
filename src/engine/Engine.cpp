@@ -240,6 +240,7 @@ bool Engine::bTraceStart(void)
       break;
 
     default:
+      vTrace("Unrecognized boot options\n"_Stz);
       return false;
   }
 
