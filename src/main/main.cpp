@@ -49,18 +49,11 @@ extern i8   giProgressPoint;
 /*----------------------------------------------------------------------------*/
 int main(int argc, char* argv[])
 {
-  // Move the trace here
-  // Get rid of se_error.log
-  // Global file pointer
-  // If error here, direct to se.log from stderr
 
-//  if (argc > 1) {
-//    for (i8 i_Arg = 0; i_Arg < argc; i_Arg++) {
-//      if(((Stz*)argv[i_Arg])->bSame("--start"_Stz)) {
-//        Engine::vTraceStart();
-//      }
-//    }
-//  }
+  // ********************************************************************************
+  // NOTE: Till initial command line options are parsed and trace file is
+  // initialised, we log to the trace file via piping out to stdout
+  // ********************************************************************************
 
   //char* s = readline ("Enter a line: ");
 
@@ -80,27 +73,14 @@ int main(int argc, char* argv[])
 
   gxCmdLineArgs.vInit();
 
-  // Initialise the random number generator
-  Mersenne::init_genrand64(TickingDevice::iGetTick());
-
-  TlsKeys::vInit();
-
-  IntLib::vInitGlobals();
-
-  FltLib::vInitGlobals();
-
-  Engine::vEnvFlags();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
   gsBuildGitHash  = (Stz*)C_BUILD_GIT_HASH;
   gsBuildDate     = (Stz*)C_BUILD_DATE;
   gsBuildHostName = (Stz*)C_BUILD_HOSTNAME;
   gsBuildUserName = (Stz*)C_BUILD_USERNAME;
   gsBuildBranch   = (Stz*)C_BUILD_BRANCH;
-    
+
   gi_szaArgv[0] = (Stz*)argv[0];
-  
+
   if (argc> 1) {
     for (i8 i_Arg = 0; i_Arg < argc; i_Arg++)
       gi_szaArgv[i_Arg] = (Stz*)argv[i_Arg];
@@ -122,22 +102,65 @@ int main(int argc, char* argv[])
       // ********************************************************************************
       u8 uRndClusterId = RndLib::uInteger(C_I8_MAX);
       sSeArgs.vSprint(
-        "--start "
-        "--prompt "
-        "--metadata "
-        "--killPrev "
-        "--munged "
-        "--name SINGLENODE "
-        "--node SINGLENODE 127.0.0.1 5541 "
-        "--heartbeat BROADCAST 8888 "
-        "--cid %llu"
-        ""_Stz,
-        uRndClusterId);
+          "--start "
+          "--prompt "
+          "--metadata "
+          "--killPrev "
+          "--munged "
+          "--name SINGLENODE "
+          "--node SINGLENODE 127.0.0.1 5541 "
+          "--heartbeat BROADCAST 8888 "
+          "--cid %llu"
+          ""_Stz,
+          uRndClusterId);
     }
     vTrace("CmdLineArgs: %s\n"_Stz,sSeArgs.szStz());
-    
+
     gi_argc = CmdLineArgs::nBurstArgs(gi_szaArgv, sSeArgs);
   }
+
+  try {
+
+    // parse the command line arguments for trace file options only
+    if (! gxCmdLineArgs.bParseTraceFileArgs(gi_argc,gi_szaArgv))
+      Process::vExitStartup();
+
+    if (! Engine::bTraceStart())
+      Process::vExitStartup();
+
+    // add comment
+  }
+
+  catch (Exception xException) {
+
+    fflush(stderr); fflush(stdout);
+    printf("Main-level exception caught in func %s() file %s line %d\n",
+           __func__,__FILE__,__LINE__);
+    fflush(stderr); fflush(stdout);
+    xException.vPrint();
+    fflush(stderr); fflush(stdout);
+
+    Process::vExitFailure();
+  }
+
+  // ********************************************************************************
+  // NOTE: Now that we have parsed the initial command line options, we have opened
+  // the trace file and vTrace() logs to the trace file. We should not be using
+  // stdout or stderr for logging from this point onwards.
+  // ********************************************************************************
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Initialise the random number generator
+  Mersenne::init_genrand64(TickingDevice::iGetTick());
+
+  TlsKeys::vInit();
+
+  IntLib::vInitGlobals();
+
+  FltLib::vInitGlobals();
+
+  Engine::vEnvFlags();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -147,7 +170,7 @@ int main(int argc, char* argv[])
     
     Process::vEntry();
     
-    // parse the command line arguments
+    // parse the rest of the command line arguments
     if (! gxCmdLineArgs.bParse(gi_argc,gi_szaArgv))
       Process::vExitStartup();
     

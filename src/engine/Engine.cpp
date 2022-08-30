@@ -124,8 +124,6 @@ void Engine::vPreliminary(void)
   vChangeDirectory(); //! what happens if this fails?
   
   vCreateTmpDir();
-  
-  vTraceStart();
 
   vPrintWelcome();
   
@@ -217,39 +215,35 @@ void Engine::vPreliminary(void)
 /*----------------------------------------------------------------------------*/
 /* Start trace file based on command line options                             */
 /*----------------------------------------------------------------------------*/
-void Engine::vTraceStart(void)
+bool Engine::bTraceStart(void)
 {
 
   eBO eBootOption = eDecodeCommandLine();
 
-  try {
-    switch (eBootOption) {
 
-      case BO_PROMPT:
-      case BO_SETH_PROMPT:
-        vOpenTrace(true);
-        break;
+  switch (eBootOption) {
 
-      case BO_START:
-      case BO_START_PROMPT:
-        vOpenTrace(false);
-        break;
+    case BO_PROMPT:
+    case BO_SETH_PROMPT:
+      vOpenTrace(true);
+      break;
 
-      case BO_ADD_NODE:
-      case BO_STATUS:
-      case BO_STOP:
-      case BO_UNLINK:
-        break;
+    case BO_START:
+    case BO_START_PROMPT:
+      vOpenTrace(false);
+      break;
 
-      default:
-        vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-               "Unknown command line argument\n"_Stz);
-    }
+    case BO_ADD_NODE:
+    case BO_STATUS:
+    case BO_STOP:
+    case BO_UNLINK:
+      break;
+
+    default:
+      return false;
   }
 
-  catch (Error* pError) {
-    vErrorHandler(pError);
-  }
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

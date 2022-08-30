@@ -15,7 +15,7 @@ namespace ENGINE
   
     static void vMainEntry(void);
     static void vPreliminary(void);
-    static void vTraceStart(void);
+    static bool bTraceStart(void);
     static void vRunCommandLine(void);
     static void vConcluding(void);
 
