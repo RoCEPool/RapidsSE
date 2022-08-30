@@ -69,6 +69,30 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* HACK call the optimiser                                                    */
+/*----------------------------------------------------------------------------*/
+: _Call_Optimiser
+
+  // "_Call_Optimiser" .
+
+  Dynamo[].new
+
+  Text[] Dynamo[].compile to ErrorCode[]
+  ErrorCode[] EC_NONE == if
+    // + clean compile
+    //"Clean Compile" .
+    to PipeSpec[]
+
+    PipeSpec[].delete
+  else
+    // - error compile
+    //"Error Compile" .
+  then
+
+  Dynamo[].delete
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for EV_D_PLANOPERAND ...                                           */
 /*----------------------------------------------------------------------------*/
 : transliterate_PlanOperand \handler
@@ -103,6 +127,10 @@
   PlanOperand[].delete
 
   //Text[] "FORKING CHILD FOR PIPELINE: %v"  str.format .
+
+
+  _Call_Optimiser
+
 
   [Op] [job].responseOp!
   STD_NORMALFORK_TAG Text[] api::forkChild not if
