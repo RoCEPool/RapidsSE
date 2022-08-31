@@ -111,7 +111,6 @@ namespace STORE
     static void vAddSteps_Locks(void);
     static void vAddSteps_Logic(void);
     static void vAddSteps_LogicUnit(void);
-    static void vAddSteps_LogRoll(void);
 
     static void vAddSteps_Machine(void);
     static void vAddSteps_Magnitude(void);

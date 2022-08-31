@@ -127,7 +127,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Locks();
   Step::vAddSteps_Logic();
   Step::vAddSteps_LogicUnit();
-  Step::vAddSteps_LogRoll();
 
   Step::vAddSteps_Machine();
   Step::vAddSteps_Magnitude();
