@@ -11,14 +11,25 @@
 
 namespace STORE
 {
-  class Board : public Card_OTHER
+  class Bench;
+  class Dissect;
+  class Drafter;
+  class Weave;
+
+  class Board : public Object //Card_OTHER
   {
+    friend class Bench;
+    friend class Dissect;
+    friend class Drafter;
+    friend class Weave;
   protected:
     s32 m_sQueryNm;
     Optimiser* m_pOptimiser;
 
     CardRegs*  m_pCardRegs;
     RuleCtl*   m_pRuleCtl;
+
+    Card_SubSet* m_pCard_SubSet;
 
   private:
     // must be last

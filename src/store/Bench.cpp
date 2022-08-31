@@ -82,7 +82,7 @@ void Bench::vRenumberCards(void)
   while (pBench_I->bHasNext()) {
     Board* pBoard = pBench_I->pNext();
     
-    ListExoIter2_t<Card>* pBoard_I = pBoard->pNewIter();
+    ListExoIter2_t<Card>* pBoard_I = pBoard->m_pCard_SubSet->pNewIter();
 
     while (pBoard_I->bHasNext()) {
       Card* pWorkUnit = pBoard_I->pNext();
