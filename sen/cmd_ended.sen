@@ -24,7 +24,7 @@
 /* <edd org */  [job].originId@ ListedJob[].findOriginator? if
 /* <edd org */
 /* <edd org */    ListedJob[].nodeLoss@ not if
-/* <edd org */      ListedJob[].taskState@ TS_WAITING == assert
+/* <edd org */      //RAY ListedJob[].taskState@ TS_WAITING == assert
 /* <edd org */      ListedJob[].taskAck
 /* <edd org */    then
 /* <edd org */
