@@ -1158,6 +1158,19 @@ bool CmdLineArgs::bParseTraceFileArgs(i8 argc, s256 argv[])
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (szArg->bSame("--commands"_Stz)) {
+      if(argv[++i_Arg].bContains("--"_Stz))
+      {
+        vPrintErrorMarker(argv, i_Arg);
+        vTrace("Invalid commands argument value: %s\n"_Stz, (Stz*)argv[i_Arg]);
+        vTrace("Usage: --commands <path> (path to commands directory)\n"_Stz);
+        return false;
+      }
+      m_xSysArgs.m_sCommandsDir = (Stz*)argv[i_Arg];
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--developer"_Stz)) {
       m_xSysArgs.m_bDeveloper = true;
       continue;
