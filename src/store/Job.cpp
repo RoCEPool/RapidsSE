@@ -1131,8 +1131,8 @@ void Job::vMutexWait(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
       
-  //m_pMutex->vWaitForSignalLoop(this);
-  m_pMutex->vPauseForSignalLoop(this,100000);
+  m_pMutex->vWaitForSignalLoop(this);
+  //m_pMutex->vPauseForSignalLoop(this,100000);
 }
 
 /*----------------------------------------------------------------------------*/
