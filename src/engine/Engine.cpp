@@ -121,8 +121,6 @@ void Engine::vPreliminary(void)
   //OpSys::vGetInfo();
   //OpSys::vTraceInfo();
   
-  vChangeDirectory(); //! what happens if this fails?
-  
   vCreateTmpDir();
 
   vPrintWelcome();

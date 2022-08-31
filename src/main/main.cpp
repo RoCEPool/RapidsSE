@@ -125,6 +125,8 @@ int main(int argc, char* argv[])
     if (! gxCmdLineArgs.bParseTraceFileArgs(gi_argc,gi_szaArgv))
       Process::vExitStartup();
 
+    Engine::vChangeDirectory(); //! what happens if this fails?
+
     if (! Engine::bTraceStart())
       Process::vExitStartup();
   }
