@@ -91,7 +91,7 @@
   to PipeSpec[]
 
   Optimiser[].new
-    //PipeSpec[] Optimiser[].dissect
+    PipeSpec[] Optimiser[].dissect
     //Optimiser[].optimise
     //Optimiser[].weave discard
   Optimiser[].delete
