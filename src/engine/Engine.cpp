@@ -1458,6 +1458,8 @@ void Engine::vSignalHandler(int iSignal)
 /*----------------------------------------------------------------------------*/
 void Engine::vStartSystem(void)
 {
+  RASSERT(! AM::SYSTEM::bReady());
+
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("\n+\n+ %lld) System Start\n+\n"_Stz,giProgressPoint++);
     
@@ -1560,6 +1562,12 @@ void Engine::vStartSystem(void)
   Scheduler::vScheduler_Boot();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
+    vTrace("  Calling StartSystem job\n"_Stz);
+  Api::vCallEngineJob("startSystem"_Stz,"startSystem::startSystem"_Stz,false);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // internal tables
   
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
@@ -1607,12 +1615,8 @@ void Engine::vStartSystem(void)
   // mark attachmap to be ready for connections
   gpAttachMap->vAttachMapState(C_READY);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
-    vTrace("  Calling StartSystem job\n"_Stz);
-  Api::vCallEngineJob("startSystem"_Stz,"startSystem::startSystem"_Stz,false);
-
+  while (! AM::SYSTEM::bReady())
+    sleep(1);
 
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT)) {
     vTrace("\n++\n++ System Started\n++\n"_Stz);
