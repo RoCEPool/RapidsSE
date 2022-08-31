@@ -75,6 +75,8 @@
 
   "_Call_Optimiser" .
 
+  Text[] .
+
   Dynamo[].new
 
   Text[] Dynamo[].compile to ErrorCode[]
@@ -138,7 +140,7 @@
   //Text[] "FORKING CHILD FOR PIPELINE: %v"  str.format .
 
 
-  // _Call_Optimiser
+  _Call_Optimiser
 
 
   [Op] [job].responseOp!
