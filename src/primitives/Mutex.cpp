@@ -312,6 +312,8 @@ void Mutex::vPause(Object* pLockedBy, i8 iMicroSeconds)
   //! mutex is signaled.
   //!
   ASSERT(pLockedBy == m_pLockedBy);
+  ASSERT(! m_pWaitedBy);
+  UNUSED(pLockedBy);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -336,27 +338,28 @@ void Mutex::vPause(Object* pLockedBy, i8 iMicroSeconds)
 #endif
   
   ++ m_ixWaitTimed;
-  
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+
   // clear tracking of the mutex lock state
+  m_pWaitedBy = m_pLockedBy;
   m_pLockedBy = nullptr;
+  m_bSignalled = false;
   
   //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
   i8 iRetVal = pthread_cond_timedwait(&m_xCond,&m_xMutex,&xTimeSpec);// BLOCKING
   //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-  
+
+
   // success: signaled -- this thread has been signaled and now has mutex lock
   
   if (0 == iRetVal) {
-    RASSERT(! m_pLockedBy);
-    m_pLockedBy = pLockedBy;
-    
 #ifdef WITH_STATISTICS_COUNTERS
     gpAttachMap->m_oStatistics.Mutex.m_nUnblocks++;
 #endif
-    
+
+    m_pLockedBy = m_pWaitedBy;
+    m_pWaitedBy = nullptr;
+    m_eMutex = MS_LOCKED;
+
     ++ m_ixSignaled;
     
     return;
@@ -366,14 +369,15 @@ void Mutex::vPause(Object* pLockedBy, i8 iMicroSeconds)
   // success: timedout -- call has timed-out; thread has reacquired mutex lock
   
   if (ETIMEDOUT == iRetVal) {
-    RASSERT(! m_pLockedBy);
-    m_pLockedBy = pLockedBy;
-
 #ifdef WITH_STATISTICS_COUNTERS
     gpAttachMap->m_oStatistics.Mutex.m_nTimeOuts++;
 #endif
-    
+    m_pLockedBy = m_pWaitedBy;
+    m_pWaitedBy = nullptr;
+    m_eMutex = MS_LOCKED;
+
     ++ m_ixTimedout;
+
     return;
   }
   
@@ -516,13 +520,13 @@ void Mutex::vWait(Object* pLockedBy)
   i8 iRetVal = pthread_cond_wait(&m_xCond,&m_xMutex);                // BLOCKING
   //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
-#ifdef WITH_STATISTICS_COUNTERS
-  gpAttachMap->m_oStatistics.Mutex.m_nUnblocks++;
-#endif
-  
+
   // success -- this thread has been signaled and now has the mutex lock
 
   if (0 == iRetVal) {
+#ifdef WITH_STATISTICS_COUNTERS
+    gpAttachMap->m_oStatistics.Mutex.m_nUnblocks++;
+#endif
     m_pLockedBy = m_pWaitedBy;
     m_pWaitedBy = nullptr;
     m_eMutex = MS_LOCKED;
