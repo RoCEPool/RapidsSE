@@ -384,6 +384,23 @@ void Mutex::vPause(Object* pLockedBy, i8 iMicroSeconds)
 }
 
 /*----------------------------------------------------------------------------*/
+/* calling thread waits indefinitely to be signalled          (blocking call) */
+/*----------------------------------------------------------------------------*/
+void Mutex::vPauseForSignalLoop(Object* pLockedBy, i8 iMicroSeconds)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
+
+  m_eMutex = MS_WAITING;
+
+  do {
+
+    vPause(pLockedBy,iMicroSeconds);
+    //vWait(pLockedBy);
+
+  } while (! m_bSignalled && AM::PROCESS::bSeRunning());
+}
+
+/*----------------------------------------------------------------------------*/
 /* signal the condition variable of this mutex                                */
 /*----------------------------------------------------------------------------*/
 void Mutex::vSignalAndUnlock(Object* pLockedBy)

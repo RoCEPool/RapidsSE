@@ -838,6 +838,10 @@ bool SePrompt::bReadCommand(eEC& eInputError)
 
   if (bStdIn() && ! *this->szToDo()->azChar()) {
     //vReportOther();
+
+    if (! AM::PROCESS::bSeRunning())
+      vTrace("\n\n** NODE LOST (%s) **\n\n"_Stz,AM::NODE::szNodeNm());
+
     vPrintPrompt();
   }
   

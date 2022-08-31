@@ -105,7 +105,7 @@ void Step::vSystemSee(void)
 
   vTrace("  pid %lld (%s)\n"_Stz
          ,AM::PROCESS::iSePid()
-         ,Process::bTestPid(AM::PROCESS::iSePid()) ? "exists"_Stz : "non-existant"_Stz
+         ,AM::PROCESS::bSeRunning() ? "exists"_Stz : "non-existant"_Stz
          );
 
   vTrace("  system %s\n"_Stz

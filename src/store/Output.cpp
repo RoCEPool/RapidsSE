@@ -274,15 +274,16 @@ Operand* Output::pPopBufferQueue_blocking(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
       
-  for (;;) {
-    
+  while (AM::PROCESS::bSeRunning()) {
+
     Operand* pOperand = _pOperand(m_pOutputQueue->pPop());
     if (pOperand)
       return pOperand;
     
     AM::vNapUsec(1000,CN_OUTPUT);
   }
-  
+
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
