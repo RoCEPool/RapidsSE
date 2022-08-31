@@ -704,7 +704,25 @@ void SePrompt::vPrintPrompt(void)
     fflush(stdin);
     return;
   }
-  
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // print the git branch once
+
+  static bool bGitBranch = true;
+
+  if (bGitBranch) {
+    bGitBranch = false;
+    File* pFile = new File(this);
+    if (pFile->bOpenRead("../.git/HEAD"_Stz)) {
+      s256 sHead;
+      if (pFile->bReadLine(sHead))
+        vTrace("%s\n"_Stz,sHead.azChar());
+      pFile->vClose();
+    }
+    delete pFile;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   bool bLowMem = AM::MEMORY::bIsRunningLow();
   
