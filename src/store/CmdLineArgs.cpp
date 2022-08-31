@@ -736,12 +736,6 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
         return false;
       }
 
-      if (m_xSysArgs.m_bSethScript) {
-        vPrintErrorMarker(argv, i_Arg);
-        vTrace("Incorrect argument: --script with %s\n"_Stz,argv[i_Arg].szStz());
-        return false;
-      }
-
       m_xSysArgs.m_bPrompt = true;
       continue;
     }
@@ -1216,12 +1210,6 @@ bool CmdLineArgs::bParseTraceFileArgs(i8 argc, s256 argv[])
       if (m_xSysArgs.m_bStatus) {
         vPrintErrorMarker(argv, i_Arg);
         vTrace("Incorrect argument: --status with %s\n"_Stz,argv[i_Arg].szStz());
-        return false;
-      }
-
-      if (m_xSysArgs.m_bSethScript) {
-        vPrintErrorMarker(argv, i_Arg);
-        vTrace("Incorrect argument: --script with %s\n"_Stz,argv[i_Arg].szStz());
         return false;
       }
 
