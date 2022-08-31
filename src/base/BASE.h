@@ -195,6 +195,7 @@ extern d8 C_D8_MID;
 #include "Scanner.hpp"
 
 #include "DecVal.hpp"
+#include "Formats.hpp"
 
 //------------------------------------------------------------------------------
 

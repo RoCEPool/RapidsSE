@@ -73,21 +73,30 @@
 /*----------------------------------------------------------------------------*/
 : _Call_Optimiser
 
-  // "_Call_Optimiser" .
+  "_Call_Optimiser" .
 
   Dynamo[].new
 
   Text[] Dynamo[].compile to ErrorCode[]
-  ErrorCode[] EC_NONE == if
-    // + clean compile
-    //"Clean Compile" .
-    to PipeSpec[]
+  Dynamo[].delete
 
-    PipeSpec[].delete
-  else
+  ErrorCode[] EC_NONE == not if
     // - error compile
     //"Error Compile" .
+    exit
   then
+
+  // + clean compile
+  //"Clean Compile" .
+  to PipeSpec[]
+
+  Optimiser[].new
+    //PipeSpec[] Optimiser[].dissect
+    //Optimiser[].optimise
+    //Optimiser[].weave discard
+  Optimiser[].delete
+
+  PipeSpec[].delete
 
   Dynamo[].delete
 ;
