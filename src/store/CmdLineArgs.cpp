@@ -1365,6 +1365,7 @@ void CmdLineArgs::vPrint(void)
 /*----------------------------------------------------------------------------*/
 void CmdLineArgs::vPrintErrorMarker(s256* argv, i8 i_Arg)
 {
+  s256 sErrorMarker;
   i8 iCount = 0;
   for(i8 i = 0; i < i_Arg; i++)
   {
@@ -1372,14 +1373,14 @@ void CmdLineArgs::vPrintErrorMarker(s256* argv, i8 i_Arg)
   }
   for(i8 i = 0; i < iCount; i++)
   {
-    vTrace(" "_Stz);
+    sErrorMarker.vAppend(' ');
   }
-  vTrace("^"_Stz);
+  sErrorMarker.vAppend('^');
   for(i8 i = 0; i < argv[i_Arg].nLength() - 1; i++)
   {
-    vTrace("~"_Stz);
+    sErrorMarker.vAppend('~');
   }
-  vTrace("\n"_Stz);
+  vTrace("%s\n"_Stz, sErrorMarker.szStz());
 }
 /*----------------------------------------------------------------------------*/
 /* print arguments                                                            */
