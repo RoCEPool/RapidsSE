@@ -278,6 +278,7 @@ void Fragments::vAppendLocals(char *azStr) {
       "\n    i8*   piColumn;"
       "\n    i8    iIndex;"
       "\n    i8    nSrcSize;"
+      "\n    i8    nDstSize;"
       "\n    i8    iOffset;"
       "\n    i8    iMixIn;"
       "\n    i8    iBufferJ;"
