@@ -66,6 +66,7 @@ AttachMap*   gpAttachMap;
 BufferPool*  gpBufferPool;
 Header*      gaSeShmRegion;
 extern File* gpTraceFile;
+extern s256  gszTraceFilePath;
 
 Stz* gsBuildGitHash;
 Stz* gsBuildDate;
@@ -570,10 +571,19 @@ void Engine::vClosePool(void)
 /*----------------------------------------------------------------------------*/
 void Engine::vCloseTrace(void)
 {
-  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
-    vTrace("** trace file closed: %s\n"_Stz, gpAttachMap->m_sTraceFile.szStz());
   if(gpTraceFile)
+  {
+    if(gpAttachMap)
+      gpAttachMap->vTraceLockGrab();
+
     gpTraceFile->vClose();
+
+    if(gpAttachMap)
+      gpAttachMap->vTraceLockDrop();
+
+    if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
+      vTrace("** trace file closed: %s\n"_Stz, gszTraceFilePath.szStz());
+  }
   //delete gpTraceFile;
   
   gpTraceFile = nullptr;
@@ -601,27 +611,12 @@ void Engine::vCreateFileNames(void)
   
   // "SEgrid" to be gxCmdLineArgs.m_xSysArgs.m_sGridName.szStz()
 
-  gpAttachMap->vTraceLockGrab();
-
-  if (gxCmdLineArgs.m_xSysArgs.m_bDeveloper)
-    gpAttachMap->m_sTraceFile.vSprint("../se_%s.log"_Stz,
-                                    gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz());
-  else
-    gpAttachMap->m_sTraceFile.vSprint("../se.log"_Stz);
-
-  if(gpTraceFile)
-  {
-    gpAttachMap->vTraceFile(gpTraceFile);
-  }
-
   gpAttachMap->m_sLogRegion.vSprint("SE_Log_%s"_Stz, "SEgrid"_Stz);
   gpAttachMap->m_sLogCsvFile.vSprint("../tmp/SE_Log_%s.csv"_Stz, "SEgrid"_Stz);
   gpAttachMap->m_sLogTxtFile.vSprint("../tmp/SE_Log_%s.txt"_Stz, "SEgrid"_Stz);
 
-  gpAttachMap->vTraceLockDrop();
-
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT)) {
-    vTrace("Trace file path: %s\n"_Stz,gpAttachMap->m_sTraceFile.szStz());
+    vTrace("Trace file path: %s\n"_Stz,gszTraceFilePath.szStz());
     vTrace("Log file path (csv): %s\n"_Stz,gpAttachMap->m_sLogCsvFile.szStz());
     vTrace("Log file path (text): %s\n"_Stz,gpAttachMap->m_sLogTxtFile.szStz());
 
@@ -1068,6 +1063,7 @@ void Engine::vOpenTrace(bool bPrompt)
     bool bOpened = gpTraceFile->bOpenAppend(gxCmdLineArgs.m_xSysArgs.m_sLogFile);
     RASSERT(bOpened);
 
+    gszTraceFilePath.vCopy(gxCmdLineArgs.m_xSysArgs.m_sLogFile);
     vTrace("Opened prompt trace file %s for write\n"_Stz
         ,gxCmdLineArgs.m_xSysArgs.m_sLogFile.szStz()
     );
@@ -1087,6 +1083,8 @@ void Engine::vOpenTrace(bool bPrompt)
 
     bOpened = gpTraceFile->bOpenAppend(sTrace);
     RASSERT(bOpened);
+
+    gszTraceFilePath.vCopy(sTrace);
 
     vTrace("Opened trace file %s for write\n"_Stz, sTrace.szStz());
   }
@@ -1481,12 +1479,12 @@ void Engine::vRollTrace(void)
     sNewTrace.vSprint("../se_%lld.log"_Stz, 0);
   }
 
-  RASSERT(gpAttachMap->szTraceFilePath()->bIsEmpty() == false)
+  RASSERT(gszTraceFilePath.bIsEmpty() == false)
 
-  File::bRename(gpAttachMap->szTraceFilePath(), sNewTrace.szStz());
+  File::bRename(gszTraceFilePath, sNewTrace.szStz());
 
   // Open a new trace file with the original name and drop the lock
-  bool bOpened = gpTraceFile->bOpenWrite(gpAttachMap->szTraceFilePath());
+  bool bOpened = gpTraceFile->bOpenWrite(gszTraceFilePath);
   RASSERT(bOpened);
 
   // If the total number of trace files exceeds the max, delete the oldest trace file

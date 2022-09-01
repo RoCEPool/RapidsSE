@@ -39,7 +39,6 @@ namespace STORE
     Timer m_oSince;
     i8    m_iTimePoint;
   
-    s256  m_sTraceFile;
     s256  m_sLogRegion;
     s256  m_sLogCsvFile;
     s256  m_sLogTxtFile;
@@ -88,7 +87,6 @@ namespace STORE
     b8            m_bSystemOpen;
     Word*         m_pTenants;
     TempName      m_oTempName;
-    File*         m_pTraceFile;
     TraceLock      m_oTraceLock;
     TraceMultiLock m_oTraceMultiLock;
     TxSet*        m_pTxSet;
@@ -155,9 +153,6 @@ namespace STORE
     void vSysMetricsAdd(SysMetrics* pSysMetrics);
     SysMetrics* pSysMetricsChain(void);
 
-    File* pTraceFile(void);
-    void  vTraceFile(File* pTraceFile);
-    Stz* szTraceFilePath(void);
     void vTraceLockDrop(void);
     void vTraceLockGrab(void);
     void vTraceMultiLockDrop(void);

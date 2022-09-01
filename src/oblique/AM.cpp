@@ -3711,6 +3711,7 @@ void AM::vWriteTrace_vargs(Stz* aFormat, va_list xArgs)
     // Roll over trace file only if we are SE main
     if(iBootOptions == BO_START || iBootOptions == BO_START_PROMPT) {
       // Calculate length of message
+      // Note: the 15 bits at the end is for low memory message that may be added
       i8 iMaxLen = gpTraceFile->iSize() + strlen(spNow.sz()->azChar()) + strlen(caFormatted) + 15;
 
       // If the message exceeds the max length of the trace file, roll over
@@ -3720,6 +3721,8 @@ void AM::vWriteTrace_vargs(Stz* aFormat, va_list xArgs)
     }
 
     gpTraceFile->vSeekEnd();
+    // Note: If this msg format is updated, ensure the max len of the msg is updated in the above
+    // Where we calculate the max msg length
     gpTraceFile->vPrint("[%s] %s%s"_Stz,spNow.sz(),bLowMem ? "LOW-MEMORY! " : "",caFormatted);
     gpTraceFile->vFlush();
   }

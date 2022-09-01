@@ -14,6 +14,8 @@
 
 
 File*        gpTraceFile;
+s256         gszTraceFilePath;
+
 extern Stz* gsBuildGitHash;
 extern Stz* gsBuildDate;
 extern Stz* gsBuildHostName;

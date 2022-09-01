@@ -35,7 +35,7 @@ extern BufferPool*   gpBufferPool;
 extern Stz*          gsBuildGitHash;
 extern CmdLineArgs   gxCmdLineArgs;
 extern PromptCatalog gxPromptCatalog;
-
+extern s256          gszTraceFilePath;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -999,7 +999,11 @@ void SePrompt::vReportTrace(void)
   if (! m_oPmtTagSet.bHasName(C_PMT_TRCFILE))
     return;
 
-  i8 iSizeTrace = File::nSize(gpAttachMap->m_sTraceFile);
+  i8 iSizeTrace = 0;
+
+  if( ! gszTraceFilePath.bIsEmpty()) {
+    iSizeTrace = File::nSize(gszTraceFilePath);
+  }
   
   s32 sTrace_magn;
   MagLib::vByteMag(iSizeTrace,sTrace_magn);
