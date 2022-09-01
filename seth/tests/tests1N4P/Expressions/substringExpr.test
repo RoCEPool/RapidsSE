@@ -341,7 +341,7 @@ create table substring(a varchar,b char);
 success
 
 // load the table
-load substring "../DATA/Expressions/SubString.csv";
+load substring "../DATA/Expressions/subString.csv";
 success
 
 select * from substring where substr(a,1,1)='A';
