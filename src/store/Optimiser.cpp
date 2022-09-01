@@ -109,7 +109,7 @@ void Optimiser::vDissect(VertexSpec* pm_pUnOptPipeSpec)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  vOptimise();
+  //vOptimise();
 
   return;
 }

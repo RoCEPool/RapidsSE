@@ -16,6 +16,9 @@
 #include "ProjectedColumn.hpp"
 #include "ProjectedColumns.hpp"
 #include "Expr.hpp"
+#include "AggregateExpr.hpp"
+#include "AliasRef.hpp"
+#include "CastExpr.hpp"
 
 using namespace Parser;
 
@@ -32,7 +35,8 @@ void AggregateSplit::vAggregateSplit(PlanNode *pRootNode)
   ASSERT(pPlanNode);
   ASSERT(ShadowPlan::bIsOfType(pPlanNode));
 
-  vSplitAggregates(pPlanNode, pRootNode);
+  vSplitMultipleAggregates(pPlanNode, pRootNode);
+  vSplitCastOfAggregates(pPlanNode, pRootNode);
 
   // After splitting aggregates we also need to separate two or more projections
   // (or aggregations) under the same StageMarker.
@@ -44,7 +48,7 @@ void AggregateSplit::vAggregateSplit(PlanNode *pRootNode)
 /* Splits multiple aggregations into separate proj columns so that we don't   */
 /* have more than one aggregation in a single expression.                     */
 /*----------------------------------------------------------------------------*/
-void AggregateSplit::vSplitAggregates(QueryNode *pPlanNode, PlanNode *pRootNode)
+void AggregateSplit::vSplitMultipleAggregates(QueryNode *pPlanNode, PlanNode *pRootNode)
 {
   ASSERT(pPlanNode);
   ASSERT(ShadowPlan::bIsOfType(pPlanNode));
@@ -132,7 +136,7 @@ void AggregateSplit::vSplitAggregates(QueryNode *pPlanNode, PlanNode *pRootNode)
       delete pOrdExpr;
     }
 
-    // Insert the Project/AggregateOp with these aggregates
+    // Insert a Project/AggregateOp with these aggregates below the current pSqlOp Project node
     if (pCommonAggList) {
       vInsertProjection(pCommonAggList, bRemoveCol, nCols, pSqlOp, pColumnExprList, pRootNode);
       ASSERT(pCommonAggList->nItems() > 0);
@@ -260,7 +264,176 @@ void AggregateSplit::vInsertProjection(QueryNodeList* pAggList,
       pParentNode->vAppendChild(pChild);
     }
   }
+}
 
+/*----------------------------------------------------------------------------*/
+/* Splits a cast of an aggregation into separate projections so the           */
+/* aggregation and casting are done in separate pipeline stages.              */
+/*----------------------------------------------------------------------------*/
+void AggregateSplit::vSplitCastOfAggregates(QueryNode *pPlanNode, PlanNode *pRootNode)
+{
+  ASSERT(pPlanNode);
+  ASSERT(ShadowPlan::bIsOfType(pPlanNode));
+
+
+  // Lambda called as we walk the graph
+  auto fVisitor = [pRootNode](PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
+
+    UNUSED(sPath);
+    UNUSED(iDepth);
+    UNUSED(pvArg);
+
+    QueryNode* pSqlOp = _pQueryNode(pNode);
+
+    if (!ProjectOp::bIsOfType(pNode)) {
+      return GraphNav::WALK_CONTINUE;
+    }
+
+    QueryNodeList* pCommonAggList = nullptr;
+
+
+    i8 nCols = ProjectOp::nColumns(pSqlOp);
+    b1 bRemoveCol[nCols]; // remove associated column if true
+
+    QueryNodeList* pColumnExprList = PlanObject::pColumnExprs(_pQueryNode(pSqlOp->pFirstChild()), pRootNode);
+
+    // Get the list of correlated expressions from the enclosing subquery.
+    // We don't need to free this object.
+    QueryNode* pCorrelatedExprs = PlanObject::pCorrelatedExprs(pSqlOp, pRootNode);
+
+    // We have a ProjectOp (or AggregateOp)
+    // We will check each ordinal projected column to see if it has a cast of an aggregation
+    QueryNode* pSymProjCols = ProjectOp::pProjectedColumns(pSqlOp);
+    PlanNodeIter* pIter = pSymProjCols->pNewChildrenIter();
+
+    // Iterate each symbolic projected column
+    i8 i = -1;
+    while (pIter->bHasNext()) {
+      QueryNode* pSymProjCol = _pQueryNode(pIter->pNext());
+      ASSERT(ProjectedColumn::bIsOfType(pSymProjCol));
+
+      ++i;
+      bRemoveCol[i] = false;
+
+      QueryNode* pSymExpr = ProjectedColumn::pExprNode(pSymProjCol);
+      ASSERT(Expr::bIsOfType(pSymExpr));
+
+      QueryNode* pOrdExpr = Expr::pSymbolicToOrdinal(pSymExpr, pColumnExprList, pCorrelatedExprs, pRootNode);
+      ASSERT(Expr::bIsOfType(pOrdExpr));
+      ASSERT(Expr::bIsFullyOrdinal(pOrdExpr));
+
+      if (!Expr::bContainsAnAggregate(pOrdExpr)) {
+        // Nothing to worry about here
+        delete pOrdExpr;
+        continue;
+      }
+
+      // The ordinal expression contains aggregations. But does it contain
+      // any CAST(aggregate) terms? If so, get a list of the casted aggregate
+      // expressions that exist in pOrdExpr (just the aggregates, not the casts themselves).
+      // Note that these are pointers to exprs in pOrdExpr, not copies.
+      QueryNodeList* pAggList = pCastedAggregateExprs(pOrdExpr);
+
+      if (pAggList->nItems() > 0) {
+        bRemoveCol[i] = true;
+
+        // Make a list of aggregates to be split. After we have looked at all projected
+        // columns then we can insert a ProjectOp underneath.
+
+        if (!pCommonAggList) {
+          pCommonAggList = new QueryNodeList();
+        }
+
+        // Copy the aggregation terms to the common list
+        while (pAggList->nItems() > 0){
+          pCommonAggList->vAppend(pAggList->pPop()->pDeepCopy(true));
+        }
+      }
+
+      if (pAggList) {
+        pAggList->vRemoveAll();
+        delete pAggList;
+      }
+
+      delete pOrdExpr;
+    }
+
+    // Insert a Project/AggregateOp with these aggregates below the current pSqlOp Project node
+    if (pCommonAggList) {
+      vInsertProjection(pCommonAggList, bRemoveCol, nCols, pSqlOp, pColumnExprList, pRootNode);
+      ASSERT(pCommonAggList->nItems() > 0);
+      pCommonAggList->vDeleteAll();
+      delete pCommonAggList;
+    }
+
+    pColumnExprList->vDeleteAll();
+    delete pColumnExprList;
+
+    delete pIter;
+
+    return GraphNav::WALK_CONTINUE;
+  };
+
+
+  // Walk each node from the bottom up and inspect each ProjectOp/AggregateOp.
+  // We use a bottom-up walk because we may be modifying the children of
+  // the current node. Can't do that with a top-down walk.
+  GraphNav::bGlobalWalkBottomUp(pPlanNode, false, true, fVisitor, nullptr);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Given an expression, return a list of aggregate expression terms found in  */
+/* that expression who have a CAST expression as a parent. Returned list is   */
+/* to be deleted but NOT the list items.                                      */
+/*----------------------------------------------------------------------------*/
+QueryNodeList* AggregateSplit::pCastedAggregateExprs(QueryNode* pExpr)
+{
+  QueryNodeList* pList = new QueryNodeList();
+
+  auto fVisitor = [pList]
+      (PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    UNUSED(sPath);
+    UNUSED(iDepth);
+    UNUSED(pvArg);
+
+    QueryNode* pExprNode = _pQueryNode(pNode);
+
+    if (AliasRef::bIsOfType(pNode)) {
+      QueryNode* pAliasedExpr = AliasRef::pAliasedExpr(pExprNode);
+
+      // Since the alias expression is a property of alias, and we are not walking
+      // properties, we manually search this space and add it to the outer list of aggregates.
+      QueryNodeList* pAliasAggs = pCastedAggregateExprs(pAliasedExpr);
+
+      while (pAliasAggs->nItems() > 0) {
+        pList->vPush(pAliasAggs->pPop());
+      }
+
+      ASSERT(pAliasAggs->nItems() == 0);
+      delete pAliasAggs;
+
+    } else if (CastExpr::bIsOfType(pExprNode)) {
+      QueryNode* pCastTarget = CastExpr::pTargetExpr(pExprNode);
+
+      // Get all expressions in this ordinal cast target
+      QueryNodeList* pAggList = Expr::pAggregateExprs(pCastTarget, false);
+
+      QueryNode* pAggExpr;
+      while ((pAggExpr = pAggList->pPop()) != nullptr) {
+        pList->vPush(pAggExpr);
+      }
+
+      ASSERT(pAggList->nItems() == 0);
+      delete pAggList;
+    }
+
+    return GraphNav::WALK_CONTINUE;
+  };
+
+  GraphNav::bGlobalWalk(pExpr, false, true, fVisitor, nullptr);
+
+  return pList;
 }
 
 /*============================================================================*/

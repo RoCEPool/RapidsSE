@@ -155,6 +155,8 @@ void Dissect::vOp(i8 i_OpSpec)
   Card* pCard;
   Stz* szOpNm = m_pOpSpec->szOpNm();
   TagSet* pArgTags = m_pOpSpec->pArgTags();
+
+  //vTrace("Op %s\n"_Stz,szOpNm);
   //pArgTags->vDumpSet(true);
 
        if (szOpNm->bSame("aggreg"_Stz))    pCard = pCard_Aggreg   (pArgTags);
@@ -186,14 +188,14 @@ void Dissect::vOp(i8 i_OpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect : aggreg <iCompiled> <szRpnExpr : 0) aggElist ; 1) gbyElist>       */
+/* dissect : aggreg <szRpnExpr : 0) aggElist ; 1) gbyElist>                   */
 /*----------------------------------------------------------------------------*/
 Card* Dissect::pCard_Aggreg(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
      
   m_bSawAggOp = true;
-  Card_RpnTerms* pCard_RpnTerms = pArgCheckLast(pArgTags,1);
+  Card_RpnTerms* pCard_RpnTerms = pArgCheckLast(pArgTags,0);
   Card_Aggreg* pCard_Aggreg = new Card_Aggreg;
   
   eAL eAggLevel = m_pStageSpec->eAggegLevel();
@@ -269,13 +271,13 @@ Card* Dissect::pCard_Debug(TagSet* pArgTags)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect : filter <iCompiled> <szRpnExpr: 0) filtElist>                     */
+/* dissect : filter <szRpnExpr: 0) filtElist>                                 */
 /*----------------------------------------------------------------------------*/
 Card* Dissect::pCard_Filter(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
-  Card_RpnTerms* pCard_RpnTerms = pArgCheckLast(pArgTags,1);
+  Card_RpnTerms* pCard_RpnTerms = pArgCheckLast(pArgTags,0);
   Card_Filter* pCard_Filter = new Card_Filter;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -302,13 +304,13 @@ Card* Dissect::pCard_Filter(TagSet* pArgTags)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect : hash <iCompiled> <szRpnExpr : 0) calcExpr>                       */
+/* dissect : hash <szRpnExpr : 0) calcExpr>                                   */
 /*----------------------------------------------------------------------------*/
 Card* Dissect::pCard_Hash(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
-  Card_RpnTerms* pCard_RpnTerms = pArgCheckLast(pArgTags,1);
+  Card_RpnTerms* pCard_RpnTerms = pArgCheckLast(pArgTags,0);
   Card_Hash* pCard_Hash = new Card_Hash;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -324,7 +326,7 @@ Card* Dissect::pCard_Hash(TagSet* pArgTags)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect : indexJoin <iCompiled> <szTblNm> <szIdxNm> <szRpnExpr: 0) idxPred>*/
+/* dissect : indexJoin <szTblNm> <szIdxNm> <szRpnExpr: 0) idxPred>            */
 /*----------------------------------------------------------------------------*/
 Card* Dissect::pCard_IndexJoin(TagSet* pArgTags)
 {
@@ -333,7 +335,7 @@ Card* Dissect::pCard_IndexJoin(TagSet* pArgTags)
   Stz* szTableNm = nullptr;
   Stz* szIndexNm = nullptr;
 
-  Card_RpnTerms* pCard_RpnTerms = pArgCheckLast(pArgTags,1,szTableNm,szIndexNm);
+  Card_RpnTerms* pCard_RpnTerms = pArgCheckLast(pArgTags,0,szTableNm,szIndexNm);
   Card_IndexJoin* pCard_IndexJoin = new Card_IndexJoin;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -365,7 +367,7 @@ Card* Dissect::pCard_IndexJoin(TagSet* pArgTags)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect : indexScan <iCompiled> <szTblNm> <szIdxNm> <szRpnExpr: 0) idxPred>*/
+/* dissect : indexScan <szTblNm> <szIdxNm> <szRpnExpr: 0) idxPred>            */
 /*----------------------------------------------------------------------------*/
 Card* Dissect::pCard_IndexScan(TagSet* pArgTags)
 {
@@ -374,7 +376,7 @@ Card* Dissect::pCard_IndexScan(TagSet* pArgTags)
   Stz* szTableNm = nullptr;
   Stz* szIndexNm = nullptr;
 
-  Card_RpnTerms* pCard_RpnTerms = pArgCheckLast(pArgTags,1,szTableNm,szIndexNm);
+  Card_RpnTerms* pCard_RpnTerms = pArgCheckLast(pArgTags,0,szTableNm,szIndexNm);
   Card_IndexScan* pCard_IndexScan = new Card_IndexScan;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -406,13 +408,13 @@ Card* Dissect::pCard_IndexScan(TagSet* pArgTags)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect : limit <iCompiled> <nRows>                                        */
+/* dissect : limit <nRows>                                                    */
 /*----------------------------------------------------------------------------*/
 Card* Dissect::pCard_Limit(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
-  i8 nRows = iArgCheckLast(pArgTags,1);
+  i8 nRows = iArgCheckLast(pArgTags,0);
   Card_Limit* pCard_Limit = new Card_Limit;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -425,14 +427,14 @@ Card* Dissect::pCard_Limit(TagSet* pArgTags)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect : ordAgg <iCompiled> <szRpnExpr : 0) aggElist>                     */
+/* dissect : ordAgg <szRpnExpr : 0) aggElist>                                 */
 /*----------------------------------------------------------------------------*/
 Card* Dissect::pCard_OrdAgg(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
       
   m_bSawAggOp = true;
-  Card_RpnTerms* pCard_RpnTerms = pArgCheckLast(pArgTags,1);
+  Card_RpnTerms* pCard_RpnTerms = pArgCheckLast(pArgTags,0);
   Card_OrdAgg* pCard_OrdAgg = new Card_OrdAgg;
   
   eAL eAggLevel = m_pStageSpec->eAggegLevel();
@@ -477,13 +479,13 @@ Card* Dissect::pCard_Pulse(TagSet* pArgTags)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect : project <iCompiled> <szRpnExpr : 0) projElist>                   */
+/* dissect : project <szRpnExpr : 0) projElist>                               */
 /*----------------------------------------------------------------------------*/
 Card* Dissect::pCard_Project(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
-  Card_RpnTerms* pCard_RpnTerms = pArgCheckLast(pArgTags,1);
+  Card_RpnTerms* pCard_RpnTerms = pArgCheckLast(pArgTags,0);
   Card_Project* pCard_Project = new Card_Project(CK_PROJECT);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -566,13 +568,13 @@ Card* Dissect::pCard_Sink(TagSet* pArgTags)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect : orderBy <iCompiled> <szRpnExpr: 0) sbyElist>                     */
+/* dissect : orderBy <szRpnExpr: 0) sbyElist>                                 */
 /*----------------------------------------------------------------------------*/
 Card* Dissect::pCard_Sort(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
-  Card_RpnTerms* pCard_RpnTerms = pArgCheckLast(pArgTags,1);
+  Card_RpnTerms* pCard_RpnTerms = pArgCheckLast(pArgTags,0);
   Card_Sort* pCard_Sort = new Card_Sort;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
