@@ -22,84 +22,25 @@ create table datums (
 
 load datums "../DATA/DataTypes/dataTypes.csv" ;
 
-create table LineItem
-(
- L_ORDERKEY      INTEGER       NOT NULL,
- L_PARTKEY       INTEGER       NOT NULL,
- L_SUPPKEY       INTEGER       NOT NULL,
- L_LINENUMBER    INTEGER       NOT NULL,
- L_QUANTITY      DECIMAL(15,2) NOT NULL,
- L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL,
- L_DISCOUNT      DECIMAL(15,2) NOT NULL,
- L_TAX           DECIMAL(15,2) NOT NULL,
- L_RETURNFLAG    CHAR(1)       NOT NULL,
- L_LINESTATUS    CHAR(1)       NOT NULL,
- L_SHIPDATE      DATE NOT      NULL,
- L_COMMITDATE    DATE NOT      NULL,
- L_RECEIPTDATE   DATE NOT      NULL,
- L_SHIPINSTRUCT  CHAR(25)      NOT NULL,
- L_SHIPMODE      CHAR(10)      NOT NULL,
- L_COMMENT       VARCHAR(44)   NOT NULL
- );
- load lineitem "../TPCH/SF10/lineitem.tbl";
-count lineitem;
 
-select L_EXTENDEDPRICE, L_COMMENT, L_SHIPDATE from lineitem;
-
-select flt_col8 + 2 from datums;
-load lineitem "../TPCH/SF10/lineitem.tbl";
-select flt_col8 + 2 from datums;
-load lineitem "../TPCH/SF10/lineitem.tbl";
-load lineitem "../TPCH/SF10/lineitem.tbl";
-select flt_col8 + 2 from datums;
-load lineitem "../TPCH/SF10/lineitem.tbl";
-select flt_col8 + 2 from datums;
-load lineitem "../TPCH/SF10/lineitem.tbl";
-select flt_col8 + 2 from datums;
-load lineitem "../TPCH/SF10/lineitem.tbl";
-select flt_col8 + 2 from datums;
-load lineitem "../TPCH/SF10/lineitem.tbl";
-select flt_col8 + 2 from datums;
-load lineitem "../TPCH/SF10/lineitem.tbl";
 /*
- pipeline unamed
- begin
-   stage stageStart on origin :
-     start
-     | pulse once
-     | stageMarker0249
-   stage stageMarker0249 on all partitions :
-     scan rapidsse public LineItem
-     | project " type DECIMAL as l_extendedprice $6 , type VARCHAR as l_comment $16 , type DATE as l_shipdate $11 "
-     | combined 0
-     | stageLast
-   stage stageLast on origin :
-     output
-     | sink
-     | stageStart
- end ;
+select flt_col8 + 2 from datums;
+load lineitem "../TPCH/SF10/lineitem.tbl";
+select flt_col8 + 2 from datums;
+load lineitem "../TPCH/SF10/lineitem.tbl";
+load lineitem "../TPCH/SF10/lineitem.tbl";
+select flt_col8 + 2 from datums;
+load lineitem "../TPCH/SF10/lineitem.tbl";
+select flt_col8 + 2 from datums;
+load lineitem "../TPCH/SF10/lineitem.tbl";
+select flt_col8 + 2 from datums;
+load lineitem "../TPCH/SF10/lineitem.tbl";
+select flt_col8 + 2 from datums;
+load lineitem "../TPCH/SF10/lineitem.tbl";
+select flt_col8 + 2 from datums;
+load lineitem "../TPCH/SF10/lineitem.tbl";
+*/
 
-
-create table datums (
-  int_col0   INTEGER NOT NULL,
-  int_col1   INTEGER,
-  bol_col2   BOOLEAN,
-  bol_col3   BOOLEAN,
-  dte_col4   DATE,
-  dte_col5   DATE,
-  dec_col6   DECIMAL(19,2),
-  dec_col7   DECIMAL(19,2),
-  flt_col8   FLOAT,
-  flt_col9   FLOAT,
-  tme_col10  TIME,
-  tme_col11  TIME,
-  tsp_col12  TIMESTAMP,
-  tsp_col13  TIMESTAMP,
-  vch_col14  VARCHAR(32),
-  vch_col15  VARCHAR(32)
-);
-
-load datums "../DATA/DataTypes/dataTypes.csv" ;
 
 create table LineItem
 (
@@ -120,29 +61,27 @@ create table LineItem
  L_SHIPMODE      CHAR(10)      NOT NULL,
  L_COMMENT       VARCHAR(44)   NOT NULL
  );
+
 CREATE INDEX IxL_ORDERKEY ON lineitem(L_ORDERKEY);
 //CREATE INDEX IxL ON lineitem(l_returnflag);
 //create index IxL_SHIPDATE  ON Lineitem (l_SHIPDATE)  ;
+//create index lineitem_part ON lineitem(L_PARTKEY);
+
+//load lineitem "../TPCH/SF10/lineitem.tbl";
+//load lineitem "../TPCH/SF_0001/lineitem.csv";
+//load lineitem "../DATA/TPCH/lineitem10.csv";
 
 _nation
 _region
-
-create table orders (
-	 O_ORDERKEY        INTEGER NOT NULL,
-	 O_CUSTKEY         INTEGER NOT NULL,
-	 O_ORDERSTATUS     CHAR(1) NOT NULL,
-	 O_TOTALPRICE      DECIMAL(15,2) NOT NULL,
-	 O_ORDERDATE       TIMESTAMP NOT NULL,
-	 O_ORDERPRIORITY   CHAR(15) NOT NULL,
-	 O_CLERK           CHAR(15) NOT NULL,
-	 O_SHIPPRIORITY    INTEGER NOT NULL,
-	 O_COMMENT         VARCHAR(79) NOT NULL
-);
-
+_customer;
 _part;
-_customer
-_partsupp
-_supplier
+_customer;
+_partsupp;
+_supplier;
+_orders;
+
+///time load orders "../DATA/TPCH/orders10.csv";
+///time load customer "../TPCH/SF_0001/customer.csv";
 
 CREATE INDEX orders_idx1 ON orders(O_CUSTKEY);
 CREATE INDEX IxO_ORDERKEY ON orders(O_ORDERKEY);
@@ -151,19 +90,16 @@ create index IxR_REGIONKEY on REGION (R_REGIONKEY);
 create index IxR_NAME on REGION (R_NAME);
 create index IxL_PARTKEY ON lineitem(L_PARTKEY);
 
-///time load region "<tpch_dir>/region.<suffix>";
+/time load region "<tpch_dir>/region.<suffix>";
 /time load nation "<tpch_dir>/nation.<suffix>";
 /time load lineitem "<tpch_dir>/lineitem.<suffix>";
-///time load orders "<tpch_dir>/orders.<suffix>";
-///time load part "<tpch_dir>/part.<suffix>";
-///time load orders "../DATA/TPCH/orders10.csv";
-///load lineitem "../TPCH/SF_0001/lineitem.csv";
-//load lineitem "../DATA/TPCH/lineitem10.csv";
+/time load orders "<tpch_dir>/orders.<suffix>";
+/time load part "<tpch_dir>/part.<suffix>";
+/time load partsupp "<tpch_dir>/partsupp.<suffix>";
+/time load customer "<tpch_dir>/customer.<suffix>";
+/time load supplier "<tpch_dir>/supplier.<suffix>";
 
-//load customer "../TPCH/SF_0001/customer.csv";
 
-//load lineitem "../TPCH/SF10/lineitem.tbl";
-//create index lineitem_part ON lineitem(L_PARTKEY);
 
 create table TABLE1 (
   pcol1   INTEGER NOT NULL,
@@ -219,7 +155,7 @@ create table TABLE9 (
   ucol    INTEGER,
   ucolvc  VARCHAR(5)
 );
-Load TABLE9 "../DATA/Load/tbl9data.csv" <escape_char> = "\0";
+Load TABLE9 "../DATA/Load/tbl9data.csv";
 
-select dec_col6 from datums order by dec_col6;
-*/
+explain stage transliterate select cast(dec_col6 as varchar(3)) from datums;
+
