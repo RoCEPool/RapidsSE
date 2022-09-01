@@ -2076,6 +2076,7 @@ void vDdlLockAssertNone(void);
   void vSystemBpa(void);
   void vSystemOpenFetch(void);
   void vSystemOpenStore(void);
+  void vSystemReady(void);
   void vSystemSee(void);
   void vSystemStartedStore(void);
   void vSystemStartedFetch(void);

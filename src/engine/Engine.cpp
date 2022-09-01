@@ -251,7 +251,7 @@ void Engine::vRunCommandLine(void)
         
       case BO_ADD_NODE:
         vStartSystem();
-        AM::SYSTEM::vSystemReady(); // Process has completed the boot sequence
+        //AM::SYSTEM::vSystemReady(); // Process has completed the boot sequence
         vWaitStop();
         break;
         
@@ -280,7 +280,7 @@ void Engine::vRunCommandLine(void)
       case BO_START:
         vOpenTrace(false);
         vStartSystem();
-        AM::SYSTEM::vSystemReady(); // Process has completed the boot sequence
+        //AM::SYSTEM::vSystemReady(); // Process has completed the boot sequence
         vTrace("\nNodeId %lld\n\n"_Stz,AM::NODE::iThisNodeId());
         vWaitStop();
         break;
@@ -288,7 +288,7 @@ void Engine::vRunCommandLine(void)
       case BO_START_PROMPT:
         vOpenTrace(false);
         vStartSystem();
-        AM::SYSTEM::vSystemReady(); // Process has completed the boot sequence
+        //AM::SYSTEM::vSystemReady(); // Process has completed the boot sequence
         vTrace("\nNodeId %lld\n\n"_Stz,AM::NODE::iThisNodeId());
 #ifdef WITH_APPLE
         if (! gxCmdLineArgs.m_xSysArgs.m_bNoMunge )
@@ -1458,6 +1458,8 @@ void Engine::vSignalHandler(int iSignal)
 /*----------------------------------------------------------------------------*/
 void Engine::vStartSystem(void)
 {
+  RASSERT(! AM::SYSTEM::bReady());
+
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("\n+\n+ %lld) System Start\n+\n"_Stz,giProgressPoint++);
     
@@ -1558,7 +1560,6 @@ void Engine::vStartSystem(void)
     vTrace("  Spawning Threads\n"_Stz);
   
   Scheduler::vScheduler_Boot();
-  
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -1613,7 +1614,10 @@ void Engine::vStartSystem(void)
   
   // mark attachmap to be ready for connections
   gpAttachMap->vAttachMapState(C_READY);
-    
+
+  while (! AM::SYSTEM::bReady())
+    sleep(1);
+
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT)) {
     vTrace("\n++\n++ System Started\n++\n"_Stz);
   }
