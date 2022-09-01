@@ -99,7 +99,6 @@ AttachMap::AttachMap(bool bNoFree)
   m_pTxSet          = new TxSet;
 
   m_pTraceFile      = nullptr;
-  m_iTraceFileCount = 0;
   
   Step::vAddStep("\\word"_Stz,&Step::vWord);
   AM::vRootWord(m_pDicRoot->pFindWord("\\word"_Stz));

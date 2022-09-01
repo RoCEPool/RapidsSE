@@ -1440,25 +1440,32 @@ void Engine::vPrintWelcome(void)
 /*---------------------------------------------------------------------------------*/
 void Engine::vRollTrace(void)
 {
+  i8 iMaxFileIndex = 0;
   // Increment trace file indexes by 1, making room for the latest trace file 0
-  for(i8 i = gpAttachMap->m_iTraceFileCount - 1; i >= 0; i--)
+  for(i8 i = C_MAX_LOG_FILES - 1; i >= 0; i--)
   {
     s256 sOldTrace, sNewTrace;
     if (gxCmdLineArgs.m_xSysArgs.m_bDeveloper) {
-      sOldTrace.vSprint("../se_%s_%d.log"_Stz,
+      sOldTrace.vSprint("../se_%s_%lld.log"_Stz,
                         gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz(),
                         i);
-      sNewTrace.vSprint("../se_%s_%d.log"_Stz,
+      sNewTrace.vSprint("../se_%s_%lld.log"_Stz,
                         gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz(),
                         i+1);
     }
     else {
-      sOldTrace.vSprint("../se_%d.log"_Stz, i);
-      sNewTrace.vSprint("../se_%d.log"_Stz, i+1);
+      sOldTrace.vSprint("../se_%lld.log"_Stz, i);
+      sNewTrace.vSprint("../se_%lld.log"_Stz, i+1);
     }
 
-    bool bRenamed = File::bRename(sOldTrace.szStz(), sNewTrace.szStz());
-    RASSERT(bRenamed);
+    // SE may have restarted at some point, and older trace files may already exist
+    // Hence we attempt to roll over the older files as well
+    if (File::bExists(const_cast<Stz*>(sOldTrace.szStz()), false)) {
+      bool bRenamed = File::bRename(sOldTrace.szStz(), sNewTrace.szStz());
+      RASSERT(bRenamed);
+      if(i+1 > iMaxFileIndex)
+        iMaxFileIndex = i + 1;
+    }
   }
 
   gpTraceFile->vClose();
@@ -1466,12 +1473,12 @@ void Engine::vRollTrace(void)
   s256 sNewTrace;
 
   if(gxCmdLineArgs.m_xSysArgs.m_bDeveloper) {
-    sNewTrace.vSprint("../se_%s_%d.log"_Stz,
+    sNewTrace.vSprint("../se_%s_%lld.log"_Stz,
                       gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz(),
                       0);
   }
   else {
-    sNewTrace.vSprint("../se_%d.log"_Stz, 0);
+    sNewTrace.vSprint("../se_%lld.log"_Stz, 0);
   }
 
   RASSERT(gpAttachMap->szTraceFilePath()->bIsEmpty() == false)
@@ -1482,29 +1489,25 @@ void Engine::vRollTrace(void)
   bool bOpened = gpTraceFile->bOpenWrite(gpAttachMap->szTraceFilePath());
   RASSERT(bOpened);
 
-  gpAttachMap->m_iTraceFileCount++;
-
   // If the total number of trace files exceeds the max, delete the oldest trace file
-  if(gpAttachMap->m_iTraceFileCount > C_MAX_LOG_FILES)
+  if(iMaxFileIndex >= C_MAX_LOG_FILES)
   {
     s256 sOldTrace;
 
     if(gxCmdLineArgs.m_xSysArgs.m_bDeveloper) {
-      sOldTrace.vSprint("../se_%s_%d.log"_Stz,
+      sOldTrace.vSprint("../se_%s_%lld.log"_Stz,
                         gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz(),
-                        gpAttachMap->m_iTraceFileCount-1);
+                        iMaxFileIndex);
     }
     else {
-      sOldTrace.vSprint("../se_%d.log"_Stz,
-                        gpAttachMap->m_iTraceFileCount-1);
+      sOldTrace.vSprint("../se_%lld.log"_Stz,
+                        iMaxFileIndex);
     }
 
     if (File::bExists(const_cast<Stz*>(sOldTrace.szStz()), false)) {
 
       bool bRemoved = File::bRemove(const_cast<Stz *>(sOldTrace.szStz()));
       RASSERT(bRemoved);
-
-      gpAttachMap->m_iTraceFileCount--;
     }
   }
 }
