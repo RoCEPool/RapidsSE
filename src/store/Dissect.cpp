@@ -283,7 +283,7 @@ Card* Dissect::pCard_Filter(TagSet* pArgTags)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // filtElist : filter expression list
 
-  Card_Expr* pCard_Expr = pExpr_b(pCard_RpnTerms);
+  Card_Expr* pCard_Expr = pExpr_c(pCard_RpnTerms);
   pCard_Filter->vAppend(pCard_Expr);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -413,7 +413,9 @@ Card* Dissect::pCard_IndexScan(TagSet* pArgTags)
 Card* Dissect::pCard_Limit(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
-  
+
+  pArgTags->vDumpSet(true);
+
   i8 nRows = iArgCheckLast(pArgTags,0);
   Card_Limit* pCard_Limit = new Card_Limit;
   
@@ -625,7 +627,7 @@ Card_AggElist* Dissect::pAggElist(Card_RpnTerms* pCard_RpnTerms)
     
     // SEPARATOR
     if (pCard_Term_head->bIsSeparator()) {
-      pCard_RpnTerms->pPop();
+      delete pCard_RpnTerms->pPop();
       continue;
     }
         
@@ -653,12 +655,15 @@ Card_GbyElist* Dissect::pGbyElist(Card_RpnTerms* pCard_RpnTerms)
   Card_Term* pCard_Term_head = _pCard_Term(pCard_RpnTerms->pPop());
   RASSERT(pCard_Term_head->bIsSame("GROUPBY"_Stz));
 
+  delete pCard_Term_head;
+  pCard_Term_head = nullptr;
+
   i8 iCardNo = 0;
   while ( (pCard_Term_head = pCard_RpnTerms->pHeadTerm()) ) {
         
     // SEPARATOR
     if (pCard_Term_head->bIsSeparator()) {
-      pCard_RpnTerms->pPop();
+      delete pCard_RpnTerms->pPop();
       continue;
     }
         
@@ -690,7 +695,7 @@ Card_ProjElist* Dissect::pProjElist(Card_RpnTerms* pCard_RpnTerms)
         
     // SEPARATOR
     if (pCard_Term_head->bIsSeparator()) {
-      pCard_RpnTerms->pPop();
+      delete pCard_RpnTerms->pPop();
       continue;
     }
         
@@ -716,7 +721,7 @@ Card_SbyElist* Dissect::pSbyElist(Card_RpnTerms* pCard_RpnTerms)
         
     // SEPARATOR
     if (pCard_Term_head->bIsSeparator()) {
-      pCard_RpnTerms->pPop();
+      delete pCard_RpnTerms->pPop();
       continue;
     }
         
@@ -770,10 +775,15 @@ Card_Expr* Dissect::pExpr_c(Card_RpnTerms* pCard_RpnTerms)
   Card_Term* pCard_Term_popped = pCard_RpnTerms->pPopTerm();
   eTE eTermEval = pCard_Term_popped->eTermEval();
   RASSERT(TE_TYPE == eTermEval);
-  
+  delete pCard_Term_popped;
+  pCard_Term_popped = nullptr;
+
   pCard_Term_popped = pCard_RpnTerms->pPopTerm();
   Card_Type* pCard_Type = new Card_Type(pCard_Term_popped->szTerm());
   pCard_Expr->vAppend(pCard_Type);
+
+  delete pCard_Term_popped;
+  pCard_Term_popped = nullptr;
 
   // [ AS <as> ]
   Card* pCard_Term_head = pCard_RpnTerms->pHead();
@@ -851,8 +861,8 @@ Card_ExprCalc* Dissect::pExprCalc(Card_RpnTerms* pCard_RpnTerms)
   Card_Term* pCard_Term_popped = nullptr;
   while ( (pCard_Term_popped = _pCard_Term(pCard_RpnTerms->pPop())) ) {
 
-    if (pCard_Term_popped->bIsSame(")"_Stz))
-      continue;
+    //if (pCard_Term_popped->bIsSame(")"_Stz))
+    //  continue;
     
     if (   pCard_Term_popped->bIsSame("ASC"_Stz)
         || pCard_Term_popped->bIsSame("DESC"_Stz)
@@ -964,12 +974,16 @@ Card_As* Dissect::pAs(Card_RpnTerms* pCard_RpnTerms)
   // AS
   Card_Term* pCard_Term = _pCard_Term(pCard_RpnTerms->pPop());
   RASSERT(pCard_Term->bIsSame("AS"_Stz));
+  delete pCard_Term;
+  pCard_Term = nullptr;
 
   // <name>
   pCard_Term = _pCard_Term(pCard_RpnTerms->pPop());
   Stz* szAsNm = pCard_Term->szTerm();
 
   Card_As* pCard_As = new Card_As(szAsNm);
+  delete pCard_Term;
+  pCard_Term = nullptr;
 
   return pCard_As;
 }
@@ -988,6 +1002,9 @@ Card_Direction* Dissect::pDirection(Card_RpnTerms* pCard_RpnTerms)
 
   Card_Direction* pCard_SortDirn = new Card_Direction(szDirn);
 
+  delete pCard_Term;
+  pCard_Term = nullptr;
+
   return pCard_SortDirn;
 }
 
@@ -1002,12 +1019,18 @@ Card_Type* Dissect::pType(Card_RpnTerms* pCard_RpnTerms)
   Card_Term* pCard_Term = _pCard_Term(pCard_RpnTerms->pPop());
   eTE eTermEval = pCard_Term->eTermEval();
   RASSERT(TE_TYPE == eTermEval);
-  
+
+  delete pCard_Term;
+  pCard_Term = nullptr;
+
   // column type (e.g. BOOLEAN)
   Card_Term* pCard_Term_type = pCard_RpnTerms->pPopTerm();
   //eCT eColumn = Column::eColumn(pCard_Term_type->szTerm());
 
   Card_Type* pCard_Type = new Card_Type(pCard_Term_type->szTerm());
+
+  delete pCard_Term_type;
+  pCard_Term_type = nullptr;
 
   return pCard_Type;
 }
@@ -1020,7 +1043,7 @@ i8 Dissect::iArgCheckLast(TagSet* pArgTags, i8 i_Last)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
 
   vArgCheck(pArgTags,i_Last + 1);
-  
+
   i8 iArg = pArgTags->iValue(i_Last);
 
   return iArg;

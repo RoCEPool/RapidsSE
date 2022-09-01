@@ -95,7 +95,7 @@
   Optimiser[].new
     PipeSpec[] Optimiser[].dissect
     //Optimiser[].optimise
-    Optimiser[].weave dup . to Text[] // discard
+    //Optimiser[].weave dup . to Text[] // discard
   Optimiser[].delete
 
   PipeSpec[].delete

@@ -47,7 +47,9 @@ namespace STORE
     eCK  m_eCard;
     eGC  m_eCatg;
     i8   m_iCardNo;
-  
+
+    i8   m_iSeqNo;
+
     char m_cMark1;
     char m_cMark2;
 

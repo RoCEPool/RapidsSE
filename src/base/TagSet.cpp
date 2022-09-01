@@ -981,10 +981,17 @@ i8 TagSet::iValue(i8 i_Tag)
   //Stz* szValue = m_xyStrings.szGet(m_xaTag[i_Tag].m_i_Value);
   //i8 iValue = szValue->iToI8();
   
-  ASSERT(TN_INTEGER == m_xaTag[i_Tag].m_eToken);
-  
-  i8 iValue = m_xaTag[i_Tag].m_i_Value;
-  
+  //ASSERT(TN_INTEGER == m_xaTag[i_Tag].m_eToken);
+
+  i8 iValue = C_UNKNOWN;
+
+  if (TN_INTEGER == m_xaTag[i_Tag].m_eToken) {
+    iValue = m_xaTag[i_Tag].m_i_Value;
+  }
+  else {
+    Stz* szValue = m_xyStrings.szGet(m_xaTag[i_Tag].m_i_Value);
+    iValue = szValue->iToI8();
+  }
   return iValue;
 }
 

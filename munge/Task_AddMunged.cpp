@@ -29209,7 +29209,7 @@ void Task::vAddMunged(Task* )
     "  Optimiser[].new\n"
     "    PipeSpec[] Optimiser[].dissect\n"
     "    //Optimiser[].optimise\n"
-    "    Optimiser[].weave dup . to Text[] // discard\n"
+    "    //Optimiser[].weave dup . to Text[] // discard\n"
     "  Optimiser[].delete\n"
     "\n"
     "  PipeSpec[].delete\n"

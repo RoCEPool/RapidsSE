@@ -97,11 +97,15 @@ Card::Card(eCK eCard)
 : Object(CN_CARD)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-          
+
+  static i8 iSeqNo = 0;
+
   m_eCard    = eCard;
   m_eCatg    = Card::eToECatg(eCard);
   m_iCardNo  = C_UNKNOWN;
-  
+
+  m_iSeqNo   = iSeqNo++;
+
   m_cMark1   = ' ';
   m_cMark2   = ' ';
 
@@ -111,6 +115,7 @@ Card::Card(eCK eCard)
   
   _checkInitialised_(CN_CARD);
 
+  //vTrace("Card [%02lld] %p\n"_Stz,m_iSeqNo,this);
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
@@ -120,6 +125,8 @@ Card::Card(eCK eCard)
 Card::~Card(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  //vTrace("Card [~%02lld] %p\n"_Stz,m_iSeqNo,this);
 
   for (Card* pCard = pPop(); pCard; pCard = pPop())
     delete pCard;
