@@ -935,16 +935,19 @@
       if (iStart == 0) {                                                    \
         iStart = 1;                                                         \
       }                                                                     \
-      szSrcStz = (char*)(szArg1 + iStart - 1);                              \
+      nSrcSize = strlen(szArg1);                                            \
+      nDstSize = 0;                                                         \
       szDstStz = szDstArea;                                                 \
-      nSrcSize = 0;                                                         \
-      while (*szSrcStz) {                                                   \
-        nSrcSize++;                                                         \
-        *szDstStz++ = *szSrcStz++;                                          \
+      if (nSrcSize >= iStart) {                                             \
+        szSrcStz = (char*)(szArg1 + iStart - 1);                            \
+        while (*szSrcStz) {                                                 \
+          *szDstStz++ = *szSrcStz++;                                        \
+          nDstSize++;                                                       \
+        }                                                                   \
       }                                                                     \
       *szDstStz = '\0';                                                     \
       *(paW++) = (i8)szDstArea;                                             \
-      szDstArea += nSrcSize + 1;                                            \
+      szDstArea += nDstSize + 1;                                            \
     }                                                                       \
   }
 
@@ -966,13 +969,18 @@
         iLength--;                                                          \
       }                                                                     \
       szSrcStz = (char*)(szArg1 + iStart - 1);                              \
+      nSrcSize = strlen(szArg1);                                            \
+      nDstSize = 0;                                                         \
       szDstStz = szDstArea;                                                 \
-      nSrcSize = iLength;                                                   \
-      while (*szSrcStz && iLength--)                                        \
-        *szDstStz++ = *szSrcStz++;                                          \
+      if (nSrcSize >= iStart+iLength-1) {                                   \
+        while (*szSrcStz && iLength--) {                                    \
+          *szDstStz++ = *szSrcStz++;                                        \
+          nDstSize++;                                                       \
+        }                                                                   \
+      }                                                                     \
       *szDstStz = '\0';                                                     \
       *(paW++) = (i8)szDstArea;                                             \
-      szDstArea += nSrcSize + 1;                                            \
+      szDstArea += (i8)(nDstSize) + 1;                                      \
     }                                                                       \
   }
 
