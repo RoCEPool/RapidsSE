@@ -43,7 +43,7 @@ rows:
 ('dec_col6', 'DECIMAL',19, 2, true, false)
 
 Load decTbl "../DATA/Datums/decimal.csv" ;
-failure contains: '15 invalid'
+failure contains: '16 invalid'
 
 // check no of rows
 tableScan decTbl;
