@@ -115,7 +115,9 @@ void Weave::vEnd(void)
 void Weave::vCard(Card* pCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
-  
+
+  //pCard->vDump();
+
   eCK eCard = pCard->eCard();
   
   if (CK_STAGE == eCard)
@@ -201,15 +203,16 @@ void Weave::vOp(Card* pCard)
   
   switch (eCard) {
                     
-    case CK_AGGREG:     vArgAggreg   (sOpArgs,_pCard_Aggreg   (pCard));  break;
-    case CK_COMBINE:    vArgCombine  (sOpArgs,_pCard_Combine  (pCard));  break;
-    case CK_FILTER:     vArgFilter   (sOpArgs,_pCard_Filter   (pCard));  break;
+    case CK_AGGREG:     vArgAggreg   (sOpArgs,_pCard_Aggreg(pCard));  break;
+    case CK_COMBINE:    vArgCombine  (sOpArgs,_pCard_Combine(pCard));  break;
+    case CK_FILTER:     vArgFilter   (sOpArgs,_pCard_Filter(pCard));  break;
+    case CK_HAVING:     vArgHaving   (sOpArgs, _pCard_Having(pCard));  break;
     case CK_INDEXJOIN:  vArgIndexJoin(sOpArgs,_pCard_IndexJoin(pCard));  break;
     case CK_INDEXSCAN:  vArgIndexScan(sOpArgs,_pCard_IndexScan(pCard));  break;
-    case CK_LIMIT:      vArgLimit    (sOpArgs,_pCard_Limit    (pCard));  break;
-    case CK_PROJECT:    vArgProject  (sOpArgs,_pCard_Project  (pCard));  break;
-    case CK_SCAN:       vArgScan     (sOpArgs,_pCard_Scan     (pCard));  break;
-    case CK_SORT:       vArgSort     (sOpArgs,_pCard_Sort     (pCard));  break;
+    case CK_LIMIT:      vArgLimit    (sOpArgs,_pCard_Limit(pCard));  break;
+    case CK_PROJECT:    vArgProject  (sOpArgs,_pCard_Project(pCard));  break;
+    case CK_SCAN:       vArgScan     (sOpArgs,_pCard_Scan(pCard));  break;
+    case CK_SORT:       vArgSort     (sOpArgs,_pCard_Sort(pCard));  break;
 
     default:
       //{;}
@@ -256,7 +259,7 @@ void Weave::vArgCombine(Stz* szOpArgs, Card_Combine* pCard_Combine)
 }
 
 /*----------------------------------------------------------------------------*/
-/* weave : filter <compiled> <expr>                                           */
+/* weave : filter <expr>                                                      */
 /*----------------------------------------------------------------------------*/
 void Weave::vArgFilter(Stz* szOpArgs, Card_Filter* pCard_Filter)
 {
@@ -268,6 +271,22 @@ void Weave::vArgFilter(Stz* szOpArgs, Card_Filter* pCard_Filter)
   
   vRpnFilter(sRpnExpr,pCard_Filter);
   
+  szOpArgs->vCatSprint("\" %s \""_Stz,sRpnExpr.szStz());
+}
+
+/*----------------------------------------------------------------------------*/
+/* weave : having  <expr>                                                     */
+/*----------------------------------------------------------------------------*/
+void Weave::vArgHaving(Stz* szOpArgs, Card_Having* pCard_Having)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
+
+  // filter : 0) filtElist
+
+  s4K sRpnExpr;
+
+  vRpnHaving(sRpnExpr,pCard_Having);
+
   szOpArgs->vCatSprint("\" %s \""_Stz,sRpnExpr.szStz());
 }
 
@@ -324,12 +343,14 @@ void Weave::vArgLimit(Stz* szOpArgs, Card_Limit* pCard_Limit)
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
   // limit : 0) rows
-  
+
+  pCard_Limit->vDump();
+
   s4K sRpnExpr;
   
   vRpnLimit(sRpnExpr,pCard_Limit);
 
-  szOpArgs->vCatSprint("\" %s \""_Stz,sRpnExpr.szStz());
+  szOpArgs->vCatSprint("%s"_Stz,sRpnExpr.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -469,16 +490,42 @@ void Weave::vRpnCombine(Stz* szRpnExpr, Card_Combine* pCard_Combine)
 void Weave::vRpnFilter(Stz* szRpnExpr, Card_Filter* pCard_Filter)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
-  
+
   //pCard_Filter->vDump();
 
   Card_Expr* pCard_Expr = _pCard_Expr(pCard_Filter->pGet(0));
 
   Card_Type* pCard_Type = _pCard_Type(pCard_Expr->pGet(0));
   vType(szRpnExpr,pCard_Type);
-  
-  Card_ExprBool* pCard_ExprBool = _pCard_ExprBool(pCard_Expr->pGet(1));
-  vExprBool(szRpnExpr,pCard_ExprBool);
+
+//  Card_ExprBool* pCard_ExprBool = _pCard_ExprBool(pCard_Expr->pGet(1));
+//  vExprBool(szRpnExpr,pCard_ExprBool);
+
+  Card_ExprCalc* pCard_ExprCalc = _pCard_ExprCalc(pCard_Expr->pGet(1));
+  vExprCalc(szRpnExpr,pCard_ExprCalc);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* produce <expr> for having op                                               */
+/*----------------------------------------------------------------------------*/
+void Weave::vRpnHaving(Stz* szRpnExpr, Card_Having* pCard_Having)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
+
+  //pCard_Having->vDump();
+
+  Card_Expr* pCard_Expr = _pCard_Expr(pCard_Having->pGet(0));
+
+  Card_Type* pCard_Type = _pCard_Type(pCard_Expr->pGet(0));
+  vType(szRpnExpr,pCard_Type);
+
+//  Card_ExprBool* pCard_ExprBool = _pCard_ExprBool(pCard_Expr->pGet(1));
+//  vExprBool(szRpnExpr,pCard_ExprBool);
+
+  Card_ExprCalc* pCard_ExprCalc = _pCard_ExprCalc(pCard_Expr->pGet(1));
+  vExprCalc(szRpnExpr,pCard_ExprCalc);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -646,8 +693,11 @@ void Weave::vRpnIndexScan(Stz* szRpnExpr, Card_IndexScan* pCard_IndexScan)
 void Weave::vRpnLimit(Stz* szRpnExpr, Card_Limit*  pCard_Limit)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
-  
-  i8 nRows = pCard_Limit->nRows();
+
+  Card_Rows* pCard_Rows =
+          _pCard_Rows(pCard_Limit->pFindSubCard(CK_ROWS));
+
+  i8 nRows = pCard_Rows->nRows();
 
   szRpnExpr->vCatSprint("%lld"_Stz,nRows);
 }
@@ -714,6 +764,9 @@ void Weave::vRpnSort(Stz* szRpnExpr, Card_Sort* pCard_Sort)
     if (i_SubCard)
       szRpnExpr->vConcat(" , "_Stz);
     vExpr(szRpnExpr,pCard_Expr);
+
+    szRpnExpr->vConcat(" ASC "_Stz);
+
   }
 
 }

@@ -276,7 +276,7 @@ static Stz* aCK_op[]
   /* */ "(none)"_Stz,          // CK_GENERATE
 
   /* */ "(none)"_Stz,          // CK_HASH
-  /* */ "(none)"_Stz,          // CK_HAVING
+  /* */ "filter   "_Stz,       // CK_HAVING
   
   /* */ "(none)"_Stz,          // CK_INDEX
   /* */ "indexJoin "_Stz,      // CK_INDEXJOIN
@@ -284,7 +284,7 @@ static Stz* aCK_op[]
   /* */ "indexScan "_Stz,      // CK_INDEXSCAN
   
   /* */ "(none)"_Stz,          // CK_LBOUND
-  /* */ "limit     2"_Stz,     // CK_LIMIT
+  /* */ "limit     "_Stz,     // CK_LIMIT
     
   /* */ "(none)"_Stz,          // CK_MODE
 

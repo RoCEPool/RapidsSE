@@ -54,6 +54,7 @@ namespace STORE
     void vArgAggreg   (Stz* szOpArgs,  Card_Aggreg*    pCard_Aggreg);
     void vArgCombine  (Stz* szOpArgs,  Card_Combine*   pCard_Combine);
     void vArgFilter   (Stz* szOpArgs,  Card_Filter*    pCard_Filter);
+    void vArgHaving   (Stz* szOpArgs,  Card_Having*    pCard_Having);
     void vArgIndexJoin(Stz* szOpArgs,  Card_IndexJoin* pCard_IndexJoin);
     void vArgIndexScan(Stz* szOpArgs,  Card_IndexScan* pCard_IndexScan);
     void vArgLimit    (Stz* szOpArgs,  Card_Limit*     pCard_Limit);
@@ -65,6 +66,7 @@ namespace STORE
     void vRpnAggreg   (Stz* szRpnExpr, Card_Aggreg*    pCard_Aggreg);
     void vRpnCombine  (Stz* szRpnExpr, Card_Combine*   pCard_Combine);
     void vRpnFilter   (Stz* szRpnExpr, Card_Filter*    pCard_Filter);
+    void vRpnHaving   (Stz* szRpnExpr, Card_Having*    pCard_Having);
     void vRpnIndexJoin(Stz* szRpnExpr, Card_IndexJoin* pCard_IndexJoin);
     void vRpnIndexScan(Stz* szRpnExpr, Card_IndexScan* pCard_IndexScan);
     void vRpnLimit    (Stz* szRpnExpr, Card_Limit*     pCard_Limit);

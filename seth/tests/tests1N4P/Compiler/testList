@@ -13,7 +13,7 @@ expressions/exprSubqueries.test
 expressions/implicitCoercion.test
 expressions/literals.test
 expressions/nulls.test
-union.test
+//union.test
 postProject.test
 columnAliases.test
 corrByProjectSquashing.test
