@@ -136,6 +136,10 @@ void Output::vDrainBufferQueue(void)
     
     if (! pOperand ) {
       if ( ! AM::PROCESS::bSeRunning() ) {
+        Stz *sNodeName = AM::pGrid()->pThisNode()->szNodeNm();
+        vTrace("\nerror: %s; %s; %s; \n"_Stz,
+               sNodeName, aEC2[EC_NODE_LOSS], aErrorMsg[EC_NODE_LOSS]);
+        m_bHasError = true;
         m_bToExit = true;
         return;
       }
