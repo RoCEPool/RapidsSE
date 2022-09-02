@@ -355,7 +355,6 @@ void Mutex::vPause(Object* pLockedBy, i8 iMicroSeconds)
 #ifdef WITH_STATISTICS_COUNTERS
     gpAttachMap->m_oStatistics.Mutex.m_nUnblocks++;
 #endif
-
     m_pLockedBy = m_pWaitedBy;
     m_pWaitedBy = nullptr;
     m_eMutex = MS_LOCKED;
@@ -372,6 +371,7 @@ void Mutex::vPause(Object* pLockedBy, i8 iMicroSeconds)
 #ifdef WITH_STATISTICS_COUNTERS
     gpAttachMap->m_oStatistics.Mutex.m_nTimeOuts++;
 #endif
+    //vTrace("TIMEDOUT\n"_Stz);
     m_pLockedBy = m_pWaitedBy;
     m_pWaitedBy = nullptr;
     m_eMutex = MS_LOCKED;

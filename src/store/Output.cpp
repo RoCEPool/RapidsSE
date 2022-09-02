@@ -134,7 +134,12 @@ void Output::vDrainBufferQueue(void)
     
     Operand* pOperand = pPopBufferQueue_blocking();
     
-    if (! pOperand) {
+    if (! pOperand ) {
+      if ( ! AM::PROCESS::bSeRunning() ) {
+        m_bToExit = true;
+        return;
+      }
+
       AM::vNapUsec(1000,CN_OUTPUT);
       continue;
     }
