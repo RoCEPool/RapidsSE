@@ -95,12 +95,10 @@
         szDstStz = szAreaTo;                                                \
         strncpy(szDstStz, (char*)iArg2, nSrcSize);                          \
         iArgTo =  (i8)szDstStz;                                             \
-        printf("COPYING: %p %s\n", szDstStz, szDstStz);                                                \
+        printf("COPYING: %p %s\n", szDstStz, szDstStz);                     \
         szAreaTo += nSrcSize + 1;                                           \
     }                                                                       \
   }
-
-//nSrcSize = strlen((char*)iArg2) + 1 < 8 ? strlen((char*)iArg2) + 1 : 8 ;
 
 #define _COPYSTR_IFTRUE_PL(iArg3)                                           \
   {                                                                         \
@@ -360,7 +358,7 @@
         if (bFilterResult) {                                                \
           break;                                                            \
           }      \
-      }                                                                      \
+      }                                                                     \
       while(iInCount-- > 0) {                                               \
         iArg2 = *(--paW);                                                   \
       }                                                                     \
@@ -423,7 +421,7 @@
 
 #define _INX_IVYIVY(eErrorCode)                                             \
   {                                                                         \
-    iErrorCode = EC_NOT_IMPLEMENTED;                                         \
+    iErrorCode = EC_NOT_IMPLEMENTED;                                        \
   }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -446,7 +444,7 @@
         if (bFilterResult) {                                                \
           break;                                                            \
           }      \
-      }                                                                      \
+      }                                                                     \
       while(iInCount-- > 0) {                                               \
         iArg2 = *(--paW);                                                   \
       }                                                                     \
@@ -578,7 +576,7 @@
     }                                                                         \
   }
 
-#define _MINUTE_TSP(eErrorCode)                                                 \
+#define _MINUTE_TSP(eErrorCode)                                               \
   {                                                                           \
     xTsp1.m_iAsI8 = *(--paW);                                                 \
     if (eErrorCode != EC_NONE ||                                              \
@@ -593,7 +591,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // EXTRACT SECOND
 
-#define _SECOND_TME(eErrorCode)                                                 \
+#define _SECOND_TME(eErrorCode)                                               \
   {                                                                           \
     xTme1.m_iAsI8 = *(--paW);                                                 \
     if (eErrorCode != EC_NONE ||                                              \
@@ -605,7 +603,7 @@
     }                                                                         \
   }
 
-#define _SECOND_TSP(eErrorCode)                                                 \
+#define _SECOND_TSP(eErrorCode)                                               \
   {                                                                           \
     xTsp1.m_iAsI8 = *(--paW);                                                 \
     if (eErrorCode != EC_NONE ||                                              \
