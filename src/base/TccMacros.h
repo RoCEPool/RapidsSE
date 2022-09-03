@@ -100,27 +100,16 @@
     }                                                                       \
   }
 
-#define _COPYSTR_IFTRUE_PL(szAreaTo)                                        \
+//nSrcSize = strlen((char*)iArg2) + 1 < 8 ? strlen((char*)iArg2) + 1 : 8 ;
+
+#define _COPYSTR_IFTRUE_PL(iArg3)                                           \
   {                                                                         \
     iArg1 = *(--paW);                                                       \
     iArg2 = *(--paW);                                                       \
     if (iArg1 && iArg2 != C_DATUM_NULL)    {                                \
-        nSrcSize = strlen((char*)iArg2) + 1 < 8 ? strlen((char*)iArg2) + 1 : 8 ; \
-        szDstStz = (char*)szAreaTo;                                         \
-        strncpy(szDstStz, (char*)iArg2, nSrcSize);                          \
+      iArg3 = (i8)aIndexTree_allotPayStr((void*)aCombinedT->m_aIndexTreePL, (char*)iArg2); \
     }                                                                       \
   }
-
-#define _COPYSTR_PL(szAreaTo)                                               \
-  {                                                                         \
-    iArg1 = *(--paW);                                                       \
-    if (iArg1 != C_DATUM_NULL)    {                                         \
-        nSrcSize = strlen((char*)iArg1) + 1 < 8 ? strlen((char*)iArg1) + 1 : 8 ; \
-        szDstStz = (char*)szAreaTo;                                         \
-        strncpy(szDstStz, (char*)iArg1, nSrcSize);                          \
-    }                                                                       \
-  }
-
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // BETWEEN
