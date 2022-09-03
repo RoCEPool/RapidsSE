@@ -403,6 +403,14 @@ SELECT SUM(n_nationkey) from nation HAVING SUM(n_nationkey) > 0;
 rows:
  (329)
 
+select N_REGIONKEY,max(N_NAME) from nation group by N_REGIONKEY;
+rows:
+ (0,'MOZAMBIQUE')
+ (1,'UNITED STATES')
+ (2,'VIETNAM')
+ (3,'UNITED KINGDOM')
+ (4,'SAUDI ARABIA')
+
 DROP TABLE nation;
 success
 
