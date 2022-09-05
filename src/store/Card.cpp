@@ -2105,6 +2105,7 @@ eTE Card::eTermEval(void)
   Stz* szTerm = this->szTerm();
   
        if (szTerm->bSame("and"_Stz))     return TE_AND;
+  else if (szTerm->bSame("as"_Stz))      return TE_AS;
   else if (szTerm->bSame("boolean"_Stz)) return TE_BOOLEAN;
   else if (szTerm->bSame("or"_Stz))      return TE_OR;
   else if (szTerm->bSame("type"_Stz))    return TE_TYPE;

@@ -667,7 +667,7 @@ Card_GbyElist* Dissect::pGbyElist(Card_RpnTerms* pCard_RpnTerms)
       continue;
     }
         
-    // TYPE <type> [ AS <as> ] <calcExpr>
+    // TYPE <type> <calcExpr> [ AS <as> ]
     Card_Expr* pCard_Expr = pExpr_c(pCard_RpnTerms);
     pCard_Expr->vCardNo(++iCardNo);
     pCard_Expr->vAsEnsure();
@@ -787,17 +787,27 @@ Card_Expr* Dissect::pExpr_c(Card_RpnTerms* pCard_RpnTerms)
 
   // [ AS <as> ]
   Card* pCard_Term_head = pCard_RpnTerms->pHead();
-  if (pCard_Term_head->bIsSame("AS"_Stz)) {
-        
+  if (pCard_Term_head
+      && pCard_Term_head->bIsSame("AS"_Stz)) {
+
     Card_As* pCard_As = pAs(pCard_RpnTerms);
     pCard_Expr->vAppend(pCard_As);
   }
-  
-  
+
+
   // <calcExpr>
   Card_ExprCalc* pCard_ExprCalc = pExprCalc(pCard_RpnTerms);
   pCard_Expr->vAppend(pCard_ExprCalc);
-  
+
+  // [ AS <as> ]
+  pCard_Term_head = pCard_RpnTerms->pHead();
+  if (pCard_Term_head
+      && pCard_Term_head->bIsSame("AS"_Stz)) {
+
+    Card_As* pCard_As = pAs(pCard_RpnTerms);
+    pCard_Expr->vAppend(pCard_As);
+  }
+
   // [ ASC | DESC ]
   pCard_Term_head = pCard_RpnTerms->pHead();
   if (pCard_Term_head
@@ -864,7 +874,9 @@ Card_ExprCalc* Dissect::pExprCalc(Card_RpnTerms* pCard_RpnTerms)
     //if (pCard_Term_popped->bIsSame(")"_Stz))
     //  continue;
     
-    if (   pCard_Term_popped->bIsSame("ASC"_Stz)
+    if (
+           pCard_Term_popped->bIsSame("AS"_Stz)
+        || pCard_Term_popped->bIsSame("ASC"_Stz)
         || pCard_Term_popped->bIsSame("DESC"_Stz)
         || pCard_Term_popped->bIsSame("GROUPBY"_Stz)
         || pCard_Term_popped->bIsSeparator()
@@ -872,7 +884,7 @@ Card_ExprCalc* Dissect::pExprCalc(Card_RpnTerms* pCard_RpnTerms)
       pCard_RpnTerms->vPush(pCard_Term_popped);
       break;
     }
-    
+
     if (pCard_Term_popped->bIsAggOp())
       pCard_ExprCalc->vAggOp();
 

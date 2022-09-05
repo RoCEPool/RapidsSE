@@ -235,6 +235,7 @@ void Weave::vArgAggreg(Stz* szOpArgs, Card_Aggreg* pCard_Aggreg)
   
   // 0) aggElist : 1) gbyList
 
+  pCard_Aggreg->vDump();
   s4K sRpnExpr;
   
   vRpnAggreg(sRpnExpr,pCard_Aggreg);

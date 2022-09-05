@@ -90,10 +90,10 @@ rows:
 --   ['region', 'nationcount']
 
 -- UNION clause
-SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount FROM nation GROUP BY n_regionkey
-UNION ALL
-SELECT n_regionkey, COUNT(n_nationkey) FROM nation GROUP BY n_regionkey;
-success
+-- SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount FROM nation GROUP BY n_regionkey
+-- UNION ALL
+-- SELECT n_regionkey, COUNT(n_nationkey) FROM nation GROUP BY n_regionkey;
+--success
 -- rows:
 --   ['region', 'nationcount']
 
@@ -104,10 +104,10 @@ SELECT n_regionkey, COUNT(n_nationkey) FROM nation GROUP BY n_regionkey
 ORDER BY region;
 success
 
-SELECT n_regionkey, COUNT(n_nationkey) FROM nation GROUP BY n_regionkey
-UNION ALL
-SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount FROM nation GROUP BY n_regionkey;
-success
+-- SELECT n_regionkey, COUNT(n_nationkey) FROM nation GROUP BY n_regionkey
+-- UNION ALL
+-- SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount FROM nation GROUP BY n_regionkey;
+-- success
 -- rows:
 --     ['n_regionkey', *]
 
