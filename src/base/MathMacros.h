@@ -74,8 +74,10 @@
   (iArg1 == 0 || iArg2 == 0) ? EC_NONE :                                   \
   (iArg1 == -1 && iArg2 == C_I8_MIN) ? EC_ARITHMETIC_OVERFLOW :            \
   (iArg1 == C_I8_MIN && iArg2 == -1) ? EC_ARITHMETIC_OVERFLOW :            \
-  (iArg2 > C_I8_MAX / iArg1) ? EC_ARITHMETIC_OVERFLOW :                    \
-  (iArg1 != -1 && iArg2 < C_I8_MIN / iArg1) ? EC_ARITHMETIC_UNDERFLOW :    \
+  (iArg1 > 0 && iArg2 > C_I8_MAX / iArg1) ? EC_ARITHMETIC_OVERFLOW :       \
+  (iArg1 > 0 && iArg2 < C_I8_MIN / iArg1) ? EC_ARITHMETIC_UNDERFLOW :      \
+  (iArg1 < 0 && iArg2 < C_I8_MAX / iArg1) ? EC_ARITHMETIC_OVERFLOW :       \
+  (iArg1 < 0 && iArg2 > C_I8_MIN / iArg1) ? EC_ARITHMETIC_UNDERFLOW :      \
   EC_NONE                                                                  \
 )
 
@@ -624,7 +626,6 @@
   {                                                                        \
     iArg2 = *(--paW);                                                      \
     iArg1 = *(--paW);                                                      \
-    printf("%lld %lld %lld %lld\n", iArg1, iArg2, C_I8_MIN, C_I8_MAX);   \
     if (eErrorCode != EC_NONE ||                                           \
         iArg1 == C_DATUM_NULL ||                                           \
         iArg2 == C_DATUM_NULL) {                                           \
