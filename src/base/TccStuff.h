@@ -103,27 +103,37 @@ union Int_T {
 //
 union Ivl_T {
   struct  __attribute__((__packed__)) {
-    u8 m_eType    : 4 ; // 0..15
+    u8 m_eType    : 5 ; // 0..31, eIV enum
     u8 m_bIsNeg   : 1 ;
     u8 m_bIsNull  : 1 ;
-    u8 m_iSpare   : 2 ;
+    u8 m_iSpare   : 1 ;
 
     union __attribute__((__packed__)) {
 
+      // ==========================
       // Year-Month interval types:
+      // ==========================
+
+      // INTERVAL YEAR
       struct __attribute__((__packed__)) {
         u8 m_uMonths        : 56; // 0..7.2E16
       } m_xIvlYr;
 
+      // INTERVAL MONTH
       struct __attribute__((__packed__)) {
         u8 m_uMonths        : 56; // 0..7.2E16
       } m_xIvlMon;
 
+      // INTERVAL YEAR TO MONTH
       struct __attribute__((__packed__)) {
         u8 m_uMonths        : 56; // 0..7.2E16
       } m_xIvlYrToMon;
 
+      // ==========================
       // Day-time interval types:
+      // ==========================
+
+      // INTERVAL DAY TO SECOND
       struct __attribute__((__packed__)) {
         u8 m_uDays          : 12; // 0..4,095
         u8 m_uMinutes       : 12; // 0..4,095
@@ -131,44 +141,53 @@ union Ivl_T {
         u8 m_uFrac          : 20; // 0..1,048,575
       } m_xIvlDayToSec;
 
+      // INTERVAL DAY TO MINUTE
       struct __attribute__((__packed__)) {
         u8 m_uDays          : 28; // 0..268,435,456
         u8 m_uMinutes       : 28; // 0..268,435,456
       } m_xIvlDayToMin;
 
+      // INTERVAL DAY TO HOUR
       struct __attribute__((__packed__)) {
         u8 m_uDays          : 28; // 0..268,435,456
         u8 m_uMinutes       : 28; // 0..268,435,456
       } m_xIvlDayToHr;
 
+      // INTERVAL HOUR TO SECOND
       struct __attribute__((__packed__)) {
         u8 m_uMinutes       : 18; // 0..262,143
         u8 m_uSeconds       : 18; // 0..262,143
         u8 m_uFrac          : 20; // 0..1,048,575
       } m_xIvlHrToSec;
 
+      // INTERVAL HOUR TO MINUTE
       struct __attribute__((__packed__)) {
         u8 m_uMinutes       : 56; // 0..7.2E16
       } m_xIvlHrToMin;
 
+      // INTERVAL MINUTE TO SECOND
       struct __attribute__((__packed__)) {
         u8 m_uMinutes       : 18; // 0..262,143
         u8 m_uSeconds       : 18; // 0..262,143
         u8 m_uFrac          : 20; // 0..1,048,575
       } m_xIvlMinToSec;
 
+      // INTERVAL DAY
       struct __attribute__((__packed__)) {
         u8 m_uDays          : 56; // 0..7.2E16
       } m_xIvlDay;
 
+      // INTERVAL HOUR
       struct __attribute__((__packed__)) {
         u8 m_uHours         : 56; // 0..7.2E16
       } m_xIvlHr;
 
+      // INTERVAL MINUTE
       struct __attribute__((__packed__)) {
         u8 m_uMinutes       : 56; // 0..7.2E16
       } m_xIvlMin;
 
+      // INTERVAL SECOND
       struct __attribute__((__packed__)) {
         u8 m_uSeconds       : 36; // 0..68,719,476,736
         u8 m_uMicros        : 20; // 0..1,048,575

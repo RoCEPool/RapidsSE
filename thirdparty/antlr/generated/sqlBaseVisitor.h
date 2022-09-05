@@ -209,6 +209,18 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitIntervalType(sqlParser::IntervalTypeContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitYearMonthIntervalType(sqlParser::YearMonthIntervalTypeContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitDayTimeIntervalType(sqlParser::DayTimeIntervalTypeContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitFixedLenChar(sqlParser::FixedLenCharContext *ctx) override {
     return visitChildren(ctx);
   }
@@ -586,10 +598,6 @@ public:
   }
 
   virtual antlrcpp::Any visitIntervalLiteral(sqlParser::IntervalLiteralContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual antlrcpp::Any visitLooseInterval(sqlParser::LooseIntervalContext *ctx) override {
     return visitChildren(ctx);
   }
 

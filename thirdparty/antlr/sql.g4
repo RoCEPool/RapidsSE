@@ -192,13 +192,27 @@ sqlDataType       : BOOLEAN
                   | DATE
                   | TIME
                   | TIMESTAMP
-//                  | INTERVAL
+                  | intervalType
                   | fixedLenChar
                   | varyingLenChar
                   | (BINARY     ( '(' size (BYTE | BYTES)? ')' ) )
                   | (VARBINARY  ( '(' size (BYTE | BYTES)? ')' )? )
                   | BLOB
                   ;
+
+intervalType      : INTERVAL (yearMonthIntervalType | dayTimeIntervalType) ;
+yearMonthIntervalType :   ( year=YEAR   ('(' precision ')')? )
+                        | ( year=YEAR   ('(' precision ')')? TO month=MONTH)
+                        | ( month=MONTH ('(' precision ')')? )
+                        ;
+dayTimeIntervalType   :   ( day=DAY     ('(' precision ')')? )
+                        | ( day=DAY     ('(' precision ')')? TO (hour=HOUR | min=MINUTE | sec=SECOND ('(' scale ')')? ))
+                        | ( hour=HOUR   ('(' precision ')')? TO (min=MINUTE | sec=SECOND ('(' scale ')')? ))
+                        | ( min=MINUTE  ('(' precision ')')? TO (sec=SECOND ('(' scale ')')? ))
+                        | ( hour=HOUR   ('(' precision ')')? )
+                        | ( min=MINUTE  ('(' precision ')')? )
+                        | ( sec=SECOND  ('(' precision (',' scale)?')')? )
+                        ;
 
 fixedLenChar      : (CHAR | CHARACTER)
                     '(' size (BYTE | BYTES | CHAR | CHARS)? ')'
@@ -410,9 +424,9 @@ dateLiteral       : DATE str = stringLiteral ;
 timeLiteral       : TIME str = stringLiteral ;
 timestampLiteral  : TIMESTAMP stringLiteral ;
 stringLiteral     : STRING_LITERAL ;
-intervalLiteral   : ( sql92CalendarInterval | sql92TimeInterval | looseInterval ) ;
+intervalLiteral   : ( sql92CalendarInterval | sql92TimeInterval /* | looseInterval */ ) ;
 
-looseInterval     : INTERVAL str=expr ;
+// looseInterval     : INTERVAL str=expr ;
 
 sql92CalendarInterval :
                   INTERVAL stringLiteral
