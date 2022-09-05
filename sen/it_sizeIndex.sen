@@ -8,14 +8,15 @@
 
   // C_TDEF_SIZEINDEX
   
-  STD_WAIT_PATH_TAG
+  STD_BOOTFORK_TAG
   "
   define table __sizeIndex (
     NodeName  VARCHAR NOT NULL ,
-    size      VARCHAR NOT NULL
+    size      INTEGER NOT NULL ,
+    sizeStr   VARCHAR NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::forkChild api:executeCheck
+  api::forkChild  api:executeCheck
 
 ;
 

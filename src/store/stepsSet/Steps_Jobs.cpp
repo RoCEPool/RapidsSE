@@ -83,13 +83,13 @@ void Step::vJobsSeePlist(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* jobs::seeRlist -- see contents of m_pRetiredJobs                           */
+/* jobs::seeRlist -- see contents of m_pExitedJobs                            */
 /*----------------------------------------------------------------------------*/
 void Step::vJobsSeeRlist(void)
 {
   ENTRY();
   
-  AM::pRetiredJobs()->vListJobs();
+  AM::pExitedJobs()->vListJobs();
 
   EXIT();
 }

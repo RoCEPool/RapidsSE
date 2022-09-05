@@ -119,9 +119,9 @@ TypeId DecimalLiteral::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Parse a string into a Bcd, setting bResult to true if successful           */
+/* Parse a string into a Bcd, throwing an exception is there is a problem     */
 /*----------------------------------------------------------------------------*/
-Bcd DecimalLiteral::xParseStr(Stz* szStr, b1& bResult)
+Bcd DecimalLiteral::xParseStr(Stz* szStr)
 {
   ASSERT(szStr);
 
@@ -136,44 +136,72 @@ Bcd DecimalLiteral::xParseStr(Stz* szStr, b1& bResult)
     // We've got an integer that we are parsing into a decimal.
     // This can come about through implicit coercion. e.g. we are
     // coercing the string '2' to a decimal.
-    i8 iMantissa = StrLib::iToI8(szStr->azChar());
+    bool bOverflow = false;
+    i8 iMantissa = StrLib::iToI8(szStr->azChar(), &bOverflow);
+
+    if (bOverflow || iMantissa > C_BCD_MAX || iMantissa < C_BCD_MIN) {
+      SemanticException::vThrow(
+          EC_VALUE_OUT_OF_RANGE,
+          ": %s: Max/min decimal precision supported is %lld to %lld"_Stz,
+          szStr,
+          C_BCD_MIN,
+          C_BCD_MAX);
+    }
+
     Bcd xBcd;
     xBcd.vSet(iMantissa, 0);
-    bResult = true;
     return xBcd;
   }
 
   ASSERT(iPointPos >= 0);  // decimal literals must always contain one decimal point
 
-  i8 iScale = nLen - iPointPos - iSign - 1;
+  i8 iScale = nLen - iPointPos - 1;
   i8 iPrecision = nLen - iSign - 1;
 
   i8 iMantissa;
   char* pcCrs = szStr->azChar();
-  bResult = StrLib::bExtractDecimal(&pcCrs, iMantissa, iPrecision + iScale, iScale);
+  bool bResult = StrLib::bExtractDecimal(&pcCrs, iMantissa, iPrecision + iScale, iScale);
 
   if (!bResult) {
     SemanticException::vThrow(EC_INVALID_VALUE,
-                              "%s: Unable to convert string literal to decimal literal "_Stz);
+                              ": %s: Unable to convert string literal to decimal literal "_Stz,
+                              szStr);
   }
 
   // Check for overflows. This is dependent on the size of components of the Bcd_T structure
-  if (iScale > 127 || iScale < -128) {
+  if (iScale > C_BCD_SCALE_MAX || iScale < C_BCD_SCALE_MIN) {
     SemanticException::vThrow(EC_VALUE_OUT_OF_RANGE,
-                              "%s: Max/min decimal scale supported is [-128, 127]"_Stz);
+                              ": %s: Max/min decimal scale supported is %lld to %lld"_Stz,
+                              szStr,
+                              C_BCD_SCALE_MIN,
+                              C_BCD_SCALE_MAX);
   }
 
-  if (iMantissa > 140737488355327 || iMantissa < -140737488355328) {
+  if (iMantissa > C_BCD_MAX || iMantissa < C_BCD_MIN) {
     // iDecimal > (2^47 - 1) || iDecimal < (-2^47)
     SemanticException::vThrow(
                              EC_VALUE_OUT_OF_RANGE,
-                             "%s: Max/min decimal precision supported is [2^47, (2^47) - 1]"_Stz);
+                             ": %s: Max/min decimal precision supported is %lld to %lld"_Stz,
+                             szStr,
+                             C_BCD_MIN,
+                             C_BCD_MAX);
   }
 
   ASSERT(sizeof(Bcd) == C_BYTES_PER_WORD);
 
   Bcd xBcd;
-  xBcd.vSet(iMantissa, iScale);
+
+  // REVISE: If the value is small enough then represent it with 2 decimal places
+  // so it prints nicely. It should strictly have a scale of 0.
+  if ( iScale == 0 &&
+       (iMantissa * 100) < C_BCD_MAX &&
+       (iMantissa * 100) > C_BCD_MIN ) {
+    xBcd.vSet(iMantissa * 100, 2);
+
+  } else {
+    xBcd.vSet(iMantissa, iScale);
+  }
+
   return xBcd;
 }
 

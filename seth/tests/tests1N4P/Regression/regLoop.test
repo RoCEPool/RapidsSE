@@ -21,23 +21,51 @@ INCLUDE 'regrLoadData.test';
 //LOG 'Running regression tests...';
 
 //------------------------------------------------------------------------------
-//INCLUDE 'AndOrNot.test';
-//INCLUDE 'InNotIn.test';
+
+
+LOG 'AndOrNot.test ...';
+INCLUDE 'AndOrNot.test';
+
+LOG 'inNotIn.test ...';
+INCLUDE 'InNotIn.test';
+
 //INCLUDE 'PartKey1way.test';
 //INCLUDE 'PartKey2way.test';
 //INCLUDE 'Stage9.test';
 //INCLUDE 'Using1way.test';
-//INCLUDE 'aggs-avg.test';
-//INCLUDE 'aggs-count.test';
-//INCLUDE 'aggs-max.test';
-//INCLUDE 'aggs-min.test';
-//INCLUDE 'aggs-sum.test';
-//INCLUDE 'alias.test';
-//INCLUDE 'aliasSelAll.test';
-//INCLUDE 'between.test';
-//INCLUDE 'case.test';
-//INCLUDE 'cast.test';
+
+LOG 'aggs-avg.test ...';
+INCLUDE 'aggs-avg.test';
+
+LOG 'aggs-count.test ...';
+INCLUDE 'aggs-count.test';
+
+LOG 'aggs-max.test ...';
+INCLUDE 'aggs-max.test';
+
+LOG 'aggs-min.test ...';
+INCLUDE 'aggs-min.test';
+
+LOG 'aggs-sum.test ...';
+INCLUDE 'aggs-sum.test';
+
+LOG 'aggs-sum.test ...';
+INCLUDE 'alias.test';
+
+LOG 'aliasSelAll.test ...';
+INCLUDE 'aliasSelAll.test';
+
+LOG 'between.test ...';
+INCLUDE 'between.test';
+
+LOG 'case.test ...';
+INCLUDE 'case.test';
+
+LOG 'cast.test ...';
+INCLUDE 'cast.test';
+
 //INCLUDE 'ctas.test';
+
 //INCLUDE 'except.test';
 //INCLUDE 'exists.test';
 //INCLUDE 'functions-abs.test';
@@ -46,7 +74,10 @@ INCLUDE 'regrLoadData.test';
 //INCLUDE 'functions-charlen.test';
 //INCLUDE 'functions-coal.test';
 //INCLUDE 'functions-concat.test';
-//INCLUDE 'functions-extract.test';
+
+LOG 'functions-extract.test ...';
+INCLUDE 'functions-extract.test';
+
 //INCLUDE 'functions-floor.test';
 //INCLUDE 'functions-left.test';
 //INCLUDE 'functions-lower.test';
@@ -56,15 +87,27 @@ INCLUDE 'regrLoadData.test';
 //INCLUDE 'functions-right.test';
 //INCLUDE 'functions-round.test';
 //INCLUDE 'functions-rtrim.test';
-//INCLUDE 'functions-substr.test';
+
+LOG 'functions-substr.test ...';
+INCLUDE 'functions-substr.test';
+
 //INCLUDE 'functions-trim.test';
 //INCLUDE 'functions-upper.test';
+
+LOG 'having.test ...';
 INCLUDE 'having.test';
+
 //INCLUDE 'intersect.test';
 //INCLUDE 'intervals.test';
+
+LOG 'isnull.test ...';
 INCLUDE 'isnull.test';
+
 //INCLUDE 'joinTests.test';
+
+LOG 'like.test ...';
 INCLUDE 'like.test';
+
 //INCLUDE 'subqueries-select.test';
 //INCLUDE 'subqueries-where-single.test';
 

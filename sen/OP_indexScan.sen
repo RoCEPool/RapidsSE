@@ -41,12 +41,13 @@
 
   EC_NONE locals| eError |
 
-  PipeIn[]\clear [op].pipeout
-
   <tableNm> <indexNm> op__table_index not if
+    Pipein[].delete
     true
     exit
   then
+
+  PipeIn[]\clear [op].pipeout
 
   // new a stream def
   Table[] StreamDefLft[].new

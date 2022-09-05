@@ -54,6 +54,7 @@ void Step::vAddSteps_Task(void)
   vAddStep("[task].trace!"_Stz,         &Step::vTaskTraceStore);
   vAddStep("[task].thread@"_Stz,        &Step::vTaskThreadFetch);
   vAddStep("[task].transition!"_Stz,    &Step::vTaskTransitionStore);
+  vAddStep("[task].throwLowMemory"_Stz, &Step::vTaskThrowLowMemory);
   vAddStep("[task].wait"_Stz,           &Step::vTaskWait);
   vAddStep("[task].yield"_Stz,          &Step::vTaskYield);
   vAddStep("[task].yield_opLoop"_Stz,   &Step::vTaskYield_opLoop);
@@ -285,10 +286,10 @@ void Step::vTaskPreHibernate(void)
 //  m_pDataStack->vReset();
 //  m_pReturnStack->vReset();
   
-  while (m_pLocalsFrame) {
+  while (m_pLocalFrame) {
     
-    LocalChain* pLocalsFrame = m_pLocalsFrame;
-    m_pLocalsFrame = m_pLocalsFrame->pNext();
+    LocalFrame* pLocalsFrame = m_pLocalFrame;
+    m_pLocalFrame = m_pLocalFrame->pNext();
     
     delete pLocalsFrame;
   }
@@ -455,6 +456,18 @@ void Step::vTaskTransitionStore(void)
   RASSERT(bIsLocked());
   m_eTransition = eTransition;
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [task].throwLowMemory -- throw low memory exception                        */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskThrowLowMemory(void)
+{
+  ENTRY();
+
+  THROW_LOWMEMORY();
+
   EXIT();
 }
 

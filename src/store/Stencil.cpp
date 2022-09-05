@@ -96,30 +96,78 @@ Stencil::Stencil(void)
   m_xStageOps.m_sLabelOrdAgg = ""_Stz;
   m_xStageOps.m_sHashExpr = ""_Stz;
 
-  m_pBannerHead  = new CodeSynth;
-  m_pBannerTail  = new CodeSynth;
+  m_pBannerHead  = nullptr;
+  m_pBannerTail  = nullptr;
 
-  m_pPreliminary     = new CodeSynth;
-  m_pPreliminaryFun0 = new CodeSynth;
-  m_pPreliminaryFun1 = new CodeSynth;
-  m_pPreliminaryFun2 = new CodeSynth;
-  m_pPreliminaryEos = new CodeSynth;
+  m_pPreliminary     = nullptr;
+  m_pPreliminaryFun0 = nullptr;
+  m_pPreliminaryFun1 = nullptr;
+  m_pPreliminaryFun2 = nullptr;
+  m_pPreliminaryEos = nullptr;
 
-  m_pConcluding     = new CodeSynth;
-  m_pConcludingFun0 = new CodeSynth;
-  m_pConcludingFun1 = new CodeSynth;
-  m_pConcludingFun2 = new CodeSynth;
-  m_pConcludingEos  = new CodeSynth;
-  m_pOpHeader    = new CodeSynth;
-  m_pOpSource    = new CodeSynth;
-  m_pEmptyFun0   = new CodeSynth;
-  m_pEmptyFun1   = new CodeSynth;
-  m_pEmptyFun2   = new CodeSynth;
+  m_pConcluding     = nullptr;
+  m_pConcludingFun0 = nullptr;
+  m_pConcludingFun1 = nullptr;
+  m_pConcludingFun2 = nullptr;
+  m_pConcludingEos  = nullptr;
+  m_pOpHeader    = nullptr;
+  m_pOpSource    = nullptr;
+  m_pEmptyFun0   = nullptr;
+  m_pEmptyFun1   = nullptr;
+  m_pEmptyFun2   = nullptr;
 
   m_pShapeCRW    = nullptr;
   m_pShapeROW    = nullptr;
   m_pShapeIDX    = nullptr;
-  m_pShapeEOS    = new Shape;
+  m_pShapeEOS    = nullptr;
+
+  try {
+    m_pBannerHead  = new CodeSynth;
+    m_pBannerTail  = new CodeSynth;
+
+    m_pPreliminary     = new CodeSynth;
+    m_pPreliminaryFun0 = new CodeSynth;
+    m_pPreliminaryFun1 = new CodeSynth;
+    m_pPreliminaryFun2 = new CodeSynth;
+    m_pPreliminaryEos = new CodeSynth;
+
+    m_pConcluding     = new CodeSynth;
+    m_pConcludingFun0 = new CodeSynth;
+    m_pConcludingFun1 = new CodeSynth;
+    m_pConcludingFun2 = new CodeSynth;
+    m_pConcludingEos  = new CodeSynth;
+    m_pOpHeader    = new CodeSynth;
+    m_pOpSource    = new CodeSynth;
+    m_pEmptyFun0   = new CodeSynth;
+    m_pEmptyFun1   = new CodeSynth;
+    m_pEmptyFun2   = new CodeSynth;
+    m_pShapeEOS    = new Shape;
+  }
+  catch (LowMemory xLowMemory) {
+
+    delete m_pBannerHead;
+    delete m_pBannerTail;
+    delete m_pPreliminary;
+    delete m_pPreliminaryFun0;
+    delete m_pPreliminaryFun1;
+    delete m_pPreliminaryFun2;
+    delete m_pPreliminaryEos;
+    delete m_pConcluding;
+    delete m_pConcludingFun0;
+    delete m_pConcludingFun1;
+    delete m_pConcludingFun2;
+    delete m_pConcludingEos;
+    delete m_pOpHeader;
+    delete m_pOpSource;
+    delete m_pEmptyFun0;
+    delete m_pEmptyFun1;
+    delete m_pEmptyFun2;
+
+    delete m_pShapeEOS;
+
+    throw xLowMemory;
+  }
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append banner head
@@ -761,7 +809,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
           vSetupEosPayload(pCombined, pStream, pOp);
 
           // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-          vSketchEosProjectAgg(pCombined, pStream, pOp);
+          vSketchEosProjectAgg(pCombined, pStream, pOp, pShape->pCodeSynthA()->pInitStack());
           m_xStageOps.m_bGeneratePotTub = false;
 
           ePrevStencil = SR_AT;
@@ -1330,6 +1378,7 @@ void Stencil::vSetupOrdAgg(Combined* pCombined, Stream* pStream, Op* pOp) {
   pCombined->aCombinedT()->m_aRowCellArrayAgg =
       (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleAgg,
                                       &pCombined->aCombinedT()->m_racStrAreaAgg);
+  pCombined->aCombinedT()->m_racStrAreaAggSav = pCombined->aCombinedT()->m_racStrAreaAgg;
 
   // get the indexDef
   IndexDef *pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
@@ -1366,7 +1415,7 @@ void Stencil::vSetupProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp) {
   pCombined->aCombinedT()->m_aRowCellArrayAgg =
       (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleAgg,
                                       &pCombined->aCombinedT()->m_racStrAreaAgg);
-  pCombined->aCombinedT()->m_racStrAreaSavAgg = pCombined->aCombinedT()->m_racStrAreaAgg;
+  pCombined->aCombinedT()->m_racStrAreaAggSav = pCombined->aCombinedT()->m_racStrAreaAgg;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1385,7 +1434,7 @@ void Stencil::vSetupProjectExp(Combined* pCombined, Stream* pStream, Op* pOp) {
   pCombined->aCombinedT()->m_aRowCellArrayP =
       (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleP,
                                       &pCombined->aCombinedT()->m_racStrAreaP);
-  pCombined->aCombinedT()->m_racStrAreaSavP = pCombined->aCombinedT()->m_racStrAreaP;
+  pCombined->aCombinedT()->m_racStrAreaPSav = pCombined->aCombinedT()->m_racStrAreaP;
 
 }
 
@@ -1437,7 +1486,7 @@ void Stencil::vSetupSort(Combined* pCombined, Stream* pStream, Op* pOp) {
     pCombined->aCombinedT()->m_aRowCellArrayP =
         (byte *) RowSingle::aGetCellArray((RowSingle *) pCombined->aCombinedT()->m_aRowSingleP,
                                           &pCombined->aCombinedT()->m_racStrAreaP);
-    pCombined->aCombinedT()->m_racStrAreaSavP = pCombined->aCombinedT()->m_racStrAreaP;
+    pCombined->aCombinedT()->m_racStrAreaPSav = pCombined->aCombinedT()->m_racStrAreaP;
   }
 
   // delete the indexdef in the LU of OP
@@ -1541,7 +1590,7 @@ void Stencil::vSketchEosFilter(Combined* pCombined, Stream* pStream, Op* pOp) {
 /*----------------------------------------------------------------------------*/
 /* sketch code for Eos fun3 for Project agg OP                                */
 /*----------------------------------------------------------------------------*/
-void Stencil::vSketchEosProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp) {
+void Stencil::vSketchEosProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp, TypedStack* pInitStack) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
@@ -1576,7 +1625,7 @@ void Stencil::vSketchEosProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // payload to Tub/Pot
-  pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefOut, nullptr, pPreExpStack, SR_AT, SR_NONE);
+  pCodeSynth = new CodeSynth(pStreamDefOut, pStreamDefOut, nullptr, pPreExpStack, SR_AT, SR_NONE);
 
   Stz* sHavingExpr = ""_Stz;
 
@@ -1586,7 +1635,7 @@ void Stencil::vSketchEosProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp
     sHavingExpr = pOpTags->szValue(C_TAG_EXPR);
 
     sLabel.vSprint("L_%s_%d"_Stz, m_xStageOps.m_pHavingFilterOp->szOpNm(), m_xStageOps.m_pHavingFilterOp->i_Op());
-    vGetNextLabel(sLabelNext, pStream, m_xStageOps.m_pHavingFilterOp->i_Op(), "L_AdvanceNextRow"_Stz);
+    vGetNextLabel(sLabelNext, pStream, m_xStageOps.m_pHavingFilterOp->i_Op(), "L_AddRowToTubPot"_Stz);
     pCodeSynth->vSynthFilter(sHavingExpr, sLabel, ""_Stz, sLabelNext);
     m_pShapeEOS->vCodeSynthB(pCodeSynth);
   }
@@ -1602,9 +1651,10 @@ void Stencil::vSketchEosProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp
   }
 
   if (pCombined->aCombinedT()->m_iHashRows)
-    pCodeSynth->vSynthAllocPotRow(m_pPostStack, m_xStageOps.m_sHashExpr, true, "L_AddRowToTubPot"_Stz, "L_ReturnFinal"_Stz, ""_Stz);
+    pCodeSynth->vSynthAllocPotRow(m_pPostStack, m_xStageOps.m_sHashExpr, true,
+                                  "L_AddRowToTubPot"_Stz, "L_ReturnFinal"_Stz, ""_Stz, pInitStack);
   else
-    pCodeSynth->vSynthAllocTubRow(m_pPostStack, true, "L_AddRowToTubPot"_Stz, "L_ReturnFinal"_Stz,""_Stz);
+    pCodeSynth->vSynthAllocTubRow(m_pPostStack, true, "L_AddRowToTubPot"_Stz, "L_ReturnFinal"_Stz,""_Stz, pInitStack);
 
   // delete the postStack. No longer needed
   delete m_pPostStack;
@@ -2013,9 +2063,17 @@ Shape* Stencil::pSketchInflateCrw(Combined* pCombined, Stream* pStream, Op* pOp)
   // generate the code for the row inflate
   pCodeSynth = new CodeSynth(pStreamDefLft, nullptr, nullptr, nullptr, SR_NONE, SR_NONE);
   sLabel.vSprint("L_InflateT"_Stz);
-  sReturnLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), pOp->i_Op());
+  sReturnLabel.vSprint("L_InflateCrwRet"_Stz);
   pCodeSynth->vSynthInflateCrw("T"_Stz, sLabel, m_xStageOps.m_sLabelOrdAgg, sReturnLabel, &uSelectColumns);
   pShape->vCodeSynthA(pCodeSynth);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the code for the return from inflate
+  pCodeSynth = new CodeSynth(nullptr, nullptr, nullptr, nullptr, SR_NONE, SR_NONE);
+  sLabel.vSprint("L_InflateCrwRet"_Stz);
+  sReturnLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), pOp->i_Op());
+  pCodeSynth->vSynthInflateCrwRet(sLabel, sReturnLabel);
+  pShape->vCodeSynthB(pCodeSynth);
 
   return pShape;
 }
@@ -2577,7 +2635,7 @@ Shape* Stencil::pSketchReturn(void) {
 
   CodeSynth* pCodeSynth = new CodeSynth();
 
-  pCodeSynth->vSynthReturn();
+  //pCodeSynth->vSynthReturn();
   pShape->vCodeSynthB(pCodeSynth);
   return pShape;
 }

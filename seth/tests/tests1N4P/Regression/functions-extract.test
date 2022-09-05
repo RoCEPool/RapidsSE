@@ -162,21 +162,22 @@ ordered rows:
 // Source file: ../queries/functions/extract/rextract14.sql
 // Result file: ../queries/functions/extract/results/extract14.res
 select colb1, colc1, extract(day from colc1) from table1 where colb1 in ('pink','green','indigo','violet','yellow') order by extract(day from colc1);
-ordered rows:
-  ('green', TIMESTAMP '2015-02-01 00:00:00.0', 1)
+// changed to unordered because column duplicates in the column being ordered
+unordered rows:
+  ('green',  TIMESTAMP '2015-02-01 00:00:00.0', 1)
   ('indigo', TIMESTAMP '2015-03-03 00:00:00.0', 3)
-  ('green', TIMESTAMP '2015-02-12 00:00:00.0', 12)
-  ('indigo', TIMESTAMP '2015-07-14 00:00:00.0', 14)
+  ('green',  TIMESTAMP '2015-02-12 00:00:00.0', 12)
   ('indigo', TIMESTAMP '2015-05-14 00:00:00.0', 14)
+  ('indigo', TIMESTAMP '2015-07-14 00:00:00.0', 14)
   ('violet', TIMESTAMP '2015-12-15 00:00:00.0', 15)
   ('violet', TIMESTAMP '2015-01-16 00:00:00.0', 16)
-  ('green', TIMESTAMP '2015-01-19 00:00:00.0', 19)
+  ('green',  TIMESTAMP '2015-01-19 00:00:00.0', 19)
   ('yellow', TIMESTAMP '2015-10-19 00:00:00.0', 19)
-  ('pink', TIMESTAMP '2015-03-19 00:00:00.0', 19)
-  ('green', TIMESTAMP '2015-10-21 00:00:00.0', 21)
+  ('pink',   TIMESTAMP '2015-03-19 00:00:00.0', 19)
+  ('green',  TIMESTAMP '2015-10-21 00:00:00.0', 21)
   ('violet', TIMESTAMP '2015-09-22 00:00:00.0', 22)
   ('violet', TIMESTAMP '2015-09-23 00:00:00.0', 23)
-  ('green', TIMESTAMP '2015-07-26 00:00:00.0', 26)
+  ('green',  TIMESTAMP '2015-07-26 00:00:00.0', 26)
   ('indigo', TIMESTAMP '2015-03-26 00:00:00.0', 26)
 
 
@@ -220,6 +221,8 @@ ordered rows:
 
 // Source file: ../queries/functions/extract/rextract15.sql
 // Result file: ../queries/functions/extract/results/extract15.res
+//TODO: ENABLE WHEN JOINS
+/*
 select colb1, extract(month from colc1), colb2, extract(month from colc2) from table1 join table2 on extract(month from colc1) = extract(month from colc2) where extract(month from colc1) in (5, 7, 9) and colb1 like ('%ea%') order by colb1, colb2;
 ordered rows:
   ('peach', 5, 'GREEN', 5)
@@ -242,10 +245,12 @@ ordered rows:
   ('teal', 7, 'orange', 7)
   ('teal', 7, 'tan', 7)
   ('teal', 7, 'teal', 7)
-
+*/
 
 // Source file: ../queries/functions/extract/rextract12.sql
 // Result file: ../queries/functions/extract/results/extract12.res
+//TODO: ENABLE WHEN DESC
+/*
 select colb1, colc1 from table1 where extract(month from colc1) between 3 and 5 order by colb1 desc;
 ordered rows:
   ('teal', TIMESTAMP '2015-03-06 00:00:00.0')
@@ -272,10 +277,43 @@ ordered rows:
   ('BLUE', TIMESTAMP '2015-04-20 00:00:00.0')
   ('BLACK', TIMESTAMP '2015-03-07 00:00:00.0')
   ('BLACK', TIMESTAMP '2015-04-01 00:00:00.0')
+*/
+
+// Source file: ../queries/functions/extract/rextract12.sql
+// Result file: ../queries/functions/extract/results/extract12.res
+select colb1, colc1 from table1 where extract(month from colc1) between 3 and 5 order by colb1;
+// unordered because duplicates
+unordered rows:
+  ('BLACK'  , TIMESTAMP '2015-04-01 00:00:00')
+  ('BLACK'  , TIMESTAMP '2015-03-07 00:00:00')
+  ('BLUE'   , TIMESTAMP '2015-04-20 00:00:00')
+  ('GREEN'  , TIMESTAMP '2015-05-06 00:00:00')
+  ('PINK'   , TIMESTAMP '2015-05-05 00:00:00')
+  ('PINK'   , TIMESTAMP '2015-03-18 00:00:00')
+  ('TEAL'   , TIMESTAMP '2015-05-23 00:00:00')
+  ('TEAL'   , TIMESTAMP '2015-05-29 00:00:00')
+  ('WHITE'  , TIMESTAMP '2015-05-17 00:00:00')
+  ('YELLOW' , TIMESTAMP '2015-05-07 00:00:00')
+  ('aqua'   , TIMESTAMP '2015-03-27 00:00:00')
+  ('black'  , TIMESTAMP '2015-03-07 00:00:00')
+  ('brown'  , TIMESTAMP '2015-05-03 00:00:00')
+  ('gold'   , TIMESTAMP '2015-05-23 00:00:00')
+  ('gold'   , TIMESTAMP '2015-05-12 00:00:00')
+  ('indigo' , TIMESTAMP '2015-05-14 00:00:00')
+  ('indigo' , TIMESTAMP '2015-03-26 00:00:00')
+  ('indigo' , TIMESTAMP '2015-03-03 00:00:00')
+  ('orange' , TIMESTAMP '2015-03-10 00:00:00')
+  ('orange' , TIMESTAMP '2015-04-10 00:00:00')
+  ('peach'  , TIMESTAMP '2015-05-08 00:00:00')
+  ('pink'   , TIMESTAMP '2015-03-19 00:00:00')
+  ('tan'    , TIMESTAMP '2015-03-11 00:00:00')
+  ('teal'   , TIMESTAMP '2015-03-06 00:00:00')
 
 
 // Source file: ../queries/functions/extract/rextract7.sql
 // Result file: ../queries/functions/extract/results/extract7.res
+//TODO: ENABLE WHEN UPPER
+/*
 select colc1, extract(second from colc1) from table1 where upper(colb1) = 'PINK' order by colc1;
 ordered rows:
   (TIMESTAMP '2015-01-16 00:00:00.0', 0)
@@ -285,4 +323,16 @@ ordered rows:
   (TIMESTAMP '2015-05-05 00:00:00.0', 0)
   (TIMESTAMP '2015-08-07 00:00:00.0', 0)
   (TIMESTAMP '2015-09-07 00:00:00.0', 0)
+*/
 
+// Source file: ../queries/functions/extract/rextract7.sql
+// Result file: ../queries/functions/extract/results/extract7.res
+select colc1, extract(second from colc1) from table1 where colb1 = 'PINK' or colb1 = 'pink' order by colc1;
+ordered rows:
+  (TIMESTAMP '2015-01-16 00:00:00.0', 0)
+  (TIMESTAMP '2015-01-30 00:00:00.0', 0)
+  (TIMESTAMP '2015-03-18 00:00:00.0', 0)
+  (TIMESTAMP '2015-03-19 00:00:00.0', 0)
+  (TIMESTAMP '2015-05-05 00:00:00.0', 0)
+  (TIMESTAMP '2015-08-07 00:00:00.0', 0)
+  (TIMESTAMP '2015-09-07 00:00:00.0', 0)

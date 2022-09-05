@@ -128,7 +128,7 @@ void CodeBlock::vAppend(fpSTEPFN* afpStepFp)
 /*----------------------------------------------------------------------------*/
 /* append a value (the entire value, not a pointer to it)                     */
 /*----------------------------------------------------------------------------*/
-void CodeBlock::vAppend(TypedCell* aTypedCell)
+void CodeBlock::vAppend(TypeValueArea* aTypedCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODEBLOCK,_FOOTER_);
   

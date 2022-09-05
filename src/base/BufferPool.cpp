@@ -34,7 +34,6 @@ void BufferPool::operator delete(void*)
 /* constructor (new region)                                                   */
 /*----------------------------------------------------------------------------*/
 BufferPool::BufferPool(Stz* aRegionName, i8 iRegionSize,
-                       i8 iNonPageableSize,
                        bool bTouch, bool bProgress,
                        bool bDontFree, bool bFreeSpecific)
 : Object(CN_BUFFERPOOL)
@@ -43,7 +42,6 @@ BufferPool::BufferPool(Stz* aRegionName, i8 iRegionSize,
   gpBufferPool = this;
   
   m_nBuffers = DIV(iRegionSize,C_SIZE_POOL_BUFFER);
-  m_nNonPageableBuffers = DIV(iNonPageableSize, C_SIZE_POOL_BUFFER);
   
   m_pBase  = reinterpret_cast<PoolBuffer*>(this);
   m_pLimit = (PoolBuffer*)aAdd<void*>(m_pBase,iRegionSize);
@@ -153,7 +151,10 @@ PoolBuffer* BufferPool::pAllocHeapBuffer(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
   FreePoolBuffer* pHeapBuffer = pPopFreePoolBuffer();
-  
+
+  if ( ! pHeapBuffer )
+    THROW_LOWMEMORY();
+
   ++m_ixHeapBuffers;
   
   return _pPoolBuffer(pHeapBuffer);
@@ -165,7 +166,9 @@ PoolBuffer* BufferPool::pAllocHeapBuffer(void)
 PoolBuffer* BufferPool::pAllocLongerBuffer(i8 nBuffers)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
-  
+
+  RASSERT(0);
+
   FreePoolBuffer* pLongerBuffer = pPopFreePoolBuffer();
   
   ++m_ixOtherBuffers;
@@ -188,7 +191,10 @@ PoolBuffer* BufferPool::pAllocOtherBuffer(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
   FreePoolBuffer* pOtherBuffer = pPopFreePoolBuffer();
-  
+
+  if ( ! pOtherBuffer )
+    THROW_LOWMEMORY();
+
   ++m_ixOtherBuffers;
 
   return _pPoolBuffer(pOtherBuffer);
@@ -526,10 +532,23 @@ PoolBuffer* BufferPool::pLimit(void)
 bool BufferPool::bLowMemory(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
-    
+
   if (nFreeCount() >= C_LOW_BUFFERS)
     return false;
-    
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for low memory condition                                              */
+/*----------------------------------------------------------------------------*/
+bool BufferPool::bLowMemoryDist(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
+
+  if (nFreeCount() >= C_LOW_BUFFERS_DIST_JOB)
+    return false;
+
   return true;
 }
 
@@ -718,8 +737,8 @@ FreePoolBuffer* BufferPool::pPopFreePoolBuffer(void)
   // test for empty free chain
   if (C_NIL == m_iFreeHead) {
     ASSERT( ! m_nFreeCount );
-    vTrace("NODE%lld: RUNNING OUT OF MEMORY!!!\n"_Stz, AM::NODE::iThisNodeId());
-    vTrace("BufferPool::pAllocBuffer: zero free buffers\n"_Stz);
+    vTrace("NODE%lld: BUFFERPOOL RUNNING OUT OF MEMORY!!!\n"_Stz, AM::NODE::iThisNodeId());
+    //vTrace("BufferPool::pAllocBuffer: zero free buffers\n"_Stz);
     m_okLock.vDropWrite();                                                // 🔵
     return nullptr;
   }
@@ -782,12 +801,6 @@ void BufferPool::vPrintProgress(void)
          AM::pHeaps()->Transient.m_pLarge->nBufferCount(),
          AM::pHeaps()->Transient.m_pLarge->nCurrAllocated(),
          AM::pHeaps()->Transient.m_pLarge->nFreeChunks());
-
-  vTrace("   Transient DataHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
-         sMagData.azChar(),
-         AM::pHeaps()->Transient.m_pData->nBufferCount(),
-         AM::pHeaps()->Transient.m_pData->nCurrAllocated(),
-         AM::pHeaps()->Transient.m_pData->nFreeChunks());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

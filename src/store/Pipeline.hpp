@@ -43,6 +43,8 @@ namespace STORE
     bool m_bPulsedLimit;
     Op*  m_pOpToPulse;
     bool m_bCancelled;
+    bool m_bLowMemory;
+    bool m_bNodeLossAbort;
         
     // must be last
     Footer m_xFooter;
@@ -53,7 +55,8 @@ namespace STORE
     
     Pipeline(Job* pPipelineJob, VertexSpec* pVertexSpecRoot, i8 iOriginNodeId);
    ~Pipeline(void) noexcept(false);
-  
+
+    bool bNodeLossAbort(void);
     void vAddAccum(i8 i_Accum, i8 iValue);
     bool bCancel(Task* pTriggeringTask);
     void vCancelled(bool bCancelled);
@@ -67,6 +70,9 @@ namespace STORE
     void vErrored(bool bErrored);
     i8   iGetAccum(i8 i_Accum);
     void vGrabDebugLock(void);
+    void vLowMemory(bool bLowMemory);
+    bool bLowMemory(void);
+    void vNodeLossAbort(void);
     i8   iOriginNodeId(void);
     Op*  pOp0(void);
     i8   nOpsOnNode(i8 iNode);
@@ -79,7 +85,7 @@ namespace STORE
     void vPulsed(bool bPulsed);
     bool bPulsedLimit(void);
     void vPulsedLimit(bool bPulsedLimit);
-    void vSetInvoker(Task* pInvoker);
+    void vSetJobTask(Task* pJobTask);
     void vSetupJob(void);
     void vSpawnOpTasks(void);
     Stage* pStage0(void);

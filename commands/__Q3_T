@@ -25,8 +25,8 @@ Q03_0: select
  where     c_mktsegment = 'BUILDING'
        and c_custkey    = o_custkey
        and l_orderkey   = o_orderkey
-       and o_orderdate  < TIMESTAMP '1995-03-15'
-       and l_shipdate   > TIMESTAMP '1995-03-15'
+       and o_orderdate  < DATE '1995-03-15'
+       and l_shipdate   > DATE '1995-03-15'
 
  group by l_orderkey, o_orderdate, o_shippriority
 
@@ -46,8 +46,8 @@ Q03_0: select
   where     c_mktsegment = 'BUILDING'
         //and c_custkey    = o_custkey
         //and l_orderkey   = o_orderkey
-        and o_orderdate  < TIMESTAMP '1995-03-15 00:00:00'
-        and l_shipdate   > TIMESTAMP '1995-03-15 00:00:00'
+        and o_orderdate  < DATE '1995-03-15'
+        and l_shipdate   > DATE '1995-03-15'
 
   group by l_orderkey;
 
@@ -69,8 +69,8 @@ explain select
                   /*+ joinAlgorithm = index , joinIndex = IxL_ORDERKEY , joinRouting = unicast */ join LineItem on o_orderkey = l_orderkey
 
    where     c_mktsegment = 'BUILDING'
-         and o_orderdate  < TIMESTAMP '1995-03-15 00:00:00'
-         and l_shipdate   > TIMESTAMP '1995-03-15 00:00:00'
+         and o_orderdate  < DATE '1995-03-15'
+         and l_shipdate   > DATE '1995-03-15'
 
 group by l_orderkey, o_orderdate, o_shippriority;
 
@@ -88,20 +88,20 @@ begin
     | stageMarker8564 broadcast
   stage stageMarker8564 on all partitions :
     indexJoin 1 orders IxO_CUSTKEY " BOUND $L1 $I2 ==  "
-    | filter 1 " J1_O_ORDERDATE TIMESTAMP '1995-03-15 00:00:00'  < "
+    | filter 1 " J1_O_ORDERDATE DATE '1995-03-15 00:00:00'  < "
     | stageMarker8567
   stage stageMarker8567 on all partitions :
     indexJoin 1 lineitem IxL_ORDERKEY " BOUND $L9 $I1 ==  "
-    | filter 1 " J2_L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00'  >  "
+    | filter 1 " J2_L_SHIPDATE DATE '1995-03-15 00:00:00'  >  "
     | stageMarker8570
   stage stageMarker8570 on all partitions :
-    aggreg 0 " type INTEGER as l_orderkey $18 , type FLOAT )  $23 1  $24 -  *  sum  , type TIMESTAMP as o_orderdate $13 , type INTEGER as o_shippriority $16 groupBy  type INTEGER as l_orderkey $18 , type TIMESTAMP as o_orderdate $13 , type INTEGER as o_shippriority $16 "
+    aggreg 0 " type INTEGER as l_orderkey $18 , type FLOAT )  $23 1  $24 -  *  sum  , type DATE as o_orderdate $13 , type INTEGER as o_shippriority $16 groupBy  type INTEGER as l_orderkey $18 , type DATE as o_orderdate $13 , type INTEGER as o_shippriority $16 "
     | stageMarker8573
   stage stageMarker8573 on all nodes :
-    aggreg 0 " type INTEGER as l_orderkey $1 , type FLOAT )  $2 sum  , type TIMESTAMP as o_orderdate $3 , type INTEGER as o_shippriority $4 groupBy  type INTEGER as l_orderkey $1 , type TIMESTAMP as o_orderdate $3 , type INTEGER as o_shippriority $4 "
+    aggreg 0 " type INTEGER as l_orderkey $1 , type FLOAT )  $2 sum  , type DATE as o_orderdate $3 , type INTEGER as o_shippriority $4 groupBy  type INTEGER as l_orderkey $1 , type DATE as o_orderdate $3 , type INTEGER as o_shippriority $4 "
     | stageMarker8576
   stage stageMarker8576 on origin :
-    aggreg 0 " type INTEGER as l_orderkey $1 , type FLOAT as Revenue )  $2 sum  , type TIMESTAMP as o_orderdate $3 , type INTEGER as o_shippriority $4 groupBy  type INTEGER as l_orderkey $1 , type TIMESTAMP as o_orderdate $3 , type INTEGER as o_shippriority $4 "
+    aggreg 0 " type INTEGER as l_orderkey $1 , type FLOAT as Revenue )  $2 sum  , type DATE as o_orderdate $3 , type INTEGER as o_shippriority $4 groupBy  type INTEGER as l_orderkey $1 , type DATE as o_orderdate $3 , type INTEGER as o_shippriority $4 "
     | stageLast
   stage stageLast on origin :
     output

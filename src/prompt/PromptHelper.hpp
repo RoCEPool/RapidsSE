@@ -14,6 +14,8 @@ namespace PROMPT
                            Stz* szaEnumNm[],
                            i8   iEnumLimit,
                            TokenVec* pTknVec);
+
+    static void vDisableFuncs(void);
   
   };
 }

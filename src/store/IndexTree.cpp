@@ -85,6 +85,7 @@ IndexTree::IndexTree(Index* pIndex, IndexDef* pIndexDef, i8 i_TablePtn)
   m_pIndexDef = pIndexDef ? new IndexDef(pIndexDef) : nullptr;
   m_i_TablePtn = i_TablePtn;
   m_pRootEntBuffer  = nullptr;
+  m_pPayStrBuffer = nullptr;
   
   m_nEntryBuffers  = 0;
   
@@ -129,11 +130,12 @@ void* aIndexTree_begin(void* pIndexTree, void** ppEntBuffer) {
 void* aIndexTree_findEntry(void* aIndexTree, void* aKey) {
   return (void*)IndexTree::aFindEntry((IndexTree*) aIndexTree, (Key*) aKey);
 }
-void* aIndexTree_insertEnt(void* aIndexTree, void* aEnt) {
-  return IndexTree::aInsertEnt((IndexTree*)aIndexTree, (Ent*)aEnt);
+void* aIndexTree_insertEnt(void* aIndexTree, void* aEnt, i8* piErrorCode) {
+  return IndexTree::aInsertEnt((IndexTree*)aIndexTree, (Ent*)aEnt, piErrorCode);
 }
-void* aIndexTree_insertEntTop(void* aIndexTree, void* aEnt, void** aaEntBottom, i8 iTopCount) {
-  return IndexTree::aInsertEntTop((IndexTree*)aIndexTree, (Ent*)aEnt, (Ent**)aaEntBottom, iTopCount);
+void* aIndexTree_insertEntTop(void* aIndexTree, void* aEnt, void** aaEntBottom, i8 iTopCount, i8* piErrorCode) {
+  return IndexTree::aInsertEntTop((IndexTree*)aIndexTree, (Ent*)aEnt, (Ent**)aaEntBottom,
+                                  iTopCount, piErrorCode);
 }
 void* aIndexTree_positionGE(void* aIndexTree, void** aaEntBuffer, void* aKey) {
   return IndexTree::aPositionGE((IndexTree*) aIndexTree, (EntBuffer**) aaEntBuffer, (Key*) aKey);
@@ -177,26 +179,38 @@ Ent* IndexTree::aIndexBegin(IndexTree* pIndexTree, EntBuffer** ppEntBuffer)
 /*----------------------------------------------------------------------------*/
 /* insert an entry for given row into this index at level 0                   */
 /*----------------------------------------------------------------------------*/
-Ent* IndexTree::aInsertEnt(IndexTree* pIndexTree, Ent* pEnt)
+Ent* IndexTree::aInsertEnt(IndexTree* pIndexTree, Ent* pEnt, i8* piErrorCode)
 {
   _static_
 
-  Ent* aInsertedEntry = pIndexTree->aInsertEntry(pEnt);
+  try {
+    Ent *aInsertedEntry = pIndexTree->aInsertEntry(pEnt);
 
-  //pIndexTree->vDump(false);
+    //pIndexTree->vDump(false);
 
-  return aInsertedEntry;
+    return aInsertedEntry;
+  }
+  catch (LowMemory xLowMemory) {
+    *piErrorCode = EC_LOW_MEMORY;
+    return nullptr;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
 /* insert an entry for given row into this index at level 0                   */
 /*----------------------------------------------------------------------------*/
-Ent* IndexTree::aInsertEntTop(IndexTree* pIndexTree, Ent* pEnt, Ent** ppEntBottom, i8 iTopCount)
+Ent* IndexTree::aInsertEntTop(IndexTree* pIndexTree, Ent* pEnt, Ent** ppEntBottom,
+                              i8 iTopCount, i8* piErrorCode)
 {
   _static_
 
-  return pIndexTree->pInsertEntTop_(pEnt, ppEntBottom, iTopCount);
-
+  try {
+    return pIndexTree->pInsertEntTop_(pEnt, ppEntBottom, iTopCount);
+  }
+  catch (LowMemory xLowMemory) {
+    *piErrorCode = EC_LOW_MEMORY;
+    return nullptr;
+}
 }
 
 /*----------------------------------------------------------------------------*/
@@ -348,6 +362,22 @@ Ent* IndexTree::aPositionLT(IndexTree* pIndexTree, Key* aKey)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* analyze table                                                              */
+/*----------------------------------------------------------------------------*/
+PayStr* IndexTree::pAllotPayStr(Stz* szStz)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+
+  if (! m_pPayStrBuffer) {
+    m_pPayStrBuffer = new PayStrBuffer;
+  }
+
+  PayStr* pPayStr = new (m_pPayStrBuffer,szStz) PayStr;
+
+  return pPayStr;
+}
 
 /*----------------------------------------------------------------------------*/
 /* analyze table                                                              */
@@ -705,7 +735,7 @@ void IndexTree::vInsertEntries(CrwBuffer* pCrwBuffer)
 
   //pEntBuffer->vShow();
 
-  StreamDef* pStreamDef = pCrwBuffer->pStreamDef();
+  StreamDef* pStreamDef = pCrwBuffer->pStreamDef_dbuff();
   i8* aiaColSet = m_pIndexDef->aiaColSet();
 
   EntWrk xEntWrk;
@@ -759,7 +789,7 @@ void IndexTree::vInsertEntries(RowBuffer* pRowBuffer)
 
   //pEntBuffer->vShow();
 
-  StreamDef* pStreamDef = pRowBuffer->pStreamDef();
+  StreamDef* pStreamDef = pRowBuffer->pStreamDef_dbuff();
 
   RASSERT(m_pIndexDef->nColumns() == 1);
   Column* pColumn = m_pIndexDef->pGetColumn(0);
@@ -867,7 +897,7 @@ void IndexTree::vInsertEntriesTop(RowBuffer* pRowBuffer, Ent** ppBottomEnt, i8 i
 
   //pEntBuffer->vShow();
 
-  StreamDef* pStreamDef = pRowBuffer->pStreamDef();
+  StreamDef* pStreamDef = pRowBuffer->pStreamDef_dbuff();
 
   RASSERT(m_pIndexDef->nColumns() == 1);
   Column* pColumn = m_pIndexDef->pGetColumn(0);
@@ -1244,7 +1274,7 @@ bool IndexTree::bVerifyIndex(void)
 void IndexTree::vExtractKey(EntWrk* pEntWrk, CrwBuffer* pCrwBuffer, i8 i_Row)
 {
   // create a row
-  HV_RowSingle hvRowSingle(pCrwBuffer->pStreamDef());
+  HV_RowSingle hvRowSingle(pCrwBuffer->pStreamDef_dbuff());
   
   IndexDef* pIndexDef = m_pIndex->pIndexDef();
   

@@ -55,15 +55,14 @@ source "${COMMON_FN}" || { >&2 echo "Could not load ${COMMON_FN}"; exit 1; }
 
 function printUsageAndExit() {
 
+  # Note: not showing the internal parameters (--cluster, --node, --chunks, --offset)
+  # so users don't mess with them!
+
   echo ""
-  echo "Usage: ./${SCRIPT_NAME} [--cluster | --node]"
-  echo "                        [--config <file>]"
+  echo "Usage: ./${SCRIPT_NAME} [--config <file>]"
   echo "                        --dir <dirName> [--dir <dirName> ...]"
-  echo "                        [--debug]"
+  echo "                        [--debug] [--norename]"
   echo "Details:"
-  echo "  --cluster           [Default] Generates TPC-H data on all nodes in the cluster."
-  echo "  --node              Generates TPC-H data for the current node only."
-  echo ""
   echo "  --config <file>     Uses a given cluster configuration file."
   echo "                      Default is: ${CONFIG_FILE}"
   echo ""
@@ -71,11 +70,6 @@ function printUsageAndExit() {
   echo ""
   echo "  --dir <dirName>     The name of a directory where output files will be written"
   echo "                      on all nodes."
-  echo ""
-  echo "  --chunks <val>      The total number of ways the data is split."
-  echo "                      Requires --node."
-  echo "  --offset <val>      The first (1-based) chunk number that this node will create."
-  echo "                      Requires --node."
   echo ""
   echo "  --norename          Do not remove the \".1\", \",2\" extensions off the data files."
   echo ""
@@ -348,24 +342,31 @@ function generateClusterData() {
 function makeOutputDirs() {
   local nodeName
   local host
-  local remoteCmd=""
+  local makeDirCmd=""
+  local checkWritableCmd=""
   declare -a sshCmd=()
 
   for nodeName in "${NODE_LIST[@]}"
   do
     host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+
+    makeDirCmd=""
+    checkWritableCmd=""
     
     for dir in "${OUTPUT_DIRS[@]}" 
     do
       # Make the directory if it doesn't exist. Then check if the directory is writable.
-      remoteCmd="${remoteCmd} mkdir -p \"${dir}\" || { echo \"Cannot make directory on host ${host}: ${dir}\"; exit 1; } ; if [ ! -w \"${dir}\" ]; then echo \"Directory is not writable on host ${host}: ${dir}\"; exit 1; fi; true;"
+      makeDirCmd="${makeDirCmd} if ! mkdir -p \"${dir}\"; then echo \"Cannot make directory on host ${host}: ${dir}\"; exit 1; fi ; "
+      checkWritableCmd="${checkWritableCmd} if [ ! -w \"${dir}\" ]; then echo \"Directory is not writable on host ${host}: ${dir}\"; exit 1; fi; "
     done
 
-    sshCmd=( "ssh" "-q" "${host}" "bash -c '${remoteCmd}'" )
-
+    sshCmd=( "ssh" "${SSH_COMMON_OPTIONS[@]}" "${host}" "bash -c '${makeDirCmd}'" )
     debugPrint "About to create output directories on node ${nodeName} with the command: ${sshCmd[*]}"
+    "${sshCmd[@]}" || exit 1
 
-    "${sshCmd[@]}" || errorExit "Could not create output directories on node ${nodeName}."
+    sshCmd=( "ssh" "${SSH_COMMON_OPTIONS[@]}" "${host}" "bash -c '${checkWritableCmd}'" )
+    debugPrint "About to check the writability of output directories on node ${nodeName} with the command: ${sshCmd[*]}"
+    "${sshCmd[@]}" || exit 1
   done
 }
 
@@ -403,7 +404,7 @@ function invokeNodeGeneration() {
     remoteCmd="${remoteCmd} --debug"
   fi
  
-  sshCmd=( "ssh" "-q" "${host}" "bash" "-c" "'${remoteCmd}'" )
+  sshCmd=( "ssh" "${SSH_COMMON_OPTIONS[@]}" "${host}" "bash" "-c" "'${remoteCmd}'" )
 
   debugPrint "About to generate TPC-H data on node ${nodeName} with the command: ${sshCmd[*]}"
 

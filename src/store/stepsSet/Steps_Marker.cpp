@@ -57,11 +57,10 @@ void Step::vAddSteps_Marker(void)
   vAddStep("Marker[].newEndMarker"_Stz,         &Step::vMarkerNewEndMarker);
   vAddStep("Marker[].newEndingMarker"_Stz,      &Step::vMarkerNewEndingMarker);
   vAddStep("Marker[].newEndedMarker"_Stz,       &Step::vMarkerNewEndedMarker);
-  vAddStep("Marker[].newEndCrwRhtMarker"_Stz,   &Step::vMarkerNewEndCrwRhtMarker);
-  vAddStep("Marker[].newEndRowRhtMarker"_Stz,   &Step::vMarkerNewEndRowRhtMarker);
   vAddStep("Marker[].newEosMarker"_Stz,         &Step::vMarkerNewEosMarker);
   vAddStep("Marker[].newErroringMarker"_Stz,    &Step::vMarkerNewErroringMarker);
   vAddStep("Marker[].newErroredMarker"_Stz,     &Step::vMarkerNewErroredMarker);
+  vAddStep("Marker[].newExit"_Stz,              &Step::vMarkerNewExitMarker);
   vAddStep("Marker[].newExitingMarker"_Stz,     &Step::vMarkerNewExitingMarker);
   vAddStep("Marker[].newExitedMarker"_Stz,      &Step::vMarkerNewExitedMarker);
   vAddStep("Marker[].newFinishedMarker"_Stz,    &Step::vMarkerNewFinishedMarker);
@@ -70,13 +69,13 @@ void Step::vAddSteps_Marker(void)
   vAddStep("Marker[].newLeaveMarker"_Stz,       &Step::vMarkerNewLeaveMarker);
   vAddStep("Marker[].newLeavingMarker"_Stz,     &Step::vMarkerNewLeavingMarker);
   vAddStep("Marker[].newLeftMarker"_Stz,        &Step::vMarkerNewLeftMarker);
+  vAddStep("Marker[].newLowMemory"_Stz,         &Step::vMarkerNewLowMemory);
   vAddStep("Marker[].newNextBufferMarker"_Stz,  &Step::vMarkerNewNextBufferMarker);
   vAddStep("Marker[].newStartedMarker"_Stz,     &Step::vMarkerNewStartedMarker);
   vAddStep("Marker[].newStartMarker"_Stz,       &Step::vMarkerNewStartMarker);
-  vAddStep("Marker[].newStartCrwRhtMarker"_Stz, &Step::vMarkerNewStartCrwRhtMarker);
-  vAddStep("Marker[].newStartRowRhtMarker"_Stz, &Step::vMarkerNewStartRowRhtMarker);
   vAddStep("Marker[].newStreamDefRht"_Stz,      &Step::vMarkerNewStreamDefRht);
   vAddStep("Marker[].newTrigger"_Stz,           &Step::vMarkerNewTrigger);
+  vAddStep("Marker[].newTriggeredMarker"_Stz,   &Step::vMarkerNewTriggeredMarker);
   vAddStep("Marker[].pipeIn"_Stz,               &Step::vMarkerPipeIn);
   vAddStep("Marker[].pipeToOutput"_Stz,         &Step::vMarkerPipeToOutput);
   vAddStep("Marker[].set"_Stz,                  &Step::vMarkerSet);
@@ -89,7 +88,7 @@ void Step::vMarkerDelete(void)
 {
   ENTRY();
   
-  AM::vDeleteOperand(*m_pLogicUnit->m_xpMarker);
+  AM::vDeleteOperand(*m_pLogicUnit->m_xpMarker,nullptr);
   
   m_pLogicUnit->m_xpMarker = nullptr;
   
@@ -155,7 +154,8 @@ void Step::vMarkerNewCancelling(void)
 
   ASSERT (m_pLogicUnit->m_xpMarker.bIsNull());
 
-  m_pLogicUnit->m_xpMarker = new Marker(OM_CANCELLING);
+  m_pLogicUnit->m_xpMarker =
+    AM::MARKER::pNewMarker(OM_CANCELLING,pOuterJobOfTask());
 
   EXIT();
 }
@@ -169,7 +169,8 @@ void Step::vMarkerNewCancelledMarker(void)
 
   ASSERT (m_pLogicUnit->m_xpMarker.bIsNull());
 
-  m_pLogicUnit->m_xpMarker = new Marker(OM_CANCELLEDMARKER);
+  m_pLogicUnit->m_xpMarker =
+    AM::MARKER::pNewMarker(OM_CANCELLEDMARKER,pOuterJobOfTask());
 
   EXIT();
 }
@@ -197,7 +198,8 @@ void Step::vMarkerNewCleaningMarker(void)
 
   ASSERT (m_pLogicUnit->m_xpMarker.bIsNull());
 
-  m_pLogicUnit->m_xpMarker = new Marker(OM_CLEANING);
+  m_pLogicUnit->m_xpMarker =
+    AM::MARKER::pNewMarker(OM_CLEANING,pOuterJobOfTask());
 
   EXIT();
 }
@@ -211,7 +213,8 @@ void Step::vMarkerNewCleanedupMarker(void)
 
   ASSERT (m_pLogicUnit->m_xpMarker.bIsNull());
 
-  m_pLogicUnit->m_xpMarker = new Marker(OM_CLEANED);
+  m_pLogicUnit->m_xpMarker =
+    AM::MARKER::pNewMarker(OM_CLEANED,pOuterJobOfTask());
 
   EXIT();
 }
@@ -225,7 +228,8 @@ void Step::vMarkerNewDataPulse(void)
 
   ASSERT (m_pLogicUnit->m_xpMarker.bIsNull());
 
-  m_pLogicUnit->m_xpMarker = new Marker(OM_DATAPULSE);
+  m_pLogicUnit->m_xpMarker =
+    AM::MARKER::pNewMarker(OM_DATAPULSE,pOuterJobOfTask());
 
   EXIT();
 }
@@ -239,7 +243,8 @@ void Step::vMarkerNewDestroyMarker(void)
 
   ASSERT (m_pLogicUnit->m_xpMarker.bIsNull());
 
-  m_pLogicUnit->m_xpMarker = new Marker(OM_DESTROYMARKER);
+  m_pLogicUnit->m_xpMarker =
+    AM::MARKER::pNewMarker(OM_DESTROYMARKER,pOuterJobOfTask());
 
   EXIT();
 }
@@ -253,7 +258,8 @@ void Step::vMarkerNewEndMarker(void)
 
   ASSERT (m_pLogicUnit->m_xpMarker.bIsNull());
 
-  m_pLogicUnit->m_xpMarker = new Marker(OM_ENDMARKER);
+  m_pLogicUnit->m_xpMarker =
+    AM::MARKER::pNewMarker(OM_ENDMARKER,pOuterJobOfTask());
 
   EXIT();
 }
@@ -267,7 +273,8 @@ void Step::vMarkerNewEndedMarker(void)
 
   ASSERT (m_pLogicUnit->m_xpMarker.bIsNull());
 
-  m_pLogicUnit->m_xpMarker = new Marker(OM_ENDEDMARKER);
+  m_pLogicUnit->m_xpMarker =
+    AM::MARKER::pNewMarker(OM_ENDEDMARKER,pOuterJobOfTask());
 
   EXIT();
 }
@@ -281,35 +288,8 @@ void Step::vMarkerNewEndingMarker(void)
 
   ASSERT (m_pLogicUnit->m_xpMarker.bIsNull());
 
-  m_pLogicUnit->m_xpMarker = new Marker(OM_ENDINGMARKER);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Marker[].newEndCrwRhtMarker -- new an end crw right marker                 */
-/*----------------------------------------------------------------------------*/
-void Step::vMarkerNewEndCrwRhtMarker(void)
-{
-  ENTRY();
-
-  ASSERT (m_pLogicUnit->m_xpMarker.bIsNull());
-
-  m_pLogicUnit->m_xpMarker = new Marker(OM_ENDCRWRHT);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Marker[].newEndRowRhtMarker -- new an end row right marker                 */
-/*----------------------------------------------------------------------------*/
-void Step::vMarkerNewEndRowRhtMarker(void)
-{
-  ENTRY();
-
-  ASSERT (m_pLogicUnit->m_xpMarker.bIsNull());
-
-  m_pLogicUnit->m_xpMarker = new Marker(OM_ENDROWRHT);
+  m_pLogicUnit->m_xpMarker =
+    AM::MARKER::pNewMarker(OM_ENDINGMARKER,pOuterJobOfTask());
 
   EXIT();
 }
@@ -323,7 +303,8 @@ void Step::vMarkerNewEosMarker(void)
 
   ASSERT (m_pLogicUnit->m_xpMarker.bIsNull());
 
-  m_pLogicUnit->m_xpMarker = new Marker(OM_EOSMARKER);
+  m_pLogicUnit->m_xpMarker =
+    AM::MARKER::pNewMarker(OM_EOSMARKER,pOuterJobOfTask());
 
   EXIT();
 }
@@ -337,7 +318,8 @@ void Step::vMarkerNewErroringMarker(void)
 
   ASSERT (m_pLogicUnit->m_xpMarker.bIsNull());
 
-  m_pLogicUnit->m_xpMarker = new Marker(OM_ERRORINGMARKER);
+  m_pLogicUnit->m_xpMarker =
+    AM::MARKER::pNewMarker(OM_ERRORINGMARKER,pOuterJobOfTask());
 
   EXIT();
 }
@@ -351,7 +333,23 @@ void Step::vMarkerNewErroredMarker(void)
 
   ASSERT (m_pLogicUnit->m_xpMarker.bIsNull());
 
-  m_pLogicUnit->m_xpMarker = new Marker(OM_ERROREDMARKER);
+  m_pLogicUnit->m_xpMarker =
+    AM::MARKER::pNewMarker(OM_ERROREDMARKER,pOuterJobOfTask());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Marker[].newExitMarker -- new an exit marker                               */
+/*----------------------------------------------------------------------------*/
+void Step::vMarkerNewExitMarker(void)
+{
+  ENTRY();
+
+  ASSERT (m_pLogicUnit->m_xpMarker.bIsNull());
+
+  m_pLogicUnit->m_xpMarker =
+      AM::MARKER::pNewMarker(OM_EXIT,pOuterJobOfTask());
 
   EXIT();
 }
@@ -365,7 +363,8 @@ void Step::vMarkerNewExitingMarker(void)
 
   ASSERT (m_pLogicUnit->m_xpMarker.bIsNull());
 
-  m_pLogicUnit->m_xpMarker = new Marker(OM_EXITING);
+  m_pLogicUnit->m_xpMarker =
+    AM::MARKER::pNewMarker(OM_EXITING,pOuterJobOfTask());
 
   EXIT();
 }
@@ -379,7 +378,8 @@ void Step::vMarkerNewExitedMarker(void)
 
   ASSERT (m_pLogicUnit->m_xpMarker.bIsNull());
 
-  m_pLogicUnit->m_xpMarker = new Marker(OM_EXITED);
+  m_pLogicUnit->m_xpMarker =
+    AM::MARKER::pNewMarker(OM_EXITED,pOuterJobOfTask());
 
   EXIT();
 }
@@ -393,7 +393,8 @@ void Step::vMarkerNewFinishedMarker(void)
 
   ASSERT (m_pLogicUnit->m_xpMarker.bIsNull());
 
-  m_pLogicUnit->m_xpMarker = new Marker(OM_FINISHED);
+  m_pLogicUnit->m_xpMarker =
+    AM::MARKER::pNewMarker(OM_FINISHED,pOuterJobOfTask());
 
   EXIT();
 }
@@ -407,7 +408,8 @@ void Step::vMarkerNewFlushMarker(void)
 
   ASSERT (m_pLogicUnit->m_xpMarker.bIsNull());
 
-  m_pLogicUnit->m_xpMarker = new Marker(OM_FLUSH);
+  m_pLogicUnit->m_xpMarker =
+    AM::MARKER::pNewMarker(OM_FLUSH,pOuterJobOfTask());
 
   EXIT();
 }
@@ -421,7 +423,8 @@ void Step::vMarkerNewInvokeMarker(void)
 
   ASSERT (m_pLogicUnit->m_xpMarker.bIsNull());
 
-  m_pLogicUnit->m_xpMarker = new Marker(OM_INVOKEMARKER);
+  m_pLogicUnit->m_xpMarker =
+    AM::MARKER::pNewMarker(OM_INVOKEMARKER,pOuterJobOfTask());
 
   EXIT();
 }
@@ -434,7 +437,8 @@ void Step::vMarkerNewLeaveMarker(void)
   ENTRY();
 
   ASSERT (m_pLogicUnit->m_xpMarker.bIsNull());
-  m_pLogicUnit->m_xpMarker = new Marker(OM_LEAVEMARKER);
+  m_pLogicUnit->m_xpMarker =
+    AM::MARKER::pNewMarker(OM_LEAVEMARKER,pOuterJobOfTask());
 
   EXIT();
 }
@@ -448,7 +452,8 @@ void Step::vMarkerNewLeavingMarker(void)
 
   ASSERT (m_pLogicUnit->m_xpMarker.bIsNull());
 
-  m_pLogicUnit->m_xpMarker = new Marker(OM_LEAVINGMARKER);
+  m_pLogicUnit->m_xpMarker =
+    AM::MARKER::pNewMarker(OM_LEAVINGMARKER,pOuterJobOfTask());
 
   EXIT();
 }
@@ -462,7 +467,23 @@ void Step::vMarkerNewLeftMarker(void)
 
   ASSERT (m_pLogicUnit->m_xpMarker.bIsNull());
 
-  m_pLogicUnit->m_xpMarker = new Marker(OM_LEFTMARKER);
+  m_pLogicUnit->m_xpMarker =
+    AM::MARKER::pNewMarker(OM_LEFTMARKER,pOuterJobOfTask());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Marker[].newLowMemory -- new a lowMemory marker                            */
+/*----------------------------------------------------------------------------*/
+void Step::vMarkerNewLowMemory(void)
+{
+  ENTRY();
+
+  ASSERT (m_pLogicUnit->m_xpMarker.bIsNull());
+
+  m_pLogicUnit->m_xpMarker =
+      AM::MARKER::pNewMarker(OM_LOWMEMORY,pOuterJobOfTask());
 
   EXIT();
 }
@@ -476,7 +497,8 @@ void Step::vMarkerNewNextBufferMarker(void)
 
   ASSERT (m_pLogicUnit->m_xpMarker.bIsNull());
 
-  m_pLogicUnit->m_xpMarker = new Marker(OM_NEXTBUFFERMARKER);
+  m_pLogicUnit->m_xpMarker =
+    AM::MARKER::pNewMarker(OM_NEXTBUFFERMARKER,pOuterJobOfTask());
 
   EXIT();
 }
@@ -490,7 +512,8 @@ void Step::vMarkerNewStartedMarker(void)
 
   ASSERT (m_pLogicUnit->m_xpMarker.bIsNull());
 
-  m_pLogicUnit->m_xpMarker = new Marker(OM_STARTEDMARKER);
+  m_pLogicUnit->m_xpMarker =
+    AM::MARKER::pNewMarker(OM_STARTEDMARKER,pOuterJobOfTask());
 
   EXIT();
 }
@@ -507,38 +530,10 @@ void Step::vMarkerNewStartMarker(void)
   // revised job/op model
   //Op* pOp = *m_pOp;
 
-  Operand* pOperand = new Marker(OM_STARTMARKER);
-  m_pLogicUnit->m_xpMarker = pOperand;
+  m_pLogicUnit->m_xpMarker =
+    AM::MARKER::pNewMarker(OM_STARTMARKER,pOuterJobOfTask());
 
   //pOp->vOpTrace(pOperand,(Stz*)__func__,true);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Marker[].newStartCrwRhtMarker -- new a start crw right marker              */
-/*----------------------------------------------------------------------------*/
-void Step::vMarkerNewStartCrwRhtMarker(void)
-{
-  ENTRY();
-
-  ASSERT (m_pLogicUnit->m_xpMarker.bIsNull());
-
-  m_pLogicUnit->m_xpMarker = new Marker(OM_STARTCRWRHT);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Marker[].newStartRowRhtMarker -- new a start crw right marker              */
-/*----------------------------------------------------------------------------*/
-void Step::vMarkerNewStartRowRhtMarker(void)
-{
-  ENTRY();
-
-  ASSERT (m_pLogicUnit->m_xpMarker.bIsNull());
-
-  m_pLogicUnit->m_xpMarker = new Marker(OM_STARTROWRHT);
 
   EXIT();
 }
@@ -552,7 +547,8 @@ void Step::vMarkerNewStreamDefRht(void)
 
   ASSERT (m_pLogicUnit->m_xpMarker.bIsNull());
 
-  m_pLogicUnit->m_xpMarker = new Marker(OM_STREAMDEFRHT);
+  m_pLogicUnit->m_xpMarker =
+    AM::MARKER::pNewMarker(OM_STREAMDEFRHT,pOuterJobOfTask());
 
   EXIT();
 }
@@ -566,12 +562,26 @@ void Step::vMarkerNewTrigger(void)
 
   ASSERT (m_pLogicUnit->m_xpMarker.bIsNull());
 
-  m_pLogicUnit->m_xpMarker = new Marker(OM_TRIGGER);
+  m_pLogicUnit->m_xpMarker =
+    AM::MARKER::pNewMarker(OM_TRIGGER,pOuterJobOfTask());
 
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* Marker[].newTriggered -- new a triggered marker                            */
+/*----------------------------------------------------------------------------*/
+void Step::vMarkerNewTriggeredMarker(void)
+{
+  ENTRY();
 
+  ASSERT (m_pLogicUnit->m_xpMarker.bIsNull());
+
+  m_pLogicUnit->m_xpMarker =
+    AM::MARKER::pNewMarker(OM_TRIGGERED,pOuterJobOfTask());
+
+  EXIT();
+}
 
 /*----------------------------------------------------------------------------*/
 /* Marker[].pipeIn -- move pipein operand into Marker                         */

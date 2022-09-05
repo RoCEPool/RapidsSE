@@ -37,22 +37,26 @@ void vHeartInit(void) {
     //vTrace("SE Heart (sizeof(Heartbeat)=%lld\n"_Stz, (i8) sizeof(Heartbeat));
 
     int iPort = (int)gxCmdLineArgs.m_xSysArgs.m_xHeartbeatDefn[0].m_iPortNo;
-    char szAddr[32];
+    char szAddr[64];  // allow for a hostname mapping to a multicast address
 
-    if (iPort == 0) {
+    if (iPort <= 0) {
       iPort = 8888;
     }
 
+    //User can put on the command line argument as --heartbeat NODE0 BROADCAST 8888
     strncpy(szAddr, gxCmdLineArgs.m_xSysArgs.m_xHeartbeatDefn[0].m_sIPAddress.azChar(), sizeof(szAddr) - 1);
     szAddr[sizeof(szAddr) - 1] = 0;
 
-    //User can put on the command line argument as --heartbeat NODE0 BROADCAST 8888
+    bool bIsBroadcast = false;
+    if (strcasecmp(szAddr, "BROADCAST") == 0 || strcmp(szAddr, "255.255.255.255") == 0) {
+      bIsBroadcast = true;
+    }
+
     //strcpy(szAddr, "192.168.0.255"); // for DEBUG
-    HeartbeatSnd *pSender = new HeartbeatSnd(szAddr, iPort);
+    HeartbeatSnd *pSender = new HeartbeatSnd(szAddr, iPort, bIsBroadcast);
     PsxThd::iSpawnPosixThread(vHeartSndLoop, pSender);
 
-    strcpy(szAddr, "ANY"); // For receiving Broadcast, any interface is the option
-    HeartbeatRcv *pReceiver = new HeartbeatRcv(szAddr, iPort);
+    HeartbeatRcv *pReceiver = new HeartbeatRcv(szAddr, iPort, bIsBroadcast);
     PsxThd::iSpawnPosixThread(vHeartRcvLoop, pReceiver);
 
     // Create Reader thread to maintain the Grid
@@ -165,13 +169,14 @@ void vHeartInit(void) {
     if (gxHeartbeatBuffer.bTryRead(xHeartbeat)) {
       // update heartbeat info for the node
 
-      if (xHeartbeat.m_iClusterID == gxCmdLineArgs.m_xSysArgs.m_iClusterID) {
+      if (xHeartbeat.m_uHeader == C_HEARTBEAT_HEADER &&                         // reject stray packets
+          xHeartbeat.m_iClusterID == gxCmdLineArgs.m_xSysArgs.m_iClusterID) {   // reject heartbeats from different clusters
         //vTrace("Try to update heartbeat from Node %s  %lld\n"_Stz, xHeartbeat.m_acNodeName, xHeartbeat.m_iClusterID);
         if (!AM::bPutHeartbeat((Stz *) xHeartbeat.m_acNodeName, xHeartbeat)) {
           // We failed to update the node with heartbeat,
           // meaning we don't have this node in the cluster/grid yet.
           // Then we need to add this node into the cluster/grid.
-          if (xHeartbeat.m_u2Version >= AM::iVersionNumber()) {// will add the correct global version number
+          if (xHeartbeat.m_u4Version >= AM::iVersionNumber()) {// will add the correct global version number
             AM::GRID::vNodeDetected(xHeartbeat.m_iNodeId,
                                     (Stz *) xHeartbeat.m_acNodeName,
                                     (Stz *) xHeartbeat.m_acAddr,
@@ -180,7 +185,7 @@ void vHeartInit(void) {
             
             vTrace("Node %s has been added\n"_Stz, xHeartbeat.m_acNodeName);
           } else {
-            vTrace("Invalid Heartbeat message version (%ld) is rejected. \n"_Stz, xHeartbeat.m_u2Version);
+            vTrace("Invalid Heartbeat message version (%ld) is rejected. \n"_Stz, xHeartbeat.m_u4Version);
           }
         }
       }

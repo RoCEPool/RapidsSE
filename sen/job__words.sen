@@ -17,7 +17,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // store path into the sessions <path>=<...>
   Path[].depth strVec::toPath
-    [op].job@ job(Id).masterJob job(Id).folderPath!
+    [job].masterJobId jobId::folderPath! assert
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -53,56 +53,60 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* print job notice                                                           */
-/*----------------------------------------------------------------------------*/
-: job(Id).notice ( pJob -- )
-
-  params| pJob |
-
-;
-
-/*----------------------------------------------------------------------------*/
 /* send job (to the node which is in task)                                    */
 /*----------------------------------------------------------------------------*/
-: job(Id).send params| pJob |
+: job.send
 
 
-  //pJob job(Id).name@ [grid].thisNodeName@ "(%v) job(Id).send %v" .printf
+  //[job].name@ [grid].thisNodeName@ "(%v) job.send %v" .printf
 
   SendNode[] node.sendSocket@ to Socket[]
 
-  Socket[].grabWrite
+  Socket[].isNotNull if
 
-  pJob Socket[].sendObject discard
+    Socket[].grabWrite
 
-  Socket[].dropWrite
+    [job] Socket[].sendObject discard
+
+    Socket[].dropWrite
   
-  nullptr to Socket[]
+    nullptr to Socket[]
+  then
+;
+
+/*----------------------------------------------------------------------------*/
+/* send the reject job                                                        */
+/*----------------------------------------------------------------------------*/
+: job.sendRejectJob
+
+  [job].originNodeId@ [grid].findNodeByNo to SendNode[]
+
+  SendNode[] node.sendSocket@ to Socket[]
+
+  Socket[].isNotNull if
+
+    Socket[].grabWrite
+
+    [job].rejectJob@ Socket[].sendObject discard
+
+    Socket[].dropWrite
+
+    nullptr to Socket[]
+
+    nullptr to SendNode[]
+  then
 ;
 
 /*----------------------------------------------------------------------------*/
 /* send job to given participating node                                       */
 /*----------------------------------------------------------------------------*/
-: job(Id).forward ( i_Node pJob -- )
+: job.forward ( i_Node -- )
 
-  params| pJob |
   params| i_Node |
 
   i_Node [grid].findNodeByNo to SendNode[]
 
-  pJob job(Id).send
-  
-  nullptr to SendNode[]
-;
-
-/*----------------------------------------------------------------------------*/
-/* send job back to originating node                                          */
-/*----------------------------------------------------------------------------*/
-: job(Id).reply params| pJob iNodeId |
-
-  iNodeId [grid].findNodeByNo to SendNode[]
-
-  pJob job(Id).send
+  job.send
   
   nullptr to SendNode[]
 ;
@@ -112,10 +116,8 @@
 /*----------------------------------------------------------------------------*/
 : job:spawn params| pJob |
 
-
   pJob api::spawnJob
 ;
-
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -187,37 +189,179 @@
 /*----------------------------------------------------------------------------*/
 : std_recoveryWord
 
-  //"std_recoveryWord" .
+  "std_recoveryWord" .
   
-  //[task].exception .
+  [task].exception .
 
-  "op__failureRecovery" FIND execute
-  
-  //process::quit
-
-  //HAZARD
+  AM::SYSTEM::Ready@ if
+    "op__failureRecovery" FIND execute
+  else
+    process::quit
+    HAZARD
+  then
 ;
 
-
 /*----------------------------------------------------------------------------*/
-/* queue given job onto exit demon                                            */
+/* low memory exception recovery                                              */
 /*----------------------------------------------------------------------------*/
-: [exitDemon]:queueJob params| pJob |
+: OpLowMem_recoveryWord
 
-  "__exitDemon" find dup if
-  
-    word.object@ locals| pExitDemonJob |
+  "OpLowMem_recoveryWord" .
 
-    pJob pExitDemonJob job(Id).pipeToOp0
+  //[task].exception .
+
+  AM::SYSTEM::Ready@ if
+    [ddlLock].testDrop
+
+
+    Pipein[].isNull not if
+      Pipein[].isMarker if
+        //Pipein[].pipeOut
+        PipeIn[]
+            nullptr to PipeIn[]
+
+          [op].pipeout
+      else
+        //"deleting pipein!!!" .
+        Pipein[].delete
+        nullptr to Pipein[]
+      then
+    then
+
+    [op].isSend not assert
+
+    //[op].isSend if
+    //  Parcel[].reset
+    //  true
+    //  exit
+    //then
+
+    [op].isRecv not assert
+
+    //[op].isRecv if
+    //  true
+    //  exit
+    //then
+
+    // not already detected low memory ?
+    [pipeline].lowMemory@ not if
+
+      //[job] >str "%v PIPELINE DETECTED LOW MEMORY!!!" str.format .
+
+      Marker[].newLowMemory
+      Marker[]
+          nullptr to Marker[]
+
+      [op].pipeout
+      //"PIPED OUT LOW MEMORY!!!" .
+    else
+      [job] >str "%v PIPELINE ALREADY DETECTED LOW MEMORY!!!" str.format .
+    then
+
+    // toggle to default abnormal handlers
+    //[op].opName@ "TOGGLING TO ABNORMAL HANDLERS FOR OP %v" str.format .
+    "default_abnormalHandlers" FIND execute
+    "default_lowMemHandlers" FIND execute
+    //[op].opName@ "TOGGLED TO ABNORMAL HANDLERS FOR OP %v" str.format .
+
+    true
 
   else
-
-    discard
-
-    true pJob job(Id).reapable!
-
+    process::quit
+    HAZARD
   then
+;
 
+/*----------------------------------------------------------------------------*/
+/* job signal parent and exit                                                 */
+/*----------------------------------------------------------------------------*/
+: Job_signalAndExit
+   Path[].discardAll
+   [task].grabLock
+   [job].addExited
+   [job].updateParent assert
+   [job].signalParent assert
+   [task].retire
+   HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/* standard exception recovery                                                */
+/*----------------------------------------------------------------------------*/
+: JobLowMemory_recoveryWord
+
+  "JobLowMemory_recoveryWord" .
+
+  //[task].exception .
+
+  AM::SYSTEM::Ready@ if
+
+    EC_LOW_MEMORY [job].error!
+
+    //[job].jobList@ [job].phase@ [job] >str "JOB %v phase %v list %v" str.format .
+
+    [job].phase@ JP_NONE == if
+
+     // local job
+     [job].jobList@ JL_LOCAL == if
+       //"removing job from loacl list" .
+       [job].removeLocal
+       Path[].discardAll
+       [task].grabLock
+       [job].addExited
+       [job].updateParent assert
+       //"Notifying parent" .
+       [job].signalParent assert
+       [task].retire
+       HAZARD
+     then
+
+      // originating job
+      [job].jobList@ JL_ORIGINATING == if
+        //"removing job from originator list" .
+        [job].removeOriginator
+        Path[].discardAll
+        [task].grabLock
+        [job].addExited
+        [job].updateParent assert
+        //"Notifying parent" .
+        [job].signalParent assert
+        [task].retire
+        HAZARD
+      then
+
+      // participant job
+      [job].jobList@ JL_NONE == assert
+      [job].rejectJobSetup
+      EC_LOW_MEMORY [job].rejectJobError!
+      //"SENDING REJECT" .
+      job.sendRejectJob
+      Path[].discardAll
+      [task].grabLock
+      [job].addExited
+      [task].retire
+      HAZARD
+    then
+
+    [job].phase@ JP_BEGINNING == if
+
+      //participant job
+      [job].jobList@ JL_NONE == assert
+      [job].rejectJobSetup
+      EC_LOW_MEMORY [job].rejectJobError!
+      //"JP_BEGINNING SENDING REJECT" .
+      job.sendRejectJob
+      Path[].discardAll
+      [task].grabLock
+      [job].addExited
+      [task].retire
+      HAZARD
+    then
+
+  else
+    process::quit
+    HAZARD
+  then
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -232,10 +376,8 @@
 
   Path[].discardAll
 
-  [job].addRetired
   [task].grabLock
-    [job] [exitDemon]:queueJob
-
+  [job].addExited
     [task].retire
   
   HAZARD
@@ -342,6 +484,7 @@
 /*----------------------------------------------------------------------------*/
 /* distribute current originating job to all nodes as participating job       */
 /*----------------------------------------------------------------------------*/
+/*
 : [job]:distributeBegin ( -- )
 
   // send the job to each connected node in the grid
@@ -354,7 +497,7 @@
     node_I[].node to pNode
 
     pNode node.sendSocket@ if
-      pNode node.id [job] job(Id).forward
+      pNode node.id job.forward
     else
       "++++++++++++++++++++++++++++++++++ NO SOCKET FOR NODE" .
     then
@@ -366,7 +509,7 @@
 
   node_I[].delete
 ;
-
+*/
 /*----------------------------------------------------------------------------*/
 /* entry point                                                                */
 /*----------------------------------------------------------------------------*/
@@ -374,8 +517,9 @@
 
   //" +++++++++++++++++++++++++++++++++++++++++++++++++++++++ job::entryPoint" .
   
-  [job].entryPoint@ >interpret
-  
+  //[job].entryPoint@ >interpret
+  [job].setInxPtr
+
   HAZARD
 ;
 
@@ -387,14 +531,16 @@
 : [job]:broadcast
 
   0 locals| pNode |
-  
-  C_ALL node_I[].new
+
+  //C_ALL node_I[].new
+
+  node_I[].init
 
   begin
     node_I[].node to pNode
 
     pNode node.sendSocket@ if
-      pNode node.id [job] job(Id).forward
+      pNode node.id job.forward
     else
       "++++++++++++++++++++++++++++++++++ NO SOCKET FOR NODE" .
     then
@@ -404,7 +550,58 @@
   while
   repeat
 
-  node_I[].delete
+  //node_I[].delete
+;
+
+/*----------------------------------------------------------------------------*/
+/* handle a failure on the originating job (LOWMEM / NODELOSS)                */
+/*----------------------------------------------------------------------------*/
+: [job]:handleFailure ( -- )
+
+  // - - - - - - - - - - - - - - -
+  // pipeline becomes ordinary job
+  // - - - - - - - - - - - - - - -
+  [job].removeOriginator
+  //[job].assertOrdinary
+  [args].distJob if
+    "pipeline" "origin"
+      "org_ ovr" "lst ordinary again"                  [job].trace
+  then
+
+
+  [ddlLock].testDrop
+  ListedJob[].assertNoRef
+
+  [args].distJob if
+    "pipeline" "origin"
+      "org_ ovr" "retiring as origin..."               [job].trace
+  then
+
+  Path[].discardAll
+  [task].grabLock
+  [job].addExited
+
+    //[job].tagSet@ tagSet.asStr .
+    //"<signalParent>" [job].tagSet@ tagSet.hasName not if
+
+      [args].distJob if
+        "pipeline" "origin"
+        "org_ org" "WAIT/NO_WAIT signalling parent"       [job].trace
+      then
+
+      [job].updateParent discard
+      [job].signalParent discard
+
+      [args].distJob if
+        "pipeline" "origin"
+          "org_ ovr" "signalled..."                  [job].trace
+      then
+
+    //then
+
+    [task].retire
+
+  HAZARD
 ;
 
 /*============================================================================*/

@@ -47,6 +47,7 @@ Output::Output(void)
   m_pStreamDef_result = nullptr;
   m_bToExit           = false;
   m_bHasError         = false;
+  m_bLoadResult       = false;
 
   m_bFileOut          = false;
   m_pFileOut          = nullptr;
@@ -69,7 +70,7 @@ Output::~Output(void) noexcept(false)
   if (m_pOutputQueue) {
     
     while (Operand* pOperand = _pOperand(m_pOutputQueue->pPop()))
-      AM::vDeleteOperand(pOperand);
+      AM::vDeleteOperand(pOperand,nullptr);
 
     RASSERT(! m_pOutputQueue->nItems());
     delete m_pOutputQueue;
@@ -133,18 +134,27 @@ void Output::vDrainBufferQueue(void)
     
     Operand* pOperand = pPopBufferQueue_blocking();
     
-    if (! pOperand) {
+    if (! pOperand ) {
+      if ( ! AM::PROCESS::bSeRunning() ) {
+        Stz *sNodeName = AM::pGrid()->pThisNode()->szNodeNm();
+        vTrace("\nerror: %s; %s; %s; \n"_Stz,
+               sNodeName, aEC2[EC_NODE_LOSS], aErrorMsg[EC_NODE_LOSS]);
+        m_bHasError = true;
+        m_bToExit = true;
+        return;
+      }
+
       AM::vNapUsec(1000,CN_OUTPUT);
       continue;
     }
-    
-    eCN eOperandClass = pOperand->eGetClassNo();
 
-    if (eOperandClass == CN_EXITOPERAND) {
-      m_bToExit = true;
+    if (pOperand->bIsMarker()) {
+      Marker* pMarker = _pMarker(pOperand);
+      if (pMarker->eOpMarker() == OM_EXIT)
+        m_bToExit = true;
     }
 
-    AM::vDeleteOperand(pOperand);
+    AM::vDeleteOperand(pOperand,nullptr);
   }
 }
 
@@ -220,19 +230,18 @@ void Output::vPrintResult(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
 
-  if (*m_ixRowsInvalid   ||
-      *m_ixRowsSkipped ) {
+  if (m_bLoadResult) {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // success / error
-    if (*m_ixRowsInvalid   ||
-        *m_ixRowsSkipped )
+    if (*m_ixRowsInvalid ||
+        *m_ixRowsSkipped)
       vTrace("error: %lld rows loaded (%lld invalid rows %lld skipped rows)\n"_Stz,
              *m_ixRowsProcessed -
              *m_ixRowsSkipped,
              *m_ixRowsInvalid,
              *m_ixRowsSkipped);
     else
-      vTrace("\nsuccess: %lld rows loaded (%lld invalid rows %lld skipped rows)\n"_Stz,
+      vTrace("success: %lld rows loaded (%lld invalid rows %lld skipped rows)\n"_Stz,
              *m_ixRowsProcessed -
              *m_ixRowsSkipped,
              *m_ixRowsInvalid,
@@ -253,13 +262,14 @@ void Output::vPrintResult(void)
 //      vTrace("NOT READY\n"_Stz);
 
     if (AM::SYSTEM::bReady()) // || ! AM::SHOW::bBoot())
-      vTrace("\nsuccess: %lld rows fetched\n"_Stz,
+      vTrace("success: %lld rows fetched\n"_Stz,
              *m_ixRowsProcessed);
   }
 
   m_ixRowsProcessed = 0;
   m_ixRowsInvalid   = 0;
   m_ixRowsSkipped   = 0;
+  m_bLoadResult     = false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -273,16 +283,16 @@ Operand* Output::pPopBufferQueue_blocking(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
       
-  for (;;) {
-    
+  while (AM::PROCESS::bSeRunning()) {
+
     Operand* pOperand = _pOperand(m_pOutputQueue->pPop());
-    
     if (pOperand)
       return pOperand;
     
     AM::vNapUsec(1000,CN_OUTPUT);
   }
-  
+
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -301,7 +311,20 @@ bool Output::bProcessOperand(Operand* pOperand)
   //vTrace("OPERAND: %s\n"_Stz, aCN[eOperandClass]);
 
   switch (eOperandClass) {
-      
+
+    // -- -- -- -- -- --
+
+    case CN_CHILDEXIT: {
+      AM::vDeleteOperand(pOperand,nullptr);
+      m_bToExit = true;
+      if ( !m_bHasError )
+        vPrintResult();
+      m_bHasError = false;
+      bContinue = false;
+      goto L_EXIT;
+      break;
+    }
+
     // -- -- -- -- -- --
       
     case CN_CRWBUFFER: {
@@ -309,7 +332,7 @@ bool Output::bProcessOperand(Operand* pOperand)
       m_ixRowsProcessed += pCrwBuffer->nRows();
       vTrace("\n"_Stz);
       pCrwBuffer->vPrintRows(m_pStreamDef_result);
-      AM::vDeleteOperand(pOperand);
+      AM::vDeleteOperand(pOperand,nullptr);
       break;
     }
       
@@ -320,7 +343,7 @@ bool Output::bProcessOperand(Operand* pOperand)
       m_ixRowsProcessed += pCsvBuffer->nRecords();
       vTrace("\n"_Stz);
       pCsvBuffer->vPrintRecords();
-      AM::vDeleteOperand(pOperand);
+      AM::vDeleteOperand(pOperand,nullptr);
       break;
     }
 
@@ -331,7 +354,7 @@ bool Output::bProcessOperand(Operand* pOperand)
       m_ixRowsProcessed += pEntBuffer->nItems();
       vTrace("\n"_Stz);
       pEntBuffer->vPrintRefdRows();
-      AM::vDeleteOperand(pOperand);
+      AM::vDeleteOperand(pOperand,nullptr);
       break;
     }
       
@@ -358,7 +381,7 @@ bool Output::bProcessOperand(Operand* pOperand)
         else {
           // LOG error
         }
-        AM::vDeleteOperand(pOperand);
+        AM::vDeleteOperand(pOperand,nullptr);
       }
       else if (pInfoSet->szBufferNm()->bSame(C_TDEF_EXECERRORS)) {
 
@@ -371,29 +394,35 @@ bool Output::bProcessOperand(Operand* pOperand)
 
           vTrace("\nerror: %s; %s; %s; \n"_Stz,
                  sNodeName, aEC2[eErrorCode], szErrorText);
+
+          m_ixRowsProcessed = 0;
+          m_ixRowsInvalid   = 0;
+          m_ixRowsSkipped   = 0;
+
           m_bHasError = true;
         }
         else {
           // LOG error
         }
-        AM::vDeleteOperand(pOperand);
+        AM::vDeleteOperand(pOperand,nullptr);
       }
       else if (pInfoSet->szBufferNm()->bSame(C_TDEF_LOADRESULT)) {
-        
+
+        m_bLoadResult = true;
         Row* pInfoRow = pInfoSet->pFirstRow();
 
         i8 iRowsProcessed = pInfoRow->iColVal_int(0);
         i8 iRowsInvalid   = pInfoRow->iColVal_int(1);
         i8 iRowsSkipped   = pInfoRow->iColVal_int(2);
 
-        m_ixRowsProcessed += iRowsProcessed;
+        m_ixRowsProcessed    += iRowsProcessed;
         m_ixRowsInvalid   += iRowsInvalid;
         m_ixRowsSkipped   += iRowsSkipped;
 
         //vTrace("INFOSET: %lld, %lld, %lld\n"_Stz,
         //       iRowsProcessed,iRowsInvalid,iRowsSkipped);
 
-        AM::vDeleteOperand(pOperand);
+        AM::vDeleteOperand(pOperand,nullptr);
       }
 
       else if (pInfoSet->szBufferNm()->bSame(C_TDEF_PROMPTOUT)) {
@@ -403,30 +432,64 @@ bool Output::bProcessOperand(Operand* pOperand)
 
         vTrace("%s\n"_Stz,szPromptLine);
 
-        AM::vDeleteOperand(pOperand);
+        AM::vDeleteOperand(pOperand,nullptr);
       }
       
       else {
         m_ixRowsProcessed += pInfoSet->nRows();
         vTrace("\n"_Stz);
         pInfoSet->vPrintRows(m_pStreamDef_result);
-        AM::vDeleteOperand(pOperand);
+        AM::vDeleteOperand(pOperand,nullptr);
+      }
+      break;
+    }
+
+      // -- -- -- -- -- --
+
+    case CN_MARKER: {
+
+      Marker *pMarker = _pMarker(pOperand);
+      if (pMarker->eOpMarker() == OM_LOWMEMORY) {
+        if (!m_bHasError) {
+          vTrace("RowsProcessed: %lld\n"_Stz, *m_ixRowsProcessed);
+          vTrace("\nerror: low memory\n"_Stz);
+          m_bHasError = true;
+        }
+      } else if (pMarker->eOpMarker() == OM_CHILDEXIT) {
+        m_bToExit = true;
+        if (!m_bHasError)
+          vPrintResult();
+        m_bHasError = false;
+        bContinue = false;
+        goto L_EXIT;
+        break;
+      } else if (pMarker->eOpMarker() == OM_EXIT) {
+        m_bToExit = true;
+        if ( !m_bHasError )
+          vPrintResult();
+        m_bHasError = false;
+        bContinue = false;
+        goto L_EXIT;
+        break;
+      }
+      else {
+        RASSERT(0);
       }
       break;
     }
 
     // -- -- -- -- -- --
 
-    case CN_EXITOPERAND: {
-      AM::vDeleteOperand(pOperand);
-      m_bToExit = true;
-      if ( !m_bHasError )
-        vPrintResult();
-      m_bHasError = false;
-      bContinue = false;
-      goto L_EXIT;
-      break;
-    }
+//    case CN_EXITOPERAND: {
+//      AM::vDeleteOperand(pOperand);
+//      m_bToExit = true;
+//      if ( !m_bHasError )
+//        vPrintResult();
+//      m_bHasError = false;
+//      bContinue = false;
+//      goto L_EXIT;
+//      break;
+//    }
 
     // -- -- -- -- -- --
       
@@ -436,17 +499,18 @@ bool Output::bProcessOperand(Operand* pOperand)
 //          vTrace("[[RowBuffer %s ; Row=%lld]]\n"_Stz,
 //                 spDataBuffer.sz(pRowBuffer),
 //                 pRowBuffer->nRows());
-      m_ixRowsProcessed += pRowBuffer->nRows();
-      vTrace("\n"_Stz);
-      pRowBuffer->vPrintRows(m_pFileOut,nullptr);
-      AM::vDeleteOperand(pOperand);
+      if ( ! m_bHasError ) {
+        m_ixRowsProcessed += pRowBuffer->nRows();
+        vTrace("\n"_Stz);
+        pRowBuffer->vPrintRows(m_pFileOut, nullptr);
+      }
+      AM::vDeleteOperand(pOperand, nullptr);
       break;
     }
             
     // -- -- -- -- -- --
 
     case CN_STREAMDEF: {
-      //vTrace("Pipeline Job: STREAMMARKER\n"_Stz);
       if ( ! m_pStreamDef_result ) {
         m_pStreamDef_result = _pStreamDef(pOperand);
         
@@ -467,7 +531,7 @@ bool Output::bProcessOperand(Operand* pOperand)
       m_ixRowsProcessed += pStreamSet->nRows();
       vTrace("\n"_Stz);
       pStreamSet->vPrintRows(m_pStreamDef_result);
-      AM::vDeleteOperand(pOperand);
+      AM::vDeleteOperand(pOperand,nullptr);
       break;
     }
       

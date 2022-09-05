@@ -13,7 +13,6 @@ fi
 # Copy binaries
 mkdir -p "${LAYOUT_DIR}/bin"
 cp "${ROOT_DIR}/bin/rapidsse"       "${LAYOUT_DIR}/bin"
-cp "${ROOT_DIR}/bin/libRapidsSE.so" "${LAYOUT_DIR}/bin"
 cp "${ROOT_DIR}/bin/se.man"         "${LAYOUT_DIR}/bin"
 
 # commands directory
@@ -38,8 +37,9 @@ cp "${ROOT_DIR}/bootstrap/generateData.sh"  "${LAYOUT_DIR}/dbgen"
 mkdir -p "${LAYOUT_DIR}/src"
 mkdir -p "${LAYOUT_DIR}/src/store"
 mkdir -p "${LAYOUT_DIR}/src/base"
+mkdir -p "${LAYOUT_DIR}/src/primitives"
 cp "${ROOT_DIR}/src/store/LogicUnit.cpp"    "${LAYOUT_DIR}/src/store"
-cp "${ROOT_DIR}/src/base/BaseTypes_tcc.h"   "${LAYOUT_DIR}/src/base"
+cp "${ROOT_DIR}/src/primitives/BaseTypes_tcc.h"   "${LAYOUT_DIR}/src/primitives"
 cp "${ROOT_DIR}/src/base/CastMacros.h"      "${LAYOUT_DIR}/src/base"
 cp "${ROOT_DIR}/src/base/EnumGroups.h"      "${LAYOUT_DIR}/src/base"
 cp "${ROOT_DIR}/src/base/eEC.h"             "${LAYOUT_DIR}/src/base"
@@ -69,8 +69,8 @@ cp "${ROOT_DIR}/bootstrap/boot.fn"               "${LAYOUT_DIR}"
 cp "${ROOT_DIR}/bootstrap/status.sh"             "${LAYOUT_DIR}"
 cp "${ROOT_DIR}/bootstrap/prompt.sh"             "${LAYOUT_DIR}"
 cp "${ROOT_DIR}/bootstrap/collectLogs.sh"        "${LAYOUT_DIR}"
-cp "${ROOT_DIR}/bootstrap/addNode.sh"            "${LAYOUT_DIR}"
-cp "${ROOT_DIR}/bootstrap/removeNode.sh"         "${LAYOUT_DIR}"
+# cp "${ROOT_DIR}/bootstrap/addNode.sh"            "${LAYOUT_DIR}"
+# cp "${ROOT_DIR}/bootstrap/removeNode.sh"         "${LAYOUT_DIR}"
 
 # Resources
 mkdir -p "${LAYOUT_DIR}/res"

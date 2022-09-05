@@ -108,6 +108,24 @@ void ExtractExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Represent the expression as types instead of names. Append to the buffer   */
+/*----------------------------------------------------------------------------*/
+void ExtractExpr::vDescribeAsTypes(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  ExtractField::eEF eExtractField = ExtractExpr::eExtractField(_pQueryNode(pNode));
+  Stz* szExtractField = ExtractField::szExtractFieldType(eExtractField);
+
+  QueryNode* pExpr = ExtractExpr::pSourceExpr(_pQueryNode(pNode));
+
+  sBuf.vCatSprint("EXTRACT (%s FROM %s)"_Stz,
+                  szExtractField,
+                  Expr::xTypeId(pExpr, pRootNode).szTypeName());
+}
+
+/*----------------------------------------------------------------------------*/
 /* The enum field to be extracted                                             */
 /*----------------------------------------------------------------------------*/
 ExtractField::eEF ExtractExpr::eExtractField(QueryNode *pNode)

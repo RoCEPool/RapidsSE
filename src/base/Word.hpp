@@ -83,7 +83,7 @@ namespace BASE
     void  vEncodeCall(fpSTEPFN* afpEntryStep);
     void  vEncodeCall(Stz* aWordNm);
     void  vEncodeJump(Stz* aWordNm, CodeCell* aArgCell);
-    void  vEncodePush(TypedCell* aTypedCell);
+    void  vEncodePush(TypeValueArea* aTypedCell);
     void  vEntryCell(CodeCell* aInxPtr);
     CodeCell* aEntryCell(void);
     void  vEntryStep(fpSTEPFN fpIntrinsic);
@@ -100,6 +100,7 @@ namespace BASE
     CodeCell* aLastCell(void);
     i8    iLocalNo(void);
     void  vLocalNo(i8 iLocalNo);
+    void vName(Stz* sWordNm);
     Word* pNextWord(void);
     Object* pObject(void);
     void  vObject(Object* pObject);

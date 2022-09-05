@@ -14,7 +14,7 @@ namespace STORE
   class CmdLineArgs : public Object
   {
     friend class OBLIQUE::AM;
-    friend class STORE::Engine;
+    friend class Engine;
     friend class BASE::Charser;
     friend class BASE::Input;
 
@@ -39,6 +39,7 @@ namespace STORE
     void vInit(void);
     bool bParse(i8 argc, s256 szaArgv[]);
     void vPrint(void);
+    void vPrintErrorMarker(s256* argv, i8 i_Arg);
     void vPrintStartupInfo(void);
     void vPrintHelp(void);
     void vSanityCheck(void);

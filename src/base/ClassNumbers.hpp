@@ -52,8 +52,8 @@ enum eCN : u2 // Class Number
   /* */ CN_CARDCTL,
   /* */ CN_CARDREGS,
   /* */ CN_CATALOG,
-  /* */ CN_CELLSINGLE,
   /* */ CN_CHARSER,
+  /* */ CN_CHILDEXIT,
   /* */ CN_CLASSPLACEHOLDER,
   /* */ CN_CMDLINEARGS,
   /* */ CN_CODEBLOCK,
@@ -118,6 +118,7 @@ enum eCN : u2 // Class Number
 
   /* */ CN__H__,
   /* */ CN_HASHMAP,
+  /* */ CN_HASHMAPENTRY,
   /* */ CN_HASHMAPSLOT,
   /* */ CN_HEAPBUFFER,
   /* */ CN_HEAPMEM,
@@ -163,10 +164,11 @@ enum eCN : u2 // Class Number
   /* */ CN_LIT,
   /* */ CN_LITRECOGNISER,
   /* */ CN_LOADCHUNK,
-  /* */ CN_LOCAL,
   /* */ CN_LOCALCHAIN,
   /* */ CN_LOCALDIR,
   /* */ CN_LOCALFILE,
+  /* */ CN_LOCALSTRS,
+  /* */ CN_LOCALVARS,
   /* */ CN_LOCATION,
   /* */ CN_LOCATOR,
   /* */ CN_LOCK,
@@ -176,6 +178,8 @@ enum eCN : u2 // Class Number
 
   /* */ CN__M__,
   /* */ CN_MARKER,
+  /* */ CN_MARKERCHAIN,
+  /* */ CN_MARKERMGR,
   /* */ CN_MEDIUMPERSISTENT,
   /* */ CN_MEDIUMTRANSIENT,
   /* */ CN_MEDIUMVIRTUAL,
@@ -198,6 +202,7 @@ enum eCN : u2 // Class Number
   /* */ CN__O__,
   /* */ CN_OBJBUFFER,
   /* */ CN_OBJECTSNAPSHOT,
+  /* */ CN_OBJTRACKER,
   /* */ CN_OUTPUT,
   /* */ CN_OP,
   /* */ CN_OPENFILES,
@@ -214,6 +219,8 @@ enum eCN : u2 // Class Number
   /* */ CN_PARCEL,
   /* */ CN_PATHIDENTIFIER,
   /* */ CN_PATHVEC,
+  /* */ CN_PAYSTR,
+  /* */ CN_PAYSTRBUFFER,
   /* */ CN_PERMIT,
   /* */ CN_PERUSE,
   /* */ CN_PIPEIN,
@@ -228,6 +235,7 @@ enum eCN : u2 // Class Number
   /* */ CN_PLANNODELIST,
   /* */ CN_PLANOPERAND,
   /* */ CN_POT,
+  /* */ CN_PORT,
   /* */ CN_PREDICATE,
   /* */ CN_PREDICATEVEC,
   /* */ CN_PRIMITIVENODE,
@@ -252,6 +260,7 @@ enum eCN : u2 // Class Number
   /* */ CN_REAPLOCK,
   /* */ CN_RECORD,
   /* */ CN_RECVWL,
+  /* */ CN_REJECTJOB,
   /* */ CN_RELOP,
   /* */ CN_RESOURCES,
   /* */ CN_RIBBON,
@@ -289,6 +298,7 @@ enum eCN : u2 // Class Number
   /* */ CN_SEAPI,
   /* */ CN_SEDEPUTY,
   /* */ CN_SEEME,
+  /* */ CN_SENCELL,
   /* */ CN_SENCOMPILER,
   /* */ CN_SENDS,
   /* */ CN_SENDWL,
@@ -459,8 +469,8 @@ static Stz* aCN[]
   /* */ "CARDCTL"_Stz,              // CN_CARDCTL
   /* */ "CARDREGS"_Stz,             // CN_CARDREGS
   /* */ "CATALOG"_Stz,              // CN_CATALOG
-  /* */ "CELLSINGLE"_Stz,           // CN_CELLSINGLE
   /* */ "CHARSER"_Stz,              // CN_CHARSER
+  /* */ "CHILDEXIT"_Stz,            // CN_CHILDEXIT
   /* */ "CLASSPLACEHOLDER"_Stz,     // CN_CLASSPLACEHOLDER
   /* */ "CMDLINEARGS"_Stz,          // CN_CMDLINEARGS
   /* */ "CODEBLOCK"_Stz,            // CN_CODEBLOCK
@@ -525,6 +535,7 @@ static Stz* aCN[]
 
   /* */ "_H__"_Stz,                 // CN__H__
   /* */ "HASHMAP"_Stz,              // CN_HASHMAP
+  /* */ "HASHMAPENTRY"_Stz,         // CN_HASHMAPENTRY
   /* */ "HASHMAPSLOT"_Stz,          // CN_HASHMAPSLOT
   /* */ "HEAPBUFFER"_Stz,           // CN_HEAPBUFFER
   /* */ "HEAPMEM"_Stz,              // CN_HEAPMEM
@@ -570,10 +581,11 @@ static Stz* aCN[]
   /* */ "LIT"_Stz,                  // CN_LIT
   /* */ "LITRECOGNISER"_Stz,        // CN_LITRECOGNISER
   /* */ "LOADCHUNK"_Stz,            // CN_LOADCHUNK
-  /* */ "LOCAL"_Stz,                // CN_LOCAL
   /* */ "LOCALCHAIN"_Stz,           // CN_LOCALCHAIN
   /* */ "LOCALDIR"_Stz,             // CN_LOCALDIR
   /* */ "LOCALFILE"_Stz,            // CN_LOCALFILE
+  /* */ "LOCALSTRS"_Stz,            // CN_LOCALSTRS
+  /* */ "LOCALVARS"_Stz,            // CN_LOCALVARS
   /* */ "LOCATION"_Stz,             // CN_LOCATION
   /* */ "LOCATOR"_Stz,              // CN_LOCATOR
   /* */ "LOCK"_Stz,                 // CN_LOCK
@@ -583,6 +595,8 @@ static Stz* aCN[]
 
   /* */ "_M__"_Stz,                 // CN__M__
   /* */ "MARKER"_Stz,               // CN_MARKER
+  /* */ "MARKERCHAIN"_Stz,          // CN_MARKERCHAIN
+  /* */ "MARKERMGR"_Stz,            // CN_MARKERMGR
   /* */ "MEDIUMPERSISTENT"_Stz,     // CN_MEDIUMPERSISTENT
   /* */ "MEDIUMTRANSIENT"_Stz,      // CN_MEDIUMTRANSIENT
   /* */ "MEDIUMVIRTUAL"_Stz,        // CN_MEDIUMVIRTUAL
@@ -605,6 +619,7 @@ static Stz* aCN[]
   /* */ "_O__"_Stz,                 // CN__O__
   /* */ "OBJBUFFER"_Stz,            // CN_OBJBUFFER
   /* */ "OBJECTSNAPSHOT"_Stz,       // CN_OBJECTSNAPSHOT
+  /* */ "OBJTRACKER"_Stz,           // CN_OBJTRACKER
   /* */ "OUTPUT"_Stz,               // CN_OUTPUT
   /* */ "OP"_Stz,                   // CN_OP
   /* */ "OPENFILES"_Stz,            // CN_OPENFILES
@@ -621,6 +636,8 @@ static Stz* aCN[]
   /* */ "PARCEL"_Stz,               // CN_PARCEL
   /* */ "PATHIDENTIFIER"_Stz,       // CN_PATHIDENTIFIER
   /* */ "PATHVEC"_Stz,              // CN_PATHVEC
+  /* */ "PAYSTR"_Stz,               // CN_PATHSTR
+  /* */ "PAYSTRBUFFER"_Stz,         // CN_PATHSTRBUFFER
   /* */ "PERMIT"_Stz,               // CN_PERMIT
   /* */ "PERUSE"_Stz,               // CN_PERUSE
   /* */ "PIPEIN"_Stz,               // CN_PIPEIN
@@ -635,6 +652,7 @@ static Stz* aCN[]
   /* */ "PLANNODELIST"_Stz,         // CN_PLANNODELIST
   /* */ "PLANOPERAND"_Stz,          // CN_PLANOPERAND
   /* */ "POT"_Stz,                  // CN_POT
+  /* */ "PORT"_Stz,                 // CN_PORT
   /* */ "PREDICATE"_Stz,            // CN_PREDICATE
   /* */ "PREDICATEVEC"_Stz,         // CN_PREDICATEVEC
   /* */ "PRIMITIVENODE"_Stz,        // CN_PRIMITIVENODE
@@ -659,6 +677,7 @@ static Stz* aCN[]
   /* */ "REAPLOCK"_Stz,             // CN_REAPLOCK
   /* */ "RECORD"_Stz,               // CN_RECORD
   /* */ "RECVWL"_Stz,               // CN_RECVWL
+  /* */ "REJECTJOB"_Stz,            // CN_REJECTJOB
   /* */ "RELOP"_Stz,                // CN_RELOP
   /* */ "RESOURCES"_Stz,            // CN_RESOURCES
   /* */ "RIBBON"_Stz,               // CN_RIBBON
@@ -696,6 +715,7 @@ static Stz* aCN[]
   /* */ "SEAPI"_Stz,                // CN_SEAPI
   /* */ "SEDEPUTY"_Stz,             // CN_SEDEPUTY
   /* */ "SEEME"_Stz,                // CN_SEEME
+  /* */ "SENCELL"_Stz,              // CN_SENCELL
   /* */ "SENCOMPILER"_Stz,          // CN_SENCOMPILER
   /* */ "SENDS"_Stz,                // CN_SENDS
   /* */ "SENDWL"_Stz,               // CN_SENDWL

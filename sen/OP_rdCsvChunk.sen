@@ -22,11 +22,25 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for EV_M_EOS ...                                                   */
+/*----------------------------------------------------------------------------*/
+: rdCsvChunk_Eos \handler
+
+  "<OP_rdCsvChunk>" [job].tagSet@ tagSet.hasName if
+    counter0[] "OP_rdCsvChunk: nTotalBytes %v\n" .putf
+  then
+
+  EV_M_EOS_handler
+;
+
+/*----------------------------------------------------------------------------*/
 /* on EV_I_SEEKOFFSETS ...                                                    */
 /*----------------------------------------------------------------------------*/
 : rdCsvChunk_SeekOffsets \handler
 
   // 0 EV_I_SEEKOFFSETS EG_ZK LogicUnit[].diaryNote
+
+  0 0 locals| iOffset nBytes |
 
   PipeIn[] to InfoSet[]
   nullptr to PipeIn[]
@@ -44,14 +58,26 @@
     else
 
       // check for low memory
+      /*
       attachMap::isLowMemory if
         //InfoSet[].delete
         EC_LOW_MEMORY op__execErr
         true
         exit
       then
-      
-      infoSetRow[].get InfoSet[].rdCsvChunk to CsvBuffer[]
+      */
+
+      infoSetRow[].get InfoSet[].rdCsvChunk
+        to CsvBuffer[]
+        to iOffset
+        to nBytes
+
+      counter0[] nBytes + to counter0[]
+
+      "<OP_rdCsvChunk>" [job].tagSet@ tagSet.hasName if
+        nBytes iOffset "OP_rdCsvChunk: iOffset %v nBytes %v\n" .putf
+      then
+
       CsvBuffer[].pipeOut
       InfoSet[].nextRow to infoSetRow[]
 
@@ -152,6 +178,7 @@
   op__topology
 
   find: rdCsvChunk_Cleaning      EV_M_CLEANING     [op].handler!
+  find: rdCsvChunk_Eos           EV_M_EOS          [op].handler!
   find: rdCsvChunk_SeekOffsets   EV_I_SEEKOFFSETS  [op].handler!
   find: rdCsvChunk_StartMarker   EV_M_START        [op].handler!
 

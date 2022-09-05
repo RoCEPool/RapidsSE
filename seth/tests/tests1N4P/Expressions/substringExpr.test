@@ -7,6 +7,9 @@
 //  Setup
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+trackmemory;
+success
+
 CREATE TABLE nation (
 	 N_NATIONKEY       INTEGER NOT NULL,
 	 N_NAME            CHAR(25) NOT NULL,
@@ -16,9 +19,6 @@ CREATE TABLE nation (
 success
 
 load nation "../DATA/TPCH/nation.tbl" ;
-success
-
-trackmemory;
 success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -54,6 +54,35 @@ rows:
  ('UN')
  ('UN')
 
+// Extract from a columnRef
+SELECT SUBSTRING(n_name, 1, 2), n_name FROM nation;
+rows:
+ ('AL','ALGERIA')
+ ('AR','ARGENTINA')
+ ('BR','BRAZIL')
+ ('CA','CANADA')
+ ('EG','EGYPT')
+ ('ET','ETHIOPIA')
+ ('FR','FRANCE')
+ ('GE','GERMANY')
+ ('IN','INDIA')
+ ('IN','INDONESIA')
+ ('IR','IRAN')
+ ('IR','IRAQ')
+ ('JA','JAPAN')
+ ('JO','JORDAN')
+ ('KE','KENYA')
+ ('MO','MOROCCO')
+ ('MO','MOZAMBIQUE')
+ ('PE','PERU')
+ ('CH','CHINA')
+ ('RO','ROMANIA')
+ ('SA','SAUDI ARABIA')
+ ('VI','VIETNAM')
+ ('RU','RUSSIA')
+ ('UN','UNITED KINGDOM')
+ ('UN','UNITED STATES')
+
 // Extract from a literal
 SELECT SUBSTRING('abcdef', 1, 2) FROM nation;
 rows:
@@ -85,7 +114,7 @@ rows:
 
 
 // Extract from a subquery
-//ALKA: COME BACK TO THIS
+//TODO: FIX WHEN SUBQUERIES
 //SELECT SUBSTRING((SELECT n_name FROM nation LIMIT 1), 1, 2) FROM nation;
 
 
@@ -273,10 +302,140 @@ rows:
  ('UNITED KINGDOM')
  ('UNITED STATES')
 
+// Leave off the length parameter
+SELECT n_name, SUBSTRING(n_name, 2) FROM nation;
+rows:
+ ('ALGERIA','LGERIA')
+ ('ARGENTINA','RGENTINA')
+ ('BRAZIL','RAZIL')
+ ('CANADA','ANADA')
+ ('EGYPT','GYPT')
+ ('ETHIOPIA','THIOPIA')
+ ('FRANCE','RANCE')
+ ('GERMANY','ERMANY')
+ ('INDIA','NDIA')
+ ('INDONESIA','NDONESIA')
+ ('IRAN','RAN')
+ ('IRAQ','RAQ')
+ ('JAPAN','APAN')
+ ('JORDAN','ORDAN')
+ ('KENYA','ENYA')
+ ('MOROCCO','OROCCO')
+ ('MOZAMBIQUE','OZAMBIQUE')
+ ('PERU','ERU')
+ ('CHINA','HINA')
+ ('ROMANIA','OMANIA')
+ ('SAUDI ARABIA','AUDI ARABIA')
+ ('VIETNAM','IETNAM')
+ ('RUSSIA','USSIA')
+ ('UNITED KINGDOM','NITED KINGDOM')
+ ('UNITED STATES','NITED STATES')
+
+
 // Test that a zero length returns an empty string
 SELECT SUBSTRING(n_name, 1, 0) FROM nation LIMIT 1;
 rows: ('')
 
+// craete table
+create table substring(a varchar,b char);
+success
+
+// load the table
+load substring "../DATA/Expressions/subString.csv";
+success
+
+select * from substring where substr(a,1,1)='A';
+rows:
+ ('A'    ,*)
+ ('A01'  ,*)
+ ('A0101',*)
+ ('A0102',*)
+ ('A02'  ,*)
+ ('A0201',*)
+ ('A0202',*)
+
+select substring(a,4,2),a from substring;
+rows:
+ (''    ,'A')
+ (''    ,'A01')
+ ('01'  ,'A0101')
+ ('02'  ,'A0102')
+ (''    ,'A02')
+ ('01'  ,'A0201')
+ ('02'  ,'A0202')
+ (''    ,'B')
+ (''    ,'B01')
+ ('10'  ,'0B0101')
+ ('02'  ,'B0102')
+ (''    ,'B02')
+ ('01'  ,'B0201')
+ ('02'  ,'B0202')
+ (null, null)
+
+select substring(a,4,1),substring(a,4,2) from substring;
+rows:
+ ('' , '')
+ ('' , '')
+ ('0', '01')
+ ('0', '02')
+ ('' , '')
+ ('0', '01')
+ ('0', '02')
+ ('' , '')
+ ('' , '')
+ ('1', '10')
+ ('0', '02')
+ ('' , '')
+ ('0', '01')
+ ('0', '02')
+ (null, null)
+
+select substring(a,2) from substring where substring(a,2)!='';
+rows:
+ ('01')
+ ('0101')
+ ('0102')
+ ('02')
+ ('0201')
+ ('0202')
+ ('01')
+ ('B0101')
+ ('0102')
+ ('02')
+ ('0201')
+ ('0202')
+
+select a from substring where substring(a,4,1) != '' and substring(a,4,2) != '01';
+rows:
+ ('A0102')
+ ('A0202')
+ ('0B0101')
+ ('B0102')
+ ('B0202')
+
+select a, substring(a,4) from substring;
+rows:
+ ('A','')
+ ('A01','')
+ ('A0101','01')
+ ('A0102','02')
+ ('A02','')
+ ('A0201','01')
+ ('A0202','02')
+ ('B','')
+ ('B01','')
+ ('0B0101','101')
+ ('B0102','02')
+ ('B02','')
+ ('B0201','01')
+ ('B0202','02')
+ (null,null)
+
+drop table nation;
+success
+
+drop table substring;
+success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Check for memory leaks
@@ -293,6 +452,7 @@ CLEANUP {
   DROP TABLE nation;
   mute
 
-  DROP TABLE region;
+  DROP TABLE substring;
   mute
+
 }

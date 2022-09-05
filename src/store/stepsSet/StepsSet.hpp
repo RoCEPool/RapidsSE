@@ -61,6 +61,35 @@ public:
   void vAggTimerTicks(void);
 
   // AM
+  void vAM_AnswerDemonJobIdFetch(void);
+  void vAM_AnswerDemonJobIdStore(void);
+  void vAM_CollectDemonJobIdFetch(void);
+  void vAM_CollectDemonJobIdStore(void);
+  void vAM_ConnectorDemonJobIdFetch(void);
+  void vAM_ConnectorDemonJobIdStore(void);
+  void vAM_EventDemonJobIdFetch(void);
+  void vAM_EventDemonJobIdStore(void);
+  void vAM_ExitDemonJobIdFetch(void);
+  void vAM_ExitDemonJobIdStore(void);
+  void vAM_MetricsDemonJobIdFetch(void);
+  void vAM_MetricsDemonJobIdStore(void);
+  void vAM_MonDemonJobIdFetch(void);
+  void vAM_MonDemonJobIdStore(void);
+  void vAM_NodeMonDemonJobIdStore(void);
+  void vAM_NodeMonDemonJobIdFetch(void);
+  void vAM_PageOutDemonJobIdFetch(void);
+  void vAM_PageOutDemonJobIdStore(void);
+  void vAM_ReaperDemonJobIdFetch(void);
+  void vAM_ReaperDemonJobIdStore(void);
+  void vAM_RecurDemonJobIdFetch(void);
+  void vAM_RecurDemonJobIdStore(void);
+  void vAM_StatDemonJobIdFetch(void);
+  void vAM_StatDemonJobIdStore(void);
+  void vAM_WakerDemonJobIdFetch(void);
+  void vAM_WakerDemonJobIdStore(void);
+  void vAM_SuperDemonJobIdFetch(void);
+  void vAM_SuperDemonJobIdStore(void);
+
   void vAM_No_Free(void);
   void vAM_Show_Boot(void);
   void vAM_Show_Dir(void);
@@ -83,11 +112,15 @@ public:
   void vAM_ReapEnable(void);
   void vAM_SysMetricsDisable(void);
   void vAM_SysMetricsEnable(void);
+  void vAM_System_ReadyFetch(void);
 
 
   // api
+  void vApiDeleteJob(void);
   void vApiForkChild(void);
-  void vApiReapJobs(void);
+  void vApiForkDemon(void);
+  void vApiForkChild2PC(void);
+  void vApiReapableJobFetch(void);
   void vApiSpawnJob(void);
 
   // arrange
@@ -363,7 +396,7 @@ void vDdlLockAssertNone(void);
   void vDeckPulsedFetch(void);
   void vDeckPulsedStore(void);
   void vDeckSet(void);
-  void vDeckSetInvoker(void);
+  void vDeckSetJobTask(void);
   void vDeckSpawnOpTasks(void);
 
   // deck (of op)
@@ -799,70 +832,68 @@ void vDdlLockAssertNone(void);
 
   // job
   void vJobAddDemon(void);
+  void vJobAddExited(void);
   void vJobAddLocal(void);
   void vJobAddOriginator(void);
   void vJobAddParticipant(void);
-  void vJobAddRetired(void);
-  void vJobAssertBegin(void);
   void vJobAssertStructure(void);
   void vJobAssertOrdinary(void);
   void vJobAssertOriginator(void);
   void vJobAssertParticipant(void);
   void vJobAssertReceived(void);
 
-  void vJobIdCascadeFetch(void);
-  void vJobIdCascadeStore(void);
-
+  void vJobDisableAllocate(void);
+  void vJobDisableObjectTracker(void);
   void vJobDistIdFetch(void);
   void vJobDistIdGenerate(void);
   void vJobTrace(void);
+  void vJobTriggerBegun(void);
+  void vJobTriggerEnd(void);
+  void vJobTriggerEnded(void);
+  void vJobTriggerCancelled(void);
+  void vJobTriggerExecuted(void);
+  void vJobTriggerExecute(void);
 
+  void vJobEnableAllocate(void);
+  void vJobEnableObjectTracker(void);
   void vJobEntryPointFetch(void);
   void vJobEntryPointStore(void);
   void vJobErrorFetch(void);
   void vJobErrorStore(void);
 
-  void vJobIdFolderPathFetch(void);
   void vJobIdFolderPathStore(void);
 
   void vJobGet(void);
 
-  void vJobIdHasCascadeFetch(void);
-
-  void vJobIdFetch(void);
-  void vJobIdIdFetch(void);
-
-  void vJobIdJobListFetch(void);
-
   void vJobIdLastJobIdFetch(void);
-  void vJobIdLastJobIdStore(void);
 
-  void vJobIdMasterJob(void);
+  void vJobLabelObjectTracker(void);
+  void vJobListFetch(void);
 
-  void vJobIdNameFetch(void);
-
+  void vJobNameFetch(void);
   void vJobOriginIdFetch(void);
   void vJobOriginNodeIdFetch(void);
 
   void vJobParentIdFetch(void);
   void vJobParentOriginNodeIdFetch(void);
   void vJobIdPipeToOp0(void);
-  void vJobPreExecuteTest(void);
+  void vJobPreExecuteDist(void);
+  void vJobPreExecuteLocal(void);
   void vJobPhaseFetch(void);
-  void vJobIdPhaseFetch(void);
   void vJobPhaseStore(void);
+  void vJobPrintObjectTracker(void);
   void vJobProgress(void);
   void vJobProgressReset(void);
   void vJobProgressSeconds(void);
 
-  void vJobReapableFetch(void);
-  void vJobIdReapableFetch(void);
-  void vJobReapableStore(void);
-  void vJobIdReapableStore(void);
+  void vJobRejectJobErrorStore(void);
+  void vJobRejectJobFetch(void);
+  void vJobRejectJobSetup(void);
   void vJobRemoveLocal(void);
   void vJobRemoveOriginator(void);
   void vJobRemoveParticipant(void);
   void vJobRemoveRetired(void);
+  void vJobResetObjectTracker(void);
   void vJobResponseOpFetch(void);
   void vJobResponseOpStore(void);
 
@@ -873,19 +904,26 @@ void vDdlLockAssertNone(void);
   void vJobReportOperands(void);
   void vJobReportOperators(void);
 
+  void vJobOtherIdFetch(void);
+
   void vListedJobScheduleNextPhase(void);
   void vJobScheduleNextPhase(void);
-  void vJobIdShow(void);
 
+  void vJobSetInxPtr(void);
   void vJobSetOriginId(void);
-  void vJobSignalWaiter(void);
+  void vJobSignalParent(void);
+  void vJobMasterJobId(void);
   void vJobMutexFetch(void);
-  void vJobIdSystemCloserFetch(void);
+  void vJobNewMarkerChain(void);
+  void vJobNew2PCOriginJobs(void);
+  void vJobNew2PCParticipantJobs(void);
+  void vJobUpdateParent(void);
+
   void vJobIdSystemCloserStore(void);
+  void vJobIdIsUnknown(void);
 
   void vJobTagSetFetch(void);
   void vJobTaskFetch(void);
-  void vJobIdTaskFetch(void);
 
   void vJobTscBeginning(void);
   void vJobTscBegun(void);
@@ -1039,6 +1077,7 @@ void vDdlLockAssertNone(void);
   void vListedJobFindOriginator(void);
   void vListedJobFindParticipant(void);
   void vListedJobHasTask(void);
+  void vListedJobNodeLossFetch(void);
   void vListedJobPointer(void);
   void vListedJobReturn(void);
   void vListedJobReferences(void);
@@ -1057,11 +1096,11 @@ void vDdlLockAssertNone(void);
   void vLoadTableTableStore(void);
 
   // locals
-  void vLocalFetch(void);
-  void vLocalStore(void);
   void vLocalsBar(void);
-  void vLocalsPop(void);
-  void vLocalsPush(void);
+  void vLocalsFetch(void);
+  void vLocalsFramePop(void);
+  void vLocalsFramePush(void);
+  void vLocalsStore(void);
   void vLocalsTo(void);
 
   // lock
@@ -1102,6 +1141,10 @@ void vDdlLockAssertNone(void);
   void vLogicUnitIntStackStore(void);
   void vLogicUnitJobMetricsFetch(void);
   void vLogicUnitJobMetricsStore(void);
+  void vLogicUnitRcvdChildExitFetch(void);
+  void vLogicUnitRcvdChildExitStore(void);
+  void vLogicUnitRcvdEndFetch(void);
+  void vLogicUnitRcvdEndStore(void);
 
   // ErrorMarker[]
   void vMarkerDelete(void);
@@ -1119,11 +1162,10 @@ void vDdlLockAssertNone(void);
   void vMarkerNewEndMarker(void);
   void vMarkerNewEndedMarker(void);
   void vMarkerNewEndingMarker(void);
-  void vMarkerNewEndCrwRhtMarker(void);
-  void vMarkerNewEndRowRhtMarker(void);
   void vMarkerNewEosMarker(void);
   void vMarkerNewErroringMarker(void);
   void vMarkerNewErroredMarker(void);
+  void vMarkerNewExitMarker(void);
   void vMarkerNewExitingMarker(void);
   void vMarkerNewExitedMarker(void);
   void vMarkerNewFinishedMarker(void);
@@ -1132,13 +1174,13 @@ void vDdlLockAssertNone(void);
   void vMarkerNewLeaveMarker(void);
   void vMarkerNewLeavingMarker(void);
   void vMarkerNewLeftMarker(void);
+  void vMarkerNewLowMemory(void);
   void vMarkerNewNextBufferMarker(void);
   void vMarkerNewStartedMarker(void);
   void vMarkerNewStartMarker(void);
-  void vMarkerNewStartCrwRhtMarker(void);
-  void vMarkerNewStartRowRhtMarker(void);
   void vMarkerNewStreamDefRht(void);
   void vMarkerNewTrigger(void);
+  void vMarkerNewTriggeredMarker(void);
   void vMarkerPipeIn(void);
   void vMarkerPipeToOutput(void);
   void vMarkerSet(void);
@@ -1217,12 +1259,16 @@ void vDdlLockAssertNone(void);
   void vNetworkShow(void);
 
   // node (of grid)
+  void vNodeCleanup(void);
+  void vNodeConnectRetry(void);
   void vNodeForget(void);
   void vNodeGet(void);
   void vNodeIP(void);
   void vNodeIsThisNode(void);
   void vNodeName(void);
   void vNodeNew(void);
+  void vNodeMonitorDummyCall(void);
+  void vNodeMonitorInspectGrid(void);
   void vNodeId(void);
   void vNodePartitions(void);
   void vNodePort(void);
@@ -1239,6 +1285,7 @@ void vDdlLockAssertNone(void);
 
   // node iterator
   void vNode_IDelete(void);
+  void vNode_IInit(void);
   void vNode_IMore(void);
   void vNode_INext(void);
   void vNode_INode(void);
@@ -1261,7 +1308,9 @@ void vDdlLockAssertNone(void);
   void vObjectStore(void);
 
   // op
-  void vOpAckInvokingTask(void);
+  void vOpAckJobTask(void);
+  void vOpDisableAllocate(void);
+  void vOpEnableAllocate(void);
   void vOpEnqueOperand(void);
   void vOpFindOp(void);
   void vOpGet(void);
@@ -1271,6 +1320,8 @@ void vDdlLockAssertNone(void);
   void vOpHandlerStore(void);
   void vOpHandlerAllStore(void);
   void vOpIsEventValid(void);
+  void vOpIsRecv(void);
+  void vOpIsSend(void);
   void vOpEventCountInc(void);
   void vOpNameFetch(void);
   void vOpOpNameFetch(void);
@@ -1374,6 +1425,8 @@ void vDdlLockAssertNone(void);
   void vPipelineOfOpGet(void);
   void vPipelineOfOpGetAccum(void);
   void vPipelineOfOpGrabDebugLock(void);
+  void vPipelineOfOpLowMemoryFetch(void);
+  void vPipelineOfOpLowMemoryStore(void);
   void vPipelineOfOpPulsedFetch(void);
   void vPipelineOfOpPulsedStore(void);
 
@@ -1401,6 +1454,10 @@ void vDdlLockAssertNone(void);
   void vPlanNameFetch(void);
   void vPlanNameStore(void);
   void vPlanShow(void);
+
+  // port
+  void vPortAcceptConnection_reg(void);
+  void vPortNewListen_reg(void);
 
   // pot
   void vPotCompleted(void);
@@ -1532,6 +1589,7 @@ void vDdlLockAssertNone(void);
   void vRegSendsHandleStart(void);
   void vRegSendsHandleStreamDef(void);
   void vRegSendsHandleStreamDefRht(void);
+  void vRegSendsHandleTriggered(void);
   void vRegSendsIsNull(void);
   void vRegSendsNew(void);
 
@@ -1565,13 +1623,17 @@ void vDdlLockAssertNone(void);
   void vParcelJobIdFetch(void);
   void vParcelLabel(void);
   void vParcelPipeOut(void);
-  void vParcelSendOut(void);
+  void vParcelSendOutOld(void);
 
+  void vParcelAddOperand(void);
   void vParcelDelete(void);
   void vParcelGet(void);
   void vParcelGetAndClear(void);
   void vParcelIsNotNull(void);
   void vParcelIsNull(void);
+  void vParcelNew(void);
+  void vParcelReset(void);
+  void vParcelSendOut(void);
   void vParcelSet(void);
 
   // reg Pipein
@@ -1581,8 +1643,10 @@ void vDdlLockAssertNone(void);
   void vPipeinGet(void);
   void vPipeinGetAndClear(void);
   void vPipeinIsBuffer(void);
+  void vPipeinIsMarker(void);
   void vPipeinIsNull(void);
   void vPipeinKind(void);
+  void vPipeinName(void);
   void vPipeinNext(void);
   void vPipeinPeek(void);
   void vPipeinPipeToOutput(void);
@@ -1686,7 +1750,9 @@ void vDdlLockAssertNone(void);
   void vSenComment(void);
   void vSenCreateFromInRoot(void);
   void vSenDoColon(void);
+  void vSenEnterTrace(void);
   void vSenExecute(void);
+  void vSenExitTrace(void);
   void vSenExit_RT(void);
   void vSenFind(void);
   void vSenImmediate(void);
@@ -1717,6 +1783,9 @@ void vDdlLockAssertNone(void);
   void vSenCompilerCurrentFetch(void);
   void vSenCompilerCurrentStore(void);
   void vSenCompilerDiscarding(void);
+  void vSenCompilerEncodeEnter(void);
+  void vSenCompilerEnterExitFetch(void);
+  void vSenCompilerEnterExitStore(void);
   void vSenCompilerInterpreting(void);
   void vSenCompilerIsCompiling(void);
   void vSenCompilerIsDiscarding(void);
@@ -1743,7 +1812,6 @@ void vDdlLockAssertNone(void);
   void vShellExecute(void);
 
   // socket
-  void vSocketAccept(void);
   void vSocketClose(void);
   void vSocketConnect(void);
   void vSocketGet(void);
@@ -1751,7 +1819,6 @@ void vDdlLockAssertNone(void);
   void vSocketGrabWrite(void);
   void vSocketIsNotNull(void);
   void vSocketIsNull(void);
-  void vSocketListen(void);
   void vSocketObjectFetch(void);
   void vSocketObjectFetchClear(void);
   void vSocketNew(void);
@@ -2009,6 +2076,7 @@ void vDdlLockAssertNone(void);
   void vSystemBpa(void);
   void vSystemOpenFetch(void);
   void vSystemOpenStore(void);
+  void vSystemReady(void);
   void vSystemSee(void);
   void vSystemStartedStore(void);
   void vSystemStartedFetch(void);
@@ -2118,6 +2186,7 @@ void vDdlLockAssertNone(void);
   void vTaskTraceFetch(void);
   void vTaskTraceStore(void);
   void vTaskTransitionStore(void);
+  void vTaskThrowLowMemory(void);
   void vTaskWait(void);
   void vTaskYield(void);
   void vTaskYield_opLoop(void);
@@ -2195,7 +2264,9 @@ void vDdlLockAssertNone(void);
 
   // text
   void vTextDelete(void);
+  void vTextGet(void);
   void vTextNew(void);
+  void vTextSet(void);
 
   // thread
   void vThreadBind(void);
@@ -2205,6 +2276,9 @@ void vDdlLockAssertNone(void);
   void vThreadDisableRealtime(void);
   void vThreadDump(void);
   void vThreadEnableRealtime(void);
+  void vThreadFaultCurrentStore(void);
+  void vThreadFaultInjectionStore(void);
+  void vThreadFaultPointStore(void);
   void vThreadId(void);
   void vThreadSleepMsec(void);
   void vThreadSleepNsec(void);
@@ -2301,6 +2375,7 @@ void vDdlLockAssertNone(void);
   void vTubDelete(void);
   void vTubGet(void);
   void vTubIsEmpty(void);
+  void vTubIsNull(void);
   void vTubNew(void);
 
   // tx

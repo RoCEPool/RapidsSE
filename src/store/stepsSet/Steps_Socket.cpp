@@ -49,8 +49,6 @@ extern SizeHeap  gxaSizeHeap[];
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Socket(void)
 {
-  vAddStep("listen::open"_Stz,       &Step::vSocketListen);
-  vAddStep("listen.accept"_Stz,      &Step::vSocketAccept);
 
   vAddStep("socket::new"_Stz,        &Step::vSocketNew);
   
@@ -70,33 +68,6 @@ void Step::vAddSteps_Socket(void)
   vAddStep("Socket[].success@"_Stz,  &Step::vSocketSuccessFetch);
   vAddStep("Socket[].success!"_Stz,  &Step::vSocketSuccessStore);
 
-}
-
-/*----------------------------------------------------------------------------*/
-/* listen.accept: accept a socket connection                                  */
-/*----------------------------------------------------------------------------*/
-void Step::vSocketAccept(void)
-{
-  ENTRY();
-  
-  SysCall oSysCall;
-  
-  Socket* pListeningSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
-  
-  // accept a connection
-  int iSocketId;
-  bool bResult = pListeningSocket->bAcceptClient(iSocketId, oSysCall);
-  
-  if ( ! bResult )
-    vThrow(FK_CHECK,__func__,__FILE__,__LINE__,
-           "Unable to accept connection: Errno %d"_Stz, oSysCall.iError());
-  
-  // return the socket
-  Socket* pNewSocket = new Socket(this,iSocketId);
-  
-  m_pDataStack->vPushPtr(pNewSocket);
-  
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -128,11 +99,11 @@ void Step::vSocketConnect(void)
   ENTRY();
   
   SysCall oSysCall;
-  CellSingle xNodeVar;
+  SenCell xNodeVar;
   
   Socket* pSocket = *m_pLogicUnit->m_xpSocket;
 
-  m_pDataStack->vPopItem(xNodeVar,__func__);
+  m_pDataStack->vPopSenCell(xNodeVar,__func__);
   
   i8 iPort = m_pDataStack->iPopInt(__func__);
   
@@ -240,60 +211,6 @@ void Step::vSocketIsNull(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* listen::open: listen in for socket connections                           */
-/*----------------------------------------------------------------------------*/
-void Step::vSocketListen(void)
-{
-  ENTRY();
-  
-  SysCall oSysCall;
-  
-  i8 iPort = m_pDataStack->iPopInt(__func__);
-  
-  //- - - - - - - - - - - - - - - - - - -  - - - - - - - - - - - - - - - - - - -
-  // attempt to create server-side listening socket
-  
-  Socket* pSocket = new Socket(this);
-  bool bResult = pSocket->bCreateServer((int)iPort, oSysCall);
-  
-  if ( ! bResult ) {
-    if (oSysCall.iError() == EADDRINUSE) {
-      vThrow(FK_CHECK,__func__,__FILE__,__LINE__,
-             "Address in use (port: %lld). "
-             "Check if another instance of RAPIDSSE is running!"_Stz,
-             iPort);
-    }
-    else
-      vThrow(FK_CHECK,__func__,__FILE__,__LINE__,
-             "Unable to listen for connections: Errno %d"_Stz, oSysCall.iError());
-  }
-  
-  //- - - - - - - - - - - - - - - - - - -  - - - - - - - - - - - - - - - - - - -
-  // test to see what happens when we attempt to create
-  // server-side listening socket when the socket/port is already in use
-  
-//  Socket* pSocket2 = new Socket(this);
-//  bool bResult2 = pSocket2->bCreateServer((int)iPort, oSysCall);
-//
-//  if ( ! bResult2 ) {
-//    if (oSysCall.iError() == EADDRINUSE) {
-//      vThrow(FK_CHECK,__func__,__FILE__,__LINE__,
-//             "Address in use (port: %lld). "
-//             "Check if another instance of RAPIDSSE is running!"_Stz,
-//             iPort);
-//    }
-//    else
-//      vThrow(FK_CHECK,__func__,__FILE__,__LINE__,
-//             "Unable to listen for connections: Errno %d"_Stz, oSysCall.iError());
-//  }
-
-  // return socket
-  m_pDataStack->vPushPtr(pSocket);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* socket::new: open a socket                                                */
 /*----------------------------------------------------------------------------*/
 void Step::vSocketNew(void)
@@ -305,8 +222,8 @@ void Step::vSocketNew(void)
   
   Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
 
-  pSocket = new Socket(pNode);
-  bool bResult = pSocket->bSocket(oSysCall);
+  pSocket = new Socket(pNode,C_UNKNOWN);
+  bool bResult = pSocket->bCreateFdForSocket(oSysCall);
   
   if ( ! bResult )
     vThrow(FK_CHECK,__func__,__FILE__,__LINE__,
@@ -388,7 +305,9 @@ void Step::vSocketSendObject(void)
   eCN eClass = pObject->eGetClassNo();
   i8 nObjectSize = gxaSizeHeap[eClass].m_nClassSize;
   
-  RASSERT(CN_JOB == eClass || _bIsValidOperand(eClass));
+  RASSERT(CN_JOB == eClass ||
+          CN_REJECTJOB == eClass ||
+          _bIsValidOperand(eClass));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -410,8 +329,12 @@ void Step::vSocketSendObject(void)
 void Step::vSocketSet(void)
 {
   ENTRY();
-  
+
   Socket* pSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
+
+  if ( ! pSocket)
+    i8 i = 1;
+
   ASSERT(! pSocket || m_pLogicUnit->m_xpSocket.bIsNull());
   m_pLogicUnit->m_xpSocket = _pSocket(pSocket);
   

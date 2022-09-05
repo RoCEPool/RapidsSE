@@ -14,9 +14,14 @@
   PipeIn[].pipeOut
 
   // check if we can drop the index
-  <indexNm> <tableNm> check::validIndexAssembly not if
-    to errorCode
-    errorCode op__execErr
+  //<indexNm> <tableNm> check::validIndexAssembly not if
+  //  to errorCode
+  //  errorCode op__execErr
+  //then
+
+  // check if we can find the index and the table
+  <tableNm> <indexNm> op__table_index if
+   // nothing to do
   then
 
   true

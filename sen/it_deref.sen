@@ -13,19 +13,19 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_DEREF
   
-  STD_WAIT_PATH_TAG
+  STD_BOOTFORK_TAG
   "
   define table se__derefMetrics
   (
   
-    objectNo     INTEGER NOT NULL , //
-    classNm      VARCHAR NOT NULL , //
-    tsc          INTEGER NOT NULL , //
-    action       VARCHAR NOT NULL   //
+    objectNo     INTEGER NOT NULL ,
+    classNm      VARCHAR NOT NULL ,
+    tsc          INTEGER NOT NULL ,
+    action       VARCHAR NOT NULL  
     
   ) < internal > = 1 ;
   "
-  api::forkChild api:executeCheck
+  api::forkChild  api:executeCheck
 ;
 
 /*============================================================================*/

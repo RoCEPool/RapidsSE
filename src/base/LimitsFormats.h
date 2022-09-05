@@ -3,7 +3,8 @@
 /*============================================================================*/
 #pragma once
 
-static const i8 C_MAX_COLUMNS       = 150;    // max columns per table
+static const i8 C_MAX_COLUMNS       = 48;     // max columns per table
+static const i8 C_MAX_CONN_RETRIES  = 5;      // max connection retries on node failure
 static const i8 C_MAX_DECKS         = 256;
 static const i8 C_MAX_ENTRY         = C_1KB;  // max index entry size
 static const i8 C_MAX_EXPR          = 256;    // max expressions in expr vec
@@ -32,6 +33,7 @@ static const i8 C_MAX_SHORTCUTS     = 1024;
 static const i8 C_MAX_STAGES        = 256;
 static const i8 C_MAX_STREAMS       = 256;
 static const i8 C_MAX_STREAM_ORDER  = 8;
+static const i8 C_MAX_TABLE_NAME_LENGTH  = 32; // max table name length including null terminator
 static const i8 C_MAX_THREADS       = 4096;
 static const i8 C_MAX_TOKENS        = C_2KB;
 static const i8 C_MAX_VERTEXES      = 256;
@@ -54,7 +56,7 @@ static const i8 C_MAX_VCH_PRECISION = C_64KB; // max defined length of a vch col
 static const Stz* F_BCD       = "%s%lld."_Stz;
 static const Stz* F_BCD_frac  = "%s%lld.%.*lld"_Stz;
 static const Stz* F_DTE       = "%04lld-%02lld-%02lld"_Stz;
-static const Stz* F_FLT       = "%g"_Stz;
+static const Stz* F_FLT       = "%f"_Stz;
 static const Stz* F_INT       = "%lld"_Stz;
 static const Stz* F_IVL       = "%lld.%06lld"_Stz;
 static const Stz* F_IVL_frac  = "%lld.%.*lld"_Stz;

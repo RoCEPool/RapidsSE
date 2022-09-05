@@ -20,7 +20,6 @@ namespace STORE
     i8    m_iClusterID;    // ID of this cluster (Can the GridName be used?)
     s32   m_sGridName;     // name of the grid
     s32   m_sNodeName;     // this node name
-    i8    m_iNonPageableSize; // Size of the non-pagable region
     s256  m_sPageFilePath; // path to page file
     i8    m_nPtnsPerNode;  // partitions per node
     void* m_aRegionAddr;   // use this address for region
@@ -74,6 +73,7 @@ namespace STORE
     i8   m_nDemonSleep;      // sleep period for demons
     bool m_bDerefMetrics;    // collect deref metrics
     bool m_bDeveloper;       // user is a developer
+    bool m_bDisablePromptCmds;// Disable prompt commands
     bool m_bDistJob;         // dist job trace
     bool m_bDontFree;        // dont actually free objects back to heap
     i8   m_nDummyThreads;    // number of dummy threads
@@ -109,6 +109,7 @@ namespace STORE
     bool m_bRLUDiary;        // RLU diary
     bool m_bRLUTimer;        // RLU timer
     bool m_bShmLock;         // lock shared memory pages in memory
+    i8   m_iSocketLowMem;    // socket recv low memory test
     bool m_bSysMetrics;      // collect sys metrics
     i8   m_nThreads;         // number of general threads
     bool m_bTouch;           // touch all shm pages during region create

@@ -21,7 +21,9 @@ void Step::vAddSteps_Sen(void)
   vAddStep("("_Stz,                &Step::vSenComment,          true );
   vAddStep(">createInRoot"_Stz,    &Step::vSenCreateFromInRoot);
   vAddStep("doColon"_Stz,          &Step::vSenDoColon);
+  vAddStep("enterTrace"_Stz,       &Step::vSenEnterTrace);
   vAddStep("execute"_Stz,          &Step::vSenExecute);
+  vAddStep("exitTrace"_Stz,        &Step::vSenExitTrace);
   vAddStep("exit_rt"_Stz,          &Step::vSenExit_RT);
   vAddStep("find:"_Stz,            &Step::vSenFind,             true);
   vAddStep("hazard"_Stz,           &Step::vSenHazard);
@@ -48,12 +50,16 @@ void Step::vAddSteps_Sen(void)
 void Step::vSenColon(void)
 {
   ENTRY();
-  
+
+  bool b;
   s256 sWordNm;
-  
+  eEC eError;
+
   m_pSenCompiler->vMode(CM_COMPILING);
   
-  m_pInput->vReadToken();
+  b = m_pInput->bReadToken(eError);
+  UNUSED(b);
+
   sWordNm = m_pInput->szChars();
   
   //vTrace("Colon: %s\n"_Stz,sWordNm.szStz());
@@ -87,9 +93,13 @@ void Step::vSenColon(void)
 void Step::vSenComment(void)
 {
   ENTRY();
-  
+
+  bool b;
+  eEC eError = EC_NONE;
+
   for (;;) {
-    m_pInput->vReadToken();
+    b = m_pInput->bReadToken(eError);
+    UNUSED(b);
     if (m_pInput->szChars()->bEqual(")"_Stz))
       break;
   }
@@ -169,6 +179,22 @@ void Step::vSenDoColon(void)
 
 
 /*----------------------------------------------------------------------------*/
+/* enterTrace -- trace entry of sen function                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vSenEnterTrace(void)
+{
+  ENTRY();
+  
+  SenCell xVariable;
+  m_pDataStack->vPopSenCell(xVariable,__func__);
+  
+  Stz* szVal = xVariable.szStz();
+  vTrace(">>> %s\n"_Stz,szVal);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* execute -- execute word on data stack                                      */
 /*----------------------------------------------------------------------------*/
 void Step::vSenExecute(void)
@@ -209,6 +235,22 @@ void Step::vSenExecute(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* exitTrace -- trace exit of sen function                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vSenExitTrace(void)
+{
+  ENTRY();
+  
+  SenCell xVariable;
+  m_pDataStack->vPopSenCell(xVariable,__func__);
+  
+  Stz* szVal = xVariable.szStz();
+  vTrace("<<< %s\n"_Stz,szVal);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* exit_rt -- runtime for exit from routine                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vSenExit_RT(void)
@@ -220,9 +262,9 @@ void Step::vSenExit_RT(void)
   if ( (m_iTraceMask & C_TRACE_ROUTINES) )
     Task::vTracePoint("<"_Stz);
   
-  if (m_pLocalsFrame
-      && m_pLocalsFrame->aDiscardPoint() == (TypedCell*)m_pReturnStack->aTopVal())
-    vLocalsPop();
+  if (m_pLocalFrame
+      && m_pLocalFrame->aDiscardPoint() == (TypeValueArea*)m_pReturnStack->aTopVal())
+    vLocalsFramePop();
   
   // make sure we don't return to nowhere
   ASSERT(m_pReturnStack->nValues());
@@ -240,8 +282,12 @@ void Step::vSenExit_RT(void)
 void Step::vSenFind(void)
 {
   ENTRY();
-  
-  m_pInput->vReadToken();
+
+  bool b;
+  eEC eError = EC_NONE;
+
+  b = m_pInput->bReadToken(eError);
+  UNUSED(b);
 
   s32 sWordNm;
   sWordNm = m_pInput->szChars();
@@ -252,7 +298,7 @@ void Step::vSenFind(void)
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "No word: %s "_Stz,sWordNm.azChar());
   
-  CellSingle xVar;
+  SenCell xVar;
   xVar = pWord;
 
   if (m_pSenCompiler->bCompiling()) {
@@ -667,11 +713,15 @@ void Step::vSenNop(void)
 void Step::vSenPostpone(void)
 {
   ENTRY();
-  
+
+  bool b;
+  eEC eError = EC_NONE;
+
   Word* pCurrentWord = m_pSenCompiler->pCurrentWord();
   
   // get name of word to be called
-  m_pInput->vReadToken();
+  b = m_pInput->bReadToken(eError);
+  UNUSED(b);
 
   // find the word in dic stack
   Word* pCalledWord = m_oDicStack.pFindWord(m_pInput->szChars());
@@ -681,7 +731,7 @@ void Step::vSenPostpone(void)
            m_pInput->szChars()->azChar());
   
   
-  CellSingle xVar;
+  SenCell xVar;
   xVar = pCalledWord;
 
   if (pCalledWord->bImmediate()) {
@@ -712,13 +762,17 @@ void Step::vSenPostpone(void)
 void Step::vSenProcText(void)
 {
   ENTRY();
-  
+
+  bool b;
   s256 sWordNm;
   s4K sProcedure;
-  
+
+  eEC eError = EC_NONE;
+
   // to be coded ...
   for (i8 i_Tkn = 0; /*none*/; i_Tkn++) {
-    m_pInput->vReadToken();
+    b = m_pInput->bReadToken(eError);
+    UNUSED(b);
     if (m_pInput->szChars()->bEqual(";"_Stz))
       break;
     
@@ -755,7 +809,7 @@ void Step::vSenProcText(void)
   
   Word* pNewWord = new(pDic) Word(sWordNm);
 
-  CellSingle xVar;
+  SenCell xVar;
   
   xVar = sProcedure;
 
@@ -810,6 +864,8 @@ void Step::vSenSemicolon(void)
   
   if (m_pSenCompiler->nLocals()) {
     
+    m_pSenCompiler->vLocalsUpdate();
+    
     // reset the number of local variables
     m_pSenCompiler->vLocals(0);
     
@@ -817,7 +873,7 @@ void Step::vSenSemicolon(void)
     m_oDicStack.vDiscard();
     
     // enocde locals frame pop
-    pCurrentWord->vEncodeCall("locals.pop"_Stz);
+    pCurrentWord->vEncodeCall("locals.framePop"_Stz);
   }
   
   if (! pCurrentWord->szWordNm()->bSame("exit"_Stz) &&
@@ -825,14 +881,14 @@ void Step::vSenSemicolon(void)
     
     if (m_oDicStack.pFindWord(pCurrentWord->szExitHook())) {
       pCurrentWord->vEncodeCall(pCurrentWord->szExitHook());
-      pCurrentWord->vEncodeCall("exit_rt"_Stz);
+      m_pSenCompiler->vEncodeExit();
     }
     else
-      pCurrentWord->vEncodeCall("exit_RT"_Stz);
+      m_pSenCompiler->vEncodeExit();
   }
   else
-    pCurrentWord->vEncodeCall("exit_rt"_Stz);
-  
+    m_pSenCompiler->vEncodeExit();
+
   i8 iUsed = pCurrentWord->nCodeBlockUsed();
   if (iUsed > iMaxUsed)
     iMaxUsed = iUsed;
@@ -841,6 +897,7 @@ void Step::vSenSemicolon(void)
 //         iMaxUsed,
 //         pCurrentWord->szWordNm());
   
+  m_pSenCompiler->vEnterExitTrace(false);
   m_pSenCompiler->vMode(CM_INTERPRETING);
     
   //m_pSenCompiler->vCurrentWord(nullptr);

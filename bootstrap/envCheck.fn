@@ -15,6 +15,8 @@ fi
 readonly GCC_MINIMUM_VERSION="4.8.5"
 readonly BASH_MINIMUM_VERSION="4.2.46"
 
+readonly UDP_SENDER_FILE="udpSender.py"
+readonly UDP_RECEIVER_FILE="udpReceive.py"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Validate that the environment we are installing into is correct before
@@ -30,20 +32,30 @@ function validateInstallationEnvironment() {
   # Check that all hosts are resolvable.
   validateHostsAreResolvable
 
+  # Check that all heartbeat hosts/IPs are resolvable.
+  validateHeartbeatAddressIsResolvable
+
   # Check that all host/dir combinations are unique.
   validateHostsAndDirsAreUnique
 
-  # Check that all host:port combinations are unique.
-  validateHostsAndPortsAreUnique
+  # Check that all host and {internal_port | client_port} combinations are unique.
+  validateHostsAndAllPortsAreUnique
 
   # Check if all hosts are reachable by SSH.
   validateHostsReachableBySsh
 
+  # Check that the installer is not inside a target installation directory
+  # as that directory will be wiped, including the installer.
+  validateInstallerNotInInstallDir
+
   # Check if SE is running in any of these host:directory combinations.
   validateSENotRunning
 
-  # Check if the port is not being used on any of the hosts.
-  validatePortsNotInUse
+  # Check if the internal port is not being used on any of the hosts.
+  validateInternalPortNotInUse
+
+  # Check if the client port is not being used on any of the hosts.
+  validateClientPortNotInUse
 
   # TODO: Check if a conflicting SE SHM file exists on any of the hosts.
 
@@ -71,23 +83,88 @@ function validateInstallationEnvironment() {
   # Check that node names don't contain spaces or special characters and are unique.
   validateNodeNames
 
-  # Check that gcc is installed and is new enough
-  validateGcc
-
-  # Check that libAtomic.so.1 is installed
-  validateLibAtomic
-
-  # Check that bash has the correct version
-  validateBash
-
-  # Check that netcat is installed
-  validateNetcat
-
-  # Check that the ss utility is installed
-  validateSs
-
   # Check that all appropriate ports are opened on firewalls
   validateFirewall
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Validate that the environment we are installing into has all of the necessary
+## 3rd party applications and libraries.
+##  $@ - the array of node names that are being added at this time, or none
+##       for all nodes.
+
+function validate3rdPartyTools() {
+
+  if [ "${DEBUG}" -eq 1 ]; then
+    debugPrint "Validating pre-requisite tools exist on each node."
+  fi
+
+  if [ "$#" -eq 0 ]; then
+
+    # Customised check for pre-requisites
+
+    # Check that bash has the correct version
+    validateBash
+
+    # Check that gcc is installed and is new enough
+    validateGcc
+
+    # Check that the ldconfig utility is installed
+    validateLdconfig
+
+    # Check that libAtomic.so.1 is installed (using ldconfig)
+    validateLibAtomic
+
+    # Check that the ss utility is installed
+    validateSs
+
+    # Common check that the a number of basic utilities are installed
+    validateCommandLineToolExists "nc"
+    validateCommandLineToolExists "tar"
+    validateCommandLineToolExists "bc"
+    validateCommandLineToolExists "cut"
+    validateCommandLineToolExists "printf"
+    validateCommandLineToolExists "sort"
+    validateCommandLineToolExists "awk"
+
+    # tar, bc, cut, printf, sort, awk
+    # "nslookup" "dig" "getent"
+    # "nproc" "getconf"
+
+  else
+    local -a nodeNames=()
+    nodeNames=("$@")
+
+    # Customised check for pre-requisites
+
+    # Check that bash has the correct version
+    validateBash "${nodeNames[@]}"
+
+    # Check that gcc is installed and is new enough
+    validateGcc "${nodeNames[@]}"
+
+    # Check that the ldconfig utility is installed
+    validateLdconfig "${nodeNames[@]}"
+
+    # Check that libAtomic.so.1 is installed (using ldconfig)
+    validateLibAtomic "${nodeNames[@]}"
+
+    # Check that the ss utility is installed
+    validateSs "${nodeNames[@]}"
+
+    # Common check that the a number of basic utilities are installed
+    validateCommandLineToolExists "nc" "${nodeNames[@]}"
+    validateCommandLineToolExists "tar" "${nodeNames[@]}"
+    validateCommandLineToolExists "bc" "${nodeNames[@]}"
+    validateCommandLineToolExists "cut" "${nodeNames[@]}"
+    validateCommandLineToolExists "printf" "${nodeNames[@]}"
+    validateCommandLineToolExists "sort" "${nodeNames[@]}"
+    validateCommandLineToolExists "awk" "${nodeNames[@]}"
+
+    # Check that the bc utility is installed
+    validateBc "${nodeNames[@]}"
+  fi
 }
 
 
@@ -110,20 +187,30 @@ function validateNodeAdditionEnvironment() {
   # Check that all hosts are resolvable.
   validateHostsAreResolvable "${nodeNames[@]}"
 
+  # Check that all heartbeat addresses are resolvable.
+  validateHeartbeatAddressIsResolvable "${nodeNames[@]}"
+
   # Check that all host/dir combinations are unique.
   validateHostsAndDirsAreUnique
 
-  # Check that all host:port combinations are unique.
-  validateHostsAndPortsAreUnique
+  # Check that all host and {internal_port | client_port} combinations are unique.
+  validateHostsAndAllPortsAreUnique
 
   # Check if all hosts are reachable by SSH.
   validateHostsReachableBySsh "${nodeNames[@]}"
 
+  # Check that the installer is not inside a target installation directory
+  # as that directory will be wiped, including the installer.
+  validateInstallerNotInInstallDir "${nodeNames[@]}"
+
   # Check if SE is running in any of these host:directory combinations.
   validateSENotRunning "${nodeNames[@]}"
 
-  # Check if the port is not being used on any of the hosts.
-  validatePortsNotInUse "${nodeNames[@]}"
+  # Check if the internal port is not being used on any of the hosts.
+  validateInternalPortNotInUse "${nodeNames[@]}"
+
+  # Check if the client port is not being used on any of the hosts.
+  validateClientPortNotInUse "${nodeNames[@]}"
 
   # TODO: Check if a conflicting SE SHM file exists on any of the hosts.
 
@@ -150,21 +237,6 @@ function validateNodeAdditionEnvironment() {
 
   # Check that node names don't contain spaces or special characters and are unique.
   validateNodeNames
-
-  # Check that gcc is installed and is new enough
-  validateGcc "${nodeNames[@]}"
-
-  # Check that libAtomic.so.1 is installed
-  validateLibAtomic "${nodeNames[@]}"
-
-  # Check that bash has the correct version
-  validateBash "${nodeNames[@]}"
-
-  # Check that netcat is installed
-  validateNetcat "${nodeNames[@]}"
-
-  # Check that the ss utility is installed
-  validateSs "${nodeNames[@]}"
 
   # Check that all appropriate ports are opened on firewalls
   validateFirewall "${nodeNames[@]}"
@@ -281,6 +353,145 @@ function validateHostsAreResolvable() {
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Validates that the heartbeat address is resolvable on the current machine. Exits out
+## and writes an error to stderr if not.
+## Params:
+##  $@ - (optional) the list of node names to check. If not set then check all.
+
+# shellcheck disable=SC2120
+function validateHeartbeatAddressIsResolvable() {
+
+  local -a nodeNames;
+
+  if [ "$#" -eq 0 ]; then
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    nodeNames=( "$@" )
+  fi
+
+  local nodeName
+  local heartbeatAddr
+  local output
+  local broadcast="BROADCAST"
+
+  if [ "${NO_RESOLVE_HEARTBEATS:-x}" != "x" ]; then
+    debugPrint "Skipping heartbeat address resolution."
+    return
+  fi
+
+  debugPrint "About to validate that all heartbeat addresses are resolvable."
+
+  for nodeName in "${nodeNames[@]}"
+  do
+    heartbeatAddr="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HEARTBEAT_ADDRESS_KEY}")"
+
+    if [ "${heartbeatAddr,,}" = "${broadcast,,}" ]; then
+      continue
+    fi
+
+    # Check if the heartbeat address is an IP address
+    local re="^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$"
+
+    if [[ "${heartbeatAddr}" =~ ${re} ]]; then
+      # We've got an IPv4 address
+      # Check the quads
+      quad1="$(echo "${heartbeatAddr}" | cut -d. -f1)"
+      quad2="$(echo "${heartbeatAddr}" | cut -d. -f2)"
+      quad3="$(echo "${heartbeatAddr}" | cut -d. -f3)"
+      quad4="$(echo "${heartbeatAddr}" | cut -d. -f4)"
+
+      for i in "${quad1}" "${quad2}" "${quad3}" "${quad4}"
+      do
+        if [ "${i}" -gt 255 ]; then
+          errorExit "Heartbeat address \"${heartbeatAddr}\" is not a valid IPv4 address."
+        fi
+      done
+
+      # Check that this must fall within the multicast range of 224.0.0.0 - 239.255.255.255
+      if [ "${quad1}" -lt 224 ] || [ "${quad1}" -gt 239 ]; then
+        msg="Heartbeat address \"${heartbeatAddr}\" is outside of the valid multicast address "
+        msg+="range of [224.0.0.0, 239.255.255.255]."
+        errorExit "${msg}"
+      fi
+
+      # Check that this should be within the admin, organisation or local scope multicast ranges of:
+      #   Admin scope: 239.0.0.0   - 239.195.255.255
+      #   Org scope:   239.192.0.0 - 239.195.255.255
+      #   Local scope: 239.255.0.0 - 239.255.255.255
+      if [ "${quad1}" -ne 239 ]; then
+        echo ""
+        msg="Heartbeat multicast IP address should be in the RFC 2365 administratively scoped address "
+        msg+="range of 239.0.0.0/8 to avoid conflicts with other multicast addresses."
+        printWarning "${msg}"
+      fi
+
+      # This is a valid IPv4 multicast address
+      continue
+
+    elif [[ "${heartbeatAddr}" = *:* ]]; then
+      # We've got an IPv6 address
+      re="^([0-9a-fA-F]{0,4}:){1,7}([0-9a-fA-F]){0,4}$"
+
+      if [[ ! "${heartbeatAddr}" =~ $re ]]; then
+        errorExit "Heartbeat address \"${heartbeatAddr}\" is not a valid IPv6 address."
+      fi
+
+      # This is a valid IPv6 address
+      continue
+    fi
+
+
+    # We must have a hostname to resolve. There are a few different tools that
+    # can be used to resolve it, depending on what is installed.
+
+    # Use getent to resolve the hostname, if available
+    if command -v getent &>/dev/null; then
+
+      output="$(getent hosts "${heartbeatAddr}" | awk '{ print $1; exit }' 2>/dev/null)"
+      if [ -z "${output:-}" ]; then
+        errorExit "Heartbeat address \"${heartbeatAddr}\" is not resolvable."
+      fi
+
+      # heartbeatAddr was resolved.
+      continue
+
+
+    # No getent, then try dig
+    elif command -v dig &>/dev/null; then
+
+      output="$(dig +short +search "${heartbeatAddr}" | awk '{ print ; exit }' 2>/dev/null)"
+      if [ -z "${output:-}" ]; then
+        errorExit "Heartbeat address \"${heartbeatAddr}\" is not resolvable."
+      fi
+
+      # heartbeatAddr was resolved.
+      continue
+
+
+    # No dig, then try nslookup
+    elif command -v nslookup &>/dev/null; then
+
+      output="$(nslookup "${heartbeatAddr}" | awk '/^Address: / { print $2 ; exit }' 2>/dev/null)"
+      if [ -z "${output:-}" ]; then
+        errorExit "Heartbeat address \"${heartbeatAddr}\" is not resolvable."
+      fi
+
+      # heartbeatAddr was resolved.
+      continue
+
+    # No nslookup either. Don't validate the hostnames.
+    else
+      echo ""
+      printWarning "Could not validate that the hostnames are resolvable. No [getent|dig|nslookup] tools available."
+    fi
+
+  done
+
+  debugPrint "Successfully validated that all heartbeat addresses are resolvable."
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Validates that there are no duplicate entries with the same host:dir combination.
 ## Params: None
 
@@ -315,10 +526,11 @@ function validateHostsAndDirsAreUnique() {
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Validates that there are no duplicate entries with the same host:port combination.
+## Validates that there are no duplicate entries with the same host:port
+## combination for both internal and client ports.
 ## Params: None
 
-function validateHostsAndPortsAreUnique() {
+function validateHostsAndAllPortsAreUnique() {
 
   local nodeName
   local host
@@ -331,20 +543,31 @@ function validateHostsAndPortsAreUnique() {
   do
 
     host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
-    port="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_PORT_KEY}")"
+    internal_port="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_INTERNAL_PORT_KEY}")"
+    client_port="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_CLIENT_PORT_KEY}")"
 
-    key="${host}:${port}"
+    key1="${host}:${internal_port}"
+    key2="${host}:${client_port}"
+
+    if [ "${internal_port}" -eq "${client_port}" ]; then
+      errorExit "Internal port number cannot be the same as the client port number on ${nodeName}: ${key1}"
+    fi
 
     # Check if the value for this key is not set.
-    if [ "${map[${key}]:-x}" != "x" ]; then
-      errorExit "Non-unique host:port combination for the following nodes:" "${map[${key}]}" "${nodeName}"
+    if [ "${map[${key1}]:-x}" != "x" ]; then
+      errorExit "Non-unique host:internal_port combination (${key1}) for the following nodes:" "${map[${key1}]}" "${nodeName}"
+    fi
+
+    if [ "${map[${key2}]:-x}" != "x" ]; then
+      errorExit "Non-unique host:client_port combination (${key2}) for the following nodes:" "${map[${key2}]}" "${nodeName}"
     fi
 
     # Set the value for this key.
-    map[${key}]="${nodeName}"
+    map[${key1}]="${nodeName}"
+    map[${key2}]="${nodeName}"
   done
 
-  # We're all good. All host:port combinations are unique.
+  # We're all good. All host:{internal|client}_port combinations are unique.
 }
 
 
@@ -377,8 +600,7 @@ function validateHostsReachableBySsh() {
   do
 
     host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
-    #sshArgs=("-q" "-o" "StrictHostKeyChecking no" "-o" "PasswordAuthentication no" "-o" "ConnectTimeout 10" "${host}" "exit" "0")
-    sshArgs=("-o" "PasswordAuthentication no" "-o" "ConnectTimeout 10" "${host}" "exit" "0")
+    sshArgs=("${SSH_COMMON_OPTIONS[@]}" "-o" "PasswordAuthentication no" "-o" "ConnectTimeout 10" "${host}" "exit" "0")
 
     # Run it, in parallel
     (
@@ -402,6 +624,106 @@ function validateHostsReachableBySsh() {
   done
 
   debugPrint "Successfully validated that all nodes can be reached by SSH."
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Check that the installer is not inside a target installation directory
+## as that directory will be wiped, including the installer.
+## Params:
+##  $@ - (optional) the list of node names to check. If not set then check all.
+
+function validateInstallerNotInInstallDir() {
+
+  if [ -z "${INSTALL_FILE:-}" ]; then
+    # No install file, no problem!
+    return
+  fi
+
+  if ! [ -f "${INSTALL_FILE}" ]; then
+    # File doesn't exist. This shouldn't happen.
+    return
+  fi
+
+  local -a nodeNames;
+
+    if [ "$#" -eq 0 ]; then
+      nodeNames=( "${NODE_LIST[@]}" )
+    else
+      nodeNames=( "$@" )
+    fi
+
+  local nodeName
+  local host
+  local path
+
+  for nodeName in "${nodeNames[@]}"
+  do
+    host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+    path="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
+
+    # For each node...
+    # We first check if the path of the installer is underneath any of the
+    # installation paths.
+    # If it is then we need to check if the $host represents the current machine.
+    # This is non-trivial because a machine can have multiple addresses that resolve
+    # to it that are distinct from the hostname of the machine. e.g. multiple IP
+    # addresses, DNS A records, DNS C records, fully-qualified names vs non-qualified
+    # names, etc. The easiest thing to do is to create a temporary file locally and
+    # then SSH to each node and see if that file exists. If it does then we are on
+    # that node.
+
+    # Is the path of the installer underneath that of the installation path.
+    # Canonicalise both paths so that symlinks don't give a false result.
+
+    case "$(realpath -m "${INSTALL_FILE}")" in
+
+      $(realpath -m "${path}")/*)
+        # Installer IS under the installation path.
+        # We now need to check if $host represents the current machine.
+        if isHostTheCurrentMachine "${host}"; then
+          errorExit "The installer cannot be run when it exists underneath one of the installation paths: ${nodeName} ; ${host}:${path}"
+        fi
+        ;;
+
+      *)
+        # Installer is not under the installation path
+        continue
+        ;;
+    esac
+  done
+
+  # We're all good.
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Returns a zero exit code if the host given by $1 is the same as the current
+## machine, otherwise a non-zero exit code is returned.
+## Params:
+##  $1 - A hostname or IP address to check.
+
+function isHostTheCurrentMachine() {
+  local host="$1"
+
+  # Create a temporary file with a unique and random name
+  local tempfile
+  tempfile="$(mktemp /tmp/tmp.rapidsse.XXXXXXXX)"
+
+  local retVal=1
+
+  # SSH to $host and check for the existence of the file
+  sshArgs=("${SSH_COMMON_OPTIONS[@]}" "-o" "PasswordAuthentication=no" "-o" "ConnectTimeout=10" "${host}" "ls" "${tempfile}")
+
+  if ssh "${sshArgs[@]}" &>/dev/null; then
+    # $host does indeed represent the current machine
+    retVal=0
+  fi
+
+  # Cleanup the temporary file
+  rm -f "${tempfile}"
+
+  return "${retVal}"
 }
 
 
@@ -441,11 +763,11 @@ function validateSENotRunning() {
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Validate that the port specified for each node is not currently in use.
+## Validate that the TCP internal port specified for each node is not currently in use.
 ## Params:
 ##  $@ - (optional) the list of node names to check. If not set then check all.
 
-function validatePortsNotInUse() {
+function validateInternalPortNotInUse() {
 
   local -a nodeNames;
 
@@ -457,7 +779,7 @@ function validatePortsNotInUse() {
 
   local nodeName
   local host
-  local port
+  local internal_port
   local remoteCmd
   local output
 
@@ -467,11 +789,11 @@ function validatePortsNotInUse() {
   for nodeName in "${nodeNames[@]}"
   do
     host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
-    port="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_PORT_KEY}")"
+    internal_port="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_INTERNAL_PORT_KEY}")"
 
-    remoteCmd="which nc &>/dev/null && nc -z 127.0.0.1 ${port} && echo \"PORT_IN_USE\""
+    remoteCmd="which nc &>/dev/null && nc -z 127.0.0.1 ${internal_port} && echo \"PORT_IN_USE\""
 
-    sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "bash" "-c" "'${remoteCmd}'")
+    sshArgs=("${SSH_COMMON_OPTIONS[@]}" "${host}" "bash -c '${remoteCmd}'")
 
     # Run it
     output="$(ssh "${sshArgs[@]}" || true)"
@@ -482,13 +804,69 @@ function validatePortsNotInUse() {
   done
 
   if [ "${#failedNodes[@]}" -gt 0 ]; then
-    local errMsg="The port specified for RapidsSE is already in use on the following nodes:"
+    local errMsg="The internal port specified for RapidsSE is already in use on the following nodes:"
     
     for nodeName in "${failedNodes[@]}"
     do
       host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
-      port="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_PORT_KEY}")"
-      errMsg+="$(printf "\n  %-12s %12s:%s" "${nodeName}" "${host}" "${port}")"
+      internal_port="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_INTERNAL_PORT_KEY}")"
+      errMsg+="$(printf "\n  %-12s %12s:%s" "${nodeName}" "${host}" "${internal_port}")"
+    done
+
+    errorExit "${errMsg}"
+  fi
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Validate that the TCP client port specified for each node is not currently in use.
+## Params:
+##  $@ - (optional) the list of node names to check. If not set then check all.
+
+function validateClientPortNotInUse() {
+
+  local -a nodeNames;
+
+  if [ "$#" -eq 0 ]; then
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    nodeNames=( "$@" )
+  fi
+
+  local nodeName
+  local host
+  local client_port
+  local remoteCmd
+  local output
+
+  declare -a sshArgs=()
+  declare -a failedNodes=()
+
+  for nodeName in "${nodeNames[@]}"
+  do
+    host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+    client_port="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_CLIENT_PORT_KEY}")"
+
+    remoteCmd="which nc &>/dev/null && nc -z 127.0.0.1 ${client_port} && echo \"PORT_IN_USE\""
+
+    sshArgs=("${SSH_COMMON_OPTIONS[@]}" "${host}" "bash -c '${remoteCmd}'")
+
+    # Run it
+    output="$(ssh "${sshArgs[@]}" || true)"
+
+    if [ "${output}" = "PORT_IN_USE" ]; then
+      failedNodes+=("${nodeName}")
+    fi
+  done
+
+  if [ "${#failedNodes[@]}" -gt 0 ]; then
+    local errMsg="The client port specified for RapidsSE is already in use on the following nodes:"
+    
+    for nodeName in "${failedNodes[@]}"
+    do
+      host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+      client_port="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_CLIENT_PORT_KEY}")"
+      errMsg+="$(printf "\n  %-12s %12s:%s" "${nodeName}" "${host}" "${client_port}")"
     done
 
     errorExit "${errMsg}"
@@ -556,8 +934,9 @@ function validateShmAgainstRAM() {
     host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
     nodeShm="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_MEM_KEY}")"
     ram="${NODE_TOTAL_MEM[${nodeName}]}"
-  
-    if [ "$(echo "${nodeShm} > (0.95 * ${ram})" | bc -l)" -eq 1 ]; then
+
+    if [ "$(echo "${nodeShm} > (0.95 * ${ram})" | bc -l)" -eq 1 ] &&
+       [ "$(echo "${nodeShm} > (${ram} - 10)" | bc -l)" -eq 1 ]; then  
       errorExit "The shared memory allocated for RapidsSE (${nodeShm}GB) on ${nodeName} [host ${host}] exceeds 95% of total RAM on that host (${ram}GB)."
     fi
   done
@@ -764,7 +1143,7 @@ function validateInstallDirIsWritable() {
 		EOF
     )"
 
-    sshCmd=( "ssh" "-q" "${host}" "bash" "-c" "'${remoteCmd}'" )
+    sshCmd=( "ssh" "${SSH_COMMON_OPTIONS[@]}" "${host}" "bash -c '${remoteCmd}'" )
 
     debugPrint "About to validate the installation directory on node ${nodeName} with the command: ${sshCmd[*]}"
 
@@ -860,10 +1239,10 @@ function validateGcc() {
 
     remoteCmd="which gcc &>/dev/null && gcc -dumpversion 2>/dev/null"
 
-    sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "bash" "-c" "'${remoteCmd}'")
+    sshArgs=("${SSH_COMMON_OPTIONS[@]}" "${host}" "bash -c '${remoteCmd}'")
 
     # Run it and check if it returned with a success error code
-    if ! output="$(ssh "${sshArgs[@]}" || true)" ; then
+    if ! output="$(ssh "${sshArgs[@]}")" ; then
       failedNodes+=("${nodeName}")
       continue
     fi
@@ -926,12 +1305,12 @@ function validateLibAtomic() {
   do
     host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
 
-    remoteCmd="/usr/sbin/ldconfig -p | grep libatomic.so.1"
+    remoteCmd="PATH=\${PATH}:/usr/sbin:/sbin ldconfig -p | grep libatomic.so.1"
 
-    sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "bash" "-c" "'${remoteCmd}'")
+    sshArgs=("${SSH_COMMON_OPTIONS[@]}" "${host}" "${remoteCmd}")
 
     # Run it and check if it returned with a success error code
-    if ! ssh "${sshArgs[@]}" &>/dev/null; then
+    if ! response="$(ssh "${sshArgs[@]}" &>/dev/null)"; then
       failedNodes+=("${nodeName}")
       continue
     fi
@@ -953,7 +1332,6 @@ function validateLibAtomic() {
   fi
 }
 
-#
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Check that bash is installed and is new enough on each node.
@@ -987,10 +1365,10 @@ function validateBash() {
     # shellcheck disable=SC2016
     remoteCmd='which bash &>/dev/null && echo "${BASH_VERSINFO[0]}.${BASH_VERSINFO[1]}.${BASH_VERSINFO[2]}" 2>/dev/null'
 
-    sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "bash" "-c" "'${remoteCmd}'")
+    sshArgs=("${SSH_COMMON_OPTIONS[@]}" "${host}" "bash -c '${remoteCmd}'")
 
     # Run it and check if it returned with a success error code
-    if ! output="$(ssh "${sshArgs[@]}" || true)" ; then
+    if ! output="$(ssh "${sshArgs[@]}")" ; then
       failedNodes+=("${nodeName}")
       continue
     fi
@@ -1023,59 +1401,6 @@ function validateBash() {
   fi
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Check that netcat (nc) is installed on each node.
-## Params:
-##  $@ - (optional) the list of node names to check. If not set then check all.
-
-function validateNetcat() {
-
-  local -a nodeNames;
-
-  if [ "$#" -eq 0 ]; then
-    nodeNames=( "${NODE_LIST[@]}" )
-  else
-    nodeNames=( "$@" )
-  fi
-
-  local nodeName
-  local host
-  local remoteCmd
-  local output
-
-  declare -a sshArgs=()
-  declare -a failedNodes=()
-
-  debugPrint "Validating netcat is installed"
-
-  for nodeName in "${nodeNames[@]}"
-  do
-    host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
-
-    #shellcheck disable=SC2016
-    remoteCmd="which nc &>/dev/null"
-
-    sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "bash" "-c" "'${remoteCmd}'")
-
-    # Run it and check if it returned with a success error code
-    if ! output="$(ssh "${sshArgs[@]}" || true)" ; then
-      failedNodes+=("${nodeName}")
-      continue
-    fi
-  done
-
-  if [ "${#failedNodes[@]}" -gt 0 ]; then
-    local errMsg="Netcat is not installed on the following nodes:"
-
-    for nodeName in "${failedNodes[@]}"
-    do
-      host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
-      errMsg+="$(printf "\n  %-12s [host: %12s]" "${nodeName}" "${host}")"
-    done
-
-    errorExit "${errMsg}"
-  fi
-}
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Check that ss utility is installed on each node.
@@ -1107,12 +1432,12 @@ function validateSs() {
     host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
 
     #shellcheck disable=SC2016
-    remoteCmd='export PATH=${PATH}:/usr/sbin which ss &>/dev/null'
+    remoteCmd='PATH=${PATH}:/usr/sbin which ss &>/dev/null'
 
-    sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "bash" "-c" "'${remoteCmd}'")
+    sshArgs=("${SSH_COMMON_OPTIONS[@]}" "${host}" "bash -c '${remoteCmd}'")
 
     # Run it and check if it returned with a success error code
-    if ! output="$(ssh "${sshArgs[@]}" || true)" ; then
+    if ! output="$(ssh "${sshArgs[@]}")" ; then
       failedNodes+=("${nodeName}")
       continue
     fi
@@ -1129,6 +1454,167 @@ function validateSs() {
 
     errorExit "${errMsg}"
   fi
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Check that ldconfig utility is installed on each node.
+## Params:
+##  $@ - (optional) the list of node names to check. If not set then check all.
+
+function validateLdconfig() {
+
+  local -a nodeNames;
+
+  if [ "$#" -eq 0 ]; then
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    nodeNames=( "$@" )
+  fi
+
+  local nodeName
+  local host
+  local remoteCmd
+  local output
+
+  declare -a sshArgs=()
+  declare -a failedNodes=()
+
+  debugPrint "Validating ldconfig is installed"
+
+  for nodeName in "${nodeNames[@]}"
+  do
+    host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+
+    #shellcheck disable=SC2016
+    remoteCmd='PATH=${PATH}:/usr/sbin:/sbin which ldconfig &>/dev/null'
+
+    sshArgs=("${SSH_COMMON_OPTIONS[@]}" "${host}" "bash -c '${remoteCmd}'")
+
+    # Run it and check if it returned with a success error code
+    if ! output="$(ssh "${sshArgs[@]}")" ; then
+      failedNodes+=("${nodeName}")
+      continue
+    fi
+  done
+
+  if [ "${#failedNodes[@]}" -gt 0 ]; then
+    local errMsg="ldconfig is not installed on the following nodes:"
+
+    for nodeName in "${failedNodes[@]}"
+    do
+      host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+      errMsg+="$(printf "\n  %-12s [host: %12s]" "${nodeName}" "${host}")"
+    done
+
+    errorExit "${errMsg}"
+  fi
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Check that a given command line tool is installed on each node.
+## Params:
+##  $1 - the name of the tool to check
+##  $@ - (optional) the list of node names to check. If not set then check all.
+
+function validateCommandLineToolExists() {
+
+  local tool="$1"
+  shift
+
+  local -a nodeNames;
+
+  if [ "$#" -eq 0 ]; then
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    nodeNames=( "$@" )
+  fi
+
+  local nodeName
+  local host
+  local remoteCmd
+  local output
+
+  declare -a sshArgs=()
+  declare -a failedNodes=()
+
+  debugPrint "Validating ${tool} is installed"
+
+  for nodeName in "${nodeNames[@]}"
+  do
+    host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+
+    #shellcheck disable=SC2016
+    remoteCmd="which ${tool} &>/dev/null"
+
+    sshArgs=("${SSH_COMMON_OPTIONS[@]}" "${host}" "bash -c '${remoteCmd}'")
+
+    # Run it and check if it returned with a success error code
+    if ! output="$(ssh "${sshArgs[@]}")" ; then
+      failedNodes+=("${nodeName}")
+      continue
+    fi
+  done
+
+  if [ "${#failedNodes[@]}" -gt 0 ]; then
+    local errMsg="${tool} is not installed on the following nodes:"
+
+    for nodeName in "${failedNodes[@]}"
+    do
+      host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+      errMsg+="$(printf "\n  %-12s [host: %12s]" "${nodeName}" "${host}")"
+    done
+
+    errorExit "${errMsg}"
+  fi
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Check that the local machine has the basic 3rd party tools installed.
+## These are used by the installer.
+## Params: None
+
+function validateLocal3rdPartyTools() {
+
+  validateLocalBash
+
+  local mandatoryTools=("ssh" "tar" "bc" "cut" "printf" "sort" "awk")
+  local oneOfDnsTools=("nslookup" "dig" "getent")
+  local oneOfCpuTools=("nproc" "getconf")
+
+  for tool in "${mandatoryTools[@]}"; do
+    if ! which "${tool}" &>/dev/null; then
+      errorExit "Cannot find the command line tool ${tool} needed for the installation."
+    fi
+  done
+
+  # Check for one of the DNS tools: nslookup, dig, getent
+  local gotDnsTool=0
+  for tool in "${oneOfDnsTools[@]}"; do
+    if which "${tool}" &>/dev/null; then
+      gotDnsTool=1
+      break
+    fi
+  done
+
+  if [ "${gotDnsTool}" -eq 0 ]; then
+    prettyList="$(arrayToCommaSeparatedString "${oneOfDnsTools[@]}")"
+    errorExit "At least one of the following tools must be installed for the installation to proceed: ${prettyList}"
+  fi
+
+  # Check for one of the CPU tools: nproc, getconf
+  local gotCpuTool=0
+  for tool in "${oneOfCpuTools[@]}"; do
+    if which "${tool}" &>/dev/null; then
+      gotCpuTool=1
+      break
+    fi
+  done
+
+  if [ "${gotCpuTool}" -eq 0 ]; then
+    prettyList="$(arrayToCommaSeparatedString "${oneOfCpuTools[@]}")"
+    errorExit "At least one of the following tools must be installed for the installation to proceed: ${prettyList}"
+  fi
+
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1256,8 +1742,9 @@ function validateFirewallSequential() {
 
     server="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
     client="${firstHost}"  # by default
-    internalPort="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_PORT_KEY}")"
-    heartbeatPort="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HEARTBEAT_KEY}")"
+    internalPort="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_INTERNAL_PORT_KEY}")"
+    clientPort="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_CLIENT_PORT_KEY}")"
+    heartbeatPort="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HEARTBEAT_PORT_KEY}")"
 
     # Ensure we don't try to test the firewall of the current host from the current host
     if [ "${server}" = "${client}" ]; then
@@ -1266,19 +1753,21 @@ function validateFirewallSequential() {
 
     # Test the main internal TCP port. This either succeeds or fails. Ignore stderr output.
     local tcpResult
-    debugPrint "Sequential TCP: ${server}:${internalPort}"
-    if ! checkFirewallTcp "${client}" "${server}" "${internalPort}" 2>/dev/null ; then
-      tcpResult="$?"
+    for port in "${internalPort}" "${clientPort}"; do
+      debugPrint "Sequential TCP: ${server}:${port}"
+      if ! checkFirewallTcp "${client}" "${server}" "${port}" 2>/dev/null ; then
+        tcpResult="$?"
 
-      if [ "${tcpResult}" -eq 2 ]; then
-        # TCP socket is already in use. This is an error
-        errorList+=( "${server}:${internalPort}  (TCP port already in use by another process on host)" )
+        if [ "${tcpResult}" -eq 2 ]; then
+          # TCP socket is already in use. This is an error
+          errorList+=( "${server}:${port}/TCP  (TCP port already in use by another process on host)" )
 
-      else
-        # Socket is blocked. Add to failed node/socket list
-        errorList+=( "${server}:${internalPort}  (TCP port may be blocked)" )
+        else
+          # Socket is blocked. Add to failed node/socket list
+          errorList+=( "${server}:${port}/TCP  (TCP port may be blocked)" )
+        fi
       fi
-    fi
+    done
 
     # Test the heartbeat UDP port. This may be indeterminant if another process
     # is using the socket, so we need to cater for that. Ignore stderr output.
@@ -1289,11 +1778,15 @@ function validateFirewallSequential() {
 
       if [ "${udpResult}" -eq 2 ] ; then
         # UDP socket is already in use. Add to warning node/socket list
-        warningList+=( "${server}:${heartbeatPort}  (UDP port already in use by another process on host)" )
+        warningList+=( "${server}:${heartbeatPort}/UDP  (UDP port already in use by another process on host)" )
+
+      elif [ "${udpResult}" -eq 3 ] ; then
+        # UDP port was not tested because of a missing pre-requisite.
+        warningList+=( "${server}:${heartbeatPort}/UDP  (UDP port not tested due to missing python interpreter)" )
 
       else
         # Socket is likely blocked. Add to failed node/socket list
-        errorList+=( "${server}:${heartbeatPort}  (UDP port may be blocked)" )
+        errorList+=( "${server}:${heartbeatPort}/UDP  (UDP port may be blocked)" )
       fi
     fi
   done
@@ -1312,22 +1805,28 @@ function validateFirewallSequential() {
       errMsg+="\n  ${host}"
     done
 
+    echo
     printError "${errMsg}"
   fi
 
   if [ "${#warningList[@]}" -gt 0 ]; then
     local warningMsg
-    warningMsg="RapidsSE was not able to determine if the following UDP ports were accessible through the host's firewall."
+    warningMsg="RapidsSE was not able to determine if the following UDP ports were accessible through the host's firewall.\n"
     warningMsg+="RapidsSE requires these ports to be open."
     for host in "${warningList[@]}"; do
       warningMsg+="\n  ${host}"
     done
 
+    echo
     printWarning "${warningMsg}"
   fi
 
   if [ "${#errorList[@]}" -gt 0 ]; then
     exit 1
+  fi
+
+  if [ "${#errorList[@]}" -eq 0 ] && [ "${#warningList[@]}" -gt 0 ]; then 
+    echo -e "\nInstallation can continue with the above warnings, but they may prevent RapidsSE from starting correctly."
   fi
 
   # Otherwise continue on warnings
@@ -1420,23 +1919,26 @@ function validateFirewallParallel() {
   for nodeName in "${nodeNames[@]}"; do
     server="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
     client="${firstHost}"  # by default
-    port="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_PORT_KEY}")"
+    internalPort="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_INTERNAL_PORT_KEY}")"
+    clientPort="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_CLIENT_PORT_KEY}")"
 
-    debugPrint "Parallel TCP: ${server}:${port}"
+    for port in "${internalPort}" "${clientPort}"; do
+      debugPrint "Parallel TCP: ${server}:${port}"
 
-    # Ensure we don't try to test the firewall of the current host from the current host
-    if [ "${server}" = "${client}" ]; then
-      client="${alternateHost}"
-    fi
+      # Ensure we don't try to test the firewall of the current host from the current host
+      if [ "${server}" = "${client}" ]; then
+        client="${alternateHost}"
+      fi
 
-    (checkFirewallTcp "${client}" "${server}" "${port}" 2>/dev/null) &
-    pid="$!"
+      (checkFirewallTcp "${client}" "${server}" "${port}" 2>/dev/null) &
+      pid="$!"
 
-    jobPids+=( "${pid}" )
-    jobParams["${pid}_server"]="${server}"
-    jobParams["${pid}_client"]="${client}"
-    jobParams["${pid}_port"]="${port}"
-    jobParams["${pid}_protocol"]="TCP"
+      jobPids+=( "${pid}" )
+      jobParams["${pid}_server"]="${server}"
+      jobParams["${pid}_client"]="${client}"
+      jobParams["${pid}_port"]="${port}"
+      jobParams["${pid}_protocol"]="TCP"
+    done
   done
 
   # The Heartbeat UDP tests all run on the same port, so we only need to consider
@@ -1446,7 +1948,7 @@ function validateFirewallParallel() {
   local -a sequentialServers=()
   mapfile -t sequentialServers < <(nonUniqueHosts "${nodeNames[@]}")
 
-  if [ -z "${sequentialServers[@]:-}" ]; then
+  if [ -z "${sequentialServers[*]:-}" ]; then
     sequentialServers=()
   fi
   
@@ -1455,10 +1957,10 @@ function validateFirewallParallel() {
 
     server="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
     client="${firstHost}"  # by default
-    port="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HEARTBEAT_KEY}")"
+    port="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HEARTBEAT_PORT_KEY}")"
 
     # Skip any sequential hosts
-    if [ "${#sequentialServers[@]}" -eq 0 ] || isValueInArray "${server}" "${sequentialServers[@]:-}"; then
+    if [ "${#sequentialServers[@]}" -ne 0 ] && isValueInArray "${server}" "${sequentialServers[@]:-}"; then
       continue
     fi
 
@@ -1480,7 +1982,7 @@ function validateFirewallParallel() {
   done
 
   # Launch all of the non-unique server name UDP tests sequentially and collate results
-  port="$(nodeCfgGetValue "${nodeNames[0]}" "${NODE_CFG_HEARTBEAT_KEY}")"
+  port="$(nodeCfgGetValue "${nodeNames[0]}" "${NODE_CFG_HEARTBEAT_PORT_KEY}")"
   if [ "${#sequentialServers[@]}" -gt 0 ]; then
     for server in "${sequentialServers[@]}"; do
       client="${firstHost}"  # by default
@@ -1500,11 +2002,15 @@ function validateFirewallParallel() {
 
         if [ "${udpResult}" -eq 2 ] ; then
           # UDP socket is already in use. Add to warning node/socket list
-          warningList+=( "${server}:${port}  (UDP port already in use by another process on host)" )
+          warningList+=( "${server}:${port}/UDP  (UDP port already in use by another process on host)" )
+
+        elif [ "${udpResult}" -eq 3 ] ; then
+          # UDP port was not tested because of a missing pre-requisite.
+          warningList+=( "${server}:${port}/UDP  (UDP port not tested due to missing python interpreter)" )
 
         else
           # Socket is likely blocked. Add to failed node/socket list
-          errorList+=( "${server}:${port}  (UDP port may be blocked)" )
+          errorList+=( "${server}:${port}/UDP  (UDP port may be blocked)" )
         fi
       fi
     done
@@ -1529,15 +2035,19 @@ function validateFirewallParallel() {
 
       # For TCP this is an error. For UDP it is a warning.
       if [ "${protocol}" = "TCP" ]; then
-        errorList+=( "${server}:${port}  (TCP port already in use by another process on host)" )
+        errorList+=( "${server}:${port}/${protocol}  (TCP port already in use by another process on host)" )
       else
-        warningList+=( "${server}:${port}  (UDP port already in use by another process on host)" )
+        warningList+=( "${server}:${port}/${protocol}  (UDP port already in use by another process on host)" )
       fi
       # TCP socket is already in use. This is an error
 
+    elif [ "${pidResult}" -eq 3 ] && [ "${protocol}" = "UDP"  ]; then
+      # UDP port was not tested because of a missing pre-requisite.
+      warningList+=( "${server}:${port}/${protocol}  (UDP port not tested due to missing python interpreter)" )
+
     else
       # Socket is blocked. Add to failed node/socket list
-      errorList+=( "${server}:${port}  (${protocol} port may be blocked)" )
+      errorList+=( "${server}:${port}/${protocol}  (${protocol} port may be blocked)" )
     fi
   done
 
@@ -1556,22 +2066,28 @@ function validateFirewallParallel() {
       errMsg+="\n  ${host}"
     done
 
+    echo
     printError "${errMsg}"
   fi
 
   if [ "${#warningList[@]}" -gt 0 ]; then
     local warningMsg
-    warningMsg="RapidsSE was not able to determine if the following UDP ports were accessible through the host's firewall."
+    warningMsg="RapidsSE was not able to determine if the following UDP ports were accessible through the host's firewall.\n"
     warningMsg+="RapidsSE requires these ports to be open."
     for host in "${warningList[@]}"; do
       warningMsg+="\n  ${host}"
     done
 
+    echo
     printWarning "${warningMsg}"
   fi
 
   if [ "${#errorList[@]}" -gt 0 ]; then
     exit 1
+  fi
+
+  if [ "${#errorList[@]}" -eq 0 ] && [ "${#warningList[@]}" -gt 0 ]; then
+    echo -e "\nInstallation can continue with the above warnings, but they may prevent RapidsSE from starting correctly."
   fi
 
   # Otherwise continue on warnings
@@ -1591,7 +2107,7 @@ function validateFirewallParallel() {
 
 function checkFirewallTcp() {
 
-  [ "$#" -eq 3 ] || errorExit "Invalid number of arguments to function testFirewallTcp()."
+  [ "$#" -eq 3 ] || errorExit "Invalid number of arguments to function checkFirewallTcp()."
 
   local client="$1"
   local server="$2"
@@ -1603,7 +2119,8 @@ function checkFirewallTcp() {
   # used on the server.
   local -a cmdServerSocketInUse=()
   cmdServerSocketInUse+=( "ssh"
-                          "-q" "${server}"
+                          "${SSH_COMMON_OPTIONS[@]}"
+                          "${server}"
                           "nc" "-z" "localhost" "${port}"
                           "&>/dev/null" )
 
@@ -1619,7 +2136,8 @@ function checkFirewallTcp() {
   local -a cmdServerTask=()
   local cmdServerPid
   cmdServerTask+=( "ssh"
-                   "-q" "${server}"
+                   "${SSH_COMMON_OPTIONS[@]}"
+                   "${server}"
                    "nc" "-l" "${port}" "&>/dev/null" "&" "echo" '$!' )
 
   debugPrint "About to execute the following command to start a TCP netcat server on host ${server}:${port} :"
@@ -1634,7 +2152,8 @@ function checkFirewallTcp() {
   local -a cmdClientTask=()
   local exitCode=0
   cmdClientTask+=( "ssh"
-                   "-q" "${client}"
+                   "${SSH_COMMON_OPTIONS[@]}"
+                   "${client}"
                    "nc" "-z" "${server}" "${port}" )
 
   debugPrint "About to execute the following command to start a netcat client on TCP host ${client}:${port} :"
@@ -1648,7 +2167,7 @@ function checkFirewallTcp() {
 
   # Kill nc on the server
   local -a cmdServerKill
-  cmdServerKill=( "ssh" "-q" "${server}" "kill" "-9" "${cmdServerPid}" "&>/dev/null" )
+  cmdServerKill=( "ssh" "${SSH_COMMON_OPTIONS[@]}" "${server}" "kill" "-9" "${cmdServerPid}" "&>/dev/null" )
   "${cmdServerKill[@]}" || true
 
   # Return the appropriate exit code
@@ -1663,13 +2182,41 @@ function checkFirewallTcp() {
 ##  $2 - hostname of the server that is listening for the connection and whose
 ##       firewall we are testing for.
 ##  $3 - UDP/IP port number to use.
-## Returns: exit code 0 if the two hostnames can communicate,
-##          exit code 1 if the two hostnames cannot communicate,
-##          exit code 2 if a process is already using the given port on the server
+## Returns: exit code 0 if communication was attempted and the two hostnames can communicate,
+##          exit code 1 if communication was attempted and the two hostnames cannot communicate,
+##          exit code 2 if a process is already using the given port on the host
+##          exit code 3 if communication was not attempted because of a missing pre-requisite
 
 function checkFirewallUdp() {
 
-  [ "$#" -eq 3 ] || errorExit "Invalid number of arguments to function testFirewallTcp()."
+  # I really wanted to do this test using native linux commands using nc. However the mechanism
+  # used needs to work on all platforms, which starts at CentOS 7. The version of nc used on
+  # CentOS 7 is quite old and very different to modern nc versions. Different command line parameters
+  # are supported and the behaviour is vastly different as well. There isn't one common denominator
+  # we can use that will also work in a noisy UDP environment (where nc may receive UDP messages
+  # from other SE clusters on the network).
+  #
+  # So the solution is to use Python, if it is installed, to check the UDP port accessibility
+  # because it's much more consistent to write the code to do so. A CentOS 7 minimal installation
+  # does include a Python interpreter by default. However the Python code needs to work across
+  # a Python 2 and a Python 3 interpreter as some machines will have one or the other. So we
+  # need to write it carefully.
+  #
+  # The idea is to copy a Python script to a client (sender) and copy a separate Python script
+  # to a server (receiver). Invoke both and the server (receiver) will filter out spurious
+  # messages and write the expected message to a file. If that file is non-empty then we've got
+  # successful UDP communication between the two hosts on a given port.
+  #
+  # It's also possible that one or both hosts involved here don't have Python installed. In that
+  # case we will generate a warning but let them continue to install SE. We don't want to have a
+  # hard dependency on Python.
+  #
+  # Its also possible that there is a program already on the server (receiving) node that is
+  # listening on the given UDP port (e.g. from a separate cluster). In that case we cannot
+  # determine if the UDP port is accessible across the firewall because that separate program
+  # will eat any UDP messages we send through, and the test will be indeterminate.
+
+  [ "$#" -eq 3 ] || errorExit "Invalid number of arguments to function checkFirewallUdp()."
 
   local client="$1"
   local server="$2"
@@ -1686,7 +2233,8 @@ function checkFirewallUdp() {
   # is in use.
   local -a cmdServerSocketInUse=()
   cmdServerSocketInUse+=( "ssh"
-                          "-q" "${server}"
+                          "${SSH_COMMON_OPTIONS[@]}"
+                          "${server}"
                           "export" 'PATH=${PATH}:/usr/sbin'
                           "&&"
                           "ss" "-lunH" "'( sport = ${port} )'" )
@@ -1699,115 +2247,369 @@ function checkFirewallUdp() {
 
   if [ "${responseServerSocketInUse:-x}" != "x" ]; then
     printError "Unable to determine if UDP port ${port} is opened in the firewall of host ${server} because the socket is currently being used by another process."
-    exit 2
+    return 2
   fi
 
-  debugPrint "The UDP port ${port} does not currently appear to be in use on host ${server}:"
+  debugPrint "The UDP port ${port} does not currently appear to be in use on host ${server}."
 
+  # Get the python interpreter to use on the server and client, or an empty string if there is none.
+  local serverPythonPath
+  local clientPythonPath
 
+  serverPythonPath="$(getPythonInterpreter "${server}")"
+  clientPythonPath="$(getPythonInterpreter "${client}")"
 
-  # Generate a string that will be send between client and server
-  local udpMessage="checkFirewallUdp:${server}:${port}:checkFirewallUdp"
-
-
-  # Create a temporary file on the server for saving data that is read off the socket
-  local -a cmdServerMakeTemp=()
-  cmdServerMakeTemp=( "ssh"
-                      "-q" "${server}"
-                      "mktemp" )
-
-  local responseServerMakeTemp
-  responseServerMakeTemp="$("${cmdServerMakeTemp[@]}")"
-
-  debugPrint "Temporary directory on the server for response data is ${server}:${responseServerMakeTemp}"
-
-
-  # Define the command to spawn nc on the server in the background.
-  local -a cmdServerTask=()
-  local cmdServerPid
-  cmdServerTask=( "ssh"
-                  "-q" "${server}"
-                  "nc" "-ul" "${port}" ">${responseServerMakeTemp}" "2>/dev/null" "&" "echo" '$!' )
-
-
-  debugPrint "About to execute the following command to start a UDP netcat server on host ${server}:${port} :"
-  debugPrint "${cmdServerTask[*]}"
-
-  cmdServerPid="$("${cmdServerTask[@]}")"
-
-  # Give the server a little bit of time to load.
-  sleep 1
-
-  # Define the command to spawn a client to try to send a message to the server.
-  # Note that some versions of netcat (*cough* CentOS 7) will return after sending
-  # the data on stdin. Others (*cough* Ubuntu20) will not. And they don't all support the
-  # command line option to exit on stdin EOF (or those arguments are different on
-  # different systems), so let's just save the pid and kill them anyway.
-  local -a cmdClientTask=()
-  local cmdClientPid
-  cmdClientTask=( "ssh"
-                  "-q" "${client}"
-                  "echo" "\"${udpMessage}\"" "|" "nc" "-u" "${server}" "${port}" "&>/dev/null" "&" "echo" '$!' )
-
-
-  debugPrint "About to execute the following command to start a UDP netcat client on host ${client} :"
-  debugPrint "${cmdClientTask[*]}"
-
-  # Run it in the background and collect it's pid.
-  cmdClientPid="$("${cmdClientTask[@]}")"
-
-  # Give the client a little bit of time to send the messages
-  sleep 1
-
-  # Now kill the nc on the remote client.
-  local -a cmdClientKill
-  cmdClientKill=( "ssh" "-q" "${client}" "kill" "-9" "${cmdClientPid}" "&>/dev/null" )
-  "${cmdClientKill[@]}" || true
-
-  # Check what the server read
-  local -a cmdServerReadData=()
-  cmdServerReadData=( "ssh"
-                      "-q" "${server}"
-                      "cat" "${responseServerMakeTemp}" "2>/dev/null" )
-
-  debugPrint "About to execute the following command to read data from server host ${server} :"
-  debugPrint "${cmdServerReadData[*]}"
-
-  local responseServerReadData
-  responseServerReadData="$("${cmdServerReadData[@]}")"
-
-  local exitCode=1;
-
-  if [ "${responseServerReadData:-x}" != "x" ]; then
-    while read -r line || [ -n "${line}" ]; do
-      debugPrint "Read line: ${line}"
-      if [[ "${line}" =~ ${udpMessage} ]]; then
-        exitCode=0
-        break
-      fi
-    done <<< "${responseServerReadData}"
+  if [ -z "${serverPythonPath}" ]; then
+    printWarning "Host ${server} does not have a python interpreter installed. Unable to check accessibility of UDP port ${port} from host ${client} to ${server}."
+    return 3
   fi
 
-  # Kill the server
-  local -a cmdServerKill
-  cmdServerKill=( "ssh" "-q" "${server}" "kill" "-9" "${cmdServerPid}" "&>/dev/null" )
-  "${cmdServerKill[@]}" || true
+  if [ -z "${clientPythonPath}" ]; then
+    printWarning "Host ${client} does not have a python interpreter installed. Unable to check accessibility of UDP port ${port} from host ${client} to ${server}."
+    return 3
+  fi
 
-  # Remove the temporary file
-  local -a cmdServerRemoveTemp=()
-  cmdServerRemoveTemp=( "ssh"
-                      "-q" "${server}"
-                      "rm" "-f" "${responseServerMakeTemp}" "&>/dev/null" )
+  # Make temporary directories on the server and client hosts
+  local serverTmpDir
+  local clientTmpDir
 
-  "${cmdServerRemoveTemp[@]}" || true
+  serverTmpDir="$(makeRemoteTempDir "${server}")" || errorExit "Unable to create a temporary directory on host ${server}"
+  clientTmpDir="$(makeRemoteTempDir "${client}")" || errorExit "Unable to create a temporary directory on host ${client}"
+
+  # Distribute and invoke UDP server and client processes
+  local serverPid
+  local clientPid
+
+  serverPid="$(invokeUdpServer "${server}" "${port}" "${serverTmpDir}" "${serverPythonPath}")"
+  clientPid="$(invokeUdpClient "${client}" "${server}" "${port}" "${clientTmpDir}" "${clientPythonPath}")"
+
+  # Give the client and server a little bit of time to do their thing.
+  sleep 1
+
+  # Check result
+  local exitCode=1
+  local checkResultTimeout=5
+
+  if checkUdpResult "${server}" "${serverTmpDir}" "${checkResultTimeout}" ; then
+    exitCode=0
+  fi
+
+  # Kill the server and client processes
+  local -a killCmd
+  killCmd=( "ssh" "${SSH_COMMON_OPTIONS[@]}" "${server}" "kill" "-9" "${serverPid}" "&>/dev/null" )
+  "${killCmd[@]}" || true
+
+  killCmd=( "ssh" "${SSH_COMMON_OPTIONS[@]}" "${client}" "kill" "-9" "${clientPid}" "&>/dev/null" )
+  "${killCmd[@]}" || true
+
+
+  # Finally, clean up the temporary directory that was created on both server and client
+  local -a cleanupCmd
+  cleanupCmd=( "ssh" "${SSH_COMMON_OPTIONS[@]}" "${server}" "rm" "-rf" "${serverTmpDir}" "&>/dev/null" )
+  "${cleanupCmd[@]}" || true
+
+  cleanupCmd=( "ssh" "${SSH_COMMON_OPTIONS[@]}" "${client}" "rm" "-rf" "${clientTmpDir}" "&>/dev/null" )
+  "${cleanupCmd[@]}" || true
 
   if [ "${exitCode}" -ne 0 ] ; then
     printError "UDP port ${port} may be blocked by a firewall on on host ${server}."
   fi
 
   # Return the result
+  debugPrint "Returning exit code ${exitCode}"
   return "${exitCode}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Returns the path of the python interpreter on a given node.
+## Params:
+##  $1 - hostname of the node in question.
+## Returns: the path of the python interpreter, or an empty string if there is none.
 
+function getPythonInterpreter() {
+
+  [ "$#" -eq 1 ] || errorExit "Invalid number of arguments to function getPythonInterpreter()."
+
+  local host
+  host="$1"
+
+  local pythonInterpreterPath
+  local -a pythonInterpreterCmd=()
+  pythonInterpreterCmd=( "ssh"
+                         "${SSH_COMMON_OPTIONS[@]}"
+                         "${host}"
+                         "which" "python3" "2>/dev/null" "||" "which" "python" "2>/dev/null" )
+
+
+  pythonInterpreterPath="$("${pythonInterpreterCmd[@]}")"
+
+  [ -n "${pythonInterpreterPath}" ] && echo "${pythonInterpreterPath}"
+  return 0
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Makes a temporary directory on a remote node and returns its pathReturns the path of the python interpreter on a given node.
+## Params:
+##  $1 - hostname of the node in question.
+## Returns: the path of the python interpreter, or an empty string if there is none.
+
+function makeRemoteTempDir() {
+
+  [ "$#" -eq 1 ] || errorExit "Invalid number of arguments to function makeRemoteTempDir()."
+
+  local host
+  host="$1"
+
+  local -a makeTempCmd=()
+  makeTempCmd=( "ssh"
+                "${SSH_COMMON_OPTIONS[@]}"
+                "${host}"
+                "mktemp" "-d" )
+
+  local makeTempResponse
+  makeTempResponse="$("${makeTempCmd[@]}")"
+
+  [ -n "${makeTempResponse}" ] && echo "${makeTempResponse}"
+  return 0
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Copies the UDP server to the server host and invokes it
+## Params:
+##  $1 - hostname of the node in question.
+##  $2 - UDP port number of the node in question.
+##  $3 - Temp dir to copy the code to
+##  $4 - Python interpreter path
+
+## Returns: the PID of the server process
+
+function invokeUdpServer() {
+
+  [ "$#" -eq 4 ] || errorExit "Invalid number of arguments to function invokeUdpServer()."
+
+  local server="$1"
+  local port="$2"
+  local tmpDir="$3"
+  local pythonPath="$4"
+
+  local tempFile
+  tempFile="$(mktemp)"
+
+  readonly remotePath="${tmpDir}/${UDP_RECEIVER_FILE}"
+
+  # Write the python code to a temporary file.
+  # Python code works on Python 2 and 3.
+  {
+    cat <<-EOF
+import sys
+import socket
+import os
+
+if len(sys.argv) != 3:
+    print("Usage: {0} host port".format(sys.argv[0]))
+    sys.exit(1)
+
+HOST = sys.argv[1]
+PORT = int(sys.argv[2])
+TEMPLATE = 'checkFirewallUdp:{0}:{1}:checkFirewallUdp'.format(HOST, PORT)
+OUT_FILE = 'dump.txt'
+OUT_PATH = os.path.dirname(os.path.realpath(__file__)) + "/" + OUT_FILE
+
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+s.bind(('', PORT))
+
+with open(OUT_PATH, "a") as f:
+    while 1:
+        (data, address) = s.recvfrom(1024)
+
+        if isinstance(data, bytes):
+            try:
+                data_str = str(data, 'utf-8')
+            except UnicodeDecodeError:
+                continue       # Ignore binary data received
+            except TypeError:  # bytes and str are identical in Python 2
+                data_str = data
+        else:
+            data_str = data
+
+        if data_str and data_str.strip() == TEMPLATE:
+            print("From address: {0} ; Got data: {1}".format(str(address), data_str))
+            f.write(data_str)
+            f.write("\n")
+            f.flush()
+EOF
+  } > "${tempFile}"
+
+  # Copy the temporary file to the remote node
+  local -a copyCmd=()
+  copyCmd=( "scp"
+            "${SSH_COMMON_OPTIONS[@]}"
+            "${tempFile}"
+            "${server}:${remotePath}")
+
+#  debugPrint "About to execute the following command to copy the UDP python server code to host ${server} :"
+#  debugPrint "${copyCmd[*]}"
+
+  "${copyCmd[@]}" || true
+
+  # Invoke the python code on the remote node
+  local -a invokeCmd=()
+  invokeCmd=( "ssh"
+              "${SSH_COMMON_OPTIONS[@]}"
+              "${server}"
+              "${pythonPath}" "${remotePath}" "${server}" "${port}" "&>/dev/null" "&" "echo" '$!')
+
+#  debugPrint "About to execute the following command to invoke the UDP python server code on host ${server} :"
+#  debugPrint "${invokeCmd[*]}"
+
+  local serverPid
+  serverPid="$("${invokeCmd[@]}")" || errorExit "Unable to invoke the server UDP port checking code with the command:\n${invokeCmd[*]}"
+
+  # Clean up the local temporary file used
+  rm -f "${tempFile}" || true
+
+  echo "${serverPid}"
+  return 0
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Copies the UDP client to the client host and invokes it
+## Params:
+##  $1 - hostname of the client in question.
+##  $2 - hostname of the server to send UDP packets to
+##  $3 - UDP port number of the node in question.
+##  $4 - Temp dir to copy the code to
+##  $5 - Python interpreter path
+
+## Returns: the PID of the server process
+
+function invokeUdpClient() {
+
+  [ "$#" -eq 5 ] || errorExit "Invalid number of arguments to function invokeUdpClient()."
+
+  local client="$1"
+  local server="$2"
+  local port="$3"
+  local tmpDir="$4"
+  local pythonPath="$5"
+
+  local tempFile
+  tempFile="$(mktemp)"
+
+  readonly remotePath="${tmpDir}/${UDP_SENDER_FILE}"
+
+  # Write the python code to a temporary file.
+  # Python code works on Python 2 and 3.
+  {
+    cat <<-EOF
+import sys
+import socket
+import time
+
+if len(sys.argv) != 3:
+    print("Usage: {0} host port".format(sys.argv[0]))
+    sys.exit(1)
+
+HOST = sys.argv[1]
+PORT = int(sys.argv[2])
+DATA='checkFirewallUdp:{0}:{1}:checkFirewallUdp'.format(HOST, PORT)
+
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+while True:
+#   print("Sending to address {0}:{1} Data: {2}".format(HOST, str(PORT), DATA))
+
+    try:
+        # Python 2
+        s.sendto(DATA, (HOST, PORT))
+    except TypeError:
+        # Python 3
+        s.sendto(bytes(DATA, 'utf-8'), (HOST, PORT))
+
+    time.sleep(1)
+EOF
+  } > "${tempFile}"
+
+  # Copy the temporary file to the remote node
+  local -a copyCmd=()
+  copyCmd=( "scp"
+            "${SSH_COMMON_OPTIONS[@]}"
+            "${tempFile}"
+            "${client}:${remotePath}")
+
+#  debugPrint "About to execute the following command to copy the UDP python client code to host ${client} :"
+#  debugPrint "${copyCmd[*]}"
+
+  "${copyCmd[@]}" || true
+
+  # Invoke the python code on the remote node
+  local -a invokeCmd=()
+  invokeCmd=( "ssh"
+              "${SSH_COMMON_OPTIONS[@]}"
+              "${client}"
+              "${pythonPath}" "${remotePath}" "${server}" "${port}" "&>/dev/null" "&" "echo" '$!')
+
+#  debugPrint "About to execute the following command to invoke the UDP python client code on host ${client} :"
+#  debugPrint "${invokeCmd[*]}"
+
+  local clientPid
+  clientPid="$("${invokeCmd[@]}")" || errorExit "Unable to invoke the client UDP port checking code with the command:\n${invokeCmd[*]}"
+
+  # Clean up the local temporary file used
+  rm -f "${tempFile}" || true
+
+  echo "${clientPid}"
+  return 0
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Copies the UDP client to the client host and invokes it
+## Params:
+##  $1 - hostname of the server receiving the UDP packets.
+##  $2 - Temp dir that the server operates in
+##  $3 - Max number of attempts, each 1 second apart
+
+## Returns: nothing. Just check the exit code
+function checkUdpResult() {
+
+  [ "$#" -eq 3 ] || errorExit "Invalid number of arguments to function checkUdpResult()."
+
+  local server="$1"
+  local tmpDir="$2"
+  local maxAttempts="$3"
+
+  local dumpFilePath="${tmpDir}/dump.txt"
+
+  local -a checkCmd=()
+  checkCmd=( "ssh"
+              "${SSH_COMMON_OPTIONS[@]}"
+              "${server}"
+              "wc" "-l" "${dumpFilePath}" "2>/dev/null" "|" "cut" "-d" "' '" "-f" "1")
+
+  local attempts=0
+  local exitCode=0
+
+  while [ "${attempts}" -lt "${maxAttempts}" ]; do
+    attempts=$((attempts + 1))
+
+    debugPrint "About to execute the following command to check the result of the UDP dump file on host ${client} :"
+    debugPrint "${checkCmd[*]}"
+
+    local numLines
+    numLines="$("${checkCmd[@]}")" || errorExit "Unable to check the result of the UDP dump file with the command:\n${checkCmd[*]}"
+
+    if [ -z "${numLines}" ] || [ "${numLines}" -eq 0 ]; then
+      exitCode=1
+
+    else
+      # Success!
+      exitCode=0
+      break
+    fi
+
+    sleep 1
+  done
+
+  return "${exitCode}"
+}

@@ -5,24 +5,6 @@
 " cmd_pipelineLocal.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* terminate this pipeline                                                    */
-/*----------------------------------------------------------------------------*/
-: pipelineLocal::termination
-
-  [ddlLock].testDrop
-
-  ListedJob[].assertNoRef
-
-  Path[].discardAll
-
-  [job].addRetired
-  [task].grabLock
-    [task].retire // does not queue onto exit demon
-
-  HAZARD
-;
-
-/*----------------------------------------------------------------------------*/
 /* execute on local node                                                      */
 /*----------------------------------------------------------------------------*/
 : pipelineLocal::local
@@ -42,6 +24,28 @@
     <cmd> "pipelineLocal::origin: %v\n" .printf
     //[system].bpa
   then
+/*
+  [job].preExecuteLocal to ErrorCode[]
+  ErrorCode[] if
+    ErrorCode[] [job].error!
+    [ddlLock].testDrop
+
+    ListedJob[].assertNoRef
+
+    Path[].discardAll
+
+    [task].grabLock
+    [job].addExited
+    [job].updateParent assert
+    [job].signalParent assert
+      [task].retire // does not queue onto exit demon
+
+    HAZARD
+  then
+*/
+
+  // add job to the local job list
+  [job].addLocal
 
   Dynamo[].new
   <cmd> Dynamo[].compile to ErrorCode[]
@@ -60,13 +64,21 @@
 
     // cross check
     PipeSpec[] not assert
-      
+
+    [ddlLock].testDrop
+
+    ListedJob[].assertNoRef
+
+    Path[].discardAll
+
     [task].grabLock
-    [job].signalWaiter
-    [task].dropLock
-    
-    pipelineLocal::termination
-    
+    [job].addExited
+    [job].updateParent assert
+    [job].signalParent assert
+      [task].retire // does not queue onto exit demon
+
+    HAZARD
+
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -74,10 +86,15 @@
   
   PipeSpec[] assert
 
+
+/* local */  // - - - - - - - - - - - - - -
+/* local */  // new all the markers needed
+/* local */  // - - - - - - - - - - - - - -
+/* local */  [job].newMarkerChain
+
   PipeSpec[] Pipeline[].create
   Pipeline[].spawnOpTasks
-  
-  
+
   // run <pre_execute>
 
   "<pre_execute>"
@@ -87,6 +104,8 @@
     sPreExe find
     dup not if
       sPreExe "Unable to find pre execute word: %v" .printf
+      [job].updateParent assert
+      [job].signalParent assert
       process::quit
     then
       execute
@@ -96,10 +115,27 @@
     then
   then
 
+  "<signalParent>" [job].tagSet@ tagSet.hasName not if
+     //"SIGNALLING PARENT AS NO WAIT" .
+     [job].updateParent assert
+     [job].signalParent assert
+  then
+
+/* local */  // - - - - - - - - - - - - - - - -  - -
+/* local */  // - - - - - - - - - - - - - - - -  - -
+/* local */  // JOB NOT TO ALLLOCATE ANY MORE MEMORY
+/* local */  // - - - - - - - - - - - - - -  - - - -
+/* local */  [job].disableAllocate
+/* local */  // - - - - - - - - - - - - - - - -  - -
+/* local */  // - - - - - - - - - - - - - - - -  - -
+
+/*
   // add job to the local job list
-  [job] job(Id).jobList@ JL_DEMON == not if
+  [job].jobList@ JL_DEMON == not if
     [job].addLocal
   then
+*/
+
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -110,31 +146,25 @@
   nullptr to Deck[]
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   // remove job from the local job list
-  [job] job(Id).jobList@ JL_DEMON == not if
+  [job].jobList@ JL_DEMON == not if
     [job].removeLocal
   then
 
-  //<pipelineNm> [grid].thisNodeName@ "(%v) ALL DONE!!!" .
-  
-  
+ //<pipelineNm> [grid].thisNodeName@ "(%v) ALL DONE!!!" .
+
   [ddlLock].testDrop
   ListedJob[].assertNoRef
 
   Path[].discardAll
 
-  [job].addRetired
-  
   [task].grabLock
-  
-    [job].signalWaiter
+  [job].addExited
 
-    [system].started@ if
-    //  "SYSTEM STARTED" .
-    else
-    //  "SYSTEM NOT STARTED" .
-      true [job].reapable!
+    "<signalParent>" [job].tagSet@ tagSet.hasName if
+      //"pipelineLocal::local SIGNALLING PARENT" .
+      [job].updateParent assert
+      [job].signalParent assert
     then
 
     [task].retire // does not queue onto exit demon

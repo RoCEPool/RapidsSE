@@ -38,7 +38,7 @@ void Step::vOperandOoODelete(void)
 {
   ENTRY();
   
-  AM::vDeleteOperand(*m_pLogicUnit->m_xpOperandOoO);
+  AM::vDeleteOperand(*m_pLogicUnit->m_xpOperandOoO,nullptr);
   
   m_pLogicUnit->m_xpOperandOoO = nullptr;
   

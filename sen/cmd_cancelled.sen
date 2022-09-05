@@ -9,27 +9,38 @@
 /*                    ON ORIGINATING NODE OF GIVEN PIPELINE                   */
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7//////////
 
-/*----------------------------------------------------------------------------*/
-/* run recieved Job_Cancelled on originating node                             */
-/*----------------------------------------------------------------------------*/
-: cancelled:cancelled
 
+
+/*----------------------------------------------------------------------------*/
+/* on originating node                                                        */
+/*----------------------------------------------------------------------------*/
+
+: cancelled:cancelled
   // "cancelled:cancelled" .
 
-  [args].distJob if
-    "cancelled" "cancelled" "*ack origin task" [job].trace
-  then
-
-
-  // find the originating job
-  [job].originId@ ListedJob[].findOriginator? discard
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  ListedJob[].taskAck
-  
-  ListedJob[].returnReference
-  [job]:retireAndExit
+/* <cnd ptp */  [args].distJob if
+/* <cnd ptp */    "cancelled" "cancelled" "<edd ptp"
+/* <cnd ptp */      "snd cancelled origin"                           [job].trace
+/* <cnd ptp */  then
+/* <cnd ptp */
+/* <cnd ptp */
+/* <cnd ptp */  // find the originating job
+/* <cnd ptp */  [job].originId@ ListedJob[].findOriginator? if
+/* <cnd ptp */
+/* <cnd org */    ListedJob[].nodeLoss@ not if
+/* <cnd org */      //RAY ListedJob[].taskState@ TS_WAITING == assert
+/* <cnd org */      ListedJob[].taskAck
+/* <cnd org */    then
+/* <cnd org */
+/* <cnd ptp */  ListedJob[].returnReference
+/* <cnd ptp */  then
+/* <cnd ptp */
+/* <cnd ptp */  [args].distJob if
+/* <cnd ptp */    "cancelled" "onOrigin" "<cld org"
+/* <cnd ptp */      "<cld origin" "exiting"                           [job].trace
+/* <cnd ptp */  then
+/* <cnd ptp */
+/* <cnd ptp */  [job]:retireAndExit
 ;
 
 /*----------------------------------------------------------------------------*/

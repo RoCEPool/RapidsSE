@@ -4,27 +4,26 @@
 
 " OP_transliterate.sen" .verbose
 
-/******************************************************************************/
-/* cascade experimental code (ray)                                            */
-/******************************************************************************/
+/*----------------------------------------------------------------------------*/
+/* handler for EV_X_CHILDEXIT ...                                             */
+/*----------------------------------------------------------------------------*/
+: transliterate_ChildExit \handler
 
-: cascadeJob \prompt
+  //"EV_X_CHILDEXIT" .verbose
 
-  "
-  pipeline cascade
-  begin
+  true LogicUnit[].RcvdChildExit!
 
-  stage stageA on origin :
-    start
-    | pulse once
-    | metaScan tables
-    | rowToList
-    | output
-    | sink
-    | stageA
+  nullptr [job].responseOp!
 
-  end ;
-  " [op].job@ job(Id).masterJob job(Id).cascade!
+  LogicUnit[].RcvdEnd@ if
+    Marker[].newEndMarker
+    Marker[].pipeout
+  then
+
+  //"transliterate_ChildExit" .
+  Pipein[].delete
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -52,21 +51,39 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for EV_M_END ...                                                   */
+/*----------------------------------------------------------------------------*/
+: transliterate_End \handler
+
+  //"EV_M_END_handler" .verbose
+
+  true LogicUnit[].RcvdEnd!
+
+  LogicUnit[].RcvdChildExit@ if
+     PipeIn[].pipeout
+  else
+    PipeIn[].delete
+  then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for EV_D_PLANOPERAND ...                                           */
 /*----------------------------------------------------------------------------*/
 : transliterate_PlanOperand \handler
 
- 0 0 locals| sPipeline sOperatorName |
+  0 locals| sOperatorName |
 
   PipeIn[]\clear to PlanOperand[]
 
-  PlanOperand[] sqlCompiler::transliterate to sPipeline
+  PlanOperand[] sqlCompiler::transliterate to Text[]
 
   "transliterate" to sOperatorName
   PlanOperand[] sOperatorName sqlCompiler::hasExplain if
 
     // execute special explain for this operator
-    PlanOperand[] sPipeline sOperatorName sqlCompiler::doExplainTliterate
+    PlanOperand[] Text[] sOperatorName sqlCompiler::doExplainTliterate
 
     // pipeout explain
     StreamSet[].isNull not assert
@@ -85,11 +102,19 @@
   PlanOperand[] sqlCompiler::deletePlan
   PlanOperand[].delete
 
-  //sPipeline .
+  //Text[] "FORKING CHILD FOR PIPELINE: %v"  str.format .
 
-  sPipeline [op].job@ job(Id).masterJob job(Id).cascade!
+  [Op] [job].responseOp!
+  STD_NORMALFORK_TAG Text[] api::forkChild not if
+     //"****Error Code %v" .printf
+     nullptr [job].responseOp!
+     op__execErr
+     true
+     exit
+  else
+    find: transliterate_End       EV_M_END       [op].handler!
+  then
 
-  
   true
 ;
 
@@ -102,7 +127,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_M_LEAVE ...                                             */
+/* handler for EV_M_LEAVE ...                                                 */
 /*----------------------------------------------------------------------------*/
 : transliterate_LeaveMarker \handler
 
@@ -111,6 +136,18 @@
   StreamSet[].pipeout
 
   EV_M_LEAVE_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_LOWMEMORY operand                                         */
+/*----------------------------------------------------------------------------*/
+: transliterate_lowMemory \handler
+
+  //"EV_M_LOWMEMORY_handler" .verbose
+
+  PipeIn[].pipeToOutput
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -142,8 +179,10 @@
   find: transliterate_PlanOperand   EV_D_PLANOPERAND   [op].handler!
   find: transliterate_StartMarker   EV_M_START         [op].handler!
 
-  find: transliterate_StreamSet    EV_D_STREAMSET      [op].handler!
-  find: transliterate_LeaveMarker  EV_M_LEAVE          [op].handler!
+  find: transliterate_StreamSet     EV_D_STREAMSET     [op].handler!
+  find: transliterate_LeaveMarker   EV_M_LEAVE         [op].handler!
+  find: transliterate_LowMemory     EV_M_LOWMEMORY     [op].handler!
+  find: transliterate_ChildExit     EV_X_CHILDEXIT     [op].handler!
 
   op__loop
 

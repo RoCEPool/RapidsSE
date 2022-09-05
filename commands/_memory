@@ -1,0 +1,168 @@
+/*============================================================================*/
+/* _alka                                                                      */
+/*============================================================================*/
+select * from dummy;
+
+//verbose enable;
+trackMemory;
+
+print "----------------------------------------------------------";
+create table datums (
+  int_col0   INTEGER NOT NULL,
+  int_col1   INTEGER,
+  bol_col2   BOOLEAN,
+  bol_col3   BOOLEAN,
+  dte_col4   DATE,
+  dte_col5   DATE,
+  dec_col6   DECIMAL(19,2),
+  dec_col7   DECIMAL(19,2),
+  flt_col8   FLOAT,
+  flt_col9   FLOAT,
+  tme_col10  TIME,
+  tme_col11  TIME,
+  tsp_col12  TIMESTAMP,
+  tsp_col13  TIMESTAMP,
+  vch_col14  VARCHAR(32),
+  vch_col15  VARCHAR(32)
+);
+lstbl;
+
+print "----------------------------------------------------------";
+load datums "../DATA/DataTypes/dataTypes.csv" ;
+print "----------------------------------------------------------";
+
+select 0.0 < dec_col7 from datums;
+print "----------------------------------------------------------";
+select 0.0 > dec_col7 from datums;
+print "----------------------------------------------------------";
+select 0.0 < dec_col6 from datums;
+print "----------------------------------------------------------";
+select 0.0 > dec_col6 from datums;
+print "----------------------------------------------------------";
+select 0.0 < dec_col7 from datums;
+print "----------------------------------------------------------";
+
+select dec_col6 from datums order by dec_col6;
+print "----------------------------------------------------------";
+select dec_col6 from datums where dec_col6 > 47.04;
+print "----------------------------------------------------------";
+select dec_col6 from datums where dec_col6 = 47.04;
+print "----------------------------------------------------------";
+select dec_col6 from datums where dec_col6 = 41.04;
+print "----------------------------------------------------------";
+select dec_col6 from datums where dec_col6 = 41.04;
+print "----------------------------------------------------------";
+select dec_col6 from datums where dec_col6 = 41.04;
+print "----------------------------------------------------------";
+select dec_col6 from datums where dec_col6 = 41.04;
+print "----------------------------------------------------------";
+select dec_col6 from datums where dec_col6 = 41.04;
+print "----------------------------------------------------------";
+select dec_col6 from datums where dec_col6 = 41.04;
+print "----------------------------------------------------------";
+select dec_col6 from datums where dec_col6 = 41.04;
+print "----------------------------------------------------------";
+
+drop table datums;
+print "----------------------------------------------------------";
+memoryLeaks;
+
+
+/*
+
+/FaultInjection drop table datums <faultPoint> = 1;
+
+
+
+
+create table LineItem
+(
+ L_ORDERKEY      INTEGER       NOT NULL,
+ L_PARTKEY       INTEGER       NOT NULL,
+ L_SUPPKEY       INTEGER       NOT NULL,
+ L_LINENUMBER    INTEGER       NOT NULL,
+ L_QUANTITY      DECIMAL(15,2) NOT NULL,
+ L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL,
+ L_DISCOUNT      DECIMAL(15,2) NOT NULL,
+ L_TAX           DECIMAL(15,2) NOT NULL,
+ L_RETURNFLAG    CHAR(1)       NOT NULL,
+ L_LINESTATUS    CHAR(1)       NOT NULL,
+ L_SHIPDATE      DATE NOT      NULL,
+ L_COMMITDATE    DATE NOT      NULL,
+ L_RECEIPTDATE   DATE NOT      NULL,
+ L_SHIPINSTRUCT  CHAR(25)      NOT NULL,
+ L_SHIPMODE      CHAR(10)      NOT NULL,
+ L_COMMENT       VARCHAR(44)   NOT NULL
+ );
+
+ ///FaultInjection drop table lineitem <faultPoint> = 1;
+
+
+///FaultInjection load lineitem "<tpch_dir>/lineitem.<suffix>" <faultPoint> = 6 ;
+load lineitem "<tpch_dir>/lineitem.<suffix>";
+
+//count lineitem;
+//select count(*) from lineitem;
+
+verbose enable;
+select l_orderkey/0 from lineitem;
+select l_orderkey/0 from lineitem;
+select l_orderkey/0 from lineitem;
+select l_orderkey/0 from lineitem;
+select l_orderkey/0 from lineitem;
+select l_orderkey/0 from lineitem;
+
+
+explain stage transliterate select l_orderkey, L_SHIPDATE, L_COMMENT from lineitem where l_orderkey > 2;
+
+
+verbose enable;
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+  stage stageMarker0391 on all partitions :
+    scan rapidsse public LineItem
+    | project " type INTEGER as l_orderkey $1 , type DATE as l_shipdate $11 , type VARCHAR as l_comment $16 "
+    | combined 0
+    | next
+  stage stageMarkerXYZ on all partitions :
+    filter " type BOOLEAN  $1 2  >  "
+    | combined 0
+    | next
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+
+select l_orderkey, L_SHIPDATE, L_COMMENT from lineitem;
+select l_orderkey, L_SHIPDATE, L_COMMENT from lineitem;
+select l_orderkey, L_SHIPDATE, L_COMMENT from lineitem;
+select l_orderkey, L_SHIPDATE, L_COMMENT from lineitem;
+
+verbose enable;
+
+/FaultInjection
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+  stage stageMarker0111 on all partitions :
+    chunk "../DATA/Load/decTest.csv"
+    | next
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end
+<faultPoint> = 7 ;
+
+
+
+*/

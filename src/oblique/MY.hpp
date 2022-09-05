@@ -6,17 +6,18 @@
 //!                    ** Do not include BASE.h **
 
 #include "eEV.h"
+#include "AM.hpp"
 
-namespace BASE
-{
-  class Task;
-}
-
-namespace STORE
-{
-  class Job;
-  class Session;
-}
+//namespace BASE
+//{
+//  class Task;
+//}
+//
+//namespace STORE
+//{
+//  class Job;
+//  class Session;
+//}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -55,6 +56,8 @@ namespace OBLIQUE
     static LogicUnit* pOpLogicUnit(void);
     static eEV        eOperand(void);
     static Pipeline*  pPipeline(void);
+    static StepAccum* pStepAccum(void);
+    static void       vStepAccum(StepAccum*);
     static Dic*       pSchemaDic(void);
     static Stage*     pStage(void);
     static Stream*    pStream(void);

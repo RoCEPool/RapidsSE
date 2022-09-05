@@ -34,7 +34,7 @@ static Stz* C_TARGETTYPE_PROP = "targetType"_Stz;
 // * Fields marked with /*X*/ are not currently supported but should be.
 static eCT aeTypeCalculus[CT_ENUMS][CT_ENUMS] = {
 
-                 //   NONE     BOOLEAN     CHAR     DATE     DECIMAL         FLOAT     INTEGER         INTERVAL_DT      INTERVAL_YM      TIME     TIMESTAMP     VARCHAR     UNKNOWN
+                 //               NONE     BOOLEAN            CHAR          DATE        DECIMAL             FLOAT         INTEGER             INTERVAL_DT           INTERVAL_YM           TIME        TIMESTAMP             VARCHAR     UNKNOWN
 /*  0 NONE       */ { CT_NONE, CT_NONE,    CT_NONE, CT_NONE, CT_NONE,        CT_NONE,  CT_NONE,        CT_NONE,         CT_NONE,         CT_NONE, CT_NONE,      CT_NONE,    CT_NONE    },
 /*  1 BOOLEAN    */ { CT_NONE, CT_BOOLEAN, CT_CHAR, CT_NONE, CT_NONE,        CT_NONE,  CT_NONE,        CT_NONE,         CT_NONE,         CT_NONE, CT_NONE,      CT_VARCHAR, CT_UNKNOWN },
 /*  2 CHAR       */ { CT_NONE, CT_NONE,    CT_CHAR, CT_DATE, CT_DECIMAL,     CT_FLOAT, CT_INTEGER,     CT_INTERVAL_DT,  CT_INTERVAL_YM,  CT_TIME, CT_TIMESTAMP, CT_VARCHAR, CT_UNKNOWN },
@@ -110,6 +110,27 @@ void CastExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
   SqlType::vDescribe(pTargetType, sTypeBuf, pRootNode);
 
   sBuf.vCatSprint("CAST(%s AS %s)"_Stz, sExprBuf.szStz(), sTypeBuf.szStz());
+}
+
+/*----------------------------------------------------------------------------*/
+/* Represent the expression as types instead of names. Append to the buffer   */
+/*----------------------------------------------------------------------------*/
+void CastExpr::vDescribeAsTypes(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pTargetExpr = CastExpr::pTargetExpr(_pQueryNode(pNode));
+  QueryNode* pTargetType = CastExpr::pSqlTypeNode(_pQueryNode(pNode));
+  ASSERT(   Expr::bIsOfType(pTargetExpr));
+  ASSERT(SqlType::bIsOfType(pTargetType));
+
+  s2K sTypeBuf;
+  SqlType::vDescribe(pTargetType, sTypeBuf, pRootNode);
+
+  sBuf.vCatSprint("CAST(%s AS %s)"_Stz,
+                  Expr::xTypeId(pTargetExpr, pRootNode).szTypeName(),
+                  sTypeBuf.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -231,6 +252,10 @@ b1 CastExpr::bIsImplicitlyCoercibleTo(TypeId xTargetTypeId, QueryNode* pExpr, Pl
         return true;
       }
       break;
+
+    // Note: We don't implicitly cast a time to a timestamp because
+    //       it is ambiguous as to what date should be chosen.
+    //       Should it be TODAY, or 1900-01-01, or something else?
 
     case CT_BOOLEAN:
       if (eTargetTypeId == CT_VARCHAR || eTargetTypeId == CT_CHAR)

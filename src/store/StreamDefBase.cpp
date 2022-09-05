@@ -490,7 +490,7 @@ RowPix* StreamDefBase::pRowPix(void)
 /*----------------------------------------------------------------------------*/
 /* get fixed row size                                                         */
 /*----------------------------------------------------------------------------*/
-i8 StreamDefBase::jRowSize(void)
+i8 StreamDefBase::jRowSizeBytes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -718,7 +718,7 @@ eEC StreamDefBase::eParse(Stz* szCmd)
   //m_sCmd = szCmd;
   
   // tokenise the command
-  TokenVec* pTknVec = TokenVec::pTokeniseSen(szCmd);
+  TokenVec* pTknVec = AM::TOKENISE::pTokeniseSen(szCmd);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Parse: Create Table <tableNm>
@@ -736,10 +736,13 @@ eEC StreamDefBase::eParse(Stz* szCmd)
   // -- -- -- --
   // table name
   // -- -- -- --
+
+  eError = eValidateTableName(pTknVec);
+  if (EC_NONE != eError) {
+    goto L_RETURN;
+  }
   
-  pTkn = pTknVec->pNextToken(); dPT();
-  m_sStreamDefNm = pTkn->szChars();
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Parse: ( <columnDef> ,... )
   
@@ -843,7 +846,7 @@ eEC StreamDefBase::eParseColumn(TokenVec* pTknVec, i8 i_Col)
   // -- -- -- -- -- -- -- -- -- -- --
   
   for (i8 i_Search = 0; i_Search < i_Col; i_Search++) {
-    Column* pCol_search = pGetColumn(i_Search++);
+    Column* pCol_search = pGetColumn(i_Search);
     if (pCol_search->szColNm()->bSame(pCol->szColNm())) {
       eError = EC_DUPLICATE_COLUMN;
       return eError;
@@ -1133,7 +1136,11 @@ eEC StreamDefBase::eParseColumnVarchar(TokenVec* pTknVec, Column* pCol)
   
   // get size
   iSize = pTkn->iToI8();
-  
+
+  // check if size is 0
+  if (iSize == 0)
+    return EC_INVALID_COMMAND;
+
   pTkn = pTknVec->pNextToken(); dPT();
   
   if (! pTkn->bSame(")"_Stz))
@@ -1403,6 +1410,54 @@ eEC StreamDefBase::eParseTableSize(TokenVec* pTknVec)
   // get size
   m_jTableSize = pTkn->iToI8();
     
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* validate table name                                                        */
+/*----------------------------------------------------------------------------*/
+eEC StreamDefBase::eValidateTableName(TokenVec *pTknVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  // next token should be table name
+  m_sStreamDefNm = pTknVec->pNextToken()->szChars();
+
+  if (m_sStreamDefNm.nLength() > C_MAX_TABLE_NAME_LENGTH - 1) {
+    return EC_MAX_TABLE_NAME_LENGTH;
+  }
+
+  // Check starting character of table name
+  char cStartChar = m_sStreamDefNm.azChar()[0];
+
+  if( !(cStartChar >= 'A' && cStartChar <= 'Z') &&
+      !(cStartChar >= 'a' && cStartChar <= 'z') &&
+      !(cStartChar == '_'))
+  {
+    return EC_SYNTAX_ERROR;
+  }
+
+  // Check for special characters in table name
+  for(i8 i = 33; i <= 47 ; i++)
+  {
+    if( m_sStreamDefNm.bContains(StrLib::szCharToStr(i))) {
+      return EC_SYNTAX_ERROR;
+    }
+  }
+
+  for(i8 i = 58; i <= 64 ; i++)
+  {
+    if( m_sStreamDefNm.bContains(StrLib::szCharToStr(i))) {
+      return EC_SYNTAX_ERROR;
+    }
+  }
+
+  if( m_sStreamDefNm.bContains("|"_Stz) ||
+      m_sStreamDefNm.bContains("^"_Stz) ||
+      m_sStreamDefNm.bContains("~"_Stz)) {
+    return EC_SYNTAX_ERROR;
+  }
+
   return EC_NONE;
 }
 

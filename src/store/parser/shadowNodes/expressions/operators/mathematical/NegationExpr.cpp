@@ -30,7 +30,7 @@ static Stz* C_NEGATION_DEFN = "/__root__/definitions/object/expr/operator/mathem
 static eCT aeTypeCalculus[CT_ENUMS] =
 
 //   NONE     BOOLEAN  CHAR     DATE     DECIMAL     FLOAT     INTEGER     INTERVAL_DT     INTERVAL_YM     TIME          TIMESTAMP VARCHAR  UNKNOWN
-   { CT_NONE, CT_NONE, CT_NONE, CT_NONE, CT_DECIMAL, CT_FLOAT, CT_INTEGER, CT_INTERVAL_DT, CT_INTERVAL_YM, CT_NONE/*?*/, CT_NONE,  CT_NONE, CT_NONE };
+   { CT_NONE, CT_NONE, CT_NONE, CT_NONE, CT_DECIMAL, CT_FLOAT, CT_INTEGER, CT_INTERVAL_DT, CT_INTERVAL_YM, CT_NONE/*?*/, CT_NONE,  CT_NONE, CT_UNKNOWN };
 
 // References:
 //  /*?*/
@@ -76,6 +76,20 @@ void NegationExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
     Expr::vDescribe(pChild1, sBuf, pRootNode);
     sBuf.vConcat(")"_Stz);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Represent the expression as types instead of names. Append to the buffer   */
+/*----------------------------------------------------------------------------*/
+void NegationExpr::vDescribeAsTypes(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pChild1 = NegationExpr::pChild1(_pQueryNode(pNode));
+
+  sBuf.vConcat("-"_Stz);
+  sBuf.vConcat(Expr::xTypeId(pChild1, pRootNode).szTypeName());
 }
 
 /*----------------------------------------------------------------------------*/

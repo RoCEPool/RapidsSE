@@ -32,7 +32,9 @@ void Step::vAddSteps_Op(void)
   vAddStep("Op::findOp"_Stz,            &Step::vOpFindOp);
   
   vAddStep("[op]"_Stz,                  &Step::vOpGet);
-  vAddStep("[op].ackInvokingTask"_Stz,  &Step::vOpAckInvokingTask);
+  vAddStep("[op].ackJobTask"_Stz,       &Step::vOpAckJobTask);
+  vAddStep("[op].disableAllocate"_Stz,  &Step::vOpDisableAllocate);
+  vAddStep("[op].enableAllocate"_Stz,   &Step::vOpEnableAllocate);
   vAddStep("[op].eventCountInc"_Stz,    &Step::vOpEventCountInc);
   vAddStep("[op].handlerEntry"_Stz,     &Step::vOpHandlerEntry);
   vAddStep("[op].handlerExit"_Stz,      &Step::vOpHandlerExit);
@@ -40,6 +42,8 @@ void Step::vAddSteps_Op(void)
   vAddStep("[op].handler!"_Stz,         &Step::vOpHandlerStore);
   vAddStep("[op].handlerAll!"_Stz,      &Step::vOpHandlerAllStore);
   vAddStep("[op].isEventValid"_Stz,     &Step::vOpIsEventValid);
+  vAddStep("[op].isRecv"_Stz,           &Step::vOpIsRecv);
+  vAddStep("[op].isSend"_Stz,           &Step::vOpIsSend);
   vAddStep("[op].job@"_Stz,             &Step::vOpJobFetch);
   vAddStep("[op].opName@"_Stz,          &Step::vOpOpNameFetch);
   vAddStep("[op].partition@"_Stz,       &Step::vOpPartitionFetch);
@@ -53,13 +57,33 @@ void Step::vAddSteps_Op(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [op].ackInvokingTask -- ack the invoking task                              */
+/* [op].ackJobTask -- ack the job task                                        */
 /*----------------------------------------------------------------------------*/
-void Step::vOpAckInvokingTask(void)
+void Step::vOpAckJobTask(void)
 {
   ENTRY();
   
-  m_pOp->vAckInvokingTask();
+  m_pOp->vAckJobTask();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [op].disableAllocate -- disable memory allocation by this op               */
+/*----------------------------------------------------------------------------*/
+void Step::vOpDisableAllocate(void)
+{
+  ENTRY();
+
+  m_pOp->vSetAllocate(false);
+}
+
+/*----------------------------------------------------------------------------*/
+/* [op].enableAllocate -- enable memory allocation by this op               */
+/*----------------------------------------------------------------------------*/
+void Step::vOpEnableAllocate(void)
+{
+  ENTRY();
+
+  m_pOp->vSetAllocate(true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -212,7 +236,7 @@ void Step::vOpHandlerAllStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [op].isEventValid -- check if operand is valid                           */
+/* [op].isEventValid -- check if operand is valid                             */
 /*----------------------------------------------------------------------------*/
 void Step::vOpIsEventValid(void)
 {
@@ -231,6 +255,36 @@ void Step::vOpIsEventValid(void)
   
   m_pDataStack->vPushInt(bValid);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [op].isRecv -- check if operand is the recv OP                             */
+/*----------------------------------------------------------------------------*/
+void Step::vOpIsRecv(void)
+{
+  ENTRY();
+
+  if ( m_pOp->szOpNm()->bSame("recvSE"_Stz))
+    m_pDataStack->vPushInt(true);
+  else
+    m_pDataStack->vPushInt(false);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [op].isSend -- check if operand is the send OP                             */
+/*----------------------------------------------------------------------------*/
+void Step::vOpIsSend(void)
+{
+  ENTRY();
+
+  if ( m_pOp->szOpNm()->bSame("sendSE"_Stz))
+    m_pDataStack->vPushInt(true);
+  else
+    m_pDataStack->vPushInt(false);
+
   EXIT();
 }
 

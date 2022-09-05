@@ -21,6 +21,9 @@ extern pthread_key_t giTLS_ThreadKey;
 extern pthread_key_t giTLS_TaskKey;
 extern pthread_key_t giTLS_HandlerKey;
 extern pthread_key_t giTLS_StepKey;
+extern pthread_key_t gbTLS_FaultInjection;
+extern pthread_key_t giTLS_FaultPoint;
+extern pthread_key_t giTLS_CurrentPoint;
 
 /*----------------------------------------------------------------------------*/
 /* process entry                                                              */
@@ -53,6 +56,16 @@ void Process::vEntry(void)
   fprintf(stderr,"Calling exit(%lld)\n",(u8)EXIT_FAILURE);
 
  
+  exit((int)EXIT_FAILURE);
+}
+
+/*----------------------------------------------------------------------------*/
+/* process exit startup                                                       */
+/*----------------------------------------------------------------------------*/
+[[ noreturn ]] void Process::vExitStartup(void)
+{
+  fprintf(stderr,"Calling exit(%lld)\n",(i8)EXIT_FAILURE);
+
   exit((int)EXIT_FAILURE);
 }
 

@@ -56,6 +56,8 @@ Pipeline::Pipeline(Job*        pPipelineJob,
   m_pOpToPulse    = nullptr;
   
   m_bCancelled    = false;
+  m_bLowMemory    = false;
+  m_bNodeLossAbort = false;
     
   m_ixAccum0 = 0;
   m_ixAccum1 = 0;
@@ -84,6 +86,16 @@ Pipeline::~Pipeline(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* is pipeline being aborted due to node loss ?                               */
+/*----------------------------------------------------------------------------*/
+bool Pipeline::bNodeLossAbort(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+
+  return m_bNodeLossAbort;
+}
 
 /*----------------------------------------------------------------------------*/
 /* add to accumumlator                                                         */
@@ -242,6 +254,40 @@ void Pipeline::vGrabDebugLock(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pipeline has run into low memory                                           */
+/*----------------------------------------------------------------------------*/
+void Pipeline::vLowMemory(bool bLowMemory)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+
+  m_bLowMemory = bLowMemory;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is pipeline running low on memory                                          */
+/*----------------------------------------------------------------------------*/
+bool Pipeline::bLowMemory(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+
+  if (m_bLowMemory)
+    vDebugPoint();
+
+  return m_bLowMemory;
+}
+
+/*----------------------------------------------------------------------------*/
+/* node loss abort the pipeline                                               */
+/*----------------------------------------------------------------------------*/
+void Pipeline::vNodeLossAbort(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+
+  m_bNodeLossAbort = true;
+  m_pVertexRoot->vNodeLossAbort();
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the originating node                                                   */
 /*----------------------------------------------------------------------------*/
 i8 Pipeline::iOriginNodeId(void)
@@ -366,13 +412,13 @@ bool Pipeline::bPulsed(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* spawn operaator jobs for the pipeline                                      */
+/* set job task for the pipeline                                              */
 /*----------------------------------------------------------------------------*/
-void Pipeline::vSetInvoker(Task* pInvoker)
+void Pipeline::vSetJobTask(Task* pJobTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
 
-  m_pVertexRoot->vSetInvoker(pInvoker);
+  m_pVertexRoot->vSetJobTask(pJobTask);
 
 }
 
@@ -393,7 +439,13 @@ void Pipeline::vSpawnOpTasks(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
 
-  m_pVertexRoot->vSpawnOpTasks();
+  try {
+    m_pVertexRoot->vSpawnOpTasks();
+  }
+  catch (LowMemory xLowMemory) {
+    m_pVertexRoot->vUnspawnOpTasks();
+    throw xLowMemory;
+  }
 }
 
 /*----------------------------------------------------------------------------*/

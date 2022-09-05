@@ -6,10 +6,18 @@
 
 #include "AM.hpp"
 #include "LogicUnit.hpp"
+#include "Job.hpp"
+#include "SeDeputy.hpp"
+#include "StepAccum.hpp"
+#include "Op.hpp"
 
 extern BufferPool* gpBufferPool;
 
 extern SizeHeap  gxaSizeHeap[];
+
+extern pthread_key_t gbTLS_FaultInjection;
+extern pthread_key_t giTLS_FaultPoint;
+extern pthread_key_t giTLS_CurrentPoint;
 
 
 /*----------------------------------------------------------------------------*/
@@ -141,41 +149,49 @@ Object* Heap::pAllocObject(eCN eAllocClass)
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   ASSERT(gxaSizeHeap[eAllocClass].m_nClassSize < m_nObjectSize);
+
   UNUSED(eAllocClass);
+
+  AM::MEMORY::vAssertAllocate();
+
+  Job* pJob = MY::pJob();
+  Thread* pThread = MY::pThread();
   
-  //static eCN eLastClass = CN_ENUMS;
-  
-  //vVerify();
-  
-  
+//  if (pThread && pThread->iMallocWatch()) {
+//    vTrace("allocating %s"_Stz,aCN[eAllocClass]);
+//    vTrace("\n"_Stz);
+//    i8 iDebug = 1;
+//    UNUSED(iDebug);
+//  }
+
+
+//#ifdef WITH_OOM_FAULTINJECTION
+//  bool bFaultInjection = static_cast<bool>(PsxThd::pTlsGet(gbTLS_FaultInjection));
+//  if (bFaultInjection) {
+//    i8 iFaultPoint = (i8)(PsxThd::pTlsGet(giTLS_FaultPoint));
+//    i8 iCurrentPoint = (i8)(PsxThd::pTlsGet(giTLS_CurrentPoint));
+//    vTrace("FI: FP:%lld CP:%lld\n"_Stz, iFaultPoint, iCurrentPoint);
+//    if (iFaultPoint == iCurrentPoint)
+//      THROW_LOWMEMORY();
+//  }
+//#endif
+
   m_okLock.vGrabWrite();
   
   // check for free chunks in the heap and extend if none
   if (! m_pFreeHead ) {
 
-    // check for low memory when allocating a LARGE buffer
-    if (m_eHeap == HT_T_LARGE &&
-        AM::MEMORY::bIsRunningLow() &&
-        gxaSizeHeap[eAllocClass].m_bLowMemoryDiscard) {
-      // error: we have run out of space
-      //vTrace("RUNNING OUT OF MEMORY!!!\n"_Stz);
-      //vTrace("Heap::pAllocObject: unable to extend heap\n"_Stz);
-      vTrace("LOW MEMORY encountered : %s %s %lld!!!\n"_Stz,
-             __FILE__,__func__,(i8)__LINE__);
-      m_okLock.vDropWrite();
-      PoolHelper::vPoolAnalyze();
-      THROW_LOWMEMORY();
-      return nullptr;
-    }
-
+    // other buffers
     if (! bExtendHeap()) {
       // error: we have run out of space
-      //vTrace("RUNNING OUT OF MEMORY!!!\n"_Stz);
-      //vTrace("Heap::pAllocObject: unable to extend heap\n"_Stz);
-      vTrace("LOW MEMORY encountered : %s %s %lld!!!\n"_Stz,
-             __FILE__,__func__,(i8)__LINE__);
+      vTrace("NODE%lld: HEAP RUNNING OUT OF MEMORY!!!\n"_Stz, AM::NODE::iThisNodeId());
+      //vTrace("************************************************\n"_Stz);
+      //vTrace("LOW MEMORY encountered : %s %s %lld %s!!!\n"_Stz,
+      //       __FILE__,__func__,(i8)__LINE__, aCN[eAllocClass]);
+      //vThreadCallStackDump();
+      //vTrace("************************************************\n"_Stz);
       m_okLock.vDropWrite();
-      PoolHelper::vPoolAnalyze();
+      //PoolHelper::vPoolAnalyze();
       THROW_LOWMEMORY();
       return nullptr;
     }
@@ -203,6 +219,21 @@ Object* Heap::pAllocObject(eCN eAllocClass)
       if (nMaxBytes > pLogicUnit->m_xpStats->m_nMaxBytes)
         pLogicUnit->m_xpStats->m_nMaxBytes = nMaxBytes;
     }
+  }
+
+  if (pJob)
+  {
+    pJob->vTrackAllocObject(eAllocClass);
+  }
+  else if(pThread && pThread->pObject0()) {
+    Job* pJob = _pJob(MY::pThread()->pObject0());
+    pJob->vTrackAllocObject(eAllocClass);
+  }
+
+  if(MY::pStepAccum())
+  {
+    MY::pStepAccum()->vHeapAllocCount(m_eHeap);
+    MY::pStepAccum()->m_nSumAllocs++;
   }
 
   //bool bSetLogMemory = false;
@@ -369,6 +400,26 @@ void Heap::vFreeObject(Object* pObject)
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
   eCN eClassNo = pObject->eGetClassNo();
+
+  Job* pJob = MY::pJob();
+  if(pJob && pJob->bObjectTracker())
+  {
+    pJob->vTrackFreeObject(eClassNo);
+  }
+
+  if(MY::pStepAccum())
+  {
+    MY::pStepAccum()->vHeapFreeCount(m_eHeap);
+    MY::pStepAccum()->m_nSumFrees++;
+  }
+
+  //Thread* pThread = MY::pThread();
+  
+  //if (pThread && pThread->iMallocWatch()) {
+  //  i8 iDebug = 1;
+  //  UNUSED(iDebug);
+  //}
+
 
 //  if ((Object*)0x2048091aa040 == pObject) {
 //    vTrace("FreeObject:: %p %s:%-3lld (address)\n"_Stz,
@@ -582,6 +633,10 @@ bool Heap::bExtendHeap(void)
   
   // check that we are free to extend this heap
   if ( m_bFixedHeap )
+    return false;
+
+  // check if any free buffers in the pool
+  if ( ! (HeapBuffer*)gpBufferPool->nFreeCount())
     return false;
 
   // get a free buffer from buffer pool

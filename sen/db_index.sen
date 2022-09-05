@@ -253,7 +253,7 @@
 
   0 locals| sIndexNm |
 
-  pFolder dic.lastWord not if  exit_rt then
+  pFolder dic.lastWord not if  exit  then
 
   pFolder Path[].pushFolder
 

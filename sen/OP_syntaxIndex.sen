@@ -78,7 +78,7 @@
   // sSmt .
 
   // parse the smt and get the table name
-  sSmt [job] indexDef::parseTableName not if ( errorCode )
+  sSmt indexDef::parseTableName not if ( errorCode )
     to errorCode
     errorCode op__execErr
     true
@@ -95,7 +95,7 @@
     exit
   then
 
-  sSmt Table[] [job] indexDef::parse not if ( errorCode )
+  sSmt Table[] indexDef::parse not if ( errorCode )
     to errorCode
     errorCode op__execErr
     true

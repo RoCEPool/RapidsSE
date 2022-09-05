@@ -10,7 +10,7 @@
 /* handler for EV_D_STREAMSET ...                                             */
 /*----------------------------------------------------------------------------*/
 : callProc_STREAMSET \handler
-
+/*
   "callProc_StreamSet" .
 
   // get the first row of the infoSet (__listTables)
@@ -24,7 +24,7 @@
     STD_PATH_TAG
     <procedureCall> " " str.cat
     0 infoSetRow[].getVchColumn str.cat
-    api::forkChild api:executeCheck not if
+    api::forkChildOld api:executeCheck not if
       op__execErr
       true
       exit
@@ -36,7 +36,7 @@
   repeat
 
   StreamSet[].delete
-
+*/
   true
 ;
 

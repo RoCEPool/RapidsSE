@@ -1,0 +1,36 @@
+This folder contains unique test configurations used in the SE performance tests.
+
+Each test configuration is known by it's unique file name. It is very important that
+this filename not change once it has been used, as this filename gets saved with the
+performance results and will be used in queries to filter and return particular
+performance data.
+
+TPC-H tests have load commands that have hard coded paths for a given machine. So a
+given TPC-H test file may not work in another environment. So we need to encode this
+into the filename so it is clearer and differentiated.
+
+TPC-H tests have filenames that are encoded as follows:
+  tpch-<scale_factor>-<load_format>.jmx
+
+where <load_format> is a number followed by 'D', for the number of disk drives in the
+machine, then another number followed by 'F', for the number of ways the data is
+partitioned on each disk.
+
+Examples:
+(1) tpch-sf100-2D1F.jmx is expecting to run on a cluster where each machine has
+    2 disk drives and there is one partition of data on each drive.
+    For example the lineitem data would be located at:
+      /mnt/disk1/data1/tpch/sf100/lineitem/lineitem.tbl
+      /mnt/disk2/data1/tpch/sf100/lineitem/lineitem.tbl
+
+(2) tpch-sf100-2D2F.jmx is expecting to run on a cluster where each machine has
+    2 disk drives and there are two partitions of data on each drive.
+    For example the lineitem data would be located at:
+      /mnt/disk1/data1/tpch/sf100/lineitem/lineitem.tbl
+      /mnt/disk1/data2/tpch/sf100/lineitem/lineitem.tbl
+      /mnt/disk2/data1/tpch/sf100/lineitem/lineitem.tbl
+      /mnt/disk2/data2/tpch/sf100/lineitem/lineitem.tbl
+
+This is so that it can take advantage of parallel loading from multiple disks. But we can
+also have the TPC-H data arranged in multiple files per disk in order to play with
+the load concurrency.

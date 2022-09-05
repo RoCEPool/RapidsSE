@@ -275,7 +275,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CASE n_name         WHEN ''AUSTRALIA'' THEN 1         WHEN ''INDIA'' THEN 1.0e0         ELSE NULL       END FROM nation"
 
 -> -> projectOp
-      » column: (Expr = CASE WHEN (rapidsse.public.nation.n_name = ''AUSTRALIA'') THEN 1.000000e+00 WHEN (rapidsse.public.nation.n_name = ''INDIA'') THEN 1.000000e+00 ELSE NULL END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN 1.000000e+00 WHEN ($2 = ''INDIA'') THEN 1.000000e+00 ELSE NULL END) ; type: FLOAT
+      » column: (Expr = CASE WHEN (rapidsse.public.nation.n_name = ''AUSTRALIA'') THEN 1.0000000000e+00 WHEN (rapidsse.public.nation.n_name = ''INDIA'') THEN 1.0000000000e+00 ELSE NULL END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN 1.0000000000e+00 WHEN ($2 = ''INDIA'') THEN 1.0000000000e+00 ELSE NULL END) ; type: FLOAT
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.nation)')

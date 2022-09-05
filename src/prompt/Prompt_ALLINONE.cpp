@@ -50,6 +50,9 @@
 #include "AttachMap.hpp"
 #include "Output.hpp"
 #include "Jobs.hpp"
+#include "Test.hpp"
+#include "PayStr.hpp"
+#include "PayStrBuffer.hpp"
 
 extern CmdLineArgs gxCmdLineArgs;
 extern AttachMap* gpAttachMap;
@@ -363,7 +366,7 @@ bool PROMPT::bPrompt_cancel(SePrompt* pPrompt)
   tJobId = pInpTknVec->pGet(1)->iToI8();
   
   // find the pipeline job
-  Job* pJob = AM::pJob_FindParticipating(tJobId);
+  Job* pJob = AM::pJob_FindParticipating(tJobId, true);
   
   if ( ! pJob ) {
     vTrace("job %lld not found\n"_Stz, tJobId.iAsI8());
@@ -372,16 +375,18 @@ bool PROMPT::bPrompt_cancel(SePrompt* pPrompt)
   }
   else
     vTrace("Cancelling job %lld\n"_Stz, tJobId.iAsI8());
-  
+
   // get the pipeline from the job
   Pipeline* pPipeline = pJob->pPipeline();
 
   // cancel the pipeline
   if ( ! pPipeline->bCancel(nullptr) ) {
     vTrace("Cancel rejected. Job %lld almost done.\n"_Stz, tJobId.iAsI8());
+    pJob->vDropLock();
     return false;
   }
-  
+
+  pJob->vDropLock();
   return true;
 }
 
@@ -659,7 +664,8 @@ bool PROMPT::bPrompt_constants(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
 
-  vTrace("  C_LOW_BUFFERS       = %lld\n"_Stz,C_LOW_BUFFERS);
+  vTrace("  C_LOW_BUFFERS          = %lld\n"_Stz,C_LOW_BUFFERS);
+  vTrace("  C_LOW_BUFFERS_DIST_JOB = %lld\n"_Stz,C_LOW_BUFFERS_DIST_JOB);
   vTrace("  C_MAX_BCD_PRECISION = %lld\n"_Stz,C_MAX_BCD_PRECISION);
   vTrace("  C_MAX_COLUMNS       = %lld\n"_Stz,C_MAX_COLUMNS);
   vTrace("  C_MAX_FLT_PRECISION = %lld\n"_Stz,C_MAX_FLT_PRECISION);
@@ -2022,7 +2028,9 @@ bool PROMPT::bPrompt_jobs(SePrompt* pPrompt)
          ,AM::JOBS::nJobsActive()
          ,AM::JOBS::nJobsThreshold()
          );
-  
+
+  AM::JLIST::pJobsList()->vListJobs();;
+
   return true;
 }
 
@@ -2427,7 +2435,7 @@ PromptFun __Prompt_memoryLeaks (
   "memoryLeaks"_Stz,           // the prompt command
   nullptr,                     // the second word
   bPrompt_memoryLeaks,         // prompt function
-  true,                        // enabled
+  true,                        // runable only by developer
 
   true,                        // visible
   "memoryLeaks"_Stz,           // help
@@ -2449,8 +2457,8 @@ bool PROMPT::bPrompt_memoryLeaks(SePrompt* pPrompt)
 
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
   i8 iNumTokens = pInpTknVec->nItems();
-  JobList* pRetiredJobs = AM::pRetiredJobs();
-  i8 nRetired = pRetiredJobs->nJobs();
+  JobList* pExitedJobs = AM::pExitedJobs();
+  i8 nRetired = pExitedJobs->nJobs();
   
   bool bFatal = false;
   if (2 == iNumTokens && pInpTknVec->pGet(1)->bSame("fatal"_Stz))
@@ -2489,10 +2497,14 @@ bool PROMPT::bPrompt_memoryLeaks(SePrompt* pPrompt)
   // note: the tracking of memory works with an assumption that
   //       whatever was started after trackingMemory has completed
 
+  // wait for zero jobs in the Exited JOBLIST
+  while (gpAttachMap->pJobs()->bAnyExitedJobs())
+    {;}
+
   for (i8 iAttempt = 0; iAttempt < C_ATTEMPTS; iAttempt++) {
-    
+
     //Api::vReapJobsOnce();
-    gpAttachMap->pJobs()->vReapJobsOnce();
+    //gpAttachMap->pJobs()->vReapJobsOnce();
 
     i8 nJobsActive    = AM::JOBS::nJobsActive();
     i8 nJobsThreshold = AM::JOBS::nJobsThreshold();
@@ -2512,7 +2524,7 @@ bool PROMPT::bPrompt_memoryLeaks(SePrompt* pPrompt)
   for (i8 iAttempt = 0; iAttempt < C_ATTEMPTS; iAttempt++) {
 
     //Api::vReapJobsOnce();
-    gpAttachMap->pJobs()->vReapJobsOnce();
+    //gpAttachMap->pJobs()->vReapJobsOnce();
 
     nLeaksDetected = 0;
     pPoolSnapshot_curr->vTakeSnapshot();
@@ -2556,7 +2568,7 @@ bool PROMPT::bPrompt_memoryLeaks(SePrompt* pPrompt)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  nRetired = pRetiredJobs->nJobs();
+  nRetired = pExitedJobs->nJobs();
   vTrace("Retired Jobs : %lld)\n"_Stz,nRetired);
 
   
@@ -3684,7 +3696,7 @@ bool PROMPT::bPrompt_retired(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
 
-  AM::pRetiredJobs()->vListJobs();
+  AM::pExitedJobs()->vListJobs();
 
   return true;
 }
@@ -4263,7 +4275,17 @@ bool PROMPT::bPrompt_sleep(SePrompt* pPrompt)
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
 
   ASSERT(pInpTknVec->pGet(0)->bSame("sleep"_Stz));
-  
+
+  if (pInpTknVec->nItems() != 2) {
+    vTrace("error: sleep : %s\n"_Stz, aEC[EC_INVALID_COMMAND]);
+    return false;
+  }
+
+  if ( ! pInpTknVec->pGet(1)->bIsInteger() ) {
+    vTrace("error: sleep : %s\n"_Stz, aEC[EC_INVALID_COMMAND]);
+    return false;
+  }
+
   i8 nSeconds = pInpTknVec->pGet(1)->iToI8();
   
   AM::vNapMsec(nSeconds * C_1K,CN_SEPROMPT);
@@ -4891,7 +4913,19 @@ bool PROMPT::bPrompt_stepTiming(SePrompt* pPrompt)
     AM::pSteps()->vShow(sStepNm);
     return true;
   }
-  
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // show all step timings
+  if ( pInpTknVec->pGet(1)->bSame("showAll"_Stz) && nTokens == 2) {
+
+    if (! AM::pSteps()) {
+      vTrace("Step timing not started\n"_Stz);
+      return true;
+    }
+    AM::pSteps()->vShowAll();
+    return true;
+  }
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // write step timings to given file
   if ( pInpTknVec->pGet(1)->bSame("write"_Stz) && nTokens == 3) {
@@ -4903,6 +4937,18 @@ bool PROMPT::bPrompt_stepTiming(SePrompt* pPrompt)
       return true;
     }
     AM::pSteps()->vWrite(sPath);
+    return true;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // write step timings to given file
+  if ( pInpTknVec->pGet(1)->bSame("writeAll"_Stz) && nTokens == 2) {
+
+    if (! AM::pSteps()) {
+      vTrace("Step timing not started\n"_Stz);
+      return true;
+    }
+    AM::pSteps()->vWriteAll();
     return true;
   }
   
@@ -5271,6 +5317,38 @@ bool PROMPT::bPrompt_tempName(SePrompt* pPrompt)
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/* Prompt_test.cpp -- call test                                               */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+PromptFun __Prompt_test (
+        PF_TEMPNAME,           // prompt function
+        "Prompt_test"_Stz,     // name of the prompt function
+        "comment"_Stz,         // comment about the function
+        "test"_Stz,            // the prompt command
+        nullptr,               // the second word
+        bPrompt_test,          // prompt function
+        true,                  // enabled
+
+        true,                  // visible
+        "test"_Stz,            // help
+        ""_Stz                 // description
+);
+
+/*----------------------------------------------------------------------------*/
+/* prompt function                                                            */
+/*----------------------------------------------------------------------------*/
+bool PROMPT::bPrompt_test(SePrompt* pPrompt)
+{
+  TokenVec* pTknVec = pPrompt->pInpTknVec();
+  Stz* szTest = pTknVec->pGet(1)->szChars();
+
+  if (szTest->bSame("test14"_Stz))
+    vTest14();
+
+  return true;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /* Prompt_threads.cpp -- threads report                                       */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
@@ -5520,7 +5598,7 @@ bool PROMPT::bPrompt_trackMemory(SePrompt* pPrompt)
   RASSERT(pPrompt);
 
   //Api::vReapJobsOnce();
-  gpAttachMap->pJobs()->vReapJobsOnce();
+  //gpAttachMap->pJobs()->vReapJobsOnce();
 
   pPrompt->vTrackMemory(true);
 
@@ -5705,7 +5783,7 @@ PromptFun __Prompt_wait_bg (
   PF_WAIT_BG,        // prompt function
   "Prompt_wait_bg"_Stz,  // name of the prompt function
   "comment"_Stz,     // comment about the function
-  "wait_bg"_Stz,     // the prompt command
+  "wait"_Stz,        // the prompt command
   nullptr,           // the second word
   bPrompt_wait_bg,   // prompt function
   true,              // enabled
@@ -5805,7 +5883,7 @@ bool PROMPT::bPrompt_with(SePrompt* pPrompt)
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 PromptFun __Prompt_without (
-  PF_WITH,              // prompt function
+  PF_WITHOUT,              // prompt function
   "Prompt_without"_Stz, // name of the prompt function
   "comment"_Stz,        // comment about the function
   "without"_Stz,        // the prompt command

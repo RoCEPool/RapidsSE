@@ -18,7 +18,7 @@ readonly __COMMON_FN=1
 
 #shellcheck disable=2034
 readonly VERSION_FILE="version"
-readonly CONFIG_DEFAULT_VERSION="2"
+readonly CONFIG_DEFAULT_VERSION="3"
 
 readonly PID_FILENAME="se.pid"
 readonly READY_FILENAME="se.ready"
@@ -32,8 +32,10 @@ readonly NODE_CFG_PREFIX="NODE_CFG_"
 # Names of fields within each node's associative array.
 readonly NODE_CFG_NAME_KEY="name"
 readonly NODE_CFG_HOST_KEY="host"
-readonly NODE_CFG_PORT_KEY="port"
-readonly NODE_CFG_HEARTBEAT_KEY="heartbeat"
+readonly NODE_CFG_INTERNAL_PORT_KEY="internal_port"
+readonly NODE_CFG_CLIENT_PORT_KEY="client_port"
+readonly NODE_CFG_HEARTBEAT_PORT_KEY="heartbeat_port"
+readonly NODE_CFG_HEARTBEAT_ADDRESS_KEY="heartbeat_address"
 readonly NODE_CFG_DIR_KEY="dir"
 readonly NODE_CFG_PARTITIONS_KEY="partitions"
 readonly NODE_CFG_THREADS_KEY="threads"
@@ -46,8 +48,10 @@ readonly NODE_CFG_PARAMS_KEY="params"
 declare -ra NODE_CFG_MANDATORY_KEYS=( \
   "${NODE_CFG_NAME_KEY}" \
   "${NODE_CFG_HOST_KEY}" \
-  "${NODE_CFG_PORT_KEY}" \
-  "${NODE_CFG_HEARTBEAT_KEY}" \
+  "${NODE_CFG_INTERNAL_PORT_KEY}" \
+  "${NODE_CFG_CLIENT_PORT_KEY}" \
+  "${NODE_CFG_HEARTBEAT_PORT_KEY}" \
+  "${NODE_CFG_HEARTBEAT_ADDRESS_KEY}" \
   "${NODE_CFG_DIR_KEY}" \
   "${NODE_CFG_PARTITIONS_KEY}" \
   "${NODE_CFG_THREADS_KEY}" \
@@ -60,6 +64,29 @@ declare -ra NODE_CFG_ALL_KEYS=( \
   "${NODE_CFG_MANDATORY_KEYS[@]}" \
   "${NODE_CFG_PARAMS_KEY}" \
 )
+
+declare -ra DEFAULT_SSH_MULTIPLEX_OPTIONS=( "-o" "ControlMaster=auto" "-o" "ControlPath=~/.ssh/rapidsse_mux_%h_%p_%r" "-o" "ControlPersist=3m" )
+declare -ra DEFAULT_SSH_STRICT_HOST_KEY_CHECKING=("-o" "StrictHostKeyChecking=no")
+
+# Note: We use StrictHostKeyChecking=no rather than StrictHostKeyChecking=accept-new because
+#       the accept-new option doesn't exist until OpenSSH v7.6 (Oct 2017) and operating systems
+#       like CentOS 7 only have OpenSSH v7.4.
+
+# Override the SSH multiplex settings if NO_SSH_MULTIPLEX=1
+if [ -z "${NO_SSH_MULTIPLEX:-}" ] || [ "${NO_SSH_MULTIPLEX:-}" -eq 0 ] ; then
+  SSH_MULTIPLEX_OPTIONS=("${DEFAULT_SSH_MULTIPLEX_OPTIONS[@]}")
+else
+  SSH_MULTIPLEX_OPTIONS=()
+fi
+
+# Override the SSH StrictHostKeyChecking settings if NO_SSH_STRICTHOSTKEYCHECKING=1
+if [ -z "${NO_SSH_STRICTHOSTKEYCHECKING:-}" ] || [ "${NO_SSH_STRICTHOSTKEYCHECKING:-}" -eq 0 ] ; then
+  SSH_STRICTHOSTKEYCHECKING=("${DEFAULT_SSH_STRICT_HOST_KEY_CHECKING[@]}")
+else
+  SSH_STRICTHOSTKEYCHECKING=()
+fi
+
+declare -ra SSH_COMMON_OPTIONS=( "-q" "${SSH_STRICTHOSTKEYCHECKING[@]}" "${SSH_MULTIPLEX_OPTIONS[@]}" )
 
 ###############################################################################
 ### Functions                                                               ###
@@ -365,7 +392,7 @@ function validateClusterConfig() {
       val="$(nodeCfgGetValue "${nodeName}" "${key}")"
 
       if [ -z "${val:-}" ]; then
-        errorExit "${errMsg}" "Null/unset value for key ${key} of node ${nodeName}."
+        errorExit "${errMsg}" "Missing or empty value for key ${key} of node ${nodeName}."
       fi
     done
 
@@ -431,7 +458,7 @@ function getCpuCount() {
   remoteCmd+="{ getconf _NPROCESSORS_ONLN 2>/dev/null; } || "
   remoteCmd+="{ echo \"-1\"; }"
 
-  sshArgs=( "-q" "${host}" "bash" "-c" "'${remoteCmd}'" )
+  sshArgs=( "${SSH_COMMON_OPTIONS[@]}" "${host}" "bash" "-c" "'${remoteCmd}'" )
 
   if ! response="$(ssh "${sshArgs[@]}")"; then
     echo "-1" 
@@ -470,7 +497,7 @@ function getTotalMem() {
 
   remoteCmd="bash -c \"cat /proc/meminfo | grep MemTotal | awk '{print \\\$2 / 1048576}'\""
 
-  sshArgs=( "-q" "${host}" "${remoteCmd}" )
+  sshArgs=( "${SSH_COMMON_OPTIONS[@]}" "${host}" "${remoteCmd}" )
 
   if ! response="$(ssh "${sshArgs[@]}")"; then
     echo "-1" 
@@ -509,7 +536,7 @@ function getTotalShm() {
   
   remoteCmd="bash -c \"df -Bk --output=size,avail /dev/shm | tail -n 1 | awk '{print \\\$1 / 1048576}'\""
 
-  sshArgs=( "-q" "${host}" "${remoteCmd}" )
+  sshArgs=( "${SSH_COMMON_OPTIONS[@]}" "${host}" "${remoteCmd}" )
 
   if ! response="$(ssh "${sshArgs[@]}")"; then
     echo "-1" 
@@ -548,7 +575,7 @@ function getFreeShm() {
 
   remoteCmd="bash -c \"df -Bk --output=size,avail /dev/shm | tail -n 1 | awk '{print \\\$2 / 1048576}'\""
 
-  sshArgs=( "-q" "${host}" "${remoteCmd}" )
+  sshArgs=( "${SSH_COMMON_OPTIONS[@]}" "${host}" "${remoteCmd}" )
 
   if ! response="$(ssh "${sshArgs[@]}")"; then
     echo "-1" 
@@ -586,7 +613,7 @@ function getRemoteRunningPid() {
 
   remoteCmd="if [ ! -f \"${dir}/${PID_FILENAME}\" ]; then exit 1; fi; cat \"${dir}/${PID_FILENAME}\" | xargs ps -o pid -h -p "
 
-  pid="$(ssh -q "${host}" "bash" "-c" "'${remoteCmd}'")"
+  pid="$(ssh "${SSH_COMMON_OPTIONS[@]}" "${host}" "bash" "-c" "'${remoteCmd}'")"
 
   local re="^[[:space:]]*([0-9]+)[[:space:]]*$"
 
@@ -620,7 +647,7 @@ function isRemoteSeReady() {
 
   remoteCmd="diff -qNZ \"${dir}/${PID_FILENAME}\" \"${dir}/${READY_FILENAME}\" &>/dev/null"
 
-  ssh -q "${host}" "bash" "-c" "'${remoteCmd}'"
+  ssh "${SSH_COMMON_OPTIONS[@]}" "${host}" "bash" "-c" "'${remoteCmd}'"
   local nodeReady="$?"
 
   if [ "${nodeReady}" -eq 0 ]; then
@@ -872,11 +899,39 @@ function nodeCfgSetValue() {
   local key=$2
   local value=$3
 
+  # Escape any quotes in the value
+  local escapedVal
+  escapedVal="$(escapeDoubleQuotes "${value}")"
+
   # Here be dragons
   #shellcheck disable=2140
-  eval "${NODE_CFG_PREFIX}${nodeName}"["${key}"]="${value}"
+  eval "${NODE_CFG_PREFIX}${nodeName}"["${key}"]="\"${escapedVal}\""
+
+  # We need to include escaped quotes around $value because it may contain strings
+  # and this prevents the line from becoming a syntax error.
 }
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Escapes a value so that it can be used in double quotes.
+## It does this by escaping any backslashes and double quotes contained in the
+## value. Call this function as escapedVal="$(escapeDoubleQuotes "${value}")"
+##
+## Params:
+##   $1 : The value to be escaped
+
+function escapeDoubleQuotes() {
+  local value=$1
+
+  local escapedVal
+  # First we need to escape any backslashes because they are interpreted in
+  # double quoted values.
+  escapedVal="${value//\\/\\\\}"
+
+  # Now we need to escape any double quotes themselves.
+  escapedVal="${escapedVal//\"/\\\"}"
+
+  echo "${escapedVal}"
+}
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Returns a value for a key in a dynamically created associative array.
@@ -895,7 +950,8 @@ function nodeCfgGetValue() {
   local key=$2
 
   local ref="${NODE_CFG_PREFIX}${nodeName}[${key}]"
-  echo "${!ref}"
+
+  echo "${!ref:-}"
 }
 
 

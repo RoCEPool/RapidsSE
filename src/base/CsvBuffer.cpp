@@ -65,6 +65,7 @@ void CsvBuffer::vPostRecv(void* aCsvBuffer)
   _static_
   
   CsvBuffer* pCsvBuffer = _pCsvBuffer(aCsvBuffer);
+  UNUSED(pCsvBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -78,7 +79,7 @@ void CsvBuffer::vRepairList(Object* pObject)
 
   while (pCsvBuffer) {
     pNextCsvBuffer = pCsvBuffer->pNextBuffer();
-    AM::vDeleteOperand(pCsvBuffer);
+    AM::vDeleteOperand(pCsvBuffer,nullptr);
     pCsvBuffer = pNextCsvBuffer;
   }
 }

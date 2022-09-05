@@ -45,7 +45,7 @@ void Step::vMetaGetDelete(void)
 {
   ENTRY();
 
-  AM::vDeleteOperand(*m_pLogicUnit->m_xpMetaGet);
+  AM::vDeleteOperand(*m_pLogicUnit->m_xpMetaGet,nullptr);
 
   m_pLogicUnit->m_xpMetaGet = nullptr;
 

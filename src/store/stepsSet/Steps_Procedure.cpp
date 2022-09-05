@@ -58,7 +58,7 @@ void Step::vProcedureAdd(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  TokenVec* pDmnTknVec = TokenVec::pTokeniseSen(sProc);
+  TokenVec* pDmnTknVec = AM::TOKENISE::pTokeniseSen(sProc);
   
   pDmnTknVec->vIntegrityCheck();
   

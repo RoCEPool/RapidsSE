@@ -42,6 +42,7 @@ enum eEC : u2 // error codes
   EC_CLUSTER_SIZE_MISMATCH,
   EC_COLUMN_COUNT_MISMATCH,         // SQL Compiler Subsystem
   EC_COLUMN_TYPE_MISMATCH,          // SQL Compiler Subsystem
+  EC_COMMAND_TOO_LONG,
   EC_CORRBY_COLUMN_NOT_FOUND,       // SQL Compiler Subsystem
   EC_CORRBY_COLUMN_TYPE_MISMATCH,   // SQL Compiler Subsystem
   EC_CORRBY_NO_COMMON_COLUMNS,      // SQL Compiler Subsystem
@@ -80,6 +81,7 @@ enum eEC : u2 // error codes
 
   /* _D_ */
   EC_DECIMAL_NOT_SUPPORTED,
+  EC_DISABLED_STATEMENT,
   EC_DIVIDE_BY_ZERO,
   EC_DUPLICATE_COLUMN,
   EC_DUPLICATE_KEY,
@@ -93,6 +95,7 @@ enum eEC : u2 // error codes
   EC_EXPR_IS_LIT_IN_GROUPBY_LIST,   // SQL Compiler Subsystem
   EC_EXPR_MUST_BE_BOOLEAN,          // SQL Compiler Subsystem
   EC_EXPR_MUST_BE_EQUIJOIN,         // SQL Compiler Subsystem
+  EC_EXPR_NESTED_AGGREGATE,         // SQL Compiler Subsystem
   EC_EXPR_NOT_IN_GROUPBY_LIST,      // SQL Compiler Subsystem
   EC_EXPR_NOT_PROJECTED,            // SQL Compiler Subsystem
   EC_EXPR_TYPE_INCOMPATIBLE,        // SQL Compiler Subsystem
@@ -159,6 +162,7 @@ enum eEC : u2 // error codes
   EC_MAX_INDEXES,
   EC_MAX_COLUMNS,
   EC_MAX_ROW_LENGTH,
+  EC_MAX_TABLE_NAME_LENGTH,
 
   /* _N_ */
   EC_NO_COLUMNS_DIC,
@@ -177,6 +181,7 @@ enum eEC : u2 // error codes
   EC_NO_SUCH_TENANT,
   EC_NO_SUCH_WORD,
   EC_NODE_EXISTS,
+  EC_NODE_LOSS,
   EC_NOT_A_CATALOG,
   EC_NOT_A_FOLDER,
   EC_NOT_AN_INDEX,
@@ -295,6 +300,7 @@ static Stz* aEC[] =
   /* EC_CLUSTER_SIZE_MISMATCH         */ (Stz*)"cluster node size mismatch",
   /* EC_COLUMN_COUNT_MISMATCH         */ (Stz*)"EC_COLUMN_COUNT_MISMATCH",        // SQL Compiler Subsystem
   /* EC_COLUMN_TYPE_MISMATCH          */ (Stz*)"EC_COLUMN_TYPE_MISMATCH",         // SQL Compiler Subsystem
+  /* EC_COMMAND_TOO_LONG              */ (Stz*)"EC_COMMAND_TOO_LONG",
   /* EC_CORRBY_COLUMN_NOT_FOUND       */ (Stz*)"EC_CORRBY_COLUMN_NOT_FOUND",      // SQL Compiler Subsystem
   /* EC_CORRBY_COLUMN_TYPE_MISMATCH   */ (Stz*)"EC_CORRBY_COLUMN_TYPE_MISMATCH",  // SQL Compiler Subsystem
   /* EC_CORRBY_NO_COMMON_COLUMNS      */ (Stz*)"EC_CORRBY_NO_COMMON_COLUMNS",     // SQL Compiler Subsystem
@@ -333,6 +339,7 @@ static Stz* aEC[] =
 
   /* _D_ */
   /* EC_DECIMAL_NOT_SUPPORTED         */ (Stz*)"decimal only with scale 2 currently supported",
+  /* EC_DISABLED_STATEMENT            */ (Stz*)"EC_DISABLED_STATEMENT",
   /* EC_DIVIDE_BY_ZERO                */ (Stz*)"divide by zero",
   /* EC_DUPLICATE_COLUMN              */ (Stz*)"duplicate column",
   /* EC_DUPLICATE_KEY                 */ (Stz*)"duplicate key",
@@ -346,6 +353,7 @@ static Stz* aEC[] =
   /* EC_EXPR_IS_LIT_IN_GROUPBY_LIST   */ (Stz*)"EC_EXPR_IS_LIT_IN_GROUPBY_LIST",  // SQL Compiler Subsystem
   /* EC_EXPR_MUST_BE_BOOLEAN          */ (Stz*)"EC_EXPR_MUST_BE_BOOLEAN",         // SQL Compiler Subsystem
   /* EC_EXPR_MUST_BE_EQUIJOIN         */ (Stz*)"EC_EXPR_MUST_BE_EQUIJOIN",        // SQL Compiler Subsystem
+  /* EC_EXPR_NESTED_AGGREGATE         */ (Stz*)"EC_EXPR_NESTED_AGGREGATE",        // SQL Compiler Subsystem
   /* EC_EXPR_NOT_IN_GROUPBY_LIST      */ (Stz*)"EC_EXPR_NOT_IN_GROUPBY_LIST",     // SQL Compiler Subsystem
   /* EC_EXPR_NOT_PROJECTED            */ (Stz*)"EC_EXPR_NOT_PROJECTED",           // SQL Compiler Subsystem
   /* EC_EXPR_TYPE_INCOMPATIBLE        */ (Stz*)"EC_EXPR_TYPE_INCOMPATIBLE",           // SQL Compiler Subsystem
@@ -410,8 +418,9 @@ static Stz* aEC[] =
 
   /* _M_ */
   /* EC_MAX_INDEXES                   */ (Stz*)"max allowed indexes already created",
-  /* EC_MAX_COLUMNS                   */ (Stz*)"max 150 columns supported in a table",
+  /* EC_MAX_COLUMNS                   */ (Stz*)"max 48 columns supported in a table",
   /* EC_MAX_ROW_LENGTH                */ (Stz*)"max row length allowed is 16k bytes",
+  /* EC_MAX_TABLE_NAME_LENGTH         */ (Stz*)"max table name length allowed is 31 bytes",
 
   /* _N_ */
   /* EC_NO_COLUMNS_DIC                */ (Stz*)"no columns dictionary",
@@ -430,6 +439,7 @@ static Stz* aEC[] =
   /* EC_NO_SUCH_TENANT                */ (Stz*)"no such tenant",
   /* EC_NO_SUCH_WORD                  */ (Stz*)"no such word",
   /* EC_NODE_EXISTS                   */ (Stz*)"node exists",
+  /* EC_NODE_LOSS                     */ (Stz*)"node loss",
   /* EC_NOT_A_CATALOG                 */ (Stz*)"not a catalog",
   /* EC_NOT_A_FOLDER                  */ (Stz*)"not a folder",
   /* EC_NOT_AN_INDEX                  */ (Stz*)"not an index",
@@ -541,6 +551,7 @@ static Stz* aEC2[] = // error code
   /* EC_CLUSTER_SIZE_MISMATCH         */ (Stz*)"EC_CLUSTER_SIZE_MISMATCH",
   /* EC_COLUMN_COUNT_MISMATCH         */ (Stz*)"EC_COLUMN_COUNT_MISMATCH",          // SQL Compiler Subsystem
   /* EC_COLUMN_TYPE_MISMATCH          */ (Stz*)"EC_COLUMN_TYPE_MISMATCH",           // SQL Compiler Subsystem
+  /* EC_COMMAND_TOO_LONG              */ (Stz*)"EC_COMMAND_TOO_LONG",
   /* EC_CORRBY_COLUMN_NOT_FOUND       */ (Stz*)"EC_CORRBY_COLUMN_NOT_FOUND",        // SQL Compiler Subsystem
   /* EC_CORRBY_COLUMN_TYPE_MISMATCH   */ (Stz*)"EC_CORRBY_COLUMN_TYPE_MISMATCH",    // SQL Compiler Subsystem
   /* EC_CORRBY_NO_COMMON_COLUMNS      */ (Stz*)"EC_CORRBY_NO_COMMON_COLUMNS",       // SQL Compiler Subsystem
@@ -580,6 +591,7 @@ static Stz* aEC2[] = // error code
 
   /* _D_ */
   /* EC_DECIMAL_NOT_SUPPORTED         */ (Stz*)"EC_DECIMAL_NOT_SUPPORTED",
+  /* EC_DISABLED_STATEMENT            */ (Stz*)"EC_DISABLED_STATEMENT",
   /* EC_DIVIDE_BY_ZERO                */ (Stz*)"EC_DIVIDE_BY_ZERO",
   /* EC_DUPLICATE_COLUMN              */ (Stz*)"EC_DUPLICATE_COLUMN",
   /* EC_DUPLICATE_KEY                 */ (Stz*)"EC_DUPLICATE_KEY",
@@ -593,6 +605,7 @@ static Stz* aEC2[] = // error code
   /* EC_EXPR_IS_LIT_IN_GROUPBY_LIST   */ (Stz*)"EC_EXPR_IS_LIT_IN_GROUPBY_LIST",    // SQL Compiler Subsystem
   /* EC_EXPR_MUST_BE_BOOLEAN          */ (Stz*)"EC_EXPR_MUST_BE_BOOLEAN",           // SQL Compiler Subsystem
   /* EC_EXPR_MUST_BE_EQUIJOIN         */ (Stz*)"EC_EXPR_MUST_BE_EQUIJOIN",          // SQL Compiler Subsystem
+  /* EC_EXPR_NESTED_AGGREGATE         */ (Stz*)"EC_EXPR_NESTED_AGGREGATE",          // SQL Compiler Subsystem
   /* EC_EXPR_NOT_IN_GROUPBY_LIST      */ (Stz*)"EC_EXPR_NOT_IN_GROUPBY_LIST",       // SQL Compiler Subsystem
   /* EC_EXPR_NOT_PROJECTED            */ (Stz*)"EC_EXPR_NOT_PROJECTED",             // SQL Compiler Subsystem
   /* EC_EXPR_TYPE_INCOMPATIBLE        */ (Stz*)"EC_EXPR_TYPE_INCOMPATIBLE",             // SQL Compiler Subsystem
@@ -659,6 +672,7 @@ static Stz* aEC2[] = // error code
   /* EC_MAX_INDEXES                   */ (Stz*)"EC_MAX_INDEXES",
   /* EC_MAX_COLUMNS                   */ (Stz*)"EC_MAX_COLUMNS",
   /* EC_MAX_ROW_LENGTH                */ (Stz*)"EC_MAX_ROW_LENGTH",
+  /* EC_MAX_TABLE_NAME_LENGTH         */ (Stz*)"EC_MAX_TABLE_NAME_LENGTH",
 
   /* _N_ */
   /* EC_NO_COLUMNS_DIC                */ (Stz*)"EC_NO_COLUMNS_DIC",
@@ -677,6 +691,7 @@ static Stz* aEC2[] = // error code
   /* EC_NO_SUCH_TENANT                */ (Stz*)"EC_NO_SUCH_TENANT",
   /* EC_NO_SUCH_WORD                  */ (Stz*)"EC_NO_SUCH_WORD",
   /* EC_NODE_EXISTS                   */ (Stz*)"EC_NODE_EXISTS",
+  /* EC_NODE_LOSS                     */ (Stz*)"EC_NODE_LOSS",
   /* EC_NOT_A_CATALOG                 */ (Stz*)"EC_NOT_A_CATALOG",
   /* EC_NOT_A_FOLDER                  */ (Stz*)"EC_NOT_A_FOLDER",
   /* EC_NOT_AN_INDEX                  */ (Stz*)"EC_NOT_AN_INDEX",
@@ -798,6 +813,7 @@ static Stz* aErrorMsg[] =
   /* EC_CLUSTER_SIZE_MISMATCH         */ (Stz*)"cluster node size mismatch",
   /* EC_COLUMN_COUNT_MISMATCH         */ (Stz*)"The number of columns of each subquery do not match",   // SQL Compiler Subsystem
   /* EC_COLUMN_TYPE_MISMATCH          */ (Stz*)"Column types do not match",                             // SQL Compiler Subsystem
+  /* EC_COMMAND_TOO_LONG              */ (Stz*)"Command too long",
   /* EC_CORRBY_COLUMN_NOT_FOUND       */ (Stz*)"Column in CORRESPONDING BY list is not found in select list",   // SQL Compiler Subsystem
   /* EC_CORRBY_COLUMN_TYPE_MISMATCH   */ (Stz*)"Column in CORRESPONDING BY list has mismatched types in child queries", // SQL Compiler Subsystem
   /* EC_CORRBY_NO_COMMON_COLUMNS      */ (Stz*)"No common column names of the subqueries could be found for the CORRESPONDING list",  // SQL Compiler Subsystem
@@ -837,7 +853,8 @@ static Stz* aErrorMsg[] =
 
   /* _D_ */
   /* EC_DECIMAL_NOT_SUPPORTED         */ (Stz*)"decimal only with scale 2 currently supported",
-  /* EC_DECIMAL_NOT_SUPPORTED         */ (Stz*)"divide by zero",
+  /* EC_DISABLED_STATEMENT            */ (Stz*)"statement is temporarily disabled",
+  /* EC_DIVIDE_BY_ZERO                */ (Stz*)"divide by zero",
   /* EC_DUPLICATE_COLUMN              */ (Stz*)"duplicate column",
   /* EC_DUPLICATE_KEY                 */ (Stz*)"duplicate key",
 
@@ -850,7 +867,8 @@ static Stz* aErrorMsg[] =
   /* EC_EXPR_IS_LIT_IN_GROUPBY_LIST   */ (Stz*)"Cannot have a literal expression in the GROUP BY list",    // SQL Compiler Subsystem
   /* EC_EXPR_MUST_BE_BOOLEAN          */ (Stz*)"Predicate expression must have a boolean result",          // SQL Compiler Subsystem
   /* EC_EXPR_MUST_BE_EQUIJOIN         */ (Stz*)"Join predicate expression must be an equi-join and contain an equality comparison",           // SQL Compiler Subsystem
-  /* EC_EXPR_NOT_IN_GROUPBY_LIST      */ (Stz*)"Expression is not present in the GROUP BY list",           // SQL Compiler Subsystem
+  /* EC_EXPR_NESTED_AGGREGATE         */ (Stz*)"Nested aggregate expressions are not permitted",           // SQL Compiler Subsystem
+  /* EC_EXPR_NOT_IN_GROUPBY_LIST      */ (Stz*)"Expression does not appear in the GROUP BY list or as part of an aggregate", // SQL Compiler Subsystem
   /* EC_EXPR_NOT_PROJECTED            */ (Stz*)"Invalid expression because it is not being projected",     // SQL Compiler Subsystem
   /* EC_EXPR_TYPE_INCOMPATIBLE        */ (Stz*)"Incompatible expression types",                            // SQL Compiler Subsystem
 
@@ -914,8 +932,9 @@ static Stz* aErrorMsg[] =
 
   /* _M_ */
   /* EC_MAX_INDEXES                   */ (Stz*)"max allowed indexes already created",
-  /* EC_MAX_COLUMNS                   */ (Stz*)"max 150 columns supported in a table",
+  /* EC_MAX_COLUMNS                   */ (Stz*)"max 48 columns supported in a table",
   /* EC_MAX_ROW_LENGTH                */ (Stz*)"max row length allowed is 16k bytes",
+  /* EC_MAX_TABLE_NAME_LENGTH         */ (Stz*)"max table name length allowed is 31 bytes",
 
   /* _N_ */
   /* EC_NO_COLUMNS_DIC                */ (Stz*)"no columns dictionary",
@@ -934,6 +953,7 @@ static Stz* aErrorMsg[] =
   /* EC_NO_SUCH_TENANT                */ (Stz*)"no such tenant",
   /* EC_NO_SUCH_WORD                  */ (Stz*)"no such word",
   /* EC_NODE_EXISTS                   */ (Stz*)"node exists",
+  /* EC_NODE_LOSS                     */ (Stz*)"node loss",
   /* EC_NOT_A_CATALOG                 */ (Stz*)"not a catalog",
   /* EC_NOT_A_FOLDER                  */ (Stz*)"not a folder",
   /* EC_NOT_AN_INDEX                  */ (Stz*)"'%v' not an index",

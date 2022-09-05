@@ -29,7 +29,7 @@ static Stz* C_DIVISION_DEFN = "/__root__/definitions/object/expr/operator/mathem
 // * Fields marked with /*X*/ are not currently supported but should be.
 static eCT aeTypeCalculus[CT_ENUMS][CT_ENUMS] = {
 
-                 //   NONE     BOOLEAN  CHAR     DATE          DECIMAL     FLOAT       INTEGER         INTERVAL_DT  INTERVAL_YM  TIME          TIMESTAMP     VARCHAR     UNKNOWN
+                             //   NONE       BOOLEAN         CHAR         DATE            DECIMAL           FLOAT         INTEGER           INTERVAL_DT       INTERVAL_YM           TIME            TIMESTAMP           VARCHAR           UNKNOWN
 /*  0 NONE       */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,        CT_NONE,     CT_NONE,     CT_NONE,      CT_NONE,      CT_NONE,    CT_NONE    },
 /*  1 BOOLEAN    */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,        CT_NONE,     CT_NONE,     CT_NONE,      CT_NONE,      CT_NONE,    CT_NONE    },
 /*  2 CHAR       */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,        CT_NONE,     CT_NONE,     CT_NONE,      CT_NONE,      CT_NONE,    CT_NONE    },
@@ -42,7 +42,7 @@ static eCT aeTypeCalculus[CT_ENUMS][CT_ENUMS] = {
 /*  9 TIME       */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,        CT_NONE,     CT_NONE,     CT_NONE,      CT_NONE,      CT_NONE,    CT_NONE    },
 /* 10 TIMESTAMP  */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,        CT_NONE,     CT_NONE,     CT_NONE,      CT_NONE,      CT_NONE,    CT_NONE    },
 /* 11 VARCHAR    */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,        CT_NONE,     CT_NONE,     CT_NONE,      CT_NONE,      CT_NONE,    CT_NONE    },
-/* 12 UNKNOWN    */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_UNKNOWN, CT_UNKNOWN, CT_UNKNOWN,     CT_NONE,     CT_NONE,     CT_NONE,      CT_NONE,      CT_NONE,    CT_NONE    }
+/* 12 UNKNOWN    */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_UNKNOWN, CT_UNKNOWN, CT_UNKNOWN,     CT_NONE,     CT_NONE,     CT_NONE,      CT_NONE,      CT_NONE,    CT_UNKNOWN }
 };
 
 // References:
@@ -107,6 +107,22 @@ void DivisionExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
     Expr::vDescribe(pChild2, sBuf, pRootNode);
     sBuf.vConcat(")"_Stz);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Represent the expression as types instead of names. Append to the buffer   */
+/*----------------------------------------------------------------------------*/
+void DivisionExpr::vDescribeAsTypes(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pChild1 = DivisionExpr::pChild1(_pQueryNode(pNode));
+  QueryNode* pChild2 = DivisionExpr::pChild2(_pQueryNode(pNode));
+
+  sBuf.vConcat(Expr::xTypeId(pChild1, pRootNode).szTypeName());
+  sBuf.vConcat(" / "_Stz);
+  sBuf.vConcat(Expr::xTypeId(pChild2, pRootNode).szTypeName());
 }
 
 /*----------------------------------------------------------------------------*/

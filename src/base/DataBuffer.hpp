@@ -12,7 +12,7 @@ namespace BASE
     i8           m_iBufferNo;     // this DataBuffer's buffer number
 
 #ifdef WITH_BUFFER_ID
-    BufferId     m_oBufferId;     // Set wherever bufferno is set, with bit flag set
+    BufferId     m_oBufferId;     // Location to where this buffer can be paged out to in page file on disk
 #endif
 
     LglPtn m_tLglPtn;
@@ -22,8 +22,8 @@ namespace BASE
     Birth  m_oWhenNewed;    // when was this buffer created?
     b8     m_bIsPermanent;  // is buffer permanent ?
   
-    Table*     m_pTable;
-    StreamDef* m_pStreamDef;
+    Table*     m_pTable_dbuff;
+    StreamDef* m_pStreamDef_dbuff;
 
     tXN m_tTxnNo; // transaction number
 
@@ -33,6 +33,7 @@ namespace BASE
     PadWord m__PadToCacheLine[18];
 #endif
 
+
   public:
     DataBuffer(eCN eClass, bool bIsPermanent);
 
@@ -40,19 +41,21 @@ namespace BASE
 
     noexcept(false);
 
+    static bool bIsDataBuffer(eCN eClass);
+
     static DataBuffer *pRefdDataBuffer(Rrf &xRef);
 
     static void vRepairList(Object *pObject);
 
     static DataBuffer *pToDataBuffer(void *aAddr);
 
-    void vStreamDef(StreamDef *pStreamDef);
+    void vStreamDef_dbuff(StreamDef *pStreamDef);
 
-    StreamDef *pStreamDef(void);
+    StreamDef *pStreamDef_dbuff(void);
 
-    Table *pTable(void);
+    Table *pTable_dbuff(void);
 
-    void vTable(Table *pTable);
+    void vTable_dbuff(Table *pTable);
 
     tXN tTxnNo(void);
 
@@ -85,10 +88,11 @@ namespace BASE
     void vIsPermanent(bool bIsPermanent);
 
     i8   iBufferNo(void);
+
+    void     vSetBufferNo(i8 iBufferNo);
 #ifdef WITH_BUFFER_ID
     BufferId oGetBufferId(void);
-    void     vSetBufferId(BufferId oBufferId);
-    void     vSetBufferNo(i8 iBufferNo);
+    void vSetBufferId(BufferId oBufferId);
 #endif
   };
   

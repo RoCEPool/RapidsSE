@@ -66,6 +66,7 @@
 /*----------------------------------------------------------------------------*/
 : exp4 \prompt
 
+/*
 "
   create table definition __Exp4 (
     nodeName       VARCHAR NOT NULL ,
@@ -76,7 +77,8 @@
 "
   locals| sStmt |
 
-  "" sStmt api::forkChild api:executeCheck
+  "" sStmt api::forkChildOld api:executeCheck
+  */
 ;
 
 /*----------------------------------------------------------------------------*/

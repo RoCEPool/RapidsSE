@@ -78,7 +78,7 @@ void CrwToRow::vRepair(Object* pObject)
 
     RowBuffer* pNextRowBuffer = _pRowBuffer(pRowBuffer->pNextLinkedBuffer());
 
-    delete pRowBuffer;
+    AM::vDeleteOperand(pRowBuffer, nullptr);
     pRowBuffer = pNextRowBuffer;
 
   }

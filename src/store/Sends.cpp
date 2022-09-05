@@ -230,7 +230,7 @@ bool Sends::bExitingDone(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
   
   if (m_iExitingMarkers > m_iSends)
-    vTrace("Warning: ConsumeOp EV_M_EXITING EV_M_EXIT %lld; expected %lld\n"_Stz,
+    vTrace("Warning: ConsumeOp EV_M_EXITING %lld; expected %lld\n"_Stz,
            m_iExitingMarkers, m_iSends);
   
   if (m_iExitingMarkers == m_iSends) {
@@ -306,6 +306,24 @@ bool Sends::bStreamDefRhtDone(void)
            m_iStreamDefRhts, m_iSends);
 
   if (m_iStreamDefRhts == 0) {
+    return true;
+  }
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* triggered done ?                                                           */
+/*----------------------------------------------------------------------------*/
+bool Sends::bTriggeredDone(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
+
+  if (m_iTriggeredMarkers > m_iSends)
+    vTrace("Warning: ConsumeOp received EV_M_TRIGGERED %lld; expected %lld\n"_Stz,
+           m_iTriggeredMarkers, m_iSends);
+
+  if (m_iTriggeredMarkers == m_iSends) {
     return true;
   }
   else
@@ -440,6 +458,16 @@ void Sends::vIncStreamDefRht(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
 
   m_iStreamDefRhts++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* inc triggered                                                              */
+/*----------------------------------------------------------------------------*/
+void Sends::vIncTriggered(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
+
+  m_iTriggeredMarkers++;
 }
 
 /*----------------------------------------------------------------------------*/

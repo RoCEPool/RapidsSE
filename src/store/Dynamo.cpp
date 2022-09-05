@@ -1075,7 +1075,7 @@ bool Dynamo::bPass3_include(Stz *szIncludePipNm)
   TokenVec *pIncludeTknVec = nullptr;
   Word *pwMatchedProc = nullptr;
 
-  pIncludeTknVec = TokenVec::pTokeniseSen(szIncludePipNm);
+  pIncludeTknVec = AM::TOKENISE::pTokeniseSen(szIncludePipNm);
 
   bool b = Procedure::bTranslateToPipeline(sPipelineSmt.pString(),
                                            pIncludeTknVec,

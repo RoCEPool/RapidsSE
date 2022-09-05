@@ -1,0 +1,228 @@
+/*============================================================================*/
+/* __QAlka                                                                   */
+/*============================================================================*/
+
+create table lineitem (
+  L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B
+  L_PARTKEY       INTEGER NOT NULL,         //  1)  8B   3B
+  L_SUPPKEY       INTEGER NOT NULL,         //  2)  8B   3B
+  L_LINENUMBER    INTEGER NOT NULL,         //  3)  8B   3B
+  L_QUANTITY      DECIMAL(15,2) NOT NULL,   //  4)  8B   3B
+  L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL,   //  5)  8B   3B
+  L_DISCOUNT      DECIMAL(15,2) NOT NULL,   //  6)  8B   3B
+  L_TAX           DECIMAL(15,2) NOT NULL,   //  7)  8B   3B
+  L_RETURNFLAG    VARCHAR(1) NOT NULL,      //  8)  2B   2B
+  L_LINESTATUS    VARCHAR(1) NOT NULL,      //  9)  2B   2B
+  l_SHIPDATE      DATE NOT NULL,            // 10)  8B   8B
+  L_COMMITDATE    DATE NOT NULL,            // 11)  8B   8B
+  L_RECEIPTDATE   DATE NOT NULL,            // 12)  8B   8B
+  L_SHIPINSTRUCT  VARCHAR(25) NOT NULL,     // 13) 26B  13B
+  L_SHIPMODE      VARCHAR(10) NOT NULL,     // 14) 11B   5B
+  L_COMMENT       VARCHAR(44) NOT NULL      // 15) 45B  23B
+);
+create index IxL_ORDERKEY ON lineitem(L_ORDERKEY);
+
+_customer
+create index IxC_CUSTKEY ON customer(C_CUSTKEY);
+
+create table orders (
+O_ORDERKEY        INTEGER NOT NULL,
+O_CUSTKEY         INTEGER NOT NULL,
+O_ORDERSTATUS     CHAR(1) NOT NULL,
+O_TOTALPRICE      DECIMAL(15,2) NOT NULL,
+O_ORDERDATE       DATE NOT NULL,
+O_ORDERPRIORITY   CHAR(15) NOT NULL,
+O_CLERK           CHAR(15) NOT NULL,
+O_SHIPPRIORITY    INTEGER NOT NULL,
+O_COMMENT         VARCHAR(79) NOT NULL
+) partition by (O_CUSTKEY) ;
+
+create index IxO_CUSTKEY ON orders(O_CUSTKEY);
+create index IxO_ORDERDATE ON orders(O_ORDERDATE);
+
+_supplier
+create index IxS_SUPPKEY ON supplier(S_SUPPKEY);
+
+_nation
+create index IxN_NATIONKEY ON nation(N_NATIONKEY);
+
+_region
+create index IxR_REGIONKEY ON region(R_REGIONKEY);
+
+_part
+
+/time load orders "<tpch_dir>/orders.<suffix>";
+/time load customer "<tpch_dir>/customer.<suffix>";
+/time load lineitem "<tpch_dir>/lineitem.<suffix>";
+/time load supplier "<tpch_dir>/supplier.<suffix>";
+/time load part "<tpch_dir>/part.<suffix>";
+/time load nation "<tpch_dir>/nation.<suffix>";
+/time load region "<tpch_dir>/region.<suffix>";
+
+trackMemory;
+
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker6340
+
+  stage stageMarker6340 on all partitions :
+    scan rapidsse public customer
+    | next
+
+  stage stageMarker6343 on all partitions :
+    //scan rapidsse public orders
+    //| abstractJoin " 1  "
+    indexjoin Orders IxO_CUSTKEY "BOUND $I1 C_CUSTKEY =="
+    | combined 0
+    | next //broadcast
+
+  stage stageMarker6346 on all partitions :
+    //scan rapidsse public lineitem
+    //| abstractJoin " 1  "
+    indexjoin Lineitem IxL_ORDERKEY "BOUND $I1 J1_O_ORDERKEY =="
+    | combined 0
+    | next
+/*
+  stage stageMarker6349 on all partitions :
+    filter " type BOOLEAN  C_MKTSEGMENT 'BUILDING'  ==
+                           //C_CUSTKEY J1_O_CUSTKEY ==  and
+                           //J2_L_ORDERKEY J1_O_ORDERKEY ==  and
+                           J1_O_ORDERDATE DATE '1995-03-15'  <  and
+                           J2_L_SHIPDATE DATE '1995-03-15'  >  and  "
+    | aggreg " groupBy  type INTEGER  J2_L_ORDERKEY ,
+                        type DATE J1_O_ORDERDATE ,
+                        type INTEGER J1_O_SHIPPRIORITY
+                        aggregates
+                        type INTEGER as J2_L_ORDERKEY $K1 ,
+                        type DECIMAL )  J2_L_EXTENDEDPRICE 1.  J2_L_DISCOUNT -  *  sum  ,
+                        type DATE as J1_O_ORDERDATE  $K2 ,
+                        type INTEGER as J1_O_SHIPPRIORITY $K3 "
+
+    | combined 0
+    | next
+
+  stage stageMarker6352 on all nodes :
+    aggreg " groupBy  type INTEGER J2_L_ORDERKEY ,
+                      type DATE J1_O_ORDERDATE ,
+                      type INTEGER J1_O_SHIPPRIORITY
+                      aggregates
+                      type INTEGER as J2_L_ORDERKEY $K1 ,
+                      type DECIMAL )  $2 sum  ,
+                      type DATE as J1_O_ORDERDATE  $K2 ,
+                      type INTEGER as J1_O_SHIPPRIORITY $K3 "
+    | combined 0
+    | next
+
+  stage stageMarker6355 on origin :
+    aggreg " groupBy type INTEGER J2_L_ORDERKEY ,
+                     type DATE J1_O_ORDERDATE ,
+                     type INTEGER J1_O_SHIPPRIORITY
+                     aggregates
+                     type INTEGER as J2_L_ORDERKEY $K1 ,
+                     type DECIMAL )  $2 sum  ,
+                     type DATE as J1_O_ORDERDATE  $K2 ,
+                     type INTEGER as J1_O_SHIPPRIORITY $K3 "
+    | combined 0
+    | next
+
+   stage stageNew on origin :
+    //| sort " type DECIMAL REVENUE DESC  , type DATE as o_orderdate J1_O_ORDERDATE ASC  "
+    sort " type DECIMAL as REVENUE $2 ASC  , type DATE as o_orderdate J1_O_ORDERDATE ASC  "
+    | limit 10
+    | combined 0
+    | next
+*/
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+end ;
+
+/*
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker6340
+
+  stage stageMarker6340 on all partitions :
+    scan rapidsse public customer
+    | stageMarker6343 broadcast
+
+  stage stageMarker6343 on all partitions :
+    //scan rapidsse public orders
+    //| abstractJoin " 1  "
+    indexjoin Orders IxO_CUSTKEY "BOUND $I1 C_CUSTKEY =="
+    | combined 0
+    | next broadcast
+
+  stage stageMarker6346 on all partitions :
+    //scan rapidsse public lineitem
+    //| abstractJoin " 1  "
+    indexjoin Lineitem IxL_ORDERKEY "BOUND $I1 J1_O_ORDERKEY =="
+    | combined 0
+    | next
+
+  stage stageMarker6349 on all partitions :
+    filter " type BOOLEAN  C_MKTSEGMENT 'BUILDING'  ==
+                           //C_CUSTKEY J1_O_CUSTKEY ==  and
+                           //J2_L_ORDERKEY J1_O_ORDERKEY ==  and
+                           J1_O_ORDERDATE DATE '1995-03-15'  <  and
+                           J2_L_SHIPDATE DATE '1995-03-15'  >  and  "
+    | aggreg " groupBy  type INTEGER  J2_L_ORDERKEY ,
+                        type DATE J1_O_ORDERDATE ,
+                        type INTEGER J1_O_SHIPPRIORITY
+                        aggregates
+                        type INTEGER as J2_L_ORDERKEY $K1 ,
+                        type DECIMAL )  J2_L_EXTENDEDPRICE 1.  J2_L_DISCOUNT -  *  sum  ,
+                        type DATE as J1_O_ORDERDATE  $K2 ,
+                        type INTEGER as J1_O_SHIPPRIORITY $K3 "
+
+    | combined 0
+    | next
+
+  stage stageMarker6352 on all nodes :
+    aggreg " groupBy  type INTEGER J2_L_ORDERKEY ,
+                      type DATE J1_O_ORDERDATE ,
+                      type INTEGER J1_O_SHIPPRIORITY
+                      aggregates
+                      type INTEGER as J2_L_ORDERKEY $K1 ,
+                      type DECIMAL )  $2 sum  ,
+                      type DATE as J1_O_ORDERDATE  $K2 ,
+                      type INTEGER as J1_O_SHIPPRIORITY $K3 "
+    | combined 0
+    | next
+
+  stage stageMarker6355 on origin :
+    aggreg " groupBy type INTEGER J2_L_ORDERKEY ,
+                     type DATE J1_O_ORDERDATE ,
+                     type INTEGER J1_O_SHIPPRIORITY
+                     aggregates
+                     type INTEGER as J2_L_ORDERKEY $K1 ,
+                     type DECIMAL )  $2 sum  ,
+                     type DATE as J1_O_ORDERDATE  $K2 ,
+                     type INTEGER as J1_O_SHIPPRIORITY $K3 "
+    | combined 0
+    | next
+
+   stage stageNew on origin :
+    //| sort " type DECIMAL REVENUE DESC  , type DATE as o_orderdate J1_O_ORDERDATE ASC  "
+    sort " type DECIMAL as REVENUE $2 ASC  , type DATE as o_orderdate J1_O_ORDERDATE ASC  "
+    | limit 10
+    | combined 0
+    | next
+
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+end ;
+*/
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -4,6 +4,9 @@
 
 #include "BASE.h"
 
+/*----------------------------------------------------------------------------*/
+/* Get the address that this BufferId represents                              */
+/*----------------------------------------------------------------------------*/
 // We will update this to use the HashMap, and page in from disk
 // What happens if page out receives a buffer not in memory?
 // Potentially page it in, just to page it back out.
@@ -29,13 +32,16 @@ void* BufferId::vAddressFromId(BufferId oBufferId)
 
 }
 
-BufferId BufferId::vBufferIdFromNo(i8 iBufferNo)
+/*----------------------------------------------------------------------------*/
+/* Calculate the DataBuffer BufferId from the PoolBufferNo                    */
+/*----------------------------------------------------------------------------*/
+BufferId BufferId::vBufferIdFromNo(i8 iPoolBufferNo)
 {
   _static_
 
   BufferId oBufferId;
 
-  oBufferId.m_iAsI8 =  iBufferNo;
+  oBufferId.m_iAsI8 =  iPoolBufferNo;
 
   oBufferId.m_bIdFlag = 1;
 
@@ -43,6 +49,9 @@ BufferId BufferId::vBufferIdFromNo(i8 iBufferNo)
 
 }
 
+/*----------------------------------------------------------------------------*/
+/* Check if the given BufferId is an address or an Id by checking the flag bit*/
+/*----------------------------------------------------------------------------*/
 bool BufferId::bIsAddress(BufferId oBufferId)
 {
   _static_
@@ -50,3 +59,32 @@ bool BufferId::bIsAddress(BufferId oBufferId)
   return oBufferId.m_bIdFlag == 0;
 
 }
+
+/*----------------------------------------------------------------------------*/
+/* Set the Buffer Subscript                                                   */
+/*----------------------------------------------------------------------------*/
+//TODO Arjun: Check overflow before setting below members
+void BufferId::vSetBuffSubscript(u8 uBuffSubscript)
+{
+  m_uBuffSubscript = uBuffSubscript;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Set the Page File Number                                                   */
+/*----------------------------------------------------------------------------*/
+void BufferId::vSetPageFile(u8 uPageFile)
+{
+  m_uPageFile = uPageFile;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Set the Id flag bit                                                        */
+/*----------------------------------------------------------------------------*/
+void BufferId::vSetIdFlag(bool bFlag)
+{
+  m_bIdFlag = bFlag;
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

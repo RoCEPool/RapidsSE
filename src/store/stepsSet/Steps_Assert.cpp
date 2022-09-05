@@ -56,7 +56,7 @@ void Step::vAssertClass(void)
   
   i8 iAssertClassNo = m_pDataStack->iPopAsInt(__func__);
   
-  TypedCell* aTypedCell = m_pDataStack->aTopVal();
+  TypeValueArea* aTypedCell = m_pDataStack->aTopVal();
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
   eCN eClassNo = aTypedCell->eType();
@@ -81,7 +81,7 @@ void Step::vAssertClass_0(void)
   
   i8 iAssertClassNo = m_pDataStack->iPopAsInt(__func__);
   
-  TypedCell* aTypedCell = m_pDataStack->aPeekItem(0);
+  TypeValueArea* aTypedCell = m_pDataStack->aPeekItem(0);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
   eCN eClassNo = aTypedCell->eType();
@@ -106,7 +106,7 @@ void Step::vAssertClass_1(void)
   
   i8 iAssertClassNo = m_pDataStack->iPopAsInt(__func__);
   
-  TypedCell* aTypedCell = m_pDataStack->aPeekItem(1);
+  TypeValueArea* aTypedCell = m_pDataStack->aPeekItem(1);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
   eCN eClassNo = aTypedCell->eType();
@@ -130,7 +130,7 @@ void Step::vAssertClass_2(void)
   
   i8 iAssertClassNo = m_pDataStack->iPopAsInt(__func__);
   
-  TypedCell* aTypedCell = m_pDataStack->aPeekItem(2);
+  TypeValueArea* aTypedCell = m_pDataStack->aPeekItem(2);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
   eCN eClassNo = aTypedCell->eType();
@@ -155,7 +155,7 @@ void Step::vAssertClass_3(void)
   
   i8 iAssertClassNo = m_pDataStack->iPopAsInt(__func__);
   
-  TypedCell* aTypedCell = m_pDataStack->aPeekItem(3);
+  TypeValueArea* aTypedCell = m_pDataStack->aPeekItem(3);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
   eCN eClassNo = aTypedCell->eType();
@@ -180,7 +180,7 @@ void Step::vAssertClass_4(void)
   
   i8 iAssertClassNo = m_pDataStack->iPopAsInt(__func__);
   
-  TypedCell* aTypedCell = m_pDataStack->aPeekItem(4);
+  TypeValueArea* aTypedCell = m_pDataStack->aPeekItem(4);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
   eCN eClassNo = aTypedCell->eType();
@@ -206,7 +206,7 @@ void Step::vAssertStack_0(void)
   i8 iStackValues = m_pDataStack->nValues();
   
   if ( ! (0 == iStackValues)  ) {
-    TypedCell* pTypedCell = m_pDataStack->aPeekItem(0);
+    TypeValueArea* pTypedCell = m_pDataStack->aPeekItem(0);
     vTrace("\n========> assert::stack_0 Class:%s   value:%lld\n"_Stz, aCN[pTypedCell->eType()]->azChar(), pTypedCell->iInt());
 
     vContentDump();

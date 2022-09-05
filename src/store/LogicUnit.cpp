@@ -50,6 +50,7 @@
 #include "PtnStream.hpp"
 #include "PlanOperand.hpp"
 #include "Dynamo.hpp"
+#include "Port.hpp"
 
 #include "SP_Dte.hpp"
 #include "SP_Ent.hpp"
@@ -129,8 +130,8 @@ LogicUnit::LogicUnit(void)
 
 ,    m_xpNamedBuffer(this,RF_REPAIR_DELETE,   NamedBuffer::vRepairList,LR_NAMEDBUFFER)
 ,           m_xpNode(this,RF_REPAIR_NEVER, nullptr,                           LR_NODE)
-,         m_xpNode_I(this,RF_SET_NULL,     nullptr,                         LR_NODE_I)
-,            m_xpNow(this,RF_REPAIR_DELETE,           Now::vRepair,            LR_NOW)
+,         m_xpNode_I(this,RF_REPAIR_NEVER, nullptr,                         LR_NODE_I)
+,            m_xpNow(this,RF_REPAIR_DELETE,   Now::vRepair,                    LR_NOW)
 
 ,             m_xpOp(this,RF_NONE,         nullptr,                             LR_OP)
 ,     m_xpOperandOoO(this,RF_REPAIR_NONE,  nullptr,                     LR_OPERANDOOO)
@@ -141,6 +142,7 @@ LogicUnit::LogicUnit(void)
 ,         m_xpPipein(this,RF_REPAIR_NONE,  nullptr,                         LR_PIPEIN)
 ,       m_xpPipeline(this,RF_NONE,         nullptr,                       LR_PIPELINE)
 ,    m_xpPlanOperand(this,RF_REPAIR_DELETE,   PlanOperand::vRepair,    LR_PLANOPERAND)
+,           m_xpPort(this,RF_REPAIR_NEVER,           Port::vRepair,           LR_PORT)
 ,            m_xpPot(this,RF_REPAIR_DELETE,           Pot::vRepair,            LR_POT)
 ,    m_xpPreExpStack(this,RF_REPAIR_DELETE,      IntStack::vRepair,    LR_PREEXPSTACK)
 ,         m_xpPtnDef(this,RF_REPAIR_DELETE,        PtnDef::vRepair,         LR_PTNDEF)
@@ -172,6 +174,7 @@ LogicUnit::LogicUnit(void)
 ,          m_xpTable(this,RF_SET_NULL,     nullptr,                          LR_TABLE)
 ,       m_xpTablePtn(this,RF_SET_NULL,     nullptr,                       LR_TABLEPTN)
 ,         m_xpTagSet(this,RF_REPAIR_DELETE,        TagSet::vRepair,         LR_TAGSET)
+,           m_xpText(this,RF_REPAIR_DELETE,          Text::vRepair,          LR_TEXT)
 ,          m_xpTimer(this,RF_REPAIR_DELETE,         Timer::vRepair,          LR_TIMER)
 ,          m_xpTinyC(this,RF_REPAIR_DELETE,         TinyC::vRepair,          LR_TINYC)
 ,    m_xpToKeyHshRow(this,RF_REPAIR_DELETE,   ToKeyHshRow::vRepairList,LR_TOKEYHSHROW)
@@ -216,7 +219,10 @@ LogicUnit::LogicUnit(void)
   m_iCounter5 = 0;
   m_iCounter6 = 0;
   m_iCounter7 = 0;
-  
+
+  m_bRcvdChildExit = false;
+  m_bRcvdEnd = false;
+
   m_afFun0 = nullptr;
   m_afFun1 = nullptr;
   m_afFun2 = nullptr;
@@ -265,7 +271,9 @@ LogicUnit::LogicUnit(void)
   
   for (i8 i_UnusedReg = m_nRegs ; i_UnusedReg < C_MAX_REGS; i_UnusedReg++)
     m_paReg[i_UnusedReg] = nullptr;
-  
+
+  m_xpNode_I = new Node_I;
+
   _checkInitialised_(CN_LOGICUNIT);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
@@ -320,7 +328,9 @@ LogicUnit::~LogicUnit(void) noexcept(false)
 
   RASSERT(m_xpNamedBuffer.bIsNull());
   RASSERT(m_xpNode.bIsNull());
-  RASSERT(m_xpNode_I.bIsNull());
+
+  if ( ! m_xpNode_I.bIsNull() )
+    delete *m_xpNode_I;
 
   RASSERT(m_xpOperandOoO.bIsNull());
 
@@ -328,6 +338,7 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpPathIdentifier.bIsNull());
   RASSERT(m_xpPipein.bIsNull());
   RASSERT(m_xpPlanOperand.bIsNull());
+  RASSERT(m_xpPort.bIsNull());
   RASSERT(m_xpPot.bIsNull());
   RASSERT(m_xpPtnStream.bIsNull());
 
@@ -349,6 +360,7 @@ LogicUnit::~LogicUnit(void) noexcept(false)
 
   RASSERT(m_xpTable.bIsNull());
   RASSERT(m_xpTablePtn.bIsNull());
+  RASSERT(m_xpText.bIsNull());
   RASSERT(m_xpTimer.bIsNull());
   RASSERT(m_xpToLglPtnCrw.bIsNull());
   RASSERT(m_xpToLglPtnRow.bIsNull());
@@ -518,7 +530,9 @@ void LogicUnit::vCleanup(void)
     }
     
     // execute register repair
-    if (p_Reg->m_eLogicUnitReg != LR_STATS)
+    if (p_Reg->m_eLogicUnitReg != LR_STATS  &&
+        p_Reg->m_eLogicUnitReg != LR_NODE_I &&
+        p_Reg->m_eLogicUnitReg != LR_PARCEL)
       p_Reg->vRepair();
   }
 }

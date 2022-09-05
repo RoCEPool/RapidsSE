@@ -35,7 +35,7 @@ void Step::vBktMapDelete(void)
 {
   ENTRY();
 
-  AM::vDeleteOperand(*m_pLogicUnit->m_xpBktMapGet);
+  AM::vDeleteOperand(*m_pLogicUnit->m_xpBktMapGet,nullptr);
 
   m_pLogicUnit->m_xpBktMapGet = nullptr;
 

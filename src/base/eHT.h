@@ -16,14 +16,13 @@ enum eHT // Heap type
   /*  6 */ HT_T_SMALL,
   /*  7 */ HT_T_MEDIUM,
   /*  8 */ HT_T_LARGE,
-  /*  9 */ HT_T_DATA,
 
-  /* 10 */ HT_V_TINY,
-  /* 11 */ HT_V_SMALL,
-  /* 12 */ HT_V_MEDIUM,
-  /* 13 */ HT_V_LARGE,
+  /* 9 */  HT_V_TINY,
+  /* 10 */ HT_V_SMALL,
+  /* 11 */ HT_V_MEDIUM,
+  /* 12 */ HT_V_LARGE,
   
-  /* 14 */ HT_ENUMS
+  /* 13 */ HT_ENUMS
 };
 
 static Stz* aHT[]

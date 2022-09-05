@@ -43,7 +43,10 @@ namespace BASE
     i8      m_iViaMalloc;  // is this object in malloc heap (or small heap)?
     s32     m_sOpenMode;   // open mode
     FILE*   m_aFile;       // the os/lib file pointer
-  
+
+    b8      m_bIsOpen;     // is file currently open?
+    void*   m_aFile_check;
+
     SysCall m_oSysCall;
   
     // must be last

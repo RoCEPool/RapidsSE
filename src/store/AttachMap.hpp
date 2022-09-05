@@ -10,6 +10,7 @@
 #include "EventHandlers.hpp"
 #include "SysMetrics.hpp"
 #include "CmdLineArgs.hpp"
+#include "MarkerMgr.hpp"
 #include "eAC.h"
 
 namespace STORE { class InternalTables; class Jobs; class Numbering; }
@@ -22,7 +23,7 @@ namespace STORE
   class AttachMap : public Object
   {
   friend class OBLIQUE::AM;
-  friend class Engine;
+  friend class ENGINE::Engine;
   friend class PROMPT::SePrompt;
 
   private:
@@ -66,6 +67,7 @@ namespace STORE
     i8            m_nJobsThreshold;
     LglPtnMap*    m_pLglPtnMap;
     Locks         m_oLocks;
+    MarkerMgr*    m_pMarkerMgr;
     Numbering*    m_pNumbering;
     Atomic        m_nxOperands;
     Atomic        m_ixQueryNo;
@@ -92,6 +94,21 @@ namespace STORE
     TxSet*        m_pTxSet;
     Word*         m_pWordRoot;
 
+    JobId         m_tAnswerDemonJobId;
+    JobId         m_tCollectDemonJobId;
+    JobId         m_tConnectorDemonJobId;
+    JobId         m_tEventDemonJobId;
+    JobId         m_tExitDemonJobId;
+    JobId         m_tMetricsDemonJobId;
+    JobId         m_tMonDemonJobId;
+    JobId         m_tNodeMonDemonJobId;
+    JobId         m_tPageOutDemonJobId;
+    JobId         m_tReaperDemonJobId;
+    JobId         m_tRecurDemonJobId;
+    JobId         m_tStatDemonJobId;
+    JobId         m_tWakerDemonJobId;
+    JobId         m_tSuperDemonJobId;
+
     // must be last
     Footer m_xFooter;
     
@@ -110,6 +127,7 @@ namespace STORE
     u8   uAttachMapState(void);
   
     i8   iCmdNoNext(void);
+    b1   bDisablePromptCommands(void);
 
     eAC  eFindApi(Stz* aApiNm);
   
@@ -118,6 +136,8 @@ namespace STORE
     void vIndexEntries(i8 nIndexEntries);
   
     Jobs* pJobs(void);
+  
+    MarkerMgr* pMarkerMgr(void);
   
     void vNextTempName(s32& sName);
   

@@ -26,31 +26,51 @@
 /* recv next object(s)                                                        */
 /*----------------------------------------------------------------------------*/
 : recvSE_recvNext
-  
+
+/*
   nullptr to recvdObject[]
 
   Socket[].recvObject
-  
+
   Socket[].success@ not if
+    false
     exit
   then
   
   Socket[].object@\clear to recvdObject[]
 
   Socket[].success@
+*/
+
+  nullptr to recvdObject[]
+  Socket[].recvObject
+
+  Socket[].success@ if
+    Socket[].object@\clear to recvdObject[]
+  else
+    false
+    exit
+  then
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
 /* recv loop: receive a job (possibly with operand), dispatch it              */
 /*----------------------------------------------------------------------------*/
 : recvSE_dispatch ( -- )
-
+/*
   // null object (low memory)
   recvdObject[].isNull if
     exit
   then
     
   recvdObject[] recvdObject[] object.postRecvWord@ execute
+*/
+
+  recvdObject[].isNull not if
+    recvdObject[] recvdObject[] object.postRecvWord@ execute
+  then
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -71,6 +91,19 @@
     recvSE_dispatch
 
   again
+
+/*
+
+  begin
+
+    trap::stackDepthZero
+
+    // receive next object(s)
+    recvSE_recvNext assert
+    recvSE_dispatch
+
+  again
+*/
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -79,7 +112,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for EV_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
-: recvSE_StartMarker \handler
+: recvSE_StartMarker \handler \enterExitTrace
 
   "Receiver Demon Started" .boot
 
@@ -89,7 +122,7 @@
   // loop, receiving and executing jobs
   recvSE_loop
 
-  HAZARD
+  <ansNode> >int >ptr node.cleanup
 ;
 
 /*----------------------------------------------------------------------------*/

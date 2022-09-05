@@ -112,7 +112,7 @@ void ToKeyHshRow::vRepairList(Object* pObject)
 
   while (pRowBuffer) {
     pNextRowBuffer = pRowBuffer->pNextRowBuffer();
-    AM::vDeleteOperand(pRowBuffer);
+    AM::vDeleteOperand(pRowBuffer,nullptr);
     pRowBuffer = pNextRowBuffer;
   }
 
@@ -301,7 +301,7 @@ void ToKeyHshRow::vNewRowBuffer(void)
 //--
 
 #define vACCEPT_CHAR() \
-  (cPrvChr = cCurChr, cCurChr = cNxtChr , cNxtChr = *++azCsvCrs)
+  (StrLib::vCheckIsNot(cCurChr,'\0'), cPrvChr = cCurChr, cCurChr = cNxtChr, cNxtChr = *++azCsvCrs)
 
 #define vCOLLECT_INT_DIGIT(uComponent) \
   uComponent = (uComponent * 10) + (cCurChr - '0')
@@ -415,6 +415,23 @@ void ToKeyHshRow::vNewRowBuffer(void)
     else \
     if (cCurChr && cCurChr == m_cLineEnd && ! m_cLineEnd2nd) { \
       vACCEPT_CHAR(); \
+    } \
+  }
+
+#define vSKIP_TILL_LINE_END() \
+  { \
+    while (cCurChr) { \
+      if (cCurChr && cCurChr == m_cLineEnd && \
+          m_cLineEnd2nd && cNxtChr == m_cLineEnd2nd) { \
+        break; \
+      } \
+      else \
+      if (cCurChr && cCurChr == m_cLineEnd && \
+          ! m_cLineEnd2nd) { \
+        break; \
+      } \
+      else \
+        vACCEPT_CHAR(); \
     } \
   }
 
@@ -968,6 +985,7 @@ L_NextFieldInRecord:
   if (++i_Fld >= nCols) {
     if (iTraceBits & C_BIT_TestMoreFields)
       vTrace("L_NextFieldInRecord: end-of-fields\n"_Stz);
+    vSKIP_TILL_LINE_END();
     goto L_RecordEndLineEnd;
   }
   
@@ -1088,6 +1106,17 @@ L_Boolean:
   if ('f' == cCurChr || 'F' == cCurChr) {
     vBOOLEAN_FALSE();
     goto L_Boolean_recognised;
+  }
+
+  // ---- ---- ---- ---- ---- ---- ---- ----
+  // possible negative form of boolean
+
+  if (C_MINUS_SIGN == cCurChr) {
+    vSIGN_optional();
+    if (bIS_DIGIT()) {
+      vBOOLEAN_NUMERIC();
+      goto L_Boolean_recognised;
+    }
   }
 
   // ---- ---- ---- ---- ---- ---- ---- ----
@@ -1287,7 +1316,7 @@ L_Decimal:
     vCOLLECT_INT_DIGIT(uUnscaledNumber);
     nDecimalDigits++;
     nPixWholeDigits--;
-    if (nPixWholeDigits < 0)
+    if (uUnscaledNumber && nPixWholeDigits < 0)
       goto L_FieldError;
   }
 
@@ -1327,10 +1356,6 @@ L_Decimal:
       vACCEPT_CHAR(); // skip remaining digits
   }
 
-  // have we exceeded the max ?
-  if (uScaledNumber > (u8)C_I8_MAX)
-    vFIELD_ERROR(EC_CSV_DECIMAL_TOO_LARGE);
-
   // ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
   //                                                         recognized decimal
     
@@ -1340,11 +1365,15 @@ L_Decimal:
   
   // compute final field value
   iColVal_decimal = bIsNegative ? - uScaledNumber : uScaledNumber;
-  
-  // have we gone below the negative min ?
-  if (iColVal_decimal < C_I8_MIN)
+
+  // have we exceeded the decimal max ?
+  if (iColVal_decimal > C_BCD_MAX)
+    vFIELD_ERROR(EC_CSV_DECIMAL_TOO_LARGE);
+
+  // have we gone below the decimal min ?
+  if (iColVal_decimal < C_BCD_MIN)
     vFIELD_ERROR(EC_CSV_DECIMAL_TOO_SMALL);
-    
+
   // ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡
   //                                                            deposit decimal
     
@@ -2104,9 +2133,11 @@ L_Varchar_unquoted:
   *acVchDst++ = '\0';
 
   // its not an enclosed varchar so we consider it to be valid
-  if (nVchChars >= nPixLength)
+  if (nVchChars >= nPixLength) {
     nVchChars = nPixLength;
-  
+    *(azColVal_varchar + nVchChars) = '\0';
+  }
+
   goto L_Varchar_depositValue;
   
   
@@ -2216,9 +2247,11 @@ L_Varchar_singleQuotedTerminate:
   *acVchDst++ = '\0';
 
   // its not an enclosed varchar so we consider it to be valid
-  if (nVchChars >= nPixLength)
+  if (nVchChars >= nPixLength) {
     nVchChars = nPixLength;
-  
+    *(azColVal_varchar + nVchChars) = '\0';
+  }
+
   vWHITE_SPACE_trailing(EC_CSV_TIMESTAMP_INVALID);
 
   goto L_Varchar_depositValue;
@@ -2330,9 +2363,11 @@ L_Varchar_doubleQuotedTerminate:
   *acVchDst++ = '\0';
 
   // its not an enclosed varchar so we consider it to be valid
-  if (nVchChars >= nPixLength)
+  if (nVchChars >= nPixLength) {
     nVchChars = nPixLength;
-    
+    *(azColVal_varchar + nVchChars) = '\0';
+  }
+
   vWHITE_SPACE_trailing(EC_CSV_TIMESTAMP_INVALID);
 
   goto L_Varchar_depositValue;
@@ -2401,9 +2436,11 @@ L_Varchar_userEnclosed:
   *acVchDst++ = '\0';
 
   // its not an enclosed varchar so we consider it to be valid
-  if (nVchChars >= nPixLength)
+  if (nVchChars >= nPixLength) {
     nVchChars = nPixLength;
-  
+    *(azColVal_varchar + nVchChars) = '\0';
+  }
+
   vWHITE_SPACE_trailing(EC_CSV_VARCHAR_INVALID);
   
   goto L_Varchar_depositValue;
@@ -2548,7 +2585,7 @@ L_FieldError:
   // resynch csv cursor to first char after next record end
   
   // consume up to and include end of line
-  while (! bIS_LINE_END())
+  while (cCurChr && ! bIS_LINE_END())
     vACCEPT_CHAR(); // skip any
   vSKIP_LINE_END();
   

@@ -21,6 +21,8 @@
 #include "TagConstants.h"
 #include "BucketMap.hpp"
 
+#include "AM.hpp"
+
 extern AttachMap*  gpAttachMap;
 extern BufferPool* gpBufferPool;
 
@@ -82,15 +84,16 @@ AttachMap::AttachMap(bool bNoFree)
   m_xHeaps.vInit();
 
   m_pFileMap        = new FileMap();
-  m_pBucketMap      = nullptr;
-  m_pDicRoot        = new Dic("__dicRoot"_Stz);
 #ifdef WITH_HASHMAP
   m_pHashMap        = new HashMap();
 #endif
+  m_pBucketMap      = nullptr;
+  m_pDicRoot        = new Dic("__dicRoot"_Stz);
   m_pInternalTables = new InternalTables;
   m_pJobs           = new Jobs;
+  m_pMarkerMgr      = new MarkerMgr;
   m_pNumbering      = new Numbering;
-  m_pLglPtnMap         = nullptr;
+  m_pLglPtnMap      = nullptr;
   m_bReapEnabled    = true;
   m_pStarter        = new Starter;
   m_pTxSet          = new TxSet;
@@ -158,6 +161,16 @@ i8 AttachMap::iCmdNoNext(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* generate next command no                                                   */
+/*----------------------------------------------------------------------------*/
+b1 AttachMap::bDisablePromptCommands(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
+
+  return m_xSysArgs.m_bDisablePromptCmds;
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump this attachmap                                                        */
 /*----------------------------------------------------------------------------*/
 void AttachMap::vDump(eCN eClass, Object* pObject, Stz* aTab)
@@ -216,6 +229,16 @@ Jobs* AttachMap::pJobs(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get marker manager                                                         */
+/*----------------------------------------------------------------------------*/
+MarkerMgr* AttachMap::pMarkerMgr(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
+
+  return m_pMarkerMgr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get next temp name                                                         */
 /*----------------------------------------------------------------------------*/
 void AttachMap::vNextTempName(s32& sName)
@@ -271,7 +294,6 @@ void AttachMap::vPrintAttachMap(void)
   
   vTrace("\n"_Stz);
   vTrace("BufferPool         : %p \n"_Stz, gpAttachMap->m_pBufferPool);
-  vTrace("TransientDataHeap  : %p \n"_Stz, gpAttachMap->m_xHeaps.Transient.m_pData);
   vTrace("TransientLargeHeap : %p \n"_Stz, gpAttachMap->m_xHeaps.Transient.m_pLarge);
   vTrace("TransientMediumHeap: %p \n"_Stz, gpAttachMap->m_xHeaps.Transient.m_pMedium);
   vTrace("TransientSmallHeap : %p \n"_Stz, gpAttachMap->m_xHeaps.Transient.m_pSmall);
@@ -375,6 +397,7 @@ void AttachMap::vRecordArguments(CmdLineArgs* pCmdLineArgs)
   m_xSysArgs.m_bDebugMode       = pCmdLineArgs->m_xSysArgs.m_bDebugMode;
   m_xSysArgs.m_bDerefMetrics    = pCmdLineArgs->m_xSysArgs.m_bDerefMetrics;
   m_xSysArgs.m_bDeveloper       = pCmdLineArgs->m_xSysArgs.m_bDeveloper;
+  m_xSysArgs.m_bDisablePromptCmds = pCmdLineArgs->m_xSysArgs.m_bDisablePromptCmds;
   m_xSysArgs.m_bDistJob         = pCmdLineArgs->m_xSysArgs.m_bDistJob;
   m_xSysArgs.m_nDummyLoop       = pCmdLineArgs->m_xSysArgs.m_nDummyLoop;
   m_xSysArgs.m_nDummySleep      = pCmdLineArgs->m_xSysArgs.m_nDummySleep;
@@ -427,7 +450,6 @@ void AttachMap::vRecordArguments(CmdLineArgs* pCmdLineArgs)
   ASSERT(m_xHeaps.Transient.m_pSmall);
   ASSERT(m_xHeaps.Transient.m_pMedium);
   ASSERT(m_xHeaps.Transient.m_pLarge);
-  ASSERT(m_xHeaps.Transient.m_pData);
 
   
   ASSERT(m_xHeaps.Virtual.m_pTiny);

@@ -24,6 +24,7 @@ namespace BASE
     static void vRepair(Object* pObject);
     static void vRepairList(Object* pObject);
 
+    Operand* pDuplicateOperand(void);
     bool bIsBuffer(void);
     bool bIsInfoSet(void);
     bool bIsMarker(void);

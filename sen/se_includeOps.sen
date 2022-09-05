@@ -18,6 +18,7 @@ assert::stack_0
 
 "a" .verbose
 
+  "OP_adaptorDummy.sen"         include
   "OP_adaptorWL.sen"            include
   "OP_addNode.sen"              include
   "OP_adjustPartitions.sen"     include
@@ -180,6 +181,7 @@ assert::stack_0
   "OP_networkReset.sen"         include
   "OP_nodeHeartbeat.sen"        include
   "OP_nodeInfo.sen"             include
+  "OP_nodeMon.sen"              include
   "OP_noop.sen"                 include
 
 "o" .verbose
@@ -213,7 +215,6 @@ assert::stack_0
   "OP_rdCrwFile.sen"            include
   "OP_rdCsvChunk.sen"           include
   "OP_rdCsvCyclic.sen"          include
-  "OP_reap.sen"                 include
   "OP_reapCtl.sen"              include
   "OP_recurring.sen"            include
   "OP_recvSE.sen"               include
@@ -266,8 +267,7 @@ assert::stack_0
   "OP_toLglPtnRow.sen"          include
   "OP_toCsv.sen"                include
   "OP_toDemon.sen"              include
-  "OP_toDfload.sen"             include
-  "OP_pathToDfload2.sen"        include
+  "OP_pathToDfload.sen"         include
   "OP_top.sen"                  include
   "OP_toStatDemon.sen"          include
   "OP_totalCount.sen"           include

@@ -104,13 +104,13 @@ TokenVec* TokenVec::pGetSubVec(TokenVec* pTknVec, Stz* szStart, Stz* szEnd)
 }
 
 /*----------------------------------------------------------------------------*/
-/* replace tokens                                                             */
+/* replace tokens (procedure params)                                          */
 /*----------------------------------------------------------------------------*/
-void TokenVec::vReplace(TokenVec* pThisVec,
+bool TokenVec::bReplace(TokenVec* pThisVec,
                         TokenVec* pFindVec, TokenVec* pWithVec)
 {
   _static_
-  
+
   i8 nTokens = pThisVec->nTokens();
   for (i8 i_Token = 0; i_Token < nTokens; i_Token++) {
     
@@ -120,27 +120,37 @@ void TokenVec::vReplace(TokenVec* pThisVec,
     
     if (C_UNKNOWN == i_Find)
       continue;
-    
+
+    if (pWithVec->nItems() <= i_Find)
+      return false;
+
     Token* pWithToken = pWithVec->pGet(i_Find);
+
+    // SE-93 temp hack: to cater to certain names being "|"
+    // eg create table | (...)
+    if (pWithToken->bSame("|"_Stz))
+      return false;
 
     pThisToken->vUpdateChars(pWithToken->szChars(),pThisVec);
     pThisToken->vToken(pWithToken->eToken());
   }
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
 /* tokenise given string                                                      */
 /*----------------------------------------------------------------------------*/
-TokenVec* TokenVec::pTokeniseSen(Stz* szString)
-{
-  _static_
-  
-  TokenVec* pTknVec = new TokenVec;
-  
-  pTknVec->vTokeniseSen(szString);
-  
-  return pTknVec;
-}
+//TokenVec* TokenVec::pTokeniseSen(Stz* szString)
+//{
+//  _static_
+//  
+//  TokenVec* pTknVec = new TokenVec;
+//  
+//  pTknVec->vTokeniseSen(szString);
+//  
+//  return pTknVec;
+//}
 
 
 /*----------------------------------------------------------------------------*/
@@ -151,14 +161,19 @@ TokenVec* TokenVec::pTokeniseSen(Stz* szString)
 /*----------------------------------------------------------------------------*/
 /* advance current token                                                      */
 /*----------------------------------------------------------------------------*/
-void TokenVec::vAdvanceCurr(bool bIncItems)
+bool TokenVec::bAdvanceCurr(bool bIncItems)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+
+  if (m_iCurTkn + 2 >= nMaxItems())
+    return false;
 
   m_iCurTkn++;
   
   if (bIncItems)
     vIncItems();
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -995,60 +1010,60 @@ void TokenVec::vTrimTokens(i8 i_Tkn)
 /*----------------------------------------------------------------------------*/
 /* tokenise given string into this token vector                               */
 /*----------------------------------------------------------------------------*/
-void TokenVec::vTokeniseSen(Stz* szTokenStr)
-{
-  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-
-  vSoftReset();
-  vIntegrityCheck();
-
-  Input* pInput = new Input(nullptr);
-  pInput->vUseString(szTokenStr);
-  pInput->vFormSenTokens();
-  pInput->vUseBegin();
-
-  for (i8 i_Token = 0; ; i_Token++) {
-    
-    pInput->vReadToken();
-    if (TN_NULL == pInput->eToken())
-      break;
-      
-    vAppendToken(pInput->szChars(),pInput->eToken());
-  }
-  
-  pInput->vUseEnd();
-  while (pInput)
-    pInput = pInput->pDeleteInput();
-}
+//void TokenVec::vTokeniseSen(Stz* szTokenStr)
+//{
+//  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+//
+//  vSoftReset();
+//  vIntegrityCheck();
+//
+//  Input* pInput = new Input(nullptr);
+//  pInput->vUseString(szTokenStr);
+//  pInput->vFormSenTokens();
+//  pInput->vUseBegin();
+//
+//  for (i8 i_Token = 0; ; i_Token++) {
+//
+//    pInput->vReadToken();
+//    if (TN_NULL == pInput->eToken())
+//      break;
+//
+//    vAppendToken(pInput->szChars(),pInput->eToken());
+//  }
+//
+//  pInput->vUseEnd();
+//  while (pInput)
+//    pInput = pInput->pDeleteInput();
+//}
 
 /*----------------------------------------------------------------------------*/
 /* tokenise given string into this token vector                               */
 /*----------------------------------------------------------------------------*/
-void TokenVec::vTokeniseCpp(Stz* szTokenStr)
-{
-  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-  
-  vSoftReset();
-  vIntegrityCheck();
-  
-  Input* pInput = new Input(nullptr);
-  pInput->vUseString(szTokenStr);
-  pInput->vFormCppTokens();
-  pInput->vUseBegin();
-  
-  for (i8 i_Token = 0; ; i_Token++) {
-    
-    pInput->vReadToken();
-    if (TN_NULL == pInput->eToken())
-      break;
-    
-    vAppendToken(pInput->szChars(),pInput->eToken());
-  }
-  
-  pInput->vUseEnd();
-  while (pInput)
-    pInput = pInput->pDeleteInput();
-}
+//void TokenVec::vTokeniseCpp(Stz* szTokenStr)
+//{
+//  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+//
+//  vSoftReset();
+//  vIntegrityCheck();
+//
+//  Input* pInput = new Input(nullptr);
+//  pInput->vUseString(szTokenStr);
+//  pInput->vFormCppTokens();
+//  pInput->vUseBegin();
+//
+//  for (i8 i_Token = 0; ; i_Token++) {
+//
+//    pInput->vReadToken();
+//    if (TN_NULL == pInput->eToken())
+//      break;
+//
+//    vAppendToken(pInput->szChars(),pInput->eToken());
+//  }
+//
+//  pInput->vUseEnd();
+//  while (pInput)
+//    pInput = pInput->pDeleteInput();
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get number of tokens                                                       */

@@ -4,6 +4,7 @@
 
 #include "BASE.h"
 
+#include "Marker.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -80,7 +81,7 @@ void Operand::vRepair(Object* pObject)
   Operand* pOperand = _pOperand(pObject);
 
   // delete the operand
-  AM::vDeleteOperand(pOperand);
+  AM::vDeleteOperand(pOperand,nullptr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -96,7 +97,7 @@ void Operand::vRepairList(Object* pObject)
 
   while (pOperand) {
     pNextOperand = pOperand->pNextItem();
-    AM::vDeleteOperand(pOperand);
+    AM::vDeleteOperand(pOperand,nullptr);
     pOperand = pNextOperand;
   }
 
@@ -105,6 +106,26 @@ void Operand::vRepairList(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* duplicate the operand                                                      */
+/*----------------------------------------------------------------------------*/
+Operand* Operand::pDuplicateOperand(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  if (CN_MARKER == eGetClassNo()) {
+    Marker* pThisMarker = (Marker*)this;
+    Marker* pMarker = AM::MARKER::pNewMarker(pThisMarker->eOpMarker(),
+                                             nullptr);
+    return pMarker;
+  }
+  
+  Operand* pDuplicate = (Operand*)this->pMemoryCopy();
+  
+  return pDuplicate;
+
+}
 
 /*----------------------------------------------------------------------------*/
 /* is this operand a buffer ?                                                 */

@@ -55,6 +55,27 @@ void ComparisonExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
   else NEVER_REACH
 }
 
+/*----------------------------------------------------------------------------*/
+/* Represent the expression as types instead of names. Append to the buffer   */
+/*----------------------------------------------------------------------------*/
+void ComparisonExpr::vDescribeAsTypes(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  if      (     EqExpr::bIsOfType(pNode))   {      EqExpr::vDescribeAsTypes(pNode, sBuf, pRootNode); }
+  else if (     NeExpr::bIsOfType(pNode))   {      NeExpr::vDescribeAsTypes(pNode, sBuf, pRootNode); }
+  else if (     GtExpr::bIsOfType(pNode))   {      GtExpr::vDescribeAsTypes(pNode, sBuf, pRootNode); }
+  else if (     GeExpr::bIsOfType(pNode))   {      GeExpr::vDescribeAsTypes(pNode, sBuf, pRootNode); }
+  else if (     LtExpr::bIsOfType(pNode))   {      LtExpr::vDescribeAsTypes(pNode, sBuf, pRootNode); }
+  else if (     LeExpr::bIsOfType(pNode))   {      LeExpr::vDescribeAsTypes(pNode, sBuf, pRootNode); }
+  else if (     InExpr::bIsOfType(pNode))   {      InExpr::vDescribeAsTypes(pNode, sBuf, pRootNode); }
+  else if ( ExistsExpr::bIsOfType(pNode))   {  ExistsExpr::vDescribeAsTypes(pNode, sBuf, pRootNode); }
+  else if (   LikeExpr::bIsOfType(pNode))   {    LikeExpr::vDescribeAsTypes(pNode, sBuf, pRootNode); }
+  else if (BetweenExpr::bIsOfType(pNode))   { BetweenExpr::vDescribeAsTypes(pNode, sBuf, pRootNode); }
+//else if (    AnyExpr::bIsOfType(pNode))   {     AnyExpr::vDescribeAsTypes(pNode, sBuf, pRootNode);    }
+  else NEVER_REACH
+}
 
 /*----------------------------------------------------------------------------*/
 /* Returns true if the given node is derived from the expr definition         */

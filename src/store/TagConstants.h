@@ -4,8 +4,7 @@
 #pragma once
 
 static Stz* C_TAGSET_NAME      = "<aTagSetNm>"_Stz;
-  
-static Stz* C_TAG_BG           = "<bg>"_Stz;
+
 static Stz* C_TAG_BYPROMPT     = "<byPrompt>"_Stz;
 static Stz* C_TAG_CMD          = "<cmd>"_Stz;
 static Stz* C_TAG_CMDFILE      = "<cmdFile>"_Stz;
@@ -18,6 +17,8 @@ static Stz* C_TAG_DIARYDIR     = "<diaryDir>"_Stz;
 static Stz* C_TAG_DIVISION     = "<division>"_Stz;
 static Stz* C_TAG_ENTRYPOINT   = "<entryPoint>"_Stz;
 static Stz* C_TAG_EXPR         = "<expr>"_Stz;
+static Stz* C_TAG_FAULTINJECTION = "<faultInjection>"_Stz;
+static Stz* C_TAG_FAULTPOINT   = "<faultPoint>"_Stz;
 static Stz* C_TAG_FLOW         = "<flow>"_Stz;
 static Stz* C_TAG_FORCELOG     = "<forceLog>"_Stz;
 static Stz* C_TAG_FREEPCT      = "<freePct>"_Stz;
@@ -34,6 +35,7 @@ static Stz* C_TAG_MEMORYLOG    = "<memoryLog>"_Stz;
 static Stz* C_TAG_NODE         = "<node>"_Stz;
 static Stz* C_TAG_NOTE         = "<note>"_Stz;
 static Stz* C_TAG_NOWAIT       = "<noWait>"_Stz;
+static Stz* C_TAG_OBJTRACKER   = "<objectTracker>"_Stz;
 static Stz* C_TAG_OPERANDLOG   = "<operandLog>"_Stz;
 static Stz* C_TAG_OPTIMISE     = "<optimise>"_Stz;
 static Stz* C_TAG_OPTIMISED    = "<optimised>"_Stz;
@@ -49,7 +51,7 @@ static Stz* C_TAG_REQOF        = "<reqOf>"_Stz;
 static Stz* C_TAG_RESOURCELOG  = "<resourceLog>"_Stz;
 static Stz* C_TAG_SECTION      = "<section>"_Stz;
 static Stz* C_TAG_SHM          = "<shm>"_Stz;
-static Stz* C_TAG_SIGNALWAITER = "<signalWaiter>"_Stz;
+static Stz* C_TAG_SIGNALPARENT = "<signalParent>"_Stz;
 static Stz* C_TAG_STMT         = "<stmt>"_Stz;
 static Stz* C_TAG_SUMMARY      = "<summary>"_Stz;
 static Stz* C_TAG_SYSTEMCLOSER = "<systemCloser>"_Stz;

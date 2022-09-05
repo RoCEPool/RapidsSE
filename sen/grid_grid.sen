@@ -72,7 +72,8 @@
 
   0 locals| pNode |
 
-  C_ALL node_I[].new
+  //C_ALL node_I[].new
+  node_I[].init
 
   "" // initial empty string
 
@@ -90,7 +91,7 @@
     node_i[].more while
   repeat
 
-  node_I[].delete
+  //node_I[].delete
 
   CN_STZVAL assert::class
 ;
@@ -143,7 +144,8 @@
 
   0 locals| pNode |
 
-  0 node_I[].new
+  //0 node_I[].new
+  node_I[].init
 
   begin
 
@@ -159,7 +161,7 @@
     node_i[].more while
   repeat
 
-  node_I[].delete
+  //node_I[].delete
 ;
 
 /*----------------------------------------------------------------------------*/

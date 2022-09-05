@@ -72,6 +72,7 @@ Op::Op(Stream* p_Stream, OpSpec* p_OpSpec)
   m_pOpTags   = nullptr;
   m_bTraceOp  = false;
   m_bTraceAck = false;
+  m_bAllocate = true;
   
   m_pEvMgr    = new EvMgr;
   
@@ -174,18 +175,18 @@ Op::~Op(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* ack the invoking task                                                      */
+/* ack the job task                                                           */
 /*----------------------------------------------------------------------------*/
-void Op::vAckInvokingTask(void)
+void Op::vAckJobTask(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  //Task* pInvokingTask = m_p_PipelineOfOp->pPipelineJob()->pTask();
-  //RASSERT(m_pTask->pInvoker() == pInvokingTask);
+  //Task* pJobTask = m_p_PipelineOfOp->pPipelineJob()->pTask();
+  //RASSERT(m_pTask->pInvoker() == pJobTask);
 
   SP_Op spOp;
   i8 nAcksWereRemaining;
-  Task* pInvokingTask = m_pTask->pInvokingTask();
+  Task* pJobTask = m_pTask->pJobTask();
 
   if (m_bTraceOp) {
 
@@ -196,7 +197,7 @@ void Op::vAckInvokingTask(void)
               "%-18s pipelineJob=%p\n"_Stz, spOp.szLeading(this), __func__, pOuterJobOfOp()
       );
     } else {
-      vTrace("Op %s (%s (N%lld) (P%02lld)): acking invoking task\n"_Stz,
+      vTrace("Op %s (%s (N%lld) (P%02lld)): acking invoking job\n"_Stz,
              szOpNm(),
              m_p_Stream->pStage()->szStageNm(),
              iNodeId(),
@@ -207,7 +208,7 @@ void Op::vAckInvokingTask(void)
   if (m_bTraceOp && AM::TRACE::bVBlong())
     spOp.szLeading(this);
 
-  AM::vAckWaitingTask(pInvokingTask, m_pTask, nAcksWereRemaining);
+  AM::vAckWaitingTask(pJobTask, m_pTask, nAcksWereRemaining);
 
   if (m_bTraceOp && AM::TRACE::bVBlong()) {
     vTraceM("%s "
@@ -217,7 +218,7 @@ void Op::vAckInvokingTask(void)
   }
 
   if (m_bTraceAck)
-    vTrace("Op %s (%s (N%lld) (P%02lld)): acking invoking task (acksRemaining : %lld)\n"_Stz,
+    vTrace("Op %s (%s (N%lld) (P%02lld)): acking invoking job (acksRemaining : %lld)\n"_Stz,
            szOpNm(),
            m_p_Stream->pStage()->szStageNm(),
            iNodeId(),
@@ -237,18 +238,37 @@ void Op::vAddWorkDone(i8 iWorkDone)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is memory allocation allowed for this op?                                  */
+/*----------------------------------------------------------------------------*/
+bool Op::bAllocateMemory()
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+
+  return m_bAllocate;
+}
+
+/*----------------------------------------------------------------------------*/
 /* append operand to this op's left operand queue                             */
 /*----------------------------------------------------------------------------*/
 void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   if (AM::OPERAND::bIsOoO(pOperand)) {
     vAppendOoO(pOperand,pTriggeringTask);
     return;
   }
   
   AM::METRICS::vDerefMetrics((i8)pOperand,pOperand->eGetClassNo(),DR_ENQUEUE);
+
+#ifdef WITH_BUFFER_ID
+  if(1 == DataBuffer::bIsDataBuffer(pOperand->eGetClassNo())) {
+    // Replace RowBuffer address with BufferId and append to queue
+    DataBuffer* pDataBuffer = _pDataBuffer(pOperand);
+    BufferId oBufferId = pDataBuffer->oGetBufferId();
+    pOperand = (Operand*) oBufferId.m_pvAsAddress;
+  }
+#endif
 
   vGrabTaskLock();
   RASSERT(bIsLocked());
@@ -292,6 +312,17 @@ void Op::vAppendOoO(Operand* pOperand, Task* pTriggeringTask)
   IGNORE_RETURN(m_pPipeIn->pQueueOoO()->iAppendOperand(pOperand));
 
   AM::vOperandsInc();
+
+  RASSERT(pOperand->bIsMarker());
+  Marker* pMarker = _pMarker(pOperand);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  /// if NODELOSS, latch the opertor queue
+  // no more operands can be accepted !!!
+  if (pMarker->eOpMarker() == OM_NODELOSSABORT) {
+    m_pPipeIn->pQueueOoO()->vLatch(true);
+    m_pPipeIn->pQueueLeft()->vLatch(true);
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for biding op/task
@@ -580,8 +611,9 @@ bool Op::bIsEventValid(i8 i_OperandKind)
       }
       
       // should have received a EV_M_CANCEL
-      if ( ! m_pEvMgr->m_naEventCount[EV_M_CANCEL]) {
-        vTrace("%s: %s arrived without a prior EV_M_CANCEL\n"_Stz,
+      if ( ! m_pEvMgr->m_naEventCount[EV_M_CANCEL] &&
+           ! m_pEvMgr->m_naEventCount[EV_M_LOWMEMORY]) {
+        vTrace("%s: %s arrived without a prior EV_M_CANCEL / EV_M_LOWMEMORY\n"_Stz,
                szOpNm(), aEV[i_OperandKind]);
         return false;
       }
@@ -642,34 +674,6 @@ bool Op::bIsEventValid(i8 i_OperandKind)
       if ( m_pEvMgr->m_naEventCount[EV_M_END]) {
         vTrace("%s: %s arrived after EV_M_END\n"_Stz,
                szOpNm(), aEV[i_OperandKind]);
-        return false;
-      }
-      break;
-
-    case EV_M_ENDCRWRHT:
-      // should not have received a EV_M_ENDROWRHT already
-      if (m_pEvMgr->m_naEventCount[EV_M_ENDROWRHT]) {
-        vTrace("%s: EV_M_ENDROWRHT already arrived\n"_Stz, szOpNm());
-        return false;
-      }
-
-      // should have received a ~ EV_M_STARTCRWRHT already
-      if (m_pEvMgr->m_naEventCount[i_OperandKind] == m_pEvMgr->m_naEventCount[EV_M_STARTCRWRHT] ) {
-        vTrace("%s: EV_M_STARTCRWRHT not yet arrived\n"_Stz, szOpNm());
-        return false;
-      }
-      break;
-
-    case EV_M_ENDROWRHT:
-      // should not have received a EV_M_ENDCRWRHT already
-      if (m_pEvMgr->m_naEventCount[EV_M_ENDCRWRHT]) {
-        vTrace("%s: EV_M_ENDCRWRHT already arrived\n"_Stz, szOpNm());
-        return false;
-      }
-
-      // should have received a ~ EV_M_STARTROWRHT already
-      if (m_pEvMgr->m_naEventCount[i_OperandKind] == m_pEvMgr->m_naEventCount[EV_M_STARTROWRHT] ) {
-        vTrace("%s: EV_M_STARTROWRHT not yet arrived\n"_Stz, szOpNm());
         return false;
       }
       break;
@@ -801,20 +805,6 @@ bool Op::bIsEventValid(i8 i_OperandKind)
         return false;
       }
       break;
-      
-    case EV_M_STARTCRWRHT:
-      // should not have received a EV_M_STARTROWRHT already
-      if (m_pEvMgr->m_naEventCount[EV_M_STARTROWRHT]) {
-        vTrace("%s: EV_M_STARTROWRHT already arrived\n"_Stz, szOpNm());
-        return false;
-      }
-
-      // should not have received a ~ EV_M_ENDCRWRHT already
-      if (m_pEvMgr->m_naEventCount[i_OperandKind] == m_pEvMgr->m_naEventCount[EV_M_ENDCRWRHT] + 1 ) {
-        vTrace("%s: EV_M_ENDCRWRHT already arrived\n"_Stz, szOpNm());
-        return false;
-      }
-      break;
 
     case EV_M_START:
       // should not have received a EV_M_START already
@@ -822,21 +812,6 @@ bool Op::bIsEventValid(i8 i_OperandKind)
         vTrace("%s: multiple EV_M_START's arrived\n"_Stz, szOpNm());
         return false;
       }
-      break;
-
-    case EV_M_STARTROWRHT:
-      // should not have received a EV_M_STARTCRWRHT already
-      if (m_pEvMgr->m_naEventCount[EV_M_STARTCRWRHT]) {
-        vTrace("%s: EV_M_STARTCRWRHT already arrived\n"_Stz, szOpNm());
-        return false;
-      }
-
-      // should not have received a ~ EV_M_STARTROWRHT already
-      if (m_pEvMgr->m_naEventCount[i_OperandKind] == m_pEvMgr->m_naEventCount[EV_M_ENDROWRHT] + 1 ) {
-        vTrace("%s: EV_M_ENDROWRHT already arrived\n"_Stz, szOpNm());
-        return false;
-      }
-
       break;
 
     case EV_M_STARTED:
@@ -983,6 +958,29 @@ i8 Op::iNodeId(void)
     iNodeId = AM::pLglPtnMap()->iNodeId(tLglPtn());
 
   return iNodeId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* send EV_M_NODELOSSABORT to this operator                                   */
+/*----------------------------------------------------------------------------*/
+void Op::vNodeLossAbort(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+
+  Job* pJob = this->pOuterJobOfOp();
+
+  Task* pTask = this->pTask();
+
+  RASSERT( ! m_pOpTags->bHasName(C_TAG_DEDICATEDTHD) );
+
+  if (pTask) {
+    vTrace("Sending NODELOSSABORT to OP %s %s\n"_Stz, m_p_OpSpec->szOpNm(), m_p_OpSpec->pStageSpec()->szStageNm());
+    Operand *pOperand = AM::MARKER::pNewMarker(OM_NODELOSSABORT, pJob);
+    vAppendLeft(pOperand, pTask);
+  }
+  else
+    vTrace("SKIPPINGSending NODELOSSABORT to OP %s %s\n"_Stz, m_p_OpSpec->szOpNm(), m_p_OpSpec->pStageSpec()->szStageNm());
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1294,7 +1292,7 @@ Pipeline* Op::pPipeline(void)
 void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-    
+
   vOpTrace(pOperand,(Stz*)__func__);
   
   if (pOperand->bIsBuffer()) {
@@ -1359,23 +1357,12 @@ void Op::vPipeToThis(Operand* pOperand, Task* pTriggeringTask)
 void Op::vPipeToOutput(Operand* pOperand)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   Job* pJob = MY::pJob();
   RASSERT(pJob);
 
   // pipeout response from job
-  pJob->vPipeout(pOperand);
-
-//  Output* pOutput = pJob->pOutputFind();
-//  RASSERT(pOutput);
-//
-//  Queue* pOutputQueue = pOutput->m_pOutputQueue;
-//
-//  RASSERT(pOutputQueue);
-//
-//  vOpTrace(pOperand,(Stz*)__func__);
-//
-//  IGNORE_RETURN(pOutputQueue->iAppend(pOperand));
+  pJob->vPipeoutResponse(pOperand);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1472,6 +1459,18 @@ Operand* Op::pPopOoOLeft(void)
   vDropTaskLock();
   AM::vOperandsDec();
 
+#ifdef WITH_BUFFER_ID
+  BufferId oBufferId;
+  oBufferId.m_pvAsAddress = (void*)pOperand;
+  if(1 == oBufferId.m_bIdFlag)
+  {
+    pOperand = (Operand*)BufferId::vAddressFromId(oBufferId);
+#ifdef WITH_HASHMAP
+    ASSERT(pOperand == (Operand*)AM::pHashMap()->pValueAt(oBufferId.m_pvAsAddress));
+#endif
+  }
+#endif
+
   AM::METRICS::vDerefMetrics((i8)pOperand,pOperand->eGetClassNo(),DR_DEQUEUE);
 
   vOpTrace(pOperand
@@ -1508,7 +1507,6 @@ Operand* Op::pPopOoOLeft(void)
           ,pRowBuffer->nRows()
           );
   }
-
   return pOperand;
 
 }
@@ -1650,14 +1648,24 @@ void Op::vSendNode(i8 iSendNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set tags for this op                                                       */
+/* enable/disable allocation of memory by op                                  */
 /*----------------------------------------------------------------------------*/
-void Op::vSetInvoker(Task* pInvoker)
+void Op::vSetAllocate(bool bAlloc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+
+  m_bAllocate = bAlloc;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set job task                                                               */
+/*----------------------------------------------------------------------------*/
+void Op::vSetJobTask(Task* pJobTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
   if (m_pTask)
-    m_pTask->vInvokingTask(pInvoker);
+    m_pTask->vJobTask(pJobTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1680,9 +1688,10 @@ void Op::vSpawnTask(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
       
   Job* pJob = this->pOuterJobOfOp();
-  pJob->vActiveOpsInc();
   
   vCreateTaskForOp();
+  pJob->vActiveOpsInc();
+
   Task* pTask = this->pTask();
   
   if (m_pOpTags->bHasName(C_TAG_DEDICATEDTHD))
@@ -1784,6 +1793,27 @@ void Op::vToCmdStr(Stz* szCmdStr)
   szCmdStr->vCopy(szOpNm());
   m_p_OpSpec->pArgTags()->vConcat(szCmdStr);
   //vTrace("%s\n"_Stz, szCmdStr);
+}
+
+/*----------------------------------------------------------------------------*/
+/* unspawn task for this operator                                             */
+/*----------------------------------------------------------------------------*/
+void Op::vUnspawnTask(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+
+  Job* pJob = this->pOuterJobOfOp();
+
+  Task* pTask = this->pTask();
+
+  RASSERT( ! m_pOpTags->bHasName(C_TAG_DEDICATEDTHD) );
+
+  if (pTask) {
+    //vTrace("Sending HARDABORT to OP %s\n"_Stz, m_p_OpSpec->szOpNm());
+
+    Operand *pOperand = AM::MARKER::pNewMarker(OM_HARDABORT, pJob);
+    vAppendLeft(pOperand, pTask);
+  }
 }
 
 /*----------------------------------------------------------------------------*/

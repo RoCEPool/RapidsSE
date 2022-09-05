@@ -41,6 +41,7 @@
 #include "WhenExpr.hpp"
 #include "SubstringExpr.hpp"
 #include "ShadowRoot.hpp"
+#include "NullLiteral.hpp"
 
 #include "NodeNamer.hpp"
 #include "GraphNav.hpp"
@@ -84,8 +85,30 @@ void Expr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
   else if (ColumnParameter::bIsOfType(pNode))  { ColumnParameter::vDescribe(pNode, sBuf, pRootNode); }
   else if (   OperatorExpr::bIsOfType(pNode))  {    OperatorExpr::vDescribe(pNode, sBuf, pRootNode); }
   else if (SubqueryRefExpr::bIsOfType(pNode))  { SubqueryRefExpr::vDescribe(pNode, sBuf, pRootNode); }
-  else if (       MiscExpr::bIsOfType(pNode))  {        MiscExpr::vDescribe(pNode, sBuf, pRootNode); }
+  else {
+    // Need to add in manual polymorphism here
+    NEVER_REACH
+  }
+}
 
+/*----------------------------------------------------------------------------*/
+/* Represent the expression as types instead of names. Append to the buffer   */
+/*----------------------------------------------------------------------------*/
+void Expr::vDescribeAsTypes(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  // TODO: manual expression polymorphism here
+
+  if      (    LiteralExpr::bIsOfType(pNode))  {     LiteralExpr::vDescribeAsTypes(pNode, sBuf, pRootNode); }
+  else if (      ColumnRef::bIsOfType(pNode))  {       ColumnRef::vDescribeAsTypes(pNode, sBuf, pRootNode); }
+  else if (       AliasRef::bIsOfType(pNode))  {        AliasRef::vDescribeAsTypes(pNode, sBuf, pRootNode); }
+  else if ( ColumnWildcard::bIsOfType(pNode))  { NEVER_REACH }
+  else if (  ColumnOrdinal::bIsOfType(pNode))  {   ColumnOrdinal::vDescribeAsTypes(pNode, sBuf, pRootNode); }
+  else if (ColumnParameter::bIsOfType(pNode))  { ColumnParameter::vDescribeAsTypes(pNode, sBuf, pRootNode); }
+  else if (   OperatorExpr::bIsOfType(pNode))  {    OperatorExpr::vDescribeAsTypes(pNode, sBuf, pRootNode); }
+  else if (SubqueryRefExpr::bIsOfType(pNode))  { SubqueryRefExpr::vDescribeAsTypes(pNode, sBuf, pRootNode); }
   else {
     // Need to add in manual polymorphism here
     NEVER_REACH
@@ -311,12 +334,15 @@ void Expr::vValidateResultType(QueryNode* pExprNode, PlanNode* pRootNode)
   }
 
   // The problem is in this expression node. Throw an exception
-  s2K sBuf;
-  Expr::vDescribe(pExprNode, sBuf, pRootNode);
+  s2K sExprDesc;
+  s2K sTypeDesc;
+  Expr::vDescribe(pExprNode, sExprDesc, pRootNode);
+  Expr::vDescribeAsTypes(pExprNode, sTypeDesc, pRootNode);
 
   SemanticException::vThrow(EC_EXPR_INVALID_COMBINATION,
-                            ": %s"_Stz,
-                            sBuf.szStz() );
+                            ": (%s) in expression (%s)"_Stz,
+                            sTypeDesc.szStz(),
+                            sExprDesc.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -903,7 +929,7 @@ void Expr::vSuperAggregate(QueryNode* pExpr, PlanNode* pRootNode)
       // DECIMAL if x is an INTEGER.
       //
       // First get the resulting type of the original AVG operation.
-      TypeId xAvgTypeId = Expr::xTypeId(pExpr, pRootNode);
+      TypeId xAvgTypeId = Expr::xTypeId(pAgg, pRootNode);
       eCT eAvgType = xAvgTypeId.eCTVal();
 
       // Now check if it is the same type as the numerator and denominator
@@ -1071,6 +1097,52 @@ void Expr::vCoerceSubExprs(QueryNode* pExpr, PlanNode* pRootNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Convert a cast of a literal to the new literal value, or throw an exception*/
+/* if this is not possible.                                                   */
+/*----------------------------------------------------------------------------*/
+void Expr::vCoerceCastLiteral(Parser::QueryNode* pExpr, Parser::PlanNode* pRootNode)
+{
+  if (!CastExpr::bIsOfType(pExpr)) {
+    return;
+  }
+
+  QueryNode* pTargetExpr = CastExpr::pTargetExpr(pExpr);
+  TypeId xTargetType = CastExpr::xTypeId(pExpr, pRootNode);
+
+  if (!LiteralExpr::bIsOfType(pTargetExpr)) {
+    return;
+  }
+
+  if (NullLiteral::bIsOfType(pTargetExpr)) {
+    // We don't want to convert cast of a NULL to a NULL because we actually lose
+    // type information. e.g. CAST(NULL AS BOOLEAN) is still a boolean column but
+    // with a NULL value. If we replace the CAST with NULL then we actually have a
+    // NULL type being returned.
+    return;
+  }
+
+  QueryNode* pLiteralExpr = pTargetExpr;
+
+  if (!bIsImplicitlyCoercibleTo(xTargetType, pLiteralExpr, pRootNode)) {
+    // There are some casts that are not implicitly coercible but yet are still supported.
+    // e.g Implicit coercion will not cast a float to a decimal, but yet this is still a
+    // valid thing to do with an explicit cast. So don't give an error if we can't do this
+    // coercion implicitly.
+    return;
+  }
+
+  // It still might not be coercible because it overflows the target types bounds.
+  // This next call could also generate an exception.
+  QueryNode* pCoercedLiteral = Expr::pCoerceTo(xTargetType, pLiteralExpr, pRootNode);
+  ASSERT(pCoercedLiteral);
+
+  // Convert the pExpr from a CastExpr to the coerced literal
+  pExpr->vTransmogrifyTo(pCoercedLiteral, true);
+
+  delete pCoercedLiteral;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Try to find a common type that all children of pExpr can be coerced to.    */
 /* Return true if the coerced and modified pExpr now returns a value for      */
 /* eType() that is not CT_NONE.                                               */
@@ -1130,8 +1202,17 @@ b1 Expr::bCoerceChildrenToCommonType(QueryNode* pExprCopy, PlanNode* pRootNode)
       pCoercedChild = pChild->pDeepCopy(false);
 
     } else {
-    // Coerce it to the new type. This will create a new expression object.
-      pCoercedChild = Expr::pCoerceTo(xCoercibleTarget, pChild, pRootNode);
+      // Coerce it to the new type. This will create a new expression object.
+      try {
+        pCoercedChild = Expr::pCoerceTo(xCoercibleTarget, pChild, pRootNode);
+
+      } catch (SemanticException& e) {
+        delete pChild;
+        pChildList->vRemoveAll();
+        delete pChildList;
+        delete pExprCopy;
+        throw;
+      }
     }
 
     ASSERT(pCoercedChild);
@@ -1270,7 +1351,9 @@ b1 Expr::bIsImplicitlyCoercibleTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNo
 }
 
 /*----------------------------------------------------------------------------*/
-/* Returns a new expression object which represents pExpr coerced to eTarget  */
+/* Returns a new expression object which represents pExpr coerced to eTarget. */
+/* Note: an exception may be thrown if the expr cannot be coerced because it  */
+/*       falls out of range of the target type.                               */
 /*----------------------------------------------------------------------------*/
 QueryNode* Expr::pCoerceTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNode* pRootNode)
 {

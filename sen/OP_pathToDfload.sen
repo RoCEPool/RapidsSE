@@ -1,0 +1,78 @@
+/*============================================================================*/
+/* OP_pathToDfload.sen -- Operator Path To Dfload                             */
+/*============================================================================*/
+
+" OP_pathToDfload.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_I_PATH ... an infoset with __path rows                      */
+/*----------------------------------------------------------------------------*/
+: pathToDfload_Path \handler
+
+  PipeIn[]\clear to InfoSet[]
+
+  C_TDEF_PATH infoSetRow:getFirstRow
+
+  // extract the values
+  0 InfoSet[].colVal@ locals| sPath   |
+  1 InfoSet[].colVal@ locals| iPathNo |
+  2 InfoSet[].colVal@ locals| iPathOf | 
+  
+  // print the __path data
+  //iPathOf iPathNo sPath "pathToDfload: %v %v %v" .printf
+
+  InfoSet[].delete
+  nullptr to InfoSetRow[]
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  sPath <tableNm> "dfload %v \"%v\"" str.format locals| sCmd |
+
+  //sCmd "pathToDfload: %v" .printf
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // temp debug
+  //true exit
+
+  C_TDEF_COMMAND InfoSet:discover
+  sCmd 1 OI_COMMAND InfoSet:pipeoutRow
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for call pipeline req                      (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+ : pathToDfload_op \operator
+
+  _lu_initialise_
+
+  op__topology
+
+  find: pathToDfload_Path  EV_I_PATH  [op].handler!
+
+  op__loop
+
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: pathToDfload :: pathToDfload <tableNm> ;
+
+: pathToDfload_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "pathToDfload_op"
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

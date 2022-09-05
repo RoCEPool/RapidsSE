@@ -13,7 +13,6 @@
 #include "XorExpr.hpp"
 #include "NotExpr.hpp"
 #include "IsNullExpr.hpp"
-//#include "LikeExpr.hpp"
 
 using namespace Parser;
 
@@ -41,10 +40,24 @@ void LogicExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
   else if (   XorExpr::bIsOfType(pNode))    {    XorExpr::vDescribe(pNode, sBuf, pRootNode);  }
   else if (   NotExpr::bIsOfType(pNode))    {    NotExpr::vDescribe(pNode, sBuf, pRootNode);  }
   else if (IsNullExpr::bIsOfType(pNode))    { IsNullExpr::vDescribe(pNode, sBuf, pRootNode);  }
-//  else if (LikeExpr::bIsOfType(pNode))    {   LikeExpr::vDescribe(pNode, sBuf, pRootNode);     }
   else NEVER_REACH
 }
 
+/*----------------------------------------------------------------------------*/
+/* Represent the expression as types instead of names. Append to the buffer   */
+/*----------------------------------------------------------------------------*/
+void LogicExpr::vDescribeAsTypes(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  if      (   AndExpr::bIsOfType(pNode))    {    AndExpr::vDescribeAsTypes(pNode, sBuf, pRootNode);  }
+  else if (    OrExpr::bIsOfType(pNode))    {     OrExpr::vDescribeAsTypes(pNode, sBuf, pRootNode);  }
+  else if (   XorExpr::bIsOfType(pNode))    {    XorExpr::vDescribeAsTypes(pNode, sBuf, pRootNode);  }
+  else if (   NotExpr::bIsOfType(pNode))    {    NotExpr::vDescribeAsTypes(pNode, sBuf, pRootNode);  }
+  else if (IsNullExpr::bIsOfType(pNode))    { IsNullExpr::vDescribeAsTypes(pNode, sBuf, pRootNode);  }
+  else NEVER_REACH
+}
 
 /*----------------------------------------------------------------------------*/
 /* Returns true if the given node is derived from the expr definition         */
@@ -68,7 +81,7 @@ b1 LogicExpr::bIsExactType(PlanNode *pNode)
 TypeId LogicExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
 {
   _static_
-      ASSERT(bIsOfType(pExprNode));
+  ASSERT(bIsOfType(pExprNode));
 
   // TODO: manual expression polymorphism here
 
@@ -77,7 +90,6 @@ TypeId LogicExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
   else if (   XorExpr::bIsOfType(pExprNode))    { return    XorExpr::xTypeId(pExprNode, pRootNode);  }
   else if (   NotExpr::bIsOfType(pExprNode))    { return    NotExpr::xTypeId(pExprNode, pRootNode);  }
   else if (IsNullExpr::bIsOfType(pExprNode))    { return IsNullExpr::xTypeId(pExprNode, pRootNode);  }
-//else if (LikeExpr::bIsOfType(pExprNode))             { return   LikeExpr::eType(pExprNode, pRootNode);           }
   else NEVER_REACH
 }
 

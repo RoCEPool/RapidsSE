@@ -14,6 +14,10 @@ namespace BASE
     eCM   m_eMode;           // current mode of compiler
   
     i8    m_nLocals;         // number of locals/params variables
+    i8*   m_aiLocals;        // address of where nLocals is encoded
+  
+    b8    m_bEnterExitTrace; // trace enter and exit
+
     Word* m_paWord[C_MAX_NESTED_WORDS]; // array of nested words
  
     // must be last
@@ -29,9 +33,15 @@ namespace BASE
     bool  bCompiling(void);
     Word* pCurrentWord(void);
     void  vCurrentWord(Word* pWord);
+    void  vEncodeEnter(void);
+    void  vEncodeExit(void);
+    bool  bEnterExitTrace(void);
+    void  vEnterExitTrace(bool bExterExitTrace);
     bool  bInterpreting(void);
     i8    nLocals(void);
     void  vLocals(i8 nLocals);
+    void  vLocalsMark(void);
+    void  vLocalsUpdate(void);
     eCM   eMode(void);
     void  vMode(eCM eMode);
     Word* pNestedWord(i8 i_Nested);

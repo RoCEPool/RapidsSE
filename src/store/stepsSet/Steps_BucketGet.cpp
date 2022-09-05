@@ -131,7 +131,7 @@ void Step::vBucketDelete(void)
 {
   ENTRY();
 
-  AM::vDeleteOperand(*m_pLogicUnit->m_xpBucketGet);
+  AM::vDeleteOperand(*m_pLogicUnit->m_xpBucketGet,nullptr);
 
   m_pLogicUnit->m_xpBucketGet = nullptr;
 

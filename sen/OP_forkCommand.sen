@@ -8,36 +8,30 @@
 /* handler for EV_I_COMMAND ...                                               */
 /*----------------------------------------------------------------------------*/
 : forkCommand_Command \handler
-
-  [EvMgr].curEventNm@ "%v" .printf
   
   0 0 locals| eError tForkedJobId |
   
   PipeIn[]\clear to InfoSet[]
 
+  // get the command to be forked
   0 C_TDEF_COMMAND InfoSet:getCol locals| sForkCmd |
 
-  sForkCmd "  forkCmd=%v" .printf
+  //sForkCmd "  forkCmd=%v" .printf
 
-
+  // set the responseOp for the responses coming from the forked child
   <responseOpNm> [stream].findOp locals| pResponseOp |
-  
-  pResponseOp op.name@ "  responseOp=%v" .printf
-    
-/*
+  pResponseOp [job].responseOp!
 
-  STD_NOWAIT_TAG sForkCmd api::forkChild if
-    to tForkedJobId
-    tForkedJobId "forkCommand: job %v" .printf
-  else
-    to eError
-    eError ErrorCode::decodeError eError "forkCommand: error %v %v" .printf
+  // fork a child job for the command
+  STD_NORMALFORK_TAG sForkCmd api::forkChild not if
+    nullptr [job].responseOp!
+    op__execErr
+    true
+    exit
   then
-*/
 
   true
 ;
-
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -65,7 +59,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: forkCommand :: forkCommand dynamic <responseOpNm> ;
+cmdSyntax: forkCommand :: forkCommand <responseOpNm> ;
 
 : forkCommand_cmdTags _cmdTags tagCopy: op_tags
   tags{

@@ -19,7 +19,9 @@ namespace BASE
   public:
     SysCall(void);
     ~SysCall(void) noexcept(false);
-    
+
+    static char* azError(i8 iErrMo);
+
     void vClear(void);
     void vError(i8 iErrno);
     i8   iError(void);

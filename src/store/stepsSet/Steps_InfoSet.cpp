@@ -30,7 +30,7 @@
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
 
-static const i8 C_CHUNKBLOCK        = 2048;
+static const i8 C_CHUNK_BLOCK        = 2048;
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -376,129 +376,105 @@ void Step::vInfoSetChunkFile(void)
 {
   ENTRY();
 
-  m_pLogicUnit->m_iCounter2++;
-
-  i8 nRows = 0;
-  Row* pRow;
-  
   // get the seekOffsets
-  InfoSet* pInfoSet = _pInfoSet(*m_pLogicUnit->m_xpInfoSet);
-  pInfoSet->vOpInfoSet(OI_SEEKOFFSETS);
-  
+  InfoSet* pSeekOffsets = _pInfoSet(*m_pLogicUnit->m_xpInfoSet);
+  pSeekOffsets->vOpInfoSet(OI_SEEKOFFSETS);
+  i8 nRowsInSeekOffsets = 0;
+  Row* pSeekOffsetRow = nullptr;
+
   // get the file we are chunking
   File* pFile = _pFile(*m_pLogicUnit->m_xpFile0);
-  
-  // get the last chunk location
-  i8 i_ChunkLoc = m_pLogicUnit->m_iCounter0;
-  
-  // get the Eof location
-  i8 i_EofLoc = m_pLogicUnit->m_iCounter1;
-  
-  char* pReadBlock = (char*)MemLib::aMallocBlock(C_CHUNKBLOCK);
-  
-  i8 nChunkBytes;
-  
+
+  // allocate a work area for reading in last block of chunk
+  char* aLastBlock = (char*)MemLib::aMallocBlock(C_CHUNK_BLOCK);
+
+  i8 nSumBytes = 0;
+  i8 nChunkBytes = C_UNKNOWN;
+  i8 i_OfsOfLastBlockInChunk = C_UNKNOWN;
+
+  // get the file offset of the EOF
+  i8 i_EofOfs = m_pLogicUnit->m_iCounter1;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // process chunks till eof or till we get C_MAX_SEEKOFFSETS
-  
-  while (true) {
-    
-    // compute the location of the final block of the current chunk
-    i8 i_FinalBlockLoc = i_ChunkLoc + C_LOAD_READCHUNK - C_CHUNKBLOCK;
-    
-    // the final block will be past the eof if the chunk is
-    // less than maximum chunk size
-    if (i_FinalBlockLoc > i_EofLoc) {
-      
-      // compute the number of bytes which belong to the current chunk
-      nChunkBytes = i_EofLoc - i_ChunkLoc;
-      pRow = nullptr;
-      if (nRows < C_MAX_SEEKOFFSETS)
-        pRow = pInfoSet->RowBuffer::pAllotRow();
-      
-      if (pRow) {
-        nRows++;
-        
-        pRow->vColVal_int(0,i_ChunkLoc);
-        pRow->vColVal_int(1,nChunkBytes);
-      }
 
-      s32 sFileSize;
-      MagLib::vByteMag(i_EofLoc, 3, sFileSize);
-      vTrace("Loading %s %s "
-             "in %lld chunks (%lld offsets per chunk) "
-             "by %lld nodes %lld partitions\n"_Stz,
-             
-             pFile->sFilePath().szStz(),
-             sFileSize.szStz(),
-             
-             m_pLogicUnit->m_iCounter2,
-             C_MAX_SEEKOFFSETS,
-             
-             AM::GRID::nKnownNodes(),
-             AM::PTNMAP::nPtnsInGrid());
-      
-      // set the chunk location
-      m_pLogicUnit->m_iCounter0 = i_ChunkLoc + nChunkBytes;
-      
-      //vTrace("*****SeekOfset has %lld rows\n"_Stz, nRows);
-      
-      break;
-    }
-    
-    // read next block of the chunk
-    pFile->vSeek(i_FinalBlockLoc);
-    
-    i8 nBytesRead = pFile->nReadBytes(pReadBlock,C_CHUNKBLOCK);
-    
-    // compute last actual byte of final block just read in
-    char *aLastByte = &pReadBlock[nBytesRead - 1];
-    
-    // find the final end of line for the block (and therefore the chunk)
-    char *aFinalEol = aLastByte;
-    bool bFoundEol = StrLib::bBackward(&aFinalEol,pReadBlock,'\n');
-    if (!bFoundEol)
-      bFoundEol = StrLib::bBackward(&aFinalEol,pReadBlock,'\r');
-    RASSERT(bFoundEol);
-    
-    // compute the number of bytes which belong to the current chunk
-    i8 nPartialBytes = nDifference((void*)aFinalEol,pReadBlock) + 1;
-    
-    // compute the total chunk bytes
-    nChunkBytes = nPartialBytes + C_WSP_DATACHUNK - 2048;
-    
-    // compute end location of chunk
-    i8 i_EndChunkLoc = i_ChunkLoc + nChunkBytes - 1;
-    
-    pRow = nullptr;
-    if (nRows < C_MAX_SEEKOFFSETS)
-      pRow = pInfoSet->RowBuffer::pAllotRow();
-    
-    if (pRow) {
-      nRows++;
-      
-      pRow->vColVal_int(0,i_ChunkLoc);
-      pRow->vColVal_int(1,nChunkBytes);
-      
-      // advance to start of next chunk
-      i_ChunkLoc = i_EndChunkLoc + 1;
+  for (;;) {
+
+    // get the file offset of next chunk
+    i8 i_ChunkOfs = m_pLogicUnit->m_iCounter0;
+
+    RASSERT (i_ChunkOfs < i_EofOfs);
+
+    // allot row for seek offset info
+    pSeekOffsetRow = pSeekOffsets->RowBuffer::pAllotRow();
+
+    // test for final chunk in file
+    if (i_ChunkOfs + C_CHUNK_SIZE >= i_EofOfs) {
+      // + final chunk in file
+
+      // compute the total chunk bytes
+      nChunkBytes = i_EofOfs - i_ChunkOfs;
+
+      // end of file
+      m_pLogicUnit->m_iCounter0 = i_EofOfs;
     }
     else {
-      
-      // save the current chunk location
-      m_pLogicUnit->m_iCounter0 = i_ChunkLoc;
-      
-      //vTrace("*****SeekOfset has %lld rows\n"_Stz, nRows);
-      // dump
-      //pInfoSet->vPrintRows();
-      
-      break;
+      // -not final chunk in file
+
+      // compute offset of last block in current chunk
+      i_OfsOfLastBlockInChunk = i_ChunkOfs + C_CHUNK_SIZE - C_CHUNK_BLOCK;
+
+      // read last block of current chunk
+      pFile->vSeek(i_OfsOfLastBlockInChunk);
+      i8 nBytesRead = pFile->nReadBytes(aLastBlock, C_CHUNK_BLOCK);
+
+      // compute address of last data byte of last block of current chunk
+      char *aLastDataByte = &aLastBlock[nBytesRead - 1];
+
+      // find the last end of line in last block of current chunk
+      char *aLastEol = aLastDataByte;
+      bool bFoundEol = StrLib::bBackward(&aLastEol, aLastBlock, '\n');
+      if (!bFoundEol)
+        bFoundEol = StrLib::bBackward(&aLastEol, aLastBlock, '\r');
+      RASSERT(bFoundEol);
+
+      // compute the number of bytes which belong to the last block in chunk
+      i8 nLastBlockBytes = nDifference(aLastEol, aLastBlock) + 1;
+
+      // compute the total chunk bytes
+      nChunkBytes = C_WSP_DATACHUNK - C_CHUNK_BLOCK + nLastBlockBytes;
+
+      // compute end location of chunk
+      i8 i_EndChunkLoc = i_ChunkOfs + nChunkBytes - 1;
+
+      // advance to start of next chunk
+      m_pLogicUnit->m_iCounter0 = i_EndChunkLoc + 1;
     }
+
+    if (MY::pJob()->pJobTags()->bHasName("<OP_Chunk>"_Stz))
+      vTrace("<OP_Chunk>: i_ChunkOfs %lld nChunkBytes %lld\n"_Stz,
+             i_ChunkOfs,nChunkBytes);
+
+    pSeekOffsetRow->vColVal_int(0,i_ChunkOfs);
+    pSeekOffsetRow->vColVal_int(1,nChunkBytes);
+
+    nSumBytes += nChunkBytes;
+
+    if (++nRowsInSeekOffsets >= C_MAX_SEEKOFFSETS)
+      break;
+    if (m_pLogicUnit->m_iCounter0 >= i_EofOfs)
+      break;
   }
-  
+
+
   // free the read block
-  MemLib::vFreeBlock(pReadBlock, C_2K);
-  
+  MemLib::vFreeBlock(aLastBlock, C_CHUNK_BLOCK);
+
+  if (MY::pJob()->pJobTags()->bHasName("<OP_Chunk>"_Stz))
+    vTrace("<OP_Chunk>: nSumBytes %lld\n"_Stz,nSumBytes);
+
+  m_pDataStack->vPushInt(nSumBytes);
+
   EXIT();
 }
 
@@ -554,7 +530,7 @@ void Step::vInfoSetDelete(void)
 {
   ENTRY();
   
-  AM::vDeleteOperand(*m_pLogicUnit->m_xpInfoSet);
+  AM::vDeleteOperand(*m_pLogicUnit->m_xpInfoSet,nullptr);
   
   m_pLogicUnit->m_xpInfoSet = nullptr;
   
@@ -689,7 +665,7 @@ void Step::vInfoSetNew(void)
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
   
   StreamDef* pStreamDef = pTable->pStreamDef();
-  
+
   m_pLogicUnit->m_xpInfoSet = new InfoSet(pStreamDef);
   
   EXIT();
@@ -765,7 +741,11 @@ void Step::vInfoSetRdCsvChunk(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create new csvBuffer and set csvMeta
-  
+
+#ifdef WITH_OOM_FAULTINJECTION
+  PsxThd::vTlsSet(giTLS_CurrentPoint,(void*)6);
+#endif
+
   CsvBuffer* pCsvBuffer = new CsvBuffer;
   
   CsvMeta* pCsvMeta = pCsvBuffer->pCsvMeta();
@@ -782,6 +762,12 @@ void Step::vInfoSetRdCsvChunk(void)
   pCsvFile->vSeek(iOffset);
   pCsvBuffer->vTake(nBytes);
   i8 nBytesRead = pCsvFile->nReadBytes(azInto,nBytes);
+
+//  if (nBytesRead != nBytes) {
+//    nBytesRead = pCsvFile->nReadBytes(azInto,nBytes);
+//    ASSERT(nBytesRead == nBytes);
+//  }
+
   ASSERT(nBytesRead == nBytes);
   UNUSED(nBytesRead);
   
@@ -791,7 +777,10 @@ void Step::vInfoSetRdCsvChunk(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // return the CsvBuffer
-  
+
+  m_pDataStack->vPushInt(nBytes);
+  m_pDataStack->vPushInt(iOffset);
+
   m_pDataStack->vPushPtr(pCsvBuffer);
  
   EXIT();

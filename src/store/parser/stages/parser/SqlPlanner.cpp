@@ -3042,8 +3042,18 @@ i8 SqlPlanner::iCleanInt(std::string& sStr)
 
   } catch (std::out_of_range &e) {
     SemanticException::vThrow(EC_INVALID_INTEGER_FORMAT,
-                              ": Value of out range: \"%s\""_Stz,
-                              sStr.c_str());
+                              ": Value of out range: \"%s\". Integer range is %lld to %lld"_Stz,
+                              sStr.c_str(), C_INT_MIN, C_INT_MAX);
+  }
+
+  // Because NULL is represented as a bit pattern, we need to restrict the
+  // literal value range a little bit further. Refer to the definitions in
+  // the file Fragments.cpp (specifically C_DATUM_NULL).
+
+  if (iVal > 9223372036854775806 || iVal < -9223372036854775806) {
+    SemanticException::vThrow(EC_INVALID_INTEGER_FORMAT,
+                              ": Value of out range: \"%s\". Integer range is %lld to %lld"_Stz,
+                              sStr.c_str(), C_INT_MIN, C_INT_MAX);
   }
 
   return iVal;
@@ -3164,15 +3174,24 @@ Bcd SqlPlanner::xCleanDecimal(Stz* szStr, i8 iLine, i8 iColumn)
     // iDecimal > (2^47 - 1) || iDecimal < (-2^47)
     SyntaxException::vThrow(iLine, iColumn,
                             EC_VALUE_OUT_OF_RANGE,
-                            ": Max/min decimal precision supported is [2^47, (2^47) - 1] : %s"_Stz, szStr);
+                            ": Max/min decimal precision supported is [-1,407,374,883,553.28, 1,407,374,883,553.27] : %s"_Stz, szStr);
   }
-
-
 
   ASSERT(sizeof(Bcd) == C_BYTES_PER_WORD);
 
   Bcd xBcd;
-  xBcd.vSet(iMantissa, iScale);
+
+  // REVISE: If the value is small enough then represent it with 2 decimal places
+  // so it prints nicely. It should strictly have a scale of 0.
+  if ( iScale == 0 &&
+      (iMantissa * 100) < C_BCD_MAX &&
+      (iMantissa * 100) > C_BCD_MIN ) {
+    xBcd.vSet(iMantissa * 100, 2);
+
+  } else {
+    xBcd.vSet(iMantissa, iScale);
+  }
+
   return xBcd;
 }
 

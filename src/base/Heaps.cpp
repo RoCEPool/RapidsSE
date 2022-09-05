@@ -40,7 +40,6 @@ Heaps::Heaps(i8 bNoFree)
   Transient.m_pSmall  = nullptr;
   Transient.m_pMedium = nullptr;
   Transient.m_pLarge  = nullptr;
-  Transient.m_pData   = nullptr;
 
   Virtual.m_pTiny   = nullptr;
   Virtual.m_pSmall  = nullptr;
@@ -266,8 +265,14 @@ void Heaps::vFree(Object* pObject, bool bPersistent)
 //  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  pObject = aAdd<Object*>(pObject,gxaSizeHeap[eFreeClass].m_nVtableAdjust);
+
+  if( gxaSizeHeap[eFreeClass].m_eWhichHeap == HT_V_TINY   ||
+      gxaSizeHeap[eFreeClass].m_eWhichHeap == HT_V_SMALL  ||
+      gxaSizeHeap[eFreeClass].m_eWhichHeap == HT_V_MEDIUM ||
+      gxaSizeHeap[eFreeClass].m_eWhichHeap == HT_V_LARGE ) {
+
+    pObject = aAdd<Object*>(pObject,-8);
+  }
   
   if ((pHeaps->m_bTraceFree || eFreeClass == pHeaps->m_eTraceFree)
       && (! pHeaps->m_pTaskFree || (MY::pTask() == pHeaps->m_pTaskFree))) {
@@ -448,7 +453,6 @@ Heap* Heaps::pGetHeap(eHT eHeap)
     case HT_T_SMALL:   return Transient.m_pSmall;
     case HT_T_MEDIUM:  return Transient.m_pMedium;
     case HT_T_LARGE:   return Transient.m_pLarge;
-    case HT_T_DATA:    return Transient.m_pData;
 
     case HT_V_TINY:    return Virtual.m_pTiny;
     case HT_V_SMALL:   return Virtual.m_pSmall;
@@ -467,14 +471,14 @@ Heap* Heaps::pGetHeap(eHT eHeap)
 void Heaps::vInit(void)
 {
   // create the persistent heaps
-//  Persistent.m_pTiny   =
-//    new Heap(CN_TINYPERSISTENT,  C_SIZE_SMALL_OBJECT,  HT_P_TINY);
-//  Persistent.m_pSmall  =
-//    new Heap(CN_SMALLPERSISTENT, C_SIZE_SMALL_OBJECT,  HT_P_SMALL);
-//  Persistent.m_pMedium =
-//    new Heap(CN_MEDIUMPERSISTENT,C_SIZE_MEDIUM_OBJECT, HT_P_MEDIUM);
-//  Persistent.m_pLarge  =
-//    new Heap(CN_LARGEPERSISTENT, C_SIZE_LARGE_OBJECT,  HT_P_LARGE);
+  Persistent.m_pTiny   =
+    new Heap(CN_TINYPERSISTENT,  C_SIZE_SMALL_OBJECT,  HT_P_TINY);
+  Persistent.m_pSmall  =
+    new Heap(CN_SMALLPERSISTENT, C_SIZE_SMALL_OBJECT,  HT_P_SMALL);
+  Persistent.m_pMedium =
+    new Heap(CN_MEDIUMPERSISTENT,C_SIZE_MEDIUM_OBJECT, HT_P_MEDIUM);
+  Persistent.m_pLarge  =
+    new Heap(CN_LARGEPERSISTENT, C_SIZE_LARGE_OBJECT,  HT_P_LARGE);
   // create the transient heaps
   
   Transient.m_pTiny   =
@@ -485,8 +489,6 @@ void Heaps::vInit(void)
     new Heap(CN_MEDIUMTRANSIENT,C_SIZE_MEDIUM_OBJECT,HT_T_MEDIUM);
   Transient.m_pLarge  =
     new Heap(CN_LARGETRANSIENT, C_SIZE_LARGE_OBJECT, HT_T_LARGE);
-  Transient.m_pData  =
-    new Heap(CN_DATATRANSIENT,  C_SIZE_DATA_OBJECT, HT_T_DATA);
 
   // create the virtual heaps
   Virtual.m_pTiny   =
@@ -518,8 +520,6 @@ void Heaps::vInit(void)
           Transient.m_pMedium, C_SIZE_MEDIUM_OBJECT);
     vTrace("Created transient large heap %p: %lldB objects\n"_Stz,
           Transient.m_pLarge, C_SIZE_LARGE_OBJECT);
-    vTrace("Created transient data heap %p: %lldB objects\n"_Stz,
-          Transient.m_pData, C_SIZE_DATA_OBJECT);
 
     vTrace("Created virtual tiny heap %p: %lldB objects\n"_Stz,
           Virtual.m_pTiny, C_SIZE_TINY_OBJECT);

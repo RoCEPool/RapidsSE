@@ -54,7 +54,7 @@ void Step::vPlanOperandDelete(void)
 {
   ENTRY();
   
-  AM::vDeleteOperand(*m_pLogicUnit->m_xpPlanOperand);
+  AM::vDeleteOperand(*m_pLogicUnit->m_xpPlanOperand,nullptr);
   
   m_pLogicUnit->m_xpPlanOperand = nullptr;
   

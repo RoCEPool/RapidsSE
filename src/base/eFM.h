@@ -62,22 +62,29 @@ enum eFM : u2 // function macros
   /*  */ FM_SUB_UNKANY,           // unk + any
 
   // sum
+  /*  */ FM_SUM_ANYUNK,           // sum(any,unk)
   /*  */ FM_SUM_BCDBCD,           // sum(bcd,bcd)
   /*  */ FM_SUM_FLTFLT,           // sum(flt,flt)
   /*  */ FM_SUM_INTINT,           // sum(int,int)
+  /*  */ FM_SUM_UNKANY,           // sum(unk,any)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // between operators
 
   /*  */ FM_BET_BCDBCD,           // between bcd bcd
+  /*  */ FM_BET_DTEDTE,           // between dte dte
   /*  */ FM_BET_FLTFLT,           // between flt flt
   /*  */ FM_BET_INTINT,           // between int int
-  /*  */ FM_BET_UNKXYZ,           // between unk xyz
+  /*  */ FM_BET_TMETME,           // between bcd bcd
+  /*  */ FM_BET_TSPTSP,           // between tme tme
+  /*  */ FM_BET_UNKXYZ,           // between tsp tsp
+  /*  */ FM_BET_VCHVCH,           // between vch vch
   /*  */ FM_BET_XYZUNK,           // between xyz unk
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cast operators
 
+  /*  */ FM_ANY_TOUNK,          // any to unk
   /*  */ FM_BCD_TOFLT,          // bcd to flt
   /*  */ FM_BCD_TOINT,          // bcd to int
   /*  */ FM_BCD_TOUNK,          // bcd to unk
@@ -230,7 +237,7 @@ enum eFM : u2 // function macros
   /*  */ FM_GE_IVYIVY,        // ivy == ivy
   /*  */ FM_GE_TMETME,        // tme >= tme
   /*  */ FM_GE_TSPTSP,        // tsp >= tsp
-  /*  */ FM_GE_UNKANY,        // unk/any == any/unk
+  /*  */ FM_GE_UNKANY,        // unk >= any
   /*  */ FM_GE_VCHVCH,        // vch >= vch
 
   // greater than
@@ -241,11 +248,25 @@ enum eFM : u2 // function macros
   /*  */ FM_GT_FLTFLT,        // flt > flt
   /*  */ FM_GT_INTINT,        // int > int
   /*  */ FM_GT_IVLIVL,        // ivl > ivl
-  /*  */ FM_GT_IVYIVY,        // ivy == ivy
+  /*  */ FM_GT_IVYIVY,        // ivy > ivy
   /*  */ FM_GT_TMETME,        // tme > tme
   /*  */ FM_GT_TSPTSP,        // tsp > tsp
-  /*  */ FM_GT_UNKANY,        // unk/any == any/unk
+  /*  */ FM_GT_UNKANY,        // unk > any
   /*  */ FM_GT_VCHVCH,        // vch > vch
+
+  // greater than for aggreagtes
+  /*  */ FM_GTA_ANYUNK,        // any > unk
+  /*  */ FM_GTA_BCDBCD,        // bcd > bcd
+  /*  */ FM_GTA_BOLBOL,        // bol > bol
+  /*  */ FM_GTA_DTEDTE,        // dte > bcd
+  /*  */ FM_GTA_FLTFLT,        // flt > flt
+  /*  */ FM_GTA_INTINT,        // int > int
+  /*  */ FM_GTA_IVLIVL,        // ivl > ivl
+  /*  */ FM_GTA_IVYIVY,        // ivy > ivy
+  /*  */ FM_GTA_TMETME,        // tme > tme
+  /*  */ FM_GTA_TSPTSP,        // tsp > tsp
+  /*  */ FM_GTA_UNKANY,        // unk > any
+  /*  */ FM_GTA_VCHVCH,        // vch > vch
 
   // less than equal
   /*  */ FM_LE_ANYUNK,        // any <= unk
@@ -255,13 +276,13 @@ enum eFM : u2 // function macros
   /*  */ FM_LE_FLTFLT,        // flt <= flt
   /*  */ FM_LE_INTINT,        // int <= int
   /*  */ FM_LE_IVLIVL,        // ivl <= ivl
-  /*  */ FM_LE_IVYIVY,        // ivy == ivy
+  /*  */ FM_LE_IVYIVY,        // ivy <= ivy
   /*  */ FM_LE_TMETME,        // tme <= tme
   /*  */ FM_LE_TSPTSP,        // tsp <= tsp
-  /*  */ FM_LE_UNKANY,        // unk/any == any/unk
+  /*  */ FM_LE_UNKANY,        // unk <= any
   /*  */ FM_LE_VCHVCH,        // vch <= vch
 
-  // less than equal
+  // less than
   /*  */ FM_LT_ANYUNK,        // any < unk
   /*  */ FM_LT_BCDBCD,        // bcd < bcd
   /*  */ FM_LT_BOLBOL,        // bol < bol
@@ -269,12 +290,25 @@ enum eFM : u2 // function macros
   /*  */ FM_LT_FLTFLT,        // flt < flt
   /*  */ FM_LT_INTINT,        // int < int
   /*  */ FM_LT_IVLIVL,        // ivl < ivl
-  /*  */ FM_LT_IVYIVY,        // ivy == ivy
+  /*  */ FM_LT_IVYIVY,        // ivy < ivy
   /*  */ FM_LT_TMETME,        // tme < tme
   /*  */ FM_LT_TSPTSP,        // tsp < tsp
-  /*  */ FM_LT_UNKANY,        // unk/any == any/unk
+  /*  */ FM_LT_UNKANY,        // unk < any
   /*  */ FM_LT_VCHVCH,        // vch < vch
 
+  // less than for aggregates
+  /*  */ FM_LTA_ANYUNK,        // any < unk
+  /*  */ FM_LTA_BCDBCD,        // bcd < bcd
+  /*  */ FM_LTA_BOLBOL,        // bol < bol
+  /*  */ FM_LTA_DTEDTE,        // dte < bcd
+  /*  */ FM_LTA_FLTFLT,        // flt < flt
+  /*  */ FM_LTA_INTINT,        // int < int
+  /*  */ FM_LTA_IVLIVL,        // ivl < ivl
+  /*  */ FM_LTA_IVYIVY,        // ivy < ivy
+  /*  */ FM_LTA_TMETME,        // tme < tme
+  /*  */ FM_LTA_TSPTSP,        // tsp < tsp
+  /*  */ FM_LTA_UNKANY,        // unk < any
+  /*  */ FM_LTA_VCHVCH,        // vch < vch
 
   // not equal
   /*  */ FM_NE_ANYUNK,        // any != unk
@@ -284,10 +318,10 @@ enum eFM : u2 // function macros
   /*  */ FM_NE_FLTFLT,        // flt != flt
   /*  */ FM_NE_INTINT,        // int != int
   /*  */ FM_NE_IVLIVL,        // ivl != ivl
-  /*  */ FM_NE_IVYIVY,        // ivy == ivy
+  /*  */ FM_NE_IVYIVY,        // ivy != ivy
   /*  */ FM_NE_TMETME,        // tme != tme
   /*  */ FM_NE_TSPTSP,        // tsp != tsp
-  /*  */ FM_NE_UNKANY,        // unk/any == any/unk
+  /*  */ FM_NE_UNKANY,        // unk != any
   /*  */ FM_NE_VCHVCH,        // vch != vch
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -359,22 +393,29 @@ static Stz* aFM[]
   /*  */ "_SUB_UNKANY"_Stz,
 
   // sum
+  /*  */ "_SUM_ANYUNK"_Stz,
   /*  */ "_SUM_BCDBCD"_Stz,
   /*  */ "_SUM_FLTFLT"_Stz,
   /*  */ "_SUM_INTINT"_Stz,
+  /*  */ "_SUM_UNKANY"_Stz,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // between operators
 
   /*  */ "_BET_BCDBCD"_Stz,
+  /*  */ "_BET_DTEDTE"_Stz,
   /*  */ "_BET_FLTFLT"_Stz,
   /*  */ "_BET_INTINT"_Stz,
+  /*  */ "_BET_TMETME"_Stz,
+  /*  */ "_BET_TSPTSP"_Stz,
   /*  */ "_BET_UNKXYZ"_Stz,
+  /*  */ "_BET_VCHVCH"_Stz,
   /*  */ "_BET_XYZUNK"_Stz,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cast operators
 
+  /*  */ "_ANY_TOUNK"_Stz,
   /*  */ "_BCD_TOFLT"_Stz,
   /*  */ "_BCD_TOINT"_Stz,
   /*  */ "_BCD_TOUNK"_Stz,
@@ -542,6 +583,20 @@ static Stz* aFM[]
   /*  */ "_GT_UNKANY"_Stz,
   /*  */ "_GT_VCHVCH"_Stz,
 
+  // greater than aggregate
+  /*  */ "_GTA_ANYUNK"_Stz,
+  /*  */ "_GTA_BCDBCD"_Stz,
+  /*  */ "_GTA_BOLBOL"_Stz,
+  /*  */ "_GTA_DTEDTE"_Stz,
+  /*  */ "_GTA_FLTFLT"_Stz,
+  /*  */ "_GTA_INTINT"_Stz,
+  /*  */ "_GTA_IVLIVL"_Stz,
+  /*  */ "_GTA_IVYIVY"_Stz,
+  /*  */ "_GTA_TMETME"_Stz,
+  /*  */ "_GTA_TSPTSP"_Stz,
+  /*  */ "_GTA_UNKANY"_Stz,
+  /*  */ "_GTA_VCHVCH"_Stz,
+
   // less than
   /*  */ "_LE_ANYUNK"_Stz,
   /*  */ "_LE_BCDBCD"_Stz,
@@ -556,7 +611,7 @@ static Stz* aFM[]
   /*  */ "_LE_UNKANY"_Stz,
   /*  */ "_LE_VCHVCH"_Stz,
 
-  // less than equal
+  // less than
   /*  */ "_LT_ANYUNK"_Stz,
   /*  */ "_LT_BCDBCD"_Stz,
   /*  */ "_LT_BOLBOL"_Stz,
@@ -570,7 +625,21 @@ static Stz* aFM[]
   /*  */ "_LT_UNKANY"_Stz,
   /*  */ "_LT_VCHVCH"_Stz,
 
-  // not equal
+  // less than aggregates
+  /*  */ "_LTA_ANYUNK"_Stz,
+  /*  */ "_LTA_BCDBCD"_Stz,
+  /*  */ "_LTA_BOLBOL"_Stz,
+  /*  */ "_LTA_DTEDTE"_Stz,
+  /*  */ "_LTA_FLTFLT"_Stz,
+  /*  */ "_LTA_INTINT"_Stz,
+  /*  */ "_LTA_IVLIVL"_Stz,
+  /*  */ "_LTA_IVYIVY"_Stz,
+  /*  */ "_LTA_TMETME"_Stz,
+  /*  */ "_LTA_TSPTSP"_Stz,
+  /*  */ "_LTA_UNKANY"_Stz,
+  /*  */ "_LTA_VCHVCH"_Stz,
+
+    // not equal
   /*  */ "_NE_ANYUNK"_Stz,
   /*  */ "_NE_BCDBCD"_Stz,
   /*  */ "_NE_BOLBOL"_Stz,

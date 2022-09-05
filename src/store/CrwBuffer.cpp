@@ -166,7 +166,7 @@ void CrwBuffer::vRepairList(Object* pObject)
 
   while (pCrwBuffer) {
     pNextCrwBuffer = pCrwBuffer->pNextCrwBuffer();
-    AM::vDeleteOperand(pCrwBuffer);
+    AM::vDeleteOperand(pCrwBuffer,nullptr);
     pCrwBuffer = pNextCrwBuffer;
   }
 }
@@ -228,7 +228,7 @@ void CrwBuffer::vStreamDef(StreamDef* pStreamDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
-  DataBuffer::vStreamDef(pStreamDef);
+  DataBuffer::vStreamDef_dbuff(pStreamDef);
   m_oRowTray.pNub()->vDesc(pStreamDef);
 }
 
@@ -239,7 +239,7 @@ void CrwBuffer::vTable(Table* pTable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
-  DataBuffer::vTable(pTable);
+  DataBuffer::vTable_dbuff(pTable);
   vStreamDef(pTable->pStreamDef());
 }
 
@@ -315,8 +315,8 @@ bool CrwBuffer::bAppendCrw(Crw* aCrwSrc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
-  StreamDef* pStreamDef = this->pStreamDef();
-  i8 jCrwSize = pStreamDef->jRowSize();
+  StreamDef* pStreamDef = this->pStreamDef_dbuff();
+  i8 jCrwSize = pStreamDef->jRowSizeBytes();
 
   RowNub* pRowNub = m_oRowTray.pNub();
   i8 i_Head = pRowNub->iAllotHead(jCrwSize);
@@ -371,8 +371,8 @@ void CrwBuffer::vCopy(CrwBuffer* pArgCrwBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
-  m_pTable     = pArgCrwBuffer->m_pTable;
-  m_pStreamDef = pArgCrwBuffer->m_pStreamDef;
+  m_pTable_dbuff     = pArgCrwBuffer->m_pTable_dbuff;
+  m_pStreamDef_dbuff = pArgCrwBuffer->m_pStreamDef_dbuff;
   
   MemLib::vCopy(&m_oRowTray,
                 &pArgCrwBuffer->m_oRowTray,
@@ -709,7 +709,7 @@ void CrwBuffer::vShowRow(i8 i_Row)
   
   vTrace("Rrf: %3lli.%03lli "_Stz,m_iBufferNo,i_Row);
   
-  StreamDef* pStreamDef = pTable()->pStreamDef();
+  StreamDef* pStreamDef = pTable_dbuff()->pStreamDef();
   HV_Record hvRecord(pStreamDef->pRowPix());
   
   // create a row
@@ -776,7 +776,7 @@ void CrwBuffer::vToCsv(Tub* pTub)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
-  StreamDef* pStreamDef = this->pStreamDef();
+  StreamDef* pStreamDef = this->pStreamDef_dbuff();
   
   HV_Record hvRecord(pStreamDef->pRowPix());
   HV_RowSingle hvRowSingle(pStreamDef);
@@ -819,7 +819,7 @@ CsvBuffer* CrwBuffer::pToCsvBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
-  StreamDef* pStreamDef = this->pStreamDef();
+  StreamDef* pStreamDef = this->pStreamDef_dbuff();
   
   CsvBuffer* pFirstCsvBuffer = new CsvBuffer;
   CsvBuffer* pCsvBuffer = pFirstCsvBuffer;

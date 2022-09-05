@@ -85,7 +85,7 @@
   // now delete the InfoSet[]
   InfoSet[].delete
   
-  Counter0[] "Total Units: %v" .printf
+  //Counter0[] "Total Units: %v" .printf
 
   true
 ;
@@ -99,7 +99,7 @@
 
   op__topology
 
-  find: Progress_EosMarker     EV_M_EOS     [op].handler!
+  find: Progress_EosMarker     EV_M_EOS           [op].handler!
   find: Progress_ProgressUnits EV_I_PROGRESSUNITS [op].handler!
   find: Progress_TotalUnits    EV_I_TOTALUNITS    [op].handler!
 

@@ -40,6 +40,7 @@ namespace BASE
     Word* pEachWord(Word* pPrior);
     Word* pEachWord(Word* pPrior, Word* pCategory);
     Word* pFindWord(Stz* szWordNm);
+    Word* pFindWord(Word* pSearchWord, Stz* szWordNm);
     Word* pFindStep(fpSTEPFN fpStepFn);
     Word* pFirstWord(void);
     void  vGrabRead(void);

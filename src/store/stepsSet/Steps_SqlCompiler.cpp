@@ -304,6 +304,18 @@ void Step::vSqlCompilerDoExplain(void) {
   // may indicate otherwise.
   if (ExplainOp::bExplainStage(pExplainOp)) {
     // This stage does need explaining!
+
+    i8 iStageNum = ExplainOp::iStageCount(pExplainOp);
+
+    // If with_types was specified then we don't want to do this for the parser stage
+    // because it doesn't have resolved columns and types and stuff, so temporarily
+    // turn this off.
+    b1 bResetWithTypes = false;
+    if (ExplainOp::bWithTypes(pExplainOp) && iStageNum == 1){
+      bResetWithTypes = true;
+      ExplainOp::vWithTypes(pExplainOp, false);
+    }
+
     // Don't explain the explain node, but do explain each child under it.
     s48K sExplainBuf;
 
@@ -314,7 +326,10 @@ void Step::vSqlCompilerDoExplain(void) {
     }
     delete pIter;
 
-    i8 iStageNum = ExplainOp::iStageCount(pExplainOp);
+    if (bResetWithTypes) {
+      ExplainOp::vWithTypes(pExplainOp, true);
+    }
+
 
     Row *pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
                                     iStageNum,
@@ -749,6 +764,7 @@ void Step::vSqlCompilerNameValidate(void)
   // where applicable.
   try {
     NameValidator::vValidateNames(pPlanRoot);
+    NameValidator::vCheckDisabledFunctionality(pPlanRoot);
 
   } catch (Parser::SqlException& e) {
     Grid* pGrid = AM::pGrid();

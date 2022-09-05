@@ -25,16 +25,16 @@ eEC ExprEval2::eGenerateSelectColumns(StreamDefBase* pStreamDefIn, Stz* sExpr, u
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tokenise the expr
-  TokenVec *pTknVec = TokenVec::pTokeniseSen(sExpr);
+  TokenVec *pTknVec = AM::TOKENISE::pTokeniseSen(sExpr);
 
   // get the next token
   Token* pTkn = pTknVec->pNextToken();
 
   while ( pTkn ) {
 
-#ifdef WITH_DEBUG_VERSION
-    //vTrace("TKN: %s\n"_Stz, pTkn->azChars());
-#endif
+//#ifdef WITH_DEBUG_VERSION
+//    //vTrace("TKN: %s\n"_Stz, pTkn->azChars());
+//#endif
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // comma
@@ -203,7 +203,7 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tokenise the expr
-  TokenVec *pTknVec = TokenVec::pTokeniseSen(sExpr);
+  TokenVec *pTknVec = AM::TOKENISE::pTokeniseSen(sExpr);
 
   // create a new columnExpr
   Column *pColumnExpr =  new Column;
@@ -220,9 +220,9 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
 
   while ( pTkn ) {
 
-#ifdef WITH_DEBUG_VERSION
-    vTrace("TKN: %s\n"_Stz, pTkn->azChars());
-#endif
+//#ifdef WITH_DEBUG_VERSION
+//    vTrace("TKN: %s\n"_Stz, pTkn->azChars());
+//#endif
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // is it a FILTER ?
@@ -552,7 +552,7 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
       continue;
     }
 
-    if (pTkn->bSame("EXTRACT_MIN"_Stz)) {
+    if (pTkn->bSame("EXTRACT_MINUTE"_Stz)) {
       ePreExp = PE_XMN;
       pTkn = pTknVec->pNextToken();
       continue;
@@ -799,29 +799,29 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
 
   L_RETURN:
 
-#ifdef WITH_DEBUG_VERSION
-  // dump the PreExp stack
-  vTrace("--------------------------------------\n"_Stz);
-  vTrace("PREEXPSTACK:\n"_Stz);
-  i8 nExpr = pPreExpStack->nItems() - 1;
-
-  while ( nExpr >= 0) {
-    i8 iValue = pPreExpStack->iPeek(nExpr--);
-    vTrace("%s\n"_Stz, aPE[iValue]);
-  }
-
-  // dump the streamDefOut
-  vTrace("--------------------------------------\n"_Stz);
-  vTrace("STREAMDEFOUT:\n"_Stz);
-  pStreamDefOut->vPrint();
-
-  // dump the indexDef
-  vTrace("--------------------------------------\n"_Stz);
-  vTrace("INDEXDEF:\n"_Stz);
-  if (pIndexDef) {
-    pIndexDef->vPrint();
-  }
-#endif
+//#ifdef WITH_DEBUG_VERSION
+//  // dump the PreExp stack
+//  vTrace("--------------------------------------\n"_Stz);
+//  vTrace("PREEXPSTACK:\n"_Stz);
+//  i8 nExpr = pPreExpStack->nItems() - 1;
+//
+//  while ( nExpr >= 0) {
+//    i8 iValue = pPreExpStack->iPeek(nExpr--);
+//    vTrace("%s\n"_Stz, aPE[iValue]);
+//  }
+//
+//  // dump the streamDefOut
+//  vTrace("--------------------------------------\n"_Stz);
+//  vTrace("STREAMDEFOUT:\n"_Stz);
+//  pStreamDefOut->vPrint();
+//
+//  // dump the indexDef
+//  vTrace("--------------------------------------\n"_Stz);
+//  vTrace("INDEXDEF:\n"_Stz);
+//  if (pIndexDef) {
+//    pIndexDef->vPrint();
+//  }
+//#endif
 
   delete pColumnExpr;
   delete pTknVec;

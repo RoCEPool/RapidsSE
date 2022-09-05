@@ -20,6 +20,10 @@ namespace BASE
 
     Charser*  m_pCharser;   // charser
     AnnChar   m_xAnnChar;   // annotated char from charser
+  
+    Charser*  m_pCharser_spares;  // set of spare charsers
+
+    b8        m_bRevertToCpp; // revert to cpp tokens after read command
 
     // some debugging aids
     i8        d_iDebugMode;    // debug mode?
@@ -43,6 +47,7 @@ namespace BASE
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
+    void vAllocCharser(void);
     Stz* szChars(void);
     void vDebugMode(i8 iDebugMode);
     Input* pDeleteInput(void);
@@ -51,8 +56,11 @@ namespace BASE
     Stz* szDivision(void);
     void vDump(void);
     void vForkReset(void);
+    bool bFormCppTokens(void);
     void vFormCppTokens(void);
+    bool bFormSenTokens(void);
     void vFormSenTokens(void);
+    void vFreeCharser(void);
     TagSet* pInpTagSet(void);
     TokenVec* pInpTknVec(void);
     void vInspect(void);
@@ -62,9 +70,10 @@ namespace BASE
     void vPushCharser(void);
     Stz* szRawInput(void);
     void vRawInputClear(void);
-    void vReadCommand(void);
-    void vReadTillSemicolon(void);
-    void vReadToken(void);
+    bool bReadCommand(eEC& eInputError);
+    bool bReadTillSemicolon(eEC& eError);
+    bool bReadToken(eEC& eError);
+    void vReset(void);
     void vSection(Stz* szSection);
     Stz* szSection(void);
     bool bSeenEOF(void);
@@ -81,8 +90,8 @@ namespace BASE
  
   private:    
     void vCollectOneToken(void);
-    void vCollectVecFirstLine(void);
-    void vCollectVecTillSemicolon(void);
+    bool bCollectVecFirstLine(eEC& eInputError);
+    bool bCollectVecTillSemicolon(eEC& eError);
   
     void vCollectCpp(void);
     void vCollectCppNumber(void);
@@ -117,14 +126,17 @@ namespace BASE
   
     void vTokenCollectBegin(void);
     void vTokenCollectEnd(void);
-  
-    void vCursorAdvance(void);
+
+    bool bCursorAdvance(eEC& eError);
     void vCursorReset(void);
     void vCursorRewind(void);
 
     bool bHitEOF(void);
-    
-    Footer* aFooter(void);
+
+    void vTestRevertToCpp();
+    void vTestSwitchToSen();
+
+      Footer* aFooter(void);
   };
   
   Input* _pInput(void* aAddr);

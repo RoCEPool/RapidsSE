@@ -74,6 +74,429 @@ void Token::vDump(eCN eClass, Object* pObject, Stz* aTab)
          pToken->azChars());
 }
 
+/*----------------------------------------------------------------------------*/
+/* test for start of normal integer                                           */
+/*----------------------------------------------------------------------------*/
+bool Token::bStartCppInteger(char cArg)
+{
+  _static_
+  
+  if (StrLib::bIsDigit(cArg))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for start of normal name                                              */
+/*----------------------------------------------------------------------------*/
+bool Token::bStartCppName(char cArg)
+{
+  _static_
+
+  //if ('$' == cArg)
+  //  return true;
+  
+  if (StrLib::bIsNameStartChar(cArg))
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for start of normal other                                             */
+/*----------------------------------------------------------------------------*/
+bool Token::bStartCppOther(char cArg)
+{
+  _static_
+
+  if (! StrLib::bIsNameBodyChar(cArg))
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for start of normal string                                            */
+/*----------------------------------------------------------------------------*/
+bool Token::bStartCppString(char cArg)
+{
+  _static_
+
+  if (StrLib::bIsDoubleQuote(cArg))
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for end of normal string                                              */
+/*----------------------------------------------------------------------------*/
+bool Token::bEndCppString(char cArg)
+{
+  _static_
+
+  if (StrLib::bIsDoubleQuote(cArg))
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for start of Sen integer                                              */
+/*----------------------------------------------------------------------------*/
+bool Token::bStartSenInteger(char cArg)
+{
+  _static_
+
+  if (StrLib::bIsMinus(cArg) || StrLib::bIsDigit(cArg) || StrLib::bIsDot(cArg))
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for start of Sen name                                                 */
+/*----------------------------------------------------------------------------*/
+bool Token::bStartSenName(char cArg)
+{
+  _static_
+
+  if (bStartSenInteger(cArg) || bStartSenString(cArg))
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for start of Sen string                                               */
+/*----------------------------------------------------------------------------*/
+bool Token::bStartSenString(char cArg)
+{
+  _static_
+
+  if (StrLib::bIsDoubleQuote(cArg))
+    return true;
+  
+// 2020-Feb-26 RJH: I commented this out as I don't think we have 'string'
+//                  in sen literals
+  if (StrLib::bIsSingleQuote(cArg))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for start of Sen tag                                                  */
+/*----------------------------------------------------------------------------*/
+bool Token::bStartSenTag(char cArg)
+{
+  _static_
+
+  if (StrLib::bIsLessThan(cArg))
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for end of Sen string                                                 */
+/*----------------------------------------------------------------------------*/
+bool Token::bEndSenString(char cArg)
+{
+  _static_
+
+  if (StrLib::bIsDoubleQuote(cArg))
+    return true;
+
+  if (StrLib::bIsSingleQuote(cArg))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect Sen name                                                           */
+/*----------------------------------------------------------------------------*/
+eTN Token::eCollectSenName(char** aazCrs, Stz* szString)
+{
+  _static_
+
+  char *azChars = StrLib::azNullTerminator(szString->azChar());
+  char *z = azChars;
+  
+  // collect the characters of the name
+  while ( **aazCrs && !StrLib::bIsWhite(**aazCrs) && !bStartSenString(**aazCrs) ) {
+    *z++ = **aazCrs;
+    (*aazCrs)++;
+  }
+  
+  // terminate name
+  *z = '\0';
+
+  if (StrLib::bIsBoolean(szString->azChar()))
+    return TN_BOOLEAN;
+  else
+    return TN_NAME;
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect Sen number (integer, decimal, float)                               */
+/*----------------------------------------------------------------------------*/
+eTN Token::eCollectSenNumber(char** aazCrs, Stz* szString)
+{
+  _static_
+
+  char *azChars = StrLib::azNullTerminator(szString->azChar());
+  char *z = azChars;
+
+  i8 nIntegerDigits  = 0;
+  i8 nFractionDigits = 0;
+  i8 nExponentDigits = 0;
+
+  // we have seen a minus or a digit
+  ASSERT(bStartSenInteger(**aazCrs));
+
+  // by default we are collectin an integer
+  eTN eToken = TN_INTEGER;
+
+  // - start parsing an integer
+  
+  // collect leading sign
+  if (StrLib::bIsSign(**aazCrs)) {
+    *z++ = **aazCrs;
+    (*aazCrs)++;
+  }
+  
+  // collect initial digits of an integer
+  while (StrLib::bIsDigit(**aazCrs)) {
+    *z++ = **aazCrs;
+    nIntegerDigits++;
+    (*aazCrs)++;
+  }
+  *z = '\0';
+
+  // 0x hex number?
+  if (1 == nIntegerDigits && StrLib::bIsX(**aazCrs)) {
+
+    // add the 'x'
+    *z++ = **aazCrs;
+    (*aazCrs)++;
+
+    // collect the hex digits
+    while (StrLib::bIsHex(**aazCrs)) {
+      *z++ = **aazCrs;
+      nIntegerDigits++;
+      (*aazCrs)++;
+    }
+    *z = '\0';
+  }
+  
+
+  // - handle minus only
+  if (! nIntegerDigits && ! StrLib::bIsDot(**aazCrs)) {
+    eToken = eCollectSenName(aazCrs,szString);
+    return eToken;
+  }
+
+  // . handle dot only
+  if ( ! nIntegerDigits && StrLib::bIsDot(**aazCrs)) {
+
+    // collect next char
+    (*aazCrs)++;
+
+    if ( ! StrLib::bIsDigit(**aazCrs) ) {
+      (*aazCrs)--;
+      eToken = eCollectSenName(aazCrs,szString);
+      return eToken;
+    }
+    (*aazCrs)--;
+  }
+
+  // dot indicating fraction digits of decimal number follow
+  if (StrLib::bIsDot(**aazCrs)) {
+
+    *z++ = **aazCrs;
+    (*aazCrs)++;
+
+    // collect digits after decimal
+    while (StrLib::bIsDigit(**aazCrs)) {
+      *z++ = **aazCrs;
+      nFractionDigits++;
+      (*aazCrs)++;
+    }
+
+
+    // terminate the decimal literal
+    *z = '\0';
+    
+    eToken = TN_DECIMAL;
+  }
+  
+
+  // an e|E indicating a float number ?
+  if ('e' == **aazCrs || 'E' == **aazCrs) {
+    
+    *z++ = **aazCrs;
+    (*aazCrs)++;
+
+    // collect optional sign after E
+    if (StrLib::bIsSign(**aazCrs)) {
+      *z++ = **aazCrs;
+      (*aazCrs)++;
+    }
+
+
+    // collect digits after E
+    while (StrLib::bIsDigit(**aazCrs)) {
+      *z++ = **aazCrs;
+      nExponentDigits++;
+      (*aazCrs)++;
+    }
+
+    // terminate the float literal
+    *z = '\0';
+    
+    if (! nExponentDigits) {
+      eToken = eCollectSenName(aazCrs,szString);
+      return eToken;
+    }
+    
+    eToken = TN_FLOAT;
+  }
+  
+  // - handle the case where we have a name like 1_ugh
+  
+  // just a number?
+  if (StrLib::bIsNull(**aazCrs) || StrLib::bIsWhite(**aazCrs) || bStartSenString(**aazCrs) ) {
+    
+    // push back the unconsumed char
+    //(*aazCrs)--;
+    
+    // terminate
+    //*z = '\0';
+    return eToken;
+  }
+  
+  // its actually a name; complete parsing name
+  eToken = eCollectSenName(aazCrs,szString);
+  return eToken;
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect Sen string                                                         */
+/*----------------------------------------------------------------------------*/
+eTN Token::eCollectSenString(char** aazCrs, Stz* szString)
+{
+  _static_
+
+  char *azChars = StrLib::azNullTerminator(szString->azChar());
+  char *z = azChars;
+    
+  // skip the leading '"' or '\''
+  char cStartQuote = **aazCrs;
+  (*aazCrs)++;
+
+  // collect the chars within the string
+  while ( **aazCrs && **aazCrs != cStartQuote ) {
+  
+    //vTrace(">>%c<<\n"_Stz,**ps);
+        
+    if (StrLib::bIsBackSlash(**aazCrs)) {
+      (*aazCrs)++;
+      // translate \n into new line
+      if ('n' == **aazCrs)
+         *z++ = '\n';
+      else
+        *z++ = **aazCrs;
+      (*aazCrs)++;
+    }
+    else {
+      *z++ = **aazCrs;
+      (*aazCrs)++;
+    }
+  }
+ 
+  // terminate the strlit
+  *z = '\0';
+  
+  if ( **aazCrs == cStartQuote )
+    (*aazCrs)++;
+
+  return TN_STRING;
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect Sen tag                                                            */
+/*----------------------------------------------------------------------------*/
+eTN Token::eCollectSenTag(char** aazCrs, Stz* szString)
+{
+  _static_
+
+  char *azChars = StrLib::azNullTerminator(szString->azChar());
+  char *z = azChars;
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  if (! **aazCrs || StrLib::bIsWhite(**aazCrs) || bStartSenString(**aazCrs) ) {
+    // push back the unconsumed char
+    (*aazCrs)--;
+
+    // terminate name
+    *z = '\0';
+    
+    return TN_NAME;
+  }
+     
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // collect the characters of the name
+  
+  while ( **aazCrs && !StrLib::bIsWhite(**aazCrs) && !bStartSenString(**aazCrs) ) {
+    *z++ = **aazCrs;
+    (*aazCrs)++;
+  }
+  
+  // push back the unconsumed char
+  //(*aazCrs)--;
+
+  // terminate a tag name
+  *z = '\0';
+
+  return TN_TAG;
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect next sen token                                                     */
+/*----------------------------------------------------------------------------*/
+eTN Token::eCollectSenToken(char** aazCrs, Stz* szString)
+{
+  _static_
+
+  StrLib::vSkipCommentsEtc(aazCrs);
+  if (! **aazCrs)
+    return TN_NONE;
+  
+  eTN eToken = TN_NONE;
+  
+  if (bStartSenInteger(**aazCrs)) {
+    eToken = eCollectSenNumber(aazCrs,szString);
+    return eToken;
+  }
+  
+  if (bStartSenString(**aazCrs)) {
+    eToken = eCollectSenString(aazCrs,szString);
+    return eToken;
+  }
+
+  if (bStartSenTag(**aazCrs)) {
+    eToken = eCollectSenTag(aazCrs,szString);
+    return eToken;
+  }
+
+  eToken = eCollectSenName(aazCrs,szString);
+  return eToken;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Restricted --------------------------------------------------------------*/
@@ -414,6 +837,22 @@ bool Token::bIsOther(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this token a name?                                                      */
+/*----------------------------------------------------------------------------*/
+bool Token::bIsPipeline(void)
+{
+  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+
+  if (TN_NAME != m_eToken)
+    return false;
+
+  if (bSame("pipeline"_Stz))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this token a relational operator ?                                      */
 /*----------------------------------------------------------------------------*/
 bool Token::bIsRelational(void)
@@ -438,7 +877,8 @@ bool Token::bIsSemicolon(void)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
-  if (TN_OTHER == m_eToken && bSame(";"_Stz))
+  if (TN_STRING != m_eToken &&
+      bSame(";"_Stz))
     return true;
   else
     return false;

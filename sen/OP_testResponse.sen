@@ -17,22 +17,22 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* on EV_D_EXITOPERAND ...                                   EV_D_EXITOPERAND */
+/* on EV_X_EXIT ...                                                 EV_X_EXIT */
 /*----------------------------------------------------------------------------*/
-: testResponse_ExitOperand \handler
+: testResponse_Exit \handler
 
-  0 EV_D_EXITOPERAND EG_ZK LogicUnit[].diaryNote
+  0 EV_X_EXIT EG_ZK LogicUnit[].diaryNote
 
   nullptr [job].responseOp!
 
-  "testResponse_ExitOperand" .
+  "testResponse_Exit" .
   Pipein[].delete
 
   [job] assert
   [task] assert
 
   // ack the parent job task
-  [op].ackInvokingTask
+  [op].ackJobTask
 
   false // calling op_loop exits
 ;
@@ -102,9 +102,9 @@
   op__topology
 
   find: testResponse_CrwBuffer    EV_D_CRWBUFFER     [op].handler!
-  find: testResponse_ExitOperand  EV_D_EXITOPERAND   [op].handler!
   find: testResponse_StreamDef    EV_D_STREAMDEF     [op].handler!
 
+  find: testResponse_Exit         EV_X_EXIT          [op].handler!
   find: testResponse_Exiting      EV_M_EXITING       [op].handler!
   find: testResponse_Start        EV_M_START         [op].handler!
 

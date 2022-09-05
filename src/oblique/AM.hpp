@@ -17,6 +17,7 @@
 #include "eLA.h"
 #include "eMA.h"
 #include "eOA.h"
+#include "eOM.h"
 #include "ePA.h"
 #include "eYX.h"
 #include "eRA.h"
@@ -25,9 +26,8 @@
 #include "eXA.h"
 
 #include "KeyBkt.hpp"
+//#include "JobId.hpp"
 
-
-class LglPtn;
 
 namespace OBLIQUE {
   class AM;
@@ -37,6 +37,17 @@ using namespace OBLIQUE;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+namespace PRIMITIVES {
+  class Atomic;
+  class Footer;
+  class Header;
+  class Mutex;
+  class Object;
+}
+
+using namespace PRIMITIVES;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 namespace BASE {
          
   class Birth;
@@ -56,10 +67,9 @@ namespace BASE {
   class FileMap;
   class Format;
 
-#ifdef WITH_HASHMAP
   class HashMap;
-#endif
-  class Header;
+  class HashMapEntry;
+  class HashMapSlot;
   class Heap;
   class Heaps;
   class HeapBuffer;
@@ -73,11 +83,9 @@ namespace BASE {
   class Locks;
 
   class MasterLock;
-  class Mutex;
 
   class Now;
 
-  class Object;
   class ObjectSnapshot;
   class Operand;
 
@@ -90,17 +98,12 @@ namespace BASE {
   class Resource;
   class Resources;
 
-  class Schedule;
-  class Scheduler;
   class Socket;
   class Starter;
   class Statistics;
   class String;
 
   class TagSet;
-  class Task;
-  class Thread;
-  class ThreadVec;
   class Timer;
   class Token;
   class TokenVec;
@@ -152,7 +155,6 @@ namespace STORE {
   class Dynamo;
 
   class Encoding;
-  class Engine;
   class EntBuffer;
   class EventHandlers;
 
@@ -170,7 +172,11 @@ namespace STORE {
   class Job;
   class JobList;
 
+  class LglPtn;
   class LogicUnit;
+
+  class Marker;
+  class MarkerMgr;
 
   class Node;
 
@@ -182,6 +188,7 @@ namespace STORE {
   class PtnStm_cursor;
   class PtnStream;
 
+  class RejectJob;
   class Row;
   class RowBuffer;
   class RowCompactor;
@@ -193,6 +200,7 @@ namespace STORE {
   class Stage;
   class StageVec;
   class Step;
+  class StepAccum;
   class Steps;
   class Stream;
   class StreamDef;
@@ -210,6 +218,21 @@ namespace STORE {
 }
 
 using namespace STORE;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+namespace ENGINE {
+  class Engine;
+  class Schedule;
+  class Scheduler;
+  class Task;
+  class TaskList;
+  class Thread;
+  class ThreadQueue;
+  class ThreadVec;
+}
+
+using namespace ENGINE;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -254,6 +277,48 @@ namespace OBLIQUE
     class DEMON
     {
     public:
+      static void  vAnswerDemonJobId(JobId tJobId);
+      static JobId tAnswerDemonJobId(void);
+
+      static void  vCollectDemonJobId(JobId tJobId);
+      static JobId tCollectDemonJobId(void);
+
+      static void  vConnectorDemonJobId(JobId tJobId);
+      static JobId tConnectorDemonJobId(void);
+
+      static void  vEventDemonJobId(JobId tJobId);
+      static JobId tEventDemonJobId(void);
+
+      static void  vExitDemonJobId(JobId tJobId);
+      static JobId tExitDemonJobId(void);
+
+      static void  vMetricsDemonJobId(JobId tJobId);
+      static JobId tMetricsDemonJobId(void);
+
+      static void  vMonDemonJobId(JobId tJobId);
+      static JobId tMonDemonJobId(void);
+
+      static void  vNodeMonDemonJobId(JobId tJobId);
+      static JobId tNodeMonDemonJobId(void);
+
+      static void  vPageOutDemonJobId(JobId tJobId);
+      static JobId tPageOutDemonJobId(void);
+
+      static void  vReaperDemonJobId(JobId tJobId);
+      static JobId tReaperDemonJobId(void);
+
+      static void  vRecurDemonJobId(JobId tJobId);
+      static JobId tRecurDemonJobId(void);
+
+      static void  vStatDemonJobId(JobId tJobId);
+      static JobId tStatDemonJobId(void);
+
+      static void  vWakerDemonJobId(JobId tJobId);
+      static JobId tWakerDemonJobId(void);
+
+      static void  vSuperDemonJobId(JobId tJobId);
+      static JobId tSuperDemonJobId(void);
+
       static void vPipeToOp0(Stz* szDemonNm, Operand* pOperand);
     };
     
@@ -285,19 +350,35 @@ namespace OBLIQUE
     class JLIST
     {
     public:
+      static eEC  eFolderPathSet(JobId tJobId, Stz* szFolderPath);
       static bool bFindJob(Job* pJob, bool bLockJob=false);
       static Job* pFindJob(JobId tJobId, bool bLockJob=false);
       static void vInsertJob(Job* pJob);
       static JobList* pJobsList(void);
+      static eEC  eLastJobId(JobId tJobId, JobId& tLastJobId);
+      static eEC  ePipeToOp0(JobId tJobId, Operand* pOperand, Task* pTask);
       static void vRemoveJob(Job* pJob);
+      static eEC  eSignalParent(Job* pJob);
+      static eEC  eSystemCloserSet(JobId tJobId, i8 iSystemCloser);
+      static eEC  eUpdateParent(Job* pJob);
     };
   
     class JOB
     {
     public:
+      static void vAckOriginatingJob(JobId tOriginId);
       static bool bHasTag(Job* pJob, Stz* szTagNm);
       static Stz* szJobNm(Job* pJob);
-      static eEC  ePreExecuteTest(Job* pJob);
+
+      static void vOriginJobNodeFailure(JobId tJobId);
+      static void vPtpJobNodeFailure(JobId tJobId);
+
+      static eEC  ePreExecuteDist(Job* pJob);
+      static eEC  ePreExecuteLocal(Job* pJob);
+
+      static void vRecvdReject(RejectJob* pRejectJob);
+      static void vSendReject(RejectJob* pRejectJob);
+      static void vTriggerExecute(JobId tDistId);
     };
   
     class JOBS
@@ -332,6 +413,14 @@ namespace OBLIQUE
       static Job* pFindJob(JobId tJobId, bool bLockJob=false);
     };
 
+    class MARKER
+    {
+    public:
+      static void vFreeMarker(Marker* pMarker, Job* pJob);
+      static MarkerMgr* pMarkerMgr(void);
+      static Marker* pNewMarker(eOM eOpMarker, Job* pJob);
+    };
+
     class MASTERLOCK
     {
     public:
@@ -358,7 +447,9 @@ namespace OBLIQUE
     class MEMORY
     {
     public:
+      static void vAssertAllocate(void);
       static bool bIsRunningLow(void);
+      static bool bIsRunningLowDist(void);
     };
   
     class METRICS
@@ -383,6 +474,7 @@ namespace OBLIQUE
     class OBJECT
     {
     public:
+      static void vAssertClassSize(eCN eClassNo, i8 nClassSize);
       static i8 iNextNo(eCN eClassNo);
       static eEC eValidObject(Object* pObject);
     };
@@ -428,8 +520,7 @@ namespace OBLIQUE
       static i8 iPctUsed(void);
       static i8 iTotalSpace(void);
       static i8 iUsedSpace(void);
- 
-      static i8 nDataHeap(void);
+
       static i8 nLargeHeap(void);
       static i8 nMediumHeap(void);
       static i8 nSmallHeap(void);
@@ -440,6 +531,7 @@ namespace OBLIQUE
     {
     public:
       static i8 iSePid(void);
+      static bool bSeRunning(void);
     };
 
     class PROMPT
@@ -542,6 +634,7 @@ namespace OBLIQUE
       static i8   nActiveJobs(void);
       static i8   nNanoseconds(void);
       static bool bPassesLowMem(Job* pJob);
+      static bool bPassesLowMemDist(Job* pJob);
       static bool bPassesOpenSystem(Job* pJob);
       static bool bReapEnabled(void);
       static void vReapEnabled(bool bReapEnabled);
@@ -580,6 +673,13 @@ namespace OBLIQUE
       static Timer* pSinceTimer(void);
     };
 
+    class TOKENISE
+    {
+    public:
+      static TokenVec* pTokeniseSen(Stz* szString);
+      static void vTokeniseSen(TokenVec* pTknVec, Stz* szString);
+    };
+
     class TRACE
     {
     public:
@@ -609,6 +709,7 @@ namespace OBLIQUE
     static bool bDebugIndex(void);
     static bool bDebugMode(void);
     static bool bDeveloper(void);
+    static bool bDisableCmds(void);
     static Stz* szCommand(void);
     static i8   nDummyLoop(void);
     static i8   nDummySleep(void);
@@ -636,7 +737,7 @@ namespace OBLIQUE
     static i8   nBuckets(void);
     static BufferPool* pBufferPool(void);
     static ClassFlags* pClassFlags(void);
-    static void vDeleteOperand(Operand* pOperand);
+    static void vDeleteOperand(Operand* pOperand, Job* pJob);
     static MasterLock* pDicLock(void);
     static i8   iElapsedSsec(void);
     static i8   iEpoch(void);
@@ -650,6 +751,7 @@ namespace OBLIQUE
     static std::list<Node*>::const_iterator itEndNodes(void);
 
     static JobList* pDemonJobs(void);
+    static JobList* pExitedJobs(void);
 #ifdef WITH_HASHMAP
     static HashMap* pHashMap(void);
 #endif
@@ -666,7 +768,6 @@ namespace OBLIQUE
     static i8   iNextTxId(void);
     static JobList* pOriginatingJobs(void);
     static JobList* pParticipatingJobs(void);
-    static JobList* pRetiredJobs(void);
     static void vProcessExit(void);
     static i8   iSystemUsec(void);
     static i8   iUserUsec(void);
@@ -760,8 +861,7 @@ namespace OBLIQUE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static void vNapMsec(i8 nMilliSeconds, eCN eCallingClass);
     static void vNapUsec(i8 nMicroSeconds, eCN eCallingClass);
-    static Operand* pDuplicateOperand(Operand* pOperand);
-        
+       
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static Stz* pOperandName(Operand* pOperand);
     static i8   nOperandsArg(void);
@@ -841,19 +941,19 @@ namespace OBLIQUE
 
   public:
     static void vJob_AddDemon(Job* pJob);
+    static void vJob_AddExited(Job* pJob);
     static void vJob_AddLocal(Job* pJob);
     static void vJob_AddOriginating(Job* pJob);
     static void vJob_AddParticipating(Job* pJob);
-    static void vJob_AddRetired(Job* pJob);
     static void vJob_DumpDemon(void);
     static void vJob_DumpLocal(void);
     static void vJob_DumpOriginating(void);
     static void vJob_DumpParticipating(void);
-    static Job* pJob_FindOriginating(JobId tJobId);
-    static Job* pJob_FindParticipating(JobId tJobId);
+    static Job* pJob_FindOriginating(JobId tJobId, bool bLock);
+    static Job* pJob_FindParticipating(JobId tJobId, bool bLock);
     static void vJob_RemoveLocal(Job* pJob);
-    static void vJob_RemoveOriginating(Job* pJob);
-    static void vJob_RemoveParticipating(Job* pJob);
+    static void vJob_RemoveOriginating(Job* pJob, bool bLock = true);
+    static void vJob_RemoveParticipating(Job* pJob, bool bLock = true);
     static void vJob_RemoveRetired(Job* pJob);
 
   };

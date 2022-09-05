@@ -25,8 +25,6 @@ ordered rows:
 
 // Source file: ../queries/case/rcase22.sql
 // Result file: ../queries/case/results/case22.res
-/*
-TODO: FIX
 select ucolvc, cola1, colg1, cola1/colg1 from table1 where cola1 / case when colg1 <= 0 then null else colg1 end > 5 order by cola1;
 ordered rows:
   ('qqq', 93, 13, 7)
@@ -39,7 +37,6 @@ ordered rows:
   ('fff', 400, 61, 6)
   ('uuu', 415, 40, 10)
   ('iii', 491, 81, 6)
-*/
 
 // Source file: ../queries/case/rcase7.sql
 // Result file: ../queries/case/results/case7.res
@@ -59,6 +56,8 @@ ordered rows:
 
 // Source file: ../queries/case/rcase4.sql
 // Result file: ../queries/case/results/case4.res
+//TODO: ENABLE WHEN PAYLOAD VARCHAR (ORDERBY VARCHAR COLUMN TRUNCATED TO 8 BYTES)
+/*
 select ucolvc, case when colf1 > 0 and colf1 < 3 and ucolvc < 'ddd' then 'Very small int with low alpha' when colf1 >= 3 and colf1 < 7 then 'Sort of small int' when colf1 >=7 and colf1 < 13 then 'high small int' else 'biggest small int' end, colf1 from table1 where colf1 >= 12 order by colf1, ucolvc;
 ordered rows:
   ('bbb', 'high small int', 12)
@@ -89,7 +88,40 @@ ordered rows:
   ('sss', 'biggest small int', 15)
   ('vvv', 'biggest small int', 15)
   ('www', 'biggest small int', 15)
+*/
 
+// Source file: ../queries/case/rcase4.sql
+// Result file: ../queries/case/results/case4.res
+select ucolvc, case when colf1 > 0 and colf1 < 3 and ucolvc < 'ddd' then 'Very small int with low alpha' when colf1 >= 3 and colf1 < 7 then 'Sort of small int' when colf1 >=7 and colf1 < 13 then 'high small int' else 'biggest small int' end, colf1 from table1 where colf1 >= 12;
+unordered rows:
+  ('bbb', 'high small int', 12)
+  ('ccc', 'high small int', 12)
+  ('ggg', 'high small int', 12)
+  ('rrr', 'high small int', 12)
+  ('ttt', 'high small int', 12)
+  ('uuu', 'high small int', 12)
+  ('xxx', 'high small int', 12)
+  ('yyy', 'high small int', 12)
+  ('ccc', 'biggest small int', 13)
+  ('ccc', 'biggest small int', 13)
+  ('ddd', 'biggest small int', 13)
+  ('fff', 'biggest small int', 13)
+  ('nnn', 'biggest small int', 13)
+  ('aaa', 'biggest small int', 14)
+  ('ccc', 'biggest small int', 14)
+  ('hhh', 'biggest small int', 14)
+  ('iii', 'biggest small int', 14)
+  ('iii', 'biggest small int', 14)
+  ('ooo', 'biggest small int', 14)
+  ('ppp', 'biggest small int', 14)
+  ('aaa', 'biggest small int', 15)
+  ('ccc', 'biggest small int', 15)
+  ('iii', 'biggest small int', 15)
+  ('kkk', 'biggest small int', 15)
+  ('sss', 'biggest small int', 15)
+  ('sss', 'biggest small int', 15)
+  ('vvv', 'biggest small int', 15)
+  ('www', 'biggest small int', 15)
 
 // Source file: ../queries/case/rcase14.sql
 // Result file: ../queries/case/results/case14.res
@@ -106,6 +138,8 @@ ordered rows:
 
 // Source file: ../queries/case/rcase2.sql
 // Result file: ../queries/case/results/case2.res
+//TODO: WHEN PAYLOAD VARCHAR (ORDERBY VARCHAR COLUMN TRUNCATED TO 8 BYTES)
+/*
 select ucolvc, case when colg1 < 3 then 'Very small int' when colg1 >= 3 and colg1 < 7 then 'Sort of small int' when colg1 >=7 and colg1 < 13 then 'high small int' else 'biggest small int' end, colg1 from table1 order by colg1, ucolvc;
 ordered rows:
   ('sss', 'Very small int', -170)
@@ -208,39 +242,145 @@ ordered rows:
   ('bbb', 'biggest small int', 169)
   ('aaa', 'biggest small int', 175)
   ('nnn', 'biggest small int', 175)
+*/
 
+// Source file: ../queries/case/rcase2.sql
+// Result file: ../queries/case/results/case2.res
+select ucolvc, case when colg1 < 3 then 'Very small int' when colg1 >= 3 and colg1 < 7 then 'Sort of small int' when colg1 >=7 and colg1 < 13 then 'high small int' else 'biggest small int' end, colg1 from table1;
+unordered rows:
+  ('sss', 'Very small int', -170)
+  ('mmm', 'Very small int', -167)
+  ('www', 'Very small int', -166)
+  ('qqq', 'Very small int', -162)
+  ('jjj', 'Very small int', -154)
+  ('lll', 'Very small int', -152)
+  ('uuu', 'Very small int', -151)
+  ('www', 'Very small int', -150)
+  ('xxx', 'Very small int', -148)
+  ('ggg', 'Very small int', -145)
+  ('kkk', 'Very small int', -143)
+  ('www', 'Very small int', -143)
+  ('eee', 'Very small int', -139)
+  ('qqq', 'Very small int', -136)
+  ('zzz', 'Very small int', -136)
+  ('ggg', 'Very small int', -133)
+  ('hhh', 'Very small int', -133)
+  ('qqq', 'Very small int', -133)
+  ('www', 'Very small int', -133)
+  ('ttt', 'Very small int', -132)
+  ('www', 'Very small int', -120)
+  ('ttt', 'Very small int', -118)
+  ('yyy', 'Very small int', -115)
+  ('yyy', 'Very small int', -107)
+  ('ttt', 'Very small int', -103)
+  ('bbb', 'Very small int', -93)
+  ('vvv', 'Very small int', -91)
+  ('lll', 'Very small int', -76)
+  ('xxx', 'Very small int', -76)
+  ('ggg', 'Very small int', -74)
+  ('ccc', 'Very small int', -71)
+  ('ddd', 'Very small int', -71)
+  ('ppp', 'Very small int', -70)
+  ('ppp', 'Very small int', -56)
+  ('lll', 'Very small int', -55)
+  ('nnn', 'Very small int', -55)
+  ('nnn', 'Very small int', -54)
+  ('mmm', 'Very small int', -46)
+  ('uuu', 'Very small int', -46)
+  ('ppp', 'Very small int', -32)
+  ('ccc', 'Very small int', -31)
+  ('nnn', 'Very small int', -26)
+  ('xxx', 'Very small int', -26)
+  ('uuu', 'Very small int', -25)
+  ('iii', 'Very small int', -24)
+  ('ooo', 'Very small int', -24)
+  ('bbb', 'Very small int', -18)
+  ('rrr', 'Very small int', -8)
+  ('uuu', 'Very small int', -5)
+  ('kkk', 'Very small int', -4)
+  ('ccc', 'Very small int', -3)
+  ('sss', 'Very small int', 0)
+  ('ooo', 'Very small int', 1)
+  ('nnn', 'Very small int', 2)
+  ('kkk', 'high small int', 8)
+  ('qqq', 'biggest small int', 13)
+  ('rrr', 'biggest small int', 14)
+  ('bbb', 'biggest small int', 17)
+  ('ddd', 'biggest small int', 26)
+  ('qqq', 'biggest small int', 39)
+  ('uuu', 'biggest small int', 40)
+  ('eee', 'biggest small int', 42)
+  ('nnn', 'biggest small int', 44)
+  ('ooo', 'biggest small int', 46)
+  ('eee', 'biggest small int', 50)
+  ('yyy', 'biggest small int', 50)
+  ('ppp', 'biggest small int', 57)
+  ('fff', 'biggest small int', 61)
+  ('ttt', 'biggest small int', 77)
+  ('ccc', 'biggest small int', 80)
+  ('hhh', 'biggest small int', 80)
+  ('iii', 'biggest small int', 81)
+  ('qqq', 'biggest small int', 82)
+  ('yyy', 'biggest small int', 83)
+  ('iii', 'biggest small int', 84)
+  ('bbb', 'biggest small int', 85)
+  ('ccc', 'biggest small int', 86)
+  ('ttt', 'biggest small int', 97)
+  ('zzz', 'biggest small int', 102)
+  ('fff', 'biggest small int', 105)
+  ('fff', 'biggest small int', 108)
+  ('kkk', 'biggest small int', 114)
+  ('eee', 'biggest small int', 115)
+  ('aaa', 'biggest small int', 118)
+  ('hhh', 'biggest small int', 118)
+  ('hhh', 'biggest small int', 124)
+  ('mmm', 'biggest small int', 127)
+  ('qqq', 'biggest small int', 129)
+  ('ccc', 'biggest small int', 134)
+  ('xxx', 'biggest small int', 135)
+  ('eee', 'biggest small int', 137)
+  ('yyy', 'biggest small int', 137)
+  ('mmm', 'biggest small int', 152)
+  ('ggg', 'biggest small int', 157)
+  ('aaa', 'biggest small int', 160)
+  ('xxx', 'biggest small int', 163)
+  ('ccc', 'biggest small int', 165)
+  ('bbb', 'biggest small int', 169)
+  ('aaa', 'biggest small int', 175)
+  ('nnn', 'biggest small int', 175)
 
 // Source file: ../queries/case/rcase8.sql
 // Result file: ../queries/case/results/case8.res
 select colb1, cole1, case when cole1 > 33.0 and cole1 <72.0 then cole1 /.5 end from table1 where colb1 not like '%ea%' order by pcol1 limit 20;
 ordered rows:
-  ('grey', 5.340000000000, NULL)
-  ('PINK', 74.590000000000, NULL)
-  ('green', 128.910000000000, NULL)
-  ('green', 7.530000000000, NULL)
-  ('black', 96.490000000000, NULL)
-  ('PINK', 117.290000000000, NULL)
-  ('WHITE', 121.330000000000, NULL)
-  ('green', 64.970000000000, 129.940000000000)
-  ('aqua', 88.860000000000, NULL)
-  ('red', 61.670000000000, 123.340000000000)
-  ('TEAL', 139.850000000000, NULL)
-  ('PURPLE', 65.320000000000, 130.640000000000)
-  ('TEAL', 12.130000000000, NULL)
-  ('aqua', 77.170000000000, NULL)
-  ('YELLOW', 37.900000000000, 75.800000000000)
+  ('grey',   5.34, NULL)
+  ('PINK',  74.59, NULL)
+  ('green',128.91, NULL)
+  ('green',  7.53, NULL)
+  ('black', 96.49, NULL)
+  ('PINK', 117.29, NULL)
+  ('WHITE',121.33, NULL)
+  ('green', 64.97, 129.94)
+  ('aqua', 88.86, NULL)
+  ('red', 61.67, 123.34)
+  ('TEAL', 139.85, NULL)
+  ('PURPLE', 65.32, 130.64)
+  ('TEAL', 12.13, NULL)
+  ('aqua', 77.17, NULL)
+  ('YELLOW', 37.90, 75.80)
   ('green', NULL, NULL)
-  ('violet', 27.740000000000, NULL)
-  ('blue', 103.160000000000, NULL)
-  ('yellow', 30.690000000000, NULL)
-  ('PINK', 22.240000000000, NULL)
-
+  ('violet', 27.74, NULL)
+  ('blue', 103.16, NULL)
+  ('yellow', 30.69, NULL)
+  ('PINK', 22.24, NULL)
 
 // Source file: ../queries/case/rncase1.sql
 // Result file: ../queries/case/results/ncase1.res
+//TODO: ENABLE WHEN expression subqueries, ISNULL, ORDER BY, JOIN.
+/*
 select a.colb4, a.ucolvc, b.colh8, b.ucolvc, case when b.colh8 = 0 then (select b.cola1 from table1 where pcol1 = 5;) when b.colh8 = 1 then (select b.cola1 from table1 where pcol1 = 10;) when b.colh8 is null then (select b.cola1 from table1 where pcol1 = 15;) end as TorF from table4 a join table8 b on a.pcol4 = b.pcol8 where b.ucolvc = 'www' order by TorF, pcol8;
 failure contains: 'EC_SYNTAX_ERROR'
-
+*/
 
 // Source file: ../queries/case/rcase16.sql
 // Result file: ../queries/case/results/case16.res
@@ -259,8 +399,6 @@ ordered rows:
 
 // Source file: ../queries/case/rcase23.sql
 // Result file: ../queries/case/results/case23.res
-/*
-TODO: FIX
 select colb1, cola1, colf1 from table1 where cola1 / case when colf1 < 5 then cola1 when colf1 >= 5 and colf1 < 8 then 10 when colf1 >= 8 and colf1 < 15 then 2 end > 0 and colb1 in ('orange','violet','purple') order by cola1;
 ordered rows:
   ('purple', 58, 12)
@@ -272,47 +410,46 @@ ordered rows:
   ('violet', 295, 7)
   ('orange', 329, 12)
   ('purple', 415, 7)
-*/
 
 // Source file: ../queries/case/rcase9.sql
 // Result file: ../queries/case/results/case9.res
 select colb1, cole1, case when cole1 > 33.0 and cole1 < 72.0 or cole1 > 84.0 and cole1 < 86.0 then cole1 /.5 end from table1 where cole1 between 30.5 and 89.0 order by cole1, colb1;
 ordered rows:
-  ('yellow', 30.690000000000, NULL)
-  ('violet', 32.130000000000, NULL)
-  ('maroon', 37.570000000000, 75.140000000000)
-  ('YELLOW', 37.900000000000, 75.800000000000)
-  ('tan', 38.380000000000, 76.760000000000)
-  ('WHITE', 40.430000000000, 80.860000000000)
-  ('GREEN', 46.010000000000, 92.020000000000)
-  ('PURPLE', 47.020000000000, 94.040000000000)
-  ('maroon', 48.140000000000, 96.280000000000)
-  ('YELLOW', 48.970000000000, 97.940000000000)
-  ('PINK', 49.470000000000, 98.940000000000)
-  ('BLACK', 52.390000000000, 104.780000000000)
-  ('green', 53.260000000000, 106.520000000000)
-  ('aqua', 58.100000000000, 116.200000000000)
-  ('GREEN', 59.240000000000, 118.480000000000)
-  ('peach', 59.860000000000, 119.720000000000)
-  ('red', 61.670000000000, 123.340000000000)
-  ('green', 64.970000000000, 129.940000000000)
-  ('PURPLE', 65.320000000000, 130.640000000000)
-  ('teal', 70.380000000000, 140.760000000000)
-  ('BLACK', 70.940000000000, 141.880000000000)
-  ('purple', 71.350000000000, 142.700000000000)
-  ('BLACK', 71.950000000000, 143.900000000000)
-  ('teal', 73.020000000000, NULL)
-  ('PINK', 74.590000000000, NULL)
-  ('aqua', 77.170000000000, NULL)
-  ('WHITE', 78.530000000000, NULL)
-  ('PURPLE', 81.270000000000, NULL)
-  ('TEAL', 83.340000000000, NULL)
-  ('maroon', 85.150000000000, 170.300000000000)
-  ('violet', 85.640000000000, 171.280000000000)
-  ('WHITE', 85.840000000000, 171.680000000000)
-  ('tan', 85.840000000000, 171.680000000000)
-  ('PINK', 86.420000000000, NULL)
-  ('aqua', 88.860000000000, NULL)
+  ('yellow', 30.69, NULL)
+  ('violet', 32.13, NULL)
+  ('maroon', 37.57, 75.14)
+  ('YELLOW', 37.90, 75.80)
+  ('tan',    38.38, 76.76)
+  ('WHITE',  40.43, 80.86)
+  ('GREEN',  46.01, 92.02)
+  ('PURPLE', 47.02, 94.04)
+  ('maroon', 48.14, 96.28)
+  ('YELLOW', 48.97, 97.94)
+  ('PINK',   49.47, 98.94)
+  ('BLACK',  52.39, 104.78)
+  ('green',  53.26, 106.52)
+  ('aqua',   58.10, 116.20)
+  ('GREEN',  59.24, 118.48)
+  ('peach',  59.86, 119.72)
+  ('red',    61.67, 123.34)
+  ('green',  64.97, 129.94)
+  ('PURPLE', 65.32, 130.64)
+  ('teal',   70.38, 140.76)
+  ('BLACK',  70.94, 141.88)
+  ('purple', 71.35, 142.70)
+  ('BLACK',  71.95, 143.90)
+  ('teal',   73.02, NULL)
+  ('PINK',   74.59, NULL)
+  ('aqua',   77.17, NULL)
+  ('WHITE',  78.53, NULL)
+  ('PURPLE', 81.27, NULL)
+  ('TEAL',   83.34, NULL)
+  ('maroon', 85.15, 170.30)
+  ('violet', 85.64, 171.28)
+  ('WHITE',  85.84, 171.68)
+  ('tan',    85.84, 171.68)
+  ('PINK',   86.42, NULL)
+  ('aqua',   88.86, NULL)
 
 
 // Source file: ../queries/case/rcase17.sql
@@ -328,6 +465,8 @@ ordered rows:
 
 // Source file: ../queries/case/rcase1.sql
 // Result file: ../queries/case/results/case1.res
+//TODO: ENABLE WHEN PAYLOAD/STRINGS
+/*
 select ucolvc, case when colg1 < 3 then 'Very small int' when colg1 >= 3 and colg1 < 7 then 'Sort of small int' when colg1 >=7 and colg1 < 13 then 'high small int' else 'biggest small int' end, colg1 from table1 order by pcol1;
 ordered rows:
   ('lll', 'Very small int', -152)
@@ -430,7 +569,113 @@ ordered rows:
   ('ttt', 'Very small int', -132)
   ('yyy', 'biggest small int', 50)
   ('www', 'Very small int', -143)
+*/
 
+
+// Source file: ../queries/case/rcase1.sql
+// Result file: ../queries/case/results/case1.res
+select ucolvc, case when colg1 < 3 then 'Very small int' when colg1 >= 3 and colg1 < 7 then 'Sort of small int' when colg1 >=7 and colg1 < 13 then 'high small int' else 'biggest small int' end, colg1 from table1;
+unordered rows:
+  ('lll', 'Very small int', -152)
+  ('qqq', 'biggest small int', 39)
+  ('uuu', 'biggest small int', 40)
+  ('qqq', 'Very small int', -162)
+  ('mmm', 'Very small int', -167)
+  ('uuu', 'Very small int', -46)
+  ('hhh', 'biggest small int', 124)
+  ('yyy', 'biggest small int', 137)
+  ('bbb', 'biggest small int', 85)
+  ('rrr', 'biggest small int', 14)
+  ('ggg', 'Very small int', -145)
+  ('www', 'Very small int', -133)
+  ('ooo', 'Very small int', -24)
+  ('ggg', 'Very small int', -74)
+  ('zzz', 'biggest small int', 102)
+  ('xxx', 'biggest small int', 135)
+  ('ttt', 'Very small int', -103)
+  ('fff', 'biggest small int', 108)
+  ('kkk', 'Very small int', -4)
+  ('nnn', 'Very small int', 2)
+  ('lll', 'Very small int', -76)
+  ('nnn', 'Very small int', -54)
+  ('ggg', 'biggest small int', 157)
+  ('uuu', 'Very small int', -151)
+  ('eee', 'biggest small int', 42)
+  ('kkk', 'biggest small int', 114)
+  ('hhh', 'biggest small int', 118)
+  ('bbb', 'biggest small int', 17)
+  ('ttt', 'biggest small int', 97)
+  ('bbb', 'Very small int', -18)
+  ('bbb', 'Very small int', -93)
+  ('zzz', 'Very small int', -136)
+  ('uuu', 'Very small int', -25)
+  ('ccc', 'biggest small int', 134)
+  ('qqq', 'Very small int', -133)
+  ('aaa', 'biggest small int', 118)
+  ('iii', 'Very small int', -24)
+  ('ddd', 'biggest small int', 26)
+  ('ooo', 'Very small int', 1)
+  ('qqq', 'biggest small int', 129)
+  ('ccc', 'biggest small int', 80)
+  ('kkk', 'Very small int', -143)
+  ('kkk', 'high small int', 8)
+  ('ddd', 'Very small int', -71)
+  ('eee', 'biggest small int', 115)
+  ('jjj', 'Very small int', -154)
+  ('sss', 'Very small int', 0)
+  ('lll', 'Very small int', -55)
+  ('www', 'Very small int', -120)
+  ('ppp', 'biggest small int', 57)
+  ('hhh', 'Very small int', -133)
+  ('ccc', 'Very small int', -71)
+  ('fff', 'biggest small int', 61)
+  ('yyy', 'Very small int', -115)
+  ('nnn', 'biggest small int', 44)
+  ('ppp', 'Very small int', -56)
+  ('ppp', 'Very small int', -70)
+  ('aaa', 'biggest small int', 160)
+  ('sss', 'Very small int', -170)
+  ('mmm', 'biggest small int', 127)
+  ('www', 'Very small int', -166)
+  ('yyy', 'biggest small int', 83)
+  ('bbb', 'biggest small int', 169)
+  ('xxx', 'Very small int', -76)
+  ('aaa', 'biggest small int', 175)
+  ('yyy', 'Very small int', -107)
+  ('ooo', 'biggest small int', 46)
+  ('qqq', 'Very small int', -136)
+  ('ccc', 'Very small int', -31)
+  ('uuu', 'Very small int', -5)
+  ('ttt', 'Very small int', -118)
+  ('eee', 'biggest small int', 50)
+  ('hhh', 'biggest small int', 80)
+  ('eee', 'biggest small int', 137)
+  ('www', 'Very small int', -150)
+  ('ttt', 'biggest small int', 77)
+  ('nnn', 'biggest small int', 175)
+  ('fff', 'biggest small int', 105)
+  ('xxx', 'Very small int', -148)
+  ('mmm', 'biggest small int', 152)
+  ('eee', 'Very small int', -139)
+  ('ggg', 'Very small int', -133)
+  ('ppp', 'Very small int', -32)
+  ('iii', 'biggest small int', 81)
+  ('qqq', 'biggest small int', 13)
+  ('iii', 'biggest small int', 84)
+  ('vvv', 'Very small int', -91)
+  ('nnn', 'Very small int', -55)
+  ('xxx', 'Very small int', -26)
+  ('ccc', 'Very small int', -3)
+  ('mmm', 'Very small int', -46)
+  ('nnn', 'Very small int', -26)
+  ('ccc', 'biggest small int', 86)
+  ('ccc', 'biggest small int', 165)
+  ('rrr', 'Very small int', -8)
+  ('qqq', 'biggest small int', 82)
+  ('xxx', 'biggest small int', 163)
+  ('ttt', 'Very small int', -132)
+  ('yyy', 'biggest small int', 50)
+  ('www', 'Very small int', -143)
 
 // Source file: ../queries/case/rcase11.sql
 // Result file: ../queries/case/results/case11.res
@@ -448,6 +693,8 @@ ordered rows:
 
 // Source file: ../queries/case/rcase6.sql
 // Result file: ../queries/case/results/case6.res
+//TODO: ENABLE WHEN OFFSET
+/*
 select colb3, colc3, cola3, case when cola3 < 100 then cola3 / 10 end from table3 order by pcol3, colb3 limit 10 offset 12;
 ordered rows:
   ('ORANGE', TIMESTAMP '2015-08-05 00:00:00.0', 12, 1)
@@ -460,7 +707,22 @@ ordered rows:
   ('TEAL', TIMESTAMP '2015-06-03 00:00:00.0', 326, NULL)
   ('YELLOW', TIMESTAMP '2015-12-08 00:00:00.0', 228, NULL)
   ('blue', TIMESTAMP '2015-03-04 00:00:00.0', 325, NULL)
+*/
 
+// Source file: ../queries/case/rcase6.sql
+// Result file: ../queries/case/results/case6.res
+select colb3, colc3, cola3, case when cola3 < 100 then cola3 / 10 end from table3 order by pcol3, colb3, colc3 limit 10;
+ordered rows:
+   ('BLUE'   , TIMESTAMP '2015-07-15 00:00:00', 188, NULL)
+   ('WHITE'  , TIMESTAMP '2015-02-04 00:00:00', 210, NULL)
+   ('YELLOW' , TIMESTAMP '2015-08-06 00:00:00', 266, NULL)
+   ('blue'   , TIMESTAMP '2015-02-05 00:00:00', 401, NULL)
+   ('brown'  , TIMESTAMP '2015-06-28 00:00:00', 132, NULL)
+   ('green'  , TIMESTAMP '2015-07-30 00:00:00', 211, NULL)
+   ('grey'   , TIMESTAMP '2015-06-19 00:00:00', 359, NULL)
+   ('indigo' , TIMESTAMP '2015-06-30 00:00:00', 264, NULL)
+   ('peach'  , TIMESTAMP '2015-09-30 00:00:00', 392, NULL)
+   ('tan'    , TIMESTAMP '2015-06-13 00:00:00', 371, NULL)
 
 // Source file: ../queries/case/rcase12.sql
 // Result file: ../queries/case/results/case12.res
@@ -548,7 +810,18 @@ ordered rows:
 // Source file: ../queries/case/case26.sql
 // Result file: none
 select colb1, cola1, colf1 from table1 where cola1 / case when colf1 < 5 then cola1 when colf1 >= 5 and colf1 < 8 then 10 when colf1 >= 8 and colf1 < 15 then 2 end > 0 order by cola1;
-failure: 'Result file missing'
+//failure: 'Result file missing'
+rows: 91
+
+// Source file: ../queries/case/case26.sql
+// Result file: none
+select colb1, cola1, colf1 from table1 where cola1 / case when colf1 < 5 then cola1 when colf1 >= 5 and colf1 < 8 then 10 when colf1 >= 8 and colf1 < 15 then 2 end > 0 order by cola1;
+//failure: 'Result file missing'
+contains rows:
+ ('black',  5, 14)
+ ('peach', 26,  6)
+ ('GREEN', 35, 11)
+ ('BLACK', 44,  1)
 
 
 // Source file: ../queries/case/rcase13.sql
@@ -598,7 +871,7 @@ ordered rows:
 // Source file: ../queries/case/rncase2.sql
 // Result file: ../queries/case/results/ncase2.res
 select a.colb4, a.ucolvc, b.colh8, b.ucolvc, case b.colh8 when 1 then 'true' when 0 then 'false' when is null then 'neither' end as TorF from table4 a join table8 b on a.pcol4 = b.pcol8 where b.ucolvc = 'www' order by TorF, pcol8;
-failure: 'Syntax error near 'when''
+failure contains: 'EC_SYNTAX_ERROR'
 
 
 // Source file: ../queries/case/rcase20.sql

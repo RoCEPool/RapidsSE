@@ -24,6 +24,7 @@ void Step::vAddSteps_ListedJob(void)
   vAddStep("ListedJob[].findOriginator?"_Stz,  &Step::vListedJobFindOriginator);
   vAddStep("ListedJob[].findParticipant?"_Stz, &Step::vListedJobFindParticipant);
   vAddStep("ListedJob[].hasTask"_Stz,          &Step::vListedJobHasTask);
+  vAddStep("ListedJob[].nodeLoss@"_Stz,        &Step::vListedJobNodeLossFetch);
   vAddStep("ListedJob[].references"_Stz,       &Step::vListedJobReferences);
   vAddStep("ListedJob[].returnReference"_Stz,  &Step::vListedJobReturn);
   vAddStep("ListedJob[].scheduleNextPhase"_Stz,&Step::vListedJobScheduleNextPhase);
@@ -73,15 +74,18 @@ void Step::vListedJobFindOriginator(void)
   JobId tJobId;
   tJobId = m_pDataStack->iPopAsInt(__func__);
 
-  Job* pJobFound = AM::pJob_FindOriginating(tJobId);
-  RASSERT(pJobFound);
+  Job* pJobFound = AM::pJob_FindOriginating(tJobId, true);
 
+  if ( pJobFound) {
 
-  //! borrow the job ref [ this needs to be done under lock ]
-  pJobFound->vBorrowRefBy(&m_pLogicUnit->m_xpListedJob);
+    //! borrow the job ref [ this needs to be done under lock ]
+    pJobFound->vBorrowRefBy(&m_pLogicUnit->m_xpListedJob);
 
-
-  m_pDataStack->vPushPtr(pJobFound);
+    m_pDataStack->vPushBol(true);
+  }
+  else {
+    m_pDataStack->vPushBol(false);
+  }
 
   EXIT();
 }
@@ -96,15 +100,18 @@ void Step::vListedJobFindParticipant(void)
   JobId tJobId;
   tJobId = m_pDataStack->iPopAsInt(__func__);
 
-  Job* pJobFound = AM::pJob_FindParticipating(tJobId);
-  RASSERT(pJobFound);
+  Job* pJobFound = AM::pJob_FindParticipating(tJobId, true);
 
+  if (pJobFound) {
 
-  //! borrow the job ref [ this needs to be done under lock ]
-  pJobFound->vBorrowRefBy(&m_pLogicUnit->m_xpListedJob);
+    //! borrow the job ref [ this needs to be done under lock ]
+    pJobFound->vBorrowRefBy(&m_pLogicUnit->m_xpListedJob);
 
-
-  m_pDataStack->vPushPtr(pJobFound);
+    m_pDataStack->vPushBol(true);
+  }
+  else {
+    m_pDataStack->vPushBol(false);
+  }
 
   EXIT();
 }
@@ -120,6 +127,21 @@ void Step::vListedJobHasTask(void)
   
   m_pDataStack->vPushInt(pJob->pTask() ? true : false);
   
+  EXIT();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* ListedJob[].nodeLoss@ -- fetch nodeLoss flag from job                      */
+/*----------------------------------------------------------------------------*/
+void Step::vListedJobNodeLossFetch(void)
+{
+  ENTRY();
+
+  Job* pJob = m_pLogicUnit->m_xpListedJob.pReferencedObject();
+
+  m_pDataStack->vPushInt(pJob->bNodeLoss());
+
   EXIT();
 }
 
@@ -143,7 +165,7 @@ void Step::vListedJobPointer(void)
 void Step::vListedJobReferences(void)
 {
   ENTRY();
-  
+
   m_pDataStack->vPushInt(m_pLogicUnit->m_xpListedJob.nReferences());
   
   EXIT();
@@ -155,7 +177,9 @@ void Step::vListedJobReferences(void)
 void Step::vListedJobReturn(void)
 {
   ENTRY();
-  
+
+  m_pLogicUnit->m_xpListedJob->vDropLock();
+
   if (m_pLogicUnit->m_xpListedJob.bHasReference())
     m_pLogicUnit->m_xpListedJob.vReturnRef();
 
@@ -239,8 +263,6 @@ void Step::vListedJobTaskStateFetch(void)
   
   EXIT();
 }
-
-
 
 /*============================================================================*/
 /* end                                                                        */

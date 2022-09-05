@@ -79,6 +79,20 @@ void NotExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Represent the expression as types instead of names. Append to the buffer   */
+/*----------------------------------------------------------------------------*/
+void NotExpr::vDescribeAsTypes(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pChild1 = NotExpr::pChild1(_pQueryNode(pNode));
+
+  sBuf.vConcat("NOT "_Stz);
+  sBuf.vConcat(Expr::xTypeId(pChild1, pRootNode).szTypeName());
+}
+
+/*----------------------------------------------------------------------------*/
 /* Return the first child expression of this operator                         */
 /*----------------------------------------------------------------------------*/
 QueryNode* NotExpr::pChild1(QueryNode *pNode)

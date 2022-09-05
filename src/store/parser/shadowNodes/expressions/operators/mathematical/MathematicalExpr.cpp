@@ -43,12 +43,31 @@ void MathematicalExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode
   else if (      DivisionExpr::bIsOfType(pNode))  {       DivisionExpr::vDescribe(pNode, sBuf, pRootNode); }
   else if (       ModulusExpr::bIsOfType(pNode))  {        ModulusExpr::vDescribe(pNode, sBuf, pRootNode); }
   else if (      NegationExpr::bIsOfType(pNode))  {       NegationExpr::vDescribe(pNode, sBuf, pRootNode); }
-  else if (       ExtractExpr::bIsOfType(pNode))  {          ExtractExpr::vDescribe(pNode, sBuf, pRootNode);    }
+  else if (       ExtractExpr::bIsOfType(pNode))  {        ExtractExpr::vDescribe(pNode, sBuf, pRootNode); }
 //  else if (       PowerExpr::bIsOfType(pNode))  {          PowerExpr::vDescribe(pNode, sBuf, pRootNode);    }
 //  else if (         LogExpr::bIsOfType(pNode))  {            LogExpr::vDescribe(pNode, sBuf, pRootNode);    }
   else NEVER_REACH
 }
 
+/*----------------------------------------------------------------------------*/
+/* Represent the expression as types instead of names. Append to the buffer   */
+/*----------------------------------------------------------------------------*/
+void MathematicalExpr::vDescribeAsTypes(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  if      (      AdditionExpr::bIsOfType(pNode))  {       AdditionExpr::vDescribeAsTypes(pNode, sBuf, pRootNode); }
+  else if (   SubtractionExpr::bIsOfType(pNode))  {    SubtractionExpr::vDescribeAsTypes(pNode, sBuf, pRootNode); }
+  else if (MultiplicationExpr::bIsOfType(pNode))  { MultiplicationExpr::vDescribeAsTypes(pNode, sBuf, pRootNode); }
+  else if (      DivisionExpr::bIsOfType(pNode))  {       DivisionExpr::vDescribeAsTypes(pNode, sBuf, pRootNode); }
+  else if (       ModulusExpr::bIsOfType(pNode))  {        ModulusExpr::vDescribeAsTypes(pNode, sBuf, pRootNode); }
+  else if (      NegationExpr::bIsOfType(pNode))  {       NegationExpr::vDescribeAsTypes(pNode, sBuf, pRootNode); }
+  else if (       ExtractExpr::bIsOfType(pNode))  {        ExtractExpr::vDescribeAsTypes(pNode, sBuf, pRootNode); }
+//  else if (       PowerExpr::bIsOfType(pNode))  {          PowerExpr::vDescribeAsTypes(pNode, sBuf, pRootNode);    }
+//  else if (         LogExpr::bIsOfType(pNode))  {            LogExpr::vDescribeAsTypes(pNode, sBuf, pRootNode);    }
+  else NEVER_REACH
+}
 
 /*----------------------------------------------------------------------------*/
 /* Returns true if the given node is derived from the expr definition         */

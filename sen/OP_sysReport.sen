@@ -9,9 +9,11 @@
 /*----------------------------------------------------------------------------*/
 : sysReport_action
 
-  "__eventDemon" find dup if
-    word.object@ locals| pEventDemon |
-  else
+  //"__eventDemon" find dup if
+  //  word.object@ locals| pEventDemon |
+
+  AM::DEMON::tEventDemonJobId@ locals| tEventDemonJobId |
+    tEventDemonJobId jobId::isUnknown if
     "Cant find __eventDemon" .
     true
     exit
@@ -26,7 +28,7 @@
   
   Tub[] sysReport::sysMetrics
 
-  pEventDemon Tub[].pipeToJob
+  tEventDemonJobId Tub[].pipeToJob
   
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -34,7 +36,7 @@
   
   Tub[] sysReport::sysLocks
 
-  pEventDemon Tub[].pipeToJob
+  tEventDemonJobId Tub[].pipeToJob
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -36,6 +36,7 @@ namespace STORE
     TagSet*  m_pOpTags;   // tags for the op
     bool     m_bTraceOp;  // tracing this operator
     bool     m_bTraceAck; // tracing ack of this operator
+    bool     m_bAllocate; // can op ask for memory?
 
     EvMgr*   m_pEvMgr;    // event handlers
          
@@ -69,8 +70,9 @@ namespace STORE
    ~Op(void) noexcept(false);
   
     // - - - - - - - - - - - - - - - -
-    void vAckInvokingTask(void);
+    void vAckJobTask(void);
     void vAddWorkDone(i8 iWorkDone);
+    bool bAllocateMemory(void);
     void vAppendLeft(Operand* pOperand, Task* pTriggeringTask);
     void vAppendOoO(Operand* pOperand, Task* pTriggeringTask);
     void vAppendToJob(Operand* pOperand);
@@ -110,6 +112,7 @@ namespace STORE
     i8   iNextStage(void);
     Stage* pNextStage(void);
     i8   iNodeId(void);
+    void vNodeLossAbort(void);
     
     i8   i_Op(void);
     OperandWatch* pOperandWatch(void);
@@ -155,8 +158,9 @@ namespace STORE
     void vSendCast(eXK eSendCast);
     i8   iSendNode(void);
     void vSendNode(i8 iNde);
+    void vSetAllocate(bool bAlloc);
     void vSpawnTask(void);
-    void vSetInvoker(Task* pInvoker);
+    void vSetJobTask(Task* pJobTask);
     void vSetTags(void);
     Stage* pStage(void);
     Stz* szStageName(void);
@@ -167,7 +171,8 @@ namespace STORE
     void vTask(Task* pTask);
     i8   nTmpIndexSize(void);
     void vToCmdStr(Stz* szCmdStr);
-  
+
+    void vUnspawnTask(void);
     void vVerifyOpComposition(void);
   
     void vWorkQuanta(i8 iWorkQuanta);

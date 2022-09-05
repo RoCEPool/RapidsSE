@@ -78,7 +78,7 @@ namespace STORE
     void    vReplicated(bool bReplicated);
     void    vResetPointers(void);
     RowPix* pRowPix(void);
-    i8      jRowSize(void);
+    i8      jRowSizeBytes(void);
   
     void    vStreamDefNm(Stz* szStreamDefNm);
     Stz*    szStreamDefNm(void);
@@ -114,6 +114,8 @@ namespace STORE
     eEC eParseReplicated     (TokenVec* pTknVec);
     eEC eParseRowSize        (TokenVec* pTknVec);
     eEC eParseTableSize      (TokenVec* pTknVec);
+
+    eEC eValidateTableName   (TokenVec* pTknVec);
 
   };
 

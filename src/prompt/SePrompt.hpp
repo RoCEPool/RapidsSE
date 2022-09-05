@@ -16,16 +16,6 @@ namespace PROMPT
   static Stz* C_PMT_TKNDUMP  = "<dumpTokens>"_Stz;
   static Stz* C_PMT_TRCFILE  = "<traceFile>"_Stz;
 
-  static Stz* C_Query1 = "/time Query1_ASM_I lineitem \"../eo_text/QRY_100.txt\" \"../eo_text/QRY_102.txt\""_Stz;
-  
-  static Stz* C_Query3 = "/time Query3_ASM_I \"../eo_text/QRY_300.txt\" \"../eo_text/QRY_301.txt\" \"../eo_text/QRY_302.txt\""_Stz;
-  
-  static Stz* C_Query4 = "/time Query4_ASM_I \"../eo_text/QRY_400.txt\" \"../eo_text/QRY_401.txt\" \"../eo_text/QRY_402.txt\""_Stz;
-  
-  static Stz* C_Query6 = "/time Query6_ASM_I \"../eo_text/QRY_600.txt\" \"../eo_text/QRY_601.txt\""_Stz ;
-  
-  static Stz* C_Query6_PL = "/time Query6_ASM_I \"../eo_text/QRY_600_2.txt\" \"../eo_text/QRY_601.txt\""_Stz ;
-  
   class SePrompt : public Object
   {
   private:
@@ -39,19 +29,18 @@ namespace PROMPT
 
     bool        m_bOutputEnabled; // is output enabled?
 
+    eEC         m_eInputError;  // input error
+
     i8          m_nDeputies;    // current number of deputies
     SeDeputy*   m_paSeDeputy[C_MAX_DEPUTY];
 
-
     SeDeputy*   m_pCurrentDeputy;
-  
-    TagSet      m_oPmtTagSet;   // tag set which controls this prompt
-  
-    Input*      m_pInput;       // current input from current deputy
-    TokenVec*   m_pInpTknVec;   // token vector from deputy->ssn->input
-    TagSet*     m_pInpTagSet;   // extra tags gleaned from the prompt command
- 
+    Input*      m_pInput_deputy; // current input from current deputy
+    TokenVec*   m_pInpTknVec;    // token vector from deputy->ssn->input
+    TagSet*     m_pInpTagSet;    // extra tags gleaned from the prompt command
 
+    TagSet      m_oPmtTagSet;    // tag set which controls this prompt
+  
     // -- -- -- -- -- --
   
     // object delta reporting
@@ -66,6 +55,7 @@ namespace PROMPT
   
     Op*       m_pPrintOp;    // the companion print op
 
+    Word*     m_pSearchWord;
     // -- -- -- -- -- --
     // delete
   
@@ -99,7 +89,7 @@ namespace PROMPT
     bool bDumpTokens(void);
     void vDumpTokens(bool bDumpTokens);
     void vDumpInpTknVec(bool bForce);
-    bool bExamineCommand(void);
+    bool bExamineCommand(eEC* eErrorCode);
     SeDeputy* pFindDeputy(void);
     TokenVec* pInpTknVec(void);
     Input* pInputGet(void);
@@ -118,10 +108,10 @@ namespace PROMPT
     bool bOutputEnabled(void);
     void vOutputEnabled(bool bOutputEnabled);
     void vPrintPrompt(void);
-    bool bPromptFunction(void);
+    bool bPromptFunction(eEC* eErrorCode);
     TagSet* pPmtTagSet(void);
     Stz* szRawInput(void);
-    bool bReadCommand(void);
+    bool bReadCommand(eEC& eInputError);
     bool bRedirectFromFile(void);
     void vReportObjects();
     void vReportOther(void);
@@ -134,7 +124,7 @@ namespace PROMPT
     bool bShortCut(void);
     ShortCutVec* pShortCutVec(void);
     bool bStdIn(void);
-    bool bTagCommand(void);
+    bool bTagCommand(eEC* eErrorCode);
     Timer* pTimer(void);
     Stz* szToDo(void);
     void vToDo(Stz* szToDo);

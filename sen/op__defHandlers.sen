@@ -9,6 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : ABNORMAL_PIPEIN_DELETE
 
+  //PipeIn[].name [op].ptnId@ "ABNORMAL_PIPEIN_DELETE P%v %v" str.format .
   PipeIn[].delete
 
   // calling op_loop continues
@@ -16,10 +17,22 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* perform a simple pipein delete on behalf of an abnormal handler            */
+/*----------------------------------------------------------------------------*/
+: ABNORMAL_PIPEIN_DELETE_END
+
+  PipeIn[].delete
+
+  // calling op_loop discontinues
+  false
+;
+
+/*----------------------------------------------------------------------------*/
 /* perform a simple pipeout on behalf of a standard handler                   */
 /*----------------------------------------------------------------------------*/
 : STANDARD_PIPEOUT
 
+  //PipeIn[].name "DEFAULT HANDLER %v" str.format .
   PipeIn[]\clear [op].pipeout
   
   // calling op_loop continues
@@ -37,7 +50,6 @@
 : EV_D_CRWBUFFER_handler        \handler STANDARD_PIPEOUT ;
 : EV_D_CSVBUFFER_handler        \handler STANDARD_PIPEOUT ;
 : EV_D_ENTBUFFER_handler        \handler STANDARD_PIPEOUT ;
-: EV_D_EXITOPERAND_handler      \handler STANDARD_PIPEOUT ;
 : EV_D_INDEX_handler            \handler STANDARD_PIPEOUT ;
 : EV_D_INDEXDEF_handler         \handler STANDARD_PIPEOUT ;
 : EV_D_GRID_handler             \handler STANDARD_PIPEOUT ;
@@ -83,22 +95,20 @@
 : EV_M_DESTROY_handler          \handler STANDARD_PIPEOUT ;
 : EV_M_END_handler              \handler STANDARD_PIPEOUT ;
 : EV_M_ENDING_handler           \handler STANDARD_PIPEOUT ;
-: EV_M_ENDCRWRHT_handler        \handler STANDARD_PIPEOUT ;
-: EV_M_ENDROWRHT_handler        \handler STANDARD_PIPEOUT ;
 : EV_M_EOS_handler              \handler STANDARD_PIPEOUT ;
 : EV_M_ERRORING_handler         \handler STANDARD_PIPEOUT ;
 : EV_M_FINISHED_handler         \handler STANDARD_PIPEOUT ;
 : EV_M_FLUSH_handler            \handler STANDARD_PIPEOUT ;
 : EV_M_LEAVE_handler            \handler STANDARD_PIPEOUT ;
 : EV_M_LEAVING_handler          \handler STANDARD_PIPEOUT ;
-: EV_M_LEFTOUTER_CRWLFT_handler \handler STANDARD_PIPEOUT ;
-: EV_M_LEFTOUTER_ROWLFT_handler \handler STANDARD_PIPEOUT ;
+//: EV_M_LOWMEMORY_handler        \handler STANDARD_PIPEOUT ;
 : EV_M_NEXTBUFFER_handler       \handler STANDARD_PIPEOUT ;
 : EV_D_SRTBUFFER_handler        \handler STANDARD_PIPEOUT ;
-: EV_M_STARTCRWRHT_handler      \handler STANDARD_PIPEOUT ;
 : EV_M_START_handler            \handler STANDARD_PIPEOUT ;
-: EV_M_STARTROWRHT_handler      \handler STANDARD_PIPEOUT ;
 : EV_M_TRIGGER_handler          \handler STANDARD_PIPEOUT ;
+
+: EV_X_CHILDEXIT_handler        \handler STANDARD_PIPEOUT ;
+: EV_X_EXIT_handler             \handler STANDARD_PIPEOUT ;
 
 /*----------------------------------------------------------------------------*/
 /*                       NON-STANDARD EVENT HANDLERS                          */
@@ -244,10 +254,25 @@
   [job] assert
   [task] assert
 
-  // ack the parent job task
-  [op].ackInvokingTask
+  // ack the job task
+  [op].ackJobTask
   
   false // calling op_loop exits
+;
+
+/*----------------------------------------------------------------------------*/
+/* default handler for EV_M_HARDABORT operand                                 */
+/*----------------------------------------------------------------------------*/
+: EV_M_HARDABORT_handler \handler
+
+  "EV_M_HARDABORT_handler" .verbose
+  //[op].opName@ "OP %v exiting got EV_M_HARDABORT" str.format .
+
+  PipeIn[].delete
+
+  LogicUnit[].cleanup
+
+  false
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -258,7 +283,7 @@
   //"EV_M_INVOKE_handler" .verbose
 
   PipeIn[].delete
-  
+
   Marker[].newStartMarker
   Marker[].pipeOut
 
@@ -281,6 +306,44 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* default handler for EV_M_LOWMEMORY operand                     (pipes out) */
+/*----------------------------------------------------------------------------*/
+: EV_M_LOWMEMORY_handler \handler
+
+  //"EV_M_LOWMEMORY_handler" .verbose
+
+  //[op].opName@ "TOGGLING TO ABNORMAL HANDLERS FOR OP %v" str.format .
+  "default_abnormalHandlers" FIND execute
+  "default_lowMemHandlers" FIND execute
+  //[op].opName@ "TOGGLED TO ABNORMAL HANDLERS FOR OP %v" str.format .
+
+
+  PipeIn[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* default handler for EV_M_NODELOSSABORT operand                             */
+/*----------------------------------------------------------------------------*/
+: EV_M_NODELOSSABORT_handler \handler
+
+  "EV_M_NODELOSSABORT_handler" .verbose
+  [op].opName@ [op].stageNm@ "OP %v:%v exiting got EV_M_NODELOSSABORT" str.format .
+
+  PipeIn[].delete
+
+  PipeIn[].drain
+
+  LogicUnit[].cleanup
+
+  // ack the job task
+  [op].ackJobTask
+
+  false
+;
+
+/*----------------------------------------------------------------------------*/
 /* default handler for EV_M_STARTED operand      (deletes pipein operand)     */
 /*----------------------------------------------------------------------------*/
 : EV_M_STARTED_handler \handler
@@ -297,12 +360,28 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* default handler for EV_M_TRIGGERED operand        (deletes pipein operand) */
+/*----------------------------------------------------------------------------*/
+: EV_M_TRIGGERED_handler \handler
+
+  //"EV_M_TRIGGERED_handler" .verbose
+
+  PipeIn[].delete
+
+  // an error if any other operator receives this operand
+  EC_PIPELINE_PROTOCOL_ERROR op__execErr
+
+  true // calling op_loop continues
+;
+
+/*----------------------------------------------------------------------------*/
 /*                       ABNORMAL EVENT HANDLERS                              */
 /*----------------------------------------------------------------------------*/
 : default_abnormalHandlers
 
-  find: ABNORMAL_PIPEIN_DELETE  locals| abnormalHandler |
-  find: STANDARD_PIPEOUT        locals| defaultHandler |
+  find: ABNORMAL_PIPEIN_DELETE      locals| abnormalHandler |
+  find: ABNORMAL_PIPEIN_DELETE_END  locals| abnormalHandlerEnd |
+  find: STANDARD_PIPEOUT            locals| defaultHandler |
 
   // ABNORMAL handlers (pipein delete) for DATA Operators
   abnormalHandler EV_D_BKTMAPGET        [op].handler!
@@ -310,10 +389,7 @@
   abnormalHandler EV_D_BUCKETMAP_dyn    [op].handler!
   abnormalHandler EV_D_CRWBUFFER        [op].handler!
   abnormalHandler EV_D_CSVBUFFER        [op].handler!
-  abnormalHandler EV_M_ENDCRWRHT        [op].handler!
-  abnormalHandler EV_M_ENDROWRHT        [op].handler!
   abnormalHandler EV_D_ENTBUFFER        [op].handler!
-  abnormalHandler EV_D_EXITOPERAND      [op].handler!
   abnormalHandler EV_D_GRID             [op].handler!
   abnormalHandler EV_D_INDEX            [op].handler!
   abnormalHandler EV_D_INDEXDEF         [op].handler!
@@ -327,31 +403,27 @@
   abnormalHandler EV_D_PROFILE          [op].handler!
   abnormalHandler EV_D_ROWBUFFER        [op].handler!
   abnormalHandler EV_D_SRTBUFFER        [op].handler!
-  abnormalHandler EV_M_STARTCRWRHT      [op].handler!
-  abnormalHandler EV_M_STARTROWRHT      [op].handler!
   abnormalHandler EV_D_STREAMDEF        [op].handler!
   abnormalHandler EV_D_STREAMDEFRHT     [op].handler!
   abnormalHandler EV_M_STREAMDEFRHT     [op].handler!
   abnormalHandler EV_D_STREAMSET        [op].handler!
   abnormalHandler EV_D_TABLE            [op].handler!
-  
+
+  //abnormalHandler  EV_X_CHILDEXIT        [op].handler!
+  abnormalHandler EV_X_EXIT             [op].handler!
+
   // DEFAULT handlers (pipein pipeout) for MARKERS
   defaultHandler EV_M_DATAPULSE         [op].handler!
   defaultHandler EV_M_DESTROY           [op].handler!
-  //defaultHandler EV_M_ENDCRWRHT         [op].handler!
-  //defaultHandler EV_M_ENDROWRHT         [op].handler!
   defaultHandler EV_M_EOS               [op].handler!
   defaultHandler EV_M_FINISHED          [op].handler!
   defaultHandler EV_M_FLUSH             [op].handler!
-  defaultHandler EV_M_LEFTOUTER_CRWLFT  [op].handler!
-  defaultHandler EV_M_LEFTOUTER_ROWLFT  [op].handler!
+  abnormalHandlerEnd    EV_M_HARDABORT  [op].handler!
+  defaultHandler EV_M_LOWMEMORY         [op].handler!
   defaultHandler EV_M_NEXTBUFFER        [op].handler!
-  defaultHandler EV_M_STARTCRWRHT       [op].handler!
   defaultHandler EV_M_START             [op].handler!
-  //defaultHandler EV_M_STARTCRWRHT       [op].handler!
-  //defaultHandler EV_M_STARTROWRHT       [op].handler!
   //defaultHandler EV_M_STREAMDEFRHT      [op].handler!
-  defaultHandler EV_M_TRIGGER           [op].handler!
+  //defaultHandler EV_M_TRIGGERED         [op].handler!
 
   //EV_M_CANCEL
   //EV_M_CANCELLING
@@ -370,8 +442,35 @@
   //EV_M_LEAVING
   //EV_M_LEFT
   //EV_M_STARTED
+  //EV_M_TRIGGERED
 ;
 
+/*----------------------------------------------------------------------------*/
+/*                 LOWMEMORY EVENT HANDLERS                                   */
+/*----------------------------------------------------------------------------*/
+: default_lowMemHandlers
+
+  //[op].opName@ "SETTING default_lowMemHandlers for OP %v" str.format .
+  find: ABNORMAL_PIPEIN_DELETE  locals| abnormalHandler |
+
+  abnormalHandler EV_I_COMMAND          [op].handler!
+  abnormalHandler EV_I_CALLPIPELINE     [op].handler!
+  abnormalHandler EV_I_COMPILEERRORS    [op].handler!
+  abnormalHandler EV_I_COUNT            [op].handler!
+  abnormalHandler EV_I_EXECERRORS       [op].handler!
+  abnormalHandler EV_I_FORKCOMMAND      [op].handler!
+  abnormalHandler EV_I_LOADRESULT       [op].handler!
+  abnormalHandler EV_I_LOCKSTATS        [op].handler!
+  abnormalHandler EV_I_NODEINFO         [op].handler!
+  abnormalHandler EV_I_PATH             [op].handler!
+  abnormalHandler EV_I_PROGRESSUNITS    [op].handler!
+  abnormalHandler EV_I_PROMPTOUT        [op].handler!
+  abnormalHandler EV_I_RETURNPIPELINE   [op].handler!
+  abnormalHandler EV_I_SEEKOFFSETS      [op].handler!
+  abnormalHandler EV_I_TOTALUNITS       [op].handler!
+
+  //[op].opName@ "DONE SETTING default_lowMemHandlers for OP %v" str.format .
+;
 
 /*----------------------------------------------------------------------------*/
 /*                       ABNORMAL EVENT HANDLERS                              */

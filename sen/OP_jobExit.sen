@@ -5,21 +5,32 @@
 " OP_jobExit.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* add reap activity here                                                     */
+/*----------------------------------------------------------------------------*/
+: reap_activity ( -- )
+
+  //false api::reapJobs
+
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for EV_M_FLUSH ...                                                 */
 /*----------------------------------------------------------------------------*/
+/*
 : jobExit_Flush \handler
 
   //"jobExit_Flush" .
   
   PipeIn[].delete
   
-  "__eventDemon" find dup if
-  word.object@ locals| pEventDemon |
+  //"__eventDemon" find dup if
+  //word.object@ locals| pEventDemon |
 
-      pEventDemon Tub[].pipeToJob
+  AM::DEMON::tEventDemonJobId@ locals| tEventDemonJobId |
 
+  tEventDemonJobId jobId::isUnknown not if
+    tEventDemonJobId Tub[].pipeToJob
   else
-
     discard
 
     // delete all buffers in the TUB
@@ -29,10 +40,12 @@
 
   true
 ;
+*/
 
 /*----------------------------------------------------------------------------*/
 /* handler for EV_D_JOB ...                                                   */
 /*----------------------------------------------------------------------------*/
+/*
 : jobExit_Job \handler
 
   0 locals| eError |
@@ -43,7 +56,7 @@
 
   "<job_report>" sysargs::tagSet@ tagSet.hasName not
   if
-    true pJob job(Id).reapable!
+    true pJob job::reapable!
     true
     exit
   then
@@ -52,7 +65,7 @@
   
   //pJob jobReport::reportJob to eError
   
-  true pJob job(Id).reapable!
+  true pJob job::reapable!
 
   eError EC_NONE == not if
     eError op__execErr
@@ -62,6 +75,7 @@
 
   true
 ;
+*/
 
 /*----------------------------------------------------------------------------*/
 /* initialise                                                                 */
@@ -69,6 +83,39 @@
 : jobExit_initialise
 
   Tub[].new
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_START ...                                                 */
+/*----------------------------------------------------------------------------*/
+: jobExit_StartMarker \handler
+
+   0 locals| pJobToBeDeleted |
+  "jobExit Demon Started" .boot
+
+  begin
+
+    // get exited job to be deleted
+    api::reapableJob@ to pJobToBeDeleted
+
+    begin
+        pJobToBeDeleted
+    while
+      // generate the job report here
+      //pJobToBeDeleted >str "JobReport: %v" str.format .
+
+      // delete the job
+      pJobToBeDeleted api::deleteJob
+
+      // next exited job to be deleted
+      api::reapableJob@ to pJobToBeDeleted
+    repeat
+
+    // sleep for a second
+    // [args].demonSleep thread::sleepSsec
+    1 thread::sleepSsec
+
+  again
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -80,8 +127,8 @@
 
   op__topology
 
-  find: jobExit_Flush  EV_M_FLUSH [op].handler!
-  find: jobExit_Job    EV_D_JOB   [op].handler!
+  //find: jobExit_Flush       EV_M_FLUSH [op].handler!
+  find: jobExit_StartMarker EV_M_START [op].handler!
 
   jobExit_initialise
   

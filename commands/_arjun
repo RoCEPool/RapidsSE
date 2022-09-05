@@ -24,7 +24,7 @@ create table datums (
 load datums "../DATA/Datums/datums.csv" ;
 
 //select * from datums;
-
+/*
 pipeline __pageout
   begin
     stage stageStart on origin :
@@ -47,3 +47,4 @@ pipeline __pageout
       | sink
       | first
   end ;
+*/

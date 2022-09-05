@@ -57,7 +57,7 @@ begin
     | next broadcast
 
   stage stageQ18_1_c on all partitions :
-    project "type integer as CUSTKEY $4 , type integer as ORDERKEY $1 , type timestamp as ORDERDATE $7 , type decimal as TOTALPRICE $6 , type decimal as SUM_QTY $2 "
+    project "type integer as CUSTKEY $4 , type integer as ORDERKEY $1 , type date as ORDERDATE $7 , type decimal as TOTALPRICE $6 , type decimal as SUM_QTY $2 "
     | combined 0
     | next
 
@@ -67,16 +67,16 @@ begin
     | next
 
   stage stageQ18_1_e on all partitions :
-    aggreg " groupBy type integer $1 , type integer $2 aggregates type integer as CUSTKEY $K1 , type integer as ORDERKEY $K2 , type timestamp as ORDERDATE $3 , type decimal as TOTALPRICE $4 , type decimal as SUM_QTY )  $5 sum "
+    aggreg " groupBy type integer $1 , type integer $2 aggregates type integer as CUSTKEY $K1 , type integer as ORDERKEY $K2 , type date as ORDERDATE $3 , type decimal as TOTALPRICE $4 , type decimal as SUM_QTY )  $5 sum "
     | combined 0
     | next
   stage stageQ18_1_f on all nodes :
-     aggreg " groupBy type integer $1 , type integer $2 aggregates type integer as CUSTKEY $K1 , type integer as ORDERKEY $K2 , type timestamp as ORDERDATE $3 , type decimal as TOTALPRICE $4 , type decimal as SUM_QTY )  $5 sum "
+     aggreg " groupBy type integer $1 , type integer $2 aggregates type integer as CUSTKEY $K1 , type integer as ORDERKEY $K2 , type date as ORDERDATE $3 , type decimal as TOTALPRICE $4 , type decimal as SUM_QTY )  $5 sum "
      | combined 0
      | next
 
   stage stageQ18_1_g on origin :
-    aggreg " groupBy type integer $1 , type integer $2 aggregates type integer as CUSTKEY $K1 , type integer as ORDERKEY $K2 , type timestamp as ORDERDATE $3 , type decimal as TOTALPRICE $4 , type decimal as SUM_QTY )  $5 sum "
+    aggreg " groupBy type integer $1 , type integer $2 aggregates type integer as CUSTKEY $K1 , type integer as ORDERKEY $K2 , type date as ORDERDATE $3 , type decimal as TOTALPRICE $4 , type decimal as SUM_QTY )  $5 sum "
     | limit 100
     | combined 0
     | stageLast

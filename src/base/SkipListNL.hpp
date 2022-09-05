@@ -69,8 +69,9 @@ namespace BASE
                       
                       std::function<void(SkipNode* pNode,
                                          int i_Level
-                                         )> vfPrintNode
-                      );
+                                         )> vfPrintNode,
+                      SkipNode* pSkipNode = nullptr
+                     );
 
   
     i8 nItems(void);
@@ -97,8 +98,9 @@ namespace BASE
                        
                        std::function<void(SkipNode* pNode,
                                           int i_Level
-                                          )> vfPrintNode
-                       );
+                                          )> vfPrintNode,
+                       bool bDeleteNode = true
+    );
 
     bool bValidate(std::function<bool(SkipNode* aLeftNode,
                                       SkipNode* aRightNode

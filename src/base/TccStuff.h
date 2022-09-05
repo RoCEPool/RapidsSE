@@ -265,7 +265,6 @@ struct SpaceUnit_T
 
 static const i8 C_HEADLINE_QUANTA  = C_BYTES_PER_WORD;
 static const i8 C_SPACEUNIT_QUANTA = 2 * C_BYTES_PER_WORD;
-static const i8 C_TAILLINE_QUANTA  = 2 * C_BYTES_PER_WORD;
 
 enum eSI // string inflate
 {
@@ -307,7 +306,7 @@ static const i8 C_HEADLINE_OFS_PERSPECTIVE = 1;
 static const i8 C_HEADLINE_DELETED = 127;
 
 static const i8 C_C_1B = 1;   // <C> 1B number of compressed bytes
-static const i8 C_L_1B = 1;   // <L> 1B string length in bytes
+//static const i8 C_L_1B = 1;   // <L> 1B string length in bytes
 static const i8 C_M_1B = 1;   // <M> 1B overflowed metacode
 static const i8 C_T_8B = 8;   // <T> 8B transaction perspective
 static const i8 C_U_1B = 1;   // <U> 1B over/tail line size in units
@@ -343,10 +342,10 @@ static const i8 C_NULL_1B = 1;// <NULL> '\0' 1B
   __iHigh = (__uCode >> 4); \
   __iLow  = (__uCode &  0x0F);
 
-#define STRx1(__uLow) (__uLow)            //   0B .. |1 * 16 =  16| ..  15B
-#define STRx2(__uLow) ( 16 + 2 * __uLow)  //  16B .. |2 * 16 =  32| ..  47B
-#define STRx4(__uLow) ( 48 + 4 * __uLow)  //  48B .. |4 * 16 =  64| .. 111B
-#define STRx8(__uLow) (112 + 8 * __uLow)  // 112B .. |8 * 16 = 128| .. 239B
+#define STRx1(__uLow) (__uLow)           //   0B .. |  0 + (15*1 =  15)| ..  15B
+#define STRx2(__uLow) ( 15 + 2 * __uLow) //  16B .. | 15 + (15*2 =  30)| ..  45B
+#define STRx4(__uLow) ( 45 + 4 * __uLow) //  46B .. | 45 + (15 4 =  60)| .. 105B
+#define STRx8(__uLow) (105 + 8 * __uLow) // 112B .. |105 + (15*8 = 120)| .. 225B
 
 #define TO_BOUNDARY(addr,nByteBoundary) \
   ( (void*)BITWISE_AND(addr,BITWISE_NOT((nByteBoundary - 1))) )
@@ -429,14 +428,14 @@ struct Combined_T
   void*   m_aRowSingleP;
   void*   m_aRowCellArrayP;
   char*   m_racStrAreaP;
-  char*   m_racStrAreaSavP;
+  char*   m_racStrAreaPSav;
 
   // project (agg)
   i8      m_iRowsProcessed;
   void*   m_aRowSingleAgg;
   void*   m_aRowCellArrayAgg;
   char*   m_racStrAreaAgg;
-  char*   m_racStrAreaSavAgg;
+  char*   m_racStrAreaAggSav;
 
   // ordered aggregates
   i8      m_iHasOrdAggRow;
@@ -491,8 +490,8 @@ void vEntWrk_print(void* pEntWrk, void* pIndexDef);
 
 void* aIndexTree_begin(void* pIndexTree, void** ppEntBuffer);
 void* aIndexTree_findEntry(void* aIndexTree, void* aKey);
-void* aIndexTree_insertEnt(void* aIndexDef, void* aEnt);
-void* aIndexTree_insertEntTop(void* aIndexTree, void* aEnt, void** aaEntBottom, i8 iTopCount);
+void* aIndexTree_insertEnt(void* aIndexDef, void* aEnt, i8* piErrorCode);
+void* aIndexTree_insertEntTop(void* aIndexTree, void* aEnt, void** aaEntBottom, i8 iTopCount, i8* piErrorCode);
 void* aIndexTree_positionGE(void* aIndexTree, void** aaEntBuffer, void* aKey);
 void* aIndexTree_positionGT(void* aIndexTree, void** aaEntBuffer, void* aKey);
 void *aIndexTree_positionLE(void* aIndexTree, void* aKey);
@@ -501,10 +500,10 @@ void *aIndexTree_positionLT(void* aIndexTree, void* aKey);
 void* aRowBuffer_GetCellArray(void* aRowBuffer, i8 iRow);
 void  vRowSingle_Print(void* pRowSingle);
 
-void* aPot_AllotRow(void* pPot, i8 iMixIn, char** aazStrArea);
+void* aPot_AllotRow(void* pPot, i8 iMixIn, char** aazStrArea, i8* piErrorCode);
 void  vPot_RowStrSize(void* pPot, i8 iMixin, i8 nRowStrSize);
 
-void* aTub_AllotRow(void* pTub, char** aazStrArea);
+void* aTub_AllotRow(void* pTub, char** aazStrArea, i8* piErrorCode);
 void  vTub_RowStrSize(void* pTub, i8 nRowStrSize);
 
 i8    StrLib_iLike2(char* azStr, char* azRegExp);

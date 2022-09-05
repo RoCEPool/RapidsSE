@@ -62,6 +62,17 @@ void ColumnOrdinal::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Represent the expression as types instead of names. Append to the buffer   */
+/*----------------------------------------------------------------------------*/
+void ColumnOrdinal::vDescribeAsTypes(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  sBuf.vConcat(xTypeId(_pQueryNode(pNode), pRootNode).szTypeName());
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns true if the given node is derived from the expr definition         */
 /*----------------------------------------------------------------------------*/
 b1 ColumnOrdinal::bIsOfType(PlanNode *pNode)

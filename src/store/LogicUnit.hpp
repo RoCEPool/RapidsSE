@@ -45,6 +45,7 @@
 #include "JobMetrics.hpp"
 #include "Vertex.hpp"
 #include "Deck.hpp"
+#include "Port.hpp"
 
 #include "eLH.h"
 #include "eXK.h"
@@ -145,6 +146,7 @@ namespace STORE
     REG<Operand,        CN_NONE          > m_xpPipein;
     REG<Pipeline,       CN_PIPELINE      > m_xpPipeline;
     REG<Operand,        CN_NONE          > m_xpPlanOperand;
+    REG<Port,           CN_PORT          > m_xpPort;
     REG<Pot,            CN_POT           > m_xpPot;
     REG<IntStack,       CN_INTSTACK      > m_xpPreExpStack;
     REG<PtnDef,         CN_PTNDEF        > m_xpPtnDef;
@@ -176,6 +178,7 @@ namespace STORE
     REG<Table,          CN_TABLE         > m_xpTable;
     REG<TablePtn,       CN_TABLEPTN      > m_xpTablePtn;
     REG<TagSet,         CN_TAGSET        > m_xpTagSet;
+    REG<Text,           CN_TEXT          > m_xpText;
     REG<Timer,          CN_TIMER         > m_xpTimer;
     REG<TinyC,          CN_TINYC         > m_xpTinyC;
     REG<ToKeyHshRow,    CN_TOKEYHSHROW   > m_xpToKeyHshRow;
@@ -205,7 +208,10 @@ namespace STORE
     i8   m_iCounter5;   // counter
     i8   m_iCounter6;   // counter
     i8   m_iCounter7;   // counter
-  
+
+    bool m_bRcvdChildExit;
+    bool m_bRcvdEnd;
+
     bool (*m_afFun0)(void*);
     bool (*m_afFun1)(void*);
     bool (*m_afFun2)(void*);

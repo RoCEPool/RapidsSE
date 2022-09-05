@@ -42,7 +42,7 @@ void Fragments::vAppendPreliminary(char *azStr) {
       "\n"
       "\n  #include \"tcclib.h\" // include libc header for TCC"
       "\n"
-      "\n  #include \"../src/base/BaseTypes_tcc.h\""
+      "\n  #include \"../src/primitives/BaseTypes_tcc.h\""
       "\n  #include \"../src/base/TccStuff.h\""
       "";
 
@@ -126,8 +126,8 @@ void Fragments::vAppendConcludingFunc0(char *azStr)
 
   char* azFrag = (char*)
       "\n"
-      //"\n   L_Return:"
-      //"\n     goto L_ReturnFinal;"
+      "\n   L_Return:"
+      "\n     goto L_ReturnFinal;"
       "\n"
       "\n   #include \"../src/store/vFLAT_InflateColumn.h\""
       "\n   #include \"../src/store/vFLAT_SkipColumn.h\""
@@ -149,8 +149,8 @@ void Fragments::vAppendConcludingFunc1(char *azStr)
 
   char* azFrag = (char*)
       "\n"
-      //"\n   L_Return:"
-      //"\n     goto L_ReturnFinal;"
+      "\n   L_Return:"
+      "\n     goto L_ReturnFinal;"
       "\n"
       "\n   #include \"../src/store/vFLAT_InflateColumn.h\""
       "\n   #include \"../src/store/vFLAT_SkipColumn.h\""
@@ -171,8 +171,8 @@ void Fragments::vAppendConcludingFunc2(char *azStr)
   _static_
 
   char* azFrag = (char*)
-      //"\n   L_Return:"
-      //"\n     goto L_ReturnFinal;"
+      "\n   L_Return:"
+      "\n     goto L_ReturnFinal;"
       "\n"
       "\n   #include \"../src/store/vFLAT_InflateColumn.h\""
       "\n   #include \"../src/store/vFLAT_SkipColumn.h\""
@@ -194,8 +194,8 @@ void Fragments::vAppendConcludingFunc3(char *azStr)
 
   char* azFrag = (char*)
       "\n"
-      //"\n   L_Return:"
-      //"\n     goto L_ReturnFinal;"
+      "\n   L_Return:"
+      "\n     goto L_ReturnFinal;"
       "\n   L_ReturnFinal:"
       "\n     return 1;"
       "\n  }"
@@ -278,6 +278,7 @@ void Fragments::vAppendLocals(char *azStr) {
       "\n    i8*   piColumn;"
       "\n    i8    iIndex;"
       "\n    i8    nSrcSize;"
+      "\n    i8    nDstSize;"
       "\n    i8    iOffset;"
       "\n    i8    iMixIn;"
       "\n    i8    iBufferJ;"
@@ -297,16 +298,23 @@ void Fragments::vAppendLocals(char *azStr) {
       "\n    union Bcd_T bcdArg1;"
       "\n    union Bcd_T bcdArg2;"
       "\n    union Bcd_T bcdArg3;"
+      "\n    union Bcd_T bcdReScale1;"
+      "\n    union Bcd_T bcdReScale2;"
+      "\n    union Bcd_T bcdRound;"
       "\n    i8    iaPow10[15];"
       "\n    i8    iScaleDiff;"
       "\n    union Dte_T xDte1;"
       "\n    union Dte_T xDte2;"
+      "\n    union Dte_T xDte3;"
       "\n    union Flt_T fltArg1;"
       "\n    union Flt_T fltArg2;"
+      "\n    union Flt_T fltArg3;"
       "\n    union Tsp_T xTsp1;"
       "\n    union Tsp_T xTsp2;"
+      "\n    union Tsp_T xTsp3;"
       "\n    union Tme_T xTme1;"
       "\n    union Tme_T xTme2;"
+      "\n    union Tme_T xTme3;"
       "\n    void* aIndexScanCrw;"
       "\n    void* aEntInserted;"
       "\n    void* aEntFound;"

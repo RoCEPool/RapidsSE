@@ -105,7 +105,7 @@ void Step::vStreamDefLftDelete(void)
 {
   ENTRY();
 
-  AM::vDeleteOperand(*m_pLogicUnit->m_xpStreamDefLft);
+  AM::vDeleteOperand(*m_pLogicUnit->m_xpStreamDefLft,nullptr);
   
   m_pLogicUnit->m_xpStreamDefLft = nullptr;
   
@@ -247,8 +247,6 @@ void Step::vStreamDefLftNewToCsv(void)
 void Step::vStreamDefLftParse(void)
 {
   ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   sSTMT sCmd;
   m_pDataStack->vPopStr(sCmd,__func__);
