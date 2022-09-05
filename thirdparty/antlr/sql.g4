@@ -456,27 +456,27 @@ nonReservedWord   :
                   | BIT | BITS | BLOCK | BLOOM | BOTH | BTREE | BY | BYTE | BYTES
                   | CATALOG | CHARS | COALESCE | CONCAT | CORRESPONDING | COUNT | CREATE
                   | CURRENT_CATALOG | CURRENT_SCHEMA | CURRENT_TIMESTAMP | CURRENT_USER
-                  | DATA | DATE | DAY | DAYS | DECODE | DELETE | DESC | DETAIL | DIGITS | DROP
+                  | DATA | DATE | DAYS | DECODE | DELETE | DESC | DETAIL | DIGITS | DROP
                   | ESCAPE | EXCEPT | EXPLAIN | EXTRACT
                   | FEDERATION | FORMAT
-                  | HASH | HASHKEY | HOUR | HOURS
+                  | HASH | HASHKEY | HOURS
                   | IFNULL | INDEX | INSERT | INTO | IS
                   | JOIN
                   | KEY
                   | LEFT | LOOP
-                  | MINUTE | MINUTES | MONOTONIC | MONTH | MONTHS
+                  | MINUTES | MONOTONIC | MONTHS
                   | NO | NODE | NULLIF
                   | OFFSET | OUTER | OVERLAY
                   | PARTITION | POSITION | PRETTY
                   | QUARTER| QUARTERS
                   | REFERENCE | RIGHT
-                  | SCHEMA | SECOND | SECONDS | SET | SKIPLIST | STAGE | STATS
+                  | SCHEMA | SECONDS | SET | SKIPLIST | STAGE | STATS
                   | STATISTICS |SUBSTR | SUBSTRING
                   | TABLE | TIME | TREE | TYPE
                   | UNION | UNIQUE | UPDATE | USING
                   | VALUE | VALUES | VARYING
                   | WEEK | WEEKS | WITH_NAMES
-                  | YEAR | YEARS
+                  | YEARS
                   | INTEGER | DECIMAL | FLOAT | TIMESTAMP | CHARACTER | CHAR | CHARS
                   | BOOLEAN | BINARY | VARBINARY
                   ;

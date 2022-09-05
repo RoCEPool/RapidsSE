@@ -2610,7 +2610,6 @@ public:
     antlr4::tree::TerminalNode *CURRENT_USER();
     antlr4::tree::TerminalNode *DATA();
     antlr4::tree::TerminalNode *DATE();
-    antlr4::tree::TerminalNode *DAY();
     antlr4::tree::TerminalNode *DAYS();
     antlr4::tree::TerminalNode *DECODE();
     antlr4::tree::TerminalNode *DELETE();
@@ -2626,7 +2625,6 @@ public:
     antlr4::tree::TerminalNode *FORMAT();
     antlr4::tree::TerminalNode *HASH();
     antlr4::tree::TerminalNode *HASHKEY();
-    antlr4::tree::TerminalNode *HOUR();
     antlr4::tree::TerminalNode *HOURS();
     antlr4::tree::TerminalNode *IFNULL();
     antlr4::tree::TerminalNode *INDEX();
@@ -2637,10 +2635,8 @@ public:
     antlr4::tree::TerminalNode *KEY();
     antlr4::tree::TerminalNode *LEFT();
     antlr4::tree::TerminalNode *LOOP();
-    antlr4::tree::TerminalNode *MINUTE();
     antlr4::tree::TerminalNode *MINUTES();
     antlr4::tree::TerminalNode *MONOTONIC();
-    antlr4::tree::TerminalNode *MONTH();
     antlr4::tree::TerminalNode *MONTHS();
     antlr4::tree::TerminalNode *NO();
     antlr4::tree::TerminalNode *NODE();
@@ -2656,7 +2652,6 @@ public:
     antlr4::tree::TerminalNode *REFERENCE();
     antlr4::tree::TerminalNode *RIGHT();
     antlr4::tree::TerminalNode *SCHEMA();
-    antlr4::tree::TerminalNode *SECOND();
     antlr4::tree::TerminalNode *SECONDS();
     antlr4::tree::TerminalNode *SET();
     antlr4::tree::TerminalNode *SKIPLIST();
@@ -2679,7 +2674,6 @@ public:
     antlr4::tree::TerminalNode *WEEK();
     antlr4::tree::TerminalNode *WEEKS();
     antlr4::tree::TerminalNode *WITH_NAMES();
-    antlr4::tree::TerminalNode *YEAR();
     antlr4::tree::TerminalNode *YEARS();
     antlr4::tree::TerminalNode *INTEGER();
     antlr4::tree::TerminalNode *DECIMAL();
