@@ -227,7 +227,12 @@ def start_instances(instance_type: str,
             last_error = e
 
         except botocore.exceptions.ClientError as e:
-            if e.response["Error"]["Code"] == "RequestLimitExceeded":
+            if e.response["Error"]["Code"] == "InsufficientInstanceCapacity":
+                # Save the exception and try the next subnet, just in case
+                last_error = e
+                continue
+
+            elif e.response["Error"]["Code"] == "RequestLimitExceeded":
                 retry_count += 1
 
                 if retry_count >= C_MAX_RETRIES:
