@@ -1,7 +1,7 @@
 /*============================================================================*/
 /* _arjun                                                                     */
 /*============================================================================*/
-
+/*
 create table datums (
   int_col0   INTEGER NOT NULL,
   int_col1   INTEGER,
@@ -22,7 +22,7 @@ create table datums (
 );
 
 load datums "../DATA/Datums/datums.csv" ;
-
+*/
 //select * from datums;
 /*
 pipeline __pageout
@@ -48,3 +48,9 @@ pipeline __pageout
       | first
   end ;
 */
+
+create table cast_time(a date,b time,c timestamp);
+load cast_time "../DATA/test.csv";
+select cast(c,time) from cast_time;
+select c, cast(c,time) from cast_time;
+select c, cast(c, date) from cast_time;
