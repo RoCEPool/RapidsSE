@@ -95,7 +95,6 @@
         szDstStz = szAreaTo;                                                \
         strncpy(szDstStz, (char*)iArg2, nSrcSize);                          \
         iArgTo =  (i8)szDstStz;                                             \
-        printf("COPYING: %p %s\n", szDstStz, szDstStz);                     \
         szAreaTo += nSrcSize + 1;                                           \
     }                                                                       \
   }

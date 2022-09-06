@@ -209,6 +209,23 @@
 }
 
 
+#define _FLT_TOVCH(iErrorCode, szStrArea)                             \
+{                                                                     \
+  fltArg1.m_iAsI8 = *(--paW);                                         \
+  if (iErrorCode != EC_NONE ||                                        \
+    fltArg1.m_iAsI8 == C_DATUM_NULL) {                                \
+    *paW++ = C_DATUM_NULL;                                            \
+  }                                                                   \
+  else {                                                              \
+    sprintf(szStrArea, "%.9e", fltArg1.m_dFlt);                       \
+    *paW++ = (i8)szStrArea;                                           \
+    szStrArea += strlen(szStrArea) + 1;                               \
+  }                                                                   \
+}
+
+/*
+ * Does not take care of min/max flt to varchar
+ *
 // how many decimal places , 10?
 //WARNING do we need to length of string?
 
@@ -258,6 +275,7 @@
     szStrArea += strlen(szStrArea) + 1;                               \
   }                                                                   \
 }
+*/
 
 // varchar TO FLT
 #define _VCH_TOFLT(iErrorCode)                                        \
