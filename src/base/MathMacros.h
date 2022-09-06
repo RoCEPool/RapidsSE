@@ -211,19 +211,8 @@
       *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
-      bcdArg1.m_iMantissa = 0;                                             \
-      bcdArg1.m_iScale = bcdArg2.m_iScale;                                 \
-      bcdArg1.m_iMantissa = bcdArg1.m_iMantissa - bcdArg2.m_iMantissa;     \
-      eErrorCode = _OF_BCDSUB;                                             \
-      if(eErrorCode != EC_NONE)                                            \
-      {                                                                    \
-        *paW++ = C_DATUM_NULL;                                             \
-      }                                                                    \
-      else                                                                 \
-      {                                                                    \
-        bcdArg2.m_iMantissa = - bcdArg2.m_iMantissa;                       \
-        *paW++ = bcdArg2.m_iAsI8;                                          \
-      }                                                                    \
+      bcdArg2.m_iMantissa = - bcdArg2.m_iMantissa;                         \
+      *paW++ = bcdArg2.m_iAsI8;                                            \
     }                                                                      \
   }
 
