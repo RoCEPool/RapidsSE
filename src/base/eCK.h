@@ -10,6 +10,7 @@ enum eCK // card kind
   /* */ CK_AGGELIST,
   /* */ CK_AGGLEVEL,
   /* */ CK_AGGREG,
+  /* */ CK_AGGREGATES,
   /* */ CK_AS,
 
   /* */ CK_BOARD,
@@ -91,6 +92,7 @@ static Stz* aCK[]
   /* */ "CK_AGGELIST"_Stz,     // CK_AGGELIST
   /* */ "CK_AGGLEVEL"_Stz,     // CK_AGGLEVEL
   /* */ "CK_AGGREG"_Stz,       // CK_AGGREG
+  /* */ "CK_AGGREGATES"_Stz,   // CK_AGGREGATES
   /* */ "CK_AS"_Stz,           // CK_AS
   
   /* */ "CK_BOARD"_Stz,        // CK_BOARD

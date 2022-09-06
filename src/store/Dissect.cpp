@@ -774,6 +774,8 @@ Card_Expr* Dissect::pExpr_c(Card_RpnTerms* pCard_RpnTerms)
   // TYPE <type>
   Card_Term* pCard_Term_popped = pCard_RpnTerms->pPopTerm();
   eTE eTermEval = pCard_Term_popped->eTermEval();
+  Stz* szTerm = pCard_Term_popped->szTerm();
+
   RASSERT(TE_TYPE == eTermEval);
   delete pCard_Term_popped;
   pCard_Term_popped = nullptr;
