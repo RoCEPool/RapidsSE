@@ -387,14 +387,18 @@
       *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
+      time_t iSecondsSincePosixEpoch = time(0);                            \
+      struct tm* aLocalDateTime = localtime(&iSecondsSincePosixEpoch);     \
+                                                                           \
+      xTsp1.m_uYearDelta = aLocalDateTime->tm_year;                        \
+      xTsp1.m_uMonth = aLocalDateTime->tm_mon + 1;                         \
+      xTsp1.m_uDay = aLocalDateTime->tm_mday;                              \
+                                                                           \
       xTsp1.m_uMicro = xTme1.m_uMicro;                                     \
       xTsp1.m_uSecond = xTme1.m_uSecond;                                   \
       xTsp1.m_uMinute = xTme1.m_uMinute;                                   \
       xTsp1.m_uHour = xTme1.m_uHour;                                       \
                                                                            \
-      xTsp1.m_uDay = 1;                                                    \
-      xTsp1.m_uMonth = 1;                                                  \
-      xTsp1.m_uYearDelta = 0;                                              \
       *paW++ = xTsp1.m_iAsI8;                                              \
     }                                                                      \
   }
