@@ -771,6 +771,8 @@ Card_Expr* Dissect::pExpr_c(Card_RpnTerms* pCard_RpnTerms)
 
   Card_Expr* pCard_Expr = new Card_Expr;
 
+  L_TYPE:
+
   // TYPE <type>
   Card_Term* pCard_Term_popped = pCard_RpnTerms->pPopTerm();
   eTE eTermEval = pCard_Term_popped->eTermEval();
@@ -819,7 +821,22 @@ Card_Expr* Dissect::pExpr_c(Card_RpnTerms* pCard_RpnTerms)
     Card_Direction* pCard_SortDirn = pDirection(pCard_RpnTerms);
     pCard_Expr->vAppend(pCard_SortDirn);
   }
-    
+
+
+  pCard_Term_head = pCard_RpnTerms->pHead();
+  if (pCard_Term_head
+      && pCard_Term_head->bIsSame("AGGREGATES"_Stz)) {
+
+    Card_Aggregates* pCard_Aggregates = new Card_Aggregates;
+    pCard_Expr->vAppend(pCard_Aggregates);
+
+    pCard_Term_popped = pCard_RpnTerms->pPopTerm();
+    delete pCard_Term_popped;
+
+    //HACK
+    goto L_TYPE;
+  }
+
   return pCard_Expr;
 }
 
@@ -877,7 +894,8 @@ Card_ExprCalc* Dissect::pExprCalc(Card_RpnTerms* pCard_RpnTerms)
     //  continue;
     
     if (
-           pCard_Term_popped->bIsSame("AS"_Stz)
+           pCard_Term_popped->bIsSame("AGGREGATES"_Stz)
+        || pCard_Term_popped->bIsSame("AS"_Stz)
         || pCard_Term_popped->bIsSame("ASC"_Stz)
         || pCard_Term_popped->bIsSame("DESC"_Stz)
         || pCard_Term_popped->bIsSame("GROUPBY"_Stz)

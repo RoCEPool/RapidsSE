@@ -12,13 +12,13 @@ __pCastFunction_Card(STORE,Card_Aggregates,CK_AGGREGATES)
 __aNewFunction(Card_Aggregates,CN_CARD)
 __vDeleteFunction(Card_Aggregates,CN_CARD)
 
-__bIsCard(STORE,Card_Aggregates,CK_AGGREG)
+__bIsCard(STORE,Card_Aggregates,CK_AGGREGATES)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Aggregates::Card_Aggregates(void)
-: Card_Project(CK_AGGREG)
+: Card_Project(CK_AGGREGATES)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   

@@ -13,6 +13,7 @@
 #include "Card_AggElist.hpp"
 #include "Card_AggLevel.hpp"
 #include "Card_Aggreg.hpp"
+#include "Card_Aggregates.hpp"
 #include "Card_As.hpp"
 
 #include "Card_CandIndex.hpp"

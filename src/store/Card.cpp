@@ -302,6 +302,7 @@ eGC Card::eToECatg(eCK eCard)
     case CK_AGGELIST:                    return GC_SUB;
     case CK_AGGLEVEL:                    return GC_SUB;
     case CK_AGGREG:     return GC_MAIN;
+    case CK_AGGREGATES:                  return GC_SUB;
     case CK_AS:                          return GC_SUB;
                                    
     case CK_BOARD:                                      return GC_OTHER;
@@ -342,7 +343,7 @@ eGC Card::eToECatg(eCK eCard)
     case CK_ON:                          return GC_SUB;
     case CK_OPTION:                      return GC_SUB;
     case CK_ORDAGG:     return GC_MAIN;
-    case CK_OBYELIST:                  return GC_SUB;
+    case CK_OBYELIST:                    return GC_SUB;
               
     case CK_PREDAND:                     return GC_SUB;
     case CK_PREDCMP:                     return GC_SUB;

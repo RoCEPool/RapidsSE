@@ -174,6 +174,7 @@ static Stz* aCK_short[]
   /* */ "aggElist"_Stz,        // CK_AGGELIST
   /* */ "aggLevel"_Stz,        // CK_AGGLEVEL
   /* */ "aggreg"_Stz,          // CK_AGGREG
+  /* */ "aggregates"_Stz,      // CK_AGGREGATES
   /* */ "as"_Stz,              // CK_AS
   
   /* */ "board"_Stz,           // CK_BOARD
@@ -254,7 +255,8 @@ static Stz* aCK_op[]
     
   /* */ "(none)"_Stz,          // CK_AGGELIST
   /* */ "(none)"_Stz,          // CK_AGGLEVEL
-  /* */ "aggreg   "_Stz,     // CK_AGGREG
+  /* */ "aggreg   "_Stz,       // CK_AGGREG
+  /* */ "(none)"_Stz,          // CK_AGGREGATES
   /* */ "(none)"_Stz,          // CK_AS
 
   /* */ "(none)"_Stz,          // CK_BOARD

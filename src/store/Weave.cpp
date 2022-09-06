@@ -791,6 +791,10 @@ void Weave::vExpr(Stz* szRpnExpr, Card_Expr* pCard_Expr)
     
     switch (eCard) {
 
+      case CK_AGGREGATES:
+        vAggregates(szRpnExpr, _pCard_Aggregates(pCard));
+        break;
+
       case CK_AS:
         vAs(szRpnExpr, _pCard_As(pCard));
         break;
@@ -947,6 +951,16 @@ void Weave::vPredCmp(Stz* szRpnExpr, Card_PredCmp* pCard_PredCmp)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* produce <expr> for pCard_Aaggregates                                       */
+/*----------------------------------------------------------------------------*/
+void Weave::vAggregates(Stz* szRpnExpr, Card_Aggregates* pCard_Aggregates)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
+
+  szRpnExpr->vCatSprint(" aggregates"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
 /* produce <expr> for pCard_As                                                */
 /*----------------------------------------------------------------------------*/
 void Weave::vAs(Stz* szRpnExpr, Card_As* pCard_As)
@@ -973,7 +987,7 @@ void Weave::vType(Stz* szRpnExpr, Card_Type* pCard_Type)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
-  szRpnExpr->vCatSprint("type %s"_Stz,pCard_Type->szType());
+  szRpnExpr->vCatSprint(" type %s"_Stz,pCard_Type->szType());
 }
 
 /*----------------------------------------------------------------------------*/
