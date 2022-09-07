@@ -312,9 +312,9 @@ public:
 
     virtual antlrcpp::Any visitIntervalLiteral(sqlParser::IntervalLiteralContext *context) = 0;
 
-    virtual antlrcpp::Any visitSql92CalendarInterval(sqlParser::Sql92CalendarIntervalContext *context) = 0;
+    virtual antlrcpp::Any visitYearMonthInterval(sqlParser::YearMonthIntervalContext *context) = 0;
 
-    virtual antlrcpp::Any visitSql92TimeInterval(sqlParser::Sql92TimeIntervalContext *context) = 0;
+    virtual antlrcpp::Any visitDayTimeInterval(sqlParser::DayTimeIntervalContext *context) = 0;
 
     virtual antlrcpp::Any visitNonReservedWord(sqlParser::NonReservedWordContext *context) = 0;
 

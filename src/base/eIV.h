@@ -49,6 +49,29 @@ static Stz* aIV[]
     /* 18 */ "ENUMS"_Stz
 };
 
+static Stz* aIV_field[]
+{
+    /* IV_NONE=0                      */ ""_Stz,
+    /* IV_SUBCATEGORY_YEARMONTH_START */ ""_Stz,
+    /* IV_YEAR                        */ "year"_Stz,
+    /* IV_MONTH                       */ "month"_Stz,
+    /* IV_YEAR_TO_MONTH               */ "year to month"_Stz,
+    /* IV_SUBCATEGORY_YEARMONTH_END   */ ""_Stz,
+    /* IV_SUBCATEGORY_DAYTIME_START   */ ""_Stz,
+    /* IV_DAY                         */ "day"_Stz,
+    /* IV_HOUR                        */ "hour"_Stz,
+    /* IV_MINUTE                      */ "minute"_Stz,
+    /* IV_SECOND                      */ "second"_Stz,
+    /* IV_DAY_TO_HOUR                 */ "day to hour"_Stz,
+    /* IV_DAY_TO_MINUTE               */ "day to minute"_Stz,
+    /* IV_DAY_TO_SECOND               */ "day to second"_Stz,
+    /* IV_HOUR_TO_MINUTE              */ "hour to minute"_Stz,
+    /* IV_HOUR_TO_SECOND              */ "hour to second"_Stz,
+    /* IV_MINUTE_TO_SECOND            */ "minute to second"_Stz,
+    /* IV_SUBCATEGORY_DAYTIME_END     */ ""_Stz,
+    /* IV_ENUMS                       */ ""_Stz
+};
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

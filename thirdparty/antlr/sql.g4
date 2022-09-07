@@ -424,11 +424,11 @@ dateLiteral       : DATE str = stringLiteral ;
 timeLiteral       : TIME str = stringLiteral ;
 timestampLiteral  : TIMESTAMP stringLiteral ;
 stringLiteral     : STRING_LITERAL ;
-intervalLiteral   : ( sql92CalendarInterval | sql92TimeInterval /* | looseInterval */ ) ;
+intervalLiteral   : ( yearMonthInterval | dayTimeInterval /* | looseInterval */ ) ;
 
 // looseInterval     : INTERVAL str=expr ;
 
-sql92CalendarInterval :
+yearMonthInterval :
                   INTERVAL  ('+' | neg='-')? stringLiteral
                   (
                       ( year=YEAR   ('(' precision ')')? )
@@ -436,7 +436,7 @@ sql92CalendarInterval :
                     | ( month=MONTH ('(' precision ')')? )
                   ) ;
 
-sql92TimeInterval :
+dayTimeInterval   :
                   INTERVAL  ('+' | neg='-')? stringLiteral
                   (
                       ( day=DAY     ('(' precision ')')? )

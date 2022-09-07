@@ -122,8 +122,8 @@ b1 Tsp::bIsValid(i8 iYear, i8 iMonth, i8 iDay, i8 iHour, i8 iMin, i8 iSec, i8 iM
 /*----------------------------------------------------------------------------*/
 Ivl::Ivl(eIV eIvlType)
 {
+  T.m_iAsI8 = 0;
   T.m_xIvl.m_eType = eIvlType;
-  vSetZero();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -157,7 +157,7 @@ void Ivl::vSetMax()
   T.m_xIvl.m_iSpare = 0;
 
   switch(T.m_xIvl.m_eType)    {
-    case IV_YEAR:             { T.m_xIvl.u.m_xIvlYr.m_uMonths      = 72057594037927935LL; break; } // 2^56-1
+    case IV_YEAR:             { T.m_xIvl.u.m_xIvlYr.m_uYears       = 72057594037927935LL; break; } // 2^56-1
 
     case IV_MONTH:            { T.m_xIvl.u.m_xIvlMon.m_uMonths     = 72057594037927935LL; break; } // 2^56-1
 
@@ -215,7 +215,7 @@ void Ivl::vSetZero()
   T.m_xIvl.m_iSpare = 0;
 
   switch(T.m_xIvl.m_eType)    {
-    case IV_YEAR:             { T.m_xIvl.u.m_xIvlYr.m_uMonths      = 0; break; }
+    case IV_YEAR:             { T.m_xIvl.u.m_xIvlYr.m_uYears       = 0; break; }
 
     case IV_MONTH:            { T.m_xIvl.u.m_xIvlMon.m_uMonths     = 0; break; }
 

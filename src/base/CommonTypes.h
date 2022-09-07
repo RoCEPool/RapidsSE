@@ -36,12 +36,40 @@ static const u8 C_YEAR_RANGE = 255;
 static const u8 C_YEAR_MAX   = C_YEAR_BASE + C_YEAR_RANGE;
 static const u8 C_YEAR_MIN   = C_YEAR_BASE;
 
+static const u8 C_TSP_USEC_MIN = 0;
+static const u8 C_TSP_USEC_MAX = 999999;
+
+// Intervals
 static const u8 C_IVL_SEC_MAX    = 999999999;
 static const u8 C_IVL_USEC_MAX   = 999999;
 static const u8 C_IVL_USEC_SHIFT = 1000000;
 
-static const u8 C_TSP_USEC_MIN = 0;
-static const u8 C_TSP_USEC_MAX = 999999;
+static const u8 C_IVL_YEAR_MAX    = 72057594037927935; // 0..2^56 -1
+static const u8 C_IVL_MONTH_MAX   = 72057594037927935; // 0..2^56 -1
+static const u8 C_IVL_DAY_MAX     = 72057594037927935; // 0..2^56 -1
+static const u8 C_IVL_HOUR_MAX    = 72057594037927935; // 0..2^56 -1
+static const u8 C_IVL_MINUTE_MAX     = 72057594037927935; // 0..2^56 -1
+static const u8 C_IVL_SEC_SEC_MAX = 68719476735;       // 0..2^36 -1
+
+static const u8 C_IVL_YEARMON_MONTH_MAX = 72057594037927935; // 0..2^56 -1
+
+static const u8 C_IVL_DAYSEC_DAY_MAX = 4095; // 0..2^12 -1
+static const u8 C_IVL_DAYSEC_MIN_MAX = 4095; // 0..2^12 -1
+static const u8 C_IVL_DAYSEC_SEC_MAX = 4095; // 0..2^12 -1
+
+static const u8 C_IVL_DAYMIN_DAY_MAX = 268435455; // 0..2^28 -1
+static const u8 C_IVL_DAYMIN_MIN_MAX = 268435455; // 0..2^28 -1
+
+static const u8 C_IVL_DAYHOUR_DAY_MAX = 268435455; // 0..2^28 -1
+static const u8 C_IVL_DAYHOUR_MIN_MAX = 268435455; // 0..2^28 -1
+
+static const u8 C_IVL_HOURSEC_DAY_MAX = 262143; // 0..2^18 -1
+static const u8 C_IVL_HOURSEC_MIN_MAX = 262143; // 0..2^18 -1
+
+static const u8 C_IVL_HOURMIN_MIN_MAX = 72057594037927935; // 0..2^56 -1
+
+static const u8 C_IVL_MINSEC_DAY_MAX = 262143; // 0..2^18 -1
+static const u8 C_IVL_MINSEC_MIN_MAX = 262143; // 0..2^18 -1
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // bcd / decimal

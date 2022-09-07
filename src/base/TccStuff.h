@@ -82,8 +82,10 @@ union Int_T {
 // will need to expand this to a 16 byte field in good time.
 //
 // We don't necessarily store every field. That is, some fields are normalised
-// down into a lower field. e.g. hours should be normalised into minutes and
-// years should be normalised into months.
+// down into a lower field. e.g. in a multi-field interval (e.g. year-month) hours
+// should be normalised into minutes and years should be normalised into months.
+//
+// Single field intervals (e.g. YEAR) store the value in its specified form.
 //
 // However there are also fields that we cannot normalised. e.g
 // We can't normalise minutes into seconds because there may be between 58 and 62
@@ -91,7 +93,7 @@ union Int_T {
 // into hours because there could be 23-25 hours in a day (thanks to daylight
 // savings time). We also cannot normalise months into days for obvious reasons.
 //
-// Therefore:
+// Therefore, in a multi-field interval:
 //   - Don't store hours; instead store them as minutes.
 //     (The only exception here is the IvalHours structure that only represents hours)
 //   - Don't store years; instead store them as months
@@ -116,7 +118,7 @@ union Ivl_T {
 
       // INTERVAL YEAR
       struct __attribute__((__packed__)) {
-        u8 m_uMonths        : 56; // 0..7.2E16
+        u8 m_uYears        : 56; // 0..7.2E16
       } m_xIvlYr;
 
       // INTERVAL MONTH

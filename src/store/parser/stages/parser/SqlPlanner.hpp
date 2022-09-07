@@ -99,6 +99,8 @@ namespace Parser
     antlrcpp::Any visitColumnRef(sqlParser::ColumnRefContext* pCtx)               override;
     antlrcpp::Any visitColumnWildcard(sqlParser::ColumnWildcardContext* pCtx)     override;
     antlrcpp::Any visitLiteral(sqlParser::LiteralContext* pCtx)                   override;
+    antlrcpp::Any visitYearMonthInterval(sqlParser::YearMonthIntervalContext* pCtx) override;
+    antlrcpp::Any visitDayTimeInterval(sqlParser::DayTimeIntervalContext* pCtx)   override;
     antlrcpp::Any visitUnaryOp(sqlParser::UnaryOpContext *pCtx)                   override;
     antlrcpp::Any visitBinaryOp(sqlParser::BinaryOpContext *pCtx)                 override;
     antlrcpp::Any visitLogicOp(sqlParser::LogicOpContext *pCtx)                   override;
@@ -160,29 +162,38 @@ namespace Parser
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   private:
-    Text* pCleanId(sqlParser::IdentifierContext* pCtx);
-    Text* pCleanString(sqlParser::StringLiteralContext* pCtx);
-    Text* pCleanString(antlr4::Token* pToken);
-    void  vCleanString(sqlParser::StringLiteralContext* pCtx, s256& sBuf);
-    void  vCleanString(sqlParser::IdentifierContext* pCtx, s256& sBuf);
-    void  vCleanString(antlr4::Token* pToken, s256& sBuf);
-    void  vCleanString(std::string& sStr, s256& sBuf);
-    i8    iCleanInt(sqlParser::SignedIntegerLiteralContext* pCtx);
-    i8    iCleanInt(sqlParser::IntegerLiteralContext* pCtx);
-    i8    iCleanInt(antlr4::Token* pToken);
-    i8    iCleanInt(std::string& sStr);
-    d8    dCleanFloat(sqlParser::SignedFloatLiteralContext* pCtx);
-    d8    dCleanFloat(sqlParser::FloatLiteralContext* pCtx);
-    Bcd   xCleanDecimal(sqlParser::DecimalLiteralContext* pCtx);
-    Bcd   xCleanDecimal(sqlParser::SignedDecimalLiteralContext* pCtx);
-    Bcd   xCleanDecimal(Stz* szStr, i8 iLine, i8 iColumn);
-    Dte   xCleanDate(sqlParser::StringLiteralContext* pCtx);
-    Tme   xCleanTime(sqlParser::StringLiteralContext* pCtx);
-    Tsp   xCleanTimestamp(sqlParser::StringLiteralContext* pCtx);
-//  Ivl   xCleanInterval(sqlParser::StringLiteralContext* pCtx);
-    eJT   eExtractJoinType(sqlParser::JoinTypeContext* pCtx);
-    eJT   eExtractJoinType(sqlParser::ExtendedJoinTypeContext* pCtx);
-    eCT   eExtractDataType(sqlParser::DataTypeContext* pCtx);
+    static Text* pCleanId(sqlParser::IdentifierContext* pCtx);
+    static Text* pCleanString(sqlParser::StringLiteralContext* pCtx);
+    static Text* pCleanString(antlr4::Token* pToken);
+    static void  vCleanString(sqlParser::StringLiteralContext* pCtx, s256& sBuf);
+    static void  vCleanString(sqlParser::IdentifierContext* pCtx, s256& sBuf);
+    static void  vCleanString(antlr4::Token* pToken, s256& sBuf);
+    static void  vCleanString(std::string& sStr, s256& sBuf);
+    static i8    iCleanInt(sqlParser::SignedIntegerLiteralContext* pCtx);
+    static i8    iCleanInt(sqlParser::IntegerLiteralContext* pCtx);
+    static i8    iCleanInt(antlr4::Token* pToken);
+    static i8    iCleanInt(std::string& sStr);
+    static d8    dCleanFloat(sqlParser::SignedFloatLiteralContext* pCtx);
+    static d8    dCleanFloat(sqlParser::FloatLiteralContext* pCtx);
+    static Bcd   xCleanDecimal(sqlParser::DecimalLiteralContext* pCtx);
+    static Bcd   xCleanDecimal(sqlParser::SignedDecimalLiteralContext* pCtx);
+    static Bcd   xCleanDecimal(Stz* szStr, i8 iLine, i8 iColumn);
+    static Dte   xCleanDate(sqlParser::StringLiteralContext* pCtx);
+    static Tme   xCleanTime(sqlParser::StringLiteralContext* pCtx);
+    static Tsp   xCleanTimestamp(sqlParser::StringLiteralContext* pCtx);
+    static Ivl   xCleanInterval(sqlParser::StringLiteralContext* pCtx, eIV eIvlType);
+    static Ivl   xCleanSingleFieldInterval(Stz* szVal, eIV eIvlType, sqlParser::StringLiteralContext *pCtx);
+    static Ivl   xCleanSecondInterval(Stz* szVal, sqlParser::StringLiteralContext *pCtx);
+    static Ivl   xCleanYearMonthInterval(Stz* szVal, sqlParser::StringLiteralContext *pCtx);
+    static Ivl   xCleanDayHourInterval(Stz* szVal, sqlParser::StringLiteralContext *pCtx);
+    static Ivl   xCleanDayMinuteInterval(Stz* szVal, sqlParser::StringLiteralContext *pCtx);
+    static Ivl   xCleanDaySecondInterval(Stz* szVal, sqlParser::StringLiteralContext *pCtx);
+    static Ivl   xCleanHourMinuteInterval(Stz* szVal, sqlParser::StringLiteralContext *pCtx);
+    static Ivl   xCleanHourSecondInterval(Stz* szVal, sqlParser::StringLiteralContext *pCtx);
+    static Ivl   xCleanMinuteSecondInterval(Stz* szVal, sqlParser::StringLiteralContext *pCtx);
+    static eJT   eExtractJoinType(sqlParser::JoinTypeContext* pCtx);
+    static eJT   eExtractJoinType(sqlParser::ExtendedJoinTypeContext* pCtx);
+    static eCT   eExtractDataType(sqlParser::DataTypeContext* pCtx);
 
     void  vGenerateSubqueryName(s256& sBuf);
 

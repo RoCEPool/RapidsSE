@@ -83,7 +83,7 @@ public:
     RuleSignedIntegerLiteral = 96, RuleDecimalLiteral = 97, RuleSignedDecimalLiteral = 98, 
     RuleFloatLiteral = 99, RuleSignedFloatLiteral = 100, RuleDateLiteral = 101, 
     RuleTimeLiteral = 102, RuleTimestampLiteral = 103, RuleStringLiteral = 104, 
-    RuleIntervalLiteral = 105, RuleSql92CalendarInterval = 106, RuleSql92TimeInterval = 107, 
+    RuleIntervalLiteral = 105, RuleYearMonthInterval = 106, RuleDayTimeInterval = 107, 
     RuleNonReservedWord = 108
   };
 
@@ -203,8 +203,8 @@ public:
   class TimestampLiteralContext;
   class StringLiteralContext;
   class IntervalLiteralContext;
-  class Sql92CalendarIntervalContext;
-  class Sql92TimeIntervalContext;
+  class YearMonthIntervalContext;
+  class DayTimeIntervalContext;
   class NonReservedWordContext; 
 
   class  StatementContext : public antlr4::ParserRuleContext {
@@ -2527,8 +2527,8 @@ public:
   public:
     IntervalLiteralContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    Sql92CalendarIntervalContext *sql92CalendarInterval();
-    Sql92TimeIntervalContext *sql92TimeInterval();
+    YearMonthIntervalContext *yearMonthInterval();
+    DayTimeIntervalContext *dayTimeInterval();
 
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -2537,11 +2537,12 @@ public:
 
   IntervalLiteralContext* intervalLiteral();
 
-  class  Sql92CalendarIntervalContext : public antlr4::ParserRuleContext {
+  class  YearMonthIntervalContext : public antlr4::ParserRuleContext {
   public:
+    antlr4::Token *neg = nullptr;;
     antlr4::Token *year = nullptr;;
     antlr4::Token *month = nullptr;;
-    Sql92CalendarIntervalContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    YearMonthIntervalContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *INTERVAL();
     StringLiteralContext *stringLiteral();
@@ -2555,15 +2556,16 @@ public:
    
   };
 
-  Sql92CalendarIntervalContext* sql92CalendarInterval();
+  YearMonthIntervalContext* yearMonthInterval();
 
-  class  Sql92TimeIntervalContext : public antlr4::ParserRuleContext {
+  class  DayTimeIntervalContext : public antlr4::ParserRuleContext {
   public:
+    antlr4::Token *neg = nullptr;;
     antlr4::Token *day = nullptr;;
     antlr4::Token *hour = nullptr;;
     antlr4::Token *min = nullptr;;
     antlr4::Token *sec = nullptr;;
-    Sql92TimeIntervalContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    DayTimeIntervalContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *INTERVAL();
     StringLiteralContext *stringLiteral();
@@ -2580,7 +2582,7 @@ public:
    
   };
 
-  Sql92TimeIntervalContext* sql92TimeInterval();
+  DayTimeIntervalContext* dayTimeInterval();
 
   class  NonReservedWordContext : public antlr4::ParserRuleContext {
   public:

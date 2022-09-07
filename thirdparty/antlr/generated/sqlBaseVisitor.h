@@ -601,11 +601,11 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitSql92CalendarInterval(sqlParser::Sql92CalendarIntervalContext *ctx) override {
+  virtual antlrcpp::Any visitYearMonthInterval(sqlParser::YearMonthIntervalContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitSql92TimeInterval(sqlParser::Sql92TimeIntervalContext *ctx) override {
+  virtual antlrcpp::Any visitDayTimeInterval(sqlParser::DayTimeIntervalContext *ctx) override {
     return visitChildren(ctx);
   }
 

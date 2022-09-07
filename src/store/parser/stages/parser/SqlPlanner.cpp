@@ -1894,18 +1894,95 @@ antlrcpp::Any SqlPlanner::visitLiteral(sqlParser::LiteralContext* pCtx)
     pLiteral = TimestampLiteral::pCreate(xVal);
 
   } else if (pCtx->intervalLiteral()) {
-    __NOT_IMPL("<interval literal>")
+    pLiteral = nullptr;
+
+    // This is handled in visitYearMonthInterval and visitDayTimeInterval
+    if (!pCtx->intervalLiteral()->yearMonthInterval() && !pCtx->intervalLiteral()->dayTimeInterval()) {
+      NEVER_REACH
+    }
+
 
   } else {
     NEVER_REACH
   }
+
+  if (pLiteral) {
+    m_pExprStack->vPush(pLiteral);
+  }
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Year-Month interval literal                                                */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitYearMonthInterval(sqlParser::YearMonthIntervalContext* pCtx)
+{
+  ASSERT(m_pExprStack);
+  visitChildren(pCtx);
+
+  QueryNode* pLiteral;
+
+  eIV eIntervalType;
+
+  if (pCtx->TO()) {
+    eIntervalType = IV_YEAR_TO_MONTH;
+
+  } else if (pCtx->YEAR()) {
+    eIntervalType = IV_YEAR;
+
+  } else {
+    eIntervalType = IV_MONTH;
+  }
+
+  Ivl xIvl = xCleanInterval(pCtx->stringLiteral(), eIntervalType);
+  pLiteral = IntervalLiteral::pCreate(xIvl);
 
   m_pExprStack->vPush(pLiteral);
   return nullptr;
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-/* Unary Expression Operators                                                */
+/* Day-Time interval literal                                                  */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitDayTimeInterval(sqlParser::DayTimeIntervalContext* pCtx)
+{
+  ASSERT(m_pExprStack);
+  visitChildren(pCtx);
+
+  QueryNode* pLiteral;
+
+  eIV eIntervalType = IV_NONE;
+
+  if (pCtx->TO()) {
+    // We've got a multi-field interval
+    if (pCtx->DAY()) {
+      if      (pCtx->HOUR())      { eIntervalType = IV_DAY_TO_HOUR;   }
+      else if (pCtx->MINUTE())    { eIntervalType = IV_DAY_TO_MINUTE; }
+      else if (pCtx->SECOND())    { eIntervalType = IV_DAY_TO_SECOND; }
+
+    } else if (pCtx->HOUR()) {
+      if      (pCtx->MINUTE())    { eIntervalType = IV_HOUR_TO_MINUTE; }
+      else if (pCtx->SECOND())    { eIntervalType = IV_HOUR_TO_SECOND; }
+
+    } else if (pCtx->MINUTE())    { eIntervalType = IV_MINUTE_TO_SECOND; }
+  }
+
+  else if (pCtx->DAY())         { eIntervalType = IV_DAY;    }
+  else if (pCtx->HOUR())        { eIntervalType = IV_HOUR;   }
+  else if (pCtx->MINUTE())      { eIntervalType = IV_MINUTE; }
+  else if (pCtx->SECOND())      { eIntervalType = IV_SECOND; }
+
+  ASSERT(eIntervalType != IV_NONE);
+
+  Ivl xIvl = xCleanInterval(pCtx->stringLiteral(), eIntervalType);
+  pLiteral = IntervalLiteral::pCreate(xIvl);
+
+  m_pExprStack->vPush(pLiteral);
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Unary Expression Operators                                                 */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 antlrcpp::Any SqlPlanner::visitUnaryOp(sqlParser::UnaryOpContext *pCtx)
 {
@@ -3475,6 +3552,430 @@ Tsp SqlPlanner::xCleanTimestamp(sqlParser::StringLiteralContext *pCtx)
   Tsp xVal;
   xVal.vSet(iYear, iMonth, iDay, iHour, iMin, iSec, iMicro);
   return xVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Return an interval value from an interval string                           */
+/*----------------------------------------------------------------------------*/
+Ivl SqlPlanner::xCleanInterval(sqlParser::StringLiteralContext *pCtx, eIV eIvlType)
+{
+  std::string sStr = pCtx->getText();
+  s256 sBuf;
+
+  if ((i8) sStr.length() > sBuf.nSpace()) {
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine(),
+                            EC_INVALID_INTERVAL_FORMAT,
+                            ": interval string is too large"_Stz);
+  }
+
+  vCleanString(sStr, sBuf);
+
+  if (sBuf.nLength() == 0) {
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine(),
+                            EC_INVALID_INTERVAL_FORMAT,
+                            ": interval string is empty"_Stz);
+  }
+
+  // The reason we don't just invoke sscanf() is because it doesn't handle
+  // two main factors:
+  //   1. Partially valid input.
+  //      e.g. 12w34 can be parsed as value 12 with %lld instead of giving
+  //      an error.
+  //   2. Arithmetic overflow.
+  //      While we may not handle that yet, parsing manually gives us the
+  //      ability to do so in the future.
+
+  Ivl xIvl{eIvlType};
+
+  switch (eIvlType) {
+    case IV_YEAR:
+    case IV_MONTH:
+    case IV_DAY:
+    case IV_HOUR:
+    case IV_MINUTE:
+      xIvl = xCleanSingleFieldInterval(sBuf.szStz(), eIvlType, pCtx);
+      break;
+
+    case IV_SECOND:
+      xIvl = xCleanSecondInterval(sBuf.szStz(), pCtx);
+      break;
+
+    case IV_YEAR_TO_MONTH:
+      xIvl = xCleanYearMonthInterval(sBuf.szStz(), pCtx);
+      break;
+
+    case IV_DAY_TO_HOUR:
+      xIvl = xCleanDayHourInterval(sBuf.szStz(), pCtx);
+      break;
+
+    case IV_DAY_TO_MINUTE:
+      xIvl = xCleanDayMinuteInterval(sBuf.szStz(), pCtx);
+      break;
+
+    case IV_DAY_TO_SECOND:
+      xIvl = xCleanDaySecondInterval(sBuf.szStz(), pCtx);
+      break;
+
+    case IV_HOUR_TO_MINUTE:
+      xIvl = xCleanHourMinuteInterval(sBuf.szStz(), pCtx);
+      break;
+
+    case IV_HOUR_TO_SECOND:
+      xIvl = xCleanHourSecondInterval(sBuf.szStz(), pCtx);
+      break;
+
+    case IV_MINUTE_TO_SECOND:
+      xIvl = xCleanMinuteSecondInterval(sBuf.szStz(), pCtx);
+      break;
+
+    default:
+      NEVER_REACH
+  }
+
+  return xIvl;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Return a single field interval value from a string                         */
+/*----------------------------------------------------------------------------*/
+Ivl SqlPlanner::xCleanSingleFieldInterval(Stz* szVal, eIV eIvlType, sqlParser::StringLiteralContext *pCtx)
+{
+  b1 bIsNegative = false;
+  u8 uVal = 0;
+  i8 nLength = szVal->nLength();
+  char* psChar = szVal->azChar();
+  char* psEnd = psChar + nLength;  // pointer to null terminator
+
+  // Ignore leading spaces
+  while (*psChar == ' ') { ++psChar; }
+
+  if (psChar == psEnd) {
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine() + nLength,
+                            EC_INVALID_INTERVAL_FORMAT,
+                            ": interval string is incomplete"_Stz);
+  }
+
+  // Check for a negative or positive sign
+  if (*psChar == '-')
+  {
+    bIsNegative = true;
+    ++psChar;
+
+  } else if (*psChar == '+') {
+    ++psChar;
+  }
+
+  if (psChar == psEnd) {
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine() + nLength,
+                            EC_INVALID_INTERVAL_FORMAT,
+                            ": interval string is incomplete"_Stz);
+  }
+
+  // Must have at least one digit
+  if (!StrLib::bIsDigit(*psChar)) {
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine() + nLength,
+                            EC_INVALID_INTERVAL_FORMAT,
+                            ": interval string is incomplete"_Stz);
+  }
+
+  // Read digits
+  b1 bResult = StrLib::bExtractU8(&psChar, &uVal);
+
+  if (!bResult) {
+    // Out of range of C_MAX_INT and definitely out of range of a single field value.
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine(),
+                            EC_INVALID_INTERVAL_FORMAT,
+                            ": absolute interval %s value exceeds maximum of %lld"_Stz,
+                            aIV_field[eIvlType],
+                            C_IVL_YEAR_MAX);
+  }
+
+  if (!StrLib::bIsWhite(*psChar) && psChar != psEnd) {
+    // Got a character we didn't expect after the digits
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine(),
+                            EC_INVALID_INTERVAL_FORMAT,
+                            ": non-digit value '%c' encountered"_Stz,
+                            *psChar);
+  }
+
+  // Ignore trailing spaces
+  while (*psChar == ' ') { ++psChar; }
+
+  // If we are not at the end then we have encountered a character we don't expect
+  if (psChar != psEnd) {
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine() + nLength,
+                            EC_INVALID_INTERVAL_FORMAT,
+                            ": non-digit value '%c' encountered"_Stz,
+                            *psChar);
+  }
+
+  Ivl xIvl{eIvlType};
+  xIvl.T.m_xIvl.m_bIsNeg = bIsNegative;
+  xIvl.T.m_xIvl.m_bIsNull = false;
+
+  // Now check the bounds and set the value
+  switch(eIvlType) {
+    case IV_YEAR:
+      if (uVal > C_IVL_YEAR_MAX) {
+        SyntaxException::vThrow(pCtx->start->getLine(),
+                                pCtx->start->getCharPositionInLine() + nLength,
+                                EC_INVALID_INTERVAL_FORMAT,
+                                ": absolute interval year value exceeds maximum of %lld"_Stz,
+                                C_IVL_YEAR_MAX);
+      }
+      xIvl.T.m_xIvl.u.m_xIvlYr.m_uYears = uVal;
+      break;
+
+    case IV_MONTH:
+      if (uVal > C_IVL_MONTH_MAX) {
+        SyntaxException::vThrow(pCtx->start->getLine(),
+                                pCtx->start->getCharPositionInLine() + nLength,
+                                EC_INVALID_INTERVAL_FORMAT,
+                                ": absolute interval month value exceeds maximum of %lld"_Stz,
+                                C_IVL_MONTH_MAX);
+      }
+      xIvl.T.m_xIvl.u.m_xIvlMon.m_uMonths = uVal;
+      break;
+
+    case IV_DAY:
+      if (uVal > C_IVL_DAY_MAX) {
+        SyntaxException::vThrow(pCtx->start->getLine(),
+                                pCtx->start->getCharPositionInLine() + nLength,
+                                EC_INVALID_INTERVAL_FORMAT,
+                                ": absolute interval day value exceeds maximum of %lld"_Stz,
+                                C_IVL_DAY_MAX);
+      }
+      xIvl.T.m_xIvl.u.m_xIvlDay.m_uDays = uVal;
+      break;
+
+    case IV_HOUR:
+      if (uVal > C_IVL_HOUR_MAX) {
+        SyntaxException::vThrow(pCtx->start->getLine(),
+                                pCtx->start->getCharPositionInLine() + nLength,
+                                EC_INVALID_INTERVAL_FORMAT,
+                                ": absolute interval hour value exceeds maximum of %lld"_Stz,
+                                C_IVL_HOUR_MAX);
+      }
+      xIvl.T.m_xIvl.u.m_xIvlHr.m_uHours = uVal;
+      break;
+
+    case IV_MINUTE:
+      if (uVal > C_IVL_MINUTE_MAX) {
+        SyntaxException::vThrow(pCtx->start->getLine(),
+                                pCtx->start->getCharPositionInLine() + nLength,
+                                EC_INVALID_INTERVAL_FORMAT,
+                                ": absolute interval minute value exceeds maximum of %lld"_Stz,
+                                C_IVL_MINUTE_MAX);
+      }
+      xIvl.T.m_xIvl.u.m_xIvlMin.m_uMinutes = uVal;
+      break;
+
+    default:
+      // Note: Seconds are handled separately because they can have a fractional component.
+      NEVER_REACH
+
+  }
+
+  return xIvl;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Return a SECOND interval value from a string (optional fractional secs)    */
+/*----------------------------------------------------------------------------*/
+Ivl SqlPlanner::xCleanSecondInterval(Stz* szVal, sqlParser::StringLiteralContext *pCtx)
+{
+  b1 bIsNegative = false;
+  b1 bGotSecVal = false;
+  u8 uSecVal = 0;
+  u8 uFracVal = 0;
+  i8 nLength = szVal->nLength();
+  char* psChar = szVal->azChar();
+  char* psEnd = psChar + nLength;  // pointer to null terminator
+
+  // Ignore leading spaces
+  while (*psChar == ' ') { ++psChar; }
+
+  if (psChar == psEnd) {
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine() + nLength,
+                            EC_INVALID_INTERVAL_FORMAT,
+                            ": interval string is incomplete"_Stz);
+  }
+
+  // Check for a negative or positive sign
+  if (*psChar == '-')
+  {
+    bIsNegative = true;
+    ++psChar;
+
+  } else if (*psChar == '+') {
+    ++psChar;
+  }
+
+  if (psChar == psEnd) {
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine(),
+                            EC_INVALID_INTERVAL_FORMAT,
+                            ": interval string is incomplete"_Stz);
+  }
+
+  if (StrLib::bIsDigit(*psChar)) {
+    // Read in the whole seconds
+    b1 bResult = StrLib::bExtractU8(&psChar, &uSecVal);
+
+    if (!bResult) {
+      // Out of range of C_MAX_INT and definitely out of range of whole seconds.
+      SyntaxException::vThrow(pCtx->start->getLine(),
+                              pCtx->start->getCharPositionInLine(),
+                              EC_INVALID_INTERVAL_FORMAT,
+                              ": absolute interval seconds value exceeds maximum of %lld"_Stz,
+                              C_IVL_SEC_SEC_MAX);
+    }
+
+    if (*psChar != '.' && !StrLib::bIsWhite(*psChar) && psChar != psEnd) {
+      // Got a character we didn't expect
+      SyntaxException::vThrow(pCtx->start->getLine(),
+                              pCtx->start->getCharPositionInLine(),
+                              EC_INVALID_INTERVAL_FORMAT,
+                              ": non-digit value '%c' encountered"_Stz,
+                              *psChar);
+    }
+
+    bGotSecVal = true;
+  }
+
+  if (*psChar == '.') {
+    ++psChar;
+
+    if (StrLib::bIsDigit(*psChar)) {
+      // Read in the fractional seconds
+      b1 bResult = StrLib::bExtractU8(&psChar, &uFracVal);
+
+      if (!bResult) {
+        // Out of range of C_MAX_INT and definitely out of range of microseconds.
+        SyntaxException::vThrow(pCtx->start->getLine(),
+                                pCtx->start->getCharPositionInLine(),
+                                EC_INVALID_INTERVAL_FORMAT,
+                                ": absolute interval microseconds value exceeds maximum of %lld"_Stz,
+                                C_IVL_USEC_MAX);
+      }
+
+      if (!StrLib::bIsWhite(*psChar) && psChar != psEnd) {
+        // Got a character we didn't expect
+        SyntaxException::vThrow(pCtx->start->getLine(),
+                                pCtx->start->getCharPositionInLine(),
+                                EC_INVALID_INTERVAL_FORMAT,
+                                ": non-digit value '%c' encountered"_Stz,
+                                *psChar);
+      }
+    }
+
+  } else if (!bGotSecVal) {
+    // No whole seconds or fractional seconds were provided
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine(),
+                            EC_INVALID_INTERVAL_FORMAT,
+                            ": no whole or fractional seconds specified"_Stz);
+  }
+
+  // Ignore trailing spaces
+  while (*psChar == ' ') { ++psChar; }
+
+  // If we are not at the end then we have encountered a character we don't expect
+  if (psChar != psEnd) {
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine() + nLength,
+                            EC_INVALID_INTERVAL_FORMAT,
+                            ": non-digit value '%c' encountered"_Stz,
+                            *psChar);
+  }
+
+  // Check bounds
+  if (uSecVal > C_IVL_SEC_SEC_MAX) {
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine(),
+                            EC_INVALID_INTERVAL_FORMAT,
+                            ": absolute interval seconds value exceeds maximum of %lld"_Stz,
+                            C_IVL_SEC_SEC_MAX);
+  }
+
+  if (uFracVal > C_IVL_USEC_MAX) {
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine(),
+                            EC_INVALID_INTERVAL_FORMAT,
+                            ": absolute interval microseconds value exceeds %lld"_Stz,
+                            C_IVL_USEC_MAX);
+  }
+
+  Ivl xIvl{IV_SECOND};
+  xIvl.T.m_xIvl.m_bIsNeg = bIsNegative;
+  xIvl.T.m_xIvl.m_bIsNull = false;
+  xIvl.T.m_xIvl.u.m_xIvlSec.m_uSeconds = uSecVal;
+  xIvl.T.m_xIvl.u.m_xIvlSec.m_uMicros = uFracVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Return a YEAR-MONTH interval value from a string                           */
+/*----------------------------------------------------------------------------*/
+Ivl SqlPlanner::xCleanYearMonthInterval(Stz* szVal, sqlParser::StringLiteralContext *pCtx)
+{
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* Return a DAY-HOUR interval value from a string                             */
+/*----------------------------------------------------------------------------*/
+Ivl SqlPlanner::xCleanDayHourInterval(Stz* szVal, sqlParser::StringLiteralContext *pCtx)
+{
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* Return a DAY-MINUTE interval value from a string                           */
+/*----------------------------------------------------------------------------*/
+Ivl SqlPlanner::xCleanDayMinuteInterval(Stz* szVal, sqlParser::StringLiteralContext *pCtx)
+{
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* Return a DAY-SECOND interval value from a string                           */
+/*----------------------------------------------------------------------------*/
+Ivl SqlPlanner::xCleanDaySecondInterval(Stz* szVal, sqlParser::StringLiteralContext *pCtx)
+{
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* Return a HOUR-MINUTE interval value from a string                          */
+/*----------------------------------------------------------------------------*/
+Ivl SqlPlanner::xCleanHourMinuteInterval(Stz* szVal, sqlParser::StringLiteralContext *pCtx)
+{
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* Return a HOUR-SECOND interval value from a string                          */
+/*----------------------------------------------------------------------------*/
+Ivl SqlPlanner::xCleanHourSecondInterval(Stz* szVal, sqlParser::StringLiteralContext *pCtx)
+{
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* Return a MINUTE-SECOND interval value from a string                        */
+/*----------------------------------------------------------------------------*/
+Ivl SqlPlanner::xCleanMinuteSecondInterval(Stz* szVal, sqlParser::StringLiteralContext *pCtx)
+{
+
 }
 
 /*----------------------------------------------------------------------------*/
