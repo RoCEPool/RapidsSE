@@ -171,7 +171,10 @@ namespace STORE
                                   Stz*& szTableNm, Stz*& szIndexNm);
     Stz*           szArgCheckLast(TagSet* pArgTags, i8 i_Last);
     void           vArgCheck     (TagSet* pArgTags, i8 nArgs);
-  
+
+    Stz*           szArgsStz     (TagSet* pArgTags, i8 i_Arg);
+    Card_RpnTerms* pArgsRpnTerms (TagSet* pArgTags, i8 i_Arg);
+
   private:
     Footer* aFooter(void);
   };

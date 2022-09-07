@@ -595,6 +595,21 @@ bool TagSet::bIsInteger(i8 i_Tag)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is token kind a pointer to object?                                         */
+/*----------------------------------------------------------------------------*/
+bool TagSet::bIsObject(i8 i_Tag)
+{
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+
+  eTN eToken = m_xaTag[i_Tag].m_eToken;
+
+  if (TN_OBJECT == eToken)
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is token kind a string?                                                    */
 /*----------------------------------------------------------------------------*/
 bool TagSet::bIsString(i8 i_Tag)
@@ -959,12 +974,19 @@ void TagSet::vToString(Stz* szStz)
       continue;
     }
     
-    ASSERT(bIsInteger(i_Tag));
+    //ASSERT(bIsInteger(i_Tag));
 
     s32 sValue;
-    
+
+    if (bIsObject(i_Tag)) {
+      sValue.vSprint( "%p"_Stz, pValue(i_Tag));
+      szStz->vConcat(sValue);
+      continue;
+    }
+
     if (bIsDecodable(i_Tag))
       sValue = szValueDecoded(i_Tag);
+
     else
       sValue.vSprint("%lld"_Stz,iValue(i_Tag));
     szStz->vConcat(sValue);

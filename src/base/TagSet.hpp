@@ -61,6 +61,7 @@ namespace BASE
     void vInsert(Stz* szName, Stz* szValue);
     bool bIsDecodable(i8 i_Tag);
     bool bIsInteger(i8 i_Tag);
+    bool bIsObject(i8 i_Tag);
     bool bIsString(i8 i_Tag);
     i8   nItems(void);
   

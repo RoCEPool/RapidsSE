@@ -331,11 +331,17 @@ Card* Dissect::pCard_Hash(TagSet* pArgTags)
 Card* Dissect::pCard_IndexJoin(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
-      
-  Stz* szTableNm = nullptr;
-  Stz* szIndexNm = nullptr;
 
-  Card_RpnTerms* pCard_RpnTerms = pArgCheckLast(pArgTags,0,szTableNm,szIndexNm);
+  vTrace("pCard_IndexJoin\n"_Stz);
+  pArgTags->vDumpSet(true);
+
+  Stz* szTableNm = szArgsStz(pArgTags,0);
+  Stz* szIndexNm = szArgsStz(pArgTags,1);
+  Card_RpnTerms* pCard_RpnTerms = pArgsRpnTerms(pArgTags,2);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  //Card_RpnTerms* pCard_RpnTerms = pArgCheckLast(pArgTags,0,szTableNm,szIndexNm);
   Card_IndexJoin* pCard_IndexJoin = new Card_IndexJoin;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -365,6 +371,47 @@ Card* Dissect::pCard_IndexJoin(TagSet* pArgTags)
   
   return pCard_IndexJoin;
 }
+/*----------------------------------------------------------------------------*/
+//Card* Dissect::pCard_IndexJoin(TagSet* pArgTags)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+//
+//  vTrace("pCard_IndexJoin\n"_Stz);
+//  pArgTags->vDumpSet(true);
+//
+//  Stz* szTableNm = nullptr;
+//  Stz* szIndexNm = nullptr;
+//
+//  Card_RpnTerms* pCard_RpnTerms = pArgCheckLast(pArgTags,0,szTableNm,szIndexNm);
+//  Card_IndexJoin* pCard_IndexJoin = new Card_IndexJoin;
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // table
+//
+//  Table* pTable = AM::pTableFind(szTableNm);
+//  Card_Table* pCard_Table = new Card_Table(pTable);
+//  pCard_IndexJoin->vAppend(pCard_Table);
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // index
+//
+//  Index* pIndex = pTable->pFindIndex(szIndexNm);
+//  Card_Index* pCard_Index = new Card_Index(pIndex);
+//  pCard_IndexJoin->vAppend(pCard_Index);
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // index predicate????
+//
+//  Card_IndexPred* pCard_IndexPred = new Card_IndexPred;
+//  pCard_IndexPred->vTransferAll(pCard_RpnTerms);
+//  pCard_IndexJoin->vAppend(pCard_IndexPred);
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  delete pCard_RpnTerms;
+//
+//  return pCard_IndexJoin;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* dissect : indexScan <szTblNm> <szIdxNm> <szRpnExpr: 0) idxPred>            */
@@ -1142,6 +1189,33 @@ void Dissect::vArgCheck(TagSet* pArgTags, i8 nArgs)
     NEVER_REACH;
   }
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Stz* Dissect::szArgsStz(TagSet* pArgTags, i8 i_Arg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+
+ Stz* szValue = pArgTags->szValue(i_Arg);
+
+  return szValue;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_RpnTerms* Dissect::pArgsRpnTerms(TagSet* pArgTags, i8 i_Arg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+
+  Stz* szRpnExpr = pArgTags->szValue(i_Arg);
+
+  Card_RpnTerms* pCard_RpnTerms = pToRpnTerms(szRpnExpr);
+
+  return pCard_RpnTerms;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

@@ -300,20 +300,27 @@ void Weave::vArgIndexJoin(Stz* szOpArgs, Card_IndexJoin* pCard_IndexJoin)
   
   // indexJoin : 0) {table} 1) {index} 2) indexPred
 
-  s4K sRpnExpr;
-  
-  vRpnIndexJoin(sRpnExpr,pCard_IndexJoin);
+  pCard_IndexJoin->vDump();
 
-  Index* pIndex = pCard_IndexJoin->pIndex();
+  s4K sRpnExpr;
+
+  Card_Index* pCard_Index = _pCard_Index(pCard_IndexJoin->pFindSubCard(CK_INDEX));
+
+  Index* pIndex = pCard_Index->pIndex();
   Stz* szIndexNm = pIndex->szIndexNm();
 
-  Card_Table* pCard_Table = nullptr; //_pCard_Table(pBoard_I->pNext());
-  Table* pTable = _pTable(pCard_Table->pTable());
+  Card_Table* pCard_Table = _pCard_Table(pCard_IndexJoin->pFindSubCard(CK_TABLE));
+  Table* pTable = pCard_Table->pTable();
   Stz* szTableNm = pTable->szTableNm();
-    
-  szOpArgs->vCatSprint("%s %s \"%s\""_Stz,szTableNm
-                                         ,szIndexNm
-                                         ,sRpnExpr.szStz());
+
+  //Card_IndexPred* pCard_IndexPred = _pCard_IndexPred(pCard_IndexJoin->pFindSubCard(CK_INDEXPRED));
+
+  vRpnIndexJoin(sRpnExpr,pCard_IndexJoin);
+
+  szOpArgs->vCatSprint("%s %s \"%s \""_Stz
+                       ,szTableNm
+                       ,szIndexNm
+                       ,sRpnExpr.szStz());
 
 }
 
@@ -535,8 +542,19 @@ void Weave::vRpnHaving(Stz* szRpnExpr, Card_Having* pCard_Having)
 void Weave::vRpnIndexJoin(Stz* szRpnExpr, Card_IndexJoin* pCard_IndexJoin)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
-  
-  // ????
+
+  Card_IndexPred* pCard_IndexPred = _pCard_IndexPred(pCard_IndexJoin->pFindSubCard(CK_INDEXPRED));
+
+  i8 nSubs = pCard_IndexPred->nSubCards();
+  for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {
+    Card* pSubCard = pCard_IndexPred->pGet(i_Sub);
+
+    if (! pSubCard->bIsCard(CK_TERM))
+      continue;
+
+    szRpnExpr->vCatSprint(" %s"_Stz,pSubCard->szGetProperty((i8)0));
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/

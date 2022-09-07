@@ -4,6 +4,76 @@
 
 " OP_optimise.sen" .verbose
 
+/*----------------------------------------------------------------------------*/
+/* HACK call the optimiser                                                    */
+/*----------------------------------------------------------------------------*/
+: _run_Optimiser
+
+  "_run_Optimiser" .
+
+  Text[] .
+
+  Dynamo[].new
+
+  Text[] Dynamo[].compile to ErrorCode[]
+  Dynamo[].delete
+
+  ErrorCode[] EC_NONE == not if
+    // - error compile
+    //"Error Compile" .
+    exit
+  then
+
+  // + clean compile
+  //"Clean Compile" .
+  to PipeSpec[]
+
+  Optimiser[].new
+    PipeSpec[] Optimiser[].dissect
+    //Optimiser[].optimise
+    Optimiser[].weave dup . to Text[] // discard
+  Optimiser[].delete
+
+  PipeSpec[].delete
+
+  Dynamo[].delete
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_DATAPULSE ...                                             */
+/*----------------------------------------------------------------------------*/
+: optimise_DataPulse \handler
+
+  <etc> to Text[]
+
+  // pipeline is 8
+
+  8 Text[] str.clip "pipeline" str.same if
+    "IS pipeline" .
+  else
+    "NOT pipeline" .
+
+    file::new to File0[]
+
+    Text[] OPEN_READ File0[] file.open if
+      File0[] file.readText if
+        to Text[]
+      then
+    then
+
+    File0[] file.close
+    nullptr to File0[]
+
+  then
+
+  Text[] .
+
+  _run_Optimiser
+
+  Text[] .
+
+  EV_M_DATAPULSE_handler
+;
 
 /*----------------------------------------------------------------------------*/
 /* execute for optimise req                          (on node where spawned) */
@@ -12,10 +82,9 @@
 
   _lu_initialise_
 
-  0 to Counter0[]
-
   op__topology
 
+  find: optimise_DataPulse     EV_M_DATAPULSE     [op].handler!
 
   op__loop
 
@@ -29,7 +98,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: optimise :: optimise ;
+cmdSyntax: optimise :: optimise <etc> ;
 
 : optimise_cmdTags _cmdTags tagCopy: op_tags
   tags{
