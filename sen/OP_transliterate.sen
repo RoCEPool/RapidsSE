@@ -93,14 +93,20 @@
   to PipeSpec[]
 
   Optimiser[].new
-    PipeSpec[] Optimiser[].dissect
+
+  PipeSpec[] Optimiser[].dissect
+
+  "<optimise>" [job].tagSet@ tagSet.hasName if
     //Optimiser[].optimise
+  then
+
+  "<weave>" [job].tagSet@ tagSet.hasName if
     Optimiser[].weave dup . to Text[] // discard
+  then
+
   Optimiser[].delete
 
   PipeSpec[].delete
-
-  Dynamo[].delete
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -140,7 +146,14 @@
   //Text[] "FORKING CHILD FOR PIPELINE: %v"  str.format .
 
 
-  // _Call_Optimiser
+  //[job].tagSet@ tagSet.dump
+  "<dissect>"  [job].tagSet@ tagSet.hasName
+  "<optimise>" [job].tagSet@ tagSet.hasName or
+  "<weave>"    [job].tagSet@ tagSet.hasName or if
+    "HAS optimisation tag" .
+    _Call_Optimiser
+  then
+
 
 
   [Op] [job].responseOp!
