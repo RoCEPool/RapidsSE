@@ -72,6 +72,7 @@
 #include "store/parser/shadowNodes/expressions/literals/DateLiteral.hpp"
 #include "store/parser/shadowNodes/expressions/literals/TimeLiteral.hpp"
 #include "store/parser/shadowNodes/expressions/literals/TimestampLiteral.hpp"
+#include "store/parser/shadowNodes/expressions/literals/IntervalLiteral.hpp"
 #include "store/parser/shadowNodes/expressions/operators/mathematical/AdditionExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/mathematical/SubtractionExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/mathematical/MultiplicationExpr.hpp"
@@ -1935,6 +1936,12 @@ antlrcpp::Any SqlPlanner::visitYearMonthInterval(sqlParser::YearMonthIntervalCon
   }
 
   Ivl xIvl = xCleanInterval(pCtx->stringLiteral(), eIntervalType);
+
+  // Check for negative in front of interval string
+  if (pCtx->neg) {
+    xIvl.T.m_xIvl.m_bIsNeg = !xIvl.T.m_xIvl.m_bIsNeg;
+  }
+
   pLiteral = IntervalLiteral::pCreate(xIvl);
 
   m_pExprStack->vPush(pLiteral);
@@ -1975,6 +1982,12 @@ antlrcpp::Any SqlPlanner::visitDayTimeInterval(sqlParser::DayTimeIntervalContext
   ASSERT(eIntervalType != IV_NONE);
 
   Ivl xIvl = xCleanInterval(pCtx->stringLiteral(), eIntervalType);
+
+  // Check for negative in front of interval string
+  if (pCtx->neg) {
+    xIvl.T.m_xIvl.m_bIsNeg = !xIvl.T.m_xIvl.m_bIsNeg;
+  }
+
   pLiteral = IntervalLiteral::pCreate(xIvl);
 
   m_pExprStack->vPush(pLiteral);

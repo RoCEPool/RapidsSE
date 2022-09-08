@@ -306,7 +306,9 @@ public:
   void vSetZero(void);
   void vSetNull(void)                  { T.m_xIvl.m_bIsNull = true; }  // set to be null
 
-  bool bIsNull(void)                   { return (C_DATUM_NULL == T.m_iAsI8); }  // test for null
+  bool bIsNull(void)                   { return T.m_xIvl.m_bIsNull; }  // test for null
+  eIV  eIvlType(void)                  { return (eIV) T.m_xIvl.m_eType; }
+  bool bIsNeg(void)                    { return (bool) T.m_xIvl.m_bIsNeg; }
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

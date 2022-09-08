@@ -13,6 +13,7 @@
 #include "DateLiteral.hpp"
 #include "TimeLiteral.hpp"
 #include "TimestampLiteral.hpp"
+#include "IntervalLiteral.hpp"
 #include "NullLiteral.hpp"
 #include "eCT.h"
 #include "TypeSystem.hpp"
@@ -51,7 +52,7 @@ void LiteralExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
   else if (     DateLiteral::bIsOfType(pNode))  {      DateLiteral::vDescribe(pNode, sBuf, pRootNode); }
   else if (     TimeLiteral::bIsOfType(pNode))  {      TimeLiteral::vDescribe(pNode, sBuf, pRootNode); }
   else if (TimestampLiteral::bIsOfType(pNode))  { TimestampLiteral::vDescribe(pNode, sBuf, pRootNode); }
-//else if (IntervalLiteral::bIsOfType(pNode))   {  IntervalLiteral::vDescribe(pNode, sBuf, pRootNode);    }
+  else if ( IntervalLiteral::bIsOfType(pNode))  {  IntervalLiteral::vDescribe(pNode, sBuf, pRootNode); }
   else if (     NullLiteral::bIsOfType(pNode))  {      NullLiteral::vDescribe(pNode, sBuf, pRootNode); }
   else NEVER_REACH
 }
@@ -112,8 +113,7 @@ TypeId LiteralExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
   else if (        DateLiteral::bIsOfType(pExprNode))  { return TypeId::xIdOf(CT_DATE);        }
   else if (        TimeLiteral::bIsOfType(pExprNode))  { return TypeId::xIdOf(CT_TIME);        }
   else if (   TimestampLiteral::bIsOfType(pExprNode))  { return TypeId::xIdOf(CT_TIMESTAMP);   }
-//else if (  IntervalYMLiteral::bIsOfType(pExprNode))         { return TypeId::xIdOf(CT_INTERVAL_YM); }
-//else if (  IntervalDTLiteral::bIsOfType(pExprNode))         { return TypeId::xIdOf(CT_INTERVAL_DT); }
+  else if (    IntervalLiteral::bIsOfType(pExprNode))  { return IntervalLiteral::xTypeId(pExprNode, pRootNode); }
   else if (      NullLiteral::bIsOfType(pExprNode))    { return TypeId::xIdOf(CT_UNKNOWN);     }
   else NEVER_REACH
 }
