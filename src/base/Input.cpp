@@ -953,17 +953,23 @@ void Input::vCollectCpp(void)
   
   // collect integer literal?
   else
-  if (bStartCppInteger()) {
+  if (bStartCppNumber()) {
     vCollectCppNumber();
   }
   
-  // collect string literal?
+  // collect double quoted string ?
   else
   if (bStartCppString()) {
     vCollectCppString();
   }
-  
-  // collect name token?
+
+  // collect single quoted literal?
+  else
+  if (bStartCppLiteral()) {
+    vCollectCppLiteral();
+  }
+
+    // collect name token?
   else
   if (bStartCppName()) {
     vCollectCppName();
@@ -986,6 +992,7 @@ void Input::vCollectCpp(void)
     case TN_DECIMAL:
     case TN_FLOAT:
     case TN_INTEGER:
+    case TN_LITERAL:
     case TN_NAME:
     case TN_NULL:
     case TN_STRING:
@@ -1004,6 +1011,42 @@ void Input::vCollectCpp(void)
   vTestSwitchToSen();
 }
 
+/*----------------------------------------------------------------------------*/
+/* collect normal cpp single quoted literal                                    */
+/*----------------------------------------------------------------------------*/
+void Input::vCollectCppLiteral(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+
+  char *azChars = StrLib::azNullTerminator(m_pCurrTkn->azChars());
+  char *z = azChars;
+
+  ASSERT(bStartSenString());
+
+  // skip the leading '
+  vGetAnnCharStripped();
+
+  // collect the characters within the string
+  while ( ! bEndCppLiteral() ) {
+
+    if (m_xAnnChar.bIsBackSlash()) {
+      vGetAnnCharStripped();
+      // translate \n into new line
+      if ('n' == m_xAnnChar.m_cChar)
+        m_xAnnChar.m_cChar = '\n';
+      else if ('r' == m_xAnnChar.m_cChar)
+        m_xAnnChar.m_cChar = '\r';
+    }
+
+    *z++ = m_xAnnChar.m_cChar;
+    vGetAnnCharStripped();
+  }
+
+  // terminate the string literal
+  *z = '\0';
+
+  m_pCurrTkn->vToken(TN_LITERAL);
+}
 /*----------------------------------------------------------------------------*/
 /* collect normal cpp name                                                    */
 /*----------------------------------------------------------------------------*/
@@ -1043,44 +1086,106 @@ void Input::vCollectCppNumber(void)
 
   i8 iNoDigits = 0;
   
-  // we have seen a digit
-  ASSERT(bStartCppInteger());
+  // we have seen the start of a number
+  ASSERT(bStartCppNumber());
   
   // - start parsing an integer
-  
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // collect initial digits
   while (m_xAnnChar.bIsDigit()) {
-    *z++ = m_xAnnChar.m_cChar;
-    iNoDigits++;
-    vGetAnnCharStripped();
+    *z++ = m_xAnnChar.m_cChar; iNoDigits++; vGetAnnCharStripped();
   }
-  
-  // 0x hex number?
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // float of form 123e4 (no decimal point)
+  if (m_xAnnChar.bIsE()) {
+    *z++ = m_xAnnChar.m_cChar; iNoDigits++; vGetAnnCharStripped();
+
+    if (m_xAnnChar.bIsSign()) {
+      *z++ = m_xAnnChar.m_cChar; iNoDigits++; vGetAnnCharStripped();
+    }
+
+    while (m_xAnnChar.bIsDigit()) {
+      *z++ = m_xAnnChar.m_cChar; iNoDigits++; vGetAnnCharStripped();
+    }
+
+    vUngetAnnCharStripped();
+
+    // terminate the float literal
+    *z = '\0';
+    m_pCurrTkn->vToken(TN_FLOAT);
+    return;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 0x hex form of integer
   if (1 == iNoDigits && m_xAnnChar.bIsX()) {
     
-    // add the 'x'
-    *z++ = m_xAnnChar.m_cChar;
+    // collect the 'x'
+    *z++ = m_xAnnChar.m_cChar; iNoDigits++; vGetAnnCharStripped();
     
     // collect the hex digits
     while (m_xAnnChar.bIsHex()) {
-      *z++ = m_xAnnChar.m_cChar;
-      vGetAnnCharStripped();
+      *z++ = m_xAnnChar.m_cChar; iNoDigits++; vGetAnnCharStripped();
     }
+
+    vUngetAnnCharStripped();
+
+    // terminate the integer literal
+    *z = '\0';
+    m_pCurrTkn->vToken(TN_INTEGER);
+    return;
   }
-  
-  // decimal number?
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // . decimal number?
   if (m_xAnnChar.bIsDot()) {
-    
-    *z++ = m_xAnnChar.m_cChar;
-    
-    vGetAnnCharStripped();
+
+    // collect the '.'
+    *z++ = m_xAnnChar.m_cChar; iNoDigits++; vGetAnnCharStripped();
+
+    // test for ..
+    if (m_xAnnChar.bIsDot()) {
+      *z++ = m_xAnnChar.m_cChar; iNoDigits++; vGetAnnCharStripped();
+
+      vUngetAnnCharStripped();
+
+      // terminate the other literal
+      *z = '\0';
+      m_pCurrTkn->vToken(TN_OTHER);
+      return;
+    }
     
     // collect digits after decimal
     while (m_xAnnChar.bIsDigit()) {
-      *z++ = m_xAnnChar.m_cChar;
-      iNoDigits++;
-      vGetAnnCharStripped();
+      *z++ = m_xAnnChar.m_cChar; iNoDigits++; vGetAnnCharStripped();
     }
+
+    // an 'e' introduces a float (scientific notation)
+    if (m_xAnnChar.bIsE()) {
+
+      // collect the 'e'
+      *z++ = m_xAnnChar.m_cChar; iNoDigits++; vGetAnnCharStripped();
+
+      // collect optional sign of e
+      if (m_xAnnChar.bIsSign()) {
+        *z++ = m_xAnnChar.m_cChar; iNoDigits++; vGetAnnCharStripped();
+      }
+
+      // collect e digits
+      while (m_xAnnChar.bIsDigit()) {
+        *z++ = m_xAnnChar.m_cChar; iNoDigits++; vGetAnnCharStripped();
+      }
+
+      vUngetAnnCharStripped();
+
+      // terminate the float literal
+      *z = '\0';
+      m_pCurrTkn->vToken(TN_FLOAT);
+      return;
+    }
+
     vUngetAnnCharStripped();
     
     // terminate the decimal literal
@@ -1234,7 +1339,47 @@ void Input::vCollectCppOther(void)
       m_xAnnChar.m_cChar = '<';
     }
   }
-  
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // gather <> as a token
+  if (m_xAnnChar.bIsLessThan()) {
+    vGetAnnCharStripped();
+    if (m_xAnnChar.bIsGreaterThan()) {
+      *z++ = '<';
+      *z++ = '>';
+      *z = '\0';
+      m_pCurrTkn->vToken(TN_OTHER);
+      return;
+    }
+    else {
+      // push back the unconsumed char
+      vUngetAnnCharStripped();
+
+      // set last single character as <
+      m_xAnnChar.m_cChar = '<';
+    }
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // gather != as a token
+  if (m_xAnnChar.bIsExclamation()) {
+    vGetAnnCharStripped();
+    if (m_xAnnChar.bIsEqual()) {
+      *z++ = '!';
+      *z++ = '=';
+      *z = '\0';
+      m_pCurrTkn->vToken(TN_OTHER);
+      return;
+    }
+    else {
+      // push back the unconsumed char
+      vUngetAnnCharStripped();
+
+      // set last single character as !
+      m_xAnnChar.m_cChar = '!';
+    }
+  }
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // gather [[ as a token
   if (m_xAnnChar.bIsOpenBracket()) {
@@ -1763,13 +1908,28 @@ bool Input::bHaveWhitespace(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* test for start of normal integer                                           */
+/* test for start of normal number                                            */
 /*----------------------------------------------------------------------------*/
-bool Input::bStartCppInteger(void)
+bool Input::bStartCppNumber(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   if (StrLib::bIsDigit(m_xAnnChar.m_cChar))
+    return true;
+  if (StrLib::bIsDot(m_xAnnChar.m_cChar))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for start of quoted literal string                                    */
+/*----------------------------------------------------------------------------*/
+bool Input::bStartCppLiteral(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+
+  if (m_xAnnChar.bIsSingleQuote())
     return true;
 
   return false;
@@ -1814,6 +1974,22 @@ bool Input::bStartCppString(void)
   if (m_xAnnChar.bIsDoubleQuote())
     return true;
   
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for end of quoted literal string                                      */
+/*----------------------------------------------------------------------------*/
+bool Input::bEndCppLiteral(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+
+  if (m_xAnnChar.bIsSingleQuote())
+    return true;
+
+  if (bFormCppTokens() && m_xAnnChar.bIsNewLine())
+    return true;
+
   return false;
 }
 

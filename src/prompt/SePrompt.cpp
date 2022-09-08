@@ -505,8 +505,18 @@ SeDeputy* SePrompt::pFindDeputy(void)
 TokenVec* SePrompt::pInpTknVec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
+
   return m_pInpTknVec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get tag set                                                                */
+/*----------------------------------------------------------------------------*/
+TagSet* SePrompt::pInpTagSet(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+
+  return m_pInpTagSet;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -858,8 +868,9 @@ bool SePrompt::bReadCommand(eEC& eInputError)
     //vReportOther();
     vPrintPrompt();
   }
-  
-  vResetExtractedTagSet();
+
+  if (! *this->szToDo()->azChar())
+    vResetExtractedTagSet();
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // read next command

@@ -94,6 +94,7 @@ namespace BASE
     bool bCollectVecTillSemicolon(eEC& eError);
   
     void vCollectCpp(void);
+    void vCollectCppLiteral(void);
     void vCollectCppNumber(void);
     void vCollectCppName(void);
     void vCollectCppOther(void);
@@ -108,10 +109,12 @@ namespace BASE
     void vSkipWhitespace(void);
     bool bHaveWhitespace(void);
     
-    bool bStartCppInteger(void);
+    bool bStartCppNumber(void);
+    bool bStartCppLiteral(void);
     bool bStartCppName(void);
     bool bStartCppOther(void);
     bool bStartCppString(void);
+    bool bEndCppLiteral(void);
     bool bEndCppString(void);
 
     bool bStartSenInteger(void);

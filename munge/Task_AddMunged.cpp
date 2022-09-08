@@ -29295,7 +29295,7 @@ void Task::vAddMunged(Task* )
     "  //Text[] \"FORKING CHILD FOR PIPELINE: %v\"  str.format .\n"
     "\n"
     "\n"
-    "  _Call_Optimiser\n"
+    "  // _Call_Optimiser\n"
     "\n"
     "\n"
     "  [Op] [job].responseOp!\n"

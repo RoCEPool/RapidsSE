@@ -3871,7 +3871,8 @@ bool PROMPT::bPrompt_select(SePrompt* pPrompt)
   //vTrace("bPrompt_select\n"_Stz);
   
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
-  
+  TagSet* pInpTagSet = pPrompt->pInpTagSet();
+
   i8 iNumTokens = pInpTknVec->nItems();
   
 //  s16KB sSelectStmt;
@@ -3883,8 +3884,29 @@ bool PROMPT::bPrompt_select(SePrompt* pPrompt)
   
   Stz* szRaw = pPrompt->szRawInput();
 
+  s16KB sTrimmed;
+  sTrimmed = szRaw;
+
+  while (' ' == *sTrimmed.azChar())
+    StrLib::vShuffleLeft(sTrimmed.azChar(),1);
+
+  while ('/' == *sTrimmed.azChar())
+    StrLib::vRemoveTill(sTrimmed.azChar(),' ', true);
+
+  //s16KB sStatement;
   s16KB sSqlCompiler;
-  sSqlCompiler.vSprint("sqlCompiler \"%s\""_Stz,szRaw);
+  sSqlCompiler.vSprint("sqlCompiler \"%s\""_Stz,sTrimmed.azChar());
+
+  //pInpTknVec->vInsertToken(0,"sqlCompiler"_Stz,TN_NAME);
+
+  //pInpTknVec->vVecToString(sStatement,0, true);
+
+  //sSqlCompiler.vSprint("sqlCompiler \"%s\""_Stz,sStatement.szStz());
+
+  //pInpTknVec->vDumpVec();
+  //pInpTagSet->vDumpSet();
+
+  vTrace("TODO: %s\n"_Stz,sSqlCompiler.szStz());
 
   pPrompt->vToDo(sSqlCompiler);
   

@@ -16,12 +16,12 @@ create index Ri on R(r_a);
 
 load R "../DATA/JOINS/R.csv";
 
-//select * from R;
+/time select * from R;
 
 //select * from L,R where l_a = r_a;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-optimise_test _LR_statement ;
+//optimise_test _LR_statement ;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 drop table L;

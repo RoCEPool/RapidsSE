@@ -4028,6 +4028,26 @@ void StrLib::vReplaceTail(char* azArg, char* azTail)
 }
 
 /*----------------------------------------------------------------------------*/
+/* remove till given char                                                     */
+/*----------------------------------------------------------------------------*/
+void StrLib::vRemoveTill(char* azArg, const char cTill, bool bRemoveTheTill)
+{
+  _static_
+
+  char* azSrc = azArg;
+  while (*azSrc && *azSrc != cTill)
+    azSrc++;
+
+  if (! *azSrc)
+    return;
+
+  if (bRemoveTheTill)
+    azSrc++;
+
+  vShuffleLeft(azArg,azSrc);
+}
+
+/*----------------------------------------------------------------------------*/
 /* reverse a string                                                           */
 /*----------------------------------------------------------------------------*/
 void StrLib::vReverse(char* azDst, char* azSrc)
@@ -4110,6 +4130,30 @@ bool StrLib::bSame(const char* pArg1, const char* pArg2)
     return true;
   else
     return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* shuffle substring left                                                     */
+/*----------------------------------------------------------------------------*/
+void StrLib::vShuffleLeft(char* azDst, const char* azSrc)
+{
+  _static_
+
+  for (;;) {
+    char cCopied = (*azDst++ = *azSrc++);
+    if (! cCopied)
+      return;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* shuffle substring left                                                     */
+/*----------------------------------------------------------------------------*/
+void StrLib::vShuffleLeft(char* azDst, i8 i_Right)
+{
+  _static_
+
+  vShuffleLeft(azDst, azDst + i_Right);
 }
 
 /*----------------------------------------------------------------------------*/
