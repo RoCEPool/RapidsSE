@@ -230,6 +230,13 @@ def start_instances(instance_type: str,
             if e.response["Error"]["Code"] == "InsufficientInstanceCapacity":
                 # Save the exception and try the next subnet, just in case
                 last_error = e
+                LOG.warning(f"{ctx}Got error response InsufficientInstanceCapacity in region "
+                            f"{C_SUBNET_RMAP[subnet_id]}.")
+                
+                if (i+1) < len(C_SUBNET_ID_PREFERENCE):
+                    LOG.info("Trying another region.")
+                else:
+                    LOG.error("No more regions left to try.")
                 continue
 
             elif e.response["Error"]["Code"] == "RequestLimitExceeded":
