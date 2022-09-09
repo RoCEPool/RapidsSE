@@ -3,12 +3,16 @@
 /*============================================================================*/
 
 _part
-
+_supplier
 _partsupp
-create index IxPS_PARTKEY ON partsupp(PS_PARTKEY);
+
+//create index IxPS_PARTKEY ON partsupp(PS_PARTKEY);
+CREATE index IxS_SUPPKEY ON SUPPLIER(S_SUPPKEY);
+create index IxP_PARTKEY on PART(P_PARTKEY);
 
 /time load part     "<tpch_dir>/part.<suffix>";
 /time load partsupp "<tpch_dir>/partsupp.<suffix>";
+/time load supplier "<tpch_dir>/supplier.<suffix>";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
