@@ -44,7 +44,8 @@ namespace STORE
     
     IndexTree(Index* pIndex, IndexDef* pIndexDef, i8 i_TablePtn);
    ~IndexTree(void) noexcept(false);
-  
+
+    static char* aAllotPayStr(IndexTree* pIndexTree, Stz* szStz);
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static Ent* aFindEntry(IndexTree* aIndexTree, Key* aKey);
     static Ent* aIndexBegin(IndexTree* pIndexTree, EntBuffer** ppEntBuffer);
@@ -108,6 +109,7 @@ namespace STORE
   
   IndexTree* _pIndexTree(void* pAddr);
 
+  void* aIndexTree_allotPayStr(void* pIndexTree, char* sStr);
   void* aIndexTree_begin(void* pIndexTree, void** ppEntBuffer);
   void* aIndexTree_findEntry(void* aIndexTree, void* aKey);
   void* aIndexTree_insertEnt(void* aIndexDef, void* aEnt);

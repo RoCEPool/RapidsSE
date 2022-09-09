@@ -531,6 +531,7 @@ namespace OBLIQUE
     {
     public:
       static i8 iSePid(void);
+      static bool bSeRunning(void);
     };
 
     class PROMPT

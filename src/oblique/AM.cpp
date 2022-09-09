@@ -1990,6 +1990,20 @@ i8 AM::PROCESS::iSePid(void)
   return gpAttachMap->m_iSePid;
 }
 
+/*----------------------------------------------------------------------------*/
+/* is the se process still running?                                           */
+/*----------------------------------------------------------------------------*/
+bool AM::PROCESS::bSeRunning(void)
+{
+  _static_
+
+  i8 iSePid = AM::PROCESS::iSePid();
+
+  bool bRunning = Process::bTestPid(iSePid);
+
+  return bRunning;
+}
+
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                               PROMPT                                       */

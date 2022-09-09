@@ -1,0 +1,15 @@
+A,I do agree with you that our Jira workflow is very simplistic and needs to be matured
+A01,You are right that the current workflow does not give the test team the flexibility and responsibilities that you need.
+A0101,So let’s fix it together
+A0102,We want to mature SE as a product and to get there we also need to mature our processes
+A02,so I think this is a good time to make some of these changes
+A0201,The existing workflow was very simple in part because I needed to get everyone on the development team using it
+A0202,Some are harder to encourage than others
+B,The workflow also needs to cater for managing the development of new features
+B01,so it’s important that we get the balance right that works for both teams.
+0B0101,
+B0102,n thinking about this
+B02,I have drawn out the existing workflow and then drawn a possible new workflow that we could move to
+B0201,Please refer to the attached document (either in PDF or in Keynote format)
+B0202,The new workflow gives the test team better visibility of issues that need to be actioned as well as the responsibility for validating fixes and acknowledging/closing bugs
+,the development team will work on issues from the Backlog and issues will end up in one of the 3 green states

@@ -108,6 +108,7 @@ IndexTree::~IndexTree(void) noexcept(false)
 
   vTruncate();
   delete m_pIndexDef;
+  delete m_pPayStrBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -124,6 +125,9 @@ void IndexTree::vDump(eCN eClass, Object* pObject, Stz* aTab)
   UNUSED(aTab);
 }
 
+void* aIndexTree_allotPayStr(void* pIndexTree, char* sStr) {
+  return (void*)IndexTree::aAllotPayStr((IndexTree*)pIndexTree, (Stz*)sStr);
+}
 void* aIndexTree_begin(void* pIndexTree, void** ppEntBuffer) {
   return (void*)IndexTree::aIndexBegin((IndexTree*)pIndexTree, (EntBuffer**) ppEntBuffer);
 }
@@ -148,6 +152,16 @@ void *aIndexTree_positionLE(void* aIndexTree, void* aKey) {
 }
 void *aIndexTree_positionLT(void* aIndexTree, void* aKey) {
   return IndexTree::aPositionLT((IndexTree*) aIndexTree, (Key*) aKey);
+}
+
+/*----------------------------------------------------------------------------*/
+/* allocate a pay load string                                                  */
+/*----------------------------------------------------------------------------*/
+char* IndexTree::aAllotPayStr(IndexTree* pIndexTree, Stz* szStz) {
+
+  _static_
+
+  return (char*)pIndexTree->pAllotPayStr(szStz)->szStz();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -364,7 +378,7 @@ Ent* IndexTree::aPositionLT(IndexTree* pIndexTree, Key* aKey)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* analyze table                                                              */
+/* allot a pay load string                                                    */
 /*----------------------------------------------------------------------------*/
 PayStr* IndexTree::pAllotPayStr(Stz* szStz)
 {

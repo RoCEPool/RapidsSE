@@ -103,6 +103,7 @@ namespace STORE {
     void vSynthIndexScan(Stz *sIndexScanExpr, Stz *sLabel, Stz *sLabelNext, Stz* sLabelOrdAgg, u8 uSelectColumns);
 
     void vSynthInflateCrw(Stz *sTableNm, Stz *sLabel, Stz *sReturnLabel, Stz* sLabelOrdAgg, u8 *puSelectColumns);
+    void vSynthInflateCrwRet(Stz *sLabel, Stz *sNextLabel);
 
     void vSynthInflateRow(Stz *sLabel, Stz* sLabelOrdAgg);
 
