@@ -2517,7 +2517,7 @@ void Card::vStreamElistPrint(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
     Card_As*   pCard_As   = _pCard_As  (pCard_Expr->pFindSubCard(CK_AS));
 
     pRibbon->vSprintRight("%s %c"_Stz
-                          ,pCard_As->szAs()
+                          ,pCard_As ? pCard_As->szAs() : "??AS?"_Stz
                           ,pCard_Type->cTypeShort()
                           );
 

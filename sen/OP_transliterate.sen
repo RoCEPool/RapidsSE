@@ -97,7 +97,7 @@
   PipeSpec[] Optimiser[].dissect
 
   "<optimise>" [job].tagSet@ tagSet.hasName if
-    //Optimiser[].optimise
+    Optimiser[].optimise
   then
 
   "<weave>" [job].tagSet@ tagSet.hasName if

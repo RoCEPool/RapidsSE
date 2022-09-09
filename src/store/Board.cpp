@@ -182,6 +182,8 @@ void Board::vPinCards(Ribbon* pRibbon, i8 i_Board)
   i8 nCount = 0;
   while (pBoard_I->bHasNext()) {
     Card* pCard = pBoard_I->pNext();
+
+    pCard->vDump();
     
     //if (_bIsCard_Filter(pCard))
     //  pCard->vDump();

@@ -244,16 +244,16 @@ void Optimiser::vOptimise(void)
   
   pBoard->vResolve_Symbols();
   pBoard->vPrintBoard("vResolve_Symbols >> "_Stz);
-
-  // rules
-  
-  if (pBoard->bMay_Scan_Filter_to_IndexScan()) {
-    
-    bool bRun = pBoard->bRule_Scan_Filter_to_IndexScan();
-    UNUSED(bRun);
-    
-    pCardRegs->vResetCardRegs();
-  }
+//
+//  // rules
+//
+//  if (pBoard->bMay_Scan_Filter_to_IndexScan()) {
+//
+//    bool bRun = pBoard->bRule_Scan_Filter_to_IndexScan();
+//    UNUSED(bRun);
+//
+//    pCardRegs->vResetCardRegs();
+//  }
   
   Cue::vGetReturn("$$$$$$ >>"_Stz);
 }

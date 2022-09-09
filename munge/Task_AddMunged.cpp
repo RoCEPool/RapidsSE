@@ -29252,7 +29252,7 @@ void Task::vAddMunged(Task* )
     "  PipeSpec[] Optimiser[].dissect\n"
     "\n"
     "  \"<optimise>\" [job].tagSet@ tagSet.hasName if\n"
-    "    //Optimiser[].optimise\n"
+    "    Optimiser[].optimise\n"
     "  then\n"
     "\n"
     "  \"<weave>\" [job].tagSet@ tagSet.hasName if\n"
