@@ -52,8 +52,8 @@ LOG 'Running index joins with hash...';
 INCLUDE 'indexJoinHash.test';
 
 //------------------------------------------------------------------------------
-//LOG 'Running tpch query 1...';
-//INCLUDE 'query1.test';
+LOG 'Running tpch query 1...';
+INCLUDE 'query1.test';
 
 //------------------------------------------------------------------------------
 //LOG 'Running tpch query 3...';
