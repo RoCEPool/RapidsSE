@@ -48,7 +48,7 @@ static const u8 C_IVL_YEAR_MAX    = 72057594037927935; // 0..2^56 -1
 static const u8 C_IVL_MONTH_MAX   = 72057594037927935; // 0..2^56 -1
 static const u8 C_IVL_DAY_MAX     = 72057594037927935; // 0..2^56 -1
 static const u8 C_IVL_HOUR_MAX    = 72057594037927935; // 0..2^56 -1
-static const u8 C_IVL_MINUTE_MAX     = 72057594037927935; // 0..2^56 -1
+static const u8 C_IVL_MINUTE_MAX  = 72057594037927935; // 0..2^56 -1
 static const u8 C_IVL_SEC_SEC_MAX = 68719476735;       // 0..2^36 -1
 
 static const u8 C_IVL_YEARMON_MONTH_MAX = 72057594037927935; // 0..2^56 -1
@@ -298,7 +298,7 @@ public:
 
   Ivl(eIV eIvlType);
   operator i8(void)                    { return T.m_iAsI8; }  // auto conversion
-  
+
   void operator = (i8 iArg)            { T.m_iAsI8 = iArg; }  // assign from i8
   
   void vSetMax(void);

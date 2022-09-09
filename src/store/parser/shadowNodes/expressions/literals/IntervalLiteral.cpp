@@ -103,10 +103,18 @@ void IntervalLiteral::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
       break;
 
     case IV_SECOND:
-      sBuf.vCatSprint("INTERVAL %s'%lld' %s"_Stz,
-                      szNeg,
-                      xIvl.T.m_xIvl.u.m_xIvlSec.m_uSeconds,
-                      aIV_field[eIvlType]);
+      if (xIvl.T.m_xIvl.u.m_xIvlDayToSec.m_uFrac > 0) {
+        sBuf.vCatSprint("INTERVAL %s'%lld.%06lld' %s"_Stz,
+                        szNeg,
+                        xIvl.T.m_xIvl.u.m_xIvlSec.m_uSeconds,
+                        xIvl.T.m_xIvl.u.m_xIvlSec.m_uMicros,
+                        aIV_field[eIvlType]);
+      } else {
+        sBuf.vCatSprint("INTERVAL %s'%lld' %s"_Stz,
+                        szNeg,
+                        xIvl.T.m_xIvl.u.m_xIvlSec.m_uSeconds,
+                        aIV_field[eIvlType]);
+      }
       break;
 
     case IV_DAY_TO_HOUR:

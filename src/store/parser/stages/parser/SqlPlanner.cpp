@@ -3869,15 +3869,29 @@ Ivl SqlPlanner::xCleanSecondInterval(Stz* szVal, sqlParser::StringLiteralContext
     ++psChar;
 
     if (StrLib::bIsDigit(*psChar)) {
-      // Read in the fractional seconds
-      b1 bResult = StrLib::bExtractU8(&psChar, &uFracVal);
+      // Read in the fractional seconds as microseconds
+      b1 bResult = StrLib::bExtractFraction(&psChar, &uFracVal, 6);
 
       if (!bResult) {
         // Out of range of C_MAX_INT and definitely out of range of microseconds.
         SyntaxException::vThrow(pCtx->start->getLine(),
                                 pCtx->start->getCharPositionInLine(),
                                 EC_INVALID_INTERVAL_FORMAT,
-                                ": absolute interval microseconds value exceeds maximum of %lld"_Stz,
+                                ": absolute interval microseconds value exceeds range of 0-%lld"_Stz,
+                                C_IVL_USEC_MAX);
+      }
+
+      // Ignore trailing zeros
+      while (psChar != psEnd && *psChar == '0') {
+        ++psChar;
+      }
+
+      // Were there additional numbers specified in excess of microseconds?
+      if (psChar != psEnd && StrLib::bIsDigit(*psChar)) {
+        SyntaxException::vThrow(pCtx->start->getLine(),
+                                pCtx->start->getCharPositionInLine(),
+                                EC_INVALID_INTERVAL_FORMAT,
+                                ": absolute interval microseconds value exceeds range of 0-%lld"_Stz,
                                 C_IVL_USEC_MAX);
       }
 
@@ -3933,6 +3947,8 @@ Ivl SqlPlanner::xCleanSecondInterval(Stz* szVal, sqlParser::StringLiteralContext
   xIvl.T.m_xIvl.m_bIsNull = false;
   xIvl.T.m_xIvl.u.m_xIvlSec.m_uSeconds = uSecVal;
   xIvl.T.m_xIvl.u.m_xIvlSec.m_uMicros = uFracVal;
+
+  return xIvl;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3940,7 +3956,143 @@ Ivl SqlPlanner::xCleanSecondInterval(Stz* szVal, sqlParser::StringLiteralContext
 /*----------------------------------------------------------------------------*/
 Ivl SqlPlanner::xCleanYearMonthInterval(Stz* szVal, sqlParser::StringLiteralContext *pCtx)
 {
+  b1 bIsNegative = false;
+  u8 uYearVal = 0;
+  u8 uMonthVal = 0;
+  i8 nLength = szVal->nLength();
+  char* psChar = szVal->azChar();
+  char* psEnd = psChar + nLength;  // pointer to null terminator
+  const eIV eIvlType = IV_YEAR_TO_MONTH;
 
+  // Format of the string is: "<sp?><neg?><year>-<month><sp?>"
+
+  // Ignore leading spaces
+  while (*psChar == ' ') { ++psChar; }
+
+  if (psChar == psEnd) {
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine() + nLength,
+                            EC_INVALID_INTERVAL_FORMAT,
+                            ": interval string is incomplete"_Stz);
+  }
+
+  // Check for a negative or positive sign
+  if (*psChar == '-')
+  {
+    bIsNegative = true;
+    ++psChar;
+
+  } else if (*psChar == '+') {
+    ++psChar;
+  }
+
+  if (psChar == psEnd) {
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine() + nLength,
+                            EC_INVALID_INTERVAL_FORMAT,
+                            ": interval string is incomplete"_Stz);
+  }
+
+  // Must have at least one digit for the year value
+  if (!StrLib::bIsDigit(*psChar)) {
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine() + nLength,
+                            EC_INVALID_INTERVAL_FORMAT,
+                            ": interval string is incomplete"_Stz);
+  }
+
+  // Read year digits until we hit a non-digit
+  b1 bResult = StrLib::bExtractU8(&psChar, &uYearVal);
+
+  if (!bResult) {
+    // Out of range of C_MAX_INT and definitely out of range of a year field value.
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine(),
+                            EC_INVALID_INTERVAL_FORMAT,
+                            ": absolute interval %s value exceeds maximum of %lld"_Stz,
+                            aIV_field[eIvlType],
+                            C_IVL_YEARMON_MONTH_MAX);
+  }
+
+  // We should have a dash next
+  if (*psChar != '-') {
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine(),
+                            EC_INVALID_INTERVAL_FORMAT,
+                            ": missing '-' separator"_Stz,
+                            *psChar);
+  }
+
+  ++psChar; // Skip over the dash
+
+  // Must have at least one digit for the month value
+  if (!StrLib::bIsDigit(*psChar)) {
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine() + nLength,
+                            EC_INVALID_INTERVAL_FORMAT,
+                            ": interval string is incomplete"_Stz);
+  }
+
+  // Read month digits until we hit a non-digit
+  bResult = StrLib::bExtractU8(&psChar, &uMonthVal);
+
+  if (!bResult) {
+    // Out of range of C_MAX_INT and definitely out of range of a year field value.
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine(),
+                            EC_INVALID_INTERVAL_FORMAT,
+                            ": absolute interval %s value exceeds maximum of %lld"_Stz,
+                            aIV_field[eIvlType],
+                            C_IVL_YEARMON_MONTH_MAX);
+  }
+
+
+  if (!StrLib::bIsWhite(*psChar) && psChar != psEnd) {
+    // Got a character we didn't expect after the digits
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine(),
+                            EC_INVALID_INTERVAL_FORMAT,
+                            ": non-digit value '%c' encountered"_Stz,
+                            *psChar);
+  }
+
+//  // Check if the month is between [0,11]
+//  if (uMonthVal > 11) {
+//    SyntaxException::vThrow(pCtx->start->getLine(),
+//                            pCtx->start->getCharPositionInLine(),
+//                            EC_INVALID_INTERVAL_FORMAT,
+//                            ": month value must be in the range [0,11] in a %s interval"_Stz,
+//                            aIV_field[eIvlType]);
+//  }
+
+  // Ignore trailing spaces
+  while (*psChar == ' ') { ++psChar; }
+
+  // If we are not at the end then we have encountered a character we don't expect
+  if (psChar != psEnd) {
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine() + nLength,
+                            EC_INVALID_INTERVAL_FORMAT,
+                            ": non-digit value '%c' encountered"_Stz,
+                            *psChar);
+  }
+
+  // Now check the bounds and set the value
+  u8 uCombinedMonths = uYearVal * 12 + uMonthVal;
+  if (uCombinedMonths > C_IVL_YEARMON_MONTH_MAX) {
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine(),
+                            EC_INVALID_INTERVAL_FORMAT,
+                            ": absolute interval %s value exceeds maximum of %lld"_Stz,
+                            aIV_field[eIvlType],
+                            C_IVL_YEARMON_MONTH_MAX);
+  }
+
+  Ivl xIvl{eIvlType};
+  xIvl.T.m_xIvl.m_bIsNeg = bIsNegative;
+  xIvl.T.m_xIvl.m_bIsNull = false;
+  xIvl.T.m_xIvl.u.m_xIvlYrToMon.m_uMonths = uCombinedMonths;
+  return xIvl;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3948,7 +4100,153 @@ Ivl SqlPlanner::xCleanYearMonthInterval(Stz* szVal, sqlParser::StringLiteralCont
 /*----------------------------------------------------------------------------*/
 Ivl SqlPlanner::xCleanDayHourInterval(Stz* szVal, sqlParser::StringLiteralContext *pCtx)
 {
+  b1 bIsNegative = false;
+  u8 uDayVal = 0;
+  u8 uHourVal = 0;
+  i8 nLength = szVal->nLength();
+  char* psChar = szVal->azChar();
+  char* psEnd = psChar + nLength;  // pointer to null terminator
+  const eIV eIvlType = IV_DAY_TO_HOUR;
 
+  // Format of the string is: "<sp?><neg?><day><spaces><hour><sp?>"
+
+  // Ignore leading spaces
+  while (*psChar == ' ') { ++psChar; }
+
+  if (psChar == psEnd) {
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine() + nLength,
+                            EC_INVALID_INTERVAL_FORMAT,
+                            ": interval string is incomplete"_Stz);
+  }
+
+  // Check for a negative or positive sign
+  if (*psChar == '-')
+  {
+    bIsNegative = true;
+    ++psChar;
+
+  } else if (*psChar == '+') {
+    ++psChar;
+  }
+
+  if (psChar == psEnd) {
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine() + nLength,
+                            EC_INVALID_INTERVAL_FORMAT,
+                            ": interval string is incomplete"_Stz);
+  }
+
+  // Must have at least one digit for the day value
+  if (!StrLib::bIsDigit(*psChar)) {
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine() + nLength,
+                            EC_INVALID_INTERVAL_FORMAT,
+                            ": interval string is incomplete"_Stz);
+  }
+
+  // Read day digits until we hit a non-digit
+  b1 bResult = StrLib::bExtractU8(&psChar, &uDayVal);
+
+  if (!bResult) {
+    // Out of range of C_MAX_INT and definitely out of range of a day field value.
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine(),
+                            EC_INVALID_INTERVAL_FORMAT,
+                            ": absolute interval %s value exceeds maximum of %lld"_Stz,
+                            aIV_field[eIvlType],
+                            C_IVL_DAYHOUR_DAY_MAX);
+  }
+
+  // We should have a space next
+  if (*psChar != ' ') {
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine(),
+                            EC_INVALID_INTERVAL_FORMAT,
+                            ": missing ' ' separator between day and hour digits"_Stz,
+                            *psChar);
+  }
+
+  // Ignore day-hour spaces
+  while (*psChar == ' ') { ++psChar; }
+
+  // Must have at least one digit for the hour value
+  if (!StrLib::bIsDigit(*psChar)) {
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine() + nLength,
+                            EC_INVALID_INTERVAL_FORMAT,
+                            ": interval string is incomplete"_Stz);
+  }
+
+  // Read hour digits until we hit a non-digit
+  bResult = StrLib::bExtractU8(&psChar, &uHourVal);
+
+  if (!bResult) {
+    // Out of range of C_MAX_INT and definitely out of range of an hour field value.
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine(),
+                            EC_INVALID_INTERVAL_FORMAT,
+                            ": absolute interval %s value exceeds maximum of %lld"_Stz,
+                            aIV_field[eIvlType],
+                            C_IVL_DAYHOUR_MIN_MAX/60);
+  }
+
+
+  if (!StrLib::bIsWhite(*psChar) && psChar != psEnd) {
+    // Got a character we didn't expect after the digits
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine(),
+                            EC_INVALID_INTERVAL_FORMAT,
+                            ": non-digit value '%c' encountered"_Stz,
+                            *psChar);
+  }
+
+  // Check if the hour is between [0,23]
+  if (uHourVal > 23) {
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine(),
+                            EC_INVALID_INTERVAL_FORMAT,
+                            ": hour value must be in the range [0,23] in a %s interval"_Stz,
+                            aIV_field[eIvlType]);
+  }
+
+  // Ignore trailing spaces
+  while (*psChar == ' ') { ++psChar; }
+
+  // If we are not at the end then we have encountered a character we don't expect
+  if (psChar != psEnd) {
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine() + nLength,
+                            EC_INVALID_INTERVAL_FORMAT,
+                            ": non-digit value '%c' encountered"_Stz,
+                            *psChar);
+  }
+
+  // Now check the bounds and set the value
+  if (uDayVal > C_IVL_DAYHOUR_DAY_MAX) {
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine(),
+                            EC_INVALID_INTERVAL_FORMAT,
+                            ": absolute interval %s value exceeds DAY maximum of %lld"_Stz,
+                            aIV_field[eIvlType],
+                            C_IVL_DAYHOUR_DAY_MAX);
+  }
+
+  if (uHourVal > C_IVL_DAYHOUR_MIN_MAX / 60) {
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine(),
+                            EC_INVALID_INTERVAL_FORMAT,
+                            ": absolute interval %s value exceeds HOUR maximum of %lld"_Stz,
+                            aIV_field[eIvlType],
+                            C_IVL_DAYHOUR_MIN_MAX / 60);
+  }
+
+  Ivl xIvl{eIvlType};
+  xIvl.T.m_xIvl.m_bIsNeg = bIsNegative;
+  xIvl.T.m_xIvl.m_bIsNull = false;
+  xIvl.T.m_xIvl.u.m_xIvlDayToHr.m_uDays = uDayVal;
+  xIvl.T.m_xIvl.u.m_xIvlDayToHr.m_uMinutes = uHourVal * 60;
+  return xIvl;
 }
 
 /*----------------------------------------------------------------------------*/
