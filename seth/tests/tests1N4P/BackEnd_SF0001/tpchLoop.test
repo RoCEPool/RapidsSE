@@ -68,8 +68,12 @@ LOG 'Running tpch query 6...';
 INCLUDE 'query6.test';
 
 //------------------------------------------------------------------------------
-//LOG 'Running tpch query 12...';
-//INCLUDE 'query12.test';
+//LOG 'Running tpch query 10...';
+//INCLUDE 'query10.test';
+
+//------------------------------------------------------------------------------
+LOG 'Running tpch query 12...';
+INCLUDE 'query12.test';
 
 //------------------------------------------------------------------------------
 LOG 'Running tpch query 16...';
