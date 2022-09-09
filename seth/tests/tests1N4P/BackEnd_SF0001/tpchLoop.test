@@ -64,8 +64,8 @@ INCLUDE 'query1.test';
 //INCLUDE 'query5.test';
 
 //------------------------------------------------------------------------------
-//LOG 'Running tpch query 6...';
-//INCLUDE 'query6.test';
+LOG 'Running tpch query 6...';
+INCLUDE 'query6.test';
 
 //------------------------------------------------------------------------------
 //LOG 'Running tpch query 12...';
