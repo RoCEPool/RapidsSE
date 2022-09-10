@@ -961,10 +961,10 @@
       nSrcSize = strlen(szArg1);                                            \
       nDstSize = 0;                                                         \
       szDstStz = szDstArea;                                                 \
-      if (nSrcSize >= iStart+iLength-1) {                                   \
-        while (*szSrcStz && iLength--) {                                    \
-          *szDstStz++ = *szSrcStz++;                                        \
-          nDstSize++;                                                       \
+      if (nSrcSize >= iStart) {                                             \
+         while (*szSrcStz && iLength-- && nSrcSize > nDstSize) {            \
+           *szDstStz++ = *szSrcStz++;                                       \
+           nDstSize++;                                                      \
         }                                                                   \
       }                                                                     \
       *szDstStz = '\0';                                                     \
