@@ -101,12 +101,17 @@
   then
 
   "<weave>" [job].tagSet@ tagSet.hasName if
-    Optimiser[].weave dup . to Text[] // discard
+    Optimiser[].weave to Text[] // discard
   then
 
   Optimiser[].delete
 
   PipeSpec[].delete
+
+  "<optimised>"  [job].tagSet@ tagSet.hasName if
+    Text[] "Optimised: %v"  str.format .
+  then
+
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -145,8 +150,15 @@
 
   //Text[] "FORKING CHILD FOR PIPELINE: %v"  str.format .
 
+  "<jobTags>" [job].tagSet@ tagSet.hasName if
+    "JOB TAGS:" .
+    [job].tagSet@ tagSet.dump
+  then
 
-  //[job].tagSet@ tagSet.dump
+  "<transliterated>" [job].tagSet@ tagSet.hasName if
+    Text[] "Tranliterated: \n%v"  str.format .
+  then
+
   "<dissect>"  [job].tagSet@ tagSet.hasName
   "<optimise>" [job].tagSet@ tagSet.hasName or
   "<weave>"    [job].tagSet@ tagSet.hasName or if

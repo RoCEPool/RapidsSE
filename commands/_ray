@@ -3,10 +3,22 @@
 /*============================================================================*/
 
 _nation
-/time load nation "/Users/Shared/tpch/SF1/nation.csv" ;
+
+load nation "/Users/Shared/rapidsse/tpch/SF1/nation.csv" ;
+
+/jobTags
+/transliterated
+/todo
 select * from nation;
 
-di nation;
+/jobTags
+// /optimise
+// /weave
+/transliterated
+// /optimised
+select sum(n_nationKey) from nation;
+
+drop table nation;
 
 /*============================================================================*/
 /* end                                                                        */

@@ -8,8 +8,12 @@ namespace BASE
   class Stz
   {
   private:
-    char m_caChar[1];
-  
+    union
+    {
+      char m_caChar[1];
+      char _S[];
+    };
+
   public:
     void* operator new(size_t);
   

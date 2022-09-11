@@ -4048,6 +4048,51 @@ void StrLib::vRemoveTill(char* azArg, const char cTill, bool bRemoveTheTill)
 }
 
 /*----------------------------------------------------------------------------*/
+/* remove leading token                                                       */
+/*----------------------------------------------------------------------------*/
+void StrLib::vRemoveToken(char* azArg)
+{
+  _static_
+
+  char* azRight = azArg;
+
+  // skip leading whitespace
+  while (*azRight) {
+    if (' ' == *azRight || '\n' == *azRight) {
+      azRight++;
+      continue;
+    }
+    break;
+  }
+
+  // something still to process?
+  if (! *azRight)
+    return;
+
+  // skip token
+  while (*azRight) {
+    if (' ' == *azRight || '\n' == *azRight)
+      break;
+    azRight++;
+  }
+
+  // skip whitespace
+  while (*azRight) {
+    if (' ' == *azRight || '\n' == *azRight) {
+      azRight++;
+      continue;
+    }
+    break;
+  }
+
+  // something still to process?
+  if (! *azRight)
+    return;
+
+  vShuffleLeft(azArg,azRight);
+}
+
+/*----------------------------------------------------------------------------*/
 /* reverse a string                                                           */
 /*----------------------------------------------------------------------------*/
 void StrLib::vReverse(char* azDst, char* azSrc)

@@ -3891,7 +3891,8 @@ bool PROMPT::bPrompt_select(SePrompt* pPrompt)
     StrLib::vShuffleLeft(sTrimmed.azChar(),1);
 
   while ('/' == *sTrimmed.azChar())
-    StrLib::vRemoveTill(sTrimmed.azChar(),' ', true);
+    //StrLib::vRemoveTill(sTrimmed.azChar(),' ', true);
+    StrLib::vRemoveToken(sTrimmed.azChar());
 
   //s16KB sStatement;
   s16KB sSqlCompiler;
@@ -3906,10 +3907,11 @@ bool PROMPT::bPrompt_select(SePrompt* pPrompt)
   //pInpTknVec->vDumpVec();
   //pInpTagSet->vDumpSet();
 
-  vTrace("TODO: %s\n"_Stz,sSqlCompiler.szStz());
 
   pPrompt->vToDo(sSqlCompiler);
-  
+  if (pInpTagSet->bHasName("<toDo>"_Stz))
+    vTrace("TODO: %s\n"_Stz,pPrompt->szToDo());
+
   return true;
 }
 
