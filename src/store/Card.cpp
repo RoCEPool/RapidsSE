@@ -100,6 +100,8 @@ Card::Card(eCK eCard)
 
   static i8 iSeqNo = 0;
 
+  MemLib::vZero(m_caRef,sizeof(m_caRef),CN_CARD);
+
   m_eCard    = eCard;
   m_eCatg    = Card::eToECatg(eCard);
   m_iCardNo  = C_UNKNOWN;
@@ -1049,23 +1051,43 @@ void Card::vRemoveSubCard(Card* pCardRemove)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card::vRenumberCards(void)
+void Card::vRenumberSubCards(Card* pParentCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  ListExoIter2_t<Card>* pBoard_I = pNewIter();
 
-  i8 iCardNo = 0;
-  while (pBoard_I->bHasNext()) {
-    Card* pCard = pBoard_I->pNext();
-    
-    pCard->vCardNo(iCardNo++);
-    pCard->vRenumberCards();
+  ListExoIter2_t<Card>* pSubCard_I = pNewIter();
+
+  vRef(pParentCard);
+
+  i8 iSubCardNo = 0;
+  while (pSubCard_I->bHasNext()) {
+    Card* pSubCard = pSubCard_I->pNext();
+
+    pSubCard->vCardNo(iSubCardNo++);
+    pSubCard->vRenumberSubCards(this);
   }
-  
-  delete pBoard_I;
-}
 
+  delete pSubCard_I;
+
+  vRef();
+}
+/*----------------------------------------------------------------------------*/
+//void Card::vRenumberMainCards(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+//
+//  ListExoIter2_t<Card>* pBoard_I = pNewIter();
+//
+//  i8 iCardNo = 0;
+//  while (pBoard_I->bHasNext()) {
+//    Card* pCard = pBoard_I->pNext();
+//
+//    pCard->vCardNo(iCardNo++);
+//    pCard->vRenumberMainCards();
+//  }
+//
+//  delete pBoard_I;
+//}
 /*----------------------------------------------------------------------------*/
 /* get number of sub-cards                                                    */
 /*----------------------------------------------------------------------------*/
@@ -1854,6 +1876,47 @@ void Card::vRank(i8 iRank)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   vAddProperty("iRank"_Stz,iRank);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set ref                                                                    */
+/*----------------------------------------------------------------------------*/
+void Card::vRef(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  s4K sPretty;
+
+  sPretty = aCK[m_eCard];
+
+  if (m_pProperties) {
+    s4K sProperties;
+    m_pProperties->vToString(sProperties,true);
+    sPretty.vConcat(": "_Stz);
+    sPretty.vConcat(sProperties);
+  }
+
+  strcat(m_caRef," ");
+  strcat(m_caRef,sPretty.azChar());
+
+  //  vTrace("%s\n"_Stz,m_caRef);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set ref                                                                    */
+/*----------------------------------------------------------------------------*/
+void Card::vRef(Card* pParentCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (pParentCard) {
+    sprintf(m_caRef,"%s.%lld", pParentCard->m_caRef, m_iCardNo);
+  }
+  else {
+    sprintf(m_caRef,"%lld",m_iCardNo);
+  }
+
+//  vTrace("%s\n"_Stz,m_caRef);
 }
 
 /*----------------------------------------------------------------------------*/

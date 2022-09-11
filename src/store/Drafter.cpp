@@ -236,7 +236,7 @@ bool Drafter::bCut(TokenVec* pTknVec, eOA& reOptAct)
     }
   }
   
-  pBoard->m_pCard_SubSet->vRenumberCards();
+  //pBoard->m_pCard_SubSet->vRenumberMainCards();
   
   return true;
   

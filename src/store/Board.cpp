@@ -227,7 +227,7 @@ void Board::vPrintBoard(Stz* szCue)
   bool bPrint = true;
   bool bExecuted = false;
 
-  m_pCard_SubSet->vRenumberCards();
+  vRenumberMainCards();
   
   if (! bPrint)
     return;
@@ -326,6 +326,26 @@ void Board::vQueryNm(Stz* szQueryNm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
   m_sQueryNm = szQueryNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* renumber the cards                                                         */
+/*----------------------------------------------------------------------------*/
+void Board::vRenumberMainCards(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  ListExoIter2_t<Card>* pMainCard_I = m_pCard_SubSet->pNewIter();
+
+  i8 iMainCardNo = 0;
+  while (pMainCard_I->bHasNext()) {
+    Card* pMainCard = pMainCard_I->pNext();
+
+    pMainCard->vCardNo(iMainCardNo++);
+    pMainCard->vRenumberSubCards(nullptr);
+  }
+
+  delete pMainCard_I;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -428,6 +448,7 @@ void Board::vRankCandIndex(Card_CandIndex* pCard_CandIndex)
 
   pCard_CandIndex->vRank(iRank);
 }
+
 
 
 /*----------------------------------------------------------------------------*/

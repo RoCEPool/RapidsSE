@@ -952,7 +952,7 @@ bool TagSet::bSame(TagSet* pTagSet_arg)
 /*----------------------------------------------------------------------------*/
 /* to string                                                                  */
 /*----------------------------------------------------------------------------*/
-void TagSet::vToString(Stz* szStz)
+void TagSet::vToString(Stz* szStz, bool bValueOnly)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
@@ -962,13 +962,19 @@ void TagSet::vToString(Stz* szStz)
   }
   
   for (i8 i_Tag = 0; i_Tag < m_nItems; i_Tag++) {
-    
-    if (i_Tag)
-      szStz->vConcat(", "_Stz);
-    
-    szStz->vConcat(szName(i_Tag));
-    szStz->vConcat("="_Stz);
-    
+
+    if (bValueOnly) {
+      if (i_Tag)
+        szStz->vConcat(" "_Stz);
+    }
+    else {
+      if (i_Tag)
+        szStz->vConcat(", "_Stz);
+
+      szStz->vConcat(szName(i_Tag));
+      szStz->vConcat("="_Stz);
+    }
+
     if (bIsString(i_Tag)) {
       szStz->vConcat(m_xyStrings.szGet(m_xaTag[i_Tag].m_i_Value));
       continue;

@@ -79,7 +79,7 @@ namespace BASE
   
     Tag* pTag(i8 i_Tag);
     eTN  eToken(i8 i_Tag);
-    void vToString(Stz* szStz);
+    void vToString(Stz* szStz, bool bValueOnly=false);
 
     i8   iValue(i8 i_Tag);
     i8   iValue(Stz* szName);

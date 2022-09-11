@@ -7,16 +7,21 @@ _nation
 load nation "/Users/Shared/rapidsse/tpch/SF1/nation.csv" ;
 
 /jobTags
+/optimise
+/weave
 /transliterated
+/optimised
 /todo
 select * from nation;
 
+/*
 /jobTags
-// /optimise
-// /weave
+/optimise
+/weave
 /transliterated
-// /optimised
+/optimised
 select sum(n_nationKey) from nation;
+*/
 
 drop table nation;
 
