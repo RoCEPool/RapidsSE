@@ -156,6 +156,21 @@ rows:
   (true)
   (true)
 
+select true = bol_col2 from datums;
+ (false)
+ (null)
+ (true)
+ (false)
+ (true)
+ (false)
+ (true)
+ (false)
+ (false)
+ (true)
+ (true)
+ (true)
+ (true)
+
 // drop the table
 drop table datums;
 success
