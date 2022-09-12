@@ -3668,7 +3668,7 @@ Ivl SqlPlanner::xCleanSingleFieldInterval(Stz* szVal, eIV eIvlType, sqlParser::S
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine() + nLength,
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": interval string is incomplete"_Stz);
+                            ": interval string is incomplete or invalid"_Stz);
   }
 
   // Check for a negative or positive sign
@@ -3685,7 +3685,7 @@ Ivl SqlPlanner::xCleanSingleFieldInterval(Stz* szVal, eIV eIvlType, sqlParser::S
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine() + nLength,
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": interval string is incomplete"_Stz);
+                            ": interval string is incomplete or invalid"_Stz);
   }
 
   // Must have at least one digit
@@ -3693,7 +3693,8 @@ Ivl SqlPlanner::xCleanSingleFieldInterval(Stz* szVal, eIV eIvlType, sqlParser::S
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine() + nLength,
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": interval string is incomplete"_Stz);
+                            ": non-digit value '%c' encountered"_Stz,
+                            *psChar);
   }
 
   // Read digits
@@ -3714,7 +3715,7 @@ Ivl SqlPlanner::xCleanSingleFieldInterval(Stz* szVal, eIV eIvlType, sqlParser::S
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": non-digit value '%c' encountered"_Stz,
+                            ": unexpected character '%c' encountered"_Stz,
                             *psChar);
   }
 
@@ -3726,7 +3727,7 @@ Ivl SqlPlanner::xCleanSingleFieldInterval(Stz* szVal, eIV eIvlType, sqlParser::S
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine() + nLength,
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": non-digit value '%c' encountered"_Stz,
+                            ": unexpected character '%c' encountered"_Stz,
                             *psChar);
   }
 
@@ -3820,7 +3821,7 @@ Ivl SqlPlanner::xCleanSecondInterval(Stz* szVal, sqlParser::StringLiteralContext
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine() + nLength,
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": interval string is incomplete"_Stz);
+                            ": interval string is incomplete or invalid"_Stz);
   }
 
   // Check for a negative or positive sign
@@ -3837,7 +3838,7 @@ Ivl SqlPlanner::xCleanSecondInterval(Stz* szVal, sqlParser::StringLiteralContext
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": interval string is incomplete"_Stz);
+                            ": interval string is incomplete or invalid"_Stz);
   }
 
   if (StrLib::bIsDigit(*psChar)) {
@@ -3900,7 +3901,7 @@ Ivl SqlPlanner::xCleanSecondInterval(Stz* szVal, sqlParser::StringLiteralContext
         SyntaxException::vThrow(pCtx->start->getLine(),
                                 pCtx->start->getCharPositionInLine(),
                                 EC_INVALID_INTERVAL_FORMAT,
-                                ": non-digit value '%c' encountered"_Stz,
+                                ": unexpected character '%c' encountered"_Stz,
                                 *psChar);
       }
     }
@@ -3921,7 +3922,7 @@ Ivl SqlPlanner::xCleanSecondInterval(Stz* szVal, sqlParser::StringLiteralContext
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine() + nLength,
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": non-digit value '%c' encountered"_Stz,
+                            ": unexpected character '%c' encountered"_Stz,
                             *psChar);
   }
 
@@ -3973,7 +3974,7 @@ Ivl SqlPlanner::xCleanYearMonthInterval(Stz* szVal, sqlParser::StringLiteralCont
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine() + nLength,
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": interval string is incomplete"_Stz);
+                            ": interval string is incomplete or invalid"_Stz);
   }
 
   // Check for a negative or positive sign
@@ -3990,7 +3991,7 @@ Ivl SqlPlanner::xCleanYearMonthInterval(Stz* szVal, sqlParser::StringLiteralCont
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine() + nLength,
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": interval string is incomplete"_Stz);
+                            ": interval string is incomplete or invalid"_Stz);
   }
 
   // Must have at least one digit for the year value
@@ -3998,7 +3999,8 @@ Ivl SqlPlanner::xCleanYearMonthInterval(Stz* szVal, sqlParser::StringLiteralCont
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine() + nLength,
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": interval string is incomplete"_Stz);
+                            ": non-digit value '%c' encountered"_Stz,
+                            *psChar);
   }
 
   // Read year digits until we hit a non-digit
@@ -4025,12 +4027,20 @@ Ivl SqlPlanner::xCleanYearMonthInterval(Stz* szVal, sqlParser::StringLiteralCont
 
   ++psChar; // Skip over the dash
 
+  if (psChar == psEnd) {
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine() + nLength,
+                            EC_INVALID_INTERVAL_FORMAT,
+                            ": interval string is incomplete or invalid"_Stz);
+  }
+
   // Must have at least one digit for the month value
   if (!StrLib::bIsDigit(*psChar)) {
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine() + nLength,
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": interval string is incomplete"_Stz);
+                            ": non-digit value '%c' encountered"_Stz,
+                            *psChar);
   }
 
   // Read month digits until we hit a non-digit
@@ -4052,7 +4062,7 @@ Ivl SqlPlanner::xCleanYearMonthInterval(Stz* szVal, sqlParser::StringLiteralCont
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": non-digit value '%c' encountered"_Stz,
+                            ": unexpected character '%c' encountered"_Stz,
                             *psChar);
   }
 
@@ -4073,7 +4083,7 @@ Ivl SqlPlanner::xCleanYearMonthInterval(Stz* szVal, sqlParser::StringLiteralCont
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine() + nLength,
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": non-digit value '%c' encountered"_Stz,
+                            ": unexpected character '%c' encountered"_Stz,
                             *psChar);
   }
 
@@ -4083,7 +4093,7 @@ Ivl SqlPlanner::xCleanYearMonthInterval(Stz* szVal, sqlParser::StringLiteralCont
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": absolute interval %s value exceeds maximum of %lld"_Stz,
+                            ": absolute interval %s value exceeds maximum months of %lld"_Stz,
                             aIV_field[eIvlType],
                             C_IVL_YEARMON_MONTH_MAX);
   }
@@ -4117,7 +4127,7 @@ Ivl SqlPlanner::xCleanDayHourInterval(Stz* szVal, sqlParser::StringLiteralContex
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine() + nLength,
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": interval string is incomplete"_Stz);
+                            ": interval string is incomplete or invalid"_Stz);
   }
 
   // Check for a negative or positive sign
@@ -4134,7 +4144,7 @@ Ivl SqlPlanner::xCleanDayHourInterval(Stz* szVal, sqlParser::StringLiteralContex
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine() + nLength,
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": interval string is incomplete"_Stz);
+                            ": interval string is incomplete or invalid"_Stz);
   }
 
   // Must have at least one digit for the day value
@@ -4142,7 +4152,7 @@ Ivl SqlPlanner::xCleanDayHourInterval(Stz* szVal, sqlParser::StringLiteralContex
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine() + nLength,
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": interval string is incomplete"_Stz);
+                            ": interval string is incomplete or invalid"_Stz);
   }
 
   // Read day digits until we hit a non-digit
@@ -4175,7 +4185,7 @@ Ivl SqlPlanner::xCleanDayHourInterval(Stz* szVal, sqlParser::StringLiteralContex
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine() + nLength,
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": interval string is incomplete"_Stz);
+                            ": interval string is incomplete or invalid"_Stz);
   }
 
   // Read hour digits until we hit a non-digit

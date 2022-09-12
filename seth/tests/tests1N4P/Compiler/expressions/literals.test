@@ -319,95 +319,677 @@ EXPLAIN SELECT -9223372036854775807000 FROM nation;
 failure contains: 'Invalid format of integer literal: Value of out range: "-9223372036854775807000". Integer range is -9223372036854775806 to 9223372036854775806'
 
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 //  Intervals
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
 // Interval interval literals - whitespace, negative, etc
+// -------------------------------------------------------
 EXPLAIN SELECT INTERVAL '1'     YEAR FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''1''     YEAR FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1'' YEAR ; Ordinal Expr = INTERVAL ''1'' YEAR)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '  1'   YEAR FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''  1''   YEAR FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1'' YEAR ; Ordinal Expr = INTERVAL ''1'' YEAR)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '  1  ' YEAR FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''  1  '' YEAR FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1'' YEAR ; Ordinal Expr = INTERVAL ''1'' YEAR)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL -'1'    YEAR FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL -''1''    YEAR FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL -''1'' YEAR ; Ordinal Expr = INTERVAL -''1'' YEAR)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '-1'    YEAR FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''-1''    YEAR FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL -''1'' YEAR ; Ordinal Expr = INTERVAL -''1'' YEAR)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL -'-1'   YEAR FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL -''-1''   YEAR FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1'' YEAR ; Ordinal Expr = INTERVAL ''1'' YEAR)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
 
 
 // Invalid interval literals
+// -------------------------------------------------------
+
 EXPLAIN SELECT INTERVAL ''   YEAR FROM nation;
+failure contains: 'Invalid interval format: interval string is empty'
+
 EXPLAIN SELECT INTERVAL 'aaa'   YEAR FROM nation;
+failure contains: 'Invalid interval format: interval string is incomplete'
+
 EXPLAIN SELECT INTERVAL '1a2'   YEAR FROM nation;
+failure contains: 'Invalid interval format: non-digit value ''a'' encountered'
+
 EXPLAIN SELECT INTERVAL 'a12'   YEAR FROM nation;
+failure contains: 'Invalid interval format: non-digit value ''a'' encountered'
+
 EXPLAIN SELECT INTERVAL '12a'   YEAR FROM nation;
+failure contains: 'Invalid interval format: non-digit value ''a'' encountered'
+
 EXPLAIN SELECT INTERVAL '0x1'   YEAR FROM nation;
+failure contains: 'Invalid interval format: non-digit value ''x'' encountered'
 
 
 // Single field interval literals
+// -------------------------------------------------------
+
 EXPLAIN SELECT INTERVAL '1' YEAR FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''1'' YEAR FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1'' YEAR ; Ordinal Expr = INTERVAL ''1'' YEAR)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '1' MONTH FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''1'' MONTH FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1'' MONTH ; Ordinal Expr = INTERVAL ''1'' MONTH)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '1' DAY FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''1'' DAY FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1'' DAY ; Ordinal Expr = INTERVAL ''1'' DAY)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '1' HOUR FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''1'' HOUR FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1'' HOUR ; Ordinal Expr = INTERVAL ''1'' HOUR)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '1' MINUTE FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''1'' MINUTE FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1'' MINUTE ; Ordinal Expr = INTERVAL ''1'' MINUTE)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
 // Check bounds. The bounds are the same for all single field values.
+// -------------------------------------------------------
+
 EXPLAIN SELECT INTERVAL '72057594037927935' MINUTE FROM nation;   // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''72057594037927935'' MINUTE FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''72057594037927935'' MINUTE ; Ordinal Expr = INTERVAL ''72057594037927935'' MINUTE)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+         
 EXPLAIN SELECT INTERVAL '72057594037927936' MINUTE FROM nation;   // invalid
+failure contains: 'Invalid interval format: absolute interval minute value exceeds maximum of 72057594037927935'
+
 EXPLAIN SELECT INTERVAL '-72057594037927935' MINUTE FROM nation;  // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''-72057594037927935'' MINUTE FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL -''72057594037927935'' MINUTE ; Ordinal Expr = INTERVAL -''72057594037927935'' MINUTE)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+         
 EXPLAIN SELECT INTERVAL '-72057594037927936' MINUTE FROM nation;  // invalid
+failure contains: 'Invalid interval format: absolute interval minute value exceeds maximum of 72057594037927935'
 
 
 // SECOND interval literals
 // These are a special category because it can have fractional seconds
-EXPLAIN SELECT INTERVAL '1' SECOND FROM nation;
-EXPLAIN SELECT INTERVAL '1.' SECOND FROM nation;
-EXPLAIN SELECT INTERVAL '.1' SECOND FROM nation;
-EXPLAIN SELECT INTERVAL '-.1' SECOND FROM nation;
-EXPLAIN SELECT INTERVAL '1.0' SECOND FROM nation;
-EXPLAIN SELECT INTERVAL '0.1' SECOND FROM nation;
-EXPLAIN SELECT INTERVAL '0.0' SECOND FROM nation;
+// -------------------------------------------------------
+
+EXPLAIN SELECT INTERVAL '1' SECOND FROM nation;         // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''1'' SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1'' SECOND ; Ordinal Expr = INTERVAL ''1'' SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+EXPLAIN SELECT INTERVAL '1.' SECOND FROM nation;        // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''1.'' SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1'' SECOND ; Ordinal Expr = INTERVAL ''1'' SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+EXPLAIN SELECT INTERVAL '.1' SECOND FROM nation;        // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''.1'' SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''0.100000'' SECOND ; Ordinal Expr = INTERVAL ''0.100000'' SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+EXPLAIN SELECT INTERVAL '-.1' SECOND FROM nation;       // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''-.1'' SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL -''0.100000'' SECOND ; Ordinal Expr = INTERVAL -''0.100000'' SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+EXPLAIN SELECT INTERVAL '1.0' SECOND FROM nation;       // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''1.0'' SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1'' SECOND ; Ordinal Expr = INTERVAL ''1'' SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+EXPLAIN SELECT INTERVAL '0.1' SECOND FROM nation;       // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''0.1'' SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''0.100000'' SECOND ; Ordinal Expr = INTERVAL ''0.100000'' SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+EXPLAIN SELECT INTERVAL '0.0' SECOND FROM nation;       // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''0.0'' SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''0'' SECOND ; Ordinal Expr = INTERVAL ''0'' SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '1.0e1' SECOND FROM nation;     // Invalid
+failure contains: 'Invalid interval format: non-digit value ''e'' encountered'
+
 // Check bounds. Max seconds is 68,719,476,735. Max microseconds are 999,999.
 EXPLAIN SELECT INTERVAL '68719476735' SECOND FROM nation;   // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''68719476735'' SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''68719476735'' SECOND ; Ordinal Expr = INTERVAL ''68719476735'' SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '68719476736' SECOND FROM nation;   // invalid
+failure contains: 'Invalid interval format: absolute interval seconds value exceeds maximum of 68719476735'
+
 EXPLAIN SELECT INTERVAL '-68719476735' SECOND FROM nation;  // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''-68719476735'' SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL -''68719476735'' SECOND ; Ordinal Expr = INTERVAL -''68719476735'' SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '-68719476736' SECOND FROM nation;  // invalid
+failure contains: 'Invalid interval format: absolute interval seconds value exceeds maximum of 68719476735'
+
 EXPLAIN SELECT INTERVAL '0.000001' SECOND FROM nation;      // ok
-EXPLAIN SELECT INTERVAL '0.000001000' SECOND FROM nation;   // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''0.000001'' SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''0.000001'' SECOND ; Ordinal Expr = INTERVAL ''0.000001'' SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+EXPLAIN SELECT INTERVAL '0.000001000' SECOND FROM nation;   // ok. ignore trailing zeros
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''0.000001000'' SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''0.000001'' SECOND ; Ordinal Expr = INTERVAL ''0.000001'' SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '0.00a001' SECOND FROM nation;      // Invalid
+failure contains: 'Invalid interval format: non-digit value ''a'' encountered'
+
 EXPLAIN SELECT INTERVAL '0.0000011' SECOND FROM nation;     // Invalid
+failure contains: 'absolute interval microseconds value exceeds range of 0-999999'
+
 EXPLAIN SELECT INTERVAL '0.0000001' SECOND FROM nation;     // Invalid
+failure contains: 'absolute interval microseconds value exceeds range of 0-999999'
+
 EXPLAIN SELECT INTERVAL '68719476735.999999' SECOND FROM nation; // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''68719476735.999999'' SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''68719476735.999999'' SECOND ; Ordinal Expr = INTERVAL ''68719476735.999999'' SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '68719476736.000000' SECOND FROM nation; // invalid
+failure contains: 'absolute interval seconds value exceeds maximum of 68719476735'
+
 EXPLAIN SELECT INTERVAL '-68719476735.999999' SECOND FROM nation; // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''-68719476735.999999'' SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL -''68719476735.999999'' SECOND ; Ordinal Expr = INTERVAL -''68719476735.999999'' SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 
 
 // YEAR TO MONTH interval literals
+// -------------------------------------------------------
+
 EXPLAIN SELECT INTERVAL '' YEAR TO MONTH FROM nation;       // invalid
+failure contains: 'Invalid interval format: interval string is empty'
+
 EXPLAIN SELECT INTERVAL '1' YEAR TO MONTH FROM nation;      // invalid
+failure contains: 'Invalid interval format: missing '-' separator'
+
 EXPLAIN SELECT INTERVAL '1 2' YEAR TO MONTH FROM nation;    // invalid
+failure contains: 'Invalid interval format: missing '-' separator'
+
 EXPLAIN SELECT INTERVAL '1-2' YEAR TO MONTH FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''1-2'' YEAR TO MONTH FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1-2'' YEAR TO MONTH ; Ordinal Expr = INTERVAL ''1-2'' YEAR TO MONTH)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '0-0' YEAR TO MONTH FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''0-0'' YEAR TO MONTH FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''0-0'' YEAR TO MONTH ; Ordinal Expr = INTERVAL ''0-0'' YEAR TO MONTH)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '0-1' YEAR TO MONTH FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''0-1'' YEAR TO MONTH FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''0-1'' YEAR TO MONTH ; Ordinal Expr = INTERVAL ''0-1'' YEAR TO MONTH)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '-1-2' YEAR TO MONTH FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''-1-2'' YEAR TO MONTH FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL -''1-2'' YEAR TO MONTH ; Ordinal Expr = INTERVAL -''1-2'' YEAR TO MONTH)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL -'1-2' YEAR TO MONTH FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL -''1-2'' YEAR TO MONTH FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL -''1-2'' YEAR TO MONTH ; Ordinal Expr = INTERVAL -''1-2'' YEAR TO MONTH)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL -'-1-2' YEAR TO MONTH FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL -''-1-2'' YEAR TO MONTH FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1-2'' YEAR TO MONTH ; Ordinal Expr = INTERVAL ''1-2'' YEAR TO MONTH)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '  1-2  ' YEAR TO MONTH FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''  1-2  '' YEAR TO MONTH FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1-2'' YEAR TO MONTH ; Ordinal Expr = INTERVAL ''1-2'' YEAR TO MONTH)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '1- 2' YEAR TO MONTH FROM nation;   // invalid
+failure contains: 'Invalid interval format: non-digit value '' '' encountered'
+
 EXPLAIN SELECT INTERVAL '1 -2' YEAR TO MONTH FROM nation;   // invalid
+failure contains: 'Invalid interval format: missing ''-'' separator'
+
 EXPLAIN SELECT INTERVAL '-1--2' YEAR TO MONTH FROM nation;  // invalid
+failure contains: 'Invalid interval format: non-digit value ''-'' encountered'
+
 EXPLAIN SELECT INTERVAL '1-11' YEAR TO MONTH FROM nation;   // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''1-11'' YEAR TO MONTH FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1-11'' YEAR TO MONTH ; Ordinal Expr = INTERVAL ''1-11'' YEAR TO MONTH)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '1-12' YEAR TO MONTH FROM nation;   // ok because years are converted into months
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''1-12'' YEAR TO MONTH FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''2-0'' YEAR TO MONTH ; Ordinal Expr = INTERVAL ''2-0'' YEAR TO MONTH)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '1-1.2' YEAR TO MONTH FROM nation;  // invalid
+failure contains: 'Invalid interval format: non-digit value ''.'' encountered'
+
 EXPLAIN SELECT INTERVAL '1-a' YEAR TO MONTH FROM nation;    // invalid
+failure contains: 'Invalid interval format: non-digit value ''a'' encountered'
+
 EXPLAIN SELECT INTERVAL 'a-2' YEAR TO MONTH FROM nation;    // invalid
+failure contains: 'Invalid interval format: non-digit value ''a'' encountered'
+
 // Check bounds - max 72057594037927935 months (6,004,799,503,160,661 years and 3 months)
 EXPLAIN SELECT INTERVAL '0-72057594037927935' YEAR TO MONTH FROM nation;  // ok
-EXPLAIN SELECT INTERVAL '0-72057594037927931' YEAR TO MONTH FROM nation;  // invalid
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''0-72057594037927935'' YEAR TO MONTH FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''6004799503160661-3'' YEAR TO MONTH ; Ordinal Expr = INTERVAL ''6004799503160661-3'' YEAR TO MONTH)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+EXPLAIN SELECT INTERVAL '0-72057594037927936' YEAR TO MONTH FROM nation;  // invalid
+failure contains: 'Invalid interval format: absolute interval YEAR TO MONTH value exceeds maximum months of 72057594037927935'
+
 EXPLAIN SELECT INTERVAL '6004799503160661-3' YEAR TO MONTH FROM nation;  // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''6004799503160661-3'' YEAR TO MONTH FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''6004799503160661-3'' YEAR TO MONTH ; Ordinal Expr = INTERVAL ''6004799503160661-3'' YEAR TO MONTH)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '6004799503160661-4' YEAR TO MONTH FROM nation;  // invalid
+failure contains: 'Invalid interval format: absolute interval YEAR TO MONTH value exceeds maximum months of 72057594037927935'
+
 EXPLAIN SELECT INTERVAL '6004799503160662-0' YEAR TO MONTH FROM nation;  // invalid
-failure contains: 'Invalid interval format'
+failure contains: 'Invalid interval format: absolute interval YEAR TO MONTH value exceeds maximum months of 72057594037927935'
+
 
 
 // DAY TO HOUR interval literals
+// -------------------------------------------------------
+
 EXPLAIN SELECT INTERVAL '' DAY TO HOUR FROM nation;       // invalid
 EXPLAIN SELECT INTERVAL '1' DAY TO HOUR FROM nation;      // invalid
 EXPLAIN SELECT INTERVAL '1-2' DAY TO HOUR FROM nation;    // invalid
@@ -440,6 +1022,8 @@ EXPLAIN SELECT INTERVAL '268435456 268435456' DAY TO HOUR FROM nation;  // inval
 
 
 // DAY TO MINUTE interval literals
+// -------------------------------------------------------
+
 EXPLAIN SELECT INTERVAL '' DAY TO MINUTE FROM nation;         // invalid
 EXPLAIN SELECT INTERVAL '1' DAY TO MINUTE FROM nation;        // invalid
 EXPLAIN SELECT INTERVAL '1-2' DAY TO MINUTE FROM nation;      // invalid
@@ -484,6 +1068,8 @@ EXPLAIN SELECT INTERVAL '268435456 4473924:16' DAY TO MINUTE FROM nation;  // in
 
 
 // DAY TO SECOND interval literals
+// -------------------------------------------------------
+
 EXPLAIN SELECT INTERVAL '' DAY TO SECOND FROM nation;                   // invalid
 EXPLAIN SELECT INTERVAL '1' DAY TO SECOND FROM nation;                  // invalid
 EXPLAIN SELECT INTERVAL '1-2' DAY TO SECOND FROM nation;                // invalid
@@ -538,6 +1124,8 @@ EXPLAIN SELECT INTERVAL '4095 0:4095:4095.9999999' DAY TO SECOND FROM nation; //
 
 
 // HOUR TO MINUTE interval literals
+// -------------------------------------------------------
+
 EXPLAIN SELECT INTERVAL '' HOUR TO MINUTE FROM nation;              // invalid
 EXPLAIN SELECT INTERVAL '1' HOUR TO MINUTE FROM nation;             // invalid
 EXPLAIN SELECT INTERVAL '1-2' HOUR TO MINUTE FROM nation;           // invalid
@@ -571,6 +1159,8 @@ EXPLAIN SELECT INTERVAL '1200959900632131:76' HOUR TO MINUTE FROM nation;   // i
 
 
 // HOUR TO SECOND interval literals
+// -------------------------------------------------------
+
 EXPLAIN SELECT INTERVAL '' HOUR TO SECOND FROM nation;                   // invalid
 EXPLAIN SELECT INTERVAL '1' HOUR TO SECOND FROM nation;                  // invalid
 EXPLAIN SELECT INTERVAL '1-2' HOUR TO SECOND FROM nation;                // invalid
@@ -621,6 +1211,8 @@ EXPLAIN SELECT INTERVAL '0:262143:262143.9999999' HOUR TO SECOND FROM nation; //
 
 
 // MINUTE TO SECOND interval literals
+// -------------------------------------------------------
+
 EXPLAIN SELECT INTERVAL '' MINUTE TO MINUTE FROM nation;              // invalid
 EXPLAIN SELECT INTERVAL '1' MINUTE TO MINUTE FROM nation;             // invalid
 EXPLAIN SELECT INTERVAL '1-2' MINUTE TO MINUTE FROM nation;           // invalid
