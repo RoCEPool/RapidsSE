@@ -102,7 +102,8 @@ namespace STORE
   
     void vReduce_Filter              (void);
   
-  
+    void vResolve_RootStreams        (void);
+
     void vResolve_Symbols            (void);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~

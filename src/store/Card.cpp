@@ -109,7 +109,7 @@ Card::Card(eCK eCard)
   m_iSeqNo   = iSeqNo++;
 
   m_cMark1   = ' ';
-  m_cMark2   = ' ';
+  m_cMark2   = '!';
 
   m_pProperties = nullptr;
   
@@ -2257,7 +2257,8 @@ void Card::vPrintCard(Ribbon* pRibbon, i8 iDepth, i8 iBelow)
     }
     vPrintDetails(pRibbon,iDepth,bPrune);
   }
-  
+
+  vMark2(' ');
   if (bPrune)
     return;
   
