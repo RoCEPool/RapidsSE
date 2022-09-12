@@ -48,6 +48,70 @@ rows:
   (null)
   (null)
 
+select cast(null as boolean) from datums;
+rows:
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+
+select cast(null as char) from datums;
+rows:
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+
+select cast(null as decimal) from datums;
+rows:
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+
+select cast(null as integer) from datums;
+rows:
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+
 drop table datums;
 success
 

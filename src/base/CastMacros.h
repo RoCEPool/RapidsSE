@@ -738,9 +738,9 @@
 
 // nothing to do
 // unk remains unk
-#define _UNK_TOANY(iErrorCode, szDstArea) \
-{                                         \
-                                          \
+#define _UNK_TOANY(iErrorCode)                                             \
+{                                                                          \
+                                                                           \
 }
 
 /*============================================================================*/
