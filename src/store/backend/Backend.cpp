@@ -980,7 +980,7 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
         // Walk the then testexpr node plan graph
         GraphNav::bGlobalWalk(pTestExpr, false, true, vVisitorExpr, vVisitorExpr, (void *) pBackend);
 
-        sPipeline->vConcat("WHEN "_Stz);
+        sPipeline->vConcat(" WHEN "_Stz);
 
         // Walk the then resultexpr node plan graph
         GraphNav::bGlobalWalk(pResultExpr, false, true, vVisitorExpr, vVisitorExpr, (void *) pBackend);
@@ -1331,7 +1331,7 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
   if (LiteralExpr::bIsOfType(pOrdinalExpr)) {
 
     if (BooleanLiteral::bIsOfType(pOrdinalExpr)) {
-      sPipeline->vCatSprint(" %lld "_Stz, BooleanLiteral::bValue(pOrdinalExpr));
+      sPipeline->vCatSprint(" %s "_Stz, BooleanLiteral::bValue(pOrdinalExpr) ? "true" : "false");
     }
 
     if (DateLiteral::bIsOfType(pOrdinalExpr)) {
