@@ -3,6 +3,8 @@
 /*============================================================================*/
 
 #include "Card_ELIST.hpp"
+#include "Card_As.hpp"
+#include "Card_StreamCol.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -26,6 +28,41 @@ Card_ELIST::~Card_ELIST(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+Card_StreamColList* Card_ELIST::pDerive_StreamColList(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_StreamColList* pCard_StreamColList = new Card_StreamColList;
+
+  eCK eSubCard;
+  i8 nSubCards = this->nSubCards();
+  for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
+    Card *pSubCard = pGetSubCard(i_SubCard, eSubCard);
+
+    Card *pCard_Type = pSubCard->pFindSubCard(CK_TYPE);
+    Card *pCard_As = pSubCard->pFindSubCard(CK_AS);
+
+    Card_StreamCol* pCard_StreamCol = new Card_StreamCol;
+    pCard_StreamColList->vAppend(pCard_StreamCol);
+
+    if (pCard_As)
+      pCard_StreamCol->vAppend(pCard_As->pDupCardAndSubCards());
+    else {
+      s32 sAs;
+      sAs.vSprint("$%lld"_Stz,i_SubCard + 1);
+      pCard_As = new Card_As(sAs);
+      pCard_StreamCol->vAppend(pCard_As);
+    }
+    pCard_StreamCol->vAppend(pCard_Type->pDupCardAndSubCards());
+  }
+
+  return pCard_StreamColList;
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

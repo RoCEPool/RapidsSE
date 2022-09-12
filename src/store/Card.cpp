@@ -366,6 +366,8 @@ eGC Card::eToECatg(eCK eCard)
     case CK_STAGE:      return GC_MAIN;
     case CK_STAGETOPO:                   return GC_SUB;
     case CK_STREAM:                      return GC_SUB;
+    case CK_STREAMCOL:                   return GC_SUB;
+    case CK_STREAMCOLLIST:               return GC_SUB;
     case CK_STREAMELIST:                 return GC_SUB;
     case CK_SUBSET:                      return GC_SUB;
                     
@@ -575,7 +577,11 @@ Card* Card::pDupCardAndSubCards(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   Card* pCard_dup = new Card(m_eCard);
-  
+  if (m_pProperties) {
+    pCard_dup->vPropertiesEnsure();
+    pCard_dup->pProperties()->vCopy(m_pProperties);
+  }
+
   i8 nSubCards = this->nSubCards();
   for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
     Card* pSubCard = pGetSubCard(i_SubCard);
@@ -2356,6 +2362,8 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
     case CK_STAGE:                      vPrintProperties(pRibbon,iDepth); break;
     case CK_STAGETOPO:                  vPrintProperties(pRibbon,iDepth); break;
     case CK_STREAM:                     vPrintProperties(pRibbon,iDepth); break;
+    case CK_STREAMCOL:                  vPrintProperties(pRibbon,iDepth); break;
+    case CK_STREAMCOLLIST:              vPrintProperties(pRibbon,iDepth); break;
     case CK_SUBSET:                     vPrintProperties(pRibbon,iDepth); break;
       
     case CK_TABLE:      vTablePrint                     (pRibbon,iDepth); break;

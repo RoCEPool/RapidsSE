@@ -16,7 +16,10 @@ namespace STORE
     void  operator delete(void*);
   
     Card_StreamColList(void);
+    Card_StreamColList(StreamDef* pStreamDef);
    ~Card_StreamColList(void) noexcept(false);
+
+    void vPopulate(StreamDef* pStreamDef);
   };
 
   Card_StreamColList* _pCard_StreamColList(void* aAddr);

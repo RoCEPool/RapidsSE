@@ -11,6 +11,8 @@
 #include "OptimiserFun.hpp"
 #include "OptimiserCatalog.hpp"
 
+#include "Card_StreamCol.hpp"
+
 extern OptimiserCatalog gxOptimiserCatalog;
 
 /*----------------------------------------------------------------------------*/
@@ -529,6 +531,11 @@ void Board::vResolveAll(Card* pAnyCard) // recursive
     
     //vReg_Stream(pCard_Stream);
     m_pCardRegs->vCardReg(CK_STREAM,pCard_Stream);
+
+    // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
+
+    Card_StreamColList* pCard_StreamColList = pCard_ELIST->pDerive_StreamColList();
+    pCard_Stream->vAppend(pCard_StreamColList);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -555,6 +562,9 @@ void Board::vResolveAll(Card* pAnyCard) // recursive
 
     Card_StreamElist* pCard_StreamElist = new Card_StreamElist(pStreamDef);
     pCard_Stream->vAppend(pCard_StreamElist);
+
+    Card_StreamColList* pCard_StreamColList = new Card_StreamColList(pStreamDef);
+    pCard_Stream->vAppend(pCard_StreamColList);
   }
 
 }
@@ -573,6 +583,21 @@ void Board::vResolveTerm(Card_Term* pCard_Term)
 
     i8 i_Ord = pCard_Term->iOrdinalStreamColNo();
     i8 i_Col = i_Ord - 1;
+
+    Card_StreamColList* pCard_StreamColList =
+            _pCard_StreamColList(pReg_Stream->pFindSubCard(CK_STREAMCOLLIST));
+
+    if (pCard_StreamColList && pCard_StreamColList->nItems()) {
+      Card_StreamCol *pCard_StreamCol = _pCard_StreamCol(pCard_StreamColList->pGet(i_Col));
+
+      Card_As *pCard_As = _pCard_As(pCard_StreamCol->pFindSubCard(CK_AS));
+
+      Stz *szColNm_resolved = pCard_As->szAs();
+
+      pCard_Term->vTerm(szColNm_resolved);
+
+      return;
+    }
 
     Card_StreamElist *pCard_StreamElist_src =
             _pCard_StreamElist(pReg_Stream->pFindSubCard(CK_STREAMELIST));

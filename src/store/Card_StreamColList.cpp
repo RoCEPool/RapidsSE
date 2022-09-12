@@ -7,6 +7,10 @@
 #include "Card_ObyElist.hpp"
 #include "Card_StreamElist.hpp"
 
+#include "Card_StreamCol.hpp"
+#include "Card_As.hpp"
+#include "Card_Type.hpp"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -31,6 +35,21 @@ Card_StreamColList::Card_StreamColList(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Card_StreamColList::Card_StreamColList(StreamDef* pStreamDef)
+: Card_SUB(CK_STREAMCOLLIST)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  _checkInitialised_(CN_CARD);
+
+  vPopulate(pStreamDef);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Card_StreamColList::~Card_StreamColList(void) noexcept(false)
@@ -41,6 +60,29 @@ Card_StreamColList::~Card_StreamColList(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* populate from stream def                                                   */
+/*----------------------------------------------------------------------------*/
+void Card_StreamColList::vPopulate(StreamDef* pStreamDef)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  i8 nCols = pStreamDef->nColumns();
+  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+    Column *pColumn = pStreamDef->pGetColumn(i_Col);
+
+    Card_StreamCol *pCard_StreamCol = new Card_StreamCol;
+
+    vAppend(pCard_StreamCol);
+
+    Card_As *pCard_As = new Card_As(pColumn);
+    Card_Type *pCard_Type = new Card_Type(pColumn);
+
+    pCard_StreamCol->vAppend(pCard_As);
+    pCard_StreamCol->vAppend(pCard_Type);
+  }
+}
 
 /*============================================================================*/
 /* end                                                                        */
