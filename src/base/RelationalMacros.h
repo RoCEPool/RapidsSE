@@ -313,6 +313,129 @@
   }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// BOOLEAN
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+#define _EQ_BOLBOL(eErrorCode)                                             \
+  {                                                                        \
+    iArg1 = *(--paW);                                                      \
+    iArg2 = *(--paW);                                                      \
+    if (eErrorCode != EC_NONE ||                                           \
+        iArg1 == C_DATUM_NULL ||                                           \
+        iArg2 == C_DATUM_NULL) {                                           \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      *paW++ = iArg2 == iArg1;                                             \
+    }                                                                      \
+  }
+
+#define _GE_BOLBOL(eErrorCode)                                             \
+  {                                                                        \
+    iArg1 = *(--paW);                                                      \
+    iArg2 = *(--paW);                                                      \
+    if (eErrorCode != EC_NONE ||                                           \
+        iArg1 == C_DATUM_NULL ||                                           \
+        iArg2 == C_DATUM_NULL) {                                           \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      *paW++ = iArg2 >= iArg1;                                             \
+    }                                                                      \
+  }
+
+#define _GT_BOLBOL(eErrorCode)                                             \
+  {                                                                        \
+    iArg1 = *(--paW);                                                      \
+    iArg2 = *(--paW);                                                      \
+    if (eErrorCode != EC_NONE ||                                           \
+        iArg1 == C_DATUM_NULL ||                                           \
+        iArg2 == C_DATUM_NULL) {                                           \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      *paW++ = iArg2 > iArg1 ? 1 : 0;                                      \
+    }                                                                      \
+  }
+
+#define _GTA_BOLBOL(eErrorCode)                                            \
+  {                                                                        \
+    iArg1 = *(--paW);                                                      \
+    iArg2 = *(--paW);                                                      \
+    if (eErrorCode != EC_NONE) {                                           \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else if (iArg1 == C_DATUM_NULL) {                                      \
+      *paW++ = 1;                                                          \
+    }                                                                      \
+    else if (iArg2 == C_DATUM_NULL) {                                      \
+      *paW++ = 0;                                                          \
+    }                                                                      \
+    else {                                                                 \
+      *paW++ = iArg2 > iArg1 ? 1 : 0;                                      \
+    }                                                                      \
+  }
+
+#define _LE_BOLBOL(eErrorCode)                                             \
+  {                                                                        \
+    iArg1 = *(--paW);                                                      \
+    iArg2 = *(--paW);                                                      \
+    if (eErrorCode != EC_NONE ||                                           \
+        iArg1 == C_DATUM_NULL ||                                           \
+        iArg2 == C_DATUM_NULL) {                                           \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      *paW++ = iArg2 <= iArg1;                                             \
+    }                                                                      \
+  }
+
+#define _LT_BOLBOL(eErrorCode)                                             \
+  {                                                                        \
+    iArg1 = *(--paW);                                                      \
+    iArg2 = *(--paW);                                                      \
+    if (eErrorCode != EC_NONE ||                                           \
+        iArg1 == C_DATUM_NULL ||                                           \
+        iArg2 == C_DATUM_NULL) {                                           \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      *paW++ = iArg2 < iArg1 ? 1 : 0;                                      \
+    }                                                                      \
+  }
+#define _LTA_BOLBOL(eErrorCode)                                            \
+  {                                                                        \
+    iArg1 = *(--paW);                                                      \
+    iArg2 = *(--paW);                                                      \
+    if (eErrorCode != EC_NONE) {                                           \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else if (iArg1 == C_DATUM_NULL) {                                      \
+      *paW++ = 1;                                                          \
+    }                                                                      \
+    else if (iArg2 == C_DATUM_NULL) {                                      \
+      *paW++ = 0;                                                          \
+    }                                                                      \
+    else {                                                                 \
+      *paW++ = iArg2 < iArg1 ? 1 : 0;                                      \
+    }                                                                      \
+  }
+
+#define _NE_BOLBOL(eErrorCode)                                             \
+  {                                                                        \
+    iArg1 = *(--paW);                                                      \
+    iArg2 = *(--paW);                                                      \
+    if (eErrorCode != EC_NONE ||                                           \
+        iArg1 == C_DATUM_NULL ||                                           \
+        iArg2 == C_DATUM_NULL) {                                           \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      *paW++ = iArg2 != iArg1 ? 1 : 0;                                     \
+    }                                                                      \
+  }
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // FLOAT
 #define AS_FLT(x) \
 (    *(d8*)&x   )
