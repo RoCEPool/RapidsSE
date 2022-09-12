@@ -12,7 +12,11 @@ load nation "/Users/Shared/rapidsse/tpch/SF1/nation.csv" ;
 /transliterated
 /optimised
 /todo
-select * from nation;
+select *
+  from nation
+ where N_NATIONKEY > 1
+ order by N_NAME
+;
 
 /*
 /jobTags

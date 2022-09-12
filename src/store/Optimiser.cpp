@@ -242,8 +242,8 @@ void Optimiser::vOptimise(void)
 
   pBoard->vPrintBoard("vDissectSpec >> "_Stz);
   
-  //pBoard->vResolve_Symbols();
-  pBoard->vResolve_RootStreams();
+  pBoard->vResolve_Symbols();
+  //pBoard->vResolve_RootStreams();
   pBoard->vPrintBoard("vResolve_RootStreams >> "_Stz);
 //
 //  // rules

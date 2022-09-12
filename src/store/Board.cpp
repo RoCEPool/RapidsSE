@@ -1058,42 +1058,55 @@ void Board::vReduce_Filter(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vResolve_RootStreams(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  i8 nMainCards = this->nMainCards();
-  for (i8 i_MainCard = 0; i_MainCard < nMainCards; i_MainCard++) {
-    Card* pMainCard = pGetMainCard(i_MainCard);
-
-    Card* pCard_Table = _pCard_Table(pMainCard->pFindSubCard(CK_TABLE));
-    if (! pCard_Table)
-      continue;
-
-    StreamDef* pStreamDef = pCard_Table->pTable()->pStreamDef();
-    Card_StreamElist* pCard_StreamElist = new Card_StreamElist(pStreamDef);
-
-    Card_Stream* pCard_Stream = new Card_Stream;
-    pCard_Stream->vAppend(pCard_StreamElist);
-
-    pMainCard->vAppend(pCard_Stream);
-  }
-}
+//void Board::vResolve_RootStreams(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+//
+//  i8 nMainCards = this->nMainCards();
+//  for (i8 i_MainCard = 0; i_MainCard < nMainCards; i_MainCard++) {
+//    Card* pMainCard = pGetMainCard(i_MainCard);
+//
+//    Card* pCard_Table = _pCard_Table(pMainCard->pFindSubCard(CK_TABLE));
+//    if (! pCard_Table)
+//      continue;
+//
+//    StreamDef* pStreamDef = pCard_Table->pTable()->pStreamDef();
+//    Card_StreamElist* pCard_StreamElist = new Card_StreamElist(pStreamDef);
+//
+//    Card_Stream* pCard_Stream = new Card_Stream;
+//    pCard_Stream->vAppend(pCard_StreamElist);
+//
+//    pMainCard->vAppend(pCard_Stream);
+//  }
+//}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+//void Board::vResolve_Symbols(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+//
+//  i8 nMainCards = this->nMainCards();
+//  for (i8 i_MainCard = 0; i_MainCard < nMainCards; i_MainCard++) {
+//    Card* pMainCard = pGetMainCard(i_MainCard);
+//
+//    vResolveSymbolTerms(pMainCard);
+//  }
+//
+//}
+/*----------------------------------------------------------------------------*/
 void Board::vResolve_Symbols(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-  
+
   i8 nMainCards = this->nMainCards();
   for (i8 i_MainCard = 0; i_MainCard < nMainCards; i_MainCard++) {
     Card* pMainCard = pGetMainCard(i_MainCard);
-    
+
     vResolveAll(pMainCard);
   }
-  
+
 }
 
 /*----------------------------------------------------------------------------*/

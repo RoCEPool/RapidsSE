@@ -71,8 +71,8 @@ namespace STORE
 
     void vRankCandIndex(Card_CandIndex* pCard_CandIndex);
   
-    void vResolveAll(Card*        pAnyCard);
-    void vResolveTerm(Card_Term*  pCard_Term);
+    void vResolveAll                 (Card*        pAnyCard);
+    void vResolveTerm                (Card_Term*   pCard_Term);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   
@@ -102,7 +102,7 @@ namespace STORE
   
     void vReduce_Filter              (void);
   
-    void vResolve_RootStreams        (void);
+    //void vResolve_RootStreams        (void);
 
     void vResolve_Symbols            (void);
 
