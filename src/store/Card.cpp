@@ -534,10 +534,13 @@ void Card::vCutSubCard(Card* pSubCard)
 /*----------------------------------------------------------------------------*/
 /* dum card and its sub cards                                                 */
 /*----------------------------------------------------------------------------*/
-void Card::vDump(i8 iDepth)
+void Card::vDump(i8 iDepth, Stz* szTitle)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
+
+  if (szTitle)
+    vTrace("%s:\n"_Stz,szTitle);
+
   s48K sProperties;
   
   if (m_pProperties)
@@ -545,14 +548,20 @@ void Card::vDump(i8 iDepth)
   else
     sProperties = "no properties"_Stz;
   
-  vTrace("%s%lld %s %s { %s }\n"_Stz
+//  vTrace("%s%lld %s %s { %s }\n"_Stz
+//         ,Stz::szTab(iDepth)
+//         ,m_iCardNo
+//         ,szCardNm()
+//         ,aCK[m_eCard]
+//         ,sProperties.szStz()
+//         );
+
+  vTrace("%s%s { %s }\n"_Stz
          ,Stz::szTab(iDepth)
-         ,m_iCardNo
-         ,szCardNm()
-         ,aCK[m_eCard]
+         ,m_caRef
          ,sProperties.szStz()
          );
-  
+
   i8 nSubCards = this->nSubCards();
   for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++)
     pGetSubCard(i_Sub)->vDump(iDepth+1);

@@ -513,7 +513,8 @@ void Board::vResolveAll(Card* pAnyCard) // recursive
     //vReg_Stream(pCard_Stream);
     m_pCardRegs->vCardReg(CK_STREAM,pCard_Stream);
   }
-  
+
+  // derive the stream definition for projection
   pCard_ELIST = (Card_ELIST*)pAnyCard->pFindSubCard(CK_PROJELIST);
   if (pCard_ELIST) {
         
@@ -521,8 +522,8 @@ void Board::vResolveAll(Card* pAnyCard) // recursive
     pAnyCard->vAppend(pCard_Stream);
     
     Card_SubSet* pCard_SubSet = pCard_ELIST->pDupSubCards();
-    Card_StreamElist* pCard_StreamElist = new Card_StreamElist;
-    pCard_StreamElist->vTransferAll(pCard_SubSet);
+      Card_StreamElist* pCard_StreamElist = new Card_StreamElist;
+      pCard_StreamElist->vTransferAll(pCard_SubSet);
     pCard_Stream->vAppend(pCard_StreamElist);
     delete pCard_SubSet;
     
@@ -573,16 +574,23 @@ void Board::vResolveTerm(Card_Term* pCard_Term)
     i8 i_Ord = pCard_Term->iOrdinalStreamColNo();
     i8 i_Col = i_Ord - 1;
 
-    Card_StreamElist* pCard_StreamElist_src =
-      _pCard_StreamElist(pReg_Stream->pFindSubCard(CK_STREAMELIST));
+    Card_StreamElist *pCard_StreamElist_src =
+            _pCard_StreamElist(pReg_Stream->pFindSubCard(CK_STREAMELIST));
 
-    Card_Expr* pCard_Expr_src = _pCard_Expr(pCard_StreamElist_src->pGet(i_Col));
+    Card_Expr *pCard_Expr_src = _pCard_Expr(pCard_StreamElist_src->pGet(i_Col));
 
-    Card_Term* pCard_Term_src =
-      _pCard_Term(pCard_Expr_src->pFindSubCard(CK_TERM));
+    Card_Term *pCard_Term_src =
+            _pCard_Term(pCard_Expr_src->pFindSubCard(CK_TERM));
 
-    Stz* szColNm_resolved = pCard_Term_src->szTerm();
-    
+    Stz *szColNm_resolved = pCard_Term_src->szTerm();
+
+    if (szColNm_resolved->bSame(")"_Stz)) {
+      pReg_Stream->vDump(0,"pReg_Stream"_Stz);
+      pCard_Term->vDump(0,"pCard_Term"_Stz);
+      vTrace("Resolved To: %s\n"_Stz,szColNm_resolved);
+      vDebugPoint();
+    }
+
     pCard_Term->vTerm(szColNm_resolved);
 
     return;
@@ -1105,6 +1113,8 @@ void Board::vResolve_Symbols(void)
     Card* pMainCard = pGetMainCard(i_MainCard);
 
     vResolveAll(pMainCard);
+
+    pMainCard->vRenumberSubCards(nullptr);
   }
 
 }

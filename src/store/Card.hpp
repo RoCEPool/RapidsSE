@@ -93,7 +93,7 @@ namespace STORE
     void vCutProperty(Stz* szName);
     void vCutSubCard(Card* pSubCard);
 
-    void vDump(i8 iDepth=0);
+    void vDump(i8 iDepth=0, Stz* szTitle=nullptr);
     Card* pDupCardAndSubCards(void);
     Card_SubSet* pDupSubCards(void);
 

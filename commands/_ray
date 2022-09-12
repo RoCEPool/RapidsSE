@@ -6,6 +6,7 @@ _nation
 
 load nation "/Users/Shared/rapidsse/tpch/SF1/nation.csv" ;
 
+
 /jobTags
 /optimise
 /weave
@@ -17,6 +18,7 @@ select *
  where N_NATIONKEY > 1
  order by N_NAME
 ;
+
 
 /*
 /jobTags

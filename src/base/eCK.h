@@ -72,6 +72,8 @@ enum eCK // card kind
   /* */ CK_STAGE,
   /* */ CK_STAGETOPO,
   /* */ CK_STREAM,
+  /* */ CK_STREAMCOL,
+  /* */ CK_STREAMCOLLIST,
   /* */ CK_STREAMELIST,
   /* */ CK_SUBSET,
 
@@ -154,7 +156,9 @@ static Stz* aCK[]
   /* */ "CK_STAGE"_Stz,        // CK_STAGE
   /* */ "CK_STAGETOPO"_Stz,    // CK_STAGETOPO
   /* */ "CK_STREAM"_Stz,       // CK_STREAM
-  /* */ "CK_STREAMLIST"_Stz,   // CK_STREAMELIST
+  /* */ "CK_STREAMCOL"_Stz,    // CK_STREAMCOL
+  /* */ "CK_STREAMCOLLIST"_Stz, // CK_STREAMCOLLIST
+  /* */ "CK_STREAMELIST"_Stz,  // CK_STREAMELIST
   /* */ "CK_SUBSET"_Stz,       // CK_SUBSET
 
   /* */ "CK_TABLE"_Stz,        // CK_TABLE
@@ -236,6 +240,8 @@ static Stz* aCK_short[]
   /* */ "stage"_Stz,           // CK_STAGE
   /* */ "stageTopo"_Stz,       // CK_STAGETOPO
   /* */ "stream"_Stz,          // CK_STREAM
+  /* */ "streamCol"_Stz,       // CK_STREAMCOL
+  /* */ "streamColList"_Stz,   // CK_STREAMCOLLIST
   /* */ "streamElist"_Stz,     // CK_STREAMELIST
   /* */ "subSet"_Stz,          // CK_SUBSET
 
@@ -288,7 +294,7 @@ static Stz* aCK_op[]
   /* */ "indexScan "_Stz,      // CK_INDEXSCAN
   
   /* */ "(none)"_Stz,          // CK_LBOUND
-  /* */ "limit     "_Stz,     // CK_LIMIT
+  /* */ "limit     "_Stz,      // CK_LIMIT
     
   /* */ "(none)"_Stz,          // CK_MODE
 
@@ -318,6 +324,8 @@ static Stz* aCK_op[]
   /* */ "(none)"_Stz,          // CK_STAGE
   /* */ "(none)"_Stz,          // CK_STAGETOPO
   /* */ "(none)"_Stz,          // CK_STREAM
+  /* */ "(none)"_Stz,          // CK_STREAMCOL
+  /* */ "(none)"_Stz,          // CK_STREAMCOLLIST
   /* */ "(none)"_Stz,          // CK_STREAMELIST
   /* */ "(none)"_Stz,          // CK_SUBSET
 
