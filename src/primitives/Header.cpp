@@ -26,6 +26,7 @@ Header::Header(eCN eClassNo)
   
   vSetWasReceived(false);
   vSetPostRecvRun(false);
+  vSetPersistent(false);
 }
 
 /*----------------------------------------------------------------------------*/
