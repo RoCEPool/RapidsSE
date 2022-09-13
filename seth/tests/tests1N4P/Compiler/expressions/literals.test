@@ -423,19 +423,19 @@ EXPLAIN SELECT INTERVAL ''   YEAR FROM nation;
 failure contains: 'Invalid interval format: interval string is empty'
 
 EXPLAIN SELECT INTERVAL 'aaa'   YEAR FROM nation;
-failure contains: 'Invalid interval format: interval string is incomplete'
+failure contains: 'Invalid interval format: non-digit value ''a'' encountered'
 
 EXPLAIN SELECT INTERVAL '1a2'   YEAR FROM nation;
-failure contains: 'Invalid interval format: non-digit value ''a'' encountered'
+failure contains: 'Invalid interval format: unexpected character ''a'' encountered;'
 
 EXPLAIN SELECT INTERVAL 'a12'   YEAR FROM nation;
-failure contains: 'Invalid interval format: non-digit value ''a'' encountered'
+failure contains: 'Invalid interval format: non-digit value ''a'' encountered;'
 
 EXPLAIN SELECT INTERVAL '12a'   YEAR FROM nation;
-failure contains: 'Invalid interval format: non-digit value ''a'' encountered'
+failure contains: 'Invalid interval format: unexpected character ''a'' encountered;'
 
 EXPLAIN SELECT INTERVAL '0x1'   YEAR FROM nation;
-failure contains: 'Invalid interval format: non-digit value ''x'' encountered'
+failure contains: 'Invalid interval format: unexpected character ''x'' encountered;'
 
 
 // Single field interval literals
@@ -667,7 +667,7 @@ rows: (*,'explainPlan','
          » table: (rapidsse.public.nation)')
 
 EXPLAIN SELECT INTERVAL '1.0e1' SECOND FROM nation;     // Invalid
-failure contains: 'Invalid interval format: non-digit value ''e'' encountered'
+failure contains: 'Invalid interval format: unexpected character ''e'' encountered'
 
 // Check bounds. Max seconds is 68,719,476,735. Max microseconds are 999,999.
 EXPLAIN SELECT INTERVAL '68719476735' SECOND FROM nation;   // ok
@@ -737,7 +737,7 @@ rows: (*,'explainPlan','
          » table: (rapidsse.public.nation)')
 
 EXPLAIN SELECT INTERVAL '0.00a001' SECOND FROM nation;      // Invalid
-failure contains: 'Invalid interval format: non-digit value ''a'' encountered'
+failure contains: 'Invalid interval format: unexpected character ''a'' encountered'
 
 EXPLAIN SELECT INTERVAL '0.0000011' SECOND FROM nation;     // Invalid
 failure contains: 'absolute interval microseconds value exceeds range of 0-999999'
@@ -787,10 +787,10 @@ EXPLAIN SELECT INTERVAL '' YEAR TO MONTH FROM nation;       // invalid
 failure contains: 'Invalid interval format: interval string is empty'
 
 EXPLAIN SELECT INTERVAL '1' YEAR TO MONTH FROM nation;      // invalid
-failure contains: 'Invalid interval format: missing '-' separator'
+failure contains: 'Invalid interval format: missing ''-'' separator'
 
 EXPLAIN SELECT INTERVAL '1 2' YEAR TO MONTH FROM nation;    // invalid
-failure contains: 'Invalid interval format: missing '-' separator'
+failure contains: 'Invalid interval format: missing ''-'' separator'
 
 EXPLAIN SELECT INTERVAL '1-2' YEAR TO MONTH FROM nation;
 rows: (*,'explainPlan','
@@ -937,7 +937,7 @@ rows: (*,'explainPlan','
          » table: (rapidsse.public.nation)')
 
 EXPLAIN SELECT INTERVAL '1-1.2' YEAR TO MONTH FROM nation;  // invalid
-failure contains: 'Invalid interval format: non-digit value ''.'' encountered'
+failure contains: 'Invalid interval format: unexpected character ''.'' encountered'
 
 EXPLAIN SELECT INTERVAL '1-a' YEAR TO MONTH FROM nation;    // invalid
 failure contains: 'Invalid interval format: non-digit value ''a'' encountered'
@@ -1855,7 +1855,7 @@ EXPLAIN SELECT INTERVAL '1 2:3:a.5' DAY TO SECOND FROM nation;          // inval
 failure contains: 'Invalid interval format: non-digit value ''a'' encountered'
 
 EXPLAIN SELECT INTERVAL '1 2:3:4.a' DAY TO SECOND FROM nation;          // invalid
-failure contains: 'Invalid interval format: non-digit value ''a'' encountered'
+failure contains: 'Invalid interval format: unexpected character ''a'' encountered'
 
 // Check bounds - max 4,095 days, minutes and whole seconds.
 // Hours (max 68) are converted to minutes.
@@ -1958,10 +1958,10 @@ EXPLAIN SELECT INTERVAL '' HOUR TO MINUTE FROM nation;              // invalid
 failure contains: 'Invalid interval format: interval string is empty'
 
 EXPLAIN SELECT INTERVAL '1' HOUR TO MINUTE FROM nation;             // invalid
-failure contains: 'Invalid interval format: missing '':'' separator between hour and minute digits; '
+failure contains: 'Invalid interval format: missing '':'' separator between hour and minute digits'
 
 EXPLAIN SELECT INTERVAL '1-2' HOUR TO MINUTE FROM nation;           // invalid
-failure contains: 'Invalid interval format: missing '':'' separator between hour and minute digits; '
+failure contains: 'Invalid interval format: missing '':'' separator between hour and minute digits'
 
 EXPLAIN SELECT INTERVAL '1:2' HOUR TO MINUTE FROM nation;           // ok
 rows: (*,'explainPlan','
@@ -2123,7 +2123,7 @@ EXPLAIN SELECT INTERVAL '1:-2' HOUR TO MINUTE FROM nation;          // invalid
 failure contains: 'Invalid interval format: non-digit value ''-'' encountered'
 
 EXPLAIN SELECT INTERVAL '1:2:3' HOUR TO MINUTE FROM nation;         // invalid
-failure contains: 'Invalid interval format: non-digit value '':'' encountered'
+failure contains: 'Invalid interval format: unexpected character '':'' encountered'
 
 EXPLAIN SELECT INTERVAL '1 2:' HOUR TO MINUTE FROM nation;          // invalid
 failure contains: 'Invalid interval format: missing '':'' separator between hour and minute digits'
@@ -2241,7 +2241,7 @@ EXPLAIN SELECT INTERVAL '1 2-3' HOUR TO SECOND FROM nation;              // inva
 failure contains: 'Invalid interval format: missing '':'' separator between hour and minute digits'
 
 EXPLAIN SELECT INTERVAL '02:03' HOUR TO SECOND FROM nation;            // invalid, incomplete
-failure contains: 'Invalid interval format: missing '':'' separator between minute and second digits; '
+failure contains: 'Invalid interval format: missing '':'' separator between minute and second digits'
 
 EXPLAIN SELECT INTERVAL '02:03:04' HOUR TO SECOND FROM nation;         // ok
 rows: (*,'explainPlan','
@@ -2322,7 +2322,7 @@ EXPLAIN SELECT INTERVAL '2:3:4.5678910001' HOUR TO SECOND FROM nation; // invali
 failure contains: 'Invalid interval format: absolute interval microseconds value exceeds range of 0-999999'
 
 EXPLAIN SELECT INTERVAL '  2 : 3 : 4' HOUR TO SECOND FROM nation;      // invalid
-failure contains: 'Invalid interval format: missing ':' separator between hour and minute digits'
+failure contains: 'Invalid interval format: missing '':'' separator between hour and minute digits'
 
 EXPLAIN SELECT INTERVAL '0:0:0' HOUR TO SECOND FROM nation;            // ok
 rows: (*,'explainPlan','
@@ -2445,7 +2445,7 @@ EXPLAIN SELECT INTERVAL '1:2:-3' HOUR TO SECOND FROM nation;           // invali
 failure contains: 'Invalid interval format: non-digit value ''-'' encountered'
 
 EXPLAIN SELECT INTERVAL '1:2:3.-4' HOUR TO SECOND FROM nation;         // invalid
-failure contains: 'Invalid interval format: non-digit value ''-'' encountered'
+failure contains: 'Invalid interval format: unexpected character ''-'' encountered'
 
 EXPLAIN SELECT INTERVAL '2:3.4' HOUR TO SECOND FROM nation;            // invalid
 failure contains: 'Invalid interval format: missing '':'' separator between minute and second digits'
@@ -2526,7 +2526,7 @@ EXPLAIN SELECT INTERVAL '1:2:a.4' HOUR TO SECOND FROM nation;          // invali
 failure contains: 'Invalid interval format: non-digit value ''a'' encountered'
 
 EXPLAIN SELECT INTERVAL '1:2:3.a' HOUR TO SECOND FROM nation;          // invalid
-failure contains: 'Invalid interval format: non-digit value ''a'' encountered'
+failure contains: 'Invalid interval format: unexpected character ''a'' encountered'
 
 // Check bounds - max 262,143 minutes and whole seconds.
 // Hours (max 4,369) are converted to minutes.
@@ -2929,7 +2929,7 @@ EXPLAIN SELECT INTERVAL '1:a.3' MINUTE TO SECOND FROM nation;         // invalid
 failure contains: 'Invalid interval format: non-digit value ''a'' encountered'
 
 EXPLAIN SELECT INTERVAL '1:2.a' MINUTE TO SECOND FROM nation;         // invalid
-failure contains: 'Invalid interval format: non-digit value ''a'' encountered'
+failure contains: 'Invalid interval format: unexpected character ''a'' encountered'
 
 // Check bounds - max 262,143 minutes and max 262,143 whole seconds
 EXPLAIN SELECT INTERVAL '0:262143.0' MINUTE TO SECOND FROM nation;            // ok
