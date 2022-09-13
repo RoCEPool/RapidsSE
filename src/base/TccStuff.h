@@ -140,7 +140,7 @@ union Ivl_T {
         u8 m_uDays          : 12; // 0..4,095
         u8 m_uMinutes       : 12; // 0..4,095
         u8 m_uSeconds       : 12; // 0..4,095
-        u8 m_uFrac          : 20; // 0..1,048,575
+        u8 m_uMicros        : 20; // 0..1,048,575
       } m_xIvlDayToSec;
 
       // INTERVAL DAY TO MINUTE
@@ -159,7 +159,7 @@ union Ivl_T {
       struct __attribute__((__packed__)) {
         u8 m_uMinutes       : 18; // 0..262,143
         u8 m_uSeconds       : 18; // 0..262,143
-        u8 m_uFrac          : 20; // 0..1,048,575
+        u8 m_uMicros        : 20; // 0..1,048,575
       } m_xIvlHrToSec;
 
       // INTERVAL HOUR TO MINUTE
@@ -171,7 +171,7 @@ union Ivl_T {
       struct __attribute__((__packed__)) {
         u8 m_uMinutes       : 18; // 0..262,143
         u8 m_uSeconds       : 18; // 0..262,143
-        u8 m_uFrac          : 20; // 0..1,048,575
+        u8 m_uMicros        : 20; // 0..1,048,575
       } m_xIvlMinToSec;
 
       // INTERVAL DAY

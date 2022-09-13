@@ -184,19 +184,19 @@ void Ivl::vSetMax()
     case IV_DAY_TO_SECOND:    { T.m_xIvl.u.m_xIvlDayToSec.m_uDays = 4095; // 2^12-1
                                 T.m_xIvl.u.m_xIvlDayToSec.m_uMinutes = 4095; // 2^12-1
                                 T.m_xIvl.u.m_xIvlDayToSec.m_uSeconds = 4095; // 2^12-1
-                                T.m_xIvl.u.m_xIvlDayToSec.m_uFrac = 999999;
+                                T.m_xIvl.u.m_xIvlDayToSec.m_uMicros = 999999;
                                 break; }
 
     case IV_HOUR_TO_MINUTE:   { T.m_xIvl.u.m_xIvlHrToMin.m_uMinutes = 72057594037927935LL; break; } // 2^56-1
 
     case IV_HOUR_TO_SECOND:   { T.m_xIvl.u.m_xIvlHrToSec.m_uMinutes = 262143; // 2^18-1
                                 T.m_xIvl.u.m_xIvlHrToSec.m_uSeconds = 262143; // 2^18-1
-                                T.m_xIvl.u.m_xIvlHrToSec.m_uFrac = 999999;
+                                T.m_xIvl.u.m_xIvlHrToSec.m_uMicros = 999999;
                                 break; }
 
     case IV_MINUTE_TO_SECOND: { T.m_xIvl.u.m_xIvlMinToSec.m_uMinutes = 262143; // 2^18-1
                                 T.m_xIvl.u.m_xIvlMinToSec.m_uSeconds = 262143; // 2^18-1
-                                T.m_xIvl.u.m_xIvlMinToSec.m_uFrac = 999999;
+                                T.m_xIvl.u.m_xIvlMinToSec.m_uMicros = 999999;
                                 break; }
 
     default:
@@ -242,19 +242,19 @@ void Ivl::vSetZero()
     case IV_DAY_TO_SECOND:    { T.m_xIvl.u.m_xIvlDayToSec.m_uDays = 0;
                                 T.m_xIvl.u.m_xIvlDayToSec.m_uMinutes = 0;
                                 T.m_xIvl.u.m_xIvlDayToSec.m_uSeconds = 0;
-                                T.m_xIvl.u.m_xIvlDayToSec.m_uFrac = 0;
+                                T.m_xIvl.u.m_xIvlDayToSec.m_uMicros = 0;
                                 break; }
 
     case IV_HOUR_TO_MINUTE:   { T.m_xIvl.u.m_xIvlHrToMin.m_uMinutes = 0; break; }
 
     case IV_HOUR_TO_SECOND:   { T.m_xIvl.u.m_xIvlHrToSec.m_uMinutes = 0;
                                 T.m_xIvl.u.m_xIvlHrToSec.m_uSeconds = 0;
-                                T.m_xIvl.u.m_xIvlHrToSec.m_uFrac = 0;
+                                T.m_xIvl.u.m_xIvlHrToSec.m_uMicros = 0;
                                 break; }
 
     case IV_MINUTE_TO_SECOND: { T.m_xIvl.u.m_xIvlMinToSec.m_uMinutes = 0;
                                 T.m_xIvl.u.m_xIvlMinToSec.m_uSeconds = 0;
-                                T.m_xIvl.u.m_xIvlMinToSec.m_uFrac = 0;
+                                T.m_xIvl.u.m_xIvlMinToSec.m_uMicros = 0;
                                 break; }
 
     default:

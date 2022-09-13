@@ -58,143 +58,195 @@ void IntervalLiteral::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
   eIV eIvlType = xIvl.eIvlType();
   Stz* szNeg = xIvl.bIsNeg() ? "-"_Stz : ""_Stz;
 
+  // We can't sprintf from a tightly packed structure as the width of
+  // each field is not regular or consistent. We can end up printing
+  // part of an adjacent field. So copy the values onto the stack first,
+  // then we can just sprintf with %lld.
+  u8 uYears;
+  u8 uMonths;
+  u8 uDays;
+  u8 uHours;
+  u8 uMins;
+  u8 uSecs;
+  u8 uMicros;
+
   switch (eIvlType) {
     case IV_YEAR:
+      uYears = xIvl.T.m_xIvl.u.m_xIvlYr.m_uYears;
+
       sBuf.vCatSprint("INTERVAL %s'%lld' %s"_Stz,
                       szNeg,
-                      xIvl.T.m_xIvl.u.m_xIvlYr.m_uYears,
+                      uYears,
                       aIV_field[eIvlType]);
       break;
 
     case IV_MONTH:
+      uMonths = xIvl.T.m_xIvl.u.m_xIvlMon.m_uMonths;
+
       sBuf.vCatSprint("INTERVAL %s'%lld' %s"_Stz,
                       szNeg,
-                      xIvl.T.m_xIvl.u.m_xIvlMon.m_uMonths,
+                      uMonths,
                       aIV_field[eIvlType]);
       break;
 
     case IV_YEAR_TO_MONTH:
+      uYears = xIvl.T.m_xIvl.u.m_xIvlYrToMon.m_uMonths / 12;
+      uMonths = xIvl.T.m_xIvl.u.m_xIvlYrToMon.m_uMonths % 12;
+
       sBuf.vCatSprint("INTERVAL %s'%lld-%lld' %s"_Stz,
                       szNeg,
-                      xIvl.T.m_xIvl.u.m_xIvlYrToMon.m_uMonths / 12,
-                      xIvl.T.m_xIvl.u.m_xIvlYrToMon.m_uMonths % 12,
+                      uYears,
+                      uMonths,
                       aIV_field[eIvlType]);
       break;
 
     case IV_DAY:
+      uDays = xIvl.T.m_xIvl.u.m_xIvlDay.m_uDays;
+
       sBuf.vCatSprint("INTERVAL %s'%lld' %s"_Stz,
                       szNeg,
-                      xIvl.T.m_xIvl.u.m_xIvlDay.m_uDays,
+                      uDays,
                       aIV_field[eIvlType]);
       break;
 
     case IV_HOUR:
+      uHours = xIvl.T.m_xIvl.u.m_xIvlHr.m_uHours;
+
       sBuf.vCatSprint("INTERVAL %s'%lld' %s"_Stz,
                       szNeg,
-                      xIvl.T.m_xIvl.u.m_xIvlHr.m_uHours,
+                      uHours,
                       aIV_field[eIvlType]);
       break;
 
     case IV_MINUTE:
+      uMins = xIvl.T.m_xIvl.u.m_xIvlMin.m_uMinutes;
       sBuf.vCatSprint("INTERVAL %s'%lld' %s"_Stz,
                       szNeg,
-                      xIvl.T.m_xIvl.u.m_xIvlMin.m_uMinutes,
+                      uMins,
                       aIV_field[eIvlType]);
       break;
 
     case IV_SECOND:
-      if (xIvl.T.m_xIvl.u.m_xIvlDayToSec.m_uFrac > 0) {
+      uSecs = xIvl.T.m_xIvl.u.m_xIvlSec.m_uSeconds;
+      uMicros = xIvl.T.m_xIvl.u.m_xIvlSec.m_uMicros;
+
+      if (uMicros > 0) {
         sBuf.vCatSprint("INTERVAL %s'%lld.%06lld' %s"_Stz,
                         szNeg,
-                        xIvl.T.m_xIvl.u.m_xIvlSec.m_uSeconds,
-                        xIvl.T.m_xIvl.u.m_xIvlSec.m_uMicros,
+                        uSecs,
+                        uMicros,
                         aIV_field[eIvlType]);
       } else {
         sBuf.vCatSprint("INTERVAL %s'%lld' %s"_Stz,
                         szNeg,
-                        xIvl.T.m_xIvl.u.m_xIvlSec.m_uSeconds,
+                        uSecs,
                         aIV_field[eIvlType]);
       }
       break;
 
     case IV_DAY_TO_HOUR:
+      uDays = xIvl.T.m_xIvl.u.m_xIvlDayToHr.m_uDays;
+      uHours = xIvl.T.m_xIvl.u.m_xIvlDayToHr.m_uMinutes / 60;
+
       sBuf.vCatSprint("INTERVAL %s'%lld %lld' %s"_Stz,
                       szNeg,
-                      xIvl.T.m_xIvl.u.m_xIvlDayToHr.m_uDays,
-                      xIvl.T.m_xIvl.u.m_xIvlDayToHr.m_uMinutes / 60,
+                      uDays,
+                      uHours,
                       aIV_field[eIvlType]);
       break;
 
     case IV_DAY_TO_MINUTE:
+      uDays = xIvl.T.m_xIvl.u.m_xIvlDayToMin.m_uDays;
+      uHours = xIvl.T.m_xIvl.u.m_xIvlDayToMin.m_uMinutes / 60;
+      uMins = xIvl.T.m_xIvl.u.m_xIvlDayToMin.m_uMinutes % 60;
+
       sBuf.vCatSprint("INTERVAL %s'%lld %lld:%lld' %s"_Stz,
                       szNeg,
-                      xIvl.T.m_xIvl.u.m_xIvlDayToMin.m_uDays,
-                      xIvl.T.m_xIvl.u.m_xIvlDayToMin.m_uMinutes / 60,
-                      xIvl.T.m_xIvl.u.m_xIvlDayToMin.m_uMinutes % 60,
+                      uDays,
+                      uHours,
+                      uMins,
                       aIV_field[eIvlType]);
       break;
 
     case IV_DAY_TO_SECOND:
-      if (xIvl.T.m_xIvl.u.m_xIvlDayToSec.m_uFrac > 0) {
+      uDays = xIvl.T.m_xIvl.u.m_xIvlDayToSec.m_uDays;
+      uHours = xIvl.T.m_xIvl.u.m_xIvlDayToSec.m_uMinutes / 60;
+      uMins = xIvl.T.m_xIvl.u.m_xIvlDayToSec.m_uMinutes % 60;
+      uSecs = xIvl.T.m_xIvl.u.m_xIvlDayToSec.m_uSeconds;
+      uMicros = xIvl.T.m_xIvl.u.m_xIvlDayToSec.m_uMicros;
+
+      if (uMicros > 0) {
         sBuf.vCatSprint("INTERVAL %s'%lld %lld:%lld:%lld.%06lld' %s"_Stz,
                         szNeg,
-                        xIvl.T.m_xIvl.u.m_xIvlDayToSec.m_uDays,
-                        xIvl.T.m_xIvl.u.m_xIvlDayToSec.m_uMinutes / 60,
-                        xIvl.T.m_xIvl.u.m_xIvlDayToSec.m_uMinutes % 60,
-                        xIvl.T.m_xIvl.u.m_xIvlDayToSec.m_uSeconds,
-                        xIvl.T.m_xIvl.u.m_xIvlDayToSec.m_uFrac,
+                        uDays,
+                        uHours,
+                        uMins,
+                        uSecs,
+                        uMicros,
                         aIV_field[eIvlType]);
       } else {
         sBuf.vCatSprint("INTERVAL %s'%lld %lld:%lld:%lld' %s"_Stz,
                         szNeg,
-                        xIvl.T.m_xIvl.u.m_xIvlDayToSec.m_uDays,
-                        xIvl.T.m_xIvl.u.m_xIvlDayToSec.m_uMinutes / 60,
-                        xIvl.T.m_xIvl.u.m_xIvlDayToSec.m_uMinutes % 60,
-                        xIvl.T.m_xIvl.u.m_xIvlDayToSec.m_uSeconds,
+                        uDays,
+                        uHours,
+                        uMins,
+                        uSecs,
                         aIV_field[eIvlType]);
       }
       break;
 
     case IV_HOUR_TO_MINUTE:
+      uHours = xIvl.T.m_xIvl.u.m_xIvlHrToMin.m_uMinutes / 60;
+      uMins = xIvl.T.m_xIvl.u.m_xIvlHrToMin.m_uMinutes % 60;
+
       sBuf.vCatSprint("INTERVAL %s'%lld:%lld' %s"_Stz,
                       szNeg,
-                      xIvl.T.m_xIvl.u.m_xIvlHrToMin.m_uMinutes / 60,
-                      xIvl.T.m_xIvl.u.m_xIvlHrToMin.m_uMinutes % 60,
+                      uHours,
+                      uMins,
                       aIV_field[eIvlType]);
       break;
 
     case IV_HOUR_TO_SECOND:
-      if (xIvl.T.m_xIvl.u.m_xIvlHrToSec.m_uFrac > 0) {
+      uHours = xIvl.T.m_xIvl.u.m_xIvlHrToSec.m_uMinutes / 60;
+      uMins = xIvl.T.m_xIvl.u.m_xIvlHrToSec.m_uMinutes % 60;
+      uSecs = xIvl.T.m_xIvl.u.m_xIvlHrToSec.m_uSeconds;
+      uMicros = xIvl.T.m_xIvl.u.m_xIvlHrToSec.m_uMicros;
+
+      if (uMicros > 0) {
         sBuf.vCatSprint("INTERVAL %s'%lld:%lld:%lld.%06lld' %s"_Stz,
                         szNeg,
-                        xIvl.T.m_xIvl.u.m_xIvlHrToSec.m_uMinutes / 60,
-                        xIvl.T.m_xIvl.u.m_xIvlHrToSec.m_uMinutes % 60,
-                        xIvl.T.m_xIvl.u.m_xIvlHrToSec.m_uSeconds,
-                        xIvl.T.m_xIvl.u.m_xIvlHrToSec.m_uFrac,
+                        uHours,
+                        uMins,
+                        uSecs,
+                        uMicros,
                         aIV_field[eIvlType]);
       } else {
         sBuf.vCatSprint("INTERVAL %s'%lld:%lld:%lld' %s"_Stz,
                         szNeg,
-                        xIvl.T.m_xIvl.u.m_xIvlHrToSec.m_uMinutes / 60,
-                        xIvl.T.m_xIvl.u.m_xIvlHrToSec.m_uMinutes % 60,
-                        xIvl.T.m_xIvl.u.m_xIvlHrToSec.m_uSeconds,
+                        uHours,
+                        uMins,
+                        uSecs,
                         aIV_field[eIvlType]);
       }
       break;
 
     case IV_MINUTE_TO_SECOND:
-      if (xIvl.T.m_xIvl.u.m_xIvlMinToSec.m_uFrac > 0) {
+      uMins = xIvl.T.m_xIvl.u.m_xIvlMinToSec.m_uMinutes % 60;
+      uSecs = xIvl.T.m_xIvl.u.m_xIvlMinToSec.m_uSeconds;
+      uMicros = xIvl.T.m_xIvl.u.m_xIvlMinToSec.m_uMicros;
+
+      if (uMicros > 0) {
         sBuf.vCatSprint("INTERVAL %s'%lld:%lld.%06lld' %s"_Stz,
                         szNeg,
-                        xIvl.T.m_xIvl.u.m_xIvlMinToSec.m_uMinutes % 60,
-                        xIvl.T.m_xIvl.u.m_xIvlMinToSec.m_uSeconds,
-                        xIvl.T.m_xIvl.u.m_xIvlMinToSec.m_uFrac,
+                        uMins,
+                        uSecs,
+                        uMicros,
                         aIV_field[eIvlType]);
       } else {
         sBuf.vCatSprint("INTERVAL %s'%lld:%lld' %s"_Stz,
                         szNeg,
-                        xIvl.T.m_xIvl.u.m_xIvlMinToSec.m_uMinutes % 60,
-                        xIvl.T.m_xIvl.u.m_xIvlMinToSec.m_uSeconds,
+                        uMins,
+                        uSecs,
                         aIV_field[eIvlType]);
       }
       break;

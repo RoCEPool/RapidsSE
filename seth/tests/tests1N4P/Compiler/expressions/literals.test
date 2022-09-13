@@ -1549,55 +1549,405 @@ failure contains: 'Invalid interval format: absolute interval DAY TO MINUTE valu
 // -------------------------------------------------------
 
 EXPLAIN SELECT INTERVAL '' DAY TO SECOND FROM nation;                   // invalid
+failure contains: 'Invalid interval format: interval string is empty'
+
+EXPLAIN SELECT INTERVAL '   ' DAY TO SECOND FROM nation;                   // invalid
+failure contains: 'Invalid interval format: interval string is incomplete or invalid'
+
 EXPLAIN SELECT INTERVAL '1' DAY TO SECOND FROM nation;                  // invalid
+failure contains: 'Invalid interval format: missing '' '' separator between day and hour digits'
+
 EXPLAIN SELECT INTERVAL '1-2' DAY TO SECOND FROM nation;                // invalid
+failure contains: 'Invalid interval format: missing '' '' separator between day and hour digits'
+
 EXPLAIN SELECT INTERVAL '1 2' DAY TO SECOND FROM nation;                // invalid, incomplete
+failure contains: 'Invalid interval format: missing '':'' separator between hour and minute digits'
+
 EXPLAIN SELECT INTERVAL '1 2-3' DAY TO SECOND FROM nation;              // invalid
+failure contains: 'Invalid interval format: missing '':'' separator between hour and minute digits'
+
 EXPLAIN SELECT INTERVAL '1 02:03' DAY TO SECOND FROM nation;            // invalid, incomplete
+failure contains: 'Invalid interval format: missing '':'' separator between minute and second digits'
+
 EXPLAIN SELECT INTERVAL '1 02:03:04' DAY TO SECOND FROM nation;         // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''1 02:03:04'' DAY TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1 2:3:4'' DAY TO SECOND ; Ordinal Expr = INTERVAL ''1 2:3:4'' DAY TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '1 02:03:04.567891' DAY TO SECOND FROM nation;  // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''1 02:03:04.567891'' DAY TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1 2:3:4.567891'' DAY TO SECOND ; Ordinal Expr = INTERVAL ''1 2:3:4.567891'' DAY TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '1   2:3:4' DAY TO SECOND FROM nation;          // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''1   2:3:4'' DAY TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1 2:3:4'' DAY TO SECOND ; Ordinal Expr = INTERVAL ''1 2:3:4'' DAY TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '1   2:3:4.567891' DAY TO SECOND FROM nation;   // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''1   2:3:4.567891'' DAY TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1 2:3:4.567891'' DAY TO SECOND ; Ordinal Expr = INTERVAL ''1 2:3:4.567891'' DAY TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '1 2:3:4.5678910000' DAY TO SECOND FROM nation; // ok (trailing zeros ignored)
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''1 2:3:4.5678910000'' DAY TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1 2:3:4.567891'' DAY TO SECOND ; Ordinal Expr = INTERVAL ''1 2:3:4.567891'' DAY TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '1 2:3:4.5678910001' DAY TO SECOND FROM nation; // invalid
+failure contains: 'Invalid interval format: absolute interval microseconds value exceeds range of 0-999999'
+
 EXPLAIN SELECT INTERVAL '1   2 : 3 : 4' DAY TO SECOND FROM nation;      // invalid
+failure contains: 'Invalid interval format: missing '':'' separator between hour and minute digits'
+
 EXPLAIN SELECT INTERVAL '0 0:0:0' DAY TO SECOND FROM nation;            // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''0 0:0:0'' DAY TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''0 0:0:0'' DAY TO SECOND ; Ordinal Expr = INTERVAL ''0 0:0:0'' DAY TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '0 0:0:0.0' DAY TO SECOND FROM nation;          // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''0 0:0:0.0'' DAY TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''0 0:0:0'' DAY TO SECOND ; Ordinal Expr = INTERVAL ''0 0:0:0'' DAY TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '0 1:2:3' DAY TO SECOND FROM nation;            // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''0 1:2:3'' DAY TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''0 1:2:3'' DAY TO SECOND ; Ordinal Expr = INTERVAL ''0 1:2:3'' DAY TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '0 1:2:3:' DAY TO SECOND FROM nation;           // invalid
+failure contains: 'Invalid interval format: unexpected character '':'' encountered'
+
 EXPLAIN SELECT INTERVAL '-1 2:3:4' DAY TO SECOND FROM nation;           // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''-1 2:3:4'' DAY TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL -''1 2:3:4'' DAY TO SECOND ; Ordinal Expr = INTERVAL -''1 2:3:4'' DAY TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL -'1 2:3:4' DAY TO SECOND FROM nation;           // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL -''1 2:3:4'' DAY TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL -''1 2:3:4'' DAY TO SECOND ; Ordinal Expr = INTERVAL -''1 2:3:4'' DAY TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL -'-1 2:3:4' DAY TO SECOND FROM nation;          // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL -''-1 2:3:4'' DAY TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1 2:3:4'' DAY TO SECOND ; Ordinal Expr = INTERVAL ''1 2:3:4'' DAY TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '  1 2:3:4  ' DAY TO SECOND FROM nation;        // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''  1 2:3:4  '' DAY TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1 2:3:4'' DAY TO SECOND ; Ordinal Expr = INTERVAL ''1 2:3:4'' DAY TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '  1 2::3:4  ' DAY TO SECOND FROM nation;       // invalid
+failure contains: 'Invalid interval format: non-digit value '':'' encountered'
+
 EXPLAIN SELECT INTERVAL '  1 2:3::4  ' DAY TO SECOND FROM nation;       // invalid
+failure contains: 'Invalid interval format: non-digit value '':'' encountered'
+
 EXPLAIN SELECT INTERVAL '1 -2:3:4' DAY TO SECOND FROM nation;           // invalid
+failure contains: 'Invalid interval format: non-digit value ''-'' encountered'
+
 EXPLAIN SELECT INTERVAL '1 2:3:-4' DAY TO SECOND FROM nation;           // invalid
+failure contains: 'Invalid interval format: non-digit value ''-'' encountered'
+
 EXPLAIN SELECT INTERVAL '1 2:3:4.-5' DAY TO SECOND FROM nation;         // invalid
+failure contains: 'Invalid interval format: unexpected character ''-'' encountered'
+
 EXPLAIN SELECT INTERVAL '1:2:3.4' DAY TO SECOND FROM nation;            // invalid
+failure contains: 'Invalid interval format: missing '' '' separator between day and hour digits'
+
 EXPLAIN SELECT INTERVAL '1 2:3:4:' DAY TO SECOND FROM nation;           // invalid
+failure contains: 'Invalid interval format: unexpected character '':'' encountered'
+
 EXPLAIN SELECT INTERVAL '1 2:60:4' DAY TO SECOND FROM nation;           // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''1 2:60:4'' DAY TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1 3:0:4'' DAY TO SECOND ; Ordinal Expr = INTERVAL ''1 3:0:4'' DAY TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '1 2:3:60' DAY TO SECOND FROM nation;           // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''1 2:3:60'' DAY TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1 2:3:60'' DAY TO SECOND ; Ordinal Expr = INTERVAL ''1 2:3:60'' DAY TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '1 2:3:61' DAY TO SECOND FROM nation;           // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''1 2:3:61'' DAY TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1 2:3:61'' DAY TO SECOND ; Ordinal Expr = INTERVAL ''1 2:3:61'' DAY TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '1 24:60:61' DAY TO SECOND FROM nation;         // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''1 24:60:61'' DAY TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1 25:0:61'' DAY TO SECOND ; Ordinal Expr = INTERVAL ''1 25:0:61'' DAY TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '1 2:3.4:5' DAY TO SECOND FROM nation;          // invalid
+failure contains: 'Invalid interval format: missing '':'' separator between minute and second digits'
+
 EXPLAIN SELECT INTERVAL 'a 2:3:4.5' DAY TO SECOND FROM nation;          // invalid
+failure contains: 'Invalid interval format: non-digit value ''a'' encountered'
+
 EXPLAIN SELECT INTERVAL '1 a:3:4.5' DAY TO SECOND FROM nation;          // invalid
+failure contains: 'Invalid interval format: non-digit value ''a'' encountered'
+
 EXPLAIN SELECT INTERVAL '1 2:a:4.5' DAY TO SECOND FROM nation;          // invalid
+failure contains: 'Invalid interval format: non-digit value ''a'' encountered'
+
 EXPLAIN SELECT INTERVAL '1 2:3:a.5' DAY TO SECOND FROM nation;          // invalid
+failure contains: 'Invalid interval format: non-digit value ''a'' encountered'
+
 EXPLAIN SELECT INTERVAL '1 2:3:4.a' DAY TO SECOND FROM nation;          // invalid
+failure contains: 'Invalid interval format: non-digit value ''a'' encountered'
+
 // Check bounds - max 4,095 days, minutes and whole seconds.
 // Hours (max 68) are converted to minutes.
 EXPLAIN SELECT INTERVAL '0 0:0:4095' DAY TO SECOND FROM nation;             // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''0 0:0:4095'' DAY TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''0 0:0:4095'' DAY TO SECOND ; Ordinal Expr = INTERVAL ''0 0:0:4095'' DAY TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '0 0:0:4096' DAY TO SECOND FROM nation;             // invalid
+failure contains: 'Invalid interval format: absolute interval DAY TO SECOND value exceeds SECOND maximum of 4095'
+
 EXPLAIN SELECT INTERVAL '0 0:4095:4095' DAY TO SECOND FROM nation;          // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''0 0:4095:4095'' DAY TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''0 68:15:4095'' DAY TO SECOND ; Ordinal Expr = INTERVAL ''0 68:15:4095'' DAY TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '0 0:4096:4095' DAY TO SECOND FROM nation;          // invalid
+failure contains: 'Invalid interval format: absolute interval DAY TO SECOND value exceeds MINUTE maximum of 4095'
+
 EXPLAIN SELECT INTERVAL '0 68:15:4095' DAY TO SECOND FROM nation;           // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''0 68:15:4095'' DAY TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''0 68:15:4095'' DAY TO SECOND ; Ordinal Expr = INTERVAL ''0 68:15:4095'' DAY TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '0 68:16:4095' DAY TO SECOND FROM nation;           // invalid
+failure contains: 'Invalid interval format: absolute interval DAY TO SECOND value exceeds MINUTE maximum of 4095'
+
 EXPLAIN SELECT INTERVAL '4095 0:4095:4095' DAY TO SECOND FROM nation;       // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''4095 0:4095:4095'' DAY TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''4095 68:15:4095'' DAY TO SECOND ; Ordinal Expr = INTERVAL ''4095 68:15:4095'' DAY TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '4096 0:4095:4095' DAY TO SECOND FROM nation;       // invalid
+failure contains: 'Invalid interval format: absolute interval DAY TO SECOND value exceeds DAY maximum of 4095'
+
 EXPLAIN SELECT INTERVAL '4095 0:4095:4095.999999' DAY TO SECOND FROM nation;  // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''4095 0:4095:4095.999999'' DAY TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''4095 68:15:4095.999999'' DAY TO SECOND ; Ordinal Expr = INTERVAL ''4095 68:15:4095.999999'' DAY TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '4095 0:4095:4095.9999999' DAY TO SECOND FROM nation; // invalid
+failure contains: 'Invalid interval format: absolute interval microseconds value exceeds range of 0-999999'
 
 
 
