@@ -240,12 +240,12 @@ void Optimiser::vOptimise(void)
   Board* pBoard = m_pBench->pHead();
   CardRegs* pCardRegs = pBoard->pCardRegs();
 
-  pBoard->vPrintBoard("vDissectSpec >> "_Stz);
+  //pBoard->vPrintBoard("vDissectSpec >> "_Stz);
   
   pBoard->vResolve_Symbols();
   //pBoard->vResolve_RootStreams();
 
-  pBoard->vPrintBoard("vResolve_RootStreams >> "_Stz);
+  //pBoard->vPrintBoard("vResolve_RootStreams >> "_Stz);
 //
 //  // rules
 //
