@@ -203,19 +203,19 @@ Card* Dissect::pCard_Aggreg(TagSet* pArgTags)
   pCard_Aggreg->vAppend(pCard_AggLevel);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // gbyElist : optional groupBy expression list
+
+  if (pCard_RpnTerms->nItems()) {
+    Card_GbyElist* pCard_ByList = pGbyElist(pCard_RpnTerms);
+    pCard_Aggreg->vAppend(pCard_ByList);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // aggElist : aggregate expression list
   
   Card_AggElist* pCard_AggElist = pAggElist(pCard_RpnTerms);
   pCard_Aggreg->vAppend(pCard_AggElist);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // gbyElist : optional groupBy expression list
-  
-  if (pCard_RpnTerms->nItems()) {
-    Card_GbyElist* pCard_ByList = pGbyElist(pCard_RpnTerms);
-    pCard_Aggreg->vAppend(pCard_ByList);
-  }
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   delete pCard_RpnTerms;
@@ -664,7 +664,13 @@ Card_AggElist* Dissect::pAggElist(Card_RpnTerms* pCard_RpnTerms)
   Card_AggElist* pCard_AggElist = new Card_AggElist;
   
   i8 iCardNo = 0;
-  Card_Term* pCard_Term_head = nullptr;
+
+  Card_Term* pCard_Term_head = pCard_RpnTerms->pPopTerm();
+  RASSERT(pCard_Term_head->bIsSame("AGGREGATES"_Stz));
+  delete pCard_Term_head;
+
+
+
   while ( (pCard_Term_head = pCard_RpnTerms->pHeadTerm()) ) {
     
     // GROUPBY
@@ -678,7 +684,7 @@ Card_AggElist* Dissect::pAggElist(Card_RpnTerms* pCard_RpnTerms)
       continue;
     }
         
-    // TYPE <type> [ AS <as> ] <calcExpr>
+    // TYPE <type> [ AS <as> ] <calc>
     Card_Expr* pCard_Expr = pExpr_c(pCard_RpnTerms);
     pCard_Expr->vCardNo(++iCardNo);
     pCard_Expr->vAsEnsure();
@@ -707,7 +713,12 @@ Card_GbyElist* Dissect::pGbyElist(Card_RpnTerms* pCard_RpnTerms)
 
   i8 iCardNo = 0;
   while ( (pCard_Term_head = pCard_RpnTerms->pHeadTerm()) ) {
-        
+
+    // GROUPBY
+    if (pCard_Term_head->bIsSame("AGGREGATES"_Stz)) {
+      break;
+    }
+
     // SEPARATOR
     if (pCard_Term_head->bIsSeparator()) {
       delete pCard_RpnTerms->pPop();
@@ -847,7 +858,7 @@ Card_Expr* Dissect::pExpr_c(Card_RpnTerms* pCard_RpnTerms)
 
 
   // <calcExpr>
-  Card_ExprCalc* pCard_ExprCalc = pExprCalc(pCard_RpnTerms);
+  Card_Calc* pCard_ExprCalc = pExprCalc(pCard_RpnTerms);
   pCard_Expr->vAppend(pCard_ExprCalc);
 
   // [ AS <as> ]
@@ -870,19 +881,19 @@ Card_Expr* Dissect::pExpr_c(Card_RpnTerms* pCard_RpnTerms)
   }
 
 
-  pCard_Term_head = pCard_RpnTerms->pHead();
-  if (pCard_Term_head
-      && pCard_Term_head->bIsSame("AGGREGATES"_Stz)) {
-
-    Card_Aggregates* pCard_Aggregates = new Card_Aggregates;
-    pCard_Expr->vAppend(pCard_Aggregates);
-
-    pCard_Term_popped = pCard_RpnTerms->pPopTerm();
-    delete pCard_Term_popped;
-
-    //HACK
-    goto L_TYPE;
-  }
+//  pCard_Term_head = pCard_RpnTerms->pHead();
+//  if (pCard_Term_head
+//      && pCard_Term_head->bIsSame("AGGREGATES"_Stz)) {
+//
+//    Card_Aggregates* pCard_Aggregates = new Card_Aggregates;
+//    pCard_Expr->vAppend(pCard_Aggregates);
+//
+//    pCard_Term_popped = pCard_RpnTerms->pPopTerm();
+//    delete pCard_Term_popped;
+//
+//    //HACK
+//    goto L_TYPE;
+//  }
 
   return pCard_Expr;
 }
@@ -928,11 +939,11 @@ Card_ExprBool* Dissect::pExprBool(Card_RpnTerms* pCard_RpnTerms)
 /*----------------------------------------------------------------------------*/
 /* collect <predicate>                                                        */
 /*----------------------------------------------------------------------------*/
-Card_ExprCalc* Dissect::pExprCalc(Card_RpnTerms* pCard_RpnTerms)
+Card_Calc* Dissect::pExprCalc(Card_RpnTerms* pCard_RpnTerms)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
 
-  Card_ExprCalc* pCard_ExprCalc = new Card_ExprCalc;
+  Card_Calc* pCard_ExprCalc = new Card_Calc;
 
   Card_Term* pCard_Term_popped = nullptr;
   while ( (pCard_Term_popped = _pCard_Term(pCard_RpnTerms->pPop())) ) {

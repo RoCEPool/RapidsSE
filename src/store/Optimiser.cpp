@@ -244,6 +244,7 @@ void Optimiser::vOptimise(void)
   
   pBoard->vResolve_Symbols();
   //pBoard->vResolve_RootStreams();
+
   pBoard->vPrintBoard("vResolve_RootStreams >> "_Stz);
 //
 //  // rules
@@ -256,7 +257,7 @@ void Optimiser::vOptimise(void)
 //    pCardRegs->vResetCardRegs();
 //  }
   
-  Cue::vGetReturn("$$$$$$ >>"_Stz);
+  //Cue::vGetReturn("$$$$$$ >>"_Stz);
 }
 
 /*============================================================================*/

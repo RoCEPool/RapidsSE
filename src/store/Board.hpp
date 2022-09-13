@@ -56,7 +56,7 @@ namespace STORE
   
     void vPinCards(Ribbon* pRibbon, i8 i_Board);
   
-    void vPrintBoard(Stz* szCue);
+    void vPrintBoard(Stz* szCue=nullptr);
 
     Stz* szQueryNm(void);
     void vQueryNm(Stz* szQueryNm);

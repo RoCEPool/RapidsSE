@@ -185,7 +185,7 @@ void Board::vPinCards(Ribbon* pRibbon, i8 i_Board)
   while (pBoard_I->bHasNext()) {
     Card* pCard = pBoard_I->pNext();
 
-    pCard->vDump();
+    //pCard->vDump();
     
     //if (_bIsCard_Filter(pCard))
     //  pCard->vDump();
@@ -243,8 +243,10 @@ void Board::vPrintBoard(Stz* szCue)
   
   if (! bCue)
     return;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  if (! szCue)
+    return;
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
   L_Input:
   
@@ -502,18 +504,23 @@ void Board::vResolveAll(Card* pAnyCard) // recursive
 
   pCard_ELIST = (Card_ELIST*)pAnyCard->pFindSubCard(CK_AGGELIST);
   if (pCard_ELIST) {
-        
+
+    Card_AggElist* pCard_AggElist = _pCard_AggElist(pCard_ELIST);
     Card_Stream* pCard_Stream = new Card_Stream;
     pAnyCard->vAppend(pCard_Stream);
     
-    Card_SubSet* pCard_SubSet = pCard_ELIST->pDupSubCards();
-    Card_StreamElist* pCard_StreamElist = new Card_StreamElist;
-    pCard_StreamElist->vTransferAll(pCard_SubSet);
-    pCard_Stream->vAppend(pCard_StreamElist);
-    delete pCard_SubSet;
+//    Card_SubSet* pCard_SubSet = pCard_ELIST->pDupSubCards();
+//    Card_StreamElist* pCard_StreamElist = new Card_StreamElist;
+//    pCard_StreamElist->vTransferAll(pCard_SubSet);
+//    pCard_Stream->vAppend(pCard_StreamElist);
+//    delete pCard_SubSet;
     
     //vReg_Stream(pCard_Stream);
     m_pCardRegs->vCardReg(CK_STREAM,pCard_Stream);
+
+    Card_StreamColList* pCard_StreamColList = new Card_StreamColList(pCard_AggElist);
+    pCard_Stream->vAppend(pCard_StreamColList);
+
   }
 
   // derive the stream definition for projection
@@ -523,11 +530,11 @@ void Board::vResolveAll(Card* pAnyCard) // recursive
     Card_Stream* pCard_Stream = new Card_Stream;
     pAnyCard->vAppend(pCard_Stream);
     
-    Card_SubSet* pCard_SubSet = pCard_ELIST->pDupSubCards();
-      Card_StreamElist* pCard_StreamElist = new Card_StreamElist;
-      pCard_StreamElist->vTransferAll(pCard_SubSet);
-    pCard_Stream->vAppend(pCard_StreamElist);
-    delete pCard_SubSet;
+//    Card_SubSet* pCard_SubSet = pCard_ELIST->pDupSubCards();
+//    Card_StreamElist* pCard_StreamElist = new Card_StreamElist;
+//    pCard_StreamElist->vTransferAll(pCard_SubSet);
+//    pCard_Stream->vAppend(pCard_StreamElist);
+//    delete pCard_SubSet;
     
     //vReg_Stream(pCard_Stream);
     m_pCardRegs->vCardReg(CK_STREAM,pCard_Stream);
@@ -560,8 +567,8 @@ void Board::vResolveAll(Card* pAnyCard) // recursive
     //vReg_Stream(pCard_Stream);
     m_pCardRegs->vCardReg(CK_STREAM,pCard_Stream);
 
-    Card_StreamElist* pCard_StreamElist = new Card_StreamElist(pStreamDef);
-    pCard_Stream->vAppend(pCard_StreamElist);
+//    Card_StreamElist* pCard_StreamElist = new Card_StreamElist(pStreamDef);
+//    pCard_Stream->vAppend(pCard_StreamElist);
 
     Card_StreamColList* pCard_StreamColList = new Card_StreamColList(pStreamDef);
     pCard_Stream->vAppend(pCard_StreamColList);
@@ -595,6 +602,8 @@ void Board::vResolveTerm(Card_Term* pCard_Term)
       Stz *szColNm_resolved = pCard_As->szAs();
 
       pCard_Term->vTerm(szColNm_resolved);
+
+      vTrace("Resolved $%lld To: %s\n"_Stz,i_Ord,szColNm_resolved);
 
       return;
     }
@@ -1137,9 +1146,12 @@ void Board::vResolve_Symbols(void)
   for (i8 i_MainCard = 0; i_MainCard < nMainCards; i_MainCard++) {
     Card* pMainCard = pGetMainCard(i_MainCard);
 
+    vTrace("Resolving MainCard %lld\n"_Stz,i_MainCard);
     vResolveAll(pMainCard);
 
-    pMainCard->vRenumberSubCards(nullptr);
+    //vPrintBoard();
+
+    //pMainCard->vRenumberSubCards(nullptr);
   }
 
 }

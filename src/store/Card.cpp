@@ -198,14 +198,15 @@ bool Card::bIsSub(eCK eCard)
     case CK_AGGELIST:
     case CK_AGGLEVEL:
     case CK_AS:
-                      
+
+    case CK_CALC:
+
     case CK_DIRECTION:
               
     case CK_EBOUND:
     case CK_EXPR:
     case CK_EXPRBOOL:
-    case CK_EXPRCALC:
-              
+
     case CK_FILTELIST:
       
     case CK_GBYELIST:
@@ -308,7 +309,8 @@ eGC Card::eToECatg(eCK eCard)
     case CK_AS:                          return GC_SUB;
                                    
     case CK_BOARD:                                      return GC_OTHER;
-      
+
+    case CK_CALC:                        return GC_SUB;
     case CK_CANDINDEX:  return GC_MAIN;
     case CK_COMBINE:    return GC_MAIN;
                                     
@@ -319,8 +321,7 @@ eGC Card::eToECatg(eCK eCard)
     case CK_EXISTS:     return GC_MAIN;
     case CK_EXPR:                        return GC_SUB;
     case CK_EXPRBOOL:                    return GC_SUB;
-    case CK_EXPRCALC:                    return GC_SUB;
-              
+
     case CK_FILTER:     return GC_MAIN;
     case CK_FILTELIST:                   return GC_SUB;
 
@@ -2304,8 +2305,10 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
     case CK_AGGELIST:                   vPrintProperties(pRibbon,iDepth); break;
     case CK_AGGLEVEL:                   vPrintProperties(pRibbon,iDepth); break;
     case CK_AGGREG:                     vPrintProperties(pRibbon,iDepth); break;
+    case CK_AGGREGATES:                 vPrintProperties(pRibbon,iDepth); break;
     case CK_AS:                         vPrintProperties(pRibbon,iDepth); break;
-                        
+
+    case CK_CALC:                       vPrintProperties(pRibbon,iDepth); break;
     case CK_CANDINDEX:                  vPrintProperties(pRibbon,iDepth); break;
     case CK_COMBINE:                    vPrintProperties(pRibbon,iDepth); break;
                         
@@ -2316,7 +2319,6 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
     case CK_EXISTS:                     vPrintProperties(pRibbon,iDepth); break;
     case CK_EXPR:                       vPrintProperties(pRibbon,iDepth); break;
     case CK_EXPRBOOL:                   vPrintProperties(pRibbon,iDepth); break;
-    case CK_EXPRCALC:                   vPrintProperties(pRibbon,iDepth); break;
 
     case CK_FILTER:                     vPrintProperties(pRibbon,iDepth); break;
     case CK_FILTELIST:                  vPrintProperties(pRibbon,iDepth); break;

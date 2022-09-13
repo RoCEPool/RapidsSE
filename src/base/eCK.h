@@ -15,6 +15,7 @@ enum eCK // card kind
 
   /* */ CK_BOARD,
 
+  /* */ CK_CALC,
   /* */ CK_CANDINDEX,
   /* */ CK_COMBINE,
   
@@ -25,7 +26,6 @@ enum eCK // card kind
   /* */ CK_EXISTS,
   /* */ CK_EXPR,
   /* */ CK_EXPRBOOL,
-  /* */ CK_EXPRCALC,
 
   /* */ CK_FILTER,
   /* */ CK_FILTELIST,
@@ -99,6 +99,7 @@ static Stz* aCK[]
   
   /* */ "CK_BOARD"_Stz,        // CK_BOARD
 
+  /* */ "CK_CALC"_Stz,         // CK_CALC
   /* */ "CK_CANDINDEX"_Stz,    // CK_CANDINDEX
   /* */ "CK_COMBINE"_Stz,      // CK_COMBINE
   
@@ -109,8 +110,7 @@ static Stz* aCK[]
   /* */ "CK_EXISTS"_Stz,       // CK_EXISTS
   /* */ "CK_EXPR"_Stz,         // CK_EXPR
   /* */ "CK_EXPRBOOL"_Stz,     // CK_EXPRBOOL
-  /* */ "CK_EXPRCALC"_Stz,     // CK_EXPRCALC
-  
+
   /* */ "CK_FILTER"_Stz,       // CK_FILTER
   /* */ "CK_FILTELIST"_Stz,    // CK_FILTELIST
 
@@ -183,6 +183,7 @@ static Stz* aCK_short[]
   
   /* */ "board"_Stz,           // CK_BOARD
 
+  /* */ "calc"_Stz,            // CK_CALC
   /* */ "candIndex"_Stz,       // CK_CANDINDEX
   /* */ "combine"_Stz,         // CK_COMBINE
 
@@ -193,7 +194,6 @@ static Stz* aCK_short[]
   /* */ "exists"_Stz,          // CK_EXISTS
   /* */ "expr"_Stz,            // CK_EXPR
   /* */ "exprBool"_Stz,        // CK_EXPRBOOL
-  /* */ "exprCalc"_Stz,        // CK_EXPRCALC
 
   /* */ "filter"_Stz,          // CK_FILTER
   /* */ "filtElist"_Stz,       // CK_FILTELIST
@@ -267,6 +267,7 @@ static Stz* aCK_op[]
 
   /* */ "(none)"_Stz,          // CK_BOARD
 
+  /* */ "(none)"_Stz,          // CK_CALC
   /* */ "(none)"_Stz,          // CK_CANDINDEX
   /* */ "combined  0"_Stz,     // CK_COMBINE
 
@@ -277,7 +278,6 @@ static Stz* aCK_op[]
   /* */ "(none)"_Stz,          // CK_EXISTS
   /* */ "(none)"_Stz,          // CK_EXPR
   /* */ "(none)"_Stz,          // CK_EXPRBOOL
-  /* */ "(none)"_Stz,          // CK_EXPRCALC
 
   /* */ "filter   "_Stz,       // CK_FILTER
   /* */ "(none)"_Stz,          // CK_FILTELIST
