@@ -2,9 +2,10 @@
 /* Aggregate Splitting semantic tests                                         */
 /*----------------------------------------------------------------------------*/
 
-// This tests that ordinal expressions that contain more than one aggregate
-// expression (e.g. SUM($1)/COUNT($2)) have a separate ProjectOp added underneath
-// them that calculates each aggregate separately.
+// This tests that ordinal expressions that contain one or more aggregates under
+// an expression parent are separated such that they have separate ProjectOp added
+// underneath that calculates each aggregate separately.
+// e.g. SUM($1)/COUNT($2), SUM($1) + SUM($2)
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Setup
@@ -292,8 +293,8 @@ rows:
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  A CAST of an aggregate needs to be split into multiple stages
-//  (aggregate in one stage, cast in the next).
+//  An aggregate underneath any parent expression needs to be split.
+//  e.g. an aggregate under a +, LIKE, SUBSTRING, etc.
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 -- cast of an aggregate is split /1
@@ -657,6 +658,91 @@ rows: (*,'aggregateSplit','
                            » location: all partitions
                            » table: (rapidsse.public.nation)')
 
+
+-- SUBSTRING
+EXPLAIN STAGE aggregatesplit SELECT SUBSTR(MAX(n_name), 0, 1) FROM nation;
+rows: (*,'aggregateSplit','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> stageMarker
+   » location: origin
+   » routing: unicast
+
+-> -> projectOp
+      » column: (Expr = SUBSTRING((MAX(MAX(MAX(rapidsse.public.nation.n_name)))), 0, 1) ; Ordinal Expr = SUBSTRING($1, 0, 1))
+
+-> -> -> stageMarker
+         » location: origin
+         » routing: unicast
+
+-> -> -> -> projectOp
+            » location: origin
+            » column: (Expr = MAX(MAX(MAX(rapidsse.public.nation.n_name))) ; Ordinal Expr = MAX($1))
+
+-> -> -> -> -> stageMarker
+               » location: all nodes
+               » routing: unicast
+
+-> -> -> -> -> -> projectOp
+                  » location: all nodes
+                  » column: (Expr = MAX(MAX(rapidsse.public.nation.n_name)) ; Ordinal Expr = MAX($1))
+
+-> -> -> -> -> -> -> stageMarker
+                     » location: all partitions
+                     » routing: local node
+
+-> -> -> -> -> -> -> -> projectOp
+                        » column: (Expr = MAX(rapidsse.public.nation.n_name) ; Ordinal Expr = MAX($2))
+
+-> -> -> -> -> -> -> -> -> tableScanOp
+                           » location: all partitions
+                           » table: (rapidsse.public.nation)')
+
+-- LIKE
+EXPLAIN STAGE aggregatesplit SELECT MIN(n_name) LIKE MAX(n_name) FROM nation;
+rows: (*,'aggregateSplit','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> stageMarker
+   » location: origin
+   » routing: unicast
+
+-> -> projectOp
+      » column: (Expr = (MIN(MIN(MIN(rapidsse.public.nation.n_name)))) LIKE (MAX(MAX(MAX(rapidsse.public.nation.n_name)))) ; Ordinal Expr = $2 LIKE $1)
+
+-> -> -> stageMarker
+         » location: origin
+         » routing: unicast
+
+-> -> -> -> projectOp
+            » location: origin
+            » column: (Expr = MAX(MAX(MAX(rapidsse.public.nation.n_name))) ; Ordinal Expr = MAX($1))
+            » column: (Expr = MIN(MIN(MIN(rapidsse.public.nation.n_name))) ; Ordinal Expr = MIN($2))
+
+-> -> -> -> -> stageMarker
+               » location: all nodes
+               » routing: unicast
+
+-> -> -> -> -> -> projectOp
+                  » location: all nodes
+                  » column: (Expr = MAX(MAX(rapidsse.public.nation.n_name)) ; Ordinal Expr = MAX($1))
+                  » column: (Expr = MIN(MIN(rapidsse.public.nation.n_name)) ; Ordinal Expr = MIN($2))
+
+-> -> -> -> -> -> -> stageMarker
+                     » location: all partitions
+                     » routing: local node
+
+-> -> -> -> -> -> -> -> projectOp
+                        » column: (Expr = MAX(rapidsse.public.nation.n_name) ; Ordinal Expr = MAX($2))
+                        » column: (Expr = MIN(rapidsse.public.nation.n_name) ; Ordinal Expr = MIN($2))
+
+-> -> -> -> -> -> -> -> -> tableScanOp
+                           » location: all partitions
+                           » table: (rapidsse.public.nation)')
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Check for memory leaks
