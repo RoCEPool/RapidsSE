@@ -739,37 +739,16 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
           continue;
         }
       } else {
-        // could be a symbolic column name
+        // look for the column in the streamDefLft
+        Column *pColumn = pStreamDefIn->pFindColumn(pTkn->szChars());
 
-        // look for the column in the indexDef
-        Column *pIdxColumn = pIndexDef ? pIndexDef->pFindColumn(pTkn->szChars()) : nullptr;
-
-        if ( pIdxColumn ) {
-          // should already be in the streamDef
-          Column *pColumn = pStreamDefIn->pFindColumn(pTkn->szChars());
-          RASSERT(pColumn);
-
-          // select bit should be on
-          i_ColumnOrdinal = pColumn->iColumnNo();
-          RASSERT(BitLib::bIsOn(*puSelectColumns, i_ColumnOrdinal));
-
-          ePreExp = PE_GKY;
-
+        if (! pColumn ) {
+          vTrace("***Invalid Column %s***\n"_Stz,pTkn->szChars());
+          eError = EC_INVALID_COMMAND;
+          break;
         }
-        else {
-          // look for the column in the streamDefLft
-          Column *pColumn = pStreamDefIn->pFindColumn(pTkn->szChars());
-
-          if (! pColumn ) {
-            vTrace("***Invalid Column %s***\n"_Stz,pTkn->szChars());
-            eError = EC_INVALID_COMMAND;
-            break;
-          }
-          i_ColumnOrdinal = pColumn->iColumnNo();
-          BitLib::vSetOn(*puSelectColumns, i_ColumnOrdinal);
-
-        }
-
+        i_ColumnOrdinal = pColumn->iColumnNo();
+        BitLib::vSetOn(*puSelectColumns, i_ColumnOrdinal);
       }
 
     }
