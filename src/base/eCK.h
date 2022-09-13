@@ -316,7 +316,7 @@ static Stz* aCK_op[]
   /* */ "(none)"_Stz,          // CK_RPNTERMS
 
   /* */ "(none)"_Stz,          // CK_SBYELIST
-  /* */ "scan       "_Stz,     // CK_SCAN
+  /* */ "scan     "_Stz,     // CK_SCAN
   /* */ "(none)"_Stz,          // CK_SEND
   /* */ "(none)"_Stz,          // CK_SENDKIND
   /* */ "(none)"_Stz,          // CK_SENDS

@@ -689,6 +689,30 @@ bool Card::bEquivalent(Card* pCard_arg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find immediate child-card                                                  */
+/*----------------------------------------------------------------------------*/
+Card* Card::pFindChildCard(eCK eCard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  ListExoIter2_t<Card> *pSubCard_I = pNewIter();
+
+  Card *pFoundCard = nullptr;
+  while (pSubCard_I->bHasNext()) {
+    Card *pSubCard = pSubCard_I->pNext();
+
+    if (eCard == pSubCard->eCard()) {
+      pFoundCard = pSubCard;
+      break;
+    }
+  }
+
+  delete pSubCard_I;
+
+  return pFoundCard;
+}
+
+/*----------------------------------------------------------------------------*/
 /* find parent of given arg                                                   */
 /*----------------------------------------------------------------------------*/
 Card* Card::pFindParent(Card* pSubCard_arg)
@@ -709,7 +733,7 @@ Card* Card::pFindParent(Card* pSubCard_arg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get card name                                                              */
+/* find sub-card                                                              */
 /*----------------------------------------------------------------------------*/
 Card* Card::pFindSubCard(eCK eCard)
 {

@@ -211,6 +211,8 @@ void Board::vPinCards(Ribbon* pRibbon, i8 i_Board)
   pRibbon->vPinRibbon(1,0,pSubRibbon);
   
   delete pSubRibbon;
+
+  delete pBoard_I;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -458,124 +460,110 @@ void Board::vRankCandIndex(Card_CandIndex* pCard_CandIndex)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vResolveAll(Card* pAnyCard) // recursive
+void Board::vResolveRecursive(Card* pAnyCard) // recursive
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-    
-  
-  Card_ELIST* pCard_ELIST;
-  Card_Index* pCard_Index;
-  Card_Table* pCard_Table;
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
+
+  eCK eCard = pAnyCard->eCard();
+
+  if (CK_INDEX == eCard) {
+    m_pCard_SubSet->vIndex(pAnyCard->pIndex());
+    return;
+  }
+
+  if (CK_STREAM == eCard) {
+    m_pCardRegs->vCardReg(CK_STREAM, pAnyCard);
+    return;
+  }
+
+  if (CK_TABLE == eCard) {
+    m_pCard_SubSet->vTable(pAnyCard->pTable());
+    return;
+  }
+
+  if (CK_TERM == eCard) {
+    vResolveTerm(_pCard_Term(pAnyCard));
+    return;
+  }
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+
   //pCard->vDump();
-  
-  eCK eSubCard;
+
   i8 nSubCards = pAnyCard->nSubCards();
   for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
-    Card* pSubCard = pAnyCard->pGetSubCard(i_SubCard,eSubCard);
-       
-    if (CK_INDEX == eSubCard) {
-      m_pCard_SubSet->vIndex(pSubCard->pIndex());
-      continue;
-    }
-
-    if (CK_STREAM == eSubCard) {
-      //vReg_Stream(_pCard_Stream(pSubCard));
-      m_pCardRegs->vCardReg(CK_STREAM,pSubCard);
-      continue;
-    }
-
-    if (CK_TABLE == eSubCard) {
-      m_pCard_SubSet->vTable(pSubCard->pTable());
-      continue;
-    }
-
-    if (CK_TERM == eSubCard) {
-      vResolveTerm(_pCard_Term(pSubCard));
-      continue;
-    }
-    
-    vResolveAll(pSubCard);
+    Card *pSubCard = pAnyCard->pGetSubCard(i_SubCard);
+    vResolveRecursive(pSubCard);
   }
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pCard_ELIST = (Card_ELIST*)pAnyCard->pFindSubCard(CK_AGGELIST);
-  if (pCard_ELIST) {
+  Card_AggElist *pCard_AggElist = _pCard_AggElist(pAnyCard->pFindChildCard(CK_AGGELIST));
+  if (pCard_AggElist) {
 
-    Card_AggElist* pCard_AggElist = _pCard_AggElist(pCard_ELIST);
-    Card_Stream* pCard_Stream = new Card_Stream;
+    Card_Stream *pCard_Stream = new Card_Stream;
     pAnyCard->vAppend(pCard_Stream);
-    
-//    Card_SubSet* pCard_SubSet = pCard_ELIST->pDupSubCards();
-//    Card_StreamElist* pCard_StreamElist = new Card_StreamElist;
-//    pCard_StreamElist->vTransferAll(pCard_SubSet);
-//    pCard_Stream->vAppend(pCard_StreamElist);
-//    delete pCard_SubSet;
-    
-    //vReg_Stream(pCard_Stream);
-    m_pCardRegs->vCardReg(CK_STREAM,pCard_Stream);
 
-    Card_StreamColList* pCard_StreamColList = new Card_StreamColList(pCard_AggElist);
+    m_pCardRegs->vCardReg(CK_STREAM, pCard_Stream);
+
+    Card_StreamColList *pCard_StreamColList = new Card_StreamColList(pCard_AggElist);
     pCard_Stream->vAppend(pCard_StreamColList);
-
   }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // derive the stream definition for projection
-  pCard_ELIST = (Card_ELIST*)pAnyCard->pFindSubCard(CK_PROJELIST);
-  if (pCard_ELIST) {
-        
-    Card_Stream* pCard_Stream = new Card_Stream;
+  Card_ProjElist *pCard_ProjElist = _pCard_ProjElist(pAnyCard->pFindChildCard(CK_PROJELIST));
+  if (pCard_ProjElist) {
+
+    Card_Stream *pCard_Stream = new Card_Stream;
     pAnyCard->vAppend(pCard_Stream);
-    
-//    Card_SubSet* pCard_SubSet = pCard_ELIST->pDupSubCards();
-//    Card_StreamElist* pCard_StreamElist = new Card_StreamElist;
-//    pCard_StreamElist->vTransferAll(pCard_SubSet);
-//    pCard_Stream->vAppend(pCard_StreamElist);
-//    delete pCard_SubSet;
-    
-    //vReg_Stream(pCard_Stream);
-    m_pCardRegs->vCardReg(CK_STREAM,pCard_Stream);
 
-    // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
+    m_pCardRegs->vCardReg(CK_STREAM, pCard_Stream);
 
-    Card_StreamColList* pCard_StreamColList = pCard_ELIST->pDerive_StreamColList();
+    Card_StreamColList *pCard_StreamColList = pCard_ProjElist->pDerive_StreamColList();
     pCard_Stream->vAppend(pCard_StreamColList);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  pCard_Index = _pCard_Index(pAnyCard->pFindSubCard(CK_INDEX));
-  if (pCard_Index) {
-    Index* pIndex = pCard_Index->pIndex();
-    m_pCard_SubSet->vIndex(pIndex);
-  }
+
+//  pCard_Index = _pCard_Index(pAnyCard->pFindChildCard(CK_INDEX));
+//  if (pCard_Index) {
+//    Index* pIndex = pCard_Index->pIndex();
+//    m_pCard_SubSet->vIndex(pIndex);
+//  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  
-  pCard_Table = _pCard_Table(pAnyCard->pFindSubCard(CK_TABLE));
+  Card_Table *pCard_Table = _pCard_Table(pAnyCard->pFindChildCard(CK_TABLE));
   if (pCard_Table) {
 
-    StreamDef* pStreamDef = pCard_Table->pTable()->pStreamDef();
+    StreamDef *pStreamDef = pCard_Table->pTable()->pStreamDef();
 
-    
-    Card_Stream* pCard_Stream = new Card_Stream;
+    Card_Stream *pCard_Stream = new Card_Stream;
     pAnyCard->vAppend(pCard_Stream);
-    //vReg_Stream(pCard_Stream);
-    m_pCardRegs->vCardReg(CK_STREAM,pCard_Stream);
 
-//    Card_StreamElist* pCard_StreamElist = new Card_StreamElist(pStreamDef);
-//    pCard_Stream->vAppend(pCard_StreamElist);
+    m_pCardRegs->vCardReg(CK_STREAM, pCard_Stream);
 
-    Card_StreamColList* pCard_StreamColList = new Card_StreamColList(pStreamDef);
+    Card_StreamColList *pCard_StreamColList = new Card_StreamColList(pStreamDef);
     pCard_Stream->vAppend(pCard_StreamColList);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  if (CK_EXPR == eCard) {
+    Card_Expr *pCard_Expr = _pCard_Expr(pAnyCard);
+
+    Card_As   *pCard_As   = _pCard_As (pCard_Expr->pFindChildCard(CK_AS));
+    Card_Type *pCard_Type = _pCard_Type(pCard_Expr->pFindChildCard(CK_TYPE));
+
+    if (pCard_As && pCard_Type) {
+      pCard_Expr->vRemove(pCard_As);
+      pCard_Expr->vInsertAfter(pCard_As,pCard_Type);
+    }
   }
 
 }
- 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
@@ -594,38 +582,15 @@ void Board::vResolveTerm(Card_Term* pCard_Term)
     Card_StreamColList* pCard_StreamColList =
             _pCard_StreamColList(pReg_Stream->pFindSubCard(CK_STREAMCOLLIST));
 
-    if (pCard_StreamColList && pCard_StreamColList->nItems()) {
-      Card_StreamCol *pCard_StreamCol = _pCard_StreamCol(pCard_StreamColList->pGet(i_Col));
+    Card_StreamCol *pCard_StreamCol = _pCard_StreamCol(pCard_StreamColList->pGet(i_Col));
 
-      Card_As *pCard_As = _pCard_As(pCard_StreamCol->pFindSubCard(CK_AS));
+    Card_As *pCard_As = _pCard_As(pCard_StreamCol->pFindSubCard(CK_AS));
 
-      Stz *szColNm_resolved = pCard_As->szAs();
-
-      pCard_Term->vTerm(szColNm_resolved);
-
-      vTrace("Resolved $%lld To: %s\n"_Stz,i_Ord,szColNm_resolved);
-
-      return;
-    }
-
-    Card_StreamElist *pCard_StreamElist_src =
-            _pCard_StreamElist(pReg_Stream->pFindSubCard(CK_STREAMELIST));
-
-    Card_Expr *pCard_Expr_src = _pCard_Expr(pCard_StreamElist_src->pGet(i_Col));
-
-    Card_Term *pCard_Term_src =
-            _pCard_Term(pCard_Expr_src->pFindSubCard(CK_TERM));
-
-    Stz *szColNm_resolved = pCard_Term_src->szTerm();
-
-    if (szColNm_resolved->bSame(")"_Stz)) {
-      pReg_Stream->vDump(0,"pReg_Stream"_Stz);
-      pCard_Term->vDump(0,"pCard_Term"_Stz);
-      vTrace("Resolved To: %s\n"_Stz,szColNm_resolved);
-      vDebugPoint();
-    }
+    Stz *szColNm_resolved = pCard_As->szAs();
 
     pCard_Term->vTerm(szColNm_resolved);
+
+    vTrace("Resolved $%lld To: %s\n"_Stz,i_Ord,szColNm_resolved);
 
     return;
   }
@@ -1147,7 +1112,7 @@ void Board::vResolve_Symbols(void)
     Card* pMainCard = pGetMainCard(i_MainCard);
 
     vTrace("Resolving MainCard %lld\n"_Stz,i_MainCard);
-    vResolveAll(pMainCard);
+    vResolveRecursive(pMainCard);
 
     //vPrintBoard();
 

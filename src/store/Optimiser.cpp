@@ -8,6 +8,7 @@
 #include "Dynamo.hpp"
 
 #include "SP_PipeSpec.hpp"
+#include "Job.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -236,16 +237,21 @@ Stz* Optimiser::szWeave(void)
 void Optimiser::vOptimise(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
+  Job* pJob = MY::pJob();
+  TagSet* pJobTags = pJob->pJobTags();
+  bool bInteractive = pJobTags->bHasName("<interactive>"_Stz);
 
   Board* pBoard = m_pBench->pHead();
   CardRegs* pCardRegs = pBoard->pCardRegs();
 
-  //pBoard->vPrintBoard("vDissectSpec >> "_Stz);
+  if (bInteractive)
+    pBoard->vPrintBoard("vDissectSpec >> "_Stz);
   
   pBoard->vResolve_Symbols();
   //pBoard->vResolve_RootStreams();
 
-  //pBoard->vPrintBoard("vResolve_RootStreams >> "_Stz);
+  if (bInteractive)
+    pBoard->vPrintBoard("vResolve_RootStreams >> "_Stz);
 //
 //  // rules
 //

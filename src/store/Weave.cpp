@@ -240,7 +240,7 @@ void Weave::vArgAggreg(Stz* szOpArgs, Card_Aggreg* pCard_Aggreg)
   
   vRpnAggreg(sRpnExpr,pCard_Aggreg);
 
-  szOpArgs->vCatSprint("\" %s \""_Stz,sRpnExpr.szStz());
+  szOpArgs->vCatSprint("\"%s \""_Stz,sRpnExpr.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -256,7 +256,7 @@ void Weave::vArgCombine(Stz* szOpArgs, Card_Combine* pCard_Combine)
   
   vRpnCombine(sRpnExpr,pCard_Combine);
 
-  //szOpArgs->vCatSprint("\" %s \""_Stz,sRpnExpr.szStz());
+  //szOpArgs->vCatSprint("\"%s \""_Stz,sRpnExpr.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -272,7 +272,7 @@ void Weave::vArgFilter(Stz* szOpArgs, Card_Filter* pCard_Filter)
   
   vRpnFilter(sRpnExpr,pCard_Filter);
   
-  szOpArgs->vCatSprint("\" %s \""_Stz,sRpnExpr.szStz());
+  szOpArgs->vCatSprint("\"%s \""_Stz,sRpnExpr.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -288,7 +288,7 @@ void Weave::vArgHaving(Stz* szOpArgs, Card_Having* pCard_Having)
 
   vRpnHaving(sRpnExpr,pCard_Having);
 
-  szOpArgs->vCatSprint("\" %s \""_Stz,sRpnExpr.szStz());
+  szOpArgs->vCatSprint("\"%s \""_Stz,sRpnExpr.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -338,7 +338,7 @@ void Weave::vArgIndexScan(Stz* szOpArgs, Card_IndexScan* pCard_IndexScan)
   
   vRpnIndexScan(sRpnExpr,pCard_IndexScan);
   
-  szOpArgs->vCatSprint("%s %s \"%s\""_Stz,pIndex->pTable()->szTableNm()
+  szOpArgs->vCatSprint("%s %s \"%s \""_Stz,pIndex->pTable()->szTableNm()
                                          ,pIndex->szIndexNm()
                                          ,sRpnExpr.szStz());
 }
@@ -374,7 +374,7 @@ void Weave::vArgOrdAgg(Stz* szOpArgs, Card_Aggreg* pCard_Aggreg)
   
   vRpnAggreg(sRpnExpr,pCard_Aggreg);
 
-  szOpArgs->vCatSprint("\" %s \""_Stz,sRpnExpr.szStz());
+  szOpArgs->vCatSprint("\"%s \""_Stz,sRpnExpr.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -390,7 +390,7 @@ void Weave::vArgProject(Stz* szOpArgs, Card_Project* pCard_Project)
   
   vRpnProject(sRpnExpr,pCard_Project);
   
-  szOpArgs->vCatSprint("\" %s \""_Stz,sRpnExpr.szStz());
+  szOpArgs->vCatSprint("\"%s \""_Stz,sRpnExpr.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -429,7 +429,7 @@ void Weave::vArgSort(Stz* szOpArgs, Card_Sort* pCard_Sort)
   
   vRpnSort(sRpnExpr,pCard_Sort);
 
-  szOpArgs->vCatSprint("\" %s \""_Stz,sRpnExpr.szStz());
+  szOpArgs->vCatSprint("\"%s \""_Stz,sRpnExpr.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -450,7 +450,8 @@ void Weave::vRpnAggreg(Stz* szRpnExpr, Card_Aggreg* pCard_Aggreg)
   if (! pCard_GbyElist)
     return;
 
-  szRpnExpr->vConcat(" groupBy "_Stz);
+  szRpnExpr->vConcat(" groupBy"_Stz);
+  szRpnExpr->vConcat("\n                   "_Stz);
 
   nSubCards = pCard_GbyElist->nItems();
   for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
@@ -458,8 +459,10 @@ void Weave::vRpnAggreg(Stz* szRpnExpr, Card_Aggreg* pCard_Aggreg)
     if (! pCard_SUB->bIsCard(CK_EXPR))
       return;
 
-    if (i_SubCard)
-      szRpnExpr->vConcat(" , "_Stz);
+    if (i_SubCard) {
+      szRpnExpr->vConcat("\n                 "_Stz);
+      szRpnExpr->vConcat(" ,"_Stz);
+    }
 
     Card_Expr* pCard_Expr = _pCard_Expr(pCard_SUB);
     vExpr(szRpnExpr,pCard_Expr);
@@ -475,7 +478,9 @@ void Weave::vRpnAggreg(Stz* szRpnExpr, Card_Aggreg* pCard_Aggreg)
   if (! pCard_AggElist)
     return;
 
-  szRpnExpr->vConcat(" aggregates "_Stz);
+  szRpnExpr->vConcat("\n                 "_Stz);
+  szRpnExpr->vConcat(" aggregates"_Stz);
+  szRpnExpr->vConcat("\n                   "_Stz);
 
   nSubCards = pCard_AggElist->nItems();
   for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
@@ -483,8 +488,10 @@ void Weave::vRpnAggreg(Stz* szRpnExpr, Card_Aggreg* pCard_Aggreg)
     if (! pCard_SUB->bIsCard(CK_EXPR))
       return;
     
-    if (i_SubCard)
-      szRpnExpr->vConcat(" , "_Stz);
+    if (i_SubCard) {
+      szRpnExpr->vConcat("\n                 "_Stz);
+      szRpnExpr->vConcat(" ,"_Stz);
+    }
 
     Card_Expr* pCard_Expr = _pCard_Expr(pCard_SUB);
     vExpr(szRpnExpr,pCard_Expr);
@@ -587,7 +594,7 @@ void Weave::vRpnIndexScan(Stz* szRpnExpr, Card_IndexScan* pCard_IndexScan)
     = _pCard_LBound(pCard_IndexScan->pFindSubCard(CK_LBOUND));
   
   if (pCard_LBound) {
-    szRpnExpr->vConcat("LBOUND"_Stz);
+    szRpnExpr->vConcat(" LBOUND"_Stz);
     
     pCard_PredCmp = _pCard_PredCmp(pCard_LBound->pGet(0));
 
@@ -612,7 +619,7 @@ void Weave::vRpnIndexScan(Stz* szRpnExpr, Card_IndexScan* pCard_IndexScan)
     = _pCard_UBound(pCard_IndexScan->pFindSubCard(CK_UBOUND));
   
   if (pCard_UBound) {
-    szRpnExpr->vConcat("UBOUND"_Stz);
+    szRpnExpr->vConcat(" UBOUND"_Stz);
     
     pCard_PredCmp = _pCard_PredCmp(pCard_UBound->pGet(0));
 
@@ -637,7 +644,7 @@ void Weave::vRpnIndexScan(Stz* szRpnExpr, Card_IndexScan* pCard_IndexScan)
     = _pCard_RBound(pCard_IndexScan->pFindSubCard(CK_RBOUND));
   
   if (pCard_RBound) {
-    szRpnExpr->vConcat("LBOUND"_Stz);
+    szRpnExpr->vConcat(" LBOUND"_Stz);
     
     pCard_PredCmp = _pCard_PredCmp(pCard_RBound->pGet(0));
 
@@ -680,7 +687,7 @@ void Weave::vRpnIndexScan(Stz* szRpnExpr, Card_IndexScan* pCard_IndexScan)
   if (pCard_EBound) {
     pCard_PredCmp = _pCard_PredCmp(pCard_EBound->pGet(0));
     
-    szRpnExpr->vConcat("LBOUND"_Stz);
+    szRpnExpr->vConcat(" LBOUND"_Stz);
     
     pCard_Term = _pCard_Term(pCard_PredCmp->pGet(0));
     szTerm = pCard_Term->szTerm();
@@ -729,7 +736,7 @@ void Weave::vRpnLimit(Stz* szRpnExpr, Card_Limit*  pCard_Limit)
 
   i8 nRows = pCard_Rows->nRows();
 
-  szRpnExpr->vCatSprint("%lld"_Stz,nRows);
+  szRpnExpr->vCatSprint(" %lld"_Stz,nRows);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -755,8 +762,13 @@ void Weave::vRpnProject(Stz* szRpnExpr, Card_Project* pCard_Project)
 
     Card_Expr* pCard_Expr = _pCard_Expr(pSubCard);
   
-    if (i_SubCard)
-      szRpnExpr->vConcat(" , "_Stz);
+    if (i_SubCard) {
+      szRpnExpr->vConcat("\n                 "_Stz);
+      szRpnExpr->vConcat(" ,"_Stz);
+    }
+    else if (nSubCards > 1)
+      szRpnExpr->vConcat(" "_Stz);
+
     vExpr(szRpnExpr,pCard_Expr);
   }
   
@@ -792,10 +804,11 @@ void Weave::vRpnSort(Stz* szRpnExpr, Card_Sort* pCard_Sort)
     Card_Expr* pCard_Expr = _pCard_Expr(pSubCard);
 
     if (i_SubCard)
-      szRpnExpr->vConcat(" , "_Stz);
+      szRpnExpr->vConcat(" ,"_Stz);
+
     vExpr(szRpnExpr,pCard_Expr);
 
-    szRpnExpr->vConcat(" ASC "_Stz);
+    szRpnExpr->vConcat(" ASC"_Stz);
 
   }
 

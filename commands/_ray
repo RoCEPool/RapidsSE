@@ -22,10 +22,11 @@ select *
 
 
 /jobTags
-/optimise
-/weave
 /transliterated
-/optimised
+/optimise
+/interactive
+/weave
+/weaved
 select sum(n_nationKey) from nation;
 
 

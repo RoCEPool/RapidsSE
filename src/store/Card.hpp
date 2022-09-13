@@ -101,6 +101,7 @@ namespace STORE
                       eCK eCard=CK_NONE);
     bool bEquivalent(Card* pCard_arg);
 
+    Card* pFindChildCard(eCK eCard);
     Card* pFindParent(Card* pSubCard_arg);
     Card* pFindSubCard(eCK eCard);
 
