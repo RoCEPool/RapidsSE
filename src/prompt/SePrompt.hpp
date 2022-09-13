@@ -92,6 +92,7 @@ namespace PROMPT
     bool bExamineCommand(eEC* eErrorCode);
     SeDeputy* pFindDeputy(void);
     TokenVec* pInpTknVec(void);
+    TagSet* pInpTagSet(void);
     Input* pInputGet(void);
     bool bIsPromptWord(void);
     void vLogCommand(void);
