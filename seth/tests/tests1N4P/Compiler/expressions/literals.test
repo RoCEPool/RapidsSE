@@ -1955,133 +1955,1055 @@ failure contains: 'Invalid interval format: absolute interval microseconds value
 // -------------------------------------------------------
 
 EXPLAIN SELECT INTERVAL '' HOUR TO MINUTE FROM nation;              // invalid
+failure contains: 'Invalid interval format: interval string is empty'
+
 EXPLAIN SELECT INTERVAL '1' HOUR TO MINUTE FROM nation;             // invalid
+failure contains: 'Invalid interval format: missing '':'' separator between hour and minute digits; '
+
 EXPLAIN SELECT INTERVAL '1-2' HOUR TO MINUTE FROM nation;           // invalid
+failure contains: 'Invalid interval format: missing '':'' separator between hour and minute digits; '
+
 EXPLAIN SELECT INTERVAL '1:2' HOUR TO MINUTE FROM nation;           // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''1:2'' HOUR TO MINUTE FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1:2'' HOUR TO MINUTE ; Ordinal Expr = INTERVAL ''1:2'' HOUR TO MINUTE)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '01:02' HOUR TO MINUTE FROM nation;         // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''01:02'' HOUR TO MINUTE FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1:2'' HOUR TO MINUTE ; Ordinal Expr = INTERVAL ''1:2'' HOUR TO MINUTE)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '   1:2' HOUR TO MINUTE FROM nation;        // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''   1:2'' HOUR TO MINUTE FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1:2'' HOUR TO MINUTE ; Ordinal Expr = INTERVAL ''1:2'' HOUR TO MINUTE)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '1:2   ' HOUR TO MINUTE FROM nation;        // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''1:2   '' HOUR TO MINUTE FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1:2'' HOUR TO MINUTE ; Ordinal Expr = INTERVAL ''1:2'' HOUR TO MINUTE)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '0:0' HOUR TO MINUTE FROM nation;           // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''0:0'' HOUR TO MINUTE FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''0:0'' HOUR TO MINUTE ; Ordinal Expr = INTERVAL ''0:0'' HOUR TO MINUTE)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '0:1' HOUR TO MINUTE FROM nation;           // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''0:1'' HOUR TO MINUTE FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''0:1'' HOUR TO MINUTE ; Ordinal Expr = INTERVAL ''0:1'' HOUR TO MINUTE)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '1:2:' HOUR TO MINUTE FROM nation;          // invalid
+failure contains: 'Invalid interval format: unexpected character '':'' encountered'
+
 EXPLAIN SELECT INTERVAL '-1:2' HOUR TO MINUTE FROM nation;          // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''-1:2'' HOUR TO MINUTE FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL -''1:2'' HOUR TO MINUTE ; Ordinal Expr = INTERVAL -''1:2'' HOUR TO MINUTE)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL -'1:2' HOUR TO MINUTE FROM nation;          // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL -''1:2'' HOUR TO MINUTE FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL -''1:2'' HOUR TO MINUTE ; Ordinal Expr = INTERVAL -''1:2'' HOUR TO MINUTE)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL -'-1:2' HOUR TO MINUTE FROM nation;         // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL -''-1:2'' HOUR TO MINUTE FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1:2'' HOUR TO MINUTE ; Ordinal Expr = INTERVAL ''1:2'' HOUR TO MINUTE)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '  1:2  ' HOUR TO MINUTE FROM nation;       // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''  1:2  '' HOUR TO MINUTE FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1:2'' HOUR TO MINUTE ; Ordinal Expr = INTERVAL ''1:2'' HOUR TO MINUTE)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '  1::2  ' HOUR TO MINUTE FROM nation;      // invalid
+failure contains: 'Invalid interval format: non-digit value '':'' encountered'
+
 EXPLAIN SELECT INTERVAL '1:-2' HOUR TO MINUTE FROM nation;          // invalid
+failure contains: 'Invalid interval format: non-digit value ''-'' encountered'
+
 EXPLAIN SELECT INTERVAL '1:2:3' HOUR TO MINUTE FROM nation;         // invalid
+failure contains: 'Invalid interval format: non-digit value '':'' encountered'
+
 EXPLAIN SELECT INTERVAL '1 2:' HOUR TO MINUTE FROM nation;          // invalid
+failure contains: 'Invalid interval format: missing '':'' separator between hour and minute digits'
+
 EXPLAIN SELECT INTERVAL '1:60' HOUR TO MINUTE FROM nation;          // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''1:60'' HOUR TO MINUTE FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''2:0'' HOUR TO MINUTE ; Ordinal Expr = INTERVAL ''2:0'' HOUR TO MINUTE)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '1:61' HOUR TO MINUTE FROM nation;          // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''1:61'' HOUR TO MINUTE FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''2:1'' HOUR TO MINUTE ; Ordinal Expr = INTERVAL ''2:1'' HOUR TO MINUTE)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL 'a:2' HOUR TO MINUTE FROM nation;           // invalid
+failure contains: 'Invalid interval format: non-digit value ''a'' encountered'
+
 EXPLAIN SELECT INTERVAL '1:a' HOUR TO MINUTE FROM nation;           // invalid
+failure contains: 'Invalid interval format: non-digit value ''a'' encountered'
+
 // Check bounds - max 72,057,594,037,927,935 minutes.
 // Hours (max 1,200,959,900,632,132) are converted to minutes.
 EXPLAIN SELECT INTERVAL '0:72057594037927935' HOUR TO MINUTE FROM nation;  // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''0:72057594037927935'' HOUR TO MINUTE FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1200959900632132:15'' HOUR TO MINUTE ; Ordinal Expr = INTERVAL ''1200959900632132:15'' HOUR TO MINUTE)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '0:72057594037927936' HOUR TO MINUTE FROM nation;  // invalid
+failure contains: 'Invalid interval format: absolute interval HOUR TO MINUTE value exceeds MINUTE maximum of 72057594037927935'
+
 EXPLAIN SELECT INTERVAL '1200959900632132:15' HOUR TO MINUTE FROM nation;   // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''1200959900632132:15'' HOUR TO MINUTE FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1200959900632132:15'' HOUR TO MINUTE ; Ordinal Expr = INTERVAL ''1200959900632132:15'' HOUR TO MINUTE)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '1200959900632132:16' HOUR TO MINUTE FROM nation;   // invalid
+failure contains: 'Invalid interval format: absolute interval HOUR TO MINUTE value exceeds MINUTE maximum of 72057594037927935'
+
 EXPLAIN SELECT INTERVAL '1200959900632131:75' HOUR TO MINUTE FROM nation;   // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''1200959900632131:75'' HOUR TO MINUTE FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1200959900632132:15'' HOUR TO MINUTE ; Ordinal Expr = INTERVAL ''1200959900632132:15'' HOUR TO MINUTE)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '1200959900632131:76' HOUR TO MINUTE FROM nation;   // invalid
+failure contains: 'Invalid interval format: absolute interval HOUR TO MINUTE value exceeds MINUTE maximum of 72057594037927935'
+
 
 
 // HOUR TO SECOND interval literals
 // -------------------------------------------------------
 
 EXPLAIN SELECT INTERVAL '' HOUR TO SECOND FROM nation;                   // invalid
+failure contains: 'Invalid interval format: interval string is empty'
+
 EXPLAIN SELECT INTERVAL '1' HOUR TO SECOND FROM nation;                  // invalid
+failure contains: 'Invalid interval format: missing '':'' separator between hour and minute digits'
+
 EXPLAIN SELECT INTERVAL '1-2' HOUR TO SECOND FROM nation;                // invalid
+failure contains: 'Invalid interval format: missing '':'' separator between hour and minute digits'
+
 EXPLAIN SELECT INTERVAL '1 2' HOUR TO SECOND FROM nation;                // invalid, incomplete
+failure contains: 'Invalid interval format: missing '':'' separator between hour and minute digits'
+
 EXPLAIN SELECT INTERVAL '1 2-3' HOUR TO SECOND FROM nation;              // invalid
+failure contains: 'Invalid interval format: missing '':'' separator between hour and minute digits'
+
 EXPLAIN SELECT INTERVAL '02:03' HOUR TO SECOND FROM nation;            // invalid, incomplete
+failure contains: 'Invalid interval format: missing '':'' separator between minute and second digits; '
+
 EXPLAIN SELECT INTERVAL '02:03:04' HOUR TO SECOND FROM nation;         // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''02:03:04'' HOUR TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''2:3:4'' HOUR TO SECOND ; Ordinal Expr = INTERVAL ''2:3:4'' HOUR TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '02:03:04.567891' HOUR TO SECOND FROM nation;  // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''02:03:04.567891'' HOUR TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''2:3:4.567891'' HOUR TO SECOND ; Ordinal Expr = INTERVAL ''2:3:4.567891'' HOUR TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '  2:3:4' HOUR TO SECOND FROM nation;          // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''  2:3:4'' HOUR TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''2:3:4'' HOUR TO SECOND ; Ordinal Expr = INTERVAL ''2:3:4'' HOUR TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '  2:3:4.567891' HOUR TO SECOND FROM nation;   // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''  2:3:4.567891'' HOUR TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''2:3:4.567891'' HOUR TO SECOND ; Ordinal Expr = INTERVAL ''2:3:4.567891'' HOUR TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '2:3:4.5678910000' HOUR TO SECOND FROM nation; // ok (trailing zeros ignored)
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''2:3:4.5678910000'' HOUR TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''2:3:4.567891'' HOUR TO SECOND ; Ordinal Expr = INTERVAL ''2:3:4.567891'' HOUR TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '2:3:4.5678910001' HOUR TO SECOND FROM nation; // invalid
+failure contains: 'Invalid interval format: absolute interval microseconds value exceeds range of 0-999999'
+
 EXPLAIN SELECT INTERVAL '  2 : 3 : 4' HOUR TO SECOND FROM nation;      // invalid
+failure contains: 'Invalid interval format: missing ':' separator between hour and minute digits'
+
 EXPLAIN SELECT INTERVAL '0:0:0' HOUR TO SECOND FROM nation;            // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''0:0:0'' HOUR TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''0:0:0'' HOUR TO SECOND ; Ordinal Expr = INTERVAL ''0:0:0'' HOUR TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '0:0:0.0' HOUR TO SECOND FROM nation;          // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''0:0:0.0'' HOUR TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''0:0:0'' HOUR TO SECOND ; Ordinal Expr = INTERVAL ''0:0:0'' HOUR TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '1:2:3' HOUR TO SECOND FROM nation;            // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''1:2:3'' HOUR TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1:2:3'' HOUR TO SECOND ; Ordinal Expr = INTERVAL ''1:2:3'' HOUR TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '1:2:3:' HOUR TO SECOND FROM nation;           // invalid
+failure contains: 'Invalid interval format: unexpected character '':'' encountered'
+
 EXPLAIN SELECT INTERVAL '-1:2:3' HOUR TO SECOND FROM nation;           // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''-1:2:3'' HOUR TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL -''1:2:3'' HOUR TO SECOND ; Ordinal Expr = INTERVAL -''1:2:3'' HOUR TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL -'1:2:3' HOUR TO SECOND FROM nation;           // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL -''1:2:3'' HOUR TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL -''1:2:3'' HOUR TO SECOND ; Ordinal Expr = INTERVAL -''1:2:3'' HOUR TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL -'-1:2:3' HOUR TO SECOND FROM nation;          // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL -''-1:2:3'' HOUR TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1:2:3'' HOUR TO SECOND ; Ordinal Expr = INTERVAL ''1:2:3'' HOUR TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '  1:2:3  ' HOUR TO SECOND FROM nation;        // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''  1:2:3  '' HOUR TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1:2:3'' HOUR TO SECOND ; Ordinal Expr = INTERVAL ''1:2:3'' HOUR TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '  1::2:3  ' HOUR TO SECOND FROM nation;       // invalid
+failure contains: 'Invalid interval format: non-digit value '':'' encountered'
+
 EXPLAIN SELECT INTERVAL '  1:2::3  ' HOUR TO SECOND FROM nation;       // invalid
+failure contains: 'Invalid interval format: non-digit value '':'' encountered'
+
 EXPLAIN SELECT INTERVAL '1:-2:3' HOUR TO SECOND FROM nation;           // invalid
+failure contains: 'Invalid interval format: non-digit value ''-'' encountered'
+
 EXPLAIN SELECT INTERVAL '1:2:-3' HOUR TO SECOND FROM nation;           // invalid
+failure contains: 'Invalid interval format: non-digit value ''-'' encountered'
+
 EXPLAIN SELECT INTERVAL '1:2:3.-4' HOUR TO SECOND FROM nation;         // invalid
+failure contains: 'Invalid interval format: non-digit value ''-'' encountered'
+
 EXPLAIN SELECT INTERVAL '2:3.4' HOUR TO SECOND FROM nation;            // invalid
+failure contains: 'Invalid interval format: missing '':'' separator between minute and second digits'
+
 EXPLAIN SELECT INTERVAL '1:2:3:' HOUR TO SECOND FROM nation;           // invalid
+failure contains: 'Invalid interval format: unexpected character '':'' encountered'
+
 EXPLAIN SELECT INTERVAL '1:60:3' HOUR TO SECOND FROM nation;           // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''1:60:3'' HOUR TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''2:0:3'' HOUR TO SECOND ; Ordinal Expr = INTERVAL ''2:0:3'' HOUR TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '1:2:60' HOUR TO SECOND FROM nation;           // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''1:2:60'' HOUR TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1:2:60'' HOUR TO SECOND ; Ordinal Expr = INTERVAL ''1:2:60'' HOUR TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '1:2:61' HOUR TO SECOND FROM nation;           // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''1:2:61'' HOUR TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1:2:61'' HOUR TO SECOND ; Ordinal Expr = INTERVAL ''1:2:61'' HOUR TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '24:60:61' HOUR TO SECOND FROM nation;         // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''24:60:61'' HOUR TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''25:0:61'' HOUR TO SECOND ; Ordinal Expr = INTERVAL ''25:0:61'' HOUR TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '1:2.3:4' HOUR TO SECOND FROM nation;          // invalid
+failure contains: 'Invalid interval format: missing '':'' separator between minute and second digits'
+
 EXPLAIN SELECT INTERVAL 'a:2:3.4' HOUR TO SECOND FROM nation;          // invalid
+failure contains: 'Invalid interval format: non-digit value ''a'' encountered'
+
 EXPLAIN SELECT INTERVAL '1:a:3.4' HOUR TO SECOND FROM nation;          // invalid
+failure contains: 'Invalid interval format: non-digit value ''a'' encountered'
+
 EXPLAIN SELECT INTERVAL '1:2:a.4' HOUR TO SECOND FROM nation;          // invalid
+failure contains: 'Invalid interval format: non-digit value ''a'' encountered'
+
 EXPLAIN SELECT INTERVAL '1:2:3.a' HOUR TO SECOND FROM nation;          // invalid
+failure contains: 'Invalid interval format: non-digit value ''a'' encountered'
+
 // Check bounds - max 262,143 minutes and whole seconds.
 // Hours (max 4,369) are converted to minutes.
 EXPLAIN SELECT INTERVAL '0:0:262143' HOUR TO SECOND FROM nation;              // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''0:0:262143'' HOUR TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''0:0:262143'' HOUR TO SECOND ; Ordinal Expr = INTERVAL ''0:0:262143'' HOUR TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '0:0:262144' HOUR TO SECOND FROM nation;              // invalid
+failure contains: 'Invalid interval format: absolute interval HOUR TO SECOND value exceeds SECOND maximum of 262143'
+
 EXPLAIN SELECT INTERVAL '0:262143:262143' HOUR TO SECOND FROM nation;         // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''0:262143:262143'' HOUR TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''4369:3:262143'' HOUR TO SECOND ; Ordinal Expr = INTERVAL ''4369:3:262143'' HOUR TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '0:262144:262143' HOUR TO SECOND FROM nation;         // invalid
+failure contains: 'Invalid interval format: absolute interval HOUR TO SECOND value exceeds MINUTE maximum of 262143'
+
 EXPLAIN SELECT INTERVAL '4369:3:262143' HOUR TO SECOND FROM nation;           // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''4369:3:262143'' HOUR TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''4369:3:262143'' HOUR TO SECOND ; Ordinal Expr = INTERVAL ''4369:3:262143'' HOUR TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+         
 EXPLAIN SELECT INTERVAL '4369:4:262143' HOUR TO SECOND FROM nation;           // invalid
+failure contains: 'Invalid interval format: absolute interval HOUR TO SECOND value exceeds MINUTE maximum of 262143'
+
 EXPLAIN SELECT INTERVAL '0:262143:262143.999999' HOUR TO SECOND FROM nation;  // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''0:262143:262143.999999'' HOUR TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''4369:3:262143.999999'' HOUR TO SECOND ; Ordinal Expr = INTERVAL ''4369:3:262143.999999'' HOUR TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 EXPLAIN SELECT INTERVAL '0:262143:262143.9999999' HOUR TO SECOND FROM nation; // invalid
+failure contains: 'Invalid interval format: absolute interval microseconds value exceeds range of 0-999999'
+
 
 
 // MINUTE TO SECOND interval literals
 // -------------------------------------------------------
 
-EXPLAIN SELECT INTERVAL '' MINUTE TO MINUTE FROM nation;              // invalid
-EXPLAIN SELECT INTERVAL '1' MINUTE TO MINUTE FROM nation;             // invalid
-EXPLAIN SELECT INTERVAL '1-2' MINUTE TO MINUTE FROM nation;           // invalid
-EXPLAIN SELECT INTERVAL '1:2' MINUTE TO MINUTE FROM nation;           // ok
-EXPLAIN SELECT INTERVAL '1:2.3' MINUTE TO MINUTE FROM nation;         // ok
-EXPLAIN SELECT INTERVAL '01:02' MINUTE TO MINUTE FROM nation;         // ok
-EXPLAIN SELECT INTERVAL '01:02.03' MINUTE TO MINUTE FROM nation;      // ok
-EXPLAIN SELECT INTERVAL '   1:2' MINUTE TO MINUTE FROM nation;        // ok
-EXPLAIN SELECT INTERVAL '1:2   ' MINUTE TO MINUTE FROM nation;        // ok
-EXPLAIN SELECT INTERVAL '1:2.3   ' MINUTE TO MINUTE FROM nation;      // ok
-EXPLAIN SELECT INTERVAL '1:2.30000000' MINUTE TO MINUTE FROM nation;  // ok (trailing zeros ignored)
-EXPLAIN SELECT INTERVAL '1:2.30000001' MINUTE TO MINUTE FROM nation;  // invalid
-EXPLAIN SELECT INTERVAL '0:0' MINUTE TO MINUTE FROM nation;           // ok
-EXPLAIN SELECT INTERVAL '0:0.' MINUTE TO MINUTE FROM nation;          // ok
-EXPLAIN SELECT INTERVAL '0:0.0' MINUTE TO MINUTE FROM nation;         // ok
-EXPLAIN SELECT INTERVAL '0:1' MINUTE TO MINUTE FROM nation;           // ok
-EXPLAIN SELECT INTERVAL '1:2:' MINUTE TO MINUTE FROM nation;          // invalid
-EXPLAIN SELECT INTERVAL '-1:2' MINUTE TO MINUTE FROM nation;          // ok
-EXPLAIN SELECT INTERVAL -'1:2' MINUTE TO MINUTE FROM nation;          // ok
-EXPLAIN SELECT INTERVAL -'-1:2' MINUTE TO MINUTE FROM nation;         // ok
-EXPLAIN SELECT INTERVAL '  1:2  ' MINUTE TO MINUTE FROM nation;       // ok
-EXPLAIN SELECT INTERVAL '  1:2.3  ' MINUTE TO MINUTE FROM nation;     // ok
-EXPLAIN SELECT INTERVAL '  1::2  ' MINUTE TO MINUTE FROM nation;      // invalid
-EXPLAIN SELECT INTERVAL '  1:2..3  ' MINUTE TO MINUTE FROM nation;    // invalid
-EXPLAIN SELECT INTERVAL '1:-2' MINUTE TO MINUTE FROM nation;          // invalid
-EXPLAIN SELECT INTERVAL '1:2:3' MINUTE TO MINUTE FROM nation;         // invalid
-EXPLAIN SELECT INTERVAL '1 2' MINUTE TO MINUTE FROM nation;           // invalid
-EXPLAIN SELECT INTERVAL '1:60' MINUTE TO MINUTE FROM nation;          // ok
-EXPLAIN SELECT INTERVAL '1:61' MINUTE TO MINUTE FROM nation;          // ok
-EXPLAIN SELECT INTERVAL 'a:2.3' MINUTE TO MINUTE FROM nation;         // invalid
-EXPLAIN SELECT INTERVAL '1:a.3' MINUTE TO MINUTE FROM nation;         // invalid
-EXPLAIN SELECT INTERVAL '1:2.a' MINUTE TO MINUTE FROM nation;         // invalid
+EXPLAIN SELECT INTERVAL '' MINUTE TO SECOND FROM nation;              // invalid
+failure contains: 'Invalid interval format: interval string is empty'
+
+EXPLAIN SELECT INTERVAL '1' MINUTE TO SECOND FROM nation;             // invalid
+failure contains: 'Invalid interval format: missing '':'' separator between minute and second digits'
+
+EXPLAIN SELECT INTERVAL '1-2' MINUTE TO SECOND FROM nation;           // invalid
+failure contains: 'Invalid interval format: missing '':'' separator between minute and second digits'
+
+EXPLAIN SELECT INTERVAL '1:2' MINUTE TO SECOND FROM nation;           // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''1:2'' MINUTE TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1:2'' MINUTE TO SECOND ; Ordinal Expr = INTERVAL ''1:2'' MINUTE TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+EXPLAIN SELECT INTERVAL '1:2.3' MINUTE TO SECOND FROM nation;         // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''1:2.3'' MINUTE TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1:2.300000'' MINUTE TO SECOND ; Ordinal Expr = INTERVAL ''1:2.300000'' MINUTE TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+EXPLAIN SELECT INTERVAL '01:02' MINUTE TO SECOND FROM nation;         // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''01:02'' MINUTE TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1:2'' MINUTE TO SECOND ; Ordinal Expr = INTERVAL ''1:2'' MINUTE TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+EXPLAIN SELECT INTERVAL '01:02.03' MINUTE TO SECOND FROM nation;      // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''01:02.03'' MINUTE TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1:2.030000'' MINUTE TO SECOND ; Ordinal Expr = INTERVAL ''1:2.030000'' MINUTE TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+EXPLAIN SELECT INTERVAL '   1:2' MINUTE TO SECOND FROM nation;        // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''   1:2'' MINUTE TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1:2'' MINUTE TO SECOND ; Ordinal Expr = INTERVAL ''1:2'' MINUTE TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+EXPLAIN SELECT INTERVAL '1:2   ' MINUTE TO SECOND FROM nation;        // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''1:2   '' MINUTE TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1:2'' MINUTE TO SECOND ; Ordinal Expr = INTERVAL ''1:2'' MINUTE TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+EXPLAIN SELECT INTERVAL '1:2.3   ' MINUTE TO SECOND FROM nation;      // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''1:2.3   '' MINUTE TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1:2.300000'' MINUTE TO SECOND ; Ordinal Expr = INTERVAL ''1:2.300000'' MINUTE TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+EXPLAIN SELECT INTERVAL '1:2.30000000' MINUTE TO SECOND FROM nation;  // ok (trailing zeros ignored)
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''1:2.30000000'' MINUTE TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1:2.300000'' MINUTE TO SECOND ; Ordinal Expr = INTERVAL ''1:2.300000'' MINUTE TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+EXPLAIN SELECT INTERVAL '1:2.30000001' MINUTE TO SECOND FROM nation;  // invalid
+failure contains: 'Invalid interval format: absolute interval microseconds value exceeds range of 0-999999'
+
+EXPLAIN SELECT INTERVAL '0:0' MINUTE TO SECOND FROM nation;           // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''0:0'' MINUTE TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''0:0'' MINUTE TO SECOND ; Ordinal Expr = INTERVAL ''0:0'' MINUTE TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+EXPLAIN SELECT INTERVAL '0:0.' MINUTE TO SECOND FROM nation;          // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''0:0.'' MINUTE TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''0:0'' MINUTE TO SECOND ; Ordinal Expr = INTERVAL ''0:0'' MINUTE TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+EXPLAIN SELECT INTERVAL '0:0.0' MINUTE TO SECOND FROM nation;         // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''0:0.0'' MINUTE TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''0:0'' MINUTE TO SECOND ; Ordinal Expr = INTERVAL ''0:0'' MINUTE TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+EXPLAIN SELECT INTERVAL '0:1' MINUTE TO SECOND FROM nation;           // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''0:1'' MINUTE TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''0:1'' MINUTE TO SECOND ; Ordinal Expr = INTERVAL ''0:1'' MINUTE TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+EXPLAIN SELECT INTERVAL '1:2:' MINUTE TO SECOND FROM nation;          // invalid
+failure contains: 'Invalid interval format: unexpected character '':'' encountered'
+
+EXPLAIN SELECT INTERVAL '-1:2' MINUTE TO SECOND FROM nation;          // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''-1:2'' MINUTE TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL -''1:2'' MINUTE TO SECOND ; Ordinal Expr = INTERVAL -''1:2'' MINUTE TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+EXPLAIN SELECT INTERVAL -'1:2' MINUTE TO SECOND FROM nation;          // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL -''1:2'' MINUTE TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL -''1:2'' MINUTE TO SECOND ; Ordinal Expr = INTERVAL -''1:2'' MINUTE TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+EXPLAIN SELECT INTERVAL -'-1:2' MINUTE TO SECOND FROM nation;         // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL -''-1:2'' MINUTE TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1:2'' MINUTE TO SECOND ; Ordinal Expr = INTERVAL ''1:2'' MINUTE TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+EXPLAIN SELECT INTERVAL '  1:2  ' MINUTE TO SECOND FROM nation;       // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''  1:2  '' MINUTE TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1:2'' MINUTE TO SECOND ; Ordinal Expr = INTERVAL ''1:2'' MINUTE TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+EXPLAIN SELECT INTERVAL '  1:2.3  ' MINUTE TO SECOND FROM nation;     // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''  1:2.3  '' MINUTE TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1:2.300000'' MINUTE TO SECOND ; Ordinal Expr = INTERVAL ''1:2.300000'' MINUTE TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+EXPLAIN SELECT INTERVAL '  1::2  ' MINUTE TO SECOND FROM nation;      // invalid
+failure contains: 'Invalid interval format: non-digit value '':'' encountered'
+
+EXPLAIN SELECT INTERVAL '  1:2..3  ' MINUTE TO SECOND FROM nation;    // invalid
+failure contains: 'Invalid interval format: unexpected character ''.'' encountered'
+
+EXPLAIN SELECT INTERVAL '1:-2' MINUTE TO SECOND FROM nation;          // invalid
+failure contains: 'Invalid interval format: non-digit value ''-'' encountered'
+
+EXPLAIN SELECT INTERVAL '1:2:3' MINUTE TO SECOND FROM nation;         // invalid
+failure contains: 'Invalid interval format: unexpected character '':'' encountered'
+
+EXPLAIN SELECT INTERVAL '1 2' MINUTE TO SECOND FROM nation;           // invalid
+failure contains: 'Invalid interval format: missing '':'' separator between minute and second digits'
+
+EXPLAIN SELECT INTERVAL '1:60' MINUTE TO SECOND FROM nation;          // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''1:60'' MINUTE TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1:60'' MINUTE TO SECOND ; Ordinal Expr = INTERVAL ''1:60'' MINUTE TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+EXPLAIN SELECT INTERVAL '1:61' MINUTE TO SECOND FROM nation;          // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''1:61'' MINUTE TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1:61'' MINUTE TO SECOND ; Ordinal Expr = INTERVAL ''1:61'' MINUTE TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+EXPLAIN SELECT INTERVAL 'a:2.3' MINUTE TO SECOND FROM nation;         // invalid
+failure contains: 'Invalid interval format: non-digit value ''a'' encountered'
+
+EXPLAIN SELECT INTERVAL '1:a.3' MINUTE TO SECOND FROM nation;         // invalid
+failure contains: 'Invalid interval format: non-digit value ''a'' encountered'
+
+EXPLAIN SELECT INTERVAL '1:2.a' MINUTE TO SECOND FROM nation;         // invalid
+failure contains: 'Invalid interval format: non-digit value ''a'' encountered'
+
 // Check bounds - max 262,143 minutes and max 262,143 whole seconds
-EXPLAIN SELECT INTERVAL '0:262143.0' MINUTE TO MINUTE FROM nation;            // ok
-EXPLAIN SELECT INTERVAL '0:262144.0' MINUTE TO MINUTE FROM nation;            // invalid
-EXPLAIN SELECT INTERVAL '262143:0.0' MINUTE TO MINUTE FROM nation;            // ok
-EXPLAIN SELECT INTERVAL '262144:0.0' MINUTE TO MINUTE FROM nation;            // invalid
-EXPLAIN SELECT INTERVAL '262143:262143.0' MINUTE TO MINUTE FROM nation;       // ok
-EXPLAIN SELECT INTERVAL '262144:262144.0' MINUTE TO MINUTE FROM nation;       // invalid
-EXPLAIN SELECT INTERVAL '262143:262143.999999' MINUTE TO MINUTE FROM nation;  // ok
-EXPLAIN SELECT INTERVAL '262143:262143.9999999' MINUTE TO MINUTE FROM nation; // invalid
+EXPLAIN SELECT INTERVAL '0:262143.0' MINUTE TO SECOND FROM nation;            // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''0:262143.0'' MINUTE TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''0:262143'' MINUTE TO SECOND ; Ordinal Expr = INTERVAL ''0:262143'' MINUTE TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+EXPLAIN SELECT INTERVAL '0:262144.0' MINUTE TO SECOND FROM nation;            // invalid
+failure contains: 'Invalid interval format: absolute interval MINUTE TO SECOND value exceeds SECOND maximum of 262143'
+
+EXPLAIN SELECT INTERVAL '262143:0.0' MINUTE TO SECOND FROM nation;            // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''262143:0.0'' MINUTE TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''262143:0'' MINUTE TO SECOND ; Ordinal Expr = INTERVAL ''262143:0'' MINUTE TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+EXPLAIN SELECT INTERVAL '262144:0.0' MINUTE TO SECOND FROM nation;            // invalid
+failure contains: 'Invalid interval format: absolute interval MINUTE TO SECOND value exceeds MINUTE maximum of 262143'
+
+EXPLAIN SELECT INTERVAL '262143:262143.0' MINUTE TO SECOND FROM nation;       // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''262143:262143.0'' MINUTE TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''262143:262143'' MINUTE TO SECOND ; Ordinal Expr = INTERVAL ''262143:262143'' MINUTE TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+EXPLAIN SELECT INTERVAL '262144:262144.0' MINUTE TO SECOND FROM nation;       // invalid
+failure contains: 'Invalid interval format: absolute interval MINUTE TO SECOND value exceeds MINUTE maximum of 262143'
+
+EXPLAIN SELECT INTERVAL '262143:262143.999999' MINUTE TO SECOND FROM nation;  // ok
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''262143:262143.999999'' MINUTE TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''262143:262143.999999'' MINUTE TO SECOND ; Ordinal Expr = INTERVAL ''262143:262143.999999'' MINUTE TO SECOND)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+EXPLAIN SELECT INTERVAL '262143:262143.9999999' MINUTE TO SECOND FROM nation; // invalid
+failure contains: 'Invalid interval format: absolute interval microseconds value exceeds range of 0-999999'
+
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -

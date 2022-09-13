@@ -63,13 +63,13 @@ static const u8 C_IVL_DAYMIN_MIN_MAX = 268435455; // 0..2^28 -1
 static const u8 C_IVL_DAYHOUR_DAY_MAX = 268435455; // 0..2^28 -1
 static const u8 C_IVL_DAYHOUR_MIN_MAX = 268435455; // 0..2^28 -1
 
-static const u8 C_IVL_HOURSEC_DAY_MAX = 262143; // 0..2^18 -1
 static const u8 C_IVL_HOURSEC_MIN_MAX = 262143; // 0..2^18 -1
+static const u8 C_IVL_HOURSEC_SEC_MAX = 262143; // 0..2^18 -1
 
 static const u8 C_IVL_HOURMIN_MIN_MAX = 72057594037927935; // 0..2^56 -1
 
-static const u8 C_IVL_MINSEC_DAY_MAX = 262143; // 0..2^18 -1
 static const u8 C_IVL_MINSEC_MIN_MAX = 262143; // 0..2^18 -1
+static const u8 C_IVL_MINSEC_SEC_MAX = 262143; // 0..2^18 -1
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // bcd / decimal

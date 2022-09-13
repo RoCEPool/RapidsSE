@@ -231,7 +231,7 @@ void IntervalLiteral::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
       break;
 
     case IV_MINUTE_TO_SECOND:
-      uMins = xIvl.T.m_xIvl.u.m_xIvlMinToSec.m_uMinutes % 60;
+      uMins = xIvl.T.m_xIvl.u.m_xIvlMinToSec.m_uMinutes;
       uSecs = xIvl.T.m_xIvl.u.m_xIvlMinToSec.m_uSeconds;
       uMicros = xIvl.T.m_xIvl.u.m_xIvlMinToSec.m_uMicros;
 
