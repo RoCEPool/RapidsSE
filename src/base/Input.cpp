@@ -839,6 +839,11 @@ bool Input::bCollectVecFirstLine(eEC& eInputError)
     if (d_iDebugMode)
       m_pInpTknVec->vDumpVec(16);
 
+    if (m_pCurrTkn->bInvalidToken()) {
+      eInputError = EC_INVALID_TOKEN;
+      return false;
+    }
+
     if (m_pCurrTkn->bIsNull()) {
       if (d_iDebugMode)
         vJot1('r',"null token detected"_Stz);
@@ -868,7 +873,7 @@ bool Input::bCollectVecFirstLine(eEC& eInputError)
 /*----------------------------------------------------------------------------*/
 /* collect vector of tokens from input stream till ';'                        */
 /*----------------------------------------------------------------------------*/
-bool Input::bCollectVecTillSemicolon(eEC& eError)
+bool Input::bCollectVecTillSemicolon(eEC& eInputError)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
@@ -896,10 +901,15 @@ bool Input::bCollectVecTillSemicolon(eEC& eError)
   // get tokens delimited by ';'
   for (;;) {
 
-    if (! bCursorAdvance(eError))
+    if (! bCursorAdvance(eInputError))
       return false;
     
     vCollectOneToken();
+
+    if (m_pCurrTkn->bInvalidToken()) {
+      eInputError = EC_INVALID_TOKEN;
+      return false;
+    }
 
     if (TN_NULL == m_pCurrTkn->eToken())
       m_pInpTknVec->vDumpVec(0);
@@ -992,6 +1002,7 @@ void Input::vCollectCpp(void)
     case TN_DECIMAL:
     case TN_FLOAT:
     case TN_INTEGER:
+    case TN_INVALID:
     case TN_LITERAL:
     case TN_NAME:
     case TN_NULL:
@@ -1028,6 +1039,12 @@ void Input::vCollectCppLiteral(void)
 
   // collect the characters within the string
   while ( ! bEndCppLiteral() ) {
+
+    if (m_xAnnChar.bIsNewLine()) {
+      *z = '\0';
+      m_pCurrTkn->vToken(TN_INVALID);
+      return;
+    }
 
     if (m_xAnnChar.bIsBackSlash()) {
       vGetAnnCharStripped();
@@ -1492,7 +1509,13 @@ void Input::vCollectCppString(void)
   
   // collect the characters within the string
   while ( ! bEndCppString() ) {
-    
+
+    if (m_xAnnChar.bIsNewLine()) {
+      *z = '\0';
+      m_pCurrTkn->vToken(TN_INVALID);
+      return;
+    }
+
     if (m_xAnnChar.bIsBackSlash()) {
       vGetAnnCharStripped();
       // translate \n into new line
@@ -1987,8 +2010,8 @@ bool Input::bEndCppLiteral(void)
   if (m_xAnnChar.bIsSingleQuote())
     return true;
 
-  if (bFormCppTokens() && m_xAnnChar.bIsNewLine())
-    return true;
+  //if (bFormCppTokens() && m_xAnnChar.bIsNewLine())
+  //  return true;
 
   return false;
 }
@@ -2003,8 +2026,8 @@ bool Input::bEndCppString(void)
   if (m_xAnnChar.bIsDoubleQuote())
     return true;
 
-  if (bFormCppTokens() && m_xAnnChar.bIsNewLine())
-    return true;
+  //if (bFormCppTokens() && m_xAnnChar.bIsNewLine())
+  //  return true;
 
   return false;
 }

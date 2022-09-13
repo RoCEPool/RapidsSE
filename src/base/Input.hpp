@@ -91,7 +91,7 @@ namespace BASE
   private:    
     void vCollectOneToken(void);
     bool bCollectVecFirstLine(eEC& eInputError);
-    bool bCollectVecTillSemicolon(eEC& eError);
+    bool bCollectVecTillSemicolon(eEC& eInputError);
   
     void vCollectCpp(void);
     void vCollectCppLiteral(void);

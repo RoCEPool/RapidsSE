@@ -222,8 +222,11 @@ void SePrompt::vPromptLoop(void)
         m_pInput_deputy->vRawInputClear();
 
       m_eInputError = EC_NONE;
-      if (! bReadCommand(m_eInputError))
+      if (! bReadCommand(m_eInputError)) {
+        if (m_eInputError != EC_NONE)
+          vTrace("error: %s\n"_Stz, aErrorMsg[m_eInputError]);
         continue;
+      }
 
       //    Stz* szRaw = szRawInput();
       //    vTrace("SePrompt got command : %s\n"_Stz,szRaw);
