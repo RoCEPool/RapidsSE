@@ -11,14 +11,25 @@
 
 namespace STORE
 {
-  class Board : public Card_OTHER
+  class Bench;
+  class Dissect;
+  class Drafter;
+  class Weave;
+
+  class Board : public Object //Card_OTHER
   {
+    friend class Bench;
+    friend class Dissect;
+    friend class Drafter;
+    friend class Weave;
   protected:
     s32 m_sQueryNm;
     Optimiser* m_pOptimiser;
 
     CardRegs*  m_pCardRegs;
     RuleCtl*   m_pRuleCtl;
+
+    Card_SubSet* m_pCard_SubSet;
 
   private:
     // must be last
@@ -45,11 +56,13 @@ namespace STORE
   
     void vPinCards(Ribbon* pRibbon, i8 i_Board);
   
-    void vPrintBoard(Stz* szCue);
+    void vPrintBoard(Stz* szCue=nullptr);
 
     Stz* szQueryNm(void);
     void vQueryNm(Stz* szQueryNm);
-      
+
+    void vRenumberMainCards(void);
+
     Card* pSearch(Stz* szCardNm);
     void vSearch(Stz* szCardNm, Card*& rpMainCard, Card*& rpSubCard);
 
@@ -58,8 +71,8 @@ namespace STORE
 
     void vRankCandIndex(Card_CandIndex* pCard_CandIndex);
   
-    void vResolveAll(Card*        pAnyCard);
-    void vResolveTerm(Card_Term*  pCard_Term);
+    void vResolveAll                 (Card*        pAnyCard);
+    void vResolveTerm                (Card_Term*   pCard_Term);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   
@@ -89,7 +102,8 @@ namespace STORE
   
     void vReduce_Filter              (void);
   
-  
+    //void vResolve_RootStreams        (void);
+
     void vResolve_Symbols            (void);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~

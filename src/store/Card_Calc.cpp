@@ -1,25 +1,25 @@
 /*============================================================================*/
-/* Card_ExprCalc.cpp -- Calculation Predicate                                 */
+/* Card_Calc.cpp -- Calculation Predicate                                 */
 /*============================================================================*/
 
-#include "Card_ExprCalc.hpp"
+#include "Card_Calc.hpp"
 #include "Card_Term.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_ExprCalc,CK_EXPRCALC)
-__aNewFunction(Card_ExprCalc,CN_CARD)
-__vDeleteFunction(Card_ExprCalc,CN_CARD)
+__pCastFunction_Card(STORE, Card_Calc, CK_CALC)
+__aNewFunction(Card_Calc, CN_CARD)
+__vDeleteFunction(Card_Calc, CN_CARD)
 
-__bIsCard(STORE,Card_ExprCalc,CK_EXPRCALC)
+__bIsCard(STORE,Card_Calc,CK_CALC)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_ExprCalc::Card_ExprCalc(void)
-: Card_EXPRESSION(CK_EXPRCALC)
+Card_Calc::Card_Calc(void)
+: Card_EXPRESSION(CK_CALC)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
       
@@ -31,8 +31,8 @@ Card_ExprCalc::Card_ExprCalc(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_ExprCalc::Card_ExprCalc(Column* pColumn)
-: Card_EXPRESSION(CK_EXPRCALC)
+Card_Calc::Card_Calc(Column* pColumn)
+: Card_EXPRESSION(CK_CALC)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
       
@@ -47,7 +47,7 @@ Card_ExprCalc::Card_ExprCalc(Column* pColumn)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_ExprCalc::~Card_ExprCalc(void) noexcept(false)
+Card_Calc::~Card_Calc(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

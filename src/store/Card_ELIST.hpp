@@ -6,6 +6,7 @@
 #include "BASE.h"
 
 #include "Card_SUB.hpp"
+#include "Card_StreamColList.hpp"
 
 namespace STORE
 {
@@ -14,6 +15,8 @@ namespace STORE
   public:
     Card_ELIST(eCK eCard);
    ~Card_ELIST(void) noexcept(false);
+
+   Card_StreamColList* pDerive_StreamColList(void);
   };
 
   Card_ELIST* _pCard_ELIST(void* aAddr);

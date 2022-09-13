@@ -7,7 +7,7 @@
 
 #include "Card_Type.hpp"
 #include "Card_As.hpp"
-#include "Card_ExprCalc.hpp"
+#include "Card_Calc.hpp"
 #include "Card_Direction.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -52,7 +52,7 @@ Card_Expr::Card_Expr(Column* pColumn)
   vAppend(pCard_As);
 
   // exprCalc
-  Card_ExprCalc* pCard_ExprCalc = new Card_ExprCalc(pColumn);
+  Card_Calc* pCard_ExprCalc = new Card_Calc(pColumn);
   vAppend(pCard_ExprCalc);
 
   // direction
@@ -82,7 +82,7 @@ void Card_Expr::vAsEnsure(void)
     return;
   
   s32 sAs;
-  sAs.vSprint("COL__%lld"_Stz,m_iCardNo);
+  sAs.vSprint("COL_%lld"_Stz,m_iCardNo);
   
   pCard_As = new Card_As(sAs);
   vAppend(pCard_As);

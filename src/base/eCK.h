@@ -10,10 +10,12 @@ enum eCK // card kind
   /* */ CK_AGGELIST,
   /* */ CK_AGGLEVEL,
   /* */ CK_AGGREG,
+  /* */ CK_AGGREGATES,
   /* */ CK_AS,
 
   /* */ CK_BOARD,
 
+  /* */ CK_CALC,
   /* */ CK_CANDINDEX,
   /* */ CK_COMBINE,
   
@@ -24,7 +26,6 @@ enum eCK // card kind
   /* */ CK_EXISTS,
   /* */ CK_EXPR,
   /* */ CK_EXPRBOOL,
-  /* */ CK_EXPRCALC,
 
   /* */ CK_FILTER,
   /* */ CK_FILTELIST,
@@ -71,6 +72,8 @@ enum eCK // card kind
   /* */ CK_STAGE,
   /* */ CK_STAGETOPO,
   /* */ CK_STREAM,
+  /* */ CK_STREAMCOL,
+  /* */ CK_STREAMCOLLIST,
   /* */ CK_STREAMELIST,
   /* */ CK_SUBSET,
 
@@ -91,10 +94,12 @@ static Stz* aCK[]
   /* */ "CK_AGGELIST"_Stz,     // CK_AGGELIST
   /* */ "CK_AGGLEVEL"_Stz,     // CK_AGGLEVEL
   /* */ "CK_AGGREG"_Stz,       // CK_AGGREG
+  /* */ "CK_AGGREGATES"_Stz,   // CK_AGGREGATES
   /* */ "CK_AS"_Stz,           // CK_AS
   
   /* */ "CK_BOARD"_Stz,        // CK_BOARD
 
+  /* */ "CK_CALC"_Stz,         // CK_CALC
   /* */ "CK_CANDINDEX"_Stz,    // CK_CANDINDEX
   /* */ "CK_COMBINE"_Stz,      // CK_COMBINE
   
@@ -105,8 +110,7 @@ static Stz* aCK[]
   /* */ "CK_EXISTS"_Stz,       // CK_EXISTS
   /* */ "CK_EXPR"_Stz,         // CK_EXPR
   /* */ "CK_EXPRBOOL"_Stz,     // CK_EXPRBOOL
-  /* */ "CK_EXPRCALC"_Stz,     // CK_EXPRCALC
-  
+
   /* */ "CK_FILTER"_Stz,       // CK_FILTER
   /* */ "CK_FILTELIST"_Stz,    // CK_FILTELIST
 
@@ -152,7 +156,9 @@ static Stz* aCK[]
   /* */ "CK_STAGE"_Stz,        // CK_STAGE
   /* */ "CK_STAGETOPO"_Stz,    // CK_STAGETOPO
   /* */ "CK_STREAM"_Stz,       // CK_STREAM
-  /* */ "CK_STREAMLIST"_Stz,   // CK_STREAMELIST
+  /* */ "CK_STREAMCOL"_Stz,    // CK_STREAMCOL
+  /* */ "CK_STREAMCOLLIST"_Stz, // CK_STREAMCOLLIST
+  /* */ "CK_STREAMELIST"_Stz,  // CK_STREAMELIST
   /* */ "CK_SUBSET"_Stz,       // CK_SUBSET
 
   /* */ "CK_TABLE"_Stz,        // CK_TABLE
@@ -172,10 +178,12 @@ static Stz* aCK_short[]
   /* */ "aggElist"_Stz,        // CK_AGGELIST
   /* */ "aggLevel"_Stz,        // CK_AGGLEVEL
   /* */ "aggreg"_Stz,          // CK_AGGREG
+  /* */ "aggregates"_Stz,      // CK_AGGREGATES
   /* */ "as"_Stz,              // CK_AS
   
   /* */ "board"_Stz,           // CK_BOARD
 
+  /* */ "calc"_Stz,            // CK_CALC
   /* */ "candIndex"_Stz,       // CK_CANDINDEX
   /* */ "combine"_Stz,         // CK_COMBINE
 
@@ -186,7 +194,6 @@ static Stz* aCK_short[]
   /* */ "exists"_Stz,          // CK_EXISTS
   /* */ "expr"_Stz,            // CK_EXPR
   /* */ "exprBool"_Stz,        // CK_EXPRBOOL
-  /* */ "exprCalc"_Stz,        // CK_EXPRCALC
 
   /* */ "filter"_Stz,          // CK_FILTER
   /* */ "filtElist"_Stz,       // CK_FILTELIST
@@ -233,6 +240,8 @@ static Stz* aCK_short[]
   /* */ "stage"_Stz,           // CK_STAGE
   /* */ "stageTopo"_Stz,       // CK_STAGETOPO
   /* */ "stream"_Stz,          // CK_STREAM
+  /* */ "streamCol"_Stz,       // CK_STREAMCOL
+  /* */ "streamColList"_Stz,   // CK_STREAMCOLLIST
   /* */ "streamElist"_Stz,     // CK_STREAMELIST
   /* */ "subSet"_Stz,          // CK_SUBSET
 
@@ -252,11 +261,13 @@ static Stz* aCK_op[]
     
   /* */ "(none)"_Stz,          // CK_AGGELIST
   /* */ "(none)"_Stz,          // CK_AGGLEVEL
-  /* */ "aggreg   "_Stz,     // CK_AGGREG
+  /* */ "aggreg   "_Stz,       // CK_AGGREG
+  /* */ "(none)"_Stz,          // CK_AGGREGATES
   /* */ "(none)"_Stz,          // CK_AS
 
   /* */ "(none)"_Stz,          // CK_BOARD
 
+  /* */ "(none)"_Stz,          // CK_CALC
   /* */ "(none)"_Stz,          // CK_CANDINDEX
   /* */ "combined  0"_Stz,     // CK_COMBINE
 
@@ -267,7 +278,6 @@ static Stz* aCK_op[]
   /* */ "(none)"_Stz,          // CK_EXISTS
   /* */ "(none)"_Stz,          // CK_EXPR
   /* */ "(none)"_Stz,          // CK_EXPRBOOL
-  /* */ "(none)"_Stz,          // CK_EXPRCALC
 
   /* */ "filter   "_Stz,       // CK_FILTER
   /* */ "(none)"_Stz,          // CK_FILTELIST
@@ -276,7 +286,7 @@ static Stz* aCK_op[]
   /* */ "(none)"_Stz,          // CK_GENERATE
 
   /* */ "(none)"_Stz,          // CK_HASH
-  /* */ "(none)"_Stz,          // CK_HAVING
+  /* */ "filter   "_Stz,       // CK_HAVING
   
   /* */ "(none)"_Stz,          // CK_INDEX
   /* */ "indexJoin "_Stz,      // CK_INDEXJOIN
@@ -284,7 +294,7 @@ static Stz* aCK_op[]
   /* */ "indexScan "_Stz,      // CK_INDEXSCAN
   
   /* */ "(none)"_Stz,          // CK_LBOUND
-  /* */ "limit     2"_Stz,     // CK_LIMIT
+  /* */ "limit     "_Stz,      // CK_LIMIT
     
   /* */ "(none)"_Stz,          // CK_MODE
 
@@ -314,6 +324,8 @@ static Stz* aCK_op[]
   /* */ "(none)"_Stz,          // CK_STAGE
   /* */ "(none)"_Stz,          // CK_STAGETOPO
   /* */ "(none)"_Stz,          // CK_STREAM
+  /* */ "(none)"_Stz,          // CK_STREAMCOL
+  /* */ "(none)"_Stz,          // CK_STREAMCOLLIST
   /* */ "(none)"_Stz,          // CK_STREAMELIST
   /* */ "(none)"_Stz,          // CK_SUBSET
 
