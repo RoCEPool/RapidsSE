@@ -379,6 +379,10 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
     // type ?
     if (pTkn->bSame("casttype"_Stz)) {
       pTkn = pTknVec->pNextToken();
+      if (bGroupBy) {
+        eError = EC_NOT_IMPLEMENTED;
+        goto L_RETURN;
+      }
       if (!pTkn->bIsName()) {
         eError = EC_INVALID_COMMAND;
         goto L_RETURN;
@@ -513,18 +517,30 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
     }
 
     if (pTkn->bSame("BETWEEN"_Stz)) {
+      if (bGroupBy) {
+        eError = EC_NOT_IMPLEMENTED;
+        goto L_RETURN;
+      }
       ePreExp = PE_BET;
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     if (pTkn->bSame("CASE"_Stz)) {
+      if (bGroupBy) {
+        eError = EC_NOT_IMPLEMENTED;
+        goto L_RETURN;
+      }
       ePreExp = PE_CSE;
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     if (pTkn->bSame("CAST"_Stz)) {
+      if (bGroupBy) {
+        eError = EC_NOT_IMPLEMENTED;
+        goto L_RETURN;
+      }
       ePreExp = PE_CST;
       pTkn = pTknVec->pNextToken();
       continue;
@@ -547,90 +563,150 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
     }
 
     if (pTkn->bSame("EXTRACT_HOUR"_Stz)) {
+      if (bGroupBy) {
+        eError = EC_NOT_IMPLEMENTED;
+        goto L_RETURN;
+      }
       ePreExp = PE_XHR;
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     if (pTkn->bSame("EXTRACT_MINUTE"_Stz)) {
+      if (bGroupBy) {
+        eError = EC_NOT_IMPLEMENTED;
+        goto L_RETURN;
+      }
       ePreExp = PE_XMN;
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     if (pTkn->bSame("EXTRACT_MONTH"_Stz)) {
+      if (bGroupBy) {
+        eError = EC_NOT_IMPLEMENTED;
+        goto L_RETURN;
+      }
       ePreExp = PE_XMT;
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     if (pTkn->bSame("EXTRACT_SECOND"_Stz)) {
+      if (bGroupBy) {
+        eError = EC_NOT_IMPLEMENTED;
+        goto L_RETURN;
+      }
       ePreExp = PE_XSC;
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     if (pTkn->bSame("EXTRACT_YEAR"_Stz)) {
+      if (bGroupBy) {
+        eError = EC_NOT_IMPLEMENTED;
+        goto L_RETURN;
+      }
       ePreExp = PE_XYR;
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     if (pTkn->bSame("IN"_Stz)) {
+      if (bGroupBy) {
+        eError = EC_NOT_IMPLEMENTED;
+        goto L_RETURN;
+      }
       ePreExp = PE_INX;
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     if (pTkn->bSame("LIKE2"_Stz)) {
+      if (bGroupBy) {
+        eError = EC_NOT_IMPLEMENTED;
+        goto L_RETURN;
+      }
       ePreExp = PE_LK2;
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     if (pTkn->bSame("LIKE3"_Stz)) {
+      if (bGroupBy) {
+        eError = EC_NOT_IMPLEMENTED;
+        goto L_RETURN;
+      }
       ePreExp = PE_LK3;
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     if (pTkn->bSame("MATCHLEADING"_Stz)) {
+      if (bGroupBy) {
+        eError = EC_NOT_IMPLEMENTED;
+        goto L_RETURN;
+      }
       ePreExp = PE_MLE;
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     if (pTkn->bSame("MATCHMIDDLE"_Stz)) {
+      if (bGroupBy) {
+        eError = EC_NOT_IMPLEMENTED;
+        goto L_RETURN;
+      }
       ePreExp = PE_MMD;
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     if (pTkn->bSame("MATCHMIDDLE1"_Stz)) {
+      if (bGroupBy) {
+        eError = EC_NOT_IMPLEMENTED;
+        goto L_RETURN;
+      }
       ePreExp = PE_MM1;
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     if (pTkn->bSame("MATCHMIDDLE2"_Stz)) {
+      if (bGroupBy) {
+        eError = EC_NOT_IMPLEMENTED;
+        goto L_RETURN;
+      }
       ePreExp = PE_MM2;
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     if (pTkn->bSame("MATCHTRAILING"_Stz)) {
+      if (bGroupBy) {
+        eError = EC_NOT_IMPLEMENTED;
+        goto L_RETURN;
+      }
       ePreExp = PE_MTR;
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     if (pTkn->bSame("SUBSTRING2"_Stz)) {
+      if (bGroupBy) {
+        eError = EC_NOT_IMPLEMENTED;
+        goto L_RETURN;
+      }
       ePreExp = PE_SS2;
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     if (pTkn->bSame("SUBSTRING3"_Stz)) {
+      if (bGroupBy) {
+        eError = EC_NOT_IMPLEMENTED;
+        goto L_RETURN;
+      }
       ePreExp = PE_SS3;;
       pTkn = pTknVec->pNextToken();
       continue;

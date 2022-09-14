@@ -708,6 +708,14 @@ rows:
   ('woman',true)
   ('man',false)
 
+select
+    case when c+d<=0 then '<=0' when c+d>0 and c+d<=1000 then '<=1000' when c+d>1000 and c+d<=10000 then '<=10000' else '>10000' end,
+  sum(c)
+  from caseExpr
+  group by
+    case when c+d<=0 then '<=0' when c+d>0 and c+d<=1000 then '<=1000' when c+d>1000 and c+d<=10000 then '<=10000' else '>10000' end;
+failure contains: 'EC_NOT_IMPLEMENTED'
+
 DROP TABLE nation;
 success
 
@@ -739,5 +747,8 @@ CLEANUP {
   mute
 
   DROP TABLE datums;
+  mute
+
+  DROP TABLE caseExpr;
   mute
 }
