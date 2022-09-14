@@ -1,0 +1,37 @@
+/*============================================================================*/
+/* _rayD                                                                      */
+/*============================================================================*/
+
+trackMemory;
+
+_orders
+
+_lineItem
+
+load orders "../tpch/sf_0001/orders.csv" ;
+//select * from orders;
+
+load lineItem "../tpch/sf_0001/lineItem.csv" ;
+//select * from lineItem;
+
+/*
+/jobTags
+*/
+/transliterated
+/optimise
+/interactive
+/weave
+/weaved
+select *
+  from orders , lineItem
+ where o_orderKey = l_orderKey
+;
+
+drop table orders;
+drop table lineItem;
+
+memoryLeaks;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

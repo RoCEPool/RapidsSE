@@ -2,9 +2,9 @@
 /* _ordersLoad - create and load TPC-H Orders table                           */
 /*============================================================================*/
 
-_orders
+//_orders
 
-/time load orders "/Users/Shared/tpch/SF1/orders.csv" ;
+load orders "/Users/Shared/rapidsse/tpch/SF1/orders.csv" ;
 
 // select * from orders;
 
