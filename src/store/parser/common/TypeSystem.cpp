@@ -20,38 +20,41 @@ typedef struct {
 } TypeDescriptor;
 
 static Stz* C_DEFAULT_NAMESPACE = "rapids"_Stz;
-static i8 C_INVALID_TYPEID = -1;
+static constexpr i8 C_INVALID_TYPEID = -1;
 
 // The set of known types in the system, indexed by their typeId.
 // When we fully support dynamic types then this will change to a
 // proper indexed tree.
-static i8 C_MAX_TYPE_ID = 0;
+static i8 C_NEXT_TYPE_ID = 0;
 static TypeDescriptor axTypes[] = {
- {C_MAX_TYPE_ID++, -1, CT_BOOLEAN,     IV_NONE,             false, C_DEFAULT_NAMESPACE, aCT[CT_BOOLEAN]          },
- {C_MAX_TYPE_ID++, -1, CT_CHAR,        IV_NONE,             false, C_DEFAULT_NAMESPACE, aCT[CT_CHAR]             },
- {C_MAX_TYPE_ID++, -1, CT_DATE,        IV_NONE,             false, C_DEFAULT_NAMESPACE, aCT[CT_DATE]             },
- {C_MAX_TYPE_ID++, -1, CT_DECIMAL,     IV_NONE,             false, C_DEFAULT_NAMESPACE, aCT[CT_DECIMAL]          },
- {C_MAX_TYPE_ID++, -1, CT_FLOAT,       IV_NONE,             false, C_DEFAULT_NAMESPACE, aCT[CT_FLOAT]            },
- {C_MAX_TYPE_ID++, -1, CT_INTEGER,     IV_NONE,             false, C_DEFAULT_NAMESPACE, aCT[CT_INTEGER]          },
- {C_MAX_TYPE_ID++, -1, CT_TIME,        IV_NONE,             false, C_DEFAULT_NAMESPACE, aCT[CT_TIME]             },
- {C_MAX_TYPE_ID++, -1, CT_TIMESTAMP,   IV_NONE,             false, C_DEFAULT_NAMESPACE, aCT[CT_TIMESTAMP]        },
- {C_MAX_TYPE_ID++, -1, CT_VARCHAR,     IV_NONE,             false, C_DEFAULT_NAMESPACE, aCT[CT_VARCHAR]          },
- {C_MAX_TYPE_ID++, -1, CT_UNKNOWN,     IV_NONE,             false, C_DEFAULT_NAMESPACE, aCT[CT_UNKNOWN]          },
+ {C_NEXT_TYPE_ID++, -1, CT_BOOLEAN,     IV_NONE,             false, C_DEFAULT_NAMESPACE, aCT[CT_BOOLEAN]          },
+ {C_NEXT_TYPE_ID++, -1, CT_CHAR,        IV_NONE,             false, C_DEFAULT_NAMESPACE, aCT[CT_CHAR]             },
+ {C_NEXT_TYPE_ID++, -1, CT_DATE,        IV_NONE,             false, C_DEFAULT_NAMESPACE, aCT[CT_DATE]             },
+ {C_NEXT_TYPE_ID++, -1, CT_DECIMAL,     IV_NONE,             false, C_DEFAULT_NAMESPACE, aCT[CT_DECIMAL]          },
+ {C_NEXT_TYPE_ID++, -1, CT_FLOAT,       IV_NONE,             false, C_DEFAULT_NAMESPACE, aCT[CT_FLOAT]            },
+ {C_NEXT_TYPE_ID++, -1, CT_INTEGER,     IV_NONE,             false, C_DEFAULT_NAMESPACE, aCT[CT_INTEGER]          },
+ {C_NEXT_TYPE_ID++, -1, CT_TIME,        IV_NONE,             false, C_DEFAULT_NAMESPACE, aCT[CT_TIME]             },
+ {C_NEXT_TYPE_ID++, -1, CT_TIMESTAMP,   IV_NONE,             false, C_DEFAULT_NAMESPACE, aCT[CT_TIMESTAMP]        },
+ {C_NEXT_TYPE_ID++, -1, CT_VARCHAR,     IV_NONE,             false, C_DEFAULT_NAMESPACE, aCT[CT_VARCHAR]          },
+ {C_NEXT_TYPE_ID++, -1, CT_UNKNOWN,     IV_NONE,             false, C_DEFAULT_NAMESPACE, aCT[CT_UNKNOWN]          },
 
-{ C_MAX_TYPE_ID++, -1, CT_INTERVAL_YM, IV_YEAR,             false, C_DEFAULT_NAMESPACE, aIV[IV_YEAR]             },
-{ C_MAX_TYPE_ID++, -1, CT_INTERVAL_YM, IV_MONTH,            false, C_DEFAULT_NAMESPACE, aIV[IV_MONTH]            },
-{ C_MAX_TYPE_ID++, -1, CT_INTERVAL_YM, IV_YEAR_TO_MONTH,    false, C_DEFAULT_NAMESPACE, aIV[IV_YEAR_TO_MONTH]    },
-{ C_MAX_TYPE_ID++, -1, CT_INTERVAL_DT, IV_DAY,              false, C_DEFAULT_NAMESPACE, aIV[IV_DAY]              },
-{ C_MAX_TYPE_ID++, -1, CT_INTERVAL_DT, IV_HOUR,             false, C_DEFAULT_NAMESPACE, aIV[IV_HOUR]             },
-{ C_MAX_TYPE_ID++, -1, CT_INTERVAL_DT, IV_MINUTE,           false, C_DEFAULT_NAMESPACE, aIV[IV_MINUTE]           },
-{ C_MAX_TYPE_ID++, -1, CT_INTERVAL_DT, IV_SECOND,           false, C_DEFAULT_NAMESPACE, aIV[IV_SECOND]           },
-{ C_MAX_TYPE_ID++, -1, CT_INTERVAL_DT, IV_DAY_TO_HOUR,      false, C_DEFAULT_NAMESPACE, aIV[IV_DAY_TO_HOUR]      },
-{ C_MAX_TYPE_ID++, -1, CT_INTERVAL_DT, IV_DAY_TO_MINUTE,    false, C_DEFAULT_NAMESPACE, aIV[IV_DAY_TO_MINUTE]    },
-{ C_MAX_TYPE_ID++, -1, CT_INTERVAL_DT, IV_DAY_TO_SECOND,    false, C_DEFAULT_NAMESPACE, aIV[IV_DAY_TO_SECOND]    },
-{ C_MAX_TYPE_ID++, -1, CT_INTERVAL_DT, IV_HOUR_TO_MINUTE,   false, C_DEFAULT_NAMESPACE, aIV[IV_HOUR_TO_MINUTE]   },
-{ C_MAX_TYPE_ID++, -1, CT_INTERVAL_DT, IV_HOUR_TO_SECOND,   false, C_DEFAULT_NAMESPACE, aIV[IV_HOUR_TO_SECOND]   },
-{ C_MAX_TYPE_ID++, -1, CT_INTERVAL_DT, IV_MINUTE_TO_SECOND, false, C_DEFAULT_NAMESPACE, aIV[IV_MINUTE_TO_SECOND] },
+{ C_NEXT_TYPE_ID++, -1, CT_INTERVAL_YM, IV_YEAR,             false, C_DEFAULT_NAMESPACE, aIV[IV_YEAR]             },
+{ C_NEXT_TYPE_ID++, -1, CT_INTERVAL_YM, IV_MONTH,            false, C_DEFAULT_NAMESPACE, aIV[IV_MONTH]            },
+{ C_NEXT_TYPE_ID++, -1, CT_INTERVAL_YM, IV_YEAR_TO_MONTH,    false, C_DEFAULT_NAMESPACE, aIV[IV_YEAR_TO_MONTH]    },
+{ C_NEXT_TYPE_ID++, -1, CT_INTERVAL_DT, IV_DAY,              false, C_DEFAULT_NAMESPACE, aIV[IV_DAY]              },
+{ C_NEXT_TYPE_ID++, -1, CT_INTERVAL_DT, IV_HOUR,             false, C_DEFAULT_NAMESPACE, aIV[IV_HOUR]             },
+{ C_NEXT_TYPE_ID++, -1, CT_INTERVAL_DT, IV_MINUTE,           false, C_DEFAULT_NAMESPACE, aIV[IV_MINUTE]           },
+{ C_NEXT_TYPE_ID++, -1, CT_INTERVAL_DT, IV_SECOND,           false, C_DEFAULT_NAMESPACE, aIV[IV_SECOND]           },
+{ C_NEXT_TYPE_ID++, -1, CT_INTERVAL_DT, IV_DAY_TO_HOUR,      false, C_DEFAULT_NAMESPACE, aIV[IV_DAY_TO_HOUR]      },
+{ C_NEXT_TYPE_ID++, -1, CT_INTERVAL_DT, IV_DAY_TO_MINUTE,    false, C_DEFAULT_NAMESPACE, aIV[IV_DAY_TO_MINUTE]    },
+{ C_NEXT_TYPE_ID++, -1, CT_INTERVAL_DT, IV_DAY_TO_SECOND,    false, C_DEFAULT_NAMESPACE, aIV[IV_DAY_TO_SECOND]    },
+{ C_NEXT_TYPE_ID++, -1, CT_INTERVAL_DT, IV_HOUR_TO_MINUTE,   false, C_DEFAULT_NAMESPACE, aIV[IV_HOUR_TO_MINUTE]   },
+{ C_NEXT_TYPE_ID++, -1, CT_INTERVAL_DT, IV_HOUR_TO_SECOND,   false, C_DEFAULT_NAMESPACE, aIV[IV_HOUR_TO_SECOND]   },
+{ C_NEXT_TYPE_ID++, -1, CT_INTERVAL_DT, IV_MINUTE_TO_SECOND, false, C_DEFAULT_NAMESPACE, aIV[IV_MINUTE_TO_SECOND] },
 };
+
+constexpr i8 C_MAXTYPEID = (sizeof(axTypes) / sizeof(*axTypes)) - 1; // number of entries in the array
+
 
 // Reverse mapping of eCT to typeId
 static constexpr i8 aiTypeIdOfCT[CT_ENUMS] = {
@@ -111,7 +114,7 @@ TypeSystem::TypeSystem()
 /*----------------------------------------------------------------------------*/
 b1 TypeSystem::bIsValid(TypeId xTypeId)
 {
-  return (xTypeId.iIdVal() > C_INVALID_TYPEID) && (xTypeId.iIdVal() < C_MAX_TYPE_ID);
+  return (xTypeId.iIdVal() > C_INVALID_TYPEID) && (xTypeId.iIdVal() <= C_MAXTYPEID);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -223,7 +226,7 @@ TypeId TypeSystem::xIdOf(Stz* szNamespace, Stz* szTypeName)
   ASSERT(szNamespace);
   ASSERT(szTypeName);
 
-  for (i8 i=0; i<C_MAX_TYPE_ID; i++) {
+  for (i8 i=0; i <= C_MAXTYPEID; i++) {
 
     if (axTypes[i].m_szNamespace->bSame(szNamespace) &&
         axTypes[i].m_szTypeName->bSame(szTypeName) ) {
@@ -235,6 +238,15 @@ TypeId TypeSystem::xIdOf(Stz* szNamespace, Stz* szTypeName)
   // Not found
   return TypeId{C_INVALID_TYPEID};
 }
+
+/*----------------------------------------------------------------------------*/
+/* Returns the maximum integer typeId in the system                           */
+/*----------------------------------------------------------------------------*/
+i8 TypeSystem::iMaxTypeId()
+{
+  return C_MAXTYPEID;
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

@@ -258,6 +258,7 @@
 #include "graphTools/GraphEditor.hpp"
 
 #include "parser/stages/parser/SqlPlanner.hpp"
+#include "parser/common/TypeMap2D.hpp"
 using namespace Parser;
 
 /*----------------------------------------------------------------------------*/
@@ -653,6 +654,7 @@ SizeHeap gxaSizeHeap[]
   { CN_TUB,                      sizeof(Tub),                HT_T_TINY    ,FILL },
   { CN_TX,                       sizeof(Tx),                 HT_T_TINY    ,FILL },
   { CN_TXSET,                    sizeof(TxSet),              HT_T_TINY    ,FILL },
+  { CN_TYPEMAP2D,                sizeof(TypeMap2D),          HT_T_TINY    ,FILL },
 
   { CN__U__,                     'U' - ('A' - 1),            HT_INVALID   ,FILL },
   { CN_UNITINT,                  sizeof(UnitInt),            HT_T_TINY    ,FILL },

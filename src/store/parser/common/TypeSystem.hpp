@@ -16,6 +16,7 @@ namespace Parser
   class TypeSystem
   {
     friend class TypeId;
+    friend class TypeMap2D;
 
     private:
     TypeSystem(); // Not to be initialised. Static class only
@@ -33,7 +34,7 @@ namespace Parser
     static TypeId xIdOf(eIV eVal);
     static TypeId xIdOf(Stz* szNamespace, Stz* szTypeName);
 
-
+    static i8 iMaxTypeId();
   };
   
 }
