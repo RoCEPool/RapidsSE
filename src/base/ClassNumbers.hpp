@@ -399,6 +399,7 @@ enum eCN : u2 // Class Number
   /* */ CN_TUB,
   /* */ CN_TX,
   /* */ CN_TXSET,
+  /* */ CN_TYPEMAP1D,
   /* */ CN_TYPEMAP2D,
 
   /* */ CN__U__,
@@ -817,6 +818,7 @@ static Stz* aCN[]
   /* */ "TUB"_Stz,                  // CN_TUB
   /* */ "TX"_Stz,                   // CN_TX
   /* */ "TXSET"_Stz,                // CN_TXSET
+  /* */ "CN_TYPEMAP1D"_Stz,         // CN_TYPEMAP1D
   /* */ "CN_TYPEMAP2D"_Stz,         // CN_TYPEMAP2D
 
   /* */ "_U__"_Stz,                 // CN__U__

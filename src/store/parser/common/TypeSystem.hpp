@@ -16,6 +16,7 @@ namespace Parser
   class TypeSystem
   {
     friend class TypeId;
+    friend class TypeMap1D;
     friend class TypeMap2D;
 
     private:
