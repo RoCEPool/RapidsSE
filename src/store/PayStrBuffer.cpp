@@ -31,7 +31,7 @@ PayStrBuffer::PayStrBuffer(void)
     m_xWsp.vZero(CN_CSVBUFFER);
   #endif
 
-  vTrace("PayStrBuffer %p\n"_Stz,this);
+  //vTrace("PayStrBuffer %p\n"_Stz,this);
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PAYSTRBUFFER,_FOOTER_);
 }
 
@@ -45,7 +45,7 @@ PayStrBuffer::~PayStrBuffer(void) noexcept(false)
   if (m_pNext)
     delete m_pNext;
 
-  vTrace("~ PayStrBuffer %p : %lldB free\n"_Stz,this,m_xWsp.nFree());
+  //vTrace("~ PayStrBuffer %p : %lldB free\n"_Stz,this,m_xWsp.nFree());
 }
 
 
