@@ -11,35 +11,40 @@
 #include "OptimiserFun.hpp"
 #include "OptimiserCatalog.hpp"
 
+#include "Card_StreamCol.hpp"
+
 extern OptimiserCatalog gxOptimiserCatalog;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Board,CN_CARD)
-__aNewFunction(Board,CN_CARD)
-__vDeleteFunction(Board,CN_CARD)
+__pCastFunction(STORE,Board,CN_BOARD)
+__aNewFunction(Board,CN_BOARD)
+__vDeleteFunction(Board,CN_BOARD)
 __aFooterFunction(Board)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Board::Board(Stz* szQueryNm, Optimiser* pOptimiser)
-: Card_OTHER(CK_BOARD)
+//: Card_OTHER(CK_BOARD)
+: Object(CN_BOARD)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
       
   m_sQueryNm   = szQueryNm;
   m_pOptimiser = pOptimiser;
    
   m_pCardRegs  = new CardRegs;
   m_pRuleCtl   = new RuleCtl;
-  
-  //_checkInitialised_(CN_CARD);
+
+  m_pCard_SubSet = new Card_SubSet;
+
+  //_checkInitialised_(CN_BOARD);
   _checkInitialisedSize_(sizeof(Board));
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -47,10 +52,12 @@ Board::Board(Stz* szQueryNm, Optimiser* pOptimiser)
 /*----------------------------------------------------------------------------*/
 Board::~Board(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
   delete m_pCardRegs;
   delete m_pRuleCtl;
+
+  delete m_pCard_SubSet;
 }
 
 
@@ -64,7 +71,7 @@ Board::~Board(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 CardRegs* Board::pCardRegs(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
   return m_pCardRegs;
 }
@@ -74,7 +81,7 @@ CardRegs* Board::pCardRegs(void)
 /*----------------------------------------------------------------------------*/
 void Board::vClear(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
   m_pCardRegs->vResetCardRegs();
   
@@ -86,9 +93,9 @@ void Board::vClear(void)
 /*----------------------------------------------------------------------------*/
 void Board::vDeleteAllCards(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
-  while (Card* pCard = pPop())
+  while (Card* pCard = m_pCard_SubSet->pPop())
     delete pCard;
 }
 
@@ -97,9 +104,9 @@ void Board::vDeleteAllCards(void)
 /*----------------------------------------------------------------------------*/
 Card* Board::pGetMainCard(i8 i_MainCard)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-  Card* pMainCard = pGet(i_MainCard);
+  Card* pMainCard = m_pCard_SubSet->pGet(i_MainCard);
   return pMainCard;
 }
 
@@ -108,9 +115,9 @@ Card* Board::pGetMainCard(i8 i_MainCard)
 /*----------------------------------------------------------------------------*/
 Card* Board::pGetMainCard(i8 i_MainCard, eCK& reCard)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-  Card* pMainCard = pGet(i_MainCard);
+  Card* pMainCard = m_pCard_SubSet->pGet(i_MainCard);
   
   if (pMainCard)
     reCard = pMainCard->eCard();
@@ -125,7 +132,7 @@ Card* Board::pGetMainCard(i8 i_MainCard, eCK& reCard)
 /*----------------------------------------------------------------------------*/
 Card* Board::pFindMain(Stz* szCardNm)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
   eCK eCard = Card::eToECard(szCardNm);
   
@@ -145,9 +152,9 @@ Card* Board::pFindMain(Stz* szCardNm)
 /*----------------------------------------------------------------------------*/
 i8 Board::nMainCards(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
-  i8 nCards = this->nItems();
+  i8 nCards = this->m_pCard_SubSet->nItems();
   
   return nCards;
 }
@@ -157,7 +164,7 @@ i8 Board::nMainCards(void)
 /*----------------------------------------------------------------------------*/
 void Board::vPinCards(Ribbon* pRibbon, i8 i_Board)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
   if (! nMainCards())
     return;
@@ -172,11 +179,13 @@ void Board::vPinCards(Ribbon* pRibbon, i8 i_Board)
   Ribbon* pSubRibbon = new Ribbon(m_pOptimiser->pCardCtl(),this,0);
   
 
-  ListExoIter2_t<Card>* pBoard_I = pNewIter();
+  ListExoIter2_t<Card>* pBoard_I = m_pCard_SubSet->pNewIter();
 
   i8 nCount = 0;
   while (pBoard_I->bHasNext()) {
     Card* pCard = pBoard_I->pNext();
+
+    //pCard->vDump();
     
     //if (_bIsCard_Filter(pCard))
     //  pCard->vDump();
@@ -209,7 +218,7 @@ void Board::vPinCards(Ribbon* pRibbon, i8 i_Board)
 /*----------------------------------------------------------------------------*/
 void Board::vPrintBoard(Stz* szCue)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
   eOA eOptAct = OA_ENTRY;
   TokenVec* pTknVec = nullptr;
@@ -220,7 +229,7 @@ void Board::vPrintBoard(Stz* szCue)
   bool bPrint = true;
   bool bExecuted = false;
 
-  vRenumberCards();
+  vRenumberMainCards();
   
   if (! bPrint)
     return;
@@ -234,8 +243,10 @@ void Board::vPrintBoard(Stz* szCue)
   
   if (! bCue)
     return;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  if (! szCue)
+    return;
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
   L_Input:
   
@@ -306,7 +317,7 @@ L_Exit:
 /*----------------------------------------------------------------------------*/
 Stz* Board::szQueryNm(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
   return m_sQueryNm;
 }
@@ -316,9 +327,29 @@ Stz* Board::szQueryNm(void)
 /*----------------------------------------------------------------------------*/
 void Board::vQueryNm(Stz* szQueryNm)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
   m_sQueryNm = szQueryNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* renumber the cards                                                         */
+/*----------------------------------------------------------------------------*/
+void Board::vRenumberMainCards(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  ListExoIter2_t<Card>* pMainCard_I = m_pCard_SubSet->pNewIter();
+
+  i8 iMainCardNo = 0;
+  while (pMainCard_I->bHasNext()) {
+    Card* pMainCard = pMainCard_I->pNext();
+
+    pMainCard->vCardNo(iMainCardNo++);
+    pMainCard->vRenumberSubCards(nullptr);
+  }
+
+  delete pMainCard_I;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -326,7 +357,7 @@ void Board::vQueryNm(Stz* szQueryNm)
 /*----------------------------------------------------------------------------*/
 Card* Board::pSearch(Stz* szCardNm)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
   Card* pCard = nullptr;
   if (szCardNm->bIsInteger()) {
@@ -351,7 +382,7 @@ Card* Board::pSearch(Stz* szCardNm)
 /*----------------------------------------------------------------------------*/
 void Board::vSearch(Stz* szCardNm, Card*& rpMainCard, Card*& rpSubCard)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
   if (szCardNm->bIsInteger()) {
     i8 i_MainCard = szCardNm->iToI8();
@@ -379,7 +410,7 @@ void Board::vSearch(Stz* szCardNm, Card*& rpMainCard, Card*& rpSubCard)
 /*----------------------------------------------------------------------------*/
 void Board::vRankCandIndex(Card_CandIndex* pCard_CandIndex)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
   Card_Filter* pReg_Filter = _pCard_Filter(m_pCardRegs->pCardReg(CK_FILTER));
   
@@ -423,12 +454,13 @@ void Board::vRankCandIndex(Card_CandIndex* pCard_CandIndex)
 }
 
 
+
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Board::vResolveAll(Card* pAnyCard) // recursive
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
     
   
   Card_ELIST* pCard_ELIST;
@@ -445,7 +477,7 @@ void Board::vResolveAll(Card* pAnyCard) // recursive
     Card* pSubCard = pAnyCard->pGetSubCard(i_SubCard,eSubCard);
        
     if (CK_INDEX == eSubCard) {
-      vIndex(pSubCard->pIndex());
+      m_pCard_SubSet->vIndex(pSubCard->pIndex());
       continue;
     }
 
@@ -456,7 +488,7 @@ void Board::vResolveAll(Card* pAnyCard) // recursive
     }
 
     if (CK_TABLE == eSubCard) {
-      vTable(pSubCard->pTable());
+      m_pCard_SubSet->vTable(pSubCard->pTable());
       continue;
     }
 
@@ -472,34 +504,45 @@ void Board::vResolveAll(Card* pAnyCard) // recursive
 
   pCard_ELIST = (Card_ELIST*)pAnyCard->pFindSubCard(CK_AGGELIST);
   if (pCard_ELIST) {
-        
+
+    Card_AggElist* pCard_AggElist = _pCard_AggElist(pCard_ELIST);
     Card_Stream* pCard_Stream = new Card_Stream;
     pAnyCard->vAppend(pCard_Stream);
     
-    Card_SubSet* pCard_SubSet = pCard_ELIST->pDupSubCards();
-    Card_StreamElist* pCard_StreamElist = new Card_StreamElist;
-    pCard_StreamElist->vTransferAll(pCard_SubSet);
-    pCard_Stream->vAppend(pCard_StreamElist);
-    delete pCard_SubSet;
+//    Card_SubSet* pCard_SubSet = pCard_ELIST->pDupSubCards();
+//    Card_StreamElist* pCard_StreamElist = new Card_StreamElist;
+//    pCard_StreamElist->vTransferAll(pCard_SubSet);
+//    pCard_Stream->vAppend(pCard_StreamElist);
+//    delete pCard_SubSet;
     
     //vReg_Stream(pCard_Stream);
     m_pCardRegs->vCardReg(CK_STREAM,pCard_Stream);
+
+    Card_StreamColList* pCard_StreamColList = new Card_StreamColList(pCard_AggElist);
+    pCard_Stream->vAppend(pCard_StreamColList);
+
   }
-  
+
+  // derive the stream definition for projection
   pCard_ELIST = (Card_ELIST*)pAnyCard->pFindSubCard(CK_PROJELIST);
   if (pCard_ELIST) {
         
     Card_Stream* pCard_Stream = new Card_Stream;
     pAnyCard->vAppend(pCard_Stream);
     
-    Card_SubSet* pCard_SubSet = pCard_ELIST->pDupSubCards();
-    Card_StreamElist* pCard_StreamElist = new Card_StreamElist;
-    pCard_StreamElist->vTransferAll(pCard_SubSet);
-    pCard_Stream->vAppend(pCard_StreamElist);
-    delete pCard_SubSet;
+//    Card_SubSet* pCard_SubSet = pCard_ELIST->pDupSubCards();
+//    Card_StreamElist* pCard_StreamElist = new Card_StreamElist;
+//    pCard_StreamElist->vTransferAll(pCard_SubSet);
+//    pCard_Stream->vAppend(pCard_StreamElist);
+//    delete pCard_SubSet;
     
     //vReg_Stream(pCard_Stream);
     m_pCardRegs->vCardReg(CK_STREAM,pCard_Stream);
+
+    // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
+
+    Card_StreamColList* pCard_StreamColList = pCard_ELIST->pDerive_StreamColList();
+    pCard_Stream->vAppend(pCard_StreamColList);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -507,7 +550,7 @@ void Board::vResolveAll(Card* pAnyCard) // recursive
   pCard_Index = _pCard_Index(pAnyCard->pFindSubCard(CK_INDEX));
   if (pCard_Index) {
     Index* pIndex = pCard_Index->pIndex();
-    vIndex(pIndex);
+    m_pCard_SubSet->vIndex(pIndex);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -524,8 +567,11 @@ void Board::vResolveAll(Card* pAnyCard) // recursive
     //vReg_Stream(pCard_Stream);
     m_pCardRegs->vCardReg(CK_STREAM,pCard_Stream);
 
-    Card_StreamElist* pCard_StreamElist = new Card_StreamElist(pStreamDef);
-    pCard_Stream->vAppend(pCard_StreamElist);
+//    Card_StreamElist* pCard_StreamElist = new Card_StreamElist(pStreamDef);
+//    pCard_Stream->vAppend(pCard_StreamElist);
+
+    Card_StreamColList* pCard_StreamColList = new Card_StreamColList(pStreamDef);
+    pCard_Stream->vAppend(pCard_StreamColList);
   }
 
 }
@@ -535,7 +581,7 @@ void Board::vResolveAll(Card* pAnyCard) // recursive
 /*----------------------------------------------------------------------------*/
 void Board::vResolveTerm(Card_Term* pCard_Term)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
   
   Card_Stream* pReg_Stream = _pCard_Stream(m_pCardRegs->pCardReg(CK_STREAM));
@@ -545,16 +591,40 @@ void Board::vResolveTerm(Card_Term* pCard_Term)
     i8 i_Ord = pCard_Term->iOrdinalStreamColNo();
     i8 i_Col = i_Ord - 1;
 
-    Card_StreamElist* pCard_StreamElist_src =
-      _pCard_StreamElist(pReg_Stream->pFindSubCard(CK_STREAMELIST));
+    Card_StreamColList* pCard_StreamColList =
+            _pCard_StreamColList(pReg_Stream->pFindSubCard(CK_STREAMCOLLIST));
 
-    Card_Expr* pCard_Expr_src = _pCard_Expr(pCard_StreamElist_src->pGet(i_Col));
+    if (pCard_StreamColList && pCard_StreamColList->nItems()) {
+      Card_StreamCol *pCard_StreamCol = _pCard_StreamCol(pCard_StreamColList->pGet(i_Col));
 
-    Card_Term* pCard_Term_src =
-      _pCard_Term(pCard_Expr_src->pFindSubCard(CK_TERM));
+      Card_As *pCard_As = _pCard_As(pCard_StreamCol->pFindSubCard(CK_AS));
 
-    Stz* szColNm_resolved = pCard_Term_src->szTerm();
-    
+      Stz *szColNm_resolved = pCard_As->szAs();
+
+      pCard_Term->vTerm(szColNm_resolved);
+
+      vTrace("Resolved $%lld To: %s\n"_Stz,i_Ord,szColNm_resolved);
+
+      return;
+    }
+
+    Card_StreamElist *pCard_StreamElist_src =
+            _pCard_StreamElist(pReg_Stream->pFindSubCard(CK_STREAMELIST));
+
+    Card_Expr *pCard_Expr_src = _pCard_Expr(pCard_StreamElist_src->pGet(i_Col));
+
+    Card_Term *pCard_Term_src =
+            _pCard_Term(pCard_Expr_src->pFindSubCard(CK_TERM));
+
+    Stz *szColNm_resolved = pCard_Term_src->szTerm();
+
+    if (szColNm_resolved->bSame(")"_Stz)) {
+      pReg_Stream->vDump(0,"pReg_Stream"_Stz);
+      pCard_Term->vDump(0,"pCard_Term"_Stz);
+      vTrace("Resolved To: %s\n"_Stz,szColNm_resolved);
+      vDebugPoint();
+    }
+
     pCard_Term->vTerm(szColNm_resolved);
 
     return;
@@ -563,7 +633,7 @@ void Board::vResolveTerm(Card_Term* pCard_Term)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Index* pIndex = this->pIndex();
+  Index* pIndex = this->m_pCard_SubSet->pIndex();
   if (pIndex && pCard_Term->bIsOrdinalIndexTerm()) {
     
     i8 i_IdxOrd = pCard_Term->iOrdinalIndexColNo();
@@ -588,11 +658,11 @@ void Board::vResolveTerm(Card_Term* pCard_Term)
 /*----------------------------------------------------------------------------*/
 bool Board::bAdd_CandIndexes(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
  
   Card_Scan* pReg_Scan = _pCard_Scan(m_pCardRegs->pCardReg(CK_SCAN));
 
-  Table* pTable = this->pTable();
+  Table* pTable = this->m_pCard_SubSet->pTable();
 
   IdxVec* pIdxVec = pTable->pIdxVec();
   if (! pIdxVec) {
@@ -606,8 +676,8 @@ bool Board::bAdd_CandIndexes(void)
     return false;
   }
   
-  i8 i_Filter = i_Find(pReg_Scan) + 1;
-  Card_Filter* pCard_Filter = _pCard_Filter(pGet(i_Filter));
+  i8 i_Filter = m_pCard_SubSet->i_Find(pReg_Scan) + 1;
+  Card_Filter* pCard_Filter = _pCard_Filter(m_pCard_SubSet->pGet(i_Filter));
 
   for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
     Index* pIndex = pIdxVec->pGet(i_Index);
@@ -616,8 +686,8 @@ bool Board::bAdd_CandIndexes(void)
     Card_CandIndex* pCard_CandIndex = new Card_CandIndex;
     Card_Index* pCard_Index = new Card_Index(pIndex);
     pCard_CandIndex->vAppend(pCard_Index);
-    
-    vInsertAfter(pCard_CandIndex,pCard_Filter);
+
+    m_pCard_SubSet->vInsertAfter(pCard_CandIndex,pCard_Filter);
   }
 
   return true;
@@ -628,7 +698,7 @@ bool Board::bAdd_CandIndexes(void)
 /*----------------------------------------------------------------------------*/
 void Board::vAdd_IndexScan(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
   //m_pFilter->vDump();
 
@@ -639,7 +709,7 @@ void Board::vAdd_IndexScan(void)
   Card_PredCmp* pReg_lbound = m_pCardRegs->pPredCmp_lbound();
   Card_PredCmp* pReg_ubound = m_pCardRegs->pPredCmp_ubound();
   
-  Index* pIndex = this->pIndex();
+  Index* pIndex = this->m_pCard_SubSet->pIndex();
   Card_Index* pCard_Index = new Card_Index(pIndex);
   pCard_IndexScan->vAppend(pCard_Index);
 
@@ -714,7 +784,7 @@ void Board::vAdd_IndexScan(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
-  vInsertBefore(pCard_IndexScan,pReg_Scan);
+  m_pCard_SubSet->vInsertBefore(pCard_IndexScan,pReg_Scan);
   
   m_pCardRegs->vCardReg(CK_INDEXSCAN,pCard_IndexScan);
 
@@ -725,14 +795,14 @@ void Board::vAdd_IndexScan(void)
 /*----------------------------------------------------------------------------*/
 void Board::vCull_Filter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
   Card_Filter* pReg_Filter = _pCard_Filter(m_pCardRegs->pCardReg(CK_FILTER));
 
   if (! pReg_Filter->bCull())
     return;
-  
-  vRemove(pReg_Filter);
+
+  m_pCard_SubSet->vRemove(pReg_Filter);
   
   delete pReg_Filter;
 
@@ -745,9 +815,9 @@ void Board::vCull_Filter(void)
 /*----------------------------------------------------------------------------*/
 void Board::vCut_CandidateIndexes(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  vRemoveSubCards(CK_CANDINDEX);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  m_pCard_SubSet->vRemoveSubCards(CK_CANDINDEX);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -755,7 +825,7 @@ void Board::vCut_CandidateIndexes(void)
 /*----------------------------------------------------------------------------*/
 void Board::vCut_PredCmps(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
   Card_Filter* pReg_Filter = _pCard_Filter(m_pCardRegs->pCardReg(CK_FILTER));
 
@@ -782,12 +852,12 @@ void Board::vCut_PredCmps(void)
 /*----------------------------------------------------------------------------*/
 void Board::vCut_Scan(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
   Card_Scan* pReg_Scan = _pCard_Scan(m_pCardRegs->pCardReg(CK_SCAN));
 
 
-  vRemove(pReg_Scan);
+  m_pCard_SubSet->vRemove(pReg_Scan);
   
   m_pCardRegs->vCardReg(CK_SCAN,nullptr);
   delete pReg_Scan;
@@ -798,7 +868,7 @@ void Board::vCut_Scan(void)
 /*----------------------------------------------------------------------------*/
 bool Board::bFind_Scan_AggGby(bool bMark)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
   return false;
 }
@@ -808,7 +878,7 @@ bool Board::bFind_Scan_AggGby(bool bMark)
 /*----------------------------------------------------------------------------*/
 bool Board::bFind_Scan_Filter(bool bMark)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
   m_pCardRegs->vCardReg(CK_SCAN,nullptr);
 
@@ -826,7 +896,7 @@ bool Board::bFind_Scan_Filter(bool bMark)
       //vReg_Scan(_pCard_Scan(pTestScan));
       m_pCardRegs->vCardReg(CK_SCAN,pTestScan);
     Card_Table* pCard_Table = _pCard_Table(pTestScan->pFindSubCard(CK_TABLE));
-    vTable(pCard_Table->pTable());
+    m_pCard_SubSet->vTable(pCard_Table->pTable());
     
     if (bMark)
       //vReg_Filter(_pCard_Filter(pTestFilter));
@@ -843,7 +913,7 @@ bool Board::bFind_Scan_Filter(bool bMark)
 /*----------------------------------------------------------------------------*/
 void Board::vMark_PredCmps(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
   Card_Filter* pReg_Filter = _pCard_Filter(m_pCardRegs->pCardReg(CK_FILTER));
 
@@ -852,7 +922,7 @@ void Board::vMark_PredCmps(void)
 
   i8 iRank = pCard_CandIndex->iRank();
  
-  Index* pIndex = this->pIndex();
+  Index* pIndex = this->m_pCard_SubSet->pIndex();
 
   switch (iRank) {
       
@@ -919,7 +989,7 @@ void Board::vMark_PredCmps(void)
 /*----------------------------------------------------------------------------*/
 void Board::vOrder_ProjectiveStreamDefs(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
   Card_IndexScan* pReg_IndexScan
     = _pCard_IndexScan(m_pCardRegs->pCardReg(CK_INDEXSCAN));
@@ -958,7 +1028,7 @@ void Board::vOrder_ProjectiveStreamDefs(void)
 /*----------------------------------------------------------------------------*/
 bool Board::bPick_CandidateIndex(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
   i8 iBestRank = C_UNKNOWN;
   Card_CandIndex* pCard_CandIndex = nullptr;
@@ -986,7 +1056,7 @@ bool Board::bPick_CandidateIndex(void)
   
   //vReg_CandIndex(pCard_CandIndex);
   m_pCardRegs->vCardReg(CK_CANDINDEX,pCard_CandIndex);
-  vIndex(pCard_CandIndex->pFindSubCard(CK_INDEX)->pIndex());
+  m_pCard_SubSet->vIndex(pCard_CandIndex->pFindSubCard(CK_INDEX)->pIndex());
 
   return true;
 }
@@ -996,7 +1066,7 @@ bool Board::bPick_CandidateIndex(void)
 /*----------------------------------------------------------------------------*/
 void Board::vRank_CandidateIndexes(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
   //m_pFilter->vMark2('0');
                     
@@ -1017,7 +1087,7 @@ void Board::vRank_CandidateIndexes(void)
 /*----------------------------------------------------------------------------*/
 void Board::vReduce_Filter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
   Card_Filter* pReg_Filter = _pCard_Filter(m_pCardRegs->pCardReg(CK_FILTER));
 
@@ -1030,17 +1100,60 @@ void Board::vReduce_Filter(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+//void Board::vResolve_RootStreams(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+//
+//  i8 nMainCards = this->nMainCards();
+//  for (i8 i_MainCard = 0; i_MainCard < nMainCards; i_MainCard++) {
+//    Card* pMainCard = pGetMainCard(i_MainCard);
+//
+//    Card* pCard_Table = _pCard_Table(pMainCard->pFindSubCard(CK_TABLE));
+//    if (! pCard_Table)
+//      continue;
+//
+//    StreamDef* pStreamDef = pCard_Table->pTable()->pStreamDef();
+//    Card_StreamElist* pCard_StreamElist = new Card_StreamElist(pStreamDef);
+//
+//    Card_Stream* pCard_Stream = new Card_Stream;
+//    pCard_Stream->vAppend(pCard_StreamElist);
+//
+//    pMainCard->vAppend(pCard_Stream);
+//  }
+//}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+//void Board::vResolve_Symbols(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+//
+//  i8 nMainCards = this->nMainCards();
+//  for (i8 i_MainCard = 0; i_MainCard < nMainCards; i_MainCard++) {
+//    Card* pMainCard = pGetMainCard(i_MainCard);
+//
+//    vResolveSymbolTerms(pMainCard);
+//  }
+//
+//}
+/*----------------------------------------------------------------------------*/
 void Board::vResolve_Symbols(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
   i8 nMainCards = this->nMainCards();
   for (i8 i_MainCard = 0; i_MainCard < nMainCards; i_MainCard++) {
     Card* pMainCard = pGetMainCard(i_MainCard);
-    
+
+    vTrace("Resolving MainCard %lld\n"_Stz,i_MainCard);
     vResolveAll(pMainCard);
+
+    //vPrintBoard();
+
+    //pMainCard->vRenumberSubCards(nullptr);
   }
-  
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1051,7 +1164,7 @@ void Board::vResolve_Symbols(void)
 /*----------------------------------------------------------------------------*/
 bool Board::bMay_AggGby_Sort_to_AggGby(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
 #ifdef RULE_NO
   #undef RULE_NO
@@ -1070,7 +1183,7 @@ bool Board::bMay_AggGby_Sort_to_AggGby(void)
 /*----------------------------------------------------------------------------*/
 bool Board::bMay_ordStream_AggGby_to_OrdAgg(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
 #ifdef RULE_NO
   #undef RULE_NO
@@ -1089,7 +1202,7 @@ bool Board::bMay_ordStream_AggGby_to_OrdAgg(void)
 /*----------------------------------------------------------------------------*/
 bool Board::bMay_OrdAgg_Sort_to_OrdAgg(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
 #ifdef RULE_NO
   #undef RULE_NO
@@ -1108,7 +1221,7 @@ bool Board::bMay_OrdAgg_Sort_to_OrdAgg(void)
 /*----------------------------------------------------------------------------*/
 bool Board::bMay_Scan_AggGby_to_IndexScan(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
 #ifdef RULE_NO
   #undef RULE_NO
@@ -1127,7 +1240,7 @@ bool Board::bMay_Scan_AggGby_to_IndexScan(void)
 /*----------------------------------------------------------------------------*/
 bool Board::bMay_Scan_Filter_to_IndexScan(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
 #ifdef RULE_NO
   #undef RULE_NO
@@ -1146,7 +1259,7 @@ bool Board::bMay_Scan_Filter_to_IndexScan(void)
 /*----------------------------------------------------------------------------*/
 bool Board::bMay_Scan_Sort_to_IndexScan(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
 #ifdef RULE_NO
   #undef RULE_NO
@@ -1168,7 +1281,7 @@ bool Board::bMay_Scan_Sort_to_IndexScan(void)
 /*----------------------------------------------------------------------------*/
 bool Board::bRule_AggGby_Sort_to_AggGby(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
 #ifdef RULE_NO
   #undef RULE_NO
@@ -1184,7 +1297,7 @@ bool Board::bRule_AggGby_Sort_to_AggGby(void)
 /*----------------------------------------------------------------------------*/
 bool Board::bRule_ordStream_AggGby_to_OrdAgg(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
 #ifdef RULE_NO
   #undef RULE_NO
@@ -1200,7 +1313,7 @@ bool Board::bRule_ordStream_AggGby_to_OrdAgg(void)
 /*----------------------------------------------------------------------------*/
 bool Board::bRule_OrdAgg_Sort_to_OrdAgg(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
 #ifdef RULE_NO
   #undef RULE_NO
@@ -1216,7 +1329,7 @@ bool Board::bRule_OrdAgg_Sort_to_OrdAgg(void)
 /*----------------------------------------------------------------------------*/
 bool Board::bRule_Scan_AggGby_to_IndexScan(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
 #ifdef RULE_NO
   #undef RULE_NO
@@ -1232,7 +1345,7 @@ bool Board::bRule_Scan_AggGby_to_IndexScan(void)
 /*----------------------------------------------------------------------------*/
 bool Board::bRule_Scan_Filter_to_IndexScan(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
 #ifdef RULE_NO
   #undef RULE_NO
@@ -1297,7 +1410,7 @@ bool Board::bRule_Scan_Filter_to_IndexScan(void)
 /*----------------------------------------------------------------------------*/
 bool Board::bRule_Scan_Sort_to_IndexScan(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
 #ifdef RULE_NO
   #undef RULE_NO

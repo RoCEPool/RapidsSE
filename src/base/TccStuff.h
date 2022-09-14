@@ -509,6 +509,7 @@ void vEntWrk_entKind(void* pEntWrk, i8 bPayLoad, i8 eKeyKind);
 void vEntWrk_payloadCreate(void* pEntWrk, i8 nPayloadBytes);
 void vEntWrk_print(void* pEntWrk, void* pIndexDef);
 
+void* aIndexTree_allotPayStr(void* pIndexTree, char* sStr);
 void* aIndexTree_begin(void* pIndexTree, void** ppEntBuffer);
 void* aIndexTree_findEntry(void* aIndexTree, void* aKey);
 void* aIndexTree_insertEnt(void* aIndexDef, void* aEnt, i8* piErrorCode);

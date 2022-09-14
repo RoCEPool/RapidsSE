@@ -359,16 +359,20 @@ void Step::vFileReadText(void)
   
   File* pFile = _pFile(m_pDataStack->pPopPtr(__func__));
   ASSERT(pFile);
-  
-  Text* pText = _pText(m_pDataStack->pPopPtr(__func__));
-  
-  Stz* szDst = pText->szGet();
-  
-  i8 nReadBytes = pFile->nReadBytes(szDst,C_TEXT_LARGE);
 
-  szDst->azChar()[nReadBytes] = '\0';
-  
-  m_pDataStack->vPushInt(nReadBytes);
+  s48K sText;
+
+  i8 nBytesRead = pFile->nReadBytes(sText.szStz(),C_TEXT_LARGE);
+
+  sText.azChar()[nBytesRead] = '\0';
+
+  if (nBytesRead) {
+    m_pDataStack->vPushStr(sText);
+    m_pDataStack->vPushInt(true);
+  }
+  else {
+    m_pDataStack->vPushInt(false);
+  }
 
   EXIT();
 }

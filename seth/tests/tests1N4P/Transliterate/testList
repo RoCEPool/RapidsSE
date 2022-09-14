@@ -17,4 +17,4 @@ query6.test
 selectTypes.test
 sum.test
 top.test
-union.test
+//union.test

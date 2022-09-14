@@ -1,0 +1,14 @@
+pipeline Join_LR
+begin
+    stage stageA on origin :
+      start | pulse once | next
+
+    stage stageB on all partitions :
+      scan L
+      | indexJoin R Ri "BOUND $I1 $L1 =="
+      | combined 0
+      | next
+
+    stage stageC on origin :
+      output | sink | first
+end ;

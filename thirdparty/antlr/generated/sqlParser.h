@@ -1945,8 +1945,8 @@ public:
     ExprContext* expr(size_t i);
     antlr4::tree::TerminalNode *NOT();
     antlr4::tree::TerminalNode *AND();
-    antlr4::tree::TerminalNode *OR();
     antlr4::tree::TerminalNode *XOR();
+    antlr4::tree::TerminalNode *OR();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };

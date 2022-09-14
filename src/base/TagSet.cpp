@@ -595,6 +595,21 @@ bool TagSet::bIsInteger(i8 i_Tag)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is token kind a pointer to object?                                         */
+/*----------------------------------------------------------------------------*/
+bool TagSet::bIsObject(i8 i_Tag)
+{
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+
+  eTN eToken = m_xaTag[i_Tag].m_eToken;
+
+  if (TN_OBJECT == eToken)
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is token kind a string?                                                    */
 /*----------------------------------------------------------------------------*/
 bool TagSet::bIsString(i8 i_Tag)
@@ -937,7 +952,7 @@ bool TagSet::bSame(TagSet* pTagSet_arg)
 /*----------------------------------------------------------------------------*/
 /* to string                                                                  */
 /*----------------------------------------------------------------------------*/
-void TagSet::vToString(Stz* szStz)
+void TagSet::vToString(Stz* szStz, bool bValueOnly)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
@@ -947,24 +962,37 @@ void TagSet::vToString(Stz* szStz)
   }
   
   for (i8 i_Tag = 0; i_Tag < m_nItems; i_Tag++) {
-    
-    if (i_Tag)
-      szStz->vConcat(", "_Stz);
-    
-    szStz->vConcat(szName(i_Tag));
-    szStz->vConcat("="_Stz);
-    
+
+    if (bValueOnly) {
+      if (i_Tag)
+        szStz->vConcat(" "_Stz);
+    }
+    else {
+      if (i_Tag)
+        szStz->vConcat(", "_Stz);
+
+      szStz->vConcat(szName(i_Tag));
+      szStz->vConcat("="_Stz);
+    }
+
     if (bIsString(i_Tag)) {
       szStz->vConcat(m_xyStrings.szGet(m_xaTag[i_Tag].m_i_Value));
       continue;
     }
     
-    ASSERT(bIsInteger(i_Tag));
+    //ASSERT(bIsInteger(i_Tag));
 
     s32 sValue;
-    
+
+    if (bIsObject(i_Tag)) {
+      sValue.vSprint( "%p"_Stz, pValue(i_Tag));
+      szStz->vConcat(sValue);
+      continue;
+    }
+
     if (bIsDecodable(i_Tag))
       sValue = szValueDecoded(i_Tag);
+
     else
       sValue.vSprint("%lld"_Stz,iValue(i_Tag));
     szStz->vConcat(sValue);
@@ -981,10 +1009,17 @@ i8 TagSet::iValue(i8 i_Tag)
   //Stz* szValue = m_xyStrings.szGet(m_xaTag[i_Tag].m_i_Value);
   //i8 iValue = szValue->iToI8();
   
-  ASSERT(TN_INTEGER == m_xaTag[i_Tag].m_eToken);
-  
-  i8 iValue = m_xaTag[i_Tag].m_i_Value;
-  
+  //ASSERT(TN_INTEGER == m_xaTag[i_Tag].m_eToken);
+
+  i8 iValue = C_UNKNOWN;
+
+  if (TN_INTEGER == m_xaTag[i_Tag].m_eToken) {
+    iValue = m_xaTag[i_Tag].m_i_Value;
+  }
+  else {
+    Stz* szValue = m_xyStrings.szGet(m_xaTag[i_Tag].m_i_Value);
+    iValue = szValue->iToI8();
+  }
   return iValue;
 }
 

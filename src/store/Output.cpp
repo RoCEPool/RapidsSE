@@ -454,6 +454,10 @@ bool Output::bProcessOperand(Operand* pOperand)
           vTrace("RowsProcessed: %lld\n"_Stz, *m_ixRowsProcessed);
           vTrace("\nerror: low memory\n"_Stz);
           m_bHasError = true;
+
+          m_ixRowsProcessed = 0;
+          m_ixRowsInvalid   = 0;
+          m_ixRowsSkipped   = 0;
         }
       } else if (pMarker->eOpMarker() == OM_CHILDEXIT) {
         m_bToExit = true;
