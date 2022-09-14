@@ -463,6 +463,28 @@ void Card::vAddProperty(Stz* szName, Stz* szValue)
 }
 
 /*----------------------------------------------------------------------------*/
+/* duplicate the sub cards                                                    */
+/*----------------------------------------------------------------------------*/
+void Card::vAppendDupSubCards(Card* pCard_SubSet)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  i8 nSubCards = pCard_SubSet->nSubCards();
+  for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
+    Card* pSubCard = pCard_SubSet->pGetSubCard(i_SubCard);
+
+    Card* pSubCard_dup = pSubCard->pDupCardAndSubCards();
+
+    if (pSubCard->m_pProperties) {
+      pSubCard_dup->vPropertiesEnsure();
+      pSubCard_dup->pProperties()->vCopy(pSubCard->m_pProperties);
+    }
+
+    this->vAppend(pSubCard_dup);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* get card kind                                                              */
 /*----------------------------------------------------------------------------*/
 eCK Card::eCard(void)
@@ -562,7 +584,7 @@ void Card::vDump(i8 iDepth, Stz* szTitle)
 
   vTrace("%s%s { %s }\n"_Stz
          ,Stz::szTab(iDepth)
-         ,m_caRef
+         ,m_caRef[0] ? m_caRef : (char*)aCK[m_eCard]
          ,sProperties.szStz()
          );
 

@@ -84,6 +84,7 @@ namespace STORE
     void vAddProperty(Stz* szName, i8 iValue);
     void vAddProperty(Stz* szName, Object* pValue);
     void vAddProperty(Stz* szName, Stz* szValue);
+    void vAppendDupSubCards(Card* pCard_SubSet);
 
     eCK  eCard(void);
     eGC  eCatg(void);

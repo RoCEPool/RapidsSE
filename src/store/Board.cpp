@@ -315,6 +315,25 @@ L_Exit:
 }
 
 /*----------------------------------------------------------------------------*/
+/* get prior subcard                                                          */
+/*----------------------------------------------------------------------------*/
+Card* Board::pPriorSubCard(Card*& rpMainCard, eCK eSubCard, i8 i_PriorToMain)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  for (i8 i_MainCard = i_PriorToMain - 1; i_MainCard >= 0; i_MainCard--) {
+    rpMainCard = pGetMainCard(i_MainCard);
+
+    Card* pSubCard;
+    if (pSubCard = rpMainCard->pFindSubCard(eSubCard))
+      return pSubCard;
+  }
+
+  rpMainCard = nullptr;
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get query name                                                             */
 /*----------------------------------------------------------------------------*/
 Stz* Board::szQueryNm(void)
@@ -560,6 +579,46 @@ void Board::vResolveRecursive(Card* pAnyCard) // recursive
     if (pCard_As && pCard_Type) {
       pCard_Expr->vRemove(pCard_As);
       pCard_Expr->vInsertAfter(pCard_As,pCard_Type);
+    }
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  if (CK_ABSJOIN == eCard) {
+    Card_AbsJoin* pCard_AbsJoin = _pCard_AbsJoin(pAnyCard);
+
+    Card* pPriorMain;
+    Card_Stream* pCard_StreamB = _pCard_Stream(pPriorSubCard(pPriorMain,
+                                                             CK_STREAM,
+                                                             pCard_AbsJoin->iCardNo()));
+    if (pCard_StreamB) {
+      Card_Stream* pCard_StreamA = _pCard_Stream(pPriorSubCard(pPriorMain,
+                                                               CK_STREAM,
+                                                               pPriorMain->iCardNo()));
+
+      if (pCard_StreamA) {
+        Card_StreamColList* pCard_StreamColListA =
+                _pCard_StreamColList(pCard_StreamA->pFindSubCard(CK_STREAMCOLLIST));
+        Card_StreamColList* pCard_StreamColListB =
+                _pCard_StreamColList(pCard_StreamB->pFindSubCard(CK_STREAMCOLLIST));
+
+        Card_Stream *pCard_Stream = new Card_Stream;
+        pAnyCard->vAppend(pCard_Stream);
+        m_pCardRegs->vCardReg(CK_STREAM, pCard_Stream);
+
+        Card_StreamColList* pCard_StreamColList = new Card_StreamColList;
+        pCard_Stream->vAppend(pCard_StreamColList);
+
+        //pCard_StreamColList->vAppend(pCard_StreamColListA->pDupSubCards());
+        //pCard_StreamColList->vAppend(pCard_StreamColListB->pDupSubCards());
+
+        pCard_StreamColList->vAppendDupSubCards(pCard_StreamColListA);
+        pCard_StreamColList->vAppendDupSubCards(pCard_StreamColListB);
+
+        pCard_StreamColListA->vDump();
+        pCard_StreamColListB->vDump();
+        pCard_Stream->vDump();
+        vDebugPoint();
+      }
     }
   }
 

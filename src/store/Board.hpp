@@ -57,6 +57,7 @@ namespace STORE
     void vPinCards(Ribbon* pRibbon, i8 i_Board);
   
     void vPrintBoard(Stz* szCue=nullptr);
+    Card* pPriorSubCard(Card*& rpMainCard, eCK eSubCard, i8 i_PriorToMain);
 
     Stz* szQueryNm(void);
     void vQueryNm(Stz* szQueryNm);
