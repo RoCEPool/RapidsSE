@@ -38,7 +38,15 @@ begin
 
   stage S01 on all partitions :
        scan      L
-     | indexJoin R Ri0 " BOUND $I1 $L1 == "
+     | next
+
+  stage S02 on all partitions :
+       indexJoin R Ri0 " BOUND $I1 $L1 == "
+     | combined  0
+     | next
+
+  stage S03 on all partitions :
+       indexJoin R Ri0 " BOUND $I1 $L1 == "
      | combined  0
      | next
 

@@ -17,7 +17,6 @@ load lineItem "../tpch/sf_0001/lineItem.csv" ;
 
 /*
 /jobTags
-*/
 /transliterated
 /optimise
 /interactive
@@ -27,9 +26,36 @@ select *
   from orders , lineItem
  where o_orderKey = l_orderKey
 ;
+*/
 
-//drop table orders;
-//drop table lineItem;
+pipeline unamed
+  tag <optimised> = 1 endTag
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+       scan      orders
+     | next
+
+  stage S02 on all partitions :
+       indexJoin lineitem L_idx0 " BOUND $I1 $L1 == "
+     | combined  0
+     | next
+
+  stage S04 on origin :
+      output
+    | sink
+    | first
+
+end ;
+
+
+drop table orders;
+drop table lineItem;
 
 memoryLeaks;
 
