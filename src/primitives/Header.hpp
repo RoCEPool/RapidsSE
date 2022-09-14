@@ -28,7 +28,7 @@ namespace PRIMITIVES
     struct {
       u2 m_bWasReceived:1; // object was received
       u2 m_bPostRecvRun:1; // post receive function run
-      u2 m_bPersistent:1; // object is persistent
+      u2 m_bPersistentFlag:1; // object is persistent
       u2 m__spareBytes:13; // spare bits
     };
 
@@ -177,7 +177,7 @@ namespace PRIMITIVES
   /*--------------------------------------------------------------------------*/
   inline bool bGetPersistent(void)
   {
-    return m_bPersistent;
+    return m_bPersistentFlag;
   }
 
   /*--------------------------------------------------------------------------*/
@@ -185,7 +185,7 @@ namespace PRIMITIVES
   /*--------------------------------------------------------------------------*/
   inline void vSetPersistent(bool bPersistent)
   {
-    m_bPersistent = bPersistent;
+    m_bPersistentFlag = bPersistent;
   }
   
 

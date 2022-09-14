@@ -244,6 +244,17 @@ bool Procedure::bTranslateToPipeline(String* pToPipelineStmt,
   pPrdTxtVec->vInsertToken(i_InsTkn++,"endTag"_Stz,TN_NAME);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // add the <persistentTx> tag into the modified text vector
+
+  if (pWrdTagSet->bHasName(C_TAG_PERSISTENT)) {
+    pPrdTxtVec->vInsertToken(i_InsTkn++,"tag"_Stz,TN_NAME);
+    pPrdTxtVec->vInsertToken(i_InsTkn++,C_TAG_PERSISTENT,TN_NAME);
+    pPrdTxtVec->vInsertToken(i_InsTkn++,"="_Stz,TN_NAME);
+    pPrdTxtVec->vInsertToken(i_InsTkn++,"1"_Stz,TN_NAME);
+    pPrdTxtVec->vInsertToken(i_InsTkn++,"endTag"_Stz,TN_NAME);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add the <lowMemory> tag into the modified text vector
   
   if (pWrdTagSet->bHasName(C_TAG_LOWMEMORY)) {

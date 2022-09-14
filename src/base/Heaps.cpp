@@ -4,6 +4,7 @@
 
 #include "BASE.h"
 #include "TagConstants.h"
+#include "Job.hpp"
 
 extern SizeHeap  gxaSizeHeap[];
 
@@ -83,9 +84,22 @@ Object* Heaps::pAllocate(eCN eAllocClass, bool bPersistent)
   Heaps* pHeaps = AM::pHeaps();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+
   eHT eHeap = gxaSizeHeap[eAllocClass].m_eWhichHeap;
-  
+
+  // The Job persistent flag is set via pipeline tag
+  // This causes all allocs as part of this job to use the persistent heap
+  Job* pJob = MY::pJob();
+  if (pJob && pJob->bPersistent()) {
+    switch(eHeap) {
+      case HT_T_TINY:   eHeap = HT_P_TINY;   break;
+      case HT_T_SMALL:  eHeap = HT_P_SMALL;  break;
+      case HT_T_MEDIUM: eHeap = HT_P_MEDIUM; break;
+      case HT_T_LARGE:  eHeap = HT_P_LARGE;  break;
+      default: break;
+    }
+  }
+
   Heap* pHeap = pHeaps->pGetHeap(eHeap);
   
 //  if (bPersistent) {
@@ -142,7 +156,7 @@ void Heaps::vDumpHeaps(void)
 void Heaps::vFree(Object* pObject, bool bPersistent)
 {  
   UNUSED(bPersistent);
-  
+
   eCN eFreeClass = pObject->eGetClassNo();
 
   Heaps* pHeaps = AM::pHeaps();
@@ -249,6 +263,17 @@ void Heaps::vFree(Object* pObject, bool bPersistent)
            ,aCN[eFreeClass]
            );
     RASSERT(eHeap > HT_INVALID && eHeap < HT_ENUMS);
+  }
+
+  // Note: Virtual Heap is ignored for now, even if the Object persistent bit is set.
+  if (pObject->bGetPersistent()) {
+    switch(eHeap) {
+      case HT_T_TINY:   eHeap = HT_P_TINY;   break;
+      case HT_T_SMALL:  eHeap = HT_P_SMALL;  break;
+      case HT_T_MEDIUM: eHeap = HT_P_MEDIUM; break;
+      case HT_T_LARGE:  eHeap = HT_P_LARGE;  break;
+      default: break;
+    }
   }
 
   Heap* pHeap = pHeaps->pGetHeap(eHeap);
