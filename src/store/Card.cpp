@@ -302,6 +302,7 @@ eGC Card::eToECatg(eCK eCard)
   
   switch (eCard) {
 
+    case CK_ABSJOIN:    return GC_MAIN;
     case CK_AGGELIST:                    return GC_SUB;
     case CK_AGGLEVEL:                    return GC_SUB;
     case CK_AGGREG:     return GC_MAIN;
@@ -2326,6 +2327,7 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
   
   switch (eCard) {
 
+    case CK_ABSJOIN:                    vPrintProperties(pRibbon,iDepth); break;
     case CK_AGGELIST:                   vPrintProperties(pRibbon,iDepth); break;
     case CK_AGGLEVEL:                   vPrintProperties(pRibbon,iDepth); break;
     case CK_AGGREG:                     vPrintProperties(pRibbon,iDepth); break;

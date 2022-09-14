@@ -10,6 +10,7 @@
 #include "Card.hpp"
 #include "CardCtl.hpp"
 
+#include "Card_AbsJoin.hpp"
 #include "Card_AggElist.hpp"
 #include "Card_AggLevel.hpp"
 #include "Card_Aggreg.hpp"
@@ -123,6 +124,7 @@ namespace STORE
     void vStage(i8 i_StageSpec);
     void vOp(i8 i_OpSpec);
 
+    Card* pCard_AbsJoin  (TagSet* pArgTags);
     Card* pCard_Aggreg   (TagSet* pArgTags);
     Card* pCard_Combined (TagSet* pArgTags);
     Card* pCard_Consume  (TagSet* pArgTags);
@@ -150,7 +152,7 @@ namespace STORE
     Card_Expr*      pExpr_b     (Card_RpnTerms* pCard_RpnTerms);
     Card_Expr*      pExpr_c     (Card_RpnTerms* pCard_RpnTerms);
     Card_ExprBool*  pExprBool   (Card_RpnTerms* pCard_RpnTerms);
-    Card_Calc*  pExprCalc   (Card_RpnTerms* pCard_RpnTerms);
+    Card_Calc*      pExprCalc   (Card_RpnTerms* pCard_RpnTerms);
   
     void vPredOr  (Card_ExprBool* pCard_ExprBool,
                    Card_RpnTerms* pCard_RpnTerms);

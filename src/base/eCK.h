@@ -7,7 +7,7 @@ enum eCK // card kind
 {
   /* */ CK_NONE=0,
 
-  /* */ CK_ABSTRACTJOIN,
+  /* */ CK_ABSJOIN,
   /* */ CK_AGGELIST,
   /* */ CK_AGGLEVEL,
   /* */ CK_AGGREG,
@@ -92,7 +92,7 @@ static Stz* aCK[]
 {
   /* */ "NONE"_Stz,
 
-  /* */ "CK_ABSTRACTJOIN"_Stz, // CK_ABSTRACTJOIN
+  /* */ "CK_ABSJOIN"_Stz,      // CK_ABSJOIN
   /* */ "CK_AGGELIST"_Stz,     // CK_AGGELIST
   /* */ "CK_AGGLEVEL"_Stz,     // CK_AGGLEVEL
   /* */ "CK_AGGREG"_Stz,       // CK_AGGREG
@@ -177,7 +177,7 @@ static Stz* aCK_short[]
 {
   /* */ "NONE"_Stz,
 
-  /* */ "abstractJoin"_Stz,    // CK_ABSTRACTJOIN
+  /* */ "absJoin"_Stz,         // CK_ABSJOIN
   /* */ "aggElist"_Stz,        // CK_AGGELIST
   /* */ "aggLevel"_Stz,        // CK_AGGLEVEL
   /* */ "aggreg"_Stz,          // CK_AGGREG
@@ -262,7 +262,7 @@ static Stz* aCK_op[]
 {
   /* */ "NONE"_Stz,
 
-  /* */ "abstractJoin "_Stz,   // CK_ABSTRACTJOIN
+  /* */ "abstractJoin "_Stz,   // CK_ABSJOIN
   /* */ "(none)"_Stz,          // CK_AGGELIST
   /* */ "(none)"_Stz,          // CK_AGGLEVEL
   /* */ "aggreg   "_Stz,       // CK_AGGREG

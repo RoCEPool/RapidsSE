@@ -159,25 +159,26 @@ void Dissect::vOp(i8 i_OpSpec)
   //vTrace("Op %s\n"_Stz,szOpNm);
   //pArgTags->vDumpSet(true);
 
-       if (szOpNm->bSame("aggreg"_Stz))    pCard = pCard_Aggreg   (pArgTags);
-  else if (szOpNm->bSame("combined"_Stz))  pCard = pCard_Combined (pArgTags);
-  else if (szOpNm->bSame("consumeOp"_Stz)) pCard = pCard_Consume  (pArgTags);
-  else if (szOpNm->bSame("debug"_Stz))     pCard = pCard_Debug    (pArgTags);
-  else if (szOpNm->bSame("filter"_Stz))    pCard = pCard_Filter   (pArgTags);
-  else if (szOpNm->bSame("hash"_Stz))      pCard = pCard_Hash     (pArgTags);
-  else if (szOpNm->bSame("indexJoin"_Stz)) pCard = pCard_IndexJoin(pArgTags);
-  else if (szOpNm->bSame("indexScan"_Stz)) pCard = pCard_IndexScan(pArgTags);
-  else if (szOpNm->bSame("limit"_Stz))     pCard = pCard_Limit    (pArgTags);
-  else if (szOpNm->bSame("ordagg"_Stz))    pCard = pCard_OrdAgg   (pArgTags);
-  else if (szOpNm->bSame("orderBy"_Stz))   pCard = pCard_Sort     (pArgTags);
-  else if (szOpNm->bSame("output"_Stz))    pCard = pCard_Output   (pArgTags);
-  else if (szOpNm->bSame("pulse"_Stz))     pCard = pCard_Pulse    (pArgTags);
-  else if (szOpNm->bSame("project"_Stz))   pCard = pCard_Project  (pArgTags);
-  else if (szOpNm->bSame("scan"_Stz))      pCard = pCard_Scan     (pArgTags);
-  else if (szOpNm->bSame("sendSE"_Stz))    pCard = pCard_Send     (pArgTags);
-  else if (szOpNm->bSame("sink"_Stz))      pCard = pCard_Sink     (pArgTags);
-  else if (szOpNm->bSame("sort"_Stz))      pCard = pCard_Sort     (pArgTags);
-  else if (szOpNm->bSame("start"_Stz))     pCard = pCard_Start    (pArgTags);
+       if (szOpNm->bSame("abstractJoin"_Stz)) pCard = pCard_AbsJoin  (pArgTags);
+  else if (szOpNm->bSame("aggreg"_Stz))       pCard = pCard_Aggreg   (pArgTags);
+  else if (szOpNm->bSame("combined"_Stz))     pCard = pCard_Combined (pArgTags);
+  else if (szOpNm->bSame("consumeOp"_Stz))    pCard = pCard_Consume  (pArgTags);
+  else if (szOpNm->bSame("debug"_Stz))        pCard = pCard_Debug    (pArgTags);
+  else if (szOpNm->bSame("filter"_Stz))       pCard = pCard_Filter   (pArgTags);
+  else if (szOpNm->bSame("hash"_Stz))         pCard = pCard_Hash     (pArgTags);
+  else if (szOpNm->bSame("indexJoin"_Stz))    pCard = pCard_IndexJoin(pArgTags);
+  else if (szOpNm->bSame("indexScan"_Stz))    pCard = pCard_IndexScan(pArgTags);
+  else if (szOpNm->bSame("limit"_Stz))        pCard = pCard_Limit    (pArgTags);
+  else if (szOpNm->bSame("ordagg"_Stz))       pCard = pCard_OrdAgg   (pArgTags);
+  else if (szOpNm->bSame("orderBy"_Stz))      pCard = pCard_Sort     (pArgTags);
+  else if (szOpNm->bSame("output"_Stz))       pCard = pCard_Output   (pArgTags);
+  else if (szOpNm->bSame("pulse"_Stz))        pCard = pCard_Pulse    (pArgTags);
+  else if (szOpNm->bSame("project"_Stz))      pCard = pCard_Project  (pArgTags);
+  else if (szOpNm->bSame("scan"_Stz))         pCard = pCard_Scan     (pArgTags);
+  else if (szOpNm->bSame("sendSE"_Stz))       pCard = pCard_Send     (pArgTags);
+  else if (szOpNm->bSame("sink"_Stz))         pCard = pCard_Sink     (pArgTags);
+  else if (szOpNm->bSame("sort"_Stz))         pCard = pCard_Sort     (pArgTags);
+  else if (szOpNm->bSame("start"_Stz))        pCard = pCard_Start    (pArgTags);
   else {
     vTrace("Skipping OpSpec %s\n"_Stz,szOpNm);
     pCard = nullptr;
@@ -185,6 +186,25 @@ void Dissect::vOp(i8 i_OpSpec)
   
   if (pCard)
     m_pBoard->m_pCard_SubSet->vAppend(pCard);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dissect : abstractJoin <szRpnExpr>                                         */
+/*----------------------------------------------------------------------------*/
+Card* Dissect::pCard_AbsJoin(TagSet* pArgTags)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+
+  Card_RpnTerms* pCard_RpnTerms = pArgCheckLast(pArgTags,0);
+  Card_AbsJoin* pCard_AbsJoin = new Card_AbsJoin;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // expr : exression list
+
+  Card_Calc* pCard_ExprCalc = pExprCalc(pCard_RpnTerms);
+  pCard_AbsJoin->vAppend(pCard_ExprCalc);
+
+  return pCard_AbsJoin;
 }
 
 /*----------------------------------------------------------------------------*/

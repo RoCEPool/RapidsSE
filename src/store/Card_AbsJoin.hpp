@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_AbstractJoin.hpp -- Abstract Join                                     */
+/* Card_AbsJoin.hpp -- Abstract Join                                          */
 /*============================================================================*/
 #pragma once
 
@@ -9,18 +9,18 @@
 
 namespace STORE
 {
-  class Card_AbstractJoin : public Card_MAIN
+  class Card_AbsJoin : public Card_MAIN
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
 
-    Card_AbstractJoin(void);
-    ~Card_AbstractJoin(void) noexcept(false);
+    Card_AbsJoin(void);
+    ~Card_AbsJoin(void) noexcept(false);
   };
 
-  Card_AbstractJoin* _pCard_AbstractJoin(void* aAddr);
-  bool _bIsCard_AbstractJoin(void* aAddr);
+  Card_AbsJoin* _pCard_AbsJoin(void* aAddr);
+  bool _bIsCard_AbsJoin(void* aAddr);
 }
 
 /*============================================================================*/
