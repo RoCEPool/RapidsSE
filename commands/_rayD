@@ -13,9 +13,19 @@ load orders "../tpch/sf_0001/orders.csv" ;
 //select * from orders;
 
 load lineItem "../tpch/sf_0001/lineItem.csv" ;
-//select * from lineItem;
 
 /*
+/transliterated
+/optimise
+/interactive
+/weave
+/weaved
+select * from orders;
+*/
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
 /jobTags
 /transliterated
 /optimise
@@ -26,8 +36,9 @@ select *
   from orders , lineItem
  where o_orderKey = l_orderKey
 ;
-*/
 
+
+/*
 pipeline unamed
   tag <optimised> = 1 endTag
 begin
@@ -52,7 +63,7 @@ begin
     | first
 
 end ;
-
+*/
 
 drop table orders;
 drop table lineItem;

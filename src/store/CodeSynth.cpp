@@ -1800,6 +1800,11 @@ void CodeSynth::vGetValue(eDM eDatum, char* sValue, i8& iValue, d8& dValue) {
       iValue = snBcd.i(&sValue, AM::pFmt());
     }
       break;
+    case DM_BOL: {
+      SN_Bol snBol;
+      iValue = snBol.i(&sValue, AM::pFmt());
+    }
+      break;
     case DM_DTE: {
       SN_Dte snDate;
       iValue = snDate.i(&sValue, AM::pFmt());
@@ -3164,6 +3169,11 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
       continue;
     }
 
+    if (pTkn->bIsBoolean()) {
+      vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, eExprKind, DM_BOL);
+      continue;
+    }
+
     if (pTkn->bIsFloat()) {
       vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, eExprKind, DM_FLT);
       continue;
@@ -3969,6 +3979,11 @@ void CodeSynth::vPushLiteral(TypedStack* pExprStack, IntStack* pTypeStack, Token
   switch(eLiteral) {
     case DM_BCD:
       vGetValue(DM_BCD, pTkn->azChars(), iValue, dValue);
+      sOperation.vSprintCat("(%lld)"_Stz, iValue);
+      pExprStack->vPushStz(sOperation);
+      break;
+    case DM_BOL:
+      vGetValue(DM_BOL, pTkn->azChars(), iValue, dValue);
       sOperation.vSprintCat("(%lld)"_Stz, iValue);
       pExprStack->vPushStz(sOperation);
       break;

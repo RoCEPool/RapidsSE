@@ -100,20 +100,21 @@
     iArg1 = *(--paW);                                                      \
     fltArg1.m_iAsI8 = iArg1;                                               \
     if (iErrorCode != EC_NONE ||                                           \
-    iArg1 == C_DATUM_NULL) {                                               \
-    *paW++ = C_DATUM_NULL;                                                 \
+        iArg1 == C_DATUM_NULL) {                                           \
+      *paW++ = C_DATUM_NULL;                                               \
   }                                                                        \
   else {                                                                   \
-    if(fltArg1.m_iAsI8 > (i8)C_I8_MAX) {                                   \
+    if(fltArg1.m_dFlt > (i8)C_I8_MAX) {                                    \
       iErrorCode = EC_ARITHMETIC_OVERFLOW;                                 \
       *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
-    else if(fltArg1.m_iAsI8 < (i8) C_I8_MIN) {                             \
+    else if(fltArg1.m_dFlt < (i8) C_I8_MIN) {                              \
       iErrorCode = EC_ARITHMETIC_UNDERFLOW;                                \
       *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
-      *paW++ = (i8)fltArg1.m_dFlt;                                         \
+      *paW++ = (i8)( fltArg1.m_dFlt >= 0.0 ?                               \
+        (fltArg1.m_dFlt + 0.5) : (fltArg1.m_dFlt - 0.5) );                 \
     }                                                                      \
   }                                                                        \
 }
@@ -738,9 +739,9 @@
 
 // nothing to do
 // unk remains unk
-#define _UNK_TOANY(iErrorCode, szDstArea) \
-{                                         \
-                                          \
+#define _UNK_TOANY(iErrorCode)                                             \
+{                                                                          \
+                                                                           \
 }
 
 /*============================================================================*/

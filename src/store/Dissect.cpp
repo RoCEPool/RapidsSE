@@ -204,6 +204,8 @@ Card* Dissect::pCard_AbsJoin(TagSet* pArgTags)
   Card_Calc* pCard_ExprCalc = pExprCalc(pCard_RpnTerms);
   pCard_AbsJoin->vAppend(pCard_ExprCalc);
 
+  delete pCard_RpnTerms;
+
   return pCard_AbsJoin;
 }
 

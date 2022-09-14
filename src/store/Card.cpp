@@ -80,6 +80,7 @@ void CardSet::vRemoveSubCards(eCK eCard)
 /* Card.cpp -- Abstract Card                                                  */
 /*============================================================================*/
 
+Card* gapCard[C_10K];
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -96,28 +97,33 @@ __aFooterFunction(Card)
 Card::Card(eCK eCard)
 : Object(CN_CARD)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   static i8 iSeqNo = 0;
 
-  MemLib::vZero(m_caRef,sizeof(m_caRef),CN_CARD);
+  MemLib::vZero(m_caRef, sizeof(m_caRef), CN_CARD);
 
-  m_eCard    = eCard;
-  m_eCatg    = Card::eToECatg(eCard);
-  m_iCardNo  = C_UNKNOWN;
+  m_eCard = eCard;
+  m_eCatg = Card::eToECatg(eCard);
+  m_iCardNo = C_UNKNOWN;
 
-  m_iSeqNo   = iSeqNo++;
+  m_iSeqNo = iSeqNo++;
 
-  m_cMark1   = ' ';
-  m_cMark2   = '!';
+  m_cMark1 = ' ';
+  m_cMark2 = '!';
 
   m_pProperties = nullptr;
-  
+
   m_bPrintNm = true;
-  
+
   _checkInitialised_(CN_CARD);
 
-  //vTrace("Card [%02lld] %p\n"_Stz,m_iSeqNo,this);
+  gapCard[m_iSeqNo] = this;
+
+//  if (20 == m_iSeqNo) {
+//    vTrace("Card [%02lld] %p\n"_Stz, m_iSeqNo, this);
+//    vDebugPoint();
+//  }
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
@@ -129,6 +135,7 @@ Card::~Card(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   //vTrace("Card [~%02lld] %p\n"_Stz,m_iSeqNo,this);
+  gapCard[m_iSeqNo] = nullptr;
 
   for (Card* pCard = pPop(); pCard; pCard = pPop())
     delete pCard;
@@ -140,6 +147,21 @@ Card::~Card(void) noexcept(false)
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* check for leaks                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vCardLeaks(void)
+{
+  _static_
+
+  for (i8 i_Card = 0; i_Card < C_10K; i_Card++) {
+    if (gapCard[i_Card]) {
+      Card *pLeaked = gapCard[i_Card];
+      vTrace("Card Leak ~%02lld %p\n"_Stz, i_Card, pLeaked);
+      vDebugPoint();
+    }
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /* is eCK a main card?                                                        */

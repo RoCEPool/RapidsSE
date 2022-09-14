@@ -102,6 +102,40 @@ void Board::vDeleteAllCards(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Board::vDeleteFromTill(Card* pFrom, Card* pTillBefore)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  i8 i_Main = -1;
+  i8 nMainCards = this->nMainCards();
+  for (i_Main = 0; i_Main < nMainCards; i_Main++) {
+    Card* pMainCard = m_pCard_SubSet->pGet(i_Main);
+    if (pMainCard == pFrom)
+      break;
+  }
+
+  if (i_Main >= nMainCards)
+    return;
+
+  for (;;) {
+
+    nMainCards = this->nMainCards();
+    if (i_Main >= nMainCards)
+      break;
+
+    Card* pDeleteCard = m_pCard_SubSet->pGet(i_Main);
+
+    if (pDeleteCard == pTillBefore)
+      break;
+
+    m_pCard_SubSet->vRemove(pDeleteCard);
+    delete pDeleteCard;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 Card* Board::pGetMainCard(i8 i_MainCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
@@ -144,6 +178,40 @@ Card* Board::pFindMain(Stz* szCardNm)
       return pMainCard;
   }
   
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find next main card after given arg which is an eFindCard                  */
+/*----------------------------------------------------------------------------*/
+Card* Board::pFindNextMain(Card* pAfter, eCK eFindCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  Card* pMainCard = nullptr;
+
+  i8 i_MainCard = -1;
+  i8 nMainCards = this->nMainCards();
+  for (i_MainCard = 0; i_MainCard < nMainCards; i_MainCard++) {
+    pMainCard = pGetMainCard(i_MainCard);
+
+    if (pMainCard == pAfter)
+      break;
+  }
+
+  if (pMainCard != pAfter)
+    return nullptr;
+
+  // found after
+
+  // get next eCard
+  for (i8 i_TestCard = i_MainCard+1; i_TestCard < nMainCards; i_TestCard++) {
+    Card* pTestCard = pGetMainCard(i_TestCard);
+
+    if (eFindCard == pTestCard->eCard())
+      return pTestCard;
+  }
+
   return nullptr;
 }
 
@@ -500,11 +568,26 @@ void Board::vResolveJoin(Card_AbsJoin* pCard_AbsJoin)
 
   pCard_IndexPred->vAppend(new Card_Term("BOUND"_Stz));
   pCard_IndexPred->vAppend(new Card_Term("$I1"_Stz));
-  pCard_IndexPred->vAppend(new Card_Term("l_a"_Stz));
+  pCard_IndexPred->vAppend(new Card_Term("$L1"_Stz));
   pCard_IndexPred->vAppend(new Card_Term("=="_Stz));
 
   m_pCard_SubSet->vInsertAfter(pIndexJoin,pCard_AbsJoin);
 
+  Card_Combine* pCard_Combine = new Card_Combine;
+  m_pCard_SubSet->vInsertAfter(pCard_Combine,pIndexJoin);
+
+
+  // temp hack
+
+  Card_Stage* pCard_Stage_next =
+    _pCard_Stage(pFindNextMain(pIndexJoin,CK_STAGE));
+  if (! pCard_Stage_next)
+    return;
+
+  Card_Stage* pCard_Stage_following =
+    _pCard_Stage(pFindNextMain(pCard_Stage_next,CK_STAGE));
+
+  vDeleteFromTill(pCard_Stage_next,pCard_Stage_following);
 }
 
 /*----------------------------------------------------------------------------*/

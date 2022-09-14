@@ -41,15 +41,6 @@ namespace Parser
                                   QueryNode* pParentNode,
                                   QueryNodeList* pColumnExprList,
                                   PlanNode* pRootNode);
-
-    // Splits a cast of an aggregation into separate projections so the aggregation
-    // and casting are done in separate pipeline stages.
-    static void vSplitCastOfAggregates(QueryNode *pPlanNode, PlanNode* pRootNode);
-
-    // Given an expression, return a list of aggregate expression terms found in
-    // that expression who have a CAST expression as a parent. Returned list is
-    // to be deleted but NOT the list items.
-    static QueryNodeList* pCastedAggregateExprs(QueryNode* pExpr);
   };
 }
 

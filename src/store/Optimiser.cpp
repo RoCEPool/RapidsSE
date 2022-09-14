@@ -59,6 +59,8 @@ Optimiser::~Optimiser(void) noexcept(false)
   delete m_pWeave;
   
   delete m_pPaste;
+
+  Card::vCardLeaks();
 }
 
 /*----------------------------------------------------------------------------*/

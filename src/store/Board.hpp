@@ -46,9 +46,11 @@ namespace STORE
     void vClear(void);
 
     void vDeleteAllCards(void);
-  
+    void vDeleteFromTill(Card* pFrom, Card* pTillBefore);
+
     Card* pFindMain(Stz* szCardNm);
- 
+    Card* pFindNextMain(Card* pAfter, eCK eFindCard);
+
     Card* pGetMainCard(i8 i_MainCard);
     Card* pGetMainCard(i8 i_MainCard, eCK& reCard);
   

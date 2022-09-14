@@ -70,6 +70,8 @@ namespace STORE
     Card(eCK eCard);
    ~Card(void) noexcept(false);
 
+   static  void vCardLeaks(void);
+
     static bool bIsMain(eCK eCard);
     static bool bIsOther(eCK eCard);
     static bool bIsSub(eCK eCard);
