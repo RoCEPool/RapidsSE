@@ -146,6 +146,7 @@ namespace BASE
     static bool  bIsAlpha(const char c);
     static bool  bIsAlphaDigit(const char c);
     static bool  bIsAmpersand(const char c);
+    static bool  bIsAsciiName(char* azArg);
     static bool  bIsAsterisk(const char c);
     static bool  bIsAt(const char c);
     static bool  bIsBackQuote(const char c);

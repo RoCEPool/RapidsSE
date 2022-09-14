@@ -52,6 +52,18 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* check valid index name                                                     */
+/*----------------------------------------------------------------------------*/
+: check::nameIsValidIndex params| sIndexNm | ( t | ec f )
+
+  sIndexNm str.length 31 > if
+    EC_MAX_INDEX_NAME_LENGTH false exit
+  then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* check word is not known (specifically not a known index)                   */
 /*----------------------------------------------------------------------------*/
 : check::nameIsUnknownIndex params| sIndexNm | ( t | ec f )

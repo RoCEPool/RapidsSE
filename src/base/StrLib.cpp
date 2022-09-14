@@ -2638,6 +2638,38 @@ bool StrLib::bIsAmpersand(const char c)
 }
 
 /*----------------------------------------------------------------------------*/
+/* bIsAsciiName: is argument a valid name                                     */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsAsciiName(char* azArg)
+{
+  _static_
+
+  // check starting character
+  char cStartChar = *azArg;
+
+  if ( ! (cStartChar >= 'A' && cStartChar <= 'Z') &&
+       ! (cStartChar >= 'a' && cStartChar <= 'z') &&
+       ! (cStartChar == '_'))
+    return false;
+
+  // check for special characters in table name
+  for (char c = 33; c <= 47 ; c++)
+    if (bContains(azArg,c))
+      return false;
+
+  for (char c = 58; c <= 64 ; c++)
+    if (bContains(azArg,c))
+      return false;
+
+  if (bContains(azArg,'|') ||
+      bContains(azArg,'^') ||
+      bContains(azArg,'~'))
+    return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bIsAsterisk: is char an asterisk?                                          */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bIsAsterisk(const char c)
