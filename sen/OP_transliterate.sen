@@ -159,9 +159,9 @@
     Text[] "Tranliterated: \n%v"  str.format .
   then
 
-  "<dissect>"  1 [job].tagSet@ tagSet.appendInt
-  "<optimise>" 1 [job].tagSet@ tagSet.appendInt
-  "<weave>"    1 [job].tagSet@ tagSet.appendInt
+  //"<dissect>"  1 [job].tagSet@ tagSet.appendInt
+  //"<optimise>" 1 [job].tagSet@ tagSet.appendInt
+  //"<weave>"    1 [job].tagSet@ tagSet.appendInt
 
   "<dissect>"  [job].tagSet@ tagSet.hasName
   "<optimise>" [job].tagSet@ tagSet.hasName or

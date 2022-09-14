@@ -475,6 +475,37 @@ void Board::vRankCandIndex(Card_CandIndex* pCard_CandIndex)
 }
 
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vResolveJoin(Card_AbsJoin* pCard_AbsJoin)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
+
+  Card_Scan* pCard_Scan = _pCard_Scan(pGetMainCard(pCard_AbsJoin->iCardNo() - 1));
+  Card_Table* pCard_Table = _pCard_Table(pCard_Scan->pFindSubCard(CK_TABLE));
+  Table* pTable = pCard_Table->pTable();
+
+  Index* pIndex = pTable->pIdxVec()->pGet(0);
+
+  Card_IndexJoin* pIndexJoin = new Card_IndexJoin;
+  pIndexJoin->vAppend(new Card_Table(pTable));
+  pIndexJoin->vAppend(new Card_Index(pIndex));
+
+  Card_Filter* pCard_Filter = _pCard_Filter(pGetMainCard(pCard_AbsJoin->iCardNo() + 3));
+  pCard_Filter->vDump();
+
+  Card_IndexPred* pCard_IndexPred = new Card_IndexPred;
+  pIndexJoin->vAppend(pCard_IndexPred);
+
+  pCard_IndexPred->vAppend(new Card_Term("BOUND"_Stz));
+  pCard_IndexPred->vAppend(new Card_Term("$I1"_Stz));
+  pCard_IndexPred->vAppend(new Card_Term("l_a"_Stz));
+  pCard_IndexPred->vAppend(new Card_Term("=="_Stz));
+
+  m_pCard_SubSet->vInsertAfter(pIndexJoin,pCard_AbsJoin);
+
+}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -1121,6 +1152,29 @@ void Board::vReduce_Filter(void)
   pReg_Filter->vReduceFilter();
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vResolve_Joins(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  i8 nMainCards = this->nMainCards();
+  for (i8 i_MainCard = 0; i_MainCard < nMainCards; i_MainCard++) {
+    Card* pMainCard = pGetMainCard(i_MainCard);
+
+    if (CK_ABSJOIN != pMainCard->eCard())
+      continue;
+
+    vResolveJoin(_pCard_AbsJoin(pMainCard));
+
+    Card_Scan* pCard_Scan = _pCard_Scan(pGetMainCard(i_MainCard - 1));
+    m_pCard_SubSet->vRemove(pCard_Scan);
+    delete pCard_Scan;
+    break;
+  }
+
+}
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/

@@ -1,0 +1,59 @@
+/*============================================================================*/
+/* _rayE                                                                      */
+/*============================================================================*/
+
+trackMemory;
+
+create table L(l_a integer);
+load L "../DATA/JOINS/L.csv";
+
+create table R(r_a integer,r_b varchar,r_c integer,r_d varchar);
+create index Ri0 on R(r_a);
+load R "../DATA/JOINS/R.csv";
+
+select * from L;
+select * from R;
+
+/*
+/jobTags
+/transliterated
+/optimise
+/interactive
+/weave
+/weaved
+select *
+  from L,R
+ where l_a = r_a
+;
+*/
+
+pipeline unamed
+  tag <optimised> = 1 endTag
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+       scan      L
+     | indexJoin R Ri0 " BOUND $I1 $L1 == "
+     | combined  0
+     | next
+
+  stage S04 on origin :
+      output
+    | sink
+    | first
+
+end ;
+
+drop table L;
+drop table R;
+
+memoryLeaks;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

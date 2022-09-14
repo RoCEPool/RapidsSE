@@ -7,6 +7,7 @@ trackMemory;
 _orders
 
 _lineItem
+create index L_idx0 on lineitem(L_ORDERKEY);
 
 load orders "../tpch/sf_0001/orders.csv" ;
 //select * from orders;
@@ -27,8 +28,8 @@ select *
  where o_orderKey = l_orderKey
 ;
 
-drop table orders;
-drop table lineItem;
+//drop table orders;
+//drop table lineItem;
 
 memoryLeaks;
 
