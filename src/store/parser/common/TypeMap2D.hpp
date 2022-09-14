@@ -17,10 +17,7 @@ namespace Parser
     Footer m_xFooter;
 
     public:
-    void *operator new(size_t);
-    void operator delete(void *);
-
-    TypeMap2D(i8 iInvalidTypeId);
+    TypeMap2D();
     ~TypeMap2D();
 
     // Add a mapping of two input operand types to one output type

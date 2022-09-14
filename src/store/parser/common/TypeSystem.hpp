@@ -36,6 +36,7 @@ namespace Parser
     static TypeId xIdOf(Stz* szNamespace, Stz* szTypeName);
 
     static i8 iMaxTypeId();
+    static i8 iInvalidTypeId();
   };
   
 }

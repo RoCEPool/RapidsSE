@@ -10,6 +10,7 @@
 #include "GraphNav.hpp"
 #include "NodeNamer.hpp"
 #include "TypeSystem.hpp"
+#include "TypeMap1D.hpp"
 
 using namespace Parser;
 
@@ -28,8 +29,19 @@ static Stz* C_AVG_EXPR_DEFN = "/__root__/definitions/object/expr/operator/aggreg
 // * Fields marked with /*X*/ are not currently supported but should be.
 static eCT aeTypeCalculus[CT_ENUMS] =
 
-//    NONE     BOOLEAN   CHAR     DATE     DECIMAL     FLOAT     INTEGER     INTERVAL_DT   INTERVAL_YM   TIME     TIMESTAMP  VARCHAR  UNKNOWN
+        //    NONE     BOOLEAN         CHAR           DATE         DECIMAL         FLOAT         INTEGER        INTERVAL_DT       INTERVAL_YM         TIME        TIMESTAMP         VARCHAR       UNKNOWN
     { CT_NONE, CT_NONE,  CT_NONE, CT_NONE, CT_DECIMAL, CT_FLOAT, CT_DECIMAL, CT_NONE/*X*/, CT_NONE/*X*/, CT_NONE, CT_NONE,   CT_NONE, CT_UNKNOWN };
+
+// What is the resulting type when we combine these inputs?
+// The first parameter represents the type of the first operand
+// The second parameter represents the type of the result from this operation.
+// Any unspecified mappings are unsupported.
+static TypeMap1D* pTypeMap = (new TypeMap1D())
+    ->pAddMapping( TypeId::xIdOf(CT_DECIMAL),  TypeId::xIdOf(CT_DECIMAL)  )
+    ->pAddMapping( TypeId::xIdOf(CT_FLOAT),    TypeId::xIdOf(CT_FLOAT)    )
+    ->pAddMapping( TypeId::xIdOf(CT_INTEGER),  TypeId::xIdOf(CT_DECIMAL)  )
+    ->pAddMapping( TypeId::xIdOf(CT_UNKNOWN),  TypeId::xIdOf(CT_UNKNOWN)  )
+    ;
 
 // References:
 //
@@ -171,12 +183,14 @@ TypeId AvgExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
   QueryNode* pChild1 = AvgExpr::pChild1(pExprNode);
 
   TypeId xOperand1TypeId = Expr::xTypeId(pChild1, pRootNode);
-  eCT eOperand1 = xOperand1TypeId.eCTVal();
+//  eCT eOperand1 = xOperand1TypeId.eCTVal();
 
   // Lookup the type of the result
-  eCT eResult = aeTypeCalculus[eOperand1];
+//  eCT eResult = aeTypeCalculus[eOperand1];
+//  return TypeId::xIdOf(eResult);
 
-  return TypeId::xIdOf(eResult);
+  TypeId xResult = pTypeMap->xLookup(xOperand1TypeId);
+  return xResult;
 }
 
 /*============================================================================*/

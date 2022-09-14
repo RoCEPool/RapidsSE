@@ -11,25 +11,25 @@ using namespace Parser;
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-__aNewFunction(TypeMap1D,CN_TYPEMAP1D)
-__vDeleteFunction(TypeMap1D,CN_TYPEMAP1D)
 __aFooterFunction(TypeMap1D)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-TypeMap1D::TypeMap1D(i8 iInvalidTypeId)
+TypeMap1D::TypeMap1D()
  : Object(CN_TYPEMAP1D)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TYPEMAP1D,_FOOTER_);
+  _precondition_(_MAGIC_,CN_TYPEMAP1D,_FOOTER_);
 
   m_iSize = TypeSystem::iMaxTypeId() + 1;
   ASSERT(m_iSize > 0 && m_iSize < 128);
 
-  m_aiTypeArray = (i1*) malloc(m_iSize * sizeof(*m_aiTypeArray));
+  i8 nBytes = m_iSize * (i8) sizeof(*m_aiTypeArray);
+  m_aiTypeArray = (i1*) malloc(nBytes);
+  memset(m_aiTypeArray, (int) TypeSystem::iInvalidTypeId(), nBytes);
 
   _checkInitialised_(CN_TYPEMAP1D);
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_TYPEMAP1D,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_TYPEMAP1D,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -37,7 +37,7 @@ TypeMap1D::TypeMap1D(i8 iInvalidTypeId)
 /*----------------------------------------------------------------------------*/
 TypeMap1D::~TypeMap1D()
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TYPEMAP1D,_FOOTER_);
+  _precondition_(_MAGIC_,CN_TYPEMAP1D,_FOOTER_);
   free(m_aiTypeArray);
 }
 
@@ -49,7 +49,7 @@ TypeMap1D::~TypeMap1D()
 /*----------------------------------------------------------------------------*/
 TypeMap1D* TypeMap1D::pAddMapping(TypeId xArg1, TypeId xResult)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TYPEMAP1D,_FOOTER_);
+  _precondition_(_MAGIC_,CN_TYPEMAP1D,_FOOTER_);
 
   ASSERT(xArg1.iIdVal() >= 0 && xArg1.iIdVal() < m_iSize);
   ASSERT(xResult.iIdVal() >= 0 && xResult.iIdVal() < m_iSize);
@@ -64,7 +64,7 @@ TypeMap1D* TypeMap1D::pAddMapping(TypeId xArg1, TypeId xResult)
 /*----------------------------------------------------------------------------*/
 TypeId TypeMap1D::xLookup(TypeId xArg1)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TYPEMAP1D,_FOOTER_);
+  _precondition_(_MAGIC_,CN_TYPEMAP1D,_FOOTER_);
 
   ASSERT(xArg1.iIdVal() >= 0 && xArg1.iIdVal() < m_iSize);
 

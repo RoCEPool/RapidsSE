@@ -11,25 +11,25 @@ using namespace Parser;
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-__aNewFunction(TypeMap2D,CN_TYPEMAP2D)
-__vDeleteFunction(TypeMap2D,CN_TYPEMAP2D)
 __aFooterFunction(TypeMap2D)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-TypeMap2D::TypeMap2D(i8 iInvalidTypeId)
+TypeMap2D::TypeMap2D()
  : Object(CN_TYPEMAP2D)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TYPEMAP2D,_FOOTER_);
+  _precondition_(_MAGIC_,CN_TYPEMAP2D,_FOOTER_);
 
   m_iSize = TypeSystem::iMaxTypeId() + 1;
   ASSERT(m_iSize > 0 && m_iSize < 128);
 
-  m_aiTypeArray = (i1*) malloc(m_iSize * m_iSize * sizeof(*m_aiTypeArray));
+  i8 nBytes = m_iSize * m_iSize * (i8) sizeof(*m_aiTypeArray);
+  m_aiTypeArray = (i1*) malloc(nBytes);
+  memset(m_aiTypeArray, (int) TypeSystem::iInvalidTypeId(), nBytes);
 
   _checkInitialised_(CN_TYPEMAP2D);
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_TYPEMAP2D,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_TYPEMAP2D,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -37,7 +37,7 @@ TypeMap2D::TypeMap2D(i8 iInvalidTypeId)
 /*----------------------------------------------------------------------------*/
 TypeMap2D::~TypeMap2D()
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TYPEMAP2D,_FOOTER_);
+  _precondition_(_MAGIC_,CN_TYPEMAP2D,_FOOTER_);
   free(m_aiTypeArray);
 }
 
@@ -49,7 +49,7 @@ TypeMap2D::~TypeMap2D()
 /*----------------------------------------------------------------------------*/
 TypeMap2D* TypeMap2D::pAddMapping(TypeId xArg1, TypeId xArg2, TypeId xResult)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TYPEMAP2D,_FOOTER_);
+  _precondition_(_MAGIC_,CN_TYPEMAP2D,_FOOTER_);
 
   ASSERT(xArg1.iIdVal() >= 0 && xArg1.iIdVal() < m_iSize);
   ASSERT(xArg2.iIdVal() >= 0 && xArg2.iIdVal() < m_iSize);
@@ -65,7 +65,7 @@ TypeMap2D* TypeMap2D::pAddMapping(TypeId xArg1, TypeId xArg2, TypeId xResult)
 /*----------------------------------------------------------------------------*/
 TypeId TypeMap2D::xLookup(TypeId xArg1, TypeId xArg2)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TYPEMAP2D,_FOOTER_);
+  _precondition_(_MAGIC_,CN_TYPEMAP2D,_FOOTER_);
 
   ASSERT(xArg1.iIdVal() >= 0 && xArg1.iIdVal() < m_iSize);
   ASSERT(xArg2.iIdVal() >= 0 && xArg2.iIdVal() < m_iSize);

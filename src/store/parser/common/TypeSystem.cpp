@@ -247,6 +247,14 @@ i8 TypeSystem::iMaxTypeId()
   return C_MAXTYPEID;
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns the integer value for invalid type IDs in the system               */
+/*----------------------------------------------------------------------------*/
+i8 TypeSystem::iInvalidTypeId()
+{
+  return C_INVALID_TYPEID;
+}
+
 
 /*============================================================================*/
 /* end                                                                        */
