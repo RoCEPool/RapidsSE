@@ -3994,7 +3994,7 @@ void CodeSynth::vPushLiteral(TypedStack* pExprStack, IntStack* pTypeStack, Token
       break;
     case DM_FLT:
       vGetValue(DM_FLT, pTkn->azChars(), iValue, dValue);
-      sOperation.vSprintCat("(%e)"_Stz, dValue);
+      sOperation.vSprintCat("(%.9e)"_Stz, dValue);
       pExprStack->vPushStz(sOperation);
       break;
     case DM_INT:

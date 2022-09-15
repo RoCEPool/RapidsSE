@@ -132,7 +132,8 @@ rows:
   (true)
   (true)
 
-select 0.0e+00 < -1.797693134862315708145274237317043567981e+308 from datums;
+//select 0.0e+00 < -1.797693134862315708145274237317043567981e+308 from datums;
+select 0.0e+00 < -1.79769313e+308 from datums;
 rows:
   (false)
   (false)
@@ -476,6 +477,14 @@ rows:
   (0.11)
   (0.11)
   (0.11)
+
+select cast(9223372036854775806 as float) from datums where int_col1 = 0;
+rows:
+ (9.223372037e+18)
+
+select cast(1407374883553.27 as float) from datums where int_col1 = 0;
+rows:
+ (1.407374884e+12)
 
 // drop the table
 drop table datums;
