@@ -17,7 +17,9 @@
 -- aggregate expression and the matching column in the project list is not
 -- an aggregate then this a post projection IS required (because that aggregate
 -- expression will be pushed down in the exprPushdown compilation stage).
-
+--
+-- Post project also adds in any literal expressions as they usually do not need
+-- to be projected from lower in the plan.
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Setup
@@ -398,7 +400,171 @@ rows:
             » table: (rapidsse.public.nation)'
 )
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Literals get added in the post-project stage, not earlier.
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+EXPLAIN SELECT 'abc', SUBSTRING('abc', 1), 1+1, n_nationkey FROM nation;
+rows: (*, 'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
+-> statementMarker: select
+   » queryText: "SELECT ''abc'', SUBSTRING(''abc'', 1), 1+1, n_nationkey FROM nation"
+
+-> -> projectOp
+      » column: (Expr = ''abc'' ; Ordinal Expr = ''abc'')
+      » column: (Expr = SUBSTRING(''abc'', 1) ; Ordinal Expr = SUBSTRING(''abc'', 1))
+      » column: (Expr = 1 + 1 ; Ordinal Expr = 1 + 1)
+      » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+
+-> -> -> projectOp
+         » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)')
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// If all columns are literals then there's no need for a post-project
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+EXPLAIN SELECT 'abc', SUBSTRING('abc', 1), 1+1 FROM nation;
+rows: (*, 'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT ''abc'', SUBSTRING(''abc'', 1), 1+1 FROM nation"
+
+-> -> projectOp
+      » column: (Expr = ''abc'' ; Ordinal Expr = ''abc'')
+      » column: (Expr = SUBSTRING(''abc'', 1) ; Ordinal Expr = SUBSTRING(''abc'', 1))
+      » column: (Expr = 1 + 1 ; Ordinal Expr = 1 + 1)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Post-projected literals with an aggregate
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+EXPLAIN SELECT 'abc', SUBSTRING('abc', 1), 1+1, SUM(n_nationkey) FROM nation;
+rows: (*, 'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT ''abc'', SUBSTRING(''abc'', 1), 1+1, SUM(n_nationkey) FROM nation"
+
+-> -> projectOp
+      » column: (Expr = ''abc'' ; Ordinal Expr = ''abc'')
+      » column: (Expr = SUBSTRING(''abc'', 1) ; Ordinal Expr = SUBSTRING(''abc'', 1))
+      » column: (Expr = 1 + 1 ; Ordinal Expr = 1 + 1)
+      » column: (Expr = SUM(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = $1)
+
+-> -> -> projectOp
+         » column: (Expr = SUM(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = SUM($1))
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)')
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Post-projected literals with an aggregate and group by
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+EXPLAIN SELECT 'abc', SUBSTRING('abc', 1), 1+1, SUM(n_nationkey) FROM nation GROUP BY n_regionkey;
+rows: (*, 'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT ''abc'', SUBSTRING(''abc'', 1), 1+1, SUM(n_nationkey) FROM nation GROUP BY n_regionkey"
+
+-> -> projectOp
+      » column: (Expr = ''abc'' ; Ordinal Expr = ''abc'')
+      » column: (Expr = SUBSTRING(''abc'', 1) ; Ordinal Expr = SUBSTRING(''abc'', 1))
+      » column: (Expr = 1 + 1 ; Ordinal Expr = 1 + 1)
+      » column: (Expr = SUM(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = $1)
+
+-> -> -> aggregateOp
+         » column: (Expr = SUM(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = SUM($1))
+         » column: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
+         » group by: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)')
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Aggregated literals can't be post-projected /1
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+EXPLAIN SELECT 'abc', SUBSTRING('abc', 1), 1+1, SUM(1) FROM nation;
+rows: (*, 'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT ''abc'', SUBSTRING(''abc'', 1), 1+1, SUM(1) FROM nation"
+
+-> -> projectOp
+      » column: (Expr = ''abc'' ; Ordinal Expr = ''abc'')
+      » column: (Expr = SUBSTRING(''abc'', 1) ; Ordinal Expr = SUBSTRING(''abc'', 1))
+      » column: (Expr = 1 + 1 ; Ordinal Expr = 1 + 1)
+      » column: (Expr = SUM(1) ; Ordinal Expr = $1)
+
+-> -> -> projectOp
+         » column: (Expr = SUM(1) ; Ordinal Expr = SUM(1))
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)')
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Aggregated literals can't be post-projected /2
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+EXPLAIN SELECT 'abc', SUBSTRING('abc', 1), 1+1, SUM(null) FROM nation;
+rows: (*, 'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT ''abc'', SUBSTRING(''abc'', 1), 1+1, SUM(null) FROM nation"
+
+-> -> projectOp
+      » column: (Expr = ''abc'' ; Ordinal Expr = ''abc'')
+      » column: (Expr = SUBSTRING(''abc'', 1) ; Ordinal Expr = SUBSTRING(''abc'', 1))
+      » column: (Expr = 1 + 1 ; Ordinal Expr = 1 + 1)
+      » column: (Expr = SUM(NULL) ; Ordinal Expr = $1)
+
+-> -> -> projectOp
+         » column: (Expr = SUM(NULL) ; Ordinal Expr = SUM(NULL))
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)')
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// COUNT(*) can't be post-projected
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+EXPLAIN SELECT 'abc', SUBSTRING('abc', 1), 1+1, COUNT(*) FROM nation;
+rows: (*, 'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT ''abc'', SUBSTRING(''abc'', 1), 1+1, COUNT(*) FROM nation"
+
+-> -> projectOp
+      » column: (Expr = ''abc'' ; Ordinal Expr = ''abc'')
+      » column: (Expr = SUBSTRING(''abc'', 1) ; Ordinal Expr = SUBSTRING(''abc'', 1))
+      » column: (Expr = 1 + 1 ; Ordinal Expr = 1 + 1)
+      » column: (Expr = COUNT(*) ; Ordinal Expr = $1)
+
+-> -> -> projectOp
+         » column: (Expr = COUNT(*) ; Ordinal Expr = COUNT(*))
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)')
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Check for memory leaks
