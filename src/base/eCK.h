@@ -17,6 +17,7 @@ enum eCK // card kind
   /* */ CK_BOARD,
 
   /* */ CK_CALC,
+  /* */ CK_CALCBOOL,
   /* */ CK_CANDINDEX,
   /* */ CK_COMBINE,
   
@@ -102,6 +103,7 @@ static Stz* aCK[]
   /* */ "CK_BOARD"_Stz,        // CK_BOARD
 
   /* */ "CK_CALC"_Stz,         // CK_CALC
+  /* */ "CK_CALCBOOL"_Stz,      // CK_CALCBOOL
   /* */ "CK_CANDINDEX"_Stz,    // CK_CANDINDEX
   /* */ "CK_COMBINE"_Stz,      // CK_COMBINE
   
@@ -187,6 +189,7 @@ static Stz* aCK_short[]
   /* */ "board"_Stz,           // CK_BOARD
 
   /* */ "calc"_Stz,            // CK_CALC
+  /* */ "calcBool"_Stz,         // CK_CALCBOOL
   /* */ "candIndex"_Stz,       // CK_CANDINDEX
   /* */ "combine"_Stz,         // CK_COMBINE
 
@@ -272,6 +275,7 @@ static Stz* aCK_op[]
   /* */ "(none)"_Stz,          // CK_BOARD
 
   /* */ "(none)"_Stz,          // CK_CALC
+  /* */ "(none)"_Stz,          // CK_CALCBOOL
   /* */ "(none)"_Stz,          // CK_CANDINDEX
   /* */ "combined  0"_Stz,     // CK_COMBINE
 

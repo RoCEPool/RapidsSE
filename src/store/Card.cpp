@@ -222,6 +222,7 @@ bool Card::bIsSub(eCK eCard)
     case CK_AS:
 
     case CK_CALC:
+    case CK_CALCBOOL:
 
     case CK_DIRECTION:
               
@@ -334,6 +335,7 @@ eGC Card::eToECatg(eCK eCard)
     case CK_BOARD:                                      return GC_OTHER;
 
     case CK_CALC:                        return GC_SUB;
+    case CK_CALCBOOL:                    return GC_SUB;
     case CK_CANDINDEX:  return GC_MAIN;
     case CK_COMBINE:    return GC_MAIN;
                                     
@@ -1345,6 +1347,28 @@ void Card::vAggOp(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get and                                                                   */
+/*----------------------------------------------------------------------------*/
+Stz* Card::szAnd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Stz* szAnd = szGetProperty("szAnd"_Stz);
+
+  return szAnd;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set aand                                                                   */
+/*----------------------------------------------------------------------------*/
+void Card::vAnd(Stz* szAnd)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  vAddProperty("szAnd"_Stz,szAnd);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get as name                                                                */
 /*----------------------------------------------------------------------------*/
 Stz* Card::szAs(void)
@@ -1391,6 +1415,28 @@ eBK Card::eBound(void)
       RASSERT(0);
       break;
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* get cmp                                                                    */
+/*----------------------------------------------------------------------------*/
+Stz* Card::szCmp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Stz* szCmp = szGetProperty("szCmp"_Stz);
+
+  return szCmp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set cmp                                                                    */
+/*----------------------------------------------------------------------------*/
+void Card::vCmp(Stz* szCmp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  vAddProperty("szCmp"_Stz,szCmp);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1879,6 +1925,28 @@ void Card::vOption(Stz* szOption)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   vAddProperty("szOption"_Stz,szOption);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get or                                                                     */
+/*----------------------------------------------------------------------------*/
+Stz* Card::szOr(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Stz* szOr = szGetProperty("szOr"_Stz);
+
+  return szOr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set or                                                                     */
+/*----------------------------------------------------------------------------*/
+void Card::vOr(Stz* szOr)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  vAddProperty("szOr"_Stz,szOr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2379,6 +2447,7 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
     case CK_AS:                         vPrintProperties(pRibbon,iDepth); break;
 
     case CK_CALC:                       vPrintProperties(pRibbon,iDepth); break;
+    case CK_CALCBOOL:                   vPrintProperties(pRibbon,iDepth); break;
     case CK_CANDINDEX:                  vPrintProperties(pRibbon,iDepth); break;
     case CK_COMBINE:                    vPrintProperties(pRibbon,iDepth); break;
                         

@@ -25,7 +25,9 @@ Card_PredOr::Card_PredOr(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   _checkInitialised_(CN_CARD);
-  
+
+  vOr("or"_Stz);
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 

@@ -35,6 +35,8 @@ select * from orders;
 select *
   from orders , lineItem
  where o_orderKey = l_orderKey
+   and o_orderKey + 1 > 1
+   or l_orderKey = 5
 ;
 
 /*

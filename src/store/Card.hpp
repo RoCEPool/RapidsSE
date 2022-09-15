@@ -159,9 +159,11 @@ namespace STORE
     void vAggLevel(eAL eAggLevel);
     bool bAggOp(void);
     void vAggOp(void);
+    Stz* szAnd(void);
+    void vAnd(Stz* szAnd);
     Stz* szAs(void);
     void vAs(Stz* szAs);
-  
+
     eBK  eBound(void);
   
     Column* pColumn(void);
@@ -170,6 +172,8 @@ namespace STORE
     void vColumn1(Column* pColumn1);
     Column* pColumn2(void);
     void vColumn2(Column* pColumn2);
+    Stz* szCmp(void);
+    void vCmp(Stz* szCmp);
 
     Stz* szDirn(void);
     void vDirn(Stz* szAsNm);
@@ -207,6 +211,9 @@ namespace STORE
     void vOption(i8 iOption);
     Stz* szOption(void);
     void vOption(Stz* szOption);
+    Stz* szOr(void);
+    void vOr(Stz* szOr);
+
     i8   iOrdinalStreamColNo(void);
     i8   iOrdinalIndexColNo(void);
 

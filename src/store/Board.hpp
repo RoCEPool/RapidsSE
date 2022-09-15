@@ -74,6 +74,7 @@ namespace STORE
 
     void vRankCandIndex(Card_CandIndex* pCard_CandIndex);
 
+    void vResolveFilter              (Card_Filter*  pCard_Filter);
     void vResolveJoin                (Card_AbsJoin* pCard_AbsJoin);
     void vResolveRecursive           (Card*         pAnyCard);
     void vResolveTerm                (Card_Term*    pCard_Term);
@@ -108,6 +109,8 @@ namespace STORE
   
     //void vResolve_RootStreams        (void);
 
+    void vResolve_Filters              (void);
+
     void vResolve_Joins              (void);
 
     void vResolve_Symbols            (void);
@@ -141,7 +144,9 @@ namespace STORE
     /* rule 00 */ bool bRule_Scan_Sort_to_IndexScan    (void);
   
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
- 
+
+    Card_CalcBool*  pTo_CalcBool  (Card_Calc* pCard_Calc);
+
   private:
       Footer* aFooter(void);
   };

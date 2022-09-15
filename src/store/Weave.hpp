@@ -76,8 +76,13 @@ namespace STORE
 
     void vExpr        (Stz* szRpnExpr, Card_Expr*      pCard_Expr);
     void vExprBool    (Stz* szRpnExpr, Card_ExprBool*  pCard_ExprBool);
-    void vExprCalc    (Stz* szRpnExpr, Card_Calc*  pCard_ExprCalc);
- 
+    void vExprCalc    (Stz* szRpnExpr, Card_Calc*      pCard_ExprCalc);
+    void vCalcBool    (Stz* szRpnExpr, Card_CalcBool*  pCard_CalcBool);
+    void vPredOr      (Stz* szRpnExpr, Card_PredOr*    pCard_PredOr,    i8 i);
+    void vPredAnd     (Stz* szRpnExpr, Card_PredAnd*   pCard_PredAnd,   i8 i);
+    void vPredCmp     (Stz* szRpnExpr, Card_PredCmp*   pCard_PredCmp,   i8 i);
+    void vPredOther   (Stz* szRpnExpr, Card*           pCard_Other,     i8 i);
+
     void vPred        (Stz* szRpnExpr, Card_PRED*      pCard_PRED);
     void vPredOr      (Stz* szRpnExpr, Card_PredOr*    pCard_PredOr);
     void vPredAnd     (Stz* szRpnExpr, Card_PredAnd*   pCard_PredAnd);

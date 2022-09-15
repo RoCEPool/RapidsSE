@@ -253,6 +253,10 @@ void Optimiser::vOptimise(void)
   if (bInteractive)
     pBoard->vPrintBoard("vResolve_Symbols >> "_Stz);
 
+  pBoard->vResolve_Filters();
+  if (bInteractive)
+    pBoard->vPrintBoard("vResolve_Filters >> "_Stz);
+
   pBoard->vResolve_Joins();
   if (bInteractive)
     pBoard->vPrintBoard("vResolve_Joins >> "_Stz);

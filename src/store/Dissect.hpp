@@ -17,6 +17,8 @@
 #include "Card_Aggregates.hpp"
 #include "Card_As.hpp"
 
+#include "Card_Calc.hpp"
+#include "Card_CalcBool.hpp"
 #include "Card_CandIndex.hpp"
 #include "Card_Combine.hpp"
 
@@ -26,7 +28,6 @@
 #include "Card_EBound.hpp"
 #include "Card_Exists.hpp"
 #include "Card_ExprBool.hpp"
-#include "Card_Calc.hpp"
 
 #include "Card_Filter.hpp"
 
