@@ -26,13 +26,6 @@ Header::Header(eCN eClassNo)
   
   vSetWasReceived(false);
   vSetPostRecvRun(false);
-  Job* pJob = MY::pJob();
-  if (pJob && pJob->bPersistent()) {
-    vSetPersistent(true);
-  }
-  else
-    vSetPersistent(false);
-
 }
 
 /*----------------------------------------------------------------------------*/
