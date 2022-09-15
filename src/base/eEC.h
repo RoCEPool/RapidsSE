@@ -160,6 +160,7 @@ enum eEC : u2 // error codes
   EC_LOW_MEMORY,
 
   /* _M_ */
+  EC_MAX_INDEX_NAME_LENGTH,
   EC_MAX_INDEXES,
   EC_MAX_COLUMNS,
   EC_MAX_ROW_LENGTH,
@@ -419,6 +420,7 @@ static Stz* aEC[] =
   /* EC_LOW_MEMORY                    */ (Stz*)"low memory",
 
   /* _M_ */
+  /* EC_MAX_INDEX_NAME_LENGTH         */ (Stz*)"max index name length allowed is 31 bytes",
   /* EC_MAX_INDEXES                   */ (Stz*)"max allowed indexes already created",
   /* EC_MAX_COLUMNS                   */ (Stz*)"max 48 columns supported in a table",
   /* EC_MAX_ROW_LENGTH                */ (Stz*)"max row length allowed is 16k bytes",
@@ -672,6 +674,7 @@ static Stz* aEC2[] = // error code
   /* EC_LOW_MEMORY                    */ (Stz*)"EC_LOW_MEMORY",
 
   /* _M_ */
+  /* EC_MAX_INDEX_NAME_LENGTH         */ (Stz*)"EC_MAX_INDEX_NAME_LENGTH",
   /* EC_MAX_INDEXES                   */ (Stz*)"EC_MAX_INDEXES",
   /* EC_MAX_COLUMNS                   */ (Stz*)"EC_MAX_COLUMNS",
   /* EC_MAX_ROW_LENGTH                */ (Stz*)"EC_MAX_ROW_LENGTH",
@@ -935,6 +938,7 @@ static Stz* aErrorMsg[] =
   /* EC_LOW_MEMORY                    */ (Stz*)"low memory",
 
   /* _M_ */
+  /* EC_MAX_INDEX_NAME_LENGTH         */ (Stz*)"max index name length allowed is 31 bytes",
   /* EC_MAX_INDEXES                   */ (Stz*)"max allowed indexes already created",
   /* EC_MAX_COLUMNS                   */ (Stz*)"max 48 columns supported in a table",
   /* EC_MAX_ROW_LENGTH                */ (Stz*)"max row length allowed is 16k bytes",
