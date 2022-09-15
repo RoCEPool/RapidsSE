@@ -264,7 +264,10 @@ b1 Expr::bIsFullyLiteral(PlanNode *pNode)
 
     if (      ColumnRef::bIsOfType(pExpr) ||
           ColumnOrdinal::bIsOfType(pExpr) ||
-        ColumnParameter::bIsOfType(pExpr)) {
+        ColumnParameter::bIsOfType(pExpr) ||
+        SubqueryRefExpr::bIsOfType(pExpr) ||
+        ( CountExpr::bIsOfType(pExpr) && CountExpr::bIsCountAll(pExpr) )
+       ) {
       bIsLit = false;
       return GraphNav::WALK_ABORT;
     }
