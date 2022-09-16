@@ -120,7 +120,7 @@ Card::Card(eCK eCard)
 
   gapCard[m_iSeqNo] = this;
 
-//  if (20 == m_iSeqNo) {
+//  if (35 == m_iSeqNo) {
 //    vTrace("Card [%02lld] %p\n"_Stz, m_iSeqNo, this);
 //    vDebugPoint();
 //  }

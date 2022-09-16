@@ -26,6 +26,7 @@ select * from orders;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+
 /jobTags
 /transliterated
 /optimise
@@ -35,9 +36,8 @@ select * from orders;
 select *
   from orders , lineItem
  where o_orderKey = l_orderKey
-   and o_orderKey + 1 > 1
-   or l_orderKey = 5
 ;
+
 
 /*
 /jobTags
@@ -106,8 +106,8 @@ begin
 end ;
 */
 
-drop table orders;
-drop table lineItem;
+//drop table orders;
+//drop table lineItem;
 
 memoryLeaks;
 

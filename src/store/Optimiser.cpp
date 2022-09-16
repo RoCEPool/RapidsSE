@@ -248,7 +248,11 @@ void Optimiser::vOptimise(void)
 
   if (bInteractive)
     pBoard->vPrintBoard("vDissectSpec >> "_Stz);
-  
+
+  pBoard->vConvert_Joins();
+  if (bInteractive)
+    pBoard->vPrintBoard("vConvert_Joins >> "_Stz);
+
   pBoard->vResolve_Symbols();
   if (bInteractive)
     pBoard->vPrintBoard("vResolve_Symbols >> "_Stz);
@@ -257,9 +261,9 @@ void Optimiser::vOptimise(void)
   if (bInteractive)
     pBoard->vPrintBoard("vResolve_Filters >> "_Stz);
 
-  pBoard->vResolve_Joins();
+  pBoard->vResolve_Joins3();
   if (bInteractive)
-    pBoard->vPrintBoard("vResolve_Joins >> "_Stz);
+    pBoard->vPrintBoard("vResolve_Joins3 >> "_Stz);
 
 //
 //  // rules
@@ -272,7 +276,7 @@ void Optimiser::vOptimise(void)
 //    pCardRegs->vResetCardRegs();
 //  }
   
-  //Cue::vGetReturn("$$$$$$ >>"_Stz);
+  Cue::vGetReturn("$$$$$$ >>"_Stz);
 }
 
 /*============================================================================*/

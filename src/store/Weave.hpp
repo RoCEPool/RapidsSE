@@ -51,6 +51,7 @@ namespace STORE
 
     void vOp          (Card* pCard);
 
+    void vArgAbsJoin  (Stz* szOpArgs,  Card_AbsJoin*   pCard_AbsJoin);
     void vArgAggreg   (Stz* szOpArgs,  Card_Aggreg*    pCard_Aggreg);
     void vArgCombine  (Stz* szOpArgs,  Card_Combine*   pCard_Combine);
     void vArgFilter   (Stz* szOpArgs,  Card_Filter*    pCard_Filter);

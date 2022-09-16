@@ -202,7 +202,8 @@ void Weave::vOp(Card* pCard)
   eCK eCard = pCard->eCard();
   
   switch (eCard) {
-                    
+
+    case CK_ABSJOIN:    vArgAbsJoin  (sOpArgs,_pCard_AbsJoin(pCard));  break;
     case CK_AGGREG:     vArgAggreg   (sOpArgs,_pCard_Aggreg(pCard));  break;
     case CK_COMBINE:    vArgCombine  (sOpArgs,_pCard_Combine(pCard));  break;
     case CK_FILTER:     vArgFilter   (sOpArgs,_pCard_Filter(pCard));  break;
@@ -224,6 +225,16 @@ void Weave::vOp(Card* pCard)
   vConcat("%s %s"_Stz,aCK_op[eCard],sOpArgs.szStz());
   vEolOp();
   m_i_Op_stage++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* weave : abstractJoin " 1 "                                                 */
+/*----------------------------------------------------------------------------*/
+void Weave::vArgAbsJoin(Stz* szOpArgs, Card_AbsJoin*   pCard_AbsJoin)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
+
+  szOpArgs->vCatSprint("abstractJoin \" 1 \""_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -569,6 +580,11 @@ void Weave::vRpnIndexJoin(Stz* szRpnExpr, Card_IndexJoin* pCard_IndexJoin)
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
 
   Card_IndexPred* pCard_IndexPred = _pCard_IndexPred(pCard_IndexJoin->pFindSubCard(CK_INDEXPRED));
+
+  if (! pCard_IndexPred) {
+    szRpnExpr->vConcat(" <<no: indexPred>>"_Stz);
+    return;
+  }
 
   i8 nSubs = pCard_IndexPred->nSubCards();
   for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {

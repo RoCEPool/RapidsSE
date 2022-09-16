@@ -38,14 +38,14 @@ Card_StreamColList::Card_StreamColList(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_StreamColList::Card_StreamColList(StreamDef* pStreamDef)
+Card_StreamColList::Card_StreamColList(StreamDef* pStreamDef, Stz* szPrefix_opt)
 : Card_SUB(CK_STREAMCOLLIST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   _checkInitialised_(CN_CARD);
 
-  vPopulate(pStreamDef);
+  vPopulate(pStreamDef,szPrefix_opt);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -80,7 +80,7 @@ Card_StreamColList::~Card_StreamColList(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* populate from stream def                                                   */
 /*----------------------------------------------------------------------------*/
-void Card_StreamColList::vPopulate(StreamDef* pStreamDef)
+void Card_StreamColList::vPopulate(StreamDef* pStreamDef, Stz* szPrefix_opt)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -94,6 +94,12 @@ void Card_StreamColList::vPopulate(StreamDef* pStreamDef)
 
     Card_As *pCard_As = new Card_As(pColumn);
     Card_Type *pCard_Type = new Card_Type(pColumn);
+
+    if (szPrefix_opt) {
+      s256 sAs;
+      sAs.vSprint("%s%s"_Stz,szPrefix_opt,pColumn->szColNm());
+      pCard_As->vAs(sAs);
+    }
 
     pCard_StreamCol->vAppend(pCard_As);
     pCard_StreamCol->vAppend(pCard_Type);

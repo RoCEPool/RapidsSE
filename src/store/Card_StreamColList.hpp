@@ -18,11 +18,11 @@ namespace STORE
     void  operator delete(void*);
   
     Card_StreamColList(void);
-    Card_StreamColList(StreamDef* pStreamDef);
+    Card_StreamColList(StreamDef* pStreamDef, Stz* szPrefix_opt=nullptr);
     Card_StreamColList(Card_AggElist* pCard_AggElist);
    ~Card_StreamColList(void) noexcept(false);
 
-    void vPopulate(StreamDef* pStreamDef);
+    void vPopulate(StreamDef* pStreamDef, Stz* szPrefix_opt=nullptr);
     void vPopulate(Card_AggElist* pCard_AggElist);
   };
 

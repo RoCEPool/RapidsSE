@@ -614,11 +614,91 @@ void Board::vResolveJoin(Card_AbsJoin* pCard_AbsJoin)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Board::vResolveJoin2(Card_AbsJoin* pCard_AbsJoin)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
+
+  Card_Scan* pCard_Scan = _pCard_Scan(pGetMainCard(pCard_AbsJoin->iCardNo() - 1));
+  Card_Table* pCard_Table = _pCard_Table(pCard_Scan->pFindSubCard(CK_TABLE));
+  Table* pTable = pCard_Table->pTable();
+
+  Index* pIndex = pTable->pIdxVec()->pGet(0);
+
+  Card_IndexJoin* pIndexJoin = new Card_IndexJoin;
+  pIndexJoin->vAppend(new Card_Table(pTable));
+  pIndexJoin->vAppend(new Card_Index(pIndex));
+
+  Card_Filter* pCard_Filter = _pCard_Filter(pGetMainCard(pCard_AbsJoin->iCardNo() + 3));
+  //pCard_Filter->vDump();
+
+  Card_Expr* pCard_Expr = _pCard_Expr(pCard_Filter->pGetSubCard(0));
+
+  Card_Type* pCard_Type = _pCard_Type(pCard_Expr->pGetSubCard(0));
+  Card_CalcBool* pCard_CalcBool = _pCard_CalcBool(pCard_Expr->pGetSubCard(1));
+  Card_PredCmp* pCard_PredCmp = _pCard_PredCmp(pCard_CalcBool->pGetSubCard(0));
+
+  Card_IndexPred* pCard_IndexPred = pTo_IndexPred(pCard_PredCmp);
+  pIndexJoin->vAppend(pCard_IndexPred);
+
+  m_pCard_SubSet->vInsertAfter(pIndexJoin,pCard_AbsJoin);
+
+  Card_Combine* pCard_Combine = new Card_Combine;
+  m_pCard_SubSet->vInsertAfter(pCard_Combine,pIndexJoin);
+
+  //delete pCard_PredCmp;
+
+  // temp hack
+
+  Card_Stage* pCard_Stage_next =
+          _pCard_Stage(pFindNextMain(pIndexJoin,CK_STAGE));
+  if (! pCard_Stage_next)
+    return;
+
+  Card_Stage* pCard_Stage_following =
+          _pCard_Stage(pFindNextMain(pCard_Stage_next,CK_STAGE));
+
+  vDeleteFromTill(pCard_Stage_next,pCard_Stage_following);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vConvertJoin(Card_AbsJoin* pCard_AbsJoin)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
+
+  m_pCard_SubSet->vRemove(pCard_AbsJoin);
+
+  Card_Scan* pCard_Scan = _pCard_Scan(pGetMainCard(pCard_AbsJoin->iCardNo() - 1));
+  Card_Table* pCard_Table = _pCard_Table(pCard_Scan->pFindSubCard(CK_TABLE));
+  Table* pTable = pCard_Table->pTable();
+
+
+  Card_IndexJoin* pIndexJoin = new Card_IndexJoin;
+  pIndexJoin->vAppend(new Card_Table(pTable));
+
+  // TODO:
+  Index* pIndex = pTable->pIdxVec()->pGet(0);
+  pIndexJoin->vAppend(new Card_Index(pIndex));
+
+  m_pCard_SubSet->vInsertAfter(pIndexJoin,pCard_Scan);
+
+  m_pCard_SubSet->vRemove(pCard_Scan);
+  delete pCard_Scan;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Board::vResolveRecursive(Card* pAnyCard) // recursive
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
 
   eCK eCard = pAnyCard->eCard();
+
+  //
+  // leaves
+  //
 
   if (CK_INDEX == eCard) {
     m_pCard_SubSet->vIndex(pAnyCard->pIndex());
@@ -641,7 +721,9 @@ void Board::vResolveRecursive(Card* pAnyCard) // recursive
   }
 
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //
+  // subcards first
+  //
 
   //pCard->vDump();
 
@@ -651,7 +733,12 @@ void Board::vResolveRecursive(Card* pAnyCard) // recursive
     vResolveRecursive(pSubCard);
   }
 
+  //
+  // this card
+  //
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // aggElist
 
   Card_AggElist *pCard_AggElist = _pCard_AggElist(pAnyCard->pFindChildCard(CK_AGGELIST));
   if (pCard_AggElist) {
@@ -666,6 +753,7 @@ void Board::vResolveRecursive(Card* pAnyCard) // recursive
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // projElist
 
   // derive the stream definition for projection
   Card_ProjElist *pCard_ProjElist = _pCard_ProjElist(pAnyCard->pFindChildCard(CK_PROJELIST));
@@ -689,22 +777,27 @@ void Board::vResolveRecursive(Card* pAnyCard) // recursive
 //  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // scan
 
-  Card_Table *pCard_Table = _pCard_Table(pAnyCard->pFindChildCard(CK_TABLE));
-  if (pCard_Table) {
+  if (CK_SCAN == eCard) {
+    Card_Table *pCard_Table = _pCard_Table(pAnyCard->pFindChildCard(CK_TABLE));
+    if (pCard_Table) {
 
-    StreamDef *pStreamDef = pCard_Table->pTable()->pStreamDef();
+      StreamDef *pStreamDef = pCard_Table->pTable()->pStreamDef();
 
-    Card_Stream *pCard_Stream = new Card_Stream;
-    pAnyCard->vAppend(pCard_Stream);
+      Card_Stream *pCard_Stream = new Card_Stream;
+      pAnyCard->vAppend(pCard_Stream);
 
-    m_pCardRegs->vCardReg(CK_STREAM, pCard_Stream);
+      m_pCardRegs->vCardReg(CK_STREAM, pCard_Stream);
 
-    Card_StreamColList *pCard_StreamColList = new Card_StreamColList(pStreamDef);
-    pCard_Stream->vAppend(pCard_StreamColList);
+      Card_StreamColList *pCard_StreamColList = new Card_StreamColList(pStreamDef);
+      pCard_Stream->vAppend(pCard_StreamColList);
+    }
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check type and as for expr
+
   if (CK_EXPR == eCard) {
     Card_Expr *pCard_Expr = _pCard_Expr(pAnyCard);
 
@@ -718,6 +811,8 @@ void Board::vResolveRecursive(Card* pAnyCard) // recursive
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // absJoin
+
   if (CK_ABSJOIN == eCard) {
     Card_AbsJoin* pCard_AbsJoin = _pCard_AbsJoin(pAnyCard);
 
@@ -757,7 +852,53 @@ void Board::vResolveRecursive(Card* pAnyCard) // recursive
     }
   }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // indexJoin
+
+  if (CK_INDEXJOIN == eCard) {
+    Card_IndexJoin *pCard_IndexJoin = _pCard_IndexJoin(pAnyCard);
+
+    Card* pCard_mainPrior;
+    Card_Stream* pCard_Stream_prior = _pCard_Stream(pPriorSubCard(pCard_mainPrior,
+                                                                   CK_STREAM,
+                                                                pCard_IndexJoin->iCardNo()));
+
+    if (pCard_Stream_prior) {
+      Card_StreamColList *pCard_StreamColList_prior =
+              _pCard_StreamColList(pCard_Stream_prior->pFindSubCard(CK_STREAMCOLLIST));
+
+      Card_Stream *pCard_Stream_join = new Card_Stream;
+      m_pCardRegs->vCardReg(CK_STREAM, pCard_Stream_join);
+
+      pAnyCard->vAppend(pCard_Stream_join);
+      m_pCardRegs->vCardReg(CK_STREAM, pCard_Stream_join);
+
+      Card_StreamColList* pCard_StreamColList_join = new Card_StreamColList;
+
+      pCard_StreamColList_join->vAppendDupSubCards(pCard_StreamColList_prior);
+
+      pCard_Stream_join->vAppend(pCard_StreamColList_join);
+
+
+
+      Card_Table *pCard_Table_right = _pCard_Table(pAnyCard->pFindChildCard(CK_TABLE));
+      if (pCard_Table_right) {
+
+        StreamDef *pStreamDef_right = pCard_Table_right->pTable()->pStreamDef();
+
+        Card_StreamColList *pCard_StreamColList_right =
+          new Card_StreamColList(pStreamDef_right,"J1_"_Stz);
+
+        pCard_StreamColList_join->vAppendDupSubCards(pCard_StreamColList_right);
+        delete pCard_StreamColList_right;
+      }
+
+    }
+
+  }
+
 }
+
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
@@ -1302,6 +1443,68 @@ void Board::vResolve_Joins(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Board::vResolve_Joins2(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  i8 nMainCards = this->nMainCards();
+  for (i8 i_MainCard = 0; i_MainCard < nMainCards; i_MainCard++) {
+    Card* pMainCard = pGetMainCard(i_MainCard);
+
+    if (CK_ABSJOIN != pMainCard->eCard())
+      continue;
+
+    Card_AbsJoin* pCard_AbsJoin = _pCard_AbsJoin(pMainCard);
+    vResolveJoin2(pCard_AbsJoin);
+
+    Card_Scan* pCard_Scan = _pCard_Scan(pGetMainCard(i_MainCard - 1));
+    m_pCard_SubSet->vRemove(pCard_Scan);
+    delete pCard_Scan;
+
+    m_pCard_SubSet->vRemove(pCard_AbsJoin);
+    delete pCard_AbsJoin;
+
+    break;
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vResolve_Joins3(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
+  NEVER_REACH;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vConvert_Joins(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  i8 nMainCards = this->nMainCards();
+  for (i8 i_MainCard = 0; i_MainCard < nMainCards; i_MainCard++) {
+    Card* pMainCard = pGetMainCard(i_MainCard);
+
+    if (CK_ABSJOIN != pMainCard->eCard())
+      continue;
+
+    Card_AbsJoin* pCard_AbsJoin = _pCard_AbsJoin(pMainCard);
+    vConvertJoin(pCard_AbsJoin);
+    i_MainCard--;
+
+    vRenumberMainCards();
+
+    break;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 //void Board::vResolve_RootStreams(void)
 //{
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
@@ -1656,6 +1859,7 @@ Card_CalcBool* Board::pTo_CalcBool(Card_Calc* pCard_Calc)
         pCard_CalcBool->vAppend(pCard_PredAnd);
         RASSERT(1 == pCard_CalcBool->nSubCards());
         pCard_PredAnd = nullptr;
+        delete pCard_Term;
         break;
 
       case TE_OR:
@@ -1666,6 +1870,7 @@ Card_CalcBool* Board::pTo_CalcBool(Card_Calc* pCard_Calc)
         pCard_CalcBool->vAppend(pCard_PredOr);
         RASSERT(1 == pCard_CalcBool->nSubCards());
         pCard_PredOr = nullptr;
+        delete pCard_Term;
         break;
 
       case TE_COMPARE:
@@ -1675,6 +1880,7 @@ Card_CalcBool* Board::pTo_CalcBool(Card_Calc* pCard_Calc)
         pCard_PredCmp->vTransferAll(pCard_SubExpr);
         pCard_CalcBool->vAppend(pCard_PredCmp);
         pCard_PredCmp = nullptr;
+        delete pCard_Term;
         break;
 
       case TE_OTHER:
@@ -1707,6 +1913,24 @@ Card_CalcBool* Board::pTo_CalcBool(Card_Calc* pCard_Calc)
   delete pCard_SubExpr;
 
   return pCard_CalcBool;
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert a calculation into a boolean calculaiton                           */
+/*----------------------------------------------------------------------------*/
+Card_IndexPred* Board::pTo_IndexPred(Card_PredCmp* pCard_PredCmp)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
+
+  Card_IndexPred* pCard_IndexPred = new Card_IndexPred;
+
+  pCard_IndexPred->vAppend(new Card_Term("BOUND"_Stz));
+  pCard_IndexPred->vAppend(new Card_Term("$I1"_Stz));
+  pCard_IndexPred->vAppend(new Card_Term("$L1"_Stz));
+  pCard_IndexPred->vAppend(new Card_Term("=="_Stz));
+
+  return pCard_IndexPred;
+
 }
 
 /*============================================================================*/
