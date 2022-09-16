@@ -239,7 +239,7 @@ bool Engine::bTraceStart(void)
       break;
 
     default:
-      vTrace("Unrecognized boot options\n"_Stz);
+      fprintf(stderr,"Unrecognized boot options\n");
       return false;
   }
 
@@ -466,10 +466,23 @@ void Engine::vChangeDirectory(void)
   // change these paths in LogicCompiler::bCompile().
   bool bResult = Dir::bChangeCurrent(gxCmdLineArgs.m_xSysArgs.m_sCommandsDir);
 
-  // Hard code error message stdout
-  if (! bResult)
-    Process::vUnrecoverableError("Unable to change to command dir"_Stz,
-                                 gxCmdLineArgs.m_xSysArgs.m_sCommandsDir);
+  if (! bResult) {
+    if(gpTraceFile) {
+      Process::vUnrecoverableError("Unable to change to command dir"_Stz,
+                                   gxCmdLineArgs.m_xSysArgs.m_sCommandsDir);
+    }
+    else {
+      fprintf(stderr,"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+      fprintf(stderr,"RapidsSE Unrecoverable Error\n");
+      fprintf(stderr,"  Unable to change to command dir\n");
+      fprintf(stderr,"  %s\n",gxCmdLineArgs.m_xSysArgs.m_sCommandsDir.szStz());
+      fprintf(stderr,"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+
+      vThreadCallStackDump();
+
+      Process::vExitFailure();
+    }
+  }
 
   if (Dir::bGetCurrent(sCurrent) && AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("Current working directory: %s\n"_Stz,sCurrent.szStz());

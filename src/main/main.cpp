@@ -54,7 +54,8 @@ int main(int argc, char* argv[])
 
   // ********************************************************************************
   // NOTE: Till initial command line options are parsed and trace file is
-  // initialised, we log to the trace file via piping out to stdout
+  // initialised, we log to the trace file via piping out to stderr. stdout is
+  // ignored.
   // ********************************************************************************
 
   //char* s = readline ("Enter a line: ");
@@ -116,7 +117,7 @@ int main(int argc, char* argv[])
           ""_Stz,
           uRndClusterId);
     }
-    vTrace("CmdLineArgs: %s\n"_Stz,sSeArgs.szStz()); // Print to stdout.
+    vTrace("CmdLineArgs: %s\n"_Stz,sSeArgs.szStz());
 
     gi_argc = CmdLineArgs::nBurstArgs(gi_szaArgv, sSeArgs);
   }
@@ -138,7 +139,7 @@ int main(int argc, char* argv[])
 
     fflush(stderr); fflush(stdout);
     //Update this printf
-    printf("Main-level exception caught in func %s() file %s line %d\n",
+    fprintf(stderr, "Main-level exception caught in func %s() file %s line %d\n",
            __func__,__FILE__,__LINE__);
     fflush(stderr); fflush(stdout);
     xException.vPrint();
