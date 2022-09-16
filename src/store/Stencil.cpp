@@ -247,7 +247,7 @@ void Stencil::vRepair(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* combine synthesized op code (put code for all shapes together)             */
 /*----------------------------------------------------------------------------*/
-void Stencil::vCombine(void)
+void Stencil::vCombine(bool bGenerateCCode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL,_FOOTER_);
 
@@ -449,7 +449,7 @@ void Stencil::vCombine(void)
 
   i8 iQueryNo = AM::iQueryNoInc();
 
-  if (gxCmdLineArgs.m_xSysArgs.m_bCombined) {
+  if (gxCmdLineArgs.m_xSysArgs.m_bCombined || bGenerateCCode) {
     sFileName.vSprint("../combined/FlatQuery.hpp"_Stz, iQueryNo,
                       AM::pGrid()->pThisNode()->szNodeNm());
 
