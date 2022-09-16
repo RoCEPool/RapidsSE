@@ -140,6 +140,7 @@ assert::stack_0
 
 "k" .verbose
   "OP_keyExists.sen"            include
+  "OP_keyNotExists.sen"         include
 
 "l" .verbose
 

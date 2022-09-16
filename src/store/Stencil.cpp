@@ -716,7 +716,19 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       vSetupKeyExists(pCombined, pStream, pOp);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pShape = pSketchKeyExists(pCombined, pStream, pOp, ePrevStencil);
+      pShape = pSketchKeyExists(pCombined, pStream, pOp, ePrevStencil, /* exists*/ true);
+      vAppend(pShape);
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate the code for the keyNotExistsOP
+    if (pOp->szOpNm()->bSame("keyNotExists"_Stz)) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      vSetupKeyExists(pCombined, pStream, pOp);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      pShape = pSketchKeyExists(pCombined, pStream, pOp, ePrevStencil, /* exists*/ false);
       vAppend(pShape);
     }
 
@@ -2166,7 +2178,7 @@ Shape* Stencil::pSketchFilter(Stream* pStream, Op* pOp, eSR ePrevStencil, Stz* s
 /*----------------------------------------------------------------------------*/
 /* sketch keyExists                                                           */
 /*----------------------------------------------------------------------------*/
-Shape* Stencil::pSketchKeyExists(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil) {
+Shape* Stencil::pSketchKeyExists(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil, bool bExists) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
@@ -2212,7 +2224,7 @@ Shape* Stencil::pSketchKeyExists(Combined* pCombined, Stream* pStream, Op* pOp, 
   vGetNextLabel(sLabelNext, pStream, i_Op, "L_AdvanceNextRow"_Stz);
 
   pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefLft, pIndex->pIndexDef(), pPreExpStack, SR_IJ, ePrevStencil);
-  pCodeSynth->vSynthKeyExists(pStreamDefRht, pIndex->pIndexDef(), sFilterExpr, sKeyExpr, sLabel, uSelectColumns);
+  pCodeSynth->vSynthKeyExists(pStreamDefRht, pIndex->pIndexDef(), sFilterExpr, sKeyExpr, sLabel, uSelectColumns, bExists);
   pShape->vCodeSynthB(pCodeSynth);
 
   return pShape;
@@ -2999,7 +3011,22 @@ eEC Stencil::eCollectStage(Combined* pCombined, Stream* pStream) {
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // MULTIPLE LIMIT-OP's
       if (m_xStageOps.m_iKeyExistsOp) {
-        vTrace("Error: Cannot have multiple keyExists operators in the same stage (%s)!!!\n"_Stz,
+        vTrace("Error: Cannot have multiple keyExists/keyNotExists operators in the same stage (%s)!!!\n"_Stz,
+               m_szStageNm.azChar());
+        return EC_INVALID_PIPELINE;
+      }
+
+      m_xStageOps.m_iKeyExistsOp++;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // keyNotExistsOp
+    if (pOp->szOpNm()->bSame("keyNotExists"_Stz)) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // MULTIPLE LIMIT-OP's
+      if (m_xStageOps.m_iKeyExistsOp) {
+        vTrace("Error: Cannot have multiple keyExists/keyNotExists operators in the same stage (%s)!!!\n"_Stz,
                m_szStageNm.azChar());
         return EC_INVALID_PIPELINE;
       }
