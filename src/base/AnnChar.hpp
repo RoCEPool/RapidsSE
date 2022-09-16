@@ -53,6 +53,7 @@ namespace BASE
     
     bool bIsAlpha(void);
     bool bIsDigit(void);
+    bool bIsE(void);
     bool bIsX(void);
 
     void vReset(void);

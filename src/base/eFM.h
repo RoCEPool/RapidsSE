@@ -448,9 +448,9 @@ static Stz* aFM[]
   /*  */ "_TME_TOUNK"_Stz,
   /*  */ "_TME_TOVCH"_Stz,
 
+  /*  */ "_TSP_TOUNK"_Stz,
   /*  */ "_TSP_TODTE"_Stz,
   /*  */ "_TSP_TOTME"_Stz,
-  /*  */ "_TSP_TOUNK"_Stz,
   /*  */ "_TSP_TOVCH"_Stz,
 
   /*  */ "_UNK_TOANY"_Stz,

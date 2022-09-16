@@ -2638,6 +2638,38 @@ bool StrLib::bIsAmpersand(const char c)
 }
 
 /*----------------------------------------------------------------------------*/
+/* bIsAsciiName: is argument a valid name                                     */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsAsciiName(char* azArg)
+{
+  _static_
+
+  // check starting character
+  char cStartChar = *azArg;
+
+  if ( ! (cStartChar >= 'A' && cStartChar <= 'Z') &&
+       ! (cStartChar >= 'a' && cStartChar <= 'z') &&
+       ! (cStartChar == '_'))
+    return false;
+
+  // check for special characters in table name
+  for (char c = 33; c <= 47 ; c++)
+    if (bContains(azArg,c))
+      return false;
+
+  for (char c = 58; c <= 64 ; c++)
+    if (bContains(azArg,c))
+      return false;
+
+  if (bContains(azArg,'|') ||
+      bContains(azArg,'^') ||
+      bContains(azArg,'~'))
+    return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bIsAsterisk: is char an asterisk?                                          */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bIsAsterisk(const char c)
@@ -4028,6 +4060,71 @@ void StrLib::vReplaceTail(char* azArg, char* azTail)
 }
 
 /*----------------------------------------------------------------------------*/
+/* remove till given char                                                     */
+/*----------------------------------------------------------------------------*/
+void StrLib::vRemoveTill(char* azArg, const char cTill, bool bRemoveTheTill)
+{
+  _static_
+
+  char* azSrc = azArg;
+  while (*azSrc && *azSrc != cTill)
+    azSrc++;
+
+  if (! *azSrc)
+    return;
+
+  if (bRemoveTheTill)
+    azSrc++;
+
+  vShuffleLeft(azArg,azSrc);
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove leading token                                                       */
+/*----------------------------------------------------------------------------*/
+void StrLib::vRemoveToken(char* azArg)
+{
+  _static_
+
+  char* azRight = azArg;
+
+  // skip leading whitespace
+  while (*azRight) {
+    if (' ' == *azRight || '\n' == *azRight) {
+      azRight++;
+      continue;
+    }
+    break;
+  }
+
+  // something still to process?
+  if (! *azRight)
+    return;
+
+  // skip token
+  while (*azRight) {
+    if (' ' == *azRight || '\n' == *azRight)
+      break;
+    azRight++;
+  }
+
+  // skip whitespace
+  while (*azRight) {
+    if (' ' == *azRight || '\n' == *azRight) {
+      azRight++;
+      continue;
+    }
+    break;
+  }
+
+  // something still to process?
+  if (! *azRight)
+    return;
+
+  vShuffleLeft(azArg,azRight);
+}
+
+/*----------------------------------------------------------------------------*/
 /* reverse a string                                                           */
 /*----------------------------------------------------------------------------*/
 void StrLib::vReverse(char* azDst, char* azSrc)
@@ -4110,6 +4207,30 @@ bool StrLib::bSame(const char* pArg1, const char* pArg2)
     return true;
   else
     return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* shuffle substring left                                                     */
+/*----------------------------------------------------------------------------*/
+void StrLib::vShuffleLeft(char* azDst, const char* azSrc)
+{
+  _static_
+
+  for (;;) {
+    char cCopied = (*azDst++ = *azSrc++);
+    if (! cCopied)
+      return;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* shuffle substring left                                                     */
+/*----------------------------------------------------------------------------*/
+void StrLib::vShuffleLeft(char* azDst, i8 i_Right)
+{
+  _static_
+
+  vShuffleLeft(azDst, azDst + i_Right);
 }
 
 /*----------------------------------------------------------------------------*/

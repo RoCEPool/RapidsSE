@@ -449,6 +449,82 @@ rows:
  ('B0201','Please refer to the attached document (either in PDF or in Keynote format)')
  ('B0202','The new workflow gives the test team better visibility of issues that need to be actioned as well as the responsibility for validating fixes and acknowledging/closing bugs')
 
+select a,substring(a,1,100) from substring;
+rows:
+ ('A','A')
+ ('A01','A01')
+ ('A0101','A0101')
+ ('A0102','A0102')
+ ('A02','A02')
+ ('A0201','A0201')
+ ('A0202','A0202')
+ ('B','B')
+ ('B01','B01')
+ ('0B0101','0B0101')
+ ('B0102','B0102')
+ ('B02','B02')
+ ('B0201','B0201')
+ ('B0202','B0202')
+ (null,null)
+
+select SUBSTRING('ABCDEFGHI',3,3) from substring where a = 'A';
+rows:
+ ('CDE')
+
+select SUBSTRING('ABCDEFGHI',6,3) from substring where a = 'A';
+rows:
+ ('FGH' )
+
+select SUBSTRING('ABCDEFGHI',0,5) from substring where a = 'A';
+rows:
+ ('ABCD')
+
+select SUBSTRING('ABCDEFGHI',1,5) from substring where a = 'A';
+rows:
+ ('ABCDE')
+
+select SUBSTRING('ABCDEFGHI',-4,5) from substring where a = 'A';
+ failure contains: 'EC_SEMANTIC_ERROR'
+
+select SUBSTRING('ABCDEFGHI',15,5) from substring where a = 'A';
+rows:
+ ('');
+
+select SUBSTRING('ABCDEFGHI',null,5) from substring where a = 'A';
+rows:
+ (NULL)
+
+select SUBSTRING('ABCDEFGHI',1,50) from substring where a = 'A';
+rows:
+ ('ABCDEFGHI')
+
+select SUBSTRING('ABCDEFGHI',3) from substring where a = 'A';
+rows:
+ ('CDEFGHI')
+
+select SUBSTRING('ABCDEFGHI',6) from substring where a = 'A';
+rows:
+ ('FGHI' )
+
+select SUBSTRING('ABCDEFGHI',0) from substring where a = 'A';
+rows:
+ ('ABCDEFGHI')
+
+select SUBSTRING('ABCDEFGHI',1) from substring where a = 'A';
+rows:
+ ('ABCDEFGHI')
+
+select SUBSTRING('ABCDEFGHI',-4) from substring where a = 'A';
+ failure contains: 'EC_SEMANTIC_ERROR'
+
+select SUBSTRING('ABCDEFGHI',15) from substring where a = 'A';
+rows:
+ ('');
+
+select SUBSTRING('ABCDEFGHI',null) from substring where a = 'A';
+rows:
+ (NULL)
+
 drop table nation;
 success
 

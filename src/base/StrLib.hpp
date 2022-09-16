@@ -146,6 +146,7 @@ namespace BASE
     static bool  bIsAlpha(const char c);
     static bool  bIsAlphaDigit(const char c);
     static bool  bIsAmpersand(const char c);
+    static bool  bIsAsciiName(char* azArg);
     static bool  bIsAsterisk(const char c);
     static bool  bIsAt(const char c);
     static bool  bIsBackQuote(const char c);
@@ -223,6 +224,8 @@ namespace BASE
     static void  vRemovePrefix(char* azArg, char cIntro);
     static void  vRemoveSuffix(char* azArg, char cIntro);
     static void  vRemoveTailInt(char* azArg);
+    static void  vRemoveTill(char* azArg, const char cTill, bool bRemoveTheTill=false);
+    static void  vRemoveToken(char* azArg);
     static bool  bReplace(char* pString, const char* pThis, const char* pThat);
     static bool  bReplace(char* pDst, const char* pSrc,
                           const char* pThis, const char* pThat);
@@ -233,6 +236,8 @@ namespace BASE
     static void  vRuler(char* azDst, i8 iLength);
 
     static bool  bSame(const char* s1, const char* s2);
+    static void  vShuffleLeft(char* azDst, const char* azSrc);
+    static void  vShuffleLeft(char* azDst, i8 i_Right);
     static i8    nSize(const char* s);
     static void  vSkipCommentBlock(char** ps);
     static void  vSkipCommentLine(char** ps);

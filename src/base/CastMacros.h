@@ -100,20 +100,21 @@
     iArg1 = *(--paW);                                                      \
     fltArg1.m_iAsI8 = iArg1;                                               \
     if (iErrorCode != EC_NONE ||                                           \
-    iArg1 == C_DATUM_NULL) {                                               \
-    *paW++ = C_DATUM_NULL;                                                 \
+        iArg1 == C_DATUM_NULL) {                                           \
+      *paW++ = C_DATUM_NULL;                                               \
   }                                                                        \
   else {                                                                   \
-    if(fltArg1.m_iAsI8 > (i8)C_I8_MAX) {                                   \
+    if(fltArg1.m_dFlt > (i8)C_I8_MAX) {                                    \
       iErrorCode = EC_ARITHMETIC_OVERFLOW;                                 \
       *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
-    else if(fltArg1.m_iAsI8 < (i8) C_I8_MIN) {                             \
+    else if(fltArg1.m_dFlt < (i8) C_I8_MIN) {                              \
       iErrorCode = EC_ARITHMETIC_UNDERFLOW;                                \
       *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
-      *paW++ = (i8)fltArg1.m_dFlt;                                         \
+      *paW++ = (i8)( fltArg1.m_dFlt >= 0.0 ?                               \
+        (fltArg1.m_dFlt + 0.5) : (fltArg1.m_dFlt - 0.5) );                 \
     }                                                                      \
   }                                                                        \
 }
@@ -332,8 +333,23 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // TO DATE
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#define _TSP_TODTE(iErrorCode) \
-  iErrorCode = EC_NOT_IMPLEMENTED;
+#define _TSP_TODTE(iErrorCode)                                             \
+  {                                                                        \
+    xTsp1.m_iAsI8 = *(--paW);                                              \
+    if (iErrorCode != EC_NONE ||                                           \
+      xTsp1.m_iAsI8 == C_DATUM_NULL) {                                     \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      xDte1.m_iAsI8 = 0;                                                   \
+                                                                           \
+      xDte1.m_uDay = xTsp1.m_uDay;                                         \
+      xDte1.m_uMonth = xTsp1.m_uMonth;                                     \
+      xDte1.m_uYearDelta = xTsp1.m_uYearDelta;                             \
+                                                                           \
+      *paW++ = xDte1.m_iAsI8;                                              \
+    }                                                                      \
+  }
 
 #define _VCH_TODTE(iErrorCode) \
   iErrorCode = EC_NOT_IMPLEMENTED;
@@ -353,8 +369,24 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // TO TME
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#define _TSP_TOTME(iErrorCode) \
-  iErrorCode = EC_NOT_IMPLEMENTED;
+#define _TSP_TOTME(iErrorCode)                                             \
+  {                                                                        \
+    xTsp1.m_iAsI8 = *(--paW);                                              \
+    if (iErrorCode != EC_NONE ||                                           \
+      xTsp1.m_iAsI8 == C_DATUM_NULL) {                                     \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      xTme1.m_iAsI8 = 0;                                                   \
+                                                                           \
+      xTme1.m_uMicro = xTsp1.m_uMicro;                                     \
+      xTme1.m_uSecond = xTsp1.m_uSecond;                                   \
+      xTme1.m_uMinute = xTsp1.m_uMinute;                                   \
+      xTme1.m_uHour = xTsp1.m_uHour;                                       \
+                                                                           \
+      *paW++ = xTme1.m_iAsI8;                                              \
+    }                                                                      \
+  }
 
 #define _VCH_TOTME(iErrorCode) \
   iErrorCode = EC_NOT_IMPLEMENTED;
@@ -707,9 +739,9 @@
 
 // nothing to do
 // unk remains unk
-#define _UNK_TOANY(iErrorCode, szDstArea) \
-{                                         \
-                                          \
+#define _UNK_TOANY(iErrorCode)                                             \
+{                                                                          \
+                                                                           \
 }
 
 /*============================================================================*/

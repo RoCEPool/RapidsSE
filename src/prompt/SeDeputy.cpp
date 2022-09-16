@@ -192,6 +192,9 @@ void SeDeputy::vDeputyLoop(void)
       JobId tDistId;
       tDistId = m_pRootJob->tDistId();
 
+      //pInpTknVec->vDumpVec();
+      //pInpTagSet->vDumpSet();
+
       m_eError = Api::eForkJobChild(tChildJobId,
                                     pInpTknVec, pInpTagSet,
                                     tParentId, tOriginId, tDistId,

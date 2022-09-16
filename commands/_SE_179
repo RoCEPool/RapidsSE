@@ -2,6 +2,8 @@
 /* _SE_179 - scientific notation                                              */
 /*============================================================================*/
 
+trackMemory;
+
 create table SE_179(n varchar, a varchar, f float);
 
 load SE_179 "../data/jira/SE_179.csv";
@@ -9,6 +11,8 @@ load SE_179 "../data/jira/SE_179.csv";
 select * from SE_179;
 
 drop table SE_179;
+
+memoryLeaks;
 
 /*============================================================================*/
 /* end                                                                        */

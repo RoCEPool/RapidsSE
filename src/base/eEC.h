@@ -148,6 +148,7 @@ enum eEC : u2 // error codes
   EC_INVALID_SYNTAX,
   EC_INVALID_TIME_FORMAT,           // SQL Compiler Subsystem
   EC_INVALID_TIMESTAMP_FORMAT,      // SQL Compiler Subsystem
+  EC_INVALID_TOKEN,
   EC_INVALID_TYPES,
   EC_INVALID_VALUE,
 
@@ -159,6 +160,7 @@ enum eEC : u2 // error codes
   EC_LOW_MEMORY,
 
   /* _M_ */
+  EC_MAX_INDEX_NAME_LENGTH,
   EC_MAX_INDEXES,
   EC_MAX_COLUMNS,
   EC_MAX_ROW_LENGTH,
@@ -406,6 +408,7 @@ static Stz* aEC[] =
   /* EC_INVALID_SYNTAX                */ (Stz*)"invalid syntax",
   /* EC_INVALID_TIME_FORMAT           */ (Stz*)"EC_INVALID_TIME_FORMAT",        // SQL Compiler Subsystem
   /* EC_INVALID_TIMESTAMP_FORMAT      */ (Stz*)"EC_INVALID_TIMESTAMP_FORMAT",   // SQL Compiler Subsystem
+  /* EC_INVALID_TOKEN                 */ (Stz*)"EC_INVALID_TOKEN",
   /* EC_INVALID_TYPES                 */ (Stz*)"EC_INVALID_TYPES",
   /* EC_INVALID_VALUE                 */ (Stz*)"invalid value",
 
@@ -417,6 +420,7 @@ static Stz* aEC[] =
   /* EC_LOW_MEMORY                    */ (Stz*)"low memory",
 
   /* _M_ */
+  /* EC_MAX_INDEX_NAME_LENGTH         */ (Stz*)"max index name length allowed is 31 bytes",
   /* EC_MAX_INDEXES                   */ (Stz*)"max allowed indexes already created",
   /* EC_MAX_COLUMNS                   */ (Stz*)"max 48 columns supported in a table",
   /* EC_MAX_ROW_LENGTH                */ (Stz*)"max row length allowed is 16k bytes",
@@ -658,6 +662,7 @@ static Stz* aEC2[] = // error code
   /* EC_INVALID_SYNTAX                */ (Stz*)"EC_INVALID_SYNTAX",
   /* EC_INVALID_TIME_FORMAT           */ (Stz*)"EC_INVALID_TIME_FORMAT",            // SQL Compiler Subsystem
   /* EC_INVALID_TIMESTAMP_FORMAT      */ (Stz*)"EC_INVALID_TIMESTAMP_FORMAT",       // SQL Compiler Subsystem
+  /* EC_INVALID_TOKEN                 */ (Stz*)"EC_INVALID_TOKEN",
   /* EC_INVALID_TYPES                 */ (Stz*)"EC_INVALID_TYPES",
   /* EC_INVALID_VALUE                 */ (Stz*)"EC_INVALID_VALUE",
 
@@ -669,6 +674,7 @@ static Stz* aEC2[] = // error code
   /* EC_LOW_MEMORY                    */ (Stz*)"EC_LOW_MEMORY",
 
   /* _M_ */
+  /* EC_MAX_INDEX_NAME_LENGTH         */ (Stz*)"EC_MAX_INDEX_NAME_LENGTH",
   /* EC_MAX_INDEXES                   */ (Stz*)"EC_MAX_INDEXES",
   /* EC_MAX_COLUMNS                   */ (Stz*)"EC_MAX_COLUMNS",
   /* EC_MAX_ROW_LENGTH                */ (Stz*)"EC_MAX_ROW_LENGTH",
@@ -920,6 +926,7 @@ static Stz* aErrorMsg[] =
   /* EC_INVALID_SYNTAX                */ (Stz*)"invalid syntax",
   /* EC_INVALID_TIME_FORMAT           */ (Stz*)"Invalid time string format. Must be of the form: 'hh:mm:ss'",    // SQL Compiler Subsystem
   /* EC_INVALID_TIMESTAMP_FORMAT      */ (Stz*)"Invalid timestamp string format. Must be of the form: 'YYYY-MM-DD hh:mm:ss[.ffffff]'",    // SQL Compiler Subsystem
+  /* EC_INVALID_TOKEN                 */ (Stz*)"Invalid token",
   /* EC_INVALID_TYPES                 */ (Stz*)"Invalid types in arithmetic/logical/relational operation",
   /* EC_INVALID_VALUE                 */ (Stz*)"invalid value",
 
@@ -931,6 +938,7 @@ static Stz* aErrorMsg[] =
   /* EC_LOW_MEMORY                    */ (Stz*)"low memory",
 
   /* _M_ */
+  /* EC_MAX_INDEX_NAME_LENGTH         */ (Stz*)"max index name length allowed is 31 bytes",
   /* EC_MAX_INDEXES                   */ (Stz*)"max allowed indexes already created",
   /* EC_MAX_COLUMNS                   */ (Stz*)"max 48 columns supported in a table",
   /* EC_MAX_ROW_LENGTH                */ (Stz*)"max row length allowed is 16k bytes",

@@ -1,5 +1,5 @@
 
-// Generated from /Users/craig/repos/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
+// Generated from /Users/alka/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
 
 #pragma once
 
@@ -1885,8 +1885,8 @@ public:
     ExprContext* expr(size_t i);
     antlr4::tree::TerminalNode *NOT();
     antlr4::tree::TerminalNode *AND();
-    antlr4::tree::TerminalNode *OR();
     antlr4::tree::TerminalNode *XOR();
+    antlr4::tree::TerminalNode *OR();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };

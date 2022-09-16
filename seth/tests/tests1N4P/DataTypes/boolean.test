@@ -1,0 +1,194 @@
+/*----------------------------------------------------------------------------*/
+/* boolean.test -- BOOLEAN DATUM tests                                        */
+/*----------------------------------------------------------------------------*/
+
+// begin tracking memory
+trackMemory;
+success
+
+//------------------------------------------------------------------------------
+// create table
+create table datums (
+  int_col0   INTEGER NOT NULL,
+  int_col1   INTEGER,
+  bol_col2   BOOLEAN,
+  bol_col3   BOOLEAN,
+  dte_col4   DATE,
+  dte_col5   DATE,
+  dec_col6   DECIMAL(19,2),
+  dec_col7   DECIMAL(19,2),
+  flt_col8   FLOAT,
+  flt_col9   FLOAT,
+  tme_col10  TIME,
+  tme_col11  TIME,
+  tsp_col12  TIMESTAMP,
+  tsp_col13  TIMESTAMP,
+  vch_col14  VARCHAR(32),
+  vch_col15  VARCHAR(32)
+);
+success
+
+load datums "../DATA/DataTypes/dataTypes.csv" ;
+success
+
+//------------------------------------------------------------------------------
+select bol_col2 from datums;
+rows:
+  (false)
+  (true)
+  (true)
+  (true)
+  (true)
+
+  (true)
+  (false)
+  (false)
+  (true)
+
+  (null)
+  (false)
+  (false)
+  (true)
+
+select -bol_col2 from datums;
+failure contains: 'EC_SEMANTIC_ERROR'
+
+//------------------------------------------------------------------------------
+select bol_col3 from datums;
+rows:
+  (false)
+  (false)
+  (false)
+  (false)
+
+  (false)
+  (false)
+  (false)
+  (false)
+  (false)
+
+  (false)
+  (false)
+  (false)
+  (false)
+
+//------------------------------------------------------------------------------
+select bol_col3 + 2 from datums;
+failure contains: 'EC_SEMANTIC_ERROR'
+
+select cast (bol_col2 as varchar)  , cast (bol_col3 as varchar) from datums;
+rows:
+ ('true','false')
+ ('false','false')
+ ('false','false')
+ ('true','false')
+
+ ('false','false')
+ ('true','false')
+ ('true','false')
+ ('true','false')
+ ('true','false')
+
+ (null,'false')
+ ('false','false')
+ ('false','false')
+ ('true','false')
+
+// aggregates : sum
+select sum(bol_col2) from datums;
+failure contains: 'EC_SEMANTIC_ERROR'
+
+// aggregates : min
+
+select min(bol_col2) from datums;
+failure contains: 'EC_SEMANTIC_ERROR'
+
+// aggregates : max
+
+select max(bol_col2) from datums;
+failure contains: 'EC_SEMANTIC_ERROR'
+
+select bol_col2 = bol_col3 from datums;
+rows:
+ (true)
+ (null)
+ (false)
+ (true)
+ (false)
+ (true)
+ (false)
+ (true)
+ (true)
+ (false)
+ (false)
+ (false)
+ (false)
+
+select bol_col2 != bol_col3 from datums;
+rows:
+ (false)
+ (null)
+ (true)
+ (false)
+ (true)
+ (false)
+ (true)
+ (false)
+ (false)
+ (true)
+ (true)
+ (true)
+ (true)
+
+select bol_col2 > bol_col3 from datums;
+rows:
+  (false)
+  (null)
+  (true)
+  (false)
+  (true)
+  (false)
+  (true)
+  (false)
+  (false)
+  (true)
+  (true)
+  (true)
+  (true)
+
+select true = bol_col2 from datums;
+ (false)
+ (null)
+ (true)
+ (false)
+ (true)
+ (false)
+ (true)
+ (false)
+ (false)
+ (true)
+ (true)
+ (true)
+ (true)
+
+// drop the table
+drop table datums;
+success
+
+// get memory leaks
+memoryLeaks;
+rows: 0
+
+CLEANUP {
+  
+  // drop the table
+  drop table datums;
+  mute
+  
+  bye;
+  mute
+}
+
+/*----------------------------------------------------------------------------*/
+/* end                                                                        */
+/*----------------------------------------------------------------------------*/

@@ -42,7 +42,7 @@ namespace BASE
     void vCurrToken(i8 i_Tkn);
     Token* pCurrToken(void);
     void vDbgStr(Stz* szDstStr);
-    void vDumpVec(i8 nPlusMore);
+    void vDumpVec(i8 nPlusMore=0);
     void vDuplicateVector(TokenVec* pSrcVec);
     i8   iFindToken(Stz* pLookFor);
     i8   iFindToken(Stz* pLookFor, eTN eToken);
