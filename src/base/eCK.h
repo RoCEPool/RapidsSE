@@ -45,7 +45,9 @@ enum eCK // card kind
 
   /* */ CK_LBOUND,
   /* */ CK_LIMIT,
-  
+
+  /* */ CK_MAP,
+  /* */ CK_MAPSET,
   /* */ CK_MODE,
 
   /* */ CK_NAME,
@@ -132,6 +134,8 @@ static Stz* aCK[]
   /* */ "CK_LBOUND"_Stz,       // CK_LBOUND
   /* */ "CK_LIMIT"_Stz,        // CK_LIMIT
 
+  /* */ "CK_MAP"_Stz,          // CK_MAP
+  /* */ "CK_MAPSET"_Stz,       // CK_MAPSET
   /* */ "CK_MODE"_Stz,         // CK_MODE
 
   /* */ "CK_NAME"_Stz,         // CK_NAME
@@ -218,6 +222,8 @@ static Stz* aCK_short[]
   /* */ "lbound"_Stz,          // CK_LBOUND
   /* */ "limit"_Stz,           // CK_LIMIT
 
+  /* */ "map"_Stz,             // CK_MAP
+  /* */ "mapSet"_Stz,          // CK_MAPSET
   /* */ "mode"_Stz,            // CK_MODE
 
   /* */ "name"_Stz,            // CK_NAME
@@ -303,7 +309,9 @@ static Stz* aCK_op[]
   
   /* */ "(none)"_Stz,          // CK_LBOUND
   /* */ "limit     "_Stz,      // CK_LIMIT
-    
+
+  /* */ "(none)"_Stz,          // CK_MAP
+  /* */ "(none)"_Stz,          // CK_MAPSET
   /* */ "(none)"_Stz,          // CK_MODE
 
   /* */ "(none)"_Stz,          // CK_NAME

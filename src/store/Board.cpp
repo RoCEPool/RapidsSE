@@ -884,13 +884,22 @@ void Board::vResolveRecursive(Card* pAnyCard) // recursive
       Card_Table *pCard_Table_right = _pCard_Table(pAnyCard->pFindChildCard(CK_TABLE));
       if (pCard_Table_right) {
 
-        StreamDef *pStreamDef_right = pCard_Table_right->pTable()->pStreamDef();
+        Table* pTable = pCard_Table_right->pTable();
+        Index* pIndex = pTable->pIdxVec()->pGet(0); // HACK!
+
+        StreamDef *pStreamDef_right = pTable->pStreamDef();
+
 
         Card_StreamColList *pCard_StreamColList_right =
-          new Card_StreamColList(pStreamDef_right,"J1_"_Stz);
+          new Card_StreamColList(pStreamDef_right);
+
+        pCard_StreamColList_right->vPrependToAs("J1_"_Stz);
 
         pCard_StreamColList_join->vAppendDupSubCards(pCard_StreamColList_right);
         delete pCard_StreamColList_right;
+
+        Card_MapSet* pCard_MapSet = new Card_MapSet(pIndex,"J1_"_Stz);
+        pCard_IndexJoin->vAppend(pCard_MapSet);
       }
 
     }

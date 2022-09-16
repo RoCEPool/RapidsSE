@@ -45,6 +45,8 @@
 #include "Card_LBound.hpp"
 #include "Card_Limit.hpp"
 
+#include "Card_Map.hpp"
+#include "Card_MapSet.hpp"
 #include "Card_Mode.hpp"
 
 #include "Card_Name.hpp"

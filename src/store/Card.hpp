@@ -201,6 +201,10 @@ namespace STORE
     Stz* szLevel(void);
     void vLevel(Stz* szLevel);
 
+    Stz* szMapFrom(void);
+    void vMapFrom(Stz* szMapFrom);
+    Stz* szMapTo(void);
+    void vMapTo(Stz* szMapTo);
     Stz* szMode(void);
     void vMode(Stz* szMode);
   

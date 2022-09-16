@@ -78,6 +78,30 @@ Card_StreamColList::~Card_StreamColList(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* pre-pend given prefix to each As                                           */
+/*----------------------------------------------------------------------------*/
+void Card_StreamColList::vPrependToAs(Stz* szPrefix)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  i8 nSubCards = this->nSubCards();
+  for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
+    Card *pSubCard = this->pGetSubCard(i_SubCard);
+
+    if (CK_STREAMCOL != pSubCard->eCard())
+      continue;
+
+    Card_StreamCol *pCard_StreamCol = _pCard_StreamCol(pSubCard);
+
+    Card_As* pCard_As = _pCard_As(pCard_StreamCol->pFindSubCard(CK_AS));
+
+    s256 sRevisedAs;
+    sRevisedAs.vSprint("%s%s"_Stz,szPrefix,pCard_As->szAs());
+
+    pCard_As->vAs(sRevisedAs);
+  }
+}
+/*----------------------------------------------------------------------------*/
 /* populate from stream def                                                   */
 /*----------------------------------------------------------------------------*/
 void Card_StreamColList::vPopulate(StreamDef* pStreamDef, Stz* szPrefix_opt)

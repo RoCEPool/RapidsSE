@@ -363,7 +363,9 @@ eGC Card::eToECatg(eCK eCard)
                         
     case CK_LBOUND:                      return GC_SUB;
     case CK_LIMIT:      return GC_MAIN;
-                                    
+
+    case CK_MAP:                         return GC_SUB;
+    case CK_MAPSET:                      return GC_SUB;
     case CK_MODE:                        return GC_SUB;
               
     case CK_NAME:                        return GC_SUB;
@@ -1800,6 +1802,50 @@ void Card::vLevel(Stz* szLevel)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get map from                                                               */
+/*----------------------------------------------------------------------------*/
+Stz* Card::szMapFrom(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Stz* szMapFrom = szGetProperty("szMapFrom"_Stz);
+
+  return szMapFrom;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set map from                                                               */
+/*----------------------------------------------------------------------------*/
+void Card::vMapFrom(Stz* szMapFrom)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  vAddProperty("szMapFrom"_Stz,szMapFrom);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get map to                                                                 */
+/*----------------------------------------------------------------------------*/
+Stz* Card::szMapTo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Stz* szMapTo = szGetProperty("szMapTo"_Stz);
+
+  return szMapTo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set map to                                                                 */
+/*----------------------------------------------------------------------------*/
+void Card::vMapTo(Stz* szMapTo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  vAddProperty("szMapTo"_Stz,szMapTo);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get mark 1                                                                 */
 /*----------------------------------------------------------------------------*/
 char Card::cMark1(void)
@@ -2475,7 +2521,9 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
           
     case CK_LBOUND:                     vPrintProperties(pRibbon,iDepth); break;
     case CK_LIMIT:                      vPrintProperties(pRibbon,iDepth); break;
-                                                
+
+    case CK_MAP:                        vPrintProperties(pRibbon,iDepth); break;
+    case CK_MAPSET:                     vPrintProperties(pRibbon,iDepth); break;
     case CK_MODE:                       vPrintProperties(pRibbon,iDepth); break;
 
     case CK_NAME:                       vPrintProperties(pRibbon,iDepth); break;
@@ -2483,7 +2531,7 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
     case CK_ON:                         vPrintProperties(pRibbon,iDepth); break;
     case CK_OPTION:                     vPrintProperties(pRibbon,iDepth); break;
     case CK_ORDAGG:                     vPrintProperties(pRibbon,iDepth); break;
-    case CK_OBYELIST:                 vPrintProperties(pRibbon,iDepth); break;
+    case CK_OBYELIST:                   vPrintProperties(pRibbon,iDepth); break;
 
     case CK_PREDAND:                    vPrintProperties(pRibbon,iDepth); break;
     case CK_PREDCMP:                    vPrintProperties(pRibbon,iDepth); break;

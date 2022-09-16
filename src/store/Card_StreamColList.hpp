@@ -22,6 +22,7 @@ namespace STORE
     Card_StreamColList(Card_AggElist* pCard_AggElist);
    ~Card_StreamColList(void) noexcept(false);
 
+    void vPrependToAs(Stz* szPrefix);
     void vPopulate(StreamDef* pStreamDef, Stz* szPrefix_opt=nullptr);
     void vPopulate(Card_AggElist* pCard_AggElist);
   };
