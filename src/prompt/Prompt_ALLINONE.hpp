@@ -165,6 +165,7 @@ namespace PROMPT
   bool bPrompt_tpch(SePrompt* pPrompt);
   bool bPrompt_trackMemory(SePrompt* pPrompt);
 
+  bool bPrompt_unload(SePrompt* pPrompt);
   bool bPrompt_uptime(SePrompt* pPrompt);
   bool bPrompt_ut_skipList(SePrompt* pPrompt);
 

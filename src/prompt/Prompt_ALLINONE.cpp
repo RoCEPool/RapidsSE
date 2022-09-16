@@ -1582,6 +1582,7 @@ bool PROMPT::bPrompt_funs(SePrompt* pPrompt)
   gxPromptCatalog.vFuns(PF_THREADS);
   gxPromptCatalog.vFuns(PF_TIMER);
   gxPromptCatalog.vFuns(PF_TRACKMEMORY);
+  gxPromptCatalog.vFuns(PF_UNLOAD);
   gxPromptCatalog.vFuns(PF_UPTIME);
   gxPromptCatalog.vFuns(PF_VERSION);
   gxPromptCatalog.vFuns(PF_WAITING);
@@ -5607,6 +5608,39 @@ bool PROMPT::bPrompt_trackMemory(SePrompt* pPrompt)
   
   vTrace("\nsuccess: 0 rows affected\n"_Stz);
   
+  return true;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/* Prompt_unload.cpp -- unload persistent heap to disk prompt function        */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+PromptFun __Prompt_unload (
+    PF_UNLOAD,            // prompt function
+    "Prompt_unload"_Stz,      // name of the prompt function
+    "unload to disk"_Stz,  // comment about the function
+    "unload"_Stz,         // the prompt command
+    nullptr,              // the second word
+    bPrompt_unload,          // prompt function
+    true,                   // enabled
+
+    true,                    // visible
+    "unload"_Stz,             // help
+    ""_Stz               // description
+);
+
+
+/*----------------------------------------------------------------------------*/
+/* prompt function                                                            */
+/*----------------------------------------------------------------------------*/
+bool PROMPT::bPrompt_unload(SePrompt* pPrompt)
+{
+  RASSERT(pPrompt);
+
+  Stz* szFilePath = "../tmp/saveFile"_Stz;
+
+  PersistenceHelper::vWritePersistentHeaps(szFilePath);
+
   return true;
 }
 

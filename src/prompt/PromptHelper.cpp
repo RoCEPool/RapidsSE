@@ -247,6 +247,7 @@ void PromptHelper::vDisableFuncs(void)
       case PF_TOOLS:           { pFunc->m_bEnabled = false; continue; }
       case PF_TPCH:            { pFunc->m_bEnabled = false; continue; }
       case PF_TRACKMEMORY:     { pFunc->m_bEnabled = false; continue; }
+      case PF_UNLOAD:          { pFunc->m_bEnabled = false; continue; }
       case PF_UPTIME:          { pFunc->m_bEnabled = false; continue; }
       case PF_UT_SKIPLIST:     { pFunc->m_bEnabled = false; continue; }
       case PF_VERBOSE:         { pFunc->m_bEnabled = false; continue; }
