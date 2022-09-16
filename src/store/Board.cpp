@@ -663,6 +663,29 @@ void Board::vResolveJoin2(Card_AbsJoin* pCard_AbsJoin)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Board::vResolveJoin3(Card_IndexJoin* pCard_IndexJoin)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
+
+  Card_Filter* pCard_Filter =
+    _pCard_Filter(pFindNextMain(pCard_IndexJoin, CK_FILTER));
+
+  Card_Expr* pCard_Expr = _pCard_Expr(pCard_Filter->pGetSubCard(0));
+
+  Card_Type* pCard_Type = _pCard_Type(pCard_Expr->pGetSubCard(0));
+  Card_CalcBool* pCard_CalcBool = _pCard_CalcBool(pCard_Expr->pGetSubCard(1));
+  Card_PredCmp* pCard_PredCmp = _pCard_PredCmp(pCard_CalcBool->pGetSubCard(0));
+
+  Card_IndexPred* pCard_IndexPred = pTo_IndexPred(pCard_PredCmp);
+  pCard_IndexJoin->vAppend(pCard_IndexPred);
+
+  Card_Combine* pCard_Combine = new Card_Combine;
+  m_pCard_SubSet->vInsertAfter(pCard_Combine,pCard_IndexJoin);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Board::vConvertJoin(Card_AbsJoin* pCard_AbsJoin)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
@@ -1484,7 +1507,17 @@ void Board::vResolve_Joins2(void)
 void Board::vResolve_Joins3(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
-  NEVER_REACH;
+
+  i8 nMainCards = this->nMainCards();
+  for (i8 i_MainCard = 0; i_MainCard < nMainCards; i_MainCard++) {
+    Card* pMainCard = pGetMainCard(i_MainCard);
+
+    if (CK_INDEXJOIN != pMainCard->eCard())
+      continue;
+
+    Card_IndexJoin* pCard_IndexJoin = _pCard_IndexJoin(pMainCard);
+    vResolveJoin3(pCard_IndexJoin);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1933,10 +1966,15 @@ Card_IndexPred* Board::pTo_IndexPred(Card_PredCmp* pCard_PredCmp)
 
   Card_IndexPred* pCard_IndexPred = new Card_IndexPred;
 
+//  pCard_IndexPred->vAppend(new Card_Term("BOUND"_Stz));
+//  pCard_IndexPred->vAppend(new Card_Term("$I1"_Stz));
+//  pCard_IndexPred->vAppend(new Card_Term("$L1"_Stz));
+//  pCard_IndexPred->vAppend(new Card_Term("=="_Stz));
+
   pCard_IndexPred->vAppend(new Card_Term("BOUND"_Stz));
   pCard_IndexPred->vAppend(new Card_Term("$I1"_Stz));
   pCard_IndexPred->vAppend(new Card_Term("$L1"_Stz));
-  pCard_IndexPred->vAppend(new Card_Term("=="_Stz));
+  pCard_IndexPred->vAppend(new Card_Term(pCard_PredCmp->szCmp()));
 
   return pCard_IndexPred;
 

@@ -77,6 +77,7 @@ namespace STORE
     void vResolveFilter              (Card_Filter*  pCard_Filter);
     void vResolveJoin                (Card_AbsJoin* pCard_AbsJoin);
     void vResolveJoin2               (Card_AbsJoin* pCard_AbsJoin);
+    void vResolveJoin3               (Card_IndexJoin* pCard_IndexJoin);
     void vConvertJoin                (Card_AbsJoin* pCard_AbsJoin);
     void vResolveRecursive           (Card*         pAnyCard);
     void vResolveTerm                (Card_Term*    pCard_Term);
