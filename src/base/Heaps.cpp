@@ -79,7 +79,6 @@ void Heaps::vSubSystem(TokenVec* pTokenVec)
 Object* Heaps::pAllocate(eCN eAllocClass, bool bPersistent)
 {
   _static_
-  UNUSED(bPersistent);
 
   Heaps* pHeaps = AM::pHeaps();
   
@@ -90,7 +89,7 @@ Object* Heaps::pAllocate(eCN eAllocClass, bool bPersistent)
   // The Job persistent flag is set via pipeline tag
   // This causes all allocs as part of this job to use the persistent heap
   Job* pJob = MY::pJob();
-  if (pJob && pJob->bPersistent()) {
+  if ((pJob && pJob->bPersistent()) || bPersistent) {
     switch(eHeap) {
       case HT_T_TINY:   eHeap = HT_P_TINY;   break;
       case HT_T_SMALL:  eHeap = HT_P_SMALL;  break;
@@ -101,16 +100,6 @@ Object* Heaps::pAllocate(eCN eAllocClass, bool bPersistent)
   }
 
   Heap* pHeap = pHeaps->pGetHeap(eHeap);
-  
-//  if (bPersistent) {
-//    switch(eHeap) {
-//      case HT_T_TINY:   eHeap = HT_P_TINY;   break;
-//      case HT_T_SMALL:  eHeap = HT_P_SMALL;  break;
-//      case HT_T_MEDIUM: eHeap = HT_P_MEDIUM; break;
-//      case HT_T_LARGE:  eHeap = HT_P_LARGE;  break;
-//      default: break;
-//    }
-//  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

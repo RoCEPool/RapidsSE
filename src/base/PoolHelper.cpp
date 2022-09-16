@@ -306,6 +306,13 @@ void PoolHelper::vObjectSummary(void)
   MagLib::vByteMag(nObjInHeap*nBlockSize,sMagBlocks);
   vTrace("  [%lld objects ; %s of blocks]\n"_Stz,nObjInHeap,sMagBlocks.szStz());
 
+  if(nObjInHeap != AM::pHeaps()->Persistent.m_pTiny->nCurrAllocated())
+  {
+    vTrace("  ******************************************************************\n"_Stz);
+    vTrace("  WARNING: Number of objects: %lld does not match current allocs: %lld\n"_Stz,
+           nObjInHeap, AM::pHeaps()->Persistent.m_pTiny->nCurrAllocated());
+    vTrace("  ******************************************************************\n"_Stz);
+  }
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   nBlockSize = C_SIZE_SMALL_OBJECT;
@@ -339,6 +346,14 @@ void PoolHelper::vObjectSummary(void)
   }
   MagLib::vByteMag(nObjInHeap*nBlockSize,sMagBlocks);
   vTrace("  [%lld objects ; %s of blocks]\n"_Stz,nObjInHeap,sMagBlocks.szStz());
+
+  if(nObjInHeap != AM::pHeaps()->Persistent.m_pSmall->nCurrAllocated())
+  {
+    vTrace("  ******************************************************************\n"_Stz);
+    vTrace("  WARNING: Number of objects: %lld does not match current allocs: %lld\n"_Stz,
+           nObjInHeap, AM::pHeaps()->Persistent.m_pSmall->nCurrAllocated());
+    vTrace("  ******************************************************************\n"_Stz);
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -374,6 +389,14 @@ void PoolHelper::vObjectSummary(void)
   MagLib::vByteMag(nObjInHeap*nBlockSize,sMagBlocks);
   vTrace("  [%lld objects ; %s of blocks]\n"_Stz,nObjInHeap,sMagBlocks.szStz());
 
+  if(nObjInHeap != AM::pHeaps()->Persistent.m_pMedium->nCurrAllocated())
+  {
+    vTrace("  ******************************************************************\n"_Stz);
+    vTrace("  WARNING: Number of objects: %lld does not match current allocs: %lld\n"_Stz,
+           nObjInHeap, AM::pHeaps()->Persistent.m_pMedium->nCurrAllocated());
+    vTrace("  ******************************************************************\n"_Stz);
+  }
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   nBlockSize = C_SIZE_LARGE_OBJECT;
@@ -408,6 +431,14 @@ void PoolHelper::vObjectSummary(void)
   MagLib::vByteMag(nObjInHeap*nBlockSize,sMagBlocks);
   vTrace("  [%lld objects ; %s of blocks]\n"_Stz,nObjInHeap,sMagBlocks.szStz());
 
+  if(nObjInHeap != AM::pHeaps()->Persistent.m_pLarge->nCurrAllocated())
+  {
+    vTrace("  ******************************************************************\n"_Stz);
+    vTrace("  WARNING: Number of objects: %lld does not match current allocs: %lld\n"_Stz,
+           nObjInHeap, AM::pHeaps()->Persistent.m_pLarge->nCurrAllocated());
+    vTrace("  ******************************************************************\n"_Stz);
+  }
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   nBlockSize = C_SIZE_TINY_OBJECT;
@@ -441,7 +472,15 @@ void PoolHelper::vObjectSummary(void)
   }
   MagLib::vByteMag(nObjInHeap*nBlockSize,sMagBlocks);
   vTrace("  [%lld objects ; %s of blocks]\n"_Stz,nObjInHeap,sMagBlocks.szStz());
-  
+
+  if(nObjInHeap != AM::pHeaps()->Transient.m_pTiny->nCurrAllocated())
+  {
+    vTrace("  ******************************************************************\n"_Stz);
+    vTrace("  WARNING: Number of objects: %lld does not match current allocs: %lld\n"_Stz,
+           nObjInHeap, AM::pHeaps()->Transient.m_pTiny->nCurrAllocated());
+    vTrace("  ******************************************************************\n"_Stz);
+  }
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   nBlockSize = C_SIZE_SMALL_OBJECT;
@@ -475,7 +514,15 @@ void PoolHelper::vObjectSummary(void)
   }
   MagLib::vByteMag(nObjInHeap*nBlockSize,sMagBlocks);
   vTrace("  [%lld objects ; %s of blocks]\n"_Stz,nObjInHeap,sMagBlocks.szStz());
-  
+
+  if(nObjInHeap != AM::pHeaps()->Transient.m_pSmall->nCurrAllocated())
+  {
+    vTrace("  ******************************************************************\n"_Stz);
+    vTrace("  WARNING: Number of objects: %lld does not match current allocs: %lld\n"_Stz,
+           nObjInHeap, AM::pHeaps()->Transient.m_pSmall->nCurrAllocated());
+    vTrace("  ******************************************************************\n"_Stz);
+  }
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   nBlockSize = C_SIZE_MEDIUM_OBJECT;
@@ -509,6 +556,14 @@ void PoolHelper::vObjectSummary(void)
   }
   MagLib::vByteMag(nObjInHeap*nBlockSize,sMagBlocks);
   vTrace("  [%lld objects ; %s of blocks]\n"_Stz,nObjInHeap,sMagBlocks.szStz());
+
+  if(nObjInHeap != AM::pHeaps()->Transient.m_pMedium->nCurrAllocated())
+  {
+    vTrace("  ******************************************************************\n"_Stz);
+    vTrace("  WARNING: Number of objects: %lld does not match current allocs: %lld\n"_Stz,
+           nObjInHeap, AM::pHeaps()->Transient.m_pMedium->nCurrAllocated());
+    vTrace("  ******************************************************************\n"_Stz);
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -544,6 +599,14 @@ void PoolHelper::vObjectSummary(void)
   }
   MagLib::vByteMag(nObjInHeap*nBlockSize,sMagBlocks);
   vTrace("  [%lld objects ; %s of blocks]\n"_Stz,nObjInHeap,sMagBlocks.szStz());
+
+  if(nObjInHeap != AM::pHeaps()->Transient.m_pLarge->nCurrAllocated())
+  {
+    vTrace("  ******************************************************************\n"_Stz);
+    vTrace("  WARNING: Number of objects: %lld does not match current allocs: %lld\n"_Stz,
+           nObjInHeap, AM::pHeaps()->Transient.m_pLarge->nCurrAllocated());
+    vTrace("  ******************************************************************\n"_Stz);
+  }
 }
 
 /*----------------------------------------------------------------------------*/

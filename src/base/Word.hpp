@@ -61,7 +61,7 @@ namespace BASE
   
    public:
     void* operator new(size_t, Dic* pDic);
-    void* operator new(size_t, Dic* pDic, bool bPersistent);
+//    void* operator new(size_t, Dic* pDic, bool bPersistent);
     void  operator delete(void* pWordAddress);
   
     Word(Stz* szName);

@@ -34,17 +34,17 @@ void* Word::operator new(size_t, Dic* pDic)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Word::operator new(size_t, Dic* pDic, bool bPersistent)
-{
-  RASSERT(bPersistent || ! bPersistent);
-  
-  Word* pWord = (Word*)(Heaps::pAllocate(CN_WORD,bPersistent));
-  
-  pWord->m_bPersistent = bPersistent;
-  pWord->m_pDic = pDic;
-  
-  return pWord;
-}
+//void* Word::operator new(size_t, Dic* pDic, bool bPersistent)
+//{
+//  RASSERT(bPersistent || ! bPersistent);
+//
+//  Word* pWord = (Word*)(Heaps::pAllocate(CN_WORD,bPersistent));
+//
+//  pWord->m_bPersistent = bPersistent;
+//  pWord->m_pDic = pDic;
+//
+//  return pWord;
+//}
 
 
 /*----------------------------------------------------------------------------*/
