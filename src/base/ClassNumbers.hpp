@@ -147,6 +147,7 @@ enum eCN : u2 // Class Number
   /* */ CN_JOBMETRICS,
   /* */ CN_JOBREPORT,
   /* */ CN_JOBS,
+  /* */ CN_JOINER,
 
   /* */ CN__K__,
   /* */ CN_KEY,
@@ -307,6 +308,7 @@ enum eCN : u2 // Class Number
   /* */ CN_SHAPE,
   /* */ CN_SHORTCUT,
   /* */ CN_SHORTCUTVEC,
+  /* */ CN_SIMPLIFIER,
   /* */ CN_SINCE,
   /* */ CN_SKIPLIST,
   /* */ CN_SKIPNODE,
@@ -346,6 +348,7 @@ enum eCN : u2 // Class Number
   /* */ CN_STREAM,
   /* */ CN_STREAMDEF,
   /* */ CN_STREAMDEFRHT,
+  /* */ CN_STREAMER,
   /* */ CN_STREAMMETRICS,
   /* */ CN_STREAMSET,
   /* */ CN_STRING_T,
@@ -565,6 +568,7 @@ static Stz* aCN[]
   /* */ "JOBMETRICS"_Stz,           // CN_JOBMETRICS
   /* */ "JOBREPORT"_Stz,            // CN_JOBREPORT
   /* */ "JOBS"_Stz,                 // CN_JOBS
+  /* */ "JOINER"_Stz,               // CN_JOINER
 
   /* */ "_K__"_Stz,                 // CN__K__
   /* */ "KEY"_Stz,                  // CN_KEY
@@ -725,6 +729,7 @@ static Stz* aCN[]
   /* */ "SHAPE"_Stz,                // CN_SHAPE
   /* */ "SHORTCUT"_Stz,             // CN_SHORTCUT
   /* */ "SHORTCUTVEC"_Stz,          // CN_SHORTCUTVEC
+  /* */ "SIMPLIFIER"_Stz,           // CN_SIMPLIFIER
   /* */ "SINCE"_Stz,                // CN_SINCE
   /* */ "SKIPLIST"_Stz,             // CN_SKIPLIST
   /* */ "SKIPNODE"_Stz,             // CN_SKIPNODE
@@ -764,6 +769,7 @@ static Stz* aCN[]
   /* */ "STREAM"_Stz,               // CN_STREAM
   /* */ "STREAMDEF"_Stz,            // CN_STREAMDEF
   /* */ "STREAMDEFRHT"_Stz,         // CN_STREAMDEFRHT
+  /* */ "STREAMER"_Stz,             // CN_STREAMER
   /* */ "STREAMMETRICS"_Stz,        // CN_STREAMMETRICS
   /* */ "STREAMSET"_Stz,            // CN_STREAMSET
   /* */ "STRING_T"_Stz,             // CN_STRING_T

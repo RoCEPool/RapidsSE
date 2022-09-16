@@ -244,6 +244,9 @@
 #include "PayStr.hpp"
 #include "PayStrBuffer.hpp"
 #include "Resolver.hpp"
+#include "Streamer.hpp"
+#include "Simplifier.hpp"
+#include "Joiner.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -402,6 +405,7 @@ SizeHeap gxaSizeHeap[]
   { CN_JOBMETRICS,               sizeof(JobMetrics),         HT_T_LARGE   ,FILL },
   { CN_JOBREPORT,                sizeof(JobReport),          HT_T_TINY    ,FILL },
   { CN_JOBS,                     sizeof(Jobs),               HT_T_TINY    ,FILL },
+  { CN_JOINER,                   sizeof(Joiner),             HT_T_TINY    ,FILL },
 
   { CN__K__,                     'K' - ('A' - 1),            HT_INVALID   ,FILL },
   { CN_KEY,                      sizeof(Key),                HT_INVALID   ,FILL },
@@ -562,6 +566,7 @@ SizeHeap gxaSizeHeap[]
   { CN_SHAPE,                    sizeof(Shape),              HT_T_TINY    ,FILL },
   { CN_SHORTCUT,                 sizeof(ShortCut),           HT_T_MEDIUM  ,FILL },
   { CN_SHORTCUTVEC,              sizeof(ShortCutVec),        HT_T_MEDIUM  ,FILL },
+  { CN_SIMPLIFIER,               sizeof(Simplifier),         HT_T_TINY    ,FILL },
   { CN_SINCE,                    sizeof(Birth),              HT_INVALID   ,FILL },
   { CN_SKIPLIST,                 sizeof(SkipListNL),         HT_T_TINY    ,FILL },
   { CN_SKIPNODE,                 sizeof(SkipNode),           HT_T_TINY    ,FILL },
@@ -601,6 +606,7 @@ SizeHeap gxaSizeHeap[]
   { CN_STREAM,                   sizeof(Stream),             HT_T_SMALL   ,FILL },
   { CN_STREAMDEF,                sizeof(StreamDef),          HT_T_LARGE   ,FILL },
   { CN_STREAMDEFRHT,             sizeof(StreamDefRht),       HT_T_LARGE   ,FILL },
+  { CN_STREAMER,                 sizeof(Streamer),           HT_T_TINY    ,FILL },
   { CN_STREAMMETRICS,            sizeof(StreamMetrics),      HT_T_TINY    ,FILL },
   { CN_STREAMSET,                sizeof(StreamSet),          HT_T_LARGE   ,FILL },
   { CN_STRING_T,                 sizeof(s32),                HT_INVALID   ,FILL },

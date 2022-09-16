@@ -8,6 +8,10 @@
 #include "Dissect.hpp"
 #include "CardRegs.hpp"
 #include "RuleCtl.hpp"
+#include "Resolver.hpp"
+#include "Simplifier.hpp"
+#include "Streamer.hpp"
+#include "Joiner.hpp"
 
 namespace STORE
 {
@@ -23,13 +27,18 @@ namespace STORE
     friend class Drafter;
     friend class Weave;
   protected:
-    s32 m_sQueryNm;
-    Optimiser* m_pOptimiser;
+    s32          m_sQueryNm;
+    Optimiser*   m_pOptimiser;
 
-    CardRegs*  m_pCardRegs;
-    RuleCtl*   m_pRuleCtl;
+    CardRegs*    m_pCardRegs;
+    RuleCtl*     m_pRuleCtl;
 
     Card_SubSet* m_pCard_SubSet;
+
+    Simplifier*   m_pSimplifier;
+    Streamer*     m_pStreamer;
+    Resolver*     m_pResolver;
+    Joiner*       m_pJoiner;
 
   private:
     // must be last
