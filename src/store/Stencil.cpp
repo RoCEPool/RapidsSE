@@ -247,7 +247,7 @@ void Stencil::vRepair(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* combine synthesized op code (put code for all shapes together)             */
 /*----------------------------------------------------------------------------*/
-void Stencil::vCombine(void)
+void Stencil::vCombine(bool bGenerateCCode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL,_FOOTER_);
 
@@ -443,49 +443,53 @@ void Stencil::vCombine(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // write to a file
 
-  s256 sFileName;
+  if ( ! gxCmdLineArgs.m_xSysArgs.m_bCombined && ! bGenerateCCode)
+    return;
+
+  s256 sFileHpp;
+  s256 sFileC;
   s256 funcName;
   LocalFile oFile;
 
   i8 iQueryNo = AM::iQueryNoInc();
 
   if (gxCmdLineArgs.m_xSysArgs.m_bCombined) {
-    sFileName.vSprint("../combined/FlatQuery.hpp"_Stz, iQueryNo,
+    if (!Dir::bExists("../combined"_Stz)) {
+      if (!Dir::bMake("../combined"_Stz)) {
+        vTrace("Unable to make dir ../combined"_Stz);
+        return;
+      }
+    }
+    sFileHpp.vSprint("../combined/FlatQuery.hpp"_Stz, iQueryNo,
                       AM::pGrid()->pThisNode()->szNodeNm());
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // write to a .h file
-    bool bResult = oFile.bOpenAppend(sFileName);
-    oFile.vPrint((Stz*)m_pOpHeader->azCode());
-    oFile.vClose();
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // write to a .c file
-
-    sFileName.vSprint("../combined/FlatQuery%lld_%s.c"_Stz, iQueryNo,
+    sFileC.vSprint("../combined/FlatQuery%lld_%s.c"_Stz, iQueryNo,
                       AM::pGrid()->pThisNode()->szNodeNm());
-    bResult = oFile.bOpenWrite(sFileName);
-    oFile.vPrint((Stz*)m_pOpSource->azCode());
-    oFile.vClose();
-
   }
-  else {
-#ifdef WITH_DEBUG_VERSION
-
-//    sFileName.vSprint("../tmp/FlatQuery.hpp"_Stz, iQueryNo,
-//                      AM::pGrid()->pThisNode()->szNodeNm());
-//
-//    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    // write to a .c file
-//
-//    sFileName.vSprint("../tmp/FlatQuery%lld_%s.c"_Stz, iQueryNo,
-//                      AM::pGrid()->pThisNode()->szNodeNm());
-//    bool bResult = oFile.bOpenWrite(sFileName);
-//    oFile.vPrint((Stz*)m_pOpSource->azCode());
-//    oFile.vClose();
-
-#endif
+  else if (bGenerateCCode) {
+    if (! Dir::bExists("../ccode"_Stz)) {
+      if (! Dir::bMake("../ccode"_Stz)) {
+        vTrace("Unable to make dir ../ccode"_Stz);
+        return;
+      }
+    }
+    sFileHpp.vSprint("../ccode/FlatQuery.hpp"_Stz, iQueryNo,
+                      AM::pGrid()->pThisNode()->szNodeNm());
+    sFileC.vSprint("../ccode/FlatQuery%lld_%s.c"_Stz, iQueryNo,
+                      AM::pGrid()->pThisNode()->szNodeNm());
   }
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // write to the .hpp file
+  bool bResult = oFile.bOpenAppend(sFileHpp);
+  oFile.vPrint((Stz*)m_pOpHeader->azCode());
+  oFile.vClose();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // write to the .c file
+  bResult = oFile.bOpenWrite(sFileC);
+  oFile.vPrint((Stz*)m_pOpSource->azCode());
+  oFile.vClose();
 
 }
 

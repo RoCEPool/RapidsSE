@@ -67,7 +67,15 @@ void Step::vApiForkChild(void)
   TokenVec* pCmdTknVec = AM::TOKENISE::pTokeniseSen(sCmd);
   TokenVec* pTagTknVec = AM::TOKENISE::pTokeniseSen(sCmdTagStr);
   TagSet*   pCmdTagSet = new TagSet;
+
+
+  TagSet* pJobTags = pOuterJobOfTask()->pJobTags();
+  //pJobTags->vContentDump();
+
   CmdHelper::vPopulateTagSet(pCmdTagSet,pTagTknVec);
+
+  if (pJobTags->bHasName(C_TAG_CCODE))
+    pCmdTagSet->vInsert(C_TAG_CCODE);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // replace the C_TAG_JOBNM
@@ -96,6 +104,7 @@ void Step::vApiForkChild(void)
 
   JobId tChildJobId;
   bool bIsPipeline;
+
   eEC eError = Api::eForkJobChild(tChildJobId,
                                    pCmdTknVec,pCmdTagSet,
                                    tParentId,tOriginId,tDistId,

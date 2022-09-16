@@ -96,7 +96,7 @@ static const i8 C_MAX_SHAPES = 32;
 
     static void vRepair(Object* pObject);
 
-    void vCombine(void);
+    void vCombine(bool bGenerateCCode);
   
     Stz* szOpSource(void);
 
