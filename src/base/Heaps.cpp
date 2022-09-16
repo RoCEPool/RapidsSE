@@ -115,7 +115,7 @@ Object* Heaps::pAllocate(eCN eAllocClass, bool bPersistent)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Object* pObject = nullptr;
-  
+
   pObject = pHeap->pAllocObject(eAllocClass);
 
   if (pJob && pJob->bPersistent()) {
@@ -502,7 +502,7 @@ void Heaps::vInit(void)
 {
   // create the persistent heaps
   Persistent.m_pTiny   =
-    new Heap(CN_TINYPERSISTENT,  C_SIZE_SMALL_OBJECT,  HT_P_TINY);
+    new Heap(CN_TINYPERSISTENT,  C_SIZE_TINY_OBJECT,  HT_P_TINY);
   Persistent.m_pSmall  =
     new Heap(CN_SMALLPERSISTENT, C_SIZE_SMALL_OBJECT,  HT_P_SMALL);
   Persistent.m_pMedium =
