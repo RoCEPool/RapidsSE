@@ -78,6 +78,7 @@ namespace STORE
     void vResolveJoin                (Card_AbsJoin* pCard_AbsJoin);
     void vResolveJoin2               (Card_AbsJoin* pCard_AbsJoin);
     void vResolveJoin3               (Card_IndexJoin* pCard_IndexJoin);
+    void vAResolveJoin               (Card_IndexJoin* pCard_IndexJoin);
     void vConvertJoin                (Card_AbsJoin* pCard_AbsJoin);
     void vResolveRecursive           (Card*         pAnyCard);
     void vResolveTerm                (Card_Term*    pCard_Term);
@@ -109,7 +110,9 @@ namespace STORE
     void vRank_CandidateIndexes      (void);
   
     void vReduce_Filter              (void);
-  
+
+    void vSimplify_Initial           (void);
+
     //void vResolve_RootStreams        (void);
 
     void vResolve_Filters              (void);
@@ -120,6 +123,8 @@ namespace STORE
     void vConvert_Joins              (void);
 
     void vResolve_Symbols            (void);
+
+    void vAResolve_Joins             (void);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
@@ -152,7 +157,8 @@ namespace STORE
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
     Card_CalcBool*   pTo_CalcBool  (Card_Calc*    pCard_Calc);
-    Card_IndexPred*  pTo_IndexPred (Card_PredCmp* pCard_PredCmp);
+    Card_IndexPred*  pTo_IndexPred (Card_PredCmp* pCard_PredCmp,
+                                    Card_MapSet* pCard_MapSet);
 
   private:
       Footer* aFooter(void);

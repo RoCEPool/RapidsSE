@@ -243,6 +243,7 @@
 #include "LocalVars.hpp"
 #include "PayStr.hpp"
 #include "PayStrBuffer.hpp"
+#include "Resolver.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -516,6 +517,7 @@ SizeHeap gxaSizeHeap[]
   { CN_RECVWL,                   sizeof(RecvWL),             HT_T_TINY    ,FILL },
   { CN_REJECTJOB,                sizeof(RejectJob),          HT_T_TINY    ,FILL },
   { CN_RELOP,                    sizeof(RelOp),              HT_T_TINY    ,FILL },
+  { CN_RESOLVER,                 sizeof(Resolver),           HT_T_TINY    ,FILL },
   { CN_RESOURCES,                sizeof(Resources),          HT_T_TINY    ,FILL },
   { CN_RIBBON,                   sizeof(Ribbon),             HT_T_SMALL   ,FILL },
   { CN_RIBBONLINE,               sizeof(RibbonLine),         HT_T_SMALL   ,FILL },

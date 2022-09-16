@@ -1802,6 +1802,28 @@ void Card::vLevel(Stz* szLevel)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get map back                                                                */
+/*----------------------------------------------------------------------------*/
+Stz* Card::szMapBack(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Stz* szMapBack = szGetProperty("szMapBack"_Stz);
+
+  return szMapBack;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set map back                                                               */
+/*----------------------------------------------------------------------------*/
+void Card::vMapBack(Stz* szMapBack)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  vAddProperty("szMapBack"_Stz,szMapBack);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get map from                                                               */
 /*----------------------------------------------------------------------------*/
 Stz* Card::szMapFrom(void)
@@ -1821,28 +1843,6 @@ void Card::vMapFrom(Stz* szMapFrom)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   vAddProperty("szMapFrom"_Stz,szMapFrom);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get map to                                                                 */
-/*----------------------------------------------------------------------------*/
-Stz* Card::szMapTo(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Stz* szMapTo = szGetProperty("szMapTo"_Stz);
-
-  return szMapTo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set map to                                                                 */
-/*----------------------------------------------------------------------------*/
-void Card::vMapTo(Stz* szMapTo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  vAddProperty("szMapTo"_Stz,szMapTo);
 }
 
 /*----------------------------------------------------------------------------*/

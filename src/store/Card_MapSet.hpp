@@ -18,6 +18,8 @@ namespace STORE
     Card_MapSet(void);
     Card_MapSet(Index* pIndex, Stz* szPrefix);
    ~Card_MapSet(void) noexcept(false);
+
+    Stz* szMapBack(Stz* szMapFrom);
   };
 
   Card_MapSet* _pCard_MapSet(void* aAddr);
