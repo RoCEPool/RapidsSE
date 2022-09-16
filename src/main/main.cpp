@@ -116,7 +116,7 @@ int main(int argc, char* argv[])
           ""_Stz,
           uRndClusterId);
     }
-    vTrace("CmdLineArgs: %s\n"_Stz,sSeArgs.szStz());
+    vTrace("CmdLineArgs: %s\n"_Stz,sSeArgs.szStz()); // Print to stdout.
 
     gi_argc = CmdLineArgs::nBurstArgs(gi_szaArgv, sSeArgs);
   }
@@ -127,6 +127,7 @@ int main(int argc, char* argv[])
     if (! gxCmdLineArgs.bParseTraceFileArgs(gi_argc,gi_szaArgv))
       Process::vExitStartup();
 
+    //Change to boolean and check like above
     Engine::vChangeDirectory(); //! what happens if this fails?
 
     if (! Engine::bTraceStart())
@@ -136,6 +137,7 @@ int main(int argc, char* argv[])
   catch (Exception xException) {
 
     fflush(stderr); fflush(stdout);
+    //Update this printf
     printf("Main-level exception caught in func %s() file %s line %d\n",
            __func__,__FILE__,__LINE__);
     fflush(stderr); fflush(stdout);

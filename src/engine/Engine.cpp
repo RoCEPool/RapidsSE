@@ -465,7 +465,8 @@ void Engine::vChangeDirectory(void)
   // compiling dynamic code. If you change this value you may need to
   // change these paths in LogicCompiler::bCompile().
   bool bResult = Dir::bChangeCurrent(gxCmdLineArgs.m_xSysArgs.m_sCommandsDir);
-  
+
+  // Hard code error message stdout
   if (! bResult)
     Process::vUnrecoverableError("Unable to change to command dir"_Stz,
                                  gxCmdLineArgs.m_xSysArgs.m_sCommandsDir);
