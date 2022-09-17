@@ -13,7 +13,10 @@ namespace STORE
   {
   private:
 
-    Optimiser* m_pOptimiser;
+    Optimiser*   m_pOptimiser;
+
+    Board*       m_pBoard;
+    Card_SubSet* m_pCard_SubSet;
 
     // must be last
     Footer m_xFooter;
@@ -26,6 +29,7 @@ namespace STORE
   
    ~Transformer(void) noexcept(false);
 
+    void vTransform(void);
 
   private:
 

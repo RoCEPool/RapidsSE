@@ -52,6 +52,8 @@ namespace STORE
    ~Board(void) noexcept(false);
 
     CardRegs* pCardRegs(void);
+    Card_SubSet* pCard_SubSet(void);
+
     void vClear(void);
 
     void vDeleteAllCards(void);

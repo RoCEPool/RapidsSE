@@ -240,6 +240,10 @@ Stz* Optimiser::szWeave(void)
 void Optimiser::vTransform(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
+
+  m_pTransformer->vTransform();
+
+
   Job* pJob = MY::pJob();
   TagSet* pJobTags = pJob->pJobTags();
   bool bInteractive = pJobTags->bHasName("<interactive>"_Stz);

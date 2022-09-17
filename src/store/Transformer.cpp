@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "Transformer.hpp"
+#include "Optimiser.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -21,7 +22,11 @@ Transformer::Transformer(Optimiser* pOptimiser)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMER,_FOOTER_);
 
-  m_pOptimiser = pOptimiser;
+  m_pOptimiser   = pOptimiser;
+
+  m_pBoard       = nullptr;
+  m_pCard_SubSet = nullptr;
+
 
   _checkInitialised_(CN_TRANSFORMER);
   
@@ -41,6 +46,18 @@ Transformer::~Transformer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* transform                                                                  */
+/*----------------------------------------------------------------------------*/
+void Transformer::vTransform(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMER,_FOOTER_);
+
+  m_pBoard = m_pOptimiser->pHeadBoard();
+  m_pCard_SubSet = m_pBoard->pCard_SubSet();
+
+}
 
 
 /*----------------------------------------------------------------------------*/
