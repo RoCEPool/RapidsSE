@@ -32,10 +32,11 @@ Optimiser::Optimiser(TagSet* p_JobTags)
   
   m_pCardCtl = new CardCtl;
   
-  m_pBench   = new Bench(this);
-  m_pDissecter = new Dissector(this);
-  m_pDrafter = new Drafter(this);
-  m_pWeaver   = new Weaver(this);
+  m_pBench       = new Bench(this);
+  m_pDissector   = new Dissector(this);
+  m_pTransformer = new Transformer(this);
+  m_pDrafter     = new Drafter(this);
+  m_pWeaver      = new Weaver(this);
 
   m_pPaste   = new Card_SubSet;
 
@@ -54,7 +55,7 @@ Optimiser::~Optimiser(void) noexcept(false)
   delete m_pCardCtl;
   
   delete m_pBench;
-  delete m_pDissecter;
+  delete m_pDissector;
   delete m_pDrafter;
   delete m_pWeaver;
   
@@ -106,13 +107,13 @@ void Optimiser::vDissect(VertexSpec* pm_pUnOptPipeSpec)
   SP_PipeSpec spPipeSpec(m_pUnOptPipeSpec);
   vTrace("Optimiser: %s\n"_Stz,spPipeSpec.sz());
       
-  Board* pBoard = m_pDissecter->pDissectSpec(m_pUnOptPipeSpec);
+  Board* pBoard = m_pDissector->pDissectSpec(m_pUnOptPipeSpec);
   
   m_pBench->vPush(pBoard);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  //vOptimise();
+  //vTransform();
 
   return;
 }
@@ -208,7 +209,7 @@ void Optimiser::vToPipeSpec(VertexSpec* pPipeSpec)
   
   delete m_pBench->pPop();
   
-  Board* pBoard = m_pDissecter->pDissectSpec(m_pUnOptPipeSpec);
+  Board* pBoard = m_pDissector->pDissectSpec(m_pUnOptPipeSpec);
 
   m_pBench->vAppend(pBoard);
 
@@ -236,7 +237,7 @@ Stz* Optimiser::szWeave(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Optimiser::vOptimise(void)
+void Optimiser::vTransform(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
   Job* pJob = MY::pJob();

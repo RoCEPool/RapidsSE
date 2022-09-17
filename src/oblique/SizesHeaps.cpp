@@ -247,6 +247,7 @@
 #include "Streamer.hpp"
 #include "Simplifier.hpp"
 #include "Joiner.hpp"
+#include "Transformer.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -657,6 +658,7 @@ SizeHeap gxaSizeHeap[]
   { CN_TOTUP,                    sizeof(Totup),              HT_T_MEDIUM  ,FILL },
   { CN_TRACELOCK,                sizeof(TraceLock),          HT_T_TINY    ,FILL },
   { CN_TRACEMULTILOCK,           sizeof(TraceMultiLock),     HT_T_TINY    ,FILL },
+  { CN_TRANSFORMER,              sizeof(Transformer),        HT_T_TINY    ,FILL },
   { CN_TSPVAL,                   sizeof(TypeValueArea),/*yes*/   HT_INVALID   ,FILL },
   { CN_TUB,                      sizeof(Tub),                HT_T_TINY    ,FILL },
   { CN_TX,                       sizeof(Tx),                 HT_T_TINY    ,FILL },

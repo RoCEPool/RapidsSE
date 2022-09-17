@@ -8,6 +8,7 @@
 #include "Bench.hpp"
 #include "CardCtl.hpp"
 #include "Dissector.hpp"
+#include "Transformer.hpp"
 #include "Drafter.hpp"
 #include "Weaver.hpp"
 
@@ -22,10 +23,11 @@ namespace STORE
   
     CardCtl* m_pCardCtl;
   
-    Bench*     m_pBench;
-    Dissector* m_pDissecter;
-    Drafter*   m_pDrafter;
-    Weaver*    m_pWeaver;
+    Bench*       m_pBench;
+    Dissector*   m_pDissector;
+    Transformer* m_pTransformer;
+    Drafter*     m_pDrafter;
+    Weaver*      m_pWeaver;
   
     Card_SubSet* m_pPaste;
 
@@ -52,7 +54,7 @@ namespace STORE
 
     TagSet* pJobTags(void);
   
-    void vOptimise(void);
+    void vTransform(void);
   
     Card_SubSet* pPaste(void);
     void vPipeSpec(VertexSpec* pUnOptPlineSpec);

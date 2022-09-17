@@ -1339,8 +1339,8 @@ void vDdlLockAssertNone(void);
   void vOptimiserDelete(void);
   void vOptimiserDissect(void);
   void vOptimiserGet(void);
-  void vOptimiserOptimise(void);
   void vOptimiserNew(void);
+  void vOptimiserTransform(void);
   void vOptimiserWeave(void);
 
   // operand

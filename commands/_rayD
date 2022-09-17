@@ -17,7 +17,7 @@ load lineItem "../tpch/sf_0001/lineItem.csv" ;
 
 /*
 /transliterated
-/optimise
+/transform
 /interactive
 /weave
 /weaved
@@ -29,7 +29,7 @@ select * from orders;
 
 /jobTags
 /transliterated
-/optimise
+/transform
 /interactive
 /weave
 /weaved
@@ -42,7 +42,7 @@ select *
 /*
 /jobTags
 /transliterated
-/optimise
+/transform
 /interactive
 /weave
 /weaved
