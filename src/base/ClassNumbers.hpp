@@ -36,6 +36,7 @@ enum eCN : u2 // Class Number
   /* */ CN_BIRTH,
   /* */ CN_BOARD,
   /* */ CN_BOLVAL,
+  /* */ CN_BOOLER,
   /* */ CN_BUCKET,
   /* */ CN_BUCKETGET,
   /* */ CN_BUCKETINFO,
@@ -237,6 +238,7 @@ enum eCN : u2 // Class Number
   /* */ CN_PLANOPERAND,
   /* */ CN_POT,
   /* */ CN_PORT,
+  /* */ CN_PREDER,
   /* */ CN_PREDICATE,
   /* */ CN_PREDICATEVEC,
   /* */ CN_PRIMITIVENODE,
@@ -458,6 +460,7 @@ static Stz* aCN[]
   /* */ "BIRTH"_Stz,                // CN_BIRTH
   /* */ "BOARD"_Stz,                // CN_BOARD
   /* */ "BOLVAL"_Stz,               // CN_BOLVAL
+  /* */ "BOOLER"_Stz,               // CN_BOOLER
   /* */ "BUCKET"_Stz,               // CN_BUCKET
   /* */ "BUCKETGET"_Stz,            // CN_BUCKETGET
   /* */ "BUCKETINFO"_Stz,           // CN_BUCKETINFO
@@ -661,6 +664,7 @@ static Stz* aCN[]
   /* */ "PORT"_Stz,                 // CN_PORT
   /* */ "PREDICATE"_Stz,            // CN_PREDICATE
   /* */ "PREDICATEVEC"_Stz,         // CN_PREDICATEVEC
+  /* */ "PREDER"_Stz,               // CN_PREDER
   /* */ "PRIMITIVENODE"_Stz,        // CN_PRIMITIVENODE
   /* */ "PROCEDURE"_Stz,            // CN_PROCEDURE
   /* */ "PROFILE"_Stz,              // CN_PROFILE

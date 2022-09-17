@@ -71,22 +71,28 @@ void Transformer::vTransform(void)
   m_pSimplifier->vSimplify();
   delete m_pSimplifier;
   if (bInteractive)
-    m_pBoard->vPrintBoard("vSimplify_Initial >> "_Stz);
+    m_pBoard->vPrintBoard("Simplifier->vSimplify() >> "_Stz);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  Booler* pBooler  = new Booler(m_pCard_SubSet);
+  pBooler->vBool();
+  delete pBooler;
+  if (bInteractive)
+    m_pBoard->vPrintBoard("pBooler->vBool() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pStreamer  = new Streamer(m_pCard_SubSet);
   m_pStreamer->vStream();
   delete m_pStreamer;
   if (bInteractive)
-    m_pBoard->vPrintBoard("vStreamer_Initial >> "_Stz);
+    m_pBoard->vPrintBoard("pStreamer->vStream() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pJoiner  = new Joiner(m_pCard_SubSet);
   m_pJoiner->vJoin();
   delete m_pJoiner;
   if (bInteractive)
-    m_pBoard->vPrintBoard("vJoiner_Initial >> "_Stz);
-
+    m_pBoard->vPrintBoard("pJoiner->vJoin() >> "_Stz);
 
 }
 

@@ -6,9 +6,12 @@
 #include "BASE.h"
 
 #include "Dissector.hpp"
+
+#include "Booler.hpp"
+#include "Joiner.hpp"
+#include "Preder.hpp"
 #include "Simplifier.hpp"
 #include "Streamer.hpp"
-#include "Joiner.hpp"
 
 namespace STORE
 {
