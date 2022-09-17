@@ -1,17 +1,17 @@
 /*============================================================================*/
-/* Weave.hpp -- Weave of Cards                                      */
+/* Weaver.hpp -- Weaver of Cards                                      */
 /*============================================================================*/
 #pragma once
 
 #include "BASE.h"
 
-#include "Dissect.hpp"
+#include "Dissector.hpp"
 #include "Board.hpp"
 
 
 namespace STORE
 {
-  class Weave : public Object
+  class Weaver : public Object
   {
   protected:
   
@@ -30,8 +30,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Weave(Optimiser* pOptimser);
-   ~Weave(void) noexcept(false);
+    Weaver(Optimiser* pOptimser);
+   ~Weaver(void) noexcept(false);
   
     void vWeaveOptStmt(Board* pBoard);
     Stz* szOptStmt(void);
@@ -111,7 +111,7 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  Weave* _pWeave(void* aAddr);
+  Weaver* _pWeaver(void* aAddr);
 }
 
 /*============================================================================*/

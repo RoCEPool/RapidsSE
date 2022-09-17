@@ -5,7 +5,7 @@
 
 #include "BASE.h"
 
-#include "Dissect.hpp"
+#include "Dissector.hpp"
 
 namespace STORE
 {

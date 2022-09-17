@@ -5,7 +5,7 @@
 
 #include "BASE.h"
 
-#include "Dissect.hpp"
+#include "Dissector.hpp"
 #include "CardRegs.hpp"
 #include "RuleCtl.hpp"
 #include "Resolver.hpp"
@@ -16,16 +16,16 @@
 namespace STORE
 {
   class Bench;
-  class Dissect;
+  class Dissector;
   class Drafter;
-  class Weave;
+  class Weaver;
 
   class Board : public Object //Card_OTHER
   {
     friend class Bench;
-    friend class Dissect;
+    friend class Dissector;
     friend class Drafter;
-    friend class Weave;
+    friend class Weaver;
   protected:
     s32          m_sQueryNm;
     Optimiser*   m_pOptimiser;

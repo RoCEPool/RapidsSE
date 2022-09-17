@@ -144,8 +144,8 @@
 #include "Procedure.hpp"
 
 #include "ReapLock.hpp"
-#include "Dissect.hpp"
-#include "Weave.hpp"
+#include "Dissector.hpp"
+#include "Weaver.hpp"
 #include "Ribbon.hpp"
 #include "RibbonLine.hpp"
 #include "RowTablePtn.hpp"
@@ -329,27 +329,27 @@ SizeHeap gxaSizeHeap[]
   { CN__D__,                     'D' - ('A' - 1),            HT_INVALID   ,FILL },
   { CN_DATATRANSIENT,            sizeof(Heap), /*correct*/   HT_INVALID   ,FILL },
   { CN_DDLLOCK,                  sizeof(DdlLock),            HT_T_TINY    ,FILL },
-  { CN_DECACNT,                  sizeof(DecaCnt),            HT_T_TINY    ,FILL },
-  { CN_DECIDER,                  sizeof(Decider),            HT_T_TINY    ,FILL },
-  { CN_DECK,                     sizeof(Deck),               HT_T_SMALL   ,FILL },
-  { CN_DECKSPEC,                 sizeof(DeckSpec),           HT_T_TINY    ,FILL },
-  { CN_DEFINITIONNODE,           sizeof(DefinitionNode),     HT_V_TINY    ,FILL },
-  { CN_DEREFMETRICS,             sizeof(DerefMetrics),       HT_T_TINY    ,FILL },
-  { CN_DIC,                      sizeof(Dic),                HT_T_TINY    ,FILL },
-  { CN_DICLOCK,                  sizeof(DicLock),            HT_T_TINY    ,FILL },
-  { CN_DICSTACK,                 sizeof(DicStack),           HT_T_TINY    ,FILL },
-  { CN_DIR,                      sizeof(Dir),                HT_T_TINY    ,FILL },
-  { CN_DISSECT,                  sizeof(Dissect),            HT_T_TINY    ,FILL },
-  { CN_DRAFTER,                  sizeof(Drafter),            HT_T_TINY    ,FILL },
-  { CN_DTEVAL,                   sizeof(TypeValueArea),/*yes*/   HT_INVALID   ,FILL },
-  { CN_DYNAMO,                   sizeof(Dynamo),             HT_T_TINY    ,FILL },
+  {CN_DECACNT,                  sizeof(DecaCnt),                HT_T_TINY    , FILL },
+  {CN_DECIDER,                  sizeof(Decider),                HT_T_TINY    , FILL },
+  {CN_DECK,                     sizeof(Deck),                   HT_T_SMALL   , FILL },
+  {CN_DECKSPEC,                 sizeof(DeckSpec),               HT_T_TINY    , FILL },
+  {CN_DEFINITIONNODE,           sizeof(DefinitionNode),         HT_V_TINY    , FILL },
+  {CN_DEREFMETRICS,             sizeof(DerefMetrics),           HT_T_TINY    , FILL },
+  {CN_DIC,                      sizeof(Dic),                    HT_T_TINY    , FILL },
+  {CN_DICLOCK,                  sizeof(DicLock),                HT_T_TINY    , FILL },
+  {CN_DICSTACK,                 sizeof(DicStack),               HT_T_TINY    , FILL },
+  {CN_DIR,                      sizeof(Dir),                    HT_T_TINY    , FILL },
+  {CN_DISSECTOR,                sizeof(Dissector),              HT_T_TINY    , FILL },
+  {CN_DRAFTER,                  sizeof(Drafter),                HT_T_TINY    , FILL },
+  {CN_DTEVAL,                   sizeof(TypeValueArea),/*yes*/   HT_INVALID   , FILL },
+  {CN_DYNAMO,                   sizeof(Dynamo),                 HT_T_TINY    , FILL },
 
-  { CN__E__,                     'E' - ('A' - 1),            HT_INVALID   ,FILL },
-  { CN_EDTVAL,                   sizeof(TypeValueArea),/*yes*/   HT_INVALID   ,FILL },
-  { CN_ENCODING,                 sizeof(Encoding),           HT_T_MEDIUM  ,FILL },
-  { CN_ENT,                      sizeof(Ent),                HT_INVALID   ,FILL },
-  { CN_ENTBUFFER,                sizeof(EntBuffer),          HT_T_LARGE   ,FILL },
-  { CN_ENTBUFSORTER,             sizeof(EntBufSorter),       HT_T_LARGE   ,FILL },
+  {CN__E__,                     'E' - ('A' - 1),                HT_INVALID   , FILL },
+  {CN_EDTVAL,                   sizeof(TypeValueArea),/*yes*/   HT_INVALID   , FILL },
+  {CN_ENCODING,                 sizeof(Encoding),               HT_T_MEDIUM  , FILL },
+  {CN_ENT,                      sizeof(Ent),                    HT_INVALID   , FILL },
+  {CN_ENTBUFFER,                sizeof(EntBuffer),              HT_T_LARGE   , FILL },
+  {CN_ENTBUFSORTER,             sizeof(EntBufSorter),           HT_T_LARGE   , FILL },
   { CN_ENTWRK,                   sizeof(EntWrk),             HT_INVALID   ,FILL },
   { CN_ENUMFLAGS,                sizeof(ClassFlags),         HT_T_TINY    ,FILL },
   { CN_EVENTHANDLERS,            sizeof(EventHandlers),      HT_T_TINY    ,FILL },
@@ -663,26 +663,26 @@ SizeHeap gxaSizeHeap[]
   { CN_TXSET,                    sizeof(TxSet),              HT_T_TINY    ,FILL },
 
   { CN__U__,                     'U' - ('A' - 1),            HT_INVALID   ,FILL },
-  { CN_UNITINT,                  sizeof(UnitInt),            HT_T_TINY    ,FILL },
-  { CN_UT_SKIPLIST,              sizeof(UT_SkipList),        HT_T_LARGE   ,FILL },
+  {CN_UNITINT,                  sizeof(UnitInt),     HT_T_TINY    , FILL },
+  {CN_UT_SKIPLIST,              sizeof(UT_SkipList), HT_T_LARGE   , FILL },
 
-  { CN__V__,                     'V' - ('A' - 1),            HT_INVALID   ,FILL },
-  { CN_VERBOSE,                  sizeof(Verbose),            HT_T_TINY    ,FILL },
-  { CN_VERTEX,                   sizeof(Vertex),             HT_T_SMALL   ,FILL },
-  { CN_VERTEXSPEC,               sizeof(VertexSpec),         HT_T_TINY    ,FILL },
+  {CN__V__,                     'V' - ('A' - 1),     HT_INVALID   , FILL },
+  {CN_VERBOSE,                  sizeof(Verbose),     HT_T_TINY    , FILL },
+  {CN_VERTEX,                   sizeof(Vertex),      HT_T_SMALL   , FILL },
+  {CN_VERTEXSPEC,               sizeof(VertexSpec),  HT_T_TINY    , FILL },
 
-  { CN__W__,                     'W' - ('A' - 1),            HT_INVALID   ,FILL },
-  { CN_WAKEUP,                   sizeof(Wakeup),             HT_INVALID   ,FILL },
-  { CN_WEAVE,                    sizeof(Weave),              HT_T_LARGE   ,FILL },
-  { CN_WILDERNESS,               sizeof(Wilderness),         HT_INVALID   ,FILL },
-  { CN_WORD,                     sizeof(Word),               HT_T_TINY    ,FILL },
-  { CN_WSPCONVERGENT_t,          0,                          HT_INVALID   ,FILL },
+  {CN__W__,                     'W' - ('A' - 1),     HT_INVALID   , FILL },
+  {CN_WAKEUP,                   sizeof(Wakeup),      HT_INVALID   , FILL },
+  {CN_WEAVER,                   sizeof(Weaver),      HT_T_LARGE   , FILL },
+  {CN_WILDERNESS,               sizeof(Wilderness),  HT_INVALID   , FILL },
+  {CN_WORD,                     sizeof(Word),        HT_T_TINY    , FILL },
+  {CN_WSPCONVERGENT_t,          0,                   HT_INVALID   , FILL },
 
-  { CN__X__,                     'X' - ('A' - 1),            HT_INVALID   ,FILL },
+  {CN__X__,                     'X' - ('A' - 1),     HT_INVALID   , FILL },
 
-  { CN__Y__,                     'Y' - ('A' - 1),            HT_INVALID   ,FILL },
+  {CN__Y__,                     'Y' - ('A' - 1),     HT_INVALID   , FILL },
 
-  { CN__Z__,                     'Z' - ('A' - 1),            HT_INVALID   ,FILL },
+  {CN__Z__,                     'Z' - ('A' - 1),     HT_INVALID   , FILL },
 
   { CN_ENUMS,                    C_VARGS_END,                HT_INVALID   ,FILL }
 };

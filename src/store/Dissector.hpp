@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Dissect.hpp -- Dissect                                                     */
+/* Dissector.hpp -- Dissector                                                     */
 /*============================================================================*/
 #pragma once
 
@@ -95,7 +95,7 @@ namespace STORE { class Bench; class Board; class Optimiser; }
 
 namespace STORE
 {
-  class Dissect : public Object
+  class Dissector : public Object
   {
   protected:
   
@@ -117,8 +117,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Dissect(Optimiser* pOptimiser);
-   ~Dissect(void) noexcept(false);
+    Dissector(Optimiser* pOptimiser);
+   ~Dissector(void) noexcept(false);
   
     Board* pDissectSpec(VertexSpec* pPipeSpec);
   
@@ -184,7 +184,7 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  Dissect* _pDissect(void* aAddr);
+  Dissector* _pDissector(void* aAddr);
 }
 
 /*============================================================================*/

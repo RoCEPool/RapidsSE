@@ -81,7 +81,7 @@ enum eCN : u2 // Class Number
   /* */ CN_DICLOCK,
   /* */ CN_DICSTACK,
   /* */ CN_DIR,
-  /* */ CN_DISSECT,
+  /* */ CN_DISSECTOR,
   /* */ CN_DRAFTER,
   /* */ CN_DTEVAL,
   /* */ CN_DYNAMO,
@@ -415,7 +415,7 @@ enum eCN : u2 // Class Number
 
   /* */ CN__W__,
   /* */ CN_WAKEUP,
-  /* */ CN_WEAVE,
+  /* */ CN_WEAVER,
   /* */ CN_WILDERNESS,
   /* */ CN_WORD,
   /* */ CN_WSPCONVERGENT_t,
@@ -502,7 +502,7 @@ static Stz* aCN[]
   /* */ "DICLOCK"_Stz,              // CN_DICLOCK
   /* */ "DICSTACK"_Stz,             // CN_DICSTACK
   /* */ "DIR"_Stz,                  // CN_DIR
-  /* */ "DISSECT"_Stz,              // CN_DISSECT
+  /* */ "DISSECTER"_Stz,            // CN_DISSECTOR
   /* */ "DRAFTER"_Stz,              // CN_DRAFTER
   /* */ "DTEVAL"_Stz,               // CN_DTEVAL
   /* */ "DYNAMO"_Stz,               // CN_DYNAMO
@@ -836,7 +836,7 @@ static Stz* aCN[]
 
   /* */ "_W__"_Stz,                 // CN__W__
   /* */ "WAKEUP"_Stz,               // CN_WAKEUP
-  /* */ "WEAVE"_Stz,                // CN_WEAVE
+  /* */ "WEAVER"_Stz,               // CN_WEAVER
   /* */ "WILDERNESS"_Stz,           // CN_WILDERNESS
   /* */ "WORD"_Stz,                 // CN_WORD
   /* */ "WSPCONVERGENT_t"_Stz,      // CN_WSPCONVERGENT_t
