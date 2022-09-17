@@ -256,8 +256,8 @@ void Optimiser::vTransform(void)
   m_pTransformer->vTransform();
 
 //  pBoard->vSimplify_Initial();
-  if (bInteractive)
-    pBoard->vPrintBoard("vSimplify_Initial >> "_Stz);
+//  if (bInteractive)
+//    pBoard->vPrintBoard("vSimplify_Initial >> "_Stz);
 
 /*
   pBoard->vConvert_Joins();

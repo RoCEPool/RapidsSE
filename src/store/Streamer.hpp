@@ -26,6 +26,7 @@ namespace STORE
   
    ~Streamer(void) noexcept(false);
 
+    void vStream(void);
 
   private:
 

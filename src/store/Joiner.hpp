@@ -23,9 +23,9 @@ namespace STORE
     void  operator delete(void*);
   
     Joiner(Card_SubSet* pCard_SubSet);
-  
    ~Joiner(void) noexcept(false);
 
+    void vJoin(void);
 
   private:
 

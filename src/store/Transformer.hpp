@@ -7,6 +7,8 @@
 
 #include "Dissector.hpp"
 #include "Simplifier.hpp"
+#include "Streamer.hpp"
+#include "Joiner.hpp"
 
 namespace STORE
 {
@@ -20,6 +22,8 @@ namespace STORE
     Card_SubSet* m_pCard_SubSet;
 
     Simplifier*  m_pSimplifier;
+    Streamer*    m_pStreamer;
+    Joiner*      m_pJoiner;
 
     // must be last
     Footer m_xFooter;
