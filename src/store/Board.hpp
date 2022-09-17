@@ -8,6 +8,10 @@
 #include "Dissect.hpp"
 #include "CardRegs.hpp"
 #include "RuleCtl.hpp"
+#include "Resolver.hpp"
+#include "Simplifier.hpp"
+#include "Streamer.hpp"
+#include "Joiner.hpp"
 
 namespace STORE
 {
@@ -23,13 +27,18 @@ namespace STORE
     friend class Drafter;
     friend class Weave;
   protected:
-    s32 m_sQueryNm;
-    Optimiser* m_pOptimiser;
+    s32          m_sQueryNm;
+    Optimiser*   m_pOptimiser;
 
-    CardRegs*  m_pCardRegs;
-    RuleCtl*   m_pRuleCtl;
+    CardRegs*    m_pCardRegs;
+    RuleCtl*     m_pRuleCtl;
 
     Card_SubSet* m_pCard_SubSet;
+
+    Simplifier*   m_pSimplifier;
+    Streamer*     m_pStreamer;
+    Resolver*     m_pResolver;
+    Joiner*       m_pJoiner;
 
   private:
     // must be last
@@ -78,6 +87,7 @@ namespace STORE
     void vResolveJoin                (Card_AbsJoin* pCard_AbsJoin);
     void vResolveJoin2               (Card_AbsJoin* pCard_AbsJoin);
     void vResolveJoin3               (Card_IndexJoin* pCard_IndexJoin);
+    void vAResolveJoin               (Card_IndexJoin* pCard_IndexJoin);
     void vConvertJoin                (Card_AbsJoin* pCard_AbsJoin);
     void vResolveRecursive           (Card*         pAnyCard);
     void vResolveTerm                (Card_Term*    pCard_Term);
@@ -109,7 +119,9 @@ namespace STORE
     void vRank_CandidateIndexes      (void);
   
     void vReduce_Filter              (void);
-  
+
+    void vSimplify_Initial           (void);
+
     //void vResolve_RootStreams        (void);
 
     void vResolve_Filters              (void);
@@ -120,6 +132,8 @@ namespace STORE
     void vConvert_Joins              (void);
 
     void vResolve_Symbols            (void);
+
+    void vAResolve_Joins             (void);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
@@ -152,7 +166,8 @@ namespace STORE
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
     Card_CalcBool*   pTo_CalcBool  (Card_Calc*    pCard_Calc);
-    Card_IndexPred*  pTo_IndexPred (Card_PredCmp* pCard_PredCmp);
+    Card_IndexPred*  pTo_IndexPred (Card_PredCmp* pCard_PredCmp,
+                                    Card_MapSet* pCard_MapSet);
 
   private:
       Footer* aFooter(void);

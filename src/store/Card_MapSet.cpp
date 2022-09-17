@@ -48,8 +48,8 @@ Card_MapSet::Card_MapSet(Index* pIndex, Stz* szPrefix)
     sAltNm.vSprint("%s%s"_Stz,szPrefix,pIdxCol->szColNm());
 
     Card_Map* pCard_Map = new Card_Map;
-    pCard_Map->vMapFrom(pIdxCol->szColNm());
-    pCard_Map->vMapTo(sAltNm);
+    pCard_Map->vMapFrom(sAltNm);
+    pCard_Map->vMapBack(pIdxCol->szColNm());
 
     this->vAppend(pCard_Map);
   }
@@ -63,6 +63,24 @@ Card_MapSet::Card_MapSet(Index* pIndex, Stz* szPrefix)
 Card_MapSet::~Card_MapSet(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* look up mapFrom and return mapBack                                         */
+/*----------------------------------------------------------------------------*/
+Stz* Card_MapSet::szMapBack(Stz* szMapFrom)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  i8 nSubCards = this->nSubCards();
+  for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
+    Card_Map *pCard_Map = _pCard_Map(pGetSubCard(i_SubCard));
+
+    if (pCard_Map->szMapFrom()->bSame(szMapFrom))
+      return pCard_Map->szMapBack();
+  }
+
+  return nullptr;
 }
 
 /*============================================================================*/
