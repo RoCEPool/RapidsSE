@@ -26,7 +26,7 @@ namespace STORE
   
    ~Simplifier(void) noexcept(false);
 
-
+    void vSimplify(void);
   private:
 
     Footer* aFooter(void);

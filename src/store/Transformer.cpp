@@ -27,6 +27,7 @@ Transformer::Transformer(Optimiser* pOptimiser)
   m_pBoard       = nullptr;
   m_pCard_SubSet = nullptr;
 
+  m_pSimplifier  = nullptr;
 
   _checkInitialised_(CN_TRANSFORMER);
   
@@ -57,6 +58,11 @@ void Transformer::vTransform(void)
   m_pBoard = m_pOptimiser->pHeadBoard();
   m_pCard_SubSet = m_pBoard->pCard_SubSet();
 
+  m_pSimplifier  = new Simplifier(m_pCard_SubSet);
+
+  m_pSimplifier->vSimplify();
+
+  delete m_pSimplifier;
 }
 
 

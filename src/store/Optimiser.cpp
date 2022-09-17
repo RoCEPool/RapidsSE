@@ -241,7 +241,6 @@ void Optimiser::vTransform(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
-  m_pTransformer->vTransform();
 
 
   Job* pJob = MY::pJob();
@@ -254,7 +253,9 @@ void Optimiser::vTransform(void)
   if (bInteractive)
     pBoard->vPrintBoard("vDissectSpec >> "_Stz);
 
-  pBoard->vSimplify_Initial();
+  m_pTransformer->vTransform();
+
+//  pBoard->vSimplify_Initial();
   if (bInteractive)
     pBoard->vPrintBoard("vSimplify_Initial >> "_Stz);
 

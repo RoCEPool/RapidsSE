@@ -6,6 +6,7 @@
 #include "BASE.h"
 
 #include "Dissector.hpp"
+#include "Simplifier.hpp"
 
 namespace STORE
 {
@@ -17,6 +18,8 @@ namespace STORE
 
     Board*       m_pBoard;
     Card_SubSet* m_pCard_SubSet;
+
+    Simplifier*  m_pSimplifier;
 
     // must be last
     Footer m_xFooter;
