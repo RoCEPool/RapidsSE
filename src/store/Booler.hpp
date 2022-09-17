@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Booler.hpp --                                                              */
+/* Booler.hpp -- transform <calc> into <calcBool>                             */
 /*============================================================================*/
 #pragma once
 
@@ -28,6 +28,10 @@ namespace STORE
     void vBool(void);
 
   private:
+
+    void vBool(Card* pCard_Filter);
+
+    Card* pTo_CalcBool(Card* pCard_Calc);
 
     Footer* aFooter(void);
   };

@@ -58,6 +58,8 @@ Optimiser::~Optimiser(void) noexcept(false)
   delete m_pDissector;
   delete m_pDrafter;
   delete m_pWeaver;
+
+  delete m_pTransformer;
   
   delete m_pPaste;
 
