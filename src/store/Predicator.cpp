@@ -1,37 +1,37 @@
 /*============================================================================*/
-/* Preder.cpp -- predicate tool                                               */
+/* Predicator.cpp -- predicate tool                                          */
 /*============================================================================*/
 
-#include "Preder.hpp"
+#include "Predicator.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Preder,CN_PREDER)
-__aNewFunction(Preder,CN_PREDER)
-__vDeleteFunction(Preder,CN_PREDER)
-__aFooterFunction(Preder)
+__pCastFunction(STORE, Predicator, CN_PREDICATOR)
+__aNewFunction(Predicator, CN_PREDICATOR)
+__vDeleteFunction(Predicator, CN_PREDICATOR)
+__aFooterFunction(Predicator)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Preder::Preder(Bench* pBench)
-: OptimiserTool(CN_PREDER,pBench)
+Predicator::Predicator(Bench* pBench)
+: OptimiserTool(CN_PREDICATOR, pBench)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PREDER,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PREDICATOR, _FOOTER_);
 
-  _checkInitialised_(CN_PREDER);
+  _checkInitialised_(CN_PREDICATOR);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_PREDER,_FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_PREDICATOR, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Preder::~Preder(void) noexcept(false)
+Predicator::~Predicator(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PREDER,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PREDICATOR, _FOOTER_);
   
 }
 
@@ -43,9 +43,9 @@ Preder::~Preder(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* predicate                                                                  */
 /*----------------------------------------------------------------------------*/
-void Preder::vDiscover(void)
+void Predicator::vDiscover(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PREDER,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PREDICATOR, _FOOTER_);
 
 }
 

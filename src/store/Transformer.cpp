@@ -85,11 +85,11 @@ void Transformer::vTransform(void)
     m_pBoard->vPrintBoard("Streamer::vStream() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  Preder* pPreder  = new Preder(m_pBench);
-  pPreder->vDiscover();
-  delete pPreder;
+  Predicator* pPredicator  = new Predicator(m_pBench);
+  pPredicator->vDiscover();
+  delete pPredicator;
   if (bInteractive)
-    m_pBoard->vPrintBoard("Preder::vDiscover() >> "_Stz);
+    m_pBoard->vPrintBoard("Predicator::vDiscover() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Joiner* pJoiner  = new Joiner(m_pBench);

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Preder.hpp -- predicate tool                                               */
+/* Predicator.hpp -- predicate tool                                           */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class Preder : public OptimiserTool
+  class Predicator : public OptimiserTool
   {
   private:
 
@@ -18,8 +18,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Preder(Bench* pBench);
-   ~Preder(void) noexcept(false);
+    Predicator(Bench* pBench);
+   ~Predicator(void) noexcept(false);
 
     void vDiscover(void);
 
@@ -28,7 +28,7 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  Preder* _pPreder(void* aAddr);
+  Predicator* _pPredicator(void* aAddr);
 }
 /*============================================================================*/
 /* end                                                                        */

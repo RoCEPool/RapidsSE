@@ -9,7 +9,7 @@
 
 #include "Booler.hpp"
 #include "Joiner.hpp"
-#include "Preder.hpp"
+#include "Predicator.hpp"
 #include "Simplifier.hpp"
 #include "Streamer.hpp"
 

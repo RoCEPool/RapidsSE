@@ -249,7 +249,7 @@
 #include "Joiner.hpp"
 #include "Transformer.hpp"
 #include "Booler.hpp"
-#include "Preder.hpp"
+#include "Predicator.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -489,27 +489,27 @@ SizeHeap gxaSizeHeap[]
   { CN_PIPEIN,                   sizeof(PipeIn),             HT_T_TINY    ,FILL },
   { CN_PIPELINE,                 sizeof(Pipeline),           HT_T_TINY    ,FILL },
   { CN_PIPELINEMETRICS,          sizeof(PipelineMetrics),    HT_T_TINY    ,FILL },
-  { CN_PLANDEFINITIONPARSER,     sizeof(PlanDefinitionParser), HT_V_MEDIUM,FILL },
-  { CN_PLANNERLOCK,              sizeof(PlannerLock),        HT_T_TINY    ,FILL },
-  { CN_PLANNODE,                 sizeof(PlanNode),           HT_V_TINY    ,FILL },
-  { CN_PLANNODEBUILDER,          sizeof(PlanNodeBuilder),    HT_T_TINY    ,FILL },
-  { CN_PLANNODEBUILDERLIST,      sizeof(PlanNodeBuilderList),HT_T_TINY    ,FILL },
-  { CN_PLANNODEBUILDERSTACK,     sizeof(PlanNodeBuilderStack), HT_T_MEDIUM,FILL },
-  { CN_PLANNODELIST,             sizeof(PlanNodeList),       HT_T_TINY    ,FILL },
-  { CN_PLANOPERAND,              sizeof(PlanOperand),        HT_T_TINY    ,FILL },
-  { CN_POT,                      sizeof(Pot),                HT_T_LARGE   ,FILL },
-  { CN_PORT,                     sizeof(Port),               HT_T_LARGE   ,FILL },
-  { CN_PREDER,                   sizeof(Preder),/*yes*/      HT_T_TINY   ,FILL },
-  { CN_PREDICATE,                sizeof(Predicate),          HT_T_TINY    ,FILL },
-  { CN_PREDICATEVEC,             sizeof(PredicateVec),       HT_T_MEDIUM  ,FILL },
-  { CN_PRIMITIVENODE,            sizeof(PrimitiveNode),      HT_V_TINY    ,FILL },
-  { CN_PROCEDURE,                sizeof(Procedure),          HT_T_MEDIUM  ,FILL },
-  { CN_PROFILE,                  sizeof(Profile),            HT_T_MEDIUM  ,FILL },
-  { CN_PSXTHD,                   sizeof(PsxThd),             HT_T_TINY    ,FILL },
-  { CN_PTNDEF,                   sizeof(PtnDef),             HT_T_MEDIUM  ,FILL },
-  { CN_PTNID,                    sizeof(LglPtn),              HT_T_TINY    ,FILL },
-  { CN_PTNSTMCURSOR,             sizeof(PtnStm_cursor),      HT_T_TINY    ,FILL },
-  { CN_PTNSTREAM,                sizeof(PtnStream),          HT_T_TINY    ,FILL },
+  {CN_PLANDEFINITIONPARSER, sizeof(PlanDefinitionParser),   HT_V_MEDIUM,   FILL },
+  {CN_PLANNERLOCK,          sizeof(PlannerLock),            HT_T_TINY    , FILL },
+  {CN_PLANNODE,             sizeof(PlanNode),               HT_V_TINY    , FILL },
+  {CN_PLANNODEBUILDER,      sizeof(PlanNodeBuilder),        HT_T_TINY    , FILL },
+  {CN_PLANNODEBUILDERLIST,  sizeof(PlanNodeBuilderList),    HT_T_TINY    , FILL },
+  {CN_PLANNODEBUILDERSTACK, sizeof(PlanNodeBuilderStack),   HT_T_MEDIUM,   FILL },
+  {CN_PLANNODELIST,         sizeof(PlanNodeList),           HT_T_TINY    , FILL },
+  {CN_PLANOPERAND,          sizeof(PlanOperand),            HT_T_TINY    , FILL },
+  {CN_POT,                  sizeof(Pot),                    HT_T_LARGE   , FILL },
+  {CN_PORT,                 sizeof(Port),                   HT_T_LARGE   , FILL },
+  {CN_PREDICATOR,           sizeof(Predicator),/*yes*/      HT_T_TINY   ,  FILL },
+  {CN_PREDICATE,            sizeof(Predicate),              HT_T_TINY    , FILL },
+  {CN_PREDICATEVEC,         sizeof(PredicateVec),           HT_T_MEDIUM  , FILL },
+  {CN_PRIMITIVENODE,        sizeof(PrimitiveNode),          HT_V_TINY    , FILL },
+  {CN_PROCEDURE,            sizeof(Procedure),              HT_T_MEDIUM  , FILL },
+  {CN_PROFILE,              sizeof(Profile),                HT_T_MEDIUM  , FILL },
+  {CN_PSXTHD,               sizeof(PsxThd),                 HT_T_TINY    , FILL },
+  {CN_PTNDEF,               sizeof(PtnDef),                 HT_T_MEDIUM  , FILL },
+  {CN_PTNID,                sizeof(LglPtn),                 HT_T_TINY    , FILL },
+  {CN_PTNSTMCURSOR,         sizeof(PtnStm_cursor),          HT_T_TINY    , FILL },
+  {CN_PTNSTREAM,            sizeof(PtnStream),              HT_T_TINY    , FILL },
   { CN_PTRVAL,                   sizeof(TypeValueArea),/*yes*/   HT_INVALID   ,FILL },
 
   { CN__Q__,                     'Q' - ('A' - 1),            HT_INVALID   ,FILL },
