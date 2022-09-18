@@ -64,7 +64,7 @@ void Transformer::vTransform(void)
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  Simplifier* pSimplifier  = new Simplifier(m_pCard_SubSet);
+  Simplifier* pSimplifier  = new Simplifier(m_pBench);
   pSimplifier->vSimplify();
   delete pSimplifier;
   if (bInteractive)
@@ -78,21 +78,21 @@ void Transformer::vTransform(void)
     m_pBoard->vPrintBoard("Booler::vBool() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  Streamer* pStreamer  = new Streamer(m_pCard_SubSet);
+  Streamer* pStreamer  = new Streamer(m_pBench);
   pStreamer->vStream();
   delete pStreamer;
   if (bInteractive)
     m_pBoard->vPrintBoard("Streamer::vStream() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  Preder* pPreder  = new Preder(m_pCard_SubSet);
-  pPreder->vPred();
+  Preder* pPreder  = new Preder(m_pBench);
+  pPreder->vDiscover();
   delete pPreder;
   if (bInteractive)
-    m_pBoard->vPrintBoard("Streamer::vStream() >> "_Stz);
+    m_pBoard->vPrintBoard("Preder::vDiscover() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  Joiner* pJoiner  = new Joiner(m_pCard_SubSet);
+  Joiner* pJoiner  = new Joiner(m_pBench);
   pJoiner->vJoin();
   delete pJoiner;
   if (bInteractive)

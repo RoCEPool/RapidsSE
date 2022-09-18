@@ -41,11 +41,6 @@ Board::Board(Stz* szQueryNm, Optimiser* pOptimiser)
 
   m_pCard_SubSet = new Card_SubSet;
 
-  m_pSimplifier  = new Simplifier(m_pCard_SubSet);
-  m_pStreamer    = new Streamer(m_pCard_SubSet);
-  m_pResolver    = new Resolver(m_pCard_SubSet);
-  m_pJoiner      = new Joiner(m_pCard_SubSet);
-
   //_checkInitialised_(CN_BOARD);
   _checkInitialisedSize_(sizeof(Board));
   
@@ -63,11 +58,6 @@ Board::~Board(void) noexcept(false)
   delete m_pRuleCtl;
 
   delete m_pCard_SubSet;
-
-  delete m_pSimplifier;
-  delete m_pStreamer;
-  delete m_pResolver;
-  delete m_pJoiner;
 }
 
 
@@ -439,6 +429,16 @@ void Board::vQueryNm(Stz* szQueryNm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
   m_sQueryNm = szQueryNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vRemoveMainCard(Card* pMainCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+ m_pCard_SubSet->vRemove(pMainCard);
 }
 
 /*----------------------------------------------------------------------------*/

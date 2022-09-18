@@ -32,7 +32,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Transformer(Optimiser* pOptimiserh);
+    Transformer(Optimiser* pOptimiser);
   
    ~Transformer(void) noexcept(false);
 

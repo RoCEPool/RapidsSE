@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Preder.cpp --                                                              */
+/* Preder.cpp -- predicate tool                                               */
 /*============================================================================*/
 
 #include "Preder.hpp"
@@ -16,12 +16,10 @@ __aFooterFunction(Preder)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Preder::Preder(Card_SubSet* pCard_SubSet)
-: Object(CN_PREDER)
+Preder::Preder(Bench* pBench)
+: OptimiserTool(CN_PREDER,pBench)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PREDER,_FOOTER_);
-
-  m_pCard_SubSet = pCard_SubSet;
 
   _checkInitialised_(CN_PREDER);
   
@@ -43,9 +41,9 @@ Preder::~Preder(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* stream                                                                     */
+/* predicate                                                                  */
 /*----------------------------------------------------------------------------*/
-void Preder::vPred(void)
+void Preder::vDiscover(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PREDER,_FOOTER_);
 

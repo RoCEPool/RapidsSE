@@ -3,17 +3,13 @@
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
-
-#include "Dissector.hpp"
+#include "OptimiserTool.hpp"
 
 namespace STORE
 {
-  class Joiner : public Object
+  class Joiner : public OptimiserTool
   {
   private:
-
-    Card_SubSet* m_pCard_SubSet;
 
     // must be last
     Footer m_xFooter;
@@ -22,7 +18,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Joiner(Card_SubSet* pCard_SubSet);
+    Joiner(Bench* pBench);
    ~Joiner(void) noexcept(false);
 
     void vJoin(void);

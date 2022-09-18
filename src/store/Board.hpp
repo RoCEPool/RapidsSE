@@ -8,10 +8,6 @@
 #include "Dissector.hpp"
 #include "CardRegs.hpp"
 #include "RuleCtl.hpp"
-#include "Resolver.hpp"
-#include "Simplifier.hpp"
-#include "Streamer.hpp"
-#include "Joiner.hpp"
 
 namespace STORE
 {
@@ -34,11 +30,6 @@ namespace STORE
     RuleCtl*     m_pRuleCtl;
 
     Card_SubSet* m_pCard_SubSet;
-
-    Simplifier*   m_pSimplifier;
-    Streamer*     m_pStreamer;
-    Resolver*     m_pResolver;
-    Joiner*       m_pJoiner;
 
   private:
     // must be last
@@ -74,6 +65,8 @@ namespace STORE
 
     Stz* szQueryNm(void);
     void vQueryNm(Stz* szQueryNm);
+
+    void vRemoveMainCard(Card* pMainCard);
 
     void vRenumberMainCards(void);
 

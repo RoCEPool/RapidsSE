@@ -16,12 +16,11 @@ __aFooterFunction(Resolver)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Resolver::Resolver(Card_SubSet* pCard_SubSet)
-: Object(CN_RESOLVER)
+Resolver::Resolver(Bench* pBench)
+: OptimiserTool(CN_RESOLVER,pBench)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RESOLVER,_FOOTER_);
 
-  m_pCard_SubSet = pCard_SubSet;
   m_pStream_a    = nullptr;
   m_pStream_b    = nullptr;
 
@@ -72,7 +71,7 @@ void Resolver::vLocateStreams(Card* pMainCard)
 
   //i8 nMainCards = m_pCard_SubSet->nMainCards();
   for (i8 i_Test = pMainCard->iCardNo(); i_Test >= 0; i_Test--) {
-    Card *pTestCard = m_pCard_SubSet->pGet(i_Test);
+    Card *pTestCard = m_pBoard->pGetMainCard(i_Test);
 
     if (CK_ABSJOIN == pTestCard->eCard()) {
       vLocateStreams_two(_pCard_AbsJoin(pTestCard));

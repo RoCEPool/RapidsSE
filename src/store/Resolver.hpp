@@ -3,17 +3,13 @@
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
-
-#include "Dissector.hpp"
+#include "OptimiserTool.hpp"
 
 namespace STORE
 {
-  class Resolver : public Object
+  class Resolver : public OptimiserTool
   {
   private:
-
-    Card_SubSet* m_pCard_SubSet;
 
     Card_Stream* m_pStream_a;
     Card_Stream* m_pStream_b;
@@ -25,7 +21,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Resolver(Card_SubSet* pCard_SubSet);
+    Resolver(Bench* pBench);
   
    ~Resolver(void) noexcept(false);
 

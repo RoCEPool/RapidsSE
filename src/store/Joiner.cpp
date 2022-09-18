@@ -16,12 +16,10 @@ __aFooterFunction(Joiner)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Joiner::Joiner(Card_SubSet* pCard_SubSet)
-: Object(CN_JOINER)
+Joiner::Joiner(Bench* pBench)
+: OptimiserTool(CN_JOINER,pBench)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOINER,_FOOTER_);
-
-  m_pCard_SubSet = pCard_SubSet;
 
   _checkInitialised_(CN_JOINER);
   

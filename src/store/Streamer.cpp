@@ -16,12 +16,10 @@ __aFooterFunction(Streamer)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Streamer::Streamer(Card_SubSet* pCard_SubSet)
-: Object(CN_STREAMER)
+Streamer::Streamer(Bench* pBench)
+: OptimiserTool(CN_STREAMER,pBench)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMER,_FOOTER_);
-
-  m_pCard_SubSet = pCard_SubSet;
 
   _checkInitialised_(CN_STREAMER);
   

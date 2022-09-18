@@ -1,19 +1,15 @@
 /*============================================================================*/
-/* Preder.hpp --                                                              */
+/* Preder.hpp -- predicate tool                                               */
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
-
-#include "Dissector.hpp"
+#include "OptimiserTool.hpp"
 
 namespace STORE
 {
-  class Preder : public Object
+  class Preder : public OptimiserTool
   {
   private:
-
-    Card_SubSet* m_pCard_SubSet;
 
     // must be last
     Footer m_xFooter;
@@ -22,10 +18,10 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Preder(Card_SubSet* pCard_SubSet);
+    Preder(Bench* pBench);
    ~Preder(void) noexcept(false);
 
-    void vPred(void);
+    void vDiscover(void);
 
   private:
 
