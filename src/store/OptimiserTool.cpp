@@ -8,15 +8,13 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-OptimiserTool::OptimiserTool(eCN eClass, Card_SubSet* pCard_SubSet, Bench* pBench)
+OptimiserTool::OptimiserTool(eCN eClass, Bench* pBench)
 : Object(eClass)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
   m_pBench = pBench;
   m_pBoard = m_pBench->pHead();
-
-  m_pCard_SubSet = pCard_SubSet;
 
   _postcondition_(_ADDRESS_,_MAGIC_);
 }

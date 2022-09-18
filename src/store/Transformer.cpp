@@ -71,7 +71,7 @@ void Transformer::vTransform(void)
     m_pBoard->vPrintBoard("Simplifier::vSimplify() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  Booler* pBooler  = new Booler(m_pCard_SubSet, m_pBench);
+  Booler* pBooler  = new Booler(m_pBench);
   pBooler->vBool();
   delete pBooler;
   if (bInteractive)

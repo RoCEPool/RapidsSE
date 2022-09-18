@@ -16,8 +16,8 @@ __aFooterFunction(Booler)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Booler::Booler(Card_SubSet* pCard_SubSet, Bench* pBench)
-: OptimiserTool(CN_BOOLER,pCard_SubSet,pBench)
+Booler::Booler(Bench* pBench)
+: OptimiserTool(CN_BOOLER,pBench)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOOLER,_FOOTER_);
 
@@ -47,9 +47,9 @@ void Booler::vBool(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOOLER,_FOOTER_);
 
-  i8 nMainCards = m_pCard_SubSet->nSubCards();
+  i8 nMainCards = m_pBoard->nMainCards();
   for (i8 i_MainCard = 0; i_MainCard < nMainCards; i_MainCard++) {
-    Card* pMainCard =  m_pCard_SubSet->pGetSubCard(i_MainCard);
+    Card* pMainCard =  m_pBoard->pGetMainCard(i_MainCard);
 
     if (CK_FILTER != pMainCard->eCard())
       continue;

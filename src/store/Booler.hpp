@@ -18,7 +18,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Booler(Card_SubSet* pCard_SubSet, Bench* pBench);
+    Booler(Bench* pBench);
    ~Booler(void) noexcept(false);
 
     void vBool(void);
