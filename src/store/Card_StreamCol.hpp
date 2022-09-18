@@ -17,6 +17,8 @@ namespace STORE
   
     Card_StreamCol(void);
    ~Card_StreamCol(void) noexcept(false);
+
+    Stz* szStreamColNm(void);
   };
 
   Card_StreamCol* _pCard_StreamCol(void* aAddr);

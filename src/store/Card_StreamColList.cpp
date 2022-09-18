@@ -78,6 +78,20 @@ Card_StreamColList::~Card_StreamColList(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get <streamColList>                                                       */
+/*----------------------------------------------------------------------------*/
+Card_StreamCol* Card_StreamColList::pGet_streamCol(i8 i_StreamColNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_StreamCol *pCard_StreamCol
+      = _pCard_StreamCol(pGetSubCard(i_StreamColNo));
+
+  return pCard_StreamCol;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* pre-pend given prefix to each As                                           */
 /*----------------------------------------------------------------------------*/
 void Card_StreamColList::vPrependToAs(Stz* szPrefix)
@@ -157,6 +171,17 @@ void Card_StreamColList::vPopulate(Card_AggElist* pCard_AggElist)
     pCard_StreamCol->vAppend(new Card_Type(pCard_Type->szType()));
   }
 
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of stream columns                                               */
+/*----------------------------------------------------------------------------*/
+i8 Card_StreamColList::nStreamCols(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  i8 nStreamCols = nSubCards();
+  return nStreamCols;
 }
 
 /*============================================================================*/

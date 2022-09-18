@@ -6,6 +6,7 @@
 #include "BASE.h"
 
 #include "Card_SUB.hpp"
+#include "Card_StreamColList.hpp"
 
 namespace STORE
 {
@@ -17,9 +18,14 @@ namespace STORE
   
     Card_Stream(void);
    ~Card_Stream(void) noexcept(false);
-  
+
     void vApplyOrder(Card_Stream* pCard_Stream_src);
-  };
+
+    Card_StreamCol*     pGet_streamCol(i8 i_Col);
+    Card_StreamColList* pGet_streamColList(void);
+
+    i8 nStreamCols(void);
+   };
 
   Card_Stream* _pCard_Stream(void* aAddr);
   bool _bIsCard_Stream(void* aAddr);

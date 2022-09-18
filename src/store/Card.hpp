@@ -21,8 +21,10 @@
 
 
 namespace STORE { class Board;
-                  class Card; class Card_Properties;
-                  class Card_SubSet; class Card_Term; }
+                  class Card;
+                  class Card_Properties;
+                  class Card_SubSet;
+                  class Card_Term; }
 
 namespace STORE
 {
@@ -38,6 +40,7 @@ namespace STORE
     void vRemoveSubCards(eCK eCard);
   };
 
+  typedef ListExoIter_t<Card> CardIter;
 
 
   class Card : public Object
@@ -132,6 +135,8 @@ namespace STORE
     void vMark1(char cMark1);
     char cMark2(void);
     void vMark2(char cMark2);
+
+    CardIter* pNewSubCardIter(void);
 
     i8   nProperties(void);
     eTN  eProperty(i8 i_Property);
@@ -278,6 +283,7 @@ namespace STORE
   protected:
     Footer* aFooter(void);
   };
+
 
   Card* _pCard(void* aAddr);
 }

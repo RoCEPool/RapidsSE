@@ -11,8 +11,8 @@ namespace STORE
   {
   private:
 
-    Card_Stream* m_pStream_a;
-    Card_Stream* m_pStream_b;
+    Card_Stream* m_pStream_l;
+    Card_Stream* m_pStream_r;
 
     // must be last
     Footer m_xFooter;
@@ -25,11 +25,10 @@ namespace STORE
   
    ~Resolver(void) noexcept(false);
 
-    void vResolve(Card* pMainCard, Stz* szTerm, Stz*& rszStreamNm, Stz*& rszStreamColNm);
+    void vResolve(Card* pMainCard, Stz* szTerm, String* pStreamNm, String* pStreamColNm);
 
   private:
     void vLocateStreams(Card* pMainCard);
-    void vLocateStreams_two(Card_AbsJoin* pCard_AbsJoin);
 
     void vSet_Stream_a(Card_Scan* pCard_Scan);
     void vSet_Stream_b(Card_Scan* pCard_Scan);

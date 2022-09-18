@@ -43,6 +43,8 @@
 #include "Card_IndexPred.hpp"
 #include "Card_IndexScan.hpp"
 
+#include "Card_JoinPred.hpp"
+
 #include "Card_LBound.hpp"
 #include "Card_Limit.hpp"
 

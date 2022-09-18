@@ -55,9 +55,14 @@ namespace STORE
 
     Card* pGetMainCard(i8 i_MainCard);
     Card* pGetMainCard(i8 i_MainCard, eCK& reCard);
-  
+
+    void vInsertMainCard_after(Card* pNewMainCard, Card* pAfterMainCard, bool bRenumber=true);
+    void vInsertMainCard_before(Card* pNewMainCard, Card* pBeforeMainCard, bool bRenumber=true);
+
     i8   nMainCards(void);
-  
+
+    CardIter* pNewMainCardIter(void);
+
     void vPinCards(Ribbon* pRibbon, i8 i_Board);
   
     void vPrintBoard(Stz* szCue=nullptr);

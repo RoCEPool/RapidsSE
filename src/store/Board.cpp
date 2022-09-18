@@ -146,34 +146,6 @@ void Board::vDeleteFromTill(Card* pFrom, Card* pTillBefore)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card* Board::pGetMainCard(i8 i_MainCard)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  Card* pMainCard = m_pCard_SubSet->pGet(i_MainCard);
-  return pMainCard;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card* Board::pGetMainCard(i8 i_MainCard, eCK& reCard)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  Card* pMainCard = m_pCard_SubSet->pGet(i_MainCard);
-  
-  if (pMainCard)
-    reCard = pMainCard->eCard();
-  else
-    reCard = CK_NONE;
-
-  return pMainCard;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 Card* Board::pFindMain(Stz* szCardNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
@@ -226,6 +198,62 @@ Card* Board::pFindNextMain(Card* pAfter, eCK eFindCard)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card* Board::pGetMainCard(i8 i_MainCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  Card* pMainCard = m_pCard_SubSet->pGet(i_MainCard);
+  return pMainCard;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card* Board::pGetMainCard(i8 i_MainCard, eCK& reCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  Card* pMainCard = m_pCard_SubSet->pGet(i_MainCard);
+
+  if (pMainCard)
+    reCard = pMainCard->eCard();
+  else
+    reCard = CK_NONE;
+
+  return pMainCard;
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert new main card after given card                                      */
+/*----------------------------------------------------------------------------*/
+void Board::vInsertMainCard_after(Card* pNewMainCard, Card* pAfterMainCard,
+                                  bool bRenumber)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  m_pCard_SubSet->vInsertAfter(pNewMainCard,pAfterMainCard);
+
+  if (bRenumber)
+    vRenumberMainCards();
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert new main card before given card                                     */
+/*----------------------------------------------------------------------------*/
+void Board::vInsertMainCard_before(Card* pNewMainCard, Card* pBeforeMainCard,
+                                   bool bRenumber)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  m_pCard_SubSet->vInsertBefore(pNewMainCard,pBeforeMainCard);
+
+  if (bRenumber)
+    vRenumberMainCards();
+}
+
+/*----------------------------------------------------------------------------*/
 /* get number of cards                                                        */
 /*----------------------------------------------------------------------------*/
 i8 Board::nMainCards(void)
@@ -235,6 +263,18 @@ i8 Board::nMainCards(void)
   i8 nCards = this->m_pCard_SubSet->nItems();
   
   return nCards;
+}
+
+/*----------------------------------------------------------------------------*/
+/* new a main card iterator                                                   */
+/*----------------------------------------------------------------------------*/
+CardIter* Board::pNewMainCardIter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  CardIter* pMainCardIter = m_pCard_SubSet->pNewSubCardIter();
+
+  return pMainCardIter;
 }
 
 /*----------------------------------------------------------------------------*/

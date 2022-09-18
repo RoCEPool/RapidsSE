@@ -360,7 +360,9 @@ eGC Card::eToECatg(eCK eCard)
     case CK_INDEXJOIN:  return GC_MAIN;
     case CK_INDEXPRED:                   return GC_SUB;
     case CK_INDEXSCAN:  return GC_MAIN;
-                        
+
+    case CK_JOINPRED:   return GC_MAIN;
+
     case CK_LBOUND:                      return GC_SUB;
     case CK_LIMIT:      return GC_MAIN;
 
@@ -1886,6 +1888,18 @@ void Card::vMark2(char cMark2)
 }
 
 /*----------------------------------------------------------------------------*/
+/* new a card iterator                                                        */
+/*----------------------------------------------------------------------------*/
+CardIter* Card::pNewSubCardIter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  CardIter* pCardIter = (CardIter*)pNewIter();
+
+  return pCardIter;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get mode                                                                   */
 /*----------------------------------------------------------------------------*/
 Stz* Card::szMode(void)
@@ -2518,7 +2532,9 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
     case CK_INDEXJOIN:                  vPrintProperties(pRibbon,iDepth); break;
     case CK_INDEXPRED:                  vPrintProperties(pRibbon,iDepth); break;
     case CK_INDEXSCAN:                  vPrintProperties(pRibbon,iDepth); break;
-          
+
+    case CK_JOINPRED:                   vPrintProperties(pRibbon,iDepth); break;
+
     case CK_LBOUND:                     vPrintProperties(pRibbon,iDepth); break;
     case CK_LIMIT:                      vPrintProperties(pRibbon,iDepth); break;
 

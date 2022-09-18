@@ -6,6 +6,7 @@
 #include "BASE.h"
 
 #include "Card_SUB.hpp"
+#include "Card_StreamCol.hpp"
 
 namespace STORE
 {
@@ -22,9 +23,13 @@ namespace STORE
     Card_StreamColList(Card_AggElist* pCard_AggElist);
    ~Card_StreamColList(void) noexcept(false);
 
+    Card_StreamCol* pGet_streamCol(i8 i_StreamColNo);
+
     void vPrependToAs(Stz* szPrefix);
     void vPopulate(StreamDef* pStreamDef, Stz* szPrefix_opt=nullptr);
     void vPopulate(Card_AggElist* pCard_AggElist);
+
+    i8 nStreamCols(void);
   };
 
   Card_StreamColList* _pCard_StreamColList(void* aAddr);

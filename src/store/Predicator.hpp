@@ -24,6 +24,8 @@ namespace STORE
     void vDiscover(void);
 
   private:
+    //void vDiscoverRecursive(Card* pAnyCard, Card* pMainCard_filter);
+    void vDiscoverRecursive(Card* pMainCard_filter);
 
     Footer* aFooter(void);
   };

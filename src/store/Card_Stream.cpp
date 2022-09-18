@@ -90,6 +90,48 @@ void Card_Stream::vApplyOrder(Card_Stream* pCard_Stream_src)
     this->vAppend(pCard_ObyElist_dst);
 }
 
+/*----------------------------------------------------------------------------*/
+/* get a specific <streamCol>                                                 */
+/*----------------------------------------------------------------------------*/
+Card_StreamCol* Card_Stream::pGet_streamCol(i8 i_Col)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_StreamColList* pCard_StreamColList = pGet_streamColList();
+
+  Card_StreamCol* pCard_StreamCol = pCard_StreamColList->pGet_streamCol(i_Col);
+
+  return pCard_StreamCol;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get <streamColList>                                                       */
+/*----------------------------------------------------------------------------*/
+Card_StreamColList* Card_Stream::pGet_streamColList(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_StreamColList* pCard_StreamColList
+    = _pCard_StreamColList(pFindSubCard(CK_STREAMCOLLIST));
+
+  return pCard_StreamColList;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of stream columns                                               */
+/*----------------------------------------------------------------------------*/
+i8 Card_Stream::nStreamCols(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_StreamColList* pCard_StreamColList = pGet_streamColList();
+
+  i8 nStreamCols = pCard_StreamColList->nStreamCols();
+
+  return nStreamCols;
+}
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
