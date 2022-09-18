@@ -44,6 +44,8 @@ namespace STORE
 
     static void vRepair(Object* pObject);
 
+    Bench* pBench(void);
+
     CardCtl* pCardCtl(void);
   
     void vDissect(VertexSpec* pm_pUnOptPipeSpec);

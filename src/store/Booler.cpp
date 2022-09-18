@@ -16,12 +16,10 @@ __aFooterFunction(Booler)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Booler::Booler(Card_SubSet* pCard_SubSet)
-: Object(CN_BOOLER)
+Booler::Booler(Card_SubSet* pCard_SubSet, Bench* pBench)
+: OptimiserTool(CN_BOOLER,pCard_SubSet,pBench)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOOLER,_FOOTER_);
-
-  m_pCard_SubSet = pCard_SubSet;
 
   _checkInitialised_(CN_BOOLER);
   

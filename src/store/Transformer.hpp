@@ -3,9 +3,9 @@
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
-
 #include "Dissector.hpp"
+
+#include "Bench.hpp"
 
 #include "Booler.hpp"
 #include "Joiner.hpp"
@@ -21,12 +21,9 @@ namespace STORE
 
     Optimiser*   m_pOptimiser;
 
+    Bench*       m_pBench;
     Board*       m_pBoard;
     Card_SubSet* m_pCard_SubSet;
-
-    Simplifier*  m_pSimplifier;
-    Streamer*    m_pStreamer;
-    Joiner*      m_pJoiner;
 
     // must be last
     Footer m_xFooter;
@@ -35,7 +32,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Transformer(Optimiser* pOptimiser);
+    Transformer(Optimiser* pOptimiserh);
   
    ~Transformer(void) noexcept(false);
 

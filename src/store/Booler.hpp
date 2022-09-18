@@ -3,17 +3,13 @@
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
-
-#include "Dissector.hpp"
+#include "OptimiserTool.hpp"
 
 namespace STORE
 {
-  class Booler : public Object
+  class Booler : public OptimiserTool
   {
   private:
-
-    Card_SubSet* m_pCard_SubSet;
 
     // must be last
     Footer m_xFooter;
@@ -22,7 +18,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Booler(Card_SubSet* pCard_SubSet);
+    Booler(Card_SubSet* pCard_SubSet, Bench* pBench);
    ~Booler(void) noexcept(false);
 
     void vBool(void);

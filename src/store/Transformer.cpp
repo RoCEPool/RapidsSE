@@ -25,12 +25,9 @@ Transformer::Transformer(Optimiser* pOptimiser)
 
   m_pOptimiser   = pOptimiser;
 
-  m_pBoard       = nullptr;
+  m_pBench       = m_pOptimiser->pBench();
+  m_pBoard       = m_pBench->pHead();
   m_pCard_SubSet = nullptr;
-
-  m_pSimplifier  = nullptr;
-  m_pStreamer    = nullptr;
-  m_pJoiner      = nullptr;
 
   _checkInitialised_(CN_TRANSFORMER);
   
@@ -67,32 +64,39 @@ void Transformer::vTransform(void)
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  m_pSimplifier  = new Simplifier(m_pCard_SubSet);
-  m_pSimplifier->vSimplify();
-  delete m_pSimplifier;
+  Simplifier* pSimplifier  = new Simplifier(m_pCard_SubSet);
+  pSimplifier->vSimplify();
+  delete pSimplifier;
   if (bInteractive)
-    m_pBoard->vPrintBoard("Simplifier->vSimplify() >> "_Stz);
+    m_pBoard->vPrintBoard("Simplifier::vSimplify() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  Booler* pBooler  = new Booler(m_pCard_SubSet);
+  Booler* pBooler  = new Booler(m_pCard_SubSet, m_pBench);
   pBooler->vBool();
   delete pBooler;
   if (bInteractive)
-    m_pBoard->vPrintBoard("pBooler->vBool() >> "_Stz);
+    m_pBoard->vPrintBoard("Booler::vBool() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  m_pStreamer  = new Streamer(m_pCard_SubSet);
-  m_pStreamer->vStream();
-  delete m_pStreamer;
+  Streamer* pStreamer  = new Streamer(m_pCard_SubSet);
+  pStreamer->vStream();
+  delete pStreamer;
   if (bInteractive)
-    m_pBoard->vPrintBoard("pStreamer->vStream() >> "_Stz);
+    m_pBoard->vPrintBoard("Streamer::vStream() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  m_pJoiner  = new Joiner(m_pCard_SubSet);
-  m_pJoiner->vJoin();
-  delete m_pJoiner;
+  Preder* pPreder  = new Preder(m_pCard_SubSet);
+  pPreder->vPred();
+  delete pPreder;
   if (bInteractive)
-    m_pBoard->vPrintBoard("pJoiner->vJoin() >> "_Stz);
+    m_pBoard->vPrintBoard("Streamer::vStream() >> "_Stz);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  Joiner* pJoiner  = new Joiner(m_pCard_SubSet);
+  pJoiner->vJoin();
+  delete pJoiner;
+  if (bInteractive)
+    m_pBoard->vPrintBoard("Joiner::vJoin() >> "_Stz);
 
 }
 
