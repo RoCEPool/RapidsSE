@@ -26,6 +26,8 @@ namespace STORE
 
   private:
 
+    void vResolveRecursive(Card* pCard);
+
     Footer* aFooter(void);
   };
 
