@@ -16,12 +16,18 @@ namespace STORE
     Bench*       m_pBench;
     Board*       m_pBoard;
 
+    CardIter*    m_pMainCardIter;
+
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
     TransformerTool(eCN eClass, Bench* pBench);
    ~TransformerTool(void) noexcept(false);
+
+    void vBeginIteration(void);
+    Card* pEachMain(eCK eCard);
+    void vEndIteration(void);
 
     Card* pFindMainOf(Card* pSubCard);
 
