@@ -5,10 +5,11 @@
 print "Non-Correlated sub queries";
 
 _lineitem
-/time load lineitem "<tpch_dir>/lineitem.<suffix>";
+///time load lineitem "<tpch_dir>/lineitem.<suffix>";
+load lineitem "../DATA/TPCH/lineitem10.csv";
 
 select * from dummy;
-
+/*
 trackMemory;
 
 //----------------------------------------------------
@@ -80,12 +81,11 @@ pipeline __subQueryDropTable
 
 MemoryLeaks;
 
-/*
 
 EXPLAIN with_names STAGE transliterate
  SELECT l_orderkey FROM ( SELECT * from lineitem);
 
-pipeline unamed
+pipeline Q1
 begin
   pipeline __subquery0003
   begin
@@ -107,6 +107,7 @@ begin
       | stageStart
   end
 
+  __mainQuery
   stage stageStart on origin :
     start
     | pulse once
@@ -126,7 +127,106 @@ begin
 
 */
 
+//verbose enable;
+
+ pipeline testPipeline
+  begin
+ stage stageStart on origin :
+    start
+    | pulse once
+    | next
+
+
+  stage testPipeline_a on origin :
+
+      execOnStart "
+      pipeline __subquery0001
+        begin
+            stage __subquery0003_a on origin :
+              start
+              | pulse once
+              | next
+
+            stage __subquery0003_b on all partitions :
+              scan rapidsse public lineitem
+              | project expr type INTEGER as l_orderkey $1
+              | combined 0
+              | next
+
+            stage __subquery0003_c on all nodes :
+              createTableNC SQTBL
+              | next
+
+           stage __subquery0003_d on origin :
+              next broadcast
+
+           stage __subquery0003_e on all nodes :
+             insert SQTBL
+             | next
+
+            stage __subquery0003_f on origin :
+              sink
+              | first
+          end"
+        | next
+
+    stage __mainSubQuery_a on all partitions :
+        scan rapidsse public SQTBL
+        | project expr type INTEGER as l_orderkey $1
+        | combined 0
+    | next
+
+    stage __subQueryDropTable_a on origin :
+
+    execOnEnd "
+            pipeline __subQueryDropTable
+              begin
+
+                stage stageA on origin :
+                    start
+                  | pulse once
+                  | next
+
+                stage stageB on all partitions :
+                    truncateTable SQTBL
+                  | next
+
+                stage stageC on all nodes :
+                    dropTable SQTBL
+                  | next
+
+                stage stageD on origin :
+                  sink
+                  | first
+
+              end"
+
+     | next
+
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+  end ;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*
+
+
+
 
 // table subquery
 EXPLAIN with_names STAGE aggregateSplit, transliterate
