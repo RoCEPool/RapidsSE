@@ -24,7 +24,8 @@ namespace STORE
     void vJoin(void);
 
   private:
-    Card_IndexPred*  pTo_IndexPred (Card_PredCmp* pCard_PredCmp);
+    Card_IndexPred*  pTo_IndexPred (Card_AbsJoin* pCard_AbsJoin,
+                                    Card_PredCmp* pCard_PredCmp);
 
     Footer* aFooter(void);
   };

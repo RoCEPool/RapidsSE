@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "Joiner.hpp"
+#include "Resolver.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -62,7 +63,7 @@ void Joiner::vJoin(void)
 
 
     Card_PredCmp* pCard_PredCmp = _pCard_PredCmp(pCard_JoinPred->pFindSubCard(CK_CARD)->pCard());
-    Card_IndexPred* pCard_IndexPred = pTo_IndexPred(pCard_PredCmp);
+    Card_IndexPred* pCard_IndexPred = pTo_IndexPred(pCard_AbsJoin,pCard_PredCmp);
     pCard_AbsJoin->vAppend(pCard_IndexPred);
 
   }
@@ -77,47 +78,60 @@ void Joiner::vJoin(void)
 /*----------------------------------------------------------------------------*/
 /* convert a calculation into a boolean calculaiton                           */
 /*----------------------------------------------------------------------------*/
-Card_IndexPred* Joiner::pTo_IndexPred(Card_PredCmp* pCard_PredCmp)
+Card_IndexPred* Joiner::pTo_IndexPred(Card_AbsJoin* pCard_AbsJoin,
+                                      Card_PredCmp* pCard_PredCmp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_JOINER, _FOOTER_);
 
-  Card_IndexPred* pCard_IndexPred = new Card_IndexPred;
+  Card_IndexPred *pCard_IndexPred = new Card_IndexPred;
 
 //  pCard_IndexPred->vAppend(new Card_Term("BOUND"_Stz));
 //  pCard_IndexPred->vAppend(new Card_Term("$I1"_Stz));
 //  pCard_IndexPred->vAppend(new Card_Term("$L1"_Stz));
 //  pCard_IndexPred->vAppend(new Card_Term("=="_Stz));
 
+  Resolver *pResolver = new Resolver(m_pBench);
+
   pCard_IndexPred->vAppend(new Card_Term("BOUND"_Stz));
 
-  Card_Term* pCard_Term_0 = _pCard_Term(pCard_PredCmp->pGetSubCard(0));
-  Stz* szTerm_0 = pCard_Term_0->szTerm();
-  Card_Term* pCard_Term_1 = _pCard_Term(pCard_PredCmp->pGetSubCard(1));
-  Stz* szTerm_1 = pCard_Term_1->szTerm();
+  Card_Term *pCard_Term_0 = _pCard_Term(pCard_PredCmp->pGetSubCard(0));
+  Stz *szTerm_0 = pCard_Term_0->szTerm();
+  Card_Term *pCard_Term_1 = _pCard_Term(pCard_PredCmp->pGetSubCard(1));
+  Stz *szTerm_1 = pCard_Term_1->szTerm();
 
-  Stz* szPred_0 = szTerm_0;
-  Stz* szPred_1 = szTerm_1;
+  Stz *szPred_0 = szTerm_0;
+  Stz *szPred_1 = szTerm_1;
 
-//  Stz* szMapBack = pCard_MapSet->szMapBack(szTerm_0);
-//  if (szMapBack) {
-//    szPred_0 = szMapBack;
-//    szPred_1 = szTerm_1;
-//  }
-//  else {
-//    szPred_1 = szTerm_0;
-//    szPred_0 = pCard_MapSet->szMapBack(szTerm_1);
-//  }
+  s256 sStreamNm_0;
+  s256 sStreamColNm_0;
+
+  pResolver->vResolve(pCard_AbsJoin, szTerm_0,
+                      sStreamNm_0, sStreamColNm_0);
+
+  s256 sStreamNm_1;
+  s256 sStreamColNm_1;
+
+  pResolver->vResolve(pCard_AbsJoin, szTerm_1,
+                      sStreamNm_1, sStreamColNm_1);
+
+  if (sStreamNm_0.bSame("L"_Stz)) {
+    szPred_0 = szTerm_1;
+    szPred_1 = szTerm_0;
+  }
+  else {
+    szPred_0 = szTerm_0;
+    szPred_1 = szTerm_1;
+  }
 
   pCard_IndexPred->vAppend(new Card_Term(szPred_0));
   pCard_IndexPred->vAppend(new Card_Term(szPred_1));
 
   pCard_IndexPred->vAppend(new Card_Term(pCard_PredCmp->szCmp()));
 
+  delete pResolver;
+
   return pCard_IndexPred;
-
 }
-
-
 
 /*============================================================================*/
 /* end                                                                        */
