@@ -15,18 +15,6 @@
       group by o_orderpriority
       order by o_orderpriority;
 
-      select o_orderpriority, count(*) as order_count
-           from orders
-           where o_orderdate >= '1993-07-01'
-            and o_orderdate < '1993-10-01'
-            and o_orderkey in  (
-            select o_orderkey
-            from lineitem
-            where l_commitdate < l_receiptdate )
-            group by o_orderpriority
-            order by o_orderpriority;
-
-
 */
 
 //------------------------------------------------------------------------------
@@ -44,6 +32,129 @@ explain stage transliterate
       and l_commitdate < l_receiptdate )
       group by o_orderpriority
       order by o_orderpriority;
+
+pipeline unamed
+begin
+  pipeline __subquery0003
+    params "o_orderkey "
+  begin
+    stage stageStart on origin :
+      start
+      | pulse once
+      | stageMarker0967
+    stage stageMarker0967 on all partitions :
+      scan rapidsse public LineItem
+      | filter " type BOOLEAN  $1 ==  $12 $13 <  and  "
+      | project " type INTEGER as L_ORDERKEY $1 , type INTEGER as L_PARTKEY $2 , type INTEGER as L_SUPPKEY $3 , type INTEGER as L_LINENUMBER $4 , type DECIMAL as L_QUANTITY $5 , type DECIMAL as L_EXTENDEDPRICE $6 , type DECIMAL as L_DISCOUNT $7 , type DECIMAL as L_TAX $8 , type VARCHAR as L_RETURNFLAG $9 , type VARCHAR as L_LINESTATUS $10 , type DATE as L_SHIPDATE $11 , type DATE as L_COMMITDATE $12 , type DATE as L_RECEIPTDATE $13 , type VARCHAR as L_SHIPINSTRUCT $14 , type VARCHAR as L_SHIPMODE $15 , type VARCHAR as L_COMMENT $16 "
+      | combined 0
+      | stageMarker0970
+    stage stageMarker0970 on all partitions :
+
+      stageLast
+    stage stageLast on origin :
+      output
+      | sink
+      | stageStart
+  end
+
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0973
+  stage stageMarker0973 on all partitions :
+    scan rapidsse public orders
+    | filter " type BOOLEAN  $5 DATE ''1993-07-01''  >=  $5 DATE ''1993-10-01''  <  and  $1 __subquery0003  exists  and  "
+    | aggreg " groupBy  type VARCHAR as o_orderpriority $6 aggregates  type VARCHAR $K1 , type INTEGER )  countAll  "
+    | combined 0
+    | stageMarker0976
+  stage stageMarker0976 on all nodes :
+    aggreg " groupBy  type VARCHAR as o_orderpriority $1 aggregates  type VARCHAR $K1 , type INTEGER )  $2 sum  "
+    | combined 0
+    | stageMarker0979
+  stage stageMarker0979 on origin :
+    aggreg " groupBy  type VARCHAR as o_orderpriority $1 aggregates  type VARCHAR $K1 , type INTEGER as order_count )  $2 sum  "
+    | sort " type VARCHAR as o_orderpriority $1 ASC  "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+*/
+
+pipeline Q4
+begin
+
+  stage first on origin :
+    start
+    | pulse once
+    | next
+
+  //
+  // Q4_0:
+  //   a) scan Orders /O_CUSTKEY/  # _custkey    _orderkey
+  //
+
+  // ∀ ORDERS π O_ORDERKEY as _orderkey
+  stage Gs_ORDERS on all partitions :
+    scan orders
+    | filter " type BOOLEAN O_ORDERDATE DATE '1993-07-01' >=
+                              O_ORDERDATE DATE '1993-10-01' < and "
+    | project expr type INTEGER as _orderkey O_ORDERKEY ,
+                     type VARCHAR as O_ORDERPRIORITY O_ORDERPRIORITY
+    | hash "type INTEGER $1"
+    | combined 0
+    | next hashcast
+
+  stage Gs_ORDERS_a on all partitions :
+    keyExists lineitem IxL_ORDERKEY  "BOUND $I1 _orderkey =="
+                                       "type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
+    | combined 0
+    | next
+
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+  stage G_CNT_P on all partitions :
+    aggreg expr groupby type VARCHAR O_ORDERPRIORITY
+                aggregates
+                type VARCHAR as O_ORDERPRIORITY $K1 ,
+                type INTEGER as ORDER_COUNT ) countAll
+
+    | combined 0
+    | next
+
+  stage G_CNT_N on all nodes :
+    aggreg expr groupby type VARCHAR O_ORDERPRIORITY
+                aggregates
+                type VARCHAR as O_ORDERPRIORITY $K1 ,
+                type INTEGER as ORDER_COUNT ) ORDER_COUNT sum
+
+    | combined 0
+    | next
+
+  stage G_CNT_O on origin :
+    aggreg expr groupby type VARCHAR O_ORDERPRIORITY
+                aggregates
+                type VARCHAR as O_ORDERPRIORITY $K1 ,
+                type INTEGER as ORDER_COUNT ) ORDER_COUNT sum
+
+    | combined 0
+    | next
+
+  stage last on origin :
+    output
+    | sink
+    | first
+
+end ;
+
+rows:
+ ('1-URGENT',9)
+ ('2-HIGH',7)
+ ('3-MEDIUM',13)
+ ('4-NOT SPECIFIED',8)
+ ('5-LOW',12)
 
 CLEANUP {
   bye;
