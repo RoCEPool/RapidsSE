@@ -1,37 +1,37 @@
 /*============================================================================*/
-/* Deleter.cpp --                                                           */
+/* Searcher.cpp --                                                           */
 /*============================================================================*/
 
-#include "Deleter.hpp"
+#include "Searcher.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Deleter,CN_SIMPLIFIER)
-__aNewFunction(Deleter,CN_SIMPLIFIER)
-__vDeleteFunction(Deleter,CN_SIMPLIFIER)
-__aFooterFunction(Deleter)
+__pCastFunction(STORE,Searcher,CN_SEARCHER)
+__aNewFunction(Searcher,CN_SEARCHER)
+__vDeleteFunction(Searcher,CN_SEARCHER)
+__aFooterFunction(Searcher)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Deleter::Deleter(Bench* pBench)
-: TransformerTool(CN_SIMPLIFIER, pBench)
+Searcher::Searcher(Bench* pBench)
+: TransformerTool(CN_SEARCHER, pBench)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SIMPLIFIER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEARCHER,_FOOTER_);
 
-  _checkInitialised_(CN_SIMPLIFIER);
+  _checkInitialised_(CN_SEARCHER);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_SIMPLIFIER,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_SEARCHER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Deleter::~Deleter(void) noexcept(false)
+Searcher::~Searcher(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SIMPLIFIER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEARCHER,_FOOTER_);
   
 }
 
@@ -41,14 +41,27 @@ Deleter::~Deleter(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* simplify                                                                   */
+/* search for parent of given sub card                                        */
 /*----------------------------------------------------------------------------*/
-void Deleter::vDelete(void)
+Card* Searcher::pFindMainOf(Card* pGivenCard)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SIMPLIFIER,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
+  Card *pMainCard = nullptr;
+
+  CardIter *pMainCardIter = m_pBoard->pNewMainCardIter();
+
+  while (pMainCardIter->bHasNext()) {
+    Card *pMainCard = pMainCardIter->pNext();
+
+    if (pMainCard->bHasSubCard(pGivenCard))
+      break;
+  }
+
+  delete pMainCardIter;
+
+  return pMainCard;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/

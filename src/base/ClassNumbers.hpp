@@ -77,7 +77,6 @@ enum eCN : u2 // Class Number
   /* */ CN_DECK,
   /* */ CN_DECKSPEC,
   /* */ CN_DEFINITIONNODE,
-  /* */ CN_DELETER,
   /* */ CN_DEREFMETRICS,
   /* */ CN_DIC,
   /* */ CN_DICLOCK,
@@ -105,6 +104,7 @@ enum eCN : u2 // Class Number
   /* */ CN_FIFO,
   /* */ CN_FILE,
   /* */ CN_FILEMAP,
+  /* */ CN_FILTRATE,
   /* */ CN_FIPVAL,
   /* */ CN_FLATTEN,
   /* */ CN_FLTVAL,
@@ -301,6 +301,7 @@ enum eCN : u2 // Class Number
   /* */ CN_SCHEDULER,
   /* */ CN_SCHEMA,
   /* */ CN_SEAPI,
+  /* */ CN_SEARCHER,
   /* */ CN_SEDEPUTY,
   /* */ CN_SEEME,
   /* */ CN_SENCELL,
@@ -502,7 +503,6 @@ static Stz* aCN[]
   /* */ "DECK"_Stz,                 // CN_DECK
   /* */ "DECKSPEC"_Stz,             // CN_DECKSPEC
   /* */ "DEFINITIONNODE"_Stz,       // CN_DEFINITIONNODE
-  /* */ "DELETER"_Stz,              // CN_DELETER
   /* */ "DEREFMETRICS"_Stz,         // CN_DEREFMETRICS
   /* */ "DIC"_Stz,                  // CN_DIC
   /* */ "DICLOCK"_Stz,              // CN_DICLOCK
@@ -530,6 +530,7 @@ static Stz* aCN[]
   /* */ "FIFO"_Stz,                 // CN_FIFO
   /* */ "FILE"_Stz,                 // CN_FILE
   /* */ "FILEMAP"_Stz,              // CN_FILEMAP
+  /* */ "FILTRATE"_Stz,             // CN_FILTRATE
   /* */ "FIPVAL"_Stz,               // CN_FIPVAL
   /* */ "FLATTEN"_Stz,              // CN_FLATTEN
   /* */ "FLTVAL"_Stz,               // CN_FLTVAL
@@ -726,6 +727,7 @@ static Stz* aCN[]
   /* */ "SCHEDULER"_Stz,            // CN_SCHEDULER
   /* */ "SCHEMA"_Stz,               // CN_SCHEMA
   /* */ "SEAPI"_Stz,                // CN_SEAPI
+  /* */ "SEARCHER"_Stz,             // CN_SEARCHER
   /* */ "SEDEPUTY"_Stz,             // CN_SEDEPUTY
   /* */ "SEEME"_Stz,                // CN_SEEME
   /* */ "SENCELL"_Stz,              // CN_SENCELL

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Deleter.hpp --                                                             */
+/* Searcher.hpp --                                                             */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class Deleter : public TransformerTool
+  class Searcher : public TransformerTool
   {
   private:
 
@@ -18,17 +18,18 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Deleter(Bench* pBench);
+    Searcher(Bench* pBench);
   
-   ~Deleter(void) noexcept(false);
+   ~Searcher(void) noexcept(false);
 
-    void vDelete(void);
+    Card* pFindMainOf(Card* pSubCard);
+
   private:
 
     Footer* aFooter(void);
   };
 
-  Deleter* _pDeleter(void* aAddr);
+  Searcher* _pSearcher(void* aAddr);
 }
 /*============================================================================*/
 /* end                                                                        */

@@ -978,6 +978,27 @@ void Card::vHasLBound(bool bHasLBound)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is given card a sub card of this card?                                     */
+/*----------------------------------------------------------------------------*/
+bool Card::bHasSubCard(Card* pGivenCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  i8 nSubCards = this->nSubCards();
+  for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
+    Card *pSubCard = pGetSubCard(i_SubCard);
+
+    if (pSubCard == pGivenCard)
+      return true;
+
+    if (pSubCard->bHasSubCard(pGivenCard))
+      return true;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* does card have given property ?                                            */
 /*----------------------------------------------------------------------------*/
 bool Card::bHasProperty(Stz* szName)
