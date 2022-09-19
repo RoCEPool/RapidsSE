@@ -22,8 +22,11 @@ namespace STORE
   
    ~Filtrate(void) noexcept(false);
 
+    void vBool(void);
     void vDelete(void);
   private:
+    void vBool(Card* pCard_Filter);
+    Card* pTo_CalcBool(Card* pCard_Calc);
 
     Footer* aFooter(void);
   };

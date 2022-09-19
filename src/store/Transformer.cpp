@@ -28,7 +28,6 @@ Transformer::Transformer(Optimiser* pOptimiser)
   m_pBench       = m_pOptimiser->pBench();
   m_pBoard       = nullptr;
 
-  m_pBooler      = nullptr;
   m_pCurator     = nullptr;
   m_pFiltrate    = nullptr;
   m_pJoiner      = nullptr;
@@ -47,7 +46,6 @@ Transformer::~Transformer(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMER,_FOOTER_);
 
-  delete m_pBooler;
   delete m_pCurator;
   delete m_pFiltrate;
   delete m_pJoiner;
@@ -73,8 +71,8 @@ void Transformer::vTransform(void)
 
   m_pBoard = m_pOptimiser->pHeadBoard();
 
-  m_pBooler     = new Booler(m_pBench);
   m_pCurator    = new Curator(m_pBench);
+  m_pFiltrate   = new Filtrate(m_pBench);
   m_pJoiner     = new Joiner(m_pBench);
   m_pPredicator = new Predicator(m_pBench);
   m_pStreamer   = new Streamer(m_pBench);
@@ -86,9 +84,9 @@ void Transformer::vTransform(void)
     m_pBoard->vPrintBoard("Curator::vInitial_Simplification() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  m_pBooler->vBool();
+  m_pFiltrate->vBool();
   if (bInteractive)
-    m_pBoard->vPrintBoard("Booler::vBool() >> "_Stz);
+    m_pBoard->vPrintBoard("Filtrate::vBool() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pStreamer->vStream();
