@@ -6,12 +6,13 @@
 #include "BASE.h"
 
 #include "Board.hpp"
+#include "OptimiserTool.hpp"
 
 namespace STORE { class Bench; class Board; class Optimiser; }
 
 namespace STORE
 {
-  class Dissector : public Object
+  class Dissector : public OptimiserTool
   {
   protected:
   

@@ -19,7 +19,7 @@ __aFooterFunction(Dissector)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Dissector::Dissector(Optimiser* pOptimiser)
-: Object(CN_DISSECTOR)
+: OptimiserTool(CN_DISSECTOR)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
         
