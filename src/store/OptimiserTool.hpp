@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
+#include "Bench.hpp"
 
 namespace STORE
 {

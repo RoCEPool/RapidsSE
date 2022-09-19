@@ -3,9 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
-
-#include "Board.hpp"
 #include "OptimiserTool.hpp"
 
 namespace STORE { class Bench; class Board; class Optimiser; }
@@ -21,8 +18,8 @@ namespace STORE
     Board*     m_pBoard;
 
     VertexSpec*  m_pPipeSpec;
-    StageSpec* m_pStageSpec;
-    OpSpec*    m_pOpSpec;
+    StageSpec*   m_pStageSpec;
+    OpSpec*      m_pOpSpec;
 
     bool m_bSawAggOp;
 

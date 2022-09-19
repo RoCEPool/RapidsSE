@@ -3,16 +3,13 @@
 /*============================================================================*/
 #pragma once
 
-#include "Dissector.hpp"
-
-#include "Bench.hpp"
+#include "OptimiserTool.hpp"
 
 #include "Booler.hpp"
 #include "Joiner.hpp"
 #include "Predicator.hpp"
 #include "Simplifier.hpp"
 #include "Streamer.hpp"
-#include "OptimiserTool.hpp"
 
 namespace STORE
 {

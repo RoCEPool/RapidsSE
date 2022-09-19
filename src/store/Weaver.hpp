@@ -3,12 +3,8 @@
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
-
-#include "Dissector.hpp"
 #include "Board.hpp"
 #include "OptimiserTool.hpp"
-
 
 namespace STORE
 {

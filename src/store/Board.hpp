@@ -93,7 +93,6 @@
 #include "StageSpec.hpp"
 #include "OpSpec.hpp"
 
-#include "Dissector.hpp"
 #include "CardRegs.hpp"
 #include "RuleCtl.hpp"
 
