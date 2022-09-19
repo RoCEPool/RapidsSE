@@ -12,10 +12,11 @@
 #include "Predicator.hpp"
 #include "Simplifier.hpp"
 #include "Streamer.hpp"
+#include "OptimiserTool.hpp"
 
 namespace STORE
 {
-  class Transformer : public Object
+  class Transformer : public OptimiserTool
   {
   private:
 

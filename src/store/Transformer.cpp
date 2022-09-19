@@ -19,7 +19,7 @@ __aFooterFunction(Transformer)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Transformer::Transformer(Optimiser* pOptimiser)
-: Object(CN_TRANSFORMER)
+: OptimiserTool(CN_TRANSFORMER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMER,_FOOTER_);
 

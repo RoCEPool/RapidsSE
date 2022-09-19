@@ -7,11 +7,12 @@
 
 #include "Dissector.hpp"
 #include "Board.hpp"
+#include "OptimiserTool.hpp"
 
 
 namespace STORE
 {
-  class Weaver : public Object
+  class Weaver : public OptimiserTool
   {
   protected:
   

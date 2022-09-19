@@ -3,10 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "Dissector.hpp"
-
-#include "Bench.hpp"
-#include "Optimiser.hpp"
+#include "BASE.h"
 
 namespace STORE
 {

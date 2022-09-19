@@ -19,7 +19,7 @@ __aFooterFunction(Weaver)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Weaver::Weaver(Optimiser* pOptimiser)
-: Object(CN_WEAVER)
+: OptimiserTool(CN_WEAVER)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
         
