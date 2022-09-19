@@ -1,37 +1,37 @@
 /*============================================================================*/
-/* Simplifier.cpp --                                                           */
+/* Curator.cpp --                                                           */
 /*============================================================================*/
 
-#include "Simplifier.hpp"
+#include "Curator.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Simplifier,CN_SIMPLIFIER)
-__aNewFunction(Simplifier,CN_SIMPLIFIER)
-__vDeleteFunction(Simplifier,CN_SIMPLIFIER)
-__aFooterFunction(Simplifier)
+__pCastFunction(STORE, Curator, CN_CURATOR)
+__aNewFunction(Curator, CN_CURATOR)
+__vDeleteFunction(Curator, CN_CURATOR)
+__aFooterFunction(Curator)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Simplifier::Simplifier(Bench* pBench)
-: TransformerTool(CN_SIMPLIFIER, pBench)
+Curator::Curator(Bench* pBench)
+: TransformerTool(CN_CURATOR, pBench)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SIMPLIFIER,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CURATOR, _FOOTER_);
 
-  _checkInitialised_(CN_SIMPLIFIER);
+  _checkInitialised_(CN_CURATOR);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_SIMPLIFIER,_FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_CURATOR, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Simplifier::~Simplifier(void) noexcept(false)
+Curator::~Curator(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SIMPLIFIER,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CURATOR, _FOOTER_);
   
 }
 
@@ -43,9 +43,9 @@ Simplifier::~Simplifier(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* simplify                                                                   */
 /*----------------------------------------------------------------------------*/
-void Simplifier::vSimplify(void)
+void Curator::vInitial_Simplification(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SIMPLIFIER,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CURATOR, _FOOTER_);
 
   i8 i_Test;
 

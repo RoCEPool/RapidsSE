@@ -68,6 +68,7 @@ enum eCN : u2 // Class Number
   /* */ CN_CRWTOROW,
   /* */ CN_CSVBUFFER,
   /* */ CN_CSVMETA,
+  /* */ CN_CURATOR,
 
   /* */ CN__D__,
   /* */ CN_DATATRANSIENT,
@@ -312,7 +313,6 @@ enum eCN : u2 // Class Number
   /* */ CN_SHAPE,
   /* */ CN_SHORTCUT,
   /* */ CN_SHORTCUTVEC,
-  /* */ CN_SIMPLIFIER,
   /* */ CN_SINCE,
   /* */ CN_SKIPLIST,
   /* */ CN_SKIPNODE,
@@ -494,6 +494,7 @@ static Stz* aCN[]
   /* */ "CRWTOROW"_Stz,             // CN_CRWTOROW
   /* */ "CSVBUFFER"_Stz,            // CN_CSVBUFFER
   /* */ "CSVMETA"_Stz,              // CN_CSVMETA
+  /* */ "CURATOR"_Stz,              // CN_CURATOR
 
   /* */ "_D__"_Stz,                 // CN__D__
   /* */ "DATATRANSIENT"_Stz,        // CN_DATATRANSIENT
@@ -738,7 +739,6 @@ static Stz* aCN[]
   /* */ "SHAPE"_Stz,                // CN_SHAPE
   /* */ "SHORTCUT"_Stz,             // CN_SHORTCUT
   /* */ "SHORTCUTVEC"_Stz,          // CN_SHORTCUTVEC
-  /* */ "SIMPLIFIER"_Stz,           // CN_SIMPLIFIER
   /* */ "SINCE"_Stz,                // CN_SINCE
   /* */ "SKIPLIST"_Stz,             // CN_SKIPLIST
   /* */ "SKIPNODE"_Stz,             // CN_SKIPNODE

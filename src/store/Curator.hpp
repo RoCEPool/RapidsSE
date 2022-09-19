@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Simplifier.hpp --                                                           */
+/* Curator.hpp --                                                           */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class Simplifier : public TransformerTool
+  class Curator : public TransformerTool
   {
   private:
 
@@ -18,17 +18,17 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Simplifier(Bench* pBench);
+    Curator(Bench* pBench);
   
-   ~Simplifier(void) noexcept(false);
+   ~Curator(void) noexcept(false);
 
-    void vSimplify(void);
+    void vInitial_Simplification(void);
   private:
 
     Footer* aFooter(void);
   };
 
-  Simplifier* _pSimplifier(void* aAddr);
+  Curator* _pCurator(void* aAddr);
 }
 /*============================================================================*/
 /* end                                                                        */
