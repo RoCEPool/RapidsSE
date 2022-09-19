@@ -5,6 +5,94 @@
 
 #include "BASE.h"
 
+#include "eTE.h"
+
+#include "Card.hpp"
+#include "CardCtl.hpp"
+
+#include "Card_AbsJoin.hpp"
+#include "Card_AggElist.hpp"
+#include "Card_AggLevel.hpp"
+#include "Card_Aggreg.hpp"
+#include "Card_Aggregates.hpp"
+#include "Card_As.hpp"
+
+#include "Card_Calc.hpp"
+#include "Card_CalcBool.hpp"
+#include "Card_CandIndex.hpp"
+#include "Card_Card.hpp"
+#include "Card_Combine.hpp"
+
+#include "Card_Debug.hpp"
+#include "Card_Direction.hpp"
+
+#include "Card_EBound.hpp"
+#include "Card_Exists.hpp"
+#include "Card_Expr.hpp"
+#include "Card_ExprBool.hpp"
+
+#include "Card_Filter.hpp"
+
+#include "Card_GbyElist.hpp"
+#include "Card_Generate.hpp"
+
+#include "Card_Hash.hpp"
+#include "Card_Having.hpp"
+
+#include "Card_Index.hpp"
+#include "Card_IndexJoin.hpp"
+#include "Card_IndexPred.hpp"
+#include "Card_IndexScan.hpp"
+
+#include "Card_JoinPred.hpp"
+
+#include "Card_LBound.hpp"
+#include "Card_Limit.hpp"
+
+#include "Card_Map.hpp"
+#include "Card_MapSet.hpp"
+#include "Card_Mode.hpp"
+
+#include "Card_Name.hpp"
+
+#include "Card_On.hpp"
+#include "Card_Option.hpp"
+#include "Card_OrdAgg.hpp"
+#include "Card_ObyElist.hpp"
+
+#include "Card_PredAnd.hpp"
+#include "Card_PredCmp.hpp"
+#include "Card_PredOr.hpp"
+#include "Card_Project.hpp"
+#include "Card_ProjElist.hpp"
+
+#include "Card_RBound.hpp"
+#include "Card_Rows.hpp"
+#include "Card_RpnTerms.hpp"
+
+#include "Card_SbyElist.hpp"
+#include "Card_Scan.hpp"
+#include "Card_Send.hpp"
+#include "Card_SendKind.hpp"
+#include "Card_Sends.hpp"
+#include "Card_Sort.hpp"
+#include "Card_Stage.hpp"
+#include "Card_StageTopo.hpp"
+#include "Card_Stream.hpp"
+#include "Card_StreamElist.hpp"
+#include "Card_SubSet.hpp"
+
+#include "Card_Table.hpp"
+#include "Card_Term.hpp"
+#include "Card_Type.hpp"
+
+#include "Card_UBound.hpp"
+#include "Card_Unique.hpp"
+
+#include "VertexSpec.hpp"
+#include "StageSpec.hpp"
+#include "OpSpec.hpp"
+
 #include "Dissector.hpp"
 #include "CardRegs.hpp"
 #include "RuleCtl.hpp"
@@ -14,6 +102,7 @@ namespace STORE
   class Bench;
   class Dissector;
   class Drafter;
+  class Optimiser;
   class Weaver;
 
   class Board : public Object //Card_OTHER
