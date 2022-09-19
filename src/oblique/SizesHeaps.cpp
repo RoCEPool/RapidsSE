@@ -250,6 +250,7 @@
 #include "Transformer.hpp"
 #include "Booler.hpp"
 #include "Predicator.hpp"
+#include "Deleter.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -338,6 +339,7 @@ SizeHeap gxaSizeHeap[]
   {CN_DECK,                     sizeof(Deck),                   HT_T_SMALL   , FILL },
   {CN_DECKSPEC,                 sizeof(DeckSpec),               HT_T_TINY    , FILL },
   {CN_DEFINITIONNODE,           sizeof(DefinitionNode),         HT_V_TINY    , FILL },
+  {CN_DELETER,                  sizeof(Deleter),                HT_T_TINY    , FILL },
   {CN_DEREFMETRICS,             sizeof(DerefMetrics),           HT_T_TINY    , FILL },
   {CN_DIC,                      sizeof(Dic),                    HT_T_TINY    , FILL },
   {CN_DICLOCK,                  sizeof(DicLock),                HT_T_TINY    , FILL },

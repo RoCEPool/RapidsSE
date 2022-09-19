@@ -77,6 +77,7 @@ enum eCN : u2 // Class Number
   /* */ CN_DECK,
   /* */ CN_DECKSPEC,
   /* */ CN_DEFINITIONNODE,
+  /* */ CN_DELETER,
   /* */ CN_DEREFMETRICS,
   /* */ CN_DIC,
   /* */ CN_DICLOCK,
@@ -501,6 +502,7 @@ static Stz* aCN[]
   /* */ "DECK"_Stz,                 // CN_DECK
   /* */ "DECKSPEC"_Stz,             // CN_DECKSPEC
   /* */ "DEFINITIONNODE"_Stz,       // CN_DEFINITIONNODE
+  /* */ "DELETER"_Stz,              // CN_DELETER
   /* */ "DEREFMETRICS"_Stz,         // CN_DEREFMETRICS
   /* */ "DIC"_Stz,                  // CN_DIC
   /* */ "DICLOCK"_Stz,              // CN_DICLOCK
