@@ -23,6 +23,8 @@ namespace STORE
     TransformerTool(eCN eClass, Bench* pBench);
    ~TransformerTool(void) noexcept(false);
 
+    Card* pFindMainOf(Card* pSubCard);
+
   private:
 
   };

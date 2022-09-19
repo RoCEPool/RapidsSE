@@ -106,6 +106,13 @@ void Transformer::vTransform(void)
   if (bInteractive)
     m_pBoard->vPrintBoard("Joiner::vAppend_index() >> "_Stz);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // remove <predCmp> (in <joinPred>) from all <filter>
+  m_pFiltrate->vRemove_predCmp();
+  if (bInteractive)
+    m_pBoard->vPrintBoard("Filtrate::vRemove_predCmp() >> "_Stz);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   m_pJoiner->vDelete_joinPred();
   if (bInteractive)

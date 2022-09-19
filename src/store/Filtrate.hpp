@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Filtrate.hpp --                                                             */
+/* Filtrate.hpp --                                                            */
 /*============================================================================*/
 #pragma once
 
@@ -23,7 +23,8 @@ namespace STORE
    ~Filtrate(void) noexcept(false);
 
     void vBool(void);
-    void vDelete(void);
+    void vRemove_predCmp(void);
+
   private:
     void vBool(Card* pCard_Filter);
     Card* pTo_CalcBool(Card* pCard_Calc);

@@ -84,14 +84,33 @@ void Filtrate::vBool(Card* pCard_Filter)
 }
 
 /*----------------------------------------------------------------------------*/
-/* simplify                                                                   */
+/* remove <predCmp> (in <joinPred>) from all <filter>                         */
 /*----------------------------------------------------------------------------*/
-void Filtrate::vDelete(void)
+void Filtrate::vRemove_predCmp(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTRATE,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
 
+  CardIter *pMainCardIter = m_pBoard->pNewMainCardIter();
+
+  while (pMainCardIter->bHasNext()) {
+    Card* pMainCard = pMainCardIter->pNext();
+
+    if (CK_JOINPRED != pMainCard->eCard())
+      continue;
+
+    Card_JoinPred* pCard_joinPred = _pCard_JoinPred(pMainCard);
+
+    Card_Card* pCard_card = _pCard_Card(pCard_joinPred->pFindSubCard(CK_CARD));
+
+    Card_PredCmp* pCard_predCmp = _pCard_PredCmp(pCard_card->pCard());
+
+    Card_Filter* pCard_filter = _pCard_Filter(pFindMainOf(pCard_predCmp));
+
+    pCard_filter->vRemoveSubCard(pCard_predCmp);
+  }
+
+  delete pMainCardIter;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
