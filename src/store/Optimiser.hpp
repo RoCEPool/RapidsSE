@@ -3,13 +3,12 @@
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
+#include "Dissector.hpp"
 
 #include "Bench.hpp"
 #include "CardCtl.hpp"
-#include "Dissector.hpp"
-#include "Transformer.hpp"
 #include "Drafter.hpp"
+#include "Transformer.hpp"
 #include "Weaver.hpp"
 
 namespace STORE

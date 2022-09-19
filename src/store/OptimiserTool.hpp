@@ -6,6 +6,7 @@
 #include "Dissector.hpp"
 
 #include "Bench.hpp"
+#include "Optimiser.hpp"
 
 namespace STORE
 {
@@ -13,14 +14,11 @@ namespace STORE
   {
   protected:
 
-    Bench*       m_pBench;
-    Board*       m_pBoard;
-
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    OptimiserTool(eCN eClass, Bench* pBench);
+    OptimiserTool(eCN eClass);
    ~OptimiserTool(void) noexcept(false);
 
   private:

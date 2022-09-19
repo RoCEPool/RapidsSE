@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "OptimiserTool.hpp"
+#include "TransformerTool.hpp"
 
 namespace STORE
 {
-  class Joiner : public OptimiserTool
+  class Joiner : public TransformerTool
   {
   private:
 
@@ -24,6 +24,7 @@ namespace STORE
     void vJoin(void);
 
   private:
+    Card_IndexPred*  pTo_IndexPred (Card_PredCmp* pCard_PredCmp);
 
     Footer* aFooter(void);
   };

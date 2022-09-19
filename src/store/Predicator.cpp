@@ -18,7 +18,7 @@ __aFooterFunction(Predicator)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Predicator::Predicator(Bench* pBench)
-: OptimiserTool(CN_PREDICATOR, pBench)
+: TransformerTool(CN_PREDICATOR, pBench)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PREDICATOR, _FOOTER_);
 

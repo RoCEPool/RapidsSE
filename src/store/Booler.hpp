@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "OptimiserTool.hpp"
+#include "TransformerTool.hpp"
 
 namespace STORE
 {
-  class Booler : public OptimiserTool
+  class Booler : public TransformerTool
   {
   private:
 

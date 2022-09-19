@@ -17,7 +17,7 @@ __aFooterFunction(Resolver)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Resolver::Resolver(Bench* pBench)
-: OptimiserTool(CN_RESOLVER,pBench)
+: TransformerTool(CN_RESOLVER, pBench)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RESOLVER,_FOOTER_);
 

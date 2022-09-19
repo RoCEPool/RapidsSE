@@ -17,7 +17,7 @@ __aFooterFunction(Booler)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Booler::Booler(Bench* pBench)
-: OptimiserTool(CN_BOOLER,pBench)
+: TransformerTool(CN_BOOLER,pBench)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOOLER,_FOOTER_);
 

@@ -17,7 +17,7 @@ __aFooterFunction(Simplifier)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Simplifier::Simplifier(Bench* pBench)
-: OptimiserTool(CN_SIMPLIFIER,pBench)
+: TransformerTool(CN_SIMPLIFIER, pBench)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SIMPLIFIER,_FOOTER_);
 

@@ -8,13 +8,10 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-OptimiserTool::OptimiserTool(eCN eClass, Bench* pBench)
+OptimiserTool::OptimiserTool(eCN eClass)
 : Object(eClass)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-
-  m_pBench = pBench;
-  m_pBoard = m_pBench->pHead();
 
   _postcondition_(_ADDRESS_,_MAGIC_);
 }

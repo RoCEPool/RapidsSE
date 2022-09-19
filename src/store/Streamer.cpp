@@ -17,7 +17,7 @@ __aFooterFunction(Streamer)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Streamer::Streamer(Bench* pBench)
-: OptimiserTool(CN_STREAMER,pBench)
+: TransformerTool(CN_STREAMER, pBench)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMER,_FOOTER_);
 

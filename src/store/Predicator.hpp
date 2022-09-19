@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "OptimiserTool.hpp"
+#include "TransformerTool.hpp"
 
 namespace STORE
 {
-  class Predicator : public OptimiserTool
+  class Predicator : public TransformerTool
   {
   private:
 
