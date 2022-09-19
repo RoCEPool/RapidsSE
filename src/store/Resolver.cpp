@@ -47,7 +47,7 @@ Resolver::~Resolver(void) noexcept(false)
 /* resolve                                                                    */
 /*----------------------------------------------------------------------------*/
 void Resolver::vResolve(Card* pMainCard, Stz* szTerm,
-                        String* pStreamNm, String* pStreamColNm)
+                        String* pStreamNm, String* pStreamColNm, i8& i_StreamColNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RESOLVER,_FOOTER_);
 
@@ -56,7 +56,7 @@ void Resolver::vResolve(Card* pMainCard, Stz* szTerm,
 
   vLocateStreams(pMainCard);
 
-  i8 i_StreamColNo = StrLib::iGleanInt(szTerm->azChar()) - 1;
+  i_StreamColNo = StrLib::iGleanInt(szTerm->azChar()) - 1;
 
   Card_StreamCol* pCard_StreamCol = nullptr;
 
@@ -76,7 +76,8 @@ void Resolver::vResolve(Card* pMainCard, Stz* szTerm,
     else {
       // + in stream b
       pStreamNm->vCopy("R"_Stz);
-      pCard_StreamCol = m_pStream_r->pGet_streamCol(i_StreamColNo - nStreamCols_l);
+      i_StreamColNo -= nStreamCols_l;
+      pCard_StreamCol = m_pStream_r->pGet_streamCol(i_StreamColNo);
     }
   }
 

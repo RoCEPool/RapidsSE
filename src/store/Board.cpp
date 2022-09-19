@@ -146,6 +146,18 @@ void Board::vDeleteFromTill(Card* pFrom, Card* pTillBefore)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Card* Board::pFindMain(eCK eCard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
+
+  Card* pMainCard = m_pCard_SubSet->pFindSubCard(eCard);
+
+  return pMainCard;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 Card* Board::pFindMain(Stz* szCardNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
@@ -886,7 +898,7 @@ void Board::vResolveRecursive(Card* pAnyCard) // recursive
 //  pCard_Index = _pCard_Index(pAnyCard->pFindChildCard(CK_INDEX));
 //  if (pCard_Index) {
 //    Index* pIndex = pCard_Index->pIndex();
-//    m_pCard_SubSet->vIndex(pIndex);
+//    m_pCard_SubSet->vAppend_index(pIndex);
 //  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

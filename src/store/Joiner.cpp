@@ -5,6 +5,9 @@
 #include "Joiner.hpp"
 #include "Resolver.hpp"
 
+#include "Table.hpp"
+#include "Index.hpp"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -42,9 +45,50 @@ Joiner::~Joiner(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* stream                                                                     */
+/* add table and index                                                        */
 /*----------------------------------------------------------------------------*/
-void Joiner::vJoin(void)
+void Joiner::vAppend_index(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_JOINER, _FOOTER_);
+
+  Card *pMainCard = nullptr;
+
+  CardIter *pMainCardIter = m_pBoard->pNewMainCardIter();
+  while (pMainCardIter->bHasNext()) {
+    pMainCard = pMainCardIter->pNext();
+
+    if (CK_ABSJOIN == pMainCard->eCard())
+      break;
+  }
+
+  if (pMainCard) {
+    Card_AbsJoin* pCard_AbsJoin = _pCard_AbsJoin(pMainCard);
+
+    while (pMainCardIter->bHasPrev()) {
+      pMainCard = pMainCardIter->pPrev();
+
+      if (CK_SCAN == pMainCard->eCard()) {
+        Card_Table* pCard_Table = _pCard_Table(pMainCard->pFindSubCard(CK_TABLE));
+        pCard_AbsJoin->vAppend(pCard_Table->pDupCardAndSubCards());
+
+        Table* pTable = pCard_Table->pTable();
+        Index* pIndex = pTable->pIdxVec()->pGet(0);
+        Card_Index* pCard_Index = new Card_Index(pIndex);
+        pCard_AbsJoin->vAppend(pCard_Index);
+
+        break;
+      }
+    }
+  }
+
+  delete pMainCardIter;
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* append indexPred to absJoin                                                */
+/*----------------------------------------------------------------------------*/
+void Joiner::vAppend_indexPred(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_JOINER, _FOOTER_);
 
@@ -66,9 +110,26 @@ void Joiner::vJoin(void)
     Card_IndexPred* pCard_IndexPred = pTo_IndexPred(pCard_AbsJoin,pCard_PredCmp);
     pCard_AbsJoin->vAppend(pCard_IndexPred);
 
+    pCard_AbsJoin->vMark2('1');
+
   }
 
   delete pMainCardIter;
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete <joinPred> from board                                               */
+/*----------------------------------------------------------------------------*/
+void Joiner::vDelete_joinPred(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_JOINER, _FOOTER_);
+
+  Card_JoinPred* pCard_joinPred
+    = _pCard_JoinPred(m_pBoard->pFindMain(CK_JOINPRED));
+
+  m_pBoard->vRemoveMainCard(pCard_joinPred);
+
+  delete pCard_joinPred;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -99,32 +160,34 @@ Card_IndexPred* Joiner::pTo_IndexPred(Card_AbsJoin* pCard_AbsJoin,
   Card_Term *pCard_Term_1 = _pCard_Term(pCard_PredCmp->pGetSubCard(1));
   Stz *szTerm_1 = pCard_Term_1->szTerm();
 
-  Stz *szPred_0 = szTerm_0;
-  Stz *szPred_1 = szTerm_1;
-
   s256 sStreamNm_0;
   s256 sStreamColNm_0;
+  i8   i_StreamColNo_0;
 
   pResolver->vResolve(pCard_AbsJoin, szTerm_0,
-                      sStreamNm_0, sStreamColNm_0);
+                      sStreamNm_0, sStreamColNm_0,i_StreamColNo_0);
 
   s256 sStreamNm_1;
   s256 sStreamColNm_1;
+  i8   i_StreamColNo_1;
 
   pResolver->vResolve(pCard_AbsJoin, szTerm_1,
-                      sStreamNm_1, sStreamColNm_1);
+                      sStreamNm_1, sStreamColNm_1, i_StreamColNo_1);
+
+  s256 sPred_0;
+  s256 sPred_1;
 
   if (sStreamNm_0.bSame("L"_Stz)) {
-    szPred_0 = szTerm_1;
-    szPred_1 = szTerm_0;
+    sPred_0.vSprint("$I%lld"_Stz,i_StreamColNo_1+1);
+    sPred_1.vSprint("$%lld"_Stz,i_StreamColNo_0+1);
   }
   else {
-    szPred_0 = szTerm_0;
-    szPred_1 = szTerm_1;
+    sPred_0.vSprint("$I%lld"_Stz,i_StreamColNo_0+1);
+    sPred_1.vSprint("$%lld"_Stz,i_StreamColNo_1+1);
   }
 
-  pCard_IndexPred->vAppend(new Card_Term(szPred_0));
-  pCard_IndexPred->vAppend(new Card_Term(szPred_1));
+  pCard_IndexPred->vAppend(new Card_Term(sPred_0));
+  pCard_IndexPred->vAppend(new Card_Term(sPred_1));
 
   pCard_IndexPred->vAppend(new Card_Term(pCard_PredCmp->szCmp()));
 

@@ -21,7 +21,10 @@ namespace STORE
     Joiner(Bench* pBench);
    ~Joiner(void) noexcept(false);
 
-    void vJoin(void);
+    void vAppend_index(void);
+    void vAppend_indexPred(void);
+    void vDelete_joinPred(void);
+    void vDelete_scan_R(void);
 
   private:
     Card_IndexPred*  pTo_IndexPred (Card_AbsJoin* pCard_AbsJoin,

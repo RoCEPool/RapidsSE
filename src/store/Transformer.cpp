@@ -66,38 +66,48 @@ void Transformer::vTransform(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Simplifier* pSimplifier  = new Simplifier(m_pBench);
   pSimplifier->vSimplify();
-  delete pSimplifier;
   if (bInteractive)
     m_pBoard->vPrintBoard("Simplifier::vSimplify() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Booler* pBooler  = new Booler(m_pBench);
   pBooler->vBool();
-  delete pBooler;
   if (bInteractive)
     m_pBoard->vPrintBoard("Booler::vBool() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Streamer* pStreamer  = new Streamer(m_pBench);
   pStreamer->vStream();
-  delete pStreamer;
   if (bInteractive)
     m_pBoard->vPrintBoard("Streamer::vStream() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Predicator* pPredicator  = new Predicator(m_pBench);
-  pPredicator->vDiscover();
-  delete pPredicator;
+  pPredicator->vInsert_joinPred();
   if (bInteractive)
-    m_pBoard->vPrintBoard("Predicator::vDiscover() >> "_Stz);
+    m_pBoard->vPrintBoard("Predicator::vInsert_joinPred() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Joiner* pJoiner  = new Joiner(m_pBench);
-  pJoiner->vJoin();
-  delete pJoiner;
+  pJoiner->vAppend_indexPred();
   if (bInteractive)
-    m_pBoard->vPrintBoard("Joiner::vJoin() >> "_Stz);
+    m_pBoard->vPrintBoard("Joiner::vAppend_indexPred() >> "_Stz);
+  pJoiner->vAppend_index();
+  if (bInteractive)
+    m_pBoard->vPrintBoard("Joiner::vAppend_index() >> "_Stz);
 
+
+  pJoiner->vDelete_joinPred();
+  if (bInteractive)
+    m_pBoard->vPrintBoard("Joiner::vDelete_joinPred() >> "_Stz);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  delete pBooler;
+  delete pJoiner;
+  delete pPredicator;
+  delete pSimplifier;
+  delete pStreamer;
 }
 
 

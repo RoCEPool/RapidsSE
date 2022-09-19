@@ -25,7 +25,8 @@ namespace STORE
   
    ~Resolver(void) noexcept(false);
 
-    void vResolve(Card* pMainCard, Stz* szTerm, String* pStreamNm, String* pStreamColNm);
+    void vResolve(Card* pMainCard, Stz* szTerm,
+                  String* pStreamNm, String* pStreamColNm, i8& i_StreamColNo);
 
   private:
     void vLocateStreams(Card* pMainCard);

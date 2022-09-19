@@ -44,7 +44,7 @@ Predicator::~Predicator(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* predicate                                                                  */
 /*----------------------------------------------------------------------------*/
-//void Predicator::vDiscover(void)
+//void Predicator::vInsert_joinPred(void)
 //{
 //  _precondition_(_ADDRESS_, _MAGIC_, CN_PREDICATOR, _FOOTER_);
 //
@@ -53,13 +53,13 @@ Predicator::~Predicator(void) noexcept(false)
 //    Card *pMainCard = m_pBoard->pGetMainCard(i_MainCard);
 //
 //    if (CK_FILTER == pMainCard->eCard()) {
-//      vTrace("Predicator::vDiscover %lld\n"_Stz, i_MainCard);
+//      vTrace("Predicator::vInsert_joinPred %lld\n"_Stz, i_MainCard);
 //      vDiscoverRecursive(pMainCard);
 //    }
 //  }
 //}
 /*----------------------------------------------------------------------------*/
-void Predicator::vDiscover(void)
+void Predicator::vInsert_joinPred(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PREDICATOR, _FOOTER_);
 
@@ -69,7 +69,7 @@ void Predicator::vDiscover(void)
     Card *pMainCard = pMainCardIter->pNext();
 
     if (CK_FILTER == pMainCard->eCard()) {
-      vTrace("Predicator::vDiscover %lld %s\n"_Stz,
+      vTrace("Predicator::vInsert_joinPred %lld %s\n"_Stz,
              pMainCard->iCardNo(),aCK[pMainCard->eCard()]);
       vDiscoverRecursive(pMainCard);
     }
@@ -171,13 +171,17 @@ void Predicator::vDiscoverRecursive(Card* pMainCard_filter) // recursive
 
   s256 sStreamNm_0;
   s256 sStreamColNm_0;
+  i8   i_StreamColNo_0;
 
-  pResolver->vResolve(pMainCard_filter, szTerm_0, sStreamNm_0, sStreamColNm_0);
+  pResolver->vResolve(pMainCard_filter, szTerm_0,
+                      sStreamNm_0, sStreamColNm_0, i_StreamColNo_0);
 
   s256 sStreamNm_1;
   s256 sStreamColNm_1;
+  i8   i_StreamColNo_1;
 
-  pResolver->vResolve(pMainCard_filter, szTerm_1, sStreamNm_1, sStreamColNm_1);
+  pResolver->vResolve(pMainCard_filter, szTerm_1,
+                      sStreamNm_1, sStreamColNm_1, i_StreamColNo_1);
 
   delete pResolver;
 

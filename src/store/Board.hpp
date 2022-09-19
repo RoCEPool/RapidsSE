@@ -138,6 +138,7 @@ namespace STORE
     void vDeleteAllCards(void);
     void vDeleteFromTill(Card* pFrom, Card* pTillBefore);
 
+    Card* pFindMain(eCK eCard);
     Card* pFindMain(Stz* szCardNm);
     Card* pFindNextMain(Card* pAfter, eCK eFindCard);
 
