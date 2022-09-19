@@ -337,6 +337,7 @@ eGC Card::eToECatg(eCK eCard)
     case CK_CALC:                        return GC_SUB;
     case CK_CALCBOOL:                    return GC_SUB;
     case CK_CANDINDEX:  return GC_MAIN;
+    case CK_CARD:                        return GC_SUB;
     case CK_COMBINE:    return GC_MAIN;
                                     
     case CK_DEBUG:      return GC_MAIN;
@@ -1422,6 +1423,53 @@ eBK Card::eBound(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* return pCard                                                               */
+/*----------------------------------------------------------------------------*/
+Card* Card::pCard(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card* pCard = _pCard(pGetProperty("pCard"_Stz));
+
+  return pCard;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set pCard                                                                  */
+/*----------------------------------------------------------------------------*/
+void Card::vCard(Card* pCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  vAddProperty("pCard"_Stz,pCard);
+}
+
+/*----------------------------------------------------------------------------*/
+/* print {card}                                                               */
+/*----------------------------------------------------------------------------*/
+void Card::vCardPrint(Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Card* pCard_Card = _pCard_Card(this);
+  Card* pCard = _pCard(pCard_Card->pCard());
+
+  pRibbon->vSput(FR_NAME,pCard->szCardNm());
+
+  if (pRibbon->iArea())
+    return;
+
+  pCard->vPrintProperties(pRibbon,iDepth);
+
+  CardIter* pSubCardIter = pCard->pNewSubCardIter();
+  while (pSubCardIter->bHasNext()) {
+    Card *pSubCard = pSubCardIter->pNext();
+    pSubCard->vPrintProperties(pRibbon,iDepth+1);
+  }
+  delete pSubCardIter;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get cmp                                                                    */
 /*----------------------------------------------------------------------------*/
 Stz* Card::szCmp(void)
@@ -2471,7 +2519,7 @@ void Card::vPrintCard(Ribbon* pRibbon, i8 iDepth, i8 iBelow)
     vPrintDetails(pRibbon,iDepth,bPrune);
   }
 
-  vMark2(' ');
+  //vMark2(' ');
   if (bPrune)
     return;
   
@@ -2509,6 +2557,7 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
     case CK_CALC:                       vPrintProperties(pRibbon,iDepth); break;
     case CK_CALCBOOL:                   vPrintProperties(pRibbon,iDepth); break;
     case CK_CANDINDEX:                  vPrintProperties(pRibbon,iDepth); break;
+    case CK_CARD:       vCardPrint                      (pRibbon,iDepth); break;
     case CK_COMBINE:                    vPrintProperties(pRibbon,iDepth); break;
                         
     case CK_DEBUG:                      vPrintProperties(pRibbon,iDepth); break;

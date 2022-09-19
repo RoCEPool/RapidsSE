@@ -20,6 +20,7 @@
 #include "Card_Calc.hpp"
 #include "Card_CalcBool.hpp"
 #include "Card_CandIndex.hpp"
+#include "Card_Card.hpp"
 #include "Card_Combine.hpp"
 
 #include "Card_Debug.hpp"

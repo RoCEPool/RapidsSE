@@ -22,6 +22,8 @@ Card_AbsJoin::Card_AbsJoin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  m_cMark2 = '0';
+
   _checkInitialised_(CN_CARD);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

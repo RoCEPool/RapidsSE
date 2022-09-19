@@ -170,7 +170,10 @@ namespace STORE
     void vAs(Stz* szAs);
 
     eBK  eBound(void);
-  
+
+    Card* pCard(void);
+    void vCard(Card* pCard);
+    void vCardPrint(Ribbon* pRibbon, i8 iDepth);
     Column* pColumn(void);
     void vColumn(Column* pColumn);
     Column* pColumn1(void);

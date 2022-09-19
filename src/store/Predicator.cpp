@@ -151,20 +151,20 @@ void Predicator::vDiscoverRecursive(Card* pMainCard_filter) // recursive
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PREDICATOR, _FOOTER_);
 
-  Card_PredCmp* pPredCmp = _pCard_PredCmp(pMainCard_filter->pFindSubCard(CK_PREDCMP));
+  Card_PredCmp* pCard_PredCmp = _pCard_PredCmp(pMainCard_filter->pFindSubCard(CK_PREDCMP));
 
-  if (! pPredCmp)
+  if (! pCard_PredCmp)
     return;
 
-  if (! pPredCmp->szCmp()->bSame("=="_Stz))
+  if (! pCard_PredCmp->szCmp()->bSame("=="_Stz))
     return;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Card *pCard_Term_0 = pPredCmp->pGetSubCard(0);
+  Card *pCard_Term_0 = pCard_PredCmp->pGetSubCard(0);
   Stz* szTerm_0 = pCard_Term_0->szTerm();
 
-  Card *pCard_Term_1 = pPredCmp->pGetSubCard(1);
+  Card *pCard_Term_1 = pCard_PredCmp->pGetSubCard(1);
   Stz* szTerm_1 = pCard_Term_1->szTerm();
 
   Resolver* pResolver = new Resolver(m_pBench);
@@ -185,6 +185,10 @@ void Predicator::vDiscoverRecursive(Card* pMainCard_filter) // recursive
 
   Card_JoinPred* pCard_JoinPred = new Card_JoinPred;
   m_pBoard->vInsertMainCard_before(pCard_JoinPred, pMainCard_filter);
+
+  Card_Card* pCard_Card = new Card_Card(pCard_PredCmp);
+
+  pCard_JoinPred->vAppend(pCard_Card);
 }
 
 /*============================================================================*/

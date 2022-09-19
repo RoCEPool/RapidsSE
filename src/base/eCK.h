@@ -19,6 +19,7 @@ enum eCK // card kind
   /* */ CK_CALC,
   /* */ CK_CALCBOOL,
   /* */ CK_CANDINDEX,
+  /* */ CK_CARD,
   /* */ CK_COMBINE,
   
   /* */ CK_DEBUG,
@@ -109,6 +110,7 @@ static Stz* aCK[]
   /* */ "CK_CALC"_Stz,         // CK_CALC
   /* */ "CK_CALCBOOL"_Stz,      // CK_CALCBOOL
   /* */ "CK_CANDINDEX"_Stz,    // CK_CANDINDEX
+  /* */ "CK_CARD"_Stz,         // CK_CARD
   /* */ "CK_COMBINE"_Stz,      // CK_COMBINE
   
   /* */ "CK_DEBUG"_Stz,        // CK_DEBUG
@@ -199,6 +201,7 @@ static Stz* aCK_short[]
   /* */ "calc"_Stz,            // CK_CALC
   /* */ "calcBool"_Stz,         // CK_CALCBOOL
   /* */ "candIndex"_Stz,       // CK_CANDINDEX
+  /* */ "{card}"_Stz,          // CK_CAND
   /* */ "combine"_Stz,         // CK_COMBINE
 
   /* */ "debug"_Stz,           // CK_DEBUG
@@ -289,6 +292,7 @@ static Stz* aCK_op[]
   /* */ "(none)"_Stz,          // CK_CALC
   /* */ "(none)"_Stz,          // CK_CALCBOOL
   /* */ "(none)"_Stz,          // CK_CANDINDEX
+  /* */ "(none)"_Stz,          // CK_CARD
   /* */ "combined  0"_Stz,     // CK_COMBINE
 
   /* */ "(none)"_Stz,          // CK_DEBUG
