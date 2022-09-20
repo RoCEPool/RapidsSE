@@ -130,6 +130,8 @@ namespace STORE
     Board(Stz* szQueryNm, Optimiser* pOptimiser);
    ~Board(void) noexcept(false);
 
+    void vAppendMainCard(Card* pNewMainCard, bool bRenumber=true);
+
     CardRegs* pCardRegs(void);
     Card_SubSet* pCard_SubSet(void);
 

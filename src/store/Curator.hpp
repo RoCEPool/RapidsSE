@@ -22,10 +22,11 @@ namespace STORE
   
    ~Curator(void) noexcept(false);
 
-    void vCull_Sends(void);
     void vDelete_Combines(void);
-
+    void vDelete_Sends(void);
     void vLinearize_Stages(void);
+    void vReadd_Sends(void);
+
   private:
 
     Footer* aFooter(void);

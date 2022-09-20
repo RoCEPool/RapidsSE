@@ -24,7 +24,7 @@ load part "../tpch/sf_0001/part.csv" ;
 /interactive
 /weave
 /weaved
-/pipelineName = "rayE2_Q14`"
+/pipelineName = "rayE_Q14"
 select 100
          * sum(case when p_type like 'PROMO%'
                     then l_extendedPrice * (1 - l_discount)

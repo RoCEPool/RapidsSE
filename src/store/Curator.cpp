@@ -41,34 +41,6 @@ Curator::~Curator(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* cull sends                                                                */
-/*----------------------------------------------------------------------------*/
-void Curator::vCull_Sends(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CURATOR, _FOOTER_);
-
-  i8 nMainCards = m_pBoard->nMainCards();
-  for (i8 i_MainCard = 0; i_MainCard < nMainCards - 1; i_MainCard++) {
-    Card* pMainCard = m_pBoard->pGetMainCard(i_MainCard);
-
-    if (CK_SEND != pMainCard->eCard())
-      continue;
-
-    Card* pNextCard = m_pBoard->pGetMainCard(i_MainCard + 1);
-    if (! pNextCard)
-      break;
-
-    if (CK_STAGE != pNextCard->eCard()) {
-      m_pBoard->vRemoveMainCard(pMainCard);
-      nMainCards = m_pBoard->nMainCards();
-      i_MainCard--;
-      delete pMainCard;
-    }
-
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* delete combines                                                            */
 /*----------------------------------------------------------------------------*/
 void Curator::vDelete_Combines(void)
@@ -85,6 +57,34 @@ void Curator::vDelete_Combines(void)
       i_MainCard--;
       delete pMainCard;
     }
+
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete sends                                                               */
+/*----------------------------------------------------------------------------*/
+void Curator::vDelete_Sends(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CURATOR, _FOOTER_);
+
+  i8 nMainCards = m_pBoard->nMainCards();
+  for (i8 i_MainCard = 0; i_MainCard < nMainCards; i_MainCard++) {
+    Card* pMainCard = m_pBoard->pGetMainCard(i_MainCard);
+
+    if (CK_SEND != pMainCard->eCard())
+      continue;
+
+    //Card* pNextCard = m_pBoard->pGetMainCard(i_MainCard + 1);
+    //if (! pNextCard)
+    //  break;
+
+    //if (CK_STAGE != pNextCard->eCard()) {
+    m_pBoard->vRemoveMainCard(pMainCard);
+    nMainCards = m_pBoard->nMainCards();
+    i_MainCard--;
+    delete pMainCard;
+    //}
 
   }
 }
@@ -127,6 +127,34 @@ void Curator::vLinearize_Stages(void)
 
     m_pBoard->vRenumberMainCards();
   }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* re-add sends                                                               */
+/*----------------------------------------------------------------------------*/
+void Curator::vReadd_Sends(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CURATOR, _FOOTER_);
+
+  i8 nMainCards = m_pBoard->nMainCards();
+  for (i8 i_MainCard = 1; i_MainCard < nMainCards; i_MainCard++) {
+    Card *pMainCard = m_pBoard->pGetMainCard(i_MainCard);
+
+    if (CK_STAGE != pMainCard->eCard())
+      continue;
+
+    Card_Send *pCard_send = new Card_Send;
+    Card_SendKind *pCard_sendKind = new Card_SendKind(XK_UNICAST);
+    pCard_send->vAppend(pCard_sendKind);
+
+    m_pBoard->vInsertMainCard_before(pCard_send, pMainCard);
+    i_MainCard++;
+  }
+
+  Card_Send* pCard_send = new Card_Send;
+  Card_SendKind* pCard_sendKind = new Card_SendKind(XK_UNICAST);
+  m_pBoard->vAppendMainCard(pCard_send);
 
 }
 

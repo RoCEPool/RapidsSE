@@ -89,9 +89,9 @@ void Transformer::vTransform(void)
   if (bInteractive)
     m_pBoard->vPrintBoard("Curator::vDelete_Combines() >> "_Stz);
 
-  m_pCurator->vCull_Sends();
+  m_pCurator->vDelete_Sends();
   if (bInteractive)
-    m_pBoard->vPrintBoard("Curator::vCull_Sends() >> "_Stz);
+    m_pBoard->vPrintBoard("Curator::vDelete_Sends() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pFiltrate->vCalc_to_calcBool();
@@ -104,9 +104,9 @@ void Transformer::vTransform(void)
     m_pBoard->vPrintBoard("Streamer::vAppendStream_to_Scan() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  m_pPredicator->vInsert_joinPred();
+  m_pJoiner->vInsert_joinPred();
   if (bInteractive)
-    m_pBoard->vPrintBoard("Predicator::vInsert_joinPred() >> "_Stz);
+    m_pBoard->vPrintBoard("Joiner::vInsert_joinPred() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pJoiner->vAppend_indexPred();
@@ -154,6 +154,12 @@ void Transformer::vTransform(void)
   m_pJoiner->vDelete_scan_R();
   if (bInteractive)
     m_pBoard->vPrintBoard("Joiner::vDelete_scan_R() >> "_Stz);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  m_pCurator->vReadd_Sends();
+  if (bInteractive)
+    m_pBoard->vPrintBoard("Curator::vReadd_Sends() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

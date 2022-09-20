@@ -26,8 +26,10 @@ namespace STORE
     void vConvert_absJoin(void);
     void vDelete_joinPred(void);
     void vDelete_scan_R(void);
+    void vInsert_joinPred(void);
 
   private:
+    void vDiscoverRecursive(Card* pMainCard_filter);
     Card_IndexPred*  pTo_IndexPred (Card_AbsJoin* pCard_AbsJoin,
                                     Card_PredCmp* pCard_PredCmp);
 

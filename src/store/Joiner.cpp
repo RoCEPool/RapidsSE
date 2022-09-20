@@ -174,8 +174,79 @@ void Joiner::vDelete_scan_R(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* predicate                                                                  */
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+void Joiner::vInsert_joinPred(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_JOINER, _FOOTER_);
+
+  vBeginIteration();
+
+  while (Card *pMainCard = pEachMain(CK_FILTER)) {
+
+    vTrace("Predicator::vInsert_joinPred %lld %s\n"_Stz,
+           pMainCard->iCardNo(), aCK[pMainCard->eCard()]);
+    vDiscoverRecursive(pMainCard);
+  }
+
+  vEndIteration();
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* vDiscoverRecursive                                                                  */
+/*----------------------------------------------------------------------------*/
+void Joiner::vDiscoverRecursive(Card* pMainCard_filter) // recursive
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_JOINER, _FOOTER_);
+
+  Card_PredCmp* pCard_PredCmp = _pCard_PredCmp(pMainCard_filter->pFindSubCard(CK_PREDCMP));
+
+  if (! pCard_PredCmp)
+    return;
+
+  if (! pCard_PredCmp->szCmp()->bSame("=="_Stz))
+    return;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Card *pCard_Term_0 = pCard_PredCmp->pGetSubCard(0);
+  Stz* szTerm_0 = pCard_Term_0->szTerm();
+
+  Card *pCard_Term_1 = pCard_PredCmp->pGetSubCard(1);
+  Stz* szTerm_1 = pCard_Term_1->szTerm();
+
+  Resolver* pResolver = new Resolver(m_pBench);
+
+  s256 sStreamNm_0;
+  s256 sStreamColNm_0;
+  i8   i_StreamColNo_0;
+
+  pResolver->vResolve(pMainCard_filter, szTerm_0,
+                      sStreamNm_0, sStreamColNm_0, i_StreamColNo_0);
+
+  s256 sStreamNm_1;
+  s256 sStreamColNm_1;
+  i8   i_StreamColNo_1;
+
+  pResolver->vResolve(pMainCard_filter, szTerm_1,
+                      sStreamNm_1, sStreamColNm_1, i_StreamColNo_1);
+
+  delete pResolver;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Card_JoinPred* pCard_JoinPred = new Card_JoinPred;
+  m_pBoard->vInsertMainCard_before(pCard_JoinPred, pMainCard_filter);
+
+  Card_Card* pCard_Card = new Card_Card(pCard_PredCmp);
+
+  pCard_JoinPred->vAppend(pCard_Card);
+}
 
 /*----------------------------------------------------------------------------*/
 /* convert a calculation into a boolean calculaiton                           */
