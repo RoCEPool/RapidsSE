@@ -648,6 +648,22 @@ void Backend::vAppendAbstractJoinOp(Backend* pBackend, QueryNode* pNode)
   pBackend->m_iColumnsOfLeftChild = JoinOp::iColumnsOfChild1(pNode, pBackend->m_pPlanRoot);
 
   pBackend->vAppendNextOp("abstractJoin \""_Stz);
+  switch(JoinOp::eJoinType(pNode)) {
+    case JT_INNER:                   /* sPipeline->vCatSprint("INNER"_Stz); */ break;
+    case JT_CROSS:                   sPipeline->vCatSprint("CROSS"_Stz); break;
+    case JT_SEMI:                    sPipeline->vCatSprint("SEMI"_Stz); break;
+    case JT_ANTI:                    sPipeline->vCatSprint("ANTI"_Stz); break;
+    case JT_LEFT_OUTER:              sPipeline->vCatSprint("LEFT_OUTER"_Stz); break;
+    case JT_RIGHT_OUTER:             sPipeline->vCatSprint("RIGHT_OUTER"_Stz); break;
+    case JT_FULL_OUTER:              sPipeline->vCatSprint("FULL_OUTER"_Stz); break;
+    case JT_NATURAL_INNER:           sPipeline->vCatSprint("NATURAL_INNER"_Stz); break;
+    case JT_NATURAL_LEFT_OUTER:      sPipeline->vCatSprint("NATURAL_LEFT_OUTER"_Stz); break;
+    case JT_NATURAL_RIGHT_OUTER:     sPipeline->vCatSprint("NATURAL_RIGHT_OUTER"_Stz); break;
+    case JT_NATURAL_FULL_OUTER:      sPipeline->vCatSprint("NATURAL_FULL_OUTER"_Stz); break;
+    default:
+      break;
+  }
+
   GraphNav::bGlobalWalk(pOrdinalJoinPredicate, false, true,vVisitorExpr, vVisitorExpr, (void *) pBackend);
   sPipeline->vCatSprint(" \""_Stz);
 
