@@ -133,6 +133,18 @@ void Transformer::vTransform(void)
   if (bInteractive)
     m_pBoard->vPrintBoard("Streamer::vAppendStream_to_AbsJoin() >> "_Stz);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  m_pJoiner->vConvert_absJoin();
+  if (bInteractive)
+    m_pBoard->vPrintBoard("Joiner::vConvert_absJoin() >> "_Stz);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  m_pJoiner->vDelete_scan_R();
+  if (bInteractive)
+    m_pBoard->vPrintBoard("Joiner::vDelete_scan_R() >> "_Stz);
+
 }
 
 

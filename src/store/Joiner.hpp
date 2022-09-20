@@ -23,6 +23,7 @@ namespace STORE
 
     void vAppend_index(void);
     void vAppend_indexPred(void);
+    void vConvert_absJoin(void);
     void vDelete_joinPred(void);
     void vDelete_scan_R(void);
 
