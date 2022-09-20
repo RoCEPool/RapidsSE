@@ -102,6 +102,8 @@ void Transformer::vTransform(void)
   m_pJoiner->vAppend_indexPred();
   if (bInteractive)
     m_pBoard->vPrintBoard("Joiner::vAppend_indexPred() >> "_Stz);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pJoiner->vAppend_index();
   if (bInteractive)
     m_pBoard->vPrintBoard("Joiner::vAppend_index() >> "_Stz);

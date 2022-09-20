@@ -63,23 +63,16 @@ void Predicator::vInsert_joinPred(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PREDICATOR, _FOOTER_);
 
-  CardIter* pMainCardIter = m_pBoard->pNewMainCardIter();
+  vBeginIteration();
 
-  while (pMainCardIter->bHasNext()) {
-    Card *pMainCard = pMainCardIter->pNext();
+  while (Card *pMainCard = pEachMain(CK_FILTER)) {
 
-    if (CK_FILTER == pMainCard->eCard()) {
-      vTrace("Predicator::vInsert_joinPred %lld %s\n"_Stz,
-             pMainCard->iCardNo(),aCK[pMainCard->eCard()]);
-      vDiscoverRecursive(pMainCard);
-    }
-    else {
-      vTrace("Predicator::Skipping %lld %s\n"_Stz,
-             pMainCard->iCardNo(),aCK[pMainCard->eCard()]);
-    }
+    vTrace("Predicator::vInsert_joinPred %lld %s\n"_Stz,
+           pMainCard->iCardNo(), aCK[pMainCard->eCard()]);
+    vDiscoverRecursive(pMainCard);
   }
 
-  delete pMainCardIter;
+  vEndIteration();
 }
 
 
