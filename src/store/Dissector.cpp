@@ -3,8 +3,10 @@
 /*============================================================================*/
 
 #include "Dissector.hpp"
+
 #include "Optimiser.hpp"
 
+#include "Job.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -91,7 +93,16 @@ void Dissector::vPipeline(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
     
-  Stz* szPipelineNm = m_pPipeSpec->szVertexNm();
+  Stz* szPipelineNm;
+
+  Job* pJob = MY::pJob();
+  TagSet* pJobTags = pJob->pJobTags();
+  if (pJobTags->bHasName("<pipelineName>"_Stz))
+    szPipelineNm = pJobTags->szValue("<pipelineName>"_Stz);
+  else
+    szPipelineNm = m_pPipeSpec->szVertexNm();
+
+
   //TagSet* pJobTags = m_pPipeSpec->pJobTags();
   //pJobTags->vDumpSet(true);
 

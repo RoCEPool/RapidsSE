@@ -33,6 +33,7 @@ select * from orders;
 /interactive
 /weave
 /weaved
+/pipelineName = "rayD"
 select *
   from orders , lineItem
  where o_orderKey = l_orderKey

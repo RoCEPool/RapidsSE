@@ -24,6 +24,7 @@ select * from part;
 /interactive
 /weave
 /weaved
+/pipelineName = "rayE"
 select *
   from lineItem, part
  where l_partkey = p_partkey
