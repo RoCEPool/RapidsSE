@@ -25,7 +25,7 @@ namespace STORE
   private:
     static void vAppendColumnToIndexDef(IndexDef* pIndexDef, Column* pColumn);
     static void vAppendColumnToStreamDef(StreamDefBase* pStreamDefOut, Column* pColumn);
-    static void vGenerateColPrefix(Stz* szColNm, Stz* szColPrefix);
+    static void vGenerateColPrefix(StreamDefBase* pStreamDef, Stz* szColPrefix);
   };
 }
 
