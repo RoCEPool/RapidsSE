@@ -84,14 +84,14 @@ void Transformer::vTransform(void)
     m_pBoard->vPrintBoard("Curator::vInitial_Simplification() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  m_pFiltrate->vBool();
+  m_pFiltrate->vCalc_to_calcBool();
   if (bInteractive)
-    m_pBoard->vPrintBoard("Filtrate::vBool() >> "_Stz);
+    m_pBoard->vPrintBoard("Filtrate::vCalc_to_calcBool() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  m_pStreamer->vStream();
+  m_pStreamer->vAppendStream_to_Scan();
   if (bInteractive)
-    m_pBoard->vPrintBoard("Streamer::vStream() >> "_Stz);
+    m_pBoard->vPrintBoard("Streamer::vAppendStream_to_Scan() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pPredicator->vInsert_joinPred();

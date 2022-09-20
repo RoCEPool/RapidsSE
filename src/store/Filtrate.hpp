@@ -22,11 +22,11 @@ namespace STORE
   
    ~Filtrate(void) noexcept(false);
 
-    void vBool(void);
+    void vCalc_to_calcBool(void);
     void vRemove_predCmp(void);
 
   private:
-    void vBool(Card* pCard_Filter);
+    void vCalc_to_calcBool(Card* pCard_Filter);
     Card* pTo_CalcBool(Card* pCard_Calc);
 
     Footer* aFooter(void);

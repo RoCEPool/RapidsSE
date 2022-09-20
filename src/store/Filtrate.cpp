@@ -43,26 +43,24 @@ Filtrate::~Filtrate(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* stream                                                                     */
 /*----------------------------------------------------------------------------*/
-void Filtrate::vBool(void)
+void Filtrate::vCalc_to_calcBool(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTRATE,_FOOTER_);
 
-  i8 nMainCards = m_pBoard->nMainCards();
-  for (i8 i_MainCard = 0; i_MainCard < nMainCards; i_MainCard++) {
-    Card* pMainCard =  m_pBoard->pGetMainCard(i_MainCard);
+  vBeginIteration();
 
-    if (CK_FILTER != pMainCard->eCard())
-      continue;
+  while (Card *pMainCard = pEachMain(CK_FILTER)) {
 
-    vBool(pMainCard);
+    vCalc_to_calcBool(pMainCard);
   }
 
+  vEndIteration();
 }
 
 /*----------------------------------------------------------------------------*/
 /* stream                                                                     */
 /*----------------------------------------------------------------------------*/
-void Filtrate::vBool(Card* pCard_Filter)
+void Filtrate::vCalc_to_calcBool(Card* pCard_Filter)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTRATE,_FOOTER_);
 

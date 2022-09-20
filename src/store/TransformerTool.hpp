@@ -26,6 +26,7 @@ namespace STORE
    ~TransformerTool(void) noexcept(false);
 
     void vBeginIteration(void);
+    Card* pEachMain(void);
     Card* pEachMain(eCK eCard);
     void vEndIteration(void);
 

@@ -47,14 +47,13 @@ void Curator::vInitial_Simplification(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CURATOR, _FOOTER_);
 
-  i8 i_Test;
 
-  i8 nMainCards = m_pBoard->nMainCards();
-  for (i8 i_MainCard = 0; i_MainCard < nMainCards; i_MainCard++) {
-    Card *pMainCard = m_pBoard->pGetMainCard(i_MainCard);
+  vBeginIteration();
+
+  while (Card *pMainCard = pEachMain()) {
 
     // of stage 1
-    i8 i_Test = i_MainCard;
+    i8 i_Test = pMainCard->iCardNo();
     Card* pStage_1 = m_pBoard->pGetMainCard(i_Test++);
     if (CK_STAGE != pStage_1->eCard())
       continue;
@@ -123,7 +122,7 @@ void Curator::vInitial_Simplification(void)
     break;
   }
 
-
+  vEndIteration();
 }
 
 

@@ -43,17 +43,20 @@ Streamer::~Streamer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* stream                                                                     */
 /*----------------------------------------------------------------------------*/
-void Streamer::vStream(void)
+void Streamer::vAppendStream_to_Scan(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMER,_FOOTER_);
 
-  i8 nMainCards = m_pBoard->nMainCards();
-  for (i8 i_MainCard = 0; i_MainCard < nMainCards; i_MainCard++) {
-    Card* pMainCard = m_pBoard->pGetMainCard(i_MainCard);
+  vBeginIteration();
 
-    vTrace("Resolving MainCard %lld\n"_Stz,i_MainCard);
+  while (Card *pMainCard = pEachMain()) {
+
+    vTrace("Resolving MainCard %lld\n"_Stz,pMainCard->iCardNo());
+
     vResolveRecursive(pMainCard);
   }
+
+  vEndIteration();
 }
 
 

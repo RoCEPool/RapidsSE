@@ -49,6 +49,22 @@ void TransformerTool::vBeginIteration(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* each main card                                                             */
+/*----------------------------------------------------------------------------*/
+Card* TransformerTool::pEachMain(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  while (m_pMainCardIter->bHasNext()) {
+    Card* pMainCard = m_pMainCardIter->pNext();
+
+    return pMainCard;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* each main card which is of given eCard                                     */
 /*----------------------------------------------------------------------------*/
 Card* TransformerTool::pEachMain(eCK eCard)
@@ -75,6 +91,7 @@ void TransformerTool::vEndIteration(void)
   RASSERT(m_pMainCardIter);
 
   delete m_pMainCardIter;
+  m_pMainCardIter = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -22,7 +22,7 @@ namespace STORE
   
    ~Streamer(void) noexcept(false);
 
-    void vStream(void);
+    void vAppendStream_to_Scan(void);
 
   private:
 
