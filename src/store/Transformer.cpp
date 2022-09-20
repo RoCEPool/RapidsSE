@@ -28,6 +28,7 @@ Transformer::Transformer(Optimiser* pOptimiser)
   m_pBench       = m_pOptimiser->pBench();
   m_pBoard       = nullptr;
 
+  m_pCombiner    = nullptr;
   m_pCurator     = nullptr;
   m_pFiltrate    = nullptr;
   m_pJoiner      = nullptr;
@@ -71,6 +72,7 @@ void Transformer::vTransform(void)
 
   m_pBoard = m_pOptimiser->pHeadBoard();
 
+  m_pCombiner   = new Combiner(m_pBench);
   m_pCurator    = new Curator(m_pBench);
   m_pFiltrate   = new Filtrate(m_pBench);
   m_pJoiner     = new Joiner(m_pBench);
@@ -115,7 +117,7 @@ void Transformer::vTransform(void)
     m_pBoard->vPrintBoard("Filtrate::vRemove_predCmp() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // elete any <filter> which is effectively empty
+  // delete any <filter> which is effectively empty
   m_pFiltrate->vDeleteEmpty_filter();
   if (bInteractive)
     m_pBoard->vPrintBoard("Filtrate::vDeleteEmpty_filter() >> "_Stz);
@@ -144,6 +146,12 @@ void Transformer::vTransform(void)
   m_pJoiner->vDelete_scan_R();
   if (bInteractive)
     m_pBoard->vPrintBoard("Joiner::vDelete_scan_R() >> "_Stz);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  m_pCombiner->vAdd_combined();
+  if (bInteractive)
+    m_pBoard->vPrintBoard("Combiner::vAdd_combined() >> "_Stz);
 
 }
 
