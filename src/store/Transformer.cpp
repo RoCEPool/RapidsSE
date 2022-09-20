@@ -81,9 +81,17 @@ void Transformer::vTransform(void)
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  m_pCurator->vInitial_Simplification();
+  m_pCurator->vLinearize_Stages();
   if (bInteractive)
-    m_pBoard->vPrintBoard("Curator::vInitial_Simplification() >> "_Stz);
+    m_pBoard->vPrintBoard("Curator::vLinearize_Stages() >> "_Stz);
+
+  m_pCurator->vDelete_Combines();
+  if (bInteractive)
+    m_pBoard->vPrintBoard("Curator::vDelete_Combines() >> "_Stz);
+
+  m_pCurator->vCull_Sends();
+  if (bInteractive)
+    m_pBoard->vPrintBoard("Curator::vCull_Sends() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pFiltrate->vCalc_to_calcBool();

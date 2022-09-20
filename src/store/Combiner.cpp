@@ -56,7 +56,7 @@ void Combiner::vAdd_combined(void)
 
     m_pBoard->vInsertMainCard_before(pCard_combine,pCard_send);
 
-    break;
+    //break;
   }
 
   vEndIteration();

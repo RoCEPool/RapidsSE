@@ -41,90 +41,94 @@ Curator::~Curator(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* simplify                                                                   */
+/* cull sends                                                                */
 /*----------------------------------------------------------------------------*/
-void Curator::vInitial_Simplification(void)
+void Curator::vCull_Sends(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CURATOR, _FOOTER_);
 
+  i8 nMainCards = m_pBoard->nMainCards();
+  for (i8 i_MainCard = 0; i_MainCard < nMainCards - 1; i_MainCard++) {
+    Card* pMainCard = m_pBoard->pGetMainCard(i_MainCard);
 
-  vBeginIteration();
-
-  while (Card *pMainCard = pEachMain()) {
-
-    // of stage 1
-    i8 i_Test = pMainCard->iCardNo();
-    Card* pStage_1 = m_pBoard->pGetMainCard(i_Test++);
-    if (CK_STAGE != pStage_1->eCard())
+    if (CK_SEND != pMainCard->eCard())
       continue;
 
-    Card* pScan_1 = m_pBoard->pGetMainCard(i_Test++);
-    if (CK_SCAN != pScan_1->eCard())
-      continue;
+    Card* pNextCard = m_pBoard->pGetMainCard(i_MainCard + 1);
+    if (! pNextCard)
+      break;
 
-    Card* pSend_1 = m_pBoard->pGetMainCard(i_Test++);
-    if (CK_SEND != pSend_1->eCard())
-      continue;
+    if (CK_STAGE != pNextCard->eCard()) {
+      m_pBoard->vRemoveMainCard(pMainCard);
+      nMainCards = m_pBoard->nMainCards();
+      i_MainCard--;
+      delete pMainCard;
+    }
 
-    // of stage 2
-    Card* pStage_2 = m_pBoard->pGetMainCard(i_Test++);
-    if (CK_STAGE != pStage_2->eCard())
-      continue;
-
-    Card* pScan_2 = m_pBoard->pGetMainCard(i_Test++);
-    if (CK_SCAN != pScan_2->eCard())
-      continue;
-
-    Card* pAbsJoin_2 = m_pBoard->pGetMainCard(i_Test++);
-    if (CK_ABSJOIN != pAbsJoin_2->eCard())
-      continue;
-
-    Card* pSend_2 = m_pBoard->pGetMainCard(i_Test++);
-    if (CK_SEND != pSend_2->eCard())
-      continue;
-
-    // of stage 3
-    Card* pStage_3 = m_pBoard->pGetMainCard(i_Test++);
-    if (CK_STAGE != pStage_3->eCard())
-      continue;
-
-    Card* pFilter_3 = m_pBoard->pGetMainCard(i_Test++);
-    if (CK_FILTER != pFilter_3->eCard())
-      continue;
-
-    Card* pProject_3 = m_pBoard->pGetMainCard(i_Test++);
-    if (CK_PROJECT != pProject_3->eCard())
-      continue;
-
-    Card* pCombine_3 = m_pBoard->pGetMainCard(i_Test++);
-    if (CK_COMBINE != pCombine_3->eCard())
-      continue;
-
-    Card* pSend_3 = m_pBoard->pGetMainCard(i_Test++);
-    if (CK_SEND != pSend_3->eCard())
-      continue;
-
-    m_pBoard->vRemoveMainCard(pSend_1);
-    m_pBoard->vRemoveMainCard(pStage_2);
-    m_pBoard->vRemoveMainCard(pSend_2);
-    m_pBoard->vRemoveMainCard(pStage_3);
-    m_pBoard->vRemoveMainCard(pCombine_3);
-
-    delete pSend_1;
-    delete pStage_2;
-    delete pSend_2;
-    delete pStage_3;
-    delete pCombine_3;
-
-    //m_pCard_SubSet->vRemove(pFilter_3);
-    //m_pCard_SubSet->vInsertAfter(pFilter_3,pScan_2);
-
-    break;
   }
-
-  vEndIteration();
 }
 
+/*----------------------------------------------------------------------------*/
+/* delete combines                                                            */
+/*----------------------------------------------------------------------------*/
+void Curator::vDelete_Combines(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CURATOR, _FOOTER_);
+
+  i8 nMainCards = m_pBoard->nMainCards();
+  for (i8 i_MainCard = 0; i_MainCard < nMainCards; i_MainCard++) {
+    Card* pMainCard = m_pBoard->pGetMainCard(i_MainCard);
+
+    if (CK_COMBINE == pMainCard->eCard()) {
+      m_pBoard->vRemoveMainCard(pMainCard);
+      nMainCards = m_pBoard->nMainCards();
+      i_MainCard--;
+      delete pMainCard;
+    }
+
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* linearize stages                                                           */
+/*----------------------------------------------------------------------------*/
+void Curator::vLinearize_Stages(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CURATOR, _FOOTER_);
+
+  Card_Stage* pCard_stage_a =
+      _pCard_Stage(m_pBoard->pFindMain(CK_STAGE));
+  if (! pCard_stage_a)
+    return;
+  Card_StageTopo* pCard_stageTopo_a =
+      _pCard_StageTopo(pCard_stage_a->pFindSubCard(CK_STAGETOPO));
+  if (! pCard_stageTopo_a)
+    return;
+
+  if (YG_ALL_PARTITIONS != pCard_stageTopo_a->eStageTopo())
+    return;
+
+  for (;;) {
+    Card_Stage* pCard_stage_b =
+        _pCard_Stage(m_pBoard->pFindNextMain(pCard_stage_a,CK_STAGE));
+    if (! pCard_stage_b)
+      return;
+    Card_StageTopo* pCard_stageTopo_b =
+        _pCard_StageTopo(pCard_stage_b->pFindSubCard(CK_STAGETOPO));
+    if (! pCard_stageTopo_b)
+      return;
+
+    if (YG_ALL_PARTITIONS != pCard_stageTopo_b->eStageTopo())
+      return;
+
+    m_pBoard->vRemoveMainCard(pCard_stage_b);
+
+    delete pCard_stage_b;
+
+    m_pBoard->vRenumberMainCards();
+  }
+
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
