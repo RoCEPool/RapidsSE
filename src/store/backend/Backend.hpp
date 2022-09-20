@@ -40,7 +40,7 @@ namespace STORE
     Backend(RootNode* pPlanRoot);
    ~Backend(void) noexcept(false);
 
-    bool bTransliterate(String* sPipeline);
+    bool bTransliterate(Stz* sPipelineName, String* sPipeline);
 
   private:
 

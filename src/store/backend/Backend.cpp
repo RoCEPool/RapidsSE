@@ -180,7 +180,7 @@ Backend::~Backend(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* transliterate plan into a pipeline statement                               */
 /*----------------------------------------------------------------------------*/
-bool Backend::bTransliterate(String* sPipeline) {
+bool Backend::bTransliterate(Stz* sPipelineName, String* sPipeline) {
   _static_
 
   m_sPipeline = sPipeline;
@@ -215,7 +215,7 @@ bool Backend::bTransliterate(String* sPipeline) {
   PlanNodeIter* pIter = pStartingNode->pNewChildrenIter();
 
   // append the main pipeline
-  vAppendPipeline("unamed"_Stz);
+  vAppendPipeline(sPipelineName);
 
   while (pIter->bHasNext()) {
     QueryNode* pSubqueryMarker = _pQueryNode(pIter->pNext());

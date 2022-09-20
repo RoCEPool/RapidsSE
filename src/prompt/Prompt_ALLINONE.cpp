@@ -3890,9 +3890,16 @@ bool PROMPT::bPrompt_select(SePrompt* pPrompt)
   while (' ' == *sTrimmed.azChar())
     StrLib::vShuffleLeft(sTrimmed.azChar(),1);
 
-  while ('/' == *sTrimmed.azChar())
+  while ('/' == *sTrimmed.azChar()) {
     //StrLib::vRemoveTill(sTrimmed.azChar(),' ', true);
     StrLib::vRemoveToken(sTrimmed.azChar());
+
+    if ('=' == *sTrimmed.azChar()) {
+      StrLib::vRemoveToken(sTrimmed.azChar());
+      StrLib::vRemoveToken(sTrimmed.azChar());
+    }
+  }
+
 
   //s16KB sStatement;
   s16KB sSqlCompiler;
