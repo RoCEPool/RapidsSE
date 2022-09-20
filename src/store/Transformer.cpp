@@ -115,6 +115,13 @@ void Transformer::vTransform(void)
     m_pBoard->vPrintBoard("Filtrate::vRemove_predCmp() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // elete any <filter> which is effectively empty
+  m_pFiltrate->vDeleteEmpty_filter();
+  if (bInteractive)
+    m_pBoard->vPrintBoard("Filtrate::vDeleteEmpty_filter() >> "_Stz);
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   m_pJoiner->vDelete_joinPred();
   if (bInteractive)

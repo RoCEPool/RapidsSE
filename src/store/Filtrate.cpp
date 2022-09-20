@@ -58,27 +58,28 @@ void Filtrate::vCalc_to_calcBool(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* stream                                                                     */
+/* delete any <filter> which is effectively empty                             */
 /*----------------------------------------------------------------------------*/
-void Filtrate::vCalc_to_calcBool(Card* pCard_Filter)
+void Filtrate::vDeleteEmpty_filter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTRATE,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
 
-  RASSERT(CK_FILTER == pCard_Filter->eCard());
+  vBeginIteration();
 
-  RASSERT(1 == pCard_Filter->nSubCards());
+  while (Card_Filter *pCard_filter =
+      _pCard_Filter(pEachMain(CK_FILTER))) {
 
-  Card_Expr* pCard_Expr = _pCard_Expr(pCard_Filter->pGet(0));
-  RASSERT(2 == pCard_Expr->nSubCards());
+    Card_CalcBool* pCard_calcBool =
+        _pCard_CalcBool(pCard_filter->pFindSubCard(CK_CALCBOOL));
 
-  Card_Type* pCard_Type = _pCard_Type(pCard_Expr->pGet(0));
-  Card_Calc* pCard_Calc = _pCard_Calc(pCard_Expr->pGet(1));
+    if (0 == pCard_calcBool->nSubCards()) {
+      m_pBoard->vRemoveMainCard(pCard_filter);
+      delete pCard_filter;
+      break;
+    }
+  }
 
-  Card* pCard_CalcBool = pTo_CalcBool(pCard_Calc);
-
-  pCard_Expr->vRemove(pCard_Calc);
-  delete pCard_Calc;
-  pCard_Expr->vAppend(pCard_CalcBool);
+  vEndIteration();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -201,6 +202,30 @@ Card* Filtrate::pTo_CalcBool(Card* pCard_Calc)
   delete pCard_SubExpr;
 
   return pCard_CalcBool;
+}
+
+/*----------------------------------------------------------------------------*/
+/* stream                                                                     */
+/*----------------------------------------------------------------------------*/
+void Filtrate::vCalc_to_calcBool(Card* pCard_Filter)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTRATE,_FOOTER_);
+
+  RASSERT(CK_FILTER == pCard_Filter->eCard());
+
+  RASSERT(1 == pCard_Filter->nSubCards());
+
+  Card_Expr* pCard_Expr = _pCard_Expr(pCard_Filter->pGet(0));
+  RASSERT(2 == pCard_Expr->nSubCards());
+
+  Card_Type* pCard_Type = _pCard_Type(pCard_Expr->pGet(0));
+  Card_Calc* pCard_Calc = _pCard_Calc(pCard_Expr->pGet(1));
+
+  Card* pCard_CalcBool = pTo_CalcBool(pCard_Calc);
+
+  pCard_Expr->vRemove(pCard_Calc);
+  delete pCard_Calc;
+  pCard_Expr->vAppend(pCard_CalcBool);
 }
 
 /*============================================================================*/

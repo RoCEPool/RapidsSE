@@ -23,6 +23,7 @@ namespace STORE
    ~Filtrate(void) noexcept(false);
 
     void vCalc_to_calcBool(void);
+    void vDeleteEmpty_filter(void);
     void vRemove_predCmp(void);
 
   private:
