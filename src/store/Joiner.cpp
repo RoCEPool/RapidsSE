@@ -107,6 +107,22 @@ void Joiner::vAppend_indexPred(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* convert <absJoin> into <indexJoin>                                         */
+/*----------------------------------------------------------------------------*/
+void Joiner::vConvert_absJoin(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_JOINER, _FOOTER_);
+
+  vBeginIteration();
+
+  while (Card_AbsJoin* pCard_AbsJoin = _pCard_AbsJoin(pEachMain(CK_ABSJOIN))) {
+    pCard_AbsJoin->vCard(CK_INDEXJOIN);
+  }
+
+  vEndIteration();
+}
+
+/*----------------------------------------------------------------------------*/
 /* delete <joinPred> from board                                               */
 /*----------------------------------------------------------------------------*/
 void Joiner::vDelete_joinPred(void)
@@ -119,6 +135,42 @@ void Joiner::vDelete_joinPred(void)
   m_pBoard->vRemoveMainCard(pCard_joinPred);
 
   delete pCard_joinPred;
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete <scan_r> from board                                               */
+/*----------------------------------------------------------------------------*/
+void Joiner::vDelete_scan_R(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_JOINER, _FOOTER_);
+
+  vBeginIteration();
+
+  while (Card *pMainCard = pEachMain()) {
+
+    i8 i_Test = pMainCard->iCardNo();
+    Card* pTestCard = m_pBoard->pGetMainCard(i_Test++);
+    if (CK_SCAN != pTestCard->eCard())
+      continue;
+    Card_Scan* pCard_scan_l = _pCard_Scan(pTestCard);
+
+    pTestCard = m_pBoard->pGetMainCard(i_Test++);
+    if (CK_SCAN != pTestCard->eCard())
+      continue;
+    Card_Scan* pCard_scan_r = _pCard_Scan(pTestCard);
+
+    pTestCard = m_pBoard->pGetMainCard(i_Test++);
+    if (CK_INDEXJOIN != pTestCard->eCard())
+      continue;
+    Card_IndexJoin* pCard_indexJoin = _pCard_IndexJoin(pTestCard);
+
+    m_pBoard->vRemoveMainCard(pCard_scan_r);
+    delete pCard_scan_r;
+
+    break;
+  }
+
+  vEndIteration();
 }
 
 /*----------------------------------------------------------------------------*/

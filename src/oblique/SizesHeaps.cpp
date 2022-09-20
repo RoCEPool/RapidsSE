@@ -251,6 +251,7 @@
 #include "Predicator.hpp"
 #include "Filtrate.hpp"
 #include "Searcher.hpp"
+#include "Combiner.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -322,6 +323,7 @@ SizeHeap gxaSizeHeap[]
   { CN_CODESYNTH,                sizeof(CodeSynth),          HT_T_LARGE   ,FILL },
   { CN_COLUMN,                   sizeof(Column),             HT_T_TINY    ,FILL },
   { CN_COMBINED,                 sizeof(Combined),           HT_T_LARGE   ,FILL },
+  { CN_COMBINER,                 sizeof(Combiner),           HT_T_TINY    ,FILL },
   { CN_CONDITIONALQUERYNODEITER, sizeof(ConditionalQueryNodeIter), HT_T_TINY,FILL },
   { CN_CRVBUFFER,                sizeof(CrvBuffer),          HT_T_LARGE   ,FILL },
   { CN_CRWBUFFER,                sizeof(CrwBuffer),          HT_T_LARGE   ,FILL },

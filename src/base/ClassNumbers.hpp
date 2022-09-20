@@ -60,6 +60,7 @@ enum eCN : u2 // Class Number
   /* */ CN_CODESYNTH,
   /* */ CN_COLUMN,
   /* */ CN_COMBINED,
+  /* */ CN_COMBINER,
   /* */ CN_CONDITIONALQUERYNODEITER,
   /* */ CN_CRVBUFFER,
   /* */ CN_CRWBUFFER,
@@ -485,6 +486,7 @@ static Stz* aCN[]
   /* */ "CODESYNTH"_Stz,            // CN_CODESYNTH
   /* */ "COLUMN"_Stz,               // CN_COLUMN
   /* */ "COMBINED"_Stz,             // CN_COMBINED
+  /* */ "COMBINER"_Stz,             // CN_COMBINER
   /* */ "CONDITIONALQUERYNODEITER"_Stz, // CN_CONDITIONALQUERYNODEITER
   /* */ "CRVBUFFER"_Stz,            // CN_CRVBUFFER
   /* */ "CRWBUFFER"_Stz,            // CN_CRWBUFFER

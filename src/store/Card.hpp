@@ -92,6 +92,7 @@ namespace STORE
     void vAppendDupSubCards(Card* pCard_SubSet);
 
     eCK  eCard(void);
+    void vCard(eCK eCard);
     eGC  eCatg(void);
     Stz* szCardNm(void);
     i8   iCardNo(void);

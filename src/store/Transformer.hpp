@@ -5,6 +5,7 @@
 
 #include "OptimiserTool.hpp"
 
+#include "Combiner.hpp"
 #include "Curator.hpp"
 #include "Filtrate.hpp"
 #include "Joiner.hpp"
@@ -22,6 +23,7 @@ namespace STORE
     Bench*       m_pBench;
     Board*       m_pBoard;
 
+    Combiner*    m_pCombiner;
     Curator*     m_pCurator;
     Filtrate*    m_pFiltrate;
     Joiner*      m_pJoiner;
