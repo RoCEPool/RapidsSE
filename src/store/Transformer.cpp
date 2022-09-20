@@ -129,7 +129,11 @@ void Transformer::vTransform(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
- }
+  m_pStreamer->vAppendStream_to_AbsJoin();
+  if (bInteractive)
+    m_pBoard->vPrintBoard("Streamer::vAppendStream_to_AbsJoin() >> "_Stz);
+
+}
 
 
 /*----------------------------------------------------------------------------*/
