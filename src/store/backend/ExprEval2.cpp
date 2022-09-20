@@ -948,7 +948,8 @@ void ExprEval2::vGenerateColPrefix(StreamDefBase* pStreamDef, Stz* szColPrefix)
 
   _static_
 
-  i8 iTableNo = 1;
+  i8 iTableNo = 0;
+  i8 iTablePrefix = C_UNKNOWN;
 
   for (i8 iCol = 0; iCol < pStreamDef->nColumns(); iCol++) {
 
@@ -963,14 +964,14 @@ void ExprEval2::vGenerateColPrefix(StreamDefBase* pStreamDef, Stz* szColPrefix)
 
     // extract the table no from the column name prefix if any
     if (!szColPrefix->bIsEmpty() && szColPrefix->bBeginsWith("J"_Stz)) {
-      iTableNo = StrLib::iToI8(szColPrefix->azChar() + 1);
-      iTableNo++;
-      break;
+      iTablePrefix = StrLib::iToI8(szColPrefix->azChar() + 1);
+      if (iTablePrefix > iTableNo )
+        iTableNo = iTablePrefix;
     }
 
   }
   // generate the new column prefix
-  StrLib::vSprint(szColPrefix, "J%d_"_Stz, iTableNo);
+  StrLib::vSprint(szColPrefix, "J%d_"_Stz, iTableNo+1);
 }
 
 /*============================================================================*/
