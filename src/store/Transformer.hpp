@@ -5,10 +5,10 @@
 
 #include "OptimiserTool.hpp"
 
-#include "Booler.hpp"
+#include "Curator.hpp"
+#include "Filtrate.hpp"
 #include "Joiner.hpp"
 #include "Predicator.hpp"
-#include "Simplifier.hpp"
 #include "Streamer.hpp"
 
 namespace STORE
@@ -21,7 +21,12 @@ namespace STORE
 
     Bench*       m_pBench;
     Board*       m_pBoard;
-    Card_SubSet* m_pCard_SubSet;
+
+    Curator*     m_pCurator;
+    Filtrate*    m_pFiltrate;
+    Joiner*      m_pJoiner;
+    Predicator*  m_pPredicator;
+    Streamer*    m_pStreamer;
 
     // must be last
     Footer m_xFooter;

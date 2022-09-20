@@ -766,7 +766,7 @@ void ListExo_t<CLASSNO,ITEM>::vRemoveAll(void)
 template <eCN CLASSNO, class ITEM>
 void ListExo_t<CLASSNO,ITEM>::vRemoveNode(ListExoNode_t<ITEM>* pRemovingNode)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
+  //_precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
 
   m_okLock.vGrabWrite();
 

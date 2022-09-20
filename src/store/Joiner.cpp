@@ -53,19 +53,15 @@ void Joiner::vAppend_index(void)
 
   Card *pMainCard = nullptr;
 
-  CardIter *pMainCardIter = m_pBoard->pNewMainCardIter();
-  while (pMainCardIter->bHasNext()) {
-    pMainCard = pMainCardIter->pNext();
+  vBeginIteration();
 
-    if (CK_ABSJOIN == pMainCard->eCard())
-      break;
-  }
+  pMainCard = pEachMain(CK_ABSJOIN);
 
   if (pMainCard) {
     Card_AbsJoin* pCard_AbsJoin = _pCard_AbsJoin(pMainCard);
 
-    while (pMainCardIter->bHasPrev()) {
-      pMainCard = pMainCardIter->pPrev();
+    while (m_pMainCardIter->bHasPrev()) {
+      pMainCard = m_pMainCardIter->pPrev();
 
       if (CK_SCAN == pMainCard->eCard()) {
         Card_Table* pCard_Table = _pCard_Table(pMainCard->pFindSubCard(CK_TABLE));
@@ -81,8 +77,7 @@ void Joiner::vAppend_index(void)
     }
   }
 
-  delete pMainCardIter;
-
+  vEndIteration();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -92,15 +87,9 @@ void Joiner::vAppend_indexPred(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_JOINER, _FOOTER_);
 
-  CardIter *pMainCardIter = m_pBoard->pNewMainCardIter();
+  vBeginIteration();
 
-  while (pMainCardIter->bHasNext()) {
-    Card *pMainCard = pMainCardIter->pNext();
-
-    if (CK_ABSJOIN != pMainCard->eCard())
-      continue;
-
-    Card_AbsJoin* pCard_AbsJoin = _pCard_AbsJoin(pMainCard);
+  while (Card_AbsJoin* pCard_AbsJoin = _pCard_AbsJoin(pEachMain(CK_ABSJOIN))) {
 
     Card_JoinPred* pCard_JoinPred =
         _pCard_JoinPred(m_pBoard->pFindNextMain(pCard_AbsJoin,CK_JOINPRED));
@@ -114,7 +103,7 @@ void Joiner::vAppend_indexPred(void)
 
   }
 
-  delete pMainCardIter;
+  vEndIteration();
 }
 
 /*----------------------------------------------------------------------------*/

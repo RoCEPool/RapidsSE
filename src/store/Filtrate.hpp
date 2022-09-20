@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Simplifier.hpp --                                                           */
+/* Filtrate.hpp --                                                            */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class Simplifier : public TransformerTool
+  class Filtrate : public TransformerTool
   {
   private:
 
@@ -18,17 +18,22 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Simplifier(Bench* pBench);
+    Filtrate(Bench* pBench);
   
-   ~Simplifier(void) noexcept(false);
+   ~Filtrate(void) noexcept(false);
 
-    void vSimplify(void);
+    void vCalc_to_calcBool(void);
+    void vDeleteEmpty_filter(void);
+    void vRemove_predCmp(void);
+
   private:
+    void vCalc_to_calcBool(Card* pCard_Filter);
+    Card* pTo_CalcBool(Card* pCard_Calc);
 
     Footer* aFooter(void);
   };
 
-  Simplifier* _pSimplifier(void* aAddr);
+  Filtrate* _pFiltrate(void* aAddr);
 }
 /*============================================================================*/
 /* end                                                                        */

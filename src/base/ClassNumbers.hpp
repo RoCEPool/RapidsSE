@@ -36,7 +36,6 @@ enum eCN : u2 // Class Number
   /* */ CN_BIRTH,
   /* */ CN_BOARD,
   /* */ CN_BOLVAL,
-  /* */ CN_BOOLER,
   /* */ CN_BUCKET,
   /* */ CN_BUCKETGET,
   /* */ CN_BUCKETINFO,
@@ -68,6 +67,7 @@ enum eCN : u2 // Class Number
   /* */ CN_CRWTOROW,
   /* */ CN_CSVBUFFER,
   /* */ CN_CSVMETA,
+  /* */ CN_CURATOR,
 
   /* */ CN__D__,
   /* */ CN_DATATRANSIENT,
@@ -77,7 +77,6 @@ enum eCN : u2 // Class Number
   /* */ CN_DECK,
   /* */ CN_DECKSPEC,
   /* */ CN_DEFINITIONNODE,
-  /* */ CN_DELETER,
   /* */ CN_DEREFMETRICS,
   /* */ CN_DIC,
   /* */ CN_DICLOCK,
@@ -105,6 +104,7 @@ enum eCN : u2 // Class Number
   /* */ CN_FIFO,
   /* */ CN_FILE,
   /* */ CN_FILEMAP,
+  /* */ CN_FILTRATE,
   /* */ CN_FIPVAL,
   /* */ CN_FLATTEN,
   /* */ CN_FLTVAL,
@@ -301,6 +301,7 @@ enum eCN : u2 // Class Number
   /* */ CN_SCHEDULER,
   /* */ CN_SCHEMA,
   /* */ CN_SEAPI,
+  /* */ CN_SEARCHER,
   /* */ CN_SEDEPUTY,
   /* */ CN_SEEME,
   /* */ CN_SENCELL,
@@ -311,7 +312,6 @@ enum eCN : u2 // Class Number
   /* */ CN_SHAPE,
   /* */ CN_SHORTCUT,
   /* */ CN_SHORTCUTVEC,
-  /* */ CN_SIMPLIFIER,
   /* */ CN_SINCE,
   /* */ CN_SKIPLIST,
   /* */ CN_SKIPNODE,
@@ -461,7 +461,6 @@ static Stz* aCN[]
   /* */ "BIRTH"_Stz,                // CN_BIRTH
   /* */ "BOARD"_Stz,                // CN_BOARD
   /* */ "BOLVAL"_Stz,               // CN_BOLVAL
-  /* */ "BOOLER"_Stz,               // CN_BOOLER
   /* */ "BUCKET"_Stz,               // CN_BUCKET
   /* */ "BUCKETGET"_Stz,            // CN_BUCKETGET
   /* */ "BUCKETINFO"_Stz,           // CN_BUCKETINFO
@@ -493,6 +492,7 @@ static Stz* aCN[]
   /* */ "CRWTOROW"_Stz,             // CN_CRWTOROW
   /* */ "CSVBUFFER"_Stz,            // CN_CSVBUFFER
   /* */ "CSVMETA"_Stz,              // CN_CSVMETA
+  /* */ "CURATOR"_Stz,              // CN_CURATOR
 
   /* */ "_D__"_Stz,                 // CN__D__
   /* */ "DATATRANSIENT"_Stz,        // CN_DATATRANSIENT
@@ -502,7 +502,6 @@ static Stz* aCN[]
   /* */ "DECK"_Stz,                 // CN_DECK
   /* */ "DECKSPEC"_Stz,             // CN_DECKSPEC
   /* */ "DEFINITIONNODE"_Stz,       // CN_DEFINITIONNODE
-  /* */ "DELETER"_Stz,              // CN_DELETER
   /* */ "DEREFMETRICS"_Stz,         // CN_DEREFMETRICS
   /* */ "DIC"_Stz,                  // CN_DIC
   /* */ "DICLOCK"_Stz,              // CN_DICLOCK
@@ -530,6 +529,7 @@ static Stz* aCN[]
   /* */ "FIFO"_Stz,                 // CN_FIFO
   /* */ "FILE"_Stz,                 // CN_FILE
   /* */ "FILEMAP"_Stz,              // CN_FILEMAP
+  /* */ "FILTRATE"_Stz,             // CN_FILTRATE
   /* */ "FIPVAL"_Stz,               // CN_FIPVAL
   /* */ "FLATTEN"_Stz,              // CN_FLATTEN
   /* */ "FLTVAL"_Stz,               // CN_FLTVAL
@@ -726,6 +726,7 @@ static Stz* aCN[]
   /* */ "SCHEDULER"_Stz,            // CN_SCHEDULER
   /* */ "SCHEMA"_Stz,               // CN_SCHEMA
   /* */ "SEAPI"_Stz,                // CN_SEAPI
+  /* */ "SEARCHER"_Stz,             // CN_SEARCHER
   /* */ "SEDEPUTY"_Stz,             // CN_SEDEPUTY
   /* */ "SEEME"_Stz,                // CN_SEEME
   /* */ "SENCELL"_Stz,              // CN_SENCELL
@@ -736,7 +737,6 @@ static Stz* aCN[]
   /* */ "SHAPE"_Stz,                // CN_SHAPE
   /* */ "SHORTCUT"_Stz,             // CN_SHORTCUT
   /* */ "SHORTCUTVEC"_Stz,          // CN_SHORTCUTVEC
-  /* */ "SIMPLIFIER"_Stz,           // CN_SIMPLIFIER
   /* */ "SINCE"_Stz,                // CN_SINCE
   /* */ "SKIPLIST"_Stz,             // CN_SKIPLIST
   /* */ "SKIPNODE"_Stz,             // CN_SKIPNODE

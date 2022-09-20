@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Deleter.hpp --                                                             */
+/* Curator.hpp --                                                           */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class Deleter : public TransformerTool
+  class Curator : public TransformerTool
   {
   private:
 
@@ -18,17 +18,17 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Deleter(Bench* pBench);
+    Curator(Bench* pBench);
   
-   ~Deleter(void) noexcept(false);
+   ~Curator(void) noexcept(false);
 
-    void vDelete(void);
+    void vInitial_Simplification(void);
   private:
 
     Footer* aFooter(void);
   };
 
-  Deleter* _pDeleter(void* aAddr);
+  Curator* _pCurator(void* aAddr);
 }
 /*============================================================================*/
 /* end                                                                        */

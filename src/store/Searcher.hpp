@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Booler.hpp -- transform <calc> into <calcBool>                             */
+/* Searcher.hpp --                                                             */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class Booler : public TransformerTool
+  class Searcher : public TransformerTool
   {
   private:
 
@@ -18,21 +18,18 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Booler(Bench* pBench);
-   ~Booler(void) noexcept(false);
+    Searcher(Bench* pBench);
+  
+   ~Searcher(void) noexcept(false);
 
-    void vBool(void);
+    Card* pFindMainOf(Card* pSubCard);
 
   private:
-
-    void vBool(Card* pCard_Filter);
-
-    Card* pTo_CalcBool(Card* pCard_Calc);
 
     Footer* aFooter(void);
   };
 
-  Booler* _pBooler(void* aAddr);
+  Searcher* _pSearcher(void* aAddr);
 }
 /*============================================================================*/
 /* end                                                                        */

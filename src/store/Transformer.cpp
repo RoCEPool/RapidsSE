@@ -26,8 +26,13 @@ Transformer::Transformer(Optimiser* pOptimiser)
   m_pOptimiser   = pOptimiser;
 
   m_pBench       = m_pOptimiser->pBench();
-  m_pBoard       = m_pBench->pHead();
-  m_pCard_SubSet = nullptr;
+  m_pBoard       = nullptr;
+
+  m_pCurator     = nullptr;
+  m_pFiltrate    = nullptr;
+  m_pJoiner      = nullptr;
+  m_pPredicator  = nullptr;
+  m_pStreamer    = nullptr;
 
   _checkInitialised_(CN_TRANSFORMER);
   
@@ -40,7 +45,12 @@ Transformer::Transformer(Optimiser* pOptimiser)
 Transformer::~Transformer(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMER,_FOOTER_);
-  
+
+  delete m_pCurator;
+  delete m_pFiltrate;
+  delete m_pJoiner;
+  delete m_pPredicator;
+  delete m_pStreamer;
 }
 
 
@@ -60,55 +70,66 @@ void Transformer::vTransform(void)
   bool bInteractive = pJobTags->bHasName("<interactive>"_Stz);
 
   m_pBoard = m_pOptimiser->pHeadBoard();
-  m_pCard_SubSet = m_pBoard->pCard_SubSet();
+
+  m_pCurator    = new Curator(m_pBench);
+  m_pFiltrate   = new Filtrate(m_pBench);
+  m_pJoiner     = new Joiner(m_pBench);
+  m_pPredicator = new Predicator(m_pBench);
+  m_pStreamer   = new Streamer(m_pBench);
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  Simplifier* pSimplifier  = new Simplifier(m_pBench);
-  pSimplifier->vSimplify();
+  m_pCurator->vInitial_Simplification();
   if (bInteractive)
-    m_pBoard->vPrintBoard("Simplifier::vSimplify() >> "_Stz);
+    m_pBoard->vPrintBoard("Curator::vInitial_Simplification() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  Booler* pBooler  = new Booler(m_pBench);
-  pBooler->vBool();
+  m_pFiltrate->vCalc_to_calcBool();
   if (bInteractive)
-    m_pBoard->vPrintBoard("Booler::vBool() >> "_Stz);
+    m_pBoard->vPrintBoard("Filtrate::vCalc_to_calcBool() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  Streamer* pStreamer  = new Streamer(m_pBench);
-  pStreamer->vStream();
+  m_pStreamer->vAppendStream_to_Scan();
   if (bInteractive)
-    m_pBoard->vPrintBoard("Streamer::vStream() >> "_Stz);
+    m_pBoard->vPrintBoard("Streamer::vAppendStream_to_Scan() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  Predicator* pPredicator  = new Predicator(m_pBench);
-  pPredicator->vInsert_joinPred();
+  m_pPredicator->vInsert_joinPred();
   if (bInteractive)
     m_pBoard->vPrintBoard("Predicator::vInsert_joinPred() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  Joiner* pJoiner  = new Joiner(m_pBench);
-  pJoiner->vAppend_indexPred();
+  m_pJoiner->vAppend_indexPred();
   if (bInteractive)
     m_pBoard->vPrintBoard("Joiner::vAppend_indexPred() >> "_Stz);
-  pJoiner->vAppend_index();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  m_pJoiner->vAppend_index();
   if (bInteractive)
     m_pBoard->vPrintBoard("Joiner::vAppend_index() >> "_Stz);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // remove <predCmp> (in <joinPred>) from all <filter>
+  m_pFiltrate->vRemove_predCmp();
+  if (bInteractive)
+    m_pBoard->vPrintBoard("Filtrate::vRemove_predCmp() >> "_Stz);
 
-  pJoiner->vDelete_joinPred();
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // elete any <filter> which is effectively empty
+  m_pFiltrate->vDeleteEmpty_filter();
+  if (bInteractive)
+    m_pBoard->vPrintBoard("Filtrate::vDeleteEmpty_filter() >> "_Stz);
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  m_pJoiner->vDelete_joinPred();
   if (bInteractive)
     m_pBoard->vPrintBoard("Joiner::vDelete_joinPred() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  delete pBooler;
-  delete pJoiner;
-  delete pPredicator;
-  delete pSimplifier;
-  delete pStreamer;
-}
+ }
 
 
 /*----------------------------------------------------------------------------*/

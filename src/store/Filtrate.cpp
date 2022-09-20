@@ -1,37 +1,37 @@
 /*============================================================================*/
-/* Booler.cpp -- transform <calc> into <calcBool>                             */
+/* Filtrate.cpp --                                                            */
 /*============================================================================*/
 
-#include "Booler.hpp"
+#include "Filtrate.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Booler,CN_BOOLER)
-__aNewFunction(Booler,CN_BOOLER)
-__vDeleteFunction(Booler,CN_BOOLER)
-__aFooterFunction(Booler)
+__pCastFunction(STORE, Filtrate, CN_FILTRATE)
+__aNewFunction(Filtrate, CN_FILTRATE)
+__vDeleteFunction(Filtrate, CN_FILTRATE)
+__aFooterFunction(Filtrate)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Booler::Booler(Bench* pBench)
-: TransformerTool(CN_BOOLER,pBench)
+Filtrate::Filtrate(Bench* pBench)
+: TransformerTool(CN_FILTRATE, pBench)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOOLER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTRATE,_FOOTER_);
 
-  _checkInitialised_(CN_BOOLER);
+  _checkInitialised_(CN_FILTRATE);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_BOOLER,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_FILTRATE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Booler::~Booler(void) noexcept(false)
+Filtrate::~Filtrate(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOOLER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTRATE,_FOOTER_);
   
 }
 
@@ -43,57 +43,83 @@ Booler::~Booler(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* stream                                                                     */
 /*----------------------------------------------------------------------------*/
-void Booler::vBool(void)
+void Filtrate::vCalc_to_calcBool(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOOLER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTRATE,_FOOTER_);
 
-  i8 nMainCards = m_pBoard->nMainCards();
-  for (i8 i_MainCard = 0; i_MainCard < nMainCards; i_MainCard++) {
-    Card* pMainCard =  m_pBoard->pGetMainCard(i_MainCard);
+  vBeginIteration();
 
-    if (CK_FILTER != pMainCard->eCard())
-      continue;
+  while (Card *pMainCard = pEachMain(CK_FILTER)) {
 
-    vBool(pMainCard);
+    vCalc_to_calcBool(pMainCard);
   }
 
+  vEndIteration();
 }
 
+/*----------------------------------------------------------------------------*/
+/* delete any <filter> which is effectively empty                             */
+/*----------------------------------------------------------------------------*/
+void Filtrate::vDeleteEmpty_filter(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
 
+  vBeginIteration();
+
+  while (Card_Filter *pCard_filter =
+      _pCard_Filter(pEachMain(CK_FILTER))) {
+
+    Card_CalcBool* pCard_calcBool =
+        _pCard_CalcBool(pCard_filter->pFindSubCard(CK_CALCBOOL));
+
+    if (0 == pCard_calcBool->nSubCards()) {
+      m_pBoard->vRemoveMainCard(pCard_filter);
+      delete pCard_filter;
+      break;
+    }
+  }
+
+  vEndIteration();
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove <predCmp> (referenced in <joinPred>) from all <filter>              */
+/*----------------------------------------------------------------------------*/
+void Filtrate::vRemove_predCmp(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
+
+  vBeginIteration();
+
+  while (Card_JoinPred* pCard_joinPred =
+           _pCard_JoinPred(pEachMain(CK_JOINPRED))) {
+
+    // <card> that is subCard of <joinPred>
+    Card_Card* pCard_card = _pCard_Card(pCard_joinPred->pFindSubCard(CK_CARD));
+
+    // <card> is a reference to <predCmp>
+    Card_PredCmp* pCard_predCmp = _pCard_PredCmp(pCard_card->pCard());
+
+    // <filter> that is main of <predCmp>
+    Card_Filter* pCard_filter = _pCard_Filter(pFindMainOf(pCard_predCmp));
+
+    // remove <predCmp> from <filter>
+    pCard_filter->vRemoveSubCard(pCard_predCmp);
+  }
+
+  vEndIteration();
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* stream                                                                     */
-/*----------------------------------------------------------------------------*/
-void Booler::vBool(Card* pCard_Filter)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOOLER,_FOOTER_);
-  RASSERT(CK_FILTER == pCard_Filter->eCard());
-
-  RASSERT(1 == pCard_Filter->nSubCards());
-
-  Card_Expr* pCard_Expr = _pCard_Expr(pCard_Filter->pGet(0));
-  RASSERT(2 == pCard_Expr->nSubCards());
-
-  Card_Type* pCard_Type = _pCard_Type(pCard_Expr->pGet(0));
-  Card_Calc* pCard_Calc = _pCard_Calc(pCard_Expr->pGet(1));
-
-  Card* pCard_CalcBool = pTo_CalcBool(pCard_Calc);
-
-  pCard_Expr->vRemove(pCard_Calc);
-  delete pCard_Calc;
-  pCard_Expr->vAppend(pCard_CalcBool);
-}
-
-/*----------------------------------------------------------------------------*/
 /* convert a calculation into a boolean calculaiton                           */
 /*----------------------------------------------------------------------------*/
-Card* Booler::pTo_CalcBool(Card* pCard_Calc)
+Card* Filtrate::pTo_CalcBool(Card* pCard_Calc)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BOOLER, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
   RASSERT(CK_CALC == pCard_Calc->eCard());
 
   Card_PredAnd* pCard_PredAnd = nullptr;
@@ -176,6 +202,30 @@ Card* Booler::pTo_CalcBool(Card* pCard_Calc)
   delete pCard_SubExpr;
 
   return pCard_CalcBool;
+}
+
+/*----------------------------------------------------------------------------*/
+/* stream                                                                     */
+/*----------------------------------------------------------------------------*/
+void Filtrate::vCalc_to_calcBool(Card* pCard_Filter)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTRATE,_FOOTER_);
+
+  RASSERT(CK_FILTER == pCard_Filter->eCard());
+
+  RASSERT(1 == pCard_Filter->nSubCards());
+
+  Card_Expr* pCard_Expr = _pCard_Expr(pCard_Filter->pGet(0));
+  RASSERT(2 == pCard_Expr->nSubCards());
+
+  Card_Type* pCard_Type = _pCard_Type(pCard_Expr->pGet(0));
+  Card_Calc* pCard_Calc = _pCard_Calc(pCard_Expr->pGet(1));
+
+  Card* pCard_CalcBool = pTo_CalcBool(pCard_Calc);
+
+  pCard_Expr->vRemove(pCard_Calc);
+  delete pCard_Calc;
+  pCard_Expr->vAppend(pCard_CalcBool);
 }
 
 /*============================================================================*/

@@ -124,6 +124,7 @@ namespace STORE
     bool bHasLBound(void);
     void vHasLBound(bool bHasLBound);
     bool bHasProperty(Stz* szName);
+    bool bHasSubCard(Card* pGivenCard);
     bool bHasUBound(void);
     void vHasUBound(bool bHasUBound);
 
