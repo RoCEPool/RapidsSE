@@ -119,11 +119,17 @@
 /*----------------------------------------------------------------------------*/
 : transliterate_PlanOperand \handler
 
-  0 locals| sOperatorName |
+  0 0 locals| sOperatorName sPipeline |
 
   PipeIn[]\clear to PlanOperand[]
 
-  PlanOperand[] sqlCompiler::transliterate to Text[]
+  "<pipelineName>" [job].tagSet@ tagSet.hasName if
+    <pipelineName> to sPipeline
+  else
+    "unamed" to sPipeline
+  then
+
+  sPipeline PlanOperand[] sqlCompiler::transliterate to Text[]
 
   "transliterate" to sOperatorName
   PlanOperand[] sOperatorName sqlCompiler::hasExplain if

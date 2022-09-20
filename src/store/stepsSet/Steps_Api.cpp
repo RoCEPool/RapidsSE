@@ -77,6 +77,9 @@ void Step::vApiForkChild(void)
   if (pJobTags->bHasName(C_TAG_CCODE))
     pCmdTagSet->vInsert(C_TAG_CCODE);
 
+  if (pJobTags->bHasName(C_TAG_PIPELINENAME))
+    pCmdTagSet->vInsert(C_TAG_PIPELINENAME);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // replace the C_TAG_JOBNM
   Stz* szJobNm = pCmdTknVec->pGet(0)->szChars();
