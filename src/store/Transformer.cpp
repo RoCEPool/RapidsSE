@@ -109,6 +109,11 @@ void Transformer::vTransform(void)
     m_pBoard->vPrintBoard("Joiner::vInsert_joinPred() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  m_pJoiner->vResolve_joinPred();
+  if (bInteractive)
+    m_pBoard->vPrintBoard("Joiner::vResolve_joinPred() >> "_Stz);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pJoiner->vAppend_indexPred();
   if (bInteractive)
     m_pBoard->vPrintBoard("Joiner::vAppend_indexPred() >> "_Stz);
