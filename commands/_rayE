@@ -8,13 +8,13 @@ _lineItem
 //create index L_idx0 on lineitem(L_ORDERKEY);
 
 _part
-create index P_idx0 on lineitem(P_PARTKEY);
+create index P_idx0 on part(P_PARTKEY);
 
 load lineItem "../tpch/sf_0001/lineItem.csv" ;
-select * from lineiitem;
+//select * from lineitem;
 
 load part "../tpch/sf_0001/part.csv" ;
-select * from part;
+//select * from part;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -24,10 +24,17 @@ select * from part;
 /interactive
 /weave
 /weaved
-/pipelineName = "rayE"
-select *
+/pipelineName = "rayE2_Q14`"
+select 100
+         * sum(case when p_type like 'PROMO%'
+                    then l_extendedPrice * (1 - l_discount)
+                    else 0
+               end)
+         / sum(l_extendedPrice * (1 - l_discount))
   from lineItem, part
- where l_partkey = p_partkey
+ where l_partKey = p_partKey
+   and l_shipDate >= '1995-09-01'
+   and l_shipDate <  '1995-10-01'
 ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

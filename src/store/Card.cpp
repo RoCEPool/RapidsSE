@@ -788,7 +788,9 @@ Card* Card::pFindParent(Card* pSubCard_arg)
     if (pSubCard_arg == pSubCard)
       return this;
     
-    pSubCard->pFindParent(pSubCard_arg);
+    Card* pParent = pSubCard->pFindParent(pSubCard_arg);
+    if (pParent)
+      return pParent;
   }
   
   return nullptr;
@@ -1009,6 +1011,30 @@ bool Card::bHasSubCard(Card* pGivenCard)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is given card a sub card of this card?                                     */
+/*----------------------------------------------------------------------------*/
+bool Card::bHasSubCard(Card* pGivenCard, Card*& rpParentCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  i8 nSubCards = this->nSubCards();
+  for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
+    Card *pSubCard = pGetSubCard(i_SubCard);
+
+    if (pSubCard == pGivenCard) {
+      rpParentCard = this;
+      return true;
+    }
+
+    if (pSubCard->bHasSubCard(pGivenCard,rpParentCard))
+      return true;
+  }
+
+  rpParentCard = nullptr;
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* does card have given property ?                                            */
 /*----------------------------------------------------------------------------*/
 bool Card::bHasProperty(Stz* szName)
@@ -1211,6 +1237,17 @@ void Card::vRenumberSubCards(Card* pParentCard)
 //
 //  delete pBoard_I;
 //}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vReplaceSubCard(Card* pSubCard, Card* pWithCard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vReplace(pSubCard,pWithCard);
+}
+
 /*----------------------------------------------------------------------------*/
 /* get number of sub-cards                                                    */
 /*----------------------------------------------------------------------------*/

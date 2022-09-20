@@ -126,6 +126,7 @@ namespace STORE
     void vHasLBound(bool bHasLBound);
     bool bHasProperty(Stz* szName);
     bool bHasSubCard(Card* pGivenCard);
+    bool bHasSubCard(Card* pGivenCard, Card*& pParentCard);
     bool bHasUBound(void);
     void vHasUBound(bool bHasUBound);
 
@@ -148,6 +149,7 @@ namespace STORE
 
     void vRemoveSubCard(Card* pCardRemove);
     void vRenumberSubCards(Card* pParentCard);
+    void vReplaceSubCard(Card* pSubCard, Card* pWithCard);
 
     i8   nSubCards(void);
   
