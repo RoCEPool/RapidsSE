@@ -899,9 +899,7 @@ eEC ExprEval2::eJoinStreamDef(StreamDef* pStreamDefLft, StreamDef* pStreamDefRht
 
   // generate right table column prefix
   s32 sColPrefix;
-  Column* pColumn = pStreamDefLft->pGetColumn(pStreamDefLft->nColumns() - 1);
-  Stz* szColumnNm = pColumn->szColNm();
-  vGenerateColPrefix(szColumnNm, sColPrefix);
+  vGenerateColPrefix(pStreamDefLft, sColPrefix);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add columns from StreamDefRht to StreamDefOut using colPrefix for right tablecolumns
@@ -945,22 +943,32 @@ void ExprEval2::vAppendColumnToStreamDef(StreamDefBase* pStreamDefOut, Column* p
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void ExprEval2::vGenerateColPrefix(Stz* szColNm, Stz* szColPrefix)
+void ExprEval2::vGenerateColPrefix(StreamDefBase* pStreamDef, Stz* szColPrefix)
 {
 
   _static_
 
   i8 iTableNo = 1;
 
-  // extract the column name prefix upto .
-  StrLib::vCopyTill(szColPrefix->azChar(), szColNm->azChar(), '.');
+  for (i8 iCol = 0; iCol < pStreamDef->nColumns(); iCol++) {
 
-  // extract the table no from the column name prefix if any
-  if (!szColPrefix->bIsEmpty() && szColPrefix->bBeginsWith("J"_Stz)) {
-    iTableNo = StrLib::iToI8(szColPrefix->azChar() + 1);
-    iTableNo++;
+    // get the column
+    Column* pColumn = pStreamDef->pGetColumn(iCol);
+
+    // get the column name
+    Stz* szColNm = pColumn->szColNm();
+
+    // extract the column name prefix upto .
+    StrLib::vCopyTill(szColPrefix->azChar(), szColNm->azChar(), '.');
+
+    // extract the table no from the column name prefix if any
+    if (!szColPrefix->bIsEmpty() && szColPrefix->bBeginsWith("J"_Stz)) {
+      iTableNo = StrLib::iToI8(szColPrefix->azChar() + 1);
+      iTableNo++;
+      break;
+    }
+
   }
-
   // generate the new column prefix
   StrLib::vSprint(szColPrefix, "J%d_"_Stz, iTableNo);
 }
