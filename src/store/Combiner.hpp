@@ -23,6 +23,8 @@ namespace STORE
    ~Combiner(void) noexcept(false);
 
     void vAdd_combined(void);
+    void vDelete_Combines(void);
+
   private:
 
     Footer* aFooter(void);

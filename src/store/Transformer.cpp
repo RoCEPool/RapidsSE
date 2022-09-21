@@ -85,9 +85,9 @@ void Transformer::vTransform(void)
   if (bInteractive)
     m_pBoard->vPrintBoard("Curator::vLinearize_Stages() >> "_Stz);
 
-  m_pCurator->vDelete_Combines();
+  m_pCombiner->vDelete_Combines();
   if (bInteractive)
-    m_pBoard->vPrintBoard("Curator::vDelete_Combines() >> "_Stz);
+    m_pBoard->vPrintBoard("Combiner::vDelete_Combines() >> "_Stz);
 
   m_pCurator->vDelete_Sends();
   if (bInteractive)

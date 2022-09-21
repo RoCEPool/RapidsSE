@@ -62,6 +62,26 @@ void Combiner::vAdd_combined(void)
   vEndIteration();
 }
 
+/*----------------------------------------------------------------------------*/
+/* delete combines                                                            */
+/*----------------------------------------------------------------------------*/
+void Combiner::vDelete_Combines(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINER, _FOOTER_);
+
+  i8 nMainCards = m_pBoard->nMainCards();
+  for (i8 i_MainCard = 0; i_MainCard < nMainCards; i_MainCard++) {
+    Card* pMainCard = m_pBoard->pGetMainCard(i_MainCard);
+
+    if (CK_COMBINE == pMainCard->eCard()) {
+      m_pBoard->vRemoveMainCard(pMainCard);
+      nMainCards = m_pBoard->nMainCards();
+      i_MainCard--;
+      delete pMainCard;
+    }
+
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
