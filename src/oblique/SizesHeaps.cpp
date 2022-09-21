@@ -250,7 +250,6 @@
 #include "Transformer.hpp"
 #include "Predicator.hpp"
 #include "Filtrate.hpp"
-#include "Searcher.hpp"
 #include "Combiner.hpp"
 #include "Sender.hpp"
 #include "Stager.hpp"
@@ -567,7 +566,6 @@ SizeHeap gxaSizeHeap[]
   { CN_SCHEDULER,                sizeof(Scheduler),          HT_INVALID   ,FILL },
   { CN_SCHEMA,                   sizeof(Schema),             HT_T_TINY    ,FILL },
   { CN_SEAPI,                    sizeof(SeApi),              HT_T_LARGE   ,FILL },
-  { CN_SEARCHER,                 sizeof(Searcher),           HT_T_TINY    ,FILL },
   {CN_SEDEPUTY,        sizeof(SeDeputy),           HT_T_MEDIUM  , FILL },
   {CN_SEEME,           sizeof(SeeMe),              HT_INVALID   , FILL },
   {CN_SENCELL,         sizeof(SenCell),            HT_INVALID   , FILL },

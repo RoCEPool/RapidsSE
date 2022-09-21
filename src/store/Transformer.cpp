@@ -74,24 +74,24 @@ void Transformer::vTransform(void)
 
   Job* pJob = MY::pJob();
   TagSet* pJobTags = pJob->pJobTags();
-  m_bInteractive = pJobTags->bHasName("<interactive>"_Stz);
 
   m_pBoard = m_pOptimiser->pHeadBoard();
 
-  m_pCombiner   = new Combiner(m_pBench);
-  m_pCurator    = new Curator(m_pBench);
-  m_pFiltrate   = new Filtrate(m_pBench);
-  m_pJoiner     = new Joiner(m_pBench);
-  m_pPredicator = new Predicator(m_pBench);
-  m_pSender     = new Sender(m_pBench);
-  m_pStager     = new Stager(m_pBench);
-  m_pStreamer   = new Streamer(m_pBench);
-
+  m_pCombiner    = new Combiner(m_pBench);
+  m_pCurator     = new Curator(m_pBench);
+  m_pFiltrate    = new Filtrate(m_pBench);
+  m_pJoiner      = new Joiner(m_pBench);
+  m_pPredicator  = new Predicator(m_pBench);
+  m_pSender      = new Sender(m_pBench);
+  m_pStager      = new Stager(m_pBench);
+  m_pStreamer    = new Streamer(m_pBench);
+  m_bInteractive = pJobTags->bHasName("<interactive>"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  vTransform1();
-  //vTransform2();
+       if (pJobTags->bHasName("<transform1>"_Stz)) vTransform1();
+  else if (pJobTags->bHasName("<transform2>"_Stz)) vTransform2();
+  else vTransform1();
 }
 
 
@@ -105,6 +105,8 @@ void Transformer::vTransform(void)
 void Transformer::vTransform1(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMER,_FOOTER_);
+
+  vTrace("Transformer running vTransform1\n"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pStager->vLinearize_Stages();
@@ -200,95 +202,93 @@ void Transformer::vTransform2(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMER,_FOOTER_);
 
-  Job* pJob = MY::pJob();
-  TagSet* pJobTags = pJob->pJobTags();
-  bool bInteractive = pJobTags->bHasName("<interactive>"_Stz);
+  vTrace("Transformer running vTransform2\n"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pStager->vLinearize_Stages();
-  if (bInteractive)
+  if (m_bInteractive)
     m_pBoard->vPrintBoard("Stager::vLinearize_Stages() >> "_Stz);
 
   m_pCombiner->vDelete_Combines();
-  if (bInteractive)
+  if (m_bInteractive)
     m_pBoard->vPrintBoard("Combiner::vDelete_Combines() >> "_Stz);
 
   m_pSender->vDelete_Sends();
-  if (bInteractive)
+  if (m_bInteractive)
     m_pBoard->vPrintBoard("Sender::vDelete_Sends() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pFiltrate->vCalc_to_calcBool();
-  if (bInteractive)
+  if (m_bInteractive)
     m_pBoard->vPrintBoard("Filtrate::vCalc_to_calcBool() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append <stream> to all <scan> and then to all <absJoin>
   m_pStreamer->vAppend_Streams();
-  if (bInteractive)
+  if (m_bInteractive)
     m_pBoard->vPrintBoard("Streamer::vAppend_Streams() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pJoiner->vInsert_joinPred();
-  if (bInteractive)
+  if (m_bInteractive)
     m_pBoard->vPrintBoard("Joiner::vInsert_joinPred() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pJoiner->vResolve_joinPred();
-  if (bInteractive)
+  if (m_bInteractive)
     m_pBoard->vPrintBoard("Joiner::vResolve_joinPred() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pJoiner->vAppend_indexPred();
-  if (bInteractive)
+  if (m_bInteractive)
     m_pBoard->vPrintBoard("Joiner::vAppend_indexPred() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pJoiner->vAppend_index();
-  if (bInteractive)
+  if (m_bInteractive)
     m_pBoard->vPrintBoard("Joiner::vAppend_index() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove <predCmp> (in <joinPred>) from all <filter>
   m_pFiltrate->vRemove_predCmp();
-  if (bInteractive)
+  if (m_bInteractive)
     m_pBoard->vPrintBoard("Filtrate::vRemove_predCmp() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete any <filter> which is effectively empty
   m_pFiltrate->vDeleteEmpty_filter();
-  if (bInteractive)
+  if (m_bInteractive)
     m_pBoard->vPrintBoard("Filtrate::vDeleteEmpty_filter() >> "_Stz);
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   m_pJoiner->vDelete_joinPred();
-  if (bInteractive)
+  if (m_bInteractive)
     m_pBoard->vPrintBoard("Joiner::vDelete_joinPred() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   m_pJoiner->vConvert_absJoin();
-  if (bInteractive)
+  if (m_bInteractive)
     m_pBoard->vPrintBoard("Joiner::vConvert_absJoin() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   m_pJoiner->vDelete_scan_R();
-  if (bInteractive)
+  if (m_bInteractive)
     m_pBoard->vPrintBoard("Joiner::vDelete_scan_R() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   m_pSender->vReadd_Sends();
-  if (bInteractive)
+  if (m_bInteractive)
     m_pBoard->vPrintBoard("Sender::vReadd_Sends() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   m_pCombiner->vAdd_combined();
-  if (bInteractive)
+  if (m_bInteractive)
     m_pBoard->vPrintBoard("Combiner::vAdd_combined() >> "_Stz);
 
 }
