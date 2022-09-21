@@ -41,7 +41,23 @@ Filtrate::~Filtrate(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* stream                                                                     */
+/* inspect all <filter> and attempt to move <predCmp> after <scan>/<absJoin>  */
+/*----------------------------------------------------------------------------*/
+void Filtrate::vBurstLeftwards(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTRATE,_FOOTER_);
+
+  vBeginIteration();
+
+  while (Card_Filter *pCard_filter = _pCard_Filter(pEachMain(CK_FILTER))) {
+    vBurstLeftwards(pCard_filter);
+  }
+
+  vEndIteration();
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert all <filter> from calc form to calcBool                            */
 /*----------------------------------------------------------------------------*/
 void Filtrate::vCalc_to_calcBool(void)
 {
@@ -131,6 +147,74 @@ void Filtrate::vRemove_predCmp(void)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* inspect all <filter> and attempt to move <predCmp> after <scan>/<absJoin>  */
+/*----------------------------------------------------------------------------*/
+void Filtrate::vBurstLeftwards(Card_Filter* pCard_filter)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
+
+  Card* pMayCard = pDrillForPredCmp(pCard_filter);
+
+  if (pMayCard) {
+    vTrace("vBurstLeftwards discovered %p\n"_Stz,pMayCard);
+    pMayCard->vDump();
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* inspect all <filter> and attempt to move <predCmp> after <scan>/<absJoin>  */
+/*----------------------------------------------------------------------------*/
+Card* Filtrate::pDrillForPredCmp(Card* pParentCard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
+
+  Card* pMayCard = nullptr;
+
+  i8 nSubCards = pParentCard->nSubCards();
+  for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
+    Card* pSubCard = pParentCard->pGetSubCard(i_SubCard);
+
+    eCK eSubCard = pSubCard->eCard();
+    if (CK_PREDCMP == eSubCard) {
+      if ( (pMayCard = pCandidatePredCmp(_pCard_PredCmp(pSubCard))) )
+        return pMayCard;
+   }
+    else
+    if (CK_PREDAND == eSubCard) {
+      if ( (pMayCard = pDrillForPredCmp(pSubCard)) )
+        return pMayCard;
+    }
+    else
+    if (CK_PREDOR == eSubCard) {
+      return nullptr;
+    }
+    else {
+      if ( (pMayCard = pDrillForPredCmp(pSubCard)) )
+        return pMayCard;
+    }
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* inspect all <filter> and attempt to move <predCmp> after <scan>/<absJoin>  */
+/*----------------------------------------------------------------------------*/
+Card* Filtrate::pCandidatePredCmp(Card_PredCmp* pCard_PredCmp)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
+
+  vTrace("bCandidatePredCmp candidate %p\n"_Stz,pCard_PredCmp);
+  pCard_PredCmp->vDump();
+
+  // ADD TEST IF THIS CAN BE MOVED etc
+
+  return nullptr;
+}
+
+
 
 /*----------------------------------------------------------------------------*/
 /* convert a calculation into a boolean calculaiton                           */

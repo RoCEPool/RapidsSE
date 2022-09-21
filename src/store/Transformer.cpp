@@ -122,6 +122,7 @@ void Transformer::vTransform1(void)
     m_pBoard->vPrintBoard("Sender::vDelete_Sends() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // convert all <filter> from calc form to calcBool
   m_pFiltrate->vCalc_to_calcBool();
   if (m_bInteractive)
     m_pBoard->vPrintBoard("Filtrate::vCalc_to_calcBool() >> "_Stz);
@@ -218,6 +219,7 @@ void Transformer::vTransform2(void)
     m_pBoard->vPrintBoard("Sender::vDelete_Sends() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // convert all <filter> from calc form to calcBool
   m_pFiltrate->vCalc_to_calcBool();
   if (m_bInteractive)
     m_pBoard->vPrintBoard("Filtrate::vCalc_to_calcBool() >> "_Stz);
@@ -227,6 +229,16 @@ void Transformer::vTransform2(void)
   m_pStreamer->vAppend_Streams();
   if (m_bInteractive)
     m_pBoard->vPrintBoard("Streamer::vAppend_Streams() >> "_Stz);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+  // inspect all <filter> and attempt to move <predCmp> after <scan>/<absJoin>
+  m_pFiltrate->vBurstLeftwards();
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Filtrate::vBurstLeftwards() >> "_Stz);
+
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pJoiner->vInsert_joinPred();

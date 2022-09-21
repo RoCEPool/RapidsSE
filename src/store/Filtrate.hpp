@@ -22,11 +22,16 @@ namespace STORE
   
    ~Filtrate(void) noexcept(false);
 
+    void vBurstLeftwards(void);
     void vCalc_to_calcBool(void);
     void vDeleteEmpty_filter(void);
     void vRemove_predCmp(void);
 
   private:
+    void vBurstLeftwards(Card_Filter* pCard_filter);
+    Card* pDrillForPredCmp(Card* pParentCard);
+    Card* pCandidatePredCmp(Card_PredCmp* pCard_PredCmp);
+
     void vCalc_to_calcBool(Card* pCard_Filter);
     Card* pTo_CalcBool(Card* pCard_Calc);
 
