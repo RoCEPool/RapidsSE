@@ -87,6 +87,7 @@ void Sender::vReadd_Sends(void)
     pCard_send->vAppend(pCard_sendKind);
 
     m_pBoard->vInsertMainCard_before(pCard_send, pMainCard);
+    nMainCards = m_pBoard->nMainCards();
     i_MainCard++;
   }
 
