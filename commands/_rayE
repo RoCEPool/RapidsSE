@@ -4,63 +4,45 @@
 
 trackMemory;
 
-create table L(l_a integer);
-load L "../DATA/JOINS/L.csv";
+_lineItem
+//create index L_idx0 on lineitem(L_ORDERKEY);
 
-create table R(r_a integer,r_b varchar,r_c integer,r_d varchar);
-create index Ri0 on R(r_a);
-load R "../DATA/JOINS/R.csv";
+_part
+create index P_idx0 on part(P_PARTKEY);
 
-select * from L;
-select * from R;
+load lineItem "../tpch/sf_0001/lineItem.csv" ;
+//select * from lineitem;
 
-/*
+load part "../tpch/sf_0001/part.csv" ;
+//select * from part;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 /jobTags
 /transliterated
-/optimise
+/transform
 /interactive
 /weave
 /weaved
-select *
-  from L,R
- where l_a = r_a
+/pipelineName = "rayE_Q14"
+select 100
+         * sum(case when p_type like 'PROMO%'
+                    then l_extendedPrice * (1 - l_discount)
+                    else 0
+               end)
+         / sum(l_extendedPrice * (1 - l_discount))
+  from lineItem, part
+ where l_partKey = p_partKey
+   and l_shipDate >= '1995-09-01'
+   and l_shipDate <  '1995-10-01'
 ;
-*/
 
-pipeline unamed
-  tag <optimised> = 1 endTag
-begin
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  stage S00 on origin :
-      start
-    | pulse     once
-    | next
+//drop table lineItem;
+//drop table part;
 
-  stage S01 on all partitions :
-       scan      L
-     | next
-
-  stage S02 on all partitions :
-       indexJoin R Ri0 " BOUND $I1 $L1 == "
-     | combined  0
-     | next
-
-  stage S03 on all partitions :
-       indexJoin R Ri0 " BOUND $I1 $L1 == "
-     | combined  0
-     | next
-
-  stage S04 on origin :
-      output
-    | sink
-    | first
-
-end ;
-
-drop table L;
-drop table R;
-
-memoryLeaks;
+//memoryLeaks;
 
 /*============================================================================*/
 /* end                                                                        */

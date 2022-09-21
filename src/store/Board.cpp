@@ -67,6 +67,19 @@ Board::~Board(void) noexcept(false)
 
 
 /*----------------------------------------------------------------------------*/
+/* append new main card at end                                                */
+/*----------------------------------------------------------------------------*/
+void Board::vAppendMainCard(Card* pNewMainCard, bool bRenumber)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  m_pCard_SubSet->vAppend(pNewMainCard);
+
+  if (bRenumber)
+    vRenumberMainCards();
+}
+
+/*----------------------------------------------------------------------------*/
 /* get card registers                                                         */
 /*----------------------------------------------------------------------------*/
 CardRegs* Board::pCardRegs(void)

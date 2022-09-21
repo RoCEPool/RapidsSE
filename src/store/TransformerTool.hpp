@@ -31,6 +31,7 @@ namespace STORE
     void vEndIteration(void);
 
     Card* pFindMainOf(Card* pSubCard);
+    Card* pFindMainOf(Card* pSubCard, Card*& rpParentCard);
 
   private:
 

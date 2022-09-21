@@ -252,6 +252,7 @@
 #include "Filtrate.hpp"
 #include "Searcher.hpp"
 #include "Combiner.hpp"
+#include "Sender.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -570,6 +571,7 @@ SizeHeap gxaSizeHeap[]
   {CN_SEEME,           sizeof(SeeMe),              HT_INVALID   , FILL },
   {CN_SENCELL,         sizeof(SenCell),            HT_INVALID   , FILL },
   {CN_SENCOMPILER,     sizeof(SenCompiler),        HT_T_TINY    , FILL },
+  {CN_SENDER,          sizeof(Sender),             HT_T_TINY    , FILL },
   {CN_SENDS,           sizeof(Sends),              HT_T_TINY    , FILL },
   {CN_SENDWL,          sizeof(SendWL),             HT_T_TINY    , FILL },
   {CN_SEPROMPT,        sizeof(SePrompt),           HT_T_MEDIUM  , FILL },

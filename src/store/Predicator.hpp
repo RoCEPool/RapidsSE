@@ -21,11 +21,7 @@ namespace STORE
     Predicator(Bench* pBench);
    ~Predicator(void) noexcept(false);
 
-    void vInsert_joinPred(void);
-
   private:
-    //void vDiscoverRecursive(Card* pAnyCard, Card* pMainCard_filter);
-    void vDiscoverRecursive(Card* pMainCard_filter);
 
     Footer* aFooter(void);
   };

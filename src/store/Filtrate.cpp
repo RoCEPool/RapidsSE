@@ -89,6 +89,8 @@ void Filtrate::vRemove_predCmp(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
 
+  Card* pParentCard;
+
   vBeginIteration();
 
   while (Card_JoinPred* pCard_joinPred =
@@ -101,10 +103,26 @@ void Filtrate::vRemove_predCmp(void)
     Card_PredCmp* pCard_predCmp = _pCard_PredCmp(pCard_card->pCard());
 
     // <filter> that is main of <predCmp>
-    Card_Filter* pCard_filter = _pCard_Filter(pFindMainOf(pCard_predCmp));
+    Card_Filter* pCard_filter =
+        _pCard_Filter(pFindMainOf(pCard_predCmp,pParentCard));
 
-    // remove <predCmp> from <filter>
-    pCard_filter->vRemoveSubCard(pCard_predCmp);
+    // remove <predCmp> from <parent>
+    pParentCard->vRemoveSubCard(pCard_predCmp);
+
+    if ((CK_PREDAND == pParentCard->eCard() || CK_PREDOR == pParentCard->eCard())) {
+
+      if (0 == pParentCard->nSubCards()) {
+        pCard_filter->vRemoveSubCard(pParentCard);
+      }
+      else {
+        Card* pSiblingCard = pParentCard->pGetSubCard(0);
+        Card* pGrandCard = pCard_filter->pFindParent((pParentCard));
+        pParentCard->vRemoveSubCard(pSiblingCard);
+        pGrandCard->vReplaceSubCard(pParentCard,pSiblingCard);
+      }
+
+      delete pParentCard;
+    }
   }
 
   vEndIteration();

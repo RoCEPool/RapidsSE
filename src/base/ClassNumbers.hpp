@@ -307,6 +307,7 @@ enum eCN : u2 // Class Number
   /* */ CN_SEEME,
   /* */ CN_SENCELL,
   /* */ CN_SENCOMPILER,
+  /* */ CN_SENDER,
   /* */ CN_SENDS,
   /* */ CN_SENDWL,
   /* */ CN_SEPROMPT,
@@ -733,6 +734,7 @@ static Stz* aCN[]
   /* */ "SEEME"_Stz,                // CN_SEEME
   /* */ "SENCELL"_Stz,              // CN_SENCELL
   /* */ "SENCOMPILER"_Stz,          // CN_SENCOMPILER
+  /* */ "SENDER"_Stz,               // CN_SENDER
   /* */ "SENDS"_Stz,                // CN_SENDS
   /* */ "SENDWL"_Stz,               // CN_SENDWL
   /* */ "SEPROMPT"_Stz,             // CN_SEPROMPT

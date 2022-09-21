@@ -117,6 +117,31 @@ Card* TransformerTool::pFindMainOf(Card* pGivenCard)
   return pMainCard;
 }
 
+/*----------------------------------------------------------------------------*/
+/* search for parent of given sub card                                        */
+/*----------------------------------------------------------------------------*/
+Card* TransformerTool::pFindMainOf(Card* pGivenCard, Card*& rpParentCard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  rpParentCard = nullptr;
+
+  Card *pMainCard = nullptr;
+
+  CardIter *pMainCardIter = m_pBoard->pNewMainCardIter();
+
+  while (pMainCardIter->bHasNext()) {
+    pMainCard = pMainCardIter->pNext();
+
+    if (pMainCard->bHasSubCard(pGivenCard,rpParentCard))
+      break;
+  }
+
+  delete pMainCardIter;
+
+  return pMainCard;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/

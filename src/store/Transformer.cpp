@@ -33,6 +33,7 @@ Transformer::Transformer(Optimiser* pOptimiser)
   m_pFiltrate    = nullptr;
   m_pJoiner      = nullptr;
   m_pPredicator  = nullptr;
+  m_pSender      = nullptr;
   m_pStreamer    = nullptr;
 
   _checkInitialised_(CN_TRANSFORMER);
@@ -52,6 +53,7 @@ Transformer::~Transformer(void) noexcept(false)
   delete m_pJoiner;
   delete m_pPredicator;
   delete m_pStreamer;
+  delete m_pSender;
 }
 
 
@@ -77,13 +79,22 @@ void Transformer::vTransform(void)
   m_pFiltrate   = new Filtrate(m_pBench);
   m_pJoiner     = new Joiner(m_pBench);
   m_pPredicator = new Predicator(m_pBench);
+  m_pSender     = new Sender(m_pBench);
   m_pStreamer   = new Streamer(m_pBench);
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  m_pCurator->vInitial_Simplification();
+  m_pCurator->vLinearize_Stages();
   if (bInteractive)
-    m_pBoard->vPrintBoard("Curator::vInitial_Simplification() >> "_Stz);
+    m_pBoard->vPrintBoard("Curator::vLinearize_Stages() >> "_Stz);
+
+  m_pCombiner->vDelete_Combines();
+  if (bInteractive)
+    m_pBoard->vPrintBoard("Combiner::vDelete_Combines() >> "_Stz);
+
+  m_pSender->vDelete_Sends();
+  if (bInteractive)
+    m_pBoard->vPrintBoard("Sender::vDelete_Sends() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pFiltrate->vCalc_to_calcBool();
@@ -91,14 +102,20 @@ void Transformer::vTransform(void)
     m_pBoard->vPrintBoard("Filtrate::vCalc_to_calcBool() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  m_pStreamer->vAppendStream_to_Scan();
+  // append <stream> to all <scan> and then to all <absJoin>
+  m_pStreamer->vAppend_Streams();
   if (bInteractive)
-    m_pBoard->vPrintBoard("Streamer::vAppendStream_to_Scan() >> "_Stz);
+    m_pBoard->vPrintBoard("Streamer::vAppend_Streams() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  m_pPredicator->vInsert_joinPred();
+  m_pJoiner->vInsert_joinPred();
   if (bInteractive)
-    m_pBoard->vPrintBoard("Predicator::vInsert_joinPred() >> "_Stz);
+    m_pBoard->vPrintBoard("Joiner::vInsert_joinPred() >> "_Stz);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  m_pJoiner->vResolve_joinPred();
+  if (bInteractive)
+    m_pBoard->vPrintBoard("Joiner::vResolve_joinPred() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pJoiner->vAppend_indexPred();
@@ -131,12 +148,6 @@ void Transformer::vTransform(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  m_pStreamer->vAppendStream_to_AbsJoin();
-  if (bInteractive)
-    m_pBoard->vPrintBoard("Streamer::vAppendStream_to_AbsJoin() >> "_Stz);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   m_pJoiner->vConvert_absJoin();
   if (bInteractive)
     m_pBoard->vPrintBoard("Joiner::vConvert_absJoin() >> "_Stz);
@@ -146,6 +157,12 @@ void Transformer::vTransform(void)
   m_pJoiner->vDelete_scan_R();
   if (bInteractive)
     m_pBoard->vPrintBoard("Joiner::vDelete_scan_R() >> "_Stz);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  m_pSender->vReadd_Sends();
+  if (bInteractive)
+    m_pBoard->vPrintBoard("Sender::vReadd_Sends() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

@@ -22,7 +22,8 @@ namespace STORE
   
    ~Curator(void) noexcept(false);
 
-    void vInitial_Simplification(void);
+   void vLinearize_Stages(void);
+
   private:
 
     Footer* aFooter(void);
