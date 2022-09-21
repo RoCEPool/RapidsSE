@@ -99,9 +99,10 @@ void Transformer::vTransform(void)
     m_pBoard->vPrintBoard("Filtrate::vCalc_to_calcBool() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  m_pStreamer->vAppendStream_to_Scan();
+  // append <stream> to all <scan> and then to all <absJoin>
+  m_pStreamer->vAppend_Streams();
   if (bInteractive)
-    m_pBoard->vPrintBoard("Streamer::vAppendStream_to_Scan() >> "_Stz);
+    m_pBoard->vPrintBoard("Streamer::vAppend_Streams() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pJoiner->vInsert_joinPred();
@@ -141,12 +142,6 @@ void Transformer::vTransform(void)
   m_pJoiner->vDelete_joinPred();
   if (bInteractive)
     m_pBoard->vPrintBoard("Joiner::vDelete_joinPred() >> "_Stz);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  m_pStreamer->vAppendStream_to_AbsJoin();
-  if (bInteractive)
-    m_pBoard->vPrintBoard("Streamer::vAppendStream_to_AbsJoin() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

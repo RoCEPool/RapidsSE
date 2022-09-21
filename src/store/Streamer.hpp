@@ -22,12 +22,11 @@ namespace STORE
   
    ~Streamer(void) noexcept(false);
 
-    void vAppendStream_to_AbsJoin(void);
-    void vAppendStream_to_Scan(void);
+    void vAppend_Streams(void);
 
   private:
-
-    void vResolveRecursive(Card* pCard);
+    void vAppendStream_to_AbsJoin(void);
+    void vAppendStream_to_Scan(void);
 
     Footer* aFooter(void);
   };

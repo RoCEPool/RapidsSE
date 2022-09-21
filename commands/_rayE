@@ -42,7 +42,7 @@ select 100
 //drop table lineItem;
 //drop table part;
 
-memoryLeaks;
+//memoryLeaks;
 
 /*============================================================================*/
 /* end                                                                        */
