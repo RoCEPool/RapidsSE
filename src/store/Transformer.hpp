@@ -10,6 +10,7 @@
 #include "Filtrate.hpp"
 #include "Joiner.hpp"
 #include "Predicator.hpp"
+#include "Sender.hpp"
 #include "Streamer.hpp"
 
 namespace STORE
@@ -28,6 +29,7 @@ namespace STORE
     Filtrate*    m_pFiltrate;
     Joiner*      m_pJoiner;
     Predicator*  m_pPredicator;
+    Sender*      m_pSender;
     Streamer*    m_pStreamer;
 
     // must be last

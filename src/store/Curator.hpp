@@ -22,9 +22,7 @@ namespace STORE
   
    ~Curator(void) noexcept(false);
 
-     void vDelete_Sends(void);
-    void vLinearize_Stages(void);
-    void vReadd_Sends(void);
+   void vLinearize_Stages(void);
 
   private:
 

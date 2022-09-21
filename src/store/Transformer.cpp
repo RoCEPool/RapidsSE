@@ -33,6 +33,7 @@ Transformer::Transformer(Optimiser* pOptimiser)
   m_pFiltrate    = nullptr;
   m_pJoiner      = nullptr;
   m_pPredicator  = nullptr;
+  m_pSender      = nullptr;
   m_pStreamer    = nullptr;
 
   _checkInitialised_(CN_TRANSFORMER);
@@ -52,6 +53,7 @@ Transformer::~Transformer(void) noexcept(false)
   delete m_pJoiner;
   delete m_pPredicator;
   delete m_pStreamer;
+  delete m_pSender;
 }
 
 
@@ -77,6 +79,7 @@ void Transformer::vTransform(void)
   m_pFiltrate   = new Filtrate(m_pBench);
   m_pJoiner     = new Joiner(m_pBench);
   m_pPredicator = new Predicator(m_pBench);
+  m_pSender     = new Sender(m_pBench);
   m_pStreamer   = new Streamer(m_pBench);
 
 
@@ -89,9 +92,9 @@ void Transformer::vTransform(void)
   if (bInteractive)
     m_pBoard->vPrintBoard("Combiner::vDelete_Combines() >> "_Stz);
 
-  m_pCurator->vDelete_Sends();
+  m_pSender->vDelete_Sends();
   if (bInteractive)
-    m_pBoard->vPrintBoard("Curator::vDelete_Sends() >> "_Stz);
+    m_pBoard->vPrintBoard("Sender::vDelete_Sends() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pFiltrate->vCalc_to_calcBool();
@@ -157,9 +160,9 @@ void Transformer::vTransform(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  m_pCurator->vReadd_Sends();
+  m_pSender->vReadd_Sends();
   if (bInteractive)
-    m_pBoard->vPrintBoard("Curator::vReadd_Sends() >> "_Stz);
+    m_pBoard->vPrintBoard("Sender::vReadd_Sends() >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
