@@ -559,12 +559,13 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
 
   s4K sCopy;
+  bool bLeftOuter = false;
 
   // generate the init stub
   vGenerateInitStub("INDEXJOIN-OP"_Stz, sLabel);
 
   // generate the code for the index join expr
-  vGenerateExpr((char *) sJoinExpr, nullptr, EK_INDEXJOIN, m_pStreamDefLft);
+  vGenerateExpr((char *) sJoinExpr, nullptr, EK_INDEXJOIN, m_pStreamDefLft, &bLeftOuter);
 
   sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayT;"_Stz, xRowRef[m_eStencilFrom], xRowRef[m_eStencilFrom].m_szInclude);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
@@ -2705,7 +2706,8 @@ void CodeSynth::vInitAgg(ePE ePreExp, eDM eExprType)
 /*----------------------------------------------------------------------------*/
 /* convert postfix to expr macros                                             */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind, StreamDef* pStreamDef) {
+void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind,
+                              StreamDef* pStreamDef, bool *pbLeftOuter) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
@@ -2904,6 +2906,13 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
       // set working stack
       pExprStack = pWorkingStack(eExprKind, ePreExp, m_pExprStack);
 
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // left_outer
+    if (pTkn->bSame("left_outer"_Stz)) {
+      *pbLeftOuter = true;
       continue;
     }
 

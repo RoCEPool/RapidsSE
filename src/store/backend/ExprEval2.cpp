@@ -84,7 +84,7 @@ eEC ExprEval2::eGenerateSelectColumns(StreamDefBase* pStreamDefIn, Stz* sExpr, u
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // ignore index related keywords
     if (pTkn->bIsName() &&
-        (pTkn->bSame("LEFTOUTER"_Stz) ||
+        (pTkn->bSame("LEFT_OUTER"_Stz) ||
          pTkn->bSame("BOUND"_Stz) ||
          pTkn->bSame("UBOUND"_Stz) ||
          pTkn->bSame("LBOUND"_Stz))
