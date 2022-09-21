@@ -34,6 +34,8 @@ namespace STORE
     Stager*      m_pStager;
     Streamer*    m_pStreamer;
 
+    b8           m_bInteractive;
+
     // must be last
     Footer m_xFooter;
 
@@ -48,6 +50,9 @@ namespace STORE
     void vTransform(void);
 
   private:
+
+    void vTransform1(void);
+    void vTransform2(void);
 
     Footer* aFooter(void);
   };
