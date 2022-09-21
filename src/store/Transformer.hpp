@@ -12,6 +12,7 @@
 #include "Predicator.hpp"
 #include "Sender.hpp"
 #include "Streamer.hpp"
+#include "Stager.hpp"
 
 namespace STORE
 {
@@ -30,6 +31,7 @@ namespace STORE
     Joiner*      m_pJoiner;
     Predicator*  m_pPredicator;
     Sender*      m_pSender;
+    Stager*      m_pStager;
     Streamer*    m_pStreamer;
 
     // must be last

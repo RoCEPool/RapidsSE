@@ -32,7 +32,7 @@ select 100
                end)
          / sum(l_extendedPrice * (1 - l_discount))
   from lineItem, part
- where l_partKey = p_partKey
+ where l_partKey  =  p_partKey
    and l_shipDate >= '1995-09-01'
    and l_shipDate <  '1995-10-01'
 ;

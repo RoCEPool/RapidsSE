@@ -253,6 +253,7 @@
 #include "Searcher.hpp"
 #include "Combiner.hpp"
 #include "Sender.hpp"
+#include "Stager.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -605,6 +606,7 @@ SizeHeap gxaSizeHeap[]
   { CN_STACK,                    sizeof(TypedStack), /*yes*/ HT_T_MEDIUM  ,FILL },
   { CN_STAGE,                    sizeof(Stage),              HT_T_SMALL   ,FILL },
   { CN_STAGEMETRICS,             sizeof(StageMetrics),       HT_T_TINY    ,FILL },
+  { CN_STAGER,                   sizeof(Stager),             HT_T_TINY    ,FILL },
   { CN_STAGESPEC,                sizeof(StageSpec),          HT_T_TINY    ,FILL },
   { CN_STARTER,                  sizeof(Starter),            HT_T_TINY    ,FILL },
   { CN_STATEMENT,                sizeof(Statement),          HT_T_MEDIUM  ,FILL },

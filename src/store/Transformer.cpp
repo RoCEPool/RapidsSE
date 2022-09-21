@@ -34,6 +34,7 @@ Transformer::Transformer(Optimiser* pOptimiser)
   m_pJoiner      = nullptr;
   m_pPredicator  = nullptr;
   m_pSender      = nullptr;
+  m_pStager      = nullptr;
   m_pStreamer    = nullptr;
 
   _checkInitialised_(CN_TRANSFORMER);
@@ -52,8 +53,9 @@ Transformer::~Transformer(void) noexcept(false)
   delete m_pFiltrate;
   delete m_pJoiner;
   delete m_pPredicator;
-  delete m_pStreamer;
   delete m_pSender;
+  delete m_pStager;
+  delete m_pStreamer;
 }
 
 
@@ -80,13 +82,14 @@ void Transformer::vTransform(void)
   m_pJoiner     = new Joiner(m_pBench);
   m_pPredicator = new Predicator(m_pBench);
   m_pSender     = new Sender(m_pBench);
+  m_pStager     = new Stager(m_pBench);
   m_pStreamer   = new Streamer(m_pBench);
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  m_pCurator->vLinearize_Stages();
+  m_pStager->vLinearize_Stages();
   if (bInteractive)
-    m_pBoard->vPrintBoard("Curator::vLinearize_Stages() >> "_Stz);
+    m_pBoard->vPrintBoard("Stager::vLinearize_Stages() >> "_Stz);
 
   m_pCombiner->vDelete_Combines();
   if (bInteractive)
