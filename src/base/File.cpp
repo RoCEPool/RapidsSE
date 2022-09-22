@@ -259,12 +259,7 @@ bool File::bRemove(Stz* szFilePath)
 /*----------------------------------------------------------------------------*/
 bool File::bRename(Stz* szOldPath, Stz* szNewPath)
 {
-  if(rename(szOldPath->azChar(), szNewPath->azChar()) == 0)
-  {
-    return true;
-  }
-
-  return false;
+  return (rename(szOldPath->azChar(), szNewPath->azChar()) == 0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -721,26 +716,62 @@ void File::vPreAllocate(i8 nOffset, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* formatted print                                                            */
 /*----------------------------------------------------------------------------*/
+i8 File::iPrint(Stz* szFormat, ...)
+{
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+
+  m_oSysCall.vClear();
+
+  va_list args;
+
+  va_start(args,szFormat);
+
+#ifdef WITH_STATISTICS_COUNTERS
+  if (gpAttachMap) gpAttachMap->m_oStatistics.File.m_nPrints++;
+#endif
+
+  i8 nPrinted = vfprintf(m_aFile,szFormat->azChar(),args);
+
+#ifdef WITH_STATISTICS_COUNTERS
+  if (gpAttachMap) gpAttachMap->m_oStatistics.File.m_nPrintBytes += nPrinted;
+#endif
+
+  va_end(args);
+
+  if (-1 == nPrinted) {
+    m_oSysCall.vError(errno);
+    vTrace("File::vPrint: vfprintf() error; errno=%d"_Stz,errno);
+    return nPrinted;
+  }
+
+  m_oSysCall.vSuccess();
+
+  return nPrinted;
+}
+
+/*----------------------------------------------------------------------------*/
+/* formatted print                                                            */
+/*----------------------------------------------------------------------------*/
 void File::vPrint(Stz* szFormat, ...)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
   m_oSysCall.vClear();
-  
+
   va_list args;
 
   va_start(args,szFormat);
-  
+
 #ifdef WITH_STATISTICS_COUNTERS
   if (gpAttachMap) gpAttachMap->m_oStatistics.File.m_nPrints++;
 #endif
-  
+
   i8 nPrinted = vfprintf(m_aFile,szFormat->azChar(),args);
-  
+
 #ifdef WITH_STATISTICS_COUNTERS
   if (gpAttachMap) gpAttachMap->m_oStatistics.File.m_nPrintBytes += nPrinted;
 #endif
-  
+
   va_end(args);
 
   if (-1 == nPrinted) {
@@ -748,7 +779,7 @@ void File::vPrint(Stz* szFormat, ...)
     vTrace("File::vPrint: vfprintf() error; errno=%d"_Stz,errno);
     return;
   }
-  
+
   m_oSysCall.vSuccess();
 }
 

@@ -67,6 +67,7 @@ BufferPool*  gpBufferPool;
 Header*      gaSeShmRegion;
 extern File* gpTraceFile;
 extern s256  gszTraceFilePath;
+extern i8    giTraceFileSize;
 
 Stz* gsBuildGitHash;
 Stz* gsBuildDate;
@@ -1077,6 +1078,8 @@ void Engine::vOpenTrace(bool bPrompt)
     bool bOpened = gpTraceFile->bOpenAppend(gxCmdLineArgs.m_xSysArgs.m_sLogFile);
     RASSERT(bOpened);
 
+    giTraceFileSize = 0;
+
     gszTraceFilePath.vCopy(gxCmdLineArgs.m_xSysArgs.m_sLogFile);
     vTrace("Opened prompt trace file %s for write\n"_Stz
         ,gxCmdLineArgs.m_xSysArgs.m_sLogFile.szStz()
@@ -1097,6 +1100,8 @@ void Engine::vOpenTrace(bool bPrompt)
 
     bOpened = gpTraceFile->bOpenAppend(sTrace);
     RASSERT(bOpened);
+
+    giTraceFileSize = 0;
 
     gszTraceFilePath.vCopy(sTrace);
 
@@ -1500,6 +1505,8 @@ void Engine::vRollTrace(void)
   // Open a new trace file with the original name and drop the lock
   bool bOpened = gpTraceFile->bOpenWrite(gszTraceFilePath);
   RASSERT(bOpened);
+
+  giTraceFileSize = 0;
 
   // If the total number of trace files exceeds the max, delete the oldest trace file
   if(iMaxFileIndex >= C_MAX_LOG_FILES)

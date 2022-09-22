@@ -12,9 +12,11 @@
 #include "Engine.hpp"
 #include "Mersenne.hpp"
 
-
+// Since trace file is opened before the attach map is ready
+// we use globals instead of saving it to the attach map
 File*        gpTraceFile;
 s256         gszTraceFilePath;
+i8           giTraceFileSize;
 
 extern Stz* gsBuildGitHash;
 extern Stz* gsBuildDate;
@@ -54,8 +56,9 @@ int main(int argc, char* argv[])
 
   // ********************************************************************************
   // NOTE: Till initial command line options are parsed and trace file is
-  // initialised, we log to the trace file via piping out to stderr. stdout is
-  // ignored.
+  // initialised, we log to the trace file via piping out to stdout. We only do this
+  // in developer's environment not in the installed environment (it is redirected
+  // to /dev/null).
   // ********************************************************************************
 
   //char* s = readline ("Enter a line: ");
@@ -138,9 +141,8 @@ int main(int argc, char* argv[])
   catch (Exception xException) {
 
     fflush(stderr); fflush(stdout);
-    //Update this printf
-    fprintf(stderr, "Main-level exception caught in func %s() file %s line %d\n",
-           __func__,__FILE__,__LINE__);
+    fprintf(stderr,"Main-level exception caught in func %s() file %s line %d\n",
+            __func__,__FILE__,__LINE__);
     fflush(stderr); fflush(stdout);
     xException.vPrint();
     fflush(stderr); fflush(stdout);
