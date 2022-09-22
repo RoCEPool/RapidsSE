@@ -27,6 +27,8 @@ namespace STORE
     Card_StreamCol*     pGet_streamCol(i8 i_Col);
     Card_StreamColList* pGet_streamColList(void);
 
+    void vRibbonPrint(Ribbon* pRibbon, i8 iDepth);
+
     i8 nStreamCols(void);
    };
 

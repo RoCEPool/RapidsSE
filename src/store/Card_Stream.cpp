@@ -122,6 +122,38 @@ Card_StreamColList* Card_Stream::pGet_streamColList(void)
 /*----------------------------------------------------------------------------*/
 /* get number of stream columns                                               */
 /*----------------------------------------------------------------------------*/
+void Card_Stream::vRibbonPrint(Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  s32 sName;
+
+  if (m_pProperties && C_UNKNOWN != iGetProperty("iOrdLo"_Stz))
+    sName.vSprint("%s%lld)%s $%lld,%lld"_Stz
+        ,Stz::szDots(iDepth)
+        ,m_iCardNo
+        ,szCardNm()
+        ,iGetProperty("iOrdLo"_Stz)
+        ,iGetProperty("iOrdHi"_Stz)
+    );
+  else
+    sName.vSprint("%s%lld)%s"_Stz
+        ,Stz::szDots(iDepth)
+        ,m_iCardNo
+        ,szCardNm()
+    );
+
+  pRibbon->vSprint("%-18s%c%c"_Stz
+      ,sName.szStz()
+      ,m_cMark1
+      ,m_cMark2
+  );
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of stream columns                                               */
+/*----------------------------------------------------------------------------*/
 i8 Card_Stream::nStreamCols(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);

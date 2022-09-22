@@ -227,6 +227,8 @@ void Transformer::vTransform2(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append <stream> to all <scan> and then to all <absJoin>
   m_pOptimiser->pCardCtl()->vSubCards(CK_STREAM,0);
+  m_pOptimiser->pCardCtl()->vPinForm(CK_STREAM,1);
+
   //m_pOptimiser->pCardCtl()->vSubCards(CK_EXPR,0);
 
   m_pOptimiser->pCardCtl()->vPinForm(CK_PREDAND,1);

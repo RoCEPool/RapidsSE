@@ -58,6 +58,9 @@ void Streamer::vOrdinal_Range(void)
 
   vBeginIteration();
 
+  i8 iOrdLo = 1;
+  i8 iOrdHi = C_UNKNOWN;
+
   char cStream = '0';
 
   while (Card* pMainCard = pEachMain()) {
@@ -67,6 +70,13 @@ void Streamer::vOrdinal_Range(void)
 
       pCard_stream->vMark1('@');
       pCard_stream->vMark2(cStream++);
+
+      i8 nStreamCols = pCard_stream->nStreamCols();
+      pCard_stream->vAddProperty("iOrdLo"_Stz,iOrdLo);
+      iOrdHi = iOrdLo + nStreamCols;
+      pCard_stream->vAddProperty("iOrdHi"_Stz,iOrdHi);
+      iOrdLo = iOrdHi + 1;
+
       continue;
     }
 
@@ -76,6 +86,13 @@ void Streamer::vOrdinal_Range(void)
 
       pCard_stream->vMark1('@');
       pCard_stream->vMark2(cStream++);
+
+      i8 nStreamCols = pCard_stream->nStreamCols();
+      pCard_stream->vAddProperty("iOrdLo"_Stz,iOrdLo);
+      iOrdHi = iOrdLo + nStreamCols;
+      pCard_stream->vAddProperty("iOrdHi"_Stz,iOrdHi);
+      iOrdLo = iOrdHi + 1;
+
       continue;
     }
   }

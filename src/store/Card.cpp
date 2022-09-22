@@ -2678,6 +2678,10 @@ void Card::vPrintCard_byForm(Ribbon* pRibbon, i8 iDepth, i8 iPinForm, bool& bPru
       _pCard_PredOr(this)->vPrintName(pRibbon,iDepth);
       break;
 
+    case CK_STREAM:
+      _pCard_Stream(this)->vRibbonPrint(pRibbon,iDepth);
+      break;
+
     case CK_TERM:
       _pCard_Term(this)->vPrintProperties(pRibbon,iDepth,false);
       break;

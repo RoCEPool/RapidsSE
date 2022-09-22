@@ -1,43 +1,42 @@
 /*============================================================================*/
-/* _rayF                                                                      */
+/* _r14                                                                       */
 /*============================================================================*/
 
 trackMemory;
 
 _lineItem
-create index L_idx0 on lineitem(L_ORDERKEY);
+//create index L_idx0 on lineitem(L_ORDERKEY);
 
-_orders
-create index O_idx0 on orders(O_ORDERKEY);
-
-_customer
-create index C_idx0 on customer(C_CUSTKEY);
+_part
+create index P_idx0 on part(P_PARTKEY);
 
 load lineItem "../tpch/sf_0001/lineItem.csv" ;
 //select * from lineitem;
 
-load orders "../tpch/sf_0001/orders.csv" ;
-//select * from orders;
-
-load customer "../tpch/sf_0001/customer.csv" ;
-//select * from customer;
+load part "../tpch/sf_0001/part.csv" ;
+//select * from part;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 /jobTags
 /transliterated
 /transform
-/transform2
+/transform1
 /interactive
 /weave
 /weaved
-/pipelineName = "rayF_Q3"
-select count(*)
-  from orders, lineItem, customer
- where l_orderKey = o_orderKey
-   and c_custKey  = o_custKey
+/pipelineName = "r14"
+select 100
+         * sum(case when p_type like 'PROMO%'
+                    then l_extendedPrice * (1 - l_discount)
+                    else 0
+               end)
+         / sum(l_extendedPrice * (1 - l_discount))
+  from lineItem, part
+ where l_partKey  =  p_partKey
+   and l_shipDate >= '1995-09-01'
+   and l_shipDate <  '1995-10-01'
 ;
-
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
