@@ -96,7 +96,7 @@ void Streamer::vAppendStream_to_AbsJoin(void)
         pCard_Stream->vAppend(pCard_StreamColList);
       }
 
-      pCard_Table = _pCard_Table(pCard_Scan_r->pFindChildCard(CK_TABLE));
+      pCard_Table = _pCard_Table(pCard_absJoin->pFindChildCard(CK_TABLE));
       if (pCard_Table) {
         StreamDef *pStreamDef = pCard_Table->pTable()->pStreamDef();
         Card_StreamColList *pCard_StreamColList_b = new Card_StreamColList(pStreamDef);

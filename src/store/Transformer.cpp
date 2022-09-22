@@ -230,8 +230,15 @@ void Transformer::vTransform2(void)
   if (m_bInteractive)
     m_pBoard->vPrintBoard("Streamer::vAppend_Streams() >> "_Stz);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // each <scan> <absJoin> becomes <absJoin>/<scan>
+  m_pJoiner->vSubsume_scan();
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Joiner::vSubsume_scan() >> "_Stz);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // inspect all <filter> and attempt to move <predCmp> after <scan>/<absJoin>
   m_pFiltrate->vBurstLeftwards();

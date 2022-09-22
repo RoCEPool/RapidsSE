@@ -27,6 +27,7 @@ load customer "../tpch/sf_0001/customer.csv" ;
 /jobTags
 /transliterated
 /transform
+/transform2
 /interactive
 /weave
 /weaved
