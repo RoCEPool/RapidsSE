@@ -240,11 +240,20 @@ void Transformer::vTransform2(void)
 
 
 
+
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // each <scan> <absJoin> becomes <absJoin>/<scan>
   m_pJoiner->vSubsume_scan();
   if (m_bInteractive)
     m_pBoard->vPrintBoard("Joiner::vSubsume_scan() >> "_Stz);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //
+  m_pStreamer->vOrdinal_Range();
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Streamer::vOrdinal_Range() >> "_Stz);
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

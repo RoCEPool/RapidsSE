@@ -137,6 +137,8 @@ namespace STORE
 
     void vClear(void);
 
+    void vClearAllMarks(void);
+
     void vDeleteAllCards(void);
     void vDeleteFromTill(Card* pFrom, Card* pTillBefore);
 

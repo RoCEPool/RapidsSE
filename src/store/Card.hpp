@@ -178,6 +178,7 @@ namespace STORE
     Card* pCard(void);
     void vCard(Card* pCard);
     void vCardPrint(Ribbon* pRibbon, i8 iDepth);
+    void vClearAllMarks(void);
     Column* pColumn(void);
     void vColumn(Column* pColumn);
     Column* pColumn1(void);

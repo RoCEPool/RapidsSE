@@ -112,6 +112,21 @@ void Board::vClear(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* clear all marks                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vClearAllMarks(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
+
+  i8 nMainCards = this->nMainCards();
+  for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
+    Card *pMainCard = m_pCard_SubSet->pGet(i_Main);
+
+    pMainCard->vClearAllMarks();
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Board::vDeleteAllCards(void)

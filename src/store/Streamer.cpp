@@ -50,6 +50,41 @@ void Streamer::vAppend_Streams(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* calc ordinal ranges                                                        */
+/*----------------------------------------------------------------------------*/
+void Streamer::vOrdinal_Range(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMER,_FOOTER_);
+
+  vBeginIteration();
+
+  char cStream = '0';
+
+  while (Card* pMainCard = pEachMain()) {
+
+    if (CK_SCAN == pMainCard->eCard()) {
+      Card_Stream* pCard_stream = _pGetSub_Card_Stream(pMainCard);
+
+      pCard_stream->vMark1('@');
+      pCard_stream->vMark2(cStream++);
+      continue;
+    }
+
+    if (CK_ABSJOIN == pMainCard->eCard()) {
+      Card_Scan*   pCard_scan   = _pGetSub_Card_Scan(pMainCard);
+      Card_Stream* pCard_stream = _pGetSub_Card_Stream(pCard_scan);
+
+      pCard_stream->vMark1('@');
+      pCard_stream->vMark2(cStream++);
+      continue;
+    }
+  }
+
+  vEndIteration();
+
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -140,6 +175,8 @@ void Streamer::vAppendStream_to_Scan(void)
 
   vEndIteration();
 }
+
+
 
 /*============================================================================*/
 /* end                                                                        */

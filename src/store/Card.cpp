@@ -1538,6 +1538,26 @@ void Card::vCardPrint(Ribbon* pRibbon, i8 iDepth)
 }
 
 /*----------------------------------------------------------------------------*/
+/* clear all marks                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vClearAllMarks(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vMark1(' ');
+  vMark2(' ');
+
+  i8 nSubCards = this->nSubCards();
+  for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
+    Card *pSubCard = pGetSubCard(i_Sub);
+
+    pSubCard->vClearAllMarks();
+  }
+
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* get cmp                                                                    */
 /*----------------------------------------------------------------------------*/
 Stz* Card::szCmp(void)
