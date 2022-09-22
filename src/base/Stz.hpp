@@ -50,8 +50,10 @@ namespace BASE
     bool  bIsInteger(void);
     bool  bIsSomeFalse(void);
     bool  bIsSomeTrue(void);
+    bool  bIsOrdinal(void);
     i8    nLength(void);
     bool  bOneOf(Stz* szArg, ...);
+    i8    iOrdinal(void);
     bool  bSame(Stz* szArg);
     i8    nSize(void);
     void  vSprint(Stz* szFormat, ...);

@@ -22,6 +22,8 @@ namespace STORE
 
     void vApplyOrder(Card_Stream* pCard_Stream_src);
 
+    bool bContainsOrdinal(Stz* szOrd);
+
     Card_StreamCol*     pGet_streamCol(i8 i_Col);
     Card_StreamColList* pGet_streamColList(void);
 
