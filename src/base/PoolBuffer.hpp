@@ -31,8 +31,9 @@ namespace BASE
   class PoolBuffer : public Object
   {
   protected:
-    i8 m_iBufferNo;  // this buffer number
-    i8 m__spare;     // number of buffers
+    i8 m_iBufferNo;          // this buffer number
+  public:
+    PoolBuffer* m_pThis;     // the address of this pool buffer
   
     // ..heap buffer..
     

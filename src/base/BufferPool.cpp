@@ -591,6 +591,40 @@ void BufferPool::vPoolDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Use a specific buffer by address from free chain for alloc                 */
+/*----------------------------------------------------------------------------*/
+PoolBuffer* BufferPool::pReAllocHeapBuffer(void *aAddress)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
+
+  FreePoolBuffer* pHeapBuffer = pGetFreePoolBufferByAddress(aAddress);
+
+  if ( ! pHeapBuffer )
+    THROW("BufferPool::pReAllocHeapBuffer: could not find Heap Buffer address in Buffer Pool free chain"_Stz);
+
+  ++m_ixHeapBuffers;
+
+  return _pPoolBuffer(pHeapBuffer);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Use a specific buffer by address from free chain for alloc                 */
+/*----------------------------------------------------------------------------*/
+PoolBuffer* BufferPool::pReAllocOtherBuffer(void *aAddress)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
+
+  FreePoolBuffer* pHeapBuffer = pGetFreePoolBufferByAddress(aAddress);
+
+  if ( ! pHeapBuffer )
+    THROW("BufferPool::pReAllocOtherBuffer: could not find Heap Buffer address in Buffer Pool free chain"_Stz);
+
+  ++m_ixOtherBuffers;
+
+  return _pPoolBuffer(pHeapBuffer);
+}
+
+/*----------------------------------------------------------------------------*/
 /* return free space in bytes                                                 */
 /*----------------------------------------------------------------------------*/
 Stz* BufferPool::szShmNm(void)
@@ -723,6 +757,39 @@ void BufferPool::vVerifyPool(void)
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* get a free buffer from the free chain by address                           */
+/* used for reloading persistent heaps from disk                              */
+/*----------------------------------------------------------------------------*/
+FreePoolBuffer* BufferPool::pGetFreePoolBufferByAddress(void* aAddress)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
+
+  FreePoolBuffer* pFreeIter = nullptr;
+  FreePoolBuffer* pPrevIter = nullptr;
+
+  for(pFreeIter = pToFreePoolBuffer(m_iFreeHead);
+      iBufferNext(pFreeIter->iNextFree()) != C_NIL;
+      pFreeIter = pToFreePoolBuffer(pFreeIter->iNextFree()))
+  {
+    if(aAddress == pFreeIter) {
+      // Fix chain pointers
+      if(pPrevIter != nullptr)
+        pPrevIter->vNextFree(pFreeIter->iNextFree());
+      else
+        m_iFreeHead = pFreeIter->iNextFree();
+
+      // adjust counts
+      m_nFreeCount--;
+      m_nAllocCount++;
+
+      return pFreeIter;
+    }
+    pPrevIter = pFreeIter;
+  }
+
+  return nullptr;
+}
 /*----------------------------------------------------------------------------*/
 /* pop a free buffer from the free chain                                      */
 /*----------------------------------------------------------------------------*/
