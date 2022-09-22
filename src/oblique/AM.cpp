@@ -3700,13 +3700,12 @@ void AM::vWriteTrace_vargs(Stz* aFormat, va_list xArgs)
   
   // produce formatted line
   vsnprintf(caFormatted,sizeof(caFormatted) - 3,aFormat->azChar(),xArgs);
-  
-  if (gpTraceFile) {
-    // if trace file exists, we print to stdout and to the trace file
-    // print formatted line
-    fprintf(stdout,"%s%s",bLowMem ? "LOW-MEMORY! " : "",caFormatted);
-    fflush(stdout);
 
+  // print formatted line
+  fprintf(stdout,"%s%s",bLowMem ? "LOW-MEMORY! " : "",caFormatted);
+  fflush(stdout);
+
+  if (gpTraceFile) {
     static i8 iBootOptions = 0;
 
     if( ! iBootOptions )

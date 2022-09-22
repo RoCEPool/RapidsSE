@@ -217,6 +217,7 @@ void Engine::vPreliminary(void)
 /*----------------------------------------------------------------------------*/
 bool Engine::bTraceStart(void)
 {
+  gpTraceFile = nullptr;
 
   eBO eBootOption = eDecodeCommandLine();
 
@@ -1078,10 +1079,10 @@ void Engine::vOpenTrace(bool bPrompt)
     bool bOpened = gpTraceFile->bOpenAppend(gxCmdLineArgs.m_xSysArgs.m_sLogFile);
     RASSERT(bOpened);
 
-    giTraceFileSize = 0;
+    giTraceFileSize = gpTraceFile->iSize();
 
     gszTraceFilePath.vCopy(gxCmdLineArgs.m_xSysArgs.m_sLogFile);
-    vTrace("Opened prompt trace file %s for write\n"_Stz
+    vTrace("Opened prompt trace file %s for append\n"_Stz
         ,gxCmdLineArgs.m_xSysArgs.m_sLogFile.szStz()
     );
   }
@@ -1101,11 +1102,11 @@ void Engine::vOpenTrace(bool bPrompt)
     bOpened = gpTraceFile->bOpenAppend(sTrace);
     RASSERT(bOpened);
 
-    giTraceFileSize = 0;
+    giTraceFileSize = gpTraceFile->iSize();
 
     gszTraceFilePath.vCopy(sTrace);
 
-    vTrace("Opened trace file %s for write\n"_Stz, sTrace.szStz());
+    vTrace("Opened trace file %s for append\n"_Stz, sTrace.szStz());
   }
 }
 
