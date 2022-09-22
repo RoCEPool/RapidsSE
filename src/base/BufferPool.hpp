@@ -9,6 +9,7 @@ namespace BASE
 
   static const i8 C_MIN_SHM_REGION  = 1024 * C_1MB;
   static const i8 C_MAX_SHM_PERCENT = 95;
+  static const i8 C_MAX_LEFTOVER_MEM = C_10GB;  // How much leftover memory (after SHM) is acceptable.
 
   class BufferPool : public Object
   {
@@ -79,6 +80,7 @@ namespace BASE
     void vInitialise(bool bTouch, bool bProgress);
     PoolBuffer* pLimit(void);
     bool bLowMemory(void);
+    bool bLowMemoryDist(void);
     void vPoolDump(void);
     Stz* szShmNm(void);
     void vTakeBuffers(i8 nSpareBuffers);

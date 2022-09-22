@@ -57,6 +57,8 @@ Queue::Queue(eCN eClass)
   m_pTopBuffer = nullptr;
   m_pEndBuffer = nullptr;
 
+  vExpand();
+
   _checkInitialised_(CN_QUEUE);
   
   _postcondition_(_ADDRESS_,_MAGIC_,eClass);
@@ -72,8 +74,11 @@ Queue::~Queue(void) noexcept(false)
   if (m_nItems)
     vPostMortem();
   
-  vReset();
-      
+  //vReset();
+
+  while (m_pTopBuffer)
+    vDiscard();
+
   ASSERT( ! m_pEndBuffer );
   ASSERT( ! m_pTopBuffer );
 }
@@ -213,13 +218,13 @@ void Queue::vReset(void)
 
   RASSERT(0 == m_nItems);
 
-  while (m_pTopBuffer)
-    vDiscard();
+  //while (m_pTopBuffer)
+  //  vDiscard();
   
   m_nItems = 0;
     
-  ASSERT( ! m_pEndBuffer );
-  ASSERT( ! m_pTopBuffer );
+  //ASSERT( ! m_pEndBuffer );
+  //ASSERT( ! m_pTopBuffer );
 }
 
 

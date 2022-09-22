@@ -161,7 +161,7 @@ stage G_SUM_O on origin :
     output
     | sink
     | first
-end;
+end ;
 
 rows: 1126
 

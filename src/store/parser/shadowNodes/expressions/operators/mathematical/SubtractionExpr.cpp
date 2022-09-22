@@ -42,7 +42,7 @@ static eCT aeTypeCalculus[CT_ENUMS][CT_ENUMS] = {
 /*  9 TIME       */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_TIME,        CT_TIME,        CT_NONE/*X*/, CT_NONE,      CT_NONE, CT_NONE    },
 /* 10 TIMESTAMP  */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE/*?*/, CT_NONE,    CT_NONE,    CT_NONE,      CT_TIMESTAMP,   CT_TIMESTAMP,   CT_NONE/*?*/, CT_NONE/*X*/, CT_NONE, CT_NONE    },
 /* 11 VARCHAR    */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,        CT_NONE,        CT_NONE,      CT_NONE,      CT_NONE, CT_NONE    },
-/* 12 UNKNOWN    */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_UNKNOWN, CT_UNKNOWN, CT_UNKNOWN,   CT_UNKNOWN,     CT_UNKNOWN,     CT_NONE,      CT_NONE,      CT_NONE, CT_NONE    }
+/* 12 UNKNOWN    */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_UNKNOWN, CT_UNKNOWN, CT_UNKNOWN,   CT_UNKNOWN,     CT_UNKNOWN,     CT_NONE,      CT_NONE,      CT_NONE, CT_UNKNOWN }
 };
 
 // References:
@@ -120,6 +120,22 @@ void SubtractionExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
     Expr::vDescribe(pChild2, sBuf, pRootNode);
     sBuf.vConcat(")"_Stz);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Represent the expression as types instead of names. Append to the buffer   */
+/*----------------------------------------------------------------------------*/
+void SubtractionExpr::vDescribeAsTypes(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pChild1 = SubtractionExpr::pChild1(_pQueryNode(pNode));
+  QueryNode* pChild2 = SubtractionExpr::pChild2(_pQueryNode(pNode));
+
+  sBuf.vConcat(Expr::xTypeId(pChild1, pRootNode).szTypeName());
+  sBuf.vConcat(" - "_Stz);
+  sBuf.vConcat(Expr::xTypeId(pChild2, pRootNode).szTypeName());
 }
 
 /*----------------------------------------------------------------------------*/

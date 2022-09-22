@@ -337,6 +337,15 @@
   "<diary>" [job].tagSet@ tagSet.hasName if
     rluDiary_init
   then
+
+  "<faultInjection>" [job].tagSet@ tagSet.hasName if
+    "SETTING FAULTINJECTION" .
+    true thread.faultInjection!
+
+    "<faultPoint>" [job].tagSet@ tagSet.hasName assert
+    "SETTING FAULTPOINT" .
+    "<faultPoint>" [job].tagSet@ tagSet.getStr >int thread.faultPoint!
+  then
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -560,6 +569,7 @@
       true LogicUnit[].calledAgain!
 
       op__callHandler to iContinue
+
       continue_if
 
     then
@@ -599,7 +609,6 @@
     PipeIn[].kind [op].eventCountInc
     PipeIn[].kind [op].handler@ LogicUnit[].handler!
     op__callHandler to iContinue
-
   repeat
   
   iContinue not assert

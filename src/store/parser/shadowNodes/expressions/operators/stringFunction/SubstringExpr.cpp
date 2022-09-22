@@ -151,7 +151,30 @@ void SubstringExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
   }
 
   sBuf.vConcat(")"_Stz);
+}
 
+/*----------------------------------------------------------------------------*/
+/* Represent the expression as types instead of names. Append to the buffer   */
+/*----------------------------------------------------------------------------*/
+void SubstringExpr::vDescribeAsTypes(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pSrcExprNode    = SubstringExpr::pSrcExpr(_pQueryNode(pNode));
+  QueryNode* pFromExprNode   = SubstringExpr::pFromExpr(_pQueryNode(pNode));
+  QueryNode* pLengthExprNode = SubstringExpr::pLengthExpr(_pQueryNode(pNode));
+
+  sBuf.vCatSprint("SUBSTRING(%s, %s"_Stz,
+                  Expr::xTypeId(pSrcExprNode, pRootNode).szTypeName(),
+                  Expr::xTypeId(pFromExprNode, pRootNode).szTypeName());
+
+
+  if (pLengthExprNode) {
+    sBuf.vCatSprint(", %s"_Stz, Expr::xTypeId(pLengthExprNode, pRootNode).szTypeName());
+  }
+
+  sBuf.vConcat(")"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

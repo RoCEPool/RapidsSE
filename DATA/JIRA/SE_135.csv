@@ -1,0 +1,30 @@
+~yf2ftpstart,A0000,AAbcDd
+2123@qq.com,A0100,aaBcdd
+3abc-123!,A0101,bcAAfDde
+4bcs#1,A0102,Ddefg
+5meiyuan$,A0103,abcdefg
+6aa%qw,A0200,abcabc2222efg
+7abc^123,A0201,a\\b\\c\\d
+8A&B,A0202,"a\,b\,c\,d"
+912*23,A0203,a\'b\'c\'d
+10abc(ABC),B0000,abcd
+11中文——信息,B0300,a11b22c33d
+1290+,B0301,s123e
+13pass{123},B0302,ss123ee
+14xxii[123],B0400,s345e
+15hh【就是要中文得】,B0401,s12345e
+16node1|node2,B0402,ss1ee
+17D:\\柏睿工作\\se文档\\测试用例,B0403,开开心心
+18姓名：简文文,C0000,每天开开心心
+19姓名：简文文；籍贯：湖北；学历：本科,C0600,开开心心过大年
+20这是个错误“假的”,C0601,每个人都开开心心过大年
+21"english""two"",xxii[123]",C0602,that is a book
+22/opt/rdp/5.3.5,C0700,this is a pen
+23are you ready?,C0701,it is a pencil
+24就这个feel<demiliter>,C0702,0 1 2 3 4
+25test\ntest1,D0000,1 2 3
+26xixi\thaha\tyyds,D0800,19086204296
+27en\wno,D0801,18986194297
+28,D0802,18944554297
+29jwww\swwwww,D0803,237823AA
+30"When the table to be created has too many fields, it will cause exit prompt or no response",D0804,134299

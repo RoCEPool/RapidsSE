@@ -19,6 +19,7 @@
 void Step::vAddSteps_Node_I(void)
 {
   vAddStep("node_I[].delete"_Stz,  &Step::vNode_IDelete);
+  vAddStep("node_I[].init"_Stz,    &Step::vNode_IInit);
   vAddStep("node_I[].more"_Stz,    &Step::vNode_IMore);
   vAddStep("node_I[].new"_Stz,     &Step::vNode_INew);
   vAddStep("node_I[].next"_Stz,    &Step::vNode_INext);
@@ -37,6 +38,18 @@ void Step::vNode_IDelete(void)
   
   delete pNode_I;
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* node_I[].init -- initialize the node iterator                              */
+/*----------------------------------------------------------------------------*/
+void Step::vNode_IInit(void)
+{
+  ENTRY();
+
+  m_pLogicUnit->m_xpNode_I->vInit();
+
   EXIT();
 }
 
@@ -61,11 +74,12 @@ void Step::vNode_INew(void)
 {
   ENTRY();
   
-  i8 iStipulate = m_pDataStack->iPopInt(__func__);
-  UNUSED(iStipulate);
+  //i8 iStipulate = m_pDataStack->iPopInt(__func__);
+  //UNUSED(iStipulate);
   
   Node_I* pNode_I = new Node_I;
-      
+  RASSERT(m_pLogicUnit->m_xpNode_I.bIsNull());
+
   m_pLogicUnit->m_xpNode_I = pNode_I;
 
   EXIT();

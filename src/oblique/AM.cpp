@@ -52,6 +52,8 @@
 #include "RowCoder.hpp"
 #include "HeadLine.hpp"
 
+#include "Socket.hpp"
+
 #include "Crw.hpp"
 
 #include "LglPtnMap.hpp"
@@ -368,6 +370,24 @@ JobId AM::DEMON::tMonDemonJobId(void) {
   _static_
 
   return gpAttachMap->m_tMonDemonJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set jobId of the nodeMon demon in AM                                       */
+/*----------------------------------------------------------------------------*/
+void AM::DEMON::vNodeMonDemonJobId(JobId tJobId) {
+  _static_
+
+  gpAttachMap->m_tNodeMonDemonJobId = tJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get jobId of the nodeMon demon in AM                                       */
+/*----------------------------------------------------------------------------*/
+JobId AM::DEMON::tNodeMonDemonJobId(void) {
+  _static_
+
+  return gpAttachMap->m_tNodeMonDemonJobId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -740,6 +760,32 @@ void AM::JLIST::vRemoveJob(Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
+/* signal the parent job                                                      */
+/*----------------------------------------------------------------------------*/
+eEC AM::JLIST::eSignalParent(Job* pJob)
+{
+  eEC eError = EC_NONE;
+
+  // get the parent job
+  JobId tParentJobId = pJob->tParentId();
+
+  // find the parent job
+  Job* pParentJob = AM::JLIST::pFindJob(tParentJobId,true);
+
+  // signal parent
+  if (pParentJob) {
+
+    pParentJob->vMutexSignal();
+    pParentJob->vDropLock();
+  }
+  else {
+    eError = EC_NO_SUCH_JOB;
+  }
+
+  return eError;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the last jobId of the job                                              */
 /*----------------------------------------------------------------------------*/
 eEC AM::JLIST::eSystemCloserSet(JobId tJobId, i8 iSystemCloser)
@@ -809,6 +855,32 @@ eEC AM::JLIST::eUpdateParent(Job* pJob)
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /*----------------------------------------------------------------------------*/
+/* ack originating job                                                        */
+/*----------------------------------------------------------------------------*/
+void AM::JOB::vAckOriginatingJob(JobId tOriginId)
+{
+  _static_;
+
+  // find the originating job
+  Job *pJobFound = AM::pJob_FindOriginating(tOriginId, true);
+
+  //may not be able to find the job if node loss
+  vTrace("vAckOriginatingJob: No originating job (node loss ???)\n"_Stz);
+  if ( ! pJobFound )
+    return;
+
+  // find the job task
+  Task *pJobTask = pJobFound->pTask();
+
+  // ack the job task
+  i8 nAcksWereRemaining;
+  bool bWasQueued = Scheduler::bTaskCross_AckWaiting(pJobTask, AM::pThisTLSTask(),
+                                                     nAcksWereRemaining);
+  pJobFound->vDropLock();
+  UNUSED(bWasQueued);
+}
+
+/*----------------------------------------------------------------------------*/
 /* has job got given tag?                                                     */
 /*----------------------------------------------------------------------------*/
 bool AM::JOB::bHasTag(Job* pJob, Stz* szTagNm)
@@ -835,11 +907,98 @@ Stz* AM::JOB::szJobNm(Job* pJob)
   return pJob->szJobNm();
 }
 
+/*----------------------------------------------------------------------------*/
+/* handle originating job during node failure                                 */
+/*----------------------------------------------------------------------------*/
+void AM::JOB::vOriginJobNodeFailure(JobId tJobId)
+{
+  _static_
+
+  // find the job holding onto the lock
+  Job* pJob = AM::pOriginatingJobs()->pFindJob(tJobId,true);
+
+  if ( ! pJob ) {
+    return;
+  }
+
+  Task* pThisTask = MY::pTask();
+
+  pJob->vOriginJobNodeFailure();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // fully ack the waiting job
+
+  Task* pTask = pJob->pTask();
+
+  bool bAmDecider = false;
+  if (pTask->eState() == TS_WAITING) {
+    vTrace("Notifying Origin job %p %s J%04lld.%04lld %s\n"_Stz,
+           pJob,
+           pJob->szJobNm(),
+           pJob->tJobId().uNodeId(),
+           pJob->tJobId().uJobNo());
+
+    i8 nAcksRemainaing;
+    while ( ! bAmDecider ) {
+      vTrace("vOriginJobNodeFailure acking %s...\n"_Stz, aJP[pJob->eJobPhase()]);
+      bAmDecider = Scheduler::bTaskCross_AckWaiting(pTask, pThisTask, nAcksRemainaing);
+    }
+    RASSERT(nAcksRemainaing == 0);
+
+    vTrace("Notified Origin job %p %s J%04lld.%04lld\n"_Stz,
+           pJob,
+           pJob->szJobNm(),
+           pJob->tJobId().uNodeId(),
+           pJob->tJobId().uJobNo());
+  }
+
+  pJob->vDropLock();
+
+}
 
 /*----------------------------------------------------------------------------*/
-/* test if the job passes all pre-execution requirements                      */
+/* handle participant job during node failure                                 */
 /*----------------------------------------------------------------------------*/
-eEC AM::JOB::ePreExecuteTest(Job* pJob)
+void AM::JOB::vPtpJobNodeFailure(JobId tJobId)
+{
+  _static_
+
+  // find the job holding onto the lock
+  Job* pJob = AM::pParticipatingJobs()->pFindJob(tJobId,true);
+
+  if ( ! pJob ) {
+    return;
+  }
+
+  vTrace("**************Job %04lld.%04lld ; %s\n"_Stz,
+         pJob->tDistId().uNodeId(),
+         pJob->tDistId().uJobNo(),
+         aJP[pJob->eJobPhase()]);
+
+  // TO BE CODED
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* test if the job passes all pre-execution requirements for distributed jobs */
+/*----------------------------------------------------------------------------*/
+eEC AM::JOB::ePreExecuteDist(Job* pJob)
+{
+  _static_
+
+  if (! AM::SYSTEM::bPassesLowMemDist(pJob))
+    return EC_LOW_MEMORY;
+
+  if (! AM::SYSTEM::bPassesOpenSystem(pJob))
+    return EC_SYSTEM_CLOSED;
+
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test if the job passes all pre-execution requirements for local jobs       */
+/*----------------------------------------------------------------------------*/
+eEC AM::JOB::ePreExecuteLocal(Job* pJob)
 {
   _static_
 
@@ -852,6 +1011,94 @@ eEC AM::JOB::ePreExecuteTest(Job* pJob)
   return EC_NONE;
 }
 
+/*----------------------------------------------------------------------------*/
+/* handle received rejectJob                                                  */
+/*----------------------------------------------------------------------------*/
+void AM::JOB::vRecvdReject(RejectJob *pRejectJob)
+{
+  _static_;
+
+  // get origin id
+  JobId tOriginId = pRejectJob->tOriginId();
+
+  // get the error
+  eEC eError = pRejectJob->eError();
+
+  Job *pJobFound = AM::pJob_FindOriginating(tOriginId, true);
+
+  //may not be able to find the job if node loss
+  vTrace("vAckOriginatingJob: No originating job (node loss ???)\n"_Stz);
+  if ( ! pJobFound )
+    return;
+
+  // set the error
+  pJobFound->vJobError(eError);
+
+  // find the job task
+  Task *pJobTask = pJobFound->pTask();
+
+  // ack the job task
+  i8 nAcksWereRemaining;
+  bool bWasQueued = Scheduler::bTaskCross_AckWaiting(pJobTask, AM::pThisTLSTask(),
+                                                     nAcksWereRemaining);
+  UNUSED(bWasQueued);
+  pJobFound->vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
+/* send a rejectJob                                                           */
+/*----------------------------------------------------------------------------*/
+void AM::JOB::vSendReject(RejectJob *pRejectJob)
+{
+  _static_;
+
+  // get origin id
+  JobId tOriginId = pRejectJob->tOriginId();
+
+  // get origin node
+  i8 iOriginNodeId = tOriginId.uNodeId();
+
+  // find the node by no
+  Node *pNode = AM::pGrid()->pFindNodeById(iOriginNodeId);
+
+  // get the send socket of the node
+  Socket *pSocket = pNode->pSendSocket();
+  SysCall oSysCall;
+
+  // send the rejectJob
+  pSocket->vGrabWrite();
+  bool bResult = pSocket->bSendObject(pRejectJob, oSysCall, SY_NONE);
+  pSocket->vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* trigger execution of the pipeline on the participant                       */
+/*----------------------------------------------------------------------------*/
+void AM::JOB::vTriggerExecute(JobId tDistId)
+{
+  _static_;
+
+  // find the participant job
+  Job* pJobParticipant = AM::pJob_FindParticipating(tDistId, true);
+
+  // get the task of the participant job
+  Task* pTaskParticipant = pJobParticipant->pTask();
+
+  // get the state of the job
+  eTS eState = pTaskParticipant->eState();
+
+  while (pTaskParticipant->eState() != TS_HIBERNATING)
+  {;}
+
+  pJobParticipant->vDropLock();
+
+  // cycle the task lock to ensure task has fully entered next state
+  pTaskParticipant->vCycleTaskLock((Stz*)__func__);
+
+  pJobParticipant->vResetTaskForJob();
+  Scheduler::vTaskCross_ScheduleNextPhase(pTaskParticipant, AM::pThisTLSTask());
+  pJobParticipant->vSetAllocate(false);
+}
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                   JOB                                      */
@@ -863,9 +1110,9 @@ eEC AM::JOB::ePreExecuteTest(Job* pJob)
 i8 AM::JOBS::nJobsActive(void)
 {
   _static_
-  
+
   i8 nJobs = gpAttachMap->m_nxJobsActive.iVal();
-  
+
   return nJobs;
 }
 
@@ -875,7 +1122,7 @@ i8 AM::JOBS::nJobsActive(void)
 void AM::JOBS::vJobsActiveDec(void)
 {
   _static_
-  
+
   -- gpAttachMap->m_nxJobsActive;
 }
 
@@ -885,7 +1132,7 @@ void AM::JOBS::vJobsActiveDec(void)
 void AM::JOBS::vJobsActiveInc(void)
 {
   _static_
-  
+
   ++ gpAttachMap->m_nxJobsActive;
 }
 
@@ -895,9 +1142,9 @@ void AM::JOBS::vJobsActiveInc(void)
 i8 AM::JOBS::nJobsThreshold(void)
 {
   _static_
-  
+
   i8 nJobs = gpAttachMap->m_nJobsThreshold;
-  
+
   return nJobs;
 }
 
@@ -907,7 +1154,7 @@ i8 AM::JOBS::nJobsThreshold(void)
 void AM::JOBS::vJobsThreshold(i8 nJobs)
 {
   _static_
-  
+
   gpAttachMap->m_nJobsThreshold = nJobs;
 }
 
@@ -921,7 +1168,7 @@ void AM::JOBS::vJobsThreshold(i8 nJobs)
 Job* AM::LLIST::pFindJob(JobId tJobId, bool bLockJob)
 {
   Job* pJob = AM::pLocalJobs()->pFindJob(tJobId,bLockJob);
-    
+
   return pJob;
 }
 
@@ -939,9 +1186,9 @@ void AM::LOCK::vIntendReadUnlocked(Lock* pLock)
   Task* pUnlockingTask = MY::pTask();
   if (! pUnlockingTask)
     return;
-      
+
   LockSet* pReadLocks = pUnlockingTask->pReadLocks();
-  
+
   pReadLocks->vRemove(pLock);
 }
 
@@ -951,11 +1198,11 @@ void AM::LOCK::vIntendReadUnlocked(Lock* pLock)
 void AM::LOCK::vJustReadLocked(Lock* pLock)
 {
   _static_
-  
+
   Task* pUnlockingTask = MY::pTask();
   if (! pUnlockingTask)
     return;
-      
+
   LockSet* pReadLocks = pUnlockingTask->pReadLocks();
 
   pReadLocks->vAdd(pLock);
@@ -971,9 +1218,9 @@ void AM::LOCK::vIntendWriteUnlocked(Lock* pLock)
   Task* pUnlockingTask = MY::pTask();
   if (! pUnlockingTask)
     return;
-      
+
   LockSet* pWriteLocks = pUnlockingTask->pWriteLocks();
-  
+
   pWriteLocks->vRemove(pLock);
 }
 
@@ -983,13 +1230,13 @@ void AM::LOCK::vIntendWriteUnlocked(Lock* pLock)
 void AM::LOCK::vJustWriteLocked(Lock* pLock)
 {
   _static_
-  
+
   Task* pLockingTask = MY::pTask();
   if (! pLockingTask)
     return;
-      
+
   LockSet* pWriteLocks = pLockingTask->pWriteLocks();
-  
+
   pWriteLocks->vAdd(pLock);
 }
 
@@ -1051,7 +1298,7 @@ void AM::LOGICUNIT::vAddReg(LogicUnit* pLogicUnit, void* aReg)
   _static_
 
   pLogicUnit->vAddReg(static_cast< REG<Object,CN_NONE>* >(aReg));
-  
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1060,13 +1307,13 @@ void AM::LOGICUNIT::vAddReg(LogicUnit* pLogicUnit, void* aReg)
 void AM::LOGICUNIT::vDelete(LogicUnit** ppLogicUnit)
 {
   _static_
-  
+
 
   //delete * ppLogicUnit;
-  
+
   LogicUnit* pLogicUnit = * ppLogicUnit;
   * ppLogicUnit = nullptr;
-  
+
   delete pLogicUnit;
 }
 
@@ -1119,9 +1366,9 @@ MarkerMgr* AM::MARKER::pMarkerMgr(void)
 Marker* AM::MARKER::pNewMarker(eOM eOpMarker, Job* pJob)
 {
   _static_
-  
+
   Marker* pMarker;
-  
+
   MarkerMgr* pMarkerMgr = gpAttachMap->m_pMarkerMgr;
   pMarker = pMarkerMgr->pMarker(eOpMarker);
   if (pMarker)
@@ -1148,11 +1395,11 @@ Marker* AM::MARKER::pNewMarker(eOM eOpMarker, Job* pJob)
 void AM::MASTERLOCK::vDropDdlReadLock(LogicUnit* pLogicUnit)
 {
   _static_
-  
+
   RASSERT(LH_HAVE_READ_LOCK == pLogicUnit->m_eDdlLocked);
 
   gpAttachMap->m_oLocks.m_oDdlMasterLock.vDropRead();
-  
+
   pLogicUnit->m_eDdlLocked = LH_HAVE_NO_LOCK;
 }
 
@@ -1162,11 +1409,11 @@ void AM::MASTERLOCK::vDropDdlReadLock(LogicUnit* pLogicUnit)
 void AM::MASTERLOCK::vGrabDdlReadLock(LogicUnit* pLogicUnit)
 {
   _static_
-  
+
   RASSERT(LH_HAVE_NO_LOCK == pLogicUnit->m_eDdlLocked);
-  
+
   gpAttachMap->m_oLocks.m_oDdlMasterLock.vGrabRead();
-  
+
   pLogicUnit->m_eDdlLocked = LH_HAVE_READ_LOCK;
 }
 
@@ -1176,11 +1423,11 @@ void AM::MASTERLOCK::vGrabDdlReadLock(LogicUnit* pLogicUnit)
 void AM::MASTERLOCK::vDropDdlWriteLock(LogicUnit* pLogicUnit)
 {
   _static_
-  
+
   RASSERT(LH_HAVE_WRITE_LOCK == pLogicUnit->m_eDdlLocked);
-  
+
   gpAttachMap->m_oLocks.m_oDdlMasterLock.vDropWrite();
-  
+
   pLogicUnit->m_eDdlLocked = LH_HAVE_NO_LOCK;
 }
 
@@ -1190,11 +1437,11 @@ void AM::MASTERLOCK::vDropDdlWriteLock(LogicUnit* pLogicUnit)
 void AM::MASTERLOCK::vGrabDdlWriteLock(LogicUnit* pLogicUnit)
 {
   _static_
-  
+
   RASSERT(LH_HAVE_NO_LOCK == pLogicUnit->m_eDdlLocked);
 
   gpAttachMap->m_oLocks.m_oDdlMasterLock.vGrabWrite();
-  
+
   pLogicUnit->m_eDdlLocked = LH_HAVE_WRITE_LOCK;
 }
 
@@ -1204,14 +1451,14 @@ void AM::MASTERLOCK::vGrabDdlWriteLock(LogicUnit* pLogicUnit)
 void AM::MASTERLOCK::vDdlLockTestDrop(LogicUnit* pLogicUnit)
 {
   _static_
-  
+
   if (LH_HAVE_READ_LOCK == pLogicUnit->m_eDdlLocked) {
-    
+
     AM::MASTERLOCK::vDropDdlReadLock(pLogicUnit);
   }
   else
   if (LH_HAVE_WRITE_LOCK == pLogicUnit->m_eDdlLocked) {
-    
+
     AM::MASTERLOCK::vDropDdlWriteLock(pLogicUnit);
   }
 }
@@ -1222,9 +1469,9 @@ void AM::MASTERLOCK::vDdlLockTestDrop(LogicUnit* pLogicUnit)
 u8 AM::MASTERLOCK::uDdlLockWord(void)
 {
   _static_
-  
+
   u8 uLockWord = gpAttachMap->m_oLocks.m_oDdlMasterLock.uLockWord();
-  
+
   return uLockWord;
 }
 
@@ -1234,7 +1481,7 @@ u8 AM::MASTERLOCK::uDdlLockWord(void)
 void AM::MASTERLOCK::vDropReap(LogicUnit* pLogicUnit)
 {
   _static_
-  
+
   UNUSED(pLogicUnit);
   gpAttachMap->m_oReapLock.vDropWrite();
 }
@@ -1245,7 +1492,7 @@ void AM::MASTERLOCK::vDropReap(LogicUnit* pLogicUnit)
 void AM::MASTERLOCK::vGrabReap(LogicUnit* pLogicUnit)
 {
   _static_
-  
+
   UNUSED(pLogicUnit);
   gpAttachMap->m_oReapLock.vGrabWrite();
 }
@@ -1256,7 +1503,7 @@ void AM::MASTERLOCK::vGrabReap(LogicUnit* pLogicUnit)
 void AM::MASTERLOCK::vDropTraceLine(void)
 {
   _static_
-  
+
   gpAttachMap->vTraceLockDrop();
 }
 
@@ -1266,7 +1513,7 @@ void AM::MASTERLOCK::vDropTraceLine(void)
 void AM::MASTERLOCK::vGrabTraceLine(void)
 {
   _static_
-  
+
   gpAttachMap->vTraceLockDrop();
 }
 
@@ -1276,7 +1523,7 @@ void AM::MASTERLOCK::vGrabTraceLine(void)
 void AM::MASTERLOCK::vDropTraceMulti(void)
 {
   _static_
-  
+
   gpAttachMap->vTraceMultiLockDrop();
 }
 
@@ -1286,7 +1533,7 @@ void AM::MASTERLOCK::vDropTraceMulti(void)
 void AM::MASTERLOCK::vGrabTraceMulti(void)
 {
   _static_
-  
+
   gpAttachMap->vTraceMultiLockGrab();
 }
 
@@ -1302,8 +1549,14 @@ void AM::MEMORY::vAssertAllocate(void)
 {
   _static_
 
-  RASSERT(MY::pJob()->bAllocateMemory());
-  RASSERT(MY::pOp()->bAllocateMemory());
+  Job* pJob = MY::pJob();
+  Op* pOp = MY::pOp();
+
+  if ( ! pOp ) {
+    RASSERT( ! pJob || pJob->bAllocateMemory() );
+  }
+
+  RASSERT( ! pOp || pOp->bAllocateMemory() );
 
 }
 
@@ -1313,13 +1566,29 @@ void AM::MEMORY::vAssertAllocate(void)
 bool AM::MEMORY::bIsRunningLow(void)
 {
   _static_
-  
+
   bool bIsLow = false;
-  
+
   if (gpBufferPool) {
     bIsLow = gpBufferPool->bLowMemory();
   }
-  
+
+  return bIsLow;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is memory running low for a distributed job?                               */
+/*----------------------------------------------------------------------------*/
+bool AM::MEMORY::bIsRunningLowDist(void)
+{
+  _static_
+
+  bool bIsLow = false;
+
+  if (gpBufferPool) {
+    bIsLow = gpBufferPool->bLowMemoryDist();
+  }
+
   return bIsLow;
 }
 
@@ -1333,16 +1602,16 @@ bool AM::MEMORY::bIsRunningLow(void)
 void AM::METRICS::vDerefMetrics(i8 iObjectNo, eCN eClassNo, eDR eAction)
 {
   _static_
- 
+
   if (! AM::SYSARGS::bDerefMetrics())
     return;
-  
+
   Thread* pThread = Thread::pThisTLSThread();
-  
+
   ThreadScratch* pThreadScratch = pThread->pThreadScratch();
 
   i8 iTsc = Hardware::iReadTsc();
-  
+
   pThreadScratch->vAddDerefMetrics(iObjectNo,eClassNo,iTsc,eAction);
 }
 
@@ -1356,7 +1625,7 @@ void AM::METRICS::vDerefMetrics(i8 iObjectNo, eCN eClassNo, eDR eAction)
 bool AM::NO::bFree(void)
 {
   _static_
-  
+
   if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_NO_FREE))
     return true;
   else
@@ -1374,7 +1643,7 @@ bool AM::NO::bFree(void)
 Stz* AM::NODE::szNodeNm(void)
 {
   _static_
-  
+
   return gpAttachMap->m_pGrid->pThisNode()->szNodeNm();
 }
 
@@ -1384,7 +1653,7 @@ Stz* AM::NODE::szNodeNm(void)
 i8 AM::NODE::iThisNodeId(void)
 {
   _static_
-  
+
   return gpAttachMap->m_pGrid->iThisNodeId();
 }
 
@@ -1399,7 +1668,7 @@ i8 AM::NODE::iThisNodeId(void)
 void AM::OBJECT::vAssertClassSize(eCN eClassNo, i8 nClassSize)
 {
   _static_
-  
+
   RASSERT(eClassNo == gxaSizeHeap[eClassNo].m_eClassType);
   RASSERT(nClassSize == gxaSizeHeap[eClassNo].m_nClassSize);
 }
@@ -1410,14 +1679,14 @@ void AM::OBJECT::vAssertClassSize(eCN eClassNo, i8 nClassSize)
 i8 AM::OBJECT::iNextNo(eCN eClassNo)
 {
   _static_
-  
+
   i8 iNo;
-    
+
   if (gpAttachMap && gpAttachMap->m_pNumbering) {
     iNo = gpAttachMap->m_pNumbering->iNextNo(eClassNo);
     if (CN_JOB == eClassNo) {
       i8 iNodeId = AM::GRID::iThisNodeId();
-      
+
       iNo = iNodeId << 48 | iNo;
     }
   }
@@ -1425,7 +1694,7 @@ i8 AM::OBJECT::iNextNo(eCN eClassNo)
     RASSERT(CN_FILE == eClassNo);
     iNo = 0;
   }
-  
+
   return iNo;
 }
 
@@ -1435,11 +1704,11 @@ i8 AM::OBJECT::iNextNo(eCN eClassNo)
 eEC AM::OBJECT::eValidObject(Object* pObject)
 {
   _static_
-  
+
   // valid address in buffer?
   if (! gpBufferPool->bValidAddress(pObject))
     return EC_OBJECT_ADDRESS_INVALID;
-  
+
   // valid class, footer etc?
   eEC eError = pObject->eValidObject();
   if (EC_NONE != eError)
@@ -1488,7 +1757,7 @@ Job* AM::OLIST::pFindJob(JobId tJobId, bool bLockJob)
   _static_
 
   Job* pJob = AM::pOriginatingJobs()->pFindJob(tJobId,bLockJob);
-    
+
   return pJob;
 }
 
@@ -1503,12 +1772,12 @@ Job* AM::OLIST::pFindJob(JobId tJobId, bool bLockJob)
 bool AM::OPERAND::bIsOoO(Operand* pOperand)
 {
   _static_
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // is it a marker ?
-  
+
   if (pOperand->bIsMarker()) {
-  
+
     Marker* pMarker = _pMarker(pOperand);
     if (pMarker->eOpMarker() == OM_CANCELLING)
       return true;
@@ -1516,22 +1785,31 @@ bool AM::OPERAND::bIsOoO(Operand* pOperand)
     if (pMarker->eOpMarker() == OM_ERRORINGMARKER)
       return true;
 
+    if (pMarker->eOpMarker() == OM_HARDABORT)
+      return true;
+
     if (pMarker->eOpMarker() == OM_LEAVINGMARKER)
       return true;
 
+    if (pMarker->eOpMarker() == OM_LOWMEMORY)
+      return true;
+
     if (pMarker->eOpMarker() == OM_NEXTBUFFERMARKER)
+      return true;
+
+    if (pMarker->eOpMarker() == OM_NODELOSSABORT)
       return true;
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // is it a infoset ?
-  
+
   if (CN_INFOSET == pOperand->eGetClassNo()) {
     InfoSet* pInfoSet = _pInfoSet(pOperand);
-    
+
     eOI eOpInfoSet = pInfoSet->eOpInfoSet();
     UNUSED(eOpInfoSet);
-    
+
 //    if (OI_PROGRESSUNITS == eOpInfoSet)
 //      return true;
 //    if (OI_SEEKOFFSETS   == eOpInfoSet)
@@ -1540,7 +1818,7 @@ bool AM::OPERAND::bIsOoO(Operand* pOperand)
 //      return true;
 
   }
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   return false;
 }
@@ -1556,7 +1834,7 @@ bool AM::OPERAND::bIsOoO(Operand* pOperand)
 void AM::PARCEL::vRecvContents(Parcel* pParcel, Socket* pSocket)
 {
   _static_
-  
+
   pParcel->vRecvContents(pSocket);
 }
 
@@ -1573,7 +1851,7 @@ Job* AM::PLIST::pFindJob(JobId tJobId, bool bLockJob)
   _static_
 
   Job* pJob = AM::pParticipatingJobs()->pFindJob(tJobId,bLockJob);
-    
+
   return pJob;
 }
 
@@ -1588,9 +1866,9 @@ Job* AM::PLIST::pFindJob(JobId tJobId, bool bLockJob)
 i8 AM::POOL::iFreeSpace(void)
 {
   _static_
-  
+
   i8 nFree = gpBufferPool->iFreeSpace();;
-  
+
   return nFree;
 }
 
@@ -1600,13 +1878,13 @@ i8 AM::POOL::iFreeSpace(void)
 i8 AM::POOL::iPctFree(void)
 {
   _static_
-  
+
   i8 nFree  = iFreeSpace();
   i8 nTotal = iTotalSpace();
-  
+
   i8 iPct = IntLib::iPercent(nFree,nTotal);
 
-  
+
   return iPct;
 }
 
@@ -1616,12 +1894,12 @@ i8 AM::POOL::iPctFree(void)
 i8 AM::POOL::iPctUsed(void)
 {
   _static_
-  
+
   i8 nUsed  = iUsedSpace();
   i8 nTotal = iTotalSpace();
-  
+
   i8 iPct = IntLib::iPercent(nUsed,nTotal);
-  
+
   return iPct;
 }
 
@@ -1631,9 +1909,9 @@ i8 AM::POOL::iPctUsed(void)
 i8 AM::POOL::iTotalSpace(void)
 {
   _static_
-  
+
   i8 nTotal = AM::iRegionSize();
-  
+
   return nTotal;
 }
 
@@ -1643,7 +1921,7 @@ i8 AM::POOL::iTotalSpace(void)
 i8 AM::POOL::iUsedSpace(void)
 {
   _static_
-  
+
   i8 nUsed = AM::iRegionSize()
                - gpBufferPool->iFreeSpace()
                - PoolHelper::iPoolFree()
@@ -1661,7 +1939,7 @@ i8 AM::POOL::nLargeHeap(void)
   _static_
 
   i8 nBufferCount = gpAttachMap->m_xHeaps.Transient.m_pLarge->nBufferCount();
-  
+
   return nBufferCount;
 }
 
@@ -1673,7 +1951,7 @@ i8 AM::POOL::nMediumHeap(void)
   _static_
 
   i8 nBufferCount = gpAttachMap->m_xHeaps.Transient.m_pMedium->nBufferCount();
-  
+
   return nBufferCount;
 }
 
@@ -1685,7 +1963,7 @@ i8 AM::POOL::nSmallHeap(void)
   _static_
 
   i8 nBufferCount = gpAttachMap->m_xHeaps.Transient.m_pSmall->nBufferCount();
-  
+
   return nBufferCount;
 }
 
@@ -1697,7 +1975,7 @@ i8 AM::POOL::nTinyHeap(void)
   _static_
 
   i8 nBufferCount = gpAttachMap->m_xHeaps.Transient.m_pTiny->nBufferCount();
-  
+
   return nBufferCount;
 }
 
@@ -1713,6 +1991,20 @@ i8 AM::PROCESS::iSePid(void)
   return gpAttachMap->m_iSePid;
 }
 
+/*----------------------------------------------------------------------------*/
+/* is the se process still running?                                           */
+/*----------------------------------------------------------------------------*/
+bool AM::PROCESS::bSeRunning(void)
+{
+  _static_
+
+  i8 iSePid = AM::PROCESS::iSePid();
+
+  bool bRunning = Process::bTestPid(iSePid);
+
+  return bRunning;
+}
+
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                               PROMPT                                       */
@@ -1725,17 +2017,17 @@ bool AM::PROMPT::bToPipelineStmt(String* pAsPipelineStmt,
                                 TokenVec* pFromTokenVec)
 {
   _static_
-  
+
   i8 nTkns = pFromTokenVec->nTokens();
-  
+
   Stz* szOpNm;
   Stz* szOpArg;
-  
+
   char cStageStart   = 'A';
   char cStageCurrent = 'A';
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+
   pAsPipelineStmt->vCopy(
     "pipeline unnamed\n"
     "begin\n"
@@ -1750,12 +2042,12 @@ bool AM::PROMPT::bToPipelineStmt(String* pAsPipelineStmt,
   cStageStart);
 
   ++ cStageCurrent;
-  
+
   pAsPipelineStmt->vCatSprint(
     "  stage stage%c on all partitions :\n"
     ""_Stz,
     cStageCurrent);
-  
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -1764,107 +2056,107 @@ bool AM::PROMPT::bToPipelineStmt(String* pAsPipelineStmt,
     szOpNm = pFromTokenVec->pGet(i_Tkn++)->szChars();
 
     // -- -- -- -- -- -- -- -- -- --
-    
+
     if (szOpNm->bSame("scan"_Stz)) {
-      
+
       szOpArg = pFromTokenVec->pGet(i_Tkn++)->szChars();
 
       pAsPipelineStmt->vCatSprint("    scan %s\n"_Stz,szOpArg);
-      
+
       while (i_Tkn < nTkns) {
         szOpArg = pFromTokenVec->pGet(i_Tkn++)->szChars();
         if (szOpArg->bSame("|"_Stz))
           break;
       }
-      
+
     }
-    
+
     // -- -- -- -- -- -- -- -- -- --
-    
+
     else
     if (szOpNm->bSame("filter"_Stz)) {
-      
+
       pAsPipelineStmt->vCatSprint("    | filter 0"_Stz);
       pAsPipelineStmt->vCatSprint(" \""_Stz);
-      
+
       while (i_Tkn < nTkns) {
         szOpArg = pFromTokenVec->pGet(i_Tkn++)->szChars();
         if (szOpArg->bSame("|"_Stz))
           break;
         pAsPipelineStmt->vCatSprint(" %s"_Stz,szOpArg);
       }
-      
+
       pAsPipelineStmt->vCatSprint(" <>\"\n"_Stz);
     }
-    
+
     // -- -- -- -- -- -- -- -- -- --
-    
+
     else
     if (szOpNm->bSame("project"_Stz)) {
-      
+
       pAsPipelineStmt->vCatSprint("    | project 0"_Stz);
       pAsPipelineStmt->vCatSprint(" \""_Stz);
-      
+
       while (i_Tkn < nTkns) {
         szOpArg = pFromTokenVec->pGet(i_Tkn++)->szChars();
         if (szOpArg->bSame("|"_Stz))
           break;
         pAsPipelineStmt->vCatSprint("%s "_Stz,szOpArg);
       }
-      
+
       pAsPipelineStmt->vCatSprint("\"\n"_Stz);
-            
+
     }
-    
+
     // -- -- -- -- -- -- -- -- -- --
-    
+
     else
     if (szOpNm->bSame("aggreg"_Stz)) {
-      
+
       pAsPipelineStmt->vCatSprint(
         "    | stage%c\n"
         ""_Stz,
         cStageCurrent + 1);
 
       ++ cStageCurrent;
-      
+
       pAsPipelineStmt->vCatSprint(
         "  stage stage%c on origin :\n"
         ""_Stz,
         cStageCurrent);
-      
+
       pAsPipelineStmt->vCatSprint("    aggreg 0"_Stz);
       pAsPipelineStmt->vCatSprint(" \""_Stz);
-      
+
       while (i_Tkn < nTkns) {
         szOpArg = pFromTokenVec->pGet(i_Tkn++)->szChars();
         if (szOpArg->bSame("|"_Stz))
           break;
         pAsPipelineStmt->vCatSprint("%s "_Stz,szOpArg);
       }
-      
+
       pAsPipelineStmt->vCatSprint("\"\n"_Stz);
-            
+
     }
-    
+
     // -- -- -- -- -- -- -- -- -- --
-    
+
     else {
-      
+
       return false;
     }
-    
+
   }
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+
   pAsPipelineStmt->vCatSprint(
     "    | stage%c\n"
     ""_Stz,
     cStageCurrent + 1);
-  
+
   ++ cStageCurrent;
-  
+
   pAsPipelineStmt->vCatSprint(
     "  stage stage%c on origin :\n"
     "    output\n"
@@ -1876,9 +2168,9 @@ bool AM::PROMPT::bToPipelineStmt(String* pAsPipelineStmt,
   pAsPipelineStmt->vConcat(
     "end ;\n"
     ""_Stz);
-  
+
   vTrace("bToPipelineStmt : \n%s\n"_Stz,pAsPipelineStmt->szStz());
-  
+
   return true;
 }
 
@@ -1888,18 +2180,18 @@ bool AM::PROMPT::bToPipelineStmt(String* pAsPipelineStmt,
 InfoSet* AM::PROMPT::pToPromptOut(Stz* szStz)
 {
   _static_
-  
+
   StreamDef* pStreamDef = AM::pInternalTables()->pStreamDef(TI_PROMPTOUT);
   if (! pStreamDef)
     return nullptr;
 
   InfoSet* pInfoSet = new InfoSet(pStreamDef);
   pInfoSet->vOpInfoSet(OI_PROMPTOUT);
-  
+
   Row* pRow = pInfoSet->pAllotRow();
-  
+
   pInfoSet->vDepositRow(pRow,C_VARGS_BEGIN,szStz,C_VARGS_END);
-  
+
   return pInfoSet;
 }
 
@@ -1955,7 +2247,7 @@ i8 AM::PTNMAP::nPtnsPerNode(void)
 LglPtn AM::PTNMAP::tRobinToDtdPtnStream(i8 iRobin)
 {
   _static_
-  
+
   return gpAttachMap->m_pLglPtnMap->tRobinToDtdPtnStream(iRobin);
 }
 
@@ -1965,7 +2257,7 @@ LglPtn AM::PTNMAP::tRobinToDtdPtnStream(i8 iRobin)
 LglPtn AM::PTNMAP::tRobinToLclPtnStream(i8 iRobin)
 {
   _static_
-  
+
   return gpAttachMap->m_pLglPtnMap->tRobinToLclPtnStream(iRobin);
 }
 
@@ -1975,7 +2267,7 @@ LglPtn AM::PTNMAP::tRobinToLclPtnStream(i8 iRobin)
 LglPtn AM::PTNMAP::tRobinToNdePtnNo(i8 iRobin)
 {
   _static_
-  
+
   return gpAttachMap->m_pLglPtnMap->tRobinToNdePtnNo(iRobin);
 }
 
@@ -1989,11 +2281,11 @@ LglPtn AM::PTNMAP::tRobinToNdePtnNo(i8 iRobin)
 i8 AM::SCHEDULER::nIdleThreads(void)
 {
   _static_
-  
+
   Schedule* pSchedule = gpAttachMap->m_pSchedule;
-  
+
   i8 nIdle = pSchedule->nIdleThreads();
-  
+
   return nIdle;
 }
 
@@ -2009,9 +2301,9 @@ void AM::SE::vWhereAmI(void)
   _static_
 
   vTrace("AM::SE::vWhereAmI()\n"_Stz);
-  
+
   HeadsUp oHeadsUp((Stz*)__func__);
-  
+
 //  SP_Pointer spThread;
 //  Thread* pThread = MY::pThread();
 //  vTrace("Thread %s\n"_Stz,spThread.sz(pThread));
@@ -2033,12 +2325,12 @@ void AM::SE::vWhereAmI(void)
 //  vTrace("LogicUnit %s\n"_Stz,spLogicUnit.sz(pLogicUnit));
 //
 //  vTrace("\n"_Stz);
-  
+
   if (EC_NONE == pTask->eValidObject()) {
     pTask->vDump();
   }
-  
-  
+
+
   AM::pSchedule()->vDumpBidingSet();
   AM::pSchedule()->vDumpExecutingSet();
   AM::pSchedule()->vDumpReadyQueue();
@@ -2061,7 +2353,7 @@ void AM::SE::vWhereAmI(void)
 bool AM::SHOW::bBoot(void)
 {
   _static_
-  
+
   if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_BOOT))
     return true;
   else
@@ -2074,7 +2366,7 @@ bool AM::SHOW::bBoot(void)
 bool AM::SHOW::bDir(void)
 {
   _static_
-  
+
   if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_DIR))
     return true;
   else
@@ -2087,7 +2379,7 @@ bool AM::SHOW::bDir(void)
 bool AM::SHOW::bDir_Failure(void)
 {
   _static_
-  
+
   if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_DIR_FAILURE))
     return true;
   else
@@ -2100,7 +2392,7 @@ bool AM::SHOW::bDir_Failure(void)
 bool AM::SHOW::bConnection(void)
 {
   _static_
-  
+
   if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_CONNECTION))
     return true;
   else
@@ -2113,7 +2405,7 @@ bool AM::SHOW::bConnection(void)
 bool AM::SHOW::bException(void)
 {
   _static_
-  
+
   if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_EXCEPTION))
     return true;
   else
@@ -2126,7 +2418,7 @@ bool AM::SHOW::bException(void)
 bool AM::SHOW::bFile(void)
 {
   _static_
-  
+
   if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_FILE))
     return true;
   else
@@ -2139,7 +2431,7 @@ bool AM::SHOW::bFile(void)
 bool AM::SHOW::bFile_Failure(void)
 {
   _static_
-  
+
   if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_FILE_FAILURE))
     return true;
   else
@@ -2152,7 +2444,7 @@ bool AM::SHOW::bFile_Failure(void)
 bool AM::SHOW::bLowMem(void)
 {
   _static_
-  
+
   if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_LOWMEM))
     return true;
   else
@@ -2165,7 +2457,7 @@ bool AM::SHOW::bLowMem(void)
 bool AM::SHOW::bLowMem_Recv(void)
 {
   _static_
-  
+
   if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_LOWMEM_RECV))
     return true;
   else
@@ -2178,7 +2470,7 @@ bool AM::SHOW::bLowMem_Recv(void)
 bool AM::SHOW::bRecurring(void)
 {
   _static_
-  
+
   if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_RECURRING))
     return true;
   else
@@ -2191,7 +2483,7 @@ bool AM::SHOW::bRecurring(void)
 bool AM::SHOW::bSocket(void)
 {
   _static_
-  
+
   if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_SOCKET))
     return true;
   else
@@ -2204,7 +2496,7 @@ bool AM::SHOW::bSocket(void)
 bool AM::SHOW::bSocket_Failure(void)
 {
   _static_
-  
+
   if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_SOCKET_FAILURE))
     return true;
   else
@@ -2222,9 +2514,9 @@ bool AM::SHOW::bSocket_Failure(void)
 Op* AM::STAGE::pGetOp(Stage* pStage, LglPtn tLglPtn, i8 i_Op)
 {
   _static_
-  
+
   Op* pOp = pStage->pPipeDstOp(tLglPtn,i_Op);
-  
+
   return pOp;
 
 }
@@ -2239,7 +2531,7 @@ Op* AM::STAGE::pGetOp(Stage* pStage, LglPtn tLglPtn, i8 i_Op)
 Starter* AM::STARTER::pStarter(void)
 {
   _static_
-  
+
   return gpAttachMap->m_pStarter;
 }
 
@@ -2253,17 +2545,17 @@ Starter* AM::STARTER::pStarter(void)
 void AM::STR::vReplaceTags(Stz* szDst, Stz* szSrc, TagSet* pTags)
 {
   _static_
-  
+
   szDst->vCopy(szSrc);
-  
+
   i8 nEnames = pTags->nItems();
   for (i8 i_Tag = 0; i_Tag < nEnames; i_Tag++) {
     if (! pTags->bIsString(i_Tag))
       continue;
-    
+
     Stz* szName  = pTags->szName(i_Tag);
     Stz* szValue = pTags->szValue(i_Tag);
-    
+
     IGNORE_RETURN( StrLib::bReplace(szDst->azChar(),
                                     szName->azChar(),
                                     szValue->azChar()) );
@@ -2282,7 +2574,7 @@ void AM::STR::vReplaceTags(Stz* szDst, Stz* szSrc, TagSet* pTags)
 i8 AM::SYSARGS::nDefinedNodes(void)
 {
   _static_
-  
+
   return gpAttachMap->m_xSysArgs.m_nDefinedNodes;
 }
 
@@ -2293,7 +2585,7 @@ i8 AM::SYSARGS::nDefinedNodes(void)
 bool AM::SYSARGS::bDerefMetrics(void)
 {
   _static_
-  
+
   if (gpAttachMap)
     return gpAttachMap->m_xSysArgs.m_bDerefMetrics;
   else
@@ -2306,7 +2598,7 @@ bool AM::SYSARGS::bDerefMetrics(void)
 void AM::SYSARGS::vDerefMetrics(bool bDerefMetrics)
 {
   _static_
-  
+
   gpAttachMap->m_xSysArgs.m_bDerefMetrics = bDerefMetrics;
 }
 
@@ -2316,7 +2608,7 @@ void AM::SYSARGS::vDerefMetrics(bool bDerefMetrics)
 bool AM::SYSARGS::bDistJob(void)
 {
   _static_
-  
+
   if (gpAttachMap)
     return gpAttachMap->m_xSysArgs.m_bDistJob;
   else
@@ -2329,7 +2621,7 @@ bool AM::SYSARGS::bDistJob(void)
 bool AM::SYSARGS::bJobMetrics(void)
 {
   _static_
-  
+
   if (gpAttachMap)
     return gpAttachMap->m_xSysArgs.m_bJobMetrics;
   else
@@ -2342,7 +2634,7 @@ bool AM::SYSARGS::bJobMetrics(void)
 void AM::SYSARGS::vJobMetrics(bool bJobMetrics)
 {
   _static_
-  
+
   gpAttachMap->m_xSysArgs.m_bJobMetrics = bJobMetrics;
 }
 
@@ -2354,7 +2646,7 @@ void AM::SYSARGS::vJobMetrics(bool bJobMetrics)
 bool AM::SYSARGS::bLockTracking(void)
 {
   _static_
-  
+
   if (gpAttachMap)
     return gpAttachMap->m_xSysArgs.m_bLockTracking;
   else
@@ -2367,7 +2659,7 @@ bool AM::SYSARGS::bLockTracking(void)
 void AM::SYSARGS::vLockTracking(bool bLockTracking)
 {
   _static_
-  
+
   gpAttachMap->m_xSysArgs.m_bLockTracking = bLockTracking;
 }
 
@@ -2379,7 +2671,7 @@ void AM::SYSARGS::vLockTracking(bool bLockTracking)
 i8 AM::SYSARGS::nMetricsSleep(void)
 {
   _static_
-  
+
   return gpAttachMap->m_xSysArgs.m_nMetricsSleep;
 }
 
@@ -2389,7 +2681,7 @@ i8 AM::SYSARGS::nMetricsSleep(void)
 void AM::SYSARGS::vMetricsSleep(i8 nMetricsSleep)
 {
   _static_
-  
+
   gpAttachMap->m_xSysArgs.m_nMetricsSleep = nMetricsSleep;
 }
 
@@ -2404,7 +2696,7 @@ void AM::SYSARGS::vMetricsSleep(i8 nMetricsSleep)
 i8 AM::SYSARGS::nOperandYield(void)
 {
   _static_
-  
+
   return gpAttachMap->m_xSysArgs.m_nOperandYield;
 }
 
@@ -2414,7 +2706,7 @@ i8 AM::SYSARGS::nOperandYield(void)
 void AM::SYSARGS::vOperandYield(i8 nOperandYield)
 {
   _static_
-  
+
   gpAttachMap->m_xSysArgs.m_nOperandYield = nOperandYield;
 }
 
@@ -2425,7 +2717,7 @@ void AM::SYSARGS::vOperandYield(i8 nOperandYield)
 i8 AM::SYSARGS::iOptimiserLvl(void)
 {
   _static_
-  
+
   return gpAttachMap->m_xSysArgs.m_iOptimiserLvl;
 }
 
@@ -2435,7 +2727,7 @@ i8 AM::SYSARGS::iOptimiserLvl(void)
 void AM::SYSARGS::vOptimiserLvl(i8 iOptimiserLvl)
 {
   _static_
-  
+
   gpAttachMap->m_xSysArgs.m_iOptimiserLvl = iOptimiserLvl;
 }
 
@@ -2450,7 +2742,7 @@ void AM::SYSARGS::vOptimiserLvl(i8 iOptimiserLvl)
 i8 AM::SYSARGS::nPtnsPerNode(void)
 {
   _static_
-  
+
   return gpAttachMap->m_xSysArgs.m_nPtnsPerNode;
 }
 
@@ -2460,7 +2752,7 @@ i8 AM::SYSARGS::nPtnsPerNode(void)
 bool AM::SYSARGS::bSysMetrics(void)
 {
   _static_
-  
+
   if (gpAttachMap)
     return gpAttachMap->m_xSysArgs.m_bSysMetrics;
   else
@@ -2473,7 +2765,7 @@ bool AM::SYSARGS::bSysMetrics(void)
 void AM::SYSARGS::vSysMetrics(bool bSysMetrics)
 {
   _static_
-  
+
   gpAttachMap->m_xSysArgs.m_bSysMetrics = bSysMetrics;
 }
 
@@ -2503,7 +2795,7 @@ void AM::SYSARGS::vThreadsInc(i8 iBy)
 TagSet* AM::SYSARGS::pTagSet(void)
 {
   _static_
-  
+
   return & gpAttachMap->m_xSysArgs.m_oArgTags;
 }
 
@@ -2528,12 +2820,12 @@ void AM::SYSARGS::vVerbose(bool bVerbose)
 i8 AM::SYSTEM::nActiveJobs(void)
 {
   _static_
-    
+
   i8 nActiveJobs =   gpAttachMap->m_pJobs->pLocalJobs()->nJobs()
                    + gpAttachMap->m_pJobs->pOriginatingJobs()->nJobs()
                    + gpAttachMap->m_pJobs->pParticipatingJobs()->nJobs()
                    ;
-  
+
   return nActiveJobs;
 }
 
@@ -2543,11 +2835,11 @@ i8 AM::SYSTEM::nActiveJobs(void)
 i8 AM::SYSTEM::nNanoseconds(void)
 {
   _static_
-  
+
   gpAttachMap->m_oSince.vUpdate();
-  
+
   i8 nElapsed = gpAttachMap->m_oSince.iNanoseconds();
-    
+
   return nElapsed;
 }
 
@@ -2561,14 +2853,35 @@ bool AM::SYSTEM::bPassesLowMem(Job* pJob)
   if (! AM::MEMORY::bIsRunningLow()) {
     return true;
   }
-  
-  PoolHelper::vPoolAnalyze();
 
-  pJob->pJobTags()->vContentDump();
-  
+  //PoolHelper::vPoolAnalyze();
+
+  //pJob->pJobTags()->vContentDump();
+
   if (pJob->bHasTag(C_TAG_LOWMEMORY))
     return true;
-  
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* passes the low-memory condition?                                           */
+/*----------------------------------------------------------------------------*/
+bool AM::SYSTEM::bPassesLowMemDist(Job* pJob)
+{
+  _static_
+
+  if (! AM::MEMORY::bIsRunningLowDist()) {
+    return true;
+  }
+
+  //PoolHelper::vPoolAnalyze();
+
+  //pJob->pJobTags()->vContentDump();
+
+  if (pJob->bHasTag(C_TAG_LOWMEMORY))
+    return true;
+
   return false;
 }
 
@@ -2753,6 +3066,7 @@ void AM::TASK::vRetire(Task* pTask)
   if (Op* pOp = pTask->pOp()) {
     // retiring op of job
     Job* pJob = pOp->pOuterJobOfOp();
+    //vTrace("--------------OP %s of Stage %s EXITING\n"_Stz, pOp->szOpNm(), pOp->pStage()->szStageNm());
     pJob->vActiveOpsDec();
   }
   else
@@ -2852,6 +3166,54 @@ i8 AM::THREAD::iThisThreadNo(void)
   i8 iThreadNo = pThread->iThreadNo();
   
   return iThreadNo;
+}
+
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                  TOKENISE                                  */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* tokenise string                                                            */
+/*----------------------------------------------------------------------------*/
+TokenVec* AM::TOKENISE::pTokeniseSen(Stz* szString)
+{
+  _static_
+ 
+  TokenVec* pTknVec = new TokenVec;
+
+  //pTknVec->vTokeniseSen(szString);
+  AM::TOKENISE::vTokeniseSen(pTknVec,szString);
+  return pTknVec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* tokenise string                                                            */
+/*----------------------------------------------------------------------------*/
+void AM::TOKENISE::vTokeniseSen(TokenVec* pTknVec, Stz* szString)
+{
+  _static_
+  
+  pTknVec->vSoftReset();
+  pTknVec->vIntegrityCheck();
+
+  s4K sToken;
+  
+  char* azCrs = szString->azChar();
+
+  //vTrace("%s\n"_Stz,szString);
+
+  for (;;) {
+    sToken.vReset();
+    
+    eTN eToken = Token::eCollectSenToken(&azCrs,sToken);
+    if (TN_NONE == eToken)
+      break;
+    
+    //vTrace("  %12s %s\n"_Stz,aTN[eToken],sToken.szStz());
+    
+    pTknVec->vAppendToken(sToken,eToken);
+  }
 }
 
 
@@ -3271,7 +3633,7 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
       
     case CN_ROWBUFFER: {
       RowBuffer* pRowBuffer = _pRowBuffer(pOperand);
-      // permament row buffers not to be deleted
+      // permanent row buffers not to be deleted
       if (pRowBuffer->bIsPermanent())
         break;
       pRowBuffer->vDecidedDelete();
@@ -3879,11 +4241,9 @@ i8 AM::iOperandEvKind(Operand* pOperand)
   switch (eClass_opd) {
 
     case CN_BUCKETMAP:   eOperand = EV_D_BUCKETMAP_dyn; break;
-    case CN_CHILDEXIT:   eOperand = EV_X_CHILDEXIT; break;
     case CN_CRWBUFFER:   eOperand = EV_D_CRWBUFFER; break;
     case CN_CSVBUFFER:   eOperand = EV_D_CSVBUFFER; break;
     case CN_ENTBUFFER:   eOperand = EV_D_ENTBUFFER; break;
-    case CN_EXITOPERAND: eOperand = EV_D_EXITOPERAND; break;
     case CN_INDEX:       eOperand = EV_D_INDEX;  break;
     case CN_INDEXDEF:    eOperand = EV_D_INDEXDEF; break;
       
@@ -3933,8 +4293,6 @@ i8 AM::iOperandEvKind(Operand* pOperand)
         case OM_ENDMARKER:          eOperand = EV_M_END;          break;
         case OM_ENDEDMARKER:        eOperand = EV_M_ENDED;        break;
         case OM_ENDINGMARKER:       eOperand = EV_M_ENDING;       break;
-        case OM_ENDCRWRHT:          eOperand = EV_M_ENDCRWRHT;    break;
-        case OM_ENDROWRHT:          eOperand = EV_M_ENDROWRHT;    break;
         case OM_EOSMARKER:          eOperand = EV_M_EOS;          break;
         case OM_ERRORMARKER:        eOperand = EV_M_ERROR;        break;
         case OM_ERROREDMARKER:      eOperand = EV_M_ERRORED;      break;
@@ -3943,20 +4301,23 @@ i8 AM::iOperandEvKind(Operand* pOperand)
         case OM_EXITED:             eOperand = EV_M_EXITED;       break;
         case OM_FINISHED:           eOperand = EV_M_FINISHED;     break;
         case OM_FLUSH:              eOperand = EV_M_FLUSH;        break;
+        case OM_HARDABORT:          eOperand = EV_M_HARDABORT;    break;
         case OM_INVOKEMARKER:       eOperand = EV_M_INVOKE;       break;
         case OM_LEAVEMARKER:        eOperand = EV_M_LEAVE;        break;
         case OM_LEAVINGMARKER:      eOperand = EV_M_LEAVING;      break;
         case OM_LEFTMARKER:         eOperand = EV_M_LEFT;         break;
-        case OM_LEFTOUTER_CRWLFT:   eOperand = EV_M_LEFTOUTER_CRWLFT; break;
-        case OM_LEFTOUTER_ROWLFT:   eOperand = EV_M_LEFTOUTER_ROWLFT; break;
+        case OM_LOWMEMORY:          eOperand = EV_M_LOWMEMORY;    break;
         case OM_NEXTBUFFERMARKER:   eOperand = EV_M_NEXTBUFFER;   break;
+        case OM_NODELOSSABORT:      eOperand = EV_M_NODELOSSABORT; break;
         case OM_STARTEDMARKER:      eOperand = EV_M_STARTED;      break;
-        case OM_STARTCRWRHT:        eOperand = EV_M_STARTCRWRHT;  break;
         case OM_STARTMARKER:        eOperand = EV_M_START;        break;
-        case OM_STARTROWRHT:        eOperand = EV_M_STARTROWRHT;  break;
         case OM_STREAMDEFRHT:       eOperand = EV_M_STREAMDEFRHT; break;
         case OM_TRIGGER:            eOperand = EV_M_TRIGGER;      break;
         case OM_TRIGGERED:          eOperand = EV_M_TRIGGERED;    break;
+
+        case OM_CHILDEXIT:          eOperand = EV_X_CHILDEXIT;    break;
+        case OM_EXIT:               eOperand = EV_X_EXIT;         break;
+
         default:
           RASSERT(0);
       }
@@ -4093,21 +4454,25 @@ void AM::vBootCheck(void)
         
       case HT_P_TINY:
       case HT_T_TINY:
+      case HT_V_TINY:
         ASSERT(iClassSize < C_SIZE_TINY_OBJECT);
         continue;
         
       case HT_P_SMALL:
       case HT_T_SMALL:
+      case HT_V_SMALL:
         ASSERT(iClassSize < C_SIZE_SMALL_OBJECT);
         continue;
         
       case HT_P_MEDIUM:
       case HT_T_MEDIUM:
+      case HT_V_MEDIUM:
         ASSERT(iClassSize < C_SIZE_MEDIUM_OBJECT);
         continue;
         
       case HT_P_LARGE:
       case HT_T_LARGE:
+      case HT_V_LARGE:
         ASSERT(iClassSize < C_SIZE_LARGE_OBJECT);
         continue;
                 
@@ -4905,9 +5270,9 @@ void AM::vJob_DumpParticipating(void)
 /*----------------------------------------------------------------------------*/
 /* find job in originating list                                               */
 /*----------------------------------------------------------------------------*/
-Job* AM::pJob_FindOriginating(JobId tJobId)
+Job* AM::pJob_FindOriginating(JobId tJobId, bool bLock)
 {
-  Job* pJob = AM::pOriginatingJobs()->pFindJob(tJobId);
+  Job* pJob = AM::pOriginatingJobs()->pFindJob(tJobId, bLock);
     
   return pJob;
 }
@@ -4915,9 +5280,9 @@ Job* AM::pJob_FindOriginating(JobId tJobId)
 /*----------------------------------------------------------------------------*/
 /* find job in participating list                                             */
 /*----------------------------------------------------------------------------*/
-Job* AM::pJob_FindParticipating(JobId tJobId)
+Job* AM::pJob_FindParticipating(JobId tJobId, bool bLock)
 {
-  Job* pJob = AM::pParticipatingJobs()->pFindJob(tJobId);
+  Job* pJob = AM::pParticipatingJobs()->pFindJob(tJobId, bLock);
   
   return pJob;
 }
@@ -4933,17 +5298,17 @@ void AM::vJob_RemoveLocal(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* remove job from originating list                                           */
 /*----------------------------------------------------------------------------*/
-void AM::vJob_RemoveOriginating(Job* pJob)
+void AM::vJob_RemoveOriginating(Job* pJob, bool bLock)
 {
-  AM::pOriginatingJobs()->vRemoveJob(pJob);
+  AM::pOriginatingJobs()->vRemoveJob(pJob, bLock);
 }
 
 /*----------------------------------------------------------------------------*/
 /* remove job from participating list                                         */
 /*----------------------------------------------------------------------------*/
-void AM::vJob_RemoveParticipating(Job* pJob)
+void AM::vJob_RemoveParticipating(Job* pJob, bool bLock)
 {
-  AM::pParticipatingJobs()->vRemoveJob(pJob);
+  AM::pParticipatingJobs()->vRemoveJob(pJob, bLock);
 }
 
 /*----------------------------------------------------------------------------*/

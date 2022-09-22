@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* main.cpp - main entry                                                      */
+/* main.cpp -- main entry                                                     */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -76,6 +76,8 @@ int main(int argc, char* argv[])
 //  printf("C_SIZE_LARGE_OBJECT - sizeof(RowBuffer) %lld\n",C_SIZE_LARGE_OBJECT - (i8)sizeof(RowBuffer));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  //signal(SIGPIPE, SIG_IGN);
 
   gxCmdLineArgs.vInit();
 

@@ -12,12 +12,15 @@
 //#include <pcap/pcap.h>
 #include <arpa/inet.h>
 //#include <netinet/in.h>
+#include "Job.hpp"
+#include "CmdLineArgs.hpp"
 
 extern Stz* C_LOOPBACK_IP;
 
 Atomic gixSocket;
 
 extern SizeHeap  gxaSizeHeap[];
+extern CmdLineArgs  gxCmdLineArgs;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -79,7 +82,7 @@ Socket::~Socket(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
+/* ---------------------------------------------------------------------------*/
 /* get received object                                                        */
 /*----------------------------------------------------------------------------*/
 Object* Socket::pReceivedObject(void)
@@ -108,9 +111,8 @@ Object* Socket::pRecvObject(void)
   
   RASSERT(! pReceivedObject());
 
-  bool bLowMem = AM::MEMORY::bIsRunningLow();
-  if (bLowMem)
-     PoolHelper::vPoolAnalyze();
+  static i8 nPipeline = 0;
+  bool bLowMem = false;
 
   m_pObject->vSetWasReceived(true);
   m_pObject->vSetPostRecvRun(false);
@@ -119,7 +121,6 @@ Object* Socket::pRecvObject(void)
   // receive the header of the next object
     
   if (! bHeaderRecv()) {
-    vSuccess(false);
     return nullptr;
   }
 
@@ -141,17 +142,88 @@ Object* Socket::pRecvObject(void)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // reject job is a special case
+  // receive reject body into m_pRejectJob
 
-  // ...
+  if (eClass == CN_REJECTJOB) {
+
+    // copy the object header into the m_pRejectJob
+    MemLib::vCopy(m_pRejectJob,m_pObject,sizeof(Object),eClass);
+
+    // recv rest of the buffer into m_pRejectJob
+    void* pRejectJob = aAdd<void*>(m_pRejectJob,sizeof(Object));
+    i8 nRemainingBytes = gxaSizeHeap[eClass].m_nClassSize - sizeof(Object);
+
+    SysCall oSysCall;
+
+    bool bResult = bBytesRecv(pRejectJob,nRemainingBytes,oSysCall);
+    UNUSED(bResult);
+
+    vTrace("Recvd RejectJob\n"_Stz);
+
+    // handle the received reject job
+    AM::JOB::vRecvdReject(m_pRejectJob);
+    nPipeline++;
+    vSuccess(true);
+    return nullptr;
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // receive object normally (or acceptable objects under low memory)
+  // HACK : To simulate lowMemory
+  //  if (eClass == CN_JOB) {
+  //    nPipeline++;
+  //    if (nPipeline == gxCmdLineArgs.m_xSysArgs.m_iSocketLowMem)
+  //      bLowMem = true;
+  //  }
 
-  if (! bLowMem || ! gxaSizeHeap[eClass].m_bLowMemoryDiscard) {
-    Object* pReceivedObject = pObjectRecv(eClass);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // receive object body
+
+  try {
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // HACK : To simulate lowMemory
+    //nPipeline++;
+    //if (nPipeline == gxCmdLineArgs.m_xSysArgs.m_iSocketLowMem)
+    //  THROW_LOWMEMORY();
+
+    Object *pReceivedObject = pObjectRecv(eClass);
+    if ( !pReceivedObject ) {
+      return nullptr;
+    }
+
+    try {
+      pReceivedObject->vRunPostRecv();
+    }
+    catch (LowMemory xLowMemory) {
+
+      // received the object but was unable to execute postRecv
+
+      //
+      // RunPostRecv can get lowMemory only for JOB
+      //
+
+      // no other objects received allocate memory in postRecv functions
+      // to handle when this changes
+
+      RASSERT(eClass == CN_JOB);
+      Job *pJob = _pJob(pReceivedObject);
+      vTrace("Recvd Job %s : Unable to execute postRecv (lowmem)\n"_Stz, Job::szJobNm(pJob));
+
+      // execute the 2PC commands directly for job received/ send reject
+      vJobRecv_lowmem(pJob);
+
+      // delete the job
+      delete pJob;
+
+      vSuccess(true);
+      return nullptr;
+    }
+
     vSuccess(true);
     return pReceivedObject;
+  }
+  catch (LowMemory xLowMemory) {
+    // fall thru
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -159,8 +231,7 @@ Object* Socket::pRecvObject(void)
 
   Object* pReceivedObject = pObjectRecv_lowmem(eClass);
   RASSERT(! pReceivedObject);
-  
-  //vReceivedObject(nullptr);
+
   vSuccess(true);
   
   return pReceivedObject;
@@ -211,6 +282,40 @@ bool Socket::bHeaderRecv(void)
   return true;
 }
 
+/* ---------------------------------------------------------------------------*/
+/* handle received job under low memory                                       */
+/*----------------------------------------------------------------------------*/
+void Socket::vJobRecv_lowmem(Job* pJob) {
+  _precondition_(_MAGIC_, CN_SOCKET, _FOOTER_);
+
+  if (Job::szJobNm(pJob)->bSame("begun"_Stz) ||
+      Job::szJobNm(pJob)->bSame("executed"_Stz) ||
+      Job::szJobNm(pJob)->bSame("ended"_Stz) ||
+      Job::szJobNm(pJob)->bSame("cancelled"_Stz)) {
+
+    // job has begun/executed/ended/cancelled on the participant
+    // ack originating job
+    AM::JOB::vAckOriginatingJob(Job::tOriginId(pJob));
+
+  } else if (Job::szJobNm(pJob)->bSame("cancel"_Stz) ||
+             Job::szJobNm(pJob)->bSame("end"_Stz) ||
+             Job::szJobNm(pJob)->bSame("execute"_Stz)) {
+
+    // trigger an execute/end of the participant pipeline job
+    AM::JOB::vTriggerExecute(Job::tDistId(pJob));
+
+  } else {
+
+    // received a pipeline job, just reject it
+    m_pRejectJob->vOriginId(Job::tOriginId(pJob));
+    m_pRejectJob->vDistId(Job::tDistId(pJob));
+    m_pRejectJob->vError(EC_LOW_MEMORY);
+
+    // send a rejectJob to originating node
+    AM::JOB::vSendReject(m_pRejectJob);
+  }
+}
+
 /*----------------------------------------------------------------------------*/
 /* complete the recv of next marker from this socket                          */
 /*----------------------------------------------------------------------------*/
@@ -246,45 +351,44 @@ Marker* Socket::pMarkerRecv(void)
 Object* Socket::pObjectRecv(eCN eClass)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
-  
-  
+
+  Object *pReceivedObject = nullptr;
+
+
   SysCall oSysCall;
 
   i8 nSize = gxaSizeHeap[eClass].m_nClassSize;
 
   //vTrace("class:%s\n"_Stz, aCN[eClass]);
-  Object* pReceivedObject = Heaps::pAllocate(eClass);
-  MemLib::vCopy(pReceivedObject,m_pObject,sizeof(Object),eClass);
+  pReceivedObject = Heaps::pAllocate(eClass);
+  MemLib::vCopy(pReceivedObject, m_pObject, sizeof(Object), eClass);
 
-  void* aBody = aAdd<void*>(pReceivedObject,sizeof(Object));
+  void *aBody = aAdd<void *>(pReceivedObject, sizeof(Object));
   i8 nRemainingBytes = nSize - sizeof(Object);
 
-  bool bResult = bBytesRecv(aBody,nRemainingBytes,oSysCall);
-  if (! bResult) {
-   //m_pDataStack->vPushInt(false);
-   //vReceivedObject(nullptr);
-   vTrace("Socket::pRecvObject (body) : bRecvBytes returned false\n"_Stz);
-   vSuccess(false);
-   return nullptr;
+  bool bResult = bBytesRecv(aBody, nRemainingBytes, oSysCall);
+  if (!bResult) {
+    vTrace("Socket::pRecvObject (body) : bRecvBytes returned false\n"_Stz);
+    vSuccess(false);
+    return nullptr;
   }
 #ifdef WITH_BUFFER_ID
-  if (1 == DataBuffer::bIsDataBuffer(eClass)) {
-    DataBuffer* pDataBuffer = _pDataBuffer(pReceivedObject);
-    i8 iPoolBufferNo = pDataBuffer->iBufferNo();
-    pDataBuffer->vSetBufferNo(iPoolBufferNo);
-    pDataBuffer->vSetBufferId(
-        AM::pFileMap()->oGetNewBufferId(iPoolBufferNo));
+    if (1 == DataBuffer::bIsDataBuffer(eClass)) {
+      DataBuffer* pDataBuffer = _pDataBuffer(pReceivedObject);
+      i8 iPoolBufferNo = pDataBuffer->iBufferNo();
+      pDataBuffer->vSetBufferNo(iPoolBufferNo);
+      pDataBuffer->vSetBufferId(
+          AM::pFileMap()->oGetNewBufferId(iPoolBufferNo));
 #ifdef WITH_HASHMAP
-    AM::pHashMap()->vInsertKeyValue(
-        (void *) pDataBuffer->oGetBufferId().m_pvAsAddress,
-        (Object *) pReceivedObject);
+      AM::pHashMap()->vInsertKeyValue(
+          (void *) pDataBuffer->oGetBufferId().m_pvAsAddress,
+          (Object *) pReceivedObject);
 #endif
-  }
+    }
 #endif
-  pReceivedObject->vRunPostRecv();
 
-  m_pTotup->vAdd(eClass,nSize);
-  
+  m_pTotup->vAdd(eClass, nSize);
+
   return pReceivedObject;
 }
 
@@ -294,15 +398,14 @@ Object* Socket::pObjectRecv(eCN eClass)
 Object* Socket::pObjectRecv_lowmem(eCN eClass)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
-  
-  
-  SysCall oSysCall;
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // receive and discard the body of the object (low memory condition)
+  SysCall oSysCall;
 
   if (AM::SHOW::bLowMem_Recv())
     vTrace("Socket::pObjectRecv_lowmem : LOW MEMORY\n"_Stz);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // receive and discard the body of the object (low memory condition)
 
   void* aLowBuff = m_aLowBuff;
 
@@ -315,7 +418,24 @@ Object* Socket::pObjectRecv_lowmem(eCN eClass)
 
   bool bResult = bBytesRecv(aLowBody,nRemainingBytes,oSysCall);
   UNUSED(bResult);
-    
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // JOB received under low memory
+
+  if (eClass == CN_JOB) {
+
+    Job* pJob = _pJob(aLowBuff);
+    vTrace("Recvd Job under lowMem: %s\n"_Stz, Job::szJobNm(pJob));
+
+    // execute the 2PC commands directly for job received
+    vJobRecv_lowmem(pJob);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // Nothing to do for other objects received under low memory
+    return nullptr;
+
+  }
+
   return nullptr;
 }
 

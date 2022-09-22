@@ -74,14 +74,17 @@
 /*----------------------------------------------------------------------------*/
 : connectSE_take ( -- )
 
-  C_ALL node_I[].new
+  //C_ALL node_I[].new
+  node_I[].init
 
   begin
 
     node_I[].node to Node[]
 
     Node[] node.sendSocket@ not if
-      connectSE_attemptConnect
+      Node[] node.connectRetry if
+        connectSE_attemptConnect
+      then
     then
     
     nullptr to Node[]
@@ -90,7 +93,7 @@
     node_i[].more while
   repeat
 
-  node_I[].delete
+  //node_I[].delete
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -1,7 +1,10 @@
+// dummy master checkin
 /*============================================================================*/
 /* test.cpp - general testing                                                 */
 /*============================================================================*/
   
+// dummy commit
+
 #include "BASE.h"
 
 #include "Test.hpp"
@@ -48,6 +51,9 @@
 #include "SP_Timer.hpp"
 
 #include "Flatten.hpp"
+
+#include "PayStr.hpp"
+#include "PayStrBuffer.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* test1                                                                      */
@@ -1135,7 +1141,24 @@ void vTest13(void)
 /*----------------------------------------------------------------------------*/
 void vTest14(void)
 {
+  vTrace("Test14\n"_Stz);
 
+  s4K s;
+
+  PayStrBuffer* pPayStrBuffer = new PayStrBuffer;
+
+  PayStr* pPayStr;
+
+  for (i8 i_N = 0; i_N < 100000; i_N++) {
+
+    RndLib::vString(s,i_N % 1024);
+
+    pPayStr = new(pPayStrBuffer, s.szStz()) PayStr;
+//    vTrace("pPayStrBuffer %p pPayStr %p : %s\n"_Stz,
+//           pPayStrBuffer, pPayStr, pPayStr->szStz());
+  }
+
+  delete pPayStrBuffer;
 }
 
 /*----------------------------------------------------------------------------*/

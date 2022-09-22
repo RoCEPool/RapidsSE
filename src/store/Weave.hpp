@@ -54,6 +54,7 @@ namespace STORE
     void vArgAggreg   (Stz* szOpArgs,  Card_Aggreg*    pCard_Aggreg);
     void vArgCombine  (Stz* szOpArgs,  Card_Combine*   pCard_Combine);
     void vArgFilter   (Stz* szOpArgs,  Card_Filter*    pCard_Filter);
+    void vArgHaving   (Stz* szOpArgs,  Card_Having*    pCard_Having);
     void vArgIndexJoin(Stz* szOpArgs,  Card_IndexJoin* pCard_IndexJoin);
     void vArgIndexScan(Stz* szOpArgs,  Card_IndexScan* pCard_IndexScan);
     void vArgLimit    (Stz* szOpArgs,  Card_Limit*     pCard_Limit);
@@ -65,6 +66,7 @@ namespace STORE
     void vRpnAggreg   (Stz* szRpnExpr, Card_Aggreg*    pCard_Aggreg);
     void vRpnCombine  (Stz* szRpnExpr, Card_Combine*   pCard_Combine);
     void vRpnFilter   (Stz* szRpnExpr, Card_Filter*    pCard_Filter);
+    void vRpnHaving   (Stz* szRpnExpr, Card_Having*    pCard_Having);
     void vRpnIndexJoin(Stz* szRpnExpr, Card_IndexJoin* pCard_IndexJoin);
     void vRpnIndexScan(Stz* szRpnExpr, Card_IndexScan* pCard_IndexScan);
     void vRpnLimit    (Stz* szRpnExpr, Card_Limit*     pCard_Limit);
@@ -74,13 +76,14 @@ namespace STORE
 
     void vExpr        (Stz* szRpnExpr, Card_Expr*      pCard_Expr);
     void vExprBool    (Stz* szRpnExpr, Card_ExprBool*  pCard_ExprBool);
-    void vExprCalc    (Stz* szRpnExpr, Card_ExprCalc*  pCard_ExprCalc);
+    void vExprCalc    (Stz* szRpnExpr, Card_Calc*  pCard_ExprCalc);
  
     void vPred        (Stz* szRpnExpr, Card_PRED*      pCard_PRED);
     void vPredOr      (Stz* szRpnExpr, Card_PredOr*    pCard_PredOr);
     void vPredAnd     (Stz* szRpnExpr, Card_PredAnd*   pCard_PredAnd);
     void vPredCmp     (Stz* szRpnExpr, Card_PredCmp*   pCard_PredCmp);
- 
+
+    void vAggregates  (Stz* szRpnExpr, Card_Aggregates* pCard_Aggregates);
     void vAs          (Stz* szRpnExpr, Card_As*        pCard_As);
     void vTerm        (Stz* szRpnExpr, Card_Term*      pCard_Term);
     void vType        (Stz* szRpnExpr, Card_Type*      pCard_Type);

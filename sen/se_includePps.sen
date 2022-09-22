@@ -22,6 +22,7 @@ assert::stack_0
   "pp_getMeta.sen"          include 
   "pp_unloadReload.sen"     include
   "pp_forgetRebalance.sen"  include 
+  "pp_optimise.sen"         include
 
   "pp_range.sen"            include
   "pp_scanTables.sen"       include 

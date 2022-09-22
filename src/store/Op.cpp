@@ -253,7 +253,7 @@ bool Op::bAllocateMemory()
 void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   if (AM::OPERAND::bIsOoO(pOperand)) {
     vAppendOoO(pOperand,pTriggeringTask);
     return;
@@ -312,6 +312,17 @@ void Op::vAppendOoO(Operand* pOperand, Task* pTriggeringTask)
   IGNORE_RETURN(m_pPipeIn->pQueueOoO()->iAppendOperand(pOperand));
 
   AM::vOperandsInc();
+
+  RASSERT(pOperand->bIsMarker());
+  Marker* pMarker = _pMarker(pOperand);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  /// if NODELOSS, latch the opertor queue
+  // no more operands can be accepted !!!
+  if (pMarker->eOpMarker() == OM_NODELOSSABORT) {
+    m_pPipeIn->pQueueOoO()->vLatch(true);
+    m_pPipeIn->pQueueLeft()->vLatch(true);
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for biding op/task
@@ -600,8 +611,9 @@ bool Op::bIsEventValid(i8 i_OperandKind)
       }
       
       // should have received a EV_M_CANCEL
-      if ( ! m_pEvMgr->m_naEventCount[EV_M_CANCEL]) {
-        vTrace("%s: %s arrived without a prior EV_M_CANCEL\n"_Stz,
+      if ( ! m_pEvMgr->m_naEventCount[EV_M_CANCEL] &&
+           ! m_pEvMgr->m_naEventCount[EV_M_LOWMEMORY]) {
+        vTrace("%s: %s arrived without a prior EV_M_CANCEL / EV_M_LOWMEMORY\n"_Stz,
                szOpNm(), aEV[i_OperandKind]);
         return false;
       }
@@ -662,34 +674,6 @@ bool Op::bIsEventValid(i8 i_OperandKind)
       if ( m_pEvMgr->m_naEventCount[EV_M_END]) {
         vTrace("%s: %s arrived after EV_M_END\n"_Stz,
                szOpNm(), aEV[i_OperandKind]);
-        return false;
-      }
-      break;
-
-    case EV_M_ENDCRWRHT:
-      // should not have received a EV_M_ENDROWRHT already
-      if (m_pEvMgr->m_naEventCount[EV_M_ENDROWRHT]) {
-        vTrace("%s: EV_M_ENDROWRHT already arrived\n"_Stz, szOpNm());
-        return false;
-      }
-
-      // should have received a ~ EV_M_STARTCRWRHT already
-      if (m_pEvMgr->m_naEventCount[i_OperandKind] == m_pEvMgr->m_naEventCount[EV_M_STARTCRWRHT] ) {
-        vTrace("%s: EV_M_STARTCRWRHT not yet arrived\n"_Stz, szOpNm());
-        return false;
-      }
-      break;
-
-    case EV_M_ENDROWRHT:
-      // should not have received a EV_M_ENDCRWRHT already
-      if (m_pEvMgr->m_naEventCount[EV_M_ENDCRWRHT]) {
-        vTrace("%s: EV_M_ENDCRWRHT already arrived\n"_Stz, szOpNm());
-        return false;
-      }
-
-      // should have received a ~ EV_M_STARTROWRHT already
-      if (m_pEvMgr->m_naEventCount[i_OperandKind] == m_pEvMgr->m_naEventCount[EV_M_STARTROWRHT] ) {
-        vTrace("%s: EV_M_STARTROWRHT not yet arrived\n"_Stz, szOpNm());
         return false;
       }
       break;
@@ -821,20 +805,6 @@ bool Op::bIsEventValid(i8 i_OperandKind)
         return false;
       }
       break;
-      
-    case EV_M_STARTCRWRHT:
-      // should not have received a EV_M_STARTROWRHT already
-      if (m_pEvMgr->m_naEventCount[EV_M_STARTROWRHT]) {
-        vTrace("%s: EV_M_STARTROWRHT already arrived\n"_Stz, szOpNm());
-        return false;
-      }
-
-      // should not have received a ~ EV_M_ENDCRWRHT already
-      if (m_pEvMgr->m_naEventCount[i_OperandKind] == m_pEvMgr->m_naEventCount[EV_M_ENDCRWRHT] + 1 ) {
-        vTrace("%s: EV_M_ENDCRWRHT already arrived\n"_Stz, szOpNm());
-        return false;
-      }
-      break;
 
     case EV_M_START:
       // should not have received a EV_M_START already
@@ -842,21 +812,6 @@ bool Op::bIsEventValid(i8 i_OperandKind)
         vTrace("%s: multiple EV_M_START's arrived\n"_Stz, szOpNm());
         return false;
       }
-      break;
-
-    case EV_M_STARTROWRHT:
-      // should not have received a EV_M_STARTCRWRHT already
-      if (m_pEvMgr->m_naEventCount[EV_M_STARTCRWRHT]) {
-        vTrace("%s: EV_M_STARTCRWRHT already arrived\n"_Stz, szOpNm());
-        return false;
-      }
-
-      // should not have received a ~ EV_M_STARTROWRHT already
-      if (m_pEvMgr->m_naEventCount[i_OperandKind] == m_pEvMgr->m_naEventCount[EV_M_ENDROWRHT] + 1 ) {
-        vTrace("%s: EV_M_ENDROWRHT already arrived\n"_Stz, szOpNm());
-        return false;
-      }
-
       break;
 
     case EV_M_STARTED:
@@ -1003,6 +958,29 @@ i8 Op::iNodeId(void)
     iNodeId = AM::pLglPtnMap()->iNodeId(tLglPtn());
 
   return iNodeId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* send EV_M_NODELOSSABORT to this operator                                   */
+/*----------------------------------------------------------------------------*/
+void Op::vNodeLossAbort(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+
+  Job* pJob = this->pOuterJobOfOp();
+
+  Task* pTask = this->pTask();
+
+  RASSERT( ! m_pOpTags->bHasName(C_TAG_DEDICATEDTHD) );
+
+  if (pTask) {
+    vTrace("Sending NODELOSSABORT to OP %s %s\n"_Stz, m_p_OpSpec->szOpNm(), m_p_OpSpec->pStageSpec()->szStageNm());
+    Operand *pOperand = AM::MARKER::pNewMarker(OM_NODELOSSABORT, pJob);
+    vAppendLeft(pOperand, pTask);
+  }
+  else
+    vTrace("SKIPPINGSending NODELOSSABORT to OP %s %s\n"_Stz, m_p_OpSpec->szOpNm(), m_p_OpSpec->pStageSpec()->szStageNm());
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1314,7 +1292,7 @@ Pipeline* Op::pPipeline(void)
 void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-    
+
   vOpTrace(pOperand,(Stz*)__func__);
   
   if (pOperand->bIsBuffer()) {
@@ -1379,7 +1357,7 @@ void Op::vPipeToThis(Operand* pOperand, Task* pTriggeringTask)
 void Op::vPipeToOutput(Operand* pOperand)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   Job* pJob = MY::pJob();
   RASSERT(pJob);
 
@@ -1529,7 +1507,6 @@ Operand* Op::pPopOoOLeft(void)
           ,pRowBuffer->nRows()
           );
   }
-
   return pOperand;
 
 }
@@ -1711,9 +1688,10 @@ void Op::vSpawnTask(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
       
   Job* pJob = this->pOuterJobOfOp();
-  pJob->vActiveOpsInc();
   
   vCreateTaskForOp();
+  pJob->vActiveOpsInc();
+
   Task* pTask = this->pTask();
   
   if (m_pOpTags->bHasName(C_TAG_DEDICATEDTHD))
@@ -1815,6 +1793,27 @@ void Op::vToCmdStr(Stz* szCmdStr)
   szCmdStr->vCopy(szOpNm());
   m_p_OpSpec->pArgTags()->vConcat(szCmdStr);
   //vTrace("%s\n"_Stz, szCmdStr);
+}
+
+/*----------------------------------------------------------------------------*/
+/* unspawn task for this operator                                             */
+/*----------------------------------------------------------------------------*/
+void Op::vUnspawnTask(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+
+  Job* pJob = this->pOuterJobOfOp();
+
+  Task* pTask = this->pTask();
+
+  RASSERT( ! m_pOpTags->bHasName(C_TAG_DEDICATEDTHD) );
+
+  if (pTask) {
+    //vTrace("Sending HARDABORT to OP %s\n"_Stz, m_p_OpSpec->szOpNm());
+
+    Operand *pOperand = AM::MARKER::pNewMarker(OM_HARDABORT, pJob);
+    vAppendLeft(pOperand, pTask);
+  }
 }
 
 /*----------------------------------------------------------------------------*/

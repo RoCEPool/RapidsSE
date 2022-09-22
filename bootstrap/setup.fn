@@ -458,6 +458,12 @@ function doClusterInstall() {
       # TODO: Present summary
       # TODO: Edit ?
 
+      # We need to validate hostnames and SSH access now so that we can connect
+      # to each machine and determine the number of CPUs, so we can set the
+      # number of partitions/threads appropriately.
+      validateHostsAreResolvable
+      validateHostsReachableBySsh
+
       # Validate that the necessary 3rd party applications and libraries are installed.
       # We do this here because they are used in collectHostSizeInfo and other steps.
       validate3rdPartyTools
@@ -497,19 +503,6 @@ function doClusterInstall() {
       # TODO: Present summary
       # TODO: Edit ?
 
-      # Validate that the necessary 3rd party applications and libraries are installed.
-      # We do this here because they are used in collectHostSizeInfo and other steps.
-      validate3rdPartyTools
-
-      # Get the number of CPU cores, memory size, SHM size of each node.
-      # This populates NODE_CORE_COUNT, NODE_TOTAL_MEM, NODE_TOTAL_SHM and NODE_FREE_SHM
-      # and will be used for default values for partitions, threads and
-      # shared memory size later on.
-      collectHostSizeInfo
-
-      # Now we can update the default values for memory size, partitions and threads.
-      updateDefaults
-
       # Validate the installation environment
       validateInstallationEnvironment
 
@@ -534,6 +527,12 @@ function doClusterInstall() {
 
     # Load and validate config
     loadClusterConfig
+
+    # We need to validate hostnames and SSH access now so that we can connect
+    # to each machine and determine the number of CPUs, so we can set the
+    # number of partitions/threads appropriately.
+    validateHostsAreResolvable
+    validateHostsReachableBySsh
 
     # Validate that the necessary 3rd party applications and libraries are installed.
     # We do this here because they are used in collectHostSizeInfo and other steps.
@@ -1536,6 +1535,20 @@ function confirmConfig() {
   echo ""
   echo "RapidsSE is now ready to be installed."
 
+  # Check if the install directory exists on any node. If it does then warn the
+  # user that all files in that directory will be replaced.
+
+  local installDir
+  installDir="$(nodeCfgGetValue "${NODE_LIST[0]}" "${NODE_CFG_DIR_KEY}")"
+
+  if doesInstallDirExist; then
+    echo
+    printWarning "The installation directory already exists on one or more nodes in the"
+    echo "         cluster:  ${installDir}"
+    printWarning "Continuing with the installation will remove and replace ALL files in "
+    echo "         the installation directory."
+  fi
+
   local line
 
   while true
@@ -1557,6 +1570,39 @@ function confirmConfig() {
   done
 }
 
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Exits with a zero exit status if the installation directory exists on any of the
+## nodes in the cluster. Otherwise this function exits with a non-zero exit status.
+## Params: None
+function doesInstallDirExist() {
+  local hostname
+  local installDir
+
+  for nodeName in "${NODE_LIST[@]}"; do
+
+    hostname="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+    installDir="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
+
+    [ -n "${hostname}" ]   || errorExit "Cannot check for the presence of the install directory on node ${nodeName} because its hostname has not been specified."
+    [ -n "${installDir}" ] || errorExit "Cannot check for the presence of the install directory on node ${nodeName} (host: ${hostname}) because its installation directory has not been specified."
+
+    # Build the command
+    local cmd=( "ssh" "${SSH_COMMON_OPTIONS[@]}" "${hostname}" "ls" "-d" "${installDir}" "&>/dev/null" )
+
+    debugPrint "Checking for the presence of the install directory on node ${nodeName} [host: ${hostname}] at ${installDir}."
+    debugPrint "Command: ${cmd[*]}"
+
+    # Execute the command
+    if "${cmd[@]}"; then
+      # The install dir exists on at least one node.
+      return 0
+    fi
+  done
+
+  # The install dir does not exist on any of the nodes.
+  return 1
+}
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Writes the current configuration out to a file.
@@ -1696,7 +1742,7 @@ function backupConfig() {
     backupConfigPath="${existingConfigPath}.${suffix}"
 
     # Build the command
-    local cmd=( "ssh" "-q" "${hostname}" "cp" "${existingConfigPath}" "${backupConfigPath}"  )
+    local cmd=( "ssh" "${SSH_COMMON_OPTIONS[@]}" "${hostname}" "cp" "${existingConfigPath}" "${backupConfigPath}"  )
 
     debugPrint "Backing up cluster configuration on node ${nodeName} [host: ${hostname}] to ${backupConfigPath}."
     debugPrint "Command: ${cmd[*]}"
@@ -1743,7 +1789,7 @@ function removeConfig() {
     fi
 
     # Build the command
-    local cmd=( "ssh" "-q" "${hostname}" "rm" "-f" "${backupConfigPath}" "&>/dev/null" )
+    local cmd=( "ssh" "${SSH_COMMON_OPTIONS[@]}" "${hostname}" "rm" "-f" "${backupConfigPath}" "&>/dev/null" )
 
     debugPrint "Removing the cluster configuration on node ${nodeName} [host: ${hostname}] at ${backupConfigPath}."
     debugPrint "Command: ${cmd[*]}"
@@ -1813,7 +1859,7 @@ function distributeSoftware() {
 
     # Copy the installer & cluster.config to /tmp
     # Build the command
-    local cmd=( "scp" "-q" "${INSTALL_FILE}" "${configFile}" "${hostname}:/tmp"  )
+    local cmd=( "scp" "${SSH_COMMON_OPTIONS[@]}" "${INSTALL_FILE}" "${configFile}" "${hostname}:/tmp"  )
 
       debugPrint "Copying installer to node ${nodeName} [host: ${hostname}]."
       debugPrint "Command: ${cmd[*]}"
@@ -1833,7 +1879,8 @@ function distributeSoftware() {
 
     # Build the command to execute
     local cmd=( "ssh"
-                "-q" "${hostname}"
+                "${SSH_COMMON_OPTIONS[@]}"
+                "${hostname}"
                 "${remoteInstaller}"
                 "--"
                 "--node"
@@ -1900,7 +1947,7 @@ function distributeFile() {
     local nodeRemotePath="${installDir}/${remotePath}"
 
     # Build the command
-    local cmd=( "scp" "-q" "${localPath}" "${hostname}:${nodeRemotePath}"  )
+    local cmd=( "scp" "${SSH_COMMON_OPTIONS[@]}" "${localPath}" "${hostname}:${nodeRemotePath}"  )
 
     debugPrint "Distributing file ${localPath} to node ${nodeName} at ${nodeRemotePath}."
     debugPrint "Command: ${cmd[*]}"

@@ -50,6 +50,9 @@
 #include "AttachMap.hpp"
 #include "Output.hpp"
 #include "Jobs.hpp"
+#include "Test.hpp"
+#include "PayStr.hpp"
+#include "PayStrBuffer.hpp"
 
 extern CmdLineArgs gxCmdLineArgs;
 extern AttachMap* gpAttachMap;
@@ -363,7 +366,7 @@ bool PROMPT::bPrompt_cancel(SePrompt* pPrompt)
   tJobId = pInpTknVec->pGet(1)->iToI8();
   
   // find the pipeline job
-  Job* pJob = AM::pJob_FindParticipating(tJobId);
+  Job* pJob = AM::pJob_FindParticipating(tJobId, true);
   
   if ( ! pJob ) {
     vTrace("job %lld not found\n"_Stz, tJobId.iAsI8());
@@ -372,16 +375,18 @@ bool PROMPT::bPrompt_cancel(SePrompt* pPrompt)
   }
   else
     vTrace("Cancelling job %lld\n"_Stz, tJobId.iAsI8());
-  
+
   // get the pipeline from the job
   Pipeline* pPipeline = pJob->pPipeline();
 
   // cancel the pipeline
   if ( ! pPipeline->bCancel(nullptr) ) {
     vTrace("Cancel rejected. Job %lld almost done.\n"_Stz, tJobId.iAsI8());
+    pJob->vDropLock();
     return false;
   }
-  
+
+  pJob->vDropLock();
   return true;
 }
 
@@ -659,7 +664,8 @@ bool PROMPT::bPrompt_constants(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
 
-  vTrace("  C_LOW_BUFFERS       = %lld\n"_Stz,C_LOW_BUFFERS);
+  vTrace("  C_LOW_BUFFERS          = %lld\n"_Stz,C_LOW_BUFFERS);
+  vTrace("  C_LOW_BUFFERS_DIST_JOB = %lld\n"_Stz,C_LOW_BUFFERS_DIST_JOB);
   vTrace("  C_MAX_BCD_PRECISION = %lld\n"_Stz,C_MAX_BCD_PRECISION);
   vTrace("  C_MAX_COLUMNS       = %lld\n"_Stz,C_MAX_COLUMNS);
   vTrace("  C_MAX_FLT_PRECISION = %lld\n"_Stz,C_MAX_FLT_PRECISION);
@@ -2022,7 +2028,9 @@ bool PROMPT::bPrompt_jobs(SePrompt* pPrompt)
          ,AM::JOBS::nJobsActive()
          ,AM::JOBS::nJobsThreshold()
          );
-  
+
+  AM::JLIST::pJobsList()->vListJobs();;
+
   return true;
 }
 
@@ -3863,7 +3871,8 @@ bool PROMPT::bPrompt_select(SePrompt* pPrompt)
   //vTrace("bPrompt_select\n"_Stz);
   
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
-  
+  TagSet* pInpTagSet = pPrompt->pInpTagSet();
+
   i8 iNumTokens = pInpTknVec->nItems();
   
 //  s16KB sSelectStmt;
@@ -3875,11 +3884,34 @@ bool PROMPT::bPrompt_select(SePrompt* pPrompt)
   
   Stz* szRaw = pPrompt->szRawInput();
 
+  s16KB sTrimmed;
+  sTrimmed = szRaw;
+
+  while (' ' == *sTrimmed.azChar())
+    StrLib::vShuffleLeft(sTrimmed.azChar(),1);
+
+  while ('/' == *sTrimmed.azChar())
+    //StrLib::vRemoveTill(sTrimmed.azChar(),' ', true);
+    StrLib::vRemoveToken(sTrimmed.azChar());
+
+  //s16KB sStatement;
   s16KB sSqlCompiler;
-  sSqlCompiler.vSprint("sqlCompiler \"%s\""_Stz,szRaw);
+  sSqlCompiler.vSprint("sqlCompiler \"%s\""_Stz,sTrimmed.azChar());
+
+  //pInpTknVec->vInsertToken(0,"sqlCompiler"_Stz,TN_NAME);
+
+  //pInpTknVec->vVecToString(sStatement,0, true);
+
+  //sSqlCompiler.vSprint("sqlCompiler \"%s\""_Stz,sStatement.szStz());
+
+  //pInpTknVec->vDumpVec();
+  //pInpTagSet->vDumpSet();
+
 
   pPrompt->vToDo(sSqlCompiler);
-  
+  if (pInpTagSet->bHasName("<toDo>"_Stz))
+    vTrace("TODO: %s\n"_Stz,pPrompt->szToDo());
+
   return true;
 }
 
@@ -4156,7 +4188,17 @@ bool PROMPT::bPrompt_show(SePrompt* pPrompt)
   TokenVec* pTkVec = pPrompt->pInpTknVec();
 
   ASSERT(pTkVec->pGet(0)->bSame("show"_Stz));
-  
+
+  if (pTkVec->nItems() != 2) {
+    vTrace("error: show { grid | nodes } : %s\n"_Stz, aEC[EC_INVALID_COMMAND]);
+    return false;
+  }
+
+  if ( ! pTkVec->pGet(1)->bIsName() ) {
+    vTrace("error: show { grid | nodes } : %s\n"_Stz, aEC[EC_INVALID_COMMAND]);
+    return false;
+  }
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   if (pTkVec->pGet(1)->bSame("grid"_Stz)) {
     
@@ -4169,7 +4211,7 @@ bool PROMPT::bPrompt_show(SePrompt* pPrompt)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  if (pTkVec->pGet(1)->bSame("nodes"_Stz)) {
+  else if (pTkVec->pGet(1)->bSame("nodes"_Stz)) {
     
     SP_Node spNode;
     for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext())
@@ -4177,6 +4219,12 @@ bool PROMPT::bPrompt_show(SePrompt* pPrompt)
     
     vTrace("\n"_Stz);
     return true;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  else {
+    vTrace("error: show { grid | nodes } : %s\n"_Stz, aEC[EC_INVALID_COMMAND]);
+    return false;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -4905,7 +4953,19 @@ bool PROMPT::bPrompt_stepTiming(SePrompt* pPrompt)
     AM::pSteps()->vShow(sStepNm);
     return true;
   }
-  
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // show all step timings
+  if ( pInpTknVec->pGet(1)->bSame("showAll"_Stz) && nTokens == 2) {
+
+    if (! AM::pSteps()) {
+      vTrace("Step timing not started\n"_Stz);
+      return true;
+    }
+    AM::pSteps()->vShowAll();
+    return true;
+  }
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // write step timings to given file
   if ( pInpTknVec->pGet(1)->bSame("write"_Stz) && nTokens == 3) {
@@ -4917,6 +4977,18 @@ bool PROMPT::bPrompt_stepTiming(SePrompt* pPrompt)
       return true;
     }
     AM::pSteps()->vWrite(sPath);
+    return true;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // write step timings to given file
+  if ( pInpTknVec->pGet(1)->bSame("writeAll"_Stz) && nTokens == 2) {
+
+    if (! AM::pSteps()) {
+      vTrace("Step timing not started\n"_Stz);
+      return true;
+    }
+    AM::pSteps()->vWriteAll();
     return true;
   }
   
@@ -5281,6 +5353,38 @@ bool PROMPT::bPrompt_tempName(SePrompt* pPrompt)
     vTrace("%s\n"_Stz,sName.szStz());
   }
   
+  return true;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/* Prompt_test.cpp -- call test                                               */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+PromptFun __Prompt_test (
+        PF_TEMPNAME,           // prompt function
+        "Prompt_test"_Stz,     // name of the prompt function
+        "comment"_Stz,         // comment about the function
+        "test"_Stz,            // the prompt command
+        nullptr,               // the second word
+        bPrompt_test,          // prompt function
+        true,                  // enabled
+
+        true,                  // visible
+        "test"_Stz,            // help
+        ""_Stz                 // description
+);
+
+/*----------------------------------------------------------------------------*/
+/* prompt function                                                            */
+/*----------------------------------------------------------------------------*/
+bool PROMPT::bPrompt_test(SePrompt* pPrompt)
+{
+  TokenVec* pTknVec = pPrompt->pInpTknVec();
+  Stz* szTest = pTknVec->pGet(1)->szChars();
+
+  if (szTest->bSame("test14"_Stz))
+    vTest14();
+
   return true;
 }
 
@@ -5719,7 +5823,7 @@ PromptFun __Prompt_wait_bg (
   PF_WAIT_BG,        // prompt function
   "Prompt_wait_bg"_Stz,  // name of the prompt function
   "comment"_Stz,     // comment about the function
-  "wait_bg"_Stz,     // the prompt command
+  "wait"_Stz,        // the prompt command
   nullptr,           // the second word
   bPrompt_wait_bg,   // prompt function
   true,              // enabled

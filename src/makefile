@@ -36,7 +36,7 @@ UNAME_S := $(shell uname -s)
 # Currently used to build and run RapidsSe in x86_64 architecture on
 # the Arm M1 chip, that allows rosetta to kick in and translate from
 # x86_64 to arm64, since tinyc support for the M1 chip is not ready yet.
-#ARCH_FLAG_FORCE = x86_64
+ARCH_FLAG_FORCE = x86_64
 export ARCH_FLAG_FORCE
 
 ifeq ($(UNAME_S),Linux)
@@ -187,16 +187,19 @@ $(TARGET_EXE): $(OBJECTS) $(DEPFILES) $(COMPILED_LIBS)
 # Compile source .cpp files into object files
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(OBJ_DIR)/%.d
 	$(DIR_GUARD)
+	@echo "Compiling file: $@"
 	$(CPP) -c $(CPPFLAGS_ARCH) $(CPPFLAGS) $(PICFLAGS) $(INCLUDES)  $< -o $@
 
 # Compile source .c files into object files
 $(OBJ_DIR)/%.obj: $(SRC_DIR)/%.c $(OBJ_DIR)/%.d
 	$(DIR_GUARD)
+	@echo "Compiling file: $@"
 	$(CPP) -c $(CPPFLAGS_ARCH) $(CFLAGS) $(PICFLAGS) $(INCLUDES)  $< -o $@
 
 # Compile assembly files into objects
 $(OBJ_DIR)/%.obj: $(SRC_DIR)/%.s 
 	$(DIR_GUARD)
+	@echo "Compiling file: $@"
 	$(CPP) -c $(CPPFLAGS_ARCH) $(CPPFLAGS) $(PICFLAGS) $(INCLUDES)  $< -o $@
 
 # Include all of the generated dependency rules from all .d files.

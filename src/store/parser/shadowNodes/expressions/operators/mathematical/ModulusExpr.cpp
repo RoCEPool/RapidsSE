@@ -42,7 +42,7 @@ static eCT aeTypeCalculus[CT_ENUMS][CT_ENUMS] = {
 /*  8 TIME       */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,      CT_NONE,    CT_NONE,      CT_NONE,      CT_NONE,      CT_NONE,      CT_NONE,      CT_NONE, CT_NONE    },
 /*  9 TIMESTAMP  */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,      CT_NONE,    CT_NONE,      CT_NONE,      CT_NONE,      CT_NONE,      CT_NONE,      CT_NONE, CT_NONE    },
 /* 10 VARCHAR    */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,      CT_NONE,    CT_NONE,      CT_NONE,      CT_NONE,      CT_NONE,      CT_NONE,      CT_NONE, CT_NONE    },
-/* 11 UNKNOWN    */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,      CT_NONE,    CT_UNKNOWN,   CT_NONE,      CT_NONE,      CT_NONE,      CT_NONE,      CT_NONE, CT_NONE    }
+/* 11 UNKNOWN    */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,      CT_NONE,    CT_UNKNOWN,   CT_NONE,      CT_NONE,      CT_NONE,      CT_NONE,      CT_NONE, CT_UNKNOWN }
 };
 
 // References:
@@ -100,6 +100,22 @@ void ModulusExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
     Expr::vDescribe(pChild2, sBuf, pRootNode);
     sBuf.vConcat(")"_Stz);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Represent the expression as types instead of names. Append to the buffer   */
+/*----------------------------------------------------------------------------*/
+void ModulusExpr::vDescribeAsTypes(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pChild1 = ModulusExpr::pChild1(_pQueryNode(pNode));
+  QueryNode* pChild2 = ModulusExpr::pChild2(_pQueryNode(pNode));
+
+  sBuf.vConcat(Expr::xTypeId(pChild1, pRootNode).szTypeName());
+  sBuf.vConcat(" % "_Stz);
+  sBuf.vConcat(Expr::xTypeId(pChild2, pRootNode).szTypeName());
 }
 
 /*----------------------------------------------------------------------------*/

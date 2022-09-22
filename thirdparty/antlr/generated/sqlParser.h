@@ -224,7 +224,6 @@ public:
     virtual size_t getRuleIndex() const override;
     QueryStatementContext *queryStatement();
     ExplainStatementContext *explainStatement();
-    StatisticsStatementContext *statisticsStatement();
 
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -368,12 +367,6 @@ public:
     virtual size_t getRuleIndex() const override;
     SelectQueryContext *selectQuery();
     SetQueryContext *setQuery();
-    InsertQueryContext *insertQuery();
-    DeleteQueryContext *deleteQuery();
-    UpdateQueryContext *updateQuery();
-    CreateQueryContext *createQuery();
-    DropQueryContext *dropQuery();
-    TruncateQueryContext *truncateQuery();
     std::vector<QueryHintContext *> queryHint();
     QueryHintContext* queryHint(size_t i);
 
@@ -1892,8 +1885,8 @@ public:
     ExprContext* expr(size_t i);
     antlr4::tree::TerminalNode *NOT();
     antlr4::tree::TerminalNode *AND();
-    antlr4::tree::TerminalNode *OR();
     antlr4::tree::TerminalNode *XOR();
+    antlr4::tree::TerminalNode *OR();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };

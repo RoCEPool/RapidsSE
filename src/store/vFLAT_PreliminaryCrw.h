@@ -14,8 +14,8 @@ L_ProcessRow:
 
   ayDstByte = (byte*)aCombinedT->m_aRowCellArrayT;
   //aCombinedT->m_aRowCellArrayT = ayDstByte;
-  acStrArea = (char*)aCombinedT->m_racStrAreaT;
-  racStrArea = (char*)aCombinedT->m_racStrAreaT;
+  acStrArea = (char*)aCombinedT->m_racStrAreaTSav;
+  racStrArea = (char*)aCombinedT->m_racStrAreaTSav;
   eStrInflateRule = SI_STRAREA_ADR;
 
   if (aCombinedT->m_bTrace) {

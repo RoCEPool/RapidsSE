@@ -359,7 +359,7 @@ eEC IndexDef::eParse(Table* pTable, Stz* szCmd)
   eEC eError = EC_NONE;
 
   // tokenise the command
-  TokenVec* pTknVec = TokenVec::pTokeniseSen(szCmd);
+  TokenVec* pTknVec = AM::TOKENISE::pTokeniseSen(szCmd);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Parse: Create Index <indexNm>
@@ -475,7 +475,7 @@ eEC IndexDef::eParseTableName(Stz* szCmd, Stz* szTableNm)
   eEC eError = EC_NONE;
   
   // tokenise the command
-  TokenVec* pTknVec = TokenVec::pTokeniseSen(szCmd);
+  TokenVec* pTknVec = AM::TOKENISE::pTokeniseSen(szCmd);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Parse: Create Index <indexNm>
@@ -682,7 +682,7 @@ eEC IndexDef::eSyntax(Stz* szCmd)
   i8 iIndexColumns;
   
   // tokenise the command
-  TokenVec* pTknVec = TokenVec::pTokeniseSen(szCmd);
+  TokenVec* pTknVec = AM::TOKENISE::pTokeniseSen(szCmd);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Parse: Create Index <indexNm>

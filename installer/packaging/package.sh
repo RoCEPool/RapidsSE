@@ -48,6 +48,9 @@ readonly MAKESELF_ARGS=()
 
 readonly SHELLCHECK_CMD="${ROOT_DIR}/installer/packaging/shellcheck.sh"
 
+readonly CHECKSUM_MD5_FILE="${OUTPUT_DIR}/checksum.md5"
+readonly CHECKSUM_SHA1_FILE="${OUTPUT_DIR}/checksum.sha1"
+
 ###############################################################################
 ### Functions                                                               ###
 ###############################################################################
@@ -259,13 +262,13 @@ esac
       echo "Using GCC version ${newestGccVer} from SCL"
       (
         cd "${SOURCE_DIR}"
-        scl enable "devtoolset-${newestGccVer}" "make clean && make -j $(nproc)"
+        scl enable "devtoolset-${newestGccVer}" "make clean && make -s -j $(nproc)"
       )
 
     else
       (
         cd "${SOURCE_DIR}"
-        make clean && make -j "$(nproc)"
+        make clean && make -s  -j "$(nproc)"
       )
     fi
   fi
@@ -286,7 +289,7 @@ esac
 
   ### Remove object files, bin dir and layout dir to reduce disk space requirements
   echo "Cleaning up"
-  if [ -n "${KEEP_OBJECTS}" ]; then
+  if [ -z "${KEEP_OBJECTS}" ]; then
     rm -rf "${OBJECT_DIR}" || true
     rm -rf "${LAYOUT_DIR:?}/"* &>/dev/null || true
     rm -rf "${BIN_DIR:?}/"* &>/dev/null || true
@@ -295,9 +298,15 @@ esac
   FILESIZE="$(du -k "${OUTPUT_DIR}/${OUTPUT_FILE}" | cut -f1)"
   printf "Size of installer: %'d kB\n" "${FILESIZE}"
 
-  echo
-  echo "Installer checksums:"
-  echo -n "md5:   " && md5sum  "${OUTPUT_DIR}/${OUTPUT_FILE}"
-  echo -n "sha1:  " && sha1sum "${OUTPUT_DIR}/${OUTPUT_FILE}"
-  echo
+  # Generate checksum files
+  (
+    cd "${OUTPUT_DIR}"
+    md5sum  "${OUTPUT_FILE}" > "${CHECKSUM_MD5_FILE}"
+    sha1sum "${OUTPUT_FILE}" > "${CHECKSUM_SHA1_FILE}"
+    echo
+    echo "Installer checksums:"
+    echo -n "md5:   " && cat "${CHECKSUM_MD5_FILE}"
+    echo -n "sha1:  " && cat "${CHECKSUM_SHA1_FILE}"
+    echo
+  )
 }

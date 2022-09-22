@@ -2,9 +2,10 @@
 /* Aggregate Splitting semantic tests                                         */
 /*----------------------------------------------------------------------------*/
 
-// This tests that ordinal expressions that contain more than one aggregate
-// expression (e.g. SUM($1)/COUNT($2)) have a separate ProjectOp added underneath
-// them that calculates each aggregate separately.
+// This tests that ordinal expressions that contain one or more aggregates under
+// an expression parent are separated such that they have separate ProjectOp added
+// underneath that calculates each aggregate separately.
+// e.g. SUM($1)/COUNT($2), SUM($1) + SUM($2)
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Setup
@@ -15,6 +16,14 @@ create table nation (
 	 N_NAME            CHAR(25) NOT NULL,
 	 N_REGIONKEY       INTEGER NOT NULL,
 	 N_COMMENT         VARCHAR(152)
+);
+success
+
+create table t1 (
+	 col1       INTEGER NOT NULL,
+	 col2       DECIMAL NOT NULL,
+	 col3       FLOAT NOT NULL,
+	 col4       VARCHAR(152)
 );
 success
 
@@ -283,6 +292,457 @@ rows:
 )
 
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  An aggregate underneath any parent expression needs to be split.
+//  e.g. an aggregate under a +, LIKE, SUBSTRING, etc.
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+-- cast of an aggregate is split /1
+EXPLAIN STAGE aggregateSplit SELECT CAST(SUM(n_nationkey) AS DECIMAL) FROM nation;
+rows: (*,'aggregateSplit','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> stageMarker
+   » location: origin
+   » routing: unicast
+
+-> -> projectOp
+      » column: (Expr = CAST(SUM(SUM(SUM(rapidsse.public.nation.n_nationkey))) AS DECIMAL) ; Ordinal Expr = CAST($1 AS DECIMAL))
+
+-> -> -> stageMarker
+         » location: origin
+         » routing: unicast
+
+-> -> -> -> projectOp
+            » location: origin
+            » column: (Expr = SUM(SUM(SUM(rapidsse.public.nation.n_nationkey))) ; Ordinal Expr = SUM($1))
+
+-> -> -> -> -> stageMarker
+               » location: all nodes
+               » routing: unicast
+
+-> -> -> -> -> -> projectOp
+                  » location: all nodes
+                  » column: (Expr = SUM(SUM(rapidsse.public.nation.n_nationkey)) ; Ordinal Expr = SUM($1))
+
+-> -> -> -> -> -> -> stageMarker
+                     » location: all partitions
+                     » routing: local node
+
+-> -> -> -> -> -> -> -> projectOp
+                        » column: (Expr = SUM(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = SUM($1))
+
+-> -> -> -> -> -> -> -> -> tableScanOp
+                           » location: all partitions
+                           » table: (rapidsse.public.nation)')
+
+
+-- cast of an aggregate is split /2
+EXPLAIN STAGE aggregateSplit SELECT 1.0 + CAST(SUM(n_nationkey) AS DECIMAL) FROM nation;
+rows: (*,'aggregateSplit','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> stageMarker
+   » location: origin
+   » routing: unicast
+
+-> -> projectOp
+      » column: (Expr = 1.0 + (CAST(SUM(SUM(SUM(rapidsse.public.nation.n_nationkey))) AS DECIMAL)) ; Ordinal Expr = 1.0 + (CAST($1 AS DECIMAL)))
+
+-> -> -> stageMarker
+         » location: origin
+         » routing: unicast
+
+-> -> -> -> projectOp
+            » location: origin
+            » column: (Expr = SUM(SUM(SUM(rapidsse.public.nation.n_nationkey))) ; Ordinal Expr = SUM($1))
+
+-> -> -> -> -> stageMarker
+               » location: all nodes
+               » routing: unicast
+
+-> -> -> -> -> -> projectOp
+                  » location: all nodes
+                  » column: (Expr = SUM(SUM(rapidsse.public.nation.n_nationkey)) ; Ordinal Expr = SUM($1))
+
+-> -> -> -> -> -> -> stageMarker
+                     » location: all partitions
+                     » routing: local node
+
+-> -> -> -> -> -> -> -> projectOp
+                        » column: (Expr = SUM(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = SUM($1))
+
+-> -> -> -> -> -> -> -> -> tableScanOp
+                           » location: all partitions
+                           » table: (rapidsse.public.nation)')
+
+
+-- cast of an aggregate is split /3
+EXPLAIN STAGE aggregateSplit SELECT 1.0 + CAST(SUM(n_nationkey) + 1 AS DECIMAL) FROM nation;
+rows: (*,'aggregateSplit','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> stageMarker
+   » location: origin
+   » routing: unicast
+
+-> -> projectOp
+      » column: (Expr = 1.0 + (CAST((SUM(SUM(SUM(rapidsse.public.nation.n_nationkey)))) + 1 AS DECIMAL)) ; Ordinal Expr = 1.0 + (CAST($1 + 1 AS DECIMAL)))
+
+-> -> -> stageMarker
+         » location: origin
+         » routing: unicast
+
+-> -> -> -> projectOp
+            » location: origin
+            » column: (Expr = SUM(SUM(SUM(rapidsse.public.nation.n_nationkey))) ; Ordinal Expr = SUM($1))
+
+-> -> -> -> -> stageMarker
+               » location: all nodes
+               » routing: unicast
+
+-> -> -> -> -> -> projectOp
+                  » location: all nodes
+                  » column: (Expr = SUM(SUM(rapidsse.public.nation.n_nationkey)) ; Ordinal Expr = SUM($1))
+
+-> -> -> -> -> -> -> stageMarker
+                     » location: all partitions
+                     » routing: local node
+
+-> -> -> -> -> -> -> -> projectOp
+                        » column: (Expr = SUM(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = SUM($1))
+
+-> -> -> -> -> -> -> -> -> tableScanOp
+                           » location: all partitions
+                           » table: (rapidsse.public.nation)')
+
+
+-- cast of an aggregate is split /4
+EXPLAIN STAGE aggregateSplit SELECT 1.0 + CAST(SUM(n_nationkey) + 1 + SUM(n_regionkey) AS DECIMAL) FROM nation;
+rows: (*,'aggregateSplit','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> stageMarker
+   » location: origin
+   » routing: unicast
+
+-> -> projectOp
+      » column: (Expr = 1.0 + (CAST(((SUM(SUM(SUM(rapidsse.public.nation.n_nationkey)))) + 1) + (SUM(SUM(SUM(rapidsse.public.nation.n_regionkey)))) AS DECIMAL)) ; Ordinal Expr = 1.0 + (CAST(($2 + 1) + $1 AS DECIMAL)))
+
+-> -> -> stageMarker
+         » location: origin
+         » routing: unicast
+
+-> -> -> -> projectOp
+            » location: origin
+            » column: (Expr = SUM(SUM(SUM(rapidsse.public.nation.n_regionkey))) ; Ordinal Expr = SUM($1))
+            » column: (Expr = SUM(SUM(SUM(rapidsse.public.nation.n_nationkey))) ; Ordinal Expr = SUM($2))
+
+-> -> -> -> -> stageMarker
+               » location: all nodes
+               » routing: unicast
+
+-> -> -> -> -> -> projectOp
+                  » location: all nodes
+                  » column: (Expr = SUM(SUM(rapidsse.public.nation.n_regionkey)) ; Ordinal Expr = SUM($1))
+                  » column: (Expr = SUM(SUM(rapidsse.public.nation.n_nationkey)) ; Ordinal Expr = SUM($2))
+
+-> -> -> -> -> -> -> stageMarker
+                     » location: all partitions
+                     » routing: local node
+
+-> -> -> -> -> -> -> -> projectOp
+                        » column: (Expr = SUM(rapidsse.public.nation.n_regionkey) ; Ordinal Expr = SUM($3))
+                        » column: (Expr = SUM(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = SUM($1))
+
+-> -> -> -> -> -> -> -> -> tableScanOp
+                           » location: all partitions
+                           » table: (rapidsse.public.nation)')
+
+
+-- cast of a grouped aggregate is split
+EXPLAIN STAGE aggregateSplit SELECT CAST(SUM(n_nationkey) AS DECIMAL) FROM nation GROUP BY n_regionkey;
+rows: (*,'aggregateSplit','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> stageMarker
+   » location: origin
+   » routing: unicast
+
+-> -> projectOp
+      » column: (Expr = CAST(SUM(SUM(SUM(rapidsse.public.nation.n_nationkey))) AS DECIMAL) ; Ordinal Expr = $1)
+
+-> -> -> stageMarker
+         » location: origin
+         » routing: unicast
+
+-> -> -> -> projectOp
+            » column: (Expr = CAST(SUM(SUM(SUM(rapidsse.public.nation.n_nationkey))) AS DECIMAL) ; Ordinal Expr = CAST($2 AS DECIMAL))
+            » column: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $1)
+
+-> -> -> -> -> stageMarker
+               » location: origin
+               » routing: unicast
+
+-> -> -> -> -> -> aggregateOp
+                  » location: origin
+                  » column: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $2)
+                  » column: (Expr = SUM(SUM(SUM(rapidsse.public.nation.n_nationkey))) ; Ordinal Expr = SUM($1))
+                  » group by: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $2)
+
+-> -> -> -> -> -> -> stageMarker
+                     » location: all nodes
+                     » routing: unicast
+
+-> -> -> -> -> -> -> -> aggregateOp
+                        » location: all nodes
+                        » column: (Expr = SUM(SUM(rapidsse.public.nation.n_nationkey)) ; Ordinal Expr = SUM($1))
+                        » column: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $2)
+                        » group by: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $2)
+
+-> -> -> -> -> -> -> -> -> stageMarker
+                           » location: all partitions
+                           » routing: local node
+
+-> -> -> -> -> -> -> -> -> -> aggregateOp
+                              » column: (Expr = SUM(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = SUM($1))
+                              » column: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
+                              » group by: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
+
+-> -> -> -> -> -> -> -> -> -> -> tableScanOp
+                                 » location: all partitions
+                                 » table: (rapidsse.public.nation)')
+
+
+-- cast of one aggregate in a compound aggregate expression is split
+EXPLAIN STAGE aggregateSplit SELECT CAST(SUM(col1) AS DECIMAL) * 1.0 + MAX(col2) FROM t1;
+rows: (*,'aggregateSplit','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> stageMarker
+   » location: origin
+   » routing: unicast
+
+-> -> projectOp
+      » column: (Expr = ((CAST(SUM(SUM(SUM(rapidsse.public.t1.col1))) AS DECIMAL)) * 1.0) + (MAX(MAX(MAX(rapidsse.public.t1.col2)))) ; Ordinal Expr = ((CAST($2 AS DECIMAL)) * 1.0) + $1)
+
+-> -> -> stageMarker
+         » location: origin
+         » routing: unicast
+
+-> -> -> -> projectOp
+            » location: origin
+            » column: (Expr = MAX(MAX(MAX(rapidsse.public.t1.col2))) ; Ordinal Expr = MAX($1))
+            » column: (Expr = SUM(SUM(SUM(rapidsse.public.t1.col1))) ; Ordinal Expr = SUM($2))
+
+-> -> -> -> -> stageMarker
+               » location: all nodes
+               » routing: unicast
+
+-> -> -> -> -> -> projectOp
+                  » location: all nodes
+                  » column: (Expr = MAX(MAX(rapidsse.public.t1.col2)) ; Ordinal Expr = MAX($1))
+                  » column: (Expr = SUM(SUM(rapidsse.public.t1.col1)) ; Ordinal Expr = SUM($2))
+
+-> -> -> -> -> -> -> stageMarker
+                     » location: all partitions
+                     » routing: local node
+
+-> -> -> -> -> -> -> -> projectOp
+                        » column: (Expr = MAX(rapidsse.public.t1.col2) ; Ordinal Expr = MAX($2))
+                        » column: (Expr = SUM(rapidsse.public.t1.col1) ; Ordinal Expr = SUM($1))
+
+-> -> -> -> -> -> -> -> -> tableScanOp
+                           » location: all partitions
+                           » table: (rapidsse.public.t1)')
+
+
+-- cast of two individual aggregates in a compound aggregate expression is split
+EXPLAIN STAGE aggregateSplit SELECT CAST(SUM(col1) AS DECIMAL) * 1.0 + CAST(COUNT(col1) AS DECIMAL) FROM t1;
+rows: (*,'aggregateSplit','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> stageMarker
+   » location: origin
+   » routing: unicast
+
+-> -> projectOp
+      » column: (Expr = ((CAST(SUM(SUM(SUM(rapidsse.public.t1.col1))) AS DECIMAL)) * 1.0) + (CAST(SUM(SUM(COUNT(rapidsse.public.t1.col1))) AS DECIMAL)) ; Ordinal Expr = ((CAST($2 AS DECIMAL)) * 1.0) + (CAST($1 AS DECIMAL)))
+
+-> -> -> stageMarker
+         » location: origin
+         » routing: unicast
+
+-> -> -> -> projectOp
+            » location: origin
+            » column: (Expr = SUM(SUM(COUNT(rapidsse.public.t1.col1))) ; Ordinal Expr = SUM($1))
+            » column: (Expr = SUM(SUM(SUM(rapidsse.public.t1.col1))) ; Ordinal Expr = SUM($2))
+
+-> -> -> -> -> stageMarker
+               » location: all nodes
+               » routing: unicast
+
+-> -> -> -> -> -> projectOp
+                  » location: all nodes
+                  » column: (Expr = SUM(COUNT(rapidsse.public.t1.col1)) ; Ordinal Expr = SUM($1))
+                  » column: (Expr = SUM(SUM(rapidsse.public.t1.col1)) ; Ordinal Expr = SUM($2))
+
+-> -> -> -> -> -> -> stageMarker
+                     » location: all partitions
+                     » routing: local node
+
+-> -> -> -> -> -> -> -> projectOp
+                        » column: (Expr = COUNT(rapidsse.public.t1.col1) ; Ordinal Expr = COUNT($1))
+                        » column: (Expr = SUM(rapidsse.public.t1.col1) ; Ordinal Expr = SUM($1))
+
+-> -> -> -> -> -> -> -> -> tableScanOp
+                           » location: all partitions
+                           » table: (rapidsse.public.t1)')
+
+
+-- cast of a whole compound aggregate expression is split
+EXPLAIN STAGE aggregateSplit SELECT CAST(SUM(n_nationkey) + COUNT(n_nationkey) AS DECIMAL) * 1.0 FROM nation;
+rows: (*,'aggregateSplit','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> stageMarker
+   » location: origin
+   » routing: unicast
+
+-> -> projectOp
+      » column: (Expr = (CAST((SUM(SUM(SUM(rapidsse.public.nation.n_nationkey)))) + (SUM(SUM(COUNT(rapidsse.public.nation.n_nationkey)))) AS DECIMAL)) * 1.0 ; Ordinal Expr = (CAST($2 + $1 AS DECIMAL)) * 1.0)
+
+-> -> -> stageMarker
+         » location: origin
+         » routing: unicast
+
+-> -> -> -> projectOp
+            » location: origin
+            » column: (Expr = SUM(SUM(COUNT(rapidsse.public.nation.n_nationkey))) ; Ordinal Expr = SUM($1))
+            » column: (Expr = SUM(SUM(SUM(rapidsse.public.nation.n_nationkey))) ; Ordinal Expr = SUM($2))
+
+-> -> -> -> -> stageMarker
+               » location: all nodes
+               » routing: unicast
+
+-> -> -> -> -> -> projectOp
+                  » location: all nodes
+                  » column: (Expr = SUM(COUNT(rapidsse.public.nation.n_nationkey)) ; Ordinal Expr = SUM($1))
+                  » column: (Expr = SUM(SUM(rapidsse.public.nation.n_nationkey)) ; Ordinal Expr = SUM($2))
+
+-> -> -> -> -> -> -> stageMarker
+                     » location: all partitions
+                     » routing: local node
+
+-> -> -> -> -> -> -> -> projectOp
+                        » column: (Expr = COUNT(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = COUNT($1))
+                        » column: (Expr = SUM(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = SUM($1))
+
+-> -> -> -> -> -> -> -> -> tableScanOp
+                           » location: all partitions
+                           » table: (rapidsse.public.nation)')
+
+
+-- SUBSTRING
+EXPLAIN STAGE aggregatesplit SELECT SUBSTR(MAX(n_name), 0, 1) FROM nation;
+rows: (*,'aggregateSplit','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> stageMarker
+   » location: origin
+   » routing: unicast
+
+-> -> projectOp
+      » column: (Expr = SUBSTRING((MAX(MAX(MAX(rapidsse.public.nation.n_name)))), 0, 1) ; Ordinal Expr = SUBSTRING($1, 0, 1))
+
+-> -> -> stageMarker
+         » location: origin
+         » routing: unicast
+
+-> -> -> -> projectOp
+            » location: origin
+            » column: (Expr = MAX(MAX(MAX(rapidsse.public.nation.n_name))) ; Ordinal Expr = MAX($1))
+
+-> -> -> -> -> stageMarker
+               » location: all nodes
+               » routing: unicast
+
+-> -> -> -> -> -> projectOp
+                  » location: all nodes
+                  » column: (Expr = MAX(MAX(rapidsse.public.nation.n_name)) ; Ordinal Expr = MAX($1))
+
+-> -> -> -> -> -> -> stageMarker
+                     » location: all partitions
+                     » routing: local node
+
+-> -> -> -> -> -> -> -> projectOp
+                        » column: (Expr = MAX(rapidsse.public.nation.n_name) ; Ordinal Expr = MAX($2))
+
+-> -> -> -> -> -> -> -> -> tableScanOp
+                           » location: all partitions
+                           » table: (rapidsse.public.nation)')
+
+-- LIKE
+EXPLAIN STAGE aggregatesplit SELECT MIN(n_name) LIKE MAX(n_name) FROM nation;
+rows: (*,'aggregateSplit','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> stageMarker
+   » location: origin
+   » routing: unicast
+
+-> -> projectOp
+      » column: (Expr = (MIN(MIN(MIN(rapidsse.public.nation.n_name)))) LIKE (MAX(MAX(MAX(rapidsse.public.nation.n_name)))) ; Ordinal Expr = $2 LIKE $1)
+
+-> -> -> stageMarker
+         » location: origin
+         » routing: unicast
+
+-> -> -> -> projectOp
+            » location: origin
+            » column: (Expr = MAX(MAX(MAX(rapidsse.public.nation.n_name))) ; Ordinal Expr = MAX($1))
+            » column: (Expr = MIN(MIN(MIN(rapidsse.public.nation.n_name))) ; Ordinal Expr = MIN($2))
+
+-> -> -> -> -> stageMarker
+               » location: all nodes
+               » routing: unicast
+
+-> -> -> -> -> -> projectOp
+                  » location: all nodes
+                  » column: (Expr = MAX(MAX(rapidsse.public.nation.n_name)) ; Ordinal Expr = MAX($1))
+                  » column: (Expr = MIN(MIN(rapidsse.public.nation.n_name)) ; Ordinal Expr = MIN($2))
+
+-> -> -> -> -> -> -> stageMarker
+                     » location: all partitions
+                     » routing: local node
+
+-> -> -> -> -> -> -> -> projectOp
+                        » column: (Expr = MAX(rapidsse.public.nation.n_name) ; Ordinal Expr = MAX($2))
+                        » column: (Expr = MIN(rapidsse.public.nation.n_name) ; Ordinal Expr = MIN($2))
+
+-> -> -> -> -> -> -> -> -> tableScanOp
+                           » location: all partitions
+                           » table: (rapidsse.public.nation)')
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Check for memory leaks
@@ -297,5 +757,8 @@ rows: 0
 
 CLEANUP {
   drop table nation ;
+  mute
+
+  drop table t1 ;
   mute
 }

@@ -6,7 +6,6 @@
 
 #include "RejectJob.hpp"
 
-#include "eCF.h"
 #include "Job.hpp"
 #include "AM.hpp"
 
@@ -45,6 +44,40 @@ RejectJob::~RejectJob(void) noexcept(false)
 //         aOM[m_eOpRejectJob],this,m_xFooter.iWhenAllocated());
 }
 
+/*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* post recv function                                                         */
+/*----------------------------------------------------------------------------*/
+void RejectJob::vPostRecv(void* aReceivedJob)
+{
+  _static_
+
+  // nothing to do
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* get dist job id                                                            */
+/*----------------------------------------------------------------------------*/
+JobId RejectJob::tDistId(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_REJECTJOB,_FOOTER_);
+
+  return m_tDistId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set origin job id                                                          */
+/*----------------------------------------------------------------------------*/
+void RejectJob::vDistId(JobId tDistId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_REJECTJOB,_FOOTER_);
+
+  m_tDistId = tDistId;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get error code                                                             */
@@ -84,16 +117,6 @@ void RejectJob::vOriginId(JobId tOriginId)
   _precondition_(_ADDRESS_,_MAGIC_,CN_REJECTJOB,_FOOTER_);
 
   m_tOriginId = tOriginId;
-}
-
-/*----------------------------------------------------------------------------*/
-/* reject job                                                                 */
-/*----------------------------------------------------------------------------*/
-bool RejectJob::bReject(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_REJECTJOB,_FOOTER_);
-
-  return false;
 }
 
 /*============================================================================*/

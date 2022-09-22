@@ -1,0 +1,30 @@
+~yf2ftpstart,A0000,AAbcDd
+123@qq.com,A0100,aaBcdd
+abc-123!,A0101,bcAAfDde
+bcs#1,A0102,Ddefg
+meiyuan$,A0103,abcdefg
+aa%qw,A0200,abcabc2222efg
+abc^123,A0201,a\\b\\c\\d
+A&B,A0202,"a\,b\,c\,d"
+12*23,A0203,a\'b\'c\'d
+abc(ABC),B0000,abcd
+中文——信息,B0300,a11b22c33d
+90+,B0301,s123e
+pass{123},B0302,ss123ee
+xxii[123],B0400,s345e
+hh【就是要中文得】,B0401,s12345e
+node1|node2,B0402,ss1ee
+D:\\柏睿工作\\se文档\\测试用例,B0403,开开心心
+姓名：简文文,C0000,每天开开心心
+姓名：简文文；籍贯：湖北；学历：本科,C0600,开开心心过大年
+这是个错误“假的”,C0601,每个人都开开心心过大年
+"english""two"",xxii[123]",C0602,that is a book
+/opt/rdp/5.3.5,C0700,this is a pen
+are you ready?,C0701,it is a pencil
+就这个feel<demiliter>,C0702,0 1 2 3 4
+test\ntest1,D0000,1 2 3
+xixi\thaha\tyyds,D0800,19086204296
+en\wno,D0801,18986194297
+,D0802,18944554297
+jwww\swwwww,D0803,237823AA
+"When the table to be created has too many fields, it will cause exit prompt or no response",D0804,134299

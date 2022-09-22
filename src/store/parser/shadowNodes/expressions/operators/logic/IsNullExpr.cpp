@@ -77,6 +77,20 @@ void IsNullExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Represent the expression as types instead of names. Append to the buffer   */
+/*----------------------------------------------------------------------------*/
+void IsNullExpr::vDescribeAsTypes(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pChild1 = IsNullExpr::pChild1(_pQueryNode(pNode));
+
+  sBuf.vConcat(Expr::xTypeId(pChild1, pRootNode).szTypeName());
+  sBuf.vConcat(" IS NULL"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Return the first child expression of this operator                         */
 /*----------------------------------------------------------------------------*/
 QueryNode* IsNullExpr::pChild1(QueryNode *pNode)

@@ -14,6 +14,7 @@
 
 #include "Socket.hpp" //?
 #include "LogicUnit.hpp"
+#include "JobList.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -26,6 +27,8 @@ void Step::vAddSteps_Node(void)
   vAddStep("Node[].get"_Stz,       &Step::vNodeGet);
   vAddStep("Node[].set"_Stz,       &Step::vNodeSet);
 
+  vAddStep("node.cleanup"_Stz,      &Step::vNodeCleanup);
+  vAddStep("node.connectRetry"_Stz, &Step::vNodeConnectRetry);
   vAddStep("node.forget"_Stz,      &Step::vNodeForget);
   vAddStep("node.IP"_Stz,          &Step::vNodeIP);
   vAddStep("node.isThisNode"_Stz,  &Step::vNodeIsThisNode);
@@ -84,6 +87,82 @@ void Step::vNodeNew(void)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* node.cleanup -- set status to failed and cleanup sockets, set grid to unhealthy*/
+/*----------------------------------------------------------------------------*/
+void Step::vNodeCleanup(void)
+{
+  ENTRY();
+
+  Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
+  Grid* pGrid = AM::pGrid();
+
+  pGrid->vGrabWrite();
+
+  pGrid->vHealthy(false);
+
+  // latch the job Originating list and Job Participant list
+  JobList* pPtpJobList = AM::pParticipatingJobs();
+  pPtpJobList->vLatch(true);
+
+  JobList* pOriginatingJobList = AM::pOriginatingJobs();
+  pOriginatingJobList->vLatch(true);
+
+  pNode->vState(NS_INACTIVE);
+
+  Socket* pRecvSocket = pNode->pRecvSocket();
+  if(pRecvSocket)
+  {
+    if(pRecvSocket->bIsOpen())
+    {
+      SysCall oSysCall;
+      bool bResult = pRecvSocket->bClose(oSysCall);
+
+      if ( ! bResult )
+        vThrow(FK_CHECK,__func__,__FILE__,__LINE__,
+               "Unable to close recv socket: Errno %d!"_Stz, oSysCall.iError());
+    }
+    delete pRecvSocket;
+    pNode->vRecvSocket(nullptr);
+  }
+
+  Socket* pSendSocket = pNode->pSendSocket();
+  if(pSendSocket)
+  {
+    if(pSendSocket->bIsOpen())
+    {
+      SysCall oSysCall;
+      bool bResult = pSendSocket->bClose(oSysCall);
+
+      if ( ! bResult )
+        vThrow(FK_CHECK,__func__,__FILE__,__LINE__,
+               "Unable to close send socket: Errno %d!"_Stz, oSysCall.iError());
+    }
+    delete pSendSocket;
+    pNode->vSendSocket(nullptr);
+  }
+
+  pGrid->vDropWrite();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* node.connectRetry -- Number of connect retry attempts                      */
+/*----------------------------------------------------------------------------*/
+void Step::vNodeConnectRetry(void)
+{
+  ENTRY();
+
+  Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
+
+  pNode->vRetryDecrement();
+
+  m_pDataStack->vPushInt(pNode->iRetry());
+
+  EXIT();
+}
 
 /*----------------------------------------------------------------------------*/
 /* node.forget -- remove node from node list and delete                       */

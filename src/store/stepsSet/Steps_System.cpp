@@ -18,6 +18,7 @@ void Step::vAddSteps_System(void)
   vAddStep("[system].bpa"_Stz,        &Step::vSystemBpa);
   vAddStep("[system].open@"_Stz,      &Step::vSystemOpenFetch);
   vAddStep("[system].open!"_Stz,      &Step::vSystemOpenStore);
+  vAddStep("[system].ready"_Stz,      &Step::vSystemReady);
   vAddStep("[system].see"_Stz,        &Step::vSystemSee);
   vAddStep("[system].started@"_Stz,   &Step::vSystemStartedFetch);
   vAddStep("[system].started!"_Stz,   &Step::vSystemStartedStore);
@@ -69,10 +70,22 @@ void Step::vSystemOpenFetch(void)
 void Step::vSystemOpenStore(void)
 {
   ENTRY();
-  
+
   b8 bSystemOpen = m_pDataStack->iPopInt(__func__);
-  
+
   AM::SYSTEM::vSystemOpen(bSystemOpen);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [system].ready -- system is now ready                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vSystemReady(void)
+{
+  ENTRY();
+
+  AM::SYSTEM::vSystemReady();
 
   EXIT();
 }
@@ -92,7 +105,7 @@ void Step::vSystemSee(void)
 
   vTrace("  pid %lld (%s)\n"_Stz
          ,AM::PROCESS::iSePid()
-         ,Process::bTestPid(AM::PROCESS::iSePid()) ? "exists"_Stz : "non-existant"_Stz
+         ,AM::PROCESS::bSeRunning() ? "exists"_Stz : "non-existant"_Stz
          );
 
   vTrace("  system %s\n"_Stz

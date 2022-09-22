@@ -109,8 +109,8 @@
   PipeIn[].delete
 
   // pipeout an exit operand to output
-  ExitOperand[].newExitOperand
-  ExitOperand[].pipeToOutput
+  Marker[].newExit
+  Marker[].pipeToOutput
 
   // pipe out and exited marker
   Marker[].newExitedMarker
@@ -156,6 +156,25 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for EV_M_LOWMEMORY ...                                             */
+/*----------------------------------------------------------------------------*/
+: sink_LowMemory \handler
+
+  //"Operand:- EV_M_LOWMEMORY" .verbose
+
+  // check if sink has seen low memory
+  [pipeline].lowMemory@ if
+    PipeIn[].delete
+  else
+    // mark pipeline as running low on memory
+    true [pipeline].lowMemory!
+    PipeIn[].pipeOut
+  then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for EV_M_END ...                                                   */
 /*----------------------------------------------------------------------------*/
 : sink_EndMarker \handler
@@ -177,6 +196,12 @@
 
   // check if sink has already been cancelled
   [pipeline].cancelled@ if
+    true
+    exit
+  then
+
+  // check if sink has seen low memory
+  [pipeline].lowMemory@ if
     true
     exit
   then
@@ -219,7 +244,11 @@
   find: sink_Exiting         EV_M_EXITING    [op].handler!
   find: sink_LeaveMarker     EV_M_LEAVE      [op].handler!
   find: sink_LeavingMarker   EV_M_LEAVING    [op].handler!
+  find: sink_LowMemory       EV_M_LOWMEMORY  [op].handler!
   find: sink_StartMarker     EV_M_START      [op].handler!
+
+  find: EV_M_HARDABORT_handler      EV_M_HARDABORT      [op].handler!
+  find: EV_M_NODELOSSABORT_handler  EV_M_NODELOSSABORT  [op].handler!
 
   op__loop
 

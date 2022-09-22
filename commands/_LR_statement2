@@ -1,0 +1,29 @@
+pipeline unamed
+begin
+
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0180
+
+  stage stageMarker0180 on all partitions :
+    scan rapidsse public L
+    | stageMarker0183 broadcast
+
+  stage stageMarker0183 on all partitions :
+    scan rapidsse public R
+    | abstractJoin " 1  "
+    | stageMarker0186
+
+  stage stageMarker0186 on all partitions :
+    filter " type BOOLEAN  $1 $2 ==  "
+    | project " type INTEGER as l_a $1 , type INTEGER as r_a $2 , type VARCHAR as r_b $3 , type INTEGER as r_c $4 , type VARCHAR as r_d $5 "
+    | combined 0
+    | stageLast
+
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+
+end ;

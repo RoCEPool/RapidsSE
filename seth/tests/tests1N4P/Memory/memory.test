@@ -25,6 +25,7 @@ create table LineItem
  L_SHIPMODE      CHAR(10)      NOT NULL,
  L_COMMENT       VARCHAR(44)   NOT NULL
  );
+success
 
 MemoryLeaks;
 rows:
@@ -38,6 +39,7 @@ rows:
  ('IDXVEC',  1)
  ('PTNDEF',  1)
  ('SKIPLIST',  2)
+ ('SKIPNODE',  5)
  ('STREAMDEF',  1)
  ('TABLE',  1)
  ('TABLEPTN',  4)

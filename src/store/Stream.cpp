@@ -165,6 +165,49 @@ Op* Stream::pOp0(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* send EV_M_NODELOASSABORT to all operators on given node ( a nodeLoss )     */
+/*----------------------------------------------------------------------------*/
+void Stream::vNodeLossAbort(void)
+{
+  _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
+
+  i8 iThisNodeId = MY::iNodeId();
+
+  i8 iOnNodeId = -1;
+
+  if (m_p_StageSpec->bNodeTopo()) {
+
+    if (YG_NEXT_NODE == m_p_StageSpec->eStageTopology()) {
+      if (iThisNodeId != pPipeline()->iOriginNodeId()) {
+        iOnNodeId = m_iNodeId;
+      }
+    }
+    else {
+      iOnNodeId = m_iNodeId;
+    }
+
+  }
+  else {
+    iOnNodeId = AM::pLglPtnMap()->iNodeId(m_tLglPtn);
+  }
+
+  if (iOnNodeId == iThisNodeId) {
+    // for each operator in the stage ptn
+    vTrace("Sending NODELOSSABORT to Operators!!!\n"_Stz);
+    for (i8 i_Op = nItems() - 1; i_Op >= 0; i_Op--) {
+
+      Op* pOp = pGet(i_Op);
+
+      if (pOp->pTask()) {
+        pOp->vNodeLossAbort();
+      }
+
+    }
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* get pipeline for this stream                                               */
 /*----------------------------------------------------------------------------*/
 Pipeline* Stream::pPipeline(void)
@@ -256,6 +299,9 @@ void Stream::vSpawnOpTasks(void)
       Op* pOp = pGet(i_Op);
       
       pOp->vSpawnTask();
+
+//      if (AM::SYSTEM::bReady() && i_Op == 3)
+//        THROW_LOWMEMORY();
     }
   }
   
@@ -269,6 +315,49 @@ Stz* Stream::szStreamNm(void)
   _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
   
   return m_sStreamNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* unspawn tasks for all operators for partitions of given node               */
+/*----------------------------------------------------------------------------*/
+void Stream::vUnspawnOpTasks(void)
+{
+  _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
+
+  i8 iThisNodeId = MY::iNodeId();
+
+  i8 iOnNodeId = -1;
+
+  if (m_p_StageSpec->bNodeTopo()) {
+
+    if (YG_NEXT_NODE == m_p_StageSpec->eStageTopology()) {
+      if (iThisNodeId != pPipeline()->iOriginNodeId()) {
+        iOnNodeId = m_iNodeId;
+      }
+    }
+    else {
+      iOnNodeId = m_iNodeId;
+    }
+
+  }
+  else {
+    iOnNodeId = AM::pLglPtnMap()->iNodeId(m_tLglPtn);
+  }
+
+  if (iOnNodeId == iThisNodeId) {
+    // for each operator in the stage ptn
+    vTrace("Sending HARDABORT to Operators!!!\n"_Stz);
+    for (i8 i_Op = nItems() - 1; i_Op >= 0; i_Op--) {
+
+      Op* pOp = pGet(i_Op);
+
+      if (pOp->pTask()) {
+        pOp->vUnspawnTask();
+      }
+
+    }
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -317,7 +406,7 @@ void Stream::vCreateOps(void)
     //vTrace("<><><> %s\n"_Stz,sOpCmd.azChar());
 
     TokenVec* pTknVec = new TokenVec;
-    pTknVec->vTokeniseSen(sOpCmd);
+    AM::TOKENISE::vTokeniseSen(pTknVec,sOpCmd);
 
     bool b = CmdHelper::bParseCmd(pTknVec,pOp_0->pOpTags());
     UNUSED(b);

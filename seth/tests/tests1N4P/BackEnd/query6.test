@@ -14,7 +14,7 @@ begin
   stage stageB on all partitions :
     scan lineitem
     | filter "type boolean $11 DATE '1994-01-01' >=  $11 DATE '1995-01-01' < and "
-    | filter "type boolean $7 0.06 0.01 - >= <> $7 0.06 0.01 +  <= <>"
+    | filter "type boolean $7 0.06 0.01 - >= $7 0.06 0.01 +  <= and"
     | aggreg " type decimal as revenue_p ) $6 $7 * sum "
     | combined 0
     | stageC
@@ -26,7 +26,7 @@ begin
 
   stage stageD on origin :
     output | sink | stageA
-end;
+end ;
 
 failure contains: "Table does not exist"
 
@@ -74,8 +74,9 @@ begin
 
     stage stageD on origin :
     output | sink | stageA
-end;
-rows: 0
+end ;
+rows:
+ (null)
 
 //------------------------------------------------------------------------------
 load lineitem "../DATA/TPCH/lineitem10.csv";
@@ -95,7 +96,7 @@ begin
 
   stage stageC on origin :
     output | sink | stageA
-end;
+end ;
 rows:
   (3,42970,17971,1,45.00,86083.65,0.06,0.00,'R','F',DATE '1994-02-02',DATE '1994-01-04',DATE '1994-02-23','NONE','AIR','ongside of the furiously brave acco')
   (3,1284483,34508,3,22.00,39620.34,0.06,0.07,'A','F',DATE '1994-01-16',DATE '1993-11-22',DATE '1994-01-23','DELIVER IN PERSON','SHIP','nal foxes wake. ')
@@ -115,7 +116,7 @@ begin
 
   stage stageC on origin :
     output | sink | stageA
-end;
+end ;
 rows:
   (3,42970,17971,1,45.00,86083.65,0.06,0.00,'R','F',DATE '1994-02-02',DATE '1994-01-04',DATE '1994-02-23','NONE','AIR','ongside of the furiously brave acco')
   (3,1284483,34508,3,22.00,39620.34,0.06,0.07,'A','F',DATE '1994-01-16',DATE '1993-11-22',DATE '1994-01-23','DELIVER IN PERSON','SHIP','nal foxes wake. ')
@@ -135,7 +136,7 @@ begin
 
   stage stageC on origin :
     output | sink | stageA
-end;
+end ;
 rows:
   (3,42970,17971,1,45.00,86083.65,0.06,0.00,'R','F',DATE '1994-02-02',DATE '1994-01-04',DATE '1994-02-23','NONE','AIR','ongside of the furiously brave acco')
   (3,1284483,34508,3,22.00,39620.34,0.06,0.07,'A','F',DATE '1994-01-16',DATE '1993-11-22',DATE '1994-01-23','DELIVER IN PERSON','SHIP','nal foxes wake. ')
@@ -155,7 +156,7 @@ begin
 
   stage stageC on origin :
     output | sink | stageA
-end;
+end ;
 rows:
   (3,1284483,34508,3,22.00,39620.34,0.06,0.07,'A','F',DATE '1994-01-16',DATE '1993-11-22',DATE '1994-01-23','DELIVER IN PERSON','SHIP','nal foxes wake. ')
 
@@ -177,9 +178,9 @@ begin
     | combined 0
     | next
 
-  stage stageLast on origin:
+  stage stageLast on origin :
     output | sink | stageA
-end;
+end ;
 rows:
  (39620.34,0.06)
 
@@ -200,9 +201,9 @@ begin
     | combined 0
     | next
 
-   stage stageLast on origin:
+   stage stageLast on origin :
      output | sink | stageA
-end;
+end ;
 rows:
   (39620.34,0.06,2377.22)
 
@@ -224,9 +225,9 @@ begin
     | combined 0
     | next
 
-  stage stageLast on origin:
+  stage stageLast on origin :
     output | sink | stageA
-end;
+end ;
 rows:
   (2377.22)
 
@@ -249,9 +250,9 @@ begin
     | combined 0
     | next
 
-  stage stageLast on origin:
+  stage stageLast on origin :
     output | sink | stageA
-end;
+end ;
 rows:
   (2377.22)
 
@@ -273,9 +274,9 @@ begin
     | combined 0
     | next
 
-  stage stageLast on origin:
+  stage stageLast on origin :
     output | sink | stageA
-end;
+end ;
 rows:
   (2377.22)
 
@@ -296,9 +297,9 @@ begin
     | combined 0
     | next
 
-  stage stageLast on origin:
+  stage stageLast on origin :
      output | sink | stageA
-end;
+end ;
 rows:
   (86083.65,0.06,5165.02)
   (39620.34,0.06,2377.22)
@@ -321,9 +322,9 @@ begin
     | combined 0
     | next
 
-  stage stageLast on origin:
+  stage stageLast on origin :
      output | sink | stageA
-end;
+end ;
 rows:
   (7542.24)
 

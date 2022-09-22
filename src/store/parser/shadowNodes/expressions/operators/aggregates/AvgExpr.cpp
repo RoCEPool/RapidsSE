@@ -29,7 +29,7 @@ static Stz* C_AVG_EXPR_DEFN = "/__root__/definitions/object/expr/operator/aggreg
 static eCT aeTypeCalculus[CT_ENUMS] =
 
 //    NONE     BOOLEAN   CHAR     DATE     DECIMAL     FLOAT     INTEGER     INTERVAL_DT   INTERVAL_YM   TIME     TIMESTAMP  VARCHAR  UNKNOWN
-    { CT_NONE, CT_NONE,  CT_NONE, CT_NONE, CT_DECIMAL, CT_FLOAT, CT_DECIMAL, CT_NONE/*X*/, CT_NONE/*X*/, CT_NONE, CT_NONE,   CT_NONE, CT_NONE };
+    { CT_NONE, CT_NONE,  CT_NONE, CT_NONE, CT_DECIMAL, CT_FLOAT, CT_DECIMAL, CT_NONE/*X*/, CT_NONE/*X*/, CT_NONE, CT_NONE,   CT_NONE, CT_UNKNOWN };
 
 // References:
 //
@@ -96,6 +96,32 @@ void AvgExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
   ASSERT(pNode->nChildren() == 1);
   PlanNode* pChildExpr = pNode->pFirstChild();
   Expr::vDescribe(pChildExpr, sBuf, pRootNode);
+
+  if (bDistinct) {
+    sBuf.vConcat(")"_Stz);
+  }
+
+  sBuf.vConcat(")"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Represent the expression as types instead of names. Append to the buffer   */
+/*----------------------------------------------------------------------------*/
+void AvgExpr::vDescribeAsTypes(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  sBuf.vConcat("AVG("_Stz);
+
+  b1 bDistinct = bIsDistinct(pNode);
+  if (bDistinct) {
+    sBuf.vConcat("DISTINCT("_Stz);
+  }
+
+  ASSERT(pNode->nChildren() == 1);
+  PlanNode* pChildExpr = pNode->pFirstChild();
+  sBuf.vConcat(Expr::xTypeId(_pQueryNode(pChildExpr), pRootNode).szTypeName());
 
   if (bDistinct) {
     sBuf.vConcat(")"_Stz);

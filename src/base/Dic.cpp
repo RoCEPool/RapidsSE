@@ -209,21 +209,46 @@ Word* Dic::pFindWord(Stz* szWordNm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   bool bTrace = false;
-  
+
   if (szWordNm->nLength() > 31)
     return nullptr;
-  
-  Word* pSearchWord = new (nullptr) Word(szWordNm);
-  
+
+  Task* pThisTask = AM::pThisTLSTask();
+  Word* pFoundWord = nullptr;
+
+  if (pThisTask) {
+    Word* pSearchWord = pThisTask->pSearchWord();
+    pSearchWord->vName(szWordNm);
+    pFoundWord = pFindWord(pSearchWord, szWordNm);
+  }
+  else {
+    Word *pSearchWord = new(nullptr) Word(szWordNm);
+    pFoundWord = pFindWord(pSearchWord, szWordNm);
+    delete pSearchWord;
+  }
+
+  return pFoundWord;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find a word given name using word from task for teh search                 */
+/*----------------------------------------------------------------------------*/
+Word* Dic::pFindWord(Word* pSearchWord, Stz* szWordNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
+
+  bool bTrace = false;
+
+  if (szWordNm->nLength() > 31)
+    return nullptr;
+
   m_okLock.vGrabRead();
-  
-  Word* pFoundWord =
-    _pWord(m_pWordSkipList->pFind(pSearchWord,bTrace,g_fp_bWordCompare));
-  
+
+  Word *pFoundWord =
+      _pWord(m_pWordSkipList->pFind(pSearchWord, bTrace, g_fp_bWordCompare));
+
   m_okLock.vDropRead();
-  
-  delete pSearchWord;
-  
+
   return pFoundWord;
 }
 

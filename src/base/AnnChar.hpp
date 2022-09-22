@@ -34,6 +34,7 @@ namespace BASE
     bool bIsLessThan(void);
     bool bIsGreaterThan(void);
     bool bIsMinus(void);
+    bool bIsNewLine(void);
     bool bIsNull(void);
     bool bIsOpenBrace(void);
     bool bIsOpenBracket(void);
@@ -52,6 +53,7 @@ namespace BASE
     
     bool bIsAlpha(void);
     bool bIsDigit(void);
+    bool bIsE(void);
     bool bIsX(void);
 
     void vReset(void);

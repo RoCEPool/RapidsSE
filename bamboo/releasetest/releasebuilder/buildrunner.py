@@ -278,14 +278,40 @@ class BuildRunner:
         LOG.info(f"Successfully copied the RapidsSE installer from {src} to {dest}")
 
         for root, dirs, files in os.walk(str(self.artifact_path)):
+            if self.installer_path is not None:
+                break
+                
             for name in files:
                 if fnmatch.fnmatch(name, C_INSTALLER_FILESPEC):
                     self.installer_path = pathlib.Path(root) / name
                     LOG.info(f"The RapidsSE installer is found at {str(self.installer_path)}")
-                    return
+                    break
 
-        msg = f"Could not find the RapidsSE installer in local directory: {str(self.artifact_path)}"
-        raise errors.ClusterError(msg)
+        if self.installer_path is None:
+            msg = f"Could not find the RapidsSE installer in local directory: {str(self.artifact_path)}"
+            raise errors.ClusterError(msg)
+
+        # Now copy the checksums as artifacts too
+        remote_filespec = str(self.remote_repo_dir / "installer" / "output" / "checksum*")
+        src = f"{self.ip_addr}:{remote_filespec}"
+        dest = f"{str(self.artifact_path)}"
+
+        LOG.debug(f"About to copy the installer checksums from {src} to {dest}")
+
+        try:
+            ssh.run_scp(src, dest, command_timeout, ctx=OP_CTX)
+
+        except errors.SshError:
+            LOG.error(f"Error while copying the installer checksums from {src} to {dest}.")
+            raise
+
+        except subprocess.TimeoutExpired as e:
+            msg = f"Copying the installer checksums from {src} to {dest} timed out after {e.timeout} seconds." \
+                  f"\nStdout Output:\n{e.stdout}" \
+                  f"\nStderr Output:\n{e.stderr}"
+            raise errors.SshError(msg, e.stdout, e.stderr) from e
+
+        LOG.debug(f"Successfully copied the installer checksums from {src} to {dest}")
 
     def get_installer_path(self) -> pathlib.Path:
         """Returns the path of the local installer file"""

@@ -106,10 +106,15 @@ begin
     | combined 0
     | next
 
-  stage last on origin :
+  stage XYZ on origin :
     top "TOP type DECIMAL Revenue" 10
     | combined 0
-    | output
+    | next
+
+  stage last on origin :
+    //top "TOP type DECIMAL Revenue" 10
+    //| combined 0
+    output
     | sink
     | first
 

@@ -65,6 +65,29 @@ declare -ra NODE_CFG_ALL_KEYS=( \
   "${NODE_CFG_PARAMS_KEY}" \
 )
 
+declare -ra DEFAULT_SSH_MULTIPLEX_OPTIONS=( "-o" "ControlMaster=auto" "-o" "ControlPath=~/.ssh/rapidsse_mux_%h_%p_%r" "-o" "ControlPersist=3m" )
+declare -ra DEFAULT_SSH_STRICT_HOST_KEY_CHECKING=("-o" "StrictHostKeyChecking=no")
+
+# Note: We use StrictHostKeyChecking=no rather than StrictHostKeyChecking=accept-new because
+#       the accept-new option doesn't exist until OpenSSH v7.6 (Oct 2017) and operating systems
+#       like CentOS 7 only have OpenSSH v7.4.
+
+# Override the SSH multiplex settings if NO_SSH_MULTIPLEX=1
+if [ -z "${NO_SSH_MULTIPLEX:-}" ] || [ "${NO_SSH_MULTIPLEX:-}" -eq 0 ] ; then
+  SSH_MULTIPLEX_OPTIONS=("${DEFAULT_SSH_MULTIPLEX_OPTIONS[@]}")
+else
+  SSH_MULTIPLEX_OPTIONS=()
+fi
+
+# Override the SSH StrictHostKeyChecking settings if NO_SSH_STRICTHOSTKEYCHECKING=1
+if [ -z "${NO_SSH_STRICTHOSTKEYCHECKING:-}" ] || [ "${NO_SSH_STRICTHOSTKEYCHECKING:-}" -eq 0 ] ; then
+  SSH_STRICTHOSTKEYCHECKING=("${DEFAULT_SSH_STRICT_HOST_KEY_CHECKING[@]}")
+else
+  SSH_STRICTHOSTKEYCHECKING=()
+fi
+
+declare -ra SSH_COMMON_OPTIONS=( "-q" "${SSH_STRICTHOSTKEYCHECKING[@]}" "${SSH_MULTIPLEX_OPTIONS[@]}" )
+
 ###############################################################################
 ### Functions                                                               ###
 ###############################################################################
@@ -435,7 +458,7 @@ function getCpuCount() {
   remoteCmd+="{ getconf _NPROCESSORS_ONLN 2>/dev/null; } || "
   remoteCmd+="{ echo \"-1\"; }"
 
-  sshArgs=( "-q" "${host}" "bash" "-c" "'${remoteCmd}'" )
+  sshArgs=( "${SSH_COMMON_OPTIONS[@]}" "${host}" "bash" "-c" "'${remoteCmd}'" )
 
   if ! response="$(ssh "${sshArgs[@]}")"; then
     echo "-1" 
@@ -474,7 +497,7 @@ function getTotalMem() {
 
   remoteCmd="bash -c \"cat /proc/meminfo | grep MemTotal | awk '{print \\\$2 / 1048576}'\""
 
-  sshArgs=( "-q" "${host}" "${remoteCmd}" )
+  sshArgs=( "${SSH_COMMON_OPTIONS[@]}" "${host}" "${remoteCmd}" )
 
   if ! response="$(ssh "${sshArgs[@]}")"; then
     echo "-1" 
@@ -513,7 +536,7 @@ function getTotalShm() {
   
   remoteCmd="bash -c \"df -Bk --output=size,avail /dev/shm | tail -n 1 | awk '{print \\\$1 / 1048576}'\""
 
-  sshArgs=( "-q" "${host}" "${remoteCmd}" )
+  sshArgs=( "${SSH_COMMON_OPTIONS[@]}" "${host}" "${remoteCmd}" )
 
   if ! response="$(ssh "${sshArgs[@]}")"; then
     echo "-1" 
@@ -552,7 +575,7 @@ function getFreeShm() {
 
   remoteCmd="bash -c \"df -Bk --output=size,avail /dev/shm | tail -n 1 | awk '{print \\\$2 / 1048576}'\""
 
-  sshArgs=( "-q" "${host}" "${remoteCmd}" )
+  sshArgs=( "${SSH_COMMON_OPTIONS[@]}" "${host}" "${remoteCmd}" )
 
   if ! response="$(ssh "${sshArgs[@]}")"; then
     echo "-1" 
@@ -590,7 +613,7 @@ function getRemoteRunningPid() {
 
   remoteCmd="if [ ! -f \"${dir}/${PID_FILENAME}\" ]; then exit 1; fi; cat \"${dir}/${PID_FILENAME}\" | xargs ps -o pid -h -p "
 
-  pid="$(ssh -q "${host}" "bash" "-c" "'${remoteCmd}'")"
+  pid="$(ssh "${SSH_COMMON_OPTIONS[@]}" "${host}" "bash" "-c" "'${remoteCmd}'")"
 
   local re="^[[:space:]]*([0-9]+)[[:space:]]*$"
 
@@ -624,7 +647,7 @@ function isRemoteSeReady() {
 
   remoteCmd="diff -qNZ \"${dir}/${PID_FILENAME}\" \"${dir}/${READY_FILENAME}\" &>/dev/null"
 
-  ssh -q "${host}" "bash" "-c" "'${remoteCmd}'"
+  ssh "${SSH_COMMON_OPTIONS[@]}" "${host}" "bash" "-c" "'${remoteCmd}'"
   local nodeReady="$?"
 
   if [ "${nodeReady}" -eq 0 ]; then

@@ -7,6 +7,9 @@ extern pthread_key_t giTLS_ThreadKey;
 extern pthread_key_t giTLS_TaskKey;
 extern pthread_key_t giTLS_HandlerKey;
 extern pthread_key_t giTLS_StepKey;
+extern pthread_key_t gbTLS_FaultInjection;
+extern pthread_key_t giTLS_FaultPoint;
+extern pthread_key_t giTLS_CurrentPoint;
 
 namespace STORE
 {
@@ -36,7 +39,9 @@ namespace STORE
     void vGrabWrite(void);
     void vReset(void);
     void vShow(Stz* szStepNm);
+    void vShowAll(void);
     void vWrite(Stz* szPath);
+    void vWriteAll(void);
     void vWriteSingleStep(Stz* szPath, Stz* szStepNm);
 
   

@@ -41,7 +41,24 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     eEC    m_eError_job;  // error when starting job
     eEC    m_eChildError; // error in child job
 
+    bool   m_bNodeLoss;     // node loss detected
     bool   m_bUpdateParent; // update parent
+
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // originating job
+    Job*  m_pExecuteJob;
+    Job*  m_pEndJob;
+
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // participant job
+    Job*  m_pBegunJob;
+    Job*  m_pExecutedJob;
+    Job*  m_pEndedJob;
+    Job*  m_pCancelledJob;
+
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    // reject job
+    RejectJob*  m_pRejectJob;
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // reset in Job::vPostRecv()
@@ -57,7 +74,9 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     /* 08 */ b8      m_bWasReceived;   // was job received over a socket?
     /* 09 */ MarkerChain* m_pMarkerChain; // chain of free markers
     /* 10 */ b8      m_bAllocate;      // can job ask for memory?
-    /* 11 */ ObjectTracker*      m_pObjectTracker;// Frequency count of object types allocated/freed by this Job
+    /* 11 */ ObjectTracker* m_pObjectTracker;// Frequency count of object types allocated/freed by this Job
+    /* 12 */ SkipNode* m_pJobsSkipNode;     // Jobs list skip node
+    /* 13 */ SkipNode* m_pGenericSkipNode;  // generic list skip node
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
 
@@ -88,7 +107,10 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId, TagSet* pCmdTagSet = nullptr);
 
    ~Job(void) noexcept(false);
-  
+
+    static JobId tDistId(Job* pJob);
+    static Stz*  szJobNm(Job* pJob);
+    static JobId tOriginId(Job* pJob);
     static void vPostRecv(void* aJob);
     static void vPrintJobNode(SkipNode* pNode, int i_Level);
   
@@ -97,13 +119,16 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vActiveOpsInc(void);
     bool bAllocateMemory(void);
 
-    void vCascadeReset(void);
+    Job* pBegunJob(void);
+    void vBegunJob(Job* pBegunJob);
+
+    Job* pCancelledJob(void);
+    void vCancelledJob(Job* pCancelledJob);
     eEC eChildError(void);
     void vChildError(eEC eErrorCode);
     void vCleanupOutput(void);
     Stz* szCmd(void);
     void vCmd(Stz* szCmd);
-
     void vDisableObjectTracker(void);
     JobId tDistId(void);
     void vDistIdGenerate(void);
@@ -113,13 +138,22 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vDropLock(void);
 
     void vEnableObjectTracker(void);
+    Job* pEndJob(void);
+    void vEndJob(Job* pEndJob);
+    Job* pEndedJob(void);
+    void vEndedJob(Job* pEndedJob);
     Stz* szEntryPoint(void);
     void vEntryPoint(Stz* szEntry);
-  
+    Job* pExecuteJob(void);
+    void vExecuteJob(Job* pExecuteJob);
+    Job* pExecutedJob(void);
+    void vExecutedJob(Job* pExecutedJob);
+
     Stz* szFolderPath(void);
     void vFolderPath(Stz* szFolderPath);
     void vFreeMarker(Marker* pMarker);
 
+    SkipNode* pGenericSkipNode(void);
     void vGetTimerFromChild(Job* pChildJob);
     void vGrabLock(void);
 
@@ -143,6 +177,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vJobNm(Stz* szJobNm);
     eJP  eJobPhase(void);
     void vJobPhase(eJP eJobPhase);
+    SkipNode* pJobsSkipNode(void);
     TagSet* pJobTags(void);
     void vJobTrace(Stz* szAtCmd, Stz* szAtRoutine, Stz* szAtPoint, Stz* szNote);
 
@@ -161,6 +196,9 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     Marker* pNewMarker(eOM eOpMarker);
     void vNewMarkerChain(void);
 
+    bool  bNodeLoss(void);
+    void  vNodeLoss(bool bNodeLoss);
+
     bool bObjectTracker(void);
     void vObjectTrackerDump(void);
     void vOutputBeginProc(void);
@@ -170,6 +208,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     JobId tOriginId(void);
     void vOriginId(JobId tOriginId);
     Job* pOriginJob(void);
+    void vOriginJobNodeFailure(void);
     i8   iOriginNodeId(void);
     Stz* szOriginNodeNm(void);
   
@@ -183,9 +222,15 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vPostRecv(void);
     void vProcessOutput(void);
     Timer* pProgressTimer(void);
+    void vPtpJobNodeFailure(void);
 
     void vUpdateParent(bool bUpdateParent);
     bool bUpdateParent(void);
+
+    void vRejected(bool bRejected);
+    bool bRejected(void);
+
+    RejectJob* pRejectJob(void);
 
     void vResetObjectTracker(void);
     void vResetOutput(void);

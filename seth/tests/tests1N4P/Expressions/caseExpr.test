@@ -7,6 +7,9 @@
 //  Setup
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+trackmemory;
+success
+
 CREATE TABLE nation (
 	 N_NATIONKEY       INTEGER NOT NULL,
 	 N_NAME            CHAR(25) NOT NULL,
@@ -49,9 +52,6 @@ load nation "../TPCH/SF_0001/nation.csv";
 success
 
 load datums "../DATA/Datums/datums.csv" ;
-success
-
-trackmemory;
 success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -599,6 +599,135 @@ rows:
   ('everywhere')
   ('everywhere')
 
+CREATE TABLE caseExpr(a varchar,b varchar,c decimal,d decimal,e timestamp,f boolean,g integer);
+success
+
+load caseExpr "../DATA/Expressions/caseExpr.csv";
+success
+
+select * from caseExpr where case  when true then d<0  end;
+rows:
+ ('zzs','L14',43772.00,-44.76,2023-02-01 00:00:00,false,1)
+ ('xfs','M15',58777.34,-143.10,2023-01-01 00:00:00,true,0)
+ ('xfs','N16',59752.31,-241.43,2022-03-07 21:04:00,true,0)
+ ('xfs','O17',64234.87,-339.77,2021-01-02 12:58:00,false,1)
+
+select case
+  when f then 'woman'
+  else 'man' end xb,
+  f
+from caseExpr a;
+rows:
+ ('woman',true)
+ ('man',false)
+ ('woman',true)
+ ('man',false)
+ ('woman',true)
+ ('man',false)
+ ('woman',true)
+ ('man',false)
+ ('woman',true)
+ ('man',false)
+ ('woman',true)
+ ('man',false)
+ ('woman',true)
+ ('man',false)
+ ('woman',true)
+ ('woman',true)
+ ('man',false)
+ ('woman',true)
+ ('man',false)
+ ('woman',true)
+ ('man',false)
+ ('woman',true)
+ ('man',false)
+ ('woman',true)
+ ('man',false)
+ ('woman',true)
+ ('man',false)
+ ('woman',true)
+ ('man',false)
+ ('woman',true)
+ ('man',false)
+ ('woman',true)
+ ('man',false)
+ ('woman',true)
+ ('man',false)
+ ('woman',true)
+ ('man',false)
+ ('woman',true)
+ ('man',false)
+ ('woman',true)
+ ('man',false)
+
+ select case f
+   when true then 'woman'
+   else 'man' end xb,
+   f
+ from caseExpr a;
+ rows:
+  ('woman',true)
+  ('man',false)
+  ('woman',true)
+  ('man',false)
+  ('woman',true)
+  ('man',false)
+  ('woman',true)
+  ('man',false)
+  ('woman',true)
+  ('man',false)
+  ('woman',true)
+  ('man',false)
+  ('woman',true)
+  ('man',false)
+  ('woman',true)
+  ('woman',true)
+  ('man',false)
+  ('woman',true)
+  ('man',false)
+  ('woman',true)
+  ('man',false)
+  ('woman',true)
+  ('man',false)
+  ('woman',true)
+  ('man',false)
+  ('woman',true)
+  ('man',false)
+  ('woman',true)
+  ('man',false)
+  ('woman',true)
+  ('man',false)
+  ('woman',true)
+  ('man',false)
+  ('woman',true)
+  ('man',false)
+  ('woman',true)
+  ('man',false)
+  ('woman',true)
+  ('man',false)
+  ('woman',true)
+  ('man',false)
+
+select
+    case when c+d<=0 then '<=0' when c+d>0 and c+d<=1000 then '<=1000' when c+d>1000 and c+d<=10000 then '<=10000' else '>10000' end,
+  sum(c)
+  from caseExpr
+  group by
+    case when c+d<=0 then '<=0' when c+d>0 and c+d<=1000 then '<=1000' when c+d>1000 and c+d<=10000 then '<=10000' else '>10000' end;
+failure contains: 'EC_NOT_IMPLEMENTED'
+
+DROP TABLE nation;
+success
+
+DROP TABLE region;
+success
+
+DROP TABLE datums;
+success
+
+DROP TABLE caseExpr;
+success
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Check for memory leaks
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -618,5 +747,8 @@ CLEANUP {
   mute
 
   DROP TABLE datums;
+  mute
+
+  DROP TABLE caseExpr;
   mute
 }

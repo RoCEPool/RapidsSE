@@ -110,7 +110,8 @@ namespace BASE
     Charser* pNext(void);
     void     vNext(Charser* pNext);
     i8       iDepth(void);
-    
+    void     vReset(void);
+
     // debug
     i8       nLoaded(void);
     AnnChar* aRegOne(void);
@@ -121,10 +122,11 @@ namespace BASE
   
     void     vRawInputClear(void);
 
+    void vResetCharser(void);
+
   private:
     
-    void vResetCharser(void);
-    
+
     // Character Processing
     void vClearRegs(void);
     void vConsumeFirst(AnnChar& rxAnnChar);

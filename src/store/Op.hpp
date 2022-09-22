@@ -112,6 +112,7 @@ namespace STORE
     i8   iNextStage(void);
     Stage* pNextStage(void);
     i8   iNodeId(void);
+    void vNodeLossAbort(void);
     
     i8   i_Op(void);
     OperandWatch* pOperandWatch(void);
@@ -170,7 +171,8 @@ namespace STORE
     void vTask(Task* pTask);
     i8   nTmpIndexSize(void);
     void vToCmdStr(Stz* szCmdStr);
-  
+
+    void vUnspawnTask(void);
     void vVerifyOpComposition(void);
   
     void vWorkQuanta(i8 iWorkQuanta);

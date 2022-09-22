@@ -58,14 +58,14 @@ void Step::vApiForkChild(void)
   m_pDataStack->vPopStr(sCmdTagStr,__func__);
 
   if (AM::TRACE::bVerbose(C_VB_API)) {
-    vTrace("ForkChild: %s\n"_Stz,sCmd.szStz());
+    vTrace("ForkChild (TRANSLITERATE): %s\n"_Stz,sCmd.szStz());
     vTrace("  CmdTags: %s\n"_Stz,sCmdTagStr.szStz());
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // populate the tag set
-  TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sCmd);
-  TokenVec* pTagTknVec = TokenVec::pTokeniseSen(sCmdTagStr);
+  TokenVec* pCmdTknVec = AM::TOKENISE::pTokeniseSen(sCmd);
+  TokenVec* pTagTknVec = AM::TOKENISE::pTokeniseSen(sCmdTagStr);
   TagSet*   pCmdTagSet = new TagSet;
   CmdHelper::vPopulateTagSet(pCmdTagSet,pTagTknVec);
 
@@ -96,14 +96,12 @@ void Step::vApiForkChild(void)
 
   JobId tChildJobId;
   bool bIsPipeline;
-  bool bIsBackground;
   eEC eError = Api::eForkJobChild(tChildJobId,
                                    pCmdTknVec,pCmdTagSet,
                                    tParentId,tOriginId,tDistId,
                                    pOuterJob,
-                                   false,
-                                   bIsPipeline,
-                                   bIsBackground
+                                   true,
+                                   bIsPipeline
   );
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -142,8 +140,8 @@ void Step::vApiForkDemon(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // populate the tag set
-  TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sCmd);
-  TokenVec* pTagTknVec = TokenVec::pTokeniseSen(sCmdTagStr);
+  TokenVec* pCmdTknVec = AM::TOKENISE::pTokeniseSen(sCmd);
+  TokenVec* pTagTknVec = AM::TOKENISE::pTokeniseSen(sCmdTagStr);
   TagSet*   pCmdTagSet = new TagSet;
   CmdHelper::vPopulateTagSet(pCmdTagSet,pTagTknVec);
 
@@ -174,14 +172,12 @@ void Step::vApiForkDemon(void)
 
   JobId tChildJobId;
   bool bIsPipeline;
-  bool bIsBackground;
   eEC eError = Api::eForkJobChild(tChildJobId,
                                   pCmdTknVec,pCmdTagSet,
                                   tParentId,tOriginId,tDistId,
                                   pOuterJob,
                                   false,
-                                  bIsPipeline,
-                                  bIsBackground
+                                  bIsPipeline
   );
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -222,8 +218,8 @@ void Step::vApiForkChild2PC(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sCmd);
-  TokenVec* pTagTknVec = TokenVec::pTokeniseSen(sCmdTagStr);
+  TokenVec* pCmdTknVec = AM::TOKENISE::pTokeniseSen(sCmd);
+  TokenVec* pTagTknVec = AM::TOKENISE::pTokeniseSen(sCmdTagStr);
   TagSet*   pCmdTagSet = new TagSet;
   CmdHelper::vPopulateTagSet(pCmdTagSet,pTagTknVec);
 
@@ -303,16 +299,23 @@ void Step::vApiSpawnJob(void)
   ENTRY();
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
+
   Task* pTask = pJob->pTask();
+  /*
   RASSERT(! pTask);
-//  if ( pTask) {
-//    vTrace("****Job: %s has a task in api::spawnJob\n"_Stz,pJob->szJobNm());
-//    RASSERT(QK_NONE == pTask->eQueue());
-//    RASSERT(TR_NONE == pTask->eTransition());
-//  }
-  
+  //  if ( pTask) {
+  //    vTrace("****Job: %s has a task in api::spawnJob\n"_Stz,pJob->szJobNm());
+  //    RASSERT(QK_NONE == pTask->eQueue());
+  //    RASSERT(TR_NONE == pTask->eTransition());
+  //  }
+
   pJob->vTaskCreate();
+
+ */
+
+  if ( ! pTask )
+    pJob->vTaskCreate();
+
   Scheduler::vTaskApi_Add(pJob->pTask());
 
   EXIT();

@@ -118,6 +118,8 @@
   // now create a listening socket
   iPort Port[]::newListen
 
+  [system].ready
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   begin

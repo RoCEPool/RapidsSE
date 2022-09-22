@@ -30,13 +30,14 @@
 : toLglPtnRow_RowBuffer \handler
 
   // check for low memory
+  /*
   attachMap::isLowMemory if
     EC_LOW_MEMORY op__execErr
     PipeIn[].delete
     true
     exit
   then
-
+ */
   PipeIn[]\clear to RowBuffer[]
   Table[] RowBuffer[] toLglPtnRow[].convert
   RowBuffer[].delete

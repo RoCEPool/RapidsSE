@@ -59,6 +59,7 @@ namespace PROMPT
     void vMutexSignalAndUnlock(Object* pLockBy);
     void vMutexWaitAndUnlock(Object* pLockBy);
     void vReportTime(void);
+    void vReset(void);
     void vTerminate(void);
     bool bTerminated(void);
     Stz* szToDo(void);

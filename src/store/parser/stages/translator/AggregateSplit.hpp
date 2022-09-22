@@ -31,7 +31,7 @@ namespace Parser
   private:
     // Splits multiple aggregations into separate proj columns so that we don't
     // have more than one aggregation in a single expression.
-    static void vSplitAggregates(QueryNode *pPlanNode, PlanNode* pRootNode);
+    static void vSplitMultipleAggregates(QueryNode *pPlanNode, PlanNode* pRootNode);
 
     // Inserts a ProjectOp or AggregateOp below pParentNode with the aggregate
     // expressions from pAggList. pAggList items are borrowed and must be copied

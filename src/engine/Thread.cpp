@@ -47,6 +47,8 @@ Thread::Thread(void)
   
   m_pThreadScratch = new ThreadScratch;
 
+  m_iMallocWatch = 0;
+
   _checkInitialised_(CN_THREAD);
   
   m_sThreadNm.vSprint("Thread_%02lld"_Stz,iThreadNo());
@@ -419,6 +421,26 @@ void Thread::vDedicated(eCN eDedicated)
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   m_eDedicated = eDedicated;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get malloc watch                                                           */
+/*----------------------------------------------------------------------------*/
+i8 Thread::iMallocWatch(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
+  return m_iMallocWatch;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set malloc watch                                                           */
+/*----------------------------------------------------------------------------*/
+void Thread::vMallocWatch(i8 iMallocWatch)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
+  m_iMallocWatch = iMallocWatch;
 }
 
 /*----------------------------------------------------------------------------*/

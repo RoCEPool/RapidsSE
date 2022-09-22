@@ -3,7 +3,8 @@
 /*============================================================================*/
 #pragma once
 
-static const i8 C_MAX_COLUMNS       = 150;    // max columns per table
+static const i8 C_MAX_COLUMNS       = 48;     // max columns per table
+static const i8 C_MAX_CONN_RETRIES  = 5;      // max connection retries on node failure
 static const i8 C_MAX_DECKS         = 256;
 static const i8 C_MAX_ENTRY         = C_1KB;  // max index entry size
 static const i8 C_MAX_EXPR          = 256;    // max expressions in expr vec

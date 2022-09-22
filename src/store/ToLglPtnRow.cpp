@@ -77,7 +77,8 @@ void ToLglPtnRow::vRepairHashSet(Object* pObject)
 
     // delete dangling buffer
     pRowBuffer = pToLglPtnRow->pDangling(i_Ptn);
-    delete pRowBuffer;
+    if (pRowBuffer)
+      AM::vDeleteOperand(pRowBuffer,nullptr);
   }
 
   // delete the toBktRow

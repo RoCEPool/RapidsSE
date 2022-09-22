@@ -22,6 +22,7 @@ void Step::vAddSteps_TagSet(void)
   vAddStep("tagSet.appendStr"_Stz,  &Step::vTagSetAppendStr);
   vAddStep("tagSet.asStr"_Stz,      &Step::vTagSetAsStr);
   vAddStep("tagSet.copy"_Stz,       &Step::vTagSetCopy);
+  vAddStep("tagSet.dump"_Stz,       &Step::vTagSetDump);
   vAddStep("tagSet.getInt"_Stz,     &Step::vTagSetGetInt);
   vAddStep("tagSet.getStr"_Stz,     &Step::vTagSetGetStr);
   vAddStep("tagSet.hasName"_Stz,    &Step::vTagSetHasName);
@@ -127,6 +128,20 @@ void Step::vTagSetCopy(void)
   
   pTagSet_dst->vCopy(pTagSet_src);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* TagSet.dump -- dump tag set                                                */
+/*----------------------------------------------------------------------------*/
+void Step::vTagSetDump(void)
+{
+  ENTRY();
+
+  TagSet* pTagSet = _pTagSet(m_pDataStack->pPopPtr(__func__));
+
+  pTagSet->vDumpSet(true);
+
   EXIT();
 }
 

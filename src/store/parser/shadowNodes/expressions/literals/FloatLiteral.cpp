@@ -52,7 +52,11 @@ void FloatLiteral::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
   if (pNode->bIsNullValue()) {
     sBuf.vConcat("NULL"_Stz);
   } else {
-    sBuf.vCatSprint("%e"_Stz, pNode->dValue());
+    // We can't render all floats perfectly here, so we default to 10 decimal places.
+    // Rest assured that the floating point value is stored correctly, it's just
+    // that we don't know how many digits to actually display. The default of 6
+    // makes it look like there isn't enough, so lets use 10.
+    sBuf.vCatSprint("%.10e"_Stz, pNode->dValue());
   }
 }
 

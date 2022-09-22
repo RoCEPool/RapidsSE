@@ -291,7 +291,8 @@ i8 Hardware::iL3Cache(void)
   
   i8 iReturn = sysctlbyname("hw.l3cachesize", &iSize, &len, 0, 0);
   if (iReturn) {
-    vTrace("Error while getting L3 cache size %lld\n"_Stz, iReturn);
+    // doesnt seem to work on Mac ARM
+    //vTrace("Error while getting L3 cache size %lld\n"_Stz, iReturn);
     return 0;
   }
   return iSize;

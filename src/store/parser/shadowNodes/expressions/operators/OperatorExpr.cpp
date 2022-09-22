@@ -47,6 +47,24 @@ void OperatorExpr::vDescribe(PlanNode *pNode, s2K &sBuf, PlanNode *pRootNode)
   else NEVER_REACH
 }
 
+/*----------------------------------------------------------------------------*/
+/* Represent the expression as types instead of names. Append to the buffer   */
+/*----------------------------------------------------------------------------*/
+void OperatorExpr::vDescribeAsTypes(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  if      (  MathematicalExpr::bIsOfType(pNode))  {  MathematicalExpr::vDescribeAsTypes(pNode, sBuf, pRootNode); }
+  else if (    ComparisonExpr::bIsOfType(pNode))  {    ComparisonExpr::vDescribeAsTypes(pNode, sBuf, pRootNode); }
+  else if (         LogicExpr::bIsOfType(pNode))  {         LogicExpr::vDescribeAsTypes(pNode, sBuf, pRootNode); }
+  else if (     AggregateExpr::bIsOfType(pNode))  {     AggregateExpr::vDescribeAsTypes(pNode, sBuf, pRootNode); }
+  else if (StringFunctionExpr::bIsOfType(pNode))  {StringFunctionExpr::vDescribeAsTypes(pNode, sBuf, pRootNode); }
+  else if (   ConditionalExpr::bIsOfType(pNode))  {   ConditionalExpr::vDescribeAsTypes(pNode, sBuf, pRootNode); }
+  else if (          MiscExpr::bIsOfType(pNode))  {          MiscExpr::vDescribeAsTypes(pNode, sBuf, pRootNode); }
+  else NEVER_REACH
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* Returns true if the given node is derived from the expr definition         */

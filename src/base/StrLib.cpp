@@ -345,6 +345,18 @@ Stz* StrLib::szCharToStr(char cArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* check char                                                                 */
+/*----------------------------------------------------------------------------*/
+void StrLib::vCheckIsNot(char cArg, char cIsNot) {
+  _static_
+
+  if (cIsNot == cArg) {
+    vTrace("cArg is cIsNot\n"_Stz);
+    RASSERT(cIsNot != cArg);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* click arg                                                                  */
 /*----------------------------------------------------------------------------*/
 void StrLib::vClick(char* aArg)
@@ -979,7 +991,31 @@ char StrLib::cEscapeFor(const char cArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* cEscapeInsert: convert a special character to escaped character form       */
+/* insert cWith before any instance of cChar in azStr                         */
+/*----------------------------------------------------------------------------*/
+void StrLib::vEscapeInsert(char* azStr, char cChar, char cWith)
+{
+  _static_
+
+
+  char* azCrs = azStr;
+
+  while (*azCrs) {
+    if (cChar != *azCrs) {
+      azCrs++;
+      continue;
+    }
+
+    vTrace("vEscapeInsert: %s "_Stz,azStr);
+    vInsertChar(azCrs,cWith);
+    vTrace("-- %s \n"_Stz,azStr);
+
+    azCrs += 2;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert a special character to escaped character form                      */
 /*----------------------------------------------------------------------------*/
 char StrLib::cEscapeInverse(const char cArg)
 {
@@ -2544,6 +2580,25 @@ i8 StrLib::iHexToInw(const char c)
 }
 
 /*----------------------------------------------------------------------------*/
+/* insert char at start of given str                                          */
+/*----------------------------------------------------------------------------*/
+void StrLib::vInsertChar(char* azAt, char cArg)
+{
+  _static_
+
+  char* azCrs = azNullTerminator(azAt);
+
+  *(azCrs+1) = *azCrs;
+
+  while (azCrs != azAt) {
+    azCrs--;
+    *(azCrs+1) = *azCrs;
+  }
+
+  *azAt = cArg;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bIsAlpha: is char an alphabetic character?                                 */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bIsAlpha(const char c)
@@ -2570,6 +2625,116 @@ bool StrLib::bIsAlphaDigit(const char c)
 }
 
 /*----------------------------------------------------------------------------*/
+/* bIsAmpersand: is char an ampersand?                                        */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsAmpersand(const char c)
+{
+  _static_
+  
+  if (c == '&')
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsAsciiName: is argument a valid name                                     */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsAsciiName(char* azArg)
+{
+  _static_
+
+  // check starting character
+  char cStartChar = *azArg;
+
+  if ( ! (cStartChar >= 'A' && cStartChar <= 'Z') &&
+       ! (cStartChar >= 'a' && cStartChar <= 'z') &&
+       ! (cStartChar == '_'))
+    return false;
+
+  // check for special characters in table name
+  for (char c = 33; c <= 47 ; c++)
+    if (bContains(azArg,c))
+      return false;
+
+  for (char c = 58; c <= 64 ; c++)
+    if (bContains(azArg,c))
+      return false;
+
+  if (bContains(azArg,'|') ||
+      bContains(azArg,'^') ||
+      bContains(azArg,'~'))
+    return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsAsterisk: is char an asterisk?                                          */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsAsterisk(const char c)
+{
+  _static_
+  
+  if (c == '*')
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsAt: is char an at?                                                      */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsAt(const char c)
+{
+  _static_
+  
+  if (c == '@')
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsBackQuote: is char an back quote?                                       */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsBackQuote(const char c)
+{
+  _static_
+  
+  if (c == '`')
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsBackSlash: is char an back slash?                                       */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsBackSlash(const char c)
+{
+  _static_
+  
+  if (c == '\\')
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsBlank: is char a blank?                                                 */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsBlank(const char c)
+{
+  _static_
+  
+  if (c == ' ')
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bIsBoolean: is the string a boolean sequence ?                             */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bIsBoolean(char* ps)
@@ -2583,9 +2748,107 @@ bool StrLib::bIsBoolean(char* ps)
 }
 
 /*----------------------------------------------------------------------------*/
+/* bIsCircumflex: is char a circumflex?                                       */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsCircumflex(const char c)
+{
+  _static_
+  
+  if (c == '^')
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsCloseBrace: is char a close brace?                                      */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsCloseBrace(const char c)
+{
+  _static_
+  
+  if (c == '}')
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsCloseBracket: is char a close bracket?                                  */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsCloseBracket(const char c)
+{
+  _static_
+  
+  if (c == ']')
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsCloseParenthesis: is char a close parenthesis?                          */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsCloseParenthesis(const char c)
+{
+  _static_
+  
+  if (c == ')')
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsColon: is char a colon?                                                 */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsColon(const char c)
+{
+  _static_
+  
+  if (c == ':')
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsCommentBlock: is arg a block comment?                                   */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsCommentBlock(char* aaCrs)
+{
+  _static_
+  
+  if (! bIsSlash(*aaCrs))
+    return false;
+
+  if (! bIsAsterisk(*(aaCrs + 1)))
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsCommentLine: is arg a line comment?                                     */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsCommentLine(char* aaCrs)
+{
+  _static_
+  
+  if (! bIsSlash(*aaCrs))
+    return false;
+
+  if (! bIsSlash(*(aaCrs + 1)))
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bIsDecimal: is string a decimal no ?                                       */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bIsDecimal(char* ps) {
+bool StrLib::bIsDecimal(char* ps)
+{
   _static_
 
   bool bDecimalPoint = false;
@@ -2631,6 +2894,45 @@ bool StrLib::bIsDigit(const char c)
 }
 
 /*----------------------------------------------------------------------------*/
+/* bIsDollar: is char a dollar sign?                                          */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsDollar(const char c)
+{
+  _static_
+  
+  if (c == '$')
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsDot: is char a dot?                                                     */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsDot(const char c)
+{
+  _static_
+  
+  if ('.' == c)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsDoubleQuote: is char a double quote?                                    */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsDoubleQuote(const char c)
+{
+  _static_
+  
+  if (c == '"')
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bIsEmpty: does the string have zero content?                               */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bIsEmpty(char* ps)
@@ -2638,6 +2940,19 @@ bool StrLib::bIsEmpty(char* ps)
   _static_
 
   return (*ps == 0);
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsEqual: is char an equal?                                                */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsEqual(const char c)
+{
+  _static_
+  
+  if (c == '=')
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2655,6 +2970,19 @@ bool StrLib::bIsEscapable(const char cArg)
   if ('\t' == cArg) return true;
   
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsExclamation: is char an exclamation?                                    */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsExclamation(const char c)
+{
+  _static_
+  
+  if (c == '!')
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2710,6 +3038,32 @@ bool StrLib::bIsFloat(char* ps) {
     return false;
 
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsGreaterThan: is char a greater than?                                    */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsGreaterThan(const char c)
+{
+  _static_
+  
+  if (c == '>')
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsHash: is char a hash?                                                   */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsHash(const char c)
+{
+  _static_
+  
+  if (c == '#')
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2803,6 +3157,32 @@ bool StrLib::bIsIPAddr(const char* ps)
 }
 
 /*----------------------------------------------------------------------------*/
+/* bIsLessThan: is char a less than?                                          */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsLessThan(const char c)
+{
+  _static_
+  
+  if (c == '<')
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsMinus: is char a minus sign?                                            */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsMinus(const char c)
+{
+  _static_
+  
+  if (c == '-')
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is char an alphabetic, numeric digit, '_' or '$'?                          */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bIsNameBodyChar(const char c)
@@ -2829,6 +3209,201 @@ bool StrLib::bIsNameStartChar(const char c)
 }
 
 /*----------------------------------------------------------------------------*/
+/* bIsNewLine: is char a new line?                                            */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsNewLine(const char c)
+{
+  _static_
+  
+  if (c == '\n')
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsNull: is char a null?                                                   */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsNull(const char c)
+{
+  _static_
+  
+  if (c == '\0')
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsCloseBrace: is char an open brace?                                      */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsOpenBrace(const char c)
+{
+  _static_
+  
+  if (c == '{')
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsCloseBracket: is char an open bracket?                                  */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsOpenBracket(const char c)
+{
+  _static_
+  
+  if (c == '[')
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsCloseParenthesis: is char an open parenthesis?                          */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsOpenParenthesis(const char c)
+{
+  _static_
+  
+  if (c == '(')
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsPercent: is char a percent?                                             */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsPercent(const char c)
+{
+  _static_
+  
+  if ('%' == c)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsPipe: is char a pipe?                                                   */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsPipe(const char c)
+{
+  _static_
+  
+  if ('|' == c)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsMinus: is char a plus sign?                                             */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsPlus(const char c)
+{
+  _static_
+  
+  if (c == '+')
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsQuestion: is char a question?                                           */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsQuestion(const char c)
+{
+  _static_
+  
+  if ('?' == c)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsSemicolon: is char a semicolon?                                         */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsSemicolon(const char c)
+{
+  _static_
+  
+  if (';' == c)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsSign: is char a plus or minus?                                          */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsSign(const char c)
+{
+  _static_
+  
+  if (bIsPlus(c) || bIsMinus(c))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsSlash: is char a slash?                                                 */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsSlash(const char c)
+{
+  _static_
+  
+  if ('/' == c)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsSignleQuote: is char a single quote?                                    */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsSingleQuote(const char c)
+{
+  _static_
+  
+  if (c == '\'')
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsTilde: is char a tilde?                                                 */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsTilde(const char c)
+{
+  _static_
+  
+  if ('~' == c)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsUnderscore: is char an underscore?                                      */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsUnderscore(const char c)
+{
+  _static_
+  
+  if ('_' == c)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bIsWhite: is char white space?                                             */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bIsWhite(const char c)
@@ -2840,6 +3415,17 @@ bool StrLib::bIsWhite(const char c)
   if (c == '\r') return true;
   if (c == '\f') return true;
   if (c == '\t') return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for an 'x' or 'X'                                                     */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsX(const char c)
+{
+  if ('x' == c || 'X' == c)
+    return true;
   
   return false;
 }
@@ -2941,10 +3527,17 @@ i8 StrLib::iLike2(char* azStr, char* azRegExp)
 
    */
 
-  s256 sMatchRegExp;
+  s256 sEscapedRegExp = azRegExp;
+  StrLib::vInsertChar(sEscapedRegExp.azChar(),'^');
+  StrLib::vEscapeInsert(sEscapedRegExp.azChar(),'*','\\');
 
-  char *r = azRegExp;
+  s256 sMatchRegExp;
+  char *r = sEscapedRegExp.azChar();
   char *R = sMatchRegExp.azChar();
+
+//  s256 sMatchRegExp;
+//  char *r = azRegExp;
+//  char *R = sMatchRegExp.azChar();
 
   // handle empty string and empty regular expression
   if (*azStr == '\0' && *r == '\0') {
@@ -2959,18 +3552,18 @@ i8 StrLib::iLike2(char* azStr, char* azRegExp)
   // iterate the regular expression
   while (*r) {
 
-    // replace '%' with '.*'
     if (*r == '%') {
+      // replace '%' with '.*'
       *R++ = '.';
       *R++ = '*';
     }
-
-      // replace '_' with '.'
     else if (*r == '_') {
+      // replace '_' with '.'
       *R++ = '.';
     }
-    else
+    else {
       *R++ = *r;
+    }
 
     r++;
   }
@@ -2978,7 +3571,9 @@ i8 StrLib::iLike2(char* azStr, char* azRegExp)
   // null terminate the new regular expression
   *R++ = '\0';
 
-  return bMatch(azStr, sMatchRegExp.azChar());
+  bool bDidMatch = bMatch(azStr, sMatchRegExp.azChar());
+
+  return bDidMatch;
 }
 
 
@@ -3076,12 +3671,15 @@ bool StrLib::bMatch(char* azStr, char* azRegExp)
 /*----------------------------------------------------------------------------*/
 /* bMatchHere: search for regexp at beginning of string                       */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bMatchHere(char* azStr, char* azRegExp)
-{
+bool StrLib::bMatchHere(char* azStr, char* azRegExp) {
+  //vTrace("bMatchHere: %s : %s\n"_Stz,azStr,azRegExp);
 
-  //if (azRegExp[0] == '\0')
   if (azRegExp[0] == '\0' && *azStr == '\0')
     return true;
+
+  if (azRegExp[0] == '\\') {
+    return bMatchHere(azStr,azRegExp+1);
+  }
 
   if (azRegExp[1] == '*')
     return bMatchStar(azStr,azRegExp+2,azRegExp[0]);
@@ -3091,7 +3689,7 @@ bool StrLib::bMatchHere(char* azStr, char* azRegExp)
   
   if (*azStr != '\0' && (azRegExp[0] == '.' || azRegExp[0] == *azStr))
     return bMatchHere(azStr+1,azRegExp+1);
-  
+
   return false;
 }
 
@@ -3133,7 +3731,7 @@ char* StrLib::sNew(const char* sFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* get ptr to null terminator                                                 */
 /*----------------------------------------------------------------------------*/
-char* StrLib::zNullTerminator(char* s)
+char* StrLib::azNullTerminator(char* s)
 {
   _static_
   
@@ -3191,7 +3789,7 @@ void StrLib::vPad(char* azDst, i8 iToLength, const char cWith)
   if (iCurrLength >= iToLength)
     return;
   
-  char* z = zNullTerminator(azDst);
+  char* z = azNullTerminator(azDst);
   i8 nChars = iToLength - iCurrLength;
   
   for (i8 iChar = 0; iChar < nChars; iChar++)
@@ -3462,6 +4060,71 @@ void StrLib::vReplaceTail(char* azArg, char* azTail)
 }
 
 /*----------------------------------------------------------------------------*/
+/* remove till given char                                                     */
+/*----------------------------------------------------------------------------*/
+void StrLib::vRemoveTill(char* azArg, const char cTill, bool bRemoveTheTill)
+{
+  _static_
+
+  char* azSrc = azArg;
+  while (*azSrc && *azSrc != cTill)
+    azSrc++;
+
+  if (! *azSrc)
+    return;
+
+  if (bRemoveTheTill)
+    azSrc++;
+
+  vShuffleLeft(azArg,azSrc);
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove leading token                                                       */
+/*----------------------------------------------------------------------------*/
+void StrLib::vRemoveToken(char* azArg)
+{
+  _static_
+
+  char* azRight = azArg;
+
+  // skip leading whitespace
+  while (*azRight) {
+    if (' ' == *azRight || '\n' == *azRight) {
+      azRight++;
+      continue;
+    }
+    break;
+  }
+
+  // something still to process?
+  if (! *azRight)
+    return;
+
+  // skip token
+  while (*azRight) {
+    if (' ' == *azRight || '\n' == *azRight)
+      break;
+    azRight++;
+  }
+
+  // skip whitespace
+  while (*azRight) {
+    if (' ' == *azRight || '\n' == *azRight) {
+      azRight++;
+      continue;
+    }
+    break;
+  }
+
+  // something still to process?
+  if (! *azRight)
+    return;
+
+  vShuffleLeft(azArg,azRight);
+}
+
+/*----------------------------------------------------------------------------*/
 /* reverse a string                                                           */
 /*----------------------------------------------------------------------------*/
 void StrLib::vReverse(char* azDst, char* azSrc)
@@ -3547,6 +4210,30 @@ bool StrLib::bSame(const char* pArg1, const char* pArg2)
 }
 
 /*----------------------------------------------------------------------------*/
+/* shuffle substring left                                                     */
+/*----------------------------------------------------------------------------*/
+void StrLib::vShuffleLeft(char* azDst, const char* azSrc)
+{
+  _static_
+
+  for (;;) {
+    char cCopied = (*azDst++ = *azSrc++);
+    if (! cCopied)
+      return;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* shuffle substring left                                                     */
+/*----------------------------------------------------------------------------*/
+void StrLib::vShuffleLeft(char* azDst, i8 i_Right)
+{
+  _static_
+
+  vShuffleLeft(azDst, azDst + i_Right);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get size in bytes of arg                                                   */
 /*----------------------------------------------------------------------------*/
 i8 StrLib::nSize(const char* s)
@@ -3559,24 +4246,61 @@ i8 StrLib::nSize(const char* s)
 }
 
 /*----------------------------------------------------------------------------*/
-/* skip digit sequence in substr                                              */
+/* skip line comment                                                          */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bSkipNonDigit(char** ps)
+void StrLib::vSkipCommentLine(char** aaCrs)
 {
   _static_
   
-  char *s = *ps;
-  
-  for ( ; *s; s++)
-    if (isdigit(*s))
+  RASSERT(bIsSlash(**aaCrs));
+  (*aaCrs)++;
+  RASSERT(bIsSlash(**aaCrs));
+  (*aaCrs)++;
+
+  while (! bIsNull(**aaCrs)) {
+    if (bIsNewLine(**aaCrs)) {
+      (*aaCrs)++;
       break;
+    }
+    (*aaCrs)++;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* skip white space and comments                                              */
+/*----------------------------------------------------------------------------*/
+void StrLib::vSkipCommentsEtc(char **aazCrs)
+{
+  _static_
   
-  *ps = s;
+  for (;;) {
+    StrLib::vSkipWhite(aazCrs);
+    if (! **aazCrs)
+      return;
+
+    if (StrLib::bIsCommentLine(*aazCrs)) {
+      StrLib::vSkipCommentLine(aazCrs);
+      continue;
+    }
   
-  if (*s)
-    return true;
-  else
-    return false;
+    break;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* skip non digit sequence in substr                                          */
+/*----------------------------------------------------------------------------*/
+void StrLib::vSkipDigits(char** aaSrc)
+{
+  _static_
+  
+  char *aSrc = *aaSrc;
+  
+  for ( ; *aSrc; aSrc++)
+    if ( ! isdigit(*aSrc) )
+      break;
+
+  *aaSrc = aSrc;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3614,19 +4338,24 @@ bool StrLib::bSkipNonAlnum(char** ps)
 }
 
 /*----------------------------------------------------------------------------*/
-/* skip non digit sequence in substr                                          */
+/* skip digit sequence in substr                                              */
 /*----------------------------------------------------------------------------*/
-void StrLib::vSkipDigits(char** aaSrc)
+bool StrLib::bSkipNonDigit(char** ps)
 {
   _static_
   
-  char *aSrc = *aaSrc;
+  char *s = *ps;
   
-  for ( ; *aSrc; aSrc++)
-    if ( ! isdigit(*aSrc) )
+  for ( ; *s; s++)
+    if (isdigit(*s))
       break;
-
-  *aaSrc = aSrc;
+  
+  *ps = s;
+  
+  if (*s)
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3973,6 +4702,64 @@ i8 StrLib::iToI8(const char* s)
   if (bNegative)
     i *= -1;
   
+  return i;
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert arg to i8 with overflow checking                                   */
+/*----------------------------------------------------------------------------*/
+i8 StrLib::iToI8(const char* s, bool* bOverflowed)
+{
+  _static_
+
+  i8 i = 0;
+  bool bNegative = false;
+
+  if (*s && '-' == *s) {
+    bNegative = true;
+    s++;
+  }
+
+  // skip leading 0's
+  while (*s && '0' == *s)
+    s++;
+
+  if (*s && ('x' == *s || 'X' == *s)) {
+    const i8 iLimit = C_I8_MAX / 16;
+    const i8 iModulus = bNegative ? -(C_I8_MIN % 16) : C_I8_MAX % 16;
+
+    s++;
+    while (*s && bIsHex(*s)) {
+      i8 j = iHexToInw(*s++);
+
+      if (i > iLimit || (i == iLimit && j > iModulus) ) {
+        *bOverflowed = true;
+        return -1;
+      }
+
+      i = i * 16 + j;
+    }
+  }
+  else {
+    const i8 iLimit = C_I8_MAX / 10;
+    const i8 iModulus = bNegative ? -(C_I8_MIN % 10) : C_I8_MAX % 10;
+
+    while (*s && bIsDigit(*s)) {
+      i8 j = (*s++ - '0');
+
+      if (i > iLimit || (i == iLimit && j > iModulus) ) {
+        *bOverflowed = true;
+        return -1;
+      }
+
+      i = i * 10 + j;
+    }
+  }
+
+  if (bNegative)
+    i *= -1;
+
+  *bOverflowed = false;
   return i;
 }
 

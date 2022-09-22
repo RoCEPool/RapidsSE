@@ -24,7 +24,7 @@ vch_col15  VARCHAR(32)
 success
 
 load datums "../DATA/Transliterate/date.csv" ;
-failure contains: "invalid rows"
+success
 
 //------------------------------------------------------------------------------
 select bol_col2 from datums;
@@ -40,6 +40,22 @@ rows:
 (FALSE)
 (TRUE)
 (TRUE)
+
+select bol_col2 from datums where bol_col2='true';
+rows:
+(TRUE)
+(TRUE)
+(TRUE)
+(TRUE)
+(TRUE)
+
+select bol_col2 from datums where bol_col2='false';
+rows:
+(FALSE)
+(FALSE)
+(FALSE)
+(FALSE)
+(FALSE)
 
 //------------------------------------------------------------------------------
 select bol_col2 AND TRUE from datums;

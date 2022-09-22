@@ -50,6 +50,7 @@ assert::stack_0
   "OP_callProc.sen"             include
   "OP_catFile.sen"              include
   "OP_changeFolder.sen"         include
+  "OP_checkTable.sen"           include
   "OP_childSelectTest.sen"      include
   "OP_chunk.sen"                include
   "OP_combined.sen"             include
@@ -140,6 +141,7 @@ assert::stack_0
 
 "k" .verbose
   "OP_keyExists.sen"            include
+  "OP_keyNotExists.sen"         include
 
 "l" .verbose
 
@@ -181,10 +183,12 @@ assert::stack_0
   "OP_networkReset.sen"         include
   "OP_nodeHeartbeat.sen"        include
   "OP_nodeInfo.sen"             include
+  "OP_nodeMon.sen"              include
   "OP_noop.sen"                 include
 
 "o" .verbose
 
+  "OP_optimise.sen"             include
   "OP_ordAgg.sen"               include
   "OP_output.sen"               include
 
@@ -196,6 +200,7 @@ assert::stack_0
   "OP_partitionExplain.sen"     include
   "OP_partitionPlan.sen"        include
   "OP_passThru.sen"             include
+  "OP_pathToDfload.sen"         include
   "OP_ping.sen"                 include
   "OP_populateIndex.sen"        include
   "OP_postProject.sen"          include
@@ -266,7 +271,6 @@ assert::stack_0
   "OP_toLglPtnRow.sen"          include
   "OP_toCsv.sen"                include
   "OP_toDemon.sen"              include
-  "OP_pathToDfload.sen"         include
   "OP_top.sen"                  include
   "OP_toStatDemon.sen"          include
   "OP_totalCount.sen"           include

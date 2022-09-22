@@ -158,6 +158,16 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for EV_M_LOWMEMORY ...                                             */
+/*----------------------------------------------------------------------------*/
+: consumeOp_LowMemory \handler
+
+  PipeIn[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for EV_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : consumeOp_StartMarker \handler
@@ -236,6 +246,7 @@
   find: consumeOp_ErroringMarker EV_M_ERRORING   [op].handler!
   find: consumeOp_Exiting        EV_M_EXITING    [op].handler!
   find: consumeOp_LeavingMarker  EV_M_LEAVING    [op].handler!
+  find: consumeOp_LowMemory      EV_M_LOWMEMORY  [op].handler!
   find: consumeOp_StartMarker    EV_M_START      [op].handler!
   find: consumeOp_TriggeredMarker EV_M_TRIGGERED [op].handler!
 

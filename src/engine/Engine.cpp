@@ -95,6 +95,10 @@ pthread_key_t giTLS_ThreadKey  = C_UNKNOWN;
 pthread_key_t giTLS_TaskKey    = C_UNKNOWN;
 pthread_key_t giTLS_HandlerKey = C_UNKNOWN;
 pthread_key_t giTLS_StepKey    = C_UNKNOWN;
+pthread_key_t giTLS_StepAccum  = C_UNKNOWN;
+pthread_key_t gbTLS_FaultInjection  = false;
+pthread_key_t giTLS_FaultPoint      = C_UNKNOWN;
+pthread_key_t giTLS_CurrentPoint    = C_UNKNOWN;
 
 /*----------------------------------------------------------------------------*/
 /* main entry                                                                 */
@@ -281,7 +285,7 @@ void Engine::vRunCommandLine(void)
         
       case BO_ADD_NODE:
         vStartSystem();
-        AM::SYSTEM::vSystemReady(); // Process has completed the boot sequence
+        //AM::SYSTEM::vSystemReady(); // Process has completed the boot sequence
         vWaitStop();
         break;
         
@@ -307,13 +311,15 @@ void Engine::vRunCommandLine(void)
         
       case BO_START:
         vStartSystem();
-        AM::SYSTEM::vSystemReady(); // Process has completed the boot sequence
+        //AM::SYSTEM::vSystemReady(); // Process has completed the boot sequence
+        vTrace("\nNodeId %lld\n\n"_Stz,AM::NODE::iThisNodeId());
         vWaitStop();
         break;
         
       case BO_START_PROMPT:
         vStartSystem();
-        AM::SYSTEM::vSystemReady(); // Process has completed the boot sequence
+        //AM::SYSTEM::vSystemReady(); // Process has completed the boot sequence
+        vTrace("\nNodeId %lld\n\n"_Stz,AM::NODE::iThisNodeId());
 #ifdef WITH_APPLE
         if (! gxCmdLineArgs.m_xSysArgs.m_bNoMunge )
           vMungeCheck();
@@ -1125,6 +1131,7 @@ void Engine::vPostRecvFns(void)
   gxaSizeHeap[CN_MARKER].m_fpPostRecvFn    = (fpPOSTFN*)Marker::vPostRecv;
   gxaSizeHeap[CN_PARCEL].m_fpPostRecvFn    = (fpPOSTFN*)Parcel::vPostRecv;
   gxaSizeHeap[CN_PROFILE].m_fpPostRecvFn   = (fpPOSTFN*)Profile::vPostRecv;
+  gxaSizeHeap[CN_REJECTJOB].m_fpPostRecvFn = (fpPOSTFN*)RejectJob::vPostRecv;
   gxaSizeHeap[CN_ROWBUFFER].m_fpPostRecvFn = (fpPOSTFN*)RowBuffer::vPostRecv;
   gxaSizeHeap[CN_STREAMDEF].m_fpPostRecvFn = (fpPOSTFN*)StreamDef::vPostRecv;
   gxaSizeHeap[CN_STREAMDEFRHT].m_fpPostRecvFn = (fpPOSTFN*)StreamDefRht::vPostRecv;
@@ -1167,7 +1174,8 @@ void Engine::vPrintConstants(void)
   vTrace("  C_ENT_END_TICKET     = %llx\n"_Stz,(u8)C_ENT_END_TICKET);
   vTrace("  C_ENT_QUANTA         = %lld\n"_Stz,C_ENT_QUANTA);
   
-  vTrace("  C_LOW_BUFFERS        = %lld\n"_Stz,C_LOW_BUFFERS);
+  vTrace("  C_LOW_BUFFERS          = %lld\n"_Stz,C_LOW_BUFFERS);
+  vTrace("  C_LOW_BUFFERS_DIST_JOB = %lld\n"_Stz,C_LOW_BUFFERS_DIST_JOB);
   
   vTrace("  C_MAX_BCD_PRECISION  = %lld\n"_Stz,C_MAX_BCD_PRECISION);
   vTrace("  C_MAX_COLUMNS        = %lld\n"_Stz,C_MAX_COLUMNS);
@@ -1575,6 +1583,8 @@ void Engine::vSignalHandler(int iSignal)
 /*----------------------------------------------------------------------------*/
 void Engine::vStartSystem(void)
 {
+  RASSERT(! AM::SYSTEM::bReady());
+
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("\n+\n+ %lld) System Start\n+\n"_Stz,giProgressPoint++);
     
@@ -1646,7 +1656,7 @@ void Engine::vStartSystem(void)
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("  Adding PostRecv Functions\n"_Stz);
   vPostRecvFns();
-  
+
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("  Adding LowMemory Discard\n"_Stz);
   vLowMemoryDiscard();
@@ -1675,7 +1685,6 @@ void Engine::vStartSystem(void)
     vTrace("  Spawning Threads\n"_Stz);
   
   Scheduler::vScheduler_Boot();
-  
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -1730,7 +1739,10 @@ void Engine::vStartSystem(void)
   
   // mark attachmap to be ready for connections
   gpAttachMap->vAttachMapState(C_READY);
-    
+
+  while (! AM::SYSTEM::bReady())
+    sleep(1);
+
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT)) {
     vTrace("\n++\n++ System Started\n++\n"_Stz);
   }

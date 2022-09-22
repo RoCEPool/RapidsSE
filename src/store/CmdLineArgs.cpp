@@ -165,6 +165,7 @@ void CmdLineArgs::vInit(void)
   m_xSysArgs.m_bRLUDiary        = false;
   m_xSysArgs.m_bRLUTimer        = false;
   m_xSysArgs.m_bShmLock         = false;
+  m_xSysArgs.m_iSocketLowMem    = C_UNKNOWN;
   m_xSysArgs.m_bSysMetrics      = false;
   m_xSysArgs.m_i_ThisNode       = C_UNKNOWN;
   m_xSysArgs.m_nThreads         = 12;
@@ -830,16 +831,21 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       }
 
       i8 iTotalMemory = MemLib::iGetTotalMemory();
-      if (! m_xSysArgs.m_bDeveloper &&
-          m_xSysArgs.m_iRegionSize > DIV(C_MAX_SHM_PERCENT * iTotalMemory, 100)) {
-        vPrintErrorMarker(argv, i_Arg);
-        vTrace("Invalid size argument value: %s\n"_Stz,argv[i_Arg].szStz());
-        s32 sMag;
-        MagLib::vByteMag(iTotalMemory,sMag);
-        vTrace("Cannot set size > %lld%% of memory on this node (node has only %s of memory)\n"_Stz,
-              C_MAX_SHM_PERCENT,
-              sMag.azChar());
-        return false;
+      if (! m_xSysArgs.m_bDeveloper) {
+
+        bool bAbove95Pct = m_xSysArgs.m_iRegionSize > DIV(C_MAX_SHM_PERCENT * iTotalMemory, 100);
+        bool bLt10GBLeft = iTotalMemory - m_xSysArgs.m_iRegionSize < C_MAX_LEFTOVER_MEM;
+
+        if (bAbove95Pct && bLt10GBLeft) {
+          vPrintErrorMarker(argv, i_Arg);
+          vTrace("Invalid size argument value: %s\n"_Stz, argv[i_Arg].szStz());
+          s32 sMag;
+          MagLib::vByteMag(iTotalMemory, sMag);
+          vTrace("Cannot set size > %lld%% of memory on this node (node has only %s of memory)\n"_Stz,
+                 C_MAX_SHM_PERCENT,
+                 sMag.azChar());
+          return false;
+        }
       }
 
       s32 sMinSize;
@@ -855,6 +861,12 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
         return false;
       }
 
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (szArg->bSame("--socketLowMem"_Stz)) {
+      m_xSysArgs.m_iSocketLowMem = argv[++i_Arg].iToI8();
       continue;
     }
 

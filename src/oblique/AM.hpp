@@ -188,6 +188,7 @@ namespace STORE {
   class PtnStm_cursor;
   class PtnStream;
 
+  class RejectJob;
   class Row;
   class RowBuffer;
   class RowCompactor;
@@ -199,6 +200,7 @@ namespace STORE {
   class Stage;
   class StageVec;
   class Step;
+  class StepAccum;
   class Steps;
   class Stream;
   class StreamDef;
@@ -296,6 +298,9 @@ namespace OBLIQUE
       static void  vMonDemonJobId(JobId tJobId);
       static JobId tMonDemonJobId(void);
 
+      static void  vNodeMonDemonJobId(JobId tJobId);
+      static JobId tNodeMonDemonJobId(void);
+
       static void  vPageOutDemonJobId(JobId tJobId);
       static JobId tPageOutDemonJobId(void);
 
@@ -353,6 +358,7 @@ namespace OBLIQUE
       static eEC  eLastJobId(JobId tJobId, JobId& tLastJobId);
       static eEC  ePipeToOp0(JobId tJobId, Operand* pOperand, Task* pTask);
       static void vRemoveJob(Job* pJob);
+      static eEC  eSignalParent(Job* pJob);
       static eEC  eSystemCloserSet(JobId tJobId, i8 iSystemCloser);
       static eEC  eUpdateParent(Job* pJob);
     };
@@ -360,9 +366,19 @@ namespace OBLIQUE
     class JOB
     {
     public:
+      static void vAckOriginatingJob(JobId tOriginId);
       static bool bHasTag(Job* pJob, Stz* szTagNm);
       static Stz* szJobNm(Job* pJob);
-      static eEC  ePreExecuteTest(Job* pJob);
+
+      static void vOriginJobNodeFailure(JobId tJobId);
+      static void vPtpJobNodeFailure(JobId tJobId);
+
+      static eEC  ePreExecuteDist(Job* pJob);
+      static eEC  ePreExecuteLocal(Job* pJob);
+
+      static void vRecvdReject(RejectJob* pRejectJob);
+      static void vSendReject(RejectJob* pRejectJob);
+      static void vTriggerExecute(JobId tDistId);
     };
   
     class JOBS
@@ -433,6 +449,7 @@ namespace OBLIQUE
     public:
       static void vAssertAllocate(void);
       static bool bIsRunningLow(void);
+      static bool bIsRunningLowDist(void);
     };
   
     class METRICS
@@ -514,6 +531,7 @@ namespace OBLIQUE
     {
     public:
       static i8 iSePid(void);
+      static bool bSeRunning(void);
     };
 
     class PROMPT
@@ -616,6 +634,7 @@ namespace OBLIQUE
       static i8   nActiveJobs(void);
       static i8   nNanoseconds(void);
       static bool bPassesLowMem(Job* pJob);
+      static bool bPassesLowMemDist(Job* pJob);
       static bool bPassesOpenSystem(Job* pJob);
       static bool bReapEnabled(void);
       static void vReapEnabled(bool bReapEnabled);
@@ -652,6 +671,13 @@ namespace OBLIQUE
     public:
       static Timer* pReferenceTimer(void);
       static Timer* pSinceTimer(void);
+    };
+
+    class TOKENISE
+    {
+    public:
+      static TokenVec* pTokeniseSen(Stz* szString);
+      static void vTokeniseSen(TokenVec* pTknVec, Stz* szString);
     };
 
     class TRACE
@@ -922,11 +948,11 @@ namespace OBLIQUE
     static void vJob_DumpLocal(void);
     static void vJob_DumpOriginating(void);
     static void vJob_DumpParticipating(void);
-    static Job* pJob_FindOriginating(JobId tJobId);
-    static Job* pJob_FindParticipating(JobId tJobId);
+    static Job* pJob_FindOriginating(JobId tJobId, bool bLock);
+    static Job* pJob_FindParticipating(JobId tJobId, bool bLock);
     static void vJob_RemoveLocal(Job* pJob);
-    static void vJob_RemoveOriginating(Job* pJob);
-    static void vJob_RemoveParticipating(Job* pJob);
+    static void vJob_RemoveOriginating(Job* pJob, bool bLock = true);
+    static void vJob_RemoveParticipating(Job* pJob, bool bLock = true);
     static void vJob_RemoveRetired(Job* pJob);
 
   };

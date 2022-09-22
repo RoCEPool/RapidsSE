@@ -11,6 +11,7 @@ enum eOM // operator markers
   /*    */ OM_CANCELMARKER,
   /*    */ OM_CANCELLING,
   /*    */ OM_CANCELLEDMARKER,
+  /*    */ OM_CHILDEXIT,
   /*    */ OM_CLEANING,
   /*    */ OM_CLEANED,
   /*    */ OM_COMMENCEMARKER,
@@ -22,27 +23,28 @@ enum eOM // operator markers
   /*    */ OM_ENDMARKER,
   /*    */ OM_ENDEDMARKER,
   /*    */ OM_ENDINGMARKER,
-  /*    */ OM_ENDCRWRHT,
-  /*    */ OM_ENDROWRHT,
   /*    */ OM_EOSMARKER,
   /*    */ OM_ERRORMARKER,
   /*    */ OM_ERROREDMARKER,
   /*    */ OM_ERRORINGMARKER,
+  /*    */ OM_EXIT,
   /*    */ OM_EXITING,
   /*    */ OM_EXITED,
   
   /*    */ OM_FINISHED,
   /*    */ OM_FLUSH,
-  
+
+  /*    */ OM_HARDABORT,
+
   /*    */ OM_INVOKEMARKER,
   
   /*    */ OM_LEAVEMARKER,
   /*    */ OM_LEAVINGMARKER,
   /*    */ OM_LEFTMARKER,
-  /*    */ OM_LEFTOUTER_CRWLFT,
-  /*    */ OM_LEFTOUTER_ROWLFT,
+  /*    */ OM_LOWMEMORY,
   
   /*    */ OM_NEXTBUFFERMARKER,
+  /*    */ OM_NODELOSSABORT,
   
   /*    */ OM_PULSEDMARKER,
   
@@ -50,9 +52,7 @@ enum eOM // operator markers
   /*    */ OM_RETURNEDMARKER,
   
   /*    */ OM_STARTEDMARKER,
-  /*    */ OM_STARTCRWRHT,
   /*    */ OM_STARTMARKER,
-  /*    */ OM_STARTROWRHT,
   /*    */ OM_STREAMDEFRHT,
   
   /*    */ OM_TRIGGER,
@@ -69,6 +69,7 @@ static Stz* aOM[]
   /*    */ "CANCELMARKER"_Stz,
   /*    */ "CANCELLING"_Stz,
   /*    */ "CANCELLEDMARKER"_Stz,
+  /*    */ "CHILDEXIT"_Stz,
   /*    */ "CLEANING"_Stz,
   /*    */ "CLEANED"_Stz,
   /*    */ "COMMENCEMARKER"_Stz,
@@ -80,27 +81,27 @@ static Stz* aOM[]
   /*    */ "ENDMARKER"_Stz,
   /*    */ "ENDEDMARKER"_Stz,
   /*    */ "ENDINGMARKER"_Stz,
-  /*    */ "ENDCRWRHT"_Stz,
-  /*    */ "ENDROWRHT"_Stz,
   /*    */ "EOSMARKER"_Stz,
   /*    */ "ERRORMARKER"_Stz,
   /*    */ "ERROREDMARKER"_Stz,
   /*    */ "ERRORINGMARKER"_Stz,
+  /*    */ "EXIT"_Stz,
   /*    */ "EXITINGMARKER"_Stz,
   /*    */ "EXITEDMARKER"_Stz,
   
   /*    */ "FINISHED"_Stz,
   /*    */ "FLUSH"_Stz,
-  
+
+  /*    */ "HARDABORT"_Stz,
   /*    */ "INVOKEMARKER"_Stz,
   
   /*    */ "LEAVEMARKER"_Stz,
   /*    */ "LEAVINGMARKER"_Stz,
   /*    */ "LEFTMARKER"_Stz,
-  /*    */ "LEFTOUTER_CRWLFT"_Stz,
-  /*    */ "LEFTOUTER_ROWLFT"_Stz,
+  /*    */ "LOWMEMORY"_Stz,
   
   /*    */ "NEXTBUFFERMARKER"_Stz,
+  /*    */ "NODELOSSABORT"_Stz,
   
   /*    */ "PULSEDMARKER"_Stz,
   
@@ -108,9 +109,7 @@ static Stz* aOM[]
   /*    */ "RETURNEDMARKER"_Stz,
   
   /*    */ "STARTEDMARKER"_Stz,
-  /*    */ "STARTCRWRHT"_Stz,
   /*    */ "STARTMARKER"_Stz,
-  /*    */ "STARTROWRHT"_Stz,
   /*    */ "STREAMDEFRHT"_Stz,
   
   /*    */ "TRIGGER"_Stz,

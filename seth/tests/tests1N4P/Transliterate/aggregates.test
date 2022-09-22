@@ -24,6 +24,42 @@ create table nation (
 );
 success
 
+SELECT count(n_regionkey) FROM nation;
+rows:
+  (0)
+
+SELECT SUM(n_regionkey) FROM nation;
+rows:
+  (null)
+
+SELECT MIN(n_regionkey) FROM nation;
+rows:
+  (null)
+
+SELECT MAX(n_regionkey) FROM nation;
+rows:
+  (null)
+
+SELECT AVG(n_regionkey) FROM nation;
+rows:
+ (null)
+
+SELECT count(n_regionkey) FROM nation;
+rows:
+  (0)
+
+SELECT SUM(n_regionkey) FROM nation group by n_nationkey;
+rows: 0
+
+SELECT MIN(n_regionkey) FROM nation group by n_nationkey;
+rows: 0
+
+SELECT MAX(n_regionkey) FROM nation group by n_nationkey;
+rows: 0
+
+SELECT AVG(n_regionkey) FROM nation group by n_nationkey;
+rows: 0
+
 load nation "../DATA/Transliterate/nationAgg.tbl";
 success
 
@@ -65,10 +101,78 @@ rows:
   ('FRANCE')
   ('GERMANY')
 
--- basic select of aggregation
-SELECT SUM(n_regionkey) FROM nation;
+-- basic select of aggregation with having
+SELECT SUM(n_regionkey) FROM nation having SUM(n_regionkey) > 50;
 rows: 
   (53)
+
+SELECT SUM(n_regionkey)/2 FROM nation having SUM(n_regionkey)/2 > 25;
+rows:
+  (26)
+
+SELECT count(n_regionkey) FROM nation having count(n_regionkey) * 2 = 54;
+rows:
+  (27)
+
+SELECT MIN(n_regionkey) FROM nation having MIN(n_regionkey) != 0;
+rows: 0
+
+SELECT MAX(n_regionkey) FROM nation having MAX(n_regionkey)*2 > 7;
+rows:
+  (4)
+
+SELECT AVG(n_regionkey) FROM nation having AVG(n_regionkey) = 1.96;
+rows:
+ (1.96)
+
+-- basic select of aggregation
+SELECT SUM(n_regionkey) FROM nation;
+rows:
+  (53)
+
+SELECT count(n_regionkey) FROM nation;
+rows:
+  (27)
+
+SELECT count(n_regionkey+null) FROM nation;
+rows:
+  (0)
+
+SELECT count(null+n_regionkey) FROM nation;
+rows:
+  (0)
+
+SELECT SUM(n_regionkey+null) FROM nation;
+rows:
+  (null)
+
+SELECT SUM(null+n_regionkey) FROM nation;
+rows:
+  (null)
+/*
+SELECT MIN(n_regionkey+null) FROM nation;
+rows:
+  (null)
+
+SELECT MIN(null+n_regionkey) FROM nation;
+rows:
+  (null)
+
+SELECT MAX(n_regionkey+null) FROM nation;
+rows:
+  (null)
+
+SELECT MAX(null+n_regionkey) FROM nation;
+rows:
+  (null)
+*/
+SELECT AVG(n_regionkey+null) FROM nation;
+rows:
+ (null)
+
+SELECT AVG(null+n_regionkey) FROM nation;
+rows:
+ (null)
 
 -- basic select of grouped columnRef and aggregation
 -- we see INDIA twice because they are coming from different partitions (different nationKey)
@@ -298,6 +402,14 @@ rows:
 SELECT SUM(n_nationkey) from nation HAVING SUM(n_nationkey) > 0;
 rows:
  (329)
+
+select N_REGIONKEY,max(N_NAME) from nation group by N_REGIONKEY;
+rows:
+ (0,'MOZAMBIQUE')
+ (1,'UNITED STATES')
+ (2,'VIETNAM')
+ (3,'UNITED KINGDOM')
+ (4,'SAUDI ARABIA')
 
 DROP TABLE nation;
 success

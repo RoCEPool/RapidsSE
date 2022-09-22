@@ -85,6 +85,7 @@ IndexTree::IndexTree(Index* pIndex, IndexDef* pIndexDef, i8 i_TablePtn)
   m_pIndexDef = pIndexDef ? new IndexDef(pIndexDef) : nullptr;
   m_i_TablePtn = i_TablePtn;
   m_pRootEntBuffer  = nullptr;
+  m_pPayStrBuffer = nullptr;
   
   m_nEntryBuffers  = 0;
   
@@ -107,6 +108,7 @@ IndexTree::~IndexTree(void) noexcept(false)
 
   vTruncate();
   delete m_pIndexDef;
+  delete m_pPayStrBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -123,17 +125,21 @@ void IndexTree::vDump(eCN eClass, Object* pObject, Stz* aTab)
   UNUSED(aTab);
 }
 
+void* aIndexTree_allotPayStr(void* pIndexTree, char* sStr) {
+  return (void*)IndexTree::aAllotPayStr((IndexTree*)pIndexTree, (Stz*)sStr);
+}
 void* aIndexTree_begin(void* pIndexTree, void** ppEntBuffer) {
   return (void*)IndexTree::aIndexBegin((IndexTree*)pIndexTree, (EntBuffer**) ppEntBuffer);
 }
 void* aIndexTree_findEntry(void* aIndexTree, void* aKey) {
   return (void*)IndexTree::aFindEntry((IndexTree*) aIndexTree, (Key*) aKey);
 }
-void* aIndexTree_insertEnt(void* aIndexTree, void* aEnt) {
-  return IndexTree::aInsertEnt((IndexTree*)aIndexTree, (Ent*)aEnt);
+void* aIndexTree_insertEnt(void* aIndexTree, void* aEnt, i8* piErrorCode) {
+  return IndexTree::aInsertEnt((IndexTree*)aIndexTree, (Ent*)aEnt, piErrorCode);
 }
-void* aIndexTree_insertEntTop(void* aIndexTree, void* aEnt, void** aaEntBottom, i8 iTopCount) {
-  return IndexTree::aInsertEntTop((IndexTree*)aIndexTree, (Ent*)aEnt, (Ent**)aaEntBottom, iTopCount);
+void* aIndexTree_insertEntTop(void* aIndexTree, void* aEnt, void** aaEntBottom, i8 iTopCount, i8* piErrorCode) {
+  return IndexTree::aInsertEntTop((IndexTree*)aIndexTree, (Ent*)aEnt, (Ent**)aaEntBottom,
+                                  iTopCount, piErrorCode);
 }
 void* aIndexTree_positionGE(void* aIndexTree, void** aaEntBuffer, void* aKey) {
   return IndexTree::aPositionGE((IndexTree*) aIndexTree, (EntBuffer**) aaEntBuffer, (Key*) aKey);
@@ -146,6 +152,16 @@ void *aIndexTree_positionLE(void* aIndexTree, void* aKey) {
 }
 void *aIndexTree_positionLT(void* aIndexTree, void* aKey) {
   return IndexTree::aPositionLT((IndexTree*) aIndexTree, (Key*) aKey);
+}
+
+/*----------------------------------------------------------------------------*/
+/* allocate a pay load string                                                  */
+/*----------------------------------------------------------------------------*/
+char* IndexTree::aAllotPayStr(IndexTree* pIndexTree, Stz* szStz) {
+
+  _static_
+
+  return (char*)pIndexTree->pAllotPayStr(szStz)->szStz();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -177,26 +193,38 @@ Ent* IndexTree::aIndexBegin(IndexTree* pIndexTree, EntBuffer** ppEntBuffer)
 /*----------------------------------------------------------------------------*/
 /* insert an entry for given row into this index at level 0                   */
 /*----------------------------------------------------------------------------*/
-Ent* IndexTree::aInsertEnt(IndexTree* pIndexTree, Ent* pEnt)
+Ent* IndexTree::aInsertEnt(IndexTree* pIndexTree, Ent* pEnt, i8* piErrorCode)
 {
   _static_
 
-  Ent* aInsertedEntry = pIndexTree->aInsertEntry(pEnt);
+  try {
+    Ent *aInsertedEntry = pIndexTree->aInsertEntry(pEnt);
 
-  //pIndexTree->vDump(false);
+    //pIndexTree->vDump(false);
 
-  return aInsertedEntry;
+    return aInsertedEntry;
+  }
+  catch (LowMemory xLowMemory) {
+    *piErrorCode = EC_LOW_MEMORY;
+    return nullptr;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
 /* insert an entry for given row into this index at level 0                   */
 /*----------------------------------------------------------------------------*/
-Ent* IndexTree::aInsertEntTop(IndexTree* pIndexTree, Ent* pEnt, Ent** ppEntBottom, i8 iTopCount)
+Ent* IndexTree::aInsertEntTop(IndexTree* pIndexTree, Ent* pEnt, Ent** ppEntBottom,
+                              i8 iTopCount, i8* piErrorCode)
 {
   _static_
 
-  return pIndexTree->pInsertEntTop_(pEnt, ppEntBottom, iTopCount);
-
+  try {
+    return pIndexTree->pInsertEntTop_(pEnt, ppEntBottom, iTopCount);
+  }
+  catch (LowMemory xLowMemory) {
+    *piErrorCode = EC_LOW_MEMORY;
+    return nullptr;
+}
 }
 
 /*----------------------------------------------------------------------------*/
@@ -348,6 +376,22 @@ Ent* IndexTree::aPositionLT(IndexTree* pIndexTree, Key* aKey)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* allot a pay load string                                                    */
+/*----------------------------------------------------------------------------*/
+PayStr* IndexTree::pAllotPayStr(Stz* szStz)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+
+  if (! m_pPayStrBuffer) {
+    m_pPayStrBuffer = new PayStrBuffer;
+  }
+
+  PayStr* pPayStr = new (m_pPayStrBuffer,szStz) PayStr;
+
+  return pPayStr;
+}
 
 /*----------------------------------------------------------------------------*/
 /* analyze table                                                              */

@@ -21,6 +21,7 @@ namespace BASE
     
   public:    
     String_t(void);
+    String_t(char* azArg);
     String_t(Stz* szArg);
    ~String_t(void) noexcept(false);
   
@@ -95,6 +96,28 @@ String_t<AREA>::String_t(void)
 #else
   m_caCharArea[0] = '\0';
 #endif
+
+  _checkInitialisedSize_(AREA);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+template <i8 AREA>
+String_t<AREA>::String_t(char* azArg)
+        : Object(CN_STRING_T)
+{
+  _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
+
+  m_nArea = AREA;
+  m__reserved__ = C_UNKNOWN;
+  m__reserved2__ = C_UNKNOWN;
+
+#ifdef WITH_CHECK_INITIALISED
+  MemLib::vZero(m_caCharArea,AREA,CN_STRING_T);
+#endif
+
+  StrLib::vCopyLen(m_caCharArea,azArg,AREA-1);
 
   _checkInitialisedSize_(AREA);
 }

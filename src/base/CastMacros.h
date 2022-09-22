@@ -7,6 +7,12 @@
 // CAST
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+#define _ANY_TOUNK(iErrorCode)            \
+{                                         \
+  iArg1 = *(--paW);                       \
+  *paW++ = C_DATUM_NULL;                  \
+}
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  TO BCD
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -45,7 +51,7 @@
   }
 
 #define _VCH_TOBCD(iErrorCode) \
-  NEVER_REACH;
+  iErrorCode = EC_NOT_IMPLEMENTED;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  TO FLOAT
@@ -58,7 +64,8 @@
     *paW++ = C_DATUM_NULL;                                               \
   }                                                                      \
   else {                                                                 \
-    fltArg1.m_dFlt = (d8)(bcdArg1.m_iMantissa / iaPow10[bcdArg1.m_iScale]); \
+    fltArg1.m_dFlt = (d8)(bcdArg1.m_iMantissa);                          \
+    fltArg1.m_dFlt = fltArg1.m_dFlt / iaPow10[bcdArg1.m_iScale];         \
     *paW++ = fltArg1.m_iAsI8 ;                                           \
   }                                                                      \
 }
@@ -66,47 +73,48 @@
 // INT to Float
 #define _INT_TOFLT(iErrorCode) \
 {                                                                          \
-    fltArg1.m_iAsI8 = *(--paW);                                            \
-    if (iErrorCode != EC_NONE ||                                           \
-    fltArg1.m_iAsI8 == C_DATUM_NULL) {                                     \
-      *paW++ = C_DATUM_NULL;                                               \
-    }                                                                      \
-    else {                                                                 \
-      if(fltArg1.m_dFlt > (d8)C_FLT_MAX) {                                 \
-        iErrorCode = EC_ARITHMETIC_OVERFLOW;                               \
-        *paW++ = C_DATUM_NULL;                                             \
-      }                                                                    \
-      else if(fltArg1.m_dFlt < (d8) C_FLT_MIN) {                           \
-        iErrorCode = EC_ARITHMETIC_UNDERFLOW;                              \
-        *paW++ = C_DATUM_NULL;                                             \
-      }                                                                    \
-      else {                                                               \
-        fltArg2.m_dFlt = fltArg1.m_iAsI8;                                  \
-        *paW++ = fltArg2.m_iAsI8;                                          \
-      }                                                                    \
-    }                                                                      \
+  fltArg1.m_iAsI8 = *(--paW);                                            \
+  if (iErrorCode != EC_NONE ||                                           \
+  fltArg1.m_iAsI8 == C_DATUM_NULL) {                                     \
+    *paW++ = C_DATUM_NULL;                                               \
+  }                                                                      \
+  else {                                                                 \
+    if(fltArg1.m_dFlt > (d8)C_FLT_MAX) {                                 \
+      iErrorCode = EC_ARITHMETIC_OVERFLOW;                               \
+      *paW++ = C_DATUM_NULL;                                             \
+    }                                                                    \
+    else if(fltArg1.m_dFlt < (d8) C_FLT_MIN) {                           \
+      iErrorCode = EC_ARITHMETIC_UNDERFLOW;                              \
+      *paW++ = C_DATUM_NULL;                                             \
+    }                                                                    \
+    else {                                                               \
+      fltArg2.m_dFlt = fltArg1.m_iAsI8;                                  \
+      *paW++ = fltArg2.m_iAsI8;                                          \
+    }                                                                    \
+  }                                                                      \
 }
 
 // Float to int is just drop the decimal digits?
 #define _FLT_TOINT(iErrorCode)                                             \
 {                                                                          \
-  fltArg1.m_iAsI8 = *(--paW);                                              \
-  if (iErrorCode != EC_NONE ||                                             \
-    fltArg1.m_iAsI8 == C_DATUM_NULL) {                                     \
-    *paW++ = C_DATUM_NULL;                                                 \
+    iArg1 = *(--paW);                                                      \
+    fltArg1.m_iAsI8 = iArg1;                                               \
+    if (iErrorCode != EC_NONE ||                                           \
+        iArg1 == C_DATUM_NULL) {                                           \
+      *paW++ = C_DATUM_NULL;                                               \
   }                                                                        \
   else {                                                                   \
-    if(fltArg1.m_iAsI8 > (i8)C_INT_MAX) {                                  \
+    if(fltArg1.m_dFlt > (i8)C_I8_MAX) {                                    \
       iErrorCode = EC_ARITHMETIC_OVERFLOW;                                 \
       *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
-    else if(fltArg1.m_iAsI8 < (i8) C_INT_MIN) {                            \
+    else if(fltArg1.m_dFlt < (i8) C_I8_MIN) {                              \
       iErrorCode = EC_ARITHMETIC_UNDERFLOW;                                \
       *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
-      fltArg1.m_iAsI8 = iArg1;                                             \
-      *paW++ = (i8)fltArg1.m_dFlt;                                         \
+      *paW++ = (i8)( fltArg1.m_dFlt >= 0.0 ?                               \
+        (fltArg1.m_dFlt + 0.5) : (fltArg1.m_dFlt - 0.5) );                 \
     }                                                                      \
   }                                                                        \
 }
@@ -202,6 +210,23 @@
 }
 
 
+#define _FLT_TOVCH(iErrorCode, szStrArea)                             \
+{                                                                     \
+  fltArg1.m_iAsI8 = *(--paW);                                         \
+  if (iErrorCode != EC_NONE ||                                        \
+    fltArg1.m_iAsI8 == C_DATUM_NULL) {                                \
+    *paW++ = C_DATUM_NULL;                                            \
+  }                                                                   \
+  else {                                                              \
+    sprintf(szStrArea, "%.9e", fltArg1.m_dFlt);                       \
+    *paW++ = (i8)szStrArea;                                           \
+    szStrArea += strlen(szStrArea) + 1;                               \
+  }                                                                   \
+}
+
+/*
+ * Does not take care of min/max flt to varchar
+ *
 // how many decimal places , 10?
 //WARNING do we need to length of string?
 
@@ -251,6 +276,7 @@
     szStrArea += strlen(szStrArea) + 1;                               \
   }                                                                   \
 }
+*/
 
 // varchar TO FLT
 #define _VCH_TOFLT(iErrorCode)                                        \
@@ -299,43 +325,71 @@
     }                                                                      \
   }
 
-#define _INT_TOINT(iErrorCode) \
-  NEVER_REACH;
-
 #define _VCH_TOINT(iErrorCode) \
-  NEVER_REACH;
+  iErrorCode = EC_NOT_IMPLEMENTED;
 
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // TO DATE
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#define _TSP_TODTE(iErrorCode) \
-  NEVER_REACH;
+#define _TSP_TODTE(iErrorCode)                                             \
+  {                                                                        \
+    xTsp1.m_iAsI8 = *(--paW);                                              \
+    if (iErrorCode != EC_NONE ||                                           \
+      xTsp1.m_iAsI8 == C_DATUM_NULL) {                                     \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      xDte1.m_iAsI8 = 0;                                                   \
+                                                                           \
+      xDte1.m_uDay = xTsp1.m_uDay;                                         \
+      xDte1.m_uMonth = xTsp1.m_uMonth;                                     \
+      xDte1.m_uYearDelta = xTsp1.m_uYearDelta;                             \
+                                                                           \
+      *paW++ = xDte1.m_iAsI8;                                              \
+    }                                                                      \
+  }
 
 #define _VCH_TODTE(iErrorCode) \
-  NEVER_REACH;
+  iErrorCode = EC_NOT_IMPLEMENTED;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // TO IVL
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #define _VCH_TOIVL(iErrorCode) \
-  NEVER_REACH;
+  iErrorCode = EC_NOT_IMPLEMENTED;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // TO IVY
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #define _VCH_TOIVY(iErrorCode) \
-  NEVER_REACH;
+  iErrorCode = EC_NOT_IMPLEMENTED;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // TO TME
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#define _TSP_TOTME(iErrorCode) \
-  NEVER_REACH;
+#define _TSP_TOTME(iErrorCode)                                             \
+  {                                                                        \
+    xTsp1.m_iAsI8 = *(--paW);                                              \
+    if (iErrorCode != EC_NONE ||                                           \
+      xTsp1.m_iAsI8 == C_DATUM_NULL) {                                     \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      xTme1.m_iAsI8 = 0;                                                   \
+                                                                           \
+      xTme1.m_uMicro = xTsp1.m_uMicro;                                     \
+      xTme1.m_uSecond = xTsp1.m_uSecond;                                   \
+      xTme1.m_uMinute = xTsp1.m_uMinute;                                   \
+      xTme1.m_uHour = xTsp1.m_uHour;                                       \
+                                                                           \
+      *paW++ = xTme1.m_iAsI8;                                              \
+    }                                                                      \
+  }
 
 #define _VCH_TOTME(iErrorCode) \
-  NEVER_REACH;
+  iErrorCode = EC_NOT_IMPLEMENTED;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // TO TSP
@@ -365,26 +419,46 @@
       *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
+      time_t iSecondsSincePosixEpoch = time(0);                            \
+      struct tm* aLocalDateTime = localtime(&iSecondsSincePosixEpoch);     \
+                                                                           \
+      xTsp1.m_uYearDelta = aLocalDateTime->tm_year;                        \
+      xTsp1.m_uMonth = aLocalDateTime->tm_mon + 1;                         \
+      xTsp1.m_uDay = aLocalDateTime->tm_mday;                              \
+                                                                           \
       xTsp1.m_uMicro = xTme1.m_uMicro;                                     \
       xTsp1.m_uSecond = xTme1.m_uSecond;                                   \
       xTsp1.m_uMinute = xTme1.m_uMinute;                                   \
       xTsp1.m_uHour = xTme1.m_uHour;                                       \
                                                                            \
-      xTsp1.m_uDay = 1;                                                    \
-      xTsp1.m_uMonth = 1;                                                  \
-      xTsp1.m_uYearDelta = 0;                                              \
       *paW++ = xTsp1.m_iAsI8;                                              \
     }                                                                      \
   }
 
 #define _VCH_TOTSP(iErrorCode) \
-  NEVER_REACH;
+  iErrorCode = EC_NOT_IMPLEMENTED;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // TO VCH
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#define _BOL_TOVCH(iErrorCode) \
-  NEVER_REACH;
+#define _BOL_TOVCH(iErrorCode, szDstArea)                                  \
+{                                                                          \
+  iArg1 = *(--paW);                                                        \
+  if (iErrorCode != EC_NONE ||                                             \
+      iArg1 == C_DATUM_NULL) {                                             \
+    *paW++ = C_DATUM_NULL;                                                 \
+  }                                                                        \
+  else {                                                                   \
+    if (iArg1)                                                             \
+      strcpy(szDstArea,"true");                                            \
+    else                                                                   \
+      strcpy(szDstArea,"false");                                           \
+    *paW++ = (i8)szDstArea;                                                \
+    szDstArea += strlen(szDstArea) + 1;                                    \
+  }                                                                        \
+}
+
+
 
 #define _BCD_TOVCH(iErrorCode, szDstArea)                                  \
   {                                                                        \
@@ -571,10 +645,10 @@
   }
 
 #define _IVL_TOVCH(iErrorCode) \
-  NEVER_REACH;
+  iErrorCode = EC_NOT_IMPLEMENTED;
 
 #define _IVY_TOVCH(iErrorCode) \
-  NEVER_REACH;
+  iErrorCode = EC_NOT_IMPLEMENTED;
 
 #define _TSP_TOVCH(iErrorCode, szDstArea)                                  \
   {                                                                        \
@@ -665,9 +739,9 @@
 
 // nothing to do
 // unk remains unk
-#define _UNK_TOANY(iErrorCode, szDstArea) \
-{                                         \
-                                          \
+#define _UNK_TOANY(iErrorCode)                                             \
+{                                                                          \
+                                                                           \
 }
 
 /*============================================================================*/

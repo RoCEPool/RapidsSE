@@ -48,6 +48,9 @@ rows:
   (true)
   (true)
 
+//------------------------------------------------------------------------------
+select dec_col7/0 from datums;
+failure contains: 'divide by zero'
 
 //------------------------------------------------------------------------------
 select 0.0 > dec_col7 from datums;
@@ -99,6 +102,25 @@ rows:
   (false)
   (false)
   (false)
+
+//------------------------------------------------------------------------------
+select dec_col6 from datums where dec_col6 != null;
+rows: 0
+
+select dec_col6 from datums where dec_col6 = null;
+rows: 0
+
+select dec_col6 from datums where dec_col6 > null;
+rows: 0
+
+select dec_col6 from datums where dec_col6 >= null;
+rows: 0
+
+select dec_col6 from datums where dec_col6 < null;
+rows: 0
+
+select dec_col6 from datums where dec_col6 <= null;
+rows: 0
 
 //------------------------------------------------------------------------------
 select dec_col6 from datums order by dec_col6;

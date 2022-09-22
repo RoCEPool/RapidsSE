@@ -44,7 +44,9 @@ void Step::vLocalsBar(void)
   for (;;) {
     
     // get name of local variable
-    m_pInput->vReadToken();
+    eEC eError = EC_NONE;
+    bool b = m_pInput->bReadToken(eError);
+    UNUSED(b);
 
     // end of locals declaration?
     if (m_pInput->szChars()->bEqual("|"_Stz))
@@ -98,11 +100,15 @@ void Step::vLocalsBar(void)
 void Step::vLocalsTo(void)
 {
   ENTRY();
-    
+
+  bool b;
+  eEC eError = EC_NONE;
+
   Word* pCurrentWord = m_pSenCompiler->pCurrentWord();
   
   // advance to token after to
-  m_pInput->vReadToken();
+  b = m_pInput->bReadToken(eError);
+  UNUSED(b);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

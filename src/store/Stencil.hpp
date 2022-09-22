@@ -134,7 +134,7 @@ static const i8 C_MAX_SHAPES = 32;
     void vSetupTop(Combined* pCombined, Stream* pStream, Op* pOp);
 
     void vSketchEosFilter(Combined* pCombined, Stream* pStream, Op* pOp);
-    void vSketchEosProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp);
+    void vSketchEosProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp, TypedStack* pInitStack);
     void vSketchEosProjectGby(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSketchEosTop(Combined* pCombined, Stream* pStream, Op* pOp);
@@ -145,7 +145,7 @@ static const i8 C_MAX_SHAPES = 32;
 
     Shape* pSketchInflateCrw(Combined* pCombined, Stream* pStream, Op* pOp);
     Shape* pSketchInflateRow(Stream* pStream, Op* pOp);
-    Shape* pSketchKeyExists(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil);
+    Shape* pSketchKeyExists(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil, bool bExists);
     Shape* pSketchLabel(Combined* pCombined, Stream* pStream, Op* pOp);
     Shape* pSketchLimit(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil, Stz* sLabelLoop);
     Shape* pSketchSort(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil, Stz* szLabelLoop);
