@@ -4188,7 +4188,17 @@ bool PROMPT::bPrompt_show(SePrompt* pPrompt)
   TokenVec* pTkVec = pPrompt->pInpTknVec();
 
   ASSERT(pTkVec->pGet(0)->bSame("show"_Stz));
-  
+
+  if (pTkVec->nItems() != 2) {
+    vTrace("error: show { grid | nodes } : %s\n"_Stz, aEC[EC_INVALID_COMMAND]);
+    return false;
+  }
+
+  if ( ! pTkVec->pGet(1)->bIsName() ) {
+    vTrace("error: show { grid | nodes } : %s\n"_Stz, aEC[EC_INVALID_COMMAND]);
+    return false;
+  }
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   if (pTkVec->pGet(1)->bSame("grid"_Stz)) {
     
@@ -4201,7 +4211,7 @@ bool PROMPT::bPrompt_show(SePrompt* pPrompt)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  if (pTkVec->pGet(1)->bSame("nodes"_Stz)) {
+  else if (pTkVec->pGet(1)->bSame("nodes"_Stz)) {
     
     SP_Node spNode;
     for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext())
@@ -4209,6 +4219,12 @@ bool PROMPT::bPrompt_show(SePrompt* pPrompt)
     
     vTrace("\n"_Stz);
     return true;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  else {
+    vTrace("error: show { grid | nodes } : %s\n"_Stz, aEC[EC_INVALID_COMMAND]);
+    return false;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
