@@ -157,6 +157,24 @@ void Board::vDeleteFromTill(Card* pFrom, Card* pTillBefore)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find i_MainCard of given main card                                         */
+/*----------------------------------------------------------------------------*/
+i8 Board::iFindMain(Card* pMainCard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
+
+  i8 nMainCards = this->nMainCards();
+  for (i8 i_MainCard = 0; i_MainCard < nMainCards; i_MainCard++) {
+    Card* pTestCard = pGetMainCard(i_MainCard);
+
+    if (pTestCard == pMainCard)
+      return i_MainCard;
+  }
+
+  return C_UNKNOWN;
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 Card* Board::pFindMain(eCK eCard)
@@ -468,7 +486,7 @@ Card* Board::pPriorSubCard(Card*& rpMainCard, eCK eSubCard, i8 i_PriorToMain)
     rpMainCard = pGetMainCard(i_MainCard);
 
     Card* pSubCard;
-    if (pSubCard = rpMainCard->pFindSubCard(eSubCard))
+    if (pSubCard == rpMainCard->pFindSubCard(eSubCard))
       return pSubCard;
   }
 

@@ -3,9 +3,8 @@
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
-
 #include "Card_MAIN.hpp"
+#include "Card_PRED.hpp"
 
 namespace STORE
 {
@@ -17,6 +16,8 @@ namespace STORE
   
     Card_Scan(void);
    ~Card_Scan(void) noexcept(false);
+
+    bool bIsPredInScope(Card_PRED* pCard_PRED);
   };
 
   Card_Scan* _pCard_Scan(void* aAddr);

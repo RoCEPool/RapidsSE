@@ -16,6 +16,8 @@ __aNewFunction(Card_Stream,CN_CARD)
 __vDeleteFunction(Card_Stream,CN_CARD)
 
 __bIsCard(STORE,Card_Stream,CK_STREAM)
+__pGetSubFunction_Card(STORE,Card_Stream,CK_STREAM)
+
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -130,7 +132,6 @@ i8 Card_Stream::nStreamCols(void)
 
   return nStreamCols;
 }
-
 
 /*============================================================================*/
 /* end                                                                        */

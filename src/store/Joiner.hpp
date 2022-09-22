@@ -28,6 +28,7 @@ namespace STORE
     void vDelete_scan_R(void);
     void vInsert_joinPred(void);
     void vResolve_joinPred(void);
+    void vSubsume_scan(void);
 
   private:
     Card_IndexPred*  pTo_IndexPred (Card_AbsJoin* pCard_AbsJoin,

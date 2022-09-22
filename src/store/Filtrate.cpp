@@ -50,7 +50,7 @@ void Filtrate::vBurstLeftwards(void)
   vBeginIteration();
 
   while (Card_Filter *pCard_filter = _pCard_Filter(pEachMain(CK_FILTER))) {
-    vBurstLeftwards(pCard_filter);
+    vBurstFilterLeftwards(pCard_filter);
   }
 
   vEndIteration();
@@ -151,69 +151,188 @@ void Filtrate::vRemove_predCmp(void)
 /*----------------------------------------------------------------------------*/
 /* inspect all <filter> and attempt to move <predCmp> after <scan>/<absJoin>  */
 /*----------------------------------------------------------------------------*/
-void Filtrate::vBurstLeftwards(Card_Filter* pCard_filter)
+void Filtrate::vBurstFilterLeftwards(Card_Filter* pCard_filter)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
 
-  Card* pMayCard = pDrillForPredCmp(pCard_filter);
+  // get <filter>.<calcBool>
+  //Card_CalcBool* pCard_bool =
+  //    _pCard_CalcBool(pCard_filter->pFindSubCard(CK_CALCBOOL));
 
-  if (pMayCard) {
-    vTrace("vBurstLeftwards discovered %p\n"_Stz,pMayCard);
-    pMayCard->vDump();
-  }
+  Card_CalcBool* pCard_bool = _pGetSub_Card_CalcBool(pCard_filter);
+
+  vPredDrillDown(pCard_bool,pCard_filter);
 }
 
 /*----------------------------------------------------------------------------*/
-/* inspect all <filter> and attempt to move <predCmp> after <scan>/<absJoin>  */
+/* inspect all <filter> and attempt to move <pred> after <scan>/<absJoin>     */
 /*----------------------------------------------------------------------------*/
-Card* Filtrate::pDrillForPredCmp(Card* pParentCard)
+void Filtrate::vPredDrillDown(Card* pParentCard, Card_Filter* pCard_filter)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
 
-  Card* pMayCard = nullptr;
+  Card_PRED* pCandidatePred = nullptr;
 
   i8 nSubCards = pParentCard->nSubCards();
   for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
-    Card* pSubCard = pParentCard->pGetSubCard(i_SubCard);
+    Card *pSubCard = pParentCard->pGetSubCard(i_SubCard);
 
     eCK eSubCard = pSubCard->eCard();
-    if (CK_PREDCMP == eSubCard) {
-      if ( (pMayCard = pCandidatePredCmp(_pCard_PredCmp(pSubCard))) )
-        return pMayCard;
-   }
-    else
-    if (CK_PREDAND == eSubCard) {
-      if ( (pMayCard = pDrillForPredCmp(pSubCard)) )
-        return pMayCard;
-    }
-    else
-    if (CK_PREDOR == eSubCard) {
-      return nullptr;
-    }
-    else {
-      if ( (pMayCard = pDrillForPredCmp(pSubCard)) )
-        return pMayCard;
-    }
-  }
 
-  return nullptr;
+    if (CK_PREDOR  == eSubCard) {
+      return;
+    }
+
+    if (CK_PREDAND  == eSubCard) {
+      if (bMovePredLeft(static_cast<Card_PRED*>(pSubCard),pCard_filter))
+        return;
+    }
+
+    if (CK_PREDCMP == eSubCard) {
+      if (bMovePredLeft(static_cast<Card_PRED*>(pSubCard),pCard_filter))
+        return;
+    }
+
+    vPredDrillDown(pSubCard,pCard_filter);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
-/* inspect all <filter> and attempt to move <predCmp> after <scan>/<absJoin>  */
+/* inspect <PRED>                                                             */
 /*----------------------------------------------------------------------------*/
-Card* Filtrate::pCandidatePredCmp(Card_PredCmp* pCard_PredCmp)
+bool Filtrate::bMovePredLeft(Card_PRED* pCard_PRED, Card_Filter* pCard_filter)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
 
-  vTrace("bCandidatePredCmp candidate %p\n"_Stz,pCard_PredCmp);
-  pCard_PredCmp->vDump();
+  i8 nAbsJoin = 0;
+  i8 nScan    = 0;
 
-  // ADD TEST IF THIS CAN BE MOVED etc
+  vTrace("bMovePredLeft candidate %p\n"_Stz,pCard_PRED);
+  pCard_PRED->vDump();
 
-  return nullptr;
+  for (i8 i_MainCard = 0; /* none */ ; i_MainCard++) {
+    Card *pMainCard = m_pBoard->pGetMainCard(i_MainCard);
+
+    if (pMainCard == pCard_filter)
+      return false;
+
+    eCK eMainCard = pMainCard->eCard();
+
+    if (CK_ABSJOIN == eMainCard) {
+      nAbsJoin++;
+      if (bMovePredToAbsJoin(_pCard_AbsJoin(pMainCard),pCard_PRED)) {
+        return true;
+      }
+    }
+
+    if (CK_SCAN == eMainCard) {
+      nScan++;
+      if (1 == nScan && bMovePredToScan(_pCard_Scan(pMainCard),pCard_PRED)) {
+        return true;
+      }
+    }
+
+    // skip over any other card??
+    vTrace("bMovePredLeft skipping mainCard %s\n"_Stz,aCK[eMainCard]);
+  }
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Filtrate::bMovePredToAbsJoin(Card_AbsJoin* pCard_absJoin, Card_PRED* pCard_PRED)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
+
+  if (! bIsPredMovableToAbsJoin(pCard_absJoin,pCard_PRED))
+    return false;
+
+  vPredMovesToAbsJoin(pCard_PRED,pCard_absJoin);
+
+  vMarkPredCardsAsMoved(pCard_PRED);
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Filtrate::bMovePredToScan(Card_Scan* pCard_scan, Card_PRED* pCard_PRED)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
+
+  if (! bIsPredMovableToScan(pCard_scan,pCard_PRED))
+    return false;
+
+  vPredMovesToScan(pCard_PRED, pCard_scan);
+
+  vMarkPredCardsAsMoved(pCard_PRED);
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Filtrate::vMarkPredCardsAsMoved(Card* pPredCard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
+
+  i8 nSubCards = pPredCard->nSubCards();
+  for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
+    Card *pSubCard = pPredCard->pGetSubCard(i_SubCard);
+
+    //eCK eSubCard = pSubCard->eCard();
+
+    // mark the
+
+    vMarkPredCardsAsMoved(pSubCard);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Filtrate::bIsPredMovableToAbsJoin(Card_AbsJoin* pCard_absJoin, Card_PRED* pCard_PRED)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
+
+  // are all $n in this stream?
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Filtrate::bIsPredMovableToScan(Card_Scan* pCard_scan, Card_PRED* pCard_PRED)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
+
+  Card_Stream* pCard_stream = _pGetSub_Card_Stream(pCard_scan);
+
+  // are all $n in this stream?
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Filtrate::vPredMovesToAbsJoin(Card* pPredCard, Card_AbsJoin* pCard_absJoin)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Filtrate::vPredMovesToScan(Card* pPredCard, Card_Scan* pCard_scan)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
+
+}
 
 
 /*----------------------------------------------------------------------------*/

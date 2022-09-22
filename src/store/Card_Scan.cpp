@@ -35,6 +35,16 @@ Card_Scan::~Card_Scan(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
+/*----------------------------------------------------------------------------*/
+/* is predicate within scope of this <scan> ?                                 */
+/*----------------------------------------------------------------------------*/
+bool Card_Scan::bIsPredInScope(Card_PRED* pCard_PRED)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  return false;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

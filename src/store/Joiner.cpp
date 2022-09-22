@@ -253,6 +253,31 @@ void Joiner::vResolve_joinPred(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* each <scan> <absJoin> becomes <absJoin>/<scan>                             */
+/*----------------------------------------------------------------------------*/
+void Joiner::vSubsume_scan(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_JOINER, _FOOTER_);
+
+  i8 nMainCards = m_pBoard->nMainCards();
+  for (i8 i_MainCard = 0; i_MainCard < nMainCards - 1; i_MainCard++) {
+
+    Card *pMainCard = m_pBoard->pGetMainCard(i_MainCard);
+    if (CK_SCAN != pMainCard->eCard())
+      continue;
+
+    Card *pNextCard = m_pBoard->pGetMainCard(i_MainCard+1);
+    if (CK_ABSJOIN != pNextCard->eCard())
+      continue;
+
+    m_pBoard->vRemoveMainCard(pMainCard);
+    pNextCard->vAppend(pMainCard);
+    i_MainCard--;
+    nMainCards--;
+  }
+ }
+
+/*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

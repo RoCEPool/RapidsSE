@@ -3,9 +3,8 @@
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
-
 #include "Card_MAIN.hpp"
+#include "Card_PRED.hpp"
 
 namespace STORE
 {
@@ -17,6 +16,10 @@ namespace STORE
 
     Card_AbsJoin(void);
     ~Card_AbsJoin(void) noexcept(false);
+
+
+    bool bIsPredInScope(Card_PRED* pCard_PRED);
+
   };
 
   Card_AbsJoin* _pCard_AbsJoin(void* aAddr);

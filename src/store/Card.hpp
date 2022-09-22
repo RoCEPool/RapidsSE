@@ -347,6 +347,16 @@ EndDefine
   } \
 EndDefine
 
+/*----------------------------------------------------------------------------*/
+/* macro for standard safe cast function                                      */
+/*----------------------------------------------------------------------------*/
+#define __pGetSubFunction_Card(SPACENM,CLASSNM,CN) \
+  CLASSNM* SPACENM::_pGetSub_##CLASSNM(Card* pCard) \
+  { \
+    return _p##CLASSNM(pCard->pFindSubCard(CN)); \
+  } \
+EndDefine
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
