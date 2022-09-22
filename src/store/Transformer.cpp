@@ -226,6 +226,14 @@ void Transformer::vTransform2(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append <stream> to all <scan> and then to all <absJoin>
+  m_pOptimiser->pCardCtl()->vSubCards(CK_STREAM,0);
+  //m_pOptimiser->pCardCtl()->vSubCards(CK_EXPR,0);
+
+  m_pOptimiser->pCardCtl()->vPinForm(CK_PREDAND,1);
+  m_pOptimiser->pCardCtl()->vPinForm(CK_PREDCMP,1);
+  m_pOptimiser->pCardCtl()->vPinForm(CK_PREDOR,1);
+  m_pOptimiser->pCardCtl()->vPinForm(CK_TERM,1);
+
   m_pStreamer->vAppend_Streams();
   if (m_bInteractive)
     m_pBoard->vPrintBoard("Streamer::vAppend_Streams() >> "_Stz);

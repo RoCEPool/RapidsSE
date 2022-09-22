@@ -110,7 +110,7 @@ Card::Card(eCK eCard)
   m_iSeqNo = iSeqNo++;
 
   m_cMark1 = ' ';
-  m_cMark2 = '!';
+  m_cMark2 = ' ';
 
   m_pProperties = nullptr;
 
@@ -2602,7 +2602,76 @@ void Card::vPrintCard(Ribbon* pRibbon, i8 iDepth, i8 iBelow)
 
   delete pCard_I;
 }
+/*----------------------------------------------------------------------------*/
+void Card::vPrintCard2(Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  bool bPrune = false;
+  CardCtl* pCardCtl = _pCardCtl(pRibbon->pCtl());
+
+  i8 iPinForm = pCardCtl->iPinForm(m_eCard);
+  if (0 == iPinForm) {
+    vPrintName(pRibbon, iDepth);
+    vPrintDetails(pRibbon, iDepth, bPrune);
+  }
+  else {
+    vPrintCard_byForm(pRibbon, iDepth, iPinForm, bPrune);
+  }
+  //vMark2(' ');
+  if (bPrune)
+    return;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if (! pCardCtl->iSubCards(m_eCard))
+    return;
+
+  ListExoIter2_t<Card>* pSubCard_I = pNewIter();
+  while (pSubCard_I->bHasNext()) {
+    Card* pSubCard = pSubCard_I->pNext();
+    pSubCard->vPrintCard2(pRibbon,iDepth + 1);
+  }
+
+  delete pSubCard_I;
+}
+
+/*----------------------------------------------------------------------------*/
+/* print card onto given ribbon                                               */
+/*----------------------------------------------------------------------------*/
+void Card::vPrintCard_byForm(Ribbon* pRibbon, i8 iDepth, i8 iPinForm, bool& bPrune)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+
+  switch (m_eCard) {
+
+    case CK_PREDAND:
+      _pCard_PredAnd(this)->vPrintName(pRibbon,iDepth);
+      break;
+
+    case CK_PREDCMP:
+      _pCard_PredCmp(this)->vPrintName(pRibbon,iDepth);
+      break;
+
+    case CK_PREDOR:
+      _pCard_PredOr(this)->vPrintName(pRibbon,iDepth);
+      break;
+
+    case CK_TERM:
+      _pCard_Term(this)->vPrintProperties(pRibbon,iDepth,false);
+      break;
+
+    default:
+      vTrace("SWITCH %s: Missing case for eCard %lld %s\n"_Stz
+          ,__func__
+          ,(i8)m_eCard
+          ,aCK[m_eCard]
+      );
+      RASSERT(0);
+      break;
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /* print card onto given ribbon                                               */
