@@ -356,7 +356,9 @@ eGC Card::eToECatg(eCK eCard)
               
     case CK_HASH:       return GC_MAIN;
     case CK_HAVING:     return GC_MAIN;
-                          
+
+    case CK_IDXCOL:                      return GC_SUB;
+    case CK_IDXCOLLIST:                  return GC_SUB;
     case CK_INDEX:                       return GC_SUB;
     case CK_INDEXJOIN:  return GC_MAIN;
     case CK_INDEXPRED:                   return GC_SUB;
@@ -1556,6 +1558,27 @@ void Card::vClearAllMarks(void)
 
 }
 
+/*----------------------------------------------------------------------------*/
+/* get colNm                                                                  */
+/*----------------------------------------------------------------------------*/
+Stz* Card::szColNm(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Stz *szColNm = szGetProperty("szColNm"_Stz);
+
+  return szColNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set colNm                                                                  */
+/*----------------------------------------------------------------------------*/
+void Card::vColNm(Stz* szColNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  vAddProperty("szColNm"_Stz,szColNm);
+}
 
 /*----------------------------------------------------------------------------*/
 /* get cmp                                                                    */
@@ -2757,7 +2780,9 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
 
     case CK_HASH:                       vPrintProperties(pRibbon,iDepth); break;
     case CK_HAVING:                     vPrintProperties(pRibbon,iDepth); break;
-           
+
+    case CK_IDXCOL:                     vPrintProperties(pRibbon,iDepth); break;
+    case CK_IDXCOLLIST:                 vPrintProperties(pRibbon,iDepth); break;
     case CK_INDEX:      vIndexPrint                     (pRibbon,iDepth); break;
     case CK_INDEXJOIN:                  vPrintProperties(pRibbon,iDepth); break;
     case CK_INDEXPRED:                  vPrintProperties(pRibbon,iDepth); break;

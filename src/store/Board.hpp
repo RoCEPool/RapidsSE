@@ -39,6 +39,8 @@
 #include "Card_Hash.hpp"
 #include "Card_Having.hpp"
 
+#include "Card_IdxCol.hpp"
+#include "Card_IdxColList.hpp"
 #include "Card_Index.hpp"
 #include "Card_IndexJoin.hpp"
 #include "Card_IndexPred.hpp"

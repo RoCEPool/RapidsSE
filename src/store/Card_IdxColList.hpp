@@ -13,7 +13,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_IdxColList(void);
+    Card_IdxColList(Index* pIndex);
    ~Card_IdxColList(void) noexcept(false);
   };
 

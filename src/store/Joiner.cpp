@@ -110,6 +110,10 @@ void Joiner::vAppendPrelim_indexJoin(void)
 
       Card_Index* pCard_index = new Card_Index(pIndex);
       pCard_indexJoin->vAppend(pCard_index);
+
+      Card_IdxColList* pCard_idxColList = new Card_IdxColList(pIndex);
+      pCard_indexJoin->vAppend(pCard_idxColList);
+
     }
   }
 

@@ -39,6 +39,7 @@ enum eCK // card kind
   /* */ CK_HASH,
   /* */ CK_HAVING,
 
+  /* */ CK_IDXCOL,
   /* */ CK_IDXCOLLIST,
   /* */ CK_INDEX,
   /* */ CK_INDEXJOIN,
@@ -131,6 +132,7 @@ static Stz* aCK[]
   /* */ "CK_HASH"_Stz,         // CK_HASH
   /* */ "CK_HAVING"_Stz,       // CK_HAVING
 
+  /* */ "CK_IDXCOL"_Stz,       // CK_IDXCOL
   /* */ "CK_IDXCOLLIST"_Stz,   // CK_IDXCOLLIST
   /* */ "CK_INDEX"_Stz,        // CK_INDEX
   /* */ "CK_INDEXJOIN"_Stz,    // CK_INDEXJOIN
@@ -222,7 +224,9 @@ static Stz* aCK_short[]
 
   /* */ "hash"_Stz,            // CK_HASH
   /* */ "having"_Stz,          // CK_HAVING
-  
+
+  /* */ "idxCol"_Stz,          // CK_IDXCOL
+  /* */ "idxColList"_Stz,      // CK_IDXCOLLIST
   /* */ "{index}"_Stz,         // CK_INDEX
   /* */ "indexJoin"_Stz,       // CK_INDEXJOIN
   /* */ "indexPred"_Stz,       // CK_INDEXPRED
@@ -314,6 +318,7 @@ static Stz* aCK_op[]
   /* */ "(none)"_Stz,          // CK_HASH
   /* */ "filter   "_Stz,       // CK_HAVING
 
+  /* */ "(none)"_Stz,          // CK_IDXCOL
   /* */ "(none)"_Stz,          // CK_IDXCOLLIST
   /* */ "(none)"_Stz,          // CK_INDEX
   /* */ "indexJoin "_Stz,      // CK_INDEXJOIN
