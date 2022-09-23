@@ -93,11 +93,34 @@ void Card_Stream::vApplyOrder(Card_Stream* pCard_Stream_src)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get a specific <streamCol>                                                 */
+/* is given <pred> within this stream?                                        */
 /*----------------------------------------------------------------------------*/
 bool Card_Stream::bContainsPred(Card_PRED* pCard_PRED)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  eCK ePredCard = pCard_PRED->eCard();
+
+  if (CK_TERM == ePredCard) {
+    Stz* szTerm = pCard_PRED->szTerm();
+    if (! szTerm->bIsOrdinal())
+      return true;
+
+    i8 iOrdLo = m_pProperties->iValue("iOrdLo"_Stz);
+    i8 iOrdHi = m_pProperties->iValue("iOrdHi"_Stz);
+
+    i8 iOrd = szTerm->iOrdinal();
+    if (iOrd > iOrdHi)
+      return false;
+  }
+
+  i8 nSubCards = pCard_PRED->nSubCards();
+  for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
+    Card *pSubCard = pCard_PRED->pGetSubCard(i_SubCard);
+
+    if (! bContainsPred(static_cast<Card_PRED*>(pSubCard)))
+      return false;
+  }
 
   return true;
 }

@@ -29,11 +29,11 @@ namespace STORE
 
   private:
     void vBurstFilterLeftwards(Card_Filter* pCard_filter);
-    void vPredDrillDown(Card* pParentCard, Card_Filter* pCard_filter);
+    void vPredDrillDown(Card_PRED*, Card_Filter* pCard_filter);
     i8   iMovePredLeft(Card_PRED* pCard_PRED, Card_Filter* pCard_filter);
 
-    bool bMovePredToAbsJoin(Card_AbsJoin* pCard_absJoin, Card_PRED* pCard_PRED);
-    bool bMovePredToScan(Card_Scan* pCard_Scan, Card_PRED* pCard_PRED);
+    i8   iMovePredToAbsJoin(Card_AbsJoin* pCard_absJoin, Card_PRED* pCard_PRED);
+    i8   iMovePredToScan(Card_Scan* pCard_Scan, Card_PRED* pCard_PRED);
 
     i8   iIsPredMovableToAbsJoin(Card_AbsJoin* pCard_absJoin, Card_PRED* pCard_PRED);
     i8   iIsPredMovableToScan(Card_Scan* pCard_scan, Card_PRED* pCard_PRED);
