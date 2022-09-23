@@ -236,9 +236,9 @@ void Transformer::vTransform2(void)
   m_pOptimiser->pCardCtl()->vPinForm(CK_PREDOR,1);
   m_pOptimiser->pCardCtl()->vPinForm(CK_TERM,1);
 
-  m_pStreamer->vAppend_Streams();
+  m_pStreamer->vAppendStream_to_Scan();
   if (m_bInteractive)
-    m_pBoard->vPrintBoard("Streamer::vAppend_Streams() >> "_Stz);
+    m_pBoard->vPrintBoard("Streamer::vAppendStream_to_Scan() >> "_Stz);
 
 
 

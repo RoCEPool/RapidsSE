@@ -95,6 +95,16 @@ void Card_Stream::vApplyOrder(Card_Stream* pCard_Stream_src)
 /*----------------------------------------------------------------------------*/
 /* get a specific <streamCol>                                                 */
 /*----------------------------------------------------------------------------*/
+bool Card_Stream::bContainsPred(Card_PRED* pCard_PRED)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get a specific <streamCol>                                                 */
+/*----------------------------------------------------------------------------*/
 Card_StreamCol* Card_Stream::pGet_streamCol(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

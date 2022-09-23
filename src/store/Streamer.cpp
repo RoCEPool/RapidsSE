@@ -73,7 +73,7 @@ void Streamer::vOrdinal_Range(void)
 
       i8 nStreamCols = pCard_stream->nStreamCols();
       pCard_stream->vAddProperty("iOrdLo"_Stz,iOrdLo);
-      iOrdHi = iOrdLo + nStreamCols;
+      iOrdHi = iOrdLo + nStreamCols - 1;
       pCard_stream->vAddProperty("iOrdHi"_Stz,iOrdHi);
       iOrdLo = iOrdHi + 1;
 
@@ -89,7 +89,7 @@ void Streamer::vOrdinal_Range(void)
 
       i8 nStreamCols = pCard_stream->nStreamCols();
       pCard_stream->vAddProperty("iOrdLo"_Stz,iOrdLo);
-      iOrdHi = iOrdLo + nStreamCols;
+      iOrdHi = iOrdLo + nStreamCols - 1;
       pCard_stream->vAddProperty("iOrdHi"_Stz,iOrdHi);
       iOrdLo = iOrdHi + 1;
 
@@ -100,10 +100,6 @@ void Streamer::vOrdinal_Range(void)
   vEndIteration();
 
 }
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* append <stream> to all <absJoin>                                           */
@@ -193,6 +189,10 @@ void Streamer::vAppendStream_to_Scan(void)
   vEndIteration();
 }
 
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 
 /*============================================================================*/
