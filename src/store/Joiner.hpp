@@ -22,6 +22,7 @@ namespace STORE
    ~Joiner(void) noexcept(false);
 
     void vAppend_index(void);
+    void vAppendPrelim_indexJoin(void);
     void vAppend_indexPred(void);
     void vConvert_absJoin(void);
     void vDelete_joinPred(void);

@@ -14,6 +14,8 @@ __aNewFunction(Card_Table,CN_CARD)
 __vDeleteFunction(Card_Table,CN_CARD)
 
 __bIsCard(STORE,Card_Table,CK_TABLE)
+__pGetSubFunction_Card(STORE,Card_Table,CK_TABLE)
+
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

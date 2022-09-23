@@ -276,6 +276,15 @@ void Transformer::vTransform2(void)
   if (m_bInteractive)
     m_pBoard->vPrintBoard("Filtrate::vDeleteEmpty_filter()"_Stz);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  m_pJoiner->vAppendPrelim_indexJoin();
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Joiner::vAppendPrelim_indexJoin()"_Stz);
+
+
+
+  //############################################################################
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pJoiner->vInsert_joinPred();
