@@ -882,6 +882,25 @@ void AM::JOB::vAckOriginatingJob(JobId tOriginId)
 /*----------------------------------------------------------------------------*/
 /* has job got given tag?                                                     */
 /*----------------------------------------------------------------------------*/
+bool AM::JOB::bHasTag(Stz* szTagNm)
+{
+  _static_
+
+  Job* pJob = MY::pJob();
+
+  TagSet* pJobTags = pJob->pJobTags();
+  if (! pJobTags)
+    return false;
+
+  if (! pJobTags->bHasName(szTagNm))
+    return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* has job got given tag?                                                     */
+/*----------------------------------------------------------------------------*/
 bool AM::JOB::bHasTag(Job* pJob, Stz* szTagNm)
 {
   _static_
@@ -1068,6 +1087,24 @@ void AM::JOB::vSendReject(RejectJob *pRejectJob)
   pSocket->vGrabWrite();
   bool bResult = pSocket->bSendObject(pRejectJob, oSysCall, SY_NONE);
   pSocket->vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* has job got given tag?                                                     */
+/*----------------------------------------------------------------------------*/
+Stz* AM::JOB::szTagValue(Stz* szTagNm)
+{
+  _static_
+
+  Job* pJob = MY::pJob();
+
+  TagSet* pJobTags = pJob->pJobTags();
+  if (! pJobTags)
+    return nullptr;
+
+  Stz* szValue = pJobTags->szValue(szTagNm);
+
+  return szValue;
 }
 
 /*----------------------------------------------------------------------------*/

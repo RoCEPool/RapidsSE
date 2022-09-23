@@ -494,12 +494,24 @@ void Board::vPrintBoard(Stz* szCue)
   if (! szCue)
     return;
 
+  if (AM::JOB::bHasTag("<cue>"_Stz)) {
+    Stz* szTagCue = AM::JOB::szTagValue("<cue>"_Stz);
+    if (! szTagCue->bSame(szCue)) {
+      printf("%s\n",(char*)szCue);
+      return;
+    }
+  }
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
   L_Input:
-  
+
+  s256 sPrompt;
+
+  sPrompt.vSprint("%s >> "_Stz,szCue);
+
   s4K sInput;
-  Cue::vGetInput(szCue,sInput);
+  Cue::vGetInput(sPrompt,sInput);
     
   if (! sInput.nLength()) {
     return;
