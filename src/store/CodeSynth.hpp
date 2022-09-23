@@ -88,16 +88,17 @@ namespace STORE {
     TypedStack* pSynthAggGby(Stz *sProjectExpr, Stz *sLabel, Stz *sLabelLoop);
 
     void vSynthAllocTubRow(TypedStack* pPostStack, bool bEosHandler, Stz *sLabel, Stz *sLabelNext,
-                           Stz* sLabelOrdAgg, TypedStack* pInitStack = nullptr);
+                           Stz* sLabelOrdAgg, bool bLeftOuterJoin, TypedStack* pInitStack = nullptr);
 
     void vSynthAllocPotRow(TypedStack* pPostStack, Stz *sHashExpr, bool bEosHandler,
-                           Stz *sLabel, Stz *sLabelNext, Stz* sLabelOrdAgg, TypedStack* pInitStack = nullptr);
+                           Stz *sLabel, Stz *sLabelNext, Stz* sLabelOrdAgg,
+                           bool bLeftOuterJoin, TypedStack* pInitStack = nullptr);
 
     void vSynthEos(IndexDef *pIndexDef, TypedStack* pPostStack, Stz* sLabelNext);
 
     void vSynthFilter(Stz *sFilterExpr, Stz *sLabel, Stz* sLabelPrev, Stz* sLabelLoop);
 
-    void vSynthIndexJoin(StreamDef *pStreamDefRht, IndexDef *pIndexDefJ,
+    bool bSynthIndexJoin(StreamDef *pStreamDefRht, IndexDef *pIndexDefJ,
                          Stz *sJoinExpr, Stz *sLabel, Stz *sLabelNext, u8 uSelectColumns);
 
     void vSynthIndexScan(Stz *sIndexScanExpr, Stz *sLabel, Stz *sLabelNext, Stz* sLabelOrdAgg, u8 uSelectColumns);
@@ -136,11 +137,12 @@ namespace STORE {
   private:
     void vFindKey(IndexDef *pIndexDef, ePL ePayload);
 
-    void vGenerateAssign(u8 uSelectColumns);
+    void vGenerateAssignLft(u8 uSelectColumns);
+    void vGenerateAssignRht(u8 uSelectColumns);
 
     void vGenerateExprCode(TypedStack* pTypedStack, Stz* sIndent);
 
-    void vGenerateGoto(Stz *sLabel);
+    void vGenerateGoto(Stz *sLabel, Stz* sIndent = ""_Stz);
 
     void vGenerateInflate(StreamDef *pStreamDef, Stz *szReturnPrefix, i8 nColumndBefore, u8 uSelectColumns);
 

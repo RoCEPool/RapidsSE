@@ -66,6 +66,7 @@ Combined::Combined(LogicUnit* pLogicUnit)
 
   // index join with J
   m_xCombinedT.m_iIndexJoinInit = 0;
+  m_xCombinedT.m_iLeftOuterJoin = 0;
   m_xCombinedT.m_aRowSingleJ = nullptr;
   m_xCombinedT.m_aRowCellArrayJ = nullptr;
   m_xCombinedT.m_racStrAreaJ    = nullptr;

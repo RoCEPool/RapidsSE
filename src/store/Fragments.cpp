@@ -304,6 +304,8 @@ void Fragments::vAppendLocals(char *azStr) {
       "\n    i8    iMixIn;"
       "\n    i8    iBufferJ;"
       "\n    i8    iItemJ;"
+      "\n    i8    iLeftOuterRow;"
+      "\n    i8    iJoinedRows;"
       "\n    i8    i_BaseOffsetDataJ;"
       "\n    i8    i_BaseOffsetDataT;"
       "\n    i8    iIndexScanBuffer;"

@@ -1224,7 +1224,6 @@ void Stencil::vSetupEosPayload(Combined* pCombined, Stream* pStream, Op* pOp) {
 
 /*----------------------------------------------------------------------------*/
 /* set up for indexJoin                                                       */
-/* set up for indexJoin                                                       */
 /*----------------------------------------------------------------------------*/
 void Stencil::vSetupIndexJoin(Combined* pCombined, Stream* pStream, Op* pOp) {
 
@@ -1668,9 +1667,11 @@ void Stencil::vSketchEosProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp
 
   if (pCombined->aCombinedT()->m_iHashRows)
     pCodeSynth->vSynthAllocPotRow(m_pPostStack, m_xStageOps.m_sHashExpr, true,
-                                  "L_AddRowToTubPot"_Stz, "L_ReturnFinal"_Stz, ""_Stz, pInitStack);
+                                  "L_AddRowToTubPot"_Stz, "L_ReturnFinal"_Stz, ""_Stz,
+                                  pCombined->aCombinedT()->m_iLeftOuterJoin, pInitStack);
   else
-    pCodeSynth->vSynthAllocTubRow(m_pPostStack, true, "L_AddRowToTubPot"_Stz, "L_ReturnFinal"_Stz,""_Stz, pInitStack);
+    pCodeSynth->vSynthAllocTubRow(m_pPostStack, true, "L_AddRowToTubPot"_Stz, "L_ReturnFinal"_Stz,""_Stz,
+                                  pCombined->aCombinedT()->m_iLeftOuterJoin, pInitStack);
 
   // delete the postStack. No longer needed
   delete m_pPostStack;
@@ -1751,9 +1752,11 @@ void Stencil::vSketchEosProjectGby(Combined* pCombined, Stream* pStream, Op* pOp
   }
 
   if (pCombined->aCombinedT()->m_iHashRows)
-    pCodeSynth->vSynthAllocPotRow(m_pPostStack, m_xStageOps.m_sHashExpr, true, "L_AddRowToTubPot"_Stz, "L_AdvanceNextRow"_Stz, ""_Stz);
+    pCodeSynth->vSynthAllocPotRow(m_pPostStack, m_xStageOps.m_sHashExpr, true, "L_AddRowToTubPot"_Stz, "L_AdvanceNextRow"_Stz, ""_Stz,
+                                  pCombined->aCombinedT()->m_iLeftOuterJoin);
   else
-    pCodeSynth->vSynthAllocTubRow(m_pPostStack, true, "L_AddRowToTubPot"_Stz, "L_AdvanceNextRow"_Stz,""_Stz);
+    pCodeSynth->vSynthAllocTubRow(m_pPostStack, true, "L_AddRowToTubPot"_Stz, "L_AdvanceNextRow"_Stz,""_Stz,
+                                  pCombined->aCombinedT()->m_iLeftOuterJoin);
 
   m_pShapeEOS->vCodeSynthB(pCodeSynth);
 
@@ -1860,9 +1863,11 @@ void Stencil::vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp) {
 
   if (pCombined->aCombinedT()->m_iHashRows)
    // pCodeSynth->vSynthAllocPotRow(m_pPostStack, m_xStageOps.m_sHashExpr, true, sLabel, "L_ReturnFinal"_Stz, ""_Stz);
-    pCodeSynth->vSynthAllocPotRow(m_pPostStack, m_xStageOps.m_sHashExpr, true, "L_AddRowToTubPot"_Stz, "L_AdvanceNextRow"_Stz, ""_Stz);
+    pCodeSynth->vSynthAllocPotRow(m_pPostStack, m_xStageOps.m_sHashExpr, true, "L_AddRowToTubPot"_Stz, "L_AdvanceNextRow"_Stz, ""_Stz,
+                                  pCombined->aCombinedT()->m_iLeftOuterJoin);
   else
-    pCodeSynth->vSynthAllocTubRow(m_pPostStack, false, "L_AddRowToTubPot"_Stz, "L_AdvanceNextRow"_Stz,""_Stz);
+    pCodeSynth->vSynthAllocTubRow(m_pPostStack, false, "L_AddRowToTubPot"_Stz, "L_AdvanceNextRow"_Stz,""_Stz,
+                                  pCombined->aCombinedT()->m_iLeftOuterJoin);
 
   if (m_xStageOps.m_pPostProjectOp)
     m_pShapeEOS->vCodeSynthC(pCodeSynth);
@@ -1922,9 +1927,11 @@ void Stencil::vSketchEosTop(Combined* pCombined, Stream* pStream, Op* pOp) {
   pCodeSynth = new CodeSynth(pStreamDefOut, pStreamDefOut, nullptr, pPreExpStack, SR_PL, SR_NONE);
 
   if (pCombined->aCombinedT()->m_iHashRows)
-    pCodeSynth->vSynthAllocPotRow(m_pPostStack, m_xStageOps.m_sHashExpr, true, "L_AddRowToTubPot"_Stz, "L_AdvanceNextRow"_Stz, ""_Stz);
+    pCodeSynth->vSynthAllocPotRow(m_pPostStack, m_xStageOps.m_sHashExpr, true, "L_AddRowToTubPot"_Stz, "L_AdvanceNextRow"_Stz, ""_Stz,
+                                  pCombined->aCombinedT()->m_iLeftOuterJoin);
   else
-    pCodeSynth->vSynthAllocTubRow(m_pPostStack, true, "L_AddRowToTubPot"_Stz, "L_AdvanceNextRow"_Stz, ""_Stz);
+    pCodeSynth->vSynthAllocTubRow(m_pPostStack, true, "L_AddRowToTubPot"_Stz, "L_AdvanceNextRow"_Stz, ""_Stz,
+                                  pCombined->aCombinedT()->m_iLeftOuterJoin);
 
   m_pShapeEOS->vCodeSynthB(pCodeSynth);
 
@@ -1983,7 +1990,8 @@ Shape* Stencil::pSketchIndexJoin(Combined* pCombined, Stream* pStream, Op* pOp, 
   pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefOut, pIndex->pIndexDef(), nullptr, ePrevStencil, SR_TJ);
 
   vGetNextLabel(sLabelNext, pStream, pOp->i_Op(), "L_AddRowToTubPot"_Stz);
-  pCodeSynth->vSynthIndexJoin(pStreamDefRht, pIndex->pIndexDef(), sJoinExpr,
+  pCombined->aCombinedT()->m_iLeftOuterJoin =
+      (i8)pCodeSynth->bSynthIndexJoin(pStreamDefRht, pIndex->pIndexDef(), sJoinExpr,
       sLabel, sLabelNext, uSelectColumns);
   pShape->vCodeSynthA(pCodeSynth);
 
@@ -2629,7 +2637,8 @@ Shape* Stencil::pSketchPot(Combined* pCombined, Op* pLastOp, eSR ePrevStencil,
 
   CodeSynth* pCodeSynth = new CodeSynth(pStreamDefOut, pStreamDefOut, nullptr, pPreExpStack, ePrevStencil, SR_NONE);
 
-  pCodeSynth->vSynthAllocPotRow(m_pPostStack, m_xStageOps.m_sHashExpr, false, sLabel, sLabelLoop, sLabelOrdAgg);
+  pCodeSynth->vSynthAllocPotRow(m_pPostStack, m_xStageOps.m_sHashExpr, false, sLabel, sLabelLoop, sLabelOrdAgg,
+                                pCombined->aCombinedT()->m_iLeftOuterJoin);
   pShape->vCodeSynthB(pCodeSynth);
 
   // delete the postStack. No longer needed
@@ -2660,7 +2669,8 @@ Shape* Stencil::pSketchReturn(void) {
 /* sketch tub                                                                 */
 /*----------------------------------------------------------------------------*/
 Shape* Stencil::pSketchTub(Combined* pCombined, Op* pLastOp, eSR ePrevStencil,
-                           IntStack* pPreExpStack, Stz* sLabel, Stz* sLabelLoop, Stz* sLabelOrdAgg) {
+                           IntStack* pPreExpStack, Stz* sLabel,
+                           Stz* sLabelLoop, Stz* sLabelOrdAgg) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
@@ -2674,7 +2684,8 @@ Shape* Stencil::pSketchTub(Combined* pCombined, Op* pLastOp, eSR ePrevStencil,
 
   CodeSynth* pCodeSynth = new CodeSynth(pStreamDefOut, pStreamDefOut, nullptr, pPreExpStack, ePrevStencil, SR_NONE);
 
-  pCodeSynth->vSynthAllocTubRow(m_pPostStack, false, sLabel, sLabelLoop, sLabelOrdAgg);
+  pCodeSynth->vSynthAllocTubRow(m_pPostStack, false, sLabel, sLabelLoop, sLabelOrdAgg,
+                                (bool)pCombined->aCombinedT()->m_iLeftOuterJoin);
   pShape->vCodeSynthB(pCodeSynth);
 
   // delete the postStack. No longer needed
