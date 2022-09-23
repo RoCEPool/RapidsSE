@@ -119,6 +119,8 @@ namespace STORE
 
     Card_SubSet* m_pCard_SubSet;
 
+    b8           m_bBeenCued;
+
   private:
     // must be last
     Footer m_xFooter;

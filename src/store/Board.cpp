@@ -41,6 +41,8 @@ Board::Board(Stz* szQueryNm, Optimiser* pOptimiser)
 
   m_pCard_SubSet = new Card_SubSet;
 
+  m_bBeenCued = false;
+
   //_checkInitialised_(CN_BOARD);
   _checkInitialisedSize_(sizeof(Board));
   
@@ -494,7 +496,7 @@ void Board::vPrintBoard(Stz* szCue)
   if (! szCue)
     return;
 
-  if (AM::JOB::bHasTag("<cue>"_Stz)) {
+  if (! m_bBeenCued && AM::JOB::bHasTag("<cue>"_Stz)) {
     Stz* szTagCue = AM::JOB::szTagValue("<cue>"_Stz);
     if (! szTagCue->bSame(szCue)) {
       printf("%s\n",(char*)szCue);
@@ -502,7 +504,9 @@ void Board::vPrintBoard(Stz* szCue)
     }
   }
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  m_bBeenCued = true;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
   L_Input:
 
