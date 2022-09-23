@@ -258,29 +258,65 @@ Card* Board::pFindNextMain(Card* pAfter, eCK eFindCard)
 /*----------------------------------------------------------------------------*/
 /* find next main card after given arg which is an eFindCard                  */
 /*----------------------------------------------------------------------------*/
-Card_Stream* Board::pFindStreamCard(i8 i_Stream)
+Card_Filter* Board::pFindFilterCard(i8 iFilter, Card*& rpMainCard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
+
+  i8 i_FilterSoFar = 0;
+
+  rpMainCard = nullptr;
+
+  i8 nMains = this->nMainCards();
+  for (i8 i_Main = 0; i_Main < nMains; i_Main++) {
+    rpMainCard = pGetMainCard(i_Main);
+
+    eCK eMainCard = rpMainCard->eCard();
+    if (CK_ABSJOIN == eMainCard) {
+      if (i_FilterSoFar++ != iFilter)
+        continue;
+      Card_Filter* pCard_filter = _pGetSub_Card_Filter(rpMainCard);
+      return pCard_filter;
+    }
+
+    if (CK_SCAN == eMainCard) {
+      if (i_FilterSoFar++ != iFilter)
+        continue;
+      Card_Filter* pCard_filter = _pGetSub_Card_Filter(rpMainCard);
+      return pCard_filter;
+    }
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find next main card after given arg which is an eFindCard                  */
+/*----------------------------------------------------------------------------*/
+Card_Stream* Board::pFindStreamCard(i8 iStream, Card*& rpMainCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
 
   i8 i_StreamSoFar = 0;
 
-  Card *pMainCard = nullptr;
+  rpMainCard = nullptr;
 
   i8 nMains = this->nMainCards();
   for (i8 i_Main = 0; i_Main < nMains; i_Main++) {
-    pMainCard = pGetMainCard(i_Main);
+    rpMainCard = pGetMainCard(i_Main);
 
-    eCK eMainCard = pMainCard->eCard();
+    eCK eMainCard = rpMainCard->eCard();
     if (CK_ABSJOIN == eMainCard) {
-      if (i_StreamSoFar++ != i_Stream)
+      if (i_StreamSoFar++ != iStream)
         continue;
-      Card_Scan* pCard_scan = _pGetSub_Card_Scan(pMainCard);
+      Card_Scan* pCard_scan = _pGetSub_Card_Scan(rpMainCard);
       Card_Stream* pCard_stream = _pGetSub_Card_Stream(pCard_scan);
       return pCard_stream;
     }
 
     if (CK_SCAN == eMainCard) {
-      Card_Stream* pCard_stream = _pGetSub_Card_Stream(pMainCard);
+      if (i_StreamSoFar++ != iStream)
+        continue;
+      Card_Stream* pCard_stream = _pGetSub_Card_Stream(rpMainCard);
       return pCard_stream;
     }
   }

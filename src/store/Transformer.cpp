@@ -264,6 +264,17 @@ void Transformer::vTransform2(void)
   if (m_bInteractive)
     m_pBoard->vPrintBoard("Filtrate::vAssignLeftwards() >> "_Stz);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  m_pFiltrate->vCopyLeftwards();
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Filtrate::vCopyLeftwards() >> "_Stz);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // delete any <filter> which is effectively empty
+  m_pFiltrate->vDeleteEmpty_filter();
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Filtrate::vDeleteEmpty_filter() >> "_Stz);
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -291,12 +302,6 @@ void Transformer::vTransform2(void)
   m_pFiltrate->vRemove_predCmp();
   if (m_bInteractive)
     m_pBoard->vPrintBoard("Filtrate::vRemove_predCmp() >> "_Stz);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // delete any <filter> which is effectively empty
-  m_pFiltrate->vDeleteEmpty_filter();
-  if (m_bInteractive)
-    m_pBoard->vPrintBoard("Filtrate::vDeleteEmpty_filter() >> "_Stz);
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

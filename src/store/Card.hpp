@@ -137,6 +137,8 @@ namespace STORE
     char cMark1(void);
     void vMark1(char cMark1);
     char cMark2(void);
+    i8   iMark2(void);
+    void vMark2(i8 iMark2);
     void vMark2(char cMark2);
 
     CardIter* pNewSubCardIter(void);
