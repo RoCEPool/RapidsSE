@@ -1,0 +1,26 @@
+/*============================================================================*/
+/* Card_IdxColList.hpp -- Index Column List                                   */
+/*============================================================================*/
+#pragma once
+
+#include "Card_SUB.hpp"
+
+namespace STORE
+{
+  class Card_IdxColList : public Card_SUB
+  {
+  public:
+    void* operator new(size_t);
+    void  operator delete(void*);
+  
+    Card_IdxColList(void);
+   ~Card_IdxColList(void) noexcept(false);
+  };
+
+  Card_IdxColList* _pCard_IdxColList(void* aAddr);
+  bool _bIsCard_IdxColList(void* aAddr);
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
