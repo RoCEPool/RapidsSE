@@ -186,7 +186,7 @@ void Filtrate::vPredDrillDown(Card_PRED* pCard_pred, Card_Filter* pCard_filter)
   if (CK_PREDCMP == eCard) {
     pCard_pred->vMark1('?');
     iWhichScan =
-        iMovePredLeft(static_cast<Card_PRED*>(pCard_pred),
+        iMovePredLeft(pCard_pred,
                       pCard_filter);
     if (C_UNKNOWN != iWhichScan)
       pCard_pred->vMark2('0' + iWhichScan);

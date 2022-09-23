@@ -146,6 +146,7 @@ namespace STORE
     Card* pFindMain(eCK eCard);
     Card* pFindMain(Stz* szCardNm);
     Card* pFindNextMain(Card* pAfter, eCK eFindCard);
+    Card_Stream* pFindStreamCard(i8 i_Stream);
 
     Card* pGetMainCard(i8 i_MainCard);
     Card* pGetMainCard(i8 i_MainCard, eCK& reCard);
