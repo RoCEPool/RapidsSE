@@ -226,17 +226,43 @@ void Transformer::vTransform2(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append <stream> to all <scan> and then to all <absJoin>
-  m_pStreamer->vAppend_Streams();
+  m_pOptimiser->pCardCtl()->vSubCards(CK_STREAM,0);
+  m_pOptimiser->pCardCtl()->vPinForm(CK_STREAM,1);
+
+  //m_pOptimiser->pCardCtl()->vSubCards(CK_EXPR,0);
+
+  m_pOptimiser->pCardCtl()->vPinForm(CK_PREDAND,1);
+  m_pOptimiser->pCardCtl()->vPinForm(CK_PREDCMP,1);
+  m_pOptimiser->pCardCtl()->vPinForm(CK_PREDOR,1);
+  m_pOptimiser->pCardCtl()->vPinForm(CK_TERM,1);
+
+  m_pStreamer->vAppendStream_to_Scan();
   if (m_bInteractive)
-    m_pBoard->vPrintBoard("Streamer::vAppend_Streams() >> "_Stz);
+    m_pBoard->vPrintBoard("Streamer::vAppendStream_to_Scan() >> "_Stz);
+
+
+
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // each <scan> <absJoin> becomes <absJoin>/<scan>
+  m_pJoiner->vSubsume_scan();
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Joiner::vSubsume_scan() >> "_Stz);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //
+  m_pStreamer->vOrdinal_Range();
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Streamer::vOrdinal_Range() >> "_Stz);
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-
   // inspect all <filter> and attempt to move <predCmp> after <scan>/<absJoin>
-  m_pFiltrate->vBurstLeftwards();
+  m_pFiltrate->vAssignLeftwards();
   if (m_bInteractive)
-    m_pBoard->vPrintBoard("Filtrate::vBurstLeftwards() >> "_Stz);
+    m_pBoard->vPrintBoard("Filtrate::vAssignLeftwards() >> "_Stz);
 
 
 

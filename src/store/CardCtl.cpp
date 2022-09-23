@@ -27,6 +27,9 @@ CardCtl::CardCtl(void)
     vForm(i_Card,0);
     vPrint(i_Card,0);
     vBelow(i_Card,0);
+
+    vPinForm(i_Card,0);
+    vSubCards(i_Card,1);
   }
   
   _checkInitialised_(CN_CARDCTL);
@@ -131,6 +134,50 @@ void CardCtl::vPrint(i8 i_Card, i8 iPrint)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 
   m_iaPrint[i_Card] = iPrint;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get iPinForm for card                                                      */
+/*----------------------------------------------------------------------------*/
+i8 CardCtl::iPinForm(i8 i_Card)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
+
+  i8 iPinForm = m_iaPinForm[i_Card];
+
+  return iPinForm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set iPinForm for card                                                      */
+/*----------------------------------------------------------------------------*/
+void CardCtl::vPinForm(i8 i_Card, i8 iPinForm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
+
+  m_iaPinForm[i_Card] = iPinForm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get iSubCards for card                                                     */
+/*----------------------------------------------------------------------------*/
+i8 CardCtl::iSubCards(i8 i_Card)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
+
+  i8 iSubCards = m_iaSubCards[i_Card];
+
+  return iSubCards;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set iSubCards for card                                                     */
+/*----------------------------------------------------------------------------*/
+void CardCtl::vSubCards(i8 i_Card, i8 iSubCards)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
+
+  m_iaSubCards[i_Card] = iSubCards;
 }
 
 /*============================================================================*/

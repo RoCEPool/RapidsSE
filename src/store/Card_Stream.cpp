@@ -93,6 +93,39 @@ void Card_Stream::vApplyOrder(Card_Stream* pCard_Stream_src)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is given <pred> within this stream?                                        */
+/*----------------------------------------------------------------------------*/
+bool Card_Stream::bContainsPred(Card_PRED* pCard_PRED)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  eCK ePredCard = pCard_PRED->eCard();
+
+  if (CK_TERM == ePredCard) {
+    Stz* szTerm = pCard_PRED->szTerm();
+    if (! szTerm->bIsOrdinal())
+      return true;
+
+    i8 iOrdLo = m_pProperties->iValue("iOrdLo"_Stz);
+    i8 iOrdHi = m_pProperties->iValue("iOrdHi"_Stz);
+
+    i8 iOrd = szTerm->iOrdinal();
+    if (iOrd > iOrdHi)
+      return false;
+  }
+
+  i8 nSubCards = pCard_PRED->nSubCards();
+  for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
+    Card *pSubCard = pCard_PRED->pGetSubCard(i_SubCard);
+
+    if (! bContainsPred(static_cast<Card_PRED*>(pSubCard)))
+      return false;
+  }
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get a specific <streamCol>                                                 */
 /*----------------------------------------------------------------------------*/
 Card_StreamCol* Card_Stream::pGet_streamCol(i8 i_Col)
@@ -117,6 +150,38 @@ Card_StreamColList* Card_Stream::pGet_streamColList(void)
     = _pCard_StreamColList(pFindSubCard(CK_STREAMCOLLIST));
 
   return pCard_StreamColList;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of stream columns                                               */
+/*----------------------------------------------------------------------------*/
+void Card_Stream::vRibbonPrint(Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  s32 sName;
+
+  if (m_pProperties && C_UNKNOWN != iGetProperty("iOrdLo"_Stz))
+    sName.vSprint("%s%lld)%s $%lld,%lld"_Stz
+        ,Stz::szDots(iDepth)
+        ,m_iCardNo
+        ,szCardNm()
+        ,iGetProperty("iOrdLo"_Stz)
+        ,iGetProperty("iOrdHi"_Stz)
+    );
+  else
+    sName.vSprint("%s%lld)%s"_Stz
+        ,Stz::szDots(iDepth)
+        ,m_iCardNo
+        ,szCardNm()
+    );
+
+  pRibbon->vSprint("%-18s%c%c"_Stz
+      ,sName.szStz()
+      ,m_cMark1
+      ,m_cMark2
+  );
+
 }
 
 /*----------------------------------------------------------------------------*/

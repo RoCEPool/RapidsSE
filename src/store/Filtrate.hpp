@@ -22,21 +22,18 @@ namespace STORE
   
    ~Filtrate(void) noexcept(false);
 
-    void vBurstLeftwards(void);
+    void vAssignLeftwards(void);
     void vCalc_to_calcBool(void);
     void vDeleteEmpty_filter(void);
     void vRemove_predCmp(void);
 
   private:
-    void vBurstFilterLeftwards(Card_Filter* pCard_filter);
-    void vPredDrillDown(Card* pParentCard, Card_Filter* pCard_filter);
-    bool bMovePredLeft(Card_PRED* pCard_PRED, Card_Filter* pCard_filter);
+    void vAssignFilterLeftwards(Card_Filter* pCard_filter);
+    void vAssignPredDrillDown(Card_PRED*, Card_Filter* pCard_filter);
 
-    bool bMovePredToAbsJoin(Card_AbsJoin* pCard_absJoin, Card_PRED* pCard_PRED);
-    bool bMovePredToScan(Card_Scan* pCard_Scan, Card_PRED* pCard_PRED);
-
-    bool bIsPredMovableToAbsJoin(Card_AbsJoin* pCard_absJoin, Card_PRED* pCard_PRED);
-    bool bIsPredMovableToScan(Card_Scan* pCard_scan, Card_PRED* pCard_PRED);
+    i8   iAssignPredLeft(Card_PRED* pCard_PRED, Card_Filter* pCard_filter);
+    i8   iAssignPredToAbsJoin(Card_AbsJoin* pCard_absJoin, Card_PRED* pCard_PRED);
+    i8   iAssignPredToScan(Card_Scan* pCard_scan, Card_PRED* pCard_PRED);
 
     void vPredMovesToAbsJoin(Card* pPredCard, Card_AbsJoin* pCard_absJoin);
     void vPredMovesToScan(Card* pPredCard, Card_Scan* pCard_scan);

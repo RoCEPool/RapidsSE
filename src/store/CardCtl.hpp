@@ -18,6 +18,9 @@ namespace STORE
     i8 m_iaForm[CK_ENUMS];
     i8 m_iaPrint[CK_ENUMS];
 
+    i8 m_iaPinForm[CK_ENUMS];
+    i8 m_iaSubCards[CK_ENUMS];
+
   protected:
     // must be last
     Footer m_xFooter;
@@ -41,7 +44,12 @@ namespace STORE
     i8 iPrint(i8 i_Card);
     void vPrint(i8 i_Card, i8 iPrint);
 
-  
+    i8 iPinForm(i8 i_Card);
+    void vPinForm(i8 i_Card, i8 iPrint);
+
+    i8 iSubCards(i8 i_Card);
+    void vSubCards(i8 i_Card, i8 iSubCard);
+
   protected:
     Footer* aFooter(void);
   };

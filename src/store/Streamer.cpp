@@ -50,8 +50,56 @@ void Streamer::vAppend_Streams(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
+/* calc ordinal ranges                                                        */
 /*----------------------------------------------------------------------------*/
+void Streamer::vOrdinal_Range(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMER,_FOOTER_);
+
+  vBeginIteration();
+
+  i8 iOrdLo = 1;
+  i8 iOrdHi = C_UNKNOWN;
+
+  char cStream = '0';
+
+  while (Card* pMainCard = pEachMain()) {
+
+    if (CK_SCAN == pMainCard->eCard()) {
+      Card_Stream* pCard_stream = _pGetSub_Card_Stream(pMainCard);
+
+      pCard_stream->vMark1('#');
+      pCard_stream->vMark2(cStream++);
+
+      i8 nStreamCols = pCard_stream->nStreamCols();
+      pCard_stream->vAddProperty("iOrdLo"_Stz,iOrdLo);
+      iOrdHi = iOrdLo + nStreamCols - 1;
+      pCard_stream->vAddProperty("iOrdHi"_Stz,iOrdHi);
+      iOrdLo = iOrdHi + 1;
+
+      continue;
+    }
+
+    if (CK_ABSJOIN == pMainCard->eCard()) {
+      Card_Scan*   pCard_scan   = _pGetSub_Card_Scan(pMainCard);
+      Card_Stream* pCard_stream = _pGetSub_Card_Stream(pCard_scan);
+
+      pCard_stream->vMark1('#');
+      pCard_stream->vMark2(cStream++);
+
+      i8 nStreamCols = pCard_stream->nStreamCols();
+      pCard_stream->vAddProperty("iOrdLo"_Stz,iOrdLo);
+      iOrdHi = iOrdLo + nStreamCols - 1;
+      pCard_stream->vAddProperty("iOrdHi"_Stz,iOrdHi);
+      iOrdLo = iOrdHi + 1;
+
+      continue;
+    }
+  }
+
+  vEndIteration();
+
+}
 
 /*----------------------------------------------------------------------------*/
 /* append <stream> to all <absJoin>                                           */
@@ -96,7 +144,7 @@ void Streamer::vAppendStream_to_AbsJoin(void)
         pCard_Stream->vAppend(pCard_StreamColList);
       }
 
-      pCard_Table = _pCard_Table(pCard_Scan_r->pFindChildCard(CK_TABLE));
+      pCard_Table = _pCard_Table(pCard_absJoin->pFindChildCard(CK_TABLE));
       if (pCard_Table) {
         StreamDef *pStreamDef = pCard_Table->pTable()->pStreamDef();
         Card_StreamColList *pCard_StreamColList_b = new Card_StreamColList(pStreamDef);
@@ -140,6 +188,12 @@ void Streamer::vAppendStream_to_Scan(void)
 
   vEndIteration();
 }
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
 
 /*============================================================================*/
 /* end                                                                        */

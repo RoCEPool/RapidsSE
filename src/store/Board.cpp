@@ -112,6 +112,21 @@ void Board::vClear(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* clear all marks                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vClearAllMarks(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
+
+  i8 nMainCards = this->nMainCards();
+  for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
+    Card *pMainCard = m_pCard_SubSet->pGet(i_Main);
+
+    pMainCard->vClearAllMarks();
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Board::vDeleteAllCards(void)
@@ -235,6 +250,39 @@ Card* Board::pFindNextMain(Card* pAfter, eCK eFindCard)
 
     if (eFindCard == pTestCard->eCard())
       return pTestCard;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find next main card after given arg which is an eFindCard                  */
+/*----------------------------------------------------------------------------*/
+Card_Stream* Board::pFindStreamCard(i8 i_Stream)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
+
+  i8 i_StreamSoFar = 0;
+
+  Card *pMainCard = nullptr;
+
+  i8 nMains = this->nMainCards();
+  for (i8 i_Main = 0; i_Main < nMains; i_Main++) {
+    pMainCard = pGetMainCard(i_Main);
+
+    eCK eMainCard = pMainCard->eCard();
+    if (CK_ABSJOIN == eMainCard) {
+      if (i_StreamSoFar++ != i_Stream)
+        continue;
+      Card_Scan* pCard_scan = _pGetSub_Card_Scan(pMainCard);
+      Card_Stream* pCard_stream = _pGetSub_Card_Stream(pCard_scan);
+      return pCard_stream;
+    }
+
+    if (CK_SCAN == eMainCard) {
+      Card_Stream* pCard_stream = _pGetSub_Card_Stream(pMainCard);
+      return pCard_stream;
+    }
   }
 
   return nullptr;
@@ -366,7 +414,8 @@ void Board::vPinCards(Ribbon* pRibbon, i8 i_Board)
       pSubRibbon->vNextColumn();
     pCard->vPrintHeader(pSubRibbon);
 
-    pCard->vPrintCard(pSubRibbon,0,0);
+    //pCard->vPrintCard(pSubRibbon,0,0);
+    pCard->vPrintCard2(pSubRibbon,0);
   }
      
   pRibbon->vPinRibbon(1,0,pSubRibbon);
