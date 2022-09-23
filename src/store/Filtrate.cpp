@@ -43,14 +43,14 @@ Filtrate::~Filtrate(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* inspect all <filter> and attempt to move <predCmp> after <scan>/<absJoin>  */
 /*----------------------------------------------------------------------------*/
-void Filtrate::vBurstLeftwards(void)
+void Filtrate::vAssignLeftwards(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTRATE,_FOOTER_);
 
   vBeginIteration();
 
   while (Card_Filter *pCard_filter = _pCard_Filter(pEachMain(CK_FILTER))) {
-    vBurstFilterLeftwards(pCard_filter);
+    vAssignFilterLeftwards(pCard_filter);
   }
 
   vEndIteration();
@@ -149,9 +149,9 @@ void Filtrate::vRemove_predCmp(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* inspect all <filter> and attempt to move <predCmp> after <scan>/<absJoin>  */
+/* inspect all <filter> and attempt to assign <predCmp> after <scan>/<absJoin>*/
 /*----------------------------------------------------------------------------*/
-void Filtrate::vBurstFilterLeftwards(Card_Filter* pCard_filter)
+void Filtrate::vAssignFilterLeftwards(Card_Filter* pCard_filter)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
 
@@ -163,13 +163,13 @@ void Filtrate::vBurstFilterLeftwards(Card_Filter* pCard_filter)
 
   Card_PRED* pCard_pred = static_cast<Card_PRED*>(pCard_bool->pGetSubCard(0));
 
-  vPredDrillDown(pCard_pred,pCard_filter);
+  vAssignPredDrillDown(pCard_pred,pCard_filter);
 }
 
 /*----------------------------------------------------------------------------*/
 /* inspect all <filter> and attempt to move <pred> after <scan>/<absJoin>     */
 /*----------------------------------------------------------------------------*/
-void Filtrate::vPredDrillDown(Card_PRED* pCard_pred, Card_Filter* pCard_filter)
+void Filtrate::vAssignPredDrillDown(Card_PRED* pCard_pred, Card_Filter* pCard_filter)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
 
@@ -186,8 +186,8 @@ void Filtrate::vPredDrillDown(Card_PRED* pCard_pred, Card_Filter* pCard_filter)
   if (CK_PREDCMP == eCard) {
     pCard_pred->vMark1('?');
     iWhichScan =
-        iMovePredLeft(pCard_pred,
-                      pCard_filter);
+        iAssignPredLeft(pCard_pred,
+                        pCard_filter);
     if (C_UNKNOWN != iWhichScan) {
       pCard_pred->vMark1('@');
       pCard_pred->vMark2('0' + iWhichScan);
@@ -199,7 +199,7 @@ void Filtrate::vPredDrillDown(Card_PRED* pCard_pred, Card_Filter* pCard_filter)
   for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
     Card *pSubCard = pCard_pred->pGetSubCard(i_SubCard);
 
-    vPredDrillDown(static_cast<Card_PRED *>(pSubCard), pCard_filter);
+    vAssignPredDrillDown(static_cast<Card_PRED *>(pSubCard), pCard_filter);
   }
 
 
@@ -238,7 +238,7 @@ void Filtrate::vPredDrillDown(Card_PRED* pCard_pred, Card_Filter* pCard_filter)
 //  if (CK_PREDAND  == eCard) {
 //    pCard_pred->vMark1('&');
 //    iWhichScan =
-//        iMovePredLeft(static_cast<Card_PRED*>(pCard_pred),
+//        iAssignPredLeft(static_cast<Card_PRED*>(pCard_pred),
 //                      pCard_filter);
 //    if (C_UNKNOWN != iWhichScan) {
 //      pCard_pred->vMark2('0' + iWhichScan);
@@ -249,7 +249,7 @@ void Filtrate::vPredDrillDown(Card_PRED* pCard_pred, Card_Filter* pCard_filter)
 //  if (CK_PREDCMP == eCard) {
 //    pCard_pred->vMark1('?');
 //    iWhichScan =
-//        iMovePredLeft(static_cast<Card_PRED*>(pCard_pred),
+//        iAssignPredLeft(static_cast<Card_PRED*>(pCard_pred),
 //                      pCard_filter);
 //    if (C_UNKNOWN != iWhichScan) {
 //      pCard_pred->vMark2('0' + iWhichScan);
@@ -272,7 +272,7 @@ void Filtrate::vPredDrillDown(Card_PRED* pCard_pred, Card_Filter* pCard_filter)
 /*----------------------------------------------------------------------------*/
 /* inspect <PRED>                                                             */
 /*----------------------------------------------------------------------------*/
-i8 Filtrate::iMovePredLeft(Card_PRED* pCard_PRED, Card_Filter* pCard_filter)
+i8 Filtrate::iAssignPredLeft(Card_PRED* pCard_PRED, Card_Filter* pCard_filter)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
 
@@ -280,7 +280,7 @@ i8 Filtrate::iMovePredLeft(Card_PRED* pCard_PRED, Card_Filter* pCard_filter)
   i8 nScan    = 0;
   i8 iWhichScan = C_UNKNOWN;
 
-  vTrace("iMovePredLeft candidate %p\n"_Stz,pCard_PRED);
+  vTrace("iAssignPredLeft candidate %p\n"_Stz,pCard_PRED);
   pCard_PRED->vDump();
 
   for (i8 i_MainCard = 0; /* none */ ; i_MainCard++) {
@@ -293,7 +293,7 @@ i8 Filtrate::iMovePredLeft(Card_PRED* pCard_PRED, Card_Filter* pCard_filter)
 
     if (CK_ABSJOIN == eMainCard) {
       nAbsJoin++;
-      iWhichScan = iMovePredToAbsJoin(_pCard_AbsJoin(pMainCard),pCard_PRED);
+      iWhichScan = iAssignPredToAbsJoin(_pCard_AbsJoin(pMainCard), pCard_PRED);
       if (C_UNKNOWN != iWhichScan)
         return iWhichScan;
       continue;
@@ -301,7 +301,7 @@ i8 Filtrate::iMovePredLeft(Card_PRED* pCard_PRED, Card_Filter* pCard_filter)
 
     if (CK_SCAN == eMainCard) {
       nScan++;
-      iWhichScan = iMovePredToScan(_pCard_Scan(pMainCard),pCard_PRED);
+      iWhichScan = iAssignPredToScan(_pCard_Scan(pMainCard), pCard_PRED);
       if (C_UNKNOWN != iWhichScan)
         return iWhichScan;
       continue;
@@ -317,37 +317,38 @@ i8 Filtrate::iMovePredLeft(Card_PRED* pCard_PRED, Card_Filter* pCard_filter)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-i8 Filtrate::iMovePredToAbsJoin(Card_AbsJoin* pCard_absJoin, Card_PRED* pCard_PRED)
+i8 Filtrate::iAssignPredToAbsJoin(Card_AbsJoin* pCard_absJoin, Card_PRED* pCard_PRED)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
 
-  i8 iWhichScan = iIsPredMovableToAbsJoin(pCard_absJoin,pCard_PRED);
-  if (C_UNKNOWN == iWhichScan)
-    return C_UNKNOWN;
+  Card_Stream *pCard_stream = _pGetSub_Card_Stream(pCard_absJoin);
+  //pCard_stream->vMark1('#');
 
-  //vPredMovesToAbsJoin(pCard_PRED,pCard_absJoin);
+  // are all $n of <pred> in this <stream>?
+  if (pCard_stream->bContainsPred(pCard_PRED)) {
+    pCard_stream->vMark1('@');
+    return pCard_stream->cMark2() - '0';
+  }
 
-  //vMarkPredCardsAsMoved(pCard_PRED);
-
-  return iWhichScan;
+  return C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-i8 Filtrate::iMovePredToScan(Card_Scan* pCard_scan, Card_PRED* pCard_PRED)
+i8 Filtrate::iAssignPredToScan(Card_Scan* pCard_scan, Card_PRED* pCard_PRED)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
 
-  i8 iWhichScan = iIsPredMovableToScan(pCard_scan,pCard_PRED);
-  if (C_UNKNOWN == iWhichScan)
-    return C_UNKNOWN;
+  Card_Stream* pCard_stream = _pGetSub_Card_Stream(pCard_scan);
+  //pCard_stream->vMark1('#');
 
-  //vPredMovesToScan(pCard_PRED, pCard_scan);
-
-  //vMarkPredCardsAsMoved(pCard_PRED);
-
-  return iWhichScan;
+  // are all $n of <pred> in this <stream>?
+  if (pCard_stream->bContainsPred(pCard_PRED)) {
+    pCard_stream->vMark1('@');
+    return pCard_stream->cMark2() - '0';
+  }
+  return C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -367,43 +368,6 @@ void Filtrate::vMarkPredCardsAsMoved(Card* pPredCard)
 
     vMarkPredCardsAsMoved(pSubCard);
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-i8 Filtrate::iIsPredMovableToAbsJoin(Card_AbsJoin* pCard_absJoin, Card_PRED* pCard_PRED)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
-
-  Card_Stream *pCard_stream = _pGetSub_Card_Stream(pCard_absJoin);
-  //pCard_stream->vMark1('#');
-
-  // are all $n of <pred> in this <stream>?
-  if (pCard_stream->bContainsPred(pCard_PRED)) {
-    pCard_stream->vMark1('@');
-    return pCard_stream->cMark2() - '0';
-  }
-
-  return C_UNKNOWN;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-i8 Filtrate::iIsPredMovableToScan(Card_Scan* pCard_scan, Card_PRED* pCard_PRED)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
-
-  Card_Stream* pCard_stream = _pGetSub_Card_Stream(pCard_scan);
-  //pCard_stream->vMark1('#');
-
-  // are all $n of <pred> in this <stream>?
-  if (pCard_stream->bContainsPred(pCard_PRED)) {
-    pCard_stream->vMark1('@');
-    return pCard_stream->cMark2() - '0';
-  }
-  return C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/

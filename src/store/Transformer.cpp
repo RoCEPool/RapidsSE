@@ -260,9 +260,9 @@ void Transformer::vTransform2(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // inspect all <filter> and attempt to move <predCmp> after <scan>/<absJoin>
-  m_pFiltrate->vBurstLeftwards();
+  m_pFiltrate->vAssignLeftwards();
   if (m_bInteractive)
-    m_pBoard->vPrintBoard("Filtrate::vBurstLeftwards() >> "_Stz);
+    m_pBoard->vPrintBoard("Filtrate::vAssignLeftwards() >> "_Stz);
 
 
 
