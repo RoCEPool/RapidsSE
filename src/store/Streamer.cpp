@@ -68,7 +68,7 @@ void Streamer::vOrdinal_Range(void)
     if (CK_SCAN == pMainCard->eCard()) {
       Card_Stream* pCard_stream = _pGetSub_Card_Stream(pMainCard);
 
-      pCard_stream->vMark1('@');
+      pCard_stream->vMark1('#');
       pCard_stream->vMark2(cStream++);
 
       i8 nStreamCols = pCard_stream->nStreamCols();
@@ -84,7 +84,7 @@ void Streamer::vOrdinal_Range(void)
       Card_Scan*   pCard_scan   = _pGetSub_Card_Scan(pMainCard);
       Card_Stream* pCard_stream = _pGetSub_Card_Stream(pCard_scan);
 
-      pCard_stream->vMark1('@');
+      pCard_stream->vMark1('#');
       pCard_stream->vMark2(cStream++);
 
       i8 nStreamCols = pCard_stream->nStreamCols();
