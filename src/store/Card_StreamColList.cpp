@@ -21,6 +21,7 @@ __aNewFunction(Card_StreamColList,CN_CARD)
 __vDeleteFunction(Card_StreamColList,CN_CARD)
 
 __bIsCard(STORE,Card_StreamColList,CK_STREAMCOLLIST)
+__pGetSubFunction_Card(STORE,Card_StreamColList,CK_STREAMCOLLIST)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -88,6 +89,33 @@ Card_StreamCol* Card_StreamColList::pGet_streamCol(i8 i_StreamColNo)
       = _pCard_StreamCol(pGetSubCard(i_StreamColNo));
 
   return pCard_StreamCol;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is given <pred> within this stream?                                        */
+/*----------------------------------------------------------------------------*/
+Card_StreamCol* Card_StreamColList::pFind_streamCol(Stz *szColNm)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_StreamColList* pCard_StreamColList = _pGetSub_Card_StreamColList(this);
+
+  Card_StreamCol* pCard_streamCol = nullptr;
+
+  i8 nSubCards = this->nSubCards();
+  for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
+    Card *pSubCard = this->pGetSubCard(i_SubCard);
+
+    if (CK_STREAMCOL != pSubCard->eCard())
+      continue;
+
+    if (pSubCard->szAs()->bSame(szColNm)) {
+      pCard_streamCol = _pCard_StreamCol(pSubCard);
+      break;
+    }
+  }
+
+  return pCard_streamCol;
 }
 
 

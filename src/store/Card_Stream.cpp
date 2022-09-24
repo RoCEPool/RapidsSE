@@ -126,6 +126,20 @@ bool Card_Stream::bContainsPred(Card_PRED* pCard_PRED)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is given <pred> within this stream?                                        */
+/*----------------------------------------------------------------------------*/
+Card_StreamCol* Card_Stream::pFind_streamCol(Stz *szColNm)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+   Card_StreamColList* pCard_StreamColList = _pGetSub_Card_StreamColList(this);
+
+  Card_StreamCol* pCard_streamCol = nullptr;
+
+  return pCard_streamCol;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get a specific <streamCol>                                                 */
 /*----------------------------------------------------------------------------*/
 Card_StreamCol* Card_Stream::pGet_streamCol(i8 i_Col)
@@ -150,6 +164,16 @@ Card_StreamColList* Card_Stream::pGet_streamColList(void)
     = _pCard_StreamColList(pFindSubCard(CK_STREAMCOLLIST));
 
   return pCard_StreamColList;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of stream columns                                               */
+/*----------------------------------------------------------------------------*/
+void Card_Stream::vOrdinate(String* psOrdinal, Stz* szOrdinal)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  psOrdinal->vCopy(szOrdinal);
 }
 
 /*----------------------------------------------------------------------------*/

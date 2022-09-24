@@ -28,6 +28,8 @@ namespace STORE
     void vDelete_joinPred(void);
     void vDelete_scan_R(void);
     void vInsert_joinPred(void);
+    void vMark_idxCol(void);
+
     void vResolve_joinPred(void);
     void vSubsume_scan(void);
 

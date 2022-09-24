@@ -234,6 +234,8 @@ namespace STORE
     void vOption(Stz* szOption);
     Stz* szOr(void);
     void vOr(Stz* szOr);
+    Stz* szOrdinal(void);
+    void vOrdinal(Stz* szOrdinal);
 
     i8   iOrdinalStreamColNo(void);
     i8   iOrdinalIndexColNo(void);

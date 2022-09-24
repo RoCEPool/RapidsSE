@@ -87,6 +87,8 @@ void Joiner::vAppendPrelim_indexJoin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_JOINER, _FOOTER_);
 
+  m_pBoard->vClearAllMarks();
+
   Card *pMainCard = nullptr;
 
   vBeginIteration();
@@ -226,6 +228,38 @@ void Joiner::vInsert_joinPred(void)
 
     Card_JoinPred* pCard_JoinPred = new Card_JoinPred;
     m_pBoard->vInsertMainCard_after(pCard_JoinPred, pMainCard);
+  }
+
+  vEndIteration();
+}
+
+/*----------------------------------------------------------------------------*/
+/* append preliminary <indexJoin>'s to all <absJoin>                          */
+/*----------------------------------------------------------------------------*/
+void Joiner::vMark_idxCol(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_JOINER, _FOOTER_);
+
+  m_pBoard->vClearAllMarks();
+
+  Card *pMainCard = nullptr;
+
+  vBeginIteration();
+
+  while (Card_AbsJoin* pCard_absJoin = _pCard_AbsJoin(pEachMain(CK_ABSJOIN))) {
+
+    Card_Scan* pCard_scan = _pGetSub_Card_Scan(pCard_absJoin);
+    Card_Stream* pCard_stream = _pGetSub_Card_Stream(pCard_scan);
+
+    Card_IndexJoin* pCard_indexJoin = _pGetSub_Card_IndexJoin(pCard_absJoin);
+    Card_IdxColList* pCard_idxColList = _pGetSub_Card_IdxColList(pCard_indexJoin);
+
+    pCard_idxColList->vMark1('!');
+
+    s32 sOrdinal;
+
+    pCard_stream->vOrdinate(sOrdinal,"$$"_Stz);
+    pCard_idxColList->vOrdinal(sOrdinal);
   }
 
   vEndIteration();

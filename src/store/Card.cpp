@@ -2189,6 +2189,29 @@ void Card::vOr(Stz* szOr)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get ordinal                                                                */
+/*----------------------------------------------------------------------------*/
+Stz* Card::szOrdinal(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Stz* szOrdinal = szGetProperty("szOrdinal"_Stz);
+
+  return szOrdinal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set term                                                                   */
+/*----------------------------------------------------------------------------*/
+void Card::vOrdinal(Stz* szOrdinal)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  vAddProperty("szOrdinal"_Stz,szOrdinal);
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* get ordinal column value                                                   */
 /*----------------------------------------------------------------------------*/
 i8 Card::iOrdinalStreamColNo(void)

@@ -278,10 +278,16 @@ void Transformer::vTransform2(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  m_pOptimiser->pCardCtl()->vSubCards(CK_STREAM,1);
+  m_pOptimiser->pCardCtl()->vPinForm(CK_STREAM,0);
+
   m_pJoiner->vAppendPrelim_indexJoin();
   if (m_bInteractive)
     m_pBoard->vPrintBoard("Joiner::vAppendPrelim_indexJoin()"_Stz);
 
+  m_pJoiner->vMark_idxCol();
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Joiner::vMark_idxCol()"_Stz);
 
 
   //############################################################################

@@ -19,6 +19,7 @@ namespace STORE
 
   Card_IdxColList* _pCard_IdxColList(void* aAddr);
   bool _bIsCard_IdxColList(void* aAddr);
+  Card_IdxColList* _pGetSub_Card_IdxColList(Card* pParent);
 }
 
 /*============================================================================*/
