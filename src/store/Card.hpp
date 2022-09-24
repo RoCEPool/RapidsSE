@@ -141,6 +141,7 @@ namespace STORE
     i8   iMark2(void);
     void vMark2(i8 iMark2);
     void vMark2(char cMark2);
+    void vMoveToLastChild(Card* pChildCard);
 
     CardIter* pNewSubCardIter(void);
 
@@ -158,6 +159,7 @@ namespace STORE
     void vRemoveChildCard(Card* pCardRemove);
     void vRemoveSubCard(Card* pCardRemove);
     void vRenumberSubCards(Card* pParentCard);
+    void vReplaceChildWithKids(Card* pChildCard);
     void vReplaceSubCard(Card* pSubCard, Card* pWithCard);
 
     i8   nSubCards(void);

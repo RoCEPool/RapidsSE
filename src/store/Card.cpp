@@ -364,7 +364,7 @@ eGC Card::eToECatg(eCK eCard)
     case CK_INDEXPRED:                   return GC_SUB;
     case CK_INDEXSCAN:  return GC_MAIN;
 
-    case CK_JOINPRED:   return GC_MAIN;
+    case CK_JOINPRED:                    return GC_SUB;
 
     case CK_LBOUND:                      return GC_SUB;
     case CK_LIMIT:      return GC_MAIN;
@@ -1268,6 +1268,23 @@ void Card::vRenumberSubCards(Card* pParentCard)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Card::vReplaceChildWithKids(Card* pChildCard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card* pAfter = pChildCard;
+
+  while (Card* pKid = pChildCard->pPop()) {
+    vInsertAfter(pKid,pAfter);
+    pAfter = pKid;
+  }
+
+  vRemoveChildCard(pChildCard);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Card::vReplaceSubCard(Card* pSubCard, Card* pWithCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -2089,6 +2106,17 @@ void Card::vMark2(char cMark2)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   m_cMark2 = cMark2;
+}
+
+/*----------------------------------------------------------------------------*/
+/* move given to child to be last child                                       */
+/*----------------------------------------------------------------------------*/
+void Card::vMoveToLastChild(Card* pChildCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  vRemoveChildCard(pChildCard);
+  vAppend(pChildCard);
 }
 
 /*----------------------------------------------------------------------------*/

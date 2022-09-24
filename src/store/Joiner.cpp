@@ -345,6 +345,18 @@ void Joiner::vReduce_absJoin(void)
     pCard_absJoin->vDeleteChildCard(CK_CALC);
     pCard_absJoin->vDeleteChildCard(CK_FILTER);
 
+    Card_Scan* pCard_scan = _pGetSub_Card_Scan(pCard_absJoin);
+    pCard_absJoin->vReplaceChildWithKids(pCard_scan);
+    delete pCard_scan;
+
+    Card_IndexJoin* pCard_indexJoin = _pGetSub_Card_IndexJoin(pCard_absJoin);
+    pCard_absJoin->vReplaceChildWithKids(pCard_indexJoin);
+    delete pCard_indexJoin;
+
+    Card_Stream* pCard_stream = _pGetSub_Card_Stream(pCard_absJoin);
+    pCard_absJoin->vMoveToLastChild(pCard_stream);
+
+    pCard_absJoin->vCard(CK_INDEXJOIN);
   }
 }
 

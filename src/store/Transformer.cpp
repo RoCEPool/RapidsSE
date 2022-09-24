@@ -311,6 +311,7 @@ void Transformer::vTransform2(void)
 
   //############################################################################
 
+/*
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pJoiner->vInsert_joinPred();
   if (m_bInteractive)
@@ -363,6 +364,7 @@ void Transformer::vTransform2(void)
     m_pBoard->vPrintBoard("Sender::vReadd_Sends()"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+*/
 
   m_pCombiner->vAdd_combined();
   if (m_bInteractive)

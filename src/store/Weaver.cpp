@@ -579,6 +579,20 @@ void Weaver::vRpnIndexJoin(Stz* szRpnExpr, Card_IndexJoin* pCard_IndexJoin)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
+  Card_JoinPred* pCard_joinPred = _pGetSub_Card_JoinPred(pCard_IndexJoin);
+  if (pCard_joinPred) {
+    i8 nSubs = pCard_joinPred->nSubCards();
+    for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {
+      Card* pSubCard = pCard_joinPred->pGet(i_Sub);
+
+      if (! pSubCard->bIsCard(CK_TERM))
+        continue;
+
+      szRpnExpr->vCatSprint(" %s"_Stz,pSubCard->szGetProperty((i8)0));
+    }
+    return;
+  }
+
   Card_IndexPred* pCard_IndexPred = _pCard_IndexPred(pCard_IndexJoin->pFindSubCard(CK_INDEXPRED));
 
   if (! pCard_IndexPred) {
