@@ -599,6 +599,21 @@ void Card::vCutSubCard(Card* pSubCard)
 }
 
 /*----------------------------------------------------------------------------*/
+/* delete child-card                                                          */
+/*----------------------------------------------------------------------------*/
+void Card::vDeleteChildCard(eCK eCard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card* pChildCard = pFindChildCard(eCard);
+
+  if (pChildCard) {
+    vRemoveChildCard(pChildCard);
+    delete pChildCard;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* dum card and its sub cards                                                 */
 /*----------------------------------------------------------------------------*/
 void Card::vDump(i8 iDepth, Stz* szTitle)
@@ -1175,6 +1190,16 @@ Stz* Card::szPropertyNm(i8 i_Property)
   Stz* szName = m_pProperties->szName(i_Property);
   
   return szName;
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove given child card (non-recursive)                                    */
+/*----------------------------------------------------------------------------*/
+void Card::vRemoveChildCard(Card* pCardRemove)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vRemove(pCardRemove);
 }
 
 /*----------------------------------------------------------------------------*/

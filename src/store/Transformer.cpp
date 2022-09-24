@@ -300,6 +300,14 @@ void Transformer::vTransform2(void)
   if (m_bInteractive)
     m_pBoard->vPrintBoard("Joiner::vForm_joinPred()"_Stz);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  m_pOptimiser->pCardCtl()->vSubCards(CK_STREAM,0);
+  m_pOptimiser->pCardCtl()->vPinForm(CK_STREAM,1);
+
+  m_pJoiner->vReduce_absJoin();
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Joiner::vReduce_absJoin()"_Stz);
+
 
   //############################################################################
 

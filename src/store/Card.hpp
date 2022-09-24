@@ -100,6 +100,7 @@ namespace STORE
     void vCutProperty(Stz* szName);
     void vCutSubCard(Card* pSubCard);
 
+    void vDeleteChildCard(eCK eCard);
     void vDump(i8 iDepth=0, Stz* szTitle=nullptr);
     Card* pDupCardAndSubCards(void);
     Card_SubSet* pDupSubCards(void);
@@ -154,6 +155,7 @@ namespace STORE
     void vPropertiesEnsure(void);
     Stz* szPropertyNm(i8 i_Property);
 
+    void vRemoveChildCard(Card* pCardRemove);
     void vRemoveSubCard(Card* pCardRemove);
     void vRenumberSubCards(Card* pParentCard);
     void vReplaceSubCard(Card* pSubCard, Card* pWithCard);

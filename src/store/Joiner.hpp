@@ -30,7 +30,7 @@ namespace STORE
     void vForm_joinPred(void);
     void vInsert_joinPred(void);
     void vMark_idxCol(void);
-
+    void vReduce_absJoin(void);
     void vResolve_joinPred(void);
     void vSubsume_scan(void);
 

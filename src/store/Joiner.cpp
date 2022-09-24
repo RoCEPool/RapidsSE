@@ -221,11 +221,14 @@ void Joiner::vDelete_scan_R(void)
 void Joiner::vForm_joinPred(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_JOINER, _FOOTER_);
+
   vBeginIteration();
 
   while (Card_AbsJoin *pCard_absJoin = _pCard_AbsJoin(pEachMain(CK_ABSJOIN))) {
 
     Card_Filter*   pCard_filter   = _pGetSub_Card_Filter(pCard_absJoin);
+    Card_Scan*     pCard_scan     = _pGetSub_Card_Scan(pCard_absJoin);
+    Card_Stream*   pCard_stream   = _pGetSub_Card_Stream(pCard_scan);
     Card_Expr*     pCard_expr     = _pCard_Expr(pCard_filter->pGetSubCard(0));
     Card_CalcBool* pCard_calcBool = _pGetSub_Card_CalcBool(pCard_expr);
     Card_PredCmp*  pCard_predCmp  = _pGetSub_Card_PredCmp(pCard_calcBool);
@@ -237,22 +240,44 @@ void Joiner::vForm_joinPred(void)
     Card_IndexJoin* pCard_indexJoin = _pGetSub_Card_IndexJoin(pCard_absJoin);
 
     Card_JoinPred* pCard_joinPred = new Card_JoinPred;
-    pCard_indexJoin->vAppend(pCard_joinPred);
+    pCard_absJoin->vAppend(pCard_joinPred);
 
     Card_Term* pCard_term;
+
 
     pCard_term = new Card_Term("BOUND"_Stz);
     pCard_joinPred->vAppend(pCard_term);
 
+    // one of {pCard_term_0,pCard_term_1} is $In
+
+    i8 iStreamOrdLo = pCard_stream->iOrdLo();
+    i8 iStreamOrdHi = pCard_stream->iOrdHi();
+
+    i8 i_iOrdLo_0 = pCard_term_0->iOrdinalStreamColNo();
+    i8 i_iOrdLo_1 = pCard_term_1->iOrdinalStreamColNo();
+
+    if (i_iOrdLo_0 >= iStreamOrdLo && i_iOrdLo_0 <= iStreamOrdHi) {
+      pCard_term = new Card_Term("$I1"_Stz);
+      pCard_joinPred->vAppend(pCard_term);
+      pCard_term = new Card_Term(pCard_term_1->szTerm());
+      pCard_joinPred->vAppend(pCard_term);
+    }
+    else
+    if (i_iOrdLo_0 >= iStreamOrdLo && i_iOrdLo_0 <= iStreamOrdHi) {
+      pCard_term = new Card_Term("$I1"_Stz);
+      pCard_joinPred->vAppend(pCard_term);
+      pCard_term = new Card_Term(pCard_term_0->szTerm());
+      pCard_joinPred->vAppend(pCard_term);
+    }
+    else {
+      NEVER_REACH
+    }
+
     pCard_term = new Card_Term(pCard_predCmp->szCmp());
     pCard_joinPred->vAppend(pCard_term);
-
-    // one of these is $In
-    pCard_term = new Card_Term(pCard_term_0->szTerm());
-    pCard_joinPred->vAppend(pCard_term);
-    pCard_term = new Card_Term(pCard_term_1->szTerm());
-    pCard_joinPred->vAppend(pCard_term);
   }
+
+  vEndIteration();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -304,6 +329,23 @@ void Joiner::vMark_idxCol(void)
   }
 
   vEndIteration();
+}
+
+/*----------------------------------------------------------------------------*/
+/* reduce absJoin                                                             */
+/*----------------------------------------------------------------------------*/
+void Joiner::vReduce_absJoin(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_JOINER, _FOOTER_);
+
+  vBeginIteration();
+
+  while (Card_AbsJoin *pCard_absJoin = _pCard_AbsJoin(pEachMain(CK_ABSJOIN))) {
+
+    pCard_absJoin->vDeleteChildCard(CK_CALC);
+    pCard_absJoin->vDeleteChildCard(CK_FILTER);
+
+  }
 }
 
 /*----------------------------------------------------------------------------*/
