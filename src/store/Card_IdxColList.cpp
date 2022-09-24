@@ -56,6 +56,35 @@ Card_IdxColList::~Card_IdxColList(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* find <idxCol> which is given ordinal ($n)                                  */
+/*----------------------------------------------------------------------------*/
+Card_IdxCol* Card_IdxColList::pFind_idxCol(Stz *szOrdinal, i8& i_IdxColNo)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_IdxCol* pCard_idxCol = nullptr;
+
+  i8 nSubCards = this->nSubCards();
+  for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
+    Card *pSubCard = this->pGetSubCard(i_SubCard);
+
+    if (CK_IDXCOL != pSubCard->eCard())
+      continue;
+
+    Card_IdxCol* pCard_idxCol_test = _pCard_IdxCol(pSubCard);
+
+    Stz* szOrdinal_col = pCard_idxCol_test->szOrdinal();
+    if (szOrdinal_col->bSame(szOrdinal)) {
+      pCard_idxCol = pCard_idxCol_test;
+      i_IdxColNo = i_SubCard;
+      break;
+    }
+  }
+
+  return pCard_idxCol;
+}
+
+/*----------------------------------------------------------------------------*/
 /* add table and index                                                        */
 /*----------------------------------------------------------------------------*/
 void Card_IdxColList::vOrdinate(Card_Stream* pCard_Stream)
