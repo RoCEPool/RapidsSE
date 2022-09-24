@@ -24,7 +24,7 @@ namespace STORE
    ~Card_StreamColList(void) noexcept(false);
 
     Card_StreamCol* pGet_streamCol(i8 i_StreamColNo);
-    Card_StreamCol* pFind_streamCol(Stz *szColNm);
+    Card_StreamCol* pFind_streamCol(Stz *szColNm, i8& i_StreamColNo);
 
     void vPrependToAs(Stz* szPrefix);
     void vPopulate(StreamDef* pStreamDef, Stz* szPrefix_opt=nullptr);

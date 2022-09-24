@@ -143,6 +143,11 @@ namespace STORE
 
     CardIter* pNewSubCardIter(void);
 
+    i8   iOrdHi(void);
+    void vOrdHi(i8 iOrdHi);
+    i8   iOrdLo(void);
+    void vOrdLo(i8 iOrdLo);
+
     i8   nProperties(void);
     eTN  eProperty(i8 i_Property);
     TagSet* pProperties(void);

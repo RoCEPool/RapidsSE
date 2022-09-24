@@ -7,6 +7,8 @@
 
 namespace STORE
 {
+  class Card_Stream;
+
   class Card_IdxColList : public Card_SUB
   {
   public:
@@ -15,6 +17,8 @@ namespace STORE
   
     Card_IdxColList(Index* pIndex);
    ~Card_IdxColList(void) noexcept(false);
+
+    void vOrdinate(Card_Stream* pCard_Stream);
   };
 
   Card_IdxColList* _pCard_IdxColList(void* aAddr);

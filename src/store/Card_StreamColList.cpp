@@ -94,7 +94,7 @@ Card_StreamCol* Card_StreamColList::pGet_streamCol(i8 i_StreamColNo)
 /*----------------------------------------------------------------------------*/
 /* is given <pred> within this stream?                                        */
 /*----------------------------------------------------------------------------*/
-Card_StreamCol* Card_StreamColList::pFind_streamCol(Stz *szColNm)
+Card_StreamCol* Card_StreamColList::pFind_streamCol(Stz *szColNm, i8& i_StreamColNo)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -109,8 +109,10 @@ Card_StreamCol* Card_StreamColList::pFind_streamCol(Stz *szColNm)
     if (CK_STREAMCOL != pSubCard->eCard())
       continue;
 
-    if (pSubCard->szAs()->bSame(szColNm)) {
+    Card_As* pCard_as = _pGetSub_Card_As(pSubCard);
+    if (pCard_as->szAs()->bSame(szColNm)) {
       pCard_streamCol = _pCard_StreamCol(pSubCard);
+      i_StreamColNo = i_SubCard;
       break;
     }
   }

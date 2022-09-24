@@ -234,7 +234,7 @@ void Joiner::vInsert_joinPred(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append preliminary <indexJoin>'s to all <absJoin>                          */
+/* markup index columns                                                       */
 /*----------------------------------------------------------------------------*/
 void Joiner::vMark_idxCol(void)
 {
@@ -250,16 +250,17 @@ void Joiner::vMark_idxCol(void)
 
     Card_Scan* pCard_scan = _pGetSub_Card_Scan(pCard_absJoin);
     Card_Stream* pCard_stream = _pGetSub_Card_Stream(pCard_scan);
+    Card_StreamColList* pCard_streamColList = _pGetSub_Card_StreamColList(pCard_scan);
 
     Card_IndexJoin* pCard_indexJoin = _pGetSub_Card_IndexJoin(pCard_absJoin);
     Card_IdxColList* pCard_idxColList = _pGetSub_Card_IdxColList(pCard_indexJoin);
 
     pCard_idxColList->vMark1('!');
 
-    s32 sOrdinal;
-
-    pCard_stream->vOrdinate(sOrdinal,"$$"_Stz);
-    pCard_idxColList->vOrdinal(sOrdinal);
+    //s32 sOrdinal;
+    //pCard_stream->vOrdinate(sOrdinal,"$$"_Stz);
+    //pCard_idxColList->vOrdinal(sOrdinal);
+    pCard_idxColList->vOrdinate(pCard_stream);
   }
 
   vEndIteration();
