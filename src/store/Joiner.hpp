@@ -27,6 +27,7 @@ namespace STORE
     void vConvert_absJoin(void);
     void vDelete_joinPred(void);
     void vDelete_scan_R(void);
+    void vForm_joinPred(void);
     void vInsert_joinPred(void);
     void vMark_idxCol(void);
 

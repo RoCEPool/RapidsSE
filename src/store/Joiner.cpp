@@ -216,6 +216,46 @@ void Joiner::vDelete_scan_R(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* form <joinPred>                                                            */
+/*----------------------------------------------------------------------------*/
+void Joiner::vForm_joinPred(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_JOINER, _FOOTER_);
+  vBeginIteration();
+
+  while (Card_AbsJoin *pCard_absJoin = _pCard_AbsJoin(pEachMain(CK_ABSJOIN))) {
+
+    Card_Filter*   pCard_filter   = _pGetSub_Card_Filter(pCard_absJoin);
+    Card_Expr*     pCard_expr     = _pCard_Expr(pCard_filter->pGetSubCard(0));
+    Card_CalcBool* pCard_calcBool = _pGetSub_Card_CalcBool(pCard_expr);
+    Card_PredCmp*  pCard_predCmp  = _pGetSub_Card_PredCmp(pCard_calcBool);
+    Card_Term*     pCard_term_0   = _pCard_Term(pCard_predCmp->pGetSubCard(0));
+    Card_Term*     pCard_term_1   = _pCard_Term(pCard_predCmp->pGetSubCard(1));
+
+    // - - - -
+
+    Card_IndexJoin* pCard_indexJoin = _pGetSub_Card_IndexJoin(pCard_absJoin);
+
+    Card_JoinPred* pCard_joinPred = new Card_JoinPred;
+    pCard_indexJoin->vAppend(pCard_joinPred);
+
+    Card_Term* pCard_term;
+
+    pCard_term = new Card_Term("BOUND"_Stz);
+    pCard_joinPred->vAppend(pCard_term);
+
+    pCard_term = new Card_Term(pCard_predCmp->szCmp());
+    pCard_joinPred->vAppend(pCard_term);
+
+    // one of these is $In
+    pCard_term = new Card_Term(pCard_term_0->szTerm());
+    pCard_joinPred->vAppend(pCard_term);
+    pCard_term = new Card_Term(pCard_term_1->szTerm());
+    pCard_joinPred->vAppend(pCard_term);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* insert joinPred's                                                          */
 /*----------------------------------------------------------------------------*/
 void Joiner::vInsert_joinPred(void)
