@@ -88,17 +88,17 @@ namespace STORE {
     TypedStack* pSynthAggGby(Stz *sProjectExpr, Stz *sLabel, Stz *sLabelLoop);
 
     void vSynthAllocTubRow(TypedStack* pPostStack, bool bEosHandler, Stz *sLabel, Stz *sLabelNext,
-                           Stz* sLabelOrdAgg, bool bLeftOuterJoin, TypedStack* pInitStack = nullptr);
+                           Stz* sLabelOrdAgg, TypedStack* pInitStack = nullptr);
 
     void vSynthAllocPotRow(TypedStack* pPostStack, Stz *sHashExpr, bool bEosHandler,
                            Stz *sLabel, Stz *sLabelNext, Stz* sLabelOrdAgg,
-                           bool bLeftOuterJoin, TypedStack* pInitStack = nullptr);
+                           TypedStack* pInitStack = nullptr);
 
     void vSynthEos(IndexDef *pIndexDef, TypedStack* pPostStack, Stz* sLabelNext);
 
     void vSynthFilter(Stz *sFilterExpr, Stz *sLabel, Stz* sLabelPrev, Stz* sLabelLoop);
 
-    bool bSynthIndexJoin(StreamDef *pStreamDefRht, IndexDef *pIndexDefJ,
+    void vSynthIndexJoin(StreamDef *pStreamDefRht, IndexDef *pIndexDefJ,
                          Stz *sJoinExpr, Stz *sLabel, Stz *sLabelNext, u8 uSelectColumns);
 
     void vSynthIndexScan(Stz *sIndexScanExpr, Stz *sLabel, Stz *sLabelNext, Stz* sLabelOrdAgg, u8 uSelectColumns);
@@ -128,9 +128,7 @@ namespace STORE {
 
     void vSynthSort( Stz *sProjectExpr, Stz *sLabel, Stz *sLabelNext);
 
-    void vSynthStruct(u8 uSelectColumns, IndexDef* pIndexDef = nullptr);
-
-    void vSynthStructArray(u8 uSelectColumns);
+    void vSynthStruct(u8 uSelectColumns);
 
     void vSynthTop(Stz *sKeyExpr, i8 iTopCount, Stz *sLabel, Stz *sLabelLoop);
 
@@ -168,11 +166,11 @@ namespace STORE {
     void vGenerateStencilCastTo(void);
     void vGenerateErrorCheck(Stz* sIndent);
 
-    void vGenerateStruct(u8 uSelectColumns, IndexDef* pIndexDef = nullptr);
+    void vGenerateStruct(u8 uSelectColumns);
 
     void vGetValue(eDM eDatum, char *sValue, i8& iValue, d8& dValue);
 
-    void vInitAgg(ePE ePreExp, eDM eExprKind);
+    void vInitAgg(ePE ePreExp);
 
     void vOrdAggGby(Stz *sLabelNext, Stz *sLabelLoop);
 

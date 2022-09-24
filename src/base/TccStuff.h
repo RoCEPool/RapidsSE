@@ -311,7 +311,6 @@ struct Combined_T
 
   // index join with J
   i8      m_iIndexJoinInit;
-  i8      m_iLeftOuterJoin;
   void*   m_aRowSingleJ;
   void*   m_aRowCellArrayJ;
   char*   m_racStrAreaJ;

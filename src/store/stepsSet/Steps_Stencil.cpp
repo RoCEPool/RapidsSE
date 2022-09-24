@@ -118,7 +118,7 @@ void Step::vStencilSketch(void)
     Job* pJob = pOuterJobOfTask();
     TagSet* pTagSet = pJob->pJobTags();
 
-    pTagSet->vContentDump();
+    //pTagSet->vContentDump();
 
     bool bGenerateCCode = false;
 

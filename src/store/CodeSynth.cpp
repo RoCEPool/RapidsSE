@@ -553,7 +553,7 @@ void CodeSynth::vSynthFilter(Stz* sFilterExpr, Stz* sLabel, Stz* sLabelPrev, Stz
 /*----------------------------------------------------------------------------*/
 /* synthesize the index join                                                  */
 /*----------------------------------------------------------------------------*/
-bool CodeSynth::bSynthIndexJoin(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
+void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
                                 Stz* sJoinExpr, Stz* sLabel, Stz* sLabelNext, u8 uSelectColumns)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
@@ -744,6 +744,15 @@ bool CodeSynth::bSynthIndexJoin(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
   StrLib::vAppendString(&m_azCodeCrs, "\n L_AdvanceNextRowJ:");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
+  if (bLeftOuterJoin) {
+    StrLib::vAppendString(&m_azCodeCrs, "\n    // check if last row was a leftOuter");
+    StrLib::vAppendString(&m_azCodeCrs, "\n    if ( iLeftOuterRow ) {");
+    StrLib::vAppendString(&m_azCodeCrs, "\n      iLeftOuterRow = 0;");
+    vGenerateGoto("L_AdvanceNextRow"_Stz, "    "_Stz);
+    StrLib::vAppendString(&m_azCodeCrs, "\n    }");
+    StrLib::vAppendString(&m_azCodeCrs, "\n");
+  }
+
   // go to next entry
   StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_racStrAreaTJ = aCombinedT->m_racStrAreaTJSav;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    // move to next entry");
@@ -754,8 +763,6 @@ bool CodeSynth::bSynthIndexJoin(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
 
   // cleanup
   m_pExprStack->vReset();
-
-  return bLeftOuterJoin;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1410,28 +1417,15 @@ void CodeSynth::vSynthSort(Stz *sProjectExpr, Stz *sLabel, Stz *sLabelLoop) {
 /*----------------------------------------------------------------------------*/
 /* synthesize the streamDef into a struct                                     */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vSynthStruct(u8 uSelectColumns, IndexDef* pIndexDef) {
+void CodeSynth::vSynthStruct(u8 uSelectColumns) {
 
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generate the structure definition
-  vGenerateStruct(uSelectColumns, pIndexDef);
-
-  StrLib::vSprintCat((Stz *) m_caCode, "\n    struct %s* p%s;\n"_Stz, xRowRef[m_eStencilTo], xRowRef[m_eStencilTo]);
-}
-
-/*----------------------------------------------------------------------------*/
-/* synthesize the streamDef into a struct                                     */
-/*----------------------------------------------------------------------------*/
-void CodeSynth::vSynthStructArray(u8 uSelectColumns) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the structure definition
   vGenerateStruct(uSelectColumns);
 
-  StrLib::vSprintCat((Stz *) m_caCode, "\n    struct %s* p%s[256];\n"_Stz, xRowRef[m_eStencilTo], xRowRef[m_eStencilTo]);
+  StrLib::vSprintCat((Stz *) m_caCode, "\n    struct %s* p%s;\n"_Stz, xRowRef[m_eStencilTo], xRowRef[m_eStencilTo]);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2634,14 +2628,12 @@ void CodeSynth::vGenerateSort(void) {
 /*----------------------------------------------------------------------------*/
 /* add the init aggregate                                                     */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vInitAgg(ePE ePreExp, eDM eExprType)
+void CodeSynth::vInitAgg(ePE ePreExp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
   s256 sOperation;
   s32  sInitValue;
-  Bcd  xBcd;
-  i8   iInitValue = 0;
 
   switch(ePreExp) {
 
@@ -3545,7 +3537,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 /*----------------------------------------------------------------------------*/
 void CodeSynth::vSynthAllocPotRow(TypedStack* pPostStack, Stz* sHashExpr, bool bEosHandler,
                                   Stz* sLabel, Stz* sLabelNext, Stz* sLabelOrdAgg,
-                                  bool bLeftOuterJoin, TypedStack* pInitStack) {
+                                  TypedStack* pInitStack) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
@@ -3633,6 +3625,10 @@ void CodeSynth::vSynthAllocPotRow(TypedStack* pPostStack, Stz* sHashExpr, bool b
     StrLib::vAppendString(&m_azCodeCrs, "\n");
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate the code for the post aggregation
+    vGenerateExprCode(pPostStack, ""_Stz);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // VARCHAR column
     if (pColumn->eColumnType() == CT_VARCHAR ||
         pColumn->eColumnType() == CT_CHAR) {
@@ -3692,16 +3688,6 @@ void CodeSynth::vSynthAllocPotRow(TypedStack* pPostStack, Stz* sHashExpr, bool b
     //StrLib::vAppendString(&m_azCodeCrs, "\nL_Return:");
     //vGenerateGoto("L_ReturnFinal"_Stz);
   }
-  else if (bLeftOuterJoin) {
-    StrLib::vAppendString(&m_azCodeCrs, "\n    // check if last row was a leftOuter");
-    StrLib::vAppendString(&m_azCodeCrs, "\n    if ( iLeftOuterRow ) {");
-    StrLib::vAppendString(&m_azCodeCrs, "\n      iLeftOuterRow = 0;");
-    vGenerateGoto("L_AdvanceNextRow"_Stz, "  "_Stz);
-    StrLib::vAppendString(&m_azCodeCrs, "\n    } else {");
-    vGenerateGoto(sLabelNext, "  "_Stz);
-    StrLib::vAppendString(&m_azCodeCrs, "\n    }");
-    StrLib::vAppendString(&m_azCodeCrs, "\n");
-  }
   else {
     vGenerateGoto(sLabelNext);
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -3738,13 +3724,12 @@ void CodeSynth::vPushAggCol(TypedStack* pExprStack, TypedStack* pPostStack,
 //      sStructColumn.vSprint("p%s_tub->%s"_Stz,
 //                            xRowRef[m_eStencilTo], sColumn.azChar());
 
-    vInitAgg(ePreExp, eExprType);
+    vInitAgg(ePreExp);
 
-    Column* pColumn = m_pStreamDefOut->pGetColumn(i_Col);
     sOperation.vSprint("_ASSIGN(aCombinedT->m_aiPayload[%lld])"_Stz, i_ColPL);
     m_pInitStack->vPushStr(sOperation);
   } else {
-    vInitAgg(ePreExp, eExprType);
+    vInitAgg(ePreExp);
 
     RASSERT(eExprKind == EK_AGGREG ||
             eExprKind == EK_AGGORD)
@@ -4852,7 +4837,7 @@ void CodeSynth::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePre
 /*----------------------------------------------------------------------------*/
 void CodeSynth::vSynthAllocTubRow(TypedStack* pPostStack, bool bEosHandler,
                                   Stz* sLabel, Stz* sLabelNext, Stz* sLabelOrdAgg,
-                                  bool bLeftOuterJoin, TypedStack* pInitStack)
+                                  TypedStack* pInitStack)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
@@ -4931,6 +4916,7 @@ void CodeSynth::vSynthAllocTubRow(TypedStack* pPostStack, bool bEosHandler,
     StrLib::vAppendString(&m_azCodeCrs, "\n    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
     sCopy.vSprint("\n    // column %lld"_Stz, i_Col);
     StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+    StrLib::vAppendString(&m_azCodeCrs, "\n");
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the post aggregation
@@ -4997,16 +4983,6 @@ void CodeSynth::vSynthAllocTubRow(TypedStack* pPostStack, bool bEosHandler,
 
     //StrLib::vAppendString(&m_azCodeCrs, "\nL_Return:");
     //vGenerateGoto("L_ReturnFinal"_Stz);
-  }
-  else if (bLeftOuterJoin) {
-    StrLib::vAppendString(&m_azCodeCrs, "\n    // check if last row was a leftOuter");
-    StrLib::vAppendString(&m_azCodeCrs, "\n    if ( iLeftOuterRow ) {");
-    StrLib::vAppendString(&m_azCodeCrs, "\n      iLeftOuterRow = 0;");
-    vGenerateGoto("L_AdvanceNextRow"_Stz);
-    StrLib::vAppendString(&m_azCodeCrs, "\n    } else {");
-    vGenerateGoto(sLabelNext);
-    StrLib::vAppendString(&m_azCodeCrs, "\n    }");
-    StrLib::vAppendString(&m_azCodeCrs, "\n");
   }
   else {
     vGenerateGoto(sLabelNext);
@@ -5179,7 +5155,7 @@ void CodeSynth::vGenerateKeyNotExistsFilter(StreamDef* pStreamDef, Stz* sFilterE
 /*----------------------------------------------------------------------------*/
 /* generate the streamDef into a struct                                       */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vGenerateStruct(u8 uSelectColumns, IndexDef* pIndexDef) {
+void CodeSynth::vGenerateStruct(u8 uSelectColumns) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
