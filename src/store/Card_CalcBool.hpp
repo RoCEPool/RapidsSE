@@ -17,6 +17,8 @@ namespace STORE
   
     Card_CalcBool(void);
    ~Card_CalcBool(void) noexcept(false);
+
+    void vRemovePred(Card_PRED* pCard_pred);
   };
 
   Card_CalcBool* _pCard_CalcBool(void* aAddr);

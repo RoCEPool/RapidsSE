@@ -81,6 +81,42 @@ void Joiner::vAppend_index(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* append preliminary <indexJoin>'s to all <absJoin>                          */
+/*----------------------------------------------------------------------------*/
+void Joiner::vAppendPrelim_indexJoin(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_JOINER, _FOOTER_);
+
+  Card *pMainCard = nullptr;
+
+  vBeginIteration();
+
+  while (Card_AbsJoin* pCard_absJoin = _pCard_AbsJoin(pEachMain(CK_ABSJOIN))) {
+
+    Card_Scan* pCard_scan = _pGetSub_Card_Scan(pCard_absJoin);
+    Card_Table* pCard_table = _pGetSub_Card_Table(pCard_scan);
+    Table* pTable = pCard_table->pTable();
+
+    IdxVec* pIdxVec = pTable->pIdxVec();
+    if (! pIdxVec)
+      return;
+
+    i8 nIndexes = pIdxVec->nItems();
+    for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
+      Index* pIndex = pIdxVec->pGet(i_Index);
+
+      Card_IndexJoin* pCard_indexJoin = new Card_IndexJoin;
+      pCard_absJoin->vAppend(pCard_indexJoin);
+
+      Card_Index* pCard_index = new Card_Index(pIndex);
+      pCard_indexJoin->vAppend(pCard_index);
+    }
+  }
+
+  vEndIteration();
+}
+
+/*----------------------------------------------------------------------------*/
 /* append indexPred to absJoin                                                */
 /*----------------------------------------------------------------------------*/
 void Joiner::vAppend_indexPred(void)

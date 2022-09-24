@@ -367,17 +367,16 @@ namespace OBLIQUE
     {
     public:
       static void vAckOriginatingJob(JobId tOriginId);
+      static bool bHasTag(Stz* szTagNm);
       static bool bHasTag(Job* pJob, Stz* szTagNm);
       static Stz* szJobNm(Job* pJob);
-
       static void vOriginJobNodeFailure(JobId tJobId);
       static void vPtpJobNodeFailure(JobId tJobId);
-
       static eEC  ePreExecuteDist(Job* pJob);
       static eEC  ePreExecuteLocal(Job* pJob);
-
       static void vRecvdReject(RejectJob* pRejectJob);
       static void vSendReject(RejectJob* pRejectJob);
+      static Stz* szTagValue(Stz* szTagNm);
       static void vTriggerExecute(JobId tDistId);
     };
   

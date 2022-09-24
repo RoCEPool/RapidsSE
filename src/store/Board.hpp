@@ -119,6 +119,8 @@ namespace STORE
 
     Card_SubSet* m_pCard_SubSet;
 
+    b8           m_bBeenCued;
+
   private:
     // must be last
     Footer m_xFooter;
@@ -146,7 +148,8 @@ namespace STORE
     Card* pFindMain(eCK eCard);
     Card* pFindMain(Stz* szCardNm);
     Card* pFindNextMain(Card* pAfter, eCK eFindCard);
-    Card_Stream* pFindStreamCard(i8 i_Stream);
+    Card_Filter* pFindFilterCard(i8 iFilter, Card*& rpMainCard);
+    Card_Stream* pFindStreamCard(i8 iStream, Card*& rpMainCard);
 
     Card* pGetMainCard(i8 i_MainCard);
     Card* pGetMainCard(i8 i_MainCard, eCK& reCard);
