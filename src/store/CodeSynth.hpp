@@ -128,9 +128,7 @@ namespace STORE {
 
     void vSynthSort( Stz *sProjectExpr, Stz *sLabel, Stz *sLabelNext);
 
-    void vSynthStruct(u8 uSelectColumns, IndexDef* pIndexDef = nullptr);
-
-    void vSynthStructArray(u8 uSelectColumns);
+    void vSynthStruct(u8 uSelectColumns);
 
     void vSynthTop(Stz *sKeyExpr, i8 iTopCount, Stz *sLabel, Stz *sLabelLoop);
 

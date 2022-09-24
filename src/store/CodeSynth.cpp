@@ -1417,7 +1417,7 @@ void CodeSynth::vSynthSort(Stz *sProjectExpr, Stz *sLabel, Stz *sLabelLoop) {
 /*----------------------------------------------------------------------------*/
 /* synthesize the streamDef into a struct                                     */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vSynthStruct(u8 uSelectColumns, IndexDef* pIndexDef) {
+void CodeSynth::vSynthStruct(u8 uSelectColumns) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
@@ -1426,19 +1426,6 @@ void CodeSynth::vSynthStruct(u8 uSelectColumns, IndexDef* pIndexDef) {
   vGenerateStruct(uSelectColumns);
 
   StrLib::vSprintCat((Stz *) m_caCode, "\n    struct %s* p%s;\n"_Stz, xRowRef[m_eStencilTo], xRowRef[m_eStencilTo]);
-}
-
-/*----------------------------------------------------------------------------*/
-/* synthesize the streamDef into a struct                                     */
-/*----------------------------------------------------------------------------*/
-void CodeSynth::vSynthStructArray(u8 uSelectColumns) {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generate the structure definition
-  vGenerateStruct(uSelectColumns);
-
-  StrLib::vSprintCat((Stz *) m_caCode, "\n    struct %s* p%s[256];\n"_Stz, xRowRef[m_eStencilTo], xRowRef[m_eStencilTo]);
 }
 
 /*----------------------------------------------------------------------------*/
