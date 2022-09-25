@@ -205,6 +205,9 @@ void Transformer::vTransform2(void)
 
   vTrace("Transformer running vTransform2\n"_Stz);
 
+  m_pOptimiser->pCardCtl()->vSubCards(CK_AGGELIST,0);
+  m_pOptimiser->pCardCtl()->vSubCards(CK_GBYELIST,0);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pStager->vLinearize_Stages();
   if (m_bInteractive)
@@ -309,10 +312,21 @@ void Transformer::vTransform2(void)
     m_pBoard->vPrintBoard("Joiner::vReduce_absJoin()"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  m_pFiltrate->vIndividuate_filter();
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Filtrate::vIndividuate_filter()"_Stz);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   m_pStager->vAdd_Stages();
   if (m_bInteractive)
     m_pBoard->vPrintBoard("Stager::vAdd_Stages()"_Stz);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  m_pCombiner->vAdd_combined2();
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Combiner::vAdd_combined2()"_Stz);
 
   //############################################################################
 
@@ -369,11 +383,11 @@ void Transformer::vTransform2(void)
     m_pBoard->vPrintBoard("Sender::vReadd_Sends()"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-*/
 
   m_pCombiner->vAdd_combined();
   if (m_bInteractive)
     m_pBoard->vPrintBoard("Combiner::vAdd_combined()"_Stz);
+*/
 
 }
 

@@ -343,7 +343,7 @@ void Joiner::vReduce_absJoin(void)
   while (Card_AbsJoin *pCard_absJoin = _pCard_AbsJoin(pEachMain(CK_ABSJOIN))) {
 
     pCard_absJoin->vDeleteChildCard(CK_CALC);
-    pCard_absJoin->vDeleteChildCard(CK_FILTER);
+    //pCard_absJoin->vDeleteChildCard(CK_FILTER);
 
     Card_Scan* pCard_scan = _pGetSub_Card_Scan(pCard_absJoin);
     pCard_absJoin->vReplaceChildWithKids(pCard_scan);

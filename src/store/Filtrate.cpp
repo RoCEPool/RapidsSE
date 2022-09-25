@@ -115,6 +115,31 @@ void Filtrate::vDeleteEmpty_filter(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* individuate <absJoin>/<filter> as main <filter>                            */
+/*----------------------------------------------------------------------------*/
+void Filtrate::vIndividuate_filter(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
+
+  vBeginIteration();
+
+  while (Card_AbsJoin *pCard_absJoin =
+      _pCard_AbsJoin(pEachMain(CK_ABSJOIN))) {
+
+    Card_Filter* pCard_filter =
+      _pGetSub_Card_Filter(pCard_absJoin);
+
+    if (! pCard_filter)
+      continue;
+
+    pCard_absJoin->vRemoveChildCard(pCard_filter);
+    m_pBoard->vInsertMainCard_after(pCard_filter,pCard_absJoin);
+  }
+
+  vEndIteration();
+}
+
+/*----------------------------------------------------------------------------*/
 /* remove <predCmp> (referenced in <joinPred>) from all <filter>              */
 /*----------------------------------------------------------------------------*/
 void Filtrate::vRemove_predCmp(void)
@@ -247,8 +272,8 @@ i8 Filtrate::iAssignPredLeft(Card_PRED* pCard_PRED, Card_Filter* pCard_filter)
   i8 nScan    = 0;
   i8 iWhichScan = C_UNKNOWN;
 
-  vTrace("iAssignPredLeft candidate %p\n"_Stz,pCard_PRED);
-  pCard_PRED->vDump();
+  //vTrace("iAssignPredLeft candidate %p\n"_Stz,pCard_PRED);
+  //pCard_PRED->vDump();
 
   for (i8 i_Main = 0; /* none */ ; i_Main++) {
     Card *pMainCard = m_pBoard->pGetMainCard(i_Main);
@@ -343,24 +368,34 @@ bool Filtrate::bCopyPredDrillDown(Card_PRED* pCard_pred, Card_Filter* pCard_filt
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
 
+  Card_CalcBool* pCard_calcBool = _pGetSub_Card_CalcBool(pCard_filter);
 
   if ('@' == pCard_pred->cMark1()) {
     Card* pMainCard;
     i8 iStream = pCard_pred->iMark2();
     Card_Stream* pCard_stream = m_pBoard->pFindStreamCard(iStream,pMainCard);
 
-    Card_Filter* pCard_filter_new = new Card_Filter;
-    pCard_filter_new->vMark1(pCard_stream->cMark1());
-    pCard_filter_new->vMark2(pCard_stream->iMark2());
-    pMainCard->vAppend(pCard_filter_new);
+    Card_Filter* pCard_filter_existing =
+        _pGetSub_Card_Filter(pMainCard);
+
+    if (pCard_filter_existing) {
+      pCard_filter_existing->vMark1(pCard_stream->cMark1());
+      pCard_filter_existing->vMark2(pCard_stream->iMark2());
+      vCopyPredToExistingFilter(pCard_filter_existing,pCard_pred);
+    }
+    else {
+      Card_Filter* pCard_filter_new = new Card_Filter;
+      pCard_filter_new->vMark1(pCard_stream->cMark1());
+      pCard_filter_new->vMark2(pCard_stream->iMark2());
+      pMainCard->vAppend(pCard_filter_new);
+      vCopyPredToNewFilter(pCard_filter_new,pCard_pred);
+    }
 
     pCard_stream->vMark1('#');
 
-    vCopyPredToNewFilter(pCard_filter_new,pCard_pred);
 
-    Card_CalcBool* pCard_calcBool = _pGetSub_Card_CalcBool(pCard_filter);
     pCard_calcBool->vRemovePred(pCard_pred);
-    m_pBoard->vPrintBoard();
+    //m_pBoard->vPrintBoard();
 
     return true;
   }
@@ -375,6 +410,24 @@ bool Filtrate::bCopyPredDrillDown(Card_PRED* pCard_pred, Card_Filter* pCard_filt
   }
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* inspect all <filter> and attempt to move <pred> after <scan>/<absJoin>     */
+/*----------------------------------------------------------------------------*/
+void Filtrate::vCopyPredToExistingFilter(Card_Filter* pCard_filter_existing, Card_PRED* pCard_pred)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
+
+  Card_CalcBool* pCard_calcBool = _pGetSub_Card_CalcBool(pCard_filter_existing);
+
+  Card* pCard_top = pCard_calcBool->pPop();
+
+  Card_PredAnd* pCard_predAnd = new Card_PredAnd;
+  pCard_predAnd->vAppend(pCard_top);
+  pCard_predAnd->vAppend(pCard_pred);
+
+  pCard_calcBool->vAppend(pCard_predAnd);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -63,6 +63,65 @@ void Combiner::vAdd_combined(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* simplify                                                                   */
+/*----------------------------------------------------------------------------*/
+void Combiner::vAdd_combined2(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINER, _FOOTER_);
+
+  i8 iStage = 0;
+  i8 iScan = 0;
+  i8 iIndexJoin = 0;
+  i8 iProject = 0;
+  i8 iAggreg = 0;
+
+
+  i8 nMainCards = m_pBoard->nMainCards();
+  for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
+    Card *pMainCard = m_pBoard->pGetMainCard(i_Main);
+
+    eCK eCard = pMainCard->eCard();
+
+    if (CK_PROJECT == eCard) {
+      iProject++;
+
+      Card_Combine *pCard_combine = new Card_Combine;
+      m_pBoard->vInsertMainCard_after(pCard_combine, pMainCard);
+      i_Main++;
+      nMainCards = m_pBoard->nMainCards();
+      continue;
+    }
+
+    if (CK_INDEXJOIN == eCard) {
+      iIndexJoin++;
+
+      Card* pMainCard_next = m_pBoard->pGetMainCard(i_Main+1);
+      eCK eCard_next = pMainCard_next->eCard();
+      if (CK_PROJECT == eCard_next)
+        continue;
+
+      Card_Combine *pCard_combine = new Card_Combine;
+      m_pBoard->vInsertMainCard_after(pCard_combine, pMainCard);
+      i_Main++;
+      nMainCards = m_pBoard->nMainCards();
+      continue;
+    }
+
+    if (CK_AGGREG == eCard) {
+      iProject++;
+
+      Card_Combine *pCard_combine = new Card_Combine;
+      m_pBoard->vInsertMainCard_after(pCard_combine, pMainCard);
+      i_Main++;
+      nMainCards = m_pBoard->nMainCards();
+      continue;
+    }
+
+
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* delete combines                                                            */
 /*----------------------------------------------------------------------------*/
 void Combiner::vDelete_Combines(void)
