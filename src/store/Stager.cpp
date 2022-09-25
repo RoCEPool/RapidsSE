@@ -43,6 +43,78 @@ Stager::~Stager(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* linearize stages                                                           */
 /*----------------------------------------------------------------------------*/
+void Stager::vAdd_Stages(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STAGER, _FOOTER_);
+
+  i8 iStage = 0;
+  i8 iScan = 0;
+  i8 iIndexJoin = 0;
+  i8 iProject = 0;
+  eYG eStageTopo = YG_NONE;
+  Card_StageTopo* pCard_StageTopo = nullptr;
+
+  i8 nMainCards = m_pBoard->nMainCards();
+  for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
+    Card* pMainCard = m_pBoard->pGetMainCard(i_Main);
+
+    eCK eCard = pMainCard->eCard();
+
+    if (CK_STAGE == eCard) {
+      if (iStage++)
+        break;
+      pCard_StageTopo
+          = _pCard_StageTopo(pMainCard->pFindChildCard(CK_STAGETOPO));
+
+    }
+    else
+    if (CK_SCAN == eCard) {
+      iScan++;
+      RASSERT(1 == iScan);
+      continue;
+    }
+    else
+    if (CK_INDEXJOIN == eCard) {
+      iIndexJoin++;
+
+      Card* pMainCard_next = m_pBoard->pGetMainCard(i_Main+1);
+      eCK eCard_next = pMainCard_next->eCard();
+      if (CK_PROJECT == eCard_next)
+        continue;
+
+      Card_Stage* pCard_Stage_new = new Card_Stage;
+      Card_StageTopo* pCard_StageTopo_new
+          = _pCard_StageTopo(pCard_StageTopo->pDupCardAndSubCards());
+      pCard_Stage_new->vAppend(pCard_StageTopo_new);
+      m_pBoard->vInsertMainCard_after(pCard_Stage_new,pMainCard);
+      // skip stage just inserted
+      i_Main++;
+      continue;
+    }
+    else
+    if (CK_PROJECT == eCard) {
+      iProject++;
+
+      Card* pMainCard_next = m_pBoard->pGetMainCard(i_Main+1);
+      eCK eCard_next = pMainCard_next->eCard();
+      if (CK_STAGE == eCard_next)
+        continue;
+
+      Card_Stage* pCard_Stage_new = new Card_Stage;
+      Card_StageTopo* pCard_StageTopo_new
+          = _pCard_StageTopo(pCard_StageTopo->pDupCardAndSubCards());
+      pCard_Stage_new->vAppend(pCard_StageTopo_new);
+      m_pBoard->vInsertMainCard_after(pCard_Stage_new,pMainCard);
+      // skip stage just inserted
+      i_Main++;
+    }
+
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* linearize stages                                                           */
+/*----------------------------------------------------------------------------*/
 void Stager::vLinearize_Stages(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGER, _FOOTER_);

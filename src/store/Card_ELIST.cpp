@@ -39,9 +39,9 @@ Card_StreamColList* Card_ELIST::pDerive_StreamColList(void)
   Card_StreamColList* pCard_StreamColList = new Card_StreamColList;
 
   eCK eSubCard;
-  i8 nSubCards = this->nSubCards();
-  for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
-    Card *pSubCard = pGetSubCard(i_SubCard, eSubCard);
+  i8 nSubCards = this->nChildCards();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card *pSubCard = pGetChildCard(i_Child, eSubCard);
 
     Card *pCard_Type = pSubCard->pFindSubCard(CK_TYPE);
     Card *pCard_As = pSubCard->pFindSubCard(CK_AS);
@@ -53,7 +53,7 @@ Card_StreamColList* Card_ELIST::pDerive_StreamColList(void)
       pCard_StreamCol->vAppend(pCard_As->pDupCardAndSubCards());
     else {
       s32 sAs;
-      sAs.vSprint("$%lld"_Stz,i_SubCard + 1);
+      sAs.vSprint("$%lld"_Stz,i_Child + 1);
       pCard_As = new Card_As(sAs);
       pCard_StreamCol->vAppend(pCard_As);
     }

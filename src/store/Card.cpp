@@ -34,18 +34,18 @@ CardSet::~CardSet(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card* CardSet::pGetSubCard(i8 i_Card)
+Card* CardSet::pGetChildCard(i8 i_Child)
 {
-  Card* pCard = pGet(i_Card);
+  Card* pCard = pGet(i_Child);
   return pCard;
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card* CardSet::pGetSubCard(i8 i_Card, eCK& reCard)
+Card* CardSet::pGetChildCard(i8 i_Child, eCK& reCard)
 {
-  Card* pCard = pGet(i_Card);
+  Card* pCard = pGet(i_Child);
   
   if (pCard)
     reCard = pCard->eCard();
@@ -63,13 +63,13 @@ void CardSet::vRemoveSubCards(eCK eCard)
   //_precondition_(_ADDRESS_,_FOOTER_);
   
   i8 nSubCards = this->nItems();
-  for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
-    Card* pSubCard = pGetSubCard(i_SubCard);
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card* pSubCard = pGetChildCard(i_Child);
     if (! pSubCard->bIsCard(eCard))
       continue;
     
     vRemove(pSubCard);
-    i_SubCard--;
+    i_Child--;
     nSubCards--;
   }
 }
@@ -500,9 +500,9 @@ void Card::vAppendDupSubCards(Card* pCard_SubSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  i8 nSubCards = pCard_SubSet->nSubCards();
-  for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
-    Card* pSubCard = pCard_SubSet->pGetSubCard(i_SubCard);
+  i8 nSubCards = pCard_SubSet->nChildCards();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card* pSubCard = pCard_SubSet->pGetChildCard(i_Child);
 
     Card* pSubCard_dup = pSubCard->pDupCardAndSubCards();
 
@@ -644,9 +644,9 @@ void Card::vDump(i8 iDepth, Stz* szTitle)
          ,sProperties.szStz()
          );
 
-  i8 nSubCards = this->nSubCards();
+  i8 nSubCards = this->nChildCards();
   for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++)
-    pGetSubCard(i_Sub)->vDump(iDepth+1);
+    pGetChildCard(i_Sub)->vDump(iDepth + 1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -662,9 +662,9 @@ Card* Card::pDupCardAndSubCards(void)
     pCard_dup->pProperties()->vCopy(m_pProperties);
   }
 
-  i8 nSubCards = this->nSubCards();
-  for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
-    Card* pSubCard = pGetSubCard(i_SubCard);
+  i8 nSubCards = this->nChildCards();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card* pSubCard = pGetChildCard(i_Child);
     
     Card* pSubCard_dup = pSubCard->pDupCardAndSubCards();
     
@@ -688,9 +688,9 @@ Card_SubSet* Card::pDupSubCards(void)
   
   Card_SubSet* pCard_SubSet = new Card_SubSet;
   
-  i8 nSubCards = this->nSubCards();
-  for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
-    Card* pSubCard = pGetSubCard(i_SubCard);
+  i8 nSubCards = this->nChildCards();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card* pSubCard = pGetChildCard(i_Child);
     
     Card* pSubCard_dup = pSubCard->pDupCardAndSubCards();
     
@@ -752,9 +752,9 @@ bool Card::bEquivalent(Card* pCard_arg)
   }
   
   eCK eSubCard;
-  i8 nSubCards = this->nSubCards();
+  i8 nSubCards = this->nChildCards();
   for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
-    Card* pSubCard = pGetSubCard(i_Sub,eSubCard);
+    Card* pSubCard = pGetChildCard(i_Sub, eSubCard);
     
     Card* pSubCard_arg = pCard_arg->pFindSubCard(eSubCard);
     if (! pSubCard_arg)
@@ -798,9 +798,9 @@ Card* Card::pFindParent(Card* pSubCard_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  i8 nSubCards = this->nSubCards();
+  i8 nSubCards = this->nChildCards();
   for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
-    Card* pSubCard = pGetSubCard(i_Sub);
+    Card* pSubCard = pGetChildCard(i_Sub);
     
     if (pSubCard_arg == pSubCard)
       return this;
@@ -1013,9 +1013,9 @@ bool Card::bHasSubCard(Card* pGivenCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  i8 nSubCards = this->nSubCards();
-  for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
-    Card *pSubCard = pGetSubCard(i_SubCard);
+  i8 nSubCards = this->nChildCards();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card *pSubCard = pGetChildCard(i_Child);
 
     if (pSubCard == pGivenCard)
       return true;
@@ -1034,9 +1034,9 @@ bool Card::bHasSubCard(Card* pGivenCard, Card*& rpParentCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  i8 nSubCards = this->nSubCards();
-  for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
-    Card *pSubCard = pGetSubCard(i_SubCard);
+  i8 nSubCards = this->nChildCards();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card *pSubCard = pGetChildCard(i_Child);
 
     if (pSubCard == pGivenCard) {
       rpParentCard = this;
@@ -1295,7 +1295,7 @@ void Card::vReplaceSubCard(Card* pSubCard, Card* pWithCard)
 /*----------------------------------------------------------------------------*/
 /* get number of sub-cards                                                    */
 /*----------------------------------------------------------------------------*/
-i8 Card::nSubCards(void)
+i8 Card::nChildCards(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -1591,9 +1591,9 @@ void Card::vClearAllMarks(void)
   vMark1(' ');
   vMark2(' ');
 
-  i8 nSubCards = this->nSubCards();
+  i8 nSubCards = this->nChildCards();
   for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
-    Card *pSubCard = pGetSubCard(i_Sub);
+    Card *pSubCard = pGetChildCard(i_Sub);
 
     pSubCard->vClearAllMarks();
   }
@@ -3168,7 +3168,7 @@ void Card::vStreamElistPrint(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
   eCK eSubCard;
   i8 nSubs = this->nItems();
   for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {
-    Card* pSubCard = pGetSubCard(i_Sub,eSubCard);
+    Card* pSubCard = pGetChildCard(i_Sub, eSubCard);
     if (CK_EXPR != eSubCard)
       continue;
     

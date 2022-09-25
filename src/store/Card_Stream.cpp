@@ -72,9 +72,9 @@ void Card_Stream::vApplyOrder(Card_Stream* pCard_Stream_src)
       break;
     
     Card_Expr* pCard_Expr_src =
-      _pCard_Expr(pCard_ObyElist_src->pGetSubCard(i_Expr));
+      _pCard_Expr(pCard_ObyElist_src->pGetChildCard(i_Expr));
     Card_Expr* pCard_Expr_tst =
-      _pCard_Expr(pCard_StreamElist_dst->pGetSubCard(i_Expr));
+      _pCard_Expr(pCard_StreamElist_dst->pGetChildCard(i_Expr));
 
     if (! pCard_Expr_tst->bEquivalent(pCard_Expr_src))
       break;
@@ -114,9 +114,9 @@ bool Card_Stream::bContainsPred(Card_PRED* pCard_PRED)
       return false;
   }
 
-  i8 nSubCards = pCard_PRED->nSubCards();
-  for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
-    Card *pSubCard = pCard_PRED->pGetSubCard(i_SubCard);
+  i8 nSubCards = pCard_PRED->nChildCards();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card *pSubCard = pCard_PRED->pGetChildCard(i_Child);
 
     if (! bContainsPred(static_cast<Card_PRED*>(pSubCard)))
       return false;

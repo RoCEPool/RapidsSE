@@ -55,11 +55,11 @@ void Card_CalcBool::vRemovePred(Card_PRED* pCard_pred)
 
   if (CK_PREDAND == pParentCard->eCard() || CK_PREDOR == pParentCard->eCard()) {
 
-    if (0 == pParentCard->nSubCards()) {
+    if (0 == pParentCard->nChildCards()) {
       vRemoveSubCard(pParentCard);
     }
     else {
-      Card* pSiblingCard = pParentCard->pGetSubCard(0);
+      Card* pSiblingCard = pParentCard->pGetChildCard(0);
       Card* pGrandCard = pFindParent((pParentCard));
       pParentCard->vRemoveSubCard(pSiblingCard);
       pGrandCard->vReplaceSubCard(pParentCard,pSiblingCard);

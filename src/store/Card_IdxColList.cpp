@@ -64,9 +64,9 @@ Card_IdxCol* Card_IdxColList::pFind_idxCol(Stz *szOrdinal, i8& i_IdxColNo)
 
   Card_IdxCol* pCard_idxCol = nullptr;
 
-  i8 nSubCards = this->nSubCards();
-  for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
-    Card *pSubCard = this->pGetSubCard(i_SubCard);
+  i8 nSubCards = this->nChildCards();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card *pSubCard = this->pGetChildCard(i_Child);
 
     if (CK_IDXCOL != pSubCard->eCard())
       continue;
@@ -76,7 +76,7 @@ Card_IdxCol* Card_IdxColList::pFind_idxCol(Stz *szOrdinal, i8& i_IdxColNo)
     Stz* szOrdinal_col = pCard_idxCol_test->szOrdinal();
     if (szOrdinal_col->bSame(szOrdinal)) {
       pCard_idxCol = pCard_idxCol_test;
-      i_IdxColNo = i_SubCard;
+      i_IdxColNo = i_Child;
       break;
     }
   }
@@ -95,9 +95,9 @@ void Card_IdxColList::vOrdinate(Card_Stream* pCard_Stream)
 
   Card_StreamColList* pCard_StreamColList = _pGetSub_Card_StreamColList(pCard_Stream);
 
-  i8 nSubCards = this->nSubCards();
+  i8 nSubCards = this->nChildCards();
   for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
-    Card_IdxCol* pCard_idxCol = _pCard_IdxCol(pGetSubCard(i_Sub));
+    Card_IdxCol* pCard_idxCol = _pCard_IdxCol(pGetChildCard(i_Sub));
 
     i8 i_StreamColNo = C_UNKNOWN;
     Stz* szColNm = pCard_idxCol->szColNm();

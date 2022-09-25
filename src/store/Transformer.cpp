@@ -308,6 +308,11 @@ void Transformer::vTransform2(void)
   if (m_bInteractive)
     m_pBoard->vPrintBoard("Joiner::vReduce_absJoin()"_Stz);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  m_pStager->vAdd_Stages();
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Stager::vAdd_Stages()"_Stz);
 
   //############################################################################
 

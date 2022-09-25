@@ -229,11 +229,11 @@ void Joiner::vForm_joinPred(void)
     Card_Filter*   pCard_filter   = _pGetSub_Card_Filter(pCard_absJoin);
     Card_Scan*     pCard_scan     = _pGetSub_Card_Scan(pCard_absJoin);
     Card_Stream*   pCard_stream   = _pGetSub_Card_Stream(pCard_scan);
-    Card_Expr*     pCard_expr     = _pCard_Expr(pCard_filter->pGetSubCard(0));
+    Card_Expr*     pCard_expr     = _pCard_Expr(pCard_filter->pGetChildCard(0));
     Card_CalcBool* pCard_calcBool = _pGetSub_Card_CalcBool(pCard_expr);
     Card_PredCmp*  pCard_predCmp  = _pGetSub_Card_PredCmp(pCard_calcBool);
-    Card_Term*     pCard_term_0   = _pCard_Term(pCard_predCmp->pGetSubCard(0));
-    Card_Term*     pCard_term_1   = _pCard_Term(pCard_predCmp->pGetSubCard(1));
+    Card_Term*     pCard_term_0   = _pCard_Term(pCard_predCmp->pGetChildCard(0));
+    Card_Term*     pCard_term_1   = _pCard_Term(pCard_predCmp->pGetChildCard(1));
 
     // - - - -
 
@@ -385,10 +385,10 @@ void Joiner::vResolve_joinPred(void)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    Card *pCard_Term_0 = pCard_PredCmp->pGetSubCard(0);
+    Card *pCard_Term_0 = pCard_PredCmp->pGetChildCard(0);
     Stz* szTerm_0 = pCard_Term_0->szTerm();
 
-    Card *pCard_Term_1 = pCard_PredCmp->pGetSubCard(1);
+    Card *pCard_Term_1 = pCard_PredCmp->pGetChildCard(1);
     Stz* szTerm_1 = pCard_Term_1->szTerm();
 
     Resolver* pResolver = new Resolver(m_pBench);
@@ -429,19 +429,19 @@ void Joiner::vSubsume_scan(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_JOINER, _FOOTER_);
 
   i8 nMainCards = m_pBoard->nMainCards();
-  for (i8 i_MainCard = 0; i_MainCard < nMainCards - 1; i_MainCard++) {
+  for (i8 i_Main = 0; i_Main < nMainCards - 1; i_Main++) {
 
-    Card *pMainCard = m_pBoard->pGetMainCard(i_MainCard);
+    Card *pMainCard = m_pBoard->pGetMainCard(i_Main);
     if (CK_SCAN != pMainCard->eCard())
       continue;
 
-    Card *pNextCard = m_pBoard->pGetMainCard(i_MainCard+1);
+    Card *pNextCard = m_pBoard->pGetMainCard(i_Main+1);
     if (CK_ABSJOIN != pNextCard->eCard())
       continue;
 
     m_pBoard->vRemoveMainCard(pMainCard);
     pNextCard->vAppend(pMainCard);
-    i_MainCard--;
+    i_Main--;
     nMainCards--;
   }
  }
@@ -469,9 +469,9 @@ Card_IndexPred* Joiner::pTo_IndexPred(Card_AbsJoin* pCard_AbsJoin,
 
   pCard_IndexPred->vAppend(new Card_Term("BOUND"_Stz));
 
-  Card_Term *pCard_Term_0 = _pCard_Term(pCard_PredCmp->pGetSubCard(0));
+  Card_Term *pCard_Term_0 = _pCard_Term(pCard_PredCmp->pGetChildCard(0));
   Stz *szTerm_0 = pCard_Term_0->szTerm();
-  Card_Term *pCard_Term_1 = _pCard_Term(pCard_PredCmp->pGetSubCard(1));
+  Card_Term *pCard_Term_1 = _pCard_Term(pCard_PredCmp->pGetChildCard(1));
   Stz *szTerm_1 = pCard_Term_1->szTerm();
 
   s256 sStreamNm_0;

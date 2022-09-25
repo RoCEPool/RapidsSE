@@ -21,6 +21,7 @@ namespace STORE
     Stager(Bench* pBench);
    ~Stager(void) noexcept(false);
 
+    void vAdd_Stages(void);
     void vLinearize_Stages(void);
 
   private:

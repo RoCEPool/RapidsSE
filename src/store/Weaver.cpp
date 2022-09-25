@@ -465,12 +465,12 @@ void Weaver::vRpnAggreg(Stz* szRpnExpr, Card_Aggreg* pCard_Aggreg)
   szRpnExpr->vConcat("\n                   "_Stz);
 
   nSubCards = pCard_GbyElist->nItems();
-  for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
-    Card* pCard_SUB = pCard_GbyElist->pGet(i_SubCard);
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card* pCard_SUB = pCard_GbyElist->pGet(i_Child);
     if (! pCard_SUB->bIsCard(CK_EXPR))
       return;
 
-    if (i_SubCard) {
+    if (i_Child) {
       szRpnExpr->vConcat("\n                 "_Stz);
       szRpnExpr->vConcat(" ,"_Stz);
     }
@@ -494,12 +494,12 @@ void Weaver::vRpnAggreg(Stz* szRpnExpr, Card_Aggreg* pCard_Aggreg)
   szRpnExpr->vConcat("\n                   "_Stz);
 
   nSubCards = pCard_AggElist->nItems();
-  for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
-    Card* pCard_SUB = pCard_AggElist->pGet(i_SubCard);
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card* pCard_SUB = pCard_AggElist->pGet(i_Child);
     if (! pCard_SUB->bIsCard(CK_EXPR))
       return;
     
-    if (i_SubCard) {
+    if (i_Child) {
       szRpnExpr->vConcat("\n                 "_Stz);
       szRpnExpr->vConcat(" ,"_Stz);
     }
@@ -581,7 +581,7 @@ void Weaver::vRpnIndexJoin(Stz* szRpnExpr, Card_IndexJoin* pCard_IndexJoin)
 
   Card_JoinPred* pCard_joinPred = _pGetSub_Card_JoinPred(pCard_IndexJoin);
   if (pCard_joinPred) {
-    i8 nSubs = pCard_joinPred->nSubCards();
+    i8 nSubs = pCard_joinPred->nChildCards();
     for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {
       Card* pSubCard = pCard_joinPred->pGet(i_Sub);
 
@@ -600,7 +600,7 @@ void Weaver::vRpnIndexJoin(Stz* szRpnExpr, Card_IndexJoin* pCard_IndexJoin)
     return;
   }
 
-  i8 nSubs = pCard_IndexPred->nSubCards();
+  i8 nSubs = pCard_IndexPred->nChildCards();
   for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {
     Card* pSubCard = pCard_IndexPred->pGet(i_Sub);
 
@@ -789,9 +789,9 @@ void Weaver::vRpnProject(Stz* szRpnExpr, Card_Project* pCard_Project)
     _pCard_ProjElist(pCard_Project->pFindSubCard(CK_PROJELIST));
 
   i8 nSubCards = pCard_ProjElist->nItems();
-  for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
     
-    Card* pSubCard = pCard_ProjElist->pGet(i_SubCard);
+    Card* pSubCard = pCard_ProjElist->pGet(i_Child);
     eCK eSubCard = pSubCard->eCard();
     
     if (CK_EXPR != eSubCard)
@@ -799,7 +799,7 @@ void Weaver::vRpnProject(Stz* szRpnExpr, Card_Project* pCard_Project)
 
     Card_Expr* pCard_Expr = _pCard_Expr(pSubCard);
   
-    if (i_SubCard) {
+    if (i_Child) {
       szRpnExpr->vConcat("\n                 "_Stz);
       szRpnExpr->vConcat(" ,"_Stz);
     }
@@ -830,9 +830,9 @@ void Weaver::vRpnSort(Stz* szRpnExpr, Card_Sort* pCard_Sort)
           _pCard_SbyElist(pCard_Sort->pFindSubCard(CK_SBYELIST));
 
   i8 nSubCards = pCard_SbyElist->nItems();
-  for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
 
-    Card* pSubCard = pCard_SbyElist->pGet(i_SubCard);
+    Card* pSubCard = pCard_SbyElist->pGet(i_Child);
     eCK eSubCard = pSubCard->eCard();
 
     if (CK_EXPR != eSubCard)
@@ -840,7 +840,7 @@ void Weaver::vRpnSort(Stz* szRpnExpr, Card_Sort* pCard_Sort)
 
     Card_Expr* pCard_Expr = _pCard_Expr(pSubCard);
 
-    if (i_SubCard)
+    if (i_Child)
       szRpnExpr->vConcat(" ,"_Stz);
 
     vExpr(szRpnExpr,pCard_Expr);
@@ -863,8 +863,8 @@ void Weaver::vExpr(Stz* szRpnExpr, Card_Expr* pCard_Expr)
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
   
   i8 nSubCards = pCard_Expr->nItems();
-  for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
-    Card* pCard = pCard_Expr->pGet(i_SubCard);
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card* pCard = pCard_Expr->pGet(i_Child);
     
     eCK eCard = pCard->eCard();
     
@@ -918,8 +918,8 @@ void Weaver::vExprCalc(Stz* szRpnExpr, Card_Calc* pCard_ExprCalc)
   //  szRpnExpr->vConcat(" )"_Stz);
   
   i8 nSubCards = pCard_ExprCalc->nItems();
-  for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
-    Card* pCard = pCard_ExprCalc->pGet(i_SubCard);
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card* pCard = pCard_ExprCalc->pGet(i_Child);
     
     eCK eCard = pCard->eCard();
     
@@ -946,8 +946,8 @@ void Weaver::vCalcBool(Stz* szRpnExpr, Card_CalcBool* pCard_CalcBool)
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
   i8 nSubCards = pCard_CalcBool->nItems();
-  for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
-    Card *pSubCard = pCard_CalcBool->pGet(i_SubCard);
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card *pSubCard = pCard_CalcBool->pGet(i_Child);
 
     eCK eSubCard = pSubCard->eCard();
 
@@ -977,8 +977,8 @@ void Weaver::vPredOr(Stz* szRpnExpr, Card_PredOr* pCard_PredOr, i8 i)
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
   i8 nSubCards = pCard_PredOr->nItems();
-  for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
-    Card *pSubCard = pCard_PredOr->pGet(i_SubCard);
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card *pSubCard = pCard_PredOr->pGet(i_Child);
 
     eCK eSubCard = pSubCard->eCard();
 
@@ -1010,8 +1010,8 @@ void Weaver::vPredAnd(Stz* szRpnExpr, Card_PredAnd* pCard_PredAnd, i8 i)
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
   i8 nSubCards = pCard_PredAnd->nItems();
-  for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
-    Card *pSubCard = pCard_PredAnd->pGet(i_SubCard);
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card *pSubCard = pCard_PredAnd->pGet(i_Child);
 
     eCK eSubCard = pSubCard->eCard();
 
@@ -1043,8 +1043,8 @@ void Weaver::vPredCmp(Stz* szRpnExpr, Card_PredCmp* pCard_PredCmp, i8 i)
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
   i8 nSubCards = pCard_PredCmp->nItems();
-  for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
-    Card *pSubCard = pCard_PredCmp->pGet(i_SubCard);
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card *pSubCard = pCard_PredCmp->pGet(i_Child);
 
     eCK eSubCard = pSubCard->eCard();
 

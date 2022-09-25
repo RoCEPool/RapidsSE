@@ -153,8 +153,8 @@ namespace STORE
     Card_Filter* pFindFilterCard(i8 iFilter, Card*& rpMainCard);
     Card_Stream* pFindStreamCard(i8 iStream, Card*& rpMainCard);
 
-    Card* pGetMainCard(i8 i_MainCard);
-    Card* pGetMainCard(i8 i_MainCard, eCK& reCard);
+    Card* pGetMainCard(i8 i_Main);
+    Card* pGetMainCard(i8 i_Main, eCK& reCard);
 
     void vInsertMainCard_after(Card* pNewMainCard, Card* pAfterMainCard, bool bRenumber=true);
     void vInsertMainCard_before(Card* pNewMainCard, Card* pBeforeMainCard, bool bRenumber=true);

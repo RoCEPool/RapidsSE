@@ -72,9 +72,9 @@ Stz* Card_MapSet::szMapBack(Stz* szMapFrom)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  i8 nSubCards = this->nSubCards();
-  for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
-    Card_Map *pCard_Map = _pCard_Map(pGetSubCard(i_SubCard));
+  i8 nSubCards = this->nChildCards();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card_Map *pCard_Map = _pCard_Map(pGetChildCard(i_Child));
 
     if (pCard_Map->szMapFrom()->bSame(szMapFrom))
       return pCard_Map->szMapBack();
