@@ -20,11 +20,95 @@
 #include "ListExo2_t.hpp"
 
 
-namespace STORE { class Board;
-                  class Card;
-                  class Card_Properties;
-                  class Card_SubSet;
-                  class Card_Term; }
+namespace STORE {
+  class Board;
+  class Card;
+  class Card_SubSet;
+}
+
+namespace STORE {
+  class Card_AbsJoin;
+  class Card_AggElist;
+  class Card_AggLevel;
+  class Card_Aggreg;
+  class Card_Aggregates;
+  class Card_As;
+
+  class Card_Calc;
+  class Card_CalcBool;
+  class Card_CandIndex;
+  class Card_Card;
+  class Card_Combine;
+
+  class Card_Debug;
+  class Card_Direction;
+
+  class Card_EBound;
+  class Card_Exists;
+  class Card_Expr;
+  class Card_ExprBool;
+
+  class Card_Filter;
+
+  class Card_GbyElist;
+  class Card_Generate;
+
+  class Card_Hash;
+  class Card_Having;
+
+  class Card_IdxCol;
+  class Card_IdxColList;
+  class Card_Index;
+  class Card_IndexJoin;
+  class Card_IndexPred;
+  class Card_IndexScan;
+
+  class Card_JoinPred;
+
+  class Card_LBound;
+  class Card_Limit;
+
+  class Card_Map;
+  class Card_MapSet;
+  class Card_Mode;
+
+  class Card_Name;
+
+  class Card_On;
+  class Card_Option;
+  class Card_OrdAgg;
+  class Card_ObyElist;
+
+  class Card_PredAnd;
+  class Card_PredCmp;
+  class Card_PredOr;
+  class Card_Project;
+  class Card_ProjElist;
+
+  class Card_RBound;
+  class Card_Rows;
+  class Card_RpnTerms;
+
+  class Card_SbyElist;
+  class Card_Scan;
+  class Card_Send;
+  class Card_SendKind;
+  class Card_Sends;
+  class Card_Sort;
+  class Card_Stage;
+  class Card_StageTopo;
+  class Card_Stream;
+  class Card_StreamElist;
+  class Card_StreamColList;
+  class Card_SubSet;
+
+  class Card_Table;
+  class Card_Term;
+  class Card_Type;
+
+  class Card_UBound;
+  class Card_Unique;
+}
 
 namespace STORE
 {
@@ -303,6 +387,20 @@ namespace STORE
     void vTablePrint(Ribbon* pRibbon, i8 iDepth);
     void vTermPrint(Ribbon* pRibbon, i8 iDepth);
 
+    Card_As*            pSub_as(void);
+    Card_CalcBool*      pSub_calcBool(void);
+    Card_Filter*        pSub_filter(void);
+    Card_GbyElist*      pSub_gbyElist(void);
+    Card_IdxColList*    pSub_idxColList(void);
+    Card_IndexJoin*     pSub_indexJoin(void);
+    Card_JoinPred*      pSub_joinPred(void);
+    Card_PredCmp*       pSub_predCmp(void);
+    Card_SbyElist*      pSub_sbyElist(void);
+    Card_Scan*          pSub_scan(void);
+    Card_Stream*        pSub_stream(void);
+    Card_StreamColList* pSub_streamColList(void);
+    Card_Table*         pSub_table(void);
+  
   private:
 
     Stz* szDecodeEnum(Stz* szEnum, i8 iEnum);

@@ -169,6 +169,23 @@ void Filtrate::vIndividuate_filter(void)
 
   vBeginIteration();
 
+  while (Card_Scan *pCard_scan =
+      _pCard_Scan(pEachMain(CK_SCAN))) {
+
+    Card_Filter* pCard_filter =
+        _pGetSub_Card_Filter(pCard_scan);
+
+    if (! pCard_filter)
+      continue;
+
+    pCard_scan->vRemoveChild(pCard_filter);
+    m_pBoard->vInsertMainCard_after(pCard_filter,pCard_scan);
+  }
+
+  vEndIteration();
+
+  vBeginIteration();
+
   while (Card_IndexJoin *pCard_indexJoin =
       _pCard_IndexJoin(pEachMain(CK_INDEXJOIN))) {
 

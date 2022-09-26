@@ -21,7 +21,7 @@ namespace STORE
     Sorter(Bench* pBench);
    ~Sorter(void) noexcept(false);
 
-    void vCull_sameAsOrderBy(void);
+    void vCull_sby_SameAs_gby(void);
 
   private:
 

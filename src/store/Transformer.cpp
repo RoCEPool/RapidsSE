@@ -326,9 +326,9 @@ void Transformer::vTransform2(void)
     m_pBoard->vPrintBoard("Joiner::vReduce_absJoin"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  m_pSorter->vCull_sameAsOrderBy();
+  m_pSorter->vCull_sby_SameAs_gby();
   if (m_bInteractive)
-    m_pBoard->vPrintBoard("Sorter::vCull_sameAsOrderBy"_Stz);
+    m_pBoard->vPrintBoard("Sorter::vCull_sby_SameAs_gby"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pFiltrate->vIndividuate_filter();

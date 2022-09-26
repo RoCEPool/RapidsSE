@@ -14,7 +14,7 @@ load orders "../tpch/sf_0001/orders.csv" ;
 /transform
 /transform2
 /interactive
-/cue = "Sorter::vCull_sameAsOrderBy"
+/cue = "Sorter::vCull_sby_SameAs_gby"
 /weave
 /weaved
 /pipelineName = "r4_a"

@@ -18,6 +18,18 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
 
   m_pMainCardIter = nullptr;
 
+  m_p_absJoin    = nullptr;
+  m_p_aggreg     = nullptr;
+  m_p_filter     = nullptr;
+  m_p_gbyElist   = nullptr;
+  m_p_indexJoin  = nullptr;
+  m_p_indexScan  = nullptr;
+  m_p_project    = nullptr;
+  m_p_sbyElist   = nullptr;
+  m_p_scan       = nullptr;
+  m_p_sort       = nullptr;
+  m_p_stage      = nullptr;
+
   _postcondition_(_ADDRESS_,_MAGIC_);
 }
 
@@ -46,6 +58,16 @@ void TransformerTool::vBeginIteration(void)
   RASSERT(! m_pMainCardIter);
 
   m_pMainCardIter = m_pBoard->pNewMainCardIter();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get board                                                                  */
+/*----------------------------------------------------------------------------*/
+Board* TransformerTool::pBoard(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  return m_pBoard;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -140,6 +162,27 @@ Card* TransformerTool::pFindMainOf(Card* pGivenCard, Card*& rpParentCard)
   delete pMainCardIter;
 
   return pMainCard;
+}
+
+/*----------------------------------------------------------------------------*/
+/* search for parent of given sub card                                        */
+/*----------------------------------------------------------------------------*/
+bool TransformerTool::bRecursivelyTheSame(Card* p_card_a, Card* p_card_b, i8 iDepth, bool bTestL0)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  bool bSame = Card::bCardsSameRecursive(p_card_a, p_card_b,iDepth,bTestL0);
+
+  return bSame;
+}
+
+/*----------------------------------------------------------------------------*/
+/* record transformation                                                      */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::vTransformation(eOT eTransformation)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
 }
 
 

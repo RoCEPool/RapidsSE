@@ -3273,6 +3273,178 @@ void Card::vTermPrint(Ribbon* pRibbon, i8 iDepth)
   vPrintProperties(pRibbon,iDepth,true);
 }
 
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_As.hpp"
+Card_As* Card::pSub_as(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_As* p_as =
+      _pCard_As(pFindSubCard(CK_AS));
+  return p_as;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_CalcBool.hpp"
+Card_CalcBool* Card::pSub_calcBool(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_CalcBool* p_calcBool =
+      _pCard_CalcBool(pFindSubCard(CK_CALCBOOL));
+  return p_calcBool;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_Filter.hpp"
+Card_Filter* Card::pSub_filter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Filter* p_filter =
+      _pCard_Filter(pFindSubCard(CK_FILTER));
+  return p_filter;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_GbyElist.hpp"
+Card_GbyElist* Card::pSub_gbyElist(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_GbyElist* p_gbyElist =
+      _pCard_GbyElist(pFindSubCard(CK_GBYELIST));
+  return p_gbyElist;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_IdxColList.hpp"
+Card_IdxColList* Card::pSub_idxColList(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_IdxColList* p_idxColList =
+      _pCard_IdxColList(pFindSubCard(CK_IDXCOLLIST));
+  return p_idxColList;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_IndexJoin.hpp"
+Card_IndexJoin* Card::pSub_indexJoin(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_IndexJoin* p_indexJoin =
+      _pCard_IndexJoin(pFindSubCard(CK_INDEXJOIN));
+  return p_indexJoin;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_JoinPred.hpp"
+Card_JoinPred* Card::pSub_joinPred(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_JoinPred* p_joinPred =
+      _pCard_JoinPred(pFindSubCard(CK_JOINPRED));
+  return p_joinPred;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_PredCmp.hpp"
+Card_PredCmp* Card::pSub_predCmp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_PredCmp* p_predCmp =
+      _pCard_PredCmp(pFindSubCard(CK_PREDCMP));
+  return p_predCmp;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_SbyElist.hpp"
+Card_SbyElist* Card::pSub_sbyElist(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_SbyElist* p_sbyElist =
+      _pCard_SbyElist(pFindSubCard(CK_SBYELIST));
+  return p_sbyElist;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_Scan.hpp"
+Card_Scan* Card::pSub_scan(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Scan* p_scan =
+      _pCard_Scan(pFindSubCard(CK_SCAN));
+  return p_scan;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_Stream.hpp"
+Card_Stream* Card::pSub_stream(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Stream* p_stream =
+      _pCard_Stream(pFindSubCard(CK_STREAM));
+  return p_stream;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_StreamColList.hpp"
+Card_StreamColList* Card::pSub_streamColList(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_StreamColList* p_streamColList =
+      _pCard_StreamColList(pFindSubCard(CK_STREAMCOLLIST));
+  return p_streamColList;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_Table.hpp"
+Card_Table* Card::pSub_table(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Table* p_table =
+      _pCard_Table(pFindSubCard(CK_TABLE));
+  return p_table;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
