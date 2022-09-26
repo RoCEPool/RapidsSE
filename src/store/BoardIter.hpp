@@ -32,6 +32,10 @@ namespace STORE
 
     Card_Sort*   pEach_sort(void);
 
+    Card_Stage*  pFirst_stage(void);
+
+    Card_Stage*  pNext_stage(void);
+
     Card_Aggreg* pPrev_aggreg(void);
 
 

@@ -18,17 +18,22 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
 
   m_pMainCardIter = nullptr;
 
-  m_p_absJoin    = nullptr;
-  m_p_aggreg     = nullptr;
-  m_p_filter     = nullptr;
-  m_p_gbyElist   = nullptr;
-  m_p_indexJoin  = nullptr;
-  m_p_indexScan  = nullptr;
-  m_p_project    = nullptr;
-  m_p_sbyElist   = nullptr;
-  m_p_scan       = nullptr;
-  m_p_sort       = nullptr;
-  m_p_stage      = nullptr;
+  m_p_absJoin     = nullptr;
+  m_p_aggreg      = nullptr;
+  m_p_filter      = nullptr;
+  m_p_gbyElist    = nullptr;
+  m_p_indexJoin   = nullptr;
+  m_p_indexScan   = nullptr;
+  m_p_project     = nullptr;
+  m_p_sbyElist    = nullptr;
+  m_p_scan        = nullptr;
+  m_p_sort        = nullptr;
+  m_p_stage       = nullptr;
+  m_p_stage_a     = nullptr;
+  m_p_stage_b     = nullptr;
+  m_p_stageTopo   = nullptr;
+  m_p_stageTopo_a = nullptr;
+  m_p_stageTopo_b = nullptr;
 
   _postcondition_(_ADDRESS_,_MAGIC_);
 }

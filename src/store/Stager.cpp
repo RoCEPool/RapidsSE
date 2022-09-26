@@ -64,8 +64,9 @@ void Stager::vAdd_Stages(void)
     eCK eCard = pMainCard->eCard();
 
     if (CK_STAGE == eCard) {
+      i8 i_Child;
       pCard_StageTopo
-          = _pCard_StageTopo(pMainCard->pFindChildCard(CK_STAGETOPO));
+          = _pCard_StageTopo(pMainCard->pFindChildCard(CK_STAGETOPO,i_Child));
       continue;
     }
 
@@ -160,34 +161,24 @@ void Stager::vLinearize_Stages(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGER, _FOOTER_);
 
-  Card_Stage* pCard_stage_a =
-      _pCard_Stage(m_pBoard->pFindMain(CK_STAGE));
-  if (! pCard_stage_a)
-    return;
-  Card_StageTopo* pCard_stageTopo_a =
-      _pCard_StageTopo(pCard_stage_a->pFindSubCard(CK_STAGETOPO));
-  if (! pCard_stageTopo_a)
-    return;
+  BoardIter xBI(this);
 
-  if (YG_ALL_PARTITIONS != pCard_stageTopo_a->eStageTopo())
+  if (! (m_p_stage_a = xBI.pFirst_stage()) )
+    return;
+  if (! (m_p_stageTopo_a = m_p_stage_a->pSub_stageTopo()) )
+    return;
+  if (YG_ALL_PARTITIONS != m_p_stageTopo_a->eStageTopo())
     return;
 
   for (;;) {
-    Card_Stage* pCard_stage_b =
-        _pCard_Stage(m_pBoard->pFindNextMain(pCard_stage_a,CK_STAGE));
-    if (! pCard_stage_b)
+    if (! (m_p_stage_b = xBI.pNext_stage()) )
       return;
-    Card_StageTopo* pCard_stageTopo_b =
-        _pCard_StageTopo(pCard_stage_b->pFindSubCard(CK_STAGETOPO));
-    if (! pCard_stageTopo_b)
+    if (! (m_p_stageTopo_b = m_p_stage_b->pSub_stageTopo()) )
+      return;
+    if (YG_ALL_PARTITIONS != m_p_stageTopo_b->eStageTopo())
       return;
 
-    if (YG_ALL_PARTITIONS != pCard_stageTopo_b->eStageTopo())
-      return;
-
-    m_pBoard->vRemoveMainCard(pCard_stage_b);
-
-    delete pCard_stage_b;
+    xBI.vRemoveDeleteCurr(CK_STAGE);
 
     m_pBoard->vRenumberMainCards();
   }

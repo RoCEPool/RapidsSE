@@ -81,7 +81,7 @@ Card* BoardIter::pEachMain(eCK eCard)
 
   for (;;) {
 
-    if (m_i_Main > m_pBoard->nMainCards()) {
+    if (m_i_Main >= m_pBoard->nMainCards()) {
       m_pCurrMain = nullptr;
       return nullptr;
     }
@@ -107,7 +107,39 @@ Card_Sort* BoardIter::pEach_sort(void)
 
   Card_Sort* p_sort = _pCard_Sort(pEachMain(CK_SORT));
 
+  m_pCurrMain = p_sort;
+
   return p_sort;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Stage* BoardIter::pFirst_stage(void)
+{
+  _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
+
+  Card_Stage* p_stage =
+      _pCard_Stage(m_pBoard->pFindMain(CK_STAGE,m_i_Main));
+
+  m_pCurrMain = p_stage;
+
+  return p_stage;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Stage* BoardIter::pNext_stage(void)
+{
+  _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
+
+  Card_Stage* p_stage =
+      _pCard_Stage(m_pBoard->pFindNextMain(m_pCurrMain, CK_STAGE, m_i_Main));
+
+  m_pCurrMain = p_stage;
+
+  return p_stage;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -118,7 +150,9 @@ Card_Aggreg* BoardIter::pPrev_aggreg(void)
   _precondition_( _MAGIC_, CN_BOARDITER, _FOOTER_);
 
   Card_Aggreg* p_aggreg =
-    _pCard_Aggreg(m_pBoard->pFindPrevMain(m_pCurrMain,CK_AGGREG));
+    _pCard_Aggreg(m_pBoard->pFindPrevMain(m_pCurrMain,CK_AGGREG,m_i_Main));
+
+  m_pCurrMain = p_aggreg;
 
   return p_aggreg;
 }
@@ -133,8 +167,11 @@ void BoardIter::vRemoveCurr(eCK eCrossCheck)
 
   RASSERT(eCrossCheck == m_pCurrMain->eCard());
   m_pBoard->vRemoveMainCard(m_pCurrMain);
-  m_pCurrMain = nullptr;
   m_i_Main--;
+  if (m_i_Main < m_pBoard->nMainCards())
+    m_pCurrMain = m_pBoard->pGetMainCard(m_i_Main);
+  else
+    m_pCurrMain = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -147,8 +184,11 @@ void BoardIter::vRemoveDeleteCurr(eCK eCrossCheck)
   RASSERT(eCrossCheck == m_pCurrMain->eCard());
   m_pBoard->vRemoveMainCard(m_pCurrMain);
   delete m_pCurrMain;
-  m_pCurrMain = nullptr;
   m_i_Main--;
+  if (m_i_Main < m_pBoard->nMainCards())
+    m_pCurrMain = m_pBoard->pGetMainCard(m_i_Main);
+  else
+    m_pCurrMain = nullptr;
 }
 
 /*============================================================================*/

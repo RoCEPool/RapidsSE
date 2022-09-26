@@ -640,7 +640,8 @@ void Card::vDeleteChildCard(eCK eCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card* pChildCard = pFindChildCard(eCard);
+  i8 i_Child;
+  Card* pChildCard = pFindChildCard(eCard,i_Child);
 
   if (pChildCard) {
     vRemoveChild(pChildCard);
@@ -809,19 +810,32 @@ Card* Card::pFindChildCard(eCK eCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  ListExoIter2_t<Card> *pSubCard_I = pNewIter();
+  i8 i_Child;
 
-  Card *pFoundCard = nullptr;
-  while (pSubCard_I->bHasNext()) {
-    Card *pSubCard = pSubCard_I->pNext();
+  Card* pFoundCard = pFindChildCard(eCard,i_Child);
+
+  return pFoundCard;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find immediate child-card                                                  */
+/*----------------------------------------------------------------------------*/
+Card* Card::pFindChildCard(eCK eCard, i8& i_Child)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card* pFoundCard = nullptr;
+
+  eCK eSubCard;
+  i8 nSubCards = this->nChildCards();
+  for (i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card* pSubCard = pGetChildCard(i_Child, eSubCard);
 
     if (eCard == pSubCard->eCard()) {
       pFoundCard = pSubCard;
       break;
     }
   }
-
-  delete pSubCard_I;
 
   return pFoundCard;
 }
@@ -3404,6 +3418,19 @@ Card_Scan* Card::pSub_scan(void)
   Card_Scan* p_scan =
       _pCard_Scan(pFindSubCard(CK_SCAN));
   return p_scan;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_StageTopo.hpp"
+Card_StageTopo* Card::pSub_stageTopo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_StageTopo* p_stageTopo =
+      _pCard_StageTopo(pFindSubCard(CK_STAGETOPO));
+  return p_stageTopo;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -30,6 +30,11 @@ namespace STORE
     Card_Scan*       m_p_scan;
     Card_Sort*       m_p_sort;
     Card_Stage*      m_p_stage;
+    Card_Stage*      m_p_stage_a;
+    Card_Stage*      m_p_stage_b;
+    Card_StageTopo*  m_p_stageTopo;
+    Card_StageTopo*  m_p_stageTopo_a;
+    Card_StageTopo*  m_p_stageTopo_b;
 
   public:
     void* operator new(size_t);

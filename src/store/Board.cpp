@@ -206,6 +206,18 @@ Card* Board::pFindMain(eCK eCard)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Card* Board::pFindMain(eCK eCard, i8& i_Main)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
+
+  Card* pMainCard = m_pCard_SubSet->pFindChildCard(eCard);
+
+  return pMainCard;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 Card* Board::pFindMain(Stz* szCardNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
@@ -230,9 +242,21 @@ Card* Board::pFindNextMain(Card* pAfter, eCK eFindCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
+  i8 i_Main;
+  Card* pMainCard = pFindNextMain(pAfter,eFindCard,i_Main);
+
+  return pMainCard;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find next main card after given arg which is an eFindCard                  */
+/*----------------------------------------------------------------------------*/
+Card* Board::pFindNextMain(Card* pAfter, eCK eFindCard, i8& i_Main)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
   Card* pMainCard = nullptr;
 
-  i8 i_Main = -1;
   i8 nMainCards = this->nMainCards();
   for (i_Main = 0; i_Main < nMainCards; i_Main++) {
     pMainCard = pGetMainCard(i_Main);
@@ -247,13 +271,16 @@ Card* Board::pFindNextMain(Card* pAfter, eCK eFindCard)
   // found after
 
   // get next eCard
-  for (i8 i_TestCard = i_Main+1; i_TestCard < nMainCards; i_TestCard++) {
+  for (i8 i_TestCard = i_Main + 1; i_TestCard < nMainCards; i_TestCard++) {
     Card* pTestCard = pGetMainCard(i_TestCard);
 
-    if (eFindCard == pTestCard->eCard())
+    if (eFindCard == pTestCard->eCard()) {
+      i_Main = i_TestCard;
       return pTestCard;
+    }
   }
 
+  i_Main = C_UNKNOWN;
   return nullptr;
 }
 
@@ -264,9 +291,21 @@ Card* Board::pFindPrevMain(Card* pBefore, eCK eFindCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
+  i8 i_Main;
+  Card* pMainCard = pFindPrevMain(pBefore, eFindCard, i_Main);
+
+  return pMainCard;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find prev main card given given arg which is an eFindCard                  */
+/*----------------------------------------------------------------------------*/
+Card* Board::pFindPrevMain(Card* pBefore, eCK eFindCard, i8& i_Main)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
   Card* pMainCard = nullptr;
 
-  i8 i_Main = -1;
   i8 nMainCards = this->nMainCards();
   for (i_Main = 0; i_Main < nMainCards; i_Main++) {
     pMainCard = pGetMainCard(i_Main);
@@ -284,8 +323,10 @@ Card* Board::pFindPrevMain(Card* pBefore, eCK eFindCard)
   for (i8 i_TestCard = i_Main-1; i_TestCard >= 0; i_TestCard--) {
     Card* pTestCard = pGetMainCard(i_TestCard);
 
-    if (eFindCard == pTestCard->eCard())
+    if (eFindCard == pTestCard->eCard()) {
+      i_Main = i_TestCard;
       return pTestCard;
+    }
   }
 
   return nullptr;
@@ -1031,7 +1072,8 @@ void Board::vResolveRecursive(Card* pAnyCard) // recursive
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // aggElist
 
-  Card_AggElist *pCard_AggElist = _pCard_AggElist(pAnyCard->pFindChildCard(CK_AGGELIST));
+  i8 i_Child;
+  Card_AggElist *pCard_AggElist = _pCard_AggElist(pAnyCard->pFindChildCard(CK_AGGELIST,i_Child));
   if (pCard_AggElist) {
 
     Card_Stream *pCard_Stream = new Card_Stream;

@@ -149,9 +149,12 @@ namespace STORE
     Card_Filter* pFindFilterCard(i8 iFilter, Card*& rpMainCard);
     i8    iFindMain(Card* pMainCard);
     Card* pFindMain(eCK eCard);
+    Card* pFindMain(eCK eCard, i8& i_Main);
     Card* pFindMain(Stz* szCardNm);
     Card* pFindNextMain(Card* pAfter, eCK eFindCard);
+    Card* pFindNextMain(Card* pAfter, eCK eFindCard, i8& i_Main);
     Card* pFindPrevMain(Card* pBefore, eCK eFindCard);
+    Card* pFindPrevMain(Card* pBefore, eCK eFindCard, i8& i_Main);
     Card_Stream* pFindStreamCard(i8 iStream, Card*& rpMainCard);
 
     Card* pGetMainCard(i8 i_Main);

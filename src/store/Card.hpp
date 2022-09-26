@@ -196,6 +196,7 @@ namespace STORE
     bool bEquivalent(Card* pCard_arg);
 
     Card* pFindChildCard(eCK eCard);
+    Card* pFindChildCard(eCK eCard, i8& i_Child);
     Card* pFindParent(Card* pSubCard_arg);
     Card* pFindSubCard(eCK eCard);
 
@@ -397,6 +398,7 @@ namespace STORE
     Card_PredCmp*       pSub_predCmp(void);
     Card_SbyElist*      pSub_sbyElist(void);
     Card_Scan*          pSub_scan(void);
+    Card_StageTopo*     pSub_stageTopo(void);
     Card_Stream*        pSub_stream(void);
     Card_StreamColList* pSub_streamColList(void);
     Card_Table*         pSub_table(void);

@@ -24,12 +24,12 @@ load customer "../tpch/sf_0001/customer.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+/cue = "Stager::vLinearize_Stages"
 /jobTags
 /transliterated
 /transform
 /transform2
 /interactive
-/cue = "Filtrate::vDeleteEmpty_sub_filter"
 /weave
 /weaved
 /pipelineName = "r3"
