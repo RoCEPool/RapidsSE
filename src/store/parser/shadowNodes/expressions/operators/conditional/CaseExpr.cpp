@@ -194,31 +194,32 @@ TypeId CaseExpr::xTypeId(QueryNode* pNode, PlanNode* pRootNode)
   // Ensure they are consistent.
   // Look for the first non-null type otherwise return CT_UNKNOWN.
 
-  eCT eResultType = CT_UNKNOWN;
+  TypeId xResultType = TypeId::xIdOf(CT_UNKNOWN);
 
   PlanNodeIter* pIter = pNode->pNewChildrenIter();
   while (pIter->bHasNext()) {
     QueryNode* pChild = _pQueryNode(pIter->pNext());
     ASSERT(WhenExpr::bIsOfType(pChild) || ElseExpr::bIsOfType(pChild));
 
-    eCT eChildType = Expr::xTypeId(pChild, pRootNode).eCTVal();
+    TypeId xChildType = Expr::xTypeId(pChild, pRootNode);
+    eCT eChildType = xChildType.eCTVal();
 
     if (eChildType == CT_NONE) {
       // error
       delete pIter;
-      return TypeId::xIdOf(eChildType);
+      return xChildType;
     }
 
-    if (eResultType == eChildType) {
+    if (xResultType == xChildType) {
       continue;
     }
 
-    // So eResultType != eChildType
+    // So xResultType != xChildType
 
-    if (eResultType == CT_UNKNOWN) {
+    if (xResultType == TypeId::xIdOf(CT_UNKNOWN)) {
       // Accept the return type of this child
       ASSERT(eChildType != CT_UNKNOWN);
-      eResultType = eChildType;
+      xResultType = xChildType;
       continue;
 
     } else if (eChildType == CT_UNKNOWN) {
@@ -226,13 +227,13 @@ TypeId CaseExpr::xTypeId(QueryNode* pNode, PlanNode* pRootNode)
       continue;
     }
 
-    // eResultType != eChildType,
-    // eResultType != CT_UNKNOWN
+    // xResultType != xChildType,
+    // xResultType != CT_UNKNOWN
     // eChildType  != CT_UNKNOWN
     // eChildType  != CT_NONE
-    // eResultType != CT_NONE
+    // xResultType != CT_NONE
 
-    // Since eResultType != eChildType either an incorrect CASE statement has
+    // Since xResultType != xChildType either an incorrect CASE statement has
     // been specified, or we will need to coerce some values. So return
     // CT_NONE to force this to happen.
     delete pIter;
@@ -240,7 +241,7 @@ TypeId CaseExpr::xTypeId(QueryNode* pNode, PlanNode* pRootNode)
   }
 
   delete pIter;
-  return TypeId::xIdOf(eResultType);
+  return xResultType;
 }
 
 /*----------------------------------------------------------------------------*/
