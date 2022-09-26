@@ -38,6 +38,7 @@ namespace STORE
     void vEnvironmentVariables(void);
     void vInit(void);
     bool bParse(i8 argc, s256 szaArgv[]);
+    bool bParseTraceFileArgs(i8 argc, s256 argv[]);
     void vPrint(void);
     void vPrintErrorMarker(s256* argv, i8 i_Arg);
     void vPrintStartupInfo(void);

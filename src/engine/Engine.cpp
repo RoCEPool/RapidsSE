@@ -65,7 +65,9 @@ FnCatalog    gxFnCatalog;
 AttachMap*   gpAttachMap;
 BufferPool*  gpBufferPool;
 Header*      gaSeShmRegion;
-File*        gpTraceFile;
+extern File* gpTraceFile;
+extern s256  gszTraceFilePath;
+extern i8    giTraceFileSize;
 
 Stz* gsBuildGitHash;
 Stz* gsBuildDate;
@@ -106,7 +108,7 @@ void Engine::vMainEntry(void)
   vHeartInit();
 
   if (gxCmdLineArgs.m_xSysArgs.m_iDelay > 0) {
-    printf("Delayed %lld seconds\n", gxCmdLineArgs.m_xSysArgs.m_iDelay);
+    vTrace("Delayed %lld seconds\n"_Stz, gxCmdLineArgs.m_xSysArgs.m_iDelay);
     sleep((unsigned int)gxCmdLineArgs.m_xSysArgs.m_iDelay);
   }
 
@@ -125,11 +127,7 @@ void Engine::vPreliminary(void)
   //OpSys::vGetInfo();
   //OpSys::vTraceInfo();
   
-  vChangeDirectory(); //! what happens if this fails?
-  
   vCreateTmpDir();
-  
-  //vOpenTrace();
 
   vPrintWelcome();
   
@@ -219,6 +217,42 @@ void Engine::vPreliminary(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Start trace file based on command line options                             */
+/*----------------------------------------------------------------------------*/
+bool Engine::bTraceStart(void)
+{
+  gpTraceFile = nullptr;
+
+  eBO eBootOption = eDecodeCommandLine();
+
+
+  switch (eBootOption) {
+
+    case BO_PROMPT:
+    case BO_SETH_PROMPT:
+      vOpenTrace(true);
+      break;
+
+    case BO_START:
+    case BO_START_PROMPT:
+      vOpenTrace(false);
+      break;
+
+    case BO_ADD_NODE:
+    case BO_STATUS:
+    case BO_STOP:
+    case BO_UNLINK:
+      break;
+
+    default:
+      fprintf(stderr,"Unrecognized boot options\n");
+      return false;
+  }
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* run command line                                                           */
 /*----------------------------------------------------------------------------*/
 void Engine::vRunCommandLine(void)
@@ -262,7 +296,6 @@ void Engine::vRunCommandLine(void)
         while (gpAttachMap->uAttachMapState() != C_READY) {
           AM::vNapMsec(1,CN_NONE);
         }
-        vOpenTrace(true);
         vCallPrompt();
         break;
         
@@ -273,12 +306,10 @@ void Engine::vRunCommandLine(void)
         while (gpAttachMap->uAttachMapState() != C_READY) {
           AM::vNapMsec(1,CN_NONE);
         }
-        vOpenTrace(true);
         vCallPrompt();
         break;
         
       case BO_START:
-        vOpenTrace(false);
         vStartSystem();
         //AM::SYSTEM::vSystemReady(); // Process has completed the boot sequence
         vTrace("\nNodeId %lld\n\n"_Stz,AM::NODE::iThisNodeId());
@@ -286,7 +317,6 @@ void Engine::vRunCommandLine(void)
         break;
         
       case BO_START_PROMPT:
-        vOpenTrace(false);
         vStartSystem();
         //AM::SYSTEM::vSystemReady(); // Process has completed the boot sequence
         vTrace("\nNodeId %lld\n\n"_Stz,AM::NODE::iThisNodeId());
@@ -443,10 +473,24 @@ void Engine::vChangeDirectory(void)
   // compiling dynamic code. If you change this value you may need to
   // change these paths in LogicCompiler::bCompile().
   bool bResult = Dir::bChangeCurrent(gxCmdLineArgs.m_xSysArgs.m_sCommandsDir);
-  
-  if (! bResult)
-    Process::vUnrecoverableError("Unable to change to command dir"_Stz,
-                                 gxCmdLineArgs.m_xSysArgs.m_sCommandsDir);
+
+  if (! bResult) {
+    if(gpTraceFile) {
+      Process::vUnrecoverableError("Unable to change to command dir"_Stz,
+                                   gxCmdLineArgs.m_xSysArgs.m_sCommandsDir);
+    }
+    else {
+      fprintf(stderr,"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+      fprintf(stderr,"RapidsSE Unrecoverable Error\n");
+      fprintf(stderr,"  Unable to change to command dir\n");
+      fprintf(stderr,"  %s\n",gxCmdLineArgs.m_xSysArgs.m_sCommandsDir.szStz());
+      fprintf(stderr,"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+
+      vThreadCallStackDump();
+
+      Process::vExitFailure();
+    }
+  }
 
   if (Dir::bGetCurrent(sCurrent) && AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("Current working directory: %s\n"_Stz,sCurrent.szStz());
@@ -549,9 +593,19 @@ void Engine::vClosePool(void)
 /*----------------------------------------------------------------------------*/
 void Engine::vCloseTrace(void)
 {
-  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
-    vTrace("** trace file closed: %s\n"_Stz, gpAttachMap->m_sTraceFile.szStz());
-  gpTraceFile->vClose();
+  if(gpTraceFile)
+  {
+    if(gpAttachMap)
+      gpAttachMap->vTraceLockGrab();
+
+    gpTraceFile->vClose();
+
+    if(gpAttachMap)
+      gpAttachMap->vTraceLockDrop();
+
+    if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
+      vTrace("** trace file closed: %s\n"_Stz, gszTraceFilePath.szStz());
+  }
   //delete gpTraceFile;
   
   gpTraceFile = nullptr;
@@ -578,22 +632,13 @@ void Engine::vCreateFileNames(void)
 {
   
   // "SEgrid" to be gxCmdLineArgs.m_xSysArgs.m_sGridName.szStz()
-#ifdef WITH_DEBUG_VERSION
-  gpAttachMap->m_sTraceFile.vSprint("../tmp/SE_Trace_%s_%s_Debug.txt"_Stz,
-                                    "SEgrid"_Stz, gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz());
-  gpAttachMap->m_sLogRegion.vSprint("SE_Log_%s_Debug"_Stz,"SEgrid"_Stz);
-  gpAttachMap->m_sLogCsvFile.vSprint("../tmp/SE_Log_%s_Debug.csv"_Stz,"SEgrid"_Stz);
-  gpAttachMap->m_sLogTxtFile.vSprint("../tmp/SE_Log_%s_Debug.txt"_Stz,"SEgrid"_Stz);
-#else
-  gpAttachMap->m_sTraceFile.vSprint("../tmp/SE_Trace_%s_%s.txt"_Stz,
-                                    "SEgrid"_Stz, gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz());
+
   gpAttachMap->m_sLogRegion.vSprint("SE_Log_%s"_Stz, "SEgrid"_Stz);
   gpAttachMap->m_sLogCsvFile.vSprint("../tmp/SE_Log_%s.csv"_Stz, "SEgrid"_Stz);
   gpAttachMap->m_sLogTxtFile.vSprint("../tmp/SE_Log_%s.txt"_Stz, "SEgrid"_Stz);
-#endif
-  
+
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT)) {
-    vTrace("Trace file path: %s\n"_Stz,gpAttachMap->m_sTraceFile.szStz());
+    vTrace("Trace file path: %s\n"_Stz,gszTraceFilePath.szStz());
     vTrace("Log file path (csv): %s\n"_Stz,gpAttachMap->m_sLogCsvFile.szStz());
     vTrace("Log file path (text): %s\n"_Stz,gpAttachMap->m_sLogTxtFile.szStz());
 
@@ -613,7 +658,7 @@ void Engine::vCreateTmpDir(void)
     bool bMade = Dir::bMake("../tmp"_Stz);
     
     if (! bMade && !Dir::bExists("../tmp"_Stz)) {
-      fprintf(stderr,"Unable to make ../tmp directory\n");
+      vTrace("Unable to make ../tmp directory\n"_Stz);
       Process::vExitFailure();
     }
   }
@@ -661,11 +706,11 @@ void Engine::vErrorHandler(Error* pError)
   
   char* acEnd;
   
-  fprintf(stderr, "%s: line %lld\n",
+  vTrace("%s: line %lld\n"_Stz,
           pError->aErrorMsg()->azChar(),
           pError->iLineNo());
-  
-  fprintf(stderr, "%s: line %lld in %s\n",
+
+  vTrace("%s: line %lld in %s\n"_Stz,
          pError->aErrorMsg()->azChar(),
          pError->iLineNo(),
          (char*)pError->aFileName());
@@ -1031,47 +1076,43 @@ bool Engine::bOpenPool(s32& sPoolName)
 /*----------------------------------------------------------------------------*/
 void Engine::vOpenTrace(bool bPrompt)
 {
-  s256 sTracePath;
-
-#ifdef WITH_DEBUG_VERSION
-  sTracePath.vSprint("../tmp/SE_Trace_%s_%s_Debug.txt"_Stz,
-                     "SEgrid"_Stz,
-                     gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz());
-#else
-  sTracePath.vSprint("../tmp/SE_Trace_%s_%s.txt"_Stz,
-                     "SEgrid"_Stz,
-                     gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz());
-#endif
-
   if (bPrompt) {
+    if(gxCmdLineArgs.m_xSysArgs.m_sLogFile.bIsEmpty())
+      return;
+
     gpTraceFile = new(C_VIA_MALLOC) File(nullptr);
 
-    bool bOpened = gpTraceFile->bOpenAppend(sTracePath);
+    bool bOpened = gpTraceFile->bOpenAppend(gxCmdLineArgs.m_xSysArgs.m_sLogFile);
     RASSERT(bOpened);
 
-    vTrace("Opened trace file %s for append\n"_Stz
+    giTraceFileSize = gpTraceFile->iSize();
 
-           ,sTracePath.szStz()
-           );
+    gszTraceFilePath.vCopy(gxCmdLineArgs.m_xSysArgs.m_sLogFile);
+    vTrace("Opened prompt trace file %s for append\n"_Stz
+        ,gxCmdLineArgs.m_xSysArgs.m_sLogFile.szStz()
+    );
   }
   else {
-  
-    //if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
-    //  vTrace("\n*\n* Opening Trace File\n*\n"_Stz);
     
     gpTraceFile = new(C_VIA_MALLOC) File(nullptr);
     
-    gpAttachMap->vTraceFile(gpTraceFile);
-    
     bool bOpened;
+    s256 sTrace;
 
-    bOpened = gpTraceFile->bOpenWrite(sTracePath);
+    if (gxCmdLineArgs.m_xSysArgs.m_bDeveloper)
+      sTrace.vSprint("../se_%s.log"_Stz,
+                                        gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz());
+    else
+      sTrace.vSprint("../se.log"_Stz);
+
+    bOpened = gpTraceFile->bOpenAppend(sTrace);
     RASSERT(bOpened);
-    
-    vTrace("Opened trace file %s for write\n"_Stz
 
-           ,sTracePath.szStz()
-           );
+    giTraceFileSize = gpTraceFile->iSize();
+
+    gszTraceFilePath.vCopy(sTrace);
+
+    vTrace("Opened trace file %s for append\n"_Stz, sTrace.szStz());
   }
 }
 
@@ -1148,6 +1189,7 @@ void Engine::vPrintConstants(void)
   vTrace("  C_MAX_KEY            = %lld\n"_Stz,C_MAX_KEY);
   vTrace("  C_MAX_KEYBUCKETS     = %lld\n"_Stz,C_MAX_KEYBUCKETS);
   vTrace("  C_MAX_LOG_ENTRIES    = %lld\n"_Stz,C_MAX_LOG_ENTRIES);
+  vTrace("  C_MAX_LOG_FILES      = %lld\n"_Stz,C_MAX_LOG_FILES);
   vTrace("  C_MAX_LOG_NOTE       = %lld\n"_Stz,C_MAX_LOG_NOTE);
   vTrace("  C_MAX_LVL_LEVELS     = %lld\n"_Stz,C_MAX_LVL_LEVELS);
   vTrace("  C_MAX_LVL_RATIO      = %lld\n"_Stz,C_MAX_LVL_RATIO);
@@ -1412,6 +1454,89 @@ void Engine::vPrintWelcome(void)
   if (gxCmdLineArgs.m_xSysArgs.m_bWelcome && ! gxCmdLineArgs.m_xSysArgs.m_bStatus) {
     vTrace("%s\n"_Stz,sWelcome.szStz());
     vTrace("%s\n"_Stz,sCopyright.szStz());
+  }
+}
+
+/*---------------------------------------------------------------------------------*/
+/* roll over to new trace file. Delete oldest (keep only recent)                   */
+/* trace file indexes go from: current name, 0, 1, 2, 3... highest index is oldest */
+/* rename trace files from oldest to newest 2->3, 1->2, 0->1                       */
+/* close current trace file. Rename with 0                                         */
+/* open new trace file with original name                                          */
+/*---------------------------------------------------------------------------------*/
+void Engine::vRollTrace(void)
+{
+  i8 iMaxFileIndex = 0;
+  // Increment trace file indexes by 1, making room for the latest trace file 0
+  for(i8 i = C_MAX_LOG_FILES - 1; i >= 0; i--)
+  {
+    s256 sOldTrace, sNewTrace;
+    if (gxCmdLineArgs.m_xSysArgs.m_bDeveloper) {
+      sOldTrace.vSprint("../se_%s_%lld.log"_Stz,
+                        gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz(),
+                        i);
+      sNewTrace.vSprint("../se_%s_%lld.log"_Stz,
+                        gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz(),
+                        i+1);
+    }
+    else {
+      sOldTrace.vSprint("../se_%lld.log"_Stz, i);
+      sNewTrace.vSprint("../se_%lld.log"_Stz, i+1);
+    }
+
+    // SE may have restarted at some point, and older trace files may already exist
+    // Hence we attempt to roll over the older files as well
+    if (File::bExists(const_cast<Stz*>(sOldTrace.szStz()), false)) {
+      bool bRenamed = File::bRename(sOldTrace.szStz(), sNewTrace.szStz());
+      RASSERT(bRenamed);
+      if(i+1 > iMaxFileIndex)
+        iMaxFileIndex = i + 1;
+    }
+  }
+
+  gpTraceFile->vClose();
+
+  s256 sNewTrace;
+
+  if(gxCmdLineArgs.m_xSysArgs.m_bDeveloper) {
+    sNewTrace.vSprint("../se_%s_%lld.log"_Stz,
+                      gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz(),
+                      0);
+  }
+  else {
+    sNewTrace.vSprint("../se_%lld.log"_Stz, 0);
+  }
+
+  RASSERT(gszTraceFilePath.bIsEmpty() == false)
+
+  File::bRename(gszTraceFilePath, sNewTrace.szStz());
+
+  // Open a new trace file with the original name and drop the lock
+  bool bOpened = gpTraceFile->bOpenWrite(gszTraceFilePath);
+  RASSERT(bOpened);
+
+  giTraceFileSize = 0;
+
+  // If the total number of trace files exceeds the max, delete the oldest trace file
+  if(iMaxFileIndex >= C_MAX_LOG_FILES)
+  {
+    s256 sOldTrace;
+
+    if(gxCmdLineArgs.m_xSysArgs.m_bDeveloper) {
+      sOldTrace.vSprint("../se_%s_%lld.log"_Stz,
+                        gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz(),
+                        iMaxFileIndex);
+    }
+    else {
+      sOldTrace.vSprint("../se_%lld.log"_Stz,
+                        iMaxFileIndex);
+    }
+
+    if (File::bExists(const_cast<Stz*>(sOldTrace.szStz()), false)) {
+
+      bool bRemoved = File::bRemove(const_cast<Stz *>(sOldTrace.szStz()));
+      RASSERT(bRemoved);
+    }
   }
 }
 

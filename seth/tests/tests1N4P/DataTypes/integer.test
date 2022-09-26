@@ -115,6 +115,26 @@ rows:
   (10002)
   (924)
 
+//------------------------------------------------------------------------------
+select int_col0 from datums where int_col0 != null;
+rows: 0
+
+select int_col0 from datums where int_col0 = null;
+rows: 0
+
+select int_col0 from datums where int_col0 > null;
+rows: 0
+
+select int_col0 from datums where int_col0 >= null;
+rows: 0
+
+select int_col0 from datums where int_col0 < null;
+rows: 0
+
+select int_col0 from datums where int_col0 <= null;
+rows: 0
+
+//------------------------------------------------------------------------------
 select cast (int_col0 as varchar)  , cast (int_col1 as varchar) from datums;
 rows:
  ('1','1000')

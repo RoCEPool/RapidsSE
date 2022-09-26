@@ -77,6 +77,7 @@ ordered rows:
 // Result file: ../queries/cast/results/cast15.res
 select pcol1, cast(cold1 as integer) as Raw, cast(cold1 as integer) * 5 as Mult, colb1 from table1 where colb1 in ('indigo','aqua') order by pcol1;
 ordered rows:
+/*
   (8, 127, 635, 'aqua')
   (14, 22, 110, 'aqua')
   (24, 185, 925, 'indigo')
@@ -84,7 +85,14 @@ ordered rows:
   (84, 120, 600, 'indigo')
   (87, 117, 585, 'indigo')
   (89, 47, 235, 'indigo')
-
+*/
+   (8  , 128 ,  640 , 'aqua')
+   (14 ,  22 ,  110 , 'aqua')
+   (24 , 185 ,  925 , 'indigo')
+   (54 ,  41 ,  205 , 'aqua')
+   (84 , 120 ,  600 , 'indigo')
+   (87 , 117 ,  585 , 'indigo')
+   (89 ,  48 ,  240 , 'indigo')
 
 // Source file: ../queries/cast/rcast23.sql
 // Result file: ../queries/cast/results/cast23.res
@@ -273,6 +281,7 @@ ordered rows:
 // Source file: ../queries/cast/rcast7.sql
 // Result file: ../queries/cast/results/cast7.res
 select cast( cast(pcol9 as float) / cast(ucol as float) as integer) as Fl2Int, ucolvc from table9 where ucolvc in ('eee','jjj','nnn') and ucol > 480 order by Fl2Int, ucolvc;
+/*
 ordered rows:
   (0, 'eee')
   (0, 'eee')
@@ -302,7 +311,36 @@ ordered rows:
   (0, 'nnn')
   (0, 'nnn')
   (0, 'nnn')
-
+*/
+ordered rows:
+  (0 , 'eee')
+  (0 , 'eee')
+  (0 , 'eee')
+  (0 , 'eee')
+  (0 , 'eee')
+  (0 , 'eee')
+  (0 , 'eee')
+  (0 , 'eee')
+  (0 , 'jjj')
+  (0 , 'jjj')
+  (0 , 'jjj')
+  (0 , 'jjj')
+  (0 , 'jjj')
+  (0 , 'jjj')
+  (0 , 'nnn')
+  (0 , 'nnn')
+  (0 , 'nnn')
+  (0 , 'nnn')
+  (0 , 'nnn')
+  (0 , 'nnn')
+  (0 , 'nnn')
+  (0 , 'nnn')
+  (0 , 'nnn')
+  (1 , 'jjj')
+  (1 , 'nnn')
+  (1 , 'nnn')
+  (1 , 'nnn')
+  (1 , 'nnn')
 
 // Source file: ../queries/cast/rcast17.sql
 // Result file: ../queries/cast/results/cast17.res

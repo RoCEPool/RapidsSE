@@ -230,7 +230,7 @@ function collectLogs() {
 
     # Copy some files
     echo "Copying logs from ${nodeName} [host ${host}]"
-    scp    "${SSH_COMMON_OPTIONS[@]}" "${host}:${installDir}/se.log"         "${outputDir}" &>/dev/null || true
+    scp    "${SSH_COMMON_OPTIONS[@]}" "${host}:${installDir}/se*.log"         "${outputDir}" &>/dev/null || true
     scp    "${SSH_COMMON_OPTIONS[@]}" "${host}:${installDir}/version"        "${outputDir}" &>/dev/null || true
     scp    "${SSH_COMMON_OPTIONS[@]}" "${host}:${installDir}/cluster.config" "${outputDir}" &>/dev/null || true
     scp -r "${SSH_COMMON_OPTIONS[@]}" "${host}:${installDir}/tmp"            "${outputDir}" &>/dev/null || true

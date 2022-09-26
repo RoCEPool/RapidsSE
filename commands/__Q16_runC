@@ -19,7 +19,7 @@ Q16_0: select
        and p_size     in (49,14,23,45,19,3,36,9)
        and ps_suppkey not in
 
-             ( Q16_0_1: select s_suppkey
+             ( select s_suppkey
 
                  from Supplier
  
@@ -31,32 +31,6 @@ Q16_0: select
 *******************************************************************************/
 
 /*
-
-/time
-  pipeline __subquery0003
-  begin
-    stage stageStart on origin :
-      start
-      | pulse once
-      | stageMarker34356
-    stage stageMarker34356 on all partitions :
-      scan rapidsse public supplier
-      | filter " type BOOLEAN  }  $7 '%Customer%Complaints%'  8 10 matchMiddle1  "
-      | project " type INTEGER as s_suppkey $1 "
-      | combined 0
-      | next
-    stage stageMarker34359 on all partitions :
-      stageLast
-    stage stageLast on origin :
-      output
-      | sink
-      | stageStart
-  end;
-
-
-*/
-
-
 /time pipeline Q16
 begin
 
@@ -131,10 +105,10 @@ begin
                     type VARCHAR as P_TYPE $K2 ,
                     type INTEGER as P_SIZE $K3 ,
                     type INTEGER as PS_SUPPKEY $K4 "
-    //| hash " type INTEGER PS_SUPPKEY"
+    | hash " type INTEGER PS_SUPPKEY"
     | combined 0
-    //| next hashcast
-    | next
+    | next hashcast
+    //| next
 
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
@@ -180,13 +154,95 @@ stage G_CNT_DISTINCT_C on origin :
     | G_Start
     
 end ;
+*/
 
-/*
-stage G_CNT_O_2 on origin :
-    hash " type INTEGER PS_SUPPKEY"
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+
+  stage stageMarker2543 on all partitions :
+    scan rapidsse public partsupp
+    | next
+
+  stage stageMarker2546 on all partitions :
+    indexjoin Part IxP_PARTKEY "BOUND $I1 PS_PARTKEY =="  // J1 - PART
+    | hash " type INTEGER PS_SUPPKEY"
     | combined 0
     | next hashcast
-*/
+
+  stage stageMarker2549 on all partitions :
+    filter " type BOOLEAN  J1_P_BRAND 'Brand#45'  !=
+                 }  J1_P_TYPE 'MEDIUM POLISHED%'  16 matchLeading  not and
+                 }  49  14  23  45  19  3  36  9  #8  J1_P_SIZE in and"
+    | keyNotExists SUPPLIER IxS_SUPPKEY  "BOUND $I1 $2 =="
+               "type BOOLEAN  }  S_COMMENT '%Customer%Complaints%'  8 10 matchMiddle1"
+    | aggreg " groupBy  type VARCHAR as p_brand $9 ,
+               type VARCHAR as p_type $10 ,
+               type INTEGER as p_size $11 ,
+               type INTEGER as ps_suppkey $2
+               aggregates
+               type VARCHAR  as p_brand $K1 ,
+               type VARCHAR  as p_type $K2 ,
+               type INTEGER  as p_size $K3 ,
+               type INTEGER  as ps_suppkey $K4 "
+    | combined 0
+    | next
+
+  stage stageMarker2552 on all nodes :
+    aggreg " groupBy  type VARCHAR as p_brand $1 ,
+                   type VARCHAR as p_type $2 ,
+                   type INTEGER as p_size $3 ,
+                   type INTEGER as ps_suppkey $4
+                   aggregates
+                   type VARCHAR  as p_brand $K1 ,
+                   type VARCHAR  as p_type $K2 ,
+                   type INTEGER  as p_size $K3 ,
+                   type INTEGER  as ps_suppkey $K4 "
+    | combined 0
+    | next
+
+  stage stageMarker2555 on origin :
+    aggreg " groupBy  type VARCHAR as p_brand $1 ,
+                   type VARCHAR as p_type $2 ,
+                   type INTEGER as p_size $3 ,
+                   type INTEGER as ps_suppkey $4
+                   aggregates
+                   type VARCHAR  as p_brand $K1 ,
+                   type VARCHAR  as p_type $K2 ,
+                   type INTEGER  as p_size $K3 ,
+                   type INTEGER  as ps_suppkey $K4 "
+    | combined 0
+    | next
+
+stage stageMarker2555_b on origin :
+    aggreg " groupBy  type VARCHAR as p_brand $1 ,
+                       type VARCHAR as p_type $2 ,
+                       type INTEGER as p_size $3
+                       aggregates
+                       type VARCHAR  as p_brand $K1 ,
+                       type VARCHAR  as p_type $K2 ,
+                       type INTEGER  as p_size $K3 ,
+                       type INTEGER  as supplier_cnt ) $4 COUNT"
+    | combined 0
+    | next
+
+  stage stageMarker2555_c on origin :
+    sort " type INTEGER $4 DESC  ,
+             type VARCHAR as p_brand $1 ASC  ,
+             type VARCHAR as p_type $2 ASC  ,
+             type INTEGER as p_size $3 ASC  "
+    | combined 0
+    | next
+
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+end ;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

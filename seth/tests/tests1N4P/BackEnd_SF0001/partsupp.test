@@ -16,6 +16,9 @@ success
 CREATE INDEX IxPS_SUPPKEY ON partsupp(ps_suppkey);
 affected: 0
 
+CREATE INDEX IxPS_PARTKEY ON partsupp(ps_partkey);
+affected: 0
+
 // load the table
 load partsupp "../TPCH/SF_0001/partsupp.csv";
 success

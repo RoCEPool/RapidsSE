@@ -1,0 +1,25 @@
+/*============================================================================*/
+/* _SE_219 - Long Index Name                                                  */
+/*============================================================================*/
+
+_nation
+
+//create index Nation_i0 on nation(n_nationKey);
+create index _23456789A123456789B123456789C_         on nation(n_nationKey);
+create index _2^ on nation(n_nationKey);
+create index _23456789A123456789B123456789C_2        on nation(n_nationKey);
+create index _23456789A123456789B123456789C_23456789 on nation(n_nationKey);
+
+load nation "/Users/Shared/rapidsse/tpch/SF1/nation.csv";
+load nation "/Users/Shared/rapidsse/tpch/SF1/nation.csv";
+load nation "/Users/Shared/rapidsse/tpch/SF1/nation.csv";
+load nation "/Users/Shared/rapidsse/tpch/SF1/nation.csv";
+load nation "/Users/Shared/rapidsse/tpch/SF1/nation.csv";
+
+select * from nation;
+
+drop table nation;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
