@@ -74,6 +74,7 @@ void Combiner::vAdd_combined2(void)
   i8 iIndexJoin = 0;
   i8 iProject = 0;
   i8 iAggreg = 0;
+  i8 iSort = 0;
 
 
   i8 nMainCards = m_pBoard->nMainCards();
@@ -117,6 +118,15 @@ void Combiner::vAdd_combined2(void)
       continue;
     }
 
+    if (CK_SORT == eCard) {
+      iSort++;
+
+      Card_Combine *pCard_combine = new Card_Combine;
+      m_pBoard->vInsertMainCard_after(pCard_combine, pMainCard);
+      i_Main++;
+      nMainCards = m_pBoard->nMainCards();
+      continue;
+    }
 
   }
 }

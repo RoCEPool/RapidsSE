@@ -1,0 +1,40 @@
+/*============================================================================*/
+/* _r4_a -- tpch query 4 a (main outer query)                                 */
+/*============================================================================*/
+
+trackMemory;
+
+_orders
+load orders "../tpch/sf_0001/orders.csv" ;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/jobTags
+/transliterated
+/transform
+/transform2
+/interactive
+/cue = "$"
+/weave
+/weaved
+/pipelineName = "r4_a"
+select
+  o_orderpriority,
+  count(*)          as order_count
+  from Orders
+ where     o_orderdate >= '1993-07-01'
+       and o_orderdate <  '1993-10-01'
+ group by o_orderpriority
+ order by o_orderpriority
+;
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+//drop table orders;
+
+//memoryLeaks;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
