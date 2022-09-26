@@ -41,8 +41,6 @@ TypeMap1D::~TypeMap1D()
   free(m_aiTypeArray);
 }
 
-// TODO: destructor, proper object
-
 /*----------------------------------------------------------------------------*/
 /* Add a mapping of input types to an output type.                            */
 /* Returns a ^ptr for chaining consecutive calls.                             */
@@ -54,7 +52,22 @@ TypeMap1D* TypeMap1D::pAddMapping(TypeId xArg1, TypeId xResult)
   ASSERT(xArg1.iIdVal() >= 0 && xArg1.iIdVal() < m_iSize);
   ASSERT(xResult.iIdVal() >= 0 && xResult.iIdVal() < m_iSize);
 
-  m_aiTypeArray[xArg1.iIdVal()] = xResult.iIdVal();
+  m_aiTypeArray[xArg1.iIdVal()] = (i1) xResult.iIdVal();
+
+  return this;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Add a mapping of one input type to the same type as the output type.       */
+/* Returns a ^ptr for chaining consecutive calls.                             */
+/*----------------------------------------------------------------------------*/
+TypeMap1D* TypeMap1D::pAddSelfMapping(TypeId xArg)
+{
+  _precondition_(_MAGIC_,CN_TYPEMAP1D,_FOOTER_);
+
+  ASSERT(xArg.iIdVal() >= 0 && xArg.iIdVal() < m_iSize);
+
+  m_aiTypeArray[xArg.iIdVal()] = (i1) xArg.iIdVal();
 
   return this;
 }

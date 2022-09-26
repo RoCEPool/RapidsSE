@@ -11,6 +11,7 @@
 #include "SubqueryRefExpr.hpp"
 #include "GraphNav.hpp"
 #include "TypeSystem.hpp"
+#include "TypeMap2D.hpp"
 
 using namespace Parser;
 
@@ -22,32 +23,58 @@ static Stz* C_DEFN = "/__root__/definitions/object/expr/operator/comparison/betw
 
 
 // What is the resulting type when we combine these inputs?
-// * The left header column represents the type of the first operand (predicand)
-// * The top header row represents the type of the second operand (lower/upper bound)
-// * The corresponding cell in the matrix represents the type of the resultant from this operation.
-// * Invalid/unsupported combinations are represented with CT_NONE.
-// * Fields marked with /*?*/ are not currently supported but could be.  Refer to
-//   the documentation below marked with this symbol for more information.
-// * Fields marked with /*X*/ are not currently supported but should be.
-static eCT aeTypeCalculus[CT_ENUMS][CT_ENUMS] = {
+//  - The first parameter represents the type of the first operand
+//  - The second parameter represents the type of the second operand
+//  - The third parameter represents the type of the result from this operation.
+//  - Any unspecified mappings are unsupported.
+//  - Multiple mappings may be made in one go using the eTM values to represent a set of types.
+static TypeMap2D* S_pTypeMap = (new TypeMap2D())
+    ->pAddMapping( TypeId::xIdOf(CT_CHAR),    TM_ALL_STRINGS,                   TypeId::xIdOf(CT_BOOLEAN))
+    ->pAddMapping( TypeId::xIdOf(CT_DATE),      TypeId::xIdOf(CT_DATE),      TypeId::xIdOf(CT_BOOLEAN))
+    ->pAddMapping( TypeId::xIdOf(CT_DECIMAL),   TypeId::xIdOf(CT_DECIMAL),   TypeId::xIdOf(CT_BOOLEAN))
+    ->pAddMapping( TypeId::xIdOf(CT_FLOAT),     TypeId::xIdOf(CT_FLOAT),     TypeId::xIdOf(CT_BOOLEAN))
+    ->pAddMapping( TypeId::xIdOf(CT_INTEGER),   TypeId::xIdOf(CT_INTEGER),   TypeId::xIdOf(CT_BOOLEAN))
+    ->pAddMapping( TypeId::xIdOf(CT_TIME),      TypeId::xIdOf(CT_TIME),      TypeId::xIdOf(CT_BOOLEAN))
+    ->pAddMapping( TypeId::xIdOf(CT_TIMESTAMP), TypeId::xIdOf(CT_TIMESTAMP), TypeId::xIdOf(CT_BOOLEAN))
+    ->pAddMapping( TypeId::xIdOf(CT_VARCHAR), TM_ALL_STRINGS,                   TypeId::xIdOf(CT_BOOLEAN))
 
-//                    NONE     BOOLEAN     CHAR        DATE          DECIMAL     FLOAT       INTEGER       INTERVAL_DT  INTERVAL_YM     TIME          TIMESTAMP     VARCHAR     UNKNOWN
-/*  0 NONE       */ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,     CT_NONE,        CT_NONE,      CT_NONE,      CT_NONE,    CT_NONE    },
-/*  1 BOOLEAN    */ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,     CT_NONE,        CT_NONE,      CT_NONE,      CT_NONE,    CT_NONE    },
-/*  2 CHAR       */ { CT_NONE, CT_NONE,    CT_BOOLEAN, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,     CT_NONE,        CT_NONE,      CT_NONE,      CT_BOOLEAN, CT_BOOLEAN },
-/*  3 DATE       */ { CT_NONE, CT_NONE,    CT_NONE,    CT_BOOLEAN,   CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,     CT_NONE,        CT_NONE,      CT_NONE,      CT_NONE,    CT_BOOLEAN },
-/*  4 DECIMAL    */ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_BOOLEAN, CT_NONE,    CT_NONE,      CT_NONE,     CT_NONE,        CT_NONE,      CT_NONE,      CT_NONE,    CT_BOOLEAN },
-/*  5 FLOAT      */ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,    CT_BOOLEAN, CT_NONE,      CT_NONE,     CT_NONE,        CT_NONE,      CT_NONE,      CT_NONE,    CT_BOOLEAN },
-/*  6 INTEGER    */ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,    CT_NONE,    CT_BOOLEAN,   CT_NONE,     CT_NONE,        CT_NONE,      CT_NONE,      CT_NONE,    CT_BOOLEAN },
-/*  7 INTERVAL_DT*/ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_BOOLEAN,  CT_NONE,        CT_NONE,      CT_NONE,      CT_NONE,    CT_BOOLEAN },
-/*  8 INTERVAL_YM*/ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,     CT_BOOLEAN,     CT_NONE,      CT_NONE,      CT_NONE,    CT_BOOLEAN },
-/*  9 TIME       */ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,     CT_NONE,        CT_BOOLEAN,   CT_NONE,      CT_NONE,    CT_BOOLEAN },
-/* 10 TIMESTAMP  */ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,     CT_NONE,        CT_NONE,      CT_BOOLEAN,   CT_NONE,    CT_BOOLEAN },
-/* 11 VARCHAR    */ { CT_NONE, CT_NONE,    CT_BOOLEAN, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,     CT_NONE,        CT_NONE,      CT_NONE,      CT_BOOLEAN, CT_BOOLEAN },
-/* 12 UNKNOWN    */ { CT_NONE, CT_BOOLEAN, CT_BOOLEAN, CT_BOOLEAN,   CT_BOOLEAN, CT_BOOLEAN, CT_BOOLEAN,   CT_BOOLEAN,  CT_BOOLEAN,     CT_BOOLEAN,   CT_BOOLEAN,   CT_BOOLEAN, CT_BOOLEAN }
-};
+    // All YM intervals are comparable with each other.
+    // Refer [1] below.
+    ->pAddMapping( TypeId::xIdOf(IV_YEAR),          TM_ALL_YM_INTERVALS,                TypeId::xIdOf(CT_BOOLEAN))
+    ->pAddMapping( TypeId::xIdOf(IV_MONTH),         TM_ALL_YM_INTERVALS,                TypeId::xIdOf(CT_BOOLEAN))
+    ->pAddMapping( TypeId::xIdOf(IV_YEAR_TO_MONTH), TM_ALL_YM_INTERVALS,                TypeId::xIdOf(CT_BOOLEAN))
+
+    // All DT intervals are comparable with each other.
+    // Refer [1] below.
+    ->pAddMapping( TypeId::xIdOf(IV_DAY),              TM_ALL_DT_INTERVALS,             TypeId::xIdOf(CT_BOOLEAN))
+    ->pAddMapping( TypeId::xIdOf(IV_HOUR),             TM_ALL_DT_INTERVALS,             TypeId::xIdOf(CT_BOOLEAN))
+    ->pAddMapping( TypeId::xIdOf(IV_MINUTE),           TM_ALL_DT_INTERVALS,             TypeId::xIdOf(CT_BOOLEAN))
+    ->pAddMapping( TypeId::xIdOf(IV_SECOND),           TM_ALL_DT_INTERVALS,             TypeId::xIdOf(CT_BOOLEAN))
+    ->pAddMapping( TypeId::xIdOf(IV_DAY_TO_HOUR),      TM_ALL_DT_INTERVALS,             TypeId::xIdOf(CT_BOOLEAN))
+    ->pAddMapping( TypeId::xIdOf(IV_DAY_TO_MINUTE),    TM_ALL_DT_INTERVALS,             TypeId::xIdOf(CT_BOOLEAN))
+    ->pAddMapping( TypeId::xIdOf(IV_DAY_TO_SECOND),    TM_ALL_DT_INTERVALS,             TypeId::xIdOf(CT_BOOLEAN))
+    ->pAddMapping( TypeId::xIdOf(IV_HOUR_TO_MINUTE),   TM_ALL_DT_INTERVALS,             TypeId::xIdOf(CT_BOOLEAN))
+    ->pAddMapping( TypeId::xIdOf(IV_HOUR_TO_SECOND),   TM_ALL_DT_INTERVALS,             TypeId::xIdOf(CT_BOOLEAN))
+    ->pAddMapping( TypeId::xIdOf(IV_MINUTE_TO_SECOND), TM_ALL_DT_INTERVALS,             TypeId::xIdOf(CT_BOOLEAN))
+
+    // All the unknown mappings here
+    ->pAddMapping(TypeId::xIdOf(CT_UNKNOWN), TM_ALL_INC_UNKNOWN,             TypeId::xIdOf(CT_BOOLEAN))
+    ->pAddMapping(TM_ALL_INC_UNKNOWN,             TypeId::xIdOf(CT_UNKNOWN), TypeId::xIdOf(CT_BOOLEAN))
+    ;
 
 // References:
+// [1] Comparison of intervals:
+//    All subtypes of YM intervals are comparable with each other.
+//    All subtypes of DT intervals are comparable with each other.
+//    Interval comparison is done by converting each interval into an integer
+//    that represents the least significant qualifier of each interval type.
+//
+//    e.g. if interval A is DAY TO HOUR and inteval B is HOUR TO MINUTE
+//    then convert both intervals into integers representing minutes and then
+//    compare those integers.
+//    Be careful if the least significant qualifier is SECONDS because these
+//    will need to be compared as microseconds.
+//    - SQL standard 2008 (draft): Part 2 (Foundation), page 401, section 8.2 <comparison_predicate>, General Rules, point (7)
 
 
 /*----------------------------------------------------------------------------*/
@@ -229,21 +256,21 @@ TypeId BetweenExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
   QueryNode* pLowerBound    = BetweenExpr::pLowerBound(pExprNode);
   QueryNode* pUpperBound    = BetweenExpr::pUpperBound(pExprNode);
 
-  eCT ePredicand = Expr::xTypeId(pPredicandNode, pRootNode).eCTVal();
-  eCT eLower     = Expr::xTypeId(pLowerBound, pRootNode).eCTVal();
-  eCT eUpper     = Expr::xTypeId(pUpperBound, pRootNode).eCTVal();
+  TypeId xPredicand = Expr::xTypeId(pPredicandNode, pRootNode);
+  TypeId xLower     = Expr::xTypeId(pLowerBound, pRootNode);
+  TypeId xUpper     = Expr::xTypeId(pUpperBound, pRootNode);
 
-  if (eLower != eUpper &&
-      eLower != CT_UNKNOWN &&
-      eUpper != CT_UNKNOWN &&
-      ePredicand != CT_UNKNOWN) {
+  if (xLower != xUpper &&
+      xLower.eCTVal() != CT_UNKNOWN &&
+      xUpper.eCTVal() != CT_UNKNOWN &&
+      xPredicand.eCTVal() != CT_UNKNOWN) {
     // coercion is required
     return TypeId::xIdOf(CT_NONE);
   }
 
   // Lookup the type of the result between the predicand and the lower bound
-  eCT eResult = aeTypeCalculus[ePredicand][eLower];
-  return TypeId::xIdOf(eResult);
+  TypeId xResult = S_pTypeMap->xLookup(xPredicand, xLower);
+  return xResult;
 }
 
 /*============================================================================*/

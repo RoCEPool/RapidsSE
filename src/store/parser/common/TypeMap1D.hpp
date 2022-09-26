@@ -23,6 +23,9 @@ namespace Parser
     // Add a mapping of one input operand type to one output type
     TypeMap1D* pAddMapping(TypeId xArg, TypeId xResult);
 
+    // Add a mapping of one input type to the same type as the output type
+    TypeMap1D* pAddSelfMapping(TypeId xArg);
+
     // Lookup a mapping of one input operand type to one output type
     TypeId     xLookup(TypeId xArg);
 
