@@ -146,11 +146,12 @@ namespace STORE
     void vDeleteAllCards(void);
     void vDeleteFromTill(Card* pFrom, Card* pTillBefore);
 
+    Card_Filter* pFindFilterCard(i8 iFilter, Card*& rpMainCard);
     i8    iFindMain(Card* pMainCard);
     Card* pFindMain(eCK eCard);
     Card* pFindMain(Stz* szCardNm);
     Card* pFindNextMain(Card* pAfter, eCK eFindCard);
-    Card_Filter* pFindFilterCard(i8 iFilter, Card*& rpMainCard);
+    Card* pFindPrevMain(Card* pBefore, eCK eFindCard);
     Card_Stream* pFindStreamCard(i8 iStream, Card*& rpMainCard);
 
     Card* pGetMainCard(i8 i_Main);

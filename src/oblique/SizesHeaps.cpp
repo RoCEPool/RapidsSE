@@ -253,6 +253,7 @@
 #include "Combiner.hpp"
 #include "Sender.hpp"
 #include "Stager.hpp"
+#include "Sorter.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -595,6 +596,7 @@ SizeHeap gxaSizeHeap[]
   { CN_SNTSP,                    sizeof(SN_Tsp),             HT_INVALID   ,FILL },
   { CN_SNVCH,                    sizeof(SN_Vch),             HT_INVALID   ,FILL },
   { CN_SOCKET,                   sizeof(Socket),             HT_T_TINY    ,FILL },
+  { CN_SORTER,                   sizeof(Sorter),             HT_T_TINY    ,FILL },
   { CN_SPELAPSED,                sizeof(SP_Elapsed),         HT_INVALID   ,FILL },
   { CN_SPID,                     sizeof(SP_Gid),             HT_INVALID   ,FILL },
   { CN_SPSTRING,                 sizeof(SP_String),          HT_INVALID   ,FILL },

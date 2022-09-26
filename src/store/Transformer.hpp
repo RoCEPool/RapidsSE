@@ -11,6 +11,7 @@
 #include "Joiner.hpp"
 #include "Predicator.hpp"
 #include "Sender.hpp"
+#include "Sorter.hpp"
 #include "Streamer.hpp"
 #include "Stager.hpp"
 
@@ -31,6 +32,7 @@ namespace STORE
     Joiner*      m_pJoiner;
     Predicator*  m_pPredicator;
     Sender*      m_pSender;
+    Sorter*      m_pSorter;
     Stager*      m_pStager;
     Streamer*    m_pStreamer;
 

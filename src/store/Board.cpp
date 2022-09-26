@@ -258,6 +258,40 @@ Card* Board::pFindNextMain(Card* pAfter, eCK eFindCard)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find prev main card given given arg which is an eFindCard                  */
+/*----------------------------------------------------------------------------*/
+Card* Board::pFindPrevMain(Card* pBefore, eCK eFindCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  Card* pMainCard = nullptr;
+
+  i8 i_Main = -1;
+  i8 nMainCards = this->nMainCards();
+  for (i_Main = 0; i_Main < nMainCards; i_Main++) {
+    pMainCard = pGetMainCard(i_Main);
+
+    if (pMainCard == pBefore)
+      break;
+  }
+
+  if (pMainCard != pBefore)
+    return nullptr;
+
+  // found before
+
+  // get prev eCard
+  for (i8 i_TestCard = i_Main-1; i_TestCard >= 0; i_TestCard--) {
+    Card* pTestCard = pGetMainCard(i_TestCard);
+
+    if (eFindCard == pTestCard->eCard())
+      return pTestCard;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* find next main card after given arg which is an eFindCard                  */
 /*----------------------------------------------------------------------------*/
 Card_Filter* Board::pFindFilterCard(i8 iFilter, Card*& rpMainCard)

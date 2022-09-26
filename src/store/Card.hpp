@@ -75,7 +75,7 @@ namespace STORE
 
     static  void vCardLeaks(void);
 
-    static  bool bCardsSameRecursive(Card* pCard_a, Card* pCard_b);
+    static  bool bCardsSameRecursive(Card* pCard_a, Card* pCard_b, i8 iDepth=0, bool bTestL0=false);
 
     static bool bIsMain(eCK eCard);
     static bool bIsOther(eCK eCard);
