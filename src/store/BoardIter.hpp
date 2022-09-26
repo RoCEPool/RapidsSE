@@ -28,7 +28,9 @@ namespace STORE
    ~BoardIter(void) noexcept(false);
 
     Card* pEachMain(void);
+    Card* pEachMain(i8& ri_Main);
     Card* pEachMain(eCK eCard);
+    Card* pEachMain(eCK eCard, i8& ri_Main);
 
     Card_Sort*   pEach_sort(void);
 

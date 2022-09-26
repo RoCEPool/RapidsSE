@@ -52,6 +52,20 @@ Card* BoardIter::pEachMain(void)
 {
   _precondition_( _MAGIC_, CN_BOARDITER, _FOOTER_);
 
+  i8 i_Main;
+
+  m_pCurrMain = pEachMain(i_Main);
+
+  return m_pCurrMain;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card* BoardIter::pEachMain(i8& ri_Main)
+{
+  _precondition_( _MAGIC_, CN_BOARDITER, _FOOTER_);
+
   if (C_UNKNOWN == m_i_Main)
     m_i_Main = 0;
   else
@@ -59,10 +73,12 @@ Card* BoardIter::pEachMain(void)
 
   if (m_i_Main > m_pBoard->nMainCards()) {
     m_pCurrMain = nullptr;
+    ri_Main = C_UNKNOWN;
     return nullptr;
   }
 
   m_pCurrMain = m_pBoard->pGetMainCard(m_i_Main);
+  ri_Main = m_i_Main;
 
   return m_pCurrMain;
 }
@@ -71,6 +87,20 @@ Card* BoardIter::pEachMain(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 Card* BoardIter::pEachMain(eCK eCard)
+{
+  _precondition_( _MAGIC_, CN_BOARDITER, _FOOTER_);
+
+  i8 i_Main;
+
+  Card* pMain = pEachMain(eCard, i_Main);
+
+  return pMain;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card* BoardIter::pEachMain(eCK eCard, i8& ri_Main)
 {
   _precondition_( _MAGIC_, CN_BOARDITER, _FOOTER_);
 
@@ -83,15 +113,17 @@ Card* BoardIter::pEachMain(eCK eCard)
 
     if (m_i_Main >= m_pBoard->nMainCards()) {
       m_pCurrMain = nullptr;
+      ri_Main = C_UNKNOWN;
       return nullptr;
     }
 
     m_pCurrMain = m_pBoard->pGetMainCard(m_i_Main);
 
     eCK eCardMain = m_pCurrMain->eCard();
-    if (eCardMain == eCard)
+    if (eCardMain == eCard) {
+      ri_Main = m_i_Main;
       return m_pCurrMain;
-
+    }
     m_i_Main++;
   }
 
