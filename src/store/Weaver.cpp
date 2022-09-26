@@ -783,7 +783,7 @@ void Weaver::vRpnProject(Stz* szRpnExpr, Card_Project* pCard_Project)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
-  pCard_Project->vDump();
+  //pCard_Project->vDump();
     
   Card_ProjElist* pCard_ProjElist =
     _pCard_ProjElist(pCard_Project->pFindSubCard(CK_PROJELIST));
