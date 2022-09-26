@@ -34,7 +34,7 @@ CardSet::~CardSet(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card* CardSet::pGetChildCard(i8 i_Child)
+Card* CardSet::pGetChild(i8 i_Child)
 {
   Card* pCard = pGet(i_Child);
   return pCard;
@@ -64,7 +64,7 @@ void CardSet::vRemoveSubCards(eCK eCard)
   
   i8 nSubCards = this->nItems();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card* pSubCard = pGetChildCard(i_Child);
+    Card* pSubCard = pGetChild(i_Child);
     if (! pSubCard->bIsCard(eCard))
       continue;
     
@@ -502,7 +502,7 @@ void Card::vAppendDupSubCards(Card* pCard_SubSet)
 
   i8 nSubCards = pCard_SubSet->nChildCards();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card* pSubCard = pCard_SubSet->pGetChildCard(i_Child);
+    Card* pSubCard = pCard_SubSet->pGetChild(i_Child);
 
     Card* pSubCard_dup = pSubCard->pDupCardAndSubCards();
 
@@ -608,7 +608,7 @@ void Card::vDeleteChildCard(eCK eCard)
   Card* pChildCard = pFindChildCard(eCard);
 
   if (pChildCard) {
-    vRemoveChildCard(pChildCard);
+    vRemoveChild(pChildCard);
     delete pChildCard;
   }
 }
@@ -646,7 +646,7 @@ void Card::vDump(i8 iDepth, Stz* szTitle)
 
   i8 nSubCards = this->nChildCards();
   for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++)
-    pGetChildCard(i_Sub)->vDump(iDepth + 1);
+    pGetChild(i_Sub)->vDump(iDepth + 1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -664,7 +664,7 @@ Card* Card::pDupCardAndSubCards(void)
 
   i8 nSubCards = this->nChildCards();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card* pSubCard = pGetChildCard(i_Child);
+    Card* pSubCard = pGetChild(i_Child);
     
     Card* pSubCard_dup = pSubCard->pDupCardAndSubCards();
     
@@ -690,7 +690,7 @@ Card_SubSet* Card::pDupSubCards(void)
   
   i8 nSubCards = this->nChildCards();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card* pSubCard = pGetChildCard(i_Child);
+    Card* pSubCard = pGetChild(i_Child);
     
     Card* pSubCard_dup = pSubCard->pDupCardAndSubCards();
     
@@ -800,7 +800,7 @@ Card* Card::pFindParent(Card* pSubCard_arg)
   
   i8 nSubCards = this->nChildCards();
   for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
-    Card* pSubCard = pGetChildCard(i_Sub);
+    Card* pSubCard = pGetChild(i_Sub);
     
     if (pSubCard_arg == pSubCard)
       return this;
@@ -1015,7 +1015,7 @@ bool Card::bHasSubCard(Card* pGivenCard)
 
   i8 nSubCards = this->nChildCards();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card *pSubCard = pGetChildCard(i_Child);
+    Card *pSubCard = pGetChild(i_Child);
 
     if (pSubCard == pGivenCard)
       return true;
@@ -1036,7 +1036,7 @@ bool Card::bHasSubCard(Card* pGivenCard, Card*& rpParentCard)
 
   i8 nSubCards = this->nChildCards();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card *pSubCard = pGetChildCard(i_Child);
+    Card *pSubCard = pGetChild(i_Child);
 
     if (pSubCard == pGivenCard) {
       rpParentCard = this;
@@ -1195,7 +1195,7 @@ Stz* Card::szPropertyNm(i8 i_Property)
 /*----------------------------------------------------------------------------*/
 /* remove given child card (non-recursive)                                    */
 /*----------------------------------------------------------------------------*/
-void Card::vRemoveChildCard(Card* pCardRemove)
+void Card::vRemoveChild(Card* pCardRemove)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -1279,7 +1279,7 @@ void Card::vReplaceChildWithKids(Card* pChildCard)
     pAfter = pKid;
   }
 
-  vRemoveChildCard(pChildCard);
+  vRemoveChild(pChildCard);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1593,7 +1593,7 @@ void Card::vClearAllMarks(void)
 
   i8 nSubCards = this->nChildCards();
   for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
-    Card *pSubCard = pGetChildCard(i_Sub);
+    Card *pSubCard = pGetChild(i_Sub);
 
     pSubCard->vClearAllMarks();
   }
@@ -2115,7 +2115,7 @@ void Card::vMoveToLastChild(Card* pChildCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vRemoveChildCard(pChildCard);
+  vRemoveChild(pChildCard);
   vAppend(pChildCard);
 }
 

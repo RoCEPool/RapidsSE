@@ -229,11 +229,11 @@ void Joiner::vForm_joinPred(void)
     Card_Filter*   pCard_filter   = _pGetSub_Card_Filter(pCard_absJoin);
     Card_Scan*     pCard_scan     = _pGetSub_Card_Scan(pCard_absJoin);
     Card_Stream*   pCard_stream   = _pGetSub_Card_Stream(pCard_scan);
-    Card_Expr*     pCard_expr     = _pCard_Expr(pCard_filter->pGetChildCard(0));
+    Card_Expr*     pCard_expr     = _pCard_Expr(pCard_filter->pGetChild(0));
     Card_CalcBool* pCard_calcBool = _pGetSub_Card_CalcBool(pCard_expr);
     Card_PredCmp*  pCard_predCmp  = _pGetSub_Card_PredCmp(pCard_calcBool);
-    Card_Term*     pCard_term_0   = _pCard_Term(pCard_predCmp->pGetChildCard(0));
-    Card_Term*     pCard_term_1   = _pCard_Term(pCard_predCmp->pGetChildCard(1));
+    Card_Term*     pCard_term_0   = _pCard_Term(pCard_predCmp->pGetChild(0));
+    Card_Term*     pCard_term_1   = _pCard_Term(pCard_predCmp->pGetChild(1));
 
     // - - - -
 
@@ -275,6 +275,8 @@ void Joiner::vForm_joinPred(void)
 
     pCard_term = new Card_Term(pCard_predCmp->szCmp());
     pCard_joinPred->vAppend(pCard_term);
+
+    pCard_predCmp->vMark1('^');
   }
 
   vEndIteration();
@@ -342,7 +344,7 @@ void Joiner::vReduce_absJoin(void)
 
   while (Card_AbsJoin *pCard_absJoin = _pCard_AbsJoin(pEachMain(CK_ABSJOIN))) {
 
-    pCard_absJoin->vDeleteChildCard(CK_CALC);
+    //pCard_absJoin->vDeleteChildCard(CK_CALC);
     //pCard_absJoin->vDeleteChildCard(CK_FILTER);
 
     Card_Scan* pCard_scan = _pGetSub_Card_Scan(pCard_absJoin);
@@ -385,10 +387,10 @@ void Joiner::vResolve_joinPred(void)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    Card *pCard_Term_0 = pCard_PredCmp->pGetChildCard(0);
+    Card *pCard_Term_0 = pCard_PredCmp->pGetChild(0);
     Stz* szTerm_0 = pCard_Term_0->szTerm();
 
-    Card *pCard_Term_1 = pCard_PredCmp->pGetChildCard(1);
+    Card *pCard_Term_1 = pCard_PredCmp->pGetChild(1);
     Stz* szTerm_1 = pCard_Term_1->szTerm();
 
     Resolver* pResolver = new Resolver(m_pBench);
@@ -432,6 +434,13 @@ void Joiner::vSubsume_scan(void)
   for (i8 i_Main = 0; i_Main < nMainCards - 1; i_Main++) {
 
     Card *pMainCard = m_pBoard->pGetMainCard(i_Main);
+
+    eCK eCard = pMainCard->eCard();
+    if (CK_ABSJOIN == eCard) {
+      pMainCard->vDeleteChildCard(CK_CALC);
+      continue;
+    }
+
     if (CK_SCAN != pMainCard->eCard())
       continue;
 
@@ -469,9 +478,9 @@ Card_IndexPred* Joiner::pTo_IndexPred(Card_AbsJoin* pCard_AbsJoin,
 
   pCard_IndexPred->vAppend(new Card_Term("BOUND"_Stz));
 
-  Card_Term *pCard_Term_0 = _pCard_Term(pCard_PredCmp->pGetChildCard(0));
+  Card_Term *pCard_Term_0 = _pCard_Term(pCard_PredCmp->pGetChild(0));
   Stz *szTerm_0 = pCard_Term_0->szTerm();
-  Card_Term *pCard_Term_1 = _pCard_Term(pCard_PredCmp->pGetChildCard(1));
+  Card_Term *pCard_Term_1 = _pCard_Term(pCard_PredCmp->pGetChild(1));
   Stz *szTerm_1 = pCard_Term_1->szTerm();
 
   s256 sStreamNm_0;

@@ -24,6 +24,7 @@ namespace STORE
     bool bCull(void);
     Card_PredCmp* pFindBound(Index* pIndex, eBK eBound);
     bool bHasBounds(Index* pIndex);
+    bool bIsEmptyFilter(void);
     void vReduceFilter(void);
     bool bRemoveBound(Card_PredCmp* pCard_PredCmp);
   };

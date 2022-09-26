@@ -25,7 +25,9 @@ namespace STORE
     void vAssignLeftwards(void);
     void vCalc_to_calcBool(void);
     void vCopyLeftwards(void);
+    void vCull_indexJoin_filterPred(void);
     void vDeleteEmpty_filter(void);
+    void vDeleteEmpty_sub_filter(void);
     void vIndividuate_filter(void);
     void vRemove_predCmp(void);
 

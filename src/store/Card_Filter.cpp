@@ -4,9 +4,10 @@
 
 #include "Card_Filter.hpp"
 
+#include "Card_Expr.hpp"
+#include "Card_CalcBool.hpp"
 #include "Card_PredCmp.hpp"
 #include "Card_Term.hpp"
-#include "Card_Expr.hpp"
 #include "Card_Type.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -113,6 +114,22 @@ bool Card_Filter::bHasBounds(Index* pIndex)
   bool bHas = pCard_Expr->bHasBounds(pIndex);
   
   return bHas;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_Filter::bIsEmptyFilter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_CalcBool* pCard_calcBool =
+      _pCard_CalcBool(pFindSubCard(CK_CALCBOOL));
+
+  if (0 == pCard_calcBool->nChildCards())
+    return true;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

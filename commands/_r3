@@ -29,7 +29,7 @@ load customer "../tpch/sf_0001/customer.csv" ;
 /transform
 /transform2
 /interactive
-/cue = "Joiner::vReduce_absJoin()"
+/cue = "Filtrate::vDeleteEmpty_sub_filter"
 /weave
 /weaved
 /pipelineName = "r3"

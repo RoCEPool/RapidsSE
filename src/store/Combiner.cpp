@@ -97,7 +97,7 @@ void Combiner::vAdd_combined2(void)
 
       Card* pMainCard_next = m_pBoard->pGetMainCard(i_Main+1);
       eCK eCard_next = pMainCard_next->eCard();
-      if (CK_PROJECT == eCard_next)
+      if (CK_AGGREG == eCard_next || CK_FILTER == eCard_next || CK_PROJECT == eCard_next)
         continue;
 
       Card_Combine *pCard_combine = new Card_Combine;

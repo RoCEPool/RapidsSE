@@ -86,7 +86,7 @@ Card_StreamCol* Card_StreamColList::pGet_streamCol(i8 i_StreamColNo)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_StreamCol *pCard_StreamCol
-      = _pCard_StreamCol(pGetChildCard(i_StreamColNo));
+      = _pCard_StreamCol(pGetChild(i_StreamColNo));
 
   return pCard_StreamCol;
 }
@@ -104,7 +104,7 @@ Card_StreamCol* Card_StreamColList::pFind_streamCol(Stz *szColNm, i8& i_StreamCo
 
   i8 nSubCards = this->nChildCards();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card *pSubCard = this->pGetChildCard(i_Child);
+    Card *pSubCard = this->pGetChild(i_Child);
 
     if (CK_STREAMCOL != pSubCard->eCard())
       continue;
@@ -130,7 +130,7 @@ void Card_StreamColList::vPrependToAs(Stz* szPrefix)
 
   i8 nSubCards = this->nChildCards();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card *pSubCard = this->pGetChildCard(i_Child);
+    Card *pSubCard = this->pGetChild(i_Child);
 
     if (CK_STREAMCOL != pSubCard->eCard())
       continue;
@@ -183,7 +183,7 @@ void Card_StreamColList::vPopulate(Card_AggElist* pCard_AggElist)
 
   i8 nSubCards = pCard_AggElist->nChildCards();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card* pSubCard = pCard_AggElist->pGetChildCard(i_Child);
+    Card* pSubCard = pCard_AggElist->pGetChild(i_Child);
     if (CK_EXPR != pSubCard->eCard())
       continue;
 

@@ -321,7 +321,7 @@ static Stz* aCK_op[]
   /* */ "(none)"_Stz,          // CK_IDXCOL
   /* */ "(none)"_Stz,          // CK_IDXCOLLIST
   /* */ "(none)"_Stz,          // CK_INDEX
-  /* */ "indexJoin "_Stz,      // CK_INDEXJOIN
+  /* */ "indexJoin"_Stz,      // CK_INDEXJOIN
   /* */ "(none)"_Stz,          // CK_INDEXPRED
   /* */ "indexScan "_Stz,      // CK_INDEXSCAN
 
@@ -344,7 +344,7 @@ static Stz* aCK_op[]
   /* */ "(none)"_Stz,          // CK_PREDAND
   /* */ "(none)"_Stz,          // CK_PREDCMP
   /* */ "(none)"_Stz,          // CK_PREDOR
-  /* */ "project   "_Stz,      // CK_PROJECT
+  /* */ "project  "_Stz,      // CK_PROJECT
   /* */ "(none)"_Stz,          // CK_PROJELIST
 
   /* */ "(none)"_Stz,          // CK_RBOUND

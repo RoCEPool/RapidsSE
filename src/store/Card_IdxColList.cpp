@@ -66,7 +66,7 @@ Card_IdxCol* Card_IdxColList::pFind_idxCol(Stz *szOrdinal, i8& i_IdxColNo)
 
   i8 nSubCards = this->nChildCards();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card *pSubCard = this->pGetChildCard(i_Child);
+    Card *pSubCard = this->pGetChild(i_Child);
 
     if (CK_IDXCOL != pSubCard->eCard())
       continue;
@@ -97,7 +97,7 @@ void Card_IdxColList::vOrdinate(Card_Stream* pCard_Stream)
 
   i8 nSubCards = this->nChildCards();
   for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
-    Card_IdxCol* pCard_idxCol = _pCard_IdxCol(pGetChildCard(i_Sub));
+    Card_IdxCol* pCard_idxCol = _pCard_IdxCol(pGetChild(i_Sub));
 
     i8 i_StreamColNo = C_UNKNOWN;
     Stz* szColNm = pCard_idxCol->szColNm();

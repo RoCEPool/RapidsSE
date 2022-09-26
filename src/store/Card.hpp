@@ -34,7 +34,7 @@ namespace STORE
     CardSet(void);
    ~CardSet(void) noexcept(false);
 
-    Card* pGetChildCard(i8 i_Child);
+    Card* pGetChild(i8 i_Child);
     Card* pGetChildCard(i8 i_Child, eCK& reCard);
 
     void vRemoveSubCards(eCK eCard);
@@ -156,7 +156,7 @@ namespace STORE
     void vPropertiesEnsure(void);
     Stz* szPropertyNm(i8 i_Property);
 
-    void vRemoveChildCard(Card* pCardRemove);
+    void vRemoveChild(Card* pCardRemove);
     void vRemoveSubCard(Card* pCardRemove);
     void vRenumberSubCards(Card* pParentCard);
     void vReplaceChildWithKids(Card* pChildCard);

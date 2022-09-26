@@ -90,6 +90,27 @@ void Filtrate::vCopyLeftwards(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* inspect all <absJoin>/<filter> and cull predicates                         */
+/*----------------------------------------------------------------------------*/
+void Filtrate::vCull_indexJoin_filterPred(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTRATE,_FOOTER_);
+
+  vBeginIteration();
+
+  while (Card_AbsJoin *pCard_absJoin = _pCard_AbsJoin(pEachMain(CK_ABSJOIN))) {
+
+    Card_Filter *pCard_filter = _pGetSub_Card_Filter(pCard_absJoin);
+
+    Card_CalcBool *pCard_calcBool = _pGetSub_Card_CalcBool(pCard_filter);
+
+    pCard_calcBool->vCullPred('^');
+  }
+
+  vEndIteration();
+}
+
+/*----------------------------------------------------------------------------*/
 /* delete any <filter> which is effectively empty                             */
 /*----------------------------------------------------------------------------*/
 void Filtrate::vDeleteEmpty_filter(void)
@@ -115,6 +136,31 @@ void Filtrate::vDeleteEmpty_filter(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* delete any <filter> which is effectively empty                             */
+/*----------------------------------------------------------------------------*/
+void Filtrate::vDeleteEmpty_sub_filter(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
+
+  vBeginIteration();
+
+  while (Card *pCard_main = pEachMain()) {
+
+    Card_Filter* pCard_filter_sub = _pGetSub_Card_Filter(pCard_main);
+    if (! pCard_filter_sub)
+      continue;
+
+    if (! pCard_filter_sub->bIsEmptyFilter())
+      continue;
+
+    pCard_main->vRemoveChild(pCard_filter_sub);
+    delete pCard_filter_sub;
+  }
+
+  vEndIteration();
+}
+
+/*----------------------------------------------------------------------------*/
 /* individuate <absJoin>/<filter> as main <filter>                            */
 /*----------------------------------------------------------------------------*/
 void Filtrate::vIndividuate_filter(void)
@@ -123,17 +169,17 @@ void Filtrate::vIndividuate_filter(void)
 
   vBeginIteration();
 
-  while (Card_AbsJoin *pCard_absJoin =
-      _pCard_AbsJoin(pEachMain(CK_ABSJOIN))) {
+  while (Card_IndexJoin *pCard_indexJoin =
+      _pCard_IndexJoin(pEachMain(CK_INDEXJOIN))) {
 
     Card_Filter* pCard_filter =
-      _pGetSub_Card_Filter(pCard_absJoin);
+      _pGetSub_Card_Filter(pCard_indexJoin);
 
     if (! pCard_filter)
       continue;
 
-    pCard_absJoin->vRemoveChildCard(pCard_filter);
-    m_pBoard->vInsertMainCard_after(pCard_filter,pCard_absJoin);
+    pCard_indexJoin->vRemoveChild(pCard_filter);
+    m_pBoard->vInsertMainCard_after(pCard_filter,pCard_indexJoin);
   }
 
   vEndIteration();
@@ -172,7 +218,7 @@ void Filtrate::vRemove_predCmp(void)
         pCard_filter->vRemoveSubCard(pParentCard);
       }
       else {
-        Card* pSiblingCard = pParentCard->pGetChildCard(0);
+        Card* pSiblingCard = pParentCard->pGetChild(0);
         Card* pGrandCard = pCard_filter->pFindParent((pParentCard));
         pParentCard->vRemoveSubCard(pSiblingCard);
         pGrandCard->vReplaceSubCard(pParentCard,pSiblingCard);
@@ -202,7 +248,7 @@ void Filtrate::vAssignFilterLeftwards(Card_Filter* pCard_filter)
 
   Card_CalcBool* pCard_bool = _pGetSub_Card_CalcBool(pCard_filter);
 
-  Card_PRED* pCard_pred = static_cast<Card_PRED*>(pCard_bool->pGetChildCard(0));
+  Card_PRED* pCard_pred = static_cast<Card_PRED*>(pCard_bool->pGetChild(0));
 
   vAssignPredDrillDown(pCard_pred,pCard_filter);
 }
@@ -238,7 +284,7 @@ void Filtrate::vAssignPredDrillDown(Card_PRED* pCard_pred, Card_Filter* pCard_fi
 
   i8 nSubCards = pCard_pred->nChildCards();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card *pSubCard = pCard_pred->pGetChildCard(i_Child);
+    Card *pSubCard = pCard_pred->pGetChild(i_Child);
 
     vAssignPredDrillDown(static_cast<Card_PRED *>(pSubCard), pCard_filter);
   }
@@ -246,10 +292,10 @@ void Filtrate::vAssignPredDrillDown(Card_PRED* pCard_pred, Card_Filter* pCard_fi
 
   if (CK_PREDAND  == eCard) {
     pCard_pred->vMark1('&');
-    Card *pSubCard_0 = pCard_pred->pGetChildCard(0);
+    Card *pSubCard_0 = pCard_pred->pGetChild(0);
     i8 iStream_0 = pSubCard_0->cMark2() - '0';
 
-    Card *pSubCard_1 = pCard_pred->pGetChildCard(1);
+    Card *pSubCard_1 = pCard_pred->pGetChild(1);
     i8 iStream_1 = pSubCard_1->cMark2() - '0';
 
     if (iStream_0 == iStream_1) {
@@ -354,7 +400,7 @@ void Filtrate::vCopyFilterLeftwards(Card_Filter* pCard_filter)
 
 
   while (pCard_bool->nChildCards()) {
-    Card_PRED* pCard_pred = static_cast<Card_PRED*>(pCard_bool->pGetChildCard(0));
+    Card_PRED* pCard_pred = static_cast<Card_PRED*>(pCard_bool->pGetChild(0));
     bool bSubRemoved = bCopyPredDrillDown(pCard_pred,pCard_filter);
     if (! bSubRemoved)
       break;
@@ -402,7 +448,7 @@ bool Filtrate::bCopyPredDrillDown(Card_PRED* pCard_pred, Card_Filter* pCard_filt
 
   i8 nSubCards = pCard_pred->nChildCards();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card *pSubCard = pCard_pred->pGetChildCard(i_Child);
+    Card *pSubCard = pCard_pred->pGetChild(i_Child);
 
     bool bRemoved = bCopyPredDrillDown(static_cast<Card_PRED *>(pSubCard), pCard_filter);
     if (bRemoved)
@@ -457,7 +503,7 @@ void Filtrate::vMarkPredCardsAsMoved(Card* pPredCard)
 
   i8 nSubCards = pPredCard->nChildCards();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card *pSubCard = pPredCard->pGetChildCard(i_Child);
+    Card *pSubCard = pPredCard->pGetChild(i_Child);
 
     //eCK eSubCard = pSubCard->eCard();
 

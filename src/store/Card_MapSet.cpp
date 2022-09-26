@@ -74,7 +74,7 @@ Stz* Card_MapSet::szMapBack(Stz* szMapFrom)
 
   i8 nSubCards = this->nChildCards();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card_Map *pCard_Map = _pCard_Map(pGetChildCard(i_Child));
+    Card_Map *pCard_Map = _pCard_Map(pGetChild(i_Child));
 
     if (pCard_Map->szMapFrom()->bSame(szMapFrom))
       return pCard_Map->szMapBack();

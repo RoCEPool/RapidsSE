@@ -835,11 +835,11 @@ void Board::vResolveJoin2(Card_AbsJoin* pCard_AbsJoin)
   Card_Filter* pCard_Filter = _pCard_Filter(pGetMainCard(pCard_AbsJoin->iCardNo() + 3));
   //pCard_Filter->vDump();
 
-  Card_Expr* pCard_Expr = _pCard_Expr(pCard_Filter->pGetChildCard(0));
+  Card_Expr* pCard_Expr = _pCard_Expr(pCard_Filter->pGetChild(0));
 
-  Card_Type* pCard_Type = _pCard_Type(pCard_Expr->pGetChildCard(0));
-  Card_CalcBool* pCard_CalcBool = _pCard_CalcBool(pCard_Expr->pGetChildCard(1));
-  Card_PredCmp* pCard_PredCmp = _pCard_PredCmp(pCard_CalcBool->pGetChildCard(0));
+  Card_Type* pCard_Type = _pCard_Type(pCard_Expr->pGetChild(0));
+  Card_CalcBool* pCard_CalcBool = _pCard_CalcBool(pCard_Expr->pGetChild(1));
+  Card_PredCmp* pCard_PredCmp = _pCard_PredCmp(pCard_CalcBool->pGetChild(0));
 
   Card_IndexPred* pCard_IndexPred = pTo_IndexPred(pCard_PredCmp,nullptr);
   pIndexJoin->vAppend(pCard_IndexPred);
@@ -874,11 +874,11 @@ void Board::vResolveJoin3(Card_IndexJoin* pCard_IndexJoin)
   Card_Filter* pCard_Filter =
     _pCard_Filter(pFindNextMain(pCard_IndexJoin, CK_FILTER));
 
-  Card_Expr* pCard_Expr = _pCard_Expr(pCard_Filter->pGetChildCard(0));
+  Card_Expr* pCard_Expr = _pCard_Expr(pCard_Filter->pGetChild(0));
 
-  Card_Type* pCard_Type = _pCard_Type(pCard_Expr->pGetChildCard(0));
-  Card_CalcBool* pCard_CalcBool = _pCard_CalcBool(pCard_Expr->pGetChildCard(1));
-  Card_PredCmp* pCard_PredCmp = _pCard_PredCmp(pCard_CalcBool->pGetChildCard(0));
+  Card_Type* pCard_Type = _pCard_Type(pCard_Expr->pGetChild(0));
+  Card_CalcBool* pCard_CalcBool = _pCard_CalcBool(pCard_Expr->pGetChild(1));
+  Card_PredCmp* pCard_PredCmp = _pCard_PredCmp(pCard_CalcBool->pGetChild(0));
 
   Card_MapSet* pCard_MapSet = _pCard_MapSet(pCard_IndexJoin->pFindSubCard(CK_MAPSET));
   Card_IndexPred* pCard_IndexPred = pTo_IndexPred(pCard_PredCmp,pCard_MapSet);
@@ -909,10 +909,10 @@ void Board::vAResolveJoin(Card_IndexJoin* pCard_IndexJoin)
     _pCard_IndexPred(pCard_IndexJoin->pFindSubCard(CK_INDEXPRED));
 
   Card_Term* pCard_key =
-    _pCard_Term(pCard_IndexJoin->pGetChildCard(1));
+    _pCard_Term(pCard_IndexJoin->pGetChild(1));
 
   Card_Term* pCard_col =
-    _pCard_Term(pCard_IndexJoin->pGetChildCard(2));
+    _pCard_Term(pCard_IndexJoin->pGetChild(2));
 
 
 }
@@ -986,7 +986,7 @@ void Board::vResolveRecursive(Card* pAnyCard) // recursive
 
   i8 nSubCards = pAnyCard->nChildCards();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card *pSubCard = pAnyCard->pGetChildCard(i_Child);
+    Card *pSubCard = pAnyCard->pGetChild(i_Child);
     vResolveRecursive(pSubCard);
   }
 
@@ -2313,9 +2313,9 @@ Card_IndexPred* Board::pTo_IndexPred(Card_PredCmp* pCard_PredCmp,
 
   pCard_IndexPred->vAppend(new Card_Term("BOUND"_Stz));
 
-  Card_Term* pCard_Term_0 = _pCard_Term(pCard_PredCmp->pGetChildCard(0));
+  Card_Term* pCard_Term_0 = _pCard_Term(pCard_PredCmp->pGetChild(0));
   Stz* szTerm_0 = pCard_Term_0->szTerm();
-  Card_Term* pCard_Term_1 = _pCard_Term(pCard_PredCmp->pGetChildCard(1));
+  Card_Term* pCard_Term_1 = _pCard_Term(pCard_PredCmp->pGetChild(1));
   Stz* szTerm_1 = pCard_Term_1->szTerm();
 
   Stz* szPred_0 = nullptr;
