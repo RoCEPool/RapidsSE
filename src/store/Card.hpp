@@ -73,7 +73,9 @@ namespace STORE
     Card(eCK eCard);
    ~Card(void) noexcept(false);
 
-   static  void vCardLeaks(void);
+    static  void vCardLeaks(void);
+
+    static  bool bCardsSameRecursive(Card* pCard_a, Card* pCard_b);
 
     static bool bIsMain(eCK eCard);
     static bool bIsOther(eCK eCard);

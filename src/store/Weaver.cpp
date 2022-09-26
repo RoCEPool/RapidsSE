@@ -246,7 +246,7 @@ void Weaver::vArgAggreg(Stz* szOpArgs, Card_Aggreg* pCard_Aggreg)
   
   // 0) aggElist : 1) gbyList
 
-  pCard_Aggreg->vDump();
+  //pCard_Aggreg->vDump();
   s4K sRpnExpr;
   
   vRpnAggreg(sRpnExpr,pCard_Aggreg);
@@ -434,7 +434,7 @@ void Weaver::vArgSort(Stz* szOpArgs, Card_Sort* pCard_Sort)
   
   // sort : 0) ???
 
-  pCard_Sort->vDump();
+  //pCard_Sort->vDump();
   
   s4K sRpnExpr;
   

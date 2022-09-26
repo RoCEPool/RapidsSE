@@ -164,6 +164,38 @@ void Card::vCardLeaks(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* are the two cards recursively the sae                                      */
+/*----------------------------------------------------------------------------*/
+bool Card::bCardsSameRecursive(Card* pCard_a, Card* pCard_b)
+{
+  _static_
+
+  eCK eCard_a = pCard_a->eCard();
+  eCK eCard_b = pCard_b->eCard();
+
+  if (eCard_a != eCard_b)
+    return false;
+
+  if (CK_TERM == eCard_a)
+    if (! pCard_a->szTerm()->bSame(pCard_a->szTerm()))
+      return false;
+
+  i8 nChildren_a = pCard_a->nChildCards();
+  i8 nChildren_b = pCard_b->nChildCards();
+  if (nChildren_a != nChildren_b)
+    return false;
+
+  for (i8 i_Child = 0; i_Child < nChildren_a; i_Child++) {
+    Card* pChild_a = pCard_a->pGetChild(i_Child);
+    Card* pChild_b = pCard_b->pGetChild(i_Child);
+    if (! bCardsSameRecursive(pCard_a,pCard_b))
+      return false;
+  }
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is eCK a main card?                                                        */
 /*----------------------------------------------------------------------------*/
 bool Card::bIsMain(eCK eCard)
