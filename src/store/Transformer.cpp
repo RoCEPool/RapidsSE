@@ -217,6 +217,11 @@ void Transformer::vTransform2(void)
     m_pBoard->vPrintBoard("Filtrate::vCull_indexJoin_filterPred"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  m_pScanning->vXyz();
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Scanning::vXyz"_Stz);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pFiltrate->vDeleteEmpty_sub_filter();
   if (m_bInteractive)
     m_pBoard->vPrintBoard("Filtrate::vDeleteEmpty_sub_filter"_Stz);

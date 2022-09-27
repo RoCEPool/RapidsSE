@@ -21,6 +21,8 @@ namespace STORE
     Scanning(Bench* pBench);
    ~Scanning(void) noexcept(false);
 
+    void vXyz(void);
+
   private:
 
     Footer* aFooter(void);

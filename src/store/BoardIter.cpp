@@ -218,7 +218,6 @@ Card_Aggreg* BoardIter::pPrev_aggreg(void)
   Card_Aggreg* p_aggreg =
     _pCard_Aggreg(m_pBoard->pFindPrevMain(m_pCurrMain,CK_AGGREG,m_i_Main));
 
-  m_pCurrMain = p_aggreg;
 
   return p_aggreg;
 }

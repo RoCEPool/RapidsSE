@@ -5,6 +5,9 @@
 trackMemory;
 
 _orders
+
+create index O_idx0 on orders(o_orderdate);
+
 load orders "../tpch/sf_0001/orders.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -14,7 +17,7 @@ load orders "../tpch/sf_0001/orders.csv" ;
 /transform
 /transform2
 /interactive
-/cue = "Sorter::vCull_sby_SameAs_gby"
+/cue = "Scanning::vXyz"
 /weave
 /weaved
 /pipelineName = "r4_a"
