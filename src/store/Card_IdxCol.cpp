@@ -1,0 +1,44 @@
+/*============================================================================*/
+/* Card_IdxCol.cpp -- Index Column List                                   */
+/*============================================================================*/
+
+#include "Card_IdxCol.hpp"
+#include "Card_Term.hpp"
+#include "Column.hpp"
+
+/*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+__pCastFunction_Card(STORE,Card_IdxCol,CK_IDXCOL)
+__aNewFunction(Card_IdxCol,CN_CARD)
+__vDeleteFunction(Card_IdxCol,CN_CARD)
+
+__bIsCard(STORE,Card_IdxCol,CK_IDXCOL)
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Card_IdxCol::Card_IdxCol(Column* pColumn)
+: Card_SUB(CK_IDXCOL)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  _checkInitialised_(CN_CARD);
+
+  vColNm(pColumn->szColNm());
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+Card_IdxCol::~Card_IdxCol(void) noexcept(false)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

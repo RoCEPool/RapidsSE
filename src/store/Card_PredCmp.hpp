@@ -29,6 +29,8 @@ namespace STORE
 
   Card_PredCmp* _pCard_PredCmp(void* aAddr);
   bool _bIsCard_PredCmp(void* aAddr);
+  Card_PredCmp* _pGetSub_Card_PredCmp(Card* pParent);
+
 }
 
 /*============================================================================*/

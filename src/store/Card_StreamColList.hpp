@@ -24,6 +24,7 @@ namespace STORE
    ~Card_StreamColList(void) noexcept(false);
 
     Card_StreamCol* pGet_streamCol(i8 i_StreamColNo);
+    Card_StreamCol* pFind_streamCol(Stz *szColNm, i8& i_StreamColNo);
 
     void vPrependToAs(Stz* szPrefix);
     void vPopulate(StreamDef* pStreamDef, Stz* szPrefix_opt=nullptr);
@@ -34,6 +35,7 @@ namespace STORE
 
   Card_StreamColList* _pCard_StreamColList(void* aAddr);
   bool _bIsCard_StreamColList(void* aAddr);
+  Card_StreamColList* _pGetSub_Card_StreamColList(Card* pParent);
 }
 
 /*============================================================================*/

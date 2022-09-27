@@ -25,8 +25,10 @@ namespace STORE
     void vAssignLeftwards(void);
     void vCalc_to_calcBool(void);
     void vCopyLeftwards(void);
+    void vCull_indexJoin_filterPred(void);
     void vDeleteEmpty_filter(void);
-    void vRemove_predCmp(void);
+    void vDeleteEmpty_sub_filter(void);
+    void vIndividuate_filter(void);
 
   private:
     void vAssignFilterLeftwards(Card_Filter* pCard_filter);
@@ -38,6 +40,7 @@ namespace STORE
 
     void vCopyFilterLeftwards(Card_Filter* pCard_filter);
     bool bCopyPredDrillDown(Card_PRED*, Card_Filter* pCard_filter);
+    void vCopyPredToExistingFilter(Card_Filter* pCard_filter_existing, Card_PRED* pCard_pred);
     void vCopyPredToNewFilter(Card_Filter* pCard_filter_new, Card_PRED* pCard_pred);
 
     void vPredMovesToAbsJoin(Card* pPredCard, Card_AbsJoin* pCard_absJoin);

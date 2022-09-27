@@ -29513,7 +29513,7 @@ void Task::vAddMunged(Task* )
     "  PipeSpec[].delete\n"
     "\n"
     "  \"<weaved>\"  [job].tagSet@ tagSet.hasName if\n"
-    "    Text[] \"Weaved: %v\"  str.format .\n"
+    "    Text[] \"Weaved: \\n%v\"  str.format .\n"
     "  then\n"
     "\n"
     " ;\n"

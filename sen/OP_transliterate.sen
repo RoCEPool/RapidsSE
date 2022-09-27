@@ -109,7 +109,7 @@
   PipeSpec[].delete
 
   "<weaved>"  [job].tagSet@ tagSet.hasName if
-    Text[] "Weaved: %v"  str.format .
+    Text[] "Weaved: \n%v"  str.format .
   then
 
 ;

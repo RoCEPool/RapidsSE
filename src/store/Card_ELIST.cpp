@@ -32,6 +32,22 @@ Card_ELIST::~Card_ELIST(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_ELIST:: bSame(Card_ELIST* pCard_ELIST_a, Card_ELIST* pCard_ELIST_b)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  bool bSame = Card::bCardsSameRecursive(pCard_ELIST_a,pCard_ELIST_b);
+
+  return bSame;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 Card_StreamColList* Card_ELIST::pDerive_StreamColList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -39,9 +55,9 @@ Card_StreamColList* Card_ELIST::pDerive_StreamColList(void)
   Card_StreamColList* pCard_StreamColList = new Card_StreamColList;
 
   eCK eSubCard;
-  i8 nSubCards = this->nSubCards();
-  for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
-    Card *pSubCard = pGetSubCard(i_SubCard, eSubCard);
+  i8 nSubCards = this->nChildCards();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card *pSubCard = pGetChildCard(i_Child, eSubCard);
 
     Card *pCard_Type = pSubCard->pFindSubCard(CK_TYPE);
     Card *pCard_As = pSubCard->pFindSubCard(CK_AS);
@@ -53,7 +69,7 @@ Card_StreamColList* Card_ELIST::pDerive_StreamColList(void)
       pCard_StreamCol->vAppend(pCard_As->pDupCardAndSubCards());
     else {
       s32 sAs;
-      sAs.vSprint("$%lld"_Stz,i_SubCard + 1);
+      sAs.vSprint("$%lld"_Stz,i_Child + 1);
       pCard_As = new Card_As(sAs);
       pCard_StreamCol->vAppend(pCard_As);
     }

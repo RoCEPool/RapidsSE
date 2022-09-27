@@ -39,6 +39,8 @@
 #include "Card_Hash.hpp"
 #include "Card_Having.hpp"
 
+#include "Card_IdxCol.hpp"
+#include "Card_IdxColList.hpp"
 #include "Card_Index.hpp"
 #include "Card_IndexJoin.hpp"
 #include "Card_IndexPred.hpp"
@@ -144,15 +146,19 @@ namespace STORE
     void vDeleteAllCards(void);
     void vDeleteFromTill(Card* pFrom, Card* pTillBefore);
 
+    Card_Filter* pFindFilterCard(i8 iFilter, Card*& rpMainCard);
     i8    iFindMain(Card* pMainCard);
     Card* pFindMain(eCK eCard);
+    Card* pFindMain(eCK eCard, i8& i_Main);
     Card* pFindMain(Stz* szCardNm);
     Card* pFindNextMain(Card* pAfter, eCK eFindCard);
-    Card_Filter* pFindFilterCard(i8 iFilter, Card*& rpMainCard);
+    Card* pFindNextMain(Card* pAfter, eCK eFindCard, i8& i_Main);
+    Card* pFindPrevMain(Card* pBefore, eCK eFindCard);
+    Card* pFindPrevMain(Card* pBefore, eCK eFindCard, i8& i_Main);
     Card_Stream* pFindStreamCard(i8 iStream, Card*& rpMainCard);
 
-    Card* pGetMainCard(i8 i_MainCard);
-    Card* pGetMainCard(i8 i_MainCard, eCK& reCard);
+    Card* pGetMainCard(i8 i_Main);
+    Card* pGetMainCard(i8 i_Main, eCK& reCard);
 
     void vInsertMainCard_after(Card* pNewMainCard, Card* pAfterMainCard, bool bRenumber=true);
     void vInsertMainCard_before(Card* pNewMainCard, Card* pBeforeMainCard, bool bRenumber=true);

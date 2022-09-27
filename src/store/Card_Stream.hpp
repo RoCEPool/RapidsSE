@@ -25,9 +25,12 @@ namespace STORE
     bool bContainsOrdinal(Stz* szOrd);
     bool bContainsPred(Card_PRED* pCard_PRED);
 
+    Card_StreamCol*     pFind_streamCol(Stz* szColNm);
+
     Card_StreamCol*     pGet_streamCol(i8 i_Col);
     Card_StreamColList* pGet_streamColList(void);
 
+    void vOrdinate(String* psOrdinal, Stz* szOrdinal);
     void vRibbonPrint(Ribbon* pRibbon, i8 iDepth);
 
     i8 nStreamCols(void);

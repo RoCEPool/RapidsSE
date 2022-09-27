@@ -11,6 +11,8 @@ namespace STORE
   {
   private:
 
+    Card* m_p_stage_new;
+
     // must be last
     Footer m_xFooter;
 
@@ -21,6 +23,7 @@ namespace STORE
     Stager(Bench* pBench);
    ~Stager(void) noexcept(false);
 
+    void vAdd_Stages2(void);
     void vLinearize_Stages(void);
 
   private:

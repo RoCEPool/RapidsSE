@@ -24,19 +24,27 @@ load customer "../tpch/sf_0001/customer.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+/cue = "Stager::vLinearize_Stages"
 /jobTags
 /transliterated
 /transform
 /transform2
 /interactive
-/cue = "Joiner::vAppendPrelim_indexJoin()"
 /weave
 /weaved
 /pipelineName = "r3"
-select count(*)
+select
+  l_orderkey,
+  sum(l_extendedprice * (1 - l_discount)) as Revenue,
+  o_orderdate,
+  o_shippriority
   from orders, lineItem, customer
  where l_orderKey = o_orderKey
    and c_custKey  = o_custKey
+   and c_mktsegment = 'BUILDING'
+ group by l_orderkey,
+          o_orderdate,
+          o_shippriority
 ;
 
 

@@ -13,6 +13,7 @@ __aNewFunction(Card_IndexJoin,CN_CARD)
 __vDeleteFunction(Card_IndexJoin,CN_CARD)
 
 __bIsCard(STORE,Card_IndexJoin,CK_INDEXJOIN)
+__pGetSubFunction_Card(STORE,Card_IndexJoin,CK_INDEXJOIN)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

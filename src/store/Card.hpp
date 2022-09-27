@@ -20,11 +20,95 @@
 #include "ListExo2_t.hpp"
 
 
-namespace STORE { class Board;
-                  class Card;
-                  class Card_Properties;
-                  class Card_SubSet;
-                  class Card_Term; }
+namespace STORE {
+  class Board;
+  class Card;
+  class Card_SubSet;
+}
+
+namespace STORE {
+  class Card_AbsJoin;
+  class Card_AggElist;
+  class Card_AggLevel;
+  class Card_Aggreg;
+  class Card_Aggregates;
+  class Card_As;
+
+  class Card_Calc;
+  class Card_CalcBool;
+  class Card_CandIndex;
+  class Card_Card;
+  class Card_Combine;
+
+  class Card_Debug;
+  class Card_Direction;
+
+  class Card_EBound;
+  class Card_Exists;
+  class Card_Expr;
+  class Card_ExprBool;
+
+  class Card_Filter;
+
+  class Card_GbyElist;
+  class Card_Generate;
+
+  class Card_Hash;
+  class Card_Having;
+
+  class Card_IdxCol;
+  class Card_IdxColList;
+  class Card_Index;
+  class Card_IndexJoin;
+  class Card_IndexPred;
+  class Card_IndexScan;
+
+  class Card_JoinPred;
+
+  class Card_LBound;
+  class Card_Limit;
+
+  class Card_Map;
+  class Card_MapSet;
+  class Card_Mode;
+
+  class Card_Name;
+
+  class Card_On;
+  class Card_Option;
+  class Card_OrdAgg;
+  class Card_ObyElist;
+
+  class Card_PredAnd;
+  class Card_PredCmp;
+  class Card_PredOr;
+  class Card_Project;
+  class Card_ProjElist;
+
+  class Card_RBound;
+  class Card_Rows;
+  class Card_RpnTerms;
+
+  class Card_SbyElist;
+  class Card_Scan;
+  class Card_Send;
+  class Card_SendKind;
+  class Card_Sends;
+  class Card_Sort;
+  class Card_Stage;
+  class Card_StageTopo;
+  class Card_Stream;
+  class Card_StreamElist;
+  class Card_StreamColList;
+  class Card_SubSet;
+
+  class Card_Table;
+  class Card_Term;
+  class Card_Type;
+
+  class Card_UBound;
+  class Card_Unique;
+}
 
 namespace STORE
 {
@@ -34,8 +118,8 @@ namespace STORE
     CardSet(void);
    ~CardSet(void) noexcept(false);
 
-    Card* pGetSubCard(i8 i_SubCard);
-    Card* pGetSubCard(i8 i_SubCard, eCK& reCard);
+    Card* pGetChild(i8 i_Child);
+    Card* pGetChildCard(i8 i_Child, eCK& reCard);
 
     void vRemoveSubCards(eCK eCard);
   };
@@ -73,7 +157,9 @@ namespace STORE
     Card(eCK eCard);
    ~Card(void) noexcept(false);
 
-   static  void vCardLeaks(void);
+    static  void vCardLeaks(void);
+
+    static  bool bCardsSameRecursive(Card* pCard_a, Card* pCard_b, i8 iDepth=0, bool bTestL0=false);
 
     static bool bIsMain(eCK eCard);
     static bool bIsOther(eCK eCard);
@@ -100,6 +186,7 @@ namespace STORE
     void vCutProperty(Stz* szName);
     void vCutSubCard(Card* pSubCard);
 
+    void vDeleteChildCard(eCK eCard);
     void vDump(i8 iDepth=0, Stz* szTitle=nullptr);
     Card* pDupCardAndSubCards(void);
     Card_SubSet* pDupSubCards(void);
@@ -109,6 +196,7 @@ namespace STORE
     bool bEquivalent(Card* pCard_arg);
 
     Card* pFindChildCard(eCK eCard);
+    Card* pFindChildCard(eCK eCard, i8& i_Child);
     Card* pFindParent(Card* pSubCard_arg);
     Card* pFindSubCard(eCK eCard);
 
@@ -140,8 +228,14 @@ namespace STORE
     i8   iMark2(void);
     void vMark2(i8 iMark2);
     void vMark2(char cMark2);
+    void vMoveToLastChild(Card* pChildCard);
 
     CardIter* pNewSubCardIter(void);
+
+    i8   iOrdHi(void);
+    void vOrdHi(i8 iOrdHi);
+    i8   iOrdLo(void);
+    void vOrdLo(i8 iOrdLo);
 
     i8   nProperties(void);
     eTN  eProperty(i8 i_Property);
@@ -149,11 +243,13 @@ namespace STORE
     void vPropertiesEnsure(void);
     Stz* szPropertyNm(i8 i_Property);
 
+    void vRemoveChild(Card* pCardRemove);
     void vRemoveSubCard(Card* pCardRemove);
     void vRenumberSubCards(Card* pParentCard);
+    void vReplaceChildWithKids(Card* pChildCard);
     void vReplaceSubCard(Card* pSubCard, Card* pWithCard);
 
-    i8   nSubCards(void);
+    i8   nChildCards(void);
   
     void vTransferAll(Card* pCards);
     void vTransferFrom(Card* pCards, Card* pFrom,
@@ -181,6 +277,8 @@ namespace STORE
     void vCard(Card* pCard);
     void vCardPrint(Ribbon* pRibbon, i8 iDepth);
     void vClearAllMarks(void);
+    Stz* szColNm(void);
+    void vColNm(Stz* szColNm);
     Column* pColumn(void);
     void vColumn(Column* pColumn);
     Column* pColumn1(void);
@@ -232,6 +330,8 @@ namespace STORE
     void vOption(Stz* szOption);
     Stz* szOr(void);
     void vOr(Stz* szOr);
+    Stz* szOrdinal(void);
+    void vOrdinal(Stz* szOrdinal);
 
     i8   iOrdinalStreamColNo(void);
     i8   iOrdinalIndexColNo(void);
@@ -288,6 +388,21 @@ namespace STORE
     void vTablePrint(Ribbon* pRibbon, i8 iDepth);
     void vTermPrint(Ribbon* pRibbon, i8 iDepth);
 
+    Card_As*            pSub_as(void);
+    Card_CalcBool*      pSub_calcBool(void);
+    Card_Filter*        pSub_filter(void);
+    Card_GbyElist*      pSub_gbyElist(void);
+    Card_IdxColList*    pSub_idxColList(void);
+    Card_IndexJoin*     pSub_indexJoin(void);
+    Card_JoinPred*      pSub_joinPred(void);
+    Card_PredCmp*       pSub_predCmp(void);
+    Card_SbyElist*      pSub_sbyElist(void);
+    Card_Scan*          pSub_scan(void);
+    Card_StageTopo*     pSub_stageTopo(void);
+    Card_Stream*        pSub_stream(void);
+    Card_StreamColList* pSub_streamColList(void);
+    Card_Table*         pSub_table(void);
+  
   private:
 
     Stz* szDecodeEnum(Stz* szEnum, i8 iEnum);

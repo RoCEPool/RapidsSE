@@ -72,9 +72,9 @@ void Card_Stream::vApplyOrder(Card_Stream* pCard_Stream_src)
       break;
     
     Card_Expr* pCard_Expr_src =
-      _pCard_Expr(pCard_ObyElist_src->pGetSubCard(i_Expr));
+      _pCard_Expr(pCard_ObyElist_src->pGetChild(i_Expr));
     Card_Expr* pCard_Expr_tst =
-      _pCard_Expr(pCard_StreamElist_dst->pGetSubCard(i_Expr));
+      _pCard_Expr(pCard_StreamElist_dst->pGetChild(i_Expr));
 
     if (! pCard_Expr_tst->bEquivalent(pCard_Expr_src))
       break;
@@ -114,15 +114,29 @@ bool Card_Stream::bContainsPred(Card_PRED* pCard_PRED)
       return false;
   }
 
-  i8 nSubCards = pCard_PRED->nSubCards();
-  for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
-    Card *pSubCard = pCard_PRED->pGetSubCard(i_SubCard);
+  i8 nSubCards = pCard_PRED->nChildCards();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card *pSubCard = pCard_PRED->pGetChild(i_Child);
 
     if (! bContainsPred(static_cast<Card_PRED*>(pSubCard)))
       return false;
   }
 
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is given <pred> within this stream?                                        */
+/*----------------------------------------------------------------------------*/
+Card_StreamCol* Card_Stream::pFind_streamCol(Stz *szColNm)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+   Card_StreamColList* pCard_StreamColList = _pGetSub_Card_StreamColList(this);
+
+  Card_StreamCol* pCard_streamCol = nullptr;
+
+  return pCard_streamCol;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -150,6 +164,16 @@ Card_StreamColList* Card_Stream::pGet_streamColList(void)
     = _pCard_StreamColList(pFindSubCard(CK_STREAMCOLLIST));
 
   return pCard_StreamColList;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of stream columns                                               */
+/*----------------------------------------------------------------------------*/
+void Card_Stream::vOrdinate(String* psOrdinal, Stz* szOrdinal)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  psOrdinal->vCopy(szOrdinal);
 }
 
 /*----------------------------------------------------------------------------*/

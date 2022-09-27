@@ -19,6 +19,7 @@ namespace STORE
 
   Card_JoinPred* _pCard_JoinPred(void* aAddr);
   bool _bIsCard_JoinPred(void* aAddr);
+  Card_JoinPred* _pGetSub_Card_JoinPred(Card* pParent);
 }
 
 /*============================================================================*/

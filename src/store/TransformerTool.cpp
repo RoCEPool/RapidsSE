@@ -18,6 +18,31 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
 
   m_pMainCardIter = nullptr;
 
+  m_eMainCard     = CK_NONE;
+  m_eNextMain     = CK_NONE;
+  m_eStageTopo    = YG_NONE;
+
+  m_pMainCard     = nullptr;
+  m_pNextMain     = nullptr;
+
+  m_p_absJoin     = nullptr;
+  m_p_aggreg      = nullptr;
+  m_p_combine     = nullptr;
+  m_p_filter      = nullptr;
+  m_p_gbyElist    = nullptr;
+  m_p_indexJoin   = nullptr;
+  m_p_indexScan   = nullptr;
+  m_p_project     = nullptr;
+  m_p_sbyElist    = nullptr;
+  m_p_scan        = nullptr;
+  m_p_sort        = nullptr;
+  m_p_stage       = nullptr;
+  m_p_stage_a     = nullptr;
+  m_p_stage_b     = nullptr;
+  m_p_stageTopo   = nullptr;
+  m_p_stageTopo_a = nullptr;
+  m_p_stageTopo_b = nullptr;
+
   _postcondition_(_ADDRESS_,_MAGIC_);
 }
 
@@ -46,6 +71,48 @@ void TransformerTool::vBeginIteration(void)
   RASSERT(! m_pMainCardIter);
 
   m_pMainCardIter = m_pBoard->pNewMainCardIter();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get board                                                                  */
+/*----------------------------------------------------------------------------*/
+Board* TransformerTool::pBoard(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  return m_pBoard;
+}
+
+/*----------------------------------------------------------------------------*/
+/* decode card                                                                */
+/*----------------------------------------------------------------------------*/
+eCK TransformerTool::eDecodeMain(Card* pCard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  m_eMainCard = pCard->eCard();
+  
+  switch (m_eMainCard) {
+
+    case CK_ABSJOIN:    m_p_absJoin     = _pCard_AbsJoin(pCard);   break;
+    case CK_AGGREG:     m_p_aggreg      = _pCard_Aggreg(pCard);    break;
+    case CK_COMBINE:    m_p_combine     = _pCard_Combine(pCard);   break;
+    case CK_FILTER:     m_p_filter      = _pCard_Filter(pCard);    break;
+    case CK_GBYELIST:   m_p_gbyElist    = _pCard_GbyElist(pCard);  break;
+    case CK_INDEXJOIN:  m_p_indexJoin   = _pCard_IndexJoin(pCard); break;
+    case CK_INDEXSCAN:  m_p_indexScan   = _pCard_IndexScan(pCard); break;
+    case CK_PROJECT:    m_p_project     = _pCard_Project(pCard);   break;
+    case CK_SBYELIST:   m_p_sbyElist    = _pCard_SbyElist(pCard);  break;
+    case CK_SCAN:       m_p_scan        = _pCard_Scan(pCard);      break;
+    case CK_SORT:       m_p_sort        = _pCard_Sort(pCard);      break;
+    case CK_STAGE:      m_p_stage       = _pCard_Stage(pCard);     break;
+    case CK_STAGETOPO:  m_p_stageTopo   = _pCard_StageTopo(pCard); break;
+
+    default:
+      NEVER_REACH
+  }
+
+  return m_eMainCard;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -140,6 +207,27 @@ Card* TransformerTool::pFindMainOf(Card* pGivenCard, Card*& rpParentCard)
   delete pMainCardIter;
 
   return pMainCard;
+}
+
+/*----------------------------------------------------------------------------*/
+/* search for parent of given sub card                                        */
+/*----------------------------------------------------------------------------*/
+bool TransformerTool::bRecursivelyTheSame(Card* p_card_a, Card* p_card_b, i8 iDepth, bool bTestL0)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  bool bSame = Card::bCardsSameRecursive(p_card_a, p_card_b,iDepth,bTestL0);
+
+  return bSame;
+}
+
+/*----------------------------------------------------------------------------*/
+/* record transformation                                                      */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::vTransformation(eOT eTransformation)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
 }
 
 

@@ -22,7 +22,6 @@ namespace STORE
    ~Sender(void) noexcept(false);
 
     void vDelete_Sends(void);
-    void vReadd_Sends(void);
 
   private:
 

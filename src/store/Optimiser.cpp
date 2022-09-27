@@ -300,8 +300,11 @@ void Optimiser::vTransform(void)
 //    pCardRegs->vResetCardRegs();
 //  }
 
-  if (bInteractive)
+  if (bInteractive) {
+    m_pWeaver->vWeaveOptStmt(pBoard);
+    vTrace("%s\n"_Stz,m_pWeaver->szOptStmt());
     Cue::vGetReturn("$$$$$$ >>"_Stz);
+  }
 }
 
 /*============================================================================*/

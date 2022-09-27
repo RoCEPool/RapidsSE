@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Predicator.hpp -- predicate tool                                           */
+/* Sorter.hpp --                                                           */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class Predicator : public TransformerTool
+  class Sorter : public TransformerTool
   {
   private:
 
@@ -18,15 +18,17 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Predicator(Bench* pBench);
-   ~Predicator(void) noexcept(false);
+    Sorter(Bench* pBench);
+   ~Sorter(void) noexcept(false);
+
+    void vCull_sby_SameAs_gby(void);
 
   private:
 
     Footer* aFooter(void);
   };
 
-  Predicator* _pPredicator(void* aAddr);
+  Sorter* _pSorter(void* aAddr);
 }
 /*============================================================================*/
 /* end                                                                        */

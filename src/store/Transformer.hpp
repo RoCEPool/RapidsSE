@@ -9,8 +9,9 @@
 #include "Curator.hpp"
 #include "Filtrate.hpp"
 #include "Joiner.hpp"
-#include "Predicator.hpp"
+#include "Scanning.hpp"
 #include "Sender.hpp"
+#include "Sorter.hpp"
 #include "Streamer.hpp"
 #include "Stager.hpp"
 
@@ -21,7 +22,7 @@ namespace STORE
   private:
 
     Optimiser*   m_pOptimiser;
-
+    CardCtl*     m_pCardCtl;
     Bench*       m_pBench;
     Board*       m_pBoard;
 
@@ -29,8 +30,9 @@ namespace STORE
     Curator*     m_pCurator;
     Filtrate*    m_pFiltrate;
     Joiner*      m_pJoiner;
-    Predicator*  m_pPredicator;
+    Scanning*    m_pScanning;
     Sender*      m_pSender;
+    Sorter*      m_pSorter;
     Stager*      m_pStager;
     Streamer*    m_pStreamer;
 
@@ -51,7 +53,6 @@ namespace STORE
 
   private:
 
-    void vTransform1(void);
     void vTransform2(void);
 
     Footer* aFooter(void);

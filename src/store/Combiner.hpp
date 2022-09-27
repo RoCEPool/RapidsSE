@@ -22,7 +22,7 @@ namespace STORE
   
    ~Combiner(void) noexcept(false);
 
-    void vAdd_combined(void);
+    void vAdd_combined3(void);
     void vDelete_Combines(void);
 
   private:
