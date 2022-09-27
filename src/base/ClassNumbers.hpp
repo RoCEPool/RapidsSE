@@ -130,6 +130,7 @@ enum eCN : u2 // Class Number
   /* */ CN__I__,
   /* */ CN_INDEX,
   /* */ CN_INDEXDEF,
+  /* */ CN_INDEXER,
   /* */ CN_INDEXSTREAM,
   /* */ CN_INDEXTREE,
   /* */ CN_INDEXTREEVEC,
@@ -559,6 +560,7 @@ static Stz* aCN[]
   /* */ "_I__"_Stz,                 // CN__I__
   /* */ "INDEX"_Stz,                // CN_INDEX
   /* */ "INDEXDEF"_Stz,             // CN_INDEXDEF
+  /* */ "INDEXER"_Stz,              // CN_INDEXER
   /* */ "INDEXSTREAM"_Stz,          // CN_INDEXSTREAM
   /* */ "INDEXTREE"_Stz,            // CN_INDEXTREE
   /* */ "INDEXTREEVEC"_Stz,         // CN_INDEXTREEVEC

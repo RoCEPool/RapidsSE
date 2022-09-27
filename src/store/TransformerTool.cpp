@@ -42,6 +42,7 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_p_stageTopo   = nullptr;
   m_p_stageTopo_a = nullptr;
   m_p_stageTopo_b = nullptr;
+  m_p_table       = nullptr;
 
   _postcondition_(_ADDRESS_,_MAGIC_);
 }

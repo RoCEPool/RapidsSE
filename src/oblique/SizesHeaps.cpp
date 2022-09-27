@@ -255,6 +255,7 @@
 #include "Stager.hpp"
 #include "Sorter.hpp"
 #include "BoardIter.hpp"
+#include "Indexer.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -396,6 +397,7 @@ SizeHeap gxaSizeHeap[]
   { CN__I__,                     'I' - ('A' - 1),            HT_INVALID   ,FILL },
   { CN_INDEX,                    sizeof(Index),              HT_T_TINY    ,FILL },
   { CN_INDEXDEF,                 sizeof(IndexDef),           HT_T_SMALL   ,FILL },
+  { CN_INDEXER,                  sizeof(Indexer),            HT_T_TINY   ,FILL },
   { CN_INDEXSTREAM,              sizeof(IndexStream),        HT_T_TINY    ,FILL },
   { CN_INDEXTREE,                sizeof(IndexTree),          HT_T_TINY    ,FILL },
   { CN_INDEXTREEVEC,             sizeof(IndexTreeVec),       HT_T_TINY    ,FILL },

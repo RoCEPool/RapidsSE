@@ -43,6 +43,7 @@ namespace STORE
     Card_StageTopo*  m_p_stageTopo;
     Card_StageTopo*  m_p_stageTopo_a;
     Card_StageTopo*  m_p_stageTopo_b;
+    Card_Table*      m_p_table;
 
   public:
     void* operator new(size_t);
