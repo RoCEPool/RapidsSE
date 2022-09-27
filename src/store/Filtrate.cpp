@@ -203,52 +203,6 @@ void Filtrate::vIndividuate_filter(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* remove <predCmp> (referenced in <joinPred>) from all <filter>              */
-/*----------------------------------------------------------------------------*/
-void Filtrate::vRemove_predCmp(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
-
-  Card* pParentCard;
-
-  vBeginIteration();
-
-  while (Card_JoinPred* pCard_joinPred =
-           _pCard_JoinPred(pEachMain(CK_JOINPRED))) {
-
-    // <card> that is subCard of <joinPred>
-    Card_Card* pCard_card = _pCard_Card(pCard_joinPred->pFindSubCard(CK_CARD));
-
-    // <card> is a reference to <predCmp>
-    Card_PredCmp* pCard_predCmp = _pCard_PredCmp(pCard_card->pCard());
-
-    // <filter> that is main of <predCmp>
-    Card_Filter* pCard_filter =
-        _pCard_Filter(pFindMainOf(pCard_predCmp,pParentCard));
-
-    // remove <predCmp> from <parent>
-    pParentCard->vRemoveSubCard(pCard_predCmp);
-
-    if ((CK_PREDAND == pParentCard->eCard() || CK_PREDOR == pParentCard->eCard())) {
-
-      if (0 == pParentCard->nChildCards()) {
-        pCard_filter->vRemoveSubCard(pParentCard);
-      }
-      else {
-        Card* pSiblingCard = pParentCard->pGetChild(0);
-        Card* pGrandCard = pCard_filter->pFindParent((pParentCard));
-        pParentCard->vRemoveSubCard(pSiblingCard);
-        pGrandCard->vReplaceSubCard(pParentCard,pSiblingCard);
-      }
-
-      delete pParentCard;
-    }
-  }
-
-  vEndIteration();
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

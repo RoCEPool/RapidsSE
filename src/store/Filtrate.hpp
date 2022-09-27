@@ -29,7 +29,6 @@ namespace STORE
     void vDeleteEmpty_filter(void);
     void vDeleteEmpty_sub_filter(void);
     void vIndividuate_filter(void);
-    void vRemove_predCmp(void);
 
   private:
     void vAssignFilterLeftwards(Card_Filter* pCard_filter);

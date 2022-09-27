@@ -23,7 +23,6 @@ namespace STORE
    ~Streamer(void) noexcept(false);
 
     void vAppend_Streams(void);
-    void vAppendStream_to_AbsJoin(void);
     void vAppendStream_to_Scan(void);
 
     void vOrdinal_Range(void);

@@ -53,7 +53,6 @@ namespace STORE
 
   private:
 
-    void vTransform1(void);
     void vTransform2(void);
 
     Footer* aFooter(void);
