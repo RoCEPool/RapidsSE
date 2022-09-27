@@ -203,7 +203,7 @@ class BuildRunner:
     def __build_se_remotely(self) -> None:
         """Builds SE on the remote EC2 instance"""
 
-        command = "NO_MOD_CHECK=1 DEBUG=1 " + str(self.remote_repo_dir / "installer" / "packaging" / "package.sh")
+        command = "NO_MOD_CHECK=1 NO_SHELLCHECK=1 DEBUG=1 " + str(self.remote_repo_dir / "installer" / "packaging" / "package.sh")
 
         LOG.debug("About to build RapidsSE on the remote EC2 instance")
 
