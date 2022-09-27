@@ -1457,7 +1457,24 @@ void Card::vTransferTill(Card* pCards, Card* pTill,
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vVisitAllSub(eCK eCard, std::function<bool(Card* pCard)> bfApply)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+  eCK eTest = this->eCard();
+  if (eTest == eCard) {
+    bool b = bfApply(this);
+  }
+
+  i8 nChildren = nChildCards();
+  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
+    Card* pChildCard = pGetChild(i_Child);
+    pChildCard->vVisitAllSub(eCard,bfApply);
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/

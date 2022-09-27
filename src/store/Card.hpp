@@ -243,7 +243,7 @@ namespace STORE
     void vPropertiesEnsure(void);
     Stz* szPropertyNm(i8 i_Property);
 
-    void vRemoveChild(Card* pCardRemove);
+   void vRemoveChild(Card* pCardRemove);
     void vRemoveSubCard(Card* pCardRemove);
     void vRenumberSubCards(Card* pParentCard);
     void vReplaceChildWithKids(Card* pChildCard);
@@ -258,7 +258,9 @@ namespace STORE
                          Card* pAt=nullptr, bool bAfter=true);
     void vTransferTill(Card* pCards, Card* pTill,
                        Card* pAt=nullptr, bool bAfter=true);
-  
+
+    void vVisitAllSub(eCK eCard,std::function<bool(Card* pCard)> bfApply);
+
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   

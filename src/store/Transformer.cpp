@@ -238,6 +238,10 @@ void Transformer::vTransform2(void)
   if (m_bInteractive)
     m_pBoard->vPrintBoard("Indexer::vAppend_indexList_to_scan"_Stz);
 
+  m_pIndexer->vMark_scan_pred_bounds();
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Indexer::vMark_scan_pred_bounds"_Stz);
+
   m_pScanning->vXyz();
   if (m_bInteractive)
     m_pBoard->vPrintBoard("Scanning::vXyz"_Stz);
