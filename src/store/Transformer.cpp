@@ -24,7 +24,7 @@ Transformer::Transformer(Optimiser* pOptimiser)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMER,_FOOTER_);
 
   m_pOptimiser   = pOptimiser;
-
+  m_pCardCtl     = m_pOptimiser->pCardCtl();
   m_pBench       = m_pOptimiser->pBench();
   m_pBoard       = nullptr;
 
@@ -110,8 +110,8 @@ void Transformer::vTransform2(void)
 
   vTrace("Transformer running vTransform2\n"_Stz);
 
-  m_pOptimiser->pCardCtl()->vSubCards(CK_AGGELIST,0);
-  m_pOptimiser->pCardCtl()->vSubCards(CK_GBYELIST,0);
+  m_pCardCtl->vSubCards(CK_AGGELIST,0);
+  m_pCardCtl->vSubCards(CK_GBYELIST,0);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pStager->vLinearize_Stages();
@@ -134,15 +134,15 @@ void Transformer::vTransform2(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append <stream> to all <scan> and then to all <absJoin>
-  m_pOptimiser->pCardCtl()->vSubCards(CK_STREAM,0);
-  m_pOptimiser->pCardCtl()->vPinForm(CK_STREAM,1);
+  m_pCardCtl->vSubCards(CK_STREAM,0);
+  m_pCardCtl->vPinForm(CK_STREAM,1);
 
-  //m_pOptimiser->pCardCtl()->vSubCards(CK_EXPR,0);
+  //m_pCardCtl->vSubCards(CK_EXPR,0);
 
-  m_pOptimiser->pCardCtl()->vPinForm(CK_PREDAND,1);
-  m_pOptimiser->pCardCtl()->vPinForm(CK_PREDCMP,1);
-  m_pOptimiser->pCardCtl()->vPinForm(CK_PREDOR,1);
-  m_pOptimiser->pCardCtl()->vPinForm(CK_TERM,1);
+  m_pCardCtl->vPinForm(CK_PREDAND,1);
+  m_pCardCtl->vPinForm(CK_PREDCMP,1);
+  m_pCardCtl->vPinForm(CK_PREDOR,1);
+  m_pCardCtl->vPinForm(CK_TERM,1);
 
   m_pStreamer->vAppendStream_to_Scan();
   if (m_bInteractive)
@@ -186,12 +186,12 @@ void Transformer::vTransform2(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  m_pOptimiser->pCardCtl()->vSubCards(CK_STREAM,1);
-  m_pOptimiser->pCardCtl()->vPinForm(CK_STREAM,0);
-  m_pOptimiser->pCardCtl()->vPinForm(CK_PREDAND,0);
-  m_pOptimiser->pCardCtl()->vPinForm(CK_PREDCMP,0);
-  m_pOptimiser->pCardCtl()->vPinForm(CK_PREDOR,0);
-  m_pOptimiser->pCardCtl()->vPinForm(CK_TERM,0);
+  m_pCardCtl->vSubCards(CK_STREAM,1);
+  m_pCardCtl->vPinForm(CK_STREAM,0);
+  m_pCardCtl->vPinForm(CK_PREDAND,0);
+  m_pCardCtl->vPinForm(CK_PREDCMP,0);
+  m_pCardCtl->vPinForm(CK_PREDOR,0);
+  m_pCardCtl->vPinForm(CK_TERM,0);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pJoiner->vAppendPrelim_indexJoin();
@@ -209,8 +209,8 @@ void Transformer::vTransform2(void)
     m_pBoard->vPrintBoard("Joiner::vForm_joinPred"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  m_pOptimiser->pCardCtl()->vSubCards(CK_STREAM,0);
-  m_pOptimiser->pCardCtl()->vPinForm(CK_STREAM,1);
+  m_pCardCtl->vSubCards(CK_STREAM,0);
+  m_pCardCtl->vPinForm(CK_STREAM,1);
 
   m_pFiltrate->vCull_indexJoin_filterPred();
   if (m_bInteractive)
@@ -244,8 +244,8 @@ void Transformer::vTransform2(void)
     m_pBoard->vPrintBoard("Stager::vAdd_Stages"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  m_pOptimiser->pCardCtl()->vSubCards(CK_AGGELIST,1);
-  m_pOptimiser->pCardCtl()->vSubCards(CK_GBYELIST,1);
+  m_pCardCtl->vSubCards(CK_AGGELIST,1);
+  m_pCardCtl->vSubCards(CK_GBYELIST,1);
 
   m_pCombiner->vAdd_combined3();
   if (m_bInteractive)

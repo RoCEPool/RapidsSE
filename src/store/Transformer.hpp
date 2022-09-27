@@ -22,7 +22,7 @@ namespace STORE
   private:
 
     Optimiser*   m_pOptimiser;
-
+    CardCtl*     m_pCardCtl;
     Bench*       m_pBench;
     Board*       m_pBoard;
 
