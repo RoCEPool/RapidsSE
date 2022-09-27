@@ -135,8 +135,8 @@ namespace STORE {
   private:
     void vFindKey(IndexDef *pIndexDef, ePL ePayload);
 
-    void vGenerateAssignLft(u8 uSelectColumns);
-    void vGenerateAssignRht(u8 uSelectColumns);
+    void vGenerateAssignLft(u8 uSelectColumns, Stz* sIndent = ""_Stz);
+    void vGenerateAssignRht(u8 uSelectColumns, Stz* sIndent = ""_Stz);
 
     void vGenerateExprCode(TypedStack* pTypedStack, Stz* sIndent);
 
@@ -152,6 +152,7 @@ namespace STORE {
     void vGenerateKeyNotExistsFilter(StreamDef* pStreamDef, Stz *sExpr);
 
     void vGenerateProcessRow(Stz *sLabel);
+    void vGenerateProcessRowJoin(Stz *sLabel);
     void vGenerateProcessRowOrdAgg(Stz *sLabelOrdAgg);
 
     void vGeneratePrjAgg(void);
