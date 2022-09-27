@@ -24,6 +24,7 @@ namespace STORE
 
     void vAdd_combined(void);
     void vAdd_combined2(void);
+    void vAdd_combined3(void);
     void vDelete_Combines(void);
 
   private:

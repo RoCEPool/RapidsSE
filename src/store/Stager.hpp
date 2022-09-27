@@ -11,6 +11,8 @@ namespace STORE
   {
   private:
 
+    Card* m_p_stage_new;
+
     // must be last
     Footer m_xFooter;
 

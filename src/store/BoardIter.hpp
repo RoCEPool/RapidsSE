@@ -31,6 +31,7 @@ namespace STORE
     Card* pEachMain(i8& ri_Main);
     Card* pEachMain(eCK eCard);
     Card* pEachMain(eCK eCard, i8& ri_Main);
+    Card* pNextMain(void);
 
     Card_Sort*   pEach_sort(void);
 
@@ -42,9 +43,9 @@ namespace STORE
 
 
     i8 i_Main(void);
-    void vNext(void);
     void vPrev(void);
     bool bMore(void);
+    void vSkip(void);
 
 
     // - - - - - - - - - - - - - - - - - -

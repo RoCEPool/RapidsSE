@@ -337,7 +337,7 @@ void Transformer::vTransform2(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  m_pStager->vAdd_Stages();
+  m_pStager->vAdd_Stages2();
   if (m_bInteractive)
     m_pBoard->vPrintBoard("Stager::vAdd_Stages"_Stz);
 
@@ -345,7 +345,7 @@ void Transformer::vTransform2(void)
   m_pOptimiser->pCardCtl()->vSubCards(CK_AGGELIST,1);
   m_pOptimiser->pCardCtl()->vSubCards(CK_GBYELIST,1);
 
-  m_pCombiner->vAdd_combined2();
+  m_pCombiner->vAdd_combined3();
   if (m_bInteractive)
     m_pBoard->vPrintBoard("Combiner::vAdd_combined2"_Stz);
 

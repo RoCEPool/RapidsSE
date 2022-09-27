@@ -63,7 +63,7 @@ void Combiner::vAdd_combined(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* simplify                                                                   */
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Combiner::vAdd_combined2(void)
 {
@@ -75,6 +75,7 @@ void Combiner::vAdd_combined2(void)
   i8 iProject = 0;
   i8 iAggreg = 0;
   i8 iSort = 0;
+  i8 iFilter = 0;
 
 
   i8 nMainCards = m_pBoard->nMainCards();
@@ -128,6 +129,88 @@ void Combiner::vAdd_combined2(void)
       continue;
     }
 
+    if (CK_FILTER == eCard) {
+      iFilter++;
+
+      Card_Combine *pCard_combine = new Card_Combine;
+      m_pBoard->vInsertMainCard_after(pCard_combine, pMainCard);
+      i_Main++;
+      nMainCards = m_pBoard->nMainCards();
+      continue;
+    }
+
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Combiner::vAdd_combined3(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINER, _FOOTER_);
+
+  i8 iAggreg    = 0;
+  i8 iIndexJoin = 0;
+  i8 iFilter    = 0;
+  i8 iOther     = 0;
+  i8 iProject   = 0;
+  i8 iScan      = 0;
+  i8 iSort      = 0;
+
+  BoardIter xBI(this);
+
+  i8 nMainCards = m_pBoard->nMainCards();
+  while ( (m_pMainCard = xBI.pEachMain()) ) {
+
+    m_pNextMain = xBI.pNextMain();
+    if (m_pNextMain)
+      m_eNextMain = m_pNextMain->eCard();
+    else
+      m_eNextMain = CK_NONE;
+
+    switch (eDecodeMain(m_pMainCard)) {
+
+      case CK_AGGREG:
+        RASSERT(m_p_aggreg == m_pMainCard);
+        iAggreg++;
+        m_p_combine = new Card_Combine;
+        m_pBoard->vInsertMainCard_after(m_p_combine, m_p_aggreg);
+        break;
+
+      case CK_FILTER:
+        RASSERT(m_p_filter == m_pMainCard);
+        iFilter++;
+        m_p_combine = new Card_Combine;
+        m_pBoard->vInsertMainCard_after(m_p_combine, m_p_filter);
+        break;
+
+      case CK_INDEXJOIN:
+        RASSERT(m_p_indexJoin == m_pMainCard);
+        iIndexJoin++;
+        if (CK_AGGREG == m_eNextMain || CK_FILTER == m_eNextMain || CK_PROJECT == m_eNextMain)
+          break;
+        m_p_combine = new Card_Combine;
+        m_pBoard->vInsertMainCard_after(m_p_combine, m_p_indexJoin);
+        break;
+
+      case CK_PROJECT:
+        RASSERT(m_p_project == m_pMainCard);
+        iProject++;
+        m_p_combine = new Card_Combine;
+        m_pBoard->vInsertMainCard_after(m_p_combine, m_p_project);
+        break;
+
+      case CK_SORT:
+        RASSERT(m_p_sort == m_pMainCard);
+        iSort++;
+        m_p_combine = new Card_Combine;
+        m_pBoard->vInsertMainCard_after(m_p_combine, m_p_sort);
+        break;
+
+      default:
+        iOther++;
+        break;
+    }
   }
 }
 

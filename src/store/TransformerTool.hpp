@@ -19,10 +19,16 @@ namespace STORE
 
     CardIter*    m_pMainCardIter;
 
-    eCK              m_eCard;
+    eCK m_eMainCard;
+    eCK m_eNextMain;
+    eYG m_eStageTopo;
+
     Card*            m_pMainCard;
+    Card*            m_pNextMain;
+
     Card_AbsJoin*    m_p_absJoin;
     Card_Aggreg*     m_p_aggreg;
+    Card_Combine*    m_p_combine;
     Card_Filter*     m_p_filter;
     Card_GbyElist*   m_p_gbyElist;
     Card_IndexJoin*  m_p_indexJoin;
@@ -47,7 +53,7 @@ namespace STORE
 
     void vBeginIteration(void);
     Board* pBoard(void);
-    eCK   eDecodeCard(Card* pCard);
+    eCK   eDecodeMain(Card* pCard);
     Card* pEachMain(void);
     Card* pEachMain(eCK eCard);
     void vEndIteration(void);

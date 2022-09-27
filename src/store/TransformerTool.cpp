@@ -18,11 +18,16 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
 
   m_pMainCardIter = nullptr;
 
-  m_pMainCard     = nullptr;
+  m_eMainCard     = CK_NONE;
+  m_eNextMain     = CK_NONE;
+  m_eStageTopo    = YG_NONE;
 
-  m_eCard         = CK_NONE;
+  m_pMainCard     = nullptr;
+  m_pNextMain     = nullptr;
+
   m_p_absJoin     = nullptr;
   m_p_aggreg      = nullptr;
+  m_p_combine     = nullptr;
   m_p_filter      = nullptr;
   m_p_gbyElist    = nullptr;
   m_p_indexJoin   = nullptr;
@@ -81,32 +86,33 @@ Board* TransformerTool::pBoard(void)
 /*----------------------------------------------------------------------------*/
 /* decode card                                                                */
 /*----------------------------------------------------------------------------*/
-eCK TransformerTool::eDecodeCard(Card* pCard)
+eCK TransformerTool::eDecodeMain(Card* pCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  m_eCard = pCard->eCard();
+  m_eMainCard = pCard->eCard();
   
-  switch (m_eCard) {
+  switch (m_eMainCard) {
 
-    case CK_ABSJOIN:     m_p_absJoin     = _pCard_AbsJoin(pCard);   break;
-    case  CK_AGGREG:     m_p_aggreg      = _pCard_Aggreg(pCard);    break;
-    case  CK_FILTER:     m_p_filter      = _pCard_Filter(pCard);    break;
-    case  CK_GBYELIST:   m_p_gbyElist    = _pCard_GbyElist(pCard);  break;
-    case  CK_INDEXJOIN:  m_p_indexJoin   = _pCard_IndexJoin(pCard); break;
-    case  CK_INDEXSCAN:  m_p_indexScan   = _pCard_IndexScan(pCard); break;
-    case  CK_PROJECT:    m_p_project     = _pCard_Project(pCard);   break;
-    case  CK_SBYELIST:   m_p_sbyElist    = _pCard_SbyElist(pCard);  break;
-    case  CK_SCAN:       m_p_scan        = _pCard_Scan(pCard);      break;
-    case  CK_SORT:       m_p_sort        = _pCard_Sort(pCard);      break;
-    case  CK_STAGE:      m_p_stage       = _pCard_Stage(pCard);     break;
-    case  CK_STAGETOPO:  m_p_stageTopo   = _pCard_StageTopo(pCard); break;
+    case CK_ABSJOIN:    m_p_absJoin     = _pCard_AbsJoin(pCard);   break;
+    case CK_AGGREG:     m_p_aggreg      = _pCard_Aggreg(pCard);    break;
+    case CK_COMBINE:    m_p_combine     = _pCard_Combine(pCard);   break;
+    case CK_FILTER:     m_p_filter      = _pCard_Filter(pCard);    break;
+    case CK_GBYELIST:   m_p_gbyElist    = _pCard_GbyElist(pCard);  break;
+    case CK_INDEXJOIN:  m_p_indexJoin   = _pCard_IndexJoin(pCard); break;
+    case CK_INDEXSCAN:  m_p_indexScan   = _pCard_IndexScan(pCard); break;
+    case CK_PROJECT:    m_p_project     = _pCard_Project(pCard);   break;
+    case CK_SBYELIST:   m_p_sbyElist    = _pCard_SbyElist(pCard);  break;
+    case CK_SCAN:       m_p_scan        = _pCard_Scan(pCard);      break;
+    case CK_SORT:       m_p_sort        = _pCard_Sort(pCard);      break;
+    case CK_STAGE:      m_p_stage       = _pCard_Stage(pCard);     break;
+    case CK_STAGETOPO:  m_p_stageTopo   = _pCard_StageTopo(pCard); break;
 
     default:
       NEVER_REACH
   }
 
-  return m_eCard;
+  return m_eMainCard;
 }
 
 /*----------------------------------------------------------------------------*/
