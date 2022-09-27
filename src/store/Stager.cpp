@@ -153,6 +153,26 @@ void Stager::vAdd_Stages(void)
     }
   }
 }
+/*----------------------------------------------------------------------------*/
+void Stager::vAdd_Stages2(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STAGER, _FOOTER_);
+
+  i8 iStage = 0;
+  i8 iScan = 0;
+  i8 iIndexJoin = 0;
+  i8 iFilter = 0;
+  i8 iProject = 0;
+  i8 iSort = 0;
+
+  eYG eStageTopo = YG_NONE;
+  Card_StageTopo* pCard_StageTopo = nullptr;
+
+  BoardIter xBI(this);
+  while (m_pMainCard = xBI.pEachMain()) {
+
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /* linearize stages                                                           */

@@ -41,6 +41,12 @@ namespace STORE
     Card_Aggreg* pPrev_aggreg(void);
 
 
+    i8 i_Main(void);
+    void vNext(void);
+    void vPrev(void);
+    bool bMore(void);
+
+
     // - - - - - - - - - - - - - - - - - -
 
     void vRemoveCurr(eCK eCrossCheck);

@@ -19,6 +19,8 @@ namespace STORE
 
     CardIter*    m_pMainCardIter;
 
+    eCK              m_eCard;
+    Card*            m_pMainCard;
     Card_AbsJoin*    m_p_absJoin;
     Card_Aggreg*     m_p_aggreg;
     Card_Filter*     m_p_filter;
@@ -45,6 +47,7 @@ namespace STORE
 
     void vBeginIteration(void);
     Board* pBoard(void);
+    eCK   eDecodeCard(Card* pCard);
     Card* pEachMain(void);
     Card* pEachMain(eCK eCard);
     void vEndIteration(void);
