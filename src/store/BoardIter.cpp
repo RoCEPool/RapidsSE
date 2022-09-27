@@ -150,6 +150,23 @@ Card* BoardIter::pNextMain(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Card* BoardIter::pPrevMain(void)
+{
+  _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
+
+  i8 i_Prev = m_i_Main - 1;
+
+  if (i_Prev < 0)
+    return nullptr;
+
+  Card* pPrevMain = m_pBoard->pGetMainCard(i_Prev);
+
+  return pPrevMain;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 Card_Sort* BoardIter::pEach_sort(void)
 {
   _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);

@@ -32,6 +32,7 @@ namespace STORE
     Card* pEachMain(eCK eCard);
     Card* pEachMain(eCK eCard, i8& ri_Main);
     Card* pNextMain(void);
+    Card* pPrevMain(void);
 
     Card_Sort*   pEach_sort(void);
 
