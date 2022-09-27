@@ -25,7 +25,7 @@ L_ProcessRow:
   goto L_InflateT;
 
 L_AdvanceNextRow:
-
+  aCombinedT->m_iJoinedRows = 0;
   i_Row++;
 
   if (i_Row == aCombinedT->m_nRows)

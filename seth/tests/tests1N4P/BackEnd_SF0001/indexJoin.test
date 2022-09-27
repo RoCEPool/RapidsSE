@@ -118,7 +118,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin customer IxC_CUSTKEY "LEFTOUTER BOUND $I1 $L2 =="
+    indexJoin customer IxC_CUSTKEY "LEFT_OUTER BOUND $I1 $L2 =="
     | combined 0
     | stageD
 
