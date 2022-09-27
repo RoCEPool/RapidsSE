@@ -32,6 +32,7 @@ namespace STORE
     Card_Filter*     m_p_filter;
     Card_GbyElist*   m_p_gbyElist;
     Card_IndexJoin*  m_p_indexJoin;
+    Card_IndexList*  m_p_indexList;
     Card_IndexScan*  m_p_indexScan;
     Card_Project*    m_p_project;
     Card_SbyElist*   m_p_sbyElist;

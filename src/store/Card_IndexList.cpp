@@ -8,18 +8,18 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_IndexList,CK_IDXCOLLIST)
+__pCastFunction_Card(STORE,Card_IndexList,CK_INDEXLIST)
 __aNewFunction(Card_IndexList,CN_CARD)
 __vDeleteFunction(Card_IndexList,CN_CARD)
 
-__bIsCard(STORE,Card_IndexList,CK_IDXCOLLIST)
-__pGetSubFunction_Card(STORE,Card_IndexList,CK_IDXCOLLIST)
+__bIsCard(STORE,Card_IndexList,CK_INDEXLIST)
+__pGetSubFunction_Card(STORE,Card_IndexList,CK_INDEXLIST)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_IndexList::Card_IndexList(Index* pIndex)
-: Card_SUB(CK_IDXCOLLIST)
+Card_IndexList::Card_IndexList(void)
+: Card_SUB(CK_INDEXLIST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

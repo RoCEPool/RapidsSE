@@ -21,7 +21,7 @@ namespace STORE
     Indexer(Bench* pBench);
    ~Indexer(void) noexcept(false);
 
-    void vXyz(void);
+    void vAppend_indexList_to_scan(void);
 
   private:
 

@@ -228,15 +228,15 @@ void Transformer::vTransform2(void)
    *
    *    <scan>       <scan>
    *      <table>    <table>
-   *      <stream>   <index>
+   *      <stream>   <indexList>
    *      <filter>   <stream>
    *                 <filter>
    *
    */
 
-  m_pIndexer->vXyz();
+  m_pIndexer->vAppend_indexList_to_scan();
   if (m_bInteractive)
-    m_pBoard->vPrintBoard("Indexer::vXyz"_Stz);
+    m_pBoard->vPrintBoard("Indexer::vAppend_indexList_to_scan"_Stz);
 
   m_pScanning->vXyz();
   if (m_bInteractive)

@@ -396,6 +396,7 @@ eGC Card::eToECatg(eCK eCard)
     case CK_IDXCOLLIST:                  return GC_SUB;
     case CK_INDEX:                       return GC_SUB;
     case CK_INDEXJOIN:  return GC_MAIN;
+    case CK_INDEXLIST:                   return GC_SUB;
     case CK_INDEXPRED:                   return GC_SUB;
     case CK_INDEXSCAN:  return GC_MAIN;
 
@@ -2954,6 +2955,7 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
     case CK_IDXCOLLIST:                 vPrintProperties(pRibbon,iDepth); break;
     case CK_INDEX:      vIndexPrint                     (pRibbon,iDepth); break;
     case CK_INDEXJOIN:                  vPrintProperties(pRibbon,iDepth); break;
+    case CK_INDEXLIST:                  vPrintProperties(pRibbon,iDepth); break;
     case CK_INDEXPRED:                  vPrintProperties(pRibbon,iDepth); break;
     case CK_INDEXSCAN:                  vPrintProperties(pRibbon,iDepth); break;
 

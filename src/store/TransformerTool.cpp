@@ -31,6 +31,7 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_p_filter      = nullptr;
   m_p_gbyElist    = nullptr;
   m_p_indexJoin   = nullptr;
+  m_p_indexList   = nullptr;
   m_p_indexScan   = nullptr;
   m_p_project     = nullptr;
   m_p_sbyElist    = nullptr;
