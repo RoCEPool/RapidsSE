@@ -241,7 +241,6 @@ enum eCN : u2 // Class Number
   /* */ CN_PLANOPERAND,
   /* */ CN_POT,
   /* */ CN_PORT,
-  /* */ CN_PREDICATOR,
   /* */ CN_PREDICATE,
   /* */ CN_PREDICATEVEC,
   /* */ CN_PRIMITIVENODE,
@@ -299,6 +298,7 @@ enum eCN : u2 // Class Number
 
   /* */ CN__S__,
   /* */ CN_SCANNER,
+  /* */ CN_SCANNING,
   /* */ CN_SCHEDULE,
   /* */ CN_SCHEDULER,
   /* */ CN_SCHEMA,
@@ -672,7 +672,6 @@ static Stz* aCN[]
   /* */ "PORT"_Stz,                 // CN_PORT
   /* */ "PREDICATE"_Stz,            // CN_PREDICATE
   /* */ "PREDICATEVEC"_Stz,         // CN_PREDICATEVEC
-  /* */ "PREDICATOR"_Stz,           // CN_PREDICATOR
   /* */ "PRIMITIVENODE"_Stz,        // CN_PRIMITIVENODE
   /* */ "PROCEDURE"_Stz,            // CN_PROCEDURE
   /* */ "PROFILE"_Stz,              // CN_PROFILE
@@ -728,6 +727,7 @@ static Stz* aCN[]
 
   /* */ "_S__"_Stz,                 // CN__S__
   /* */ "SCANNER"_Stz,              // CN_SCANNER
+  /* */ "SCANNING"_Stz,             // CN_SCANNING
   /* */ "SCHEDULE"_Stz,             // CN_SCHEDULE
   /* */ "SCHEDULER"_Stz,            // CN_SCHEDULER
   /* */ "SCHEMA"_Stz,               // CN_SCHEMA

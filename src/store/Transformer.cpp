@@ -32,7 +32,7 @@ Transformer::Transformer(Optimiser* pOptimiser)
   m_pCurator     = nullptr;
   m_pFiltrate    = nullptr;
   m_pJoiner      = nullptr;
-  m_pPredicator  = nullptr;
+  m_pScanning    = nullptr;
   m_pSender      = nullptr;
   m_pSorter      = nullptr;
   m_pStager      = nullptr;
@@ -55,7 +55,7 @@ Transformer::~Transformer(void) noexcept(false)
   delete m_pCurator;
   delete m_pFiltrate;
   delete m_pJoiner;
-  delete m_pPredicator;
+  delete m_pScanning;
   delete m_pSender;
   delete m_pSorter;
   delete m_pStager;
@@ -83,7 +83,7 @@ void Transformer::vTransform(void)
   m_pCurator     = new Curator(m_pBench);
   m_pFiltrate    = new Filtrate(m_pBench);
   m_pJoiner      = new Joiner(m_pBench);
-  m_pPredicator  = new Predicator(m_pBench);
+  m_pScanning    = new Scanning(m_pBench);
   m_pSender      = new Sender(m_pBench);
   m_pSorter      = new Sorter(m_pBench);
   m_pStager      = new Stager(m_pBench);
@@ -250,70 +250,7 @@ void Transformer::vTransform2(void)
   m_pCombiner->vAdd_combined3();
   if (m_bInteractive)
     m_pBoard->vPrintBoard("Combiner::vAdd_combined2"_Stz);
-
-  //############################################################################
-
-/*
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  m_pJoiner->vInsert_joinPred();
-  if (m_bInteractive)
-    m_pBoard->vPrintBoard("Joiner::vInsert_joinPred"_Stz);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  m_pJoiner->vResolve_joinPred();
-  if (m_bInteractive)
-    m_pBoard->vPrintBoard("Joiner::vResolve_joinPred"_Stz);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  m_pJoiner->vAppend_indexPred();
-  if (m_bInteractive)
-    m_pBoard->vPrintBoard("Joiner::vAppend_indexPred"_Stz);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  m_pJoiner->vAppend_index();
-  if (m_bInteractive)
-    m_pBoard->vPrintBoard("Joiner::vAppend_index"_Stz);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // remove <predCmp> (in <joinPred>) from all <filter>
-  m_pFiltrate->vRemove_predCmp();
-  if (m_bInteractive)
-    m_pBoard->vPrintBoard("Filtrate::vRemove_predCmp"_Stz);
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  m_pJoiner->vDelete_joinPred();
-  if (m_bInteractive)
-    m_pBoard->vPrintBoard("Joiner::vDelete_joinPred"_Stz);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  m_pJoiner->vConvert_absJoin();
-  if (m_bInteractive)
-    m_pBoard->vPrintBoard("Joiner::vConvert_absJoin"_Stz);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  m_pJoiner->vDelete_scan_R();
-  if (m_bInteractive)
-    m_pBoard->vPrintBoard("Joiner::vDelete_scan_R"_Stz);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  m_pSender->vReadd_Sends();
-  if (m_bInteractive)
-    m_pBoard->vPrintBoard("Sender::vReadd_Sends"_Stz);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  m_pCombiner->vAdd_combined();
-  if (m_bInteractive)
-    m_pBoard->vPrintBoard("Combiner::vAdd_combined"_Stz);
-*/
-
 }
-
 
 /*============================================================================*/
 /* end                                                                        */

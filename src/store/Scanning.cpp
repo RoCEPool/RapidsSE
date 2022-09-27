@@ -1,38 +1,38 @@
 /*============================================================================*/
-/* Predicator.cpp -- predicate tool                                          */
+/* Scanning.cpp -- scan tool                                                    */
 /*============================================================================*/
 
-#include "Predicator.hpp"
+#include "Scanning.hpp"
 #include "Resolver.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, Predicator, CN_PREDICATOR)
-__aNewFunction(Predicator, CN_PREDICATOR)
-__vDeleteFunction(Predicator, CN_PREDICATOR)
-__aFooterFunction(Predicator)
+__pCastFunction(STORE, Scanning, CN_SCANNING)
+__aNewFunction(Scanning, CN_SCANNING)
+__vDeleteFunction(Scanning, CN_SCANNING)
+__aFooterFunction(Scanning)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Predicator::Predicator(Bench* pBench)
-: TransformerTool(CN_PREDICATOR, pBench)
+Scanning::Scanning(Bench* pBench)
+: TransformerTool(CN_SCANNING, pBench)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PREDICATOR, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SCANNING, _FOOTER_);
 
-  _checkInitialised_(CN_PREDICATOR);
+  _checkInitialised_(CN_SCANNING);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_PREDICATOR, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_SCANNING, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Predicator::~Predicator(void) noexcept(false)
+Scanning::~Scanning(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PREDICATOR, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SCANNING, _FOOTER_);
   
 }
 

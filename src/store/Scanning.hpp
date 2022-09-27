@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Predicator.hpp -- predicate tool                                           */
+/* Scanning.hpp -- scan tool                                                    */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class Predicator : public TransformerTool
+  class Scanning : public TransformerTool
   {
   private:
 
@@ -18,15 +18,15 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Predicator(Bench* pBench);
-   ~Predicator(void) noexcept(false);
+    Scanning(Bench* pBench);
+   ~Scanning(void) noexcept(false);
 
   private:
 
     Footer* aFooter(void);
   };
 
-  Predicator* _pPredicator(void* aAddr);
+  Scanning* _pScanning(void* aAddr);
 }
 /*============================================================================*/
 /* end                                                                        */

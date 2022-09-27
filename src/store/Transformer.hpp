@@ -9,7 +9,7 @@
 #include "Curator.hpp"
 #include "Filtrate.hpp"
 #include "Joiner.hpp"
-#include "Predicator.hpp"
+#include "Scanning.hpp"
 #include "Sender.hpp"
 #include "Sorter.hpp"
 #include "Streamer.hpp"
@@ -30,7 +30,7 @@ namespace STORE
     Curator*     m_pCurator;
     Filtrate*    m_pFiltrate;
     Joiner*      m_pJoiner;
-    Predicator*  m_pPredicator;
+    Scanning*    m_pScanning;
     Sender*      m_pSender;
     Sorter*      m_pSorter;
     Stager*      m_pStager;
