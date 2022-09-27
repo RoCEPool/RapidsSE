@@ -51,6 +51,9 @@ begin
     | stageStart
 end ;
 
+rows:
+  (19.25)
+
 CLEANUP {
   bye;
   mute

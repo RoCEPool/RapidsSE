@@ -582,7 +582,7 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
   if (bLeftOuterJoin)
     StrLib::vAppendString(&m_azCodeCrs, "\n      iLeftOuterRow = 0;");
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n      iJoinedRows = 0;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iJoinedRows = 0;");
 
   sCopy.vSprint("\n      vEntWrk_entKind(aCombinedT->m_aEntWrkJ,0,%lld);"_Stz, pIndexDefJ->eKeyKind());
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
@@ -642,7 +642,7 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
   if (bLeftOuterJoin) {
-    StrLib::vAppendString(&m_azCodeCrs, "\n      if (iJoinedRows == 0) {");
+    StrLib::vAppendString(&m_azCodeCrs, "\n      if (aCombinedT->m_iJoinedRows == 0) {");
     StrLib::vAppendString(&m_azCodeCrs, "\n");
     StrLib::vAppendString(&m_azCodeCrs, "\n        aCombinedT->m_iProcessRow = 1;");
     StrLib::vAppendString(&m_azCodeCrs, "\n        iLeftOuterRow = 1;");
@@ -680,7 +680,7 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
   StrLib::vAppendString(&m_azCodeCrs, "\n    if (aCombinedT->m_aEntIntJ == aCombinedT->m_aEntUpperJ) {");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   if (bLeftOuterJoin) {
-    StrLib::vAppendString(&m_azCodeCrs, "\n      if (iJoinedRows == 0) {");
+    StrLib::vAppendString(&m_azCodeCrs, "\n      if (aCombinedT->m_iJoinedRows == 0) {");
     StrLib::vAppendString(&m_azCodeCrs, "\n");
     StrLib::vAppendString(&m_azCodeCrs, "\n        aCombinedT->m_iProcessRow = 1;");
     StrLib::vAppendString(&m_azCodeCrs, "\n        iLeftOuterRow = 1;");
@@ -707,7 +707,7 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
   StrLib::vAppendString(&m_azCodeCrs, "\n    }");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n    iJoinedRows++;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_iJoinedRows++;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    aHeadLineSav = aHeadLine;");
 
   // get the crw from the entry
@@ -761,7 +761,7 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
     StrLib::vAppendString(&m_azCodeCrs, "\n    // check if last row was a leftOuter");
     StrLib::vAppendString(&m_azCodeCrs, "\n    if ( iLeftOuterRow ) {");
     StrLib::vAppendString(&m_azCodeCrs, "\n      iLeftOuterRow = 0;");
-    //StrLib::vAppendString(&m_azCodeCrs, "\n      iJoinedRows = 0;");
+    StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iJoinedRows = 0;");
     vGenerateGoto("L_AdvanceNextRow"_Stz, "  "_Stz);
     StrLib::vAppendString(&m_azCodeCrs, "\n    }");
     StrLib::vAppendString(&m_azCodeCrs, "\n");
@@ -1057,7 +1057,7 @@ void CodeSynth::vSynthInflateRow(Stz* sLabel, Stz* sLabelOrdAgg) {
   //StrLib::vAppendString(&m_azCodeCrs, "\n    if (iJoinedRows)");
   //StrLib::vAppendString(&m_azCodeCrs, "\nprintf(\"****L_AdvanceNextRow : JoinRows NOT ZERO\n\");");
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n    iJoinedRows = 0;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_iJoinedRows = 0;");
 
   StrLib::vAppendString(&m_azCodeCrs, "\n    // process the row");
   StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_iProcessRow = 1;");
@@ -1588,7 +1588,8 @@ void CodeSynth::vGenerateAssignLft(u8 uSelectColumns, Stz* sIndent) {
 
       sCopy.vSprint("\n      %s// get the destination string"_Stz, sIndent);
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-      StrLib::vAppendString(&m_azCodeCrs, "\n      szDstStz = (char*)aCombinedT->m_racStrAreaTJ;");
+      sCopy.vSprint("\n      %sszDstStz = (char*)aCombinedT->m_racStrAreaTJ;"_Stz, sIndent);
+      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
       StrLib::vAppendString(&m_azCodeCrs, "\n");
 
       sCopy.vSprint("\n      %s// copy the source to the destination"_Stz, sIndent);
