@@ -22,11 +22,11 @@ namespace STORE
     void vMarkBound(void);
 
 
-    eBK eBound(void);
+    ePB eBound(void);
     eRO eRelOp(void);
 
     Card_PredCmp* pDup(void);
-    Card_PredCmp* pFindBound_compare(Index* pIndex, eBK eBound);
+    Card_PredCmp* pFindBound_compare(Index* pIndex, ePB eBound);
     bool bHasBounds_compare(Index* pIndex);
   };
 

@@ -111,7 +111,7 @@ void Card_Filter::vToExpr(Stz* szExpr)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_PredCmp* Card_Filter::pFindBound(Index* pIndex, eBK eBound)
+Card_PredCmp* Card_Filter::pFindBound(Index* pIndex, ePB eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   

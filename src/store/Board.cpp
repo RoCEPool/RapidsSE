@@ -793,17 +793,17 @@ void Board::vRankCandIndex(Card_CandIndex* pCard_CandIndex)
   
   if (pReg_Filter->bHasBounds(pIndex)) {
   
-    if (pReg_Filter->pFindBound(pIndex,BK_EBOUND)) {
+    if (pReg_Filter->pFindBound(pIndex,PB_EBOUND)) {
       bEBound = true;
       pCard_CandIndex->vHasEBound(true);
     }
     
-    if (pReg_Filter->pFindBound(pIndex,BK_LBOUND)) {
+    if (pReg_Filter->pFindBound(pIndex,PB_LBOUND)) {
       bLBound = true;
       pCard_CandIndex->vHasLBound(true);
     }
     
-    if (pReg_Filter->pFindBound(pIndex,BK_UBOUND)) {
+    if (pReg_Filter->pFindBound(pIndex,PB_UBOUND)) {
       bUBound = true;
       pCard_CandIndex->vHasUBound(true);
     }
@@ -1571,14 +1571,14 @@ void Board::vMark_PredCmps(void)
     case 1: {
       // lower bound or upper bound
       Card_PredCmp* pPredCmp_lbound =
-        pReg_Filter->pFindBound(pIndex,BK_LBOUND);
+        pReg_Filter->pFindBound(pIndex,PB_LBOUND);
       if (pPredCmp_lbound) {
         m_pCardRegs->vPredCmp_lbound(pPredCmp_lbound);
         pPredCmp_lbound->vMark2('L');
         break;
       }
       Card_PredCmp* pPredCmp_ubound =
-        pReg_Filter->pFindBound(pIndex,BK_UBOUND);
+        pReg_Filter->pFindBound(pIndex,PB_UBOUND);
       if (pPredCmp_ubound) {
         m_pCardRegs->vPredCmp_ubound(pPredCmp_ubound);
         pPredCmp_ubound->vMark2('U');
@@ -1590,13 +1590,13 @@ void Board::vMark_PredCmps(void)
     case 2: {
       // lower bound and upper bound
       Card_PredCmp* pPredCmp_lbound =
-        pReg_Filter->pFindBound(pIndex,BK_LBOUND);
+        pReg_Filter->pFindBound(pIndex,PB_LBOUND);
       if (pPredCmp_lbound) {
         m_pCardRegs->vPredCmp_lbound(pPredCmp_lbound);
         pPredCmp_lbound->vMark2('L');
       }
       Card_PredCmp* pPredCmp_ubound =
-        pReg_Filter->pFindBound(pIndex,BK_UBOUND);
+        pReg_Filter->pFindBound(pIndex,PB_UBOUND);
       if (pPredCmp_ubound) {
         m_pCardRegs->vPredCmp_ubound(pPredCmp_ubound);
         pPredCmp_ubound->vMark2('U');
@@ -1607,7 +1607,7 @@ void Board::vMark_PredCmps(void)
     case 3: {
       // equi-bound
       Card_PredCmp* pPredCmp_ebound =
-        pReg_Filter->pFindBound(pIndex,BK_EBOUND);
+        pReg_Filter->pFindBound(pIndex,PB_EBOUND);
       if (pPredCmp_ebound) {
         m_pCardRegs->vPredCmp_ebound(pPredCmp_ebound);
         pPredCmp_ebound->vMark2('E');

@@ -1578,18 +1578,18 @@ void Card::vAs(Stz* szAs)
 /*----------------------------------------------------------------------------*/
 /* evaluate bound                                                              */
 /*----------------------------------------------------------------------------*/
-eBK Card::eBound(void)
+ePB Card::eBound(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   eRO eRelOp = this->eRelOp();
   
   switch (eRelOp) {
-    case RO_LESS_THAN:     return BK_UBOUND;
-    case RO_LESS_EQUAL:    return BK_UBOUND;
-    case RO_EQUAL_TO:      return BK_EBOUND;
-    case RO_GREATER_EQUAL: return BK_LBOUND;
-    case RO_GREATER_THAN:  return BK_LBOUND;
+    case RO_LESS_THAN:     return PB_UBOUND;
+    case RO_LESS_EQUAL:    return PB_UBOUND;
+    case RO_EQUAL_TO:      return PB_EBOUND;
+    case RO_GREATER_EQUAL: return PB_LBOUND;
+    case RO_GREATER_THAN:  return PB_LBOUND;
       
     default:
       vTrace("%s(%lld): unexpected eRelOp %lld %s\n"_Stz

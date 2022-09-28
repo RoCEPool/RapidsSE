@@ -6,7 +6,7 @@
 #include "BASE.h"
 
 #include "eAL.h"
-#include "eBK.h"
+#include "ePB.h"
 #include "eCK.h"
 #include "eGC.h"
 #include "eRO.h"
@@ -275,7 +275,7 @@ namespace STORE
     Stz* szAs(void);
     void vAs(Stz* szAs);
 
-    eBK  eBound(void);
+    ePB  eBound(void);
 
     Card* pCard(void);
     void vCard(Card* pCard);

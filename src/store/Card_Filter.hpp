@@ -23,7 +23,7 @@ namespace STORE
   
     bool bCull(void);
     void vCullPred(char cWithMark);
-    Card_PredCmp* pFindBound(Index* pIndex, eBK eBound);
+    Card_PredCmp* pFindBound(Index* pIndex, ePB eBound);
     bool bHasBounds(Index* pIndex);
     bool bIsEmptyFilter(void);
     void vReduceFilter(void);

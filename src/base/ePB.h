@@ -1,28 +1,28 @@
 /*============================================================================*/
-/* eBK.h -- Bound Kind                                                        */
+/* ePB.h -- Predicate Bound Kind                                              */
 /*============================================================================*/
 #pragma once
 
-enum eBK // bound kind
+enum ePB // predicate bound kind
 {
-  /*  0 */ BK_NONE=0,
+  /*  0 */ PB_NONE=0,
   
-  /*    */ BK_LBOUND,  // > | >=
-  /*    */ BK_UBOUND,  // < | <=
-  /*    */ BK_RBOUND,  // lbound and ubound
-  /*    */ BK_EBOUND,  // = | ==
+  /*    */ PB_LBOUND,  // > | >=
+  /*    */ PB_UBOUND,  // < | <=
+  /*    */ PB_RBOUND,  // lbound and ubound
+  /*    */ PB_EBOUND,  // = | ==
   
-  /*    */ BK_ENUMS,
+  /*    */ PB_ENUMS,
 };
 
-static Stz* aBK[]
+static Stz* aPB[]
 {
   /*  0 */ "NONE"_Stz,
   
-  /*    */ "BK_LBOUND"_Stz,
-  /*    */ "BK_UBOUND"_Stz,
-  /*    */ "BK_RBOUND"_Stz,
-  /*    */ "BK_EBOUND"_Stz,
+  /*    */ "PB_LBOUND"_Stz,
+  /*    */ "PB_UBOUND"_Stz,
+  /*    */ "PB_RBOUND"_Stz,
+  /*    */ "PB_EBOUND"_Stz,
   
   /*    */ "ENUMS"_Stz,
 };

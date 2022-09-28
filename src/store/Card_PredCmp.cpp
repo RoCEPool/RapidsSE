@@ -71,14 +71,14 @@ void Card_PredCmp::vMarkBound(void)
 /*----------------------------------------------------------------------------*/
 /* get bound of this compare op                                               */
 /*----------------------------------------------------------------------------*/
-eBK Card_PredCmp::eBound(void)
+ePB Card_PredCmp::eBound(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   i8 i_LastCard = nItems() - 1;
   Card* pLastCard = pGet(i_LastCard);
 
-  eBK eBound = pLastCard->eBound();
+  ePB eBound = pLastCard->eBound();
   
   return eBound;
 }
@@ -122,7 +122,7 @@ Card_PredCmp* Card_PredCmp::pDup(void)
 /*----------------------------------------------------------------------------*/
 /* find a comparePred which is the eBound of given index                      */
 /*----------------------------------------------------------------------------*/
-Card_PredCmp* Card_PredCmp::pFindBound_compare(Index* pIndex, eBK eBound)
+Card_PredCmp* Card_PredCmp::pFindBound_compare(Index* pIndex, ePB eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -149,7 +149,7 @@ bool Card_PredCmp::bHasBounds_compare(Index* pIndex)
   //Card_Term* pTerm1 = _pCard_Term(pCard_PredCmp->pGet(1));
   
   Card_Term* pTerm2 = _pCard_Term(pGet(2));
-  if (BK_NONE == pTerm2->eBound())
+  if (PB_NONE == pTerm2->eBound())
     return false;
 
   Card_Term* pTerm0 = _pCard_Term(pGet(0));

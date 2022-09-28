@@ -106,7 +106,7 @@ void Card_Expr::vCullPred(char cWithMark)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_PredCmp* Card_Expr::pFindBound(Index* pIndex, eBK eBound)
+Card_PredCmp* Card_Expr::pFindBound(Index* pIndex, ePB eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   

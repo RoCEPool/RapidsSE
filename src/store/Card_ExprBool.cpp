@@ -40,7 +40,7 @@ Card_ExprBool::~Card_ExprBool(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_PredCmp* Card_ExprBool::pFindBound(Index* pIndex, eBK eBound)
+Card_PredCmp* Card_ExprBool::pFindBound(Index* pIndex, ePB eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   

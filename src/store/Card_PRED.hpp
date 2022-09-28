@@ -18,7 +18,7 @@ namespace STORE
    ~Card_PRED(void) noexcept(false);
       
     void vCullByKids(void);
-    Card_PredCmp* pFindBound_pred(Index* pIndex, eBK eBound);
+    Card_PredCmp* pFindBound_pred(Index* pIndex, ePB eBound);
     bool bHasBounds_pred (Index* pIndex);
     
     bool bReduciblePred(void);
