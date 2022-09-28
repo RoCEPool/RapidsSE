@@ -53,6 +53,7 @@
 #include "Test.hpp"
 #include "PayStr.hpp"
 #include "PayStrBuffer.hpp"
+#include "Word.hpp"
 
 extern CmdLineArgs gxCmdLineArgs;
 extern AttachMap* gpAttachMap;
@@ -753,6 +754,38 @@ bool PROMPT::bPrompt_describe(SePrompt* pPrompt)
   
   gxSubSysCatalog.vList();
   
+  return true;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/* Prompt_dictTree.cpp -- Prints Dict Tree                                    */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+PromptFun __Prompt_dicTree (
+    PF_DICTREE,           // prompt function
+    "Prompt_dicTree"_Stz, // name of the prompt function
+    "comment"_Stz,         // comment about the function
+    "dicTree"_Stz,        // the prompt command
+    nullptr,               // the second word
+    bPrompt_dicTree,      // prompt function
+    true,                  // enabled
+
+    false,                 // visible
+    "ascii"_Stz,           // help
+    ""_Stz                 // description
+);
+
+/*----------------------------------------------------------------------------*/
+/* prompt function                                                            */
+/*----------------------------------------------------------------------------*/
+bool PROMPT::bPrompt_dicTree(SePrompt* pPrompt)
+{
+  RASSERT(pPrompt);
+
+  Dic* pDicRoot = AM::DIC::pRoot();
+
+  Dic::vTree(pDicRoot, 0);
+
   return true;
 }
 
@@ -1535,6 +1568,7 @@ bool PROMPT::bPrompt_funs(SePrompt* pPrompt)
   gxPromptCatalog.vFuns(PF_JOB);
   gxPromptCatalog.vFuns(PF_JOBCLASS);
   gxPromptCatalog.vFuns(PF_LASTJOB);
+  gxPromptCatalog.vFuns(PF_LOADTABLES);
   gxPromptCatalog.vFuns(PF_LOGNOTE);
   gxPromptCatalog.vFuns(PF_LOGSECTION);
   gxPromptCatalog.vFuns(PF_LOGWRITE);
@@ -2133,6 +2167,120 @@ bool PROMPT::bPrompt_llist(SePrompt* pPrompt)
   RASSERT(pPrompt);
   
   AM::pLocalJobs()->vListJobs();
+
+  return true;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/* Prompt_loadTables.cpp -- load tables from persistent heap into the root dic*/
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+PromptFun __Prompt_loadTables (
+    PF_LOADTABLES,           // prompt function
+    "Prompt_loadTables"_Stz, // name of the prompt function
+    "comment"_Stz,        // comment about the function
+    "loadTables"_Stz,        // the prompt command
+    nullptr,              // the second word
+    bPrompt_loadTables,      // prompt function
+    true,                 // enabled
+
+    true,                 // visible
+    "loadTables"_Stz,        // help
+    ""_Stz                // description
+);
+
+/*----------------------------------------------------------------------------*/
+/* prompt function                                                            */
+/*----------------------------------------------------------------------------*/
+bool PROMPT::bPrompt_loadTables(SePrompt* pPrompt)
+{
+  RASSERT(pPrompt);
+
+  Dic* pRootDic = AM::DIC::pRoot();
+
+  Word *pSearchWord = new(nullptr) Word("tenants"_Stz);
+  Word* pWord = pRootDic->pFindWord(pSearchWord, "tenants"_Stz);
+  delete pSearchWord;
+  RASSERT(pWord->pObject());
+
+  Dic* pDic = _pDic(pWord->pObject());
+  pSearchWord = new(nullptr) Word("boray"_Stz);
+  pWord = pDic->pFindWord(pSearchWord, "boray"_Stz);
+  delete pSearchWord;
+  RASSERT(pWord->pObject());
+
+  pDic = _pDic(pWord->pObject());
+  pSearchWord = new(nullptr) Word("catalogs"_Stz);
+  pWord = pDic->pFindWord(pSearchWord, "catalogs"_Stz);
+  delete pSearchWord;
+  RASSERT(pWord->pObject());
+
+  pDic = _pDic(pWord->pObject());
+  pSearchWord = new(nullptr) Word("rapidsse"_Stz);
+  pWord = pDic->pFindWord(pSearchWord, "rapidsse"_Stz);
+  delete pSearchWord;
+  RASSERT(pWord->pObject());
+
+  pDic = _pDic(pWord->pObject());
+  pSearchWord = new(nullptr) Word("schemas"_Stz);
+  pWord = pDic->pFindWord(pSearchWord, "schemas"_Stz);
+  delete pSearchWord;
+  RASSERT(pWord->pObject());
+
+  pDic = _pDic(pWord->pObject());
+  pSearchWord = new(nullptr) Word("public"_Stz);
+  pWord = pDic->pFindWord(pSearchWord, "public"_Stz);
+  delete pSearchWord;
+  RASSERT(pWord->pObject());
+
+  pDic = _pDic(pWord->pObject());
+  pSearchWord = new(nullptr) Word("tables"_Stz);
+  pWord = pDic->pFindWord(pSearchWord, "tables"_Stz);
+  delete pSearchWord;
+  RASSERT(pWord->pObject());
+
+  pDic = _pDic(pWord->pObject());
+
+  AM::pHeaps()->Persistent.m_pTiny->vGrabLock();
+  HeapBuffer* pHeapBuffer = AM::pHeaps()->Persistent.m_pTiny->pFirstBuffer();
+  i8 nBytes = AM::pHeaps()->Persistent.m_pTiny->nObjectSize();
+
+  while (pHeapBuffer) {
+    for (FreeChunk* aChunk = pHeapBuffer->aFirstChunk();
+         aChunk;
+         aChunk = pHeapBuffer->aNextChunk(aChunk,nBytes))
+    {
+      eCN eClass = aChunk->eGetClassNo();
+
+      if(CN_WORD == eClass)
+      {
+        Word* pWordTable = _pWord(aChunk);
+
+        // Check if this word points to a dictionary.
+        // If it does, we need to update its compare function pointer.
+        if(pWordTable->pObject() && pWordTable->pObject()->eGetClassNo() == CN_DIC)
+        {
+          Dic* pTmpDic = _pDic(pWordTable->pObject());
+          Dic::vDicCompareFp(pTmpDic);
+        }
+
+        // If this word's dictionary is part of the tables dictionary
+        // It needs to be added to the root dictionary
+        // Since it already has a SkipNode allocated, we can reuse it
+        if(pWordTable->pDic()->szDicNm()->bSame("tables"_Stz))
+        {
+          pDic->vAddSkipNode(pWordTable->pSkipNode());
+          pWordTable->vDic(pDic);
+        }
+      }
+    }
+    pHeapBuffer = pHeapBuffer->pNextBuffer();
+  }
+
+  AM::pHeaps()->Persistent.m_pTiny->vDropLock();
+
+
+
 
   return true;
 }

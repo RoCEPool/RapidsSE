@@ -37352,6 +37352,7 @@ void Task::vAddMunged(Task* )
     "  STD_PATH_TAG\n"
     "  \"\n"
     "  procedure load\n"
+    "    tags <persistentTx>\n"
     "    parameters $table $file\n"
     "  begin\n"
     "\n"

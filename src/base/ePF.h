@@ -30,6 +30,7 @@ enum ePF // prompt function
   /*    */ PF_DELTA,
   /*    */ PF_DELTARESET,
   /*    */ PF_DESCRIBE,
+  /*    */ PF_DICTREE,
   /*    */ PF_DSV,
   /*    */ PF_DUMPTOKENS,
 
@@ -66,6 +67,7 @@ enum ePF // prompt function
   /*    */ PF_LASTJOB,
   /*    */ PF_LET,
   /*    */ PF_LIMITS,
+  /*    */ PF_LOADTABLES,
   /*    */ PF_LOG,
   /*    */ PF_LOGNOTE,
   /*    */ PF_LOGSECTION,
@@ -195,6 +197,7 @@ static Stz* aPF[]
   /*    */ "PF_DELTA"_Stz,
   /*    */ "PF_DELTARESET"_Stz,
   /*    */ "PF_DESCRIBE"_Stz,
+  /*    */ "PF_DICTTREE"_Stz,
   /*    */ "PF_DSV"_Stz,
   /*    */ "PF_DUMPTOKENS"_Stz,
 
@@ -231,6 +234,7 @@ static Stz* aPF[]
   /*    */ "PF_LASTJOB"_Stz,
   /*    */ "PF_LET"_Stz,
   /*    */ "PF_LIMITS"_Stz,
+  /*    */ "PF_LOADTABLES"_Stz,
   /*    */ "PF_LOG"_Stz,
   /*    */ "PF_LOGNOTE"_Stz,
   /*    */ "PF_LOGSECTION"_Stz,

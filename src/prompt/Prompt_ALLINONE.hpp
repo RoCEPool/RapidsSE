@@ -48,6 +48,7 @@ namespace PROMPT
 
   bool bPrompt_ddlLock(SePrompt* pPrompt);
   bool bPrompt_describe(SePrompt* pPrompt);
+  bool bPrompt_dicTree(SePrompt* pPrompt);
   bool bPrompt_dlist(SePrompt* pPrompt);
   bool bPrompt_dsv(SePrompt* pPrompt);
   bool bPrompt_dumpTokens(SePrompt* pPrompt);
@@ -84,6 +85,7 @@ namespace PROMPT
   bool bPrompt_limits(SePrompt* pPrompt);
   bool bPrompt_llist(SePrompt* pPrompt);
   bool bPrompt_locks(SePrompt* pPrompt);
+  bool bPrompt_loadTables(SePrompt* pPrompt);
   bool bPrompt_log(SePrompt* pPrompt);
   bool bPrompt_logNote(SePrompt* pPrompt);
   bool bPrompt_logSection(SePrompt* pPrompt);

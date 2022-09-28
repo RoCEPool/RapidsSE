@@ -78,6 +78,7 @@ namespace BASE
     CodeBlock* pCodeBlock(void);
     i8    nCodeBlockUsed(void);
     void  vContentDump(void);
+    void  vDic(Dic* pDic);
     Dic*  pDic(void);
     void* aEncodeArg(CodeCell* aArgCell);
     void  vEncodeCall(fpSTEPFN* afpEntryStep);
@@ -109,6 +110,7 @@ namespace BASE
     i8    iParams(void);
     Word* pPrevWord(void);
     void  vResetCodeBlock(void);
+    SkipNode* pSkipNode(void);
     eWK   eWord(void);
     void  vWord(eWK eWord);
     Stz*  szWordNm(void);

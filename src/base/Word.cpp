@@ -234,6 +234,16 @@ void Word::vContentDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set dictionary (Used when loading persistent heaps from disk               */
+/*----------------------------------------------------------------------------*/
+void Word::vDic(Dic* pDic)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+
+  m_pDic = pDic;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get which dictionary                                                       */
 /*----------------------------------------------------------------------------*/
 Dic* Word::pDic(void)
@@ -589,6 +599,16 @@ void Word::vResetCodeBlock(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
   m_pCodeBlock->vReset();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the SkipNode                                                           */
+/*----------------------------------------------------------------------------*/
+SkipNode* Word::pSkipNode(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+
+  return m_pSkipNode;
 }
 
 /*----------------------------------------------------------------------------*/

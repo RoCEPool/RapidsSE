@@ -45,6 +45,32 @@ Dic::~Dic(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add an existing SkipNode to this dictionary (used during reload from disk) */
+/*----------------------------------------------------------------------------*/
+void Dic::vAddSkipNode(SkipNode *pSkipNode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
+
+  bool bTrace = false;
+
+  Word* pWord = _pWord(pSkipNode->m_pObject);
+  RASSERT(pWord);
+
+  m_okLock.vGrabWrite();
+
+  bool b = m_pWordSkipList->bInsertWithNode(pWord, pSkipNode, bTrace);
+  RASSERT(b);
+
+  SkipNode* pSkipNodeNewly = m_pWordSkipList->pNewly();
+  RASSERT(pSkipNodeNewly == pSkipNode);
+
+  // This step is probably not needed
+  pWord->m_pSkipNode = pSkipNodeNewly;
+
+  m_okLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
 /* add word to this dictionary                                                */
 /*----------------------------------------------------------------------------*/
 void Dic::vAddWord(Word* pWord)
@@ -159,6 +185,45 @@ void Dic::vDump(eCN eClass, Object* pObject, Stz* szTab)
   
   //for (Word* pWord = m_pLastWord; pWord; pWord = pWord->pPrevWord())
   //  pWord->vDump();
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump dictionary                                                            */
+/*----------------------------------------------------------------------------*/
+void Dic::vTree(Dic* pDic, i8 iTabs)
+{
+  vTrace("%sD:%s\n"_Stz, Stz::szTab(iTabs),
+         pDic->m_sDicNm.azChar());
+
+  Word* pWord = nullptr;
+  pWord = pDic->pEachWord(pWord);
+
+  while ( pWord )
+  {
+    vTrace("%sW%d:%s %s %s\n"_Stz, Stz::szTab(iTabs),
+           pWord->bGetPersistent(),
+           pWord->szWordNm(),
+           pWord->pCategory()->szWordNm(),
+           pWord->m_pObject ? aCN[pWord->m_pObject->eGetClassNo()]->azChar() : "");
+
+    if(pWord->m_pObject && pWord->m_pObject->eGetClassNo() == CN_DIC)
+    {
+      Dic* pSubDic = _pDic(pWord->m_pObject);
+      Dic::vTree(pSubDic, iTabs+1);
+    }
+
+    pWord = pDic->pEachWord(pWord);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* set SkipList compare function pointer                                      */
+/*----------------------------------------------------------------------------*/
+void Dic::vDicCompareFp(Dic* pDic)
+{
+  _static_
+
+  pDic->m_pWordSkipList->m_fpCompare = bWordCompare;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -29,7 +29,10 @@ namespace BASE
    ~Dic(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-    
+    static void  vDicCompareFp(Dic* pDic);
+    static void vTree(Dic* pDic, i8 iTabs);
+
+    void  vAddSkipNode(SkipNode* pWord);
     void  vAddWord(Word* pWord);
     Word* pDicKind(void);
     Stz*  szDicKind(void);

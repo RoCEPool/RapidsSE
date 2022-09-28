@@ -19,6 +19,7 @@
   STD_PATH_TAG
   "
   procedure load
+    tags <persistentTx>
     parameters $table $file
   begin
 
