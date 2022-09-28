@@ -60,6 +60,7 @@ namespace STORE {
   class Card_IdxColList;
   class Card_Index;
   class Card_IndexJoin;
+  class Card_IndexList;
   class Card_IndexPred;
   class Card_IndexScan;
 
@@ -243,7 +244,7 @@ namespace STORE
     void vPropertiesEnsure(void);
     Stz* szPropertyNm(i8 i_Property);
 
-    void vRemoveChild(Card* pCardRemove);
+   void vRemoveChild(Card* pCardRemove);
     void vRemoveSubCard(Card* pCardRemove);
     void vRenumberSubCards(Card* pParentCard);
     void vReplaceChildWithKids(Card* pChildCard);
@@ -258,7 +259,9 @@ namespace STORE
                          Card* pAt=nullptr, bool bAfter=true);
     void vTransferTill(Card* pCards, Card* pTill,
                        Card* pAt=nullptr, bool bAfter=true);
-  
+
+    void vVisitAllSub(eCK eCard,std::function<bool(Card* pCard)> bfApply);
+
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   
@@ -394,6 +397,7 @@ namespace STORE
     Card_GbyElist*      pSub_gbyElist(void);
     Card_IdxColList*    pSub_idxColList(void);
     Card_IndexJoin*     pSub_indexJoin(void);
+    Card_IndexList*     pSub_indexList(void);
     Card_JoinPred*      pSub_joinPred(void);
     Card_PredCmp*       pSub_predCmp(void);
     Card_SbyElist*      pSub_sbyElist(void);

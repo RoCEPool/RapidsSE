@@ -18,10 +18,13 @@ namespace STORE
   
     Card_PredCmp(void);
    ~Card_PredCmp(void) noexcept(false);
-    
+
+    void vMarkBound(void);
+
+
     eBK eBound(void);
     eRO eRelOp(void);
-    
+
     Card_PredCmp* pDup(void);
     Card_PredCmp* pFindBound_compare(Index* pIndex, eBK eBound);
     bool bHasBounds_compare(Index* pIndex);

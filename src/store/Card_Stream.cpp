@@ -154,6 +154,20 @@ Card_StreamCol* Card_Stream::pGet_streamCol(i8 i_Col)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get a specific <streamCol> given $n ordinal                                */
+/*----------------------------------------------------------------------------*/
+Card_StreamCol* Card_Stream::pGet_streamCol(Stz* szOrd)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  i8 i_Col = szOrd->iOrdinal() - 1;
+
+  Card_StreamCol* p_streamCol = pGet_streamCol(i_Col);
+
+  return p_streamCol;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get <streamColList>                                                       */
 /*----------------------------------------------------------------------------*/
 Card_StreamColList* Card_Stream::pGet_streamColList(void)

@@ -31,6 +31,7 @@ Transformer::Transformer(Optimiser* pOptimiser)
   m_pCombiner    = nullptr;
   m_pCurator     = nullptr;
   m_pFiltrate    = nullptr;
+  m_pIndexer     = nullptr;
   m_pJoiner      = nullptr;
   m_pScanning    = nullptr;
   m_pSender      = nullptr;
@@ -54,6 +55,7 @@ Transformer::~Transformer(void) noexcept(false)
 
   delete m_pCurator;
   delete m_pFiltrate;
+  delete m_pIndexer;
   delete m_pJoiner;
   delete m_pScanning;
   delete m_pSender;
@@ -82,6 +84,7 @@ void Transformer::vTransform(void)
   m_pCombiner    = new Combiner(m_pBench);
   m_pCurator     = new Curator(m_pBench);
   m_pFiltrate    = new Filtrate(m_pBench);
+  m_pIndexer     = new Indexer(m_pBench);
   m_pJoiner      = new Joiner(m_pBench);
   m_pScanning    = new Scanning(m_pBench);
   m_pSender      = new Sender(m_pBench);
@@ -209,17 +212,48 @@ void Transformer::vTransform2(void)
     m_pBoard->vPrintBoard("Joiner::vForm_joinPred"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  m_pCardCtl->vSubCards(CK_STREAM,0);
-  m_pCardCtl->vPinForm(CK_STREAM,1);
+  m_pCardCtl->vSubCards(CK_STREAM,1);
+  m_pCardCtl->vPinForm(CK_STREAM,0);
 
   m_pFiltrate->vCull_indexJoin_filterPred();
   if (m_bInteractive)
     m_pBoard->vPrintBoard("Filtrate::vCull_indexJoin_filterPred"_Stz);
 
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Index Scan
+
+  /*
+   *
+   *    <scan>       <scan>
+   *      <table>    <table>
+   *      <stream>   <indexList>
+   *      <filter>   <stream>
+   *                 <filter>
+   *
+   */
+
+  m_pIndexer->vAppend_indexList_to_scan();
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Indexer::vAppend_indexList_to_scan"_Stz);
+
+  m_pIndexer->vMark_scan_pred_bounds();
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Indexer::vMark_scan_pred_bounds"_Stz);
+
+  m_pIndexer->vMark_scan_pred_ordinals();
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Indexer::vMark_scan_pred_ordinals"_Stz);
+
   m_pScanning->vXyz();
   if (m_bInteractive)
     m_pBoard->vPrintBoard("Scanning::vXyz"_Stz);
+
+
+
+
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pFiltrate->vDeleteEmpty_sub_filter();

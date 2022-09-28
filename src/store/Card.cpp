@@ -396,6 +396,7 @@ eGC Card::eToECatg(eCK eCard)
     case CK_IDXCOLLIST:                  return GC_SUB;
     case CK_INDEX:                       return GC_SUB;
     case CK_INDEXJOIN:  return GC_MAIN;
+    case CK_INDEXLIST:                   return GC_SUB;
     case CK_INDEXPRED:                   return GC_SUB;
     case CK_INDEXSCAN:  return GC_MAIN;
 
@@ -1456,7 +1457,24 @@ void Card::vTransferTill(Card* pCards, Card* pTill,
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vVisitAllSub(eCK eCard, std::function<bool(Card* pCard)> bfApply)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+  eCK eTest = this->eCard();
+  if (eTest == eCard) {
+    bool b = bfApply(this);
+  }
+
+  i8 nChildren = nChildCards();
+  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
+    Card* pChildCard = pGetChild(i_Child);
+    pChildCard->vVisitAllSub(eCard,bfApply);
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
@@ -2954,6 +2972,7 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
     case CK_IDXCOLLIST:                 vPrintProperties(pRibbon,iDepth); break;
     case CK_INDEX:      vIndexPrint                     (pRibbon,iDepth); break;
     case CK_INDEXJOIN:                  vPrintProperties(pRibbon,iDepth); break;
+    case CK_INDEXLIST:                  vPrintProperties(pRibbon,iDepth); break;
     case CK_INDEXPRED:                  vPrintProperties(pRibbon,iDepth); break;
     case CK_INDEXSCAN:                  vPrintProperties(pRibbon,iDepth); break;
 
@@ -3366,6 +3385,19 @@ Card_IndexJoin* Card::pSub_indexJoin(void)
   Card_IndexJoin* p_indexJoin =
       _pCard_IndexJoin(pFindSubCard(CK_INDEXJOIN));
   return p_indexJoin;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_IndexList.hpp"
+Card_IndexList* Card::pSub_indexList(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_IndexList* p_indexList =
+      _pCard_IndexList(pFindSubCard(CK_INDEXLIST));
+  return p_indexList;
 }
 
 /*----------------------------------------------------------------------------*/

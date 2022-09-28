@@ -9,6 +9,8 @@
 
 namespace STORE
 {
+  class Card_IndexList;
+
   class Card_Table : public Card_OBJECT
   {
   public:
@@ -17,6 +19,8 @@ namespace STORE
   
     Card_Table(Table* pTable);
    ~Card_Table(void) noexcept(false);
+
+    Card_IndexList* pNew_indexList(void);
   };
 
   Card_Table* _pCard_Table(void* aAddr);

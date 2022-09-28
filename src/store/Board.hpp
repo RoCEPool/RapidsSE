@@ -43,6 +43,7 @@
 #include "Card_IdxColList.hpp"
 #include "Card_Index.hpp"
 #include "Card_IndexJoin.hpp"
+#include "Card_IndexList.hpp"
 #include "Card_IndexPred.hpp"
 #include "Card_IndexScan.hpp"
 
@@ -74,6 +75,7 @@
 
 #include "Card_SbyElist.hpp"
 #include "Card_Scan.hpp"
+#include "Card_ScanPred.hpp"
 #include "Card_Send.hpp"
 #include "Card_SendKind.hpp"
 #include "Card_Sends.hpp"

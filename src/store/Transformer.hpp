@@ -8,6 +8,7 @@
 #include "Combiner.hpp"
 #include "Curator.hpp"
 #include "Filtrate.hpp"
+#include "Indexer.hpp"
 #include "Joiner.hpp"
 #include "Scanning.hpp"
 #include "Sender.hpp"
@@ -29,6 +30,7 @@ namespace STORE
     Combiner*    m_pCombiner;
     Curator*     m_pCurator;
     Filtrate*    m_pFiltrate;
+    Indexer*     m_pIndexer;
     Joiner*      m_pJoiner;
     Scanning*    m_pScanning;
     Sender*      m_pSender;

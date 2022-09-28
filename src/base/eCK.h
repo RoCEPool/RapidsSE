@@ -43,6 +43,7 @@ enum eCK // card kind
   /* */ CK_IDXCOLLIST,
   /* */ CK_INDEX,
   /* */ CK_INDEXJOIN,
+  /* */ CK_INDEXLIST,
   /* */ CK_INDEXPRED,
   /* */ CK_INDEXSCAN,
 
@@ -74,6 +75,7 @@ enum eCK // card kind
 
   /* */ CK_SBYELIST,
   /* */ CK_SCAN,
+  /* */ CK_SCANPRED,
   /* */ CK_SEND,
   /* */ CK_SENDKIND,
   /* */ CK_SENDS,
@@ -136,6 +138,7 @@ static Stz* aCK[]
   /* */ "CK_IDXCOLLIST"_Stz,   // CK_IDXCOLLIST
   /* */ "CK_INDEX"_Stz,        // CK_INDEX
   /* */ "CK_INDEXJOIN"_Stz,    // CK_INDEXJOIN
+  /* */ "CK_INDEXLIST"_Stz,    // CK_INDEXLIST
   /* */ "CK_INDEXPRED"_Stz,    // CK_INDEXPRED
   /* */ "CK_INDEXSCAN"_Stz,    // CK_INDEXSCAN
 
@@ -167,6 +170,7 @@ static Stz* aCK[]
 
   /* */ "CK_SBYELIST"_Stz,     // CK_SBYELIST
   /* */ "CK_SCAN"_Stz,         // CK_SCAN
+  /* */ "CK_SCANPRED"_Stz,     // CK_SCANPRED
   /* */ "CK_SEND"_Stz,         // CK_SEND
   /* */ "CK_SENDKIND"_Stz,     // CK_SENDKIND
   /* */ "CK_SENDS"_Stz,        // CK_SENDS
@@ -229,6 +233,7 @@ static Stz* aCK_short[]
   /* */ "idxColList"_Stz,      // CK_IDXCOLLIST
   /* */ "{index}"_Stz,         // CK_INDEX
   /* */ "indexJoin"_Stz,       // CK_INDEXJOIN
+  /* */ "indexList"_Stz,       // CK_INDEXLIST
   /* */ "indexPred"_Stz,       // CK_INDEXPRED
   /* */ "indexScan"_Stz,       // CK_INDEXSCAN
 
@@ -260,6 +265,7 @@ static Stz* aCK_short[]
 
   /* */ "sbyElist"_Stz,        // CK_SBYELIST
   /* */ "scan"_Stz,            // CK_SCAN
+  /* */ "scanPred"_Stz,        // CK_SCANPRED
   /* */ "sendSE"_Stz,          // CK_SEND
   /* */ "sendKind"_Stz,        // CK_SENDKIND
   /* */ "sends"_Stz,           // CK_SENDS
@@ -321,7 +327,8 @@ static Stz* aCK_op[]
   /* */ "(none)"_Stz,          // CK_IDXCOL
   /* */ "(none)"_Stz,          // CK_IDXCOLLIST
   /* */ "(none)"_Stz,          // CK_INDEX
-  /* */ "indexJoin"_Stz,      // CK_INDEXJOIN
+  /* */ "indexJoin"_Stz,       // CK_INDEXJOIN
+  /* */ "(none)"_Stz,          // CK_INDEXLIST
   /* */ "(none)"_Stz,          // CK_INDEXPRED
   /* */ "indexScan "_Stz,      // CK_INDEXSCAN
 
@@ -344,7 +351,7 @@ static Stz* aCK_op[]
   /* */ "(none)"_Stz,          // CK_PREDAND
   /* */ "(none)"_Stz,          // CK_PREDCMP
   /* */ "(none)"_Stz,          // CK_PREDOR
-  /* */ "project  "_Stz,      // CK_PROJECT
+  /* */ "project  "_Stz,       // CK_PROJECT
   /* */ "(none)"_Stz,          // CK_PROJELIST
 
   /* */ "(none)"_Stz,          // CK_RBOUND
@@ -352,7 +359,8 @@ static Stz* aCK_op[]
   /* */ "(none)"_Stz,          // CK_RPNTERMS
 
   /* */ "(none)"_Stz,          // CK_SBYELIST
-  /* */ "scan     "_Stz,     // CK_SCAN
+  /* */ "scan     "_Stz,       // CK_SCAN
+  /* */ "(none)"_Stz,          // CK_SCANPRED
   /* */ "(none)"_Stz,          // CK_SEND
   /* */ "(none)"_Stz,          // CK_SENDKIND
   /* */ "(none)"_Stz,          // CK_SENDS

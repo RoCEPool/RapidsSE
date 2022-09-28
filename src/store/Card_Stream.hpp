@@ -28,6 +28,7 @@ namespace STORE
     Card_StreamCol*     pFind_streamCol(Stz* szColNm);
 
     Card_StreamCol*     pGet_streamCol(i8 i_Col);
+    Card_StreamCol*     pGet_streamCol(Stz* szOrd);
     Card_StreamColList* pGet_streamColList(void);
 
     void vOrdinate(String* psOrdinal, Stz* szOrdinal);
