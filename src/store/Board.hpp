@@ -75,6 +75,7 @@
 
 #include "Card_SbyElist.hpp"
 #include "Card_Scan.hpp"
+#include "Card_ScanPred.hpp"
 #include "Card_Send.hpp"
 #include "Card_SendKind.hpp"
 #include "Card_Sends.hpp"
