@@ -428,6 +428,7 @@ eGC Card::eToECatg(eCK eCard)
 
     case CK_SBYELIST:                    return GC_SUB;
     case CK_SCAN:       return GC_MAIN;
+    case CK_SCANPRED:                    return GC_SUB;
     case CK_SEND:       return GC_MAIN;
     case CK_SENDKIND:                    return GC_SUB;
     case CK_SENDS:                       return GC_SUB;
@@ -3003,6 +3004,7 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
 
     case CK_SBYELIST:                   vPrintProperties(pRibbon,iDepth); break;
     case CK_SCAN:                       vPrintProperties(pRibbon,iDepth); break;
+    case CK_SCANPRED:                   vPrintProperties(pRibbon,iDepth); break;
     case CK_SEND:                       vPrintProperties(pRibbon,iDepth); break;
     case CK_SENDKIND:                   vPrintProperties(pRibbon,iDepth); break;
     case CK_SENDS:                      vPrintProperties(pRibbon,iDepth); break;

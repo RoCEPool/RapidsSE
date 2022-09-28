@@ -246,9 +246,9 @@ void Transformer::vTransform2(void)
   if (m_bInteractive)
     m_pBoard->vPrintBoard("Indexer::vMark_scan_pred_ordinals"_Stz);
 
-  m_pScanning->vXyz();
+  m_pScanning->vAdd_scanPred();
   if (m_bInteractive)
-    m_pBoard->vPrintBoard("Scanning::vXyz"_Stz);
+    m_pBoard->vPrintBoard("Scanning::vAdd_scanPred"_Stz);
 
 
 

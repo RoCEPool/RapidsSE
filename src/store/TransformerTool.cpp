@@ -36,6 +36,7 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_p_project     = nullptr;
   m_p_sbyElist    = nullptr;
   m_p_scan        = nullptr;
+  m_p_scanPred    = nullptr;
   m_p_sort        = nullptr;
   m_p_stage       = nullptr;
   m_p_stage_a     = nullptr;

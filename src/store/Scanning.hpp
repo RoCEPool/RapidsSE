@@ -21,7 +21,7 @@ namespace STORE
     Scanning(Bench* pBench);
    ~Scanning(void) noexcept(false);
 
-    void vXyz(void);
+    void vAdd_scanPred(void);
 
   private:
 

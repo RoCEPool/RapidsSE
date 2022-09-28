@@ -37,6 +37,7 @@ namespace STORE
     Card_Project*    m_p_project;
     Card_SbyElist*   m_p_sbyElist;
     Card_Scan*       m_p_scan;
+    Card_ScanPred*   m_p_scanPred;
     Card_Sort*       m_p_sort;
     Card_Stage*      m_p_stage;
     Card_Stage*      m_p_stage_a;
