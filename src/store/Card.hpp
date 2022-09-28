@@ -60,6 +60,7 @@ namespace STORE {
   class Card_IdxColList;
   class Card_Index;
   class Card_IndexJoin;
+  class Card_IndexList;
   class Card_IndexPred;
   class Card_IndexScan;
 
@@ -396,6 +397,7 @@ namespace STORE
     Card_GbyElist*      pSub_gbyElist(void);
     Card_IdxColList*    pSub_idxColList(void);
     Card_IndexJoin*     pSub_indexJoin(void);
+    Card_IndexList*     pSub_indexList(void);
     Card_JoinPred*      pSub_joinPred(void);
     Card_PredCmp*       pSub_predCmp(void);
     Card_SbyElist*      pSub_sbyElist(void);

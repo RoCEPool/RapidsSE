@@ -3390,6 +3390,19 @@ Card_IndexJoin* Card::pSub_indexJoin(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_IndexList.hpp"
+Card_IndexList* Card::pSub_indexList(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_IndexList* p_indexList =
+      _pCard_IndexList(pFindSubCard(CK_INDEXLIST));
+  return p_indexList;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_JoinPred.hpp"
 Card_JoinPred* Card::pSub_joinPred(void)
 {

@@ -212,8 +212,8 @@ void Transformer::vTransform2(void)
     m_pBoard->vPrintBoard("Joiner::vForm_joinPred"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  m_pCardCtl->vSubCards(CK_STREAM,0);
-  m_pCardCtl->vPinForm(CK_STREAM,1);
+  m_pCardCtl->vSubCards(CK_STREAM,1);
+  m_pCardCtl->vPinForm(CK_STREAM,0);
 
   m_pFiltrate->vCull_indexJoin_filterPred();
   if (m_bInteractive)
@@ -241,6 +241,10 @@ void Transformer::vTransform2(void)
   m_pIndexer->vMark_scan_pred_bounds();
   if (m_bInteractive)
     m_pBoard->vPrintBoard("Indexer::vMark_scan_pred_bounds"_Stz);
+
+  m_pIndexer->vMark_scan_pred_ordinals();
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Indexer::vMark_scan_pred_ordinals"_Stz);
 
   m_pScanning->vXyz();
   if (m_bInteractive)

@@ -23,6 +23,7 @@ namespace STORE
 
     void vAppend_indexList_to_scan(void);
     void vMark_scan_pred_bounds(void);
+    void vMark_scan_pred_ordinals(void);
 
   private:
 

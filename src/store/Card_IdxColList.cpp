@@ -56,32 +56,29 @@ Card_IdxColList::~Card_IdxColList(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* find <idxCol> which is given ordinal ($n)                                  */
+/* find <idxCol> which has given column name                                  */
 /*----------------------------------------------------------------------------*/
-Card_IdxCol* Card_IdxColList::pFind_idxCol(Stz *szOrdinal, i8& i_IdxColNo)
+Card_IdxCol* Card_IdxColList::pFind_idxCol(Stz *szColNm, i8& i_IdxColNo)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_IdxCol* pCard_idxCol = nullptr;
-
-  i8 nSubCards = this->nChildCards();
-  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card *pSubCard = this->pGetChild(i_Child);
-
-    if (CK_IDXCOL != pSubCard->eCard())
+  i8 nChildren = this->nChildCards();
+  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
+    Card *pChildCard = this->pGetChild(i_Child);
+    if (CK_IDXCOL != pChildCard->eCard())
       continue;
 
-    Card_IdxCol* pCard_idxCol_test = _pCard_IdxCol(pSubCard);
+    Card_IdxCol* p_idxCol = _pCard_IdxCol(pChildCard);
 
-    Stz* szOrdinal_col = pCard_idxCol_test->szOrdinal();
-    if (szOrdinal_col->bSame(szOrdinal)) {
-      pCard_idxCol = pCard_idxCol_test;
+    Stz* szIdxColNm = p_idxCol->szColNm();
+    if (szIdxColNm->bSame(szColNm)) {
       i_IdxColNo = i_Child;
-      break;
+      return p_idxCol;
     }
   }
 
-  return pCard_idxCol;
+  i_IdxColNo = C_UNKNOWN;
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
