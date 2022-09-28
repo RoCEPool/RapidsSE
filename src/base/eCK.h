@@ -330,7 +330,7 @@ static Stz* aCK_op[]
   /* */ "indexJoin"_Stz,       // CK_INDEXJOIN
   /* */ "(none)"_Stz,          // CK_INDEXLIST
   /* */ "(none)"_Stz,          // CK_INDEXPRED
-  /* */ "indexScan "_Stz,      // CK_INDEXSCAN
+  /* */ "indexScan"_Stz,      // CK_INDEXSCAN
 
   /* */ "joinPred "_Stz,       // CK_JOINPRED
 

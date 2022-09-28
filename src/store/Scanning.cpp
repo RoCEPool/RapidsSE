@@ -73,7 +73,23 @@ void Scanning::vAdd_scanPred(void)
         m_p_scan->vAppend(m_p_scanPred);
       }
 
-      m_p_scanPred->vAppend(p_predCmp);
+      if ('L' == p_predCmp->cMark1()) {
+        m_p_lBound = m_p_scanPred->pSub_lBound();
+        if (! m_p_lBound) {
+          m_p_lBound = new Card_LBound;
+          m_p_scanPred->vInsert(m_p_lBound);
+        }
+        m_p_lBound->vAppend(p_predCmp);
+      }
+      else
+      if ('U' == p_predCmp->cMark1()) {
+        m_p_uBound = m_p_scanPred->pSub_uBound();
+        if (! m_p_uBound) {
+          m_p_uBound = new Card_UBound;
+          m_p_scanPred->vAppend(m_p_uBound);
+        }
+        m_p_uBound->vAppend(p_predCmp);
+      }
 
       return true;
     };

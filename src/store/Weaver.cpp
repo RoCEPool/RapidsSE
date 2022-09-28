@@ -347,11 +347,12 @@ void Weaver::vArgIndexScan(Stz* szOpArgs, Card_IndexScan* pCard_IndexScan)
   Index* pIndex = pCard_IndexScan->pFindSubCard(CK_INDEX)->pIndex();
   s4K sRpnExpr;
   
-  vRpnIndexScan(sRpnExpr,pCard_IndexScan);
+  vRpnIndexScan2(sRpnExpr,pCard_IndexScan);
   
-  szOpArgs->vCatSprint("%s %s \"%s \""_Stz,pIndex->pTable()->szTableNm()
-                                         ,pIndex->szIndexNm()
-                                         ,sRpnExpr.szStz());
+  szOpArgs->vCatSprint("%s %s\n"_Stz,pIndex->pTable()->szTableNm()
+                                         ,pIndex->szIndexNm());
+  szOpArgs->vCatSprint("                \"%s \""_Stz,sRpnExpr.szStz());
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -614,6 +615,48 @@ void Weaver::vRpnIndexJoin(Stz* szRpnExpr, Card_IndexJoin* pCard_IndexJoin)
 
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for indexScan op                                            */
+/*----------------------------------------------------------------------------*/
+void Weaver::vRpnIndexScan2(Stz* szRpnExpr, Card_IndexScan* p_indexScan)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
+
+  Card_PredCmp* p_predCmp;
+  Card_Term*    p_term;
+
+  Card_LBound* p_lBound = p_indexScan->pSub_lBound();
+  if (p_lBound) {
+    szRpnExpr->vConcat(" LBOUND"_Stz);
+
+    p_predCmp = p_lBound->pSub_predCmp();
+
+    p_term = _pCard_Term(p_predCmp->pGetChild(0));
+
+    szRpnExpr->vCatSprint(" $I%lld"_Stz, p_term->iMark2()+1);
+
+    p_predCmp->vConcatTerms(szRpnExpr,1);
+
+    szRpnExpr->vCatSprint(" %s"_Stz, p_predCmp->szCmp());
+
+  }
+
+  Card_UBound* p_uBound = p_indexScan->pSub_uBound();
+  if (p_uBound) {
+    szRpnExpr->vConcat(" UBOUND"_Stz);
+
+    p_predCmp = p_uBound->pSub_predCmp();
+
+    p_term = _pCard_Term(p_predCmp->pGetChild(0));
+
+    szRpnExpr->vCatSprint(" $I%lld"_Stz, p_term->iMark2()+1);
+
+    p_predCmp->vConcatTerms(szRpnExpr,1);
+
+    szRpnExpr->vCatSprint(" %s"_Stz, p_predCmp->szCmp());
+
+  }
+
+}
+
 /*----------------------------------------------------------------------------*/
 void Weaver::vRpnIndexScan(Stz* szRpnExpr, Card_IndexScan* pCard_IndexScan)
 {

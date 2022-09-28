@@ -1779,6 +1779,36 @@ void Card::vColumn2(Column* pColumn2)
 }
 
 /*----------------------------------------------------------------------------*/
+/* concat terms                                                               */
+/*----------------------------------------------------------------------------*/
+void Card::vConcatTerms(Stz* szTerms)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vConcatTerms(szTerms,0);
+}
+
+/*----------------------------------------------------------------------------*/
+/* concat terms                                                               */
+/*----------------------------------------------------------------------------*/
+void Card::vConcatTerms(Stz* szTerms, i8 i_From, i8 i_Till)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (C_UNKNOWN == i_Till)
+    i_Till = nChildCards() - 1;
+
+  for (i8 i_Child = i_From; i_Child <= i_Till; i_Child++) {
+    Card* pChildCard = pGetChild(i_Child);
+    if (CK_TERM != pChildCard->eCard())
+      continue;
+
+    szTerms->vCatSprint(" %s"_Stz, pChildCard->szTerm());
+  }
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* get sort direction                                                         */
 /*----------------------------------------------------------------------------*/
 Stz* Card::szDirn(void)
@@ -3418,6 +3448,19 @@ Card_JoinPred* Card::pSub_joinPred(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_LBound.hpp"
+Card_LBound* Card::pSub_lBound(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_LBound* p_lBound =
+      _pCard_LBound(pFindSubCard(CK_LBOUND));
+  return p_lBound;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_PredCmp.hpp"
 Card_PredCmp* Card::pSub_predCmp(void)
 {
@@ -3517,6 +3560,19 @@ Card_Table* Card::pSub_table(void)
   Card_Table* p_table =
       _pCard_Table(pFindSubCard(CK_TABLE));
   return p_table;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_UBound.hpp"
+Card_UBound* Card::pSub_uBound(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_UBound* p_uBound =
+      _pCard_UBound(pFindSubCard(CK_UBOUND));
+  return p_uBound;
 }
 
 

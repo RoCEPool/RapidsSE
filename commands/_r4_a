@@ -6,7 +6,7 @@ trackMemory;
 
 _orders
 
-create index O_idx0 on orders(o_orderdate);
+create index O_idx_orderdate on orders(o_orderdate);
 
 load orders "../tpch/sf_0001/orders.csv" ;
 

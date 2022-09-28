@@ -27,6 +27,7 @@ namespace BASE
     ITEM* pGet(i8 nThItem);
     ITEM* pHead(void);
     ListExoNode_t<ITEM>* pHeadNode(void);
+    void  vInsert(ITEM* pInsertItem);
     void  vInsertAfter(ITEM* pInsertItem, ITEM* pAfterItem);
     void  vInsertAfter(ITEM* pInsertItem, ListExoNode_t<ITEM>* pAfterNode);
     void  vInsertBefore(ITEM* pInsertItem, ITEM* pBeforeItem);
@@ -213,6 +214,27 @@ template <class ITEM>
 ListExoNode_t<ITEM>* ListExo2_t<ITEM>::pHeadNode(void)
 {
   return m_pHeadNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert item after given item                                               */
+/*----------------------------------------------------------------------------*/
+template <class ITEM>
+void ListExo2_t<ITEM>::vInsert(ITEM* pInsertThisItem)
+{
+
+  ListExoNode_t<ITEM>* pBeforeThisNode = pHeadNode();
+
+  if (pBeforeThisNode) {
+    ListExoNode_t<ITEM>* pInsertThisNode = pNewNode(pInsertThisItem);
+    ASSERT(! pInsertThisNode->pNextNode());
+    ASSERT(! pInsertThisNode->pPrevNode());
+    vInsertNodeBefore(pInsertThisNode,pBeforeThisNode);
+  }
+  else {
+    vAppend(pInsertThisItem);
+  }
+  vValidateList();
 }
 
 /*----------------------------------------------------------------------------*/

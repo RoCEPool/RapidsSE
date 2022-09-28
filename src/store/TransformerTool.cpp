@@ -33,6 +33,7 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_p_indexJoin   = nullptr;
   m_p_indexList   = nullptr;
   m_p_indexScan   = nullptr;
+  m_p_lBound      = nullptr;
   m_p_project     = nullptr;
   m_p_sbyElist    = nullptr;
   m_p_scan        = nullptr;
@@ -45,6 +46,7 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_p_stageTopo_a = nullptr;
   m_p_stageTopo_b = nullptr;
   m_p_table       = nullptr;
+  m_p_uBound      = nullptr;
 
   _postcondition_(_ADDRESS_,_MAGIC_);
 }

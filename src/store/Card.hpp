@@ -289,6 +289,9 @@ namespace STORE
     void vColumn1(Column* pColumn1);
     Column* pColumn2(void);
     void vColumn2(Column* pColumn2);
+    void vConcatTerms(Stz* szTerms);
+    void vConcatTerms(Stz* szTerms, i8 i_From, i8 i_Till=C_UNKNOWN);
+
     Stz* szCmp(void);
     void vCmp(Stz* szCmp);
 
@@ -400,15 +403,17 @@ namespace STORE
     Card_IndexJoin*     pSub_indexJoin(void);
     Card_IndexList*     pSub_indexList(void);
     Card_JoinPred*      pSub_joinPred(void);
+    Card_LBound*        pSub_lBound(void);
     Card_PredCmp*       pSub_predCmp(void);
     Card_SbyElist*      pSub_sbyElist(void);
     Card_Scan*          pSub_scan(void);
-    Card_ScanPred*       pSub_scanPred(void);
+    Card_ScanPred*      pSub_scanPred(void);
     Card_StageTopo*     pSub_stageTopo(void);
     Card_Stream*        pSub_stream(void);
     Card_StreamColList* pSub_streamColList(void);
     Card_Table*         pSub_table(void);
-  
+    Card_UBound*        pSub_uBound(void);
+
   private:
 
     Stz* szDecodeEnum(Stz* szEnum, i8 iEnum);
