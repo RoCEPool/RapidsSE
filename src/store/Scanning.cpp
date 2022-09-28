@@ -86,6 +86,54 @@ void Scanning::vAdd_scanPred(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Scanning::vCull_markedPred(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SCANNING, _FOOTER_);
+
+  BoardIter xBI(this);
+
+  while ((m_p_scan = _pCard_Scan(xBI.pEachMain(CK_SCAN)))) {
+
+    m_p_filter = m_p_scan->pSub_filter();
+    if (!m_p_filter)
+      continue;
+
+    m_p_filter->vCullPred('L');
+    m_p_filter->vCullPred('U');
+
+    if (! m_p_filter->bIsEmptyFilter())
+      continue;
+
+    m_p_scan->vRemoveSubCard(m_p_filter);
+
+    delete m_p_filter;
+    m_p_filter = nullptr;
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Scanning::vPromote_scan_to_indexScan(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SCANNING, _FOOTER_);
+
+  BoardIter xBI(this);
+
+  while ((m_p_scan = _pCard_Scan(xBI.pEachMain(CK_SCAN)))) {
+
+    m_p_scanPred = m_p_scan->pSub_scanPred();
+    if (!m_p_scanPred)
+      continue;
+
+    m_p_scan->vCard(CK_INDEXSCAN);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

@@ -22,6 +22,8 @@ namespace STORE
    ~Scanning(void) noexcept(false);
 
     void vAdd_scanPred(void);
+    void vCull_markedPred(void);
+    void vPromote_scan_to_indexScan(void);
 
   private:
 

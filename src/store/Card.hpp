@@ -92,6 +92,7 @@ namespace STORE {
 
   class Card_SbyElist;
   class Card_Scan;
+  class Card_ScanPred;
   class Card_Send;
   class Card_SendKind;
   class Card_Sends;
@@ -402,6 +403,7 @@ namespace STORE
     Card_PredCmp*       pSub_predCmp(void);
     Card_SbyElist*      pSub_sbyElist(void);
     Card_Scan*          pSub_scan(void);
+    Card_ScanPred*       pSub_scanPred(void);
     Card_StageTopo*     pSub_stageTopo(void);
     Card_Stream*        pSub_stream(void);
     Card_StreamColList* pSub_streamColList(void);

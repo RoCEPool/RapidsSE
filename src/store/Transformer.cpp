@@ -250,6 +250,16 @@ void Transformer::vTransform2(void)
   if (m_bInteractive)
     m_pBoard->vPrintBoard("Scanning::vAdd_scanPred"_Stz);
 
+  m_pCardCtl->vSubCards(CK_STREAM,0);
+  m_pCardCtl->vPinForm(CK_STREAM,1);
+
+  m_pScanning->vCull_markedPred();
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Scanning::vCull_markedPred"_Stz);
+
+  m_pScanning->vPromote_scan_to_indexScan();
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Scanning::vPromote_scan_to_indexScan"_Stz);
 
 
 

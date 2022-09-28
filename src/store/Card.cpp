@@ -3457,6 +3457,19 @@ Card_Scan* Card::pSub_scan(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_ScanPred.hpp"
+Card_ScanPred* Card::pSub_scanPred(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_ScanPred* p_scanPred =
+      _pCard_ScanPred(pFindSubCard(CK_SCANPRED));
+  return p_scanPred;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_StageTopo.hpp"
 Card_StageTopo* Card::pSub_stageTopo(void)
 {

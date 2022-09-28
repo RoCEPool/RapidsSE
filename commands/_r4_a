@@ -17,7 +17,7 @@ load orders "../tpch/sf_0001/orders.csv" ;
 /transform
 /transform2
 /interactive
-/cue = "Scanning::vAdd_scanPred"
+/cue = "Scanning::vPromote_scan_to_indexScan"
 /weave
 /weaved
 /pipelineName = "r4_a"
