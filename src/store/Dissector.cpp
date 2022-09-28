@@ -57,8 +57,7 @@ Dissector::~Dissector(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* dissect pipeline spec                                                      */
 /*----------------------------------------------------------------------------*/
-
-Board* Dissector::pDissectSpec(VertexSpec* pPipeSpec)
+void Dissector::vDissectSpec(VertexSpec* pPipeSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
         
@@ -78,8 +77,6 @@ Board* Dissector::pDissectSpec(VertexSpec* pPipeSpec)
   m_pStageSpec = nullptr;
   m_pOpSpec    = nullptr;
   m_bSawAggOp  = false;
-  
-  return m_pBoard;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -108,9 +105,7 @@ void Dissector::vPipeline(void)
 
   m_pBoard = new Board(BK_QUERY,m_pBench);
   m_pOptimiser->vQueryNm(szPipelineNm);
-  m_pBoard->vQueryNm(szPipelineNm);
 
-  //m_pBench->vAppend(m_pBoard);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     

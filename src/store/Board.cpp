@@ -44,8 +44,9 @@ Board::Board(eBK eBoard, Bench* pBench)
 
   m_bBeenCued = false;
 
-  //_checkInitialised_(CN_BOARD);
-  _checkInitialisedSize_(sizeof(Board));
+  _checkInitialised_(CN_BOARD);
+
+  pBench->vAddBoard(this);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 }
@@ -80,6 +81,16 @@ void Board::vAppendMainCard(Card* pNewMainCard, bool bRenumber)
 
   if (bRenumber)
     vRenumberMainCards();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get board kind                                                             */
+/*----------------------------------------------------------------------------*/
+eBK Board::eBoard(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  return m_eBoard;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -494,7 +505,7 @@ void Board::vPinCards(Ribbon* pRibbon, i8 i_Board)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pRibbon->vSprint("[%lld] %s"_Stz,i_Board,szQueryNm());
+  pRibbon->vSprint("[%lld] %s"_Stz,i_Board,m_pOptimiser->szQueryNm());
   pRibbon->vTitleLines(1);
   pRibbon->vSetBase();
   pRibbon->vFirstColumn();
@@ -669,26 +680,6 @@ Card* Board::pPriorSubCard(Card*& rpMainCard, eCK eSubCard, i8 i_PriorToMain)
 
   rpMainCard = nullptr;
   return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get query name                                                             */
-/*----------------------------------------------------------------------------*/
-Stz* Board::szQueryNm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-  
-  return m_sQueryNm;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set query name                                                             */
-/*----------------------------------------------------------------------------*/
-void Board::vQueryNm(Stz* szQueryNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-  
-  m_sQueryNm = szQueryNm;
 }
 
 /*----------------------------------------------------------------------------*/

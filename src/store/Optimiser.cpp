@@ -119,9 +119,7 @@ void Optimiser::vDissect(VertexSpec* pm_pUnOptPipeSpec)
   SP_PipeSpec spPipeSpec(m_pUnOptPipeSpec);
   vTrace("Optimiser: %s\n"_Stz,spPipeSpec.sz());
       
-  Board* pBoard = m_pDissector->pDissectSpec(m_pUnOptPipeSpec);
-  
-  m_pBench->vPush(pBoard);
+  m_pDissector->vDissectSpec(m_pUnOptPipeSpec);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -241,10 +239,7 @@ void Optimiser::vToPipeSpec(VertexSpec* pPipeSpec)
   
   delete m_pBench->pPop();
   
-  Board* pBoard = m_pDissector->pDissectSpec(m_pUnOptPipeSpec);
-
-  m_pBench->vAppend(pBoard);
-
+  m_pDissector->vDissectSpec(m_pUnOptPipeSpec);
 }
 
 /*----------------------------------------------------------------------------*/

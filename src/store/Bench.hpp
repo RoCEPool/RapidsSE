@@ -23,6 +23,9 @@ namespace STORE
     Bench(Optimiser* pOptimiser);
    ~Bench(void) noexcept(false);
 
+    void vAddBoard(Board* pBoard);
+    Board* pGetBoard(eBK eBoard);
+
     Optimiser* pOptimiser(void);
 
     void vPrintBench(void);

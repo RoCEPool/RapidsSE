@@ -30,7 +30,7 @@ namespace STORE
     Dissector(Bench* pBench);
    ~Dissector(void) noexcept(false);
   
-    Board* pDissectSpec(VertexSpec* pPipeSpec);
+    void vDissectSpec(VertexSpec* pPipeSpec);
   
   private:
     void vPipeline(void);

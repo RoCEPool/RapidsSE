@@ -3,8 +3,8 @@
 /*============================================================================*/
 
 #include "Weaver.hpp"
+#include "Optimiser.hpp"
 
-#include "eST.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -72,7 +72,7 @@ void Weaver::vPipeline(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
   
-  vConcat("pipeline %s\n"_Stz,m_pBoard->szQueryNm());
+  vConcat("pipeline %s\n"_Stz,m_pOptimiser->szQueryNm());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1371,7 +1371,9 @@ void Weaver::vTabStage(void)
 void Weaver::vWeaveOptStmt(Board* pBoard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
-  
+
+  RASSERT(BK_QUERY == pBoard->eBoard());
+
   //vPrintBoardSummary();
 
   m_i_Stage = 0;

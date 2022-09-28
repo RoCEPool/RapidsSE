@@ -399,12 +399,12 @@ bool Drafter::bName(TokenVec* pTknVec, eOA& reOptAct)
   i8 nTkns = pTknVec->nItems();
   
   if (nTkns < 2) {
-    vTrace("QueryNm : %s\n"_Stz,pBoard->szQueryNm());
+    vTrace("QueryNm : %s\n"_Stz,m_pOptimiser->szQueryNm());
     return true;
   }
   
   Stz* szQueryNm = pTknVec->pGet(1)->szChars();
-  pBoard->vQueryNm(szQueryNm);
+  m_pOptimiser->vQueryNm(szQueryNm);
   
   return true;
 }
@@ -521,7 +521,7 @@ bool Drafter::bWrite(TokenVec* pTknVec, eOA& reOptAct)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DRAFTER,_FOOTER_);
 
   Stz* szStmt = m_pOptimiser->szWeave();
-  Stz* szQueryNm = m_pOptimiser->pHeadBoard()->szQueryNm();
+  Stz* szQueryNm = m_pOptimiser->szQueryNm();
 
   s256 sPath;
   sPath.vSprint("/tmp/%s.txt"_Stz,szQueryNm);

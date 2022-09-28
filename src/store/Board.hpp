@@ -138,6 +138,7 @@ namespace STORE
 
     void vAppendMainCard(Card* pNewMainCard, bool bRenumber=true);
 
+    eBK eBoard(void);
     CardRegs* pCardRegs(void);
     Card_SubSet* pCard_SubSet(void);
 
@@ -173,9 +174,6 @@ namespace STORE
   
     void vPrintBoard(Stz* szCue=nullptr);
     Card* pPriorSubCard(Card*& rpMainCard, eCK eSubCard, i8 i_PriorToMain);
-
-    Stz* szQueryNm(void);
-    void vQueryNm(Stz* szQueryNm);
 
     void vRemoveMainCard(Card* pMainCard);
 
