@@ -6,6 +6,7 @@
 #include "BASE.h"
 
 #include "eTE.h"
+#include "eBK.h"
 
 #include "Card.hpp"
 #include "CardCtl.hpp"
@@ -114,8 +115,12 @@ namespace STORE
     friend class Dissector;
     friend class Drafter;
     friend class Weaver;
+
   protected:
+    eBK          m_eBoard;
+
     s32          m_sQueryNm;
+
     Optimiser*   m_pOptimiser;
 
     CardRegs*    m_pCardRegs;

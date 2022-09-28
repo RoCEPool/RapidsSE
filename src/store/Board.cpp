@@ -32,7 +32,9 @@ Board::Board(Stz* szQueryNm, Optimiser* pOptimiser)
 : Object(CN_BOARD)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-      
+
+  m_eBoard       = BK_QUERY;
+
   m_sQueryNm     = szQueryNm;
   m_pOptimiser   = pOptimiser;
    
