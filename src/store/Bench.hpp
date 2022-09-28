@@ -22,7 +22,9 @@ namespace STORE
   
     Bench(Optimiser* pOptimiser);
    ~Bench(void) noexcept(false);
-  
+
+    Optimiser* pOptimiser(void);
+
     void vPrintBench(void);
 
   private:

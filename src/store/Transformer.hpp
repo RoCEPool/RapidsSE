@@ -22,10 +22,7 @@ namespace STORE
   {
   private:
 
-    Optimiser*   m_pOptimiser;
     CardCtl*     m_pCardCtl;
-    Bench*       m_pBench;
-    Board*       m_pBoard;
 
     Combiner*    m_pCombiner;
     Curator*     m_pCurator;
@@ -47,7 +44,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Transformer(Optimiser* pOptimiser);
+    Transformer(Bench* pBench);
   
    ~Transformer(void) noexcept(false);
 

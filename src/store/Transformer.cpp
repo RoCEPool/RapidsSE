@@ -18,15 +18,16 @@ __aFooterFunction(Transformer)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Transformer::Transformer(Optimiser* pOptimiser)
+Transformer::Transformer(Bench* pBench)
 : OptimiserTool(CN_TRANSFORMER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMER,_FOOTER_);
 
-  m_pOptimiser   = pOptimiser;
+  m_pBench        = pBench;
+  m_pOptimiser    = m_pBench->pOptimiser();
+  m_pBoard        = nullptr;
+
   m_pCardCtl     = m_pOptimiser->pCardCtl();
-  m_pBench       = m_pOptimiser->pBench();
-  m_pBoard       = nullptr;
 
   m_pCombiner    = nullptr;
   m_pCurator     = nullptr;

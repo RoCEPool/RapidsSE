@@ -16,11 +16,13 @@ namespace STORE
   class Optimiser : public Object
   {
   private:
-    TagSet* m_p_JobTags;
-  
-    VertexSpec* m_pUnOptPipeSpec;
-  
-    CardCtl* m_pCardCtl;
+    s32          m_sQueryNm;
+
+    TagSet*      m_p_JobTags;
+
+    VertexSpec*  m_pUnOptPipeSpec;
+
+    CardCtl*     m_pCardCtl;
   
     Bench*       m_pBench;
     Dissector*   m_pDissector;
@@ -54,7 +56,10 @@ namespace STORE
     Board* pHeadBoard(void);
 
     TagSet* pJobTags(void);
-  
+
+    Stz* szQueryNm(void);
+    void vQueryNm(Stz* szQueryNm);
+
     void vTransform(void);
   
     Card_SubSet* pPaste(void);

@@ -18,12 +18,14 @@ __aFooterFunction(Drafter)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Drafter::Drafter(Optimiser* pOptimiser)
-: Object(CN_DRAFTER)
+Drafter::Drafter(Bench* pBench)
+: OptimiserTool(CN_DRAFTER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DRAFTER,_FOOTER_);
-    
-  m_pOptimiser = pOptimiser;
+
+  m_pBench        = pBench;
+  m_pOptimiser    = m_pBench->pOptimiser();
+
   m_pCardCtl   = m_pOptimiser->pCardCtl();
 
   _checkInitialised_(CN_DRAFTER);
@@ -224,12 +226,12 @@ bool Drafter::bCut(TokenVec* pTknVec, eOA& reOptAct)
     pBoard->vSearch(szCard,pMainCard,pSubCard);
     
     if (pMainCard) {
-      pBoard->m_pCard_SubSet->vCutSubCard(pMainCard);
+      pBoard->pCard_SubSet()->vCutSubCard(pMainCard);
       delete pMainCard; //TEMP
     }
     else
     if (pSubCard) {
-      Card* pParentCard = pBoard->m_pCard_SubSet->pFindParent(pSubCard);
+      Card* pParentCard = pBoard->pCard_SubSet()->pFindParent(pSubCard);
       pParentCard->vCutSubCard(pSubCard);
       
       delete pSubCard; //TEMP

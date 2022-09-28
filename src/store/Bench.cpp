@@ -69,6 +69,15 @@ void Bench::vPrintBench(void)
   //Cue::vGetReturn("bench> "_Stz);
 }
 
+/*----------------------------------------------------------------------------*/
+/* print bench                                                                */
+/*----------------------------------------------------------------------------*/
+Optimiser* Bench::pOptimiser(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  return m_pOptimiser;
+}
 
 /*----------------------------------------------------------------------------*/
 /* renumber all cards                                                         */

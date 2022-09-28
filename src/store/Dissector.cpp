@@ -20,16 +20,16 @@ __aFooterFunction(Dissector)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Dissector::Dissector(Optimiser* pOptimiser)
+Dissector::Dissector(Bench* pBench)
 : OptimiserTool(CN_DISSECTOR)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
-        
-  m_pOptimiser    = pOptimiser;
-  m_pBench        = nullptr;
+
+  m_pBench        = pBench;
+  m_pOptimiser    = m_pBench->pOptimiser();
   m_pBoard        = nullptr;
   
-  m_pPipeSpec = nullptr;
+  m_pPipeSpec     = nullptr;
   m_pStageSpec    = nullptr;
   m_pOpSpec       = nullptr;
   
@@ -106,7 +106,8 @@ void Dissector::vPipeline(void)
   //TagSet* pJobTags = m_pPipeSpec->pJobTags();
   //pJobTags->vDumpSet(true);
 
-  m_pBoard = new Board("Board"_Stz,m_pOptimiser);
+  m_pBoard = new Board(BK_QUERY,m_pBench);
+  m_pOptimiser->vQueryNm(szPipelineNm);
   m_pBoard->vQueryNm(szPipelineNm);
 
   //m_pBench->vAppend(m_pBoard);
@@ -142,7 +143,7 @@ void Dissector::vStage(i8 i_StageSpec)
   Card_StageTopo* pCard_StageTopo = new Card_StageTopo(eStageTopo);
   pCard_Stage->vAppend(pCard_StageTopo);
   
-  m_pBoard->m_pCard_SubSet->vAppend(pCard_Stage);
+  m_pBoard->pCard_SubSet()->vAppend(pCard_Stage);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -196,7 +197,7 @@ void Dissector::vOp(i8 i_OpSpec)
   }
   
   if (pCard)
-    m_pBoard->m_pCard_SubSet->vAppend(pCard);
+    m_pBoard->pCard_SubSet()->vAppend(pCard);
 }
 
 /*----------------------------------------------------------------------------*/

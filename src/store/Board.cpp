@@ -27,16 +27,15 @@ __aFooterFunction(Board)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Board::Board(Stz* szQueryNm, Optimiser* pOptimiser)
-//: Card_OTHER(CK_BOARD)
+Board::Board(eBK eBoard, Bench* pBench)
 : Object(CN_BOARD)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-  m_eBoard       = BK_QUERY;
+  m_eBoard       = eBoard;
+  m_pBench       = pBench;
 
-  m_sQueryNm     = szQueryNm;
-  m_pOptimiser   = pOptimiser;
+  m_pOptimiser   = m_pBench->pOptimiser();
    
   m_pCardRegs    = new CardRegs;
   m_pRuleCtl     = new RuleCtl;

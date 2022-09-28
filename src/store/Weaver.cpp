@@ -18,13 +18,14 @@ __aFooterFunction(Weaver)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Weaver::Weaver(Optimiser* pOptimiser)
+Weaver::Weaver(Bench* pBench)
 : OptimiserTool(CN_WEAVER)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
-        
-  m_pOptimiser = pOptimiser;
-  m_pBoard = nullptr;
+
+  m_pBench        = pBench;
+  m_pOptimiser    = m_pBench->pOptimiser();
+  m_pBoard        = nullptr;
   
   m_i_Stage = 0;
   m_i_Op_stage = 0;
@@ -1381,7 +1382,7 @@ void Weaver::vWeaveOptStmt(Board* pBoard)
   
   //vTrace("Build Pipeline\n"_Stz);
 
-  ListExoIter2_t<Card>* pBoard_I = m_pBoard->m_pCard_SubSet->pNewIter();
+  ListExoIter2_t<Card>* pBoard_I = m_pBoard->pCard_SubSet()->pNewIter();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

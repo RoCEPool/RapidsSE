@@ -10,6 +10,9 @@ namespace STORE
   class OptimiserTool : public Object
   {
   protected:
+    Optimiser* m_pOptimiser;
+    Bench*     m_pBench;
+    Board*     m_pBoard;
 
   public:
     void* operator new(size_t);

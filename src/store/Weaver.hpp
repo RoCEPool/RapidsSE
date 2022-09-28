@@ -11,10 +11,7 @@ namespace STORE
   class Weaver : public OptimiserTool
   {
   protected:
-  
-    Optimiser* m_pOptimiser;
-    Board* m_pBoard;
-    
+
     i8 m_i_Stage;
     i8 m_i_Op_stage;
     s48K m_sOptStmt;
@@ -27,7 +24,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Weaver(Optimiser* pOptimser);
+    Weaver(Bench* pBench);
    ~Weaver(void) noexcept(false);
   
     void vWeaveOptStmt(Board* pBoard);
