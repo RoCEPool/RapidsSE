@@ -79,6 +79,20 @@ void NegationExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Represent the expression as types instead of names. Append to the buffer   */
+/*----------------------------------------------------------------------------*/
+void NegationExpr::vDescribeAsTypes(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pChild1 = NegationExpr::pChild1(_pQueryNode(pNode));
+
+  sBuf.vConcat("-"_Stz);
+  sBuf.vConcat(Expr::xTypeId(pChild1, pRootNode).szTypeName());
+}
+
+/*----------------------------------------------------------------------------*/
 /* Return the first child expression of this operator                         */
 /*----------------------------------------------------------------------------*/
 QueryNode* NegationExpr::pChild1(QueryNode *pNode)

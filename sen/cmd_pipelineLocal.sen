@@ -25,7 +25,7 @@
     //[system].bpa
   then
 /*
-  [job].preExecuteTest to ErrorCode[]
+  [job].preExecuteLocal to ErrorCode[]
   ErrorCode[] if
     ErrorCode[] [job].error!
     [ddlLock].testDrop
@@ -37,7 +37,7 @@
     [task].grabLock
     [job].addExited
     [job].updateParent assert
-    [job].signalParent
+    [job].signalParent assert
       [task].retire // does not queue onto exit demon
 
     HAZARD
@@ -74,7 +74,7 @@
     [task].grabLock
     [job].addExited
     [job].updateParent assert
-    [job].signalParent
+    [job].signalParent assert
       [task].retire // does not queue onto exit demon
 
     HAZARD
@@ -105,7 +105,7 @@
     dup not if
       sPreExe "Unable to find pre execute word: %v" .printf
       [job].updateParent assert
-      [job].signalParent
+      [job].signalParent assert
       process::quit
     then
       execute
@@ -118,7 +118,7 @@
   "<signalParent>" [job].tagSet@ tagSet.hasName not if
      //"SIGNALLING PARENT AS NO WAIT" .
      [job].updateParent assert
-     [job].signalParent
+     [job].signalParent assert
   then
 
 /* local */  // - - - - - - - - - - - - - - - -  - -
@@ -164,7 +164,7 @@
     "<signalParent>" [job].tagSet@ tagSet.hasName if
       //"pipelineLocal::local SIGNALLING PARENT" .
       [job].updateParent assert
-      [job].signalParent
+      [job].signalParent assert
     then
 
     [task].retire // does not queue onto exit demon

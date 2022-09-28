@@ -62,13 +62,16 @@
 
   SendNode[] node.sendSocket@ to Socket[]
 
-  Socket[].grabWrite
+  Socket[].isNotNull if
 
-  [job] Socket[].sendObject discard
+    Socket[].grabWrite
 
-  Socket[].dropWrite
+    [job] Socket[].sendObject discard
+
+    Socket[].dropWrite
   
-  nullptr to Socket[]
+    nullptr to Socket[]
+  then
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -80,15 +83,18 @@
 
   SendNode[] node.sendSocket@ to Socket[]
 
-  Socket[].grabWrite
+  Socket[].isNotNull if
 
-  [job].rejectJob@ Socket[].sendObject discard
+    Socket[].grabWrite
 
-  Socket[].dropWrite
+    [job].rejectJob@ Socket[].sendObject discard
 
-  nullptr to Socket[]
+    Socket[].dropWrite
 
-  nullptr to SendNode[]
+    nullptr to Socket[]
+
+    nullptr to SendNode[]
+  then
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -274,7 +280,7 @@
    [task].grabLock
    [job].addExited
    [job].updateParent assert
-   [job].signalParent
+   [job].signalParent assert
    [task].retire
    HAZARD
 ;
@@ -305,7 +311,7 @@
        [job].addExited
        [job].updateParent assert
        //"Notifying parent" .
-       [job].signalParent
+       [job].signalParent assert
        [task].retire
        HAZARD
      then
@@ -319,7 +325,7 @@
         [job].addExited
         [job].updateParent assert
         //"Notifying parent" .
-        [job].signalParent
+        [job].signalParent assert
         [task].retire
         HAZARD
       then
@@ -548,9 +554,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handle a reject on the originating job                                     */
+/* handle a failure on the originating job (LOWMEM / NODELOSS)                */
 /*----------------------------------------------------------------------------*/
-: [job]:handleReject ( -- )
+: [job]:handleFailure ( -- )
 
   // - - - - - - - - - - - - - - -
   // pipeline becomes ordinary job
@@ -583,8 +589,8 @@
         "org_ org" "WAIT/NO_WAIT signalling parent"       [job].trace
       then
 
-      [job].updateParent assert
-      [job].signalParent
+      [job].updateParent discard
+      [job].signalParent discard
 
       [args].distJob if
         "pipeline" "origin"

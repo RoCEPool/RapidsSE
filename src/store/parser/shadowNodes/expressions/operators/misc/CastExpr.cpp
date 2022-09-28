@@ -113,6 +113,27 @@ void CastExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Represent the expression as types instead of names. Append to the buffer   */
+/*----------------------------------------------------------------------------*/
+void CastExpr::vDescribeAsTypes(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pTargetExpr = CastExpr::pTargetExpr(_pQueryNode(pNode));
+  QueryNode* pTargetType = CastExpr::pSqlTypeNode(_pQueryNode(pNode));
+  ASSERT(   Expr::bIsOfType(pTargetExpr));
+  ASSERT(SqlType::bIsOfType(pTargetType));
+
+  s2K sTypeBuf;
+  SqlType::vDescribe(pTargetType, sTypeBuf, pRootNode);
+
+  sBuf.vCatSprint("CAST(%s AS %s)"_Stz,
+                  Expr::xTypeId(pTargetExpr, pRootNode).szTypeName(),
+                  sTypeBuf.szStz());
+}
+
+/*----------------------------------------------------------------------------*/
 /* Return the property node containing the target type enumeration            */
 /*----------------------------------------------------------------------------*/
 QueryNode* CastExpr::pSqlTypeNode(QueryNode *pNode)

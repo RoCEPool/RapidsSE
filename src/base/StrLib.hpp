@@ -38,6 +38,7 @@ namespace BASE
     static i8    nBurstArgs(Stz* szaArgv[], Stz* szArgStr);
 
     static Stz*  szCharToStr(char cArg);
+    static void  vCheckIsNot(char cArg, char cIsNot);
     static void  vClick(char* aArg);
     static bool  bClip(char* aArg, i8 iLen);
     static void  vComma(char* psDst, i8 iArg);
@@ -49,9 +50,7 @@ namespace BASE
     static void  vConcat(char* psDst, const char* psArg1, const char* psArg2);
     static char* wConcat(const char* s1, const char* s2);
     static void  vConcat(char* pWS, i8 i);
-  
     static void  vConcat(Stz* szDst, Stz* szArg);
-  
     static bool  bContains(char* s, const char cArg);
     static bool  bContains(char* s, const char* sArg);
     static i8    nCopy(char* psDst, const char* psSrc);
@@ -147,6 +146,7 @@ namespace BASE
     static bool  bIsAlpha(const char c);
     static bool  bIsAlphaDigit(const char c);
     static bool  bIsAmpersand(const char c);
+    static bool  bIsAsciiName(char* azArg);
     static bool  bIsAsterisk(const char c);
     static bool  bIsAt(const char c);
     static bool  bIsBackQuote(const char c);
@@ -224,6 +224,8 @@ namespace BASE
     static void  vRemovePrefix(char* azArg, char cIntro);
     static void  vRemoveSuffix(char* azArg, char cIntro);
     static void  vRemoveTailInt(char* azArg);
+    static void  vRemoveTill(char* azArg, const char cTill, bool bRemoveTheTill=false);
+    static void  vRemoveToken(char* azArg);
     static bool  bReplace(char* pString, const char* pThis, const char* pThat);
     static bool  bReplace(char* pDst, const char* pSrc,
                           const char* pThis, const char* pThat);
@@ -234,6 +236,8 @@ namespace BASE
     static void  vRuler(char* azDst, i8 iLength);
 
     static bool  bSame(const char* s1, const char* s2);
+    static void  vShuffleLeft(char* azDst, const char* azSrc);
+    static void  vShuffleLeft(char* azDst, i8 i_Right);
     static i8    nSize(const char* s);
     static void  vSkipCommentBlock(char** ps);
     static void  vSkipCommentLine(char** ps);
@@ -263,6 +267,7 @@ namespace BASE
     static d8    dToFlt(const char* s);
     static char  cToHex(i8 i);
     static i8    iToI8(const char* s);
+    static i8    iToI8(const char* s, bool* bOverflowed);
     static void  vToLower(char* s);
     static void  vToUpper(char* s);
     static void  vTopTail(char* azArg, char cIntro);

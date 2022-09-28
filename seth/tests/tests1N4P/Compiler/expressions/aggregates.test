@@ -48,7 +48,7 @@ rows: 1
 
 -- basic select of two columnRefs with one in GROUP BY but no aggregation
 EXPLAIN SELECT n_name, n_nationkey FROM nation GROUP BY n_name;
-failure contains: 'Expression is not present in the GROUP BY list: rapidsse.public.nation.n_nationkey'
+failure contains: 'Expression does not appear in the GROUP BY list or as part of an aggregate: rapidsse.public.nation.n_nationkey'
 
 -- basic select of two columnRefs with both in GROUP BY. No aggregation
 EXPLAIN SELECT n_name, n_nationkey FROM nation GROUP BY n_name, n_nationkey;
@@ -77,11 +77,11 @@ failure contains: 'Cannot select both aggregate and non-aggregate expressions wi
 
 -- incorrect select of columnRef not in GROUP BY list
 EXPLAIN SELECT n_nationkey, SUM(n_regionkey) FROM nation GROUP BY n_name;
-failure contains: 'Expression is not present in the GROUP BY list: rapidsse.public.nation.n_nationkey'
+failure contains: 'Expression does not appear in the GROUP BY list or as part of an aggregate: rapidsse.public.nation.n_nationkey'
 
 -- incorrect select expr is not a superset of group by expr
 EXPLAIN SELECT n_nationkey, SUM(n_regionkey) FROM nation GROUP BY n_nationkey + n_regionkey;
-failure contains: 'Expression is not present in the GROUP BY list: rapidsse.public.nation.n_nationkey'
+failure contains: 'Expression does not appear in the GROUP BY list or as part of an aggregate: rapidsse.public.nation.n_nationkey'
 
 -- select expr is a superset of group by expr
 EXPLAIN SELECT n_nationkey + n_regionkey + 1, SUM(n_regionkey) FROM nation GROUP BY n_nationkey + n_regionkey;
@@ -102,15 +102,15 @@ failure contains: 'Cannot select both aggregate and non-aggregate expressions wi
 
 -- HAVING aggregate but no aggregates in select list
 EXPLAIN SELECT n_name, n_nationkey FROM nation GROUP BY n_name HAVING SUM(n_nationkey) > 0;
-failure contains: 'Expression is not present in the GROUP BY list: rapidsse.public.nation.n_nationkey'
+failure contains: 'Expression does not appear in the GROUP BY list or as part of an aggregate: rapidsse.public.nation.n_nationkey'
 
 -- HAVING clause with columnRef but no GROUP BY clause
 EXPLAIN SELECT n_name, n_nationkey FROM nation HAVING n_nationkey > 0;
-failure contains: 'Expression is not present in the GROUP BY list : rapidsse.public.nation.n_nationkey > 0'
+failure contains: 'Expression does not appear in the GROUP BY list or as part of an aggregate : rapidsse.public.nation.n_nationkey > 0'
 
 -- HAVING clause with columnRef but columnRef not in GROUP BY
 EXPLAIN SELECT n_name, n_nationkey FROM nation GROUP BY n_name HAVING n_nationkey > 0;
-failure contains: 'Expression is not present in the GROUP BY list: rapidsse.public.nation.n_nationkey'
+failure contains: 'Expression does not appear in the GROUP BY list or as part of an aggregate: rapidsse.public.nation.n_nationkey'
 
 -- HAVING clause with aggregate not in select list
 EXPLAIN SELECT n_name FROM nation GROUP BY n_name HAVING sum(n_nationkey) > 0;
@@ -131,11 +131,11 @@ failure contains: 'Cannot select both aggregate and non-aggregate expressions wi
 
 -- ORDER BY aggregate but no aggregates in select list
 EXPLAIN SELECT n_name, n_nationkey FROM nation GROUP BY n_name ORDER BY SUM(n_nationkey);
-failure contains: 'Expression is not present in the GROUP BY list: rapidsse.public.nation.n_nationkey'
+failure contains: 'Expression does not appear in the GROUP BY list or as part of an aggregate: rapidsse.public.nation.n_nationkey'
 
 -- ORDER BY clause with columnRef but columnRef not in GROUP BY
 EXPLAIN SELECT n_name, n_nationkey FROM nation GROUP BY n_name ORDER BY n_nationkey;
-failure contains: 'Expression is not present in the GROUP BY list: rapidsse.public.nation.n_nationkey'
+failure contains: 'Expression does not appear in the GROUP BY list or as part of an aggregate: rapidsse.public.nation.n_nationkey'
 
 -- ORDER BY clause with aggregate not in select list
 EXPLAIN SELECT n_name FROM nation GROUP BY n_name ORDER BY sum(n_nationkey);
@@ -390,6 +390,26 @@ rows: (*,'explainPlan','
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.nation)')
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Check for nested aggregates
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+explain select sum(n_nationkey) from nation;
+success
+
+explain select sum(count(n_nationkey)) from nation;
+failure contains: 'Nested aggregate expressions are not permitted'
+
+explain select sum(1 + avg(n_nationkey)) from nation;
+failure contains: 'Nested aggregate expressions are not permitted'
+
+explain select count(1 + 2 % count(n_nationkey)) from nation;
+failure contains: 'Nested aggregate expressions are not permitted'
+
+explain select 2 / (count(1 + 2 % count(n_nationkey))) from nation;
+failure contains: 'Nested aggregate expressions are not permitted'
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -

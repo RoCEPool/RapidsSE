@@ -66,6 +66,7 @@ namespace BASE
     i8    iColNo(void);
     void  vColNo(i8 iColNo);
     bool  bHasChars(void);
+    bool  bInvalidToken(void);
     bool  bIsArithmetic(void);
     bool  bIsAssign(void);
     bool  bIsBoolean(void);
@@ -78,6 +79,7 @@ namespace BASE
     bool  bIsName(void);
     bool  bIsNull(void);
     bool  bIsOther(void);
+    bool  bIsPipeline(void);
     bool  bIsRelational(void);
     bool  bIsSemicolon(void);
     bool  bIsString(void);

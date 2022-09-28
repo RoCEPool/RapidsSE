@@ -663,6 +663,19 @@ bool Token::bHasChars(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test for invalid token                                                     */
+/*----------------------------------------------------------------------------*/
+bool Token::bInvalidToken(void)
+{
+  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+
+  if (TN_INVALID == m_eToken)
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this token an arithmetic operator?                                      */
 /*----------------------------------------------------------------------------*/
 bool Token::bIsArithmetic(void)
@@ -837,6 +850,22 @@ bool Token::bIsOther(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this token a name?                                                      */
+/*----------------------------------------------------------------------------*/
+bool Token::bIsPipeline(void)
+{
+  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+
+  if (TN_NAME != m_eToken)
+    return false;
+
+  if (bSame("pipeline"_Stz))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this token a relational operator ?                                      */
 /*----------------------------------------------------------------------------*/
 bool Token::bIsRelational(void)
@@ -861,7 +890,8 @@ bool Token::bIsSemicolon(void)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
-  if (TN_OTHER == m_eToken && bSame(";"_Stz))
+  if (TN_STRING != m_eToken &&
+      bSame(";"_Stz))
     return true;
   else
     return false;

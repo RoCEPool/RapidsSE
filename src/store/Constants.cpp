@@ -182,11 +182,12 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("C_ALL"_Stz, C_ALL);
 
   vAddConstant("C_MAX_INDEXES"_Stz,       C_MAX_INDEXES);
-  vAddConstant("C_MAX_PTNSPERNODE"_Stz,         C_MAX_PTNSPERNODE);
+  vAddConstant("C_MAX_PTNSPERNODE"_Stz,   C_MAX_PTNSPERNODE);
   vAddConstant("C_MAX_NODES"_Stz,         C_MAX_NODES);
-  vAddConstant("C_MAX_LGLPTNS"_Stz,    C_MAX_LGLPTNS);
+  vAddConstant("C_MAX_LGLPTNS"_Stz,       C_MAX_LGLPTNS);
 
-  vAddConstant("C_LOW_BUFFERS"_Stz,       C_LOW_BUFFERS);
+  vAddConstant("C_LOW_BUFFERS"_Stz,          C_LOW_BUFFERS);
+  vAddConstant("C_LOW_BUFFERS_DIST_JOB"_Stz, C_LOW_BUFFERS_DIST_JOB);
   vAddConstant("C_MAX_COLUMNS"_Stz,       C_MAX_COLUMNS);
   vAddConstant("C_MAX_RECORD"_Stz,        C_MAX_RECORD);
   vAddConstant("C_MAX_PATH"_Stz,          C_MAX_PATH);
@@ -355,7 +356,8 @@ void Constants::vAddConstantsCpp(void)
   /* 22 */ vAddConstant("EC_INVALID_VALUE"_Stz,      EC_INVALID_VALUE);
                         
   /* 23 */ vAddConstant("EC_LOW_MEMORY"_Stz,         EC_LOW_MEMORY);
-  
+
+  /*    */ vAddConstant("EC_MAX_INDEX_NAME_LENGTH"_Stz,EC_MAX_INDEX_NAME_LENGTH);
   /* 24 */ vAddConstant("EC_MAX_INDEXES"_Stz,        EC_MAX_INDEXES);
   /*    */ vAddConstant("EC_MAX_COLUMNS"_Stz,        EC_MAX_COLUMNS);
   /*    */ vAddConstant("EC_MAX_ROW_LENGTH"_Stz,     EC_MAX_ROW_LENGTH);
@@ -717,6 +719,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("EV_M_LEFT"_Stz,            EV_M_LEFT);
   /*  0 */ vAddConstant("EV_M_LOWMEMORY"_Stz,       EV_M_LOWMEMORY);
   /*  0 */ vAddConstant("EV_M_NEXTBUFFER"_Stz,      EV_M_NEXTBUFFER);
+  /*  0 */ vAddConstant("EV_M_NODELOSSABORT"_Stz,   EV_M_NODELOSSABORT);
   /*  0 */ vAddConstant("EV_M_START"_Stz,           EV_M_START);
   /*  0 */ vAddConstant("EV_M_STARTED"_Stz,         EV_M_STARTED);
   /*  0 */ vAddConstant("EV_M_STREAMDEFRHT"_Stz,    EV_M_STREAMDEFRHT);

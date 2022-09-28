@@ -532,10 +532,23 @@ PoolBuffer* BufferPool::pLimit(void)
 bool BufferPool::bLowMemory(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
-    
+
   if (nFreeCount() >= C_LOW_BUFFERS)
     return false;
-    
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for low memory condition                                              */
+/*----------------------------------------------------------------------------*/
+bool BufferPool::bLowMemoryDist(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
+
+  if (nFreeCount() >= C_LOW_BUFFERS_DIST_JOB)
+    return false;
+
   return true;
 }
 

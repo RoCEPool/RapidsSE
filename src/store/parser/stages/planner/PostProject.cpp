@@ -40,12 +40,14 @@ public:
   QueryNode* m_pAggregateOp;  // Matches AggregateOp specifically
   QueryNode* m_pFilterOp;
   QueryNode* m_pOrderOp;
+  bool       m_bPostProjLitExprs;
 
   OpContainer() {
     m_pProjectOp = nullptr;
     m_pAggregateOp = nullptr;
     m_pFilterOp = nullptr;
     m_pOrderOp = nullptr;
+    m_bPostProjLitExprs = false;
   }
 };
 
@@ -109,7 +111,8 @@ GraphNav::eWalkCtrl PostProject::eStmtMarkerVisitor(PlanNode* pNode, s2K& sPath,
     return GraphNav::WALK_CONTINUE;
   }
 
-  if (!xContainer.m_pFilterOp && !xContainer.m_pOrderOp & !xContainer.m_pAggregateOp) {
+  if (!xContainer.m_pFilterOp && !xContainer.m_pOrderOp &&
+      !xContainer.m_pAggregateOp && !xContainer.m_bPostProjLitExprs) {
     // No potentially troublesome operators sitting above a projection.
     // So nothing for us to worry about here.
     return GraphNav::WALK_CONTINUE;
@@ -159,13 +162,71 @@ GraphNav::eWalkCtrl PostProject::eStmtSectionVisitor(PlanNode* pNode, s2K& sPath
     pContainer->m_pAggregateOp = _pQueryNode(pNode);
     pContainer->m_pProjectOp = _pQueryNode(pNode);
 
+    // Check if there are any literal expressions in this project that can be post-projected.
+    if (bHasPostProjectableLiteralColumn(pContainer->m_pProjectOp)) {
+      pContainer->m_bPostProjLitExprs = true;
+    }
+
   } else if (ProjectOp::bIsOfType(pNode)) {
     ASSERT(!pContainer->m_pProjectOp);
     pContainer->m_pProjectOp = _pQueryNode(pNode);
+
+    // Check if there are any literal expressions in this project that can be post-projected.
+    if (bHasPostProjectableLiteralColumn(pContainer->m_pProjectOp)) {
+      pContainer->m_bPostProjLitExprs = true;
+    }
+
     return GraphNav::WALK_SKIP_SUBTREE;
   }
 
   return GraphNav::WALK_CONTINUE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns true if the project/aggregateOp contains a purely literal          */
+/* expression that can be post-projected.                                     */
+/*----------------------------------------------------------------------------*/
+b1 PostProject::bHasPostProjectableLiteralColumn(QueryNode* pProjectOp)
+{
+  ASSERT(ProjectOp::bIsOfType(pProjectOp));
+
+  // If we have a projected column that is purely literal (e.g. 'abc', or 1+1)
+  // then we really don't need to project this from the lowest levels of the
+  // plan, as that is just a waste of pushing duplicate data around that could
+  // otherwise be added in a post-project step. It also helps us solve issue
+  // SE-216.
+  // There is one corner case however, and that is with a query like:
+  //   SELECT 'abc' from t1;
+  // Here there are only literal expressions being projected, no column references.
+  // So we do want these literal projected columns to be pushed down.
+  // Where we can simplify things is where there is one or more purely literal
+  // columns and at last one non-purely literal column. e.g.:
+  //   SELECT 'abc', 1+1, 2*colA from t1;
+  // Here the 'abc' and 1+1 can be removed from the projectOp and added to
+  // a post-project.
+  // This function simply detects this case of there being at least one purely
+  // literal column and one non-literal column.
+
+  b1 bHasPureLiteralCol = false;
+  b1 bHasNonLiteralCol = false;
+
+  // Iterate the projected columns
+  PlanNodeIter* pIter = ProjectOp::pProjectedColumns(pProjectOp)->pNewChildrenIter();
+  while (pIter->bHasNext()) {
+    QueryNode* pProjectedCol = _pQueryNode(pIter->pNext());
+    ASSERT(ProjectedColumn::bIsOfType(pProjectedCol));
+
+    if (ProjectedColumn::bIsFullyLiteral(pProjectedCol) &&
+        !ProjectedColumn::bContainsAnAggregate(pProjectedCol)) {
+      bHasPureLiteralCol = true;
+    } else {
+      bHasNonLiteralCol = true;
+    }
+  }
+
+  delete pIter;
+
+  return bHasPureLiteralCol && bHasNonLiteralCol;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -195,9 +256,14 @@ void PostProject::vAddPostProject(void* pvContainer, QueryNode* pStatementMarker
   // We don't need to free this object.
   QueryNode* pCorrelatedExprs = PlanObject::pCorrelatedExprs(pContainer->m_pProjectOp, pRootNode);
 
+
+  if (pContainer->m_bPostProjLitExprs) {
+    bPostProjectRequired = true;
+  }
+
   // Check if there are any expressions in the filter, order ops or Aggregate group-by
   // that are not equal to any of the expressions in the project list.
-  if (pContainer->m_pFilterOp) {
+  if (!bPostProjectRequired && pContainer->m_pFilterOp) {
     // Get the expr
     QueryNode* pFilterExpr = FilterOp::pFilterExpr(pContainer->m_pFilterOp);
     ASSERT(pFilterExpr);
@@ -279,7 +345,6 @@ void PostProject::vAddPostProject(void* pvContainer, QueryNode* pStatementMarker
       QueryNode* pColumnCopy = pProjectedColumn->pDeepCopy(true);
       pSelectList->vAppend(pColumnCopy);
     }
-
     delete pColumnIter;
 
     // Create the new post project
@@ -289,11 +354,31 @@ void PostProject::vAddPostProject(void* pvContainer, QueryNode* pStatementMarker
 
     // Add in the post project
     pStatementMarker->vInsertAsParentOfChildren(pPostProject);
+
+    // Potentially remove any purely literal expression columns from being projected
+    // below this post-project.
+    if (pContainer->m_bPostProjLitExprs) {
+      QueryNode* pProjectedColumns = ProjectOp::pProjectedColumns(pContainer->m_pProjectOp);
+
+      PlanNodeIter* pProjColumnIter = pProjectedColumns->pNewChildrenIter();
+
+      while (pProjColumnIter->bHasNext()) {
+        QueryNode* pProjectedColumn = _pQueryNode(pProjColumnIter->pNext());
+        if (ProjectedColumn::bIsFullyLiteral(pProjectedColumn) &&
+            !ProjectedColumn::bContainsAnAggregate(pProjectedColumn)) {
+          pProjColumnIter->vRemove();
+          delete pProjectedColumn;
+        }
+      }
+
+      delete pProjColumnIter;
+    }
   }
 
   pProjectedColumnList->vDeleteAll();
   delete pProjectedColumnList;
 }
+
 
 /*============================================================================*/
 /* end                                                                        */

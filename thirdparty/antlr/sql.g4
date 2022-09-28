@@ -8,7 +8,8 @@ grammar sql ;
 
 // statement / query -----------------------------------------------------------
 statement         : (ANTLR ':')? statementChoice ';' ;
-statementChoice   :  queryStatement | explainStatement | statisticsStatement ;
+statementChoice   :  queryStatement | explainStatement ;
+//statementChoice   :  queryStatement | explainStatement | statisticsStatement ;
 
 queryStatement    : query ;
 explainStatement  : (queryHint)* EXPLAIN  explainOptions* statementChoice ;
@@ -25,12 +26,12 @@ statisticsStatement : (queryHint)* (STATS | STATISTICS) statementChoice ;
 query             : (queryHint)*
                     ( selectQuery
                     | setQuery
-                    | insertQuery
-                    | deleteQuery
-                    | updateQuery
-                    | createQuery
-                    | dropQuery
-                    | truncateQuery
+//                    | insertQuery
+//                    | deleteQuery
+//                    | updateQuery
+//                    | createQuery
+//                    | dropQuery
+//                    | truncateQuery
                     ) ;
 
 queryHint         : HINT_START (hint)? (',' hint)* HINT_END ;
@@ -342,8 +343,8 @@ expr
 // The predicate prevents AND from being recognized as an expression operator when
 // it occurs in the context of a BETWEEN operator.  [rm]
  | expr {!(dynamic_cast<sqlParser::BetweenOpContext*>(_ctx->parent))}? op=AND expr   #logicOp
- | expr                                                                op=OR  expr   #logicOp
  | expr                                                                op=XOR expr   #logicOp
+ | expr                                                                op=OR  expr   #logicOp
  ;
 
 

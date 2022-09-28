@@ -79,6 +79,34 @@ void CaseExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Represent the expression as types instead of names. Append to the buffer   */
+/*----------------------------------------------------------------------------*/
+void CaseExpr::vDescribeAsTypes(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  sBuf.vConcat("CASE "_Stz);
+
+  ConditionalQueryNodeIter* pWhenIter = CaseExpr::pWhenExprIter(_pQueryNode(pNode));
+  while (pWhenIter->bHasNext()) {
+    QueryNode* pWhenExpr = pWhenIter->pNext();
+    ASSERT(WhenExpr::bIsOfType(pWhenExpr));
+
+    WhenExpr::vDescribeAsTypes(pWhenExpr, sBuf, pRootNode);
+
+    sBuf.vConcat(" "_Stz);
+  }
+
+  QueryNode* pElseExpr = CaseExpr::pElseExpr(_pQueryNode(pNode));
+  ElseExpr::vDescribeAsTypes(pElseExpr, sBuf, pRootNode);
+
+  sBuf.vConcat(" END"_Stz);
+
+  delete pWhenIter;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Add a WHEN clause to this start of this CASE expression                    */
 /*----------------------------------------------------------------------------*/
 void CaseExpr::vPushWhenExpr(QueryNode* pCaseExpr, QueryNode *pWhenExpr)

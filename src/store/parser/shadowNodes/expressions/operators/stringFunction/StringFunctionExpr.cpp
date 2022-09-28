@@ -39,6 +39,19 @@ void StringFunctionExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNo
   else NEVER_REACH
 }
 
+/*----------------------------------------------------------------------------*/
+/* Represent the expression as types instead of names. Append to the buffer   */
+/*----------------------------------------------------------------------------*/
+void StringFunctionExpr::vDescribeAsTypes(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  if      (SubstringExpr::bIsOfType(pNode))  {SubstringExpr::vDescribeAsTypes(pNode, sBuf, pRootNode); }
+//  else if (     TrimExpr::bIsOfType(pNode))  {     TrimExpr::vDescribeAsTypes(pNode, sBuf, pRootNode); }
+//  else if (   ConcatExpr::bIsOfType(pNode))  {   ConcatExpr::vDescribeAsTypes(pNode, sBuf, pRootNode); }
+  else NEVER_REACH
+}
 
 /*----------------------------------------------------------------------------*/
 /* Returns true if the given node is derived from the expr definition         */

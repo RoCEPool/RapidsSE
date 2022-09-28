@@ -29,7 +29,7 @@ namespace BASE
                               TokenVec* pFindVec, TokenVec* pWithVec);
     //static TokenVec* pTokeniseSen(Stz* szString);
 
-    void vAdvanceCurr(bool bIncItems);
+    bool bAdvanceCurr(bool bIncItems);
     void vAppendToken(Stz* szArgChars, eTN eToken);
     void vAppendToken(Token* pToken);
     void vAppendVector(TokenVec* pTokenVec);
@@ -42,7 +42,7 @@ namespace BASE
     void vCurrToken(i8 i_Tkn);
     Token* pCurrToken(void);
     void vDbgStr(Stz* szDstStr);
-    void vDumpVec(i8 nPlusMore);
+    void vDumpVec(i8 nPlusMore=0);
     void vDuplicateVector(TokenVec* pSrcVec);
     i8   iFindToken(Stz* pLookFor);
     i8   iFindToken(Stz* pLookFor, eTN eToken);

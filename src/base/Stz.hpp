@@ -8,8 +8,17 @@ namespace BASE
   class Stz
   {
   private:
+#ifdef __APPLE__
+    // this only seems to work on APPLE
+    union
+    {
+      char m_caChar[1];
+      char _S[]; //debug help
+    };
+#else
     char m_caChar[1];
-  
+#endif
+
   public:
     void* operator new(size_t);
   

@@ -85,6 +85,7 @@ IndexTree::IndexTree(Index* pIndex, IndexDef* pIndexDef, i8 i_TablePtn)
   m_pIndexDef = pIndexDef ? new IndexDef(pIndexDef) : nullptr;
   m_i_TablePtn = i_TablePtn;
   m_pRootEntBuffer  = nullptr;
+  m_pPayStrBuffer = nullptr;
   
   m_nEntryBuffers  = 0;
   
@@ -107,6 +108,7 @@ IndexTree::~IndexTree(void) noexcept(false)
 
   vTruncate();
   delete m_pIndexDef;
+  delete m_pPayStrBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -123,6 +125,9 @@ void IndexTree::vDump(eCN eClass, Object* pObject, Stz* aTab)
   UNUSED(aTab);
 }
 
+void* aIndexTree_allotPayStr(void* pIndexTree, char* sStr) {
+  return (void*)IndexTree::aAllotPayStr((IndexTree*)pIndexTree, (Stz*)sStr);
+}
 void* aIndexTree_begin(void* pIndexTree, void** ppEntBuffer) {
   return (void*)IndexTree::aIndexBegin((IndexTree*)pIndexTree, (EntBuffer**) ppEntBuffer);
 }
@@ -147,6 +152,16 @@ void *aIndexTree_positionLE(void* aIndexTree, void* aKey) {
 }
 void *aIndexTree_positionLT(void* aIndexTree, void* aKey) {
   return IndexTree::aPositionLT((IndexTree*) aIndexTree, (Key*) aKey);
+}
+
+/*----------------------------------------------------------------------------*/
+/* allocate a pay load string                                                  */
+/*----------------------------------------------------------------------------*/
+char* IndexTree::aAllotPayStr(IndexTree* pIndexTree, Stz* szStz) {
+
+  _static_
+
+  return (char*)pIndexTree->pAllotPayStr(szStz)->szStz();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -361,6 +376,22 @@ Ent* IndexTree::aPositionLT(IndexTree* pIndexTree, Key* aKey)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* allot a pay load string                                                    */
+/*----------------------------------------------------------------------------*/
+PayStr* IndexTree::pAllotPayStr(Stz* szStz)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+
+  if (! m_pPayStrBuffer) {
+    m_pPayStrBuffer = new PayStrBuffer;
+  }
+
+  PayStr* pPayStr = new (m_pPayStrBuffer,szStz) PayStr;
+
+  return pPayStr;
+}
 
 /*----------------------------------------------------------------------------*/
 /* analyze table                                                              */

@@ -300,7 +300,7 @@ rows: (*,'explainPlan','
 
 // Cannot extract year from a time
 EXPLAIN SELECT EXTRACT (YEAR FROM COL4) FROM extractTest;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: EXTRACT (YEAR FROM rapidsse.public.extractTest.COL4)'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (EXTRACT (YEAR FROM TIME)) in expression (EXTRACT (YEAR FROM rapidsse.public.extractTest.COL4))'
 
 // Cannot extract year from an interval_dt
 // TODO: Enable when intervals are supported
@@ -362,7 +362,7 @@ rows: (*,'explainPlan','
 
 // Cannot extract month from a time
 EXPLAIN SELECT EXTRACT (MONTH FROM COL4) FROM extractTest;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: EXTRACT (MONTH FROM rapidsse.public.extractTest.COL4)'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (EXTRACT (MONTH FROM TIME)) in expression (EXTRACT (MONTH FROM rapidsse.public.extractTest.COL4))'
 
 // Cannot extract month from an interval_dt
 // TODO: Enable when intervals are supported
@@ -424,7 +424,7 @@ rows: (*,'explainPlan','
 
 // Cannot extract day from a time
 EXPLAIN SELECT EXTRACT (DAY FROM COL4) FROM extractTest;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: EXTRACT (DAY FROM rapidsse.public.extractTest.COL4)'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (EXTRACT (DAY FROM TIME)) in expression (EXTRACT (DAY FROM rapidsse.public.extractTest.COL4))'
 
 // Cannot extract day from an interval_ym
 // TODO: Enable when intervals are supported
@@ -486,7 +486,7 @@ rows: (*,'explainPlan','
 
 // Cannot extract hour from a date
 EXPLAIN SELECT EXTRACT (HOUR FROM COL3) FROM extractTest;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: EXTRACT (HOUR FROM rapidsse.public.extractTest.COL3)'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (EXTRACT (HOUR FROM DATE)) in expression (EXTRACT (HOUR FROM rapidsse.public.extractTest.COL3))'
 
 // Cannot extract hour from an interval_ym
 // TODO: Enable when intervals are supported
@@ -548,7 +548,7 @@ rows: (*,'explainPlan','
 
 // Cannot extract minute from a date
 EXPLAIN SELECT EXTRACT (MINUTE FROM COL3) FROM extractTest;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: EXTRACT (MINUTE FROM rapidsse.public.extractTest.COL3)'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (EXTRACT (MINUTE FROM DATE)) in expression (EXTRACT (MINUTE FROM rapidsse.public.extractTest.COL3))'
 
 // Cannot extract minute from an interval_ym
 // TODO: Enable when intervals are supported
@@ -610,7 +610,7 @@ rows: (*,'explainPlan','
 
 // Cannot extract second from a date
 EXPLAIN SELECT EXTRACT (SECOND FROM COL3) FROM extractTest;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: EXTRACT (SECOND FROM rapidsse.public.extractTest.COL3)'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (EXTRACT (SECOND FROM DATE)) in expression (EXTRACT (SECOND FROM rapidsse.public.extractTest.COL3))'
 
 // Cannot extract second from an interval_ym
 // TODO: Enable when intervals are supported
@@ -718,23 +718,23 @@ rows: (*,'explainPlan','
 // -----
 // Cannot extract from an integer
 EXPLAIN SELECT EXTRACT (YEAR FROM COL1) FROM extractTest;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: EXTRACT (YEAR FROM rapidsse.public.extractTest.COL1)'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (EXTRACT (YEAR FROM INTEGER)) in expression (EXTRACT (YEAR FROM rapidsse.public.extractTest.COL1))'
 
 // Cannot extract from an string
 EXPLAIN SELECT EXTRACT (YEAR FROM COL2) FROM extractTest;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: EXTRACT (YEAR FROM rapidsse.public.extractTest.COL2)'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (EXTRACT (YEAR FROM VARCHAR)) in expression (EXTRACT (YEAR FROM rapidsse.public.extractTest.COL2))'
 
 // Cannot extract from an float
 EXPLAIN SELECT EXTRACT (YEAR FROM COL8) FROM extractTest;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: EXTRACT (YEAR FROM rapidsse.public.extractTest.COL8)'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (EXTRACT (YEAR FROM FLOAT)) in expression (EXTRACT (YEAR FROM rapidsse.public.extractTest.COL8))'
 
 // Cannot extract from an decimal
 EXPLAIN SELECT EXTRACT (YEAR FROM COL9) FROM extractTest;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: EXTRACT (YEAR FROM rapidsse.public.extractTest.COL9)'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (EXTRACT (YEAR FROM DECIMAL)) in expression (EXTRACT (YEAR FROM rapidsse.public.extractTest.COL9))'
 
 // Cannot extract from an boolean
 EXPLAIN SELECT EXTRACT (YEAR FROM COL10) FROM extractTest;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: EXTRACT (YEAR FROM rapidsse.public.extractTest.COL10)'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: (EXTRACT (YEAR FROM BOOLEAN)) in expression (EXTRACT (YEAR FROM rapidsse.public.extractTest.COL10))'
 
 
 // -----

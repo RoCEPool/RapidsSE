@@ -26,7 +26,6 @@ namespace STORE
    ~Bench(void) noexcept(false);
   
     void vPrintBench(void);
-    void vRenumberCards(void);
 
   private:
     Footer* aFooter(void);

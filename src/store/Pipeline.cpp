@@ -57,6 +57,7 @@ Pipeline::Pipeline(Job*        pPipelineJob,
   
   m_bCancelled    = false;
   m_bLowMemory    = false;
+  m_bNodeLossAbort = false;
     
   m_ixAccum0 = 0;
   m_ixAccum1 = 0;
@@ -85,6 +86,16 @@ Pipeline::~Pipeline(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* is pipeline being aborted due to node loss ?                               */
+/*----------------------------------------------------------------------------*/
+bool Pipeline::bNodeLossAbort(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+
+  return m_bNodeLossAbort;
+}
 
 /*----------------------------------------------------------------------------*/
 /* add to accumumlator                                                         */
@@ -263,6 +274,17 @@ bool Pipeline::bLowMemory(void)
     vDebugPoint();
 
   return m_bLowMemory;
+}
+
+/*----------------------------------------------------------------------------*/
+/* node loss abort the pipeline                                               */
+/*----------------------------------------------------------------------------*/
+void Pipeline::vNodeLossAbort(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+
+  m_bNodeLossAbort = true;
+  m_pVertexRoot->vNodeLossAbort();
 }
 
 /*----------------------------------------------------------------------------*/

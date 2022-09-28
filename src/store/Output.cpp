@@ -134,7 +134,16 @@ void Output::vDrainBufferQueue(void)
     
     Operand* pOperand = pPopBufferQueue_blocking();
     
-    if (! pOperand) {
+    if (! pOperand ) {
+      if ( ! AM::PROCESS::bSeRunning() ) {
+        Stz *sNodeName = AM::pGrid()->pThisNode()->szNodeNm();
+        vTrace("\nerror: %s; %s; %s; \n"_Stz,
+               sNodeName, aEC2[EC_NODE_LOSS], aErrorMsg[EC_NODE_LOSS]);
+        m_bHasError = true;
+        m_bToExit = true;
+        return;
+      }
+
       AM::vNapUsec(1000,CN_OUTPUT);
       continue;
     }
@@ -274,15 +283,16 @@ Operand* Output::pPopBufferQueue_blocking(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
       
-  for (;;) {
-    
+  while (AM::PROCESS::bSeRunning()) {
+
     Operand* pOperand = _pOperand(m_pOutputQueue->pPop());
     if (pOperand)
       return pOperand;
     
     AM::vNapUsec(1000,CN_OUTPUT);
   }
-  
+
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -384,6 +394,11 @@ bool Output::bProcessOperand(Operand* pOperand)
 
           vTrace("\nerror: %s; %s; %s; \n"_Stz,
                  sNodeName, aEC2[eErrorCode], szErrorText);
+
+          m_ixRowsProcessed = 0;
+          m_ixRowsInvalid   = 0;
+          m_ixRowsSkipped   = 0;
+
           m_bHasError = true;
         }
         else {
@@ -439,6 +454,10 @@ bool Output::bProcessOperand(Operand* pOperand)
           vTrace("RowsProcessed: %lld\n"_Stz, *m_ixRowsProcessed);
           vTrace("\nerror: low memory\n"_Stz);
           m_bHasError = true;
+
+          m_ixRowsProcessed = 0;
+          m_ixRowsInvalid   = 0;
+          m_ixRowsSkipped   = 0;
         }
       } else if (pMarker->eOpMarker() == OM_CHILDEXIT) {
         m_bToExit = true;

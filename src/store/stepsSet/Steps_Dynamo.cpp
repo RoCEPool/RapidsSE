@@ -103,8 +103,10 @@ void Step::vDynamoGet(void)
 void Step::vDynamoNew(void)
 {
   ENTRY();
-  
-  m_pLogicUnit->m_xpDynamo = new Dynamo(m_pJob->pJobTags());
+
+  Job* pJob = MY::pJob();
+
+  m_pLogicUnit->m_xpDynamo = new Dynamo(pJob->pJobTags());
 
   EXIT();
 }

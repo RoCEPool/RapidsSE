@@ -35,7 +35,7 @@ extern BufferPool*   gpBufferPool;
 extern Stz*          gsBuildGitHash;
 extern CmdLineArgs   gxCmdLineArgs;
 extern PromptCatalog gxPromptCatalog;
-
+extern s256          gszTraceFilePath;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -207,25 +207,29 @@ void SePrompt::vPromptLoop(void)
   while (m_bContinue) {
 
     try {
-    if (! m_pCurrentDeputy && ! (m_pCurrentDeputy = pFindDeputy())) {
-      vTrace("No Deputies\n"_Stz);
-      RASSERT(0);
-    }
+      if (!m_pCurrentDeputy && !(m_pCurrentDeputy = pFindDeputy())) {
+        vTrace("No Deputies\n"_Stz);
+        RASSERT(0);
+      }
 
-    m_pInput_deputy = m_pCurrentDeputy->pInput();
-    m_pInpTknVec    = m_pInput_deputy->pInpTknVec();
-    m_pInpTagSet    = m_pInput_deputy->pInpTagSet();
+      m_pInput_deputy = m_pCurrentDeputy->pInput();
+      m_pInpTknVec = m_pInput_deputy->pInpTknVec();
+      m_pInpTagSet = m_pInput_deputy->pInpTagSet();
 
-    Stz* szToDo = this->szToDo();
+      Stz *szToDo = this->szToDo();
 
-    if (! *szToDo->azChar())
-      m_pInput_deputy->vRawInputClear();
+      if (!*szToDo->azChar())
+        m_pInput_deputy->vRawInputClear();
 
-    if (! bReadCommand())
-      continue;
+      m_eInputError = EC_NONE;
+      if (! bReadCommand(m_eInputError)) {
+        if (m_eInputError != EC_NONE)
+          vTrace("error: %s\n"_Stz, aErrorMsg[m_eInputError]);
+        continue;
+      }
 
-    //    Stz* szRaw = szRawInput();
-    //    vTrace("SePrompt got command : %s\n"_Stz,szRaw);
+      //    Stz* szRaw = szRawInput();
+      //    vTrace("SePrompt got command : %s\n"_Stz,szRaw);
       eEC eErrorCode = EC_NONE;
       if (!bExamineCommand(&eErrorCode)) {
         if (eErrorCode != EC_NONE)
@@ -235,13 +239,13 @@ void SePrompt::vPromptLoop(void)
 
       //vTrace("Prompt-RawInput: %s\n"_Stz,m_pInput->szRawInput());
 
-      Stz* szCmdFile = m_pInput_deputy->szPath();
-      i8   iCmdLine  = pTkn(0)->iLineNo();
+      Stz *szCmdFile = m_pInput_deputy->szPath();
+      i8 iCmdLine = pTkn(0)->iLineNo();
 
       // output the script file cmd statement being executed
-      if ( ! szCmdFile->bSame("stdin"_Stz) ) {
+      if (!szCmdFile->bSame("stdin"_Stz)) {
         m_pInput_deputy->pInpTknVec()->vToTknString(sCmd);
-        vTrace("\n%s\n"_Stz,sCmd.azChar());
+        vTrace("\n%s\n"_Stz, sCmd.azChar());
       }
 
       if (*szCmdFile->azChar()) {
@@ -504,8 +508,18 @@ SeDeputy* SePrompt::pFindDeputy(void)
 TokenVec* SePrompt::pInpTknVec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
+
   return m_pInpTknVec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get tag set                                                                */
+/*----------------------------------------------------------------------------*/
+TagSet* SePrompt::pInpTagSet(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+
+  return m_pInpTagSet;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -703,7 +717,25 @@ void SePrompt::vPrintPrompt(void)
     fflush(stdin);
     return;
   }
-  
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // print the git branch once
+
+  static bool bGitBranch = true;
+
+  if (bGitBranch) {
+    bGitBranch = false;
+    File* pFile = new File(this);
+    if (pFile->bOpenRead("../.git/HEAD"_Stz)) {
+      s256 sHead;
+      if (pFile->bReadLine(sHead))
+        vTrace("%s\n"_Stz,sHead.azChar());
+      pFile->vClose();
+    }
+    delete pFile;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   bool bLowMem = AM::MEMORY::bIsRunningLow();
   
@@ -828,7 +860,7 @@ Stz* SePrompt::szRawInput(void)
 /*----------------------------------------------------------------------------*/
 /* read command from input                                                    */
 /*----------------------------------------------------------------------------*/
-bool SePrompt::bReadCommand(void)
+bool SePrompt::bReadCommand(eEC& eInputError)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
@@ -837,10 +869,15 @@ bool SePrompt::bReadCommand(void)
 
   if (bStdIn() && ! *this->szToDo()->azChar()) {
     //vReportOther();
+
+    if (! AM::PROCESS::bSeRunning())
+      vTrace("\n\n** NODE LOST (%s) **\n\n"_Stz,AM::NODE::szNodeNm());
+
     vPrintPrompt();
   }
-  
-  vResetExtractedTagSet();
+
+  if (! *this->szToDo()->azChar())
+    vResetExtractedTagSet();
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // read next command
@@ -903,7 +940,9 @@ bool SePrompt::bReadCommand(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // general case
   
-  m_pInput_deputy->vReadCommand();
+  if (! m_pInput_deputy->bReadCommand(eInputError))
+    return false;
+
   m_pInpTknVec->vIntegrityCheck();
   
   return true;
@@ -1017,7 +1056,11 @@ void SePrompt::vReportTrace(void)
   if (! m_oPmtTagSet.bHasName(C_PMT_TRCFILE))
     return;
 
-  i8 iSizeTrace = File::nSize(gpAttachMap->m_sTraceFile);
+  i8 iSizeTrace = 0;
+
+  if( ! gszTraceFilePath.bIsEmpty()) {
+    iSizeTrace = File::nSize(gszTraceFilePath);
+  }
   
   s32 sTrace_magn;
   MagLib::vByteMag(iSizeTrace,sTrace_magn);

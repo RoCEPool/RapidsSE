@@ -61,7 +61,7 @@ void STORE::vCheckAssumptions(void)
   ALWAYS(sizeof(Rrf) == 8);
 
   
-  ALWAYS(C_LOAD_READCHUNK < C_WSP_CSVBUFFER);
+  ALWAYS(C_CHUNK_SIZE < C_WSP_CSVBUFFER);
   
   //LOGGABLE ALWAYS(CacheLine::bMultipleCacheLines(sizeof(DataBuffer)));
   

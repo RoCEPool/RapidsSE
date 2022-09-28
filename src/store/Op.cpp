@@ -253,7 +253,7 @@ bool Op::bAllocateMemory()
 void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   if (AM::OPERAND::bIsOoO(pOperand)) {
     vAppendOoO(pOperand,pTriggeringTask);
     return;
@@ -312,6 +312,17 @@ void Op::vAppendOoO(Operand* pOperand, Task* pTriggeringTask)
   IGNORE_RETURN(m_pPipeIn->pQueueOoO()->iAppendOperand(pOperand));
 
   AM::vOperandsInc();
+
+  RASSERT(pOperand->bIsMarker());
+  Marker* pMarker = _pMarker(pOperand);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  /// if NODELOSS, latch the opertor queue
+  // no more operands can be accepted !!!
+  if (pMarker->eOpMarker() == OM_NODELOSSABORT) {
+    m_pPipeIn->pQueueOoO()->vLatch(true);
+    m_pPipeIn->pQueueLeft()->vLatch(true);
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for biding op/task
@@ -950,6 +961,29 @@ i8 Op::iNodeId(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* send EV_M_NODELOSSABORT to this operator                                   */
+/*----------------------------------------------------------------------------*/
+void Op::vNodeLossAbort(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+
+  Job* pJob = this->pOuterJobOfOp();
+
+  Task* pTask = this->pTask();
+
+  RASSERT( ! m_pOpTags->bHasName(C_TAG_DEDICATEDTHD) );
+
+  if (pTask) {
+    vTrace("Sending NODELOSSABORT to OP %s %s\n"_Stz, m_p_OpSpec->szOpNm(), m_p_OpSpec->pStageSpec()->szStageNm());
+    Operand *pOperand = AM::MARKER::pNewMarker(OM_NODELOSSABORT, pJob);
+    vAppendLeft(pOperand, pTask);
+  }
+  else
+    vTrace("SKIPPINGSending NODELOSSABORT to OP %s %s\n"_Stz, m_p_OpSpec->szOpNm(), m_p_OpSpec->pStageSpec()->szStageNm());
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* get i_Op                                                                   */
 /*----------------------------------------------------------------------------*/
 i8 Op::i_Op(void)
@@ -1258,7 +1292,7 @@ Pipeline* Op::pPipeline(void)
 void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-    
+
   vOpTrace(pOperand,(Stz*)__func__);
   
   if (pOperand->bIsBuffer()) {
@@ -1323,7 +1357,7 @@ void Op::vPipeToThis(Operand* pOperand, Task* pTriggeringTask)
 void Op::vPipeToOutput(Operand* pOperand)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
   Job* pJob = MY::pJob();
   RASSERT(pJob);
 

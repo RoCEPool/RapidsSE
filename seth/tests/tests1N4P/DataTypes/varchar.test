@@ -48,6 +48,27 @@ rows:
  ('yellow')
  ('orange')
 
+
+//------------------------------------------------------------------------------
+select vch_col14 from datums where vch_col14 != null;
+rows: 0
+
+select vch_col14 from datums where vch_col14 = null;
+rows: 0
+
+select vch_col14 from datums where vch_col14 > null;
+rows: 0
+
+select vch_col14 from datums where vch_col14 >= null;
+rows: 0
+
+select vch_col14 from datums where vch_col14 < null;
+rows: 0
+
+select vch_col14 from datums where vch_col14 <= null;
+rows: 0
+
+
 //------------------------------------------------------------------------------
 select 'literal' from datums;
 rows:

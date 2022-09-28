@@ -1,0 +1,32 @@
+/*============================================================================*/
+/* _LR - Join L with R                                                        */
+/*============================================================================*/
+
+create table L(l_a integer);
+
+create index Li on L(l_a);
+
+load L "../DATA/JOINS/L.csv";
+
+//select * from L;
+
+create table R(r_a integer,r_b varchar,r_c integer,r_d varchar);
+
+create index Ri on R(r_a);
+
+load R "../DATA/JOINS/R.csv";
+
+/time select * from R;
+
+//select * from L,R where l_a = r_a;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//optimise_test _LR_statement ;
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+drop table L;
+drop table R;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

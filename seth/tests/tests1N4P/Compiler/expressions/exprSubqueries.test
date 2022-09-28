@@ -705,7 +705,7 @@ SELECT n_nationkey, SUM(n_regionkey)
 FROM nation
 GROUP BY n_nationkey
 HAVING SUM(n_regionkey) >= ( SELECT AVG(r_regionkey) FROM region HAVING SUM(n_regionkey) > 0 );
-failure contains: 'Expression is not present in the GROUP BY list: rapidsse.public.nation.n_regionkey'
+failure contains: 'Expression does not appear in the GROUP BY list or as part of an aggregate: rapidsse.public.nation.n_regionkey'
 
 
 // Correlated subquery in SELECT list

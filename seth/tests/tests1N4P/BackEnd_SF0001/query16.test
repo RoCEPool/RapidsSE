@@ -18,6 +18,761 @@ select p_brand, p_type, p_size, count(distinct ps_suppkey) as supplier_cnt
 
 */
 
+//------------------------------------------------------------------------------
+// Pipeline Generated
+//------------------------------------------------------------------------------
+/*
+
+EXPLAIN STAGE TRANSLITERATE
+  select p_brand, p_type, p_size, count(distinct ps_suppkey) as supplier_cnt
+     from partsupp, part
+     where p_partkey = ps_partkey
+     and p_brand <> 'Brand#45'
+     and p_type not like 'MEDIUM POLISHED%'
+     and p_size in (49,14,23,45,19,3,36,9)
+     and ps_suppkey not in (
+     select s_suppkey
+     from supplier
+     where s_comment like '%Customer%Complaints%' )
+     group by p_brand, p_type, p_size
+     order by supplier_cnt desc, p_brand, p_type, p_size;
+
+pipeline unamed
+begin
+  pipeline __subquery0003
+  begin
+    stage stageStart on origin :
+      start
+      | pulse once
+      | stageMarker3068
+    stage stageMarker3068 on all partitions :
+      scan rapidsse public supplier
+      | filter " type BOOLEAN  }  $7 '%Customer%Complaints%'  8 10 matchMiddle1  "
+      | project " type INTEGER as s_suppkey $1 "
+      | combined 0
+      | stageMarker3071
+    stage stageMarker3071 on all partitions :
+
+      stageLast
+    stage stageLast on origin :
+      output
+      | sink
+      | stageStart
+  end
+
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker3074
+  stage stageMarker3074 on all partitions :
+    scan rapidsse public partsupp
+    | stageMarker3077 broadcast
+  stage stageMarker3077 on all partitions :
+    scan rapidsse public part
+    | abstractJoin " 1  "
+    | stageMarker3080
+  stage stageMarker3080 on all partitions :
+    filter " type BOOLEAN  $6 $1 ==  $9 ''Brand#45''  !=  and  }  $10 ''MEDIUM POLISHED%''  16 matchLeading  not  and  }  49  14  23  45  19  3  36  9  #8  $11 in  and  }  __subquery0003  #1  $2 in  not  and  "
+    | combined 0
+    | stageMarker3083
+  stage stageMarker3083 on origin :
+    aggreg " groupBy  type VARCHAR as p_brand $9 , type VARCHAR as p_type $10 , type INTEGER as p_size $11 aggregates  type VARCHAR $K1 , type VARCHAR $K2 , type INTEGER $K3 , type INTEGER as supplier_cnt )  $2 countDistinct  "
+    | sort " type INTEGER $4 DESC  , type VARCHAR as p_brand $1 ASC  , type VARCHAR as p_type $2 ASC  , type INTEGER as p_size $3 ASC  "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+*/
+
+trackMemory;
+success
+
+//------------------------------------------------------------------------------
+// OPTIMIZED Q1
+// Changed all pipe to - next and first (makes it easier)
+// Changed all Ordinal columns to Symbolic (makes it easier)
+// Changed Scans followed by AbstractJoins to concrete joins
+//------------------------------------------------------------------------------
+/*
+pipeline unamed
+begin
+  pipeline __subquery0003
+  begin
+    stage stageStart on origin :
+      start
+      | pulse once
+      | next
+    stage stageMarker3068 on all partitions :
+      scan rapidsse public supplier
+      | filter " type BOOLEAN  }  S_COMMENT '%Customer%Complaints%'  8 10 matchMiddle1  "
+      | project " type INTEGER as S_SUPPKEY S_SUPPKEY "
+      | combined 0
+      | next
+    stage stageMarker3071 on all partitions :
+      stageLast
+    stage stageLast on origin :
+      output
+      | sink
+      | first
+  end
+
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+  stage stageMarker3074 on all partitions :
+    scan rapidsse public partsupp
+    | stageMarker3077 broadcast
+  stage stageMarker3077 on all partitions :
+    //scan rapidsse public part
+    //| abstractJoin " 1  "
+    indexjoin Part IxP_PARTKEY "BOUND $I1 PS_PARTKEY =="  // J1 - PART
+    | next
+  stage stageMarker3080 on all partitions :
+    filter " type BOOLEAN  P_PARTKEY PS_PARTKEY ==  P_BRAND 'Brand#45'  !=  and
+                       }  P_TYPE 'MEDIUM POLISHED%'  16 matchLeading  not  and
+                       }  49  14  23  45  19  3  36  9  #8  PS_SUPPKEY in  and
+                       }  __subquery0003  #1  P_SIZE in  not  and  "
+    | combined 0
+    | next
+  stage stageMarker3083 on origin :
+    aggreg " groupBy  type VARCHAR as p_brand $9 , type VARCHAR as p_type $10 , type INTEGER as p_size $11 aggregates  type VARCHAR $K1 , type VARCHAR $K2 , type INTEGER $K3 , type INTEGER as supplier_cnt )  $2 countDistinct  "
+    | sort " type INTEGER $4 DESC  , type VARCHAR as p_brand $1 ASC  , type VARCHAR as p_type $2 ASC  , type INTEGER as p_size $3 ASC  "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+end ;
+*/
+
+//------------------------------------------------------------------------------
+// OPTIMIZED Q2
+// Create temp table for subquery
+// Removed P_PARTKEY PS_PARTKEY ==
+//   from filter in stage stageMarker6349 as part of join keys
+//------------------------------------------------------------------------------
+/*
+pipeline unamed
+begin
+  pipeline __subquery0003
+  begin
+    stage stageStart on origin :
+      start
+      | pulse once
+      | next
+    stage stageMarker3068 on all partitions :
+      scan rapidsse public supplier
+      | filter " type BOOLEAN  }  S_COMMENT '%Customer%Complaints%'  8 10 matchMiddle1  "
+      | project " type INTEGER as S_SUPPKEY S_SUPPKEY "
+      | combined 0
+      | next
+    stage stageB on all nodes :
+      createTable q16_inner
+      | next
+    stage stageCreateTable on origin :
+      toBktRow q16_inner
+      | toNstRow
+      | toBktCrw
+      | next hashcast
+    stage stageC on all partitions :
+        insert q16_inner
+        | next
+
+    stage stageMarker3071 on all partitions :
+      stageLast
+
+    stage stageLast on origin :
+      output
+      | sink
+      | first
+  end
+
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+  stage stageMarker3074 on all partitions :
+    scan rapidsse public partsupp
+    | stageMarker3077 broadcast
+  stage stageMarker3077 on all partitions :
+    //scan rapidsse public part
+    //| abstractJoin " 1  "
+    indexjoin Part IxP_PARTKEY "BOUND $I1 PS_PARTKEY =="  // J1 - PART
+    | next
+  stage stageMarker3080 on all partitions :
+    filter " type BOOLEAN  P_BRAND 'Brand#45'  !=  and
+                       }  P_TYPE 'MEDIUM POLISHED%'  16 matchLeading  not  and
+                       }  49  14  23  45  19  3  36  9  #8  PS_SUPPKEY in  and
+                       }  __subquery0003  #1  P_SIZE in  not  and  "
+    | combined 0
+    | next
+  stage stageMarker3083 on origin :
+    aggreg " groupBy  type VARCHAR as p_brand $9 , type VARCHAR as p_type $10 , type INTEGER as p_size $11 aggregates  type VARCHAR $K1 , type VARCHAR $K2 , type INTEGER $K3 , type INTEGER as supplier_cnt )  $2 countDistinct  "
+    | sort " type INTEGER $4 DESC  , type VARCHAR as p_brand $1 ASC  , type VARCHAR as p_type $2 ASC  , type INTEGER as p_size $3 ASC  "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+end ;
+*/
+
+// JOIN ORDER : partsupp -> part
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+
+  stage stageMarker2543 on all partitions :
+    scan rapidsse public partsupp
+    | next
+
+  stage stageMarker2546 on all partitions :
+    indexjoin Part IxP_PARTKEY "BOUND $I1 PS_PARTKEY =="  // J1 - PART
+    | hash " type INTEGER PS_SUPPKEY"
+    | combined 0
+    | next hashcast
+
+  stage stageMarker2549 on all partitions :
+    filter " type BOOLEAN  J1_P_BRAND 'Brand#45'  !=
+                 }  J1_P_TYPE 'MEDIUM POLISHED%'  16 matchLeading  not and
+                 }  49  14  23  45  19  3  36  9  #8  J1_P_SIZE in and"
+    | keyNotExists SUPPLIER IxS_SUPPKEY  "BOUND $I1 $2 =="
+               "type BOOLEAN  }  S_COMMENT '%Customer%Complaints%'  8 10 matchMiddle1"
+    | aggreg " groupBy  type VARCHAR as p_brand $9 ,
+               type VARCHAR as p_type $10 ,
+               type INTEGER as p_size $11 ,
+               type INTEGER as ps_suppkey $2
+               aggregates
+               type VARCHAR  as p_brand $K1 ,
+               type VARCHAR  as p_type $K2 ,
+               type INTEGER  as p_size $K3 ,
+               type INTEGER  as ps_suppkey $K4 "
+    | combined 0
+    | next
+
+  stage stageMarker2552 on all nodes :
+    aggreg " groupBy  type VARCHAR as p_brand $1 ,
+                   type VARCHAR as p_type $2 ,
+                   type INTEGER as p_size $3 ,
+                   type INTEGER as ps_suppkey $4
+                   aggregates
+                   type VARCHAR  as p_brand $K1 ,
+                   type VARCHAR  as p_type $K2 ,
+                   type INTEGER  as p_size $K3 ,
+                   type INTEGER  as ps_suppkey $K4 "
+    | combined 0
+    | next
+
+  stage stageMarker2555 on origin :
+    aggreg " groupBy  type VARCHAR as p_brand $1 ,
+                   type VARCHAR as p_type $2 ,
+                   type INTEGER as p_size $3 ,
+                   type INTEGER as ps_suppkey $4
+                   aggregates
+                   type VARCHAR  as p_brand $K1 ,
+                   type VARCHAR  as p_type $K2 ,
+                   type INTEGER  as p_size $K3 ,
+                   type INTEGER  as ps_suppkey $K4 "
+                    | combined 0
+                       | next
+
+stage stageMarker2555_b on origin :
+    aggreg " groupBy  type VARCHAR as p_brand $1 ,
+                       type VARCHAR as p_type $2 ,
+                       type INTEGER as p_size $3
+                       aggregates
+                       type VARCHAR  as p_brand $K1 ,
+                       type VARCHAR  as p_type $K2 ,
+                       type INTEGER  as p_size $K3 ,
+                       type INTEGER  as supplier_cnt ) $4 COUNT"
+        | combined 0
+        | next
+  stage stageMarker2555_c on origin :
+      sort " type INTEGER $4 DESC  ,
+             type VARCHAR as p_brand $1 ASC  ,
+             type VARCHAR as p_type $2 ASC  ,
+             type INTEGER as p_size $3 ASC  "
+      | combined 0
+      | next
+
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+end ;
+
+rows:
+ ('Brand#11','PROMO ANODIZED TIN'      ,45 ,1)
+ ('Brand#11','SMALL PLATED COPPER'     ,45 ,1)
+ ('Brand#11','STANDARD POLISHED TIN'   ,45 ,1)
+ ('Brand#13','MEDIUM ANODIZED STEEL'   ,36 ,1)
+ ('Brand#13','SMALL BRUSHED NICKEL'    ,19 ,1)
+ ('Brand#14','SMALL ANODIZED NICKEL'   ,45 ,1)
+ ('Brand#15','LARGE ANODIZED BRASS'    ,45 ,1)
+ ('Brand#21','LARGE BURNISHED COPPER'  ,19 ,1)
+ ('Brand#23','ECONOMY BRUSHED COPPER'  , 9 ,1)
+ ('Brand#24','MEDIUM PLATED STEEL'     ,19 ,1)
+ ('Brand#25','MEDIUM PLATED BRASS'     ,45 ,1)
+ ('Brand#25','SMALL BURNISHED COPPER'  , 3 ,1)
+ ('Brand#31','ECONOMY PLATED STEEL'    ,23 ,1)
+ ('Brand#31','PROMO POLISHED TIN'      ,23 ,1)
+ ('Brand#32','MEDIUM BURNISHED BRASS'  ,49 ,1)
+ ('Brand#33','LARGE BRUSHED TIN'       ,36 ,1)
+ ('Brand#33','SMALL BURNISHED NICKEL'  , 3 ,1)
+ ('Brand#34','LARGE PLATED BRASS'      ,45 ,1)
+ ('Brand#34','MEDIUM BRUSHED COPPER'   , 9 ,1)
+ ('Brand#34','SMALL PLATED BRASS'      ,14 ,1)
+ ('Brand#35','STANDARD ANODIZED STEEL' ,23 ,1)
+ ('Brand#43','MEDIUM ANODIZED BRASS'   ,14 ,1)
+ ('Brand#43','PROMO POLISHED BRASS'    ,19 ,1)
+ ('Brand#43','SMALL BRUSHED NICKEL'    , 9 ,1)
+ ('Brand#44','SMALL PLATED COPPER'     ,19 ,1)
+ ('Brand#51','ECONOMY POLISHED STEEL'  ,49 ,1)
+ ('Brand#52','MEDIUM BURNISHED TIN'    ,45 ,1)
+ ('Brand#52','SMALL BURNISHED NICKEL'  ,14 ,1)
+ ('Brand#53','LARGE BURNISHED NICKEL'  ,23 ,1)
+ ('Brand#53','MEDIUM BRUSHED COPPER'   , 3 ,1)
+ ('Brand#53','STANDARD PLATED STEEL'   ,45 ,1)
+ ('Brand#54','ECONOMY ANODIZED BRASS'  , 9 ,1)
+ ('Brand#55','STANDARD ANODIZED BRASS' ,36 ,1)
+ ('Brand#55','STANDARD BRUSHED COPPER' , 3 ,1)
+
+// JOIN ORDER : partsupp -> part
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+
+  stage stageMarker2543 on all partitions :
+    scan rapidsse public partsupp
+    | next
+
+  stage stageMarker2546 on all partitions :
+    indexjoin Part IxP_PARTKEY "BOUND $I1 PS_PARTKEY =="  // J1 - PART
+    | hash " type INTEGER PS_SUPPKEY"
+    | combined 0
+    | next hashcast
+
+  stage stageMarker2549 on all partitions :
+    filter " type BOOLEAN  J1_P_BRAND 'Brand#45'  !=
+                 }  J1_P_TYPE 'MEDIUM POLISHED%'  16 matchLeading  not and
+                 }  49  14  23  45  19  3  36  9  #8  J1_P_SIZE in and"
+    | keyNotExists SUPPLIER IxS_SUPPKEY  "BOUND $I1 $2 =="
+               "type BOOLEAN  }  S_COMMENT '%Customer%Complaints%'  8 10 matchMiddle1"
+    | aggreg " groupBy  type VARCHAR as p_brand $9 ,
+               type VARCHAR as p_type $10 ,
+               type INTEGER as p_size $11 ,
+               type INTEGER as ps_suppkey $2
+               aggregates
+               type VARCHAR  as p_brand $K1 ,
+               type VARCHAR  as p_type $K2 ,
+               type INTEGER  as p_size $K3 ,
+               type INTEGER  as ps_suppkey $K4 "
+    | combined 0
+    | next
+
+  stage stageMarker2552 on all nodes :
+    aggreg " groupBy  type VARCHAR as p_brand $1 ,
+                   type VARCHAR as p_type $2 ,
+                   type INTEGER as p_size $3 ,
+                   type INTEGER as ps_suppkey $4
+                   aggregates
+                   type VARCHAR  as p_brand $K1 ,
+                   type VARCHAR  as p_type $K2 ,
+                   type INTEGER  as p_size $K3 ,
+                   type INTEGER  as ps_suppkey $K4 "
+    | combined 0
+    | next
+
+  stage stageMarker2555_a on origin :
+    aggreg " groupBy  type VARCHAR as p_brand $1 ,
+                   type VARCHAR as p_type $2 ,
+                   type INTEGER as p_size $3 ,
+                   type INTEGER as ps_suppkey $4
+                   aggregates
+                   type VARCHAR  as p_brand $K1 ,
+                   type VARCHAR  as p_type $K2 ,
+                   type INTEGER  as p_size $K3 ,
+                   type INTEGER  as ps_suppkey $K4 "
+    | hash " type INTEGER PS_SUPPKEY"
+    | combined 0
+    | next hashcast
+
+  stage CNTDST_a on all partitions :
+    aggreg " groupBy  type VARCHAR as p_brand $1 ,
+                       type VARCHAR as p_type $2 ,
+                       type INTEGER as p_size $3
+                       aggregates
+                       type VARCHAR  as p_brand $K1 ,
+                       type VARCHAR  as p_type $K2 ,
+                       type INTEGER  as p_size $K3 ,
+                       type INTEGER  as supplier_cnt ) $4 COUNT"
+    | combined 0
+    | next
+
+  stage CNTDST_b on all nodes :
+    aggreg " groupBy  type VARCHAR as p_brand $1 ,
+                       type VARCHAR as p_type $2 ,
+                       type INTEGER as p_size $3
+                       aggregates
+                       type VARCHAR  as p_brand $K1 ,
+                       type VARCHAR  as p_type $K2 ,
+                       type INTEGER  as p_size $K3 ,
+                       type INTEGER  as supplier_cnt ) $4 SUM"
+    | combined 0
+    | next
+
+  stage CNTDST_c on origin :
+    aggreg " groupBy  type VARCHAR as p_brand $1 ,
+                           type VARCHAR as p_type $2 ,
+                           type INTEGER as p_size $3
+                           aggregates
+                           type VARCHAR  as p_brand $K1 ,
+                           type VARCHAR  as p_type $K2 ,
+                           type INTEGER  as p_size $K3 ,
+                           type INTEGER  as supplier_cnt ) $4 SUM"
+    | combined 0
+    | next
+
+  stage SORT_a on origin :
+   sort " type INTEGER $4 DESC  ,
+          type VARCHAR as p_brand $1 ASC  ,
+          type VARCHAR as p_type $2 ASC  ,
+          type INTEGER as p_size $3 ASC  "
+  | combined 0
+  | next
+
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+end ;
+
+rows:
+ ('Brand#11','PROMO ANODIZED TIN'      ,45 ,1)
+ ('Brand#11','SMALL PLATED COPPER'     ,45 ,1)
+ ('Brand#11','STANDARD POLISHED TIN'   ,45 ,1)
+ ('Brand#13','MEDIUM ANODIZED STEEL'   ,36 ,1)
+ ('Brand#13','SMALL BRUSHED NICKEL'    ,19 ,1)
+ ('Brand#14','SMALL ANODIZED NICKEL'   ,45 ,1)
+ ('Brand#15','LARGE ANODIZED BRASS'    ,45 ,1)
+ ('Brand#21','LARGE BURNISHED COPPER'  ,19 ,1)
+ ('Brand#23','ECONOMY BRUSHED COPPER'  , 9 ,1)
+ ('Brand#24','MEDIUM PLATED STEEL'     ,19 ,1)
+ ('Brand#25','MEDIUM PLATED BRASS'     ,45 ,1)
+ ('Brand#25','SMALL BURNISHED COPPER'  , 3 ,1)
+ ('Brand#31','ECONOMY PLATED STEEL'    ,23 ,1)
+ ('Brand#31','PROMO POLISHED TIN'      ,23 ,1)
+ ('Brand#32','MEDIUM BURNISHED BRASS'  ,49 ,1)
+ ('Brand#33','LARGE BRUSHED TIN'       ,36 ,1)
+ ('Brand#33','SMALL BURNISHED NICKEL'  , 3 ,1)
+ ('Brand#34','LARGE PLATED BRASS'      ,45 ,1)
+ ('Brand#34','MEDIUM BRUSHED COPPER'   , 9 ,1)
+ ('Brand#34','SMALL PLATED BRASS'      ,14 ,1)
+ ('Brand#35','STANDARD ANODIZED STEEL' ,23 ,1)
+ ('Brand#43','MEDIUM ANODIZED BRASS'   ,14 ,1)
+ ('Brand#43','PROMO POLISHED BRASS'    ,19 ,1)
+ ('Brand#43','SMALL BRUSHED NICKEL'    , 9 ,1)
+ ('Brand#44','SMALL PLATED COPPER'     ,19 ,1)
+ ('Brand#51','ECONOMY POLISHED STEEL'  ,49 ,1)
+ ('Brand#52','MEDIUM BURNISHED TIN'    ,45 ,1)
+ ('Brand#52','SMALL BURNISHED NICKEL'  ,14 ,1)
+ ('Brand#53','LARGE BURNISHED NICKEL'  ,23 ,1)
+ ('Brand#53','MEDIUM BRUSHED COPPER'   , 3 ,1)
+ ('Brand#53','STANDARD PLATED STEEL'   ,45 ,1)
+ ('Brand#54','ECONOMY ANODIZED BRASS'  , 9 ,1)
+ ('Brand#55','STANDARD ANODIZED BRASS' ,36 ,1)
+ ('Brand#55','STANDARD BRUSHED COPPER' , 3 ,1)
+
+
+// JOIN ORDER : part -> partsupp
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+
+  stage stageMarker2543 on all partitions :
+    scan rapidsse public part
+    | next
+
+  stage stageMarker2546 on all partitions :
+    indexjoin PartSupp IxPS_PARTKEY "BOUND $I1 P_PARTKEY =="  // J1 - PARTSUPP
+    | hash " type INTEGER J1_PS_SUPPKEY"
+    | combined 0
+    | next hashcast
+
+  stage stageMarker2549 on all partitions :
+    filter " type BOOLEAN  P_BRAND 'Brand#45'  !=
+                 }  P_TYPE 'MEDIUM POLISHED%'  16 matchLeading  not and
+                 }  49  14  23  45  19  3  36  9  #8  P_SIZE in and"
+    | keyNotExists SUPPLIER IxS_SUPPKEY  "BOUND $I1 J1_PS_SUPPKEY =="
+               "type BOOLEAN  }  S_COMMENT '%Customer%Complaints%'  8 10 matchMiddle1"
+    | aggreg " groupBy  type VARCHAR as p_brand P_BRAND ,
+               type VARCHAR as p_type P_TYPE ,
+               type INTEGER as p_size P_SIZE ,
+               type INTEGER as ps_suppkey J1_PS_SUPPKEY
+               aggregates
+               type VARCHAR  as p_brand $K1 ,
+               type VARCHAR  as p_type $K2 ,
+               type INTEGER  as p_size $K3 ,
+               type INTEGER  as ps_suppkey $K4 "
+    | combined 0
+    | next
+
+  stage stageMarker2552 on all nodes :
+    aggreg " groupBy  type VARCHAR as p_brand $1 ,
+                   type VARCHAR as p_type $2 ,
+                   type INTEGER as p_size $3 ,
+                   type INTEGER as ps_suppkey $4
+                   aggregates
+                   type VARCHAR  as p_brand $K1 ,
+                   type VARCHAR  as p_type $K2 ,
+                   type INTEGER  as p_size $K3 ,
+                   type INTEGER  as ps_suppkey $K4 "
+    | combined 0
+    | next
+
+  stage stageMarker2555 on origin :
+    aggreg " groupBy  type VARCHAR as p_brand $1 ,
+                   type VARCHAR as p_type $2 ,
+                   type INTEGER as p_size $3 ,
+                   type INTEGER as ps_suppkey $4
+                   aggregates
+                   type VARCHAR  as p_brand $K1 ,
+                   type VARCHAR  as p_type $K2 ,
+                   type INTEGER  as p_size $K3 ,
+                   type INTEGER  as ps_suppkey $K4 "
+    | combined 0
+    | next
+
+  stage CNTDST_a on origin :
+    aggreg " groupBy  type VARCHAR as p_brand $1 ,
+                      type VARCHAR as p_type $2 ,
+                      type INTEGER as p_size $3
+                      aggregates
+                      type VARCHAR  as p_brand $K1 ,
+                      type VARCHAR  as p_type $K2 ,
+                      type INTEGER  as p_size $K3 ,
+                      type INTEGER  as supplier_cnt ) $4 COUNT"
+    | combined 0
+    | next
+
+  stage SORT_a on origin :
+      sort " type INTEGER $4 DESC  ,
+             type VARCHAR as p_brand $1 ASC  ,
+             type VARCHAR as p_type $2 ASC  ,
+             type INTEGER as p_size $3 ASC  "
+      | combined 0
+      | next
+
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+end ;
+
+rows:
+ ('Brand#11','PROMO ANODIZED TIN'      ,45 ,1)
+ ('Brand#11','SMALL PLATED COPPER'     ,45 ,1)
+ ('Brand#11','STANDARD POLISHED TIN'   ,45 ,1)
+ ('Brand#13','MEDIUM ANODIZED STEEL'   ,36 ,1)
+ ('Brand#13','SMALL BRUSHED NICKEL'    ,19 ,1)
+ ('Brand#14','SMALL ANODIZED NICKEL'   ,45 ,1)
+ ('Brand#15','LARGE ANODIZED BRASS'    ,45 ,1)
+ ('Brand#21','LARGE BURNISHED COPPER'  ,19 ,1)
+ ('Brand#23','ECONOMY BRUSHED COPPER'  , 9 ,1)
+ ('Brand#24','MEDIUM PLATED STEEL'     ,19 ,1)
+ ('Brand#25','MEDIUM PLATED BRASS'     ,45 ,1)
+ ('Brand#25','SMALL BURNISHED COPPER'  , 3 ,1)
+ ('Brand#31','ECONOMY PLATED STEEL'    ,23 ,1)
+ ('Brand#31','PROMO POLISHED TIN'      ,23 ,1)
+ ('Brand#32','MEDIUM BURNISHED BRASS'  ,49 ,1)
+ ('Brand#33','LARGE BRUSHED TIN'       ,36 ,1)
+ ('Brand#33','SMALL BURNISHED NICKEL'  , 3 ,1)
+ ('Brand#34','LARGE PLATED BRASS'      ,45 ,1)
+ ('Brand#34','MEDIUM BRUSHED COPPER'   , 9 ,1)
+ ('Brand#34','SMALL PLATED BRASS'      ,14 ,1)
+ ('Brand#35','STANDARD ANODIZED STEEL' ,23 ,1)
+ ('Brand#43','MEDIUM ANODIZED BRASS'   ,14 ,1)
+ ('Brand#43','PROMO POLISHED BRASS'    ,19 ,1)
+ ('Brand#43','SMALL BRUSHED NICKEL'    , 9 ,1)
+ ('Brand#44','SMALL PLATED COPPER'     ,19 ,1)
+ ('Brand#51','ECONOMY POLISHED STEEL'  ,49 ,1)
+ ('Brand#52','MEDIUM BURNISHED TIN'    ,45 ,1)
+ ('Brand#52','SMALL BURNISHED NICKEL'  ,14 ,1)
+ ('Brand#53','LARGE BURNISHED NICKEL'  ,23 ,1)
+ ('Brand#53','MEDIUM BRUSHED COPPER'   , 3 ,1)
+ ('Brand#53','STANDARD PLATED STEEL'   ,45 ,1)
+ ('Brand#54','ECONOMY ANODIZED BRASS'  , 9 ,1)
+ ('Brand#55','STANDARD ANODIZED BRASS' ,36 ,1)
+ ('Brand#55','STANDARD BRUSHED COPPER' , 3 ,1)
+
+// JOIN ORDER : part -> partsupp
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+
+  stage stageMarker2543 on all partitions :
+    scan rapidsse public part
+    | next
+
+  stage stageMarker2546 on all partitions :
+    indexjoin PartSupp IxPS_PARTKEY "BOUND $I1 P_PARTKEY =="  // J1 - PARTSUPP
+    | hash " type INTEGER J1_PS_SUPPKEY"
+    | combined 0
+    | next hashcast
+
+  stage stageMarker2549 on all partitions :
+    filter " type BOOLEAN  P_BRAND 'Brand#45'  !=
+                 }  P_TYPE 'MEDIUM POLISHED%'  16 matchLeading  not and
+                 }  49  14  23  45  19  3  36  9  #8  P_SIZE in and"
+    | keyNotExists SUPPLIER IxS_SUPPKEY  "BOUND $I1 J1_PS_SUPPKEY =="
+               "type BOOLEAN  }  S_COMMENT '%Customer%Complaints%'  8 10 matchMiddle1"
+    | aggreg " groupBy  type VARCHAR as p_brand P_BRAND ,
+               type VARCHAR as p_type P_TYPE ,
+               type INTEGER as p_size P_SIZE ,
+               type INTEGER as ps_suppkey J1_PS_SUPPKEY
+               aggregates
+               type VARCHAR  as p_brand $K1 ,
+               type VARCHAR  as p_type $K2 ,
+               type INTEGER  as p_size $K3 ,
+               type INTEGER  as ps_suppkey $K4 "
+    | combined 0
+    | next
+
+  stage stageMarker2552 on all nodes :
+    aggreg " groupBy  type VARCHAR as p_brand $1 ,
+                   type VARCHAR as p_type $2 ,
+                   type INTEGER as p_size $3 ,
+                   type INTEGER as ps_suppkey $4
+                   aggregates
+                   type VARCHAR  as p_brand $K1 ,
+                   type VARCHAR  as p_type $K2 ,
+                   type INTEGER  as p_size $K3 ,
+                   type INTEGER  as ps_suppkey $K4 "
+    | combined 0
+    | next
+
+  stage stageMarker2555 on origin :
+    aggreg " groupBy  type VARCHAR as p_brand $1 ,
+                   type VARCHAR as p_type $2 ,
+                   type INTEGER as p_size $3 ,
+                   type INTEGER as ps_suppkey $4
+                   aggregates
+                   type VARCHAR  as p_brand $K1 ,
+                   type VARCHAR  as p_type $K2 ,
+                   type INTEGER  as p_size $K3 ,
+                   type INTEGER  as ps_suppkey $K4 "
+    | hash " type INTEGER PS_SUPPKEY"
+    | combined 0
+    | next hashcast
+
+  stage CNTDST_a on all partitions :
+    aggreg " groupBy  type VARCHAR as p_brand $1 ,
+                       type VARCHAR as p_type $2 ,
+                       type INTEGER as p_size $3
+                       aggregates
+                       type VARCHAR  as p_brand $K1 ,
+                       type VARCHAR  as p_type $K2 ,
+                       type INTEGER  as p_size $K3 ,
+                       type INTEGER  as supplier_cnt ) $4 COUNT"
+    | combined 0
+    | next
+
+  stage CNTDST_b on all nodes :
+    aggreg " groupBy  type VARCHAR as p_brand $1 ,
+                       type VARCHAR as p_type $2 ,
+                       type INTEGER as p_size $3
+                       aggregates
+                       type VARCHAR  as p_brand $K1 ,
+                       type VARCHAR  as p_type $K2 ,
+                       type INTEGER  as p_size $K3 ,
+                       type INTEGER  as supplier_cnt ) $4 SUM"
+    | combined 0
+    | next
+
+  stage CNTDST_c on origin :
+    aggreg " groupBy  type VARCHAR as p_brand $1 ,
+                           type VARCHAR as p_type $2 ,
+                           type INTEGER as p_size $3
+                           aggregates
+                           type VARCHAR  as p_brand $K1 ,
+                           type VARCHAR  as p_type $K2 ,
+                           type INTEGER  as p_size $K3 ,
+                           type INTEGER  as supplier_cnt ) $4 SUM"
+    | combined 0
+    | next
+
+  stage SORT_a on origin :
+      sort " type INTEGER $4 DESC  ,
+             type VARCHAR as p_brand $1 ASC  ,
+             type VARCHAR as p_type $2 ASC  ,
+             type INTEGER as p_size $3 ASC  "
+      | combined 0
+      | next
+
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+end ;
+
+rows:
+ ('Brand#11','PROMO ANODIZED TIN'      ,45 ,1)
+ ('Brand#11','SMALL PLATED COPPER'     ,45 ,1)
+ ('Brand#11','STANDARD POLISHED TIN'   ,45 ,1)
+ ('Brand#13','MEDIUM ANODIZED STEEL'   ,36 ,1)
+ ('Brand#13','SMALL BRUSHED NICKEL'    ,19 ,1)
+ ('Brand#14','SMALL ANODIZED NICKEL'   ,45 ,1)
+ ('Brand#15','LARGE ANODIZED BRASS'    ,45 ,1)
+ ('Brand#21','LARGE BURNISHED COPPER'  ,19 ,1)
+ ('Brand#23','ECONOMY BRUSHED COPPER'  , 9 ,1)
+ ('Brand#24','MEDIUM PLATED STEEL'     ,19 ,1)
+ ('Brand#25','MEDIUM PLATED BRASS'     ,45 ,1)
+ ('Brand#25','SMALL BURNISHED COPPER'  , 3 ,1)
+ ('Brand#31','ECONOMY PLATED STEEL'    ,23 ,1)
+ ('Brand#31','PROMO POLISHED TIN'      ,23 ,1)
+ ('Brand#32','MEDIUM BURNISHED BRASS'  ,49 ,1)
+ ('Brand#33','LARGE BRUSHED TIN'       ,36 ,1)
+ ('Brand#33','SMALL BURNISHED NICKEL'  , 3 ,1)
+ ('Brand#34','LARGE PLATED BRASS'      ,45 ,1)
+ ('Brand#34','MEDIUM BRUSHED COPPER'   , 9 ,1)
+ ('Brand#34','SMALL PLATED BRASS'      ,14 ,1)
+ ('Brand#35','STANDARD ANODIZED STEEL' ,23 ,1)
+ ('Brand#43','MEDIUM ANODIZED BRASS'   ,14 ,1)
+ ('Brand#43','PROMO POLISHED BRASS'    ,19 ,1)
+ ('Brand#43','SMALL BRUSHED NICKEL'    , 9 ,1)
+ ('Brand#44','SMALL PLATED COPPER'     ,19 ,1)
+ ('Brand#51','ECONOMY POLISHED STEEL'  ,49 ,1)
+ ('Brand#52','MEDIUM BURNISHED TIN'    ,45 ,1)
+ ('Brand#52','SMALL BURNISHED NICKEL'  ,14 ,1)
+ ('Brand#53','LARGE BURNISHED NICKEL'  ,23 ,1)
+ ('Brand#53','MEDIUM BRUSHED COPPER'   , 3 ,1)
+ ('Brand#53','STANDARD PLATED STEEL'   ,45 ,1)
+ ('Brand#54','ECONOMY ANODIZED BRASS'  , 9 ,1)
+ ('Brand#55','STANDARD ANODIZED BRASS' ,36 ,1)
+ ('Brand#55','STANDARD BRUSHED COPPER' , 3 ,1)
+
+
+MemoryLeaks;
+rows: 0
+
 CLEANUP {
   bye;
   mute

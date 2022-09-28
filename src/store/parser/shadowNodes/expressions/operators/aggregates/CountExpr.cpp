@@ -96,6 +96,37 @@ void CountExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Represent the expression as types instead of names. Append to the buffer   */
+/*----------------------------------------------------------------------------*/
+void CountExpr::vDescribeAsTypes(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  if (bIsCountAll(pNode)) {
+    sBuf.vConcat("COUNT(*)"_Stz);
+
+  } else {
+    sBuf.vConcat("COUNT("_Stz);
+
+    b1 bDistinct = bIsDistinct(pNode);
+    if (bDistinct) {
+      sBuf.vConcat("DISTINCT("_Stz);
+    }
+
+    ASSERT(pNode->nChildren() == 1);
+    PlanNode* pChildExpr = pNode->pFirstChild();
+    sBuf.vConcat(Expr::xTypeId(_pQueryNode(pChildExpr), pRootNode).szTypeName());
+
+    if (bDistinct) {
+      sBuf.vConcat(")"_Stz);
+    }
+
+    sBuf.vConcat(")"_Stz);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns true if this is a COUNT(*) aggregate                               */
 /*----------------------------------------------------------------------------*/
 b1 CountExpr::bIsCountAll(PlanNode* pNode)

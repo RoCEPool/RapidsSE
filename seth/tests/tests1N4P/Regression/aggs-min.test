@@ -177,11 +177,9 @@ rows:
 
 // Source file: ../queries/aggs/min/rnmin2.sql
 // Result file: ../queries/aggs/min/results/nmin2.res
-//TODO: COMPILER
-/*
 select sum( min(cola1) + min(cold1) ) from table1;
-failure: 'Invalid nested aggregation'
-*/
+failure contains: 'Nested aggregate expressions are not permitted'
+
 
 // Source file: ../queries/aggs/min/rmin14.sql
 // Result file: ../queries/aggs/min/results/min14.res

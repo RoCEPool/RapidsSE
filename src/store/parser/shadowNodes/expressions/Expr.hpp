@@ -39,6 +39,9 @@ namespace Parser
   public:
     static void vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode);
 
+    // Represent the expression as types instead of names (e.g. INTEGER + INTEGER)
+    static void vDescribeAsTypes(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode);
+
     // Returns true if a given node is a given type ** or is derived from that type **
     static b1 bIsOfType(PlanNode* pNode);
 
@@ -125,6 +128,8 @@ namespace Parser
     // are type compatible with this expression. Modifies the expression
     // tree in place.
     static void vCoerceSubExprs(QueryNode* pExpr, PlanNode* pRootNode);
+
+    static void vCoerceCastLiteral(QueryNode* pExpr, PlanNode* pRootNode);
 
   protected:
     // Returns true if the expression is commutative (e.g. A+B = B+A)

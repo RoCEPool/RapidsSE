@@ -12,8 +12,11 @@
 
 #include "TagConstants.h"
 #include "LogicUnit.hpp"
+#include "CmdLineArgs.hpp"
 
 Atomic gixFile;
+
+extern CmdLineArgs  gxCmdLineArgs;
 
 OpenFiles* gpOpenFiles;
 extern File* gpTraceFile;
@@ -258,6 +261,14 @@ bool File::bRemove(Stz* szFilePath)
 }
 
 /*----------------------------------------------------------------------------*/
+/* rename file                                                                */
+/*----------------------------------------------------------------------------*/
+bool File::bRename(Stz* szOldPath, Stz* szNewPath)
+{
+  return (rename(szOldPath->azChar(), szNewPath->azChar()) == 0);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get size of named file                                                     */
 /*----------------------------------------------------------------------------*/
 i8 File::nSize(Stz* szFilePath)
@@ -305,6 +316,9 @@ void File::vClose(void)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+//  if (! gxCmdLineArgs.m_xSysArgs.m_bSethScript)
+//    vTrace("Close: %p %s\n"_Stz,m_aFile,szPath());
 
   errno = 0;
   i8 iResult = fclose(m_aFile);
@@ -674,6 +688,10 @@ bool File::bOpenMode(Stz* szFilePath, Stz* szOpenMode)
 
   m_aFile_check = m_aFile;
   m_bIsOpen = true;
+
+//  if (! gxCmdLineArgs.m_xSysArgs.m_bSethScript)
+//    vTrace("Open: %p %s\n"_Stz,m_aFile,szPath());
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (! m_iViaMalloc && AM::bAttached()) AM::pResources()->vIncFileOpen();
@@ -732,26 +750,62 @@ void File::vPreAllocate(i8 nOffset, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* formatted print                                                            */
 /*----------------------------------------------------------------------------*/
+i8 File::iPrint(Stz* szFormat, ...)
+{
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+
+  m_oSysCall.vClear();
+
+  va_list args;
+
+  va_start(args,szFormat);
+
+#ifdef WITH_STATISTICS_COUNTERS
+  if (gpAttachMap) gpAttachMap->m_oStatistics.File.m_nPrints++;
+#endif
+
+  i8 nPrinted = vfprintf(m_aFile,szFormat->azChar(),args);
+
+#ifdef WITH_STATISTICS_COUNTERS
+  if (gpAttachMap) gpAttachMap->m_oStatistics.File.m_nPrintBytes += nPrinted;
+#endif
+
+  va_end(args);
+
+  if (-1 == nPrinted) {
+    m_oSysCall.vError(errno);
+    vTrace("File::vPrint: vfprintf() error; errno=%d"_Stz,errno);
+    return nPrinted;
+  }
+
+  m_oSysCall.vSuccess();
+
+  return nPrinted;
+}
+
+/*----------------------------------------------------------------------------*/
+/* formatted print                                                            */
+/*----------------------------------------------------------------------------*/
 void File::vPrint(Stz* szFormat, ...)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
   m_oSysCall.vClear();
-  
+
   va_list args;
 
   va_start(args,szFormat);
-  
+
 #ifdef WITH_STATISTICS_COUNTERS
   if (gpAttachMap) gpAttachMap->m_oStatistics.File.m_nPrints++;
 #endif
-  
+
   i8 nPrinted = vfprintf(m_aFile,szFormat->azChar(),args);
-  
+
 #ifdef WITH_STATISTICS_COUNTERS
   if (gpAttachMap) gpAttachMap->m_oStatistics.File.m_nPrintBytes += nPrinted;
 #endif
-  
+
   va_end(args);
 
   if (-1 == nPrinted) {
@@ -759,7 +813,7 @@ void File::vPrint(Stz* szFormat, ...)
     vTrace("File::vPrint: vfprintf() error; errno=%d"_Stz,errno);
     return;
   }
-  
+
   m_oSysCall.vSuccess();
 }
 
@@ -950,6 +1004,8 @@ void File::vReset(void)
   m_sPath   = ""_Stz;
   m_sOpenMode   = ""_Stz;
   m_aFile       = nullptr;
+  m_aFile_check = nullptr;
+  m_bIsOpen = false;
 }
 
 /*----------------------------------------------------------------------------*/

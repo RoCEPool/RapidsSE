@@ -50,6 +50,9 @@
 #include "AttachMap.hpp"
 #include "Output.hpp"
 #include "Jobs.hpp"
+#include "Test.hpp"
+#include "PayStr.hpp"
+#include "PayStrBuffer.hpp"
 
 extern CmdLineArgs gxCmdLineArgs;
 extern AttachMap* gpAttachMap;
@@ -363,7 +366,7 @@ bool PROMPT::bPrompt_cancel(SePrompt* pPrompt)
   tJobId = pInpTknVec->pGet(1)->iToI8();
   
   // find the pipeline job
-  Job* pJob = AM::pJob_FindParticipating(tJobId);
+  Job* pJob = AM::pJob_FindParticipating(tJobId, true);
   
   if ( ! pJob ) {
     vTrace("job %lld not found\n"_Stz, tJobId.iAsI8());
@@ -372,16 +375,18 @@ bool PROMPT::bPrompt_cancel(SePrompt* pPrompt)
   }
   else
     vTrace("Cancelling job %lld\n"_Stz, tJobId.iAsI8());
-  
+
   // get the pipeline from the job
   Pipeline* pPipeline = pJob->pPipeline();
 
   // cancel the pipeline
   if ( ! pPipeline->bCancel(nullptr) ) {
     vTrace("Cancel rejected. Job %lld almost done.\n"_Stz, tJobId.iAsI8());
+    pJob->vDropLock();
     return false;
   }
-  
+
+  pJob->vDropLock();
   return true;
 }
 
@@ -659,7 +664,8 @@ bool PROMPT::bPrompt_constants(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
 
-  vTrace("  C_LOW_BUFFERS       = %lld\n"_Stz,C_LOW_BUFFERS);
+  vTrace("  C_LOW_BUFFERS          = %lld\n"_Stz,C_LOW_BUFFERS);
+  vTrace("  C_LOW_BUFFERS_DIST_JOB = %lld\n"_Stz,C_LOW_BUFFERS_DIST_JOB);
   vTrace("  C_MAX_BCD_PRECISION = %lld\n"_Stz,C_MAX_BCD_PRECISION);
   vTrace("  C_MAX_COLUMNS       = %lld\n"_Stz,C_MAX_COLUMNS);
   vTrace("  C_MAX_FLT_PRECISION = %lld\n"_Stz,C_MAX_FLT_PRECISION);
@@ -1356,7 +1362,7 @@ void vHuh(d8 d)
   
   x._d = d;
   
-  printf("(%g : %02x%02x%02x%02x%02x%02x%02x%02x %lld) ",
+  vTrace("(%g : %02x%02x%02x%02x%02x%02x%02x%02x %lld) "_Stz,
          x._d,
          x._y[7], x._y[6], x._y[5], x._y[4],
          x._y[3], x._y[2], x._y[1], x._y[0],
@@ -1403,12 +1409,12 @@ bool PROMPT::bPrompt_floats(SePrompt* pPrompt)
   vTrace("null     "_Stz); vHuh(x._d); vTrace("\n"_Stz);
 
   
-  printf("%lld: ",(i8)0);
+  vTrace("%lld: "_Stz,(i8)0);
   vHuh((d8)0.0);
   vHuh((d8)0.0);
   vHuh((d8)0.0);
   vHuh((d8)0.0);
-  printf("\n");
+  vTrace("\n"_Stz);
 
   d8 dMptv = 1.0;
   d8 dDptv = 1.0;
@@ -1422,12 +1428,12 @@ bool PROMPT::bPrompt_floats(SePrompt* pPrompt)
 //           dMptv,dDptv, dMntv,dDntv,
 //           dMptv,dDptv, dMntv,dDntv);
 
-    printf("%lld: ",n);
+    vTrace("%lld: "_Stz,n);
     vHuh(dMptv);
     vHuh(dDptv);
     vHuh(dMntv);
     vHuh(dDntv);
-    printf("\n");
+    vTrace("\n"_Stz);
 
     
     dMptv *= 10.0;
@@ -2022,7 +2028,9 @@ bool PROMPT::bPrompt_jobs(SePrompt* pPrompt)
          ,AM::JOBS::nJobsActive()
          ,AM::JOBS::nJobsThreshold()
          );
-  
+
+  AM::JLIST::pJobsList()->vListJobs();;
+
   return true;
 }
 
@@ -3863,7 +3871,8 @@ bool PROMPT::bPrompt_select(SePrompt* pPrompt)
   //vTrace("bPrompt_select\n"_Stz);
   
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
-  
+  TagSet* pInpTagSet = pPrompt->pInpTagSet();
+
   i8 iNumTokens = pInpTknVec->nItems();
   
 //  s16KB sSelectStmt;
@@ -3875,11 +3884,34 @@ bool PROMPT::bPrompt_select(SePrompt* pPrompt)
   
   Stz* szRaw = pPrompt->szRawInput();
 
+  s16KB sTrimmed;
+  sTrimmed = szRaw;
+
+  while (' ' == *sTrimmed.azChar())
+    StrLib::vShuffleLeft(sTrimmed.azChar(),1);
+
+  while ('/' == *sTrimmed.azChar())
+    //StrLib::vRemoveTill(sTrimmed.azChar(),' ', true);
+    StrLib::vRemoveToken(sTrimmed.azChar());
+
+  //s16KB sStatement;
   s16KB sSqlCompiler;
-  sSqlCompiler.vSprint("sqlCompiler \"%s\""_Stz,szRaw);
+  sSqlCompiler.vSprint("sqlCompiler \"%s\""_Stz,sTrimmed.azChar());
+
+  //pInpTknVec->vInsertToken(0,"sqlCompiler"_Stz,TN_NAME);
+
+  //pInpTknVec->vVecToString(sStatement,0, true);
+
+  //sSqlCompiler.vSprint("sqlCompiler \"%s\""_Stz,sStatement.szStz());
+
+  //pInpTknVec->vDumpVec();
+  //pInpTagSet->vDumpSet();
+
 
   pPrompt->vToDo(sSqlCompiler);
-  
+  if (pInpTagSet->bHasName("<toDo>"_Stz))
+    vTrace("TODO: %s\n"_Stz,pPrompt->szToDo());
+
   return true;
 }
 
@@ -4156,7 +4188,17 @@ bool PROMPT::bPrompt_show(SePrompt* pPrompt)
   TokenVec* pTkVec = pPrompt->pInpTknVec();
 
   ASSERT(pTkVec->pGet(0)->bSame("show"_Stz));
-  
+
+  if (pTkVec->nItems() != 2) {
+    vTrace("error: show { grid | nodes } : %s\n"_Stz, aEC[EC_INVALID_COMMAND]);
+    return false;
+  }
+
+  if ( ! pTkVec->pGet(1)->bIsName() ) {
+    vTrace("error: show { grid | nodes } : %s\n"_Stz, aEC[EC_INVALID_COMMAND]);
+    return false;
+  }
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   if (pTkVec->pGet(1)->bSame("grid"_Stz)) {
     
@@ -4169,7 +4211,7 @@ bool PROMPT::bPrompt_show(SePrompt* pPrompt)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  if (pTkVec->pGet(1)->bSame("nodes"_Stz)) {
+  else if (pTkVec->pGet(1)->bSame("nodes"_Stz)) {
     
     SP_Node spNode;
     for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext())
@@ -4177,6 +4219,12 @@ bool PROMPT::bPrompt_show(SePrompt* pPrompt)
     
     vTrace("\n"_Stz);
     return true;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  else {
+    vTrace("error: show { grid | nodes } : %s\n"_Stz, aEC[EC_INVALID_COMMAND]);
+    return false;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -5309,6 +5357,38 @@ bool PROMPT::bPrompt_tempName(SePrompt* pPrompt)
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/* Prompt_test.cpp -- call test                                               */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+PromptFun __Prompt_test (
+        PF_TEMPNAME,           // prompt function
+        "Prompt_test"_Stz,     // name of the prompt function
+        "comment"_Stz,         // comment about the function
+        "test"_Stz,            // the prompt command
+        nullptr,               // the second word
+        bPrompt_test,          // prompt function
+        true,                  // enabled
+
+        true,                  // visible
+        "test"_Stz,            // help
+        ""_Stz                 // description
+);
+
+/*----------------------------------------------------------------------------*/
+/* prompt function                                                            */
+/*----------------------------------------------------------------------------*/
+bool PROMPT::bPrompt_test(SePrompt* pPrompt)
+{
+  TokenVec* pTknVec = pPrompt->pInpTknVec();
+  Stz* szTest = pTknVec->pGet(1)->szChars();
+
+  if (szTest->bSame("test14"_Stz))
+    vTest14();
+
+  return true;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /* Prompt_threads.cpp -- threads report                                       */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
@@ -5465,14 +5545,14 @@ bool PROMPT::bPrompt_tpch(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
 
-  printf("C_1_BYTE  %llu\n",C_1_BYTE);
-  printf("C_2_BYTES %llu\n",C_2_BYTES);
-  printf("C_3_BYTES %llu\n",C_3_BYTES);
-  printf("C_4_BYTES %llu\n",C_4_BYTES);
-  printf("C_5_BYTES %llu\n",C_5_BYTES);
-  printf("C_6_BYTES %llu\n",C_6_BYTES);
-  printf("C_7_BYTES %llu\n",C_7_BYTES);
-  printf("C_8_BYTES %llu\n",C_8_BYTES);
+  vTrace("C_1_BYTE  %llu\n"_Stz,C_1_BYTE);
+  vTrace("C_2_BYTES %llu\n"_Stz,C_2_BYTES);
+  vTrace("C_3_BYTES %llu\n"_Stz,C_3_BYTES);
+  vTrace("C_4_BYTES %llu\n"_Stz,C_4_BYTES);
+  vTrace("C_5_BYTES %llu\n"_Stz,C_5_BYTES);
+  vTrace("C_6_BYTES %llu\n"_Stz,C_6_BYTES);
+  vTrace("C_7_BYTES %llu\n"_Stz,C_7_BYTES);
+  vTrace("C_8_BYTES %llu\n"_Stz,C_8_BYTES);
   
   s32 sMagSF;
   

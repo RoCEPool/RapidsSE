@@ -258,6 +258,28 @@ bool AnnChar::bIsMinus(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test for a new line char                                                   */
+/*----------------------------------------------------------------------------*/
+bool AnnChar::bIsNewLine(void)
+{
+  if ('\n' == m_cChar)
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for a null char                                                       */
+/*----------------------------------------------------------------------------*/
+bool AnnChar::bIsNull(void)
+{
+  if ('\0' == m_cChar)
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* test for a open brace                                                      */
 /*----------------------------------------------------------------------------*/
 bool AnnChar::bIsOpenBrace(void)
@@ -285,17 +307,6 @@ bool AnnChar::bIsOpenBracket(void)
 bool AnnChar::bIsOpenParenthesis(void)
 {
   if ('(' == m_cChar)
-    return true;
-  
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* test for a null char                                                       */
-/*----------------------------------------------------------------------------*/
-bool AnnChar::bIsNull(void)
-{
-  if ('\0' == m_cChar)
     return true;
   
   return false;
@@ -444,6 +455,17 @@ bool AnnChar::bIsDigit(void)
   if (StrLib::bIsDigit(m_cChar))
     return true;
   
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for an 'e' or 'E'                                                     */
+/*----------------------------------------------------------------------------*/
+bool AnnChar::bIsE(void)
+{
+  if ('e' == m_cChar || 'E' == m_cChar)
+    return true;
+
   return false;
 }
 

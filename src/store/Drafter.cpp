@@ -224,19 +224,19 @@ bool Drafter::bCut(TokenVec* pTknVec, eOA& reOptAct)
     pBoard->vSearch(szCard,pMainCard,pSubCard);
     
     if (pMainCard) {
-      pBoard->vCutSubCard(pMainCard);
+      pBoard->m_pCard_SubSet->vCutSubCard(pMainCard);
       delete pMainCard; //TEMP
     }
     else
     if (pSubCard) {
-      Card* pParentCard = pBoard->pFindParent(pSubCard);
+      Card* pParentCard = pBoard->m_pCard_SubSet->pFindParent(pSubCard);
       pParentCard->vCutSubCard(pSubCard);
       
       delete pSubCard; //TEMP
     }
   }
   
-  pBoard->vRenumberCards();
+  //pBoard->m_pCard_SubSet->vRenumberMainCards();
   
   return true;
   

@@ -161,14 +161,19 @@ bool TokenVec::bReplace(TokenVec* pThisVec,
 /*----------------------------------------------------------------------------*/
 /* advance current token                                                      */
 /*----------------------------------------------------------------------------*/
-void TokenVec::vAdvanceCurr(bool bIncItems)
+bool TokenVec::bAdvanceCurr(bool bIncItems)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+
+  if (m_iCurTkn + 2 >= nMaxItems())
+    return false;
 
   m_iCurTkn++;
   
   if (bIncItems)
     vIncItems();
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1206,7 +1211,13 @@ void TokenVec::vVecToString(Stz* szDstStr, i8 iFromTkn, bool bAddSemicolon)
       case TN_INTEGER:
         StrLib::vConcat(szDstStr->azChar(),pToken->szChars()->azChar());
         break;
-        
+
+      case TN_LITERAL:
+        StrLib::vConcat(szDstStr->azChar(),"'");
+        StrLib::vConcat(szDstStr->azChar(),pToken->szChars()->azChar());
+        StrLib::vConcat(szDstStr->azChar(),"'");
+        break;
+
       case TN_NAME:
         StrLib::vConcat(szDstStr->azChar(),pToken->szChars()->azChar());
         break;

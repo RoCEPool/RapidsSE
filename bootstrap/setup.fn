@@ -458,6 +458,12 @@ function doClusterInstall() {
       # TODO: Present summary
       # TODO: Edit ?
 
+      # We need to validate hostnames and SSH access now so that we can connect
+      # to each machine and determine the number of CPUs, so we can set the
+      # number of partitions/threads appropriately.
+      validateHostsAreResolvable
+      validateHostsReachableBySsh
+
       # Validate that the necessary 3rd party applications and libraries are installed.
       # We do this here because they are used in collectHostSizeInfo and other steps.
       validate3rdPartyTools
@@ -521,6 +527,12 @@ function doClusterInstall() {
 
     # Load and validate config
     loadClusterConfig
+
+    # We need to validate hostnames and SSH access now so that we can connect
+    # to each machine and determine the number of CPUs, so we can set the
+    # number of partitions/threads appropriately.
+    validateHostsAreResolvable
+    validateHostsReachableBySsh
 
     # Validate that the necessary 3rd party applications and libraries are installed.
     # We do this here because they are used in collectHostSizeInfo and other steps.
@@ -617,7 +629,7 @@ function createConfiguration() {
 function displaySetupWelcome() {
   clear &>/dev/null || { echo; echo; }
 
-  #shellcheck disable=1090
+  #shellcheck disable=SC1090
   source "${VERSION_FILE}"
 
   echo "Welcome to the installation wizard for RapidsSE version ${SE_VERSION_STR}."
@@ -1972,7 +1984,7 @@ function doNodeInstall() {
   trap cleanupNodeInstall EXIT
 
   # Source the config file to include its configuration variables here
-  #shellcheck disable=1090
+  #shellcheck disable=SC1090
   source "${CONFIG_FILE}"
 
   debugPrint "Loaded cluster configuration file ${CONFIG_FILE}. Contents of file:\n$(cat "${CONFIG_FILE}")"

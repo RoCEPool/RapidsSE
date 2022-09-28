@@ -161,12 +161,16 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
 {
   _static_
 
-  if( AM::pGrid() &&
-    ! AM::pGrid()->bHealthy()) {
+  if ( AM::pGrid() &&
+      ! AM::pGrid()->bHealthy()) {
     return EC_NODE_LOSS;
   }
 
-  Job* pChildJob;
+  if (! AM::PROCESS::bSeRunning()) {
+    return EC_NODE_LOSS;
+  }
+
+            Job* pChildJob;
   rtChildJobId = C_UNKNOWN;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -241,6 +245,10 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
 
   pChildJob = new Job(szJobNm,tParentId,tOriginId,tDistId,pCmdTagSet);
   bIsPipeline = pChildJob->bIsPipeline();
+
+//  vTrace("eForkJobChild: %04lld.%04lld\n"_Stz,
+//         pChildJob->tJobId().uNodeId(),
+//         pChildJob->tJobId().uJobNo());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // save child job pointer in thread object till its task is assigned

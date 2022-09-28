@@ -934,6 +934,25 @@ void CodeSynth::vSynthInflateCrw(Stz *sTableNm, Stz *sLabel, Stz* sLabelOrdAgg, 
 }
 
 /*----------------------------------------------------------------------------*/
+/* return from the inflate of a crw row                                       */
+/*----------------------------------------------------------------------------*/
+void CodeSynth::vSynthInflateCrwRet(Stz *sLabel, Stz *sLabelNext) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the init stub
+  vGenerateInitStub("INFLATE-CRW-RET"_Stz, sLabel);
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_racStrAreaT = acStrArea;");
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate goto label
+  vGenerateGoto(sLabelNext);
+}
+
+/*----------------------------------------------------------------------------*/
 /* synthesize inflate of a row of a row buffer                                */
 /*----------------------------------------------------------------------------*/
 void CodeSynth::vSynthInflateRow(Stz* sLabel, Stz* sLabelOrdAgg) {
@@ -1003,7 +1022,8 @@ void CodeSynth::vSynthInflateRow(Stz* sLabel, Stz* sLabelOrdAgg) {
 /*----------------------------------------------------------------------------*/
 void CodeSynth::vSynthKeyExists(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
                                 Stz* sFilterExpr, Stz* sKeyExpr,
-                                Stz* sLabel, u8 uSelectColumns)
+                                Stz* sLabel, u8 uSelectColumns,
+                                bool bExists)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
 
@@ -1111,7 +1131,10 @@ void CodeSynth::vSynthKeyExists(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate filter
-  vGenerateKeyExistsFilter(pStreamDefRht, sFilterExpr);
+  if (bExists)
+    vGenerateKeyExistsFilter(pStreamDefRht, sFilterExpr);
+  else
+    vGenerateKeyNotExistsFilter(pStreamDefRht, sFilterExpr);
 
   // cleanup
   m_pExprStack->vReset();
@@ -1648,7 +1671,7 @@ void CodeSynth::vGenerateStencilCast(TypedStack* pInitStack) {
         xRowRef[m_eStencilFrom].m_szInclude,
         xRowRef[m_eStencilFrom].m_szInclude);
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-      StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_racStrAreaJ = aCombinedT->m_racStrAreaJSav;");
+      //StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_racStrAreaJ = aCombinedT->m_racStrAreaJSav;");
       StrLib::vAppendString(&m_azCodeCrs, "\n    szStrArea = aCombinedT->m_racStrAreaJ;");
       break;
 
@@ -1657,7 +1680,7 @@ void CodeSynth::vGenerateStencilCast(TypedStack* pInitStack) {
         xRowRef[m_eStencilFrom].m_szInclude,
         xRowRef[m_eStencilFrom].m_szInclude);
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-      StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_racStrAreaT = aCombinedT->m_racStrAreaTSav;");
+      //StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_racStrAreaT = aCombinedT->m_racStrAreaTSav;");
       StrLib::vAppendString(&m_azCodeCrs, "\n    szStrArea = aCombinedT->m_racStrAreaT;");
       break;
 
@@ -1666,7 +1689,7 @@ void CodeSynth::vGenerateStencilCast(TypedStack* pInitStack) {
                     xRowRef[m_eStencilFrom].m_szInclude,
                     xRowRef[m_eStencilFrom].m_szInclude);
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-      StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_racPayloadArea = aCombinedT->m_racPayloadAreaSav;");
+      //StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_racPayloadArea = aCombinedT->m_racPayloadAreaSav;");
       StrLib::vAppendString(&m_azCodeCrs, "\n    szStrArea = aCombinedT->m_racPayloadArea;");
       break;
 
@@ -1675,7 +1698,7 @@ void CodeSynth::vGenerateStencilCast(TypedStack* pInitStack) {
         xRowRef[m_eStencilFrom].m_szInclude,
         xRowRef[m_eStencilFrom].m_szInclude);
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-      StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_racStrAreaP = aCombinedT->m_racStrAreaPSav;");
+      //StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_racStrAreaP = aCombinedT->m_racStrAreaPSav;");
       StrLib::vAppendString(&m_azCodeCrs, "\n    szStrArea = aCombinedT->m_racStrAreaP;");
       break;
 
@@ -1684,7 +1707,7 @@ void CodeSynth::vGenerateStencilCast(TypedStack* pInitStack) {
         xRowRef[m_eStencilFrom].m_szInclude,
         xRowRef[m_eStencilFrom].m_szInclude);
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-      StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_racStrAreaTJ = aCombinedT->m_racStrAreaTJSav;");
+      //StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_racStrAreaTJ = aCombinedT->m_racStrAreaTJSav;");
       StrLib::vAppendString(&m_azCodeCrs, "\n    szStrArea = aCombinedT->m_racStrAreaTJ;");
       break;
 
@@ -1779,6 +1802,11 @@ void CodeSynth::vGetValue(eDM eDatum, char* sValue, i8& iValue, d8& dValue) {
     case DM_BCD: {
       SN_Bcd snBcd;
       iValue = snBcd.i(&sValue, AM::pFmt());
+    }
+      break;
+    case DM_BOL: {
+      SN_Bol snBol;
+      iValue = snBol.i(&sValue, AM::pFmt());
     }
       break;
     case DM_DTE: {
@@ -2030,10 +2058,14 @@ void CodeSynth::vPayloadPopulate(ePL ePayload) {
       StrLib::vAppendString(&m_azCodeCrs, "\n      }");
 
       StrLib::vAppendString(&m_azCodeCrs, "\n      else {");
-      sCopy.vSprint("\n        nSrcSize = 8 - 1; //strlen(szSrcStz);"_Stz);
+      //sCopy.vSprint("\n        nSrcSize = 8 - 1; //strlen(szSrcStz);"_Stz);
+      sCopy.vSprint("\n        nSrcSize = strlen(szSrcStz);"_Stz);
+
+      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+      sCopy.vSprint("\n       aCombinedT->m_aiPayload[%lld] = (i8)aIndexTree_allotPayStr(aCombinedT->m_aIndexTreePL, szSrcStz);"_Stz, iPayLoad);
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
-      sCopy.vSprint("\n        szDstStz = (char*)&aCombinedT->m_aiPayload[%lld];"_Stz, iPayLoad );
+      sCopy.vSprint("\n        szDstStz = (char*)aCombinedT->m_aiPayload[%lld];"_Stz, iPayLoad );
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
       StrLib::vAppendString(&m_azCodeCrs,"\n        strncpy(szDstStz, szSrcStz, nSrcSize);");
       StrLib::vAppendString(&m_azCodeCrs, "\n");
@@ -2288,7 +2320,7 @@ void CodeSynth::vPayloadToBuffer(IndexDef* pIndexDef, TypedStack* pPostStack)
     if (pColumn->eColumnType() == CT_VARCHAR ||
         pColumn->eColumnType() == CT_CHAR) {
 
-      sCopy.vSprint("\n      szSrcStz = (char*)&aCombinedT->m_aiPayload[%lld];"_Stz, iPayLoad);
+      sCopy.vSprint("\n      szSrcStz = (char*)aCombinedT->m_aiPayload[%lld];"_Stz, iPayLoad);
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
       sCopy.vSprint("\n      _PSH_INT(aCombinedT->m_aiPayload[%lld]);"_Stz, iPayLoad);
@@ -2301,7 +2333,7 @@ void CodeSynth::vPayloadToBuffer(IndexDef* pIndexDef, TypedStack* pPostStack)
       StrLib::vAppendString(&m_azCodeCrs, "\n      }");
 
       StrLib::vAppendString(&m_azCodeCrs, "\n      else {");
-      sCopy.vSprint("\n      nSrcSize = strlen((char*)&aCombinedT->m_aiPayload[%lld]) + 1;"_Stz, iPayLoad);
+      sCopy.vSprint("\n      nSrcSize = strlen((char*)aCombinedT->m_aiPayload[%lld]) + 1;"_Stz, iPayLoad);
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
       StrLib::vAppendString(&m_azCodeCrs, "\n");
 
@@ -2712,13 +2744,16 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
   // set working ExprStack
   pExprStack = pWorkingStack(EK_NONE, ePreExp, pPostStack);
 
+  if (!pExprStack)
+    pExprStack = m_pExprStack;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // iterate tokens of the expression
   for (i8 i_Tkn = 0; i_Tkn < m_pTokenVec->nItems(); i_Tkn++) {
 
     pTkn = m_pTokenVec->pGet(i_Tkn);
 
-/*
+
 #ifdef WITH_DEBUG_VERSION
 //    vTrace("TKN: %s\n"_Stz, pTkn->azChars());
 //
@@ -2733,7 +2768,6 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 //    }
 //    vTrace("--------------------------------------\n"_Stz);
 #endif
-*/
 
     if (pTkn->bSame(","_Stz)) {
       // skip the comma
@@ -3136,6 +3170,11 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
       pExprStack = pWorkingStack(EK_NONE, ePreExp, pPostStack);
       RASSERT(pExprStack == pPostStack);
 
+      continue;
+    }
+
+    if (pTkn->bIsBoolean()) {
+      vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, eExprKind, DM_BOL);
       continue;
     }
 
@@ -3595,12 +3634,7 @@ void CodeSynth::vPushAggCol(TypedStack* pExprStack, TypedStack* pPostStack,
     vInitAgg(ePreExp, eExprType);
 
     Column* pColumn = m_pStreamDefOut->pGetColumn(i_Col);
-//    if (pColumn->eColumnType() == CT_VARCHAR) {
-//      sOperation.vSprint("_COPYSTR_PL(&aCombinedT->m_aiPayload[%lld])"_Stz, i_ColPL);
-//    }
-//    else {
-      sOperation.vSprint("_ASSIGN(aCombinedT->m_aiPayload[%lld])"_Stz, i_ColPL);
- //   }
+    sOperation.vSprint("_ASSIGN(aCombinedT->m_aiPayload[%lld])"_Stz, i_ColPL);
     m_pInitStack->vPushStr(sOperation);
   } else {
     vInitAgg(ePreExp, eExprType);
@@ -3662,10 +3696,10 @@ void CodeSynth::vPushAggCol(TypedStack* pExprStack, TypedStack* pPostStack,
 
         // push col on both stacks
         if (eExprType == DM_VCH) {
-          sOperation.vSprint("_PSH_COL(&aCombinedT->m_aiPayload[%lld])"_Stz, i_ColPL);
+          sOperation.vSprint("_PSH_COL(aCombinedT->m_aiPayload[%lld])"_Stz, i_ColPL);
           pExprStack->vPushStr(sOperation);
           pPostStack->vPushStr(sOperation);
-          sOperation = "_LTA_VCHVCH_PL"_Stz;
+          sOperation = "_LTA_VCHVCH"_Stz;
           sOperation.vConcat("(aCombinedT->m_iErrorCode)"_Stz);
           pExprStack->vPushStr(sOperation);
         }
@@ -3708,10 +3742,10 @@ void CodeSynth::vPushAggCol(TypedStack* pExprStack, TypedStack* pPostStack,
 
         // push col on both stacks
         if (eExprType == DM_VCH) {
-          sOperation.vSprint("_PSH_COL(&aCombinedT->m_aiPayload[%lld])"_Stz, i_ColPL);
+          sOperation.vSprint("_PSH_COL(aCombinedT->m_aiPayload[%lld])"_Stz, i_ColPL);
           pExprStack->vPushStr(sOperation);
           pPostStack->vPushStr(sOperation);
-          sOperation = "_GTA_VCHVCH_PL"_Stz;
+          sOperation = "_GTA_VCHVCH"_Stz;
           sOperation.vConcat("(aCombinedT->m_iErrorCode)"_Stz);
           pExprStack->vPushStr(sOperation);
         }
@@ -3940,7 +3974,7 @@ void CodeSynth::vPushLiteral(TypedStack* pExprStack, IntStack* pTypeStack, Token
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
-  s256 sOperation;
+  s48K sOperation;
   i8 iValue;
   d8 dValue;
 
@@ -3952,6 +3986,11 @@ void CodeSynth::vPushLiteral(TypedStack* pExprStack, IntStack* pTypeStack, Token
       sOperation.vSprintCat("(%lld)"_Stz, iValue);
       pExprStack->vPushStz(sOperation);
       break;
+    case DM_BOL:
+      vGetValue(DM_BOL, pTkn->azChars(), iValue, dValue);
+      sOperation.vSprintCat("(%lld)"_Stz, iValue);
+      pExprStack->vPushStz(sOperation);
+      break;
     case DM_DTE:
       vGetValue(DM_DTE, pTkn->azChars(), iValue, dValue);
       sOperation.vSprintCat("(%lld)"_Stz, iValue);
@@ -3959,7 +3998,7 @@ void CodeSynth::vPushLiteral(TypedStack* pExprStack, IntStack* pTypeStack, Token
       break;
     case DM_FLT:
       vGetValue(DM_FLT, pTkn->azChars(), iValue, dValue);
-      sOperation.vSprintCat("(%e)"_Stz, dValue);
+      sOperation.vSprintCat("(%.9e)"_Stz, dValue);
       pExprStack->vPushStz(sOperation);
       break;
     case DM_INT:
@@ -4291,7 +4330,8 @@ void CodeSynth::vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, e
       pColumn = m_pStreamDefOut->pGetColumn(i_Col);
       if (ePreExp == PE_MIN || ePreExp == PE_MAX) {
         if (pColumn->eColumnType() == CT_VARCHAR)
-          sPush.vSprint("_COPYSTR_IFTRUE(aCombinedT->m_racStrAreaAgg, p%s->%s)\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
+          sPush.vSprint("_COPYSTR_IFTRUE(aCombinedT->m_racStrAreaAgg, p%s->%s)\n"_Stz,
+                        xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
         else
           sPush.vSprint("_ASSIGN_IFTRUE(p%s->%s)\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
       }
@@ -4324,7 +4364,7 @@ void CodeSynth::vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, e
       pColumn = m_pStreamDefOut->pGetColumn(i_Col);
       if (ePreExp == PE_MIN || ePreExp == PE_MAX) {
         if (pColumn->eColumnType() == CT_VARCHAR)
-          sPush.vSprint("_COPYSTR_IFTRUE_PL(&aCombinedT->m_aiPayload[%lld])\n"_Stz, i_ColPL);
+          sPush.vSprint("_COPYSTR_IFTRUE_PL(aCombinedT->m_aiPayload[%lld])\n"_Stz, i_ColPL);
         else
           sPush.vSprint("_ASSIGN_IFTRUE(aCombinedT->m_aiPayload[%lld])\n"_Stz, i_ColPL);
       }
@@ -4614,7 +4654,7 @@ void CodeSynth::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePre
       break;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // LIKE OPERATOR
+    // SUBSTRING2
     case PE_SS2:
       eExpr1 = (eDM)pTypeStack->iPop();
       eExpr2 = (eDM)pTypeStack->iPop();
@@ -4624,18 +4664,18 @@ void CodeSynth::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePre
       break;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // LIKE OPERATOR
+    // SUBSTRING3
     case PE_SS3:
       eExpr1 = (eDM)pTypeStack->iPop();
       eExpr2 = (eDM)pTypeStack->iPop();
       eExpr3 = (eDM)pTypeStack->iPop();
-      sOperation.vConcat("_STR_SUBSTRING3((char*)szStrArea, aCombinedT->m_iErrorCode)"_Stz);
+      sOperation.vConcat("_STR_SUBSTRING3(szStrArea, aCombinedT->m_iErrorCode)"_Stz);
       pExprStack->vPushStz(sOperation);
       pTypeStack->vPush(DM_VCH);
       break;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // LIKE OPERATOR
+    // EXTRACT DAY
     case PE_XDY:
       eExpr1 = (eDM)pTypeStack->iPop();
       sOperation = aFM[eMacro_ExtractDay[eExpr1]];
@@ -4645,7 +4685,7 @@ void CodeSynth::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePre
       break;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // LIKE OPERATOR
+    // EXTRACT HOUR
     case PE_XHR:
       eExpr1 = (eDM)pTypeStack->iPop();
       sOperation = aFM[eMacro_ExtractHour[eExpr1]];
@@ -4655,7 +4695,7 @@ void CodeSynth::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePre
       break;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // LIKE OPERATOR
+    // EXTRACT MINUTE
     case PE_XMN:
       eExpr1 = (eDM)pTypeStack->iPop();
       sOperation = aFM[eMacro_ExtractMinute[eExpr1]];
@@ -4665,7 +4705,7 @@ void CodeSynth::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePre
       break;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // LIKE OPERATOR
+    // EXTRACT MONTH
     case PE_XMT:
       eExpr1 = (eDM)pTypeStack->iPop();
       sOperation = aFM[eMacro_ExtractMonth[eExpr1]];
@@ -4675,7 +4715,7 @@ void CodeSynth::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePre
       break;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // LIKE OPERATOR
+    // EXTRACT SECOND
     case PE_XSC:
       eExpr1 = (eDM)pTypeStack->iPop();
       sOperation = aFM[eMacro_ExtractSecond[eExpr1]];
@@ -4685,7 +4725,7 @@ void CodeSynth::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePre
       break;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // LIKE OPERATOR
+      // EXTRACT YEAR
     case PE_XYR:
       eExpr1 = (eDM)pTypeStack->iPop();
       sOperation = aFM[eMacro_ExtractYear[eExpr1]];
@@ -4973,6 +5013,38 @@ void CodeSynth::vGenerateKeyExistsFilter(StreamDef* pStreamDef, Stz* sFilterExpr
   vGenerateExprCode(m_pExprStack, ""_Stz);
 
   StrLib::vAppendString(&m_azCodeCrs, "\n    if (bFilterResult && bFilterResult != C_DATUM_NULL) {");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_iProcessRow = 1;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n    } else { ");
+  StrLib::vAppendString(&m_azCodeCrs, "\n       aCombinedT->m_iProcessRow = 0;");
+  // go to next entry
+  StrLib::vAppendString(&m_azCodeCrs, "\n       // move to next entry");
+  StrLib::vAppendString(&m_azCodeCrs, "\n       aCombinedT->m_aEntIntJ = (struct Ent_int*)aEntBuffer_nextEntry(&aCombinedT->m_aEntBufferJ, aCombinedT->m_aEntIntJ);");
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n       goto L_KeyExistsDeref;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    }");
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate code for keyNotExists filter expression                           */
+/*----------------------------------------------------------------------------*/
+void CodeSynth::vGenerateKeyNotExistsFilter(StreamDef* pStreamDef, Stz* sFilterExpr)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
+
+  // generate the code for the projected expressions
+  vGenerateExpr((char *) sFilterExpr, nullptr, EK_FILTER, pStreamDef);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate stencil cast
+  vGenerateStencilCast();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate code for the expression
+  vGenerateExprCode(m_pExprStack, ""_Stz);
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n    if ( ! bFilterResult && bFilterResult != C_DATUM_NULL) {");
   StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_iProcessRow = 1;");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 

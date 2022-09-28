@@ -11,6 +11,9 @@
 
   params| sTableNm |
 
+  // check index name is valid
+  <indexNm> check::nameIsValidIndex not if false exit then
+
   // check in tables folder: ../schemas/public/tables
   check::folderIsTables not if false exit then
 

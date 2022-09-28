@@ -38,7 +38,9 @@ Input::Input(Input* pNext)
   m_pInpTagSet  = new TagSet;
 
   m_pCharser_spares = nullptr;
-  
+
+  m_bRevertToCpp = false;
+
   // debugging aids
   d_iDebugMode               = false;
   
@@ -243,13 +245,40 @@ void Input::vForkReset(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set normal cpp tokens                                                      */
+/* collecting cpp tokens?                                                     */
+/*----------------------------------------------------------------------------*/
+bool Input::bFormCppTokens(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+
+  if (UF_CPP_TOKENS == m_eTknForm)
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set cpp tokens                                                             */
 /*----------------------------------------------------------------------------*/
 void Input::vFormCppTokens(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   m_eTknForm = UF_CPP_TOKENS;
+}
+
+/*----------------------------------------------------------------------------*/
+/* collecting sen tokens?                                                     */
+/*----------------------------------------------------------------------------*/
+bool Input::bFormSenTokens(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+
+  if (UF_SEN_TOKENS == m_eTknForm)
+    return true;
+
+  return false;
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -413,7 +442,7 @@ void Input::vRawInputClear(void)
 /*----------------------------------------------------------------------------*/
 /* read next command from input stream                                        */
 /*----------------------------------------------------------------------------*/
-void Input::vReadCommand(void)
+bool Input::bReadCommand(eEC& eInputError)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
     
@@ -435,7 +464,9 @@ void Input::vReadCommand(void)
   if (d_iDebugMode)
     m_pInpTknVec->vDumpVec(16);
   
-  vCollectVecFirstLine();
+  if (! bCollectVecFirstLine(eInputError))
+    goto L_Exit;
+
   //vTrace(" : >>>%s<<<\n"_Stz,m_pCharser->szRawInput());
 
   if (d_iDebugMode)
@@ -483,7 +514,9 @@ void Input::vReadCommand(void)
   if (d_iDebugMode)
     m_pInpTknVec->vDumpVec(16);
   
-  vCollectVecTillSemicolon();
+  if (! bCollectVecTillSemicolon(eInputError))
+    goto L_Exit;
+
   //vTrace(" : %s\n"_Stz,m_pCharser->szRawInput());
   
   if (d_iDebugMode)
@@ -510,6 +543,10 @@ void Input::vReadCommand(void)
   
   
 L_Exit:
+
+  vTestRevertToCpp();
+
+
   if (d_iDebugMode) {
     i8 i = iJotSummary(':',(Stz*)__func__,"TokenVec:"_Stz);
     UNUSED(i);
@@ -518,19 +555,26 @@ L_Exit:
     vJot2('<',(Stz*)__func__,""_Stz);
   }
 
+  //m_pInpTknVec->vDumpVec(0);
+
+  if (eInputError)
+    return false;
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
 /* read till semicolon                                                        */
 /*----------------------------------------------------------------------------*/
-void Input::vReadTillSemicolon(void)
+bool Input::bReadTillSemicolon(eEC& eError)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   vCursorReset();
 
   for (;;) {
-    vCursorAdvance();
+    if (! bCursorAdvance(eError))
+      return true;
     vCollectOneToken();
     
     // look for terminal
@@ -538,12 +582,13 @@ void Input::vReadTillSemicolon(void)
       break;
   }
 
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
 /* parse next token                                                           */
 /*----------------------------------------------------------------------------*/
-void Input::vReadToken(void)
+bool Input::bReadToken(eEC& eError)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
@@ -551,12 +596,40 @@ void Input::vReadToken(void)
   
   vCursorReset();
 
-  vCursorAdvance();
+  if (! bCursorAdvance(eError))
+    return false;
 
   vCollectOneToken();
   
 //  if (m_pCurrTkn)
 //    m_pCurrTkn->vShow();
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset                                                                      */
+/*----------------------------------------------------------------------------*/
+void Input::vReset(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_INPUT, _FOOTER_);
+
+  m_pInpTknVec->vSoftReset();
+  m_pCurrTkn = nullptr;
+  m_eTknForm = UF_NONE;
+  m_pInpTagSet->vReset();
+
+  while (m_pCharser) {
+    m_pCharser->vResetCharser();
+   RASSERT(bPopCharser());
+  }
+
+  vPushCharser();
+  m_pCharser->vResetCharser();
+
+  vUseStdin();
+  vFormCppTokens();
+  vUseBegin();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -720,7 +793,7 @@ void Input::vCollectOneToken(void)
     vJot2('>',(Stz*)__func__,""_Stz);
   }
   
-  if (UF_CPP_TOKENS == m_eTknForm)
+  if (bFormCppTokens())
     vCollectCpp();
   else
     vCollectSen();
@@ -734,7 +807,7 @@ void Input::vCollectOneToken(void)
 /*----------------------------------------------------------------------------*/
 /* collect one line line of tokens from input stream                          */
 /*----------------------------------------------------------------------------*/
-void Input::vCollectVecFirstLine(void)
+bool Input::bCollectVecFirstLine(eEC& eInputError)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
@@ -755,13 +828,21 @@ void Input::vCollectVecFirstLine(void)
   
   for (;;) {
 
-    vCursorAdvance();
+    if (! bCursorAdvance(eInputError))
+      return false;
     
     if (d_iDebugMode)
       m_pInpTknVec->vDumpVec(16);
+
     vCollectOneToken();
+
     if (d_iDebugMode)
       m_pInpTknVec->vDumpVec(16);
+
+    if (m_pCurrTkn->bInvalidToken()) {
+      eInputError = EC_INVALID_TOKEN;
+      return false;
+    }
 
     if (m_pCurrTkn->bIsNull()) {
       if (d_iDebugMode)
@@ -785,12 +866,14 @@ void Input::vCollectVecFirstLine(void)
     m_pInpTknVec->vListTokens();
     vJot2('<',(Stz*)__func__,""_Stz);
   }
+
+  return true;
  }
 
 /*----------------------------------------------------------------------------*/
 /* collect vector of tokens from input stream till ';'                        */
 /*----------------------------------------------------------------------------*/
-void Input::vCollectVecTillSemicolon(void)
+bool Input::bCollectVecTillSemicolon(eEC& eInputError)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
@@ -818,10 +901,19 @@ void Input::vCollectVecTillSemicolon(void)
   // get tokens delimited by ';'
   for (;;) {
 
-    vCursorAdvance();
+    if (! bCursorAdvance(eInputError))
+      return false;
     
     vCollectOneToken();
-    
+
+    if (m_pCurrTkn->bInvalidToken()) {
+      eInputError = EC_INVALID_TOKEN;
+      return false;
+    }
+
+    if (TN_NULL == m_pCurrTkn->eToken())
+      m_pInpTknVec->vDumpVec(0);
+
     ASSERT(TN_NULL != m_pCurrTkn->eToken());
     
     // look for terminal
@@ -836,6 +928,8 @@ void Input::vCollectVecTillSemicolon(void)
     m_pInpTknVec->vListTokens();
     vJot2('<',(Stz*)__func__,""_Stz);
   }
+
+  return true;
 }
 
 // collect cpp tokens //////////////////////////////////////////////////////////
@@ -869,17 +963,23 @@ void Input::vCollectCpp(void)
   
   // collect integer literal?
   else
-  if (bStartCppInteger()) {
+  if (bStartCppNumber()) {
     vCollectCppNumber();
   }
   
-  // collect string literal?
+  // collect double quoted string ?
   else
   if (bStartCppString()) {
     vCollectCppString();
   }
-  
-  // collect name token?
+
+  // collect single quoted literal?
+  else
+  if (bStartCppLiteral()) {
+    vCollectCppLiteral();
+  }
+
+    // collect name token?
   else
   if (bStartCppName()) {
     vCollectCppName();
@@ -902,6 +1002,8 @@ void Input::vCollectCpp(void)
     case TN_DECIMAL:
     case TN_FLOAT:
     case TN_INTEGER:
+    case TN_INVALID:
+    case TN_LITERAL:
     case TN_NAME:
     case TN_NULL:
     case TN_STRING:
@@ -915,8 +1017,53 @@ void Input::vCollectCpp(void)
     default:
       NEVER_REACH;
    }
+
+   // test for collecting a pipeline and switch to sen tokens
+  vTestSwitchToSen();
 }
 
+/*----------------------------------------------------------------------------*/
+/* collect normal cpp single quoted literal                                    */
+/*----------------------------------------------------------------------------*/
+void Input::vCollectCppLiteral(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+
+  char *azChars = StrLib::azNullTerminator(m_pCurrTkn->azChars());
+  char *z = azChars;
+
+  ASSERT(bStartSenString());
+
+  // skip the leading '
+  vGetAnnCharStripped();
+
+  // collect the characters within the string
+  while ( ! bEndCppLiteral() ) {
+
+    if (m_xAnnChar.bIsNewLine()) {
+      *z = '\0';
+      m_pCurrTkn->vToken(TN_INVALID);
+      return;
+    }
+
+    if (m_xAnnChar.bIsBackSlash()) {
+      vGetAnnCharStripped();
+      // translate \n into new line
+      if ('n' == m_xAnnChar.m_cChar)
+        m_xAnnChar.m_cChar = '\n';
+      else if ('r' == m_xAnnChar.m_cChar)
+        m_xAnnChar.m_cChar = '\r';
+    }
+
+    *z++ = m_xAnnChar.m_cChar;
+    vGetAnnCharStripped();
+  }
+
+  // terminate the string literal
+  *z = '\0';
+
+  m_pCurrTkn->vToken(TN_LITERAL);
+}
 /*----------------------------------------------------------------------------*/
 /* collect normal cpp name                                                    */
 /*----------------------------------------------------------------------------*/
@@ -956,44 +1103,106 @@ void Input::vCollectCppNumber(void)
 
   i8 iNoDigits = 0;
   
-  // we have seen a digit
-  ASSERT(bStartCppInteger());
+  // we have seen the start of a number
+  ASSERT(bStartCppNumber());
   
   // - start parsing an integer
-  
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // collect initial digits
   while (m_xAnnChar.bIsDigit()) {
-    *z++ = m_xAnnChar.m_cChar;
-    iNoDigits++;
-    vGetAnnCharStripped();
+    *z++ = m_xAnnChar.m_cChar; iNoDigits++; vGetAnnCharStripped();
   }
-  
-  // 0x hex number?
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // float of form 123e4 (no decimal point)
+  if (m_xAnnChar.bIsE()) {
+    *z++ = m_xAnnChar.m_cChar; iNoDigits++; vGetAnnCharStripped();
+
+    if (m_xAnnChar.bIsSign()) {
+      *z++ = m_xAnnChar.m_cChar; iNoDigits++; vGetAnnCharStripped();
+    }
+
+    while (m_xAnnChar.bIsDigit()) {
+      *z++ = m_xAnnChar.m_cChar; iNoDigits++; vGetAnnCharStripped();
+    }
+
+    vUngetAnnCharStripped();
+
+    // terminate the float literal
+    *z = '\0';
+    m_pCurrTkn->vToken(TN_FLOAT);
+    return;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 0x hex form of integer
   if (1 == iNoDigits && m_xAnnChar.bIsX()) {
     
-    // add the 'x'
-    *z++ = m_xAnnChar.m_cChar;
+    // collect the 'x'
+    *z++ = m_xAnnChar.m_cChar; iNoDigits++; vGetAnnCharStripped();
     
     // collect the hex digits
     while (m_xAnnChar.bIsHex()) {
-      *z++ = m_xAnnChar.m_cChar;
-      vGetAnnCharStripped();
+      *z++ = m_xAnnChar.m_cChar; iNoDigits++; vGetAnnCharStripped();
     }
+
+    vUngetAnnCharStripped();
+
+    // terminate the integer literal
+    *z = '\0';
+    m_pCurrTkn->vToken(TN_INTEGER);
+    return;
   }
-  
-  // decimal number?
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // . decimal number?
   if (m_xAnnChar.bIsDot()) {
-    
-    *z++ = m_xAnnChar.m_cChar;
-    
-    vGetAnnCharStripped();
+
+    // collect the '.'
+    *z++ = m_xAnnChar.m_cChar; iNoDigits++; vGetAnnCharStripped();
+
+    // test for ..
+    if (m_xAnnChar.bIsDot()) {
+      *z++ = m_xAnnChar.m_cChar; iNoDigits++; vGetAnnCharStripped();
+
+      vUngetAnnCharStripped();
+
+      // terminate the other literal
+      *z = '\0';
+      m_pCurrTkn->vToken(TN_OTHER);
+      return;
+    }
     
     // collect digits after decimal
     while (m_xAnnChar.bIsDigit()) {
-      *z++ = m_xAnnChar.m_cChar;
-      iNoDigits++;
-      vGetAnnCharStripped();
+      *z++ = m_xAnnChar.m_cChar; iNoDigits++; vGetAnnCharStripped();
     }
+
+    // an 'e' introduces a float (scientific notation)
+    if (m_xAnnChar.bIsE()) {
+
+      // collect the 'e'
+      *z++ = m_xAnnChar.m_cChar; iNoDigits++; vGetAnnCharStripped();
+
+      // collect optional sign of e
+      if (m_xAnnChar.bIsSign()) {
+        *z++ = m_xAnnChar.m_cChar; iNoDigits++; vGetAnnCharStripped();
+      }
+
+      // collect e digits
+      while (m_xAnnChar.bIsDigit()) {
+        *z++ = m_xAnnChar.m_cChar; iNoDigits++; vGetAnnCharStripped();
+      }
+
+      vUngetAnnCharStripped();
+
+      // terminate the float literal
+      *z = '\0';
+      m_pCurrTkn->vToken(TN_FLOAT);
+      return;
+    }
+
     vUngetAnnCharStripped();
     
     // terminate the decimal literal
@@ -1147,7 +1356,47 @@ void Input::vCollectCppOther(void)
       m_xAnnChar.m_cChar = '<';
     }
   }
-  
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // gather <> as a token
+  if (m_xAnnChar.bIsLessThan()) {
+    vGetAnnCharStripped();
+    if (m_xAnnChar.bIsGreaterThan()) {
+      *z++ = '<';
+      *z++ = '>';
+      *z = '\0';
+      m_pCurrTkn->vToken(TN_OTHER);
+      return;
+    }
+    else {
+      // push back the unconsumed char
+      vUngetAnnCharStripped();
+
+      // set last single character as <
+      m_xAnnChar.m_cChar = '<';
+    }
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // gather != as a token
+  if (m_xAnnChar.bIsExclamation()) {
+    vGetAnnCharStripped();
+    if (m_xAnnChar.bIsEqual()) {
+      *z++ = '!';
+      *z++ = '=';
+      *z = '\0';
+      m_pCurrTkn->vToken(TN_OTHER);
+      return;
+    }
+    else {
+      // push back the unconsumed char
+      vUngetAnnCharStripped();
+
+      // set last single character as !
+      m_xAnnChar.m_cChar = '!';
+    }
+  }
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // gather [[ as a token
   if (m_xAnnChar.bIsOpenBracket()) {
@@ -1260,7 +1509,13 @@ void Input::vCollectCppString(void)
   
   // collect the characters within the string
   while ( ! bEndCppString() ) {
-    
+
+    if (m_xAnnChar.bIsNewLine()) {
+      *z = '\0';
+      m_pCurrTkn->vToken(TN_INVALID);
+      return;
+    }
+
     if (m_xAnnChar.bIsBackSlash()) {
       vGetAnnCharStripped();
       // translate \n into new line
@@ -1676,13 +1931,28 @@ bool Input::bHaveWhitespace(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* test for start of normal integer                                           */
+/* test for start of normal number                                            */
 /*----------------------------------------------------------------------------*/
-bool Input::bStartCppInteger(void)
+bool Input::bStartCppNumber(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   if (StrLib::bIsDigit(m_xAnnChar.m_cChar))
+    return true;
+  if (StrLib::bIsDot(m_xAnnChar.m_cChar))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for start of quoted literal string                                    */
+/*----------------------------------------------------------------------------*/
+bool Input::bStartCppLiteral(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+
+  if (m_xAnnChar.bIsSingleQuote())
     return true;
 
   return false;
@@ -1731,6 +2001,22 @@ bool Input::bStartCppString(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test for end of quoted literal string                                      */
+/*----------------------------------------------------------------------------*/
+bool Input::bEndCppLiteral(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+
+  if (m_xAnnChar.bIsSingleQuote())
+    return true;
+
+  //if (bFormCppTokens() && m_xAnnChar.bIsNewLine())
+  //  return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* test for end of normal string                                              */
 /*----------------------------------------------------------------------------*/
 bool Input::bEndCppString(void)
@@ -1739,7 +2025,10 @@ bool Input::bEndCppString(void)
   
   if (m_xAnnChar.bIsDoubleQuote())
     return true;
-  
+
+  //if (bFormCppTokens() && m_xAnnChar.bIsNewLine())
+  //  return true;
+
   return false;
 }
 
@@ -1904,13 +2193,18 @@ bool Input::bHitEOF(void)
 /*----------------------------------------------------------------------------*/
 /* reset the token vector and current token cursor pair                       */
 /*----------------------------------------------------------------------------*/
-void Input::vCursorAdvance(void)
+bool Input::bCursorAdvance(eEC& eError)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_INPUT, _FOOTER_);
 
-  m_pInpTknVec->vAdvanceCurr(true);
-  
+  if (!m_pInpTknVec->bAdvanceCurr(true)) {
+    eError = EC_COMMAND_TOO_LONG;
+    return false;
+  }
+
   m_pCurrTkn = m_pInpTknVec->pCurrToken();
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1938,6 +2232,32 @@ void Input::vCursorRewind(void)
   pTkn->vReset();
     
   m_pCurrTkn = m_pInpTknVec->pCurrToken();
+}
+
+/*----------------------------------------------------------------------------*/
+/* revert to cpp tokens                                                       */
+/*----------------------------------------------------------------------------*/
+void Input::vTestRevertToCpp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+
+  if (m_bRevertToCpp) {
+    m_bRevertToCpp = false;
+    vFormCppTokens();
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* switch to cpp tokens                                                       */
+/*----------------------------------------------------------------------------*/
+void Input::vTestSwitchToSen(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+
+  if (m_pCurrTkn && 0 == m_pCurrTkn->i_Token() && m_pCurrTkn->bIsPipeline()) {
+    m_bRevertToCpp = true;
+    vFormSenTokens();
+  }
 }
 
 /*============================================================================*/

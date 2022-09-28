@@ -1,4 +1,4 @@
-//aggregates.test
+aggregates.test
 arithmetic_int.test
 arithmetic_float.test
 boolean.test
@@ -17,4 +17,4 @@ query6.test
 selectTypes.test
 sum.test
 top.test
-union.test
+//union.test

@@ -109,7 +109,7 @@ void Optimiser::vDissect(VertexSpec* pm_pUnOptPipeSpec)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  vOptimise();
+  //vOptimise();
 
   return;
 }
@@ -240,22 +240,24 @@ void Optimiser::vOptimise(void)
   Board* pBoard = m_pBench->pHead();
   CardRegs* pCardRegs = pBoard->pCardRegs();
 
-  pBoard->vPrintBoard("vDissectSpec >> "_Stz);
+  //pBoard->vPrintBoard("vDissectSpec >> "_Stz);
   
   pBoard->vResolve_Symbols();
-  pBoard->vPrintBoard("vResolve_Symbols >> "_Stz);
+  //pBoard->vResolve_RootStreams();
 
-  // rules
+  //pBoard->vPrintBoard("vResolve_RootStreams >> "_Stz);
+//
+//  // rules
+//
+//  if (pBoard->bMay_Scan_Filter_to_IndexScan()) {
+//
+//    bool bRun = pBoard->bRule_Scan_Filter_to_IndexScan();
+//    UNUSED(bRun);
+//
+//    pCardRegs->vResetCardRegs();
+//  }
   
-  if (pBoard->bMay_Scan_Filter_to_IndexScan()) {
-    
-    bool bRun = pBoard->bRule_Scan_Filter_to_IndexScan();
-    UNUSED(bRun);
-    
-    pCardRegs->vResetCardRegs();
-  }
-  
-  Cue::vGetReturn("$$$$$$ >>"_Stz);
+  //Cue::vGetReturn("$$$$$$ >>"_Stz);
 }
 
 /*============================================================================*/

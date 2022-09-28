@@ -165,6 +165,49 @@ Op* Stream::pOp0(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* send EV_M_NODELOASSABORT to all operators on given node ( a nodeLoss )     */
+/*----------------------------------------------------------------------------*/
+void Stream::vNodeLossAbort(void)
+{
+  _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
+
+  i8 iThisNodeId = MY::iNodeId();
+
+  i8 iOnNodeId = -1;
+
+  if (m_p_StageSpec->bNodeTopo()) {
+
+    if (YG_NEXT_NODE == m_p_StageSpec->eStageTopology()) {
+      if (iThisNodeId != pPipeline()->iOriginNodeId()) {
+        iOnNodeId = m_iNodeId;
+      }
+    }
+    else {
+      iOnNodeId = m_iNodeId;
+    }
+
+  }
+  else {
+    iOnNodeId = AM::pLglPtnMap()->iNodeId(m_tLglPtn);
+  }
+
+  if (iOnNodeId == iThisNodeId) {
+    // for each operator in the stage ptn
+    vTrace("Sending NODELOSSABORT to Operators!!!\n"_Stz);
+    for (i8 i_Op = nItems() - 1; i_Op >= 0; i_Op--) {
+
+      Op* pOp = pGet(i_Op);
+
+      if (pOp->pTask()) {
+        pOp->vNodeLossAbort();
+      }
+
+    }
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* get pipeline for this stream                                               */
 /*----------------------------------------------------------------------------*/
 Pipeline* Stream::pPipeline(void)

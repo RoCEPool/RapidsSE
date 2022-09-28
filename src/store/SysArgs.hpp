@@ -19,6 +19,7 @@ namespace STORE
     i8    m_iConnectCode;  // connect code (not yet used)
     i8    m_iClusterID;    // ID of this cluster (Can the GridName be used?)
     s32   m_sGridName;     // name of the grid
+    s256  m_sLogFile;      // name and path to log file for SE Prompt
     s32   m_sNodeName;     // this node name
     s256  m_sPageFilePath; // path to page file
     i8    m_nPtnsPerNode;  // partitions per node

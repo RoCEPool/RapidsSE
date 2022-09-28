@@ -53,6 +53,7 @@ namespace PRIMITIVES
     void vLock(Object* pLockedBy);
     eMS  eMutex(void);
     void vPause(Object* pLockFor, i8 iMicroSeconds);
+    void vPauseForSignalLoop(Object* pLockFor, i8 iMicroSeconds);
     void vSignalAndUnlock(Object* pLockedBy);
     void vUnlock(Object* pLockedBy);
     void vWait(Object* pLockedBy);

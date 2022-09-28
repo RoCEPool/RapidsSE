@@ -12,7 +12,11 @@
 #include "Engine.hpp"
 #include "Mersenne.hpp"
 
-
+// Since trace file is opened before the attach map is ready
+// we use globals instead of saving it to the attach map
+File*        gpTraceFile;
+s256         gszTraceFilePath;
+i8           giTraceFileSize;
 
 extern Stz* gsBuildGitHash;
 extern Stz* gsBuildDate;
@@ -49,6 +53,14 @@ extern i8   giProgressPoint;
 /*----------------------------------------------------------------------------*/
 int main(int argc, char* argv[])
 {
+
+  // ********************************************************************************
+  // NOTE: Till initial command line options are parsed and trace file is
+  // initialised, we log to the trace file via piping out to stdout. We only do this
+  // in developer's environment not in the installed environment (it is redirected
+  // to /dev/null).
+  // ********************************************************************************
+
   //char* s = readline ("Enter a line: ");
 
 //  printf("sizeof(Table) %lld\n",(i8)sizeof(Table));
@@ -65,29 +77,18 @@ int main(int argc, char* argv[])
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  //signal(SIGPIPE, SIG_IGN);
+
   gxCmdLineArgs.vInit();
 
-  // Initialise the random number generator
-  Mersenne::init_genrand64(TickingDevice::iGetTick());
-
-  TlsKeys::vInit();
-
-  IntLib::vInitGlobals();
-
-  FltLib::vInitGlobals();
-
-  Engine::vEnvFlags();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
   gsBuildGitHash  = (Stz*)C_BUILD_GIT_HASH;
   gsBuildDate     = (Stz*)C_BUILD_DATE;
   gsBuildHostName = (Stz*)C_BUILD_HOSTNAME;
   gsBuildUserName = (Stz*)C_BUILD_USERNAME;
   gsBuildBranch   = (Stz*)C_BUILD_BRANCH;
-    
+
   gi_szaArgv[0] = (Stz*)argv[0];
-  
+
   if (argc> 1) {
     for (i8 i_Arg = 0; i_Arg < argc; i_Arg++)
       gi_szaArgv[i_Arg] = (Stz*)argv[i_Arg];
@@ -109,22 +110,66 @@ int main(int argc, char* argv[])
       // ********************************************************************************
       u8 uRndClusterId = RndLib::uInteger(C_I8_MAX);
       sSeArgs.vSprint(
-        "--start "
-        "--prompt "
-        "--metadata "
-        "--killPrev "
-        "--munged "
-        "--name SINGLENODE "
-        "--node SINGLENODE 127.0.0.1 5541 "
-        "--heartbeat BROADCAST 8888 "
-        "--cid %llu"
-        ""_Stz,
-        uRndClusterId);
+          "--start "
+          "--prompt "
+          "--metadata "
+          "--killPrev "
+          "--munged "
+          "--name SINGLENODE "
+          "--node SINGLENODE 127.0.0.1 5541 "
+          "--heartbeat BROADCAST 8888 "
+          "--cid %llu"
+          ""_Stz,
+          uRndClusterId);
     }
     vTrace("CmdLineArgs: %s\n"_Stz,sSeArgs.szStz());
-    
+
     gi_argc = CmdLineArgs::nBurstArgs(gi_szaArgv, sSeArgs);
   }
+
+  try {
+
+    // parse the command line arguments for trace file options only
+    if (! gxCmdLineArgs.bParseTraceFileArgs(gi_argc,gi_szaArgv))
+      Process::vExitStartup();
+
+    //Change to boolean and check like above
+    Engine::vChangeDirectory(); //! what happens if this fails?
+
+    if (! Engine::bTraceStart())
+      Process::vExitStartup();
+  }
+
+  catch (Exception xException) {
+
+    fflush(stderr); fflush(stdout);
+    fprintf(stderr,"Main-level exception caught in func %s() file %s line %d\n",
+            __func__,__FILE__,__LINE__);
+    fflush(stderr); fflush(stdout);
+    xException.vPrint();
+    fflush(stderr); fflush(stdout);
+
+    Process::vExitFailure();
+  }
+
+  // ********************************************************************************
+  // NOTE: Now that we have parsed the initial command line options, we have opened
+  // the trace file and vTrace() logs to the trace file. We should not be using
+  // stdout or stderr for logging from this point onwards.
+  // ********************************************************************************
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Initialise the random number generator
+  Mersenne::init_genrand64(TickingDevice::iGetTick());
+
+  TlsKeys::vInit();
+
+  IntLib::vInitGlobals();
+
+  FltLib::vInitGlobals();
+
+  Engine::vEnvFlags();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -134,7 +179,7 @@ int main(int argc, char* argv[])
     
     Process::vEntry();
     
-    // parse the command line arguments
+    // parse the rest of the command line arguments
     if (! gxCmdLineArgs.bParse(gi_argc,gi_szaArgv))
       Process::vExitStartup();
     

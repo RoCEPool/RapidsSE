@@ -30,6 +30,7 @@ JobList::JobList(eJL eJobsList)
 
   m_eJobList = eJobsList;
   m_pJobSkipList = new SkipListNL(C_UNQIUE_KEY, nullptr);
+  m_bLatch = false;
 
   _checkInitialised_(CN_JOBLIST);
 
@@ -451,7 +452,7 @@ void JobList::vInsertJob(Job *pJob) {
     }
       
     case JL_ORIGINATING: {
-      
+
       tJobId_search = pJob->tOriginId();
 
       auto bfMoveRightTest = [tJobId_search](void *aRightJob, bool &bFoundKey) {
@@ -470,7 +471,7 @@ void JobList::vInsertJob(Job *pJob) {
     }
       
     case JL_PARTICIPATING: {
-    
+
       tJobId_search = pJob->tDistId();
 
       auto bfMoveRightTest = [tJobId_search](void *aRightJob, bool &bFoundKey) {
@@ -497,6 +498,26 @@ void JobList::vInsertJob(Job *pJob) {
   ASSERT(bIsLocked());
 
   vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get a latch on the job list                                                */
+/*----------------------------------------------------------------------------*/
+void JobList::vLatch(bool bLatch) {
+  _precondition_(_ADDRESS_, _MAGIC_, CN_JOBLIST, _FOOTER_);
+
+  vGrabLock();
+  m_bLatch = bLatch;
+  vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the latch of the job list                                              */
+/*----------------------------------------------------------------------------*/
+bool JobList::bLatch() {
+  _precondition_(_ADDRESS_, _MAGIC_, CN_JOBLIST, _FOOTER_);
+
+  return m_bLatch;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -551,7 +572,7 @@ SkipNode *JobList::pNext(SkipNode *pPrev) {
 /*----------------------------------------------------------------------------*/
 /* remove a job from jobs skip list                                           */
 /*----------------------------------------------------------------------------*/
-void JobList::vRemoveJob(Job *pJob) {
+void JobList::vRemoveJob(Job *pJob, bool bLock) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_JOBLIST, _FOOTER_);
 
 //    vTrace("vRemoveJob %s : %lld.%lld %p\n"_Stz
@@ -564,9 +585,12 @@ void JobList::vRemoveJob(Job *pJob) {
 
   bool bWasRemoved;
 
-  pJob->vGrabLock();
-  
+  if (bLock)
+    pJob->vGrabLock();
+
+
   vGrabLock();
+
   RASSERT(m_okLock.bIsLocked());
 
 
@@ -685,7 +709,8 @@ void JobList::vRemoveJob(Job *pJob) {
 
   vDropLock();
 
-  pJob->vDropLock();
+  if (bLock)
+    pJob->vDropLock();
 
   if (!bWasRemoved) {
     vTrace("------------------------------------\n"_Stz);

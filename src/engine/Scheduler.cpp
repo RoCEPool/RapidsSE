@@ -894,20 +894,20 @@ void Scheduler::vScheduleTask(Task* pKnownTask)
   eTR eTransition = pKnownTask->eTransition();
   
   if (TS_DESISTED != pKnownTask->eState()) {
-    fprintf(stderr, "State: %s; Queue: %s; SchedulerAct: %s",
+    vTrace("State: %s; Queue: %s; SchedulerAct: %s"_Stz,
             (char*)aTS[eTaskState],
             (char*)aQK[eQueue],
             (char*)aTR[eTransition]);
   }
   
   if (QK_NONE != pKnownTask->eQueue()) {
-    fprintf(stderr, "State: %s; Queue: %s; SchedulerAct: %s",
+    vTrace("State: %s; Queue: %s; SchedulerAct: %s"_Stz,
             (char*)aTS[eTaskState],
             (char*)aQK[eQueue],
             (char*)aTR[eTransition]);  }
   
   if (TR_NONE != pKnownTask->eTransition()) {
-    fprintf(stderr, "State: %s; Queue: %s; SchedulerAct: %s",
+    vTrace("State: %s; Queue: %s; SchedulerAct: %s"_Stz,
             (char*)aTS[eTaskState],
             (char*)aQK[eQueue],
             (char*)aTR[eTransition]);

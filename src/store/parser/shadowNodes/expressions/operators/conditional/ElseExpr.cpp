@@ -70,6 +70,20 @@ void ElseExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Represent the expression as types instead of names. Append to the buffer   */
+/*----------------------------------------------------------------------------*/
+void ElseExpr::vDescribeAsTypes(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pChild1 = ElseExpr::pElseExpr(_pQueryNode(pNode));
+
+  sBuf.vConcat("ELSE "_Stz);
+  sBuf.vConcat(Expr::xTypeId(pChild1, pRootNode).szTypeName());
+}
+
+/*----------------------------------------------------------------------------*/
 /* Return the else value expression of this operator                          */
 /*----------------------------------------------------------------------------*/
 QueryNode* ElseExpr::pElseExpr(QueryNode *pNode)

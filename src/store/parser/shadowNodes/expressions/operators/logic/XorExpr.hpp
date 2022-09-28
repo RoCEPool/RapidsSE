@@ -21,6 +21,9 @@ namespace Parser
     static QueryNode* pCreate(QueryNode* pExpr1, QueryNode* pExpr2);
     static void vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode);
 
+    // Represent the expression as types instead of names (e.g. INTEGER + INTEGER)
+    static void vDescribeAsTypes(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode);
+
     static QueryNode* pChild1(QueryNode* pNode);
     static QueryNode* pChild2(QueryNode* pNode);
 

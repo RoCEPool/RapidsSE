@@ -44,10 +44,14 @@ namespace STORE
              , public CardSet // ListExo2_t<Card>
   {
   protected:
+    char m_caRef[256];
+
     eCK  m_eCard;
     eGC  m_eCatg;
     i8   m_iCardNo;
-  
+
+    i8   m_iSeqNo;
+
     char m_cMark1;
     char m_cMark2;
 
@@ -89,7 +93,7 @@ namespace STORE
     void vCutProperty(Stz* szName);
     void vCutSubCard(Card* pSubCard);
 
-    void vDump(i8 iDepth=0);
+    void vDump(i8 iDepth=0, Stz* szTitle=nullptr);
     Card* pDupCardAndSubCards(void);
     Card_SubSet* pDupSubCards(void);
 
@@ -132,8 +136,8 @@ namespace STORE
     Stz* szPropertyNm(i8 i_Property);
 
     void vRemoveSubCard(Card* pCardRemove);
-    void vRenumberCards(void);
- 
+    void vRenumberSubCards(Card* pParentCard);
+
     i8   nSubCards(void);
   
     void vTransferAll(Card* pCards);
@@ -209,6 +213,8 @@ namespace STORE
 
     i8   iRank(void);
     void vRank(i8 iRank);
+    void vRef(void);
+    void vRef(Card* pParentCard);
     eRO  eRelOp(void);
     i8   nRows(void);
     void vRows(i8 nRows);

@@ -16,6 +16,7 @@
 #include "ProjectedColumn.hpp"
 #include "ProjectedColumns.hpp"
 #include "Expr.hpp"
+#include "AggregateExpr.hpp"
 
 using namespace Parser;
 
@@ -32,7 +33,7 @@ void AggregateSplit::vAggregateSplit(PlanNode *pRootNode)
   ASSERT(pPlanNode);
   ASSERT(ShadowPlan::bIsOfType(pPlanNode));
 
-  vSplitAggregates(pPlanNode, pRootNode);
+  vSplitMultipleAggregates(pPlanNode, pRootNode);
 
   // After splitting aggregates we also need to separate two or more projections
   // (or aggregations) under the same StageMarker.
@@ -44,7 +45,7 @@ void AggregateSplit::vAggregateSplit(PlanNode *pRootNode)
 /* Splits multiple aggregations into separate proj columns so that we don't   */
 /* have more than one aggregation in a single expression.                     */
 /*----------------------------------------------------------------------------*/
-void AggregateSplit::vSplitAggregates(QueryNode *pPlanNode, PlanNode *pRootNode)
+void AggregateSplit::vSplitMultipleAggregates(QueryNode *pPlanNode, PlanNode *pRootNode)
 {
   ASSERT(pPlanNode);
   ASSERT(ShadowPlan::bIsOfType(pPlanNode));
@@ -97,18 +98,18 @@ void AggregateSplit::vSplitAggregates(QueryNode *pPlanNode, PlanNode *pRootNode)
       ASSERT(Expr::bIsOfType(pOrdExpr));
       ASSERT(Expr::bIsFullyOrdinal(pOrdExpr));
 
-      if (!Expr::bContainsAnAggregate(pOrdExpr)) {
+      if (!Expr::bContainsAnAggregate(pOrdExpr) ||
+          AggregateExpr::bIsOfType(pOrdExpr)) {
         // Nothing to worry about here
         delete pOrdExpr;
         continue;
       }
 
-      // The ordinal expression contains aggregations. But does it contain
-      // more than one aggregate? Get a list of aggregation expressions that exist
-      // in pOrdExpr. Note that these are pointers to exprs in pOrdExpr, not copies.
+      // The ordinal expression contains aggregations. Get a list of aggregation expressions
+      // that exist in pOrdExpr. Note that these are pointers to exprs in pOrdExpr, not copies.
       QueryNodeList* pAggList = Expr::pAggregateExprs(pOrdExpr, false);
 
-      if (pAggList->nItems() > 1) {
+      if (pAggList->nItems() > 0) {
         bRemoveCol[i] = true;
 
         // Make a list of aggregates to be split. After we have looked at all projected
@@ -132,7 +133,7 @@ void AggregateSplit::vSplitAggregates(QueryNode *pPlanNode, PlanNode *pRootNode)
       delete pOrdExpr;
     }
 
-    // Insert the Project/AggregateOp with these aggregates
+    // Insert a Project/AggregateOp with these aggregates below the current pSqlOp Project node
     if (pCommonAggList) {
       vInsertProjection(pCommonAggList, bRemoveCol, nCols, pSqlOp, pColumnExprList, pRootNode);
       ASSERT(pCommonAggList->nItems() > 0);
@@ -260,8 +261,8 @@ void AggregateSplit::vInsertProjection(QueryNodeList* pAggList,
       pParentNode->vAppendChild(pChild);
     }
   }
-
 }
+
 
 /*============================================================================*/
 /* end                                                                        */

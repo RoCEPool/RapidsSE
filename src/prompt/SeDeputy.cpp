@@ -192,6 +192,9 @@ void SeDeputy::vDeputyLoop(void)
       JobId tDistId;
       tDistId = m_pRootJob->tDistId();
 
+      //pInpTknVec->vDumpVec();
+      //pInpTagSet->vDumpSet();
+
       m_eError = Api::eForkJobChild(tChildJobId,
                                     pInpTknVec, pInpTagSet,
                                     tParentId, tOriginId, tDistId,
@@ -420,6 +423,16 @@ void SeDeputy::vReportTime(void)
               m_pRootJob->iTscEnded());
   vTrace("Ended    %lldus\n"_Stz,oTimer.iMicroseconds());
 
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset this deputy (after an input error)                                   */
+/*----------------------------------------------------------------------------*/
+void SeDeputy::vReset(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
+
+  m_pInput->vReset();
 }
 
 /*----------------------------------------------------------------------------*/

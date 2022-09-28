@@ -1,94 +1,23 @@
 /*============================================================================*/
-/* _ray6 : timing load of lineitem 6 Oct 2020                                */
+/* _ray6 :                                                                    */
 /*============================================================================*/
 
+_lineitem
 
-//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-print section "Create Tables";
+load lineitem "../tpch/SF_0001/lineitem.csv" ;
 
-_customer
-_orders
-_lineitem_dates
+select
+  sum(l_extendedprice * l_discount) as Revenue
+  from LineItem
+ where
+           l_shipdate >= DATE '1994-01-01'
+       and l_shipdate <  DATE '1995-01-01'
+       and l_discount between 0.05 - 0.01 and 0.06 + 0.01
+//     and l_quantity <  24
+;
 
-_lineitemIndex
+drop table lineitem;
 
-//time CREATE INDEX lineitem_idx2 ON lineitem(L_SHIPINSTRUCT);
-// /time CREATE INDEX lineitem_idx1 ON lineitem(L_SHIPDATE);
-
-//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-print section "Loading";
-
-//print "Sleeping ...";
-//sleep 5;
-
-// /time load lineitem "/Users/Shared/tpch/SF0/lineitem_10.csv"    <max_errors> =  100;
-// /time load lineitem "/Users/Shared/tpch/SF0/lineitem_1k.csv"   <max_errors> =  100;
-// /time /summary load lineitem "/Users/Shared/tpch/SF0/lineitem_10k.csv" <note> = "10k" <max_errors> =  100;
-// /time /summary load lineitem "/Users/Shared/tpch/SF0/lineitem_100k.csv" <note> = "100k" <max_errors> =  100;
-// /time load lineitem "/Users/Shared/tpch/SF0/lineitem_1m.csv" <max_errors> =  100;
-// /tags /time /summary /diary load lineitem "/Users/Shared/tpch/SF1/lineitem.csv"      <max_errors> =  100 <note> = "SF1";
-// /time /summary load lineitem "/Users/Shared/tpch/SF10/lineitem.csv"     <max_errors> =  100 <note> = "SF10-LineItem";
-
-
-///bg /time /summary load customer "/Users/Shared/tpch/SF1/customer.csv"     <max_errors> = 100 <note> = "SF1-Customer";
-//
-///bg /time /summary load orders "/Users/Shared/tpch/SF1/orders.csv"     <max_errors> = 100 <note> = "SF1-Orders";
-//
-///bg /time /summary load lineitem "/Users/Shared/tpch/SF1/lineitem.csv"     <max_errors> = 100 <note> = "SF1-LineItem";
-
-
- /bg /time /summary load customer "/Users/Shared/tpch/SF10/customer.csv"     <max_errors> =  100 <note> = "SF10-Customer";
-
- /bg /time /summary load orders "/Users/Shared/tpch/SF10/orders.csv"     <max_errors> =  100 <note> = "SF10-Orders";
-
- /bg /time /summary load lineitem "/Users/Shared/tpch/SF10/lineitem.csv"     <max_errors> =  100 <note> = "SF10-LineItem";
-
-
-//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-print section "Waiting...";
-
-wait_bg;
-
-//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-//print section "Sleeping...";
-//
-//sleep 5;
-
-//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-//print section "Create L_SHIPDATE";
-//
-///time CREATE INDEX lineitem_idx1 ON lineitem(L_SHIPDATE) <note> = "SF10-L_SHIPDATE";
-
-//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-//print section "reorder L_SHIPDATE";
-//
-///time reorder lineitem lineitem2 "l_shipDate '9999-01-01' <";
-//
-//drop table lineitem;
-
-//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
-//print section "Sleeping...";
-//
-//sleep 5;
-//
-///time create index lineitem2_idx1 on lineitem2 (l_shipdate);
-
-//sleep 3;
-//opdq true;
-
-//space;
-//sztbl lineitem;
-//szidx lineitem lineitem_idx1;
-//anidx lineitem lineitem_idx1;
-//count lineitem;
-//
-
-// print "vfyidx";
-// /time vfyidx lineitem lineitem_idx1;
-print "verify index";
-/time /tags verify index lineitem lineitem_idx1;
-
-//dumpidx lineitem lineitem_idx1;
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

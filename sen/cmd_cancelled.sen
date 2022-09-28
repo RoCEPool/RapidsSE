@@ -25,12 +25,21 @@
 /* <cnd ptp */
 /* <cnd ptp */
 /* <cnd ptp */  // find the originating job
-/* <cnd ptp */  [job].originId@ ListedJob[].findOriginator? discard
+/* <cnd ptp */  [job].originId@ ListedJob[].findOriginator? if
 /* <cnd ptp */
-/* <cnd ptp */
-/* <cnd ptp */  ListedJob[].taskAck
-/* <cnd ptp */
+/* <cnd org */    ListedJob[].nodeLoss@ not if
+/* <cnd org */      //RAY ListedJob[].taskState@ TS_WAITING == assert
+/* <cnd org */      ListedJob[].taskAck
+/* <cnd org */    then
+/* <cnd org */
 /* <cnd ptp */  ListedJob[].returnReference
+/* <cnd ptp */  then
+/* <cnd ptp */
+/* <cnd ptp */  [args].distJob if
+/* <cnd ptp */    "cancelled" "onOrigin" "<cld org"
+/* <cnd ptp */      "<cld origin" "exiting"                           [job].trace
+/* <cnd ptp */  then
+/* <cnd ptp */
 /* <cnd ptp */  [job]:retireAndExit
 ;
 

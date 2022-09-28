@@ -345,6 +345,18 @@ Stz* StrLib::szCharToStr(char cArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* check char                                                                 */
+/*----------------------------------------------------------------------------*/
+void StrLib::vCheckIsNot(char cArg, char cIsNot) {
+  _static_
+
+  if (cIsNot == cArg) {
+    vTrace("cArg is cIsNot\n"_Stz);
+    RASSERT(cIsNot != cArg);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* click arg                                                                  */
 /*----------------------------------------------------------------------------*/
 void StrLib::vClick(char* aArg)
@@ -734,7 +746,7 @@ void StrLib::vDump(const char* s, i8 nMax, const char* pSuffix)
   
   *z = '\0';
   
-  printf("%s",caString);
+  vTrace("%s"_Stz,caString);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2626,6 +2638,38 @@ bool StrLib::bIsAmpersand(const char c)
 }
 
 /*----------------------------------------------------------------------------*/
+/* bIsAsciiName: is argument a valid name                                     */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsAsciiName(char* azArg)
+{
+  _static_
+
+  // check starting character
+  char cStartChar = *azArg;
+
+  if ( ! (cStartChar >= 'A' && cStartChar <= 'Z') &&
+       ! (cStartChar >= 'a' && cStartChar <= 'z') &&
+       ! (cStartChar == '_'))
+    return false;
+
+  // check for special characters in table name
+  for (char c = 33; c <= 47 ; c++)
+    if (bContains(azArg,c))
+      return false;
+
+  for (char c = 58; c <= 64 ; c++)
+    if (bContains(azArg,c))
+      return false;
+
+  if (bContains(azArg,'|') ||
+      bContains(azArg,'^') ||
+      bContains(azArg,'~'))
+    return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bIsAsterisk: is char an asterisk?                                          */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bIsAsterisk(const char c)
@@ -4016,6 +4060,71 @@ void StrLib::vReplaceTail(char* azArg, char* azTail)
 }
 
 /*----------------------------------------------------------------------------*/
+/* remove till given char                                                     */
+/*----------------------------------------------------------------------------*/
+void StrLib::vRemoveTill(char* azArg, const char cTill, bool bRemoveTheTill)
+{
+  _static_
+
+  char* azSrc = azArg;
+  while (*azSrc && *azSrc != cTill)
+    azSrc++;
+
+  if (! *azSrc)
+    return;
+
+  if (bRemoveTheTill)
+    azSrc++;
+
+  vShuffleLeft(azArg,azSrc);
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove leading token                                                       */
+/*----------------------------------------------------------------------------*/
+void StrLib::vRemoveToken(char* azArg)
+{
+  _static_
+
+  char* azRight = azArg;
+
+  // skip leading whitespace
+  while (*azRight) {
+    if (' ' == *azRight || '\n' == *azRight) {
+      azRight++;
+      continue;
+    }
+    break;
+  }
+
+  // something still to process?
+  if (! *azRight)
+    return;
+
+  // skip token
+  while (*azRight) {
+    if (' ' == *azRight || '\n' == *azRight)
+      break;
+    azRight++;
+  }
+
+  // skip whitespace
+  while (*azRight) {
+    if (' ' == *azRight || '\n' == *azRight) {
+      azRight++;
+      continue;
+    }
+    break;
+  }
+
+  // something still to process?
+  if (! *azRight)
+    return;
+
+  vShuffleLeft(azArg,azRight);
+}
+
+/*----------------------------------------------------------------------------*/
 /* reverse a string                                                           */
 /*----------------------------------------------------------------------------*/
 void StrLib::vReverse(char* azDst, char* azSrc)
@@ -4098,6 +4207,30 @@ bool StrLib::bSame(const char* pArg1, const char* pArg2)
     return true;
   else
     return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* shuffle substring left                                                     */
+/*----------------------------------------------------------------------------*/
+void StrLib::vShuffleLeft(char* azDst, const char* azSrc)
+{
+  _static_
+
+  for (;;) {
+    char cCopied = (*azDst++ = *azSrc++);
+    if (! cCopied)
+      return;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* shuffle substring left                                                     */
+/*----------------------------------------------------------------------------*/
+void StrLib::vShuffleLeft(char* azDst, i8 i_Right)
+{
+  _static_
+
+  vShuffleLeft(azDst, azDst + i_Right);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4569,6 +4702,64 @@ i8 StrLib::iToI8(const char* s)
   if (bNegative)
     i *= -1;
   
+  return i;
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert arg to i8 with overflow checking                                   */
+/*----------------------------------------------------------------------------*/
+i8 StrLib::iToI8(const char* s, bool* bOverflowed)
+{
+  _static_
+
+  i8 i = 0;
+  bool bNegative = false;
+
+  if (*s && '-' == *s) {
+    bNegative = true;
+    s++;
+  }
+
+  // skip leading 0's
+  while (*s && '0' == *s)
+    s++;
+
+  if (*s && ('x' == *s || 'X' == *s)) {
+    const i8 iLimit = C_I8_MAX / 16;
+    const i8 iModulus = bNegative ? -(C_I8_MIN % 16) : C_I8_MAX % 16;
+
+    s++;
+    while (*s && bIsHex(*s)) {
+      i8 j = iHexToInw(*s++);
+
+      if (i > iLimit || (i == iLimit && j > iModulus) ) {
+        *bOverflowed = true;
+        return -1;
+      }
+
+      i = i * 16 + j;
+    }
+  }
+  else {
+    const i8 iLimit = C_I8_MAX / 10;
+    const i8 iModulus = bNegative ? -(C_I8_MIN % 10) : C_I8_MAX % 10;
+
+    while (*s && bIsDigit(*s)) {
+      i8 j = (*s++ - '0');
+
+      if (i > iLimit || (i == iLimit && j > iModulus) ) {
+        *bOverflowed = true;
+        return -1;
+      }
+
+      i = i * 10 + j;
+    }
+  }
+
+  if (bNegative)
+    i *= -1;
+
+  *bOverflowed = false;
   return i;
 }
 

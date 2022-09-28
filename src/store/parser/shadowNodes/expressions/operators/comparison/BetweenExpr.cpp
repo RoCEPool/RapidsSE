@@ -133,6 +133,25 @@ void BetweenExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Represent the expression as types instead of names. Append to the buffer   */
+/*----------------------------------------------------------------------------*/
+void BetweenExpr::vDescribeAsTypes(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pPredicand  = BetweenExpr::pPredicand(_pQueryNode(pNode));
+  QueryNode* pLowerBound = BetweenExpr::pLowerBound(_pQueryNode(pNode));
+  QueryNode* pUpperBound = BetweenExpr::pUpperBound(_pQueryNode(pNode));
+
+  sBuf.vConcat(Expr::xTypeId(pPredicand, pRootNode).szTypeName());
+  sBuf.vConcat(" BETWEEN "_Stz);
+  sBuf.vConcat(Expr::xTypeId(pLowerBound, pRootNode).szTypeName());
+  sBuf.vConcat(" AND "_Stz);
+  sBuf.vConcat(Expr::xTypeId(pUpperBound, pRootNode).szTypeName());
+}
+
+/*----------------------------------------------------------------------------*/
 /* Return the expression being compared                                       */
 /*----------------------------------------------------------------------------*/
 QueryNode* BetweenExpr::pPredicand(QueryNode *pNode)
