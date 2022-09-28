@@ -26,9 +26,10 @@
 #       commands to fail (e.g. if you enter an invalid hostname).
 set -Eeu 
 
-#shellcheck disable=2034
+#shellcheck disable=SC2034,SC2155
 readonly DIR=$(dirname "$0")
 readonly ROOT_DIR="${DIR}"
+#shellcheck disable=SC2155
 readonly THIS_FILE=$(basename "$0")
 readonly SETUP_FN="setup.fn"
 readonly BOOT_FN="boot.fn"
@@ -244,7 +245,7 @@ function processAddNodeArgs() {
 
 function displayRemoveNodeWelcome() {
   clear
-  #shellcheck disable=1090
+  #shellcheck disable=SC1090
   source "${VERSION_FILE}"
 
   echo "Welcome to the Remove Node wizard for RapidsSE version ${SE_VERSION_STR}."

@@ -25,7 +25,7 @@
 #       commands to fail (e.g. if you enter an invalid hostname).
 set -Eeu 
 
-#shellcheck disable=2034
+#shellcheck disable=SC2034,SC2155
 readonly DIR=$(dirname "$0")
 
 readonly SETUP_FN="setup.fn"
