@@ -150,7 +150,7 @@ TypeMap1D* TypeMap1D::pAddMapping(TypeId xArg1, TypeId xResult)
 /*----------------------------------------------------------------------------*/
 TypeMap1D* TypeMap1D::pAddMapping(eTM eMapper, TypeId xResult)
 {
-  _precondition_(_MAGIC_,CN_TYPEMAP2D,_FOOTER_);
+  _precondition_(_MAGIC_,CN_TYPEMAP1D,_FOOTER_);
 
   ASSERT(eMapper >= TM_NONE && eMapper < TM_ENUMS);
   ASSERT(xResult.iIdVal() >= 0 && xResult.iIdVal() < m_iSize);

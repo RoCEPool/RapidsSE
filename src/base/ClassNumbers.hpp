@@ -98,6 +98,7 @@ enum eCN : u2 // Class Number
   /* */ CN_EVMGR,
   /* */ CN_EXEMPLAR,
   /* */ CN_EXITOPERAND,
+  /* */ CN_EXTRACTMAP,
 
   /* */ CN__F__,
   /* */ CN_FIFO,
@@ -517,6 +518,7 @@ static Stz* aCN[]
   /* */ "EVMGR"_Stz,                // CN_EVMGR
   /* */ "EXEMPLAR"_Stz,             // CN_EXEMPLAR
   /* */ "EXITOPERAND"_Stz,          // CN_EXITOPERAND
+  /* */ "EXTRACTMAP"_Stz,          // CN_EXTRACTMAP
 
   /* */ "_F__"_Stz,                 // CN__F__
   /* */ "FIFO"_Stz,                 // CN_FIFO

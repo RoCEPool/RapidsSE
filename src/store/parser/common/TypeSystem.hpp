@@ -18,6 +18,7 @@ namespace Parser
     friend class TypeId;
     friend class TypeMap1D;
     friend class TypeMap2D;
+    friend class ExtractMap;
 
     private:
     TypeSystem(); // Not to be initialised. Static class only

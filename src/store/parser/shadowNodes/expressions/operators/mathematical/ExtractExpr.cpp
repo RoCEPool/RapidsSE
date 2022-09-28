@@ -12,6 +12,7 @@
 #include "SubqueryRefExpr.hpp"
 #include "GraphNav.hpp"
 #include "TypeSystem.hpp"
+#include "ExtractMap.hpp"
 
 using namespace Parser;
 
@@ -24,24 +25,61 @@ static Stz* C_DEFN = "/__root__/definitions/object/expr/operator/mathematical/ex
 static Stz* C_EXTRACT_FIELD_PROP = "field"_Stz;
 
 // What is the resulting type when we combine these inputs?
-// * The left header column represents the type of the first operand (extract field).
-// * The top header row represents the type of the second operand (source expression).
-// * The corresponding cell in the matrix represents the type of the resultant from this operation.
-// * Invalid/unsupported combinations are represented with CT_NONE.
-// * Fields marked with /*?*/ are not currently supported but could be.  Refer to
-//   the documentation below marked with this symbol for more information.
-// * Fields marked with /*X*/ are not currently supported but should be.
-static eCT aeTypeCalculus[ExtractField::EF_NENUMS][CT_ENUMS] = {
+//  - The first parameter represents the type of the first operand (extract field).
+//  - The second parameter represents the type of the second operand (source expression).
+//  - The third parameter represents the type of the result from this operation.
+//  - Any unspecified mappings are unsupported.
+//  - Multiple mappings may be made in one go using the eTM values to represent a set of types.
+static ExtractMap* S_pTypeMap = (new ExtractMap())
 
-                 //   NONE     BOOLEAN  CHAR     DATE          DECIMAL     FLOAT       INTEGER       INTERVAL_DT     INTERVAL_YM     TIME          TIMESTAMP     VARCHAR  UNKNOWN
-/*  0 EF_NONE    */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,        CT_NONE,        CT_NONE,      CT_NONE,      CT_NONE, CT_NONE    },
-/*  1 EF_YEAR    */ { CT_NONE, CT_NONE, CT_NONE, CT_INTEGER,   CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,        CT_INTEGER,     CT_NONE,      CT_INTEGER,   CT_NONE, CT_UNKNOWN },
-/*  2 EF_MONTH   */ { CT_NONE, CT_NONE, CT_NONE, CT_INTEGER,   CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,        CT_INTEGER,     CT_NONE,      CT_INTEGER,   CT_NONE, CT_UNKNOWN },
-/*  3 EF_DAY     */ { CT_NONE, CT_NONE, CT_NONE, CT_INTEGER,   CT_NONE,    CT_NONE,    CT_NONE,      CT_INTEGER,     CT_DATE,        CT_NONE,      CT_INTEGER,   CT_NONE, CT_UNKNOWN },
-/*  4 EF_HOUR    */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_INTEGER,     CT_NONE,        CT_INTEGER,   CT_INTEGER,   CT_NONE, CT_UNKNOWN },
-/*  5 EF_MINUTE  */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_INTEGER,     CT_NONE,        CT_INTEGER,   CT_INTEGER,   CT_NONE, CT_UNKNOWN },
-/*  6 EF_SECOND  */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_INTEGER,     CT_NONE,        CT_INTEGER,   CT_DECIMAL,   CT_NONE, CT_UNKNOWN },
-};
+    ->pAddMapping(ExtractField::EF_YEAR,    TypeId::xIdOf(CT_DATE),            TypeId::xIdOf(CT_INTEGER))
+    ->pAddMapping(ExtractField::EF_YEAR,    TypeId::xIdOf(CT_TIMESTAMP),       TypeId::xIdOf(CT_INTEGER))
+    ->pAddMapping(ExtractField::EF_YEAR,    TypeId::xIdOf(IV_YEAR),            TypeId::xIdOf(CT_INTEGER))
+    ->pAddMapping(ExtractField::EF_YEAR,    TypeId::xIdOf(IV_YEAR_TO_MONTH),   TypeId::xIdOf(CT_INTEGER))
+    ->pAddMapping(ExtractField::EF_YEAR,    TypeId::xIdOf(CT_UNKNOWN),         TypeId::xIdOf(CT_UNKNOWN))
+
+    ->pAddMapping(ExtractField::EF_MONTH,   TypeId::xIdOf(CT_DATE),            TypeId::xIdOf(CT_INTEGER))
+    ->pAddMapping(ExtractField::EF_MONTH,   TypeId::xIdOf(CT_TIMESTAMP),       TypeId::xIdOf(CT_INTEGER))
+    ->pAddMapping(ExtractField::EF_MONTH,   TypeId::xIdOf(IV_MONTH),           TypeId::xIdOf(CT_INTEGER))
+    ->pAddMapping(ExtractField::EF_MONTH,   TypeId::xIdOf(IV_YEAR_TO_MONTH),   TypeId::xIdOf(CT_INTEGER))
+    ->pAddMapping(ExtractField::EF_MONTH,   TypeId::xIdOf(CT_UNKNOWN),         TypeId::xIdOf(CT_UNKNOWN))
+
+    ->pAddMapping(ExtractField::EF_DAY,     TypeId::xIdOf(CT_DATE),            TypeId::xIdOf(CT_INTEGER))
+    ->pAddMapping(ExtractField::EF_DAY,     TypeId::xIdOf(CT_TIMESTAMP),       TypeId::xIdOf(CT_INTEGER))
+    ->pAddMapping(ExtractField::EF_DAY,     TypeId::xIdOf(IV_DAY),             TypeId::xIdOf(CT_INTEGER))
+    ->pAddMapping(ExtractField::EF_DAY,     TypeId::xIdOf(IV_DAY_TO_HOUR),     TypeId::xIdOf(CT_INTEGER))
+    ->pAddMapping(ExtractField::EF_DAY,     TypeId::xIdOf(IV_DAY_TO_MINUTE),   TypeId::xIdOf(CT_INTEGER))
+    ->pAddMapping(ExtractField::EF_DAY,     TypeId::xIdOf(IV_DAY_TO_SECOND),   TypeId::xIdOf(CT_INTEGER))
+    ->pAddMapping(ExtractField::EF_DAY,     TypeId::xIdOf(CT_UNKNOWN),         TypeId::xIdOf(CT_UNKNOWN))
+
+    ->pAddMapping(ExtractField::EF_HOUR,    TypeId::xIdOf(CT_TIME),            TypeId::xIdOf(CT_INTEGER))
+    ->pAddMapping(ExtractField::EF_HOUR,    TypeId::xIdOf(CT_TIMESTAMP),       TypeId::xIdOf(CT_INTEGER))
+    ->pAddMapping(ExtractField::EF_HOUR,    TypeId::xIdOf(IV_HOUR),            TypeId::xIdOf(CT_INTEGER))
+    ->pAddMapping(ExtractField::EF_HOUR,    TypeId::xIdOf(IV_DAY_TO_HOUR),     TypeId::xIdOf(CT_INTEGER))
+    ->pAddMapping(ExtractField::EF_HOUR,    TypeId::xIdOf(IV_DAY_TO_MINUTE),   TypeId::xIdOf(CT_INTEGER))
+    ->pAddMapping(ExtractField::EF_HOUR,    TypeId::xIdOf(IV_DAY_TO_SECOND),   TypeId::xIdOf(CT_INTEGER))
+    ->pAddMapping(ExtractField::EF_HOUR,    TypeId::xIdOf(IV_HOUR_TO_MINUTE),  TypeId::xIdOf(CT_INTEGER))
+    ->pAddMapping(ExtractField::EF_HOUR,    TypeId::xIdOf(IV_HOUR_TO_SECOND),  TypeId::xIdOf(CT_INTEGER))
+    ->pAddMapping(ExtractField::EF_HOUR,    TypeId::xIdOf(CT_UNKNOWN),         TypeId::xIdOf(CT_UNKNOWN))
+
+    ->pAddMapping(ExtractField::EF_MINUTE,  TypeId::xIdOf(CT_TIME),            TypeId::xIdOf(CT_INTEGER))
+    ->pAddMapping(ExtractField::EF_MINUTE,  TypeId::xIdOf(CT_TIMESTAMP),       TypeId::xIdOf(CT_INTEGER))
+    ->pAddMapping(ExtractField::EF_MINUTE,  TypeId::xIdOf(IV_MINUTE),          TypeId::xIdOf(CT_INTEGER))
+    ->pAddMapping(ExtractField::EF_MINUTE,  TypeId::xIdOf(IV_DAY_TO_MINUTE),   TypeId::xIdOf(CT_INTEGER))
+    ->pAddMapping(ExtractField::EF_MINUTE,  TypeId::xIdOf(IV_DAY_TO_SECOND),   TypeId::xIdOf(CT_INTEGER))
+    ->pAddMapping(ExtractField::EF_MINUTE,  TypeId::xIdOf(IV_HOUR_TO_MINUTE),  TypeId::xIdOf(CT_INTEGER))
+    ->pAddMapping(ExtractField::EF_MINUTE,  TypeId::xIdOf(IV_HOUR_TO_SECOND),  TypeId::xIdOf(CT_INTEGER))
+    ->pAddMapping(ExtractField::EF_MINUTE,  TypeId::xIdOf(IV_MINUTE_TO_SECOND),TypeId::xIdOf(CT_INTEGER))
+    ->pAddMapping(ExtractField::EF_MINUTE,  TypeId::xIdOf(CT_UNKNOWN),         TypeId::xIdOf(CT_UNKNOWN))
+
+    ->pAddMapping(ExtractField::EF_SECOND,  TypeId::xIdOf(CT_TIME),            TypeId::xIdOf(CT_INTEGER)) // NOTE: Integer here
+    ->pAddMapping(ExtractField::EF_SECOND,  TypeId::xIdOf(CT_TIMESTAMP),       TypeId::xIdOf(CT_DECIMAL)) // NOTE: Decimal here and below
+    ->pAddMapping(ExtractField::EF_SECOND,  TypeId::xIdOf(IV_SECOND),          TypeId::xIdOf(CT_DECIMAL))
+    ->pAddMapping(ExtractField::EF_SECOND,  TypeId::xIdOf(IV_DAY_TO_SECOND),   TypeId::xIdOf(CT_DECIMAL))
+    ->pAddMapping(ExtractField::EF_SECOND,  TypeId::xIdOf(IV_HOUR_TO_SECOND),  TypeId::xIdOf(CT_DECIMAL))
+    ->pAddMapping(ExtractField::EF_SECOND,  TypeId::xIdOf(IV_MINUTE_TO_SECOND),TypeId::xIdOf(CT_DECIMAL))
+    ->pAddMapping(ExtractField::EF_SECOND,  TypeId::xIdOf(CT_UNKNOWN),         TypeId::xIdOf(CT_UNKNOWN))
+;
 
 // References:
 // Extracting year-min returns an integer.
@@ -182,12 +220,11 @@ TypeId ExtractExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
   QueryNode* pExpr = ExtractExpr::pSourceExpr(pExprNode);
 
   ExtractField::eEF eOperand1 = eExtractField(pExprNode);
-  eCT               eOperand2 = Expr::xTypeId(pExpr, pRootNode).eCTVal();
+  TypeId            xOperand2 = Expr::xTypeId(pExpr, pRootNode);
 
   // Lookup the type of the result
-  eCT eResult = aeTypeCalculus[eOperand1][eOperand2];
-
-  return TypeId::xIdOf(eResult);
+  TypeId xResult = S_pTypeMap->xLookup(eOperand1, xOperand2);
+  return xResult;
 }
 
 /*============================================================================*/

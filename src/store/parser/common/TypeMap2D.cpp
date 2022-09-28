@@ -272,7 +272,7 @@ TypeMap2D* TypeMap2D::pAddMapping(eTM eMapper, TypeId xArg2, TypeId xResult)
 /*----------------------------------------------------------------------------*/
 TypeMap2D* TypeMap2D::pAddSelfMapping(TypeId xArg)
 {
-  _precondition_(_MAGIC_,CN_TYPEMAP1D,_FOOTER_);
+  _precondition_(_MAGIC_,CN_TYPEMAP2D,_FOOTER_);
 
   ASSERT(xArg.iIdVal() >= 0 && xArg.iIdVal() < m_iSize);
 
