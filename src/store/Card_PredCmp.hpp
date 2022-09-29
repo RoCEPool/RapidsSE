@@ -3,9 +3,8 @@
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
-
 #include "Card_PRED.hpp"
+
 #include "eRO.h"
 
 namespace STORE

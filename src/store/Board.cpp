@@ -505,7 +505,7 @@ void Board::vPinCards(Ribbon* pRibbon, i8 i_Board)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pRibbon->vSprint("[%lld] %s"_Stz,i_Board,m_pOptimiser->szQueryNm());
+  pRibbon->vSprint("[%lld %s] %s"_Stz,i_Board,aBK[m_eBoard],m_pOptimiser->szQueryNm());
   pRibbon->vTitleLines(1);
   pRibbon->vSetBase();
   pRibbon->vFirstColumn();

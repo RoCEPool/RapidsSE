@@ -3,8 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
-
 #include "Card_Project.hpp"
 
 namespace STORE

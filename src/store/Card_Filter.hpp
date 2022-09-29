@@ -3,8 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
-
 #include "Card.hpp"
 #include "Card_PRED.hpp"
 
