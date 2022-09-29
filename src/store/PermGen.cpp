@@ -23,7 +23,7 @@ PermGen::PermGen(i8 nLevels)
 
   m_nLevels = nLevels;
 
-  m_iCurrLevel = C_UNKNOWN;
+  m_i_CurrLevel = C_UNKNOWN;
   for (i8 i_Level = 0; i_Level < C_PERM_LEVELS; i_Level++) {
     m_iaAction[i_Level]    = C_UNKNOWN;
     m_iaSubscript[i_Level] = C_UNKNOWN;
@@ -47,6 +47,42 @@ PermGen::~PermGen(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+i8 PermGen::i_CurrLevel(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PERMGEN,_FOOTER_);
+
+  return m_i_CurrLevel;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool PermGen::bNextLevel(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PERMGEN,_FOOTER_);
+
+  if (++m_i_CurrLevel < m_nLevels)
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool PermGen::bPrevLevel(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PERMGEN,_FOOTER_);
+
+  if (--m_i_CurrLevel >= 0)
+    return true;
+
+  return false;
+}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

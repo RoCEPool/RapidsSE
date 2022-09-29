@@ -14,7 +14,7 @@ namespace STORE
 
     i8 m_nLevels;
 
-    i8 m_iCurrLevel;
+    i8 m_i_CurrLevel;
     i8 m_iaAction[C_PERM_LEVELS];
     i8 m_iaSubscript[C_PERM_LEVELS];
 
@@ -28,8 +28,13 @@ namespace STORE
     PermGen(i8 nLevels);
    ~PermGen(void) noexcept(false);
 
+    i8 i_CurrLevel(void);
+    bool bNextLevel(void);
+    bool bPrevLevel(void);
+
     i8 iFirstSubscript_nextLevel(void);
     i8 iNextSubscript_currLevel(void);
+
     void vReset(void);
 
   private:
