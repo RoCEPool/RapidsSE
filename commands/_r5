@@ -43,7 +43,7 @@ select * from supplier;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-///cue = "Permutor::vXyz"
+/cue = "Tabular::vAdd_TableSyn"
 /jobTags
 /transliterated
 /transform

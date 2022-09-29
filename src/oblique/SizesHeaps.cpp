@@ -258,6 +258,7 @@
 #include "Indexer.hpp"
 #include "PermGen.hpp"
 #include "Permutor.hpp"
+#include "Tabular.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -644,6 +645,7 @@ SizeHeap gxaSizeHeap[]
   { CN_TABLEDEF,                 sizeof(Table),              HT_T_MEDIUM  ,FILL },
   { CN_TABLEPTN,                 sizeof(TablePtn),           HT_T_TINY    ,FILL },
   { CN_TABLEPTNVEC,              sizeof(TablePtnVec),        HT_T_TINY    ,FILL },
+  { CN_TABULAR,                  sizeof(Tabular),            HT_T_TINY    ,FILL },
   { CN_TAGSET,                   sizeof(TagSet),             HT_T_MEDIUM  ,FILL },
   { CN_TASK,                     sizeof(Task),               HT_T_SMALL   ,FILL },
   { CN_TASKLIST,                 sizeof(TaskList),           HT_T_TINY    ,FILL },

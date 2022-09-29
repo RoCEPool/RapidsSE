@@ -2714,8 +2714,9 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
     case CK_SUBSET:                     vPrintProperties(pRibbon,iDepth); break;
 
     case CK_TABLE:                      vPrintProperties(pRibbon,iDepth); break;
-    case CK_TABLEPTR:      vTablePrint                     (pRibbon, iDepth); break;
     case CK_TABLELIST:                  vPrintProperties(pRibbon,iDepth); break;
+    case CK_TABLEPTR:   vTablePrint                     (pRibbon, iDepth); break;
+    case CK_TABLESYN:                   vPrintProperties(pRibbon,iDepth); break;
     case CK_TERM:       vTermPrint                      (pRibbon,iDepth); break;
     case CK_TYPE:                       vPrintProperties(pRibbon,iDepth); break;
 

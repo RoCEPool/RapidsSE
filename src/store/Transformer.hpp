@@ -16,6 +16,7 @@
 #include "Sorter.hpp"
 #include "Streamer.hpp"
 #include "Stager.hpp"
+#include "Tabular.hpp"
 
 namespace STORE
 {
@@ -36,6 +37,7 @@ namespace STORE
     Sorter*      m_pSorter;
     Stager*      m_pStager;
     Streamer*    m_pStreamer;
+    Tabular*     m_pTabular;
 
     b8           m_bInteractive;
 

@@ -40,6 +40,7 @@ Transformer::Transformer(Bench* pBench)
   m_pSorter      = nullptr;
   m_pStager      = nullptr;
   m_pStreamer    = nullptr;
+  m_pTabular     = nullptr;
 
   m_bInteractive = false;
 
@@ -65,6 +66,7 @@ Transformer::~Transformer(void) noexcept(false)
   delete m_pSorter;
   delete m_pStager;
   delete m_pStreamer;
+  delete m_pTabular;
 }
 
 
@@ -95,6 +97,8 @@ void Transformer::vTransform(void)
   m_pSorter      = new Sorter(m_pBench);
   m_pStager      = new Stager(m_pBench);
   m_pStreamer    = new Streamer(m_pBench);
+  m_pTabular     = new Tabular(m_pBench);
+
   m_bInteractive = pJobTags->bHasName("<interactive>"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -138,6 +142,10 @@ void Transformer::vTransform2(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  m_pTabular->vAdd_TableSyn();
+  if (m_bInteractive)
+    pBoard_query->vPrintBoard("Tabular::vAdd_TableSyn"_Stz);
 
   //m_pPermutor->vXyz();
 
