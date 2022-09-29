@@ -25,7 +25,7 @@ __pGetSubFunction_Card(STORE,Card_Filter,CK_FILTER)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Filter::Card_Filter(void)
-: Card_MAIN(CK_FILTER)
+: Card(CK_FILTER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

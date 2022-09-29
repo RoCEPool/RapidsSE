@@ -18,7 +18,7 @@ __bIsCard(STORE,Card_Send,CK_SEND)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Send::Card_Send(void)
-: Card_MAIN(CK_SEND)
+: Card(CK_SEND)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
           

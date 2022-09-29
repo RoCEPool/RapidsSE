@@ -25,7 +25,7 @@ __bIsCard(STORE,Card_Project,CK_PROJECT)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Project::Card_Project(eCK eCard)
-: Card_MAIN(eCard)
+: Card(eCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

@@ -18,7 +18,7 @@ __bIsCard(STORE,Card_Sort,CK_SORT)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Sort::Card_Sort(void)
-: Card_MAIN(CK_SORT)
+: Card(CK_SORT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
