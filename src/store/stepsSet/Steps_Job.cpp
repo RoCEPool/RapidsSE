@@ -1458,7 +1458,7 @@ void Step::vJobUpdateParent(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // update the timer of this job
-  //pJob->vResponseTimerUpdate();
+  pJob->vResponseTimerUpdate();
 
   eErrorCode = AM::JLIST::eUpdateParent(pJob);
 
