@@ -3062,46 +3062,75 @@ void Card::vPrintName(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  if (! m_bPrintNm)
+    return;
+
   s32 sName;
     
   Board* pBoard = _pBoard(pRibbon->pSurface());
   CardRegs* pCardRegs = pBoard->pCardRegs();
 
-  if (m_bPrintNm) {
-    
-    if (bIs_MAIN()) {
-      sName.vSprint("%s%s%s x%lld"_Stz
-                    ,pCardRegs->bInCardReg(this) ? "R "_Stz : ""_Stz
-                    ,Stz::szDots(iDepth)
-                    ,szCardNm()
-                    ,nItems()
-                    );
-    }
-    else
-    if (bIs_SUB()) {
-      sName.vSprint("%s%lld)%s%s"_Stz
-                    ,Stz::szDots(iDepth)
-                    ,m_iCardNo
-                    ,pCardRegs->bInCardReg(this) ? "R "_Stz : ""_Stz
-                    ,szCardNm()
-                    );
-    }
-    else {
-      sName.vSprint("%s%lld %s"_Stz
-                    ,pCardRegs->bInCardReg(this) ? "R "_Stz : ""_Stz
-                    ,m_iCardNo
-                    ,szCardNm()
-                    );
-    }
-    
-    pRibbon->vSprint("%-18s%c%c"_Stz
-                     ,sName.szStz()
-                     ,m_cMark1
-                     ,m_cMark2
-                     );
-  }
-  
+  if (0 == iDepth)
+    sName.vSprint("%s%s%s x%lld"_Stz,
+                  pCardRegs->bInCardReg(this) ? "R "_Stz : ""_Stz,
+                  Stz::szDots(iDepth),
+                  szCardNm(),
+                  nItems());
+  else
+    sName.vSprint("%s%lld)%s%s"_Stz,
+                  Stz::szDots(iDepth),
+                  m_iCardNo,
+                  pCardRegs->bInCardReg(this) ? "R "_Stz : ""_Stz,
+                  szCardNm());
+
+  pRibbon->vSprint("%-18s%c%c"_Stz, sName.szStz(), m_cMark1, m_cMark2);
 }
+
+/*----------------------------------------------------------------------------*/
+//void Card::vPrintName(Ribbon* pRibbon, i8 iDepth)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+//
+//  s32 sName;
+//
+//  Board* pBoard = _pBoard(pRibbon->pSurface());
+//  CardRegs* pCardRegs = pBoard->pCardRegs();
+//
+//  if (m_bPrintNm) {
+//
+//    if (bIs_MAIN()) {
+//      sName.vSprint("%s%s%s x%lld"_Stz
+//          ,pCardRegs->bInCardReg(this) ? "R "_Stz : ""_Stz
+//          ,Stz::szDots(iDepth)
+//          ,szCardNm()
+//          ,nItems()
+//      );
+//    }
+//    else
+//    if (bIs_SUB()) {
+//      sName.vSprint("%s%lld)%s%s"_Stz
+//          ,Stz::szDots(iDepth)
+//          ,m_iCardNo
+//          ,pCardRegs->bInCardReg(this) ? "R "_Stz : ""_Stz
+//          ,szCardNm()
+//      );
+//    }
+//    else {
+//      sName.vSprint("%s%lld %s"_Stz
+//          ,pCardRegs->bInCardReg(this) ? "R "_Stz : ""_Stz
+//          ,m_iCardNo
+//          ,szCardNm()
+//      );
+//    }
+//
+//    pRibbon->vSprint("%-18s%c%c"_Stz
+//        ,sName.szStz()
+//        ,m_cMark1
+//        ,m_cMark2
+//    );
+//  }
+//
+//}
 
 
 
