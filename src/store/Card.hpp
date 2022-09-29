@@ -240,7 +240,9 @@ namespace STORE
     void vReplaceSubCard(Card* pSubCard, Card* pWithCard);
 
     i8   nChildCards(void);
-  
+
+    char cTableSyn(void);
+    void vTableSyn(char cTableSyn);
     void vTransferAll(Card* pCards);
     void vTransferFrom(Card* pCards, Card* pFrom,
                        Card* pAt=nullptr, bool bAfter=true);

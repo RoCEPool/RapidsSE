@@ -93,9 +93,10 @@ enum eCK // card kind
   /* */ CK_SUBSET,
 
   /* */ CK_TABLE,
-  /* */ CK_TABLEPTR,
   /* */ CK_TABLELIST,
   /* */ CK_TABLEPTN,
+  /* */ CK_TABLEPTR,
+  /* */ CK_TABLESYN,
   /* */ CK_TERM,
   /* */ CK_TYPE,
 
@@ -197,9 +198,10 @@ static Stz* aCK[]
   /* */ "CK_SUBSET"_Stz,       // CK_SUBSET
 
   /* */ "CK_TABLE"_Stz,        // CK_TABLE
-  /* */ "CK_TABLEPTR"_Stz,     // CK_TABLEPTR
   /* */ "CK_TABLELIST"_Stz,    // CK_TABLELIST
   /* */ "CK_TABLEPTN"_Stz,     // CK_TABLEPTN
+  /* */ "CK_TABLEPTR"_Stz,     // CK_TABLEPTR
+  /* */ "CK_TABLESYN"_Stz,     // CK_TABLESYN
   /* */ "CK_TERM"_Stz,         // CK_TERM
   /* */ "CK_TYPE"_Stz,         // CK_TYPE
 
@@ -301,9 +303,10 @@ static Stz* aCK_short[]
   /* */ "subSet"_Stz,          // CK_SUBSET
 
   /* */ "table"_Stz,           // CK_TABLE
-  /* */ "{table}"_Stz,         // CK_TABLEPTR
   /* */ "tableList"_Stz,       // CK_TABLELIST
   /* */ "tablePtn"_Stz,        // CK_TABLEPTN
+  /* */ "{table}"_Stz,         // CK_TABLEPTR
+  /* */ "tableSyn"_Stz,        // CK_TABLESYN
   /* */ "term"_Stz,            // CK_TERM
   /* */ "type"_Stz,            // CK_TYPE
 

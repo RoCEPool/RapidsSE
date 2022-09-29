@@ -7,8 +7,6 @@
 
 namespace STORE
 {
-  class Card_IndexList;
-
   class Card_Table : public Card
   {
   public:
