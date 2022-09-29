@@ -3,13 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
-
-#include "Card_EXPRESSION.hpp"
+#include "Card_PRED.hpp"
 
 namespace STORE
 {
-  class Card_CalcBool : public Card_EXPRESSION
+  class Card_CalcBool : public Card
   {  
   public:
     void* operator new(size_t);

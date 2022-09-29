@@ -18,12 +18,14 @@ __aFooterFunction(Drafter)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Drafter::Drafter(Optimiser* pOptimiser)
-: Object(CN_DRAFTER)
+Drafter::Drafter(Bench* pBench)
+: OptimiserTool(CN_DRAFTER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DRAFTER,_FOOTER_);
-    
-  m_pOptimiser = pOptimiser;
+
+  m_pBench        = pBench;
+  m_pOptimiser    = m_pBench->pOptimiser();
+
   m_pCardCtl   = m_pOptimiser->pCardCtl();
 
   _checkInitialised_(CN_DRAFTER);
@@ -224,12 +226,12 @@ bool Drafter::bCut(TokenVec* pTknVec, eOA& reOptAct)
     pBoard->vSearch(szCard,pMainCard,pSubCard);
     
     if (pMainCard) {
-      pBoard->m_pCard_SubSet->vCutSubCard(pMainCard);
+      pBoard->pCard_SubSet()->vCutSubCard(pMainCard);
       delete pMainCard; //TEMP
     }
     else
     if (pSubCard) {
-      Card* pParentCard = pBoard->m_pCard_SubSet->pFindParent(pSubCard);
+      Card* pParentCard = pBoard->pCard_SubSet()->pFindParent(pSubCard);
       pParentCard->vCutSubCard(pSubCard);
       
       delete pSubCard; //TEMP
@@ -397,12 +399,12 @@ bool Drafter::bName(TokenVec* pTknVec, eOA& reOptAct)
   i8 nTkns = pTknVec->nItems();
   
   if (nTkns < 2) {
-    vTrace("QueryNm : %s\n"_Stz,pBoard->szQueryNm());
+    vTrace("QueryNm : %s\n"_Stz,m_pOptimiser->szQueryNm());
     return true;
   }
   
   Stz* szQueryNm = pTknVec->pGet(1)->szChars();
-  pBoard->vQueryNm(szQueryNm);
+  m_pOptimiser->vQueryNm(szQueryNm);
   
   return true;
 }
@@ -460,42 +462,6 @@ bool Drafter::bSet(TokenVec* pTknVec, eOA& reOptAct)
 }
 
 /*----------------------------------------------------------------------------*/
-/* sub                                                                        */
-/*----------------------------------------------------------------------------*/
-bool Drafter::bSub(TokenVec* pTknVec, eOA& reOptAct)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DRAFTER,_FOOTER_);
-
-  i8 nTkns = pTknVec->nItems();
-  if (nTkns < 2)
-    return false;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  if (pTknVec->pGet(1)->bSame("*"_Stz)) {
-    for (i8 i_Card = 0; i_Card < CK_ENUMS; i_Card++) {
-      if (Card::bIsMain((eCK)i_Card))
-        continue;
-      m_pCardCtl->vPrint(i_Card,0);
-    }
-    return true;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  for (i8 i_Tkn = 1; i_Tkn < nTkns; i_Tkn++) {
-    Stz* szName = pTknVec->pGet(i_Tkn)->szChars();
-    eCK eCard = Card::eToECard(szName);
-    if (CK_NONE == eCard)
-      continue;
-    
-    m_pCardCtl->vPrint(eCard,0);
-  }
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* weave                                                                      */
 /*----------------------------------------------------------------------------*/
 bool Drafter::bWeave(TokenVec* pTknVec, eOA& reOptAct)
@@ -519,7 +485,7 @@ bool Drafter::bWrite(TokenVec* pTknVec, eOA& reOptAct)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DRAFTER,_FOOTER_);
 
   Stz* szStmt = m_pOptimiser->szWeave();
-  Stz* szQueryNm = m_pOptimiser->pHeadBoard()->szQueryNm();
+  Stz* szQueryNm = m_pOptimiser->szQueryNm();
 
   s256 sPath;
   sPath.vSprint("/tmp/%s.txt"_Stz,szQueryNm);

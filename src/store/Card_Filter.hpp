@@ -3,14 +3,12 @@
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
-
-#include "Card_MAIN.hpp"
+#include "Card.hpp"
 #include "Card_PRED.hpp"
 
 namespace STORE
 {
-  class Card_Filter : public Card_MAIN
+  class Card_Filter : public Card
   {
   public:
     void* operator new(size_t);
@@ -22,7 +20,8 @@ namespace STORE
     void vToExpr(Stz* szExpr);
   
     bool bCull(void);
-    Card_PredCmp* pFindBound(Index* pIndex, eBK eBound);
+    void vCullPred(char cWithMark);
+    Card_PredCmp* pFindBound(Index* pIndex, ePB eBound);
     bool bHasBounds(Index* pIndex);
     bool bIsEmptyFilter(void);
     void vReduceFilter(void);

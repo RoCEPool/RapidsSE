@@ -3,14 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
-
-#include "Card_SUB.hpp"
-#include "Card_PRED.hpp"
+#include "Card.hpp"
 
 namespace STORE
 {
-  class Card_Expr : public Card_SUB
+  class Card_Expr : public Card
   {  
   public:
     void* operator new(size_t);
@@ -21,7 +18,8 @@ namespace STORE
    ~Card_Expr(void) noexcept(false);
     
     void vAsEnsure(void);
-    Card_PredCmp* pFindBound(Index* pIndex, eBK eBound);
+    void vCullPred(char cWithMark);
+    Card_PredCmp* pFindBound(Index* pIndex, ePB eBound);
     bool bHasBounds(Index* pIndex);
     void vReduceBoolExpr(void);
   };

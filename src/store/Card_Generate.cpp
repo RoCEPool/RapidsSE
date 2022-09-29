@@ -18,7 +18,7 @@ __bIsCard(STORE,Card_Generate,CK_GENERATE)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Generate::Card_Generate(i8 iGenerate)
-: Card_SUB(CK_GENERATE)
+: Card(CK_GENERATE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

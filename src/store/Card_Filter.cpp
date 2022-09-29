@@ -25,7 +25,7 @@ __pGetSubFunction_Card(STORE,Card_Filter,CK_FILTER)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Filter::Card_Filter(void)
-: Card_MAIN(CK_FILTER)
+: Card(CK_FILTER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -59,6 +59,28 @@ bool Card_Filter::bCull(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Filter::vCullPred(char cWithMark)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  i8 nChildren = nChildCards();
+  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
+    Card* pChildCard = pGetChild(i_Child);
+
+    eCK eCard = pChildCard->eCard();
+    if (eCard != CK_EXPR)
+      continue;
+
+    Card_Expr* p_expr = _pCard_Expr(pChildCard);
+
+    p_expr->vCullPred(cWithMark);
+  }
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* to expr                                                                    */
 /*----------------------------------------------------------------------------*/
 void Card_Filter::vToExpr(Stz* szExpr)
@@ -74,13 +96,13 @@ void Card_Filter::vToExpr(Stz* szExpr)
 
   Card_PredCmp* pCard_PredCmp = _pCard_PredCmp(pGet(1));
   
-  i8 nSubCards = pCard_PredCmp->nItems();
-  for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
-    Card_Term* pCard_Term = _pCard_Term(pCard_PredCmp->pGet(i_Sub));
+  i8 nChildren = pCard_PredCmp->nChildCards();
+  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
+    Card_Term* pCard_Term = _pCard_Term(pCard_PredCmp->pGetChild(i_Child));
     
     Stz* szTerm = pCard_Term->szTerm();
     
-      szExpr->vConcat(" "_Stz);
+    szExpr->vConcat(" "_Stz);
 
     szExpr->vConcat(szTerm);
   }
@@ -89,7 +111,7 @@ void Card_Filter::vToExpr(Stz* szExpr)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_PredCmp* Card_Filter::pFindBound(Index* pIndex, eBK eBound)
+Card_PredCmp* Card_Filter::pFindBound(Index* pIndex, ePB eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   

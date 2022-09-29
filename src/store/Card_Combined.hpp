@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_MAIN.hpp -- Abstract Main-Card                                        */
+/* Card_Combined.hpp -- Combined                                              */
 /*============================================================================*/
 #pragma once
 
@@ -7,14 +7,18 @@
 
 namespace STORE
 {
-  class Card_MAIN : public Card
-  {  
+  class Card_Combined : public Card
+  {
   public:
-    Card_MAIN(eCK eCard);
-   ~Card_MAIN(void) noexcept(false);
+    void* operator new(size_t);
+    void  operator delete(void*);
+  
+    Card_Combined(void);
+   ~Card_Combined(void) noexcept(false);
   };
 
-  Card_MAIN* _pCard_MAIN(void* aAddr);
+  Card_Combined* _pCard_Combined(void* aAddr);
+  bool _bIsCard_Combined(void* aAddr);
 }
 
 /*============================================================================*/

@@ -12,10 +12,6 @@ namespace STORE
   class Dissector : public OptimiserTool
   {
   protected:
-  
-    Optimiser* m_pOptimiser;
-    Bench*     m_pBench;
-    Board*     m_pBoard;
 
     VertexSpec*  m_pPipeSpec;
     StageSpec*   m_pStageSpec;
@@ -31,10 +27,10 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Dissector(Optimiser* pOptimiser);
+    Dissector(Bench* pBench);
    ~Dissector(void) noexcept(false);
   
-    Board* pDissectSpec(VertexSpec* pPipeSpec);
+    void vDissectSpec(VertexSpec* pPipeSpec);
   
   private:
     void vPipeline(void);
@@ -66,9 +62,7 @@ namespace STORE
     Card_ProjElist* pProjElist  (Card_RpnTerms* pCard_RpnTerms);
     Card_SbyElist*  pSbyElist   (Card_RpnTerms* pCard_RpnTerms);
 
-    Card_Expr*      pExpr_b     (Card_RpnTerms* pCard_RpnTerms);
     Card_Expr*      pExpr_c     (Card_RpnTerms* pCard_RpnTerms);
-    Card_ExprBool*  pExprBool   (Card_RpnTerms* pCard_RpnTerms);
     Card_Calc*      pExprCalc   (Card_RpnTerms* pCard_RpnTerms);
   
     void vPredOr  (Card_ExprBool* pCard_ExprBool,

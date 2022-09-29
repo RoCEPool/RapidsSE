@@ -3,15 +3,12 @@
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
-
-#include "Card_SUB.hpp"
 #include "Card_PRED.hpp"
 #include "Card_StreamColList.hpp"
 
 namespace STORE
 {
-  class Card_Stream : public Card_SUB
+  class Card_Stream : public Card
   {
   public:
     void* operator new(size_t);

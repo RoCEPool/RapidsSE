@@ -18,7 +18,7 @@ __bIsCard(STORE,Card_Option,CK_OPTION)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Option::Card_Option(i8 iOption)
-: Card_SUB(CK_OPTION)
+: Card(CK_OPTION)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

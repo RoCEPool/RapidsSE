@@ -43,7 +43,7 @@ Card_PredAnd::~Card_PredAnd(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* find a comparePred which is the eBound of given index                      */
 /*----------------------------------------------------------------------------*/
-Card_PredCmp* Card_PredAnd::pFindBound_and(Index* pIndex, eBK eBound)
+Card_PredCmp* Card_PredAnd::pFindBound_and(Index* pIndex, ePB eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   

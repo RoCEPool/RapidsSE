@@ -27,15 +27,17 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
 
   m_p_absJoin     = nullptr;
   m_p_aggreg      = nullptr;
-  m_p_combine     = nullptr;
+  m_p_combined     = nullptr;
   m_p_filter      = nullptr;
   m_p_gbyElist    = nullptr;
   m_p_indexJoin   = nullptr;
   m_p_indexList   = nullptr;
   m_p_indexScan   = nullptr;
+  m_p_lBound      = nullptr;
   m_p_project     = nullptr;
   m_p_sbyElist    = nullptr;
   m_p_scan        = nullptr;
+  m_p_scanPred    = nullptr;
   m_p_sort        = nullptr;
   m_p_stage       = nullptr;
   m_p_stage_a     = nullptr;
@@ -44,6 +46,7 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_p_stageTopo_a = nullptr;
   m_p_stageTopo_b = nullptr;
   m_p_table       = nullptr;
+  m_p_uBound      = nullptr;
 
   _postcondition_(_ADDRESS_,_MAGIC_);
 }
@@ -98,7 +101,7 @@ eCK TransformerTool::eDecodeMain(Card* pCard)
 
     case CK_ABSJOIN:    m_p_absJoin     = _pCard_AbsJoin(pCard);   break;
     case CK_AGGREG:     m_p_aggreg      = _pCard_Aggreg(pCard);    break;
-    case CK_COMBINE:    m_p_combine     = _pCard_Combine(pCard);   break;
+    case CK_COMBINED:   m_p_combined    = _pCard_Combined(pCard);   break;
     case CK_FILTER:     m_p_filter      = _pCard_Filter(pCard);    break;
     case CK_GBYELIST:   m_p_gbyElist    = _pCard_GbyElist(pCard);  break;
     case CK_INDEXJOIN:  m_p_indexJoin   = _pCard_IndexJoin(pCard); break;

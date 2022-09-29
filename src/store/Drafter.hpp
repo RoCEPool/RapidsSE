@@ -3,13 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
-
-#include "Board.hpp"
+#include "OptimiserTool.hpp"
 
 namespace STORE
 {
-  class Drafter : public Object
+  class Drafter : public OptimiserTool
   {
   private:
     Optimiser* m_pOptimiser;
@@ -22,7 +20,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Drafter(Optimiser* pOptimiser);
+    Drafter(Bench* pBench);
    ~Drafter(void) noexcept(false);
 
     static void vRepair(Object* pObject);
@@ -48,7 +46,6 @@ namespace STORE
     bool bReprint (TokenVec* pTknVec, eOA& reOptAct);
 
     bool bSet     (TokenVec* pTknVec, eOA& reOptAct);
-    bool bSub     (TokenVec* pTknVec, eOA& reOptAct);
 
     bool bWeave   (TokenVec* pTknVec, eOA& reOptAct);
     bool bWrite   (TokenVec* pTknVec, eOA& reOptAct);

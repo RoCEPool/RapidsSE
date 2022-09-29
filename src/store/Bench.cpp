@@ -3,7 +3,7 @@
 /*============================================================================*/
 
 #include "Bench.hpp"
-//#include "Cue.hpp"
+#include "Board.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -45,6 +45,37 @@ Bench::~Bench(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* add a new board                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vAddBoard(Board* pBoard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  RASSERT(! pGetBoard(pBoard->eBoard()));
+
+  vPush(pBoard);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* get board of given kind                                                    */
+/*----------------------------------------------------------------------------*/
+Board* Bench::pGetBoard(eBK eBoard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  i8 nBoards = this->nItems();
+  for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
+    Board *pBoard = this->pGet(i_Board);
+
+    if (eBoard == pBoard->eBoard())
+      return pBoard;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* print bench                                                                */
 /*----------------------------------------------------------------------------*/
 void Bench::vPrintBench(void)
@@ -69,6 +100,15 @@ void Bench::vPrintBench(void)
   //Cue::vGetReturn("bench> "_Stz);
 }
 
+/*----------------------------------------------------------------------------*/
+/* print bench                                                                */
+/*----------------------------------------------------------------------------*/
+Optimiser* Bench::pOptimiser(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  return m_pOptimiser;
+}
 
 /*----------------------------------------------------------------------------*/
 /* renumber all cards                                                         */

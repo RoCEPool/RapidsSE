@@ -3,8 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
-
 #include "Card_PRED.hpp"
 
 namespace STORE
@@ -18,7 +16,7 @@ namespace STORE
     Card_PredAnd(void);
    ~Card_PredAnd(void) noexcept(false);
     
-    Card_PredCmp* pFindBound_and(Index* pIndex, eBK eBound);
+    Card_PredCmp* pFindBound_and(Index* pIndex, ePB eBound);
     bool bHasBounds_and(Index* pIndex);
   };
 

@@ -1,15 +1,13 @@
 /*============================================================================*/
-/* Card_Calc.hpp -- Calculation Predicate                                 */
+/* Card_Calc.hpp -- Calculation Predicate                                     */
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
-
-#include "Card_EXPRESSION.hpp"
+#include "Card.hpp"
 
 namespace STORE
 {
-  class Card_Calc : public Card_EXPRESSION
+  class Card_Calc : public Card
   {  
   public:
     void* operator new(size_t);

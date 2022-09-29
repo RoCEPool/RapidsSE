@@ -3,13 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
-
-#include "Card_MAIN.hpp"
+#include "Card.hpp"
 
 namespace STORE
 {
-  class Card_Limit : public Card_MAIN
+  class Card_Limit : public Card
   {
   public:
     void* operator new(size_t);

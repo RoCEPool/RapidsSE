@@ -18,7 +18,7 @@ __bIsCard(STORE,Card_Unique,CK_UNIQUE)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Unique::Card_Unique(void)
-: Card_SUB(CK_UNIQUE)
+: Card(CK_UNIQUE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
           

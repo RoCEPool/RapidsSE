@@ -18,7 +18,7 @@ __bIsCard(STORE, Card_AbsJoin, CK_ABSJOIN)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_AbsJoin::Card_AbsJoin(void)
-: Card_MAIN(CK_ABSJOIN)
+: Card(CK_ABSJOIN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

@@ -8,17 +8,17 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_ScanPred,CK_INDEXPRED)
+__pCastFunction_Card(STORE,Card_ScanPred,CK_SCANPRED)
 __aNewFunction(Card_ScanPred,CN_CARD)
 __vDeleteFunction(Card_ScanPred,CN_CARD)
 
-__bIsCard(STORE,Card_ScanPred,CK_INDEXPRED)
+__bIsCard(STORE,Card_ScanPred,CK_SCANPRED)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_ScanPred::Card_ScanPred(void)
-: Card_PRED(CK_INDEXPRED)
+: Card_PRED(CK_SCANPRED)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

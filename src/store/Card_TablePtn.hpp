@@ -1,26 +1,25 @@
 /*============================================================================*/
-/* Card_Combine.hpp -- Combine                                                */
+/* Card_TablePtn.hpp -- Table Partition                                       */
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
-
-#include "Card_MAIN.hpp"
+#include "Card.hpp"
 
 namespace STORE
 {
-  class Card_Combine : public Card_MAIN
+  class Card_TablePtn : public Card
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Combine(void);
-   ~Card_Combine(void) noexcept(false);
+    Card_TablePtn(void);
+   ~Card_TablePtn(void) noexcept(false);
   };
 
-  Card_Combine* _pCard_Combine(void* aAddr);
-  bool _bIsCard_Combine(void* aAddr);
+  Card_TablePtn* _pCard_TablePtn(void* aAddr);
+  bool _bIsCard_TablePtn(void* aAddr);
+  Card_TablePtn* _pGetSub_Card_TablePtn(Card* pParent);
 }
 
 /*============================================================================*/

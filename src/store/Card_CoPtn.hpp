@@ -1,22 +1,25 @@
 /*============================================================================*/
-/* Card_OBJECT.hpp -- Abstract Object Card                                    */
+/* Card_CoPtn.hpp -- Filter                                                 */
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
-
-#include "Card_SUB.hpp"
+#include "Card.hpp"
 
 namespace STORE
 {
-  class Card_OBJECT : public Card_SUB
-  {  
+  class Card_CoPtn : public Card
+  {
   public:
-    Card_OBJECT(eCK eCard);
-   ~Card_OBJECT(void) noexcept(false);
+    void* operator new(size_t);
+    void  operator delete(void*);
+  
+    Card_CoPtn(void);
+   ~Card_CoPtn(void) noexcept(false);
   };
 
-  Card_OBJECT* _pCard_OBJECT(void* aAddr);
+  Card_CoPtn* _pCard_CoPtn(void* aAddr);
+  bool _bIsCard_CoPtn(void* aAddr);
+  Card_CoPtn* _pGetSub_Card_CoPtn(Card* pParent);
 }
 
 /*============================================================================*/

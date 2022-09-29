@@ -27,14 +27,15 @@ __aFooterFunction(Board)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Board::Board(Stz* szQueryNm, Optimiser* pOptimiser)
-//: Card_OTHER(CK_BOARD)
+Board::Board(eBK eBoard, Bench* pBench)
 : Object(CN_BOARD)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-      
-  m_sQueryNm     = szQueryNm;
-  m_pOptimiser   = pOptimiser;
+
+  m_eBoard       = eBoard;
+  m_pBench       = pBench;
+
+  m_pOptimiser   = m_pBench->pOptimiser();
    
   m_pCardRegs    = new CardRegs;
   m_pRuleCtl     = new RuleCtl;
@@ -43,8 +44,9 @@ Board::Board(Stz* szQueryNm, Optimiser* pOptimiser)
 
   m_bBeenCued = false;
 
-  //_checkInitialised_(CN_BOARD);
-  _checkInitialisedSize_(sizeof(Board));
+  _checkInitialised_(CN_BOARD);
+
+  pBench->vAddBoard(this);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 }
@@ -79,6 +81,16 @@ void Board::vAppendMainCard(Card* pNewMainCard, bool bRenumber)
 
   if (bRenumber)
     vRenumberMainCards();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get board kind                                                             */
+/*----------------------------------------------------------------------------*/
+eBK Board::eBoard(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  return m_eBoard;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -493,7 +505,7 @@ void Board::vPinCards(Ribbon* pRibbon, i8 i_Board)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pRibbon->vSprint("[%lld] %s"_Stz,i_Board,szQueryNm());
+  pRibbon->vSprint("[%lld %s] %s"_Stz,i_Board,aBK[m_eBoard],m_pOptimiser->szQueryNm());
   pRibbon->vTitleLines(1);
   pRibbon->vSetBase();
   pRibbon->vFirstColumn();
@@ -507,28 +519,15 @@ void Board::vPinCards(Ribbon* pRibbon, i8 i_Board)
   while (pBoard_I->bHasNext()) {
     Card* pCard = pBoard_I->pNext();
 
-    //pCard->vDump();
-    
-    //if (_bIsCard_Filter(pCard))
-    //  pCard->vDump();
-
-//    if (pCard->bIsCard(CK_STAGE) && pSubRibbon->iChar())
-//      pSubRibbon->vNextHorizontal();
-
-
     if (! nCount++)
       pSubRibbon->vFirstColumn();
     else
-    if (pCard->bIsCard(CK_STAGE) && pSubRibbon->iChar()) {
+    if (pCard->bIsCard(CK_STAGE) && pSubRibbon->iChar())
       pSubRibbon->vNextHorizontal();
-      //pSubRibbon->vFirstColumn();
-    }
     else
       pSubRibbon->vNextColumn();
-    pCard->vPrintHeader(pSubRibbon);
 
-    //pCard->vPrintCard(pSubRibbon,0,0);
-    pCard->vPrintCard2(pSubRibbon,0);
+    pCard->vPrintCard(pSubRibbon);
   }
      
   pRibbon->vPinRibbon(1,0,pSubRibbon);
@@ -671,26 +670,6 @@ Card* Board::pPriorSubCard(Card*& rpMainCard, eCK eSubCard, i8 i_PriorToMain)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get query name                                                             */
-/*----------------------------------------------------------------------------*/
-Stz* Board::szQueryNm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-  
-  return m_sQueryNm;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set query name                                                             */
-/*----------------------------------------------------------------------------*/
-void Board::vQueryNm(Stz* szQueryNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-  
-  m_sQueryNm = szQueryNm;
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Board::vRemoveMainCard(Card* pMainCard)
@@ -793,17 +772,17 @@ void Board::vRankCandIndex(Card_CandIndex* pCard_CandIndex)
   
   if (pReg_Filter->bHasBounds(pIndex)) {
   
-    if (pReg_Filter->pFindBound(pIndex,BK_EBOUND)) {
+    if (pReg_Filter->pFindBound(pIndex,PB_EBOUND)) {
       bEBound = true;
       pCard_CandIndex->vHasEBound(true);
     }
     
-    if (pReg_Filter->pFindBound(pIndex,BK_LBOUND)) {
+    if (pReg_Filter->pFindBound(pIndex,PB_LBOUND)) {
       bLBound = true;
       pCard_CandIndex->vHasLBound(true);
     }
     
-    if (pReg_Filter->pFindBound(pIndex,BK_UBOUND)) {
+    if (pReg_Filter->pFindBound(pIndex,PB_UBOUND)) {
       bUBound = true;
       pCard_CandIndex->vHasUBound(true);
     }
@@ -873,7 +852,7 @@ void Board::vResolveJoin(Card_AbsJoin* pCard_AbsJoin)
 
   m_pCard_SubSet->vInsertAfter(pIndexJoin,pCard_AbsJoin);
 
-  Card_Combine* pCard_Combine = new Card_Combine;
+  Card_Combined* pCard_Combine = new Card_Combined;
   m_pCard_SubSet->vInsertAfter(pCard_Combine,pIndexJoin);
 
 
@@ -921,7 +900,7 @@ void Board::vResolveJoin2(Card_AbsJoin* pCard_AbsJoin)
 
   m_pCard_SubSet->vInsertAfter(pIndexJoin,pCard_AbsJoin);
 
-  Card_Combine* pCard_Combine = new Card_Combine;
+  Card_Combined* pCard_Combine = new Card_Combined;
   m_pCard_SubSet->vInsertAfter(pCard_Combine,pIndexJoin);
 
   //delete pCard_PredCmp;
@@ -960,7 +939,7 @@ void Board::vResolveJoin3(Card_IndexJoin* pCard_IndexJoin)
   Card_Index* pCard_Index = _pCard_Index(pCard_IndexJoin->pFindSubCard(CK_INDEX));
   pCard_IndexJoin->vInsertAfter(pCard_IndexPred,pCard_Index);
 
-  Card_Combine* pCard_Combine = new Card_Combine;
+  Card_Combined* pCard_Combine = new Card_Combined;
   m_pCard_SubSet->vInsertAfter(pCard_Combine,pCard_IndexJoin);
 }
 
@@ -1571,14 +1550,14 @@ void Board::vMark_PredCmps(void)
     case 1: {
       // lower bound or upper bound
       Card_PredCmp* pPredCmp_lbound =
-        pReg_Filter->pFindBound(pIndex,BK_LBOUND);
+        pReg_Filter->pFindBound(pIndex,PB_LBOUND);
       if (pPredCmp_lbound) {
         m_pCardRegs->vPredCmp_lbound(pPredCmp_lbound);
         pPredCmp_lbound->vMark2('L');
         break;
       }
       Card_PredCmp* pPredCmp_ubound =
-        pReg_Filter->pFindBound(pIndex,BK_UBOUND);
+        pReg_Filter->pFindBound(pIndex,PB_UBOUND);
       if (pPredCmp_ubound) {
         m_pCardRegs->vPredCmp_ubound(pPredCmp_ubound);
         pPredCmp_ubound->vMark2('U');
@@ -1590,13 +1569,13 @@ void Board::vMark_PredCmps(void)
     case 2: {
       // lower bound and upper bound
       Card_PredCmp* pPredCmp_lbound =
-        pReg_Filter->pFindBound(pIndex,BK_LBOUND);
+        pReg_Filter->pFindBound(pIndex,PB_LBOUND);
       if (pPredCmp_lbound) {
         m_pCardRegs->vPredCmp_lbound(pPredCmp_lbound);
         pPredCmp_lbound->vMark2('L');
       }
       Card_PredCmp* pPredCmp_ubound =
-        pReg_Filter->pFindBound(pIndex,BK_UBOUND);
+        pReg_Filter->pFindBound(pIndex,PB_UBOUND);
       if (pPredCmp_ubound) {
         m_pCardRegs->vPredCmp_ubound(pPredCmp_ubound);
         pPredCmp_ubound->vMark2('U');
@@ -1607,7 +1586,7 @@ void Board::vMark_PredCmps(void)
     case 3: {
       // equi-bound
       Card_PredCmp* pPredCmp_ebound =
-        pReg_Filter->pFindBound(pIndex,BK_EBOUND);
+        pReg_Filter->pFindBound(pIndex,PB_EBOUND);
       if (pPredCmp_ebound) {
         m_pCardRegs->vPredCmp_ebound(pPredCmp_ebound);
         pPredCmp_ebound->vMark2('E');
@@ -1816,7 +1795,7 @@ void Board::vSimplify_Initial(void)
       continue;
 
     Card* pCombine_3 = pGetMainCard(i_Test++);
-    if (CK_COMBINE != pCombine_3->eCard())
+    if (CK_COMBINED != pCombine_3->eCard())
       continue;
 
     Card* pSend_3 = pGetMainCard(i_Test++);

@@ -1,22 +1,25 @@
 /*============================================================================*/
-/* Card_EXPRESSION.hpp -- Abstract Expression                                       */
+/* Card_Permutation.hpp -- Filter                                                 */
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
-
-#include "Card_PRED.hpp"
+#include "Card.hpp"
 
 namespace STORE
 {
-  class Card_EXPRESSION : public Card_PRED
-  {  
+  class Card_Permutation : public Card
+  {
   public:
-    Card_EXPRESSION(eCK eCard);
-   ~Card_EXPRESSION(void) noexcept(false);
+    void* operator new(size_t);
+    void  operator delete(void*);
+  
+    Card_Permutation(void);
+   ~Card_Permutation(void) noexcept(false);
   };
 
-  Card_EXPRESSION* _pCard_EXPRESSION(void* aAddr);
+  Card_Permutation* _pCard_Permutation(void* aAddr);
+  bool _bIsCard_Permutation(void* aAddr);
+  Card_Permutation* _pGetSub_Card_Permutation(Card* pParent);
 }
 
 /*============================================================================*/

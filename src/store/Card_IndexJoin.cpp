@@ -19,7 +19,7 @@ __pGetSubFunction_Card(STORE,Card_IndexJoin,CK_INDEXJOIN)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_IndexJoin::Card_IndexJoin(void)
-: Card_MAIN(CK_INDEXJOIN)
+: Card(CK_INDEXJOIN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   

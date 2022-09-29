@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_SUB.hpp -- Abstract Sub-Card                                          */
+/* Card_CrossPtnPred.hpp -- Filter                                                 */
 /*============================================================================*/
 #pragma once
 
@@ -7,14 +7,19 @@
 
 namespace STORE
 {
-  class Card_SUB : public Card
-  {  
+  class Card_CrossPtnPred : public Card
+  {
   public:
-    Card_SUB(eCK eCard);
-   ~Card_SUB(void) noexcept(false);
+    void* operator new(size_t);
+    void  operator delete(void*);
+  
+    Card_CrossPtnPred(void);
+   ~Card_CrossPtnPred(void) noexcept(false);
   };
 
-  Card_SUB* _pCard_SUB(void* aAddr);
+  Card_CrossPtnPred* _pCard_CrossPtnPred(void* aAddr);
+  bool _bIsCard_CrossPtnPred(void* aAddr);
+  Card_CrossPtnPred* _pGetSub_Card_CrossPtnPred(Card* pParent);
 }
 
 /*============================================================================*/

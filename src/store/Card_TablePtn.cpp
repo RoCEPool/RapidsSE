@@ -1,24 +1,26 @@
 /*============================================================================*/
-/* Card_Combine.cpp -- Combine                                                */
+/* Card_TablePtn.cpp -- Table Partition Key                                   */
 /*============================================================================*/
 
-#include "Card_Combine.hpp"
+#include "Card_TablePtn.hpp"
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_Combine,CK_COMBINE)
-__aNewFunction(Card_Combine,CN_CARD)
-__vDeleteFunction(Card_Combine,CN_CARD)
+__pCastFunction_Card(STORE,Card_TablePtn,CK_TABLEPTN)
+__aNewFunction(Card_TablePtn,CN_CARD)
+__vDeleteFunction(Card_TablePtn,CN_CARD)
 
-__bIsCard(STORE,Card_Combine,CK_COMBINE)
+__bIsCard(STORE,Card_TablePtn,CK_TABLEPTN)
+__pGetSubFunction_Card(STORE,Card_TablePtn,CK_TABLEPTN)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Combine::Card_Combine(void)
-: Card_MAIN(CK_COMBINE)
+Card_TablePtn::Card_TablePtn(void)
+: Card(CK_TABLEPTN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -30,7 +32,7 @@ Card_Combine::Card_Combine(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_Combine::~Card_Combine(void) noexcept(false)
+Card_TablePtn::~Card_TablePtn(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

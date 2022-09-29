@@ -324,29 +324,6 @@ OptimiserFun __Opt_set
 );
 
 /*----------------------------------------------------------------------------*/
-/* cardCtl: sub                                                               */
-/*----------------------------------------------------------------------------*/
-bool STORE::bOpt_sub(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
-{
-  vTrace("bOpt_sub\n"_Stz);
-  
-  Drafter* pDrafter = pOptimiser->pDrafter();
-  bool bResult = pDrafter->bSub(pTknVec,reOptAct);
-  return bResult;
-}
-
-OptimiserFun __Opt_sub
-(
-  "sub"_Stz,          // name of the prompt function
-  "-"_Stz,            // command first word
-  nullptr,            // command second word
-  bOpt_sub,           // function to call
-  0,0,                // spare
-  "remove card print"_Stz,
-  "usage???"_Stz
-);
-
-/*----------------------------------------------------------------------------*/
 /* drafter: weave                                                             */
 /*----------------------------------------------------------------------------*/
 bool STORE::bOpt_weave(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)

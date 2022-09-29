@@ -3,22 +3,20 @@
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
-
-#include "Card_SUB.hpp"
+#include "Card.hpp"
 
 namespace STORE
 {
   class Card_PredCmp;
 
-  class Card_PRED : public Card_SUB
+  class Card_PRED : public Card
   {  
   public:
     Card_PRED(eCK eCard);
    ~Card_PRED(void) noexcept(false);
       
     void vCullByKids(void);
-    Card_PredCmp* pFindBound_pred(Index* pIndex, eBK eBound);
+    Card_PredCmp* pFindBound_pred(Index* pIndex, ePB eBound);
     bool bHasBounds_pred (Index* pIndex);
     
     bool bReduciblePred(void);

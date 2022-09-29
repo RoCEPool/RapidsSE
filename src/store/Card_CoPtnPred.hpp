@@ -1,22 +1,25 @@
 /*============================================================================*/
-/* Card_OTHER.hpp -- Abstract Other-Card                                      */
+/* Card_CoPtnPred.hpp -- Filter                                                 */
 /*============================================================================*/
 #pragma once
-
-#include "BASE.h"
 
 #include "Card.hpp"
 
 namespace STORE
 {
-  class Card_OTHER : public Card
-  {  
+  class Card_CoPtnPred : public Card
+  {
   public:
-    Card_OTHER(eCK eCard);
-   ~Card_OTHER(void) noexcept(false);
+    void* operator new(size_t);
+    void  operator delete(void*);
+  
+    Card_CoPtnPred(void);
+   ~Card_CoPtnPred(void) noexcept(false);
   };
 
-  Card_OTHER* _pCard_OTHER(void* aAddr);
+  Card_CoPtnPred* _pCard_CoPtnPred(void* aAddr);
+  bool _bIsCard_CoPtnPred(void* aAddr);
+  Card_CoPtnPred* _pGetSub_Card_CoPtnPred(Card* pParent);
 }
 
 /*============================================================================*/

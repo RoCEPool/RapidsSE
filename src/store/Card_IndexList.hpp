@@ -3,13 +3,13 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card_SUB.hpp"
+#include "Card.hpp"
 
 namespace STORE
 {
   class Card_Stream;
 
-  class Card_IndexList : public Card_SUB
+  class Card_IndexList : public Card
   {
   public:
     void* operator new(size_t);

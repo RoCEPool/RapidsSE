@@ -1,20 +1,31 @@
 /*============================================================================*/
-/* Card_SUB.cpp -- Abstract Sub-Card                                          */
+/* Card_Combined.cpp -- Combine                                                */
 /*============================================================================*/
 
-#include "Card_SUB.hpp"
+#include "Card_Combined.hpp"
+#include "Card_Term.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+__pCastFunction_Card(STORE, Card_Combined, CK_COMBINED)
+__aNewFunction(Card_Combined, CN_CARD)
+__vDeleteFunction(Card_Combined, CN_CARD)
+
+__bIsCard(STORE, Card_Combined, CK_COMBINED)
+
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_SUB::Card_SUB(eCK eCard)
-: Card(eCard)
+Card_Combined::Card_Combined(void)
+: Card(CK_COMBINED)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  _checkInitialised_(CN_CARD);
+
+  vAppend(new Card_Term("0"_Stz));
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -22,7 +33,7 @@ Card_SUB::Card_SUB(eCK eCard)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_SUB::~Card_SUB(void) noexcept(false)
+Card_Combined::~Card_Combined(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

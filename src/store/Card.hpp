@@ -6,7 +6,7 @@
 #include "BASE.h"
 
 #include "eAL.h"
-#include "eBK.h"
+#include "ePB.h"
 #include "eCK.h"
 #include "eGC.h"
 #include "eRO.h"
@@ -38,7 +38,7 @@ namespace STORE {
   class Card_CalcBool;
   class Card_CandIndex;
   class Card_Card;
-  class Card_Combine;
+  class Card_Combined;
 
   class Card_Debug;
   class Card_Direction;
@@ -92,6 +92,7 @@ namespace STORE {
 
   class Card_SbyElist;
   class Card_Scan;
+  class Card_ScanPred;
   class Card_Send;
   class Card_SendKind;
   class Card_Sends;
@@ -135,7 +136,6 @@ namespace STORE
     char m_caRef[256];
 
     eCK  m_eCard;
-    eGC  m_eCatg;
     i8   m_iCardNo;
 
     i8   m_iSeqNo;
@@ -162,13 +162,7 @@ namespace STORE
 
     static  bool bCardsSameRecursive(Card* pCard_a, Card* pCard_b, i8 iDepth=0, bool bTestL0=false);
 
-    static bool bIsMain(eCK eCard);
-    static bool bIsOther(eCK eCard);
-    static bool bIsSub(eCK eCard);
-    static eCK  eParentECard(eCK eChildCard);
     static eCK  eToECard(Stz* szCardNm);
-    static eGC  eToECatg(eCK eCard);
-    static eGC  eToECatg(Stz* szCardNm);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     
@@ -180,7 +174,6 @@ namespace STORE
 
     eCK  eCard(void);
     void vCard(eCK eCard);
-    eGC  eCatg(void);
     Stz* szCardNm(void);
     i8   iCardNo(void);
     void vCardNo(i8 iCardNo);
@@ -218,10 +211,6 @@ namespace STORE
     bool bHasSubCard(Card* pGivenCard, Card*& pParentCard);
     bool bHasUBound(void);
     void vHasUBound(bool bHasUBound);
-
-    bool bIsMain(void);
-    bool bIsOther(void);
-    bool bIsSub(void);
 
     char cMark1(void);
     void vMark1(char cMark1);
@@ -274,7 +263,7 @@ namespace STORE
     Stz* szAs(void);
     void vAs(Stz* szAs);
 
-    eBK  eBound(void);
+    ePB  eBound(void);
 
     Card* pCard(void);
     void vCard(Card* pCard);
@@ -288,6 +277,9 @@ namespace STORE
     void vColumn1(Column* pColumn1);
     Column* pColumn2(void);
     void vColumn2(Column* pColumn2);
+    void vConcatTerms(Stz* szTerms);
+    void vConcatTerms(Stz* szTerms, i8 i_From, i8 i_Till=C_UNKNOWN);
+
     Stz* szCmp(void);
     void vCmp(Stz* szCmp);
 
@@ -308,11 +300,9 @@ namespace STORE
     bool bIsOrdinalIndexAtom(void);
     bool bIsOrdinalStreamTerm(void);
     bool bIsOrdinalIndexTerm(void);
-    bool bIs_MAIN(void);
     bool bIsPred(void);
     bool bIsSame(Stz* szArg);
     bool bIsSeparator(void);
-    bool bIs_SUB(void);
 
     Stz* szLevel(void);
     void vLevel(Stz* szLevel);
@@ -378,8 +368,7 @@ namespace STORE
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   
-    void vPrintCard(Ribbon* pRibbon, i8 iDepth, i8 iSee);
-    void vPrintCard2(Ribbon* pRibbon, i8 iDepth);
+    void vPrintCard(Ribbon* pRibbon, i8 iDepth=0);
     void vPrintCard_byForm(Ribbon* pRibbon, i8 iDepth, i8 iPinForm, bool& bPrune);
     void vPrintDetails(Ribbon* pRibbon, i8 iDepth, bool& bPrune);
     void vPrintHeader(Ribbon* pRibbon);
@@ -399,14 +388,17 @@ namespace STORE
     Card_IndexJoin*     pSub_indexJoin(void);
     Card_IndexList*     pSub_indexList(void);
     Card_JoinPred*      pSub_joinPred(void);
+    Card_LBound*        pSub_lBound(void);
     Card_PredCmp*       pSub_predCmp(void);
     Card_SbyElist*      pSub_sbyElist(void);
     Card_Scan*          pSub_scan(void);
+    Card_ScanPred*      pSub_scanPred(void);
     Card_StageTopo*     pSub_stageTopo(void);
     Card_Stream*        pSub_stream(void);
     Card_StreamColList* pSub_streamColList(void);
     Card_Table*         pSub_table(void);
-  
+    Card_UBound*        pSub_uBound(void);
+
   private:
 
     Stz* szDecodeEnum(Stz* szEnum, i8 iEnum);

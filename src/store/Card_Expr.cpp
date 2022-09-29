@@ -8,6 +8,7 @@
 #include "Card_Type.hpp"
 #include "Card_As.hpp"
 #include "Card_Calc.hpp"
+#include "Card_CalcBool.hpp"
 #include "Card_Direction.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -24,7 +25,7 @@ __bIsCard(STORE,Card_Expr,CK_EXPR)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Expr::Card_Expr(void)
-: Card_SUB(CK_EXPR)
+: Card(CK_EXPR)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -37,7 +38,7 @@ Card_Expr::Card_Expr(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Expr::Card_Expr(Column* pColumn)
-: Card_SUB(CK_EXPR)
+: Card(CK_EXPR)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -91,7 +92,21 @@ void Card_Expr::vAsEnsure(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_PredCmp* Card_Expr::pFindBound(Index* pIndex, eBK eBound)
+void Card_Expr::vCullPred(char cWithMark)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_CalcBool* p_calcBool = this->pSub_calcBool();
+  if (! p_calcBool)
+    return;
+
+  p_calcBool->vCullPred(cWithMark);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_PredCmp* Card_Expr::pFindBound(Index* pIndex, ePB eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   

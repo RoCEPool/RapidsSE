@@ -1,28 +1,38 @@
 /*============================================================================*/
-/* Card_EXPRESSION.cpp -- Abstract Expression                                 */
+/* Card_CoPtn.cpp -- Permutation                                        */
 /*============================================================================*/
 
-#include "Card_EXPRESSION.hpp"
+#include "Card_CoPtn.hpp"
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+__pCastFunction_Card(STORE,Card_CoPtn,CK_COPTN)
+__aNewFunction(Card_CoPtn,CN_CARD)
+__vDeleteFunction(Card_CoPtn,CN_CARD)
+
+__bIsCard(STORE,Card_CoPtn,CK_COPTN)
+__pGetSubFunction_Card(STORE,Card_CoPtn,CK_COPTN)
+
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_EXPRESSION::Card_EXPRESSION(eCK eCard)
-: Card_PRED(eCard)
+Card_CoPtn::Card_CoPtn(void)
+: Card(CK_COPTN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  _checkInitialised_(CN_CARD);
+  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_EXPRESSION::~Card_EXPRESSION(void) noexcept(false)
+Card_CoPtn::~Card_CoPtn(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

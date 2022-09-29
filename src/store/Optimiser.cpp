@@ -27,16 +27,16 @@ Optimiser::Optimiser(TagSet* p_JobTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
     
-  m_p_JobTags = p_JobTags;
+  m_p_JobTags      = p_JobTags;
   m_pUnOptPipeSpec = nullptr;
-  
-  m_pCardCtl = new CardCtl;
+  m_pCardCtl       = new CardCtl;
   
   m_pBench       = new Bench(this);
-  m_pDissector   = new Dissector(this);
-  m_pTransformer = new Transformer(this);
-  m_pDrafter     = new Drafter(this);
-  m_pWeaver      = new Weaver(this);
+
+  m_pDissector   = new Dissector(m_pBench);
+  m_pTransformer = new Transformer(m_pBench);
+  m_pDrafter     = new Drafter(m_pBench);
+  m_pWeaver      = new Weaver(m_pBench);
 
   m_pPaste   = new Card_SubSet;
 
@@ -119,9 +119,7 @@ void Optimiser::vDissect(VertexSpec* pm_pUnOptPipeSpec)
   SP_PipeSpec spPipeSpec(m_pUnOptPipeSpec);
   vTrace("Optimiser: %s\n"_Stz,spPipeSpec.sz());
       
-  Board* pBoard = m_pDissector->pDissectSpec(m_pUnOptPipeSpec);
-  
-  m_pBench->vPush(pBoard);
+  m_pDissector->vDissectSpec(m_pUnOptPipeSpec);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -211,6 +209,26 @@ void Optimiser::vPushBoard(Board* pBoard)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get query name                                                             */
+/*----------------------------------------------------------------------------*/
+Stz* Optimiser::szQueryNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
+
+  return m_sQueryNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set query name                                                             */
+/*----------------------------------------------------------------------------*/
+void Optimiser::vQueryNm(Stz* szQueryNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
+
+  m_sQueryNm = szQueryNm;
+}
+
+/*----------------------------------------------------------------------------*/
 /* run dynamo                                                                 */
 /*----------------------------------------------------------------------------*/
 void Optimiser::vToPipeSpec(VertexSpec* pPipeSpec)
@@ -221,10 +239,7 @@ void Optimiser::vToPipeSpec(VertexSpec* pPipeSpec)
   
   delete m_pBench->pPop();
   
-  Board* pBoard = m_pDissector->pDissectSpec(m_pUnOptPipeSpec);
-
-  m_pBench->vAppend(pBoard);
-
+  m_pDissector->vDissectSpec(m_pUnOptPipeSpec);
 }
 
 /*----------------------------------------------------------------------------*/

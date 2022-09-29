@@ -18,15 +18,16 @@ __aFooterFunction(Transformer)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Transformer::Transformer(Optimiser* pOptimiser)
+Transformer::Transformer(Bench* pBench)
 : OptimiserTool(CN_TRANSFORMER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMER,_FOOTER_);
 
-  m_pOptimiser   = pOptimiser;
+  m_pBench        = pBench;
+  m_pOptimiser    = m_pBench->pOptimiser();
+  m_pBoard        = nullptr;
+
   m_pCardCtl     = m_pOptimiser->pCardCtl();
-  m_pBench       = m_pOptimiser->pBench();
-  m_pBoard       = nullptr;
 
   m_pCombiner    = nullptr;
   m_pCurator     = nullptr;
@@ -246,10 +247,20 @@ void Transformer::vTransform2(void)
   if (m_bInteractive)
     m_pBoard->vPrintBoard("Indexer::vMark_scan_pred_ordinals"_Stz);
 
-  m_pScanning->vXyz();
+  m_pScanning->vAdd_scanPred();
   if (m_bInteractive)
-    m_pBoard->vPrintBoard("Scanning::vXyz"_Stz);
+    m_pBoard->vPrintBoard("Scanning::vAdd_scanPred"_Stz);
 
+  m_pCardCtl->vSubCards(CK_STREAM,0);
+  m_pCardCtl->vPinForm(CK_STREAM,1);
+
+  m_pScanning->vCull_markedPred();
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Scanning::vCull_markedPred"_Stz);
+
+  m_pScanning->vPromote_scan_to_indexScan();
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Scanning::vPromote_scan_to_indexScan"_Stz);
 
 
 

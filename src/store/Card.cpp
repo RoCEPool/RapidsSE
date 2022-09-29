@@ -104,7 +104,6 @@ Card::Card(eCK eCard)
   MemLib::vZero(m_caRef, sizeof(m_caRef), CN_CARD);
 
   m_eCard = eCard;
-  m_eCatg = Card::eToECatg(eCard);
   m_iCardNo = C_UNKNOWN;
 
   m_iSeqNo = iSeqNo++;
@@ -199,142 +198,6 @@ bool Card::bCardsSameRecursive(Card* pCard_a, Card* pCard_b, i8 iDepth, bool bTe
 }
 
 /*----------------------------------------------------------------------------*/
-/* is eCK a main card?                                                        */
-/*----------------------------------------------------------------------------*/
-bool Card::bIsMain(eCK eCard)
-{
-  _static_
-  
-  switch (eCard) {
-    case CK_AGGREG:
-    case CK_CANDINDEX:
-    case CK_COMBINE:
-    case CK_FILTER:
-    case CK_HASH:
-    case CK_INDEXJOIN:
-    case CK_INDEXSCAN:
-    case CK_LIMIT:
-    case CK_ORDAGG:
-    case CK_PROJECT:
-    case CK_SCAN:
-    case CK_SEND:
-    case CK_SORT:
-    case CK_STAGE:
-      return true;
-      
-    default:
-      return false;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* is eCK an other card?                                                      */
-/*----------------------------------------------------------------------------*/
-bool Card::bIsOther(eCK eCard)
-{
-  _static_
-  
-  switch (eCard) {
-    case CK_BOARD:
-    case CK_RPNTERMS:
-      return true;
-      
-    default:
-      return false;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* is eCK a sub card?                                                         */
-/*----------------------------------------------------------------------------*/
-bool Card::bIsSub(eCK eCard)
-{
-  _static_
-  
-  switch (eCard) {
-    case CK_AGGELIST:
-    case CK_AGGLEVEL:
-    case CK_AS:
-
-    case CK_CALC:
-    case CK_CALCBOOL:
-
-    case CK_DIRECTION:
-              
-    case CK_EBOUND:
-    case CK_EXPR:
-    case CK_EXPRBOOL:
-
-    case CK_FILTELIST:
-      
-    case CK_GBYELIST:
-    case CK_GENERATE:
-                      
-    case CK_INDEX:
-    case CK_INDEXPRED:
-                        
-    case CK_LBOUND:
-                      
-    case CK_MODE:
-              
-    case CK_NAME:
-              
-    case CK_ON:
-    case CK_OPTION:
-    case CK_OBYELIST:
-              
-    case CK_PREDAND:
-    case CK_PREDCMP:
-    case CK_PREDOR:
-    case CK_PROJELIST:
-                      
-    case CK_RBOUND:
-    case CK_ROWS:
-              
-    case CK_SBYELIST:
-    case CK_SENDKIND:
-    case CK_SENDS:
-    case CK_STAGETOPO:
-    case CK_STREAM:
-    case CK_STREAMELIST:
-    case CK_SUBSET:
-                    
-    case CK_TABLE:
-    case CK_TERM:
-    case CK_TYPE:
-              
-    case CK_UBOUND:
-    case CK_UNIQUE:
-      return true;
-      
-    default:
-      return false;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* get parent eCK of child eCK                                                */
-/*----------------------------------------------------------------------------*/
-eCK Card::eParentECard(eCK eChild)
-{
-  _static_
-  
-  switch (eChild) {
-    case CK_AGGELIST:   return CK_AGGREG;
-    case CK_EXPR:       return CK_FILTER;
-    case CK_FILTELIST:  return CK_FILTER;
-    case CK_GBYELIST:   return CK_AGGREG;
-    case CK_OBYELIST:   return CK_STREAM;
-    case CK_PROJELIST:  return CK_PROJECT;
-    case CK_SBYELIST:   return CK_SORT;
-
-    default:
-      return CK_NONE;
-  }
-  
-}
-
-/*----------------------------------------------------------------------------*/
 /* find eCK by card name                                                      */
 /*----------------------------------------------------------------------------*/
 eCK Card::eToECard(Stz* szCardNm)
@@ -349,126 +212,6 @@ eCK Card::eToECard(Stz* szCardNm)
       return (eCK)i_Card;
   
   return CK_NONE;
-}
-
-/*----------------------------------------------------------------------------*/
-/* find eGC by eCK                                                            */
-/*----------------------------------------------------------------------------*/
-eGC Card::eToECatg(eCK eCard)
-{
-  _static_
-  
-  switch (eCard) {
-
-    case CK_ABSJOIN:    return GC_MAIN;
-    case CK_AGGELIST:                    return GC_SUB;
-    case CK_AGGLEVEL:                    return GC_SUB;
-    case CK_AGGREG:     return GC_MAIN;
-    case CK_AGGREGATES:                  return GC_SUB;
-    case CK_AS:                          return GC_SUB;
-                                   
-    case CK_BOARD:                                      return GC_OTHER;
-
-    case CK_CALC:                        return GC_SUB;
-    case CK_CALCBOOL:                    return GC_SUB;
-    case CK_CANDINDEX:  return GC_MAIN;
-    case CK_CARD:                        return GC_SUB;
-    case CK_COMBINE:    return GC_MAIN;
-                                    
-    case CK_DEBUG:      return GC_MAIN;
-    case CK_DIRECTION:                   return GC_SUB;
-              
-    case CK_EBOUND:                      return GC_SUB;
-    case CK_EXISTS:     return GC_MAIN;
-    case CK_EXPR:                        return GC_SUB;
-    case CK_EXPRBOOL:                    return GC_SUB;
-
-    case CK_FILTER:     return GC_MAIN;
-    case CK_FILTELIST:                   return GC_SUB;
-
-    case CK_GBYELIST:                    return GC_SUB;
-    case CK_GENERATE:                    return GC_SUB;
-              
-    case CK_HASH:       return GC_MAIN;
-    case CK_HAVING:     return GC_MAIN;
-
-    case CK_IDXCOL:                      return GC_SUB;
-    case CK_IDXCOLLIST:                  return GC_SUB;
-    case CK_INDEX:                       return GC_SUB;
-    case CK_INDEXJOIN:  return GC_MAIN;
-    case CK_INDEXLIST:                   return GC_SUB;
-    case CK_INDEXPRED:                   return GC_SUB;
-    case CK_INDEXSCAN:  return GC_MAIN;
-
-    case CK_JOINPRED:                    return GC_SUB;
-
-    case CK_LBOUND:                      return GC_SUB;
-    case CK_LIMIT:      return GC_MAIN;
-
-    case CK_MAP:                         return GC_SUB;
-    case CK_MAPSET:                      return GC_SUB;
-    case CK_MODE:                        return GC_SUB;
-              
-    case CK_NAME:                        return GC_SUB;
-              
-    case CK_ON:                          return GC_SUB;
-    case CK_OPTION:                      return GC_SUB;
-    case CK_ORDAGG:     return GC_MAIN;
-    case CK_OBYELIST:                    return GC_SUB;
-              
-    case CK_PREDAND:                     return GC_SUB;
-    case CK_PREDCMP:                     return GC_SUB;
-    case CK_PREDOR:                      return GC_SUB;
-    case CK_PROJECT:    return GC_MAIN;
-    case CK_PROJELIST:                   return GC_SUB;
-                            
-    case CK_RBOUND:                      return GC_SUB;
-    case CK_ROWS:                        return GC_SUB;
-    case CK_RPNTERMS:                                     return GC_OTHER;
-
-    case CK_SBYELIST:                    return GC_SUB;
-    case CK_SCAN:       return GC_MAIN;
-    case CK_SEND:       return GC_MAIN;
-    case CK_SENDKIND:                    return GC_SUB;
-    case CK_SENDS:                       return GC_SUB;
-    case CK_SORT:       return GC_MAIN;
-    case CK_STAGE:      return GC_MAIN;
-    case CK_STAGETOPO:                   return GC_SUB;
-    case CK_STREAM:                      return GC_SUB;
-    case CK_STREAMCOL:                   return GC_SUB;
-    case CK_STREAMCOLLIST:               return GC_SUB;
-    case CK_STREAMELIST:                 return GC_SUB;
-    case CK_SUBSET:                      return GC_SUB;
-                    
-    case CK_TABLE:                       return GC_SUB;
-    case CK_TERM:                        return GC_SUB;
-    case CK_TYPE:                        return GC_SUB;
-              
-    case CK_UBOUND:                      return GC_SUB;
-    case CK_UNIQUE:                      return GC_SUB;
-  
-    default:
-      vTrace("SWITCH %s: Missing case for eCard %lld %s\n"_Stz
-             ,__func__
-             ,(i8)eCard
-             ,aCK[eCard]
-             );
-      RASSERT(0);
-      break;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* find eGC by card name                                                      */
-/*----------------------------------------------------------------------------*/
-eGC Card::eToECatg(Stz* szCardNm)
-{
-  _static_
-  
-  eCK eCard = Card::eToECard(szCardNm);
-  eGC eCatg = Card::eToECatg(eCard);
-
-  return eCatg;
 }
 
 
@@ -569,16 +312,6 @@ void Card::vCard(eCK eCard)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   m_eCard = eCard;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get card category                                                          */
-/*----------------------------------------------------------------------------*/
-eGC Card::eCatg(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  return m_eCatg;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1147,36 +880,6 @@ void Card::vHasUBound(bool bHasUBound)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is a main card?                                                            */
-/*----------------------------------------------------------------------------*/
-bool Card::bIsMain(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  return Card::bIsMain(m_eCard);
-}
-
-/*----------------------------------------------------------------------------*/
-/* is an other card?                                                          */
-/*----------------------------------------------------------------------------*/
-bool Card::bIsOther(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  return Card::bIsOther(m_eCard);
-}
-
-/*----------------------------------------------------------------------------*/
-/* is  sub card?                                                              */
-/*----------------------------------------------------------------------------*/
-bool Card::bIsSub(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  return Card::bIsSub(m_eCard);
-}
-
-/*----------------------------------------------------------------------------*/
 /* get number of properties                                                   */
 /*----------------------------------------------------------------------------*/
 i8 Card::nProperties(void)
@@ -1577,18 +1280,18 @@ void Card::vAs(Stz* szAs)
 /*----------------------------------------------------------------------------*/
 /* evaluate bound                                                              */
 /*----------------------------------------------------------------------------*/
-eBK Card::eBound(void)
+ePB Card::eBound(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   eRO eRelOp = this->eRelOp();
   
   switch (eRelOp) {
-    case RO_LESS_THAN:     return BK_UBOUND;
-    case RO_LESS_EQUAL:    return BK_UBOUND;
-    case RO_EQUAL_TO:      return BK_EBOUND;
-    case RO_GREATER_EQUAL: return BK_LBOUND;
-    case RO_GREATER_THAN:  return BK_LBOUND;
+    case RO_LESS_THAN:     return PB_UBOUND;
+    case RO_LESS_EQUAL:    return PB_UBOUND;
+    case RO_EQUAL_TO:      return PB_EBOUND;
+    case RO_GREATER_EQUAL: return PB_LBOUND;
+    case RO_GREATER_THAN:  return PB_LBOUND;
       
     default:
       vTrace("%s(%lld): unexpected eRelOp %lld %s\n"_Stz
@@ -1778,6 +1481,36 @@ void Card::vColumn2(Column* pColumn2)
 }
 
 /*----------------------------------------------------------------------------*/
+/* concat terms                                                               */
+/*----------------------------------------------------------------------------*/
+void Card::vConcatTerms(Stz* szTerms)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vConcatTerms(szTerms,0);
+}
+
+/*----------------------------------------------------------------------------*/
+/* concat terms                                                               */
+/*----------------------------------------------------------------------------*/
+void Card::vConcatTerms(Stz* szTerms, i8 i_From, i8 i_Till)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (C_UNKNOWN == i_Till)
+    i_Till = nChildCards() - 1;
+
+  for (i8 i_Child = i_From; i_Child <= i_Till; i_Child++) {
+    Card* pChildCard = pGetChild(i_Child);
+    if (CK_TERM != pChildCard->eCard())
+      continue;
+
+    szTerms->vCatSprint(" %s"_Stz, pChildCard->szTerm());
+  }
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* get sort direction                                                         */
 /*----------------------------------------------------------------------------*/
 Stz* Card::szDirn(void)
@@ -1914,19 +1647,6 @@ bool Card::bIsCard(eCK eCard)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a sub-class of card_MAIN?                                          */
-/*----------------------------------------------------------------------------*/
-bool Card::bIs_MAIN(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (GC_MAIN == m_eCatg)
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is atom a column ordinal?                                                  */
 /*----------------------------------------------------------------------------*/
 bool Card::bIsOrdinalColumnAtom(void)
@@ -2043,19 +1763,6 @@ bool Card::bIsSeparator(void)
   Stz* szTerm = szGetProperty("szTerm"_Stz);
 
   if (szTerm->bSame(","_Stz))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this a sub-class of card_SUB?                                           */
-/*----------------------------------------------------------------------------*/
-bool Card::bIs_SUB(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (GC_SUB == m_eCatg)
     return true;
   else
     return false;
@@ -2813,49 +2520,12 @@ void Card::vType(Stz* szType)
 /*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
-void Card::vPrintCard(Ribbon* pRibbon, i8 iDepth, i8 iBelow)
+void Card::vPrintCard(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  bool bPrune = false;
-  CardCtl* pCardCtl = _pCardCtl(pRibbon->pCtl());
-  
-  if (pCardCtl->iBelow(m_eCard))
-    iBelow = pCardCtl->iBelow(m_eCard);
-
-  if (iDepth <= pCardCtl->iDepth() || iBelow || pCardCtl->iPrint(m_eCard)) {
-    
-    i8 iForm = pCardCtl->iForm(m_eCard);
-    
-    if (iForm) {
-      if (! m_pProperties)
-        vPrintName(pRibbon,iDepth);
-    }
-    else {
-      vPrintName(pRibbon,iDepth);
-    }
-    vPrintDetails(pRibbon,iDepth,bPrune);
-  }
-
-  //vMark2(' ');
-  if (bPrune)
-    return;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  ListExoIter2_t<Card>* pCard_I = pNewIter();
-  while (pCard_I->bHasNext()) {
-    Card* pCard = pCard_I->pNext();
-
-    pCard->vPrintCard(pRibbon,iDepth + 1,iBelow);
-  }
-
-  delete pCard_I;
-}
-/*----------------------------------------------------------------------------*/
-void Card::vPrintCard2(Ribbon* pRibbon, i8 iDepth)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  if (0 == iDepth)
+    vPrintHeader(pRibbon);
 
   bool bPrune = false;
   CardCtl* pCardCtl = _pCardCtl(pRibbon->pCtl());
@@ -2880,7 +2550,7 @@ void Card::vPrintCard2(Ribbon* pRibbon, i8 iDepth)
   ListExoIter2_t<Card>* pSubCard_I = pNewIter();
   while (pSubCard_I->bHasNext()) {
     Card* pSubCard = pSubCard_I->pNext();
-    pSubCard->vPrintCard2(pRibbon,iDepth + 1);
+    pSubCard->vPrintCard(pRibbon, iDepth + 1);
   }
 
   delete pSubCard_I;
@@ -2949,7 +2619,7 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
     case CK_CALCBOOL:                   vPrintProperties(pRibbon,iDepth); break;
     case CK_CANDINDEX:                  vPrintProperties(pRibbon,iDepth); break;
     case CK_CARD:       vCardPrint                      (pRibbon,iDepth); break;
-    case CK_COMBINE:                    vPrintProperties(pRibbon,iDepth); break;
+    case CK_COMBINED:                    vPrintProperties(pRibbon,iDepth); break;
                         
     case CK_DEBUG:                      vPrintProperties(pRibbon,iDepth); break;
     case CK_DIRECTION:                  vPrintProperties(pRibbon,iDepth); break;
@@ -3003,6 +2673,7 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
 
     case CK_SBYELIST:                   vPrintProperties(pRibbon,iDepth); break;
     case CK_SCAN:                       vPrintProperties(pRibbon,iDepth); break;
+    case CK_SCANPRED:                   vPrintProperties(pRibbon,iDepth); break;
     case CK_SEND:                       vPrintProperties(pRibbon,iDepth); break;
     case CK_SENDKIND:                   vPrintProperties(pRibbon,iDepth); break;
     case CK_SENDS:                      vPrintProperties(pRibbon,iDepth); break;
@@ -3067,46 +2738,75 @@ void Card::vPrintName(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  if (! m_bPrintNm)
+    return;
+
   s32 sName;
     
   Board* pBoard = _pBoard(pRibbon->pSurface());
   CardRegs* pCardRegs = pBoard->pCardRegs();
 
-  if (m_bPrintNm) {
-    
-    if (bIs_MAIN()) {
-      sName.vSprint("%s%s%s x%lld"_Stz
-                    ,pCardRegs->bInCardReg(this) ? "R "_Stz : ""_Stz
-                    ,Stz::szDots(iDepth)
-                    ,szCardNm()
-                    ,nItems()
-                    );
-    }
-    else
-    if (bIs_SUB()) {
-      sName.vSprint("%s%lld)%s%s"_Stz
-                    ,Stz::szDots(iDepth)
-                    ,m_iCardNo
-                    ,pCardRegs->bInCardReg(this) ? "R "_Stz : ""_Stz
-                    ,szCardNm()
-                    );
-    }
-    else {
-      sName.vSprint("%s%lld %s"_Stz
-                    ,pCardRegs->bInCardReg(this) ? "R "_Stz : ""_Stz
-                    ,m_iCardNo
-                    ,szCardNm()
-                    );
-    }
-    
-    pRibbon->vSprint("%-18s%c%c"_Stz
-                     ,sName.szStz()
-                     ,m_cMark1
-                     ,m_cMark2
-                     );
-  }
-  
+  if (0 == iDepth)
+    sName.vSprint("%s%s%s x%lld"_Stz,
+                  pCardRegs->bInCardReg(this) ? "R "_Stz : ""_Stz,
+                  Stz::szDots(iDepth),
+                  szCardNm(),
+                  nItems());
+  else
+    sName.vSprint("%s%lld)%s%s"_Stz,
+                  Stz::szDots(iDepth),
+                  m_iCardNo,
+                  pCardRegs->bInCardReg(this) ? "R "_Stz : ""_Stz,
+                  szCardNm());
+
+  pRibbon->vSprint("%-18s%c%c"_Stz, sName.szStz(), m_cMark1, m_cMark2);
 }
+
+/*----------------------------------------------------------------------------*/
+//void Card::vPrintName(Ribbon* pRibbon, i8 iDepth)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+//
+//  s32 sName;
+//
+//  Board* pBoard = _pBoard(pRibbon->pSurface());
+//  CardRegs* pCardRegs = pBoard->pCardRegs();
+//
+//  if (m_bPrintNm) {
+//
+//    if (bIs_MAbIs_MAININ()) {
+//      sName.vSprint("%s%s%s x%lld"_Stz
+//          ,pCardRegs->bInCardReg(this) ? "R "_Stz : ""_Stz
+//          ,Stz::szDots(iDepth)
+//          ,szCardNm()
+//          ,nItems()
+//      );
+//    }
+//    else
+//    if (bIs_SUB()) {
+//      sName.vSprint("%s%lld)%s%s"_Stz
+//          ,Stz::szDots(iDepth)
+//          ,m_iCardNo
+//          ,pCardRegs->bInCardReg(this) ? "R "_Stz : ""_Stz
+//          ,szCardNm()
+//      );
+//    }
+//    else {
+//      sName.vSprint("%s%lld %s"_Stz
+//          ,pCardRegs->bInCardReg(this) ? "R "_Stz : ""_Stz
+//          ,m_iCardNo
+//          ,szCardNm()
+//      );
+//    }
+//
+//    pRibbon->vSprint("%-18s%c%c"_Stz
+//        ,sName.szStz()
+//        ,m_cMark1
+//        ,m_cMark2
+//    );
+//  }
+//
+//}
 
 
 
@@ -3416,6 +3116,19 @@ Card_JoinPred* Card::pSub_joinPred(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_LBound.hpp"
+Card_LBound* Card::pSub_lBound(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_LBound* p_lBound =
+      _pCard_LBound(pFindSubCard(CK_LBOUND));
+  return p_lBound;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_PredCmp.hpp"
 Card_PredCmp* Card::pSub_predCmp(void)
 {
@@ -3450,6 +3163,19 @@ Card_Scan* Card::pSub_scan(void)
   Card_Scan* p_scan =
       _pCard_Scan(pFindSubCard(CK_SCAN));
   return p_scan;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_ScanPred.hpp"
+Card_ScanPred* Card::pSub_scanPred(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_ScanPred* p_scanPred =
+      _pCard_ScanPred(pFindSubCard(CK_SCANPRED));
+  return p_scanPred;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3502,6 +3228,19 @@ Card_Table* Card::pSub_table(void)
   Card_Table* p_table =
       _pCard_Table(pFindSubCard(CK_TABLE));
   return p_table;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_UBound.hpp"
+Card_UBound* Card::pSub_uBound(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_UBound* p_uBound =
+      _pCard_UBound(pFindSubCard(CK_UBOUND));
+  return p_uBound;
 }
 
 

@@ -23,7 +23,7 @@ __pGetSubFunction_Card(STORE,Card_Stream,CK_STREAM)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Stream::Card_Stream(void)
-: Card_SUB(CK_STREAM)
+: Card(CK_STREAM)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
           

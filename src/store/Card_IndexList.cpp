@@ -19,7 +19,7 @@ __pGetSubFunction_Card(STORE,Card_IndexList,CK_INDEXLIST)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_IndexList::Card_IndexList(void)
-: Card_SUB(CK_INDEXLIST)
+: Card(CK_INDEXLIST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

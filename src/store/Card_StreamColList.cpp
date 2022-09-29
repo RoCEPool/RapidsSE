@@ -27,7 +27,7 @@ __pGetSubFunction_Card(STORE,Card_StreamColList,CK_STREAMCOLLIST)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_StreamColList::Card_StreamColList(void)
-: Card_SUB(CK_STREAMCOLLIST)
+: Card(CK_STREAMCOLLIST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
           
@@ -40,7 +40,7 @@ Card_StreamColList::Card_StreamColList(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_StreamColList::Card_StreamColList(StreamDef* pStreamDef, Stz* szPrefix_opt)
-: Card_SUB(CK_STREAMCOLLIST)
+: Card(CK_STREAMCOLLIST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -55,7 +55,7 @@ Card_StreamColList::Card_StreamColList(StreamDef* pStreamDef, Stz* szPrefix_opt)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_StreamColList::Card_StreamColList(Card_AggElist* pCard_AggElist)
-: Card_SUB(CK_STREAMCOLLIST)
+: Card(CK_STREAMCOLLIST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

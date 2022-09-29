@@ -28,15 +28,17 @@ namespace STORE
 
     Card_AbsJoin*    m_p_absJoin;
     Card_Aggreg*     m_p_aggreg;
-    Card_Combine*    m_p_combine;
+    Card_Combined*    m_p_combined;
     Card_Filter*     m_p_filter;
     Card_GbyElist*   m_p_gbyElist;
     Card_IndexJoin*  m_p_indexJoin;
     Card_IndexList*  m_p_indexList;
     Card_IndexScan*  m_p_indexScan;
+    Card_LBound*     m_p_lBound;
     Card_Project*    m_p_project;
     Card_SbyElist*   m_p_sbyElist;
     Card_Scan*       m_p_scan;
+    Card_ScanPred*   m_p_scanPred;
     Card_Sort*       m_p_sort;
     Card_Stage*      m_p_stage;
     Card_Stage*      m_p_stage_a;
@@ -45,6 +47,7 @@ namespace STORE
     Card_StageTopo*  m_p_stageTopo_a;
     Card_StageTopo*  m_p_stageTopo_b;
     Card_Table*      m_p_table;
+    Card_UBound*     m_p_uBound;
 
   public:
     void* operator new(size_t);

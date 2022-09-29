@@ -19,7 +19,7 @@ __bIsCard(STORE,Card_StreamCol,CK_STREAMCOL)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_StreamCol::Card_StreamCol(void)
-: Card_SUB(CK_STREAMCOL)
+: Card(CK_STREAMCOL)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
           

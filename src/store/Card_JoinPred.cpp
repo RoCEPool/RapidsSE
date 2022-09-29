@@ -19,7 +19,7 @@ __pGetSubFunction_Card(STORE,Card_JoinPred,CK_JOINPRED)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_JoinPred::Card_JoinPred(void)
-: Card_MAIN(CK_JOINPRED)
+: Card(CK_JOINPRED)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   

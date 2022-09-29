@@ -11,10 +11,7 @@ namespace STORE
   class Weaver : public OptimiserTool
   {
   protected:
-  
-    Optimiser* m_pOptimiser;
-    Board* m_pBoard;
-    
+
     i8 m_i_Stage;
     i8 m_i_Op_stage;
     s48K m_sOptStmt;
@@ -27,7 +24,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Weaver(Optimiser* pOptimser);
+    Weaver(Bench* pBench);
    ~Weaver(void) noexcept(false);
   
     void vWeaveOptStmt(Board* pBoard);
@@ -50,7 +47,7 @@ namespace STORE
 
     void vArgAbsJoin  (Stz* szOpArgs,  Card_AbsJoin*   pCard_AbsJoin);
     void vArgAggreg   (Stz* szOpArgs,  Card_Aggreg*    pCard_Aggreg);
-    void vArgCombine  (Stz* szOpArgs,  Card_Combine*   pCard_Combine);
+    void vArgCombined  (Stz* szOpArgs, Card_Combined*   pCard_Combine);
     void vArgFilter   (Stz* szOpArgs,  Card_Filter*    pCard_Filter);
     void vArgHaving   (Stz* szOpArgs,  Card_Having*    pCard_Having);
     void vArgIndexJoin(Stz* szOpArgs,  Card_IndexJoin* pCard_IndexJoin);
@@ -62,11 +59,12 @@ namespace STORE
     void vArgSort     (Stz* szOpArgs,  Card_Sort*      pCard_Sort);
  
     void vRpnAggreg   (Stz* szRpnExpr, Card_Aggreg*    pCard_Aggreg);
-    void vRpnCombine  (Stz* szRpnExpr, Card_Combine*   pCard_Combine);
+    void vRpnCombine  (Stz* szRpnExpr, Card_Combined*   pCard_Combine);
     void vRpnFilter   (Stz* szRpnExpr, Card_Filter*    pCard_Filter);
     void vRpnHaving   (Stz* szRpnExpr, Card_Having*    pCard_Having);
     void vRpnIndexJoin(Stz* szRpnExpr, Card_IndexJoin* pCard_IndexJoin);
     void vRpnIndexScan(Stz* szRpnExpr, Card_IndexScan* pCard_IndexScan);
+    void vRpnIndexScan2(Stz* szRpnExpr, Card_IndexScan* pCard_IndexScan);
     void vRpnLimit    (Stz* szRpnExpr, Card_Limit*     pCard_Limit);
     void vRpnProject  (Stz* szRpnExpr, Card_Project*   pCard_Project);
     void vRpnScan     (Stz* szRpnExpr, Card_Scan*      pCard_Scan);

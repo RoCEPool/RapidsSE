@@ -18,7 +18,7 @@ __bIsCard(STORE,Card_Type,CK_TYPE)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Type::Card_Type(Stz* szType)
-: Card_SUB(CK_TYPE)
+: Card(CK_TYPE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -33,7 +33,7 @@ Card_Type::Card_Type(Stz* szType)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Type::Card_Type(Column* pColumn)
-: Card_SUB(CK_TYPE)
+: Card(CK_TYPE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

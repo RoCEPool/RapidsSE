@@ -18,7 +18,7 @@ __bIsCard(STORE,Card_Mode,CK_MODE)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Mode::Card_Mode(Stz* szMode)
-: Card_SUB(CK_MODE)
+: Card(CK_MODE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

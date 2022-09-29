@@ -19,7 +19,7 @@ __pGetSubFunction_Card(STORE,Card_Scan,CK_SCAN)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Scan::Card_Scan(void)
-: Card_MAIN(CK_SCAN)
+: Card(CK_SCAN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

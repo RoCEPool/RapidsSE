@@ -3,13 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
-
-#include "Card_EXPRESSION.hpp"
+#include "Card.hpp"
 
 namespace STORE
 {
-  class Card_ExprBool : public Card_EXPRESSION
+  class Card_ExprBool : public Card
   {  
   public:
     void* operator new(size_t);
@@ -18,7 +16,7 @@ namespace STORE
     Card_ExprBool(void);
    ~Card_ExprBool(void) noexcept(false);
     
-    Card_PredCmp* pFindBound(Index* pIndex, eBK eBound);
+    Card_PredCmp* pFindBound(Index* pIndex, ePB eBound);
     bool bHasBounds(Index* pIndex);
     void vReduceExpr(void);
   };

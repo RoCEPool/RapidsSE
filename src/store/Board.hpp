@@ -5,7 +5,7 @@
 
 #include "BASE.h"
 
-#include "eTE.h"
+#include "eBK.h"
 
 #include "Card.hpp"
 #include "CardCtl.hpp"
@@ -21,7 +21,10 @@
 #include "Card_CalcBool.hpp"
 #include "Card_CandIndex.hpp"
 #include "Card_Card.hpp"
-#include "Card_Combine.hpp"
+#include "Card_Combined.hpp"
+#include "Card_CoPtn.hpp"
+#include "Card_CoPtnPred.hpp"
+#include "Card_CrossPtnPred.hpp"
 
 #include "Card_Debug.hpp"
 #include "Card_Direction.hpp"
@@ -63,6 +66,7 @@
 #include "Card_OrdAgg.hpp"
 #include "Card_ObyElist.hpp"
 
+#include "Card_Permutation.hpp"
 #include "Card_PredAnd.hpp"
 #include "Card_PredCmp.hpp"
 #include "Card_PredOr.hpp"
@@ -87,6 +91,7 @@
 #include "Card_SubSet.hpp"
 
 #include "Card_Table.hpp"
+#include "Card_TablePtn.hpp"
 #include "Card_Term.hpp"
 #include "Card_Type.hpp"
 
@@ -110,12 +115,12 @@ namespace STORE
 
   class Board : public Object //Card_OTHER
   {
-    friend class Bench;
-    friend class Dissector;
-    friend class Drafter;
-    friend class Weaver;
   protected:
+    eBK          m_eBoard;
+    Bench*       m_pBench;
+
     s32          m_sQueryNm;
+
     Optimiser*   m_pOptimiser;
 
     CardRegs*    m_pCardRegs;
@@ -133,11 +138,12 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Board(Stz* szQueryNm, Optimiser* pOptimiser);
+    Board(eBK eBoard, Bench* pBench);
    ~Board(void) noexcept(false);
 
     void vAppendMainCard(Card* pNewMainCard, bool bRenumber=true);
 
+    eBK eBoard(void);
     CardRegs* pCardRegs(void);
     Card_SubSet* pCard_SubSet(void);
 
@@ -173,9 +179,6 @@ namespace STORE
   
     void vPrintBoard(Stz* szCue=nullptr);
     Card* pPriorSubCard(Card*& rpMainCard, eCK eSubCard, i8 i_PriorToMain);
-
-    Stz* szQueryNm(void);
-    void vQueryNm(Stz* szQueryNm);
 
     void vRemoveMainCard(Card* pMainCard);
 

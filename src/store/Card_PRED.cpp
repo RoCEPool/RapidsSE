@@ -16,7 +16,7 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_PRED::Card_PRED(eCK eCard)
-: Card_SUB(eCard)
+: Card(eCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -80,7 +80,7 @@ void Card_PRED::vCullByKids(void)
 /* find a comparePred which is the eBound of given index                      */
 /*----------------------------------------------------------------------------*/
 Card_PredCmp* Card_PRED::pFindBound_pred(Index* pIndex,
-                                             eBK eBound)
+                                         ePB eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   

@@ -71,15 +71,15 @@ void Combiner::vAdd_combined3(void)
       case CK_AGGREG:
         RASSERT(m_p_aggreg == m_pMainCard);
         iAggreg++;
-        m_p_combine = new Card_Combine;
-        m_pBoard->vInsertMainCard_after(m_p_combine, m_p_aggreg);
+        m_p_combined = new Card_Combined;
+        m_pBoard->vInsertMainCard_after(m_p_combined, m_p_aggreg);
         break;
 
       case CK_FILTER:
         RASSERT(m_p_filter == m_pMainCard);
         iFilter++;
-        m_p_combine = new Card_Combine;
-        m_pBoard->vInsertMainCard_after(m_p_combine, m_p_filter);
+        m_p_combined = new Card_Combined;
+        m_pBoard->vInsertMainCard_after(m_p_combined, m_p_filter);
         break;
 
       case CK_INDEXJOIN:
@@ -87,22 +87,22 @@ void Combiner::vAdd_combined3(void)
         iIndexJoin++;
         if (CK_AGGREG == m_eNextMain || CK_FILTER == m_eNextMain || CK_PROJECT == m_eNextMain)
           break;
-        m_p_combine = new Card_Combine;
-        m_pBoard->vInsertMainCard_after(m_p_combine, m_p_indexJoin);
+        m_p_combined = new Card_Combined;
+        m_pBoard->vInsertMainCard_after(m_p_combined, m_p_indexJoin);
         break;
 
       case CK_PROJECT:
         RASSERT(m_p_project == m_pMainCard);
         iProject++;
-        m_p_combine = new Card_Combine;
-        m_pBoard->vInsertMainCard_after(m_p_combine, m_p_project);
+        m_p_combined = new Card_Combined;
+        m_pBoard->vInsertMainCard_after(m_p_combined, m_p_project);
         break;
 
       case CK_SORT:
         RASSERT(m_p_sort == m_pMainCard);
         iSort++;
-        m_p_combine = new Card_Combine;
-        m_pBoard->vInsertMainCard_after(m_p_combine, m_p_sort);
+        m_p_combined = new Card_Combined;
+        m_pBoard->vInsertMainCard_after(m_p_combined, m_p_sort);
         break;
 
       default:
@@ -123,7 +123,7 @@ void Combiner::vDelete_Combines(void)
   for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
     Card* pMainCard = m_pBoard->pGetMainCard(i_Main);
 
-    if (CK_COMBINE == pMainCard->eCard()) {
+    if (CK_COMBINED == pMainCard->eCard()) {
       m_pBoard->vRemoveMainCard(pMainCard);
       nMainCards = m_pBoard->nMainCards();
       i_Main--;

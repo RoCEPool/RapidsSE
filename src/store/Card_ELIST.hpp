@@ -3,14 +3,12 @@
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
-
-#include "Card_SUB.hpp"
+#include "Card.hpp"
 #include "Card_StreamColList.hpp"
 
 namespace STORE
 {
-  class Card_ELIST : public Card_SUB
+  class Card_ELIST : public Card
   {  
   public:
     Card_ELIST(eCK eCard);

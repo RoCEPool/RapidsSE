@@ -20,16 +20,16 @@ __aFooterFunction(Dissector)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Dissector::Dissector(Optimiser* pOptimiser)
+Dissector::Dissector(Bench* pBench)
 : OptimiserTool(CN_DISSECTOR)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
-        
-  m_pOptimiser    = pOptimiser;
-  m_pBench        = nullptr;
+
+  m_pBench        = pBench;
+  m_pOptimiser    = m_pBench->pOptimiser();
   m_pBoard        = nullptr;
   
-  m_pPipeSpec = nullptr;
+  m_pPipeSpec     = nullptr;
   m_pStageSpec    = nullptr;
   m_pOpSpec       = nullptr;
   
@@ -57,8 +57,7 @@ Dissector::~Dissector(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* dissect pipeline spec                                                      */
 /*----------------------------------------------------------------------------*/
-
-Board* Dissector::pDissectSpec(VertexSpec* pPipeSpec)
+void Dissector::vDissectSpec(VertexSpec* pPipeSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
         
@@ -78,8 +77,6 @@ Board* Dissector::pDissectSpec(VertexSpec* pPipeSpec)
   m_pStageSpec = nullptr;
   m_pOpSpec    = nullptr;
   m_bSawAggOp  = false;
-  
-  return m_pBoard;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -106,10 +103,9 @@ void Dissector::vPipeline(void)
   //TagSet* pJobTags = m_pPipeSpec->pJobTags();
   //pJobTags->vDumpSet(true);
 
-  m_pBoard = new Board("Board"_Stz,m_pOptimiser);
-  m_pBoard->vQueryNm(szPipelineNm);
+  m_pBoard = new Board(BK_QUERY,m_pBench);
+  m_pOptimiser->vQueryNm(szPipelineNm);
 
-  //m_pBench->vAppend(m_pBoard);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
@@ -142,7 +138,7 @@ void Dissector::vStage(i8 i_StageSpec)
   Card_StageTopo* pCard_StageTopo = new Card_StageTopo(eStageTopo);
   pCard_Stage->vAppend(pCard_StageTopo);
   
-  m_pBoard->m_pCard_SubSet->vAppend(pCard_Stage);
+  m_pBoard->pCard_SubSet()->vAppend(pCard_Stage);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -196,7 +192,7 @@ void Dissector::vOp(i8 i_OpSpec)
   }
   
   if (pCard)
-    m_pBoard->m_pCard_SubSet->vAppend(pCard);
+    m_pBoard->pCard_SubSet()->vAppend(pCard);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -263,7 +259,7 @@ Card* Dissector::pCard_Combined(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
       
-  Card_Combine* pCard_Combine = new Card_Combine;
+  Card_Combined* pCard_Combine = new Card_Combined;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -831,29 +827,6 @@ Card_SbyElist* Dissector::pSbyElist(Card_RpnTerms* pCard_RpnTerms)
 /*----------------------------------------------------------------------------*/
 /* eval typed calc expr : TYPE <type> [ AS <as> ] <calcExpr> [ ASC | DESC ]   */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Dissector::pExpr_b(Card_RpnTerms* pCard_RpnTerms)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
-   
-  //pCard_RpnTerms->vDump();
-
-  Card_Expr* pCard_Expr = new Card_Expr;
-
-  // <type>
-  Card_Type* pCard_Type = pType(pCard_RpnTerms);
-  pCard_Expr->vAppend(pCard_Type);
-
-  // <boolExpr>
-  Card_ExprBool* pCard_ExprBool = pExprBool(pCard_RpnTerms);
-  pCard_Expr->vAppend(pCard_ExprBool);
-
-
-  return pCard_Expr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* eval typed calc expr : TYPE <type> [ AS <as> ] <calcExpr> [ ASC | DESC ]   */
-/*----------------------------------------------------------------------------*/
 Card_Expr* Dissector::pExpr_c(Card_RpnTerms* pCard_RpnTerms)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
@@ -929,44 +902,6 @@ Card_Expr* Dissector::pExpr_c(Card_RpnTerms* pCard_RpnTerms)
 //  }
 
   return pCard_Expr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* evaluate boolean predicate termlist                                        */
-/*----------------------------------------------------------------------------*/
-Card_ExprBool* Dissector::pExprBool(Card_RpnTerms* pCard_RpnTerms)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
-  
-  Card_ExprBool* pCard_ExprBool = new Card_ExprBool;
-      
-  while (pCard_RpnTerms->nItems()) {
-    eTE eTopTerm = pCard_RpnTerms->eTopTermEval();
-    
-    switch (eTopTerm) {
-      
-      case TE_AND:
-        vPredAnd(pCard_ExprBool,pCard_RpnTerms);
-        break;
-        
-      case TE_OR:
-        vPredOr(pCard_ExprBool,pCard_RpnTerms);
-        break;
-        
-      case TE_OTHER:
-        vPredCmp(pCard_ExprBool,pCard_RpnTerms);
-        break;
-        
-      default:
-        vTrace("pEvalBoolPred: unexpected eTopTerm %lld %s\n"_Stz
-               ,(i8)eTopTerm
-               ,aTE[eTopTerm]);
-        RASSERT(0);
-        break;
-    }
-  }
-  
-  return pCard_ExprBool;
 }
 
 /*----------------------------------------------------------------------------*/

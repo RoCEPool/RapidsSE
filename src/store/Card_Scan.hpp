@@ -3,12 +3,12 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card_MAIN.hpp"
+#include "Card.hpp"
 #include "Card_PRED.hpp"
 
 namespace STORE
 {
-  class Card_Scan : public Card_MAIN
+  class Card_Scan : public Card
   {
   public:
     void* operator new(size_t);

@@ -13,6 +13,10 @@ OptimiserTool::OptimiserTool(eCN eClass)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
+  m_pOptimiser = nullptr;
+  m_pBench     = nullptr;
+  m_pBoard     = nullptr;
+
   _postcondition_(_ADDRESS_,_MAGIC_);
 }
 
