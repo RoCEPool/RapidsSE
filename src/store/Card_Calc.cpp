@@ -19,7 +19,7 @@ __bIsCard(STORE,Card_Calc,CK_CALC)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Calc::Card_Calc(void)
-: Card_EXPRESSION(CK_CALC)
+: Card(CK_CALC)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
       
@@ -32,7 +32,7 @@ Card_Calc::Card_Calc(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Calc::Card_Calc(Column* pColumn)
-: Card_EXPRESSION(CK_CALC)
+: Card(CK_CALC)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
       

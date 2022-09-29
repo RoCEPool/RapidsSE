@@ -21,7 +21,7 @@ __pGetSubFunction_Card(STORE,Card_CalcBool,CK_CALCBOOL)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_CalcBool::Card_CalcBool(void)
-: Card_EXPRESSION(CK_CALCBOOL)
+: Card(CK_CALCBOOL)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
       
