@@ -62,9 +62,7 @@ namespace STORE
     Card_ProjElist* pProjElist  (Card_RpnTerms* pCard_RpnTerms);
     Card_SbyElist*  pSbyElist   (Card_RpnTerms* pCard_RpnTerms);
 
-    Card_Expr*      pExpr_b     (Card_RpnTerms* pCard_RpnTerms);
     Card_Expr*      pExpr_c     (Card_RpnTerms* pCard_RpnTerms);
-    Card_ExprBool*  pExprBool   (Card_RpnTerms* pCard_RpnTerms);
     Card_Calc*      pExprCalc   (Card_RpnTerms* pCard_RpnTerms);
   
     void vPredOr  (Card_ExprBool* pCard_ExprBool,

@@ -827,29 +827,6 @@ Card_SbyElist* Dissector::pSbyElist(Card_RpnTerms* pCard_RpnTerms)
 /*----------------------------------------------------------------------------*/
 /* eval typed calc expr : TYPE <type> [ AS <as> ] <calcExpr> [ ASC | DESC ]   */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Dissector::pExpr_b(Card_RpnTerms* pCard_RpnTerms)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
-   
-  //pCard_RpnTerms->vDump();
-
-  Card_Expr* pCard_Expr = new Card_Expr;
-
-  // <type>
-  Card_Type* pCard_Type = pType(pCard_RpnTerms);
-  pCard_Expr->vAppend(pCard_Type);
-
-  // <boolExpr>
-  Card_ExprBool* pCard_ExprBool = pExprBool(pCard_RpnTerms);
-  pCard_Expr->vAppend(pCard_ExprBool);
-
-
-  return pCard_Expr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* eval typed calc expr : TYPE <type> [ AS <as> ] <calcExpr> [ ASC | DESC ]   */
-/*----------------------------------------------------------------------------*/
 Card_Expr* Dissector::pExpr_c(Card_RpnTerms* pCard_RpnTerms)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
@@ -925,44 +902,6 @@ Card_Expr* Dissector::pExpr_c(Card_RpnTerms* pCard_RpnTerms)
 //  }
 
   return pCard_Expr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* evaluate boolean predicate termlist                                        */
-/*----------------------------------------------------------------------------*/
-Card_ExprBool* Dissector::pExprBool(Card_RpnTerms* pCard_RpnTerms)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
-  
-  Card_ExprBool* pCard_ExprBool = new Card_ExprBool;
-      
-  while (pCard_RpnTerms->nItems()) {
-    eTE eTopTerm = pCard_RpnTerms->eTopTermEval();
-    
-    switch (eTopTerm) {
-      
-      case TE_AND:
-        vPredAnd(pCard_ExprBool,pCard_RpnTerms);
-        break;
-        
-      case TE_OR:
-        vPredOr(pCard_ExprBool,pCard_RpnTerms);
-        break;
-        
-      case TE_OTHER:
-        vPredCmp(pCard_ExprBool,pCard_RpnTerms);
-        break;
-        
-      default:
-        vTrace("pEvalBoolPred: unexpected eTopTerm %lld %s\n"_Stz
-               ,(i8)eTopTerm
-               ,aTE[eTopTerm]);
-        RASSERT(0);
-        break;
-    }
-  }
-  
-  return pCard_ExprBool;
 }
 
 /*----------------------------------------------------------------------------*/
