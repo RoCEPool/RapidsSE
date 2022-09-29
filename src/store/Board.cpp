@@ -661,7 +661,7 @@ Card* Board::pPriorSubCard(Card*& rpMainCard, eCK eSubCard, i8 i_PriorToMain)
     rpMainCard = pGetMainCard(i_Main);
 
     Card* pSubCard;
-    if (pSubCard == rpMainCard->pFindSubCard(eSubCard))
+    if (pSubCard = rpMainCard->pFindSubCard(eSubCard))
       return pSubCard;
   }
 
@@ -830,13 +830,13 @@ void Board::vResolveJoin(Card_AbsJoin* pCard_AbsJoin)
   _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
 
   Card_Scan* pCard_Scan = _pCard_Scan(pGetMainCard(pCard_AbsJoin->iCardNo() - 1));
-  Card_Table* pCard_Table = _pCard_Table(pCard_Scan->pFindSubCard(CK_TABLE));
-  Table* pTable = pCard_Table->pTable();
+  Card_TablePtr* pCard_TablePtr = _pCard_TablePtr(pCard_Scan->pFindSubCard(CK_TABLEPTR));
+  Table* pTable = pCard_TablePtr->pTable();
 
   Index* pIndex = pTable->pIdxVec()->pGet(0);
 
   Card_IndexJoin* pIndexJoin = new Card_IndexJoin;
-  pIndexJoin->vAppend(new Card_Table(pTable));
+  pIndexJoin->vAppend(new Card_TablePtr(pTable));
   pIndexJoin->vAppend(new Card_Index(pIndex));
 
   Card_Filter* pCard_Filter = _pCard_Filter(pGetMainCard(pCard_AbsJoin->iCardNo() + 3));
@@ -877,13 +877,13 @@ void Board::vResolveJoin2(Card_AbsJoin* pCard_AbsJoin)
   _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
 
   Card_Scan* pCard_Scan = _pCard_Scan(pGetMainCard(pCard_AbsJoin->iCardNo() - 1));
-  Card_Table* pCard_Table = _pCard_Table(pCard_Scan->pFindSubCard(CK_TABLE));
-  Table* pTable = pCard_Table->pTable();
+  Card_TablePtr* pCard_TablePtr = _pCard_TablePtr(pCard_Scan->pFindSubCard(CK_TABLEPTR));
+  Table* pTable = pCard_TablePtr->pTable();
 
   Index* pIndex = pTable->pIdxVec()->pGet(0);
 
   Card_IndexJoin* pIndexJoin = new Card_IndexJoin;
-  pIndexJoin->vAppend(new Card_Table(pTable));
+  pIndexJoin->vAppend(new Card_TablePtr(pTable));
   pIndexJoin->vAppend(new Card_Index(pIndex));
 
   Card_Filter* pCard_Filter = _pCard_Filter(pGetMainCard(pCard_AbsJoin->iCardNo() + 3));
@@ -981,12 +981,12 @@ void Board::vConvertJoin(Card_AbsJoin* pCard_AbsJoin)
   m_pCard_SubSet->vRemove(pCard_AbsJoin);
 
   Card_Scan* pCard_Scan = _pCard_Scan(pGetMainCard(pCard_AbsJoin->iCardNo() - 1));
-  Card_Table* pCard_Table = _pCard_Table(pCard_Scan->pFindSubCard(CK_TABLE));
-  Table* pTable = pCard_Table->pTable();
+  Card_TablePtr* pCard_TablePtr = _pCard_TablePtr(pCard_Scan->pFindSubCard(CK_TABLEPTR));
+  Table* pTable = pCard_TablePtr->pTable();
 
 
   Card_IndexJoin* pIndexJoin = new Card_IndexJoin;
-  pIndexJoin->vAppend(new Card_Table(pTable));
+  pIndexJoin->vAppend(new Card_TablePtr(pTable));
 
   // TODO:
   Index* pIndex = pTable->pIdxVec()->pGet(0);
@@ -1021,7 +1021,7 @@ void Board::vResolveRecursive(Card* pAnyCard) // recursive
     return;
   }
 
-  if (CK_TABLE == eCard) {
+  if (CK_TABLEPTR == eCard) {
     m_pCard_SubSet->vTable(pAnyCard->pTable());
     return;
   }
@@ -1092,10 +1092,10 @@ void Board::vResolveRecursive(Card* pAnyCard) // recursive
   // scan
 
   if (CK_SCAN == eCard) {
-    Card_Table *pCard_Table = _pCard_Table(pAnyCard->pFindChildCard(CK_TABLE));
-    if (pCard_Table) {
+    Card_TablePtr *pCard_TablePtr = _pCard_TablePtr(pAnyCard->pFindChildCard(CK_TABLEPTR));
+    if (pCard_TablePtr) {
 
-      StreamDef *pStreamDef = pCard_Table->pTable()->pStreamDef();
+      StreamDef *pStreamDef = pCard_TablePtr->pTable()->pStreamDef();
 
       Card_Stream *pCard_Stream = new Card_Stream;
       pAnyCard->vAppend(pCard_Stream);
@@ -1193,10 +1193,10 @@ void Board::vResolveRecursive(Card* pAnyCard) // recursive
 
 
 
-      Card_Table *pCard_Table_right = _pCard_Table(pAnyCard->pFindChildCard(CK_TABLE));
-      if (pCard_Table_right) {
+      Card_TablePtr *pCard_TablePtr_right = _pCard_TablePtr(pAnyCard->pFindChildCard(CK_TABLEPTR));
+      if (pCard_TablePtr_right) {
 
-        Table* pTable = pCard_Table_right->pTable();
+        Table* pTable = pCard_TablePtr_right->pTable();
         Index* pIndex = pTable->pIdxVec()->pGet(0); // HACK!
 
         StreamDef *pStreamDef_right = pTable->pStreamDef();
@@ -1516,8 +1516,8 @@ bool Board::bFind_Scan_Filter(bool bMark)
     if (bMark)
       //vReg_Scan(_pCard_Scan(pTestScan));
       m_pCardRegs->vCardReg(CK_SCAN,pTestScan);
-    Card_Table* pCard_Table = _pCard_Table(pTestScan->pFindSubCard(CK_TABLE));
-    m_pCard_SubSet->vTable(pCard_Table->pTable());
+    Card_TablePtr* pCard_TablePtr = _pCard_TablePtr(pTestScan->pFindSubCard(CK_TABLEPTR));
+    m_pCard_SubSet->vTable(pCard_TablePtr->pTable());
     
     if (bMark)
       //vReg_Filter(_pCard_Filter(pTestFilter));
@@ -1929,7 +1929,7 @@ void Board::vConvert_Joins(void)
 //  for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
 //    Card* pMainCard = pGetMainCard(i_Main);
 //
-//    Card* pCard_Table = _pCard_Table(pMainCard->pFindSubCard(CK_TABLE));
+//    Card* pCard_Table = _pCard_Table(pMainCard->pFindSubCard(CK_TABLEPTR));
 //    if (! pCard_Table)
 //      continue;
 //

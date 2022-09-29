@@ -60,8 +60,8 @@ void Joiner::vAppendPrelim_indexJoin(void)
   while (Card_AbsJoin* pCard_absJoin = _pCard_AbsJoin(pEachMain(CK_ABSJOIN))) {
 
     Card_Scan* pCard_scan = _pGetSub_Card_Scan(pCard_absJoin);
-    Card_Table* pCard_table = _pGetSub_Card_Table(pCard_scan);
-    Table* pTable = pCard_table->pTable();
+    Card_TablePtr* pCard_tablePtr = _pGetSub_Card_TablePtr(pCard_scan);
+    Table* pTable = pCard_tablePtr->pTable();
 
     IdxVec* pIdxVec = pTable->pIdxVec();
     if (! pIdxVec)

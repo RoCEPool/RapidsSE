@@ -320,8 +320,8 @@ void Weaver::vArgIndexJoin(Stz* szOpArgs, Card_IndexJoin* pCard_IndexJoin)
   Index* pIndex = pCard_Index->pIndex();
   Stz* szIndexNm = pIndex->szIndexNm();
 
-  Card_Table* pCard_Table = _pCard_Table(pCard_IndexJoin->pFindSubCard(CK_TABLE));
-  Table* pTable = pCard_Table->pTable();
+  Card_TablePtr* pCard_TablePtr = _pCard_TablePtr(pCard_IndexJoin->pFindSubCard(CK_TABLEPTR));
+  Table* pTable = pCard_TablePtr->pTable();
   Stz* szTableNm = pTable->szTableNm();
 
   //Card_IndexPred* pCard_IndexPred = _pCard_IndexPred(pCard_IndexJoin->pFindSubCard(CK_INDEXPRED));
@@ -418,7 +418,7 @@ void Weaver::vArgScan(Stz* szOpArgs, Card_Scan* pCard_Scan)
   
   vRpnScan(sRpnExpr,pCard_Scan);
 
-  Table* pTable = pCard_Scan->pFindSubCard(CK_TABLE)->pTable();
+  Table* pTable = pCard_Scan->pFindSubCard(CK_TABLEPTR)->pTable();
   
   Stz* szTableNm = pTable->szTableNm();
   //m_i_Op_stage++;

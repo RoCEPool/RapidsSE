@@ -102,10 +102,10 @@ void Streamer::vAppendStream_to_Scan(void)
   vBeginIteration();
 
   while (Card_Scan* pCard_scan = _pCard_Scan(pEachMain(CK_SCAN))) {
-    Card_Table *pCard_Table = _pCard_Table(pCard_scan->pFindChildCard(CK_TABLE));
-    if (pCard_Table) {
+    Card_TablePtr *pCard_TablePtr = _pCard_TablePtr(pCard_scan->pFindChildCard(CK_TABLEPTR));
+    if (pCard_TablePtr) {
 
-      StreamDef *pStreamDef = pCard_Table->pTable()->pStreamDef();
+      StreamDef *pStreamDef = pCard_TablePtr->pTable()->pStreamDef();
 
       Card_Stream *pCard_Stream = new Card_Stream;
       pCard_scan->vAppend(pCard_Stream);

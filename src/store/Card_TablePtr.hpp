@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_Table.hpp -- Table                                                    */
+/* Card_TablePtr.hpp -- Table                                                    */
 /*============================================================================*/
 #pragma once
 
@@ -9,21 +9,21 @@ namespace STORE
 {
   class Card_IndexList;
 
-  class Card_Table : public Card
+  class Card_TablePtr : public Card
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Table(Table* pTable);
-   ~Card_Table(void) noexcept(false);
+    Card_TablePtr(Table* pTable);
+   ~Card_TablePtr(void) noexcept(false);
 
     Card_IndexList* pNew_indexList(void);
   };
 
-  Card_Table* _pCard_Table(void* aAddr);
-  bool _bIsCard_Table(void* aAddr);
-  Card_Table* _pGetSub_Card_Table(Card* pParent);
+  Card_TablePtr* _pCard_TablePtr(void* aAddr);
+  bool _bIsCard_TablePtr(void* aAddr);
+  Card_TablePtr* _pGetSub_Card_TablePtr(Card * pParent);
 }
 
 /*============================================================================*/

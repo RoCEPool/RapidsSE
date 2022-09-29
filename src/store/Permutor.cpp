@@ -59,7 +59,7 @@ void Permutor::vXyz(void)
   Card_TableList* p_tableList = new Card_TableList;
 
   while ( (m_pMainCard = xBI_query.pEachMain()) ) {
-    Card_Table* p_table = m_pMainCard->pSub_table();
+    Card_TablePtr* p_table = m_pMainCard->pSub_tablePtr();
     if (! p_table)
       continue;
 

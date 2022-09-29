@@ -104,7 +104,7 @@ namespace STORE {
   class Card_StreamColList;
   class Card_SubSet;
 
-  class Card_Table;
+  class Card_TablePtr;
   class Card_Term;
   class Card_Type;
 
@@ -396,7 +396,7 @@ namespace STORE
     Card_StageTopo*     pSub_stageTopo(void);
     Card_Stream*        pSub_stream(void);
     Card_StreamColList* pSub_streamColList(void);
-    Card_Table*         pSub_table(void);
+    Card_TablePtr*         pSub_tablePtr(void);
     Card_UBound*        pSub_uBound(void);
 
   private:

@@ -51,7 +51,7 @@ void Indexer::vAppend_indexList_to_scan(void)
   BoardIter xBI(m_pBoard);
 
   while ( (m_pMainCard = xBI.pEachMain(CK_SCAN)) ) {
-    m_p_table = m_pMainCard->pSub_table();
+    m_p_table = m_pMainCard->pSub_tablePtr();
     if ( (m_p_indexList = m_p_table->pNew_indexList()) )
       m_pMainCard->vInsertAfter(m_p_indexList,m_p_table);
   }

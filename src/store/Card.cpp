@@ -2685,7 +2685,7 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
     case CK_STREAMCOLLIST:              vPrintProperties(pRibbon,iDepth); break;
     case CK_SUBSET:                     vPrintProperties(pRibbon,iDepth); break;
       
-    case CK_TABLE:      vTablePrint                     (pRibbon,iDepth); break;
+    case CK_TABLEPTR:      vTablePrint                     (pRibbon, iDepth); break;
     case CK_TABLELIST:                  vPrintProperties(pRibbon,iDepth); break;
     case CK_TERM:       vTermPrint                      (pRibbon,iDepth); break;
     case CK_TYPE:                       vPrintProperties(pRibbon,iDepth); break;
@@ -2963,25 +2963,25 @@ void Card::vTablePrint(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  Card_Table* pCardTable = _pCard_Table(this);
-  Table* pTable = _pTable(pCardTable->pTable());
+  Card_TablePtr* pCardTablePtr = _pCard_TablePtr(this);
+  Table* pTable = _pTable(pCardTablePtr->pTable());
 
   pRibbon->vSput(FR_NAME,pTable->szTableNm());
 
   if (pRibbon->iArea())
     return;
   
-  //pCardTable->vPrintPartition(pRibbon);
+  //pCardTablePtr->vPrintPartition(pRibbon);
   PtnDef* pPtnDef = pTable->pPtnDef();
   Column* pColumn = pPtnDef->pGetColumn(0);
   
   pRibbon->vSput(FR_ATOM_SLASH,pColumn->szColNm());
 
   
-  //pCardTable->vPrintSize(pRibbon);
+  //pCardTablePtr->vPrintSize(pRibbon);
   StreamDef* pStreamDef = pTable->pStreamDef();
   
-  //pCardTable->vPrintPrimary(pRibbon);
+  //pCardTablePtr->vPrintPrimary(pRibbon);
   IdxVec*   pIdxVec    = pTable->pIdxVec();
 //  Index*    pIndex     = pIdxVec->pGet(0);
 //  IndexDef* pIndexDef  = pIndex->pIndexDef();
@@ -3221,14 +3221,14 @@ Card_StreamColList* Card::pSub_streamColList(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_Table.hpp"
-Card_Table* Card::pSub_table(void)
+#include "Card_TablePtr.hpp"
+Card_TablePtr* Card::pSub_tablePtr(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_Table* p_table =
-      _pCard_Table(pFindSubCard(CK_TABLE));
-  return p_table;
+  Card_TablePtr* p_tablePtr =
+      _pCard_TablePtr(pFindSubCard(CK_TABLEPTR));
+  return p_tablePtr;
 }
 
 /*----------------------------------------------------------------------------*/

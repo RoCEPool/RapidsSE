@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Card_Table.cpp -- Table                                                    */
+/* Card_TablePtr.cpp -- Table                                                    */
 /*============================================================================*/
 
-#include "Card_Table.hpp"
+#include "Card_TablePtr.hpp"
 
 #include "Card_Index.hpp"
 #include "Card_IdxColList.hpp"
@@ -14,19 +14,19 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_Table,CK_TABLE)
-__aNewFunction(Card_Table,CN_CARD)
-__vDeleteFunction(Card_Table,CN_CARD)
+__pCastFunction_Card(STORE, Card_TablePtr, CK_TABLEPTR)
+__aNewFunction(Card_TablePtr, CN_CARD)
+__vDeleteFunction(Card_TablePtr, CN_CARD)
 
-__bIsCard(STORE,Card_Table,CK_TABLE)
-__pGetSubFunction_Card(STORE,Card_Table,CK_TABLE)
+__bIsCard(STORE, Card_TablePtr, CK_TABLEPTR)
+__pGetSubFunction_Card(STORE, Card_TablePtr, CK_TABLEPTR)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Table::Card_Table(Table* pTable)
-: Card(CK_TABLE)
+Card_TablePtr::Card_TablePtr(Table* pTable)
+: Card(CK_TABLEPTR)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -40,7 +40,7 @@ Card_Table::Card_Table(Table* pTable)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_Table::~Card_Table(void) noexcept(false)
+Card_TablePtr::~Card_TablePtr(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -53,7 +53,7 @@ Card_Table::~Card_Table(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_IndexList* Card_Table::pNew_indexList(void)
+Card_IndexList* Card_TablePtr::pNew_indexList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

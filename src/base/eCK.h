@@ -92,7 +92,7 @@ enum eCK // card kind
   /* */ CK_STREAMELIST,
   /* */ CK_SUBSET,
 
-  /* */ CK_TABLE,
+  /* */ CK_TABLEPTR,
   /* */ CK_TABLELIST,
   /* */ CK_TABLEPTN,
   /* */ CK_TERM,
@@ -195,7 +195,7 @@ static Stz* aCK[]
   /* */ "CK_STREAMELIST"_Stz,  // CK_STREAMELIST
   /* */ "CK_SUBSET"_Stz,       // CK_SUBSET
 
-  /* */ "CK_TABLE"_Stz,        // CK_TABLE
+  /* */ "CK_TABLEPTR"_Stz,     // CK_TABLEPTR
   /* */ "CK_TABLELIST"_Stz,    // CK_TABLELIST
   /* */ "CK_TABLEPTN"_Stz,     // CK_TABLEPTN
   /* */ "CK_TERM"_Stz,         // CK_TERM
@@ -298,7 +298,7 @@ static Stz* aCK_short[]
   /* */ "streamElist"_Stz,     // CK_STREAMELIST
   /* */ "subSet"_Stz,          // CK_SUBSET
 
-  /* */ "{table}"_Stz,         // CK_TABLE
+  /* */ "{table}"_Stz,         // CK_TABLEPTR
   /* */ "tableList"_Stz,       // CK_TABLELIST
   /* */ "tablePtn"_Stz,        // CK_TABLEPTN
   /* */ "term"_Stz,            // CK_TERM
