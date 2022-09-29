@@ -12,12 +12,12 @@ load orders "../tpch/sf_0001/orders.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+//cue = "Scanning::vPromote_scan_to_indexScan"
 /jobTags
 /transliterated
 /transform
 /transform2
 /interactive
-/cue = "Scanning::vPromote_scan_to_indexScan"
 /weave
 /weaved
 /pipelineName = "r4_a"

@@ -229,6 +229,7 @@ enum eCN : u2 // Class Number
   /* */ CN_PAYSTRBUFFER,
   /* */ CN_PERMGEN,
   /* */ CN_PERMIT,
+  /* */ CN_PERMUTOR,
   /* */ CN_PERUSE,
   /* */ CN_PIPEIN,
   /* */ CN_PIPELINE,
@@ -660,6 +661,7 @@ static Stz* aCN[]
   /* */ "PAYSTRBUFFER"_Stz,         // CN_PATHSTRBUFFER
   /* */ "PERMGEN"_Stz,              // CN_PERMGEN
   /* */ "PERMIT"_Stz,               // CN_PERMIT
+  /* */ "PERMUTOR"_Stz,             // CN_PERMUTOR
   /* */ "PERUSE"_Stz,               // CN_PERUSE
   /* */ "PIPEIN"_Stz,               // CN_PIPEIN
   /* */ "PIPELINE"_Stz,             // CN_PIPELINE

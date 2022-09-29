@@ -256,6 +256,8 @@
 #include "Sorter.hpp"
 #include "BoardIter.hpp"
 #include "Indexer.hpp"
+#include "PermGen.hpp"
+#include "Permutor.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -494,7 +496,9 @@ SizeHeap gxaSizeHeap[]
   { CN_PATHVEC,                  sizeof(PathVec),            HT_T_MEDIUM  ,FILL },
   { CN_PAYSTR,                   sizeof(PayStr),             HT_INVALID   ,FILL },
   { CN_PAYSTRBUFFER,             sizeof(PayStrBuffer),       HT_T_LARGE   ,FILL },
+  { CN_PERMGEN,                  sizeof(PermGen),            HT_T_TINY    ,FILL },
   { CN_PERMIT,                   sizeof(Permit),             HT_T_TINY    ,FILL },
+  { CN_PERMUTOR,                 sizeof(Permutor),           HT_T_TINY    ,FILL },
   { CN_PERUSE,                   sizeof(Peruse),             HT_T_MEDIUM  ,FILL },
   { CN_PIPEIN,                   sizeof(PipeIn),             HT_T_TINY    ,FILL },
   { CN_PIPELINE,                 sizeof(Pipeline),           HT_T_TINY    ,FILL },
