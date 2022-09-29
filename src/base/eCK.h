@@ -19,7 +19,7 @@ enum eCK // card kind
   /* */ CK_CALC,
   /* */ CK_CALCBOOL,
   /* */ CK_CANDINDEX,
-  /* */ CK_CARD,
+  /* */ CK_CARDPTR,
   /* */ CK_COMBINED,
   /* */ CK_COPTN,
   /* */ CK_COPTNPRED,
@@ -44,10 +44,10 @@ enum eCK // card kind
 
   /* */ CK_IDXCOL,
   /* */ CK_IDXCOLLIST,
-  /* */ CK_INDEX,
   /* */ CK_INDEXJOIN,
   /* */ CK_INDEXLIST,
   /* */ CK_INDEXPRED,
+  /* */ CK_INDEXPTR,
   /* */ CK_INDEXSCAN,
 
   /* */ CK_JOINPRED,
@@ -92,6 +92,7 @@ enum eCK // card kind
   /* */ CK_STREAMELIST,
   /* */ CK_SUBSET,
 
+  /* */ CK_TABLE,
   /* */ CK_TABLEPTR,
   /* */ CK_TABLELIST,
   /* */ CK_TABLEPTN,
@@ -122,7 +123,7 @@ static Stz* aCK[]
   /* */ "CK_CALC"_Stz,         // CK_CALC
   /* */ "CK_CALCBOOL"_Stz,     // CK_CALCBOOL
   /* */ "CK_CANDINDEX"_Stz,    // CK_CANDINDEX
-  /* */ "CK_CARD"_Stz,         // CK_CARD
+  /* */ "CK_CARDPTR"_Stz,      // CK_CARDPTR
   /* */ "CK_COMBINED"_Stz,     // CK_COMBINED
   /* */ "CK_COPTN"_Stz,        // CK_COPTN
   /* */ "CK_COPTNPRED"_Stz,    // CK_COPTNPRED
@@ -147,10 +148,10 @@ static Stz* aCK[]
 
   /* */ "CK_IDXCOL"_Stz,       // CK_IDXCOL
   /* */ "CK_IDXCOLLIST"_Stz,   // CK_IDXCOLLIST
-  /* */ "CK_INDEX"_Stz,        // CK_INDEX
   /* */ "CK_INDEXJOIN"_Stz,    // CK_INDEXJOIN
   /* */ "CK_INDEXLIST"_Stz,    // CK_INDEXLIST
   /* */ "CK_INDEXPRED"_Stz,    // CK_INDEXPRED
+  /* */ "CK_INDEXPTR"_Stz,     // CK_INDEXPTR
   /* */ "CK_INDEXSCAN"_Stz,    // CK_INDEXSCAN
 
   /* */ "CK_JOINPRED"_Stz,     // CK_JOINPRED
@@ -195,6 +196,7 @@ static Stz* aCK[]
   /* */ "CK_STREAMELIST"_Stz,  // CK_STREAMELIST
   /* */ "CK_SUBSET"_Stz,       // CK_SUBSET
 
+  /* */ "CK_TABLE"_Stz,        // CK_TABLE
   /* */ "CK_TABLEPTR"_Stz,     // CK_TABLEPTR
   /* */ "CK_TABLELIST"_Stz,    // CK_TABLELIST
   /* */ "CK_TABLEPTN"_Stz,     // CK_TABLEPTN
@@ -225,7 +227,7 @@ static Stz* aCK_short[]
   /* */ "calc"_Stz,            // CK_CALC
   /* */ "calcBool"_Stz,        // CK_CALCBOOL
   /* */ "candIndex"_Stz,       // CK_CANDINDEX
-  /* */ "{card}"_Stz,          // CK_CARD
+  /* */ "{card}"_Stz,          // CK_CARDPTR
   /* */ "combined"_Stz,        // CK_COMBINED
   /* */ "co-ptn"_Stz,          // CK_COPTN
   /* */ "co-ptnPred"_Stz,      // CK_COPTNPRED
@@ -250,10 +252,10 @@ static Stz* aCK_short[]
 
   /* */ "idxCol"_Stz,          // CK_IDXCOL
   /* */ "idxColList"_Stz,      // CK_IDXCOLLIST
-  /* */ "{index}"_Stz,         // CK_INDEX
   /* */ "indexJoin"_Stz,       // CK_INDEXJOIN
   /* */ "indexList"_Stz,       // CK_INDEXLIST
   /* */ "indexPred"_Stz,       // CK_INDEXPRED
+  /* */ "{index}"_Stz,         // CK_INDEXPTR
   /* */ "indexScan"_Stz,       // CK_INDEXSCAN
 
   /* */ "joinPred"_Stz,        // CK_JOINPRED
@@ -298,6 +300,7 @@ static Stz* aCK_short[]
   /* */ "streamElist"_Stz,     // CK_STREAMELIST
   /* */ "subSet"_Stz,          // CK_SUBSET
 
+  /* */ "table"_Stz,           // CK_TABLE
   /* */ "{table}"_Stz,         // CK_TABLEPTR
   /* */ "tableList"_Stz,       // CK_TABLELIST
   /* */ "tablePtn"_Stz,        // CK_TABLEPTN

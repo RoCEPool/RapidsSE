@@ -1333,8 +1333,8 @@ void Card::vCardPrint(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_Card* pCard_Card = _pCard_Card(this);
-  Card* pCard = _pCard(pCard_Card->pCard());
+  Card_CardPtr* pCard_CardPtr = _pCard_CardPtr(this);
+  Card* pCard = _pCard(pCard_CardPtr->pCard());
 
   pRibbon->vSput(FR_NAME,pCard->szCardNm());
 
@@ -2618,7 +2618,7 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
     case CK_CALC:                       vPrintProperties(pRibbon,iDepth); break;
     case CK_CALCBOOL:                   vPrintProperties(pRibbon,iDepth); break;
     case CK_CANDINDEX:                  vPrintProperties(pRibbon,iDepth); break;
-    case CK_CARD:       vCardPrint                      (pRibbon,iDepth); break;
+    case CK_CARDPTR:       vCardPrint                      (pRibbon, iDepth); break;
     case CK_COMBINED:                    vPrintProperties(pRibbon,iDepth); break;
                         
     case CK_DEBUG:                      vPrintProperties(pRibbon,iDepth); break;
@@ -2640,7 +2640,7 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
 
     case CK_IDXCOL:                     vPrintProperties(pRibbon,iDepth); break;
     case CK_IDXCOLLIST:                 vPrintProperties(pRibbon,iDepth); break;
-    case CK_INDEX:      vIndexPrint                     (pRibbon,iDepth); break;
+    case CK_INDEXPTR:      vIndexPrint                     (pRibbon, iDepth); break;
     case CK_INDEXJOIN:                  vPrintProperties(pRibbon,iDepth); break;
     case CK_INDEXLIST:                  vPrintProperties(pRibbon,iDepth); break;
     case CK_INDEXPRED:                  vPrintProperties(pRibbon,iDepth); break;
@@ -2684,7 +2684,8 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
     case CK_STREAMCOL:                  vPrintProperties(pRibbon,iDepth); break;
     case CK_STREAMCOLLIST:              vPrintProperties(pRibbon,iDepth); break;
     case CK_SUBSET:                     vPrintProperties(pRibbon,iDepth); break;
-      
+
+    case CK_TABLE:                      vPrintProperties(pRibbon,iDepth); break;
     case CK_TABLEPTR:      vTablePrint                     (pRibbon, iDepth); break;
     case CK_TABLELIST:                  vPrintProperties(pRibbon,iDepth); break;
     case CK_TERM:       vTermPrint                      (pRibbon,iDepth); break;

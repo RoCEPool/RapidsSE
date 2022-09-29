@@ -1,25 +1,25 @@
 /*============================================================================*/
-/* Card_Card.cpp -- Card                                                    */
+/* Card_CardPtr.cpp -- Card                                                    */
 /*============================================================================*/
 
-#include "Card_Card.hpp"
+#include "Card_CardPtr.hpp"
 
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_Card,CK_CARD)
-__aNewFunction(Card_Card,CN_CARD)
-__vDeleteFunction(Card_Card,CN_CARD)
+__pCastFunction_Card(STORE, Card_CardPtr, CK_CARDPTR)
+__aNewFunction(Card_CardPtr, CN_CARD)
+__vDeleteFunction(Card_CardPtr, CN_CARD)
 
-__bIsCard(STORE,Card_Card,CK_CARD)
+__bIsCard(STORE,Card_CardPtr,CK_CARDPTR)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Card::Card_Card(Card* pCard)
-: Card(CK_CARD)
+Card_CardPtr::Card_CardPtr(Card* pCard)
+: Card(CK_CARDPTR)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -33,7 +33,7 @@ Card_Card::Card_Card(Card* pCard)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_Card::~Card_Card(void) noexcept(false)
+Card_CardPtr::~Card_CardPtr(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

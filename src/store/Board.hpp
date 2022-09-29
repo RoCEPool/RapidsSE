@@ -20,7 +20,7 @@
 #include "Card_Calc.hpp"
 #include "Card_CalcBool.hpp"
 #include "Card_CandIndex.hpp"
-#include "Card_Card.hpp"
+#include "Card_CardPtr.hpp"
 #include "Card_Combined.hpp"
 #include "Card_CoPtn.hpp"
 #include "Card_CoPtnPred.hpp"
@@ -90,6 +90,7 @@
 #include "Card_StreamElist.hpp"
 #include "Card_SubSet.hpp"
 
+#include "Card_Table.hpp"
 #include "Card_TablePtr.hpp"
 #include "Card_TableList.hpp"
 #include "Card_TablePtn.hpp"

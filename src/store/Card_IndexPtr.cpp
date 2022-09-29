@@ -9,17 +9,17 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_IndexPtr, CK_INDEX)
+__pCastFunction_Card(STORE, Card_IndexPtr, CK_INDEXPTR)
 __aNewFunction(Card_IndexPtr, CN_CARD)
 __vDeleteFunction(Card_IndexPtr, CN_CARD)
 
-__bIsCard(STORE,Card_IndexPtr,CK_INDEX)
+__bIsCard(STORE, Card_IndexPtr, CK_INDEXPTR)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_IndexPtr::Card_IndexPtr(Index* pIndex)
-: Card(CK_INDEX)
+: Card(CK_INDEXPTR)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

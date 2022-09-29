@@ -768,7 +768,7 @@ void Board::vRankCandIndex(Card_CandIndex* pCard_CandIndex)
   bool bLBound = false;
   bool bUBound = false;
 
-  Index* pIndex = pCard_CandIndex->pFindSubCard(CK_INDEX)->pIndex();
+  Index* pIndex = pCard_CandIndex->pFindSubCard(CK_INDEXPTR)->pIndex();
   
   if (pReg_Filter->bHasBounds(pIndex)) {
   
@@ -936,7 +936,7 @@ void Board::vResolveJoin3(Card_IndexJoin* pCard_IndexJoin)
 
   Card_MapSet* pCard_MapSet = _pCard_MapSet(pCard_IndexJoin->pFindSubCard(CK_MAPSET));
   Card_IndexPred* pCard_IndexPred = pTo_IndexPred(pCard_PredCmp,pCard_MapSet);
-  Card_IndexPtr* pCard_IndexPtr = _pCard_IndexPtr(pCard_IndexJoin->pFindSubCard(CK_INDEX));
+  Card_IndexPtr* pCard_IndexPtr = _pCard_IndexPtr(pCard_IndexJoin->pFindSubCard(CK_INDEXPTR));
   pCard_IndexJoin->vInsertAfter(pCard_IndexPred, pCard_IndexPtr);
 
   Card_Combined* pCard_Combine = new Card_Combined;
@@ -1011,7 +1011,7 @@ void Board::vResolveRecursive(Card* pAnyCard) // recursive
   // leaves
   //
 
-  if (CK_INDEX == eCard) {
+  if (CK_INDEXPTR == eCard) {
     m_pCard_SubSet->vIndex(pAnyCard->pIndex());
     return;
   }
@@ -1082,7 +1082,7 @@ void Board::vResolveRecursive(Card* pAnyCard) // recursive
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-//  pCard_Index = _pCard_Index(pAnyCard->pFindChildCard(CK_INDEX));
+//  pCard_Index = _pCard_Index(pAnyCard->pFindChildCard(CK_INDEXPTR));
 //  if (pCard_Index) {
 //    Index* pIndex = pCard_Index->pIndex();
 //    m_pCard_SubSet->vAppend_index(pIndex);
@@ -1677,7 +1677,7 @@ bool Board::bPick_CandidateIndex(void)
   
   //vReg_CandIndex(pCard_CandIndex);
   m_pCardRegs->vCardReg(CK_CANDINDEX,pCard_CandIndex);
-  m_pCard_SubSet->vIndex(pCard_CandIndex->pFindSubCard(CK_INDEX)->pIndex());
+  m_pCard_SubSet->vIndex(pCard_CandIndex->pFindSubCard(CK_INDEXPTR)->pIndex());
 
   return true;
 }
