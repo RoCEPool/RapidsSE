@@ -48,6 +48,7 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_p_stageTopo_a = nullptr;
   m_p_stageTopo_b = nullptr;
   m_p_table       = nullptr;
+  m_p_tablePtr    = nullptr;
   m_p_uBound      = nullptr;
 
   Job* pJob = MY::pJob();

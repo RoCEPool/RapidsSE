@@ -238,10 +238,6 @@ namespace STORE
 
     void vResolve_Filters              (void);
 
-    void vResolve_Joins              (void);
-    void vResolve_Joins2             (void);
-    void vResolve_Joins3             (void);
-    void vConvert_Joins              (void);
 
     void vResolve_Symbols            (void);
 

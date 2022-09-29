@@ -43,12 +43,12 @@ select * from supplier;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+///cue = "Permutor::vXyz"
 /jobTags
 /transliterated
 /transform
 /transform2
 /interactive
-/cue = "Permutor::vXyz"
 /weave
 /weaved
 /pipelineName = "r5"

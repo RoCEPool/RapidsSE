@@ -377,7 +377,9 @@ Card* Dissector::pCard_IndexJoin(TagSet* pArgTags)
   // table
   
   Table* pTable = AM::pTableFind(szTableNm);
-  Card_TablePtr* pCard_Table = new Card_TablePtr(pTable);
+  Card_Table* pCard_Table = new Card_Table;
+  Card_TablePtr* pCard_TablePtr = new Card_TablePtr(pTable);
+  pCard_Table->vAppend(pCard_TablePtr);
   pCard_IndexJoin->vAppend(pCard_Table);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -400,47 +402,6 @@ Card* Dissector::pCard_IndexJoin(TagSet* pArgTags)
   
   return pCard_IndexJoin;
 }
-/*----------------------------------------------------------------------------*/
-//Card* Dissector::pCard_IndexJoin(TagSet* pArgTags)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
-//
-//  vTrace("pCard_IndexJoin\n"_Stz);
-//  pArgTags->vDumpSet(true);
-//
-//  Stz* szTableNm = nullptr;
-//  Stz* szIndexNm = nullptr;
-//
-//  Card_RpnTerms* pCard_RpnTerms = pArgCheckLast(pArgTags,0,szTableNm,szIndexNm);
-//  Card_IndexJoin* pCard_IndexJoin = new Card_IndexJoin;
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // table
-//
-//  Table* pTable = AM::pTableFind(szTableNm);
-//  Card_TablePtr* pCard_Table = new Card_TablePtr(pTable);
-//  pCard_IndexJoin->vAppend(pCard_Table);
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // index
-//
-//  Index* pIndex = pTable->pFindIndex(szIndexNm);
-//  Card_IndexPtr* pCard_Index = new Card_IndexPtr(pIndex);
-//  pCard_IndexJoin->vAppend(pCard_Index);
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // index predicate????
-//
-//  Card_IndexPred* pCard_IndexPred = new Card_IndexPred;
-//  pCard_IndexPred->vTransferAll(pCard_RpnTerms);
-//  pCard_IndexJoin->vAppend(pCard_IndexPred);
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//  delete pCard_RpnTerms;
-//
-//  return pCard_IndexJoin;
-//}
 
 /*----------------------------------------------------------------------------*/
 /* dissect : indexScan <szTblNm> <szIdxNm> <szRpnExpr: 0) idxPred>            */
@@ -459,7 +420,9 @@ Card* Dissector::pCard_IndexScan(TagSet* pArgTags)
   // table
 
   Table* pTable = AM::pTableFind(szTableNm);
-  Card_TablePtr* pCard_Table = new Card_TablePtr(pTable);
+  Card_Table* pCard_Table = new Card_Table;
+  Card_TablePtr* pCard_TablePtr = new Card_TablePtr(pTable);
+  pCard_Table->vAppend(pCard_TablePtr);
   pCard_IndexScan->vAppend(pCard_Table);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -606,7 +569,9 @@ Card* Dissector::pCard_Scan(TagSet* pArgTags)
   // table
   
   Table* pTable = AM::pTableFind(szTableNm);
-  Card_TablePtr* pCard_Table = new Card_TablePtr(pTable);
+  Card_Table* pCard_Table = new Card_Table;
+  Card_TablePtr* pCard_TablePtr = new Card_TablePtr(pTable);
+  pCard_Table->vAppend(pCard_TablePtr);
   pCard_Scan->vAppend(pCard_Table);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -3250,6 +3250,19 @@ Card_StreamColList* Card::pSub_streamColList(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_Table.hpp"
+Card_Table* Card::pSub_table(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Table* p_table =
+      _pCard_Table(pFindSubCard(CK_TABLE));
+  return p_table;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_TablePtr.hpp"
 Card_TablePtr* Card::pSub_tablePtr(void)
 {
