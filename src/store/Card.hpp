@@ -58,7 +58,7 @@ namespace STORE {
 
   class Card_IdxCol;
   class Card_IdxColList;
-  class Card_Index;
+  class Card_IndexPtr;
   class Card_IndexJoin;
   class Card_IndexList;
   class Card_IndexPred;

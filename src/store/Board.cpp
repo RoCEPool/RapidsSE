@@ -837,7 +837,7 @@ void Board::vResolveJoin(Card_AbsJoin* pCard_AbsJoin)
 
   Card_IndexJoin* pIndexJoin = new Card_IndexJoin;
   pIndexJoin->vAppend(new Card_TablePtr(pTable));
-  pIndexJoin->vAppend(new Card_Index(pIndex));
+  pIndexJoin->vAppend(new Card_IndexPtr(pIndex));
 
   Card_Filter* pCard_Filter = _pCard_Filter(pGetMainCard(pCard_AbsJoin->iCardNo() + 3));
   pCard_Filter->vDump();
@@ -884,7 +884,7 @@ void Board::vResolveJoin2(Card_AbsJoin* pCard_AbsJoin)
 
   Card_IndexJoin* pIndexJoin = new Card_IndexJoin;
   pIndexJoin->vAppend(new Card_TablePtr(pTable));
-  pIndexJoin->vAppend(new Card_Index(pIndex));
+  pIndexJoin->vAppend(new Card_IndexPtr(pIndex));
 
   Card_Filter* pCard_Filter = _pCard_Filter(pGetMainCard(pCard_AbsJoin->iCardNo() + 3));
   //pCard_Filter->vDump();
@@ -936,8 +936,8 @@ void Board::vResolveJoin3(Card_IndexJoin* pCard_IndexJoin)
 
   Card_MapSet* pCard_MapSet = _pCard_MapSet(pCard_IndexJoin->pFindSubCard(CK_MAPSET));
   Card_IndexPred* pCard_IndexPred = pTo_IndexPred(pCard_PredCmp,pCard_MapSet);
-  Card_Index* pCard_Index = _pCard_Index(pCard_IndexJoin->pFindSubCard(CK_INDEX));
-  pCard_IndexJoin->vInsertAfter(pCard_IndexPred,pCard_Index);
+  Card_IndexPtr* pCard_IndexPtr = _pCard_IndexPtr(pCard_IndexJoin->pFindSubCard(CK_INDEX));
+  pCard_IndexJoin->vInsertAfter(pCard_IndexPred, pCard_IndexPtr);
 
   Card_Combined* pCard_Combine = new Card_Combined;
   m_pCard_SubSet->vInsertAfter(pCard_Combine,pCard_IndexJoin);
@@ -990,7 +990,7 @@ void Board::vConvertJoin(Card_AbsJoin* pCard_AbsJoin)
 
   // TODO:
   Index* pIndex = pTable->pIdxVec()->pGet(0);
-  pIndexJoin->vAppend(new Card_Index(pIndex));
+  pIndexJoin->vAppend(new Card_IndexPtr(pIndex));
 
   m_pCard_SubSet->vInsertAfter(pIndexJoin,pCard_Scan);
 
@@ -1305,7 +1305,7 @@ bool Board::bAdd_CandIndexes(void)
     //vTrace("Index %s\n"_Stz,pIndex->szIndexNm());
     
     Card_CandIndex* pCard_CandIndex = new Card_CandIndex;
-    Card_Index* pCard_Index = new Card_Index(pIndex);
+    Card_IndexPtr* pCard_Index = new Card_IndexPtr(pIndex);
     pCard_CandIndex->vAppend(pCard_Index);
 
     m_pCard_SubSet->vInsertAfter(pCard_CandIndex,pCard_Filter);
@@ -1331,7 +1331,7 @@ void Board::vAdd_IndexScan(void)
   Card_PredCmp* pReg_ubound = m_pCardRegs->pPredCmp_ubound();
   
   Index* pIndex = this->m_pCard_SubSet->pIndex();
-  Card_Index* pCard_Index = new Card_Index(pIndex);
+  Card_IndexPtr* pCard_Index = new Card_IndexPtr(pIndex);
   pCard_IndexScan->vAppend(pCard_Index);
 
   

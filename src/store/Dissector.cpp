@@ -384,7 +384,7 @@ Card* Dissector::pCard_IndexJoin(TagSet* pArgTags)
   // index
 
   Index* pIndex = pTable->pFindIndex(szIndexNm);
-  Card_Index* pCard_Index = new Card_Index(pIndex);
+  Card_IndexPtr* pCard_Index = new Card_IndexPtr(pIndex);
   pCard_IndexJoin->vAppend(pCard_Index);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -425,7 +425,7 @@ Card* Dissector::pCard_IndexJoin(TagSet* pArgTags)
 //  // index
 //
 //  Index* pIndex = pTable->pFindIndex(szIndexNm);
-//  Card_Index* pCard_Index = new Card_Index(pIndex);
+//  Card_IndexPtr* pCard_Index = new Card_IndexPtr(pIndex);
 //  pCard_IndexJoin->vAppend(pCard_Index);
 //
 //  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -466,7 +466,7 @@ Card* Dissector::pCard_IndexScan(TagSet* pArgTags)
   // index
 
   Index* pIndex = pTable->pFindIndex(szIndexNm);
-  Card_Index* pCard_Index = new Card_Index(pIndex);
+  Card_IndexPtr* pCard_Index = new Card_IndexPtr(pIndex);
   pCard_IndexScan->vAppend(pCard_Index);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

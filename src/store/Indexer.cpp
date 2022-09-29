@@ -105,12 +105,12 @@ void Indexer::vMark_scan_pred_ordinals(void)
     if (! p_indexList)
       continue;
 
-    Card_Index* p_index = _pCard_Index(p_indexList->pGetChild(0));
-    if (! p_index)
+    Card_IndexPtr* p_indexPtr = _pCard_IndexPtr(p_indexList->pGetChild(0));
+    if (! p_indexPtr)
       continue;
 
     // - - - - - - - - -
-    auto bfPredBounds = [p_stream,p_index](Card* pCard) {
+    auto bfPredBounds = [p_stream,p_indexPtr](Card* pCard) {
       Card_Term* p_term = _pCard_Term(pCard);
 
       Stz* szTerm = p_term->szTerm();
@@ -127,7 +127,7 @@ void Indexer::vMark_scan_pred_ordinals(void)
       vTrace("vMark_scan_pred_ordinals:: %s\n"_Stz,szColNm);
 
       i8 i_IdxCol = C_UNKNOWN;
-      Card_IdxCol* p_idxCol = p_index->pFind_indexCol(szColNm,i_IdxCol);
+      Card_IdxCol* p_idxCol = p_indexPtr->pFind_indexCol(szColNm, i_IdxCol);
 
       if (! p_idxCol)
         return true;

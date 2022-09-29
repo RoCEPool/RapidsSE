@@ -74,7 +74,7 @@ void Joiner::vAppendPrelim_indexJoin(void)
       Card_IndexJoin* pCard_indexJoin = new Card_IndexJoin;
       pCard_absJoin->vAppend(pCard_indexJoin);
 
-      Card_Index* pCard_index = new Card_Index(pIndex);
+      Card_IndexPtr* pCard_index = new Card_IndexPtr(pIndex);
       pCard_indexJoin->vAppend(pCard_index);
 
       Card_IdxColList* pCard_idxColList = new Card_IdxColList(pIndex);

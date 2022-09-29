@@ -2883,8 +2883,8 @@ void Card::vIndexPrint(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_Index* pCard_Index = _pCard_Index(this);
-  Index* pIndex = pCard_Index->pIndex();
+  Card_IndexPtr* pCard_IndexPtr = _pCard_IndexPtr(this);
+  Index* pIndex = pCard_IndexPtr->pIndex();
   IndexDef* pIndexDef = pIndex->pIndexDef();
   Table* pTable = pIndex->pTable();
 

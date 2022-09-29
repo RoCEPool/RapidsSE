@@ -4,7 +4,7 @@
 
 #include "Card_TablePtr.hpp"
 
-#include "Card_Index.hpp"
+#include "Card_IndexPtr.hpp"
 #include "Card_IdxColList.hpp"
 #include "Card_IndexList.hpp"
 
@@ -69,7 +69,7 @@ Card_IndexList* Card_TablePtr::pNew_indexList(void)
   for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
     Index* pIndex = pIdxVec->pGet(i_Index);
 
-    Card_Index* pCard_index = new Card_Index(pIndex);
+    Card_IndexPtr* pCard_index = new Card_IndexPtr(pIndex);
     p_indexList->vAppend(pCard_index);
 
     Card_IdxColList* pCard_idxColList = new Card_IdxColList(pIndex);

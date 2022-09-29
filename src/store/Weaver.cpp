@@ -315,9 +315,9 @@ void Weaver::vArgIndexJoin(Stz* szOpArgs, Card_IndexJoin* pCard_IndexJoin)
 
   s4K sRpnExpr;
 
-  Card_Index* pCard_Index = _pCard_Index(pCard_IndexJoin->pFindSubCard(CK_INDEX));
+  Card_IndexPtr* pCard_IndexPtr = _pCard_IndexPtr(pCard_IndexJoin->pFindSubCard(CK_INDEX));
 
-  Index* pIndex = pCard_Index->pIndex();
+  Index* pIndex = pCard_IndexPtr->pIndex();
   Stz* szIndexNm = pIndex->szIndexNm();
 
   Card_TablePtr* pCard_TablePtr = _pCard_TablePtr(pCard_IndexJoin->pFindSubCard(CK_TABLEPTR));
