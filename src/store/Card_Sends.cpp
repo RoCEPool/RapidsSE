@@ -18,7 +18,7 @@ __bIsCard(STORE,Card_Sends,CK_SENDS)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Sends::Card_Sends(i8 iSends)
-: Card_SUB(CK_SENDS)
+: Card(CK_SENDS)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

@@ -19,7 +19,7 @@ __bIsCard(STORE,Card_MapSet,CK_MAPSET)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_MapSet::Card_MapSet(void)
-: Card_SUB(CK_MAPSET)
+: Card(CK_MAPSET)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
           
@@ -32,7 +32,7 @@ Card_MapSet::Card_MapSet(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_MapSet::Card_MapSet(Index* pIndex, Stz* szPrefix)
-: Card_SUB(CK_MAPSET)
+: Card(CK_MAPSET)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

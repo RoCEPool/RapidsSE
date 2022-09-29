@@ -25,7 +25,7 @@ __bIsCard(STORE,Card_Expr,CK_EXPR)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Expr::Card_Expr(void)
-: Card_SUB(CK_EXPR)
+: Card(CK_EXPR)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -38,7 +38,7 @@ Card_Expr::Card_Expr(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Expr::Card_Expr(Column* pColumn)
-: Card_SUB(CK_EXPR)
+: Card(CK_EXPR)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

@@ -18,7 +18,7 @@ __bIsCard(STORE,Card_Name,CK_NAME)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Name::Card_Name(Stz* szName)
-: Card_SUB(CK_NAME)
+: Card(CK_NAME)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

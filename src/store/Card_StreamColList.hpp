@@ -1,18 +1,15 @@
 /*============================================================================*/
-/* Card_StreamColList.hpp -- Stream Column                                        */
+/* Card_StreamColList.hpp -- Stream Column List                                */
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
-
-#include "Card_SUB.hpp"
 #include "Card_StreamCol.hpp"
 
 namespace STORE
 {
   class Card_AggElist;
 
-  class Card_StreamColList : public Card_SUB
+  class Card_StreamColList : public Card
   {
   public:
     void* operator new(size_t);

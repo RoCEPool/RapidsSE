@@ -3,13 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
-
-#include "Card_SUB.hpp"
+#include "Card.hpp"
 
 namespace STORE
 {
-  class Card_OBJECT : public Card_SUB
+  class Card_OBJECT : public Card
   {  
   public:
     Card_OBJECT(eCK eCard);

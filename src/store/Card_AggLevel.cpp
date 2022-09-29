@@ -18,7 +18,7 @@ __bIsCard(STORE,Card_AggLevel,CK_AGGLEVEL)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_AggLevel::Card_AggLevel(eAL eAggLevel)
-: Card_SUB(CK_AGGLEVEL)
+: Card(CK_AGGLEVEL)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

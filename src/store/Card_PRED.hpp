@@ -3,15 +3,13 @@
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
-
-#include "Card_SUB.hpp"
+#include "Card.hpp"
 
 namespace STORE
 {
   class Card_PredCmp;
 
-  class Card_PRED : public Card_SUB
+  class Card_PRED : public Card
   {  
   public:
     Card_PRED(eCK eCard);

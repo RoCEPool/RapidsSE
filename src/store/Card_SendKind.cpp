@@ -18,7 +18,7 @@ __bIsCard(STORE,Card_SendKind,CK_SENDKIND)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_SendKind::Card_SendKind(eXK eSendKind)
-: Card_SUB(CK_SENDKIND)
+: Card(CK_SENDKIND)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

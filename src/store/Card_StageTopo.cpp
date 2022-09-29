@@ -18,7 +18,7 @@ __bIsCard(STORE,Card_StageTopo,CK_STAGETOPO)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_StageTopo::Card_StageTopo(eYG eStageTopo)
-: Card_SUB(CK_STAGETOPO)
+: Card(CK_STAGETOPO)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

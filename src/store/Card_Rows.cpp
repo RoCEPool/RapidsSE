@@ -18,7 +18,7 @@ __bIsCard(STORE,Card_Rows,CK_ROWS)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Rows::Card_Rows(i8 iRows)
-: Card_SUB(CK_ROWS)
+: Card(CK_ROWS)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

@@ -20,7 +20,7 @@ __bIsCard(STORE,Card_IdxCol,CK_IDXCOL)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_IdxCol::Card_IdxCol(Column* pColumn)
-: Card_SUB(CK_IDXCOL)
+: Card(CK_IDXCOL)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

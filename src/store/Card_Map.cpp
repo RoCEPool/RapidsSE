@@ -19,7 +19,7 @@ __bIsCard(STORE,Card_Map,CK_MAP)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Map::Card_Map(void)
-: Card_SUB(CK_MAP)
+: Card(CK_MAP)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

@@ -18,7 +18,7 @@ __bIsCard(STORE,Card_Direction,CK_DIRECTION)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Direction::Card_Direction(Stz* szDirn)
-: Card_SUB(CK_DIRECTION)
+: Card(CK_DIRECTION)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -33,7 +33,7 @@ Card_Direction::Card_Direction(Stz* szDirn)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Direction::Card_Direction(Column* pColumn)
-: Card_SUB(CK_DIRECTION)
+: Card(CK_DIRECTION)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
