@@ -63,6 +63,7 @@ enum eCK // card kind
   /* */ CK_OPTION,
   /* */ CK_ORDAGG,
 
+  /* */ CK_PERMUTATION,
   /* */ CK_PREDAND,
   /* */ CK_PREDCMP,
   /* */ CK_PREDOR,
@@ -112,7 +113,7 @@ static Stz* aCK[]
   /* */ "CK_BOARD"_Stz,        // CK_BOARD
 
   /* */ "CK_CALC"_Stz,         // CK_CALC
-  /* */ "CK_CALCBOOL"_Stz,      // CK_CALCBOOL
+  /* */ "CK_CALCBOOL"_Stz,     // CK_CALCBOOL
   /* */ "CK_CANDINDEX"_Stz,    // CK_CANDINDEX
   /* */ "CK_CARD"_Stz,         // CK_CARD
   /* */ "CK_COMBINE"_Stz,      // CK_COMBINE
@@ -158,6 +159,7 @@ static Stz* aCK[]
   /* */ "CK_OPTION"_Stz,       // CK_OPTION
   /* */ "CK_ORDAGG"_Stz,       // CK_ORDAGG
 
+  /* */ "CK_PERMUTATION"_Stz,  // CK_PERMUTATION
   /* */ "CK_PREDAND"_Stz,      // CK_PREDAND
   /* */ "CK_PREDCMP"_Stz,      // CK_PREDCMP
   /* */ "CK_PREDOR"_Stz,       // CK_PREDOR
@@ -179,7 +181,7 @@ static Stz* aCK[]
   /* */ "CK_STAGETOPO"_Stz,    // CK_STAGETOPO
   /* */ "CK_STREAM"_Stz,       // CK_STREAM
   /* */ "CK_STREAMCOL"_Stz,    // CK_STREAMCOL
-  /* */ "CK_STREAMCOLLIST"_Stz, // CK_STREAMCOLLIST
+  /* */ "CK_STREAMCOLLIST"_Stz,// CK_STREAMCOLLIST
   /* */ "CK_STREAMELIST"_Stz,  // CK_STREAMELIST
   /* */ "CK_SUBSET"_Stz,       // CK_SUBSET
 
@@ -207,9 +209,9 @@ static Stz* aCK_short[]
   /* */ "board"_Stz,           // CK_BOARD
 
   /* */ "calc"_Stz,            // CK_CALC
-  /* */ "calcBool"_Stz,         // CK_CALCBOOL
+  /* */ "calcBool"_Stz,        // CK_CALCBOOL
   /* */ "candIndex"_Stz,       // CK_CANDINDEX
-  /* */ "{card}"_Stz,          // CK_CAND
+  /* */ "{card}"_Stz,          // CK_CARD
   /* */ "combine"_Stz,         // CK_COMBINE
 
   /* */ "debug"_Stz,           // CK_DEBUG
@@ -330,7 +332,7 @@ static Stz* aCK_op[]
   /* */ "indexJoin"_Stz,       // CK_INDEXJOIN
   /* */ "(none)"_Stz,          // CK_INDEXLIST
   /* */ "(none)"_Stz,          // CK_INDEXPRED
-  /* */ "indexScan"_Stz,      // CK_INDEXSCAN
+  /* */ "indexScan"_Stz,       // CK_INDEXSCAN
 
   /* */ "joinPred "_Stz,       // CK_JOINPRED
 
@@ -348,6 +350,7 @@ static Stz* aCK_op[]
   /* */ "(none)"_Stz,          // CK_OPTION
   /* */ "ordagg    "_Stz,      // CK_ORDAGG
 
+  /* */ "permutation"_Stz,     // CK_PERMUTATION
   /* */ "(none)"_Stz,          // CK_PREDAND
   /* */ "(none)"_Stz,          // CK_PREDCMP
   /* */ "(none)"_Stz,          // CK_PREDOR

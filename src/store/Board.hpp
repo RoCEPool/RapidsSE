@@ -63,6 +63,7 @@
 #include "Card_OrdAgg.hpp"
 #include "Card_ObyElist.hpp"
 
+#include "Card_Permutation.hpp"
 #include "Card_PredAnd.hpp"
 #include "Card_PredCmp.hpp"
 #include "Card_PredOr.hpp"
