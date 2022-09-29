@@ -91,6 +91,7 @@
 #include "Card_SubSet.hpp"
 
 #include "Card_Table.hpp"
+#include "Card_TablePtn.hpp"
 #include "Card_Term.hpp"
 #include "Card_Type.hpp"
 

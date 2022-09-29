@@ -93,6 +93,7 @@ enum eCK // card kind
   /* */ CK_SUBSET,
 
   /* */ CK_TABLE,
+  /* */ CK_TABLEPTN,
   /* */ CK_TERM,
   /* */ CK_TYPE,
 
@@ -194,6 +195,7 @@ static Stz* aCK[]
   /* */ "CK_SUBSET"_Stz,       // CK_SUBSET
 
   /* */ "CK_TABLE"_Stz,        // CK_TABLE
+  /* */ "CK_TABLEPTN"_Stz,     // CK_TABLEPTN
   /* */ "CK_TERM"_Stz,         // CK_TERM
   /* */ "CK_TYPE"_Stz,         // CK_TYPE
 
@@ -295,6 +297,7 @@ static Stz* aCK_short[]
   /* */ "subSet"_Stz,          // CK_SUBSET
 
   /* */ "{table}"_Stz,         // CK_TABLE
+  /* */ "tablePtn"_Stz,        // CK_TABLEPTN
   /* */ "term"_Stz,            // CK_TERM
   /* */ "type"_Stz,            // CK_TYPE
 
