@@ -3,6 +3,7 @@
 --------------------------------------------------------------------------------
 /*  (original Query)
 
+
 select
        c_count,
        count(*) as custdist
@@ -13,9 +14,10 @@ from (
        from
               customer left outer join orders on
                      c_custkey = o_custkey
-       where o_comment not like '%special%requests%'
+              and o_comment not like '%special%requests%'
        group by
               c_custkey
+
      ) as c_orders (c_custkey, c_count)
 group by
      c_count
@@ -130,7 +132,7 @@ pipeline c_orders
       | next
     stage stageMarker32013 on all partitions :
       indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $L1 ==" //J1
-      | filter  "type BOOLEAN
+      "type BOOLEAN
                 }  J1_O_COMMENT '%special%requests%'  7 8 matchMiddle1  not"
       | combined 0
       | next
@@ -155,7 +157,7 @@ pipeline c_orders
       | combined 0
       | next
     stage stageMarker32028 on origin :
-      sort " type INTEGER $2 DESC  , type INTEGER as c_count $1 DESC  "
+      sort " type INTEGER $1  , type INTEGER as c_count $2  "
       | combined 0
       | next
 
@@ -166,10 +168,11 @@ stage stageLast on origin :
 end ;
 
 rows:
-  (20,1)
+  (0,1)
   (8,2)
   (9,11)
   (10,135)
+  (20,1)
 
  CLEANUP {
    bye;

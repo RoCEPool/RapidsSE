@@ -467,7 +467,7 @@ rows: 1218
 //------------------------------------------------------------------------------
 // LEFT OUTER JOIN WITH LEFT and RIGHT FILTER
 // select * from orders left outer join customer on customer.c_custkey = orders.o_custkey
-    where customer.c_nationkey >= 4 and orders.o_orderkey >= 4;
+//    where customer.c_nationkey >= 4 and orders.o_orderkey >= 4;
 
 pipeline indexJoinTest
 begin

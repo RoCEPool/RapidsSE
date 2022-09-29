@@ -109,7 +109,7 @@ begin
 
   stage Gs_ORDERS_a on all partitions :
     keyExists lineitem IxL_ORDERKEY  "BOUND $I1 _orderkey =="
-                                       "type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
+                                      "type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
     | combined 0
     | next
 

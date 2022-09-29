@@ -1880,9 +1880,16 @@ Shape* Stencil::pSketchIndexJoin(Combined* pCombined, Stream* pStream, Op* pOp, 
   s256 sLabelNext;
   s256 sReturnLabel;
 
+  Stz* sFilterExpr = ""_Stz;
+
   // get join expr from OP
   TagSet* pOpTags = pOp->pOpTags();
-  Stz* sJoinExpr = pOpTags->szValue(C_TAG_EXPR);
+  Stz* sJoinExpr = pOpTags->szValue(C_TAG_KEYEXPR);
+
+  // get filter expr if any from OP
+  if (pOpTags->bHasName(C_TAG_EXPR)) {
+    sFilterExpr = pOpTags->szValue(C_TAG_EXPR);
+  }
 
   // get the streamDefs
   LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
@@ -1918,7 +1925,7 @@ Shape* Stencil::pSketchIndexJoin(Combined* pCombined, Stream* pStream, Op* pOp, 
   pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefOut, pIndex->pIndexDef(), nullptr, ePrevStencil, SR_TJ);
 
   vGetNextLabel(sLabelNext, pStream, pOp->i_Op(), "L_AddRowToTubPot"_Stz);
-  pCodeSynth->vSynthIndexJoin(pStreamDefRht, pIndex->pIndexDef(), sJoinExpr,
+  pCodeSynth->vSynthIndexJoin(pStreamDefRht, pIndex->pIndexDef(), sFilterExpr, sJoinExpr,
       sLabel, sLabelNext, uSelectColumns);
   pShape->vCodeSynthA(pCodeSynth);
 
