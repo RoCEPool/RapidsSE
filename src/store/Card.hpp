@@ -136,7 +136,6 @@ namespace STORE
     char m_caRef[256];
 
     eCK  m_eCard;
-    eGC  m_eCatg;
     i8   m_iCardNo;
 
     i8   m_iSeqNo;
@@ -163,13 +162,7 @@ namespace STORE
 
     static  bool bCardsSameRecursive(Card* pCard_a, Card* pCard_b, i8 iDepth=0, bool bTestL0=false);
 
-    static bool bIsMain(eCK eCard);
-    static bool bIsOther(eCK eCard);
-    static bool bIsSub(eCK eCard);
-    static eCK  eParentECard(eCK eChildCard);
     static eCK  eToECard(Stz* szCardNm);
-    static eGC  eToECatg(eCK eCard);
-    static eGC  eToECatg(Stz* szCardNm);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     
@@ -181,7 +174,6 @@ namespace STORE
 
     eCK  eCard(void);
     void vCard(eCK eCard);
-    eGC  eCatg(void);
     Stz* szCardNm(void);
     i8   iCardNo(void);
     void vCardNo(i8 iCardNo);
@@ -219,10 +211,6 @@ namespace STORE
     bool bHasSubCard(Card* pGivenCard, Card*& pParentCard);
     bool bHasUBound(void);
     void vHasUBound(bool bHasUBound);
-
-    bool bIsMain(void);
-    bool bIsOther(void);
-    bool bIsSub(void);
 
     char cMark1(void);
     void vMark1(char cMark1);
@@ -312,11 +300,9 @@ namespace STORE
     bool bIsOrdinalIndexAtom(void);
     bool bIsOrdinalStreamTerm(void);
     bool bIsOrdinalIndexTerm(void);
-    bool bIs_MAIN(void);
     bool bIsPred(void);
     bool bIsSame(Stz* szArg);
     bool bIsSeparator(void);
-    bool bIs_SUB(void);
 
     Stz* szLevel(void);
     void vLevel(Stz* szLevel);

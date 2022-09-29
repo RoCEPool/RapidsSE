@@ -462,42 +462,6 @@ bool Drafter::bSet(TokenVec* pTknVec, eOA& reOptAct)
 }
 
 /*----------------------------------------------------------------------------*/
-/* sub                                                                        */
-/*----------------------------------------------------------------------------*/
-bool Drafter::bSub(TokenVec* pTknVec, eOA& reOptAct)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DRAFTER,_FOOTER_);
-
-  i8 nTkns = pTknVec->nItems();
-  if (nTkns < 2)
-    return false;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  if (pTknVec->pGet(1)->bSame("*"_Stz)) {
-    for (i8 i_Card = 0; i_Card < CK_ENUMS; i_Card++) {
-      if (Card::bIsMain((eCK)i_Card))
-        continue;
-      m_pCardCtl->vPrint(i_Card,0);
-    }
-    return true;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  for (i8 i_Tkn = 1; i_Tkn < nTkns; i_Tkn++) {
-    Stz* szName = pTknVec->pGet(i_Tkn)->szChars();
-    eCK eCard = Card::eToECard(szName);
-    if (CK_NONE == eCard)
-      continue;
-    
-    m_pCardCtl->vPrint(eCard,0);
-  }
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* weave                                                                      */
 /*----------------------------------------------------------------------------*/
 bool Drafter::bWeave(TokenVec* pTknVec, eOA& reOptAct)

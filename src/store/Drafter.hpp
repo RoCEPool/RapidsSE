@@ -46,7 +46,6 @@ namespace STORE
     bool bReprint (TokenVec* pTknVec, eOA& reOptAct);
 
     bool bSet     (TokenVec* pTknVec, eOA& reOptAct);
-    bool bSub     (TokenVec* pTknVec, eOA& reOptAct);
 
     bool bWeave   (TokenVec* pTknVec, eOA& reOptAct);
     bool bWrite   (TokenVec* pTknVec, eOA& reOptAct);
