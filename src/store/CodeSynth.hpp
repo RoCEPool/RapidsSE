@@ -98,7 +98,7 @@ namespace STORE {
 
     void vSynthFilter(Stz *sFilterExpr, Stz *sLabel, Stz* sLabelPrev, Stz* sLabelLoop);
 
-    void vSynthIndexJoin(StreamDef *pStreamDefRht, IndexDef *pIndexDefJ,
+    void vSynthIndexJoin(StreamDef *pStreamDefRht, IndexDef *pIndexDefJ, Stz *sFilterExpr,
                          Stz *sJoinExpr, Stz *sLabel, Stz *sLabelNext, u8 uSelectColumns);
 
     void vSynthIndexScan(Stz *sIndexScanExpr, Stz *sLabel, Stz *sLabelNext, Stz* sLabelOrdAgg, u8 uSelectColumns);

@@ -52,7 +52,7 @@
   // new a streamDefRht from the right table
   Table[] StreamDefRht[].newFromTable
 
-  // generate selectColumns bitmap from filter expr and streamDefRht
+  // generate selectColumns bitmap from key expr and streamDefRht
   <keyExpr> StreamDefLft[].selectColumns to eError
 
   // check for error
