@@ -48,12 +48,28 @@ void Permutor::vXyz(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PERMUTOR, _FOOTER_);
 
-  Board* pBoard_permutor = m_pBench->pGetBoard(BK_PERMUTOR);
-  if (!pBoard_permutor)
-    pBoard_permutor = new Board(BK_PERMUTOR,m_pBench);
+  Board* pBoard_permute = m_pBench->pGetBoard(BK_PERMUTE);
+  if (!pBoard_permute)
+    pBoard_permute = new Board(BK_PERMUTE, m_pBench);
 
   Board* pBoard_query = m_pBench->pGetBoard(BK_QUERY);
 
+  BoardIter xBI_query(pBoard_query);
+
+  Card_TableList* p_tableList = new Card_TableList;
+
+  while ( (m_pMainCard = xBI_query.pEachMain()) ) {
+    Card_Table* p_table = m_pMainCard->pSub_table();
+    if (! p_table)
+      continue;
+
+    p_tableList->vAppend(p_table->pDupCardAndSubCards());
+  }
+
+  pBoard_permute->vAppendMainCard(p_tableList);
+
+  if (m_bInteractive)
+    pBoard_permute->vPrintBoard("Permutor::vXyz"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

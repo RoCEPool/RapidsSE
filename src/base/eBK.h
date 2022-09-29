@@ -9,7 +9,7 @@ enum eBK // board kind
   
   /*    */ BK_QUERY,
   /*    */ BK_PARTITIONING,
-  /*    */ BK_PERMUTOR,
+  /*    */ BK_PERMUTE,
 
   /*    */ BK_ENUMS,
 };
@@ -20,7 +20,7 @@ static Stz* aBK[]
   
   /*    */ "BK_QUERY"_Stz,
   /*    */ "BK_JOIN_ORDER"_Stz,
-  /*    */ "BK_PERMUTOR"_Stz,
+  /*    */ "BK_PERMUTE"_Stz,
 
   /*    */ "ENUMS"_Stz,
 };

@@ -48,7 +48,7 @@ void Indexer::vAppend_indexList_to_scan(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SCANNING, _FOOTER_);
 
-  BoardIter xBI(this);
+  BoardIter xBI(m_pBoard);
 
   while ( (m_pMainCard = xBI.pEachMain(CK_SCAN)) ) {
     m_p_table = m_pMainCard->pSub_table();
@@ -72,7 +72,7 @@ void Indexer::vMark_scan_pred_bounds(void)
 
   // - - - - - - - - -
 
-  BoardIter xBI(this);
+  BoardIter xBI(m_pBoard);
 
   while ( (m_pMainCard = xBI.pEachMain(CK_SCAN)) ) {
     if (! (m_p_filter = m_pMainCard->pSub_filter()) )
@@ -91,7 +91,7 @@ void Indexer::vMark_scan_pred_ordinals(void)
 
 
 
-  BoardIter xBI(this);
+  BoardIter xBI(m_pBoard);
 
   while ( (m_pMainCard = xBI.pEachMain(CK_SCAN)) ) {
     if (! (m_p_filter = m_pMainCard->pSub_filter()) )

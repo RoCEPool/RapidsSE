@@ -34,6 +34,7 @@ Transformer::Transformer(Bench* pBench)
   m_pFiltrate    = nullptr;
   m_pIndexer     = nullptr;
   m_pJoiner      = nullptr;
+  m_pPermutor    = nullptr;
   m_pScanning    = nullptr;
   m_pSender      = nullptr;
   m_pSorter      = nullptr;
@@ -58,6 +59,7 @@ Transformer::~Transformer(void) noexcept(false)
   delete m_pFiltrate;
   delete m_pIndexer;
   delete m_pJoiner;
+  delete m_pPermutor;
   delete m_pScanning;
   delete m_pSender;
   delete m_pSorter;
@@ -87,6 +89,7 @@ void Transformer::vTransform(void)
   m_pFiltrate    = new Filtrate(m_pBench);
   m_pIndexer     = new Indexer(m_pBench);
   m_pJoiner      = new Joiner(m_pBench);
+  m_pPermutor    = new Permutor(m_pBench);
   m_pScanning    = new Scanning(m_pBench);
   m_pSender      = new Sender(m_pBench);
   m_pSorter      = new Sorter(m_pBench);
@@ -131,6 +134,18 @@ void Transformer::vTransform2(void)
   m_pSender->vDelete_Sends();
   if (m_bInteractive)
     pBoard_query->vPrintBoard("Sender::vDelete_Sends"_Stz);
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  m_pPermutor->vXyz();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // convert all <filter> from calc form to calcBool

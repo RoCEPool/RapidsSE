@@ -299,6 +299,7 @@ static Stz* aCK_short[]
   /* */ "subSet"_Stz,          // CK_SUBSET
 
   /* */ "{table}"_Stz,         // CK_TABLE
+  /* */ "tableList"_Stz,       // CK_TABLELIST
   /* */ "tablePtn"_Stz,        // CK_TABLEPTN
   /* */ "term"_Stz,            // CK_TERM
   /* */ "type"_Stz,            // CK_TYPE

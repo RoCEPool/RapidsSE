@@ -49,6 +49,7 @@ namespace STORE
     Card_Table*      m_p_table;
     Card_UBound*     m_p_uBound;
 
+    bool m_bInteractive;
   public:
     void* operator new(size_t);
     void  operator delete(void*);

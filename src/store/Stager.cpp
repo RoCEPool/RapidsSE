@@ -60,7 +60,7 @@ void Stager::vAdd_Stages2(void)
   eYG eStageTopo = YG_NONE;
   Card_StageTopo* pCard_StageTopo = nullptr;
 
-  BoardIter xBI(this);
+  BoardIter xBI(m_pBoard);
   while ( (m_pMainCard = xBI.pEachMain()) ) {
 
     if (! xBI.bMore())
@@ -143,7 +143,7 @@ void Stager::vLinearize_Stages(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGER, _FOOTER_);
 
-  BoardIter xBI(this);
+  BoardIter xBI(m_pBoard);
 
   if (! (m_p_stage_a = xBI.pFirst_stage()) )
     return;

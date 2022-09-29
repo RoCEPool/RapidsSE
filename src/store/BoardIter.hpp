@@ -12,7 +12,6 @@ namespace STORE
   class BoardIter : public Object
   {
   private:
-    TransformerTool* m_pTransformerTool;
     Board* m_pBoard;
     i8     m_i_Main;
     Card*  m_pCurrMain;
@@ -24,7 +23,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    BoardIter(TransformerTool* pTransformerTool);
+    BoardIter(Board* pBoard);
    ~BoardIter(void) noexcept(false);
 
     Card* pEachMain(void);

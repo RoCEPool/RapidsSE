@@ -48,7 +48,7 @@ select * from supplier;
 /transform
 /transform2
 /interactive
-/cue = "Filtrate::vDeleteEmpty_sub_filter"
+/cue = "Permutor::vXyz"
 /weave
 /weaved
 /pipelineName = "r5"

@@ -55,7 +55,7 @@ void Combiner::vAdd_combined3(void)
   i8 iScan      = 0;
   i8 iSort      = 0;
 
-  BoardIter xBI(this);
+  BoardIter xBI(m_pBoard);
 
   i8 nMainCards = m_pBoard->nMainCards();
   while ( (m_pMainCard = xBI.pEachMain()) ) {

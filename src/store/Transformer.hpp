@@ -10,6 +10,7 @@
 #include "Filtrate.hpp"
 #include "Indexer.hpp"
 #include "Joiner.hpp"
+#include "Permutor.hpp"
 #include "Scanning.hpp"
 #include "Sender.hpp"
 #include "Sorter.hpp"
@@ -29,6 +30,7 @@ namespace STORE
     Filtrate*    m_pFiltrate;
     Indexer*     m_pIndexer;
     Joiner*      m_pJoiner;
+    Permutor*    m_pPermutor;
     Scanning*    m_pScanning;
     Sender*      m_pSender;
     Sorter*      m_pSorter;
@@ -45,7 +47,6 @@ namespace STORE
     void  operator delete(void*);
   
     Transformer(Bench* pBench);
-  
    ~Transformer(void) noexcept(false);
 
     void vTransform(void);

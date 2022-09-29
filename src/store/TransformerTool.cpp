@@ -4,6 +4,8 @@
 
 #include "TransformerTool.hpp"
 
+#include "Job.hpp"
+#include "TagSet.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -47,6 +49,10 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_p_stageTopo_b = nullptr;
   m_p_table       = nullptr;
   m_p_uBound      = nullptr;
+
+  Job* pJob = MY::pJob();
+  TagSet* pJobTags = pJob->pJobTags();
+  m_bInteractive = pJobTags->bHasName("<interactive>"_Stz);
 
   _postcondition_(_ADDRESS_,_MAGIC_);
 }

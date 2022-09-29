@@ -16,13 +16,12 @@ __aFooterFunction(BoardIter)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-BoardIter::BoardIter(TransformerTool* pTransformerTool)
+BoardIter::BoardIter(Board* pBoard)
 : Object(CN_BOARDITER)
 {
   _precondition_(_MAGIC_,CN_BOARDITER,_FOOTER_);
 
-  m_pTransformerTool = pTransformerTool;
-  m_pBoard    = m_pTransformerTool->pBoard();
+  m_pBoard    = pBoard;
   m_i_Main    = C_UNKNOWN;
   m_pCurrMain = nullptr;
 

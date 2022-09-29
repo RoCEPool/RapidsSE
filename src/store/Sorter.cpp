@@ -49,7 +49,7 @@ void Sorter::vCull_sby_SameAs_gby(void)
 
   vTransformation(OT_Cull_sby_SameAs_gby);
 
-  BoardIter xBI(this);
+  BoardIter xBI(m_pBoard);
 
   while ( (m_p_sort = xBI.pEach_sort()) ) {
 
