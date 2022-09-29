@@ -309,6 +309,138 @@ TypeMap2D* TypeMap2D::pAddMapping(eTM eMapper, TypeId xArg2, TypeId xResult)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Add a mapping of input types to an output type where the output type is    */
+/* the same as either the first or second argument.                           */
+/* Returns a ^ptr for chaining consecutive calls.                             */
+/*----------------------------------------------------------------------------*/
+TypeMap2D* TypeMap2D::pAddMapping(TypeId xArg1, eTM eMapper,  TypeMap2D::ResultToUse eResult)
+{
+  _precondition_(_MAGIC_,CN_TYPEMAP2D,_FOOTER_);
+
+  ASSERT(xArg1.iIdVal() >= 0 && xArg1.iIdVal() < m_iDim);
+  ASSERT(eMapper >= TM_NONE && eMapper < TM_ENUMS);
+
+  switch (eMapper) {
+    case TM_ALL_NUMERICS:
+      for (TypeId xVal : axAllNumeric) {
+        i8 iIdx = xArg1.iIdVal() * m_iDim + xVal.iIdVal();
+        m_aiTypeArray[iIdx] = (i1) (eResult == SAME_AS_ARG1 ? xArg1.iIdVal() : xVal.iIdVal());
+      }
+      break;
+
+    case TM_ALL_STRINGS:
+      for (TypeId xVal : axAllString) {
+        i8 iIdx = xArg1.iIdVal() * m_iDim + xVal.iIdVal();
+        m_aiTypeArray[iIdx] = (i1) (eResult == SAME_AS_ARG1 ? xArg1.iIdVal() : xVal.iIdVal());
+      }
+      break;
+
+    case TM_ALL_YM_INTERVALS:
+      for (TypeId xVal : axAllYmIntervals) {
+        i8 iIdx = xArg1.iIdVal() * m_iDim + xVal.iIdVal();
+        m_aiTypeArray[iIdx] = (i1) (eResult == SAME_AS_ARG1 ? xArg1.iIdVal() : xVal.iIdVal());
+      }
+      break;
+
+    case TM_ALL_DT_INTERVALS:
+      for (TypeId xVal : axAllDtIntervals) {
+        i8 iIdx = xArg1.iIdVal() * m_iDim + xVal.iIdVal();
+        m_aiTypeArray[iIdx] = (i1) (eResult == SAME_AS_ARG1 ? xArg1.iIdVal() : xVal.iIdVal());
+      }
+      break;
+
+    case TM_ALL_NON_UNKNOWN:
+      for (TypeId xVal : axAllNonNull) {
+        i8 iIdx = xArg1.iIdVal() * m_iDim + xVal.iIdVal();
+        m_aiTypeArray[iIdx] = (i1) (eResult == SAME_AS_ARG1 ? xArg1.iIdVal() : xVal.iIdVal());
+      }
+      break;
+
+    case TM_ALL_INC_UNKNOWN:
+      for (TypeId xVal : axAllIncNull) {
+        i8 iIdx = xArg1.iIdVal() * m_iDim + xVal.iIdVal();
+        m_aiTypeArray[iIdx] = (i1) (eResult == SAME_AS_ARG1 ? xArg1.iIdVal() : xVal.iIdVal());
+      }
+      break;
+
+    case TM_SAME:
+      m_aiTypeArray[xArg1.iIdVal() * m_iDim + xArg1.iIdVal()] = (i1) xArg1.iIdVal();
+      break;
+
+    default:
+      NEVER_REACH
+  }
+
+  return this;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Add a mapping of input types to an output type where the output type is    */
+/* the same as either the first or second argument.                           */
+/* Returns a ^ptr for chaining consecutive calls.                             */
+/*----------------------------------------------------------------------------*/
+TypeMap2D* TypeMap2D::pAddMapping(eTM eMapper, TypeId xArg2, TypeMap2D::ResultToUse eResult)
+{
+  _precondition_(_MAGIC_,CN_TYPEMAP2D,_FOOTER_);
+
+  ASSERT(eMapper >= TM_NONE && eMapper < TM_ENUMS);
+  ASSERT(xArg2.iIdVal() >= 0 && xArg2.iIdVal() < m_iDim);
+
+  switch (eMapper) {
+    case TM_ALL_NUMERICS:
+      for (TypeId xVal : axAllNumeric) {
+        i8 iIdx = xVal.iIdVal() * m_iDim + xArg2.iIdVal();
+        m_aiTypeArray[iIdx] = (i1) (eResult == SAME_AS_ARG2 ? xArg2.iIdVal() : xVal.iIdVal());
+      }
+      break;
+
+    case TM_ALL_STRINGS:
+      for (TypeId xVal : axAllString) {
+        i8 iIdx = xVal.iIdVal() * m_iDim + xArg2.iIdVal();
+        m_aiTypeArray[iIdx] = (i1) (eResult == SAME_AS_ARG2 ? xArg2.iIdVal() : xVal.iIdVal());
+      }
+      break;
+
+    case TM_ALL_YM_INTERVALS:
+      for (TypeId xVal : axAllYmIntervals) {
+        i8 iIdx = xVal.iIdVal() * m_iDim + xArg2.iIdVal();
+        m_aiTypeArray[iIdx] = (i1) (eResult == SAME_AS_ARG2 ? xArg2.iIdVal() : xVal.iIdVal());
+      }
+      break;
+
+    case TM_ALL_DT_INTERVALS:
+      for (TypeId xVal : axAllDtIntervals) {
+        i8 iIdx = xVal.iIdVal() * m_iDim + xArg2.iIdVal();
+        m_aiTypeArray[iIdx] = (i1) (eResult == SAME_AS_ARG2 ? xArg2.iIdVal() : xVal.iIdVal());
+      }
+      break;
+
+    case TM_ALL_NON_UNKNOWN:
+      for (TypeId xVal : axAllNonNull) {
+        i8 iIdx = xVal.iIdVal() * m_iDim + xArg2.iIdVal();
+        m_aiTypeArray[iIdx] = (i1) (eResult == SAME_AS_ARG2 ? xArg2.iIdVal() : xVal.iIdVal());
+      }
+      break;
+
+    case TM_ALL_INC_UNKNOWN:
+      for (TypeId xVal : axAllIncNull) {
+        i8 iIdx = xVal.iIdVal() * m_iDim + xArg2.iIdVal();
+        m_aiTypeArray[iIdx] = (i1) (eResult == SAME_AS_ARG2 ? xArg2.iIdVal() : xVal.iIdVal());
+      }
+      break;
+
+    case TM_SAME:
+      m_aiTypeArray[xArg2.iIdVal() * m_iDim + xArg2.iIdVal()] = (i1) xArg2.iIdVal();
+      break;
+
+    default:
+      NEVER_REACH
+  }
+
+  return this;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Add a mapping where the input types are the same as the output type.       */
 /* Returns a ^ptr for chaining consecutive calls.                             */
 /*----------------------------------------------------------------------------*/
