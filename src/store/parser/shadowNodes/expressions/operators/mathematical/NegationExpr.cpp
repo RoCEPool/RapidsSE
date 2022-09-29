@@ -27,7 +27,7 @@ static Stz* C_NEGATION_DEFN = "/__root__/definitions/object/expr/operator/mathem
 static TypeMap1D* S_pTypeMap = (new TypeMap1D())
     ->pAddSelfMapping( TypeId::xIdOf(CT_DECIMAL))
     ->pAddSelfMapping( TypeId::xIdOf(CT_FLOAT))
-    ->pAddMapping(     TypeId::xIdOf(CT_INTEGER),  TypeId::xIdOf(CT_DECIMAL)  )
+    ->pAddSelfMapping( TypeId::xIdOf(CT_INTEGER))
     ->pAddSelfMapping( TypeId::xIdOf(IV_YEAR) )
     ->pAddSelfMapping( TypeId::xIdOf(IV_MONTH) )
     ->pAddSelfMapping( TypeId::xIdOf(IV_YEAR_TO_MONTH) )

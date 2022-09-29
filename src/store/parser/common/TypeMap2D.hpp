@@ -11,7 +11,7 @@ namespace Parser
   class TypeMap2D : Object
   {
     private:
-    i8  m_iSize;
+    i8  m_iDim;
     i1* m_aiTypeArray;
 
     // must be last
@@ -31,6 +31,9 @@ namespace Parser
 
     // Lookup a mapping of two input operand types to one output type
     TypeId     xLookup(TypeId xArg1, TypeId xArg2);
+
+    // Print the mappings that are set.
+    void vPrintMap();
 
     Footer *aFooter(void);
   };

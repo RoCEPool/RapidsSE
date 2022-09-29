@@ -31,6 +31,9 @@ namespace Parser
     // Lookup a mapping of one input operand type to one output type
     TypeId     xLookup(TypeId xArg);
 
+    // Print the mappings that are set.
+    void vPrintMap();
+
     Footer *aFooter(void);
   };
   
