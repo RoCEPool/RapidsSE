@@ -21,7 +21,10 @@ enum eCK // card kind
   /* */ CK_CANDINDEX,
   /* */ CK_CARD,
   /* */ CK_COMBINED,
-  
+  /* */ CK_COPTN,
+  /* */ CK_COPTNPRED,
+  /* */ CK_CROSSPTNPRED,
+
   /* */ CK_DEBUG,
   /* */ CK_DIRECTION,
 
@@ -119,7 +122,10 @@ static Stz* aCK[]
   /* */ "CK_CANDINDEX"_Stz,    // CK_CANDINDEX
   /* */ "CK_CARD"_Stz,         // CK_CARD
   /* */ "CK_COMBINED"_Stz,     // CK_COMBINED
-  
+  /* */ "CK_COPTN"_Stz,        // CK_COPTN
+  /* */ "CK_COPTNPRED"_Stz,    // CK_COPTNPRED
+  /* */ "CK_CROSSPTNPRED"_Stz, // CK_CROSSPTNPRED
+
   /* */ "CK_DEBUG"_Stz,        // CK_DEBUG
   /* */ "CK_DIRECTION"_Stz,    // CK_DIRECTION
 
@@ -217,6 +223,9 @@ static Stz* aCK_short[]
   /* */ "candIndex"_Stz,       // CK_CANDINDEX
   /* */ "{card}"_Stz,          // CK_CARD
   /* */ "combined"_Stz,        // CK_COMBINED
+  /* */ "co-ptn"_Stz,          // CK_COPTN
+  /* */ "co-ptnPred"_Stz,      // CK_COPTNPRED
+  /* */ "cross-ptnPred"_Stz,   // CK_CROSSPTNPRED
 
   /* */ "debug"_Stz,           // CK_DEBUG
   /* */ "direction"_Stz,       // CK_DIRECTION

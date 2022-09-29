@@ -22,6 +22,9 @@
 #include "Card_CandIndex.hpp"
 #include "Card_Card.hpp"
 #include "Card_Combined.hpp"
+#include "Card_CoPtn.hpp"
+#include "Card_CoPtnPred.hpp"
+#include "Card_CrossPtnPred.hpp"
 
 #include "Card_Debug.hpp"
 #include "Card_Direction.hpp"

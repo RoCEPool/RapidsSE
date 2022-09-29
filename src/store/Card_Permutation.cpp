@@ -9,18 +9,18 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_Permutation,CK_FILTER)
+__pCastFunction_Card(STORE,Card_Permutation,CK_PERMUTATION)
 __aNewFunction(Card_Permutation,CN_CARD)
 __vDeleteFunction(Card_Permutation,CN_CARD)
 
-__bIsCard(STORE,Card_Permutation,CK_FILTER)
-__pGetSubFunction_Card(STORE,Card_Permutation,CK_FILTER)
+__bIsCard(STORE,Card_Permutation,CK_PERMUTATION)
+__pGetSubFunction_Card(STORE,Card_Permutation,CK_PERMUTATION)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Permutation::Card_Permutation(void)
-: Card(CK_FILTER)
+: Card(CK_PERMUTATION)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
