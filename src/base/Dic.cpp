@@ -91,6 +91,11 @@ void Dic::vAddWord(Word* pWord)
   
   SkipNode* pSkipNode = m_pWordSkipList->pNewly();
   pWord->m_pSkipNode = pSkipNode;
+
+  if(m_sDicNm.bSame("tables"_Stz))
+  {
+    pWord->m_bTableBit = true;
+  }
   
   m_okLock.vDropWrite();
   

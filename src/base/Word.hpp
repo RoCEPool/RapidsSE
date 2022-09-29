@@ -31,6 +31,7 @@ namespace BASE
     bool      m_bPersistent;  // is on persistent heap
     i8        m_iTrace;       // trace level
     TagSet*   m_pWrdTagSet;   // optional tag set
+    bool      m_bTableBit;    // is this word part of the table dic
 
     //*
     //* the following two must be together in this order
@@ -111,6 +112,7 @@ namespace BASE
     Word* pPrevWord(void);
     void  vResetCodeBlock(void);
     SkipNode* pSkipNode(void);
+    bool  bTableBit(void);
     eWK   eWord(void);
     void  vWord(eWK eWord);
     Stz*  szWordNm(void);

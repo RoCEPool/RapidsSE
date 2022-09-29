@@ -27,6 +27,7 @@ void* Word::operator new(size_t, Dic* pDic)
   
   pWord->m_bPersistent = false;
   pWord->m_pDic = pDic;
+//  pWord->m_bTableBit   = false;
   
   return pWord;
 }
@@ -66,7 +67,7 @@ Word::Word(Stz* szWordNm)
 #endif
   
   m_pSkipNode  = nullptr;
-  
+
   m_sWordNm    = szWordNm;
   
   if (! m_sWordNm.bSame(szWordNm)) {
@@ -86,7 +87,7 @@ Word::Word(Stz* szWordNm)
   //m_bPersistent   = false;
   m_iTrace     = 0;
   m_pWrdTagSet = nullptr;
-
+  m_bTableBit   = false;
   m_pCodeBlock  = nullptr; // new CodeBlock(this);
   m_aInxPtr     = nullptr; // aFirstCell();
 
@@ -609,6 +610,16 @@ SkipNode* Word::pSkipNode(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
   return m_pSkipNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the table bit                                                          */
+/*----------------------------------------------------------------------------*/
+bool Word::bTableBit(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+
+  return m_bTableBit;
 }
 
 /*----------------------------------------------------------------------------*/
