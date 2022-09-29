@@ -27,7 +27,7 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
 
   m_p_absJoin     = nullptr;
   m_p_aggreg      = nullptr;
-  m_p_combine     = nullptr;
+  m_p_combined     = nullptr;
   m_p_filter      = nullptr;
   m_p_gbyElist    = nullptr;
   m_p_indexJoin   = nullptr;
@@ -101,7 +101,7 @@ eCK TransformerTool::eDecodeMain(Card* pCard)
 
     case CK_ABSJOIN:    m_p_absJoin     = _pCard_AbsJoin(pCard);   break;
     case CK_AGGREG:     m_p_aggreg      = _pCard_Aggreg(pCard);    break;
-    case CK_COMBINE:    m_p_combine     = _pCard_Combine(pCard);   break;
+    case CK_COMBINED:   m_p_combined    = _pCard_Combined(pCard);   break;
     case CK_FILTER:     m_p_filter      = _pCard_Filter(pCard);    break;
     case CK_GBYELIST:   m_p_gbyElist    = _pCard_GbyElist(pCard);  break;
     case CK_INDEXJOIN:  m_p_indexJoin   = _pCard_IndexJoin(pCard); break;

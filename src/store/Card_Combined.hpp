@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_Combine.hpp -- Combine                                                */
+/* Card_Combined.hpp -- Combined                                              */
 /*============================================================================*/
 #pragma once
 
@@ -7,18 +7,18 @@
 
 namespace STORE
 {
-  class Card_Combine : public Card
+  class Card_Combined : public Card
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Combine(void);
-   ~Card_Combine(void) noexcept(false);
+    Card_Combined(void);
+   ~Card_Combined(void) noexcept(false);
   };
 
-  Card_Combine* _pCard_Combine(void* aAddr);
-  bool _bIsCard_Combine(void* aAddr);
+  Card_Combined* _pCard_Combined(void* aAddr);
+  bool _bIsCard_Combined(void* aAddr);
 }
 
 /*============================================================================*/

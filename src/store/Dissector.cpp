@@ -259,7 +259,7 @@ Card* Dissector::pCard_Combined(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
       
-  Card_Combine* pCard_Combine = new Card_Combine;
+  Card_Combined* pCard_Combine = new Card_Combined;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

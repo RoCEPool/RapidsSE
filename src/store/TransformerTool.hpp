@@ -28,7 +28,7 @@ namespace STORE
 
     Card_AbsJoin*    m_p_absJoin;
     Card_Aggreg*     m_p_aggreg;
-    Card_Combine*    m_p_combine;
+    Card_Combined*    m_p_combined;
     Card_Filter*     m_p_filter;
     Card_GbyElist*   m_p_gbyElist;
     Card_IndexJoin*  m_p_indexJoin;

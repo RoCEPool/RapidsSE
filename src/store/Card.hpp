@@ -38,7 +38,7 @@ namespace STORE {
   class Card_CalcBool;
   class Card_CandIndex;
   class Card_Card;
-  class Card_Combine;
+  class Card_Combined;
 
   class Card_Debug;
   class Card_Direction;

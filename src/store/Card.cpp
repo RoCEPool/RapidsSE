@@ -2619,7 +2619,7 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
     case CK_CALCBOOL:                   vPrintProperties(pRibbon,iDepth); break;
     case CK_CANDINDEX:                  vPrintProperties(pRibbon,iDepth); break;
     case CK_CARD:       vCardPrint                      (pRibbon,iDepth); break;
-    case CK_COMBINE:                    vPrintProperties(pRibbon,iDepth); break;
+    case CK_COMBINED:                    vPrintProperties(pRibbon,iDepth); break;
                         
     case CK_DEBUG:                      vPrintProperties(pRibbon,iDepth); break;
     case CK_DIRECTION:                  vPrintProperties(pRibbon,iDepth); break;

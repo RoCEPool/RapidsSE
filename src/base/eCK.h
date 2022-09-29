@@ -20,7 +20,7 @@ enum eCK // card kind
   /* */ CK_CALCBOOL,
   /* */ CK_CANDINDEX,
   /* */ CK_CARD,
-  /* */ CK_COMBINE,
+  /* */ CK_COMBINED,
   
   /* */ CK_DEBUG,
   /* */ CK_DIRECTION,
@@ -99,6 +99,8 @@ enum eCK // card kind
   /* */ CK_ENUMS
 };
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 static Stz* aCK[]
 {
   /* */ "NONE"_Stz,
@@ -116,7 +118,7 @@ static Stz* aCK[]
   /* */ "CK_CALCBOOL"_Stz,     // CK_CALCBOOL
   /* */ "CK_CANDINDEX"_Stz,    // CK_CANDINDEX
   /* */ "CK_CARD"_Stz,         // CK_CARD
-  /* */ "CK_COMBINE"_Stz,      // CK_COMBINE
+  /* */ "CK_COMBINED"_Stz,     // CK_COMBINED
   
   /* */ "CK_DEBUG"_Stz,        // CK_DEBUG
   /* */ "CK_DIRECTION"_Stz,    // CK_DIRECTION
@@ -195,6 +197,8 @@ static Stz* aCK[]
   /* */ "ENUMS"_Stz
 };
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 static Stz* aCK_short[]
 {
   /* */ "NONE"_Stz,
@@ -212,7 +216,7 @@ static Stz* aCK_short[]
   /* */ "calcBool"_Stz,        // CK_CALCBOOL
   /* */ "candIndex"_Stz,       // CK_CANDINDEX
   /* */ "{card}"_Stz,          // CK_CARD
-  /* */ "combine"_Stz,         // CK_COMBINE
+  /* */ "combined"_Stz,        // CK_COMBINED
 
   /* */ "debug"_Stz,           // CK_DEBUG
   /* */ "direction"_Stz,       // CK_DIRECTION
@@ -255,6 +259,7 @@ static Stz* aCK_short[]
   /* */ "option"_Stz,          // CK_OPTION
   /* */ "ordAgg"_Stz,          // CK_ORDAGG
 
+  /* */ "permutation"_Stz,     // CK_PERMUTATION
   /* */ "predAnd"_Stz,         // CK_PREDAND
   /* */ "predCmp"_Stz,         // CK_PREDCMP
   /* */ "predOr"_Stz,          // CK_PREDOR
@@ -288,102 +293,6 @@ static Stz* aCK_short[]
   /* */ "unique"_Stz,          // CK_UNIQUE
 
   /* */ "ENUMS"_Stz
-};
-
-static Stz* aCK_op[]
-{
-  /* */ "NONE"_Stz,
-
-  /* */ "abstractJoin "_Stz,   // CK_ABSJOIN
-  /* */ "(none)"_Stz,          // CK_AGGELIST
-  /* */ "(none)"_Stz,          // CK_AGGLEVEL
-  /* */ "aggreg   "_Stz,       // CK_AGGREG
-  /* */ "(none)"_Stz,          // CK_AGGREGATES
-  /* */ "(none)"_Stz,          // CK_AS
-
-  /* */ "(none)"_Stz,          // CK_BOARD
-
-  /* */ "(none)"_Stz,          // CK_CALC
-  /* */ "(none)"_Stz,          // CK_CALCBOOL
-  /* */ "(none)"_Stz,          // CK_CANDINDEX
-  /* */ "(none)"_Stz,          // CK_CARD
-  /* */ "combined  0"_Stz,     // CK_COMBINE
-
-  /* */ "(none)"_Stz,          // CK_DEBUG
-  /* */ "(none)"_Stz,          // CK_DIRECTION
-
-  /* */ "(none)"_Stz,          // CK_EBOUND
-  /* */ "(none)"_Stz,          // CK_EXISTS
-  /* */ "(none)"_Stz,          // CK_EXPR
-  /* */ "(none)"_Stz,          // CK_EXPRBOOL
-
-  /* */ "filter   "_Stz,       // CK_FILTER
-  /* */ "(none)"_Stz,          // CK_FILTELIST
-
-  /* */ "(none)"_Stz,          // CK_GBYELIST
-  /* */ "(none)"_Stz,          // CK_GENERATE
-
-  /* */ "(none)"_Stz,          // CK_HASH
-  /* */ "filter   "_Stz,       // CK_HAVING
-
-  /* */ "(none)"_Stz,          // CK_IDXCOL
-  /* */ "(none)"_Stz,          // CK_IDXCOLLIST
-  /* */ "(none)"_Stz,          // CK_INDEX
-  /* */ "indexJoin"_Stz,       // CK_INDEXJOIN
-  /* */ "(none)"_Stz,          // CK_INDEXLIST
-  /* */ "(none)"_Stz,          // CK_INDEXPRED
-  /* */ "indexScan"_Stz,       // CK_INDEXSCAN
-
-  /* */ "joinPred "_Stz,       // CK_JOINPRED
-
-  /* */ "(none)"_Stz,          // CK_LBOUND
-  /* */ "limit     "_Stz,      // CK_LIMIT
-
-  /* */ "(none)"_Stz,          // CK_MAP
-  /* */ "(none)"_Stz,          // CK_MAPSET
-  /* */ "(none)"_Stz,          // CK_MODE
-
-  /* */ "(none)"_Stz,          // CK_NAME
-
-  /* */ "(none)"_Stz,          // CK_OBYELIST
-  /* */ "(none)"_Stz,          // CK_ON
-  /* */ "(none)"_Stz,          // CK_OPTION
-  /* */ "ordagg    "_Stz,      // CK_ORDAGG
-
-  /* */ "permutation"_Stz,     // CK_PERMUTATION
-  /* */ "(none)"_Stz,          // CK_PREDAND
-  /* */ "(none)"_Stz,          // CK_PREDCMP
-  /* */ "(none)"_Stz,          // CK_PREDOR
-  /* */ "project  "_Stz,       // CK_PROJECT
-  /* */ "(none)"_Stz,          // CK_PROJELIST
-
-  /* */ "(none)"_Stz,          // CK_RBOUND
-  /* */ "(none)"_Stz,          // CK_ROWS
-  /* */ "(none)"_Stz,          // CK_RPNTERMS
-
-  /* */ "(none)"_Stz,          // CK_SBYELIST
-  /* */ "scan     "_Stz,       // CK_SCAN
-  /* */ "(none)"_Stz,          // CK_SCANPRED
-  /* */ "(none)"_Stz,          // CK_SEND
-  /* */ "(none)"_Stz,          // CK_SENDKIND
-  /* */ "(none)"_Stz,          // CK_SENDS
-  /* */ "sort       "_Stz,     // CK_SORT
-  /* */ "(none)"_Stz,          // CK_STAGE
-  /* */ "(none)"_Stz,          // CK_STAGETOPO
-  /* */ "(none)"_Stz,          // CK_STREAM
-  /* */ "(none)"_Stz,          // CK_STREAMCOL
-  /* */ "(none)"_Stz,          // CK_STREAMCOLLIST
-  /* */ "(none)"_Stz,          // CK_STREAMELIST
-  /* */ "(none)"_Stz,          // CK_SUBSET
-
-  /* */ "(none)"_Stz,          // CK_TABLE
-  /* */ "(none)"_Stz,          // CK_TERM
-  /* */ "(none)"_Stz,          // CK_TYPE
-
-  /* */ "(none)"_Stz,          // CK_UBOUND
-  /* */ "(none)"_Stz,          // CK_UNIQUE
-
-  /* */ "ENUMS"_Stz,
 };
 
 /*============================================================================*/

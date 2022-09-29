@@ -204,26 +204,25 @@ void Weaver::vOp(Card* pCard)
   
   switch (eCard) {
 
-    case CK_ABSJOIN:    vArgAbsJoin  (sOpArgs,_pCard_AbsJoin(pCard));  break;
-    case CK_AGGREG:     vArgAggreg   (sOpArgs,_pCard_Aggreg(pCard));  break;
-    case CK_COMBINE:    vArgCombine  (sOpArgs,_pCard_Combine(pCard));  break;
-    case CK_FILTER:     vArgFilter   (sOpArgs,_pCard_Filter(pCard));  break;
-    case CK_HAVING:     vArgHaving   (sOpArgs, _pCard_Having(pCard));  break;
-    case CK_INDEXJOIN:  vArgIndexJoin(sOpArgs,_pCard_IndexJoin(pCard));  break;
-    case CK_INDEXSCAN:  vArgIndexScan(sOpArgs,_pCard_IndexScan(pCard));  break;
-    case CK_LIMIT:      vArgLimit    (sOpArgs,_pCard_Limit(pCard));  break;
-    case CK_PROJECT:    vArgProject  (sOpArgs,_pCard_Project(pCard));  break;
-    case CK_SCAN:       vArgScan     (sOpArgs,_pCard_Scan(pCard));  break;
-    case CK_SORT:       vArgSort     (sOpArgs,_pCard_Sort(pCard));  break;
+    case CK_ABSJOIN:    vArgAbsJoin  (sOpArgs,_pCard_AbsJoin(pCard));   break;
+    case CK_AGGREG:     vArgAggreg   (sOpArgs,_pCard_Aggreg(pCard));    break;
+    case CK_COMBINED:   vArgCombined (sOpArgs,_pCard_Combined(pCard));  break;
+    case CK_FILTER:     vArgFilter   (sOpArgs,_pCard_Filter(pCard));    break;
+    case CK_HAVING:     vArgHaving   (sOpArgs, _pCard_Having(pCard));   break;
+    case CK_INDEXJOIN:  vArgIndexJoin(sOpArgs,_pCard_IndexJoin(pCard)); break;
+    case CK_INDEXSCAN:  vArgIndexScan(sOpArgs,_pCard_IndexScan(pCard)); break;
+    case CK_LIMIT:      vArgLimit    (sOpArgs,_pCard_Limit(pCard));     break;
+    case CK_PROJECT:    vArgProject  (sOpArgs,_pCard_Project(pCard));   break;
+    case CK_SCAN:       vArgScan     (sOpArgs,_pCard_Scan(pCard));      break;
+    case CK_SORT:       vArgSort     (sOpArgs,_pCard_Sort(pCard));      break;
 
     default:
-      //{;}
       vTrace("  skipping %s\n"_Stz,aCK[eCard]);
       return;
   }
   
   vTabOp();
-  vConcat("%s %s"_Stz,aCK_op[eCard],sOpArgs.szStz());
+  vConcat("%-9s %s"_Stz,aCK_short[eCard],sOpArgs.szStz());
   vEolOp();
   m_i_Op_stage++;
 }
@@ -258,7 +257,7 @@ void Weaver::vArgAggreg(Stz* szOpArgs, Card_Aggreg* pCard_Aggreg)
 /*----------------------------------------------------------------------------*/
 /* weave : combine 0                                                          */
 /*----------------------------------------------------------------------------*/
-void Weaver::vArgCombine(Stz* szOpArgs, Card_Combine* pCard_Combine)
+void Weaver::vArgCombined(Stz* szOpArgs, Card_Combined* pCard_Combine)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
     
@@ -268,7 +267,7 @@ void Weaver::vArgCombine(Stz* szOpArgs, Card_Combine* pCard_Combine)
   
   vRpnCombine(sRpnExpr,pCard_Combine);
 
-  //szOpArgs->vCatSprint("\"%s \""_Stz,sRpnExpr.szStz());
+  szOpArgs->vCatSprint("%s"_Stz,sRpnExpr.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -516,11 +515,12 @@ void Weaver::vRpnAggreg(Stz* szRpnExpr, Card_Aggreg* pCard_Aggreg)
 /*----------------------------------------------------------------------------*/
 /* expr for combine                                                           */
 /*----------------------------------------------------------------------------*/
-void Weaver::vRpnCombine(Stz* szRpnExpr, Card_Combine* pCard_Combine)
+void Weaver::vRpnCombine(Stz* szRpnExpr, Card_Combined* pCard_Combine)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
-  
-  // ???
+
+  Card_Term* pCard_Term = _pCard_Term(pCard_Combine->pGet(0));
+  szRpnExpr->vCatSprint("%s"_Stz,pCard_Term->szTerm());
 }
 
 /*----------------------------------------------------------------------------*/

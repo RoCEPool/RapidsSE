@@ -852,7 +852,7 @@ void Board::vResolveJoin(Card_AbsJoin* pCard_AbsJoin)
 
   m_pCard_SubSet->vInsertAfter(pIndexJoin,pCard_AbsJoin);
 
-  Card_Combine* pCard_Combine = new Card_Combine;
+  Card_Combined* pCard_Combine = new Card_Combined;
   m_pCard_SubSet->vInsertAfter(pCard_Combine,pIndexJoin);
 
 
@@ -900,7 +900,7 @@ void Board::vResolveJoin2(Card_AbsJoin* pCard_AbsJoin)
 
   m_pCard_SubSet->vInsertAfter(pIndexJoin,pCard_AbsJoin);
 
-  Card_Combine* pCard_Combine = new Card_Combine;
+  Card_Combined* pCard_Combine = new Card_Combined;
   m_pCard_SubSet->vInsertAfter(pCard_Combine,pIndexJoin);
 
   //delete pCard_PredCmp;
@@ -939,7 +939,7 @@ void Board::vResolveJoin3(Card_IndexJoin* pCard_IndexJoin)
   Card_Index* pCard_Index = _pCard_Index(pCard_IndexJoin->pFindSubCard(CK_INDEX));
   pCard_IndexJoin->vInsertAfter(pCard_IndexPred,pCard_Index);
 
-  Card_Combine* pCard_Combine = new Card_Combine;
+  Card_Combined* pCard_Combine = new Card_Combined;
   m_pCard_SubSet->vInsertAfter(pCard_Combine,pCard_IndexJoin);
 }
 
@@ -1795,7 +1795,7 @@ void Board::vSimplify_Initial(void)
       continue;
 
     Card* pCombine_3 = pGetMainCard(i_Test++);
-    if (CK_COMBINE != pCombine_3->eCard())
+    if (CK_COMBINED != pCombine_3->eCard())
       continue;
 
     Card* pSend_3 = pGetMainCard(i_Test++);
