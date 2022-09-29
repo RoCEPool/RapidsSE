@@ -2844,49 +2844,12 @@ void Card::vType(Stz* szType)
 /*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
-void Card::vPrintCard(Ribbon* pRibbon, i8 iDepth, i8 iBelow)
+void Card::vPrintCard(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  bool bPrune = false;
-  CardCtl* pCardCtl = _pCardCtl(pRibbon->pCtl());
-  
-  if (pCardCtl->iBelow(m_eCard))
-    iBelow = pCardCtl->iBelow(m_eCard);
-
-  if (iDepth <= pCardCtl->iDepth() || iBelow || pCardCtl->iPrint(m_eCard)) {
-    
-    i8 iForm = pCardCtl->iForm(m_eCard);
-    
-    if (iForm) {
-      if (! m_pProperties)
-        vPrintName(pRibbon,iDepth);
-    }
-    else {
-      vPrintName(pRibbon,iDepth);
-    }
-    vPrintDetails(pRibbon,iDepth,bPrune);
-  }
-
-  //vMark2(' ');
-  if (bPrune)
-    return;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  ListExoIter2_t<Card>* pCard_I = pNewIter();
-  while (pCard_I->bHasNext()) {
-    Card* pCard = pCard_I->pNext();
-
-    pCard->vPrintCard(pRibbon,iDepth + 1,iBelow);
-  }
-
-  delete pCard_I;
-}
-/*----------------------------------------------------------------------------*/
-void Card::vPrintCard2(Ribbon* pRibbon, i8 iDepth)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  if (0 == iDepth)
+    vPrintHeader(pRibbon);
 
   bool bPrune = false;
   CardCtl* pCardCtl = _pCardCtl(pRibbon->pCtl());
@@ -2911,7 +2874,7 @@ void Card::vPrintCard2(Ribbon* pRibbon, i8 iDepth)
   ListExoIter2_t<Card>* pSubCard_I = pNewIter();
   while (pSubCard_I->bHasNext()) {
     Card* pSubCard = pSubCard_I->pNext();
-    pSubCard->vPrintCard2(pRibbon,iDepth + 1);
+    pSubCard->vPrintCard(pRibbon, iDepth + 1);
   }
 
   delete pSubCard_I;

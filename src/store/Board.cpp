@@ -519,28 +519,15 @@ void Board::vPinCards(Ribbon* pRibbon, i8 i_Board)
   while (pBoard_I->bHasNext()) {
     Card* pCard = pBoard_I->pNext();
 
-    //pCard->vDump();
-    
-    //if (_bIsCard_Filter(pCard))
-    //  pCard->vDump();
-
-//    if (pCard->bIsCard(CK_STAGE) && pSubRibbon->iChar())
-//      pSubRibbon->vNextHorizontal();
-
-
     if (! nCount++)
       pSubRibbon->vFirstColumn();
     else
-    if (pCard->bIsCard(CK_STAGE) && pSubRibbon->iChar()) {
+    if (pCard->bIsCard(CK_STAGE) && pSubRibbon->iChar())
       pSubRibbon->vNextHorizontal();
-      //pSubRibbon->vFirstColumn();
-    }
     else
       pSubRibbon->vNextColumn();
-    pCard->vPrintHeader(pSubRibbon);
 
-    //pCard->vPrintCard(pSubRibbon,0,0);
-    pCard->vPrintCard2(pSubRibbon,0);
+    pCard->vPrintCard(pSubRibbon, 0);
   }
      
   pRibbon->vPinRibbon(1,0,pSubRibbon);
