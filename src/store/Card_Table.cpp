@@ -7,6 +7,7 @@
 #include "Card_IndexPtr.hpp"
 #include "Card_IdxColList.hpp"
 #include "Card_IndexList.hpp"
+#include "Card_TableSyn.hpp"
 
 #include "PtnDef.hpp"
 
@@ -48,7 +49,21 @@ Card_Table::~Card_Table(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+char Card_Table::cTableSyn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  Card_TableSyn* p_tableSyn = _pGetSub_Card_TableSyn(this);
+  if (! p_tableSyn)
+    return '?';
+
+  char cTableSyn = p_tableSyn->cTableSyn();
+
+  return cTableSyn;
+}
 
 /*============================================================================*/
 /* end                                                                        */

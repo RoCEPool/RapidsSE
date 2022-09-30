@@ -56,11 +56,34 @@ void Permutor::vCompute_coPtnList(void)
 
   pBoard_permute->vAppendMainCard(p_coPtnList);
 
+  Card_TableList* p_tableList =
+      _pCard_TableList(pBoard_permute->pFindMain(CK_TABLELIST));
+  Card_JoinPredList* p_joinPredList =
+      _pCard_JoinPredList(pBoard_permute->pFindMain(CK_JOINPREDLIST));
 
+  i8 nJoinPreds = p_joinPredList->nChildCards();
+  for (i8 i_joinPred = 0; i_joinPred < nJoinPreds; i_joinPred++) {
+    Card_PredCmp* p_predCmp =
+        _pCard_PredCmp(p_joinPredList->pGetChild(i_joinPred));
+
+//    Card_ColumnRef* p_columnRef_0 =
+//        _pCard_ColumnRef(p_predCmp->pGetChild(0));
+//    Card_ColumnRef* p_columnRef_1 =
+//        _pCard_ColumnRef(p_predCmp->pGetChild(1));
+
+    if (! p_tableList->bPredCmpIsCoPtn(p_predCmp))
+      continue;
+
+    Card_CoPtn* p_coPtn = new Card_CoPtn;
+//    p_coPtn->vAppend(p_columnRef_0->pDupCardAndSubCards());
+//    p_coPtn->vAppend(p_columnRef_1->pDupCardAndSubCards());
+    p_coPtn->vAppend(p_predCmp->pDupCardAndSubCards());
+
+    p_coPtnList->vAppend(p_coPtn);
+  }
 
   if (m_bInteractive)
     pBoard_permute->vPrintBoard("Permutor::vCompute_coPtnList"_Stz);
-
 }
 
 /*----------------------------------------------------------------------------*/
