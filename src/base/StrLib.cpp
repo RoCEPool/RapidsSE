@@ -3170,6 +3170,19 @@ bool StrLib::bIsLessThan(const char c)
 }
 
 /*----------------------------------------------------------------------------*/
+/* bIsLowerCase: is char a lower case char?                                   */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsLowerCase(const char c)
+{
+  _static_
+
+  if (c >= 'a' and c <= 'z')
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bIsMinus: is char a minus sign?                                            */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bIsMinus(const char c)
@@ -3398,6 +3411,19 @@ bool StrLib::bIsUnderscore(const char c)
   _static_
   
   if ('_' == c)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsUpperCase: is char an upper case char?                                  */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsUpperCase(const char c)
+{
+  _static_
+
+  if (c >= 'A' and c <= 'Z')
     return true;
   else
     return false;

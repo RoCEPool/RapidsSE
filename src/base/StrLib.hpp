@@ -176,6 +176,7 @@ namespace BASE
     static bool  bIsInteger(char* azArg);
     static bool  bIsIPAddr(const char* azArg);
     static bool  bIsLessThan(const char c);
+    static bool  bIsLowerCase(const char c);
     static bool  bIsMinus(const char c);
     static bool  bIsNameBodyChar(const char c);
     static bool  bIsNameStartChar(const char c);
@@ -194,6 +195,7 @@ namespace BASE
     static bool  bIsSlash(const char c);
     static bool  bIsTilde(const char c);
     static bool  bIsUnderscore(const char c);
+    static bool  bIsUpperCase(const char c);
     static bool  bIsWhite(const char c);
     static bool  bIsX(const char c);
 

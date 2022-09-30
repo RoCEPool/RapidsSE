@@ -86,6 +86,9 @@ bool Card_TableList::bPredCmpIsCoPtn(Card_PredCmp* p_predCmp)
   char cTableSyn_0 = p_columnRef_0->cColumnRef_tableSyn();
   char cTableSyn_1 = p_columnRef_1->cColumnRef_tableSyn();
 
+  if (StrLib::bIsUpperCase(cTableSyn_0) || StrLib::bIsUpperCase(cTableSyn_1))
+    return true;
+
   Card_Table* p_table_0 = pFind_table(cTableSyn_0);
   Card_TablePtn* p_tablePtn_0 = _pGetSub_Card_TablePtn(p_table_0);
   Stz* szPtnColumnRef_0 = p_tablePtn_0->szColumnRef();
