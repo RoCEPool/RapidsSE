@@ -21,6 +21,7 @@ enum eCK // card kind
   /* */ CK_COLUMNREF,
   /* */ CK_COMBINED,
   /* */ CK_COPTN,
+  /* */ CK_COPTNLIST,
   /* */ CK_COPTNPRED,
   /* */ CK_CROSSPTNPRED,
 
@@ -126,6 +127,7 @@ static Stz* aCK[]
   /* */ "CK_COLUMNREF"_Stz,    // CK_COLUMNREF
   /* */ "CK_COMBINED"_Stz,     // CK_COMBINED
   /* */ "CK_COPTN"_Stz,        // CK_COPTN
+  /* */ "CK_COPTNLIST"_Stz,    // CK_COPTNLIST
   /* */ "CK_COPTNPRED"_Stz,    // CK_COPTNPRED
   /* */ "CK_CROSSPTNPRED"_Stz, // CK_CROSSPTNPRED
 
@@ -231,6 +233,7 @@ static Stz* aCK_short[]
   /* */ "columnRef"_Stz,       // CK_COLUMNREF
   /* */ "combined"_Stz,        // CK_COMBINED
   /* */ "co-ptn"_Stz,          // CK_COPTN
+  /* */ "co-ptnList"_Stz,      // CK_COPTNLIST
   /* */ "co-ptnPred"_Stz,      // CK_COPTNPRED
   /* */ "cross-ptnPred"_Stz,   // CK_CROSSPTNPRED
 
