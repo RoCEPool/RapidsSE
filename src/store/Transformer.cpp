@@ -167,6 +167,9 @@ void Transformer::vTransform2(void)
 
 
 
+  m_pColumnar->vAdd_ColumnRef();
+  if (m_bInteractive)
+    pBoard_query->vPrintBoard("Columnar::vAdd_ColumnRef"_Stz);
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -345,6 +345,28 @@ Stz* Card::szCardNm(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get columnRef                                                              */
+/*----------------------------------------------------------------------------*/
+Stz* Card::szColumnRef(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Stz *szColumnRef = szGetProperty("szColumnRef"_Stz);
+
+  return szColumnRef;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set columnRef                                                              */
+/*----------------------------------------------------------------------------*/
+void Card::vColumnRef(Stz* szColumnRef)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  vAddProperty("szColumnRef"_Stz,szColumnRef);
+}
+
+/*----------------------------------------------------------------------------*/
 /* cut given property                                                         */
 /*----------------------------------------------------------------------------*/
 void Card::vCutProperty(Stz* szName)
@@ -2646,8 +2668,9 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
     case CK_CALC:                       vPrintProperties(pRibbon,iDepth); break;
     case CK_CALCBOOL:                   vPrintProperties(pRibbon,iDepth); break;
     case CK_CANDINDEX:                  vPrintProperties(pRibbon,iDepth); break;
-    case CK_CARDPTR:       vCardPrint                      (pRibbon, iDepth); break;
-    case CK_COMBINED:                    vPrintProperties(pRibbon,iDepth); break;
+    case CK_CARDPTR:          vCardPrint               (pRibbon, iDepth); break;
+    case CK_COLUMNREF:                  vPrintProperties(pRibbon,iDepth); break;
+    case CK_COMBINED:                   vPrintProperties(pRibbon,iDepth); break;
                         
     case CK_DEBUG:                      vPrintProperties(pRibbon,iDepth); break;
     case CK_DIRECTION:                  vPrintProperties(pRibbon,iDepth); break;
@@ -2668,7 +2691,7 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
 
     case CK_IDXCOL:                     vPrintProperties(pRibbon,iDepth); break;
     case CK_IDXCOLLIST:                 vPrintProperties(pRibbon,iDepth); break;
-    case CK_INDEXPTR:      vIndexPrint                     (pRibbon, iDepth); break;
+    case CK_INDEXPTR:        vIndexPrint               (pRibbon, iDepth); break;
     case CK_INDEXJOIN:                  vPrintProperties(pRibbon,iDepth); break;
     case CK_INDEXLIST:                  vPrintProperties(pRibbon,iDepth); break;
     case CK_INDEXPRED:                  vPrintProperties(pRibbon,iDepth); break;
@@ -2715,9 +2738,9 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
 
     case CK_TABLE:                      vPrintProperties(pRibbon,iDepth); break;
     case CK_TABLELIST:                  vPrintProperties(pRibbon,iDepth); break;
-    case CK_TABLEPTR:   vTablePrint                     (pRibbon, iDepth); break;
+    case CK_TABLEPTR:        vTablePrint               (pRibbon, iDepth); break;
     case CK_TABLESYN:                   vPrintProperties(pRibbon,iDepth); break;
-    case CK_TERM:       vTermPrint                      (pRibbon,iDepth); break;
+    case CK_TERM:             vTermPrint                (pRibbon,iDepth); break;
     case CK_TYPE:                       vPrintProperties(pRibbon,iDepth); break;
 
     case CK_UBOUND:                     vPrintProperties(pRibbon,iDepth); break;

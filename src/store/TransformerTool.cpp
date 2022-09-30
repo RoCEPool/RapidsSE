@@ -29,7 +29,8 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
 
   m_p_absJoin     = nullptr;
   m_p_aggreg      = nullptr;
-  m_p_combined     = nullptr;
+  m_p_calcBool    = nullptr;
+  m_p_combined    = nullptr;
   m_p_filter      = nullptr;
   m_p_gbyElist    = nullptr;
   m_p_indexJoin   = nullptr;

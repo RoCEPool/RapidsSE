@@ -178,6 +178,8 @@ namespace STORE
     Stz* szCardNm(void);
     i8   iCardNo(void);
     void vCardNo(i8 iCardNo);
+    Stz* szColumnRef(void);
+    void vColumnRef(Stz* szColumnRef);
     void vCutProperty(Stz* szName);
     void vCutSubCard(Card* pSubCard);
 
