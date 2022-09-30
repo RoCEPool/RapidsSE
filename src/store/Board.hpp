@@ -26,6 +26,7 @@
 #include "Card_CoPtn.hpp"
 #include "Card_CoPtnList.hpp"
 #include "Card_CoPtnPred.hpp"
+#include "Card_CoPtnPredList.hpp"
 #include "Card_CrossPtnPred.hpp"
 
 #include "Card_Debug.hpp"

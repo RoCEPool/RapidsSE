@@ -23,6 +23,7 @@ enum eCK // card kind
   /* */ CK_COPTN,
   /* */ CK_COPTNLIST,
   /* */ CK_COPTNPRED,
+  /* */ CK_COPTNPREDLIST,
   /* */ CK_CROSSPTNPRED,
 
   /* */ CK_DEBUG,
@@ -129,6 +130,7 @@ static Stz* aCK[]
   /* */ "CK_COPTN"_Stz,        // CK_COPTN
   /* */ "CK_COPTNLIST"_Stz,    // CK_COPTNLIST
   /* */ "CK_COPTNPRED"_Stz,    // CK_COPTNPRED
+  /* */ "CK_COPTNPREDLIST"_Stz,// CK_COPTNPREDLIST
   /* */ "CK_CROSSPTNPRED"_Stz, // CK_CROSSPTNPRED
 
   /* */ "CK_DEBUG"_Stz,        // CK_DEBUG
@@ -235,6 +237,7 @@ static Stz* aCK_short[]
   /* */ "co-ptn"_Stz,          // CK_COPTN
   /* */ "co-ptnList"_Stz,      // CK_COPTNLIST
   /* */ "co-ptnPred"_Stz,      // CK_COPTNPRED
+  /* */ "co-ptnPredList"_Stz,  // CK_COPTNPREDLIST
   /* */ "cross-ptnPred"_Stz,   // CK_CROSSPTNPRED
 
   /* */ "debug"_Stz,           // CK_DEBUG

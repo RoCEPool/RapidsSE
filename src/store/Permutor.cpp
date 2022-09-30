@@ -44,7 +44,7 @@ Permutor::~Permutor(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Permutor::vCompute_coPtnList(void)
+void Permutor::vCompute_coPtnPredList(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PERMUTOR, _FOOTER_);
 
@@ -52,9 +52,9 @@ void Permutor::vCompute_coPtnList(void)
   if (!pBoard_permute)
     pBoard_permute = new Board(BK_PERMUTE, m_pBench);
 
-  Card_CoPtnList* p_coPtnList = new Card_CoPtnList;
+  Card_CoPtnPredList* p_coPtnPredList = new Card_CoPtnPredList;
 
-  pBoard_permute->vAppendMainCard(p_coPtnList);
+  pBoard_permute->vAppendMainCard(p_coPtnPredList);
 
   Card_TableList* p_tableList =
       _pCard_TableList(pBoard_permute->pFindMain(CK_TABLELIST));
@@ -74,16 +74,16 @@ void Permutor::vCompute_coPtnList(void)
     if (! p_tableList->bPredCmpIsCoPtn(p_predCmp))
       continue;
 
-    Card_CoPtn* p_coPtn = new Card_CoPtn;
-//    p_coPtn->vAppend(p_columnRef_0->pDupCardAndSubCards());
-//    p_coPtn->vAppend(p_columnRef_1->pDupCardAndSubCards());
-    p_coPtn->vAppend(p_predCmp->pDupCardAndSubCards());
+    Card_CoPtnPred* p_coPtnPred = new Card_CoPtnPred;
+//    p_coPtnPred->vAppend(p_columnRef_0->pDupCardAndSubCards());
+//    p_coPtnPred->vAppend(p_columnRef_1->pDupCardAndSubCards());
+    p_coPtnPred->vAppend(p_predCmp->pDupCardAndSubCards());
 
-    p_coPtnList->vAppend(p_coPtn);
+    p_coPtnPredList->vAppend(p_coPtnPred);
   }
 
   if (m_bInteractive)
-    pBoard_permute->vPrintBoard("Permutor::vCompute_coPtnList"_Stz);
+    pBoard_permute->vPrintBoard("Permutor::vCompute_coPtnPredList"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
