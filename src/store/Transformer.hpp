@@ -17,6 +17,7 @@
 #include "Streamer.hpp"
 #include "Stager.hpp"
 #include "Tabular.hpp"
+#include "Columnar.hpp"
 
 namespace STORE
 {
@@ -26,6 +27,7 @@ namespace STORE
 
     CardCtl*     m_pCardCtl;
 
+    Columnar*    m_pColumnar;
     Combiner*    m_pCombiner;
     Curator*     m_pCurator;
     Filtrate*    m_pFiltrate;

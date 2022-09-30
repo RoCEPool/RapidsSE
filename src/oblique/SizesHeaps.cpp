@@ -259,6 +259,7 @@
 #include "PermGen.hpp"
 #include "Permutor.hpp"
 #include "Tabular.hpp"
+#include "Columnar.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -330,6 +331,7 @@ SizeHeap gxaSizeHeap[]
   { CN_CODEBLOCK,                sizeof(CodeBlock),          HT_T_MEDIUM  ,FILL },
   { CN_CODESYNTH,                sizeof(CodeSynth),          HT_T_LARGE   ,FILL },
   { CN_COLUMN,                   sizeof(Column),             HT_T_TINY    ,FILL },
+  { CN_COLUMNAR,                 sizeof(Columnar),           HT_T_TINY    ,FILL },
   { CN_COMBINED,                 sizeof(Combined),           HT_T_LARGE   ,FILL },
   { CN_COMBINER,                 sizeof(Combiner),           HT_T_TINY    ,FILL },
   { CN_CONDITIONALQUERYNODEITER, sizeof(ConditionalQueryNodeIter), HT_T_TINY,FILL },

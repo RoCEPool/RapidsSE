@@ -29,6 +29,7 @@ Transformer::Transformer(Bench* pBench)
 
   m_pCardCtl     = m_pOptimiser->pCardCtl();
 
+  m_pColumnar    = nullptr;
   m_pCombiner    = nullptr;
   m_pCurator     = nullptr;
   m_pFiltrate    = nullptr;
@@ -56,6 +57,8 @@ Transformer::~Transformer(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMER,_FOOTER_);
 
+  delete m_pColumnar;
+  delete m_pCombiner;
   delete m_pCurator;
   delete m_pFiltrate;
   delete m_pIndexer;
@@ -86,6 +89,7 @@ void Transformer::vTransform(void)
 
   //m_pBoard = m_pOptimiser->pHeadBoard();
 
+  m_pColumnar    = new Columnar(m_pBench);
   m_pCombiner    = new Combiner(m_pBench);
   m_pCurator     = new Curator(m_pBench);
   m_pFiltrate    = new Filtrate(m_pBench);
@@ -143,9 +147,9 @@ void Transformer::vTransform2(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  m_pTabular->vAdd_TableSyn();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Tabular::vAdd_TableSyn"_Stz);
+  //m_pTabular->vAdd_TableSyn();
+  //if (m_bInteractive)
+  //  pBoard_query->vPrintBoard("Tabular::vAdd_TableSyn"_Stz);
 
   //m_pPermutor->vXyz();
 
@@ -160,6 +164,10 @@ void Transformer::vTransform2(void)
   m_pFiltrate->vCalc_to_calcBool();
   if (m_bInteractive)
     pBoard_query->vPrintBoard("Filtrate::vCalc_to_calcBool"_Stz);
+
+
+
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append <stream> to all <scan> and then to all <absJoin>

@@ -60,6 +60,7 @@ enum eCN : u2 // Class Number
   /* */ CN_CODEBLOCK,
   /* */ CN_CODESYNTH,
   /* */ CN_COLUMN,
+  /* */ CN_COLUMNAR,
   /* */ CN_COMBINED,
   /* */ CN_COMBINER,
   /* */ CN_CONDITIONALQUERYNODEITER,
@@ -493,6 +494,7 @@ static Stz* aCN[]
   /* */ "CODEBLOCK"_Stz,            // CN_CODEBLOCK
   /* */ "CODESYNTH"_Stz,            // CN_CODESYNTH
   /* */ "COLUMN"_Stz,               // CN_COLUMN
+  /* */ "COLUMNAR"_Stz,             // CN_COLUMNAR
   /* */ "COMBINED"_Stz,             // CN_COMBINED
   /* */ "COMBINER"_Stz,             // CN_COMBINER
   /* */ "CONDITIONALQUERYNODEITER"_Stz, // CN_CONDITIONALQUERYNODEITER
