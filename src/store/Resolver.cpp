@@ -46,6 +46,40 @@ Resolver::~Resolver(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* resolve                                                                    */
 /*----------------------------------------------------------------------------*/
+void Resolver::vResolve_columnRef(String* psColumnRef, Stz* szTerm)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_RESOLVER, _FOOTER_);
+
+  RASSERT(BK_QUERY == m_pBoard->eBoard());
+
+  BoardIter xBI(m_pBoard);
+
+  while ( (m_pMainCard = xBI.pEachMain()) ) {
+    if (! (m_p_stream = _pGetSub_Card_Stream(m_pMainCard)) )
+      continue;
+
+    i8 iOrdLo = m_p_stream->iOrdLo();
+    i8 iOrdHi = m_p_stream->iOrdHi();
+
+    i8 iOrd = szTerm->iOrdinal() ;
+
+    if (! (iOrd >= iOrdLo && iOrd <= iOrdHi) )
+      continue;
+
+    m_p_table = _pGetSub_Card_Table(m_pMainCard);
+
+    m_p_tableSyn = _pGetSub_Card_TableSyn(m_p_table);
+    char cTableSyn = m_p_tableSyn->cTableSyn();
+
+    i8 iColumnRef = iOrd-iOrdLo+1;
+    psColumnRef->vSprint("$$%c.%lld"_Stz, cTableSyn, iColumnRef);
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* resolve                                                                    */
+/*----------------------------------------------------------------------------*/
 void Resolver::vResolve(Card* pMainCard, Stz* szTerm,
                         String* pStreamNm, String* pStreamColNm, i8& i_StreamColNo)
 {

@@ -179,6 +179,8 @@ namespace STORE
     i8   iCardNo(void);
     void vCardNo(i8 iCardNo);
     Stz* szColumnRef(void);
+    i8   iColumnRef_columnOrd(void);
+    char cColumnRef_tableSyn(void);
     void vColumnRef(Stz* szColumnRef);
     void vCutProperty(Stz* szName);
     void vCutSubCard(Card* pSubCard);
@@ -301,6 +303,7 @@ namespace STORE
     void vIndex(Index* pIndex);
     bool bIsAggOp(void);
     bool bIsCard(eCK eCard);
+    bool bIsColumnRef(void);
     bool bIsOrdinalColumnAtom(void);
     bool bIsOrdinalIndexAtom(void);
     bool bIsOrdinalStreamTerm(void);

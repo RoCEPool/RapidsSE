@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "Columnar.hpp"
+#include "Resolver.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -47,13 +48,19 @@ void Columnar::vAdd_ColumnRef(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABULAR,_FOOTER_);
 
-  auto bfTerm_columnRef = [](Card* pCard) {
+  Resolver* pResolver = new Resolver(m_pBench);
+
+  auto bfTerm_columnRef = [pResolver](Card* pCard) {
     Card_Term* p_term = _pCard_Term(pCard);
 
-    vTrace("bfTerm_columnRef: %s\n"_Stz,p_term->szTerm());
+    Stz* szTerm = p_term->szTerm();
+    vTrace("bfTerm_columnRef: %s\n"_Stz,szTerm);
+
+    s32 sColumnRef;
+    pResolver->vResolve_columnRef(sColumnRef,szTerm);
 
     Card_ColumnRef* p_columnRef = new Card_ColumnRef;
-    p_columnRef->vColumnRef(p_term->szTerm());
+    p_columnRef->vColumnRef(sColumnRef);
     p_term->vAppend(p_columnRef);
 
     return true;
@@ -72,6 +79,7 @@ void Columnar::vAdd_ColumnRef(void)
     m_p_calcBool->vVisitAllSub(CK_TERM,bfTerm_columnRef);
   }
 
+  delete pResolver;
 }
 
 

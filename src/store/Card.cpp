@@ -367,6 +367,38 @@ void Card::vColumnRef(Stz* szColumnRef)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get column ordinal of column ref                                           */
+/*----------------------------------------------------------------------------*/
+i8 Card::iColumnRef_columnOrd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Stz* szColumnRef = this->szColumnRef();
+
+  char* azColumnOrd = (szColumnRef->azChar() + 3);
+
+  i8 iColumnOrd = StrLib::iGleanInt(azColumnOrd);
+
+  return iColumnOrd;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get table syn of column ref                                                */
+/*----------------------------------------------------------------------------*/
+char Card::cColumnRef_tableSyn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Stz* szColumnRef = this->szColumnRef();
+
+  char cFirst  = szColumnRef->azChar()[0]; // $
+  char cSecond = szColumnRef->azChar()[1]; // $
+  char cThird  = szColumnRef->azChar()[2]; // c
+
+  return cThird;
+}
+
+/*----------------------------------------------------------------------------*/
 /* cut given property                                                         */
 /*----------------------------------------------------------------------------*/
 void Card::vCutProperty(Stz* szName)
@@ -1691,6 +1723,26 @@ bool Card::bIsCard(eCK eCard)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (eCard == this->eCard())
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is atom a column ordinal?                                                  */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsColumnRef(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Stz* szColumnRef = this->szColumnRef();
+
+  char cFirst  = szColumnRef->azChar()[0];
+  char cSecond = szColumnRef->azChar()[1];
+  char cThird  = szColumnRef->azChar()[2];
+  char cFourth = szColumnRef->azChar()[3];
+
+  if ('$' == cFirst && '$' == cSecond && '.' == cFourth)
     return true;
   else
     return false;

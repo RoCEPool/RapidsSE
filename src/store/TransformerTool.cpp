@@ -48,7 +48,9 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_p_stageTopo   = nullptr;
   m_p_stageTopo_a = nullptr;
   m_p_stageTopo_b = nullptr;
+  m_p_stream      = nullptr;
   m_p_table       = nullptr;
+  m_p_tableSyn    = nullptr;
   m_p_tablePtr    = nullptr;
   m_p_uBound      = nullptr;
 

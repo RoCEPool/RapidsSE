@@ -47,7 +47,9 @@ namespace STORE
     Card_StageTopo*  m_p_stageTopo;
     Card_StageTopo*  m_p_stageTopo_a;
     Card_StageTopo*  m_p_stageTopo_b;
+    Card_Stream*     m_p_stream;
     Card_Table*      m_p_table;
+    Card_TableSyn*   m_p_tableSyn;
     Card_TablePtr*   m_p_tablePtr;
     Card_UBound*     m_p_uBound;
 
