@@ -43,7 +43,7 @@ select * from supplier;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/cue = "Columnar::vAdd_ColumnRef"
+/cue = "Permutor::vExtract_joinPredList"
 /jobTags
 /transliterated
 /transform

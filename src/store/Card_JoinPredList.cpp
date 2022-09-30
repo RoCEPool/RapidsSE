@@ -14,18 +14,18 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_JoinPredList,CK_TABLELIST)
+__pCastFunction_Card(STORE,Card_JoinPredList,CK_JOINPREDLIST)
 __aNewFunction(Card_JoinPredList,CN_CARD)
 __vDeleteFunction(Card_JoinPredList,CN_CARD)
 
-__bIsCard(STORE,Card_JoinPredList,CK_TABLELIST)
-__pGetSubFunction_Card(STORE,Card_JoinPredList,CK_TABLELIST)
+__bIsCard(STORE,Card_JoinPredList,CK_JOINPREDLIST)
+__pGetSubFunction_Card(STORE,Card_JoinPredList,CK_JOINPREDLIST)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_JoinPredList::Card_JoinPredList(void)
-: Card(CK_TABLELIST)
+: Card(CK_JOINPREDLIST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -57,7 +57,7 @@ void Card_JoinPredList::vExtract_joinPredList(Card_CalcBool* p_calcBool)
 
     Card_PredCmp* p_predCmp = _pCard_PredCmp(pCard);
 
-    if (RO_EQUAL_TO != p_predCmp->eRelOp())
+    if (! p_predCmp->szCmp()->bSame("=="_Stz)) //RAYMOND CAN DO BETTER!
       return true;
 
     Card_Term* p_term_0 = _pCard_Term(p_predCmp->pGetChild(0));

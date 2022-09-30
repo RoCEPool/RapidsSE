@@ -2750,6 +2750,7 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
     case CK_INDEXSCAN:                  vPrintProperties(pRibbon,iDepth); break;
 
     case CK_JOINPRED:                   vPrintProperties(pRibbon,iDepth); break;
+    case CK_JOINPREDLIST:               vPrintProperties(pRibbon,iDepth); break;
 
     case CK_LBOUND:                     vPrintProperties(pRibbon,iDepth); break;
     case CK_LIMIT:                      vPrintProperties(pRibbon,iDepth); break;

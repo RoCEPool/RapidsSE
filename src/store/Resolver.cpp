@@ -25,7 +25,9 @@ Resolver::Resolver(Bench* pBench)
   m_pStream_r    = nullptr;
 
   _checkInitialised_(CN_RESOLVER);
-  
+
+  m_pBoard = m_pBench->pGetBoard(BK_QUERY);
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_RESOLVER,_FOOTER_);
 }
 

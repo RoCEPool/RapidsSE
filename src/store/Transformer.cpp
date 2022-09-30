@@ -144,18 +144,6 @@ void Transformer::vTransform2(void)
     pBoard_query->vPrintBoard("Sender::vDelete_Sends"_Stz);
 
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  m_pTabular->vAdd_TableSyn();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Tabular::vAdd_TableSyn"_Stz);
-
-  //m_pPermutor->vXyz();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 
 
 
@@ -164,6 +152,7 @@ void Transformer::vTransform2(void)
   m_pFiltrate->vCalc_to_calcBool();
   if (m_bInteractive)
     pBoard_query->vPrintBoard("Filtrate::vCalc_to_calcBool"_Stz);
+
 
 
 
@@ -201,11 +190,26 @@ void Transformer::vTransform2(void)
     pBoard_query->vPrintBoard("Streamer::vOrdinal_Range"_Stz);
 
 
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  m_pTabular->vAdd_TableSyn();
+  if (m_bInteractive)
+    pBoard_query->vPrintBoard("Tabular::vAdd_TableSyn"_Stz);
+
+  m_pPermutor->vExtract_tableList();
+
   m_pColumnar->vAdd_ColumnRef();
   if (m_bInteractive)
     pBoard_query->vPrintBoard("Columnar::vAdd_ColumnRef"_Stz);
 
 
+  m_pPermutor->vExtract_joinPredList();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

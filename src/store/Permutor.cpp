@@ -44,7 +44,7 @@ Permutor::~Permutor(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Permutor::vXyz(void)
+void Permutor::vExtract_tableList(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PERMUTOR, _FOOTER_);
 
@@ -56,23 +56,52 @@ void Permutor::vXyz(void)
 
   BoardIter xBI_query(pBoard_query);
 
-  Card_TableList* p_tableList = new Card_TableList;
+  Card_TableList* p_tableList_new = new Card_TableList;
 
   while ( (m_pMainCard = xBI_query.pEachMain()) ) {
-    Card_TablePtr* p_tablePtr = m_pMainCard->pSub_tablePtr();
-    if (! p_tablePtr)
+    Card_Table* p_table = m_pMainCard->pSub_table();
+    if (! p_table)
       continue;
 
-    Card_Table* p_table = new Card_Table;
-    p_table->vAppend(p_tablePtr->pDupCardAndSubCards());
-
-    p_tableList->vAppend(p_table);
+    p_tableList_new->vAppend(p_table->pDupCardAndSubCards());
   }
 
-  pBoard_permute->vAppendMainCard(p_tableList);
+  pBoard_permute->vAppendMainCard(p_tableList_new);
 
   if (m_bInteractive)
-    pBoard_permute->vPrintBoard("Permutor::vXyz"_Stz);
+    pBoard_permute->vPrintBoard("Permutor::vExtract_tableList"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Permutor::vExtract_joinPredList(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PERMUTOR, _FOOTER_);
+
+  Board *pBoard_permute = m_pBench->pGetBoard(BK_PERMUTE);
+  if (!pBoard_permute)
+    pBoard_permute = new Board(BK_PERMUTE, m_pBench);
+
+  Board *pBoard_query = m_pBench->pGetBoard(BK_QUERY);
+
+
+  Card_JoinPredList *p_joinPredList = new Card_JoinPredList;
+
+  BoardIter xBI_query(pBoard_query);
+  while ((m_pMainCard = xBI_query.pEachMain(CK_FILTER))) {
+    Card_CalcBool *p_calcBool = m_pMainCard->pSub_calcBool();
+    if (!p_calcBool)
+      continue;
+
+    p_joinPredList->vExtract_joinPredList(p_calcBool);
+  }
+
+  pBoard_permute->vAppendMainCard(p_joinPredList);
+
+  if (m_bInteractive)
+    pBoard_permute->vPrintBoard("Permutor::vExtract_joinPredList"_Stz);
+
 }
 
 /*----------------------------------------------------------------------------*/

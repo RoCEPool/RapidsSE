@@ -21,7 +21,8 @@ namespace STORE
     Permutor(Bench* pBench);
    ~Permutor(void) noexcept(false);
 
-    void vXyz(void);
+    void vExtract_tableList(void);
+    void vExtract_joinPredList(void);
 
   private:
 
