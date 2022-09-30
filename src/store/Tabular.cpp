@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "Tabular.hpp"
+#include "Table.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -81,9 +82,19 @@ void Tabular::vAdd_TableSyn(void)
     if (! (m_p_table = _pGetSub_Card_Table(m_pMainCard)) )
       continue;
 
+    Card_TablePtr* p_tablePtr = _pGetSub_Card_TablePtr(m_p_table);
+    Table* pTable = p_tablePtr->pTable();
+
     Card_TableSyn* p_tableSyn = new Card_TableSyn;
-    p_tableSyn->vTableSyn(cTableSyn++);
+
+    if (pTable->bIsReplicated())
+      p_tableSyn->vTableSyn(cTableSyn+'A'-'a');
+    else
+      p_tableSyn->vTableSyn(cTableSyn);
+
     m_p_table->vAppend(p_tableSyn);
+
+    cTableSyn++;
   }
 
 }

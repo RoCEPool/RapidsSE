@@ -4,9 +4,9 @@
 
 trackMemory;
 
-_region
+_region_replicated
 
-_nation
+_nation_replicated
 create index N_idx0 on nation(N_NATIONKEY);
 
 _customer
