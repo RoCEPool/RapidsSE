@@ -59,17 +59,18 @@
   POSTPONE senCompiler::current@
   POSTPONE word.category!
 
+  senCompiler::current@ word.categoryWc@ encode::push
   POSTPONE senCompiler::current@
-  POSTPONE word.categoryWc@
-  POSTPONE swap
   POSTPONE word.categoryWc!
+
+  //[ senCompiler::current@ word.see ]
 ;
 
 /*----------------------------------------------------------------------------*/
 /* prompt category                                                            */
 /*----------------------------------------------------------------------------*/
-: \prompt \\category ;
-//: \prompt \\category_wc WC_PROMPT ;
+//: \prompt \\category ;
+: \prompt \\category_wc WC_PROMPT ;
 
 : prompts \prompt find: \prompt word::ofCatg ;
 
