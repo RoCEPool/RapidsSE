@@ -42,7 +42,6 @@ namespace STORE
     void vReapAllJobs(bool bForce = false);
     Job* pReapableJob(void);
     bool bReapJob(void);
-    void vReapJobsOnce(bool bForce = false);
 
     JobList* pExitedJobs(void);
 

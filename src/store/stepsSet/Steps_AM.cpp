@@ -74,9 +74,6 @@ void Step::vAddSteps_AM(void)
   vAddStep("AM::jobMetricsDisable"_Stz,            &Step::vAM_JobMetricsDisable);
   vAddStep("AM::jobMetricsEnable"_Stz,             &Step::vAM_JobMetricsEnable);
 
-  vAddStep("AM::reapDisable"_Stz,                  &Step::vAM_ReapDisable);
-  vAddStep("AM::reapEnable"_Stz,                   &Step::vAM_ReapEnable);
-
   vAddStep("AM::sysMetricsDisable"_Stz,            &Step::vAM_SysMetricsDisable);
   vAddStep("AM::sysMetricsEnable"_Stz,             &Step::vAM_SysMetricsEnable);
 
@@ -670,30 +667,6 @@ void Step::vAM_JobMetricsEnable(void)
   
   AM::SYSARGS::vJobMetrics(true);
 
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* AM::reapDisable -- disble reaping of retired jobs                          */
-/*----------------------------------------------------------------------------*/
-void Step::vAM_ReapDisable(void)
-{
-  ENTRY();
-  
-  AM::SYSTEM::vReapEnabled(false);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* AM::reapEnable -- enable reaping of retired jobs                           */
-/*----------------------------------------------------------------------------*/
-void Step::vAM_ReapEnable(void)
-{
-  ENTRY();
-  
-  AM::SYSTEM::vReapEnabled(true);
-  
   EXIT();
 }
 

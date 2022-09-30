@@ -556,9 +556,6 @@ void Api::vCallEngineJob(Stz* szJobNm, Stz* szEntryPt, bool bAddAxioms)
   pEngineTask->vState(TS_RETIRED);
   pEngineTask->vDropTaskLock((Stz*)__func__);
 
-  //Api::vReapJobsOnce();
-  //gpAttachMap->pJobs()->vReapJobsOnce();
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (bAddAxioms) {

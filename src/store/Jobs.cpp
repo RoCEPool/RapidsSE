@@ -324,18 +324,6 @@ bool Jobs::bReapJob(void)
   return TRUE(reaped_a_job);
 }
 
-/*----------------------------------------------------------------------------*/
-/* attempt to reap one job from the retired list                              */
-/*----------------------------------------------------------------------------*/
-void Jobs::vReapJobsOnce(bool bForce)
-{
-  _static_
-  
-  if (bForce || AM::SYSTEM::bReapEnabled())
-    while (bReapJob())
-      {;}
-}
-
 
 /*----------------------------------------------------------------------------*/
 /* get exited job list                                                        */

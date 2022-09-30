@@ -108,8 +108,6 @@ public:
   void vAM_DerefMetricsEnable(void);
   void vAM_JobMetricsDisable(void);
   void vAM_JobMetricsEnable(void);
-  void vAM_ReapDisable(void);
-  void vAM_ReapEnable(void);
   void vAM_SysMetricsDisable(void);
   void vAM_SysMetricsEnable(void);
   void vAM_System_ReadyFetch(void);
