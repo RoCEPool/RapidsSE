@@ -4,6 +4,7 @@
 #pragma once
 
 #include "eWK.h"
+#include "eWC.h"
 
 namespace BASE
 {
@@ -18,6 +19,7 @@ namespace BASE
 
     s32       m_sWordNm;      // the name of this word
     eWK       m_eWord;        // kind of word
+    eWC       m_eWordCategory;// category of word enum
 
     bool      m_bBreakPt;     // this work gas a break point set
     Word*     m_pCategory;    // category of word
@@ -74,8 +76,10 @@ namespace BASE
     byte* ayAllot(i8 iBytes);
     bool  bBreakPt(void);
     void  vBreakPt(bool bBreakPt);
+    eWC   eCategoryEnum(void);
     Word* pCategory(void);
     void  vCategory(Word* pCategory);
+    void  vCategoryEnum(eWC eCategory);
     CodeBlock* pCodeBlock(void);
     i8    nCodeBlockUsed(void);
     void  vContentDump(void);

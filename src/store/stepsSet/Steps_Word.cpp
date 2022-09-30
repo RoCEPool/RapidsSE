@@ -26,6 +26,8 @@ void Step::vAddSteps_Word(void)
   vAddStep("word.breakPt!"_Stz,     &Step::vWordBreakPtStore);
   vAddStep("word.category@"_Stz,    &Step::vWordCategoryFetch);
   vAddStep("word.category!"_Stz,    &Step::vWordCategoryStore);
+  vAddStep("word.categoryWc@"_Stz,  &Step::vWordCategoryWcFetch);
+  vAddStep("word.categoryWc!"_Stz,  &Step::vWordCategoryWcStore);
   vAddStep("word.dump"_Stz,         &Step::vWordDump);
   vAddStep("word.embObject"_Stz,    &Step::vWordEmbObject);
   vAddStep("word.exitHook@"_Stz,    &Step::vWordExitHookGet);
@@ -151,6 +153,36 @@ void Step::vWordCategoryStore(void)
 
   pWord->vCategory(pCategory);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* word.categoryWc@ -- word category enum fetch                               */
+/*----------------------------------------------------------------------------*/
+void Step::vWordCategoryWcFetch(void)
+{
+  ENTRY();
+
+  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
+
+  m_pDataStack->vPushInt((pWord->eCategoryEnum()));
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* word.categoryWc! -- word category enum store                               */
+/*----------------------------------------------------------------------------*/
+void Step::vWordCategoryWcStore(void)
+{
+  ENTRY();
+
+  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
+
+  eWC eCategory = (eWC) m_pDataStack->iPopInt(__func__);
+
+  pWord->vCategoryEnum(eCategory);
+
   EXIT();
 }
 

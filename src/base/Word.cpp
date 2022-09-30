@@ -76,6 +76,8 @@ Word::Word(Stz* szWordNm)
   
   m_eWord      = WK_COLON;
 
+  m_eWordCategory = AM::pWordRoot() ? AM::pWordRoot()->eCategoryEnum() : WC_NONE;
+
   m_bBreakPt   = false;
   m_pCategory  = AM::pWordRoot() ? AM::pWordRoot() : this;
   //m_pDic     = pDic;
@@ -191,6 +193,16 @@ void Word::vBreakPt(bool bBreakPt)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get word category enum                                                     */
+/*----------------------------------------------------------------------------*/
+eWC Word::eCategoryEnum(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+
+  return m_eWordCategory;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get word category                                                          */
 /*----------------------------------------------------------------------------*/
 Word* Word::pCategory(void)
@@ -208,6 +220,17 @@ void Word::vCategory(Word* pCategory)
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
   m_pCategory = pCategory;
+  vCategoryEnum(pCategory->eCategoryEnum());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set word category enum                                                     */
+/*----------------------------------------------------------------------------*/
+void Word::vCategoryEnum(eWC eCategory)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+
+  m_eWordCategory = eCategory;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -205,10 +205,11 @@ void Dic::vTree(Dic* pDic, i8 iTabs)
 
   while ( pWord )
   {
-    vTrace("%sW%d:%s %s %s\n"_Stz, Stz::szTab(iTabs),
+    vTrace("%sW%d:%s %s %s  %s\n"_Stz, Stz::szTab(iTabs),
            pWord->bGetPersistent(),
            pWord->szWordNm(),
            pWord->pCategory()->szWordNm(),
+           aWC[pWord->eCategoryEnum()]->azChar(),
            pWord->m_pObject ? aCN[pWord->m_pObject->eGetClassNo()]->azChar() : "");
 
     if(pWord->m_pObject && pWord->m_pObject->eGetClassNo() == CN_DIC)
