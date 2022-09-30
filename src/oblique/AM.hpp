@@ -635,8 +635,6 @@ namespace OBLIQUE
       static bool bPassesLowMem(Job* pJob);
       static bool bPassesLowMemDist(Job* pJob);
       static bool bPassesOpenSystem(Job* pJob);
-      static bool bReapEnabled(void);
-      static void vReapEnabled(bool bReapEnabled);
       static bool bStarted(void);
       static void vStarted(bool bStarted);
       static bool bSystemOpen(void);

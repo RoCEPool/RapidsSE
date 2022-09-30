@@ -1559,7 +1559,6 @@ bool PROMPT::bPrompt_funs(SePrompt* pPrompt)
   gxPromptCatalog.vFuns(PF_QUESTION);
   gxPromptCatalog.vFuns(PF_RASSERT);
   gxPromptCatalog.vFuns(PF_READY);
-  gxPromptCatalog.vFuns(PF_REAP);
   gxPromptCatalog.vFuns(PF_RESOURCES);
   gxPromptCatalog.vFuns(PF_RETIRED);
   gxPromptCatalog.vFuns(PF_RMFIFO);

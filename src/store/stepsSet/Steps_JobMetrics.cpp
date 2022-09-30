@@ -93,10 +93,10 @@ void Step::vJobMetricsNew(void)
 void Step::vJobMetricsUpdate(void)
 {
   ENTRY();
-
+/*
   JobMetrics* pJobMetrics = _pJobMetrics(m_pDataStack->pPopPtr(__func__));
 
-  bool bReaping = AM::SYSTEM::bReapEnabled();
+  ? bool bReaping = AM::SYSTEM::bReapEnabled();
 
   bool bAppendList = ! bReaping;
   
@@ -106,7 +106,7 @@ void Step::vJobMetricsUpdate(void)
     delete pJobMetrics;
   
   m_pDataStack->vPushInt(bUpdated);
-
+*/
   EXIT();
 }
 

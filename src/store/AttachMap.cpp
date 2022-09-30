@@ -94,7 +94,6 @@ AttachMap::AttachMap(bool bNoFree)
   m_pMarkerMgr      = new MarkerMgr;
   m_pNumbering      = new Numbering;
   m_pLglPtnMap      = nullptr;
-  m_bReapEnabled    = true;
   m_pStarter        = new Starter;
   m_pTxSet          = new TxSet;
 
@@ -339,26 +338,6 @@ void AttachMap::vPrintStartupInfo(void)
   vTrace("  --region %s\n"_Stz,m_xSysArgs.m_sRegionName.azChar());
   vTrace("  --size %lld\n"_Stz,m_xSysArgs.m_iRegionSize);
   vTrace("  --partitionsPerNode %lld\n"_Stz,AM::PTNMAP::nPtnsPerNode());
-}
-
-/*----------------------------------------------------------------------------*/
-/* get reap enabled?                                                          */
-/*----------------------------------------------------------------------------*/
-bool AttachMap::bReapEnabled(void)
-{
-  _precondition_(_MAGIC_,CN_ATTACHMAP,_FOOTER_);
-  
-  return m_bReapEnabled;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set reap enabled?                                                          */
-/*----------------------------------------------------------------------------*/
-void AttachMap::vReapEnabled(bool bReapEnabled)
-{
-  _precondition_(_MAGIC_,CN_ATTACHMAP,_FOOTER_);
-  
-  m_bReapEnabled = bReapEnabled;
 }
 
 /*----------------------------------------------------------------------------*/
