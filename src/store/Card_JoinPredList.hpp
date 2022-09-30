@@ -18,7 +18,7 @@ namespace STORE
     Card_JoinPredList(void);
    ~Card_JoinPredList(void) noexcept(false);
 
-    void vTo_joinPredList(Card_CalcBool* p_calcBool);
+    void vExtract_joinPredList(Card_CalcBool* p_calcBool);
   };
 
   Card_JoinPredList* _pCard_JoinPredList(void* aAddr);

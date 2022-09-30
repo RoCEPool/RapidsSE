@@ -161,6 +161,18 @@ bool Card_PredCmp::bHasBounds_compare(Index* pIndex)
   return true;
 }
 
+/*----------------------------------------------------------------------------*/
+/* is this <predCmp> usable as a <joinPred>                                  */
+/*----------------------------------------------------------------------------*/
+bool Card_PredCmp::bIsJoinPred(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (szCmp())
+    return false;
+
+  return true;
+}
 
 /*============================================================================*/
 /* end                                                                        */

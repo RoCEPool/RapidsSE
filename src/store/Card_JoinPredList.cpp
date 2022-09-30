@@ -5,7 +5,10 @@
 #include "Card_JoinPredList.hpp"
 
 #include "Card_CalcBool.hpp"
+#include "Card_ColumnRef.hpp"
 #include "Card_PredCmp.hpp"
+#include "Card_Term.hpp"
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -46,15 +49,31 @@ Card_JoinPredList::~Card_JoinPredList(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_JoinPredList::vTo_joinPredList(Card_CalcBool* p_calcBool)
+void Card_JoinPredList::vExtract_joinPredList(Card_CalcBool* p_calcBool)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_JoinPredList* p_joinPredList = new Card_JoinPredList;
-
-  auto bfExtract = [p_joinPredList,p_calcBool](Card *pCard) {
+  auto bfExtract = [this,p_calcBool](Card *pCard) {
 
     Card_PredCmp* p_predCmp = _pCard_PredCmp(pCard);
+
+    if (RO_EQUAL_TO != p_predCmp->eRelOp())
+      return true;
+
+    Card_Term* p_term_0 = _pCard_Term(p_predCmp->pGetChild(0));
+    Card_ColumnRef* p_columnRef_0 = _pGetSub_Card_ColumnRef(p_term_0);
+    if (! p_columnRef_0)
+      return true;
+    Card_Term* p_term_1 = _pCard_Term(p_predCmp->pGetChild(1));
+    Card_ColumnRef* p_columnRef_1= _pGetSub_Card_ColumnRef(p_term_1);
+    if (! p_columnRef_1->bIsColumnRef())
+      return true;
+
+    Card_PredCmp* p_predCmp_new = new Card_PredCmp;
+    p_predCmp_new->vAppend(p_columnRef_0->pDupCardAndSubCards());
+    p_predCmp_new->vAppend(p_columnRef_1->pDupCardAndSubCards());
+
+    this->vAppend(p_predCmp_new);
 
     return true;
   };
