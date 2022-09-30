@@ -21,6 +21,7 @@ namespace STORE
     Permutor(Bench* pBench);
    ~Permutor(void) noexcept(false);
 
+    void vCompute_coPtnCrossPtn(void);
     void vCompute_coPtnPredList(void);
     void vExtract_tableList(void);
     void vExtract_joinPredList(void);

@@ -211,8 +211,8 @@ void Transformer::vTransform2(void)
 
 
   m_pPermutor->vExtract_joinPredList();
-
   m_pPermutor->vCompute_coPtnPredList();
+  m_pPermutor->vCompute_coPtnCrossPtn();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

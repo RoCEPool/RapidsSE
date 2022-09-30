@@ -44,6 +44,30 @@ Permutor::~Permutor(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Permutor::vCompute_coPtnCrossPtn(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PERMUTOR, _FOOTER_);
+
+  Board *pBoard_permute = m_pBench->pGetBoard(BK_PERMUTE);
+  if (!pBoard_permute)
+    pBoard_permute = new Board(BK_PERMUTE, m_pBench);
+
+  Card_CoPtnList* p_coPtnList = new Card_CoPtnList;
+
+  pBoard_permute->vAppendMainCard(p_coPtnList);
+
+//  Card_CrossPtnList* p_crossPtnList = new Card_CrossPtnList;
+//
+//  pBoard_permute->vAppendMainCard(p_crossPtnList);
+
+  if (m_bInteractive)
+    pBoard_permute->vPrintBoard("Permutor::vCompute_coPtnCrossPtn"_Stz);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Permutor::vCompute_coPtnPredList(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PERMUTOR, _FOOTER_);

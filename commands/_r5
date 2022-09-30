@@ -43,7 +43,7 @@ select * from supplier;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/cue = "Permutor::vCompute_coPtnPredList"
+/cue = "Permutor::vCompute_coPtnCrossPtn"
 /jobTags
 /transliterated
 /transform
