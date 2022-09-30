@@ -28,6 +28,7 @@ static Stz* C_TAG_HOST         = "<host>"_Stz;
 static Stz* C_TAG_INFOSET      = "<infoSet>"_Stz;
 static Stz* C_TAG_INTERNAL     = "<internal>"_Stz;
 static Stz* C_TAG_JOBNM        = "<jobNm>"_Stz;
+static Stz* C_TAG_JOBMETRICS   = "<jobMetrics>"_Stz;
 static Stz* C_TAG_KEYEXPR      = "<keyExpr>"_Stz;
 static Stz* C_TAG_LASTJOBID    = "<lastJobId>"_Stz;
 static Stz* C_TAG_LIFE         = "<life>"_Stz;

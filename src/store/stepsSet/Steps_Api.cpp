@@ -41,6 +41,7 @@ void Step::vAddSteps_Api(void)
 
   vAddStep("api::deleteJob"_Stz,       &Step::vApiDeleteJob);
   vAddStep("api::reapableJob@"_Stz,    &Step::vApiReapableJobFetch);
+  vAddStep("api::reapableJobTags@"_Stz,&Step::vApiReapableJobTagsFetch);
   vAddStep("api::spawnJob"_Stz,        &Step::vApiSpawnJob);
 }
 
@@ -299,6 +300,21 @@ void Step::vApiReapableJobFetch(void)
   Job* pJob = gpAttachMap->pJobs()->pReapableJob();
 
   m_pDataStack->vPushPtr(pJob);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* api::reapableJobTags@ -- fetch tagSet of reapable job                      */
+/*----------------------------------------------------------------------------*/
+void Step::vApiReapableJobTagsFetch(void)
+{
+  ENTRY();
+
+  TagSet* pTagSet = nullptr;
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+
+  m_pDataStack->vPushPtr(pJob->pJobTags());
 
   EXIT();
 }

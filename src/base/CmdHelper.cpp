@@ -69,7 +69,8 @@ bool CmdHelper::bExtractCmdTags(TagSet* pDstCmdTagSet, TokenVec* pSrcCmdTknVec)
   _static_
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // extract leading job control tags (such as /time or /nowait or /ccode or /pipelineName)
+  // extract leading job control tags
+  // /ccode, /jobMetrics /nowait, /pipelineName, /time
   
   Token* pTkn0 = pSrcCmdTknVec->pGet(0,true);
   
