@@ -147,9 +147,9 @@ void Transformer::vTransform2(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  //m_pTabular->vAdd_TableSyn();
-  //if (m_bInteractive)
-  //  pBoard_query->vPrintBoard("Tabular::vAdd_TableSyn"_Stz);
+  m_pTabular->vAdd_TableSyn();
+  if (m_bInteractive)
+    pBoard_query->vPrintBoard("Tabular::vAdd_TableSyn"_Stz);
 
   //m_pPermutor->vXyz();
 
@@ -168,11 +168,10 @@ void Transformer::vTransform2(void)
 
 
 
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append <stream> to all <scan> and then to all <absJoin>
-  m_pCardCtl->vSubCards(CK_STREAM,0);
-  m_pCardCtl->vPinForm(CK_STREAM,1);
+  m_pCardCtl->vSubCards(CK_STREAM,1);
+  m_pCardCtl->vPinForm(CK_STREAM,0);
 
   //m_pCardCtl->vSubCards(CK_EXPR,0);
 
@@ -200,6 +199,13 @@ void Transformer::vTransform2(void)
   m_pStreamer->vOrdinal_Range();
   if (m_bInteractive)
     pBoard_query->vPrintBoard("Streamer::vOrdinal_Range"_Stz);
+
+
+  m_pColumnar->vAdd_ColumnRef();
+  if (m_bInteractive)
+    pBoard_query->vPrintBoard("Columnar::vAdd_ColumnRef"_Stz);
+
+
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

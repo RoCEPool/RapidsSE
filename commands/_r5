@@ -43,7 +43,7 @@ select * from supplier;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/cue = "Tabular::vAdd_TableSyn"
+/cue = "Columnar::vAdd_ColumnRef"
 /jobTags
 /transliterated
 /transform

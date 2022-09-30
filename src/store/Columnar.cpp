@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "Columnar.hpp"
+#include "Resolver.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -47,21 +48,38 @@ void Columnar::vAdd_ColumnRef(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABULAR,_FOOTER_);
 
-//  char cTableSyn = 'a';
-//
-//  m_pBoard = m_pBench->pGetBoard(BK_QUERY);
-//
-//  BoardIter xBI(m_pBoard);
-//
-//  while ( (m_pMainCard = xBI.pEachMain()) ) {
-//    if (! (m_p_table = _pGetSub_Card_Table(m_pMainCard)) )
-//      continue;
-//
-//    Card_TableSyn* p_tableSyn = new Card_TableSyn;
-//    p_tableSyn->vTableSyn(cTableSyn++);
-//    m_p_table->vAppend(p_tableSyn);
-//  }
+  Resolver* pResolver = new Resolver(m_pBench);
 
+  auto bfTerm_columnRef = [pResolver](Card* pCard) {
+    Card_Term* p_term = _pCard_Term(pCard);
+
+    Stz* szTerm = p_term->szTerm();
+    vTrace("bfTerm_columnRef: %s\n"_Stz,szTerm);
+
+    s32 sColumnRef;
+    pResolver->vResolve_columnRef(sColumnRef,szTerm);
+
+    Card_ColumnRef* p_columnRef = new Card_ColumnRef;
+    p_columnRef->vColumnRef(sColumnRef);
+    p_term->vAppend(p_columnRef);
+
+    return true;
+  };
+
+  // - - - - - - - - -
+
+  m_pBoard = m_pBench->pGetBoard(BK_QUERY);
+
+  BoardIter xBI(m_pBoard);
+
+  while ( (m_pMainCard = xBI.pEachMain()) ) {
+    if (! (m_p_calcBool = _pGetSub_Card_CalcBool(m_pMainCard)) )
+      continue;
+
+    m_p_calcBool->vVisitAllSub(CK_TERM,bfTerm_columnRef);
+  }
+
+  delete pResolver;
 }
 
 

@@ -29,7 +29,8 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
 
   m_p_absJoin     = nullptr;
   m_p_aggreg      = nullptr;
-  m_p_combined     = nullptr;
+  m_p_calcBool    = nullptr;
+  m_p_combined    = nullptr;
   m_p_filter      = nullptr;
   m_p_gbyElist    = nullptr;
   m_p_indexJoin   = nullptr;
@@ -47,7 +48,9 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_p_stageTopo   = nullptr;
   m_p_stageTopo_a = nullptr;
   m_p_stageTopo_b = nullptr;
+  m_p_stream      = nullptr;
   m_p_table       = nullptr;
+  m_p_tableSyn    = nullptr;
   m_p_tablePtr    = nullptr;
   m_p_uBound      = nullptr;
 

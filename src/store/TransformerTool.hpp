@@ -28,7 +28,8 @@ namespace STORE
 
     Card_AbsJoin*    m_p_absJoin;
     Card_Aggreg*     m_p_aggreg;
-    Card_Combined*    m_p_combined;
+    Card_CalcBool*   m_p_calcBool;
+    Card_Combined*   m_p_combined;
     Card_Filter*     m_p_filter;
     Card_GbyElist*   m_p_gbyElist;
     Card_IndexJoin*  m_p_indexJoin;
@@ -46,7 +47,9 @@ namespace STORE
     Card_StageTopo*  m_p_stageTopo;
     Card_StageTopo*  m_p_stageTopo_a;
     Card_StageTopo*  m_p_stageTopo_b;
+    Card_Stream*     m_p_stream;
     Card_Table*      m_p_table;
+    Card_TableSyn*   m_p_tableSyn;
     Card_TablePtr*   m_p_tablePtr;
     Card_UBound*     m_p_uBound;
 
