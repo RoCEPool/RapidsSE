@@ -424,7 +424,7 @@ void Constants::vAddConstantsCpp(void)
   /* 61 */ vAddConstant("EC_ENUMS"_Stz,              EC_ENUMS);
 
 
-  
+
   vAddConstant("EG_NONE"_Stz, EG_NONE);
 
   vAddConstant("EG_AA"_Stz,   EG_AA);
@@ -631,17 +631,21 @@ void Constants::vAddConstantsCpp(void)
 
   // WC_ : word category
   /*  0 */ vAddConstant("WC_NONE"_Stz,         WC_NONE);
+  /*  0 */ vAddConstant("WC_CATALOG"_Stz,      WC_CATALOG);
   /*  0 */ vAddConstant("WC_CMDSYNTAX"_Stz,    WC_CMDSYNTAX);
   /*  0 */ vAddConstant("WC_CMDTAGS"_Stz,      WC_CMDTAGS);
   /*  0 */ vAddConstant("WC_DEMON"_Stz,        WC_DEMON);
   /*  0 */ vAddConstant("WC_FOLDER"_Stz,       WC_FOLDER);
   /*  0 */ vAddConstant("WC_HANDLER"_Stz,      WC_HANDLER);
   /*  0 */ vAddConstant("WC_INCLUDE"_Stz,      WC_INCLUDE);
+  /*  0 */ vAddConstant("WC_INDEX"_Stz,        WC_INDEX);
   /*  0 */ vAddConstant("WC_OPERATOR"_Stz,     WC_OPERATOR);
   /*  0 */ vAddConstant("WC_PROCEDURE"_Stz,    WC_PROCEDURE);
   /*  0 */ vAddConstant("WC_PROMPT"_Stz,       WC_PROMPT);
   /*  0 */ vAddConstant("WC_ROOTCONSTANT"_Stz, WC_ROOTCONSTANT);
+  /*  0 */ vAddConstant("WC_SCHEMA"_Stz,       WC_SCHEMA);
   /*  0 */ vAddConstant("WC_TABLE"_Stz,        WC_TABLE);
+  /*  0 */ vAddConstant("WC_TENANT"_Stz,       WC_TENANT);
   /*  0 */ vAddConstant("WC_WORD"_Stz,         WC_WORD);
 
   // WK_ : word type

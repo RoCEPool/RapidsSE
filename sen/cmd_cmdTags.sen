@@ -41,6 +41,8 @@
   // set the word category to be _cmdTags
   find: _cmdTags pWord word.category!
 
+  WC_CMDTAGS pWord word.categoryWc!
+
   // attach an ename set to the word being created
   tagSet::new locals| pWordTagSet |
   pWordTagSet pWord word.TagSet!

@@ -69,7 +69,6 @@
 /*----------------------------------------------------------------------------*/
 /* prompt category                                                            */
 /*----------------------------------------------------------------------------*/
-//: \prompt \\category ;
 : \prompt \\category_wc WC_PROMPT ;
 
 : prompts \prompt find: \prompt word::ofCatg ;
@@ -77,14 +76,14 @@
 /*----------------------------------------------------------------------------*/
 /* demon category                                                             */
 /*----------------------------------------------------------------------------*/
-: \demon \\category ;
+: \demon \\category_wc WC_DEMON ;
 
 : demons \prompt find: \demon word::ofCatg ;
 
 /*----------------------------------------------------------------------------*/
 /* folder is used as a kind of word to identify folders                       */
 /*----------------------------------------------------------------------------*/
-: \folder \\category ;
+: \folder \\category_wc WC_FOLDER ;
 
 : isFolder word.category@ find: \folder equal ;
 
@@ -104,7 +103,7 @@
   [op].handlerExit
 ;
 
-: \handler \\category
+: \handler \\category_wc WC_HANDLER
 
   "_handler_exit" senCompiler::current@ word.exitHook!
 
@@ -116,14 +115,14 @@
 /*----------------------------------------------------------------------------*/
 /* include category                                                           */
 /*----------------------------------------------------------------------------*/
-: \include \\category ;
+: \include \\category_wc WC_INCLUDE ;
 
 : includes \prompt find: \include word::ofCatg ;
 
 /*----------------------------------------------------------------------------*/
 /* operator category                                                          */
 /*----------------------------------------------------------------------------*/
-: \operator \\category ;
+: \operator \\category_wc WC_OPERATOR ;
 
 : operators \prompt find: \operator word::ofCatg ;
 : ops       \prompt find: \operator word::ofCatg ;
@@ -131,7 +130,7 @@
 /*----------------------------------------------------------------------------*/
 /* procedure category                                                         */
 /*----------------------------------------------------------------------------*/
-: \procedure \\category ;
+: \procedure \\category_wc WC_PROCEDURE ;
 
 
 

@@ -16,6 +16,8 @@
   // set the word category to be cmdSyntax:
   [ senCompiler::current@ encode::push ] senCompiler::current@ word.category!
 
+  WC_CMDSYNTAX senCompiler::current@ word.categoryWc!
+
   // attach a tag set to hold syntax to the word being created
   tagSet::new locals| pSynTags |
   pSynTags senCompiler::current@ word.TagSet!
