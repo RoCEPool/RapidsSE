@@ -38,24 +38,24 @@ static TypeMap2D* S_pTypeMap = (new TypeMap2D())
     ->pAddMapping( TypeId::xIdOf(CT_TIMESTAMP), TypeId::xIdOf(CT_TIMESTAMP), TypeId::xIdOf(CT_BOOLEAN))
     ->pAddMapping( TypeId::xIdOf(CT_VARCHAR), TM_ALL_STRINGS,                   TypeId::xIdOf(CT_BOOLEAN))
 
-    // All YM intervals are comparable with each other, but they may need to be implicitly or explicitly cast.
+    // All YM intervals are comparable with each other.
     // Refer [1] below.
-    ->pAddMapping( TypeId::xIdOf(IV_YEAR),          TM_SAME, TypeId::xIdOf(CT_BOOLEAN))
-    ->pAddMapping( TypeId::xIdOf(IV_MONTH),         TM_SAME, TypeId::xIdOf(CT_BOOLEAN))
-    ->pAddMapping( TypeId::xIdOf(IV_YEAR_TO_MONTH), TM_SAME, TypeId::xIdOf(CT_BOOLEAN))
+    ->pAddMapping( TypeId::xIdOf(IV_YEAR),          TM_ALL_YM_INTERVALS, TypeId::xIdOf(CT_BOOLEAN))
+    ->pAddMapping( TypeId::xIdOf(IV_MONTH),         TM_ALL_YM_INTERVALS, TypeId::xIdOf(CT_BOOLEAN))
+    ->pAddMapping( TypeId::xIdOf(IV_YEAR_TO_MONTH), TM_ALL_YM_INTERVALS, TypeId::xIdOf(CT_BOOLEAN))
 
-    // All DT intervals are comparable with each other, but they may need to be implicitly or explicitly cast.
+    // All DT intervals are comparable with each other.
     // Refer [1] below.
-    ->pAddMapping( TypeId::xIdOf(IV_DAY),              TM_SAME,  TypeId::xIdOf(CT_BOOLEAN))
-    ->pAddMapping( TypeId::xIdOf(IV_HOUR),             TM_SAME,  TypeId::xIdOf(CT_BOOLEAN))
-    ->pAddMapping( TypeId::xIdOf(IV_MINUTE),           TM_SAME,  TypeId::xIdOf(CT_BOOLEAN))
-    ->pAddMapping( TypeId::xIdOf(IV_SECOND),           TM_SAME,  TypeId::xIdOf(CT_BOOLEAN))
-    ->pAddMapping( TypeId::xIdOf(IV_DAY_TO_HOUR),      TM_SAME,  TypeId::xIdOf(CT_BOOLEAN))
-    ->pAddMapping( TypeId::xIdOf(IV_DAY_TO_MINUTE),    TM_SAME,  TypeId::xIdOf(CT_BOOLEAN))
-    ->pAddMapping( TypeId::xIdOf(IV_DAY_TO_SECOND),    TM_SAME,  TypeId::xIdOf(CT_BOOLEAN))
-    ->pAddMapping( TypeId::xIdOf(IV_HOUR_TO_MINUTE),   TM_SAME,  TypeId::xIdOf(CT_BOOLEAN))
-    ->pAddMapping( TypeId::xIdOf(IV_HOUR_TO_SECOND),   TM_SAME,  TypeId::xIdOf(CT_BOOLEAN))
-    ->pAddMapping( TypeId::xIdOf(IV_MINUTE_TO_SECOND), TM_SAME,  TypeId::xIdOf(CT_BOOLEAN))
+    ->pAddMapping( TypeId::xIdOf(IV_DAY),              TM_ALL_DT_INTERVALS,  TypeId::xIdOf(CT_BOOLEAN))
+    ->pAddMapping( TypeId::xIdOf(IV_HOUR),             TM_ALL_DT_INTERVALS,  TypeId::xIdOf(CT_BOOLEAN))
+    ->pAddMapping( TypeId::xIdOf(IV_MINUTE),           TM_ALL_DT_INTERVALS,  TypeId::xIdOf(CT_BOOLEAN))
+    ->pAddMapping( TypeId::xIdOf(IV_SECOND),           TM_ALL_DT_INTERVALS,  TypeId::xIdOf(CT_BOOLEAN))
+    ->pAddMapping( TypeId::xIdOf(IV_DAY_TO_HOUR),      TM_ALL_DT_INTERVALS,  TypeId::xIdOf(CT_BOOLEAN))
+    ->pAddMapping( TypeId::xIdOf(IV_DAY_TO_MINUTE),    TM_ALL_DT_INTERVALS,  TypeId::xIdOf(CT_BOOLEAN))
+    ->pAddMapping( TypeId::xIdOf(IV_DAY_TO_SECOND),    TM_ALL_DT_INTERVALS,  TypeId::xIdOf(CT_BOOLEAN))
+    ->pAddMapping( TypeId::xIdOf(IV_HOUR_TO_MINUTE),   TM_ALL_DT_INTERVALS,  TypeId::xIdOf(CT_BOOLEAN))
+    ->pAddMapping( TypeId::xIdOf(IV_HOUR_TO_SECOND),   TM_ALL_DT_INTERVALS,  TypeId::xIdOf(CT_BOOLEAN))
+    ->pAddMapping( TypeId::xIdOf(IV_MINUTE_TO_SECOND), TM_ALL_DT_INTERVALS,  TypeId::xIdOf(CT_BOOLEAN))
 
     // All the unknown mappings here
     ->pAddMapping(TypeId::xIdOf(CT_UNKNOWN), TM_ALL_INC_UNKNOWN,             TypeId::xIdOf(CT_BOOLEAN))
