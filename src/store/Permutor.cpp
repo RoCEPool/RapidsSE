@@ -56,9 +56,9 @@ void Permutor::vCompute_coPtnCrossPtn(void)
 
   pBoard_permute->vAppendMainCard(p_coPtnList);
 
-//  Card_CrossPtnList* p_crossPtnList = new Card_CrossPtnList;
-//
-//  pBoard_permute->vAppendMainCard(p_crossPtnList);
+  Card_CrossPtnList* p_crossPtnList = new Card_CrossPtnList;
+
+  pBoard_permute->vAppendMainCard(p_crossPtnList);
 
   if (m_bInteractive)
     pBoard_permute->vPrintBoard("Permutor::vCompute_coPtnCrossPtn"_Stz);
