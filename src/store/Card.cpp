@@ -1142,7 +1142,7 @@ void Card::vTableSyn(char cTableSyn)
 /*----------------------------------------------------------------------------*/
 /* transfer all sub-cards from given card set to this card                    */
 /*----------------------------------------------------------------------------*/
-void Card::vTransferAll(Card* pCards)
+void Card::vTransferSubCards(Card* pCards)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -1560,6 +1560,28 @@ void Card::vColumn2(Column* pColumn2)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   vAddProperty("pColumn2"_Stz,pColumn2);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get comment                                                                */
+/*----------------------------------------------------------------------------*/
+Stz* Card::szComment(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Stz* szComment = szGetProperty("szComment"_Stz);
+
+  return szComment;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set as name                                                                */
+/*----------------------------------------------------------------------------*/
+void Card::vComment(Stz* szComment)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  vAddProperty("szComment"_Stz,szComment);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2710,10 +2732,11 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
   
   switch (eCard) {
 
-    case CK_CARDPTR:     vCardPrint  (pRibbon, iDepth); break;
-    case CK_INDEXPTR:    vIndexPrint (pRibbon, iDepth); break;
-    case CK_TABLEPTR:    vTablePrint (pRibbon, iDepth); break;
-    case CK_TERM:        vTermPrint  (pRibbon,iDepth); break;
+    case CK_CARDPTR:     vCardPrint   (pRibbon, iDepth); break;
+    case CK_COMMENT:     vCommentPrint(pRibbon, iDepth); break;
+    case CK_INDEXPTR:    vIndexPrint  (pRibbon, iDepth); break;
+    case CK_TABLEPTR:    vTablePrint  (pRibbon, iDepth); break;
+    case CK_TERM:        vTermPrint   (pRibbon,iDepth); break;
 
     case CK_STREAMELIST: vStreamElistPrint(pRibbon,iDepth,bPrune);
       break;
@@ -2999,6 +3022,17 @@ void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth, bool bPrintName)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* print comment                                                              */
+/*----------------------------------------------------------------------------*/
+void Card::vCommentPrint(Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Stz* szComment = this->szComment();
+
+  pRibbon->vSprint("%s"_Stz,szComment);
+}
 
 /*----------------------------------------------------------------------------*/
 /* print {index}                                                              */

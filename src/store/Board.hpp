@@ -22,6 +22,7 @@
 #include "Card_CandIndex.hpp"
 #include "Card_CardPtr.hpp"
 #include "Card_Combined.hpp"
+#include "Card_Comment.hpp"
 #include "Card_ColumnRef.hpp"
 #include "Card_CoPtn.hpp"
 #include "Card_CoPtnList.hpp"

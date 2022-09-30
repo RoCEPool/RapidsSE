@@ -528,7 +528,7 @@ Card* Filtrate::pTo_CalcBool(Card* pCard_Calc)
       case TE_AND:
         RASSERT(2 == pCard_CalcBool->nChildCards());
         pCard_PredAnd = new Card_PredAnd;
-        pCard_PredAnd->vTransferAll(pCard_CalcBool);
+        pCard_PredAnd->vTransferSubCards(pCard_CalcBool);
         RASSERT(0 == pCard_CalcBool->nChildCards());
         pCard_CalcBool->vAppend(pCard_PredAnd);
         RASSERT(1 == pCard_CalcBool->nChildCards());
@@ -539,7 +539,7 @@ Card* Filtrate::pTo_CalcBool(Card* pCard_Calc)
       case TE_OR:
         RASSERT(2 == pCard_CalcBool->nChildCards());
         pCard_PredOr = new Card_PredOr;
-        pCard_PredOr->vTransferAll(pCard_CalcBool);
+        pCard_PredOr->vTransferSubCards(pCard_CalcBool);
         RASSERT(0 == pCard_CalcBool->nChildCards());
         pCard_CalcBool->vAppend(pCard_PredOr);
         RASSERT(1 == pCard_CalcBool->nChildCards());
@@ -551,7 +551,7 @@ Card* Filtrate::pTo_CalcBool(Card* pCard_Calc)
         RASSERT(pCard_SubExpr->nChildCards() > 0);
         pCard_PredCmp = new Card_PredCmp;
         pCard_PredCmp->vCmp(pCard_Term->szTerm());
-        pCard_PredCmp->vTransferAll(pCard_SubExpr);
+        pCard_PredCmp->vTransferSubCards(pCard_SubExpr);
         pCard_CalcBool->vAppend(pCard_PredCmp);
         pCard_PredCmp = nullptr;
         delete pCard_Term;
@@ -583,7 +583,7 @@ Card* Filtrate::pTo_CalcBool(Card* pCard_Calc)
 
   if (pCard_SubExpr->nItems()) {
     RASSERT(0 == pCard_CalcBool->nChildCards());
-    pCard_PredCmp->vTransferAll(pCard_SubExpr);
+    pCard_PredCmp->vTransferSubCards(pCard_SubExpr);
     RASSERT(1 == pCard_CalcBool->nChildCards());
     RASSERT(0 == pCard_SubExpr->nChildCards());
   }

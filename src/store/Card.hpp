@@ -248,7 +248,7 @@ namespace STORE
 
     char cTableSyn(void);
     void vTableSyn(char cTableSyn);
-    void vTransferAll(Card* pCards);
+    void vTransferSubCards(Card* pCards);
     void vTransferFrom(Card* pCards, Card* pFrom,
                        Card* pAt=nullptr, bool bAfter=true);
     void vTransferSubset(Card* pCards, Card* pFrom, Card* pTill,
@@ -284,6 +284,8 @@ namespace STORE
     void vColumn1(Column* pColumn1);
     Column* pColumn2(void);
     void vColumn2(Column* pColumn2);
+    Stz* szComment(void);
+    void vComment(Stz* szComment);
     void vConcatTerms(Stz* szTerms);
     void vConcatTerms(Stz* szTerms, i8 i_From, i8 i_Till=C_UNKNOWN);
 
@@ -383,6 +385,7 @@ namespace STORE
     void vPrintName(Ribbon* pRibbon, i8 iDepth);
     void vPrintProperties(Ribbon* pRibbon, i8 iDepth, bool bPrintName=true);
 
+    void vCommentPrint(Ribbon* pRibbon, i8 iDepth);
     void vIndexPrint(Ribbon* pRibbon, i8 iDepth);
     void vStreamElistPrint(Ribbon* pRibbon, i8 iDepth, bool& bPrune);
     void vTablePrint(Ribbon* pRibbon, i8 iDepth);

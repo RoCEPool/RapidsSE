@@ -324,7 +324,7 @@ Card* Dissector::pCard_Filter(TagSet* pArgTags)
   }
   else {
     Card_Having* pCard_Having = new Card_Having;
-    pCard_Having->vTransferAll(pCard_Filter);
+    pCard_Having->vTransferSubCards(pCard_Filter);
     delete pCard_Filter;
   
     delete pCard_RpnTerms;
@@ -345,7 +345,7 @@ Card* Dissector::pCard_Hash(TagSet* pArgTags)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // calcExpr : calculation expression list
 
-  pCard_Hash->vTransferAll(pCard_RpnTerms);
+  pCard_Hash->vTransferSubCards(pCard_RpnTerms);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -393,7 +393,7 @@ Card* Dissector::pCard_IndexJoin(TagSet* pArgTags)
   // index predicate????
 
   Card_IndexPred* pCard_IndexPred = new Card_IndexPred;
-  pCard_IndexPred->vTransferAll(pCard_RpnTerms);
+  pCard_IndexPred->vTransferSubCards(pCard_RpnTerms);
   pCard_IndexJoin->vAppend(pCard_IndexPred);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -436,7 +436,7 @@ Card* Dissector::pCard_IndexScan(TagSet* pArgTags)
   // index predicate????
 
   Card_IndexPred* pCard_IndexPred = new Card_IndexPred;
-  pCard_IndexPred->vTransferAll(pCard_RpnTerms);
+  pCard_IndexPred->vTransferSubCards(pCard_RpnTerms);
   pCard_IndexScan->vAppend(pCard_IndexPred);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
