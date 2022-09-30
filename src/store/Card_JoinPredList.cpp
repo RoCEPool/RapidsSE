@@ -1,8 +1,11 @@
 /*============================================================================*/
-/* Card_JoinPredList.cpp -- Table List                                           */
+/* Card_JoinPredList.cpp -- Table List                                        */
 /*============================================================================*/
 
 #include "Card_JoinPredList.hpp"
+
+#include "Card_CalcBool.hpp"
+#include "Card_PredCmp.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -39,6 +42,28 @@ Card_JoinPredList::~Card_JoinPredList(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_JoinPredList::vTo_joinPredList(Card_CalcBool* p_calcBool)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_JoinPredList* p_joinPredList = new Card_JoinPredList;
+
+  auto bfExtract = [p_joinPredList,p_calcBool](Card *pCard) {
+
+    Card_PredCmp* p_predCmp = _pCard_PredCmp(pCard);
+
+    return true;
+  };
+
+  // - - - - - - - - -
+
+  p_calcBool->vVisitAllSub(CK_PREDCMP,bfExtract);
+
+}
 
 //*============================================================================*/
 /* end                                                                        */
