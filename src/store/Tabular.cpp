@@ -41,7 +41,31 @@ Tabular::~Tabular(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*add table synonyms to all <table>                                           */
+/* add table partitions <tablePtn> to all <table>                             */
+/*----------------------------------------------------------------------------*/
+void Tabular::vAdd_TablePtn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABULAR,_FOOTER_);
+
+  char cTableSyn = 'a';
+
+  m_pBoard = m_pBench->pGetBoard(BK_QUERY);
+
+  BoardIter xBI(m_pBoard);
+
+  while ( (m_pMainCard = xBI.pEachMain()) ) {
+    if (! (m_p_table = _pGetSub_Card_Table(m_pMainCard)) )
+      continue;
+
+    Card_TablePtn* p_tablePtn = new Card_TablePtn(m_p_table);
+    m_p_table->vAppend(p_tablePtn);
+  }
+
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* add table synonyms <tableSyn> to all <table>                               */
 /*----------------------------------------------------------------------------*/
 void Tabular::vAdd_TableSyn(void)
 {

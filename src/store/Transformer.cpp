@@ -199,6 +199,10 @@ void Transformer::vTransform2(void)
   if (m_bInteractive)
     pBoard_query->vPrintBoard("Tabular::vAdd_TableSyn"_Stz);
 
+  m_pTabular->vAdd_TablePtn();
+  if (m_bInteractive)
+    pBoard_query->vPrintBoard("Tabular::vAdd_TablePtn"_Stz);
+
   m_pPermutor->vExtract_tableList();
 
   m_pColumnar->vAdd_ColumnRef();

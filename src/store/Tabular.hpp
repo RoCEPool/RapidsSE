@@ -21,6 +21,7 @@ namespace STORE
     Tabular(Bench* pBench);
    ~Tabular(void) noexcept(false);
 
+    void vAdd_TablePtn(void);
     void vAdd_TableSyn(void);
 
   private:

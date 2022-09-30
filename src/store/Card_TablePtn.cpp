@@ -3,7 +3,10 @@
 /*============================================================================*/
 
 #include "Card_TablePtn.hpp"
-
+#include "Card_Table.hpp"
+#include "Card_TablePtr.hpp"
+#include "Card_TableSyn.hpp"
+#include "PtnDef.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -30,12 +33,58 @@ Card_TablePtn::Card_TablePtn(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Card_TablePtn::Card_TablePtn(Card_Table* p_table)
+: Card(CK_TABLEPTN)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  _checkInitialised_(CN_CARD);
+
+  vAdd_TablePtn(p_table);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Card_TablePtn::~Card_TablePtn(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
+
+/*----------------------------------------------------------------------------*/
+/*-- private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+void Card_TablePtn::vAdd_TablePtn(Card_Table* p_table)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_TableSyn* p_tableSyn = _pGetSub_Card_TableSyn(p_table);
+
+  char cTableSyn = p_tableSyn->cTableSyn();
+
+  Card_TablePtr* p_tablePtr = _pGetSub_Card_TablePtr(p_table);
+  Table* pTable = p_tablePtr->pTable();
+
+  PtnDef* pPtnDef = pTable->pPtnDef();
+  Column* pPtnColumn = pPtnDef->pGetColumn(0);
+
+  StreamDef* pStreamDef = pTable->pStreamDef();
+  Column* pStmColumn = pStreamDef->pFindColumn(pPtnColumn->szColNm());
+  i8 iStmColNo = pStmColumn->iColumnNo();
+  s32 sColumnRef;
+  sColumnRef.vSprint("$$%c.%lld"_Stz, cTableSyn, iStmColNo+1);
+
+  this->vColumnRef(sColumnRef);
+}
+
 
 /*============================================================================*/
 /* end                                                                        */
