@@ -101,10 +101,9 @@ Ivl IvlLib::wToIvl(Dtm wTsp)
 Ivl IvlLib::wToIvl(u8 uMicroseconds)
 {
   Ivl wIvl(IV_SECOND);
-  
-  wIvl = 0;
-  
+
   wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros = uMicroseconds;
+  return wIvl;
 }
 
 /*----------------------------------------------------------------------------*/
