@@ -3705,9 +3705,8 @@ Ivl SqlPlanner::xCleanSingleFieldInterval(Stz* szVal, eIV eIvlType, sqlParser::S
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": absolute interval %s value exceeds maximum of %lld"_Stz,
-                            aIV_field[eIvlType],
-                            C_IVL_YEAR_MAX);
+                            ": absolute interval %s value exceeds integer maximum"_Stz,
+                            aIV_field[eIvlType]);
   }
 
   if (!StrLib::bIsWhite(*psChar) && psChar != psEnd) {
@@ -3745,7 +3744,7 @@ Ivl SqlPlanner::xCleanSingleFieldInterval(Stz* szVal, eIV eIvlType, sqlParser::S
                                 ": absolute interval year value exceeds maximum of %lld"_Stz,
                                 C_IVL_YEAR_MAX);
       }
-      xIvl.T.m_xIvl.u.m_xIvlYr.m_uYears = uVal;
+      xIvl.T.m_xIvl.u.m_xIvlYM.m_uMonths = uVal * 12;
       break;
 
     case IV_MONTH:
@@ -3756,7 +3755,7 @@ Ivl SqlPlanner::xCleanSingleFieldInterval(Stz* szVal, eIV eIvlType, sqlParser::S
                                 ": absolute interval month value exceeds maximum of %lld"_Stz,
                                 C_IVL_MONTH_MAX);
       }
-      xIvl.T.m_xIvl.u.m_xIvlMon.m_uMonths = uVal;
+      xIvl.T.m_xIvl.u.m_xIvlYM.m_uMonths = uVal;
       break;
 
     case IV_DAY:
@@ -3767,7 +3766,7 @@ Ivl SqlPlanner::xCleanSingleFieldInterval(Stz* szVal, eIV eIvlType, sqlParser::S
                                 ": absolute interval day value exceeds maximum of %lld"_Stz,
                                 C_IVL_DAY_MAX);
       }
-      xIvl.T.m_xIvl.u.m_xIvlDay.m_uDays = uVal;
+      xIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros = uVal * C_SECS_PER_DAY * C_1M;
       break;
 
     case IV_HOUR:
@@ -3778,7 +3777,7 @@ Ivl SqlPlanner::xCleanSingleFieldInterval(Stz* szVal, eIV eIvlType, sqlParser::S
                                 ": absolute interval hour value exceeds maximum of %lld"_Stz,
                                 C_IVL_HOUR_MAX);
       }
-      xIvl.T.m_xIvl.u.m_xIvlHr.m_uHours = uVal;
+      xIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros = uVal * C_SECS_PER_HR * C_1M;
       break;
 
     case IV_MINUTE:
@@ -3789,7 +3788,7 @@ Ivl SqlPlanner::xCleanSingleFieldInterval(Stz* szVal, eIV eIvlType, sqlParser::S
                                 ": absolute interval minute value exceeds maximum of %lld"_Stz,
                                 C_IVL_MINUTE_MAX);
       }
-      xIvl.T.m_xIvl.u.m_xIvlMin.m_uMinutes = uVal;
+      xIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros = uVal * C_SECS_PER_MIN * C_1M;
       break;
 
     default:
@@ -3851,7 +3850,7 @@ Ivl SqlPlanner::xCleanSecondInterval(Stz* szVal, sqlParser::StringLiteralContext
                               pCtx->start->getCharPositionInLine(),
                               EC_INVALID_INTERVAL_FORMAT,
                               ": absolute interval seconds value exceeds maximum of %lld"_Stz,
-                              C_IVL_SEC_SEC_MAX);
+                              C_IVL_SEC_MAX);
     }
 
     if (*psChar != '.' && !StrLib::bIsWhite(*psChar) && psChar != psEnd) {
@@ -3879,7 +3878,7 @@ Ivl SqlPlanner::xCleanSecondInterval(Stz* szVal, sqlParser::StringLiteralContext
                                 pCtx->start->getCharPositionInLine(),
                                 EC_INVALID_INTERVAL_FORMAT,
                                 ": absolute interval microseconds value exceeds range of 0-%lld"_Stz,
-                                C_IVL_USEC_MAX);
+                                C_IVL_USEC_MAX_IN_1_SEC);
       }
 
       // Ignore trailing zeros
@@ -3893,7 +3892,7 @@ Ivl SqlPlanner::xCleanSecondInterval(Stz* szVal, sqlParser::StringLiteralContext
                                 pCtx->start->getCharPositionInLine(),
                                 EC_INVALID_INTERVAL_FORMAT,
                                 ": absolute interval microseconds value exceeds range of 0-%lld"_Stz,
-                                C_IVL_USEC_MAX);
+                                C_IVL_USEC_MAX_IN_1_SEC);
       }
 
       if (!StrLib::bIsWhite(*psChar) && psChar != psEnd) {
@@ -3927,27 +3926,36 @@ Ivl SqlPlanner::xCleanSecondInterval(Stz* szVal, sqlParser::StringLiteralContext
   }
 
   // Check bounds
-  if (uSecVal > C_IVL_SEC_SEC_MAX) {
+  if (uSecVal > C_IVL_SEC_MAX) {
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": absolute interval seconds value exceeds maximum of %lld"_Stz,
-                            C_IVL_SEC_SEC_MAX);
+                            C_IVL_SEC_MAX);
   }
 
-  if (uFracVal > C_IVL_USEC_MAX) {
+  if (uFracVal > C_IVL_USEC_MAX_IN_1_SEC) {
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": absolute interval microseconds value exceeds range of 0-%lld"_Stz,
-                            C_IVL_USEC_MAX);
+                            C_IVL_USEC_MAX_IN_1_SEC);
+  }
+
+  u8 uCombinedMicros = (uSecVal * C_1M) + uFracVal;
+  if (uCombinedMicros > C_IVL_USEC_MAX) {
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine(),
+                            EC_INVALID_INTERVAL_FORMAT,
+                            ": absolute interval seconds value exceeds maximum of %lld.%06lld"_Stz,
+                            C_IVL_SEC_MAX,
+                            C_IVL_USEC_MAX % C_1M);
   }
 
   Ivl xIvl{IV_SECOND};
   xIvl.T.m_xIvl.m_bIsNeg = bIsNegative;
   xIvl.T.m_xIvl.m_bIsNull = false;
-  xIvl.T.m_xIvl.u.m_xIvlSec.m_uSeconds = uSecVal;
-  xIvl.T.m_xIvl.u.m_xIvlSec.m_uMicros = uFracVal;
+  xIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros = (uSecVal * C_1M) + uFracVal;
 
   return xIvl;
 }
@@ -4011,9 +4019,8 @@ Ivl SqlPlanner::xCleanYearMonthInterval(Stz* szVal, sqlParser::StringLiteralCont
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": absolute interval %s value exceeds maximum of %lld"_Stz,
-                            aIV_field[eIvlType],
-                            C_IVL_YEARMON_MONTH_MAX);
+                            ": absolute interval %s value exceeds integer maximum"_Stz,
+                            aIV_field[eIvlType]);
   }
 
   // We should have a dash next
@@ -4051,9 +4058,8 @@ Ivl SqlPlanner::xCleanYearMonthInterval(Stz* szVal, sqlParser::StringLiteralCont
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": absolute interval %s value exceeds maximum of %lld"_Stz,
-                            aIV_field[eIvlType],
-                            C_IVL_YEARMON_MONTH_MAX);
+                            ": absolute interval %s value exceeds integer maximum"_Stz,
+                            aIV_field[eIvlType]);
   }
 
 
@@ -4065,15 +4071,6 @@ Ivl SqlPlanner::xCleanYearMonthInterval(Stz* szVal, sqlParser::StringLiteralCont
                             ": unexpected character '%c' encountered"_Stz,
                             *psChar);
   }
-
-//  // Check if the month is between [0,11]
-//  if (uMonthVal > 11) {
-//    SyntaxException::vThrow(pCtx->start->getLine(),
-//                            pCtx->start->getCharPositionInLine(),
-//                            EC_INVALID_INTERVAL_FORMAT,
-//                            ": month value must be in the range [0,11] in a %s interval"_Stz,
-//                            aIV_field[eIvlType]);
-//  }
 
   // Ignore trailing spaces
   while (*psChar == ' ') { ++psChar; }
@@ -4089,19 +4086,24 @@ Ivl SqlPlanner::xCleanYearMonthInterval(Stz* szVal, sqlParser::StringLiteralCont
 
   // Now check the bounds and set the value
   u8 uCombinedMonths = uYearVal * 12 + uMonthVal;
-  if (uCombinedMonths > C_IVL_YEARMON_MONTH_MAX) {
+
+  if (uYearVal  > C_IVL_YEAR_MAX  ||
+      uMonthVal > C_IVL_MONTH_MAX ||
+      uCombinedMonths > C_IVL_MONTH_MAX) {
+
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": absolute interval %s value exceeds maximum months of %lld"_Stz,
+                            ": absolute interval %s value exceeds maximum of %lld years, %lld months"_Stz,
                             aIV_field[eIvlType],
+                            C_IVL_YEARMON_YEAR_MAX,
                             C_IVL_YEARMON_MONTH_MAX);
   }
 
   Ivl xIvl{eIvlType};
   xIvl.T.m_xIvl.m_bIsNeg = bIsNegative;
   xIvl.T.m_xIvl.m_bIsNull = false;
-  xIvl.T.m_xIvl.u.m_xIvlYrToMon.m_uMonths = uCombinedMonths;
+  xIvl.T.m_xIvl.u.m_xIvlYM.m_uMonths = uCombinedMonths;
   return xIvl;
 }
 
@@ -4164,9 +4166,8 @@ Ivl SqlPlanner::xCleanDayHourInterval(Stz* szVal, sqlParser::StringLiteralContex
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": absolute interval %s value exceeds maximum of %lld"_Stz,
-                            aIV_field[eIvlType],
-                            C_IVL_DAYHOUR_DAY_MAX);
+                            ": absolute interval %s value exceeds integer maximum"_Stz,
+                            aIV_field[eIvlType]);
   }
 
   // We should have a space next
@@ -4205,9 +4206,8 @@ Ivl SqlPlanner::xCleanDayHourInterval(Stz* szVal, sqlParser::StringLiteralContex
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": absolute interval %s value exceeds maximum of %lld"_Stz,
-                            aIV_field[eIvlType],
-                            C_IVL_DAYHOUR_MIN_MAX/60);
+                            ": absolute interval %s value exceeds integer maximum"_Stz,
+                            aIV_field[eIvlType]);
   }
 
 
@@ -4219,15 +4219,6 @@ Ivl SqlPlanner::xCleanDayHourInterval(Stz* szVal, sqlParser::StringLiteralContex
                             ": unexpected character '%c' encountered"_Stz,
                             *psChar);
   }
-
-//  // Check if the hour is between [0,23]
-//  if (uHourVal > 23) {
-//    SyntaxException::vThrow(pCtx->start->getLine(),
-//                            pCtx->start->getCharPositionInLine(),
-//                            EC_INVALID_INTERVAL_FORMAT,
-//                            ": hour value must be in the range [0,23] in a %s interval"_Stz,
-//                            aIV_field[eIvlType]);
-//  }
 
   // Ignore trailing spaces
   while (*psChar == ' ') { ++psChar; }
@@ -4242,29 +4233,24 @@ Ivl SqlPlanner::xCleanDayHourInterval(Stz* szVal, sqlParser::StringLiteralContex
   }
 
   // Now check the bounds and set the value
-  if (uDayVal > C_IVL_DAYHOUR_DAY_MAX) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
-                            pCtx->start->getCharPositionInLine(),
-                            EC_INVALID_INTERVAL_FORMAT,
-                            ": absolute interval %s value exceeds DAY maximum of %lld"_Stz,
-                            aIV_field[eIvlType],
-                            C_IVL_DAYHOUR_DAY_MAX);
-  }
+  u8 uCombinedSec = uDayVal * C_SECS_PER_DAY + uHourVal * C_SECS_PER_HR;
+  if (uDayVal  > C_IVL_DAY_MAX  ||
+      uHourVal > C_IVL_HOUR_MAX ||
+      uCombinedSec > C_IVL_SEC_MAX) {
 
-  if (uHourVal > C_IVL_DAYHOUR_MIN_MAX / 60) {
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": absolute interval %s value exceeds HOUR maximum of %lld"_Stz,
+                            ": absolute interval %s value exceeds maximum of %lld days, %lld hours"_Stz,
                             aIV_field[eIvlType],
-                            C_IVL_DAYHOUR_MIN_MAX / 60);
+                            C_IVL_DAYHOUR_DAY_MAX,
+                            C_IVL_DAYHOUR_HOUR_MAX);
   }
 
   Ivl xIvl{eIvlType};
   xIvl.T.m_xIvl.m_bIsNeg = bIsNegative;
   xIvl.T.m_xIvl.m_bIsNull = false;
-  xIvl.T.m_xIvl.u.m_xIvlDayToHr.m_uDays = uDayVal;
-  xIvl.T.m_xIvl.u.m_xIvlDayToHr.m_uMinutes = uHourVal * 60;
+  xIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros = uCombinedSec * C_1M;
   return xIvl;
 }
 
@@ -4328,9 +4314,8 @@ Ivl SqlPlanner::xCleanDayMinuteInterval(Stz* szVal, sqlParser::StringLiteralCont
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": absolute interval %s value exceeds maximum of %lld"_Stz,
-                            aIV_field[eIvlType],
-                            C_IVL_DAYMIN_DAY_MAX);
+                            ": absolute interval %s value exceeds integer maximum"_Stz,
+                            aIV_field[eIvlType]);
   }
 
   // We should have a space next
@@ -4369,9 +4354,8 @@ Ivl SqlPlanner::xCleanDayMinuteInterval(Stz* szVal, sqlParser::StringLiteralCont
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": absolute interval %s value exceeds maximum of %lld"_Stz,
-                            aIV_field[eIvlType],
-                            C_IVL_DAYMIN_MIN_MAX/60);
+                            ": absolute interval %s value exceeds integer maximum"_Stz,
+                            aIV_field[eIvlType]);
   }
 
   // We should have a colon next
@@ -4408,9 +4392,8 @@ Ivl SqlPlanner::xCleanDayMinuteInterval(Stz* szVal, sqlParser::StringLiteralCont
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": absolute interval %s value exceeds maximum of %lld"_Stz,
-                            aIV_field[eIvlType],
-                            C_IVL_DAYMIN_MIN_MAX);
+                            ": absolute interval %s value exceeds integer maximum"_Stz,
+                            aIV_field[eIvlType]);
   }
 
   if (!StrLib::bIsWhite(*psChar) && psChar != psEnd) {
@@ -4435,31 +4418,29 @@ Ivl SqlPlanner::xCleanDayMinuteInterval(Stz* szVal, sqlParser::StringLiteralCont
   }
 
   // Now check the bounds and set the value
-  if (uDayVal > C_IVL_DAYMIN_DAY_MAX) {
+  u8 uCombinedSec = (uDayVal * C_SECS_PER_DAY) +
+                    (uHourVal * C_SECS_PER_HR) +
+                    (uMinVal * C_SECS_PER_MIN);
+
+  if (uDayVal  > C_IVL_DAY_MAX    ||
+      uHourVal > C_IVL_HOUR_MAX   ||
+      uMinVal  > C_IVL_MINUTE_MAX ||
+      uCombinedSec > C_IVL_SEC_MAX) {
+
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": absolute interval %s value exceeds DAY maximum of %lld"_Stz,
+                            ": absolute interval %s value exceeds maximum of %lld days, %lld hours, %lld minutes"_Stz,
                             aIV_field[eIvlType],
-                            C_IVL_DAYMIN_DAY_MAX);
-  }
-
-  u8 uCombinedMinutes = (uHourVal * 60) + uMinVal;
-
-  if (uCombinedMinutes > C_IVL_DAYMIN_MIN_MAX) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
-                            pCtx->start->getCharPositionInLine(),
-                            EC_INVALID_INTERVAL_FORMAT,
-                            ": absolute interval %s value exceeds MINUTE maximum of %lld"_Stz,
-                            aIV_field[eIvlType],
+                            C_IVL_DAYMIN_DAY_MAX,
+                            C_IVL_DAYMIN_HOUR_MAX,
                             C_IVL_DAYMIN_MIN_MAX);
   }
 
   Ivl xIvl{eIvlType};
   xIvl.T.m_xIvl.m_bIsNeg = bIsNegative;
   xIvl.T.m_xIvl.m_bIsNull = false;
-  xIvl.T.m_xIvl.u.m_xIvlDayToMin.m_uDays = uDayVal;
-  xIvl.T.m_xIvl.u.m_xIvlDayToMin.m_uMinutes = uCombinedMinutes;
+  xIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros = uCombinedSec * C_1M;
   return xIvl;
 }
 
@@ -4525,9 +4506,8 @@ Ivl SqlPlanner::xCleanDaySecondInterval(Stz* szVal, sqlParser::StringLiteralCont
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": absolute interval %s value exceeds maximum of %lld"_Stz,
-                            aIV_field[eIvlType],
-                            C_IVL_DAYSEC_DAY_MAX);
+                            ": absolute interval %s value exceeds integer maximum"_Stz,
+                            aIV_field[eIvlType]);
   }
 
   // We should have a space next
@@ -4566,9 +4546,8 @@ Ivl SqlPlanner::xCleanDaySecondInterval(Stz* szVal, sqlParser::StringLiteralCont
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": absolute interval %s value exceeds maximum of %lld"_Stz,
-                            aIV_field[eIvlType],
-                            C_IVL_DAYSEC_MIN_MAX/60);
+                            ": absolute interval %s value exceeds integer maximum"_Stz,
+                            aIV_field[eIvlType]);
   }
 
   // We should have a colon next
@@ -4605,9 +4584,8 @@ Ivl SqlPlanner::xCleanDaySecondInterval(Stz* szVal, sqlParser::StringLiteralCont
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": absolute interval %s value exceeds maximum of %lld"_Stz,
-                            aIV_field[eIvlType],
-                            C_IVL_DAYSEC_MIN_MAX);
+                            ": absolute interval %s value exceeds integer maximum"_Stz,
+                            aIV_field[eIvlType]);
   }
 
   // We should have a colon next
@@ -4644,9 +4622,8 @@ Ivl SqlPlanner::xCleanDaySecondInterval(Stz* szVal, sqlParser::StringLiteralCont
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": absolute interval %s value exceeds maximum of %lld"_Stz,
-                            aIV_field[eIvlType],
-                            C_IVL_DAYSEC_SEC_MAX);
+                            ": absolute interval %s value exceeds integer maximum"_Stz,
+                            aIV_field[eIvlType]);
   }
 
   // There may be fractional seconds
@@ -4663,7 +4640,7 @@ Ivl SqlPlanner::xCleanDaySecondInterval(Stz* szVal, sqlParser::StringLiteralCont
                                 pCtx->start->getCharPositionInLine(),
                                 EC_INVALID_INTERVAL_FORMAT,
                                 ": absolute interval microseconds value exceeds range of 0-%lld"_Stz,
-                                C_IVL_USEC_MAX);
+                                C_IVL_USEC_MAX_IN_1_SEC);
       }
 
       // Ignore trailing zeros
@@ -4677,7 +4654,7 @@ Ivl SqlPlanner::xCleanDaySecondInterval(Stz* szVal, sqlParser::StringLiteralCont
                                 pCtx->start->getCharPositionInLine(),
                                 EC_INVALID_INTERVAL_FORMAT,
                                 ": absolute interval microseconds value exceeds range of 0-%lld"_Stz,
-                                C_IVL_USEC_MAX);
+                                C_IVL_USEC_MAX_IN_1_SEC);
       }
     }
   }
@@ -4705,50 +4682,42 @@ Ivl SqlPlanner::xCleanDaySecondInterval(Stz* szVal, sqlParser::StringLiteralCont
   }
 
   // Now check the bounds and set the value
-  if (uDayVal > C_IVL_DAYSEC_DAY_MAX) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
-                            pCtx->start->getCharPositionInLine(),
-                            EC_INVALID_INTERVAL_FORMAT,
-                            ": absolute interval %s value exceeds DAY maximum of %lld"_Stz,
-                            aIV_field[eIvlType],
-                            C_IVL_DAYSEC_DAY_MAX);
-  }
+  u8 uCombinedSec = (uDayVal * C_SECS_PER_DAY) +
+                    (uHourVal * C_SECS_PER_HR) +
+                    (uMinVal * C_SECS_PER_MIN) +
+                    uSecVal;
 
-  u8 uCombinedMinutes = (uHourVal * 60) + uMinVal;
-
-  if (uCombinedMinutes > C_IVL_DAYSEC_MIN_MAX) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
-                            pCtx->start->getCharPositionInLine(),
-                            EC_INVALID_INTERVAL_FORMAT,
-                            ": absolute interval %s value exceeds MINUTE maximum of %lld"_Stz,
-                            aIV_field[eIvlType],
-                            C_IVL_DAYSEC_MIN_MAX);
-  }
-
-  if (uSecVal > C_IVL_DAYSEC_SEC_MAX) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
-                            pCtx->start->getCharPositionInLine(),
-                            EC_INVALID_INTERVAL_FORMAT,
-                            ": absolute interval %s value exceeds SECOND maximum of %lld"_Stz,
-                            aIV_field[eIvlType],
-                            C_IVL_DAYSEC_SEC_MAX);
-  }
-
-  if (uFracVal > C_IVL_USEC_MAX) {
+  if (uFracVal > C_IVL_USEC_MAX_IN_1_SEC) {
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": absolute interval microseconds value exceeds range of 0-%lld"_Stz,
-                            C_IVL_USEC_MAX);
+                            C_IVL_USEC_MAX_IN_1_SEC);
+  }
+
+  if (uDayVal  > C_IVL_DAY_MAX     ||
+      uHourVal > C_IVL_HOUR_MAX    ||
+      uMinVal  > C_IVL_MINUTE_MAX  ||
+      uSecVal  > C_IVL_SEC_MAX     ||
+      uCombinedSec > C_IVL_SEC_MAX ||
+      (uCombinedSec * C_1M + uFracVal) > C_IVL_USEC_MAX) {
+
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine(),
+                            EC_INVALID_INTERVAL_FORMAT,
+                            ": absolute interval %s value exceeds maximum of %lld days, %lld hours, %lld minutes, %lld.%06lld seconds"_Stz,
+                            aIV_field[eIvlType],
+                            C_IVL_DAYSEC_DAY_MAX,
+                            C_IVL_DAYSEC_HOUR_MAX,
+                            C_IVL_DAYSEC_MIN_MAX,
+                            C_IVL_DAYSEC_SEC_MAX,
+                            C_IVL_DAYSEC_USEC_MAX);
   }
 
   Ivl xIvl{eIvlType};
   xIvl.T.m_xIvl.m_bIsNeg = bIsNegative;
   xIvl.T.m_xIvl.m_bIsNull = false;
-  xIvl.T.m_xIvl.u.m_xIvlDayToSec.m_uDays = uDayVal;
-  xIvl.T.m_xIvl.u.m_xIvlDayToSec.m_uMinutes = uCombinedMinutes;
-  xIvl.T.m_xIvl.u.m_xIvlDayToSec.m_uSeconds = uSecVal;
-  xIvl.T.m_xIvl.u.m_xIvlDayToSec.m_uMicros = uFracVal;
+  xIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros = (uCombinedSec * C_1M) + uFracVal;
   return xIvl;
 }
 
@@ -4811,9 +4780,8 @@ Ivl SqlPlanner::xCleanHourMinuteInterval(Stz* szVal, sqlParser::StringLiteralCon
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": absolute interval %s value exceeds maximum of %lld"_Stz,
-                            aIV_field[eIvlType],
-                            C_IVL_HOURMIN_MIN_MAX/60);
+                            ": absolute interval %s value exceeds integer maximum"_Stz,
+                            aIV_field[eIvlType]);
   }
 
   // We should have a colon next
@@ -4850,9 +4818,8 @@ Ivl SqlPlanner::xCleanHourMinuteInterval(Stz* szVal, sqlParser::StringLiteralCon
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": absolute interval %s value exceeds maximum of %lld"_Stz,
-                            aIV_field[eIvlType],
-                            C_IVL_HOURMIN_MIN_MAX);
+                            ": absolute interval %s value exceeds integer maximum"_Stz,
+                            aIV_field[eIvlType]);
   }
 
   if (!StrLib::bIsWhite(*psChar) && psChar != psEnd) {
@@ -4877,21 +4844,27 @@ Ivl SqlPlanner::xCleanHourMinuteInterval(Stz* szVal, sqlParser::StringLiteralCon
   }
 
   // Now check the bounds and set the value
-  u8 uCombinedMinutes = (uHourVal * 60) + uMinVal;
+  u8 uCombinedSec = (uHourVal * C_SECS_PER_HR) +
+                    (uMinVal * C_SECS_PER_MIN);
 
-  if (uCombinedMinutes > C_IVL_HOURMIN_MIN_MAX) {
+
+  if (uHourVal > C_IVL_HOUR_MAX    ||
+      uMinVal  > C_IVL_MINUTE_MAX  ||
+      uCombinedSec > C_IVL_SEC_MAX) {
+
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": absolute interval %s value exceeds MINUTE maximum of %lld"_Stz,
+                            ": absolute interval %s value exceeds maximum of %lld hours, %lld minutes"_Stz,
                             aIV_field[eIvlType],
+                            C_IVL_HOURMIN_HOUR_MAX,
                             C_IVL_HOURMIN_MIN_MAX);
   }
 
   Ivl xIvl{eIvlType};
   xIvl.T.m_xIvl.m_bIsNeg = bIsNegative;
   xIvl.T.m_xIvl.m_bIsNull = false;
-  xIvl.T.m_xIvl.u.m_xIvlHrToMin.m_uMinutes = uCombinedMinutes;
+  xIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros = (uCombinedSec * C_1M);
   return xIvl;
 }
 
@@ -4956,9 +4929,8 @@ Ivl SqlPlanner::xCleanHourSecondInterval(Stz* szVal, sqlParser::StringLiteralCon
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": absolute interval %s value exceeds maximum of %lld"_Stz,
-                            aIV_field[eIvlType],
-                            C_IVL_HOURSEC_MIN_MAX/60);
+                            ": absolute interval %s value exceeds integer maximum"_Stz,
+                            aIV_field[eIvlType]);
   }
 
   // We should have a colon next
@@ -4995,9 +4967,8 @@ Ivl SqlPlanner::xCleanHourSecondInterval(Stz* szVal, sqlParser::StringLiteralCon
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": absolute interval %s value exceeds maximum of %lld"_Stz,
-                            aIV_field[eIvlType],
-                            C_IVL_HOURSEC_MIN_MAX);
+                            ": absolute interval %s value exceeds integer maximum"_Stz,
+                            aIV_field[eIvlType]);
   }
 
   // We should have a colon next
@@ -5034,9 +5005,8 @@ Ivl SqlPlanner::xCleanHourSecondInterval(Stz* szVal, sqlParser::StringLiteralCon
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": absolute interval %s value exceeds maximum of %lld"_Stz,
-                            aIV_field[eIvlType],
-                            C_IVL_HOURSEC_SEC_MAX);
+                            ": absolute interval %s value exceeds integer maximum"_Stz,
+                            aIV_field[eIvlType]);
   }
 
   // There may be fractional seconds
@@ -5053,7 +5023,7 @@ Ivl SqlPlanner::xCleanHourSecondInterval(Stz* szVal, sqlParser::StringLiteralCon
                                 pCtx->start->getCharPositionInLine(),
                                 EC_INVALID_INTERVAL_FORMAT,
                                 ": absolute interval microseconds value exceeds range of 0-%lld"_Stz,
-                                C_IVL_USEC_MAX);
+                                C_IVL_USEC_MAX_IN_1_SEC);
       }
 
       // Ignore trailing zeros
@@ -5067,7 +5037,7 @@ Ivl SqlPlanner::xCleanHourSecondInterval(Stz* szVal, sqlParser::StringLiteralCon
                                 pCtx->start->getCharPositionInLine(),
                                 EC_INVALID_INTERVAL_FORMAT,
                                 ": absolute interval microseconds value exceeds range of 0-%lld"_Stz,
-                                C_IVL_USEC_MAX);
+                                C_IVL_USEC_MAX_IN_1_SEC);
       }
     }
   }
@@ -5095,40 +5065,39 @@ Ivl SqlPlanner::xCleanHourSecondInterval(Stz* szVal, sqlParser::StringLiteralCon
   }
 
   // Now check the bounds and set the value
-  u8 uCombinedMinutes = (uHourVal * 60) + uMinVal;
+  u8 uCombinedSec = (uHourVal * C_SECS_PER_HR) +
+                    (uMinVal * C_SECS_PER_MIN) +
+                    uSecVal;
 
-  if (uCombinedMinutes > C_IVL_HOURSEC_MIN_MAX) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
-                            pCtx->start->getCharPositionInLine(),
-                            EC_INVALID_INTERVAL_FORMAT,
-                            ": absolute interval %s value exceeds MINUTE maximum of %lld"_Stz,
-                            aIV_field[eIvlType],
-                            C_IVL_HOURSEC_MIN_MAX);
-  }
-
-  if (uSecVal > C_IVL_HOURSEC_SEC_MAX) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
-                            pCtx->start->getCharPositionInLine(),
-                            EC_INVALID_INTERVAL_FORMAT,
-                            ": absolute interval %s value exceeds SECOND maximum of %lld"_Stz,
-                            aIV_field[eIvlType],
-                            C_IVL_HOURSEC_SEC_MAX);
-  }
-
-  if (uFracVal > C_IVL_USEC_MAX) {
+  if (uFracVal > C_IVL_USEC_MAX_IN_1_SEC) {
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": absolute interval microseconds value exceeds range of 0-%lld"_Stz,
-                            C_IVL_USEC_MAX);
+                            C_IVL_USEC_MAX_IN_1_SEC);
+  }
+
+  if (uHourVal > C_IVL_HOUR_MAX     ||
+      uMinVal  > C_IVL_MINUTE_MAX   ||
+      uSecVal  > C_IVL_SEC_MAX      ||
+      uCombinedSec > C_IVL_SEC_MAX  ||
+      (uCombinedSec * C_1M + uFracVal) > C_IVL_USEC_MAX) {
+
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine(),
+                            EC_INVALID_INTERVAL_FORMAT,
+                            ": absolute interval %s value exceeds maximum of %lld hours, %lld minutes, %lld.%06lld seconds"_Stz,
+                            aIV_field[eIvlType],
+                            C_IVL_HOURSEC_HOUR_MAX,
+                            C_IVL_HOURSEC_MIN_MAX,
+                            C_IVL_HOURSEC_SEC_MAX,
+                            C_IVL_HOURSEC_USEC_MAX);
   }
 
   Ivl xIvl{eIvlType};
   xIvl.T.m_xIvl.m_bIsNeg = bIsNegative;
   xIvl.T.m_xIvl.m_bIsNull = false;
-  xIvl.T.m_xIvl.u.m_xIvlHrToSec.m_uMinutes = uCombinedMinutes;
-  xIvl.T.m_xIvl.u.m_xIvlHrToSec.m_uSeconds = uSecVal;
-  xIvl.T.m_xIvl.u.m_xIvlHrToSec.m_uMicros = uFracVal;
+  xIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros = (uCombinedSec * C_1M) + uFracVal;
   return xIvl;
 }
 
@@ -5201,9 +5170,8 @@ Ivl SqlPlanner::xCleanMinuteSecondInterval(Stz* szVal, sqlParser::StringLiteralC
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": absolute interval %s value exceeds maximum of %lld"_Stz,
-                            aIV_field[eIvlType],
-                            C_IVL_MINSEC_MIN_MAX);
+                            ": absolute interval %s value exceeds integer maximum"_Stz,
+                            aIV_field[eIvlType]);
   }
 
   // We should have a colon next
@@ -5240,9 +5208,8 @@ Ivl SqlPlanner::xCleanMinuteSecondInterval(Stz* szVal, sqlParser::StringLiteralC
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": absolute interval %s value exceeds maximum of %lld"_Stz,
-                            aIV_field[eIvlType],
-                            C_IVL_MINSEC_SEC_MAX);
+                            ": absolute interval %s value exceeds integer maximum"_Stz,
+                            aIV_field[eIvlType]);
   }
 
   // There may be fractional seconds
@@ -5259,7 +5226,7 @@ Ivl SqlPlanner::xCleanMinuteSecondInterval(Stz* szVal, sqlParser::StringLiteralC
                                 pCtx->start->getCharPositionInLine(),
                                 EC_INVALID_INTERVAL_FORMAT,
                                 ": absolute interval microseconds value exceeds range of 0-%lld"_Stz,
-                                C_IVL_USEC_MAX);
+                                C_IVL_USEC_MAX_IN_1_SEC);
       }
 
       // Ignore trailing zeros
@@ -5273,7 +5240,7 @@ Ivl SqlPlanner::xCleanMinuteSecondInterval(Stz* szVal, sqlParser::StringLiteralC
                                 pCtx->start->getCharPositionInLine(),
                                 EC_INVALID_INTERVAL_FORMAT,
                                 ": absolute interval microseconds value exceeds range of 0-%lld"_Stz,
-                                C_IVL_USEC_MAX);
+                                C_IVL_USEC_MAX_IN_1_SEC);
       }
     }
   }
@@ -5301,38 +5268,36 @@ Ivl SqlPlanner::xCleanMinuteSecondInterval(Stz* szVal, sqlParser::StringLiteralC
   }
 
   // Now check the bounds and set the value
-  if (uMinVal > C_IVL_MINSEC_MIN_MAX) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
-                            pCtx->start->getCharPositionInLine(),
-                            EC_INVALID_INTERVAL_FORMAT,
-                            ": absolute interval %s value exceeds MINUTE maximum of %lld"_Stz,
-                            aIV_field[eIvlType],
-                            C_IVL_MINSEC_MIN_MAX);
-  }
+  u8 uCombinedSec = (uMinVal * C_SECS_PER_MIN) +
+                    uSecVal;
 
-  if (uSecVal > C_IVL_MINSEC_SEC_MAX) {
-    SyntaxException::vThrow(pCtx->start->getLine(),
-                            pCtx->start->getCharPositionInLine(),
-                            EC_INVALID_INTERVAL_FORMAT,
-                            ": absolute interval %s value exceeds SECOND maximum of %lld"_Stz,
-                            aIV_field[eIvlType],
-                            C_IVL_MINSEC_SEC_MAX);
-  }
-
-  if (uFracVal > C_IVL_USEC_MAX) {
+  if (uFracVal > C_IVL_USEC_MAX_IN_1_SEC) {
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
                             ": absolute interval microseconds value exceeds range of 0-%lld"_Stz,
-                            C_IVL_USEC_MAX);
+                            C_IVL_USEC_MAX_IN_1_SEC);
+  }
+
+  if (uMinVal  > C_IVL_MINUTE_MAX   ||
+      uSecVal  > C_IVL_SEC_MAX      ||
+      uCombinedSec > C_IVL_SEC_MAX  ||
+      (uCombinedSec * C_1M + uFracVal) > C_IVL_USEC_MAX) {
+
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine(),
+                            EC_INVALID_INTERVAL_FORMAT,
+                            ": absolute interval %s value exceeds maximum of %lld minutes, %lld.%06lld seconds"_Stz,
+                            aIV_field[eIvlType],
+                            C_IVL_MINSEC_MIN_MAX,
+                            C_IVL_MINSEC_SEC_MAX,
+                            C_IVL_MINSEC_USEC_MAX);
   }
 
   Ivl xIvl{eIvlType};
   xIvl.T.m_xIvl.m_bIsNeg = bIsNegative;
   xIvl.T.m_xIvl.m_bIsNull = false;
-  xIvl.T.m_xIvl.u.m_xIvlMinToSec.m_uMinutes = uMinVal;
-  xIvl.T.m_xIvl.u.m_xIvlMinToSec.m_uSeconds = uSecVal;
-  xIvl.T.m_xIvl.u.m_xIvlMinToSec.m_uMicros = uFracVal;
+  xIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros = (uCombinedSec * C_1M) + uFracVal;
   return xIvl;
 }
 

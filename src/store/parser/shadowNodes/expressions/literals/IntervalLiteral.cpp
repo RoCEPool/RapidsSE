@@ -72,7 +72,7 @@ void IntervalLiteral::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 
   switch (eIvlType) {
     case IV_YEAR:
-      uYears = xIvl.T.m_xIvl.u.m_xIvlYr.m_uYears;
+      uYears = xIvl.T.m_xIvl.u.m_xIvlYM.m_uMonths / 12;
 
       sBuf.vCatSprint("INTERVAL %s'%lld' %s"_Stz,
                       szNeg,
@@ -81,7 +81,7 @@ void IntervalLiteral::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
       break;
 
     case IV_MONTH:
-      uMonths = xIvl.T.m_xIvl.u.m_xIvlMon.m_uMonths;
+      uMonths = xIvl.T.m_xIvl.u.m_xIvlYM.m_uMonths;
 
       sBuf.vCatSprint("INTERVAL %s'%lld' %s"_Stz,
                       szNeg,
@@ -90,8 +90,8 @@ void IntervalLiteral::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
       break;
 
     case IV_YEAR_TO_MONTH:
-      uYears = xIvl.T.m_xIvl.u.m_xIvlYrToMon.m_uMonths / 12;
-      uMonths = xIvl.T.m_xIvl.u.m_xIvlYrToMon.m_uMonths % 12;
+      uYears = xIvl.T.m_xIvl.u.m_xIvlYM.m_uMonths / 12;
+      uMonths = xIvl.T.m_xIvl.u.m_xIvlYM.m_uMonths % 12;
 
       sBuf.vCatSprint("INTERVAL %s'%lld-%lld' %s"_Stz,
                       szNeg,
@@ -101,7 +101,7 @@ void IntervalLiteral::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
       break;
 
     case IV_DAY:
-      uDays = xIvl.T.m_xIvl.u.m_xIvlDay.m_uDays;
+      uDays = xIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros / (C_SECS_PER_DAY * C_1M);
 
       sBuf.vCatSprint("INTERVAL %s'%lld' %s"_Stz,
                       szNeg,
@@ -110,7 +110,7 @@ void IntervalLiteral::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
       break;
 
     case IV_HOUR:
-      uHours = xIvl.T.m_xIvl.u.m_xIvlHr.m_uHours;
+      uHours = xIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros / (C_SECS_PER_HR * C_1M);
 
       sBuf.vCatSprint("INTERVAL %s'%lld' %s"_Stz,
                       szNeg,
@@ -119,7 +119,7 @@ void IntervalLiteral::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
       break;
 
     case IV_MINUTE:
-      uMins = xIvl.T.m_xIvl.u.m_xIvlMin.m_uMinutes;
+      uMins = xIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros / (C_SECS_PER_MIN * C_1M);
       sBuf.vCatSprint("INTERVAL %s'%lld' %s"_Stz,
                       szNeg,
                       uMins,
@@ -127,8 +127,8 @@ void IntervalLiteral::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
       break;
 
     case IV_SECOND:
-      uSecs = xIvl.T.m_xIvl.u.m_xIvlSec.m_uSeconds;
-      uMicros = xIvl.T.m_xIvl.u.m_xIvlSec.m_uMicros;
+      uSecs = xIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros / C_1M;
+      uMicros = xIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros % C_1M;
 
       if (uMicros > 0) {
         sBuf.vCatSprint("INTERVAL %s'%lld.%06lld' %s"_Stz,
@@ -145,8 +145,8 @@ void IntervalLiteral::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
       break;
 
     case IV_DAY_TO_HOUR:
-      uDays = xIvl.T.m_xIvl.u.m_xIvlDayToHr.m_uDays;
-      uHours = xIvl.T.m_xIvl.u.m_xIvlDayToHr.m_uMinutes / 60;
+      uDays  =  xIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros / (C_SECS_PER_DAY * C_1M);
+      uHours = (xIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros % (C_SECS_PER_DAY * C_1M)) / (C_SECS_PER_HR * C_1M);
 
       sBuf.vCatSprint("INTERVAL %s'%lld %lld' %s"_Stz,
                       szNeg,
@@ -156,9 +156,9 @@ void IntervalLiteral::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
       break;
 
     case IV_DAY_TO_MINUTE:
-      uDays = xIvl.T.m_xIvl.u.m_xIvlDayToMin.m_uDays;
-      uHours = xIvl.T.m_xIvl.u.m_xIvlDayToMin.m_uMinutes / 60;
-      uMins = xIvl.T.m_xIvl.u.m_xIvlDayToMin.m_uMinutes % 60;
+      uDays  =  xIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros / (C_SECS_PER_DAY * C_1M);
+      uHours = (xIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros % (C_SECS_PER_DAY * C_1M)) / (C_SECS_PER_HR * C_1M);
+      uMins  = (xIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros % (C_SECS_PER_HR * C_1M)) / (C_SECS_PER_MIN * C_1M);
 
       sBuf.vCatSprint("INTERVAL %s'%lld %lld:%lld' %s"_Stz,
                       szNeg,
@@ -169,11 +169,11 @@ void IntervalLiteral::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
       break;
 
     case IV_DAY_TO_SECOND:
-      uDays = xIvl.T.m_xIvl.u.m_xIvlDayToSec.m_uDays;
-      uHours = xIvl.T.m_xIvl.u.m_xIvlDayToSec.m_uMinutes / 60;
-      uMins = xIvl.T.m_xIvl.u.m_xIvlDayToSec.m_uMinutes % 60;
-      uSecs = xIvl.T.m_xIvl.u.m_xIvlDayToSec.m_uSeconds;
-      uMicros = xIvl.T.m_xIvl.u.m_xIvlDayToSec.m_uMicros;
+      uDays   =  xIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros / (C_SECS_PER_DAY * C_1M);
+      uHours  = (xIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros % (C_SECS_PER_DAY * C_1M)) / (C_SECS_PER_HR * C_1M);
+      uMins   = (xIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros % (C_SECS_PER_HR  * C_1M)) / (C_SECS_PER_MIN * C_1M);
+      uSecs   = (xIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros % (C_SECS_PER_MIN * C_1M)) / C_1M;
+      uMicros =  xIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros % C_1M;
 
       if (uMicros > 0) {
         sBuf.vCatSprint("INTERVAL %s'%lld %lld:%lld:%lld.%06lld' %s"_Stz,
@@ -196,8 +196,8 @@ void IntervalLiteral::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
       break;
 
     case IV_HOUR_TO_MINUTE:
-      uHours = xIvl.T.m_xIvl.u.m_xIvlHrToMin.m_uMinutes / 60;
-      uMins = xIvl.T.m_xIvl.u.m_xIvlHrToMin.m_uMinutes % 60;
+      uHours =  xIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros / (C_SECS_PER_HR * C_1M);
+      uMins  = (xIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros % (C_SECS_PER_HR * C_1M)) / (C_SECS_PER_MIN * C_1M);
 
       sBuf.vCatSprint("INTERVAL %s'%lld:%lld' %s"_Stz,
                       szNeg,
@@ -207,10 +207,10 @@ void IntervalLiteral::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
       break;
 
     case IV_HOUR_TO_SECOND:
-      uHours = xIvl.T.m_xIvl.u.m_xIvlHrToSec.m_uMinutes / 60;
-      uMins = xIvl.T.m_xIvl.u.m_xIvlHrToSec.m_uMinutes % 60;
-      uSecs = xIvl.T.m_xIvl.u.m_xIvlHrToSec.m_uSeconds;
-      uMicros = xIvl.T.m_xIvl.u.m_xIvlHrToSec.m_uMicros;
+      uHours  =  xIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros / (C_SECS_PER_HR  * C_1M);
+      uMins   = (xIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros % (C_SECS_PER_HR  * C_1M)) / (C_SECS_PER_MIN * C_1M);
+      uSecs   = (xIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros % (C_SECS_PER_MIN * C_1M)) / C_1M;
+      uMicros =  xIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros % C_1M;
 
       if (uMicros > 0) {
         sBuf.vCatSprint("INTERVAL %s'%lld:%lld:%lld.%06lld' %s"_Stz,
@@ -231,9 +231,9 @@ void IntervalLiteral::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
       break;
 
     case IV_MINUTE_TO_SECOND:
-      uMins = xIvl.T.m_xIvl.u.m_xIvlMinToSec.m_uMinutes;
-      uSecs = xIvl.T.m_xIvl.u.m_xIvlMinToSec.m_uSeconds;
-      uMicros = xIvl.T.m_xIvl.u.m_xIvlMinToSec.m_uMicros;
+      uMins   =  xIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros / (C_SECS_PER_MIN * C_1M);
+      uSecs   = (xIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros % (C_SECS_PER_MIN * C_1M)) / C_1M;
+      uMicros =  xIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros % C_1M;
 
       if (uMicros > 0) {
         sBuf.vCatSprint("INTERVAL %s'%lld:%lld.%06lld' %s"_Stz,

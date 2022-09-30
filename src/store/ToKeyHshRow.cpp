@@ -1634,7 +1634,7 @@ L_Interval:
     vFIELD_ERROR(EC_CSV_INTERVAL_SECS_TOO_LARGE);
   
   // have we exceeded the max for microsecond?
-  if (uMicrosecondComponent > (u8)C_IVL_USEC_MAX)
+  if (uMicrosecondComponent > (u8)C_IVL_USEC_MAX_IN_1_SEC)
     vFIELD_ERROR(EC_CSV_INTERVAL_USECS_TOO_LARGE);
   
   // ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ====
@@ -1643,8 +1643,7 @@ L_Interval:
   vWHITE_SPACE_trailing(EC_CSV_INTERVAL_INVALID);
 
   // compute final field value
-  wxColVal_interval.T.m_xIvl.u.m_xIvlSec.m_uSeconds = uSecondComponent;
-  wxColVal_interval.T.m_xIvl.u.m_xIvlSec.m_uMicros  = uMicrosecondComponent;
+  wxColVal_interval.T.m_xIvl.u.m_xIvlDT.m_uMicros  = (uSecondComponent * C_1M) + uMicrosecondComponent;
   
   // ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡
   //                                                           deposit interval

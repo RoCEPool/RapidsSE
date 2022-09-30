@@ -157,47 +157,23 @@ void Ivl::vSetMax()
   T.m_xIvl.m_iSpare = 0;
 
   switch(T.m_xIvl.m_eType)    {
-    case IV_YEAR:             { T.m_xIvl.u.m_xIvlYr.m_uYears       = 72057594037927935LL; break; } // 2^56-1
+    case IV_YEAR:   // fall through
+    case IV_MONTH:  // fall through
+    case IV_YEAR_TO_MONTH:
+      T.m_xIvl.u.m_xIvlYM.m_uMonths = C_IVL_MONTH_MAX;
+      break;
 
-    case IV_MONTH:            { T.m_xIvl.u.m_xIvlMon.m_uMonths     = 72057594037927935LL; break; } // 2^56-1
-
-    case IV_YEAR_TO_MONTH:    { T.m_xIvl.u.m_xIvlYrToMon.m_uMonths = 72057594037927935LL; break; } // 2^56-1
-
-    case IV_DAY:              { T.m_xIvl.u.m_xIvlDay.m_uDays       = 72057594037927935LL; break; } // 2^56-1
-
-    case IV_HOUR:             { T.m_xIvl.u.m_xIvlHr.m_uHours       = 72057594037927935LL; break; } // 2^56-1
-
-    case IV_MINUTE:           { T.m_xIvl.u.m_xIvlMin.m_uMinutes    = 72057594037927935LL; break; } // 2^56-1
-
-    case IV_SECOND:           { T.m_xIvl.u.m_xIvlSec.m_uSeconds    = 68719476735LL; // 2^36-1
-                                T.m_xIvl.u.m_xIvlSec.m_uMicros = 999999;
-                                break; }
-
-    case IV_DAY_TO_HOUR:      { T.m_xIvl.u.m_xIvlDayToHr.m_uDays = 268435455LL; // 2^28-1
-                                T.m_xIvl.u.m_xIvlDayToHr.m_uMinutes = 268435455LL; // 2^28-1
-                                break; }
-
-    case IV_DAY_TO_MINUTE:    { T.m_xIvl.u.m_xIvlDayToMin.m_uDays = 268435455LL; // 2^28-1
-                                T.m_xIvl.u.m_xIvlDayToMin.m_uMinutes = 268435455LL; // 2^28-1
-                                break; }
-
-    case IV_DAY_TO_SECOND:    { T.m_xIvl.u.m_xIvlDayToSec.m_uDays = 4095; // 2^12-1
-                                T.m_xIvl.u.m_xIvlDayToSec.m_uMinutes = 4095; // 2^12-1
-                                T.m_xIvl.u.m_xIvlDayToSec.m_uSeconds = 4095; // 2^12-1
-                                T.m_xIvl.u.m_xIvlDayToSec.m_uMicros = 999999;
-                                break; }
-
-    case IV_HOUR_TO_MINUTE:   { T.m_xIvl.u.m_xIvlHrToMin.m_uMinutes = 72057594037927935LL; break; } // 2^56-1
-
-    case IV_HOUR_TO_SECOND:   { T.m_xIvl.u.m_xIvlHrToSec.m_uMinutes = 262143; // 2^18-1
-                                T.m_xIvl.u.m_xIvlHrToSec.m_uSeconds = 262143; // 2^18-1
-                                T.m_xIvl.u.m_xIvlHrToSec.m_uMicros = 999999;
-                                break; }
-
-    case IV_MINUTE_TO_SECOND: { T.m_xIvl.u.m_xIvlMinToSec.m_uMinutes = 262143; // 2^18-1
-                                T.m_xIvl.u.m_xIvlMinToSec.m_uSeconds = 262143; // 2^18-1
-                                T.m_xIvl.u.m_xIvlMinToSec.m_uMicros = 999999;
-                                break; }
+    case IV_DAY:              // fall through
+    case IV_HOUR:             // fall through
+    case IV_MINUTE:           // fall through
+    case IV_SECOND:           // fall through
+    case IV_DAY_TO_HOUR:      // fall through
+    case IV_DAY_TO_MINUTE:    // fall through
+    case IV_DAY_TO_SECOND:    // fall through
+    case IV_HOUR_TO_MINUTE:   // fall through
+    case IV_HOUR_TO_SECOND:   // fall through
+    case IV_MINUTE_TO_SECOND:
+      T.m_xIvl.u.m_xIvlDT.m_uMicros = C_IVL_USEC_MAX;
 
     default:
      NEVER_REACH
@@ -215,47 +191,24 @@ void Ivl::vSetZero()
   T.m_xIvl.m_iSpare = 0;
 
   switch(T.m_xIvl.m_eType)    {
-    case IV_YEAR:             { T.m_xIvl.u.m_xIvlYr.m_uYears       = 0; break; }
+    case IV_YEAR:           // fall through
+    case IV_MONTH:          // fall through
+    case IV_YEAR_TO_MONTH:  // fall through
+      T.m_xIvl.u.m_xIvlYM.m_uMonths = 0;
+      break;
 
-    case IV_MONTH:            { T.m_xIvl.u.m_xIvlMon.m_uMonths     = 0; break; }
-
-    case IV_YEAR_TO_MONTH:    { T.m_xIvl.u.m_xIvlYrToMon.m_uMonths = 0; break; }
-
-    case IV_DAY:              { T.m_xIvl.u.m_xIvlDay.m_uDays       = 0; break; }
-
-    case IV_HOUR:             { T.m_xIvl.u.m_xIvlHr.m_uHours       = 0; break; }
-
-    case IV_MINUTE:           { T.m_xIvl.u.m_xIvlMin.m_uMinutes    = 0; break; }
-
-    case IV_SECOND:           { T.m_xIvl.u.m_xIvlSec.m_uSeconds    = 0;
-                                T.m_xIvl.u.m_xIvlSec.m_uMicros = 0;
-                                break; }
-
-    case IV_DAY_TO_HOUR:      { T.m_xIvl.u.m_xIvlDayToHr.m_uDays = 0;
-                                T.m_xIvl.u.m_xIvlDayToHr.m_uMinutes = 0;
-                                break; }
-
-    case IV_DAY_TO_MINUTE:    { T.m_xIvl.u.m_xIvlDayToMin.m_uDays = 0;
-                                T.m_xIvl.u.m_xIvlDayToMin.m_uMinutes = 0;
-                                break; }
-
-    case IV_DAY_TO_SECOND:    { T.m_xIvl.u.m_xIvlDayToSec.m_uDays = 0;
-                                T.m_xIvl.u.m_xIvlDayToSec.m_uMinutes = 0;
-                                T.m_xIvl.u.m_xIvlDayToSec.m_uSeconds = 0;
-                                T.m_xIvl.u.m_xIvlDayToSec.m_uMicros = 0;
-                                break; }
-
-    case IV_HOUR_TO_MINUTE:   { T.m_xIvl.u.m_xIvlHrToMin.m_uMinutes = 0; break; }
-
-    case IV_HOUR_TO_SECOND:   { T.m_xIvl.u.m_xIvlHrToSec.m_uMinutes = 0;
-                                T.m_xIvl.u.m_xIvlHrToSec.m_uSeconds = 0;
-                                T.m_xIvl.u.m_xIvlHrToSec.m_uMicros = 0;
-                                break; }
-
-    case IV_MINUTE_TO_SECOND: { T.m_xIvl.u.m_xIvlMinToSec.m_uMinutes = 0;
-                                T.m_xIvl.u.m_xIvlMinToSec.m_uSeconds = 0;
-                                T.m_xIvl.u.m_xIvlMinToSec.m_uMicros = 0;
-                                break; }
+    case IV_DAY:              // fall through
+    case IV_HOUR:             // fall through
+    case IV_MINUTE:           // fall through
+    case IV_SECOND:           // fall through
+    case IV_DAY_TO_HOUR:      // fall through
+    case IV_DAY_TO_MINUTE:    // fall through
+    case IV_DAY_TO_SECOND:    // fall through
+    case IV_HOUR_TO_MINUTE:   // fall through
+    case IV_HOUR_TO_SECOND:   // fall through
+    case IV_MINUTE_TO_SECOND: // fall through
+      T.m_xIvl.u.m_xIvlDT.m_uMicros = 0;
+      break;
 
     default:
       NEVER_REACH

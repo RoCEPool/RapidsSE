@@ -17,14 +17,8 @@
 /*----------------------------------------------------------------------------*/
 Ivl IvlLib::wAdd(Ivl wIvl1, Ivl wIvl2)
 {
-  // convert wIvl1 to microseconds
-  u8 uMicro1 = (wIvl1.T.m_xIvl.u.m_xIvlSec.m_uSeconds * C_1M) + wIvl1.T.m_xIvl.u.m_xIvlSec.m_uMicros;
-  
-  // convert wIvl2 to microseconds
-  u8 uMicro2 = (wIvl2.T.m_xIvl.u.m_xIvlSec.m_uSeconds * C_1M) + wIvl2.T.m_xIvl.u.m_xIvlSec.m_uMicros;
-  
   // add the two intervals
-  u8 uMicro = uMicro1 + uMicro2;
+  u8 uMicro = wIvl1.T.m_xIvl.u.m_xIvlDT.m_uMicros + wIvl2.T.m_xIvl.u.m_xIvlDT.m_uMicros;
   
   // convert microseconds to Ivl
   Dtm xIvl;
@@ -39,11 +33,8 @@ Ivl IvlLib::wAdd(Ivl wIvl1, Ivl wIvl2)
 /*----------------------------------------------------------------------------*/
 Ivl IvlLib::wAdd(Ivl wIvl, u8 uMicro)
 {
-  // convert wIvl1 to microseconds
-  u8 uIvlMicro = (wIvl.T.m_xIvl.u.m_xIvlSec.m_uSeconds * C_1M) + wIvl.T.m_xIvl.u.m_xIvlSec.m_uMicros;
-  
   // add the two intervals
-  u8 uMicroTotal = uIvlMicro + uMicro;
+  u8 uMicroTotal = wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros + uMicro;
   
   // convert microseconds to Ivl
   Dtm xIvl;
@@ -74,10 +65,7 @@ Ivl IvlLib::wGetCurrIvl(void)
 
   wDtm.m_wIvl.T.m_xIvl.m_eType = IV_SECOND;
   wDtm.m_wIvl.T.m_xIvl.m_bIsNeg = false;
-  wDtm.m_wIvl.T.m_xIvl.u.m_xIvlSec.m_uSeconds = xTimeVal.tv_sec;
-  wDtm.m_wIvl.T.m_xIvl.u.m_xIvlSec.m_uMicros  = xTimeVal.tv_usec;
-  
-  ASSERT(wDtm.m_wIvl.T.m_xIvl.u.m_xIvlSec.m_uMicros < C_1M); // logic check
+  wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros  = (xTimeVal.tv_sec * C_1M) + xTimeVal.tv_usec;
 
   return wDtm.m_wIvl;
 }
@@ -102,8 +90,7 @@ Ivl IvlLib::wToIvl(Dtm wTsp)
   
   time_t iSecondsSincePosixEpoch = timelocal(&xDateTime);
   
-  wIvl.T.m_xIvl.u.m_xIvlSec.m_uSeconds = iSecondsSincePosixEpoch;
-  wIvl.T.m_xIvl.u.m_xIvlSec.m_uMicros    = wTsp.m_wTsp.T.m_uMicro;
+  wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros  = (iSecondsSincePosixEpoch * C_1M) + wTsp.m_wTsp.T.m_uMicro;
   
   return wIvl;
 }
@@ -117,23 +104,7 @@ Ivl IvlLib::wToIvl(u8 uMicroseconds)
   
   wIvl = 0;
   
-  if (uMicroseconds < C_1M) {
-    wIvl.T.m_xIvl.u.m_xIvlSec.m_uMicros = uMicroseconds;
-    return wIvl;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // correction needed
-  
-  u8 uMultiples = uMicroseconds;
-  
-  wIvl.T.m_xIvl.u.m_xIvlSec.m_uMicros = uMultiples % C_1M;
-  
-  u8 uSecondsDelta = uMultiples / C_1M;
-  
-  wIvl.T.m_xIvl.u.m_xIvlSec.m_uSeconds += uSecondsDelta;
-  
-  return wIvl;
+  wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros = uMicroseconds;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -141,14 +112,8 @@ Ivl IvlLib::wToIvl(u8 uMicroseconds)
 /*----------------------------------------------------------------------------*/
 u8 IvlLib::uSubtract(Ivl wIvl1, Ivl wIvl2)
 {
-  // convert wIvl1 to microseconds
-  u8 uMicro1 = (wIvl1.T.m_xIvl.u.m_xIvlSec.m_uSeconds * C_1M) + wIvl1.T.m_xIvl.u.m_xIvlSec.m_uMicros;
-  
-  // convert wIvl2 to microseconds
-  u8 uMicro2 = (wIvl2.T.m_xIvl.u.m_xIvlSec.m_uSeconds * C_1M) + wIvl1.T.m_xIvl.u.m_xIvlSec.m_uMicros;
-  
   // subtract
-  u8 uMicro = uMicro1 - uMicro2;
+  u8 uMicro = wIvl1.T.m_xIvl.u.m_xIvlDT.m_uMicros - wIvl2.T.m_xIvl.u.m_xIvlDT.m_uMicros;
   
   return uMicro;
 }

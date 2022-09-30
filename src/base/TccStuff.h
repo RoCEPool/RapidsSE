@@ -76,29 +76,22 @@ union Int_T {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // IVL
 // Notes:
-// We present a number of unioned structures below to represent the 13 different
-// interval types. Each structure is optimised to hold as wide a range of values
-// as possible within a 64 bit limit. This is good enough for a TPC-H demo but we
-// will need to expand this to a 16 byte field in good time.
+// We use two unioned structures to below to represent the 13 different interval
+// types - one structure represents all of the YEAR-MONTH interval types and one
+// represents all of the DAY-TIME interval types.
+// Each structure only has a single field. This makes comparison and interval
+// arithmetic easy, but care needs to be taken when the interval is being displayed
+// so that only the right fields are shown.
 //
-// We don't necessarily store every field. That is, some fields are normalised
-// down into a lower field. e.g. in a multi-field interval (e.g. year-month) hours
-// should be normalised into minutes and years should be normalised into months.
+// e.g. for a YEAR-MONTH interval a value of 15 would be represented as follows
+// for each of the 3 YEAR-MONTH interval subtypes:
+//   INTERVAL '15' MONTH
+//   INTERVAL '1' YEAR
+//   INTERVAL '1-3' YEAR TO MONTH
 //
-// Single field intervals (e.g. YEAR) store the value in its specified form.
-//
-// However there are also fields that we cannot normalised. e.g
-// We can't normalise minutes into seconds because there may be between 58 and 62
-// seconds in a minute (due to leap seconds). Similarly we cannot normalise days
-// into hours because there could be 23-25 hours in a day (thanks to daylight
-// savings time). We also cannot normalise months into days for obvious reasons.
-//
-// Therefore, in a multi-field interval:
-//   - Don't store hours; instead store them as minutes.
-//     (The only exception here is the IvalHours structure that only represents hours)
-//   - Don't store years; instead store them as months
-//   - Do any interval/timestamp arithmetic with these normalised fields.
-//   - When displaying intervals, convert minutes into hours, etc.
+// The YM and DT interval classes store their values in a single field representing
+// their smallest denomination - months for YM intervals and microseconds for DT
+// intervals. This still gives a significant range of values for each interval type.
 //
 // The "__attribute__((__packed__))" is required to ensure each of the structures
 // are not padded out to 8 bytes each.
@@ -112,88 +105,37 @@ union Ivl_T {
 
     union __attribute__((__packed__)) {
 
-      // ==========================
-      // Year-Month interval types:
-      // ==========================
-
-      // INTERVAL YEAR
+      // INTERVAL YEAR, MONTH & YEAR TO MONTH:
       struct __attribute__((__packed__)) {
-        u8 m_uYears        : 56; // 0..7.2E16
-      } m_xIvlYr;
+        u8 m_uMonths  : 56; // 0..7.2E16
+      } m_xIvlYM;
 
-      // INTERVAL MONTH
+      // INTERVAL DAY, HOUR, MINUTE, SECOND,
+      // DAY TO HOUR, DAY TO MINUTE, DAY TO SECOND,
+      // HOUR TO MINUTE, HOUR TO SECOND,
+      // and MINUTE TO SECOND:
       struct __attribute__((__packed__)) {
-        u8 m_uMonths        : 56; // 0..7.2E16
-      } m_xIvlMon;
+        u8 m_uMicros  : 56; // 0..7.2E16
+      } m_xIvlDT;
 
-      // INTERVAL YEAR TO MONTH
-      struct __attribute__((__packed__)) {
-        u8 m_uMonths        : 56; // 0..7.2E16
-      } m_xIvlYrToMon;
-
-      // ==========================
-      // Day-time interval types:
-      // ==========================
-
-      // INTERVAL DAY TO SECOND
-      struct __attribute__((__packed__)) {
-        u8 m_uDays          : 12; // 0..4,095
-        u8 m_uMinutes       : 12; // 0..4,095
-        u8 m_uSeconds       : 12; // 0..4,095
-        u8 m_uMicros        : 20; // 0..1,048,575
-      } m_xIvlDayToSec;
-
-      // INTERVAL DAY TO MINUTE
-      struct __attribute__((__packed__)) {
-        u8 m_uDays          : 28; // 0..268,435,456
-        u8 m_uMinutes       : 28; // 0..268,435,456
-      } m_xIvlDayToMin;
-
-      // INTERVAL DAY TO HOUR
-      struct __attribute__((__packed__)) {
-        u8 m_uDays          : 28; // 0..268,435,456
-        u8 m_uMinutes       : 28; // 0..268,435,456
-      } m_xIvlDayToHr;
-
-      // INTERVAL HOUR TO SECOND
-      struct __attribute__((__packed__)) {
-        u8 m_uMinutes       : 18; // 0..262,143
-        u8 m_uSeconds       : 18; // 0..262,143
-        u8 m_uMicros        : 20; // 0..1,048,575
-      } m_xIvlHrToSec;
-
-      // INTERVAL HOUR TO MINUTE
-      struct __attribute__((__packed__)) {
-        u8 m_uMinutes       : 56; // 0..7.2E16
-      } m_xIvlHrToMin;
-
-      // INTERVAL MINUTE TO SECOND
-      struct __attribute__((__packed__)) {
-        u8 m_uMinutes       : 18; // 0..262,143
-        u8 m_uSeconds       : 18; // 0..262,143
-        u8 m_uMicros        : 20; // 0..1,048,575
-      } m_xIvlMinToSec;
-
-      // INTERVAL DAY
-      struct __attribute__((__packed__)) {
-        u8 m_uDays          : 56; // 0..7.2E16
-      } m_xIvlDay;
-
-      // INTERVAL HOUR
-      struct __attribute__((__packed__)) {
-        u8 m_uHours         : 56; // 0..7.2E16
-      } m_xIvlHr;
-
-      // INTERVAL MINUTE
-      struct __attribute__((__packed__)) {
-        u8 m_uMinutes       : 56; // 0..7.2E16
-      } m_xIvlMin;
-
-      // INTERVAL SECOND
-      struct __attribute__((__packed__)) {
-        u8 m_uSeconds       : 36; // 0..68,719,476,736
-        u8 m_uMicros        : 20; // 0..1,048,575
-      } m_xIvlSec;
+      // Maximum displayable ranges for each interval type:
+      //  (for each YM or DT group they are all the same value
+      //   in months or microseconds)
+      // -------------------------------------------------------
+      // INTERVAL YEAR              :  6,004,799,503,160,661 years
+      // INTERVAL MONTH             : 72,057,594,037,927,935 months
+      // INTERVAL YEAR TO MONTH     :  6,004,799,503,160,661 years, 3 months
+      //
+      // INTERVAL DAY               :                833,999 days   (about 2283 years)
+      // INTERVAL HOUR              :             20,015,998 hours
+      // INTERVAL MINUTE            :          1,200,959,900 minutes
+      // INTERVAL SECOND            :         72,057,594,037.927,935 seconds
+      // INTERVAL DAY TO HOUR       :                833,999 days, 22 hours
+      // INTERVAL DAY TO MINUTE     :                833,999 days, 22 hours, 20 minutes
+      // INTERVAL DAY TO SECOND     :                833,999 days, 22 hours, 20 minutes, 37.927,935 seconds
+      // INTERVAL HOUR TO MINUTE    :             20,015,998 hours, 20 minutes
+      // INTERVAL HOUR TO SECOND    :             20,015,998 hours, 20 minutes, 37.927,935 seconds
+      // INTERVAL MINUTE TO SECOND  :          1,200,959,900 minutes, 37.927,935 seconds
     } u;
   } m_xIvl;
 
