@@ -24,6 +24,7 @@
 #include "Card_Combined.hpp"
 #include "Card_ColumnRef.hpp"
 #include "Card_CoPtn.hpp"
+#include "Card_CoPtnList.hpp"
 #include "Card_CoPtnPred.hpp"
 #include "Card_CrossPtnPred.hpp"
 

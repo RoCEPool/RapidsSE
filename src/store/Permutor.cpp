@@ -44,6 +44,28 @@ Permutor::~Permutor(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Permutor::vCompute_coPtnList(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PERMUTOR, _FOOTER_);
+
+  Board *pBoard_permute = m_pBench->pGetBoard(BK_PERMUTE);
+  if (!pBoard_permute)
+    pBoard_permute = new Board(BK_PERMUTE, m_pBench);
+
+  Card_CoPtnList* p_coPtnList = new Card_CoPtnList;
+
+  pBoard_permute->vAppendMainCard(p_coPtnList);
+
+
+
+  if (m_bInteractive)
+    pBoard_permute->vPrintBoard("Permutor::vCompute_coPtnList"_Stz);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Permutor::vExtract_tableList(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PERMUTOR, _FOOTER_);
