@@ -22,7 +22,6 @@ create table datums (
 
 load datums "../DATA/DataTypes/dataTypes.csv" ;
 
-
 /*
 select flt_col8 + 2 from datums;
 load lineitem "../TPCH/SF10/lineitem.tbl";
@@ -89,6 +88,8 @@ create index IxC_CUSTKEY ON customer(C_CUSTKEY);
 create index IxR_REGIONKEY on REGION (R_REGIONKEY);
 create index IxR_NAME on REGION (R_NAME);
 create index IxL_PARTKEY ON lineitem(L_PARTKEY);
+create index IxL_SHIPDATE ON lineitem(L_SHIPDATE);
+create index IxP_PARTKEY ON part(P_PARTKEY);
 
 /time load region "<tpch_dir>/region.<suffix>";
 /time load nation "<tpch_dir>/nation.<suffix>";
@@ -189,13 +190,14 @@ begin
     project " type INTEGER )  $1 sum  , type INTEGER )  $2 sum  "
     | combined 0
     | stageLast
+
   stage stageLast on origin :
     output
     | sink
     | stageStart
 end ;
 
-pipeline unamed
+/time pipeline unamed
 begin
   stage stageStart on origin :
     start
@@ -205,7 +207,7 @@ begin
     scan rapidsse public customer
     | stageMarker0475
   stage stageMarker0475 on all partitions :
-    indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $L1 ==" //J1
+    indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $L1 =="
     | combined 0
     | next
   stage stageMarker0383 on all partitions :
@@ -240,7 +242,7 @@ end ;
 
 /*
 
-pipeline unamed
+/time pipeline unamed
 begin
   stage stageStart on origin :
     start
@@ -286,6 +288,183 @@ stage stageMarker32028_a on origin :
     | first
 end ;
 
-*/
+/time pipeline c_orders
+  begin
+    stage stageStart on origin :
+      start
+      | pulse once
+      | next
+    stage stageMarker32010 on all partitions :
+      scan rapidsse public customer
+      | next
+    stage stageMarker32013 on all partitions :
+      indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $L1 ==" //J1
+      | filter  "type BOOLEAN
+                }  J1_O_COMMENT '%special%requests%'  7 8 matchMiddle1  not"
+      | combined 0
+      | next
+      stage stageMarker32016 on all partitions :
+            aggreg " groupBy  type INTEGER as c_custkey $1 aggregates  type INTEGER $K1 , type INTEGER )  $9 count  "
+            | combined 0
+            | next
+          stage stageMarker32019 on all nodes :
+            aggreg " groupBy  type INTEGER as c_custkey $1 aggregates  type INTEGER $K1 , type INTEGER )  $2 sum  "
+            | combined 0
+            | next
+          stage stageMarker32022 on origin :
+            aggreg " groupBy  type INTEGER as c_custkey $1 aggregates  type INTEGER $K1 , type INTEGER as c_count )  $2 sum  "
+            | combined 0
+            | next
+            //
+                // outer query
+                //
+                stage stageMarker32028 on origin :
+                  aggreg " groupBy  type INTEGER as c_count $2 aggregates  type INTEGER $K1 , type INTEGER as custdist )  countAll  "
+                  | combined 0
+                  | next
+                stage stageMarker32028 on origin :
+                  sort " type INTEGER $2 DESC  , type INTEGER as c_count $1 DESC  "
+                  | combined 0
+                  | next
+stage stageLast on origin :
+    output
+    | sink
+    | first
+end ;
 
 
+
+/time pipeline c_orders
+  begin
+    stage stageStart on origin :
+      start
+      | pulse once
+      | next
+    stage stageMarker32010 on all partitions :
+      scan rapidsse public customer
+      | next
+    stage stageMarker32013 on all partitions :
+      indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $L1 ==" //J1
+                "type BOOLEAN
+                }  J1_O_COMMENT '%special%requests%'  7 8 matchMiddle1  not"
+      | combined 0
+      | next
+    stage stageMarker32016 on all partitions :
+      aggreg " groupBy  type INTEGER as c_custkey $1 aggregates  type INTEGER $K1 , type INTEGER )  $9 count  "
+      | combined 0
+      | next
+    stage stageMarker32019 on all nodes :
+      aggreg " groupBy  type INTEGER as c_custkey $1 aggregates  type INTEGER $K1 , type INTEGER )  $2 sum  "
+      | combined 0
+      | next
+    stage stageMarker32022 on origin :
+      aggreg " groupBy  type INTEGER as c_custkey $1 aggregates  type INTEGER $K1 , type INTEGER as c_count )  $2 sum  "
+      | combined 0
+      | next
+
+//
+// outer query
+//
+    stage stageMarker32028 on origin :
+      aggreg " groupBy  type INTEGER as c_count $2 aggregates  type INTEGER $K1 , type INTEGER as custdist )  countAll  "
+      | combined 0
+      | next
+    stage stageMarker32028 on origin :
+      sort " type INTEGER $2 DESC  , type INTEGER as c_count $1 DESC  "
+      | combined 0
+      | next
+
+stage stageLast on origin :
+    output
+    | sink
+    | first
+end ;
+
+  pipeline Q4
+  begin
+
+  stage first on origin :
+    start
+    | pulse once
+    | next
+
+  stage Gs_ORDERS on all partitions :
+    scan orders
+    | next
+
+  stage Gs_LINEITEM on all partitions :
+    keyExists lineitem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY =="
+                                    "type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
+    | combined 0
+    | next
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+    end ;
+
+
+
+
+
+explain stage transliterate select * from datums;
+
+    */
+
+
+/time pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0385
+  stage stageMarker0385 on all partitions :
+    scan rapidsse public datums
+    | project " type INTEGER as int_col0 $1 , type INTEGER as int_col1 $2 , type BOOLEAN as bol_col2 $3 , type BOOLEAN as bol_col3 $4 , type DATE as dte_col4 $5 , type DATE as dte_col5 $6 , type DECIMAL as dec_col6 $7 , type DECIMAL as dec_col7 $8 , type FLOAT as flt_col8 $9 , type FLOAT as flt_col9 $10 , type TIME as tme_col10 $11 , type TIME as tme_col11 $12 , type TIMESTAMP as tsp_col12 $13 , type TIMESTAMP as tsp_col13 $14 , type VARCHAR as vch_col14 $15 , type VARCHAR as vch_col15 $16 "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+
+pipeline c_orders
+  begin
+    stage stageStart on origin :
+      start
+      | pulse once
+      | next
+    stage stageMarker32010 on all partitions :
+      scan rapidsse public customer
+      | indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $L1 ==" //J1
+                "type BOOLEAN
+                }  J1_O_ORDERKEY 10 <="
+      | combined 0
+      | next
+    stage stageLast on origin :
+        output
+        | sink
+        | first
+    end ;
+
+
+/time pipeline c_orders
+  begin
+    stage stageStart on origin :
+      start
+      | pulse once
+      | next
+    stage stageMarker32010 on all partitions :
+      scan rapidsse public customer
+      | indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $L1 ==" //J1
+                "type BOOLEAN
+                }  J1_O_ORDERKEY 10 <="
+      | combined 0
+      | next
+    stage stageLast on origin :
+        output
+        | sink
+        | first
+    end ;

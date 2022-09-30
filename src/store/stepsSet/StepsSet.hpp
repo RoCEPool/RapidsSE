@@ -119,6 +119,7 @@ public:
   void vApiForkDemon(void);
   void vApiForkChild2PC(void);
   void vApiReapableJobFetch(void);
+  void vApiReapableJobTagsFetch(void);
   void vApiSpawnJob(void);
 
   // arrange

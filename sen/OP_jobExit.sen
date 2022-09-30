@@ -82,6 +82,7 @@
 : jobExit_StartMarker \handler
 
    0 locals| pJobToBeDeleted |
+
   "jobExit Demon Started" .boot
 
   begin
@@ -92,8 +93,10 @@
     begin
         pJobToBeDeleted
     while
-      // generate the job report here
-      //pJobToBeDeleted >str "JobReport: %v" str.format .
+      // generate the job metrics here
+      "<jobMetrics>" pJobToBeDeleted api::reapableJobTags@ tagSet.hasName if
+        pJobToBeDeleted >str "Generating JobMetrics for job %v" str.format .
+      then
 
       // delete the job
       pJobToBeDeleted api::deleteJob
