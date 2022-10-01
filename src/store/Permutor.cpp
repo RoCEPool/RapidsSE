@@ -44,7 +44,7 @@ Permutor::~Permutor(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Permutor::vCompute_coPtnCrossPtn(void)
+void Permutor::vCompute_coPtn_CrossPtn(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PERMUTOR, _FOOTER_);
 
@@ -55,48 +55,59 @@ void Permutor::vCompute_coPtnCrossPtn(void)
   if (!pBoard_permute)
     pBoard_permute = new Board(BK_PERMUTE, m_pBench);
 
-  Card_CoPtnPredList *p_coPtnPredList =
+
+
+  // - - - - - - - - -
+
+  m_p_coPtnPredList =
       _pCard_CoPtnPredList(pBoard_permute->pFindMain(CK_COPTNPREDLIST));
 
 
-  // - - - - - - - - -
-
-  Card_CoPtnList *p_coPtnList = new Card_CoPtnList;
-  pBoard_permute->vAppendMainCard(p_coPtnList);
+  m_p_coPtnList = new Card_CoPtnList;
+  pBoard_permute->vAppendMainCard(m_p_coPtnList);
 
 
-  i8 nChildren = p_coPtnPredList->nChildCards();
+  i8 nChildren = m_p_coPtnPredList->nChildCards();
   for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
-    Card_CoPtnPred *p_coPtnPred =
-        _pCard_CoPtnPred(p_coPtnPredList->pGetChild(i_Child));
+    m_p_coPtnPred =
+        _pCard_CoPtnPred(m_p_coPtnPredList->pGetChild(i_Child));
 
-    Card_SubSet *p_subSet = p_coPtnPred->pDupSubCards();
+    m_p_subSet = m_p_coPtnPred->pDupSubCards();
 
-    if (! (p_coPtn = p_coPtnList->pFind_coPtn_for(p_coPtnPred)) ) {
+    if (! (p_coPtn = m_p_coPtnList->pFind_coPtn_for(m_p_coPtnPred)) ) {
       p_coPtn = new Card_CoPtn;
-      p_coPtnList->vAppend(p_coPtn);
+      m_p_coPtnList->vAppend(p_coPtn);
     }
 
-    p_coPtn->vTransferSubCards(p_subSet);
-    delete p_subSet;
+    p_coPtn->vTransferSubCards(m_p_subSet);
+    DELETE_CARD(m_p_subSet);
   }
-
-  Card_Comment* p_comment = new Card_Comment("((?CODED?))"_Stz);
-  p_coPtnList->vAppend(p_comment);
-
 
   // - - - - - - - - -
 
-  Card_CrossPtnList* p_crossPtnList = new Card_CrossPtnList;
-  pBoard_permute->vAppendMainCard(p_crossPtnList);
+  m_p_joinPredList =
+      _pCard_JoinPredList(pBoard_permute->pFindMain(CK_JOINPREDLIST));
 
-  p_comment = new Card_Comment("((TO BE CODED))"_Stz);
-  p_crossPtnList->vAppend(p_comment);
+  m_p_crossPtnList = new Card_CrossPtnList;
+  pBoard_permute->vAppendMainCard(m_p_crossPtnList);
+
+  nChildren = m_p_joinPredList->nChildCards();
+  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
+    m_p_predCmp =
+        _pCard_PredCmp(m_p_joinPredList->pGetChild(i_Child));
+
+    if (m_p_coPtnList->bHasEqPredCmp(m_p_predCmp))
+      continue;
+
+  }
+
+  m_p_comment = new Card_Comment("((TO BE CODED))"_Stz);
+  m_p_crossPtnList->vAppend(m_p_comment);
 
   // - - - - - - - - -
 
   if (m_bInteractive)
-    pBoard_permute->vPrintBoard("Permutor::vCompute_coPtnCrossPtn"_Stz);
+    pBoard_permute->vPrintBoard("Permutor::vCompute_coPtn_CrossPtn"_Stz);
 
 }
 

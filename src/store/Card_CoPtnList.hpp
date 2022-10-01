@@ -20,6 +20,8 @@ namespace STORE
    ~Card_CoPtnList(void) noexcept(false);
 
     Card_CoPtn* pFind_coPtn_for(Card_CoPtnPred* p_CoPtnPred);
+
+    bool bHasEqPredCmp(Card_PredCmp* p_predCmp);
   };
 
   Card_CoPtnList* _pCard_CoPtnList(void* aAddr);

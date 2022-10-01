@@ -60,6 +60,16 @@ Card_CoPtn* Card_CoPtnList::pFind_coPtn_for(Card_CoPtnPred* p_CoPtnPred)
   return nullptr;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_CoPtnList::bHasEqPredCmp(Card_PredCmp* p_predCmp)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  return false;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
