@@ -48,41 +48,46 @@ void Permutor::vCompute_coPtnCrossPtn(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PERMUTOR, _FOOTER_);
 
+  Card_CoPtn *p_coPtn = nullptr;
+
+
   Board *pBoard_permute = m_pBench->pGetBoard(BK_PERMUTE);
   if (!pBoard_permute)
     pBoard_permute = new Board(BK_PERMUTE, m_pBench);
 
-  Card_CoPtnPredList* p_coPtnPredList =
+  Card_CoPtnPredList *p_coPtnPredList =
       _pCard_CoPtnPredList(pBoard_permute->pFindMain(CK_COPTNPREDLIST));
+
 
   // - - - - - - - - -
 
-  Card_CoPtnList* p_coPtnList = new Card_CoPtnList;
+  Card_CoPtnList *p_coPtnList = new Card_CoPtnList;
   pBoard_permute->vAppendMainCard(p_coPtnList);
 
 
-  Card_CoPtnPred* p_coPtnPred =
+  Card_CoPtnPred *p_coPtnPred =
       _pCard_CoPtnPred(p_coPtnPredList->pGetChild(0));
 
-  Card_SubSet* p_subSet = p_coPtnPred->pDupSubCards();
+  Card_SubSet *p_subSet = p_coPtnPred->pDupSubCards();
 
-  Card_CoPtn* p_coPtn = new Card_CoPtn;
+  if (!(p_coPtn = p_coPtnList->pFind_coPtn_for(p_coPtnPred))) {
+    p_coPtn = new Card_CoPtn;
+    p_coPtnList->vAppend(p_coPtn);
+  }
+
   p_coPtn->vTransferSubCards(p_subSet);
   delete p_subSet;
 
-  p_coPtnList->vAppend(p_coPtn);
-
-  Card_Comment* p_comment = new Card_Comment("((MORE TBC))"_Stz);
+  Card_Comment* p_comment = new Card_Comment("((TO BE CODED))"_Stz);
   p_coPtnList->vAppend(p_comment);
 
 
   // - - - - - - - - -
 
-
   Card_CrossPtnList* p_crossPtnList = new Card_CrossPtnList;
   pBoard_permute->vAppendMainCard(p_crossPtnList);
 
-  p_comment = new Card_Comment("((MORE TBC))"_Stz);
+  p_comment = new Card_Comment("((TO BE CODED))"_Stz);
   p_crossPtnList->vAppend(p_comment);
 
   // - - - - - - - - -

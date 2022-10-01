@@ -5,6 +5,9 @@
 
 #include "Card.hpp"
 
+#include "Card_CoPtn.hpp"
+#include "Card_CoPtnPred.hpp"
+
 namespace STORE
 {
   class Card_CoPtnList : public Card
@@ -15,6 +18,8 @@ namespace STORE
   
     Card_CoPtnList(void);
    ~Card_CoPtnList(void) noexcept(false);
+
+    Card_CoPtn* pFind_coPtn_for(Card_CoPtnPred* p_CoPtnPred);
   };
 
   Card_CoPtnList* _pCard_CoPtnList(void* aAddr);
