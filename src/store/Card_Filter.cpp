@@ -19,7 +19,7 @@ __aNewFunction(Card_Filter,CN_CARD)
 __vDeleteFunction(Card_Filter,CN_CARD)
 
 __bIsCard(STORE,Card_Filter,CK_FILTER)
-__pGetSubFunction_Card(STORE,Card_Filter,CK_FILTER)
+__pGetSubFunction_Card(STORE,Filter,CK_FILTER)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

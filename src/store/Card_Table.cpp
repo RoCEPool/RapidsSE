@@ -20,7 +20,7 @@ __aNewFunction(Card_Table, CN_CARD)
 __vDeleteFunction(Card_Table, CN_CARD)
 
 __bIsCard(STORE, Card_Table, CK_TABLE)
-__pGetSubFunction_Card(STORE, Card_Table, CK_TABLE)
+__pGetSubFunction_Card(STORE,Table, CK_TABLE)
 
 
 /*----------------------------------------------------------------------------*/
@@ -56,7 +56,7 @@ char Card_Table::cTableSyn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_TableSyn* p_tableSyn = _pGetSub_Card_TableSyn(this);
+  Card_TableSyn* p_tableSyn = _pGetSub_TableSyn(this);
   if (! p_tableSyn)
     return '?';
 

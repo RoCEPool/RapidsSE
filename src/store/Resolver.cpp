@@ -57,7 +57,7 @@ void Resolver::vResolve_columnRef(String* psColumnRef, Stz* szTerm)
   BoardIter xBI(m_pBoard);
 
   while ( (m_pMainCard = xBI.pEachMain()) ) {
-    if (! (m_p_stream = _pGetSub_Card_Stream(m_pMainCard)) )
+    if (! (m_p_stream = _pGetSub_Stream(m_pMainCard)) )
       continue;
 
     i8 iOrdLo = m_p_stream->iOrdLo();
@@ -68,9 +68,9 @@ void Resolver::vResolve_columnRef(String* psColumnRef, Stz* szTerm)
     if (! (iOrd >= iOrdLo && iOrd <= iOrdHi) )
       continue;
 
-    m_p_table = _pGetSub_Card_Table(m_pMainCard);
+    m_p_table = _pGetSub_Table(m_pMainCard);
 
-    m_p_tableSyn = _pGetSub_Card_TableSyn(m_p_table);
+    m_p_tableSyn = _pGetSub_TableSyn(m_p_table);
     char cTableSyn = m_p_tableSyn->cTableSyn();
 
     i8 iColumnRef = iOrd-iOrdLo+1;

@@ -73,7 +73,7 @@ void Columnar::vAdd_ColumnRef(void)
   BoardIter xBI(m_pBoard);
 
   while ( (m_pMainCard = xBI.pEachMain()) ) {
-    if (! (m_p_calcBool = _pGetSub_Card_CalcBool(m_pMainCard)) )
+    if (! (m_p_calcBool = _pGetSub_CalcBool(m_pMainCard)) )
       continue;
 
     m_p_calcBool->vVisitAllSub(CK_TERM,bfTerm_columnRef);

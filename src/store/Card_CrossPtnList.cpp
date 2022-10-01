@@ -14,7 +14,7 @@ __aNewFunction(Card_CrossPtnList,CN_CARD)
 __vDeleteFunction(Card_CrossPtnList,CN_CARD)
 
 __bIsCard(STORE,Card_CrossPtnList,CK_CROSSPTNLIST)
-__pGetSubFunction_Card(STORE,Card_CrossPtnList,CK_CROSSPTNLIST)
+__pGetSubFunction_Card(STORE,CrossPtnList,CK_CROSSPTNLIST)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

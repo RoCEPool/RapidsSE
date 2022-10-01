@@ -82,8 +82,8 @@ void Sorter::vCull_sby_SameAs_gby(void)
 //    if (! pCard_aggreg)
 //      return;
 //
-//    Card_GbyElist* pCard_GbyElist = _pGetSub_Card_GbyElist(pCard_aggreg);
-//    Card_SbyElist* pCard_SbyElist = _pGetSub_Card_SbyElist(pCard_sort);
+//    Card_GbyElist* pCard_GbyElist = _pGetSub_GbyElist(pCard_aggreg);
+//    Card_SbyElist* pCard_SbyElist = _pGetSub_SbyElist(pCard_sort);
 //
 //    if (Card::bCardsSameRecursive(pCard_GbyElist,pCard_SbyElist)) {
 //      m_pBoard->vRemoveMainCard(pCard_sort);

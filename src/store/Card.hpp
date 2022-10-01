@@ -478,10 +478,10 @@ EndDefine
 /*----------------------------------------------------------------------------*/
 /* macro for standard safe cast function                                      */
 /*----------------------------------------------------------------------------*/
-#define __pGetSubFunction_Card(SPACENM,CLASSNM,CN) \
-  CLASSNM* SPACENM::_pGetSub_##CLASSNM(Card* pCard) \
+#define __pGetSubFunction_Card(SPACENM,CARDNM,CN) \
+  Card_##CARDNM* SPACENM::_pGetSub_##CARDNM(Card* pCard) \
   { \
-    return _p##CLASSNM(pCard->pFindSubCard(CN)); \
+    return _pCard_##CARDNM(pCard->pFindSubCard(CN)); \
   } \
 EndDefine
 

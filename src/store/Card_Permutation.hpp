@@ -19,7 +19,7 @@ namespace STORE
 
   Card_Permutation* _pCard_Permutation(void* aAddr);
   bool _bIsCard_Permutation(void* aAddr);
-  Card_Permutation* _pGetSub_Card_Permutation(Card* pParent);
+  Card_Permutation* _pGetSub_Permutation(Card* pParent);
 }
 
 /*============================================================================*/

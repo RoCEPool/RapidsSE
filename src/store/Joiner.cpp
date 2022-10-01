@@ -59,8 +59,8 @@ void Joiner::vAppendPrelim_indexJoin(void)
 
   while (Card_AbsJoin* pCard_absJoin = _pCard_AbsJoin(pEachMain(CK_ABSJOIN))) {
 
-    Card_Scan* pCard_scan = _pGetSub_Card_Scan(pCard_absJoin);
-    Card_TablePtr* pCard_tablePtr = _pGetSub_Card_TablePtr(pCard_scan);
+    Card_Scan* pCard_scan = _pGetSub_Scan(pCard_absJoin);
+    Card_TablePtr* pCard_tablePtr = _pGetSub_TablePtr(pCard_scan);
     Table* pTable = pCard_tablePtr->pTable();
 
     IdxVec* pIdxVec = pTable->pIdxVec();
@@ -98,18 +98,18 @@ void Joiner::vForm_joinPred(void)
 
   while (Card_AbsJoin *pCard_absJoin = _pCard_AbsJoin(pEachMain(CK_ABSJOIN))) {
 
-    Card_Filter*   pCard_filter   = _pGetSub_Card_Filter(pCard_absJoin);
-    Card_Scan*     pCard_scan     = _pGetSub_Card_Scan(pCard_absJoin);
-    Card_Stream*   pCard_stream   = _pGetSub_Card_Stream(pCard_scan);
+    Card_Filter*   pCard_filter   = _pGetSub_Filter(pCard_absJoin);
+    Card_Scan*     pCard_scan     = _pGetSub_Scan(pCard_absJoin);
+    Card_Stream*   pCard_stream   = _pGetSub_Stream(pCard_scan);
     Card_Expr*     pCard_expr     = _pCard_Expr(pCard_filter->pGetChild(0));
-    Card_CalcBool* pCard_calcBool = _pGetSub_Card_CalcBool(pCard_expr);
-    Card_PredCmp*  pCard_predCmp  = _pGetSub_Card_PredCmp(pCard_calcBool);
+    Card_CalcBool* pCard_calcBool = _pGetSub_CalcBool(pCard_expr);
+    Card_PredCmp*  pCard_predCmp  = _pGetSub_PredCmp(pCard_calcBool);
     Card_Term*     pCard_term_0   = _pCard_Term(pCard_predCmp->pGetChild(0));
     Card_Term*     pCard_term_1   = _pCard_Term(pCard_predCmp->pGetChild(1));
 
     // - - - -
 
-    Card_IndexJoin* pCard_indexJoin = _pGetSub_Card_IndexJoin(pCard_absJoin);
+    Card_IndexJoin* pCard_indexJoin = _pGetSub_IndexJoin(pCard_absJoin);
 
     Card_JoinPred* pCard_joinPred = new Card_JoinPred;
     pCard_absJoin->vAppend(pCard_joinPred);
@@ -169,12 +169,12 @@ void Joiner::vMark_idxCol(void)
 
   while (Card_AbsJoin* pCard_absJoin = _pCard_AbsJoin(pEachMain(CK_ABSJOIN))) {
 
-    Card_Scan* pCard_scan = _pGetSub_Card_Scan(pCard_absJoin);
-    Card_Stream* pCard_stream = _pGetSub_Card_Stream(pCard_scan);
-    Card_StreamColList* pCard_streamColList = _pGetSub_Card_StreamColList(pCard_scan);
+    Card_Scan* pCard_scan = _pGetSub_Scan(pCard_absJoin);
+    Card_Stream* pCard_stream = _pGetSub_Stream(pCard_scan);
+    Card_StreamColList* pCard_streamColList = _pGetSub_StreamColList(pCard_scan);
 
-    Card_IndexJoin* pCard_indexJoin = _pGetSub_Card_IndexJoin(pCard_absJoin);
-    Card_IdxColList* pCard_idxColList = _pGetSub_Card_IdxColList(pCard_indexJoin);
+    Card_IndexJoin* pCard_indexJoin = _pGetSub_IndexJoin(pCard_absJoin);
+    Card_IdxColList* pCard_idxColList = _pGetSub_IdxColList(pCard_indexJoin);
 
     pCard_idxColList->vMark1('!');
 
@@ -201,15 +201,15 @@ void Joiner::vReduce_absJoin(void)
     //pCard_absJoin->vDeleteChildCard(CK_CALC);
     //pCard_absJoin->vDeleteChildCard(CK_FILTER);
 
-    Card_Scan* pCard_scan = _pGetSub_Card_Scan(pCard_absJoin);
+    Card_Scan* pCard_scan = _pGetSub_Scan(pCard_absJoin);
     pCard_absJoin->vReplaceChildWithKids(pCard_scan);
     delete pCard_scan;
 
-    Card_IndexJoin* pCard_indexJoin = _pGetSub_Card_IndexJoin(pCard_absJoin);
+    Card_IndexJoin* pCard_indexJoin = _pGetSub_IndexJoin(pCard_absJoin);
     pCard_absJoin->vReplaceChildWithKids(pCard_indexJoin);
     delete pCard_indexJoin;
 
-    Card_Stream* pCard_stream = _pGetSub_Card_Stream(pCard_absJoin);
+    Card_Stream* pCard_stream = _pGetSub_Stream(pCard_absJoin);
     pCard_absJoin->vMoveToLastChild(pCard_stream);
 
     pCard_absJoin->vCard(CK_INDEXJOIN);

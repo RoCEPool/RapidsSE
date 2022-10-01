@@ -13,7 +13,7 @@ __aNewFunction(Card_IndexList,CN_CARD)
 __vDeleteFunction(Card_IndexList,CN_CARD)
 
 __bIsCard(STORE,Card_IndexList,CK_INDEXLIST)
-__pGetSubFunction_Card(STORE,Card_IndexList,CK_INDEXLIST)
+__pGetSubFunction_Card(STORE,IndexList,CK_INDEXLIST)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

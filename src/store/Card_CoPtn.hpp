@@ -19,7 +19,7 @@ namespace STORE
 
   Card_CoPtn* _pCard_CoPtn(void* aAddr);
   bool _bIsCard_CoPtn(void* aAddr);
-  Card_CoPtn* _pGetSub_Card_CoPtn(Card* pParent);
+  Card_CoPtn* _pGetSub_CoPtn(Card* pParent);
 }
 
 /*============================================================================*/

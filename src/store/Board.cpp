@@ -363,14 +363,14 @@ Card_Filter* Board::pFindFilterCard(i8 iFilter, Card*& rpMainCard)
     if (CK_ABSJOIN == eMainCard) {
       if (i_FilterSoFar++ != iFilter)
         continue;
-      Card_Filter* pCard_filter = _pGetSub_Card_Filter(rpMainCard);
+      Card_Filter* pCard_filter = _pGetSub_Filter(rpMainCard);
       return pCard_filter;
     }
 
     if (CK_SCAN == eMainCard) {
       if (i_FilterSoFar++ != iFilter)
         continue;
-      Card_Filter* pCard_filter = _pGetSub_Card_Filter(rpMainCard);
+      Card_Filter* pCard_filter = _pGetSub_Filter(rpMainCard);
       return pCard_filter;
     }
   }
@@ -397,15 +397,15 @@ Card_Stream* Board::pFindStreamCard(i8 iStream, Card*& rpMainCard)
     if (CK_ABSJOIN == eMainCard) {
       if (i_StreamSoFar++ != iStream)
         continue;
-      Card_Scan* pCard_scan = _pGetSub_Card_Scan(rpMainCard);
-      Card_Stream* pCard_stream = _pGetSub_Card_Stream(pCard_scan);
+      Card_Scan* pCard_scan = _pGetSub_Scan(rpMainCard);
+      Card_Stream* pCard_stream = _pGetSub_Stream(pCard_scan);
       return pCard_stream;
     }
 
     if (CK_SCAN == eMainCard) {
       if (i_StreamSoFar++ != iStream)
         continue;
-      Card_Stream* pCard_stream = _pGetSub_Card_Stream(rpMainCard);
+      Card_Stream* pCard_stream = _pGetSub_Stream(rpMainCard);
       return pCard_stream;
     }
   }

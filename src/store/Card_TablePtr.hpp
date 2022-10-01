@@ -23,7 +23,7 @@ namespace STORE
 
   Card_TablePtr* _pCard_TablePtr(void* aAddr);
   bool _bIsCard_TablePtr(void* aAddr);
-  Card_TablePtr* _pGetSub_Card_TablePtr(Card * pParent);
+  Card_TablePtr* _pGetSub_TablePtr(Card * pParent);
 }
 
 /*============================================================================*/

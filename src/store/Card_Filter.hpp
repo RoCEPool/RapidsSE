@@ -30,7 +30,7 @@ namespace STORE
 
   Card_Filter* _pCard_Filter(void* aAddr);
   bool _bIsCard_Filter(void* aAddr);
-  Card_Filter* _pGetSub_Card_Filter(Card* pParent);
+  Card_Filter* _pGetSub_Filter(Card* pParent);
 }
 
 /*============================================================================*/

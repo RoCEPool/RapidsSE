@@ -18,7 +18,7 @@ __aNewFunction(Card_IdxColList,CN_CARD)
 __vDeleteFunction(Card_IdxColList,CN_CARD)
 
 __bIsCard(STORE,Card_IdxColList,CK_IDXCOLLIST)
-__pGetSubFunction_Card(STORE,Card_IdxColList,CK_IDXCOLLIST)
+__pGetSubFunction_Card(STORE,IdxColList,CK_IDXCOLLIST)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -90,7 +90,7 @@ void Card_IdxColList::vOrdinate(Card_Stream* pCard_Stream)
 
   i8 iOrdLo = pCard_Stream->iOrdLo();
 
-  Card_StreamColList* pCard_StreamColList = _pGetSub_Card_StreamColList(pCard_Stream);
+  Card_StreamColList* pCard_StreamColList = _pGetSub_StreamColList(pCard_Stream);
 
   i8 nSubCards = this->nChildCards();
   for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {

@@ -17,7 +17,7 @@ __aNewFunction(Card_TablePtn,CN_CARD)
 __vDeleteFunction(Card_TablePtn,CN_CARD)
 
 __bIsCard(STORE,Card_TablePtn,CK_TABLEPTN)
-__pGetSubFunction_Card(STORE,Card_TablePtn,CK_TABLEPTN)
+__pGetSubFunction_Card(STORE,TablePtn,CK_TABLEPTN)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -66,11 +66,11 @@ void Card_TablePtn::vAdd_TablePtn(Card_Table* p_table)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_TableSyn* p_tableSyn = _pGetSub_Card_TableSyn(p_table);
+  Card_TableSyn* p_tableSyn = _pGetSub_TableSyn(p_table);
 
   char cTableSyn = p_tableSyn->cTableSyn();
 
-  Card_TablePtr* p_tablePtr = _pGetSub_Card_TablePtr(p_table);
+  Card_TablePtr* p_tablePtr = _pGetSub_TablePtr(p_table);
   Table* pTable = p_tablePtr->pTable();
 
   PtnDef* pPtnDef = pTable->pPtnDef();

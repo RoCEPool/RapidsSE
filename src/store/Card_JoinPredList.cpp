@@ -19,7 +19,7 @@ __aNewFunction(Card_JoinPredList,CN_CARD)
 __vDeleteFunction(Card_JoinPredList,CN_CARD)
 
 __bIsCard(STORE,Card_JoinPredList,CK_JOINPREDLIST)
-__pGetSubFunction_Card(STORE,Card_JoinPredList,CK_JOINPREDLIST)
+__pGetSubFunction_Card(STORE,JoinPredList,CK_JOINPREDLIST)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -61,11 +61,11 @@ void Card_JoinPredList::vExtract_joinPredList(Card_CalcBool* p_calcBool)
       return true;
 
     Card_Term* p_term_0 = _pCard_Term(p_predCmp->pGetChild(0));
-    Card_ColumnRef* p_columnRef_0 = _pGetSub_Card_ColumnRef(p_term_0);
+    Card_ColumnRef* p_columnRef_0 = _pGetSub_ColumnRef(p_term_0);
     if (! p_columnRef_0)
       return true;
     Card_Term* p_term_1 = _pCard_Term(p_predCmp->pGetChild(1));
-    Card_ColumnRef* p_columnRef_1= _pGetSub_Card_ColumnRef(p_term_1);
+    Card_ColumnRef* p_columnRef_1= _pGetSub_ColumnRef(p_term_1);
     if (! p_columnRef_1->bIsColumnRef())
       return true;
 

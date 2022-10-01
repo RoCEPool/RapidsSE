@@ -32,7 +32,7 @@ namespace STORE
 
   Card_StreamColList* _pCard_StreamColList(void* aAddr);
   bool _bIsCard_StreamColList(void* aAddr);
-  Card_StreamColList* _pGetSub_Card_StreamColList(Card* pParent);
+  Card_StreamColList* _pGetSub_StreamColList(Card* pParent);
 }
 
 /*============================================================================*/

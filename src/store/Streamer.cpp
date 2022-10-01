@@ -57,7 +57,7 @@ void Streamer::vOrdinal_Range(void)
   while (Card* pMainCard = pEachMain()) {
 
     if (CK_SCAN == pMainCard->eCard()) {
-      Card_Stream* pCard_stream = _pGetSub_Card_Stream(pMainCard);
+      Card_Stream* pCard_stream = _pGetSub_Stream(pMainCard);
 
       pCard_stream->vMark1('#');
       pCard_stream->vMark2(cStream++);
@@ -72,8 +72,8 @@ void Streamer::vOrdinal_Range(void)
     }
 
     if (CK_ABSJOIN == pMainCard->eCard()) {
-      Card_Scan*   pCard_scan   = _pGetSub_Card_Scan(pMainCard);
-      Card_Stream* pCard_stream = _pGetSub_Card_Stream(pCard_scan);
+      Card_Scan*   pCard_scan   = _pGetSub_Scan(pMainCard);
+      Card_Stream* pCard_stream = _pGetSub_Stream(pCard_scan);
 
       pCard_stream->vMark1('#');
       pCard_stream->vMark2(cStream++);

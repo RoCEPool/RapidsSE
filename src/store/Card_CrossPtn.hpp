@@ -19,7 +19,7 @@ namespace STORE
 
   Card_CrossPtn* _pCard_CrossPtn(void* aAddr);
   bool _bIsCard_CrossPtn(void* aAddr);
-  Card_CrossPtn* _pGetSub_Card_CrossPtn(Card* pParent);
+  Card_CrossPtn* _pGetSub_CrossPtn(Card* pParent);
 }
 
 /*============================================================================*/
