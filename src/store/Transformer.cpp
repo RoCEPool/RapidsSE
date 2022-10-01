@@ -216,7 +216,7 @@ void Transformer::vTransform2(void)
   m_pPermutor->vCompute_coPtnList();
   m_pPermutor->vCompute_crossPtnList();
 
-  m_pPermutor->vCompute_joinPtnList();
+  m_pPermutor->vCompute_ptndJointSet();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

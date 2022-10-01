@@ -56,7 +56,6 @@ enum eCK // card kind
 
   /* */ CK_JOINPRED,
   /* */ CK_JOINPREDLIST,
-  /* */ CK_JOINPTNLIST,
 
   /* */ CK_LBOUND,
   /* */ CK_LIMIT,
@@ -78,6 +77,7 @@ enum eCK // card kind
   /* */ CK_PREDOR,
   /* */ CK_PROJECT,
   /* */ CK_PROJELIST,
+  /* */ CK_PTNDJOINSET,
 
   /* */ CK_RBOUND,
   /* */ CK_ROWS,
@@ -167,7 +167,6 @@ static Stz* aCK[]
 
   /* */ "CK_JOINPRED"_Stz,     // CK_JOINPRED
   /* */ "CK_JOINPREDLIST"_Stz, // CK_JOINPREDLIST
-  /* */ "CK_JOINPTNLIST"_Stz,  // CK_JOINPTNLIST
 
   /* */ "CK_LBOUND"_Stz,       // CK_LBOUND
   /* */ "CK_LIMIT"_Stz,        // CK_LIMIT
@@ -189,6 +188,7 @@ static Stz* aCK[]
   /* */ "CK_PREDOR"_Stz,       // CK_PREDOR
   /* */ "CK_PROJECT"_Stz,      // CK_PROJECT
   /* */ "CK_PROJELIST"_Stz,    // CK_PROJELIST
+  /* */ "CK_PTNDJOINSET"_Stz,  // CK_PTNDJOINSET
 
   /* */ "CK_RBOUND"_Stz,       // CK_RBOUND
   /* */ "CK_ROWS"_Stz,         // CK_ROWS
@@ -278,7 +278,6 @@ static Stz* aCK_short[]
 
   /* */ "joinPred"_Stz,        // CK_JOINPRED
   /* */ "joinPredList"_Stz,    // CK_JOINPREDLIST
-  /* */ "joinPtnList"_Stz,     // CK_JOINPTNLIST
 
   /* */ "lbound"_Stz,          // CK_LBOUND
   /* */ "limit"_Stz,           // CK_LIMIT
@@ -300,6 +299,7 @@ static Stz* aCK_short[]
   /* */ "predOr"_Stz,          // CK_PREDOR
   /* */ "project"_Stz,         // CK_PROJECT
   /* */ "projElist"_Stz,       // CK_PROJELIST
+  /* */ "ptndJoinSet"_Stz,     // CK_PTNDJOINSET
 
   /* */ "rbound"_Stz,          // CK_RBOUND
   /* */ "rows"_Stz,            // CK_ROWS

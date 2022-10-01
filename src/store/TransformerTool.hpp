@@ -45,7 +45,7 @@ namespace STORE
     Card_IndexList*     m_p_indexList;
     Card_IndexScan*     m_p_indexScan;
     Card_JoinPredList*  m_p_joinPredList;
-    Card_JoinPtnList*   m_p_joinPtnList;
+    Card_PtndJoinSet*   m_p_joinPtnList;
     Card_LBound*        m_p_lBound;
     Card_PredCmp*       m_p_predCmp;
     Card_Project*       m_p_project;

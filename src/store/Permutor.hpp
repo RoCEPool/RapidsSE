@@ -31,7 +31,7 @@ namespace STORE
 
     void vCompute_crossPtnList(void);
 
-    void vCompute_joinPtnList(void);
+    void vCompute_ptndJointSet(void);
 
 
   private:
