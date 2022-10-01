@@ -18,6 +18,7 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_pBench = pBench;
   m_pBoard = m_pBench->pHead();
   m_pBoard_permute = nullptr;
+  m_pBoard_query   = nullptr;
 
   m_pMainCardIter = nullptr;
 
@@ -273,6 +274,8 @@ void TransformerTool::vSetupPermuteBoard(void)
   m_pBoard_permute = m_pBench->pGetBoard(BK_PERMUTE);
   if (!m_pBoard_permute)
     m_pBoard_permute = new Board(BK_PERMUTE, m_pBench);
+
+  m_pBoard_query = m_pBench->pGetBoard(BK_QUERY);
 }
 
 

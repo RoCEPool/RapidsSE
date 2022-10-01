@@ -17,6 +17,7 @@ namespace STORE
     Bench*       m_pBench;
     Board*       m_pBoard;
     Board*       m_pBoard_permute;
+    Board*       m_pBoard_query;
 
     CardIter*    m_pMainCardIter;
 

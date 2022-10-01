@@ -44,24 +44,118 @@ Permutor::~Permutor(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Permutor::vCompute_coPtn_CrossPtn(void)
+void Permutor::vExtract_tableList(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PERMUTOR, _FOOTER_);
 
-  m_pBoard_permute = m_pBench->pGetBoard(BK_PERMUTE);
-  if (!m_pBoard_permute)
-    m_pBoard_permute = new Board(BK_PERMUTE, m_pBench);
+  vSetupPermuteBoard();
+
+  //--00--------------==
+  // tableList
+
+  BoardIter xBI_query(m_pBoard_query);
+
+  m_p_tableList = new Card_TableList;
+  m_pBoard_permute->vAppendMainCard(m_p_tableList);
+
+  while ( (m_pMainCard = xBI_query.pEachMain()) ) {
+    m_p_table = m_pMainCard->pSub_table();
+    if (! m_p_table)
+      continue;
+
+    m_p_tableList->vAppend(m_p_table->pDupCardAndSubCards());
+  }
 
 
+  if (m_bInteractive)
+    m_pBoard_permute->vPrintBoard("Permutor::vExtract_tableList"_Stz);
+}
 
-  // - - - - - - - - -
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Permutor::vExtract_joinPredList(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PERMUTOR, _FOOTER_);
 
-  m_p_coPtnPredList =
-      _pCard_CoPtnPredList(m_pBoard_permute->pFindMain(CK_COPTNPREDLIST));
+  vSetupPermuteBoard();
 
+  //--00--------------==
+  // joinPredList
+
+  m_p_joinPredList = new Card_JoinPredList;
+  m_pBoard_permute->vAppendMainCard(m_p_joinPredList);
+
+  BoardIter xBI_query(m_pBoard_query);
+  while ((m_pMainCard = xBI_query.pEachMain(CK_FILTER))) {
+    m_p_calcBool = m_pMainCard->pSub_calcBool();
+    if (!m_p_calcBool)
+      continue;
+
+    m_p_joinPredList->vExtract_joinPredList(m_p_calcBool);
+  }
+
+
+  if (m_bInteractive)
+    m_pBoard_permute->vPrintBoard("Permutor::vExtract_joinPredList"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Permutor::vCompute_coPtnPredList(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PERMUTOR, _FOOTER_);
+
+  vSetupPermuteBoard();
+
+  //--00--------------==
+  // coPptnPredList
+
+  m_p_coPtnPredList = new Card_CoPtnPredList;
+  m_pBoard_permute->vAppendMainCard(m_p_coPtnPredList);
+
+  m_p_tableList =
+      _pCard_TableList(m_pBoard_permute->pFindMain(CK_TABLELIST));
+  m_p_joinPredList =
+      _pCard_JoinPredList(m_pBoard_permute->pFindMain(CK_JOINPREDLIST));
+
+  i8 nJoinPreds = m_p_joinPredList->nChildCards();
+  for (i8 i_joinPred = 0; i_joinPred < nJoinPreds; i_joinPred++) {
+    m_p_predCmp =
+        _pCard_PredCmp(m_p_joinPredList->pGetChild(i_joinPred));
+
+    if (! m_p_tableList->bPredCmpIsCoPtn(m_p_predCmp))
+      continue;
+
+    m_p_coPtnPred = new Card_CoPtnPred;
+    m_p_coPtnPred->vAppend(m_p_predCmp->pDupCardAndSubCards());
+
+    m_p_coPtnPredList->vAppend(m_p_coPtnPred);
+  }
+
+
+  if (m_bInteractive)
+    m_pBoard_permute->vPrintBoard("Permutor::vCompute_coPtnPredList"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Permutor::vCompute_coPtnList(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PERMUTOR, _FOOTER_);
+
+  vSetupPermuteBoard();
+
+  //--00--------------==
+  // coPtnList
 
   m_p_coPtnList = new Card_CoPtnList;
   m_pBoard_permute->vAppendMainCard(m_p_coPtnList);
+
+  m_p_coPtnPredList =
+      _pCard_CoPtnPredList(m_pBoard_permute->pFindMain(CK_COPTNPREDLIST));
 
 
   i8 nChildren = m_p_coPtnPredList->nChildCards();
@@ -80,6 +174,21 @@ void Permutor::vCompute_coPtn_CrossPtn(void)
     DELETE_CARD(m_p_subSet);
   }
 
+
+
+  if (m_bInteractive)
+    m_pBoard_permute->vPrintBoard("Permutor::vCompute_coPtnList"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Permutor::vCompute_crossPtnList(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PERMUTOR, _FOOTER_);
+
+  vSetupPermuteBoard();
+
   //--00--------------==
   // crossPtnList
 
@@ -89,7 +198,7 @@ void Permutor::vCompute_coPtn_CrossPtn(void)
   m_p_crossPtnList = new Card_CrossPtnList;
   m_pBoard_permute->vAppendMainCard(m_p_crossPtnList);
 
-  nChildren = m_p_joinPredList->nChildCards();
+  i8 nChildren = m_p_joinPredList->nChildCards();
   for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
     m_p_predCmp =
         _pCard_PredCmp(m_p_joinPredList->pGetChild(i_Child));
@@ -105,56 +214,9 @@ void Permutor::vCompute_coPtn_CrossPtn(void)
   m_p_comment = new Card_Comment("((TO BE CODED))"_Stz);
   m_p_crossPtnList->vAppend(m_p_comment);
 
-  // - - - - - - - - -
 
   if (m_bInteractive)
-    m_pBoard_permute->vPrintBoard("Permutor::vCompute_coPtn_CrossPtn"_Stz);
-
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Permutor::vCompute_coPtnPredList(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PERMUTOR, _FOOTER_);
-
-  Board *pBoard_permute = m_pBench->pGetBoard(BK_PERMUTE);
-  if (!pBoard_permute)
-    pBoard_permute = new Board(BK_PERMUTE, m_pBench);
-
-  Card_CoPtnPredList* p_coPtnPredList = new Card_CoPtnPredList;
-
-  pBoard_permute->vAppendMainCard(p_coPtnPredList);
-
-  Card_TableList* p_tableList =
-      _pCard_TableList(pBoard_permute->pFindMain(CK_TABLELIST));
-  Card_JoinPredList* p_joinPredList =
-      _pCard_JoinPredList(pBoard_permute->pFindMain(CK_JOINPREDLIST));
-
-  i8 nJoinPreds = p_joinPredList->nChildCards();
-  for (i8 i_joinPred = 0; i_joinPred < nJoinPreds; i_joinPred++) {
-    Card_PredCmp* p_predCmp =
-        _pCard_PredCmp(p_joinPredList->pGetChild(i_joinPred));
-
-//    Card_ColumnRef* p_columnRef_0 =
-//        _pCard_ColumnRef(p_predCmp->pGetChild(0));
-//    Card_ColumnRef* p_columnRef_1 =
-//        _pCard_ColumnRef(p_predCmp->pGetChild(1));
-
-    if (! p_tableList->bPredCmpIsCoPtn(p_predCmp))
-      continue;
-
-    Card_CoPtnPred* p_coPtnPred = new Card_CoPtnPred;
-//    p_coPtnPred->vAppend(p_columnRef_0->pDupCardAndSubCards());
-//    p_coPtnPred->vAppend(p_columnRef_1->pDupCardAndSubCards());
-    p_coPtnPred->vAppend(p_predCmp->pDupCardAndSubCards());
-
-    p_coPtnPredList->vAppend(p_coPtnPred);
-  }
-
-  if (m_bInteractive)
-    pBoard_permute->vPrintBoard("Permutor::vCompute_coPtnPredList"_Stz);
+    m_pBoard_permute->vPrintBoard("Permutor::vCompute_crossPtnList"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -174,70 +236,6 @@ void Permutor::vCompute_joinPtnList(void)
 
   if (m_bInteractive)
     m_pBoard_permute->vPrintBoard("Permutor::vCompute_joinPtnList"_Stz);
-
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Permutor::vExtract_tableList(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PERMUTOR, _FOOTER_);
-
-  Board* pBoard_permute = m_pBench->pGetBoard(BK_PERMUTE);
-  if (!pBoard_permute)
-    pBoard_permute = new Board(BK_PERMUTE, m_pBench);
-
-  Board* pBoard_query = m_pBench->pGetBoard(BK_QUERY);
-
-  BoardIter xBI_query(pBoard_query);
-
-  Card_TableList* p_tableList_new = new Card_TableList;
-
-  while ( (m_pMainCard = xBI_query.pEachMain()) ) {
-    Card_Table* p_table = m_pMainCard->pSub_table();
-    if (! p_table)
-      continue;
-
-    p_tableList_new->vAppend(p_table->pDupCardAndSubCards());
-  }
-
-  pBoard_permute->vAppendMainCard(p_tableList_new);
-
-  if (m_bInteractive)
-    pBoard_permute->vPrintBoard("Permutor::vExtract_tableList"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Permutor::vExtract_joinPredList(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PERMUTOR, _FOOTER_);
-
-  Board *pBoard_permute = m_pBench->pGetBoard(BK_PERMUTE);
-  if (!pBoard_permute)
-    pBoard_permute = new Board(BK_PERMUTE, m_pBench);
-
-  Board *pBoard_query = m_pBench->pGetBoard(BK_QUERY);
-
-
-  Card_JoinPredList *p_joinPredList = new Card_JoinPredList;
-
-  BoardIter xBI_query(pBoard_query);
-  while ((m_pMainCard = xBI_query.pEachMain(CK_FILTER))) {
-    Card_CalcBool *p_calcBool = m_pMainCard->pSub_calcBool();
-    if (!p_calcBool)
-      continue;
-
-    p_joinPredList->vExtract_joinPredList(p_calcBool);
-  }
-
-  pBoard_permute->vAppendMainCard(p_joinPredList);
-
-  if (m_bInteractive)
-    pBoard_permute->vPrintBoard("Permutor::vExtract_joinPredList"_Stz);
-
 }
 
 /*----------------------------------------------------------------------------*/
