@@ -9,18 +9,18 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_CrossPtn,CK_COPTN)
+__pCastFunction_Card(STORE,Card_CrossPtn,CK_CROSSPTN)
 __aNewFunction(Card_CrossPtn,CN_CARD)
 __vDeleteFunction(Card_CrossPtn,CN_CARD)
 
-__bIsCard(STORE,Card_CrossPtn,CK_COPTN)
-__pGetSubFunction_Card(STORE,CrossPtn,CK_COPTN)
+__bIsCard(STORE,Card_CrossPtn,CK_CROSSPTN)
+__pGetSubFunction_Card(STORE,CrossPtn,CK_CROSSPTN)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_CrossPtn::Card_CrossPtn(void)
-: Card(CK_COPTN)
+: Card(CK_CROSSPTN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

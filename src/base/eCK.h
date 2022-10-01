@@ -56,6 +56,7 @@ enum eCK // card kind
 
   /* */ CK_JOINPRED,
   /* */ CK_JOINPREDLIST,
+  /* */ CK_JOINPTNLIST,
 
   /* */ CK_LBOUND,
   /* */ CK_LIMIT,
@@ -166,6 +167,7 @@ static Stz* aCK[]
 
   /* */ "CK_JOINPRED"_Stz,     // CK_JOINPRED
   /* */ "CK_JOINPREDLIST"_Stz, // CK_JOINPREDLIST
+  /* */ "CK_JOINPTNLIST"_Stz,  // CK_JOINPTNLIST
 
   /* */ "CK_LBOUND"_Stz,       // CK_LBOUND
   /* */ "CK_LIMIT"_Stz,        // CK_LIMIT
@@ -241,13 +243,13 @@ static Stz* aCK_short[]
   /* */ "columnRef"_Stz,       // CK_COLUMNREF
   /* */ "combined"_Stz,        // CK_COMBINED
   /* */ "comment"_Stz,         // CK_COMMENT
-  /* */ "co-ptn"_Stz,          // CK_COPTN
-  /* */ "co-ptnList"_Stz,      // CK_COPTNLIST
-  /* */ "co-ptnPred"_Stz,      // CK_COPTNPRED
-  /* */ "co-ptnPredList"_Stz,  // CK_COPTNPREDLIST
-  /* */ "cross-ptn"_Stz,       // CK_CROSSPTN
-  /* */ "cross-ptnList"_Stz,   // CK_CROSSPTNLIST
-  /* */ "cross-ptnPred"_Stz,   // CK_CROSSPTNPRED
+  /* */ "coPtn"_Stz,           // CK_COPTN
+  /* */ "coPtnList"_Stz,       // CK_COPTNLIST
+  /* */ "coPtnPred"_Stz,       // CK_COPTNPRED
+  /* */ "coPptnPredList"_Stz,  // CK_COPTNPREDLIST
+  /* */ "crossPtn"_Stz,        // CK_CROSSPTN
+  /* */ "crossPtnList"_Stz,    // CK_CROSSPTNLIST
+  /* */ "crossPtnPred"_Stz,    // CK_CROSSPTNPRED
 
   /* */ "debug"_Stz,           // CK_DEBUG
   /* */ "direction"_Stz,       // CK_DIRECTION
@@ -276,6 +278,7 @@ static Stz* aCK_short[]
 
   /* */ "joinPred"_Stz,        // CK_JOINPRED
   /* */ "joinPredList"_Stz,    // CK_JOINPREDLIST
+  /* */ "joinPtnList"_Stz,     // CK_JOINPTNLIST
 
   /* */ "lbound"_Stz,          // CK_LBOUND
   /* */ "limit"_Stz,           // CK_LIMIT

@@ -17,6 +17,7 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
 
   m_pBench = pBench;
   m_pBoard = m_pBench->pHead();
+  m_pBoard_permute = nullptr;
 
   m_pMainCardIter = nullptr;
 
@@ -44,6 +45,7 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_p_indexList     = nullptr;
   m_p_indexScan     = nullptr;
   m_p_joinPredList  = nullptr;
+  m_p_joinPtnList   = nullptr;
   m_p_lBound        = nullptr;
   m_p_predCmp       = nullptr;
   m_p_project       = nullptr;
@@ -260,6 +262,18 @@ void TransformerTool::vTransformation(eOT eTransformation)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::vSetupPermuteBoard(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  m_pBoard_permute = m_pBench->pGetBoard(BK_PERMUTE);
+  if (!m_pBoard_permute)
+    m_pBoard_permute = new Board(BK_PERMUTE, m_pBench);
+}
 
 
 /*============================================================================*/

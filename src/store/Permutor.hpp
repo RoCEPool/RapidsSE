@@ -23,6 +23,8 @@ namespace STORE
 
     void vCompute_coPtn_CrossPtn(void);
     void vCompute_coPtnPredList(void);
+    void vCompute_joinPtnList(void);
+
     void vExtract_tableList(void);
     void vExtract_joinPredList(void);
 

@@ -9,22 +9,22 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Columnar,CN_TABULAR)
-__aNewFunction(Columnar,CN_TABULAR)
-__vDeleteFunction(Columnar,CN_TABULAR)
+__pCastFunction(STORE,Columnar,CN_COLUMNAR)
+__aNewFunction(Columnar,CN_COLUMNAR)
+__vDeleteFunction(Columnar,CN_COLUMNAR)
 __aFooterFunction(Columnar)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Columnar::Columnar(Bench* pBench)
-: TransformerTool(CN_TABULAR, pBench)
+: TransformerTool(CN_COLUMNAR, pBench)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABULAR,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMNAR,_FOOTER_);
 
-  _checkInitialised_(CN_TABULAR);
+  _checkInitialised_(CN_COLUMNAR);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_TABULAR,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_COLUMNAR,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -32,7 +32,7 @@ Columnar::Columnar(Bench* pBench)
 /*----------------------------------------------------------------------------*/
 Columnar::~Columnar(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABULAR,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMNAR,_FOOTER_);
 
 }
 
@@ -46,7 +46,7 @@ Columnar::~Columnar(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Columnar::vAdd_ColumnRef(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABULAR,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMNAR,_FOOTER_);
 
   Resolver* pResolver = new Resolver(m_pBench);
 

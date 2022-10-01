@@ -16,6 +16,7 @@ namespace STORE
 
     Bench*       m_pBench;
     Board*       m_pBoard;
+    Board*       m_pBoard_permute;
 
     CardIter*    m_pMainCardIter;
 
@@ -43,6 +44,7 @@ namespace STORE
     Card_IndexList*     m_p_indexList;
     Card_IndexScan*     m_p_indexScan;
     Card_JoinPredList*  m_p_joinPredList;
+    Card_JoinPtnList*   m_p_joinPtnList;
     Card_LBound*        m_p_lBound;
     Card_PredCmp*       m_p_predCmp;
     Card_Project*       m_p_project;
@@ -86,7 +88,8 @@ namespace STORE
 
     void vTransformation(eOT eTransformation);
 
-  private:
+  protected:
+    void vSetupPermuteBoard(void);
 
   };
 }
