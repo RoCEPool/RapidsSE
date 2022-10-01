@@ -99,6 +99,9 @@ void Permutor::vCompute_coPtn_CrossPtn(void)
     if (m_p_coPtnList->bHasEqPredCmp(m_p_predCmp))
       continue;
 
+    m_p_crossPtn = new Card_CrossPtn;
+    m_p_crossPtn->vAppend(m_p_predCmp->pDupCardAndSubCards());
+    m_p_crossPtnList->vAppend(m_p_crossPtn);
   }
 
   m_p_comment = new Card_Comment("((TO BE CODED))"_Stz);

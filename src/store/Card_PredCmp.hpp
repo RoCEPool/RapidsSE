@@ -29,6 +29,7 @@ namespace STORE
     Card_PredCmp* pFindBound_compare(Index* pIndex, ePB eBound);
     bool bHasBounds_compare(Index* pIndex);
 
+    bool bIsEq(Card_PredCmp* p_PredCmp_arg);
 
     bool bIsJoinPred(void);
   };

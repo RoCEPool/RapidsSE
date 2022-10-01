@@ -5,6 +5,7 @@
 #include "Card_CoPtnList.hpp"
 
 #include "Card_CoPtn.hpp"
+#include "Card_PredCmp.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -63,9 +64,23 @@ Card_CoPtn* Card_CoPtnList::pFind_coPtn_for(Card_CoPtnPred* p_CoPtnPred)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_CoPtnList::bHasEqPredCmp(Card_PredCmp* p_predCmp)
+bool Card_CoPtnList::bHasEqPredCmp(Card_PredCmp* p_predCmp_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  i8 nChildren_coPtn = this->nChildCards();
+  for (i8 i_Child_coPtn = 0; i_Child_coPtn < nChildren_coPtn; i_Child_coPtn++) {
+    Card_CoPtn* p_coPtn = _pCard_CoPtn(this->pGetChild(i_Child_coPtn));
+
+    i8 nChildren_predCmp = p_coPtn->nChildCards();
+    for (i8 i_Child_predCmp = 0; i_Child_predCmp < nChildren_predCmp; i_Child_predCmp++) {
+      Card_PredCmp *p_predCmp = _pCard_PredCmp(p_coPtn->pGetChild(i_Child_predCmp));
+
+
+      if (p_predCmp->bIsEq(p_predCmp_arg))
+        return true;
+    }
+  }
 
   return false;
 }

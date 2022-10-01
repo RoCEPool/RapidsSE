@@ -35,6 +35,7 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_p_coPtnList     = nullptr;
   m_p_coPtnPred     = nullptr;
   m_p_coPtnPredList = nullptr;
+  m_p_crossPtn      = nullptr;
   m_p_crossPtnList  = nullptr;
   m_p_comment       = nullptr;
   m_p_filter        = nullptr;

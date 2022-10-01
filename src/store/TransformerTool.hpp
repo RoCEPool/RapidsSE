@@ -35,6 +35,7 @@ namespace STORE
     Card_CoPtnList*     m_p_coPtnList;
     Card_CoPtnPred*     m_p_coPtnPred;
     Card_CoPtnPredList* m_p_coPtnPredList;
+    Card_CrossPtn*      m_p_crossPtn;
     Card_CrossPtnList*  m_p_crossPtnList;
     Card_Filter*        m_p_filter;
     Card_GbyElist*      m_p_gbyElist;

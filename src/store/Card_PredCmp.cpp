@@ -89,6 +89,30 @@ bool Card_PredCmp::bCoPtnWith(Card_PredCmp* p_PredCmp_arg)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_PredCmp::bIsEq(Card_PredCmp* p_PredCmp_arg)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_ColumnRef* p_columnRef_this_0 = _pCard_ColumnRef(this->pGetChild(0));
+  Stz* szColumnRef_this_0 = p_columnRef_this_0->szColumnRef();
+  Card_ColumnRef* p_columnRef_this_1 = _pCard_ColumnRef(this->pGetChild(1));
+  Stz* szColumnRef_this_1 = p_columnRef_this_1->szColumnRef();
+
+  Card_ColumnRef* p_columnRef_arg_0 = _pCard_ColumnRef(p_PredCmp_arg->pGetChild(0));
+  Stz* szColumnRef_arg_0 = p_columnRef_arg_0->szColumnRef();
+  Card_ColumnRef* p_columnRef_arg_1 = _pCard_ColumnRef(p_PredCmp_arg->pGetChild(1));
+  Stz* szColumnRef_arg_1 = p_columnRef_arg_1->szColumnRef();
+
+  if (szColumnRef_this_0->bSame(szColumnRef_arg_0) &&
+      szColumnRef_this_1->bSame(szColumnRef_arg_1))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* mark the bounds of this <predCmp>                                          */
 /*----------------------------------------------------------------------------*/
 void Card_PredCmp::vMarkBound(void)
