@@ -420,6 +420,22 @@ void Stz::vSprint(Stz* szFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test if this Stz is "$nn"                                                  */
+/*----------------------------------------------------------------------------*/
+char Stz::cTableSyn(void)
+{
+  if (! StrLib::bIsDollar(m_caChar[0]))
+    return '?';
+
+  if (! StrLib::bIsDollar(m_caChar[1]))
+    return '?';
+
+  char cTableSyn = m_caChar[2];
+
+  return cTableSyn;
+}
+
+/*----------------------------------------------------------------------------*/
 /* iToI8: convert arg to i8                                                   */
 /*----------------------------------------------------------------------------*/
 i8 Stz::iToI8(void)

@@ -24,9 +24,11 @@ namespace STORE
     ePB eBound(void);
     eRO eRelOp(void);
 
+    bool bCoPtnWith(Card_PredCmp* p_PredCmp_arg);
     Card_PredCmp* pDup(void);
     Card_PredCmp* pFindBound_compare(Index* pIndex, ePB eBound);
     bool bHasBounds_compare(Index* pIndex);
+
 
     bool bIsJoinPred(void);
   };

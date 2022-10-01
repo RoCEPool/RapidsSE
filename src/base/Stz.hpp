@@ -57,6 +57,7 @@ namespace BASE
     bool  bSame(Stz* szArg);
     i8    nSize(void);
     void  vSprint(Stz* szFormat, ...);
+    char  cTableSyn(void);
     i8    iToI8(void);
     void  vToLower(void);
   };

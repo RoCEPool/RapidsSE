@@ -4,6 +4,8 @@
 
 #include "Card_CoPtn.hpp"
 
+#include "Card_PredCmp.hpp"
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -35,6 +37,26 @@ Card_CoPtn::Card_CoPtn(void)
 Card_CoPtn::~Card_CoPtn(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_CoPtn::bCoPtnWith(Card_CoPtnPred* p_CoPtnPred)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_PredCmp* p_predCmp_this = _pGetSub_PredCmp(this);
+  Card_PredCmp* p_predCmp_arg  = _pGetSub_PredCmp(p_CoPtnPred);
+
+  if (p_predCmp_this->bCoPtnWith(p_predCmp_arg))
+    return true;
+
+  return false;
 }
 
 /*============================================================================*/

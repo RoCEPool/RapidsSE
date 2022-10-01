@@ -4,6 +4,7 @@
 
 #include "Card_PredCmp.hpp"
 #include "Card_Term.hpp"
+#include "Card_ColumnRef.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -41,6 +42,51 @@ Card_PredCmp::~Card_PredCmp(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+
+/*----------------------------------------------------------------------------*/
+/* is this predCmp co-partitionable with given arg?                           */
+/*----------------------------------------------------------------------------*/
+bool Card_PredCmp::bCoPtnWith(Card_PredCmp* p_PredCmp_arg)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_ColumnRef* p_columnRef_this_0 =
+      _pCard_ColumnRef(this->pGetChild(0));
+  Stz* szColumnRef_this_0 = p_columnRef_this_0->szColumnRef();
+  char cTableSyn_this_0 = szColumnRef_this_0->cTableSyn();
+
+  Card_ColumnRef* p_columnRef_this_1 =
+      _pCard_ColumnRef(this->pGetChild(1));
+  Stz* szColumnRef_this_1 = p_columnRef_this_1->szColumnRef();
+  char cTableSyn_this_1 = szColumnRef_this_1->cTableSyn();
+
+
+  Card_ColumnRef* p_columnRef_arg_0 =
+      _pCard_ColumnRef(p_PredCmp_arg->pGetChild(0));
+  Stz* szColumnRef_arg_0 = p_columnRef_arg_0->szColumnRef();
+  char cTableSyn_arg_0 = szColumnRef_arg_0->cTableSyn();
+
+  Card_ColumnRef* p_columnRef_arg_1 =
+      _pCard_ColumnRef(p_PredCmp_arg->pGetChild(1));
+  Stz* szColumnRef_arg_1 = p_columnRef_arg_1->szColumnRef();
+  char cTableSyn_arg_1 = szColumnRef_arg_1->cTableSyn();
+
+  bool bAreCoPtn = false;
+
+  if (   cTableSyn_arg_0 == cTableSyn_this_0
+      || cTableSyn_arg_0 == cTableSyn_this_1
+      || cTableSyn_arg_1 == cTableSyn_this_0
+      || cTableSyn_arg_1 == cTableSyn_this_1
+      )
+    bAreCoPtn = true;
+
+  vTrace("(%c,%c) - (%c,%c) are%s co-partitioned\n"_Stz,
+          cTableSyn_this_0,cTableSyn_this_1,
+          cTableSyn_arg_0,cTableSyn_arg_1,
+          bAreCoPtn ? "" : " NOT");
+
+  return bAreCoPtn;
+}
 
 /*----------------------------------------------------------------------------*/
 /* mark the bounds of this <predCmp>                                          */

@@ -4,6 +4,7 @@
 #pragma once
 
 #include "Card.hpp"
+#include "Card_CoPtnPred.hpp"
 
 namespace STORE
 {
@@ -15,6 +16,8 @@ namespace STORE
   
     Card_CoPtn(void);
    ~Card_CoPtn(void) noexcept(false);
+
+   bool bCoPtnWith(Card_CoPtnPred* p_CoPtnPred);
   };
 
   Card_CoPtn* _pCard_CoPtn(void* aAddr);

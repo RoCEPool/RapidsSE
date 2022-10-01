@@ -65,20 +65,23 @@ void Permutor::vCompute_coPtnCrossPtn(void)
   pBoard_permute->vAppendMainCard(p_coPtnList);
 
 
-  Card_CoPtnPred *p_coPtnPred =
-      _pCard_CoPtnPred(p_coPtnPredList->pGetChild(0));
+  i8 nChildren = p_coPtnPredList->nChildCards();
+  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
+    Card_CoPtnPred *p_coPtnPred =
+        _pCard_CoPtnPred(p_coPtnPredList->pGetChild(i_Child));
 
-  Card_SubSet *p_subSet = p_coPtnPred->pDupSubCards();
+    Card_SubSet *p_subSet = p_coPtnPred->pDupSubCards();
 
-  if (!(p_coPtn = p_coPtnList->pFind_coPtn_for(p_coPtnPred))) {
-    p_coPtn = new Card_CoPtn;
-    p_coPtnList->vAppend(p_coPtn);
+    if (! (p_coPtn = p_coPtnList->pFind_coPtn_for(p_coPtnPred)) ) {
+      p_coPtn = new Card_CoPtn;
+      p_coPtnList->vAppend(p_coPtn);
+    }
+
+    p_coPtn->vTransferSubCards(p_subSet);
+    delete p_subSet;
   }
 
-  p_coPtn->vTransferSubCards(p_subSet);
-  delete p_subSet;
-
-  Card_Comment* p_comment = new Card_Comment("((TO BE CODED))"_Stz);
+  Card_Comment* p_comment = new Card_Comment("((?CODED?))"_Stz);
   p_coPtnList->vAppend(p_comment);
 
 

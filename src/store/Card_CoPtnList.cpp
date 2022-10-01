@@ -49,6 +49,14 @@ Card_CoPtn* Card_CoPtnList::pFind_coPtn_for(Card_CoPtnPred* p_CoPtnPred)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  i8 nChildren = nChildCards();
+  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
+    Card_CoPtn* p_coPtn = _pCard_CoPtn(pGetChild(i_Child));
+
+    if (p_coPtn->bCoPtnWith(p_CoPtnPred))
+      return p_coPtn;
+  }
+
   return nullptr;
 }
 
