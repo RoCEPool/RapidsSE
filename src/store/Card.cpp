@@ -2654,7 +2654,7 @@ void Card::vPrintCard(Ribbon* pRibbon, i8 iDepth)
   bool bPrune = false;
   CardCtl* pCardCtl = _pCardCtl(pRibbon->pCtl());
 
-  i8 iPinForm = pCardCtl->iPinForm(m_eCard);
+  i8 iPinForm = pCardCtl->iPrintForm(m_eCard);
   if (0 == iPinForm) {
     vPrintName(pRibbon, iDepth);
     vPrintDetails(pRibbon, iDepth, bPrune);

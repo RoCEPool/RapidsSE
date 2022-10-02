@@ -160,14 +160,14 @@ void Transformer::vTransform2(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append <stream> to all <scan> and then to all <absJoin>
   m_pCardCtl->vPrintSubCards(CK_STREAM, true);
-  m_pCardCtl->vPinForm(CK_STREAM,0);
+  m_pCardCtl->vPrintForm(CK_STREAM, 0);
 
   //m_pCardCtl->vPrintSubCards(CK_EXPR,0);
 
-  m_pCardCtl->vPinForm(CK_PREDAND,1);
-  m_pCardCtl->vPinForm(CK_PREDCMP,1);
-  m_pCardCtl->vPinForm(CK_PREDOR,1);
-  m_pCardCtl->vPinForm(CK_TERM,1);
+  m_pCardCtl->vPrintForm(CK_PREDAND, 1);
+  m_pCardCtl->vPrintForm(CK_PREDCMP, 1);
+  m_pCardCtl->vPrintForm(CK_PREDOR, 1);
+  m_pCardCtl->vPrintForm(CK_TERM, 1);
 
   m_pStreamer->vAppendStream_to_Scan();
   if (m_bInteractive)
@@ -244,11 +244,11 @@ void Transformer::vTransform2(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   m_pCardCtl->vPrintSubCards(CK_STREAM, true);
-  m_pCardCtl->vPinForm(CK_STREAM,0);
-  m_pCardCtl->vPinForm(CK_PREDAND,0);
-  m_pCardCtl->vPinForm(CK_PREDCMP,0);
-  m_pCardCtl->vPinForm(CK_PREDOR,0);
-  m_pCardCtl->vPinForm(CK_TERM,0);
+  m_pCardCtl->vPrintForm(CK_STREAM, 0);
+  m_pCardCtl->vPrintForm(CK_PREDAND, 0);
+  m_pCardCtl->vPrintForm(CK_PREDCMP, 0);
+  m_pCardCtl->vPrintForm(CK_PREDOR, 0);
+  m_pCardCtl->vPrintForm(CK_TERM, 0);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pJoiner->vAppendPrelim_indexJoin();
@@ -267,7 +267,7 @@ void Transformer::vTransform2(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pCardCtl->vPrintSubCards(CK_STREAM, true);
-  m_pCardCtl->vPinForm(CK_STREAM,0);
+  m_pCardCtl->vPrintForm(CK_STREAM, 0);
 
   m_pFiltrate->vCull_indexJoin_filterPred();
   if (m_bInteractive)
@@ -305,7 +305,7 @@ void Transformer::vTransform2(void)
     pBoard_query->vPrintBoard("Scanning::vAdd_scanPred"_Stz);
 
   m_pCardCtl->vPrintSubCards(CK_STREAM, false);
-  m_pCardCtl->vPinForm(CK_STREAM,1);
+  m_pCardCtl->vPrintForm(CK_STREAM, 1);
 
   m_pScanning->vCull_markedPred();
   if (m_bInteractive)

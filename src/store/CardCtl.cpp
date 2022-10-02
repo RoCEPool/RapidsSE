@@ -22,7 +22,7 @@ CardCtl::CardCtl(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
   
   for (i8 i_Card = 0; i_Card < CK_ENUMS; i_Card++) {
-    vPinForm(i_Card,0);
+    vPrintForm(i_Card, 0);
     vPrintSubCards(i_Card, true);
   }
   
@@ -45,47 +45,47 @@ CardCtl::~CardCtl(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get iPinForm for card                                                      */
+/* get print form for card                                                    */
 /*----------------------------------------------------------------------------*/
-i8 CardCtl::iPinForm(i8 i_Card)
+i8 CardCtl::iPrintForm(i8 i_Card)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 
-  i8 iPinForm = m_iaPinForm[i_Card];
+  i8 iPrintForm = m_iaPrintForm[i_Card];
 
-  return iPinForm;
+  return iPrintForm;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set iPinForm for card                                                      */
+/* set print form for card                                                    */
 /*----------------------------------------------------------------------------*/
-void CardCtl::vPinForm(i8 i_Card, i8 iPinForm)
+void CardCtl::vPrintForm(i8 i_Card, i8 iPrintForm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 
-  m_iaPinForm[i_Card] = iPinForm;
+  m_iaPrintForm[i_Card] = iPrintForm;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get bPrintCards for card                                                     */
+/* get bPrintSubCards for card                                                */
 /*----------------------------------------------------------------------------*/
 bool CardCtl::bPrintSubCards(i8 i_Card)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 
-  bool bPrintCards = m_baPrintSubCards[i_Card];
+  bool bPrintSubCards = m_baPrintSubCards[i_Card];
 
-  return bPrintCards;
+  return bPrintSubCards;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set bPrintCards for card                                                     */
+/* set bPrintSubCards for card                                                 */
 /*----------------------------------------------------------------------------*/
-void CardCtl::vPrintSubCards(i8 i_Card, bool bSubCard)
+void CardCtl::vPrintSubCards(i8 i_Card, bool bPrintSubCards)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 
-  m_baPrintSubCards[i_Card] = bSubCard;
+  m_baPrintSubCards[i_Card] = bPrintSubCards;
 }
 
 /*============================================================================*/
