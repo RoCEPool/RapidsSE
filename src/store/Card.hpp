@@ -185,7 +185,7 @@ namespace STORE
     //SZ Stz* szColumnRef(void);
     i8   iColumnRef_columnOrd(void);
     char cColumnRef_tableSyn(void);
-    void vColumnRef(Stz* szColumnRef);
+    //V void vColumnRef(Stz* szColumnRef);
     void vCutProperty(Stz* szName);
     void vCutSubCard(Card* pSubCard);
 
@@ -252,7 +252,7 @@ namespace STORE
     Stz* sz(void);
 
     //SZ Stz* szTablePtn(void);
-    void vTablePtn(Stz* szTablePtn);
+    //void vTablePtn(Stz* szTablePtn);
     char cTableSyn(void);
     void vTableSyn(char cTableSyn);
     void vTransferSubCards(Card* pCards);

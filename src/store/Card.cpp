@@ -373,13 +373,13 @@ i8 Card::nChildCards(void)
 /*----------------------------------------------------------------------------*/
 /* set columnRef                                                              */
 /*----------------------------------------------------------------------------*/
-void Card::vColumnRef(Stz* szColumnRef)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  vAddProperty_stz("szColumnRef"_Stz,szColumnRef);
-  vValue(szColumnRef);
-}
+//void Card::vColumnRef(Stz* szColumnRef)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+//
+//  vAddProperty_stz("szColumnRef"_Stz,szColumnRef);
+//  vValue(szColumnRef);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get column ordinal of column ref                                           */
@@ -1144,13 +1144,13 @@ Stz* Card::sz(void)
 /*----------------------------------------------------------------------------*/
 /* set table ptn                                                              */
 /*----------------------------------------------------------------------------*/
-void Card::vTablePtn(Stz* szTablePtn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  vAddProperty_stz("szTablePtn"_Stz,szTablePtn);
-  vValue(szTablePtn);
-}
+//void Card::vTablePtn(Stz* szTablePtn)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+//
+//  vAddProperty_stz("szTablePtn"_Stz,szTablePtn);
+//  vValue(szTablePtn);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* set table synonym                                                          */

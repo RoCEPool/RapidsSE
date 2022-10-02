@@ -79,10 +79,10 @@ void Card_TablePtn::vAdd_TablePtn(Card_Table* p_table)
   StreamDef* pStreamDef = pTable->pStreamDef();
   Column* pStmColumn = pStreamDef->pFindColumn(pPtnColumn->szColNm());
   i8 iStmColNo = pStmColumn->iColumnNo();
-  s32 sColumnRef;
-  sColumnRef.vSprint("$$%c.%lld"_Stz, cTableSyn, iStmColNo+1);
+  s32 sTablePtn;
+  sTablePtn.vSprint("$$%c.%lld"_Stz, cTableSyn, iStmColNo + 1);
 
-  this->vTablePtn(sColumnRef);
+  this->vValue(sTablePtn);
 }
 
 

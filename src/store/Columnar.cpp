@@ -60,7 +60,7 @@ void Columnar::vAdd_ColumnRef(void)
     pResolver->vResolve_columnRef(sColumnRef,szTerm);
 
     Card_ColumnRef* p_columnRef = new Card_ColumnRef;
-    p_columnRef->vColumnRef(sColumnRef);
+    p_columnRef->vValue(sColumnRef);
     p_term->vAppend(p_columnRef);
 
     return true;
