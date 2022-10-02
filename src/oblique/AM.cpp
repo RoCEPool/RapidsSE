@@ -10,7 +10,6 @@
 #include "eAR.h"
 #include "eBO.h"
 #include "eCC.h"
-#include "eCP.h"
 #include "eCX.h"
 #include "eDL.h"
 #include "eDS.h"
@@ -4970,7 +4969,6 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_CC: return aCC[i_Enum];
     case EG_CM: return aCM[i_Enum];
     case EG_CN: return aCN[i_Enum];
-    case EG_CP: return aCP[i_Enum];
     //case EG_CS: return aCS[i_Enum];
     case EG_CT: return aCT[i_Enum];
     case EG_CX: return aCX[i_Enum];

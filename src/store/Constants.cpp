@@ -437,7 +437,6 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("EG_CC"_Stz,   EG_CC);
   vAddConstant("EG_CM"_Stz,   EG_CM);
   vAddConstant("EG_CN"_Stz,   EG_CN);
-  vAddConstant("EG_CP"_Stz,   EG_CP);
   vAddConstant("EG_CS"_Stz,   EG_CS);
   vAddConstant("EG_CT"_Stz,   EG_CT);
   vAddConstant("EG_CX"_Stz,   EG_CX);

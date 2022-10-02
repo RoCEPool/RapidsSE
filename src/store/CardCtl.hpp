@@ -6,14 +6,20 @@
 #include "BASE.h"
 
 #include "eCK.h"
+#include "eCP.h"
 
 namespace STORE
 {
+  struct _CardCtl
+  {
+    eCP  m_ePrintForm;      // print form
+    bool m_bPrintSubCards;  // print the subcards of this card?
+  };
+
   class CardCtl : public Object
   {
   protected:
-    i8 m_iaPrintForm[CK_ENUMS];
-    bool m_baPrintSubCards[CK_ENUMS];
+    _CardCtl m_xaCardCtl[CK_ENUMS];
 
   protected:
     // must be last
@@ -26,8 +32,9 @@ namespace STORE
     CardCtl(void);
    ~CardCtl(void) noexcept(false);
 
-    i8 iPrintForm(i8 i_Card);
-    void vPrintForm(i8 i_Card, i8 iPrintForm);
+    eCP  ePrintForm(i8 i_Card);
+    void vPrintForm(i8 i_Card, eCP ePrintForm);
+    void vPrintFormSubCards(i8 i_Card, eCP ePrintForm, bool bPrintSubCards);
 
     bool bPrintSubCards(i8 i_Card);
     void vPrintSubCards(i8 i_Card, bool bPrintSubCards);

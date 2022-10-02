@@ -2654,13 +2654,13 @@ void Card::vPrintCard(Ribbon* pRibbon, i8 iDepth)
   bool bPrune = false;
   CardCtl* pCardCtl = _pCardCtl(pRibbon->pCtl());
 
-  i8 iPinForm = pCardCtl->iPrintForm(m_eCard);
-  if (0 == iPinForm) {
+  eCP ePrintForm = pCardCtl->ePrintForm(m_eCard);
+  if (CP_DEFAULT == ePrintForm) {
     vPrintName(pRibbon, iDepth);
     vPrintDetails(pRibbon, iDepth, bPrune);
   }
   else {
-    vPrintCard_byForm(pRibbon, iDepth, iPinForm, bPrune);
+    vPrintCard_byForm(pRibbon, iDepth, ePrintForm, bPrune);
   }
   //vMark2(' ');
   if (bPrune)
@@ -2683,7 +2683,7 @@ void Card::vPrintCard(Ribbon* pRibbon, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 /* print card onto given ribbon                                               */
 /*----------------------------------------------------------------------------*/
-void Card::vPrintCard_byForm(Ribbon* pRibbon, i8 iDepth, i8 iPinForm, bool& bPrune)
+void Card::vPrintCard_byForm(Ribbon* pRibbon, i8 iDepth, eCP ePinForm, bool& bPrune)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

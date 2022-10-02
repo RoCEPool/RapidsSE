@@ -159,15 +159,14 @@ void Transformer::vTransform2(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append <stream> to all <scan> and then to all <absJoin>
-  m_pCardCtl->vPrintSubCards(CK_STREAM, true);
-  m_pCardCtl->vPrintForm(CK_STREAM, 0);
+  m_pCardCtl->vPrintFormSubCards(CK_STREAM, CP_DEFAULT, true);
 
   //m_pCardCtl->vPrintSubCards(CK_EXPR,0);
 
-  m_pCardCtl->vPrintForm(CK_PREDAND, 1);
-  m_pCardCtl->vPrintForm(CK_PREDCMP, 1);
-  m_pCardCtl->vPrintForm(CK_PREDOR, 1);
-  m_pCardCtl->vPrintForm(CK_TERM, 1);
+  m_pCardCtl->vPrintForm(CK_PREDAND, CP_CARDFORM);
+  m_pCardCtl->vPrintForm(CK_PREDCMP, CP_CARDFORM);
+  m_pCardCtl->vPrintForm(CK_PREDOR, CP_CARDFORM);
+  m_pCardCtl->vPrintForm(CK_TERM, CP_CARDFORM);
 
   m_pStreamer->vAppendStream_to_Scan();
   if (m_bInteractive)
@@ -243,12 +242,11 @@ void Transformer::vTransform2(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  m_pCardCtl->vPrintSubCards(CK_STREAM, true);
-  m_pCardCtl->vPrintForm(CK_STREAM, 0);
-  m_pCardCtl->vPrintForm(CK_PREDAND, 0);
-  m_pCardCtl->vPrintForm(CK_PREDCMP, 0);
-  m_pCardCtl->vPrintForm(CK_PREDOR, 0);
-  m_pCardCtl->vPrintForm(CK_TERM, 0);
+  m_pCardCtl->vPrintFormSubCards(CK_STREAM, CP_DEFAULT, true);
+  m_pCardCtl->vPrintForm(CK_PREDAND, CP_DEFAULT);
+  m_pCardCtl->vPrintForm(CK_PREDCMP, CP_DEFAULT);
+  m_pCardCtl->vPrintForm(CK_PREDOR, CP_DEFAULT);
+  m_pCardCtl->vPrintForm(CK_TERM, CP_DEFAULT);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pJoiner->vAppendPrelim_indexJoin();
@@ -266,8 +264,7 @@ void Transformer::vTransform2(void)
     pBoard_query->vPrintBoard("Joiner::vForm_joinPred"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  m_pCardCtl->vPrintSubCards(CK_STREAM, true);
-  m_pCardCtl->vPrintForm(CK_STREAM, 0);
+  m_pCardCtl->vPrintFormSubCards(CK_STREAM, CP_DEFAULT, true);
 
   m_pFiltrate->vCull_indexJoin_filterPred();
   if (m_bInteractive)
@@ -304,8 +301,7 @@ void Transformer::vTransform2(void)
   if (m_bInteractive)
     pBoard_query->vPrintBoard("Scanning::vAdd_scanPred"_Stz);
 
-  m_pCardCtl->vPrintSubCards(CK_STREAM, false);
-  m_pCardCtl->vPrintForm(CK_STREAM, 1);
+  m_pCardCtl->vPrintFormSubCards(CK_STREAM, CP_CARDFORM, false);
 
   m_pScanning->vCull_markedPred();
   if (m_bInteractive)

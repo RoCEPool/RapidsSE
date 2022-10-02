@@ -8,6 +8,7 @@
 #include "eAL.h"
 #include "ePB.h"
 #include "eCK.h"
+#include "eCP.h"
 #include "eGC.h"
 #include "eRO.h"
 #include "eTE.h"
@@ -379,7 +380,7 @@ namespace STORE
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   
     void vPrintCard(Ribbon* pRibbon, i8 iDepth=0);
-    void vPrintCard_byForm(Ribbon* pRibbon, i8 iDepth, i8 iPinForm, bool& bPrune);
+    void vPrintCard_byForm(Ribbon* pRibbon, i8 iDepth, eCP ePrintForm, bool& bPrune);
     void vPrintDetails(Ribbon* pRibbon, i8 iDepth, bool& bPrune);
     void vPrintHeader(Ribbon* pRibbon);
     void vPrintName(Ribbon* pRibbon, i8 iDepth);
