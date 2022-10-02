@@ -142,14 +142,14 @@ void Permutor::vCompute_coPtnPredList(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Permutor::vCompute_coPtnList(void)
+void Permutor::vCompute_coPtnJoinList(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PERMUTOR, _FOOTER_);
 
   vSetupPermuteBoard();
 
   //--nn--------------==
-  // coPtnList
+  // coPtnJoinList
 
   m_p_coPtnJoinList = new Card_CoPtnJoinList;
   m_pBoard_permute->vAppendMainCard(m_p_coPtnJoinList);
@@ -177,20 +177,20 @@ void Permutor::vCompute_coPtnList(void)
 
 
   if (m_bInteractive)
-    m_pBoard_permute->vPrintBoard("Permutor::vCompute_coPtnList"_Stz);
+    m_pBoard_permute->vPrintBoard("Permutor::vCompute_coPtnJoinList"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Permutor::vCompute_crossPtnList(void)
+void Permutor::vCompute_crossPtnJoinList(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PERMUTOR, _FOOTER_);
 
   vSetupPermuteBoard();
 
   //--nn--------------==
-  // crossPtnList
+  // crossPtnJoinList
 
   m_p_joinPredList =
       _pCard_JoinPredList(m_pBoard_permute->pFindMain(CK_JOINPREDLIST));
@@ -216,7 +216,7 @@ void Permutor::vCompute_crossPtnList(void)
 
 
   if (m_bInteractive)
-    m_pBoard_permute->vPrintBoard("Permutor::vCompute_crossPtnList"_Stz);
+    m_pBoard_permute->vPrintBoard("Permutor::vCompute_crossPtnJoinList"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
