@@ -79,6 +79,9 @@ void Step::vApiForkChild(void)
   if (pJobTags->bHasName(C_TAG_CCODE))
     pCmdTagSet->vInsert(C_TAG_CCODE);
 
+  if (pJobTags->bHasName(C_TAG_JOBMETRICS))
+    pCmdTagSet->vInsert(C_TAG_JOBMETRICS);
+
   if (pJobTags->bHasName(C_TAG_PIPELINENAME))
     pCmdTagSet->vInsert(C_TAG_PIPELINENAME);
 
