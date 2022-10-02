@@ -1,26 +1,26 @@
 /*============================================================================*/
-/* Card_CrossPtnList.cpp -- Cross-Partition List                              */
+/* Card_CrossPtnJoinList.cpp -- Cross-Partition List                              */
 /*============================================================================*/
 
-#include "Card_CrossPtnList.hpp"
+#include "Card_CrossPtnJoinList.hpp"
 
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_CrossPtnList,CK_CROSSPTNLIST)
-__aNewFunction(Card_CrossPtnList,CN_CARD)
-__vDeleteFunction(Card_CrossPtnList,CN_CARD)
+__pCastFunction_Card(STORE, Card_CrossPtnJoinList, CK_CROSSPTNJOINLIST)
+__aNewFunction(Card_CrossPtnJoinList, CN_CARD)
+__vDeleteFunction(Card_CrossPtnJoinList, CN_CARD)
 
-__bIsCard(STORE,Card_CrossPtnList,CK_CROSSPTNLIST)
-__pGetSubFunction_Card(STORE,CrossPtnList,CK_CROSSPTNLIST)
+__bIsCard(STORE, Card_CrossPtnJoinList, CK_CROSSPTNJOINLIST)
+__pGetSubFunction_Card(STORE, CrossPtnJoinList, CK_CROSSPTNJOINLIST)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_CrossPtnList::Card_CrossPtnList(void)
-: Card(CK_CROSSPTNLIST)
+Card_CrossPtnJoinList::Card_CrossPtnJoinList(void)
+: Card(CK_CROSSPTNJOINLIST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -32,7 +32,7 @@ Card_CrossPtnList::Card_CrossPtnList(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_CrossPtnList::~Card_CrossPtnList(void) noexcept(false)
+Card_CrossPtnJoinList::~Card_CrossPtnJoinList(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
