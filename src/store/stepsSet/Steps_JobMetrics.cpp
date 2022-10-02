@@ -7,6 +7,7 @@
 #include "EnterExit.h"
 #include "StepAccum.hpp"
 #include "Steps.hpp"
+#include "Job.hpp"
 
 #include "JobMetrics.hpp"
 
@@ -75,13 +76,17 @@ void Step::vJobMetricsNew(void)
 {
   ENTRY();
 
-  i8 iJob = m_pDataStack->iPopInt(__func__);
+//  i8 iJob = m_pDataStack->iPopInt(__func__);
+//
+//  JobId tJobId;
+//  tJobId = iJob;
+//
+//  JobMetrics* pJobMetrics = new JobMetrics(tJobId);
 
-  JobId tJobId;
-  tJobId = iJob;
-  
-  JobMetrics* pJobMetrics = new JobMetrics(tJobId);
-  
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+
+  JobMetrics* pJobMetrics = new JobMetrics(pJob);
+
   m_pDataStack->vPushPtr(pJobMetrics);
 
   EXIT();

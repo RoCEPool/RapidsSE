@@ -41,6 +41,8 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     eEC    m_eError_job;  // error when starting job
     eEC    m_eChildError; // error in child job
 
+    bool   m_bOriginatorJob;   // is this the originator job ?
+
     bool   m_bNodeLoss;     // node loss detected
     bool   m_bUpdateParent; // update parent
 
@@ -162,6 +164,8 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     bool bIsInError(void);
     bool bIsOnOrigin(void);
     bool bIsOriginator(void);
+    bool bOriginatorJob(void);
+    void vOriginatorJob(bool bOriginatorJob);
     bool bIsParticipant(void);
     bool bIsPipeline(void);
     bool bIsPipelineLocal(void);

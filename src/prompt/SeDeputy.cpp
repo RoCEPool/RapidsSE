@@ -233,6 +233,7 @@ void SeDeputy::vDeputyLoop(void)
       // reset the C_TAG_TIME and C_TAG_NOWAIT
       m_pRootJob->pJobTags()->vDelete(C_TAG_TIME);
       m_pRootJob->pJobTags()->vDelete(C_TAG_NOWAIT);
+      m_pRootJob->pJobTags()->vDelete(C_TAG_JOBMETRICS);
 
     }
 

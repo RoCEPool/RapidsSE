@@ -22,6 +22,7 @@
 #include "Stream.hpp"
 #include "Op.hpp"
 
+
 #include "Node.hpp"
 #include "Node_I.hpp"
 #include "Grid.hpp"
@@ -90,24 +91,24 @@ eEC JobReport::eAllReport(i8 iJob, Tub* pTub)
 /*----------------------------------------------------------------------------*/
 /* metrics report                                                             */
 /*----------------------------------------------------------------------------*/
-eEC JobReport::eMetricsReport(i8 iJob, Tub* pTub)
+eEC JobReport::eMetricsReport(JobMetrics* pJobMetrics, Tub* pTub)
 {
   _static_
   
   // find the participant job
   
-  Job* pJob = pFindParticipantJobNo(iJob);
-
-  if ( ! pJob ) {
-    JobId tJobId;
-    tJobId = iJob;
-    pJob = pFindParticipantJobId(tJobId);
-  }
-
-  if (! pJob) {
-    vTrace("Did not jind job %lld\n"_Stz,iJob);
-    return EC_NONE;
-  }
+//  Job* pJob = pFindParticipantJobNo(iJob);
+//
+//  if ( ! pJob ) {
+//    JobId tJobId;
+//    tJobId = iJob;
+//    pJob = pFindParticipantJobId(tJobId);
+//  }
+//
+//  if (! pJob) {
+//    vTrace("Did not jind job %lld\n"_Stz,iJob);
+//    return EC_NONE;
+//  }
   
   //vTrace("JobReport::eMetricsReport job =%p\n"_Stz,pJob);
 
@@ -134,9 +135,9 @@ eEC JobReport::eMetricsReport(i8 iJob, Tub* pTub)
 
   Node* pThisNode = MY::pNode();
 
-  for (JobMetrics* pJobMetrics = pJob->pJobMetricsChain();
-       pJobMetrics;
-       pJobMetrics = pJobMetrics->pNext()) {
+//  for (JobMetrics* pJobMetrics = pJob->pJobMetricsChain();
+//       pJobMetrics;
+//       pJobMetrics = pJobMetrics->pNext()) {
     
     i8 d_MetricsCursor = C_UNKNOWN;
 
@@ -160,7 +161,7 @@ eEC JobReport::eMetricsReport(i8 iJob, Tub* pTub)
                       (
                         C_VARGS_BEGIN
                        
-                       ,iJob
+                       ,pJobMetrics->m_pJob->tJobId().uJobNo()
 
                        ,pThisNode->iNodeId()
                        ,pThisNode->szNodeNm()
@@ -198,7 +199,7 @@ eEC JobReport::eMetricsReport(i8 iJob, Tub* pTub)
 
     } // stageMetrics
 
-  } // for jobMetrics
+  //} // for jobMetrics
        
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

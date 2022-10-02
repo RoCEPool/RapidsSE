@@ -73,7 +73,28 @@
 /*----------------------------------------------------------------------------*/
 : jobExit_initialise
 
+  "Newing a tub" .
+
   Tub[].new
+;
+
+/*----------------------------------------------------------------------------*/
+/* metricsCollectJob : collect job metrics                                    */
+/*----------------------------------------------------------------------------*/
+: metricsCollectJob_ ( pJob )
+
+  params| pJob |
+
+  0 locals| pJobMetrics |
+
+  pJob jobMetrics::new to pJobMetrics
+  pJobMetrics jobMetrics.collect if
+    pJobMetrics [op].pipeout
+  else
+    pJobMetrics jobMetrics.delete
+  then
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -95,7 +116,10 @@
     while
       // generate the job metrics here
       "<jobMetrics>" pJobToBeDeleted api::reapableJobTags@ tagSet.hasName if
-        pJobToBeDeleted >str "Generating JobMetrics for job %v" str.format .
+        pJobToBeDeleted api::reapableJobIsOriginator not if
+          pJobToBeDeleted >str "Generating JobMetrics for job %v" str.format .
+          pJobToBeDeleted metricsCollectJob_
+        then
       then
 
       // delete the job
@@ -124,7 +148,7 @@
   //find: jobExit_Flush       EV_M_FLUSH [op].handler!
   find: jobExit_StartMarker EV_M_START [op].handler!
 
-  jobExit_initialise
+  //jobExit_initialise
   
   op__loop
 

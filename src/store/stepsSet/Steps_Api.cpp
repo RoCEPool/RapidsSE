@@ -41,6 +41,7 @@ void Step::vAddSteps_Api(void)
 
   vAddStep("api::deleteJob"_Stz,       &Step::vApiDeleteJob);
   vAddStep("api::reapableJob@"_Stz,    &Step::vApiReapableJobFetch);
+  vAddStep("api::reapableJobIsOriginator"_Stz,    &Step::vApiReapableIsOriginator);
   vAddStep("api::reapableJobTags@"_Stz,&Step::vApiReapableJobTagsFetch);
   vAddStep("api::spawnJob"_Stz,        &Step::vApiSpawnJob);
 }
@@ -77,6 +78,9 @@ void Step::vApiForkChild(void)
 
   if (pJobTags->bHasName(C_TAG_CCODE))
     pCmdTagSet->vInsert(C_TAG_CCODE);
+
+  if (pJobTags->bHasName(C_TAG_JOBMETRICS))
+    pCmdTagSet->vInsert(C_TAG_JOBMETRICS);
 
   if (pJobTags->bHasName(C_TAG_PIPELINENAME))
     pCmdTagSet->vInsert(C_TAG_PIPELINENAME);
@@ -300,6 +304,20 @@ void Step::vApiReapableJobFetch(void)
   Job* pJob = gpAttachMap->pJobs()->pReapableJob();
 
   m_pDataStack->vPushPtr(pJob);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* api::reapableJobIsOriginator@ -- is reapable job an originator job?        */
+/*----------------------------------------------------------------------------*/
+void Step::vApiReapableIsOriginator(void)
+{
+  ENTRY();
+
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+
+  m_pDataStack->vPushInt(pJob->bOriginatorJob());
 
   EXIT();
 }

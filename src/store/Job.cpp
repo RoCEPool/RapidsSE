@@ -75,6 +75,7 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId, TagSet* 
   m_eJobPhase  = JP_NONE;
   m_eError_job = EC_NONE;
   m_eChildError = EC_NONE;
+  m_bOriginatorJob = false;
   m_bNodeLoss     = false;
   m_bUpdateParent = false;
 
@@ -787,6 +788,26 @@ bool Job::bIsOriginator(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this an originator job?                                                 */
+/*----------------------------------------------------------------------------*/
+bool Job::bOriginatorJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_bOriginatorJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set originator job                                                         */
+/*----------------------------------------------------------------------------*/
+void Job::vOriginatorJob(bool bOriginatorJob)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_bOriginatorJob = bOriginatorJob;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this an participant job?                                                 */
 /*----------------------------------------------------------------------------*/
 bool Job::bIsParticipant(void)
@@ -1447,6 +1468,7 @@ void Job::vPostRecv(void)
   // originating job
   m_pExecuteJob  = nullptr;
   m_pEndJob  = nullptr;
+  m_bOriginatorJob = false;
 
   // - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
   // participant job
