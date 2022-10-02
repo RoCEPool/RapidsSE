@@ -165,12 +165,12 @@ void Permutor::vCompute_coPtnList(void)
 
     m_p_subSet = m_p_coPtnPred->pDupSubCards();
 
-    if (! (m_p_coPtn = m_p_coPtnJoinList->pFind_coPtn_for(m_p_coPtnPred)) ) {
-      m_p_coPtn = new Card_CoPtnJoin;
-      m_p_coPtnJoinList->vAppend(m_p_coPtn);
+    if (! (m_p_coPtnJoin = m_p_coPtnJoinList->pFind_coPtn_for(m_p_coPtnPred)) ) {
+      m_p_coPtnJoin = new Card_CoPtnJoin;
+      m_p_coPtnJoinList->vAppend(m_p_coPtnJoin);
     }
 
-    m_p_coPtn->vTransferSubCards(m_p_subSet);
+    m_p_coPtnJoin->vTransferSubCards(m_p_subSet);
     DELETE_CARD(m_p_subSet);
   }
 
@@ -206,9 +206,9 @@ void Permutor::vCompute_crossPtnList(void)
     if (m_p_coPtnJoinList->bHasEqPredCmp(m_p_predCmp))
       continue;
 
-    m_p_crossPtn = new Card_CrossPtn;
-    m_p_crossPtn->vAppend(m_p_predCmp->pDupCardAndSubCards());
-    m_p_crossPtnJoinList->vAppend(m_p_crossPtn);
+    m_p_crossPtnJoin = new Card_CrossPtnJoin;
+    m_p_crossPtnJoin->vAppend(m_p_predCmp->pDupCardAndSubCards());
+    m_p_crossPtnJoinList->vAppend(m_p_crossPtnJoin);
   }
 
 //  m_p_comment = new Card_Comment("((TO BE CODED))"_Stz);
