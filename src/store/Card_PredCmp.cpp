@@ -181,7 +181,7 @@ Card_PredCmp* Card_PredCmp::pDup(void)
   for (i8 i_Term = 0; i_Term < nTerms; i_Term++) {
     Card_Term* pCard_Term = _pCard_Term(pGet(i_Term));
 
-    Stz* szTerm = pCard_Term->szTerm();
+    Stz* szTerm = pCard_Term->sz();
 
     pComparePred->vAppend(new Card_Term(szTerm));
   }
@@ -201,7 +201,7 @@ Card_PredCmp* Card_PredCmp::pFindBound_compare(Index* pIndex, ePB eBound)
     return nullptr;
 
   Card_Term* pTerm0 = _pCard_Term(pGet(0));
-  Stz* szTerm0 = pTerm0->szTerm();
+  Stz* szTerm0 = pTerm0->sz();
   Column* pCol0 = pIndex->pGetColumn(0);
   if (! pCol0->szColNm()->bSame(szTerm0))
     return nullptr;
@@ -223,7 +223,7 @@ bool Card_PredCmp::bHasBounds_compare(Index* pIndex)
     return false;
 
   Card_Term* pTerm0 = _pCard_Term(pGet(0));
-  Stz* szTerm0 = pTerm0->szTerm();
+  Stz* szTerm0 = pTerm0->sz();
   Column* pCol0 = pIndex->pGetColumn(0);
   if (! pCol0->szColNm()->bSame(szTerm0))
     return false;

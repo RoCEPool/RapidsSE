@@ -102,7 +102,7 @@ bool Card_Stream::bContainsPred(Card_PRED* pCard_PRED)
   eCK ePredCard = pCard_PRED->eCard();
 
   if (CK_TERM == ePredCard) {
-    Stz* szTerm = pCard_PRED->szTerm();
+    Stz* szTerm = pCard_PRED->sz();
     if (! szTerm->bIsOrdinal())
       return true;
 

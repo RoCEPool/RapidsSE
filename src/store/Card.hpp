@@ -338,11 +338,11 @@ namespace STORE
 
     i8   iOption(void);
     void vOption(i8 iOption);
-    Stz* szOption(void);
+    //SZ Stz* szOption(void);
     void vOption(Stz* szOption);
-    Stz* szOr(void);
+    //SZ Stz* szOr(void);
     void vOr(Stz* szOr);
-    Stz* szOrdinal(void);
+    //SZ Stz* szOrdinal(void);
     void vOrdinal(Stz* szOrdinal);
 
     i8   iOrdinalStreamColNo(void);
@@ -350,7 +350,7 @@ namespace STORE
 
     Card_Term* pPopTerm(void);
   
-    Stz* szQueryNm(void);
+    //SZ Stz* szQueryNm(void);
     void vQueryNm(Stz* szQueryNm);
 
     i8   iRank(void);
@@ -365,7 +365,7 @@ namespace STORE
     void vSendKind(eXK eSendKind);
     i8   iSends(void);
     void vSends(i8 iSends);
-    Stz* szStageNm(void);
+    //SZ Stz* szStageNm(void);
     void vStageNm(Stz* szStageNm);
     eYG  eStageTopo(void);
     void vStageTopo(eYG  eStageTopology);
@@ -378,10 +378,10 @@ namespace STORE
     void vTable1(Table* pTable1);
     Table* pTable2(void);
     void vTable2(Table* pTable2);
-    Stz* szTerm(void);
+    //SZ Stz* szTerm(void);
     void vTerm(Stz* szTerm);
     eTE  eTermEval(void);
-    Stz* szType(void);
+    //SZ Stz* szType(void);
     char cTypeShort(void);
     void vType(Stz* szType);
 

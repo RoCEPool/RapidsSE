@@ -2218,7 +2218,7 @@ Card_CalcBool* Board::pTo_CalcBool(Card_Calc* pCard_Calc)
       case TE_COMPARE:
         RASSERT(pCard_SubExpr->nChildCards() > 0);
         pCard_PredCmp = new Card_PredCmp;
-        pCard_PredCmp->vCmp(pCard_Term->szTerm());
+        pCard_PredCmp->vCmp(pCard_Term->sz());
         pCard_PredCmp->vTransferSubCards(pCard_SubExpr);
         pCard_CalcBool->vAppend(pCard_PredCmp);
         pCard_PredCmp = nullptr;
@@ -2275,9 +2275,9 @@ Card_IndexPred* Board::pTo_IndexPred(Card_PredCmp* pCard_PredCmp,
   pCard_IndexPred->vAppend(new Card_Term("BOUND"_Stz));
 
   Card_Term* pCard_Term_0 = _pCard_Term(pCard_PredCmp->pGetChild(0));
-  Stz* szTerm_0 = pCard_Term_0->szTerm();
+  Stz* szTerm_0 = pCard_Term_0->sz();
   Card_Term* pCard_Term_1 = _pCard_Term(pCard_PredCmp->pGetChild(1));
-  Stz* szTerm_1 = pCard_Term_1->szTerm();
+  Stz* szTerm_1 = pCard_Term_1->sz();
 
   Stz* szPred_0 = nullptr;
   Stz* szPred_1 = nullptr;

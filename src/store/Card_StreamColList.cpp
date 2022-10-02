@@ -198,7 +198,7 @@ void Card_StreamColList::vPopulate(Card_AggElist* pCard_AggElist)
     vAppend(pCard_StreamCol);
 
     pCard_StreamCol->vAppend(new Card_As(pCard_As->sz()));
-    pCard_StreamCol->vAppend(new Card_Type(pCard_Type->szType()));
+    pCard_StreamCol->vAppend(new Card_Type(pCard_Type->sz()));
   }
 
 }

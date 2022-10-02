@@ -805,14 +805,14 @@ Card_Expr* Dissector::pExpr_c(Card_RpnTerms* pCard_RpnTerms)
   // TYPE <type>
   Card_Term* pCard_Term_popped = pCard_RpnTerms->pPopTerm();
   eTE eTermEval = pCard_Term_popped->eTermEval();
-  Stz* szTerm = pCard_Term_popped->szTerm();
+  Stz* szTerm = pCard_Term_popped->sz();
 
   RASSERT(TE_TYPE == eTermEval);
   delete pCard_Term_popped;
   pCard_Term_popped = nullptr;
 
   pCard_Term_popped = pCard_RpnTerms->pPopTerm();
-  Card_Type* pCard_Type = new Card_Type(pCard_Term_popped->szTerm());
+  Card_Type* pCard_Type = new Card_Type(pCard_Term_popped->sz());
   pCard_Expr->vAppend(pCard_Type);
 
   delete pCard_Term_popped;
@@ -962,21 +962,21 @@ void Dissector::vPredCmp(Card_ExprBool* pCard_ExprBool,
 
   // <col> | <literal>
   Card_Term* pCard_Term = _pCard_Term(pCard_RpnTerms->pPop());
-  //Stz* szTerm = pCard_Term->szTerm();
+  //Stz* szTerm = pCard_Term->sz();
   eTE eTermEval = pCard_Term->eTermEval();
   RASSERT(TE_OTHER == eTermEval);
   pCard_PredCmp->vAppend(pCard_Term);
 
   // <col> | <literal>
   pCard_Term = _pCard_Term(pCard_RpnTerms->pPop());
-  //szTerm = pCard_Term->szTerm();
+  //szTerm = pCard_Term->sz();
   eTermEval = pCard_Term->eTermEval();
   RASSERT(TE_OTHER == eTermEval);
   pCard_PredCmp->vAppend(pCard_Term);
 
   // < | <= | == | != | >= | >
   pCard_Term = _pCard_Term(pCard_RpnTerms->pPop());
-  //szTerm = pCard_Term->szTerm();
+  //szTerm = pCard_Term->sz();
   eTermEval = pCard_Term->eTermEval();
   RASSERT(TE_COMPARE == eTermEval);
   pCard_PredCmp->vAppend(pCard_Term);
@@ -1002,7 +1002,7 @@ Card_As* Dissector::pAs(Card_RpnTerms* pCard_RpnTerms)
 
   // <name>
   pCard_Term = _pCard_Term(pCard_RpnTerms->pPop());
-  Stz* szAsNm = pCard_Term->szTerm();
+  Stz* szAsNm = pCard_Term->sz();
 
   Card_As* pCard_As = new Card_As(szAsNm);
   delete pCard_Term;
@@ -1020,7 +1020,7 @@ Card_Direction* Dissector::pDirection(Card_RpnTerms* pCard_RpnTerms)
 
   // AS
   Card_Term* pCard_Term = _pCard_Term(pCard_RpnTerms->pPop());
-  Stz* szDirn = pCard_Term->szTerm();
+  Stz* szDirn = pCard_Term->sz();
   RASSERT(szDirn->bSame("ASC"_Stz) || szDirn->bSame("DESC"_Stz));
 
   Card_Direction* pCard_SortDirn = new Card_Direction(szDirn);
@@ -1050,7 +1050,7 @@ Card_Type* Dissector::pType(Card_RpnTerms* pCard_RpnTerms)
   Card_Term* pCard_Term_type = pCard_RpnTerms->pPopTerm();
   //eCT eColumn = Column::eColumn(pCard_Term_type->szTerm());
 
-  Card_Type* pCard_Type = new Card_Type(pCard_Term_type->szTerm());
+  Card_Type* pCard_Type = new Card_Type(pCard_Term_type->sz());
 
   delete pCard_Term_type;
   pCard_Term_type = nullptr;

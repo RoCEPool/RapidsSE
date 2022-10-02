@@ -131,14 +131,14 @@ void Joiner::vForm_joinPred(void)
     if (i_iOrdLo_0 >= iStreamOrdLo && i_iOrdLo_0 <= iStreamOrdHi) {
       pCard_term = new Card_Term("$I1"_Stz);
       pCard_joinPred->vAppend(pCard_term);
-      pCard_term = new Card_Term(pCard_term_1->szTerm());
+      pCard_term = new Card_Term(pCard_term_1->sz());
       pCard_joinPred->vAppend(pCard_term);
     }
     else
     if (i_iOrdLo_1 >= iStreamOrdLo && i_iOrdLo_1 <= iStreamOrdHi) {
       pCard_term = new Card_Term("$I1"_Stz);
       pCard_joinPred->vAppend(pCard_term);
-      pCard_term = new Card_Term(pCard_term_1->szTerm());
+      pCard_term = new Card_Term(pCard_term_1->sz());
       pCard_joinPred->vAppend(pCard_term);
     }
     else {
@@ -272,9 +272,9 @@ Card_IndexPred* Joiner::pTo_IndexPred(Card_AbsJoin* pCard_AbsJoin,
   pCard_IndexPred->vAppend(new Card_Term("BOUND"_Stz));
 
   Card_Term *pCard_Term_0 = _pCard_Term(pCard_PredCmp->pGetChild(0));
-  Stz *szTerm_0 = pCard_Term_0->szTerm();
+  Stz *szTerm_0 = pCard_Term_0->sz();
   Card_Term *pCard_Term_1 = _pCard_Term(pCard_PredCmp->pGetChild(1));
-  Stz *szTerm_1 = pCard_Term_1->szTerm();
+  Stz *szTerm_1 = pCard_Term_1->sz();
 
   s256 sStreamNm_0;
   s256 sStreamColNm_0;

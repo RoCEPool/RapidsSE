@@ -178,7 +178,7 @@ bool Card::bCardsSameRecursive(Card* pCard_a, Card* pCard_b, i8 iDepth, bool bTe
       return false;
 
     if (CK_TERM == eCard_a)
-      if (!pCard_a->szTerm()->bSame(pCard_a->szTerm()))
+      if (!pCard_a->sz()->bSame(pCard_a->sz()))
         return false;
   }
 
@@ -1690,7 +1690,7 @@ void Card::vConcatTerms(Stz* szTerms, i8 i_From, i8 i_Till)
     if (CK_TERM != pChildCard->eCard())
       continue;
 
-    szTerms->vCatSprint(" %s"_Stz, pChildCard->szTerm());
+    szTerms->vCatSprint(" %s"_Stz, pChildCard->sz());
   }
 }
 
@@ -2252,16 +2252,16 @@ void Card::vOption(i8 iOption)
 /*----------------------------------------------------------------------------*/
 /* get option                                                                 */
 /*----------------------------------------------------------------------------*/
-Stz* Card::szOption(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  Stz* szOption = szGetProperty("szOption"_Stz);
-
-  RASSERT(szValue()->bSame(szOption));
-
-  return szValue();
-}
+//Stz* Card::szOption(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+//
+//  Stz* szOption = szGetProperty("szOption"_Stz);
+//
+//  RASSERT(szValue()->bSame(szOption));
+//
+//  return szValue();
+//}
 
 /*----------------------------------------------------------------------------*/
 /* set option                                                                 */
@@ -2277,16 +2277,16 @@ void Card::vOption(Stz* szOption)
 /*----------------------------------------------------------------------------*/
 /* get or                                                                     */
 /*----------------------------------------------------------------------------*/
-Stz* Card::szOr(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Stz* szOr = szGetProperty("szOr"_Stz);
-
-  RASSERT(szValue()->bSame(szOr));
-
-  return szValue();
-}
+//Stz* Card::szOr(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+//
+//  Stz* szOr = szGetProperty("szOr"_Stz);
+//
+//  RASSERT(szValue()->bSame(szOr));
+//
+//  return szValue();
+//}
 
 /*----------------------------------------------------------------------------*/
 /* set or                                                                     */
@@ -2302,16 +2302,16 @@ void Card::vOr(Stz* szOr)
 /*----------------------------------------------------------------------------*/
 /* get ordinal                                                                */
 /*----------------------------------------------------------------------------*/
-Stz* Card::szOrdinal(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Stz* szOrdinal = szGetProperty("szOrdinal"_Stz);
-
-  RASSERT(szValue()->bSame(szOrdinal));
-
-  return szValue();
-}
+//Stz* Card::szOrdinal(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+//
+//  Stz* szOrdinal = szGetProperty("szOrdinal"_Stz);
+//
+//  RASSERT(szValue()->bSame(szOrdinal));
+//
+//  return szValue();
+//}
 
 /*----------------------------------------------------------------------------*/
 /* set term                                                                   */
@@ -2372,16 +2372,16 @@ Card_Term* Card::pPopTerm(void)
 /*----------------------------------------------------------------------------*/
 /* get query name                                                             */
 /*----------------------------------------------------------------------------*/
-Stz* Card::szQueryNm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  Stz* szQueryNm = szGetProperty("szQuerysNm"_Stz);
-
-  RASSERT(szValue()->bSame(szQueryNm));
-
-  return szValue();
-}
+//Stz* Card::szQueryNm(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+//
+//  Stz* szQueryNm = szGetProperty("szQuerysNm"_Stz);
+//
+//  RASSERT(szValue()->bSame(szQueryNm));
+//
+//  return szValue();
+//}
 
 /*----------------------------------------------------------------------------*/
 /* set query name                                                             */
@@ -2464,7 +2464,7 @@ eRO Card::eRelOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Stz* szTerm = this->szTerm();
+  Stz* szTerm = this->sz();
   
        if (szTerm->bSame("<"_Stz))       return RO_LESS_THAN;
   else if (szTerm->bSame("<="_Stz))      return RO_LESS_EQUAL;
@@ -2546,16 +2546,16 @@ void Card::vSends(i8 iSends)
 /*----------------------------------------------------------------------------*/
 /* get stage name                                                             */
 /*----------------------------------------------------------------------------*/
-Stz* Card::szStageNm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  Stz* szStageNm = szGetProperty("szStageNm"_Stz);
-
-  RASSERT(szValue()->bSame(szStageNm));
-
-  return szValue();
-}
+//Stz* Card::szStageNm(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+//
+//  Stz* szStageNm = szGetProperty("szStageNm"_Stz);
+//
+//  RASSERT(szValue()->bSame(szStageNm));
+//
+//  return szValue();
+//}
 
 /*----------------------------------------------------------------------------*/
 /* set stage name                                                             */
@@ -2681,16 +2681,16 @@ void Card::vTable2(Table* pTable2)
 /*----------------------------------------------------------------------------*/
 /* get term                                                                   */
 /*----------------------------------------------------------------------------*/
-Stz* Card::szTerm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  Stz* szTerm = szGetProperty("szTerm"_Stz);
-
-  RASSERT(szValue()->bSame(szTerm));
-
-  return szValue();
-}
+//Stz* Card::szTerm(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+//
+//  Stz* szTerm = szGetProperty("szTerm"_Stz);
+//
+//  RASSERT(szValue()->bSame(szTerm));
+//
+//  return szValue();
+//}
 
 /*----------------------------------------------------------------------------*/
 /* set term                                                                   */
@@ -2710,7 +2710,7 @@ eTE Card::eTermEval(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Stz* szTerm = this->szTerm();
+  Stz* szTerm = this->sz();
   
        if (szTerm->bSame("and"_Stz))     return TE_AND;
   else if (szTerm->bSame("as"_Stz))      return TE_AS;
@@ -2733,16 +2733,16 @@ eTE Card::eTermEval(void)
 /*----------------------------------------------------------------------------*/
 /* return type                                                                */
 /*----------------------------------------------------------------------------*/
-Stz* Card::szType(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  Stz* szType = szGetProperty("szType"_Stz);
-
-  RASSERT(szValue()->bSame(szType));
-
-  return szValue();
-}
+//Stz* Card::szType(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+//
+//  Stz* szType = szGetProperty("szType"_Stz);
+//
+//  RASSERT(szValue()->bSame(szType));
+//
+//  return szValue();
+//}
 
 /*----------------------------------------------------------------------------*/
 /* return typeShort                                                           */

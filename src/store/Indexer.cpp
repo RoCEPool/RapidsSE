@@ -114,11 +114,11 @@ void Indexer::vMark_scan_pred_ordinals(void)
     auto bfPredBounds = [p_stream,p_indexPtr](Card* pCard) {
       Card_Term* p_term = _pCard_Term(pCard);
 
-      Stz* szTerm = p_term->szTerm();
+      Stz* szTerm = p_term->sz();
       if (! szTerm->bIsOrdinal())
         return true;
 
-      vTrace("vMark_scan_pred_ordinals:: %s\n"_Stz,p_term->szTerm());
+      vTrace("vMark_scan_pred_ordinals:: %s\n"_Stz,p_term->sz());
 
       Card_StreamCol* p_streamCol = p_stream->pGet_streamCol(szTerm);
       if (! p_streamCol)

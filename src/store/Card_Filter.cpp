@@ -92,7 +92,7 @@ void Card_Filter::vToExpr(Stz* szExpr)
   Card_Type* pCard_Type = _pCard_Type(pGet(0));
 
   szExpr->vConcat("type "_Stz);
-  szExpr->vConcat(pCard_Type->szType());
+  szExpr->vConcat(pCard_Type->sz());
 
   Card_PredCmp* pCard_PredCmp = _pCard_PredCmp(pGet(1));
   
@@ -100,7 +100,7 @@ void Card_Filter::vToExpr(Stz* szExpr)
   for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
     Card_Term* pCard_Term = _pCard_Term(pCard_PredCmp->pGetChild(i_Child));
     
-    Stz* szTerm = pCard_Term->szTerm();
+    Stz* szTerm = pCard_Term->sz();
     
     szExpr->vConcat(" "_Stz);
 

@@ -53,7 +53,7 @@ void Columnar::vAdd_ColumnRef(void)
   auto bfTerm_columnRef = [pResolver](Card* pCard) {
     Card_Term* p_term = _pCard_Term(pCard);
 
-    Stz* szTerm = p_term->szTerm();
+    Stz* szTerm = p_term->sz();
     vTrace("bfTerm_columnRef: %s\n"_Stz,szTerm);
 
     s32 sColumnRef;
