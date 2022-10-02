@@ -223,7 +223,7 @@ eCK Card::eToECard(Stz* szCardNm)
 /*----------------------------------------------------------------------------*/
 /* add given property                                                         */
 /*----------------------------------------------------------------------------*/
-void Card::vAddProperty(Stz* szName)
+void Card::vAddProperty_nameOnly(Stz* szName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -236,7 +236,7 @@ void Card::vAddProperty(Stz* szName)
 /*----------------------------------------------------------------------------*/
 /* add given property                                                         */
 /*----------------------------------------------------------------------------*/
-void Card::vAddProperty(Stz* szName, i8 iValue)
+void Card::vAddProperty_int(Stz* szName, i8 iValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -249,7 +249,7 @@ void Card::vAddProperty(Stz* szName, i8 iValue)
 /*----------------------------------------------------------------------------*/
 /* add given property                                                         */
 /*----------------------------------------------------------------------------*/
-void Card::vAddProperty(Stz* szName, Object* pValue)
+void Card::vAddProperty_ptr(Stz* szName, Object* pValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -262,7 +262,7 @@ void Card::vAddProperty(Stz* szName, Object* pValue)
 /*----------------------------------------------------------------------------*/
 /* add given property                                                         */
 /*----------------------------------------------------------------------------*/
-void Card::vAddProperty(Stz* szName, Stz* szValue)
+void Card::vAddProperty_stz(Stz* szName, Stz* szValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -375,7 +375,8 @@ void Card::vColumnRef(Stz* szColumnRef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vAddProperty("szColumnRef"_Stz,szColumnRef);
+  vAddProperty_stz("szColumnRef"_Stz,szColumnRef);
+  vValue(szColumnRef);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -821,7 +822,7 @@ void Card::vHasEBound(bool bHasEBound)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (bHasEBound) {
-    vAddProperty("EBound"_Stz);
+    vAddProperty_nameOnly("EBound"_Stz);
     return;
   }
   
@@ -851,7 +852,7 @@ void Card::vHasLBound(bool bHasLBound)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (bHasLBound) {
-    vAddProperty("LBound"_Stz);
+    vAddProperty_nameOnly("LBound"_Stz);
     return;
   }
   
@@ -941,7 +942,7 @@ void Card::vHasUBound(bool bHasUBound)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (bHasUBound) {
-    vAddProperty("UBound"_Stz);
+    vAddProperty_nameOnly("UBound"_Stz);
     return;
   }
   
@@ -1149,7 +1150,8 @@ void Card::vTableSyn(char cTableSyn)
   s32 sSyn;
   sSyn.vSprint("%c"_Stz,cTableSyn);
 
-  vAddProperty("szTableSyn"_Stz,sSyn);
+  vAddProperty_stz("szTableSyn"_Stz,sSyn);
+  vValue(sSyn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1321,8 +1323,8 @@ eAL Card::eAggLevel(void)
 void Card::vAggLevel(eAL eAggLvl)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  vAddProperty("eAggLevel"_Stz,eAggLvl);
+
+  vAddProperty_int("eAggLevel"_Stz,eAggLvl);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1344,8 +1346,8 @@ bool Card::bAggOp(void)
 void Card::vAggOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  vAddProperty("bAggOp"_Stz);
+
+  vAddProperty_nameOnly("bAggOp"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1367,7 +1369,8 @@ void Card::vAnd(Stz* szAnd)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vAddProperty("szAnd"_Stz,szAnd);
+  vAddProperty_stz("szAnd"_Stz,szAnd);
+  vValue(szAnd);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1389,7 +1392,8 @@ void Card::vAs(Stz* szAs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  vAddProperty("szAs"_Stz,szAs);
+  vAddProperty_stz("szAs"_Stz,szAs);
+  vValue(szAs);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1438,7 +1442,7 @@ void Card::vCard(Card* pCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vAddProperty("pCard"_Stz,pCard);
+  vAddProperty_ptr("pCard"_Stz,pCard);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1504,7 +1508,8 @@ void Card::vColNm(Stz* szColNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vAddProperty("szColNm"_Stz,szColNm);
+  vAddProperty_stz("szColNm"_Stz,szColNm);
+  vValue(szColNm);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1526,7 +1531,8 @@ void Card::vCmp(Stz* szCmp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vAddProperty("szCmp"_Stz,szCmp);
+  vAddProperty_stz("szCmp"_Stz,szCmp);
+  vValue(szCmp);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1547,8 +1553,8 @@ Column* Card::pColumn(void)
 void Card::vColumn(Column* pColumn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  vAddProperty("pColumn"_Stz,pColumn);
+
+  vAddProperty_ptr("pColumn"_Stz,pColumn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1569,8 +1575,8 @@ Column* Card::pColumn1(void)
 void Card::vColumn1(Column* pColumn1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  vAddProperty("pColumn1"_Stz,pColumn1);
+
+  vAddProperty_ptr("pColumn1"_Stz,pColumn1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1591,8 +1597,8 @@ Column* Card::pColumn2(void)
 void Card::vColumn2(Column* pColumn2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  vAddProperty("pColumn2"_Stz,pColumn2);
+
+  vAddProperty_ptr("pColumn2"_Stz,pColumn2);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1614,7 +1620,8 @@ void Card::vComment(Stz* szComment)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vAddProperty("szComment"_Stz,szComment);
+  vAddProperty_stz("szComment"_Stz,szComment);
+  vValue(szComment);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1666,7 +1673,8 @@ void Card::vDirn(Stz* szDirn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  vAddProperty("szDirn"_Stz,szDirn);
+  vAddProperty_stz("szDirn"_Stz,szDirn);
+  vValue(szDirn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1687,8 +1695,8 @@ i8 Card::iGenerate(void)
 void Card::vGenerate(i8 iGenerate)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  vAddProperty("iGenerate"_Stz,iGenerate);
+
+  vAddProperty_int("iGenerate"_Stz,iGenerate);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1746,8 +1754,8 @@ Index* Card::pIndex(void)
 void Card::vIndex(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  vAddProperty("pIndex"_Stz,pIndex);
+
+  vAddProperty_ptr("pIndex"_Stz,pIndex);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1932,7 +1940,8 @@ void Card::vLevel(Stz* szLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  vAddProperty("szLevel"_Stz,szLevel);
+  vAddProperty_stz("szLevel"_Stz,szLevel);
+  vValue(szLevel);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1954,7 +1963,8 @@ void Card::vMapBack(Stz* szMapBack)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vAddProperty("szMapBack"_Stz,szMapBack);
+  vAddProperty_stz("szMapBack"_Stz,szMapBack);
+  vValue(szMapBack);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1976,7 +1986,8 @@ void Card::vMapFrom(Stz* szMapFrom)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vAddProperty("szMapFrom"_Stz,szMapFrom);
+  vAddProperty_stz("szMapFrom"_Stz,szMapFrom);
+  vValue(szMapFrom);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2081,7 +2092,8 @@ void Card::vMode(Stz* szMode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  vAddProperty("szMode"_Stz,szMode);
+  vAddProperty_stz("szMode"_Stz,szMode);
+  vValue(szMode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2103,7 +2115,8 @@ void Card::vName(Stz* szName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  vAddProperty("szName"_Stz,szName);
+  vAddProperty_stz("szName"_Stz,szName);
+  vValue(szName);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2125,7 +2138,7 @@ void Card::vOrdHi(i8 iOrdHi)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vAddProperty("iOrdHi"_Stz,iOrdHi);
+  vAddProperty_int("iOrdHi"_Stz,iOrdHi);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2147,7 +2160,7 @@ void Card::vOrdLo(i8 iOrdLo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vAddProperty("iOrdLo"_Stz,iOrdLo);
+  vAddProperty_int("iOrdLo"_Stz,iOrdLo);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2168,8 +2181,8 @@ i8 Card::iOption(void)
 void Card::vOption(i8 iOption)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  vAddProperty("iOption"_Stz,iOption);
+
+  vAddProperty_int("iOption"_Stz,iOption);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2191,7 +2204,8 @@ void Card::vOption(Stz* szOption)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  vAddProperty("szOption"_Stz,szOption);
+  vAddProperty_stz("szOption"_Stz,szOption);
+  vValue(szOption);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2213,7 +2227,8 @@ void Card::vOr(Stz* szOr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vAddProperty("szOr"_Stz,szOr);
+  vAddProperty_stz("szOr"_Stz,szOr);
+  vValue(szOr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2235,7 +2250,8 @@ void Card::vOrdinal(Stz* szOrdinal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vAddProperty("szOrdinal"_Stz,szOrdinal);
+  vAddProperty_stz("szOrdinal"_Stz,szOrdinal);
+  vValue(szOrdinal);
 }
 
 
@@ -2296,7 +2312,8 @@ void Card::vQueryNm(Stz* szQueryNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  vAddProperty("szQueryNm"_Stz,szQueryNm);
+  vAddProperty_stz("szQueryNm"_Stz,szQueryNm);
+  vValue(szQueryNm);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2317,8 +2334,8 @@ i8 Card::iRank(void)
 void Card::vRank(i8 iRank)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  vAddProperty("iRank"_Stz,iRank);
+
+  vAddProperty_int("iRank"_Stz,iRank);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2400,8 +2417,8 @@ i8 Card::nRows(void)
 void Card::vRows(i8 nRows)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  vAddProperty("nRows"_Stz,nRows);
+
+  vAddProperty_int("nRows"_Stz,nRows);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2422,8 +2439,8 @@ eXK Card::eSendKind(void)
 void Card::vSendKind(eXK eSendKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  vAddProperty("eSendKind"_Stz,eSendKind);
+
+  vAddProperty_int("eSendKind"_Stz,eSendKind);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2444,8 +2461,8 @@ i8 Card::iSends(void)
 void Card::vSends(i8 iSends)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  vAddProperty("iSends"_Stz,iSends);
+
+  vAddProperty_int("iSends"_Stz,iSends);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2467,7 +2484,8 @@ void Card::vStageNm(Stz* szStageNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  vAddProperty("szStageNm"_Stz,szStageNm);
+  vAddProperty_stz("szStageNm"_Stz,szStageNm);
+  vValue(szStageNm);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2488,8 +2506,8 @@ eYG Card::eStageTopo(void)
 void Card::vStageTopo(eYG  eStageTopo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  vAddProperty("eStageTopo"_Stz,eStageTopo);
+
+  vAddProperty_int("eStageTopo"_Stz,eStageTopo);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2510,8 +2528,8 @@ StreamDef* Card::pStreamDef(void)
 void Card::vStreamDef(StreamDef* pStreamDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  vAddProperty("pStreamDef"_Stz,pStreamDef);
+
+  vAddProperty_ptr("pStreamDef"_Stz,pStreamDef);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2532,8 +2550,8 @@ Table* Card::pTable(void)
 void Card::vTable(Table* pTable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  vAddProperty("pTable"_Stz,pTable);
+
+  vAddProperty_ptr("pTable"_Stz,pTable);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2554,8 +2572,8 @@ Table* Card::pTable1(void)
 void Card::vTable1(Table* pTable1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  vAddProperty("pTable1"_Stz,pTable1);
+
+  vAddProperty_ptr("pTable1"_Stz,pTable1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2576,8 +2594,8 @@ Table* Card::pTable2(void)
 void Card::vTable2(Table* pTable2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  vAddProperty("pTable2"_Stz,pTable2);
+
+  vAddProperty_ptr("pTable2"_Stz,pTable2);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2599,9 +2617,8 @@ void Card::vTerm(Stz* szTerm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  vAddProperty("szTerm"_Stz,szTerm);
-
-  m_sValue = szTerm;
+  vAddProperty_stz("szTerm"_Stz,szTerm);
+  vValue(szTerm);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2667,7 +2684,8 @@ void Card::vType(Stz* szType)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  vAddProperty("szType"_Stz,szType);
+  vAddProperty_stz("szType"_Stz,szType);
+  vValue(szType);
 }
 
 

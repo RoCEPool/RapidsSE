@@ -170,10 +170,10 @@ namespace STORE
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     
-    void vAddProperty(Stz* szName);
-    void vAddProperty(Stz* szName, i8 iValue);
-    void vAddProperty(Stz* szName, Object* pValue);
-    void vAddProperty(Stz* szName, Stz* szValue);
+    void vAddProperty_nameOnly(Stz* szName);
+    void vAddProperty_int(Stz* szName, i8 iValue);
+    void vAddProperty_ptr(Stz* szName, Object* pValue);
+    void vAddProperty_stz(Stz* szName, Stz* szValue);
     void vAppendDupSubCards(Card* pCard_SubSet);
 
     eCK  eCard(void);
