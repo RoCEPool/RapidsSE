@@ -1128,6 +1128,31 @@ Stz* Card::sz(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get table ptn                                                              */
+/*----------------------------------------------------------------------------*/
+Stz* Card::szTablePtn(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Stz *szTablePtn = szGetProperty("szTablePtn"_Stz);
+
+  RASSERT(szValue()->bSame(szTablePtn));
+
+  return szValue();
+}
+
+/*----------------------------------------------------------------------------*/
+/* set table ptn                                                              */
+/*----------------------------------------------------------------------------*/
+void Card::vTablePtn(Stz* szTablePtn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  vAddProperty_stz("szTablePtn"_Stz,szTablePtn);
+  vValue(szTablePtn);
+}
+
+/*----------------------------------------------------------------------------*/
 /* set table synonym                                                          */
 /*----------------------------------------------------------------------------*/
 char Card::cTableSyn(void)
@@ -2842,9 +2867,23 @@ void Card::vPrintCard_byForm(Ribbon* pRibbon, i8 iDepth, eCP ePinForme)
 void Card::vPrintCard_default(Ribbon* pRibbon, i8 iDepth, eCP ePinForm)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-  vPrintCardName(pRibbon, iDepth);
-  vPrintCardDetails(pRibbon, iDepth);
 
+  eCK eCard = this->eCard();
+
+  switch (eCard) {
+    case CK_COMMENT:
+      break;
+
+    case CK_TERM:
+      vPrintCardName(pRibbon, iDepth);
+      break;
+
+    default:
+      vPrintCardName(pRibbon, iDepth);
+      break;
+  }
+
+  vPrintCardDetails(pRibbon, iDepth);
 }
 
 /*----------------------------------------------------------------------------*/

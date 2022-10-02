@@ -82,7 +82,7 @@ void Card_TablePtn::vAdd_TablePtn(Card_Table* p_table)
   s32 sColumnRef;
   sColumnRef.vSprint("$$%c.%lld"_Stz, cTableSyn, iStmColNo+1);
 
-  this->vColumnRef(sColumnRef);
+  this->vTablePtn(sColumnRef);
 }
 
 

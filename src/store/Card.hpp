@@ -251,6 +251,8 @@ namespace STORE
 
     Stz* sz(void);
 
+    Stz* szTablePtn(void);
+    void vTablePtn(Stz* szTablePtn);
     char cTableSyn(void);
     void vTableSyn(char cTableSyn);
     void vTransferSubCards(Card* pCards);
