@@ -257,7 +257,6 @@
 /* org_ beg */  // - - - - - - - - - - - - - - - -  - -
 /* org_ beg */
 /* org_ beg */
-/* org_ beg */
 /* org_ beg */  "pipeline:ptpBegin" [job].entryPoint!
 /* org_ beg */
 /* org_ beg */  [task].grabLock
@@ -471,6 +470,10 @@
 /* _ptp beg */  [job].progressReset
 /* _ptp beg */  [job].assertStructure
 /* _ptp beg */  ListedJob[].assertNoRef
+/* _ptp beg */
+/* _ptp beg */   "<jobMetrics>" [job].tagSet@ tagSet.hasName if
+/* _ptp beg */     "PARTICIPANT JOBMETRICS" .
+/* _ptp beg */   then
 /* _ptp beg */
 /* _ptp beg */  // - - - - - - - - - - - - - -
 /* _ptp beg */  // new all the markers needed

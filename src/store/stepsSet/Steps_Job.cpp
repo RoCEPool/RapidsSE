@@ -215,6 +215,7 @@ void Step::vJobAddOriginator(void)
     m_pDataStack->vPushInt(false);
   }
   else {
+    pJob->vOriginatorJob(true);
     AM::vJob_AddOriginating(pJob);
     m_pDataStack->vPushInt(true);
   }

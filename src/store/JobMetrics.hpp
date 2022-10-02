@@ -12,9 +12,10 @@ namespace STORE
 {
   class JobMetrics : public Operand
   {
-  private:
-    JobId m_tJobId;
-  
+  public:
+    //JobId m_tJobId;
+    Job*  m_pJob;
+
     i8    m_nMilliseconds;
     i8    m_iPctFree;
     i8    m_nRefTimer;
@@ -30,7 +31,7 @@ namespace STORE
     void* operator new(size_t);
     void operator delete(void* pJobMetricsAddress);
   
-    JobMetrics(JobId tJobId);
+    JobMetrics(Job* pJob);
    ~JobMetrics(void) noexcept(false);
   
     static void vJobSet(IntStack* pIntStack);
