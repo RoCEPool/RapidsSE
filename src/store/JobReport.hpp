@@ -44,7 +44,7 @@ namespace STORE
     static eEC eAllReport(i8 iJobNo, Tub* pTub);
     static eEC eMetricsReport(JobMetrics* pJobMetrics, Tub* pTub);
     static eEC eNetDissectReport(i8 iJobNo, Tub* pTub);
-    static eEC eNetworkReport(i8 iJobNo, Tub* pTub);
+    static eEC eNetworkReport(Job* pJob, Tub* pTub);
     static eEC eOperandReport(i8 iJobNo, Tub* pTub);
     static eEC eOperatorReport(i8 iJobNo, Tub* pTub);
 

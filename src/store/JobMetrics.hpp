@@ -12,7 +12,7 @@ namespace STORE
 {
   class JobMetrics : public Operand
   {
-  public:
+  private:
     //JobId m_tJobId;
     Job*  m_pJob;
 
@@ -44,6 +44,7 @@ namespace STORE
     StreamMetrics*   pGetStreamMetrics(i8& d_MetricsCursor);
     OpMetrics*       pGetOpMetrics(i8& d_MetricsCursor);
 
+    Job*             pJob(void);
     MetricsWsp*      pMetricsWsp(void);
 
     JobMetrics*      pNext(void);

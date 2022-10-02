@@ -87,6 +87,8 @@
 
   0 locals| pJobMetrics |
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // job metrics
   pJob jobMetrics::new to pJobMetrics
   pJobMetrics jobMetrics.collect if
     pJobMetrics [op].pipeout
