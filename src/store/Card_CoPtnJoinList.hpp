@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_CoPtnList.hpp -- Co-Partition List                                    */
+/* Card_CoPtnJoinList.hpp -- Co-Partition Join List                            */
 /*============================================================================*/
 #pragma once
 
@@ -10,23 +10,23 @@
 
 namespace STORE
 {
-  class Card_CoPtnList : public Card
+  class Card_CoPtnJoinList : public Card
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_CoPtnList(void);
-   ~Card_CoPtnList(void) noexcept(false);
+    Card_CoPtnJoinList(void);
+   ~Card_CoPtnJoinList(void) noexcept(false);
 
     Card_CoPtn* pFind_coPtn_for(Card_CoPtnPred* p_CoPtnPred);
 
     bool bHasEqPredCmp(Card_PredCmp* p_predCmp);
   };
 
-  Card_CoPtnList* _pCard_CoPtnList(void* aAddr);
-  bool _bIsCard_CoPtnList(void* aAddr);
-  Card_CoPtnList* _pGetSub_CoPtnList(Card* pParent);
+  Card_CoPtnJoinList* _pCard_CoPtnJoinList(void* aAddr);
+  bool _bIsCard_CoPtnJoinList(void* aAddr);
+  Card_CoPtnJoinList* _pGetSub_CoPtnJoinList(Card * pParent);
 }
 
 /*============================================================================*/

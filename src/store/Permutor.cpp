@@ -151,8 +151,8 @@ void Permutor::vCompute_coPtnList(void)
   //--nn--------------==
   // coPtnList
 
-  m_p_coPtnList = new Card_CoPtnList;
-  m_pBoard_permute->vAppendMainCard(m_p_coPtnList);
+  m_p_coPtnJoinList = new Card_CoPtnJoinList;
+  m_pBoard_permute->vAppendMainCard(m_p_coPtnJoinList);
 
   m_p_coPtnPredList =
       _pCard_CoPtnPredList(m_pBoard_permute->pFindMain(CK_COPTNPREDLIST));
@@ -165,9 +165,9 @@ void Permutor::vCompute_coPtnList(void)
 
     m_p_subSet = m_p_coPtnPred->pDupSubCards();
 
-    if (! (m_p_coPtn = m_p_coPtnList->pFind_coPtn_for(m_p_coPtnPred)) ) {
+    if (! (m_p_coPtn = m_p_coPtnJoinList->pFind_coPtn_for(m_p_coPtnPred)) ) {
       m_p_coPtn = new Card_CoPtn;
-      m_p_coPtnList->vAppend(m_p_coPtn);
+      m_p_coPtnJoinList->vAppend(m_p_coPtn);
     }
 
     m_p_coPtn->vTransferSubCards(m_p_subSet);
@@ -203,7 +203,7 @@ void Permutor::vCompute_crossPtnList(void)
     m_p_predCmp =
         _pCard_PredCmp(m_p_joinPredList->pGetChild(i_Child));
 
-    if (m_p_coPtnList->bHasEqPredCmp(m_p_predCmp))
+    if (m_p_coPtnJoinList->bHasEqPredCmp(m_p_predCmp))
       continue;
 
     m_p_crossPtn = new Card_CrossPtn;
@@ -234,9 +234,9 @@ void Permutor::vCompute_ptndJointSet(void)
   m_p_joinPtnList = new Card_PtndJoinSet;
   m_pBoard_permute->vAppendMainCard(m_p_joinPtnList);
 
-  m_p_coPtnList =
-      _pCard_CoPtnList(m_pBoard_permute->pFindMain(CK_COPTNLIST));
-  m_p_subSet = m_p_coPtnList->pDupSubCards();
+  m_p_coPtnJoinList =
+      _pCard_CoPtnJoinList(m_pBoard_permute->pFindMain(CK_COPTNJOINLIST));
+  m_p_subSet = m_p_coPtnJoinList->pDupSubCards();
   m_p_joinPtnList->vTransferSubCards(m_p_subSet);
   DELETE_CARD(m_p_subSet);
 

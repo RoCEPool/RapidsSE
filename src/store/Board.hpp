@@ -25,7 +25,7 @@
 #include "Card_Comment.hpp"
 #include "Card_ColumnRef.hpp"
 #include "Card_CoPtn.hpp"
-#include "Card_CoPtnList.hpp"
+#include "Card_CoPtnJoinList.hpp"
 #include "Card_CoPtnPred.hpp"
 #include "Card_CoPtnPredList.hpp"
 #include "Card_CrossPtn.hpp"

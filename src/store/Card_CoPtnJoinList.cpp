@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Card_CoPtnList.cpp -- Co-Partition List                                    */
+/* Card_CoPtnJoinList.cpp -- Co-Partition List                                    */
 /*============================================================================*/
 
-#include "Card_CoPtnList.hpp"
+#include "Card_CoPtnJoinList.hpp"
 
 #include "Card_CoPtn.hpp"
 #include "Card_PredCmp.hpp"
@@ -11,18 +11,18 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_CoPtnList,CK_COPTNLIST)
-__aNewFunction(Card_CoPtnList,CN_CARD)
-__vDeleteFunction(Card_CoPtnList,CN_CARD)
+__pCastFunction_Card(STORE, Card_CoPtnJoinList, CK_COPTNJOINLIST)
+__aNewFunction(Card_CoPtnJoinList, CN_CARD)
+__vDeleteFunction(Card_CoPtnJoinList, CN_CARD)
 
-__bIsCard(STORE,Card_CoPtnList,CK_COPTNLIST)
-__pGetSubFunction_Card(STORE,CoPtnList,CK_COPTNLIST)
+__bIsCard(STORE, Card_CoPtnJoinList, CK_COPTNJOINLIST)
+__pGetSubFunction_Card(STORE, CoPtnJoinList, CK_COPTNJOINLIST)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_CoPtnList::Card_CoPtnList(void)
-: Card(CK_COPTNLIST)
+Card_CoPtnJoinList::Card_CoPtnJoinList(void)
+: Card(CK_COPTNJOINLIST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -34,7 +34,7 @@ Card_CoPtnList::Card_CoPtnList(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_CoPtnList::~Card_CoPtnList(void) noexcept(false)
+Card_CoPtnJoinList::~Card_CoPtnJoinList(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -46,7 +46,7 @@ Card_CoPtnList::~Card_CoPtnList(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_CoPtn* Card_CoPtnList::pFind_coPtn_for(Card_CoPtnPred* p_CoPtnPred)
+Card_CoPtn* Card_CoPtnJoinList::pFind_coPtn_for(Card_CoPtnPred* p_CoPtnPred)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -64,7 +64,7 @@ Card_CoPtn* Card_CoPtnList::pFind_coPtn_for(Card_CoPtnPred* p_CoPtnPred)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_CoPtnList::bHasEqPredCmp(Card_PredCmp* p_predCmp_arg)
+bool Card_CoPtnJoinList::bHasEqPredCmp(Card_PredCmp* p_predCmp_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

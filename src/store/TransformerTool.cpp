@@ -34,7 +34,7 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_p_calcBool      = nullptr;
   m_p_combined      = nullptr;
   m_p_coPtn         = nullptr;
-  m_p_coPtnList     = nullptr;
+  m_p_coPtnJoinList     = nullptr;
   m_p_coPtnPred     = nullptr;
   m_p_coPtnPredList = nullptr;
   m_p_crossPtn      = nullptr;
