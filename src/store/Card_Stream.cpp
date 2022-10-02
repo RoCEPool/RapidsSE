@@ -200,16 +200,16 @@ void Card_Stream::vRibbonPrint(Ribbon* pRibbon, i8 iDepth)
   s32 sName;
 
   if (m_pProperties && C_UNKNOWN != iGetProperty("iOrdLo"_Stz))
-    sName.vSprint("%s%lld)%s $%lld,%lld"_Stz
-        ,Stz::szDots(iDepth)
+    sName.vSprint("%s%lld]%s $%lld,%lld"_Stz
+        ,Stz::szDots(iDepth-1)
         ,m_iCardNo
         ,szCardNm()
         ,iGetProperty("iOrdLo"_Stz)
         ,iGetProperty("iOrdHi"_Stz)
     );
   else
-    sName.vSprint("%s%lld)%s"_Stz
-        ,Stz::szDots(iDepth)
+    sName.vSprint("%s%lld]%s"_Stz
+        ,Stz::szDots(iDepth-1)
         ,m_iCardNo
         ,szCardNm()
     );

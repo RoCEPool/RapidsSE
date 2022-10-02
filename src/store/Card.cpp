@@ -952,6 +952,271 @@ void Card::vHasUBound(bool bHasUBound)
 }
 
 /*----------------------------------------------------------------------------*/
+/* print                                                                      */
+/*----------------------------------------------------------------------------*/
+void Card::vPrintCard(Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (0 == iDepth)
+    vPrintHeader(pRibbon);
+
+  CardCtl* pCardCtl = _pCardCtl(pRibbon->pCtl());
+
+  eCP ePrintForm = pCardCtl->ePrintForm(m_eCard);
+  if (CP_DEFAULT == ePrintForm)
+    vPrintCard_default(pRibbon, iDepth, ePrintForm);
+  else
+    vPrintCard_byForm(pRibbon, iDepth, ePrintForm);
+
+  //vMark2(' ');
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if (! pCardCtl->bPrintSubCards(m_eCard))
+    return;
+
+  ListExoIter2_t<Card>* pSubCard_I = pNewIter();
+  while (pSubCard_I->bHasNext()) {
+    Card* pSubCard = pSubCard_I->pNext();
+    pSubCard->vPrintCard(pRibbon, iDepth + 1);
+  }
+
+  delete pSubCard_I;
+}
+
+/*----------------------------------------------------------------------------*/
+/* print card onto given ribbon                                               */
+/*----------------------------------------------------------------------------*/
+void Card::vPrintCard_byForm(Ribbon* pRibbon, i8 iDepth, eCP ePinForme)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+
+  switch (m_eCard) {
+
+    case CK_PREDAND:
+      _pCard_PredAnd(this)->vPrintCardName(pRibbon, iDepth);
+      break;
+
+    case CK_PREDCMP:
+      _pCard_PredCmp(this)->vPrintCardName(pRibbon, iDepth);
+      break;
+
+    case CK_PREDOR:
+      _pCard_PredOr(this)->vPrintCardName(pRibbon, iDepth);
+      break;
+
+    case CK_STREAM:
+      _pCard_Stream(this)->vRibbonPrint(pRibbon,iDepth);
+      break;
+
+    case CK_TERM:
+      _pCard_Term(this)->vPrintCardProperties(pRibbon, iDepth, false);
+      break;
+
+    default:
+      vTrace("SWITCH %s: Missing case for eCard %lld %s\n"_Stz
+          ,__func__
+          ,(i8)m_eCard
+          ,aCK[m_eCard]
+      );
+      RASSERT(0);
+      break;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* print card onto given ribbon                                               */
+/*----------------------------------------------------------------------------*/
+void Card::vPrintCard_default(Ribbon* pRibbon, i8 iDepth, eCP ePinForm)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  eCK eCard = this->eCard();
+
+  switch (eCard) {
+    case CK_COMMENT:
+      vPrintCardDetails(pRibbon, iDepth);
+      break;
+
+    case CK_TERM:
+      vPrintCardName(pRibbon, iDepth);
+      vPrintCardDetails(pRibbon, iDepth);
+      break;
+
+    default:
+      vPrintCardName(pRibbon, iDepth);
+      vPrintCardValue(pRibbon, iDepth);
+      vPrintCardDetails(pRibbon, iDepth);
+      break;
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* print card onto given ribbon                                               */
+/*----------------------------------------------------------------------------*/
+void Card::vPrintCardDetails(Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  eCK eCard = this->eCard();
+
+  switch (eCard) {
+
+    case CK_CARDPTR:     vCardPrint   (pRibbon, iDepth); break;
+    case CK_COMMENT:     vCommentPrint(pRibbon, iDepth); break;
+    case CK_INDEXPTR:    vIndexPrint  (pRibbon, iDepth); break;
+    case CK_TABLEPTR:    vTablePrint  (pRibbon, iDepth); break;
+    case CK_TERM:
+      //vPrintCardValue(pRibbon, iDepth);
+      vPrintTerm(pRibbon, iDepth);
+      break;
+
+    case CK_STREAMELIST: vStreamElistPrint(pRibbon,iDepth);
+      break;
+
+    default:
+      vPrintCardProperties(pRibbon, iDepth);
+      break;
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* put header                                                                 */
+/*----------------------------------------------------------------------------*/
+void Card::vPrintHeader(Ribbon* pRibbon)
+{
+  _static_
+
+  pRibbon->vSprint("--%02lld--------------=="_Stz
+      ,m_iCardNo
+  );
+}
+
+/*----------------------------------------------------------------------------*/
+/* print                                                                      */
+/*----------------------------------------------------------------------------*/
+void Card::vPrintCardName(Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (! m_bPrintNm)
+    return;
+
+  s32 sName;
+
+  Board* pBoard = _pBoard(pRibbon->pSurface());
+  CardRegs* pCardRegs = pBoard->pCardRegs();
+
+  if (0 == iDepth)
+    sName.vSprint("%s%s x%lld"_Stz,
+                  pCardRegs->bInCardReg(this) ? "R "_Stz : ""_Stz,
+                  szCardNm(),
+                  nItems());
+  else
+    sName.vSprint("%s%lld]%s%s"_Stz,
+                  Stz::szDots(iDepth-1),
+                  m_iCardNo,
+                  pCardRegs->bInCardReg(this) ? "R "_Stz : ""_Stz,
+                  szCardNm());
+
+  pRibbon->vSprint("%-18s%c%c"_Stz, sName.szStz(), m_cMark1, m_cMark2);
+}
+
+/*----------------------------------------------------------------------------*/
+/* print by piece                                                             */
+/*----------------------------------------------------------------------------*/
+void Card::vPrintCardProperties(Ribbon* pRibbon, i8 iDepth, bool bPrintPtyName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (! m_pProperties)
+    return;
+
+  i8 nProperties = this->nProperties();
+
+  for (i8 i_Property = 0; i_Property < nProperties; i_Property++) {
+
+    eTN eTkn = eProperty(i_Property);
+
+    switch (eTkn) {
+
+      case TN_INTEGER: {
+        Stz* szName = szGetPropertyNm(i_Property);
+        i8   iValue = iGetProperty(i_Property);
+
+        Stz* szDecode = szDecodeEnum(szName,iValue);
+        if (szDecode)
+          pRibbon->vSprintRight("%s"_Stz,szDecode);
+        else
+        if (bPrintPtyName)
+          pRibbon->vSprintRight("%s %lld"_Stz,szName,iValue);
+        else
+          pRibbon->vSprintRight("%lld"_Stz,iValue);
+        break;
+      }
+
+      case TN_OBJECT: {
+        Stz* szName = szGetPropertyNm(i_Property);
+        Object* pObject = pGetProperty(i_Property);
+        pRibbon->vSprintRight("%s->  "_Stz,szName);
+        pRibbon->vSprintRight("%p"_Stz,pObject);
+        pRibbon->vSprintRight("%s"_Stz,aCN[pObject->eGetClassNo()]);
+        break;
+      }
+
+      case TN_STRING: {
+        Stz* szName  = szGetPropertyNm(i_Property);
+        Stz* szValue = szGetProperty(i_Property);
+        if (bPrintPtyName)
+          pRibbon->vSprintRight("%s %s"_Stz,szName,szValue);
+        else
+          pRibbon->vSprintRight("%s"_Stz,szValue);
+        break;
+      }
+
+      default:
+        break;
+    }
+
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* print                                                                      */
+/*----------------------------------------------------------------------------*/
+void Card::vPrintCardValue(Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (! *sz()->azChar())
+    return;
+
+  pRibbon->vSprintRight("%s"_Stz,szValue());
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* print term card onto given ribbon                                          */
+/*----------------------------------------------------------------------------*/
+void Card::vPrintTerm(Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  //vTrace("vPrintTerm\n"_Stz);
+
+  //Card_Term* pCardTerm = _pCard_Term(this);
+
+  //vPrintCardProperties(pRibbon, iDepth, true);
+
+  pRibbon->vSprintRight("TERM %s"_Stz,sz());
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* get number of properties                                                   */
 /*----------------------------------------------------------------------------*/
 i8 Card::nProperties(void)
@@ -2779,286 +3044,6 @@ char Card::cTypeShort(void)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* print                                                                      */
-/*----------------------------------------------------------------------------*/
-void Card::vPrintCard(Ribbon* pRibbon, i8 iDepth)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (0 == iDepth)
-    vPrintHeader(pRibbon);
-
-  CardCtl* pCardCtl = _pCardCtl(pRibbon->pCtl());
-
-  eCP ePrintForm = pCardCtl->ePrintForm(m_eCard);
-  if (CP_DEFAULT == ePrintForm)
-    vPrintCard_default(pRibbon, iDepth, ePrintForm);
-  else
-    vPrintCard_byForm(pRibbon, iDepth, ePrintForm);
-
-  //vMark2(' ');
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  if (! pCardCtl->bPrintSubCards(m_eCard))
-    return;
-
-  ListExoIter2_t<Card>* pSubCard_I = pNewIter();
-  while (pSubCard_I->bHasNext()) {
-    Card* pSubCard = pSubCard_I->pNext();
-    pSubCard->vPrintCard(pRibbon, iDepth + 1);
-  }
-
-  delete pSubCard_I;
-}
-
-/*----------------------------------------------------------------------------*/
-/* print card onto given ribbon                                               */
-/*----------------------------------------------------------------------------*/
-void Card::vPrintCard_byForm(Ribbon* pRibbon, i8 iDepth, eCP ePinForme)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-
-  switch (m_eCard) {
-
-    case CK_PREDAND:
-      _pCard_PredAnd(this)->vPrintCardName(pRibbon, iDepth);
-      break;
-
-    case CK_PREDCMP:
-      _pCard_PredCmp(this)->vPrintCardName(pRibbon, iDepth);
-      break;
-
-    case CK_PREDOR:
-      _pCard_PredOr(this)->vPrintCardName(pRibbon, iDepth);
-      break;
-
-    case CK_STREAM:
-      _pCard_Stream(this)->vRibbonPrint(pRibbon,iDepth);
-      break;
-
-    case CK_TERM:
-      _pCard_Term(this)->vPrintCardProperties(pRibbon, iDepth, false);
-      break;
-
-    default:
-      vTrace("SWITCH %s: Missing case for eCard %lld %s\n"_Stz
-          ,__func__
-          ,(i8)m_eCard
-          ,aCK[m_eCard]
-      );
-      RASSERT(0);
-      break;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* print card onto given ribbon                                               */
-/*----------------------------------------------------------------------------*/
-void Card::vPrintCard_default(Ribbon* pRibbon, i8 iDepth, eCP ePinForm)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  eCK eCard = this->eCard();
-
-  switch (eCard) {
-    case CK_COMMENT:
-      vPrintCardDetails(pRibbon, iDepth);
-      break;
-
-    case CK_TERM:
-      vPrintCardName(pRibbon, iDepth);
-      vPrintCardDetails(pRibbon, iDepth);
-      break;
-
-    default:
-      vPrintCardName(pRibbon, iDepth);
-      vPrintCardValue(pRibbon, iDepth);
-      vPrintCardDetails(pRibbon, iDepth);
-      break;
-  }
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* print card onto given ribbon                                               */
-/*----------------------------------------------------------------------------*/
-void Card::vPrintCardDetails(Ribbon* pRibbon, i8 iDepth)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  eCK eCard = this->eCard();
-  
-  switch (eCard) {
-
-    case CK_CARDPTR:     vCardPrint   (pRibbon, iDepth); break;
-    case CK_COMMENT:     vCommentPrint(pRibbon, iDepth); break;
-    case CK_INDEXPTR:    vIndexPrint  (pRibbon, iDepth); break;
-    case CK_TABLEPTR:    vTablePrint  (pRibbon, iDepth); break;
-    case CK_TERM:
-      //vPrintCardValue(pRibbon, iDepth);
-      vPrintTerm(pRibbon, iDepth);
-      break;
-
-    case CK_STREAMELIST: vStreamElistPrint(pRibbon,iDepth);
-      break;
-
-    default:
-      vPrintCardProperties(pRibbon, iDepth);
-      break;
-  }
-  
-}
-
-/*----------------------------------------------------------------------------*/
-/* put header                                                                 */
-/*----------------------------------------------------------------------------*/
-void Card::vPrintHeader(Ribbon* pRibbon)
-{
-  _static_
-
-  //pRibbon->vSput(FR_HEAD,pRibbon->iLogicalColumn());
-  
-  //pRibbon->vSprint("--%02lld--%02lld----------=="_Stz
-  //                 ,pRibbon->iLogicalColumn()
-  //                 ,m_iCardNo
-  //                 );
-  
-  pRibbon->vSprint("--%02lld--------------=="_Stz
-                   ,m_iCardNo
-                   );
-}
-
-/*----------------------------------------------------------------------------*/
-/* print                                                                      */
-/*----------------------------------------------------------------------------*/
-void Card::vPrintCardName(Ribbon* pRibbon, i8 iDepth)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (! m_bPrintNm)
-    return;
-
-  s32 sName;
-    
-  Board* pBoard = _pBoard(pRibbon->pSurface());
-  CardRegs* pCardRegs = pBoard->pCardRegs();
-
-  if (0 == iDepth)
-    sName.vSprint("%s%s%s x%lld"_Stz,
-                  pCardRegs->bInCardReg(this) ? "R "_Stz : ""_Stz,
-                  Stz::szDots(iDepth),
-                  szCardNm(),
-                  nItems());
-  else
-    sName.vSprint("%s%lld)%s%s"_Stz,
-                  Stz::szDots(iDepth),
-                  m_iCardNo,
-                  pCardRegs->bInCardReg(this) ? "R "_Stz : ""_Stz,
-                  szCardNm());
-
-  pRibbon->vSprint("%-18s%c%c"_Stz, sName.szStz(), m_cMark1, m_cMark2);
-}
-
-/*----------------------------------------------------------------------------*/
-/* print by piece                                                             */
-/*----------------------------------------------------------------------------*/
-void Card::vPrintCardProperties(Ribbon* pRibbon, i8 iDepth, bool bPrintPtyName)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (! m_pProperties)
-    return;
-  
-  i8 nProperties = this->nProperties();
-  
-  for (i8 i_Property = 0; i_Property < nProperties; i_Property++) {
-
-    eTN eTkn = eProperty(i_Property);
-
-    switch (eTkn) {
-        
-      case TN_INTEGER: {
-        Stz* szName = szGetPropertyNm(i_Property);
-        i8   iValue = iGetProperty(i_Property);
-        
-        Stz* szDecode = szDecodeEnum(szName,iValue);
-        if (szDecode)
-          pRibbon->vSprintRight("%s"_Stz,szDecode);
-        else
-        if (bPrintPtyName)
-          pRibbon->vSprintRight("%s %lld"_Stz,szName,iValue);
-        else
-          pRibbon->vSprintRight("%lld"_Stz,iValue);
-        break;
-      }
-        
-      case TN_OBJECT: {
-        Stz* szName = szGetPropertyNm(i_Property);
-        Object* pObject = pGetProperty(i_Property);
-        pRibbon->vSprintRight("%s->  "_Stz,szName);
-        pRibbon->vSprintRight("%p"_Stz,pObject);
-        pRibbon->vSprintRight("%s"_Stz,aCN[pObject->eGetClassNo()]);
-        break;
-      }
-        
-      case TN_STRING: {
-        Stz* szName  = szGetPropertyNm(i_Property);
-        Stz* szValue = szGetProperty(i_Property);
-        if (bPrintPtyName)
-          pRibbon->vSprintRight("%s %s"_Stz,szName,szValue);
-        else
-          pRibbon->vSprintRight("%s"_Stz,szValue);
-        break;
-      }
-        
-      default:
-        break;
-    }
-    
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* print                                                                      */
-/*----------------------------------------------------------------------------*/
-void Card::vPrintCardValue(Ribbon* pRibbon, i8 iDepth)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  if (! *sz()->azChar())
-    return;
-
-//  s32 sPrint;
-//
-//  sPrint.vSprint("%s%lld)%s"_Stz,
-//                 Stz::szDots(iDepth),
-//                 m_iCardNo,
-//                 szValue());
-
-  pRibbon->vSprintRight("%s"_Stz,szValue());
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* print term card onto given ribbon                                          */
-/*----------------------------------------------------------------------------*/
-void Card::vPrintTerm(Ribbon* pRibbon, i8 iDepth)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  //vTrace("vPrintTerm\n"_Stz);
-
-  //Card_Term* pCardTerm = _pCard_Term(this);
-
-  //vPrintCardProperties(pRibbon, iDepth, true);
-
-  pRibbon->vSprintRight("TERM %s"_Stz,sz());
-
-}
 
 
 /*----------------------------------------------------------------------------*/

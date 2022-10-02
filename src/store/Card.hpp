@@ -236,6 +236,15 @@ namespace STORE
     i8   iOrdLo(void);
     void vOrdLo(i8 iOrdLo);
 
+    void vPrintCard(Ribbon* pRibbon, i8 iDepth=0);
+    void vPrintCard_byForm(Ribbon* pRibbon, i8 iDepth, eCP ePrintForm);
+    void vPrintCard_default(Ribbon* pRibbon, i8 iDepth, eCP ePrintForm);
+    void vPrintCardDetails(Ribbon* pRibbon, i8 iDepth);
+    void vPrintCardName(Ribbon* pRibbon, i8 iDepth);
+    void vPrintCardProperties(Ribbon* pRibbon, i8 iDepth, bool bPrintPtyName= true);
+    void vPrintCardValue(Ribbon* pRibbon, i8 iDepth);
+    void vPrintHeader(Ribbon* pRibbon);
+    void vPrintTerm(Ribbon* pRibbon, i8 iDepth);
     i8   nProperties(void);
     eTN  eProperty(i8 i_Property);
     TagSet* pProperties(void);
@@ -387,15 +396,6 @@ namespace STORE
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   
-    void vPrintCard(Ribbon* pRibbon, i8 iDepth=0);
-    void vPrintCard_byForm(Ribbon* pRibbon, i8 iDepth, eCP ePrintForm);
-    void vPrintCard_default(Ribbon* pRibbon, i8 iDepth, eCP ePrintForm);
-    void vPrintCardDetails(Ribbon* pRibbon, i8 iDepth);
-    void vPrintCardName(Ribbon* pRibbon, i8 iDepth);
-    void vPrintCardProperties(Ribbon* pRibbon, i8 iDepth, bool bPrintPtyName= true);
-    void vPrintCardValue(Ribbon* pRibbon, i8 iDepth);
-    void vPrintHeader(Ribbon* pRibbon);
-    void vPrintTerm(Ribbon* pRibbon, i8 iDepth);
 
     void vCommentPrint(Ribbon* pRibbon, i8 iDepth);
     void vIndexPrint(Ribbon* pRibbon, i8 iDepth);
