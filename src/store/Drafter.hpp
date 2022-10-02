@@ -25,19 +25,9 @@ namespace STORE
 
     static void vRepair(Object* pObject);
 
-    bool bAdd     (TokenVec* pTknVec, eOA& reOptAct);
-
-    bool bBelow   (TokenVec* pTknVec, eOA& reOptAct);
-
     bool bClear   (TokenVec* pTknVec, eOA& reOptAct);
     bool bCmp     (TokenVec* pTknVec, eOA& reOptAct);
     bool bCut     (TokenVec* pTknVec, eOA& reOptAct);
-
-    bool bDepth   (TokenVec* pTknVec, eOA& reOptAct);
-  
-    bool bForm    (TokenVec* pTknVec, eOA& reOptAct);
-
-    bool bHide    (TokenVec* pTknVec, eOA& reOptAct);
 
     bool bLoad    (TokenVec* pTknVec, eOA& reOptAct);
 

@@ -20,16 +20,10 @@ CardCtl::CardCtl(void)
 : Object(CN_CARDCTL)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
-        
-  m_iDepth = 99;
   
   for (i8 i_Card = 0; i_Card < CK_ENUMS; i_Card++) {
-    vForm(i_Card,0);
-    vPrint(i_Card,0);
-    vBelow(i_Card,0);
-
     vPinForm(i_Card,0);
-    vSubCards(i_Card,1);
+    vPrintSubCards(i_Card, true);
   }
   
   _checkInitialised_(CN_CARDCTL);
@@ -49,92 +43,6 @@ CardCtl::~CardCtl(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get iBelow for card                                                        */
-/*----------------------------------------------------------------------------*/
-i8 CardCtl::iBelow(i8 i_Card)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
-
-  i8 iBelow = m_iaBelow[i_Card];
-  
-  return iBelow;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set iBelow for card                                                        */
-/*----------------------------------------------------------------------------*/
-void CardCtl::vBelow(i8 i_Card, i8 iBelow)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
-
-  m_iaBelow[i_Card] = iBelow;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get print depth                                                            */
-/*----------------------------------------------------------------------------*/
-i8 CardCtl::iDepth(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
-
-  return m_iDepth;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set print depth                                                            */
-/*----------------------------------------------------------------------------*/
-void CardCtl::vDepth(i8 iDepth)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
-
-  m_iDepth = iDepth;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get iForm for card                                                         */
-/*----------------------------------------------------------------------------*/
-i8 CardCtl::iForm(i8 i_Card)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
-
-  i8 iForm = m_iaForm[i_Card];
-  
-  return iForm;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set iForm for card                                                         */
-/*----------------------------------------------------------------------------*/
-void CardCtl::vForm(i8 i_Card, i8 iForm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
-
-  m_iaForm[i_Card] = iForm;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get iPrint for card                                                        */
-/*----------------------------------------------------------------------------*/
-i8 CardCtl::iPrint(i8 i_Card)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
-
-  i8 iPrint = m_iaPrint[i_Card];
-  
-  return iPrint;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set iPrint for card                                                        */
-/*----------------------------------------------------------------------------*/
-void CardCtl::vPrint(i8 i_Card, i8 iPrint)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
-
-  m_iaPrint[i_Card] = iPrint;
-}
 
 /*----------------------------------------------------------------------------*/
 /* get iPinForm for card                                                      */
@@ -159,25 +67,25 @@ void CardCtl::vPinForm(i8 i_Card, i8 iPinForm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get iSubCards for card                                                     */
+/* get bPrintCards for card                                                     */
 /*----------------------------------------------------------------------------*/
-i8 CardCtl::iSubCards(i8 i_Card)
+bool CardCtl::bPrintSubCards(i8 i_Card)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 
-  i8 iSubCards = m_iaSubCards[i_Card];
+  bool bPrintCards = m_baPrintSubCards[i_Card];
 
-  return iSubCards;
+  return bPrintCards;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set iSubCards for card                                                     */
+/* set bPrintCards for card                                                     */
 /*----------------------------------------------------------------------------*/
-void CardCtl::vSubCards(i8 i_Card, i8 iSubCards)
+void CardCtl::vPrintSubCards(i8 i_Card, bool bSubCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 
-  m_iaSubCards[i_Card] = iSubCards;
+  m_baPrintSubCards[i_Card] = bSubCard;
 }
 
 /*============================================================================*/

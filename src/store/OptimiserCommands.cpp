@@ -11,55 +11,6 @@
 extern OptimiserCatalog gxOptimiserCatalog;
 
 /*----------------------------------------------------------------------------*/
-/* cardCtl: add                                                               */
-/*----------------------------------------------------------------------------*/
-bool STORE::bOpt_add(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
-{
-  vTrace("bOpt_add\n"_Stz);
-//  s4K sCmd;
-//  pTknVec->vToTknString(sCmd);
-//  vTrace("Cmd : %s\n"_Stz,sCmd.szStz());
-
-  Drafter* pDrafter = pOptimiser->pDrafter();
-  bool bResult = pDrafter->bAdd(pTknVec,reOptAct);
-  return bResult;
-}
-
-OptimiserFun __Opt_add
-(
-  "add"_Stz,          // name of the prompt function
-  "+"_Stz,            // command first word
-  nullptr,            // command second word
-  bOpt_add,           // function to call
-  0,0,                // spare
-  "add card print"_Stz,
-  "usage???"_Stz
-);
-
-/*----------------------------------------------------------------------------*/
-/* cardCtl: below                                                             */
-/*----------------------------------------------------------------------------*/
-bool STORE::bOpt_below(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
-{
-  vTrace("bOpt_below\n"_Stz);
-
-  Drafter* pDrafter = pOptimiser->pDrafter();
-  bool bResult = pDrafter->bBelow(pTknVec,reOptAct);
-  return bResult;
-}
-
-OptimiserFun __Opt_below
-(
-  "below"_Stz,        // name of the prompt function
-  "below"_Stz,        // command first word
-  nullptr,            // command second word
-  bOpt_below,         // function to call
-  0,0,                // spare
-  "set card below"_Stz,
-  "usage???"_Stz
-);
-
-/*----------------------------------------------------------------------------*/
 /* drafter: clear                                                             */
 /*----------------------------------------------------------------------------*/
 bool STORE::bOpt_clear(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
@@ -129,52 +80,6 @@ OptimiserFun __Opt_cut
 );
 
 /*----------------------------------------------------------------------------*/
-/* cardCtl: depth                                                             */
-/*----------------------------------------------------------------------------*/
-bool STORE::bOpt_depth(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
-{
-  vTrace("bOpt_depth\n"_Stz);
-  
-  Drafter* pDrafter = pOptimiser->pDrafter();
-  bool bResult = pDrafter->bDepth(pTknVec,reOptAct);
-  return bResult;
-}
-
-OptimiserFun __Opt_depth
-(
-  "depth"_Stz,        // name of the prompt function
-  "depth"_Stz,        // command first word
-  nullptr,            // command second word
-  bOpt_depth,         // function to call
-  0,0,                // spare
-  "set print depth limit"_Stz,
-  "usage???"_Stz
-);
-
-/*----------------------------------------------------------------------------*/
-/* cardCtl: form                                                              */
-/*----------------------------------------------------------------------------*/
-bool STORE::bOpt_form(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
-{
-  vTrace("bOpt_form\n"_Stz);
-  
-  Drafter* pDrafter = pOptimiser->pDrafter();
-  bool bResult = pDrafter->bForm(pTknVec,reOptAct);
-  return bResult;
-}
-
-OptimiserFun __Opt_form
-(
-  "form"_Stz,         // name of the prompt function
-  "form"_Stz,         // command first word
-  nullptr,            // command second word
-  bOpt_form,          // function to call
-  0,0,                // spare
-  "set card print form"_Stz,
-  "usage???"_Stz
-);
-
-/*----------------------------------------------------------------------------*/
 /* help                                                                       */
 /*----------------------------------------------------------------------------*/
 bool STORE::bOpt_help(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
@@ -205,29 +110,6 @@ OptimiserFun __Opt_help_1
   bOpt_help,          // function to call
   0,0,                // spare
   "help"_Stz,
-  "usage???"_Stz
-);
-
-/*----------------------------------------------------------------------------*/
-/* cardCtl: hide                                                              */
-/*----------------------------------------------------------------------------*/
-bool STORE::bOpt_hide(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
-{
-  vTrace("bOpt_hide\n"_Stz);
-    
-  Drafter* pDrafter = pOptimiser->pDrafter();
-  bool bResult = pDrafter->bHide(pTknVec,reOptAct);
-  return bResult;
-}
-
-OptimiserFun __Opt_hide
-(
-  "hide"_Stz,         // name of the prompt function
-  "hide"_Stz,         // command first word
-  nullptr,            // command second word
-  bOpt_hide,          // function to call
-  0,0,                // spare
-  "clear card see"_Stz,
   "usage???"_Stz
 );
 

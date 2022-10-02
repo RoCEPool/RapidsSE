@@ -2668,7 +2668,7 @@ void Card::vPrintCard(Ribbon* pRibbon, i8 iDepth)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (! pCardCtl->iSubCards(m_eCard))
+  if (! pCardCtl->bPrintSubCards(m_eCard))
     return;
 
   ListExoIter2_t<Card>* pSubCard_I = pNewIter();

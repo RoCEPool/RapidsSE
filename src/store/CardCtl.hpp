@@ -12,14 +12,8 @@ namespace STORE
   class CardCtl : public Object
   {
   protected:
-    i8 m_iDepth;
-  
-    i8 m_iaBelow[CK_ENUMS];
-    i8 m_iaForm[CK_ENUMS];
-    i8 m_iaPrint[CK_ENUMS];
-
     i8 m_iaPinForm[CK_ENUMS];
-    i8 m_iaSubCards[CK_ENUMS];
+    bool m_baPrintSubCards[CK_ENUMS];
 
   protected:
     // must be last
@@ -32,23 +26,11 @@ namespace STORE
     CardCtl(void);
    ~CardCtl(void) noexcept(false);
 
-    i8 iBelow(i8 i_Card);
-    void vBelow(i8 i_Card, i8 iBelow);
-  
-    i8 iDepth(void);
-    void vDepth(i8 iDepth);
-
-    i8 iForm(i8 i_Card);
-    void vForm(i8 i_Card, i8 iForm);
-
-    i8 iPrint(i8 i_Card);
-    void vPrint(i8 i_Card, i8 iPrint);
-
     i8 iPinForm(i8 i_Card);
     void vPinForm(i8 i_Card, i8 iPrint);
 
-    i8 iSubCards(i8 i_Card);
-    void vSubCards(i8 i_Card, i8 iSubCard);
+    bool bPrintSubCards(i8 i_Card);
+    void vPrintSubCards(i8 i_Card, bool bPrint);
 
   protected:
     Footer* aFooter(void);

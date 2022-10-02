@@ -127,8 +127,8 @@ void Transformer::vTransform2(void)
 
   Board* pBoard_query = m_pBench->pGetBoard(BK_QUERY);
 
-  m_pCardCtl->vSubCards(CK_AGGELIST,0);
-  m_pCardCtl->vSubCards(CK_GBYELIST,0);
+  m_pCardCtl->vPrintSubCards(CK_AGGELIST, false);
+  m_pCardCtl->vPrintSubCards(CK_GBYELIST, false);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pStager->vLinearize_Stages();
@@ -159,10 +159,10 @@ void Transformer::vTransform2(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append <stream> to all <scan> and then to all <absJoin>
-  m_pCardCtl->vSubCards(CK_STREAM,1);
+  m_pCardCtl->vPrintSubCards(CK_STREAM, true);
   m_pCardCtl->vPinForm(CK_STREAM,0);
 
-  //m_pCardCtl->vSubCards(CK_EXPR,0);
+  //m_pCardCtl->vPrintSubCards(CK_EXPR,0);
 
   m_pCardCtl->vPinForm(CK_PREDAND,1);
   m_pCardCtl->vPinForm(CK_PREDCMP,1);
@@ -243,7 +243,7 @@ void Transformer::vTransform2(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  m_pCardCtl->vSubCards(CK_STREAM,1);
+  m_pCardCtl->vPrintSubCards(CK_STREAM, true);
   m_pCardCtl->vPinForm(CK_STREAM,0);
   m_pCardCtl->vPinForm(CK_PREDAND,0);
   m_pCardCtl->vPinForm(CK_PREDCMP,0);
@@ -266,7 +266,7 @@ void Transformer::vTransform2(void)
     pBoard_query->vPrintBoard("Joiner::vForm_joinPred"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  m_pCardCtl->vSubCards(CK_STREAM,1);
+  m_pCardCtl->vPrintSubCards(CK_STREAM, true);
   m_pCardCtl->vPinForm(CK_STREAM,0);
 
   m_pFiltrate->vCull_indexJoin_filterPred();
@@ -304,7 +304,7 @@ void Transformer::vTransform2(void)
   if (m_bInteractive)
     pBoard_query->vPrintBoard("Scanning::vAdd_scanPred"_Stz);
 
-  m_pCardCtl->vSubCards(CK_STREAM,0);
+  m_pCardCtl->vPrintSubCards(CK_STREAM, false);
   m_pCardCtl->vPinForm(CK_STREAM,1);
 
   m_pScanning->vCull_markedPred();
@@ -347,8 +347,8 @@ void Transformer::vTransform2(void)
     pBoard_query->vPrintBoard("Stager::vAdd_Stages"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  m_pCardCtl->vSubCards(CK_AGGELIST,1);
-  m_pCardCtl->vSubCards(CK_GBYELIST,1);
+  m_pCardCtl->vPrintSubCards(CK_AGGELIST, true);
+  m_pCardCtl->vPrintSubCards(CK_GBYELIST, true);
 
   m_pCombiner->vAdd_combined3();
   if (m_bInteractive)
