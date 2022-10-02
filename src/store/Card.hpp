@@ -148,6 +148,8 @@ namespace STORE
     TagSet* m_pProperties;
 
     bool  m_bPrintNm;
+
+    s256  m_sValue;
   
   protected:
     // must be last
@@ -179,6 +181,7 @@ namespace STORE
     Stz* szCardNm(void);
     i8   iCardNo(void);
     void vCardNo(i8 iCardNo);
+    i8   nChildCards(void);
     Stz* szColumnRef(void);
     i8   iColumnRef_columnOrd(void);
     char cColumnRef_tableSyn(void);
@@ -245,7 +248,8 @@ namespace STORE
     void vReplaceChildWithKids(Card* pChildCard);
     void vReplaceSubCard(Card* pSubCard, Card* pWithCard);
 
-    i8   nChildCards(void);
+
+    Stz* sz(void);
 
     char cTableSyn(void);
     void vTableSyn(char cTableSyn);
@@ -257,6 +261,8 @@ namespace STORE
     void vTransferTill(Card* pCards, Card* pTill,
                        Card* pAt=nullptr, bool bAfter=true);
 
+    Stz* szValue(void);
+    void vValue(Stz* szValue);
     void vVisitAllSub(eCK eCard,std::function<bool(Card* pCard)> bfApply);
 
 

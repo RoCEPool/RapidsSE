@@ -135,10 +135,10 @@ void Joiner::vForm_joinPred(void)
       pCard_joinPred->vAppend(pCard_term);
     }
     else
-    if (i_iOrdLo_0 >= iStreamOrdLo && i_iOrdLo_0 <= iStreamOrdHi) {
+    if (i_iOrdLo_1 >= iStreamOrdLo && i_iOrdLo_1 <= iStreamOrdHi) {
       pCard_term = new Card_Term("$I1"_Stz);
       pCard_joinPred->vAppend(pCard_term);
-      pCard_term = new Card_Term(pCard_term_0->szTerm());
+      pCard_term = new Card_Term(pCard_term_1->szTerm());
       pCard_joinPred->vAppend(pCard_term);
     }
     else {

@@ -345,6 +345,18 @@ Stz* Card::szCardNm(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get number of child cards                                                  */
+/*----------------------------------------------------------------------------*/
+i8 Card::nChildCards(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  i8 nChildren = nItems();
+
+  return nChildren;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get columnRef                                                              */
 /*----------------------------------------------------------------------------*/
 Stz* Card::szColumnRef(void)
@@ -481,6 +493,9 @@ Card* Card::pDupCardAndSubCards(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   Card* pCard_dup = new Card(m_eCard);
+
+  pCard_dup->vValue(szValue());
+
   if (m_pProperties) {
     pCard_dup->vPropertiesEnsure();
     pCard_dup->pProperties()->vCopy(m_pProperties);
@@ -1100,15 +1115,13 @@ void Card::vReplaceSubCard(Card* pSubCard, Card* pWithCard)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get number of sub-cards                                                    */
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
-i8 Card::nChildCards(void)
+Stz* Card::sz(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  i8 nSubs = nItems();
-  
-  return nSubs;
+  return m_sValue.szStz();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1240,6 +1253,26 @@ void Card::vTransferTill(Card* pCards, Card* pTill,
     if (pTill == pCard)
       break;
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Stz* Card::szValue(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  return m_sValue.szStz();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vValue(Stz* szValue)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  m_sValue = szValue;
 }
 
 /*----------------------------------------------------------------------------*/
