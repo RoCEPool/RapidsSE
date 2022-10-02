@@ -1456,12 +1456,12 @@ void Card::vCardPrint(Ribbon* pRibbon, i8 iDepth)
   if (pRibbon->iArea())
     return;
 
-  pCard->vPrintProperties(pRibbon,iDepth);
+  pCard->vPrintCardProperties(pRibbon, iDepth);
 
   CardIter* pSubCardIter = pCard->pNewSubCardIter();
   while (pSubCardIter->bHasNext()) {
     Card *pSubCard = pSubCardIter->pNext();
-    pSubCard->vPrintProperties(pRibbon,iDepth+1);
+    pSubCard->vPrintCardProperties(pRibbon, iDepth + 1);
   }
   delete pSubCardIter;
 }
@@ -2600,6 +2600,8 @@ void Card::vTerm(Stz* szTerm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   vAddProperty("szTerm"_Stz,szTerm);
+
+  m_sValue = szTerm;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2684,20 +2686,15 @@ void Card::vPrintCard(Ribbon* pRibbon, i8 iDepth)
   if (0 == iDepth)
     vPrintHeader(pRibbon);
 
-  bool bPrune = false;
   CardCtl* pCardCtl = _pCardCtl(pRibbon->pCtl());
 
   eCP ePrintForm = pCardCtl->ePrintForm(m_eCard);
-  if (CP_DEFAULT == ePrintForm) {
-    vPrintName(pRibbon, iDepth);
-    vPrintDetails(pRibbon, iDepth, bPrune);
-  }
-  else {
-    vPrintCard_byForm(pRibbon, iDepth, ePrintForm, bPrune);
-  }
+  if (CP_DEFAULT == ePrintForm)
+    vPrintCard_default(pRibbon, iDepth, ePrintForm);
+  else
+    vPrintCard_byForm(pRibbon, iDepth, ePrintForm);
+
   //vMark2(' ');
-  if (bPrune)
-    return;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -2716,7 +2713,7 @@ void Card::vPrintCard(Ribbon* pRibbon, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 /* print card onto given ribbon                                               */
 /*----------------------------------------------------------------------------*/
-void Card::vPrintCard_byForm(Ribbon* pRibbon, i8 iDepth, eCP ePinForm, bool& bPrune)
+void Card::vPrintCard_byForm(Ribbon* pRibbon, i8 iDepth, eCP ePinForme)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -2724,15 +2721,15 @@ void Card::vPrintCard_byForm(Ribbon* pRibbon, i8 iDepth, eCP ePinForm, bool& bPr
   switch (m_eCard) {
 
     case CK_PREDAND:
-      _pCard_PredAnd(this)->vPrintName(pRibbon,iDepth);
+      _pCard_PredAnd(this)->vPrintCardName(pRibbon, iDepth);
       break;
 
     case CK_PREDCMP:
-      _pCard_PredCmp(this)->vPrintName(pRibbon,iDepth);
+      _pCard_PredCmp(this)->vPrintCardName(pRibbon, iDepth);
       break;
 
     case CK_PREDOR:
-      _pCard_PredOr(this)->vPrintName(pRibbon,iDepth);
+      _pCard_PredOr(this)->vPrintCardName(pRibbon, iDepth);
       break;
 
     case CK_STREAM:
@@ -2740,7 +2737,7 @@ void Card::vPrintCard_byForm(Ribbon* pRibbon, i8 iDepth, eCP ePinForm, bool& bPr
       break;
 
     case CK_TERM:
-      _pCard_Term(this)->vPrintProperties(pRibbon,iDepth,false);
+      _pCard_Term(this)->vPrintCardProperties(pRibbon, iDepth, false);
       break;
 
     default:
@@ -2757,7 +2754,18 @@ void Card::vPrintCard_byForm(Ribbon* pRibbon, i8 iDepth, eCP ePinForm, bool& bPr
 /*----------------------------------------------------------------------------*/
 /* print card onto given ribbon                                               */
 /*----------------------------------------------------------------------------*/
-void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
+void Card::vPrintCard_default(Ribbon* pRibbon, i8 iDepth, eCP ePinForm)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  vPrintCardName(pRibbon, iDepth);
+  vPrintCardDetails(pRibbon, iDepth);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* print card onto given ribbon                                               */
+/*----------------------------------------------------------------------------*/
+void Card::vPrintCardDetails(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -2769,19 +2777,22 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
     case CK_COMMENT:     vCommentPrint(pRibbon, iDepth); break;
     case CK_INDEXPTR:    vIndexPrint  (pRibbon, iDepth); break;
     case CK_TABLEPTR:    vTablePrint  (pRibbon, iDepth); break;
-    case CK_TERM:        vTermPrint   (pRibbon,iDepth); break;
+    case CK_TERM:
+      //vPrintCardValue(pRibbon, iDepth);
+      vTermPrint(pRibbon,iDepth);
+      break;
 
-    case CK_STREAMELIST: vStreamElistPrint(pRibbon,iDepth,bPrune);
+    case CK_STREAMELIST: vStreamElistPrint(pRibbon,iDepth);
       break;
 
     default:
-      vPrintProperties(pRibbon,iDepth);
+      vPrintCardProperties(pRibbon, iDepth);
       break;
   }
   
 }
 /*----------------------------------------------------------------------------*/
-//void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
+//void Card::vPrintCardDetails(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
 //{
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 //
@@ -2789,94 +2800,94 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
 //
 //  switch (eCard) {
 //
-//    case CK_ABSJOIN:                    vPrintProperties(pRibbon,iDepth); break;
-//    case CK_AGGELIST:                   vPrintProperties(pRibbon,iDepth); break;
-//    case CK_AGGLEVEL:                   vPrintProperties(pRibbon,iDepth); break;
-//    case CK_AGGREG:                     vPrintProperties(pRibbon,iDepth); break;
-//    case CK_AGGREGATES:                 vPrintProperties(pRibbon,iDepth); break;
-//    case CK_AS:                         vPrintProperties(pRibbon,iDepth); break;
+//    case CK_ABSJOIN:                    vPrintCardProperties(pRibbon,iDepth); break;
+//    case CK_AGGELIST:                   vPrintCardProperties(pRibbon,iDepth); break;
+//    case CK_AGGLEVEL:                   vPrintCardProperties(pRibbon,iDepth); break;
+//    case CK_AGGREG:                     vPrintCardProperties(pRibbon,iDepth); break;
+//    case CK_AGGREGATES:                 vPrintCardProperties(pRibbon,iDepth); break;
+//    case CK_AS:                         vPrintCardProperties(pRibbon,iDepth); break;
 //
-//    case CK_CALC:                       vPrintProperties(pRibbon,iDepth); break;
-//    case CK_CALCBOOL:                   vPrintProperties(pRibbon,iDepth); break;
-//    case CK_CANDINDEX:                  vPrintProperties(pRibbon,iDepth); break;
+//    case CK_CALC:                       vPrintCardProperties(pRibbon,iDepth); break;
+//    case CK_CALCBOOL:                   vPrintCardProperties(pRibbon,iDepth); break;
+//    case CK_CANDINDEX:                  vPrintCardProperties(pRibbon,iDepth); break;
 //    case CK_CARDPTR:          vCardPrint               (pRibbon, iDepth); break;
-//    case CK_COLUMNREF:                  vPrintProperties(pRibbon,iDepth); break;
-//    case CK_COMBINED:                   vPrintProperties(pRibbon,iDepth); break;
+//    case CK_COLUMNREF:                  vPrintCardProperties(pRibbon,iDepth); break;
+//    case CK_COMBINED:                   vPrintCardProperties(pRibbon,iDepth); break;
 //
-//    case CK_DEBUG:                      vPrintProperties(pRibbon,iDepth); break;
-//    case CK_DIRECTION:                  vPrintProperties(pRibbon,iDepth); break;
+//    case CK_DEBUG:                      vPrintCardProperties(pRibbon,iDepth); break;
+//    case CK_DIRECTION:                  vPrintCardProperties(pRibbon,iDepth); break;
 //
-//    case CK_EBOUND:                     vPrintProperties(pRibbon,iDepth); break;
-//    case CK_EXISTS:                     vPrintProperties(pRibbon,iDepth); break;
-//    case CK_EXPR:                       vPrintProperties(pRibbon,iDepth); break;
-//    case CK_EXPRBOOL:                   vPrintProperties(pRibbon,iDepth); break;
+//    case CK_EBOUND:                     vPrintCardProperties(pRibbon,iDepth); break;
+//    case CK_EXISTS:                     vPrintCardProperties(pRibbon,iDepth); break;
+//    case CK_EXPR:                       vPrintCardProperties(pRibbon,iDepth); break;
+//    case CK_EXPRBOOL:                   vPrintCardProperties(pRibbon,iDepth); break;
 //
-//    case CK_FILTER:                     vPrintProperties(pRibbon,iDepth); break;
-//    case CK_FILTELIST:                  vPrintProperties(pRibbon,iDepth); break;
+//    case CK_FILTER:                     vPrintCardProperties(pRibbon,iDepth); break;
+//    case CK_FILTELIST:                  vPrintCardProperties(pRibbon,iDepth); break;
 //
-//    case CK_GBYELIST:                   vPrintProperties(pRibbon,iDepth); break;
-//    case CK_GENERATE:                   vPrintProperties(pRibbon,iDepth); break;
+//    case CK_GBYELIST:                   vPrintCardProperties(pRibbon,iDepth); break;
+//    case CK_GENERATE:                   vPrintCardProperties(pRibbon,iDepth); break;
 //
-//    case CK_HASH:                       vPrintProperties(pRibbon,iDepth); break;
-//    case CK_HAVING:                     vPrintProperties(pRibbon,iDepth); break;
+//    case CK_HASH:                       vPrintCardProperties(pRibbon,iDepth); break;
+//    case CK_HAVING:                     vPrintCardProperties(pRibbon,iDepth); break;
 //
-//    case CK_IDXCOL:                     vPrintProperties(pRibbon,iDepth); break;
-//    case CK_IDXCOLLIST:                 vPrintProperties(pRibbon,iDepth); break;
+//    case CK_IDXCOL:                     vPrintCardProperties(pRibbon,iDepth); break;
+//    case CK_IDXCOLLIST:                 vPrintCardProperties(pRibbon,iDepth); break;
 //    case CK_INDEXPTR:        vIndexPrint               (pRibbon, iDepth); break;
-//    case CK_INDEXJOIN:                  vPrintProperties(pRibbon,iDepth); break;
-//    case CK_INDEXLIST:                  vPrintProperties(pRibbon,iDepth); break;
-//    case CK_INDEXPRED:                  vPrintProperties(pRibbon,iDepth); break;
-//    case CK_INDEXSCAN:                  vPrintProperties(pRibbon,iDepth); break;
+//    case CK_INDEXJOIN:                  vPrintCardProperties(pRibbon,iDepth); break;
+//    case CK_INDEXLIST:                  vPrintCardProperties(pRibbon,iDepth); break;
+//    case CK_INDEXPRED:                  vPrintCardProperties(pRibbon,iDepth); break;
+//    case CK_INDEXSCAN:                  vPrintCardProperties(pRibbon,iDepth); break;
 //
-//    case CK_JOINPRED:                   vPrintProperties(pRibbon,iDepth); break;
-//    case CK_JOINPREDLIST:               vPrintProperties(pRibbon,iDepth); break;
+//    case CK_JOINPRED:                   vPrintCardProperties(pRibbon,iDepth); break;
+//    case CK_JOINPREDLIST:               vPrintCardProperties(pRibbon,iDepth); break;
 //
-//    case CK_LBOUND:                     vPrintProperties(pRibbon,iDepth); break;
-//    case CK_LIMIT:                      vPrintProperties(pRibbon,iDepth); break;
+//    case CK_LBOUND:                     vPrintCardProperties(pRibbon,iDepth); break;
+//    case CK_LIMIT:                      vPrintCardProperties(pRibbon,iDepth); break;
 //
-//    case CK_MAP:                        vPrintProperties(pRibbon,iDepth); break;
-//    case CK_MAPSET:                     vPrintProperties(pRibbon,iDepth); break;
-//    case CK_MODE:                       vPrintProperties(pRibbon,iDepth); break;
+//    case CK_MAP:                        vPrintCardProperties(pRibbon,iDepth); break;
+//    case CK_MAPSET:                     vPrintCardProperties(pRibbon,iDepth); break;
+//    case CK_MODE:                       vPrintCardProperties(pRibbon,iDepth); break;
 //
-//    case CK_NAME:                       vPrintProperties(pRibbon,iDepth); break;
+//    case CK_NAME:                       vPrintCardProperties(pRibbon,iDepth); break;
 //
-//    case CK_ON:                         vPrintProperties(pRibbon,iDepth); break;
-//    case CK_OPTION:                     vPrintProperties(pRibbon,iDepth); break;
-//    case CK_ORDAGG:                     vPrintProperties(pRibbon,iDepth); break;
-//    case CK_OBYELIST:                   vPrintProperties(pRibbon,iDepth); break;
+//    case CK_ON:                         vPrintCardProperties(pRibbon,iDepth); break;
+//    case CK_OPTION:                     vPrintCardProperties(pRibbon,iDepth); break;
+//    case CK_ORDAGG:                     vPrintCardProperties(pRibbon,iDepth); break;
+//    case CK_OBYELIST:                   vPrintCardProperties(pRibbon,iDepth); break;
 //
-//    case CK_PREDAND:                    vPrintProperties(pRibbon,iDepth); break;
-//    case CK_PREDCMP:                    vPrintProperties(pRibbon,iDepth); break;
-//    case CK_PREDOR:                     vPrintProperties(pRibbon,iDepth); break;
-//    case CK_PROJECT:                    vPrintProperties(pRibbon,iDepth); break;
-//    case CK_PROJELIST:                  vPrintProperties(pRibbon,iDepth); break;
+//    case CK_PREDAND:                    vPrintCardProperties(pRibbon,iDepth); break;
+//    case CK_PREDCMP:                    vPrintCardProperties(pRibbon,iDepth); break;
+//    case CK_PREDOR:                     vPrintCardProperties(pRibbon,iDepth); break;
+//    case CK_PROJECT:                    vPrintCardProperties(pRibbon,iDepth); break;
+//    case CK_PROJELIST:                  vPrintCardProperties(pRibbon,iDepth); break;
 //
-//    case CK_RBOUND:                     vPrintProperties(pRibbon,iDepth); break;
-//    case CK_ROWS:                       vPrintProperties(pRibbon,iDepth); break;
+//    case CK_RBOUND:                     vPrintCardProperties(pRibbon,iDepth); break;
+//    case CK_ROWS:                       vPrintCardProperties(pRibbon,iDepth); break;
 //
-//    case CK_SBYELIST:                   vPrintProperties(pRibbon,iDepth); break;
-//    case CK_SCAN:                       vPrintProperties(pRibbon,iDepth); break;
-//    case CK_SCANPRED:                   vPrintProperties(pRibbon,iDepth); break;
-//    case CK_SEND:                       vPrintProperties(pRibbon,iDepth); break;
-//    case CK_SENDKIND:                   vPrintProperties(pRibbon,iDepth); break;
-//    case CK_SENDS:                      vPrintProperties(pRibbon,iDepth); break;
-//    case CK_SORT:                       vPrintProperties(pRibbon,iDepth); break;
-//    case CK_STAGE:                      vPrintProperties(pRibbon,iDepth); break;
-//    case CK_STAGETOPO:                  vPrintProperties(pRibbon,iDepth); break;
-//    case CK_STREAM:                     vPrintProperties(pRibbon,iDepth); break;
-//    case CK_STREAMCOL:                  vPrintProperties(pRibbon,iDepth); break;
-//    case CK_STREAMCOLLIST:              vPrintProperties(pRibbon,iDepth); break;
-//    case CK_SUBSET:                     vPrintProperties(pRibbon,iDepth); break;
+//    case CK_SBYELIST:                   vPrintCardProperties(pRibbon,iDepth); break;
+//    case CK_SCAN:                       vPrintCardProperties(pRibbon,iDepth); break;
+//    case CK_SCANPRED:                   vPrintCardProperties(pRibbon,iDepth); break;
+//    case CK_SEND:                       vPrintCardProperties(pRibbon,iDepth); break;
+//    case CK_SENDKIND:                   vPrintCardProperties(pRibbon,iDepth); break;
+//    case CK_SENDS:                      vPrintCardProperties(pRibbon,iDepth); break;
+//    case CK_SORT:                       vPrintCardProperties(pRibbon,iDepth); break;
+//    case CK_STAGE:                      vPrintCardProperties(pRibbon,iDepth); break;
+//    case CK_STAGETOPO:                  vPrintCardProperties(pRibbon,iDepth); break;
+//    case CK_STREAM:                     vPrintCardProperties(pRibbon,iDepth); break;
+//    case CK_STREAMCOL:                  vPrintCardProperties(pRibbon,iDepth); break;
+//    case CK_STREAMCOLLIST:              vPrintCardProperties(pRibbon,iDepth); break;
+//    case CK_SUBSET:                     vPrintCardProperties(pRibbon,iDepth); break;
 //
-//    case CK_TABLE:                      vPrintProperties(pRibbon,iDepth); break;
-//    case CK_TABLELIST:                  vPrintProperties(pRibbon,iDepth); break;
+//    case CK_TABLE:                      vPrintCardProperties(pRibbon,iDepth); break;
+//    case CK_TABLELIST:                  vPrintCardProperties(pRibbon,iDepth); break;
 //    case CK_TABLEPTR:        vTablePrint               (pRibbon, iDepth); break;
-//    case CK_TABLESYN:                   vPrintProperties(pRibbon,iDepth); break;
+//    case CK_TABLESYN:                   vPrintCardProperties(pRibbon,iDepth); break;
 //    case CK_TERM:             vTermPrint                (pRibbon,iDepth); break;
-//    case CK_TYPE:                       vPrintProperties(pRibbon,iDepth); break;
+//    case CK_TYPE:                       vPrintCardProperties(pRibbon,iDepth); break;
 //
-//    case CK_UBOUND:                     vPrintProperties(pRibbon,iDepth); break;
-//    case CK_UNIQUE:                     vPrintProperties(pRibbon,iDepth); break;
+//    case CK_UBOUND:                     vPrintCardProperties(pRibbon,iDepth); break;
+//    case CK_UNIQUE:                     vPrintCardProperties(pRibbon,iDepth); break;
 //
 //    case CK_BOARD:
 //      NEVER_REACH;
@@ -2887,7 +2898,7 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
 //      break;
 //
 //    default:
-//      vPrintProperties(pRibbon,iDepth);
+//      vPrintCardProperties(pRibbon,iDepth);
 //      break;
 //  }
 //
@@ -2915,7 +2926,7 @@ void Card::vPrintHeader(Ribbon* pRibbon)
 /*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
-void Card::vPrintName(Ribbon* pRibbon, i8 iDepth)
+void Card::vPrintCardName(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -2944,7 +2955,7 @@ void Card::vPrintName(Ribbon* pRibbon, i8 iDepth)
 }
 
 /*----------------------------------------------------------------------------*/
-//void Card::vPrintName(Ribbon* pRibbon, i8 iDepth)
+//void Card::vPrintCardName(Ribbon* pRibbon, i8 iDepth)
 //{
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 //
@@ -2994,7 +3005,7 @@ void Card::vPrintName(Ribbon* pRibbon, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 /* print by piece                                                             */
 /*----------------------------------------------------------------------------*/
-void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth, bool bPrintName)
+void Card::vPrintCardProperties(Ribbon* pRibbon, i8 iDepth, bool bPrintPtyName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -3017,7 +3028,7 @@ void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth, bool bPrintName)
         if (szDecode)
           pRibbon->vSprintRight("%s"_Stz,szDecode);
         else
-        if (bPrintName)
+        if (bPrintPtyName)
           pRibbon->vSprintRight("%s %lld"_Stz,szName,iValue);
         else
           pRibbon->vSprintRight("%lld"_Stz,iValue);
@@ -3036,7 +3047,7 @@ void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth, bool bPrintName)
       case TN_STRING: {
         Stz* szName  = szGetPropertyNm(i_Property);
         Stz* szValue = szGetProperty(i_Property);
-        if (bPrintName)
+        if (bPrintPtyName)
           pRibbon->vSprintRight("%s %s"_Stz,szName,szValue);
         else
           pRibbon->vSprintRight("%s"_Stz,szValue);
@@ -3050,6 +3061,23 @@ void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth, bool bPrintName)
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/* print                                                                      */
+/*----------------------------------------------------------------------------*/
+void Card::vPrintCardValue(Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  s32 sPrint;
+
+  sPrint.vSprint("%s%lld)%s"_Stz,
+                 Stz::szDots(iDepth),
+                 m_iCardNo,
+                 szValue());
+
+  pRibbon->vSprintRight("%s"_Stz,sPrint.szStz());
+
+}
 
 
 /*----------------------------------------------------------------------------*/
@@ -3101,21 +3129,21 @@ void Card::vIndexPrint(Ribbon* pRibbon, i8 iDepth)
   pRibbon->vSprintRight(" %lld buffers"_Stz,nBuffers);
   pRibbon->vSprintRight(" %lld entries"_Stz,nEntries);
 
-  //vPrintProperties(pRibbon,iDepth);
+  //vPrintCardProperties(pRibbon,iDepth);
 }
 
 
 /*----------------------------------------------------------------------------*/
 /* print StreamElist                                                          */
 /*----------------------------------------------------------------------------*/
-void Card::vStreamElistPrint(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
+void Card::vStreamElistPrint(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   Card_StreamElist* pCard_StreamElist = _pCard_StreamElist(this);
 
   if (! pCard_StreamElist->bSimpleDef()) {
-    vPrintProperties(pRibbon,iDepth);
+    vPrintCardProperties(pRibbon, iDepth);
     return;
   }
 
@@ -3143,8 +3171,6 @@ void Card::vStreamElistPrint(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
                           );
 
   }
-  
-  bPrune = true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3195,7 +3221,7 @@ void Card::vTermPrint(Ribbon* pRibbon, i8 iDepth)
   
   //Card_Term* pCardTerm = _pCard_Term(this);
 
-  vPrintProperties(pRibbon,iDepth,true);
+  vPrintCardProperties(pRibbon, iDepth, true);
 }
 
 /*----------------------------------------------------------------------------*/
