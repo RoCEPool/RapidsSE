@@ -1,28 +1,28 @@
 /*============================================================================*/
-/* Card_CoPtnList.cpp -- Co-Partition List                                    */
+/* Card_CoPtnJoin.cpp -- Co-Partition                                             */
 /*============================================================================*/
 
-#include "Card_CoPtnList.hpp"
+#include "Card_CoPtnJoin.hpp"
 
-#include "Card_CoPtn.hpp"
 #include "Card_PredCmp.hpp"
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_CoPtnList,CK_COPTNLIST)
-__aNewFunction(Card_CoPtnList,CN_CARD)
-__vDeleteFunction(Card_CoPtnList,CN_CARD)
+__pCastFunction_Card(STORE, Card_CoPtnJoin, CK_COPTNJOIN)
+__aNewFunction(Card_CoPtnJoin, CN_CARD)
+__vDeleteFunction(Card_CoPtnJoin, CN_CARD)
 
-__bIsCard(STORE,Card_CoPtnList,CK_COPTNLIST)
-__pGetSubFunction_Card(STORE,CoPtnList,CK_COPTNLIST)
+__bIsCard(STORE, Card_CoPtnJoin, CK_COPTNJOIN)
+__pGetSubFunction_Card(STORE, CoPtnJoin, CK_COPTNJOIN)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_CoPtnList::Card_CoPtnList(void)
-: Card(CK_COPTNLIST)
+Card_CoPtnJoin::Card_CoPtnJoin(void)
+: Card(CK_COPTNJOIN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -34,7 +34,7 @@ Card_CoPtnList::Card_CoPtnList(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_CoPtnList::~Card_CoPtnList(void) noexcept(false)
+Card_CoPtnJoin::~Card_CoPtnJoin(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -46,41 +46,15 @@ Card_CoPtnList::~Card_CoPtnList(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_CoPtn* Card_CoPtnList::pFind_coPtn_for(Card_CoPtnPred* p_CoPtnPred)
+bool Card_CoPtnJoin::bCoPtnWith(Card_CoPtnPred* p_CoPtnPred)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  i8 nChildren = nChildCards();
-  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
-    Card_CoPtn* p_coPtn = _pCard_CoPtn(pGetChild(i_Child));
+  Card_PredCmp* p_predCmp_this = _pGetSub_PredCmp(this);
+  Card_PredCmp* p_predCmp_arg  = _pGetSub_PredCmp(p_CoPtnPred);
 
-    if (p_coPtn->bCoPtnWith(p_CoPtnPred))
-      return p_coPtn;
-  }
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Card_CoPtnList::bHasEqPredCmp(Card_PredCmp* p_predCmp_arg)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  i8 nChildren_coPtn = this->nChildCards();
-  for (i8 i_Child_coPtn = 0; i_Child_coPtn < nChildren_coPtn; i_Child_coPtn++) {
-    Card_CoPtn* p_coPtn = _pCard_CoPtn(this->pGetChild(i_Child_coPtn));
-
-    i8 nChildren_predCmp = p_coPtn->nChildCards();
-    for (i8 i_Child_predCmp = 0; i_Child_predCmp < nChildren_predCmp; i_Child_predCmp++) {
-      Card_PredCmp *p_predCmp = _pCard_PredCmp(p_coPtn->pGetChild(i_Child_predCmp));
-
-
-      if (p_predCmp->bIsEq(p_predCmp_arg))
-        return true;
-    }
-  }
+  if (p_predCmp_this->bCoPtnWith(p_predCmp_arg))
+    return true;
 
   return false;
 }

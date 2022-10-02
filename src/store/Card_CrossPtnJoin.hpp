@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_CrossPtn.hpp -- Cross Partition                                       */
+/* Card_CrossPtnJoin.hpp -- Cross Partition                                       */
 /*============================================================================*/
 #pragma once
 
@@ -7,19 +7,19 @@
 
 namespace STORE
 {
-  class Card_CrossPtn : public Card
+  class Card_CrossPtnJoin : public Card
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_CrossPtn(void);
-   ~Card_CrossPtn(void) noexcept(false);
+    Card_CrossPtnJoin(void);
+   ~Card_CrossPtnJoin(void) noexcept(false);
   };
 
-  Card_CrossPtn* _pCard_CrossPtn(void* aAddr);
-  bool _bIsCard_CrossPtn(void* aAddr);
-  Card_CrossPtn* _pGetSub_CrossPtn(Card* pParent);
+  Card_CrossPtnJoin* _pCard_CrossPtnJoin(void* aAddr);
+  bool _bIsCard_CrossPtnJoin(void* aAddr);
+  Card_CrossPtnJoin* _pGetSub_CrossPtnJoin(Card * pParent);
 }
 
 /*============================================================================*/

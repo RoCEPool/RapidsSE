@@ -1,25 +1,32 @@
 /*============================================================================*/
-/* Card_CrossPtnList.hpp -- Cross-Partition List                              */
+/* Card_CoPtnJoinList.hpp -- Co-Partition Join List                            */
 /*============================================================================*/
 #pragma once
 
 #include "Card.hpp"
 
+#include "Card_CoPtnJoin.hpp"
+#include "Card_CoPtnPred.hpp"
+
 namespace STORE
 {
-  class Card_CrossPtnList : public Card
+  class Card_CoPtnJoinList : public Card
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_CrossPtnList(void);
-   ~Card_CrossPtnList(void) noexcept(false);
+    Card_CoPtnJoinList(void);
+   ~Card_CoPtnJoinList(void) noexcept(false);
+
+    Card_CoPtnJoin* pFind_coPtn_for(Card_CoPtnPred* p_CoPtnPred);
+
+    bool bHasEqPredCmp(Card_PredCmp* p_predCmp);
   };
 
-  Card_CrossPtnList* _pCard_CrossPtnList(void* aAddr);
-  bool _bIsCard_CrossPtnList(void* aAddr);
-  Card_CrossPtnList* _pGetSub_CrossPtnList(Card* pParent);
+  Card_CoPtnJoinList* _pCard_CoPtnJoinList(void* aAddr);
+  bool _bIsCard_CoPtnJoinList(void* aAddr);
+  Card_CoPtnJoinList* _pGetSub_CoPtnJoinList(Card * pParent);
 }
 
 /*============================================================================*/

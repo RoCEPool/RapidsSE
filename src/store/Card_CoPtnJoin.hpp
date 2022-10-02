@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_CoPtn.hpp -- Co-Partition                                             */
+/* Card_CoPtnJoin.hpp -- Co-Partition                                             */
 /*============================================================================*/
 #pragma once
 
@@ -8,21 +8,21 @@
 
 namespace STORE
 {
-  class Card_CoPtn : public Card
+  class Card_CoPtnJoin : public Card
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_CoPtn(void);
-   ~Card_CoPtn(void) noexcept(false);
+    Card_CoPtnJoin(void);
+   ~Card_CoPtnJoin(void) noexcept(false);
 
    bool bCoPtnWith(Card_CoPtnPred* p_CoPtnPred);
   };
 
-  Card_CoPtn* _pCard_CoPtn(void* aAddr);
-  bool _bIsCard_CoPtn(void* aAddr);
-  Card_CoPtn* _pGetSub_CoPtn(Card* pParent);
+  Card_CoPtnJoin* _pCard_CoPtnJoin(void* aAddr);
+  bool _bIsCard_CoPtnJoin(void* aAddr);
+  Card_CoPtnJoin* _pGetSub_CoPtnJoin(Card* pParent);
 }
 
 /*============================================================================*/

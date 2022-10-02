@@ -142,17 +142,17 @@ void Permutor::vCompute_coPtnPredList(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Permutor::vCompute_coPtnList(void)
+void Permutor::vCompute_coPtnJoinList(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PERMUTOR, _FOOTER_);
 
   vSetupPermuteBoard();
 
   //--nn--------------==
-  // coPtnList
+  // coPtnJoinList
 
-  m_p_coPtnList = new Card_CoPtnList;
-  m_pBoard_permute->vAppendMainCard(m_p_coPtnList);
+  m_p_coPtnJoinList = new Card_CoPtnJoinList;
+  m_pBoard_permute->vAppendMainCard(m_p_coPtnJoinList);
 
   m_p_coPtnPredList =
       _pCard_CoPtnPredList(m_pBoard_permute->pFindMain(CK_COPTNPREDLIST));
@@ -165,58 +165,58 @@ void Permutor::vCompute_coPtnList(void)
 
     m_p_subSet = m_p_coPtnPred->pDupSubCards();
 
-    if (! (m_p_coPtn = m_p_coPtnList->pFind_coPtn_for(m_p_coPtnPred)) ) {
-      m_p_coPtn = new Card_CoPtn;
-      m_p_coPtnList->vAppend(m_p_coPtn);
+    if (! (m_p_coPtnJoin = m_p_coPtnJoinList->pFind_coPtn_for(m_p_coPtnPred)) ) {
+      m_p_coPtnJoin = new Card_CoPtnJoin;
+      m_p_coPtnJoinList->vAppend(m_p_coPtnJoin);
     }
 
-    m_p_coPtn->vTransferSubCards(m_p_subSet);
+    m_p_coPtnJoin->vTransferSubCards(m_p_subSet);
     DELETE_CARD(m_p_subSet);
   }
 
 
 
   if (m_bInteractive)
-    m_pBoard_permute->vPrintBoard("Permutor::vCompute_coPtnList"_Stz);
+    m_pBoard_permute->vPrintBoard("Permutor::vCompute_coPtnJoinList"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Permutor::vCompute_crossPtnList(void)
+void Permutor::vCompute_crossPtnJoinList(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PERMUTOR, _FOOTER_);
 
   vSetupPermuteBoard();
 
   //--nn--------------==
-  // crossPtnList
+  // crossPtnJoinList
 
   m_p_joinPredList =
       _pCard_JoinPredList(m_pBoard_permute->pFindMain(CK_JOINPREDLIST));
 
-  m_p_crossPtnList = new Card_CrossPtnList;
-  m_pBoard_permute->vAppendMainCard(m_p_crossPtnList);
+  m_p_crossPtnJoinList = new Card_CrossPtnJoinList;
+  m_pBoard_permute->vAppendMainCard(m_p_crossPtnJoinList);
 
   i8 nChildren = m_p_joinPredList->nChildCards();
   for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
     m_p_predCmp =
         _pCard_PredCmp(m_p_joinPredList->pGetChild(i_Child));
 
-    if (m_p_coPtnList->bHasEqPredCmp(m_p_predCmp))
+    if (m_p_coPtnJoinList->bHasEqPredCmp(m_p_predCmp))
       continue;
 
-    m_p_crossPtn = new Card_CrossPtn;
-    m_p_crossPtn->vAppend(m_p_predCmp->pDupCardAndSubCards());
-    m_p_crossPtnList->vAppend(m_p_crossPtn);
+    m_p_crossPtnJoin = new Card_CrossPtnJoin;
+    m_p_crossPtnJoin->vAppend(m_p_predCmp->pDupCardAndSubCards());
+    m_p_crossPtnJoinList->vAppend(m_p_crossPtnJoin);
   }
 
 //  m_p_comment = new Card_Comment("((TO BE CODED))"_Stz);
-//  m_p_crossPtnList->vAppend(m_p_comment);
+//  m_p_crossPtnJoinList->vAppend(m_p_comment);
 
 
   if (m_bInteractive)
-    m_pBoard_permute->vPrintBoard("Permutor::vCompute_crossPtnList"_Stz);
+    m_pBoard_permute->vPrintBoard("Permutor::vCompute_crossPtnJoinList"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -234,15 +234,15 @@ void Permutor::vCompute_ptndJointSet(void)
   m_p_joinPtnList = new Card_PtndJoinSet;
   m_pBoard_permute->vAppendMainCard(m_p_joinPtnList);
 
-  m_p_coPtnList =
-      _pCard_CoPtnList(m_pBoard_permute->pFindMain(CK_COPTNLIST));
-  m_p_subSet = m_p_coPtnList->pDupSubCards();
+  m_p_coPtnJoinList =
+      _pCard_CoPtnJoinList(m_pBoard_permute->pFindMain(CK_COPTNJOINLIST));
+  m_p_subSet = m_p_coPtnJoinList->pDupSubCards();
   m_p_joinPtnList->vTransferSubCards(m_p_subSet);
   DELETE_CARD(m_p_subSet);
 
-  m_p_crossPtnList =
-      _pCard_CrossPtnList(m_pBoard_permute->pFindMain(CK_CROSSPTNLIST));
-  m_p_subSet = m_p_crossPtnList->pDupSubCards();
+  m_p_crossPtnJoinList =
+      _pCard_CrossPtnJoinList(m_pBoard_permute->pFindMain(CK_CROSSPTNJOINLIST));
+  m_p_subSet = m_p_crossPtnJoinList->pDupSubCards();
   m_p_joinPtnList->vTransferSubCards(m_p_subSet);
   DELETE_CARD(m_p_subSet);
 

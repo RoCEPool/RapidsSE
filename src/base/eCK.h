@@ -21,12 +21,12 @@ enum eCK // card kind
   /* */ CK_COLUMNREF,
   /* */ CK_COMBINED,
   /* */ CK_COMMENT,
-  /* */ CK_COPTN,
-  /* */ CK_COPTNLIST,
+  /* */ CK_COPTNJOIN,
+  /* */ CK_COPTNJOINLIST,
   /* */ CK_COPTNPRED,
   /* */ CK_COPTNPREDLIST,
-  /* */ CK_CROSSPTN,
-  /* */ CK_CROSSPTNLIST,
+  /* */ CK_CROSSPTNJOIN,
+  /* */ CK_CROSSPTNJOINLIST,
   /* */ CK_CROSSPTNPRED,
 
   /* */ CK_DEBUG,
@@ -132,12 +132,12 @@ static Stz* aCK[]
   /* */ "CK_COLUMNREF"_Stz,    // CK_COLUMNREF
   /* */ "CK_COMBINED"_Stz,     // CK_COMBINED
   /* */ "CK_COMMENT"_Stz,      // CK_COMMENT
-  /* */ "CK_COPTN"_Stz,        // CK_COPTN
-  /* */ "CK_COPTNLIST"_Stz,    // CK_COPTNLIST
+  /* */ "CK_COPTNJOIN"_Stz,    // CK_COPTNJOIN
+  /* */ "CK_COPTNJOINLIST"_Stz,// CK_COPTNJOINLIST
   /* */ "CK_COPTNPRED"_Stz,    // CK_COPTNPRED
   /* */ "CK_COPTNPREDLIST"_Stz,// CK_COPTNPREDLIST
-  /* */ "CK_CROSSPTN"_Stz,     // CK_CROSSPTN
-  /* */ "CK_CROSSPTNLIST"_Stz, // CK_CROSSPTNLIST
+  /* */ "CK_CROSSPTNJOIN"_Stz,     // CK_CROSSPTNJOIN
+  /* */ "CK_CROSSPTNJOINLIST"_Stz, // CK_CROSSPTNJOINLIST
   /* */ "CK_CROSSPTNPRED"_Stz, // CK_CROSSPTNPRED
 
   /* */ "CK_DEBUG"_Stz,        // CK_DEBUG
@@ -243,12 +243,12 @@ static Stz* aCK_short[]
   /* */ "columnRef"_Stz,       // CK_COLUMNREF
   /* */ "combined"_Stz,        // CK_COMBINED
   /* */ "comment"_Stz,         // CK_COMMENT
-  /* */ "coPtn"_Stz,           // CK_COPTN
-  /* */ "coPtnList"_Stz,       // CK_COPTNLIST
+  /* */ "coPtnJoin"_Stz,       // CK_COPTNJOIN
+  /* */ "coPtnJoinList"_Stz,   // CK_COPTNJOINLIST
   /* */ "coPtnPred"_Stz,       // CK_COPTNPRED
-  /* */ "coPptnPredList"_Stz,  // CK_COPTNPREDLIST
-  /* */ "crossPtn"_Stz,        // CK_CROSSPTN
-  /* */ "crossPtnList"_Stz,    // CK_CROSSPTNLIST
+  /* */ "coPtnPredList"_Stz,   // CK_COPTNPREDLIST
+  /* */ "crossPtnJoin"_Stz,    // CK_CROSSPTNJOIN
+  /* */ "crossPtnJoinList"_Stz,// CK_CROSSPTNJOINLIST
   /* */ "crossPtnPred"_Stz,    // CK_CROSSPTNPRED
 
   /* */ "debug"_Stz,           // CK_DEBUG

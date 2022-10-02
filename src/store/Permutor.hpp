@@ -27,9 +27,9 @@ namespace STORE
 
     void vCompute_coPtnPredList(void);
 
-    void vCompute_coPtnList(void);
+    void vCompute_coPtnJoinList(void);
 
-    void vCompute_crossPtnList(void);
+    void vCompute_crossPtnJoinList(void);
 
     void vCompute_ptndJointSet(void);
 
