@@ -85,10 +85,12 @@ void Step::vJobReportNetwork(void)
 {
   ENTRY();
   
-  i8 iJobNo = m_pDataStack->iPopInt(__func__);
+  //i8 iJobNo = m_pDataStack->iPopInt(__func__);
+  JobMetrics* pJobMetrics = _pJobMetrics(m_pDataStack->pPopPtr(__func__));
+
   Tub* pTub = _pTub(m_pDataStack->pPopPtr(__func__));
 
-  eEC eError = JobReport::eNetworkReport(iJobNo, pTub);
+  eEC eError = JobReport::eNetworkReport(pJobMetrics->pJob(), pTub);
 
   m_pDataStack->vPushInt(eError);
 

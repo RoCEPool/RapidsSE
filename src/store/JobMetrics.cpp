@@ -205,6 +205,15 @@ OpMetrics* JobMetrics::pGetOpMetrics(i8& d_MetricsCursor)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* get the job                                                                */
+/*----------------------------------------------------------------------------*/
+Job* JobMetrics::pJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
+
+  return m_pJob;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get metrics wsp                                                            */
@@ -479,7 +488,6 @@ void JobMetrics::vCollect(Job* pJob)
         
         new(& m_oMetricsWsp) OpMetrics( pOp->i_Op()
                                        ,pOp->szOpNm()
-
                                        ,pOp->nQueuedOperands()
                                        ,pOp->nTmpIndexSize()
                                        ,pOp->nPotSize()

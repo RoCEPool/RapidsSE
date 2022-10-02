@@ -39,19 +39,6 @@
   "metricsUpdate_Metrics" .
   PipeIn[]\clear to pJobMetrics
 
-  /*
-  PipeIn[]\clear to pJobMetrics
-  
-  pJobMetrics jobMetrics.update not if
-  
-    //pJobMetrics jobMetrics.delete
-    
-  then
-  
-  true
-
-  */
-
   AM::DEMON::tEventDemonJobId@ locals| tEventDemonJobId |
 
     tEventDemonJobId jobId::isUnknown if
@@ -74,11 +61,11 @@
     then
 
     tEventDemonJobId Tub[].pipeToJob
-  /*
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // network
 
-    Tub[] iJob jobReport::network to eError
+    Tub[] pJobMetrics jobReport::network to eError
 
     eError EC_NONE == not if
       eError op__execErr
@@ -88,6 +75,7 @@
 
     tEventDemonJobId Tub[].pipeToJob
 
+/*
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // network dissect
 

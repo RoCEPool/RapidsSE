@@ -161,7 +161,7 @@ eEC JobReport::eMetricsReport(JobMetrics* pJobMetrics, Tub* pTub)
                       (
                         C_VARGS_BEGIN
                        
-                       ,pJobMetrics->m_pJob->tJobId().uJobNo()
+                       ,pJobMetrics->pJob()->tJobId().uJobNo()
 
                        ,pThisNode->iNodeId()
                        ,pThisNode->szNodeNm()
@@ -419,18 +419,18 @@ eEC JobReport::eNetDissectReport(i8 iJob, Tub* pTub)
 /*----------------------------------------------------------------------------*/
 /* network report                                                             */
 /*----------------------------------------------------------------------------*/
-eEC JobReport::eNetworkReport(i8 iJob, Tub* pTub)
+eEC JobReport::eNetworkReport(Job* pJob, Tub* pTub)
 {
   _static_
   
   // find the participant job
-  Job* pJob = pFindParticipantJobNo(iJob);
-
-  if ( ! pJob ) {
-    JobId tJobId;
-    tJobId = iJob;
-    pJob = pFindParticipantJobId(tJobId);
-  }
+//  Job* pJob = pFindParticipantJobNo(iJob);
+//
+//  if ( ! pJob ) {
+//    JobId tJobId;
+//    tJobId = iJob;
+//    pJob = pFindParticipantJobId(tJobId);
+//  }
   
   // find the internal jobOperators table
   Table* pJobNetworkTable = AM::pTableFind(C_TDEF_JOBNETWORK);
@@ -465,7 +465,7 @@ eEC JobReport::eNetworkReport(i8 iJob, Tub* pTub)
                 (
                   C_VARGS_BEGIN
                  
-                 ,iJob
+                 ,pJob->tJobId().uJobNo()
 
                  ,pThisNode->iNodeId()
                  ,pThisNode->szNodeNm()
