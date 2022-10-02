@@ -193,7 +193,7 @@ void Transformer::vTransform2(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-/*
+
   m_pTabular->vAdd_TableSyn();
   if (m_bInteractive)
     pBoard_query->vPrintBoard("Tabular::vAdd_TableSyn"_Stz);
@@ -216,7 +216,7 @@ void Transformer::vTransform2(void)
   m_pPermutor->vCompute_crossPtnJoinList();
 
   m_pPermutor->vCompute_ptndJointSet();
-*/
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

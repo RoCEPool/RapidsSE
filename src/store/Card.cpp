@@ -365,7 +365,9 @@ Stz* Card::szColumnRef(void)
 
   Stz *szColumnRef = szGetProperty("szColumnRef"_Stz);
 
-  return szColumnRef;
+  RASSERT(szValue()->bSame(szColumnRef));
+
+  return szValue();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1134,7 +1136,9 @@ char Card::cTableSyn(void)
 
   Stz* szTableSyn = szGetProperty("szTableSyn"_Stz);
 
-  char cTableSyn = *(szTableSyn->azChar());
+  RASSERT(szValue()->bSame(szTableSyn));
+
+  char cTableSyn = *(szValue()->azChar());
 
   return cTableSyn;
 }
@@ -1274,6 +1278,8 @@ void Card::vValue(Stz* szValue)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+  //RASSERT(! *m_sValue.azChar());
+
   m_sValue = szValue;
 }
 
@@ -1359,7 +1365,9 @@ Stz* Card::szAnd(void)
 
   Stz* szAnd = szGetProperty("szAnd"_Stz);
 
-  return szAnd;
+  RASSERT(szValue()->bSame(szAnd));
+
+  return szValue();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1382,7 +1390,9 @@ Stz* Card::szAs(void)
   
   Stz* szAs = szGetProperty("szAs"_Stz);
 
-  return szAs;
+  RASSERT(szValue()->bSame(szAs));
+
+  return szValue();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1498,7 +1508,9 @@ Stz* Card::szColNm(void)
 
   Stz *szColNm = szGetProperty("szColNm"_Stz);
 
-  return szColNm;
+  RASSERT(szValue()->bSame(szColNm));
+
+  return szValue();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1521,7 +1533,9 @@ Stz* Card::szCmp(void)
 
   Stz* szCmp = szGetProperty("szCmp"_Stz);
 
-  return szCmp;
+  RASSERT(szValue()->bSame(szCmp));
+
+  return szValue();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1610,7 +1624,9 @@ Stz* Card::szComment(void)
 
   Stz* szComment = szGetProperty("szComment"_Stz);
 
-  return szComment;
+  RASSERT(szValue()->bSame(szComment));
+
+  return szValue();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1663,7 +1679,9 @@ Stz* Card::szDirn(void)
   
   Stz* szDirn = szGetProperty("szDirn"_Stz);
 
-  return szDirn;
+  RASSERT(szValue()->bSame(szDirn));
+
+  return szValue();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1767,7 +1785,10 @@ bool Card::bIsAggOp(void)
 
   Stz* szTerm = szGetProperty("szTerm"_Stz);
 
-       if (szTerm->bSame("avg"_Stz))      return true;
+  RASSERT(szValue()->bSame(szTerm));
+
+  szTerm = szValue();
+  if (szTerm->bSame("avg"_Stz))      return true;
   else if (szTerm->bSame("count"_Stz))    return true;
   else if (szTerm->bSame("countAll"_Stz)) return true;
   else if (szTerm->bSame("max"_Stz))      return true;
@@ -1820,6 +1841,9 @@ bool Card::bIsOrdinalColumnAtom(void)
 
   Stz* szTerm = szGetProperty("szTerm"_Stz);
 
+  RASSERT(szValue()->bSame(szTerm));
+
+  szTerm = szValue();
   char acFirst  = szTerm->azChar()[0];
   char acSecond = szTerm->azChar()[1];
 
@@ -1838,6 +1862,9 @@ bool Card::bIsOrdinalIndexAtom(void)
 
   Stz* szTerm = szGetProperty("szTerm"_Stz);
 
+  RASSERT(szValue()->bSame(szTerm));
+
+  szTerm = szValue();
   char acFirst  = szTerm->azChar()[0];
   char acSecond = szTerm->azChar()[1];
 
@@ -1856,7 +1883,10 @@ bool Card::bIsOrdinalStreamTerm(void)
 
   Stz* szTerm = szGetProperty("szTerm"_Stz);
   //vTrace("bIsOrdinalColumnTerm: %s\n"_Stz,szTerm);
-  
+
+  RASSERT(szValue()->bSame(szTerm));
+
+  szTerm = szValue();
   char acFirst  = szTerm->azChar()[0];
   char acSecond = szTerm->azChar()[1];
 
@@ -1875,6 +1905,9 @@ bool Card::bIsOrdinalIndexTerm(void)
 
   Stz* szTerm = szGetProperty("szTerm"_Stz);
 
+  RASSERT(szValue()->bSame(szTerm));
+
+  szTerm = szValue();
   char acFirst  = szTerm->azChar()[0];
   char acSecond = szTerm->azChar()[1];
 
@@ -1912,7 +1945,9 @@ bool Card::bIsSame(Stz* szArg)
 
   Stz* szTerm = szGetProperty("szTerm"_Stz);
 
-  if (szTerm->bSame(szArg))
+  RASSERT(szValue()->bSame(szTerm));
+
+  if (szValue()->bSame(szArg))
     return true;
   else
     return false;
@@ -1927,7 +1962,9 @@ bool Card::bIsSeparator(void)
 
   Stz* szTerm = szGetProperty("szTerm"_Stz);
 
-  if (szTerm->bSame(","_Stz))
+  RASSERT(szValue()->bSame(szTerm));
+
+  if (szValue()->bSame(","_Stz))
     return true;
   else
     return false;
@@ -1953,7 +1990,9 @@ Stz* Card::szMapBack(void)
 
   Stz* szMapBack = szGetProperty("szMapBack"_Stz);
 
-  return szMapBack;
+  RASSERT(szValue()->bSame(szMapBack));
+
+  return szValue();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1976,7 +2015,9 @@ Stz* Card::szMapFrom(void)
 
   Stz* szMapFrom = szGetProperty("szMapFrom"_Stz);
 
-  return szMapFrom;
+  RASSERT(szValue()->bSame(szMapFrom));
+
+  return szValue();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2079,10 +2120,12 @@ CardIter* Card::pNewSubCardIter(void)
 Stz* Card::szMode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
+
   Stz* szMode = szGetProperty("szMode"_Stz);
 
-  return szMode;
+  RASSERT(szValue()->bSame(szMode));
+
+  return szValue();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2105,7 +2148,9 @@ Stz* Card::szName(void)
   
   Stz* szName = szGetProperty("szName"_Stz);
 
-  return szName;
+  RASSERT(szValue()->bSame(szName));
+
+  return szValue();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2194,7 +2239,9 @@ Stz* Card::szOption(void)
   
   Stz* szOption = szGetProperty("szOption"_Stz);
 
-  return szOption;
+  RASSERT(szValue()->bSame(szOption));
+
+  return szValue();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2217,7 +2264,9 @@ Stz* Card::szOr(void)
 
   Stz* szOr = szGetProperty("szOr"_Stz);
 
-  return szOr;
+  RASSERT(szValue()->bSame(szOr));
+
+  return szValue();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2240,7 +2289,9 @@ Stz* Card::szOrdinal(void)
 
   Stz* szOrdinal = szGetProperty("szOrdinal"_Stz);
 
-  return szOrdinal;
+  RASSERT(szValue()->bSame(szOrdinal));
+
+  return szValue();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2263,7 +2314,10 @@ i8 Card::iOrdinalStreamColNo(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Stz* szTerm = szGetProperty("szTerm"_Stz);
-  i8 i_Ord = StrLib::iGleanInt(szTerm->azChar());
+
+  RASSERT(szValue()->bSame(szTerm));
+
+  i8 i_Ord = StrLib::iGleanInt(szValue()->azChar());
   
   return i_Ord;
 }
@@ -2276,7 +2330,10 @@ i8 Card::iOrdinalIndexColNo(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Stz* szTerm = szGetProperty("szTerm"_Stz);
-  i8 i_Ord = StrLib::iGleanInt(szTerm->azChar());
+
+  RASSERT(szValue()->bSame(szTerm));
+
+  i8 i_Ord = StrLib::iGleanInt(szValue()->azChar());
   
   return i_Ord;
 }
@@ -2302,7 +2359,9 @@ Stz* Card::szQueryNm(void)
   
   Stz* szQueryNm = szGetProperty("szQuerysNm"_Stz);
 
-  return szQueryNm;
+  RASSERT(szValue()->bSame(szQueryNm));
+
+  return szValue();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2474,7 +2533,9 @@ Stz* Card::szStageNm(void)
   
   Stz* szStageNm = szGetProperty("szStageNm"_Stz);
 
-  return szStageNm;
+  RASSERT(szValue()->bSame(szStageNm));
+
+  return szValue();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2607,7 +2668,9 @@ Stz* Card::szTerm(void)
   
   Stz* szTerm = szGetProperty("szTerm"_Stz);
 
-  return szTerm;
+  RASSERT(szValue()->bSame(szTerm));
+
+  return szValue();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2657,7 +2720,9 @@ Stz* Card::szType(void)
   
   Stz* szType = szGetProperty("szType"_Stz);
 
-  return szType;
+  RASSERT(szValue()->bSame(szType));
+
+  return szValue();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2668,9 +2733,11 @@ char Card::cTypeShort(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   Stz* szType = szGetProperty("szType"_Stz);
-  
+
+  RASSERT(szValue()->bSame(szType));
+
   for (i8 i_CT = 0; i_CT < CT_ENUMS; i_CT++) {
-    if (szType->bSame(aCT[i_CT]))
+    if (szValue()->bSame(aCT[i_CT]))
       return cCT_char[i_CT];
   }
 
