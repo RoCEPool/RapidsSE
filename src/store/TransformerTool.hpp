@@ -33,7 +33,7 @@ namespace STORE
     Card_CalcBool*         m_p_calcBool;
     Card_Combined*         m_p_combined;
     Card_Comment*          m_p_comment;
-    Card_CoPtn*            m_p_coPtn;
+    Card_CoPtnJoin*            m_p_coPtn;
     Card_CoPtnJoinList*    m_p_coPtnJoinList;
     Card_CoPtnPred*        m_p_coPtnPred;
     Card_CoPtnPredList*    m_p_coPtnPredList;

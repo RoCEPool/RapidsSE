@@ -5,7 +5,7 @@
 
 #include "Card.hpp"
 
-#include "Card_CoPtn.hpp"
+#include "Card_CoPtnJoin.hpp"
 #include "Card_CoPtnPred.hpp"
 
 namespace STORE
@@ -19,7 +19,7 @@ namespace STORE
     Card_CoPtnJoinList(void);
    ~Card_CoPtnJoinList(void) noexcept(false);
 
-    Card_CoPtn* pFind_coPtn_for(Card_CoPtnPred* p_CoPtnPred);
+    Card_CoPtnJoin* pFind_coPtn_for(Card_CoPtnPred* p_CoPtnPred);
 
     bool bHasEqPredCmp(Card_PredCmp* p_predCmp);
   };

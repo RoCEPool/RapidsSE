@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Card_CoPtn.cpp -- Co-Partition                                             */
+/* Card_CoPtnJoin.cpp -- Co-Partition                                             */
 /*============================================================================*/
 
-#include "Card_CoPtn.hpp"
+#include "Card_CoPtnJoin.hpp"
 
 #include "Card_PredCmp.hpp"
 
@@ -11,18 +11,18 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_CoPtn,CK_COPTN)
-__aNewFunction(Card_CoPtn,CN_CARD)
-__vDeleteFunction(Card_CoPtn,CN_CARD)
+__pCastFunction_Card(STORE, Card_CoPtnJoin, CK_COPTNJOIN)
+__aNewFunction(Card_CoPtnJoin, CN_CARD)
+__vDeleteFunction(Card_CoPtnJoin, CN_CARD)
 
-__bIsCard(STORE,Card_CoPtn,CK_COPTN)
-__pGetSubFunction_Card(STORE,CoPtn,CK_COPTN)
+__bIsCard(STORE, Card_CoPtnJoin, CK_COPTNJOIN)
+__pGetSubFunction_Card(STORE, CoPtnJoin, CK_COPTNJOIN)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_CoPtn::Card_CoPtn(void)
-: Card(CK_COPTN)
+Card_CoPtnJoin::Card_CoPtnJoin(void)
+: Card(CK_COPTNJOIN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -34,7 +34,7 @@ Card_CoPtn::Card_CoPtn(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_CoPtn::~Card_CoPtn(void) noexcept(false)
+Card_CoPtnJoin::~Card_CoPtnJoin(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -46,7 +46,7 @@ Card_CoPtn::~Card_CoPtn(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_CoPtn::bCoPtnWith(Card_CoPtnPred* p_CoPtnPred)
+bool Card_CoPtnJoin::bCoPtnWith(Card_CoPtnPred* p_CoPtnPred)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

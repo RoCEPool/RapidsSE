@@ -166,7 +166,7 @@ void Permutor::vCompute_coPtnList(void)
     m_p_subSet = m_p_coPtnPred->pDupSubCards();
 
     if (! (m_p_coPtn = m_p_coPtnJoinList->pFind_coPtn_for(m_p_coPtnPred)) ) {
-      m_p_coPtn = new Card_CoPtn;
+      m_p_coPtn = new Card_CoPtnJoin;
       m_p_coPtnJoinList->vAppend(m_p_coPtn);
     }
 
