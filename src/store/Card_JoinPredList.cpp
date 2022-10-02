@@ -57,7 +57,7 @@ void Card_JoinPredList::vExtract_joinPredList(Card_CalcBool* p_calcBool)
 
     Card_PredCmp* p_predCmp = _pCard_PredCmp(pCard);
 
-    if (! p_predCmp->szCmp()->bSame("=="_Stz)) //RAYMOND CAN DO BETTER!
+    if (! p_predCmp->sz()->bSame("=="_Stz)) //RAYMOND CAN DO BETTER!
       return true;
 
     Card_Term* p_term_0 = _pCard_Term(p_predCmp->pGetChild(0));

@@ -46,7 +46,7 @@ enum eCK // card kind
   /* */ CK_HASH,
   /* */ CK_HAVING,
 
-  /* */ CK_IDXCOL,
+  /* */ CK_IDXCOLNM,
   /* */ CK_IDXCOLLIST,
   /* */ CK_INDEXJOIN,
   /* */ CK_INDEXLIST,
@@ -63,8 +63,6 @@ enum eCK // card kind
   /* */ CK_MAP,
   /* */ CK_MAPSET,
   /* */ CK_MODE,
-
-  /* */ CK_NAME,
 
   /* */ CK_OBYELIST,
   /* */ CK_ON,
@@ -91,6 +89,7 @@ enum eCK // card kind
   /* */ CK_SENDS,
   /* */ CK_SORT,
   /* */ CK_STAGE,
+  /* */ CK_STAGENM,
   /* */ CK_STAGETOPO,
   /* */ CK_STREAM,
   /* */ CK_STREAMCOL,
@@ -157,7 +156,7 @@ static Stz* aCK[]
   /* */ "CK_HASH"_Stz,         // CK_HASH
   /* */ "CK_HAVING"_Stz,       // CK_HAVING
 
-  /* */ "CK_IDXCOL"_Stz,       // CK_IDXCOL
+  /* */ "CK_IDXCOLNM"_Stz,       // CK_IDXCOLNM
   /* */ "CK_IDXCOLLIST"_Stz,   // CK_IDXCOLLIST
   /* */ "CK_INDEXJOIN"_Stz,    // CK_INDEXJOIN
   /* */ "CK_INDEXLIST"_Stz,    // CK_INDEXLIST
@@ -174,8 +173,6 @@ static Stz* aCK[]
   /* */ "CK_MAP"_Stz,          // CK_MAP
   /* */ "CK_MAPSET"_Stz,       // CK_MAPSET
   /* */ "CK_MODE"_Stz,         // CK_MODE
-
-  /* */ "CK_NAME"_Stz,         // CK_NAME
 
   /* */ "CK_OBYELIST"_Stz,     // CK_OBYELIST
   /* */ "CK_ON"_Stz,           // CK_ON
@@ -202,6 +199,7 @@ static Stz* aCK[]
   /* */ "CK_SENDS"_Stz,        // CK_SENDS
   /* */ "CK_SORT"_Stz,         // CK_SORT
   /* */ "CK_STAGE"_Stz,        // CK_STAGE
+  /* */ "CK_STAGENM"_Stz,      // CK_STAGENM
   /* */ "CK_STAGETOPO"_Stz,    // CK_STAGETOPO
   /* */ "CK_STREAM"_Stz,       // CK_STREAM
   /* */ "CK_STREAMCOL"_Stz,    // CK_STREAMCOL
@@ -268,7 +266,7 @@ static Stz* aCK_short[]
   /* */ "hash"_Stz,            // CK_HASH
   /* */ "having"_Stz,          // CK_HAVING
 
-  /* */ "idxCol"_Stz,          // CK_IDXCOL
+  /* */ "idxColNm"_Stz,        // CK_IDXCOLNM
   /* */ "idxColList"_Stz,      // CK_IDXCOLLIST
   /* */ "indexJoin"_Stz,       // CK_INDEXJOIN
   /* */ "indexList"_Stz,       // CK_INDEXLIST
@@ -285,8 +283,6 @@ static Stz* aCK_short[]
   /* */ "map"_Stz,             // CK_MAP
   /* */ "mapSet"_Stz,          // CK_MAPSET
   /* */ "mode"_Stz,            // CK_MODE
-
-  /* */ "name"_Stz,            // CK_NAME
 
   /* */ "obyElist"_Stz,        // CK_OBYELIST
   /* */ "on"_Stz,              // CK_ON
@@ -313,6 +309,7 @@ static Stz* aCK_short[]
   /* */ "sends"_Stz,           // CK_SENDS
   /* */ "sort"_Stz,            // CK_SORT
   /* */ "stage"_Stz,           // CK_STAGE
+  /* */ "stageNm"_Stz,         // CK_STAGENM
   /* */ "stageTopo"_Stz,       // CK_STAGETOPO
   /* */ "stream"_Stz,          // CK_STREAM
   /* */ "streamCol"_Stz,       // CK_STREAMCOL

@@ -18,7 +18,7 @@ namespace STORE
     Card_IdxColList(Index* pIndex);
    ~Card_IdxColList(void) noexcept(false);
 
-    Card_IdxCol* pFind_idxCol(Stz *szColNm, i8& i_IdxColNo);
+    Card_IdxColNm* pFind_idxCol(Stz *szColNm, i8& i_IdxColNo);
 
     void vOrdinate(Card_Stream* pCard_Stream);
   };

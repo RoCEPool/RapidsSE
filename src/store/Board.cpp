@@ -1242,7 +1242,7 @@ void Board::vResolveTerm(Card_Term* pCard_Term)
 
     Card_As *pCard_As = _pCard_As(pCard_StreamCol->pFindSubCard(CK_AS));
 
-    Stz *szColNm_resolved = pCard_As->szAs();
+    Stz *szColNm_resolved = pCard_As->sz();
 
     pCard_Term->vTerm(szColNm_resolved);
 
@@ -2295,7 +2295,7 @@ Card_IndexPred* Board::pTo_IndexPred(Card_PredCmp* pCard_PredCmp,
   pCard_IndexPred->vAppend(new Card_Term(szPred_0));
   pCard_IndexPred->vAppend(new Card_Term(szPred_1));
 
-  pCard_IndexPred->vAppend(new Card_Term(pCard_PredCmp->szCmp()));
+  pCard_IndexPred->vAppend(new Card_Term(pCard_PredCmp->sz()));
 
   return pCard_IndexPred;
 

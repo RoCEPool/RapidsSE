@@ -48,7 +48,7 @@
 #include "Card_Hash.hpp"
 #include "Card_Having.hpp"
 
-#include "Card_IdxCol.hpp"
+#include "Card_IdxColNm.hpp"
 #include "Card_IdxColList.hpp"
 #include "Card_IndexPtr.hpp"
 #include "Card_IndexJoin.hpp"
@@ -67,7 +67,7 @@
 #include "Card_MapSet.hpp"
 #include "Card_Mode.hpp"
 
-#include "Card_Name.hpp"
+#include "Card_StageNm.hpp"
 
 #include "Card_On.hpp"
 #include "Card_Option.hpp"

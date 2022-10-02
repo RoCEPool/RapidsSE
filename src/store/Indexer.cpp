@@ -128,7 +128,7 @@ void Indexer::vMark_scan_pred_ordinals(void)
       vTrace("vMark_scan_pred_ordinals:: %s\n"_Stz,szColNm);
 
       i8 i_IdxCol = C_UNKNOWN;
-      Card_IdxCol* p_idxCol = p_indexPtr->pFind_indexCol(szColNm, i_IdxCol);
+      Card_IdxColNm* p_idxCol = p_indexPtr->pFind_indexCol(szColNm, i_IdxCol);
 
       if (! p_idxCol)
         return true;

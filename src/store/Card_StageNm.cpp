@@ -1,40 +1,38 @@
 /*============================================================================*/
-/* Card_IdxCol.cpp -- Index Column List                                   */
+/* Card_StageNm.cpp -- Name                                                      */
 /*============================================================================*/
 
-#include "Card_IdxCol.hpp"
-#include "Card_Term.hpp"
-#include "Column.hpp"
+#include "Card_StageNm.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_IdxCol,CK_IDXCOL)
-__aNewFunction(Card_IdxCol,CN_CARD)
-__vDeleteFunction(Card_IdxCol,CN_CARD)
+__pCastFunction_Card(STORE, Card_StageNm, CK_STAGENM)
+__aNewFunction(Card_StageNm, CN_CARD)
+__vDeleteFunction(Card_StageNm, CN_CARD)
 
-__bIsCard(STORE,Card_IdxCol,CK_IDXCOL)
+__bIsCard(STORE, Card_StageNm, CK_STAGENM)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_IdxCol::Card_IdxCol(Column* pColumn)
-: Card(CK_IDXCOL)
+Card_StageNm::Card_StageNm(Stz* szName)
+: Card(CK_STAGENM)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  vStageNm(szName);
+    
   _checkInitialised_(CN_CARD);
-
-  vColNm(pColumn->szColNm());
-
+  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_IdxCol::~Card_IdxCol(void) noexcept(false)
+Card_StageNm::~Card_StageNm(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

@@ -145,7 +145,7 @@ void Joiner::vForm_joinPred(void)
       NEVER_REACH
     }
 
-    pCard_term = new Card_Term(pCard_predCmp->szCmp());
+    pCard_term = new Card_Term(pCard_predCmp->sz());
     pCard_joinPred->vAppend(pCard_term);
 
     pCard_predCmp->vMark1('^');
@@ -305,7 +305,7 @@ Card_IndexPred* Joiner::pTo_IndexPred(Card_AbsJoin* pCard_AbsJoin,
   pCard_IndexPred->vAppend(new Card_Term(sPred_0));
   pCard_IndexPred->vAppend(new Card_Term(sPred_1));
 
-  pCard_IndexPred->vAppend(new Card_Term(pCard_PredCmp->szCmp()));
+  pCard_IndexPred->vAppend(new Card_Term(pCard_PredCmp->sz()));
 
   delete pResolver;
 

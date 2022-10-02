@@ -57,7 +57,7 @@ namespace STORE {
   class Card_Hash;
   class Card_Having;
 
-  class Card_IdxCol;
+  class Card_IdxColNm;
   class Card_IdxColList;
   class Card_IndexPtr;
   class Card_IndexJoin;
@@ -74,7 +74,7 @@ namespace STORE {
   class Card_MapSet;
   class Card_Mode;
 
-  class Card_Name;
+  class Card_StageNm;
 
   class Card_On;
   class Card_Option;
@@ -182,7 +182,7 @@ namespace STORE
     i8   iCardNo(void);
     void vCardNo(i8 iCardNo);
     i8   nChildCards(void);
-    Stz* szColumnRef(void);
+    //SZ Stz* szColumnRef(void);
     i8   iColumnRef_columnOrd(void);
     char cColumnRef_tableSyn(void);
     void vColumnRef(Stz* szColumnRef);
@@ -251,7 +251,7 @@ namespace STORE
 
     Stz* sz(void);
 
-    Stz* szTablePtn(void);
+    //SZ Stz* szTablePtn(void);
     void vTablePtn(Stz* szTablePtn);
     char cTableSyn(void);
     void vTableSyn(char cTableSyn);
@@ -274,9 +274,9 @@ namespace STORE
     void vAggLevel(eAL eAggLevel);
     bool bAggOp(void);
     void vAggOp(void);
-    Stz* szAnd(void);
+    //SZ Stz* szAnd(void);
     void vAnd(Stz* szAnd);
-    Stz* szAs(void);
+    //SZ Stz* szAs(void);
     void vAs(Stz* szAs);
 
     ePB  eBound(void);
@@ -285,7 +285,7 @@ namespace STORE
     void vCard(Card* pCard);
     void vCardPrint(Ribbon* pRibbon, i8 iDepth);
     void vClearAllMarks(void);
-    Stz* szColNm(void);
+    //SZ Stz* szColNm(void);
     void vColNm(Stz* szColNm);
     Column* pColumn(void);
     void vColumn(Column* pColumn);
@@ -293,15 +293,15 @@ namespace STORE
     void vColumn1(Column* pColumn1);
     Column* pColumn2(void);
     void vColumn2(Column* pColumn2);
-    Stz* szComment(void);
+    //SZ Stz* szComment(void);
     void vComment(Stz* szComment);
     void vConcatTerms(Stz* szTerms);
     void vConcatTerms(Stz* szTerms, i8 i_From, i8 i_Till=C_UNKNOWN);
 
-    Stz* szCmp(void);
+    //SZ Stz* szCmp(void);
     void vCmp(Stz* szCmp);
 
-    Stz* szDirn(void);
+    //SZ Stz* szDirn(void);
     void vDirn(Stz* szAsNm);
 
     i8   iGenerate(void);
@@ -330,11 +330,11 @@ namespace STORE
     void vMapBack(Stz* szMapBack);
     Stz* szMapFrom(void);
     void vMapFrom(Stz* szMapFrom);
-    Stz* szMode(void);
+    //SZ Stz* szMode(void);
     void vMode(Stz* szMode);
   
-    Stz* szName(void);
-    void vName(Stz* szMode);
+//    Stz* szStageNm(void);
+//    void vStageNm(Stz* szStageNm);
 
     i8   iOption(void);
     void vOption(i8 iOption);

@@ -110,7 +110,7 @@ Card_StreamCol* Card_StreamColList::pFind_streamCol(Stz *szColNm, i8& i_StreamCo
       continue;
 
     Card_As* pCard_as = _pGetSub_As(pSubCard);
-    if (pCard_as->szAs()->bSame(szColNm)) {
+    if (pCard_as->sz()->bSame(szColNm)) {
       pCard_streamCol = _pCard_StreamCol(pSubCard);
       i_StreamColNo = i_Child;
       break;
@@ -140,7 +140,7 @@ void Card_StreamColList::vPrependToAs(Stz* szPrefix)
     Card_As* pCard_As = _pCard_As(pCard_StreamCol->pFindSubCard(CK_AS));
 
     s256 sRevisedAs;
-    sRevisedAs.vSprint("%s%s"_Stz,szPrefix,pCard_As->szAs());
+    sRevisedAs.vSprint("%s%s"_Stz,szPrefix,pCard_As->sz());
 
     pCard_As->vAs(sRevisedAs);
   }
@@ -197,7 +197,7 @@ void Card_StreamColList::vPopulate(Card_AggElist* pCard_AggElist)
 
     vAppend(pCard_StreamCol);
 
-    pCard_StreamCol->vAppend(new Card_As(pCard_As->szAs()));
+    pCard_StreamCol->vAppend(new Card_As(pCard_As->sz()));
     pCard_StreamCol->vAppend(new Card_Type(pCard_Type->szType()));
   }
 

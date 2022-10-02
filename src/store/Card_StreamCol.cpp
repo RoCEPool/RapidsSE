@@ -49,7 +49,7 @@ Stz* Card_StreamCol::szStreamColNm(void)
 
   Card_As* pCard_As = _pCard_As(pFindSubCard(CK_AS));
 
-  Stz* szStreamColNm = pCard_As->szAs();
+  Stz* szStreamColNm = pCard_As->sz();
 
   return szStreamColNm;
 }

@@ -45,13 +45,13 @@ Card_IndexPtr::~Card_IndexPtr(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* is given <pred> within this stream?                                        */
 /*----------------------------------------------------------------------------*/
-Card_IdxCol* Card_IndexPtr::pFind_indexCol(Stz *szColNm, i8& i_IdxCol)
+Card_IdxColNm* Card_IndexPtr::pFind_indexCol(Stz *szColNm, i8& i_IdxCol)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Card_IdxColList* p_idxColList = this->pSub_idxColList();
 
-  Card_IdxCol* p_idxCol = p_idxColList->pFind_idxCol(szColNm,i_IdxCol);
+  Card_IdxColNm* p_idxCol = p_idxColList->pFind_idxCol(szColNm, i_IdxCol);
 
   return p_idxCol;
 }

@@ -77,11 +77,11 @@ bool Card_TableList::bPredCmpIsCoPtn(Card_PredCmp* p_predCmp)
 
   Card_ColumnRef* p_columnRef_0 =
       _pCard_ColumnRef(p_predCmp->pGetChild(0));
-  Stz* szPredColumnRef_0 = p_columnRef_0->szColumnRef();
+  Stz* szPredColumnRef_0 = p_columnRef_0->sz();
 
   Card_ColumnRef* p_columnRef_1 =
       _pCard_ColumnRef(p_predCmp->pGetChild(1));
-  Stz* szPredColumnRef_1 = p_columnRef_1->szColumnRef();
+  Stz* szPredColumnRef_1 = p_columnRef_1->sz();
 
   char cTableSyn_0 = p_columnRef_0->cColumnRef_tableSyn();
   char cTableSyn_1 = p_columnRef_1->cColumnRef_tableSyn();
@@ -91,11 +91,11 @@ bool Card_TableList::bPredCmpIsCoPtn(Card_PredCmp* p_predCmp)
 
   Card_Table* p_table_0 = pFind_table(cTableSyn_0);
   Card_TablePtn* p_tablePtn_0 = _pGetSub_TablePtn(p_table_0);
-  Stz* szTablePtn_0 = p_tablePtn_0->szTablePtn();
+  Stz* szTablePtn_0 = p_tablePtn_0->sz();
 
   Card_Table* p_table_1 = pFind_table(cTableSyn_1);
   Card_TablePtn* p_tablePtn_1 = _pGetSub_TablePtn(p_table_1);
-  Stz* szTablePtn_1 = p_tablePtn_1->szTablePtn();
+  Stz* szTablePtn_1 = p_tablePtn_1->sz();
 
   if (szTablePtn_0->bSame(szPredColumnRef_0) && szTablePtn_1->bSame(szPredColumnRef_1))
     return true;

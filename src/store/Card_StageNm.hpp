@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_Name.hpp -- Name                                                      */
+/* Card_StageNm.hpp -- Name                                                      */
 /*============================================================================*/
 #pragma once
 
@@ -7,18 +7,18 @@
 
 namespace STORE
 {
-  class Card_Name : public Card
+  class Card_StageNm : public Card
   {  
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Name(Stz* szName);
-   ~Card_Name(void) noexcept(false);
+    Card_StageNm(Stz* szName);
+   ~Card_StageNm(void) noexcept(false);
   };
 
-  Card_Name* _pCard_Name(void* aAddr);
-  bool _bIsCard_Name(void* aAddr);
+  Card_StageNm* _pCard_StageNm(void* aAddr);
+  bool _bIsCard_StageNm(void* aAddr);
 }
 
 /*============================================================================*/

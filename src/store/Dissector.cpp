@@ -132,7 +132,7 @@ void Dissector::vStage(i8 i_StageSpec)
     
   s32 sRevisedStageNm;
   sRevisedStageNm.vSprint("stage%c"_Stz,'A' + i_StageSpec);
-  Card_Name* pCard_Name = new Card_Name(sRevisedStageNm.szStz());
+  Card_StageNm* pCard_Name = new Card_StageNm(sRevisedStageNm.szStz());
   pCard_Stage->vAppend(pCard_Name);
 
   Card_StageTopo* pCard_StageTopo = new Card_StageTopo(eStageTopo);
