@@ -22,7 +22,7 @@ Card_StageNm::Card_StageNm(Stz* szName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vStageNm(szName);
+  vValue(szName);
     
   _checkInitialised_(CN_CARD);
   

@@ -142,7 +142,7 @@ void Card_StreamColList::vPrependToAs(Stz* szPrefix)
     s256 sRevisedAs;
     sRevisedAs.vSprint("%s%s"_Stz,szPrefix,pCard_As->sz());
 
-    pCard_As->vAs(sRevisedAs);
+    pCard_As->vValue(sRevisedAs);
   }
 }
 /*----------------------------------------------------------------------------*/
@@ -166,7 +166,7 @@ void Card_StreamColList::vPopulate(StreamDef* pStreamDef, Stz* szPrefix_opt)
     if (szPrefix_opt) {
       s256 sAs;
       sAs.vSprint("%s%s"_Stz,szPrefix_opt,pColumn->szColNm());
-      pCard_As->vAs(sAs);
+      pCard_As->vValue(sAs);
     }
 
     pCard_StreamCol->vAppend(pCard_As);

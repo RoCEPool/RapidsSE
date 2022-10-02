@@ -26,7 +26,7 @@ Card_PredAnd::Card_PredAnd(void)
 
   _checkInitialised_(CN_CARD);
 
-  vAnd("and"_Stz);
+  vValue("and"_Stz);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

@@ -22,7 +22,7 @@ Card_Type::Card_Type(Stz* szType)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vType(szType);
+  vValue(szType);
   
   _checkInitialised_(CN_CARD);
   
@@ -37,7 +37,7 @@ Card_Type::Card_Type(Column* pColumn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vType(aCT[pColumn->eColumnType()]);
+  vValue(aCT[pColumn->eColumnType()]);
   
   _checkInitialised_(CN_CARD);
   

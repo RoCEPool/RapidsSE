@@ -22,7 +22,7 @@ Card_Direction::Card_Direction(Stz* szDirn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vDirn(szDirn);
+  vValue(szDirn);
 
   _checkInitialised_(CN_CARD);
   
@@ -37,7 +37,7 @@ Card_Direction::Card_Direction(Column* pColumn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vDirn(aSD_short[SD_ASC]);
+  vValue(aSD_short[SD_ASC]);
 
   _checkInitialised_(CN_CARD);
   

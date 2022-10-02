@@ -36,7 +36,7 @@ Card_Comment::Card_Comment(Stz* szComment)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vComment(szComment);
+  vValue(szComment);
     
   _checkInitialised_(CN_CARD);
   

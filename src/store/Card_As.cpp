@@ -23,7 +23,7 @@ Card_As::Card_As(Stz* szAs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vAs(szAs);
+  vValue(szAs);
     
   _checkInitialised_(CN_CARD);
   
@@ -38,7 +38,7 @@ Card_As::Card_As(Column* pColumn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vAs(pColumn->szColNm());
+  vValue(pColumn->szColNm());
     
   _checkInitialised_(CN_CARD);
   

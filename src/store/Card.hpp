@@ -275,9 +275,9 @@ namespace STORE
     bool bAggOp(void);
     void vAggOp(void);
     //SZ Stz* szAnd(void);
-    void vAnd(Stz* szAnd);
+    //void vAnd(Stz* szAnd);
     //SZ Stz* szAs(void);
-    void vAs(Stz* szAs);
+    //void vAs(Stz* szAs);
 
     ePB  eBound(void);
 
@@ -286,7 +286,7 @@ namespace STORE
     void vCardPrint(Ribbon* pRibbon, i8 iDepth);
     void vClearAllMarks(void);
     //SZ Stz* szColNm(void);
-    void vColNm(Stz* szColNm);
+    //void vColNm(Stz* szColNm);
     Column* pColumn(void);
     void vColumn(Column* pColumn);
     Column* pColumn1(void);
@@ -294,16 +294,16 @@ namespace STORE
     Column* pColumn2(void);
     void vColumn2(Column* pColumn2);
     //SZ Stz* szComment(void);
-    void vComment(Stz* szComment);
+    //void vComment(Stz* szComment);
     void vConcatTerms(Stz* szTerms);
     void vConcatTerms(Stz* szTerms, i8 i_From, i8 i_Till=C_UNKNOWN);
 
     //SZ Stz* szCmp(void);
-    void vCmp(Stz* szCmp);
+    //void vCmp(Stz* szCmp);
 
     //SZ Stz* szDirn(void);
-    void vDirn(Stz* szAsNm);
-
+//    void vDirn(Stz* szAsNm);
+//
     i8   iGenerate(void);
     void vGenerate(i8 iGenerate);
   
@@ -339,11 +339,11 @@ namespace STORE
     i8   iOption(void);
     void vOption(i8 iOption);
     //SZ Stz* szOption(void);
-    void vOption(Stz* szOption);
+    //void vOption(Stz* szOption);
     //SZ Stz* szOr(void);
-    void vOr(Stz* szOr);
+    //void vOr(Stz* szOr);
     //SZ Stz* szOrdinal(void);
-    void vOrdinal(Stz* szOrdinal);
+    //void vOrdinal(Stz* szOrdinal);
 
     i8   iOrdinalStreamColNo(void);
     i8   iOrdinalIndexColNo(void);
@@ -351,7 +351,7 @@ namespace STORE
     Card_Term* pPopTerm(void);
   
     //SZ Stz* szQueryNm(void);
-    void vQueryNm(Stz* szQueryNm);
+    //void vQueryNm(Stz* szQueryNm);
 
     i8   iRank(void);
     void vRank(i8 iRank);
@@ -366,7 +366,7 @@ namespace STORE
     i8   iSends(void);
     void vSends(i8 iSends);
     //SZ Stz* szStageNm(void);
-    void vStageNm(Stz* szStageNm);
+    //void vStageNm(Stz* szStageNm);
     eYG  eStageTopo(void);
     void vStageTopo(eYG  eStageTopology);
     StreamDef* pStreamDef(void);
@@ -379,11 +379,11 @@ namespace STORE
     Table* pTable2(void);
     void vTable2(Table* pTable2);
     //SZ Stz* szTerm(void);
-    void vTerm(Stz* szTerm);
+    //void vTerm(Stz* szTerm);
     eTE  eTermEval(void);
     //SZ Stz* szType(void);
     char cTypeShort(void);
-    void vType(Stz* szType);
+    //void vType(Stz* szType);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   
@@ -395,12 +395,12 @@ namespace STORE
     void vPrintCardProperties(Ribbon* pRibbon, i8 iDepth, bool bPrintPtyName= true);
     void vPrintCardValue(Ribbon* pRibbon, i8 iDepth);
     void vPrintHeader(Ribbon* pRibbon);
+    void vPrintTerm(Ribbon* pRibbon, i8 iDepth);
 
     void vCommentPrint(Ribbon* pRibbon, i8 iDepth);
     void vIndexPrint(Ribbon* pRibbon, i8 iDepth);
     void vStreamElistPrint(Ribbon* pRibbon, i8 iDepth);
     void vTablePrint(Ribbon* pRibbon, i8 iDepth);
-    void vTermPrint(Ribbon* pRibbon, i8 iDepth);
 
     Card_As*            pSub_as(void);
     Card_CalcBool*      pSub_calcBool(void);

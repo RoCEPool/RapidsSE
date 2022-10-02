@@ -550,7 +550,7 @@ Card* Filtrate::pTo_CalcBool(Card* pCard_Calc)
       case TE_COMPARE:
         RASSERT(pCard_SubExpr->nChildCards() > 0);
         pCard_PredCmp = new Card_PredCmp;
-        pCard_PredCmp->vCmp(pCard_Term->sz());
+        pCard_PredCmp->vValue(pCard_Term->sz());
         pCard_PredCmp->vTransferSubCards(pCard_SubExpr);
         pCard_CalcBool->vAppend(pCard_PredCmp);
         pCard_PredCmp = nullptr;

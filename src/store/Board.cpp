@@ -1244,7 +1244,7 @@ void Board::vResolveTerm(Card_Term* pCard_Term)
 
     Stz *szColNm_resolved = pCard_As->sz();
 
-    pCard_Term->vTerm(szColNm_resolved);
+    pCard_Term->vValue(szColNm_resolved);
 
     vTrace("Resolved $%lld To: %s\n"_Stz,i_Ord,szColNm_resolved);
 
@@ -1263,7 +1263,7 @@ void Board::vResolveTerm(Card_Term* pCard_Term)
     Column* pIdxColumn = pIndex->pGetColumn(i_IdxCol);
     Stz* szIdxColNm_resolved = pIdxColumn->szColNm();
   
-    pCard_Term->vTerm(szIdxColNm_resolved);
+    pCard_Term->vValue(szIdxColNm_resolved);
 
     return;
   }
@@ -2218,7 +2218,7 @@ Card_CalcBool* Board::pTo_CalcBool(Card_Calc* pCard_Calc)
       case TE_COMPARE:
         RASSERT(pCard_SubExpr->nChildCards() > 0);
         pCard_PredCmp = new Card_PredCmp;
-        pCard_PredCmp->vCmp(pCard_Term->sz());
+        pCard_PredCmp->vValue(pCard_Term->sz());
         pCard_PredCmp->vTransferSubCards(pCard_SubExpr);
         pCard_CalcBool->vAppend(pCard_PredCmp);
         pCard_PredCmp = nullptr;

@@ -23,7 +23,7 @@ Card_Term::Card_Term(Stz* szTerm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vTerm(szTerm);
+  vValue(szTerm);
   //m_bPrintNm = false;
   
   _checkInitialised_(CN_CARD);
@@ -39,7 +39,7 @@ Card_Term::Card_Term(Column* pColumn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vTerm(pColumn->szColNm());
+  vValue(pColumn->szColNm());
   //m_bPrintNm = false;
   
   _checkInitialised_(CN_CARD);
@@ -59,10 +59,10 @@ Card_Term::Card_Term(Token* pTkn)
   
   if (pTkn->eToken() == TN_STRING) {
     sString.vSprint("'%s'"_Stz,pTkn->szChars());
-    vTerm(sString);
+    vValue(sString);
   }
   else {
-    vTerm(pTkn->szChars());
+    vValue(pTkn->szChars());
   }
   //m_bPrintNm = false;
   

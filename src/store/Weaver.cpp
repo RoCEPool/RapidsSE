@@ -590,7 +590,8 @@ void Weaver::vRpnIndexJoin(Stz* szRpnExpr, Card_IndexJoin* pCard_IndexJoin)
       if (! pSubCard->bIsCard(CK_TERM))
         continue;
 
-      szRpnExpr->vCatSprint(" %s"_Stz,pSubCard->szGetProperty((i8)0));
+      Card_Term* p_term = _pCard_Term(pSubCard);
+      szRpnExpr->vCatSprint(" %s"_Stz,p_term->sz());
     }
     return;
   }
@@ -609,7 +610,8 @@ void Weaver::vRpnIndexJoin(Stz* szRpnExpr, Card_IndexJoin* pCard_IndexJoin)
     if (! pSubCard->bIsCard(CK_TERM))
       continue;
 
-    szRpnExpr->vCatSprint(" %s"_Stz,pSubCard->szGetProperty((i8)0));
+    Card_Term* p_term = _pCard_Term(pSubCard);
+    szRpnExpr->vCatSprint(" %s"_Stz,p_term->sz());
   }
 
 }

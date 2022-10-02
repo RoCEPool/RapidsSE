@@ -26,7 +26,7 @@ Card_IdxColNm::Card_IdxColNm(Column* pColumn)
 
   _checkInitialised_(CN_CARD);
 
-  vColNm(pColumn->szColNm());
+  vValue(pColumn->szColNm());
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
