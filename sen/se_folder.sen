@@ -68,13 +68,11 @@
 
 dicLock.grabwrite
 
-  find: \folder locals| pwFolderCatg |
-
   sFolderNm dic::new locals| pFolder |
 
   sFolderNm word::new locals| pwFolder |
 
-  pwFolderCatg pFolder pwFolder word.cppObject!
+  WC_FOLDER pFolder pwFolder word.cppObject!
 
 dicLock.dropwrite
 

@@ -144,13 +144,11 @@
 
   Folder[].isIndexes assert
 
-  find: \index locals| pwIndexCatg |
-
   sIndexNm index::new locals| pIndex |
 
   sIndexNm word::new locals| pwIndex |
 
-  pwIndexCatg pIndex pwIndex word.cppObject!
+  WC_INDEX pIndex pwIndex word.cppObject!
 
   //pwIndex word.see
 

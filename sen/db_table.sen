@@ -170,11 +170,9 @@
 /*----------------------------------------------------------------------------*/
 : table::addToFolder params| pTable |
 
-  find: \table locals| pwTableCatg |
-
   pTable to Table[] Table[].name@ word::new locals| pwTable |
 
-  pwTableCatg pTable pwTable word.cppObject!
+  WC_TABLE pTable pwTable word.cppObject!
 ;
 
 /*----------------------------------------------------------------------------*/
