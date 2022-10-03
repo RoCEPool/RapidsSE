@@ -5,6 +5,7 @@
 #include "Permutor.hpp"
 #include "Resolver.hpp"
 
+#include "PermGen.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -116,6 +117,12 @@ void Permutor::vCopy_ptndJoinSet(void)
   m_pBoard_permute->vAppendMainCard(m_p_comment);
 
 
+  PermGen::vTest(1);
+  PermGen::vTest(2);
+  PermGen::vTest(3);
+  PermGen::vTest(4);
+  PermGen::vTest(5);
+  PermGen::vTest(6);
   if (m_bInteractive)
     m_pBoard_permute->vPrintBoard("Permutor::vCopy_ptndJoinSet"_Stz);
 }

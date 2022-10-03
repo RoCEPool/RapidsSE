@@ -43,7 +43,7 @@ select * from supplier;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/cue = "Columnar::vAdd_ColumnRef"
+//   /cue = "Columnar::vAdd_ColumnRef"
 /cue = "$"
 /jobTags
 /transliterated
