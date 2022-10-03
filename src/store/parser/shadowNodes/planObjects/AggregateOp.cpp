@@ -218,8 +218,8 @@ void AggregateOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode
         sBuf.vConcat(")"_Stz);
 
         if (ExplainOp::bWithTypes(pExplainNode)) {
-          eCT eColType = Expr::xTypeId(pGroupByExpr, pRootNode).eCTVal();
-          sBuf.vCatSprint(" ; type: %s"_Stz, aCT[eColType]);
+          TypeId xColType = Expr::xTypeId(pGroupByExpr, pRootNode);
+          sBuf.vCatSprint(" ; type: %s"_Stz, xColType.szTypeName());
         }
       }
 
@@ -227,11 +227,6 @@ void AggregateOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode
       delete pOrdinalIter;
       delete pOrdinalGroupByExprs;
     }
-
-
-
-
-
 
     return;
   }
