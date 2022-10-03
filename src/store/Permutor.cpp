@@ -58,63 +58,18 @@ void Permutor::vCopy_ptndJoinSet(void)
   m_p_ptndJoinSet =
       _pCard_PtndJoinSet(m_pBoard_partition->pFindMain(CK_PTNDJOINSET));
 
-  m_p_comment = new Card_Comment;
-  m_p_comment->vValue("PERMUTATIONS"_Stz);
-  m_pBoard_permute->vAppendMainCard(m_p_comment);
+  m_pBoard_permute->vAppendMain(new Card_Comment("PERMUTATIONS"_Stz));
 
+  i8 i_PtdnJoin = 0;
   m_p_subSet = m_p_ptndJoinSet->pDupSubCards();
-  while ((m_pPoppedCard = m_p_subSet->pPop()))
-    m_pBoard_permute->vAppendMainCard(m_pPoppedCard);
+  while ((m_pPoppedCard = m_p_subSet->pPop())) {
+    //m_pPoppedCard->vAddProperty_int("i_PtndJoin"_Stz,i_PtdnJoin++);
+    m_pBoard_permute->vAppendMain(m_pPoppedCard);
+  }
   DELETE_CARD(m_p_subSet);
 
   //--nn--------------==
   // x
-
-
-  m_p_permutation = new Card_Permutation;
-  m_pBoard_permute->vAppendMainCard(m_p_permutation);
-  m_p_comment = new Card_Comment;
-  m_p_comment->vValue("((to be coded))"_Stz);
-  m_pBoard_permute->vAppendMainCard(m_p_comment);
-  m_p_comment = new Card_Comment;
-  m_p_comment->vValue("((to be coded))"_Stz);
-  m_pBoard_permute->vAppendMainCard(m_p_comment);
-  m_p_comment = new Card_Comment;
-  m_p_comment->vValue("((to be coded))"_Stz);
-  m_pBoard_permute->vAppendMainCard(m_p_comment);
-  m_p_comment = new Card_Comment;
-  m_p_comment->vValue("((to be coded))"_Stz);
-  m_pBoard_permute->vAppendMainCard(m_p_comment);
-
-  m_p_permutation = new Card_Permutation;
-  m_pBoard_permute->vAppendMainCard(m_p_permutation);
-  m_p_comment = new Card_Comment;
-  m_p_comment->vValue("((to be coded))"_Stz);
-  m_pBoard_permute->vAppendMainCard(m_p_comment);
-  m_p_comment = new Card_Comment;
-  m_p_comment->vValue("((to be coded))"_Stz);
-  m_pBoard_permute->vAppendMainCard(m_p_comment);
-  m_p_comment = new Card_Comment;
-  m_p_comment->vValue("((to be coded))"_Stz);
-  m_pBoard_permute->vAppendMainCard(m_p_comment);
-  m_p_comment = new Card_Comment;
-  m_p_comment->vValue("((to be coded))"_Stz);
-  m_pBoard_permute->vAppendMainCard(m_p_comment);
-
-  m_p_permutation = new Card_Permutation;
-  m_pBoard_permute->vAppendMainCard(m_p_permutation);
-  m_p_comment = new Card_Comment;
-  m_p_comment->vValue("((to be coded))"_Stz);
-  m_pBoard_permute->vAppendMainCard(m_p_comment);
-  m_p_comment = new Card_Comment;
-  m_p_comment->vValue("((to be coded))"_Stz);
-  m_pBoard_permute->vAppendMainCard(m_p_comment);
-  m_p_comment = new Card_Comment;
-  m_p_comment->vValue("((to be coded))"_Stz);
-  m_pBoard_permute->vAppendMainCard(m_p_comment);
-  m_p_comment = new Card_Comment;
-  m_p_comment->vValue("((to be coded))"_Stz);
-  m_pBoard_permute->vAppendMainCard(m_p_comment);
 
 
 //  PermGen::vTest(1);
@@ -123,6 +78,19 @@ void Permutor::vCopy_ptndJoinSet(void)
 //  PermGen::vTest(4);
 //  PermGen::vTest(5);
 //  PermGen::vTest(6);
+
+  m_pPermGen = new PermGen(m_p_ptndJoinSet->nChildCards());
+
+  while (m_pPermGen->bNextPermutation()) {
+    m_pBoard_permute->vAppendMain((m_p_permutation = new Card_Permutation));
+    m_p_permutation->vAddProperty_int("i_Permutation"_Stz,m_pPermGen->nPermutations()-1);
+    for (i8 i_Item = 0; i_Item < m_pPermGen->nItems(); i_Item++) {
+      i8 iChild = m_pPermGen->iItem(i_Item);
+      m_pChildCard = m_p_ptndJoinSet->pGetChild(iChild);
+      m_pBoard_permute->vAppendMain(m_pChildCard->pDupCardAndSubCards());
+    }
+  }
+
   if (m_bInteractive)
     m_pBoard_permute->vPrintBoard("Permutor::vCopy_ptndJoinSet"_Stz);
 }

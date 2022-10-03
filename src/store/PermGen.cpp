@@ -22,6 +22,7 @@ PermGen::PermGen(i8 nItems)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PERMGEN,_FOOTER_);
 
   m_nItems = nItems;
+  m_nPermutations = 0;
 
   // initialise the sequencing array
   m_iaItem[0] = -1;
@@ -70,6 +71,26 @@ void PermGen::vTest(i8 nItems)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+i8 PermGen::iItem(i8 i_Position)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PERMGEN,_FOOTER_);
+
+  return m_iaItem[i_Position];
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+i8 PermGen::nItems(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PERMGEN,_FOOTER_);
+
+  return m_nItems;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 bool PermGen::bNextPermutation(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PERMGEN,_FOOTER_);
@@ -83,7 +104,8 @@ bool PermGen::bNextPermutation(void)
       if (++m_iaItem[0] >= m_nItems)
         break;
       if (bIsValidPermutation()) {
-        vPrint("IS "_Stz);
+        m_nPermutations++;
+        //vPrint("IS "_Stz);
         return true;
       }
 //      else {
@@ -124,11 +146,11 @@ bool PermGen::bNextPermutation(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-i8 PermGen::iItem(i8 i_Position)
+i8 PermGen::nPermutations(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PERMGEN,_FOOTER_);
 
-  return m_iaItem[i_Position];
+  return m_nPermutations;
 }
 
 /*----------------------------------------------------------------------------*/

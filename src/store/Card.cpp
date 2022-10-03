@@ -1081,6 +1081,7 @@ void Card::vPrintCard_compressed(Ribbon* pRibbon, i8 iDepth, bool& rbPrune, eCP 
     case CK_COPTNJOIN:
     case CK_CROSSPTNJOIN:
       vPrintCardName(pRibbon, iDepth, rbPrune);
+      vPrintCardProperties(pRibbon, iDepth, rbPrune);
       vPrintCompressed_childPairs(pRibbon, iDepth, rbPrune);
       rbPrune = true;
       break;
@@ -2491,13 +2492,13 @@ CardIter* Card::pNewSubCardIter(void)
 /*----------------------------------------------------------------------------*/
 /* set mode                                                                   */
 /*----------------------------------------------------------------------------*/
-void Card::vMode(Stz* szMode)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  vAddProperty_stz("szMode"_Stz,szMode);
-  vValue(szMode);
-}
+//void Card::vMode(Stz* szMode)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+//
+//  vAddProperty_stz("szMode"_Stz,szMode);
+//  vValue(szMode);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get mode                                                                   */

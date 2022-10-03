@@ -21,12 +21,15 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_pBoard_permute   = nullptr;
   m_pBoard_query     = nullptr;
 
+  m_pPermGen         = nullptr;
+
   m_pMainCardIter  = nullptr;
 
   m_eMainCard      = CK_NONE;
   m_eNextMain      = CK_NONE;
   m_eStageTopo     = YG_NONE;
 
+  m_pChildCard     = nullptr;
   m_pMainCard      = nullptr;
   m_pNextMain      = nullptr;
   m_pPoppedCard    = nullptr;
@@ -48,7 +51,6 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_p_indexList        = nullptr;
   m_p_indexScan        = nullptr;
   m_p_joinPredList     = nullptr;
-  m_p_joinPtnList      = nullptr;
   m_p_lBound           = nullptr;
   m_p_permutation      = nullptr;
   m_p_predCmp          = nullptr;
@@ -87,6 +89,8 @@ TransformerTool::~TransformerTool(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_);
 
   delete m_pMainCardIter;
+
+  delete m_pPermGen;
 }
 
 

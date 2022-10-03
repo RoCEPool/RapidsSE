@@ -344,7 +344,7 @@ namespace STORE
     Stz* szMapFrom(void);
     void vMapFrom(Stz* szMapFrom);
     //SZ Stz* szMode(void);
-    void vMode(Stz* szMode);
+    //void vMode(Stz* szMode);
   
 //    Stz* szStageNm(void);
 //    void vStageNm(Stz* szStageNm);

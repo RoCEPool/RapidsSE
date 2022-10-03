@@ -73,7 +73,7 @@ Board::~Board(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* append new main card at end                                                */
 /*----------------------------------------------------------------------------*/
-void Board::vAppendMainCard(Card* pNewMainCard, bool bRenumber)
+void Board::vAppendMain(Card* pNewMainCard, bool bRenumber)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 

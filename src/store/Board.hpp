@@ -65,7 +65,6 @@
 
 #include "Card_Map.hpp"
 #include "Card_MapSet.hpp"
-#include "Card_Mode.hpp"
 
 #include "Card_StageNm.hpp"
 
@@ -153,7 +152,7 @@ namespace STORE
     Board(eBK eBoard, Bench* pBench);
    ~Board(void) noexcept(false);
 
-    void vAppendMainCard(Card* pNewMainCard, bool bRenumber=true);
+    void vAppendMain(Card* pNewMainCard, bool bRenumber= true);
 
     eBK eBoard(void);
     CardCtl* pCardCtl(void);

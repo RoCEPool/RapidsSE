@@ -220,8 +220,8 @@ void Ribbon::vNextColumn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
 
-  if (m_i_Column_logical + 1 > C_RIBBON_COLUMNS)
-    return;
+//  if (m_i_Column_logical + 1 > C_RIBBON_COLUMNS)
+//    return;
     
   m_i_Column_logical++;
   

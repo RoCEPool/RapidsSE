@@ -13,6 +13,7 @@ namespace STORE
     static const i8 C_PERMGEN_ITEMS = 16;
 
     i8 m_nItems; // number of items
+    i8 m_nPermutations; // number of permutations so far
     i8 m_iaItem[C_PERMGEN_ITEMS]; // sequencing array of items
 
     // must be last
@@ -27,9 +28,10 @@ namespace STORE
 
     static void vTest(i8 nItems);
 
+    i8   iItem(i8 i_Position);
+    i8   nItems(void);
     bool bNextPermutation(void);
-    i8 iItem(i8 i_Position);
-
+    i8   nPermutations(void);
     void vPrint(Stz* szLabel);
 
   private:

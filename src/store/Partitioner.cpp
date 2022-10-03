@@ -56,7 +56,7 @@ void Partitioner::vExtract_tableList(void)
   BoardIter xBI_query(m_pBoard_query);
 
   m_p_tableList = new Card_TableList;
-  m_pBoard_partition->vAppendMainCard(m_p_tableList);
+  m_pBoard_partition->vAppendMain(m_p_tableList);
 
   while ( (m_pMainCard = xBI_query.pEachMain()) ) {
     m_p_table = m_pMainCard->pSub_table();
@@ -84,7 +84,7 @@ void Partitioner::vExtract_joinPredList(void)
   // joinPredList
 
   m_p_joinPredList = new Card_JoinPredList;
-  m_pBoard_partition->vAppendMainCard(m_p_joinPredList);
+  m_pBoard_partition->vAppendMain(m_p_joinPredList);
 
   BoardIter xBI_query(m_pBoard_query);
   while ((m_pMainCard = xBI_query.pEachMain(CK_FILTER))) {
@@ -113,7 +113,7 @@ void Partitioner::vCompute_coPtnPredList(void)
   // coPptnPredList
 
   m_p_coPtnPredList = new Card_CoPtnPredList;
-  m_pBoard_partition->vAppendMainCard(m_p_coPtnPredList);
+    m_pBoard_partition->vAppendMain(m_p_coPtnPredList);
 
   m_p_tableList =
       _pCard_TableList(m_pBoard_partition->pFindMain(CK_TABLELIST));
@@ -152,7 +152,7 @@ void Partitioner::vCompute_coPtnJoinList(void)
   // coPtnJoinList
 
   m_p_coPtnJoinList = new Card_CoPtnJoinList;
-  m_pBoard_partition->vAppendMainCard(m_p_coPtnJoinList);
+  m_pBoard_partition->vAppendMain(m_p_coPtnJoinList);
 
   m_p_coPtnPredList =
       _pCard_CoPtnPredList(m_pBoard_partition->pFindMain(CK_COPTNPREDLIST));
@@ -196,7 +196,7 @@ void Partitioner::vCompute_crossPtnJoinList(void)
       _pCard_JoinPredList(m_pBoard_partition->pFindMain(CK_JOINPREDLIST));
 
   m_p_crossPtnJoinList = new Card_CrossPtnJoinList;
-  m_pBoard_partition->vAppendMainCard(m_p_crossPtnJoinList);
+  m_pBoard_partition->vAppendMain(m_p_crossPtnJoinList);
 
   i8 nChildren = m_p_joinPredList->nChildCards();
   for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
@@ -231,19 +231,19 @@ void Partitioner::vCompute_ptndJointSet(void)
   //--nn--------------==
   // ptndJoinSet
 
-  m_p_joinPtnList = new Card_PtndJoinSet;
-  m_pBoard_partition->vAppendMainCard(m_p_joinPtnList);
+  m_p_ptndJoinSet = new Card_PtndJoinSet;
+  m_pBoard_partition->vAppendMain(m_p_ptndJoinSet);
 
   m_p_coPtnJoinList =
       _pCard_CoPtnJoinList(m_pBoard_partition->pFindMain(CK_COPTNJOINLIST));
   m_p_subSet = m_p_coPtnJoinList->pDupSubCards();
-  m_p_joinPtnList->vTransferSubCards(m_p_subSet);
+  m_p_ptndJoinSet->vTransferSubCards(m_p_subSet);
   DELETE_CARD(m_p_subSet);
 
   m_p_crossPtnJoinList =
       _pCard_CrossPtnJoinList(m_pBoard_partition->pFindMain(CK_CROSSPTNJOINLIST));
   m_p_subSet = m_p_crossPtnJoinList->pDupSubCards();
-  m_p_joinPtnList->vTransferSubCards(m_p_subSet);
+  m_p_ptndJoinSet->vTransferSubCards(m_p_subSet);
   DELETE_CARD(m_p_subSet);
 
   if (m_bInteractive)

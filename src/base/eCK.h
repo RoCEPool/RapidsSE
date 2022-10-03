@@ -62,7 +62,6 @@ enum eCK // card kind
 
   /* */ CK_MAP,
   /* */ CK_MAPSET,
-  /* */ CK_MODE,
 
   /* */ CK_OBYELIST,
   /* */ CK_ON,
@@ -172,7 +171,6 @@ static Stz* aCK[]
 
   /* */ "CK_MAP"_Stz,          // CK_MAP
   /* */ "CK_MAPSET"_Stz,       // CK_MAPSET
-  /* */ "CK_MODE"_Stz,         // CK_MODE
 
   /* */ "CK_OBYELIST"_Stz,     // CK_OBYELIST
   /* */ "CK_ON"_Stz,           // CK_ON
@@ -282,7 +280,6 @@ static Stz* aCK_short[]
 
   /* */ "map"_Stz,             // CK_MAP
   /* */ "mapSet"_Stz,          // CK_MAPSET
-  /* */ "mode"_Stz,            // CK_MODE
 
   /* */ "obyElist"_Stz,        // CK_OBYELIST
   /* */ "on"_Stz,              // CK_ON
