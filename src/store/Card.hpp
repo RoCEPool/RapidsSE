@@ -261,7 +261,6 @@ namespace STORE
     void vReplaceChildWithKids(Card* pChildCard);
     void vReplaceSubCard(Card* pSubCard, Card* pWithCard);
 
-
     Stz* sz(void);
 
     //SZ Stz* szTablePtn(void);

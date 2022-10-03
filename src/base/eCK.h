@@ -41,7 +41,6 @@ enum eCK // card kind
   /* */ CK_FILTELIST,
 
   /* */ CK_GBYELIST,
-  /* */ CK_GENERATE,
 
   /* */ CK_HASH,
   /* */ CK_HAVING,
@@ -150,7 +149,6 @@ static Stz* aCK[]
   /* */ "CK_FILTELIST"_Stz,    // CK_FILTELIST
 
   /* */ "CK_GBYELIST"_Stz,     // CK_GBYELIST
-  /* */ "CK_GENERATE"_Stz,     // CK_GENERATE
 
   /* */ "CK_HASH"_Stz,         // CK_HASH
   /* */ "CK_HAVING"_Stz,       // CK_HAVING
@@ -259,7 +257,6 @@ static Stz* aCK_short[]
   /* */ "filtElist"_Stz,       // CK_FILTELIST
 
   /* */ "gbyElist"_Stz,        // CK_GBYELIST
-  /* */ "generate"_Stz,        // CK_GENERATE
 
   /* */ "hash"_Stz,            // CK_HASH
   /* */ "having"_Stz,          // CK_HAVING

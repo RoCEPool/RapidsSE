@@ -43,7 +43,6 @@
 #include "Card_Filter.hpp"
 
 #include "Card_GbyElist.hpp"
-#include "Card_Generate.hpp"
 
 #include "Card_Hash.hpp"
 #include "Card_Having.hpp"
