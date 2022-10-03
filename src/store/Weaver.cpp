@@ -1044,7 +1044,7 @@ void Weaver::vPredOr(Stz* szRpnExpr, Card_PredOr* pCard_PredOr, i8 i)
     }
   }
 
-  szRpnExpr->vCatSprint(" %s"_Stz,pCard_PredOr->sz());
+  szRpnExpr->vCatSprint(" or"_Stz);
 
 }
 
@@ -1077,7 +1077,7 @@ void Weaver::vPredAnd(Stz* szRpnExpr, Card_PredAnd* pCard_PredAnd, i8 i)
     }
   }
 
-  szRpnExpr->vCatSprint(" %s"_Stz,pCard_PredAnd->sz());
+  szRpnExpr->vCatSprint(" and"_Stz);
 
 }
 

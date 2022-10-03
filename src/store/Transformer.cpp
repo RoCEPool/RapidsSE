@@ -117,7 +117,7 @@ void Transformer::vTransform(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* transform 1                                                                */
+/* transform 2                                                                */
 /*----------------------------------------------------------------------------*/
 void Transformer::vTransform2(void)
 {
@@ -210,6 +210,11 @@ void Transformer::vTransform2(void)
 
 
   m_pPermutor->vExtract_joinPredList();
+
+  m_pCardCtl->vPrintForm(CK_COLUMNREF,CP_COMPRESSED);
+  m_pCardCtl->vPrintForm(CK_COPTNJOIN,CP_COMPRESSED);
+  m_pCardCtl->vPrintForm(CK_CROSSPTNJOIN,CP_COMPRESSED);
+  //m_pCardCtl->vPrintForm(CK_PREDCMP,CP_COMPRESSED);
 
   m_pPermutor->vCompute_coPtnPredList();
   m_pPermutor->vCompute_coPtnJoinList();

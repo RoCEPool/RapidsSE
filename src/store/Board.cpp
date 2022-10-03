@@ -527,7 +527,8 @@ void Board::vPinCards(Ribbon* pRibbon, i8 i_Board)
     else
       pSubRibbon->vNextColumn();
 
-    pCard->vPrintCard(pSubRibbon);
+    bool bPrune = false;
+    pCard->vPrintCard(pSubRibbon,0,bPrune);
   }
      
   pRibbon->vPinRibbon(1,0,pSubRibbon);

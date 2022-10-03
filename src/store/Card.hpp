@@ -236,22 +236,23 @@ namespace STORE
     i8   iOrdLo(void);
     void vOrdLo(i8 iOrdLo);
 
-    void vPrintCard(Ribbon* pRibbon, i8 iDepth=0);
-    void vPrintCard_byForm(Ribbon* pRibbon, i8 iDepth, eCP ePrintForm);
-    void vPrintCard_default(Ribbon* pRibbon, i8 iDepth, eCP ePrintForm);
-    void vPrintCardDetails(Ribbon* pRibbon, i8 iDepth);
-    void vPrintCardName(Ribbon* pRibbon, i8 iDepth);
-    void vPrintCardProperties(Ribbon* pRibbon, i8 iDepth, bool bPrintPtyName= true);
-    void vPrintCardValue(Ribbon* pRibbon, i8 iDepth);
+    void vPrintCard(Ribbon* pRibbon, i8 iDepth, bool& rbPrune);
+    void vPrintCard_byForm(Ribbon* pRibbon, i8 iDepth, bool& rbPrune, eCP ePrintForm);
+    void vPrintCard_compressed(Ribbon* pRibbon, i8 iDepth, bool& rbPrune, eCP ePrintForm);
+    void vPrintCard_default(Ribbon* pRibbon, i8 iDepth, bool& rbPrune, eCP ePrintForm);
+    void vPrintCardDetails(Ribbon* pRibbon, i8 iDepth, bool& rbPrune);
+    void vPrintCardName(Ribbon* pRibbon, i8 iDepth, bool& rbPrune);
+    void vPrintCardProperties(Ribbon* pRibbon, i8 iDepth, bool& brPrune, bool bPrintPtyName= true);
+    void vPrintCardValue(Ribbon* pRibbon, i8 iDepth, bool& rbPrune);
+    void vPrintCompressed_childPairs(Ribbon* pRibbon, i8 iDepth, bool& rbPrune);
     void vPrintHeader(Ribbon* pRibbon);
-    void vPrintTerm(Ribbon* pRibbon, i8 iDepth);
     i8   nProperties(void);
     eTN  eProperty(i8 i_Property);
     TagSet* pProperties(void);
     void vPropertiesEnsure(void);
     Stz* szPropertyNm(i8 i_Property);
 
-   void vRemoveChild(Card* pCardRemove);
+    void vRemoveChild(Card* pCardRemove);
     void vRemoveSubCard(Card* pCardRemove);
     void vRenumberSubCards(Card* pParentCard);
     void vReplaceChildWithKids(Card* pChildCard);
@@ -292,7 +293,7 @@ namespace STORE
 
     Card* pCard(void);
     void vCard(Card* pCard);
-    void vCardPrint(Ribbon* pRibbon, i8 iDepth);
+    void vCardPrint(Ribbon* pRibbon, i8 iDepth, bool rbPrune);
     void vClearAllMarks(void);
     //SZ Stz* szColNm(void);
     //void vColNm(Stz* szColNm);
