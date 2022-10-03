@@ -24,10 +24,10 @@ void Step::vAddSteps_Word(void)
   vAddStep("word.allot"_Stz,        &Step::vWordAllot);
   vAddStep("word.breakPt@"_Stz,     &Step::vWordBreakPtFetch);
   vAddStep("word.breakPt!"_Stz,     &Step::vWordBreakPtStore);
-  vAddStep("word.category@"_Stz,    &Step::vWordCategoryFetch);
   vAddStep("word.category!"_Stz,    &Step::vWordCategoryStore);
   vAddStep("word.categoryWc@"_Stz,  &Step::vWordCategoryWcFetch);
   vAddStep("word.categoryWc!"_Stz,  &Step::vWordCategoryWcStore);
+  vAddStep("word.categoryWcString@"_Stz,&Step::vWordCategoryWcString);
   vAddStep("word.dump"_Stz,         &Step::vWordDump);
   vAddStep("word.embObject"_Stz,    &Step::vWordEmbObject);
   vAddStep("word.exitHook@"_Stz,    &Step::vWordExitHookGet);
@@ -117,22 +117,6 @@ void Step::vWordBreakPtStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* word.category@ -- word category fetch                                      */
-/*----------------------------------------------------------------------------*/
-void Step::vWordCategoryFetch(void)
-{
-  ENTRY();
-  
-  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
-  
-  Word* pCategory = pWord->pCategory();
-  
-  m_pDataStack->vPushPtr(pCategory);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* word.category! -- word category store                                      */
 /*----------------------------------------------------------------------------*/
 void Step::vWordCategoryStore(void)
@@ -182,6 +166,22 @@ void Step::vWordCategoryWcStore(void)
   eWC eCategory = (eWC) m_pDataStack->iPopInt(__func__);
 
   pWord->vCategoryEnum(eCategory);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* word.categoryWcString@ -- word category enum fetch str                     */
+/*----------------------------------------------------------------------------*/
+void Step::vWordCategoryWcString(void)
+{
+  ENTRY();
+
+  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
+
+  s32 eCategory = aWC[pWord->eCategoryEnum()];
+
+  m_pDataStack->vPushStr(eCategory);
 
   EXIT();
 }

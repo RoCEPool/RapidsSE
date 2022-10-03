@@ -37,12 +37,11 @@
 : word.show params| pWord |
 
   pWord word.name@     locals| sWordName |
-  pWord word.category@ locals| pCatg     |
-  pCatg word.name@     locals| sCatgName |
+  pWord word.categoryWcString@ locals| eCatg |
 
   pWord word.tagSet@   locals| pWordTags |
 
-  sWordName sCatgName "%12v : %24v" .putf
+  sWordName eCatg "%12v : %24v" .putf
 
   pWordTags if
     pWordTags tagSet.asStr "  %v" .putf
@@ -83,14 +82,14 @@
 /*----------------------------------------------------------------------------*/
 /* show all words that of given catg                                          */
 /*----------------------------------------------------------------------------*/
-: word::ofCatg params| pCatg |
+: word::ofCatg params| eCatg |
 
   dic::root dic.lastWord dup
   iterate                                 // iterate word cursor
 
     object@ locals| pWord |
 
-    pWord word.category@ pCatg equal if
+    pWord word.categoryWc@ eCatg equal if
       pWord word.show
     then
 
@@ -108,26 +107,6 @@
   iterate-words
  
     word@ word.name@ word@ pArrange arrange.insert
-
-  next-word
-
-  pArrange arrange.sequence
-
-  pArrange
-;
-
-/*----------------------------------------------------------------------------*/
-/* get a sorted arrangement of all words which are of given category          */
-/*----------------------------------------------------------------------------*/
-: arrange::wordsOfCatg params| pCatg |
-
-  arrange::new locals| pArrange |
-
-  iterate-words
-
-    word@ word.category@ pCatg equal if
-      word@ word.name@ word@ pArrange arrange.insert
-    then
 
   next-word
 

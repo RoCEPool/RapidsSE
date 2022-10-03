@@ -71,14 +71,14 @@
 /*----------------------------------------------------------------------------*/
 : \prompt \\category_wc WC_PROMPT ;
 
-: prompts \prompt find: \prompt word::ofCatg ;
+: prompts \prompt WC_PROCEDURE word::ofCatg ;
 
 /*----------------------------------------------------------------------------*/
 /* demon category                                                             */
 /*----------------------------------------------------------------------------*/
 : \demon \\category_wc WC_DEMON ;
 
-: demons \prompt find: \demon word::ofCatg ;
+: demons \prompt WC_DEMON word::ofCatg ;
 
 /*----------------------------------------------------------------------------*/
 /* folder is used as a kind of word to identify folders                       */
@@ -87,7 +87,7 @@
 
 : isFolder word.categoryWc@ WC_FOLDER equal ;
 
-: folders \prompt find: \folder word::ofCatg ;
+: folders \prompt WC_FOLDER word::ofCatg ;
 
 /*----------------------------------------------------------------------------*/
 /* handler category                                                           */
@@ -110,22 +110,22 @@
   POSTPONE _handler_entry
 ;
 
-: handlers \prompt find: \handler word::ofCatg ;
+: handlers \prompt WC_HANDLER word::ofCatg ;
 
 /*----------------------------------------------------------------------------*/
 /* include category                                                           */
 /*----------------------------------------------------------------------------*/
 : \include \\category_wc WC_INCLUDE ;
 
-: includes \prompt find: \include word::ofCatg ;
+: includes \prompt WC_INCLUDE word::ofCatg ;
 
 /*----------------------------------------------------------------------------*/
 /* operator category                                                          */
 /*----------------------------------------------------------------------------*/
 : \operator \\category_wc WC_OPERATOR ;
 
-: operators \prompt find: \operator word::ofCatg ;
-: ops       \prompt find: \operator word::ofCatg ;
+: operators \prompt WC_OPERATOR word::ofCatg ;
+: ops       \prompt WC_OPERATOR word::ofCatg ;
 
 /*----------------------------------------------------------------------------*/
 /* procedure category                                                         */

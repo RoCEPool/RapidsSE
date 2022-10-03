@@ -143,7 +143,7 @@ dicLock.dropwrite
 
   Folder[] dic.lastWord
   begin dup while
-    dup word.name@ .put " " .put dup word.category@ word.name@ .put .\n
+    dup word.name@ .put " " .put dup word.categoryWcString@ .put .\n
     word.prev
   repeat
   discard
