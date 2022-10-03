@@ -105,7 +105,7 @@ bool PermGen::bNextPermutation(void)
         break;
       if (bIsValidPermutation()) {
         m_nPermutations++;
-        vPrint("IS "_Stz);
+        //vPrint("IS "_Stz);
         return true;
       }
 //      else {

@@ -68,16 +68,22 @@ void Permutor::vCopy_ptndJoinSet(void)
   }
   DELETE_CARD(m_p_subSet);
 
+  if (m_bInteractive)
+    m_pBoard_permute->vPrintBoard("Permutor::vCopy_ptndJoinSet"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Permutor::vGenerate_ptndPermutations(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PERMUTOR, _FOOTER_);
+
+//  PermGen::vTest(4);
+
   //--nn--------------==
   // x
 
-
-//  PermGen::vTest(1);
-//  PermGen::vTest(2);
-//  PermGen::vTest(3);
-//  PermGen::vTest(4);
-//  PermGen::vTest(5);
-//  PermGen::vTest(6);
 
   m_pPermGen = new PermGen(m_p_ptndJoinSet->nChildCards());
 
@@ -107,7 +113,7 @@ void Permutor::vCopy_ptndJoinSet(void)
   DELETE_CARD(m_p_subSet);
 
   if (m_bInteractive)
-    m_pBoard_permute->vPrintBoard("Permutor::vCopy_ptndJoinSet"_Stz);
+    m_pBoard_permute->vPrintBoard("Permutor::vGenerate_ptndPermutations"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

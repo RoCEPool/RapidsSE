@@ -22,6 +22,7 @@ namespace STORE
    ~Permutor(void) noexcept(false);
 
     void vCopy_ptndJoinSet(void);
+    void vGenerate_ptndPermutations(void);
 
 
   private:
