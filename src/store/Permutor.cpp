@@ -48,7 +48,7 @@ void Permutor::vExtract_tableList(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PERMUTOR, _FOOTER_);
 
-  vSetupPermuteBoard();
+  vSetupPartitionBoard();
 
   //--nn--------------==
   // tableList
@@ -56,7 +56,7 @@ void Permutor::vExtract_tableList(void)
   BoardIter xBI_query(m_pBoard_query);
 
   m_p_tableList = new Card_TableList;
-  m_pBoard_permute->vAppendMainCard(m_p_tableList);
+  m_pBoard_partition->vAppendMainCard(m_p_tableList);
 
   while ( (m_pMainCard = xBI_query.pEachMain()) ) {
     m_p_table = m_pMainCard->pSub_table();
@@ -68,7 +68,7 @@ void Permutor::vExtract_tableList(void)
 
 
   if (m_bInteractive)
-    m_pBoard_permute->vPrintBoard("Permutor::vExtract_tableList"_Stz);
+    m_pBoard_partition->vPrintBoard("Permutor::vExtract_tableList"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -78,13 +78,13 @@ void Permutor::vExtract_joinPredList(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PERMUTOR, _FOOTER_);
 
-  vSetupPermuteBoard();
+  vSetupPartitionBoard();
 
   //--nn--------------==
   // joinPredList
 
   m_p_joinPredList = new Card_JoinPredList;
-  m_pBoard_permute->vAppendMainCard(m_p_joinPredList);
+  m_pBoard_partition->vAppendMainCard(m_p_joinPredList);
 
   BoardIter xBI_query(m_pBoard_query);
   while ((m_pMainCard = xBI_query.pEachMain(CK_FILTER))) {
@@ -97,7 +97,7 @@ void Permutor::vExtract_joinPredList(void)
 
 
   if (m_bInteractive)
-    m_pBoard_permute->vPrintBoard("Permutor::vExtract_joinPredList"_Stz);
+    m_pBoard_partition->vPrintBoard("Permutor::vExtract_joinPredList"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -107,18 +107,18 @@ void Permutor::vCompute_coPtnPredList(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PERMUTOR, _FOOTER_);
 
-  vSetupPermuteBoard();
+  vSetupPartitionBoard();
 
   //--nn--------------==
   // coPptnPredList
 
   m_p_coPtnPredList = new Card_CoPtnPredList;
-  m_pBoard_permute->vAppendMainCard(m_p_coPtnPredList);
+  m_pBoard_partition->vAppendMainCard(m_p_coPtnPredList);
 
   m_p_tableList =
-      _pCard_TableList(m_pBoard_permute->pFindMain(CK_TABLELIST));
+      _pCard_TableList(m_pBoard_partition->pFindMain(CK_TABLELIST));
   m_p_joinPredList =
-      _pCard_JoinPredList(m_pBoard_permute->pFindMain(CK_JOINPREDLIST));
+      _pCard_JoinPredList(m_pBoard_partition->pFindMain(CK_JOINPREDLIST));
 
   i8 nJoinPreds = m_p_joinPredList->nChildCards();
   for (i8 i_joinPred = 0; i_joinPred < nJoinPreds; i_joinPred++) {
@@ -136,7 +136,7 @@ void Permutor::vCompute_coPtnPredList(void)
 
 
   if (m_bInteractive)
-    m_pBoard_permute->vPrintBoard("Permutor::vCompute_coPtnPredList"_Stz);
+    m_pBoard_partition->vPrintBoard("Permutor::vCompute_coPtnPredList"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -146,16 +146,16 @@ void Permutor::vCompute_coPtnJoinList(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PERMUTOR, _FOOTER_);
 
-  vSetupPermuteBoard();
+  vSetupPartitionBoard();
 
   //--nn--------------==
   // coPtnJoinList
 
   m_p_coPtnJoinList = new Card_CoPtnJoinList;
-  m_pBoard_permute->vAppendMainCard(m_p_coPtnJoinList);
+  m_pBoard_partition->vAppendMainCard(m_p_coPtnJoinList);
 
   m_p_coPtnPredList =
-      _pCard_CoPtnPredList(m_pBoard_permute->pFindMain(CK_COPTNPREDLIST));
+      _pCard_CoPtnPredList(m_pBoard_partition->pFindMain(CK_COPTNPREDLIST));
 
 
   i8 nChildren = m_p_coPtnPredList->nChildCards();
@@ -177,7 +177,7 @@ void Permutor::vCompute_coPtnJoinList(void)
 
 
   if (m_bInteractive)
-    m_pBoard_permute->vPrintBoard("Permutor::vCompute_coPtnJoinList"_Stz);
+    m_pBoard_partition->vPrintBoard("Permutor::vCompute_coPtnJoinList"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -187,16 +187,16 @@ void Permutor::vCompute_crossPtnJoinList(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PERMUTOR, _FOOTER_);
 
-  vSetupPermuteBoard();
+  vSetupPartitionBoard();
 
   //--nn--------------==
   // crossPtnJoinList
 
   m_p_joinPredList =
-      _pCard_JoinPredList(m_pBoard_permute->pFindMain(CK_JOINPREDLIST));
+      _pCard_JoinPredList(m_pBoard_partition->pFindMain(CK_JOINPREDLIST));
 
   m_p_crossPtnJoinList = new Card_CrossPtnJoinList;
-  m_pBoard_permute->vAppendMainCard(m_p_crossPtnJoinList);
+  m_pBoard_partition->vAppendMainCard(m_p_crossPtnJoinList);
 
   i8 nChildren = m_p_joinPredList->nChildCards();
   for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
@@ -216,7 +216,7 @@ void Permutor::vCompute_crossPtnJoinList(void)
 
 
   if (m_bInteractive)
-    m_pBoard_permute->vPrintBoard("Permutor::vCompute_crossPtnJoinList"_Stz);
+    m_pBoard_partition->vPrintBoard("Permutor::vCompute_crossPtnJoinList"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -226,28 +226,28 @@ void Permutor::vCompute_ptndJointSet(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PERMUTOR, _FOOTER_);
 
-  vSetupPermuteBoard();
+  vSetupPartitionBoard();
 
   //--nn--------------==
   // ptndJoinSet
 
   m_p_joinPtnList = new Card_PtndJoinSet;
-  m_pBoard_permute->vAppendMainCard(m_p_joinPtnList);
+  m_pBoard_partition->vAppendMainCard(m_p_joinPtnList);
 
   m_p_coPtnJoinList =
-      _pCard_CoPtnJoinList(m_pBoard_permute->pFindMain(CK_COPTNJOINLIST));
+      _pCard_CoPtnJoinList(m_pBoard_partition->pFindMain(CK_COPTNJOINLIST));
   m_p_subSet = m_p_coPtnJoinList->pDupSubCards();
   m_p_joinPtnList->vTransferSubCards(m_p_subSet);
   DELETE_CARD(m_p_subSet);
 
   m_p_crossPtnJoinList =
-      _pCard_CrossPtnJoinList(m_pBoard_permute->pFindMain(CK_CROSSPTNJOINLIST));
+      _pCard_CrossPtnJoinList(m_pBoard_partition->pFindMain(CK_CROSSPTNJOINLIST));
   m_p_subSet = m_p_crossPtnJoinList->pDupSubCards();
   m_p_joinPtnList->vTransferSubCards(m_p_subSet);
   DELETE_CARD(m_p_subSet);
 
   if (m_bInteractive)
-    m_pBoard_permute->vPrintBoard("Permutor::vCompute_ptndJointSet"_Stz);
+    m_pBoard_partition->vPrintBoard("Permutor::vCompute_ptndJointSet"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
