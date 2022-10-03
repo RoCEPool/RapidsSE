@@ -3,6 +3,8 @@
 /*============================================================================*/
 
 #include "Card_PtndJoin.hpp"
+#include "Card_SubSet.hpp"
+#include "Card_PredCmp.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -45,6 +47,23 @@ Card_PtndJoin::~Card_PtndJoin(void) noexcept(false)
 bool Card_PtndJoin::bMayFollowAfter(Card_SubSet* pPriorPtnJoins)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  i8 nPriorPtnJoins = pPriorPtnJoins->nChildCards();
+  if (! nPriorPtnJoins)
+    return true;
+
+  for (i8 i_PriorPtnJoin = 0; i_PriorPtnJoin < nPriorPtnJoins; i_PriorPtnJoin++) {
+    Card_PtndJoin* p_ptndJoin =
+        _pCard_PtndJoin(pPriorPtnJoins->pGetChild(i_PriorPtnJoin));
+
+    i8 nPredCmps = p_ptndJoin->nChildCards();
+    for (i8 i_PredCmp = 0; i_PredCmp < nPredCmps; i_PredCmp++) {
+      Card_PredCmp* p_predCmp =
+          _pCard_PredCmp(p_ptndJoin->pGetChild(i_PredCmp));
+
+      p_predCmp->vDump();
+    }
+  }
 
   return true;
 }

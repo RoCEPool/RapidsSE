@@ -100,7 +100,7 @@ void Permutor::vGenerate_ptndPermutations(void)
       m_pBoard_permute->vAppendMain(m_pChildCard->pDupCardAndSubCards());
 
       m_p_ptndJoin = _pCard_PtndJoin(m_pChildCard);
-      if (m_p_ptndJoin->bMayFollowAfter(m_p_subSet)) {
+      if (! m_p_ptndJoin->bMayFollowAfter(m_p_subSet)) {
         m_pBoard_permute->vAppendMain(new Card_Comment("**DOESN'T FOLLOW**"_Stz));
         m_p_permutation->vAddProperty_nameOnly("bInvalid"_Stz);
         break;
