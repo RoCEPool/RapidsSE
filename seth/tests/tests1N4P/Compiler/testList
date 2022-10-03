@@ -3,6 +3,7 @@ select.test
 explain.test
 expressions/aggregates.test
 expressions/arithmetic.test
+expressions/comparison.test
 expressions/inExpr.test
 expressions/likeExpr.test
 expressions/betweenExpr.test

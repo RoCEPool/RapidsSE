@@ -2822,8 +2822,7 @@ antlrcpp::Any SqlPlanner::visitCastOp(sqlParser::CastOpContext* pCtx)
   QueryNode* pTargetExpr = m_pExprStack->pPop();
   ASSERT(Expr::bIsOfType(pTargetExpr));
 
-  eCT eDataType = eExtractDataType(pCtx->dataType());
-  TypeId xTypeId = TypeId::xIdOf(eDataType);
+  TypeId xTypeId = xExtractDataType(pCtx->dataType());
 
   QueryNode* pCastExpr = CastExpr::pCreate(pTargetExpr, xTypeId);
   m_pExprStack->vPush(pCastExpr);
@@ -2842,8 +2841,7 @@ antlrcpp::Any SqlPlanner::visitInlineCast(sqlParser::InlineCastContext* pCtx)
   QueryNode* pTargetExpr = m_pExprStack->pPop();
   ASSERT(Expr::bIsOfType(pTargetExpr));
 
-  eCT eDataType = eExtractDataType(pCtx->dataType());
-  TypeId xTypeId = TypeId::xIdOf(eDataType);
+  TypeId xTypeId = xExtractDataType(pCtx->dataType());
 
   QueryNode* pCastExpr = CastExpr::pCreate(pTargetExpr, xTypeId);
   m_pExprStack->vPush(pCastExpr);
@@ -5347,30 +5345,71 @@ eJT SqlPlanner::eExtractJoinType(sqlParser::ExtendedJoinTypeContext *pCtx)
   NEVER_REACH
 }
 
-eCT SqlPlanner::eExtractDataType(sqlParser::DataTypeContext* pCtx)
+/*----------------------------------------------------------------------------*/
+/* Extract the data type ID                                                   */
+/*----------------------------------------------------------------------------*/
+TypeId SqlPlanner::xExtractDataType(sqlParser::DataTypeContext* pCtx)
 {
   ASSERT(pCtx);
   sqlParser::SqlDataTypeContext* pSqlCtx = pCtx->sqlDataType();
 
-  eCT eDataType = CT_NONE;
+  TypeId xDataType;
 
-  if      (pSqlCtx->BOOLEAN())            { eDataType = CT_BOOLEAN;     }
-  else if (pSqlCtx->INTEGER())            { eDataType = CT_INTEGER;     }
-  else if (pSqlCtx->DECIMAL())            { eDataType = CT_DECIMAL;     }
-  else if (pSqlCtx->FLOAT())              { eDataType = CT_FLOAT;       }
-  else if (pSqlCtx->DATE())               { eDataType = CT_DATE;        }
-  else if (pSqlCtx->TIME())               { eDataType = CT_TIME;        }
-  else if (pSqlCtx->TIMESTAMP())          { eDataType = CT_TIMESTAMP;   }
-//TODO:  else if (pSqlCtx->INTERVAL())           { eDataType = CT_INTERVAL_YM; }
-  else if (pSqlCtx->fixedLenChar())       { eDataType = CT_CHAR;        }
-  else if (pSqlCtx->varyingLenChar())     { eDataType = CT_VARCHAR;     }
+  if      (pSqlCtx->BOOLEAN())            { xDataType = TypeId::xIdOf(CT_BOOLEAN);     }
+  else if (pSqlCtx->INTEGER())            { xDataType = TypeId::xIdOf(CT_INTEGER);     }
+  else if (pSqlCtx->DECIMAL())            { xDataType = TypeId::xIdOf(CT_DECIMAL);     }
+  else if (pSqlCtx->FLOAT())              { xDataType = TypeId::xIdOf(CT_FLOAT);       }
+  else if (pSqlCtx->DATE())               { xDataType = TypeId::xIdOf(CT_DATE);        }
+  else if (pSqlCtx->TIME())               { xDataType = TypeId::xIdOf(CT_TIME);        }
+  else if (pSqlCtx->TIMESTAMP())          { xDataType = TypeId::xIdOf(CT_TIMESTAMP);   }
+  else if (pSqlCtx->fixedLenChar())       { xDataType = TypeId::xIdOf(CT_CHAR);        }
+  else if (pSqlCtx->varyingLenChar())     { xDataType = TypeId::xIdOf(CT_VARCHAR);     }
+  else if (pSqlCtx->intervalType() && pSqlCtx->intervalType()->yearMonthIntervalType()) {
+    sqlParser::YearMonthIntervalTypeContext* pIvlCtx = pSqlCtx->intervalType()->yearMonthIntervalType();
+
+    if (pIvlCtx->TO()) {
+      xDataType = TypeId::xIdOf(IV_YEAR_TO_MONTH);
+    } else if (pIvlCtx->YEAR()) {
+      xDataType = TypeId::xIdOf(IV_YEAR);
+    } else {
+      xDataType = TypeId::xIdOf(IV_MONTH);
+    }
+  }
+  else if (pSqlCtx->intervalType() && pSqlCtx->intervalType()->dayTimeIntervalType()) {
+    sqlParser::DayTimeIntervalTypeContext* pIvlCtx = pSqlCtx->intervalType()->dayTimeIntervalType();
+
+    if (pIvlCtx->TO()) {
+      if (pIvlCtx->DAY()) {
+        if      (pIvlCtx->HOUR())    { xDataType = TypeId::xIdOf(IV_DAY_TO_HOUR);   }
+        else if (pIvlCtx->MINUTE())  { xDataType = TypeId::xIdOf(IV_DAY_TO_MINUTE); }
+        else if (pIvlCtx->SECOND())  { xDataType = TypeId::xIdOf(IV_DAY_TO_SECOND); }
+        else    NEVER_REACH
+
+      } else if (pIvlCtx->HOUR()) {
+        if      (pIvlCtx->MINUTE())  { xDataType = TypeId::xIdOf(IV_HOUR_TO_MINUTE); }
+        else if (pIvlCtx->SECOND())  { xDataType = TypeId::xIdOf(IV_HOUR_TO_SECOND); }
+        else    NEVER_REACH
+      }
+
+      else if (pIvlCtx->MINUTE()) {
+        if (pIvlCtx->SECOND())  xDataType = TypeId::xIdOf(IV_MINUTE_TO_SECOND);
+        else NEVER_REACH
+      }
+
+    } else {
+      // Single field
+      if      (pIvlCtx->DAY())     xDataType = TypeId::xIdOf(IV_DAY);
+      else if (pIvlCtx->HOUR())    xDataType = TypeId::xIdOf(IV_HOUR);
+      else if (pIvlCtx->MINUTE())  xDataType = TypeId::xIdOf(IV_MINUTE);
+      else if (pIvlCtx->SECOND())  xDataType = TypeId::xIdOf(IV_SECOND);
+      else  NEVER_REACH
+    }
+  }
   else if (pSqlCtx->BINARY())             {  __NOT_IMPL3("BINARY data type") }
   else if (pSqlCtx->VARBINARY())          {  __NOT_IMPL3("VARBINARY data type") }
   else if (pSqlCtx->BLOB())               {  __NOT_IMPL3("BLOB data type") }
 
-
-
-  return eDataType;
+  return xDataType;
 }
 
 /*----------------------------------------------------------------------------*/

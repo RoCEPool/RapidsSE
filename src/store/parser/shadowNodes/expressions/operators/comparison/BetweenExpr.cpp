@@ -261,6 +261,7 @@ TypeId BetweenExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
   TypeId xUpper     = Expr::xTypeId(pUpperBound, pRootNode);
 
   if (xLower != xUpper &&
+      xLower.eCTVal() != xUpper.eCTVal() &&     // caters for compatible interval types
       xLower.eCTVal() != CT_UNKNOWN &&
       xUpper.eCTVal() != CT_UNKNOWN &&
       xPredicand.eCTVal() != CT_UNKNOWN) {

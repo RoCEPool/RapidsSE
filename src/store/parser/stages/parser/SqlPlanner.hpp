@@ -8,6 +8,7 @@
 #include "QueryNodeList.hpp"
 #include "SqlException.hpp"
 #include "eJT.h"
+#include "TypeId.hpp"
 
 #define __NOT_IMPL(FEATURE) \
   SyntaxException::vThrowNotImplemented(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), FEATURE##_Stz ); \
@@ -193,7 +194,7 @@ namespace Parser
     static Ivl   xCleanMinuteSecondInterval(Stz* szVal, sqlParser::StringLiteralContext *pCtx);
     static eJT   eExtractJoinType(sqlParser::JoinTypeContext* pCtx);
     static eJT   eExtractJoinType(sqlParser::ExtendedJoinTypeContext* pCtx);
-    static eCT   eExtractDataType(sqlParser::DataTypeContext* pCtx);
+    static TypeId xExtractDataType(sqlParser::DataTypeContext* pCtx);
 
     void  vGenerateSubqueryName(s256& sBuf);
 
