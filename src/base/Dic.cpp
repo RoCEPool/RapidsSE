@@ -260,7 +260,7 @@ Word* Dic::pEachWord(Word* pPrior, Word* pCategory)
   Word* pNextWord = pPrior ? pPrior->pNextWord() : pFirstWord();
 
   for ( ; pNextWord; pNextWord = pNextWord->pNextWord()) {
-    
+
     if (pNextWord->pCategory() == pCategory) {
       m_okLock.vDropRead();
       return pNextWord;
@@ -269,6 +269,29 @@ Word* Dic::pEachWord(Word* pPrior, Word* pCategory)
   
   m_okLock.vDropRead();
   
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* progressively return each word which is of given word category             */
+/*----------------------------------------------------------------------------*/
+Word* Dic::pEachWordWc(Word* pPrior, eWC eCategory)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
+
+  m_okLock.vGrabRead();
+
+  Word* pNextWord = pPrior ? pPrior->pNextWord() : pFirstWord();
+
+  for ( ; pNextWord; pNextWord = pNextWord->pNextWord()) {
+    if (pNextWord->eCategoryEnum() == eCategory) {
+      m_okLock.vDropRead();
+      return pNextWord;
+    }
+  }
+
+  m_okLock.vDropRead();
+
   return nullptr;
 }
 
@@ -523,13 +546,11 @@ void Dic::vListWords(i8 i_Depth, bool bListContents)
   m_okLock.vGrabRead();
   
   for (Word* pWord = pFirstWord(); pWord; pWord = pWord->pNextWord()) {
-    
-    Word* pCategory = pWord->pCategory();
 
     vTrace("%s: %s %s\n"_Stz,
            Stz::szTab(i_Depth),
            pWord->szWordNm(),
-           pCategory ? pCategory->szWordNm() : "n/a"_Stz);
+           aWC[pWord->eCategoryEnum()]->azChar());
     
     if (bListContents) {
       Object* pObject = pWord->pObject();

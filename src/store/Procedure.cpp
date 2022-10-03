@@ -334,7 +334,7 @@ Word* Procedure::pFindProcedure(TokenVec* pTokenVec)
   Word* pwMatchedProc = pDicRoot->pFindWord(sProcNm_single);
   
   if (pwMatchedProc) {
-    if (pwMatchedProc->pCategory() != pProcCatg)
+    if (pwMatchedProc->eCategoryEnum() != WC_PROCEDURE)
       return nullptr;
 
     // found procedure which matches token0
@@ -358,7 +358,7 @@ Word* Procedure::pFindProcedure(TokenVec* pTokenVec)
 
   if (pwMatchedProc) {
 
-    if (pwMatchedProc->pCategory() != pProcCatg)
+    if (pwMatchedProc->eCategoryEnum() != WC_PROCEDURE)
       return nullptr;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -394,7 +394,7 @@ Word* Procedure::pFindProcedure(TokenVec* pTokenVec)
   if (! pwMatchedProc)
     return nullptr;
   
-  if (pwMatchedProc->pCategory() != pProcCatg)
+  if (pwMatchedProc->eCategoryEnum() != WC_PROCEDURE)
     return nullptr;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

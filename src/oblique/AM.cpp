@@ -3388,7 +3388,7 @@ void AM::WORD::vListContents(Word* pWord, i8 i_Depth)
   if (! pObject)
     return;
   
-  Word* pCategory = pWord->pCategory();
+//  Word* pCategory = pWord->pCategory();
 
   if (CN_DIC == pObject->eGetClassNo())
     pKind = ((Dic*)pObject)->pDicKind();
@@ -3396,7 +3396,7 @@ void AM::WORD::vListContents(Word* pWord, i8 i_Depth)
   vTrace("%s%s %s %s\n"_Stz,
          Stz::szTab(i_Depth),
          pWord->szWordNm(),
-         pCategory ? pCategory->szWordNm() : "n/a"_Stz,
+         aWC[pWord->eCategoryEnum()]->azChar(),
          pKind ? pKind->szWordNm() : "n/a"_Stz
          );
 

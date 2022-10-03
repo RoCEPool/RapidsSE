@@ -42,6 +42,7 @@ namespace BASE
     void  vDropWrite(void);
     Word* pEachWord(Word* pPrior);
     Word* pEachWord(Word* pPrior, Word* pCategory);
+    Word* pEachWordWc(Word* pPrior, eWC eCategory);
     Word* pFindWord(Stz* szWordNm);
     Word* pFindWord(Word* pSearchWord, Stz* szWordNm);
     Word* pFindStep(fpSTEPFN fpStepFn);

@@ -539,7 +539,7 @@ bool SePrompt::bIsPromptWord(void)
     return false;
     
   Word* pPromptCatg = pDicRoot->pFindWord(m_pSearchWord, "\\prompt"_Stz);
-  if (pPromptCatg == pWord->pCategory())
+  if (pPromptCatg->eCategoryEnum() == pWord->eCategoryEnum())
     return true;
   
   return false;
