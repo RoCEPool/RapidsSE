@@ -224,6 +224,7 @@ enum eCN : u2 // Class Number
   /* */ CN_PAGEFILE,
   /* */ CN_PAGINGMETRICS,
   /* */ CN_PARCEL,
+  /* */ CN_PARTITIONER,
   /* */ CN_PATHIDENTIFIER,
   /* */ CN_PATHVEC,
   /* */ CN_PAYSTR,
@@ -658,6 +659,7 @@ static Stz* aCN[]
   /* */ "PAGEFILE"_Stz,             // CN_PAGEFILE
   /* */ "PAGINGMETRICS"_Stz,        // CN_PAGINGMETRICS
   /* */ "PARCEL"_Stz,               // CN_PARCEL
+  /* */ "PARTITIONER"_Stz,          // CN_PARTITIONER
   /* */ "PATHIDENTIFIER"_Stz,       // CN_PATHIDENTIFIER
   /* */ "PATHVEC"_Stz,              // CN_PATHVEC
   /* */ "PAYSTR"_Stz,               // CN_PATHSTR

@@ -259,6 +259,7 @@
 #include "Permutor.hpp"
 #include "Tabular.hpp"
 #include "Columnar.hpp"
+#include "Partitioner.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -494,6 +495,7 @@ SizeHeap gxaSizeHeap[]
   { CN_PAGEFILE,                 sizeof(PageFile),           HT_T_TINY    ,FILL },
   { CN_PAGINGMETRICS,            sizeof(PagingMetrics),      HT_T_LARGE   ,FILL },
   { CN_PARCEL,                   sizeof(Parcel),             HT_T_TINY    ,FILL },
+  { CN_PARTITIONER,              sizeof(Partitioner),        HT_T_TINY    ,FILL },
   { CN_PATHIDENTIFIER,           sizeof(PathIdentifier),     HT_T_MEDIUM  ,FILL },
   { CN_PATHVEC,                  sizeof(PathVec),            HT_T_MEDIUM  ,FILL },
   { CN_PAYSTR,                   sizeof(PayStr),             HT_INVALID   ,FILL },
