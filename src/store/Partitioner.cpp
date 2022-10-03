@@ -246,6 +246,12 @@ void Partitioner::vCompute_ptndJointSet(void)
   m_p_ptndJoinSet->vTransferSubCards(m_p_subSet);
   DELETE_CARD(m_p_subSet);
 
+  i8 nChildren = m_p_ptndJoinSet->nChildCards();
+  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
+    m_pChildCard = m_p_ptndJoinSet->pGetChild(i_Child);
+    m_pChildCard->vAddProperty_int("i_PtnJoin"_Stz,i_Child);
+  }
+
   if (m_bInteractive)
     m_pBoard_partition->vPrintBoard("Partitioner::vCompute_ptndJointSet"_Stz);
 }

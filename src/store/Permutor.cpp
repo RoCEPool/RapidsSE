@@ -85,8 +85,8 @@ void Permutor::vCopy_ptndJoinSet(void)
     m_pBoard_permute->vAppendMain((m_p_permutation = new Card_Permutation));
     m_p_permutation->vAddProperty_int("i_Permutation"_Stz,m_pPermGen->nPermutations()-1);
     for (i8 i_Item = 0; i_Item < m_pPermGen->nItems(); i_Item++) {
-      i8 iChild = m_pPermGen->iItem(i_Item);
-      m_pChildCard = m_p_ptndJoinSet->pGetChild(iChild);
+      i8 i_Child = m_pPermGen->iItem(i_Item);
+      m_pChildCard = m_p_ptndJoinSet->pGetChild(i_Child);
       m_pBoard_permute->vAppendMain(m_pChildCard->pDupCardAndSubCards());
     }
   }

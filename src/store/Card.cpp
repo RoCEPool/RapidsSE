@@ -1247,7 +1247,7 @@ void Card::vPrintCardProperties(Ribbon* pRibbon, i8 iDepth, bool& rbPrune, bool 
           pRibbon->vSprintRight("%s"_Stz,szDecode);
         else
         if (bPrintPtyName)
-          pRibbon->vSprintRight("%s %lld"_Stz,szName,iValue);
+          pRibbon->vSprintRight("%s=%lld"_Stz,szName,iValue);
         else
           pRibbon->vSprintRight("%lld"_Stz,iValue);
         break;
@@ -1266,7 +1266,7 @@ void Card::vPrintCardProperties(Ribbon* pRibbon, i8 iDepth, bool& rbPrune, bool 
         Stz* szName  = szGetPropertyNm(i_Property);
         Stz* szValue = szGetProperty(i_Property);
         if (bPrintPtyName)
-          pRibbon->vSprintRight("%s %s"_Stz,szName,szValue);
+          pRibbon->vSprintRight("%s=%s"_Stz,szName,szValue);
         else
           pRibbon->vSprintRight("%s"_Stz,szValue);
         break;
