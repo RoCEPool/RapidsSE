@@ -336,8 +336,8 @@ namespace STORE
     bool bIsSame(Stz* szArg);
     bool bIsSeparator(void);
 
-    Stz* szLevel(void);
-    void vLevel(Stz* szLevel);
+    //Stz* szLevel(void);
+    //void vLevel(Stz* szLevel);
 
     Stz* szMapBack(void);
     void vMapBack(Stz* szMapBack);

@@ -32,11 +32,11 @@ Card_Comment::Card_Comment(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Comment::Card_Comment(Stz* szComment)
-: Card(CK_COMMENT)
+: Card(CK_COMMENT,szComment)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vValue(szComment);
+  //vValue(szComment);
     
   _checkInitialised_(CN_CARD);
   

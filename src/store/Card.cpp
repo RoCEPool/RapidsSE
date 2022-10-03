@@ -2339,13 +2339,13 @@ bool Card::bIsSeparator(void)
 /*----------------------------------------------------------------------------*/
 /* set level                                                                  */
 /*----------------------------------------------------------------------------*/
-void Card::vLevel(Stz* szLevel)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  vAddProperty_stz("szLevel"_Stz,szLevel);
-  vValue(szLevel);
-}
+//void Card::vLevel(Stz* szLevel)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+//
+//  vAddProperty_stz("szLevel"_Stz,szLevel);
+//  vValue(szLevel);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get map back                                                                */

@@ -19,11 +19,11 @@ __pGetSubFunction_Card(STORE,As,CK_AS)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_As::Card_As(Stz* szAs)
-: Card(CK_AS)
+: Card(CK_AS,szAs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vValue(szAs);
+  //vValue(szAs);
     
   _checkInitialised_(CN_CARD);
   

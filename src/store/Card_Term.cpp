@@ -19,11 +19,11 @@ __bIsCard(STORE,Card_Term,CK_TERM)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Term::Card_Term(Stz* szTerm)
-: Card(CK_TERM)
+: Card(CK_TERM,szTerm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vValue(szTerm);
+  //vValue(szTerm);
   //m_bPrintNm = false;
   
   _checkInitialised_(CN_CARD);
