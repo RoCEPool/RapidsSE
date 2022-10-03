@@ -2432,7 +2432,6 @@ void vDdlLockAssertNone(void);
   void vWordAllot(void);
   void vWordBreakPtFetch(void);
   void vWordBreakPtStore(void);
-  void vWordCategoryStore(void);
   void vWordCategoryWcFetch(void);
   void vWordCategoryWcStore(void);
   void vWordCategoryWcString(void);

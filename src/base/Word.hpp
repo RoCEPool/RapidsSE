@@ -22,7 +22,6 @@ namespace BASE
     eWC       m_eWordCategory;// category of word enum
 
     bool      m_bBreakPt;     // this work gas a break point set
-    Word*     m_pCategory;    // category of word
     Dic*      m_pDic;         // which dictionary this word in
     i8        m_iEpoch;       // epoch no. used by bp analyzer
     s32       m_sExitHook;    // routine to be called on exit
@@ -77,8 +76,6 @@ namespace BASE
     bool  bBreakPt(void);
     void  vBreakPt(bool bBreakPt);
     eWC   eCategoryEnum(void);
-    Word* pCategory(void);
-    void  vCategory(Word* pCategory);
     void  vCategoryEnum(eWC eCategory);
     CodeBlock* pCodeBlock(void);
     i8    nCodeBlockUsed(void);

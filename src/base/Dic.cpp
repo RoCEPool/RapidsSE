@@ -205,10 +205,9 @@ void Dic::vTree(Dic* pDic, i8 iTabs)
 
   while ( pWord )
   {
-    vTrace("%sW%d:%s %s %s  %s\n"_Stz, Stz::szTab(iTabs),
+    vTrace("%sW%d:%s %s  %s\n"_Stz, Stz::szTab(iTabs),
            pWord->bGetPersistent(),
            pWord->szWordNm(),
-           pWord->pCategory()->szWordNm(),
            aWC[pWord->eCategoryEnum()]->azChar(),
            pWord->m_pObject ? aCN[pWord->m_pObject->eGetClassNo()]->azChar() : "");
 
@@ -246,30 +245,6 @@ Word* Dic::pEachWord(Word* pPrior)
   m_okLock.vDropRead();
 
   return pNextWord;
-}
-
-/*----------------------------------------------------------------------------*/
-/* progressively return each word which is of given kind                      */
-/*----------------------------------------------------------------------------*/
-Word* Dic::pEachWord(Word* pPrior, Word* pCategory)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
-  
-  m_okLock.vGrabRead();
-  
-  Word* pNextWord = pPrior ? pPrior->pNextWord() : pFirstWord();
-
-  for ( ; pNextWord; pNextWord = pNextWord->pNextWord()) {
-
-    if (pNextWord->pCategory() == pCategory) {
-      m_okLock.vDropRead();
-      return pNextWord;
-    }
-  }
-  
-  m_okLock.vDropRead();
-  
-  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

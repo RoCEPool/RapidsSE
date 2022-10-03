@@ -58,7 +58,7 @@ void Constants::vAddConstant(Stz* szName, i8 iVal)
 {
   Word* pNewWord = new(AM::DIC::pRoot()) Word(szName);
   
-  pNewWord->vCategory(AM::pConstantRoot());
+  pNewWord->vCategoryEnum(AM::pConstantRoot()->eCategoryEnum());
   
   SenCell xVar;
   xVar = iVal;

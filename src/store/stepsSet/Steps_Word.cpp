@@ -24,7 +24,6 @@ void Step::vAddSteps_Word(void)
   vAddStep("word.allot"_Stz,        &Step::vWordAllot);
   vAddStep("word.breakPt@"_Stz,     &Step::vWordBreakPtFetch);
   vAddStep("word.breakPt!"_Stz,     &Step::vWordBreakPtStore);
-  vAddStep("word.category!"_Stz,    &Step::vWordCategoryStore);
   vAddStep("word.categoryWc@"_Stz,  &Step::vWordCategoryWcFetch);
   vAddStep("word.categoryWc!"_Stz,  &Step::vWordCategoryWcStore);
   vAddStep("word.categoryWcString@"_Stz,&Step::vWordCategoryWcString);
@@ -112,30 +111,6 @@ void Step::vWordBreakPtStore(void)
   pWord->vBreakPt(iBreakPt);
   
   vDebugPoint();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* word.category! -- word category store                                      */
-/*----------------------------------------------------------------------------*/
-void Step::vWordCategoryStore(void)
-{
-  ENTRY();
-  
-  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
-  
-  Word* pCategory = _pWord(m_pDataStack->pPopPtr(__func__));
-  
-//  if (pCategory->szWordNm()->bSame("proccatg"_Stz))
-//    BASE::vDebugPoint();
-//  if (pWord->szWordNm()->bSame("proccatg"_Stz))
-//    BASE::vDebugPoint();
-//
-//  vTrace("Word %s : Category %s\n"_Stz,
-//         pWord->szWordNm(),pCategory->szWordNm());
-
-  pWord->vCategory(pCategory);
   
   EXIT();
 }

@@ -79,7 +79,6 @@ Word::Word(Stz* szWordNm)
   m_eWordCategory = AM::pWordRoot() ? AM::pWordRoot()->eCategoryEnum() : WC_NONE;
 
   m_bBreakPt   = false;
-  m_pCategory  = AM::pWordRoot() ? AM::pWordRoot() : this;
   //m_pDic     = pDic;
   m_iEpoch     = AM::iEpoch();
   m_bImmediate = false;
@@ -203,27 +202,6 @@ eWC Word::eCategoryEnum(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get word category                                                          */
-/*----------------------------------------------------------------------------*/
-Word* Word::pCategory(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  return m_pCategory;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set word category                                                          */
-/*----------------------------------------------------------------------------*/
-void Word::vCategory(Word* pCategory)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  m_pCategory = pCategory;
-  vCategoryEnum(pCategory->eCategoryEnum());
-}
-
-/*----------------------------------------------------------------------------*/
 /* set word category enum                                                     */
 /*----------------------------------------------------------------------------*/
 void Word::vCategoryEnum(eWC eCategory)
@@ -248,7 +226,7 @@ void Word::vContentDump(void)
          m_sWordNm.azChar(),
          this,
          aWK[m_eWord]->azChar(),
-         m_pCategory->m_sWordNm.azChar(),
+         aWC[m_eWordCategory]->azChar(),
          m_bImmediate ? "immediate" : "not-immediate",
          m_pCodeBlock->nWspUsed(),
          m_fpIntrinsic,

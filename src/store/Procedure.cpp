@@ -480,7 +480,7 @@ void Procedure::vParseAndAdd(void)
   
   m_pProcWord = new (pDicRoot) Word(m_sProcNm);
   
-  m_pProcWord->vCategory(pProcCatg);
+  m_pProcWord->vCategoryEnum(pProcCatg->eCategoryEnum());
 //  m_pProcWord->vCategoryEnum(WC_PROCEDURE);
   
   if (! m_pProcWord->pWrdTagSet())
@@ -870,7 +870,7 @@ void Procedure::vAddProcedureWord(void)
   
   m_pProcWord = new (pDicRoot) Word(m_sProcNm);
   
-  m_pProcWord->vCategory(pProcCatg);
+  m_pProcWord->vCategoryEnum(pProcCatg->eCategoryEnum());
 
 //  m_pProcWord->vCategoryEnum(WC_PROCEDURE);
   
