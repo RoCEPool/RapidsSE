@@ -28,6 +28,7 @@ namespace STORE
 
     Card*            m_pMainCard;
     Card*            m_pNextMain;
+    Card*            m_pPoppedCard;
 
     Card_AbsJoin*          m_p_absJoin;
     Card_Aggreg*           m_p_aggreg;
@@ -48,8 +49,10 @@ namespace STORE
     Card_JoinPredList*     m_p_joinPredList;
     Card_PtndJoinSet*      m_p_joinPtnList;
     Card_LBound*           m_p_lBound;
+    Card_Permutation*      m_p_permutation;
     Card_PredCmp*          m_p_predCmp;
     Card_Project*          m_p_project;
+    Card_PtndJoinSet*      m_p_ptndJoinSet;
     Card_SbyElist*         m_p_sbyElist;
     Card_Scan*             m_p_scan;
     Card_ScanPred*         m_p_scanPred;

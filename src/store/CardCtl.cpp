@@ -24,9 +24,12 @@ CardCtl::CardCtl(void)
   for (i8 i_Card = 0; i_Card < CK_ENUMS; i_Card++) {
     m_xaCardCtl[i_Card].m_ePrintForm     = CP_DEFAULT;
     m_xaCardCtl[i_Card].m_bPrintSubCards = true;
+    m_xaCardCtl[i_Card].m_bNextHoriz     = false;
   }
   
   _checkInitialised_(CN_CARDCTL);
+
+  vNextHorizon(CK_STAGE, true);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 }
@@ -43,6 +46,28 @@ CardCtl::~CardCtl(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get bNextHoriz for card                                                    */
+/*----------------------------------------------------------------------------*/
+bool CardCtl::bNextHoriz(i8 i_Card)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
+
+  bool bNextHoriz = m_xaCardCtl[i_Card].m_bNextHoriz;
+
+  return bNextHoriz;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set bNextHoriz for card                                                    */
+/*----------------------------------------------------------------------------*/
+void CardCtl::vNextHorizon(i8 i_Card, bool bNextHoriz)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
+
+  m_xaCardCtl[i_Card].m_bNextHoriz = bNextHoriz;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get print form for card                                                    */

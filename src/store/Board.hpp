@@ -80,6 +80,7 @@
 #include "Card_PredOr.hpp"
 #include "Card_Project.hpp"
 #include "Card_ProjElist.hpp"
+#include "Card_PtndJoinSet.hpp"
 
 #include "Card_RBound.hpp"
 #include "Card_Rows.hpp"
@@ -155,6 +156,7 @@ namespace STORE
     void vAppendMainCard(Card* pNewMainCard, bool bRenumber=true);
 
     eBK eBoard(void);
+    CardCtl* pCardCtl(void);
     CardRegs* pCardRegs(void);
     Card_SubSet* pCard_SubSet(void);
 

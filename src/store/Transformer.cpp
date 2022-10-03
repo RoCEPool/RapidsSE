@@ -205,7 +205,7 @@ void Transformer::vTransform2(void)
   if (m_bInteractive)
     pBoard_query->vPrintBoard("Tabular::vAdd_TablePtn"_Stz);
 
-  m_pPermutor->vExtract_tableList();
+  m_pPartitioner->vExtract_tableList();
 
   m_pColumnar->vAdd_ColumnRef();
   if (m_bInteractive)
@@ -224,6 +224,11 @@ void Transformer::vTransform2(void)
   m_pPartitioner->vCompute_crossPtnJoinList();
 
   m_pPartitioner->vCompute_ptndJointSet();
+
+
+  m_pPermutor->vCopy_ptndJoinSet();
+
+
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

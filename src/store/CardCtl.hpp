@@ -14,6 +14,7 @@ namespace STORE
   {
     eCP  m_ePrintForm;      // print form
     bool m_bPrintSubCards;  // print the subcards of this card?
+    bool m_bNextHoriz;      // print card on new horizontal line
   };
 
   class CardCtl : public Object
@@ -31,6 +32,9 @@ namespace STORE
   
     CardCtl(void);
    ~CardCtl(void) noexcept(false);
+
+    bool bNextHoriz(i8 i_Card);
+    void vNextHorizon(i8 i_Card, bool bNextHoriz);
 
     eCP  ePrintForm(i8 i_Card);
     void vPrintForm(i8 i_Card, eCP ePrintForm);

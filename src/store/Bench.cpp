@@ -4,6 +4,7 @@
 
 #include "Bench.hpp"
 #include "Board.hpp"
+#include "Optimiser.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -54,6 +55,16 @@ void Bench::vAddBoard(Board* pBoard)
   RASSERT(! pGetBoard(pBoard->eBoard()));
 
   vPush(pBoard);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get card registers                                                         */
+/*----------------------------------------------------------------------------*/
+CardCtl* Bench::pCardCtl(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  return m_pOptimiser->pCardCtl();
 }
 
 

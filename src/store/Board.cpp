@@ -96,6 +96,16 @@ eBK Board::eBoard(void)
 /*----------------------------------------------------------------------------*/
 /* get card registers                                                         */
 /*----------------------------------------------------------------------------*/
+CardCtl* Board::pCardCtl(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  return m_pBench->pCardCtl();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get card registers                                                         */
+/*----------------------------------------------------------------------------*/
 CardRegs* Board::pCardRegs(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
@@ -518,11 +528,12 @@ void Board::vPinCards(Ribbon* pRibbon, i8 i_Board)
   i8 nCount = 0;
   while (pBoard_I->bHasNext()) {
     Card* pCard = pBoard_I->pNext();
+    eCK eCard = pCard->eCard();
 
     if (! nCount++)
       pSubRibbon->vFirstColumn();
     else
-    if (pCard->bIsCard(CK_STAGE) && pSubRibbon->iChar())
+    if ( pSubRibbon->iChar() && m_pOptimiser->pCardCtl()->bNextHoriz(eCard))
       pSubRibbon->vNextHorizontal();
     else
       pSubRibbon->vNextColumn();

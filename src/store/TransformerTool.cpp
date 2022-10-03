@@ -29,16 +29,17 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
 
   m_pMainCard      = nullptr;
   m_pNextMain      = nullptr;
+  m_pPoppedCard    = nullptr;
 
   m_p_absJoin          = nullptr;
   m_p_aggreg           = nullptr;
   m_p_calcBool         = nullptr;
   m_p_combined         = nullptr;
-  m_p_coPtnJoin            = nullptr;
+  m_p_coPtnJoin        = nullptr;
   m_p_coPtnJoinList    = nullptr;
   m_p_coPtnPred        = nullptr;
   m_p_coPtnPredList    = nullptr;
-  m_p_crossPtnJoin         = nullptr;
+  m_p_crossPtnJoin     = nullptr;
   m_p_crossPtnJoinList = nullptr;
   m_p_comment          = nullptr;
   m_p_filter           = nullptr;
@@ -49,8 +50,10 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_p_joinPredList     = nullptr;
   m_p_joinPtnList      = nullptr;
   m_p_lBound           = nullptr;
+  m_p_permutation      = nullptr;
   m_p_predCmp          = nullptr;
   m_p_project          = nullptr;
+  m_p_ptndJoinSet      = nullptr;
   m_p_sbyElist         = nullptr;
   m_p_scan             = nullptr;
   m_p_scanPred         = nullptr;

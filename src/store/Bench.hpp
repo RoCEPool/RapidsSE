@@ -24,6 +24,7 @@ namespace STORE
    ~Bench(void) noexcept(false);
 
     void vAddBoard(Board* pBoard);
+    CardCtl* pCardCtl(void);
     Board* pGetBoard(eBK eBoard);
 
     Optimiser* pOptimiser(void);
