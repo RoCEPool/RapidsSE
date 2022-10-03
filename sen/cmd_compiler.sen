@@ -129,7 +129,7 @@
 
   find: _cmdTags locals| pwCmdTagsCatg |
 
-  iterate-words word@ word.category@ pwCmdTagsCatg equal if
+  iterate-words word@ word.categoryWc@ WC_CMDTAGS equal if
 
     word@ _cmdTags.aboutLiteOp if
       word@ cmd::synthProc_lliteOp
@@ -199,7 +199,7 @@
 
   find: _cmdTags locals| pwCmdTagsCatg |
 
-  iterate-words word@ word.category@ pwCmdTagsCatg equal if
+  iterate-words word@ word.categoryWc@ WC_CMDTAGS equal if
 
     word@ _cmdTags.aboutLiteOp if
       word@ cmd::synthWords_lliteOp

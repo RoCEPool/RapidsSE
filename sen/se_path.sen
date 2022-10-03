@@ -88,7 +88,7 @@
 
   pWord not if EC_NO_SUCH_FOLDER false exit then
 
-  pWord word.category@ find: \folder equal if true exit then
+  pWord word.categoryWc@ WC_FOLDER equal if true exit then
 
   EC_NOT_A_FOLDER false
 ;

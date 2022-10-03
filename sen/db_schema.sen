@@ -49,7 +49,7 @@
 /*----------------------------------------------------------------------------*/
 : Path[].checkIsSchema ( word )
 
-  dup word.category@ find: \folder equal not if EC_NOT_A_FOLDER false exit then
+  dup word.categoryWc@ WC_FOLDER equal not if EC_NOT_A_FOLDER false exit then
   dup execute dic.kind@ find: \schema equal if true exit then
   EC_NOT_A_SCHEMA false
 ;

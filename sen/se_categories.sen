@@ -85,7 +85,7 @@
 /*----------------------------------------------------------------------------*/
 : \folder \\category_wc WC_FOLDER ;
 
-: isFolder word.category@ find: \folder equal ;
+: isFolder word.categoryWc@ WC_FOLDER equal ;
 
 : folders \prompt find: \folder word::ofCatg ;
 
