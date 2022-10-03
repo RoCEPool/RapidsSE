@@ -99,6 +99,29 @@ Card::Card(eCK eCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+  vInit(eCard);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Card::Card(eCK eCard, Stz* szValue)
+    : Object(CN_CARD)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vInit(eCard);
+
+  vValue(szValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* init                                                                       */
+/*----------------------------------------------------------------------------*/
+void Card::vInit(eCK eCard)
+{
   static i8 iSeqNo = 0;
 
   MemLib::vZero(m_caRef, sizeof(m_caRef), CN_CARD);
@@ -115,16 +138,14 @@ Card::Card(eCK eCard)
 
   m_bPrintNm = true;
 
-  _checkInitialised_(CN_CARD);
-
   gapCard[m_iSeqNo] = this;
 
 //  if (35 == m_iSeqNo) {
 //    vTrace("Card [%02lld] %p\n"_Stz, m_iSeqNo, this);
 //    vDebugPoint();
 //  }
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
+
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */

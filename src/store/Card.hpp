@@ -160,6 +160,9 @@ namespace STORE
     void  operator delete(void*);
   
     Card(eCK eCard);
+    Card(eCK eCard, Stz* szValue);
+    void vInit(eCK eCard);
+
    ~Card(void) noexcept(false);
 
     static  void vCardLeaks(void);
