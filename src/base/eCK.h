@@ -73,6 +73,7 @@ enum eCK // card kind
   /* */ CK_PREDOR,
   /* */ CK_PROJECT,
   /* */ CK_PROJELIST,
+  /* */ CK_PTNDJOIN,
   /* */ CK_PTNDJOINSET,
 
   /* */ CK_RBOUND,
@@ -181,6 +182,7 @@ static Stz* aCK[]
   /* */ "CK_PREDOR"_Stz,       // CK_PREDOR
   /* */ "CK_PROJECT"_Stz,      // CK_PROJECT
   /* */ "CK_PROJELIST"_Stz,    // CK_PROJELIST
+  /* */ "CK_PTNDJOIN"_Stz,     // CK_PTNDJOIN
   /* */ "CK_PTNDJOINSET"_Stz,  // CK_PTNDJOINSET
 
   /* */ "CK_RBOUND"_Stz,       // CK_RBOUND
@@ -289,6 +291,7 @@ static Stz* aCK_short[]
   /* */ "predOr"_Stz,          // CK_PREDOR
   /* */ "project"_Stz,         // CK_PROJECT
   /* */ "projElist"_Stz,       // CK_PROJELIST
+  /* */ "ptndJoin"_Stz,        // CK_PTNDJOIN
   /* */ "ptndJoinSet"_Stz,     // CK_PTNDJOINSET
 
   /* */ "rbound"_Stz,          // CK_RBOUND

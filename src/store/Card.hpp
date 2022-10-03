@@ -316,9 +316,7 @@ namespace STORE
     //SZ Stz* szDirn(void);
 //    void vDirn(Stz* szAsNm);
 //
-    i8   iGenerate(void);
-    void vGenerate(i8 iGenerate);
-  
+
     bool bHasAggOp(void);
     Card_Term* pHeadTerm(void);
 

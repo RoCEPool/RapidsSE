@@ -78,6 +78,7 @@
 #include "Card_PredOr.hpp"
 #include "Card_Project.hpp"
 #include "Card_ProjElist.hpp"
+#include "Card_PtndJoin.hpp"
 #include "Card_PtndJoinSet.hpp"
 
 #include "Card_RBound.hpp"

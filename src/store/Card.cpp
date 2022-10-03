@@ -2063,28 +2063,6 @@ void Card::vConcatTerms(Stz* szTerms, i8 i_From, i8 i_Till)
 //}
 
 /*----------------------------------------------------------------------------*/
-/* get generate                                                               */
-/*----------------------------------------------------------------------------*/
-i8 Card::iGenerate(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  i8 iGenerate = iGetProperty("iGenerate"_Stz);
-  
-  return iGenerate;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set generate                                                               */
-/*----------------------------------------------------------------------------*/
-void Card::vGenerate(i8 iGenerate)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  vAddProperty_int("iGenerate"_Stz,iGenerate);
-}
-
-/*----------------------------------------------------------------------------*/
 /* test if the expr has an aggregate op                                       */
 /*----------------------------------------------------------------------------*/
 bool Card::bHasAggOp(void)
