@@ -81,15 +81,30 @@ void Permutor::vCopy_ptndJoinSet(void)
 
   m_pPermGen = new PermGen(m_p_ptndJoinSet->nChildCards());
 
+  m_p_subSet = new Card_SubSet;
+
   while (m_pPermGen->bNextPermutation()) {
     m_pBoard_permute->vAppendMain((m_p_permutation = new Card_Permutation));
     m_p_permutation->vAddProperty_int("i_Permutation"_Stz,m_pPermGen->nPermutations()-1);
+
+    RASSERT(0 == m_p_subSet->nChildCards());
     for (i8 i_Item = 0; i_Item < m_pPermGen->nItems(); i_Item++) {
       i8 i_Child = m_pPermGen->iItem(i_Item);
       m_pChildCard = m_p_ptndJoinSet->pGetChild(i_Child);
       m_pBoard_permute->vAppendMain(m_pChildCard->pDupCardAndSubCards());
+
+      m_p_ptndJoin = _pCard_PtndJoin(m_pChildCard);
+      if (m_p_ptndJoin->bMayFollowAfter(m_p_subSet)) {
+        m_pBoard_permute->vAppendMain(new Card_Comment("**DOESN'T FOLLOW**"_Stz));
+        m_p_permutation->vAddProperty_nameOnly("bInvalid"_Stz);
+        break;
+      }
+      m_p_subSet->vAppend(m_pChildCard);
     }
+    m_p_subSet->vRemoveAll();
   }
+
+  DELETE_CARD(m_p_subSet);
 
   if (m_bInteractive)
     m_pBoard_permute->vPrintBoard("Permutor::vCopy_ptndJoinSet"_Stz);

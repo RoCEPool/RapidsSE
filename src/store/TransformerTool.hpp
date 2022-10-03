@@ -57,6 +57,7 @@ namespace STORE
     Card_Permutation*      m_p_permutation;
     Card_PredCmp*          m_p_predCmp;
     Card_Project*          m_p_project;
+    Card_PtndJoin*         m_p_ptndJoin;
     Card_PtndJoinSet*      m_p_ptndJoinSet;
     Card_SbyElist*         m_p_sbyElist;
     Card_Scan*             m_p_scan;

@@ -55,6 +55,7 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_p_permutation      = nullptr;
   m_p_predCmp          = nullptr;
   m_p_project          = nullptr;
+  m_p_ptndJoin         = nullptr;
   m_p_ptndJoinSet      = nullptr;
   m_p_sbyElist         = nullptr;
   m_p_scan             = nullptr;
