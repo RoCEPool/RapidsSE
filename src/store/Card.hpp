@@ -114,6 +114,29 @@ namespace STORE {
   class Card_Unique;
 }
 
+static Stz* C_CARD_AggLevel     = "eAggLevel"_Stz;
+static Stz* C_CARD_AggOp        = "bAggOp"_Stz;
+static Stz* C_CARD_Card         = "pCard"_Stz;
+static Stz* C_CARD_Column       = "pColumn"_Stz;
+static Stz* C_CARD_Column1      = "pColumn1"_Stz;
+static Stz* C_CARD_Column2      = "pColumn2"_Stz;
+static Stz* C_CARD_EBound       = "EBound"_Stz;
+static Stz* C_CARD_Index        = "pIndex"_Stz;
+static Stz* C_CARD_LBound       = "LBound"_Stz;
+static Stz* C_CARD_MapBack      = "szMapBack"_Stz;
+static Stz* C_CARD_MapFrom      = "szMapFrom"_Stz;
+static Stz* C_CARD_Option       = "iOption"_Stz;
+static Stz* C_CARD_Rank         = "iRank"_Stz;
+static Stz* C_CARD_Rows         = "nRows"_Stz;
+static Stz* C_CARD_SendKind     = "eSendKind"_Stz;
+static Stz* C_CARD_Sends        = "iSends"_Stz;
+static Stz* C_CARD_StageTopo    = "eStageTopo"_Stz;
+static Stz* C_CARD_StreamDef    = "pStreamDef"_Stz;
+static Stz* C_CARD_Table        = "pTable"_Stz;
+static Stz* C_CARD_Table1       = "pTable1"_Stz;
+static Stz* C_CARD_Table2       = "pTable2"_Stz;
+static Stz* C_CARD_UBound       = "UBound"_Stz;
+
 static Stz* C_CARD_Invalid      = "bInvalid"_Stz;
 static Stz* C_CARD_JoinedBuff   = "nJoinedBuff"_Stz;
 static Stz* C_CARD_Network      = "nNetwork"_Stz;
