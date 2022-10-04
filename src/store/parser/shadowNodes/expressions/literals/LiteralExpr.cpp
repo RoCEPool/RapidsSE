@@ -134,7 +134,6 @@ b1 LiteralExpr::bIsImplicitlyCoercibleTo(TypeId xTargetTypeId, QueryNode* pExpr,
   TypeId xCurrentTypeId = LiteralExpr::xTypeId(pExpr, pRootNode);
   eCT eCurrentType = xCurrentTypeId.eCTVal();
   eCT eTargetType = xTargetTypeId.eCTVal();
-  // TODO: handle intervals
 
   // We can always coerce the current type to itself
   if (xCurrentTypeId == xTargetTypeId)                              { return true; }
@@ -190,6 +189,10 @@ b1 LiteralExpr::bIsImplicitlyCoercibleTo(TypeId xTargetTypeId, QueryNode* pExpr,
       // This is coercible to any other type.
       return true;
 
+//    case CT_INTERVAL_DT:
+//    case CT_INTERVAL_YM:
+      // No coercions for intervals
+
     default:
       break;
   }
@@ -217,8 +220,6 @@ QueryNode* LiteralExpr::pCoerceTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNo
   QueryNode* pResultNode;
   s2K sBuf;
   i8 iVal;
-
-  // TODO: handle intervals
 
   // Are we coercing the type to itself?
   if (xCurrentTypeId == xTargetTypeId) {
@@ -394,6 +395,10 @@ QueryNode* LiteralExpr::pCoerceTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNo
 
     case CT_UNKNOWN:
       return NullLiteral::pCreate();
+
+//    case CT_INTERVAL_DT:
+//    case CT_INTERVAL_YM:
+      // No coercions for intervals
 
     default:
       NEVER_REACH

@@ -321,10 +321,7 @@ b1 CastExpr::bIsImplicitlyCoercibleTo(TypeId xTargetTypeId, QueryNode* pExpr, Pl
   ASSERT(Expr::bIsOfType(pExpr));
 
   TypeId xCurrentType = Expr::xTypeId(pExpr, pRootNode);
-  eCT eCurrentType  = xCurrentType.eCTVal();
   eCT eTargetTypeId = xTargetTypeId.eCTVal();
-
-  // TODO: Handle intervals
 
   // We can always cast the current type to itself
   if (xCurrentType == xTargetTypeId) {
@@ -338,7 +335,7 @@ b1 CastExpr::bIsImplicitlyCoercibleTo(TypeId xTargetTypeId, QueryNode* pExpr, Pl
   //       cannot be converted. So we leave these conversions to be done
   //       explicitly by the user, not implicitly by the planner.
 
-  switch (eCurrentType) {
+  switch (xCurrentType.eCTVal()) {
     case CT_INTEGER:
       if (eTargetTypeId == CT_DECIMAL || eTargetTypeId == CT_FLOAT)   {
         ASSERT(S_pTypeMap->xLookup(xCurrentType, xTargetTypeId).bIsValid());
@@ -363,8 +360,9 @@ b1 CastExpr::bIsImplicitlyCoercibleTo(TypeId xTargetTypeId, QueryNode* pExpr, Pl
       break;
 
     // Note: We don't implicitly cast a time to a timestamp because
-    //       it is ambiguous as to what date should be chosen.
+    //       it may not be clear to the user what date should be chosen.
     //       Should it be TODAY, or 1900-01-01, or something else?
+    //       An explicit cast by the user allows this, and uses the current date.
 
     case CT_BOOLEAN:
       if (eTargetTypeId == CT_VARCHAR || eTargetTypeId == CT_CHAR)
@@ -373,6 +371,10 @@ b1 CastExpr::bIsImplicitlyCoercibleTo(TypeId xTargetTypeId, QueryNode* pExpr, Pl
         return true;
       }
       break;
+
+//    case CT_INTERVAL_YM:
+//    case CT_INTERVAL_DT:
+      // no implicit casts needed for intervals
 
     default:
       break;

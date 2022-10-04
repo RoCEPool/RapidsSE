@@ -266,7 +266,11 @@ void CaseExpr::vCoerceSubExprs(QueryNode* pCaseExpr, PlanNode* pRootNode)
   // We need to try to find a common coercible data type
 
   // An array with an occurrence count for each coercible data type
-  i8 aiCoercibleTargets[CT_ENUMS] = { 0 };
+  const i8 iArrLen = TypeSystem::iMaxTypeId() + 1;
+  i8 aiCoercibleTargets[iArrLen];
+  for (i8 i=0; i< iArrLen; i++)  aiCoercibleTargets[i] = 0;
+
+//  i8 aiCoercibleTargets[CT_ENUMS] = { 0 };
 
   PlanNodeIter* pWhenOrElseIter = pCaseExpr->pNewChildrenIter();
 
@@ -291,14 +295,13 @@ void CaseExpr::vCoerceSubExprs(QueryNode* pCaseExpr, PlanNode* pRootNode)
 
     // Increment the aiCoercibleTargets array if this child can be coerced
     // to each of the data types.
-    vIncrementCoercibleTargets(pValueExpr, aiCoercibleTargets, pRootNode);
+    vIncrementCoercibleTargets(pValueExpr, aiCoercibleTargets, iArrLen, pRootNode);
   }
 
   // Determine the common coercible data type, if any
-  eCT eCoercibleTarget = eCommonCoercibleTarget(aiCoercibleTargets, pCaseExpr->nChildren());
-  TypeId xCoercibleTarget = TypeId::xIdOf(eCoercibleTarget);
+  TypeId xCoercibleTarget = xCommonCoercibleTarget(aiCoercibleTargets, iArrLen, pCaseExpr->nChildren());
 
-  if (eCoercibleTarget == CT_NONE) {
+  if (!xCoercibleTarget.bIsValid()) {
     delete pWhenOrElseIter;
     return;
   }
