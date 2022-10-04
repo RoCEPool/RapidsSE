@@ -676,15 +676,17 @@ eEC JobReport::eOperatorReport(Job* pJob, Tub* pTub)
         // get the stats for the op
         Op* pOp = pStream->pGet(i_Op);
 
-        // skip operators that don't have a LU
-       // if ( ! pOp->pOpLogicUnit() )
+        // get the OP metrics stats
+        Stats* pStats = pOp->pMetricsStats();
+
+        // skip operators that don't have a metrics stats
+       // if ( ! pMetricsStats )
        //   continue;
 
         Thread* pThread = Thread::pThisTLSThread();
 
         pThread->pPsxThd()->vSleepMsec(100,CN_WORD);
 
-        Stats* pStats = *pOp->pOpLogicUnit()->m_xpStats;
 
         s32 sBytesAlloc;
         MagLib::vByteMag(pStats->m_nBytesAlloc, sBytesAlloc);

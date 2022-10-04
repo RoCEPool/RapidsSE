@@ -15,6 +15,7 @@
 #include "JobList.hpp"
 #include "LogicUnit.hpp"
 #include "Pipeline.hpp"
+#include "Op.hpp"
 
 #include "MY.hpp"
 #include "TagConstants.h"
@@ -323,8 +324,17 @@ void Step::vTaskRetire(void)
       m_pJob->vMetricsPipeline(*m_pLogicUnit->m_xpPipeline);
       m_pLogicUnit->m_xpPipeline = nullptr;
     }
-
   }
+  else if (m_pOp) {
+    Job *pJob = m_pJobTask->pJob();
+    if (pJob->bHasTag(C_TAG_JOBMETRICS)) {
+      if (m_pLogicUnit->m_xpStats.bIsNotNull()) {
+        m_pOp->vMetricsStats(*m_pLogicUnit->m_xpStats);
+        m_pLogicUnit->m_xpStats = nullptr;
+      }
+    }
+  }
+
   vScheduleRetire();
 
   EXIT();

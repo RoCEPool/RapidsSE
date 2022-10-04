@@ -58,6 +58,8 @@ namespace STORE
 
     i8   m_iMetricsQueued;
 
+    Stats* m_pMetricsStats;
+
     // must be last
     Footer m_xFooter;
     
@@ -106,7 +108,10 @@ namespace STORE
   
     i8   iMetricsQueued(void);
     void vMetricsQueued(i8 iMetricsQueued);
-  
+
+    Stats* pMetricsStats(void);
+    void   vMetricsStats(Stats* pStats);
+
     i8   iNextOp(void);
     Op*  pNextOp(void);
     i8   iNextStage(void);

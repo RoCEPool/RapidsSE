@@ -123,8 +123,7 @@ void Step::vJobReportOperators(void)
   Job* pJob= _pJob(m_pDataStack->pPopPtr(__func__));
   Tub* pTub = _pTub(m_pDataStack->pPopPtr(__func__));
 
-  //eEC eError = JobReport::eOperatorReport(pJob, pTub);
-  eEC eError = EC_NONE;
+  eEC eError = JobReport::eOperatorReport(pJob, pTub);
 
   m_pDataStack->vPushInt(eError);
 

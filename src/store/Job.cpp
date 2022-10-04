@@ -178,6 +178,10 @@ Job::~Job(void) noexcept(false)
 
     }
 
+    if (m_pMetricsPipeline) {
+      delete m_pMetricsPipeline;
+    }
+
     if (m_pTask) {
       m_pTask->vGrabTaskLock((Stz *) __func__);
       m_pTask->vState(TS_DELETING);
