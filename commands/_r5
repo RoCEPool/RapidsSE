@@ -61,7 +61,7 @@ tablesizes;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/cue = "Permutor::vGenerate_ptndPermutations"
+/cue = "Estimator::vXyz"
 /cue = "$"
 /jobTags
 /transliterated

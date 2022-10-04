@@ -51,8 +51,10 @@ void Estimator::vXyz(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_ESTIMATOR, _FOOTER_);
 
+  vSetupCostEstBoard();
+
   if (m_bInteractive)
-    m_pBoard_permute->vPrintBoard("Estimator::vXyz"_Stz);
+    m_pBoard_costEst->vPrintBoard("Estimator::vXyz"_Stz);
 }
 
 

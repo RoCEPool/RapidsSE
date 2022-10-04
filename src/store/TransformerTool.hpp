@@ -17,6 +17,7 @@ namespace STORE
 
     Bench*      m_pBench;
     Board*      m_pBoard;
+    Board*      m_pBoard_costEst;
     Board*      m_pBoard_partition;
     Board*      m_pBoard_permute;
     Board*      m_pBoard_query;
@@ -99,6 +100,7 @@ namespace STORE
     void vTransformation(eOT eTransformation);
 
   protected:
+    void vSetupCostEstBoard(void);
     void vSetupPartitionBoard(void);
     void vSetupPermuteBoard(void);
 

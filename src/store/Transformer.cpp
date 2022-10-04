@@ -95,6 +95,7 @@ void Transformer::vTransform(void)
   m_pColumnar    = new Columnar(m_pBench);
   m_pCombiner    = new Combiner(m_pBench);
   m_pCurator     = new Curator(m_pBench);
+  m_pEstimator   = new Estimator(m_pBench);
   m_pFiltrate    = new Filtrate(m_pBench);
   m_pIndexer     = new Indexer(m_pBench);
   m_pJoiner      = new Joiner(m_pBench);
@@ -231,6 +232,7 @@ void Transformer::vTransform2(void)
   m_pPermutor->vGenerate_ptndPermutations();
   m_pPermutor->vRemove_invalidPermutations();
 
+  m_pEstimator->vXyz();
 
 
 

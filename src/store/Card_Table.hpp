@@ -16,6 +16,8 @@ namespace STORE
     Card_Table(void);
    ~Card_Table(void) noexcept(false);
 
+    Card_TablePtr* pGet_tablePtr(void);
+
     char cTableSyn(void);
   };
 
