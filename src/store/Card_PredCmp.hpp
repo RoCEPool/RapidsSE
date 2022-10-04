@@ -31,6 +31,8 @@ namespace STORE
 
     bool bIsEq(Card_PredCmp* p_PredCmp_arg);
 
+    bool bOverlapsWith(Card_PredCmp* p_PredCmp_arg);
+
     bool bIsJoinPred(void);
   };
 

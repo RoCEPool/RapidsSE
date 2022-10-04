@@ -498,11 +498,21 @@ void Card::vDump(i8 iDepth, Stz* szTitle)
 //         ,sProperties.szStz()
 //         );
 
-  vTrace("%s%s { %s }\n"_Stz
-         ,Stz::szTab(iDepth)
-         ,m_caRef[0] ? m_caRef : (char*)aCK[m_eCard]
-         ,sProperties.szStz()
-         );
+  if (*szValue()->azChar()) {
+    vTrace("%s%s %s { %s }\n"_Stz
+        ,Stz::szTab(iDepth)
+        ,m_caRef[0] ? m_caRef : (char*)aCK[m_eCard]
+        ,szValue()
+        ,sProperties.szStz()
+    );
+  }
+  else {
+    vTrace("%s%s { %s }\n"_Stz
+        ,Stz::szTab(iDepth)
+        ,m_caRef[0] ? m_caRef : (char*)aCK[m_eCard]
+        ,sProperties.szStz()
+    );
+  }
 
   i8 nSubCards = this->nChildCards();
   for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++)
