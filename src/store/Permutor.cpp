@@ -63,7 +63,6 @@ void Permutor::vCopy_ptndJoinSet(void)
   i8 i_PtdnJoin = 0;
   m_p_subSet = m_p_ptndJoinSet->pDupSubCards();
   while ((m_pPoppedCard = m_p_subSet->pPop())) {
-    //m_pPoppedCard->vAddProperty_int("i_PtndJoin"_Stz,i_PtdnJoin++);
     m_pBoard_permute->vAppendMain(m_pPoppedCard);
   }
   DELETE_CARD(m_p_subSet);

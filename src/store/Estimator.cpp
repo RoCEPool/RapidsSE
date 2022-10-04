@@ -82,9 +82,17 @@ void Estimator::vEstimate_ptndJoins(void)
 
   BoardIter xBI(m_pBoard_costEst);
 
-  while (m_p_ptndJoin = _pCard_PtndJoin(xBI.pEachMain(CK_PTNDJOIN))) {
+//  while (m_p_ptndJoin = _pCard_PtndJoin(xBI.pEachMain(CK_PTNDJOIN))) {
+  while ((m_pMainCard = xBI.pEachMain())) {
+    eCK eCard = m_pMainCard->eCard();
+    if (CK_PERMUTATION == eCard) {
+      m_p_tableList->vDeletePropertyRecursively("bTableUsed"_Stz);
+      continue;
+    }
+    if (CK_PTNDJOIN != eCard)
+      continue;
+    m_p_ptndJoin = _pCard_PtndJoin(m_pMainCard);
     m_p_ptndJoin->vJoinEst(m_p_tableList);
-    m_p_tableList->vDeletePropertyRecursively("bTableUsed"_Stz);
   }
 
   if (m_bInteractive)
@@ -119,7 +127,7 @@ void Estimator::vEstimate_network(void)
     else
     if (CK_PTNDJOIN == eCard) {
       if (m_p_ptndJoin) {
-        nSentOut += m_p_ptndJoin->iGetProperty("nJoinBuffers"_Stz);
+        nSentOut += m_p_ptndJoin->iGetProperty("nJoinedBuff"_Stz);
         nNetwork += nSentOut;
         m_p_ptndJoin->vAddProperty_int("nSentOut"_Stz, nSentOut);
       }
