@@ -89,6 +89,23 @@ void Estimator::vEstimate_ptndJoins(void)
     m_pBoard_costEst->vPrintBoard("Estimator::vEstimate_ptndJoins"_Stz);
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Estimator::vEstimate_network(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_ESTIMATOR, _FOOTER_);
+
+
+  BoardIter xBI(m_pBoard_costEst);
+
+//  while (m_p_ptndJoin = _pCard_PtndJoin(xBI.pEachMain(CK_PTNDJOIN)))
+//    m_p_ptndJoin->vJoinEst(m_p_tableList);
+
+  if (m_bInteractive)
+    m_pBoard_costEst->vPrintBoard("Estimator::vEstimate_network"_Stz);
+}
+
 
 
 /*----------------------------------------------------------------------------*/

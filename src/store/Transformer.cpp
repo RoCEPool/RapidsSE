@@ -234,6 +234,7 @@ void Transformer::vTransform2(void)
 
   m_pEstimator->vSetup_costEst();
   m_pEstimator->vEstimate_ptndJoins();
+  m_pEstimator->vEstimate_network();
 
 
 
