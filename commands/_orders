@@ -2,6 +2,8 @@
 /* _orders - create TPC-H Orders table                                        */
 /*============================================================================*/
 
+// SF=1.5m rows
+
 create table orders (
 	 O_ORDERKEY        INTEGER       NOT NULL,  //0)
 	 O_CUSTKEY         INTEGER       NOT NULL,  //1)

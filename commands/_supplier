@@ -2,6 +2,8 @@
 /* _supplier - create TPC-H Supplier table                                    */
 /*============================================================================*/
 
+// SF=10k rows
+
 create table supplier (
 	 S_SUPPKEY       INTEGER       NOT NULL,
 	 S_NAME          CHAR(25)      NOT NULL,

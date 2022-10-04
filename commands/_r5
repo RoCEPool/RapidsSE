@@ -21,6 +21,9 @@ create index L_idx0 on lineitem(L_ORDERKEY);
 _supplier
 create index S_idx0 on supplier(S_SUPPKEY);
 
+//_part
+//_partsupp
+
 
 //load region "../tpch/sf_0001/region.csv" ;
 //load region "../tpch/sf1/region.csv" ;
@@ -45,6 +48,14 @@ create index S_idx0 on supplier(S_SUPPKEY);
 //load supplier "../tpch/sf_0001/supplier.csv" ;
 //load supplier "../tpch/sf1/supplier.csv" ;
 //select * from supplier;
+
+//load part "../tpch/sf_0001/part.csv" ;
+//load part "../tpch/sf1/part.csv" ;
+//select * from part;
+
+//load partsupp "../tpch/sf_0001/partsupp.csv" ;
+//load partsupp "../tpch/sf1/partsupp.csv" ;
+//select * from partsupp;
 
 tablesizes;
 

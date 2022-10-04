@@ -124,12 +124,17 @@ void Permutor::vRemove_invalidPermutations(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_PERMUTOR, _FOOTER_);
 
   i8 i_Main = 0;
-
+  i8 i_Permutation = 0;
   while (i_Main < m_pBoard_permute->nMainCards()) {
     m_pMainCard = m_pBoard_permute->pGetMainCard(i_Main);
 
-    if (CK_PERMUTATION != m_pMainCard->eCard() ||
-        !m_pMainCard->bHasProperty("bInvalid"_Stz)) {
+    if (CK_PERMUTATION != m_pMainCard->eCard()) {
+      i_Main++;
+      continue;
+    }
+
+    if (! m_pMainCard->bHasProperty("bInvalid"_Stz)) {
+      m_pMainCard->vAddProperty_int("i_Permutation"_Stz,i_Permutation++);
       i_Main++;
       continue;
     }
