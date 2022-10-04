@@ -191,6 +191,9 @@ namespace STORE
   
     Card(eCK eCard);
     Card(eCK eCard, Stz* szValue);
+    Card(eCK eCard, Stz* szValue, Stz* szPptName, i8 iPptValue);
+    Card(eCK eCard, Stz* szValue, Stz* szPptName, Object* pPptValue);
+    Card(eCK eCard, Stz* szValue, Stz* szPptName, Stz* szPptValue);
     void vInit(eCK eCard);
 
    ~Card(void) noexcept(false);

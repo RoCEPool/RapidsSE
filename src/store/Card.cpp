@@ -118,6 +118,51 @@ Card::Card(eCK eCard, Stz* szValue)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Card::Card(eCK eCard, Stz* szValue, Stz* szPptName, i8 iPptValue)
+    : Object(CN_CARD)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vInit(eCard);
+
+  vValue(szValue);
+
+  vAddProperty_int(szPptName,iPptValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Card::Card(eCK eCard, Stz* szValue, Stz* szPptName, Object* pPptValue)
+    : Object(CN_CARD)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vInit(eCard);
+
+  vValue(szValue);
+
+  vAddProperty_ptr(szPptName,pPptValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Card::Card(eCK eCard, Stz* szValue, Stz* szPptName, Stz* szPptValue)
+    : Object(CN_CARD)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vInit(eCard);
+
+  vValue(szValue);
+
+  vAddProperty_stz(szPptName,szPptValue);
+}
+
+/*----------------------------------------------------------------------------*/
 /* init                                                                       */
 /*----------------------------------------------------------------------------*/
 void Card::vInit(eCK eCard)
