@@ -8,7 +8,8 @@
 #include "Card_ColumnRef.hpp"
 #include "Card_PredCmp.hpp"
 #include "Card_Term.hpp"
-
+#include "Card_PtndJoin.hpp"
+#include "Card_JoinOrder.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -46,6 +47,53 @@ Card_JoinOrderSeq::~Card_JoinOrderSeq(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-//*============================================================================*/
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_JoinOrderSeq::bHasJoinOrder(Stz* szJoinOrder)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  for (i8 i_Child = 0; i_Child < nChildCards(); i_Child++) {
+    Card_JoinOrder *p_joinOrder = _pCard_JoinOrder(pGetChild(i_Child));
+
+    if (p_joinOrder->szValue()->bSame(szJoinOrder))
+      return true;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_JoinOrderSeq::vExtractJoinOrder(Card_PtndJoin* p_PtndJoin)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  eCK eChild;
+
+  for (i8 i_Child = 0; i_Child < p_PtndJoin->nChildCards(); i_Child++) {
+    Card_PredCmp* p_predCmp = _pCard_PredCmp(p_PtndJoin->pGetChild(i_Child));
+
+    for (i8 i_Kid = p_predCmp->nChildCards() - 1; i_Kid >= 0; i_Kid--) {
+      Card *pChild = p_predCmp->pGetChild(i_Kid, eChild);
+      if (CK_COLUMNREF != eChild)
+        continue;
+
+      Card_ColumnRef* p_columnRef = _pCard_ColumnRef(pChild);
+      s32 sTableSyn;
+      p_columnRef->vTableSyn(sTableSyn);
+
+      if (bHasJoinOrder(sTableSyn))
+        continue;
+
+      Card_JoinOrder* p_joinOrder = new Card_JoinOrder(sTableSyn);
+      vAppend(p_joinOrder);
+    }
+  }
+}
+
+//*===========================================================================*/
 /* end                                                                        */
 /*============================================================================*/

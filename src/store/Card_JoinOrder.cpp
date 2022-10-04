@@ -35,6 +35,19 @@ Card_JoinOrder::Card_JoinOrder(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Card_JoinOrder::Card_JoinOrder(Stz* szValue)
+    : Card(CK_JOINORDER,szValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  _checkInitialised_(CN_CARD);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Card_JoinOrder::~Card_JoinOrder(void) noexcept(false)

@@ -26,10 +26,12 @@ namespace STORE
     BoardIter(Board* pBoard);
    ~BoardIter(void) noexcept(false);
 
+
     Card* pEachMain(void);
     Card* pEachMain(i8& ri_Main);
     Card* pEachMain(eCK eCard);
     Card* pEachMain(eCK eCard, i8& ri_Main);
+    Card* pEachMain(i8& ri_Main, eCK& reCard);
     Card* pNextMain(void);
     Card* pPrevMain(void);
 
@@ -52,6 +54,9 @@ namespace STORE
 
     void vRemoveCurr(eCK eCrossCheck);
     void vRemoveDeleteCurr(eCK eCrossCheck);
+
+    void vSet(Card* pCurrMain);
+    void vSet(i8 i_Main, Card* pCurrMain);
 
   private:
 

@@ -156,7 +156,7 @@ namespace STORE
    ~CardSet(void) noexcept(false);
 
     Card* pGetChild(i8 i_Child);
-    Card* pGetChildCard(i8 i_Child, eCK& reCard);
+    Card* pGetChild(i8 i_Child, eCK& reCard);
 
     void vRemoveSubCards(eCK eCard);
   };

@@ -31,9 +31,13 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_eStageTopo     = YG_NONE;
 
   m_pChildCard     = nullptr;
+  m_i_Child        = C_UNKNOWN;
   m_pMainCard      = nullptr;
+  m_i_Main         = C_UNKNOWN;
   m_pNextMain      = nullptr;
+  m_i_Next         = C_UNKNOWN;
   m_pPoppedCard    = nullptr;
+  m_i_Popped       = C_UNKNOWN;
 
   m_p_absJoin          = nullptr;
   m_p_aggreg           = nullptr;
@@ -51,9 +55,12 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_p_indexJoin        = nullptr;
   m_p_indexList        = nullptr;
   m_p_indexScan        = nullptr;
+  m_p_joinOrder        = nullptr;
+  m_p_joinOrderSeq     = nullptr;
   m_p_joinPredList     = nullptr;
   m_p_lBound           = nullptr;
   m_p_permutation      = nullptr;
+  m_p_permutation_low  = nullptr;
   m_p_predCmp          = nullptr;
   m_p_project          = nullptr;
   m_p_ptndJoin         = nullptr;

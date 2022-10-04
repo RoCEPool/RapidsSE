@@ -688,7 +688,7 @@ Card* Board::pPriorSubCard(Card*& rpMainCard, eCK eSubCard, i8 i_PriorToMain)
     rpMainCard = pGetMain(i_Main);
 
     Card* pSubCard;
-    if (pSubCard = rpMainCard->pFindSubCard(eSubCard))
+    if ((pSubCard = rpMainCard->pFindSubCard(eSubCard)))
       return pSubCard;
   }
 
@@ -2267,6 +2267,10 @@ Card_CalcBool* Board::pTo_CalcBool(Card_Calc* pCard_Calc)
         break;
 
       case TE_AS:
+        NEVER_REACH;
+        break;
+
+      default:
         NEVER_REACH;
         break;
     }

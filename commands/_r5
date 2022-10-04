@@ -61,7 +61,7 @@ tablesizes;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/cue = "Estimator::vEstimate_network"
+/cue = "Estimator::vEstimate_joinOrder"
 /cue = "$"
 /jobTags
 /transliterated

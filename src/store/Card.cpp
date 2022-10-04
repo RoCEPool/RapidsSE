@@ -43,7 +43,7 @@ Card* CardSet::pGetChild(i8 i_Child)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card* CardSet::pGetChildCard(i8 i_Child, eCK& reCard)
+Card* CardSet::pGetChild(i8 i_Child, eCK& reCard)
 {
   Card* pCard = pGet(i_Child);
   
@@ -660,7 +660,7 @@ bool Card::bEquivalent(Card* pCard_arg)
   eCK eSubCard;
   i8 nSubCards = this->nChildCards();
   for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
-    Card* pSubCard = pGetChildCard(i_Sub, eSubCard);
+    Card* pSubCard = pGetChild(i_Sub, eSubCard);
     
     Card* pSubCard_arg = pCard_arg->pFindSubCard(eSubCard);
     if (! pSubCard_arg)
@@ -699,7 +699,7 @@ Card* Card::pFindChildCard(eCK eCard, i8& i_Child)
   eCK eSubCard;
   i8 nSubCards = this->nChildCards();
   for (i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card* pSubCard = pGetChildCard(i_Child, eSubCard);
+    Card* pSubCard = pGetChild(i_Child, eSubCard);
 
     if (eCard == pSubCard->eCard()) {
       pFoundCard = pSubCard;
@@ -2822,7 +2822,7 @@ void Card::vStreamElistPrint(Ribbon* pRibbon, i8 iDepth)
   eCK eSubCard;
   i8 nSubs = this->nItems();
   for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {
-    Card* pSubCard = pGetChildCard(i_Sub, eSubCard);
+    Card* pSubCard = pGetChild(i_Sub, eSubCard);
     if (CK_EXPR != eSubCard)
       continue;
     
