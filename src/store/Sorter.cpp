@@ -64,37 +64,11 @@ void Sorter::vCull_sby_SameAs_gby(void)
       break;
     }
   }
-}
-/*----------------------------------------------------------------------------*/
-//void Sorter::vCull_sby_SameAs_gby(void)
-//{
-//  _precondition_(_ADDRESS_, _MAGIC_, CN_SORTER, _FOOTER_);
-//
-//  BoardIter xBI(m_pBoard);
-//
-//  vBeginIteration();
-//
-//  while (Card_Sort *pCard_sort = _pCard_Sort(pEachMain(CK_SORT))) {
-//
-//    Card_Aggreg* pCard_aggreg =
-//        _pCard_Aggreg(m_pBoard->pFindPrevMain(pCard_sort,CK_AGGREG));
-//
-//    if (! pCard_aggreg)
-//      return;
-//
-//    Card_GbyElist* pCard_GbyElist = _pGetSub_GbyElist(pCard_aggreg);
-//    Card_SbyElist* pCard_SbyElist = _pGetSub_SbyElist(pCard_sort);
-//
-//    if (Card::bCardsSameRecursive(pCard_GbyElist,pCard_SbyElist)) {
-//      m_pBoard->vRemoveMainCard(pCard_sort);
-//      delete pCard_sort;
-//      break;
-//    }
-//  }
-//
-//  vEndIteration();
-//}
 
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Sorter::vCull_sby_SameAs_gby"_Stz);
+
+}
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

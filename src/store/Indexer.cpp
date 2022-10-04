@@ -56,6 +56,10 @@ void Indexer::vAppend_indexList_to_scan(void)
     if ( (m_p_indexList = m_p_tablePtr->pNew_indexList()) )
       m_pMainCard->vInsertAfter(m_p_indexList, m_p_table);
   }
+
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Indexer::vAppend_indexList_to_scan"_Stz);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -81,6 +85,8 @@ void Indexer::vMark_scan_pred_bounds(void)
     m_p_filter->vVisitAllSub(CK_PREDCMP,bfPredBounds);
   }
 
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Indexer::vMark_scan_pred_bounds"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -143,6 +149,9 @@ void Indexer::vMark_scan_pred_ordinals(void)
 
     m_p_filter->vVisitAllSub(CK_TERM,bfPredBounds);
   }
+
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Indexer::vMark_scan_pred_ordinals"_Stz);
 
 }
 

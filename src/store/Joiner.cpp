@@ -223,6 +223,9 @@ void Joiner::vReduce_absJoin(void)
 
     pCard_absJoin->vCard(CK_INDEXJOIN);
   }
+
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Joiner::vReduce_absJoin"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

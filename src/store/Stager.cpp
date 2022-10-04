@@ -45,7 +45,7 @@ Stager::~Stager(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* linearize stages                                                           */
 /*----------------------------------------------------------------------------*/
-void Stager::vAdd_Stages2(void)
+void Stager::vAdd_Stages(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGER, _FOOTER_);
 
@@ -134,6 +134,9 @@ void Stager::vAdd_Stages2(void)
         break;
     }
   }
+
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Stager::vAdd_Stages"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

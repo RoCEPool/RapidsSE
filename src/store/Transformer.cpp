@@ -256,68 +256,44 @@ void Transformer::vTransform2(void)
    */
 
   m_pIndexer->vAppend_indexList_to_scan();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Indexer::vAppend_indexList_to_scan"_Stz);
 
   m_pIndexer->vMark_scan_pred_bounds();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Indexer::vMark_scan_pred_bounds"_Stz);
 
   m_pIndexer->vMark_scan_pred_ordinals();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Indexer::vMark_scan_pred_ordinals"_Stz);
 
   m_pScanning->vAdd_scanPred();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Scanning::vAdd_scanPred"_Stz);
 
   m_pCardCtl->vPrintFormSubCards(CK_STREAM, CP_CARDFORM, false);
 
   m_pScanning->vCull_markedPred();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Scanning::vCull_markedPred"_Stz);
 
   m_pScanning->vPromote_scan_to_indexScan();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Scanning::vPromote_scan_to_indexScan"_Stz);
 
 
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pFiltrate->vDeleteEmpty_sub_filter();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Filtrate::vDeleteEmpty_sub_filter"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   m_pJoiner->vReduce_absJoin();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Joiner::vReduce_absJoin"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pSorter->vCull_sby_SameAs_gby();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Sorter::vCull_sby_SameAs_gby"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pFiltrate->vIndividuate_filter();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Filtrate::vIndividuate_filter"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  m_pStager->vAdd_Stages2();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Stager::vAdd_Stages"_Stz);
+  m_pStager->vAdd_Stages();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pCardCtl->vPrintSubCards(CK_AGGELIST, true);
   m_pCardCtl->vPrintSubCards(CK_GBYELIST, true);
 
-  m_pCombiner->vAdd_combined3();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Combiner::vAdd_combined2"_Stz);
+  m_pCombiner->vAdd_combined();
 }
 
 /*============================================================================*/

@@ -43,7 +43,7 @@ Combiner::~Combiner(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Combiner::vAdd_combined3(void)
+void Combiner::vAdd_combined(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINER, _FOOTER_);
 
@@ -110,6 +110,10 @@ void Combiner::vAdd_combined3(void)
         break;
     }
   }
+
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Combiner::vAdd_combined"_Stz);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -133,7 +137,6 @@ void Combiner::vDelete_Combines(void)
 
   if (m_bInteractive)
     m_pBoard->vPrintBoard("Combiner::vDelete_Combines"_Stz);
-
 }
 
 /*----------------------------------------------------------------------------*/

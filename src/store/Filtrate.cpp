@@ -173,6 +173,9 @@ void Filtrate::vDeleteEmpty_sub_filter(void)
   }
 
   vEndIteration();
+
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Filtrate::vDeleteEmpty_sub_filter"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -215,6 +218,9 @@ void Filtrate::vIndividuate_filter(void)
   }
 
   vEndIteration();
+
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Filtrate::vIndividuate_filter"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
