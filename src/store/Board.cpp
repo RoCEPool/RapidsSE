@@ -517,7 +517,7 @@ CardIter* Board::pNewMainCardIter(void)
 /*----------------------------------------------------------------------------*/
 /* pin board onto given ribbon                                                */
 /*----------------------------------------------------------------------------*/
-void Board::vPinCards(Ribbon* pRibbon, i8 i_Board)
+void Board::vPinCards(Ribbon* pRibbon, Stz* szTransformation)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
@@ -526,7 +526,11 @@ void Board::vPinCards(Ribbon* pRibbon, i8 i_Board)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pRibbon->vSprint("[%lld %s] %s"_Stz,i_Board,aBK[m_eBoard],m_pOptimiser->szQueryNm());
+  pRibbon->vSprint("\n[Board: %s] Query=%s Transformation=%s"_Stz,
+                   aBK[m_eBoard],
+                   m_pOptimiser->szQueryNm(),
+                   szTransformation ? szTransformation : ""_Stz
+                   );
   pRibbon->vTitleLines(1);
   pRibbon->vSetBase();
   pRibbon->vFirstColumn();
@@ -583,7 +587,7 @@ void Board::vPrintBoard(Stz* szCue)
   
   Ribbon* pRibbon = new Ribbon(m_pOptimiser->pCardCtl(),this,0);
 
-  vPinCards(pRibbon,0);
+  vPinCards(pRibbon,szCue);
   pRibbon->vPrintRibbon();
 
   delete pRibbon;
