@@ -5,58 +5,48 @@
 " OP_jobExit.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_M_FLUSH ...                                                 */
+/* initialise                                                                 */
 /*----------------------------------------------------------------------------*/
-/*
-: jobExit_Flush \handler
+: updateJobMetrics ( job )
 
-  //"jobExit_Flush" .
-  
-  PipeIn[].delete
-  
-  //"__eventDemon" find dup if
-  //word.object@ locals| pEventDemon |
+  params| pJob |
+  0 locals| eError |
+
+  "updateJobMetrics" .
 
   AM::DEMON::tEventDemonJobId@ locals| tEventDemonJobId |
 
-  tEventDemonJobId jobId::isUnknown not if
-    tEventDemonJobId Tub[].pipeToJob
-  else
-    discard
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // find the event demon
 
-    // delete all buffers in the TUB
-    Tub[].deleteAllBuffers
-
-  then
-
-  true
-;
-*/
-
-/*----------------------------------------------------------------------------*/
-/* handler for EV_D_JOB ...                                                   */
-/*----------------------------------------------------------------------------*/
-/*
-: jobExit_Job \handler
-
-  0 locals| eError |
-  
-  Pipein[]\clear locals| pJob |
-  
-  //pJob "Exiting Job %v\n" .printf
-
-  "<job_report>" sysargs::tagSet@ tagSet.hasName not
-  if
-    true pJob job::reapable!
+  tEventDemonJobId jobId::isUnknown if
+    "Cant find __eventDemon" .
     true
     exit
   then
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  //pJob jobReport::reportJob to eError
-  
-  true pJob job::reapable!
+  // new a tub
+
+  Tub[].new
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // metrics
+/*
+  Tub[] pJob jobReport::metrics to eError
+
+  eError EC_NONE == not if
+    eError op__execErr
+    true
+    exit
+  then
+*/
+  tEventDemonJobId Tub[].pipeToJob
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // network
+
+  Tub[] pJob jobReport::network to eError
 
   eError EC_NONE == not if
     eError op__execErr
@@ -64,23 +54,59 @@
     exit
   then
 
+  tEventDemonJobId Tub[].pipeToJob
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // network dissect
+
+  Tub[] pJob jobReport::netDissect to eError
+
+  eError EC_NONE == not if
+    eError op__execErr
+    true
+    exit
+  then
+
+  tEventDemonJobId Tub[].pipeToJob
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // operators
+
+  Tub[] pJob jobReport::operators to eError
+
+  eError EC_NONE == not if
+    eError op__execErr
+    true
+    exit
+  then
+
+  tEventDemonJobId Tub[].pipeToJob
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // operands
+
+  Tub[] pJob jobReport::operands to eError
+
+  eError EC_NONE == not if
+    eError op__execErr
+    true
+    exit
+  then
+
+  tEventDemonJobId Tub[].pipeToJob
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Tub[].delete
+
   true
-;
-*/
-
-/*----------------------------------------------------------------------------*/
-/* initialise                                                                 */
-/*----------------------------------------------------------------------------*/
-: jobExit_initialise
-
-  "Newing a tub" .
-
-  Tub[].new
 ;
 
 /*----------------------------------------------------------------------------*/
 /* metricsCollectJob : collect job metrics                                    */
 /*----------------------------------------------------------------------------*/
+
+/*
 : metricsCollectJob_ ( pJob )
 
   params| pJob |
@@ -90,14 +116,13 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // job metrics
   pJob jobMetrics::new to pJobMetrics
-  pJobMetrics jobMetrics.collect if
-    pJobMetrics [op].pipeout
-  else
-    pJobMetrics jobMetrics.delete
-  then
+  pJobMetrics jobMetrics.collect
+  pJobMetrics jobMetrics.delete
+  pJob updateJobMetrics
 
   true
 ;
+*/
 
 /*----------------------------------------------------------------------------*/
 /* handler for EV_M_START ...                                                 */
@@ -120,7 +145,7 @@
       "<jobMetrics>" pJobToBeDeleted api::reapableJobTags@ tagSet.hasName if
         pJobToBeDeleted api::reapableJobIsOriginator not if
           pJobToBeDeleted >str "Generating JobMetrics for job %v" str.format .
-          pJobToBeDeleted metricsCollectJob_
+          pJobToBeDeleted updateJobMetrics
         then
       then
 

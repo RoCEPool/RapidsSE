@@ -46,6 +46,8 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     bool   m_bNodeLoss;     // node loss detected
     bool   m_bUpdateParent; // update parent
 
+    Pipeline* m_pMetricsPipeline;
+
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // originating job
     Job*  m_pExecuteJob;
@@ -220,6 +222,8 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vParentId(JobId tParentId);
     Job* pParentJob(void);
     Pipeline* pPipeline(void);
+    void vMetricsPipeline(Pipeline* pPipeline);
+    Pipeline* pMetricsPipeline(void);
     void vPipeoutResponse(Operand* pOperand);
     void vPrintJobContents(void);
     void vPrintJobLine(void);

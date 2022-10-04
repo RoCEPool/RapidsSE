@@ -79,6 +79,8 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId, TagSet* 
   m_bNodeLoss     = false;
   m_bUpdateParent = false;
 
+  m_pMetricsPipeline = nullptr;
+
   m_pExecuteJob   = nullptr;
   m_pEndJob       = nullptr;
 
@@ -1381,6 +1383,26 @@ Pipeline* Job::pPipeline(void)
   Pipeline* pPipeline = (* pLogicUnit->m_xpPipeline);
     
   return pPipeline;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get pipeline                                                               */
+/*----------------------------------------------------------------------------*/
+Pipeline* Job::pMetricsPipeline(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_pMetricsPipeline;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set pipeline                                                               */
+/*----------------------------------------------------------------------------*/
+void Job::vMetricsPipeline(Pipeline* pPipeline)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_pMetricsPipeline = pPipeline;
 }
 
 /*----------------------------------------------------------------------------*/

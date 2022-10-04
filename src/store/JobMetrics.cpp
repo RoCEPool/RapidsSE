@@ -125,14 +125,14 @@ bool JobMetrics::bCollect(void)
   //vTrace("Found Job %lld %p\n"_Stz,m_tJobId.iAsI8(),pJob);
 
   Task* pTask = m_pJob->pTask();
-  LogicUnit* pLogicUnit = pTask->pLogicUnit();
+  //LogicUnit* pLogicUnit = pTask->pLogicUnit();
 
-  if (pLogicUnit->m_xpPipeline.bIsNotNull()) {
+  //if (pLogicUnit->m_xpPipeline.bIsNotNull()) {
     vCollect(m_pJob);
 
     //vPrint();
 
-  }
+  //}
 
   
   return true;
@@ -463,7 +463,7 @@ void JobMetrics::vCollect(Job* pJob)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Pipeline* pPipeline = pJob->pPipeline();
+  Pipeline* pPipeline = pJob->pMetricsPipeline();
   
   new(& m_oMetricsWsp) PipelineMetrics(pPipeline->szPipelineNm());
   
@@ -485,12 +485,12 @@ void JobMetrics::vCollect(Job* pJob)
       i8 nOps = pStream->nItems();
       for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
         Op* pOp = pStream->pGet(i_Op);
-        
+
         new(& m_oMetricsWsp) OpMetrics( pOp->i_Op()
                                        ,pOp->szOpNm()
-                                       ,pOp->nQueuedOperands()
-                                       ,pOp->nTmpIndexSize()
-                                       ,pOp->nPotSize()
+                                       ,0 //pOp->nQueuedOperands()
+                                       ,0 //pOp->nTmpIndexSize()
+                                       ,0 //pOp->nPotSize()
                                        );
       }
     }

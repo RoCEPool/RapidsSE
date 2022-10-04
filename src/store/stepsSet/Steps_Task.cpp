@@ -14,8 +14,10 @@
 #include "Job.hpp"
 #include "JobList.hpp"
 #include "LogicUnit.hpp"
+#include "Pipeline.hpp"
 
 #include "MY.hpp"
+#include "TagConstants.h"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -24,7 +26,7 @@ void Step::vAddSteps_Task(void)
 {
   vAddStep("task.isWaiting?"_Stz,      &Step::vTaskIsWaiting);
 
-  
+
   // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
   vAddStep("[task]"_Stz,                &Step::vTaskGet);
@@ -68,12 +70,12 @@ void Step::vTaskIsWaiting(void)
   ENTRY();
 
   Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
-  
+
   // should never s=check for DEDICATED tasks
   RASSERT(! pThatTask->bDedicatedThread());
-  
+
   m_pDataStack->vPushInt(pThatTask->eState() == TS_WAITING ? true : false);
-  
+
   EXIT();
 }
 
@@ -83,11 +85,11 @@ void Step::vTaskIsWaiting(void)
 void Step::vTaskNameFetch(void)
 {
   ENTRY();
-    
+
   s256 sTaskNm((Stz*)szTaskNm());
-  
+
   m_pDataStack->vPushStr(sTaskNm);
-  
+
   EXIT();
 }
 
@@ -104,15 +106,15 @@ void Step::vTaskNameFetch(void)
 void Step::vTaskAcksStore(void)
 {
   ENTRY();
-    
+
   i8 nAcksRequired = m_pDataStack->iPopAsInt(__func__);
-  
+
   ASSERT(0 == m_oAcksRmg.iPrintOnlyValue());
 
   RASSERT(bIsLocked());
-  
+
   vAcksRmg(nAcksRequired);
-  
+
   EXIT();
 }
 
@@ -122,7 +124,7 @@ void Step::vTaskAcksStore(void)
 void Step::vTaskBreakPoint(void)
 {
   ENTRY();
-    
+
   EXIT();
 }
 
@@ -132,7 +134,7 @@ void Step::vTaskBreakPoint(void)
 void Step::vTaskDebugMarkFetch(void)
 {
   ENTRY();
-    
+
   m_pDataStack->vPushInt(m_iDebugMark);
 
   EXIT();
@@ -144,7 +146,7 @@ void Step::vTaskDebugMarkFetch(void)
 void Step::vTaskDebugMarkStore(void)
 {
   ENTRY();
-    
+
   m_iDebugMark = m_pDataStack->iPopInt(__func__);
 
   EXIT();
@@ -156,9 +158,9 @@ void Step::vTaskDebugMarkStore(void)
 void Step::vTaskDropLock(void)
 {
   ENTRY();
-    
+
   vDropTaskLock((Stz*)__func__);
-  
+
   EXIT();
 }
 
@@ -168,9 +170,9 @@ void Step::vTaskDropLock(void)
 void Step::vTaskDump(void)
 {
   ENTRY();
-  
+
   vDump();
-  
+
   EXIT();
 }
 
@@ -180,7 +182,7 @@ void Step::vTaskDump(void)
 void Step::vTaskGet(void)
 {
   ENTRY();
-    
+
   m_pDataStack->vPushPtr(this);
 
   EXIT();
@@ -192,13 +194,13 @@ void Step::vTaskGet(void)
 void Step::vTaskException(void)
 {
   ENTRY();
-    
+
   s4K sException;
-  
+
   sException.vSprint("Exception %lld %s; "
                      "thrown in %s (%s:%lld) "
                      ""_Stz
-                     
+
                      ,m_xException.eFailure()
                      ,m_xException.azText()
 
@@ -207,7 +209,7 @@ void Step::vTaskException(void)
                      ,m_xException.iLineNo()
 
                      );
-  
+
   m_pDataStack->vPushStr(sException);
 
   EXIT();
@@ -219,7 +221,7 @@ void Step::vTaskException(void)
 void Step::vTaskGrabLock(void)
 {
   ENTRY();
-    
+
   vGrabTaskLock((Stz*)__func__);
 
   EXIT();
@@ -231,7 +233,7 @@ void Step::vTaskGrabLock(void)
 void Step::vTaskHibernate(void)
 {
   ENTRY();
-  
+
   vScheduleHibernate();
 
   EXIT();
@@ -245,9 +247,9 @@ void Step::vTaskIsLocked(void)
   ENTRY();
 
   bool bLocked = m_okLock.bIsLocked();
-  
+
   m_pDataStack->vPushInt(bLocked);
-  
+
   EXIT();
 }
 
@@ -257,9 +259,9 @@ void Step::vTaskIsLocked(void)
 void Step::vTaskOperandYieldFetch(void)
 {
   ENTRY();
-    
+
   m_pDataStack->vPushInt(m_nOperandYield);
-  
+
   EXIT();
 }
 
@@ -269,9 +271,9 @@ void Step::vTaskOperandYieldFetch(void)
 void Step::vTaskOperandYieldStore(void)
 {
   ENTRY();
-    
+
   m_nOperandYield = m_pDataStack->iPopInt(__func__);
-  
+
   EXIT();
 }
 
@@ -281,16 +283,16 @@ void Step::vTaskOperandYieldStore(void)
 void Step::vTaskPreHibernate(void)
 {
   ENTRY();
-    
+
 //  m_pAuxStack->vReset();
 //  m_pDataStack->vReset();
 //  m_pReturnStack->vReset();
-  
+
   while (m_pLocalFrame) {
-    
+
     LocalFrame* pLocalsFrame = m_pLocalFrame;
     m_pLocalFrame = m_pLocalFrame->pNext();
-    
+
     delete pLocalsFrame;
   }
 
@@ -303,7 +305,7 @@ void Step::vTaskPreHibernate(void)
 void Step::vTaskReleaseLockSets(void)
 {
   ENTRY();
-  
+
   vReleaseLockSets();
 
   EXIT();
@@ -315,7 +317,14 @@ void Step::vTaskReleaseLockSets(void)
 void Step::vTaskRetire(void)
 {
   ENTRY();
-  
+
+  if (m_pJob && m_pJob->bHasTag(C_TAG_JOBMETRICS)) {
+    if (m_pLogicUnit->m_xpPipeline.bIsNotNull()) {
+      m_pJob->vMetricsPipeline(*m_pLogicUnit->m_xpPipeline);
+      m_pLogicUnit->m_xpPipeline = nullptr;
+    }
+
+  }
   vScheduleRetire();
 
   EXIT();
