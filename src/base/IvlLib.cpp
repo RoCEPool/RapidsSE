@@ -5,7 +5,6 @@
 #include "BASE.h"
 #include "eIV.h"
 
-#include <sys/sysctl.h>
 #include <sys/time.h>
 
 /*----------------------------------------------------------------------------*/

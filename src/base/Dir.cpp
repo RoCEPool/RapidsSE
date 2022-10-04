@@ -8,6 +8,7 @@
 #include "Resources.hpp" //?
 
 #include <sys/stat.h>
+#include <sys/types.h>
 
 #include "MY.hpp"
 
@@ -79,6 +80,22 @@ Dir::~Dir(void) noexcept(false)
 /*---------------------------------------------------------------------------*/
 bool Dir::bAccess(Stz* szDirPath, i8 iPermission)
 {
+  // Check if we are root
+  uid_t iUid = getuid();
+  if (iUid == 0) {
+    return true;
+  }
+
+  // Note: This call only tells you if you have permissions or not. It doesn't
+  //       tell you whether you can actually read or write it. It's a semantic
+  //       difference. One case where this difference is apparent is if a file
+  //       has permissions 664 for a given user, but SE is being run as the root
+  //       user. Even though the root user can write to the file, the access()
+  //       method below will return an error because strictly the root user does
+  //       not have write privileges according to the permissions that are set
+  //       (the '4' in the 664). Hence we also add the check for root-ness above.
+  //       Though really the right thing to do is to open the object with the
+  //       desired read/write mode and check for a permission denied error.
   int iResult = access(szDirPath->azChar(),(int)iPermission);
 
   if (0 == iResult)

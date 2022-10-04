@@ -11,11 +11,6 @@
 #include <signal.h>
 #include <sys/resource.h>
 #include <fstream>
-#include <sys/sysctl.h>
-
-//#include <sys/vmmeter.h>
-//#include <sys/limits.h>
-//#include <vm/vm_param.h>
 
 extern pthread_key_t giTLS_ThreadKey;
 extern pthread_key_t giTLS_TaskKey;

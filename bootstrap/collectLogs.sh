@@ -5,8 +5,10 @@
 ###############################################################################
 
 # Get the relative path to this file.
+#shellcheck disable=SC2155
 readonly DIR=$(dirname "$0")
 readonly COMMON_FN="${DIR}/common.fn"
+#shellcheck disable=SC2155
 readonly SCRIPT_NAME=$(basename "$0")
 
 ###############################################################################
