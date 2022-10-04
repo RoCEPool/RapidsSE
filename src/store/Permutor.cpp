@@ -117,6 +117,40 @@ void Permutor::vGenerate_ptndPermutations(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Permutor::vRemove_invalidPermutations(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PERMUTOR, _FOOTER_);
+
+  i8 i_Main = 0;
+
+  while (i_Main < m_pBoard_permute->nMainCards()) {
+    m_pMainCard = m_pBoard_permute->pGetMainCard(i_Main);
+
+    if (CK_PERMUTATION != m_pMainCard->eCard() ||
+        !m_pMainCard->bHasProperty("bInvalid"_Stz)) {
+      i_Main++;
+      continue;
+    }
+
+    m_pBoard_permute->vRemoveMainCard(m_pMainCard);
+    while (i_Main < m_pBoard_permute->nMainCards()) {
+      m_pMainCard = m_pBoard_permute->pGetMainCard(i_Main);
+      if (CK_PTNDJOIN != m_pMainCard->eCard() && CK_COMMENT != m_pMainCard->eCard())
+        break;
+      m_pBoard_permute->vRemoveMainCard(m_pMainCard);
+      delete m_pMainCard;
+    }
+  }
+
+  if (m_bInteractive)
+    m_pBoard_permute->vPrintBoard("Permutor::vRemove_invalidPermutations"_Stz);
+
+
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

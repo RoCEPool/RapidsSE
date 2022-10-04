@@ -10,7 +10,9 @@ create table supplier (
 	 S_PHONE         CHAR(15)      NOT NULL,
 	 S_ACCTBAL       DECIMAL(15,2) NOT NULL,
 	 S_COMMENT       VARCHAR(101)  NOT NULL
-);
+)
+tablesize 2
+;
 
 /*============================================================================*/
 /* end                                                                        */

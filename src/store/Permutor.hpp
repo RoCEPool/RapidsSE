@@ -23,6 +23,7 @@ namespace STORE
 
     void vCopy_ptndJoinSet(void);
     void vGenerate_ptndPermutations(void);
+    void vRemove_invalidPermutations(void);
 
 
   private:

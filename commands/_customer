@@ -11,7 +11,9 @@ create table customer (
 	C_ACCTBAL       DECIMAL(15,2) NOT NULL,  // 5)
 	C_MKTSEGMENT    CHAR(10)      NOT NULL,  // 6)
 	C_COMMENT       VARCHAR(117)  NOT NULL   // 7)
-);
+)
+tablesize 29
+;
 
 /*============================================================================*/
 /* end                                                                        */

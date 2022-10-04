@@ -228,6 +228,7 @@ void Transformer::vTransform2(void)
 
   m_pPermutor->vCopy_ptndJoinSet();
   m_pPermutor->vGenerate_ptndPermutations();
+  m_pPermutor->vRemove_invalidPermutations();
 
 
 
