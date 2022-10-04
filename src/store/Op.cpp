@@ -91,6 +91,8 @@ Op::Op(Stream* p_Stream, OpSpec* p_OpSpec)
   
   m_iMetricsQueued = 0;
 
+  m_pMetricsStats = nullptr;
+
   _checkInitialised_(CN_OP);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -164,6 +166,9 @@ Op::~Op(void) noexcept(false)
     delete pTask;
 
   }
+
+  if (m_pMetricsStats)
+    delete m_pMetricsStats;
 
   delete m_pOpTags;
 
@@ -892,6 +897,26 @@ void Op::vMetricsQueued(i8 iMetricsQueued)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   m_iMetricsQueued = iMetricsQueued;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get metrics queued ops                                                     */
+/*----------------------------------------------------------------------------*/
+Stats* Op::pMetricsStats(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+
+  return m_pMetricsStats;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set metrics queued ops                                                     */
+/*----------------------------------------------------------------------------*/
+void Op::vMetricsStats(Stats* pStats)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+
+  m_pMetricsStats = pStats;
 }
 
 /*----------------------------------------------------------------------------*/

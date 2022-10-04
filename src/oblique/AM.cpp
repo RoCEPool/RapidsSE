@@ -3617,7 +3617,13 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
       delete pInfoSet;
       break;
     }
-      
+
+    case CN_JOBMETRICS: {
+      JobMetrics* pJobMetrics = _pJobMetrics(pOperand);
+      delete pJobMetrics;
+      break;
+    }
+
     case CN_MARKER: {
       Marker* pMarker = _pMarker(pOperand);
       AM::MARKER::vFreeMarker(pMarker,pJob);

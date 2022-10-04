@@ -8,6 +8,7 @@
 #include "StepAccum.hpp"
 #include "Steps.hpp"
 #include "Job.hpp"
+#include "Pipeline.hpp"
 
 #include "JobMetrics.hpp"
 
@@ -36,7 +37,7 @@ void Step::vJobMetricsCollect(void)
 
   bool bCollected = pJobMetrics->bCollect();
   
-  m_pDataStack->vPushInt(bCollected);
+  //m_pDataStack->vPushInt(bCollected);
 
   EXIT();
 }
@@ -49,6 +50,9 @@ void Step::vJobMetricsDelete(void)
   ENTRY();
 
   JobMetrics* pJobMetrics = _pJobMetrics(m_pDataStack->pPopPtr(__func__));
+
+  Pipeline* pPipeline = pJobMetrics->pJob()->pMetricsPipeline();
+  delete pPipeline;
 
   delete pJobMetrics;
   
