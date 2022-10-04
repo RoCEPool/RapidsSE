@@ -5,6 +5,10 @@
 #include "Card_PtndJoin.hpp"
 #include "Card_SubSet.hpp"
 #include "Card_PredCmp.hpp"
+#include "Card_Table.hpp"
+#include "Card_TablePtr.hpp"
+#include "Card_TableList.hpp"
+#include "StreamDef.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -79,11 +83,28 @@ bool Card_PtndJoin::bMayFollowAfter(Card_SubSet* pPtnJoins_sofar)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_PtndJoin::vJoinEst(Card_TableList* pCardTableList)
+void Card_PtndJoin::vJoinEst(Card_TableList* p_tableList)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  vAddProperty_int("iJoinBuffers"_Stz,999);
+  i8 nJoinBuffers = 0;
+  i8 nTables = p_tableList->nChildCards();
+  for (i8 i_Table = 0; i_Table < nTables; i_Table++) {
+    Card_Table *p_table =
+        _pCard_Table(p_tableList->pGetChild(i_Table));
+
+    i8 nPredCmps = this->nChildCards();
+    for (i8 i_PredCmp = 0; i_PredCmp < nPredCmps; i_PredCmp++) {
+      Card_PredCmp *p_predCmp =
+          _pCard_PredCmp(this->pGetChild(i_PredCmp));
+
+      if (p_predCmp->bUsesTable(p_table->cTableSyn()))
+        nJoinBuffers += p_table->pGet_tablePtr()->pTable()->pStreamDef()->jTableSize();
+    }
+
+  }
+
+  vAddProperty_int("nJoinBuffers"_Stz,nJoinBuffers);
 }
 
 /*============================================================================*/

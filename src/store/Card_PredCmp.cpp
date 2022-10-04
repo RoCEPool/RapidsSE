@@ -262,6 +262,16 @@ bool Card_PredCmp::bHasBounds_compare(Index* pIndex)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_PredCmp::bUsesTable(char cTableSyn)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this <predCmp> usable as a <joinPred>                                  */
 /*----------------------------------------------------------------------------*/
 bool Card_PredCmp::bIsJoinPred(void)
