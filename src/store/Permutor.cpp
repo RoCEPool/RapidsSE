@@ -90,7 +90,7 @@ void Permutor::vGenerate_ptndPermutations(void)
 
   while (m_pPermGen->bNextPermutation()) {
     m_pBoard_permute->vAppendMain((m_p_permutation = new Card_Permutation));
-    m_p_permutation->vAddProperty_int("i_Permutation"_Stz,m_pPermGen->nPermutations()-1);
+    m_p_permutation->vAddProperty_int(C_CARD_Permutation,m_pPermGen->nPermutations()-1);
 
     RASSERT(0 == m_p_subSet->nChildCards());
     for (i8 i_Item = 0; i_Item < m_pPermGen->nItems(); i_Item++) {
@@ -101,7 +101,7 @@ void Permutor::vGenerate_ptndPermutations(void)
       m_p_ptndJoin = _pCard_PtndJoin(m_pChildCard);
       if (! m_p_ptndJoin->bMayFollowAfter(m_p_subSet)) {
         m_pBoard_permute->vAppendMain(new Card_Comment("**DOESN'T FOLLOW**"_Stz));
-        m_p_permutation->vAddProperty_nameOnly("bInvalid"_Stz);
+        m_p_permutation->vAddProperty_nameOnly(C_CARD_Invalid);
         break;
       }
       m_p_subSet->vAppend(m_pChildCard);
@@ -132,8 +132,8 @@ void Permutor::vRemove_invalidPermutations(void)
       continue;
     }
 
-    if (! m_pMainCard->bHasProperty("bInvalid"_Stz)) {
-      m_pMainCard->vAddProperty_int("i_Permutation"_Stz,i_Permutation++);
+    if (! m_pMainCard->bHasProperty(C_CARD_Invalid)) {
+      m_pMainCard->vAddProperty_int(C_CARD_Permutation,i_Permutation++);
       i_Main++;
       continue;
     }

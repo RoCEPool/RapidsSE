@@ -86,7 +86,7 @@ void Estimator::vEstimate_ptndJoins(void)
   while ((m_pMainCard = xBI.pEachMain())) {
     eCK eCard = m_pMainCard->eCard();
     if (CK_PERMUTATION == eCard) {
-      m_p_tableList->vDeletePropertyRecursively("bTableUsed"_Stz);
+      m_p_tableList->vDeletePropertyRecursively(C_CARD_TableUsed);
       continue;
     }
     if (CK_PTNDJOIN != eCard)
@@ -117,7 +117,7 @@ void Estimator::vEstimate_network(void)
     eCK eCard = m_pMainCard->eCard();
     if (CK_PERMUTATION == eCard) {
       if (m_p_permutation)
-        m_p_permutation->vAddProperty_int("nNetwork"_Stz, nNetwork);
+        m_p_permutation->vAddProperty_int(C_CARD_Network, nNetwork);
       m_p_permutation = _pCard_Permutation(m_pMainCard);
 
       m_p_ptndJoin = nullptr;
@@ -127,16 +127,16 @@ void Estimator::vEstimate_network(void)
     else
     if (CK_PTNDJOIN == eCard) {
       if (m_p_ptndJoin) {
-        nSentOut += m_p_ptndJoin->iGetProperty("nJoinedBuff"_Stz);
+        nSentOut += m_p_ptndJoin->iGetProperty(C_CARD_JoinedBuff);
         nNetwork += nSentOut;
-        m_p_ptndJoin->vAddProperty_int("nSentOut"_Stz, nSentOut);
+        m_p_ptndJoin->vAddProperty_int(C_CARD_SentOut, nSentOut);
       }
       m_p_ptndJoin = _pCard_PtndJoin(m_pMainCard);
     }
   }
 
   if (m_p_permutation)
-    m_p_permutation->vAddProperty_int("nNetwork"_Stz, nNetwork);
+    m_p_permutation->vAddProperty_int(C_CARD_Network, nNetwork);
 
   if (m_bInteractive)
     m_pBoard_costEst->vPrintBoard("Estimator::vEstimate_network"_Stz);
