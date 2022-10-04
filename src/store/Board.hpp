@@ -55,9 +55,10 @@
 #include "Card_IndexPred.hpp"
 #include "Card_IndexScan.hpp"
 
+#include "Card_JoinOrder.hpp"
+#include "Card_JoinOrderSeq.hpp"
 #include "Card_JoinPred.hpp"
 #include "Card_JoinPredList.hpp"
-#include "Card_PtndJoinSet.hpp"
 
 #include "Card_LBound.hpp"
 #include "Card_Limit.hpp"

@@ -53,6 +53,8 @@ enum eCK // card kind
   /* */ CK_INDEXPTR,
   /* */ CK_INDEXSCAN,
 
+  /* */ CK_JOINORDER,
+  /* */ CK_JOINORDERSEQ,
   /* */ CK_JOINPRED,
   /* */ CK_JOINPREDLIST,
 
@@ -162,6 +164,8 @@ static Stz* aCK[]
   /* */ "CK_INDEXPTR"_Stz,     // CK_INDEXPTR
   /* */ "CK_INDEXSCAN"_Stz,    // CK_INDEXSCAN
 
+  /* */ "CK_JOINORDER"_Stz,    // CK_JOINORDER
+  /* */ "CK_JOINORDERSEQ"_Stz, // CK_JOINORDERSEQ
   /* */ "CK_JOINPRED"_Stz,     // CK_JOINPRED
   /* */ "CK_JOINPREDLIST"_Stz, // CK_JOINPREDLIST
 
@@ -271,6 +275,8 @@ static Stz* aCK_short[]
   /* */ "{index}"_Stz,         // CK_INDEXPTR
   /* */ "indexScan"_Stz,       // CK_INDEXSCAN
 
+  /* */ "joinOrder"_Stz,       // CK_JOINORDER
+  /* */ "joinOrderSeq"_Stz,    // CK_JOINORDERSEQ
   /* */ "joinPred"_Stz,        // CK_JOINPRED
   /* */ "joinPredList"_Stz,    // CK_JOINPREDLIST
 
