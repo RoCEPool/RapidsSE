@@ -10,13 +10,11 @@ namespace STORE
   class PermGen : public Object
   {
   private:
-    static const i8 C_PERM_LEVELS = 0;
+    static const i8 C_PERMGEN_ITEMS = 16;
 
-    i8 m_nLevels;
-
-    i8 m_i_CurrLevel;
-    i8 m_iaAction[C_PERM_LEVELS];
-    i8 m_iaSubscript[C_PERM_LEVELS];
+    i8 m_nItems; // number of items
+    i8 m_nPermutations; // number of permutations so far
+    i8 m_iaItem[C_PERMGEN_ITEMS]; // sequencing array of items
 
     // must be last
     Footer m_xFooter;
@@ -24,20 +22,22 @@ namespace STORE
   public:
     void* operator new(size_t);
     void  operator delete(void*);
-  
-    PermGen(i8 nLevels);
+
+    PermGen(i8 nItems);
    ~PermGen(void) noexcept(false);
 
-    i8 i_CurrLevel(void);
-    bool bNextLevel(void);
-    bool bPrevLevel(void);
+    static void vTest(i8 nItems);
 
-    i8 iFirstSubscript_nextLevel(void);
-    i8 iNextSubscript_currLevel(void);
-
-    void vReset(void);
+    i8   iItem(i8 i_Position);
+    i8   nItems(void);
+    bool bNextPermutation(void);
+    i8   nPermutations(void);
+    void vPrint(Stz* szLabel);
 
   private:
+
+    bool bIsValidPermutation(void);
+
     Footer* aFooter(void);
   };
 

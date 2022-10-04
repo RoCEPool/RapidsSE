@@ -99,6 +99,29 @@ Card::Card(eCK eCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+  vInit(eCard);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Card::Card(eCK eCard, Stz* szValue)
+    : Object(CN_CARD)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vInit(eCard);
+
+  vValue(szValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* init                                                                       */
+/*----------------------------------------------------------------------------*/
+void Card::vInit(eCK eCard)
+{
   static i8 iSeqNo = 0;
 
   MemLib::vZero(m_caRef, sizeof(m_caRef), CN_CARD);
@@ -115,16 +138,14 @@ Card::Card(eCK eCard)
 
   m_bPrintNm = true;
 
-  _checkInitialised_(CN_CARD);
-
   gapCard[m_iSeqNo] = this;
 
 //  if (35 == m_iSeqNo) {
 //    vTrace("Card [%02lld] %p\n"_Stz, m_iSeqNo, this);
 //    vDebugPoint();
 //  }
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
+
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
@@ -477,11 +498,21 @@ void Card::vDump(i8 iDepth, Stz* szTitle)
 //         ,sProperties.szStz()
 //         );
 
-  vTrace("%s%s { %s }\n"_Stz
-         ,Stz::szTab(iDepth)
-         ,m_caRef[0] ? m_caRef : (char*)aCK[m_eCard]
-         ,sProperties.szStz()
-         );
+  if (*szValue()->azChar()) {
+    vTrace("%s%s %s { %s }\n"_Stz
+        ,Stz::szTab(iDepth)
+        ,m_caRef[0] ? m_caRef : (char*)aCK[m_eCard]
+        ,szValue()
+        ,sProperties.szStz()
+    );
+  }
+  else {
+    vTrace("%s%s { %s }\n"_Stz
+        ,Stz::szTab(iDepth)
+        ,m_caRef[0] ? m_caRef : (char*)aCK[m_eCard]
+        ,sProperties.szStz()
+    );
+  }
 
   i8 nSubCards = this->nChildCards();
   for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++)
@@ -1060,6 +1091,7 @@ void Card::vPrintCard_compressed(Ribbon* pRibbon, i8 iDepth, bool& rbPrune, eCP 
     case CK_COPTNJOIN:
     case CK_CROSSPTNJOIN:
       vPrintCardName(pRibbon, iDepth, rbPrune);
+      vPrintCardProperties(pRibbon, iDepth, rbPrune);
       vPrintCompressed_childPairs(pRibbon, iDepth, rbPrune);
       rbPrune = true;
       break;
@@ -1225,7 +1257,7 @@ void Card::vPrintCardProperties(Ribbon* pRibbon, i8 iDepth, bool& rbPrune, bool 
           pRibbon->vSprintRight("%s"_Stz,szDecode);
         else
         if (bPrintPtyName)
-          pRibbon->vSprintRight("%s %lld"_Stz,szName,iValue);
+          pRibbon->vSprintRight("%s=%lld"_Stz,szName,iValue);
         else
           pRibbon->vSprintRight("%lld"_Stz,iValue);
         break;
@@ -1244,7 +1276,7 @@ void Card::vPrintCardProperties(Ribbon* pRibbon, i8 iDepth, bool& rbPrune, bool 
         Stz* szName  = szGetPropertyNm(i_Property);
         Stz* szValue = szGetProperty(i_Property);
         if (bPrintPtyName)
-          pRibbon->vSprintRight("%s %s"_Stz,szName,szValue);
+          pRibbon->vSprintRight("%s=%s"_Stz,szName,szValue);
         else
           pRibbon->vSprintRight("%s"_Stz,szValue);
         break;
@@ -2041,28 +2073,6 @@ void Card::vConcatTerms(Stz* szTerms, i8 i_From, i8 i_Till)
 //}
 
 /*----------------------------------------------------------------------------*/
-/* get generate                                                               */
-/*----------------------------------------------------------------------------*/
-i8 Card::iGenerate(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  i8 iGenerate = iGetProperty("iGenerate"_Stz);
-  
-  return iGenerate;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set generate                                                               */
-/*----------------------------------------------------------------------------*/
-void Card::vGenerate(i8 iGenerate)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  vAddProperty_int("iGenerate"_Stz,iGenerate);
-}
-
-/*----------------------------------------------------------------------------*/
 /* test if the expr has an aggregate op                                       */
 /*----------------------------------------------------------------------------*/
 bool Card::bHasAggOp(void)
@@ -2318,13 +2328,13 @@ bool Card::bIsSeparator(void)
 /*----------------------------------------------------------------------------*/
 /* set level                                                                  */
 /*----------------------------------------------------------------------------*/
-void Card::vLevel(Stz* szLevel)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  vAddProperty_stz("szLevel"_Stz,szLevel);
-  vValue(szLevel);
-}
+//void Card::vLevel(Stz* szLevel)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+//
+//  vAddProperty_stz("szLevel"_Stz,szLevel);
+//  vValue(szLevel);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get map back                                                                */
@@ -2470,13 +2480,13 @@ CardIter* Card::pNewSubCardIter(void)
 /*----------------------------------------------------------------------------*/
 /* set mode                                                                   */
 /*----------------------------------------------------------------------------*/
-void Card::vMode(Stz* szMode)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  vAddProperty_stz("szMode"_Stz,szMode);
-  vValue(szMode);
-}
+//void Card::vMode(Stz* szMode)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+//
+//  vAddProperty_stz("szMode"_Stz,szMode);
+//  vValue(szMode);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get mode                                                                   */
@@ -3228,8 +3238,9 @@ void Card::vTablePrint(Ribbon* pRibbon, i8 iDepth)
 //   pRibbon->vSput(FR_ATOM_SQUARE,pIdxColumn->szColNm());
 
   //pRibbon->vSput(FR_SIZE,pStreamDef->jTableSize());
-  pRibbon->vSprintRight(" %lld buffers"_Stz,pStreamDef->jTableSize());
-  pRibbon->vSprintRight(" %lld indexes"_Stz,pIdxVec->nItems());
+  pRibbon->vSprintRight(" tableSize %lld"_Stz,pStreamDef->jTableSize());
+  pRibbon->vSprintRight(" %lld %s"_Stz,pIdxVec->nItems(),
+                        1 == pIdxVec->nItems() ? "index" : "indexes");
 }
 
 /*----------------------------------------------------------------------------*/

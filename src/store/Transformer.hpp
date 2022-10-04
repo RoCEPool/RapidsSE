@@ -7,9 +7,11 @@
 
 #include "Combiner.hpp"
 #include "Curator.hpp"
+#include "Estimator.hpp"
 #include "Filtrate.hpp"
 #include "Indexer.hpp"
 #include "Joiner.hpp"
+#include "Partitioner.hpp"
 #include "Permutor.hpp"
 #include "Scanning.hpp"
 #include "Sender.hpp"
@@ -30,9 +32,11 @@ namespace STORE
     Columnar*    m_pColumnar;
     Combiner*    m_pCombiner;
     Curator*     m_pCurator;
+    Estimator*   m_pEstimator;
     Filtrate*    m_pFiltrate;
     Indexer*     m_pIndexer;
     Joiner*      m_pJoiner;
+    Partitioner* m_pPartitioner;
     Permutor*    m_pPermutor;
     Scanning*    m_pScanning;
     Sender*      m_pSender;

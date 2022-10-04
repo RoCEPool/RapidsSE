@@ -41,7 +41,6 @@ enum eCK // card kind
   /* */ CK_FILTELIST,
 
   /* */ CK_GBYELIST,
-  /* */ CK_GENERATE,
 
   /* */ CK_HASH,
   /* */ CK_HAVING,
@@ -62,7 +61,6 @@ enum eCK // card kind
 
   /* */ CK_MAP,
   /* */ CK_MAPSET,
-  /* */ CK_MODE,
 
   /* */ CK_OBYELIST,
   /* */ CK_ON,
@@ -75,6 +73,7 @@ enum eCK // card kind
   /* */ CK_PREDOR,
   /* */ CK_PROJECT,
   /* */ CK_PROJELIST,
+  /* */ CK_PTNDJOIN,
   /* */ CK_PTNDJOINSET,
 
   /* */ CK_RBOUND,
@@ -151,7 +150,6 @@ static Stz* aCK[]
   /* */ "CK_FILTELIST"_Stz,    // CK_FILTELIST
 
   /* */ "CK_GBYELIST"_Stz,     // CK_GBYELIST
-  /* */ "CK_GENERATE"_Stz,     // CK_GENERATE
 
   /* */ "CK_HASH"_Stz,         // CK_HASH
   /* */ "CK_HAVING"_Stz,       // CK_HAVING
@@ -172,7 +170,6 @@ static Stz* aCK[]
 
   /* */ "CK_MAP"_Stz,          // CK_MAP
   /* */ "CK_MAPSET"_Stz,       // CK_MAPSET
-  /* */ "CK_MODE"_Stz,         // CK_MODE
 
   /* */ "CK_OBYELIST"_Stz,     // CK_OBYELIST
   /* */ "CK_ON"_Stz,           // CK_ON
@@ -185,6 +182,7 @@ static Stz* aCK[]
   /* */ "CK_PREDOR"_Stz,       // CK_PREDOR
   /* */ "CK_PROJECT"_Stz,      // CK_PROJECT
   /* */ "CK_PROJELIST"_Stz,    // CK_PROJELIST
+  /* */ "CK_PTNDJOIN"_Stz,     // CK_PTNDJOIN
   /* */ "CK_PTNDJOINSET"_Stz,  // CK_PTNDJOINSET
 
   /* */ "CK_RBOUND"_Stz,       // CK_RBOUND
@@ -261,7 +259,6 @@ static Stz* aCK_short[]
   /* */ "filtElist"_Stz,       // CK_FILTELIST
 
   /* */ "gbyElist"_Stz,        // CK_GBYELIST
-  /* */ "generate"_Stz,        // CK_GENERATE
 
   /* */ "hash"_Stz,            // CK_HASH
   /* */ "having"_Stz,          // CK_HAVING
@@ -282,7 +279,6 @@ static Stz* aCK_short[]
 
   /* */ "map"_Stz,             // CK_MAP
   /* */ "mapSet"_Stz,          // CK_MAPSET
-  /* */ "mode"_Stz,            // CK_MODE
 
   /* */ "obyElist"_Stz,        // CK_OBYELIST
   /* */ "on"_Stz,              // CK_ON
@@ -295,6 +291,7 @@ static Stz* aCK_short[]
   /* */ "predOr"_Stz,          // CK_PREDOR
   /* */ "project"_Stz,         // CK_PROJECT
   /* */ "projElist"_Stz,       // CK_PROJELIST
+  /* */ "ptndJoin"_Stz,        // CK_PTNDJOIN
   /* */ "ptndJoinSet"_Stz,     // CK_PTNDJOINSET
 
   /* */ "rbound"_Stz,          // CK_RBOUND

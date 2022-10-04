@@ -18,11 +18,11 @@ __bIsCard(STORE, Card_StageNm, CK_STAGENM)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_StageNm::Card_StageNm(Stz* szName)
-: Card(CK_STAGENM)
+: Card(CK_STAGENM,szName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vValue(szName);
+  //vValue(szName);
     
   _checkInitialised_(CN_CARD);
   

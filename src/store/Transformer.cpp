@@ -32,9 +32,11 @@ Transformer::Transformer(Bench* pBench)
   m_pColumnar    = nullptr;
   m_pCombiner    = nullptr;
   m_pCurator     = nullptr;
+  m_pEstimator   = nullptr;
   m_pFiltrate    = nullptr;
   m_pIndexer     = nullptr;
   m_pJoiner      = nullptr;
+  m_pPartitioner = nullptr;
   m_pPermutor    = nullptr;
   m_pScanning    = nullptr;
   m_pSender      = nullptr;
@@ -63,6 +65,7 @@ Transformer::~Transformer(void) noexcept(false)
   delete m_pFiltrate;
   delete m_pIndexer;
   delete m_pJoiner;
+  delete m_pPartitioner;
   delete m_pPermutor;
   delete m_pScanning;
   delete m_pSender;
@@ -92,9 +95,11 @@ void Transformer::vTransform(void)
   m_pColumnar    = new Columnar(m_pBench);
   m_pCombiner    = new Combiner(m_pBench);
   m_pCurator     = new Curator(m_pBench);
+  m_pEstimator   = new Estimator(m_pBench);
   m_pFiltrate    = new Filtrate(m_pBench);
   m_pIndexer     = new Indexer(m_pBench);
   m_pJoiner      = new Joiner(m_pBench);
+  m_pPartitioner = new Partitioner(m_pBench);
   m_pPermutor    = new Permutor(m_pBench);
   m_pScanning    = new Scanning(m_pBench);
   m_pSender      = new Sender(m_pBench);
@@ -202,25 +207,35 @@ void Transformer::vTransform2(void)
   if (m_bInteractive)
     pBoard_query->vPrintBoard("Tabular::vAdd_TablePtn"_Stz);
 
-  m_pPermutor->vExtract_tableList();
+  m_pPartitioner->vExtract_tableList();
 
   m_pColumnar->vAdd_ColumnRef();
   if (m_bInteractive)
     pBoard_query->vPrintBoard("Columnar::vAdd_ColumnRef"_Stz);
 
 
-  m_pPermutor->vExtract_joinPredList();
+  m_pPartitioner->vExtract_joinPredList();
 
   m_pCardCtl->vPrintForm(CK_COLUMNREF,CP_COMPRESSED);
   m_pCardCtl->vPrintForm(CK_COPTNJOIN,CP_COMPRESSED);
   m_pCardCtl->vPrintForm(CK_CROSSPTNJOIN,CP_COMPRESSED);
   //m_pCardCtl->vPrintForm(CK_PREDCMP,CP_COMPRESSED);
 
-  m_pPermutor->vCompute_coPtnPredList();
-  m_pPermutor->vCompute_coPtnJoinList();
-  m_pPermutor->vCompute_crossPtnJoinList();
+  m_pPartitioner->vCompute_coPtnPredList();
+  m_pPartitioner->vCompute_coPtnJoinList();
+  m_pPartitioner->vCompute_crossPtnJoinList();
 
-  m_pPermutor->vCompute_ptndJointSet();
+  m_pPartitioner->vCompute_ptndJointSet();
+
+
+  m_pPermutor->vCopy_ptndJoinSet();
+  m_pPermutor->vGenerate_ptndPermutations();
+  m_pPermutor->vRemove_invalidPermutations();
+
+  m_pEstimator->vSetup_costEst();
+  m_pEstimator->vEstimate_ptndJoins();
+  m_pEstimator->vEstimate_network();
+
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

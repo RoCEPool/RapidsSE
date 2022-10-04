@@ -43,7 +43,6 @@
 #include "Card_Filter.hpp"
 
 #include "Card_GbyElist.hpp"
-#include "Card_Generate.hpp"
 
 #include "Card_Hash.hpp"
 #include "Card_Having.hpp"
@@ -65,7 +64,6 @@
 
 #include "Card_Map.hpp"
 #include "Card_MapSet.hpp"
-#include "Card_Mode.hpp"
 
 #include "Card_StageNm.hpp"
 
@@ -80,6 +78,8 @@
 #include "Card_PredOr.hpp"
 #include "Card_Project.hpp"
 #include "Card_ProjElist.hpp"
+#include "Card_PtndJoin.hpp"
+#include "Card_PtndJoinSet.hpp"
 
 #include "Card_RBound.hpp"
 #include "Card_Rows.hpp"
@@ -152,9 +152,10 @@ namespace STORE
     Board(eBK eBoard, Bench* pBench);
    ~Board(void) noexcept(false);
 
-    void vAppendMainCard(Card* pNewMainCard, bool bRenumber=true);
+    void vAppendMain(Card* pNewMainCard, bool bRenumber= true);
 
     eBK eBoard(void);
+    CardCtl* pCardCtl(void);
     CardRegs* pCardRegs(void);
     Card_SubSet* pCard_SubSet(void);
 
@@ -164,6 +165,7 @@ namespace STORE
 
     void vDeleteAllCards(void);
     void vDeleteFromTill(Card* pFrom, Card* pTillBefore);
+    void vDuplicateBoard(Board* pBoard_arg);
 
     Card_Filter* pFindFilterCard(i8 iFilter, Card*& rpMainCard);
     i8    iFindMain(Card* pMainCard);
@@ -176,8 +178,8 @@ namespace STORE
     Card* pFindPrevMain(Card* pBefore, eCK eFindCard, i8& i_Main);
     Card_Stream* pFindStreamCard(i8 iStream, Card*& rpMainCard);
 
-    Card* pGetMainCard(i8 i_Main);
-    Card* pGetMainCard(i8 i_Main, eCK& reCard);
+    Card* pGetMain(i8 i_Main);
+    Card* pGetMain(i8 i_Main, eCK& reCard);
 
     void vInsertMainCard_after(Card* pNewMainCard, Card* pAfterMainCard, bool bRenumber=true);
     void vInsertMainCard_before(Card* pNewMainCard, Card* pBeforeMainCard, bool bRenumber=true);

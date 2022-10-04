@@ -7,6 +7,7 @@
 #include "Card_IndexPtr.hpp"
 #include "Card_IdxColList.hpp"
 #include "Card_IndexList.hpp"
+#include "Card_TablePtr.hpp"
 #include "Card_TableSyn.hpp"
 
 #include "PtnDef.hpp"
@@ -50,7 +51,19 @@ Card_Table::~Card_Table(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* destructor                                                                 */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_TablePtr* Card_Table::pGet_tablePtr(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_TablePtr* p_tablePtr = _pCard_TablePtr(this->pFindSubCard(CK_TABLEPTR));
+
+  return p_tablePtr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
 char Card_Table::cTableSyn(void)
 {

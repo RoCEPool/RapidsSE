@@ -160,6 +160,9 @@ namespace STORE
     void  operator delete(void*);
   
     Card(eCK eCard);
+    Card(eCK eCard, Stz* szValue);
+    void vInit(eCK eCard);
+
    ~Card(void) noexcept(false);
 
     static  void vCardLeaks(void);
@@ -258,7 +261,6 @@ namespace STORE
     void vReplaceChildWithKids(Card* pChildCard);
     void vReplaceSubCard(Card* pSubCard, Card* pWithCard);
 
-
     Stz* sz(void);
 
     //SZ Stz* szTablePtn(void);
@@ -314,9 +316,7 @@ namespace STORE
     //SZ Stz* szDirn(void);
 //    void vDirn(Stz* szAsNm);
 //
-    i8   iGenerate(void);
-    void vGenerate(i8 iGenerate);
-  
+
     bool bHasAggOp(void);
     Card_Term* pHeadTerm(void);
 
@@ -333,15 +333,15 @@ namespace STORE
     bool bIsSame(Stz* szArg);
     bool bIsSeparator(void);
 
-    Stz* szLevel(void);
-    void vLevel(Stz* szLevel);
+    //Stz* szLevel(void);
+    //void vLevel(Stz* szLevel);
 
     Stz* szMapBack(void);
     void vMapBack(Stz* szMapBack);
     Stz* szMapFrom(void);
     void vMapFrom(Stz* szMapFrom);
     //SZ Stz* szMode(void);
-    void vMode(Stz* szMode);
+    //void vMode(Stz* szMode);
   
 //    Stz* szStageNm(void);
 //    void vStageNm(Stz* szStageNm);

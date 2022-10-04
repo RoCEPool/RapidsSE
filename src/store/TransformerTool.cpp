@@ -15,10 +15,14 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  m_pBench         = pBench;
-  m_pBoard         = m_pBench->pHead();
-  m_pBoard_permute = nullptr;
-  m_pBoard_query   = nullptr;
+  m_pBench           = pBench;
+  m_pBoard           = m_pBench->pHead();
+  m_pBoard_costEst   = nullptr;
+  m_pBoard_partition = nullptr;
+  m_pBoard_permute   = nullptr;
+  m_pBoard_query     = nullptr;
+
+  m_pPermGen         = nullptr;
 
   m_pMainCardIter  = nullptr;
 
@@ -26,18 +30,20 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_eNextMain      = CK_NONE;
   m_eStageTopo     = YG_NONE;
 
+  m_pChildCard     = nullptr;
   m_pMainCard      = nullptr;
   m_pNextMain      = nullptr;
+  m_pPoppedCard    = nullptr;
 
   m_p_absJoin          = nullptr;
   m_p_aggreg           = nullptr;
   m_p_calcBool         = nullptr;
   m_p_combined         = nullptr;
-  m_p_coPtnJoin            = nullptr;
+  m_p_coPtnJoin        = nullptr;
   m_p_coPtnJoinList    = nullptr;
   m_p_coPtnPred        = nullptr;
   m_p_coPtnPredList    = nullptr;
-  m_p_crossPtnJoin         = nullptr;
+  m_p_crossPtnJoin     = nullptr;
   m_p_crossPtnJoinList = nullptr;
   m_p_comment          = nullptr;
   m_p_filter           = nullptr;
@@ -46,10 +52,12 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_p_indexList        = nullptr;
   m_p_indexScan        = nullptr;
   m_p_joinPredList     = nullptr;
-  m_p_joinPtnList      = nullptr;
   m_p_lBound           = nullptr;
+  m_p_permutation      = nullptr;
   m_p_predCmp          = nullptr;
   m_p_project          = nullptr;
+  m_p_ptndJoin         = nullptr;
+  m_p_ptndJoinSet      = nullptr;
   m_p_sbyElist         = nullptr;
   m_p_scan             = nullptr;
   m_p_scanPred         = nullptr;
@@ -83,6 +91,8 @@ TransformerTool::~TransformerTool(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_);
 
   delete m_pMainCardIter;
+
+  delete m_pPermGen;
 }
 
 
@@ -267,6 +277,37 @@ void TransformerTool::vTransformation(eOT eTransformation)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void TransformerTool::vSetupCostEstBoard(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  m_pBoard_costEst = m_pBench->pGetBoard(BK_COSTEST);
+  if (!m_pBoard_costEst)
+    m_pBoard_costEst = new Board(BK_COSTEST, m_pBench);
+
+  m_pBoard_partition = m_pBench->pGetBoard(BK_PARTITION);
+  m_pBoard_permute   = m_pBench->pGetBoard(BK_PERMUTE);
+  m_pBoard_query     = m_pBench->pGetBoard(BK_QUERY);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::vSetupPartitionBoard(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  m_pBoard_partition = m_pBench->pGetBoard(BK_PARTITION);
+  if (!m_pBoard_partition)
+    m_pBoard_partition = new Board(BK_PARTITION, m_pBench);
+
+  m_pBoard_permute = m_pBench->pGetBoard(BK_PARTITION);
+  m_pBoard_query   = m_pBench->pGetBoard(BK_QUERY);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void TransformerTool::vSetupPermuteBoard(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
@@ -275,7 +316,8 @@ void TransformerTool::vSetupPermuteBoard(void)
   if (!m_pBoard_permute)
     m_pBoard_permute = new Board(BK_PERMUTE, m_pBench);
 
-  m_pBoard_query = m_pBench->pGetBoard(BK_QUERY);
+  m_pBoard_partition = m_pBench->pGetBoard(BK_PARTITION);
+  m_pBoard_query     = m_pBench->pGetBoard(BK_QUERY);
 }
 
 

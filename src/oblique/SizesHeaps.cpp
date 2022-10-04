@@ -149,6 +149,7 @@
 #include "RibbonLine.hpp"
 #include "RowTablePtn.hpp"
 #include "Optimiser.hpp"
+#include "Estimator.hpp"
 
 #include "Card.hpp"
 
@@ -259,6 +260,7 @@
 #include "Permutor.hpp"
 #include "Tabular.hpp"
 #include "Columnar.hpp"
+#include "Partitioner.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -366,8 +368,9 @@ SizeHeap gxaSizeHeap[]
   { CN_ENT,                      sizeof(Ent),                    HT_INVALID   , FILL },
   { CN_ENTBUFFER,                sizeof(EntBuffer),              HT_T_LARGE   , FILL },
   { CN_ENTBUFSORTER,             sizeof(EntBufSorter),           HT_T_LARGE   , FILL },
-  { CN_ENTWRK,                   sizeof(EntWrk),             HT_INVALID   ,FILL },
+  { CN_ENTWRK,                   sizeof(EntWrk),                 HT_INVALID   ,FILL },
   { CN_ENUMFLAGS,                sizeof(ClassFlags),             HT_T_TINY    , FILL },
+  { CN_ESTIMATOR,                sizeof(Estimator),              HT_T_TINY    , FILL },
   { CN_EVENTHANDLERS,            sizeof(EventHandlers),          HT_T_TINY    , FILL },
   { CN_EVMGR,                    sizeof(EvMgr),                  HT_T_TINY    , FILL },
   { CN_EXEMPLAR,                 sizeof(Exemplar),               HT_T_TINY    , FILL },
@@ -494,6 +497,7 @@ SizeHeap gxaSizeHeap[]
   { CN_PAGEFILE,                 sizeof(PageFile),           HT_T_TINY    ,FILL },
   { CN_PAGINGMETRICS,            sizeof(PagingMetrics),      HT_T_LARGE   ,FILL },
   { CN_PARCEL,                   sizeof(Parcel),             HT_T_TINY    ,FILL },
+  { CN_PARTITIONER,              sizeof(Partitioner),        HT_T_TINY    ,FILL },
   { CN_PATHIDENTIFIER,           sizeof(PathIdentifier),     HT_T_MEDIUM  ,FILL },
   { CN_PATHVEC,                  sizeof(PathVec),            HT_T_MEDIUM  ,FILL },
   { CN_PAYSTR,                   sizeof(PayStr),             HT_INVALID   ,FILL },

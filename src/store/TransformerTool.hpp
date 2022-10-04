@@ -7,6 +7,7 @@
 #include "BoardIter.hpp"
 
 #include "eOT.h"
+#include "PermGen.hpp"
 
 namespace STORE
 {
@@ -14,19 +15,27 @@ namespace STORE
   {
   protected:
 
-    Bench*       m_pBench;
-    Board*       m_pBoard;
-    Board*       m_pBoard_permute;
-    Board*       m_pBoard_query;
+    Bench*      m_pBench;
+    Board*      m_pBoard;
+    Board*      m_pBoard_costEst;
+    Board*      m_pBoard_partition;
+    Board*      m_pBoard_permute;
+    Board*      m_pBoard_query;
 
-    CardIter*    m_pMainCardIter;
+    CardIter*   m_pMainCardIter;
+
+    bool        m_bInteractive;
+
+    PermGen*    m_pPermGen;
 
     eCK m_eMainCard;
     eCK m_eNextMain;
     eYG m_eStageTopo;
 
+    Card*            m_pChildCard;
     Card*            m_pMainCard;
     Card*            m_pNextMain;
+    Card*            m_pPoppedCard;
 
     Card_AbsJoin*          m_p_absJoin;
     Card_Aggreg*           m_p_aggreg;
@@ -45,10 +54,12 @@ namespace STORE
     Card_IndexList*        m_p_indexList;
     Card_IndexScan*        m_p_indexScan;
     Card_JoinPredList*     m_p_joinPredList;
-    Card_PtndJoinSet*      m_p_joinPtnList;
     Card_LBound*           m_p_lBound;
+    Card_Permutation*      m_p_permutation;
     Card_PredCmp*          m_p_predCmp;
     Card_Project*          m_p_project;
+    Card_PtndJoin*         m_p_ptndJoin;
+    Card_PtndJoinSet*      m_p_ptndJoinSet;
     Card_SbyElist*         m_p_sbyElist;
     Card_Scan*             m_p_scan;
     Card_ScanPred*         m_p_scanPred;
@@ -67,7 +78,6 @@ namespace STORE
     Card_TableSyn*         m_p_tableSyn;
     Card_UBound*           m_p_uBound;
 
-    bool m_bInteractive;
   public:
     void* operator new(size_t);
     void  operator delete(void*);
@@ -90,6 +100,8 @@ namespace STORE
     void vTransformation(eOT eTransformation);
 
   protected:
+    void vSetupCostEstBoard(void);
+    void vSetupPartitionBoard(void);
     void vSetupPermuteBoard(void);
 
   };

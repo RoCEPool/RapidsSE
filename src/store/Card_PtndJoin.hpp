@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_Mode.hpp -- Mode                                                      */
+/* Card_PtndJoin.hpp -- Partitioned Join                                      */
 /*============================================================================*/
 #pragma once
 
@@ -7,18 +7,23 @@
 
 namespace STORE
 {
-  class Card_Mode : public Card
-  {  
+  class Card_TableList;
+
+  class Card_PtndJoin : public Card
+  {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Mode(Stz* szMode);
-   ~Card_Mode(void) noexcept(false);
+    Card_PtndJoin(void);
+   ~Card_PtndJoin(void) noexcept(false);
+
+    bool bMayFollowAfter(Card_SubSet* pPriorPtnJoins_sofar);
+    void vJoinEst(Card_TableList* p_tableList);
   };
 
-  Card_Mode* _pCard_Mode(void* aAddr);
-  bool _bIsCard_Mode(void* aAddr);
+  Card_PtndJoin* _pCard_PtndJoin(void* aAddr);
+  bool _bIsCard_PtndJoin(void* aAddr);
 }
 
 /*============================================================================*/

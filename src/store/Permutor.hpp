@@ -21,17 +21,9 @@ namespace STORE
     Permutor(Bench* pBench);
    ~Permutor(void) noexcept(false);
 
-    void vExtract_tableList(void);
-
-    void vExtract_joinPredList(void);
-
-    void vCompute_coPtnPredList(void);
-
-    void vCompute_coPtnJoinList(void);
-
-    void vCompute_crossPtnJoinList(void);
-
-    void vCompute_ptndJointSet(void);
+    void vCopy_ptndJoinSet(void);
+    void vGenerate_ptndPermutations(void);
+    void vRemove_invalidPermutations(void);
 
 
   private:

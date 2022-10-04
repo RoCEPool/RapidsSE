@@ -113,6 +113,36 @@ bool Card_PredCmp::bIsEq(Card_PredCmp* p_PredCmp_arg)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_PredCmp::bOverlapsWith(Card_PredCmp* p_PredCmp_arg)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  this->vDump();
+  p_PredCmp_arg->vDump();
+
+  Card_ColumnRef* p_columnRef_this_0 = _pCard_ColumnRef(this->pGetChild(0));
+  char cTableSyn_this_0 = p_columnRef_this_0->cColumnRef_tableSyn();
+  Card_ColumnRef* p_columnRef_this_1 = _pCard_ColumnRef(this->pGetChild(1));
+  char cTableSyn_this_1 = p_columnRef_this_1->cColumnRef_tableSyn();
+
+  Card_ColumnRef* p_columnRef_arg_0 = _pCard_ColumnRef(p_PredCmp_arg->pGetChild(0));
+  char cTableSyn_arg_0 = p_columnRef_arg_0->cColumnRef_tableSyn();
+  Card_ColumnRef* p_columnRef_arg_1 = _pCard_ColumnRef(p_PredCmp_arg->pGetChild(1));
+  char cTableSyn_arg_1 = p_columnRef_arg_1->cColumnRef_tableSyn();
+
+  if (   cTableSyn_this_0 == cTableSyn_arg_0
+      || cTableSyn_this_0 == cTableSyn_arg_1
+      || cTableSyn_this_1 == cTableSyn_arg_0
+      || cTableSyn_this_1 == cTableSyn_arg_1
+      )
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* mark the bounds of this <predCmp>                                          */
 /*----------------------------------------------------------------------------*/
 void Card_PredCmp::vMarkBound(void)
@@ -229,6 +259,24 @@ bool Card_PredCmp::bHasBounds_compare(Index* pIndex)
     return false;
   
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_PredCmp::bUsesTable(char cTableSyn)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_ColumnRef* p_columnRef_this_0 = _pCard_ColumnRef(this->pGetChild(0));
+  char cTableSyn_this_0 = p_columnRef_this_0->cColumnRef_tableSyn();
+  Card_ColumnRef* p_columnRef_this_1 = _pCard_ColumnRef(this->pGetChild(1));
+  char cTableSyn_this_1 = p_columnRef_this_1->cColumnRef_tableSyn();
+
+  if (cTableSyn_this_0 == cTableSyn || cTableSyn_this_1 == cTableSyn)
+    return true;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -49,12 +49,12 @@ void Sender::vDelete_Sends(void)
 
   i8 nMainCards = m_pBoard->nMainCards();
   for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
-    Card* pMainCard = m_pBoard->pGetMainCard(i_Main);
+    Card* pMainCard = m_pBoard->pGetMain(i_Main);
 
     if (CK_SEND != pMainCard->eCard())
       continue;
 
-    //Card* pNextCard = m_pBoard->pGetMainCard(i_Main + 1);
+    //Card* pNextCard = m_pBoard->pGetMain(i_Main + 1);
     //if (! pNextCard)
     //  break;
 

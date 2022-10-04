@@ -293,7 +293,7 @@ i8 Filtrate::iAssignPredLeft(Card_PRED* pCard_PRED, Card_Filter* pCard_filter)
   //pCard_PRED->vDump();
 
   for (i8 i_Main = 0; /* none */ ; i_Main++) {
-    Card *pMainCard = m_pBoard->pGetMainCard(i_Main);
+    Card *pMainCard = m_pBoard->pGetMain(i_Main);
 
     if (pMainCard == pCard_filter)
       return C_UNKNOWN;

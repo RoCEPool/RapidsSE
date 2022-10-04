@@ -1,26 +1,37 @@
 /*============================================================================*/
-/* Card_Generate.hpp -- Generate                                              */
+/* Estimator.hpp -- Estimator tool                                            */
 /*============================================================================*/
 #pragma once
 
-#include "Card.hpp"
+#include "TransformerTool.hpp"
 
 namespace STORE
 {
-  class Card_Generate : public Card
+  class Estimator : public TransformerTool
   {
+  private:
+
+    // must be last
+    Footer m_xFooter;
+
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Generate(i8 iGenerate);
-   ~Card_Generate(void) noexcept(false);
+    Estimator(Bench* pBench);
+   ~Estimator(void) noexcept(false);
+
+   void vSetup_costEst(void);
+   void vEstimate_ptndJoins(void);
+    void vEstimate_network(void);
+
+  private:
+
+    Footer* aFooter(void);
   };
 
-  Card_Generate* _pCard_Generate(void* aAddr);
-  bool _bIsCard_Generate(void* aAddr);
+  Estimator* _pEstimator(void* aAddr);
 }
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

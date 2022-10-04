@@ -121,7 +121,7 @@ void Combiner::vDelete_Combines(void)
 
   i8 nMainCards = m_pBoard->nMainCards();
   for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
-    Card* pMainCard = m_pBoard->pGetMainCard(i_Main);
+    Card* pMainCard = m_pBoard->pGetMain(i_Main);
 
     if (CK_COMBINED == pMainCard->eCard()) {
       m_pBoard->vRemoveMainCard(pMainCard);

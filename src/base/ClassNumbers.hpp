@@ -98,6 +98,7 @@ enum eCN : u2 // Class Number
   /* */ CN_ENTBUFSORTER,
   /* */ CN_ENTWRK,
   /* */ CN_ENUMFLAGS,
+  /* */ CN_ESTIMATOR,
   /* */ CN_EVENTHANDLERS,
   /* */ CN_EVMGR,
   /* */ CN_EXEMPLAR,
@@ -224,6 +225,7 @@ enum eCN : u2 // Class Number
   /* */ CN_PAGEFILE,
   /* */ CN_PAGINGMETRICS,
   /* */ CN_PARCEL,
+  /* */ CN_PARTITIONER,
   /* */ CN_PATHIDENTIFIER,
   /* */ CN_PATHVEC,
   /* */ CN_PAYSTR,
@@ -532,6 +534,7 @@ static Stz* aCN[]
   /* */ "ENTBUFSORTER"_Stz,         // CN_ENTBUFSORTER
   /* */ "ENTWRK"_Stz,               // CN_ENTWRK
   /* */ "ENUMFLAGS"_Stz,            // CN_ENUMFLAGS
+  /* */ "ESTIMATOR"_Stz,            // CN_ESTIMATOR
   /* */ "EVENTHANDLERS"_Stz,        // CN_EVENTHANDLERS
   /* */ "EVMGR"_Stz,                // CN_EVMGR
   /* */ "EXEMPLAR"_Stz,             // CN_EXEMPLAR
@@ -658,6 +661,7 @@ static Stz* aCN[]
   /* */ "PAGEFILE"_Stz,             // CN_PAGEFILE
   /* */ "PAGINGMETRICS"_Stz,        // CN_PAGINGMETRICS
   /* */ "PARCEL"_Stz,               // CN_PARCEL
+  /* */ "PARTITIONER"_Stz,          // CN_PARTITIONER
   /* */ "PATHIDENTIFIER"_Stz,       // CN_PATHIDENTIFIER
   /* */ "PATHVEC"_Stz,              // CN_PATHVEC
   /* */ "PAYSTR"_Stz,               // CN_PATHSTR
