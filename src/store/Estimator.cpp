@@ -82,8 +82,10 @@ void Estimator::vEstimate_ptndJoins(void)
 
   BoardIter xBI(m_pBoard_costEst);
 
-  while (m_p_ptndJoin = _pCard_PtndJoin(xBI.pEachMain(CK_PTNDJOIN)))
+  while (m_p_ptndJoin = _pCard_PtndJoin(xBI.pEachMain(CK_PTNDJOIN))) {
     m_p_ptndJoin->vJoinEst(m_p_tableList);
+    m_p_tableList->vDeletePropertyRecursively("bTableUsed"_Stz);
+  }
 
   if (m_bInteractive)
     m_pBoard_costEst->vPrintBoard("Estimator::vEstimate_ptndJoins"_Stz);

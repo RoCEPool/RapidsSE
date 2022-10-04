@@ -93,13 +93,18 @@ void Card_PtndJoin::vJoinEst(Card_TableList* p_tableList)
     Card_Table *p_table =
         _pCard_Table(p_tableList->pGetChild(i_Table));
 
+    if (p_table->bHasProperty("bTableUsed"_Stz))
+      continue;
+
     i8 nPredCmps = this->nChildCards();
     for (i8 i_PredCmp = 0; i_PredCmp < nPredCmps; i_PredCmp++) {
       Card_PredCmp *p_predCmp =
           _pCard_PredCmp(this->pGetChild(i_PredCmp));
 
-      if (p_predCmp->bUsesTable(p_table->cTableSyn()))
+      if (p_predCmp->bUsesTable(p_table->cTableSyn())) {
         nJoinBuffers += p_table->pGet_tablePtr()->pTable()->pStreamDef()->jTableSize();
+        p_table->vAddProperty_nameOnly("bTableUsed"_Stz);
+      }
     }
 
   }

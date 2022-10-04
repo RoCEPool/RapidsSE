@@ -435,19 +435,6 @@ char Card::cColumnRef_tableSyn(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* cut given property                                                         */
-/*----------------------------------------------------------------------------*/
-void Card::vCutProperty(Stz* szName)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (! m_pProperties)
-    return;
-  
-  m_pProperties->vDelete(szName);
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card::vCutSubCard(Card* pSubCard)
@@ -470,6 +457,35 @@ void Card::vDeleteChildCard(eCK eCard)
   if (pChildCard) {
     vRemoveChild(pChildCard);
     delete pChildCard;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete given property                                                      */
+/*----------------------------------------------------------------------------*/
+void Card::vDeleteProperty(Stz* szName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (! m_pProperties)
+    return;
+
+  m_pProperties->vDelete(szName);
+}
+
+/*----------------------------------------------------------------------------*/
+/* duplicate this card and its sub cards                                      */
+/*----------------------------------------------------------------------------*/
+void Card::vDeletePropertyRecursively(Stz* szName)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vDeleteProperty(szName);
+
+  i8 nSubCards = this->nChildCards();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card *pChildCard = pGetChild(i_Child);
+    pChildCard->vDeletePropertyRecursively(szName);
   }
 }
 
@@ -858,8 +874,8 @@ void Card::vHasEBound(bool bHasEBound)
     vAddProperty_nameOnly("EBound"_Stz);
     return;
   }
-  
-  vCutProperty("EBound"_Stz);
+
+  vDeleteProperty("EBound"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -888,8 +904,8 @@ void Card::vHasLBound(bool bHasLBound)
     vAddProperty_nameOnly("LBound"_Stz);
     return;
   }
-  
-  vCutProperty("LBound"_Stz);
+
+  vDeleteProperty("LBound"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -978,8 +994,8 @@ void Card::vHasUBound(bool bHasUBound)
     vAddProperty_nameOnly("UBound"_Stz);
     return;
   }
-  
-  vCutProperty("UBound"_Stz);
+
+  vDeleteProperty("UBound"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

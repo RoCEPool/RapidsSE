@@ -189,10 +189,11 @@ namespace STORE
     i8   iColumnRef_columnOrd(void);
     char cColumnRef_tableSyn(void);
     //V void vColumnRef(Stz* szColumnRef);
-    void vCutProperty(Stz* szName);
     void vCutSubCard(Card* pSubCard);
 
     void vDeleteChildCard(eCK eCard);
+    void vDeleteProperty(Stz* szName);
+    void vDeletePropertyRecursively(Stz* szName);
     void vDump(i8 iDepth=0, Stz* szTitle=nullptr);
     Card* pDupCardAndSubCards(void);
     Card_SubSet* pDupSubCards(void);
