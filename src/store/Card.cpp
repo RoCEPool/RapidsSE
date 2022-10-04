@@ -469,7 +469,7 @@ void Card::vDeleteChildCard(eCK eCard)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   i8 i_Child;
-  Card* pChildCard = pFindChildCard(eCard,i_Child);
+  Card* pChildCard = pFindChild(eCard, i_Child);
 
   if (pChildCard) {
     vRemoveChild(pChildCard);
@@ -676,13 +676,13 @@ bool Card::bEquivalent(Card* pCard_arg)
 /*----------------------------------------------------------------------------*/
 /* find immediate child-card                                                  */
 /*----------------------------------------------------------------------------*/
-Card* Card::pFindChildCard(eCK eCard)
+Card* Card::pFindChild(eCK eCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   i8 i_Child;
 
-  Card* pFoundCard = pFindChildCard(eCard,i_Child);
+  Card* pFoundCard = pFindChild(eCard, i_Child);
 
   return pFoundCard;
 }
@@ -690,7 +690,7 @@ Card* Card::pFindChildCard(eCK eCard)
 /*----------------------------------------------------------------------------*/
 /* find immediate child-card                                                  */
 /*----------------------------------------------------------------------------*/
-Card* Card::pFindChildCard(eCK eCard, i8& i_Child)
+Card* Card::pFindChild(eCK eCard, i8& i_Child)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -863,6 +863,23 @@ Stz* Card::szGetPropertyNm(i8 i_Property)
   Stz* szName = m_pProperties->szName(i_Property);
   
   return szName;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does card have the EBound property ?                                       */
+/*----------------------------------------------------------------------------*/
+bool Card::bHasChildWithValue(Stz* szValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (i8 i_Child = 0; i_Child < nChildCards(); i_Child++) {
+    Card* pChildCard = pGetChild(i_Child);
+
+    if (pChildCard->szValue()->bSame(szValue))
+      return true;
+  }
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

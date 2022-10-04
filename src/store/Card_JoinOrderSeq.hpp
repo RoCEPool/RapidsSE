@@ -19,7 +19,6 @@ namespace STORE
    ~Card_JoinOrderSeq(void) noexcept(false);
 
     void vExtractJoinOrder(Card_PtndJoin* p_PtndJoin);
-    bool bHasJoinOrder(Stz* szJoinOrder);
   };
 
   Card_JoinOrderSeq* _pCard_JoinOrderSeq(void* aAddr);

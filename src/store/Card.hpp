@@ -233,8 +233,8 @@ namespace STORE
                       eCK eCard=CK_NONE);
     bool bEquivalent(Card* pCard_arg);
 
-    Card* pFindChildCard(eCK eCard);
-    Card* pFindChildCard(eCK eCard, i8& i_Child);
+    Card* pFindChild(eCK eCard);
+    Card* pFindChild(eCK eCard, i8& i_Child);
     Card* pFindParent(Card* pSubCard_arg);
     Card* pFindSubCard(eCK eCard);
 
@@ -246,6 +246,7 @@ namespace STORE
     Stz*    szGetProperty(Stz* szPptName);
     Stz*    szGetPropertyNm(i8 i_Property);
 
+    bool bHasChildWithValue(Stz* szValue);
     bool bHasEBound(void);
     void vHasEBound(bool bHasEBound);
     bool bHasLBound(void);
