@@ -2275,7 +2275,7 @@ i8 Card::iOrdHi(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  i8 iOrdHi = iGetProperty("iOrdHi"_Stz);
+  i8 iOrdHi = iGetProperty(C_CARD_OrdHi);
 
   return iOrdHi;
 }
@@ -2287,7 +2287,7 @@ void Card::vOrdHi(i8 iOrdHi)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vAddProperty_int("iOrdHi"_Stz,iOrdHi);
+  vAddProperty_int(C_CARD_OrdHi,iOrdHi);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2297,7 +2297,7 @@ i8 Card::iOrdLo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  i8 iOrdLo = iGetProperty("iOrdLo"_Stz);
+  i8 iOrdLo = iGetProperty(C_CARD_OrdLo);
 
   return iOrdLo;
 }
@@ -2309,7 +2309,7 @@ void Card::vOrdLo(i8 iOrdLo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vAddProperty_int("iOrdLo"_Stz,iOrdLo);
+  vAddProperty_int(C_CARD_OrdLo,iOrdLo);
 }
 
 /*----------------------------------------------------------------------------*/

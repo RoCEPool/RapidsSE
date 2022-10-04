@@ -117,6 +117,9 @@ namespace STORE {
 static Stz* C_CARD_Invalid      = "bInvalid"_Stz;
 static Stz* C_CARD_JoinedBuff   = "nJoinedBuff"_Stz;
 static Stz* C_CARD_Network      = "nNetwork"_Stz;
+static Stz* C_CARD_OrdHi        = "iOrdHi"_Stz;
+static Stz* C_CARD_OrdLo        = "iOrdLo"_Stz;
+static Stz* C_CARD_PtndJoin     = "i_PtndJoin"_Stz;
 static Stz* C_CARD_Permutation  = "i_Permutation"_Stz;
 static Stz* C_CARD_SentOut      = "nSentOut"_Stz;
 static Stz* C_CARD_TableUsed    = "bTableUsed"_Stz;

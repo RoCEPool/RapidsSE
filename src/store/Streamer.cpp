@@ -63,9 +63,9 @@ void Streamer::vOrdinal_Range(void)
       pCard_stream->vMark2(cStream++);
 
       i8 nStreamCols = pCard_stream->nStreamCols();
-      pCard_stream->vAddProperty_int("iOrdLo"_Stz,iOrdLo);
+      pCard_stream->vAddProperty_int(C_CARD_OrdLo,iOrdLo);
       iOrdHi = iOrdLo + nStreamCols - 1;
-      pCard_stream->vAddProperty_int("iOrdHi"_Stz,iOrdHi);
+      pCard_stream->vAddProperty_int(C_CARD_OrdHi,iOrdHi);
       iOrdLo = iOrdHi + 1;
 
       continue;
@@ -79,9 +79,9 @@ void Streamer::vOrdinal_Range(void)
       pCard_stream->vMark2(cStream++);
 
       i8 nStreamCols = pCard_stream->nStreamCols();
-      pCard_stream->vAddProperty_int("iOrdLo"_Stz,iOrdLo);
+      pCard_stream->vAddProperty_int(C_CARD_OrdLo,iOrdLo);
       iOrdHi = iOrdLo + nStreamCols - 1;
-      pCard_stream->vAddProperty_int("iOrdHi"_Stz,iOrdHi);
+      pCard_stream->vAddProperty_int(C_CARD_OrdHi,iOrdHi);
       iOrdLo = iOrdHi + 1;
 
       continue;

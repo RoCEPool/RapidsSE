@@ -250,7 +250,7 @@ void Partitioner::vCompute_ptndJointSet(void)
   for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
     m_pChildCard = m_p_ptndJoinSet->pGetChild(i_Child);
     m_pChildCard->vCard(CK_PTNDJOIN);
-    m_pChildCard->vAddProperty_int("i_PtndJoin"_Stz,i_Child);
+    m_pChildCard->vAddProperty_int(C_CARD_PtndJoin,i_Child);
   }
 
   if (m_bInteractive)
