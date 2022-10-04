@@ -36,7 +36,7 @@
     then
 
     object@ isFolder if
-      object@ execute dic.kind@ word.name@
+      object@ execute dic.kindString@
     then
 
     object@ word.name@

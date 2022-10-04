@@ -25,7 +25,7 @@ Dic::Dic(Stz* szDicNm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   m_sDicNm   = szDicNm;
-  m_pDicKind = nullptr;
+  m_eDicKind = DK_NONE;
     
   m_pWordSkipList = new SkipListNL(C_UNQIUE_KEY,bWordCompare,vWordPrint);
 
@@ -103,13 +103,13 @@ void Dic::vAddWord(Word* pWord)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get dictionary kind                                                        */
+/* get dictionary kind (enum)                                                 */
 /*----------------------------------------------------------------------------*/
-Word* Dic::pDicKind(void)
+eDK Dic::eDicKind(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
-  
-  return m_pDicKind;
+
+  return m_eDicKind;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -119,20 +119,17 @@ Stz* Dic::szDicKind(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  if (m_pDicKind)
-    return m_pDicKind->szWordNm();
-  else
-    return "none"_Stz;
+  return aDK[m_eDicKind];
 }
 
 /*----------------------------------------------------------------------------*/
 /* set dictionary kind                                                        */
 /*----------------------------------------------------------------------------*/
-void Dic::vDicKind(Word* pDicKind)
+void Dic::vDicKind(eDK eDicKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
-  
-  m_pDicKind = pDicKind;
+
+  m_eDicKind = eDicKind;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -197,8 +194,9 @@ void Dic::vDump(eCN eClass, Object* pObject, Stz* szTab)
 /*----------------------------------------------------------------------------*/
 void Dic::vTree(Dic* pDic, i8 iTabs)
 {
-  vTrace("%sD:%s\n"_Stz, Stz::szTab(iTabs),
-         pDic->m_sDicNm.azChar());
+  vTrace("%sD:%s %s\n"_Stz, Stz::szTab(iTabs),
+         pDic->m_sDicNm.azChar(),
+         aDK[pDic->m_eDicKind]->azChar());
 
   Word* pWord = nullptr;
   pWord = pDic->pEachWord(pWord);
@@ -229,6 +227,70 @@ void Dic::vDicCompareFp(Dic* pDic)
   _static_
 
   pDic->m_pWordSkipList->m_fpCompare = bWordCompare;
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert Dictionary Kind to Word Category                                   */
+/*----------------------------------------------------------------------------*/
+eWC Dic::eDKToWC(eDK eDicKind)
+{
+  _static_
+
+  switch(eDicKind)
+  {
+    case DK_NONE:
+      return WC_NONE;
+
+    case DK_CATALOG:
+      return WC_CATALOG;
+
+    case DK_FOLDER:
+      return WC_FOLDER;
+
+    case DK_SCHEMA:
+      return WC_SCHEMA;
+
+    case DK_TABLE:
+      return WC_TABLE;
+
+    case DK_TENANT:
+      return WC_TENANT;
+
+    default:
+      return WC_NONE;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert Word Category to Dictionary Kind                                   */
+/*----------------------------------------------------------------------------*/
+eDK Dic::eWCToDK(eWC eWordCtg)
+{
+  _static_
+
+  switch(eWordCtg)
+  {
+    case WC_NONE:
+      return DK_NONE;
+
+    case WC_CATALOG:
+      return DK_CATALOG;
+
+    case WC_FOLDER:
+      return DK_FOLDER;
+
+    case WC_SCHEMA:
+      return DK_SCHEMA;
+
+    case WC_TABLE:
+      return DK_TABLE;
+
+    case WC_TENANT:
+      return DK_TENANT;
+
+    default:
+      return DK_NONE;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -399,9 +461,7 @@ bool Dic::bIsCatalog(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  Word* pKind = pDicKind();
-  
-  if (pKind && pKind->szWordNm()->bSame("\\catalog"_Stz))
+  if (m_eDicKind == DK_CATALOG)
     return true;
   
   return false;
@@ -414,9 +474,7 @@ bool Dic::bIsFolder(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  Word* pKind = pDicKind();
-  
-  if (pKind && pKind->szWordNm()->bSame("\\folder"_Stz))
+  if (m_eDicKind == DK_FOLDER)
     return true;
   
   return false;
@@ -440,10 +498,8 @@ bool Dic::bIsName(Stz* szDicNm)
 bool Dic::bIsSchema(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
-  
-  Word* pKind = pDicKind();
-  
-  if (pKind && pKind->szWordNm()->bSame("\\schema"_Stz))
+
+  if (m_eDicKind == DK_SCHEMA)
     return true;
   
   return false;
@@ -466,9 +522,7 @@ bool Dic::bIsTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  Word* pKind = pDicKind();
-  
-  if (pKind && pKind->szWordNm()->bSame("\\table"_Stz))
+  if (m_eDicKind == DK_TABLE)
     return true;
   
   return false;
@@ -481,9 +535,7 @@ bool Dic::bIsTenant(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  Word* pKind = pDicKind();
-  
-  if (pKind && pKind->szWordNm()->bSame("\\tenant"_Stz))
+  if (m_eDicKind == DK_TENANT)
     return true;
   
   return false;

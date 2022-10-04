@@ -427,6 +427,7 @@ void vDdlLockAssertNone(void);
   void vDicDelete(void);
   void vDicFirstWord(void);
   void vDicKindGet(void);
+  void vDicKindGetString(void);
   void vDicKindSet(void);
   void vDicLastWord(void);
   void vDicNameFetch(void);

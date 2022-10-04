@@ -3,6 +3,10 @@
 /*============================================================================*/
 #pragma once
 
+// Note: When adding anything to the below list
+// Update the static functions in Dic.cpp/hpp
+// to convert eWC to eDK and vice versa
+
 enum eWC // word category
 {
   /*  0 */ WC_NONE=0,     // none

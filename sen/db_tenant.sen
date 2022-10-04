@@ -35,16 +35,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* check if word is a tenant folder                                           */
-/*----------------------------------------------------------------------------*/
-: Path[].checkIsTenant ( word )
-
-  dup word.categoryWc@ WC_FOLDER equal not if EC_NOT_A_FOLDER false exit then
-  dup execute dic.kind@ find: \tenant equal if true exit then
-  EC_NOT_A_TENANT false
-;
-
-/*----------------------------------------------------------------------------*/
 /* check if word is a tenant                                                  */
 /*----------------------------------------------------------------------------*/
 : checkIsTenant ( word )
@@ -76,7 +66,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make the tenant
   sTenantNm folder::makeFolder
-    find: \tenant swap execute dic.kind!
+    DK_TENANT swap execute dic.kind!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make catalogs folder

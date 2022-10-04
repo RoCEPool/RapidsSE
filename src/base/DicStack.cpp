@@ -353,8 +353,8 @@ void DicStack::vPrint(void)
     Dic* pDic = pPick(i_Dic);
     Stz* szDicNm = pDic->szDicNm();
 
-    Word* pDicKind = pDic->pDicKind();
-    Stz* szDicKindNm = pDicKind ? pDicKind->szWordNm() : "n/a"_Stz;
+    eDK eDicKind = pDic->eDicKind();
+    Stz* szDicKindNm = aDK[eDicKind];
 
     vTrace("[%lld] %s %s"_Stz,
            i_Dic,

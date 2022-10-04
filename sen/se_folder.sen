@@ -94,7 +94,7 @@ dicLock.dropwrite
 
   pFolder Path[].pushFolder
 
-    find: \folder
+    DK_FOLDER
     sSubFolderNm folder::makeFolder execute dic.kind!
 
   Path[].popFolder

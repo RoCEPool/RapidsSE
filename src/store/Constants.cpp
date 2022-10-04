@@ -299,6 +299,14 @@ void Constants::vAddConstantsCpp(void)
   /* 10 */ vAddConstant("DE_LNK"_Stz,  DT_LNK);
   /* 12 */ vAddConstant("DE_SOCK"_Stz, DT_SOCK);
 
+  // DL_ : dic kind
+  /*  0 */ vAddConstant("DK_NONE"_Stz,        DK_NONE);
+  /*  1 */ vAddConstant("DK_CATALOG"_Stz,     DK_CATALOG);
+  /*  2 */ vAddConstant("DK_FOLDER"_Stz,      DK_FOLDER);
+  /*  3 */ vAddConstant("DK_SCHEMA"_Stz,      DK_SCHEMA);
+  /*  4 */ vAddConstant("DK_TABLE"_Stz,       DK_TABLE);
+  /*  5 */ vAddConstant("DK_TENANT"_Stz,      DK_TENANT);
+
   // DL_ : ddl lock
   /*  0 */ vAddConstant("DL_NONE"_Stz,       DL_NONE);
   /*  1 */ vAddConstant("DL_GRAB_READ"_Stz,  DL_GRAB_READ);
