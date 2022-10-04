@@ -7,6 +7,7 @@
 
 #include "Combiner.hpp"
 #include "Curator.hpp"
+#include "Estimator.hpp"
 #include "Filtrate.hpp"
 #include "Indexer.hpp"
 #include "Joiner.hpp"
@@ -31,6 +32,7 @@ namespace STORE
     Columnar*    m_pColumnar;
     Combiner*    m_pCombiner;
     Curator*     m_pCurator;
+    Estimator*   m_pEstimator;
     Filtrate*    m_pFiltrate;
     Indexer*     m_pIndexer;
     Joiner*      m_pJoiner;

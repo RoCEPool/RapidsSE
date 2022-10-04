@@ -32,6 +32,7 @@ Transformer::Transformer(Bench* pBench)
   m_pColumnar    = nullptr;
   m_pCombiner    = nullptr;
   m_pCurator     = nullptr;
+  m_pEstimator   = nullptr;
   m_pFiltrate    = nullptr;
   m_pIndexer     = nullptr;
   m_pJoiner      = nullptr;
