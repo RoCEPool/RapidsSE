@@ -124,20 +124,17 @@ void Card::vInit(eCK eCard)
 {
   static i8 iSeqNo = 0;
 
-  MemLib::vZero(m_caRef, sizeof(m_caRef), CN_CARD);
+  MemLib::vZero(m_caGuage, sizeof(m_caGuage), CN_CARD);
 
-  m_eCard = eCard;
+  m_eCard   = eCard;
   m_iCardNo = C_UNKNOWN;
-
-  m_iSeqNo = iSeqNo++;
 
   m_cMark1 = ' ';
   m_cMark2 = ' ';
 
   m_pProperties = nullptr;
 
-  m_bPrintNm = true;
-
+  m_iSeqNo = iSeqNo++;
   gapCard[m_iSeqNo] = this;
 
 //  if (35 == m_iSeqNo) {
@@ -491,17 +488,17 @@ void Card::vDump(i8 iDepth, Stz* szTitle)
 
   if (*szValue()->azChar()) {
     vTrace("%s%s %s { %s }\n"_Stz
-        ,Stz::szTab(iDepth)
-        ,m_caRef[0] ? m_caRef : (char*)aCK[m_eCard]
-        ,szValue()
-        ,sProperties.szStz()
+        , Stz::szTab(iDepth)
+        , m_caGuage[0] ? m_caGuage : (char*)aCK[m_eCard]
+        , szValue()
+        , sProperties.szStz()
     );
   }
   else {
     vTrace("%s%s { %s }\n"_Stz
-        ,Stz::szTab(iDepth)
-        ,m_caRef[0] ? m_caRef : (char*)aCK[m_eCard]
-        ,sProperties.szStz()
+        , Stz::szTab(iDepth)
+        , m_caGuage[0] ? m_caGuage : (char*)aCK[m_eCard]
+        , sProperties.szStz()
     );
   }
 
@@ -1197,9 +1194,6 @@ void Card::vPrintHeader(Ribbon* pRibbon)
 void Card::vPrintCardName(Ribbon* pRibbon, i8 iDepth, bool& rbPrune)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (! m_bPrintNm)
-    return;
 
   s32 sName;
 
@@ -2432,10 +2426,10 @@ void Card::vRef(void)
     sPretty.vConcat(sProperties);
   }
 
-  strcat(m_caRef," ");
-  strcat(m_caRef,sPretty.azChar());
+  strcat(m_caGuage, " ");
+  strcat(m_caGuage, sPretty.azChar());
 
-  //  vTrace("%s\n"_Stz,m_caRef);
+  //  vTrace("%s\n"_Stz,m_caGuage);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2446,13 +2440,13 @@ void Card::vRef(Card* pParentCard)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (pParentCard) {
-    sprintf(m_caRef,"%s.%lld", pParentCard->m_caRef, m_iCardNo);
+    sprintf(m_caGuage, "%s.%lld", pParentCard->m_caGuage, m_iCardNo);
   }
   else {
-    sprintf(m_caRef,"%lld",m_iCardNo);
+    sprintf(m_caGuage, "%lld", m_iCardNo);
   }
 
-//  vTrace("%s\n"_Stz,m_caRef);
+//  vTrace("%s\n"_Stz,m_caGuage);
 }
 
 /*----------------------------------------------------------------------------*/

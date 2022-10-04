@@ -168,22 +168,19 @@ namespace STORE
              , public CardSet // ListExo2_t<Card>
   {
   protected:
-    char m_caRef[256];
+    char m_caGuage[256];
 
     eCK  m_eCard;
     i8   m_iCardNo;
 
-    i8   m_iSeqNo;
-
+    s256 m_sValue;
     char m_cMark1;
     char m_cMark2;
 
     TagSet* m_pProperties;
 
-    bool  m_bPrintNm;
+    i8   m_iSeqNo;
 
-    s256  m_sValue;
-  
   protected:
     // must be last
     Footer m_xFooter;
