@@ -206,10 +206,10 @@ namespace STORE
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     
-    void vAddProperty_nameOnly(Stz* szName);
-    void vAddProperty_int(Stz* szName, i8 iValue);
-    void vAddProperty_ptr(Stz* szName, Object* pValue);
-    void vAddProperty_stz(Stz* szName, Stz* szValue);
+    void vAddProperty_nameOnly(Stz* szPptName);
+    void vAddProperty_int(Stz* szPptName, i8 iPptValue);
+    void vAddProperty_ptr(Stz* szPptName, Object* pPptValue);
+    void vAddProperty_stz(Stz* szPptName, Stz* szPptValue);
     void vAppendDupSubCards(Card* pCard_SubSet);
 
     eCK  eCard(void);
@@ -223,8 +223,8 @@ namespace STORE
     void vCutSubCard(Card* pSubCard);
 
     void vDeleteChildCard(eCK eCard);
-    void vDeleteProperty(Stz* szName);
-    void vDeletePropertyRecursively(Stz* szName);
+    void vDeleteProperty(Stz* szPptName);
+    void vDeletePropertyRecursively(Stz* szPptName);
     void vDump(i8 iDepth=0, Stz* szTitle=nullptr);
     Card* pDupCardAndSubCards(void);
     Card_SubSet* pDupSubCards(void);
@@ -239,11 +239,11 @@ namespace STORE
     Card* pFindSubCard(eCK eCard);
 
     i8      iGetProperty(i8 i_Property);
-    i8      iGetProperty(Stz* szName);
+    i8      iGetProperty(Stz* szPptName);
     Object* pGetProperty(i8 i_Property);
-    Object* pGetProperty(Stz* szName);
+    Object* pGetProperty(Stz* szPptName);
     Stz*    szGetProperty(i8 i_Property);
-    Stz*    szGetProperty(Stz* szName);
+    Stz*    szGetProperty(Stz* szPptName);
     Stz*    szGetPropertyNm(i8 i_Property);
 
     bool bHasEBound(void);
@@ -252,7 +252,7 @@ namespace STORE
     void vHasLBound(bool bHasLBound);
     bool bHasProperty(Stz* szName);
     bool bHasSubCard(Card* pGivenCard);
-    bool bHasSubCard(Card* pGivenCard, Card*& pParentCard);
+    bool bHasSubCard(Card* pGivenCard, Card*& rpParentCard);
     bool bHasUBound(void);
     void vHasUBound(bool bHasUBound);
 

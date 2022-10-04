@@ -286,53 +286,53 @@ eCK Card::eToECard(Stz* szCardNm)
 /*----------------------------------------------------------------------------*/
 /* add given property                                                         */
 /*----------------------------------------------------------------------------*/
-void Card::vAddProperty_nameOnly(Stz* szName)
+void Card::vAddProperty_nameOnly(Stz* szPptName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_)
 
   if (! m_pProperties)
     m_pProperties = new TagSet;
   
-  m_pProperties->vReplace(szName,"yes"_Stz);
+  m_pProperties->vReplace(szPptName, "yes"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
 /* add given property                                                         */
 /*----------------------------------------------------------------------------*/
-void Card::vAddProperty_int(Stz* szName, i8 iValue)
+void Card::vAddProperty_int(Stz* szPptName, i8 iPptValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (! m_pProperties)
     m_pProperties = new TagSet;
   
-  m_pProperties->vReplace(szName,iValue);
+  m_pProperties->vReplace(szPptName, iPptValue);
 }
 
 /*----------------------------------------------------------------------------*/
 /* add given property                                                         */
 /*----------------------------------------------------------------------------*/
-void Card::vAddProperty_ptr(Stz* szName, Object* pValue)
+void Card::vAddProperty_ptr(Stz* szPptName, Object* pPptValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (! m_pProperties)
     m_pProperties = new TagSet;
   
-  m_pProperties->vReplace(szName,pValue);
+  m_pProperties->vReplace(szPptName, pPptValue);
 }
 
 /*----------------------------------------------------------------------------*/
 /* add given property                                                         */
 /*----------------------------------------------------------------------------*/
-void Card::vAddProperty_stz(Stz* szName, Stz* szValue)
+void Card::vAddProperty_stz(Stz* szPptName, Stz* szPptValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (! m_pProperties)
     m_pProperties = new TagSet;
   
-  m_pProperties->vReplace(szName,szValue);
+  m_pProperties->vReplace(szPptName, szPptValue);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -480,29 +480,29 @@ void Card::vDeleteChildCard(eCK eCard)
 /*----------------------------------------------------------------------------*/
 /* delete given property                                                      */
 /*----------------------------------------------------------------------------*/
-void Card::vDeleteProperty(Stz* szName)
+void Card::vDeleteProperty(Stz* szPptName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (! m_pProperties)
     return;
 
-  m_pProperties->vDelete(szName);
+  m_pProperties->vDelete(szPptName);
 }
 
 /*----------------------------------------------------------------------------*/
 /* duplicate this card and its sub cards                                      */
 /*----------------------------------------------------------------------------*/
-void Card::vDeletePropertyRecursively(Stz* szName)
+void Card::vDeletePropertyRecursively(Stz* szPptName)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  vDeleteProperty(szName);
+  vDeleteProperty(szPptName);
 
   i8 nSubCards = this->nChildCards();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
     Card *pChildCard = pGetChild(i_Child);
-    pChildCard->vDeletePropertyRecursively(szName);
+    pChildCard->vDeletePropertyRecursively(szPptName);
   }
 }
 
@@ -763,14 +763,14 @@ Card* Card::pFindSubCard(eCK eCard)
 /*----------------------------------------------------------------------------*/
 /* get given property                                                         */
 /*----------------------------------------------------------------------------*/
-i8 Card::iGetProperty(Stz* szName)
+i8 Card::iGetProperty(Stz* szPptName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (! m_pProperties)
     return C_UNKNOWN;
   
-  i8 iValue = m_pProperties->iValue(szName);
+  i8 iValue = m_pProperties->iValue(szPptName);
   
   return iValue;
 }
@@ -793,14 +793,14 @@ i8 Card::iGetProperty(i8 i_Property)
 /*----------------------------------------------------------------------------*/
 /* get given property                                                         */
 /*----------------------------------------------------------------------------*/
-Object* Card::pGetProperty(Stz* szName)
+Object* Card::pGetProperty(Stz* szPptName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (! m_pProperties)
     return nullptr;
   
-  Object* pValue = m_pProperties->pValue(szName);
+  Object* pValue = m_pProperties->pValue(szPptName);
   
   return pValue;
 }
@@ -823,14 +823,14 @@ Object* Card::pGetProperty(i8 i_Property)
 /*----------------------------------------------------------------------------*/
 /* get given property                                                         */
 /*----------------------------------------------------------------------------*/
-Stz* Card::szGetProperty(Stz* szName)
+Stz* Card::szGetProperty(Stz* szPptName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (! m_pProperties)
     return nullptr;
   
-  Stz* szValue = m_pProperties->szValue(szName);
+  Stz* szValue = m_pProperties->szValue(szPptName);
   
   return szValue;
 }
