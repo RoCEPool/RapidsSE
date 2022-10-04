@@ -286,7 +286,6 @@ namespace STORE
     eTN  eProperty(i8 i_Property);
     TagSet* pProperties(void);
     void vPropertiesEnsure(void);
-    Stz* szPropertyNm(i8 i_Property);
 
     void vRemoveChild(Card* pCardRemove);
     void vRemoveSubCard(Card* pCardRemove);
@@ -312,11 +311,6 @@ namespace STORE
 
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-  
-    eAL  eAggLevel(void);
-    void vAggLevel(eAL eAggLevel);
-    bool bAggOp(void);
-    void vAggOp(void);
 
     ePB  eBound(void);
 
@@ -333,7 +327,6 @@ namespace STORE
     void vConcatTerms(Stz* szTerms);
     void vConcatTerms(Stz* szTerms, i8 i_From, i8 i_Till=C_UNKNOWN);
 
-    bool bHasAggOp(void);
     Card_Term* pHeadTerm(void);
 
     Index* pIndex(void);

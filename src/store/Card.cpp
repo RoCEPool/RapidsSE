@@ -1402,21 +1402,6 @@ void Card::vPropertiesEnsure(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get name of property                                                       */
-/*----------------------------------------------------------------------------*/
-Stz* Card::szPropertyNm(i8 i_Property)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (! m_pProperties)
-    return nullptr;
-  
-  Stz* szName = m_pProperties->szName(i_Property);
-  
-  return szName;
-}
-
-/*----------------------------------------------------------------------------*/
 /* remove given child card (non-recursive)                                    */
 /*----------------------------------------------------------------------------*/
 void Card::vRemoveChild(Card* pCardRemove)
@@ -1709,50 +1694,6 @@ void Card::vVisitAllSub(eCK eCard, std::function<bool(Card* pCard)> bfApply)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* get aggregate level                                                        */
-/*----------------------------------------------------------------------------*/
-eAL Card::eAggLevel(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  eAL eAggLevel = (eAL)iGetProperty("eAggLevel"_Stz);
-  
-  return eAggLevel;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set aggregate level                                                        */
-/*----------------------------------------------------------------------------*/
-void Card::vAggLevel(eAL eAggLvl)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  vAddProperty_int("eAggLevel"_Stz,eAggLvl);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get agg op                                                                 */
-/*----------------------------------------------------------------------------*/
-bool Card::bAggOp(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  if (bHasProperty("bAggOp"_Stz))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set agg op                                                                 */
-/*----------------------------------------------------------------------------*/
-void Card::vAggOp(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  vAddProperty_nameOnly("bAggOp"_Stz);
-}
 
 
 /*----------------------------------------------------------------------------*/
@@ -1943,31 +1884,6 @@ void Card::vConcatTerms(Stz* szTerms, i8 i_From, i8 i_Till)
   }
 }
 
-
-/*----------------------------------------------------------------------------*/
-/* test if the expr has an aggregate op                                       */
-/*----------------------------------------------------------------------------*/
-bool Card::bHasAggOp(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  bool bHasAggOp = false;
-
-  ListExoIter2_t<Card>* pExpr_I = pNewIter();
-
-  while (pExpr_I->bHasNext()) {
-    Card_Term* pCardTerm = _pCard_Term(pExpr_I->pNext());
-    
-    if (pCardTerm->bIsAggOp()) {
-      bHasAggOp = true;
-      break;
-    }
-  }
-  
-  delete pExpr_I;
-
-  return bHasAggOp;
-}
 
 /*----------------------------------------------------------------------------*/
 /* get head subcard                                                           */

@@ -897,7 +897,7 @@ Card_Calc* Dissector::pExprCalc(Card_RpnTerms* pCard_RpnTerms)
     }
 
     if (pCard_Term_popped->bIsAggOp())
-      pCard_ExprCalc->vAggOp();
+      pCard_ExprCalc->vAddProperty_nameOnly(C_CARD_AggOp);
 
     pCard_ExprCalc->vAppend(pCard_Term_popped);
   }
