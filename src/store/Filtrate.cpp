@@ -71,6 +71,9 @@ void Filtrate::vCalc_to_calcBool(void)
   }
 
   vEndIteration();
+
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Filtrate::vCalc_to_calcBool"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

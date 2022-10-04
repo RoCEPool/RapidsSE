@@ -246,7 +246,10 @@ void Joiner::vSubsume_scan(void)
     i_Main--;
     nMainCards--;
   }
- }
+
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Joiner::vSubsume_scan"_Stz);
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/

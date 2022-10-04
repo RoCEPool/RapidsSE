@@ -137,30 +137,12 @@ void Transformer::vTransform2(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pStager->vLinearize_Stages();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Stager::vLinearize_Stages"_Stz);
-
   m_pCombiner->vDelete_Combines();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Combiner::vDelete_Combines"_Stz);
-
   m_pSender->vDelete_Sends();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Sender::vDelete_Sends"_Stz);
-
-
-
-
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // convert all <filter> from calc form to calcBool
   m_pFiltrate->vCalc_to_calcBool();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Filtrate::vCalc_to_calcBool"_Stz);
-
-
-
-
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append <stream> to all <scan> and then to all <absJoin>
@@ -174,45 +156,24 @@ void Transformer::vTransform2(void)
   m_pCardCtl->vPrintForm(CK_TERM, CP_CARDFORM);
 
   m_pStreamer->vAppendStream_to_Scan();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Streamer::vAppendStream_to_Scan"_Stz);
-
-
-
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // each <scan> <absJoin> becomes <absJoin>/<scan>
   m_pJoiner->vSubsume_scan();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Joiner::vSubsume_scan"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
   m_pStreamer->vOrdinal_Range();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Streamer::vOrdinal_Range"_Stz);
-
-
-
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   m_pTabular->vAdd_TableSyn();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Tabular::vAdd_TableSyn"_Stz);
-
   m_pTabular->vAdd_TablePtn();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Tabular::vAdd_TablePtn"_Stz);
-
   m_pPartitioner->vExtract_tableList();
 
   m_pColumnar->vAdd_ColumnRef();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Columnar::vAdd_ColumnRef"_Stz);
-
 
   m_pPartitioner->vExtract_joinPredList();
 

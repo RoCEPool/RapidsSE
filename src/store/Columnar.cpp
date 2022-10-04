@@ -80,6 +80,9 @@ void Columnar::vAdd_ColumnRef(void)
   }
 
   delete pResolver;
+
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Columnar::vAdd_ColumnRef"_Stz);
 }
 
 

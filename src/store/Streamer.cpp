@@ -90,6 +90,8 @@ void Streamer::vOrdinal_Range(void)
 
   vEndIteration();
 
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Streamer::vOrdinal_Range"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -117,6 +119,9 @@ void Streamer::vAppendStream_to_Scan(void)
   }
 
   vEndIteration();
+
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Streamer::vAppendStream_to_Scan"_Stz);
 }
 
 

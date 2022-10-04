@@ -129,8 +129,11 @@ void Combiner::vDelete_Combines(void)
       i_Main--;
       delete pMainCard;
     }
-
   }
+
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Combiner::vDelete_Combines"_Stz);
+
 }
 
 /*----------------------------------------------------------------------------*/

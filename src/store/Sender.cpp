@@ -66,6 +66,10 @@ void Sender::vDelete_Sends(void)
     //}
 
   }
+
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Sender::vDelete_Sends"_Stz);
+
 }
 
 /*----------------------------------------------------------------------------*/

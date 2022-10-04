@@ -62,6 +62,8 @@ void Tabular::vAdd_TablePtn(void)
     m_p_table->vAppend(p_tablePtn);
   }
 
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Tabular::vAdd_TablePtn"_Stz);
 }
 
 
@@ -97,6 +99,8 @@ void Tabular::vAdd_TableSyn(void)
     cTableSyn++;
   }
 
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Tabular::vAdd_TableSyn"_Stz);
 }
 
 

@@ -146,24 +146,28 @@ void Stager::vLinearize_Stages(void)
   BoardIter xBI(m_pBoard);
 
   if (! (m_p_stage_a = xBI.pFirst_stage()) )
-    return;
+    goto L_Exit;
   if (! (m_p_stageTopo_a = m_p_stage_a->pSub_stageTopo()) )
-    return;
+    goto L_Exit;
   if (YG_ALL_PARTITIONS != m_p_stageTopo_a->eStageTopo())
-    return;
+    goto L_Exit;
 
   for (;;) {
     if (! (m_p_stage_b = xBI.pNext_stage()) )
-      return;
+      goto L_Exit;
     if (! (m_p_stageTopo_b = m_p_stage_b->pSub_stageTopo()) )
-      return;
+      goto L_Exit;
     if (YG_ALL_PARTITIONS != m_p_stageTopo_b->eStageTopo())
-      return;
+      goto L_Exit;
 
     xBI.vRemoveDeleteCurr(CK_STAGE);
 
     m_pBoard->vRenumberMainCards();
   }
+
+  L_Exit:
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Stager::vLinearize_Stages"_Stz);
 
 }
 
