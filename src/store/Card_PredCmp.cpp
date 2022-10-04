@@ -268,7 +268,15 @@ bool Card_PredCmp::bUsesTable(char cTableSyn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  return true;
+  Card_ColumnRef* p_columnRef_this_0 = _pCard_ColumnRef(this->pGetChild(0));
+  char cTableSyn_this_0 = p_columnRef_this_0->cColumnRef_tableSyn();
+  Card_ColumnRef* p_columnRef_this_1 = _pCard_ColumnRef(this->pGetChild(1));
+  char cTableSyn_this_1 = p_columnRef_this_1->cColumnRef_tableSyn();
+
+  if (cTableSyn_this_0 == cTableSyn || cTableSyn_this_1 == cTableSyn)
+    return true;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
