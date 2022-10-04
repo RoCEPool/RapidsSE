@@ -209,20 +209,14 @@ void Transformer::vTransform2(void)
 
   // inspect all <filter> and attempt to move <predCmp> after <scan>/<absJoin>
   m_pFiltrate->vAssignLeftwards();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Filtrate::vAssignLeftwards"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   m_pFiltrate->vCopyLeftwards();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Filtrate::vCopyLeftwards"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete any <filter> which is effectively empty
   m_pFiltrate->vDeleteEmpty_filter();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Filtrate::vDeleteEmpty_filter"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -234,25 +228,17 @@ void Transformer::vTransform2(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pJoiner->vAppendPrelim_indexJoin();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Joiner::vAppendPrelim_indexJoin"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pJoiner->vMark_idxCol();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Joiner::vMark_idxCol"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pJoiner->vForm_joinPred();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Joiner::vForm_joinPred"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pCardCtl->vPrintFormSubCards(CK_STREAM, CP_DEFAULT, true);
 
   m_pFiltrate->vCull_indexJoin_filterPred();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Filtrate::vCull_indexJoin_filterPred"_Stz);
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

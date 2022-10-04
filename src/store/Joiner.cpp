@@ -84,6 +84,9 @@ void Joiner::vAppendPrelim_indexJoin(void)
   }
 
   vEndIteration();
+
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Joiner::vAppendPrelim_indexJoin"_Stz);
 }
 
 
@@ -152,6 +155,9 @@ void Joiner::vForm_joinPred(void)
   }
 
   vEndIteration();
+
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Joiner::vForm_joinPred"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -185,6 +191,9 @@ void Joiner::vMark_idxCol(void)
   }
 
   vEndIteration();
+
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Joiner::vMark_idxCol"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

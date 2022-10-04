@@ -54,6 +54,9 @@ void Filtrate::vAssignLeftwards(void)
   }
 
   vEndIteration();
+
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Filtrate::vAssignLeftwards"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -90,6 +93,9 @@ void Filtrate::vCopyLeftwards(void)
   }
 
   vEndIteration();
+
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Filtrate::vCopyLeftwards"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -111,6 +117,9 @@ void Filtrate::vCull_indexJoin_filterPred(void)
   }
 
   vEndIteration();
+
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Filtrate::vCull_indexJoin_filterPred"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -136,6 +145,9 @@ void Filtrate::vDeleteEmpty_filter(void)
   }
 
   vEndIteration();
+
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Filtrate::vDeleteEmpty_filter"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
