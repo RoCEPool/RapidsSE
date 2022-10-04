@@ -232,7 +232,8 @@ void Transformer::vTransform2(void)
   m_pPermutor->vGenerate_ptndPermutations();
   m_pPermutor->vRemove_invalidPermutations();
 
-  m_pEstimator->vXyz();
+  m_pEstimator->vSetup_costEst();
+  m_pEstimator->vEstimate_ptndJoins();
 
 
 

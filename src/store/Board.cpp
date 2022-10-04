@@ -196,6 +196,17 @@ void Board::vDeleteFromTill(Card* pFrom, Card* pTillBefore)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vDuplicateBoard(Board* pBoard_arg)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
+
+  for (i8 i_Main_arg = 0; i_Main_arg < pBoard_arg->nMainCards(); i_Main_arg++)
+    vAppendMain(pBoard_arg->pGetMain(i_Main_arg)->pDupCardAndSubCards());
+}
+
+/*----------------------------------------------------------------------------*/
 /* find i_Main of given main card                                         */
 /*----------------------------------------------------------------------------*/
 i8 Board::iFindMain(Card* pMainCard)
@@ -204,7 +215,7 @@ i8 Board::iFindMain(Card* pMainCard)
 
   i8 nMainCards = this->nMainCards();
   for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
-    Card* pTestCard = pGetMainCard(i_Main);
+    Card* pTestCard = pGetMain(i_Main);
 
     if (pTestCard == pMainCard)
       return i_Main;
@@ -248,7 +259,7 @@ Card* Board::pFindMain(Stz* szCardNm)
   
   i8 nMainCards = this->nMainCards();
   for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
-    Card* pMainCard = pGetMainCard(i_Main);
+    Card* pMainCard = pGetMain(i_Main);
     
     if (pMainCard->eCard() == eCard)
       return pMainCard;
@@ -281,7 +292,7 @@ Card* Board::pFindNextMain(Card* pAfter, eCK eFindCard, i8& i_Main)
 
   i8 nMainCards = this->nMainCards();
   for (i_Main = 0; i_Main < nMainCards; i_Main++) {
-    pMainCard = pGetMainCard(i_Main);
+    pMainCard = pGetMain(i_Main);
 
     if (pMainCard == pAfter)
       break;
@@ -294,7 +305,7 @@ Card* Board::pFindNextMain(Card* pAfter, eCK eFindCard, i8& i_Main)
 
   // get next eCard
   for (i8 i_TestCard = i_Main + 1; i_TestCard < nMainCards; i_TestCard++) {
-    Card* pTestCard = pGetMainCard(i_TestCard);
+    Card* pTestCard = pGetMain(i_TestCard);
 
     if (eFindCard == pTestCard->eCard()) {
       i_Main = i_TestCard;
@@ -330,7 +341,7 @@ Card* Board::pFindPrevMain(Card* pBefore, eCK eFindCard, i8& i_Main)
 
   i8 nMainCards = this->nMainCards();
   for (i_Main = 0; i_Main < nMainCards; i_Main++) {
-    pMainCard = pGetMainCard(i_Main);
+    pMainCard = pGetMain(i_Main);
 
     if (pMainCard == pBefore)
       break;
@@ -343,7 +354,7 @@ Card* Board::pFindPrevMain(Card* pBefore, eCK eFindCard, i8& i_Main)
 
   // get prev eCard
   for (i8 i_TestCard = i_Main-1; i_TestCard >= 0; i_TestCard--) {
-    Card* pTestCard = pGetMainCard(i_TestCard);
+    Card* pTestCard = pGetMain(i_TestCard);
 
     if (eFindCard == pTestCard->eCard()) {
       i_Main = i_TestCard;
@@ -367,7 +378,7 @@ Card_Filter* Board::pFindFilterCard(i8 iFilter, Card*& rpMainCard)
 
   i8 nMains = this->nMainCards();
   for (i8 i_Main = 0; i_Main < nMains; i_Main++) {
-    rpMainCard = pGetMainCard(i_Main);
+    rpMainCard = pGetMain(i_Main);
 
     eCK eMainCard = rpMainCard->eCard();
     if (CK_ABSJOIN == eMainCard) {
@@ -401,7 +412,7 @@ Card_Stream* Board::pFindStreamCard(i8 iStream, Card*& rpMainCard)
 
   i8 nMains = this->nMainCards();
   for (i8 i_Main = 0; i_Main < nMains; i_Main++) {
-    rpMainCard = pGetMainCard(i_Main);
+    rpMainCard = pGetMain(i_Main);
 
     eCK eMainCard = rpMainCard->eCard();
     if (CK_ABSJOIN == eMainCard) {
@@ -426,7 +437,7 @@ Card_Stream* Board::pFindStreamCard(i8 iStream, Card*& rpMainCard)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card* Board::pGetMainCard(i8 i_Main)
+Card* Board::pGetMain(i8 i_Main)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
@@ -437,7 +448,7 @@ Card* Board::pGetMainCard(i8 i_Main)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card* Board::pGetMainCard(i8 i_Main, eCK& reCard)
+Card* Board::pGetMain(i8 i_Main, eCK& reCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
@@ -670,7 +681,7 @@ Card* Board::pPriorSubCard(Card*& rpMainCard, eCK eSubCard, i8 i_PriorToMain)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
   for (i8 i_Main = i_PriorToMain - 1; i_Main >= 0; i_Main--) {
-    rpMainCard = pGetMainCard(i_Main);
+    rpMainCard = pGetMain(i_Main);
 
     Card* pSubCard;
     if (pSubCard = rpMainCard->pFindSubCard(eSubCard))
@@ -721,7 +732,7 @@ Card* Board::pSearch(Stz* szCardNm)
   Card* pCard = nullptr;
   if (szCardNm->bIsInteger()) {
     i8 i_Main = szCardNm->iToI8();
-    pCard = pGetMainCard(i_Main);
+    pCard = pGetMain(i_Main);
     
     return pCard;
   }
@@ -745,7 +756,7 @@ void Board::vSearch(Stz* szCardNm, Card*& rpMainCard, Card*& rpSubCard)
   
   if (szCardNm->bIsInteger()) {
     i8 i_Main = szCardNm->iToI8();
-    rpMainCard = pGetMainCard(i_Main);
+    rpMainCard = pGetMain(i_Main);
     
     return;
   }
@@ -841,7 +852,7 @@ void Board::vResolveJoin(Card_AbsJoin* pCard_AbsJoin)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
 
-  Card_Scan* pCard_Scan = _pCard_Scan(pGetMainCard(pCard_AbsJoin->iCardNo() - 1));
+  Card_Scan* pCard_Scan = _pCard_Scan(pGetMain(pCard_AbsJoin->iCardNo() - 1));
   Card_TablePtr* pCard_TablePtr = _pCard_TablePtr(pCard_Scan->pFindSubCard(CK_TABLEPTR));
   Table* pTable = pCard_TablePtr->pTable();
 
@@ -851,7 +862,7 @@ void Board::vResolveJoin(Card_AbsJoin* pCard_AbsJoin)
   pIndexJoin->vAppend(new Card_TablePtr(pTable));
   pIndexJoin->vAppend(new Card_IndexPtr(pIndex));
 
-  Card_Filter* pCard_Filter = _pCard_Filter(pGetMainCard(pCard_AbsJoin->iCardNo() + 3));
+  Card_Filter* pCard_Filter = _pCard_Filter(pGetMain(pCard_AbsJoin->iCardNo() + 3));
   pCard_Filter->vDump();
 
   Card_IndexPred* pCard_IndexPred = new Card_IndexPred;
@@ -888,7 +899,7 @@ void Board::vResolveJoin2(Card_AbsJoin* pCard_AbsJoin)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
 
-  Card_Scan* pCard_Scan = _pCard_Scan(pGetMainCard(pCard_AbsJoin->iCardNo() - 1));
+  Card_Scan* pCard_Scan = _pCard_Scan(pGetMain(pCard_AbsJoin->iCardNo() - 1));
   Card_TablePtr* pCard_TablePtr = _pCard_TablePtr(pCard_Scan->pFindSubCard(CK_TABLEPTR));
   Table* pTable = pCard_TablePtr->pTable();
 
@@ -898,7 +909,7 @@ void Board::vResolveJoin2(Card_AbsJoin* pCard_AbsJoin)
   pIndexJoin->vAppend(new Card_TablePtr(pTable));
   pIndexJoin->vAppend(new Card_IndexPtr(pIndex));
 
-  Card_Filter* pCard_Filter = _pCard_Filter(pGetMainCard(pCard_AbsJoin->iCardNo() + 3));
+  Card_Filter* pCard_Filter = _pCard_Filter(pGetMain(pCard_AbsJoin->iCardNo() + 3));
   //pCard_Filter->vDump();
 
   Card_Expr* pCard_Expr = _pCard_Expr(pCard_Filter->pGetChild(0));
@@ -992,7 +1003,7 @@ void Board::vConvertJoin(Card_AbsJoin* pCard_AbsJoin)
 
   m_pCard_SubSet->vRemove(pCard_AbsJoin);
 
-  Card_Scan* pCard_Scan = _pCard_Scan(pGetMainCard(pCard_AbsJoin->iCardNo() - 1));
+  Card_Scan* pCard_Scan = _pCard_Scan(pGetMain(pCard_AbsJoin->iCardNo() - 1));
   Card_TablePtr* pCard_TablePtr = _pCard_TablePtr(pCard_Scan->pFindSubCard(CK_TABLEPTR));
   Table* pTable = pCard_TablePtr->pTable();
 
@@ -1517,11 +1528,11 @@ bool Board::bFind_Scan_Filter(bool bMark)
 
   i8 nMainCards = this->nMainCards();
   for (i8 i_Main = 0; i_Main < nMainCards-1; i_Main++) {
-    Card* pTestScan = pGetMainCard(i_Main);
+    Card* pTestScan = pGetMain(i_Main);
     if (CK_SCAN != pTestScan->eCard())
       continue;
 
-    Card* pTestFilter = pGetMainCard(i_Main+1);
+    Card* pTestFilter = pGetMain(i_Main + 1);
     if (CK_FILTER != pTestFilter->eCard())
       continue;
     
@@ -1632,7 +1643,7 @@ void Board::vOrder_ProjectiveStreamDefs(void)
 
   i8 nMainCards = this->nMainCards();
   for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
-    Card* pMainCard = pGetMainCard(i_Main);
+    Card* pMainCard = pGetMain(i_Main);
     if (CK_PROJECT != pMainCard->eCard())
       continue;
     
@@ -1668,7 +1679,7 @@ bool Board::bPick_CandidateIndex(void)
   
   i8 nMainCards = this->nMainCards();
   for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
-    Card* pMainCard = pGetMainCard(i_Main);
+    Card* pMainCard = pGetMain(i_Main);
     if (CK_CANDINDEX != pMainCard->eCard())
       continue;
 
@@ -1705,7 +1716,7 @@ void Board::vRank_CandidateIndexes(void)
                     
   i8 nMainCards = this->nMainCards();
   for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
-    Card* pMainCard = pGetMainCard(i_Main);
+    Card* pMainCard = pGetMain(i_Main);
     if (CK_CANDINDEX != pMainCard->eCard())
       continue;
 
@@ -1739,7 +1750,7 @@ void Board::vResolve_Filters(void)
 
   i8 nMainCards = this->nMainCards();
   for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
-    Card* pMainCard = pGetMainCard(i_Main);
+    Card* pMainCard = pGetMain(i_Main);
 
     if (CK_FILTER != pMainCard->eCard())
       continue;
@@ -1760,57 +1771,57 @@ void Board::vSimplify_Initial(void)
 
   i8 nMainCards = this->nMainCards();
   for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
-    Card *pMainCard = pGetMainCard(i_Main);
+    Card *pMainCard = pGetMain(i_Main);
 
     // of stage 1
     i8 i_Test = i_Main;
-    Card* pStage_1 = pGetMainCard(i_Test++);
+    Card* pStage_1 = pGetMain(i_Test++);
     if (CK_STAGE != pStage_1->eCard())
       continue;
 
-    Card* pScan_1 = pGetMainCard(i_Test++);
+    Card* pScan_1 = pGetMain(i_Test++);
     if (CK_SCAN != pScan_1->eCard())
       continue;
 
-    Card* pSend_1 = pGetMainCard(i_Test++);
+    Card* pSend_1 = pGetMain(i_Test++);
     if (CK_SEND != pSend_1->eCard())
       continue;
 
     // of stage 2
-    Card* pStage_2 = pGetMainCard(i_Test++);
+    Card* pStage_2 = pGetMain(i_Test++);
     if (CK_STAGE != pStage_2->eCard())
       continue;
 
-    Card* pScan_2 = pGetMainCard(i_Test++);
+    Card* pScan_2 = pGetMain(i_Test++);
     if (CK_SCAN != pScan_2->eCard())
       continue;
 
-    Card* pAbsJoin_2 = pGetMainCard(i_Test++);
+    Card* pAbsJoin_2 = pGetMain(i_Test++);
     if (CK_ABSJOIN != pAbsJoin_2->eCard())
       continue;
 
-    Card* pSend_2 = pGetMainCard(i_Test++);
+    Card* pSend_2 = pGetMain(i_Test++);
     if (CK_SEND != pSend_2->eCard())
       continue;
 
     // of stage 3
-    Card* pStage_3 = pGetMainCard(i_Test++);
+    Card* pStage_3 = pGetMain(i_Test++);
     if (CK_STAGE != pStage_3->eCard())
       continue;
 
-    Card* pFilter_3 = pGetMainCard(i_Test++);
+    Card* pFilter_3 = pGetMain(i_Test++);
     if (CK_FILTER != pFilter_3->eCard())
       continue;
 
-    Card* pProject_3 = pGetMainCard(i_Test++);
+    Card* pProject_3 = pGetMain(i_Test++);
     if (CK_PROJECT != pProject_3->eCard())
       continue;
 
-    Card* pCombine_3 = pGetMainCard(i_Test++);
+    Card* pCombine_3 = pGetMain(i_Test++);
     if (CK_COMBINED != pCombine_3->eCard())
       continue;
 
-    Card* pSend_3 = pGetMainCard(i_Test++);
+    Card* pSend_3 = pGetMain(i_Test++);
     if (CK_SEND != pSend_3->eCard())
       continue;
 
@@ -1845,7 +1856,7 @@ void Board::vSimplify_Initial(void)
 //
 //  i8 nMainCards = this->nMainCards();
 //  for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
-//    Card* pMainCard = pGetMainCard(i_Main);
+//    Card* pMainCard = pGetMain(i_Main);
 //
 //    Card* pCard_Table = _pCard_Table(pMainCard->pFindSubCard(CK_TABLEPTR));
 //    if (! pCard_Table)
@@ -1870,7 +1881,7 @@ void Board::vSimplify_Initial(void)
 //
 //  i8 nMainCards = this->nMainCards();
 //  for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
-//    Card* pMainCard = pGetMainCard(i_Main);
+//    Card* pMainCard = pGetMain(i_Main);
 //
 //    vResolveSymbolTerms(pMainCard);
 //  }
@@ -1883,7 +1894,7 @@ void Board::vResolve_Symbols(void)
 
   i8 nMainCards = this->nMainCards();
   for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
-    Card* pMainCard = pGetMainCard(i_Main);
+    Card* pMainCard = pGetMain(i_Main);
 
     vTrace("Resolving MainCard %lld\n"_Stz,i_Main);
     vResolveRecursive(pMainCard);
@@ -1904,7 +1915,7 @@ void Board::vAResolve_Joins(void)
 
   i8 nMainCards = this->nMainCards();
   for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
-    Card* pMainCard = pGetMainCard(i_Main);
+    Card* pMainCard = pGetMain(i_Main);
 
     if (CK_INDEXJOIN != pMainCard->eCard())
       continue;

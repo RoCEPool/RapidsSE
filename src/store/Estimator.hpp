@@ -21,7 +21,8 @@ namespace STORE
     Estimator(Bench* pBench);
    ~Estimator(void) noexcept(false);
 
-    void vXyz(void);
+   void vSetup_costEst(void);
+   void vEstimate_ptndJoins(void);
 
   private:
 

@@ -165,6 +165,7 @@ namespace STORE
 
     void vDeleteAllCards(void);
     void vDeleteFromTill(Card* pFrom, Card* pTillBefore);
+    void vDuplicateBoard(Board* pBoard_arg);
 
     Card_Filter* pFindFilterCard(i8 iFilter, Card*& rpMainCard);
     i8    iFindMain(Card* pMainCard);
@@ -177,8 +178,8 @@ namespace STORE
     Card* pFindPrevMain(Card* pBefore, eCK eFindCard, i8& i_Main);
     Card_Stream* pFindStreamCard(i8 iStream, Card*& rpMainCard);
 
-    Card* pGetMainCard(i8 i_Main);
-    Card* pGetMainCard(i8 i_Main, eCK& reCard);
+    Card* pGetMain(i8 i_Main);
+    Card* pGetMain(i8 i_Main, eCK& reCard);
 
     void vInsertMainCard_after(Card* pNewMainCard, Card* pAfterMainCard, bool bRenumber=true);
     void vInsertMainCard_before(Card* pNewMainCard, Card* pBeforeMainCard, bool bRenumber=true);

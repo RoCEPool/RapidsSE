@@ -76,6 +76,15 @@ bool Card_PtndJoin::bMayFollowAfter(Card_SubSet* pPtnJoins_sofar)
   return false;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_PtndJoin::vJoinEst(Card_TableList* pCardTableList)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vAddProperty_int("iJoinBuffers"_Stz,999);
+}
 
 /*============================================================================*/
 /* end                                                                        */

@@ -126,7 +126,7 @@ void Permutor::vRemove_invalidPermutations(void)
   i8 i_Main = 0;
   i8 i_Permutation = 0;
   while (i_Main < m_pBoard_permute->nMainCards()) {
-    m_pMainCard = m_pBoard_permute->pGetMainCard(i_Main);
+    m_pMainCard = m_pBoard_permute->pGetMain(i_Main);
 
     if (CK_PERMUTATION != m_pMainCard->eCard()) {
       i_Main++;
@@ -141,7 +141,7 @@ void Permutor::vRemove_invalidPermutations(void)
 
     m_pBoard_permute->vRemoveMainCard(m_pMainCard);
     while (i_Main < m_pBoard_permute->nMainCards()) {
-      m_pMainCard = m_pBoard_permute->pGetMainCard(i_Main);
+      m_pMainCard = m_pBoard_permute->pGetMain(i_Main);
       if (CK_PTNDJOIN != m_pMainCard->eCard() && CK_COMMENT != m_pMainCard->eCard())
         break;
       m_pBoard_permute->vRemoveMainCard(m_pMainCard);

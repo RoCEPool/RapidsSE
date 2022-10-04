@@ -61,7 +61,7 @@ tablesizes;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/cue = "Estimator::vXyz"
+/cue = "Estimator::vEstimate_ptndJoins"
 /cue = "$"
 /jobTags
 /transliterated
