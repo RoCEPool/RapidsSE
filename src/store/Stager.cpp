@@ -135,6 +135,11 @@ void Stager::vAdd_stages(void)
     }
   }
 
+  i8 i_Stage = 1;
+  xBI.vRestart();
+  while ( (m_p_stage = _pCard_Stage(xBI.pEachMain(CK_STAGE))) )
+    m_p_stage->vRenameStage(i_Stage++);
+
   if (m_bInteractive)
     m_pBoard->vPrintBoard("Stager::vAdd_stages"_Stz);
 }

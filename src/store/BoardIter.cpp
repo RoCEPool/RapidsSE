@@ -291,6 +291,17 @@ void BoardIter::vRemoveDeleteCurr(eCK eCrossCheck)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void BoardIter::vRestart(void)
+{
+  _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
+
+  m_i_Main    = C_UNKNOWN;
+  m_pCurrMain = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void BoardIter::vSet(Card* pCurrMain)
 {
   _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);

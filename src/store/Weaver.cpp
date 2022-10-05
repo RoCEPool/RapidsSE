@@ -159,10 +159,12 @@ void Weaver::vStageNext(Card_Stage* pCard_Stage)
 
   vPreStage();
   vTabStage();
-  vConcat("stage S%02lld on %s : "_Stz
-          ,m_i_Stage++
+  vConcat("stage %s on %s : "_Stz
+          ,pCard_Stage->sz()
           ,aYG_weave[eStageTopo]);
   vEolStage();
+
+  m_i_Stage++;
   
   m_i_Op_stage = 0;
 }

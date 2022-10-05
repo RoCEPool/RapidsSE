@@ -126,12 +126,14 @@ void Dissector::vStage(i8 i_StageSpec)
  
   //Stz* szStageNm = m_pStageSpec->szStageNm();
   eYG eStageTopo = m_pStageSpec->eStageTopology();
-  Card_Stage* pCard_Stage = new Card_Stage;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
   s32 sRevisedStageNm;
-  sRevisedStageNm.vSprint("stage%c"_Stz,'A' + i_StageSpec);
+  Card_Stage::vFormStageNm(sRevisedStageNm,i_StageSpec);
+
+  Card_Stage* pCard_Stage = new Card_Stage(sRevisedStageNm);
+
   Card_StageNm* pCard_Name = new Card_StageNm(sRevisedStageNm.szStz());
   pCard_Stage->vAppend(pCard_Name);
 
