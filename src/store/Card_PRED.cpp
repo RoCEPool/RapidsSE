@@ -26,6 +26,19 @@ Card_PRED::Card_PRED(eCK eCard)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Card_PRED::Card_PRED(eCK eCard, Stz* szValue)
+    : Card(eCard,szValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  _checkInitialised_(CN_CARD);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Card_PRED::~Card_PRED(void) noexcept(false)

@@ -1108,7 +1108,7 @@ void Card::vPrintCard_byForm(Ribbon* pRibbon, i8 iDepth, bool& rbPrune, eCP ePin
       break;
 
     case CK_PREDCMP:
-      _pCard_PredCmp(this)->vPrintCardName(pRibbon, iDepth, rbPrune);
+      _pCard_PredCmp(this)->vPrintCardNameValue(pRibbon, iDepth, rbPrune);
       break;
 
     case CK_PREDOR:

@@ -69,7 +69,7 @@ void Card_JoinPredList::vExtract_joinPredList(Card_CalcBool* p_calcBool)
     if (! p_columnRef_1->bIsColumnRef())
       return true;
 
-    Card_PredCmp* p_predCmp_new = new Card_PredCmp;
+    Card_PredCmp* p_predCmp_new = new Card_PredCmp(p_predCmp->sz());
     p_predCmp_new->vAppend(p_columnRef_0->pDupCardAndSubCards());
     p_predCmp_new->vAppend(p_columnRef_1->pDupCardAndSubCards());
 

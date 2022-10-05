@@ -16,6 +16,7 @@ namespace STORE
     void  operator delete(void*);
   
     Card_PredCmp(void);
+    Card_PredCmp(Stz* szCmp);
    ~Card_PredCmp(void) noexcept(false);
 
     void vMarkBound(void);
