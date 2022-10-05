@@ -51,6 +51,7 @@ enum eCN : u2 // Class Number
   /* */ CN__C__,
   /* */ CN_CARD,
   /* */ CN_CARDCTL,
+  /* */ CN_CARDITER,
   /* */ CN_CARDREGS,
   /* */ CN_CATALOG,
   /* */ CN_CHARSER,
@@ -487,6 +488,7 @@ static Stz* aCN[]
   /* */ "_C__"_Stz,                 // CN__C__
   /* */ "CARD"_Stz,                 // CN_CARD
   /* */ "CARDCTL"_Stz,              // CN_CARDCTL
+  /* */ "CARDITERL"_Stz,            // CN_CARDITER
   /* */ "CARDREGS"_Stz,             // CN_CARDREGS
   /* */ "CATALOG"_Stz,              // CN_CATALOG
   /* */ "CHARSER"_Stz,              // CN_CHARSER
