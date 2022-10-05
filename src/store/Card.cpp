@@ -1886,18 +1886,6 @@ void Card::vConcatTerms(Stz* szTerms, i8 i_From, i8 i_Till)
 
 
 /*----------------------------------------------------------------------------*/
-/* get head subcard                                                           */
-/*----------------------------------------------------------------------------*/
-Card_Term* Card::pHeadTerm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  Card_Term* pCard_Term = _pCard_Term(pHead());
-  
-  return pCard_Term;
-}
-
-/*----------------------------------------------------------------------------*/
 /* return table                                                               */
 /*----------------------------------------------------------------------------*/
 Index* Card::pIndex(void)
@@ -2315,32 +2303,6 @@ i8 Card::iOrdinalIndexColNo(void)
   
   return i_Ord;
 }
-
-/*----------------------------------------------------------------------------*/
-/* pop subcard                                                                */
-/*----------------------------------------------------------------------------*/
-Card_Term* Card::pPopTerm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  Card_Term* pCard_Term = _pCard_Term(pPop());
-  
-  return pCard_Term;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get query name                                                             */
-/*----------------------------------------------------------------------------*/
-//Stz* Card::szQueryNm(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-//
-//  Stz* szQueryNm = szGetProperty("szQuerysNm"_Stz);
-//
-//  RASSERT(szValue()->bSame(szQueryNm));
-//
-//  return szValue();
-//}
 
 /*----------------------------------------------------------------------------*/
 /* get rank                                                                   */

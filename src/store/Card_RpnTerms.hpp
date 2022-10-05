@@ -15,9 +15,10 @@ namespace STORE
   
     Card_RpnTerms(void);
    ~Card_RpnTerms(void) noexcept(false);
-    
-    eTE eTopTermEval(void);
 
+    Card_Term* pHeadTerm(void);
+    Card_Term* pPopTerm(void);
+    eTE eTopTermEval(void);
   };
 
   Card_RpnTerms* _pCard_RpnTerms(void* aAddr);

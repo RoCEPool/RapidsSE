@@ -326,7 +326,6 @@ namespace STORE
     void vConcatTerms(Stz* szTerms);
     void vConcatTerms(Stz* szTerms, i8 i_From, i8 i_Till=C_UNKNOWN);
 
-    Card_Term* pHeadTerm(void);
 
     Index* pIndex(void);
     void vIndex(Index* pIndex);
@@ -349,7 +348,6 @@ namespace STORE
     i8   iOrdinalStreamColNo(void);
     i8   iOrdinalIndexColNo(void);
 
-    Card_Term* pPopTerm(void);
 
     i8   iRank(void);
     void vRank(i8 iRank);
