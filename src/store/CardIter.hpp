@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* CardIter_new.hpp --                                                        */
+/* CardIter.hpp --                                                        */
 /*============================================================================*/
 #pragma once
 
@@ -9,7 +9,7 @@ namespace STORE
 {
   class TransformerTool;
 
-  class CardIter_new : public Object
+  class CardIter : public Object
   {
   private:
     Card*  m_pCard;
@@ -22,8 +22,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    CardIter_new(Card* pCard);
-   ~CardIter_new(void) noexcept(false);
+    CardIter(Card* pCard);
+   ~CardIter(void) noexcept(false);
 
 
     Card* pEachChild(void);
@@ -36,8 +36,9 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  CardIter_new* _pCardIter_new(void* aAddr);
+  CardIter* _pCardIter(void* aAddr);
 }
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

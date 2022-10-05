@@ -261,7 +261,7 @@
 #include "Tabular.hpp"
 #include "Columnar.hpp"
 #include "Partitioner.hpp"
-#include "CardIter_new.hpp"
+#include "CardIter.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -314,27 +314,27 @@ SizeHeap gxaSizeHeap[]
   { CN_BUCKETGET,                sizeof(BucketGet),          HT_T_TINY    ,FILL },
   { CN_BUCKETINFO,               sizeof(BucketInfo),         HT_T_TINY    ,FILL },
   { CN_BUCKETMAP,                sizeof(BucketMap),          HT_T_SMALL   ,FILL },
-  { CN_BKTMAPGET,                sizeof(BktMapGet),          HT_T_TINY    ,FILL },
-  { CN_BUCKETVEC,                sizeof(BucketVec),          HT_T_TINY    ,FILL },
-  { CN_BUFFERMAP,                sizeof(BufferMap),          HT_INVALID   ,FILL },
-  { CN_BUFFERPOOL,               sizeof(BufferPool),         HT_INVALID   ,FILL },
-  { CN_BYTERATE,                 sizeof(ByteRate),           HT_T_TINY    ,FILL },
-  { CN_BYTES_T,                  sizeof(s32),                HT_INVALID   ,FILL },
+  { CN_BKTMAPGET,                sizeof(BktMapGet),        HT_T_TINY    , FILL },
+  { CN_BUCKETVEC,                sizeof(BucketVec),        HT_T_TINY    , FILL },
+  { CN_BUFFERMAP,                sizeof(BufferMap),        HT_INVALID   , FILL },
+  { CN_BUFFERPOOL,               sizeof(BufferPool),       HT_INVALID   , FILL },
+  { CN_BYTERATE,                 sizeof(ByteRate),         HT_T_TINY    , FILL },
+  { CN_BYTES_T,                  sizeof(s32),              HT_INVALID   , FILL },
 
-  { CN__C__,                     'C' - ('A' - 1),            HT_INVALID   ,FILL },
-  { CN_CARD,                     sizeof(Card),               HT_T_SMALL   ,FILL },
-  { CN_CARDCTL,                  sizeof(CardCtl),            HT_T_SMALL   ,FILL },
-  { CN_CARDITER,                 sizeof(CardIter_new),       HT_T_SMALL   ,FILL },
-  { CN_CARDREGS,                 sizeof(CardRegs),           HT_T_SMALL   ,FILL },
-  { CN_CATALOG,                  sizeof(Catalog),            HT_INVALID   ,FILL },
-  { CN_CHARSER,                  sizeof(Charser),            HT_T_LARGE   ,FILL },
-  { CN_CHILDEXIT,                sizeof(ChildExit),          HT_T_TINY    ,FILL },
-  { CN_CLASSPLACEHOLDER,         sizeof(ClassPlaceHolder),   HT_T_LARGE   ,FILL },   
-  { CN_CMDLINEARGS,              sizeof(CmdLineArgs),        HT_INVALID   ,FILL },
-  { CN_CODEBLOCK,                sizeof(CodeBlock),          HT_T_MEDIUM  ,FILL },
-  { CN_CODESYNTH,                sizeof(CodeSynth),          HT_T_LARGE   ,FILL },
-  { CN_COLUMN,                   sizeof(Column),             HT_T_TINY    ,FILL },
-  { CN_COLUMNAR,                 sizeof(Columnar),           HT_T_TINY    ,FILL },
+  { CN__C__,                     'C' - ('A' - 1),          HT_INVALID   , FILL },
+  { CN_CARD,                     sizeof(Card),             HT_T_SMALL   , FILL },
+  { CN_CARDCTL,                  sizeof(CardCtl),          HT_T_SMALL   , FILL },
+  { CN_CARDITER,                 sizeof(CardIter),         HT_T_SMALL   , FILL },
+  { CN_CARDREGS,                 sizeof(CardRegs),         HT_T_SMALL   , FILL },
+  { CN_CATALOG,                  sizeof(Catalog),          HT_INVALID   , FILL },
+  { CN_CHARSER,                  sizeof(Charser),          HT_T_LARGE   , FILL },
+  { CN_CHILDEXIT,                sizeof(ChildExit),        HT_T_TINY    , FILL },
+  { CN_CLASSPLACEHOLDER,         sizeof(ClassPlaceHolder), HT_T_LARGE   , FILL },
+  { CN_CMDLINEARGS,              sizeof(CmdLineArgs),      HT_INVALID   , FILL },
+  { CN_CODEBLOCK,                sizeof(CodeBlock),        HT_T_MEDIUM  , FILL },
+  { CN_CODESYNTH,                sizeof(CodeSynth),        HT_T_LARGE   , FILL },
+  { CN_COLUMN,                   sizeof(Column),           HT_T_TINY    , FILL },
+  { CN_COLUMNAR,                 sizeof(Columnar),         HT_T_TINY    , FILL },
   { CN_COMBINED,                 sizeof(Combined),           HT_T_LARGE   ,FILL },
   { CN_COMBINER,                 sizeof(Combiner),           HT_T_TINY    ,FILL },
   { CN_CONDITIONALQUERYNODEITER, sizeof(ConditionalQueryNodeIter), HT_T_TINY,FILL },

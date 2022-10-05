@@ -1,22 +1,22 @@
 /*============================================================================*/
-/* CardIter_new.cpp --                                                           */
+/* CardIter.cpp --                                                           */
 /*============================================================================*/
 
-#include "CardIter_new.hpp"
+#include "CardIter.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,CardIter_new,CN_CARDITER)
-__aNewFunction(CardIter_new,CN_CARDITER)
-__vDeleteFunction(CardIter_new,CN_CARDITER)
-__aFooterFunction(CardIter_new)
+__pCastFunction(STORE,CardIter,CN_CARDITER)
+__aNewFunction(CardIter,CN_CARDITER)
+__vDeleteFunction(CardIter,CN_CARDITER)
+__aFooterFunction(CardIter)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-CardIter_new::CardIter_new(Card*  pCard)
+CardIter::CardIter(Card*  pCard)
 : Object(CN_CARDITER)
 {
   _precondition_(_MAGIC_,CN_CARDITER,_FOOTER_);
@@ -32,7 +32,7 @@ CardIter_new::CardIter_new(Card*  pCard)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-CardIter_new::~CardIter_new(void) noexcept(false)
+CardIter::~CardIter(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_CARDITER,_FOOTER_);
   
