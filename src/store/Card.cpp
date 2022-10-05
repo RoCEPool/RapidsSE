@@ -1033,6 +1033,20 @@ void Card::vHasUBound(bool bHasUBound)
 }
 
 /*----------------------------------------------------------------------------*/
+/* does the card have a value?                                                */
+/*----------------------------------------------------------------------------*/
+bool Card::bHasValue(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (*m_sValue.azChar())
+    return true;
+
+  return false;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
 void Card::vPrintCard(Ribbon* pRibbon, i8 iDepth, bool& rbPrune)
@@ -1185,13 +1199,13 @@ void Card::vPrintCard_default(Ribbon* pRibbon, i8 iDepth, bool& rbPrune, eCP ePi
       break;
 
     case CK_TERM:
-      vPrintCardName(pRibbon, iDepth, rbPrune);
-      vPrintCardValue(pRibbon, iDepth, rbPrune);
+      vPrintCardNameValue(pRibbon, iDepth, rbPrune);
+      //vPrintCardValue(pRibbon, iDepth, rbPrune);
       break;
 
     default:
-      vPrintCardName(pRibbon, iDepth, rbPrune);
-      vPrintCardValue(pRibbon, iDepth, rbPrune);
+      vPrintCardNameValue(pRibbon, iDepth, rbPrune);
+      //vPrintCardValue(pRibbon, iDepth, rbPrune);
       vPrintCardProperties(pRibbon, iDepth, rbPrune);
       break;
   }
@@ -1264,6 +1278,56 @@ void Card::vPrintCardName(Ribbon* pRibbon, i8 iDepth, bool& rbPrune)
                   szCardNm());
 
   pRibbon->vSprint("%-18s%c%c"_Stz, sName.szStz(), m_cMark1, m_cMark2);
+}
+
+/*----------------------------------------------------------------------------*/
+/* print card name and value on single line if possible                       */
+/*----------------------------------------------------------------------------*/
+void Card::vPrintCardNameValue(Ribbon* pRibbon, i8 iDepth, bool& rbPrune)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  s256 sNameValue;
+
+  Board *pBoard = _pBoard(pRibbon->pSurface());
+  CardRegs *pCardRegs = pBoard->pCardRegs();
+
+  if (0 == iDepth) {
+    if (bHasValue())
+      sNameValue.vSprint("%s%s %s x%lld"_Stz,
+                         pCardRegs->bInCardReg(this) ? "R "_Stz : ""_Stz,
+                         szCardNm(),
+                         szValue(),
+                         nItems());
+    else
+      sNameValue.vSprint("%s%s x%lld"_Stz,
+                         pCardRegs->bInCardReg(this) ? "R "_Stz : ""_Stz,
+                         szCardNm(),
+                         nItems());
+  }
+  else {
+    if (bHasValue())
+      sNameValue.vSprint("%s%lld]%s%s %s"_Stz,
+                       Stz::szDots(iDepth - 1),
+                       m_iCardNo,
+                       pCardRegs->bInCardReg(this) ? "R "_Stz : ""_Stz,
+                       szCardNm(),
+                       szValue());
+    else
+      sNameValue.vSprint("%s%lld]%s%s"_Stz,
+                         Stz::szDots(iDepth - 1),
+                         m_iCardNo,
+                         pCardRegs->bInCardReg(this) ? "R "_Stz : ""_Stz,
+                         szCardNm());
+  }
+
+  if (sNameValue.nLength() <= 18) {
+    pRibbon->vSprint("%-18s%c%c"_Stz, sNameValue.szStz(), m_cMark1, m_cMark2);
+  }
+  else {
+    vPrintCardName(pRibbon, iDepth, rbPrune);
+    vPrintCardValue(pRibbon, iDepth, rbPrune);
+  }
 }
 
 /*----------------------------------------------------------------------------*/

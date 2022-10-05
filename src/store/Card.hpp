@@ -270,6 +270,7 @@ namespace STORE
     bool bHasSubCard(Card* pGivenCard, Card*& rpParentCard);
     bool bHasUBound(void);
     void vHasUBound(bool bHasUBound);
+    bool bHasValue(void);
 
     Index* pIndex(void);
     void vIndex(Index* pIndex);
@@ -312,6 +313,7 @@ namespace STORE
     void vPrintCard_compressed(Ribbon* pRibbon, i8 iDepth, bool& rbPrune, eCP ePrintForm);
     void vPrintCard_default(Ribbon* pRibbon, i8 iDepth, bool& rbPrune, eCP ePrintForm);
     void vPrintCardName(Ribbon* pRibbon, i8 iDepth, bool& rbPrune);
+    void vPrintCardNameValue(Ribbon* pRibbon, i8 iDepth, bool& rbPrune);
     void vPrintCardProperties(Ribbon* pRibbon, i8 iDepth, bool& brPrune, bool bPrintPtyName= true);
     void vPrintCardValue(Ribbon* pRibbon, i8 iDepth, bool& rbPrune);
     void vPrintCompressed_childPairs(Ribbon* pRibbon, i8 iDepth, bool& rbPrune);
