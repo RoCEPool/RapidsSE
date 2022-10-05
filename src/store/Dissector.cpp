@@ -134,9 +134,6 @@ void Dissector::vStage(i8 i_StageSpec)
 
   Card_Stage* pCard_Stage = new Card_Stage(sRevisedStageNm);
 
-  Card_StageNm* pCard_Name = new Card_StageNm(sRevisedStageNm.szStz());
-  pCard_Stage->vAppend(pCard_Name);
-
   Card_StageTopo* pCard_StageTopo = new Card_StageTopo(eStageTopo);
   pCard_Stage->vAppend(pCard_StageTopo);
   

@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "Card_StreamElist.hpp"
-#include "Card_StageNm.hpp"
 #include "Card_Expr.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -76,10 +75,7 @@ void Card_StreamElist::vPopulate(StreamDef* pStreamDef)
   i8 nCols = pStreamDef->nColumns();
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     Column* pColumn = pStreamDef->pGetColumn(i_Col);
-    
-//    Card_StageNm* pCard_Name = new Card_StageNm(pColumn->szColNm());
-//    vAppend(pCard_Name);
-    
+
     Card_Expr* pCard_Expr = new Card_Expr(pColumn);
     vAppend(pCard_Expr);
   }

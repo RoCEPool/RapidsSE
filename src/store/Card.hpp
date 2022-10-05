@@ -74,7 +74,7 @@ namespace STORE {
   class Card_MapSet;
   class Card_Mode;
 
-  class Card_StageNm;
+  class Card_Stage;
 
   class Card_On;
   class Card_Option;

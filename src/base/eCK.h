@@ -90,7 +90,6 @@ enum eCK // card kind
   /* */ CK_SENDS,
   /* */ CK_SORT,
   /* */ CK_STAGE,
-  /* */ CK_STAGENM,
   /* */ CK_STAGETOPO,
   /* */ CK_STREAM,
   /* */ CK_STREAMCOL,
@@ -201,7 +200,6 @@ static Stz* aCK[]
   /* */ "CK_SENDS"_Stz,        // CK_SENDS
   /* */ "CK_SORT"_Stz,         // CK_SORT
   /* */ "CK_STAGE"_Stz,        // CK_STAGE
-  /* */ "CK_STAGENM"_Stz,      // CK_STAGENM
   /* */ "CK_STAGETOPO"_Stz,    // CK_STAGETOPO
   /* */ "CK_STREAM"_Stz,       // CK_STREAM
   /* */ "CK_STREAMCOL"_Stz,    // CK_STREAMCOL
@@ -312,7 +310,6 @@ static Stz* aCK_short[]
   /* */ "sends"_Stz,           // CK_SENDS
   /* */ "sort"_Stz,            // CK_SORT
   /* */ "stage"_Stz,           // CK_STAGE
-  /* */ "stageNm"_Stz,         // CK_STAGENM
   /* */ "stageTopo"_Stz,       // CK_STAGETOPO
   /* */ "stream"_Stz,          // CK_STREAM
   /* */ "streamCol"_Stz,       // CK_STREAMCOL
