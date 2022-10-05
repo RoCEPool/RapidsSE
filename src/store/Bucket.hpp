@@ -41,7 +41,7 @@ namespace STORE
     Table* pTable(void);
 
 
-    void vAppendBuffer(DataBuffer* pDataBuffer);
+    bool bAppendBuffer(DataBuffer* pDataBuffer);
     i8   nBuffers(void);
     void vDump(void);
 

@@ -56,8 +56,6 @@
     stageNo           INTEGER NOT NULL ,
     ptnId             INTEGER NOT NULL ,
     opName            VARCHAR NOT NULL ,
-
-
     responseUS        INTEGER NOT NULL ,
     maxQs             INTEGER NOT NULL ,
     operands          INTEGER NOT NULL ,
@@ -70,7 +68,11 @@
     numAllocs         INTEGER NOT NULL ,
     bytesAllocated    VARCHAR NOT NULL ,
     numFrees          INTEGER NOT NULL ,
-    bytesFreed        VARCHAR NOT NULL ,
+    bytesFreed        VARCHAR NOT NULL
+     ) < internal > = 1 ;
+      "
+      api::forkChild  api:executeCheck
+/*
     maxBytes          VARCHAR NOT NULL ,
     numReads          INTEGER NOT NULL ,
     bytesRead         VARCHAR NOT NULL ,
@@ -85,6 +87,7 @@
   "
   api::forkChild  api:executeCheck
 
+*/
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_JOBREPORT
   STD_BOOTFORK_TAG

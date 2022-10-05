@@ -286,7 +286,8 @@ void TablePtn::vAppendBuffer(DataBuffer *pDataBuffer)
   //RASSERT(iBktNo == m_tLglPtn);
   
   if (pBucket) {
-    pBucket->vAppendBuffer(pDataBuffer);
+    if ( ! pBucket->bAppendBuffer(pDataBuffer) )
+      return;
     //vTrace(">>>>>>>>>>>>>>>>> Append row to vec:%p bucket:%p Bkt:%lld\n"_Stz, m_pBucketVec , pBucket, iBktNo );
   } else {
     vTrace(">>>>> ERROR >>>>>>>>>>>> Table:%s No bucket for BktNo:%lld available \n"_Stz, m_pTable->szTableNm()->azChar(),iBktNo);
@@ -326,7 +327,8 @@ void TablePtn::vAppendBuffer_replicated(DataBuffer *pDataBuffer)
 
 
   if (pBucket) {
-    pBucket->vAppendBuffer(pDataBuffer);
+    if ( ! pBucket->bAppendBuffer(pDataBuffer) )
+      return;
     //vTrace(">>>>>>>>>>>>>>>>> Append row to vec:%p bucket:%p Bkt:%lld\n"_Stz, m_pBucketVec , pBucket, iBktNo );
   } else {
     vTrace(">>>>> ERROR >>>>>>>>>>>> Table:%s No bucket available \n"_Stz, m_pTable->szTableNm()->azChar());

@@ -557,10 +557,12 @@ eEC JobReport::eOperandReport(Job* pJob, Tub* pTub)
     //for (i8 i_Op = pStream->nItems() - 1; i_Op >= 0; i_Op--) {
       for (i8 i_Op = 0; i_Op < pStream->nItems(); i_Op++) {
         Op* pOp = pStream->pGet(i_Op);
-        //if ( ! pOp->pOpLogicUnit() )
-        //  continue;
         
         OperandWatch* pOperandWatch = pOp->pOperandWatch();
+
+        //if ( ! pOperandWatch )
+        //  continue;
+
         for (i8 i_Operand = 0; i_Operand < EV_ENUMS; i_Operand++) {
 
           if (! pOperandWatch->nCnt(i_Operand))
@@ -680,8 +682,8 @@ eEC JobReport::eOperatorReport(Job* pJob, Tub* pTub)
         Stats* pStats = pOp->pMetricsStats();
 
         // skip operators that don't have a metrics stats
-       // if ( ! pMetricsStats )
-       //   continue;
+        if ( ! pStats )
+          continue;
 
         Thread* pThread = Thread::pThisTLSThread();
 
@@ -728,7 +730,6 @@ eEC JobReport::eOperatorReport(Job* pJob, Tub* pTub)
                      ,pOp->pStage()->i_Stage()
                      ,pOp->tLglPtn().iAsI8()
                      ,pOp->szOpNm()
-
                      ,pStats->iMicroseconds()
                      ,pStats->m_nMaxQs
                      ,pStats->m_nOperands
@@ -737,20 +738,23 @@ eEC JobReport::eOperatorReport(Job* pJob, Tub* pTub)
                      ,pStats->m_nNewRowBuffer
                      ,pStats->m_nDelRowBuffer
                      ,pStats->m_nNewCsvBuffer
-                     ,pStats->m_nDelCsvBuffer
-                     ,pStats->m_nAllocs
-                     ,sBytesAlloc.azChar()
-                     ,pStats->m_nFrees
-                     ,sBytesFree.azChar()
-                     ,sMaxBytes.azChar()
-                     ,pStats->m_nReads
-                     ,sBytesRead.azChar()
-                     ,pStats->m_nWrites
-                     ,sBytesWrite.azChar()
-                     ,pStats->m_nParcelSends
-                     ,pStats->m_nObjectsSent
-                     ,pStats->m_nParcelRecvs
-                     ,pStats->m_nObjectsRecv
+
+                    ,pStats->m_nDelCsvBuffer
+                    ,pStats->m_nAllocs
+                    ,sBytesAlloc.azChar()
+                    ,pStats->m_nFrees
+                    ,sBytesFree.azChar()
+                   /*
+                   ,sMaxBytes.azChar()
+                   ,pStats->m_nReads
+                   ,sBytesRead.azChar()
+                   ,pStats->m_nWrites
+                   ,sBytesWrite.azChar()
+                   ,pStats->m_nParcelSends
+                   ,pStats->m_nObjectsSent
+                   ,pStats->m_nParcelRecvs
+                   ,pStats->m_nObjectsRecv
+                   */
                      ,C_VARGS_END
                     );
         

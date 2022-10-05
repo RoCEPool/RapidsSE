@@ -40,9 +40,9 @@
     true
     exit
   then
-*/
-  tEventDemonJobId Tub[].pipeToJob
 
+  tEventDemonJobId Tub[].pipeToJob
+*/
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // network
 

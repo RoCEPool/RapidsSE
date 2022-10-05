@@ -135,19 +135,35 @@ Table* Bucket::pTable(void)
 /*----------------------------------------------------------------------------*/
 /* append a buffer into the TablePtn                                          */
 /*----------------------------------------------------------------------------*/
-void Bucket::vAppendBuffer(DataBuffer* pDataBuffer)
+bool Bucket::bAppendBuffer(DataBuffer* pDataBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKET,_FOOTER_);
 
   switch (m_eKind) {
-    case CN_CRWTABLEPTN:
-      m_pCrwTablePtn->vAppendBuffer(_pCrwBuffer(pDataBuffer));
+    case CN_CRWTABLEPTN: {
+        // check for an empty buffer
+        CrwBuffer* pCrwBuffer = _pCrwBuffer(pDataBuffer);
+        if (pCrwBuffer->nRows() == 0) {
+          delete pCrwBuffer;
+          return false;
+        }
+        m_pCrwTablePtn->vAppendBuffer(_pCrwBuffer(pDataBuffer));
+      }
       break;
-    case CN_ROWTABLEPTN:
-      m_pRowTablePtn->vAppendBuffer(_pRowBuffer(pDataBuffer));
+    case CN_ROWTABLEPTN: {
+        // check for an empty buffer
+        RowBuffer *pRowBuffer = _pRowBuffer(pDataBuffer);
+        if (pRowBuffer->nRows() == 0) {
+          delete pRowBuffer;
+          return false;
+        }
+        m_pRowTablePtn->vAppendBuffer(_pRowBuffer(pDataBuffer));
+      }
       break;
     default: NEVER_REACH;
   }
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
