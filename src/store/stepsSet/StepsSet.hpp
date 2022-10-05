@@ -1686,6 +1686,8 @@ void vDdlLockAssertNone(void);
   void vRowBufferPtnId(void);
   void vRowBufferRows(void);
   void vRowBufferSet(void);
+  void vRowBufferSetDeciderCopies(void);
+  void vRowBufferSetLglPtn(void);
   void vRowBufferToCsv(void);
   void vRowBufferToCsv_OLD(void);
   void vRowBufferOperandDump(void);

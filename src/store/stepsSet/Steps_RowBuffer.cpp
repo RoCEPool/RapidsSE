@@ -31,6 +31,8 @@ void Step::vAddSteps_RowBuffer(void)
   vAddStep("RowBuffer[].ptnId"_Stz,          &Step::vRowBufferPtnId);
   vAddStep("RowBuffer[].rows"_Stz,           &Step::vRowBufferRows);
   vAddStep("RowBuffer[].set"_Stz,            &Step::vRowBufferSet);
+  vAddStep("RowBuffer[].setDeciderCopies"_Stz, &Step::vRowBufferSetDeciderCopies);
+  vAddStep("RowBuffer[].setLglPtn"_Stz,      &Step::vRowBufferSetLglPtn);
   vAddStep("RowBuffer[].toCsv"_Stz,          &Step::vRowBufferToCsv);
   vAddStep("RowBuffer[].toCsv_OLD"_Stz,      &Step::vRowBufferToCsv_OLD);
 }
@@ -245,6 +247,34 @@ void Step::vRowBufferSet(void)
   ASSERT(! pOperand || m_pLogicUnit->m_xpRowBuffer.bIsNull());
 
   m_pLogicUnit->m_xpRowBuffer = _pRowBuffer(pOperand);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* RowBuffer[].set -- set operand                                             */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferSetDeciderCopies(void)
+{
+  ENTRY();
+
+  i8 iDeciderCopies = m_pDataStack->iPopInt(__func__);
+
+  m_pLogicUnit->m_xpRowBuffer->vDeciderCopies(iDeciderCopies);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* RowBuffer[].set -- set operand                                             */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferSetLglPtn(void)
+{
+  ENTRY();
+
+  i8 iLglPtn = m_pDataStack->iPopInt(__func__);
+
+  m_pLogicUnit->m_xpRowBuffer->vLglPtn((LglPtn)iLglPtn);
 
   EXIT();
 }

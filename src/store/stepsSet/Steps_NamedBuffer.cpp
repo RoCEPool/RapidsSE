@@ -108,12 +108,6 @@ void Step::vNamedBufferMorphClass(void)
 
   pNamedBuffer->vSetClassNo((eCN)iClassNo);
 
-  if ((eCN)iClassNo == CN_ROWBUFFER) {
-    RowBuffer* pRowBuffer = _pRowBuffer(pNamedBuffer);
-    pRowBuffer->vLglPtn((LglPtn)0);
-    pRowBuffer->vDeciderCopies(1);
-  }
-
   EXIT();
 }
 

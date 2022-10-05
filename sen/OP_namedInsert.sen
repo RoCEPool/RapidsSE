@@ -39,19 +39,26 @@
   // locate the table
   sBufferNm locateNamedTable
 
-  // morph the nameBuffer to a rowBuffer
-  CN_ROWBUFFER NamedBuffer[].morphClass
-  NamedBuffer[]\clear to RowBuffer[]
-
   // create the streamDef of this table
   Table[] StreamDefOut[].newFromTable
   StreamDefOut[] to StreamDefLft[]
   nullptr to StreamDefOut[]
 
+  // morph the nameBuffer to a rowBuffer
+  CN_ROWBUFFER NamedBuffer[].morphClass
+  NamedBuffer[]\clear to RowBuffer[]
+
+  // set the lgl ptn of the rowBuffer
+  0 RowBuffer[].setLglPtn
+
+  // set the decider copies of the rowBuffer
+  1 RowBuffer[].setDeciderCopies
+
   // convert the rowBuffer to a CrwBuffer
   ToLglPtnCrw[].create
   RowBuffer[] ToLglPtnCrw[].convert
 
+  // delete the RowBuffer
   RowBuffer[].delete
 
   // insert the crwBuffers into the table
