@@ -164,11 +164,11 @@ void Stager::vLinearize_stages(void)
       goto L_Exit;
 
     xBI.vRemoveDeleteCurr(CK_STAGE);
-
-    m_pBoard->vRenumberMainCards();
   }
 
   L_Exit:
+
+  m_pBoard->vRenumberMainCards();
 
   m_pCardCtl->vPrintSubCards(CK_AGGELIST, false);
   m_pCardCtl->vPrintSubCards(CK_GBYELIST, false);

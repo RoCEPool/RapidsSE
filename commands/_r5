@@ -62,7 +62,7 @@ tablesizes;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // /cue = "$"
-/cue = "Estimator::vExtract_joinOrderSeq"
+// /cue = "Estimator::vExtract_joinOrderSeq"
 /jobTags
 /transliterated
 /transform

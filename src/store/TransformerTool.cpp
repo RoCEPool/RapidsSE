@@ -257,6 +257,15 @@ Card* TransformerTool::pFindMainOf(Card* pGivenCard, Card*& rpParentCard)
 }
 
 /*----------------------------------------------------------------------------*/
+/* print the board                                                            */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::vPrintBoard(Stz* szCue)
+{
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard(szCue);
+}
+
+/*----------------------------------------------------------------------------*/
 /* search for parent of given sub card                                        */
 /*----------------------------------------------------------------------------*/
 bool TransformerTool::bRecursivelyTheSame(Card* p_card_a, Card* p_card_b, i8 iDepth, bool bTestL0)
@@ -266,6 +275,25 @@ bool TransformerTool::bRecursivelyTheSame(Card* p_card_a, Card* p_card_b, i8 iDe
   bool bSame = Card::bCardsSameRecursive(p_card_a, p_card_b,iDepth,bTestL0);
 
   return bSame;
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove and delete all mains of given eCard                                 */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::vRemoveDeleteMains(eCK eCard)
+{
+  BoardIter xBI(m_pBoard);
+
+  while ((m_p_combined = _pCard_Combined(xBI.pEachMain(eCard))))
+    xBI.vRemoveDeleteCurr(eCard);
+}
+
+/*----------------------------------------------------------------------------*/
+/* renumber the main cards                                                    */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::vRenumberMainCards(void)
+{
+  m_pBoard->vRenumberMainCards();
 }
 
 /*----------------------------------------------------------------------------*/

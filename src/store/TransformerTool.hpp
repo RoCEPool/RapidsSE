@@ -95,7 +95,9 @@ namespace STORE
 
     void vBeginIteration(void);
     Board* pBoard(void);
+
     eCK   eDecodeMain(Card* pCard);
+
     Card* pEachMain(void);
     Card* pEachMain(eCK eCard);
     void vEndIteration(void);
@@ -103,7 +105,11 @@ namespace STORE
     Card* pFindMainOf(Card* pSubCard);
     Card* pFindMainOf(Card* pSubCard, Card*& rpParentCard);
 
+    void vPrintBoard(Stz* szCue);
+
     bool bRecursivelyTheSame(Card* p_card_a, Card* p_card_b, i8 iDepth=0, bool bTestL0=false);
+    void vRemoveDeleteMains(eCK eCard);
+    void vRenumberMainCards(void);
 
     void vTransformation(eOT eTransformation);
 

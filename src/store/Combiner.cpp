@@ -125,21 +125,32 @@ void Combiner::vDelete_combines(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINER, _FOOTER_);
 
-  i8 nMainCards = m_pBoard->nMainCards();
-  for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
-    Card* pMainCard = m_pBoard->pGetMain(i_Main);
+  vRemoveDeleteMains(CK_COMBINED);
 
-    if (CK_COMBINED == pMainCard->eCard()) {
-      m_pBoard->vRemoveMainCard(pMainCard);
-      nMainCards = m_pBoard->nMainCards();
-      i_Main--;
-      delete pMainCard;
-    }
-  }
+  vRenumberMainCards();
 
-  if (m_bInteractive)
-    m_pBoard->vPrintBoard("Combiner::vDelete_combines"_Stz);
+  vPrintBoard("Combiner::vDelete_combines"_Stz);
 }
+/*----------------------------------------------------------------------------*/
+//void Combiner::vDelete_combines(void)
+//{
+//  _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINER, _FOOTER_);
+//
+//  i8 nMainCards = m_pBoard->nMainCards();
+//  for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
+//    Card* pMainCard = m_pBoard->pGetMain(i_Main);
+//
+//    if (CK_COMBINED == pMainCard->eCard()) {
+//      m_pBoard->vRemoveMainCard(pMainCard);
+//      nMainCards = m_pBoard->nMainCards();
+//      i_Main--;
+//      delete pMainCard;
+//    }
+//  }
+//
+//  if (m_bInteractive)
+//    m_pBoard->vPrintBoard("Combiner::vDelete_combines"_Stz);
+//}
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
