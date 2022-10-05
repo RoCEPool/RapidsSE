@@ -47,29 +47,9 @@ void Sender::vDelete_sends(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SENDER, _FOOTER_);
 
-  i8 nMainCards = m_pBoard->nMainCards();
-  for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
-    Card* pMainCard = m_pBoard->pGetMain(i_Main);
+  vRemoveDeleteMains(CK_SEND);
 
-    if (CK_SEND != pMainCard->eCard())
-      continue;
-
-    //Card* pNextCard = m_pBoard->pGetMain(i_Main + 1);
-    //if (! pNextCard)
-    //  break;
-
-    //if (CK_STAGE != pNextCard->eCard()) {
-    m_pBoard->vRemoveMainCard(pMainCard);
-    nMainCards = m_pBoard->nMainCards();
-    i_Main--;
-    delete pMainCard;
-    //}
-
-  }
-
-  if (m_bInteractive)
-    m_pBoard->vPrintBoard("Sender::vDelete_sends"_Stz);
-
+  vPrintBoard("Sender::vDelete_sends"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

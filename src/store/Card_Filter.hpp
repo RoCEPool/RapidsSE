@@ -21,11 +21,19 @@ namespace STORE
   
     bool bCull(void);
     void vCullPred(char cWithMark);
+    void vCalc_to_calcBool(void);
+
     Card_PredCmp* pFindBound(Index* pIndex, ePB eBound);
+
     bool bHasBounds(Index* pIndex);
+
     bool bIsEmptyFilter(void);
+
     void vReduceFilter(void);
     bool bRemoveBound(Card_PredCmp* pCard_PredCmp);
+
+    Card* pTo_CalcBool(Card* pCard_Calc);
+
   };
 
   Card_Filter* _pCard_Filter(void* aAddr);

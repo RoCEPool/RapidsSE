@@ -207,36 +207,6 @@ Card_Sort* BoardIter::pEach_sort(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Stage* BoardIter::pFirst_stage(void)
-{
-  _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
-
-  Card_Stage* p_stage =
-      _pCard_Stage(m_pBoard->pFindMain(CK_STAGE,m_i_Main));
-
-  m_pCurrMain = p_stage;
-
-  return p_stage;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_Stage* BoardIter::pNext_stage(void)
-{
-  _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
-
-  Card_Stage* p_stage =
-      _pCard_Stage(m_pBoard->pFindNextMain(m_pCurrMain, CK_STAGE, m_i_Main));
-
-  m_pCurrMain = p_stage;
-
-  return p_stage;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 Card_Aggreg* BoardIter::pPrev_aggreg(void)
 {
   _precondition_( _MAGIC_, CN_BOARDITER, _FOOTER_);

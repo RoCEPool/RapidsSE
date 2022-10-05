@@ -136,7 +136,7 @@ void Transformer::vTransform2(void)
   m_pSender->vDelete_sends();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // convert all <filter> from calc form to calcBool
+  // convert all <filter>/<calc> to <filter>/<calcBool>
   m_pFiltrate->vConvert_calc_to_calcBool();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

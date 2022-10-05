@@ -284,8 +284,10 @@ void TransformerTool::vRemoveDeleteMains(eCK eCard)
 {
   BoardIter xBI(m_pBoard);
 
-  while ((m_p_combined = _pCard_Combined(xBI.pEachMain(eCard))))
+  while ((m_pMainCard = xBI.pEachMain(eCard)))
     xBI.vRemoveDeleteCurr(eCard);
+
+  vRenumberMainCards();
 }
 
 /*----------------------------------------------------------------------------*/

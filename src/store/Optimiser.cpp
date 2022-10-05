@@ -278,7 +278,7 @@ void Optimiser::vTransform(void)
   CardRegs* pCardRegs = pBoard->pCardRegs();
 
   if (bInteractive)
-    pBoard->vPrintBoard("vDissectSpec >> "_Stz);
+    pBoard->vPrintBoard("vDissectSpec"_Stz);
 
   m_pTransformer->vTransform();
 

@@ -148,21 +148,18 @@ void Stager::vLinearize_stages(void)
 
   BoardIter xBI(m_pBoard);
 
-  if (! (m_p_stage_a = xBI.pFirst_stage()) )
+  if (! (m_p_stage_a = _pCard_Stage(xBI.pEachMain(CK_STAGE))))
     goto L_Exit;
   if (! (m_p_stageTopo_a = m_p_stage_a->pSub_stageTopo()) )
     goto L_Exit;
   if (YG_ALL_PARTITIONS != m_p_stageTopo_a->eStageTopo())
     goto L_Exit;
 
-  for (;;) {
-    if (! (m_p_stage_b = xBI.pNext_stage()) )
-      goto L_Exit;
+  while ((m_p_stage_b = _pCard_Stage(xBI.pEachMain(CK_STAGE)))) {
     if (! (m_p_stageTopo_b = m_p_stage_b->pSub_stageTopo()) )
-      goto L_Exit;
+      break;
     if (YG_ALL_PARTITIONS != m_p_stageTopo_b->eStageTopo())
-      goto L_Exit;
-
+      break;
     xBI.vRemoveDeleteCurr(CK_STAGE);
   }
 

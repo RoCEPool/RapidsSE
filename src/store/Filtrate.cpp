@@ -66,17 +66,12 @@ void Filtrate::vConvert_calc_to_calcBool(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTRATE,_FOOTER_);
 
-  vBeginIteration();
+  BoardIter xBI(m_pBoard);
 
-  while (Card *pMainCard = pEachMain(CK_FILTER)) {
+  while ((m_p_filter = _pCard_Filter(xBI.pEachMain(CK_FILTER))))
+    m_p_filter->vCalc_to_calcBool();
 
-    vCalc_to_calcBool(pMainCard);
-  }
-
-  vEndIteration();
-
-  if (m_bInteractive)
-    m_pBoard->vPrintBoard("Filtrate::vConvert_calc_to_calcBool"_Stz);
+  vPrintBoard("Filtrate::vConvert_calc_to_calcBool"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -524,120 +519,6 @@ void Filtrate::vPredMovesToScan(Card* pPredCard, Card_Scan* pCard_scan)
 
 }
 
-
-/*----------------------------------------------------------------------------*/
-/* convert a calculation into a boolean calculaiton                           */
-/*----------------------------------------------------------------------------*/
-Card* Filtrate::pTo_CalcBool(Card* pCard_Calc)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
-  RASSERT(CK_CALC == pCard_Calc->eCard());
-
-  Card_PredAnd* pCard_PredAnd = nullptr;
-  Card_PredCmp* pCard_PredCmp = nullptr;
-  Card_PredOr*  pCard_PredOr  = nullptr;
-
-  Card_SubSet*  pCard_SubExpr = new Card_SubSet;
-
-  Card_CalcBool* pCard_CalcBool = new Card_CalcBool;
-
-  while (pCard_Calc->nChildCards()) {
-    Card_Term *pCard_Term = _pCard_Term(pCard_Calc->pPop());
-
-    eTE eTopTerm = pCard_Term->eTermEval();
-    switch (eTopTerm) {
-
-      case TE_AND:
-        RASSERT(2 == pCard_CalcBool->nChildCards());
-        pCard_PredAnd = new Card_PredAnd;
-        pCard_PredAnd->vTransferSubCards(pCard_CalcBool);
-        RASSERT(0 == pCard_CalcBool->nChildCards());
-        pCard_CalcBool->vAppend(pCard_PredAnd);
-        RASSERT(1 == pCard_CalcBool->nChildCards());
-        pCard_PredAnd = nullptr;
-        delete pCard_Term;
-        break;
-
-      case TE_OR:
-        RASSERT(2 == pCard_CalcBool->nChildCards());
-        pCard_PredOr = new Card_PredOr;
-        pCard_PredOr->vTransferSubCards(pCard_CalcBool);
-        RASSERT(0 == pCard_CalcBool->nChildCards());
-        pCard_CalcBool->vAppend(pCard_PredOr);
-        RASSERT(1 == pCard_CalcBool->nChildCards());
-        pCard_PredOr = nullptr;
-        delete pCard_Term;
-        break;
-
-      case TE_COMPARE:
-        RASSERT(pCard_SubExpr->nChildCards() > 0);
-        pCard_PredCmp = new Card_PredCmp;
-        pCard_PredCmp->vValue(pCard_Term->sz());
-        pCard_PredCmp->vTransferSubCards(pCard_SubExpr);
-        pCard_CalcBool->vAppend(pCard_PredCmp);
-        pCard_PredCmp = nullptr;
-        delete pCard_Term;
-        break;
-
-      case TE_OTHER:
-        pCard_SubExpr->vAppend(pCard_Term);
-        break;
-
-        // - - - - - - -
-
-      case TE_BOOLEAN:
-        NEVER_REACH;
-        break;
-
-      case TE_TYPE:
-        NEVER_REACH;
-        break;
-
-      case TE_AS:
-        NEVER_REACH;
-        break;
-
-      default:
-        NEVER_REACH;
-        break;
-    }
-  }
-
-  if (pCard_SubExpr->nItems()) {
-    RASSERT(0 == pCard_CalcBool->nChildCards());
-    pCard_PredCmp->vTransferSubCards(pCard_SubExpr);
-    RASSERT(1 == pCard_CalcBool->nChildCards());
-    RASSERT(0 == pCard_SubExpr->nChildCards());
-  }
-
-  delete pCard_SubExpr;
-
-  return pCard_CalcBool;
-}
-
-/*----------------------------------------------------------------------------*/
-/* stream                                                                     */
-/*----------------------------------------------------------------------------*/
-void Filtrate::vCalc_to_calcBool(Card* pCard_Filter)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTRATE,_FOOTER_);
-
-  RASSERT(CK_FILTER == pCard_Filter->eCard());
-
-  RASSERT(1 == pCard_Filter->nChildCards());
-
-  Card_Expr* pCard_Expr = _pCard_Expr(pCard_Filter->pGet(0));
-  RASSERT(2 == pCard_Expr->nChildCards());
-
-  Card_Type* pCard_Type = _pCard_Type(pCard_Expr->pGet(0));
-  Card_Calc* pCard_Calc = _pCard_Calc(pCard_Expr->pGet(1));
-
-  Card* pCard_CalcBool = pTo_CalcBool(pCard_Calc);
-
-  pCard_Expr->vRemove(pCard_Calc);
-  delete pCard_Calc;
-  pCard_Expr->vAppend(pCard_CalcBool);
-}
 
 /*============================================================================*/
 /* end                                                                        */

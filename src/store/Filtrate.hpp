@@ -48,9 +48,6 @@ namespace STORE
 
     void vMarkPredCardsAsMoved(Card* pPredCard);
 
-    void vCalc_to_calcBool(Card* pCard_Filter);
-    Card* pTo_CalcBool(Card* pCard_Calc);
-
     Footer* aFooter(void);
   };
 
