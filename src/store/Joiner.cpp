@@ -47,7 +47,7 @@ Joiner::~Joiner(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* append preliminary <indexJoin>'s to all <absJoin>                          */
 /*----------------------------------------------------------------------------*/
-void Joiner::vAppendPrelim_indexJoin(void)
+void Joiner::vAppend_preliminary_indexJoin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_JOINER, _FOOTER_);
 
@@ -93,7 +93,7 @@ void Joiner::vAppendPrelim_indexJoin(void)
   m_pCardCtl->vPrintForm(CK_TERM, CP_DEFAULT);
 
   if (m_bInteractive)
-    m_pBoard->vPrintBoard("Joiner::vAppendPrelim_indexJoin"_Stz);
+    m_pBoard->vPrintBoard("Joiner::vAppend_preliminary_indexJoin"_Stz);
 }
 
 

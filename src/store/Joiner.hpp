@@ -21,7 +21,7 @@ namespace STORE
     Joiner(Bench* pBench);
    ~Joiner(void) noexcept(false);
 
-    void vAppendPrelim_indexJoin(void);
+    void vAppend_preliminary_indexJoin(void);
     void vForm_joinPred(void);
     void vMark_idxCol(void);
     void vReduce_absJoin(void);

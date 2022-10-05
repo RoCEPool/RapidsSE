@@ -43,7 +43,7 @@ Streamer::~Streamer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* calc ordinal ranges                                                        */
 /*----------------------------------------------------------------------------*/
-void Streamer::vOrdinal_Range(void)
+void Streamer::vCalc_streamOrdinalRanges(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMER,_FOOTER_);
 
@@ -91,13 +91,13 @@ void Streamer::vOrdinal_Range(void)
   vEndIteration();
 
   if (m_bInteractive)
-    m_pBoard->vPrintBoard("Streamer::vOrdinal_Range"_Stz);
+    m_pBoard->vPrintBoard("Streamer::vCalc_streamOrdinalRanges"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
 /* append <stream> to all <scan>                                              */
 /*----------------------------------------------------------------------------*/
-void Streamer::vAppendStream_to_Scan(void)
+void Streamer::vAppend_stream_to_scan(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMER,_FOOTER_);
 
@@ -130,7 +130,7 @@ void Streamer::vAppendStream_to_Scan(void)
   m_pCardCtl->vPrintForm(CK_TERM, CP_CARDFORM);
 
   if (m_bInteractive)
-    m_pBoard->vPrintBoard("Streamer::vAppendStream_to_Scan"_Stz);
+    m_pBoard->vPrintBoard("Streamer::vAppend_stream_to_scan"_Stz);
 }
 
 

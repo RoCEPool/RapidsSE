@@ -43,7 +43,7 @@ Sender::~Sender(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* delete sends                                                               */
 /*----------------------------------------------------------------------------*/
-void Sender::vDelete_Sends(void)
+void Sender::vDelete_sends(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SENDER, _FOOTER_);
 
@@ -68,7 +68,7 @@ void Sender::vDelete_Sends(void)
   }
 
   if (m_bInteractive)
-    m_pBoard->vPrintBoard("Sender::vDelete_Sends"_Stz);
+    m_pBoard->vPrintBoard("Sender::vDelete_sends"_Stz);
 
 }
 

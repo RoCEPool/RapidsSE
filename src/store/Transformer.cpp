@@ -131,44 +131,40 @@ void Transformer::vTransform2(void)
   vTrace("Transformer running vTransform2\n"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  m_pStager->vLinearize_Stages();
-  m_pCombiner->vDelete_Combines();
-  m_pSender->vDelete_Sends();
+  m_pStager->vLinearize_stages();
+  m_pCombiner->vDelete_combines();
+  m_pSender->vDelete_sends();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // convert all <filter> from calc form to calcBool
-  m_pFiltrate->vCalc_to_calcBool();
+  m_pFiltrate->vConvert_calc_to_calcBool();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append <stream> to all <scan> and then to all <absJoin>
-  m_pStreamer->vAppendStream_to_Scan();
-
+  m_pStreamer->vAppend_stream_to_scan();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // each <scan> <absJoin> becomes <absJoin>/<scan>
   m_pJoiner->vSubsume_scan();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //
-  m_pStreamer->vOrdinal_Range();
+  m_pStreamer->vCalc_streamOrdinalRanges();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  m_pTabular->vAdd_TableSyn();
-  m_pTabular->vAdd_TablePtn();
+  m_pTabular->vAdd_tableSyn();
+  m_pTabular->vAdd_tablePtn();
+
   m_pPartitioner->vExtract_tableList();
 
-  m_pColumnar->vAdd_ColumnRef();
+  m_pColumnar->vAdd_columnRef();
 
   m_pPartitioner->vExtract_joinPredList();
-
   m_pPartitioner->vCompute_coPtnPredList();
   m_pPartitioner->vCompute_coPtnJoinList();
   m_pPartitioner->vCompute_crossPtnJoinList();
 
   m_pPartitioner->vCompute_ptndJointSet();
-
 
   m_pPermutor->vCopy_ptndJoinSet();
   m_pPermutor->vGenerate_ptndPermutations();
@@ -180,29 +176,21 @@ void Transformer::vTransform2(void)
   m_pEstimator->vEstimate_joinOrder();
   m_pEstimator->vExtract_joinOrderSeq();
 
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // inspect all <filter> and attempt to move <predCmp> after <scan>/<absJoin>
-  m_pFiltrate->vAssignLeftwards();
+  m_pFiltrate->vMove_predCmp_leftwards();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  m_pFiltrate->vCopyLeftwards();
+  m_pFiltrate->vCopy_predCmp_leftwards();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete any <filter> which is effectively empty
-  m_pFiltrate->vDeleteEmpty_filter();
+  m_pFiltrate->vDelete_empty_filter();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  m_pJoiner->vAppendPrelim_indexJoin();
+  m_pJoiner->vAppend_preliminary_indexJoin();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pJoiner->vMark_idxCol();
@@ -230,38 +218,24 @@ void Transformer::vTransform2(void)
    */
 
   m_pIndexer->vAppend_indexList_to_scan();
-
   m_pIndexer->vMark_scan_pred_bounds();
-
   m_pIndexer->vMark_scan_pred_ordinals();
 
   m_pScanning->vAdd_scanPred();
-
   m_pScanning->vCull_markedPred();
-
   m_pScanning->vPromote_scan_to_indexScan();
 
-
-
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  m_pFiltrate->vDeleteEmpty_sub_filter();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  m_pFiltrate->vDelete_empty_sub_filter();
 
   m_pJoiner->vReduce_absJoin();
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pSorter->vCull_sby_SameAs_gby();
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pFiltrate->vIndividuate_filter();
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  m_pStager->vAdd_stages();
 
-  m_pStager->vAdd_Stages();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pCombiner->vAdd_combined();
 }
 

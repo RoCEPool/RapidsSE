@@ -45,7 +45,7 @@ Stager::~Stager(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* linearize stages                                                           */
 /*----------------------------------------------------------------------------*/
-void Stager::vAdd_Stages(void)
+void Stager::vAdd_stages(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGER, _FOOTER_);
 
@@ -136,13 +136,13 @@ void Stager::vAdd_Stages(void)
   }
 
   if (m_bInteractive)
-    m_pBoard->vPrintBoard("Stager::vAdd_Stages"_Stz);
+    m_pBoard->vPrintBoard("Stager::vAdd_stages"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
 /* linearize stages                                                           */
 /*----------------------------------------------------------------------------*/
-void Stager::vLinearize_Stages(void)
+void Stager::vLinearize_stages(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGER, _FOOTER_);
 
@@ -174,7 +174,7 @@ void Stager::vLinearize_Stages(void)
   m_pCardCtl->vPrintSubCards(CK_GBYELIST, false);
 
   if (m_bInteractive)
-    m_pBoard->vPrintBoard("Stager::vLinearize_Stages"_Stz);
+    m_pBoard->vPrintBoard("Stager::vLinearize_stages"_Stz);
 }
 
 
