@@ -505,11 +505,11 @@ i8 Board::nMainCards(void)
 /*----------------------------------------------------------------------------*/
 /* new a main card iterator                                                   */
 /*----------------------------------------------------------------------------*/
-CardIter* Board::pNewMainCardIter(void)
+SubCardIter* Board::pNewMainCardIter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-  CardIter* pMainCardIter = m_pCard_SubSet->pNewSubCardIter();
+  SubCardIter* pMainCardIter = m_pCard_SubSet->pNewSubCardIter();
 
   return pMainCardIter;
 }
