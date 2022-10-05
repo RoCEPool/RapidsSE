@@ -56,7 +56,7 @@ TablePtn::TablePtn(Table *pTable, LglPtn tLglPtn, PhyPtn tPhyPtn)
       NEVER_REACH;
       break;
     case TT_INTERNAL:
-      m_eKind = CN_ROWTABLEPTN;
+      m_eKind = CN_CRWTABLEPTN; //CN_ROWTABLEPTN;
       break;
     case TT_NORMAL:
       m_eKind = CN_CRWTABLEPTN;

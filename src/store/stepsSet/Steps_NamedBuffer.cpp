@@ -10,6 +10,7 @@
 
 #include "NamedBuffer.hpp"
 #include "LogicUnit.hpp"
+#include "DataBuffer.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -106,6 +107,12 @@ void Step::vNamedBufferMorphClass(void)
   NamedBuffer* pNamedBuffer = *m_pLogicUnit->m_xpNamedBuffer;
 
   pNamedBuffer->vSetClassNo((eCN)iClassNo);
+
+  if ((eCN)iClassNo == CN_ROWBUFFER) {
+    RowBuffer* pRowBuffer = _pRowBuffer(pNamedBuffer);
+    pRowBuffer->vLglPtn((LglPtn)0);
+    pRowBuffer->vDeciderCopies(1);
+  }
 
   EXIT();
 }
