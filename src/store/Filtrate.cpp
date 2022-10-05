@@ -118,6 +118,7 @@ void Filtrate::vCull_indexJoin_filterPred(void)
 
   vEndIteration();
 
+  m_pCardCtl->vPrintFormSubCards(CK_STREAM, CP_DEFAULT, true);
   if (m_bInteractive)
     m_pBoard->vPrintBoard("Filtrate::vCull_indexJoin_filterPred"_Stz);
 }

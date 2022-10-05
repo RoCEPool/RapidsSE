@@ -130,11 +130,6 @@ void Transformer::vTransform2(void)
 
   vTrace("Transformer running vTransform2\n"_Stz);
 
-  Board* pBoard_query = m_pBench->pGetBoard(BK_QUERY);
-
-  m_pCardCtl->vPrintSubCards(CK_AGGELIST, false);
-  m_pCardCtl->vPrintSubCards(CK_GBYELIST, false);
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pStager->vLinearize_Stages();
   m_pCombiner->vDelete_Combines();
@@ -146,15 +141,6 @@ void Transformer::vTransform2(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append <stream> to all <scan> and then to all <absJoin>
-  m_pCardCtl->vPrintFormSubCards(CK_STREAM, CP_DEFAULT, true);
-
-  //m_pCardCtl->vPrintSubCards(CK_EXPR,0);
-
-  m_pCardCtl->vPrintForm(CK_PREDAND, CP_CARDFORM);
-  m_pCardCtl->vPrintForm(CK_PREDCMP, CP_CARDFORM);
-  m_pCardCtl->vPrintForm(CK_PREDOR, CP_CARDFORM);
-  m_pCardCtl->vPrintForm(CK_TERM, CP_CARDFORM);
-
   m_pStreamer->vAppendStream_to_Scan();
 
 
@@ -176,11 +162,6 @@ void Transformer::vTransform2(void)
   m_pColumnar->vAdd_ColumnRef();
 
   m_pPartitioner->vExtract_joinPredList();
-
-  m_pCardCtl->vPrintForm(CK_COLUMNREF,CP_COMPRESSED);
-  m_pCardCtl->vPrintForm(CK_COPTNJOIN,CP_COMPRESSED);
-  m_pCardCtl->vPrintForm(CK_CROSSPTNJOIN,CP_COMPRESSED);
-  //m_pCardCtl->vPrintForm(CK_PREDCMP,CP_COMPRESSED);
 
   m_pPartitioner->vCompute_coPtnPredList();
   m_pPartitioner->vCompute_coPtnJoinList();
@@ -220,12 +201,6 @@ void Transformer::vTransform2(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  m_pCardCtl->vPrintFormSubCards(CK_STREAM, CP_DEFAULT, true);
-  m_pCardCtl->vPrintForm(CK_PREDAND, CP_DEFAULT);
-  m_pCardCtl->vPrintForm(CK_PREDCMP, CP_DEFAULT);
-  m_pCardCtl->vPrintForm(CK_PREDOR, CP_DEFAULT);
-  m_pCardCtl->vPrintForm(CK_TERM, CP_DEFAULT);
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pJoiner->vAppendPrelim_indexJoin();
 
@@ -236,7 +211,6 @@ void Transformer::vTransform2(void)
   m_pJoiner->vForm_joinPred();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  m_pCardCtl->vPrintFormSubCards(CK_STREAM, CP_DEFAULT, true);
 
   m_pFiltrate->vCull_indexJoin_filterPred();
 
@@ -263,8 +237,6 @@ void Transformer::vTransform2(void)
 
   m_pScanning->vAdd_scanPred();
 
-  m_pCardCtl->vPrintFormSubCards(CK_STREAM, CP_CARDFORM, false);
-
   m_pScanning->vCull_markedPred();
 
   m_pScanning->vPromote_scan_to_indexScan();
@@ -290,9 +262,6 @@ void Transformer::vTransform2(void)
   m_pStager->vAdd_Stages();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  m_pCardCtl->vPrintSubCards(CK_AGGELIST, true);
-  m_pCardCtl->vPrintSubCards(CK_GBYELIST, true);
-
   m_pCombiner->vAdd_combined();
 }
 

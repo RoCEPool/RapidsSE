@@ -21,6 +21,7 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_pBoard_partition = nullptr;
   m_pBoard_permute   = nullptr;
   m_pBoard_query     = nullptr;
+  m_pCardCtl         = m_pBench->pCardCtl();
 
   m_pPermGen         = nullptr;
 

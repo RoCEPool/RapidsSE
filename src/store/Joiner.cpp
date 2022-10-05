@@ -51,6 +51,7 @@ void Joiner::vAppendPrelim_indexJoin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_JOINER, _FOOTER_);
 
+
   m_pBoard->vClearAllMarks();
 
   Card *pMainCard = nullptr;
@@ -84,6 +85,12 @@ void Joiner::vAppendPrelim_indexJoin(void)
   }
 
   vEndIteration();
+
+  m_pCardCtl->vPrintFormSubCards(CK_STREAM, CP_DEFAULT, true);
+  m_pCardCtl->vPrintForm(CK_PREDAND, CP_DEFAULT);
+  m_pCardCtl->vPrintForm(CK_PREDCMP, CP_DEFAULT);
+  m_pCardCtl->vPrintForm(CK_PREDOR, CP_DEFAULT);
+  m_pCardCtl->vPrintForm(CK_TERM, CP_DEFAULT);
 
   if (m_bInteractive)
     m_pBoard->vPrintBoard("Joiner::vAppendPrelim_indexJoin"_Stz);

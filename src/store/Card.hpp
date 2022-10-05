@@ -211,6 +211,8 @@ namespace STORE
     void vAddProperty_stz(Stz* szPptName, Stz* szPptValue);
     void vAppendDupSubCards(Card* pCard_SubSet);
 
+    ePB  eBound(void);
+
     eCK  eCard(void);
     void vCard(eCK eCard);
     Stz* szCardNm(void);
@@ -220,6 +222,19 @@ namespace STORE
     i8   iColumnRef_columnOrd(void);
     char cColumnRef_tableSyn(void);
     void vCutSubCard(Card* pSubCard);
+
+    Card* pCard(void);
+    void vCard(Card* pCard);
+    void vCardPrint(Ribbon* pRibbon, i8 iDepth, bool rbPrune);
+    void vClearAllMarks(void);
+    Column* pColumn(void);
+    void vColumn(Column* pColumn);
+    Column* pColumn1(void);
+    void vColumn1(Column* pColumn1);
+    Column* pColumn2(void);
+    void vColumn2(Column* pColumn2);
+    void vConcatTerms(Stz* szTerms);
+    void vConcatTerms(Stz* szTerms, i8 i_From, i8 i_Till=C_UNKNOWN);
 
     void vDeleteChildCard(eCK eCard);
     void vDeleteProperty(Stz* szPptName);
@@ -256,77 +271,6 @@ namespace STORE
     bool bHasUBound(void);
     void vHasUBound(bool bHasUBound);
 
-    char cMark1(void);
-    void vMark1(char cMark1);
-    char cMark2(void);
-    i8   iMark2(void);
-    void vMark2(i8 iMark2);
-    void vMark2(char cMark2);
-    void vMoveToLastChild(Card* pChildCard);
-
-    CardIter* pNewSubCardIter(void);
-
-    i8   iOrdHi(void);
-    void vOrdHi(i8 iOrdHi);
-    i8   iOrdLo(void);
-    void vOrdLo(i8 iOrdLo);
-
-    void vPrintCard(Ribbon* pRibbon, i8 iDepth, bool& rbPrune);
-    void vPrintCard_byForm(Ribbon* pRibbon, i8 iDepth, bool& rbPrune, eCP ePrintForm);
-    void vPrintCard_compressed(Ribbon* pRibbon, i8 iDepth, bool& rbPrune, eCP ePrintForm);
-    void vPrintCard_default(Ribbon* pRibbon, i8 iDepth, bool& rbPrune, eCP ePrintForm);
-    void vPrintCardDetails(Ribbon* pRibbon, i8 iDepth, bool& rbPrune);
-    void vPrintCardName(Ribbon* pRibbon, i8 iDepth, bool& rbPrune);
-    void vPrintCardProperties(Ribbon* pRibbon, i8 iDepth, bool& brPrune, bool bPrintPtyName= true);
-    void vPrintCardValue(Ribbon* pRibbon, i8 iDepth, bool& rbPrune);
-    void vPrintCompressed_childPairs(Ribbon* pRibbon, i8 iDepth, bool& rbPrune);
-    void vPrintHeader(Ribbon* pRibbon);
-    i8   nProperties(void);
-    eTN  eProperty(i8 i_Property);
-    TagSet* pProperties(void);
-    void vPropertiesEnsure(void);
-
-    void vRemoveChild(Card* pCardRemove);
-    void vRemoveSubCard(Card* pCardRemove);
-    void vRenumberSubCards(Card* pParentCard);
-    void vReplaceChildWithKids(Card* pChildCard);
-    void vReplaceSubCard(Card* pSubCard, Card* pWithCard);
-
-    Stz* sz(void);
-
-    char cTableSyn(void);
-    void vTableSyn(char cTableSyn);
-    void vTransferSubCards(Card* pCards);
-    void vTransferFrom(Card* pCards, Card* pFrom,
-                       Card* pAt=nullptr, bool bAfter=true);
-    void vTransferSubset(Card* pCards, Card* pFrom, Card* pTill,
-                         Card* pAt=nullptr, bool bAfter=true);
-    void vTransferTill(Card* pCards, Card* pTill,
-                       Card* pAt=nullptr, bool bAfter=true);
-
-    Stz* szValue(void);
-    void vValue(Stz* szValue);
-    void vVisitAllSub(eCK eCard,std::function<bool(Card* pCard)> bfApply);
-
-
-    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-
-    ePB  eBound(void);
-
-    Card* pCard(void);
-    void vCard(Card* pCard);
-    void vCardPrint(Ribbon* pRibbon, i8 iDepth, bool rbPrune);
-    void vClearAllMarks(void);
-    Column* pColumn(void);
-    void vColumn(Column* pColumn);
-    Column* pColumn1(void);
-    void vColumn1(Column* pColumn1);
-    Column* pColumn2(void);
-    void vColumn2(Column* pColumn2);
-    void vConcatTerms(Stz* szTerms);
-    void vConcatTerms(Stz* szTerms, i8 i_From, i8 i_Till=C_UNKNOWN);
-
-
     Index* pIndex(void);
     void vIndex(Index* pIndex);
     bool bIsAggOp(void);
@@ -345,18 +289,56 @@ namespace STORE
     Stz* szMapFrom(void);
     void vMapFrom(Stz* szMapFrom);
 
+    char cMark1(void);
+    void vMark1(char cMark1);
+    char cMark2(void);
+    i8   iMark2(void);
+    void vMark2(i8 iMark2);
+    void vMark2(char cMark2);
+    void vMoveToLastChild(Card* pChildCard);
+
+    CardIter* pNewSubCardIter(void);
+
+    i8   iOrdHi(void);
+    void vOrdHi(i8 iOrdHi);
+    i8   iOrdLo(void);
+    void vOrdLo(i8 iOrdLo);
+
     i8   iOrdinalStreamColNo(void);
     i8   iOrdinalIndexColNo(void);
 
+    void vPrintCard(Ribbon* pRibbon, i8 iDepth, bool& rbPrune);
+    void vPrintCard_byForm(Ribbon* pRibbon, i8 iDepth, bool& rbPrune, eCP ePrintForm);
+    void vPrintCard_compressed(Ribbon* pRibbon, i8 iDepth, bool& rbPrune, eCP ePrintForm);
+    void vPrintCard_default(Ribbon* pRibbon, i8 iDepth, bool& rbPrune, eCP ePrintForm);
+    void vPrintCardDetails(Ribbon* pRibbon, i8 iDepth, bool& rbPrune);
+    void vPrintCardName(Ribbon* pRibbon, i8 iDepth, bool& rbPrune);
+    void vPrintCardProperties(Ribbon* pRibbon, i8 iDepth, bool& brPrune, bool bPrintPtyName= true);
+    void vPrintCardValue(Ribbon* pRibbon, i8 iDepth, bool& rbPrune);
+    void vPrintCompressed_childPairs(Ribbon* pRibbon, i8 iDepth, bool& rbPrune);
+    void vPrintHeader(Ribbon* pRibbon);
+    i8   nProperties(void);
+    eTN  eProperty(i8 i_Property);
+    TagSet* pProperties(void);
+    void vPropertiesEnsure(void);
 
     i8   iRank(void);
     void vRank(i8 iRank);
     void vRef(void);
     void vRef(Card* pParentCard);
     eRO  eRelOp(void);
+
+    void vRemoveChild(Card* pCardRemove);
+    void vRemoveSubCard(Card* pCardRemove);
+    void vRenumberSubCards(Card* pParentCard);
+    void vReplaceChildWithKids(Card* pChildCard);
+    void vReplaceSubCard(Card* pSubCard, Card* pWithCard);
+
     i8   nRows(void);
     void vRows(i8 nRows);
-  
+
+    Stz* sz(void);
+
     eXK  eSendKind(void);
     void vSendKind(eXK eSendKind);
     i8   iSends(void);
@@ -374,6 +356,21 @@ namespace STORE
     void vTable2(Table* pTable2);
     eTE  eTermEval(void);
     char cTypeShort(void);
+
+    char cTableSyn(void);
+    void vTableSyn(char cTableSyn);
+    void vTransferSubCards(Card* pCards);
+    void vTransferFrom(Card* pCards, Card* pFrom,
+                       Card* pAt=nullptr, bool bAfter=true);
+    void vTransferSubset(Card* pCards, Card* pFrom, Card* pTill,
+                         Card* pAt=nullptr, bool bAfter=true);
+    void vTransferTill(Card* pCards, Card* pTill,
+                       Card* pAt=nullptr, bool bAfter=true);
+
+    Stz* szValue(void);
+    void vValue(Stz* szValue);
+    void vVisitAllSub(eCK eCard,std::function<bool(Card* pCard)> bfApply);
+
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   

@@ -134,6 +134,10 @@ void Partitioner::vCompute_coPtnPredList(void)
     m_p_coPtnPredList->vAppend(m_p_coPtnPred);
   }
 
+  m_pCardCtl->vPrintForm(CK_COLUMNREF,CP_COMPRESSED);
+  m_pCardCtl->vPrintForm(CK_COPTNJOIN,CP_COMPRESSED);
+  m_pCardCtl->vPrintForm(CK_CROSSPTNJOIN,CP_COMPRESSED);
+  //m_pCardCtl->vPrintForm(CK_PREDCMP,CP_COMPRESSED);
 
   if (m_bInteractive)
     m_pBoard_partition->vPrintBoard("Partitioner::vCompute_coPtnPredList"_Stz);

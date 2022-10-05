@@ -169,9 +169,12 @@ void Stager::vLinearize_Stages(void)
   }
 
   L_Exit:
+
+  m_pCardCtl->vPrintSubCards(CK_AGGELIST, false);
+  m_pCardCtl->vPrintSubCards(CK_GBYELIST, false);
+
   if (m_bInteractive)
     m_pBoard->vPrintBoard("Stager::vLinearize_Stages"_Stz);
-
 }
 
 

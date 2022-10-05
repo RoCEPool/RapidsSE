@@ -200,7 +200,7 @@ void Estimator::vExtract_joinOrderSeq(void)
   }
 
   if (m_bInteractive)
-    m_pBoard_costEst->vPrintBoard("Estimator::vEstimate_joinOrder"_Stz);
+    m_pBoard_costEst->vPrintBoard("Estimator::vExtract_joinOrderSeq"_Stz);
 }
 
 

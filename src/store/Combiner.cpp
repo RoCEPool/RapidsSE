@@ -111,9 +111,11 @@ void Combiner::vAdd_combined(void)
     }
   }
 
+  m_pCardCtl->vPrintSubCards(CK_AGGELIST, true);
+  m_pCardCtl->vPrintSubCards(CK_GBYELIST, true);
+
   if (m_bInteractive)
     m_pBoard->vPrintBoard("Combiner::vAdd_combined"_Stz);
-
 }
 
 /*----------------------------------------------------------------------------*/

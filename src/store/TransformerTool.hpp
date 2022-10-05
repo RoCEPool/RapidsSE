@@ -21,6 +21,7 @@ namespace STORE
     Board*      m_pBoard_partition;
     Board*      m_pBoard_permute;
     Board*      m_pBoard_query;
+    CardCtl*    m_pCardCtl;
 
     CardIter*   m_pMainCardIter;
 
