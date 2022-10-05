@@ -132,6 +132,33 @@ Card* BoardIter::pEachMain(eCK eCard, i8& ri_Main)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Card* BoardIter::pEachMain(i8& ri_Main, eCK& reCard)
+{
+  _precondition_( _MAGIC_, CN_BOARDITER, _FOOTER_);
+
+  if (C_UNKNOWN == m_i_Main)
+    m_i_Main = 0;
+  else
+    m_i_Main++;
+
+  if (m_i_Main >= m_pBoard->nMainCards()) {
+    m_pCurrMain = nullptr;
+    ri_Main = C_UNKNOWN;
+    reCard = CK_NONE;
+    return nullptr;
+  }
+
+  m_pCurrMain = m_pBoard->pGetMain(m_i_Main);
+
+  reCard = m_pCurrMain->eCard();
+  ri_Main = m_i_Main;
+
+  return m_pCurrMain;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 Card* BoardIter::pNextMain(void)
 {
   _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
@@ -261,6 +288,7 @@ void BoardIter::vRemoveCurr(eCK eCrossCheck)
     m_pCurrMain = nullptr;
 }
 
+
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
@@ -276,6 +304,33 @@ void BoardIter::vRemoveDeleteCurr(eCK eCrossCheck)
     m_pCurrMain = m_pBoard->pGetMain(m_i_Main);
   else
     m_pCurrMain = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void BoardIter::vSet(Card* pCurrMain)
+{
+  _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
+
+  m_i_Main = m_pBoard->iFindMain(pCurrMain);
+
+  if (C_UNKNOWN == m_i_Main)
+    m_pCurrMain = nullptr;
+  else
+    m_pCurrMain = pCurrMain;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void BoardIter::vSet(i8 i_Main, Card* pCurrMain)
+{
+  _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
+
+  m_i_Main = i_Main;
+  m_pCurrMain = pCurrMain;
 }
 
 /*============================================================================*/

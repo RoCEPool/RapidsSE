@@ -114,6 +114,38 @@ namespace STORE {
   class Card_Unique;
 }
 
+static Stz* C_CARD_AggLevel     = "eAggLevel"_Stz;
+static Stz* C_CARD_AggOp        = "bAggOp"_Stz;
+static Stz* C_CARD_Card         = "pCard"_Stz;
+static Stz* C_CARD_Column       = "pColumn"_Stz;
+static Stz* C_CARD_Column1      = "pColumn1"_Stz;
+static Stz* C_CARD_Column2      = "pColumn2"_Stz;
+static Stz* C_CARD_EBound       = "EBound"_Stz;
+static Stz* C_CARD_Index        = "pIndex"_Stz;
+static Stz* C_CARD_LBound       = "LBound"_Stz;
+static Stz* C_CARD_MapBack      = "szMapBack"_Stz;
+static Stz* C_CARD_MapFrom      = "szMapFrom"_Stz;
+static Stz* C_CARD_Rank         = "iRank"_Stz;
+static Stz* C_CARD_Rows         = "nRows"_Stz;
+static Stz* C_CARD_SendKind     = "eSendKind"_Stz;
+static Stz* C_CARD_Sends        = "iSends"_Stz;
+static Stz* C_CARD_StageTopo    = "eStageTopo"_Stz;
+static Stz* C_CARD_StreamDef    = "pStreamDef"_Stz;
+static Stz* C_CARD_Table        = "pTable"_Stz;
+static Stz* C_CARD_Table1       = "pTable1"_Stz;
+static Stz* C_CARD_Table2       = "pTable2"_Stz;
+static Stz* C_CARD_UBound       = "UBound"_Stz;
+
+static Stz* C_CARD_Invalid      = "bInvalid"_Stz;
+static Stz* C_CARD_JoinedBuff   = "nJoinedBuff"_Stz;
+static Stz* C_CARD_Network      = "nNetwork"_Stz;
+static Stz* C_CARD_OrdHi        = "iOrdHi"_Stz;
+static Stz* C_CARD_OrdLo        = "iOrdLo"_Stz;
+static Stz* C_CARD_PtndJoin     = "i_PtndJoin"_Stz;
+static Stz* C_CARD_Permutation  = "i_Permutation"_Stz;
+static Stz* C_CARD_SentOut      = "nSentOut"_Stz;
+static Stz* C_CARD_TableUsed    = "bTableUsed"_Stz;
+
 namespace STORE
 {
   class CardSet : public ListExo2_t<Card>
@@ -123,7 +155,7 @@ namespace STORE
    ~CardSet(void) noexcept(false);
 
     Card* pGetChild(i8 i_Child);
-    Card* pGetChildCard(i8 i_Child, eCK& reCard);
+    Card* pGetChild(i8 i_Child, eCK& reCard);
 
     void vRemoveSubCards(eCK eCard);
   };
@@ -135,22 +167,19 @@ namespace STORE
              , public CardSet // ListExo2_t<Card>
   {
   protected:
-    char m_caRef[256];
+    char m_caGuage[256];
 
     eCK  m_eCard;
     i8   m_iCardNo;
 
-    i8   m_iSeqNo;
-
+    s256 m_sValue;
     char m_cMark1;
     char m_cMark2;
 
     TagSet* m_pProperties;
 
-    bool  m_bPrintNm;
+    i8   m_iSeqNo;
 
-    s256  m_sValue;
-  
   protected:
     // must be last
     Footer m_xFooter;
@@ -161,6 +190,9 @@ namespace STORE
   
     Card(eCK eCard);
     Card(eCK eCard, Stz* szValue);
+    Card(eCK eCard, Stz* szValue, Stz* szPptName, i8 iPptValue);
+    Card(eCK eCard, Stz* szValue, Stz* szPptName, Object* pPptValue);
+    Card(eCK eCard, Stz* szValue, Stz* szPptName, Stz* szPptValue);
     void vInit(eCK eCard);
 
    ~Card(void) noexcept(false);
@@ -173,11 +205,13 @@ namespace STORE
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     
-    void vAddProperty_nameOnly(Stz* szName);
-    void vAddProperty_int(Stz* szName, i8 iValue);
-    void vAddProperty_ptr(Stz* szName, Object* pValue);
-    void vAddProperty_stz(Stz* szName, Stz* szValue);
+    void vAddProperty_nameOnly(Stz* szPptName);
+    void vAddProperty_int(Stz* szPptName, i8 iPptValue);
+    void vAddProperty_ptr(Stz* szPptName, Object* pPptValue);
+    void vAddProperty_stz(Stz* szPptName, Stz* szPptValue);
     void vAppendDupSubCards(Card* pCard_SubSet);
+
+    ePB  eBound(void);
 
     eCK  eCard(void);
     void vCard(eCK eCard);
@@ -185,14 +219,26 @@ namespace STORE
     i8   iCardNo(void);
     void vCardNo(i8 iCardNo);
     i8   nChildCards(void);
-    //SZ Stz* szColumnRef(void);
     i8   iColumnRef_columnOrd(void);
     char cColumnRef_tableSyn(void);
-    //V void vColumnRef(Stz* szColumnRef);
-    void vCutProperty(Stz* szName);
     void vCutSubCard(Card* pSubCard);
 
+    Card* pCard(void);
+    void vCard(Card* pCard);
+    void vCardPrint(Ribbon* pRibbon, i8 iDepth, bool rbPrune);
+    void vClearAllMarks(void);
+    Column* pColumn(void);
+    void vColumn(Column* pColumn);
+    Column* pColumn1(void);
+    void vColumn1(Column* pColumn1);
+    Column* pColumn2(void);
+    void vColumn2(Column* pColumn2);
+    void vConcatTerms(Stz* szTerms);
+    void vConcatTerms(Stz* szTerms, i8 i_From, i8 i_Till=C_UNKNOWN);
+
     void vDeleteChildCard(eCK eCard);
+    void vDeleteProperty(Stz* szPptName);
+    void vDeletePropertyRecursively(Stz* szPptName);
     void vDump(i8 iDepth=0, Stz* szTitle=nullptr);
     Card* pDupCardAndSubCards(void);
     Card_SubSet* pDupSubCards(void);
@@ -201,28 +247,47 @@ namespace STORE
                       eCK eCard=CK_NONE);
     bool bEquivalent(Card* pCard_arg);
 
-    Card* pFindChildCard(eCK eCard);
-    Card* pFindChildCard(eCK eCard, i8& i_Child);
+    Card* pFindChild(eCK eCard);
+    Card* pFindChild(eCK eCard, i8& i_Child);
     Card* pFindParent(Card* pSubCard_arg);
     Card* pFindSubCard(eCK eCard);
 
     i8      iGetProperty(i8 i_Property);
-    i8      iGetProperty(Stz* szName);
+    i8      iGetProperty(Stz* szPptName);
     Object* pGetProperty(i8 i_Property);
-    Object* pGetProperty(Stz* szName);
+    Object* pGetProperty(Stz* szPptName);
     Stz*    szGetProperty(i8 i_Property);
-    Stz*    szGetProperty(Stz* szName);
+    Stz*    szGetProperty(Stz* szPptName);
     Stz*    szGetPropertyNm(i8 i_Property);
 
+    bool bHasChildWithValue(Stz* szValue);
     bool bHasEBound(void);
     void vHasEBound(bool bHasEBound);
     bool bHasLBound(void);
     void vHasLBound(bool bHasLBound);
     bool bHasProperty(Stz* szName);
     bool bHasSubCard(Card* pGivenCard);
-    bool bHasSubCard(Card* pGivenCard, Card*& pParentCard);
+    bool bHasSubCard(Card* pGivenCard, Card*& rpParentCard);
     bool bHasUBound(void);
     void vHasUBound(bool bHasUBound);
+
+    Index* pIndex(void);
+    void vIndex(Index* pIndex);
+    bool bIsAggOp(void);
+    bool bIsCard(eCK eCard);
+    bool bIsColumnRef(void);
+    bool bIsOrdinalColumnAtom(void);
+    bool bIsOrdinalIndexAtom(void);
+    bool bIsOrdinalStreamTerm(void);
+    bool bIsOrdinalIndexTerm(void);
+    bool bIsPred(void);
+    bool bIsSame(Stz* szArg);
+    bool bIsSeparator(void);
+
+    Stz* szMapBack(void);
+    void vMapBack(Stz* szMapBack);
+    Stz* szMapFrom(void);
+    void vMapFrom(Stz* szMapFrom);
 
     char cMark1(void);
     void vMark1(char cMark1);
@@ -239,6 +304,9 @@ namespace STORE
     i8   iOrdLo(void);
     void vOrdLo(i8 iOrdLo);
 
+    i8   iOrdinalStreamColNo(void);
+    i8   iOrdinalIndexColNo(void);
+
     void vPrintCard(Ribbon* pRibbon, i8 iDepth, bool& rbPrune);
     void vPrintCard_byForm(Ribbon* pRibbon, i8 iDepth, bool& rbPrune, eCP ePrintForm);
     void vPrintCard_compressed(Ribbon* pRibbon, i8 iDepth, bool& rbPrune, eCP ePrintForm);
@@ -253,7 +321,12 @@ namespace STORE
     eTN  eProperty(i8 i_Property);
     TagSet* pProperties(void);
     void vPropertiesEnsure(void);
-    Stz* szPropertyNm(i8 i_Property);
+
+    i8   iRank(void);
+    void vRank(i8 iRank);
+    void vRef(void);
+    void vRef(Card* pParentCard);
+    eRO  eRelOp(void);
 
     void vRemoveChild(Card* pCardRemove);
     void vRemoveSubCard(Card* pCardRemove);
@@ -261,10 +334,29 @@ namespace STORE
     void vReplaceChildWithKids(Card* pChildCard);
     void vReplaceSubCard(Card* pSubCard, Card* pWithCard);
 
+    i8   nRows(void);
+    void vRows(i8 nRows);
+
     Stz* sz(void);
 
-    //SZ Stz* szTablePtn(void);
-    //void vTablePtn(Stz* szTablePtn);
+    eXK  eSendKind(void);
+    void vSendKind(eXK eSendKind);
+    i8   iSends(void);
+    void vSends(i8 iSends);
+    eYG  eStageTopo(void);
+    void vStageTopo(eYG  eStageTopology);
+    StreamDef* pStreamDef(void);
+    void vStreamDef(StreamDef* pStreamDef);
+
+    Table* pTable(void);
+    void vTable(Table* pTable);
+    Table* pTable1(void);
+    void vTable1(Table* pTable1);
+    Table* pTable2(void);
+    void vTable2(Table* pTable2);
+    eTE  eTermEval(void);
+    char cTypeShort(void);
+
     char cTableSyn(void);
     void vTableSyn(char cTableSyn);
     void vTransferSubCards(Card* pCards);
@@ -279,121 +371,6 @@ namespace STORE
     void vValue(Stz* szValue);
     void vVisitAllSub(eCK eCard,std::function<bool(Card* pCard)> bfApply);
 
-
-    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-  
-    eAL  eAggLevel(void);
-    void vAggLevel(eAL eAggLevel);
-    bool bAggOp(void);
-    void vAggOp(void);
-    //SZ Stz* szAnd(void);
-    //void vAnd(Stz* szAnd);
-    //SZ Stz* szAs(void);
-    //void vAs(Stz* szAs);
-
-    ePB  eBound(void);
-
-    Card* pCard(void);
-    void vCard(Card* pCard);
-    void vCardPrint(Ribbon* pRibbon, i8 iDepth, bool rbPrune);
-    void vClearAllMarks(void);
-    //SZ Stz* szColNm(void);
-    //void vColNm(Stz* szColNm);
-    Column* pColumn(void);
-    void vColumn(Column* pColumn);
-    Column* pColumn1(void);
-    void vColumn1(Column* pColumn1);
-    Column* pColumn2(void);
-    void vColumn2(Column* pColumn2);
-    //SZ Stz* szComment(void);
-    //void vComment(Stz* szComment);
-    void vConcatTerms(Stz* szTerms);
-    void vConcatTerms(Stz* szTerms, i8 i_From, i8 i_Till=C_UNKNOWN);
-
-    //SZ Stz* szCmp(void);
-    //void vCmp(Stz* szCmp);
-
-    //SZ Stz* szDirn(void);
-//    void vDirn(Stz* szAsNm);
-//
-
-    bool bHasAggOp(void);
-    Card_Term* pHeadTerm(void);
-
-    Index* pIndex(void);
-    void vIndex(Index* pIndex);
-    bool bIsAggOp(void);
-    bool bIsCard(eCK eCard);
-    bool bIsColumnRef(void);
-    bool bIsOrdinalColumnAtom(void);
-    bool bIsOrdinalIndexAtom(void);
-    bool bIsOrdinalStreamTerm(void);
-    bool bIsOrdinalIndexTerm(void);
-    bool bIsPred(void);
-    bool bIsSame(Stz* szArg);
-    bool bIsSeparator(void);
-
-    //Stz* szLevel(void);
-    //void vLevel(Stz* szLevel);
-
-    Stz* szMapBack(void);
-    void vMapBack(Stz* szMapBack);
-    Stz* szMapFrom(void);
-    void vMapFrom(Stz* szMapFrom);
-    //SZ Stz* szMode(void);
-    //void vMode(Stz* szMode);
-  
-//    Stz* szStageNm(void);
-//    void vStageNm(Stz* szStageNm);
-
-    i8   iOption(void);
-    void vOption(i8 iOption);
-    //SZ Stz* szOption(void);
-    //void vOption(Stz* szOption);
-    //SZ Stz* szOr(void);
-    //void vOr(Stz* szOr);
-    //SZ Stz* szOrdinal(void);
-    //void vOrdinal(Stz* szOrdinal);
-
-    i8   iOrdinalStreamColNo(void);
-    i8   iOrdinalIndexColNo(void);
-
-    Card_Term* pPopTerm(void);
-  
-    //SZ Stz* szQueryNm(void);
-    //void vQueryNm(Stz* szQueryNm);
-
-    i8   iRank(void);
-    void vRank(i8 iRank);
-    void vRef(void);
-    void vRef(Card* pParentCard);
-    eRO  eRelOp(void);
-    i8   nRows(void);
-    void vRows(i8 nRows);
-  
-    eXK  eSendKind(void);
-    void vSendKind(eXK eSendKind);
-    i8   iSends(void);
-    void vSends(i8 iSends);
-    //SZ Stz* szStageNm(void);
-    //void vStageNm(Stz* szStageNm);
-    eYG  eStageTopo(void);
-    void vStageTopo(eYG  eStageTopology);
-    StreamDef* pStreamDef(void);
-    void vStreamDef(StreamDef* pStreamDef);
-
-    Table* pTable(void);
-    void vTable(Table* pTable);
-    Table* pTable1(void);
-    void vTable1(Table* pTable1);
-    Table* pTable2(void);
-    void vTable2(Table* pTable2);
-    //SZ Stz* szTerm(void);
-    //void vTerm(Stz* szTerm);
-    eTE  eTermEval(void);
-    //SZ Stz* szType(void);
-    char cTypeShort(void);
-    //void vType(Stz* szType);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   

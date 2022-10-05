@@ -130,103 +130,41 @@ void Transformer::vTransform2(void)
 
   vTrace("Transformer running vTransform2\n"_Stz);
 
-  Board* pBoard_query = m_pBench->pGetBoard(BK_QUERY);
-
-  m_pCardCtl->vPrintSubCards(CK_AGGELIST, false);
-  m_pCardCtl->vPrintSubCards(CK_GBYELIST, false);
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  m_pStager->vLinearize_Stages();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Stager::vLinearize_Stages"_Stz);
-
-  m_pCombiner->vDelete_Combines();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Combiner::vDelete_Combines"_Stz);
-
-  m_pSender->vDelete_Sends();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Sender::vDelete_Sends"_Stz);
-
-
-
-
+  m_pStager->vLinearize_stages();
+  m_pCombiner->vDelete_combines();
+  m_pSender->vDelete_sends();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // convert all <filter> from calc form to calcBool
-  m_pFiltrate->vCalc_to_calcBool();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Filtrate::vCalc_to_calcBool"_Stz);
-
-
-
-
+  m_pFiltrate->vConvert_calc_to_calcBool();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append <stream> to all <scan> and then to all <absJoin>
-  m_pCardCtl->vPrintFormSubCards(CK_STREAM, CP_DEFAULT, true);
-
-  //m_pCardCtl->vPrintSubCards(CK_EXPR,0);
-
-  m_pCardCtl->vPrintForm(CK_PREDAND, CP_CARDFORM);
-  m_pCardCtl->vPrintForm(CK_PREDCMP, CP_CARDFORM);
-  m_pCardCtl->vPrintForm(CK_PREDOR, CP_CARDFORM);
-  m_pCardCtl->vPrintForm(CK_TERM, CP_CARDFORM);
-
-  m_pStreamer->vAppendStream_to_Scan();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Streamer::vAppendStream_to_Scan"_Stz);
-
-
-
-
+  m_pStreamer->vAppend_stream_to_scan();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // each <scan> <absJoin> becomes <absJoin>/<scan>
   m_pJoiner->vSubsume_scan();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Joiner::vSubsume_scan"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //
-  m_pStreamer->vOrdinal_Range();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Streamer::vOrdinal_Range"_Stz);
-
-
-
+  m_pStreamer->vCalc_streamOrdinalRanges();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  m_pTabular->vAdd_TableSyn();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Tabular::vAdd_TableSyn"_Stz);
-
-  m_pTabular->vAdd_TablePtn();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Tabular::vAdd_TablePtn"_Stz);
+  m_pTabular->vAdd_tableSyn();
+  m_pTabular->vAdd_tablePtn();
 
   m_pPartitioner->vExtract_tableList();
 
-  m_pColumnar->vAdd_ColumnRef();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Columnar::vAdd_ColumnRef"_Stz);
-
+  m_pColumnar->vAdd_columnRef();
 
   m_pPartitioner->vExtract_joinPredList();
-
-  m_pCardCtl->vPrintForm(CK_COLUMNREF,CP_COMPRESSED);
-  m_pCardCtl->vPrintForm(CK_COPTNJOIN,CP_COMPRESSED);
-  m_pCardCtl->vPrintForm(CK_CROSSPTNJOIN,CP_COMPRESSED);
-  //m_pCardCtl->vPrintForm(CK_PREDCMP,CP_COMPRESSED);
-
   m_pPartitioner->vCompute_coPtnPredList();
   m_pPartitioner->vCompute_coPtnJoinList();
   m_pPartitioner->vCompute_crossPtnJoinList();
 
   m_pPartitioner->vCompute_ptndJointSet();
-
 
   m_pPermutor->vCopy_ptndJoinSet();
   m_pPermutor->vGenerate_ptndPermutations();
@@ -235,61 +173,34 @@ void Transformer::vTransform2(void)
   m_pEstimator->vSetup_costEst();
   m_pEstimator->vEstimate_ptndJoins();
   m_pEstimator->vEstimate_network();
+  m_pEstimator->vEstimate_joinOrder();
+  m_pEstimator->vExtract_joinOrderSeq();
 
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // inspect all <filter> and attempt to move <predCmp> after <scan>/<absJoin>
-  m_pFiltrate->vAssignLeftwards();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Filtrate::vAssignLeftwards"_Stz);
+  m_pFiltrate->vMove_predCmp_leftwards();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  m_pFiltrate->vCopyLeftwards();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Filtrate::vCopyLeftwards"_Stz);
+  m_pFiltrate->vCopy_predCmp_leftwards();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete any <filter> which is effectively empty
-  m_pFiltrate->vDeleteEmpty_filter();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Filtrate::vDeleteEmpty_filter"_Stz);
+  m_pFiltrate->vDelete_empty_filter();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  m_pCardCtl->vPrintFormSubCards(CK_STREAM, CP_DEFAULT, true);
-  m_pCardCtl->vPrintForm(CK_PREDAND, CP_DEFAULT);
-  m_pCardCtl->vPrintForm(CK_PREDCMP, CP_DEFAULT);
-  m_pCardCtl->vPrintForm(CK_PREDOR, CP_DEFAULT);
-  m_pCardCtl->vPrintForm(CK_TERM, CP_DEFAULT);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  m_pJoiner->vAppendPrelim_indexJoin();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Joiner::vAppendPrelim_indexJoin"_Stz);
+  m_pJoiner->vAppend_preliminary_indexJoin();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pJoiner->vMark_idxCol();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Joiner::vMark_idxCol"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pJoiner->vForm_joinPred();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Joiner::vForm_joinPred"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  m_pCardCtl->vPrintFormSubCards(CK_STREAM, CP_DEFAULT, true);
 
   m_pFiltrate->vCull_indexJoin_filterPred();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Filtrate::vCull_indexJoin_filterPred"_Stz);
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -307,68 +218,25 @@ void Transformer::vTransform2(void)
    */
 
   m_pIndexer->vAppend_indexList_to_scan();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Indexer::vAppend_indexList_to_scan"_Stz);
-
   m_pIndexer->vMark_scan_pred_bounds();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Indexer::vMark_scan_pred_bounds"_Stz);
-
   m_pIndexer->vMark_scan_pred_ordinals();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Indexer::vMark_scan_pred_ordinals"_Stz);
 
   m_pScanning->vAdd_scanPred();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Scanning::vAdd_scanPred"_Stz);
-
-  m_pCardCtl->vPrintFormSubCards(CK_STREAM, CP_CARDFORM, false);
-
   m_pScanning->vCull_markedPred();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Scanning::vCull_markedPred"_Stz);
-
   m_pScanning->vPromote_scan_to_indexScan();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Scanning::vPromote_scan_to_indexScan"_Stz);
-
-
-
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  m_pFiltrate->vDeleteEmpty_sub_filter();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Filtrate::vDeleteEmpty_sub_filter"_Stz);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  m_pFiltrate->vDelete_empty_sub_filter();
 
   m_pJoiner->vReduce_absJoin();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Joiner::vReduce_absJoin"_Stz);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pSorter->vCull_sby_SameAs_gby();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Sorter::vCull_sby_SameAs_gby"_Stz);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pFiltrate->vIndividuate_filter();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Filtrate::vIndividuate_filter"_Stz);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  m_pStager->vAdd_stages();
 
-  m_pStager->vAdd_Stages2();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Stager::vAdd_Stages"_Stz);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  m_pCardCtl->vPrintSubCards(CK_AGGELIST, true);
-  m_pCardCtl->vPrintSubCards(CK_GBYELIST, true);
-
-  m_pCombiner->vAdd_combined3();
-  if (m_bInteractive)
-    pBoard_query->vPrintBoard("Combiner::vAdd_combined2"_Stz);
+  m_pCombiner->vAdd_combined();
 }
 
 /*============================================================================*/

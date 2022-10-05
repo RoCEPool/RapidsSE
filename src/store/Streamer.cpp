@@ -43,7 +43,7 @@ Streamer::~Streamer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* calc ordinal ranges                                                        */
 /*----------------------------------------------------------------------------*/
-void Streamer::vOrdinal_Range(void)
+void Streamer::vCalc_streamOrdinalRanges(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMER,_FOOTER_);
 
@@ -63,9 +63,9 @@ void Streamer::vOrdinal_Range(void)
       pCard_stream->vMark2(cStream++);
 
       i8 nStreamCols = pCard_stream->nStreamCols();
-      pCard_stream->vAddProperty_int("iOrdLo"_Stz,iOrdLo);
+      pCard_stream->vAddProperty_int(C_CARD_OrdLo,iOrdLo);
       iOrdHi = iOrdLo + nStreamCols - 1;
-      pCard_stream->vAddProperty_int("iOrdHi"_Stz,iOrdHi);
+      pCard_stream->vAddProperty_int(C_CARD_OrdHi,iOrdHi);
       iOrdLo = iOrdHi + 1;
 
       continue;
@@ -79,9 +79,9 @@ void Streamer::vOrdinal_Range(void)
       pCard_stream->vMark2(cStream++);
 
       i8 nStreamCols = pCard_stream->nStreamCols();
-      pCard_stream->vAddProperty_int("iOrdLo"_Stz,iOrdLo);
+      pCard_stream->vAddProperty_int(C_CARD_OrdLo,iOrdLo);
       iOrdHi = iOrdLo + nStreamCols - 1;
-      pCard_stream->vAddProperty_int("iOrdHi"_Stz,iOrdHi);
+      pCard_stream->vAddProperty_int(C_CARD_OrdHi,iOrdHi);
       iOrdLo = iOrdHi + 1;
 
       continue;
@@ -90,12 +90,14 @@ void Streamer::vOrdinal_Range(void)
 
   vEndIteration();
 
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Streamer::vCalc_streamOrdinalRanges"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
 /* append <stream> to all <scan>                                              */
 /*----------------------------------------------------------------------------*/
-void Streamer::vAppendStream_to_Scan(void)
+void Streamer::vAppend_stream_to_scan(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMER,_FOOTER_);
 
@@ -117,6 +119,18 @@ void Streamer::vAppendStream_to_Scan(void)
   }
 
   vEndIteration();
+
+  m_pCardCtl->vPrintFormSubCards(CK_STREAM, CP_DEFAULT, true);
+
+  //m_pCardCtl->vPrintSubCards(CK_EXPR,0);
+
+  m_pCardCtl->vPrintForm(CK_PREDAND, CP_CARDFORM);
+  m_pCardCtl->vPrintForm(CK_PREDCMP, CP_CARDFORM);
+  m_pCardCtl->vPrintForm(CK_PREDOR, CP_CARDFORM);
+  m_pCardCtl->vPrintForm(CK_TERM, CP_CARDFORM);
+
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Streamer::vAppend_stream_to_scan"_Stz);
 }
 
 

@@ -57,7 +57,7 @@ Card_StreamColList* Card_ELIST::pDerive_StreamColList(void)
   eCK eSubCard;
   i8 nSubCards = this->nChildCards();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card *pSubCard = pGetChildCard(i_Child, eSubCard);
+    Card *pSubCard = pGetChild(i_Child, eSubCard);
 
     Card *pCard_Type = pSubCard->pFindSubCard(CK_TYPE);
     Card *pCard_As = pSubCard->pFindSubCard(CK_AS);

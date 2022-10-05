@@ -44,7 +44,7 @@ Tabular::~Tabular(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add table partitions <tablePtn> to all <table>                             */
 /*----------------------------------------------------------------------------*/
-void Tabular::vAdd_TablePtn(void)
+void Tabular::vAdd_tablePtn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABULAR,_FOOTER_);
 
@@ -62,13 +62,15 @@ void Tabular::vAdd_TablePtn(void)
     m_p_table->vAppend(p_tablePtn);
   }
 
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Tabular::vAdd_tablePtn"_Stz);
 }
 
 
 /*----------------------------------------------------------------------------*/
 /* add table synonyms <tableSyn> to all <table>                               */
 /*----------------------------------------------------------------------------*/
-void Tabular::vAdd_TableSyn(void)
+void Tabular::vAdd_tableSyn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABULAR,_FOOTER_);
 
@@ -97,6 +99,8 @@ void Tabular::vAdd_TableSyn(void)
     cTableSyn++;
   }
 
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Tabular::vAdd_tableSyn"_Stz);
 }
 
 

@@ -13,7 +13,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Option(i8 iOption);
+    Card_Option(Stz* szOption);
    ~Card_Option(void) noexcept(false);
   };
 

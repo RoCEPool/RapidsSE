@@ -44,7 +44,7 @@ Columnar::~Columnar(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add colummn ref's                                                          */
 /*----------------------------------------------------------------------------*/
-void Columnar::vAdd_ColumnRef(void)
+void Columnar::vAdd_columnRef(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMNAR,_FOOTER_);
 
@@ -80,6 +80,9 @@ void Columnar::vAdd_ColumnRef(void)
   }
 
   delete pResolver;
+
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Columnar::vAdd_columnRef"_Stz);
 }
 
 

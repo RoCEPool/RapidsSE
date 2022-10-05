@@ -99,6 +99,10 @@ void Scanning::vAdd_scanPred(void)
     m_p_filter->vVisitAllSub(CK_PREDCMP,bfX);
 
   }
+
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Scanning::vAdd_scanPred"_Stz);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -128,6 +132,10 @@ void Scanning::vCull_markedPred(void)
     m_p_filter = nullptr;
   }
 
+  m_pCardCtl->vPrintFormSubCards(CK_STREAM, CP_CARDFORM, false);
+
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Scanning::vCull_markedPred"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -147,6 +155,9 @@ void Scanning::vPromote_scan_to_indexScan(void)
 
     m_p_scan->vCard(CK_INDEXSCAN);
   }
+
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Scanning::vPromote_scan_to_indexScan"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -43,7 +43,7 @@ Card* CardSet::pGetChild(i8 i_Child)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card* CardSet::pGetChildCard(i8 i_Child, eCK& reCard)
+Card* CardSet::pGetChild(i8 i_Child, eCK& reCard)
 {
   Card* pCard = pGet(i_Child);
   
@@ -118,26 +118,68 @@ Card::Card(eCK eCard, Stz* szValue)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Card::Card(eCK eCard, Stz* szValue, Stz* szPptName, i8 iPptValue)
+    : Object(CN_CARD)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vInit(eCard);
+
+  vValue(szValue);
+
+  vAddProperty_int(szPptName,iPptValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Card::Card(eCK eCard, Stz* szValue, Stz* szPptName, Object* pPptValue)
+    : Object(CN_CARD)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vInit(eCard);
+
+  vValue(szValue);
+
+  vAddProperty_ptr(szPptName,pPptValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Card::Card(eCK eCard, Stz* szValue, Stz* szPptName, Stz* szPptValue)
+    : Object(CN_CARD)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vInit(eCard);
+
+  vValue(szValue);
+
+  vAddProperty_stz(szPptName,szPptValue);
+}
+
+/*----------------------------------------------------------------------------*/
 /* init                                                                       */
 /*----------------------------------------------------------------------------*/
 void Card::vInit(eCK eCard)
 {
   static i8 iSeqNo = 0;
 
-  MemLib::vZero(m_caRef, sizeof(m_caRef), CN_CARD);
+  MemLib::vZero(m_caGuage, sizeof(m_caGuage), CN_CARD);
 
-  m_eCard = eCard;
+  m_eCard   = eCard;
   m_iCardNo = C_UNKNOWN;
-
-  m_iSeqNo = iSeqNo++;
 
   m_cMark1 = ' ';
   m_cMark2 = ' ';
 
   m_pProperties = nullptr;
 
-  m_bPrintNm = true;
-
+  m_iSeqNo = iSeqNo++;
   gapCard[m_iSeqNo] = this;
 
 //  if (35 == m_iSeqNo) {
@@ -244,53 +286,53 @@ eCK Card::eToECard(Stz* szCardNm)
 /*----------------------------------------------------------------------------*/
 /* add given property                                                         */
 /*----------------------------------------------------------------------------*/
-void Card::vAddProperty_nameOnly(Stz* szName)
+void Card::vAddProperty_nameOnly(Stz* szPptName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_)
 
   if (! m_pProperties)
     m_pProperties = new TagSet;
   
-  m_pProperties->vReplace(szName,"yes"_Stz);
+  m_pProperties->vReplace(szPptName, "yes"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
 /* add given property                                                         */
 /*----------------------------------------------------------------------------*/
-void Card::vAddProperty_int(Stz* szName, i8 iValue)
+void Card::vAddProperty_int(Stz* szPptName, i8 iPptValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (! m_pProperties)
     m_pProperties = new TagSet;
   
-  m_pProperties->vReplace(szName,iValue);
+  m_pProperties->vReplace(szPptName, iPptValue);
 }
 
 /*----------------------------------------------------------------------------*/
 /* add given property                                                         */
 /*----------------------------------------------------------------------------*/
-void Card::vAddProperty_ptr(Stz* szName, Object* pValue)
+void Card::vAddProperty_ptr(Stz* szPptName, Object* pPptValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (! m_pProperties)
     m_pProperties = new TagSet;
   
-  m_pProperties->vReplace(szName,pValue);
+  m_pProperties->vReplace(szPptName, pPptValue);
 }
 
 /*----------------------------------------------------------------------------*/
 /* add given property                                                         */
 /*----------------------------------------------------------------------------*/
-void Card::vAddProperty_stz(Stz* szName, Stz* szValue)
+void Card::vAddProperty_stz(Stz* szPptName, Stz* szPptValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (! m_pProperties)
     m_pProperties = new TagSet;
   
-  m_pProperties->vReplace(szName,szValue);
+  m_pProperties->vReplace(szPptName, szPptValue);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -378,31 +420,6 @@ i8 Card::nChildCards(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get columnRef                                                              */
-/*----------------------------------------------------------------------------*/
-//Stz* Card::szColumnRef(void)
-//{
-//  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-//
-//  Stz *szColumnRef = szGetProperty("szColumnRef"_Stz);
-//
-//  RASSERT(szValue()->bSame(szColumnRef));
-//
-//  return szValue();
-//}
-
-/*----------------------------------------------------------------------------*/
-/* set columnRef                                                              */
-/*----------------------------------------------------------------------------*/
-//void Card::vColumnRef(Stz* szColumnRef)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-//
-//  vAddProperty_stz("szColumnRef"_Stz,szColumnRef);
-//  vValue(szColumnRef);
-//}
-
-/*----------------------------------------------------------------------------*/
 /* get column ordinal of column ref                                           */
 /*----------------------------------------------------------------------------*/
 i8 Card::iColumnRef_columnOrd(void)
@@ -435,19 +452,6 @@ char Card::cColumnRef_tableSyn(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* cut given property                                                         */
-/*----------------------------------------------------------------------------*/
-void Card::vCutProperty(Stz* szName)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (! m_pProperties)
-    return;
-  
-  m_pProperties->vDelete(szName);
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card::vCutSubCard(Card* pSubCard)
@@ -465,11 +469,40 @@ void Card::vDeleteChildCard(eCK eCard)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   i8 i_Child;
-  Card* pChildCard = pFindChildCard(eCard,i_Child);
+  Card* pChildCard = pFindChild(eCard, i_Child);
 
   if (pChildCard) {
     vRemoveChild(pChildCard);
     delete pChildCard;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete given property                                                      */
+/*----------------------------------------------------------------------------*/
+void Card::vDeleteProperty(Stz* szPptName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (! m_pProperties)
+    return;
+
+  m_pProperties->vDelete(szPptName);
+}
+
+/*----------------------------------------------------------------------------*/
+/* duplicate this card and its sub cards                                      */
+/*----------------------------------------------------------------------------*/
+void Card::vDeletePropertyRecursively(Stz* szPptName)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vDeleteProperty(szPptName);
+
+  i8 nSubCards = this->nChildCards();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card *pChildCard = pGetChild(i_Child);
+    pChildCard->vDeletePropertyRecursively(szPptName);
   }
 }
 
@@ -500,17 +533,17 @@ void Card::vDump(i8 iDepth, Stz* szTitle)
 
   if (*szValue()->azChar()) {
     vTrace("%s%s %s { %s }\n"_Stz
-        ,Stz::szTab(iDepth)
-        ,m_caRef[0] ? m_caRef : (char*)aCK[m_eCard]
-        ,szValue()
-        ,sProperties.szStz()
+        , Stz::szTab(iDepth)
+        , m_caGuage[0] ? m_caGuage : (char*)aCK[m_eCard]
+        , szValue()
+        , sProperties.szStz()
     );
   }
   else {
     vTrace("%s%s { %s }\n"_Stz
-        ,Stz::szTab(iDepth)
-        ,m_caRef[0] ? m_caRef : (char*)aCK[m_eCard]
-        ,sProperties.szStz()
+        , Stz::szTab(iDepth)
+        , m_caGuage[0] ? m_caGuage : (char*)aCK[m_eCard]
+        , sProperties.szStz()
     );
   }
 
@@ -627,7 +660,7 @@ bool Card::bEquivalent(Card* pCard_arg)
   eCK eSubCard;
   i8 nSubCards = this->nChildCards();
   for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
-    Card* pSubCard = pGetChildCard(i_Sub, eSubCard);
+    Card* pSubCard = pGetChild(i_Sub, eSubCard);
     
     Card* pSubCard_arg = pCard_arg->pFindSubCard(eSubCard);
     if (! pSubCard_arg)
@@ -643,13 +676,13 @@ bool Card::bEquivalent(Card* pCard_arg)
 /*----------------------------------------------------------------------------*/
 /* find immediate child-card                                                  */
 /*----------------------------------------------------------------------------*/
-Card* Card::pFindChildCard(eCK eCard)
+Card* Card::pFindChild(eCK eCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   i8 i_Child;
 
-  Card* pFoundCard = pFindChildCard(eCard,i_Child);
+  Card* pFoundCard = pFindChild(eCard, i_Child);
 
   return pFoundCard;
 }
@@ -657,7 +690,7 @@ Card* Card::pFindChildCard(eCK eCard)
 /*----------------------------------------------------------------------------*/
 /* find immediate child-card                                                  */
 /*----------------------------------------------------------------------------*/
-Card* Card::pFindChildCard(eCK eCard, i8& i_Child)
+Card* Card::pFindChild(eCK eCard, i8& i_Child)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -666,7 +699,7 @@ Card* Card::pFindChildCard(eCK eCard, i8& i_Child)
   eCK eSubCard;
   i8 nSubCards = this->nChildCards();
   for (i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card* pSubCard = pGetChildCard(i_Child, eSubCard);
+    Card* pSubCard = pGetChild(i_Child, eSubCard);
 
     if (eCard == pSubCard->eCard()) {
       pFoundCard = pSubCard;
@@ -730,14 +763,14 @@ Card* Card::pFindSubCard(eCK eCard)
 /*----------------------------------------------------------------------------*/
 /* get given property                                                         */
 /*----------------------------------------------------------------------------*/
-i8 Card::iGetProperty(Stz* szName)
+i8 Card::iGetProperty(Stz* szPptName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (! m_pProperties)
     return C_UNKNOWN;
   
-  i8 iValue = m_pProperties->iValue(szName);
+  i8 iValue = m_pProperties->iValue(szPptName);
   
   return iValue;
 }
@@ -760,14 +793,14 @@ i8 Card::iGetProperty(i8 i_Property)
 /*----------------------------------------------------------------------------*/
 /* get given property                                                         */
 /*----------------------------------------------------------------------------*/
-Object* Card::pGetProperty(Stz* szName)
+Object* Card::pGetProperty(Stz* szPptName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (! m_pProperties)
     return nullptr;
   
-  Object* pValue = m_pProperties->pValue(szName);
+  Object* pValue = m_pProperties->pValue(szPptName);
   
   return pValue;
 }
@@ -790,14 +823,14 @@ Object* Card::pGetProperty(i8 i_Property)
 /*----------------------------------------------------------------------------*/
 /* get given property                                                         */
 /*----------------------------------------------------------------------------*/
-Stz* Card::szGetProperty(Stz* szName)
+Stz* Card::szGetProperty(Stz* szPptName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (! m_pProperties)
     return nullptr;
   
-  Stz* szValue = m_pProperties->szValue(szName);
+  Stz* szValue = m_pProperties->szValue(szPptName);
   
   return szValue;
 }
@@ -835,6 +868,23 @@ Stz* Card::szGetPropertyNm(i8 i_Property)
 /*----------------------------------------------------------------------------*/
 /* does card have the EBound property ?                                       */
 /*----------------------------------------------------------------------------*/
+bool Card::bHasChildWithValue(Stz* szValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (i8 i_Child = 0; i_Child < nChildCards(); i_Child++) {
+    Card* pChildCard = pGetChild(i_Child);
+
+    if (pChildCard->szValue()->bSame(szValue))
+      return true;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does card have the EBound property ?                                       */
+/*----------------------------------------------------------------------------*/
 bool Card::bHasEBound(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -858,8 +908,8 @@ void Card::vHasEBound(bool bHasEBound)
     vAddProperty_nameOnly("EBound"_Stz);
     return;
   }
-  
-  vCutProperty("EBound"_Stz);
+
+  vDeleteProperty("EBound"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -888,8 +938,8 @@ void Card::vHasLBound(bool bHasLBound)
     vAddProperty_nameOnly("LBound"_Stz);
     return;
   }
-  
-  vCutProperty("LBound"_Stz);
+
+  vDeleteProperty("LBound"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -978,8 +1028,8 @@ void Card::vHasUBound(bool bHasUBound)
     vAddProperty_nameOnly("UBound"_Stz);
     return;
   }
-  
-  vCutProperty("UBound"_Stz);
+
+  vDeleteProperty("UBound"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1207,9 +1257,6 @@ void Card::vPrintCardName(Ribbon* pRibbon, i8 iDepth, bool& rbPrune)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (! m_bPrintNm)
-    return;
-
   s32 sName;
 
   Board* pBoard = _pBoard(pRibbon->pSurface());
@@ -1355,21 +1402,6 @@ void Card::vPropertiesEnsure(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get name of property                                                       */
-/*----------------------------------------------------------------------------*/
-Stz* Card::szPropertyNm(i8 i_Property)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (! m_pProperties)
-    return nullptr;
-  
-  Stz* szName = m_pProperties->szName(i_Property);
-  
-  return szName;
-}
-
-/*----------------------------------------------------------------------------*/
 /* remove given child card (non-recursive)                                    */
 /*----------------------------------------------------------------------------*/
 void Card::vRemoveChild(Card* pCardRemove)
@@ -1480,31 +1512,6 @@ Stz* Card::sz(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get table ptn                                                              */
-/*----------------------------------------------------------------------------*/
-//Stz* Card::szTablePtn(void)
-//{
-//  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-//
-//  Stz *szTablePtn = szGetProperty("szTablePtn"_Stz);
-//
-//  RASSERT(szValue()->bSame(szTablePtn));
-//
-//  return szValue();
-//}
-
-/*----------------------------------------------------------------------------*/
-/* set table ptn                                                              */
-/*----------------------------------------------------------------------------*/
-//void Card::vTablePtn(Stz* szTablePtn)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-//
-//  vAddProperty_stz("szTablePtn"_Stz,szTablePtn);
-//  vValue(szTablePtn);
-//}
-
-/*----------------------------------------------------------------------------*/
 /* set table synonym                                                          */
 /*----------------------------------------------------------------------------*/
 char Card::cTableSyn(void)
@@ -1531,7 +1538,6 @@ void Card::vTableSyn(char cTableSyn)
   s32 sSyn;
   sSyn.vSprint("%c"_Stz,cTableSyn);
 
-  //vAddProperty_stz("szTableSyn"_Stz,sSyn);
   vValue(sSyn);
 }
 
@@ -1688,100 +1694,7 @@ void Card::vVisitAllSub(eCK eCard, std::function<bool(Card* pCard)> bfApply)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* get aggregate level                                                        */
-/*----------------------------------------------------------------------------*/
-eAL Card::eAggLevel(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  eAL eAggLevel = (eAL)iGetProperty("eAggLevel"_Stz);
-  
-  return eAggLevel;
-}
 
-/*----------------------------------------------------------------------------*/
-/* set aggregate level                                                        */
-/*----------------------------------------------------------------------------*/
-void Card::vAggLevel(eAL eAggLvl)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  vAddProperty_int("eAggLevel"_Stz,eAggLvl);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get agg op                                                                 */
-/*----------------------------------------------------------------------------*/
-bool Card::bAggOp(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  if (bHasProperty("bAggOp"_Stz))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set agg op                                                                 */
-/*----------------------------------------------------------------------------*/
-void Card::vAggOp(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  vAddProperty_nameOnly("bAggOp"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get and                                                                   */
-/*----------------------------------------------------------------------------*/
-//Stz* Card::szAnd(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-//
-//  Stz* szAnd = szGetProperty("szAnd"_Stz);
-//
-//  RASSERT(szValue()->bSame(szAnd));
-//
-//  return szValue();
-//}
-
-/*----------------------------------------------------------------------------*/
-/* set aand                                                                   */
-/*----------------------------------------------------------------------------*/
-//void Card::vAnd(Stz* szAnd)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-//
-//  vAddProperty_stz("szAnd"_Stz,szAnd);
-//  vValue(szAnd);
-//}
-
-/*----------------------------------------------------------------------------*/
-/* get as name                                                                */
-/*----------------------------------------------------------------------------*/
-//Stz* Card::szAs(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-//
-//  Stz* szAs = szGetProperty("szAs"_Stz);
-//
-//  RASSERT(szValue()->bSame(szAs));
-//
-//  return szValue();
-//}
-
-/*----------------------------------------------------------------------------*/
-/* set as name                                                                */
-/*----------------------------------------------------------------------------*/
-//void Card::vAs(Stz* szAs)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-//
-//  vAddProperty_stz("szAs"_Stz,szAs);
-//  vValue(szAs);
-//}
 
 /*----------------------------------------------------------------------------*/
 /* evaluate bound                                                              */
@@ -1877,56 +1790,6 @@ void Card::vClearAllMarks(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get colNm                                                                  */
-/*----------------------------------------------------------------------------*/
-//Stz* Card::szColNm(void)
-//{
-//  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-//
-//  Stz *szColNm = szGetProperty("szColNm"_Stz);
-//
-//  RASSERT(szValue()->bSame(szColNm));
-//
-//  return szValue();
-//}
-
-/*----------------------------------------------------------------------------*/
-/* set colNm                                                                  */
-/*----------------------------------------------------------------------------*/
-//void Card::vColNm(Stz* szColNm)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-//
-//  vAddProperty_stz("szColNm"_Stz,szColNm);
-//  vValue(szColNm);
-//}
-
-/*----------------------------------------------------------------------------*/
-/* get cmp                                                                    */
-/*----------------------------------------------------------------------------*/
-//Stz* Card::szCmp(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-//
-//  Stz* szCmp = szGetProperty("szCmp"_Stz);
-//
-//  RASSERT(szValue()->bSame(szCmp));
-//
-//  return szValue();
-//}
-
-/*----------------------------------------------------------------------------*/
-/* set cmp                                                                    */
-/*----------------------------------------------------------------------------*/
-//void Card::vCmp(Stz* szCmp)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-//
-//  vAddProperty_stz("szCmp"_Stz,szCmp);
-//  vValue(szCmp);
-//}
-
-/*----------------------------------------------------------------------------*/
 /* get column                                                                 */
 /*----------------------------------------------------------------------------*/
 Column* Card::pColumn(void)
@@ -1993,31 +1856,6 @@ void Card::vColumn2(Column* pColumn2)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get comment                                                                */
-/*----------------------------------------------------------------------------*/
-//Stz* Card::szComment(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-//
-//  Stz* szComment = szGetProperty("szComment"_Stz);
-//
-//  RASSERT(szValue()->bSame(szComment));
-//
-//  return szValue();
-//}
-
-/*----------------------------------------------------------------------------*/
-/* set as name                                                                */
-/*----------------------------------------------------------------------------*/
-//void Card::vComment(Stz* szComment)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-//
-//  vAddProperty_stz("szComment"_Stz,szComment);
-//  vValue(szComment);
-//}
-
-/*----------------------------------------------------------------------------*/
 /* concat terms                                                               */
 /*----------------------------------------------------------------------------*/
 void Card::vConcatTerms(Stz* szTerms)
@@ -2046,68 +1884,6 @@ void Card::vConcatTerms(Stz* szTerms, i8 i_From, i8 i_Till)
   }
 }
 
-
-/*----------------------------------------------------------------------------*/
-/* get sort direction                                                         */
-/*----------------------------------------------------------------------------*/
-//Stz* Card::szDirn(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-//
-//  Stz* szDirn = szGetProperty("szDirn"_Stz);
-//
-//  RASSERT(szValue()->bSame(szDirn));
-//
-//  return szValue();
-//}
-
-/*----------------------------------------------------------------------------*/
-/* set sort dirn                                                              */
-/*----------------------------------------------------------------------------*/
-//void Card::vDirn(Stz* szDirn)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-//
-//  vAddProperty_stz("szDirn"_Stz,szDirn);
-//  vValue(szDirn);
-//}
-
-/*----------------------------------------------------------------------------*/
-/* test if the expr has an aggregate op                                       */
-/*----------------------------------------------------------------------------*/
-bool Card::bHasAggOp(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  bool bHasAggOp = false;
-
-  ListExoIter2_t<Card>* pExpr_I = pNewIter();
-
-  while (pExpr_I->bHasNext()) {
-    Card_Term* pCardTerm = _pCard_Term(pExpr_I->pNext());
-    
-    if (pCardTerm->bIsAggOp()) {
-      bHasAggOp = true;
-      break;
-    }
-  }
-  
-  delete pExpr_I;
-
-  return bHasAggOp;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get head subcard                                                           */
-/*----------------------------------------------------------------------------*/
-Card_Term* Card::pHeadTerm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  Card_Term* pCard_Term = _pCard_Term(pHead());
-  
-  return pCard_Term;
-}
 
 /*----------------------------------------------------------------------------*/
 /* return table                                                               */
@@ -2326,17 +2102,6 @@ bool Card::bIsSeparator(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set level                                                                  */
-/*----------------------------------------------------------------------------*/
-//void Card::vLevel(Stz* szLevel)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-//
-//  vAddProperty_stz("szLevel"_Stz,szLevel);
-//  vValue(szLevel);
-//}
-
-/*----------------------------------------------------------------------------*/
 /* get map back                                                                */
 /*----------------------------------------------------------------------------*/
 Stz* Card::szMapBack(void)
@@ -2464,63 +2229,13 @@ CardIter* Card::pNewSubCardIter(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get mode                                                                   */
-/*----------------------------------------------------------------------------*/
-//Stz* Card::szMode(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-//
-//  Stz* szMode = szGetProperty("szMode"_Stz);
-//
-//  RASSERT(szValue()->bSame(szMode));
-//
-//  return szValue();
-//}
-
-/*----------------------------------------------------------------------------*/
-/* set mode                                                                   */
-/*----------------------------------------------------------------------------*/
-//void Card::vMode(Stz* szMode)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-//
-//  vAddProperty_stz("szMode"_Stz,szMode);
-//  vValue(szMode);
-//}
-
-/*----------------------------------------------------------------------------*/
-/* get mode                                                                   */
-/*----------------------------------------------------------------------------*/
-//Stz* Card::szStageNm(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-//
-//  Stz* szStageNm = szGetProperty("szStageNm"_Stz);
-//
-//  RASSERT(szValue()->bSame(szStageNm));
-//
-//  return szValue();
-//}
-
-/*----------------------------------------------------------------------------*/
-/* set mode                                                                   */
-/*----------------------------------------------------------------------------*/
-//void Card::vStageNm(Stz* szStageNm)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-//
-//  vAddProperty_stz("szStageNm"_Stz,szStageNm);
-//  vValue(szStageNm);
-//}
-
-/*----------------------------------------------------------------------------*/
 /* get ordHi                                                                  */
 /*----------------------------------------------------------------------------*/
 i8 Card::iOrdHi(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  i8 iOrdHi = iGetProperty("iOrdHi"_Stz);
+  i8 iOrdHi = iGetProperty(C_CARD_OrdHi);
 
   return iOrdHi;
 }
@@ -2532,7 +2247,7 @@ void Card::vOrdHi(i8 iOrdHi)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vAddProperty_int("iOrdHi"_Stz,iOrdHi);
+  vAddProperty_int(C_CARD_OrdHi,iOrdHi);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2542,7 +2257,7 @@ i8 Card::iOrdLo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  i8 iOrdLo = iGetProperty("iOrdLo"_Stz);
+  i8 iOrdLo = iGetProperty(C_CARD_OrdLo);
 
   return iOrdLo;
 }
@@ -2554,106 +2269,8 @@ void Card::vOrdLo(i8 iOrdLo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vAddProperty_int("iOrdLo"_Stz,iOrdLo);
+  vAddProperty_int(C_CARD_OrdLo,iOrdLo);
 }
-
-/*----------------------------------------------------------------------------*/
-/* get option                                                                 */
-/*----------------------------------------------------------------------------*/
-i8 Card::iOption(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  i8 iOption = iGetProperty("iOption"_Stz);
-  
-  return iOption;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set option                                                                 */
-/*----------------------------------------------------------------------------*/
-void Card::vOption(i8 iOption)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  vAddProperty_int("iOption"_Stz,iOption);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get option                                                                 */
-/*----------------------------------------------------------------------------*/
-//Stz* Card::szOption(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-//
-//  Stz* szOption = szGetProperty("szOption"_Stz);
-//
-//  RASSERT(szValue()->bSame(szOption));
-//
-//  return szValue();
-//}
-
-/*----------------------------------------------------------------------------*/
-/* set option                                                                 */
-/*----------------------------------------------------------------------------*/
-//void Card::vOption(Stz* szOption)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-//
-//  vAddProperty_stz("szOption"_Stz,szOption);
-//  vValue(szOption);
-//}
-
-/*----------------------------------------------------------------------------*/
-/* get or                                                                     */
-/*----------------------------------------------------------------------------*/
-//Stz* Card::szOr(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-//
-//  Stz* szOr = szGetProperty("szOr"_Stz);
-//
-//  RASSERT(szValue()->bSame(szOr));
-//
-//  return szValue();
-//}
-
-/*----------------------------------------------------------------------------*/
-/* set or                                                                     */
-/*----------------------------------------------------------------------------*/
-//void Card::vOr(Stz* szOr)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-//
-//  vAddProperty_stz("szOr"_Stz,szOr);
-//  vValue(szOr);
-//}
-
-/*----------------------------------------------------------------------------*/
-/* get ordinal                                                                */
-/*----------------------------------------------------------------------------*/
-//Stz* Card::szOrdinal(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-//
-//  Stz* szOrdinal = szGetProperty("szOrdinal"_Stz);
-//
-//  RASSERT(szValue()->bSame(szOrdinal));
-//
-//  return szValue();
-//}
-
-/*----------------------------------------------------------------------------*/
-/* set term                                                                   */
-/*----------------------------------------------------------------------------*/
-//void Card::vOrdinal(Stz* szOrdinal)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-//
-//  vAddProperty_stz("szOrdinal"_Stz,szOrdinal);
-//  vValue(szOrdinal);
-//}
-
 
 /*----------------------------------------------------------------------------*/
 /* get ordinal column value                                                   */
@@ -2686,43 +2303,6 @@ i8 Card::iOrdinalIndexColNo(void)
   
   return i_Ord;
 }
-
-/*----------------------------------------------------------------------------*/
-/* pop subcard                                                                */
-/*----------------------------------------------------------------------------*/
-Card_Term* Card::pPopTerm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  Card_Term* pCard_Term = _pCard_Term(pPop());
-  
-  return pCard_Term;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get query name                                                             */
-/*----------------------------------------------------------------------------*/
-//Stz* Card::szQueryNm(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-//
-//  Stz* szQueryNm = szGetProperty("szQuerysNm"_Stz);
-//
-//  RASSERT(szValue()->bSame(szQueryNm));
-//
-//  return szValue();
-//}
-
-/*----------------------------------------------------------------------------*/
-/* set query name                                                             */
-/*----------------------------------------------------------------------------*/
-//void Card::vQueryNm(Stz* szQueryNm)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-//
-//  vAddProperty_stz("szQueryNm"_Stz,szQueryNm);
-//  vValue(szQueryNm);
-//}
 
 /*----------------------------------------------------------------------------*/
 /* get rank                                                                   */
@@ -2764,10 +2344,10 @@ void Card::vRef(void)
     sPretty.vConcat(sProperties);
   }
 
-  strcat(m_caRef," ");
-  strcat(m_caRef,sPretty.azChar());
+  strcat(m_caGuage, " ");
+  strcat(m_caGuage, sPretty.azChar());
 
-  //  vTrace("%s\n"_Stz,m_caRef);
+  //  vTrace("%s\n"_Stz,m_caGuage);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2778,13 +2358,13 @@ void Card::vRef(Card* pParentCard)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (pParentCard) {
-    sprintf(m_caRef,"%s.%lld", pParentCard->m_caRef, m_iCardNo);
+    sprintf(m_caGuage, "%s.%lld", pParentCard->m_caGuage, m_iCardNo);
   }
   else {
-    sprintf(m_caRef,"%lld",m_iCardNo);
+    sprintf(m_caGuage, "%lld", m_iCardNo);
   }
 
-//  vTrace("%s\n"_Stz,m_caRef);
+//  vTrace("%s\n"_Stz,m_caGuage);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2873,30 +2453,6 @@ void Card::vSends(i8 iSends)
   vAddProperty_int("iSends"_Stz,iSends);
 }
 
-/*----------------------------------------------------------------------------*/
-/* get stage name                                                             */
-/*----------------------------------------------------------------------------*/
-//Stz* Card::szStageNm(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-//
-//  Stz* szStageNm = szGetProperty("szStageNm"_Stz);
-//
-//  RASSERT(szValue()->bSame(szStageNm));
-//
-//  return szValue();
-//}
-
-/*----------------------------------------------------------------------------*/
-/* set stage name                                                             */
-/*----------------------------------------------------------------------------*/
-//void Card::vStageNm(Stz* szStageNm)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-//
-//  vAddProperty_stz("szStageNm"_Stz,szStageNm);
-//  vValue(szStageNm);
-//}
 
 /*----------------------------------------------------------------------------*/
 /* get stage topology                                                         */
@@ -3009,31 +2565,6 @@ void Card::vTable2(Table* pTable2)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get term                                                                   */
-/*----------------------------------------------------------------------------*/
-//Stz* Card::szTerm(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-//
-//  Stz* szTerm = szGetProperty("szTerm"_Stz);
-//
-//  RASSERT(szValue()->bSame(szTerm));
-//
-//  return szValue();
-//}
-
-/*----------------------------------------------------------------------------*/
-/* set term                                                                   */
-/*----------------------------------------------------------------------------*/
-//void Card::vTerm(Stz* szTerm)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-//
-//  vAddProperty_stz("szTerm"_Stz,szTerm);
-//  vValue(szTerm);
-//}
-
-/*----------------------------------------------------------------------------*/
 /* evaluate term                                                              */
 /*----------------------------------------------------------------------------*/
 eTE Card::eTermEval(void)
@@ -3061,20 +2592,6 @@ eTE Card::eTermEval(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* return type                                                                */
-/*----------------------------------------------------------------------------*/
-//Stz* Card::szType(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-//
-//  Stz* szType = szGetProperty("szType"_Stz);
-//
-//  RASSERT(szValue()->bSame(szType));
-//
-//  return szValue();
-//}
-
-/*----------------------------------------------------------------------------*/
 /* return typeShort                                                           */
 /*----------------------------------------------------------------------------*/
 char Card::cTypeShort(void)
@@ -3093,16 +2610,6 @@ char Card::cTypeShort(void)
   return cCT_char[CT_ENUMS];
 }
 
-/*----------------------------------------------------------------------------*/
-/* set type                                                                   */
-/*----------------------------------------------------------------------------*/
-//void Card::vType(Stz* szType)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-//
-//  vAddProperty_stz("szType"_Stz,szType);
-//  vValue(szType);
-//}
 
 
 /*----------------------------------------------------------------------------*/
@@ -3188,7 +2695,7 @@ void Card::vStreamElistPrint(Ribbon* pRibbon, i8 iDepth)
   eCK eSubCard;
   i8 nSubs = this->nItems();
   for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {
-    Card* pSubCard = pGetChildCard(i_Sub, eSubCard);
+    Card* pSubCard = pGetChild(i_Sub, eSubCard);
     if (CK_EXPR != eSubCard)
       continue;
     

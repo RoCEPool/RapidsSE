@@ -23,7 +23,9 @@ namespace STORE
 
    void vSetup_costEst(void);
    void vEstimate_ptndJoins(void);
-    void vEstimate_network(void);
+   void vEstimate_network(void);
+   void vEstimate_joinOrder(void);
+   void vExtract_joinOrderSeq(void);
 
   private:
 

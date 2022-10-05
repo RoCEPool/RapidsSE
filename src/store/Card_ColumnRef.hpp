@@ -15,6 +15,10 @@ namespace STORE
   
     Card_ColumnRef(void);
    ~Card_ColumnRef(void) noexcept(false);
+
+    char cTableSyn(void);
+    void vTableSyn(String* psTableSyn);
+
   };
 
   Card_ColumnRef* _pCard_ColumnRef(void* aAddr);

@@ -134,6 +134,10 @@ void Partitioner::vCompute_coPtnPredList(void)
     m_p_coPtnPredList->vAppend(m_p_coPtnPred);
   }
 
+  m_pCardCtl->vPrintForm(CK_COLUMNREF,CP_COMPRESSED);
+  m_pCardCtl->vPrintForm(CK_COPTNJOIN,CP_COMPRESSED);
+  m_pCardCtl->vPrintForm(CK_CROSSPTNJOIN,CP_COMPRESSED);
+  //m_pCardCtl->vPrintForm(CK_PREDCMP,CP_COMPRESSED);
 
   if (m_bInteractive)
     m_pBoard_partition->vPrintBoard("Partitioner::vCompute_coPtnPredList"_Stz);
@@ -250,7 +254,7 @@ void Partitioner::vCompute_ptndJointSet(void)
   for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
     m_pChildCard = m_p_ptndJoinSet->pGetChild(i_Child);
     m_pChildCard->vCard(CK_PTNDJOIN);
-    m_pChildCard->vAddProperty_int("i_PtndJoin"_Stz,i_Child);
+    m_pChildCard->vAddProperty_int(C_CARD_PtndJoin,i_Child);
   }
 
   if (m_bInteractive)

@@ -43,7 +43,7 @@ Filtrate::~Filtrate(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* inspect all <filter> and attempt to move <predCmp> after <scan>/<absJoin>  */
 /*----------------------------------------------------------------------------*/
-void Filtrate::vAssignLeftwards(void)
+void Filtrate::vMove_predCmp_leftwards(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTRATE,_FOOTER_);
 
@@ -54,12 +54,15 @@ void Filtrate::vAssignLeftwards(void)
   }
 
   vEndIteration();
+
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Filtrate::vMove_predCmp_leftwards"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
 /* convert all <filter> from calc form to calcBool                            */
 /*----------------------------------------------------------------------------*/
-void Filtrate::vCalc_to_calcBool(void)
+void Filtrate::vConvert_calc_to_calcBool(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTRATE,_FOOTER_);
 
@@ -71,12 +74,15 @@ void Filtrate::vCalc_to_calcBool(void)
   }
 
   vEndIteration();
+
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Filtrate::vConvert_calc_to_calcBool"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
 /* inspect all <filter> and copy <predCmp> to new <scan|absJoin>/<filter>     */
 /*----------------------------------------------------------------------------*/
-void Filtrate::vCopyLeftwards(void)
+void Filtrate::vCopy_predCmp_leftwards(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTRATE,_FOOTER_);
 
@@ -87,6 +93,9 @@ void Filtrate::vCopyLeftwards(void)
   }
 
   vEndIteration();
+
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Filtrate::vCopy_predCmp_leftwards"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -108,12 +117,16 @@ void Filtrate::vCull_indexJoin_filterPred(void)
   }
 
   vEndIteration();
+
+  m_pCardCtl->vPrintFormSubCards(CK_STREAM, CP_DEFAULT, true);
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Filtrate::vCull_indexJoin_filterPred"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
 /* delete any <filter> which is effectively empty                             */
 /*----------------------------------------------------------------------------*/
-void Filtrate::vDeleteEmpty_filter(void)
+void Filtrate::vDelete_empty_filter(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
 
@@ -133,12 +146,15 @@ void Filtrate::vDeleteEmpty_filter(void)
   }
 
   vEndIteration();
+
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Filtrate::vDelete_empty_filter"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
 /* delete any <filter> which is effectively empty                             */
 /*----------------------------------------------------------------------------*/
-void Filtrate::vDeleteEmpty_sub_filter(void)
+void Filtrate::vDelete_empty_sub_filter(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
 
@@ -158,6 +174,9 @@ void Filtrate::vDeleteEmpty_sub_filter(void)
   }
 
   vEndIteration();
+
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Filtrate::vDelete_empty_sub_filter"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -200,6 +219,9 @@ void Filtrate::vIndividuate_filter(void)
   }
 
   vEndIteration();
+
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Filtrate::vIndividuate_filter"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

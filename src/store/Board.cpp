@@ -243,7 +243,7 @@ Card* Board::pFindMain(eCK eCard, i8& i_Main)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
 
-  Card* pMainCard = m_pCard_SubSet->pFindChildCard(eCard);
+  Card* pMainCard = m_pCard_SubSet->pFindChild(eCard);
 
   return pMainCard;
 }
@@ -517,7 +517,7 @@ CardIter* Board::pNewMainCardIter(void)
 /*----------------------------------------------------------------------------*/
 /* pin board onto given ribbon                                                */
 /*----------------------------------------------------------------------------*/
-void Board::vPinCards(Ribbon* pRibbon, i8 i_Board)
+void Board::vPinCards(Ribbon* pRibbon, Stz* szTransformation)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
@@ -526,7 +526,11 @@ void Board::vPinCards(Ribbon* pRibbon, i8 i_Board)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pRibbon->vSprint("[%lld %s] %s"_Stz,i_Board,aBK[m_eBoard],m_pOptimiser->szQueryNm());
+  pRibbon->vSprint("\n[Board: %s] Query=%s Transformation=%s"_Stz,
+                   aBK[m_eBoard],
+                   m_pOptimiser->szQueryNm(),
+                   szTransformation ? szTransformation : ""_Stz
+                   );
   pRibbon->vTitleLines(1);
   pRibbon->vSetBase();
   pRibbon->vFirstColumn();
@@ -583,7 +587,7 @@ void Board::vPrintBoard(Stz* szCue)
   
   Ribbon* pRibbon = new Ribbon(m_pOptimiser->pCardCtl(),this,0);
 
-  vPinCards(pRibbon,0);
+  vPinCards(pRibbon,szCue);
   pRibbon->vPrintRibbon();
 
   delete pRibbon;
@@ -684,7 +688,7 @@ Card* Board::pPriorSubCard(Card*& rpMainCard, eCK eSubCard, i8 i_PriorToMain)
     rpMainCard = pGetMain(i_Main);
 
     Card* pSubCard;
-    if (pSubCard = rpMainCard->pFindSubCard(eSubCard))
+    if ((pSubCard = rpMainCard->pFindSubCard(eSubCard)))
       return pSubCard;
   }
 
@@ -1075,7 +1079,7 @@ void Board::vResolveRecursive(Card* pAnyCard) // recursive
   // aggElist
 
   i8 i_Child;
-  Card_AggElist *pCard_AggElist = _pCard_AggElist(pAnyCard->pFindChildCard(CK_AGGELIST,i_Child));
+  Card_AggElist *pCard_AggElist = _pCard_AggElist(pAnyCard->pFindChild(CK_AGGELIST, i_Child));
   if (pCard_AggElist) {
 
     Card_Stream *pCard_Stream = new Card_Stream;
@@ -1091,7 +1095,7 @@ void Board::vResolveRecursive(Card* pAnyCard) // recursive
   // projElist
 
   // derive the stream definition for projection
-  Card_ProjElist *pCard_ProjElist = _pCard_ProjElist(pAnyCard->pFindChildCard(CK_PROJELIST));
+  Card_ProjElist *pCard_ProjElist = _pCard_ProjElist(pAnyCard->pFindChild(CK_PROJELIST));
   if (pCard_ProjElist) {
 
     Card_Stream *pCard_Stream = new Card_Stream;
@@ -1105,7 +1109,7 @@ void Board::vResolveRecursive(Card* pAnyCard) // recursive
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-//  pCard_Index = _pCard_Index(pAnyCard->pFindChildCard(CK_INDEXPTR));
+//  pCard_Index = _pCard_Index(pAnyCard->pFindChild(CK_INDEXPTR));
 //  if (pCard_Index) {
 //    Index* pIndex = pCard_Index->pIndex();
 //    m_pCard_SubSet->vAppend_index(pIndex);
@@ -1115,7 +1119,7 @@ void Board::vResolveRecursive(Card* pAnyCard) // recursive
   // scan
 
   if (CK_SCAN == eCard) {
-    Card_TablePtr *pCard_TablePtr = _pCard_TablePtr(pAnyCard->pFindChildCard(CK_TABLEPTR));
+    Card_TablePtr *pCard_TablePtr = _pCard_TablePtr(pAnyCard->pFindChild(CK_TABLEPTR));
     if (pCard_TablePtr) {
 
       StreamDef *pStreamDef = pCard_TablePtr->pTable()->pStreamDef();
@@ -1136,8 +1140,8 @@ void Board::vResolveRecursive(Card* pAnyCard) // recursive
   if (CK_EXPR == eCard) {
     Card_Expr *pCard_Expr = _pCard_Expr(pAnyCard);
 
-    Card_As   *pCard_As   = _pCard_As (pCard_Expr->pFindChildCard(CK_AS));
-    Card_Type *pCard_Type = _pCard_Type(pCard_Expr->pFindChildCard(CK_TYPE));
+    Card_As   *pCard_As   = _pCard_As (pCard_Expr->pFindChild(CK_AS));
+    Card_Type *pCard_Type = _pCard_Type(pCard_Expr->pFindChild(CK_TYPE));
 
     if (pCard_As && pCard_Type) {
       pCard_Expr->vRemove(pCard_As);
@@ -1216,7 +1220,7 @@ void Board::vResolveRecursive(Card* pAnyCard) // recursive
 
 
 
-      Card_TablePtr *pCard_TablePtr_right = _pCard_TablePtr(pAnyCard->pFindChildCard(CK_TABLEPTR));
+      Card_TablePtr *pCard_TablePtr_right = _pCard_TablePtr(pAnyCard->pFindChild(CK_TABLEPTR));
       if (pCard_TablePtr_right) {
 
         Table* pTable = pCard_TablePtr_right->pTable();
@@ -2263,6 +2267,10 @@ Card_CalcBool* Board::pTo_CalcBool(Card_Calc* pCard_Calc)
         break;
 
       case TE_AS:
+        NEVER_REACH;
+        break;
+
+      default:
         NEVER_REACH;
         break;
     }

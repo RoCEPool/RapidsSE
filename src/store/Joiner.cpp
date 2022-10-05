@@ -47,9 +47,10 @@ Joiner::~Joiner(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* append preliminary <indexJoin>'s to all <absJoin>                          */
 /*----------------------------------------------------------------------------*/
-void Joiner::vAppendPrelim_indexJoin(void)
+void Joiner::vAppend_preliminary_indexJoin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_JOINER, _FOOTER_);
+
 
   m_pBoard->vClearAllMarks();
 
@@ -84,6 +85,15 @@ void Joiner::vAppendPrelim_indexJoin(void)
   }
 
   vEndIteration();
+
+  m_pCardCtl->vPrintFormSubCards(CK_STREAM, CP_DEFAULT, true);
+  m_pCardCtl->vPrintForm(CK_PREDAND, CP_DEFAULT);
+  m_pCardCtl->vPrintForm(CK_PREDCMP, CP_DEFAULT);
+  m_pCardCtl->vPrintForm(CK_PREDOR, CP_DEFAULT);
+  m_pCardCtl->vPrintForm(CK_TERM, CP_DEFAULT);
+
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Joiner::vAppend_preliminary_indexJoin"_Stz);
 }
 
 
@@ -152,6 +162,9 @@ void Joiner::vForm_joinPred(void)
   }
 
   vEndIteration();
+
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Joiner::vForm_joinPred"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -185,6 +198,9 @@ void Joiner::vMark_idxCol(void)
   }
 
   vEndIteration();
+
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Joiner::vMark_idxCol"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -214,6 +230,9 @@ void Joiner::vReduce_absJoin(void)
 
     pCard_absJoin->vCard(CK_INDEXJOIN);
   }
+
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Joiner::vReduce_absJoin"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -246,7 +265,10 @@ void Joiner::vSubsume_scan(void)
     i_Main--;
     nMainCards--;
   }
- }
+
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard("Joiner::vSubsume_scan"_Stz);
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
