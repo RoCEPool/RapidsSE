@@ -26,6 +26,7 @@ namespace STORE
     BoardIter(Board* pBoard);
    ~BoardIter(void) noexcept(false);
 
+    void  vApplyMain(eCK eCard, std::function<void(Card* pCard)> vfApply);
 
     Card* pEachMain(void);
     Card* pEachMain(i8& ri_Main);

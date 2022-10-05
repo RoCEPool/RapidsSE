@@ -584,14 +584,18 @@ void Board::vPrintBoard(Stz* szCue)
   
   if (! bPrint)
     return;
-  
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   Ribbon* pRibbon = new Ribbon(m_pOptimiser->pCardCtl(),this,0);
 
   vPinCards(pRibbon,szCue);
+
   pRibbon->vPrintRibbon();
 
   delete pRibbon;
-  
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   if (! bCue)
     return;
   if (! szCue)

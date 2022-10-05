@@ -1164,45 +1164,34 @@ void Card::vPrintCard_default(Ribbon* pRibbon, i8 iDepth, bool& rbPrune, eCP ePi
   eCK eCard = this->eCard();
 
   switch (eCard) {
+    case CK_CARDPTR:
+      vCardPrint(pRibbon, iDepth, rbPrune);
+      break;
+
     case CK_COMMENT:
-      vPrintCardDetails(pRibbon, iDepth, rbPrune);
+      vCommentPrint(pRibbon, iDepth);
+      break;
+
+    case CK_INDEXPTR:
+      vIndexPrint(pRibbon, iDepth);
+      break;
+
+    case CK_STREAMELIST:
+      vStreamElistPrint(pRibbon,iDepth);
+      break;
+
+    case CK_TABLEPTR:
+      vTablePrint(pRibbon, iDepth);
       break;
 
     case CK_TERM:
       vPrintCardName(pRibbon, iDepth, rbPrune);
-      vPrintCardDetails(pRibbon, iDepth, rbPrune);
+      vPrintCardValue(pRibbon, iDepth, rbPrune);
       break;
 
     default:
       vPrintCardName(pRibbon, iDepth, rbPrune);
       vPrintCardValue(pRibbon, iDepth, rbPrune);
-      vPrintCardDetails(pRibbon, iDepth, rbPrune);
-      break;
-  }
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* print card onto given ribbon                                               */
-/*----------------------------------------------------------------------------*/
-void Card::vPrintCardDetails(Ribbon* pRibbon, i8 iDepth, bool& rbPrune)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  eCK eCard = this->eCard();
-
-  switch (eCard) {
-
-    case CK_CARDPTR:     vCardPrint     (pRibbon, iDepth, rbPrune); break;
-    case CK_COMMENT:     vCommentPrint  (pRibbon, iDepth); break;
-    case CK_INDEXPTR:    vIndexPrint    (pRibbon, iDepth); break;
-    case CK_TABLEPTR:    vTablePrint    (pRibbon, iDepth); break;
-    case CK_TERM:        vPrintCardValue(pRibbon, iDepth, rbPrune); break;
-
-    case CK_STREAMELIST: vStreamElistPrint(pRibbon,iDepth);
-      break;
-
-    default:
       vPrintCardProperties(pRibbon, iDepth, rbPrune);
       break;
   }

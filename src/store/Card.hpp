@@ -311,7 +311,6 @@ namespace STORE
     void vPrintCard_byForm(Ribbon* pRibbon, i8 iDepth, bool& rbPrune, eCP ePrintForm);
     void vPrintCard_compressed(Ribbon* pRibbon, i8 iDepth, bool& rbPrune, eCP ePrintForm);
     void vPrintCard_default(Ribbon* pRibbon, i8 iDepth, bool& rbPrune, eCP ePrintForm);
-    void vPrintCardDetails(Ribbon* pRibbon, i8 iDepth, bool& rbPrune);
     void vPrintCardName(Ribbon* pRibbon, i8 iDepth, bool& rbPrune);
     void vPrintCardProperties(Ribbon* pRibbon, i8 iDepth, bool& brPrune, bool bPrintPtyName= true);
     void vPrintCardValue(Ribbon* pRibbon, i8 iDepth, bool& rbPrune);

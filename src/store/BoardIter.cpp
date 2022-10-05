@@ -47,6 +47,18 @@ BoardIter::~BoardIter(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void BoardIter::vApplyMain(eCK eCard, std::function<void(Card* pCard)> vfApply)
+{
+  _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
+
+  while (Card* pCard = pEachMain(eCard))
+    vfApply(pCard);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 Card* BoardIter::pEachMain(void)
 {
   _precondition_( _MAGIC_, CN_BOARDITER, _FOOTER_);
