@@ -2775,7 +2775,7 @@ void Card::vTablePrint(Ribbon* pRibbon, i8 iDepth)
   Card_TablePtr* pCardTablePtr = _pCard_TablePtr(this);
   Table* pTable = _pTable(pCardTablePtr->pTable());
 
-  pRibbon->vSput(FR_NAME,pTable->szTableNm());
+  //pRibbon->vSput(FR_NAME,pTable->szTableNm());
 
   if (pRibbon->iArea())
     return;
