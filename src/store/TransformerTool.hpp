@@ -109,6 +109,8 @@ namespace STORE
     Card* pFindMainOf(Card* pSubCard, Card*& rpParentCard);
 
     void vPrintBoard(Stz* szCue);
+    void vPrintForm(eCK eCard, eCP ePrintForm);
+    void vPrintFormSubCards(eCK eCard, eCP ePrintForm, bool bPrintSubCards);
 
     bool bRecursivelyTheSame(Card* p_card_a, Card* p_card_b, i8 iDepth=0, bool bTestL0=false);
     void vRemoveDeleteMains(eCK eCard);
