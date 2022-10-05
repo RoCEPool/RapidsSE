@@ -19,6 +19,8 @@ namespace STORE
    ~Card_TablePtr(void) noexcept(false);
 
     Card_IndexList* pNew_indexList(void);
+
+    StreamDef* pStreamDef(void);
   };
 
   Card_TablePtr* _pCard_TablePtr(void* aAddr);

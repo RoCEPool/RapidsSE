@@ -101,24 +101,23 @@ void Streamer::vAppend_stream_to_scan(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMER,_FOOTER_);
 
-  vBeginIteration();
+  BoardIter xBI(m_pBoard);
 
-  while (Card_Scan* pCard_scan = _pCard_Scan(pEachMain(CK_SCAN))) {
-    Card_TablePtr *pCard_TablePtr = pCard_scan->pSub_tablePtr();
-    if (pCard_TablePtr) {
+  // E <scan>
+  while ((m_p_scan = _pCard_Scan(xBI.pEachMain(CK_SCAN)))) {
 
-      StreamDef *pStreamDef = pCard_TablePtr->pTable()->pStreamDef();
+    // ? <scan>/<tablePtr>
+    if (! (m_p_tablePtr = m_p_scan->pSub_tablePtr()))
+      continue;
+    // ? <scan>/<tablePtr>:pStreamDef
+    if (! (m_pStreamDef = m_p_tablePtr->pStreamDef()))
+      continue;
 
-      Card_Stream *pCard_Stream = new Card_Stream;
-      pCard_scan->vAppend(pCard_Stream);
-
-      Card_StreamColList *pCard_StreamColList = new Card_StreamColList(pStreamDef);
-      pCard_Stream->vAppend(pCard_StreamColList);
-    }
-
+    // + <scan>/<stream>
+    m_p_scan->vAppend((m_p_stream = new Card_Stream));
+    // + <scan>/<stream>/<streamColList>
+    m_p_stream->vAppend((m_p_streamColList = new Card_StreamColList(m_pStreamDef)));
   }
-
-  vEndIteration();
 
   m_pCardCtl->vPrintFormSubCards(CK_STREAM, CP_DEFAULT, true);
 

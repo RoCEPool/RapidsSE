@@ -23,6 +23,8 @@ namespace STORE
     Board*      m_pBoard_query;
     CardCtl*    m_pCardCtl;
 
+    StreamDef*  m_pStreamDef;
+
     SubCardIter*   m_pMainCardIter;
 
     bool        m_bInteractive;
@@ -79,6 +81,7 @@ namespace STORE
     Card_StageTopo*        m_p_stageTopo_a;
     Card_StageTopo*        m_p_stageTopo_b;
     Card_Stream*           m_p_stream;
+    Card_StreamColList*    m_p_streamColList;
     Card_SubSet*           m_p_subSet;
     Card_Table*            m_p_table;
     Card_TableList*        m_p_tableList;

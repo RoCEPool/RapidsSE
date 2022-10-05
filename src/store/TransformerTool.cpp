@@ -23,6 +23,8 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_pBoard_query     = nullptr;
   m_pCardCtl         = m_pBench->pCardCtl();
 
+  m_pStreamDef       = nullptr;
+
   m_pPermGen         = nullptr;
 
   m_pMainCardIter  = nullptr;
@@ -77,6 +79,7 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_p_stageTopo_a      = nullptr;
   m_p_stageTopo_b      = nullptr;
   m_p_stream           = nullptr;
+  m_p_streamColList    = nullptr;
   m_p_subSet           = nullptr;
   m_p_table            = nullptr;
   m_p_tableList        = nullptr;

@@ -79,6 +79,21 @@ Card_IndexList* Card_TablePtr::pNew_indexList(void)
   return p_indexList;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+StreamDef* Card_TablePtr::pStreamDef(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Table *pTable = this->pTable();
+  if (! pTable)
+    return nullptr;
+
+  StreamDef* pStreamDef = pTable->pStreamDef();
+
+  return pStreamDef;
+}
 
 /*============================================================================*/
 /* end                                                                        */
