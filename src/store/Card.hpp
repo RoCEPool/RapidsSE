@@ -160,7 +160,7 @@ namespace STORE
     void vRemoveSubCards(eCK eCard);
   };
 
-  typedef ListExoIter_t<Card> CardIter;
+  typedef ListExoIter_t<Card> SubCardIter;
 
 
   class Card : public Object
@@ -297,7 +297,7 @@ namespace STORE
     void vMark2(char cMark2);
     void vMoveToLastChild(Card* pChildCard);
 
-    CardIter* pNewSubCardIter(void);
+    SubCardIter* pNewSubCardIter(void);
 
     i8   iOrdHi(void);
     void vOrdHi(i8 iOrdHi);

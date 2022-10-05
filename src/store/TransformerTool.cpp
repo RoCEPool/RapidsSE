@@ -217,7 +217,7 @@ Card* TransformerTool::pFindMainOf(Card* pGivenCard)
 
   Card *pMainCard = nullptr;
 
-  CardIter *pMainCardIter = m_pBoard->pNewMainCardIter();
+  SubCardIter *pMainCardIter = m_pBoard->pNewMainCardIter();
 
   while (pMainCardIter->bHasNext()) {
     pMainCard = pMainCardIter->pNext();
@@ -242,7 +242,7 @@ Card* TransformerTool::pFindMainOf(Card* pGivenCard, Card*& rpParentCard)
 
   Card *pMainCard = nullptr;
 
-  CardIter *pMainCardIter = m_pBoard->pNewMainCardIter();
+  SubCardIter *pMainCardIter = m_pBoard->pNewMainCardIter();
 
   while (pMainCardIter->bHasNext()) {
     pMainCard = pMainCardIter->pNext();

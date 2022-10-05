@@ -187,7 +187,7 @@ namespace STORE
 
     i8   nMainCards(void);
 
-    CardIter* pNewMainCardIter(void);
+    SubCardIter* pNewMainCardIter(void);
 
     void vPinCards(Ribbon* pRibbon, Stz* szTransformation=nullptr);
   

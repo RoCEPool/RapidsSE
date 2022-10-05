@@ -23,7 +23,7 @@ namespace STORE
     Board*      m_pBoard_query;
     CardCtl*    m_pCardCtl;
 
-    CardIter*   m_pMainCardIter;
+    SubCardIter*   m_pMainCardIter;
 
     bool        m_bInteractive;
 

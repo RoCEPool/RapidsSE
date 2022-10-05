@@ -1762,7 +1762,7 @@ void Card::vCardPrint(Ribbon* pRibbon, i8 iDepth, bool rbPrune)
 
   pCard->vPrintCardProperties(pRibbon, iDepth,rbPrune);
 
-  CardIter* pSubCardIter = pCard->pNewSubCardIter();
+  SubCardIter* pSubCardIter = pCard->pNewSubCardIter();
   while (pSubCardIter->bHasNext()) {
     Card *pSubCard = pSubCardIter->pNext();
     pSubCard->vPrintCardProperties(pRibbon, iDepth + 1,rbPrune);
@@ -2219,11 +2219,11 @@ void Card::vMoveToLastChild(Card* pChildCard)
 /*----------------------------------------------------------------------------*/
 /* new a card iterator                                                        */
 /*----------------------------------------------------------------------------*/
-CardIter* Card::pNewSubCardIter(void)
+SubCardIter* Card::pNewSubCardIter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  CardIter* pCardIter = (CardIter*)pNewIter();
+  SubCardIter* pCardIter = (SubCardIter*)pNewIter();
 
   return pCardIter;
 }
