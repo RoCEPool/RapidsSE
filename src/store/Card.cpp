@@ -2285,28 +2285,6 @@ void Card::vOrdLo(i8 iOrdLo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get option                                                                 */
-/*----------------------------------------------------------------------------*/
-i8 Card::iOption(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  i8 iOption = iGetProperty("iOption"_Stz);
-  
-  return iOption;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set option                                                                 */
-/*----------------------------------------------------------------------------*/
-void Card::vOption(i8 iOption)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  vAddProperty_int("iOption"_Stz,iOption);
-}
-
-/*----------------------------------------------------------------------------*/
 /* get ordinal column value                                                   */
 /*----------------------------------------------------------------------------*/
 i8 Card::iOrdinalStreamColNo(void)

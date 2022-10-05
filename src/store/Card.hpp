@@ -125,7 +125,6 @@ static Stz* C_CARD_Index        = "pIndex"_Stz;
 static Stz* C_CARD_LBound       = "LBound"_Stz;
 static Stz* C_CARD_MapBack      = "szMapBack"_Stz;
 static Stz* C_CARD_MapFrom      = "szMapFrom"_Stz;
-static Stz* C_CARD_Option       = "iOption"_Stz;
 static Stz* C_CARD_Rank         = "iRank"_Stz;
 static Stz* C_CARD_Rows         = "nRows"_Stz;
 static Stz* C_CARD_SendKind     = "eSendKind"_Stz;
@@ -346,9 +345,6 @@ namespace STORE
     void vMapBack(Stz* szMapBack);
     Stz* szMapFrom(void);
     void vMapFrom(Stz* szMapFrom);
-
-    i8   iOption(void);
-    void vOption(i8 iOption);
 
     i8   iOrdinalStreamColNo(void);
     i8   iOrdinalIndexColNo(void);

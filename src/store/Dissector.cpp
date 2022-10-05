@@ -285,13 +285,13 @@ Card* Dissector::pCard_Debug(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
     
-  i8 iOption = iArgCheckLast(pArgTags,0);
+  Stz* szOption = szArgCheckLast(pArgTags,0);
   Card_Debug* pCard_Debug = new Card_Debug;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // iOption
   
-  Card_Option* pCard_Option = new Card_Option(iOption);
+  Card_Option* pCard_Option = new Card_Option(szOption);
   pCard_Debug->vAppend(pCard_Option);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

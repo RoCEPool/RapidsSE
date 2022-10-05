@@ -17,15 +17,13 @@ __bIsCard(STORE,Card_Option,CK_OPTION)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Option::Card_Option(i8 iOption)
-: Card(CK_OPTION)
+Card_Option::Card_Option(Stz* szOption)
+    : Card(CK_OPTION,szOption)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vOption(iOption);
-  
   _checkInitialised_(CN_CARD);
-  
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
