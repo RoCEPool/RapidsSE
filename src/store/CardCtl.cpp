@@ -29,6 +29,7 @@ CardCtl::CardCtl(void)
     m_xaCardCtl[i_Card].m_bPrintName       = true;
     m_xaCardCtl[i_Card].m_bPrintValue      = true;
     m_xaCardCtl[i_Card].m_bPrintProperties = true;
+    m_xaCardCtl[i_Card].m_bPrintPptName    = true;
     m_xaCardCtl[i_Card].m_bPrintSubCards   = true;
     m_xaCardCtl[i_Card].m_bPrintSubShort   = false;
 
@@ -170,6 +171,28 @@ void CardCtl::vPrintValue(i8 i_Card, bool bPrintValue)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 
   m_xaCardCtl[i_Card].m_bPrintValue = bPrintValue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get bPrintPptName for card                                                 */
+/*----------------------------------------------------------------------------*/
+bool CardCtl::bPrintPptName(i8 i_Card)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
+
+  bool bPrintPptName = m_xaCardCtl[i_Card].m_bPrintPptName;
+
+  return bPrintPptName;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set bPrintPptName for card                                                 */
+/*----------------------------------------------------------------------------*/
+void CardCtl::vPrintPptName(i8 i_Card, bool bPrintPptName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
+
+  m_xaCardCtl[i_Card].m_bPrintPptName = bPrintPptName;
 }
 
 /*----------------------------------------------------------------------------*/

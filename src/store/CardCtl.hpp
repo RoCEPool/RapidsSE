@@ -17,6 +17,7 @@ namespace STORE
     bool m_bPrintName;       // print name of card
     bool m_bPrintValue;      // print value of card
     bool m_bPrintProperties; // print properties of card
+    bool m_bPrintPptName;    // print name of properties for card?
     bool m_bPrintSubCards;   // print the subcards of this card?
     bool m_bPrintSubShort;   //   or compressed print of subcards of this card?
 
@@ -49,6 +50,8 @@ namespace STORE
     void vPrintName(i8 i_Card, bool bPrintName);
     bool bPrintValue(i8 i_Card);
     void vPrintValue(i8 i_Card, bool bPrintValue);
+    bool bPrintPptName(i8 i_Card);
+    void vPrintPptName(i8 i_Card, bool bPrintProperties);
     bool bPrintProperties(i8 i_Card);
     void vPrintProperties(i8 i_Card, bool bPrintProperties);
     bool bPrintSubCards(i8 i_Card);

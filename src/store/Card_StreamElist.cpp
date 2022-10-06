@@ -73,8 +73,7 @@ void Card_StreamElist::vStreamElistPrint(Ribbon* pRibbon, i8 iDepth)
   Card_StreamElist* pCard_StreamElist = _pCard_StreamElist(this);
 
   if (! pCard_StreamElist->bSimpleDef()) {
-    bool bPrune = false;
-    vPrintCardProperties(pRibbon, iDepth,bPrune);
+    vPrintCardProperties(pRibbon, iDepth);
     return;
   }
 

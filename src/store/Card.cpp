@@ -1267,12 +1267,16 @@ void Card::vPrintCardNameValue(Ribbon* pRibbon, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 /* print by piece                                                             */
 /*----------------------------------------------------------------------------*/
-void Card::vPrintCardProperties(Ribbon* pRibbon, i8 iDepth, bool bPrintPtyName)
+void Card::vPrintCardProperties(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (! m_pProperties)
     return;
+
+  CardCtl* pCardCtl = _pCardCtl(pRibbon->pCtl());
+
+  bool bPrintPptName = pCardCtl->bPrintPptName(m_eCard);
 
   i8 nProperties = this->nProperties();
 
@@ -1290,7 +1294,7 @@ void Card::vPrintCardProperties(Ribbon* pRibbon, i8 iDepth, bool bPrintPtyName)
         if (szDecode)
           pRibbon->vSprintRight("%s"_Stz,szDecode);
         else
-        if (bPrintPtyName)
+        if (bPrintPptName)
           pRibbon->vSprintRight("%s=%lld"_Stz,szName,iValue);
         else
           pRibbon->vSprintRight("%lld"_Stz,iValue);
@@ -1309,7 +1313,7 @@ void Card::vPrintCardProperties(Ribbon* pRibbon, i8 iDepth, bool bPrintPtyName)
       case TN_STRING: {
         Stz* szName  = szGetPropertyNm(i_Property);
         Stz* szValue = szGetProperty(i_Property);
-        if (bPrintPtyName)
+        if (bPrintPptName)
           pRibbon->vSprintRight("%s=%s"_Stz,szName,szValue);
         else
           pRibbon->vSprintRight("%s"_Stz,szValue);

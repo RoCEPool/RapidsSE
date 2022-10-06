@@ -297,7 +297,7 @@ namespace STORE
     void vPrintCard_bySettings(Ribbon* pRibbon, i8 iDepth);
     void vPrintCardName(Ribbon* pRibbon, i8 iDepth);
     void vPrintCardNameValue(Ribbon* pRibbon, i8 iDepth);
-    void vPrintCardProperties(Ribbon* pRibbon, i8 iDepth, bool bPrintPtyName= true);
+    void vPrintCardProperties(Ribbon* pRibbon, i8 iDepth);
     void vPrintCardValue(Ribbon* pRibbon, i8 iDepth);
     void vPrintCardSubShort(Ribbon* pRibbon, i8 iDepth);
     void vPrintHeader(Ribbon* pRibbon);
