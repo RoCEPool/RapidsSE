@@ -123,7 +123,7 @@ namespace STORE
     void vSetupCostEstBoard(void);
     void vSetupPartitionBoard(void);
     void vSetupPermuteBoard(void);
-
+    void vSetupQueryBoard(void);
   };
 }
 

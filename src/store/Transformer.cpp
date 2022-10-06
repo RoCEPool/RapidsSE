@@ -90,7 +90,7 @@ void Transformer::vTransform(void)
   Job* pJob = MY::pJob();
   TagSet* pJobTags = pJob->pJobTags();
 
-  //m_pBoard = m_pOptimiser->pHeadBoard();
+  //m_pBoard = m_pOptimiser->pHeadBoard();c
 
   m_pColumnar    = new Columnar(m_pBench);
   m_pCombiner    = new Combiner(m_pBench);

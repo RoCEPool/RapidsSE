@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* TransformerTool.cpp --                                                              */
+/* TransformerTool.cpp --                                                     */
 /*============================================================================*/
 
 #include "TransformerTool.hpp"
@@ -342,6 +342,7 @@ void TransformerTool::vSetupCostEstBoard(void)
   m_pBoard_costEst = m_pBench->pGetBoard(BK_COSTEST);
   if (!m_pBoard_costEst)
     m_pBoard_costEst = new Board(BK_COSTEST, BT_ORIGINAL, m_pBench);
+  m_pBoard = m_pBoard_costEst;
 
   m_pBoard_partition = m_pBench->pGetBoard(BK_PARTITION);
   m_pBoard_permute   = m_pBench->pGetBoard(BK_PERMUTE);
@@ -358,6 +359,7 @@ void TransformerTool::vSetupPartitionBoard(void)
   m_pBoard_partition = m_pBench->pGetBoard(BK_PARTITION);
   if (!m_pBoard_partition)
     m_pBoard_partition = new Board(BK_PARTITION, BT_ORIGINAL, m_pBench);
+  m_pBoard = m_pBoard_partition;
 
   m_pBoard_permute = m_pBench->pGetBoard(BK_PARTITION);
   m_pBoard_query   = m_pBench->pGetBoard(BK_QUERY);
@@ -373,6 +375,23 @@ void TransformerTool::vSetupPermuteBoard(void)
   m_pBoard_permute = m_pBench->pGetBoard(BK_PERMUTE);
   if (!m_pBoard_permute)
     m_pBoard_permute = new Board(BK_PERMUTE, BT_ORIGINAL, m_pBench);
+  m_pBoard = m_pBoard_permute;
+
+  m_pBoard_partition = m_pBench->pGetBoard(BK_PARTITION);
+  m_pBoard_query     = m_pBench->pGetBoard(BK_QUERY);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::vSetupQueryBoard(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  m_pBoard_query = m_pBench->pGetBoard(BK_QUERY);
+  if (!m_pBoard_query)
+    m_pBoard_query = new Board(BK_QUERY, BT_ORIGINAL, m_pBench);
+  m_pBoard = m_pBoard_query;
 
   m_pBoard_partition = m_pBench->pGetBoard(BK_PARTITION);
   m_pBoard_query     = m_pBench->pGetBoard(BK_QUERY);

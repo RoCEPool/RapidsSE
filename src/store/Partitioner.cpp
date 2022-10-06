@@ -59,16 +59,14 @@ void Partitioner::vExtract_tableList(void)
   m_pBoard_partition->vAppendMain(m_p_tableList);
 
   while ( (m_pMainCard = xBI_query.pEachMain()) ) {
-    m_p_table = m_pMainCard->pSub_table();
-    if (! m_p_table)
+    if (! (m_p_table = m_pMainCard->pSub_table()))
       continue;
 
     m_p_tableList->vAppend(m_p_table->pDupCardAndSubCards());
   }
 
 
-  if (m_bInteractive)
-    m_pBoard_partition->vPrintBoard("Partitioner::vExtract_tableList"_Stz);
+  m_pBoard_partition->vPrintBoard("Partitioner::vExtract_tableList"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

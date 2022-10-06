@@ -62,8 +62,7 @@ void Tabular::vAdd_tablePtn(void)
     m_p_table->vAppend(p_tablePtn);
   }
 
-  if (m_bInteractive)
-    m_pBoard->vPrintBoard("Tabular::vAdd_tablePtn"_Stz);
+  vPrintBoard("Tabular::vAdd_tablePtn"_Stz);
 }
 
 
