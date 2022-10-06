@@ -228,11 +228,11 @@ def start_instances(instance_type: str,
 
         except botocore.exceptions.ClientError as e:
             if e.response["Error"]["Code"] == "InsufficientInstanceCapacity":
-                # Save the exception and try the next subnet, just in case
+                # Save the exception and try the next subnet
                 last_error = e
                 LOG.warning(f"{ctx}Got error response InsufficientInstanceCapacity in region "
                             f"{C_SUBNET_RMAP[subnet_id]}.")
-
+                
                 if (i+1) < len(C_SUBNET_ID_PREFERENCE):
                     LOG.info("Trying another region.")
                 else:
@@ -250,8 +250,30 @@ def start_instances(instance_type: str,
                             f"instance(s). Sleeping for {C_RETRY_INTERVAL} seconds before trying again")
                 time.sleep(C_RETRY_INTERVAL)
                 continue
+
+            elif e.response["Error"]["Code"] == "Unsupported":
+                # Ignore this exception and try the next subnet
+                LOG.warning(f"{ctx}Got error response {e.response['Error']['Code']} for instance "
+                            f"type {instance_type} in region {C_SUBNET_RMAP[subnet_id]}.")
+
+                if (i + 1) < len(C_SUBNET_ID_PREFERENCE):
+                    LOG.info("Trying another region.")
+                else:
+                    last_error = e  # Only because we have to.
+                    LOG.error("No more regions left to try.")
+                continue
+
             else:
-                raise
+                # Save the exception and try the next subnet
+                last_error = e
+                LOG.warning(f"{ctx}Got error response {e.response['Error']['Code']} in region "
+                            f"{C_SUBNET_RMAP[subnet_id]}. Full error message:\n{str(e)}")
+
+                if (i + 1) < len(C_SUBNET_ID_PREFERENCE):
+                    LOG.info("Trying another region.")
+                else:
+                    LOG.error("No more regions left to try.")
+                continue
 
     if last_error is not None:
         raise last_error
