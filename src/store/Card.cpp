@@ -2019,48 +2019,6 @@ bool Card::bIsColumnRef(void)
 /*----------------------------------------------------------------------------*/
 /* is atom a column ordinal?                                                  */
 /*----------------------------------------------------------------------------*/
-bool Card::bIsOrdinalColumnAtom(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  //Stz* szTerm = szGetProperty("szTerm"_Stz);
-
-  //RASSERT(szValue()->bSame(szTerm));
-
-  Stz* szTerm = szValue();
-  char acFirst  = szTerm->azChar()[0];
-  char acSecond = szTerm->azChar()[1];
-
-  if ('$' == acFirst && StrLib::bIsDigit(acSecond))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is atom an index ordinal?                                                  */
-/*----------------------------------------------------------------------------*/
-bool Card::bIsOrdinalIndexAtom(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  //Stz* szTerm = szGetProperty("szTerm"_Stz);
-
-  //RASSERT(szValue()->bSame(szTerm));
-
-  Stz* szTerm = szValue();
-  char acFirst  = szTerm->azChar()[0];
-  char acSecond = szTerm->azChar()[1];
-
-  if ('$' == acFirst && ('I' == acSecond || 'i' == acSecond))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is atom a column ordinal?                                                  */
-/*----------------------------------------------------------------------------*/
 bool Card::bIsOrdinalStreamTerm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

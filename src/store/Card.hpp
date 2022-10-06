@@ -277,8 +277,6 @@ namespace STORE
     bool bIsAggOp(void);
     bool bIsCard(eCK eCard);
     bool bIsColumnRef(void);
-    bool bIsOrdinalColumnAtom(void);
-    bool bIsOrdinalIndexAtom(void);
     bool bIsOrdinalStreamTerm(void);
     bool bIsOrdinalIndexTerm(void);
     bool bIsPred(void);
