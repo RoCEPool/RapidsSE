@@ -5799,9 +5799,15 @@ bool PROMPT::bPrompt_unload(SePrompt* pPrompt)
     sFilePath.vConcat(pInpTknVec->pGet(i)->szChars());
   }
 
+  sFilePath.vConcat("_"_Stz);
+
+  sFilePath.vConcat(gxCmdLineArgs.m_xSysArgs.m_sNodeName);
+
   sFilePath.vConcat("\0"_Stz);
 
   PersistenceHelper::vWritePersistentHeaps(sFilePath.szStz());
+
+  vTrace("Successfully saved to file %s\n"_Stz, sFilePath.szStz());
 
   return true;
 }
