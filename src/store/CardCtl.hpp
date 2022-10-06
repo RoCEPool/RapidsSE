@@ -20,6 +20,9 @@ namespace STORE
     bool m_bPrintValue;      // print value of card
     bool m_bPrintProperties; // print properties of card
     bool m_bPrintSubCards;   // print the subcards of this card?
+    bool m_bPrintSubShort; //   or compressed print of subcards of this card?
+
+    bool m_bPrune;           // prune sub-card printing at this point
 
   };
 
@@ -44,7 +47,7 @@ namespace STORE
 
     eCP  ePrintForm(i8 i_Card);
     void vPrintForm(i8 i_Card, eCP ePrintForm);
-    void vPrintFormSubCards(i8 i_Card, eCP ePrintForm, bool bPrintSubCards);
+//    void vPrintFormSubCards(i8 i_Card, eCP ePrintForm, bool bPrintSubCards);
 
     bool bPrintName(i8 i_Card);
     void vPrintName(i8 i_Card, bool bPrintName);
@@ -54,6 +57,10 @@ namespace STORE
     void vPrintProperties(i8 i_Card, bool bPrintProperties);
     bool bPrintSubCards(i8 i_Card);
     void vPrintSubCards(i8 i_Card, bool bPrintSubCards);
+    bool bPrintSubShort(i8 i_Card);
+    void vPrintSubShort(i8 i_Card, bool bPrintSubShort);
+    bool bPrune(i8 i_Card);
+    void vPrune(i8 i_Card, bool bPrune);
 
   protected:
     Footer* aFooter(void);

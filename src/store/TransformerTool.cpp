@@ -280,10 +280,10 @@ void TransformerTool::vPrintForm(eCK eCard, eCP ePrintForm)
 /*----------------------------------------------------------------------------*/
 /* set sub-card print form                                                    */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::vPrintFormSubCards(eCK eCard, eCP ePrintForm, bool bPrintSubCards)
-{
-  m_pCardCtl->vPrintFormSubCards(eCard,ePrintForm,bPrintSubCards);
-}
+//void TransformerTool::vPrintFormSubCards(eCK eCard, eCP ePrintForm, bool bPrintSubCards)
+//{
+//  m_pCardCtl->vPrintFormSubCards(eCard,ePrintForm,bPrintSubCards);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* set card print form                                                        */

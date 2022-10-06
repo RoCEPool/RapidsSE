@@ -29,16 +29,26 @@ CardCtl::CardCtl(void)
     m_xaCardCtl[i_Card].m_bPrintValue      = true;
     m_xaCardCtl[i_Card].m_bPrintProperties = true;
     m_xaCardCtl[i_Card].m_bPrintSubCards   = true;
+    m_xaCardCtl[i_Card].m_bPrintSubShort   = false;
+    m_xaCardCtl[i_Card].m_bPrune           = false;
   }
   
   _checkInitialised_(CN_CARDCTL);
 
+  vPrintName(CK_COMMENT,false);
+  vPrintProperties(CK_COMMENT,false);
+
+  vPrintValue(CK_PREDAND,false);
+  vPrintProperties(CK_PREDAND,false);
+
+  vPrintProperties(CK_PREDCMP,false);
+
+  vPrintValue(CK_PREDOR,false);
+  vPrintProperties(CK_PREDOR,false);
+
   vNextHorizon(CK_STAGE, true);
 
   vPrintProperties(CK_TERM,false);
-
-  vPrintName(CK_COMMENT,false);
-  vPrintProperties(CK_COMMENT,false);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 }
@@ -103,13 +113,13 @@ void CardCtl::vPrintForm(i8 i_Card, eCP ePrintForm)
 /*----------------------------------------------------------------------------*/
 /* set print form and print subcards for card                                 */
 /*----------------------------------------------------------------------------*/
-void CardCtl::vPrintFormSubCards(i8 i_Card, eCP ePrintForm, bool bPrintSubCards)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
-
-  vPrintForm(i_Card, ePrintForm);
-  vPrintSubCards(i_Card, bPrintSubCards);
-}
+//void CardCtl::vPrintFormSubCards(i8 i_Card, eCP ePrintForm, bool bPrintSubCards)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
+//
+//  vPrintForm(i_Card, ePrintForm);
+//  vPrintSubCards(i_Card, bPrintSubCards);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get bPrintName for card                                                    */
@@ -168,7 +178,7 @@ bool CardCtl::bPrintProperties(i8 i_Card)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set bPrintProperties for card                                                   */
+/* set bPrintProperties for card                                              */
 /*----------------------------------------------------------------------------*/
 void CardCtl::vPrintProperties(i8 i_Card, bool bPrintProperties)
 {
@@ -190,13 +200,57 @@ bool CardCtl::bPrintSubCards(i8 i_Card)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set bPrintSubCards for card                                                 */
+/* set bPrintSubCards for card                                                */
 /*----------------------------------------------------------------------------*/
 void CardCtl::vPrintSubCards(i8 i_Card, bool bPrintSubCards)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 
   m_xaCardCtl[i_Card].m_bPrintSubCards = bPrintSubCards;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get bPrintSubShort for card                                                */
+/*----------------------------------------------------------------------------*/
+bool CardCtl::bPrintSubShort(i8 i_Card)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
+
+  bool bPrintSubShort = m_xaCardCtl[i_Card].m_bPrintSubShort;
+
+  return bPrintSubShort;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set bPrintSubShort for card                                                */
+/*----------------------------------------------------------------------------*/
+void CardCtl::vPrintSubShort(i8 i_Card, bool bPrintSubShort)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
+
+  m_xaCardCtl[i_Card].m_bPrintSubShort = bPrintSubShort;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get bPrintSubShort for card                                                */
+/*----------------------------------------------------------------------------*/
+bool CardCtl::bPrune(i8 i_Card)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
+
+  bool bPrune = m_xaCardCtl[i_Card].m_bPrune;
+
+  return bPrune;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set bPrintSubShort for card                                                */
+/*----------------------------------------------------------------------------*/
+void CardCtl::vPrune(i8 i_Card, bool bPrune)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
+
+  m_xaCardCtl[i_Card].m_bPrune = bPrune;
 }
 
 /*============================================================================*/
