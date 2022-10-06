@@ -84,6 +84,49 @@ Card_Term::~Card_Term(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* is atom a column ordinal?                                                  */
+/*----------------------------------------------------------------------------*/
+bool Card_Term::bIsOrdinalStreamTerm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  //Stz* szTerm = szGetProperty("szTerm"_Stz);
+  //vTrace("bIsOrdinalColumnTerm: %s\n"_Stz,szTerm);
+
+  //RASSERT(szValue()->bSame(szTerm));
+
+  Stz* szTerm = szValue();
+  char acFirst  = szTerm->azChar()[0];
+  char acSecond = szTerm->azChar()[1];
+
+  if ('$' == acFirst && StrLib::bIsDigit(acSecond))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is atom an index ordinal?                                                  */
+/*----------------------------------------------------------------------------*/
+bool Card_Term::bIsOrdinalIndexTerm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  //Stz* szTerm = szGetProperty("szTerm"_Stz);
+
+  //RASSERT(szValue()->bSame(szTerm));
+
+  Stz* szTerm = szValue();
+  char acFirst  = szTerm->azChar()[0];
+  char acSecond = szTerm->azChar()[1];
+
+  if ('$' == acFirst && ('I' == acSecond || 'i' == acSecond))
+    return true;
+  else
+    return false;
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

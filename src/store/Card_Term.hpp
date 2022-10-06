@@ -18,6 +18,9 @@ namespace STORE
     Card_Term(Token* pTkn);
     Card_Term(Column* pColumn);
    ~Card_Term(void) noexcept(false);
+
+    bool bIsOrdinalIndexTerm(void);
+    bool bIsOrdinalStreamTerm(void);
   };
 
   Card_Term* _pCard_Term(void* aAddr);
