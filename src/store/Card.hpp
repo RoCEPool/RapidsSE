@@ -96,7 +96,6 @@ namespace STORE {
   class Card_ScanPred;
   class Card_Send;
   class Card_SendKind;
-  class Card_Sends;
   class Card_Sort;
   class Card_Stage;
   class Card_StageTopo;
@@ -128,7 +127,6 @@ static Stz* C_CARD_MapFrom      = "szMapFrom"_Stz;
 static Stz* C_CARD_Rank         = "iRank"_Stz;
 static Stz* C_CARD_Rows         = "nRows"_Stz;
 static Stz* C_CARD_SendKind     = "eSendKind"_Stz;
-static Stz* C_CARD_Sends        = "iSends"_Stz;
 static Stz* C_CARD_StageTopo    = "eStageTopo"_Stz;
 static Stz* C_CARD_StreamDef    = "pStreamDef"_Stz;
 static Stz* C_CARD_Table        = "pTable"_Stz;

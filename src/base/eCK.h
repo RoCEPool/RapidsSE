@@ -87,7 +87,6 @@ enum eCK // card kind
   /* */ CK_SCANPRED,
   /* */ CK_SEND,
   /* */ CK_SENDKIND,
-  /* */ CK_SENDS,
   /* */ CK_SORT,
   /* */ CK_STAGE,
   /* */ CK_STAGETOPO,
@@ -197,7 +196,6 @@ static Stz* aCK[]
   /* */ "CK_SCANPRED"_Stz,     // CK_SCANPRED
   /* */ "CK_SEND"_Stz,         // CK_SEND
   /* */ "CK_SENDKIND"_Stz,     // CK_SENDKIND
-  /* */ "CK_SENDS"_Stz,        // CK_SENDS
   /* */ "CK_SORT"_Stz,         // CK_SORT
   /* */ "CK_STAGE"_Stz,        // CK_STAGE
   /* */ "CK_STAGETOPO"_Stz,    // CK_STAGETOPO
@@ -307,7 +305,6 @@ static Stz* aCK_short[]
   /* */ "scanPred"_Stz,        // CK_SCANPRED
   /* */ "sendSE"_Stz,          // CK_SEND
   /* */ "sendKind"_Stz,        // CK_SENDKIND
-  /* */ "sends"_Stz,           // CK_SENDS
   /* */ "sort"_Stz,            // CK_SORT
   /* */ "stage"_Stz,           // CK_STAGE
   /* */ "stageTopo"_Stz,       // CK_STAGETOPO
