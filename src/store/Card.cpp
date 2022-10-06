@@ -2197,60 +2197,6 @@ SubCardIter* Card::pNewSubCardIter(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get ordinal column value                                                   */
-/*----------------------------------------------------------------------------*/
-i8 Card::iOrdinalStreamColNo(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  //Stz* szTerm = szGetProperty("szTerm"_Stz);
-
-  //RASSERT(szValue()->bSame(szTerm));
-
-  i8 i_Ord = StrLib::iGleanInt(szValue()->azChar());
-  
-  return i_Ord;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get ordinal index value                                                    */
-/*----------------------------------------------------------------------------*/
-i8 Card::iOrdinalIndexColNo(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  //Stz* szTerm = szGetProperty("szTerm"_Stz);
-
-  //RASSERT(szValue()->bSame(szTerm));
-
-  i8 i_Ord = StrLib::iGleanInt(szValue()->azChar());
-  
-  return i_Ord;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get rank                                                                   */
-/*----------------------------------------------------------------------------*/
-i8 Card::iRank(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  i8 iRank = iGetProperty("iRank"_Stz);
-  
-  return iRank;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set rank                                                                   */
-/*----------------------------------------------------------------------------*/
-void Card::vRank(i8 iRank)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  vAddProperty_int("iRank"_Stz,iRank);
-}
-
-/*----------------------------------------------------------------------------*/
 /* set ref                                                                    */
 /*----------------------------------------------------------------------------*/
 void Card::vRef(void)

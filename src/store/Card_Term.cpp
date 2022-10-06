@@ -127,6 +127,38 @@ bool Card_Term::bIsOrdinalIndexTerm(void)
     return false;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get ordinal column value                                                   */
+/*----------------------------------------------------------------------------*/
+i8 Card_Term::iOrdinalStreamColNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  //Stz* szTerm = szGetProperty("szTerm"_Stz);
+
+  //RASSERT(szValue()->bSame(szTerm));
+
+  i8 i_Ord = StrLib::iGleanInt(szValue()->azChar());
+
+  return i_Ord;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get ordinal index value                                                    */
+/*----------------------------------------------------------------------------*/
+i8 Card_Term::iOrdinalIndexColNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  //Stz* szTerm = szGetProperty("szTerm"_Stz);
+
+  //RASSERT(szValue()->bSame(szTerm));
+
+  i8 i_Ord = StrLib::iGleanInt(szValue()->azChar());
+
+  return i_Ord;
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

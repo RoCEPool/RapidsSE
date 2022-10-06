@@ -21,6 +21,9 @@ namespace STORE
 
     bool bIsOrdinalIndexTerm(void);
     bool bIsOrdinalStreamTerm(void);
+
+    i8   iOrdinalStreamColNo(void);
+    i8   iOrdinalIndexColNo(void);
   };
 
   Card_Term* _pCard_Term(void* aAddr);

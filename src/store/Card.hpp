@@ -296,9 +296,6 @@ namespace STORE
 
     SubCardIter* pNewSubCardIter(void);
 
-    i8   iOrdinalStreamColNo(void);
-    i8   iOrdinalIndexColNo(void);
-
     void vPrintCard(Ribbon* pRibbon, i8 iDepth, bool& rbPrune);
     void vPrintCard_byForm(Ribbon* pRibbon, i8 iDepth, bool& rbPrune, eCP ePrintForm);
     void vPrintCard_compressed(Ribbon* pRibbon, i8 iDepth, bool& rbPrune, eCP ePrintForm);
@@ -314,8 +311,6 @@ namespace STORE
     TagSet* pProperties(void);
     void vPropertiesEnsure(void);
 
-    i8   iRank(void);
-    void vRank(i8 iRank);
     void vRef(void);
     void vRef(Card* pParentCard);
     eRO  eRelOp(void);
