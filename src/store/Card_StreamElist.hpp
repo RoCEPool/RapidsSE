@@ -18,7 +18,8 @@ namespace STORE
    ~Card_StreamElist(void) noexcept(false);
     
     bool bSimpleDef(void);
-    
+    void vStreamElistPrint(Ribbon* pRibbon, i8 iDepth);
+
   private:
     void vPopulate(StreamDef* pStreamDef);
   };

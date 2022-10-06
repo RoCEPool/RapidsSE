@@ -16,7 +16,9 @@ namespace STORE
     Card_IndexPtr(Index* pIndex);
    ~Card_IndexPtr(void) noexcept(false);
 
-    Card_IdxColNm*     pFind_indexCol(Stz* szColNm, i8& i_IdxCol);
+    Card_IdxColNm* pFind_indexCol(Stz* szColNm, i8& i_IdxCol);
+
+    void vIndexPtrPrint(Ribbon* pRibbon, i8 iDepth);
   };
 
   Card_IndexPtr* _pCard_IndexPtr(void* aAddr);

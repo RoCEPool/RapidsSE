@@ -353,9 +353,6 @@ namespace STORE
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   
 
-    void vIndexPtrPrint(Ribbon* pRibbon, i8 iDepth);
-    void vStreamElistPrint(Ribbon* pRibbon, i8 iDepth);
-    void vTablePtrPrint(Ribbon* pRibbon, i8 iDepth);
 
     Card_As*            pSub_as(void);
     Card_CalcBool*      pSub_calcBool(void);

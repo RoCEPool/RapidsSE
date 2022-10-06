@@ -56,6 +56,43 @@ Card_IdxColNm* Card_IndexPtr::pFind_indexCol(Stz *szColNm, i8& i_IdxCol)
   return p_idxCol;
 }
 
+/*----------------------------------------------------------------------------*/
+/* print {index}                                                              */
+/*----------------------------------------------------------------------------*/
+void Card_IndexPtr::vIndexPtrPrint(Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_IndexPtr* pCard_IndexPtr = _pCard_IndexPtr(this);
+  Index* pIndex = pCard_IndexPtr->pIndex();
+  IndexDef* pIndexDef = pIndex->pIndexDef();
+  Table* pTable = pIndex->pTable();
+
+  pRibbon->vSput(FR_NAME,pIndex->szIndexNm());
+
+  pRibbon->vSput(FR_TEXT
+      ,pIndexDef->bIsUnique()
+       ? "unique"_Stz : "not unique"_Stz
+  );
+
+  pRibbon->vSput(FR_NAME,pTable->szTableNm());
+
+  i8 nIdxCols = pIndexDef->nColumns();
+  for (i8 i_Col = 0; i_Col < nIdxCols; i_Col++) {
+    Column* pIdxCol = pIndexDef->pGetColumn(i_Col);
+
+    pRibbon->vSput(FR_ATOM_SQUARE,pIdxCol->szColNm());
+  }
+
+  i8 nBuffers = 0;
+  i8 nEntries = 0;
+  pIndex->vAnalyze(nBuffers,nEntries);
+  pRibbon->vSprintRight(" %lld buffers"_Stz,nBuffers);
+  pRibbon->vSprintRight(" %lld entries"_Stz,nEntries);
+
+  //vPrintCardProperties(pRibbon,iDepth);
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

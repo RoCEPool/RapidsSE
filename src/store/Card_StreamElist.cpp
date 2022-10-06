@@ -4,6 +4,8 @@
 
 #include "Card_StreamElist.hpp"
 #include "Card_Expr.hpp"
+#include "Card_Type.hpp"
+#include "Card_As.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -62,6 +64,47 @@ bool Card_StreamElist::bSimpleDef(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* print StreamElist                                                          */
+/*----------------------------------------------------------------------------*/
+void Card_StreamElist::vStreamElistPrint(Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_StreamElist* pCard_StreamElist = _pCard_StreamElist(this);
+
+  if (! pCard_StreamElist->bSimpleDef()) {
+    bool bPrune = false;
+    vPrintCardProperties(pRibbon, iDepth,bPrune);
+    return;
+  }
+
+  // expr
+  // type
+  // as
+  // exprCalc
+  // term
+
+  eCK eSubCard;
+  i8 nSubs = this->nItems();
+  for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {
+    Card* pSubCard = pGetChild(i_Sub, eSubCard);
+    if (CK_EXPR != eSubCard)
+      continue;
+
+    Card_Expr* pCard_Expr = _pCard_Expr(pSubCard);
+
+    Card_Type* pCard_Type = _pCard_Type(pCard_Expr->pFindSubCard(CK_TYPE));
+    Card_As*   pCard_As   = _pCard_As  (pCard_Expr->pFindSubCard(CK_AS));
+
+    pRibbon->vSprintRight("%s %c"_Stz
+        ,pCard_As ? pCard_As->sz() : "??AS?"_Stz
+        ,pCard_Type->cTypeShort()
+    );
+
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -80,7 +123,6 @@ void Card_StreamElist::vPopulate(StreamDef* pStreamDef)
     vAppend(pCard_Expr);
   }
 }
-
 
 /*============================================================================*/
 /* end                                                                        */

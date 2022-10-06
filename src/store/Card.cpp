@@ -1094,8 +1094,6 @@ void Card::vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  CardCtl* pCardCtl = _pCardCtl(pRibbon->pCtl());
-
   switch (m_eCard) {
 
     case CK_CARDPTR:
@@ -2349,124 +2347,6 @@ char Card::cTypeShort(void)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* print {index}                                                              */
-/*----------------------------------------------------------------------------*/
-void Card::vIndexPtrPrint(Ribbon* pRibbon, i8 iDepth)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_IndexPtr* pCard_IndexPtr = _pCard_IndexPtr(this);
-  Index* pIndex = pCard_IndexPtr->pIndex();
-  IndexDef* pIndexDef = pIndex->pIndexDef();
-  Table* pTable = pIndex->pTable();
-
-  pRibbon->vSput(FR_NAME,pIndex->szIndexNm());
-  
-  pRibbon->vSput(FR_TEXT
-                 ,pIndexDef->bIsUnique()
-                    ? "unique"_Stz : "not unique"_Stz
-                 );
-  
-  pRibbon->vSput(FR_NAME,pTable->szTableNm());
-
-  i8 nIdxCols = pIndexDef->nColumns();
-  for (i8 i_Col = 0; i_Col < nIdxCols; i_Col++) {
-    Column* pIdxCol = pIndexDef->pGetColumn(i_Col);
-    
-    pRibbon->vSput(FR_ATOM_SQUARE,pIdxCol->szColNm());
-  }
-  
-  i8 nBuffers = 0;
-  i8 nEntries = 0;
-  pIndex->vAnalyze(nBuffers,nEntries);
-  pRibbon->vSprintRight(" %lld buffers"_Stz,nBuffers);
-  pRibbon->vSprintRight(" %lld entries"_Stz,nEntries);
-
-  //vPrintCardProperties(pRibbon,iDepth);
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* print StreamElist                                                          */
-/*----------------------------------------------------------------------------*/
-void Card::vStreamElistPrint(Ribbon* pRibbon, i8 iDepth)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  Card_StreamElist* pCard_StreamElist = _pCard_StreamElist(this);
-
-  if (! pCard_StreamElist->bSimpleDef()) {
-    bool bPrune = false;
-    vPrintCardProperties(pRibbon, iDepth,bPrune);
-    return;
-  }
-
-  // expr
-    // type
-    // as
-    // exprCalc
-      // term
-  
-  eCK eSubCard;
-  i8 nSubs = this->nItems();
-  for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {
-    Card* pSubCard = pGetChild(i_Sub, eSubCard);
-    if (CK_EXPR != eSubCard)
-      continue;
-    
-    Card_Expr* pCard_Expr = _pCard_Expr(pSubCard);
-
-    Card_Type* pCard_Type = _pCard_Type(pCard_Expr->pFindSubCard(CK_TYPE));
-    Card_As*   pCard_As   = _pCard_As  (pCard_Expr->pFindSubCard(CK_AS));
-
-    pRibbon->vSprintRight("%s %c"_Stz
-                          ,pCard_As ? pCard_As->sz() : "??AS?"_Stz
-                          ,pCard_Type->cTypeShort()
-                          );
-
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* print {table}                                                              */
-/*----------------------------------------------------------------------------*/
-void Card::vTablePtrPrint(Ribbon* pRibbon, i8 iDepth)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  Card_TablePtr* pCardTablePtr = _pCard_TablePtr(this);
-  Table* pTable = _pTable(pCardTablePtr->pTable());
-
-  //pRibbon->vSput(FR_NAME,pTable->szTableNm());
-
-  if (pRibbon->iArea())
-    return;
-  
-  //pCardTablePtr->vPrintPartition(pRibbon);
-  PtnDef* pPtnDef = pTable->pPtnDef();
-  Column* pColumn = pPtnDef->pGetColumn(0);
-  
-  pRibbon->vSput(FR_ATOM_SLASH,pColumn->szColNm());
-
-  
-  //pCardTablePtr->vPrintSize(pRibbon);
-  StreamDef* pStreamDef = pTable->pStreamDef();
-  
-  //pCardTablePtr->vPrintPrimary(pRibbon);
-  IdxVec*   pIdxVec    = pTable->pIdxVec();
-//  Index*    pIndex     = pIdxVec->pGet(0);
-//  IndexDef* pIndexDef  = pIndex->pIndexDef();
-//  Column*   pIdxColumn = pIndexDef->pGetColumn(0);
-//   pRibbon->vSput(FR_ATOM_SQUARE,pIdxColumn->szColNm());
-
-  //pRibbon->vSput(FR_SIZE,pStreamDef->jTableSize());
-  pRibbon->vSprintRight(" %lld %s"_Stz,pStreamDef->nColumns(),
-                        1 == pStreamDef->nColumns() ? "column" : "columns");
-  pRibbon->vSprintRight(" %lld %s"_Stz,pIdxVec->nItems(),
-                        1 == pIdxVec->nItems() ? "index" : "indexes");
-  pRibbon->vSprintRight(" tableSize %lld"_Stz,pStreamDef->jTableSize());
-}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
