@@ -1062,10 +1062,12 @@ void Card::vPrintCard(Ribbon* pRibbon, i8 iDepth, bool& rbPrune)
   CardCtl* pCardCtl = _pCardCtl(pRibbon->pCtl());
 
   if (pCardCtl->bPrintByKind(m_eCard))
-    vPrintCard_byKind(pRibbon, iDepth, rbPrune);
+    vPrintCard_byKind(pRibbon, iDepth);
   else
-    vPrintCard_bySettings(pRibbon, iDepth, rbPrune);
+    vPrintCard_bySettings(pRibbon, iDepth);
 
+  if (pCardCtl->bPrune(m_eCard))
+    rbPrune = true;
   //vMark2(' ');
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1088,7 +1090,7 @@ void Card::vPrintCard(Ribbon* pRibbon, i8 iDepth, bool& rbPrune)
 /*----------------------------------------------------------------------------*/
 /* print card onto given ribbon                                               */
 /*----------------------------------------------------------------------------*/
-void Card::vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth, bool& rbPrune)
+void Card::vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -1097,67 +1099,61 @@ void Card::vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth, bool& rbPrune)
   switch (m_eCard) {
 
     case CK_CARDPTR:
-      vCardPrint(pRibbon, iDepth, rbPrune);
+      _pCard_CardPtr(this)->vCardPtrPrint(pRibbon, iDepth);
       break;
 
     case CK_INDEXPTR:
-      vIndexPrint(pRibbon, iDepth);
+      _pCard_IndexPtr(this)->vIndexPtrPrint(pRibbon, iDepth);
       break;
 
     case CK_STREAM:
-      _pCard_Stream(this)->vRibbonPrint(pRibbon,iDepth);
+      _pCard_Stream(this)->vStreamPrint(pRibbon, iDepth);
       break;
 
     case CK_STREAMELIST:
-      vStreamElistPrint(pRibbon,iDepth);
+      _pCard_StreamElist(this)->vStreamElistPrint(pRibbon,iDepth);
       break;
 
     case CK_TABLEPTR:
-      vTablePrint(pRibbon, iDepth);
+      _pCard_TablePtr(this)->vTablePtrPrint(pRibbon, iDepth);
       break;
 
     default:
-      vPrintCard_bySettings(pRibbon, iDepth, rbPrune);
+      vPrintCard_bySettings(pRibbon, iDepth);
       break;
   }
-
-  if (pCardCtl->bPrune(m_eCard))
-    rbPrune = true;
 }
 
 /*----------------------------------------------------------------------------*/
 /* print card onto given ribbon                                               */
 /*----------------------------------------------------------------------------*/
-void Card::vPrintCard_bySettings(Ribbon* pRibbon, i8 iDepth, bool& rbPrune)
+void Card::vPrintCard_bySettings(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   CardCtl* pCardCtl = _pCardCtl(pRibbon->pCtl());
 
   if (pCardCtl->bPrintName(m_eCard) && pCardCtl->bPrintValue(m_eCard)) {
-    vPrintCardNameValue(pRibbon, iDepth, rbPrune);
+    vPrintCardNameValue(pRibbon, iDepth);
   }
   else {
     if (pCardCtl->bPrintName(m_eCard))
-      vPrintCardName(pRibbon, iDepth, rbPrune);
+      vPrintCardName(pRibbon, iDepth);
     if (pCardCtl->bPrintValue(m_eCard))
-      vPrintCardValue(pRibbon, iDepth, rbPrune);
+      vPrintCardValue(pRibbon, iDepth);
   }
 
   if (pCardCtl->bPrintProperties(m_eCard))
-    vPrintCardProperties(pRibbon, iDepth, rbPrune);
+    vPrintCardProperties(pRibbon, iDepth);
 
   if (pCardCtl->bPrintSubShort(m_eCard))
-    vPrintCardSubShort(pRibbon, iDepth, rbPrune);
-
-  if (pCardCtl->bPrune(m_eCard))
-    rbPrune = true;
+    vPrintCardSubShort(pRibbon, iDepth);
 }
 
 /*----------------------------------------------------------------------------*/
 /* print compressed children                                                  */
 /*----------------------------------------------------------------------------*/
-void Card::vPrintCardSubShort(Ribbon* pRibbon, i8 iDepth, bool& rbPrune)
+void Card::vPrintCardSubShort(Ribbon* pRibbon, i8 iDepth)
 {
   _static_
 
@@ -1188,17 +1184,15 @@ void Card::vPrintCardSubShort(Ribbon* pRibbon, i8 iDepth, bool& rbPrune)
 /*----------------------------------------------------------------------------*/
 void Card::vPrintHeader(Ribbon* pRibbon)
 {
-  _static_
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  pRibbon->vSprint("--%02lld--------------=="_Stz
-      ,m_iCardNo
-  );
+  pRibbon->vSprint("--%02lld--------------=="_Stz,m_iCardNo);
 }
 
 /*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
-void Card::vPrintCardName(Ribbon* pRibbon, i8 iDepth, bool& rbPrune)
+void Card::vPrintCardName(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -1225,7 +1219,7 @@ void Card::vPrintCardName(Ribbon* pRibbon, i8 iDepth, bool& rbPrune)
 /*----------------------------------------------------------------------------*/
 /* print card name and value on single line if possible                       */
 /*----------------------------------------------------------------------------*/
-void Card::vPrintCardNameValue(Ribbon* pRibbon, i8 iDepth, bool& rbPrune)
+void Card::vPrintCardNameValue(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -1267,15 +1261,15 @@ void Card::vPrintCardNameValue(Ribbon* pRibbon, i8 iDepth, bool& rbPrune)
     pRibbon->vSprint("%-18s%c%c"_Stz, sNameValue.szStz(), m_cMark1, m_cMark2);
   }
   else {
-    vPrintCardName(pRibbon, iDepth, rbPrune);
-    vPrintCardValue(pRibbon, iDepth, rbPrune);
+    vPrintCardName(pRibbon, iDepth);
+    vPrintCardValue(pRibbon, iDepth);
   }
 }
 
 /*----------------------------------------------------------------------------*/
 /* print by piece                                                             */
 /*----------------------------------------------------------------------------*/
-void Card::vPrintCardProperties(Ribbon* pRibbon, i8 iDepth, bool& rbPrune, bool bPrintPtyName)
+void Card::vPrintCardProperties(Ribbon* pRibbon, i8 iDepth, bool bPrintPtyName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -1334,11 +1328,11 @@ void Card::vPrintCardProperties(Ribbon* pRibbon, i8 iDepth, bool& rbPrune, bool 
 /*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
-void Card::vPrintCardValue(Ribbon* pRibbon, i8 iDepth, bool& rbPrune)
+void Card::vPrintCardValue(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (! *sz()->azChar())
+  if (! bHasValue())
     return;
 
   pRibbon->vSprintRight("%s"_Stz,szValue());
@@ -1708,31 +1702,6 @@ void Card::vCard(Card* pCard)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   vAddProperty_ptr("pCard"_Stz,pCard);
-}
-
-/*----------------------------------------------------------------------------*/
-/* print {card}                                                               */
-/*----------------------------------------------------------------------------*/
-void Card::vCardPrint(Ribbon* pRibbon, i8 iDepth, bool rbPrune)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_CardPtr* pCard_CardPtr = _pCard_CardPtr(this);
-  Card* pCard = _pCard(pCard_CardPtr->pCard());
-
-  pRibbon->vSput(FR_NAME,pCard->szCardNm());
-
-  if (pRibbon->iArea())
-    return;
-
-  pCard->vPrintCardProperties(pRibbon, iDepth,rbPrune);
-
-  SubCardIter* pSubCardIter = pCard->pNewSubCardIter();
-  while (pSubCardIter->bHasNext()) {
-    Card *pSubCard = pSubCardIter->pNext();
-    pSubCard->vPrintCardProperties(pRibbon, iDepth + 1,rbPrune);
-  }
-  delete pSubCardIter;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2381,21 +2350,9 @@ char Card::cTypeShort(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* print comment                                                              */
-/*----------------------------------------------------------------------------*/
-void Card::vCommentPrint(Ribbon* pRibbon, i8 iDepth)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Stz* szComment = this->sz();
-
-  pRibbon->vSprint("%s"_Stz,szComment);
-}
-
-/*----------------------------------------------------------------------------*/
 /* print {index}                                                              */
 /*----------------------------------------------------------------------------*/
-void Card::vIndexPrint(Ribbon* pRibbon, i8 iDepth)
+void Card::vIndexPtrPrint(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -2474,7 +2431,7 @@ void Card::vStreamElistPrint(Ribbon* pRibbon, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 /* print {table}                                                              */
 /*----------------------------------------------------------------------------*/
-void Card::vTablePrint(Ribbon* pRibbon, i8 iDepth)
+void Card::vTablePtrPrint(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   

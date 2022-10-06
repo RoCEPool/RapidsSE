@@ -29,7 +29,7 @@ namespace STORE
     Card_StreamColList* pGet_streamColList(void);
 
     void vOrdinate(String* psOrdinal, Stz* szOrdinal);
-    void vRibbonPrint(Ribbon* pRibbon, i8 iDepth);
+    void vStreamPrint(Ribbon* pRibbon, i8 iDepth);
 
     i8 nStreamCols(void);
    };

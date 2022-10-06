@@ -222,7 +222,6 @@ namespace STORE
 
     Card* pCard(void);
     void vCard(Card* pCard);
-    void vCardPrint(Ribbon* pRibbon, i8 iDepth, bool rbPrune);
     void vClearAllMarks(void);
     Column* pColumn(void);
     void vColumn(Column* pColumn);
@@ -294,13 +293,13 @@ namespace STORE
     SubCardIter* pNewSubCardIter(void);
 
     void vPrintCard(Ribbon* pRibbon, i8 iDepth, bool& rbPrune);
-    void vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth, bool& rbPrune);
-    void vPrintCard_bySettings(Ribbon* pRibbon, i8 iDepth, bool& rbPrune);
-    void vPrintCardName(Ribbon* pRibbon, i8 iDepth, bool& rbPrune);
-    void vPrintCardNameValue(Ribbon* pRibbon, i8 iDepth, bool& rbPrune);
-    void vPrintCardProperties(Ribbon* pRibbon, i8 iDepth, bool& brPrune, bool bPrintPtyName= true);
-    void vPrintCardValue(Ribbon* pRibbon, i8 iDepth, bool& rbPrune);
-    void vPrintCardSubShort(Ribbon* pRibbon, i8 iDepth, bool& rbPrune);
+    void vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth);
+    void vPrintCard_bySettings(Ribbon* pRibbon, i8 iDepth);
+    void vPrintCardName(Ribbon* pRibbon, i8 iDepth);
+    void vPrintCardNameValue(Ribbon* pRibbon, i8 iDepth);
+    void vPrintCardProperties(Ribbon* pRibbon, i8 iDepth, bool bPrintPtyName= true);
+    void vPrintCardValue(Ribbon* pRibbon, i8 iDepth);
+    void vPrintCardSubShort(Ribbon* pRibbon, i8 iDepth);
     void vPrintHeader(Ribbon* pRibbon);
     i8   nProperties(void);
     eTN  eProperty(i8 i_Property);
@@ -354,10 +353,9 @@ namespace STORE
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   
 
-    void vCommentPrint(Ribbon* pRibbon, i8 iDepth);
-    void vIndexPrint(Ribbon* pRibbon, i8 iDepth);
+    void vIndexPtrPrint(Ribbon* pRibbon, i8 iDepth);
     void vStreamElistPrint(Ribbon* pRibbon, i8 iDepth);
-    void vTablePrint(Ribbon* pRibbon, i8 iDepth);
+    void vTablePtrPrint(Ribbon* pRibbon, i8 iDepth);
 
     Card_As*            pSub_as(void);
     Card_CalcBool*      pSub_calcBool(void);

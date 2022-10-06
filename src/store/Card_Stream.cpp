@@ -193,7 +193,7 @@ void Card_Stream::vOrdinate(String* psOrdinal, Stz* szOrdinal)
 /*----------------------------------------------------------------------------*/
 /* get number of stream columns                                               */
 /*----------------------------------------------------------------------------*/
-void Card_Stream::vRibbonPrint(Ribbon* pRibbon, i8 iDepth)
+void Card_Stream::vStreamPrint(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
