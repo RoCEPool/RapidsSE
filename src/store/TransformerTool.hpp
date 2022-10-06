@@ -23,6 +23,7 @@ namespace STORE
     Board*      m_pBoard_query;
     CardCtl*    m_pCardCtl;
 
+    Table*      m_pTable;
     StreamDef*  m_pStreamDef;
 
     SubCardIter*   m_pMainCardIter;

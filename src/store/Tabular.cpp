@@ -76,31 +76,27 @@ void Tabular::vAdd_tableSyn(void)
 
   char cTableSyn = 'a';
 
-  m_pBoard = m_pBench->pGetBoard(BK_QUERY);
-
   BoardIter xBI(m_pBoard);
 
   while ( (m_pMainCard = xBI.pEachMain()) ) {
     if (! (m_p_table = _pGetSub_Table(m_pMainCard)) )
       continue;
 
-    Card_TablePtr* p_tablePtr = _pGetSub_TablePtr(m_p_table);
-    Table* pTable = p_tablePtr->pTable();
+    m_p_tablePtr = _pGetSub_TablePtr(m_p_table);
+    m_pTable = m_p_tablePtr->pTable();
 
-    Card_TableSyn* p_tableSyn = new Card_TableSyn;
+    m_p_tableSyn = new Card_TableSyn;
 
-    if (pTable->bIsReplicated())
-      p_tableSyn->vTableSyn(cTableSyn+'A'-'a');
+    if (m_pTable->bIsReplicated())
+      m_p_tableSyn->vTableSyn(cTableSyn+'A'-'a');
     else
-      p_tableSyn->vTableSyn(cTableSyn);
-
-    m_p_table->vAppend(p_tableSyn);
-
+      m_p_tableSyn->vTableSyn(cTableSyn);
     cTableSyn++;
+
+    m_p_table->vAppend(m_p_tableSyn);
   }
 
-  if (m_bInteractive)
-    m_pBoard->vPrintBoard("Tabular::vAdd_tableSyn"_Stz);
+  vPrintBoard("Tabular::vAdd_tableSyn"_Stz);
 }
 
 

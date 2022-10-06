@@ -1565,36 +1565,6 @@ Stz* Card::sz(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set table synonym                                                          */
-/*----------------------------------------------------------------------------*/
-char Card::cTableSyn(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  //Stz* szTableSyn = szGetProperty("szTableSyn"_Stz);
-
-  //RASSERT(szValue()->bSame(szTableSyn));
-
-  char cTableSyn = *(szValue()->azChar());
-
-  return cTableSyn;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* set table synonym                                                          */
-/*----------------------------------------------------------------------------*/
-void Card::vTableSyn(char cTableSyn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  s32 sSyn;
-  sSyn.vSprint("%c"_Stz,cTableSyn);
-
-  vValue(sSyn);
-}
-
-/*----------------------------------------------------------------------------*/
 /* transfer all sub-cards from given card set to this card                    */
 /*----------------------------------------------------------------------------*/
 void Card::vTransferSubCards(Card* pCards)

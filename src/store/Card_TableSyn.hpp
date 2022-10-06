@@ -15,6 +15,9 @@ namespace STORE
   
     Card_TableSyn(void);
    ~Card_TableSyn(void) noexcept(false);
+
+    char cTableSyn(void);
+    void vTableSyn(char cTableSyn);
   };
 
   Card_TableSyn* _pCard_TableSyn(void* aAddr);

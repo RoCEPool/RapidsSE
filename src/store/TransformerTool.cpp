@@ -23,6 +23,7 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_pBoard_query     = nullptr;
   m_pCardCtl         = m_pBench->pCardCtl();
 
+  m_pTable           = nullptr;
   m_pStreamDef       = nullptr;
 
   m_pPermGen         = nullptr;

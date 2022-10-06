@@ -342,8 +342,6 @@ namespace STORE
     eTE  eTermEval(void);
     char cTypeShort(void);
 
-    char cTableSyn(void);
-    void vTableSyn(char cTableSyn);
     void vTransferSubCards(Card* pCards);
     void vTransferFrom(Card* pCards, Card* pFrom,
                        Card* pAt=nullptr, bool bAfter=true);
