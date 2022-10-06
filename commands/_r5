@@ -62,7 +62,7 @@ tablesizes;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // /cue = "$"
-/cue = "Filtrate::vCopy_predCmp_leftwards"
+/cue = "Joiner::vAppend_preliminary_indexJoin"
 /jobTags
 /transliterated
 /transform

@@ -172,11 +172,11 @@ void Stager::vLinearize_stages(void)
 
   m_pBoard->vRenumberMainCards();
 
-  m_pCardCtl->vPrintSubCards(CK_AGGELIST, false);
-  m_pCardCtl->vPrintSubCards(CK_GBYELIST, false);
+  vPrintSubCards(CK_AGGELIST, false);
+  vPrintSubCards(CK_GBYELIST, false);
+  vPrintSubCards(CK_PROJELIST, false);
 
-  if (m_bInteractive)
-    m_pBoard->vPrintBoard("Stager::vLinearize_stages"_Stz);
+  vPrintBoard("Stager::vLinearize_stages"_Stz);
 }
 
 

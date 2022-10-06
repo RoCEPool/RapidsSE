@@ -1179,15 +1179,13 @@ void Card::vPrintCard_default(Ribbon* pRibbon, i8 iDepth, bool& rbPrune, eCP ePi
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+  CardCtl* pCardCtl = _pCardCtl(pRibbon->pCtl());
+
   eCK eCard = this->eCard();
 
   switch (eCard) {
     case CK_CARDPTR:
       vCardPrint(pRibbon, iDepth, rbPrune);
-      break;
-
-    case CK_COMMENT:
-      vCommentPrint(pRibbon, iDepth);
       break;
 
     case CK_INDEXPTR:
@@ -1202,18 +1200,20 @@ void Card::vPrintCard_default(Ribbon* pRibbon, i8 iDepth, bool& rbPrune, eCP ePi
       vTablePrint(pRibbon, iDepth);
       break;
 
-    case CK_TERM:
-      vPrintCardNameValue(pRibbon, iDepth, rbPrune);
-      //vPrintCardValue(pRibbon, iDepth, rbPrune);
-      break;
-
     default:
-      vPrintCardNameValue(pRibbon, iDepth, rbPrune);
-      //vPrintCardValue(pRibbon, iDepth, rbPrune);
-      vPrintCardProperties(pRibbon, iDepth, rbPrune);
+      if (pCardCtl->bPrintName(eCard) && pCardCtl->bPrintValue(eCard)) {
+        vPrintCardNameValue(pRibbon, iDepth, rbPrune);
+      }
+      else {
+        if (pCardCtl->bPrintName(eCard))
+          vPrintCardName(pRibbon, iDepth, rbPrune);
+        if (pCardCtl->bPrintValue(eCard))
+          vPrintCardValue(pRibbon, iDepth, rbPrune);
+      }
+      if (pCardCtl->bPrintName(eCard) && pCardCtl->bPrintProperties(eCard))
+        vPrintCardProperties(pRibbon, iDepth, rbPrune);
       break;
-  }
-
+    }
 }
 
 /*----------------------------------------------------------------------------*/

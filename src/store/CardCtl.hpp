@@ -12,9 +12,15 @@ namespace STORE
 {
   struct _CardCtl
   {
-    eCP  m_ePrintForm;      // print form
-    bool m_bPrintSubCards;  // print the subcards of this card?
-    bool m_bNextHoriz;      // print card on new horizontal line
+    bool m_bNextHoriz;       // print card on new horizontal line
+
+    eCP  m_ePrintForm;       // print form
+
+    bool m_bPrintName;       // print name of card
+    bool m_bPrintValue;      // print value of card
+    bool m_bPrintProperties; // print properties of card
+    bool m_bPrintSubCards;   // print the subcards of this card?
+
   };
 
   class CardCtl : public Object
@@ -40,6 +46,12 @@ namespace STORE
     void vPrintForm(i8 i_Card, eCP ePrintForm);
     void vPrintFormSubCards(i8 i_Card, eCP ePrintForm, bool bPrintSubCards);
 
+    bool bPrintName(i8 i_Card);
+    void vPrintName(i8 i_Card, bool bPrintName);
+    bool bPrintValue(i8 i_Card);
+    void vPrintValue(i8 i_Card, bool bPrintValue);
+    bool bPrintProperties(i8 i_Card);
+    void vPrintProperties(i8 i_Card, bool bPrintProperties);
     bool bPrintSubCards(i8 i_Card);
     void vPrintSubCards(i8 i_Card, bool bPrintSubCards);
 
