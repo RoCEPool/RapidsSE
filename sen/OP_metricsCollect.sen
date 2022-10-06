@@ -46,11 +46,6 @@
   // "metricsCollect_Start" .
 
   intStack::new LogicUnit[].intStack!
-  
-  
-  //LogicUnit[].intStack@ intStack.delete
-  //nullptr LogicUnit[].intStack!
-
 
   EV_M_START_handler
 ;
