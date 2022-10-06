@@ -10,33 +10,20 @@
 : metricsCollectJob
 
   0 locals| iJob |
-  
-  "collecting job metrics" .
 
   LogicUnit[].intStack@ jobMetrics::jobSet
 
-  //LogicUnit[].intStack@ intStack.items@ "intStack has %v items" .printf
+  LogicUnit[].intStack@ intStack.items@ if
+    LogicUnit[].intStack@ intStack.items@ "intStack has %v items" .printf
+  then
 
   begin
     LogicUnit[].intStack@ intStack.items@
   while
 
     LogicUnit[].intStack@ intStack.pop to iJob
-    
-    iJob jobMetrics::new LogicUnit[].jobMetrics!
-    
-    LogicUnit[].jobMetrics@ jobMetrics.collect if
-
-      LogicUnit[].jobMetrics@
-        nullptr LogicUnit[].jobMetrics!
-        [op].pipeout
-
-    else
-      LogicUnit[].jobMetrics@
-        nullptr LogicUnit[].jobMetrics!
-        jobMetrics.delete
-
-    then
+    iJob "metricsDemon collecting job metrics for job %v" str.format .
+    iJob jobMetrics.collect
 
   repeat
 ;
@@ -73,21 +60,21 @@
 /*----------------------------------------------------------------------------*/
 : metricsCollect_DataPulse
   
-
+/*
   begin
-    
+
     sysargs::jobMetrics@ if
-    
+
       metricsCollectJob
-            
+
     then
-    
+
     sysargs::sysMetrics@ if
     
       metricsCollectSys
 
     then
-    
+
     
     sysargs::jobMetrics@ sysargs::sysMetrics@ or if
     
@@ -100,6 +87,18 @@
     then
     
   again
+*/
+
+begin
+
+    // collect job metrics
+    metricsCollectJob
+
+    // sleep
+    10 thread::sleepMsec
+
+  again
+
 
   EV_M_DATAPULSE_handler
 ;

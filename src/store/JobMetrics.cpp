@@ -15,6 +15,7 @@
 #include "Stream.hpp"
 #include "Op.hpp"
 #include "LogicUnit.hpp"
+#include "TagConstants.h"
 
 
 /*----------------------------------------------------------------------------*/
@@ -29,13 +30,12 @@ __aFooterFunction(JobMetrics)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-JobMetrics::JobMetrics(Job* pJob)
+JobMetrics::JobMetrics(JobId tJobId)
 : Operand(CN_JOBMETRICS)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
 
-  //m_tJobId = tJobId;
-  m_pJob = pJob;
+  m_tJobId = tJobId;
 
   m_nMilliseconds = C_UNKNOWN;
   m_iPctFree      = C_UNKNOWN;
@@ -79,12 +79,16 @@ void JobMetrics::vJobSet(IntStack* pIntStack)
        pJobNode = pParticipatingJobs->pNext(pJobNode)) {
     
     Job* pJob = _pJob(pJobNode->m_pObject);
-    
-    JobId tJobId = pJob->tJobId();
-    
-    i8 iJob = tJobId.iAsI8();
-    
-    pIntStack->vPush(iJob);
+
+    vTrace("vJobSet: %04lld.%04lld\n"_Stz, pJob->tJobId().uNodeId(), pJob->tJobId().uJobNo());
+
+    if (pJob->bHasTag(C_TAG_JOBMETRICS)) {
+      JobId tJobId = pJob->tDistId();
+
+      i8 iJob = tJobId.iAsI8();
+
+      pIntStack->vPush(iJob);
+    }
   }
 
   pParticipatingJobs->vDropLock();
@@ -111,31 +115,43 @@ void JobMetrics::vRepair(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* collect job metrics                                                        */
 /*----------------------------------------------------------------------------*/
-bool JobMetrics::bCollect(void)
+void JobMetrics::vCollect(JobId tDistId)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
+  _static_
 
-  //JobList* pParticipatingJobs = AM::pParticipatingJobs();
+  JobList* pParticipatingJobs = AM::pParticipatingJobs();
+
+  Job* pJob = pParticipatingJobs->pFindJob(tDistId,true);
   
-  //Job* pJob = pParticipatingJobs->pFindJob(m_tJobId,true);
-  
-  //if (! pJob)
-  //  return false;
-  
-  //vTrace("Found Job %lld %p\n"_Stz,m_tJobId.iAsI8(),pJob);
+  if (! pJob) {
+    vTrace("vCollect: NOT Found Job %04lld.%04lld %p\n"_Stz, tDistId.uNodeId(), tDistId.uJobNo(), pJob);
+    SkipNode* pJobNode;
+    pParticipatingJobs->vGrabLock();
+    for (pJobNode = pParticipatingJobs->pFirst();
+         pJobNode;
+         pJobNode = pParticipatingJobs->pNext(pJobNode)) {
 
-  Task* pTask = m_pJob->pTask();
-  //LogicUnit* pLogicUnit = pTask->pLogicUnit();
+      Job* pJob = _pJob(pJobNode->m_pObject);
 
-  //if (pLogicUnit->m_xpPipeline.bIsNotNull()) {
-    vCollect(m_pJob);
+      vTrace("vPJ: %04lld.%04lld\n"_Stz, pJob->tJobId().uNodeId(), pJob->tJobId().uJobNo());
 
-    //vPrint();
+    }
+    pParticipatingJobs->vDropLock();
 
-  //}
+    return;
+  }
 
-  
-  return true;
+  vTrace("vCollect: Found Job %04lld.%04lld %p\n"_Stz,tDistId.uNodeId(),tDistId.uJobNo(),pJob);
+
+  JobMetrics* pJobMetrics = new JobMetrics(pJob->tJobId());
+
+  pJobMetrics->vCollect(pJob);
+  pJobMetrics->vPrint();
+  pJobMetrics->vUpdate(pJob);
+
+  pJob->vDropLock();
+
+  return;
 }
 
 
@@ -208,11 +224,11 @@ OpMetrics* JobMetrics::pGetOpMetrics(i8& d_MetricsCursor)
 /*----------------------------------------------------------------------------*/
 /* get the job                                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobMetrics::pJob(void)
+JobId JobMetrics::tJobId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
 
-  return m_pJob;
+  return m_tJobId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -291,7 +307,7 @@ i8 JobMetrics::nThreadsIdle(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get next op metrics                                                        */
+/* print job metrics                                                          */
 /*----------------------------------------------------------------------------*/
 void JobMetrics::vPrint(void)
 {
@@ -330,14 +346,12 @@ void JobMetrics::vPrint(void)
     }
 
   }
-
-  
 }
 
 /*----------------------------------------------------------------------------*/
 /* use this job metrics to update the pipeline on this node                   */
 /*----------------------------------------------------------------------------*/
-bool JobMetrics::bUpdate(bool bAppendList)
+void JobMetrics::vUpdate(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
 
@@ -355,23 +369,18 @@ bool JobMetrics::bUpdate(bool bAppendList)
 //  }
   
   
-  Pipeline* pPipeline = m_pJob->pPipeline();
+  Pipeline* pPipeline = pJob->pPipeline();
   if (! pPipeline) {
-    m_pJob->vDropLock();
-    vTrace("JobMetrics pipeline not found jobId=%lld\n"_Stz,m_pJob->tJobId().iAsI8());
-    return false;
+    vTrace("JobMetrics pipeline not found jobId=%lld\n"_Stz,pJob->tJobId().iAsI8());
+    return;
   }
-  
-  
-  
   
   i8 d_MetricsCursor = C_UNKNOWN;
   
   PipelineMetrics* pPipelineMetrics = pGetPipelineMetrics(d_MetricsCursor);
   if (! pPipelineMetrics) {
-    m_pJob->vDropLock();
-    vTrace("JobMetrics pPipelineMetrics not found jobId=%lld\n"_Stz,m_pJob->tJobId().iAsI8());
-    return false;
+    vTrace("JobMetrics pPipelineMetrics not found jobId=%lld\n"_Stz,pJob->tJobId().iAsI8());
+    return;
   }
   
 //  vTrace("  Pipeline %s\n"_Stz
@@ -414,27 +423,9 @@ bool JobMetrics::bUpdate(bool bAppendList)
 
   }
 
+  pJob->vJobMetricsAdd(this);
 
-  if (bAppendList) {
-    
-    //JobList* pOriginatingJobs = AM::pOriginatingJobs();
-    
-    //Job* pJob_originator = pOriginatingJobs->pFindJob(m_tJobId,true);
-    
-    //if (pJob_originator) {
-      //vTrace("JobMetrics update job =%p\n"_Stz,pJob);
-      m_pJob->vJobMetricsAdd(this);
-      //pJob->vDropLock();
-    //}
-    //else {
-    //  vTrace("JobMetrics originatiing job not found jobId=%lld\n"_Stz,m_tJobId.iAsI8());
-    //}
-  }
-  
-  m_pJob->vDropLock();
-
-  
-  return true;
+  return;
 }
 
 
@@ -463,7 +454,7 @@ void JobMetrics::vCollect(Job* pJob)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Pipeline* pPipeline = pJob->pMetricsPipeline();
+  Pipeline* pPipeline = pJob->pPipeline();
   
   new(& m_oMetricsWsp) PipelineMetrics(pPipeline->szPipelineNm());
   
@@ -488,9 +479,9 @@ void JobMetrics::vCollect(Job* pJob)
 
         new(& m_oMetricsWsp) OpMetrics( pOp->i_Op()
                                        ,pOp->szOpNm()
-                                       ,0 //pOp->nQueuedOperands()
-                                       ,0 //pOp->nTmpIndexSize()
-                                       ,0 //pOp->nPotSize()
+                                       ,pOp->nQueuedOperands()
+                                       ,pOp->nTmpIndexSize()
+                                       ,pOp->nPotSize()
                                        );
       }
     }

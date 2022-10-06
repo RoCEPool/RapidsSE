@@ -32,7 +32,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // metrics
-/*
+
   Tub[] pJob jobReport::metrics to eError
 
   eError EC_NONE == not if
@@ -42,7 +42,7 @@
   then
 
   tEventDemonJobId Tub[].pipeToJob
-*/
+/*
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // network
 
@@ -94,7 +94,7 @@
   then
 
   tEventDemonJobId Tub[].pipeToJob
-
+*/
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Tub[].delete

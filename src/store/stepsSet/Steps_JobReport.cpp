@@ -43,20 +43,19 @@ void Step::vJobReportAll(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* jobReport::metrics-- report on metrics after job                           */
+/* jobReport::metrics -- report on metrics after job                          */
 /*----------------------------------------------------------------------------*/
 void Step::vJobReportMetrics(void)
 {
   ENTRY();
 
-  //i8 iJobNo = m_pDataStack->iPopInt(__func__);
-//  Job* pJob= _pJob(m_pDataStack->pPopPtr(__func__));
-//
-//  Tub* pTub = _pTub(m_pDataStack->pPopPtr(__func__));
-//
-//  eEC eError = JobReport::eMetricsReport(pJobMetrics, pTub);
-//
-//  m_pDataStack->vPushInt(eError);
+  Job* pJob= _pJob(m_pDataStack->pPopPtr(__func__));
+
+  Tub* pTub = _pTub(m_pDataStack->pPopPtr(__func__));
+
+  eEC eError = JobReport::eMetricsReport(pJob, pTub);
+
+  m_pDataStack->vPushInt(eError);
 
   EXIT();
 }

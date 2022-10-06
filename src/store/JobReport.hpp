@@ -42,7 +42,7 @@ namespace STORE
     static Job* pFindParticipantJobNo(i8 iJobNo);
   
     static eEC eAllReport(i8 iJobNo, Tub* pTub);
-    static eEC eMetricsReport(JobMetrics* pJobMetrics, Tub* pTub);
+    static eEC eMetricsReport(Job* pJob, Tub* pTub);
     static eEC eNetDissectReport(Job* pJob, Tub* pTub);
     static eEC eNetworkReport(Job* pJob, Tub* pTub);
     static eEC eOperandReport(Job* pJob, Tub* pTub);
