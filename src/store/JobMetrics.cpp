@@ -80,8 +80,6 @@ void JobMetrics::vJobSet(IntStack* pIntStack)
     
     Job* pJob = _pJob(pJobNode->m_pObject);
 
-    vTrace("vJobSet: %04lld.%04lld\n"_Stz, pJob->tJobId().uNodeId(), pJob->tJobId().uJobNo());
-
     if (pJob->bHasTag(C_TAG_JOBMETRICS)) {
       JobId tJobId = pJob->tDistId();
 
