@@ -43,7 +43,7 @@ Filtrate::~Filtrate(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* inspect all <filter> and attempt to move <predCmp> after <scan>/<absJoin>  */
 /*----------------------------------------------------------------------------*/
-void Filtrate::vMove_predCmp_leftwards(void)
+void Filtrate::vAssign_predCmp_leftwards(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTRATE,_FOOTER_);
 
@@ -55,8 +55,9 @@ void Filtrate::vMove_predCmp_leftwards(void)
 
   vEndIteration();
 
-  if (m_bInteractive)
-    m_pBoard->vPrintBoard("Filtrate::vMove_predCmp_leftwards"_Stz);
+  vPrintForm(CK_PREDCMP,CP_DEFAULT);
+  vPrintSubCards(CK_PREDCMP,true);
+  vPrintBoard("Filtrate::vAssign_predCmp_leftwards"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -125,25 +126,20 @@ void Filtrate::vDelete_empty_filter(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
 
-  vBeginIteration();
 
-  while (Card_Filter *pCard_filter =
-      _pCard_Filter(pEachMain(CK_FILTER))) {
 
-    Card_CalcBool* pCard_calcBool =
-        _pCard_CalcBool(pCard_filter->pFindSubCard(CK_CALCBOOL));
+  BoardIter xBI(m_pBoard);
 
-    if (0 == pCard_calcBool->nChildCards()) {
-      m_pBoard->vRemoveMainCard(pCard_filter);
-      delete pCard_filter;
+  while ((m_p_filter = _pCard_Filter(xBI.pEachMain(CK_FILTER)))) {
+    m_p_calcBool = _pGetSub_CalcBool(m_p_filter);
+
+    if (0 == m_p_calcBool->nChildCards()) {
+      xBI.vRemoveDeleteCurr(CK_FILTER);
       break;
     }
   }
 
-  vEndIteration();
-
-  if (m_bInteractive)
-    m_pBoard->vPrintBoard("Filtrate::vDelete_empty_filter"_Stz);
+  vPrintBoard("Filtrate::vDelete_empty_filter"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

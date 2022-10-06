@@ -179,7 +179,7 @@ void Transformer::vTransform2(void)
  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // inspect all <filter> and attempt to move <predCmp> after <scan>/<absJoin>
-  m_pFiltrate->vMove_predCmp_leftwards();
+  m_pFiltrate->vAssign_predCmp_leftwards();
   m_pFiltrate->vCopy_predCmp_leftwards();
 
   // delete any <filter> which is effectively empty

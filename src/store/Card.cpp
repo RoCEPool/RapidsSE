@@ -1053,6 +1053,9 @@ void Card::vPrintCard(Ribbon* pRibbon, i8 iDepth, bool& rbPrune)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  if (CK_PREDCMP == m_eCard)
+    vDebugPoint();
+
   if (0 == iDepth)
     vPrintHeader(pRibbon);
 
@@ -1120,7 +1123,8 @@ void Card::vPrintCard_byForm(Ribbon* pRibbon, i8 iDepth, bool& rbPrune, eCP ePin
       break;
 
     case CK_TERM:
-      _pCard_Term(this)->vPrintCardProperties(pRibbon, iDepth, rbPrune, false);
+      //_pCard_Term(this)->vPrintCardProperties(pRibbon, iDepth, rbPrune, false);
+      vPrintCardNameValue(pRibbon, iDepth, rbPrune);
       break;
 
     default:

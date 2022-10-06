@@ -22,7 +22,7 @@ namespace STORE
   
    ~Filtrate(void) noexcept(false);
 
-    void vMove_predCmp_leftwards(void);
+    void vAssign_predCmp_leftwards(void);
     void vConvert_calc_to_calcBool(void);
     void vCopy_predCmp_leftwards(void);
     void vCull_indexJoin_filterPred(void);

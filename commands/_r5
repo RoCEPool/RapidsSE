@@ -62,7 +62,7 @@ tablesizes;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // /cue = "$"
-/cue = "Streamer::vCalc_streamOrdinalRanges"
+/cue = "Filtrate::vCopy_predCmp_leftwards"
 /jobTags
 /transliterated
 /transform
