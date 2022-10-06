@@ -91,7 +91,7 @@ eEC JobReport::eAllReport(i8 iJob, Tub* pTub)
 /*----------------------------------------------------------------------------*/
 /* metrics report                                                             */
 /*----------------------------------------------------------------------------*/
-eEC JobReport::eMetricsReport(JobMetrics* pJobMetrics, Tub* pTub)
+eEC JobReport::eMetricsReport(Job* pJob, Tub* pTub)
 {
   _static_
   
@@ -135,9 +135,9 @@ eEC JobReport::eMetricsReport(JobMetrics* pJobMetrics, Tub* pTub)
 
   Node* pThisNode = MY::pNode();
 
-//  for (JobMetrics* pJobMetrics = pJob->pJobMetricsChain();
-//       pJobMetrics;
-//       pJobMetrics = pJobMetrics->pNext()) {
+  for (JobMetrics* pJobMetrics = pJob->pJobMetricsChain();
+       pJobMetrics;
+       pJobMetrics = pJobMetrics->pNext()) {
     
     i8 d_MetricsCursor = C_UNKNOWN;
 
@@ -161,7 +161,7 @@ eEC JobReport::eMetricsReport(JobMetrics* pJobMetrics, Tub* pTub)
                       (
                         C_VARGS_BEGIN
                        
-                       ,pJobMetrics->pJob()->tJobId().uJobNo()
+                       ,pJobMetrics->tJobId().uJobNo()
 
                        ,pThisNode->iNodeId()
                        ,pThisNode->szNodeNm()
@@ -199,7 +199,7 @@ eEC JobReport::eMetricsReport(JobMetrics* pJobMetrics, Tub* pTub)
 
     } // stageMetrics
 
-  //} // for jobMetrics
+  } // for jobMetrics
        
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

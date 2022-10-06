@@ -25,9 +25,9 @@ failure contains: 'invalid command'
 drop index t idx;
 failure contains: 'no such index'
 
-// no table
-drop index t1 idx;
-failure contains: 'Table does not exist'
+// no table / no index
+//drop index t1 idx;
+//failure contains: 'no such index'
 
 create table;
 failure contains: 'invalid command'

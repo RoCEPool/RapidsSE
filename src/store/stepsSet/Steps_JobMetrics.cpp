@@ -33,11 +33,9 @@ void Step::vJobMetricsCollect(void)
 {
   ENTRY();
 
-  JobMetrics* pJobMetrics = _pJobMetrics(m_pDataStack->pPopPtr(__func__));
-
-  bool bCollected = pJobMetrics->bCollect();
-  
-  //m_pDataStack->vPushInt(bCollected);
+  i8 iJobNo = m_pDataStack->iPopInt(__func__);
+  JobId tDistId = iJobNo;
+  JobMetrics::vCollect(tDistId);
 
   EXIT();
 }
@@ -51,8 +49,8 @@ void Step::vJobMetricsDelete(void)
 
   JobMetrics* pJobMetrics = _pJobMetrics(m_pDataStack->pPopPtr(__func__));
 
-  Pipeline* pPipeline = pJobMetrics->pJob()->pMetricsPipeline();
-  delete pPipeline;
+  //Pipeline* pPipeline = pJobMetrics->pJob()->pMetricsPipeline();
+  //delete pPipeline;
 
   delete pJobMetrics;
   
@@ -80,16 +78,12 @@ void Step::vJobMetricsNew(void)
 {
   ENTRY();
 
-//  i8 iJob = m_pDataStack->iPopInt(__func__);
-//
-//  JobId tJobId;
-//  tJobId = iJob;
-//
-//  JobMetrics* pJobMetrics = new JobMetrics(tJobId);
+  i8 iJob = m_pDataStack->iPopInt(__func__);
 
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  JobId tJobId;
+  tJobId = iJob;
 
-  JobMetrics* pJobMetrics = new JobMetrics(pJob);
+ JobMetrics* pJobMetrics = new JobMetrics(tJobId);
 
   m_pDataStack->vPushPtr(pJobMetrics);
 
