@@ -124,6 +124,9 @@ void Streamer::vAppend_stream_to_scan(void)
   vPrintFormSubCards(CK_STREAM, CP_DEFAULT, true);
 
   vPrintBoard("Streamer::vAppend_stream_to_scan"_Stz);
+
+  vPrintSubCards(CK_STREAM, false);
+
 }
 
 

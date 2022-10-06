@@ -148,13 +148,13 @@ void Transformer::vTransform2(void)
   m_pJoiner->vSubsume_scan();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  m_pTabular->vAdd_tableSyn();
+  m_pTabular->vAdd_tablePtn();
   m_pStreamer->vCalc_streamOrdinalRanges();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  m_pTabular->vAdd_tableSyn();
-  m_pTabular->vAdd_tablePtn();
-
+/*
   m_pPartitioner->vExtract_tableList();
 
   m_pColumnar->vAdd_columnRef();
@@ -163,7 +163,6 @@ void Transformer::vTransform2(void)
   m_pPartitioner->vCompute_coPtnPredList();
   m_pPartitioner->vCompute_coPtnJoinList();
   m_pPartitioner->vCompute_crossPtnJoinList();
-
   m_pPartitioner->vCompute_ptndJointSet();
 
   m_pPermutor->vCopy_ptndJoinSet();
@@ -175,27 +174,20 @@ void Transformer::vTransform2(void)
   m_pEstimator->vEstimate_network();
   m_pEstimator->vEstimate_joinOrder();
   m_pEstimator->vExtract_joinOrderSeq();
+*/
 
  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // inspect all <filter> and attempt to move <predCmp> after <scan>/<absJoin>
   m_pFiltrate->vMove_predCmp_leftwards();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   m_pFiltrate->vCopy_predCmp_leftwards();
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete any <filter> which is effectively empty
   m_pFiltrate->vDelete_empty_filter();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pJoiner->vAppend_preliminary_indexJoin();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pJoiner->vMark_idxCol();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pJoiner->vForm_joinPred();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

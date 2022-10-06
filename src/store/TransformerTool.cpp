@@ -286,6 +286,14 @@ void TransformerTool::vPrintFormSubCards(eCK eCard, eCP ePrintForm, bool bPrintS
 }
 
 /*----------------------------------------------------------------------------*/
+/* set card print form                                                        */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::vPrintSubCards(eCK eCard, bool bPrintSubCards)
+{
+  m_pCardCtl->vPrintSubCards(eCard,bPrintSubCards);
+}
+
+/*----------------------------------------------------------------------------*/
 /* search for parent of given sub card                                        */
 /*----------------------------------------------------------------------------*/
 bool TransformerTool::bRecursivelyTheSame(Card* p_card_a, Card* p_card_b, i8 iDepth, bool bTestL0)

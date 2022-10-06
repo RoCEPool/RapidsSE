@@ -2562,9 +2562,11 @@ void Card::vTablePrint(Ribbon* pRibbon, i8 iDepth)
 //   pRibbon->vSput(FR_ATOM_SQUARE,pIdxColumn->szColNm());
 
   //pRibbon->vSput(FR_SIZE,pStreamDef->jTableSize());
-  pRibbon->vSprintRight(" tableSize %lld"_Stz,pStreamDef->jTableSize());
+  pRibbon->vSprintRight(" %lld %s"_Stz,pStreamDef->nColumns(),
+                        1 == pStreamDef->nColumns() ? "column" : "columns");
   pRibbon->vSprintRight(" %lld %s"_Stz,pIdxVec->nItems(),
                         1 == pIdxVec->nItems() ? "index" : "indexes");
+  pRibbon->vSprintRight(" tableSize %lld"_Stz,pStreamDef->jTableSize());
 }
 
 /*----------------------------------------------------------------------------*/
