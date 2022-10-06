@@ -132,7 +132,7 @@ void Scanning::vCull_markedPred(void)
     m_p_filter = nullptr;
   }
 
-  m_pCardCtl->vPrintForm(CK_STREAM, CP_CARDFORM);
+  //m_pCardCtl->vPrintForm(CK_STREAM, CP_CARDFORM);
   m_pCardCtl->vPrintByKind(CK_STREAM, true);
   m_pCardCtl->vPrintSubCards(CK_STREAM, false);
 

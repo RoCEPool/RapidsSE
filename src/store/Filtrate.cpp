@@ -55,7 +55,6 @@ void Filtrate::vAssign_predCmp_leftwards(void)
 
   vEndIteration();
 
-  vPrintForm(CK_PREDCMP,CP_DEFAULT);
   vPrintSubCards(CK_PREDCMP,true);
   vPrintBoard("Filtrate::vAssign_predCmp_leftwards"_Stz);
 }
@@ -114,7 +113,6 @@ void Filtrate::vCull_indexJoin_filterPred(void)
 
   vEndIteration();
 
-  m_pCardCtl->vPrintForm(CK_STREAM, CP_DEFAULT);
   m_pCardCtl->vPrintSubCards(CK_STREAM, true);
   if (m_bInteractive)
     m_pBoard->vPrintBoard("Filtrate::vCull_indexJoin_filterPred"_Stz);

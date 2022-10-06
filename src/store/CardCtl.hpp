@@ -6,7 +6,6 @@
 #include "BASE.h"
 
 #include "eCK.h"
-#include "eCP.h"
 
 namespace STORE
 {
@@ -14,9 +13,7 @@ namespace STORE
   {
     bool m_bNextHoriz;       // print card on new horizontal line
 
-    eCP  m_ePrintForm;       // print form
-
-    bool m_bPrintByKind;     // print card by kind (or the following...)
+    bool m_bPrintByKind;     // print card by kind (or the following settings...)
     bool m_bPrintName;       // print name of card
     bool m_bPrintValue;      // print value of card
     bool m_bPrintProperties; // print properties of card
@@ -45,9 +42,6 @@ namespace STORE
 
     bool bNextHoriz(i8 i_Card);
     void vNextHorizon(i8 i_Card, bool bNextHoriz);
-
-    eCP  ePrintForm(i8 i_Card);
-    void vPrintForm(i8 i_Card, eCP ePrintForm);
 
     bool bPrintByKind(i8 i_Card);
     void vPrintByKind(i8 i_Card, bool bPrintByKind);

@@ -89,10 +89,6 @@ void Joiner::vAppend_preliminary_indexJoin(void)
   //m_pCardCtl->vPrintFormSubCards(CK_STREAM, CP_DEFAULT, true);
   vPrintSubCards(CK_FILTER,false);
   vPrintSubCards(CK_STREAM,false);
-  vPrintForm(CK_PREDAND, CP_DEFAULT);
-  vPrintForm(CK_PREDCMP, CP_DEFAULT);
-  vPrintForm(CK_PREDOR, CP_DEFAULT);
-  vPrintForm(CK_TERM, CP_DEFAULT);
 
   vPrintBoard("Joiner::vAppend_preliminary_indexJoin"_Stz);
 }

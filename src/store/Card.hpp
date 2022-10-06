@@ -8,7 +8,6 @@
 #include "eAL.h"
 #include "ePB.h"
 #include "eCK.h"
-#include "eCP.h"
 #include "eGC.h"
 #include "eRO.h"
 #include "eTE.h"
@@ -296,12 +295,12 @@ namespace STORE
 
     void vPrintCard(Ribbon* pRibbon, i8 iDepth, bool& rbPrune);
     void vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth, bool& rbPrune);
-    void vPrintCard_default(Ribbon* pRibbon, i8 iDepth, bool& rbPrune);
+    void vPrintCard_bySettings(Ribbon* pRibbon, i8 iDepth, bool& rbPrune);
     void vPrintCardName(Ribbon* pRibbon, i8 iDepth, bool& rbPrune);
     void vPrintCardNameValue(Ribbon* pRibbon, i8 iDepth, bool& rbPrune);
     void vPrintCardProperties(Ribbon* pRibbon, i8 iDepth, bool& brPrune, bool bPrintPtyName= true);
     void vPrintCardValue(Ribbon* pRibbon, i8 iDepth, bool& rbPrune);
-    void vPrintCompressed_childPairs(Ribbon* pRibbon, i8 iDepth, bool& rbPrune);
+    void vPrintCardSubShort(Ribbon* pRibbon, i8 iDepth, bool& rbPrune);
     void vPrintHeader(Ribbon* pRibbon);
     i8   nProperties(void);
     eTN  eProperty(i8 i_Property);

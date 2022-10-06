@@ -1064,7 +1064,7 @@ void Card::vPrintCard(Ribbon* pRibbon, i8 iDepth, bool& rbPrune)
   if (pCardCtl->bPrintByKind(m_eCard))
     vPrintCard_byKind(pRibbon, iDepth, rbPrune);
   else
-    vPrintCard_default(pRibbon, iDepth, rbPrune);
+    vPrintCard_bySettings(pRibbon, iDepth, rbPrune);
 
   //vMark2(' ');
 
@@ -1096,52 +1096,16 @@ void Card::vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth, bool& rbPrune)
 
   switch (m_eCard) {
 
-    case CK_PREDAND:
-      _pCard_PredAnd(this)->vPrintCardName(pRibbon, iDepth, rbPrune);
-      break;
-
-    case CK_PREDCMP:
-      _pCard_PredCmp(this)->vPrintCardNameValue(pRibbon, iDepth, rbPrune);
-      break;
-
-    case CK_PREDOR:
-      _pCard_PredOr(this)->vPrintCardName(pRibbon, iDepth, rbPrune);
-      break;
-
-    case CK_STREAM:
-      _pCard_Stream(this)->vRibbonPrint(pRibbon,iDepth);
-      break;
-
-    case CK_TERM:
-      //_pCard_Term(this)->vPrintCardProperties(pRibbon, iDepth, rbPrune, false);
-      vPrintCardNameValue(pRibbon, iDepth, rbPrune);
-      break;
-
-    default:
-      vPrintCard_default(pRibbon, iDepth,rbPrune);
-      break;
-  }
-
-  if (pCardCtl->bPrune(m_eCard))
-    rbPrune = true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* print card onto given ribbon                                               */
-/*----------------------------------------------------------------------------*/
-void Card::vPrintCard_default(Ribbon* pRibbon, i8 iDepth, bool& rbPrune)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  CardCtl* pCardCtl = _pCardCtl(pRibbon->pCtl());
-
-  switch (m_eCard) {
     case CK_CARDPTR:
       vCardPrint(pRibbon, iDepth, rbPrune);
       break;
 
     case CK_INDEXPTR:
       vIndexPrint(pRibbon, iDepth);
+      break;
+
+    case CK_STREAM:
+      _pCard_Stream(this)->vRibbonPrint(pRibbon,iDepth);
       break;
 
     case CK_STREAMELIST:
@@ -1153,19 +1117,7 @@ void Card::vPrintCard_default(Ribbon* pRibbon, i8 iDepth, bool& rbPrune)
       break;
 
     default:
-      if (pCardCtl->bPrintName(m_eCard) && pCardCtl->bPrintValue(m_eCard)) {
-        vPrintCardNameValue(pRibbon, iDepth, rbPrune);
-      }
-      else {
-        if (pCardCtl->bPrintName(m_eCard))
-          vPrintCardName(pRibbon, iDepth, rbPrune);
-        if (pCardCtl->bPrintValue(m_eCard))
-          vPrintCardValue(pRibbon, iDepth, rbPrune);
-      }
-      if (pCardCtl->bPrintName(m_eCard) && pCardCtl->bPrintProperties(m_eCard))
-        vPrintCardProperties(pRibbon, iDepth, rbPrune);
-      if (pCardCtl->bPrintSubShort(m_eCard))
-        vPrintCompressed_childPairs(pRibbon, iDepth, rbPrune);
+      vPrintCard_bySettings(pRibbon, iDepth, rbPrune);
       break;
   }
 
@@ -1174,9 +1126,38 @@ void Card::vPrintCard_default(Ribbon* pRibbon, i8 iDepth, bool& rbPrune)
 }
 
 /*----------------------------------------------------------------------------*/
+/* print card onto given ribbon                                               */
+/*----------------------------------------------------------------------------*/
+void Card::vPrintCard_bySettings(Ribbon* pRibbon, i8 iDepth, bool& rbPrune)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  CardCtl* pCardCtl = _pCardCtl(pRibbon->pCtl());
+
+  if (pCardCtl->bPrintName(m_eCard) && pCardCtl->bPrintValue(m_eCard)) {
+    vPrintCardNameValue(pRibbon, iDepth, rbPrune);
+  }
+  else {
+    if (pCardCtl->bPrintName(m_eCard))
+      vPrintCardName(pRibbon, iDepth, rbPrune);
+    if (pCardCtl->bPrintValue(m_eCard))
+      vPrintCardValue(pRibbon, iDepth, rbPrune);
+  }
+
+  if (pCardCtl->bPrintProperties(m_eCard))
+    vPrintCardProperties(pRibbon, iDepth, rbPrune);
+
+  if (pCardCtl->bPrintSubShort(m_eCard))
+    vPrintCardSubShort(pRibbon, iDepth, rbPrune);
+
+  if (pCardCtl->bPrune(m_eCard))
+    rbPrune = true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* print compressed children                                                  */
 /*----------------------------------------------------------------------------*/
-void Card::vPrintCompressed_childPairs(Ribbon* pRibbon, i8 iDepth, bool& rbPrune)
+void Card::vPrintCardSubShort(Ribbon* pRibbon, i8 iDepth, bool& rbPrune)
 {
   _static_
 

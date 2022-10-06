@@ -272,22 +272,6 @@ void TransformerTool::vPrintBoard(Stz* szCue)
 /*----------------------------------------------------------------------------*/
 /* set card print form                                                        */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::vPrintForm(eCK eCard, eCP ePrintForm)
-{
-  m_pCardCtl->vPrintForm(eCard,ePrintForm);
-}
-
-/*----------------------------------------------------------------------------*/
-/* set sub-card print form                                                    */
-/*----------------------------------------------------------------------------*/
-//void TransformerTool::vPrintFormSubCards(eCK eCard, eCP ePrintForm, bool bPrintSubCards)
-//{
-//  m_pCardCtl->vPrintFormSubCards(eCard,ePrintForm,bPrintSubCards);
-//}
-
-/*----------------------------------------------------------------------------*/
-/* set card print form                                                        */
-/*----------------------------------------------------------------------------*/
 void TransformerTool::vPrintSubCards(eCK eCard, bool bPrintSubCards)
 {
   m_pCardCtl->vPrintSubCards(eCard,bPrintSubCards);

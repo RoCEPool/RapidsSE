@@ -117,11 +117,6 @@ void Streamer::vAppend_stream_to_scan(void)
     m_p_stream->vAppend((m_p_streamColList = new Card_StreamColList(m_pStreamDef)));
   }
 
-//  vPrintForm(CK_PREDAND, CP_CARDFORM);
-//  vPrintForm(CK_PREDCMP, CP_CARDFORM);
-//  vPrintForm(CK_PREDOR, CP_CARDFORM);
-//  vPrintForm(CK_TERM, CP_CARDFORM);
-  vPrintForm(CK_STREAM, CP_DEFAULT);
   vPrintSubCards(CK_STREAM, true);
 
   vPrintBoard("Streamer::vAppend_stream_to_scan"_Stz);

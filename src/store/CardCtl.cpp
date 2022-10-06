@@ -25,8 +25,6 @@ CardCtl::CardCtl(void)
 
     m_xaCardCtl[i_Card].m_bNextHoriz = false;
 
-    m_xaCardCtl[i_Card].m_ePrintForm = CP_DEFAULT;
-
     m_xaCardCtl[i_Card].m_bPrintByKind     = false;
     m_xaCardCtl[i_Card].m_bPrintName       = true;
     m_xaCardCtl[i_Card].m_bPrintValue      = true;
@@ -34,10 +32,12 @@ CardCtl::CardCtl(void)
     m_xaCardCtl[i_Card].m_bPrintSubCards   = true;
     m_xaCardCtl[i_Card].m_bPrintSubShort   = false;
 
-    m_xaCardCtl[i_Card].m_bPrune           = false;
+    m_xaCardCtl[i_Card].m_bPrune = false;
   }
   
   _checkInitialised_(CN_CARDCTL);
+
+  vPrintByKind(CK_CARDPTR,true);
 
   vPrintName(CK_COMMENT,false);
   vPrintProperties(CK_COMMENT,false);
@@ -50,6 +50,8 @@ CardCtl::CardCtl(void)
   vPrintSubCards(CK_CROSSPTNJOIN,false);
   vPrune(CK_CROSSPTNJOIN,true);
 
+  vPrintByKind(CK_INDEXPTR,true);
+
   vPrintValue(CK_PREDAND,false);
   vPrintProperties(CK_PREDAND,false);
 
@@ -59,6 +61,10 @@ CardCtl::CardCtl(void)
   vPrintProperties(CK_PREDOR,false);
 
   vNextHorizon(CK_STAGE, true);
+
+  vPrintByKind(CK_STREAMELIST,true);
+
+  vPrintByKind(CK_TABLEPTR,true);
 
   vPrintProperties(CK_TERM,false);
 
@@ -98,28 +104,6 @@ void CardCtl::vNextHorizon(i8 i_Card, bool bNextHoriz)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 
   m_xaCardCtl[i_Card].m_bNextHoriz = bNextHoriz;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get print form for card                                                    */
-/*----------------------------------------------------------------------------*/
-eCP CardCtl::ePrintForm(i8 i_Card)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
-
-  eCP ePrintForm = m_xaCardCtl[i_Card].m_ePrintForm;
-
-  return ePrintForm;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set print form for card                                                    */
-/*----------------------------------------------------------------------------*/
-void CardCtl::vPrintForm(i8 i_Card, eCP ePrintForm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
-
-  m_xaCardCtl[i_Card].m_ePrintForm = ePrintForm;
 }
 
 /*----------------------------------------------------------------------------*/
