@@ -16,11 +16,12 @@ namespace STORE
 
     eCP  m_ePrintForm;       // print form
 
+    bool m_bPrintByKind;     // print card by kind (or the following...)
     bool m_bPrintName;       // print name of card
     bool m_bPrintValue;      // print value of card
     bool m_bPrintProperties; // print properties of card
     bool m_bPrintSubCards;   // print the subcards of this card?
-    bool m_bPrintSubShort; //   or compressed print of subcards of this card?
+    bool m_bPrintSubShort;   //   or compressed print of subcards of this card?
 
     bool m_bPrune;           // prune sub-card printing at this point
 
@@ -47,8 +48,9 @@ namespace STORE
 
     eCP  ePrintForm(i8 i_Card);
     void vPrintForm(i8 i_Card, eCP ePrintForm);
-//    void vPrintFormSubCards(i8 i_Card, eCP ePrintForm, bool bPrintSubCards);
 
+    bool bPrintByKind(i8 i_Card);
+    void vPrintByKind(i8 i_Card, bool bPrintByKind);
     bool bPrintName(i8 i_Card);
     void vPrintName(i8 i_Card, bool bPrintName);
     bool bPrintValue(i8 i_Card);
@@ -59,6 +61,7 @@ namespace STORE
     void vPrintSubCards(i8 i_Card, bool bPrintSubCards);
     bool bPrintSubShort(i8 i_Card);
     void vPrintSubShort(i8 i_Card, bool bPrintSubShort);
+
     bool bPrune(i8 i_Card);
     void vPrune(i8 i_Card, bool bPrune);
 

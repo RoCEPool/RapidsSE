@@ -135,8 +135,8 @@ void Partitioner::vCompute_coPtnPredList(void)
   m_pCardCtl->vPrintName(CK_COLUMNREF,false);
   m_pCardCtl->vPrintProperties(CK_COLUMNREF,false);
 
-  m_pCardCtl->vPrintForm(CK_COPTNJOIN,CP_COMPRESSED);
-  m_pCardCtl->vPrintForm(CK_CROSSPTNJOIN,CP_COMPRESSED);
+  //m_pCardCtl->vPrintForm(CK_COPTNJOIN,CP_COMPRESSED);
+  //m_pCardCtl->vPrintForm(CK_CROSSPTNJOIN,CP_COMPRESSED);
   //m_pCardCtl->vPrintForm(CK_PREDCMP,CP_COMPRESSED);
 
   if (m_bInteractive)

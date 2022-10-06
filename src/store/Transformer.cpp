@@ -154,7 +154,7 @@ void Transformer::vTransform2(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/*
+
   m_pPartitioner->vExtract_tableList();
 
   m_pColumnar->vAdd_columnRef();
@@ -174,7 +174,7 @@ void Transformer::vTransform2(void)
   m_pEstimator->vEstimate_network();
   m_pEstimator->vEstimate_joinOrder();
   m_pEstimator->vExtract_joinOrderSeq();
-*/
+
 
  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

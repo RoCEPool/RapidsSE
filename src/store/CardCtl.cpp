@@ -22,14 +22,18 @@ CardCtl::CardCtl(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
   
   for (i8 i_Card = 0; i_Card < CK_ENUMS; i_Card++) {
+
     m_xaCardCtl[i_Card].m_bNextHoriz = false;
+
     m_xaCardCtl[i_Card].m_ePrintForm = CP_DEFAULT;
 
+    m_xaCardCtl[i_Card].m_bPrintByKind     = false;
     m_xaCardCtl[i_Card].m_bPrintName       = true;
     m_xaCardCtl[i_Card].m_bPrintValue      = true;
     m_xaCardCtl[i_Card].m_bPrintProperties = true;
     m_xaCardCtl[i_Card].m_bPrintSubCards   = true;
     m_xaCardCtl[i_Card].m_bPrintSubShort   = false;
+
     m_xaCardCtl[i_Card].m_bPrune           = false;
   }
   
@@ -37,6 +41,14 @@ CardCtl::CardCtl(void)
 
   vPrintName(CK_COMMENT,false);
   vPrintProperties(CK_COMMENT,false);
+
+  vPrintSubShort(CK_COPTNJOIN,true);
+  vPrintSubCards(CK_COPTNJOIN,false);
+  vPrune(CK_COPTNJOIN,true);
+
+  vPrintSubShort(CK_CROSSPTNJOIN,true);
+  vPrintSubCards(CK_CROSSPTNJOIN,false);
+  vPrune(CK_CROSSPTNJOIN,true);
 
   vPrintValue(CK_PREDAND,false);
   vPrintProperties(CK_PREDAND,false);
@@ -111,15 +123,26 @@ void CardCtl::vPrintForm(i8 i_Card, eCP ePrintForm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set print form and print subcards for card                                 */
+/* get bPrintByKind for card                                                  */
 /*----------------------------------------------------------------------------*/
-//void CardCtl::vPrintFormSubCards(i8 i_Card, eCP ePrintForm, bool bPrintSubCards)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
-//
-//  vPrintForm(i_Card, ePrintForm);
-//  vPrintSubCards(i_Card, bPrintSubCards);
-//}
+bool CardCtl::bPrintByKind(i8 i_Card)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
+
+  bool bPrintByKind = m_xaCardCtl[i_Card].m_bPrintByKind;
+
+  return bPrintByKind;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set bPrintByKind for card                                                  */
+/*----------------------------------------------------------------------------*/
+void CardCtl::vPrintByKind(i8 i_Card, bool bPrintByKind)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
+
+  m_xaCardCtl[i_Card].m_bPrintByKind = bPrintByKind;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get bPrintName for card                                                    */

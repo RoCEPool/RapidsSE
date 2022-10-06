@@ -1061,21 +1061,10 @@ void Card::vPrintCard(Ribbon* pRibbon, i8 iDepth, bool& rbPrune)
 
   CardCtl* pCardCtl = _pCardCtl(pRibbon->pCtl());
 
-  eCP ePrintForm = pCardCtl->ePrintForm(m_eCard);
-
-  switch (ePrintForm) {
-    case CP_DEFAULT:
-      vPrintCard_default(pRibbon, iDepth,rbPrune, ePrintForm);
-      break;
-    case CP_CARDFORM:
-      vPrintCard_byForm(pRibbon, iDepth,rbPrune, ePrintForm);
-      break;
-    case CP_COMPRESSED:
-      vPrintCard_compressed(pRibbon, iDepth,rbPrune, ePrintForm);
-      break;
-    default:
-      NEVER_REACH
-  }
+  if (pCardCtl->bPrintByKind(m_eCard))
+    vPrintCard_byKind(pRibbon, iDepth, rbPrune);
+  else
+    vPrintCard_default(pRibbon, iDepth, rbPrune);
 
   //vMark2(' ');
 
@@ -1099,10 +1088,11 @@ void Card::vPrintCard(Ribbon* pRibbon, i8 iDepth, bool& rbPrune)
 /*----------------------------------------------------------------------------*/
 /* print card onto given ribbon                                               */
 /*----------------------------------------------------------------------------*/
-void Card::vPrintCard_byForm(Ribbon* pRibbon, i8 iDepth, bool& rbPrune, eCP ePinForme)
+void Card::vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth, bool& rbPrune)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+  CardCtl* pCardCtl = _pCardCtl(pRibbon->pCtl());
 
   switch (m_eCard) {
 
@@ -1128,62 +1118,24 @@ void Card::vPrintCard_byForm(Ribbon* pRibbon, i8 iDepth, bool& rbPrune, eCP ePin
       break;
 
     default:
-      vTrace("SWITCH %s: Missing case for eCard %lld %s\n"_Stz
-          ,__func__
-          ,(i8)m_eCard
-          ,aCK[m_eCard]
-      );
-      RASSERT(0);
+      vPrintCard_default(pRibbon, iDepth,rbPrune);
       break;
   }
+
+  if (pCardCtl->bPrune(m_eCard))
+    rbPrune = true;
 }
 
 /*----------------------------------------------------------------------------*/
 /* print card onto given ribbon                                               */
 /*----------------------------------------------------------------------------*/
-void Card::vPrintCard_compressed(Ribbon* pRibbon, i8 iDepth, bool& rbPrune, eCP ePinForm)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  eCK eCard = this->eCard();
-
-  switch (eCard) {
-    case CK_COLUMNREF:
-    case CK_COMMENT:
-    case CK_PREDCMP:
-    case CK_TERM:
-      if (*sz()->azChar())
-        pRibbon->vSprintRight("%s"_Stz,sz());
-      break;
-
-    case CK_COPTNJOIN:
-    case CK_CROSSPTNJOIN:
-      vPrintCardName(pRibbon, iDepth, rbPrune);
-      vPrintCardProperties(pRibbon, iDepth, rbPrune);
-      vPrintCompressed_childPairs(pRibbon, iDepth, rbPrune);
-      rbPrune = true;
-      break;
-
-    default:
-      NEVER_REACH;
-      break;
-  }
-
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* print card onto given ribbon                                               */
-/*----------------------------------------------------------------------------*/
-void Card::vPrintCard_default(Ribbon* pRibbon, i8 iDepth, bool& rbPrune, eCP ePinForm)
+void Card::vPrintCard_default(Ribbon* pRibbon, i8 iDepth, bool& rbPrune)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   CardCtl* pCardCtl = _pCardCtl(pRibbon->pCtl());
 
-  eCK eCard = this->eCard();
-
-  switch (eCard) {
+  switch (m_eCard) {
     case CK_CARDPTR:
       vCardPrint(pRibbon, iDepth, rbPrune);
       break;
@@ -1201,19 +1153,24 @@ void Card::vPrintCard_default(Ribbon* pRibbon, i8 iDepth, bool& rbPrune, eCP ePi
       break;
 
     default:
-      if (pCardCtl->bPrintName(eCard) && pCardCtl->bPrintValue(eCard)) {
+      if (pCardCtl->bPrintName(m_eCard) && pCardCtl->bPrintValue(m_eCard)) {
         vPrintCardNameValue(pRibbon, iDepth, rbPrune);
       }
       else {
-        if (pCardCtl->bPrintName(eCard))
+        if (pCardCtl->bPrintName(m_eCard))
           vPrintCardName(pRibbon, iDepth, rbPrune);
-        if (pCardCtl->bPrintValue(eCard))
+        if (pCardCtl->bPrintValue(m_eCard))
           vPrintCardValue(pRibbon, iDepth, rbPrune);
       }
-      if (pCardCtl->bPrintName(eCard) && pCardCtl->bPrintProperties(eCard))
+      if (pCardCtl->bPrintName(m_eCard) && pCardCtl->bPrintProperties(m_eCard))
         vPrintCardProperties(pRibbon, iDepth, rbPrune);
+      if (pCardCtl->bPrintSubShort(m_eCard))
+        vPrintCompressed_childPairs(pRibbon, iDepth, rbPrune);
       break;
-    }
+  }
+
+  if (pCardCtl->bPrune(m_eCard))
+    rbPrune = true;
 }
 
 /*----------------------------------------------------------------------------*/

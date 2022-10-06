@@ -7,7 +7,6 @@ enum eCP // card print form
 {
   /* */ CP_DEFAULT=0,
   /* */ CP_CARDFORM,
-  /* */ CP_COMPRESSED,
 
   /* */ CP_ENUMS
 };
@@ -18,7 +17,6 @@ static Stz* aCP[]
 {
   /* */ "CP_DEFAULT"_Stz,     // CP_DEFAULT
   /* */ "CP_CARDFORM"_Stz,    // CP_CARDFORM
-  /* */ "CP_COMPRESSED"_Stz,  // CP_COMPRESSED
 
   /* */ "ENUMS"_Stz,          // CP_ENUMS
 
