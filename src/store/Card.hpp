@@ -300,11 +300,6 @@ namespace STORE
 
     SubCardIter* pNewSubCardIter(void);
 
-    i8   iOrdHi(void);
-    void vOrdHi(i8 iOrdHi);
-    i8   iOrdLo(void);
-    void vOrdLo(i8 iOrdLo);
-
     i8   iOrdinalStreamColNo(void);
     i8   iOrdinalIndexColNo(void);
 

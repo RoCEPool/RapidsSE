@@ -2282,50 +2282,6 @@ SubCardIter* Card::pNewSubCardIter(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get ordHi                                                                  */
-/*----------------------------------------------------------------------------*/
-i8 Card::iOrdHi(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  i8 iOrdHi = iGetProperty(C_CARD_OrdHi);
-
-  return iOrdHi;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set ordHi                                                                  */
-/*----------------------------------------------------------------------------*/
-void Card::vOrdHi(i8 iOrdHi)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  vAddProperty_int(C_CARD_OrdHi,iOrdHi);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get ordHi                                                                  */
-/*----------------------------------------------------------------------------*/
-i8 Card::iOrdLo(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  i8 iOrdLo = iGetProperty(C_CARD_OrdLo);
-
-  return iOrdLo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set ordLo                                                                 */
-/*----------------------------------------------------------------------------*/
-void Card::vOrdLo(i8 iOrdLo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  vAddProperty_int(C_CARD_OrdLo,iOrdLo);
-}
-
-/*----------------------------------------------------------------------------*/
 /* get ordinal column value                                                   */
 /*----------------------------------------------------------------------------*/
 i8 Card::iOrdinalStreamColNo(void)
