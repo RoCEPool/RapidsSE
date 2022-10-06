@@ -34,6 +34,7 @@ namespace STORE
     Card* pEachMain(eCK eCard, i8& ri_Main);
     Card* pEachMain(i8& ri_Main, eCK& reCard);
     Card* pNextMain(void);
+    Card* pNextMainIf(eCK eCard);
     Card* pPrevMain(void);
 
     Card_Sort*   pEach_sort(void);
@@ -49,6 +50,7 @@ namespace STORE
 
     // - - - - - - - - - - - - - - - - - -
 
+    void vRemoveCard(Card* pCard);
     void vRemoveCurr(eCK eCrossCheck);
     void vRemoveDeleteCurr(eCK eCrossCheck);
     void vRestart(void);

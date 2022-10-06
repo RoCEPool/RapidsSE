@@ -188,6 +188,21 @@ Card* BoardIter::pNextMain(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Card* BoardIter::pNextMainIf(eCK eCard)
+{
+  _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
+
+  Card* pNextMain = this->pNextMain();
+  if (! pNextMain || eCard != pNextMain->eCard())
+    return nullptr;
+
+  return pNextMain;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 Card* BoardIter::pPrevMain(void)
 {
   _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
@@ -251,6 +266,21 @@ void BoardIter::vSkip(void)
   _precondition_( _MAGIC_, CN_BOARDITER, _FOOTER_);
 
   m_i_Main++;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void BoardIter::vRemoveCard(Card* pCard)
+{
+  _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
+
+  if (pCard == m_pCurrMain) {
+    vRemoveCurr(m_pCurrMain->eCard());
+    return;
+  }
+
+  m_pBoard->vRemoveMainCard(pCard);
 }
 
 

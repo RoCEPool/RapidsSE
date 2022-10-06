@@ -242,32 +242,25 @@ void Joiner::vSubsume_scan(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_JOINER, _FOOTER_);
 
-  i8 nMainCards = m_pBoard->nMainCards();
-  for (i8 i_Main = 0; i_Main < nMainCards - 1; i_Main++) {
+  BoardIter xBI(m_pBoard);
+  while ((m_p_absJoin = _pCard_AbsJoin(xBI.pEachMain(CK_ABSJOIN))))
+    m_p_absJoin->vDeleteChildCard(CK_CALC);
 
-    Card *pMainCard = m_pBoard->pGetMain(i_Main);
+  xBI.vRestart();
 
-    eCK eCard = pMainCard->eCard();
-    if (CK_ABSJOIN == eCard) {
-      pMainCard->vDeleteChildCard(CK_CALC);
-      continue;
-    }
+  // E <scan>
+  while ((m_p_scan = _pCard_Scan(xBI.pEachMain(CK_SCAN)))) {
 
-    if (CK_SCAN != pMainCard->eCard())
-      continue;
-
-    Card *pNextCard = m_pBoard->pGetMain(i_Main + 1);
-    if (CK_ABSJOIN != pNextCard->eCard())
+    // ? <scan <absJoin>
+    if (! (m_p_absJoin = _pCard_AbsJoin(xBI.pNextMainIf(CK_ABSJOIN))))
       continue;
 
-    m_pBoard->vRemoveMainCard(pMainCard);
-    pNextCard->vAppend(pMainCard);
-    i_Main--;
-    nMainCards--;
+    // <absJoin>/<scan>
+    xBI.vRemoveCard(m_p_scan);
+    m_p_absJoin->vAppend(m_p_scan);
   }
 
-  if (m_bInteractive)
-    m_pBoard->vPrintBoard("Joiner::vSubsume_scan"_Stz);
+  vPrintBoard("Joiner::vSubsume_scan"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
