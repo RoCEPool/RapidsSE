@@ -214,43 +214,44 @@ namespace STORE
     void vResolveTerm                (Card_Term*    pCard_Term);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-  
-    bool bAdd_CandIndexes            (void);
-
-    void vAdd_IndexScan              (void);
-
-    void vCull_Filter                (void);
-  
-    void vCut_CandidateIndexes       (void);
-  
-    void vCut_PredCmps               (void);
-  
-    void vCut_Scan                   (void);
-  
-    bool bFind_Scan_AggGby           (bool bMark);
-  
-    bool bFind_Scan_Filter           (bool bMark);
-  
-    void vMark_PredCmps              (void);
-  
-    void vOrder_ProjectiveStreamDefs (void);
-  
-    bool bPick_CandidateIndex        (void);
-
-    void vRank_CandidateIndexes      (void);
-  
-    void vReduce_Filter              (void);
-
-    void vSimplify_Initial           (void);
-
-    //void vResolve_RootStreams        (void);
-
-    void vResolve_Filters              (void);
 
 
-    void vResolve_Symbols            (void);
-
-    void vAResolve_Joins             (void);
+//    bool bAdd_CandIndexes            (void);
+//
+//    void vAdd_IndexScan              (void);
+//
+//    void vCull_Filter                (void);
+//
+//    void vCut_CandidateIndexes       (void);
+//
+//    void vCut_PredCmps               (void);
+//
+//    void vCut_Scan                   (void);
+//
+//    bool bFind_Scan_AggGby           (bool bMark);
+//
+//    bool bFind_Scan_Filter           (bool bMark);
+//
+//    void vMark_PredCmps              (void);
+//
+//    void vOrder_ProjectiveStreamDefs (void);
+//
+//    bool bPick_CandidateIndex        (void);
+//
+//    void vRank_CandidateIndexes      (void);
+//
+//    void vReduce_Filter              (void);
+//
+//    void vSimplify_Initial           (void);
+//
+//    //void vResolve_RootStreams        (void);
+//
+//    void vResolve_Filters              (void);
+//
+//
+//    void vResolve_Symbols            (void);
+//
+//    void vAResolve_Joins             (void);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 

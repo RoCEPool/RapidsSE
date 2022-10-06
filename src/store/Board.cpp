@@ -1304,642 +1304,6 @@ void Board::vResolveTerm(Card_Term* pCard_Term)
 
 }
 
-// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
-//~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ //
-// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Board::bAdd_CandIndexes(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
- 
-  Card_Scan* pReg_Scan = _pCard_Scan(m_pCardRegs->pCardReg(CK_SCAN));
-
-  Table* pTable = this->m_pCard_SubSet->pTable();
-
-  IdxVec* pIdxVec = pTable->pIdxVec();
-  if (! pIdxVec) {
-    vTrace("No IdxVec\n"_Stz);
-    return false;
-  }
-
-  i8 nIndexes = pIdxVec->nItems();
-  if (! nIndexes) {
-    vTrace("No nIndexes\n"_Stz);
-    return false;
-  }
-  
-  i8 i_Filter = m_pCard_SubSet->i_Find(pReg_Scan) + 1;
-  Card_Filter* pCard_Filter = _pCard_Filter(m_pCard_SubSet->pGet(i_Filter));
-
-  for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
-    Index* pIndex = pIdxVec->pGet(i_Index);
-    //vTrace("Index %s\n"_Stz,pIndex->szIndexNm());
-    
-    Card_CandIndex* pCard_CandIndex = new Card_CandIndex;
-    Card_IndexPtr* pCard_Index = new Card_IndexPtr(pIndex);
-    pCard_CandIndex->vAppend(pCard_Index);
-
-    m_pCard_SubSet->vInsertAfter(pCard_CandIndex,pCard_Filter);
-  }
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vAdd_IndexScan(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-  
-  //m_pFilter->vDump();
-
-  Card_IndexScan* pCard_IndexScan = new Card_IndexScan;
-  Card_Scan* pReg_Scan = _pCard_Scan(m_pCardRegs->pCardReg(CK_SCAN));
-
-  Card_PredCmp* pReg_ebound = m_pCardRegs->pPredCmp_ebound();
-  Card_PredCmp* pReg_lbound = m_pCardRegs->pPredCmp_lbound();
-  Card_PredCmp* pReg_ubound = m_pCardRegs->pPredCmp_ubound();
-  
-  Index* pIndex = this->m_pCard_SubSet->pIndex();
-  Card_IndexPtr* pCard_Index = new Card_IndexPtr(pIndex);
-  pCard_IndexScan->vAppend(pCard_Index);
-
-  
-  Card_BOUND* pCard_BOUND;
-  Card_PRED*  pCard_PRED;
-
-  if (pReg_ebound) {
-    pCard_BOUND = new Card_EBound;
-    
-    pCard_PRED = pReg_ebound->pDup();
-    pCard_PRED->vHasEBound(true);
-    pCard_BOUND->vAppend(pCard_PRED);
-  }
-  else
-  if (pReg_lbound && pReg_ubound) {
-    pCard_BOUND = new Card_RBound;
-    
-    pCard_PRED = pReg_lbound->pDup();
-    pCard_PRED->vHasLBound(true);
-    pCard_BOUND->vAppend(pCard_PRED);
-    
-    pCard_PRED = pReg_ubound->pDup();
-    pCard_PRED->vHasUBound(true);
-    pCard_BOUND->vAppend(pCard_PRED);
-  }
-  else
-  if (pReg_lbound) {
-    pCard_BOUND = new Card_LBound;
-    
-    pCard_PRED = pReg_lbound->pDup();
-    pCard_PRED->vHasLBound(true);
-    pCard_BOUND->vAppend(pCard_PRED);
-  }
-  else
-  if (pReg_ubound) {
-    pCard_BOUND = new Card_UBound;
-    
-    pCard_PRED = pReg_ubound->pDup();
-    pCard_PRED->vHasUBound(true);
-    pCard_BOUND->vAppend(pReg_ubound->pDup());
-  }
-  else {
-    RASSERT(0);
-  }
-  
-  pCard_IndexScan->vAppend(pCard_BOUND);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set the stream elist
-
-  StreamDef* pStreamDef = pIndex->pTable()->pStreamDef();
-  
-  Card_Stream* pCard_Stream = new Card_Stream;
-  pCard_IndexScan->vAppend(pCard_Stream);
-
-  Card_StreamElist* pCard_StreamElist = new Card_StreamElist(pStreamDef);
-  
-  
-  pCard_Stream->vAppend(pCard_StreamElist);
-
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set the stream order
-  
-  Card_ObyElist* pCard_ObyElist = new Card_ObyElist(pIndex);
-  pCard_Stream->vAppend(pCard_ObyElist);
-
-  //bool bUnique = pIndexDef->bIsUnique();
-  //pStreamDef->vUnique(bUnique);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-
-  m_pCard_SubSet->vInsertBefore(pCard_IndexScan,pReg_Scan);
-  
-  m_pCardRegs->vCardReg(CK_INDEXSCAN,pCard_IndexScan);
-
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vCull_Filter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-  
-  Card_Filter* pReg_Filter = _pCard_Filter(m_pCardRegs->pCardReg(CK_FILTER));
-
-  if (! pReg_Filter->bCull())
-    return;
-
-  m_pCard_SubSet->vRemove(pReg_Filter);
-  
-  delete pReg_Filter;
-
-  //vReg_Filter(nullptr);
-  m_pCardRegs->vCardReg(CK_FILTER,nullptr);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vCut_CandidateIndexes(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  m_pCard_SubSet->vRemoveSubCards(CK_CANDINDEX);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vCut_PredCmps(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-  
-  Card_Filter* pReg_Filter = _pCard_Filter(m_pCardRegs->pCardReg(CK_FILTER));
-
-  Card_PredCmp* pReg_ebound = m_pCardRegs->pPredCmp_ebound();
-  Card_PredCmp* pReg_lbound = m_pCardRegs->pPredCmp_lbound();
-  Card_PredCmp* pReg_ubound = m_pCardRegs->pPredCmp_ubound();
-
-  if (pReg_ebound)
-    pReg_Filter->vRemoveSubCard(pReg_ebound);
-  
-  if (pReg_lbound)
-    pReg_Filter->vRemoveSubCard(pReg_lbound);
-  
-  if (pReg_ubound)
-    pReg_Filter->vRemoveSubCard(pReg_ubound);
-  
-  m_pCardRegs->vPredCmp_ebound(nullptr);
-  m_pCardRegs->vPredCmp_lbound(nullptr);
-  m_pCardRegs->vPredCmp_ubound(nullptr);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vCut_Scan(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-  
-  Card_Scan* pReg_Scan = _pCard_Scan(m_pCardRegs->pCardReg(CK_SCAN));
-
-
-  m_pCard_SubSet->vRemove(pReg_Scan);
-  
-  m_pCardRegs->vCardReg(CK_SCAN,nullptr);
-  delete pReg_Scan;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Board::bFind_Scan_AggGby(bool bMark)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-  
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Board::bFind_Scan_Filter(bool bMark)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-  
-  m_pCardRegs->vCardReg(CK_SCAN,nullptr);
-
-  i8 nMainCards = this->nMainCards();
-  for (i8 i_Main = 0; i_Main < nMainCards-1; i_Main++) {
-    Card* pTestScan = pGetMain(i_Main);
-    if (CK_SCAN != pTestScan->eCard())
-      continue;
-
-    Card* pTestFilter = pGetMain(i_Main + 1);
-    if (CK_FILTER != pTestFilter->eCard())
-      continue;
-    
-    if (bMark)
-      //vReg_Scan(_pCard_Scan(pTestScan));
-      m_pCardRegs->vCardReg(CK_SCAN,pTestScan);
-    Card_TablePtr* pCard_TablePtr = _pCard_TablePtr(pTestScan->pFindSubCard(CK_TABLEPTR));
-    m_pCard_SubSet->vTable(pCard_TablePtr->pTable());
-    
-    if (bMark)
-      //vReg_Filter(_pCard_Filter(pTestFilter));
-      m_pCardRegs->vCardReg(CK_FILTER,pTestFilter);
-
-    return true;
-  }
-  
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vMark_PredCmps(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-  
-  Card_Filter* pReg_Filter = _pCard_Filter(m_pCardRegs->pCardReg(CK_FILTER));
-
-  Card_CandIndex* pCard_CandIndex =
-    _pCard_CandIndex(m_pCardRegs->pCardReg(CK_CANDINDEX));
-
-  i8 iRank = pCard_CandIndex->iRank();
- 
-  Index* pIndex = this->m_pCard_SubSet->pIndex();
-
-  switch (iRank) {
-      
-    case 1: {
-      // lower bound or upper bound
-      Card_PredCmp* pPredCmp_lbound =
-        pReg_Filter->pFindBound(pIndex,PB_LBOUND);
-      if (pPredCmp_lbound) {
-        m_pCardRegs->vPredCmp_lbound(pPredCmp_lbound);
-        pPredCmp_lbound->vMark2('L');
-        break;
-      }
-      Card_PredCmp* pPredCmp_ubound =
-        pReg_Filter->pFindBound(pIndex,PB_UBOUND);
-      if (pPredCmp_ubound) {
-        m_pCardRegs->vPredCmp_ubound(pPredCmp_ubound);
-        pPredCmp_ubound->vMark2('U');
-        break;
-      }
-      break;
-    }
-
-    case 2: {
-      // lower bound and upper bound
-      Card_PredCmp* pPredCmp_lbound =
-        pReg_Filter->pFindBound(pIndex,PB_LBOUND);
-      if (pPredCmp_lbound) {
-        m_pCardRegs->vPredCmp_lbound(pPredCmp_lbound);
-        pPredCmp_lbound->vMark2('L');
-      }
-      Card_PredCmp* pPredCmp_ubound =
-        pReg_Filter->pFindBound(pIndex,PB_UBOUND);
-      if (pPredCmp_ubound) {
-        m_pCardRegs->vPredCmp_ubound(pPredCmp_ubound);
-        pPredCmp_ubound->vMark2('U');
-      }
-      break;
-    }
-      
-    case 3: {
-      // equi-bound
-      Card_PredCmp* pPredCmp_ebound =
-        pReg_Filter->pFindBound(pIndex,PB_EBOUND);
-      if (pPredCmp_ebound) {
-        m_pCardRegs->vPredCmp_ebound(pPredCmp_ebound);
-        pPredCmp_ebound->vMark2('E');
-      }
-      break;
-    }
-
-    default:
-      vTrace("SWITCH %s: Unknown iRank %lld\n"_Stz
-             ,__func__
-             ,(i8)iRank
-              );
-      RASSERT(0);
-      break;
-
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* order the projective stream defs which are downstream of indexScan         */
-/*----------------------------------------------------------------------------*/
-void Board::vOrder_ProjectiveStreamDefs(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-  
-  Card_IndexScan* pReg_IndexScan
-    = _pCard_IndexScan(m_pCardRegs->pCardReg(CK_INDEXSCAN));
-
-  Card_Stream* pCard_Stream_src =
-    _pCard_Stream(pReg_IndexScan->pFindSubCard(CK_STREAM));
-
-  i8 nMainCards = this->nMainCards();
-  for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
-    Card* pMainCard = pGetMain(i_Main);
-    if (CK_PROJECT != pMainCard->eCard())
-      continue;
-    
-    Card_Project* pCard_Project = _pCard_Project(pMainCard);
-
-    //--- --- ---
-
-    if (! pCard_Stream_src)
-      continue;
-    
-    Card_Stream* pCard_Stream_dst =
-      _pCard_Stream(pCard_Project->pFindSubCard(CK_STREAM));
-    if (! pCard_Stream_dst)
-      continue;
-
-    pCard_Stream_dst->vApplyOrder(pCard_Stream_src);
-    
-    //--- --- ---
-    
-  }
-  
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Board::bPick_CandidateIndex(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  i8 iBestRank = C_UNKNOWN;
-  Card_CandIndex* pCard_CandIndex = nullptr;
-  
-  i8 nMainCards = this->nMainCards();
-  for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
-    Card* pMainCard = pGetMain(i_Main);
-    if (CK_CANDINDEX != pMainCard->eCard())
-      continue;
-
-    Card_CandIndex* pCadIdx = _pCard_CandIndex(pMainCard);
-
-    i8 iRank = pCadIdx->iRank();
-    if (iRank > iBestRank) {
-      iBestRank = iRank;
-      pCard_CandIndex = pCadIdx;
-    }
-  }
-
-  if (! pCard_CandIndex) {
-    //vReg_CandIndex(nullptr);
-    m_pCardRegs->vCardReg(CK_CANDINDEX,nullptr);
-    return false;
-  }
-  
-  //vReg_CandIndex(pCard_CandIndex);
-  m_pCardRegs->vCardReg(CK_CANDINDEX,pCard_CandIndex);
-  m_pCard_SubSet->vIndex(pCard_CandIndex->pFindSubCard(CK_INDEXPTR)->pIndex());
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vRank_CandidateIndexes(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  //m_pFilter->vMark2('0');
-                    
-  i8 nMainCards = this->nMainCards();
-  for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
-    Card* pMainCard = pGetMain(i_Main);
-    if (CK_CANDINDEX != pMainCard->eCard())
-      continue;
-
-    Card_CandIndex* pCard_CandIndex = _pCard_CandIndex(pMainCard);
-    
-    vRankCandIndex(pCard_CandIndex);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vReduce_Filter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-  
-  Card_Filter* pReg_Filter = _pCard_Filter(m_pCardRegs->pCardReg(CK_FILTER));
-
-  if (! pReg_Filter)
-    return;
-  
-  pReg_Filter->vReduceFilter();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vResolve_Filters(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  i8 nMainCards = this->nMainCards();
-  for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
-    Card* pMainCard = pGetMain(i_Main);
-
-    if (CK_FILTER != pMainCard->eCard())
-      continue;
-
-    vResolveFilter(_pCard_Filter(pMainCard));
-  }
-
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vSimplify_Initial(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
-
-  i8 i_Test;
-
-  i8 nMainCards = this->nMainCards();
-  for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
-    Card *pMainCard = pGetMain(i_Main);
-
-    // of stage 1
-    i8 i_Test = i_Main;
-    Card* pStage_1 = pGetMain(i_Test++);
-    if (CK_STAGE != pStage_1->eCard())
-      continue;
-
-    Card* pScan_1 = pGetMain(i_Test++);
-    if (CK_SCAN != pScan_1->eCard())
-      continue;
-
-    Card* pSend_1 = pGetMain(i_Test++);
-    if (CK_SEND != pSend_1->eCard())
-      continue;
-
-    // of stage 2
-    Card* pStage_2 = pGetMain(i_Test++);
-    if (CK_STAGE != pStage_2->eCard())
-      continue;
-
-    Card* pScan_2 = pGetMain(i_Test++);
-    if (CK_SCAN != pScan_2->eCard())
-      continue;
-
-    Card* pAbsJoin_2 = pGetMain(i_Test++);
-    if (CK_ABSJOIN != pAbsJoin_2->eCard())
-      continue;
-
-    Card* pSend_2 = pGetMain(i_Test++);
-    if (CK_SEND != pSend_2->eCard())
-      continue;
-
-    // of stage 3
-    Card* pStage_3 = pGetMain(i_Test++);
-    if (CK_STAGE != pStage_3->eCard())
-      continue;
-
-    Card* pFilter_3 = pGetMain(i_Test++);
-    if (CK_FILTER != pFilter_3->eCard())
-      continue;
-
-    Card* pProject_3 = pGetMain(i_Test++);
-    if (CK_PROJECT != pProject_3->eCard())
-      continue;
-
-    Card* pCombine_3 = pGetMain(i_Test++);
-    if (CK_COMBINED != pCombine_3->eCard())
-      continue;
-
-    Card* pSend_3 = pGetMain(i_Test++);
-    if (CK_SEND != pSend_3->eCard())
-      continue;
-
-    m_pCard_SubSet->vRemove(pSend_1);
-    m_pCard_SubSet->vRemove(pStage_2);
-    m_pCard_SubSet->vRemove(pSend_2);
-    m_pCard_SubSet->vRemove(pStage_3);
-    m_pCard_SubSet->vRemove(pCombine_3);
-
-    delete pSend_1;
-    delete pStage_2;
-    delete pSend_2;
-    delete pStage_3;
-    delete pCombine_3;
-
-    //m_pCard_SubSet->vRemove(pFilter_3);
-    //m_pCard_SubSet->vInsertAfter(pFilter_3,pScan_2);
-
-    break;
-  }
-
-}
-
-
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-//void Board::vResolve_RootStreams(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-//
-//  i8 nMainCards = this->nMainCards();
-//  for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
-//    Card* pMainCard = pGetMain(i_Main);
-//
-//    Card* pCard_Table = _pCard_Table(pMainCard->pFindSubCard(CK_TABLEPTR));
-//    if (! pCard_Table)
-//      continue;
-//
-//    StreamDef* pStreamDef = pCard_Table->pTable()->pStreamDef();
-//    Card_StreamElist* pCard_StreamElist = new Card_StreamElist(pStreamDef);
-//
-//    Card_Stream* pCard_Stream = new Card_Stream;
-//    pCard_Stream->vAppend(pCard_StreamElist);
-//
-//    pMainCard->vAppend(pCard_Stream);
-//  }
-//}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-//void Board::vResolve_Symbols(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-//
-//  i8 nMainCards = this->nMainCards();
-//  for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
-//    Card* pMainCard = pGetMain(i_Main);
-//
-//    vResolveSymbolTerms(pMainCard);
-//  }
-//
-//}
-/*----------------------------------------------------------------------------*/
-void Board::vResolve_Symbols(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  i8 nMainCards = this->nMainCards();
-  for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
-    Card* pMainCard = pGetMain(i_Main);
-
-    vTrace("Resolving MainCard %lld\n"_Stz,i_Main);
-    vResolveRecursive(pMainCard);
-
-    //vPrintBoard();
-
-    //pMainCard->vRenumberSubCards(nullptr);
-  }
-
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vAResolve_Joins(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
-
-  i8 nMainCards = this->nMainCards();
-  for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
-    Card* pMainCard = pGetMain(i_Main);
-
-    if (CK_INDEXJOIN != pMainCard->eCard())
-      continue;
-
-    Card_IndexJoin* pCard_IndexJoin = _pCard_IndexJoin(pMainCard);
-    vAResolveJoin(pCard_IndexJoin);
-  }
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -2076,6 +1440,644 @@ Card_IndexPred* Board::pTo_IndexPred(Card_PredCmp* pCard_PredCmp,
   return pCard_IndexPred;
 
 }
+
+
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
+//~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ //
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+//bool Board::bAdd_CandIndexes(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+//
+//  Card_Scan* pReg_Scan = _pCard_Scan(m_pCardRegs->pCardReg(CK_SCAN));
+//
+//  Table* pTable = this->m_pCard_SubSet->pTable();
+//
+//  IdxVec* pIdxVec = pTable->pIdxVec();
+//  if (! pIdxVec) {
+//    vTrace("No IdxVec\n"_Stz);
+//    return false;
+//  }
+//
+//  i8 nIndexes = pIdxVec->nItems();
+//  if (! nIndexes) {
+//    vTrace("No nIndexes\n"_Stz);
+//    return false;
+//  }
+//
+//  i8 i_Filter = m_pCard_SubSet->i_Find(pReg_Scan) + 1;
+//  Card_Filter* pCard_Filter = _pCard_Filter(m_pCard_SubSet->pGet(i_Filter));
+//
+//  for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
+//    Index* pIndex = pIdxVec->pGet(i_Index);
+//    //vTrace("Index %s\n"_Stz,pIndex->szIndexNm());
+//
+//    Card_CandIndex* pCard_CandIndex = new Card_CandIndex;
+//    Card_IndexPtr* pCard_Index = new Card_IndexPtr(pIndex);
+//    pCard_CandIndex->vAppend(pCard_Index);
+//
+//    m_pCard_SubSet->vInsertAfter(pCard_CandIndex,pCard_Filter);
+//  }
+//
+//  return true;
+//}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+//void Board::vAdd_IndexScan(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+//
+//  //m_pFilter->vDump();
+//
+//  Card_IndexScan* pCard_IndexScan = new Card_IndexScan;
+//  Card_Scan* pReg_Scan = _pCard_Scan(m_pCardRegs->pCardReg(CK_SCAN));
+//
+//  Card_PredCmp* pReg_ebound = m_pCardRegs->pPredCmp_ebound();
+//  Card_PredCmp* pReg_lbound = m_pCardRegs->pPredCmp_lbound();
+//  Card_PredCmp* pReg_ubound = m_pCardRegs->pPredCmp_ubound();
+//
+//  Index* pIndex = this->m_pCard_SubSet->pIndex();
+//  Card_IndexPtr* pCard_Index = new Card_IndexPtr(pIndex);
+//  pCard_IndexScan->vAppend(pCard_Index);
+//
+//
+//  Card_BOUND* pCard_BOUND;
+//  Card_PRED*  pCard_PRED;
+//
+//  if (pReg_ebound) {
+//    pCard_BOUND = new Card_EBound;
+//
+//    pCard_PRED = pReg_ebound->pDup();
+//    pCard_PRED->vHasEBound(true);
+//    pCard_BOUND->vAppend(pCard_PRED);
+//  }
+//  else
+//  if (pReg_lbound && pReg_ubound) {
+//    pCard_BOUND = new Card_RBound;
+//
+//    pCard_PRED = pReg_lbound->pDup();
+//    pCard_PRED->vHasLBound(true);
+//    pCard_BOUND->vAppend(pCard_PRED);
+//
+//    pCard_PRED = pReg_ubound->pDup();
+//    pCard_PRED->vHasUBound(true);
+//    pCard_BOUND->vAppend(pCard_PRED);
+//  }
+//  else
+//  if (pReg_lbound) {
+//    pCard_BOUND = new Card_LBound;
+//
+//    pCard_PRED = pReg_lbound->pDup();
+//    pCard_PRED->vHasLBound(true);
+//    pCard_BOUND->vAppend(pCard_PRED);
+//  }
+//  else
+//  if (pReg_ubound) {
+//    pCard_BOUND = new Card_UBound;
+//
+//    pCard_PRED = pReg_ubound->pDup();
+//    pCard_PRED->vHasUBound(true);
+//    pCard_BOUND->vAppend(pReg_ubound->pDup());
+//  }
+//  else {
+//    RASSERT(0);
+//  }
+//
+//  pCard_IndexScan->vAppend(pCard_BOUND);
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // set the stream elist
+//
+//  StreamDef* pStreamDef = pIndex->pTable()->pStreamDef();
+//
+//  Card_Stream* pCard_Stream = new Card_Stream;
+//  pCard_IndexScan->vAppend(pCard_Stream);
+//
+//  Card_StreamElist* pCard_StreamElist = new Card_StreamElist(pStreamDef);
+//
+//
+//  pCard_Stream->vAppend(pCard_StreamElist);
+//
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // set the stream order
+//
+//  Card_ObyElist* pCard_ObyElist = new Card_ObyElist(pIndex);
+//  pCard_Stream->vAppend(pCard_ObyElist);
+//
+//  //bool bUnique = pIndexDef->bIsUnique();
+//  //pStreamDef->vUnique(bUnique);
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//
+//  m_pCard_SubSet->vInsertBefore(pCard_IndexScan,pReg_Scan);
+//
+//  m_pCardRegs->vCardReg(CK_INDEXSCAN,pCard_IndexScan);
+//
+//}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+//void Board::vCull_Filter(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+//
+//  Card_Filter* pReg_Filter = _pCard_Filter(m_pCardRegs->pCardReg(CK_FILTER));
+//
+//  if (! pReg_Filter->bCull())
+//    return;
+//
+//  m_pCard_SubSet->vRemove(pReg_Filter);
+//
+//  delete pReg_Filter;
+//
+//  //vReg_Filter(nullptr);
+//  m_pCardRegs->vCardReg(CK_FILTER,nullptr);
+//}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+//void Board::vCut_CandidateIndexes(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+//
+//  m_pCard_SubSet->vRemoveSubCards(CK_CANDINDEX);
+//}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+//void Board::vCut_PredCmps(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+//
+//  Card_Filter* pReg_Filter = _pCard_Filter(m_pCardRegs->pCardReg(CK_FILTER));
+//
+//  Card_PredCmp* pReg_ebound = m_pCardRegs->pPredCmp_ebound();
+//  Card_PredCmp* pReg_lbound = m_pCardRegs->pPredCmp_lbound();
+//  Card_PredCmp* pReg_ubound = m_pCardRegs->pPredCmp_ubound();
+//
+//  if (pReg_ebound)
+//    pReg_Filter->vRemoveSubCard(pReg_ebound);
+//
+//  if (pReg_lbound)
+//    pReg_Filter->vRemoveSubCard(pReg_lbound);
+//
+//  if (pReg_ubound)
+//    pReg_Filter->vRemoveSubCard(pReg_ubound);
+//
+//  m_pCardRegs->vPredCmp_ebound(nullptr);
+//  m_pCardRegs->vPredCmp_lbound(nullptr);
+//  m_pCardRegs->vPredCmp_ubound(nullptr);
+//}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+//void Board::vCut_Scan(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+//
+//  Card_Scan* pReg_Scan = _pCard_Scan(m_pCardRegs->pCardReg(CK_SCAN));
+//
+//
+//  m_pCard_SubSet->vRemove(pReg_Scan);
+//
+//  m_pCardRegs->vCardReg(CK_SCAN,nullptr);
+//  delete pReg_Scan;
+//}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+//bool Board::bFind_Scan_AggGby(bool bMark)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+//
+//  return false;
+//}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+//bool Board::bFind_Scan_Filter(bool bMark)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+//
+//  m_pCardRegs->vCardReg(CK_SCAN,nullptr);
+//
+//  i8 nMainCards = this->nMainCards();
+//  for (i8 i_Main = 0; i_Main < nMainCards-1; i_Main++) {
+//    Card* pTestScan = pGetMain(i_Main);
+//    if (CK_SCAN != pTestScan->eCard())
+//      continue;
+//
+//    Card* pTestFilter = pGetMain(i_Main + 1);
+//    if (CK_FILTER != pTestFilter->eCard())
+//      continue;
+//
+//    if (bMark)
+//      //vReg_Scan(_pCard_Scan(pTestScan));
+//      m_pCardRegs->vCardReg(CK_SCAN,pTestScan);
+//    Card_TablePtr* pCard_TablePtr = _pCard_TablePtr(pTestScan->pFindSubCard(CK_TABLEPTR));
+//    m_pCard_SubSet->vTable(pCard_TablePtr->pTable());
+//
+//    if (bMark)
+//      //vReg_Filter(_pCard_Filter(pTestFilter));
+//      m_pCardRegs->vCardReg(CK_FILTER,pTestFilter);
+//
+//    return true;
+//  }
+//
+//  return false;
+//}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+//void Board::vMark_PredCmps(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+//
+//  Card_Filter* pReg_Filter = _pCard_Filter(m_pCardRegs->pCardReg(CK_FILTER));
+//
+//  Card_CandIndex* pCard_CandIndex =
+//    _pCard_CandIndex(m_pCardRegs->pCardReg(CK_CANDINDEX));
+//
+//  i8 iRank = pCard_CandIndex->iRank();
+//
+//  Index* pIndex = this->m_pCard_SubSet->pIndex();
+//
+//  switch (iRank) {
+//
+//    case 1: {
+//      // lower bound or upper bound
+//      Card_PredCmp* pPredCmp_lbound =
+//        pReg_Filter->pFindBound(pIndex,PB_LBOUND);
+//      if (pPredCmp_lbound) {
+//        m_pCardRegs->vPredCmp_lbound(pPredCmp_lbound);
+//        pPredCmp_lbound->vMark2('L');
+//        break;
+//      }
+//      Card_PredCmp* pPredCmp_ubound =
+//        pReg_Filter->pFindBound(pIndex,PB_UBOUND);
+//      if (pPredCmp_ubound) {
+//        m_pCardRegs->vPredCmp_ubound(pPredCmp_ubound);
+//        pPredCmp_ubound->vMark2('U');
+//        break;
+//      }
+//      break;
+//    }
+//
+//    case 2: {
+//      // lower bound and upper bound
+//      Card_PredCmp* pPredCmp_lbound =
+//        pReg_Filter->pFindBound(pIndex,PB_LBOUND);
+//      if (pPredCmp_lbound) {
+//        m_pCardRegs->vPredCmp_lbound(pPredCmp_lbound);
+//        pPredCmp_lbound->vMark2('L');
+//      }
+//      Card_PredCmp* pPredCmp_ubound =
+//        pReg_Filter->pFindBound(pIndex,PB_UBOUND);
+//      if (pPredCmp_ubound) {
+//        m_pCardRegs->vPredCmp_ubound(pPredCmp_ubound);
+//        pPredCmp_ubound->vMark2('U');
+//      }
+//      break;
+//    }
+//
+//    case 3: {
+//      // equi-bound
+//      Card_PredCmp* pPredCmp_ebound =
+//        pReg_Filter->pFindBound(pIndex,PB_EBOUND);
+//      if (pPredCmp_ebound) {
+//        m_pCardRegs->vPredCmp_ebound(pPredCmp_ebound);
+//        pPredCmp_ebound->vMark2('E');
+//      }
+//      break;
+//    }
+//
+//    default:
+//      vTrace("SWITCH %s: Unknown iRank %lld\n"_Stz
+//             ,__func__
+//             ,(i8)iRank
+//              );
+//      RASSERT(0);
+//      break;
+//
+//  }
+//}
+
+/*----------------------------------------------------------------------------*/
+/* order the projective stream defs which are downstream of indexScan         */
+/*----------------------------------------------------------------------------*/
+//void Board::vOrder_ProjectiveStreamDefs(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+//
+//  Card_IndexScan* pReg_IndexScan
+//    = _pCard_IndexScan(m_pCardRegs->pCardReg(CK_INDEXSCAN));
+//
+//  Card_Stream* pCard_Stream_src =
+//    _pCard_Stream(pReg_IndexScan->pFindSubCard(CK_STREAM));
+//
+//  i8 nMainCards = this->nMainCards();
+//  for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
+//    Card* pMainCard = pGetMain(i_Main);
+//    if (CK_PROJECT != pMainCard->eCard())
+//      continue;
+//
+//    Card_Project* pCard_Project = _pCard_Project(pMainCard);
+//
+//    //--- --- ---
+//
+//    if (! pCard_Stream_src)
+//      continue;
+//
+//    Card_Stream* pCard_Stream_dst =
+//      _pCard_Stream(pCard_Project->pFindSubCard(CK_STREAM));
+//    if (! pCard_Stream_dst)
+//      continue;
+//
+//    pCard_Stream_dst->vApplyOrder(pCard_Stream_src);
+//
+//    //--- --- ---
+//
+//  }
+//
+//}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+//bool Board::bPick_CandidateIndex(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+//
+//  i8 iBestRank = C_UNKNOWN;
+//  Card_CandIndex* pCard_CandIndex = nullptr;
+//
+//  i8 nMainCards = this->nMainCards();
+//  for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
+//    Card* pMainCard = pGetMain(i_Main);
+//    if (CK_CANDINDEX != pMainCard->eCard())
+//      continue;
+//
+//    Card_CandIndex* pCadIdx = _pCard_CandIndex(pMainCard);
+//
+//    i8 iRank = pCadIdx->iRank();
+//    if (iRank > iBestRank) {
+//      iBestRank = iRank;
+//      pCard_CandIndex = pCadIdx;
+//    }
+//  }
+//
+//  if (! pCard_CandIndex) {
+//    //vReg_CandIndex(nullptr);
+//    m_pCardRegs->vCardReg(CK_CANDINDEX,nullptr);
+//    return false;
+//  }
+//
+//  //vReg_CandIndex(pCard_CandIndex);
+//  m_pCardRegs->vCardReg(CK_CANDINDEX,pCard_CandIndex);
+//  m_pCard_SubSet->vIndex(pCard_CandIndex->pFindSubCard(CK_INDEXPTR)->pIndex());
+//
+//  return true;
+//}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+//void Board::vRank_CandidateIndexes(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+//
+//  //m_pFilter->vMark2('0');
+//
+//  i8 nMainCards = this->nMainCards();
+//  for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
+//    Card* pMainCard = pGetMain(i_Main);
+//    if (CK_CANDINDEX != pMainCard->eCard())
+//      continue;
+//
+//    Card_CandIndex* pCard_CandIndex = _pCard_CandIndex(pMainCard);
+//
+//    vRankCandIndex(pCard_CandIndex);
+//  }
+//}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+//void Board::vReduce_Filter(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+//
+//  Card_Filter* pReg_Filter = _pCard_Filter(m_pCardRegs->pCardReg(CK_FILTER));
+//
+//  if (! pReg_Filter)
+//    return;
+//
+//  pReg_Filter->vReduceFilter();
+//}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+//void Board::vResolve_Filters(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+//
+//  i8 nMainCards = this->nMainCards();
+//  for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
+//    Card* pMainCard = pGetMain(i_Main);
+//
+//    if (CK_FILTER != pMainCard->eCard())
+//      continue;
+//
+//    vResolveFilter(_pCard_Filter(pMainCard));
+//  }
+//
+//}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+//void Board::vSimplify_Initial(void)
+//{
+//  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
+//
+//  i8 i_Test;
+//
+//  i8 nMainCards = this->nMainCards();
+//  for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
+//    Card *pMainCard = pGetMain(i_Main);
+//
+//    // of stage 1
+//    i8 i_Test = i_Main;
+//    Card* pStage_1 = pGetMain(i_Test++);
+//    if (CK_STAGE != pStage_1->eCard())
+//      continue;
+//
+//    Card* pScan_1 = pGetMain(i_Test++);
+//    if (CK_SCAN != pScan_1->eCard())
+//      continue;
+//
+//    Card* pSend_1 = pGetMain(i_Test++);
+//    if (CK_SEND != pSend_1->eCard())
+//      continue;
+//
+//    // of stage 2
+//    Card* pStage_2 = pGetMain(i_Test++);
+//    if (CK_STAGE != pStage_2->eCard())
+//      continue;
+//
+//    Card* pScan_2 = pGetMain(i_Test++);
+//    if (CK_SCAN != pScan_2->eCard())
+//      continue;
+//
+//    Card* pAbsJoin_2 = pGetMain(i_Test++);
+//    if (CK_ABSJOIN != pAbsJoin_2->eCard())
+//      continue;
+//
+//    Card* pSend_2 = pGetMain(i_Test++);
+//    if (CK_SEND != pSend_2->eCard())
+//      continue;
+//
+//    // of stage 3
+//    Card* pStage_3 = pGetMain(i_Test++);
+//    if (CK_STAGE != pStage_3->eCard())
+//      continue;
+//
+//    Card* pFilter_3 = pGetMain(i_Test++);
+//    if (CK_FILTER != pFilter_3->eCard())
+//      continue;
+//
+//    Card* pProject_3 = pGetMain(i_Test++);
+//    if (CK_PROJECT != pProject_3->eCard())
+//      continue;
+//
+//    Card* pCombine_3 = pGetMain(i_Test++);
+//    if (CK_COMBINED != pCombine_3->eCard())
+//      continue;
+//
+//    Card* pSend_3 = pGetMain(i_Test++);
+//    if (CK_SEND != pSend_3->eCard())
+//      continue;
+//
+//    m_pCard_SubSet->vRemove(pSend_1);
+//    m_pCard_SubSet->vRemove(pStage_2);
+//    m_pCard_SubSet->vRemove(pSend_2);
+//    m_pCard_SubSet->vRemove(pStage_3);
+//    m_pCard_SubSet->vRemove(pCombine_3);
+//
+//    delete pSend_1;
+//    delete pStage_2;
+//    delete pSend_2;
+//    delete pStage_3;
+//    delete pCombine_3;
+//
+//    //m_pCard_SubSet->vRemove(pFilter_3);
+//    //m_pCard_SubSet->vInsertAfter(pFilter_3,pScan_2);
+//
+//    break;
+//  }
+//
+//}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+//void Board::vResolve_RootStreams(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+//
+//  i8 nMainCards = this->nMainCards();
+//  for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
+//    Card* pMainCard = pGetMain(i_Main);
+//
+//    Card* pCard_Table = _pCard_Table(pMainCard->pFindSubCard(CK_TABLEPTR));
+//    if (! pCard_Table)
+//      continue;
+//
+//    StreamDef* pStreamDef = pCard_Table->pTable()->pStreamDef();
+//    Card_StreamElist* pCard_StreamElist = new Card_StreamElist(pStreamDef);
+//
+//    Card_Stream* pCard_Stream = new Card_Stream;
+//    pCard_Stream->vAppend(pCard_StreamElist);
+//
+//    pMainCard->vAppend(pCard_Stream);
+//  }
+//}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+//void Board::vResolve_Symbols(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+//
+//  i8 nMainCards = this->nMainCards();
+//  for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
+//    Card* pMainCard = pGetMain(i_Main);
+//
+//    vResolveSymbolTerms(pMainCard);
+//  }
+//
+//}
+/*----------------------------------------------------------------------------*/
+//void Board::vResolve_Symbols(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+//
+//  i8 nMainCards = this->nMainCards();
+//  for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
+//    Card* pMainCard = pGetMain(i_Main);
+//
+//    vTrace("Resolving MainCard %lld\n"_Stz,i_Main);
+//    vResolveRecursive(pMainCard);
+//
+//    //vPrintBoard();
+//
+//    //pMainCard->vRenumberSubCards(nullptr);
+//  }
+//
+//}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+//void Board::vAResolve_Joins(void)
+//{
+//  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
+//
+//  i8 nMainCards = this->nMainCards();
+//  for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
+//    Card* pMainCard = pGetMain(i_Main);
+//
+//    if (CK_INDEXJOIN != pMainCard->eCard())
+//      continue;
+//
+//    Card_IndexJoin* pCard_IndexJoin = _pCard_IndexJoin(pMainCard);
+//    vAResolveJoin(pCard_IndexJoin);
+//  }
+//}
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
 
 /*============================================================================*/
 /* end                                                                        */
