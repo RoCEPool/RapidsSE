@@ -836,6 +836,9 @@ void Engine::vKillPrev(void)
 /*----------------------------------------------------------------------------*/
 void Engine::vLoadTables(void)
 {
+  Timer oTimer;
+  oTimer.vStart();
+
   Dic* pRootDic = AM::DIC::pRoot();
 
   Word *pSearchWord = new(nullptr) Word("tenants"_Stz);
@@ -918,6 +921,9 @@ void Engine::vLoadTables(void)
   }
 
   AM::pHeaps()->Persistent.m_pTiny->vDropLock();
+
+  oTimer.vUpdate();
+  vTrace("Loading Tables duration: %lldms\n"_Stz,oTimer.iMilliseconds());
 }
 /*----------------------------------------------------------------------------*/
 /* set low-memory receive discards                                            */

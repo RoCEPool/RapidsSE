@@ -81,6 +81,7 @@ void CmdLineArgs::vInit(void)
   m_xSysArgs.m_sNodeName     = "node"_Stz;
   m_xSysArgs.m_sPageFilePath = "../../tmp/pfile.dat"_Stz;
   m_xSysArgs.m_nPtnsPerNode  = 4;
+  m_xSysArgs.m_sReloadFilePath = "../../tmp/saveFile"_Stz;
   m_xSysArgs.m_aRegionAddr   = (void*)C_ADR_REGION;
   m_xSysArgs.m_sRegionName   = ""_Stz;
   m_xSysArgs.m_sRegionPrefix = "/SE"_Stz;
@@ -745,6 +746,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--reload"_Stz)) {
       m_xSysArgs.m_bReload = true;
+      m_xSysArgs.m_sReloadFilePath = (Stz*)argv[++i_Arg];
       continue;
     }
     

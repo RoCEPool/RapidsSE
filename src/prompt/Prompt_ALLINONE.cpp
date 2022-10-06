@@ -5785,9 +5785,23 @@ bool PROMPT::bPrompt_unload(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
 
-  Stz* szFilePath = "../tmp/saveFile"_Stz;
+  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
 
-  PersistenceHelper::vWritePersistentHeaps(szFilePath);
+  i8 nTokens = pInpTknVec->nTokens();
+  ASSERT(nTokens > 1);
+
+  pInpTknVec->vStripSemicolon();
+
+  s256 sFilePath = "";
+
+  for(i8 i = 1; i < nTokens; i++)
+  {
+    sFilePath.vConcat(pInpTknVec->pGet(i)->szChars());
+  }
+
+  sFilePath.vConcat("\0"_Stz);
+
+  PersistenceHelper::vWritePersistentHeaps(sFilePath.szStz());
 
   return true;
 }

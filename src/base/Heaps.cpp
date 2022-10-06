@@ -493,6 +493,8 @@ void Heaps::vInit(void)
 {
   if(gxCmdLineArgs.m_xSysArgs.m_bReload)
   {
+    Timer oTimer;
+    oTimer.vStart();
     /*
     Notes:
       This section is where we load the persistent heaps from file.
@@ -521,7 +523,7 @@ void Heaps::vInit(void)
     i8 nSizeHeader = sizeof(Object) + 128; // object size + Pool Buffer members
     i8 nSizeBody = C_SIZE_POOL_BUFFER - nSizeHeader;
 
-    Stz* szFilePath = "../tmp/saveFile"_Stz;
+    Stz* szFilePath = gxCmdLineArgs.m_xSysArgs.m_sReloadFilePath;
     File* pFile = new(C_VIA_MALLOC) File(nullptr);
     bool bResult = pFile->bOpenRead(szFilePath);
     ASSERT(bResult);
@@ -633,6 +635,9 @@ void Heaps::vInit(void)
 
     RASSERT(Persistent.m_pLarge);
     Persistent.m_pLarge->vDropLock();
+
+    oTimer.vUpdate();
+    vTrace("Loading of Persistent Heap: %lldms\n"_Stz,oTimer.iMilliseconds());
 
   } else {
     // create the persistent heaps

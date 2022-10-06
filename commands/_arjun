@@ -56,47 +56,41 @@ select c, cast(c,time) from cast_time;
 select c, cast(c, date) from cast_time;
 */
 
-tag default <tpch_dir> = "../TPCH/SF1" ;
+tag default <tpch_dir> = "../TPCH/SF10" ;
 tag default <suffix>   = "tbl";
 
 _customer
 _lineitem
-/*
-_nation_replicated
+_nation
 _orders_custkey
 _part
 _partsupp
-_region_replicated
+_region
 _supplier
-*/
 
 
 load Customer "<tpch_dir>/customer.<suffix>" ;
 load LineItem "<tpch_dir>/lineitem.<suffix>" ;
-
-/*
+load Nation   "<tpch_dir>/nation.<suffix>"   ;
 load Orders   "<tpch_dir>/orders.<suffix>"   ;
-
-
-load PartSupp "<tpch_dir>/partsupp.<suffix>" ;
-
-
 load Part     "<tpch_dir>/part.<suffix>"     ;
-
-
-
-
+load PartSupp "<tpch_dir>/partsupp.<suffix>" ;
+load Region   "<tpch_dir>/region.<suffix>"   ;
 load Supplier "<tpch_dir>/supplier.<suffix>" ;
-*/
+
 tablesizes;
 
 /*
 drop table customer;
 drop table lineitem;
-drop table nation_replicated;
-drop table orders_custkey;
+drop table nation;
+drop table orders;
 drop table part;
 drop table partsupp;
-drop table region_replicated;
+drop table region;
 drop table supplier;
+
+lstbl;
+
+tablesizes;
 */
