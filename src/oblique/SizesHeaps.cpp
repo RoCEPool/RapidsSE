@@ -225,7 +225,6 @@
 #include "Action.hpp"
 #include "CardCtl.hpp"
 #include "CardRegs.hpp"
-#include "RuleCtl.hpp"
 #include "Drafter.hpp"
 #include "Vertex.hpp"
 #include "SubCall.hpp"
@@ -568,7 +567,6 @@ SizeHeap gxaSizeHeap[]
   { CN_RUCPU,                    sizeof(RU_Cpu),             HT_INVALID   ,FILL },
   { CN_RUDIR,                    0,/*sizeof(RU_Dir)*/        HT_INVALID   ,FILL },
   { CN_RUFILE,                   0,/*sizeof(RU_File)*/       HT_INVALID   ,FILL },
-  { CN_RULECTL,                  sizeof(RuleCtl),            HT_T_TINY    ,FILL },
   { CN_RUMEMORY,                 sizeof(RU_Memory),          HT_INVALID   ,FILL },
   { CN_RUMUTEX,                  0,/*sizeof(RU_Mutex)*/      HT_INVALID   ,FILL },
   { CN_RUPASS,                   0,/*sizeof(RU_Pass)*/       HT_INVALID   ,FILL },

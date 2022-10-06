@@ -113,7 +113,6 @@
 #include "OpSpec.hpp"
 
 #include "CardRegs.hpp"
-#include "RuleCtl.hpp"
 
 namespace STORE
 {
@@ -136,7 +135,6 @@ namespace STORE
     Optimiser*   m_pOptimiser;
 
     CardRegs*    m_pCardRegs;
-    RuleCtl*     m_pRuleCtl;
 
     Card_SubSet* m_pCard_SubSet;
 
@@ -256,32 +254,6 @@ namespace STORE
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
-    /* rule 00 */ bool bMay_AggGby_Sort_to_AggGby      (void);
-  
-    /* rule 00 */ bool bMay_ordStream_AggGby_to_OrdAgg (void);
-
-    /* rule 00 */ bool bMay_OrdAgg_Sort_to_OrdAgg      (void);
-  
-    /* rule 00 */ bool bMay_Scan_AggGby_to_IndexScan   (void);
-
-    /* rule 00 */ bool bMay_Scan_Filter_to_IndexScan   (void); // implemented
-  
-    /* rule 00 */ bool bMay_Scan_Sort_to_IndexScan     (void);
-  
-    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-
-    /* rule 00 */ bool bRule_AggGby_Sort_to_AggGby     (void);
-  
-    /* rule 00 */ bool bRule_ordStream_AggGby_to_OrdAgg(void);
-  
-    /* rule 00 */ bool bRule_OrdAgg_Sort_to_OrdAgg     (void);
-  
-    /* rule 00 */ bool bRule_Scan_AggGby_to_IndexScan  (void);
-  
-    /* rule 00 */ bool bRule_Scan_Filter_to_IndexScan  (void); // implemented
-
-    /* rule 00 */ bool bRule_Scan_Sort_to_IndexScan    (void);
-  
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
     Card_CalcBool*   pTo_CalcBool  (Card_Calc*    pCard_Calc);
