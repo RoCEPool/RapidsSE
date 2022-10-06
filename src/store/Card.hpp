@@ -326,9 +326,7 @@ namespace STORE
 
     eXK  eSendKind(void);
     void vSendKind(eXK eSendKind);
-    i8   iSends(void);
-    void vSends(i8 iSends);
-    eYG  eStageTopo(void);
+   eYG  eStageTopo(void);
     void vStageTopo(eYG  eStageTopology);
     StreamDef* pStreamDef(void);
     void vStreamDef(StreamDef* pStreamDef);

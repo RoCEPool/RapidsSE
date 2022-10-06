@@ -2272,29 +2272,6 @@ void Card::vSendKind(eXK eSendKind)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get sends                                                                  */
-/*----------------------------------------------------------------------------*/
-i8 Card::iSends(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  i8 iSends = iGetProperty("iSends"_Stz);
-  
-  return iSends;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set sends                                                                  */
-/*----------------------------------------------------------------------------*/
-void Card::vSends(i8 iSends)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  vAddProperty_int("iSends"_Stz,iSends);
-}
-
-
-/*----------------------------------------------------------------------------*/
 /* get stage topology                                                         */
 /*----------------------------------------------------------------------------*/
 eYG Card::eStageTopo(void)
