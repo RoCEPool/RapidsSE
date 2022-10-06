@@ -27,12 +27,13 @@ __aFooterFunction(Board)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Board::Board(eBK eBoard, Bench* pBench)
+Board::Board(eBK eBoard, eBT eBoardType, Bench* pBench)
 : Object(CN_BOARD)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
   m_eBoard       = eBoard;
+  m_eBoardType   = eBoardType;
   m_pBench       = pBench;
 
   m_pOptimiser   = m_pBench->pOptimiser();
@@ -60,6 +61,9 @@ Board::~Board(void) noexcept(false)
   
   delete m_pCardRegs;
   delete m_pRuleCtl;
+
+  if (BT_VIEW == m_eBoardType)
+    m_pCard_SubSet->vRemoveAll();
 
   delete m_pCard_SubSet;
 }
@@ -207,7 +211,7 @@ void Board::vDuplicateBoard(Board* pBoard_arg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find i_Main of given main card                                         */
+/* find i_Main of given main card                                             */
 /*----------------------------------------------------------------------------*/
 i8 Board::iFindMain(Card* pMainCard)
 {
@@ -526,8 +530,9 @@ void Board::vPinCards(Ribbon* pRibbon, Stz* szTransformation)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pRibbon->vSprint("\n[Board: %s] Query=%s Transformation=%s"_Stz,
+  pRibbon->vSprint("\n[Board: %s %s] Query=%s Transformation=%s"_Stz,
                    aBK[m_eBoard],
+                   aBT[m_eBoardType],
                    m_pOptimiser->szQueryNm(),
                    szTransformation ? szTransformation : ""_Stz
                    );

@@ -6,6 +6,7 @@
 #include "BASE.h"
 
 #include "eBK.h"
+#include "eBT.h"
 
 #include "Card.hpp"
 #include "CardCtl.hpp"
@@ -122,10 +123,12 @@ namespace STORE
   class Optimiser;
   class Weaver;
 
-  class Board : public Object //Card_OTHER
+  class Board : public Object
   {
   protected:
     eBK          m_eBoard;
+    eBT          m_eBoardType;
+
     Bench*       m_pBench;
 
     s32          m_sQueryNm;
@@ -147,7 +150,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Board(eBK eBoard, Bench* pBench);
+    Board(eBK eBoard, eBT eBoardType, Bench* pBench);
    ~Board(void) noexcept(false);
 
     void vAppendMain(Card* pNewMainCard, bool bRenumber= true);
