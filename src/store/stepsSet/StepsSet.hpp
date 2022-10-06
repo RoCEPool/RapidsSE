@@ -2414,6 +2414,7 @@ void vDdlLockAssertNone(void);
   void vTxRefRollback(void);
 
   // user
+  void vUnloadToFile(void);
   void vUserName(void);
 
   // vertex

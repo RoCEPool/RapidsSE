@@ -5760,59 +5760,6 @@ bool PROMPT::bPrompt_trackMemory(SePrompt* pPrompt)
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/* Prompt_unload.cpp -- unload persistent heap to disk prompt function        */
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
-PromptFun __Prompt_unload (
-    PF_UNLOAD,            // prompt function
-    "Prompt_unload"_Stz,      // name of the prompt function
-    "unload to disk"_Stz,  // comment about the function
-    "unload"_Stz,         // the prompt command
-    nullptr,              // the second word
-    bPrompt_unload,          // prompt function
-    true,                   // enabled
-
-    true,                    // visible
-    "unload"_Stz,             // help
-    ""_Stz               // description
-);
-
-
-/*----------------------------------------------------------------------------*/
-/* prompt function                                                            */
-/*----------------------------------------------------------------------------*/
-bool PROMPT::bPrompt_unload(SePrompt* pPrompt)
-{
-  RASSERT(pPrompt);
-
-  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
-
-  i8 nTokens = pInpTknVec->nTokens();
-  ASSERT(nTokens > 1);
-
-  pInpTknVec->vStripSemicolon();
-
-  s256 sFilePath = "";
-
-  for(i8 i = 1; i < nTokens; i++)
-  {
-    sFilePath.vConcat(pInpTknVec->pGet(i)->szChars());
-  }
-
-  sFilePath.vConcat("_"_Stz);
-
-  sFilePath.vConcat(gxCmdLineArgs.m_xSysArgs.m_sNodeName);
-
-  sFilePath.vConcat("\0"_Stz);
-
-  PersistenceHelper::vWritePersistentHeaps(sFilePath.szStz());
-
-  vTrace("Successfully saved to file %s\n"_Stz, sFilePath.szStz());
-
-  return true;
-}
-
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /* Prompt_uptime.cpp -- uptime prompt function                                */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
