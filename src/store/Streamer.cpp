@@ -47,51 +47,49 @@ void Streamer::vCalc_streamOrdinalRanges(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMER,_FOOTER_);
 
-  vBeginIteration();
-
   i8 iOrdLo = 1;
   i8 iOrdHi = C_UNKNOWN;
-
   char cStream = '0';
 
-  while (Card* pMainCard = pEachMain()) {
+  BoardIter xBI(m_pBoard);
 
-    if (CK_SCAN == pMainCard->eCard()) {
-      Card_Stream* pCard_stream = _pGetSub_Stream(pMainCard);
+  while ((m_pMainCard = xBI.pEachMain())) {
 
-      pCard_stream->vMark1('#');
-      pCard_stream->vMark2(cStream++);
+    if (CK_SCAN == m_pMainCard->eCard()) {
+      m_p_stream = _pGetSub_Stream(m_pMainCard);
 
-      i8 nStreamCols = pCard_stream->nStreamCols();
-      pCard_stream->vAddProperty_int(C_CARD_OrdLo,iOrdLo);
+      m_p_stream->vMark1('#');
+      m_p_stream->vMark2(cStream++);
+
+      // <scan>/<stream>:iOrdLo,iOrdHi
+      i8 nStreamCols = m_p_stream->nStreamCols();
+      m_p_stream->vAddProperty_int(C_CARD_OrdLo,iOrdLo);
       iOrdHi = iOrdLo + nStreamCols - 1;
-      pCard_stream->vAddProperty_int(C_CARD_OrdHi,iOrdHi);
+      m_p_stream->vAddProperty_int(C_CARD_OrdHi,iOrdHi);
       iOrdLo = iOrdHi + 1;
 
       continue;
     }
 
-    if (CK_ABSJOIN == pMainCard->eCard()) {
-      Card_Scan*   pCard_scan   = _pGetSub_Scan(pMainCard);
-      Card_Stream* pCard_stream = _pGetSub_Stream(pCard_scan);
+    if (CK_ABSJOIN == m_pMainCard->eCard()) {
+      m_p_scan   = _pGetSub_Scan(m_pMainCard);
+      m_p_stream = _pGetSub_Stream(m_p_scan);
 
-      pCard_stream->vMark1('#');
-      pCard_stream->vMark2(cStream++);
+      m_p_stream->vMark1('#');
+      m_p_stream->vMark2(cStream++);
 
-      i8 nStreamCols = pCard_stream->nStreamCols();
-      pCard_stream->vAddProperty_int(C_CARD_OrdLo,iOrdLo);
+      // <absJoin>/<stream>:iOrdLo,iOrdHi
+      i8 nStreamCols = m_p_stream->nStreamCols();
+      m_p_stream->vAddProperty_int(C_CARD_OrdLo,iOrdLo);
       iOrdHi = iOrdLo + nStreamCols - 1;
-      pCard_stream->vAddProperty_int(C_CARD_OrdHi,iOrdHi);
+      m_p_stream->vAddProperty_int(C_CARD_OrdHi,iOrdHi);
       iOrdLo = iOrdHi + 1;
 
       continue;
     }
   }
 
-  vEndIteration();
-
-  if (m_bInteractive)
-    m_pBoard->vPrintBoard("Streamer::vCalc_streamOrdinalRanges"_Stz);
+  vPrintBoard("Streamer::vCalc_streamOrdinalRanges"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
