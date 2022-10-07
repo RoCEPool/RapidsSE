@@ -86,7 +86,7 @@ void Estimator::vEstimate_ptndJoins(void)
   while ((m_pMainCard = xBI.pEachMain())) {
     eCK eCard = m_pMainCard->eCard();
     if (CK_PERMUTATION == eCard) {
-      m_p_tableList->vDeletePropertyRecursively(C_CARD_TableUsed);
+      m_p_tableList->vDeletePropertyRecursively(C_PPT_TableUsed);
       continue;
     }
     if (CK_PTNDJOIN != eCard)
@@ -117,7 +117,7 @@ void Estimator::vEstimate_network(void)
     eCK eCard = m_pMainCard->eCard();
     if (CK_PERMUTATION == eCard) {
       if (m_p_permutation)
-        m_p_permutation->vAddProperty_int(C_CARD_Network, nNetwork);
+        m_p_permutation->vAddProperty_int(C_PPT_Network, nNetwork);
       m_p_permutation = _pCard_Permutation(m_pMainCard);
 
       m_p_ptndJoin = nullptr;
@@ -127,16 +127,16 @@ void Estimator::vEstimate_network(void)
     else
     if (CK_PTNDJOIN == eCard) {
       if (m_p_ptndJoin) {
-        nSentOut += m_p_ptndJoin->iGetProperty(C_CARD_JoinedBuff);
+        nSentOut += m_p_ptndJoin->iGetProperty(C_PPT_JoinedBuff);
         nNetwork += nSentOut;
-        m_p_ptndJoin->vAddProperty_int(C_CARD_SentOut, nSentOut);
+        m_p_ptndJoin->vAddProperty_int(C_PPT_SentOut, nSentOut);
       }
       m_p_ptndJoin = _pCard_PtndJoin(m_pMainCard);
     }
   }
 
   if (m_p_permutation)
-    m_p_permutation->vAddProperty_int(C_CARD_Network, nNetwork);
+    m_p_permutation->vAddProperty_int(C_PPT_Network, nNetwork);
 
   if (m_bInteractive)
     m_pBoard_costEst->vPrintBoard("Estimator::vEstimate_network"_Stz);
@@ -156,7 +156,7 @@ void Estimator::vEstimate_joinOrder(void)
 
   while ((m_p_permutation =
       _pCard_Permutation(xBI.pEachMain(CK_PERMUTATION,m_i_Main)))) {
-    i8 iNetwork = m_p_permutation->iGetProperty(C_CARD_Network);
+    i8 iNetwork = m_p_permutation->iGetProperty(C_PPT_Network);
     if (iNetwork >= iLowestNetwork)
       continue;
     m_p_permutation_low = m_p_permutation;
@@ -164,7 +164,7 @@ void Estimator::vEstimate_joinOrder(void)
   }
 
   m_pBoard_costEst->vAppendMain((m_p_joinOrderSeq = new Card_JoinOrderSeq));
-  m_p_joinOrderSeq->vAddProperty_int(C_CARD_Network,iLowestNetwork);
+  m_p_joinOrderSeq->vAddProperty_int(C_PPT_Network,iLowestNetwork);
 
   xBI.vSet(m_p_permutation_low);
   while ((m_pMainCard = xBI.pEachMain(m_i_Main,m_eMainCard))) {

@@ -50,7 +50,7 @@ Card* Card_CardPtr::pCard(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card* pCard = _pCard(pGetProperty(C_CARD_Card));
+  Card* pCard = _pCard(pGetProperty(C_PPT_Card));
 
   return pCard;
 }
@@ -62,7 +62,7 @@ void Card_CardPtr::vCard(Card* pCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vAddProperty_ptr(C_CARD_Card,pCard);
+  vAddProperty_ptr(C_PPT_Card,pCard);
 }
 
 

@@ -174,7 +174,7 @@ void Partitioner::vCompute_coPtnJoinList(void)
       m_p_coPtnJoinList->vAppend(m_p_coPtnJoin);
     }
 
-    m_p_coPtnJoin->vTransferSubCards(m_p_subSet);
+    m_p_coPtnJoin->vTransferChildren(m_p_subSet);
     DELETE_CARD(m_p_subSet);
   }
 
@@ -241,20 +241,20 @@ void Partitioner::vCompute_ptndJointSet(void)
   m_p_coPtnJoinList =
       _pCard_CoPtnJoinList(m_pBoard_partition->pFindMain(CK_COPTNJOINLIST));
   m_p_subSet = m_p_coPtnJoinList->pDupSubCards();
-  m_p_ptndJoinSet->vTransferSubCards(m_p_subSet);
+  m_p_ptndJoinSet->vTransferChildren(m_p_subSet);
   DELETE_CARD(m_p_subSet);
 
   m_p_crossPtnJoinList =
       _pCard_CrossPtnJoinList(m_pBoard_partition->pFindMain(CK_CROSSPTNJOINLIST));
   m_p_subSet = m_p_crossPtnJoinList->pDupSubCards();
-  m_p_ptndJoinSet->vTransferSubCards(m_p_subSet);
+  m_p_ptndJoinSet->vTransferChildren(m_p_subSet);
   DELETE_CARD(m_p_subSet);
 
   i8 nChildren = m_p_ptndJoinSet->nChildCards();
   for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
     m_pChildCard = m_p_ptndJoinSet->pGetChild(i_Child);
     m_pChildCard->vCard(CK_PTNDJOIN);
-    m_pChildCard->vAddProperty_int(C_CARD_PtndJoin,i_Child);
+    m_pChildCard->vAddProperty_int(C_PPT_PtndJoin,i_Child);
   }
 
   if (m_bInteractive)

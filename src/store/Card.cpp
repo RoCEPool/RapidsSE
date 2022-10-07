@@ -242,19 +242,6 @@ eCK Card::eToECard(Stz* szCardNm)
 /*----------------------------------------------------------------------------*/
 /* add given property                                                         */
 /*----------------------------------------------------------------------------*/
-void Card::vAddProperty_nameOnly(Stz* szPptName)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_)
-
-  if (! m_pProperties)
-    m_pProperties = new TagSet;
-  
-  m_pProperties->vReplace(szPptName, "yes"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add given property                                                         */
-/*----------------------------------------------------------------------------*/
 void Card::vAddProperty_int(Stz* szPptName, i8 iPptValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -263,6 +250,19 @@ void Card::vAddProperty_int(Stz* szPptName, i8 iPptValue)
     m_pProperties = new TagSet;
   
   m_pProperties->vReplace(szPptName, iPptValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add given property                                                         */
+/*----------------------------------------------------------------------------*/
+void Card::vAddProperty_nameOnly(Stz* szPptName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_)
+
+  if (! m_pProperties)
+    m_pProperties = new TagSet;
+
+  m_pProperties->vReplace(szPptName, "yes"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -424,7 +424,7 @@ void Card::vDeleteProperty(Stz* szPptName)
 }
 
 /*----------------------------------------------------------------------------*/
-/* duplicate this card and its sub cards                                      */
+/* delete given property (recursively)                                        */
 /*----------------------------------------------------------------------------*/
 void Card::vDeletePropertyRecursively(Stz* szPptName)
 {
@@ -440,7 +440,7 @@ void Card::vDeletePropertyRecursively(Stz* szPptName)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dum card and its sub cards                                                 */
+/* dump card and its sub cards                                                */
 /*----------------------------------------------------------------------------*/
 void Card::vDump(i8 iDepth, Stz* szTitle)
 {
@@ -624,7 +624,7 @@ Card* Card::pFindChild(eCK eCard, i8& i_Child)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find parent of given arg                                                   */
+/* find parent of given sub-card                                              */
 /*----------------------------------------------------------------------------*/
 Card* Card::pFindParent(Card* pSubCard_arg)
 {
@@ -844,7 +844,7 @@ void Card::vGuage(Card* pParentCard)
 }
 
 /*----------------------------------------------------------------------------*/
-/* does card have the EBound property ?                                       */
+/* is there an immediate child with given value?                              */
 /*----------------------------------------------------------------------------*/
 bool Card::bHasChildWithValue(Stz* szValue)
 {
@@ -933,7 +933,6 @@ bool Card::bHasValue(void)
   return false;
 }
 
-
 /*----------------------------------------------------------------------------*/
 /* is this card the given kind?                                               */
 /*----------------------------------------------------------------------------*/
@@ -967,22 +966,17 @@ bool Card::bIsPred(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this atom same as argument?                                             */
+/* is this card same as argument?                                             */
 /*----------------------------------------------------------------------------*/
-bool Card::bIsSame(Stz* szArg)
+bool Card::bIsSameValue(Stz* szArg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  //Stz* szTerm = szGetProperty("szTerm"_Stz);
-
-  //RASSERT(szValue()->bSame(szTerm));
 
   if (szValue()->bSame(szArg))
     return true;
   else
     return false;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* get mark 1                                                                 */
@@ -1249,7 +1243,7 @@ void Card::vPrintNameValue(Ribbon* pRibbon, i8 iDepth)
 }
 
 /*----------------------------------------------------------------------------*/
-/* print by piece                                                             */
+/* print card properties                                                      */
 /*----------------------------------------------------------------------------*/
 void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth)
 {
@@ -1341,7 +1335,7 @@ void Card::vPrintSubShort(Ribbon* pRibbon, i8 iDepth)
 }
 
 /*----------------------------------------------------------------------------*/
-/* print                                                                      */
+/* print value of card                                                        */
 /*----------------------------------------------------------------------------*/
 void Card::vPrintValue(Ribbon* pRibbon, i8 iDepth)
 {
@@ -1385,7 +1379,7 @@ eTN Card::eProperty(i8 i_Property)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get properties                                                             */
+/* get properties tagSet                                                      */
 /*----------------------------------------------------------------------------*/
 TagSet* Card::pProperties(void)
 {
@@ -1395,7 +1389,7 @@ TagSet* Card::pProperties(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ensure this card has a m_pProperties                                       */
+/* ensure this card has a m_pProperties tagSet                                */
 /*----------------------------------------------------------------------------*/
 void Card::vPropertiesEnsure(void)
 {
@@ -1406,7 +1400,7 @@ void Card::vPropertiesEnsure(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* remove given child card (non-recursive)                                    */
+/* remove given immediate child card (non-recursive)                          */
 /*----------------------------------------------------------------------------*/
 void Card::vRemoveChild(Card* pCardRemove)
 {
@@ -1416,7 +1410,7 @@ void Card::vRemoveChild(Card* pCardRemove)
 }
 
 /*----------------------------------------------------------------------------*/
-/* remove given subcard (recursive)                                           */
+/* remove given subCard (recursive)                                           */
 /*----------------------------------------------------------------------------*/
 void Card::vRemoveSubCard(Card* pCardRemove)
 {
@@ -1438,7 +1432,7 @@ void Card::vRemoveSubCard(Card* pCardRemove)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* renumber card and its subCard's                                            */
 /*----------------------------------------------------------------------------*/
 void Card::vRenumberSubCards(Card* pParentCard)
 {
@@ -1479,17 +1473,17 @@ void Card::vReplaceChildWithKids(Card* pChildCard)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* replace immediate child with given card                                    */
 /*----------------------------------------------------------------------------*/
-void Card::vReplaceSubCard(Card* pSubCard, Card* pWithCard)
+void Card::vReplaceChild(Card* pChildCard, Card* pWithCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  vReplace(pSubCard,pWithCard);
+  vReplace(pChildCard, pWithCard);
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* get card value                                                             */
 /*----------------------------------------------------------------------------*/
 Stz* Card::sz(void)
 {
@@ -1499,13 +1493,13 @@ Stz* Card::sz(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* transfer all sub-cards from given card set to this card                    */
+/* transfer all child card (incl. sub-cards) from given card set to this card */
 /*----------------------------------------------------------------------------*/
-void Card::vTransferSubCards(Card* pCards)
+void Card::vTransferChildren(Card* pFromCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  while (Card* pCard = pCards->pPop())
+  while (Card* pCard = pFromCard->pPop())
     vAppend(pCard);
 }
 
@@ -1602,7 +1596,7 @@ void Card::vTransferTill(Card* pCards, Card* pTill,
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* get card value                                                             */
 /*----------------------------------------------------------------------------*/
 Stz* Card::szValue(void)
 {
@@ -1612,7 +1606,7 @@ Stz* Card::szValue(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* set card value                                                             */
 /*----------------------------------------------------------------------------*/
 void Card::vValue(Stz* szValue)
 {
@@ -1624,7 +1618,7 @@ void Card::vValue(Stz* szValue)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* visit all sub-cards of given eCard and apply lambda function               */
 /*----------------------------------------------------------------------------*/
 void Card::vVisitAllSub(eCK eCard, std::function<bool(Card* pCard)> bfApply)
 {

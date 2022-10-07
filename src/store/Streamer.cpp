@@ -63,9 +63,9 @@ void Streamer::vCalc_streamOrdinalRanges(void)
 
       // <scan>/<stream>:iOrdLo,iOrdHi
       i8 nStreamCols = m_p_stream->nStreamCols();
-      m_p_stream->vAddProperty_int(C_CARD_OrdLo,iOrdLo);
+      m_p_stream->vAddProperty_int(C_PPT_OrdLo,iOrdLo);
       iOrdHi = iOrdLo + nStreamCols - 1;
-      m_p_stream->vAddProperty_int(C_CARD_OrdHi,iOrdHi);
+      m_p_stream->vAddProperty_int(C_PPT_OrdHi,iOrdHi);
       iOrdLo = iOrdHi + 1;
 
       continue;
@@ -80,9 +80,9 @@ void Streamer::vCalc_streamOrdinalRanges(void)
 
       // <absJoin>/<stream>:iOrdLo,iOrdHi
       i8 nStreamCols = m_p_stream->nStreamCols();
-      m_p_stream->vAddProperty_int(C_CARD_OrdLo,iOrdLo);
+      m_p_stream->vAddProperty_int(C_PPT_OrdLo,iOrdLo);
       iOrdHi = iOrdLo + nStreamCols - 1;
-      m_p_stream->vAddProperty_int(C_CARD_OrdHi,iOrdHi);
+      m_p_stream->vAddProperty_int(C_PPT_OrdHi,iOrdHi);
       iOrdLo = iOrdHi + 1;
 
       continue;

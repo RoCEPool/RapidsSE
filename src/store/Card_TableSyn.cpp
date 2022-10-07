@@ -55,15 +55,10 @@ char Card_TableSyn::cTableSyn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  //Stz* szTableSyn = szGetProperty("szTableSyn"_Stz);
-
-  //RASSERT(szValue()->bSame(szTableSyn));
-
   char cTableSyn = *(szValue()->azChar());
 
   return cTableSyn;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* set table synonym                                                          */

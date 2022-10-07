@@ -100,35 +100,24 @@ namespace STORE
   class Card_Unique;
 }
 
-static Stz* C_CARD_AggLevel     = "eAggLevel"_Stz;
-static Stz* C_CARD_AggOp        = "bAggOp"_Stz;
-static Stz* C_CARD_Card         = "pCard"_Stz;
-static Stz* C_CARD_Column       = "pColumn"_Stz;
-static Stz* C_CARD_Column1      = "pColumn1"_Stz;
-static Stz* C_CARD_Column2      = "pColumn2"_Stz;
-static Stz* C_CARD_DebugOption  = "szDebugOption"_Stz;
-static Stz* C_CARD_EBound       = "EBound"_Stz;
-static Stz* C_CARD_Index        = "pIndex"_Stz;
-static Stz* C_CARD_LBound       = "LBound"_Stz;
-static Stz* C_CARD_Rank         = "iRank"_Stz;
-static Stz* C_CARD_Rows         = "nRows"_Stz;
-static Stz* C_CARD_SendKind     = "eSendKind"_Stz;
-static Stz* C_CARD_StageTopo    = "eStageTopo"_Stz;
-static Stz* C_CARD_StreamDef    = "pStreamDef"_Stz;
-static Stz* C_CARD_Table        = "pTable"_Stz;
-static Stz* C_CARD_Table1       = "pTable1"_Stz;
-static Stz* C_CARD_Table2       = "pTable2"_Stz;
-static Stz* C_CARD_UBound       = "UBound"_Stz;
-
-static Stz* C_CARD_Invalid      = "bInvalid"_Stz;
-static Stz* C_CARD_JoinedBuff   = "nJoinedBuff"_Stz;
-static Stz* C_CARD_Network      = "nNetwork"_Stz;
-static Stz* C_CARD_OrdHi        = "iOrdHi"_Stz;
-static Stz* C_CARD_OrdLo        = "iOrdLo"_Stz;
-static Stz* C_CARD_PtndJoin     = "i_PtndJoin"_Stz;
-static Stz* C_CARD_Permutation  = "i_Permutation"_Stz;
-static Stz* C_CARD_SentOut      = "nSentOut"_Stz;
-static Stz* C_CARD_TableUsed    = "bTableUsed"_Stz;
+static Stz* C_PPT_AggLevel     = "eAggLevel"_Stz;
+static Stz* C_PPT_AggOp        = "bAggOp"_Stz;
+static Stz* C_PPT_Card         = "pCard"_Stz;
+static Stz* C_PPT_DebugOption  = "szDebugOption"_Stz;
+static Stz* C_PPT_Index        = "pIndex"_Stz;
+static Stz* C_PPT_Invalid      = "bInvalid"_Stz;
+static Stz* C_PPT_JoinedBuff   = "nJoinedBuff"_Stz;
+static Stz* C_PPT_Network      = "nNetwork"_Stz;
+static Stz* C_PPT_OrdHi        = "iOrdHi"_Stz;
+static Stz* C_PPT_OrdLo        = "iOrdLo"_Stz;
+static Stz* C_PPT_Permutation  = "i_Permutation"_Stz;
+static Stz* C_PPT_PtndJoin     = "i_PtndJoin"_Stz;
+static Stz* C_PPT_Rank         = "iRank"_Stz;
+static Stz* C_PPT_SendKind     = "eSendKind"_Stz;
+static Stz* C_PPT_SentOut      = "nSentOut"_Stz;
+static Stz* C_PPT_StageTopo    = "eStageTopo"_Stz;
+static Stz* C_PPT_Table        = "pTable"_Stz;
+static Stz* C_PPT_TableUsed    = "bTableUsed"_Stz;
 
 namespace STORE
 {
@@ -137,12 +126,9 @@ namespace STORE
   public:
     CardSet(void);
    ~CardSet(void) noexcept(false);
-
-
   };
 
   typedef ListExoIter_t<Card> SubCardIter;
-
 
   class Card : public Object
              , public CardSet // ListExo2_t<Card>
@@ -186,8 +172,8 @@ namespace STORE
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     
-    void vAddProperty_nameOnly(Stz* szPptName);
     void vAddProperty_int(Stz* szPptName, i8 iPptValue);
+    void vAddProperty_nameOnly(Stz* szPptName);
     void vAddProperty_ptr(Stz* szPptName, Object* pPptValue);
     void vAddProperty_stz(Stz* szPptName, Stz* szPptValue);
     void vAppendDupSubCards(Card* pCard_SubSet);
@@ -234,7 +220,7 @@ namespace STORE
 
     bool bIsCard(eCK eCard);
     bool bIsPred(void);
-    bool bIsSame(Stz* szArg);
+    bool bIsSameValue(Stz* szArg);
 
     char cMark1(void);
     void vMark1(char cMark1);
@@ -264,11 +250,11 @@ namespace STORE
     void vRemoveSubCard(Card* pCardRemove);
     void vRenumberSubCards(Card* pParentCard);
     void vReplaceChildWithKids(Card* pChildCard);
-    void vReplaceSubCard(Card* pSubCard, Card* pWithCard);
+    void vReplaceChild(Card* pChildCard, Card* pWithCard);
 
     Stz* sz(void);
 
-    void vTransferSubCards(Card* pCards);
+    void vTransferChildren(Card* pFromCard);
     void vTransferFrom(Card* pCards, Card* pFrom,
                        Card* pAt=nullptr, bool bAfter=true);
     void vTransferSubset(Card* pCards, Card* pFrom, Card* pTill,

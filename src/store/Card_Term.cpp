@@ -118,17 +118,13 @@ bool Card_Term::bIsAggOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  //Stz* szTerm = szGetProperty("szTerm"_Stz);
-
-  //RASSERT(szValue()->bSame(szTerm));
-
   Stz* szTerm = szValue();
-  if (szTerm->bSame("avg"_Stz))      return true;
+       if (szTerm->bSame("avg"_Stz))      return true;
   else if (szTerm->bSame("count"_Stz))    return true;
   else if (szTerm->bSame("countAll"_Stz)) return true;
   else if (szTerm->bSame("max"_Stz))      return true;
   else if (szTerm->bSame("min"_Stz))      return true;
-//  else if (szTerm->bSame("stddev"_Stz))   return true;
+//else if (szTerm->bSame("stddev"_Stz))   return true;
   else if (szTerm->bSame("sum"_Stz))      return true;
 
   return false;
@@ -140,11 +136,6 @@ bool Card_Term::bIsAggOp(void)
 bool Card_Term::bIsOrdinalStreamTerm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  //Stz* szTerm = szGetProperty("szTerm"_Stz);
-  //vTrace("bIsOrdinalColumnTerm: %s\n"_Stz,szTerm);
-
-  //RASSERT(szValue()->bSame(szTerm));
 
   Stz* szTerm = szValue();
   char acFirst  = szTerm->azChar()[0];
@@ -163,10 +154,6 @@ bool Card_Term::bIsOrdinalIndexTerm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  //Stz* szTerm = szGetProperty("szTerm"_Stz);
-
-  //RASSERT(szValue()->bSame(szTerm));
-
   Stz* szTerm = szValue();
   char acFirst  = szTerm->azChar()[0];
   char acSecond = szTerm->azChar()[1];
@@ -184,10 +171,6 @@ bool Card_Term::bIsSeparator(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  //Stz* szTerm = szGetProperty("szTerm"_Stz);
-
-  //RASSERT(szValue()->bSame(szTerm));
-
   if (szValue()->bSame(","_Stz))
     return true;
   else
@@ -202,10 +185,6 @@ i8 Card_Term::iOrdinalStreamColNo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  //Stz* szTerm = szGetProperty("szTerm"_Stz);
-
-  //RASSERT(szValue()->bSame(szTerm));
-
   i8 i_Ord = StrLib::iGleanInt(szValue()->azChar());
 
   return i_Ord;
@@ -217,10 +196,6 @@ i8 Card_Term::iOrdinalStreamColNo(void)
 i8 Card_Term::iOrdinalIndexColNo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  //Stz* szTerm = szGetProperty("szTerm"_Stz);
-
-  //RASSERT(szValue()->bSame(szTerm));
 
   i8 i_Ord = StrLib::iGleanInt(szValue()->azChar());
 

@@ -60,8 +60,8 @@ void Resolver::vResolve_columnRef(String* psColumnRef, Stz* szTerm)
     if (! (m_p_stream = _pGetSub_Stream(m_pMainCard)) )
       continue;
 
-    i8 iOrdLo = m_p_stream->iGetProperty(C_CARD_OrdLo);
-    i8 iOrdHi = m_p_stream->iGetProperty(C_CARD_OrdHi);
+    i8 iOrdLo = m_p_stream->iGetProperty(C_PPT_OrdLo);
+    i8 iOrdHi = m_p_stream->iGetProperty(C_PPT_OrdHi);
 
     i8 iOrd = szTerm->iOrdinal() ;
 

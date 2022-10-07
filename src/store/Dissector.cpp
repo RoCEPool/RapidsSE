@@ -287,7 +287,7 @@ Card* Dissector::pCard_Debug(TagSet* pArgTags)
   Stz* szOption = szArgCheckLast(pArgTags,0);
   Card_Debug* pCard_Debug = new Card_Debug;
 
-  pCard_Debug->vAddProperty_stz(C_CARD_DebugOption,szOption);
+  pCard_Debug->vAddProperty_stz(C_PPT_DebugOption,szOption);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -319,7 +319,7 @@ Card* Dissector::pCard_Filter(TagSet* pArgTags)
   }
   else {
     Card_Having* pCard_Having = new Card_Having;
-    pCard_Having->vTransferSubCards(pCard_Filter);
+    pCard_Having->vTransferChildren(pCard_Filter);
     delete pCard_Filter;
   
     delete pCard_RpnTerms;
@@ -340,7 +340,7 @@ Card* Dissector::pCard_Hash(TagSet* pArgTags)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // calcExpr : calculation expression list
 
-  pCard_Hash->vTransferSubCards(pCard_RpnTerms);
+  pCard_Hash->vTransferChildren(pCard_RpnTerms);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -388,7 +388,7 @@ Card* Dissector::pCard_IndexJoin(TagSet* pArgTags)
   // index predicate????
 
   Card_IndexPred* pCard_IndexPred = new Card_IndexPred;
-  pCard_IndexPred->vTransferSubCards(pCard_RpnTerms);
+  pCard_IndexPred->vTransferChildren(pCard_RpnTerms);
   pCard_IndexJoin->vAppend(pCard_IndexPred);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -431,7 +431,7 @@ Card* Dissector::pCard_IndexScan(TagSet* pArgTags)
   // index predicate????
 
   Card_IndexPred* pCard_IndexPred = new Card_IndexPred;
-  pCard_IndexPred->vTransferSubCards(pCard_RpnTerms);
+  pCard_IndexPred->vTransferChildren(pCard_RpnTerms);
   pCard_IndexScan->vAppend(pCard_IndexPred);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -585,7 +585,7 @@ Card* Dissector::pCard_Send(TagSet* pArgTags)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // eSendKind
 
-  pCard_Send->vAddProperty_int(C_CARD_SendKind,eSendKind);
+  pCard_Send->vAddProperty_int(C_PPT_SendKind,eSendKind);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -652,7 +652,7 @@ Card_AggElist* Dissector::pAggElist(Card_RpnTerms* pCard_RpnTerms)
   i8 iCardNo = 0;
 
   Card_Term* pCard_Term_head = pCard_RpnTerms->pPopTerm();
-  RASSERT(pCard_Term_head->bIsSame("AGGREGATES"_Stz));
+  RASSERT(pCard_Term_head->bIsSameValue("AGGREGATES"_Stz));
   delete pCard_Term_head;
 
 
@@ -660,7 +660,7 @@ Card_AggElist* Dissector::pAggElist(Card_RpnTerms* pCard_RpnTerms)
   while ( (pCard_Term_head = pCard_RpnTerms->pHeadTerm()) ) {
     
     // GROUPBY
-    if (pCard_Term_head->bIsSame("GROUPBY"_Stz)) {
+    if (pCard_Term_head->bIsSameValue("GROUPBY"_Stz)) {
       break;
     }
     
@@ -692,7 +692,7 @@ Card_GbyElist* Dissector::pGbyElist(Card_RpnTerms* pCard_RpnTerms)
   
   // GROUPBY
   Card_Term* pCard_Term_head = _pCard_Term(pCard_RpnTerms->pPop());
-  RASSERT(pCard_Term_head->bIsSame("GROUPBY"_Stz));
+  RASSERT(pCard_Term_head->bIsSameValue("GROUPBY"_Stz));
 
   delete pCard_Term_head;
   pCard_Term_head = nullptr;
@@ -701,7 +701,7 @@ Card_GbyElist* Dissector::pGbyElist(Card_RpnTerms* pCard_RpnTerms)
   while ( (pCard_Term_head = pCard_RpnTerms->pHeadTerm()) ) {
 
     // GROUPBY
-    if (pCard_Term_head->bIsSame("AGGREGATES"_Stz)) {
+    if (pCard_Term_head->bIsSameValue("AGGREGATES"_Stz)) {
       break;
     }
 
@@ -813,7 +813,7 @@ Card_Expr* Dissector::pExpr_c(Card_RpnTerms* pCard_RpnTerms)
   // [ AS <as> ]
   Card* pCard_Term_head = pCard_RpnTerms->pHead();
   if (pCard_Term_head
-      && pCard_Term_head->bIsSame("AS"_Stz)) {
+      && pCard_Term_head->bIsSameValue("AS"_Stz)) {
 
     Card_As* pCard_As = pAs(pCard_RpnTerms);
     pCard_Expr->vAppend(pCard_As);
@@ -827,7 +827,7 @@ Card_Expr* Dissector::pExpr_c(Card_RpnTerms* pCard_RpnTerms)
   // [ AS <as> ]
   pCard_Term_head = pCard_RpnTerms->pHead();
   if (pCard_Term_head
-      && pCard_Term_head->bIsSame("AS"_Stz)) {
+      && pCard_Term_head->bIsSameValue("AS"_Stz)) {
 
     Card_As* pCard_As = pAs(pCard_RpnTerms);
     pCard_Expr->vAppend(pCard_As);
@@ -836,8 +836,8 @@ Card_Expr* Dissector::pExpr_c(Card_RpnTerms* pCard_RpnTerms)
   // [ ASC | DESC ]
   pCard_Term_head = pCard_RpnTerms->pHead();
   if (pCard_Term_head
-      && (pCard_Term_head->bIsSame("ASC"_Stz) ||
-          pCard_Term_head->bIsSame("DESC"_Stz))) {
+      && (pCard_Term_head->bIsSameValue("ASC"_Stz) ||
+          pCard_Term_head->bIsSameValue("DESC"_Stz))) {
 
     Card_Direction* pCard_SortDirn = pDirection(pCard_RpnTerms);
     pCard_Expr->vAppend(pCard_SortDirn);
@@ -846,7 +846,7 @@ Card_Expr* Dissector::pExpr_c(Card_RpnTerms* pCard_RpnTerms)
 
 //  pCard_Term_head = pCard_RpnTerms->pHead();
 //  if (pCard_Term_head
-//      && pCard_Term_head->bIsSame("AGGREGATES"_Stz)) {
+//      && pCard_Term_head->bIsSameValue("AGGREGATES"_Stz)) {
 //
 //    Card_Aggregates* pCard_Aggregates = new Card_Aggregates;
 //    pCard_Expr->vAppend(pCard_Aggregates);
@@ -873,15 +873,15 @@ Card_Calc* Dissector::pExprCalc(Card_RpnTerms* pCard_RpnTerms)
   Card_Term* pCard_Term_popped = nullptr;
   while ( (pCard_Term_popped = _pCard_Term(pCard_RpnTerms->pPop())) ) {
 
-    //if (pCard_Term_popped->bIsSame(")"_Stz))
+    //if (pCard_Term_popped->bIsSameValue(")"_Stz))
     //  continue;
     
     if (
-           pCard_Term_popped->bIsSame("AGGREGATES"_Stz)
-        || pCard_Term_popped->bIsSame("AS"_Stz)
-        || pCard_Term_popped->bIsSame("ASC"_Stz)
-        || pCard_Term_popped->bIsSame("DESC"_Stz)
-        || pCard_Term_popped->bIsSame("GROUPBY"_Stz)
+        pCard_Term_popped->bIsSameValue("AGGREGATES"_Stz)
+        || pCard_Term_popped->bIsSameValue("AS"_Stz)
+        || pCard_Term_popped->bIsSameValue("ASC"_Stz)
+        || pCard_Term_popped->bIsSameValue("DESC"_Stz)
+        || pCard_Term_popped->bIsSameValue("GROUPBY"_Stz)
         || pCard_Term_popped->bIsSeparator()
         ) {
       pCard_RpnTerms->vPush(pCard_Term_popped);
@@ -889,7 +889,7 @@ Card_Calc* Dissector::pExprCalc(Card_RpnTerms* pCard_RpnTerms)
     }
 
     if (pCard_Term_popped->bIsAggOp())
-      pCard_ExprCalc->vAddProperty_nameOnly(C_CARD_AggOp);
+      pCard_ExprCalc->vAddProperty_nameOnly(C_PPT_AggOp);
 
     pCard_ExprCalc->vAppend(pCard_Term_popped);
   }
@@ -988,7 +988,7 @@ Card_As* Dissector::pAs(Card_RpnTerms* pCard_RpnTerms)
   
   // AS
   Card_Term* pCard_Term = _pCard_Term(pCard_RpnTerms->pPop());
-  RASSERT(pCard_Term->bIsSame("AS"_Stz));
+  RASSERT(pCard_Term->bIsSameValue("AS"_Stz));
   delete pCard_Term;
   pCard_Term = nullptr;
 

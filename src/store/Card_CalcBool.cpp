@@ -76,7 +76,7 @@ void Card_CalcBool::vRemovePred(Card_PRED* pCard_pred)
       Card* pSiblingCard = pParentCard->pGetChild(0);
       Card* pGrandCard = pFindParent((pParentCard));
       pParentCard->vRemoveSubCard(pSiblingCard);
-      pGrandCard->vReplaceSubCard(pParentCard,pSiblingCard);
+      pGrandCard->vReplaceChild(pParentCard, pSiblingCard);
     }
 
     delete pParentCard;

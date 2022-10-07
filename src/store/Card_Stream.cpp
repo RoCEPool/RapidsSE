@@ -106,8 +106,8 @@ bool Card_Stream::bContainsPred(Card_PRED* pCard_PRED)
     if (! szTerm->bIsOrdinal())
       return true;
 
-    i8 iOrdLo = m_pProperties->iValue(C_CARD_OrdLo);
-    i8 iOrdHi = m_pProperties->iValue(C_CARD_OrdHi);
+    i8 iOrdLo = m_pProperties->iValue(C_PPT_OrdLo);
+    i8 iOrdHi = m_pProperties->iValue(C_PPT_OrdHi);
 
     i8 iOrd = szTerm->iOrdinal();
     if (iOrd > iOrdHi)
@@ -199,13 +199,13 @@ void Card_Stream::vStreamPrint(Ribbon* pRibbon, i8 iDepth)
 
   s32 sName;
 
-  if (m_pProperties && C_UNKNOWN != iGetProperty(C_CARD_OrdLo))
+  if (m_pProperties && C_UNKNOWN != iGetProperty(C_PPT_OrdLo))
     sName.vSprint("%s%lld]%s $%lld,%lld"_Stz
         ,Stz::szDots(iDepth-1)
         ,m_iCardNo
         ,szCardNm()
-        ,iGetProperty(C_CARD_OrdLo)
-        ,iGetProperty(C_CARD_OrdHi)
+        ,iGetProperty(C_PPT_OrdLo)
+        ,iGetProperty(C_PPT_OrdHi)
     );
   else
     sName.vSprint("%s%lld]%s"_Stz

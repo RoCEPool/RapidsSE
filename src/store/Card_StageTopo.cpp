@@ -49,7 +49,7 @@ eYG Card_StageTopo::eStageTopo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  eYG eStageTopo = (eYG)iGetProperty("eStageTopo"_Stz);
+  eYG eStageTopo = (eYG)iGetProperty(C_PPT_StageTopo);
 
   return eStageTopo;
 }
@@ -61,7 +61,7 @@ void Card_StageTopo::vStageTopo(eYG  eStageTopo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vAddProperty_int("eStageTopo"_Stz,eStageTopo);
+  vAddProperty_int(C_PPT_StageTopo,eStageTopo);
 }
 
 

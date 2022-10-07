@@ -86,7 +86,7 @@ Table* Card_TablePtr::pTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Table* pTable = _pTable(pGetProperty(C_CARD_Table));
+  Table* pTable = _pTable(pGetProperty(C_PPT_Table));
 
   return pTable;
 }
@@ -98,7 +98,7 @@ void Card_TablePtr::vTable(Table* pTable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vAddProperty_ptr(C_CARD_Table,pTable);
+  vAddProperty_ptr(C_PPT_Table,pTable);
 }
 
 /*----------------------------------------------------------------------------*/
