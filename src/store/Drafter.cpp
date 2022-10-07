@@ -158,12 +158,12 @@ bool Drafter::bCut(TokenVec* pTknVec, eOA& reOptAct)
     pBoard->vSearch(szCard,pMainCard,pSubCard);
     
     if (pMainCard) {
-      pBoard->pCard_SubSet()->vCutSubCard(pMainCard);
+      pBoard->pCard_Board()->vCutSubCard(pMainCard);
       delete pMainCard; //TEMP
     }
     else
     if (pSubCard) {
-      Card* pParentCard = pBoard->pCard_SubSet()->pFindParent(pSubCard);
+      Card* pParentCard = pBoard->pCard_Board()->pFindParent(pSubCard);
       pParentCard->vCutSubCard(pSubCard);
       
       delete pSubCard; //TEMP

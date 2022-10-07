@@ -138,7 +138,6 @@ namespace STORE
 
     CardRegs*    m_pCardRegs;
 
-    Card_SubSet* m_pCard_SubSet;
     Card_Board*  m_pCard_Board;
 
     b8           m_bBeenCued;
@@ -159,7 +158,7 @@ namespace STORE
     eBK eBoard(void);
     CardCtl* pCardCtl(void);
     CardRegs* pCardRegs(void);
-    Card_SubSet* pCard_SubSet(void);
+    Card_Board* pCard_Board(void);
 
     void vClear(void);
 

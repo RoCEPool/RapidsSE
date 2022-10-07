@@ -137,7 +137,7 @@ void Dissector::vStage(i8 i_StageSpec)
   Card_StageTopo* pCard_StageTopo = new Card_StageTopo(eStageTopo);
   pCard_Stage->vAppend(pCard_StageTopo);
   
-  m_pBoard->pCard_SubSet()->vAppend(pCard_Stage);
+  m_pBoard->pCard_Board()->vAppend(pCard_Stage);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -191,7 +191,7 @@ void Dissector::vOp(i8 i_OpSpec)
   }
   
   if (pCard)
-    m_pBoard->pCard_SubSet()->vAppend(pCard);
+    m_pBoard->pCard_Board()->vAppend(pCard);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -1388,7 +1388,7 @@ void Weaver::vWeaveOptStmt(Board* pBoard)
   
   //vTrace("Build Pipeline\n"_Stz);
 
-  ListExoIter2_t<Card>* pBoard_I = m_pBoard->pCard_SubSet()->pNewIter();
+  ListExoIter2_t<Card>* pBoard_I = m_pBoard->pCard_Board()->pNewIter();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
