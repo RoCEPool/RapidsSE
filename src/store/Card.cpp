@@ -376,38 +376,6 @@ i8 Card::nChildCards(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get column ordinal of column ref                                           */
-/*----------------------------------------------------------------------------*/
-i8 Card::iColumnRef_columnOrd(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Stz* szColumnRef = this->sz();
-
-  char* azColumnOrd = (szColumnRef->azChar() + 3);
-
-  i8 iColumnOrd = StrLib::iGleanInt(azColumnOrd);
-
-  return iColumnOrd;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get table syn of column ref                                                */
-/*----------------------------------------------------------------------------*/
-char Card::cColumnRef_tableSyn(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Stz* szColumnRef = this->sz();
-
-  char cFirst  = szColumnRef->azChar()[0]; // $
-  char cSecond = szColumnRef->azChar()[1]; // $
-  char cThird  = szColumnRef->azChar()[2]; // c
-
-  return cThird;
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card::vCutSubCard(Card* pSubCard)
@@ -1698,72 +1666,6 @@ void Card::vClearAllMarks(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get column                                                                 */
-/*----------------------------------------------------------------------------*/
-Column* Card::pColumn(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-    
-  Column* pColumn = _pColumn(pGetProperty("pColumn"_Stz));
-
-  return pColumn;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set column                                                                */
-/*----------------------------------------------------------------------------*/
-void Card::vColumn(Column* pColumn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  vAddProperty_ptr("pColumn"_Stz,pColumn);
-}
-
-/*----------------------------------------------------------------------------*/
-/* return column 1                                                            */
-/*----------------------------------------------------------------------------*/
-Column* Card::pColumn1(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-    
-  Column* pColumn1 = _pColumn(pGetProperty("pColumn1"_Stz));
-
-  return pColumn1;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set column 1                                                               */
-/*----------------------------------------------------------------------------*/
-void Card::vColumn1(Column* pColumn1)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  vAddProperty_ptr("pColumn1"_Stz,pColumn1);
-}
-
-/*----------------------------------------------------------------------------*/
-/* return column 2                                                            */
-/*----------------------------------------------------------------------------*/
-Column* Card::pColumn2(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  Column* pColumn2 = _pColumn(pGetProperty("pColumn2"_Stz));
-
-  return pColumn2;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set column 2                                                               */
-/*----------------------------------------------------------------------------*/
-void Card::vColumn2(Column* pColumn2)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  vAddProperty_ptr("pColumn2"_Stz,pColumn2);
-}
-
-/*----------------------------------------------------------------------------*/
 /* concat terms                                                               */
 /*----------------------------------------------------------------------------*/
 void Card::vConcatTerms(Stz* szTerms)
@@ -1846,26 +1748,6 @@ bool Card::bIsCard(eCK eCard)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (eCard == this->eCard())
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is atom a column ordinal?                                                  */
-/*----------------------------------------------------------------------------*/
-bool Card::bIsColumnRef(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Stz* szColumnRef = this->sz();
-
-  char cFirst  = szColumnRef->azChar()[0];
-  char cSecond = szColumnRef->azChar()[1];
-  char cThird  = szColumnRef->azChar()[2];
-  char cFourth = szColumnRef->azChar()[3];
-
-  if ('$' == cFirst && '$' == cSecond && '.' == cFourth)
     return true;
   else
     return false;

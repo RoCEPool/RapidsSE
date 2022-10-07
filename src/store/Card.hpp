@@ -215,19 +215,11 @@ namespace STORE
     i8   iCardNo(void);
     void vCardNo(i8 iCardNo);
     i8   nChildCards(void);
-    i8   iColumnRef_columnOrd(void);
-    char cColumnRef_tableSyn(void);
     void vCutSubCard(Card* pSubCard);
 
     Card* pCard(void);
     void vCard(Card* pCard);
     void vClearAllMarks(void);
-    Column* pColumn(void);
-    void vColumn(Column* pColumn);
-    Column* pColumn1(void);
-    void vColumn1(Column* pColumn1);
-    Column* pColumn2(void);
-    void vColumn2(Column* pColumn2);
     void vConcatTerms(Stz* szTerms);
     void vConcatTerms(Stz* szTerms, i8 i_From, i8 i_Till=C_UNKNOWN);
 
@@ -273,7 +265,6 @@ namespace STORE
     void vIndex(Index* pIndex);
     bool bIsAggOp(void);
     bool bIsCard(eCK eCard);
-    bool bIsColumnRef(void);
     bool bIsPred(void);
     bool bIsSame(Stz* szArg);
     bool bIsSeparator(void);
