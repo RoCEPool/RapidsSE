@@ -114,7 +114,6 @@
 #include "StageSpec.hpp"
 #include "OpSpec.hpp"
 
-#include "CardRegs.hpp"
 
 namespace STORE
 {

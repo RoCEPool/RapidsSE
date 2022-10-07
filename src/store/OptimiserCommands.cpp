@@ -6,7 +6,6 @@
 
 #include "OptimiserCatalog.hpp"
 #include "Dynamo.hpp"
-#include "CardRegs.hpp"
 
 extern OptimiserCatalog gxOptimiserCatalog;
 
