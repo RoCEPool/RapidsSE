@@ -11,10 +11,6 @@ namespace STORE
 {
   bool bOpt_clear   (Optimiser* pOpt, TokenVec* pTknVec, eOA& reAction);
 
-  bool bOpt_cmp     (Optimiser* pOpt, TokenVec* pTknVec, eOA& reAction);
-
-  bool bOpt_cut     (Optimiser* pOpt, TokenVec* pTknVec, eOA& reAction);
-
   bool bOpt_help    (Optimiser* pOpt, TokenVec* pTknVec, eOA& reAction);
 
   bool bOpt_load    (Optimiser* pOpt, TokenVec* pTknVec, eOA& reAction);

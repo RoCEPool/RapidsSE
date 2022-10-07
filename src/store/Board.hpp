@@ -136,8 +136,6 @@ namespace STORE
 
     b8           m_bBeenCued;
 
-    CardRegs*    m_pCardRegs;
-
   private:
     // must be last
     Footer m_xFooter;
@@ -153,7 +151,6 @@ namespace STORE
 
     eBK eBoard(void);
     CardCtl* pCardCtl(void);
-    CardRegs* pCardRegs(void);
     Card_Board* pCard_Board(void);
 
     void vClear(void);
@@ -194,22 +191,17 @@ namespace STORE
 
     void vRenumberMainCards(void);
 
-    Card* pSearch(Stz* szCardNm);
-    void vSearch(Stz* szCardNm, Card*& rpMainCard, Card*& rpSubCard);
-
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
-    void vRankCandIndex(Card_CandIndex* pCard_CandIndex);
-
-    void vResolveFilter              (Card_Filter*  pCard_Filter);
-    void vResolveJoin                (Card_AbsJoin* pCard_AbsJoin);
-    void vResolveJoin2               (Card_AbsJoin* pCard_AbsJoin);
-    void vResolveJoin3               (Card_IndexJoin* pCard_IndexJoin);
-    void vAResolveJoin               (Card_IndexJoin* pCard_IndexJoin);
-    void vConvertJoin                (Card_AbsJoin* pCard_AbsJoin);
-    void vResolveRecursive           (Card*         pAnyCard);
-    void vResolveTerm                (Card_Term*    pCard_Term);
+//    void vRankCandIndex(Card_CandIndex* pCard_CandIndex);
+//
+//    void vResolveFilter              (Card_Filter*  pCard_Filter);
+//    void vResolveJoin                (Card_AbsJoin* pCard_AbsJoin);
+//    void vResolveJoin2               (Card_AbsJoin* pCard_AbsJoin);
+//    void vResolveJoin3               (Card_IndexJoin* pCard_IndexJoin);
+//    void vAResolveJoin               (Card_IndexJoin* pCard_IndexJoin);
+//    void vConvertJoin                (Card_AbsJoin* pCard_AbsJoin);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 

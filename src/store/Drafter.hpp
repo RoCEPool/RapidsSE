@@ -26,8 +26,6 @@ namespace STORE
     static void vRepair(Object* pObject);
 
     bool bClear   (TokenVec* pTknVec, eOA& reOptAct);
-    bool bCmp     (TokenVec* pTknVec, eOA& reOptAct);
-    bool bCut     (TokenVec* pTknVec, eOA& reOptAct);
 
     bool bLoad    (TokenVec* pTknVec, eOA& reOptAct);
 

@@ -268,52 +268,16 @@ void Optimiser::vTransform(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
-
-
   Job* pJob = MY::pJob();
   TagSet* pJobTags = pJob->pJobTags();
   bool bInteractive = pJobTags->bHasName("<interactive>"_Stz);
 
   Board* pBoard = m_pBench->pHead();
-  CardRegs* pCardRegs = pBoard->pCardRegs();
 
   if (bInteractive)
     pBoard->vPrintBoard("vDissectSpec"_Stz);
 
   m_pTransformer->vTransform();
-
-//  pBoard->vSimplify_Initial();
-//  if (bInteractive)
-//    pBoard->vPrintBoard("vSimplify_Initial >> "_Stz);
-
-/*
-  pBoard->vConvert_Joins();
-  if (bInteractive)
-    pBoard->vPrintBoard("vConvert_Joins >> "_Stz);
-
-  pBoard->vResolve_Symbols();
-  if (bInteractive)
-    pBoard->vPrintBoard("vResolve_Symbols >> "_Stz);
-
-  pBoard->vResolve_Filters();
-  if (bInteractive)
-    pBoard->vPrintBoard("vResolve_Filters >> "_Stz);
-
-  pBoard->vResolve_Joins3();
-  if (bInteractive)
-    pBoard->vPrintBoard("vResolve_Joins3 >> "_Stz);
-*/
-
-//
-//  // rules
-//
-//  if (pBoard->bMay_Scan_Filter_to_IndexScan()) {
-//
-//    bool bRun = pBoard->bRule_Scan_Filter_to_IndexScan();
-//    UNUSED(bRun);
-//
-//    pCardRegs->vResetCardRegs();
-//  }
 
   if (bInteractive) {
     m_pWeaver->vWeaveOptStmt(pBoard);

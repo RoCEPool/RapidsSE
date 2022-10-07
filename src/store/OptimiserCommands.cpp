@@ -34,52 +34,6 @@ OptimiserFun __Opt_clear
 );
 
 /*----------------------------------------------------------------------------*/
-/* drafter: compare cards                                                     */
-/*----------------------------------------------------------------------------*/
-bool STORE::bOpt_cmp(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
-{
-  vTrace("bOpt_cut\n"_Stz);
-
-  Drafter* pDrafter = pOptimiser->pDrafter();
-  bool bResult = pDrafter->bCmp(pTknVec,reOptAct);
-  return bResult;
-}
-
-OptimiserFun __Opt_cmp
-(
-  "cmp"_Stz,          // name of the prompt function
-  "cmp"_Stz,          // command first word
-  nullptr,            // command second word
-  bOpt_cmp,           // function to call
-  0,0,                // spare
-  "compare cards"_Stz,
-  "usage???"_Stz
-);
-
-/*----------------------------------------------------------------------------*/
-/* drafter: cut card                                                          */
-/*----------------------------------------------------------------------------*/
-bool STORE::bOpt_cut(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
-{
-  vTrace("bOpt_cut\n"_Stz);
-  
-  Drafter* pDrafter = pOptimiser->pDrafter();
-  bool bResult = pDrafter->bCut(pTknVec,reOptAct);
-  return bResult;
-}
-
-OptimiserFun __Opt_cut
-(
-  "cut"_Stz,          // name of the prompt function
-  "cut"_Stz,          // command first word
-  nullptr,            // command second word
-  bOpt_cut,           // function to call
-  0,0,                // spare
-  "cut card"_Stz,
-  "usage???"_Stz
-);
-
-/*----------------------------------------------------------------------------*/
 /* help                                                                       */
 /*----------------------------------------------------------------------------*/
 bool STORE::bOpt_help(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)

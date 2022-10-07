@@ -37,8 +37,6 @@ Board::Board(eBK eBoard, eBT eBoardType, Bench* pBench)
   m_pBench       = pBench;
 
   m_pOptimiser   = m_pBench->pOptimiser();
-   
-  m_pCardRegs    = new CardRegs;
 
   m_pCard_Board  = new Card_Board;
 
@@ -57,8 +55,6 @@ Board::Board(eBK eBoard, eBT eBoardType, Bench* pBench)
 Board::~Board(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-  
-  delete m_pCardRegs;
 
   if (BT_VIEW == m_eBoardType) {
     m_pCard_Board->vRemoveAll();
@@ -107,16 +103,6 @@ CardCtl* Board::pCardCtl(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get card registers                                                         */
-/*----------------------------------------------------------------------------*/
-CardRegs* Board::pCardRegs(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-  
-  return m_pCardRegs;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get card subSet                                                            */
 /*----------------------------------------------------------------------------*/
 Card_Board* Board::pCard_Board(void)
@@ -132,9 +118,7 @@ Card_Board* Board::pCard_Board(void)
 void Board::vClear(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-  
-  m_pCardRegs->vResetCardRegs();
-  
+
   vDeleteAllCards();
 }
 
@@ -734,53 +718,6 @@ void Board::vRenumberMainCards(void)
   delete pMainCard_I;
 }
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card* Board::pSearch(Stz* szCardNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-  
-  Card* pCard = nullptr;
-  if (szCardNm->bIsInteger()) {
-    i8 i_Main = szCardNm->iToI8();
-    pCard = pGetMain(i_Main);
-    
-    return pCard;
-  }
-
-  pCard = pFindMain(szCardNm);
-  if (pCard)
-    return pCard;
-  
-  eCK eCard = Card::eToECard(szCardNm);
-  pCard = m_pCardRegs->pSearchReg(eCard);
-
-  return pCard;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vSearch(Stz* szCardNm, Card*& rpMainCard, Card*& rpSubCard)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-  
-  if (szCardNm->bIsInteger()) {
-    i8 i_Main = szCardNm->iToI8();
-    rpMainCard = pGetMain(i_Main);
-    
-    return;
-  }
-
-  rpMainCard = pFindMain(szCardNm);
-  if (rpMainCard)
-    return;
-  
-  eCK eCard = Card::eToECard(szCardNm);
-  rpSubCard = m_pCardRegs->pSearchReg(eCard);
-}
-
 
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
@@ -790,520 +727,248 @@ void Board::vSearch(Stz* szCardNm, Card*& rpMainCard, Card*& rpSubCard)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vRankCandIndex(Card_CandIndex* pCard_CandIndex)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-  
-  Card_Filter* pReg_Filter = _pCard_Filter(m_pCardRegs->pCardReg(CK_FILTER));
-  
-  RASSERT(pReg_Filter);
-  
-  i8 iRank = 0;
-  bool bEBound = false;
-  bool bLBound = false;
-  bool bUBound = false;
-
-  Index* pIndex = pCard_CandIndex->pFindSubCard(CK_INDEXPTR)->pIndex();
-  
-  if (pReg_Filter->bHasBounds(pIndex)) {
-  
-    if (pReg_Filter->pFindBound(pIndex,PB_EBOUND)) {
-      bEBound = true;
-      pCard_CandIndex->vHasEBound(true);
-    }
-    
-    if (pReg_Filter->pFindBound(pIndex,PB_LBOUND)) {
-      bLBound = true;
-      pCard_CandIndex->vHasLBound(true);
-    }
-    
-    if (pReg_Filter->pFindBound(pIndex,PB_UBOUND)) {
-      bUBound = true;
-      pCard_CandIndex->vHasUBound(true);
-    }
-  }
-
-  if (bEBound)
-    iRank = 3;
-  else
-  if (bLBound && bUBound)
-    iRank = 2;
-  else
-  if (bLBound || bUBound)
-    iRank = 1;
-
-  pCard_CandIndex->vRank(iRank);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vResolveFilter(Card_Filter* pCard_Filter)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
-
-  RASSERT(1 == pCard_Filter->nChildCards());
-
-  Card_Expr* pCard_Expr = _pCard_Expr(pCard_Filter->pGet(0));
-  RASSERT(2 == pCard_Expr->nChildCards());
-
-  Card_Type* pCard_Type = _pCard_Type(pCard_Expr->pGet(0));
-  Card_Calc* pCard_Calc = _pCard_Calc(pCard_Expr->pGet(1));
-
-  Card_CalcBool* pCard_CalcBool = pTo_CalcBool(pCard_Calc);
-
-  pCard_Expr->vRemove(pCard_Calc);
-  delete pCard_Calc;
-  pCard_Expr->vAppend(pCard_CalcBool);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vResolveJoin(Card_AbsJoin* pCard_AbsJoin)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
-
-  Card_Scan* pCard_Scan = _pCard_Scan(pGetMain(pCard_AbsJoin->iCardNo() - 1));
-  Card_TablePtr* pCard_TablePtr = _pCard_TablePtr(pCard_Scan->pFindSubCard(CK_TABLEPTR));
-  Table* pTable = pCard_TablePtr->pTable();
-
-  Index* pIndex = pTable->pIdxVec()->pGet(0);
-
-  Card_IndexJoin* pIndexJoin = new Card_IndexJoin;
-  pIndexJoin->vAppend(new Card_TablePtr(pTable));
-  pIndexJoin->vAppend(new Card_IndexPtr(pIndex));
-
-  Card_Filter* pCard_Filter = _pCard_Filter(pGetMain(pCard_AbsJoin->iCardNo() + 3));
-  pCard_Filter->vDump();
-
-  Card_IndexPred* pCard_IndexPred = new Card_IndexPred;
-  pIndexJoin->vAppend(pCard_IndexPred);
-
-  pCard_IndexPred->vAppend(new Card_Term("BOUND"_Stz));
-  pCard_IndexPred->vAppend(new Card_Term("$I1"_Stz));
-  pCard_IndexPred->vAppend(new Card_Term("$L1"_Stz));
-  pCard_IndexPred->vAppend(new Card_Term("=="_Stz));
-
-  m_pCard_Board->vInsertAfter(pIndexJoin,pCard_AbsJoin);
-
-  Card_Combined* pCard_Combine = new Card_Combined;
-  m_pCard_Board->vInsertAfter(pCard_Combine,pIndexJoin);
-
-
-  // temp hack
-
-  Card_Stage* pCard_Stage_next =
-    _pCard_Stage(pFindNextMain(pIndexJoin,CK_STAGE));
-  if (! pCard_Stage_next)
-    return;
-
-  Card_Stage* pCard_Stage_following =
-    _pCard_Stage(pFindNextMain(pCard_Stage_next,CK_STAGE));
-
-  vDeleteFromTill(pCard_Stage_next,pCard_Stage_following);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vResolveJoin2(Card_AbsJoin* pCard_AbsJoin)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
-
-  Card_Scan* pCard_Scan = _pCard_Scan(pGetMain(pCard_AbsJoin->iCardNo() - 1));
-  Card_TablePtr* pCard_TablePtr = _pCard_TablePtr(pCard_Scan->pFindSubCard(CK_TABLEPTR));
-  Table* pTable = pCard_TablePtr->pTable();
-
-  Index* pIndex = pTable->pIdxVec()->pGet(0);
-
-  Card_IndexJoin* pIndexJoin = new Card_IndexJoin;
-  pIndexJoin->vAppend(new Card_TablePtr(pTable));
-  pIndexJoin->vAppend(new Card_IndexPtr(pIndex));
-
-  Card_Filter* pCard_Filter = _pCard_Filter(pGetMain(pCard_AbsJoin->iCardNo() + 3));
-  //pCard_Filter->vDump();
-
-  Card_Expr* pCard_Expr = _pCard_Expr(pCard_Filter->pGetChild(0));
-
-  Card_Type* pCard_Type = _pCard_Type(pCard_Expr->pGetChild(0));
-  Card_CalcBool* pCard_CalcBool = _pCard_CalcBool(pCard_Expr->pGetChild(1));
-  Card_PredCmp* pCard_PredCmp = _pCard_PredCmp(pCard_CalcBool->pGetChild(0));
-
-  Card_IndexPred* pCard_IndexPred = pTo_IndexPred(pCard_PredCmp,nullptr);
-  pIndexJoin->vAppend(pCard_IndexPred);
-
-  m_pCard_Board->vInsertAfter(pIndexJoin,pCard_AbsJoin);
-
-  Card_Combined* pCard_Combine = new Card_Combined;
-  m_pCard_Board->vInsertAfter(pCard_Combine,pIndexJoin);
-
-  //delete pCard_PredCmp;
-
-  // temp hack
-
-  Card_Stage* pCard_Stage_next =
-          _pCard_Stage(pFindNextMain(pIndexJoin,CK_STAGE));
-  if (! pCard_Stage_next)
-    return;
-
-  Card_Stage* pCard_Stage_following =
-          _pCard_Stage(pFindNextMain(pCard_Stage_next,CK_STAGE));
-
-  vDeleteFromTill(pCard_Stage_next,pCard_Stage_following);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vResolveJoin3(Card_IndexJoin* pCard_IndexJoin)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
-
-  Card_Filter* pCard_Filter =
-    _pCard_Filter(pFindNextMain(pCard_IndexJoin, CK_FILTER));
-
-  Card_Expr* pCard_Expr = _pCard_Expr(pCard_Filter->pGetChild(0));
-
-  Card_Type* pCard_Type = _pCard_Type(pCard_Expr->pGetChild(0));
-  Card_CalcBool* pCard_CalcBool = _pCard_CalcBool(pCard_Expr->pGetChild(1));
-  Card_PredCmp* pCard_PredCmp = _pCard_PredCmp(pCard_CalcBool->pGetChild(0));
-
-  Card_MapSet* pCard_MapSet = _pCard_MapSet(pCard_IndexJoin->pFindSubCard(CK_MAPSET));
-  Card_IndexPred* pCard_IndexPred = pTo_IndexPred(pCard_PredCmp,pCard_MapSet);
-  Card_IndexPtr* pCard_IndexPtr = _pCard_IndexPtr(pCard_IndexJoin->pFindSubCard(CK_INDEXPTR));
-  pCard_IndexJoin->vInsertAfter(pCard_IndexPred, pCard_IndexPtr);
-
-  Card_Combined* pCard_Combine = new Card_Combined;
-  m_pCard_Board->vInsertAfter(pCard_Combine,pCard_IndexJoin);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vAResolveJoin(Card_IndexJoin* pCard_IndexJoin)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
-
-  // indexJoin
-  // .0){table}
-  // .1){index}
-  // .2)indexPred
-  // ..0)term BOUND
-  // ..1)term COL -> $K1
-  // ..2)term COL -> $1
-  // ..3)term ==
-
-  Card_IndexPred* pCard_IndexPred =
-    _pCard_IndexPred(pCard_IndexJoin->pFindSubCard(CK_INDEXPRED));
-
-  Card_Term* pCard_key =
-    _pCard_Term(pCard_IndexJoin->pGetChild(1));
-
-  Card_Term* pCard_col =
-    _pCard_Term(pCard_IndexJoin->pGetChild(2));
-
-
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vConvertJoin(Card_AbsJoin* pCard_AbsJoin)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
-
-  m_pCard_Board->vRemove(pCard_AbsJoin);
-
-  Card_Scan* pCard_Scan = _pCard_Scan(pGetMain(pCard_AbsJoin->iCardNo() - 1));
-  Card_TablePtr* pCard_TablePtr = _pCard_TablePtr(pCard_Scan->pFindSubCard(CK_TABLEPTR));
-  Table* pTable = pCard_TablePtr->pTable();
-
-
-  Card_IndexJoin* pIndexJoin = new Card_IndexJoin;
-  pIndexJoin->vAppend(new Card_TablePtr(pTable));
-
-  // TODO:
-  Index* pIndex = pTable->pIdxVec()->pGet(0);
-  pIndexJoin->vAppend(new Card_IndexPtr(pIndex));
-
-  m_pCard_Board->vInsertAfter(pIndexJoin,pCard_Scan);
-
-  m_pCard_Board->vRemove(pCard_Scan);
-  delete pCard_Scan;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vResolveRecursive(Card* pAnyCard) // recursive
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
-
-  eCK eCard = pAnyCard->eCard();
-
-  //
-  // leaves
-  //
-
-  if (CK_INDEXPTR == eCard) {
-    m_pCard_Board->vIndex(pAnyCard->pIndex());
-    return;
-  }
-
-  if (CK_STREAM == eCard) {
-    m_pCardRegs->vCardReg(CK_STREAM, pAnyCard);
-    return;
-  }
-
-  if (CK_TABLEPTR == eCard) {
-    m_pCard_Board->vTable(pAnyCard->pTable());
-    return;
-  }
-
-  if (CK_TERM == eCard) {
-    vResolveTerm(_pCard_Term(pAnyCard));
-    return;
-  }
-
-
-  //
-  // subcards first
-  //
-
-  //pCard->vDump();
-
-  i8 nSubCards = pAnyCard->nChildCards();
-  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card *pSubCard = pAnyCard->pGetChild(i_Child);
-    vResolveRecursive(pSubCard);
-  }
-
-  //
-  // this card
-  //
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // aggElist
-
-  i8 i_Child;
-  Card_AggElist *pCard_AggElist = _pCard_AggElist(pAnyCard->pFindChild(CK_AGGELIST, i_Child));
-  if (pCard_AggElist) {
-
-    Card_Stream *pCard_Stream = new Card_Stream;
-    pAnyCard->vAppend(pCard_Stream);
-
-    m_pCardRegs->vCardReg(CK_STREAM, pCard_Stream);
-
-    Card_StreamColList *pCard_StreamColList = new Card_StreamColList(pCard_AggElist);
-    pCard_Stream->vAppend(pCard_StreamColList);
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // projElist
-
-  // derive the stream definition for projection
-  Card_ProjElist *pCard_ProjElist = _pCard_ProjElist(pAnyCard->pFindChild(CK_PROJELIST));
-  if (pCard_ProjElist) {
-
-    Card_Stream *pCard_Stream = new Card_Stream;
-    pAnyCard->vAppend(pCard_Stream);
-
-    m_pCardRegs->vCardReg(CK_STREAM, pCard_Stream);
-
-    Card_StreamColList *pCard_StreamColList = pCard_ProjElist->pDerive_StreamColList();
-    pCard_Stream->vAppend(pCard_StreamColList);
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-//  pCard_Index = _pCard_Index(pAnyCard->pFindChild(CK_INDEXPTR));
-//  if (pCard_Index) {
-//    Index* pIndex = pCard_Index->pIndex();
-//    m_pCard_Board->vAppend_index(pIndex);
+//void Board::vRankCandIndex(Card_CandIndex* pCard_CandIndex)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+//
+//  Card_Filter* pReg_Filter = _pCard_Filter(m_pCardRegs->pCardReg(CK_FILTER));
+//
+//  RASSERT(pReg_Filter);
+//
+//  i8 iRank = 0;
+//  bool bEBound = false;
+//  bool bLBound = false;
+//  bool bUBound = false;
+//
+//  Index* pIndex = pCard_CandIndex->pFindSubCard(CK_INDEXPTR)->pIndex();
+//
+//  if (pReg_Filter->bHasBounds(pIndex)) {
+//
+//    if (pReg_Filter->pFindBound(pIndex,PB_EBOUND)) {
+//      bEBound = true;
+//      pCard_CandIndex->vHasEBound(true);
+//    }
+//
+//    if (pReg_Filter->pFindBound(pIndex,PB_LBOUND)) {
+//      bLBound = true;
+//      pCard_CandIndex->vHasLBound(true);
+//    }
+//
+//    if (pReg_Filter->pFindBound(pIndex,PB_UBOUND)) {
+//      bUBound = true;
+//      pCard_CandIndex->vHasUBound(true);
+//    }
 //  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // scan
-
-  if (CK_SCAN == eCard) {
-    Card_TablePtr *pCard_TablePtr = _pCard_TablePtr(pAnyCard->pFindChild(CK_TABLEPTR));
-    if (pCard_TablePtr) {
-
-      StreamDef *pStreamDef = pCard_TablePtr->pTable()->pStreamDef();
-
-      Card_Stream *pCard_Stream = new Card_Stream;
-      pAnyCard->vAppend(pCard_Stream);
-
-      m_pCardRegs->vCardReg(CK_STREAM, pCard_Stream);
-
-      Card_StreamColList *pCard_StreamColList = new Card_StreamColList(pStreamDef);
-      pCard_Stream->vAppend(pCard_StreamColList);
-    }
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // check type and as for expr
-
-  if (CK_EXPR == eCard) {
-    Card_Expr *pCard_Expr = _pCard_Expr(pAnyCard);
-
-    Card_As   *pCard_As   = _pCard_As (pCard_Expr->pFindChild(CK_AS));
-    Card_Type *pCard_Type = _pCard_Type(pCard_Expr->pFindChild(CK_TYPE));
-
-    if (pCard_As && pCard_Type) {
-      pCard_Expr->vRemove(pCard_As);
-      pCard_Expr->vInsertAfter(pCard_As,pCard_Type);
-    }
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // absJoin
-
-  if (CK_ABSJOIN == eCard) {
-    Card_AbsJoin* pCard_AbsJoin = _pCard_AbsJoin(pAnyCard);
-
-    Card* pPriorMain;
-    Card_Stream* pCard_StreamB = _pCard_Stream(pPriorSubCard(pPriorMain,
-                                                             CK_STREAM,
-                                                             pCard_AbsJoin->iCardNo()));
-    if (pCard_StreamB) {
-      Card_Stream* pCard_StreamA = _pCard_Stream(pPriorSubCard(pPriorMain,
-                                                               CK_STREAM,
-                                                               pPriorMain->iCardNo()));
-
-      if (pCard_StreamA) {
-        Card_StreamColList* pCard_StreamColListA =
-                _pCard_StreamColList(pCard_StreamA->pFindSubCard(CK_STREAMCOLLIST));
-        Card_StreamColList* pCard_StreamColListB =
-                _pCard_StreamColList(pCard_StreamB->pFindSubCard(CK_STREAMCOLLIST));
-
-        Card_Stream *pCard_Stream = new Card_Stream;
-        pAnyCard->vAppend(pCard_Stream);
-        m_pCardRegs->vCardReg(CK_STREAM, pCard_Stream);
-
-        Card_StreamColList* pCard_StreamColList = new Card_StreamColList;
-        pCard_Stream->vAppend(pCard_StreamColList);
-
-        //pCard_StreamColList->vAppend(pCard_StreamColListA->pDupSubCards());
-        //pCard_StreamColList->vAppend(pCard_StreamColListB->pDupSubCards());
-
-        pCard_StreamColList->vAppendDupSubCards(pCard_StreamColListA);
-        pCard_StreamColList->vAppendDupSubCards(pCard_StreamColListB);
-
-        pCard_StreamColListA->vDump();
-        pCard_StreamColListB->vDump();
-        pCard_Stream->vDump();
-        vDebugPoint();
-      }
-    }
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // indexJoin
-
-  if (CK_INDEXJOIN == eCard) {
-    Card_IndexJoin *pCard_IndexJoin = _pCard_IndexJoin(pAnyCard);
-
-    Card* pCard_mainPrior;
-    Card_Stream* pCard_Stream_prior = _pCard_Stream(pPriorSubCard(pCard_mainPrior,
-                                                                   CK_STREAM,
-                                                                pCard_IndexJoin->iCardNo()));
-
-    if (pCard_Stream_prior) {
-      Card_StreamColList *pCard_StreamColList_prior =
-              _pCard_StreamColList(pCard_Stream_prior->pFindSubCard(CK_STREAMCOLLIST));
-
-      Card_Stream *pCard_Stream_join = new Card_Stream;
-      m_pCardRegs->vCardReg(CK_STREAM, pCard_Stream_join);
-
-      pAnyCard->vAppend(pCard_Stream_join);
-      m_pCardRegs->vCardReg(CK_STREAM, pCard_Stream_join);
-
-      Card_StreamColList* pCard_StreamColList_join = new Card_StreamColList;
-
-      pCard_StreamColList_join->vAppendDupSubCards(pCard_StreamColList_prior);
-
-      pCard_Stream_join->vAppend(pCard_StreamColList_join);
-
-
-
-      Card_TablePtr *pCard_TablePtr_right = _pCard_TablePtr(pAnyCard->pFindChild(CK_TABLEPTR));
-      if (pCard_TablePtr_right) {
-
-        Table* pTable = pCard_TablePtr_right->pTable();
-        Index* pIndex = pTable->pIdxVec()->pGet(0); // HACK!
-
-        StreamDef *pStreamDef_right = pTable->pStreamDef();
-
-
-        Card_StreamColList *pCard_StreamColList_right =
-          new Card_StreamColList(pStreamDef_right);
-
-        pCard_StreamColList_right->vPrependToAs("J1_"_Stz);
-
-        pCard_StreamColList_join->vAppendDupSubCards(pCard_StreamColList_right);
-        delete pCard_StreamColList_right;
-
-        Card_MapSet* pCard_MapSet = new Card_MapSet(pIndex,"J1_"_Stz);
-        pCard_IndexJoin->vAppend(pCard_MapSet);
-      }
-
-    }
-
-  }
-
-}
+//
+//  if (bEBound)
+//    iRank = 3;
+//  else
+//  if (bLBound && bUBound)
+//    iRank = 2;
+//  else
+//  if (bLBound || bUBound)
+//    iRank = 1;
+//
+//  pCard_CandIndex->vRank(iRank);
+//}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vResolveTerm(Card_Term* pCard_Term)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-  
-  
-  Card_Stream* pReg_Stream = _pCard_Stream(m_pCardRegs->pCardReg(CK_STREAM));
+//void Board::vResolveFilter(Card_Filter* pCard_Filter)
+//{
+//  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
+//
+//  RASSERT(1 == pCard_Filter->nChildCards());
+//
+//  Card_Expr* pCard_Expr = _pCard_Expr(pCard_Filter->pGet(0));
+//  RASSERT(2 == pCard_Expr->nChildCards());
+//
+//  Card_Type* pCard_Type = _pCard_Type(pCard_Expr->pGet(0));
+//  Card_Calc* pCard_Calc = _pCard_Calc(pCard_Expr->pGet(1));
+//
+//  Card_CalcBool* pCard_CalcBool = pTo_CalcBool(pCard_Calc);
+//
+//  pCard_Expr->vRemove(pCard_Calc);
+//  delete pCard_Calc;
+//  pCard_Expr->vAppend(pCard_CalcBool);
+//}
 
-  if (pCard_Term->bIsOrdinalStreamTerm()) {
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+//void Board::vResolveJoin(Card_AbsJoin* pCard_AbsJoin)
+//{
+//  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
+//
+//  Card_Scan* pCard_Scan = _pCard_Scan(pGetMain(pCard_AbsJoin->iCardNo() - 1));
+//  Card_TablePtr* pCard_TablePtr = _pCard_TablePtr(pCard_Scan->pFindSubCard(CK_TABLEPTR));
+//  Table* pTable = pCard_TablePtr->pTable();
+//
+//  Index* pIndex = pTable->pIdxVec()->pGet(0);
+//
+//  Card_IndexJoin* pIndexJoin = new Card_IndexJoin;
+//  pIndexJoin->vAppend(new Card_TablePtr(pTable));
+//  pIndexJoin->vAppend(new Card_IndexPtr(pIndex));
+//
+//  Card_Filter* pCard_Filter = _pCard_Filter(pGetMain(pCard_AbsJoin->iCardNo() + 3));
+//  pCard_Filter->vDump();
+//
+//  Card_IndexPred* pCard_IndexPred = new Card_IndexPred;
+//  pIndexJoin->vAppend(pCard_IndexPred);
+//
+//  pCard_IndexPred->vAppend(new Card_Term("BOUND"_Stz));
+//  pCard_IndexPred->vAppend(new Card_Term("$I1"_Stz));
+//  pCard_IndexPred->vAppend(new Card_Term("$L1"_Stz));
+//  pCard_IndexPred->vAppend(new Card_Term("=="_Stz));
+//
+//  m_pCard_Board->vInsertAfter(pIndexJoin,pCard_AbsJoin);
+//
+//  Card_Combined* pCard_Combine = new Card_Combined;
+//  m_pCard_Board->vInsertAfter(pCard_Combine,pIndexJoin);
+//
+//
+//  // temp hack
+//
+//  Card_Stage* pCard_Stage_next =
+//    _pCard_Stage(pFindNextMain(pIndexJoin,CK_STAGE));
+//  if (! pCard_Stage_next)
+//    return;
+//
+//  Card_Stage* pCard_Stage_following =
+//    _pCard_Stage(pFindNextMain(pCard_Stage_next,CK_STAGE));
+//
+//  vDeleteFromTill(pCard_Stage_next,pCard_Stage_following);
+//}
 
-    i8 i_Ord = pCard_Term->iOrdinalStreamColNo();
-    i8 i_Col = i_Ord - 1;
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+//void Board::vResolveJoin2(Card_AbsJoin* pCard_AbsJoin)
+//{
+//  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
+//
+//  Card_Scan* pCard_Scan = _pCard_Scan(pGetMain(pCard_AbsJoin->iCardNo() - 1));
+//  Card_TablePtr* pCard_TablePtr = _pCard_TablePtr(pCard_Scan->pFindSubCard(CK_TABLEPTR));
+//  Table* pTable = pCard_TablePtr->pTable();
+//
+//  Index* pIndex = pTable->pIdxVec()->pGet(0);
+//
+//  Card_IndexJoin* pIndexJoin = new Card_IndexJoin;
+//  pIndexJoin->vAppend(new Card_TablePtr(pTable));
+//  pIndexJoin->vAppend(new Card_IndexPtr(pIndex));
+//
+//  Card_Filter* pCard_Filter = _pCard_Filter(pGetMain(pCard_AbsJoin->iCardNo() + 3));
+//  //pCard_Filter->vDump();
+//
+//  Card_Expr* pCard_Expr = _pCard_Expr(pCard_Filter->pGetChild(0));
+//
+//  Card_Type* pCard_Type = _pCard_Type(pCard_Expr->pGetChild(0));
+//  Card_CalcBool* pCard_CalcBool = _pCard_CalcBool(pCard_Expr->pGetChild(1));
+//  Card_PredCmp* pCard_PredCmp = _pCard_PredCmp(pCard_CalcBool->pGetChild(0));
+//
+//  Card_IndexPred* pCard_IndexPred = pTo_IndexPred(pCard_PredCmp,nullptr);
+//  pIndexJoin->vAppend(pCard_IndexPred);
+//
+//  m_pCard_Board->vInsertAfter(pIndexJoin,pCard_AbsJoin);
+//
+//  Card_Combined* pCard_Combine = new Card_Combined;
+//  m_pCard_Board->vInsertAfter(pCard_Combine,pIndexJoin);
+//
+//  //delete pCard_PredCmp;
+//
+//  // temp hack
+//
+//  Card_Stage* pCard_Stage_next =
+//          _pCard_Stage(pFindNextMain(pIndexJoin,CK_STAGE));
+//  if (! pCard_Stage_next)
+//    return;
+//
+//  Card_Stage* pCard_Stage_following =
+//          _pCard_Stage(pFindNextMain(pCard_Stage_next,CK_STAGE));
+//
+//  vDeleteFromTill(pCard_Stage_next,pCard_Stage_following);
+//}
 
-    Card_StreamColList* pCard_StreamColList =
-            _pCard_StreamColList(pReg_Stream->pFindSubCard(CK_STREAMCOLLIST));
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+//void Board::vResolveJoin3(Card_IndexJoin* pCard_IndexJoin)
+//{
+//  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
+//
+//  Card_Filter* pCard_Filter =
+//    _pCard_Filter(pFindNextMain(pCard_IndexJoin, CK_FILTER));
+//
+//  Card_Expr* pCard_Expr = _pCard_Expr(pCard_Filter->pGetChild(0));
+//
+//  Card_Type* pCard_Type = _pCard_Type(pCard_Expr->pGetChild(0));
+//  Card_CalcBool* pCard_CalcBool = _pCard_CalcBool(pCard_Expr->pGetChild(1));
+//  Card_PredCmp* pCard_PredCmp = _pCard_PredCmp(pCard_CalcBool->pGetChild(0));
+//
+//  Card_MapSet* pCard_MapSet = _pCard_MapSet(pCard_IndexJoin->pFindSubCard(CK_MAPSET));
+//  Card_IndexPred* pCard_IndexPred = pTo_IndexPred(pCard_PredCmp,pCard_MapSet);
+//  Card_IndexPtr* pCard_IndexPtr = _pCard_IndexPtr(pCard_IndexJoin->pFindSubCard(CK_INDEXPTR));
+//  pCard_IndexJoin->vInsertAfter(pCard_IndexPred, pCard_IndexPtr);
+//
+//  Card_Combined* pCard_Combine = new Card_Combined;
+//  m_pCard_Board->vInsertAfter(pCard_Combine,pCard_IndexJoin);
+//}
 
-    Card_StreamCol *pCard_StreamCol = _pCard_StreamCol(pCard_StreamColList->pGet(i_Col));
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+//void Board::vAResolveJoin(Card_IndexJoin* pCard_IndexJoin)
+//{
+//  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
+//
+//  // indexJoin
+//  // .0){table}
+//  // .1){index}
+//  // .2)indexPred
+//  // ..0)term BOUND
+//  // ..1)term COL -> $K1
+//  // ..2)term COL -> $1
+//  // ..3)term ==
+//
+//  Card_IndexPred* pCard_IndexPred =
+//    _pCard_IndexPred(pCard_IndexJoin->pFindSubCard(CK_INDEXPRED));
+//
+//  Card_Term* pCard_key =
+//    _pCard_Term(pCard_IndexJoin->pGetChild(1));
+//
+//  Card_Term* pCard_col =
+//    _pCard_Term(pCard_IndexJoin->pGetChild(2));
+//
+//
+//}
 
-    Card_As *pCard_As = _pCard_As(pCard_StreamCol->pFindSubCard(CK_AS));
-
-    Stz *szColNm_resolved = pCard_As->sz();
-
-    pCard_Term->vValue(szColNm_resolved);
-
-    vTrace("Resolved $%lld To: %s\n"_Stz,i_Ord,szColNm_resolved);
-
-    return;
-  }
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  Index* pIndex = this->m_pCard_Board->pIndex();
-  if (pIndex && pCard_Term->bIsOrdinalIndexTerm()) {
-    
-    i8 i_IdxOrd = pCard_Term->iOrdinalIndexColNo();
-    i8 i_IdxCol = i_IdxOrd - 1;
-
-    Column* pIdxColumn = pIndex->pGetColumn(i_IdxCol);
-    Stz* szIdxColNm_resolved = pIdxColumn->szColNm();
-  
-    pCard_Term->vValue(szIdxColNm_resolved);
-
-    return;
-  }
-
-}
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+//void Board::vConvertJoin(Card_AbsJoin* pCard_AbsJoin)
+//{
+//  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
+//
+//  m_pCard_Board->vRemove(pCard_AbsJoin);
+//
+//  Card_Scan* pCard_Scan = _pCard_Scan(pGetMain(pCard_AbsJoin->iCardNo() - 1));
+//  Card_TablePtr* pCard_TablePtr = _pCard_TablePtr(pCard_Scan->pFindSubCard(CK_TABLEPTR));
+//  Table* pTable = pCard_TablePtr->pTable();
+//
+//
+//  Card_IndexJoin* pIndexJoin = new Card_IndexJoin;
+//  pIndexJoin->vAppend(new Card_TablePtr(pTable));
+//
+//  // TODO:
+//  Index* pIndex = pTable->pIdxVec()->pGet(0);
+//  pIndexJoin->vAppend(new Card_IndexPtr(pIndex));
+//
+//  m_pCard_Board->vInsertAfter(pIndexJoin,pCard_Scan);
+//
+//  m_pCard_Board->vRemove(pCard_Scan);
+//  delete pCard_Scan;
+//}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
