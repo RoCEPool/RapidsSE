@@ -190,7 +190,7 @@ void Transformer::vTransform2(void)
   m_pEstimator->vEstimate_joinOrder();
   m_pEstimator->vExtract_joinOrderSeq();
 */
-  
+
 
  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

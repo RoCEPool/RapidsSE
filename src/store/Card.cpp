@@ -1161,19 +1161,26 @@ void Card::vPrintName(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  s32 sName;
+  CardCtl* pCardCtl = _pCardCtl(pRibbon->pCtl());
+
+  s32 sHiddenChildren;
+  if (! pCardCtl->bPrintSubCards(m_eCard) && nChildCards())
+    sHiddenChildren = " +"_Stz;
 
   Board* pBoard = _pBoard(pRibbon->pSurface());
 
+  s32 sName;
   if (0 == iDepth)
-    sName.vSprint("%s x%lld"_Stz,
+    sName.vSprint("%s%s x%lld"_Stz,
                   szCardNm(),
+                  sHiddenChildren.szStz(),
                   nItems());
   else
-    sName.vSprint("%s%lld]%s"_Stz,
+    sName.vSprint("%s%lld]%s%s"_Stz,
                   Stz::szDots(iDepth-1),
                   m_iCardNo,
-                  szCardNm());
+                  szCardNm(),
+                  sHiddenChildren.szStz());
 
   pRibbon->vSprint("%-18s%c%c"_Stz, sName.szStz(), m_cMark1, m_cMark2);
 }
@@ -1185,33 +1192,40 @@ void Card::vPrintNameValue(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+  CardCtl* pCardCtl = _pCardCtl(pRibbon->pCtl());
+
+  s32 sHiddenChildren;
+  if (! pCardCtl->bPrintSubCards(m_eCard) && nChildCards())
+    sHiddenChildren = " +"_Stz;
+
   s256 sNameValue;
-
-  Board *pBoard = _pBoard(pRibbon->pSurface());
-
   if (0 == iDepth) {
     if (bHasValue())
-      sNameValue.vSprint("%s %s x%lld"_Stz,
+      sNameValue.vSprint("%s%s %s x%lld"_Stz,
                          szCardNm(),
+                         sHiddenChildren.szStz(),
                          szValue(),
                          nItems());
     else
-      sNameValue.vSprint("%s x%lld"_Stz,
+      sNameValue.vSprint("%s%s x%lld"_Stz,
                          szCardNm(),
+                         sHiddenChildren.szStz(),
                          nItems());
   }
   else {
     if (bHasValue())
-      sNameValue.vSprint("%s%lld]%s %s"_Stz,
+      sNameValue.vSprint("%s%lld]%s%s %s"_Stz,
                        Stz::szDots(iDepth - 1),
                        m_iCardNo,
                        szCardNm(),
+                         sHiddenChildren.szStz(),
                        szValue());
     else
-      sNameValue.vSprint("%s%lld]%s"_Stz,
+      sNameValue.vSprint("%s%lld]%s%s"_Stz,
                          Stz::szDots(iDepth - 1),
                          m_iCardNo,
-                         szCardNm());
+                         szCardNm(),
+                         sHiddenChildren.szStz());
   }
 
   if (sNameValue.nLength() <= 18) {
