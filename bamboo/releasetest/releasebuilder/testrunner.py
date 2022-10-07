@@ -47,6 +47,8 @@ C_SETH_RESULT_PATH = "bamboo/unittest/results/results-*.xml"
 C_SETH_TIMEOUT_SEC = 300
 C_COLLECT_RESULTS_TIMEOUT_SEC = 90
 
+C_CLOUD_INIT_LOG_PATH: pathlib.Path = pathlib.Path("/cloud-init-output.log")
+
 
 class TestRunner:
 
@@ -248,6 +250,18 @@ class InstanceRunner:
 
         finally:
             if len(self.ip_addrs) > 0:
+
+                # Collect cloud-init logs from the remote nodes
+                try:
+                    self.__collect_cloudinit_log()
+                except (errors.SshError,) as e:
+                    LOG.error(f"Test {self.test_name}: Unable to collect cloud-init logs: {e.stderr}")
+                    # Otherwise carry on
+
+                except (Exception,) as e:
+                    LOG.error(f"Test {self.test_name}: Unable to collect cloud-init logs")
+                    LOG.exception(e)
+                    # Otherwise carry on
 
                 # Collect results from the remote node
                 try:
@@ -511,6 +525,40 @@ class InstanceRunner:
             raise errors.SshError(msg, e.stdout, e.stderr) from e
 
         LOG.info(f"Test {self.test_name}: RapidsSE cluster stopped successfully")
+
+    def __collect_cloudinit_log(self) -> None:
+        """Collect cloud-init log from each of the remote nodes"""
+
+        last_error = None
+
+        for ip in self.ip_addrs:
+            # cloud-init logs have been written out to /cloud-init-output.log
+            suffix = C_CLOUD_INIT_LOG_PATH.suffix
+            dest_filename = f"{C_CLOUD_INIT_LOG_PATH.name.removesuffix(suffix)}-" \
+                            f"{self.test_name.replace(' ', '-')}-{ip}.txt"
+
+            src = f"{ip}:{str(C_CLOUD_INIT_LOG_PATH)}"
+            dest = str(self.artifact_path / dest_filename)
+
+            LOG.debug(f"About to collect cloud-init logs from {src} to {dest}")
+
+            try:
+                ssh.run_scp(src, dest, C_SE_COPY_LOGS_TIMEOUT_SEC, ctx=self.op_ctx)
+
+            except subprocess.TimeoutExpired as e:
+                msg = f"Test {self.test_name}: Collecting of cloud-init logs from the SE cluster on {ip} " \
+                      f"timed out after {e.timeout} seconds." \
+                      f"\nStdout Output:\n{e.stdout}" \
+                      f"\nStderr Output:\n{e.stderr}"
+                LOG.error(last_error)
+
+                if last_error is None:
+                    last_error = errors.SshError(msg, e.stdout, e.stderr)
+                    last_error.__cause__ = e
+                # Keep trying other instances in this test
+
+        if last_error is not None:
+            raise last_error
 
     def __collect_seth_results(self) -> None:
         """Collect SETH result files from the remote node and save them in the local results directory"""
