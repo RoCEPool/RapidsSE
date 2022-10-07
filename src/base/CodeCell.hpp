@@ -20,7 +20,7 @@ namespace BASE
       //
       // The function will be:
       //   i) Step::vDoColon for normal : words; or
-      //  ii) Step::vAppend_indexList_to_scan for primitives
+      //  ii) Step::vAppend_indexList_To_scan for primitives
       //
       
       fpMEMBERFN* m_afpStepFn;  // indirect address of a member function

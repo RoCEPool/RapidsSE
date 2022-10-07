@@ -21,7 +21,7 @@ namespace STORE
     Partitioner(Bench* pBench);
    ~Partitioner(void) noexcept(false);
 
-    void vExtract_tableList(void);
+    void vExtract_tableList_From_queryBoard(void);
 
     void vExtract_joinPredList(void);
 
@@ -31,7 +31,7 @@ namespace STORE
 
     void vCompute_crossPtnJoinList(void);
 
-    void vCompute_ptndJointSet(void);
+    void vCompute_ptndJoinSet(void);
 
 
   private:

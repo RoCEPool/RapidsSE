@@ -42,9 +42,9 @@ Columnar::~Columnar(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add colummn ref's                                                          */
+/* add <term/<columnRef> to all ordinal <term>                                */
 /*----------------------------------------------------------------------------*/
-void Columnar::vAdd_columnRef(void)
+void Columnar::vAdd_columnRef_Under_term(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMNAR,_FOOTER_);
 
@@ -53,14 +53,13 @@ void Columnar::vAdd_columnRef(void)
   auto bfTerm_columnRef = [pResolver](Card* pCard) {
     Card_Term* p_term = _pCard_Term(pCard);
 
-    Stz* szTerm = p_term->sz();
-    vTrace("bfTerm_columnRef: %s\n"_Stz,szTerm);
+    Stz* szOrdinalTerm = p_term->sz();
+    vTrace("bfTerm_columnRef: %s\n"_Stz, szOrdinalTerm);
 
     s32 sColumnRef;
-    pResolver->vResolve_columnRef(sColumnRef,szTerm);
+    pResolver->vResolve_streamColOrdinal_To_tableColOrdinal(sColumnRef, szOrdinalTerm);
 
-    Card_ColumnRef* p_columnRef = new Card_ColumnRef;
-    p_columnRef->vValue(sColumnRef);
+    Card_ColumnRef* p_columnRef = new Card_ColumnRef(sColumnRef);
     p_term->vAppend(p_columnRef);
 
     return true;
@@ -82,7 +81,7 @@ void Columnar::vAdd_columnRef(void)
   delete pResolver;
 
   if (m_bInteractive)
-    m_pBoard->vPrintBoard("Columnar::vAdd_columnRef"_Stz);
+    m_pBoard->vPrintBoard("Columnar::vAdd_columnRef_Under_term"_Stz);
 }
 
 

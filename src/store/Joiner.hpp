@@ -24,8 +24,8 @@ namespace STORE
     void vAppend_preliminary_indexJoin(void);
     void vForm_joinPred(void);
     void vMark_idxCol(void);
-    void vReduce_absJoin(void);
-    void vSubsume_scan(void);
+    void vRefactor_absJoin_Into_indexJoin(void);
+    void vSubsume_scan_Under_absJoin(void);
 
   private:
     Card_IndexPred*  pTo_IndexPred (Card_AbsJoin* pCard_AbsJoin,

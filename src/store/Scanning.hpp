@@ -23,7 +23,7 @@ namespace STORE
 
     void vAdd_scanPred(void);
     void vCull_markedPred(void);
-    void vPromote_scan_to_indexScan(void);
+    void vPromote_scan_To_indexScan(void);
 
   private:
 

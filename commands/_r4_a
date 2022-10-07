@@ -12,7 +12,7 @@ load orders "../tpch/sf_0001/orders.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-//cue = "Scanning::vPromote_scan_to_indexScan"
+//cue = "Scanning::vPromote_scan_To_indexScan"
 /jobTags
 /transliterated
 /transform

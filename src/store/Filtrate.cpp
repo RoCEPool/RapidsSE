@@ -55,14 +55,14 @@ void Filtrate::vAssign_predCmp_leftwards(void)
 
   vEndIteration();
 
-  vPrintSubCards(CK_PREDCMP,true);
+  vSetPrintSubCards(CK_PREDCMP, true);
   vPrintBoard("Filtrate::vAssign_predCmp_leftwards"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
 /* convert all <filter> from calc form to calcBool                            */
 /*----------------------------------------------------------------------------*/
-void Filtrate::vConvert_calc_to_calcBool(void)
+void Filtrate::vConvert_calc_To_calcBool(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTRATE,_FOOTER_);
 
@@ -71,7 +71,7 @@ void Filtrate::vConvert_calc_to_calcBool(void)
   while ((m_p_filter = _pCard_Filter(xBI.pEachMain(CK_FILTER))))
     m_p_filter->vCalc_to_calcBool();
 
-  vPrintBoard("Filtrate::vConvert_calc_to_calcBool"_Stz);
+  vPrintBoard("Filtrate::vConvert_calc_To_calcBool"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -121,11 +121,9 @@ void Filtrate::vCull_indexJoin_filterPred(void)
 /*----------------------------------------------------------------------------*/
 /* delete any <filter> which is effectively empty                             */
 /*----------------------------------------------------------------------------*/
-void Filtrate::vDelete_empty_filter(void)
+void Filtrate::vDelete_Empty_filter(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
-
-
 
   BoardIter xBI(m_pBoard);
 
@@ -138,7 +136,7 @@ void Filtrate::vDelete_empty_filter(void)
     }
   }
 
-  vPrintBoard("Filtrate::vDelete_empty_filter"_Stz);
+  vPrintBoard("Filtrate::vDelete_Empty_filter"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -19,7 +19,6 @@
 #include "Ribbon.hpp"
 #include "ListExo2_t.hpp"
 
-
 namespace STORE
 {
   class Card;
@@ -176,7 +175,7 @@ namespace STORE
     void vAddProperty_nameOnly(Stz* szPptName);
     void vAddProperty_ptr(Stz* szPptName, Object* pPptValue);
     void vAddProperty_stz(Stz* szPptName, Stz* szPptValue);
-    void vAppendDupSubCards(Card* pCard_SubSet);
+    void vAppendDupSubCards(Card* pFromCard);
 
     eCK  eCard(void);
     void vCard(eCK eCard);
@@ -248,7 +247,7 @@ namespace STORE
     void vRemoveChild(Card* pChildCard);
     void vRemoveSubCard(Card* pSubCard);
     void vRenumberSubCards(Card* pParentCard);
-    void vReplaceChildWithKids(Card* pChildCard);
+    void vReplaceChildWithItsSubs(Card* pChildCard);
     void vReplaceChild(Card* pChildCard, Card* pWithCard);
 
     Stz* sz(void);

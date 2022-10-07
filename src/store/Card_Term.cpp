@@ -79,13 +79,26 @@ Card_Term::~Card_Term(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
+/*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* form tableColOrdinal from tableSyn and tableColNo                          */
+/*----------------------------------------------------------------------------*/
+void Card_Term::vTableColOrdinal(String* psTableColOrdinal, char cTableSyn,  i8 iTableColNo)
+{
+  _static_
+
+  psTableColOrdinal->vSprint("$$%c.%lld"_Stz, cTableSyn, iTableColNo);
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* evaluate bound                                                              */
+/* evaluate bound                                                             */
 /*----------------------------------------------------------------------------*/
 ePB Card_Term::eBound(void)
 {
@@ -112,6 +125,20 @@ ePB Card_Term::eBound(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get ordinal index value  (i.e. $In)                                        */
+/*----------------------------------------------------------------------------*/
+i8 Card_Term::iIndexColNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  RASSERT(bIsIndexColOrdinal());
+
+  i8 i_Ord = StrLib::iGleanInt(szValue()->azChar());
+
+  return i_Ord;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this atom an aggregate op?                                              */
 /*----------------------------------------------------------------------------*/
 bool Card_Term::bIsAggOp(void)
@@ -119,6 +146,7 @@ bool Card_Term::bIsAggOp(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Stz* szTerm = szValue();
+
        if (szTerm->bSame("avg"_Stz))      return true;
   else if (szTerm->bSame("count"_Stz))    return true;
   else if (szTerm->bSame("countAll"_Stz)) return true;
@@ -131,43 +159,9 @@ bool Card_Term::bIsAggOp(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is atom a column ordinal?                                                  */
+/* is this term a comma separator?                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_Term::bIsOrdinalStreamTerm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Stz* szTerm = szValue();
-  char acFirst  = szTerm->azChar()[0];
-  char acSecond = szTerm->azChar()[1];
-
-  if ('$' == acFirst && StrLib::bIsDigit(acSecond))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is atom an index ordinal?                                                  */
-/*----------------------------------------------------------------------------*/
-bool Card_Term::bIsOrdinalIndexTerm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Stz* szTerm = szValue();
-  char acFirst  = szTerm->azChar()[0];
-  char acSecond = szTerm->azChar()[1];
-
-  if ('$' == acFirst && ('I' == acSecond || 'i' == acSecond))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this atom an separator?                                                 */
-/*----------------------------------------------------------------------------*/
-bool Card_Term::bIsSeparator(void)
+bool Card_Term::bIsCommaSeparator(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -177,29 +171,69 @@ bool Card_Term::bIsSeparator(void)
     return false;
 }
 
-
 /*----------------------------------------------------------------------------*/
-/* get ordinal column value                                                   */
+/* is term an index-column ordinal?  (i.e. $In)                               */
 /*----------------------------------------------------------------------------*/
-i8 Card_Term::iOrdinalStreamColNo(void)
+bool Card_Term::bIsIndexColOrdinal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  i8 i_Ord = StrLib::iGleanInt(szValue()->azChar());
+  Stz* szTerm = szValue();
 
-  return i_Ord;
+  char acFirst  = szTerm->azChar()[0];
+  char acSecond = szTerm->azChar()[1];
+  char acThird  = szTerm->azChar()[2];
+
+  if (   '$' == acFirst
+      && ('I' == acSecond || 'i' == acSecond)
+      && StrLib::bIsDigit(acThird))
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get ordinal index value                                                    */
+/* is term a stream-column ordinal?  (i.e. $n)                                */
 /*----------------------------------------------------------------------------*/
-i8 Card_Term::iOrdinalIndexColNo(void)
+bool Card_Term::bIsStreamColOrdinal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  i8 i_Ord = StrLib::iGleanInt(szValue()->azChar());
+  Stz* szTerm = szValue();
 
-  return i_Ord;
+  char acFirst  = szTerm->azChar()[0];
+  char acSecond = szTerm->azChar()[1];
+
+  if (   '$' == acFirst
+      && StrLib::bIsDigit(acSecond))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is term an table-column ordinal?  (i.e. $$c.n)                             */
+/*----------------------------------------------------------------------------*/
+bool Card_Term::bIsTableColOrdinal(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Stz* szTerm = szValue();
+
+  char acFirst  = szTerm->azChar()[0];
+  char acSecond = szTerm->azChar()[1];
+  char acThird  = szTerm->azChar()[2];
+  char acFourth = szTerm->azChar()[3];
+  char acFifth  = szTerm->azChar()[4];
+
+  if (   '$' == acFirst
+      && '$' == acSecond
+      && StrLib::bIsAlpha(acThird)
+      && '.' == acFourth
+      && StrLib::bIsDigit(acFifth))
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -211,15 +245,59 @@ eRO Card_Term::eRelOp(void)
 
   Stz* szTerm = this->sz();
 
-  if (szTerm->bSame("<"_Stz))       return RO_LESS_THAN;
-  else if (szTerm->bSame("<="_Stz))      return RO_LESS_EQUAL;
-  else if (szTerm->bSame("="_Stz))       return RO_EQUAL_TO;
-  else if (szTerm->bSame("=="_Stz))      return RO_EQUAL_TO;
-  else if (szTerm->bSame("!="_Stz))      return RO_NOT_EQUAL;
-  else if (szTerm->bSame(">="_Stz))      return RO_GREATER_EQUAL;
-  else if (szTerm->bSame(">"_Stz))       return RO_GREATER_THAN;
+  if (szTerm->bSame("<"_Stz))   return RO_LESS_THAN;
+  else if (szTerm->bSame("<="_Stz))  return RO_LESS_EQUAL;
+  else if (szTerm->bSame("="_Stz))   return RO_EQUAL_TO;
+  else if (szTerm->bSame("=="_Stz))  return RO_EQUAL_TO;
+  else if (szTerm->bSame("!="_Stz))  return RO_NOT_EQUAL;
+  else if (szTerm->bSame(">="_Stz))  return RO_GREATER_EQUAL;
+  else if (szTerm->bSame(">"_Stz))   return RO_GREATER_THAN;
 
   else return RO_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get stream column number n  (i.e. $n)                                      */
+/*----------------------------------------------------------------------------*/
+i8 Card_Term::iStreamColNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  RASSERT(bIsStreamColOrdinal());
+
+  i8 i_Col = StrLib::iGleanInt(szValue()->azChar());
+
+  return i_Col;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get table column number n (i.e. $$c.n)                                     */
+/*----------------------------------------------------------------------------*/
+i8 Card_Term::iTableColNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  RASSERT(bIsTableColOrdinal());
+
+  i8 i_Col = StrLib::iGleanInt(szValue()->azChar());
+
+  return i_Col;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get table synonym c (i.e. $$c.n)                                           */
+/*----------------------------------------------------------------------------*/
+char Card_Term::cTableSyn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  RASSERT(bIsTableColOrdinal());
+
+  Stz* szTerm = this->sz();
+
+  char cSyn = szTerm->azChar()[2];
+
+  return cSyn;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -231,7 +309,7 @@ eTE Card_Term::eTermEval(void)
 
   Stz* szTerm = this->sz();
 
-  if (szTerm->bSame("and"_Stz))     return TE_AND;
+       if (szTerm->bSame("and"_Stz))     return TE_AND;
   else if (szTerm->bSame("as"_Stz))      return TE_AS;
   else if (szTerm->bSame("boolean"_Stz)) return TE_BOOLEAN;
   else if (szTerm->bSame("or"_Stz))      return TE_OR;
@@ -248,7 +326,6 @@ eTE Card_Term::eTermEval(void)
 
   else return TE_OTHER;
 }
-
 
 /*============================================================================*/
 /* end                                                                        */

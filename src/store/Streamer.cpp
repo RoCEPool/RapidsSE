@@ -43,7 +43,7 @@ Streamer::~Streamer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* calc ordinal ranges                                                        */
 /*----------------------------------------------------------------------------*/
-void Streamer::vCalc_streamOrdinalRanges(void)
+void Streamer::vCalc_OrdinalRangesOf_stream(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMER,_FOOTER_);
 
@@ -89,13 +89,13 @@ void Streamer::vCalc_streamOrdinalRanges(void)
     }
   }
 
-  vPrintBoard("Streamer::vCalc_streamOrdinalRanges"_Stz);
+  vPrintBoard("Streamer::vCalc_OrdinalRangesOf_stream"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
 /* append <stream> to all <scan>                                              */
 /*----------------------------------------------------------------------------*/
-void Streamer::vAppend_stream_to_scan(void)
+void Streamer::vAppend_stream_To_scan(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMER,_FOOTER_);
 
@@ -117,11 +117,11 @@ void Streamer::vAppend_stream_to_scan(void)
     m_p_stream->vAppend((m_p_streamColList = new Card_StreamColList(m_pStreamDef)));
   }
 
-  vPrintSubCards(CK_STREAM, true);
+  vSetPrintSubCards(CK_STREAM, true);
 
-  vPrintBoard("Streamer::vAppend_stream_to_scan"_Stz);
+  vPrintBoard("Streamer::vAppend_stream_To_scan"_Stz);
 
-  vPrintSubCards(CK_STREAM, false);
+  vSetPrintSubCards(CK_STREAM, false);
 
 }
 

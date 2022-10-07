@@ -44,7 +44,7 @@ Indexer::~Indexer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Indexer::vAppend_indexList_to_scan(void)
+void Indexer::vAppend_indexList_To_scan(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SCANNING, _FOOTER_);
 
@@ -58,7 +58,7 @@ void Indexer::vAppend_indexList_to_scan(void)
   }
 
   if (m_bInteractive)
-    m_pBoard->vPrintBoard("Indexer::vAppend_indexList_to_scan"_Stz);
+    m_pBoard->vPrintBoard("Indexer::vAppend_indexList_To_scan"_Stz);
 
 }
 

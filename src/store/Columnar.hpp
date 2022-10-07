@@ -21,7 +21,7 @@ namespace STORE
     Columnar(Bench* pBench);
    ~Columnar(void) noexcept(false);
 
-    void vAdd_columnRef(void);
+    void vAdd_columnRef_Under_term(void);
 
   private:
 

@@ -22,9 +22,9 @@ namespace STORE
   
    ~Streamer(void) noexcept(false);
 
-    void vAppend_stream_to_scan(void);
+    void vAppend_stream_To_scan(void);
 
-    void vCalc_streamOrdinalRanges(void);
+    void vCalc_OrdinalRangesOf_stream(void);
 
   private:
 

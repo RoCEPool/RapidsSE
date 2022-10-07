@@ -13,7 +13,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_ColumnRef(void);
+    Card_ColumnRef(Stz* szColumnRef);
    ~Card_ColumnRef(void) noexcept(false);
 
     bool bIsColumnRef(void);

@@ -23,10 +23,10 @@ namespace STORE
    ~Filtrate(void) noexcept(false);
 
     void vAssign_predCmp_leftwards(void);
-    void vConvert_calc_to_calcBool(void);
+    void vConvert_calc_To_calcBool(void);
     void vCopy_predCmp_leftwards(void);
     void vCull_indexJoin_filterPred(void);
-    void vDelete_empty_filter(void);
+    void vDelete_Empty_filter(void);
     void vDelete_empty_sub_filter(void);
     void vIndividuate_filter(void);
 

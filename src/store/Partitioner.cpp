@@ -44,7 +44,7 @@ Partitioner::~Partitioner(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Partitioner::vExtract_tableList(void)
+void Partitioner::vExtract_tableList_From_queryBoard(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARTITIONER, _FOOTER_);
 
@@ -66,7 +66,7 @@ void Partitioner::vExtract_tableList(void)
   }
 
 
-  m_pBoard_partition->vPrintBoard("Partitioner::vExtract_tableList"_Stz);
+  m_pBoard_partition->vPrintBoard("Partitioner::vExtract_tableList_From_queryBoard"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -226,7 +226,7 @@ void Partitioner::vCompute_crossPtnJoinList(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Partitioner::vCompute_ptndJointSet(void)
+void Partitioner::vCompute_ptndJoinSet(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARTITIONER, _FOOTER_);
 
@@ -258,7 +258,7 @@ void Partitioner::vCompute_ptndJointSet(void)
   }
 
   if (m_bInteractive)
-    m_pBoard_partition->vPrintBoard("Partitioner::vCompute_ptndJointSet"_Stz);
+    m_pBoard_partition->vPrintBoard("Partitioner::vCompute_ptndJoinSet"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

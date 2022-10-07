@@ -143,7 +143,7 @@ void Scanning::vCull_markedPred(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Scanning::vPromote_scan_to_indexScan(void)
+void Scanning::vPromote_scan_To_indexScan(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SCANNING, _FOOTER_);
 
@@ -159,7 +159,7 @@ void Scanning::vPromote_scan_to_indexScan(void)
   }
 
   if (m_bInteractive)
-    m_pBoard->vPrintBoard("Scanning::vPromote_scan_to_indexScan"_Stz);
+    m_pBoard->vPrintBoard("Scanning::vPromote_scan_To_indexScan"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

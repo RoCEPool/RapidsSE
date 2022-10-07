@@ -87,8 +87,8 @@ void Joiner::vAppend_preliminary_indexJoin(void)
   vEndIteration();
 
   //m_pCardCtl->vPrintFormSubCards(CK_STREAM, CP_DEFAULT, true);
-  vPrintSubCards(CK_FILTER,false);
-  vPrintSubCards(CK_STREAM,false);
+  vSetPrintSubCards(CK_FILTER, false);
+  vSetPrintSubCards(CK_STREAM, false);
 
   vPrintBoard("Joiner::vAppend_preliminary_indexJoin"_Stz);
 }
@@ -132,8 +132,8 @@ void Joiner::vForm_joinPred(void)
     i8 iStreamOrdLo = pCard_stream->iGetProperty(C_PPT_OrdLo);
     i8 iStreamOrdHi = pCard_stream->iGetProperty(C_PPT_OrdHi);
 
-    i8 i_iOrdLo_0 = pCard_term_0->iOrdinalStreamColNo();
-    i8 i_iOrdLo_1 = pCard_term_1->iOrdinalStreamColNo();
+    i8 i_iOrdLo_0 = pCard_term_0->iStreamColNo();
+    i8 i_iOrdLo_1 = pCard_term_1->iStreamColNo();
 
     if (i_iOrdLo_0 >= iStreamOrdLo && i_iOrdLo_0 <= iStreamOrdHi) {
       pCard_term = new Card_Term("$I1"_Stz);
@@ -203,7 +203,7 @@ void Joiner::vMark_idxCol(void)
 /*----------------------------------------------------------------------------*/
 /* reduce absJoin                                                             */
 /*----------------------------------------------------------------------------*/
-void Joiner::vReduce_absJoin(void)
+void Joiner::vRefactor_absJoin_Into_indexJoin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_JOINER, _FOOTER_);
 
@@ -215,11 +215,11 @@ void Joiner::vReduce_absJoin(void)
     //pCard_absJoin->vDeleteChildCard(CK_FILTER);
 
     Card_Scan* pCard_scan = _pGetSub_Scan(pCard_absJoin);
-    pCard_absJoin->vReplaceChildWithKids(pCard_scan);
+    pCard_absJoin->vReplaceChildWithItsSubs(pCard_scan);
     delete pCard_scan;
 
     Card_IndexJoin* pCard_indexJoin = _pGetSub_IndexJoin(pCard_absJoin);
-    pCard_absJoin->vReplaceChildWithKids(pCard_indexJoin);
+    pCard_absJoin->vReplaceChildWithItsSubs(pCard_indexJoin);
     delete pCard_indexJoin;
 
     Card_Stream* pCard_stream = _pGetSub_Stream(pCard_absJoin);
@@ -229,13 +229,13 @@ void Joiner::vReduce_absJoin(void)
   }
 
   if (m_bInteractive)
-    m_pBoard->vPrintBoard("Joiner::vReduce_absJoin"_Stz);
+    m_pBoard->vPrintBoard("Joiner::vRefactor_absJoin_Into_indexJoin"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
 /* each <scan> <absJoin> becomes <absJoin>/<scan>                             */
 /*----------------------------------------------------------------------------*/
-void Joiner::vSubsume_scan(void)
+void Joiner::vSubsume_scan_Under_absJoin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_JOINER, _FOOTER_);
 
@@ -257,7 +257,7 @@ void Joiner::vSubsume_scan(void)
     m_p_absJoin->vAppend(m_p_scan);
   }
 
-  vPrintBoard("Joiner::vSubsume_scan"_Stz);
+  vPrintBoard("Joiner::vSubsume_scan_Under_absJoin"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

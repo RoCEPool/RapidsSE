@@ -25,10 +25,10 @@ namespace STORE
   
    ~Resolver(void) noexcept(false);
 
-    void vResolve_columnRef(String* psColumnRef, Stz* szTerm);
+    void vResolve_streamColOrdinal_To_tableColOrdinal(String* psTableColOrdinal, Stz* szStreamColOrdinal);
 
     void vResolve(Card* pMainCard, Stz* szTerm,
-                  String* pStreamNm, String* pStreamColNm, i8& i_StreamColNo);
+                  String* pStreamNm, String* pStreamColNm, i8& i_StreamCol);
 
 
 

@@ -131,39 +131,49 @@ void Transformer::vTransform2(void)
   vTrace("Transformer running vTransform2\n"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // QUERY BOARD
+
+  // combine all cards for leading stages of topo ALL PARTITIONS
   m_pStager->vLinearize_stages();
+
+  // delete all <combined>
   m_pCombiner->vDelete_combines();
+
+  // delete all <send>
   m_pSender->vDelete_sends();
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // convert all <filter>/<calc> to <filter>/<calcBool>
-  m_pFiltrate->vConvert_calc_to_calcBool();
+  m_pFiltrate->vConvert_calc_To_calcBool();
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // append <stream> to all <scan> and then to all <absJoin>
-  m_pStreamer->vAppend_stream_to_scan();
+  // append <stream> & <streamColList> to all <scan>
+  m_pStreamer->vAppend_stream_To_scan();
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // each <scan> <absJoin> becomes <absJoin>/<scan>
-  m_pJoiner->vSubsume_scan();
+  m_pJoiner->vSubsume_scan_Under_absJoin();
+
+  // add <tableSyn> to all <table>
+  m_pTabular->vAdd_tableSyn_To_table();
+
+  // add <tablePtn> to all <table>
+  m_pTabular->vAdd_tablePtn_To_table();
+
+  // calculate /<stream>:iOrdLo,iOrdHi properties
+  m_pStreamer->vCalc_OrdinalRangesOf_stream();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  m_pTabular->vAdd_tableSyn();
-  m_pTabular->vAdd_tablePtn();
-  m_pStreamer->vCalc_streamOrdinalRanges();
+  // PARTITION BOARD
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //
+  m_pPartitioner->vExtract_tableList_From_queryBoard();
 
-
-  m_pPartitioner->vExtract_tableList();
-
-  m_pColumnar->vAdd_columnRef();
+  // add <term/<columnRef> to all ordinal <term>
+  m_pColumnar->vAdd_columnRef_Under_term();
 
   m_pPartitioner->vExtract_joinPredList();
   m_pPartitioner->vCompute_coPtnPredList();
   m_pPartitioner->vCompute_coPtnJoinList();
   m_pPartitioner->vCompute_crossPtnJoinList();
-  m_pPartitioner->vCompute_ptndJointSet();
+  m_pPartitioner->vCompute_ptndJoinSet();
 
   m_pPermutor->vCopy_ptndJoinSet();
   m_pPermutor->vGenerate_ptndPermutations();
@@ -183,7 +193,7 @@ void Transformer::vTransform2(void)
   m_pFiltrate->vCopy_predCmp_leftwards();
 
   // delete any <filter> which is effectively empty
-  m_pFiltrate->vDelete_empty_filter();
+  m_pFiltrate->vDelete_Empty_filter();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pJoiner->vAppend_preliminary_indexJoin();
@@ -209,18 +219,18 @@ void Transformer::vTransform2(void)
    *
    */
 
-  m_pIndexer->vAppend_indexList_to_scan();
+  m_pIndexer->vAppend_indexList_To_scan();
   m_pIndexer->vMark_scan_pred_bounds();
   m_pIndexer->vMark_scan_pred_ordinals();
 
   m_pScanning->vAdd_scanPred();
   m_pScanning->vCull_markedPred();
-  m_pScanning->vPromote_scan_to_indexScan();
+  m_pScanning->vPromote_scan_To_indexScan();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pFiltrate->vDelete_empty_sub_filter();
 
-  m_pJoiner->vReduce_absJoin();
+  m_pJoiner->vRefactor_absJoin_Into_indexJoin();
 
   m_pSorter->vCull_sby_SameAs_gby();
 

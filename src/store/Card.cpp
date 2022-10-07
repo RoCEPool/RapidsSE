@@ -294,13 +294,13 @@ void Card::vAddProperty_stz(Stz* szPptName, Stz* szPptValue)
 /*----------------------------------------------------------------------------*/
 /* duplicate the sub cards                                                    */
 /*----------------------------------------------------------------------------*/
-void Card::vAppendDupSubCards(Card* pCard_SubSet)
+void Card::vAppendDupSubCards(Card* pFromCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  i8 nSubCards = pCard_SubSet->nChildCards();
+  i8 nSubCards = pFromCard->nChildCards();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card* pSubCard = pCard_SubSet->pGetChild(i_Child);
+    Card* pSubCard = pFromCard->pGetChild(i_Child);
 
     Card* pSubCard_dup = pSubCard->pDupCardAndSubCards();
 
@@ -1400,20 +1400,20 @@ void Card::vRemoveSubCard(Card* pSubCard)
   ListExoIter2_t<Card>* pSubCard_I = pNewIter();
   
   while (pSubCard_I->bHasNext()) {
-    Card* pSubCard = pSubCard_I->pNext();
+    Card* pTestCard = pSubCard_I->pNext();
     
-    if (pSubCard == pSubCard) {
-      vRemove(pSubCard);
+    if (pTestCard == pSubCard) {
+      vRemove(pTestCard);
       break;
     }
-    pSubCard->vRemoveSubCard(pSubCard);
+    pTestCard->vRemoveSubCard(pSubCard);
    }
   
   delete pSubCard_I;
 }
 
 /*----------------------------------------------------------------------------*/
-/* renumber card and its subCard's                                            */
+/* renumber subCard's                                                         */
 /*----------------------------------------------------------------------------*/
 void Card::vRenumberSubCards(Card* pParentCard)
 {
@@ -1437,17 +1437,17 @@ void Card::vRenumberSubCards(Card* pParentCard)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* remove given child card from this card and replace it with its children    */
 /*----------------------------------------------------------------------------*/
-void Card::vReplaceChildWithKids(Card* pChildCard)
+void Card::vReplaceChildWithItsSubs(Card* pChildCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Card* pAfter = pChildCard;
 
-  while (Card* pKid = pChildCard->pPop()) {
-    vInsertAfter(pKid,pAfter);
-    pAfter = pKid;
+  while (Card* pSub = pChildCard->pPop()) {
+    vInsertAfter(pSub, pAfter);
+    pAfter = pSub;
   }
 
   vRemoveChild(pChildCard);
@@ -1480,8 +1480,8 @@ void Card::vTransferChildren(Card* pFromCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  while (Card* pCard = pFromCard->pPop())
-    vAppend(pCard);
+  while (Card* pPoppedChildCard = pFromCard->pPop())
+    vAppend(pPoppedChildCard);
 }
 
 /*----------------------------------------------------------------------------*/

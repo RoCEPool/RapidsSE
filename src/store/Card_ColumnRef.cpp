@@ -19,8 +19,8 @@ __pGetSubFunction_Card(STORE,ColumnRef, CK_COLUMNREF)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_ColumnRef::Card_ColumnRef(void)
-: Card(CK_COLUMNREF)
+Card_ColumnRef::Card_ColumnRef(Stz* szColumnRef)
+: Card(CK_COLUMNREF,szColumnRef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

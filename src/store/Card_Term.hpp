@@ -19,14 +19,19 @@ namespace STORE
     Card_Term(Column* pColumn);
    ~Card_Term(void) noexcept(false);
 
+    static void vTableColOrdinal(String* psTableColOrdinal, char cTableSyn,  i8 iTableColNo);
+
     ePB  eBound(void);
+    i8   iIndexColNo(void);
     bool bIsAggOp(void);
-    bool bIsOrdinalIndexTerm(void);
-    bool bIsOrdinalStreamTerm(void);
-    bool bIsSeparator(void);
-    i8   iOrdinalStreamColNo(void);
-    i8   iOrdinalIndexColNo(void);
+    bool bIsCommaSeparator(void);
+    bool bIsIndexColOrdinal(void);
+    bool bIsStreamColOrdinal(void);
+    bool bIsTableColOrdinal(void);
     eRO  eRelOp(void);
+    i8   iStreamColNo(void);
+    i8   iTableColNo(void);
+    char cTableSyn(void);
     eTE  eTermEval(void);
   };
 

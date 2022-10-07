@@ -46,13 +46,16 @@ Resolver::~Resolver(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* resolve                                                                    */
+/* resolve $n into $$c.n                                                      */
 /*----------------------------------------------------------------------------*/
-void Resolver::vResolve_columnRef(String* psColumnRef, Stz* szTerm)
+void Resolver::vResolve_streamColOrdinal_To_tableColOrdinal
+                (String* psTableColOrdinal, Stz* szStreamColOrdinal)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_RESOLVER, _FOOTER_);
 
   RASSERT(BK_QUERY == m_pBoard->eBoard());
+
+  i8 iStreamColNo = szStreamColOrdinal->iOrdinal();
 
   BoardIter xBI(m_pBoard);
 
@@ -63,27 +66,24 @@ void Resolver::vResolve_columnRef(String* psColumnRef, Stz* szTerm)
     i8 iOrdLo = m_p_stream->iGetProperty(C_PPT_OrdLo);
     i8 iOrdHi = m_p_stream->iGetProperty(C_PPT_OrdHi);
 
-    i8 iOrd = szTerm->iOrdinal() ;
-
-    if (! (iOrd >= iOrdLo && iOrd <= iOrdHi) )
+    if (! (iStreamColNo >= iOrdLo && iStreamColNo <= iOrdHi) )
       continue;
 
-    m_p_table = _pGetSub_Table(m_pMainCard);
+    i8 iTableColNo = iStreamColNo - iOrdLo + 1;
 
+    m_p_table = _pGetSub_Table(m_pMainCard);
     m_p_tableSyn = _pGetSub_TableSyn(m_p_table);
     char cTableSyn = m_p_tableSyn->cTableSyn();
 
-    i8 iColumnRef = iOrd-iOrdLo+1;
-    psColumnRef->vSprint("$$%c.%lld"_Stz, cTableSyn, iColumnRef);
+    Card_Term::vTableColOrdinal(psTableColOrdinal, cTableSyn, iTableColNo);
   }
-
 }
 
 /*----------------------------------------------------------------------------*/
 /* resolve                                                                    */
 /*----------------------------------------------------------------------------*/
 void Resolver::vResolve(Card* pMainCard, Stz* szTerm,
-                        String* pStreamNm, String* pStreamColNm, i8& i_StreamColNo)
+                        String* pStreamNm, String* pStreamColNm, i8& i_StreamCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RESOLVER,_FOOTER_);
 
@@ -92,28 +92,28 @@ void Resolver::vResolve(Card* pMainCard, Stz* szTerm,
 
   vLocateStreams(pMainCard);
 
-  i_StreamColNo = StrLib::iGleanInt(szTerm->azChar()) - 1;
+  i_StreamCol = StrLib::iGleanInt(szTerm->azChar()) - 1;
 
   Card_StreamCol* pCard_StreamCol = nullptr;
 
   if (! m_pStream_r) {
     // + one stream
     pStreamNm->vCopy("S"_Stz);
-    pCard_StreamCol = m_pStream_l->pGet_streamCol(i_StreamColNo);
+    pCard_StreamCol = m_pStream_l->pGet_streamCol(i_StreamCol);
   }
   else {
     // - two streams
     i8 nStreamCols_l = m_pStream_l->nStreamCols();
-    if (i_StreamColNo < nStreamCols_l) {
+    if (i_StreamCol < nStreamCols_l) {
       // + in stream a
       pStreamNm->vCopy("L"_Stz);
-      pCard_StreamCol = m_pStream_l->pGet_streamCol(i_StreamColNo);
+      pCard_StreamCol = m_pStream_l->pGet_streamCol(i_StreamCol);
     }
     else {
       // + in stream b
       pStreamNm->vCopy("R"_Stz);
-      i_StreamColNo -= nStreamCols_l;
-      pCard_StreamCol = m_pStream_r->pGet_streamCol(i_StreamColNo);
+      i_StreamCol -= nStreamCols_l;
+      pCard_StreamCol = m_pStream_r->pGet_streamCol(i_StreamCol);
     }
   }
 
