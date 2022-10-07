@@ -257,46 +257,6 @@ bool Drafter::bReprint(TokenVec* pTknVec, eOA& reOptAct)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set                                                                        */
-/*----------------------------------------------------------------------------*/
-bool Drafter::bSet(TokenVec* pTknVec, eOA& reOptAct)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DRAFTER,_FOOTER_);
-
-  i8 nTkns = pTknVec->nItems();
-  if (nTkns < 2) {
-    vTrace("Error -- usage is: set <card>\n"_Stz);
-    return false;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  Card* pMainCard = nullptr;
-  Card* pSubCard = nullptr;
-  Board* pBoard = m_pOptimiser->pHeadBoard();
-  CardRegs* pCardRegs = pBoard->pCardRegs();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  for (i8 i_Tkn = 1; i_Tkn < nTkns; i_Tkn++) {
-    Token* pTkn = pTknVec->pGet(i_Tkn);
-    Stz* szCard = pTkn->szChars();
-
-    pBoard->vSearch(szCard,pMainCard,pSubCard);
-      
-    if (pMainCard) {
-      pCardRegs->vCardReg(pMainCard);
-    }
-    else
-    if (pSubCard) {
-      pCardRegs->vCardReg(pSubCard);
-    }
-  }
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* weave                                                                      */
 /*----------------------------------------------------------------------------*/
 bool Drafter::bWeave(TokenVec* pTknVec, eOA& reOptAct)

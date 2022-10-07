@@ -23,8 +23,6 @@ namespace STORE
 
   bool bOpt_reprint (Optimiser* pOpt, TokenVec* pTknVec, eOA& reAction);
 
-  bool bOpt_set     (Optimiser* pOpt, TokenVec* pTknVec, eOA& reAction);
-
   bool bOpt_weave   (Optimiser* pOpt, TokenVec* pTknVec, eOA& reAction);
 
   bool bOpt_write   (Optimiser* pOpt, TokenVec* pTknVec, eOA& reAction);

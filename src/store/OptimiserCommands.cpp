@@ -183,29 +183,6 @@ OptimiserFun __Opt_reprint
 );
 
 /*----------------------------------------------------------------------------*/
-/* drafter: set card registers                                                */
-/*----------------------------------------------------------------------------*/
-bool STORE::bOpt_set(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
-{
-  vTrace("bOpt_set\n"_Stz);
-  
-  Drafter* pDrafter = pOptimiser->pDrafter();
-  bool bResult = pDrafter->bSet(pTknVec,reOptAct);
-  return bResult;
-}
-
-OptimiserFun __Opt_set
-(
-  "set"_Stz,          // name of the prompt function
-  "set"_Stz,          // command first word
-  nullptr,            // command second word
-  bOpt_set,           // function to call
-  0,0,                // spare
-  "set card registers"_Stz,
-  "usage???"_Stz
-);
-
-/*----------------------------------------------------------------------------*/
 /* drafter: weave                                                             */
 /*----------------------------------------------------------------------------*/
 bool STORE::bOpt_weave(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
