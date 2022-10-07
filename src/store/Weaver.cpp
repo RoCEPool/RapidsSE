@@ -346,7 +346,7 @@ void Weaver::vArgIndexScan(Stz* szOpArgs, Card_IndexScan* pCard_IndexScan)
   
   // indexScan : 0) {table} 1) {index} 2) indexPred
 
-  Index* pIndex = pCard_IndexScan->pFindSubCard(CK_INDEXPTR)->pIndex();
+  Index* pIndex = pCard_IndexScan->pSub_indexPtr()->pIndex();
   s4K sRpnExpr;
   
   vRpnIndexScan2(sRpnExpr,pCard_IndexScan);

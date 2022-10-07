@@ -18,11 +18,15 @@ namespace STORE
 
     Card_IdxColNm* pFind_indexCol(Stz* szColNm, i8& i_IdxCol);
 
+    Index* pIndex(void);
+    void vIndex(Index* pIndex);
+
     void vIndexPtrPrint(Ribbon* pRibbon, i8 iDepth);
   };
 
   Card_IndexPtr* _pCard_IndexPtr(void* aAddr);
   bool _bIsCard_IndexPtr(void* aAddr);
+  Card_IndexPtr* _pGetSub_IndexPtr(Card * pParent);
 }
 
 /*============================================================================*/

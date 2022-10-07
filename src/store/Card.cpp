@@ -935,28 +935,6 @@ bool Card::bHasValue(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* return table                                                               */
-/*----------------------------------------------------------------------------*/
-Index* Card::pIndex(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Index* pIndex = _pIndex(pGetProperty("pIndex"_Stz));
-
-  return pIndex;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set index                                                                  */
-/*----------------------------------------------------------------------------*/
-void Card::vIndex(Index* pIndex)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  vAddProperty_ptr("pIndex"_Stz,pIndex);
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this card the given kind?                                               */
 /*----------------------------------------------------------------------------*/
 bool Card::bIsCard(eCK eCard)
@@ -1192,35 +1170,6 @@ void Card::vPrintCard_bySettings(Ribbon* pRibbon, i8 iDepth)
 }
 
 /*----------------------------------------------------------------------------*/
-/* print compressed children                                                  */
-/*----------------------------------------------------------------------------*/
-void Card::vPrintSubShort(Ribbon* pRibbon, i8 iDepth)
-{
-  _static_
-
-  i8 nChildren = nChildCards();
-  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
-    Card* pChild = pGetChild(i_Child);
-
-    i8 nSubs = pChild->nChildCards();
-    if (nSubs == 0) {
-      /*none*/;
-    }
-    else
-    if (nSubs == 1) {
-      Card *pSub_0 = pChild->pGetChild(0);
-      pRibbon->vSprintRight("%s"_Stz,pSub_0->sz());
-    }
-    else {
-      Card *pSub_0 = pChild->pGetChild(0);
-      Card *pSub_1 = pChild->pGetChild(1);
-      pRibbon->vSprintRight("%s == %s"_Stz,pSub_0->sz(),pSub_1->sz());
-    }
-
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* put header                                                                 */
 /*----------------------------------------------------------------------------*/
 void Card::vPrintHeader(Ribbon* pRibbon)
@@ -1357,6 +1306,35 @@ void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth)
 
       default:
         break;
+    }
+
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* print compressed children                                                  */
+/*----------------------------------------------------------------------------*/
+void Card::vPrintSubShort(Ribbon* pRibbon, i8 iDepth)
+{
+  _static_
+
+  i8 nChildren = nChildCards();
+  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
+    Card* pChild = pGetChild(i_Child);
+
+    i8 nSubs = pChild->nChildCards();
+    if (nSubs == 0) {
+      /*none*/;
+    }
+    else
+    if (nSubs == 1) {
+      Card *pSub_0 = pChild->pGetChild(0);
+      pRibbon->vSprintRight("%s"_Stz,pSub_0->sz());
+    }
+    else {
+      Card *pSub_0 = pChild->pGetChild(0);
+      Card *pSub_1 = pChild->pGetChild(1);
+      pRibbon->vSprintRight("%s == %s"_Stz,pSub_0->sz(),pSub_1->sz());
     }
 
   }
@@ -1760,6 +1738,19 @@ Card_IndexList* Card::pSub_indexList(void)
   Card_IndexList* p_indexList =
       _pCard_IndexList(pFindSubCard(CK_INDEXLIST));
   return p_indexList;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_IndexPtr.hpp"
+Card_IndexPtr* Card::pSub_indexPtr(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_IndexPtr* p_indexPtr =
+      _pCard_IndexPtr(pFindSubCard(CK_INDEXPTR));
+  return p_indexPtr;
 }
 
 /*----------------------------------------------------------------------------*/

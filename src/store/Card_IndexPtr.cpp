@@ -14,6 +14,7 @@ __aNewFunction(Card_IndexPtr, CN_CARD)
 __vDeleteFunction(Card_IndexPtr, CN_CARD)
 
 __bIsCard(STORE, Card_IndexPtr, CK_INDEXPTR)
+__pGetSubFunction_Card(STORE,IndexPtr, CK_INDEXPTR)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -55,6 +56,29 @@ Card_IdxColNm* Card_IndexPtr::pFind_indexCol(Stz *szColNm, i8& i_IdxCol)
 
   return p_idxCol;
 }
+
+/*----------------------------------------------------------------------------*/
+/* return table                                                               */
+/*----------------------------------------------------------------------------*/
+Index* Card_IndexPtr::pIndex(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Index* pIndex = _pIndex(pGetProperty(C_CARD_Index));
+
+  return pIndex;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set index                                                                  */
+/*----------------------------------------------------------------------------*/
+void Card_IndexPtr::vIndex(Index* pIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  vAddProperty_ptr(C_CARD_Index,pIndex);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* print {index}                                                              */

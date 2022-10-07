@@ -232,8 +232,6 @@ namespace STORE
     bool bHasSubCard(Card* pSubCard, Card*& rpParentCard);
     bool bHasValue(void);
 
-    Index* pIndex(void);
-    void vIndex(Index* pIndex);
     bool bIsCard(eCK eCard);
     bool bIsPred(void);
     bool bIsSame(Stz* szArg);
@@ -293,6 +291,7 @@ namespace STORE
     Card_IdxColList*    pSub_idxColList(void);
     Card_IndexJoin*     pSub_indexJoin(void);
     Card_IndexList*     pSub_indexList(void);
+    Card_IndexPtr*      pSub_indexPtr(void);
     Card_JoinPred*      pSub_joinPred(void);
     Card_LBound*        pSub_lBound(void);
     Card_PredCmp*       pSub_predCmp(void);
