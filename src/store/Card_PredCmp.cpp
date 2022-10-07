@@ -189,9 +189,9 @@ ePB Card_PredCmp::eBound(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   i8 i_LastCard = nItems() - 1;
-  Card* pLastCard = pGet(i_LastCard);
+  Card_Term* p_term_last = _pCard_Term(pGetChild(i_LastCard));
 
-  ePB eBound = pLastCard->eBound();
+  ePB eBound = p_term_last->eBound();
   
   return eBound;
 }
@@ -204,9 +204,9 @@ eRO Card_PredCmp::eRelOp(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   i8 i_LastCard = nItems() - 1;
-  Card* pLastCard = pGet(i_LastCard);
+  Card_Term* p_term_last = _pCard_Term(pGetChild(i_LastCard));
 
-  eRO eRelOp = pLastCard->eRelOp();
+  eRO eRelOp = p_term_last->eRelOp();
   
   return eRelOp;
 }

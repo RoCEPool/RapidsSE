@@ -207,8 +207,6 @@ namespace STORE
     void vAddProperty_stz(Stz* szPptName, Stz* szPptValue);
     void vAppendDupSubCards(Card* pCard_SubSet);
 
-    ePB  eBound(void);
-
     eCK  eCard(void);
     void vCard(eCK eCard);
     Stz* szCardNm(void);
@@ -234,15 +232,17 @@ namespace STORE
     Card* pFindParent(Card* pSubCard_arg);
     Card* pFindSubCard(eCK eCard);
 
-    i8      iGetProperty(i8 i_Property);
-    i8      iGetProperty(Stz* szPptName);
+    i8   iGetProperty(i8 i_Property);
+    i8   iGetProperty(Stz* szPptName);
     Object* pGetProperty(i8 i_Property);
     Object* pGetProperty(Stz* szPptName);
-    Stz*    szGetProperty(i8 i_Property);
-    Stz*    szGetProperty(Stz* szPptName);
-    Stz*    szGetPropertyNm(i8 i_Property);
-    Card*   pGetChild(i8 i_Child);
-    Card*   pGetChild(i8 i_Child, eCK& reCard);
+    Stz* szGetProperty(i8 i_Property);
+    Stz* szGetProperty(Stz* szPptName);
+    Stz* szGetPropertyNm(i8 i_Property);
+    Card* pGetChild(i8 i_Child);
+    Card* pGetChild(i8 i_Child, eCK& reCard);
+    void vGuage(void);
+    void vGuage(Card* pParentCard);
 
     bool bHasChildWithValue(Stz* szValue);
     bool bHasProperty(Stz* szPptName);
@@ -285,16 +285,11 @@ namespace STORE
     TagSet* pProperties(void);
     void vPropertiesEnsure(void);
 
-    void vRef(void);
-    void vRef(Card* pParentCard);
-    eRO  eRelOp(void);
-
     void vRemoveChild(Card* pCardRemove);
     void vRemoveSubCard(Card* pCardRemove);
     void vRenumberSubCards(Card* pParentCard);
     void vReplaceChildWithKids(Card* pChildCard);
     void vReplaceSubCard(Card* pSubCard, Card* pWithCard);
-
     i8   nRows(void);
     void vRows(i8 nRows);
 
@@ -302,15 +297,11 @@ namespace STORE
 
     eXK  eSendKind(void);
     void vSendKind(eXK eSendKind);
-   eYG  eStageTopo(void);
+    eYG  eStageTopo(void);
     void vStageTopo(eYG  eStageTopology);
-    StreamDef* pStreamDef(void);
-    void vStreamDef(StreamDef* pStreamDef);
 
     Table* pTable(void);
     void vTable(Table* pTable);
-    eTE  eTermEval(void);
-    char cTypeShort(void);
 
     void vTransferSubCards(Card* pCards);
     void vTransferFrom(Card* pCards, Card* pFrom,
@@ -327,7 +318,6 @@ namespace STORE
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   
-
 
     Card_As*            pSub_as(void);
     Card_CalcBool*      pSub_calcBool(void);

@@ -85,6 +85,33 @@ Card_Term::~Card_Term(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* evaluate bound                                                              */
+/*----------------------------------------------------------------------------*/
+ePB Card_Term::eBound(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  eRO eRelOp = this->eRelOp();
+
+  switch (eRelOp) {
+    case RO_LESS_THAN:     return PB_UBOUND;
+    case RO_LESS_EQUAL:    return PB_UBOUND;
+    case RO_EQUAL_TO:      return PB_EBOUND;
+    case RO_GREATER_EQUAL: return PB_LBOUND;
+    case RO_GREATER_THAN:  return PB_LBOUND;
+
+    default:
+      vTrace("%s(%lld): unexpected eRelOp %lld %s\n"_Stz
+          ,__func__
+          ,(i8)__LINE__
+          ,(i8)eRelOp
+          ,aRO[eRelOp]);
+      RASSERT(0);
+      break;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this atom an aggregate op?                                              */
 /*----------------------------------------------------------------------------*/
 bool Card_Term::bIsAggOp(void)
@@ -198,6 +225,53 @@ i8 Card_Term::iOrdinalIndexColNo(void)
   i8 i_Ord = StrLib::iGleanInt(szValue()->azChar());
 
   return i_Ord;
+}
+
+/*----------------------------------------------------------------------------*/
+/* evaluate relational op                                                     */
+/*----------------------------------------------------------------------------*/
+eRO Card_Term::eRelOp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Stz* szTerm = this->sz();
+
+  if (szTerm->bSame("<"_Stz))       return RO_LESS_THAN;
+  else if (szTerm->bSame("<="_Stz))      return RO_LESS_EQUAL;
+  else if (szTerm->bSame("="_Stz))       return RO_EQUAL_TO;
+  else if (szTerm->bSame("=="_Stz))      return RO_EQUAL_TO;
+  else if (szTerm->bSame("!="_Stz))      return RO_NOT_EQUAL;
+  else if (szTerm->bSame(">="_Stz))      return RO_GREATER_EQUAL;
+  else if (szTerm->bSame(">"_Stz))       return RO_GREATER_THAN;
+
+  else return RO_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* evaluate term                                                              */
+/*----------------------------------------------------------------------------*/
+eTE Card_Term::eTermEval(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Stz* szTerm = this->sz();
+
+  if (szTerm->bSame("and"_Stz))     return TE_AND;
+  else if (szTerm->bSame("as"_Stz))      return TE_AS;
+  else if (szTerm->bSame("boolean"_Stz)) return TE_BOOLEAN;
+  else if (szTerm->bSame("or"_Stz))      return TE_OR;
+  else if (szTerm->bSame("type"_Stz))    return TE_TYPE;
+
+  else if (szTerm->bSame("<"_Stz))       return TE_COMPARE;
+  else if (szTerm->bSame("<="_Stz))      return TE_COMPARE;
+  else if (szTerm->bSame("="_Stz))       return TE_COMPARE;
+  else if (szTerm->bSame("=="_Stz))      return TE_COMPARE;
+  else if (szTerm->bSame("!="_Stz))      return TE_COMPARE;
+  else if (szTerm->bSame("<>"_Stz))      return TE_COMPARE;
+  else if (szTerm->bSame(">="_Stz))      return TE_COMPARE;
+  else if (szTerm->bSame(">"_Stz))       return TE_COMPARE;
+
+  else return TE_OTHER;
 }
 
 

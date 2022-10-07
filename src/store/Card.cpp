@@ -1253,7 +1253,7 @@ void Card::vRenumberSubCards(Card* pParentCard)
 
   ListExoIter2_t<Card>* pSubCard_I = pNewIter();
 
-  vRef(pParentCard);
+  vGuage(pParentCard);
 
   i8 iSubCardNo = 0;
   while (pSubCard_I->bHasNext()) {
@@ -1265,7 +1265,7 @@ void Card::vRenumberSubCards(Card* pParentCard)
 
   delete pSubCard_I;
 
-  vRef();
+  vGuage();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1459,33 +1459,6 @@ void Card::vVisitAllSub(eCK eCard, std::function<bool(Card* pCard)> bfApply)
 /*----------------------------------------------------------------------------*/
 
 
-
-/*----------------------------------------------------------------------------*/
-/* evaluate bound                                                              */
-/*----------------------------------------------------------------------------*/
-ePB Card::eBound(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  eRO eRelOp = this->eRelOp();
-  
-  switch (eRelOp) {
-    case RO_LESS_THAN:     return PB_UBOUND;
-    case RO_LESS_EQUAL:    return PB_UBOUND;
-    case RO_EQUAL_TO:      return PB_EBOUND;
-    case RO_GREATER_EQUAL: return PB_LBOUND;
-    case RO_GREATER_THAN:  return PB_LBOUND;
-      
-    default:
-      vTrace("%s(%lld): unexpected eRelOp %lld %s\n"_Stz
-             ,__func__
-             ,(i8)__LINE__
-             ,(i8)eRelOp
-             ,aRO[eRelOp]);
-      RASSERT(0);
-      break;
-  }
-}
 
 /*----------------------------------------------------------------------------*/
 /* return pCard                                                               */
@@ -1730,7 +1703,7 @@ SubCardIter* Card::pNewSubCardIter(void)
 /*----------------------------------------------------------------------------*/
 /* set ref                                                                    */
 /*----------------------------------------------------------------------------*/
-void Card::vRef(void)
+void Card::vGuage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -1754,7 +1727,7 @@ void Card::vRef(void)
 /*----------------------------------------------------------------------------*/
 /* set ref                                                                    */
 /*----------------------------------------------------------------------------*/
-void Card::vRef(Card* pParentCard)
+void Card::vGuage(Card* pParentCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -1766,26 +1739,6 @@ void Card::vRef(Card* pParentCard)
   }
 
 //  vTrace("%s\n"_Stz,m_caGuage);
-}
-
-/*----------------------------------------------------------------------------*/
-/* evaluate relational op                                                     */
-/*----------------------------------------------------------------------------*/
-eRO Card::eRelOp(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Stz* szTerm = this->sz();
-  
-       if (szTerm->bSame("<"_Stz))       return RO_LESS_THAN;
-  else if (szTerm->bSame("<="_Stz))      return RO_LESS_EQUAL;
-  else if (szTerm->bSame("="_Stz))       return RO_EQUAL_TO;
-  else if (szTerm->bSame("=="_Stz))      return RO_EQUAL_TO;
-  else if (szTerm->bSame("!="_Stz))      return RO_NOT_EQUAL;
-  else if (szTerm->bSame(">="_Stz))      return RO_GREATER_EQUAL;
-  else if (szTerm->bSame(">"_Stz))       return RO_GREATER_THAN;
-  
-  else return RO_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1855,28 +1808,6 @@ void Card::vStageTopo(eYG  eStageTopo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get stream definition                                                      */
-/*----------------------------------------------------------------------------*/
-StreamDef* Card::pStreamDef(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  StreamDef* pStreamDef = _pStreamDef(pGetProperty("pStreamDef"_Stz));
-  
-  return pStreamDef;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set stream definition                                                      */
-/*----------------------------------------------------------------------------*/
-void Card::vStreamDef(StreamDef* pStreamDef)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  vAddProperty_ptr("pStreamDef"_Stz,pStreamDef);
-}
-
-/*----------------------------------------------------------------------------*/
 /* return table                                                               */
 /*----------------------------------------------------------------------------*/
 Table* Card::pTable(void)
@@ -1898,66 +1829,11 @@ void Card::vTable(Table* pTable)
   vAddProperty_ptr("pTable"_Stz,pTable);
 }
 
-/*----------------------------------------------------------------------------*/
-/* evaluate term                                                              */
-/*----------------------------------------------------------------------------*/
-eTE Card::eTermEval(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Stz* szTerm = this->sz();
-  
-       if (szTerm->bSame("and"_Stz))     return TE_AND;
-  else if (szTerm->bSame("as"_Stz))      return TE_AS;
-  else if (szTerm->bSame("boolean"_Stz)) return TE_BOOLEAN;
-  else if (szTerm->bSame("or"_Stz))      return TE_OR;
-  else if (szTerm->bSame("type"_Stz))    return TE_TYPE;
-  
-  else if (szTerm->bSame("<"_Stz))       return TE_COMPARE;
-  else if (szTerm->bSame("<="_Stz))      return TE_COMPARE;
-  else if (szTerm->bSame("="_Stz))       return TE_COMPARE;
-  else if (szTerm->bSame("=="_Stz))      return TE_COMPARE;
-  else if (szTerm->bSame("!="_Stz))      return TE_COMPARE;
-  else if (szTerm->bSame("<>"_Stz))      return TE_COMPARE;
-  else if (szTerm->bSame(">="_Stz))      return TE_COMPARE;
-  else if (szTerm->bSame(">"_Stz))       return TE_COMPARE;
-  
-  else return TE_OTHER;
-}
-
-/*----------------------------------------------------------------------------*/
-/* return typeShort                                                           */
-/*----------------------------------------------------------------------------*/
-char Card::cTypeShort(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  Stz* szType = szGetProperty("szType"_Stz);
-
-  RASSERT(szValue()->bSame(szType));
-
-  for (i8 i_CT = 0; i_CT < CT_ENUMS; i_CT++) {
-    if (szValue()->bSame(aCT[i_CT]))
-      return cCT_char[i_CT];
-  }
-
-  return cCT_char[CT_ENUMS];
-}
-
-
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
 
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
