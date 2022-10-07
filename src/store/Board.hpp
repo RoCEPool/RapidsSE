@@ -130,17 +130,13 @@ namespace STORE
     eBK          m_eBoard;
     eBT          m_eBoardType;
 
-    Bench*       m_pBench;
-
-    s32          m_sQueryNm;
-
     Optimiser*   m_pOptimiser;
-
-    CardRegs*    m_pCardRegs;
-
+    Bench*       m_pBench;
     Card_Board*  m_pCard_Board;
 
     b8           m_bBeenCued;
+
+    CardRegs*    m_pCardRegs;
 
   private:
     // must be last
