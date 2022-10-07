@@ -1720,28 +1720,6 @@ void Card::vRows(i8 nRows)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get send kind                                                              */
-/*----------------------------------------------------------------------------*/
-eXK Card::eSendKind(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  eXK eSendKind = (eXK)iGetProperty("eSendKind"_Stz);
-
-  return eSendKind;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set send kind                                                              */
-/*----------------------------------------------------------------------------*/
-void Card::vSendKind(eXK eSendKind)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  vAddProperty_int("eSendKind"_Stz,eSendKind);
-}
-
-/*----------------------------------------------------------------------------*/
 /* get stage topology                                                         */
 /*----------------------------------------------------------------------------*/
 eYG Card::eStageTopo(void)

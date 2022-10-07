@@ -590,9 +590,8 @@ Card* Dissector::pCard_Send(TagSet* pArgTags)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // eSendKind
-  
-  Card_SendKind* pCard_SendKind = new Card_SendKind(eSendKind);
-  pCard_Send->vAppend(pCard_SendKind);
+
+  pCard_Send->vAddProperty_int(C_CARD_SendKind,eSendKind);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

@@ -71,13 +71,8 @@ namespace STORE {
   class Card_LBound;
   class Card_Limit;
 
-  class Card_Map;
-  class Card_MapSet;
-  class Card_Mode;
-
   class Card_Stage;
 
-  class Card_On;
   class Card_Option;
   class Card_OrdAgg;
   class Card_ObyElist;
@@ -209,13 +204,12 @@ namespace STORE
 
     eCK  eCard(void);
     void vCard(eCK eCard);
+    Card* pCard(void);
+    void vCard(Card* pCard);
     Stz* szCardNm(void);
     i8   iCardNo(void);
     void vCardNo(i8 iCardNo);
     i8   nChildCards(void);
-
-    Card* pCard(void);
-    void vCard(Card* pCard);
     void vClearAllMarks(void);
 
     void vDeleteChildCard(eCK eCard);
@@ -289,9 +283,6 @@ namespace STORE
     void vRows(i8 nRows);
 
     Stz* sz(void);
-
-    eXK  eSendKind(void);
-    void vSendKind(eXK eSendKind);
     eYG  eStageTopo(void);
     void vStageTopo(eYG  eStageTopology);
 
