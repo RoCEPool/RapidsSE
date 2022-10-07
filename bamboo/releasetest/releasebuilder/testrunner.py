@@ -300,6 +300,11 @@ class InstanceRunner:
 
         name_tag = f"{C_INSTANCE_NAME_PREFIX}-{self.test_name.replace(' ', '-')}-"
 
+        suffix = C_CLOUD_INIT_LOG_PATH.suffix
+        cloudinit_dest_filename = f"{C_CLOUD_INIT_LOG_PATH.name.removesuffix(suffix)}-" \
+                                  f"{self.test_name.replace(' ', '-')}.txt"
+        cloudinit_dest = pathlib.Path(self.artifact_path / cloudinit_dest_filename)
+
         instance_ids, ip_addrs = ec2.start_instances(self.instance_type,
                                                      self.image_id,
                                                      str(self.cloudinit_path),
@@ -307,7 +312,9 @@ class InstanceRunner:
                                                      name_tag,
                                                      C_INSTANCE_START_TIMEOUT,
                                                      False,
-                                                     ctx=self.op_ctx)
+                                                     ctx=self.op_ctx,
+                                                     cloudinit_src=C_CLOUD_INIT_LOG_PATH,
+                                                     cloudinit_dest=cloudinit_dest)
 
         assert len(instance_ids) == num_instances
         assert len(ip_addrs) == num_instances
@@ -550,11 +557,12 @@ class InstanceRunner:
                       f"timed out after {e.timeout} seconds." \
                       f"\nStdout Output:\n{e.stdout}" \
                       f"\nStderr Output:\n{e.stderr}"
-                LOG.error(last_error)
 
                 if last_error is None:
                     last_error = errors.SshError(msg, e.stdout, e.stderr)
                     last_error.__cause__ = e
+
+                LOG.error(last_error)
                 # Keep trying other instances in this test
 
         if last_error is not None:

@@ -9,6 +9,7 @@ import botocore.exceptions
 import boto3
 
 import pyutils.errors as errors
+import pyutils.ssh as ssh
 
 # ---------- AWS Constants -------------
 C_REGION = "us-east-1"
@@ -120,7 +121,9 @@ def start_instances(instance_type: str,
                     timeout_sec: float,
                     use_spot_instances: bool,
                     tags: {} = None,
-                    ctx: str = "") -> ([str], [str]):
+                    ctx: str = "",
+                    cloudinit_src: pathlib.Path = None,
+                    cloudinit_dest: pathlib.Path = None) -> ([str], [str]):
     """
     Starts up AWS EC2 instances according to the hardware configuration
     and waits until they have booted and are ready to be used.
@@ -283,9 +286,10 @@ def start_instances(instance_type: str,
 
     # Wait for all of the instances to be usable
     try:
-        __wait_for_instances_to_be_ready(instance_ids, ip_addresses, timeout_sec, name_prefix, client, ctx)
+        __wait_for_instances_to_be_ready(instance_ids, ip_addresses, timeout_sec, name_prefix, client, ctx,
+                                         cloudinit_src, cloudinit_dest)
 
-    except (Exception,):
+    except (Exception,) as e:
         # Clean up, but try to ignore any errors in the process
         try:
             terminate_instances(instance_ids, ctx)
@@ -293,6 +297,8 @@ def start_instances(instance_type: str,
             pass
         except AssertionError:
             pass
+
+        raise e
 
     return instance_ids, ip_addresses
 
@@ -437,7 +443,8 @@ def __set_instance_names(instance_ids: [str], name_prefix: str, client, ctx: str
 
 
 def __wait_for_instances_to_be_ready(instance_ids: [str], ip_addresses: [str], timeout_sec: float,
-                                     name_prefix: str = None, client=None, ctx: str = ""):
+                                     name_prefix: str = None, client=None, ctx: str = "",
+                                     cloudinit_src: pathlib.Path = None, cloudinit_dest: pathlib.Path = None):
     """
     Waits for the set of instances to be runnable, SSH-able, and finished booting.
     If name_prefix and client are set then these instances are named when they are ready.
@@ -472,7 +479,8 @@ def __wait_for_instances_to_be_ready(instance_ids: [str], ip_addresses: [str], t
     # Now we need to wait for the machines to have completed the cloud-init script.
     time_left = end_time - current_time
     op_start = current_time
-    __wait_for_instances_to_finish_booting(instance_ids, ip_addresses, time_left, timeout_sec, ctx)
+    __wait_for_instances_to_finish_booting(instance_ids, ip_addresses, time_left, timeout_sec, ctx,
+                                           cloudinit_src, cloudinit_dest)
     current_time = time.time()
     time_left = end_time - current_time
     LOG.info(f"{ctx}All EC2 instances have completed running their cloud-init script in %.1f seconds",
@@ -631,9 +639,12 @@ def __wait_for_instances_to_accept_ssh(instance_ids: [str], ip_addresses: [str],
 
 
 def __wait_for_instances_to_finish_booting(instance_ids: [str], ip_addresses: [str], time_left: float,
-                                           total_time: float, ctx: str = ""):
+                                           total_time: float, ctx: str = "",
+                                           cloudinit_src: pathlib.Path = None, cloudinit_dest: pathlib.Path = None):
     """
     Waits for the newly started instances to complete their boot-up cloud-init script.
+    If cloudinit_src and cloudinit_dest are set then the cloud-init log file is copied
+    if the startup times out.
     Throws an errors.Ec2InstanceTimeoutError if the timeout is exceeded.
     """
 
@@ -688,6 +699,9 @@ def __wait_for_instances_to_finish_booting(instance_ids: [str], ip_addresses: [s
                   f"Last error message: {last_error}" if last_error is not None else ""
             LOG.error(msg)
 
+            if cloudinit_src is not None and cloudinit_dest is not None:
+                __copy_cloudinit_logs(ip_addresses, cloudinit_src, cloudinit_dest, ctx)
+
             # Terminate the machines here as we haven't passed the instance_ids back to the caller yet.
             try:
                 terminate_instances(instance_ids, ctx)
@@ -701,3 +715,35 @@ def __wait_for_instances_to_finish_booting(instance_ids: [str], ip_addresses: [s
         # Go on to the next host
 
     # All hosts are reachable over SSH!
+
+
+def __copy_cloudinit_logs(ip_addresses: [str], cloudinit_src: pathlib.Path, cloudinit_dest: pathlib.Path,
+                          ctx: str = ""):
+
+    LOG.info(f"{ctx} Trying to copy cloud-init scripts from the failed instances at {ip_addresses}")
+
+    for ip in ip_addresses:
+        # Add "-<ip_address>" into the filename so it doesn't conflict
+        suffix = cloudinit_dest.suffix
+        dest_filename = f"{cloudinit_dest.name.removesuffix(suffix)}" \
+                        f"-{ip}{suffix}"
+
+        src = f"{ip}:{str(cloudinit_src)}"
+        dest = str(cloudinit_dest.parent / dest_filename)
+
+        LOG.debug(f"About to collect cloud-init logs from {src} to {dest}")
+
+        try:
+            ssh.run_scp(src, dest, 30, ctx=ctx)
+
+        except subprocess.TimeoutExpired as e:
+            msg = f"{ctx}: Collecting of cloud-init logs from the machine at {ip} " \
+                  f"timed out after {e.timeout} seconds." \
+                  f"\nStdout Output:\n{e.stdout}" \
+                  f"\nStderr Output:\n{e.stderr}"
+            LOG.error(msg)
+            # Keep trying other instances in this test
+
+        except errors.SshError as e:
+            LOG.error(e)
+            # Keep trying other instances in this test
