@@ -151,10 +151,7 @@ namespace STORE
     CardSet(void);
    ~CardSet(void) noexcept(false);
 
-    Card* pGetChild(i8 i_Child);
-    Card* pGetChild(i8 i_Child, eCK& reCard);
 
-    void vRemoveSubCards(eCK eCard);
   };
 
   typedef ListExoIter_t<Card> SubCardIter;
@@ -255,6 +252,8 @@ namespace STORE
     Stz*    szGetProperty(i8 i_Property);
     Stz*    szGetProperty(Stz* szPptName);
     Stz*    szGetPropertyNm(i8 i_Property);
+    Card*   pGetChild(i8 i_Child);
+    Card*   pGetChild(i8 i_Child, eCK& reCard);
 
     bool bHasChildWithValue(Stz* szValue);
     bool bHasEBound(void);

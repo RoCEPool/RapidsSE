@@ -31,50 +31,6 @@ CardSet::~CardSet(void) noexcept(false)
 }
 
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card* CardSet::pGetChild(i8 i_Child)
-{
-  Card* pCard = pGet(i_Child);
-  return pCard;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card* CardSet::pGetChild(i8 i_Child, eCK& reCard)
-{
-  Card* pCard = pGet(i_Child);
-  
-  if (pCard)
-    reCard = pCard->eCard();
-  else
-    reCard = CK_NONE;
-  
-  return pCard;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void CardSet::vRemoveSubCards(eCK eCard)
-{
-  //_precondition_(_ADDRESS_,_FOOTER_);
-  
-  i8 nSubCards = this->nItems();
-  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card* pSubCard = pGetChild(i_Child);
-    if (! pSubCard->bIsCard(eCard))
-      continue;
-    
-    vRemove(pSubCard);
-    i_Child--;
-    nSubCards--;
-  }
-}
-
-
 
 /*============================================================================*/
 /* Card.cpp -- Abstract Card                                                  */
@@ -863,6 +819,30 @@ Stz* Card::szGetPropertyNm(i8 i_Property)
   Stz* szName = m_pProperties->szName(i_Property);
   
   return szName;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card* Card::pGetChild(i8 i_Child)
+{
+  Card* pCard = pGet(i_Child);
+  return pCard;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card* Card::pGetChild(i8 i_Child, eCK& reCard)
+{
+  Card* pCard = pGet(i_Child);
+
+  if (pCard)
+    reCard = pCard->eCard();
+  else
+    reCard = CK_NONE;
+
+  return pCard;
 }
 
 /*----------------------------------------------------------------------------*/
