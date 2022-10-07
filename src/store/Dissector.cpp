@@ -286,12 +286,8 @@ Card* Dissector::pCard_Debug(TagSet* pArgTags)
     
   Stz* szOption = szArgCheckLast(pArgTags,0);
   Card_Debug* pCard_Debug = new Card_Debug;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // iOption
-  
-  Card_Option* pCard_Option = new Card_Option(szOption);
-  pCard_Debug->vAppend(pCard_Option);
+
+  pCard_Debug->vAddProperty_stz(C_CARD_DebugOption,szOption);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

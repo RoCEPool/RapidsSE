@@ -71,9 +71,6 @@ namespace STORE {
   class Card_LBound;
   class Card_Limit;
 
-  class Card_Stage;
-
-  class Card_Option;
   class Card_OrdAgg;
   class Card_ObyElist;
 
@@ -91,7 +88,6 @@ namespace STORE {
   class Card_Scan;
   class Card_ScanPred;
   class Card_Send;
-  class Card_SendKind;
   class Card_Sort;
   class Card_Stage;
   class Card_StageTopo;
@@ -115,11 +111,10 @@ static Stz* C_CARD_Card         = "pCard"_Stz;
 static Stz* C_CARD_Column       = "pColumn"_Stz;
 static Stz* C_CARD_Column1      = "pColumn1"_Stz;
 static Stz* C_CARD_Column2      = "pColumn2"_Stz;
+static Stz* C_CARD_DebugOption  = "szDebugOption"_Stz;
 static Stz* C_CARD_EBound       = "EBound"_Stz;
 static Stz* C_CARD_Index        = "pIndex"_Stz;
 static Stz* C_CARD_LBound       = "LBound"_Stz;
-static Stz* C_CARD_MapBack      = "szMapBack"_Stz;
-static Stz* C_CARD_MapFrom      = "szMapFrom"_Stz;
 static Stz* C_CARD_Rank         = "iRank"_Stz;
 static Stz* C_CARD_Rows         = "nRows"_Stz;
 static Stz* C_CARD_SendKind     = "eSendKind"_Stz;
