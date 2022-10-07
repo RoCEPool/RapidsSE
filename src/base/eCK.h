@@ -14,6 +14,8 @@ enum eCK // card kind
   /* */ CK_AGGREGATES,
   /* */ CK_AS,
 
+  /* */ CK_BOARD,
+
   /* */ CK_CALC,
   /* */ CK_CALCBOOL,
   /* */ CK_CANDINDEX,
@@ -123,6 +125,8 @@ static Stz* aCK[]
   /* */ "CK_AGGREGATES"_Stz,   // CK_AGGREGATES
   /* */ "CK_AS"_Stz,           // CK_AS
 
+  /* */ "CK_BOARD"_Stz,        // CK_BOARD
+
   /* */ "CK_CALC"_Stz,         // CK_CALC
   /* */ "CK_CALCBOOL"_Stz,     // CK_CALCBOOL
   /* */ "CK_CANDINDEX"_Stz,    // CK_CANDINDEX
@@ -231,6 +235,8 @@ static Stz* aCK_short[]
   /* */ "aggreg"_Stz,          // CK_AGGREG
   /* */ "aggregates"_Stz,      // CK_AGGREGATES
   /* */ "as"_Stz,              // CK_AS
+
+  /* */ "board"_Stz,           // CK_BOARD
 
   /* */ "calc"_Stz,            // CK_CALC
   /* */ "calcBool"_Stz,        // CK_CALCBOOL

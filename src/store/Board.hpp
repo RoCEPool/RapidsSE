@@ -18,6 +18,8 @@
 #include "Card_Aggregates.hpp"
 #include "Card_As.hpp"
 
+#include "Card_Board.hpp"
+
 #include "Card_Calc.hpp"
 #include "Card_CalcBool.hpp"
 #include "Card_CandIndex.hpp"
