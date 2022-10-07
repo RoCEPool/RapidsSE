@@ -19,8 +19,10 @@ namespace STORE
     Card_Term(Column* pColumn);
    ~Card_Term(void) noexcept(false);
 
+    bool bIsAggOp(void);
     bool bIsOrdinalIndexTerm(void);
     bool bIsOrdinalStreamTerm(void);
+    bool bIsSeparator(void);
 
     i8   iOrdinalStreamColNo(void);
     i8   iOrdinalIndexColNo(void);

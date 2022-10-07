@@ -90,7 +90,7 @@ void Card_IndexPtr::vIndexPtrPrint(Ribbon* pRibbon, i8 iDepth)
   pRibbon->vSprintRight(" %lld buffers"_Stz,nBuffers);
   pRibbon->vSprintRight(" %lld entries"_Stz,nEntries);
 
-  //vPrintCardProperties(pRibbon,iDepth);
+  //vPrintProperties(pRibbon,iDepth);
 }
 
 

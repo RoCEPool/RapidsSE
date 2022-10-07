@@ -58,12 +58,12 @@ void Card_CardPtr::vCardPtrPrint(Ribbon* pRibbon, i8 iDepth)
   if (pRibbon->iArea())
     return;
 
-  pCard->vPrintCardProperties(pRibbon, iDepth);
+  pCard->vPrintProperties(pRibbon, iDepth);
 
   SubCardIter* pSubCardIter = pCard->pNewSubCardIter();
   while (pSubCardIter->bHasNext()) {
     Card *pSubCard = pSubCardIter->pNext();
-    pSubCard->vPrintCardProperties(pRibbon, iDepth + 1);
+    pSubCard->vPrintProperties(pRibbon, iDepth + 1);
   }
   delete pSubCardIter;
 }

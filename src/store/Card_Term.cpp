@@ -85,6 +85,29 @@ Card_Term::~Card_Term(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* is this atom an aggregate op?                                              */
+/*----------------------------------------------------------------------------*/
+bool Card_Term::bIsAggOp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  //Stz* szTerm = szGetProperty("szTerm"_Stz);
+
+  //RASSERT(szValue()->bSame(szTerm));
+
+  Stz* szTerm = szValue();
+  if (szTerm->bSame("avg"_Stz))      return true;
+  else if (szTerm->bSame("count"_Stz))    return true;
+  else if (szTerm->bSame("countAll"_Stz)) return true;
+  else if (szTerm->bSame("max"_Stz))      return true;
+  else if (szTerm->bSame("min"_Stz))      return true;
+//  else if (szTerm->bSame("stddev"_Stz))   return true;
+  else if (szTerm->bSame("sum"_Stz))      return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is atom a column ordinal?                                                  */
 /*----------------------------------------------------------------------------*/
 bool Card_Term::bIsOrdinalStreamTerm(void)
@@ -126,6 +149,24 @@ bool Card_Term::bIsOrdinalIndexTerm(void)
   else
     return false;
 }
+
+/*----------------------------------------------------------------------------*/
+/* is this atom an separator?                                                 */
+/*----------------------------------------------------------------------------*/
+bool Card_Term::bIsSeparator(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  //Stz* szTerm = szGetProperty("szTerm"_Stz);
+
+  //RASSERT(szValue()->bSame(szTerm));
+
+  if (szValue()->bSame(","_Stz))
+    return true;
+  else
+    return false;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* get ordinal column value                                                   */

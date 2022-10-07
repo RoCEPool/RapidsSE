@@ -215,13 +215,10 @@ namespace STORE
     i8   iCardNo(void);
     void vCardNo(i8 iCardNo);
     i8   nChildCards(void);
-    void vCutSubCard(Card* pSubCard);
 
     Card* pCard(void);
     void vCard(Card* pCard);
     void vClearAllMarks(void);
-    void vConcatTerms(Stz* szTerms);
-    void vConcatTerms(Stz* szTerms, i8 i_From, i8 i_Till=C_UNKNOWN);
 
     void vDeleteChildCard(eCK eCard);
     void vDeleteProperty(Stz* szPptName);
@@ -230,8 +227,6 @@ namespace STORE
     Card* pDupCardAndSubCards(void);
     Card_SubSet* pDupSubCards(void);
 
-    void vEachSubCard(std::function<void(Card* pCard)> f_vClosure,
-                      eCK eCard=CK_NONE);
     bool bEquivalent(Card* pCard_arg);
 
     Card* pFindChild(eCK eCard);
@@ -250,24 +245,16 @@ namespace STORE
     Card*   pGetChild(i8 i_Child, eCK& reCard);
 
     bool bHasChildWithValue(Stz* szValue);
-    bool bHasEBound(void);
-    void vHasEBound(bool bHasEBound);
-    bool bHasLBound(void);
-    void vHasLBound(bool bHasLBound);
-    bool bHasProperty(Stz* szName);
-    bool bHasSubCard(Card* pGivenCard);
-    bool bHasSubCard(Card* pGivenCard, Card*& rpParentCard);
-    bool bHasUBound(void);
-    void vHasUBound(bool bHasUBound);
+    bool bHasProperty(Stz* szPptName);
+    bool bHasSubCard(Card* pSubCard);
+    bool bHasSubCard(Card* pSubCard, Card*& rpParentCard);
     bool bHasValue(void);
 
     Index* pIndex(void);
     void vIndex(Index* pIndex);
-    bool bIsAggOp(void);
     bool bIsCard(eCK eCard);
     bool bIsPred(void);
     bool bIsSame(Stz* szArg);
-    bool bIsSeparator(void);
 
     Stz* szMapBack(void);
     void vMapBack(Stz* szMapBack);
@@ -287,12 +274,12 @@ namespace STORE
     void vPrintCard(Ribbon* pRibbon, i8 iDepth, bool& rbPrune);
     void vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth);
     void vPrintCard_bySettings(Ribbon* pRibbon, i8 iDepth);
-    void vPrintCardName(Ribbon* pRibbon, i8 iDepth);
-    void vPrintCardNameValue(Ribbon* pRibbon, i8 iDepth);
-    void vPrintCardProperties(Ribbon* pRibbon, i8 iDepth);
-    void vPrintCardValue(Ribbon* pRibbon, i8 iDepth);
-    void vPrintCardSubShort(Ribbon* pRibbon, i8 iDepth);
     void vPrintHeader(Ribbon* pRibbon);
+    void vPrintName(Ribbon* pRibbon, i8 iDepth);
+    void vPrintNameValue(Ribbon* pRibbon, i8 iDepth);
+    void vPrintProperties(Ribbon* pRibbon, i8 iDepth);
+    void vPrintValue(Ribbon* pRibbon, i8 iDepth);
+    void vPrintSubShort(Ribbon* pRibbon, i8 iDepth);
     i8   nProperties(void);
     eTN  eProperty(i8 i_Property);
     TagSet* pProperties(void);
@@ -322,10 +309,6 @@ namespace STORE
 
     Table* pTable(void);
     void vTable(Table* pTable);
-    Table* pTable1(void);
-    void vTable1(Table* pTable1);
-    Table* pTable2(void);
-    void vTable2(Table* pTable2);
     eTE  eTermEval(void);
     char cTypeShort(void);
 
