@@ -816,12 +816,7 @@ void Weaver::vRpnLimit(Stz* szRpnExpr, Card_Limit*  pCard_Limit)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
-  Card_Rows* pCard_Rows =
-          _pCard_Rows(pCard_Limit->pFindSubCard(CK_ROWS));
-
-  i8 nRows = pCard_Rows->nRows();
-
-  szRpnExpr->vCatSprint(" %lld"_Stz,nRows);
+  szRpnExpr->vCatSprint(" %lls"_Stz,pCard_Limit->sz());
 }
 
 /*----------------------------------------------------------------------------*/

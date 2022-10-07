@@ -451,13 +451,11 @@ Card* Dissector::pCard_Limit(TagSet* pArgTags)
   pArgTags->vDumpSet(true);
 
   i8 nRows = iArgCheckLast(pArgTags,0);
-  Card_Limit* pCard_Limit = new Card_Limit;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // nRows
-  
-  Card_Rows* pCard_Rows = new Card_Rows(nRows);
-  pCard_Limit->vAppend(pCard_Rows);
+
+  s32 sRows;
+  sRows.vSprint("%lld"_Stz,nRows);
+
+  Card_Limit* pCard_Limit = new Card_Limit(sRows);
 
   return pCard_Limit;
 }

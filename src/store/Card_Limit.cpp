@@ -17,8 +17,8 @@ __bIsCard(STORE,Card_Limit,CK_LIMIT)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Limit::Card_Limit(void)
-: Card(CK_LIMIT)
+Card_Limit::Card_Limit(Stz* szRows)
+: Card(CK_LIMIT,szRows)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   

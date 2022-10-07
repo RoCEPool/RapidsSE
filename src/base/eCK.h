@@ -77,7 +77,6 @@ enum eCK // card kind
   /* */ CK_PTNDJOINSET,
 
   /* */ CK_RBOUND,
-  /* */ CK_ROWS,
   /* */ CK_RPNTERMS,
 
   /* */ CK_SBYELIST,
@@ -184,7 +183,6 @@ static Stz* aCK[]
   /* */ "CK_PTNDJOINSET"_Stz,  // CK_PTNDJOINSET
 
   /* */ "CK_RBOUND"_Stz,       // CK_RBOUND
-  /* */ "CK_ROWS"_Stz,         // CK_ROWS
   /* */ "CK_RPNTERMS"_Stz,     // CK_RPNTERMS
 
   /* */ "CK_SBYELIST"_Stz,     // CK_SBYELIST
@@ -291,7 +289,6 @@ static Stz* aCK_short[]
   /* */ "ptndJoinSet"_Stz,     // CK_PTNDJOINSET
 
   /* */ "rbound"_Stz,          // CK_RBOUND
-  /* */ "rows"_Stz,            // CK_ROWS
   /* */ "rpnTerms"_Stz,        // CK_RPNTERMS
 
   /* */ "sbyElist"_Stz,        // CK_SBYELIST

@@ -274,8 +274,6 @@ namespace STORE
     void vRenumberSubCards(Card* pParentCard);
     void vReplaceChildWithKids(Card* pChildCard);
     void vReplaceSubCard(Card* pSubCard, Card* pWithCard);
-    i8   nRows(void);
-    void vRows(i8 nRows);
 
     Stz* sz(void);
     eYG  eStageTopo(void);
