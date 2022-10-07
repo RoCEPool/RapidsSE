@@ -17,6 +17,9 @@ namespace STORE
     Card_CardPtr(Card* pCard);
    ~Card_CardPtr(void) noexcept(false);
 
+    Card* pCard(void);
+    void vCard(Card* pCard);
+
     void vCardPtrPrint(Ribbon* pRibbon, i8 iDepth);
   };
 

@@ -194,8 +194,6 @@ namespace STORE
 
     eCK  eCard(void);
     void vCard(eCK eCard);
-    Card* pCard(void);
-    void vCard(Card* pCard);
     Stz* szCardNm(void);
     i8   iCardNo(void);
     void vCardNo(i8 iCardNo);

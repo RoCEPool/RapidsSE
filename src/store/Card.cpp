@@ -334,28 +334,6 @@ void Card::vCard(eCK eCard)
 }
 
 /*----------------------------------------------------------------------------*/
-/* return pCard                                                               */
-/*----------------------------------------------------------------------------*/
-Card* Card::pCard(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card* pCard = _pCard(pGetProperty("pCard"_Stz));
-
-  return pCard;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set pCard                                                                  */
-/*----------------------------------------------------------------------------*/
-void Card::vCard(Card* pCard)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  vAddProperty_ptr("pCard"_Stz,pCard);
-}
-
-/*----------------------------------------------------------------------------*/
 /* clear all marks                                                            */
 /*----------------------------------------------------------------------------*/
 void Card::vClearAllMarks(void)

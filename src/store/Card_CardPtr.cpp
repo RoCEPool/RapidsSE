@@ -44,6 +44,29 @@ Card_CardPtr::~Card_CardPtr(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* return pCard                                                               */
+/*----------------------------------------------------------------------------*/
+Card* Card_CardPtr::pCard(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card* pCard = _pCard(pGetProperty(C_CARD_Card));
+
+  return pCard;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set pCard                                                                  */
+/*----------------------------------------------------------------------------*/
+void Card_CardPtr::vCard(Card* pCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  vAddProperty_ptr(C_CARD_Card,pCard);
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* print {card}                                                               */
 /*----------------------------------------------------------------------------*/
 void Card_CardPtr::vCardPtrPrint(Ribbon* pRibbon, i8 iDepth)
