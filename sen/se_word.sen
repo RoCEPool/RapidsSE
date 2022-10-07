@@ -118,7 +118,7 @@
 /*----------------------------------------------------------------------------*/
 /* get a sorted arrangement of all words which are of given category enum (eWC)*/
 /*----------------------------------------------------------------------------*/
-: arrange::wordsOfCatgWc params| eCatg |
+: arrange::wordsOfCatg params| eCatg |
 
   arrange::new locals| pArrange |
 

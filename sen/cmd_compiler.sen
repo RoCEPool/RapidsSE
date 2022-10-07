@@ -240,7 +240,7 @@
 
   //find: cmdSyntax: word::ofCatg
 
-  WC_CMDSYNTAX arrange::wordsOfCatgWc locals| pProcSet |
+  WC_CMDSYNTAX arrange::wordsOfCatg locals| pProcSet |
 
   0 locals| pwCmdSyntax |
   0 locals| sCmdSyntax  |
@@ -318,7 +318,7 @@
   0 locals| pwCmdTags  |
   0 locals| pCmdTagSet |
 
-  WC_CMDTAGS arrange::wordsOfCatgWc locals| pProcSet |
+  WC_CMDTAGS arrange::wordsOfCatg locals| pProcSet |
 
   nullptr locals| pCursor |
   begin
@@ -373,7 +373,7 @@
 /*----------------------------------------------------------------------------*/
 : procs \prompt
 
-  WC_PROCEDURE arrange::wordsOfCatgWc locals| pProcSet |
+  WC_PROCEDURE arrange::wordsOfCatg locals| pProcSet |
 
   nullptr locals| pCursor |
   begin
@@ -446,7 +446,7 @@
 /*----------------------------------------------------------------------------*/
 : procsToFiles \prompt
 
-  WC_PROCEDURE arrange::wordsOfCatgWc locals| pProcSet |
+  WC_PROCEDURE arrange::wordsOfCatg locals| pProcSet |
 
   nullptr locals| pCursor |
   nullptr locals| pTags   |
