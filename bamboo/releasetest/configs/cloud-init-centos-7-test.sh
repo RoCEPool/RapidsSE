@@ -300,6 +300,7 @@ yum update -y
 
 if [ "${OS_DIST}" = "${CENTOS7}" ]; then
   yum install -y epel-release
+  echo "exclude=mirror.es.its.nyu.edu" >> /etc/yum/pluginconf.d/fastestmirror.conf  # mirror doesn't respond
   yum install -y https://packages.endpointdev.com/rhel/7/os/x86_64/endpoint-repo.x86_64.rpm
 fi
 
