@@ -153,7 +153,7 @@ void Weaver::vStageNext(Card_Stage* pCard_Stage)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
   
-  eYG eStageTopo = pCard_Stage->pFindSubCard(CK_STAGETOPO)->eStageTopo();
+  eYG eStageTopo = pCard_Stage->pSub_stageTopo()->eStageTopo();
   
   vTabOp();  vConcat("next"_Stz);  vEolOp();
 

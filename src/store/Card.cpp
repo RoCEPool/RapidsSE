@@ -334,6 +334,47 @@ void Card::vCard(eCK eCard)
 }
 
 /*----------------------------------------------------------------------------*/
+/* return pCard                                                               */
+/*----------------------------------------------------------------------------*/
+Card* Card::pCard(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card* pCard = _pCard(pGetProperty("pCard"_Stz));
+
+  return pCard;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set pCard                                                                  */
+/*----------------------------------------------------------------------------*/
+void Card::vCard(Card* pCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  vAddProperty_ptr("pCard"_Stz,pCard);
+}
+
+/*----------------------------------------------------------------------------*/
+/* clear all marks                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vClearAllMarks(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vMark1(' ');
+  vMark2(' ');
+
+  i8 nSubCards = this->nChildCards();
+  for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
+    Card *pSubCard = pGetChild(i_Sub);
+
+    pSubCard->vClearAllMarks();
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* get card no                                                                */
 /*----------------------------------------------------------------------------*/
 i8 Card::iCardNo(void)
@@ -784,6 +825,47 @@ Card* Card::pGetChild(i8 i_Child, eCK& reCard)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set guage                                                                  */
+/*----------------------------------------------------------------------------*/
+void Card::vGuage(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  s4K sPretty;
+
+  sPretty = aCK[m_eCard];
+
+  if (m_pProperties) {
+    s4K sProperties;
+    m_pProperties->vToString(sProperties,true);
+    sPretty.vConcat(": "_Stz);
+    sPretty.vConcat(sProperties);
+  }
+
+  strcat(m_caGuage, " ");
+  strcat(m_caGuage, sPretty.azChar());
+
+  //  vTrace("%s\n"_Stz,m_caGuage);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set guage                                                                  */
+/*----------------------------------------------------------------------------*/
+void Card::vGuage(Card* pParentCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (pParentCard) {
+    sprintf(m_caGuage, "%s.%lld", pParentCard->m_caGuage, m_iCardNo);
+  }
+  else {
+    sprintf(m_caGuage, "%lld", m_iCardNo);
+  }
+
+//  vTrace("%s\n"_Stz,m_caGuage);
+}
+
+/*----------------------------------------------------------------------------*/
 /* does card have the EBound property ?                                       */
 /*----------------------------------------------------------------------------*/
 bool Card::bHasChildWithValue(Stz* szValue)
@@ -873,6 +955,161 @@ bool Card::bHasValue(void)
   return false;
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* return table                                                               */
+/*----------------------------------------------------------------------------*/
+Index* Card::pIndex(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Index* pIndex = _pIndex(pGetProperty("pIndex"_Stz));
+
+  return pIndex;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set index                                                                  */
+/*----------------------------------------------------------------------------*/
+void Card::vIndex(Index* pIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  vAddProperty_ptr("pIndex"_Stz,pIndex);
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this card the given kind?                                               */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsCard(eCK eCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (eCard == this->eCard())
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this card the given kind?                                               */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsPred(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  eCK eCard = this->eCard();
+
+  switch (eCard) {
+    case CK_EXPRBOOL:
+    case CK_PREDOR:
+    case CK_PREDAND:
+      return true;
+
+    default: return false;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this atom same as argument?                                             */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsSame(Stz* szArg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  //Stz* szTerm = szGetProperty("szTerm"_Stz);
+
+  //RASSERT(szValue()->bSame(szTerm));
+
+  if (szValue()->bSame(szArg))
+    return true;
+  else
+    return false;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* get mark 1                                                                 */
+/*----------------------------------------------------------------------------*/
+char Card::cMark1(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  return m_cMark1;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set mark 1                                                                 */
+/*----------------------------------------------------------------------------*/
+void Card::vMark1(char cMark1)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  m_cMark1 = cMark1;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get mark 2                                                                 */
+/*----------------------------------------------------------------------------*/
+char Card::cMark2(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  return m_cMark2;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get mark 2                                                                 */
+/*----------------------------------------------------------------------------*/
+i8 Card::iMark2(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  return m_cMark2 - '0';
+}
+
+/*----------------------------------------------------------------------------*/
+/* set mark 2                                                                 */
+/*----------------------------------------------------------------------------*/
+void Card::vMark2(i8 iMark2)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  m_cMark2 = iMark2 + '0';
+}
+
+/*----------------------------------------------------------------------------*/
+/* set mark 2                                                                 */
+/*----------------------------------------------------------------------------*/
+void Card::vMark2(char cMark2)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  m_cMark2 = cMark2;
+}
+
+/*----------------------------------------------------------------------------*/
+/* move given to child to be last child                                       */
+/*----------------------------------------------------------------------------*/
+void Card::vMoveToLastChild(Card* pChildCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  vRemoveChild(pChildCard);
+  vAppend(pChildCard);
+}
+
+/*----------------------------------------------------------------------------*/
+/* new a card iterator                                                        */
+/*----------------------------------------------------------------------------*/
+SubCardIter* Card::pNewSubCardIter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  SubCardIter* pCardIter = (SubCardIter*)pNewIter();
+
+  return pCardIter;
+}
 
 /*----------------------------------------------------------------------------*/
 /* print                                                                      */
@@ -1449,277 +1686,8 @@ void Card::vVisitAllSub(eCK eCard, std::function<bool(Card* pCard)> bfApply)
   }
 }
 
-/*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-
 
 /*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-
-
-/*----------------------------------------------------------------------------*/
-/* return pCard                                                               */
-/*----------------------------------------------------------------------------*/
-Card* Card::pCard(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card* pCard = _pCard(pGetProperty("pCard"_Stz));
-
-  return pCard;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set pCard                                                                  */
-/*----------------------------------------------------------------------------*/
-void Card::vCard(Card* pCard)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  vAddProperty_ptr("pCard"_Stz,pCard);
-}
-
-/*----------------------------------------------------------------------------*/
-/* clear all marks                                                            */
-/*----------------------------------------------------------------------------*/
-void Card::vClearAllMarks(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  vMark1(' ');
-  vMark2(' ');
-
-  i8 nSubCards = this->nChildCards();
-  for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
-    Card *pSubCard = pGetChild(i_Sub);
-
-    pSubCard->vClearAllMarks();
-  }
-
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* return table                                                               */
-/*----------------------------------------------------------------------------*/
-Index* Card::pIndex(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  Index* pIndex = _pIndex(pGetProperty("pIndex"_Stz));
-
-  return pIndex;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set index                                                                  */
-/*----------------------------------------------------------------------------*/
-void Card::vIndex(Index* pIndex)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  vAddProperty_ptr("pIndex"_Stz,pIndex);
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this card the given kind?                                               */
-/*----------------------------------------------------------------------------*/
-bool Card::bIsCard(eCK eCard)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (eCard == this->eCard())
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this card the given kind?                                               */
-/*----------------------------------------------------------------------------*/
-bool Card::bIsPred(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  eCK eCard = this->eCard();
-  
-  switch (eCard) {
-    case CK_EXPRBOOL:
-    case CK_PREDOR:
-    case CK_PREDAND:
-      return true;
-      
-    default: return false;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this atom same as argument?                                             */
-/*----------------------------------------------------------------------------*/
-bool Card::bIsSame(Stz* szArg)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  //Stz* szTerm = szGetProperty("szTerm"_Stz);
-
-  //RASSERT(szValue()->bSame(szTerm));
-
-  if (szValue()->bSame(szArg))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get mark 1                                                                 */
-/*----------------------------------------------------------------------------*/
-char Card::cMark1(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  return m_cMark1;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set mark 1                                                                 */
-/*----------------------------------------------------------------------------*/
-void Card::vMark1(char cMark1)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  m_cMark1 = cMark1;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get mark 2                                                                 */
-/*----------------------------------------------------------------------------*/
-char Card::cMark2(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  return m_cMark2;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get mark 2                                                                 */
-/*----------------------------------------------------------------------------*/
-i8 Card::iMark2(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  return m_cMark2 - '0';
-}
-
-/*----------------------------------------------------------------------------*/
-/* set mark 2                                                                 */
-/*----------------------------------------------------------------------------*/
-void Card::vMark2(i8 iMark2)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  m_cMark2 = iMark2 + '0';
-}
-
-/*----------------------------------------------------------------------------*/
-/* set mark 2                                                                 */
-/*----------------------------------------------------------------------------*/
-void Card::vMark2(char cMark2)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  m_cMark2 = cMark2;
-}
-
-/*----------------------------------------------------------------------------*/
-/* move given to child to be last child                                       */
-/*----------------------------------------------------------------------------*/
-void Card::vMoveToLastChild(Card* pChildCard)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  vRemoveChild(pChildCard);
-  vAppend(pChildCard);
-}
-
-/*----------------------------------------------------------------------------*/
-/* new a card iterator                                                        */
-/*----------------------------------------------------------------------------*/
-SubCardIter* Card::pNewSubCardIter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  SubCardIter* pCardIter = (SubCardIter*)pNewIter();
-
-  return pCardIter;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set ref                                                                    */
-/*----------------------------------------------------------------------------*/
-void Card::vGuage(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  s4K sPretty;
-
-  sPretty = aCK[m_eCard];
-
-  if (m_pProperties) {
-    s4K sProperties;
-    m_pProperties->vToString(sProperties,true);
-    sPretty.vConcat(": "_Stz);
-    sPretty.vConcat(sProperties);
-  }
-
-  strcat(m_caGuage, " ");
-  strcat(m_caGuage, sPretty.azChar());
-
-  //  vTrace("%s\n"_Stz,m_caGuage);
-}
-
-/*----------------------------------------------------------------------------*/
-/* set ref                                                                    */
-/*----------------------------------------------------------------------------*/
-void Card::vGuage(Card* pParentCard)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (pParentCard) {
-    sprintf(m_caGuage, "%s.%lld", pParentCard->m_caGuage, m_iCardNo);
-  }
-  else {
-    sprintf(m_caGuage, "%lld", m_iCardNo);
-  }
-
-//  vTrace("%s\n"_Stz,m_caGuage);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get stage topology                                                         */
-/*----------------------------------------------------------------------------*/
-eYG Card::eStageTopo(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  eYG eStageTopo = (eYG)iGetProperty("eStageTopo"_Stz);
-
-  return eStageTopo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set stage topology                                                         */
-/*----------------------------------------------------------------------------*/
-void Card::vStageTopo(eYG  eStageTopo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  vAddProperty_int("eStageTopo"_Stz,eStageTopo);
-}
-
-
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

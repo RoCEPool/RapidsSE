@@ -20,13 +20,10 @@
 #include "ListExo2_t.hpp"
 
 
-namespace STORE {
-  class Board;
+namespace STORE
+{
   class Card;
-  class Card_SubSet;
-}
 
-namespace STORE {
   class Card_AbsJoin;
   class Card_AggElist;
   class Card_AggLevel;
@@ -53,7 +50,6 @@ namespace STORE {
   class Card_Filter;
 
   class Card_GbyElist;
-  class Card_Generate;
 
   class Card_Hash;
   class Card_Having;
@@ -81,7 +77,6 @@ namespace STORE {
   class Card_ProjElist;
 
   class Card_RBound;
-  class Card_Rows;
   class Card_RpnTerms;
 
   class Card_SbyElist;
@@ -276,8 +271,6 @@ namespace STORE
     void vReplaceSubCard(Card* pSubCard, Card* pWithCard);
 
     Stz* sz(void);
-    eYG  eStageTopo(void);
-    void vStageTopo(eYG  eStageTopology);
 
     void vTransferSubCards(Card* pCards);
     void vTransferFrom(Card* pCards, Card* pFrom,
@@ -322,7 +315,6 @@ namespace STORE
   protected:
     Footer* aFooter(void);
   };
-
 
   Card* _pCard(void* aAddr);
 }
