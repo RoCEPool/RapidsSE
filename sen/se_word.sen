@@ -37,7 +37,7 @@
 : word.show params| pWord |
 
   pWord word.name@     locals| sWordName |
-  pWord word.categoryWcString@ locals| eCatg |
+  pWord word.categoryString@ locals| eCatg |
 
   pWord word.tagSet@   locals| pWordTags |
 
@@ -59,7 +59,7 @@
 
   pObject pwObject word.object!
 
-  eCatg pwObject word.categoryWc!
+  eCatg pwObject word.category!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -89,7 +89,7 @@
 
     object@ locals| pWord |
 
-    pWord word.categoryWc@ eCatg equal if
+    pWord word.category@ eCatg equal if
       pWord word.show
     then
 
@@ -124,7 +124,7 @@
 
   iterate-words
 
-    word@ word.categoryWc@ eCatg equal if
+    word@ word.category@ eCatg equal if
       word@ word.name@ word@ pArrange arrange.insert
     then
 

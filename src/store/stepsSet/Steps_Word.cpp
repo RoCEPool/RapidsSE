@@ -24,9 +24,9 @@ void Step::vAddSteps_Word(void)
   vAddStep("word.allot"_Stz,        &Step::vWordAllot);
   vAddStep("word.breakPt@"_Stz,     &Step::vWordBreakPtFetch);
   vAddStep("word.breakPt!"_Stz,     &Step::vWordBreakPtStore);
-  vAddStep("word.categoryWc@"_Stz,  &Step::vWordCategoryWcFetch);
-  vAddStep("word.categoryWc!"_Stz,  &Step::vWordCategoryWcStore);
-  vAddStep("word.categoryWcString@"_Stz,&Step::vWordCategoryWcString);
+  vAddStep("word.category@"_Stz,  &Step::vWordCategoryFetch);
+  vAddStep("word.category!"_Stz,  &Step::vWordCategoryStore);
+  vAddStep("word.categoryString@"_Stz,&Step::vWordCategoryString);
   vAddStep("word.dump"_Stz,         &Step::vWordDump);
   vAddStep("word.embObject"_Stz,    &Step::vWordEmbObject);
   vAddStep("word.exitHook@"_Stz,    &Step::vWordExitHookGet);
@@ -116,9 +116,9 @@ void Step::vWordBreakPtStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* word.categoryWc@ -- word category enum fetch                               */
+/* word.category@ -- word category enum fetch                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vWordCategoryWcFetch(void)
+void Step::vWordCategoryFetch(void)
 {
   ENTRY();
 
@@ -130,9 +130,9 @@ void Step::vWordCategoryWcFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* word.categoryWc! -- word category enum store                               */
+/* word.category! -- word category enum store                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vWordCategoryWcStore(void)
+void Step::vWordCategoryStore(void)
 {
   ENTRY();
 
@@ -146,9 +146,9 @@ void Step::vWordCategoryWcStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* word.categoryWcString@ -- word category enum fetch str                     */
+/* word.categoryString@ -- word category enum fetch str                     */
 /*----------------------------------------------------------------------------*/
-void Step::vWordCategoryWcString(void)
+void Step::vWordCategoryString(void)
 {
   ENTRY();
 

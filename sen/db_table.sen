@@ -7,14 +7,14 @@
 /*----------------------------------------------------------------------------*/
 /* the table category                                                         */
 /*----------------------------------------------------------------------------*/
-: \table \\category_wc WC_TABLE ;
+: \table \\category WC_TABLE ;
 
 /*----------------------------------------------------------------------------*/
 /* test if word is a table (is of \table category)                            */
 /*----------------------------------------------------------------------------*/
 : word.isaTable params| pwTable | ( t | f )
 
-  pwTable word.categoryWc@ WC_TABLE equal
+  pwTable word.category@ WC_TABLE equal
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -87,7 +87,7 @@
 
   pwTable not if EC_NO_SUCH_TABLE false exit then
 
-  pwTable word.categoryWc@ WC_TABLE equal if true exit then
+  pwTable word.category@ WC_TABLE equal if true exit then
 
   EC_NOT_A_TABLE false
 ;

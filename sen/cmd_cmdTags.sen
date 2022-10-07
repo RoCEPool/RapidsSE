@@ -39,7 +39,7 @@
   // pWord word.name@ "_cmdTags" str.cat pWord word.name!
 
   // set the word category to be _cmdTags
-  WC_CMDTAGS pWord word.categoryWc!
+  WC_CMDTAGS pWord word.category!
 
   // attach an ename set to the word being created
   tagSet::new locals| pWordTagSet |

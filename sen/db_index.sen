@@ -7,14 +7,14 @@
 /*----------------------------------------------------------------------------*/
 /* \index is the category to identify indexes                                 */
 /*----------------------------------------------------------------------------*/
-: \index \\category_wc WC_INDEX ;
+: \index \\category WC_INDEX ;
 
 /*----------------------------------------------------------------------------*/
 /* test if word is an index (is of \index category)                           */
 /*----------------------------------------------------------------------------*/
 : word.isaIndex params| pwIndex |
 
-  pwIndex word.categoryWc@ WC_INDEX equal
+  pwIndex word.category@ WC_INDEX equal
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -69,7 +69,7 @@
 
   pwIndex not if EC_NO_SUCH_INDEX false exit then
 
-  pwIndex word.categoryWc@ WC_INDEX equal if true exit then
+  pwIndex word.category@ WC_INDEX equal if true exit then
 
   EC_NOT_AN_INDEX false
 ;
