@@ -85,7 +85,6 @@ namespace PROMPT
   bool bPrompt_limits(SePrompt* pPrompt);
   bool bPrompt_llist(SePrompt* pPrompt);
   bool bPrompt_locks(SePrompt* pPrompt);
-  bool bPrompt_loadTables(SePrompt* pPrompt);
   bool bPrompt_log(SePrompt* pPrompt);
   bool bPrompt_logNote(SePrompt* pPrompt);
   bool bPrompt_logSection(SePrompt* pPrompt);

@@ -3387,8 +3387,6 @@ void AM::WORD::vListContents(Word* pWord, i8 i_Depth)
   Object* pObject = pWord->pObject();
   if (! pObject)
     return;
-  
-//  Word* pCategory = pWord->pCategory();
 
   if (CN_DIC == pObject->eGetClassNo())
     eKind = ((Dic*)pObject)->eDicKind();

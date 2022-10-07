@@ -27,11 +27,12 @@ void* Word::operator new(size_t, Dic* pDic)
   
   pWord->m_bPersistent = false;
   pWord->m_pDic = pDic;
-//  pWord->m_bTableBit   = false;
   
   return pWord;
 }
 
+// Note: Commented out the below function since it may clash with how we use
+// persistent flag with pAllocate() now.
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/

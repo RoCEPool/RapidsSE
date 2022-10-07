@@ -148,14 +148,11 @@ bool CmdHelper::bParseCmd(TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
 
   Dic* pDicRoot = AM::DIC::pRoot();
 
-//  Word* pCategory = nullptr;
   Word* pSyntax   = nullptr;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // can we find a job which matches the syntax?
-//  Dic::vTree(pDicRoot, 0);
-  
-//  pCategory = pDicRoot->pFindWord("cmdSyntax:"_Stz);
+
   pSyntax   = nullptr;
   
   while ( (pSyntax = pDicRoot->pEachWordWc(pSyntax,WC_CMDSYNTAX)) ) {

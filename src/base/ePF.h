@@ -67,7 +67,6 @@ enum ePF // prompt function
   /*    */ PF_LASTJOB,
   /*    */ PF_LET,
   /*    */ PF_LIMITS,
-  /*    */ PF_LOADTABLES,
   /*    */ PF_LOG,
   /*    */ PF_LOGNOTE,
   /*    */ PF_LOGSECTION,
@@ -155,7 +154,6 @@ enum ePF // prompt function
   /*    */ PF_TPCH,
   /*    */ PF_TRACKMEMORY,
 
-  /*    */ PF_UNLOAD,
   /*    */ PF_UPTIME,
   /*    */ PF_UT_SKIPLIST,
 
@@ -234,7 +232,6 @@ static Stz* aPF[]
   /*    */ "PF_LASTJOB"_Stz,
   /*    */ "PF_LET"_Stz,
   /*    */ "PF_LIMITS"_Stz,
-  /*    */ "PF_LOADTABLES"_Stz,
   /*    */ "PF_LOG"_Stz,
   /*    */ "PF_LOGNOTE"_Stz,
   /*    */ "PF_LOGSECTION"_Stz,
@@ -322,7 +319,6 @@ static Stz* aPF[]
   /*    */ "PF_TPCH"_Stz,
   /*    */ "PF_TRACKMEMORY"_Stz,
 
-  /*    */ "PF_UNLOAD"_Stz,
   /*    */ "PF_UPTIME"_Stz,
   /*    */ "PF_UT_SKIPLIST"_Stz,
 

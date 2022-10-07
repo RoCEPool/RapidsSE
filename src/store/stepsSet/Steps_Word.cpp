@@ -24,8 +24,8 @@ void Step::vAddSteps_Word(void)
   vAddStep("word.allot"_Stz,        &Step::vWordAllot);
   vAddStep("word.breakPt@"_Stz,     &Step::vWordBreakPtFetch);
   vAddStep("word.breakPt!"_Stz,     &Step::vWordBreakPtStore);
-  vAddStep("word.category@"_Stz,  &Step::vWordCategoryFetch);
-  vAddStep("word.category!"_Stz,  &Step::vWordCategoryStore);
+  vAddStep("word.category@"_Stz,    &Step::vWordCategoryFetch);
+  vAddStep("word.category!"_Stz,    &Step::vWordCategoryStore);
   vAddStep("word.categoryString@"_Stz,&Step::vWordCategoryString);
   vAddStep("word.dump"_Stz,         &Step::vWordDump);
   vAddStep("word.embObject"_Stz,    &Step::vWordEmbObject);

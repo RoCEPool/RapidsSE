@@ -92,6 +92,11 @@ void Dic::vAddWord(Word* pWord)
   SkipNode* pSkipNode = m_pWordSkipList->pNewly();
   pWord->m_pSkipNode = pSkipNode;
 
+  // Note: During unload/reload, we need an easy way to figure out whether
+  // a word is part of the table dictionary (which is part of root_dic in AM).
+  // Hence, we use a bit to store this information. This allows us to quickly
+  // reconnect the words and their dictionaries back to the root dic during
+  // a reload operation (while walking the Persistent Tiny Heap).
   if(m_sDicNm.bSame("tables"_Stz))
   {
     pWord->m_bTableBit = true;
