@@ -1177,18 +1177,15 @@ void Card::vPrintCardName(Ribbon* pRibbon, i8 iDepth)
   s32 sName;
 
   Board* pBoard = _pBoard(pRibbon->pSurface());
-  CardRegs* pCardRegs = pBoard->pCardRegs();
 
   if (0 == iDepth)
-    sName.vSprint("%s%s x%lld"_Stz,
-                  pCardRegs->bInCardReg(this) ? "R "_Stz : ""_Stz,
+    sName.vSprint("%s x%lld"_Stz,
                   szCardNm(),
                   nItems());
   else
-    sName.vSprint("%s%lld]%s%s"_Stz,
+    sName.vSprint("%s%lld]%s"_Stz,
                   Stz::szDots(iDepth-1),
                   m_iCardNo,
-                  pCardRegs->bInCardReg(this) ? "R "_Stz : ""_Stz,
                   szCardNm());
 
   pRibbon->vSprint("%-18s%c%c"_Stz, sName.szStz(), m_cMark1, m_cMark2);
@@ -1204,34 +1201,29 @@ void Card::vPrintCardNameValue(Ribbon* pRibbon, i8 iDepth)
   s256 sNameValue;
 
   Board *pBoard = _pBoard(pRibbon->pSurface());
-  CardRegs *pCardRegs = pBoard->pCardRegs();
 
   if (0 == iDepth) {
     if (bHasValue())
-      sNameValue.vSprint("%s%s %s x%lld"_Stz,
-                         pCardRegs->bInCardReg(this) ? "R "_Stz : ""_Stz,
+      sNameValue.vSprint("%s %s x%lld"_Stz,
                          szCardNm(),
                          szValue(),
                          nItems());
     else
-      sNameValue.vSprint("%s%s x%lld"_Stz,
-                         pCardRegs->bInCardReg(this) ? "R "_Stz : ""_Stz,
+      sNameValue.vSprint("%s x%lld"_Stz,
                          szCardNm(),
                          nItems());
   }
   else {
     if (bHasValue())
-      sNameValue.vSprint("%s%lld]%s%s %s"_Stz,
+      sNameValue.vSprint("%s%lld]%s %s"_Stz,
                        Stz::szDots(iDepth - 1),
                        m_iCardNo,
-                       pCardRegs->bInCardReg(this) ? "R "_Stz : ""_Stz,
                        szCardNm(),
                        szValue());
     else
-      sNameValue.vSprint("%s%lld]%s%s"_Stz,
+      sNameValue.vSprint("%s%lld]%s"_Stz,
                          Stz::szDots(iDepth - 1),
                          m_iCardNo,
-                         pCardRegs->bInCardReg(this) ? "R "_Stz : ""_Stz,
                          szCardNm());
   }
 
