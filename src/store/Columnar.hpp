@@ -22,6 +22,7 @@ namespace STORE
    ~Columnar(void) noexcept(false);
 
     void vAdd_columnRef_Under_term(void);
+    void vConvert_streamColOrdinal_To_tableColOrdinal(void);
 
   private:
 

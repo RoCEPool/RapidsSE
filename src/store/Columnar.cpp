@@ -84,6 +84,46 @@ void Columnar::vAdd_columnRef_Under_term(void)
     m_pBoard->vPrintBoard("Columnar::vAdd_columnRef_Under_term"_Stz);
 }
 
+/*----------------------------------------------------------------------------*/
+/* add <term/<columnRef> to all ordinal <term>                                */
+/*----------------------------------------------------------------------------*/
+void Columnar::vConvert_streamColOrdinal_To_tableColOrdinal(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMNAR,_FOOTER_);
+
+  Resolver* pResolver = new Resolver(m_pBench);
+
+  auto bfTerm_columnRef = [pResolver](Card* pCard) {
+    Card_Term* p_term = _pCard_Term(pCard);
+
+    Stz* szStreamColOrdinal = p_term->sz();
+
+    s32 sTableColOrdinal;
+    pResolver->vResolve_streamColOrdinal_To_tableColOrdinal(sTableColOrdinal, szStreamColOrdinal);
+
+    p_term->vValue(sTableColOrdinal);
+
+    return true;
+  };
+
+  // - - - - - - - - -
+
+  m_pBoard = m_pBench->pGetBoard(BK_QUERY);
+
+  BoardIter xBI(m_pBoard);
+
+  while ( (m_pMainCard = xBI.pEachMain()) ) {
+    if (! (m_p_calcBool = _pGetSub_CalcBool(m_pMainCard)) )
+      continue;
+
+    m_p_calcBool->vVisitAllSub(CK_TERM,bfTerm_columnRef);
+  }
+
+  delete pResolver;
+
+  m_pBoard->vPrintBoard("Columnar::vConvert_streamColOrdinal_To_tableColOrdinal"_Stz);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/

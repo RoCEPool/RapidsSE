@@ -131,7 +131,7 @@ void Transformer::vTransform2(void)
   vTrace("Transformer running vTransform2\n"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // QUERY BOARD
+  // QUERY BOARD -- preliminaries
 
   // combine all cards for leading stages of topo ALL PARTITIONS
   m_pStager->vLinearize_stages();
@@ -154,12 +154,17 @@ void Transformer::vTransform2(void)
   // add <tableSyn> to all <table>
   m_pTabular->vAdd_tableSyn_To_table();
 
-  // add <tablePtn> to all <table>
-  m_pTabular->vAdd_tablePtn_To_table();
-
   // calculate /<stream>:iOrdLo,iOrdHi properties
   m_pStreamer->vCalc_OrdinalRangesOf_stream();
 
+  // convert $n to $$c.n
+  m_pColumnar->vConvert_streamColOrdinal_To_tableColOrdinal();
+
+  // add <tablePtn> to all <table>
+  m_pTabular->vAdd_tablePtn_To_table();
+
+
+  /*
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // PARTITION BOARD
 
@@ -184,7 +189,8 @@ void Transformer::vTransform2(void)
   m_pEstimator->vEstimate_network();
   m_pEstimator->vEstimate_joinOrder();
   m_pEstimator->vExtract_joinOrderSeq();
-
+*/
+  
 
  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

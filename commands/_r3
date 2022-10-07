@@ -24,8 +24,7 @@ load customer "../tpch/sf_0001/customer.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/cue = "Stager::vLinearize_stages"
-/jobTags
+/cue = "Tabular::vAdd_tablePtn_To_table"
 /transliterated
 /transform
 /transform2
