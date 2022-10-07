@@ -91,7 +91,7 @@ void Card_PRED::vCullByKids(void)
   i8 nChildCards = nItems();
   for (i8 i_ChildCard = 0; i_ChildCard < nChildCards; i_ChildCard++) {
     Card* pCard_Child = pGet(i_ChildCard);
-    if (! pCard_Child->bIsPred())
+    if (! bIsPred(pCard_Child))
       continue;
     
     Card_PRED* pCard_ChildPRED = (Card_PRED*)pCard_Child;
@@ -182,9 +182,27 @@ bool Card_PRED::bHasBounds_pred(Index* pIndex)
       RASSERT(0);
       break;
   }
-  
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this card the given kind?                                               */
+/*----------------------------------------------------------------------------*/
+bool Card_PRED::bIsPred(Card* pArgCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  eCK eCard = pArgCard->eCard();
+
+  switch (eCard) {
+    case CK_EXPRBOOL:
+    case CK_PREDOR:
+    case CK_PREDAND:
+      return true;
+
+    default: return false;
+  }
 }
 
 /*----------------------------------------------------------------------------*/

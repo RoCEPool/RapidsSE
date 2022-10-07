@@ -652,7 +652,7 @@ Card_AggElist* Dissector::pAggElist(Card_RpnTerms* pCard_RpnTerms)
   i8 iCardNo = 0;
 
   Card_Term* pCard_Term_head = pCard_RpnTerms->pPopTerm();
-  RASSERT(pCard_Term_head->bIsSameValue("AGGREGATES"_Stz));
+  RASSERT(pCard_Term_head->bIsValue("AGGREGATES"_Stz));
   delete pCard_Term_head;
 
 
@@ -660,7 +660,7 @@ Card_AggElist* Dissector::pAggElist(Card_RpnTerms* pCard_RpnTerms)
   while ( (pCard_Term_head = pCard_RpnTerms->pHeadTerm()) ) {
     
     // GROUPBY
-    if (pCard_Term_head->bIsSameValue("GROUPBY"_Stz)) {
+    if (pCard_Term_head->bIsValue("GROUPBY"_Stz)) {
       break;
     }
     
@@ -692,7 +692,7 @@ Card_GbyElist* Dissector::pGbyElist(Card_RpnTerms* pCard_RpnTerms)
   
   // GROUPBY
   Card_Term* pCard_Term_head = _pCard_Term(pCard_RpnTerms->pPop());
-  RASSERT(pCard_Term_head->bIsSameValue("GROUPBY"_Stz));
+  RASSERT(pCard_Term_head->bIsValue("GROUPBY"_Stz));
 
   delete pCard_Term_head;
   pCard_Term_head = nullptr;
@@ -701,7 +701,7 @@ Card_GbyElist* Dissector::pGbyElist(Card_RpnTerms* pCard_RpnTerms)
   while ( (pCard_Term_head = pCard_RpnTerms->pHeadTerm()) ) {
 
     // GROUPBY
-    if (pCard_Term_head->bIsSameValue("AGGREGATES"_Stz)) {
+    if (pCard_Term_head->bIsValue("AGGREGATES"_Stz)) {
       break;
     }
 
@@ -813,7 +813,7 @@ Card_Expr* Dissector::pExpr_c(Card_RpnTerms* pCard_RpnTerms)
   // [ AS <as> ]
   Card* pCard_Term_head = pCard_RpnTerms->pHead();
   if (pCard_Term_head
-      && pCard_Term_head->bIsSameValue("AS"_Stz)) {
+      && pCard_Term_head->bIsValue("AS"_Stz)) {
 
     Card_As* pCard_As = pAs(pCard_RpnTerms);
     pCard_Expr->vAppend(pCard_As);
@@ -827,7 +827,7 @@ Card_Expr* Dissector::pExpr_c(Card_RpnTerms* pCard_RpnTerms)
   // [ AS <as> ]
   pCard_Term_head = pCard_RpnTerms->pHead();
   if (pCard_Term_head
-      && pCard_Term_head->bIsSameValue("AS"_Stz)) {
+      && pCard_Term_head->bIsValue("AS"_Stz)) {
 
     Card_As* pCard_As = pAs(pCard_RpnTerms);
     pCard_Expr->vAppend(pCard_As);
@@ -836,8 +836,8 @@ Card_Expr* Dissector::pExpr_c(Card_RpnTerms* pCard_RpnTerms)
   // [ ASC | DESC ]
   pCard_Term_head = pCard_RpnTerms->pHead();
   if (pCard_Term_head
-      && (pCard_Term_head->bIsSameValue("ASC"_Stz) ||
-          pCard_Term_head->bIsSameValue("DESC"_Stz))) {
+      && (pCard_Term_head->bIsValue("ASC"_Stz) ||
+          pCard_Term_head->bIsValue("DESC"_Stz))) {
 
     Card_Direction* pCard_SortDirn = pDirection(pCard_RpnTerms);
     pCard_Expr->vAppend(pCard_SortDirn);
@@ -846,7 +846,7 @@ Card_Expr* Dissector::pExpr_c(Card_RpnTerms* pCard_RpnTerms)
 
 //  pCard_Term_head = pCard_RpnTerms->pHead();
 //  if (pCard_Term_head
-//      && pCard_Term_head->bIsSameValue("AGGREGATES"_Stz)) {
+//      && pCard_Term_head->bIsValue("AGGREGATES"_Stz)) {
 //
 //    Card_Aggregates* pCard_Aggregates = new Card_Aggregates;
 //    pCard_Expr->vAppend(pCard_Aggregates);
@@ -873,15 +873,15 @@ Card_Calc* Dissector::pExprCalc(Card_RpnTerms* pCard_RpnTerms)
   Card_Term* pCard_Term_popped = nullptr;
   while ( (pCard_Term_popped = _pCard_Term(pCard_RpnTerms->pPop())) ) {
 
-    //if (pCard_Term_popped->bIsSameValue(")"_Stz))
+    //if (pCard_Term_popped->bIsValue(")"_Stz))
     //  continue;
     
     if (
-        pCard_Term_popped->bIsSameValue("AGGREGATES"_Stz)
-        || pCard_Term_popped->bIsSameValue("AS"_Stz)
-        || pCard_Term_popped->bIsSameValue("ASC"_Stz)
-        || pCard_Term_popped->bIsSameValue("DESC"_Stz)
-        || pCard_Term_popped->bIsSameValue("GROUPBY"_Stz)
+        pCard_Term_popped->bIsValue("AGGREGATES"_Stz)
+        || pCard_Term_popped->bIsValue("AS"_Stz)
+        || pCard_Term_popped->bIsValue("ASC"_Stz)
+        || pCard_Term_popped->bIsValue("DESC"_Stz)
+        || pCard_Term_popped->bIsValue("GROUPBY"_Stz)
         || pCard_Term_popped->bIsSeparator()
         ) {
       pCard_RpnTerms->vPush(pCard_Term_popped);
@@ -988,7 +988,7 @@ Card_As* Dissector::pAs(Card_RpnTerms* pCard_RpnTerms)
   
   // AS
   Card_Term* pCard_Term = _pCard_Term(pCard_RpnTerms->pPop());
-  RASSERT(pCard_Term->bIsSameValue("AS"_Stz));
+  RASSERT(pCard_Term->bIsValue("AS"_Stz));
   delete pCard_Term;
   pCard_Term = nullptr;
 

@@ -242,7 +242,7 @@ Card* Board::pFindMain(Stz* szCardNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
-  eCK eCard = Card::eToECard(szCardNm);
+  eCK eCard = Card::eTo_eCK(szCardNm);
   
   i8 nMainCards = this->nMainCards();
   for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {

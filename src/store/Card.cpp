@@ -219,7 +219,7 @@ bool Card::bCardsSameRecursive(Card* pCard_a, Card* pCard_b, i8 iDepth, bool bTe
 /*----------------------------------------------------------------------------*/
 /* find eCK by card name                                                      */
 /*----------------------------------------------------------------------------*/
-eCK Card::eToECard(Stz* szCardNm)
+eCK Card::eTo_eCK(Stz* szCardNm)
 {
   _static_
   
@@ -547,11 +547,11 @@ Card_SubSet* Card::pDupSubCards(void)
 /*----------------------------------------------------------------------------*/
 /* is this card equivalent to given arg?                                      */
 /*----------------------------------------------------------------------------*/
-bool Card::bEquivalent(Card* pCard_arg)
+bool Card::bEquivalent(Card* pToCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  TagSet* pProperties_arg = pCard_arg->pProperties();
+  TagSet* pProperties_arg = pToCard->pProperties();
   if (m_pProperties) {
     if (pProperties_arg) {
       if (! m_pProperties->bSame(pProperties_arg))
@@ -575,7 +575,7 @@ bool Card::bEquivalent(Card* pCard_arg)
   for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
     Card* pSubCard = pGetChild(i_Sub, eSubCard);
     
-    Card* pSubCard_arg = pCard_arg->pFindSubCard(eSubCard);
+    Card* pSubCard_arg = pToCard->pFindSubCard(eSubCard);
     if (! pSubCard_arg)
       return false;
 
@@ -626,18 +626,18 @@ Card* Card::pFindChild(eCK eCard, i8& i_Child)
 /*----------------------------------------------------------------------------*/
 /* find parent of given sub-card                                              */
 /*----------------------------------------------------------------------------*/
-Card* Card::pFindParent(Card* pSubCard_arg)
+Card* Card::pFindParent(Card* pSubCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   i8 nSubCards = this->nChildCards();
   for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
-    Card* pSubCard = pGetChild(i_Sub);
+    Card* pTestCard = pGetChild(i_Sub);
     
-    if (pSubCard_arg == pSubCard)
+    if (pSubCard == pTestCard)
       return this;
     
-    Card* pParent = pSubCard->pFindParent(pSubCard_arg);
+    Card* pParent = pTestCard->pFindParent(pSubCard);
     if (pParent)
       return pParent;
   }
@@ -853,7 +853,7 @@ bool Card::bHasChildWithValue(Stz* szValue)
   for (i8 i_Child = 0; i_Child < nChildCards(); i_Child++) {
     Card* pChildCard = pGetChild(i_Child);
 
-    if (pChildCard->szValue()->bSame(szValue))
+    if (pChildCard->bIsValue(szValue))
       return true;
   }
 
@@ -947,32 +947,13 @@ bool Card::bIsCard(eCK eCard)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this card the given kind?                                               */
+/* does this card have same value as argument?                                */
 /*----------------------------------------------------------------------------*/
-bool Card::bIsPred(void)
+bool Card::bIsValue(Stz* szValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  eCK eCard = this->eCard();
-
-  switch (eCard) {
-    case CK_EXPRBOOL:
-    case CK_PREDOR:
-    case CK_PREDAND:
-      return true;
-
-    default: return false;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this card same as argument?                                             */
-/*----------------------------------------------------------------------------*/
-bool Card::bIsSameValue(Stz* szArg)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (szValue()->bSame(szArg))
+  if (this->szValue()->bSame(szValue))
     return true;
   else
     return false;
@@ -1402,17 +1383,17 @@ void Card::vPropertiesEnsure(void)
 /*----------------------------------------------------------------------------*/
 /* remove given immediate child card (non-recursive)                          */
 /*----------------------------------------------------------------------------*/
-void Card::vRemoveChild(Card* pCardRemove)
+void Card::vRemoveChild(Card* pChildCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  vRemove(pCardRemove);
+  vRemove(pChildCard);
 }
 
 /*----------------------------------------------------------------------------*/
 /* remove given subCard (recursive)                                           */
 /*----------------------------------------------------------------------------*/
-void Card::vRemoveSubCard(Card* pCardRemove)
+void Card::vRemoveSubCard(Card* pSubCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -1421,11 +1402,11 @@ void Card::vRemoveSubCard(Card* pCardRemove)
   while (pSubCard_I->bHasNext()) {
     Card* pSubCard = pSubCard_I->pNext();
     
-    if (pSubCard == pCardRemove) {
-      vRemove(pCardRemove);
+    if (pSubCard == pSubCard) {
+      vRemove(pSubCard);
       break;
     }
-    pSubCard->vRemoveSubCard(pCardRemove);
+    pSubCard->vRemoveSubCard(pSubCard);
    }
   
   delete pSubCard_I;

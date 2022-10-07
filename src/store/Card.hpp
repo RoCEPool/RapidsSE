@@ -168,7 +168,7 @@ namespace STORE
 
     static  bool bCardsSameRecursive(Card* pCard_a, Card* pCard_b, i8 iDepth=0, bool bTestL0=false);
 
-    static eCK  eToECard(Stz* szCardNm);
+    static eCK  eTo_eCK(Stz* szCardNm);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     
@@ -193,11 +193,11 @@ namespace STORE
     Card* pDupCardAndSubCards(void);
     Card_SubSet* pDupSubCards(void);
 
-    bool bEquivalent(Card* pCard_arg);
+    bool bEquivalent(Card* pToCard);
 
     Card* pFindChild(eCK eCard);
     Card* pFindChild(eCK eCard, i8& i_Child);
-    Card* pFindParent(Card* pSubCard_arg);
+    Card* pFindParent(Card* pSubCard);
     Card* pFindSubCard(eCK eCard);
 
     i8   iGetProperty(i8 i_Property);
@@ -219,8 +219,7 @@ namespace STORE
     bool bHasValue(void);
 
     bool bIsCard(eCK eCard);
-    bool bIsPred(void);
-    bool bIsSameValue(Stz* szArg);
+    bool bIsValue(Stz* szValue);
 
     char cMark1(void);
     void vMark1(char cMark1);
@@ -246,8 +245,8 @@ namespace STORE
     TagSet* pProperties(void);
     void vPropertiesEnsure(void);
 
-    void vRemoveChild(Card* pCardRemove);
-    void vRemoveSubCard(Card* pCardRemove);
+    void vRemoveChild(Card* pChildCard);
+    void vRemoveSubCard(Card* pSubCard);
     void vRenumberSubCards(Card* pParentCard);
     void vReplaceChildWithKids(Card* pChildCard);
     void vReplaceChild(Card* pChildCard, Card* pWithCard);
