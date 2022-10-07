@@ -420,7 +420,7 @@ void Weaver::vArgScan(Stz* szOpArgs, Card_Scan* pCard_Scan)
   
   vRpnScan(sRpnExpr,pCard_Scan);
 
-  Table* pTable = pCard_Scan->pFindSubCard(CK_TABLEPTR)->pTable();
+  Table* pTable = _pGetSub_TablePtr(pCard_Scan)->pTable();
   
   Stz* szTableNm = pTable->szTableNm();
   //m_i_Op_stage++;

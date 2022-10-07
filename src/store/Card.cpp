@@ -1574,50 +1574,6 @@ bool Card::bIsSame(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get map back                                                                */
-/*----------------------------------------------------------------------------*/
-Stz* Card::szMapBack(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Stz* szMapBack = szGetProperty("szMapBack"_Stz);
-
-  return szMapBack;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set map back                                                               */
-/*----------------------------------------------------------------------------*/
-void Card::vMapBack(Stz* szMapBack)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  vAddProperty_stz("szMapBack"_Stz,szMapBack);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get map from                                                               */
-/*----------------------------------------------------------------------------*/
-Stz* Card::szMapFrom(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Stz* szMapFrom = szGetProperty("szMapFrom"_Stz);
-
-  return szMapFrom;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set map from                                                               */
-/*----------------------------------------------------------------------------*/
-void Card::vMapFrom(Stz* szMapFrom)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  vAddProperty_stz("szMapFrom"_Stz,szMapFrom);
-}
-
-/*----------------------------------------------------------------------------*/
 /* get mark 1                                                                 */
 /*----------------------------------------------------------------------------*/
 char Card::cMark1(void)
@@ -1805,28 +1761,6 @@ void Card::vStageTopo(eYG  eStageTopo)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   vAddProperty_int("eStageTopo"_Stz,eStageTopo);
-}
-
-/*----------------------------------------------------------------------------*/
-/* return table                                                               */
-/*----------------------------------------------------------------------------*/
-Table* Card::pTable(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  Table* pTable = _pTable(pGetProperty("pTable"_Stz));
-
-  return pTable;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set table                                                                  */
-/*----------------------------------------------------------------------------*/
-void Card::vTable(Table* pTable)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  vAddProperty_ptr("pTable"_Stz,pTable);
 }
 
 

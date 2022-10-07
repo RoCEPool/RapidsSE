@@ -66,9 +66,6 @@
 #include "Card_LBound.hpp"
 #include "Card_Limit.hpp"
 
-#include "Card_Map.hpp"
-#include "Card_MapSet.hpp"
-
 #include "Card_Option.hpp"
 #include "Card_OrdAgg.hpp"
 #include "Card_ObyElist.hpp"
@@ -245,9 +242,6 @@ namespace STORE
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
-    Card_CalcBool*   pTo_CalcBool  (Card_Calc*    pCard_Calc);
-    Card_IndexPred*  pTo_IndexPred (Card_PredCmp* pCard_PredCmp,
-                                    Card_MapSet* pCard_MapSet);
 
   private:
       Footer* aFooter(void);

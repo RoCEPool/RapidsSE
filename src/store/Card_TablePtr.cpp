@@ -80,6 +80,28 @@ Card_IndexList* Card_TablePtr::pNew_indexList(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* return table                                                               */
+/*----------------------------------------------------------------------------*/
+Table* Card_TablePtr::pTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Table* pTable = _pTable(pGetProperty(C_CARD_Table));
+
+  return pTable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set table                                                                  */
+/*----------------------------------------------------------------------------*/
+void Card_TablePtr::vTable(Table* pTable)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  vAddProperty_ptr(C_CARD_Table,pTable);
+}
+
+/*----------------------------------------------------------------------------*/
 /* print {table}                                                              */
 /*----------------------------------------------------------------------------*/
 void Card_TablePtr::vTablePtrPrint(Ribbon* pRibbon, i8 iDepth)

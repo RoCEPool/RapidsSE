@@ -256,11 +256,6 @@ namespace STORE
     bool bIsPred(void);
     bool bIsSame(Stz* szArg);
 
-    Stz* szMapBack(void);
-    void vMapBack(Stz* szMapBack);
-    Stz* szMapFrom(void);
-    void vMapFrom(Stz* szMapFrom);
-
     char cMark1(void);
     void vMark1(char cMark1);
     char cMark2(void);
@@ -299,9 +294,6 @@ namespace STORE
     void vSendKind(eXK eSendKind);
     eYG  eStageTopo(void);
     void vStageTopo(eYG  eStageTopology);
-
-    Table* pTable(void);
-    void vTable(Table* pTable);
 
     void vTransferSubCards(Card* pCards);
     void vTransferFrom(Card* pCards, Card* pFrom,
