@@ -139,6 +139,7 @@ namespace STORE
     CardRegs*    m_pCardRegs;
 
     Card_SubSet* m_pCard_SubSet;
+    Card_Board*  m_pCard_Board;
 
     b8           m_bBeenCued;
 

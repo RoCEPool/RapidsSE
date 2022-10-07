@@ -41,6 +41,7 @@ Board::Board(eBK eBoard, eBT eBoardType, Bench* pBench)
   m_pCardRegs    = new CardRegs;
 
   m_pCard_SubSet = new Card_SubSet;
+  m_pCard_Board  = new Card_Board;
 
   m_bBeenCued = false;
 
@@ -60,10 +61,14 @@ Board::~Board(void) noexcept(false)
   
   delete m_pCardRegs;
 
-  if (BT_VIEW == m_eBoardType)
+  if (BT_VIEW == m_eBoardType) {
+    m_pCard_Board->vRemoveAll();
     m_pCard_SubSet->vRemoveAll();
+  }
 
   delete m_pCard_SubSet;
+
+  delete m_pCard_Board;
 }
 
 
