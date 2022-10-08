@@ -115,6 +115,7 @@ static Stz* C_PPT_Rank         = "iRank"_Stz;
 static Stz* C_PPT_SendKind     = "eSendKind"_Stz;
 static Stz* C_PPT_SentOut      = "nSentOut"_Stz;
 static Stz* C_PPT_StageTopo    = "eStageTopo"_Stz;
+static Stz* C_PPT_Stream       = "iStream"_Stz;
 static Stz* C_PPT_Table        = "pTable"_Stz;
 static Stz* C_PPT_TableUsed    = "bTableUsed"_Stz;
 

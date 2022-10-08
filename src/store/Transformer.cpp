@@ -158,7 +158,7 @@ void Transformer::vTransform2(void)
   m_pStreamer->vCalc_OrdinalRangesOf_stream();
 
   // convert $n to $$c.n
-  m_pColumnar->vConvert_streamColOrdinal_To_tableColOrdinal();
+  //m_pColumnar->vConvert_streamColOrdinal_To_tableColOrdinal();
 
   // add <tablePtn> to all <table>
   m_pTabular->vAdd_tablePtn_To_table();

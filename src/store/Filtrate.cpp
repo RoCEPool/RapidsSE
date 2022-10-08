@@ -47,15 +47,12 @@ void Filtrate::vAssign_predCmp_leftwards(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTRATE,_FOOTER_);
 
-  vBeginIteration();
+  BoardIter xBI(m_pBoard);
 
-  while (Card_Filter *pCard_filter = _pCard_Filter(pEachMain(CK_FILTER))) {
-    vAssignFilterLeftwards(pCard_filter);
-  }
+  while ((m_p_filter = _pCard_Filter(xBI.pEachMain(CK_FILTER))))
+    vAssignFilterLeftwards(m_p_filter);
 
-  vEndIteration();
-
-  vSetPrintSubCards(CK_PREDCMP, true);
+  //vSetPrintSubCards(CK_PREDCMP, true);
   vPrintBoard("Filtrate::vAssign_predCmp_leftwards"_Stz);
 }
 
@@ -81,16 +78,12 @@ void Filtrate::vCopy_predCmp_leftwards(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTRATE,_FOOTER_);
 
-  vBeginIteration();
+  BoardIter xBI(m_pBoard);
 
-  while (Card_Filter *pCard_filter = _pCard_Filter(pEachMain(CK_FILTER))) {
-    vCopyFilterLeftwards(pCard_filter);
-  }
+  while ((m_p_filter = _pCard_Filter(xBI.pEachMain(CK_FILTER))))
+    vCopyFilterLeftwards(m_p_filter);
 
-  vEndIteration();
-
-  if (m_bInteractive)
-    m_pBoard->vPrintBoard("Filtrate::vCopy_predCmp_leftwards"_Stz);
+  vPrintBoard("Filtrate::vCopy_predCmp_leftwards"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -346,7 +339,7 @@ i8 Filtrate::iAssignPredToAbsJoin(Card_AbsJoin* pCard_absJoin, Card_PRED* pCard_
   // are all $n of <pred> in this <stream>?
   if (pCard_stream->bContainsPred(pCard_PRED)) {
     pCard_stream->vMark1('@');
-    return pCard_stream->cMark2() - '0';
+    return pCard_stream->iStream();
   }
 
   return C_UNKNOWN;
@@ -365,7 +358,7 @@ i8 Filtrate::iAssignPredToScan(Card_Scan* pCard_scan, Card_PRED* pCard_PRED)
   // are all $n of <pred> in this <stream>?
   if (pCard_stream->bContainsPred(pCard_PRED)) {
     pCard_stream->vMark1('@');
-    return pCard_stream->cMark2() - '0';
+    return pCard_stream->iStream();
   }
   return C_UNKNOWN;
 }

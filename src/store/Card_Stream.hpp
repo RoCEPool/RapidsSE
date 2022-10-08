@@ -29,9 +29,11 @@ namespace STORE
     Card_StreamColList* pGet_streamColList(void);
 
     void vOrdinate(String* psOrdinal, Stz* szOrdinal);
+
+    i8 iStream(void);
+    i8 nStreamCols(void);
     void vStreamPrint(Ribbon* pRibbon, i8 iDepth);
 
-    i8 nStreamCols(void);
    };
 
   Card_Stream* _pCard_Stream(void* aAddr);

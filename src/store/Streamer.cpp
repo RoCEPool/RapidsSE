@@ -50,6 +50,7 @@ void Streamer::vCalc_OrdinalRangesOf_stream(void)
   i8 iOrdLo = 1;
   i8 iOrdHi = C_UNKNOWN;
   char cStream = '0';
+  i8 iStream = 0;
 
   BoardIter xBI(m_pBoard);
 
@@ -67,6 +68,7 @@ void Streamer::vCalc_OrdinalRangesOf_stream(void)
       iOrdHi = iOrdLo + nStreamCols - 1;
       m_p_stream->vAddProperty_int(C_PPT_OrdHi,iOrdHi);
       iOrdLo = iOrdHi + 1;
+      m_p_stream->vAddProperty_int(C_PPT_Stream,iStream++);
 
       continue;
     }
@@ -84,6 +86,7 @@ void Streamer::vCalc_OrdinalRangesOf_stream(void)
       iOrdHi = iOrdLo + nStreamCols - 1;
       m_p_stream->vAddProperty_int(C_PPT_OrdHi,iOrdHi);
       iOrdLo = iOrdHi + 1;
+      m_p_stream->vAddProperty_int(C_PPT_Stream,iStream++);
 
       continue;
     }

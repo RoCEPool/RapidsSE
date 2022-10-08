@@ -24,7 +24,7 @@ load customer "../tpch/sf_0001/customer.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/cue = "Tabular::vAdd_tablePtn_To_table"
+/cue = "Filtrate::vAssign_predCmp_leftwards"
 /transliterated
 /transform
 /transform2
