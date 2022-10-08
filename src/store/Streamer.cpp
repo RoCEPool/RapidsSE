@@ -59,8 +59,8 @@ void Streamer::vCalc_OrdinalRangesOf_stream(void)
     if (CK_SCAN == m_pMainCard->eCard()) {
       m_p_stream = _pGetSub_Stream(m_pMainCard);
 
-      m_p_stream->vMark1('#');
-      m_p_stream->vMark2(cStream++);
+      //m_p_stream->vMark1('#');
+      //m_p_stream->vMark2(cStream++);
 
       // <scan>/<stream>:iOrdLo,iOrdHi
       i8 nStreamCols = m_p_stream->nStreamCols();
@@ -77,8 +77,8 @@ void Streamer::vCalc_OrdinalRangesOf_stream(void)
       m_p_scan   = _pGetSub_Scan(m_pMainCard);
       m_p_stream = _pGetSub_Stream(m_p_scan);
 
-      m_p_stream->vMark1('#');
-      m_p_stream->vMark2(cStream++);
+      //m_p_stream->vMark1('#');
+      //m_p_stream->vMark2(cStream++);
 
       // <absJoin>/<stream>:iOrdLo,iOrdHi
       i8 nStreamCols = m_p_stream->nStreamCols();

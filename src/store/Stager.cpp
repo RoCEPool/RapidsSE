@@ -150,6 +150,8 @@ void Stager::vLinearize_stages(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGER, _FOOTER_);
 
+  vExplain("Linearize all the stages"_Stz);
+
   BoardIter xBI(m_pBoard);
 
   if (! (m_p_stage_a = _pCard_Stage(xBI.pEachMain(CK_STAGE))))

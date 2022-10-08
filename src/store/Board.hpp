@@ -174,9 +174,9 @@ namespace STORE
 
     SubCardIter* pNewMainCardIter(void);
 
-    void vPinCards(Ribbon* pRibbon, Stz* szTransformation=nullptr);
+    void vPinCards(Ribbon* pRibbon, Stz* szTransformation=nullptr, Stz* szExplain=nullptr);
   
-    void vPrintBoard(Stz* szCue=nullptr);
+    void vPrintBoard(Stz* szCue=nullptr, Stz* szExplain=nullptr);
     Card* pPriorSubCard(Card*& rpMainCard, eCK eSubCard, i8 i_PriorToMain);
 
     void vRemoveMainCard(Card* pMainCard);

@@ -338,7 +338,7 @@ i8 Filtrate::iAssignPredToAbsJoin(Card_AbsJoin* pCard_absJoin, Card_PRED* pCard_
 
   // are all $n of <pred> in this <stream>?
   if (pCard_stream->bContainsPred(pCard_PRED)) {
-    pCard_stream->vMark1('@');
+    //pCard_stream->vMark1('@');
     return pCard_stream->iStream();
   }
 
@@ -357,7 +357,7 @@ i8 Filtrate::iAssignPredToScan(Card_Scan* pCard_scan, Card_PRED* pCard_PRED)
 
   // are all $n of <pred> in this <stream>?
   if (pCard_stream->bContainsPred(pCard_PRED)) {
-    pCard_stream->vMark1('@');
+    //pCard_stream->vMark1('@');
     return pCard_stream->iStream();
   }
   return C_UNKNOWN;
@@ -411,7 +411,7 @@ bool Filtrate::bCopyPredDrillDown(Card_PRED* pCard_pred, Card_Filter* pCard_filt
       vCopyPredToNewFilter(pCard_filter_new,pCard_pred);
     }
 
-    pCard_stream->vMark1('#');
+    //pCard_stream->vMark1('#');
 
 
     pCard_calcBool->vRemovePred(pCard_pred);

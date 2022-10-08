@@ -393,8 +393,6 @@ Card_Stream* Board::pFindStreamCard(i8 iStream, Card*& rpMainCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
 
-  i8 i_StreamSoFar = 0;
-
   rpMainCard = nullptr;
 
   i8 nMains = this->nMainCards();
@@ -403,17 +401,19 @@ Card_Stream* Board::pFindStreamCard(i8 iStream, Card*& rpMainCard)
 
     eCK eMainCard = rpMainCard->eCard();
     if (CK_ABSJOIN == eMainCard) {
-      if (i_StreamSoFar++ != iStream)
-        continue;
       Card_Scan* pCard_scan = _pGetSub_Scan(rpMainCard);
       Card_Stream* pCard_stream = _pGetSub_Stream(pCard_scan);
+      if (iStream != pCard_stream->iStream())
+        continue;
+
       return pCard_stream;
     }
 
     if (CK_SCAN == eMainCard) {
-      if (i_StreamSoFar++ != iStream)
-        continue;
       Card_Stream* pCard_stream = _pGetSub_Stream(rpMainCard);
+      if (iStream != pCard_stream->iStream())
+        continue;
+
       return pCard_stream;
     }
   }
@@ -504,7 +504,7 @@ SubCardIter* Board::pNewMainCardIter(void)
 /*----------------------------------------------------------------------------*/
 /* pin board onto given ribbon                                                */
 /*----------------------------------------------------------------------------*/
-void Board::vPinCards(Ribbon* pRibbon, Stz* szTransformation)
+void Board::vPinCards(Ribbon* pRibbon, Stz* szTransformation, Stz* szExplain)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
@@ -519,7 +519,13 @@ void Board::vPinCards(Ribbon* pRibbon, Stz* szTransformation)
                    m_pOptimiser->szQueryNm(),
                    szTransformation ? szTransformation : ""_Stz
                    );
-  pRibbon->vTitleLines(1);
+  if (szExplain && *szExplain->azChar()) {
+    pRibbon->vSprint("Explanation: %s"_Stz, szExplain);
+    pRibbon->vTitleLines(2);
+  }
+  else {
+    pRibbon->vTitleLines(1);
+  }
   pRibbon->vSetBase();
   pRibbon->vFirstColumn();
 
@@ -545,7 +551,7 @@ void Board::vPinCards(Ribbon* pRibbon, Stz* szTransformation)
     pCard->vPrintCard(pSubRibbon,0,bPrune);
   }
      
-  pRibbon->vPinRibbon(1,0,pSubRibbon);
+  pRibbon->vPinRibbon(pRibbon->nTitleLines(),0,pSubRibbon);
   
   delete pSubRibbon;
 
@@ -555,7 +561,7 @@ void Board::vPinCards(Ribbon* pRibbon, Stz* szTransformation)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vPrintBoard(Stz* szCue)
+void Board::vPrintBoard(Stz* szCue, Stz* szExplain)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
@@ -577,7 +583,7 @@ void Board::vPrintBoard(Stz* szCue)
 
   Ribbon* pRibbon = new Ribbon(m_pOptimiser->pCardCtl(),this,0);
 
-  vPinCards(pRibbon,szCue);
+  vPinCards(pRibbon,szCue,szExplain);
 
   pRibbon->vPrintRibbon();
 

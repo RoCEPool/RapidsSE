@@ -186,7 +186,7 @@ void Joiner::vMark_idxCol(void)
     Card_IndexJoin* pCard_indexJoin = _pGetSub_IndexJoin(pCard_absJoin);
     Card_IdxColList* pCard_idxColList = _pGetSub_IdxColList(pCard_indexJoin);
 
-    pCard_idxColList->vMark1('!');
+    //pCard_idxColList->vMark1('!');
 
     //s32 sOrdinal;
     //pCard_stream->vOrdinate(sOrdinal,"$$"_Stz);

@@ -90,6 +90,8 @@ namespace STORE
     Card_TableSyn*         m_p_tableSyn;
     Card_UBound*           m_p_uBound;
 
+    s256 m_sExplain;
+
   public:
     void* operator new(size_t);
     void  operator delete(void*);
@@ -105,6 +107,7 @@ namespace STORE
     Card* pEachMain(void);
     Card* pEachMain(eCK eCard);
     void vEndIteration(void);
+    void vExplain(Stz* szExplain);
 
     Card* pFindMainOf(Card* pSubCard);
     Card* pFindMainOf(Card* pSubCard, Card*& rpParentCard);

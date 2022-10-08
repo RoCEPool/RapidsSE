@@ -213,6 +213,16 @@ void TransformerTool::vEndIteration(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set explain                                                                */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::vExplain(Stz* szExplain)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  m_sExplain = szExplain;
+}
+
+/*----------------------------------------------------------------------------*/
 /* search for parent of given sub card                                        */
 /*----------------------------------------------------------------------------*/
 Card* TransformerTool::pFindMainOf(Card* pGivenCard)
@@ -266,7 +276,9 @@ Card* TransformerTool::pFindMainOf(Card* pGivenCard, Card*& rpParentCard)
 void TransformerTool::vPrintBoard(Stz* szCue)
 {
   if (m_bInteractive)
-    m_pBoard->vPrintBoard(szCue);
+    m_pBoard->vPrintBoard(szCue,m_sExplain);
+
+  m_sExplain = ""_Stz;
 }
 
 /*----------------------------------------------------------------------------*/
