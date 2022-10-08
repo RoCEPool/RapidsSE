@@ -203,12 +203,12 @@ void Transformer::vTransform2(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pJoiner->vAppend_preliminary_indexJoin();
-  m_pJoiner->vMark_idxCol();
+  m_pJoiner->vOrdinate_idxColList();
   m_pJoiner->vForm_joinPred();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  m_pFiltrate->vCull_indexJoin_filterPred();
+  m_pFiltrate->vCull_filterPred_Of_indexJoin();
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

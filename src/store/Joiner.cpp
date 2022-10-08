@@ -51,29 +51,25 @@ void Joiner::vAppend_preliminary_indexJoin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_JOINER, _FOOTER_);
 
-
   m_pBoard->vClearAllMarks();
 
-  Card *pMainCard = nullptr;
+  BoardIter xBI(m_pBoard);
 
-  vBeginIteration();
+  while (m_p_absJoin = _pCard_AbsJoin(xBI.pEachMain(CK_ABSJOIN))) {
 
-  while (Card_AbsJoin* pCard_absJoin = _pCard_AbsJoin(pEachMain(CK_ABSJOIN))) {
+    m_p_scan = _pGetSub_Scan(m_p_absJoin);
+    m_p_tablePtr = _pGetSub_TablePtr(m_p_scan);
+    m_pTable = m_p_tablePtr->pTable();
 
-    Card_Scan* pCard_scan = _pGetSub_Scan(pCard_absJoin);
-    Card_TablePtr* pCard_tablePtr = _pGetSub_TablePtr(pCard_scan);
-    Table* pTable = pCard_tablePtr->pTable();
-
-    IdxVec* pIdxVec = pTable->pIdxVec();
-    if (! pIdxVec)
+    if (! (m_pIdxVec = m_pTable->pIdxVec()))
       return;
 
-    i8 nIndexes = pIdxVec->nItems();
+    i8 nIndexes = m_pIdxVec->nItems();
     for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
-      Index* pIndex = pIdxVec->pGet(i_Index);
+      Index* pIndex = m_pIdxVec->pGet(i_Index);
 
       Card_IndexJoin* pCard_indexJoin = new Card_IndexJoin;
-      pCard_absJoin->vAppend(pCard_indexJoin);
+      m_p_absJoin->vAppend(pCard_indexJoin);
 
       Card_IndexPtr* pCard_index = new Card_IndexPtr(pIndex);
       pCard_indexJoin->vAppend(pCard_index);
@@ -83,8 +79,6 @@ void Joiner::vAppend_preliminary_indexJoin(void)
 
     }
   }
-
-  vEndIteration();
 
   //m_pCardCtl->vPrintFormSubCards(CK_STREAM, CP_DEFAULT, true);
   vSetPrintSubCards(CK_FILTER, false);
@@ -101,103 +95,87 @@ void Joiner::vForm_joinPred(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_JOINER, _FOOTER_);
 
-  vBeginIteration();
+  BoardIter xBI(m_pBoard);
 
-  while (Card_AbsJoin *pCard_absJoin = _pCard_AbsJoin(pEachMain(CK_ABSJOIN))) {
+  while ((m_p_absJoin = _pCard_AbsJoin(xBI.pEachMain(CK_ABSJOIN)))) {
 
-    Card_Filter*   pCard_filter   = _pGetSub_Filter(pCard_absJoin);
-    Card_Scan*     pCard_scan     = _pGetSub_Scan(pCard_absJoin);
-    Card_Stream*   pCard_stream   = _pGetSub_Stream(pCard_scan);
-    Card_Expr*     pCard_expr     = _pCard_Expr(pCard_filter->pGetChild(0));
-    Card_CalcBool* pCard_calcBool = _pGetSub_CalcBool(pCard_expr);
-    Card_PredCmp*  pCard_predCmp  = _pGetSub_PredCmp(pCard_calcBool);
-    Card_Term*     pCard_term_0   = _pCard_Term(pCard_predCmp->pGetChild(0));
-    Card_Term*     pCard_term_1   = _pCard_Term(pCard_predCmp->pGetChild(1));
+    m_p_filter   = _pGetSub_Filter(m_p_absJoin);
+    m_p_scan     = _pGetSub_Scan(m_p_absJoin);
+    m_p_stream   = _pGetSub_Stream(m_p_scan);
+    m_p_expr     = _pCard_Expr(m_p_filter->pGetChild(0));
+    m_p_calcBool = _pGetSub_CalcBool(m_p_expr);
+    m_p_predCmp  = _pGetSub_PredCmp(m_p_calcBool);
+    m_p_term_0   = _pCard_Term(m_p_predCmp->pGetChild(0));
+    m_p_term_1   = _pCard_Term(m_p_predCmp->pGetChild(1));
 
     // - - - -
 
-    Card_IndexJoin* pCard_indexJoin = _pGetSub_IndexJoin(pCard_absJoin);
+    Card_IndexJoin* pCard_indexJoin = _pGetSub_IndexJoin(m_p_absJoin);
 
     Card_JoinPred* pCard_joinPred = new Card_JoinPred;
-    pCard_absJoin->vAppend(pCard_joinPred);
+    m_p_absJoin->vAppend(pCard_joinPred);
 
-    Card_Term* pCard_term;
-
-
-    pCard_term = new Card_Term("BOUND"_Stz);
-    pCard_joinPred->vAppend(pCard_term);
+    m_p_term = new Card_Term("BOUND"_Stz);
+    pCard_joinPred->vAppend(m_p_term);
 
     // one of {pCard_term_0,pCard_term_1} is $In
 
-    i8 iStreamOrdLo = pCard_stream->iGetProperty(C_PPT_OrdLo);
-    i8 iStreamOrdHi = pCard_stream->iGetProperty(C_PPT_OrdHi);
+    i8 iStreamOrdLo = m_p_stream->iGetProperty(C_PPT_OrdLo);
+    i8 iStreamOrdHi = m_p_stream->iGetProperty(C_PPT_OrdHi);
 
-    i8 i_iOrdLo_0 = pCard_term_0->iStreamColNo();
-    i8 i_iOrdLo_1 = pCard_term_1->iStreamColNo();
+    i8 i_iOrdLo_0 = m_p_term_0->iStreamColNo();
+    i8 i_iOrdLo_1 = m_p_term_1->iStreamColNo();
 
     if (i_iOrdLo_0 >= iStreamOrdLo && i_iOrdLo_0 <= iStreamOrdHi) {
-      pCard_term = new Card_Term("$I1"_Stz);
-      pCard_joinPred->vAppend(pCard_term);
-      pCard_term = new Card_Term(pCard_term_1->sz());
-      pCard_joinPred->vAppend(pCard_term);
+      m_p_term = new Card_Term("$I1"_Stz);
+      pCard_joinPred->vAppend(m_p_term);
+      m_p_term = new Card_Term(m_p_term_1->sz());
+      pCard_joinPred->vAppend(m_p_term);
     }
     else
     if (i_iOrdLo_1 >= iStreamOrdLo && i_iOrdLo_1 <= iStreamOrdHi) {
-      pCard_term = new Card_Term("$I1"_Stz);
-      pCard_joinPred->vAppend(pCard_term);
-      pCard_term = new Card_Term(pCard_term_1->sz());
-      pCard_joinPred->vAppend(pCard_term);
+      m_p_term = new Card_Term("$I1"_Stz);
+      pCard_joinPred->vAppend(m_p_term);
+      m_p_term = new Card_Term(m_p_term_1->sz());
+      pCard_joinPred->vAppend(m_p_term);
     }
     else {
       NEVER_REACH
     }
 
-    pCard_term = new Card_Term(pCard_predCmp->sz());
-    pCard_joinPred->vAppend(pCard_term);
-
-    pCard_predCmp->vMark1('^');
+    m_p_predCmp->vMark1('^');
+    m_p_term = new Card_Term(m_p_predCmp->sz());
+    pCard_joinPred->vAppend(m_p_term);
   }
 
-  vEndIteration();
-
-  if (m_bInteractive)
-    m_pBoard->vPrintBoard("Joiner::vForm_joinPred"_Stz);
+  vSetPrintSubCards(CK_FILTER, true);
+  vPrintBoard("Joiner::vForm_joinPred"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
 /* markup index columns                                                       */
 /*----------------------------------------------------------------------------*/
-void Joiner::vMark_idxCol(void)
+void Joiner::vOrdinate_idxColList(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_JOINER, _FOOTER_);
 
   m_pBoard->vClearAllMarks();
 
-  Card *pMainCard = nullptr;
+  BoardIter xBI(m_pBoard);
 
-  vBeginIteration();
+  while ((m_p_absJoin = _pCard_AbsJoin(xBI.pEachMain(CK_ABSJOIN)))) {
 
-  while (Card_AbsJoin* pCard_absJoin = _pCard_AbsJoin(pEachMain(CK_ABSJOIN))) {
+    m_p_scan = _pGetSub_Scan(m_p_absJoin);
+    m_p_stream = _pGetSub_Stream(m_p_scan);
+    m_p_streamColList = _pGetSub_StreamColList(m_p_scan);
 
-    Card_Scan* pCard_scan = _pGetSub_Scan(pCard_absJoin);
-    Card_Stream* pCard_stream = _pGetSub_Stream(pCard_scan);
-    Card_StreamColList* pCard_streamColList = _pGetSub_StreamColList(pCard_scan);
+    m_p_indexJoin = _pGetSub_IndexJoin(m_p_absJoin);
+    m_p_idxColList = _pGetSub_IdxColList(m_p_indexJoin);
 
-    Card_IndexJoin* pCard_indexJoin = _pGetSub_IndexJoin(pCard_absJoin);
-    Card_IdxColList* pCard_idxColList = _pGetSub_IdxColList(pCard_indexJoin);
-
-    //pCard_idxColList->vMark1('!');
-
-    //s32 sOrdinal;
-    //pCard_stream->vOrdinate(sOrdinal,"$$"_Stz);
-    //pCard_idxColList->vOrdinal(sOrdinal);
-    pCard_idxColList->vOrdinate(pCard_stream);
+    m_p_idxColList->vOrdinate(m_p_stream);
   }
 
-  vEndIteration();
-
-  if (m_bInteractive)
-    m_pBoard->vPrintBoard("Joiner::vMark_idxCol"_Stz);
+  vPrintBoard("Joiner::vOrdinate_idxColList"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -25,8 +25,9 @@ namespace STORE
 
     Table*      m_pTable;
     StreamDef*  m_pStreamDef;
+    IdxVec*     m_pIdxVec;
 
-    SubCardIter*   m_pMainCardIter;
+    SubCardIter* m_pMainCardIter;
 
     bool        m_bInteractive;
 
@@ -56,8 +57,10 @@ namespace STORE
     Card_CoPtnPredList*    m_p_coPtnPredList;
     Card_CrossPtnJoin*     m_p_crossPtnJoin;
     Card_CrossPtnJoinList* m_p_crossPtnJoinList;
+    Card_Expr*             m_p_expr;
     Card_Filter*           m_p_filter;
     Card_GbyElist*         m_p_gbyElist;
+    Card_IdxColList*       m_p_idxColList;
     Card_IndexJoin*        m_p_indexJoin;
     Card_IndexList*        m_p_indexList;
     Card_IndexScan*        m_p_indexScan;
@@ -88,6 +91,9 @@ namespace STORE
     Card_TableList*        m_p_tableList;
     Card_TablePtr*         m_p_tablePtr;
     Card_TableSyn*         m_p_tableSyn;
+    Card_Term*             m_p_term;
+    Card_Term*             m_p_term_0;
+    Card_Term*             m_p_term_1;
     Card_UBound*           m_p_uBound;
 
     s256 m_sExplain;

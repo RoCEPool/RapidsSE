@@ -25,6 +25,7 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
 
   m_pTable           = nullptr;
   m_pStreamDef       = nullptr;
+  m_pIdxVec          = nullptr;
 
   m_pPermGen         = nullptr;
 
@@ -54,8 +55,10 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_p_crossPtnJoin     = nullptr;
   m_p_crossPtnJoinList = nullptr;
   m_p_comment          = nullptr;
+  m_p_expr             = nullptr;
   m_p_filter           = nullptr;
   m_p_gbyElist         = nullptr;
+  m_p_idxColList       = nullptr;
   m_p_indexJoin        = nullptr;
   m_p_indexList        = nullptr;
   m_p_indexScan        = nullptr;
@@ -86,6 +89,9 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_p_tableList        = nullptr;
   m_p_tablePtr         = nullptr;
   m_p_tableSyn         = nullptr;
+  m_p_term             = nullptr;
+  m_p_term_0           = nullptr;
+  m_p_term_1           = nullptr;
   m_p_uBound           = nullptr;
 
   Job* pJob = MY::pJob();

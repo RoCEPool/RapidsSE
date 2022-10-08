@@ -89,26 +89,22 @@ void Filtrate::vCopy_predCmp_leftwards(void)
 /*----------------------------------------------------------------------------*/
 /* inspect all <absJoin>/<filter> and cull predicates                         */
 /*----------------------------------------------------------------------------*/
-void Filtrate::vCull_indexJoin_filterPred(void)
+void Filtrate::vCull_filterPred_Of_indexJoin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTRATE,_FOOTER_);
 
-  vBeginIteration();
+  BoardIter xBI(m_pBoard);
 
-  while (Card_AbsJoin *pCard_absJoin = _pCard_AbsJoin(pEachMain(CK_ABSJOIN))) {
+  while ((m_p_absJoin = _pCard_AbsJoin(xBI.pEachMain(CK_ABSJOIN)))) {
 
-    Card_Filter *pCard_filter = _pGetSub_Filter(pCard_absJoin);
+    m_p_filter   = _pGetSub_Filter(m_p_absJoin);
+    m_p_calcBool = _pGetSub_CalcBool(m_p_filter);
 
-    Card_CalcBool *pCard_calcBool = _pGetSub_CalcBool(pCard_filter);
-
-    pCard_calcBool->vCullPred('^');
+    m_p_calcBool->vCullPred('^');
   }
 
-  vEndIteration();
-
-  m_pCardCtl->vPrintSubCards(CK_STREAM, true);
-  if (m_bInteractive)
-    m_pBoard->vPrintBoard("Filtrate::vCull_indexJoin_filterPred"_Stz);
+  //m_pCardCtl->vPrintSubCards(CK_STREAM, true);
+  vPrintBoard("Filtrate::vCull_filterPred_Of_indexJoin"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
