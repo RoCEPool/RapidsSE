@@ -19,7 +19,7 @@ __aFooterFunction(CardIter)
 CardIter::CardIter(Card*  pCard)
 : Object(CN_CARDITER)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
 
   m_pCard      = pCard;
   m_i_Child    = C_UNKNOWN;
@@ -27,14 +27,14 @@ CardIter::CardIter(Card*  pCard)
 
   _checkInitialised_(CN_CARDITER);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _postcondition_(_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 CardIter::CardIter(eCN eClass, Card*  pCard)
-    : Object(CN_CARDITER)
+    : Object(eClass)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
@@ -44,7 +44,7 @@ CardIter::CardIter(eCN eClass, Card*  pCard)
 
   _checkInitialised_(CN_CARDITER);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _postcondition_(_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -52,7 +52,7 @@ CardIter::CardIter(eCN eClass, Card*  pCard)
 /*----------------------------------------------------------------------------*/
 CardIter::~CardIter(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
   
 }
 

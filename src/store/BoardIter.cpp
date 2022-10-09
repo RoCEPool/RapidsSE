@@ -2,6 +2,8 @@
 /* BoardIter.cpp --                                                           */
 /*============================================================================*/
 
+#include "Board.hpp"
+
 #include "BoardIter.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -17,7 +19,7 @@ __aFooterFunction(BoardIter)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 BoardIter::BoardIter(Board* pBoard)
-: Object(CN_BOARDITER)
+: CardIter(CN_BOARDITER,pBoard->pCard_Board())
 {
   _precondition_(_MAGIC_,CN_BOARDITER,_FOOTER_);
 

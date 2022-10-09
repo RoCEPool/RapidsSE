@@ -3,13 +3,13 @@
 /*============================================================================*/
 #pragma once
 
-#include "TransformerTool.hpp"
+#include "CardIter.hpp"
 
 namespace STORE
 {
-  class TransformerTool;
+  class Board;
 
-  class BoardIter : public Object
+  class BoardIter : public CardIter
   {
   private:
     Board* m_pBoard;

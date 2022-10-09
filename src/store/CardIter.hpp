@@ -3,12 +3,10 @@
 /*============================================================================*/
 #pragma once
 
-#include "TransformerTool.hpp"
+#include "Card.hpp"
 
 namespace STORE
 {
-  class TransformerTool;
-
   class CardIter : public Object
   {
   protected:
