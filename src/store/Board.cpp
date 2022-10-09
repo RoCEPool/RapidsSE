@@ -508,6 +508,8 @@ void Board::vPinCards(Ribbon* pRibbon, Stz* szTransformation, Stz* szExplain)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
+  CardCtl* pCardCtl = m_pOptimiser->pCardCtl();
+
   if (! nMainCards())
     return;
   
@@ -529,19 +531,33 @@ void Board::vPinCards(Ribbon* pRibbon, Stz* szTransformation, Stz* szExplain)
   pRibbon->vSetBase();
   pRibbon->vFirstColumn();
 
-  Ribbon* pSubRibbon = new Ribbon(m_pOptimiser->pCardCtl(),this,0);
+  Ribbon* pSubRibbon = new Ribbon(pCardCtl,this,0);
   
 
-  BoardIter xBi(this);
+  BoardIter xBI(this);
 
   i8 nCount = 0;
-  while (Card* pCard = xBi.pEachMain()) {
+  while (Card* pCard = xBI.pEachMain()) {
     eCK eCard = pCard->eCard();
+
+    // skip non-printable horizontal lines
+    if (pCardCtl->bNextHoriz(eCard) &&
+        pCard->bHasProperty(pCardCtl->szHorizExclude(eCard))) {
+
+      while (Card* pNextMain = xBI.pNextMain()) {
+        eCK eNextCard = pNextMain->eCard();
+        if (pCardCtl->bNextHoriz(eNextCard))
+          break;
+        xBI.vForward();
+      }
+
+      continue;
+    }
 
     if (! nCount++)
       pSubRibbon->vFirstColumn();
     else
-    if ( pSubRibbon->iChar() && m_pOptimiser->pCardCtl()->bNextHoriz(eCard))
+    if ( pSubRibbon->iChar() && pCardCtl->bNextHoriz(eCard))
       pSubRibbon->vNextHorizontal();
     else
       pSubRibbon->vNextColumn();
