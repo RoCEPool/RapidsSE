@@ -11,9 +11,10 @@ namespace STORE
 
   class CardIter : public Object
   {
-  private:
+  protected:
     Card*  m_pCard;
     i8     m_i_Child;
+    Card*  m_pCurrChild;
 
     // must be last
     Footer m_xFooter;
@@ -23,6 +24,7 @@ namespace STORE
     void  operator delete(void*);
   
     CardIter(Card* pCard);
+    CardIter(eCN eClass, Card* pCard);
    ~CardIter(void) noexcept(false);
 
 
