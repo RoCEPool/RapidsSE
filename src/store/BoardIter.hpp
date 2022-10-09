@@ -31,19 +31,17 @@ namespace STORE
     Card* pEachMain(eCK eCard);
     Card* pEachMain(eCK eCard, i8& ri_Main);
     Card* pEachMain(i8& ri_Main, eCK& reCard);
+
     Card* pNextMain(void);
     Card* pNextMainIf(eCK eCard);
+
     Card* pPrevMain(void);
-
-    Card_Sort*   pEach_sort(void);
-
-    Card_Aggreg* pPrev_aggreg(void);
-
+    Card* pPrevMainIf(eCK eCard);
 
     i8 i_Main(void);
-    void vPrev(void);
+    void vRewind(void);
     bool bMore(void);
-    void vSkip(void);
+    void vForward(void);
 
 
     // - - - - - - - - - - - - - - - - - -

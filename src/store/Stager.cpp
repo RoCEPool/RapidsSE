@@ -82,7 +82,7 @@ void Stager::vAdd_stages(void)
 
         m_p_stage_new = m_p_stage->pDupCardAndSubCards();
         m_pBoard->vInsertMainCard_after(m_p_stage_new, m_p_filter);
-        xBI.vSkip();
+        xBI.vForward();
         break;
 
       case CK_INDEXJOIN:
@@ -94,7 +94,7 @@ void Stager::vAdd_stages(void)
 
         m_p_stage_new = m_p_stage->pDupCardAndSubCards();
         m_pBoard->vInsertMainCard_after(m_p_stage_new, m_p_indexJoin);
-        xBI.vSkip();
+        xBI.vForward();
         break;
 
       case CK_PROJECT:
@@ -103,7 +103,7 @@ void Stager::vAdd_stages(void)
 
         m_p_stage_new = m_p_stage->pDupCardAndSubCards();
         m_pBoard->vInsertMainCard_after(m_p_stage_new, m_p_project);
-        xBI.vSkip();
+        xBI.vForward();
         break;
 
       case CK_SCAN:
@@ -118,7 +118,7 @@ void Stager::vAdd_stages(void)
 
         m_p_stage_new = m_p_stage->pDupCardAndSubCards();
         m_pBoard->vInsertMainCard_after(m_p_stage_new, m_p_sort);
-        xBI.vSkip();
+        xBI.vForward();
         break;
 
       case CK_STAGE:

@@ -196,6 +196,7 @@ namespace STORE
 
     bool bEquivalent(Card* pToCard);
 
+    i8    iFindChild(Card* pChild);
     Card* pFindChild(eCK eCard);
     Card* pFindChild(eCK eCard, i8& i_Child);
     Card* pFindParent(Card* pSubCard);

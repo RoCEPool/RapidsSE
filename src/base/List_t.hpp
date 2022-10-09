@@ -184,7 +184,7 @@ void List_t<CLASSNO,ITEM>::vPush(ITEM* pItem)
   pItem->vNextItem(m_pHead);
   
   if (m_pHead)
-    m_pHead->vPrev(pItem);
+    m_pHead->vRewind(pItem);
   else
     m_pTail = pItem;
   

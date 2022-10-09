@@ -25,12 +25,40 @@ namespace STORE
     CardIter(eCN eClass, Card* pCard);
    ~CardIter(void) noexcept(false);
 
+    i8 i_Child(void);
+
+    Card* pCurrChild(void);
 
     Card* pEachChild(void);
     Card* pEachChild(i8& ri_Child);
     Card* pEachChild(eCK eCard);
     Card* pEachChild(eCK eCard, i8& ri_Main);
     Card* pEachChild(i8& ri_Main, eCK& reCard);
+
+    void vForward(void);
+
+    Card* pGetChild(i8 i_Child);
+
+    bool bLess(void);
+
+    bool bMore(void);
+
+    Card* pNextChild(void);
+    Card* pNextChildIf(eCK eCard);
+
+    Card* pPrevChild(void);
+    Card* pPrevChildIf(eCK eCard);
+
+    void vRemoveChild(Card* pChild);
+    void vRemoveCurr(eCK eCrossCheck);
+    void vRemoveDeleteChild(Card*& rpChild);
+    void vRemoveDeleteCurr(eCK eCrossCheck);
+    void vRestart(void);
+    void vRewind(void);
+
+    void vSet(Card* pChild);
+    void vSet(i8 iChild, Card* pChild);
+
   private:
 
     Footer* aFooter(void);

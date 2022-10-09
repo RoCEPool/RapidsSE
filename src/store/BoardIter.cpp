@@ -220,29 +220,15 @@ Card* BoardIter::pPrevMain(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Sort* BoardIter::pEach_sort(void)
+Card* BoardIter::pPrevMainIf(eCK eCard)
 {
   _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
 
-  Card_Sort* p_sort = _pCard_Sort(pEachMain(CK_SORT));
+  Card* pPrevMain = this->pPrevMain();
+  if (! pPrevMain || eCard != pPrevMain->eCard())
+    return nullptr;
 
-  m_pCurrChild = p_sort;
-
-  return p_sort;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_Aggreg* BoardIter::pPrev_aggreg(void)
-{
-  _precondition_( _MAGIC_, CN_BOARDITER, _FOOTER_);
-
-  Card_Aggreg* p_aggreg =
-    _pCard_Aggreg(m_pBoard->pFindPrevMain(m_pCurrChild,CK_AGGREG,m_i_Child));
-
-
-  return p_aggreg;
+  return pPrevMain;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -261,7 +247,7 @@ bool BoardIter::bMore(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void BoardIter::vSkip(void)
+void BoardIter::vForward(void)
 {
   _precondition_( _MAGIC_, CN_BOARDITER, _FOOTER_);
 
@@ -283,7 +269,6 @@ void BoardIter::vRemoveCard(Card* pCard)
   m_pBoard->vRemoveMainCard(pCard);
 }
 
-
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
@@ -299,7 +284,6 @@ void BoardIter::vRemoveCurr(eCK eCrossCheck)
   else
     m_pCurrChild = nullptr;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

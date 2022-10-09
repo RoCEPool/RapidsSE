@@ -51,9 +51,9 @@ void Sorter::vCull_sby_SameAs_gby(void)
 
   BoardIter xBI(m_pBoard);
 
-  while ( (m_p_sort = xBI.pEach_sort()) ) {
+  while ( (m_p_sort = _pCard_Sort(xBI.pEachMain(CK_SORT))) ) {
 
-    if (! (m_p_aggreg = xBI.pPrev_aggreg()) )
+    if (! (m_p_aggreg = _pCard_Aggreg(xBI.pPrevMainIf(CK_AGGREG))) )
       return;
 
     m_p_gbyElist = m_p_aggreg->pSub_gbyElist();
