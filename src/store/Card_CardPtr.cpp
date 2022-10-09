@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "Card_CardPtr.hpp"
+#include "CardIter.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -83,12 +84,9 @@ void Card_CardPtr::vCardPtrPrint(Ribbon* pRibbon, i8 iDepth)
 
   pCard->vPrintProperties(pRibbon, iDepth);
 
-  SubCardIter* pSubCardIter = pCard->pNewSubCardIter();
-  while (pSubCardIter->bHasNext()) {
-    Card *pSubCard = pSubCardIter->pNext();
+  CardIter xCI(this);
+  while (Card *pSubCard = xCI.pEachChild())
     pSubCard->vPrintProperties(pRibbon, iDepth + 1);
-  }
-  delete pSubCardIter;
 }
 
 
