@@ -13,6 +13,7 @@ namespace STORE
   {
     bool m_bNextHoriz;       // print card on new horizontal line
     s32  m_sHorizExclude;    // has this property for horizontal non-print
+
     bool m_bPrintByKind;     // print card by kind (or the following settings...)
     bool m_bPrintName;       // print name of card
     bool m_bPrintValue;      // print value of card
@@ -21,6 +22,7 @@ namespace STORE
     bool m_bPrintSubCards;   // print the subcards of this card?
     bool m_bPrintSubShort;   //   or compressed print of subcards of this card?
 
+    i8   m_iPtrDetail;       // ptr print detail
     bool m_bPrune;           // prune sub-card printing at this point
 
   };
@@ -60,6 +62,9 @@ namespace STORE
     void vPrintSubCards(i8 i_Card, bool bPrintSubCards);
     bool bPrintSubShort(i8 i_Card);
     void vPrintSubShort(i8 i_Card, bool bPrintSubShort);
+
+    i8   iPtrDetail(i8 i_Card);
+    void vPtrDetail(i8 i_Card, i8 iPtrDetail);
 
     bool bPrune(i8 i_Card);
     void vPrune(i8 i_Card, bool bPrune);

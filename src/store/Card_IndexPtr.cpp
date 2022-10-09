@@ -5,6 +5,8 @@
 #include "Card_IdxColList.hpp"
 #include "Card_IndexPtr.hpp"
 
+#include "CardCtl.hpp"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -86,6 +88,10 @@ void Card_IndexPtr::vIndex(Index* pIndex)
 void Card_IndexPtr::vIndexPtrPrint(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  CardCtl* pCardCtl = _pCardCtl(pRibbon->pCtl());
+  if (! pCardCtl->iPtrDetail(CK_INDEXPTR))
+    return;
 
   Card_IndexPtr* pCard_IndexPtr = _pCard_IndexPtr(this);
   Index* pIndex = pCard_IndexPtr->pIndex();

@@ -8,6 +8,8 @@
 #include "Card_IdxColList.hpp"
 #include "Card_IndexList.hpp"
 
+#include "CardCtl.hpp"
+
 #include "PtnDef.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -107,6 +109,10 @@ void Card_TablePtr::vTable(Table* pTable)
 void Card_TablePtr::vTablePtrPrint(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  CardCtl* pCardCtl = _pCardCtl(pRibbon->pCtl());
+  if (! pCardCtl->iPtrDetail(CK_TABLEPTR))
+    return;
 
   Card_TablePtr* pCardTablePtr = _pCard_TablePtr(this);
   Table* pTable = _pTable(pCardTablePtr->pTable());

@@ -24,10 +24,10 @@ CardCtl::CardCtl(void)
   
   for (i8 i_Card = 0; i_Card < CK_ENUMS; i_Card++) {
 
-    m_xaCardCtl[i_Card].m_bNextHoriz = false;
+    m_xaCardCtl[i_Card].m_bNextHoriz    = false;
+    m_xaCardCtl[i_Card].m_sHorizExclude = "n/a"_Stz;
 
     m_xaCardCtl[i_Card].m_bPrintByKind     = false;
-    m_xaCardCtl[i_Card].m_sHorizExclude    = "n/a"_Stz;
     m_xaCardCtl[i_Card].m_bPrintName       = true;
     m_xaCardCtl[i_Card].m_bPrintValue      = true;
     m_xaCardCtl[i_Card].m_bPrintProperties = true;
@@ -35,7 +35,8 @@ CardCtl::CardCtl(void)
     m_xaCardCtl[i_Card].m_bPrintSubCards   = true;
     m_xaCardCtl[i_Card].m_bPrintSubShort   = false;
 
-    m_xaCardCtl[i_Card].m_bPrune = false;
+    m_xaCardCtl[i_Card].m_iPtrDetail = 1;
+    m_xaCardCtl[i_Card].m_bPrune     = false;
   }
   
   _checkInitialised_(CN_CARDCTL);
@@ -54,6 +55,7 @@ CardCtl::CardCtl(void)
   vPrune(CK_CROSSPTNJOIN,true);
 
   vPrintByKind(CK_INDEXPTR,true);
+  vPtrDetail(CK_INDEXPTR,0);
 
   vPrintValue(CK_PREDAND,false);
   vPrintProperties(CK_PREDAND,false);
@@ -68,6 +70,7 @@ CardCtl::CardCtl(void)
   vPrintByKind(CK_STREAMELIST,true);
 
   vPrintByKind(CK_TABLEPTR,true);
+  vPtrDetail(CK_TABLEPTR,0);
 
   vPrintProperties(CK_TERM,false);
 
@@ -283,6 +286,28 @@ void CardCtl::vPrintSubShort(i8 i_Card, bool bPrintSubShort)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 
   m_xaCardCtl[i_Card].m_bPrintSubShort = bPrintSubShort;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get iPtrDetail for card                                                    */
+/*----------------------------------------------------------------------------*/
+i8 CardCtl::iPtrDetail(i8 i_Card)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
+
+  i8 iPtrDetail = m_xaCardCtl[i_Card].m_iPtrDetail;
+
+  return iPtrDetail;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set iPtrDetail for card                                                    */
+/*----------------------------------------------------------------------------*/
+void CardCtl::vPtrDetail(i8 i_Card, i8 iPtrDetail)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
+
+  m_xaCardCtl[i_Card].m_iPtrDetail = iPtrDetail;
 }
 
 /*----------------------------------------------------------------------------*/
