@@ -321,7 +321,7 @@ SizeHeap gxaSizeHeap[]
 
   { CN__C__,                     'C' - ('A' - 1),          HT_INVALID   , FILL },
   { CN_CARD,                     sizeof(Card),             HT_T_SMALL   , FILL },
-  { CN_CARDCTL,                  sizeof(CardCtl),          HT_T_SMALL   , FILL },
+  { CN_CARDCTL,                  sizeof(CardCtl),          HT_T_MEDIUM  , FILL },
   { CN_CARDITER,                 sizeof(CardIter),         HT_T_SMALL   , FILL },
   { CN_CATALOG,                  sizeof(Catalog),          HT_INVALID   , FILL },
   { CN_CHARSER,                  sizeof(Charser),          HT_T_LARGE   , FILL },

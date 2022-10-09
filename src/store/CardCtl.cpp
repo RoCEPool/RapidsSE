@@ -2,7 +2,8 @@
 /* CardCtl.cpp -- Card Control                                                */
 /*============================================================================*/
 
- #include "CardCtl.hpp"
+#include "CardCtl.hpp"
+#include "Card.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -26,6 +27,7 @@ CardCtl::CardCtl(void)
     m_xaCardCtl[i_Card].m_bNextHoriz = false;
 
     m_xaCardCtl[i_Card].m_bPrintByKind     = false;
+    m_xaCardCtl[i_Card].m_sHorizExclude    = "n/a"_Stz;
     m_xaCardCtl[i_Card].m_bPrintName       = true;
     m_xaCardCtl[i_Card].m_bPrintValue      = true;
     m_xaCardCtl[i_Card].m_bPrintProperties = true;
@@ -62,7 +64,7 @@ CardCtl::CardCtl(void)
   vPrintProperties(CK_PREDOR,false);
 
   vNextHorizon(CK_STAGE, true);
-
+  vHorizExclude(CK_STAGE,C_PPT_Exclude);
   vPrintByKind(CK_STREAMELIST,true);
 
   vPrintByKind(CK_TABLEPTR,true);
@@ -127,6 +129,28 @@ void CardCtl::vPrintByKind(i8 i_Card, bool bPrintByKind)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 
   m_xaCardCtl[i_Card].m_bPrintByKind = bPrintByKind;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get szHorizExclude for card                                                */
+/*----------------------------------------------------------------------------*/
+Stz* CardCtl::szHorizExclude(i8 i_Card)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
+
+  Stz* szHorizExclude = m_xaCardCtl[i_Card].m_sHorizExclude;
+
+  return szHorizExclude;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set szHorizExclude for card                                                */
+/*----------------------------------------------------------------------------*/
+void CardCtl::vHorizExclude(i8 i_Card, Stz* szHorizExclude)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
+
+  m_xaCardCtl[i_Card].m_sHorizExclude = szHorizExclude;
 }
 
 /*----------------------------------------------------------------------------*/

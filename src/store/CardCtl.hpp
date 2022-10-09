@@ -12,7 +12,7 @@ namespace STORE
   struct _CardCtl
   {
     bool m_bNextHoriz;       // print card on new horizontal line
-
+    s32  m_sHorizExclude;    // has this property for horizontal non-print
     bool m_bPrintByKind;     // print card by kind (or the following settings...)
     bool m_bPrintName;       // print name of card
     bool m_bPrintValue;      // print value of card
@@ -46,6 +46,8 @@ namespace STORE
 
     bool bPrintByKind(i8 i_Card);
     void vPrintByKind(i8 i_Card, bool bPrintByKind);
+    Stz* szHorizExclude(i8 i_Card);
+    void vHorizExclude(i8 i_Card, Stz* szHorizExclude);
     bool bPrintName(i8 i_Card);
     void vPrintName(i8 i_Card, bool bPrintName);
     bool bPrintValue(i8 i_Card);

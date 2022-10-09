@@ -171,6 +171,17 @@ void Stager::vLinearize_stages(void)
 
   L_Exit:
 
+  xBI.vRestart();
+  while ((m_p_stage = _pCard_Stage(xBI.pEachMain(CK_STAGE)))) {
+    if (! (m_p_stageTopo = m_p_stage->pSub_stageTopo()) )
+      continue;
+    if (YG_ALL_PARTITIONS == m_p_stageTopo->eStageTopo())
+      continue;
+
+    m_p_stage->vAddProperty_nameOnly(C_PPT_Exclude);
+  }
+
+
   m_pBoard->vRenumberMainCards();
 
   vSetPrintSubCards(CK_AGGELIST, false);

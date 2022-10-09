@@ -103,6 +103,7 @@ static Stz* C_PPT_AggLevel     = "eAggLevel"_Stz;
 static Stz* C_PPT_AggOp        = "bAggOp"_Stz;
 static Stz* C_PPT_Card         = "pCard"_Stz;
 static Stz* C_PPT_DebugOption  = "szDebugOption"_Stz;
+static Stz* C_PPT_Exclude      = "bExclude"_Stz;
 static Stz* C_PPT_Index        = "pIndex"_Stz;
 static Stz* C_PPT_Invalid      = "bInvalid"_Stz;
 static Stz* C_PPT_JoinedBuff   = "nJoinedBuff"_Stz;
