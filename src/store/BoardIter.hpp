@@ -13,8 +13,6 @@ namespace STORE
   {
   private:
     Board* m_pBoard;
-    i8     m_i_Main;
-    Card*  m_pCurrMain;
 
     // must be last
     Footer m_xFooter;
