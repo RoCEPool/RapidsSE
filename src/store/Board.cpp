@@ -532,11 +532,10 @@ void Board::vPinCards(Ribbon* pRibbon, Stz* szTransformation, Stz* szExplain)
   Ribbon* pSubRibbon = new Ribbon(m_pOptimiser->pCardCtl(),this,0);
   
 
-  ListExoIter2_t<Card>* pBoard_I = m_pCard_Board->pNewIter();
+  BoardIter xBi(this);
 
   i8 nCount = 0;
-  while (pBoard_I->bHasNext()) {
-    Card* pCard = pBoard_I->pNext();
+  while (Card* pCard = xBi.pEachMain()) {
     eCK eCard = pCard->eCard();
 
     if (! nCount++)
@@ -554,8 +553,6 @@ void Board::vPinCards(Ribbon* pRibbon, Stz* szTransformation, Stz* szExplain)
   pRibbon->vPinRibbon(pRibbon->nTitleLines(),0,pSubRibbon);
   
   delete pSubRibbon;
-
-  delete pBoard_I;
 }
 
 /*----------------------------------------------------------------------------*/
