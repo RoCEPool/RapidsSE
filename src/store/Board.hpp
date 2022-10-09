@@ -104,6 +104,8 @@
 #include "Card_UBound.hpp"
 #include "Card_Unique.hpp"
 
+#include "Card_Where.hpp"
+
 #include "VertexSpec.hpp"
 #include "StageSpec.hpp"
 #include "OpSpec.hpp"

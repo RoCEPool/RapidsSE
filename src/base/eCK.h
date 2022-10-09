@@ -105,6 +105,8 @@ enum eCK // card kind
   /* */ CK_UBOUND,
   /* */ CK_UNIQUE,
 
+  /* */ CK_WHERE,
+
   /* */ CK_ENUMS
 };
 
@@ -212,6 +214,8 @@ static Stz* aCK[]
   /* */ "CK_UBOUND"_Stz,       // CK_UBOUND
   /* */ "CK_UNIQUE"_Stz,       // CK_UNIQUE
 
+  /* */ "CK_WHERE"_Stz,        // CK_WHERE
+
   /* */ "ENUMS"_Stz
 };
 
@@ -318,6 +322,8 @@ static Stz* aCK_short[]
 
   /* */ "ubound"_Stz,          // CK_UBOUND
   /* */ "unique"_Stz,          // CK_UNIQUE
+
+  /* */ "where"_Stz,           // CK_WHERE
 
   /* */ "ENUMS"_Stz
 };
