@@ -60,9 +60,7 @@ enum eCN : u2 // Class Number
   /* */ CN_CODEBLOCK,
   /* */ CN_CODESYNTH,
   /* */ CN_COLUMN,
-  /* */ CN_COLUMNAR,
   /* */ CN_COMBINED,
-  /* */ CN_COMBINER,
   /* */ CN_CONDITIONALQUERYNODEITER,
   /* */ CN_CRVBUFFER,
   /* */ CN_CRWBUFFER,
@@ -98,7 +96,6 @@ enum eCN : u2 // Class Number
   /* */ CN_ENTBUFSORTER,
   /* */ CN_ENTWRK,
   /* */ CN_ENUMFLAGS,
-  /* */ CN_ESTIMATOR,
   /* */ CN_EVENTHANDLERS,
   /* */ CN_EVMGR,
   /* */ CN_EXEMPLAR,
@@ -108,7 +105,6 @@ enum eCN : u2 // Class Number
   /* */ CN_FIFO,
   /* */ CN_FILE,
   /* */ CN_FILEMAP,
-  /* */ CN_FILTRATE,
   /* */ CN_FIPVAL,
   /* */ CN_FLATTEN,
   /* */ CN_FLTVAL,
@@ -132,7 +128,6 @@ enum eCN : u2 // Class Number
   /* */ CN__I__,
   /* */ CN_INDEX,
   /* */ CN_INDEXDEF,
-  /* */ CN_INDEXER,
   /* */ CN_INDEXSTREAM,
   /* */ CN_INDEXTREE,
   /* */ CN_INDEXTREEVEC,
@@ -154,7 +149,6 @@ enum eCN : u2 // Class Number
   /* */ CN_JOBMETRICS,
   /* */ CN_JOBREPORT,
   /* */ CN_JOBS,
-  /* */ CN_JOINER,
 
   /* */ CN__K__,
   /* */ CN_KEY,
@@ -225,14 +219,12 @@ enum eCN : u2 // Class Number
   /* */ CN_PAGEFILE,
   /* */ CN_PAGINGMETRICS,
   /* */ CN_PARCEL,
-  /* */ CN_PARTITIONER,
   /* */ CN_PATHIDENTIFIER,
   /* */ CN_PATHVEC,
   /* */ CN_PAYSTR,
   /* */ CN_PAYSTRBUFFER,
   /* */ CN_PERMGEN,
   /* */ CN_PERMIT,
-  /* */ CN_PERMUTOR,
   /* */ CN_PERUSE,
   /* */ CN_PIPEIN,
   /* */ CN_PIPELINE,
@@ -303,7 +295,6 @@ enum eCN : u2 // Class Number
 
   /* */ CN__S__,
   /* */ CN_SCANNER,
-  /* */ CN_SCANNING,
   /* */ CN_SCHEDULE,
   /* */ CN_SCHEDULER,
   /* */ CN_SCHEMA,
@@ -312,7 +303,6 @@ enum eCN : u2 // Class Number
   /* */ CN_SEEME,
   /* */ CN_SENCELL,
   /* */ CN_SENCOMPILER,
-  /* */ CN_SENDER,
   /* */ CN_SENDS,
   /* */ CN_SENDWL,
   /* */ CN_SEPROMPT,
@@ -337,7 +327,6 @@ enum eCN : u2 // Class Number
   /* */ CN_SNTSP,
   /* */ CN_SNVCH,
   /* */ CN_SOCKET,
-  /* */ CN_SORTER,
   /* */ CN_SPELAPSED,
   /* */ CN_SPID,
   /* */ CN_SPSTRING,
@@ -347,7 +336,6 @@ enum eCN : u2 // Class Number
   /* */ CN_STACK,
   /* */ CN_STAGE,
   /* */ CN_STAGEMETRICS,
-  /* */ CN_STAGER,
   /* */ CN_STAGESPEC,
   /* */ CN_STARTER,
   /* */ CN_STATEMENT,
@@ -360,7 +348,6 @@ enum eCN : u2 // Class Number
   /* */ CN_STREAM,
   /* */ CN_STREAMDEF,
   /* */ CN_STREAMDEFRHT,
-  /* */ CN_STREAMER,
   /* */ CN_STREAMMETRICS,
   /* */ CN_STREAMSET,
   /* */ CN_STRING_T,
@@ -377,7 +364,6 @@ enum eCN : u2 // Class Number
   /* */ CN_TABLEDEF,
   /* */ CN_TABLEPTN,
   /* */ CN_TABLEPTNVEC,
-  /* */ CN_TABULAR,
   /* */ CN_TAGSET,
   /* */ CN_TASK,
   /* */ CN_TASKLIST,
@@ -496,10 +482,8 @@ static Stz* aCN[]
   /* */ "CODEBLOCK"_Stz,            // CN_CODEBLOCK
   /* */ "CODESYNTH"_Stz,            // CN_CODESYNTH
   /* */ "COLUMN"_Stz,               // CN_COLUMN
-  /* */ "COLUMNAR"_Stz,             // CN_COLUMNAR
   /* */ "COMBINED"_Stz,             // CN_COMBINED
-  /* */ "COMBINER"_Stz,             // CN_COMBINER
-  /* */ "CONDITIONALQUERYNODEITER"_Stz, // CN_CONDITIONALQUERYNODEITER
+   /* */ "CONDITIONALQUERYNODEITER"_Stz, // CN_CONDITIONALQUERYNODEITER
   /* */ "CRVBUFFER"_Stz,            // CN_CRVBUFFER
   /* */ "CRWBUFFER"_Stz,            // CN_CRWBUFFER
   /* */ "CRWTABLEPTN"_Stz,          // CN_CRWTABLEPTN
@@ -534,7 +518,6 @@ static Stz* aCN[]
   /* */ "ENTBUFSORTER"_Stz,         // CN_ENTBUFSORTER
   /* */ "ENTWRK"_Stz,               // CN_ENTWRK
   /* */ "ENUMFLAGS"_Stz,            // CN_ENUMFLAGS
-  /* */ "ESTIMATOR"_Stz,            // CN_ESTIMATOR
   /* */ "EVENTHANDLERS"_Stz,        // CN_EVENTHANDLERS
   /* */ "EVMGR"_Stz,                // CN_EVMGR
   /* */ "EXEMPLAR"_Stz,             // CN_EXEMPLAR
@@ -544,8 +527,7 @@ static Stz* aCN[]
   /* */ "FIFO"_Stz,                 // CN_FIFO
   /* */ "FILE"_Stz,                 // CN_FILE
   /* */ "FILEMAP"_Stz,              // CN_FILEMAP
-  /* */ "FILTRATE"_Stz,             // CN_FILTRATE
-  /* */ "FIPVAL"_Stz,               // CN_FIPVAL
+   /* */ "FIPVAL"_Stz,               // CN_FIPVAL
   /* */ "FLATTEN"_Stz,              // CN_FLATTEN
   /* */ "FLTVAL"_Stz,               // CN_FLTVAL
   /* */ "FORMAT"_Stz,               // CN_FORMAT
@@ -568,7 +550,6 @@ static Stz* aCN[]
   /* */ "_I__"_Stz,                 // CN__I__
   /* */ "INDEX"_Stz,                // CN_INDEX
   /* */ "INDEXDEF"_Stz,             // CN_INDEXDEF
-  /* */ "INDEXER"_Stz,              // CN_INDEXER
   /* */ "INDEXSTREAM"_Stz,          // CN_INDEXSTREAM
   /* */ "INDEXTREE"_Stz,            // CN_INDEXTREE
   /* */ "INDEXTREEVEC"_Stz,         // CN_INDEXTREEVEC
@@ -590,7 +571,6 @@ static Stz* aCN[]
   /* */ "JOBMETRICS"_Stz,           // CN_JOBMETRICS
   /* */ "JOBREPORT"_Stz,            // CN_JOBREPORT
   /* */ "JOBS"_Stz,                 // CN_JOBS
-  /* */ "JOINER"_Stz,               // CN_JOINER
 
   /* */ "_K__"_Stz,                 // CN__K__
   /* */ "KEY"_Stz,                  // CN_KEY
@@ -661,14 +641,12 @@ static Stz* aCN[]
   /* */ "PAGEFILE"_Stz,             // CN_PAGEFILE
   /* */ "PAGINGMETRICS"_Stz,        // CN_PAGINGMETRICS
   /* */ "PARCEL"_Stz,               // CN_PARCEL
-  /* */ "PARTITIONER"_Stz,          // CN_PARTITIONER
   /* */ "PATHIDENTIFIER"_Stz,       // CN_PATHIDENTIFIER
   /* */ "PATHVEC"_Stz,              // CN_PATHVEC
   /* */ "PAYSTR"_Stz,               // CN_PATHSTR
   /* */ "PAYSTRBUFFER"_Stz,         // CN_PATHSTRBUFFER
   /* */ "PERMGEN"_Stz,              // CN_PERMGEN
   /* */ "PERMIT"_Stz,               // CN_PERMIT
-  /* */ "PERMUTOR"_Stz,             // CN_PERMUTOR
   /* */ "PERUSE"_Stz,               // CN_PERUSE
   /* */ "PIPEIN"_Stz,               // CN_PIPEIN
   /* */ "PIPELINE"_Stz,             // CN_PIPELINE
@@ -739,7 +717,6 @@ static Stz* aCN[]
 
   /* */ "_S__"_Stz,                 // CN__S__
   /* */ "SCANNER"_Stz,              // CN_SCANNER
-  /* */ "SCANNING"_Stz,             // CN_SCANNING
   /* */ "SCHEDULE"_Stz,             // CN_SCHEDULE
   /* */ "SCHEDULER"_Stz,            // CN_SCHEDULER
   /* */ "SCHEMA"_Stz,               // CN_SCHEMA
@@ -748,7 +725,6 @@ static Stz* aCN[]
   /* */ "SEEME"_Stz,                // CN_SEEME
   /* */ "SENCELL"_Stz,              // CN_SENCELL
   /* */ "SENCOMPILER"_Stz,          // CN_SENCOMPILER
-  /* */ "SENDER"_Stz,               // CN_SENDER
   /* */ "SENDS"_Stz,                // CN_SENDS
   /* */ "SENDWL"_Stz,               // CN_SENDWL
   /* */ "SEPROMPT"_Stz,             // CN_SEPROMPT
@@ -773,7 +749,6 @@ static Stz* aCN[]
   /* */ "SNTSP"_Stz,                // CN_SNTSP
   /* */ "SNVCH"_Stz,                // CN_SNVCH
   /* */ "SOCKET"_Stz,               // CN_SOCKET
-  /* */ "SORTER"_Stz,               // CN_SORTER
   /* */ "SPELAPSED"_Stz,            // CN_SPELAPSED
   /* */ "SPID"_Stz,                 // CN_SPID
   /* */ "SPSTRING"_Stz,             // CN_SPSTRING
@@ -783,7 +758,6 @@ static Stz* aCN[]
   /* */ "STACK"_Stz,                // CN_STACK
   /* */ "STAGE"_Stz,                // CN_STAGE
   /* */ "STAGEMETRICS"_Stz,         // CN_STAGEMETRICS
-  /* */ "STAGER"_Stz,               // CN_STAGER
   /* */ "STAGESPEC"_Stz,            // CN_STAGESPEC
   /* */ "STARTER"_Stz,              // CN_STARTER
   /* */ "STATEMENT"_Stz,            // CN_STATEMENT
@@ -796,7 +770,6 @@ static Stz* aCN[]
   /* */ "STREAM"_Stz,               // CN_STREAM
   /* */ "STREAMDEF"_Stz,            // CN_STREAMDEF
   /* */ "STREAMDEFRHT"_Stz,         // CN_STREAMDEFRHT
-  /* */ "STREAMER"_Stz,             // CN_STREAMER
   /* */ "STREAMMETRICS"_Stz,        // CN_STREAMMETRICS
   /* */ "STREAMSET"_Stz,            // CN_STREAMSET
   /* */ "STRING_T"_Stz,             // CN_STRING_T
@@ -813,7 +786,6 @@ static Stz* aCN[]
   /* */ "TABLEDEF"_Stz,             // CN_TABLEDEF
   /* */ "TABLEPTN"_Stz,             // CN_TABLEPTN
   /* */ "TABLEPTNVEC"_Stz,          // CN_TABLEPTNVEC
-  /* */ "TABULAR"_Stz,              // CN_TABULAR
   /* */ "TAGSET"_Stz,               // CN_TAGSET
   /* */ "TASK"_Stz,                 // CN_TASK
   /* */ "TASKLIST"_Stz,             // CN_TASKLIST

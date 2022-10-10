@@ -149,7 +149,6 @@
 #include "RibbonLine.hpp"
 #include "RowTablePtn.hpp"
 #include "Optimiser.hpp"
-#include "Estimator.hpp"
 
 #include "Card.hpp"
 
@@ -242,23 +241,10 @@
 #include "PayStr.hpp"
 #include "PayStrBuffer.hpp"
 #include "Resolver.hpp"
-#include "Streamer.hpp"
 #include "Curator.hpp"
-#include "Joiner.hpp"
 #include "Transformer.hpp"
-#include "Scanning.hpp"
-#include "Filtrate.hpp"
-#include "Combiner.hpp"
-#include "Sender.hpp"
-#include "Stager.hpp"
-#include "Sorter.hpp"
 #include "BoardIter.hpp"
-#include "Indexer.hpp"
 #include "PermGen.hpp"
-#include "Permutor.hpp"
-#include "Tabular.hpp"
-#include "Columnar.hpp"
-#include "Partitioner.hpp"
 #include "CardIter.hpp"
 #include "Transforms.hpp"
 
@@ -332,9 +318,7 @@ SizeHeap gxaSizeHeap[]
   { CN_CODEBLOCK,                sizeof(CodeBlock),        HT_T_MEDIUM  , FILL },
   { CN_CODESYNTH,                sizeof(CodeSynth),        HT_T_LARGE   , FILL },
   { CN_COLUMN,                   sizeof(Column),           HT_T_TINY    , FILL },
-  { CN_COLUMNAR,                 sizeof(Columnar),         HT_T_SMALL   , FILL },
   { CN_COMBINED,                 sizeof(Combined),           HT_T_LARGE   ,FILL },
-  { CN_COMBINER,                 sizeof(Combiner),           HT_T_SMALL   ,FILL },
   { CN_CONDITIONALQUERYNODEITER, sizeof(ConditionalQueryNodeIter), HT_T_TINY,FILL },
   { CN_CRVBUFFER,                sizeof(CrvBuffer),          HT_T_LARGE   ,FILL },
   { CN_CRWBUFFER,                sizeof(CrwBuffer),          HT_T_LARGE   ,FILL },
@@ -370,7 +354,6 @@ SizeHeap gxaSizeHeap[]
   { CN_ENTBUFSORTER,             sizeof(EntBufSorter),           HT_T_LARGE   , FILL },
   { CN_ENTWRK,                   sizeof(EntWrk),                 HT_INVALID   ,FILL },
   { CN_ENUMFLAGS,                sizeof(ClassFlags),             HT_T_TINY    , FILL },
-  { CN_ESTIMATOR,                sizeof(Estimator),              HT_T_SMALL   , FILL },
   { CN_EVENTHANDLERS,            sizeof(EventHandlers),          HT_T_TINY    , FILL },
   { CN_EVMGR,                    sizeof(EvMgr),                  HT_T_TINY    , FILL },
   { CN_EXEMPLAR,                 sizeof(Exemplar),               HT_T_TINY    , FILL },
@@ -380,7 +363,6 @@ SizeHeap gxaSizeHeap[]
   { CN_FIFO,                     sizeof(Fifo),                   HT_T_TINY    , FILL },
   { CN_FILE,                     sizeof(File),                   HT_T_TINY    , FILL },
   { CN_FILEMAP,                  sizeof(FileMap),                HT_INVALID   , FILL },
-  { CN_FILTRATE,                 sizeof(Filtrate),               HT_T_SMALL    , FILL },
   { CN_FIPVAL,                   sizeof(TypeValueArea), /*yes*/  HT_INVALID   , FILL },
   { CN_FLATTEN,                  sizeof(Flatten), /*yes*/    HT_T_TINY    ,     FILL },
   { CN_FLTVAL,                   sizeof(TypeValueArea), /*yes*/  HT_INVALID   , FILL },
@@ -404,7 +386,6 @@ SizeHeap gxaSizeHeap[]
   { CN__I__,                     'I' - ('A' - 1),            HT_INVALID   ,FILL },
   { CN_INDEX,                    sizeof(Index),              HT_T_TINY    ,FILL },
   { CN_INDEXDEF,                 sizeof(IndexDef),           HT_T_SMALL   ,FILL },
-  { CN_INDEXER,                  sizeof(Indexer),            HT_T_SMALL  ,FILL },
   { CN_INDEXSTREAM,              sizeof(IndexStream),        HT_T_TINY    ,FILL },
   { CN_INDEXTREE,                sizeof(IndexTree),          HT_T_TINY    ,FILL },
   { CN_INDEXTREEVEC,             sizeof(IndexTreeVec),       HT_T_TINY    ,FILL },
@@ -426,7 +407,6 @@ SizeHeap gxaSizeHeap[]
   { CN_JOBMETRICS,               sizeof(JobMetrics),         HT_T_LARGE   ,FILL },
   { CN_JOBREPORT,                sizeof(JobReport),          HT_T_TINY    ,FILL },
   { CN_JOBS,                     sizeof(Jobs),               HT_T_TINY    ,FILL },
-  { CN_JOINER,                   sizeof(Joiner),             HT_T_SMALL   ,FILL },
 
   { CN__K__,                     'K' - ('A' - 1),            HT_INVALID   ,FILL },
   { CN_KEY,                      sizeof(Key),                HT_INVALID   ,FILL },
@@ -497,14 +477,12 @@ SizeHeap gxaSizeHeap[]
   { CN_PAGEFILE,                 sizeof(PageFile),           HT_T_TINY    ,FILL },
   { CN_PAGINGMETRICS,            sizeof(PagingMetrics),      HT_T_LARGE   ,FILL },
   { CN_PARCEL,                   sizeof(Parcel),             HT_T_TINY    ,FILL },
-  { CN_PARTITIONER,              sizeof(Partitioner),        HT_T_SMALL   ,FILL },
   { CN_PATHIDENTIFIER,           sizeof(PathIdentifier),     HT_T_MEDIUM  ,FILL },
   { CN_PATHVEC,                  sizeof(PathVec),            HT_T_MEDIUM  ,FILL },
   { CN_PAYSTR,                   sizeof(PayStr),             HT_INVALID   ,FILL },
   { CN_PAYSTRBUFFER,             sizeof(PayStrBuffer),       HT_T_LARGE   ,FILL },
   { CN_PERMGEN,                  sizeof(PermGen),            HT_T_TINY    ,FILL },
   { CN_PERMIT,                   sizeof(Permit),             HT_T_TINY    ,FILL },
-  { CN_PERMUTOR,                 sizeof(Permutor),           HT_T_SMALL   ,FILL },
   { CN_PERUSE,                   sizeof(Peruse),             HT_T_MEDIUM  ,FILL },
   { CN_PIPEIN,                   sizeof(PipeIn),             HT_T_TINY    ,FILL },
   { CN_PIPELINE,                 sizeof(Pipeline),           HT_T_TINY    ,FILL },
@@ -575,7 +553,6 @@ SizeHeap gxaSizeHeap[]
 
   { CN__S__,                     'S' - ('A' - 1),            HT_INVALID   ,FILL },
   { CN_SCANNER,                  sizeof(Scanner),            HT_T_TINY    ,FILL },
-  { CN_SCANNING,                 sizeof(Scanning),           HT_T_SMALL   ,FILL },
   { CN_SCHEDULE,                 sizeof(Schedule),           HT_T_TINY    ,FILL },
   { CN_SCHEDULER,                sizeof(Scheduler),          HT_INVALID   ,FILL },
   { CN_SCHEMA,                   sizeof(Schema),             HT_T_TINY    ,FILL },
@@ -584,7 +561,6 @@ SizeHeap gxaSizeHeap[]
   { CN_SEEME,           sizeof(SeeMe),              HT_INVALID   , FILL },
   { CN_SENCELL,         sizeof(SenCell),            HT_INVALID   , FILL },
   { CN_SENCOMPILER,     sizeof(SenCompiler),        HT_T_TINY    , FILL },
-  { CN_SENDER,          sizeof(Sender),             HT_T_SMALL   , FILL },
   { CN_SENDS,           sizeof(Sends),              HT_T_TINY    , FILL },
   { CN_SENDWL,          sizeof(SendWL),             HT_T_TINY    , FILL },
   { CN_SEPROMPT,        sizeof(SePrompt),           HT_T_MEDIUM  , FILL },
@@ -609,7 +585,6 @@ SizeHeap gxaSizeHeap[]
   { CN_SNTSP,                    sizeof(SN_Tsp),             HT_INVALID   ,FILL },
   { CN_SNVCH,                    sizeof(SN_Vch),             HT_INVALID   ,FILL },
   { CN_SOCKET,                   sizeof(Socket),             HT_T_TINY    ,FILL },
-  { CN_SORTER,                   sizeof(Sorter),             HT_T_SMALL   ,FILL },
   { CN_SPELAPSED,                sizeof(SP_Elapsed),         HT_INVALID   ,FILL },
   { CN_SPID,                     sizeof(SP_Gid),             HT_INVALID   ,FILL },
   { CN_SPSTRING,                 sizeof(SP_String),          HT_INVALID   ,FILL },
@@ -619,7 +594,6 @@ SizeHeap gxaSizeHeap[]
   { CN_STACK,                    sizeof(TypedStack), /*yes*/ HT_T_MEDIUM  ,FILL },
   { CN_STAGE,                    sizeof(Stage),              HT_T_SMALL   ,FILL },
   { CN_STAGEMETRICS,             sizeof(StageMetrics),       HT_T_TINY    ,FILL },
-  { CN_STAGER,                   sizeof(Stager),             HT_T_SMALL   ,FILL },
   { CN_STAGESPEC,                sizeof(StageSpec),          HT_T_TINY    ,FILL },
   { CN_STARTER,                  sizeof(Starter),            HT_T_TINY    ,FILL },
   { CN_STATEMENT,                sizeof(Statement),          HT_T_MEDIUM  ,FILL },
@@ -632,7 +606,6 @@ SizeHeap gxaSizeHeap[]
   { CN_STREAM,                   sizeof(Stream),             HT_T_SMALL   ,FILL },
   { CN_STREAMDEF,                sizeof(StreamDef),          HT_T_LARGE   ,FILL },
   { CN_STREAMDEFRHT,             sizeof(StreamDefRht),       HT_T_LARGE   ,FILL },
-  { CN_STREAMER,                 sizeof(Streamer),           HT_T_SMALL   ,FILL },
   { CN_STREAMMETRICS,            sizeof(StreamMetrics),      HT_T_TINY    ,FILL },
   { CN_STREAMSET,                sizeof(StreamSet),          HT_T_LARGE   ,FILL },
   { CN_STRING_T,                 sizeof(s32),                HT_INVALID   ,FILL },
@@ -649,7 +622,6 @@ SizeHeap gxaSizeHeap[]
   { CN_TABLEDEF,                 sizeof(Table),              HT_T_MEDIUM  ,FILL },
   { CN_TABLEPTN,                 sizeof(TablePtn),           HT_T_TINY    ,FILL },
   { CN_TABLEPTNVEC,              sizeof(TablePtnVec),        HT_T_TINY    ,FILL },
-  { CN_TABULAR,                  sizeof(Tabular),            HT_T_SMALL   ,FILL },
   { CN_TAGSET,                   sizeof(TagSet),             HT_T_MEDIUM  ,FILL },
   { CN_TASK,                     sizeof(Task),               HT_T_SMALL   ,FILL },
   { CN_TASKLIST,                 sizeof(TaskList),           HT_T_TINY    ,FILL },

@@ -45,7 +45,7 @@ Curator::~Curator(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Curator::vChangeAll_scan_To_retrieve(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_JOINER, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CURATOR, _FOOTER_);
 
   vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
