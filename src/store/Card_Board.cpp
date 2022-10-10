@@ -13,7 +13,7 @@ __aNewFunction(Card_Board,CN_CARD)
 __vDeleteFunction(Card_Board,CN_CARD)
 
 __bIsCard(STORE,Card_Board,CK_BOARD)
-__pGetSubFunction_Card(STORE,Board,CK_BOARD)
+__pSubFunction_Card(STORE,Board,CK_BOARD)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

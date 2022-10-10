@@ -97,8 +97,8 @@ void Filtrate::vCull_filterPred_Of_indexJoin(void)
 
   while ((m_p_absJoin = _pCard_AbsJoin(xBI.pEachMain(CK_ABSJOIN)))) {
 
-    m_p_filter   = _pGetSub_Filter(m_p_absJoin);
-    m_p_calcBool = _pGetSub_CalcBool(m_p_filter);
+    m_p_filter   = _pSub_Filter(m_p_absJoin);
+    m_p_calcBool = _pSub_CalcBool(m_p_filter);
 
     m_p_calcBool->vCullPred('^');
   }
@@ -117,7 +117,7 @@ void Filtrate::vDelete_Empty_filter(void)
   BoardIter xBI(m_pBoard);
 
   while ((m_p_filter = _pCard_Filter(xBI.pEachMain(CK_FILTER)))) {
-    m_p_calcBool = _pGetSub_CalcBool(m_p_filter);
+    m_p_calcBool = _pSub_CalcBool(m_p_filter);
 
     if (0 == m_p_calcBool->nChildCards()) {
       xBI.vRemoveDeleteCurr(CK_FILTER);
@@ -139,7 +139,7 @@ void Filtrate::vDelete_empty_sub_filter(void)
 
   while (Card *pCard_main = pEachMain()) {
 
-    Card_Filter* pCard_filter_sub = _pGetSub_Filter(pCard_main);
+    Card_Filter* pCard_filter_sub = _pSub_Filter(pCard_main);
     if (! pCard_filter_sub)
       continue;
 
@@ -169,7 +169,7 @@ void Filtrate::vIndividuate_filter(void)
       _pCard_Scan(pEachMain(CK_SCAN))) {
 
     Card_Filter* pCard_filter =
-        _pGetSub_Filter(pCard_scan);
+        _pSub_Filter(pCard_scan);
 
     if (! pCard_filter)
       continue;
@@ -186,7 +186,7 @@ void Filtrate::vIndividuate_filter(void)
       _pCard_IndexJoin(pEachMain(CK_INDEXJOIN))) {
 
     Card_Filter* pCard_filter =
-      _pGetSub_Filter(pCard_indexJoin);
+      _pSub_Filter(pCard_indexJoin);
 
     if (! pCard_filter)
       continue;
@@ -216,7 +216,7 @@ void Filtrate::vAssignFilterLeftwards(Card_Filter* pCard_filter)
   //Card_CalcBool* pCard_bool =
   //    _pCard_CalcBool(pCard_filter->pFindSubCard(CK_CALCBOOL));
 
-  Card_CalcBool* pCard_bool = _pGetSub_CalcBool(pCard_filter);
+  Card_CalcBool* pCard_bool = _pSub_CalcBool(pCard_filter);
 
   Card_PRED* pCard_pred = static_cast<Card_PRED*>(pCard_bool->pGetChild(0));
 
@@ -329,7 +329,7 @@ i8 Filtrate::iAssignPredToAbsJoin(Card_AbsJoin* pCard_absJoin, Card_PRED* pCard_
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
 
-  Card_Stream *pCard_stream = _pGetSub_Stream(pCard_absJoin);
+  Card_Stream *pCard_stream = _pSub_Stream(pCard_absJoin);
   //pCard_stream->vMark1('#');
 
   // are all $n of <pred> in this <stream>?
@@ -348,7 +348,7 @@ i8 Filtrate::iAssignPredToScan(Card_Scan* pCard_scan, Card_PRED* pCard_PRED)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
 
-  Card_Stream* pCard_stream = _pGetSub_Stream(pCard_scan);
+  Card_Stream* pCard_stream = _pSub_Stream(pCard_scan);
   //pCard_stream->vMark1('#');
 
   // are all $n of <pred> in this <stream>?
@@ -366,7 +366,7 @@ void Filtrate::vCopyFilterLeftwards(Card_Filter* pCard_filter)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
 
-  Card_CalcBool* pCard_bool = _pGetSub_CalcBool(pCard_filter);
+  Card_CalcBool* pCard_bool = _pSub_CalcBool(pCard_filter);
 
 
   while (pCard_bool->nChildCards()) {
@@ -384,7 +384,7 @@ bool Filtrate::bCopyPredDrillDown(Card_PRED* pCard_pred, Card_Filter* pCard_filt
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
 
-  Card_CalcBool* pCard_calcBool = _pGetSub_CalcBool(pCard_filter);
+  Card_CalcBool* pCard_calcBool = _pSub_CalcBool(pCard_filter);
 
   if ('@' == pCard_pred->cMark1()) {
     Card* pMainCard;
@@ -392,7 +392,7 @@ bool Filtrate::bCopyPredDrillDown(Card_PRED* pCard_pred, Card_Filter* pCard_filt
     Card_Stream* pCard_stream = m_pBoard->pFindStreamCard(iStream,pMainCard);
 
     Card_Filter* pCard_filter_existing =
-        _pGetSub_Filter(pMainCard);
+        _pSub_Filter(pMainCard);
 
     if (pCard_filter_existing) {
       pCard_filter_existing->vMark1(pCard_stream->cMark1());
@@ -435,7 +435,7 @@ void Filtrate::vCopyPredToExistingFilter(Card_Filter* pCard_filter_existing, Car
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
 
-  Card_CalcBool* pCard_calcBool = _pGetSub_CalcBool(pCard_filter_existing);
+  Card_CalcBool* pCard_calcBool = _pSub_CalcBool(pCard_filter_existing);
 
   Card* pCard_top = pCard_calcBool->pPop();
 

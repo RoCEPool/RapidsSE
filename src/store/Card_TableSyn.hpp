@@ -22,7 +22,7 @@ namespace STORE
 
   Card_TableSyn* _pCard_TableSyn(void* aAddr);
   bool _bIsCard_TableSyn(void* aAddr);
-  Card_TableSyn* _pGetSub_TableSyn(Card * pParent);
+  Card_TableSyn* _pSub_TableSyn(Card * pParent);
 }
 
 /*============================================================================*/

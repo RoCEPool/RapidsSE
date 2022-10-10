@@ -23,7 +23,7 @@ namespace STORE
 
   Card_JoinOrderSeq* _pCard_JoinOrderSeq(void* aAddr);
   bool _bIsCard_JoinOrderSeq(void* aAddr);
-  Card_JoinOrderSeq* _pGetSub_JoinOrderSeq(Card* pParent);
+  Card_JoinOrderSeq* _pSub_JoinOrderSeq(Card* pParent);
 }
 
 /*============================================================================*/

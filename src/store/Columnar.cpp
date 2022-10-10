@@ -72,7 +72,7 @@ void Columnar::vAdd_columnRef_Under_term(void)
   BoardIter xBI(m_pBoard);
 
   while ( (m_pMainCard = xBI.pEachMain()) ) {
-    if (! (m_p_calcBool = _pGetSub_CalcBool(m_pMainCard)) )
+    if (! (m_p_calcBool = _pSub_CalcBool(m_pMainCard)) )
       continue;
 
     m_p_calcBool->vVisitAllSub(CK_TERM,bfTerm_columnRef);
@@ -113,7 +113,7 @@ void Columnar::vConvert_streamColOrdinal_To_tableColOrdinal(void)
   BoardIter xBI(m_pBoard);
 
   while ( (m_pMainCard = xBI.pEachMain()) ) {
-    if (! (m_p_calcBool = _pGetSub_CalcBool(m_pMainCard)) )
+    if (! (m_p_calcBool = _pSub_CalcBool(m_pMainCard)) )
       continue;
 
     m_p_calcBool->vVisitAllSub(CK_TERM,bfTerm_columnRef);

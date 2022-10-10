@@ -57,8 +57,8 @@ void Joiner::vAppend_preliminary_indexJoin(void)
 
   while (m_p_absJoin = _pCard_AbsJoin(xBI.pEachMain(CK_ABSJOIN))) {
 
-    m_p_scan = _pGetSub_Scan(m_p_absJoin);
-    m_p_tablePtr = _pGetSub_TablePtr(m_p_scan);
+    m_p_scan = _pSub_Scan(m_p_absJoin);
+    m_p_tablePtr = _pSub_TablePtr(m_p_scan);
     m_pTable = m_p_tablePtr->pTable();
 
     if (! (m_pIdxVec = m_pTable->pIdxVec()))
@@ -99,18 +99,18 @@ void Joiner::vForm_joinPred(void)
 
   while ((m_p_absJoin = _pCard_AbsJoin(xBI.pEachMain(CK_ABSJOIN)))) {
 
-    m_p_filter   = _pGetSub_Filter(m_p_absJoin);
-    m_p_scan     = _pGetSub_Scan(m_p_absJoin);
-    m_p_stream   = _pGetSub_Stream(m_p_scan);
+    m_p_filter   = _pSub_Filter(m_p_absJoin);
+    m_p_scan     = _pSub_Scan(m_p_absJoin);
+    m_p_stream   = _pSub_Stream(m_p_scan);
     m_p_expr     = _pCard_Expr(m_p_filter->pGetChild(0));
-    m_p_calcBool = _pGetSub_CalcBool(m_p_expr);
-    m_p_predCmp  = _pGetSub_PredCmp(m_p_calcBool);
+    m_p_calcBool = _pSub_CalcBool(m_p_expr);
+    m_p_predCmp  = _pSub_PredCmp(m_p_calcBool);
     m_p_term_0   = _pCard_Term(m_p_predCmp->pGetChild(0));
     m_p_term_1   = _pCard_Term(m_p_predCmp->pGetChild(1));
 
     // - - - -
 
-    Card_IndexJoin* pCard_indexJoin = _pGetSub_IndexJoin(m_p_absJoin);
+    Card_IndexJoin* pCard_indexJoin = _pSub_IndexJoin(m_p_absJoin);
 
     Card_JoinPred* pCard_joinPred = new Card_JoinPred;
     m_p_absJoin->vAppend(pCard_joinPred);
@@ -165,12 +165,12 @@ void Joiner::vOrdinate_idxColList(void)
 
   while ((m_p_absJoin = _pCard_AbsJoin(xBI.pEachMain(CK_ABSJOIN)))) {
 
-    m_p_scan = _pGetSub_Scan(m_p_absJoin);
-    m_p_stream = _pGetSub_Stream(m_p_scan);
-    m_p_streamColList = _pGetSub_StreamColList(m_p_scan);
+    m_p_scan = _pSub_Scan(m_p_absJoin);
+    m_p_stream = _pSub_Stream(m_p_scan);
+    m_p_streamColList = _pSub_StreamColList(m_p_scan);
 
-    m_p_indexJoin = _pGetSub_IndexJoin(m_p_absJoin);
-    m_p_idxColList = _pGetSub_IdxColList(m_p_indexJoin);
+    m_p_indexJoin = _pSub_IndexJoin(m_p_absJoin);
+    m_p_idxColList = _pSub_IdxColList(m_p_indexJoin);
 
     m_p_idxColList->vOrdinate(m_p_stream);
   }
@@ -192,15 +192,15 @@ void Joiner::vRefactor_absJoin_Into_indexJoin(void)
     //pCard_absJoin->vDeleteChildCard(CK_CALC);
     //pCard_absJoin->vDeleteChildCard(CK_FILTER);
 
-    Card_Scan* pCard_scan = _pGetSub_Scan(pCard_absJoin);
+    Card_Scan* pCard_scan = _pSub_Scan(pCard_absJoin);
     pCard_absJoin->vReplaceChildWithItsSubs(pCard_scan);
     delete pCard_scan;
 
-    Card_IndexJoin* pCard_indexJoin = _pGetSub_IndexJoin(pCard_absJoin);
+    Card_IndexJoin* pCard_indexJoin = _pSub_IndexJoin(pCard_absJoin);
     pCard_absJoin->vReplaceChildWithItsSubs(pCard_indexJoin);
     delete pCard_indexJoin;
 
-    Card_Stream* pCard_stream = _pGetSub_Stream(pCard_absJoin);
+    Card_Stream* pCard_stream = _pSub_Stream(pCard_absJoin);
     pCard_absJoin->vMoveToLastChild(pCard_stream);
 
     pCard_absJoin->vCard(CK_INDEXJOIN);

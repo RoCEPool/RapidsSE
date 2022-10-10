@@ -19,7 +19,7 @@ __aNewFunction(Card_TableSyn, CN_CARD)
 __vDeleteFunction(Card_TableSyn, CN_CARD)
 
 __bIsCard(STORE, Card_TableSyn, CK_TABLESYN)
-__pGetSubFunction_Card(STORE,TableSyn, CK_TABLESYN)
+__pSubFunction_Card(STORE,TableSyn, CK_TABLESYN)
 
 
 /*----------------------------------------------------------------------------*/

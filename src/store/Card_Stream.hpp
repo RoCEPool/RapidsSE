@@ -38,7 +38,7 @@ namespace STORE
 
   Card_Stream* _pCard_Stream(void* aAddr);
   bool _bIsCard_Stream(void* aAddr);
-  Card_Stream* _pGetSub_Stream(Card* pParent);
+  Card_Stream* _pSub_Stream(Card* pParent);
 }
 
 /*============================================================================*/

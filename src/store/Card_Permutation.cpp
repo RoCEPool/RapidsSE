@@ -14,7 +14,7 @@ __aNewFunction(Card_Permutation,CN_CARD)
 __vDeleteFunction(Card_Permutation,CN_CARD)
 
 __bIsCard(STORE,Card_Permutation,CK_PERMUTATION)
-__pGetSubFunction_Card(STORE,Permutation,CK_PERMUTATION)
+__pSubFunction_Card(STORE,Permutation,CK_PERMUTATION)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

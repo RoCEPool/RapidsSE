@@ -15,7 +15,7 @@ __aNewFunction(Card_PredCmp,CN_CARD)
 __vDeleteFunction(Card_PredCmp,CN_CARD)
 
 __bIsCard(STORE,Card_PredCmp,CK_PREDCMP)
-__pGetSubFunction_Card(STORE,PredCmp,CK_PREDCMP)
+__pSubFunction_Card(STORE,PredCmp,CK_PREDCMP)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

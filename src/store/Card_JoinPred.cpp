@@ -13,7 +13,7 @@ __aNewFunction(Card_JoinPred,CN_CARD)
 __vDeleteFunction(Card_JoinPred,CN_CARD)
 
 __bIsCard(STORE,Card_JoinPred,CK_JOINPRED)
-__pGetSubFunction_Card(STORE,JoinPred,CK_JOINPRED)
+__pSubFunction_Card(STORE,JoinPred,CK_JOINPRED)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

@@ -20,7 +20,7 @@ namespace STORE
 
   Card_Comment* _pCard_Comment(void* aAddr);
   bool _bIsCard_Comment(void* aAddr);
-  Card_Comment* _pGetSub_Comment(Card* pParent);
+  Card_Comment* _pSub_Comment(Card* pParent);
 }
 
 /*============================================================================*/

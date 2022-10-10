@@ -19,7 +19,7 @@ namespace STORE
 
   Card_Board* _pCard_Board(void* aAddr);
   bool _bIsCard_Board(void* aAddr);
-  Card_Board* _pGetSub_Board(Card* pParent);
+  Card_Board* _pSub_Board(Card* pParent);
 }
 
 /*============================================================================*/

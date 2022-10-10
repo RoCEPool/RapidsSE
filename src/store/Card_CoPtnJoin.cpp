@@ -16,7 +16,7 @@ __aNewFunction(Card_CoPtnJoin, CN_CARD)
 __vDeleteFunction(Card_CoPtnJoin, CN_CARD)
 
 __bIsCard(STORE, Card_CoPtnJoin, CK_COPTNJOIN)
-__pGetSubFunction_Card(STORE, CoPtnJoin, CK_COPTNJOIN)
+__pSubFunction_Card(STORE, CoPtnJoin, CK_COPTNJOIN)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -50,8 +50,8 @@ bool Card_CoPtnJoin::bCoPtnWith(Card_CoPtnPred* p_CoPtnPred)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_PredCmp* p_predCmp_this = _pGetSub_PredCmp(this);
-  Card_PredCmp* p_predCmp_arg  = _pGetSub_PredCmp(p_CoPtnPred);
+  Card_PredCmp* p_predCmp_this = _pSub_PredCmp(this);
+  Card_PredCmp* p_predCmp_arg  = _pSub_PredCmp(p_CoPtnPred);
 
   if (p_predCmp_this->bCoPtnWith(p_predCmp_arg))
     return true;

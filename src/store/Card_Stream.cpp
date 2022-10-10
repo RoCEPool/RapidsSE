@@ -16,7 +16,7 @@ __aNewFunction(Card_Stream,CN_CARD)
 __vDeleteFunction(Card_Stream,CN_CARD)
 
 __bIsCard(STORE,Card_Stream,CK_STREAM)
-__pGetSubFunction_Card(STORE,Stream,CK_STREAM)
+__pSubFunction_Card(STORE,Stream,CK_STREAM)
 
 
 /*----------------------------------------------------------------------------*/
@@ -132,7 +132,7 @@ Card_StreamCol* Card_Stream::pFind_streamCol(Stz *szColNm)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-   Card_StreamColList* pCard_StreamColList = _pGetSub_StreamColList(this);
+   Card_StreamColList* pCard_StreamColList = _pSub_StreamColList(this);
 
   Card_StreamCol* pCard_streamCol = nullptr;
 

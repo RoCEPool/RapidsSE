@@ -19,7 +19,7 @@ __aNewFunction(Card_JoinOrder,CN_CARD)
 __vDeleteFunction(Card_JoinOrder,CN_CARD)
 
 __bIsCard(STORE,Card_JoinOrder,CK_JOINORDER)
-__pGetSubFunction_Card(STORE,JoinOrder,CK_JOINORDER)
+__pSubFunction_Card(STORE,JoinOrder,CK_JOINORDER)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

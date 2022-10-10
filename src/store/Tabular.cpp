@@ -55,7 +55,7 @@ void Tabular::vAdd_tablePtn_To_table(void)
   BoardIter xBI(m_pBoard);
 
   while ( (m_pMainCard = xBI.pEachMain()) ) {
-    if (! (m_p_table = _pGetSub_Table(m_pMainCard)) )
+    if (! (m_p_table = _pSub_Table(m_pMainCard)) )
       continue;
 
     Card_TablePtn* p_tablePtn = new Card_TablePtn(m_p_table);
@@ -78,10 +78,10 @@ void Tabular::vAdd_tableSyn_To_table(void)
   BoardIter xBI(m_pBoard);
 
   while ( (m_pMainCard = xBI.pEachMain()) ) {
-    if (! (m_p_table = _pGetSub_Table(m_pMainCard)) )
+    if (! (m_p_table = _pSub_Table(m_pMainCard)) )
       continue;
 
-    m_p_tablePtr = _pGetSub_TablePtr(m_p_table);
+    m_p_tablePtr = _pSub_TablePtr(m_p_table);
     m_pTable = m_p_tablePtr->pTable();
 
     m_p_tableSyn = new Card_TableSyn;

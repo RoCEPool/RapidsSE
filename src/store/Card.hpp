@@ -356,10 +356,20 @@ EndDefine
 EndDefine
 
 /*----------------------------------------------------------------------------*/
-/* macro for standard safe cast function                                      */
+/* macro for find childCard function                                          */
 /*----------------------------------------------------------------------------*/
-#define __pGetSubFunction_Card(SPACENM,CARDNM,CN) \
-  Card_##CARDNM* SPACENM::_pGetSub_##CARDNM(Card* pCard) \
+#define __pChildFunction_Card(SPACENM,CARDNM,CN) \
+  Card_##CARDNM* SPACENM::_pSub_##CARDNM(Card* pCard) \
+  { \
+    return _pCard_##CARDNM(pCard->pFindChild(CN)); \
+  } \
+EndDefine
+
+/*----------------------------------------------------------------------------*/
+/* macro for find subCard function                                            */
+/*----------------------------------------------------------------------------*/
+#define __pSubFunction_Card(SPACENM,CARDNM,CN) \
+  Card_##CARDNM* SPACENM::_pSub_##CARDNM(Card* pCard) \
   { \
     return _pCard_##CARDNM(pCard->pFindSubCard(CN)); \
   } \

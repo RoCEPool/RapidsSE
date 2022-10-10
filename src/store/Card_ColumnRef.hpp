@@ -27,7 +27,7 @@ namespace STORE
 
   Card_ColumnRef* _pCard_ColumnRef(void* aAddr);
   bool _bIsCard_ColumnRef(void* aAddr);
-  Card_ColumnRef* _pGetSub_ColumnRef(Card * pParent);
+  Card_ColumnRef* _pSub_ColumnRef(Card * pParent);
 }
 
 /*============================================================================*/

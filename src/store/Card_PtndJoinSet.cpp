@@ -14,7 +14,7 @@ __aNewFunction(Card_PtndJoinSet,CN_CARD)
 __vDeleteFunction(Card_PtndJoinSet,CN_CARD)
 
 __bIsCard(STORE,Card_PtndJoinSet,CK_PTNDJOINSET)
-__pGetSubFunction_Card(STORE,PtndJoinSet,CK_PTNDJOINSET)
+__pSubFunction_Card(STORE,PtndJoinSet,CK_PTNDJOINSET)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

@@ -13,7 +13,7 @@ __aNewFunction(Card_Retrieve,CN_CARD)
 __vDeleteFunction(Card_Retrieve,CN_CARD)
 
 __bIsCard(STORE,Card_Retrieve,CK_RETRIEVE)
-__pGetSubFunction_Card(STORE,Retrieve,CK_RETRIEVE)
+__pSubFunction_Card(STORE,Retrieve,CK_RETRIEVE)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

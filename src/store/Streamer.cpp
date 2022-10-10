@@ -57,7 +57,7 @@ void Streamer::vCalc_OrdinalRangesOf_stream(void)
   while ((m_pMainCard = xBI.pEachMain())) {
 
     if (CK_SCAN == m_pMainCard->eCard()) {
-      m_p_stream = _pGetSub_Stream(m_pMainCard);
+      m_p_stream = _pSub_Stream(m_pMainCard);
 
       //m_p_stream->vMark1('#');
       //m_p_stream->vMark2(cStream++);
@@ -74,8 +74,8 @@ void Streamer::vCalc_OrdinalRangesOf_stream(void)
     }
 
     if (CK_ABSJOIN == m_pMainCard->eCard()) {
-      m_p_scan   = _pGetSub_Scan(m_pMainCard);
-      m_p_stream = _pGetSub_Stream(m_p_scan);
+      m_p_scan   = _pSub_Scan(m_pMainCard);
+      m_p_stream = _pSub_Stream(m_p_scan);
 
       //m_p_stream->vMark1('#');
       //m_p_stream->vMark2(cStream++);

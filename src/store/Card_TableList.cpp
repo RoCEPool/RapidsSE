@@ -18,7 +18,7 @@ __aNewFunction(Card_TableList,CN_CARD)
 __vDeleteFunction(Card_TableList,CN_CARD)
 
 __bIsCard(STORE,Card_TableList,CK_TABLELIST)
-__pGetSubFunction_Card(STORE,TableList,CK_TABLELIST)
+__pSubFunction_Card(STORE,TableList,CK_TABLELIST)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -59,7 +59,7 @@ Card_Table* Card_TableList::pFind_table(char cSyn)
       continue;
 
     Card_Table* p_table = _pCard_Table(pChildCard);
-    Card_TableSyn* p_tableSyn = _pGetSub_TableSyn(p_table);
+    Card_TableSyn* p_tableSyn = _pSub_TableSyn(p_table);
     char cTableSyn = p_tableSyn->cTableSyn();
     if (cTableSyn == cSyn)
       return p_table;
@@ -90,11 +90,11 @@ bool Card_TableList::bPredCmpIsCoPtn(Card_PredCmp* p_predCmp)
     return true;
 
   Card_Table* p_table_0 = pFind_table(cTableSyn_0);
-  Card_TablePtn* p_tablePtn_0 = _pGetSub_TablePtn(p_table_0);
+  Card_TablePtn* p_tablePtn_0 = _pSub_TablePtn(p_table_0);
   Stz* szTablePtn_0 = p_tablePtn_0->sz();
 
   Card_Table* p_table_1 = pFind_table(cTableSyn_1);
-  Card_TablePtn* p_tablePtn_1 = _pGetSub_TablePtn(p_table_1);
+  Card_TablePtn* p_tablePtn_1 = _pSub_TablePtn(p_table_1);
   Stz* szTablePtn_1 = p_tablePtn_1->sz();
 
   if (szTablePtn_0->bSame(szPredColumnRef_0) && szTablePtn_1->bSame(szPredColumnRef_1))

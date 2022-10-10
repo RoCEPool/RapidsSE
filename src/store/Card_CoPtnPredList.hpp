@@ -19,7 +19,7 @@ namespace STORE
 
   Card_CoPtnPredList* _pCard_CoPtnPredList(void* aAddr);
   bool _bIsCard_CoPtnPredList(void* aAddr);
-  Card_CoPtnPredList* _pGetSub_CoPtnPredList(Card* pParent);
+  Card_CoPtnPredList* _pSub_CoPtnPredList(Card* pParent);
 }
 
 /*============================================================================*/

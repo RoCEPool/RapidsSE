@@ -22,7 +22,7 @@ namespace STORE
 
   Card_Retrieve* _pCard_Retrieve(void* aAddr);
   bool _bIsCard_Retrieve(void* aAddr);
-  Card_Retrieve* _pGetSub_Retrieve(Card* pParent);
+  Card_Retrieve* _pSub_Retrieve(Card* pParent);
 }
 
 /*============================================================================*/

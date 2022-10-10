@@ -420,7 +420,7 @@ void Weaver::vArgScan(Stz* szOpArgs, Card_Scan* pCard_Scan)
   
   vRpnScan(sRpnExpr,pCard_Scan);
 
-  Table* pTable = _pGetSub_TablePtr(pCard_Scan)->pTable();
+  Table* pTable = _pSub_TablePtr(pCard_Scan)->pTable();
   
   Stz* szTableNm = pTable->szTableNm();
   //m_i_Op_stage++;
@@ -583,7 +583,7 @@ void Weaver::vRpnIndexJoin(Stz* szRpnExpr, Card_IndexJoin* pCard_IndexJoin)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
-  Card_JoinPred* pCard_joinPred = _pGetSub_JoinPred(pCard_IndexJoin);
+  Card_JoinPred* pCard_joinPred = _pSub_JoinPred(pCard_IndexJoin);
   if (pCard_joinPred) {
     i8 nSubs = pCard_joinPred->nChildCards();
     for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {

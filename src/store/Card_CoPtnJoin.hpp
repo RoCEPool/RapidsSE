@@ -22,7 +22,7 @@ namespace STORE
 
   Card_CoPtnJoin* _pCard_CoPtnJoin(void* aAddr);
   bool _bIsCard_CoPtnJoin(void* aAddr);
-  Card_CoPtnJoin* _pGetSub_CoPtnJoin(Card* pParent);
+  Card_CoPtnJoin* _pSub_CoPtnJoin(Card* pParent);
 }
 
 /*============================================================================*/
