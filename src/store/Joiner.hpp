@@ -24,7 +24,7 @@ namespace STORE
     void vInsert_preliminary_indexJoin(void);
     void vDeleteAll_absJoin(void);
     void vForm_joinPred(void);
-    void vOrdinate_idxColList(void);
+    void vConvertAll_idxColNm_To_streamColOrdinal(void);
     void vRefactor_absJoin_Into_indexJoin(void);
     void vSubsume_scan_Under_absJoin(void);
 

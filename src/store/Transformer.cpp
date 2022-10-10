@@ -207,7 +207,7 @@ void Transformer::vTransform2(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pJoiner->vInsert_preliminary_indexJoin();
-  m_pJoiner->vOrdinate_idxColList();
+  m_pJoiner->vConvertAll_idxColNm_To_streamColOrdinal();
   m_pJoiner->vForm_joinPred();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

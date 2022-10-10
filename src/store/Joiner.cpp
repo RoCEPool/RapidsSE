@@ -176,7 +176,7 @@ void Joiner::vForm_joinPred(void)
 /*----------------------------------------------------------------------------*/
 /* markup index columns                                                       */
 /*----------------------------------------------------------------------------*/
-void Joiner::vOrdinate_idxColList(void)
+void Joiner::vConvertAll_idxColNm_To_streamColOrdinal(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_JOINER, _FOOTER_);
 
@@ -187,13 +187,12 @@ void Joiner::vOrdinate_idxColList(void)
 
   BoardIter xBI(m_pBoard);
 
-  while ((m_p_absJoin = _pCard_AbsJoin(xBI.pEachMain(CK_ABSJOIN)))) {
+  while ((m_p_scan = _pCard_Scan(xBI.pEachMain(CK_SCAN)))) {
+    if (! (m_p_indexJoin = _pSub_IndexJoin(m_p_scan)))
+      continue;
 
-    m_p_scan = _pSub_Scan(m_p_absJoin);
     m_p_stream = _pSub_Stream(m_p_scan);
     m_p_streamColList = _pSub_StreamColList(m_p_scan);
-
-    m_p_indexJoin = _pSub_IndexJoin(m_p_absJoin);
     m_p_idxColList = _pSub_IdxColList(m_p_indexJoin);
 
     m_p_idxColList->vOrdinate(m_p_stream);
