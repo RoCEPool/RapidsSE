@@ -49,6 +49,9 @@ void Card_CalcBool::vCullPred(char cWithMark)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_)
 
+  if (! nChildCards())
+    return;
+
   Card_PRED* pCard_pred = static_cast<Card_PRED*>(pGetChild(0));
 
   while (pCard_pred && bCullPred(pCard_pred,cWithMark) && nChildCards()) {

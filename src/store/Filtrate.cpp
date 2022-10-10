@@ -107,9 +107,10 @@ void Filtrate::vCull_filterPred_Of_indexJoin(void)
 
   BoardIter xBI(m_pBoard);
 
-  while ((m_p_absJoin = _pCard_AbsJoin(xBI.pEachMain(CK_ABSJOIN)))) {
+  while ((m_p_scan = _pCard_Scan(xBI.pEachMain(CK_SCAN)))) {
+    if (! (m_p_filter = _pSub_Filter(m_p_scan)))
+      continue;
 
-    m_p_filter   = _pSub_Filter(m_p_absJoin);
     m_p_calcBool = _pSub_CalcBool(m_p_filter);
 
     m_p_calcBool->vCullPred('^');

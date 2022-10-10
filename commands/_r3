@@ -27,7 +27,7 @@ load customer "../tpch/sf_0001/customer.csv" ;
 /cue = "vForm_joinPred"
 /transliterated
 /transform
-/transform2
+/transform3
 /interactive
 /weave
 /weaved

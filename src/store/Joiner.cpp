@@ -214,23 +214,26 @@ void Joiner::vRefactor_absJoin_Into_indexJoin(void)
 
   vBeginIteration();
 
-  while (Card_AbsJoin *pCard_absJoin = _pCard_AbsJoin(pEachMain(CK_ABSJOIN))) {
+  while (Card_Scan *p_scan = _pCard_Scan(pEachMain(CK_SCAN))) {
 
     //pCard_absJoin->vDeleteChildCard(CK_CALC);
     //pCard_absJoin->vDeleteChildCard(CK_FILTER);
 
-    Card_Scan* pCard_scan = _pSub_Scan(pCard_absJoin);
-    pCard_absJoin->vReplaceChildWithItsSubs(pCard_scan);
-    delete pCard_scan;
+//    Card_Scan* pCard_scan = _pSub_Scan(pCard_absJoin);
+//    pCard_absJoin->vReplaceChildWithItsSubs(pCard_scan);
+//    delete pCard_scan;
 
-    Card_IndexJoin* pCard_indexJoin = _pSub_IndexJoin(pCard_absJoin);
-    pCard_absJoin->vReplaceChildWithItsSubs(pCard_indexJoin);
+    Card_IndexJoin* pCard_indexJoin = _pSub_IndexJoin(p_scan);
+    if (! pCard_indexJoin)
+      continue;
+
+    p_scan->vReplaceChildWithItsSubs(pCard_indexJoin);
     delete pCard_indexJoin;
 
-    Card_Stream* pCard_stream = _pSub_Stream(pCard_absJoin);
-    pCard_absJoin->vMoveToLastChild(pCard_stream);
+    Card_Stream* pCard_stream = _pSub_Stream(p_scan);
+    p_scan->vMoveToLastChild(pCard_stream);
 
-    pCard_absJoin->vCard(CK_INDEXJOIN);
+    p_scan->vCard(CK_INDEXJOIN);
   }
 
   if (m_bInteractive)

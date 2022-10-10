@@ -103,7 +103,7 @@ bool Card_Stream::bContainsPred(Card_PRED* pCard_PRED)
 
   if (CK_TERM == ePredCard) {
     Stz* szTerm = pCard_PRED->sz();
-    if (! szTerm->bIsOrdinal())
+    if (!szTerm->bIsStreamColOrdinal())
       return true;
 
     i8 iOrdLo = m_pProperties->iValue(C_PPT_OrdLo);
@@ -148,7 +148,9 @@ Card_StreamCol* Card_Stream::pGet_streamCol(i8 i_Col)
 
   Card_StreamColList* pCard_StreamColList = pGet_streamColList();
 
-  Card_StreamCol* pCard_StreamCol = pCard_StreamColList->pGet_streamCol(i_Col);
+  i8 iOrdLo = iGetProperty(C_PPT_OrdLo);
+  i8 i_ColNo = i_Col - iOrdLo;
+  Card_StreamCol* pCard_StreamCol = pCard_StreamColList->pGet_streamCol(i_ColNo);
 
   return pCard_StreamCol;
 }
@@ -156,11 +158,11 @@ Card_StreamCol* Card_Stream::pGet_streamCol(i8 i_Col)
 /*----------------------------------------------------------------------------*/
 /* get a specific <streamCol> given $n ordinal                                */
 /*----------------------------------------------------------------------------*/
-Card_StreamCol* Card_Stream::pGet_streamCol(Stz* szOrd)
+Card_StreamCol* Card_Stream::pGet_streamCol(Stz* szStreamColOrd)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  i8 i_Col = szOrd->iOrdinal() - 1;
+  i8 i_Col = szStreamColOrd->iOrdinal() - 1;
 
   Card_StreamCol* p_streamCol = pGet_streamCol(i_Col);
 

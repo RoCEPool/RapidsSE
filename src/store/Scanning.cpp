@@ -160,8 +160,8 @@ void Scanning::vPromote_scan_To_indexScan(void)
 
   while ((m_p_scan = _pCard_Scan(xBI.pEachMain(CK_SCAN)))) {
 
-    m_p_scanPred = m_p_scan->pSub_scanPred();
-    if (!m_p_scanPred)
+    m_p_joinPred = _pSub_JoinPred(m_p_scan);
+    if (!m_p_joinPred)
       continue;
 
     m_p_scan->vCard(CK_INDEXSCAN);

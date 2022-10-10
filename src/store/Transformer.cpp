@@ -30,7 +30,7 @@ Transformer::Transformer(Bench* pBench)
 
   m_pCardCtl      = m_pOptimiser->pCardCtl();
 
-  m_pTransforms   = new Transforms(m_pBench);
+  m_pTransforms   = nullptr;
 
   m_pColumnar    = nullptr;
   m_pCombiner    = nullptr;
@@ -97,6 +97,7 @@ void Transformer::vTransform(void)
 
   //m_pBoard = m_pOptimiser->pHeadBoard();c
 
+  m_pTransforms  = new Transforms(m_pBench);
   m_pColumnar    = new Columnar(m_pBench);
   m_pCombiner    = new Combiner(m_pBench);
   m_pCurator     = new Curator(m_pBench);
@@ -118,7 +119,8 @@ void Transformer::vTransform(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
        if (pJobTags->bHasName("<transform2>"_Stz)) vTransform2();
-  else vTransform2();
+  else if (pJobTags->bHasName("<transform3>"_Stz)) vTransform3();
+  else vTransform3();
 }
 
 
@@ -240,7 +242,7 @@ void Transformer::vTransform2(void)
 
   m_pScanning->vAdd_scanPred();
   m_pScanning->vCull_markedPred();
-  m_pScanning->vPromote_scan_To_indexScan();
+  //m_pScanning->vPromote_scan_To_indexScan();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pFiltrate->vDelete_empty_sub_filter();
@@ -370,7 +372,7 @@ void Transformer::vTransform3(void)
 
   m_pTransforms->vAdd_scanPred();
   m_pTransforms->vCull_markedPred();
-  m_pTransforms->vPromote_scan_To_indexScan();
+  //m_pTransforms->vPromote_scan_To_indexScan();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pTransforms->vDelete_empty_sub_filter();

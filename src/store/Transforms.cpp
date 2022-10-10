@@ -396,9 +396,10 @@ void Transforms::vCull_filterPred_Of_indexJoin(void)
 
   BoardIter xBI(m_pBoard);
 
-  while ((m_p_absJoin = _pCard_AbsJoin(xBI.pEachMain(CK_ABSJOIN)))) {
+  while ((m_p_scan = _pCard_Scan(xBI.pEachMain(CK_SCAN)))) {
+    if (! (m_p_filter = _pSub_Filter(m_p_scan)))
+      continue;
 
-    m_p_filter   = _pSub_Filter(m_p_absJoin);
     m_p_calcBool = _pSub_CalcBool(m_p_filter);
 
     m_p_calcBool->vCullPred('^');
@@ -598,7 +599,7 @@ void Transforms::vMark_scan_pred_ordinals(void)
       Card_Term* p_term = _pCard_Term(pCard);
 
       Stz* szTerm = p_term->sz();
-      if (! szTerm->bIsOrdinal())
+      if (!szTerm->bIsStreamColOrdinal())
         return true;
 
       vTrace("vMark_scan_pred_ordinals:: %s\n"_Stz,p_term->sz());
@@ -803,24 +804,29 @@ void Transforms::vRefactor_absJoin_Into_indexJoin(void)
 
   vBeginIteration();
 
-  while (Card_AbsJoin *pCard_absJoin = _pCard_AbsJoin(pEachMain(CK_ABSJOIN))) {
+  while (Card_Scan *p_scan = _pCard_Scan(pEachMain(CK_SCAN))) {
 
     //pCard_absJoin->vDeleteChildCard(CK_CALC);
     //pCard_absJoin->vDeleteChildCard(CK_FILTER);
 
-    Card_Scan* pCard_scan = _pSub_Scan(pCard_absJoin);
-    pCard_absJoin->vReplaceChildWithItsSubs(pCard_scan);
-    delete pCard_scan;
+//    Card_Scan* pCard_scan = _pSub_Scan(pCard_absJoin);
+//    pCard_absJoin->vReplaceChildWithItsSubs(pCard_scan);
+//    delete pCard_scan;
 
-    Card_IndexJoin* pCard_indexJoin = _pSub_IndexJoin(pCard_absJoin);
-    pCard_absJoin->vReplaceChildWithItsSubs(pCard_indexJoin);
+    Card_IndexJoin* pCard_indexJoin = _pSub_IndexJoin(p_scan);
+    if (! pCard_indexJoin)
+      continue;
+
+    p_scan->vReplaceChildWithItsSubs(pCard_indexJoin);
     delete pCard_indexJoin;
 
-    Card_Stream* pCard_stream = _pSub_Stream(pCard_absJoin);
-    pCard_absJoin->vMoveToLastChild(pCard_stream);
+    Card_Stream* pCard_stream = _pSub_Stream(p_scan);
+    p_scan->vMoveToLastChild(pCard_stream);
 
-    pCard_absJoin->vCard(CK_INDEXJOIN);
+    p_scan->vCard(CK_INDEXJOIN);
   }
+
+  vEndIteration();
 
   if (m_bInteractive)
     m_pBoard->vPrintBoard();

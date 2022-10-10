@@ -128,7 +128,7 @@ void Indexer::vMark_scan_pred_ordinals(void)
       Card_Term* p_term = _pCard_Term(pCard);
 
       Stz* szTerm = p_term->sz();
-      if (! szTerm->bIsOrdinal())
+      if (!szTerm->bIsStreamColOrdinal())
         return true;
 
       vTrace("vMark_scan_pred_ordinals:: %s\n"_Stz,p_term->sz());
