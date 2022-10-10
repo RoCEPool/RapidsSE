@@ -38,6 +38,7 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_eStageTopo     = YG_NONE;
   m_pChildCard     = nullptr;
   m_i_Child        = C_UNKNOWN;
+  m_pDupCard       = nullptr;
   m_pMainCard      = nullptr;
   m_i_Main         = C_UNKNOWN;
   m_pNextMain      = nullptr;
