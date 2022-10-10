@@ -256,6 +256,137 @@ void Transformer::vTransform2(void)
   m_pCombiner->vAdd_combined();
 }
 
+/*----------------------------------------------------------------------------*/
+/* transform 2                                                                */
+/*----------------------------------------------------------------------------*/
+void Transformer::vTransform3(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMER,_FOOTER_);
+
+  vTrace("Transformer running vTransform2\n"_Stz);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // QUERY BOARD -- preliminaries
+
+  // combine {{==<stage>}}->{<stage>}
+  m_pTransforms->vLinearize_stages();
+
+  // delete *<absJoin>
+  m_pTransforms->vDeleteAll_absJoin();
+
+  // delete *<combined>
+  m_pTransforms->vDeleteAll_combined();
+
+  // delete *<send>
+  m_pTransforms->vDeleteAll_send();
+
+  // add <tableSyn> to all <table>
+  m_pTransforms->vAdd_tableSyn_To_table();
+
+  // add <tablePtn> to all <table>
+  m_pTransforms->vAdd_tablePtn_To_table();
+
+  // append <stream> & <streamColList> to all <scan>
+  m_pTransforms->vAppend_stream_To_scan();
+
+  // calculate /<stream>:iOrdLo,iOrdHi properties
+  m_pTransforms->vCalc_OrdinalRangesOf_stream();
+
+  // convert all <filter>/<calc> to <filter>/<calcBool>
+  m_pTransforms->vConvert_calc_To_calcBool();
+
+  // each <scan> <absJoin> becomes <absJoin>/<scan>
+  //m_pTransforms->vSubsume_scan_Under_absJoin();
+
+  // convert $n to $$c.n
+  //m_pTransforms->vConvert_streamColOrdinal_To_tableColOrdinal();
+
+
+
+  /*
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // PARTITION BOARD
+
+  //
+  m_pTransforms->vExtract_tableList_From_queryBoard();
+
+  // add <term/<columnRef> to all ordinal <term>
+  m_pTransforms->vAdd_columnRef_Under_term();
+
+  m_pTransforms->vExtract_joinPredList();
+  m_pTransforms->vCompute_coPtnPredList();
+  m_pTransforms->vCompute_coPtnJoinList();
+  m_pTransforms->vCompute_crossPtnJoinList();
+  m_pTransforms->vCompute_ptndJoinSet();
+
+  m_pTransforms->vCopy_ptndJoinSet();
+  m_pTransforms->vGenerate_ptndPermutations();
+  m_pTransforms->vRemove_invalidPermutations();
+
+  m_pTransforms->vSetup_costEst();
+  m_pTransforms->vEstimate_ptndJoins();
+  m_pTransforms->vEstimate_network();
+  m_pTransforms->vEstimate_joinOrder();
+  m_pTransforms->vExtract_joinOrderSeq();
+*/
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // inspect all <filter> and attempt to move <predCmp> after <scan>/<absJoin>
+  m_pTransforms->vAssign_predCmp_leftwards();
+  m_pTransforms->vCopy_predCmp_leftwards();
+
+  // delete any <filter> which is effectively empty
+  m_pTransforms->vDelete_Empty_filter();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  m_pTransforms->vInsert_preliminary_indexJoin();
+  m_pTransforms->vConvertAll_idxColNm_To_streamColOrdinal();
+  m_pTransforms->vForm_joinPred();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  m_pTransforms->vCull_filterPred_Of_indexJoin();
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Index Scan
+
+  /*
+   *
+   *    <scan>       <scan>
+   *      <table>    <table>
+   *      <stream>   <indexList>
+   *      <filter>   <stream>
+   *                 <filter>
+   *
+   */
+
+  m_pTransforms->vAppend_indexList_To_scan();
+  m_pTransforms->vMark_scan_pred_bounds();
+  m_pTransforms->vMark_scan_pred_ordinals();
+
+  m_pTransforms->vAdd_scanPred();
+  m_pTransforms->vCull_markedPred();
+  m_pTransforms->vPromote_scan_To_indexScan();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  m_pTransforms->vDelete_empty_sub_filter();
+
+  m_pTransforms->vRefactor_absJoin_Into_indexJoin();
+
+  m_pTransforms->vCull_sby_SameAs_gby();
+
+  m_pTransforms->vIndividuate_filter();
+
+  m_pTransforms->vAdd_stages();
+
+  m_pTransforms->vAdd_combined();
+}
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

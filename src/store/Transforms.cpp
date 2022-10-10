@@ -46,7 +46,7 @@ Transforms::~Transforms(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Transforms::vAdd_combined(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINER, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
@@ -126,7 +126,7 @@ void Transforms::vAdd_combined(void)
 /*----------------------------------------------------------------------------*/
 void Transforms::vDeleteAll_combined(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINER, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation((char*)(__func__),false);
   vExplain("Blah"_Stz);
@@ -141,7 +141,7 @@ void Transforms::vDeleteAll_combined(void)
 /*----------------------------------------------------------------------------*/
 void Transforms::vChangeAll_scan_To_retrieve(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_JOINER, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
@@ -160,7 +160,7 @@ void Transforms::vChangeAll_scan_To_retrieve(void)
 /*----------------------------------------------------------------------------*/
 void Transforms::vSetup_costEst(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_ESTIMATOR, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
@@ -188,7 +188,7 @@ void Transforms::vSetup_costEst(void)
 /*----------------------------------------------------------------------------*/
 void Transforms::vEstimate_ptndJoins(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_ESTIMATOR, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
@@ -221,7 +221,7 @@ void Transforms::vEstimate_ptndJoins(void)
 /*----------------------------------------------------------------------------*/
 void Transforms::vEstimate_network(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_ESTIMATOR, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
@@ -268,7 +268,7 @@ void Transforms::vEstimate_network(void)
 /*----------------------------------------------------------------------------*/
 void Transforms::vEstimate_joinOrder(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_ESTIMATOR, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
@@ -307,7 +307,7 @@ void Transforms::vEstimate_joinOrder(void)
 /*----------------------------------------------------------------------------*/
 void Transforms::vExtract_joinOrderSeq(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_ESTIMATOR, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
@@ -334,7 +334,7 @@ void Transforms::vExtract_joinOrderSeq(void)
 /*----------------------------------------------------------------------------*/
 void Transforms::vAssign_predCmp_leftwards(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTRATE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
@@ -353,7 +353,7 @@ void Transforms::vAssign_predCmp_leftwards(void)
 /*----------------------------------------------------------------------------*/
 void Transforms::vConvert_calc_To_calcBool(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTRATE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
@@ -371,7 +371,7 @@ void Transforms::vConvert_calc_To_calcBool(void)
 /*----------------------------------------------------------------------------*/
 void Transforms::vCopy_predCmp_leftwards(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTRATE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
@@ -389,7 +389,7 @@ void Transforms::vCopy_predCmp_leftwards(void)
 /*----------------------------------------------------------------------------*/
 void Transforms::vCull_filterPred_Of_indexJoin(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTRATE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
@@ -413,7 +413,7 @@ void Transforms::vCull_filterPred_Of_indexJoin(void)
 /*----------------------------------------------------------------------------*/
 void Transforms::vDelete_Empty_filter(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
@@ -437,7 +437,7 @@ void Transforms::vDelete_Empty_filter(void)
 /*----------------------------------------------------------------------------*/
 void Transforms::vDelete_empty_sub_filter(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
@@ -468,7 +468,7 @@ void Transforms::vDelete_empty_sub_filter(void)
 /*----------------------------------------------------------------------------*/
 void Transforms::vIndividuate_filter(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
@@ -516,7 +516,7 @@ void Transforms::vIndividuate_filter(void)
 /*----------------------------------------------------------------------------*/
 void Transforms::vAppend_indexList_To_scan(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_SCANNING, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
@@ -540,7 +540,7 @@ void Transforms::vAppend_indexList_To_scan(void)
 /*----------------------------------------------------------------------------*/
 void Transforms::vMark_scan_pred_bounds(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_SCANNING, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
@@ -570,7 +570,7 @@ void Transforms::vMark_scan_pred_bounds(void)
 /*----------------------------------------------------------------------------*/
 void Transforms::vMark_scan_pred_ordinals(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_SCANNING, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
@@ -638,7 +638,7 @@ void Transforms::vMark_scan_pred_ordinals(void)
 /*----------------------------------------------------------------------------*/
 void Transforms::vInsert_preliminary_indexJoin(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_JOINER, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
@@ -685,7 +685,7 @@ void Transforms::vInsert_preliminary_indexJoin(void)
 /*----------------------------------------------------------------------------*/
 void Transforms::vDeleteAll_absJoin(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_JOINER, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation((char*)(__func__),false);
   vExplain("Blah"_Stz);
@@ -700,7 +700,7 @@ void Transforms::vDeleteAll_absJoin(void)
 /*----------------------------------------------------------------------------*/
 void Transforms::vForm_joinPred(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_JOINER, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
@@ -768,7 +768,7 @@ void Transforms::vForm_joinPred(void)
 /*----------------------------------------------------------------------------*/
 void Transforms::vConvertAll_idxColNm_To_streamColOrdinal(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_JOINER, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
@@ -796,7 +796,7 @@ void Transforms::vConvertAll_idxColNm_To_streamColOrdinal(void)
 /*----------------------------------------------------------------------------*/
 void Transforms::vRefactor_absJoin_Into_indexJoin(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_JOINER, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
@@ -831,7 +831,7 @@ void Transforms::vRefactor_absJoin_Into_indexJoin(void)
 /*----------------------------------------------------------------------------*/
 void Transforms::vSubsume_scan_Under_absJoin(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_JOINER, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
@@ -862,7 +862,7 @@ void Transforms::vSubsume_scan_Under_absJoin(void)
 /*----------------------------------------------------------------------------*/
 void Transforms::vExtract_tableList_From_queryBoard(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PARTITIONER, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
@@ -894,7 +894,7 @@ void Transforms::vExtract_tableList_From_queryBoard(void)
 /*----------------------------------------------------------------------------*/
 void Transforms::vExtract_joinPredList(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PARTITIONER, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
@@ -926,7 +926,7 @@ void Transforms::vExtract_joinPredList(void)
 /*----------------------------------------------------------------------------*/
 void Transforms::vCompute_coPtnPredList(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PARTITIONER, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
@@ -974,7 +974,7 @@ void Transforms::vCompute_coPtnPredList(void)
 /*----------------------------------------------------------------------------*/
 void Transforms::vCompute_coPtnJoinList(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PARTITIONER, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
@@ -1018,7 +1018,7 @@ void Transforms::vCompute_coPtnJoinList(void)
 /*----------------------------------------------------------------------------*/
 void Transforms::vCompute_crossPtnJoinList(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PARTITIONER, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
@@ -1060,7 +1060,7 @@ void Transforms::vCompute_crossPtnJoinList(void)
 /*----------------------------------------------------------------------------*/
 void Transforms::vCompute_ptndJoinSet(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PARTITIONER, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
@@ -1101,7 +1101,7 @@ void Transforms::vCompute_ptndJoinSet(void)
 /*----------------------------------------------------------------------------*/
 void Transforms::vCopy_ptndJoinSet(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PERMUTOR, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
@@ -1131,7 +1131,7 @@ void Transforms::vCopy_ptndJoinSet(void)
 /*----------------------------------------------------------------------------*/
 void Transforms::vGenerate_ptndPermutations(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PERMUTOR, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
@@ -1178,7 +1178,7 @@ void Transforms::vGenerate_ptndPermutations(void)
 /*----------------------------------------------------------------------------*/
 void Transforms::vRemove_invalidPermutations(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PERMUTOR, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
@@ -1220,7 +1220,7 @@ void Transforms::vRemove_invalidPermutations(void)
 /*----------------------------------------------------------------------------*/
 void Transforms::vAdd_scanPred(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_SCANNING, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
@@ -1287,7 +1287,7 @@ void Transforms::vAdd_scanPred(void)
 /*----------------------------------------------------------------------------*/
 void Transforms::vCull_markedPred(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_SCANNING, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
@@ -1325,7 +1325,7 @@ void Transforms::vCull_markedPred(void)
 /*----------------------------------------------------------------------------*/
 void Transforms::vPromote_scan_To_indexScan(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_SCANNING, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
@@ -1350,7 +1350,7 @@ void Transforms::vPromote_scan_To_indexScan(void)
 /*----------------------------------------------------------------------------*/
 void Transforms::vDeleteAll_send(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_SENDER, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation((char*)(__func__),false);
   vExplain("Blah"_Stz);
@@ -1365,7 +1365,7 @@ void Transforms::vDeleteAll_send(void)
 /*----------------------------------------------------------------------------*/
 void Transforms::vCull_sby_SameAs_gby(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_SORTER, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
@@ -1396,7 +1396,7 @@ void Transforms::vCull_sby_SameAs_gby(void)
 /*----------------------------------------------------------------------------*/
 void Transforms::vAdd_stages(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STAGER, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
@@ -1500,7 +1500,7 @@ void Transforms::vAdd_stages(void)
 /*----------------------------------------------------------------------------*/
 void Transforms::vLinearize_stages(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STAGER, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation((char*)(__func__),false);
   vExplain("Linearize all the stages"_Stz);
@@ -1549,7 +1549,7 @@ void Transforms::vLinearize_stages(void)
 /*----------------------------------------------------------------------------*/
 void Transforms::vCalc_OrdinalRangesOf_stream(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
@@ -1607,7 +1607,7 @@ void Transforms::vCalc_OrdinalRangesOf_stream(void)
 /*----------------------------------------------------------------------------*/
 void Transforms::vAppend_stream_To_scan(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
@@ -1643,7 +1643,7 @@ void Transforms::vAppend_stream_To_scan(void)
 /*----------------------------------------------------------------------------*/
 void Transforms::vAdd_tablePtn_To_table(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABULAR,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
@@ -1671,7 +1671,7 @@ void Transforms::vAdd_tablePtn_To_table(void)
 /*----------------------------------------------------------------------------*/
 void Transforms::vAdd_tableSyn_To_table(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABULAR,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
@@ -1714,7 +1714,7 @@ void Transforms::vAdd_tableSyn_To_table(void)
 /*----------------------------------------------------------------------------*/
 void Transforms::vAssignFilterLeftwards(Card_Filter* pCard_filter)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   // get <filter>.<calcBool>
   //Card_CalcBool* pCard_bool =
@@ -1732,7 +1732,7 @@ void Transforms::vAssignFilterLeftwards(Card_Filter* pCard_filter)
 /*----------------------------------------------------------------------------*/
 void Transforms::vAssignPredDrillDown(Card_PRED* pCard_pred, Card_Filter* pCard_filter)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   i8 iWhichScan = C_UNKNOWN;
 
@@ -1786,7 +1786,7 @@ void Transforms::vAssignPredDrillDown(Card_PRED* pCard_pred, Card_Filter* pCard_
 /*----------------------------------------------------------------------------*/
 i8 Transforms::iAssignPredLeft(Card_PRED* pCard_PRED, Card_Filter* pCard_filter)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   i8 nAbsJoin = 0;
   i8 nScan    = 0;
@@ -1831,7 +1831,7 @@ i8 Transforms::iAssignPredLeft(Card_PRED* pCard_PRED, Card_Filter* pCard_filter)
 /*----------------------------------------------------------------------------*/
 i8 Transforms::iAssignPredToAbsJoin(Card_AbsJoin* pCard_absJoin, Card_PRED* pCard_PRED)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   Card_Stream *pCard_stream = _pSub_Stream(pCard_absJoin);
   //pCard_stream->vMark1('#');
@@ -1850,7 +1850,7 @@ i8 Transforms::iAssignPredToAbsJoin(Card_AbsJoin* pCard_absJoin, Card_PRED* pCar
 /*----------------------------------------------------------------------------*/
 i8 Transforms::iAssignPredToScan(Card_Scan* pCard_scan, Card_PRED* pCard_PRED)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   Card_Stream* pCard_stream = _pSub_Stream(pCard_scan);
   //pCard_stream->vMark1('#');
@@ -1868,7 +1868,7 @@ i8 Transforms::iAssignPredToScan(Card_Scan* pCard_scan, Card_PRED* pCard_PRED)
 /*----------------------------------------------------------------------------*/
 void Transforms::vCopyFilterLeftwards(Card_Filter* pCard_filter)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   Card_CalcBool* pCard_bool = _pSub_CalcBool(pCard_filter);
 
@@ -1886,7 +1886,7 @@ void Transforms::vCopyFilterLeftwards(Card_Filter* pCard_filter)
 /*----------------------------------------------------------------------------*/
 bool Transforms::bCopyPredDrillDown(Card_PRED* pCard_pred, Card_Filter* pCard_filter)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   Card_CalcBool* pCard_calcBool = _pSub_CalcBool(pCard_filter);
 
@@ -1937,7 +1937,7 @@ bool Transforms::bCopyPredDrillDown(Card_PRED* pCard_pred, Card_Filter* pCard_fi
 /*----------------------------------------------------------------------------*/
 void Transforms::vCopyPredToExistingFilter(Card_Filter* pCard_filter_existing, Card_PRED* pCard_pred)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   Card_CalcBool* pCard_calcBool = _pSub_CalcBool(pCard_filter_existing);
 
@@ -1955,7 +1955,7 @@ void Transforms::vCopyPredToExistingFilter(Card_Filter* pCard_filter_existing, C
 /*----------------------------------------------------------------------------*/
 void Transforms::vCopyPredToNewFilter(Card_Filter* pCard_filter_new, Card_PRED* pCard_pred)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   Card_Expr* pCard_expr = new Card_Expr;
   pCard_filter_new->vAppend(pCard_expr);
@@ -1973,7 +1973,7 @@ void Transforms::vCopyPredToNewFilter(Card_Filter* pCard_filter_new, Card_PRED* 
 /*----------------------------------------------------------------------------*/
 void Transforms::vMarkPredCardsAsMoved(Card* pPredCard)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   i8 nSubCards = pPredCard->nChildCards();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
@@ -1992,7 +1992,7 @@ void Transforms::vMarkPredCardsAsMoved(Card* pPredCard)
 /*----------------------------------------------------------------------------*/
 void Transforms::vPredMovesToAbsJoin(Card* pPredCard, Card_AbsJoin* pCard_absJoin)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
 }
 
@@ -2001,7 +2001,7 @@ void Transforms::vPredMovesToAbsJoin(Card* pPredCard, Card_AbsJoin* pCard_absJoi
 /*----------------------------------------------------------------------------*/
 void Transforms::vPredMovesToScan(Card* pPredCard, Card_Scan* pCard_scan)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
 }
 
@@ -2012,7 +2012,7 @@ void Transforms::vPredMovesToScan(Card* pPredCard, Card_Scan* pCard_scan)
 Card_IndexPred* Transforms::pTo_IndexPred(Card_AbsJoin* pCard_AbsJoin,
                                       Card_PredCmp* pCard_PredCmp)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_JOINER, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   Card_IndexPred *pCard_IndexPred = new Card_IndexPred;
 
