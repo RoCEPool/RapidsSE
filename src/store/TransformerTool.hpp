@@ -70,6 +70,7 @@ namespace STORE
     Card_IndexScan*        m_p_indexScan;
     Card_JoinOrder*        m_p_joinOrder;
     Card_JoinOrderSeq*     m_p_joinOrderSeq;
+    Card_JoinPred*         m_p_joinPred;
     Card_JoinPredList*     m_p_joinPredList;
     Card_LBound*           m_p_lBound;
     Card_Permutation*      m_p_permutation;

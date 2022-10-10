@@ -130,12 +130,12 @@ void Joiner::vForm_joinPred(void)
 
     // - - - -
 
+    m_p_joinPred = new Card_JoinPred;
     m_p_indexJoin = _pSub_IndexJoin(m_p_scan);
-    Card_JoinPred* pCard_joinPred = new Card_JoinPred;
-    m_p_scan->vInsertAfter(pCard_joinPred,m_p_indexJoin);
+    m_p_scan->vInsertAfter(m_p_joinPred,m_p_indexJoin);
 
     m_p_term = new Card_Term("BOUND"_Stz);
-    pCard_joinPred->vAppend(m_p_term);
+    m_p_joinPred->vAppend(m_p_term);
 
     // - - - -
 
@@ -150,16 +150,16 @@ void Joiner::vForm_joinPred(void)
 
     if (i_iOrdLo_0 >= iStreamOrdLo && i_iOrdLo_0 <= iStreamOrdHi) {
       m_p_term = new Card_Term("$I1"_Stz);
-      pCard_joinPred->vAppend(m_p_term);
+      m_p_joinPred->vAppend(m_p_term);
       m_p_term = new Card_Term(m_p_term_1->sz());
-      pCard_joinPred->vAppend(m_p_term);
+      m_p_joinPred->vAppend(m_p_term);
     }
     else
     if (i_iOrdLo_1 >= iStreamOrdLo && i_iOrdLo_1 <= iStreamOrdHi) {
       m_p_term = new Card_Term("$I1"_Stz);
-      pCard_joinPred->vAppend(m_p_term);
+      m_p_joinPred->vAppend(m_p_term);
       m_p_term = new Card_Term(m_p_term_1->sz());
-      pCard_joinPred->vAppend(m_p_term);
+      m_p_joinPred->vAppend(m_p_term);
     }
     else {
       NEVER_REACH
@@ -167,7 +167,7 @@ void Joiner::vForm_joinPred(void)
 
     m_p_predCmp->vMark1('^');
     m_p_term = new Card_Term(m_p_predCmp->sz());
-    pCard_joinPred->vAppend(m_p_term);
+    m_p_joinPred->vAppend(m_p_term);
   }
 
   vSetPrintSubCards(CK_FILTER, true);

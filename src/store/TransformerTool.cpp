@@ -66,6 +66,7 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_p_indexScan        = nullptr;
   m_p_joinOrder        = nullptr;
   m_p_joinOrderSeq     = nullptr;
+  m_p_joinPred         = nullptr;
   m_p_joinPredList     = nullptr;
   m_p_lBound           = nullptr;
   m_p_permutation      = nullptr;
