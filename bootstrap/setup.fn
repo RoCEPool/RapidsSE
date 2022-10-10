@@ -2112,6 +2112,15 @@ function cleanupNodeInstall() {
 # the user was doing a non-scripted installation.
 
 function scriptedClusterValidation() {
+  scriptedPortValidation
+  scriptedShmValidation
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# Validate that the port numbers are not < 1024 unless the user is root.
+
+function scriptedPortValidation() {
   local -a nodeNames
   nodeNames=( "${NODE_LIST[@]}" )
 
@@ -2155,6 +2164,38 @@ function scriptedClusterValidation() {
         errorExit "Cannot use a ${descArr[$i]} port number less than 1024 as a non-root user on node ${nodeName} (host: ${hostAddr})."
       fi
     done
+  done
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# Validate that the shared memory size is appropriate during a scripted installation
+
+function scriptedShmValidation() {
+  local -a nodeNames
+  nodeNames=( "${NODE_LIST[@]}" )
+
+  local shmSize
+  local hostAddr
+
+  local re="^-?[0-9]+$"
+
+  for nodeName in "${nodeNames[@]}"; do
+
+    shmSize="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_MEM_KEY}")"
+    hostAddr="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+
+    if [[ "${shmSize}" = *[[:space:]]* ]]; then
+      errorExit "memory segment size for node ${nodeName} (host: ${hostAddr}) cannot contain whitespace."
+    fi
+
+    if ! [[ ${shmSize} =~ ${re} ]]; then
+      errorExit "memory segment size for node ${nodeName} (host: ${hostAddr}) must be an integer."
+    fi
+
+    if [[ ${shmSize} -lt "${MINIMUM_SHM_SIZE}" ]]; then
+      errorExit "memory segment size must be at least ${MINIMUM_SHM_SIZE} GB for node ${nodeName} (host: ${hostAddr})."
+    fi
   done
 }
 
