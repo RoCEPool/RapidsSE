@@ -5,7 +5,7 @@
 
 namespace BASE
 {
-  static const i8 C_STACK_BACKTRACE = 16;
+  static const i8 C_STACK_BACKTRACE = 32;
 
   void vDebugPoint(void);
   void vThreadCallStackDump(void);
