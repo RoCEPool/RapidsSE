@@ -28,19 +28,26 @@ void Step::vUnloadToFile(void)
 {
   ENTRY();
 
-  s256 sFileNm;
-  m_pDataStack->vPopStr(sFileNm, __func__);
+  s256 sDirNm;
+  m_pDataStack->vPopStr(sDirNm, __func__);
+
+  s256 sDirPath = "../tmp/";
+
+  sDirPath.vConcat(sDirNm);
+
+  if( ! Dir::bExists(sDirPath.szStz()))
+    Dir::bMake(sDirPath.szStz());
 
   s256 sFilePath = ""_Stz;
 
   if(MY::pOp()) {
-    sFilePath.vCatSprint("../tmp/%s_%s_%lld"_Stz,
-                         sFileNm.szStz(),
+    sFilePath.vCatSprint("%s/saveFile_%s_%lld"_Stz,
+                         sDirPath.szStz(),
                          gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz(),
                          MY::pOp()->pStream()->i_PtnOfNode());
   } else {
-    sFilePath.vCatSprint("../tmp/%s_%s"_Stz,
-                         sFileNm.szStz(),
+    sFilePath.vCatSprint("%s/saveFile_%s"_Stz,
+                         sDirPath.szStz(),
                          gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz());
   }
 
