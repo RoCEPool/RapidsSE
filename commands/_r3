@@ -24,7 +24,7 @@ load customer "../tpch/sf_0001/customer.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/cue = "vConvertAll_idxColNm_To_streamColOrdinal"
+/cue = "vForm_joinPred"
 /transliterated
 /transform
 /transform2

@@ -118,11 +118,10 @@ void Joiner::vForm_joinPred(void)
 
   BoardIter xBI(m_pBoard);
 
-  while ((m_p_absJoin = _pCard_AbsJoin(xBI.pEachMain(CK_ABSJOIN)))) {
+  while ((m_p_scan = _pCard_Scan(xBI.pEachMain(CK_SCAN)))) {
+    if (! (m_p_filter = _pSub_Filter(m_p_scan)))
+      continue;
 
-    m_p_filter   = _pSub_Filter(m_p_absJoin);
-    m_p_scan     = _pSub_Scan(m_p_absJoin);
-    m_p_stream   = _pSub_Stream(m_p_scan);
     m_p_expr     = _pCard_Expr(m_p_filter->pGetChild(0));
     m_p_calcBool = _pSub_CalcBool(m_p_expr);
     m_p_predCmp  = _pSub_PredCmp(m_p_calcBool);
@@ -131,16 +130,18 @@ void Joiner::vForm_joinPred(void)
 
     // - - - -
 
-    Card_IndexJoin* pCard_indexJoin = _pSub_IndexJoin(m_p_absJoin);
-
+    m_p_indexJoin = _pSub_IndexJoin(m_p_scan);
     Card_JoinPred* pCard_joinPred = new Card_JoinPred;
-    m_p_absJoin->vAppend(pCard_joinPred);
+    m_p_scan->vInsertAfter(pCard_joinPred,m_p_indexJoin);
 
     m_p_term = new Card_Term("BOUND"_Stz);
     pCard_joinPred->vAppend(m_p_term);
 
+    // - - - -
+
     // one of {pCard_term_0,pCard_term_1} is $In
 
+    m_p_stream = _pSub_Stream(m_p_scan);
     i8 iStreamOrdLo = m_p_stream->iGetProperty(C_PPT_OrdLo);
     i8 iStreamOrdHi = m_p_stream->iGetProperty(C_PPT_OrdHi);
 
