@@ -2449,6 +2449,13 @@ antlrcpp::Any SqlPlanner::visitLikeOp(sqlParser::LikeOpContext *pCtx)
   QueryNode* pPatternExpr   = m_pExprStack->pPop();
   QueryNode* pPredicandExpr = m_pExprStack->pPop();
 
+  // Temporary workaround for backend limitation
+  if (!LiteralExpr::bIsOfType(pPatternExpr)) {
+    delete pPatternExpr;
+    delete pPredicandExpr;
+    SemanticException::vThrow(EC_EXPR_MUST_BE_LITERAL, ": LIKE pattern"_Stz);
+  }
+
   QueryNode* pLikeExpr = LikeExpr::pCreate(pPredicandExpr, pPatternExpr, nullptr);
 
   // Put the LIKE operator back onto the expression stack
@@ -2479,6 +2486,20 @@ antlrcpp::Any SqlPlanner::visitLikeEscapeOp(sqlParser::LikeEscapeOpContext *pCtx
   QueryNode* pEscapeExpr    = m_pExprStack->pPop();
   QueryNode* pPatternExpr   = m_pExprStack->pPop();
   QueryNode* pPredicandExpr = m_pExprStack->pPop();
+
+  // Temporary workaround for backend limitation
+  if (!LiteralExpr::bIsOfType(pPatternExpr)) {
+    delete pPatternExpr;
+    delete pPredicandExpr;
+    delete pEscapeExpr;
+    SemanticException::vThrow(EC_EXPR_MUST_BE_LITERAL, ": LIKE pattern expression"_Stz);
+
+  } else if (!LiteralExpr::bIsOfType(pEscapeExpr)) {
+    delete pPatternExpr;
+    delete pPredicandExpr;
+    delete pEscapeExpr;
+    SemanticException::vThrow(EC_EXPR_MUST_BE_LITERAL, ": LIKE escape expression"_Stz);
+  }
 
   if (pEscapeExpr &&
       Expr::bIsFullyLiteral(pEscapeExpr) &&
