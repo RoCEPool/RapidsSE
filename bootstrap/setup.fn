@@ -458,6 +458,10 @@ function doClusterInstall() {
       # TODO: Present summary
       # TODO: Edit ?
 
+      # Additional validation checking that would otherwise occur if a user was
+      # not running a scripted installation
+      scriptedClusterValidation
+
       # We need to validate hostnames and SSH access now so that we can connect
       # to each machine and determine the number of CPUs, so we can set the
       # number of partitions/threads appropriately.
@@ -527,6 +531,10 @@ function doClusterInstall() {
 
     # Load and validate config
     loadClusterConfig
+
+    # Additional validation checking that would otherwise occur if a user was
+    # not running a scripted installation
+    scriptedClusterValidation
 
     # We need to validate hostnames and SSH access now so that we can connect
     # to each machine and determine the number of CPUs, so we can set the
@@ -2097,6 +2105,58 @@ function cleanupNodeInstall() {
   fi
 }
 
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# Additional validation of the cluster config file that would normally occur if
+# the user was doing a non-scripted installation.
+
+function scriptedClusterValidation() {
+  local -a nodeNames
+  nodeNames=( "${NODE_LIST[@]}" )
+
+  local internalPort
+  local clientPort
+  local heartbeatPort
+  local hostAddr
+
+  local re="^-?[0-9]+$"
+
+  for nodeName in "${nodeNames[@]}"; do
+
+    internalPort="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_INTERNAL_PORT_KEY}")"
+    clientPort="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_CLIENT_PORT_KEY}")"
+    heartbeatPort="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HEARTBEAT_PORT_KEY}")"
+    hostAddr="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+
+    local -a portArr=("${internalPort}" "${clientPort}" "${heartbeatPort}")
+    local -a descArr=("internal" "client" "heartbeat")
+
+    for i in 0 1 2; do
+      if [[ "${portArr[$i]}" = *[[:space:]]* ]]; then
+        errorExit "the ${descArr[$i]} port number for node ${nodeName} (host: ${hostAddr}) cannot contain whitespace."
+      fi
+
+      if ! [[ ${portArr[$i]} =~ ${re} ]]; then
+        errorExit "${descArr[$i]} port number for node ${nodeName} (host: ${hostAddr}) must be an integer."
+      fi
+
+      if [[ ${portArr[$i]} -lt 1 || ${portArr[$i]} -gt 65535 ]]; then
+        if [[ ${EUID} -ne 0 ]]; then
+          # Regular user
+          errorExit "${descArr[$i]} port number for node ${nodeName} (host: ${hostAddr}) is out of range [1024, 65535]."
+        else
+          # Superuser
+          errorExit "${descArr[$i]} port number for node ${nodeName} (host: ${hostAddr}) is out of range [1, 65535]."
+        fi
+      fi
+
+      if [[ ${portArr[$i]} -lt 1024 && ${EUID} -ne 0 ]]; then
+        errorExit "Cannot use a ${descArr[$i]} port number less than 1024 as a non-root user on node ${nodeName} (host: ${hostAddr})."
+      fi
+    done
+  done
+}
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
