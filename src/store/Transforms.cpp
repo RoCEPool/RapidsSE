@@ -1,0 +1,142 @@
+/*============================================================================*/
+/* Transforms.cpp --                                                          */
+/*============================================================================*/
+
+#include "Transforms.hpp"
+#include "Resolver.hpp"
+
+/*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+__pCastFunction(STORE,Transforms,CN_TRANSFORMS)
+__aNewFunction(Transforms,CN_TRANSFORMS)
+__vDeleteFunction(Transforms,CN_TRANSFORMS)
+__aFooterFunction(Transforms)
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Transforms::Transforms(Bench* pBench)
+: TransformerTool(CN_TRANSFORMS, pBench)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  _checkInitialised_(CN_TRANSFORMS);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+Transforms::~Transforms(void) noexcept(false)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* add <term/<columnRef> to all ordinal <term>                                */
+/*----------------------------------------------------------------------------*/
+void Transforms::vAdd_columnRef_Under_term(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransformation((char*)(__func__));
+  vExplain("Blah"_Stz);
+
+
+  Resolver* pResolver = new Resolver(m_pBench);
+
+  auto bfTerm_columnRef = [pResolver](Card* pCard) {
+    Card_Term* p_term = _pCard_Term(pCard);
+
+    Stz* szOrdinalTerm = p_term->sz();
+    vTrace("bfTerm_columnRef: %s\n"_Stz, szOrdinalTerm);
+
+    s32 sColumnRef;
+    pResolver->vResolve_streamColOrdinal_To_tableColOrdinal(sColumnRef, szOrdinalTerm);
+
+    Card_ColumnRef* p_columnRef = new Card_ColumnRef(sColumnRef);
+    p_term->vAppend(p_columnRef);
+
+    return true;
+  };
+
+  // - - - - - - - - -
+
+  m_pBoard = m_pBench->pGetBoard(BK_QUERY);
+
+  BoardIter xBI(m_pBoard);
+
+  while ( (m_pMainCard = xBI.pEachMain()) ) {
+    if (! (m_p_calcBool = _pSub_CalcBool(m_pMainCard)) )
+      continue;
+
+    m_p_calcBool->vVisitAllSub(CK_TERM,bfTerm_columnRef);
+  }
+
+  delete pResolver;
+
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/* add <term/<columnRef> to all ordinal <term>                                */
+/*----------------------------------------------------------------------------*/
+void Transforms::vConvert_streamColOrdinal_To_tableColOrdinal(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransformation((char*)(__func__));
+  vExplain("Blah"_Stz);
+
+  Resolver* pResolver = new Resolver(m_pBench);
+
+  auto bfTerm_columnRef = [pResolver](Card* pCard) {
+    Card_Term* p_term = _pCard_Term(pCard);
+
+    Stz* szStreamColOrdinal = p_term->sz();
+
+    s32 sTableColOrdinal;
+    pResolver->vResolve_streamColOrdinal_To_tableColOrdinal(sTableColOrdinal, szStreamColOrdinal);
+
+    p_term->vValue(sTableColOrdinal);
+
+    return true;
+  };
+
+  // - - - - - - - - -
+
+  m_pBoard = m_pBench->pGetBoard(BK_QUERY);
+
+  BoardIter xBI(m_pBoard);
+
+  while ( (m_pMainCard = xBI.pEachMain()) ) {
+    if (! (m_p_calcBool = _pSub_CalcBool(m_pMainCard)) )
+      continue;
+
+    m_p_calcBool->vVisitAllSub(CK_TERM,bfTerm_columnRef);
+  }
+
+  delete pResolver;
+
+  m_pBoard->vPrintBoard();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "Transformer.hpp"
+#include "Transforms.hpp"
 #include "Optimiser.hpp"
 #include "Job.hpp"
 
@@ -27,7 +28,9 @@ Transformer::Transformer(Bench* pBench)
   m_pOptimiser    = m_pBench->pOptimiser();
   m_pBoard        = nullptr;
 
-  m_pCardCtl     = m_pOptimiser->pCardCtl();
+  m_pCardCtl      = m_pOptimiser->pCardCtl();
+
+  m_pTransforms   = new Transforms(m_pBench);
 
   m_pColumnar    = nullptr;
   m_pCombiner    = nullptr;
@@ -58,6 +61,8 @@ Transformer::Transformer(Bench* pBench)
 Transformer::~Transformer(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMER,_FOOTER_);
+
+  delete m_pTransforms;
 
   delete m_pColumnar;
   delete m_pCombiner;

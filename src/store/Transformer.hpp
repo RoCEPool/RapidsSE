@@ -5,6 +5,8 @@
 
 #include "OptimiserTool.hpp"
 
+#include "Transforms.hpp"
+
 #include "Combiner.hpp"
 #include "Curator.hpp"
 #include "Estimator.hpp"
@@ -29,6 +31,8 @@ namespace STORE
 
     CardCtl*     m_pCardCtl;
 
+    Transforms*  m_pTransforms;
+
     Columnar*    m_pColumnar;
     Combiner*    m_pCombiner;
     Curator*     m_pCurator;
@@ -44,6 +48,7 @@ namespace STORE
     Stager*      m_pStager;
     Streamer*    m_pStreamer;
     Tabular*     m_pTabular;
+
 
     b8           m_bInteractive;
 
