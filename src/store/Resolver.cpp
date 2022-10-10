@@ -72,8 +72,7 @@ void Resolver::vResolve_streamColOrdinal_To_tableColOrdinal
     i8 iTableColNo = iStreamColNo - iOrdLo + 1;
 
     m_p_table = _pSub_Table(m_pMainCard);
-    m_p_tableSyn = _pSub_TableSyn(m_p_table);
-    char cTableSyn = m_p_tableSyn->cTableSyn();
+    char cTableSyn = m_p_table->cGetProperty(C_PPY_TableSyn);
 
     Card_Term::vTableColOrdinal(psTableColOrdinal, cTableSyn, iTableColNo);
   }

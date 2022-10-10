@@ -5,7 +5,6 @@
 #include "Card_TablePtn.hpp"
 #include "Card_Table.hpp"
 #include "Card_TablePtr.hpp"
-#include "Card_TableSyn.hpp"
 #include "PtnDef.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -66,9 +65,7 @@ void Card_TablePtn::vAdd_TablePtn(Card_Table* p_table)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_TableSyn* p_tableSyn = _pSub_TableSyn(p_table);
-
-  char cTableSyn = p_tableSyn->cTableSyn();
+  char cTableSyn = p_table->cGetProperty(C_PPY_TableSyn);
 
   Card_TablePtr* p_tablePtr = _pSub_TablePtr(p_table);
   Table* pTable = p_tablePtr->pTable();

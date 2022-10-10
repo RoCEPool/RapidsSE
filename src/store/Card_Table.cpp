@@ -8,7 +8,6 @@
 #include "Card_IdxColList.hpp"
 #include "Card_IndexList.hpp"
 #include "Card_TablePtr.hpp"
-#include "Card_TableSyn.hpp"
 
 #include "PtnDef.hpp"
 
@@ -93,22 +92,6 @@ void Card_Table::vTablePrint(Ribbon* pRibbon, i8 iDepth)
     sName.vCatSprint(" %s"_Stz, szValue());
 
   vPrintCard_byCustom(pRibbon, iDepth, sName);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-char Card_Table::cTableSyn(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_TableSyn* p_tableSyn = _pSub_TableSyn(this);
-  if (! p_tableSyn)
-    return '?';
-
-  char cTableSyn = p_tableSyn->cTableSyn();
-
-  return cTableSyn;
 }
 
 /*============================================================================*/

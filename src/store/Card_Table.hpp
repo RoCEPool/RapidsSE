@@ -19,8 +19,6 @@ namespace STORE
 
     Card_TablePtr* pGet_tablePtr(void);
     void vTablePrint(Ribbon* pRibbon, i8 iDepth);
-
-    char cTableSyn(void);
   };
 
   Card_Table* _pCard_Table(void* aAddr);

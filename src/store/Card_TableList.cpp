@@ -5,7 +5,6 @@
 #include "Card_TableList.hpp"
 #include "Card_Table.hpp"
 #include "Card_TablePtn.hpp"
-#include "Card_TableSyn.hpp"
 #include "Card_ColumnRef.hpp"
 #include "Card_CmpPred.hpp"
 
@@ -59,8 +58,7 @@ Card_Table* Card_TableList::pFind_table(char cSyn)
       continue;
 
     Card_Table* p_table = _pCard_Table(pChildCard);
-    Card_TableSyn* p_tableSyn = _pSub_TableSyn(p_table);
-    char cTableSyn = p_tableSyn->cTableSyn();
+    char cTableSyn = p_table->cGetProperty(C_PPY_TableSyn);
     if (cTableSyn == cSyn)
       return p_table;
   }

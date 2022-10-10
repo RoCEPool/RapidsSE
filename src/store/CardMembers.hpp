@@ -71,7 +71,6 @@ namespace STORE
     Card_TableList*        m_p_tableList;
     Card_TablePtn*         m_p_tablePtn;
     Card_TablePtr*         m_p_tablePtr;
-    Card_TableSyn*         m_p_tableSyn;
     Card_Term*             m_p_term;
     Card_Term*             m_p_term_0;
     Card_Term*             m_p_term_1;

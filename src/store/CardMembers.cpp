@@ -79,7 +79,6 @@ CardMembers::CardMembers(void)
   m_p_tableList        = nullptr;
   m_p_tablePtn         = nullptr;
   m_p_tablePtr         = nullptr;
-  m_p_tableSyn         = nullptr;
   m_p_term             = nullptr;
   m_p_term_0           = nullptr;
   m_p_term_1           = nullptr;

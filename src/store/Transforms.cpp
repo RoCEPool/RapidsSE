@@ -1693,17 +1693,12 @@ void Transforms::vAdd_tableSyn_To_table(void)
     m_p_tablePtr = _pSub_TablePtr(m_p_table);
     m_pTable = m_p_tablePtr->pTable();
 
-    m_p_tableSyn = new Card_TableSyn;
-
     char cTableSyn_actual = cTableSyn;
     if (m_pTable->bIsReplicated())
       cTableSyn_actual += 'A'-'a';
-    m_p_tableSyn->vTableSyn(cTableSyn_actual);
     m_p_table->vAddProperty_chr(C_PPY_TableSyn,cTableSyn_actual);
 
     cTableSyn++;
-
-    m_p_table->vAppend(m_p_tableSyn);
   }
 
   vPrintBoard();

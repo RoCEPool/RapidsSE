@@ -97,7 +97,6 @@
 #include "Card_TableList.hpp"
 #include "Card_TablePtn.hpp"
 #include "Card_TablePtr.hpp"
-#include "Card_TableSyn.hpp"
 #include "Card_Term.hpp"
 #include "Card_Type.hpp"
 
