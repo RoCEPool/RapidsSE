@@ -12,11 +12,15 @@ namespace STORE
   protected:
     Card* m_pChildCard;
     i8    m_i_Child;
+
     Card* m_pDupCard;
+
     Card* m_pMainCard;
     i8    m_i_Main;
+
     Card* m_pNextMain;
     i8    m_i_Next;
+
     Card* m_pPoppedCard;
     i8    m_i_Popped;
 

@@ -238,6 +238,20 @@ eCK Card::eTo_eCK(Stz* szCardNm)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* add given property                                                         */
+/*----------------------------------------------------------------------------*/
+void Card::vAddProperty_chr(Stz* szPptName, char cPptValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (! m_pProperties)
+    m_pProperties = new TagSet;
+
+  s32 sPptValue;
+  sPptValue.vSprint("%c"_Stz,cPptValue);
+  m_pProperties->vReplace(szPptName, sPptValue);
+}
 
 /*----------------------------------------------------------------------------*/
 /* add given property                                                         */
@@ -689,6 +703,40 @@ Card* Card::pFindSubCard(eCK eCard)
   delete pSubCard_I;
   
   return pFoundCard;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get given property                                                         */
+/*----------------------------------------------------------------------------*/
+char Card::cGetProperty(Stz* szPptName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (! m_pProperties)
+    return ' ';
+
+  Stz* szValue = m_pProperties->szValue(szPptName);
+  if (! szValue)
+    return ' ';
+
+  return *szValue->azChar();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get given property                                                         */
+/*----------------------------------------------------------------------------*/
+char Card::cGetProperty(i8 i_Property)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (! m_pProperties)
+    return ' ';
+
+  Stz* szValue = m_pProperties->szValue(i_Property);
+  if (! szValue)
+    return ' ';
+
+  return *szValue->azChar();
 }
 
 /*----------------------------------------------------------------------------*/

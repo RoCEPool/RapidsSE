@@ -118,6 +118,7 @@ static Stz* C_PPT_SentOut      = "nSentOut"_Stz;
 static Stz* C_PPT_StageTopo    = "eStageTopo"_Stz;
 static Stz* C_PPT_Stream       = "iStream"_Stz;
 static Stz* C_PPT_Table        = "pTable"_Stz;
+static Stz* C_PPT_TableSyn     = "cTableSyn"_Stz;
 static Stz* C_PPT_TableUsed    = "bTableUsed"_Stz;
 
 namespace STORE
@@ -172,7 +173,8 @@ namespace STORE
     static eCK  eTo_eCK(Stz* szCardNm);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-    
+
+    void vAddProperty_chr(Stz* szPptName, char cPptValue);
     void vAddProperty_int(Stz* szPptName, i8 iPptValue);
     void vAddProperty_nameOnly(Stz* szPptName);
     void vAddProperty_ptr(Stz* szPptName, Object* pPptValue);
@@ -202,6 +204,8 @@ namespace STORE
     Card* pFindParent(Card* pSubCard);
     Card* pFindSubCard(eCK eCard);
 
+    char cGetProperty(i8 i_Property);
+    char cGetProperty(Stz* szPptName);
     i8   iGetProperty(i8 i_Property);
     i8   iGetProperty(Stz* szPptName);
     Object* pGetProperty(i8 i_Property);
