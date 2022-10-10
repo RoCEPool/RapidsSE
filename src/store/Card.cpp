@@ -1169,7 +1169,7 @@ void Card::vPrintHeader(Ribbon* pRibbon)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  pRibbon->vSprint("--%02lld----------------"_Stz,m_iCardNo);
+  pRibbon->vSprint("==%02lld----------------"_Stz,m_iCardNo);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1188,17 +1188,20 @@ void Card::vPrintName(Ribbon* pRibbon, i8 iDepth)
   Board* pBoard = _pBoard(pRibbon->pSurface());
 
   s32 sName;
-  if (0 == iDepth)
-    sName.vSprint("%s%s x%lld"_Stz,
+  if (0 == iDepth) {
+    sName.vSprint("%s%s *%lld"_Stz,
                   szCardNm(),
                   sHiddenChildren.szStz(),
                   nItems());
-  else
+    sName.vToUpper();
+  }
+  else {
     sName.vSprint("%s%lld]%s%s"_Stz,
-                  Stz::szDots(iDepth-1),
+                  Stz::szDots(iDepth - 1),
                   m_iCardNo,
                   szCardNm(),
                   sHiddenChildren.szStz());
+  }
 
   pRibbon->vSprint("%c%c%-18s"_Stz, m_cMark1, m_cMark2, sName.szStz());
 }
@@ -1216,33 +1219,39 @@ void Card::vPrintNameValue(Ribbon* pRibbon, i8 iDepth)
   if (! pCardCtl->bPrintSubCards(m_eCard) && nChildCards())
     sHiddenChildren = " +"_Stz;
 
+  s32 sName(szCardNm());
+  if (0 == iDepth)
+    sName.vToUpper();
+
   s256 sNameValue;
+
   if (0 == iDepth) {
     if (bHasValue())
-      sNameValue.vSprint("%s%s %s x%lld"_Stz,
-                         szCardNm(),
+      sNameValue.vSprint("%s%s %s *%lld"_Stz,
+                         sName.szStz(),
                          sHiddenChildren.szStz(),
                          szValue(),
                          nItems());
     else
-      sNameValue.vSprint("%s%s x%lld"_Stz,
-                         szCardNm(),
+      sNameValue.vSprint("%s%s *%lld"_Stz,
+                         sName.szStz(),
                          sHiddenChildren.szStz(),
                          nItems());
+
   }
   else {
     if (bHasValue())
       sNameValue.vSprint("%s%lld]%s%s %s"_Stz,
                        Stz::szDots(iDepth - 1),
                        m_iCardNo,
-                       szCardNm(),
-                         sHiddenChildren.szStz(),
+                       sName.szStz(),
+                       sHiddenChildren.szStz(),
                        szValue());
     else
       sNameValue.vSprint("%s%lld]%s%s"_Stz,
                          Stz::szDots(iDepth - 1),
                          m_iCardNo,
-                         szCardNm(),
+                         sName.szStz(),
                          sHiddenChildren.szStz());
   }
 
@@ -1357,7 +1366,7 @@ void Card::vPrintValue(Ribbon* pRibbon, i8 iDepth)
   if (! bHasValue())
     return;
 
-  pRibbon->vSprintRight("%s"_Stz,szValue());
+  pRibbon->vSprintRight("  %s"_Stz,szValue());
 
 }
 

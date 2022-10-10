@@ -187,7 +187,7 @@ void Ribbon::vFmtDefaults(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
   
-  m_sRightFormat = "%18s"_Stz;
+  m_sRightFormat = "%20s"_Stz;
   
   for (i8 i_Fmt = 0; i_Fmt < FR_ENUMS; i_Fmt++)
     vFmt((eFR)i_Fmt, aFR_format[i_Fmt]);
