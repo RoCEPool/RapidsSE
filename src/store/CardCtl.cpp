@@ -39,9 +39,8 @@ CardCtl::CardCtl(void)
     m_xaCardCtl[i_Card].m_bPrune     = false;
   }
 
-  for (i8 i_Tform = 0; i_Tform < OT_ENUMS; i_Tform++) {
-    m_xaTrfCtl[i_Tform].m_bTfmPrint = true;
-  }
+  m_xaTrfCtl.m_bTfmPrint = true;
+
 
    _checkInitialised_(CN_CARDCTL);
 
@@ -78,10 +77,6 @@ CardCtl::CardCtl(void)
 
   vPrintProperties(CK_TERM,false);
 
-
-  vTfmPrint(OT_vLinearize_stages,false);
-  vTfmPrint(OT_vDelete_combines,false);
-  vTfmPrint(OT_vDelete_sends,false);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 }
@@ -348,7 +343,7 @@ bool CardCtl::bTfmPrint(i8 i_Tfm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 
-  bool bTfmPrint = m_xaTrfCtl[i_Tfm].m_bTfmPrint;
+  bool bTfmPrint = m_xaTrfCtl.m_bTfmPrint;
 
   return bTfmPrint;
 }
@@ -360,7 +355,7 @@ void CardCtl::vTfmPrint(i8 i_Tfm, bool bTfmPrint)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 
-  m_xaTrfCtl[i_Tfm].m_bTfmPrint = bTfmPrint;
+  m_xaTrfCtl.m_bTfmPrint = bTfmPrint;
 }
 
 /*============================================================================*/

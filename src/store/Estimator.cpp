@@ -51,7 +51,7 @@ void Estimator::vSetup_costEst(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_ESTIMATOR, _FOOTER_);
 
-  vTransformation(OT_vSetup_costEst);
+  vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
 
   vSetupCostEstBoard();
@@ -79,7 +79,7 @@ void Estimator::vEstimate_ptndJoins(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_ESTIMATOR, _FOOTER_);
 
-  vTransformation(OT_vEstimate_ptndJoins);
+  vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
 
   m_p_tableList =
@@ -112,7 +112,7 @@ void Estimator::vEstimate_network(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_ESTIMATOR, _FOOTER_);
 
-  vTransformation(OT_vEstimate_network);
+  vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
 
   BoardIter xBI(m_pBoard_costEst);
@@ -159,7 +159,7 @@ void Estimator::vEstimate_joinOrder(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_ESTIMATOR, _FOOTER_);
 
-  vTransformation(OT_vEstimate_joinOrder);
+  vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
 
   i8 iLowestNetwork = 999999999;
@@ -198,7 +198,7 @@ void Estimator::vExtract_joinOrderSeq(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_ESTIMATOR, _FOOTER_);
 
-  vTransformation(OT_vExtract_joinOrderSeq);
+  vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
 
   m_pBoard_costEst->vAppendMain((m_p_joinOrderSeq = new Card_JoinOrderSeq));

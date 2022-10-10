@@ -48,7 +48,7 @@ void Partitioner::vExtract_tableList_From_queryBoard(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARTITIONER, _FOOTER_);
 
-  vTransformation(OT_vExtract_tableList_From_queryBoard);
+  vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
 
 
@@ -80,7 +80,7 @@ void Partitioner::vExtract_joinPredList(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARTITIONER, _FOOTER_);
 
-  vTransformation(OT_vExtract_joinPredList);
+  vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
 
   vSetupPartitionBoard();
@@ -112,7 +112,7 @@ void Partitioner::vCompute_coPtnPredList(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARTITIONER, _FOOTER_);
 
-  vTransformation(OT_vCompute_coPtnPredList);
+  vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
 
   vSetupPartitionBoard();
@@ -160,7 +160,7 @@ void Partitioner::vCompute_coPtnJoinList(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARTITIONER, _FOOTER_);
 
-  vTransformation(OT_vCompute_coPtnJoinList);
+  vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
 
   vSetupPartitionBoard();
@@ -204,7 +204,7 @@ void Partitioner::vCompute_crossPtnJoinList(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARTITIONER, _FOOTER_);
 
-  vTransformation(OT_vCompute_crossPtnJoinList);
+  vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
 
   vSetupPartitionBoard();
@@ -246,7 +246,7 @@ void Partitioner::vCompute_ptndJoinSet(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARTITIONER, _FOOTER_);
 
-  vTransformation(OT_vCompute_ptndJoinSet);
+  vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
 
   vSetupPartitionBoard();

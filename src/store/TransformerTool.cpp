@@ -22,11 +22,12 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_pBoard_permute   = nullptr;
   m_pBoard_query     = nullptr;
   m_pCardCtl         = m_pBench->pCardCtl();
-  m_eTranformation   = OT_NONE;
+  m_bPrintTransformation   = true;
 
   m_pTable           = nullptr;
   m_pStreamDef       = nullptr;
   m_pIdxVec          = nullptr;
+  m_pIndex           = nullptr;
 
   m_pPermGen         = nullptr;
 
@@ -61,6 +62,7 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_p_idxColList       = nullptr;
   m_p_indexJoin        = nullptr;
   m_p_indexList        = nullptr;
+  m_p_indexPtr         = nullptr;
   m_p_indexScan        = nullptr;
   m_p_joinOrder        = nullptr;
   m_p_joinOrderSeq     = nullptr;
@@ -87,6 +89,7 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_p_subSet           = nullptr;
   m_p_table            = nullptr;
   m_p_tableList        = nullptr;
+  m_p_tablePtn         = nullptr;
   m_p_tablePtr         = nullptr;
   m_p_tableSyn         = nullptr;
   m_p_term             = nullptr;
@@ -283,12 +286,12 @@ void TransformerTool::vPrintBoard(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  if (m_pBench->pCardCtl()->bTfmPrint(m_eTranformation)) {
+  if (m_bPrintTransformation) {
     if (m_bInteractive)
-      m_pBoard->vPrintBoard(aOT[m_eTranformation], m_sExplain);
+      m_pBoard->vPrintBoard(m_sTranformation.szStz(), m_sExplain);
   }
   else {
-    vTrace("SILENT : %s\n"_Stz,aOT[m_eTranformation]);
+    vTrace("SILENT : %s\n"_Stz,m_sTranformation.szStz());
   }
 
   m_sExplain = ""_Stz;
@@ -338,11 +341,12 @@ void TransformerTool::vSetPrintSubCards(eCK eCard, bool bPrintSubCards)
 /*----------------------------------------------------------------------------*/
 /* record transformation                                                      */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::vTransformation(eOT eTransformation)
+void TransformerTool::vTransformation(char* azTranformation, bool bPrintTransformation)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  m_eTranformation = eTransformation;
+  m_sTranformation = azTranformation;
+  m_bPrintTransformation = bPrintTransformation;
 }
 
 

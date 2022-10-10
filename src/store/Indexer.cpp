@@ -48,7 +48,7 @@ void Indexer::vAppend_indexList_To_scan(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SCANNING, _FOOTER_);
 
-  vTransformation(OT_vAppend_indexList_To_scan);
+  vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
 
   BoardIter xBI(m_pBoard);
@@ -72,7 +72,7 @@ void Indexer::vMark_scan_pred_bounds(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SCANNING, _FOOTER_);
 
-  vTransformation(OT_vMark_scan_pred_bounds);
+  vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
 
   auto bfPredBounds = [](Card* pCard) {
@@ -102,7 +102,7 @@ void Indexer::vMark_scan_pred_ordinals(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SCANNING, _FOOTER_);
 
-  vTransformation(OT_vMark_scan_pred_ordinals);
+  vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
 
   BoardIter xBI(m_pBoard);

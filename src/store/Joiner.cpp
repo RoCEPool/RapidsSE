@@ -47,20 +47,22 @@ Joiner::~Joiner(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* append preliminary <indexJoin>'s to all <absJoin>                          */
 /*----------------------------------------------------------------------------*/
-void Joiner::vAppend_preliminary_indexJoin(void)
+void Joiner::vInsert_preliminary_indexJoin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_JOINER, _FOOTER_);
 
-  vTransformation(OT_vAppend_preliminary_indexJoin);
+  vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
 
   m_pBoard->vClearAllMarks();
 
   BoardIter xBI(m_pBoard);
 
-  while (m_p_absJoin = _pCard_AbsJoin(xBI.pEachMain(CK_ABSJOIN))) {
+  while (m_p_scan = _pCard_Scan(xBI.pEachMain(CK_SCAN))) {
 
-    m_p_scan = _pSub_Scan(m_p_absJoin);
+    if (! (m_p_filter = m_p_scan->pSub_filter()))
+      continue;
+
     m_p_tablePtr = _pSub_TablePtr(m_p_scan);
     m_pTable = m_p_tablePtr->pTable();
 
@@ -69,17 +71,16 @@ void Joiner::vAppend_preliminary_indexJoin(void)
 
     i8 nIndexes = m_pIdxVec->nItems();
     for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
-      Index* pIndex = m_pIdxVec->pGet(i_Index);
+      m_pIndex = m_pIdxVec->pGet(i_Index);
 
-      Card_IndexJoin* pCard_indexJoin = new Card_IndexJoin;
-      m_p_absJoin->vAppend(pCard_indexJoin);
+      m_p_indexJoin = new Card_IndexJoin;
+      m_p_scan->vInsertBefore(m_p_indexJoin,m_p_filter);
 
-      Card_IndexPtr* pCard_index = new Card_IndexPtr(pIndex);
-      pCard_indexJoin->vAppend(pCard_index);
+      m_p_indexPtr = new Card_IndexPtr(m_pIndex);
+      m_p_indexJoin->vAppend(m_p_indexPtr);
 
-      Card_IdxColList* pCard_idxColList = new Card_IdxColList(pIndex);
-      pCard_indexJoin->vAppend(pCard_idxColList);
-
+      Card_IdxColList* pCard_idxColList = new Card_IdxColList(m_pIndex);
+      m_p_indexJoin->vAppend(pCard_idxColList);
     }
   }
 
@@ -97,7 +98,7 @@ void Joiner::vDeleteAll_absJoin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_JOINER, _FOOTER_);
 
-  vTransformation(OT_vDeleteAll_absJoin);
+  vTransformation((char*)(__func__),false);
   vExplain("Blah"_Stz);
 
   vRemoveDeleteMains(CK_ABSJOIN);
@@ -112,7 +113,7 @@ void Joiner::vForm_joinPred(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_JOINER, _FOOTER_);
 
-  vTransformation(OT_vForm_joinPred);
+  vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
 
   BoardIter xBI(m_pBoard);
@@ -179,7 +180,7 @@ void Joiner::vOrdinate_idxColList(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_JOINER, _FOOTER_);
 
-  vTransformation(OT_vOrdinate_idxColList);
+  vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
 
   m_pBoard->vClearAllMarks();
@@ -208,7 +209,7 @@ void Joiner::vRefactor_absJoin_Into_indexJoin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_JOINER, _FOOTER_);
 
-  vTransformation(OT_vRefactor_absJoin_Into_indexJoin);
+  vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
 
   vBeginIteration();
@@ -243,7 +244,7 @@ void Joiner::vSubsume_scan_Under_absJoin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_JOINER, _FOOTER_);
 
-  vTransformation(OT_vSubsume_scan_Under_absJoin);
+  vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
 
   BoardIter xBI(m_pBoard);

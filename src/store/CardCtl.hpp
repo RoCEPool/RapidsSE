@@ -6,7 +6,6 @@
 #include "BASE.h"
 
 #include "eCK.h"
-#include "eOT.h"
 
 namespace STORE
 {
@@ -37,7 +36,7 @@ namespace STORE
   {
   protected:
     _CardCtl m_xaCardCtl[CK_ENUMS];
-    _TfmCtl  m_xaTrfCtl[OT_ENUMS];
+    _TfmCtl  m_xaTrfCtl;
 
   protected:
     // must be last

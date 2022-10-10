@@ -133,38 +133,39 @@ void Transformer::vTransform2(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // QUERY BOARD -- preliminaries
 
-  // combine all cards for leading stages of topo ALL PARTITIONS
+  // combine {{==<stage>}}->{<stage>}
   m_pStager->vLinearize_stages();
 
-  // delete all <absJoin>
+  // delete *<absJoin>
   m_pJoiner->vDeleteAll_absJoin();
 
-  // delete all <combined>
-  m_pCombiner->vDelete_combines();
+  // delete *<combined>
+  m_pCombiner->vDeleteAll_combined();
 
-  // delete all <send>
-  m_pSender->vDelete_sends();
-
-  // convert all <filter>/<calc> to <filter>/<calcBool>
-  m_pFiltrate->vConvert_calc_To_calcBool();
-
-  // append <stream> & <streamColList> to all <scan>
-  m_pStreamer->vAppend_stream_To_scan();
-
-  // each <scan> <absJoin> becomes <absJoin>/<scan>
-  m_pJoiner->vSubsume_scan_Under_absJoin();
+  // delete *<send>
+  m_pSender->vDeleteAll_send();
 
   // add <tableSyn> to all <table>
   m_pTabular->vAdd_tableSyn_To_table();
 
+  // add <tablePtn> to all <table>
+  m_pTabular->vAdd_tablePtn_To_table();
+
+  // append <stream> & <streamColList> to all <scan>
+  m_pStreamer->vAppend_stream_To_scan();
+
   // calculate /<stream>:iOrdLo,iOrdHi properties
   m_pStreamer->vCalc_OrdinalRangesOf_stream();
+
+  // convert all <filter>/<calc> to <filter>/<calcBool>
+  m_pFiltrate->vConvert_calc_To_calcBool();
+
+  // each <scan> <absJoin> becomes <absJoin>/<scan>
+  //m_pJoiner->vSubsume_scan_Under_absJoin();
 
   // convert $n to $$c.n
   //m_pColumnar->vConvert_streamColOrdinal_To_tableColOrdinal();
 
-  // add <tablePtn> to all <table>
-  m_pTabular->vAdd_tablePtn_To_table();
 
 
   /*
@@ -205,7 +206,7 @@ void Transformer::vTransform2(void)
   m_pFiltrate->vDelete_Empty_filter();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  m_pJoiner->vAppend_preliminary_indexJoin();
+  m_pJoiner->vInsert_preliminary_indexJoin();
   m_pJoiner->vOrdinate_idxColList();
   m_pJoiner->vForm_joinPred();
 

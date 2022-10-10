@@ -48,7 +48,7 @@ void Scanning::vAdd_scanPred(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SCANNING, _FOOTER_);
 
-  vTransformation(OT_vAdd_scanPred);
+  vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
 
   BoardIter xBI(m_pBoard);
@@ -115,7 +115,7 @@ void Scanning::vCull_markedPred(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SCANNING, _FOOTER_);
 
-  vTransformation(OT_vCull_markedPred);
+  vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
 
   BoardIter xBI(m_pBoard);
@@ -153,7 +153,7 @@ void Scanning::vPromote_scan_To_indexScan(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SCANNING, _FOOTER_);
 
-  vTransformation(OT_vPromote_scan_To_indexScan);
+  vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
 
   BoardIter xBI(m_pBoard);

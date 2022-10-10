@@ -47,7 +47,7 @@ void Curator::vChangeAll_scan_To_retrieve(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_JOINER, _FOOTER_);
 
-  vTransformation(OT_vChangeAll_scan_To_retrieve);
+  vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
 
   BoardIter xBI(m_pBoard);

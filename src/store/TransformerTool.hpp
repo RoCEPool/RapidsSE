@@ -6,7 +6,6 @@
 #include "Bench.hpp"
 #include "BoardIter.hpp"
 
-#include "eOT.h"
 #include "PermGen.hpp"
 
 namespace STORE
@@ -23,11 +22,13 @@ namespace STORE
     Board*      m_pBoard_query;
     CardCtl*    m_pCardCtl;
 
-    eOT         m_eTranformation;
+    s256        m_sTranformation;
+    bool        m_bPrintTransformation;
 
     Table*      m_pTable;
     StreamDef*  m_pStreamDef;
     IdxVec*     m_pIdxVec;
+    Index*      m_pIndex;
 
     SubCardIter* m_pMainCardIter;
 
@@ -65,6 +66,7 @@ namespace STORE
     Card_IdxColList*       m_p_idxColList;
     Card_IndexJoin*        m_p_indexJoin;
     Card_IndexList*        m_p_indexList;
+    Card_IndexPtr*         m_p_indexPtr;
     Card_IndexScan*        m_p_indexScan;
     Card_JoinOrder*        m_p_joinOrder;
     Card_JoinOrderSeq*     m_p_joinOrderSeq;
@@ -91,6 +93,7 @@ namespace STORE
     Card_SubSet*           m_p_subSet;
     Card_Table*            m_p_table;
     Card_TableList*        m_p_tableList;
+    Card_TablePtn*         m_p_tablePtn;
     Card_TablePtr*         m_p_tablePtr;
     Card_TableSyn*         m_p_tableSyn;
     Card_Term*             m_p_term;
@@ -128,7 +131,7 @@ namespace STORE
 
     void vSetPrintSubCards(eCK eCard, bool bPrintSubCards);
 
-    void vTransformation(eOT eTransformation);
+    void vTransformation(char* azTranformation, bool bPrintTransformation=true);
 
   protected:
     void vSetupCostEstBoard(void);

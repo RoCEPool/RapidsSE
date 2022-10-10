@@ -49,7 +49,7 @@ void Stager::vAdd_stages(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGER, _FOOTER_);
 
-  vTransformation(OT_vAdd_stages);
+  vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
 
   i8 iFilter    = 0;
@@ -153,7 +153,7 @@ void Stager::vLinearize_stages(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGER, _FOOTER_);
 
-  vTransformation(OT_vLinearize_stages);
+  vTransformation((char*)(__func__),false);
   vExplain("Linearize all the stages"_Stz);
 
   BoardIter xBI(m_pBoard);

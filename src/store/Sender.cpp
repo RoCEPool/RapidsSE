@@ -43,11 +43,11 @@ Sender::~Sender(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* delete sends                                                               */
 /*----------------------------------------------------------------------------*/
-void Sender::vDelete_sends(void)
+void Sender::vDeleteAll_send(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SENDER, _FOOTER_);
 
-  vTransformation(OT_vDelete_sends);
+  vTransformation((char*)(__func__),false);
   vExplain("Blah"_Stz);
 
   vRemoveDeleteMains(CK_SEND);

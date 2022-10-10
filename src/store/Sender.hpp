@@ -21,7 +21,7 @@ namespace STORE
     Sender(Bench* pBench);
    ~Sender(void) noexcept(false);
 
-    void vDelete_sends(void);
+    void vDeleteAll_send(void);
 
   private:
 

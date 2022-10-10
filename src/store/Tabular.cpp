@@ -48,7 +48,7 @@ void Tabular::vAdd_tablePtn_To_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABULAR,_FOOTER_);
 
-  vTransformation(OT_vAdd_tablePtn_To_table);
+  vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
 
   char cTableSyn = 'a';
@@ -61,8 +61,8 @@ void Tabular::vAdd_tablePtn_To_table(void)
     if (! (m_p_table = _pSub_Table(m_pMainCard)) )
       continue;
 
-    Card_TablePtn* p_tablePtn = new Card_TablePtn(m_p_table);
-    m_p_table->vAppend(p_tablePtn);
+    m_p_tablePtn = new Card_TablePtn(m_p_table);
+    m_p_table->vAppend(m_p_tablePtn);
   }
 
   vPrintBoard();
@@ -76,7 +76,7 @@ void Tabular::vAdd_tableSyn_To_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABULAR,_FOOTER_);
 
-  vTransformation(OT_vAdd_tableSyn_To_table);
+  vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
 
   char cTableSyn = 'a';

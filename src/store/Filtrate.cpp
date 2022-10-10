@@ -47,7 +47,7 @@ void Filtrate::vAssign_predCmp_leftwards(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTRATE,_FOOTER_);
 
-  vTransformation(OT_vAssign_predCmp_leftwards);
+  vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
 
   BoardIter xBI(m_pBoard);
@@ -66,7 +66,7 @@ void Filtrate::vConvert_calc_To_calcBool(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTRATE,_FOOTER_);
 
-  vTransformation(OT_vConvert_calc_To_calcBool);
+  vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
 
   BoardIter xBI(m_pBoard);
@@ -84,7 +84,7 @@ void Filtrate::vCopy_predCmp_leftwards(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTRATE,_FOOTER_);
 
-  vTransformation(OT_vCopy_predCmp_leftwards);
+  vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
 
   BoardIter xBI(m_pBoard);
@@ -102,7 +102,7 @@ void Filtrate::vCull_filterPred_Of_indexJoin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTRATE,_FOOTER_);
 
-  vTransformation(OT_vCull_filterPred_Of_indexJoin);
+  vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
 
   BoardIter xBI(m_pBoard);
@@ -126,7 +126,7 @@ void Filtrate::vDelete_Empty_filter(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
 
-  vTransformation(OT_vDelete_Empty_filter);
+  vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
 
   BoardIter xBI(m_pBoard);
@@ -150,7 +150,7 @@ void Filtrate::vDelete_empty_sub_filter(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
 
-  vTransformation(OT_vDelete_empty_sub_filter);
+  vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
 
   vBeginIteration();
@@ -181,7 +181,7 @@ void Filtrate::vIndividuate_filter(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
 
-  vTransformation(OT_vIndividuate_filter);
+  vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
 
   vBeginIteration();
