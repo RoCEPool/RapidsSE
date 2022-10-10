@@ -1169,7 +1169,7 @@ void Card::vPrintHeader(Ribbon* pRibbon)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  pRibbon->vSprint("--%02lld--------------=="_Stz,m_iCardNo);
+  pRibbon->vSprint("--%02lld----------------"_Stz,m_iCardNo);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1200,7 +1200,7 @@ void Card::vPrintName(Ribbon* pRibbon, i8 iDepth)
                   szCardNm(),
                   sHiddenChildren.szStz());
 
-  pRibbon->vSprint("%-18s%c%c"_Stz, sName.szStz(), m_cMark1, m_cMark2);
+  pRibbon->vSprint("%c%c%-18s"_Stz, m_cMark1, m_cMark2, sName.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1247,7 +1247,7 @@ void Card::vPrintNameValue(Ribbon* pRibbon, i8 iDepth)
   }
 
   if (sNameValue.nLength() <= 18) {
-    pRibbon->vSprint("%-18s%c%c"_Stz, sNameValue.szStz(), m_cMark1, m_cMark2);
+    pRibbon->vSprint("%c%c%-18s"_Stz, m_cMark1, m_cMark2, sNameValue.szStz());
   }
   else {
     vPrintName(pRibbon, iDepth);
