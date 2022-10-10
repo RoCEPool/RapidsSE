@@ -69,7 +69,7 @@ void Estimator::vSetup_costEst(void)
 
 
   if (m_bInteractive)
-    m_pBoard_costEst->vPrintBoard("Estimator::vSetup_costEst"_Stz);
+    m_pBoard_costEst->vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -102,7 +102,7 @@ void Estimator::vEstimate_ptndJoins(void)
   }
 
   if (m_bInteractive)
-    m_pBoard_costEst->vPrintBoard("Estimator::vEstimate_ptndJoins"_Stz);
+    m_pBoard_costEst->vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -148,7 +148,7 @@ void Estimator::vEstimate_network(void)
     m_p_permutation->vAddProperty_int(C_PPT_Network, nNetwork);
 
   if (m_bInteractive)
-    m_pBoard_costEst->vPrintBoard("Estimator::vEstimate_network"_Stz);
+    m_pBoard_costEst->vPrintBoard();
 }
 
 
@@ -188,7 +188,7 @@ void Estimator::vEstimate_joinOrder(void)
   }
 
   if (m_bInteractive)
-   m_pBoard_costEst->vPrintBoard("Estimator::vEstimate_joinOrder"_Stz);
+   m_pBoard_costEst->vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -215,7 +215,7 @@ void Estimator::vExtract_joinOrderSeq(void)
   }
 
   if (m_bInteractive)
-    m_pBoard_costEst->vPrintBoard("Estimator::vExtract_joinOrderSeq"_Stz);
+    m_pBoard_costEst->vPrintBoard();
 }
 
 

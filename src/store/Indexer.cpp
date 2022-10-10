@@ -61,7 +61,7 @@ void Indexer::vAppend_indexList_To_scan(void)
   }
 
   if (m_bInteractive)
-    m_pBoard->vPrintBoard("Indexer::vAppend_indexList_To_scan"_Stz);
+    m_pBoard->vPrintBoard();
 
 }
 
@@ -92,7 +92,7 @@ void Indexer::vMark_scan_pred_bounds(void)
   }
 
   if (m_bInteractive)
-    m_pBoard->vPrintBoard("Indexer::vMark_scan_pred_bounds"_Stz);
+    m_pBoard->vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -158,7 +158,7 @@ void Indexer::vMark_scan_pred_ordinals(void)
   }
 
   if (m_bInteractive)
-    m_pBoard->vPrintBoard("Indexer::vMark_scan_pred_ordinals"_Stz);
+    m_pBoard->vPrintBoard();
 
 }
 

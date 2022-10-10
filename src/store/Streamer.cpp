@@ -95,7 +95,7 @@ void Streamer::vCalc_OrdinalRangesOf_stream(void)
     }
   }
 
-  vPrintBoard("Streamer::vCalc_OrdinalRangesOf_stream"_Stz);
+  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -128,7 +128,7 @@ void Streamer::vAppend_stream_To_scan(void)
 
   vSetPrintSubCards(CK_STREAM, true);
 
-  vPrintBoard("Streamer::vAppend_stream_To_scan"_Stz);
+  vPrintBoard();
 
   vSetPrintSubCards(CK_STREAM, false);
 

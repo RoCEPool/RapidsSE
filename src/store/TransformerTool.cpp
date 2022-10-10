@@ -279,7 +279,7 @@ Card* TransformerTool::pFindMainOf(Card* pGivenCard, Card*& rpParentCard)
 /*----------------------------------------------------------------------------*/
 /* print the board                                                            */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::vPrintBoard(Stz* szCue)
+void TransformerTool::vPrintBoard()
 {
   if (m_bInteractive)
     m_pBoard->vPrintBoard(aOT[m_eTranformation],m_sExplain);

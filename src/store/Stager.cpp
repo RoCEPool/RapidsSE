@@ -143,7 +143,7 @@ void Stager::vAdd_stages(void)
   while ( (m_p_stage = _pCard_Stage(xBI.pEachMain(CK_STAGE))) )
     m_p_stage->vRenameStage(i_Stage++);
 
-  vPrintBoard("Stager::vAdd_stages"_Stz);
+  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -192,7 +192,7 @@ void Stager::vLinearize_stages(void)
   vSetPrintSubCards(CK_GBYELIST, false);
   vSetPrintSubCards(CK_PROJELIST, false);
 
-  vPrintBoard("Stager::vLinearize_stages"_Stz);
+  vPrintBoard();
 }
 
 

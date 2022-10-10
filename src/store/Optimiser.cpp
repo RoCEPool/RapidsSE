@@ -275,7 +275,7 @@ void Optimiser::vTransform(void)
   Board* pBoard = m_pBench->pHead();
 
   if (bInteractive)
-    pBoard->vPrintBoard("vDissectSpec"_Stz);
+    pBoard->vPrintBoard();
 
   m_pTransformer->vTransform();
 

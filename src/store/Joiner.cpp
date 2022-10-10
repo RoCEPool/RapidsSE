@@ -87,7 +87,7 @@ void Joiner::vAppend_preliminary_indexJoin(void)
   vSetPrintSubCards(CK_FILTER, false);
   vSetPrintSubCards(CK_STREAM, false);
 
-  vPrintBoard("Joiner::vAppend_preliminary_indexJoin"_Stz);
+  vPrintBoard();
 }
 
 
@@ -155,7 +155,7 @@ void Joiner::vForm_joinPred(void)
   }
 
   vSetPrintSubCards(CK_FILTER, true);
-  vPrintBoard("Joiner::vForm_joinPred"_Stz);
+  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -184,7 +184,7 @@ void Joiner::vOrdinate_idxColList(void)
     m_p_idxColList->vOrdinate(m_p_stream);
   }
 
-  vPrintBoard("Joiner::vOrdinate_idxColList"_Stz);
+  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -219,7 +219,7 @@ void Joiner::vRefactor_absJoin_Into_indexJoin(void)
   }
 
   if (m_bInteractive)
-    m_pBoard->vPrintBoard("Joiner::vRefactor_absJoin_Into_indexJoin"_Stz);
+    m_pBoard->vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -250,7 +250,7 @@ void Joiner::vSubsume_scan_Under_absJoin(void)
     m_p_absJoin->vAppend(m_p_scan);
   }
 
-  vPrintBoard("Joiner::vSubsume_scan_Under_absJoin"_Stz);
+  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/

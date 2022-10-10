@@ -71,7 +71,7 @@ void Permutor::vCopy_ptndJoinSet(void)
   DELETE_CARD(m_p_subSet);
 
   if (m_bInteractive)
-    m_pBoard_permute->vPrintBoard("Permutor::vCopy_ptndJoinSet"_Stz);
+    m_pBoard_permute->vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -118,7 +118,7 @@ void Permutor::vGenerate_ptndPermutations(void)
   DELETE_CARD(m_p_subSet);
 
   if (m_bInteractive)
-    m_pBoard_permute->vPrintBoard("Permutor::vGenerate_ptndPermutations"_Stz);
+    m_pBoard_permute->vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -158,7 +158,7 @@ void Permutor::vRemove_invalidPermutations(void)
   }
 
   if (m_bInteractive)
-    m_pBoard_permute->vPrintBoard("Permutor::vRemove_invalidPermutations"_Stz);
+    m_pBoard_permute->vPrintBoard();
 
 
 }

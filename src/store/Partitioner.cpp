@@ -70,7 +70,7 @@ void Partitioner::vExtract_tableList_From_queryBoard(void)
   }
 
 
-  m_pBoard_partition->vPrintBoard("Partitioner::vExtract_tableList_From_queryBoard"_Stz);
+  m_pBoard_partition->vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -102,7 +102,7 @@ void Partitioner::vExtract_joinPredList(void)
 
 
   if (m_bInteractive)
-    m_pBoard_partition->vPrintBoard("Partitioner::vExtract_joinPredList"_Stz);
+    m_pBoard_partition->vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -150,7 +150,7 @@ void Partitioner::vCompute_coPtnPredList(void)
   //m_pCardCtl->vPrintForm(CK_PREDCMP,CP_COMPRESSED);
 
   if (m_bInteractive)
-    m_pBoard_partition->vPrintBoard("Partitioner::vCompute_coPtnPredList"_Stz);
+    m_pBoard_partition->vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -194,7 +194,7 @@ void Partitioner::vCompute_coPtnJoinList(void)
 
 
   if (m_bInteractive)
-    m_pBoard_partition->vPrintBoard("Partitioner::vCompute_coPtnJoinList"_Stz);
+    m_pBoard_partition->vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -236,7 +236,7 @@ void Partitioner::vCompute_crossPtnJoinList(void)
 
 
   if (m_bInteractive)
-    m_pBoard_partition->vPrintBoard("Partitioner::vCompute_crossPtnJoinList"_Stz);
+    m_pBoard_partition->vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -277,7 +277,7 @@ void Partitioner::vCompute_ptndJoinSet(void)
   }
 
   if (m_bInteractive)
-    m_pBoard_partition->vPrintBoard("Partitioner::vCompute_ptndJoinSet"_Stz);
+    m_pBoard_partition->vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/

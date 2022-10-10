@@ -67,7 +67,7 @@ void Sorter::vCull_sby_SameAs_gby(void)
   }
 
   if (m_bInteractive)
-    m_pBoard->vPrintBoard("Sorter::vCull_sby_SameAs_gby"_Stz);
+    m_pBoard->vPrintBoard();
 
 }
 /*============================================================================*/

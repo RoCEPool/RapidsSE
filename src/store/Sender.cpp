@@ -52,7 +52,7 @@ void Sender::vDelete_sends(void)
 
   vRemoveDeleteMains(CK_SEND);
 
-  vPrintBoard("Sender::vDelete_sends"_Stz);
+  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/

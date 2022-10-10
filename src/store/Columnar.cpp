@@ -85,7 +85,7 @@ void Columnar::vAdd_columnRef_Under_term(void)
   delete pResolver;
 
   if (m_bInteractive)
-    m_pBoard->vPrintBoard("Columnar::vAdd_columnRef_Under_term"_Stz);
+    m_pBoard->vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -128,7 +128,7 @@ void Columnar::vConvert_streamColOrdinal_To_tableColOrdinal(void)
 
   delete pResolver;
 
-  m_pBoard->vPrintBoard("Columnar::vConvert_streamColOrdinal_To_tableColOrdinal"_Stz);
+  m_pBoard->vPrintBoard();
 }
 
 

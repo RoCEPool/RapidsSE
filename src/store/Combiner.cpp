@@ -117,7 +117,7 @@ void Combiner::vAdd_combined(void)
   vSetPrintSubCards(CK_AGGELIST, true);
   vSetPrintSubCards(CK_GBYELIST, true);
 
-  vPrintBoard("Combiner::vAdd_combined"_Stz);
+  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -132,7 +132,7 @@ void Combiner::vDelete_combines(void)
 
   vRemoveDeleteMains(CK_COMBINED);
 
-  vPrintBoard("Combiner::vDelete_combines"_Stz);
+  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/

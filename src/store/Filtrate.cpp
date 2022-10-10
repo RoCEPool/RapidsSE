@@ -56,7 +56,7 @@ void Filtrate::vAssign_predCmp_leftwards(void)
     vAssignFilterLeftwards(m_p_filter);
 
   //vSetPrintSubCards(CK_PREDCMP, true);
-  vPrintBoard("Filtrate::vAssign_predCmp_leftwards"_Stz);
+  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -74,7 +74,7 @@ void Filtrate::vConvert_calc_To_calcBool(void)
   while ((m_p_filter = _pCard_Filter(xBI.pEachMain(CK_FILTER))))
     m_p_filter->vCalc_to_calcBool();
 
-  vPrintBoard("Filtrate::vConvert_calc_To_calcBool"_Stz);
+  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -92,7 +92,7 @@ void Filtrate::vCopy_predCmp_leftwards(void)
   while ((m_p_filter = _pCard_Filter(xBI.pEachMain(CK_FILTER))))
     vCopyFilterLeftwards(m_p_filter);
 
-  vPrintBoard("Filtrate::vCopy_predCmp_leftwards"_Stz);
+  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -116,7 +116,7 @@ void Filtrate::vCull_filterPred_Of_indexJoin(void)
   }
 
   //m_pCardCtl->vPrintSubCards(CK_STREAM, true);
-  vPrintBoard("Filtrate::vCull_filterPred_Of_indexJoin"_Stz);
+  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -140,7 +140,7 @@ void Filtrate::vDelete_Empty_filter(void)
     }
   }
 
-  vPrintBoard("Filtrate::vDelete_Empty_filter"_Stz);
+  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -171,7 +171,7 @@ void Filtrate::vDelete_empty_sub_filter(void)
   vEndIteration();
 
   if (m_bInteractive)
-    m_pBoard->vPrintBoard("Filtrate::vDelete_empty_sub_filter"_Stz);
+    m_pBoard->vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -219,7 +219,7 @@ void Filtrate::vIndividuate_filter(void)
   vEndIteration();
 
   if (m_bInteractive)
-    m_pBoard->vPrintBoard("Filtrate::vIndividuate_filter"_Stz);
+    m_pBoard->vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
