@@ -29,7 +29,7 @@
     | pulse once
     | next
 
-  stage stageB on all nodes :
+  stage stageB on all partitions :
       unload $File
     | next
 

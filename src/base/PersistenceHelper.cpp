@@ -3,6 +3,8 @@
 /*============================================================================*/
 
 #include "BASE.h"
+#include "Op.hpp"
+#include "Stream.hpp"
 
 extern SizeHeap     gxaSizeHeap[];
 extern ClassCatalog gxClassCatalog;
@@ -68,26 +70,50 @@ void PersistenceHelper::vWriteHeap(Heap* pHeap, File* pFile)
 {
   _static_
 
+  pHeap->vGrabLock();
+  bool bResult = pFile->bWriteBytes(pHeap,C_SIZE_POOL_BUFFER);
+  ASSERT(bResult);
+  pHeap->vDropLock();
+
+}
+/*----------------------------------------------------------------------------*/
+/* write given heap's HeapBuffers to file                                     */
+/*----------------------------------------------------------------------------*/
+void PersistenceHelper::vWriteHeapBuffers(Heap* pHeap, File* pFile)
+{
+  _static_
+
+  i8 iPtnOfNode = -1;
+  if(MY::pOp()) {
+    iPtnOfNode = MY::pOp()->pStream()->i_PtnOfNode();
+  }
+
+  ASSERT(iPtnOfNode >= 0);
+
+  iPtnOfNode++;
+
   Timer oTimer;
   oTimer.vStart();
   
   pHeap->vGrabLock();
-  
-  bool bResult = pFile->bWriteBytes(pHeap,C_SIZE_POOL_BUFFER);
-  ASSERT(bResult);
-  
+
   for (HeapBuffer* pHeapBuffer = pHeap->pFirstBuffer();
        pHeapBuffer;
        pHeapBuffer = pHeap->pNextBuffer(pHeapBuffer)) {
-    
-    bResult = pFile->bWriteBytes(pHeapBuffer,C_SIZE_POOL_BUFFER);
-    ASSERT(bResult);
+
+    if(BitLib::uMaskOffUpper32((u8) pHeapBuffer) % iPtnOfNode == 0) {
+      bool bResult = pFile->bWriteBytes(pHeapBuffer,C_SIZE_POOL_BUFFER);
+      ASSERT(bResult);
+    }
   }
   
   pHeap->vDropLock();
   
   oTimer.vUpdate();
-  vTrace("duration %lldms\n"_Stz,oTimer.iMilliseconds());
+  vTrace("Partition %lld took %lldms to write heap buffers of %s\n"_Stz,
+         iPtnOfNode,
+         oTimer.iMilliseconds(),
+         pHeap->szClassNm());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -97,20 +123,36 @@ void PersistenceHelper::vWritePersistentHeaps(Stz* sFilePath)
 {
   _static_
 
+  i8 iPtnOfNode = -1;
+  if(MY::pOp()) {
+    iPtnOfNode = MY::pOp()->pStream()->i_PtnOfNode();
+  }
+
+  ASSERT(iPtnOfNode >= 0);
+
   File* pFile = new(C_VIA_MALLOC) File(nullptr);
   pFile->bOpenWrite(sFilePath);
+
+  if(iPtnOfNode == 0)
+  {
+    vWriteHeap(AM::pHeaps()->Persistent.m_pTiny, pFile);
+    vWriteHeap(AM::pHeaps()->Persistent.m_pSmall, pFile);
+    vWriteHeap(AM::pHeaps()->Persistent.m_pMedium, pFile);
+    vWriteHeap(AM::pHeaps()->Persistent.m_pLarge, pFile);
+  }
+
   
-  vTrace("Writing persistent tiny heap\n"_Stz);
-  vWriteHeap(AM::pHeaps()->Persistent.m_pTiny,pFile);
+//  vTrace("Writing persistent tiny heap\n"_Stz);
+  vWriteHeapBuffers(AM::pHeaps()->Persistent.m_pTiny, pFile);
   
-  vTrace("Writing persistent small heap\n"_Stz);
-  vWriteHeap(AM::pHeaps()->Persistent.m_pSmall,pFile);
+//  vTrace("Writing persistent small heap\n"_Stz);
+  vWriteHeapBuffers(AM::pHeaps()->Persistent.m_pSmall, pFile);
   
-  vTrace("Writing persistent medium heap\n"_Stz);
-  vWriteHeap(AM::pHeaps()->Persistent.m_pMedium,pFile);
+//  vTrace("Writing persistent medium heap\n"_Stz);
+  vWriteHeapBuffers(AM::pHeaps()->Persistent.m_pMedium, pFile);
   
-  vTrace("Writing persistent large heap\n"_Stz);
-  vWriteHeap(AM::pHeaps()->Persistent.m_pLarge,pFile);
+//  vTrace("Writing persistent large heap\n"_Stz);
+  vWriteHeapBuffers(AM::pHeaps()->Persistent.m_pLarge, pFile);
 
   pFile->vClose();
   delete pFile;

@@ -870,7 +870,7 @@ void Task::vAddMunged(Task* )
     "    | pulse once\n"
     "    | next\n"
     "\n"
-    "  stage stageB on all nodes :\n"
+    "  stage stageB on all partitions :\n"
     "      unload $File\n"
     "    | next\n"
     "\n"
