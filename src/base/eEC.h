@@ -216,6 +216,7 @@ enum eEC : u2 // error codes
   /* _Q_ */
 
   /* _R_ */
+  EC_RESERVED_WORD,
   EC_RESPONSE_PENDING,
 
   /* _S_ */
@@ -475,6 +476,7 @@ static Stz* aEC[] =
   /* _Q_ */
 
   /* _R_ */
+  /* EC_RESERVED_WORD                 */ (Stz*)"definition contains a reserved word",
   /* EC_RESPONSE_PENDING              */ (Stz*)"response pending",
 
   /* _S_ */
@@ -729,6 +731,7 @@ static Stz* aEC2[] = // error code
   /* _Q_ */
 
   /* _R_ */
+  /* EC_RESERVED_WORD                 */ (Stz*)"EC_RESERVED_WORD",
   /* EC_RESPONSE_PENDING              */ (Stz*)"EC_RESPONSE_PENDING",
 
   /* _S_ */
@@ -992,6 +995,7 @@ static Stz* aErrorMsg[] =
   /* _Q_ */
 
   /* _R_ */
+  /* EC_RESERVED_WORD                 */ (Stz*)"definition contains a reserved word",
   /* EC_RESPONSE_PENDING              */ (Stz*)"response pending",
 
   /* _S_ */
