@@ -1695,11 +1695,11 @@ void Transforms::vAdd_tableSyn_To_table(void)
 
     m_p_tableSyn = new Card_TableSyn;
 
+    char cTableSyn_actual = cTableSyn;
     if (m_pTable->bIsReplicated())
-      m_p_tableSyn->vTableSyn(cTableSyn+'A'-'a');
-    else
-      m_p_tableSyn->vTableSyn(cTableSyn);
-    cTableSyn++;
+      cTableSyn_actual += 'A'-'a';
+    m_p_tableSyn->vTableSyn(cTableSyn_actual);
+    m_p_table->vAddProperty_chr(C_PPT_TableSyn,cTableSyn_actual);
 
     m_p_table->vAppend(m_p_tableSyn);
   }
