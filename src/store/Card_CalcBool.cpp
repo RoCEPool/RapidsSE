@@ -70,7 +70,7 @@ void Card_CalcBool::vRemovePred(Card_PRED* pCard_pred)
 
   pParentCard->vRemoveSubCard(pCard_pred);
 
-  if (CK_PREDAND == pParentCard->eCard() || CK_PREDOR == pParentCard->eCard()) {
+  if (CK_ANDPRED == pParentCard->eCard() || CK_ORPRED == pParentCard->eCard()) {
 
     if (0 == pParentCard->nChildCards()) {
       vRemoveSubCard(pParentCard);
@@ -99,21 +99,21 @@ bool Card_CalcBool::bCullPred(Card_PRED* pCard_pred, char cWithMark)
 
   eCK eCard_pred = pCard_pred->eCard();
 
-  if (CK_PREDAND == eCard_pred) {
+  if (CK_ANDPRED == eCard_pred) {
     if (cWithMark == pCard_pred->cMark1()) {
        vRemovePred(pCard_pred);
        return true;
     }
   }
   else
-  if (CK_PREDOR == eCard_pred) {
+  if (CK_ORPRED == eCard_pred) {
     if (cWithMark == pCard_pred->cMark1()) {
       vRemovePred(pCard_pred);
       return true;
     }
   }
   else
-  if (CK_PREDCMP == eCard_pred) {
+  if (CK_CMPPRED == eCard_pred) {
     if (cWithMark == pCard_pred->cMark1()) {
       vRemovePred(pCard_pred);
       return true;
@@ -121,7 +121,7 @@ bool Card_CalcBool::bCullPred(Card_PRED* pCard_pred, char cWithMark)
     return false;
   }
 
-  RASSERT (CK_PREDAND == eCard_pred || CK_PREDOR == eCard_pred);
+  RASSERT (CK_ANDPRED == eCard_pred || CK_ORPRED == eCard_pred);
 
   i8 nChildren = pCard_pred->nChildCards();
   for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {

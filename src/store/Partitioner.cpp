@@ -147,7 +147,7 @@ void Partitioner::vCompute_coPtnPredList(void)
 
   //m_pCardCtl->vPrintForm(CK_COPTNJOIN,CP_COMPRESSED);
   //m_pCardCtl->vPrintForm(CK_CROSSPTNJOIN,CP_COMPRESSED);
-  //m_pCardCtl->vPrintForm(CK_PREDCMP,CP_COMPRESSED);
+  //m_pCardCtl->vPrintForm(CK_CMPPRED,CP_COMPRESSED);
 
   if (m_bInteractive)
     m_pBoard_partition->vPrintBoard();

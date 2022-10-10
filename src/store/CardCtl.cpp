@@ -60,13 +60,13 @@ CardCtl::CardCtl(void)
   vPrintByKind(CK_INDEXPTR,true);
   vPtrDetail(CK_INDEXPTR,0);
 
-  vPrintValue(CK_PREDAND,false);
-  vPrintProperties(CK_PREDAND,false);
+  vPrintValue(CK_ANDPRED, false);
+  vPrintProperties(CK_ANDPRED, false);
 
-  vPrintProperties(CK_PREDCMP,false);
+  vPrintProperties(CK_CMPPRED, false);
 
-  vPrintValue(CK_PREDOR,false);
-  vPrintProperties(CK_PREDOR,false);
+  vPrintValue(CK_ORPRED, false);
+  vPrintProperties(CK_ORPRED, false);
 
   vNextHorizon(CK_STAGE, true);
   vHorizExclude(CK_STAGE,C_PPT_Exclude);

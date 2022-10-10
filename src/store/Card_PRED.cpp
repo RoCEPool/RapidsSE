@@ -135,13 +135,13 @@ Card_CmpPred* Card_PRED::pFindBound_pred(Index* pIndex,
   
   switch (eCard) {
     
-    case CK_PREDOR:
+    case CK_ORPRED:
       return _pCard_OrPred(this)->pFindBound_or(pIndex,eBound);
       
-    case CK_PREDAND:
+    case CK_ANDPRED:
       return _pCard_AndPred(this)->pFindBound_and(pIndex,eBound);
       
-    case CK_PREDCMP:
+    case CK_CMPPRED:
       return _pCard_CmpPred(this)->pFindBound_compare(pIndex,eBound);
 
     default:
@@ -166,13 +166,13 @@ bool Card_PRED::bHasBounds_pred(Index* pIndex)
   
   switch (eCard) {
     
-    case CK_PREDOR:
+    case CK_ORPRED:
       return _pCard_OrPred(this)->bHasBounds_or(pIndex);
       
-    case CK_PREDAND:
+    case CK_ANDPRED:
       return _pCard_AndPred(this)->bHasBounds_and(pIndex);
       
-    case CK_PREDCMP:
+    case CK_CMPPRED:
       return _pCard_CmpPred(this)->bHasBounds_compare(pIndex);
 
     default:
@@ -197,8 +197,8 @@ bool Card_PRED::bIsPred(Card* pArgCard)
 
   switch (eCard) {
     case CK_EXPRBOOL:
-    case CK_PREDOR:
-    case CK_PREDAND:
+    case CK_ORPRED:
+    case CK_ANDPRED:
       return true;
 
     default: return false;
@@ -215,7 +215,7 @@ bool Card_PRED::bReduciblePred(void)
   eCK eCard = this->eCard();
   i8 nSubCards = nItems();
   
-  if (1 == nSubCards && (CK_PREDOR == eCard || CK_PREDAND == eCard))
+  if (1 == nSubCards && (CK_ORPRED == eCard || CK_ANDPRED == eCard))
     return true;
 
   return false;

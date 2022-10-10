@@ -995,13 +995,13 @@ void Weaver::vCalcBool(Stz* szRpnExpr, Card_CalcBool* pCard_CalcBool)
     eCK eSubCard = pSubCard->eCard();
 
     switch (eSubCard) {
-      case CK_PREDOR:
+      case CK_ORPRED:
         vPredOr(szRpnExpr,_pCard_OrPred(pSubCard),0);
         break;
-      case CK_PREDAND:
+      case CK_ANDPRED:
         vPredAnd(szRpnExpr,_pCard_AndPred(pSubCard),0);
         break;
-      case CK_PREDCMP:
+      case CK_CMPPRED:
         vPredCmp(szRpnExpr,_pCard_CmpPred(pSubCard),0);
         break;
       default:
@@ -1026,13 +1026,13 @@ void Weaver::vPredOr(Stz* szRpnExpr, Card_OrPred* pCard_PredOr, i8 i)
     eCK eSubCard = pSubCard->eCard();
 
     switch (eSubCard) {
-      case CK_PREDOR:
+      case CK_ORPRED:
         vPredOr(szRpnExpr,_pCard_OrPred(pSubCard),0);
         break;
-      case CK_PREDAND:
+      case CK_ANDPRED:
         vPredAnd(szRpnExpr,_pCard_AndPred(pSubCard),0);
         break;
-      case CK_PREDCMP:
+      case CK_CMPPRED:
         vPredCmp(szRpnExpr,_pCard_CmpPred(pSubCard),0);
         break;
       default:
@@ -1059,13 +1059,13 @@ void Weaver::vPredAnd(Stz* szRpnExpr, Card_AndPred* pCard_PredAnd, i8 i)
     eCK eSubCard = pSubCard->eCard();
 
     switch (eSubCard) {
-      case CK_PREDOR:
+      case CK_ORPRED:
         vPredOr(szRpnExpr,_pCard_OrPred(pSubCard),0);
         break;
-      case CK_PREDAND:
+      case CK_ANDPRED:
         vPredAnd(szRpnExpr,_pCard_AndPred(pSubCard),0);
         break;
-      case CK_PREDCMP:
+      case CK_CMPPRED:
         vPredCmp(szRpnExpr,_pCard_CmpPred(pSubCard),0);
         break;
       default:
@@ -1092,13 +1092,13 @@ void Weaver::vPredCmp(Stz* szRpnExpr, Card_CmpPred* pCard_PredCmp, i8 i)
     eCK eSubCard = pSubCard->eCard();
 
     switch (eSubCard) {
-      case CK_PREDOR:
+      case CK_ORPRED:
         vPredOr(szRpnExpr,_pCard_OrPred(pSubCard),0);
         break;
-      case CK_PREDAND:
+      case CK_ANDPRED:
         vPredAnd(szRpnExpr,_pCard_AndPred(pSubCard),0);
         break;
-      case CK_PREDCMP:
+      case CK_CMPPRED:
         vPredCmp(szRpnExpr,_pCard_CmpPred(pSubCard),0);
         break;
       default:
@@ -1146,15 +1146,15 @@ void Weaver::vPred(Stz* szRpnExpr, Card_PRED* pCard_PRED)
   
   switch (eCard) {
     
-    case CK_PREDOR:
+    case CK_ORPRED:
       vPredOr(szRpnExpr,_pCard_OrPred(pCard_PRED));
       break;
       
-    case CK_PREDAND:
+    case CK_ANDPRED:
       vPredAnd(szRpnExpr,_pCard_AndPred(pCard_PRED));
       break;
       
-    case CK_PREDCMP:
+    case CK_CMPPRED:
       vPredCmp(szRpnExpr,_pCard_CmpPred(pCard_PRED));
       break;
 

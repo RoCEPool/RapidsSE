@@ -1067,7 +1067,7 @@ void Card::vPrintCard(Ribbon* pRibbon, i8 iDepth, bool& rbPrune)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (CK_PREDCMP == m_eCard)
+  if (CK_CMPPRED == m_eCard)
     vDebugPoint();
 
   if (0 == iDepth)
@@ -1804,7 +1804,7 @@ Card_CmpPred* Card::pSub_predCmp(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_CmpPred* p_predCmp =
-      _pCard_CmpPred(pFindSubCard(CK_PREDCMP));
+      _pCard_CmpPred(pFindSubCard(CK_CMPPRED));
   return p_predCmp;
 }
 

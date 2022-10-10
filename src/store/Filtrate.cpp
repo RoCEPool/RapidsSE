@@ -55,7 +55,7 @@ void Filtrate::vAssign_predCmp_leftwards(void)
   while ((m_p_filter = _pCard_Filter(xBI.pEachMain(CK_FILTER))))
     vAssignFilterLeftwards(m_p_filter);
 
-  //vSetPrintSubCards(CK_PREDCMP, true);
+  //vSetPrintSubCards(CK_CMPPRED, true);
   vPrintBoard();
 }
 
@@ -257,12 +257,12 @@ void Filtrate::vAssignPredDrillDown(Card_PRED* pCard_pred, Card_Filter* pCard_fi
   eCK eCard = pCard_pred->eCard();
 
 
-  if (CK_PREDOR  == eCard) {
+  if (CK_ORPRED == eCard) {
     pCard_pred->vMark1('|');
     return;
   }
 
-  if (CK_PREDCMP == eCard) {
+  if (CK_CMPPRED == eCard) {
     pCard_pred->vMark1('?');
     iWhichScan =
         iAssignPredLeft(pCard_pred,
@@ -282,7 +282,7 @@ void Filtrate::vAssignPredDrillDown(Card_PRED* pCard_pred, Card_Filter* pCard_fi
   }
 
 
-  if (CK_PREDAND  == eCard) {
+  if (CK_ANDPRED == eCard) {
     pCard_pred->vMark1('&');
     Card *pSubCard_0 = pCard_pred->pGetChild(0);
     i8 iStream_0 = pSubCard_0->cMark2() - '0';

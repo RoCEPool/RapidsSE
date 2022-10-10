@@ -80,7 +80,7 @@ void Card_JoinPredList::vExtract_joinPredList(Card_CalcBool* p_calcBool)
 
   // - - - - - - - - -
 
-  p_calcBool->vVisitAllSub(CK_PREDCMP,bfExtract);
+  p_calcBool->vVisitAllSub(CK_CMPPRED, bfExtract);
 
 }
 

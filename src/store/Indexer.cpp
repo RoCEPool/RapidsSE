@@ -88,7 +88,7 @@ void Indexer::vMark_scan_pred_bounds(void)
   while ( (m_pMainCard = xBI.pEachMain(CK_SCAN)) ) {
     if (! (m_p_filter = m_pMainCard->pSub_filter()) )
       continue;
-    m_p_filter->vVisitAllSub(CK_PREDCMP,bfPredBounds);
+    m_p_filter->vVisitAllSub(CK_CMPPRED, bfPredBounds);
   }
 
   if (m_bInteractive)

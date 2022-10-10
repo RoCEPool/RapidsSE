@@ -12,6 +12,7 @@ enum eCK // card kind
   /* */ CK_AGGLEVEL,
   /* */ CK_AGGREG,
   /* */ CK_AGGREGATES,
+  /* */ CK_ANDPRED,
   /* */ CK_AS,
 
   /* */ CK_BOARD,
@@ -20,6 +21,7 @@ enum eCK // card kind
   /* */ CK_CALCBOOL,
   /* */ CK_CANDINDEX,
   /* */ CK_CARDPTR,
+  /* */ CK_CMPPRED,
   /* */ CK_COLUMNREF,
   /* */ CK_COMBINED,
   /* */ CK_COMMENT,
@@ -66,11 +68,9 @@ enum eCK // card kind
   /* */ CK_OBYELIST,
   /* */ CK_OPTION,
   /* */ CK_ORDAGG,
+  /* */ CK_ORPRED,
 
   /* */ CK_PERMUTATION,
-  /* */ CK_PREDAND,
-  /* */ CK_PREDCMP,
-  /* */ CK_PREDOR,
   /* */ CK_PROJECT,
   /* */ CK_PROJELIST,
   /* */ CK_PTNDJOIN,
@@ -121,6 +121,7 @@ static Stz* aCK[]
   /* */ "CK_AGGLEVEL"_Stz,     // CK_AGGLEVEL
   /* */ "CK_AGGREG"_Stz,       // CK_AGGREG
   /* */ "CK_AGGREGATES"_Stz,   // CK_AGGREGATES
+  /* */ "CK_ANDPRED"_Stz,      // CK_ANDPRED
   /* */ "CK_AS"_Stz,           // CK_AS
 
   /* */ "CK_BOARD"_Stz,        // CK_BOARD
@@ -129,6 +130,7 @@ static Stz* aCK[]
   /* */ "CK_CALCBOOL"_Stz,     // CK_CALCBOOL
   /* */ "CK_CANDINDEX"_Stz,    // CK_CANDINDEX
   /* */ "CK_CARDPTR"_Stz,      // CK_CARDPTR
+  /* */ "CK_CMPPRED"_Stz,      // CK_CMPPRED
   /* */ "CK_COLUMNREF"_Stz,    // CK_COLUMNREF
   /* */ "CK_COMBINED"_Stz,     // CK_COMBINED
   /* */ "CK_COMMENT"_Stz,      // CK_COMMENT
@@ -175,11 +177,9 @@ static Stz* aCK[]
   /* */ "CK_OBYELIST"_Stz,     // CK_OBYELIST
   /* */ "CK_OPTION"_Stz,       // CK_OPTION
   /* */ "CK_ORDAGG"_Stz,       // CK_ORDAGG
+  /* */ "CK_ORPRED"_Stz,       // CK_ORPRED
 
   /* */ "CK_PERMUTATION"_Stz,  // CK_PERMUTATION
-  /* */ "CK_PREDAND"_Stz,      // CK_PREDAND
-  /* */ "CK_PREDCMP"_Stz,      // CK_PREDCMP
-  /* */ "CK_PREDOR"_Stz,       // CK_PREDOR
   /* */ "CK_PROJECT"_Stz,      // CK_PROJECT
   /* */ "CK_PROJELIST"_Stz,    // CK_PROJELIST
   /* */ "CK_PTNDJOIN"_Stz,     // CK_PTNDJOIN
@@ -230,6 +230,7 @@ static Stz* aCK_short[]
   /* */ "aggLevel"_Stz,        // CK_AGGLEVEL
   /* */ "aggreg"_Stz,          // CK_AGGREG
   /* */ "aggregates"_Stz,      // CK_AGGREGATES
+  /* */ "andPred"_Stz,         // CK_ANDPRED
   /* */ "as"_Stz,              // CK_AS
 
   /* */ "board"_Stz,           // CK_BOARD
@@ -238,6 +239,7 @@ static Stz* aCK_short[]
   /* */ "calcBool"_Stz,        // CK_CALCBOOL
   /* */ "candIndex"_Stz,       // CK_CANDINDEX
   /* */ "{card}"_Stz,          // CK_CARDPTR
+  /* */ "cmpPred"_Stz,         // CK_CMPPRED
   /* */ "columnRef"_Stz,       // CK_COLUMNREF
   /* */ "combined"_Stz,        // CK_COMBINED
   /* */ "comment"_Stz,         // CK_COMMENT
@@ -284,11 +286,9 @@ static Stz* aCK_short[]
   /* */ "obyElist"_Stz,        // CK_OBYELIST
   /* */ "option"_Stz,          // CK_OPTION
   /* */ "ordAgg"_Stz,          // CK_ORDAGG
+  /* */ "orPred"_Stz,          // CK_ORPRED
 
   /* */ "permutation"_Stz,     // CK_PERMUTATION
-  /* */ "predAnd"_Stz,         // CK_PREDAND
-  /* */ "predCmp"_Stz,         // CK_PREDCMP
-  /* */ "predOr"_Stz,          // CK_PREDOR
   /* */ "project"_Stz,         // CK_PROJECT
   /* */ "projElist"_Stz,       // CK_PROJELIST
   /* */ "ptndJoin"_Stz,        // CK_PTNDJOIN

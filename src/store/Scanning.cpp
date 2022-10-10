@@ -99,7 +99,7 @@ void Scanning::vAdd_scanPred(void)
 
     // - - - - - - - - -
 
-    m_p_filter->vVisitAllSub(CK_PREDCMP,bfX);
+    m_p_filter->vVisitAllSub(CK_CMPPRED, bfX);
 
   }
 

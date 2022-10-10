@@ -344,7 +344,7 @@ void Transforms::vAssign_predCmp_leftwards(void)
   while ((m_p_filter = _pCard_Filter(xBI.pEachMain(CK_FILTER))))
     vAssignFilterLeftwards(m_p_filter);
 
-  //vSetPrintSubCards(CK_PREDCMP, true);
+  //vSetPrintSubCards(CK_CMPPRED, true);
   vPrintBoard();
 }
 
@@ -559,7 +559,7 @@ void Transforms::vMark_scan_pred_bounds(void)
   while ( (m_pMainCard = xBI.pEachMain(CK_SCAN)) ) {
     if (! (m_p_filter = m_pMainCard->pSub_filter()) )
       continue;
-    m_p_filter->vVisitAllSub(CK_PREDCMP,bfPredBounds);
+    m_p_filter->vVisitAllSub(CK_CMPPRED, bfPredBounds);
   }
 
   if (m_bInteractive)
@@ -969,7 +969,7 @@ void Transforms::vCompute_coPtnPredList(void)
 
   //m_pCardCtl->vPrintForm(CK_COPTNJOIN,CP_COMPRESSED);
   //m_pCardCtl->vPrintForm(CK_CROSSPTNJOIN,CP_COMPRESSED);
-  //m_pCardCtl->vPrintForm(CK_PREDCMP,CP_COMPRESSED);
+  //m_pCardCtl->vPrintForm(CK_CMPPRED,CP_COMPRESSED);
 
   if (m_bInteractive)
     m_pBoard_partition->vPrintBoard();
@@ -1279,7 +1279,7 @@ void Transforms::vAdd_scanPred(void)
 
     // - - - - - - - - -
 
-    m_p_filter->vVisitAllSub(CK_PREDCMP,bfX);
+    m_p_filter->vVisitAllSub(CK_CMPPRED, bfX);
 
   }
 
@@ -1745,12 +1745,12 @@ void Transforms::vAssignPredDrillDown(Card_PRED* pCard_pred, Card_Filter* pCard_
   eCK eCard = pCard_pred->eCard();
 
 
-  if (CK_PREDOR  == eCard) {
+  if (CK_ORPRED == eCard) {
     pCard_pred->vMark1('|');
     return;
   }
 
-  if (CK_PREDCMP == eCard) {
+  if (CK_CMPPRED == eCard) {
     pCard_pred->vMark1('?');
     iWhichScan =
         iAssignPredLeft(pCard_pred,
@@ -1770,7 +1770,7 @@ void Transforms::vAssignPredDrillDown(Card_PRED* pCard_pred, Card_Filter* pCard_
   }
 
 
-  if (CK_PREDAND  == eCard) {
+  if (CK_ANDPRED == eCard) {
     pCard_pred->vMark1('&');
     Card *pSubCard_0 = pCard_pred->pGetChild(0);
     i8 iStream_0 = pSubCard_0->cMark2() - '0';

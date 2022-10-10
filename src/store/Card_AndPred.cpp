@@ -10,17 +10,17 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_AndPred, CK_PREDAND)
+__pCastFunction_Card(STORE, Card_AndPred, CK_ANDPRED)
 __aNewFunction(Card_AndPred, CN_CARD)
 __vDeleteFunction(Card_AndPred, CN_CARD)
 
-__bIsCard(STORE,Card_AndPred,CK_PREDAND)
+__bIsCard(STORE, Card_AndPred, CK_ANDPRED)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_AndPred::Card_AndPred(void)
-: Card_PRED(CK_PREDAND)
+: Card_PRED(CK_ANDPRED)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
