@@ -47,6 +47,9 @@ void Sender::vDelete_sends(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SENDER, _FOOTER_);
 
+  vTransformation(OT_vDelete_sends);
+  vExplain("Blah"_Stz);
+
   vRemoveDeleteMains(CK_SEND);
 
   vPrintBoard("Sender::vDelete_sends"_Stz);

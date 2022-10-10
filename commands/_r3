@@ -24,7 +24,7 @@ load customer "../tpch/sf_0001/customer.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/cue = "Joiner::vForm_joinPred"
+/cue = "OT_vForm_joinPred"
 /transliterated
 /transform
 /transform2

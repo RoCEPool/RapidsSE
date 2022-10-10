@@ -51,6 +51,9 @@ void Permutor::vCopy_ptndJoinSet(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PERMUTOR, _FOOTER_);
 
+  vTransformation(OT_vCopy_ptndJoinSet);
+  vExplain("Blah"_Stz);
+
   vSetupPermuteBoard();
 
   m_pBench->pCardCtl()->vNextHorizon(CK_PERMUTATION, true);
@@ -77,6 +80,9 @@ void Permutor::vCopy_ptndJoinSet(void)
 void Permutor::vGenerate_ptndPermutations(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PERMUTOR, _FOOTER_);
+
+  vTransformation(OT_vGenerate_ptndPermutations);
+  vExplain("Blah"_Stz);
 
 //  PermGen::vTest(4);
 
@@ -121,6 +127,9 @@ void Permutor::vGenerate_ptndPermutations(void)
 void Permutor::vRemove_invalidPermutations(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PERMUTOR, _FOOTER_);
+
+  vTransformation(OT_vRemove_invalidPermutations);
+  vExplain("Blah"_Stz);
 
   i8 i_Main = 0;
   i8 i_Permutation = 0;

@@ -48,6 +48,9 @@ void Tabular::vAdd_tablePtn_To_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABULAR,_FOOTER_);
 
+  vTransformation(OT_vAdd_tablePtn_To_table);
+  vExplain("Blah"_Stz);
+
   char cTableSyn = 'a';
 
   m_pBoard = m_pBench->pGetBoard(BK_QUERY);
@@ -72,6 +75,9 @@ void Tabular::vAdd_tablePtn_To_table(void)
 void Tabular::vAdd_tableSyn_To_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABULAR,_FOOTER_);
+
+  vTransformation(OT_vAdd_tableSyn_To_table);
+  vExplain("Blah"_Stz);
 
   char cTableSyn = 'a';
 

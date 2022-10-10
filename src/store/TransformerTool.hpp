@@ -23,6 +23,8 @@ namespace STORE
     Board*      m_pBoard_query;
     CardCtl*    m_pCardCtl;
 
+    eOT         m_eTranformation;
+
     Table*      m_pTable;
     StreamDef*  m_pStreamDef;
     IdxVec*     m_pIdxVec;

@@ -47,6 +47,9 @@ void Filtrate::vAssign_predCmp_leftwards(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTRATE,_FOOTER_);
 
+  vTransformation(OT_vAssign_predCmp_leftwards);
+  vExplain("Blah"_Stz);
+
   BoardIter xBI(m_pBoard);
 
   while ((m_p_filter = _pCard_Filter(xBI.pEachMain(CK_FILTER))))
@@ -63,6 +66,9 @@ void Filtrate::vConvert_calc_To_calcBool(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTRATE,_FOOTER_);
 
+  vTransformation(OT_vConvert_calc_To_calcBool);
+  vExplain("Blah"_Stz);
+
   BoardIter xBI(m_pBoard);
 
   while ((m_p_filter = _pCard_Filter(xBI.pEachMain(CK_FILTER))))
@@ -78,6 +84,9 @@ void Filtrate::vCopy_predCmp_leftwards(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTRATE,_FOOTER_);
 
+  vTransformation(OT_vCopy_predCmp_leftwards);
+  vExplain("Blah"_Stz);
+
   BoardIter xBI(m_pBoard);
 
   while ((m_p_filter = _pCard_Filter(xBI.pEachMain(CK_FILTER))))
@@ -92,6 +101,9 @@ void Filtrate::vCopy_predCmp_leftwards(void)
 void Filtrate::vCull_filterPred_Of_indexJoin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTRATE,_FOOTER_);
+
+  vTransformation(OT_vCull_filterPred_Of_indexJoin);
+  vExplain("Blah"_Stz);
 
   BoardIter xBI(m_pBoard);
 
@@ -114,6 +126,9 @@ void Filtrate::vDelete_Empty_filter(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
 
+  vTransformation(OT_vDelete_Empty_filter);
+  vExplain("Blah"_Stz);
+
   BoardIter xBI(m_pBoard);
 
   while ((m_p_filter = _pCard_Filter(xBI.pEachMain(CK_FILTER)))) {
@@ -134,6 +149,9 @@ void Filtrate::vDelete_Empty_filter(void)
 void Filtrate::vDelete_empty_sub_filter(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
+
+  vTransformation(OT_vDelete_empty_sub_filter);
+  vExplain("Blah"_Stz);
 
   vBeginIteration();
 
@@ -162,6 +180,9 @@ void Filtrate::vDelete_empty_sub_filter(void)
 void Filtrate::vIndividuate_filter(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_FILTRATE, _FOOTER_);
+
+  vTransformation(OT_vIndividuate_filter);
+  vExplain("Blah"_Stz);
 
   vBeginIteration();
 

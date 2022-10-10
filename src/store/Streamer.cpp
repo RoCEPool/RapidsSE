@@ -47,6 +47,9 @@ void Streamer::vCalc_OrdinalRangesOf_stream(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMER,_FOOTER_);
 
+  vTransformation(OT_vCalc_OrdinalRangesOf_stream);
+  vExplain("Blah"_Stz);
+
   i8 iOrdLo = 1;
   i8 iOrdHi = C_UNKNOWN;
   char cStream = '0';
@@ -101,6 +104,9 @@ void Streamer::vCalc_OrdinalRangesOf_stream(void)
 void Streamer::vAppend_stream_To_scan(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMER,_FOOTER_);
+
+  vTransformation(OT_vAppend_stream_To_scan);
+  vExplain("Blah"_Stz);
 
   BoardIter xBI(m_pBoard);
 

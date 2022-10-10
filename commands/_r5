@@ -62,7 +62,7 @@ tablesizes;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // /cue = "$"
-/cue = "Joiner::vAppend_preliminary_indexJoin"
+/cue = "OT_vAppend_preliminary_indexJoin"
 /jobTags
 /transliterated
 /transform

@@ -47,7 +47,8 @@ void Sorter::vCull_sby_SameAs_gby(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SORTER, _FOOTER_);
 
-  vTransformation(OT_Cull_sby_SameAs_gby);
+  vTransformation(OT_vCull_sby_SameAs_gby);
+  vExplain("Blah"_Stz);
 
   BoardIter xBI(m_pBoard);
 

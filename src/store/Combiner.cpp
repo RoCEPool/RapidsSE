@@ -47,6 +47,9 @@ void Combiner::vAdd_combined(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINER, _FOOTER_);
 
+  vTransformation(OT_vAdd_combined);
+  vExplain("Blah"_Stz);
+
   i8 iAggreg    = 0;
   i8 iIndexJoin = 0;
   i8 iFilter    = 0;
@@ -123,6 +126,9 @@ void Combiner::vAdd_combined(void)
 void Combiner::vDelete_combines(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINER, _FOOTER_);
+
+  vTransformation(OT_vDelete_combines);
+  vExplain("Blah"_Stz);
 
   vRemoveDeleteMains(CK_COMBINED);
 

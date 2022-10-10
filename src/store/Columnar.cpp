@@ -48,6 +48,10 @@ void Columnar::vAdd_columnRef_Under_term(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMNAR,_FOOTER_);
 
+  vTransformation(OT_vAdd_columnRef_Under_term);
+  vExplain("Blah"_Stz);
+
+
   Resolver* pResolver = new Resolver(m_pBench);
 
   auto bfTerm_columnRef = [pResolver](Card* pCard) {
@@ -90,6 +94,9 @@ void Columnar::vAdd_columnRef_Under_term(void)
 void Columnar::vConvert_streamColOrdinal_To_tableColOrdinal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMNAR,_FOOTER_);
+
+  vTransformation(OT_vConvert_streamColOrdinal_To_tableColOrdinal);
+  vExplain("Blah"_Stz);
 
   Resolver* pResolver = new Resolver(m_pBench);
 

@@ -22,6 +22,7 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_pBoard_permute   = nullptr;
   m_pBoard_query     = nullptr;
   m_pCardCtl         = m_pBench->pCardCtl();
+  m_eTranformation   = OT_NONE;
 
   m_pTable           = nullptr;
   m_pStreamDef       = nullptr;
@@ -34,7 +35,6 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_eMainCard      = CK_NONE;
   m_eNextMain      = CK_NONE;
   m_eStageTopo     = YG_NONE;
-
   m_pChildCard     = nullptr;
   m_i_Child        = C_UNKNOWN;
   m_pMainCard      = nullptr;
@@ -282,7 +282,7 @@ Card* TransformerTool::pFindMainOf(Card* pGivenCard, Card*& rpParentCard)
 void TransformerTool::vPrintBoard(Stz* szCue)
 {
   if (m_bInteractive)
-    m_pBoard->vPrintBoard(szCue,m_sExplain);
+    m_pBoard->vPrintBoard(aOT[m_eTranformation],m_sExplain);
 
   m_sExplain = ""_Stz;
 }
@@ -335,6 +335,7 @@ void TransformerTool::vTransformation(eOT eTransformation)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
+  m_eTranformation = eTransformation;
 }
 
 

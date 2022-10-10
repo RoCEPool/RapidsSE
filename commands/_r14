@@ -18,7 +18,7 @@ load part "../tpch/sf_0001/part.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/cue = "Indexer::vAppend_indexList_To_scan"
+/cue = "OTvAppend_indexList_To_scan"
 /jobTags
 /transliterated
 /transform
