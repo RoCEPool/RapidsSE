@@ -547,7 +547,7 @@ void Transforms::vMark_scan_pred_bounds(void)
   vExplain("Blah"_Stz);
 
   auto bfPredBounds = [](Card* pCard) {
-    Card_PredCmp* p_predCmp = _pCard_PredCmp(pCard);
+    Card_CmpPred* p_predCmp = _pCard_CmpPred(pCard);
     p_predCmp->vMarkBound();
     return true;
   };
@@ -714,7 +714,7 @@ void Transforms::vForm_joinPred(void)
 
     m_p_expr     = _pCard_Expr(m_p_filter->pGetChild(0));
     m_p_calcBool = _pSub_CalcBool(m_p_expr);
-    m_p_predCmp  = _pSub_PredCmp(m_p_calcBool);
+    m_p_predCmp  = _pSub_CmpPred(m_p_calcBool);
     m_p_term_0   = _pCard_Term(m_p_predCmp->pGetChild(0));
     m_p_term_1   = _pCard_Term(m_p_predCmp->pGetChild(1));
 
@@ -953,7 +953,7 @@ void Transforms::vCompute_coPtnPredList(void)
   i8 nJoinPreds = m_p_joinPredList->nChildCards();
   for (i8 i_joinPred = 0; i_joinPred < nJoinPreds; i_joinPred++) {
     m_p_predCmp =
-        _pCard_PredCmp(m_p_joinPredList->pGetChild(i_joinPred));
+        _pCard_CmpPred(m_p_joinPredList->pGetChild(i_joinPred));
 
     if (! m_p_tableList->bPredCmpIsCoPtn(m_p_predCmp))
       continue;
@@ -1043,7 +1043,7 @@ void Transforms::vCompute_crossPtnJoinList(void)
   i8 nChildren = m_p_joinPredList->nChildCards();
   for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
     m_p_predCmp =
-        _pCard_PredCmp(m_p_joinPredList->pGetChild(i_Child));
+        _pCard_CmpPred(m_p_joinPredList->pGetChild(i_Child));
 
     if (m_p_coPtnJoinList->bHasEqPredCmp(m_p_predCmp))
       continue;
@@ -1247,7 +1247,7 @@ void Transforms::vAdd_scanPred(void)
 
     // - - - - - - - - -
     auto bfX = [this](Card* pCard) {
-      Card_PredCmp* p_predCmp = _pCard_PredCmp(pCard);
+      Card_CmpPred* p_predCmp = _pCard_CmpPred(pCard);
       if (! ('L' == p_predCmp->cMark1() || 'U' == p_predCmp->cMark1()) )
         return true;
 
@@ -1949,7 +1949,7 @@ void Transforms::vCopyPredToExistingFilter(Card_Filter* pCard_filter_existing, C
 
   Card* pCard_top = pCard_calcBool->pPop();
 
-  Card_PredAnd* pCard_predAnd = new Card_PredAnd;
+  Card_AndPred* pCard_predAnd = new Card_AndPred;
   pCard_predAnd->vAppend(pCard_top);
   pCard_predAnd->vAppend(pCard_pred);
 
@@ -2016,7 +2016,7 @@ void Transforms::vPredMovesToScan(Card* pPredCard, Card_Scan* pCard_scan)
 /* convert a calculation into a boolean calculaiton                           */
 /*----------------------------------------------------------------------------*/
 Card_IndexPred* Transforms::pTo_IndexPred(Card_AbsJoin* pCard_AbsJoin,
-                                      Card_PredCmp* pCard_PredCmp)
+                                      Card_CmpPred* pCard_PredCmp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 

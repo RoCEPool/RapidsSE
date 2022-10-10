@@ -4,7 +4,7 @@
 
 #include "Card_CalcBool.hpp"
 #include "Card_PRED.hpp"
-#include "Card_PredCmp.hpp"
+#include "Card_CmpPred.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

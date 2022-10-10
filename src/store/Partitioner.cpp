@@ -131,7 +131,7 @@ void Partitioner::vCompute_coPtnPredList(void)
   i8 nJoinPreds = m_p_joinPredList->nChildCards();
   for (i8 i_joinPred = 0; i_joinPred < nJoinPreds; i_joinPred++) {
     m_p_predCmp =
-        _pCard_PredCmp(m_p_joinPredList->pGetChild(i_joinPred));
+        _pCard_CmpPred(m_p_joinPredList->pGetChild(i_joinPred));
 
     if (! m_p_tableList->bPredCmpIsCoPtn(m_p_predCmp))
       continue;
@@ -221,7 +221,7 @@ void Partitioner::vCompute_crossPtnJoinList(void)
   i8 nChildren = m_p_joinPredList->nChildCards();
   for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
     m_p_predCmp =
-        _pCard_PredCmp(m_p_joinPredList->pGetChild(i_Child));
+        _pCard_CmpPred(m_p_joinPredList->pGetChild(i_Child));
 
     if (m_p_coPtnJoinList->bHasEqPredCmp(m_p_predCmp))
       continue;

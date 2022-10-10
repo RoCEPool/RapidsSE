@@ -4,7 +4,7 @@
 
 #include "Card_CoPtnJoin.hpp"
 
-#include "Card_PredCmp.hpp"
+#include "Card_CmpPred.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -50,8 +50,8 @@ bool Card_CoPtnJoin::bCoPtnWith(Card_CoPtnPred* p_CoPtnPred)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_PredCmp* p_predCmp_this = _pSub_PredCmp(this);
-  Card_PredCmp* p_predCmp_arg  = _pSub_PredCmp(p_CoPtnPred);
+  Card_CmpPred* p_predCmp_this = _pCard_CmpPred(this);
+  Card_CmpPred* p_predCmp_arg  = _pCard_CmpPred(p_CoPtnPred);
 
   if (p_predCmp_this->bCoPtnWith(p_predCmp_arg))
     return true;

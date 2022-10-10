@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class Card_PredCmp;
+  class Card_CmpPred;
 
   class Card_PRED : public Card
   {  
@@ -19,7 +19,7 @@ namespace STORE
     void vConcatTerms(Stz* szTerms);
     void vConcatTerms(Stz* szTerms, i8 i_From, i8 i_Till=C_UNKNOWN);
     void vCullByKids(void);
-    Card_PredCmp* pFindBound_pred(Index* pIndex, ePB eBound);
+    Card_CmpPred* pFindBound_pred(Index* pIndex, ePB eBound);
     bool bHasBounds_pred (Index* pIndex);
     bool bIsPred(Card* pArgCard);
 

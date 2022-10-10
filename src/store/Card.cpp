@@ -1798,13 +1798,13 @@ Card_LBound* Card::pSub_lBound(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_PredCmp.hpp"
-Card_PredCmp* Card::pSub_predCmp(void)
+#include "Card_CmpPred.hpp"
+Card_CmpPred* Card::pSub_predCmp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_PredCmp* p_predCmp =
-      _pCard_PredCmp(pFindSubCard(CK_PREDCMP));
+  Card_CmpPred* p_predCmp =
+      _pCard_CmpPred(pFindSubCard(CK_PREDCMP));
   return p_predCmp;
 }
 

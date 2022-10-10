@@ -70,9 +70,9 @@
 #include "Card_ObyElist.hpp"
 
 #include "Card_Permutation.hpp"
-#include "Card_PredAnd.hpp"
-#include "Card_PredCmp.hpp"
-#include "Card_PredOr.hpp"
+#include "Card_AndPred.hpp"
+#include "Card_CmpPred.hpp"
+#include "Card_OrPred.hpp"
 #include "Card_Project.hpp"
 #include "Card_ProjElist.hpp"
 #include "Card_PtndJoin.hpp"

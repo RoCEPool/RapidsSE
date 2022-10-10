@@ -124,7 +124,7 @@ void Joiner::vForm_joinPred(void)
 
     m_p_expr     = _pCard_Expr(m_p_filter->pGetChild(0));
     m_p_calcBool = _pSub_CalcBool(m_p_expr);
-    m_p_predCmp  = _pSub_PredCmp(m_p_calcBool);
+    m_p_predCmp  = _pSub_CmpPred(m_p_calcBool);
     m_p_term_0   = _pCard_Term(m_p_predCmp->pGetChild(0));
     m_p_term_1   = _pCard_Term(m_p_predCmp->pGetChild(1));
 
@@ -279,7 +279,7 @@ void Joiner::vSubsume_scan_Under_absJoin(void)
 /* convert a calculation into a boolean calculaiton                           */
 /*----------------------------------------------------------------------------*/
 Card_IndexPred* Joiner::pTo_IndexPred(Card_AbsJoin* pCard_AbsJoin,
-                                      Card_PredCmp* pCard_PredCmp)
+                                      Card_CmpPred* pCard_PredCmp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_JOINER, _FOOTER_);
 

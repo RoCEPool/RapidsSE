@@ -7,12 +7,12 @@
 #include "Card_Expr.hpp"
 #include "Card_Calc.hpp"
 #include "Card_CalcBool.hpp"
-#include "Card_PredCmp.hpp"
+#include "Card_CmpPred.hpp"
 #include "Card_Term.hpp"
 #include "Card_Type.hpp"
 #include "Card_SubSet.hpp"
-#include "Card_PredAnd.hpp"
-#include "Card_PredOr.hpp"
+#include "Card_AndPred.hpp"
+#include "Card_OrPred.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -122,7 +122,7 @@ void Card_Filter::vToExpr(Stz* szExpr)
   szExpr->vConcat("type "_Stz);
   szExpr->vConcat(pCard_Type->sz());
 
-  Card_PredCmp* pCard_PredCmp = _pCard_PredCmp(pGet(1));
+  Card_CmpPred* pCard_PredCmp = _pCard_CmpPred(pGet(1));
   
   i8 nChildren = pCard_PredCmp->nChildCards();
   for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
@@ -139,14 +139,14 @@ void Card_Filter::vToExpr(Stz* szExpr)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_PredCmp* Card_Filter::pFindBound(Index* pIndex, ePB eBound)
+Card_CmpPred* Card_Filter::pFindBound(Index* pIndex, ePB eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   Card_Expr* pCard_Expr =
     _pCard_Expr(pFindSubCard(CK_EXPR));
 
-  Card_PredCmp* pCard_PredCmp = pCard_Expr->pFindBound(pIndex,eBound);
+  Card_CmpPred* pCard_PredCmp = pCard_Expr->pFindBound(pIndex,eBound);
   
   return pCard_PredCmp;
 }
@@ -198,7 +198,7 @@ void Card_Filter::vReduceFilter(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_Filter::bRemoveBound(Card_PredCmp* pCard_PredCmp)
+bool Card_Filter::bRemoveBound(Card_CmpPred* pCard_PredCmp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
     
@@ -215,9 +215,9 @@ Card* Card_Filter::pTo_CalcBool(Card* pCard_Calc)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   RASSERT(CK_CALC == pCard_Calc->eCard());
 
-  Card_PredAnd* pCard_PredAnd = nullptr;
-  Card_PredCmp* pCard_PredCmp = nullptr;
-  Card_PredOr*  pCard_PredOr  = nullptr;
+  Card_AndPred* pCard_PredAnd = nullptr;
+  Card_CmpPred* pCard_PredCmp = nullptr;
+  Card_OrPred*  pCard_PredOr  = nullptr;
 
   Card_SubSet*  pCard_SubExpr = new Card_SubSet;
 
@@ -231,7 +231,7 @@ Card* Card_Filter::pTo_CalcBool(Card* pCard_Calc)
 
       case TE_AND:
         RASSERT(2 == pCard_CalcBool->nChildCards());
-        pCard_PredAnd = new Card_PredAnd;
+        pCard_PredAnd = new Card_AndPred;
         pCard_PredAnd->vTransferChildren(pCard_CalcBool);
         RASSERT(0 == pCard_CalcBool->nChildCards());
         pCard_CalcBool->vAppend(pCard_PredAnd);
@@ -242,7 +242,7 @@ Card* Card_Filter::pTo_CalcBool(Card* pCard_Calc)
 
       case TE_OR:
         RASSERT(2 == pCard_CalcBool->nChildCards());
-        pCard_PredOr = new Card_PredOr;
+        pCard_PredOr = new Card_OrPred;
         pCard_PredOr->vTransferChildren(pCard_CalcBool);
         RASSERT(0 == pCard_CalcBool->nChildCards());
         pCard_CalcBool->vAppend(pCard_PredOr);
@@ -253,7 +253,7 @@ Card* Card_Filter::pTo_CalcBool(Card* pCard_Calc)
 
       case TE_COMPARE:
         RASSERT(pCard_SubExpr->nChildCards() > 0);
-        pCard_PredCmp = new Card_PredCmp;
+        pCard_PredCmp = new Card_CmpPred;
         pCard_PredCmp->vValue(pCard_Term->sz());
         pCard_PredCmp->vTransferChildren(pCard_SubExpr);
         pCard_CalcBool->vAppend(pCard_PredCmp);

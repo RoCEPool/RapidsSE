@@ -916,7 +916,7 @@ void Dissector::vPredOr(Card_ExprBool* pCard_ExprBool,
   Card_PRED* pCard_PRED_a = (Card_PRED*)(pCard_ExprBool->pPop());
   Card_PRED* pCard_PRED_b = (Card_PRED*)(pCard_ExprBool->pPop());
 
-  Card_PredOr* pCard_PredOr = new Card_PredOr;
+  Card_OrPred* pCard_PredOr = new Card_OrPred;
   pCard_PredOr->vAppend(pCard_PRED_b);
   pCard_PredOr->vAppend(pCard_PRED_a);
   pCard_ExprBool->vAppend(pCard_PredOr);
@@ -936,7 +936,7 @@ void Dissector::vPredAnd(Card_ExprBool* pCard_ExprBool,
   Card_PRED* pCard_PRED_a = (Card_PRED*)(pCard_ExprBool->pPop());
   Card_PRED* pCard_PRED_b = (Card_PRED*)(pCard_ExprBool->pPop());
 
-  Card_PredAnd* pCard_PredAnd = new Card_PredAnd;
+  Card_AndPred* pCard_PredAnd = new Card_AndPred;
   pCard_PredAnd->vAppend(pCard_PRED_b);
   pCard_PredAnd->vAppend(pCard_PRED_a);
   pCard_ExprBool->vAppend(pCard_PredAnd);
@@ -950,7 +950,7 @@ void Dissector::vPredCmp(Card_ExprBool* pCard_ExprBool,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
 
-  Card_PredCmp* pCard_PredCmp = new Card_PredCmp;
+  Card_CmpPred* pCard_PredCmp = new Card_CmpPred;
 
   // <col> | <literal>
   Card_Term* pCard_Term = _pCard_Term(pCard_RpnTerms->pPop());

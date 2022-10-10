@@ -106,13 +106,13 @@ void Card_Expr::vCullPred(char cWithMark)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_PredCmp* Card_Expr::pFindBound(Index* pIndex, ePB eBound)
+Card_CmpPred* Card_Expr::pFindBound(Index* pIndex, ePB eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   Card_ExprBool* pCard_ExprBool = _pCard_ExprBool(pFindSubCard(CK_EXPRBOOL));
   
-  Card_PredCmp* pCard_PredCmp =
+  Card_CmpPred* pCard_PredCmp =
     pCard_ExprBool->pFindBound(pIndex,eBound);
  
   return pCard_PredCmp;

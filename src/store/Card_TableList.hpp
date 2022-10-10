@@ -20,7 +20,7 @@ namespace STORE
 
     Card_Table* pFind_table(char cSyn);
 
-    bool bPredCmpIsCoPtn(Card_PredCmp* p_predCmp);
+    bool bPredCmpIsCoPtn(Card_CmpPred* p_predCmp);
   };
 
   Card_TableList* _pCard_TableList(void* aAddr);

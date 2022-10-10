@@ -69,9 +69,9 @@ namespace STORE
   class Card_OrdAgg;
   class Card_ObyElist;
 
-  class Card_PredAnd;
-  class Card_PredCmp;
-  class Card_PredOr;
+  class Card_AndPred;
+  class Card_CmpPred;
+  class Card_OrPred;
   class Card_Project;
   class Card_ProjElist;
 
@@ -281,7 +281,7 @@ namespace STORE
     Card_IndexPtr*      pSub_indexPtr(void);
     Card_JoinPred*      pSub_joinPred(void);
     Card_LBound*        pSub_lBound(void);
-    Card_PredCmp*       pSub_predCmp(void);
+    Card_CmpPred*       pSub_predCmp(void);
     Card_SbyElist*      pSub_sbyElist(void);
     Card_Scan*          pSub_scan(void);
     Card_ScanPred*      pSub_scanPred(void);

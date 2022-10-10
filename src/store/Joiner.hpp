@@ -30,7 +30,7 @@ namespace STORE
 
   private:
     Card_IndexPred*  pTo_IndexPred (Card_AbsJoin* pCard_AbsJoin,
-                                    Card_PredCmp* pCard_PredCmp);
+                                    Card_CmpPred* pCard_PredCmp);
 
     Footer* aFooter(void);
   };

@@ -67,7 +67,7 @@ void Scanning::vAdd_scanPred(void)
 
     // - - - - - - - - -
     auto bfX = [this](Card* pCard) {
-      Card_PredCmp* p_predCmp = _pCard_PredCmp(pCard);
+      Card_CmpPred* p_predCmp = _pCard_CmpPred(pCard);
       if (! ('L' == p_predCmp->cMark1() || 'U' == p_predCmp->cMark1()) )
         return true;
 

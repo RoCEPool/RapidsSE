@@ -76,7 +76,7 @@ namespace STORE
     Card_LBound*           m_p_lBound;
     Card_Permutation*      m_p_permutation;
     Card_Permutation*      m_p_permutation_low;
-    Card_PredCmp*          m_p_predCmp;
+    Card_CmpPred*          m_p_predCmp;
     Card_Project*          m_p_project;
     Card_PtndJoin*         m_p_ptndJoin;
     Card_PtndJoinSet*      m_p_ptndJoinSet;

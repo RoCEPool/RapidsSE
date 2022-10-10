@@ -461,7 +461,7 @@ void Filtrate::vCopyPredToExistingFilter(Card_Filter* pCard_filter_existing, Car
 
   Card* pCard_top = pCard_calcBool->pPop();
 
-  Card_PredAnd* pCard_predAnd = new Card_PredAnd;
+  Card_AndPred* pCard_predAnd = new Card_AndPred;
   pCard_predAnd->vAppend(pCard_top);
   pCard_predAnd->vAppend(pCard_pred);
 

@@ -6,7 +6,7 @@
 
 #include "Card_CalcBool.hpp"
 #include "Card_ColumnRef.hpp"
-#include "Card_PredCmp.hpp"
+#include "Card_CmpPred.hpp"
 #include "Card_Term.hpp"
 
 
@@ -55,7 +55,7 @@ void Card_JoinPredList::vExtract_joinPredList(Card_CalcBool* p_calcBool)
 
   auto bfExtract = [this,p_calcBool](Card *pCard) {
 
-    Card_PredCmp* p_predCmp = _pCard_PredCmp(pCard);
+    Card_CmpPred* p_predCmp = _pCard_CmpPred(pCard);
 
     if (! p_predCmp->sz()->bSame("=="_Stz)) //RAYMOND CAN DO BETTER!
       return true;
@@ -69,7 +69,7 @@ void Card_JoinPredList::vExtract_joinPredList(Card_CalcBool* p_calcBool)
     if (! p_columnRef_1->bIsColumnRef())
       return true;
 
-    Card_PredCmp* p_predCmp_new = new Card_PredCmp(p_predCmp->sz());
+    Card_CmpPred* p_predCmp_new = new Card_CmpPred(p_predCmp->sz());
     p_predCmp_new->vAppend(p_columnRef_0->pDupCardAndSubCards());
     p_predCmp_new->vAppend(p_columnRef_1->pDupCardAndSubCards());
 

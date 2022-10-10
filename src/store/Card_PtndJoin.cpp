@@ -4,7 +4,7 @@
 
 #include "Card_PtndJoin.hpp"
 #include "Card_SubSet.hpp"
-#include "Card_PredCmp.hpp"
+#include "Card_CmpPred.hpp"
 #include "Card_Table.hpp"
 #include "Card_TablePtr.hpp"
 #include "Card_TableList.hpp"
@@ -62,13 +62,13 @@ bool Card_PtndJoin::bMayFollowAfter(Card_SubSet* pPtnJoins_sofar)
 
     i8 nPredCmps_sofar = p_ptndJoin_sofar->nChildCards();
     for (i8 i_PredCmp_sofar = 0; i_PredCmp_sofar < nPredCmps_sofar; i_PredCmp_sofar++) {
-      Card_PredCmp* p_predCmp_sofar =
-          _pCard_PredCmp(p_ptndJoin_sofar->pGetChild(i_PredCmp_sofar));
+      Card_CmpPred* p_predCmp_sofar =
+          _pCard_CmpPred(p_ptndJoin_sofar->pGetChild(i_PredCmp_sofar));
 
       i8 nPredCmps_this = this->nChildCards();
       for (i8 i_PredCmp_this = 0; i_PredCmp_this < nPredCmps_this; i_PredCmp_this++) {
-        Card_PredCmp *p_predCmp_this =
-            _pCard_PredCmp(this->pGetChild(i_PredCmp_this));
+        Card_CmpPred *p_predCmp_this =
+            _pCard_CmpPred(this->pGetChild(i_PredCmp_this));
 
         if (p_predCmp_this->bOverlapsWith(p_predCmp_sofar))
           return true;
@@ -99,8 +99,8 @@ void Card_PtndJoin::vJoinEst(Card_TableList* p_tableList)
 
     i8 nPredCmps = this->nChildCards();
     for (i8 i_PredCmp = 0; i_PredCmp < nPredCmps; i_PredCmp++) {
-      Card_PredCmp *p_predCmp =
-          _pCard_PredCmp(this->pGetChild(i_PredCmp));
+      Card_CmpPred *p_predCmp =
+          _pCard_CmpPred(this->pGetChild(i_PredCmp));
 
       if (p_predCmp->bUsesTable(p_table->cTableSyn())) {
         nJoinedBuff += p_table->pGet_tablePtr()->pTable()->pStreamDef()->jTableSize();

@@ -6,7 +6,7 @@
 
 #include "Card_CalcBool.hpp"
 #include "Card_ColumnRef.hpp"
-#include "Card_PredCmp.hpp"
+#include "Card_CmpPred.hpp"
 #include "Card_Term.hpp"
 #include "Card_PtndJoin.hpp"
 #include "Card_JoinOrder.hpp"
@@ -57,7 +57,7 @@ void Card_JoinOrderSeq::vExtractJoinOrder(Card_PtndJoin* p_PtndJoin)
   eCK eChild;
 
   for (i8 i_Child = 0; i_Child < p_PtndJoin->nChildCards(); i_Child++) {
-    Card_PredCmp* p_predCmp = _pCard_PredCmp(p_PtndJoin->pGetChild(i_Child));
+    Card_CmpPred* p_predCmp = _pCard_CmpPred(p_PtndJoin->pGetChild(i_Child));
 
     for (i8 i_Kid = p_predCmp->nChildCards() - 1; i_Kid >= 0; i_Kid--) {
       Card *pChild = p_predCmp->pGetChild(i_Kid, eChild);

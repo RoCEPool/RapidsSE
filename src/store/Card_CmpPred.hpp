@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_PredCmp.hpp -- Compare Predicate                                      */
+/* Card_CmpPred.hpp -- Compare Predicate                                      */
 /*============================================================================*/
 #pragma once
 
@@ -9,15 +9,15 @@
 
 namespace STORE
 {
-  class Card_PredCmp : public Card_PRED
+  class Card_CmpPred : public Card_PRED
   {  
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_PredCmp(void);
-    Card_PredCmp(Stz* szCmp);
-   ~Card_PredCmp(void) noexcept(false);
+    Card_CmpPred(void);
+    Card_CmpPred(Stz* szCmp);
+   ~Card_CmpPred(void) noexcept(false);
 
     void vMarkBound(void);
 
@@ -25,22 +25,22 @@ namespace STORE
     ePB eBound(void);
     eRO eRelOp(void);
 
-    bool bCoPtnWith(Card_PredCmp* p_PredCmp_arg);
-    Card_PredCmp* pDup(void);
-    Card_PredCmp* pFindBound_compare(Index* pIndex, ePB eBound);
+    bool bCoPtnWith(Card_CmpPred* p_PredCmp_arg);
+    Card_CmpPred* pDup(void);
+    Card_CmpPred* pFindBound_compare(Index* pIndex, ePB eBound);
     bool bHasBounds_compare(Index* pIndex);
 
-    bool bIsEq(Card_PredCmp* p_PredCmp_arg);
+    bool bIsEq(Card_CmpPred* p_PredCmp_arg);
 
-    bool bOverlapsWith(Card_PredCmp* p_PredCmp_arg);
+    bool bOverlapsWith(Card_CmpPred* p_PredCmp_arg);
 
     bool bIsJoinPred(void);
     bool bUsesTable(char cTableSyn);
   };
 
-  Card_PredCmp* _pCard_PredCmp(void* aAddr);
-  bool _bIsCard_PredCmp(void* aAddr);
-  Card_PredCmp* _pSub_PredCmp(Card* pParent);
+  Card_CmpPred* _pCard_CmpPred(void* aAddr);
+  bool _bIsCard_CmpPred(void* aAddr);
+  Card_CmpPred* _pSub_CmpPred(Card* pParent);
 
 }
 

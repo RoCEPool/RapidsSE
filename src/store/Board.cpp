@@ -884,7 +884,7 @@ void Board::vRenumberMainCards(void)
 //
 //  Card_Type* pCard_Type = _pCard_Type(pCard_Expr->pGetChild(0));
 //  Card_CalcBool* pCard_CalcBool = _pCard_CalcBool(pCard_Expr->pGetChild(1));
-//  Card_PredCmp* pCard_PredCmp = _pCard_PredCmp(pCard_CalcBool->pGetChild(0));
+//  Card_CmpPred* pCard_PredCmp = _pCard_PredCmp(pCard_CalcBool->pGetChild(0));
 //
 //  Card_IndexPred* pCard_IndexPred = pTo_IndexPred(pCard_PredCmp,nullptr);
 //  pIndexJoin->vAppend(pCard_IndexPred);
@@ -923,7 +923,7 @@ void Board::vRenumberMainCards(void)
 //
 //  Card_Type* pCard_Type = _pCard_Type(pCard_Expr->pGetChild(0));
 //  Card_CalcBool* pCard_CalcBool = _pCard_CalcBool(pCard_Expr->pGetChild(1));
-//  Card_PredCmp* pCard_PredCmp = _pCard_PredCmp(pCard_CalcBool->pGetChild(0));
+//  Card_CmpPred* pCard_PredCmp = _pCard_PredCmp(pCard_CalcBool->pGetChild(0));
 //
 //  Card_MapSet* pCard_MapSet = _pCard_MapSet(pCard_IndexJoin->pFindSubCard(CK_MAPSET));
 //  Card_IndexPred* pCard_IndexPred = pTo_IndexPred(pCard_PredCmp,pCard_MapSet);
@@ -1051,9 +1051,9 @@ void Board::vRenumberMainCards(void)
 //  Card_IndexScan* pCard_IndexScan = new Card_IndexScan;
 //  Card_Scan* pReg_Scan = _pCard_Scan(m_pCardRegs->pCardReg(CK_SCAN));
 //
-//  Card_PredCmp* pReg_ebound = m_pCardRegs->pPredCmp_ebound();
-//  Card_PredCmp* pReg_lbound = m_pCardRegs->pPredCmp_lbound();
-//  Card_PredCmp* pReg_ubound = m_pCardRegs->pPredCmp_ubound();
+//  Card_CmpPred* pReg_ebound = m_pCardRegs->pPredCmp_ebound();
+//  Card_CmpPred* pReg_lbound = m_pCardRegs->pPredCmp_lbound();
+//  Card_CmpPred* pReg_ubound = m_pCardRegs->pPredCmp_ubound();
 //
 //  Index* pIndex = this->m_pCard_Board->pIndex();
 //  Card_IndexPtr* pCard_Index = new Card_IndexPtr(pIndex);
@@ -1175,9 +1175,9 @@ void Board::vRenumberMainCards(void)
 //
 //  Card_Filter* pReg_Filter = _pCard_Filter(m_pCardRegs->pCardReg(CK_FILTER));
 //
-//  Card_PredCmp* pReg_ebound = m_pCardRegs->pPredCmp_ebound();
-//  Card_PredCmp* pReg_lbound = m_pCardRegs->pPredCmp_lbound();
-//  Card_PredCmp* pReg_ubound = m_pCardRegs->pPredCmp_ubound();
+//  Card_CmpPred* pReg_ebound = m_pCardRegs->pPredCmp_ebound();
+//  Card_CmpPred* pReg_lbound = m_pCardRegs->pPredCmp_lbound();
+//  Card_CmpPred* pReg_ubound = m_pCardRegs->pPredCmp_ubound();
 //
 //  if (pReg_ebound)
 //    pReg_Filter->vRemoveSubCard(pReg_ebound);
@@ -1274,14 +1274,14 @@ void Board::vRenumberMainCards(void)
 //
 //    case 1: {
 //      // lower bound or upper bound
-//      Card_PredCmp* pPredCmp_lbound =
+//      Card_CmpPred* pPredCmp_lbound =
 //        pReg_Filter->pFindBound(pIndex,PB_LBOUND);
 //      if (pPredCmp_lbound) {
 //        m_pCardRegs->vPredCmp_lbound(pPredCmp_lbound);
 //        pPredCmp_lbound->vMark2('L');
 //        break;
 //      }
-//      Card_PredCmp* pPredCmp_ubound =
+//      Card_CmpPred* pPredCmp_ubound =
 //        pReg_Filter->pFindBound(pIndex,PB_UBOUND);
 //      if (pPredCmp_ubound) {
 //        m_pCardRegs->vPredCmp_ubound(pPredCmp_ubound);
@@ -1293,13 +1293,13 @@ void Board::vRenumberMainCards(void)
 //
 //    case 2: {
 //      // lower bound and upper bound
-//      Card_PredCmp* pPredCmp_lbound =
+//      Card_CmpPred* pPredCmp_lbound =
 //        pReg_Filter->pFindBound(pIndex,PB_LBOUND);
 //      if (pPredCmp_lbound) {
 //        m_pCardRegs->vPredCmp_lbound(pPredCmp_lbound);
 //        pPredCmp_lbound->vMark2('L');
 //      }
-//      Card_PredCmp* pPredCmp_ubound =
+//      Card_CmpPred* pPredCmp_ubound =
 //        pReg_Filter->pFindBound(pIndex,PB_UBOUND);
 //      if (pPredCmp_ubound) {
 //        m_pCardRegs->vPredCmp_ubound(pPredCmp_ubound);
@@ -1310,7 +1310,7 @@ void Board::vRenumberMainCards(void)
 //
 //    case 3: {
 //      // equi-bound
-//      Card_PredCmp* pPredCmp_ebound =
+//      Card_CmpPred* pPredCmp_ebound =
 //        pReg_Filter->pFindBound(pIndex,PB_EBOUND);
 //      if (pPredCmp_ebound) {
 //        m_pCardRegs->vPredCmp_ebound(pPredCmp_ebound);

@@ -4,7 +4,7 @@
 
 #include "Card_ExprBool.hpp"
 #include "Card_PRED.hpp"
-#include "Card_PredCmp.hpp"
+#include "Card_CmpPred.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -40,13 +40,13 @@ Card_ExprBool::~Card_ExprBool(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_PredCmp* Card_ExprBool::pFindBound(Index* pIndex, ePB eBound)
+Card_CmpPred* Card_ExprBool::pFindBound(Index* pIndex, ePB eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   Card_PRED* pPred = (Card_PRED*)pGet(0);
 
-  Card_PredCmp* pCard_PredCmp = pPred->pFindBound_pred(pIndex,eBound);
+  Card_CmpPred* pCard_PredCmp = pPred->pFindBound_pred(pIndex,eBound);
   
   return pCard_PredCmp;
 }

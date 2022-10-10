@@ -5,7 +5,7 @@
 #include "Card_CoPtnJoinList.hpp"
 
 #include "Card_CoPtnJoin.hpp"
-#include "Card_PredCmp.hpp"
+#include "Card_CmpPred.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -64,7 +64,7 @@ Card_CoPtnJoin* Card_CoPtnJoinList::pFind_coPtn_for(Card_CoPtnPred* p_CoPtnPred)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_CoPtnJoinList::bHasEqPredCmp(Card_PredCmp* p_predCmp_arg)
+bool Card_CoPtnJoinList::bHasEqPredCmp(Card_CmpPred* p_predCmp_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -74,7 +74,7 @@ bool Card_CoPtnJoinList::bHasEqPredCmp(Card_PredCmp* p_predCmp_arg)
 
     i8 nChildren_predCmp = p_coPtnJoin->nChildCards();
     for (i8 i_Child_predCmp = 0; i_Child_predCmp < nChildren_predCmp; i_Child_predCmp++) {
-      Card_PredCmp *p_predCmp = _pCard_PredCmp(p_coPtnJoin->pGetChild(i_Child_predCmp));
+      Card_CmpPred *p_predCmp = _pCard_CmpPred(p_coPtnJoin->pGetChild(i_Child_predCmp));
 
 
       if (p_predCmp->bIsEq(p_predCmp_arg))

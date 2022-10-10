@@ -23,14 +23,14 @@ namespace STORE
     void vCullPred(char cWithMark);
     void vCalc_to_calcBool(void);
 
-    Card_PredCmp* pFindBound(Index* pIndex, ePB eBound);
+    Card_CmpPred* pFindBound(Index* pIndex, ePB eBound);
 
     bool bHasBounds(Index* pIndex);
 
     bool bIsEmptyFilter(void);
 
     void vReduceFilter(void);
-    bool bRemoveBound(Card_PredCmp* pCard_PredCmp);
+    bool bRemoveBound(Card_CmpPred* pCard_PredCmp);
 
     Card* pTo_CalcBool(Card* pCard_Calc);
 

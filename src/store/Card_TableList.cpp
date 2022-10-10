@@ -7,7 +7,7 @@
 #include "Card_TablePtn.hpp"
 #include "Card_TableSyn.hpp"
 #include "Card_ColumnRef.hpp"
-#include "Card_PredCmp.hpp"
+#include "Card_CmpPred.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -71,7 +71,7 @@ Card_Table* Card_TableList::pFind_table(char cSyn)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_TableList::bPredCmpIsCoPtn(Card_PredCmp* p_predCmp)
+bool Card_TableList::bPredCmpIsCoPtn(Card_CmpPred* p_predCmp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

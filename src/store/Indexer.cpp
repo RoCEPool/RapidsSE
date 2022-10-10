@@ -76,7 +76,7 @@ void Indexer::vMark_scan_pred_bounds(void)
   vExplain("Blah"_Stz);
 
   auto bfPredBounds = [](Card* pCard) {
-    Card_PredCmp* p_predCmp = _pCard_PredCmp(pCard);
+    Card_CmpPred* p_predCmp = _pCard_CmpPred(pCard);
     p_predCmp->vMarkBound();
     return true;
   };
