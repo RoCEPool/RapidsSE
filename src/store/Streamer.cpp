@@ -67,11 +67,11 @@ void Streamer::vCalc_OrdinalRangesOf_stream(void)
 
       // <scan>/<stream>:iOrdLo,iOrdHi
       i8 nStreamCols = m_p_stream->nStreamCols();
-      m_p_stream->vAddProperty_int(C_PPT_OrdLo,iOrdLo);
+      m_p_stream->vAddProperty_int(C_PPY_OrdLo,iOrdLo);
       iOrdHi = iOrdLo + nStreamCols - 1;
-      m_p_stream->vAddProperty_int(C_PPT_OrdHi,iOrdHi);
+      m_p_stream->vAddProperty_int(C_PPY_OrdHi,iOrdHi);
       iOrdLo = iOrdHi + 1;
-      m_p_stream->vAddProperty_int(C_PPT_Stream,iStream++);
+      m_p_stream->vAddProperty_int(C_PPY_Stream,iStream++);
 
       continue;
     }
@@ -85,11 +85,11 @@ void Streamer::vCalc_OrdinalRangesOf_stream(void)
 
       // <absJoin>/<stream>:iOrdLo,iOrdHi
       i8 nStreamCols = m_p_stream->nStreamCols();
-      m_p_stream->vAddProperty_int(C_PPT_OrdLo,iOrdLo);
+      m_p_stream->vAddProperty_int(C_PPY_OrdLo,iOrdLo);
       iOrdHi = iOrdLo + nStreamCols - 1;
-      m_p_stream->vAddProperty_int(C_PPT_OrdHi,iOrdHi);
+      m_p_stream->vAddProperty_int(C_PPY_OrdHi,iOrdHi);
       iOrdLo = iOrdHi + 1;
-      m_p_stream->vAddProperty_int(C_PPT_Stream,iStream++);
+      m_p_stream->vAddProperty_int(C_PPY_Stream,iStream++);
 
       continue;
     }

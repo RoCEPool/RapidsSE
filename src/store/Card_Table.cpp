@@ -78,6 +78,26 @@ Card_TablePtr* Card_Table::pGet_tablePtr(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Card_Table::vTablePrint(Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  s32 sName;
+  sName = aCK_short[m_eCard];
+  if (0 == iDepth)
+    sName.vToUpper();
+
+  if (bHasProperty(C_PPY_TableSyn))
+    sName.vCatSprint(" %c"_Stz, cGetProperty(C_PPY_TableSyn));
+  else
+    sName.vCatSprint(" %s"_Stz, szValue());
+
+  vPrintCard_byCustom(pRibbon, iDepth, sName);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 char Card_Table::cTableSyn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

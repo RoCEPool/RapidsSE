@@ -66,7 +66,7 @@ Index* Card_IndexPtr::pIndex(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Index* pIndex = _pIndex(pGetProperty(C_PPT_Index));
+  Index* pIndex = _pIndex(pGetProperty(C_PPY_Index));
 
   return pIndex;
 }
@@ -78,7 +78,7 @@ void Card_IndexPtr::vIndex(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vAddProperty_ptr(C_PPT_Index,pIndex);
+  vAddProperty_ptr(C_PPY_Index,pIndex);
 }
 
 

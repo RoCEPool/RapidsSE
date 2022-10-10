@@ -203,7 +203,7 @@ void Transforms::vEstimate_ptndJoins(void)
   while ((m_pMainCard = xBI.pEachMain())) {
     eCK eCard = m_pMainCard->eCard();
     if (CK_PERMUTATION == eCard) {
-      m_p_tableList->vDeletePropertyRecursively(C_PPT_TableUsed);
+      m_p_tableList->vDeletePropertyRecursively(C_PPY_TableUsed);
       continue;
     }
     if (CK_PTNDJOIN != eCard)
@@ -237,7 +237,7 @@ void Transforms::vEstimate_network(void)
     eCK eCard = m_pMainCard->eCard();
     if (CK_PERMUTATION == eCard) {
       if (m_p_permutation)
-        m_p_permutation->vAddProperty_int(C_PPT_Network, nNetwork);
+        m_p_permutation->vAddProperty_int(C_PPY_Network, nNetwork);
       m_p_permutation = _pCard_Permutation(m_pMainCard);
 
       m_p_ptndJoin = nullptr;
@@ -247,16 +247,16 @@ void Transforms::vEstimate_network(void)
     else
     if (CK_PTNDJOIN == eCard) {
       if (m_p_ptndJoin) {
-        nSentOut += m_p_ptndJoin->iGetProperty(C_PPT_JoinedBuff);
+        nSentOut += m_p_ptndJoin->iGetProperty(C_PPY_JoinedBuff);
         nNetwork += nSentOut;
-        m_p_ptndJoin->vAddProperty_int(C_PPT_SentOut, nSentOut);
+        m_p_ptndJoin->vAddProperty_int(C_PPY_SentOut, nSentOut);
       }
       m_p_ptndJoin = _pCard_PtndJoin(m_pMainCard);
     }
   }
 
   if (m_p_permutation)
-    m_p_permutation->vAddProperty_int(C_PPT_Network, nNetwork);
+    m_p_permutation->vAddProperty_int(C_PPY_Network, nNetwork);
 
   if (m_bInteractive)
     m_pBoard_costEst->vPrintBoard();
@@ -279,7 +279,7 @@ void Transforms::vEstimate_joinOrder(void)
 
   while ((m_p_permutation =
               _pCard_Permutation(xBI.pEachMain(CK_PERMUTATION,m_i_Main)))) {
-    i8 iNetwork = m_p_permutation->iGetProperty(C_PPT_Network);
+    i8 iNetwork = m_p_permutation->iGetProperty(C_PPY_Network);
     if (iNetwork >= iLowestNetwork)
       continue;
     m_p_permutation_low = m_p_permutation;
@@ -287,7 +287,7 @@ void Transforms::vEstimate_joinOrder(void)
   }
 
   m_pBoard_costEst->vAppendMain((m_p_joinOrderSeq = new Card_JoinOrderSeq));
-  m_p_joinOrderSeq->vAddProperty_int(C_PPT_Network,iLowestNetwork);
+  m_p_joinOrderSeq->vAddProperty_int(C_PPY_Network,iLowestNetwork);
 
   xBI.vSet(m_p_permutation_low);
   while ((m_pMainCard = xBI.pEachMain(m_i_Main,m_eMainCard))) {
@@ -732,8 +732,8 @@ void Transforms::vForm_joinPred(void)
     // one of {pCard_term_0,pCard_term_1} is $In
 
     m_p_stream = _pSub_Stream(m_p_scan);
-    i8 iStreamOrdLo = m_p_stream->iGetProperty(C_PPT_OrdLo);
-    i8 iStreamOrdHi = m_p_stream->iGetProperty(C_PPT_OrdHi);
+    i8 iStreamOrdLo = m_p_stream->iGetProperty(C_PPY_OrdLo);
+    i8 iStreamOrdHi = m_p_stream->iGetProperty(C_PPY_OrdHi);
 
     i8 i_iOrdLo_0 = m_p_term_0->iStreamColNo();
     i8 i_iOrdLo_1 = m_p_term_1->iStreamColNo();
@@ -1095,7 +1095,7 @@ void Transforms::vCompute_ptndJoinSet(void)
   for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
     m_pChildCard = m_p_ptndJoinSet->pGetChild(i_Child);
     m_pChildCard->vCard(CK_PTNDJOIN);
-    m_pChildCard->vAddProperty_int(C_PPT_PtndJoin,i_Child);
+    m_pChildCard->vAddProperty_int(C_PPY_PtndJoin,i_Child);
   }
 
   if (m_bInteractive)
@@ -1154,7 +1154,7 @@ void Transforms::vGenerate_ptndPermutations(void)
 
   while (m_pPermGen->bNextPermutation()) {
     m_pBoard_permute->vAppendMain((m_p_permutation = new Card_Permutation));
-    m_p_permutation->vAddProperty_int(C_PPT_Permutation,m_pPermGen->nPermutations()-1);
+    m_p_permutation->vAddProperty_int(C_PPY_Permutation,m_pPermGen->nPermutations()-1);
 
     RASSERT(0 == m_p_subSet->nChildCards());
     for (i8 i_Item = 0; i_Item < m_pPermGen->nItems(); i_Item++) {
@@ -1165,7 +1165,7 @@ void Transforms::vGenerate_ptndPermutations(void)
       m_p_ptndJoin = _pCard_PtndJoin(m_pChildCard);
       if (! m_p_ptndJoin->bMayFollowAfter(m_p_subSet)) {
         m_pBoard_permute->vAppendMain(new Card_Comment("**DOESN'T FOLLOW**"_Stz));
-        m_p_permutation->vAddProperty_nameOnly(C_PPT_Invalid);
+        m_p_permutation->vAddProperty_nameOnly(C_PPY_Invalid);
         break;
       }
       m_p_subSet->vAppend(m_pChildCard);
@@ -1199,8 +1199,8 @@ void Transforms::vRemove_invalidPermutations(void)
       continue;
     }
 
-    if (! m_pMainCard->bHasProperty(C_PPT_Invalid)) {
-      m_pMainCard->vAddProperty_int(C_PPT_Permutation,i_Permutation++);
+    if (! m_pMainCard->bHasProperty(C_PPY_Invalid)) {
+      m_pMainCard->vAddProperty_int(C_PPY_Permutation,i_Permutation++);
       i_Main++;
       continue;
     }
@@ -1537,7 +1537,7 @@ void Transforms::vLinearize_stages(void)
     if (YG_ALL_PARTITIONS == m_p_stageTopo->eStageTopo())
       continue;
 
-    m_p_stage->vAddProperty_nameOnly(C_PPT_Exclude);
+    m_p_stage->vAddProperty_nameOnly(C_PPY_Exclude);
   }
 
 
@@ -1577,11 +1577,11 @@ void Transforms::vCalc_OrdinalRangesOf_stream(void)
 
       // <scan>/<stream>:iOrdLo,iOrdHi
       i8 nStreamCols = m_p_stream->nStreamCols();
-      m_p_stream->vAddProperty_int(C_PPT_OrdLo,iOrdLo);
+      m_p_stream->vAddProperty_int(C_PPY_OrdLo,iOrdLo);
       iOrdHi = iOrdLo + nStreamCols - 1;
-      m_p_stream->vAddProperty_int(C_PPT_OrdHi,iOrdHi);
+      m_p_stream->vAddProperty_int(C_PPY_OrdHi,iOrdHi);
       iOrdLo = iOrdHi + 1;
-      m_p_stream->vAddProperty_int(C_PPT_Stream,iStream++);
+      m_p_stream->vAddProperty_int(C_PPY_Stream,iStream++);
 
       continue;
     }
@@ -1595,11 +1595,11 @@ void Transforms::vCalc_OrdinalRangesOf_stream(void)
 
       // <absJoin>/<stream>:iOrdLo,iOrdHi
       i8 nStreamCols = m_p_stream->nStreamCols();
-      m_p_stream->vAddProperty_int(C_PPT_OrdLo,iOrdLo);
+      m_p_stream->vAddProperty_int(C_PPY_OrdLo,iOrdLo);
       iOrdHi = iOrdLo + nStreamCols - 1;
-      m_p_stream->vAddProperty_int(C_PPT_OrdHi,iOrdHi);
+      m_p_stream->vAddProperty_int(C_PPY_OrdHi,iOrdHi);
       iOrdLo = iOrdHi + 1;
-      m_p_stream->vAddProperty_int(C_PPT_Stream,iStream++);
+      m_p_stream->vAddProperty_int(C_PPY_Stream,iStream++);
 
       continue;
     }
@@ -1699,7 +1699,9 @@ void Transforms::vAdd_tableSyn_To_table(void)
     if (m_pTable->bIsReplicated())
       cTableSyn_actual += 'A'-'a';
     m_p_tableSyn->vTableSyn(cTableSyn_actual);
-    m_p_table->vAddProperty_chr(C_PPT_TableSyn,cTableSyn_actual);
+    m_p_table->vAddProperty_chr(C_PPY_TableSyn,cTableSyn_actual);
+
+    cTableSyn++;
 
     m_p_table->vAppend(m_p_tableSyn);
   }

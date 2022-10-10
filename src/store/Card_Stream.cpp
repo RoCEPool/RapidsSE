@@ -106,8 +106,8 @@ bool Card_Stream::bContainsPred(Card_PRED* pCard_PRED)
     if (!szTerm->bIsStreamColOrdinal())
       return true;
 
-    i8 iOrdLo = m_pProperties->iValue(C_PPT_OrdLo);
-    i8 iOrdHi = m_pProperties->iValue(C_PPT_OrdHi);
+    i8 iOrdLo = m_pProperties->iValue(C_PPY_OrdLo);
+    i8 iOrdHi = m_pProperties->iValue(C_PPY_OrdHi);
 
     i8 iOrd = szTerm->iOrdinal();
     if (iOrd > iOrdHi)
@@ -148,7 +148,7 @@ Card_StreamCol* Card_Stream::pGet_streamCol(i8 i_Col)
 
   Card_StreamColList* pCard_StreamColList = pGet_streamColList();
 
-  i8 iOrdLo = iGetProperty(C_PPT_OrdLo);
+  i8 iOrdLo = iGetProperty(C_PPY_OrdLo);
   i8 i_ColNo = i_Col - iOrdLo;
   Card_StreamCol* pCard_StreamCol = pCard_StreamColList->pGet_streamCol(i_ColNo);
 
@@ -201,13 +201,13 @@ void Card_Stream::vStreamPrint(Ribbon* pRibbon, i8 iDepth)
 
   s32 sName;
 
-  if (m_pProperties && C_UNKNOWN != iGetProperty(C_PPT_OrdLo))
+  if (m_pProperties && C_UNKNOWN != iGetProperty(C_PPY_OrdLo))
     sName.vSprint("%s%lld]%s $%lld,%lld"_Stz
         ,Stz::szDots(iDepth-1)
         ,m_iCardNo
         ,szCardNm()
-        ,iGetProperty(C_PPT_OrdLo)
-        ,iGetProperty(C_PPT_OrdHi)
+        ,iGetProperty(C_PPY_OrdLo)
+        ,iGetProperty(C_PPY_OrdHi)
     );
   else
     sName.vSprint("%s%lld]%s"_Stz
@@ -225,13 +225,13 @@ void Card_Stream::vStreamPrint(Ribbon* pRibbon, i8 iDepth)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get C_PPT_Stream                                                           */
+/* get C_PPY_Stream                                                           */
 /*----------------------------------------------------------------------------*/
 i8 Card_Stream::iStream(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  i8 iStream = iGetProperty(C_PPT_Stream);
+  i8 iStream = iGetProperty(C_PPY_Stream);
 
   return iStream;
 }

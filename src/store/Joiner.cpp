@@ -142,8 +142,8 @@ void Joiner::vForm_joinPred(void)
     // one of {pCard_term_0,pCard_term_1} is $In
 
     m_p_stream = _pSub_Stream(m_p_scan);
-    i8 iStreamOrdLo = m_p_stream->iGetProperty(C_PPT_OrdLo);
-    i8 iStreamOrdHi = m_p_stream->iGetProperty(C_PPT_OrdHi);
+    i8 iStreamOrdLo = m_p_stream->iGetProperty(C_PPY_OrdLo);
+    i8 iStreamOrdHi = m_p_stream->iGetProperty(C_PPY_OrdHi);
 
     i8 i_iOrdLo_0 = m_p_term_0->iStreamColNo();
     i8 i_iOrdLo_1 = m_p_term_1->iStreamColNo();

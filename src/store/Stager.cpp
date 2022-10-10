@@ -182,7 +182,7 @@ void Stager::vLinearize_stages(void)
     if (YG_ALL_PARTITIONS == m_p_stageTopo->eStageTopo())
       continue;
 
-    m_p_stage->vAddProperty_nameOnly(C_PPT_Exclude);
+    m_p_stage->vAddProperty_nameOnly(C_PPY_Exclude);
   }
 
 

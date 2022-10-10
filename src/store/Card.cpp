@@ -241,7 +241,7 @@ eCK Card::eTo_eCK(Stz* szCardNm)
 /*----------------------------------------------------------------------------*/
 /* add given property                                                         */
 /*----------------------------------------------------------------------------*/
-void Card::vAddProperty_chr(Stz* szPptName, char cPptValue)
+void Card::vAddProperty_chr(Stz* szPpyName, char cPpyValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -249,60 +249,60 @@ void Card::vAddProperty_chr(Stz* szPptName, char cPptValue)
     m_pProperties = new TagSet;
 
   s32 sPptValue;
-  sPptValue.vSprint("%c"_Stz,cPptValue);
-  m_pProperties->vReplace(szPptName, sPptValue);
+  sPptValue.vSprint("%c"_Stz, cPpyValue);
+  m_pProperties->vReplace(szPpyName, sPptValue);
 }
 
 /*----------------------------------------------------------------------------*/
 /* add given property                                                         */
 /*----------------------------------------------------------------------------*/
-void Card::vAddProperty_int(Stz* szPptName, i8 iPptValue)
+void Card::vAddProperty_int(Stz* szPpyName, i8 iPpyValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (! m_pProperties)
     m_pProperties = new TagSet;
   
-  m_pProperties->vReplace(szPptName, iPptValue);
+  m_pProperties->vReplace(szPpyName, iPpyValue);
 }
 
 /*----------------------------------------------------------------------------*/
 /* add given property                                                         */
 /*----------------------------------------------------------------------------*/
-void Card::vAddProperty_nameOnly(Stz* szPptName)
+void Card::vAddProperty_nameOnly(Stz* szPpyName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_)
 
   if (! m_pProperties)
     m_pProperties = new TagSet;
 
-  m_pProperties->vReplace(szPptName, "yes"_Stz);
+  m_pProperties->vReplace(szPpyName, "yes"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
 /* add given property                                                         */
 /*----------------------------------------------------------------------------*/
-void Card::vAddProperty_ptr(Stz* szPptName, Object* pPptValue)
+void Card::vAddProperty_ptr(Stz* szPpyName, Object* pPpyValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (! m_pProperties)
     m_pProperties = new TagSet;
   
-  m_pProperties->vReplace(szPptName, pPptValue);
+  m_pProperties->vReplace(szPpyName, pPpyValue);
 }
 
 /*----------------------------------------------------------------------------*/
 /* add given property                                                         */
 /*----------------------------------------------------------------------------*/
-void Card::vAddProperty_stz(Stz* szPptName, Stz* szPptValue)
+void Card::vAddProperty_stz(Stz* szPpyName, Stz* szPpyValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (! m_pProperties)
     m_pProperties = new TagSet;
   
-  m_pProperties->vReplace(szPptName, szPptValue);
+  m_pProperties->vReplace(szPpyName, szPpyValue);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -974,14 +974,14 @@ bool Card::bHasSubCard(Card* pSubCard, Card*& rpParentCard)
 /*----------------------------------------------------------------------------*/
 /* does card have given property ?                                            */
 /*----------------------------------------------------------------------------*/
-bool Card::bHasProperty(Stz* szPptName)
+bool Card::bHasProperty(Stz* szPpyName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (! m_pProperties)
     return false;
 
-  bool bHas = m_pProperties->bHasName(szPptName);
+  bool bHas = m_pProperties->bHasName(szPpyName);
 
   return bHas;
 }
@@ -1152,6 +1152,27 @@ void Card::vPrintCard(Ribbon* pRibbon, i8 iDepth, bool& rbPrune)
 /*----------------------------------------------------------------------------*/
 /* print card onto given ribbon                                               */
 /*----------------------------------------------------------------------------*/
+void Card::vPrintCard_byCustom(Ribbon* pRibbon, i8 iDepth, Stz* szCustomName)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  CardCtl* pCardCtl = _pCardCtl(pRibbon->pCtl());
+
+  if (pCardCtl->bPrintName(m_eCard))
+    vPrintName(pRibbon, iDepth, szCustomName);
+  if (pCardCtl->bPrintValue(m_eCard))
+    vPrintValue(pRibbon, iDepth);
+
+  if (pCardCtl->bPrintProperties(m_eCard))
+    vPrintProperties(pRibbon, iDepth);
+
+  if (pCardCtl->bPrintSubShort(m_eCard))
+    vPrintSubShort(pRibbon, iDepth);
+}
+
+/*----------------------------------------------------------------------------*/
+/* print card onto given ribbon                                               */
+/*----------------------------------------------------------------------------*/
 void Card::vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -1172,6 +1193,10 @@ void Card::vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth)
 
     case CK_STREAMELIST:
       _pCard_StreamElist(this)->vStreamElistPrint(pRibbon,iDepth);
+      break;
+
+    case CK_TABLE:
+      _pCard_Table(this)->vTablePrint(pRibbon, iDepth);
       break;
 
     case CK_TABLEPTR:
@@ -1223,7 +1248,7 @@ void Card::vPrintHeader(Ribbon* pRibbon)
 /*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
-void Card::vPrintName(Ribbon* pRibbon, i8 iDepth)
+void Card::vPrintName(Ribbon* pRibbon, i8 iDepth, Stz* szCustomName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -1237,18 +1262,30 @@ void Card::vPrintName(Ribbon* pRibbon, i8 iDepth)
 
   s32 sName;
   if (0 == iDepth) {
-    sName.vSprint("%s%s *%lld"_Stz,
-                  szCardNm(),
-                  sHiddenChildren.szStz(),
-                  nItems());
-    sName.vToUpper();
+    if (szCustomName) {
+      sName.vSprint("%s"_Stz,
+                    szCustomName);
+    }
+    else {
+      sName.vSprint("%s%s *%lld"_Stz,
+                    szCardNm(),
+                    sHiddenChildren.szStz(),
+                    nItems());
+      sName.vToUpper();
+    }
   }
   else {
-    sName.vSprint("%s%lld]%s%s"_Stz,
-                  Stz::szDots(iDepth - 1),
-                  m_iCardNo,
-                  szCardNm(),
-                  sHiddenChildren.szStz());
+    if (szCustomName)
+      sName.vSprint("%s%lld]%s"_Stz,
+                    Stz::szDots(iDepth - 1),
+                    m_iCardNo,
+                    szCustomName);
+    else
+      sName.vSprint("%s%lld]%s%s"_Stz,
+                    Stz::szDots(iDepth - 1),
+                    m_iCardNo,
+                    szCardNm(),
+                    sHiddenChildren.szStz());
   }
 
   pRibbon->vSprint("%c%c%-18s"_Stz, m_cMark1, m_cMark2, sName.szStz());

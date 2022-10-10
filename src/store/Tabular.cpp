@@ -96,7 +96,7 @@ void Tabular::vAdd_tableSyn_To_table(void)
     if (m_pTable->bIsReplicated())
       cTableSyn_actual += 'A'-'a';
     m_p_tableSyn->vTableSyn(cTableSyn_actual);
-    m_p_table->vAddProperty_chr(C_PPT_TableSyn,cTableSyn_actual);
+    m_p_table->vAddProperty_chr(C_PPY_TableSyn,cTableSyn_actual);
 
     cTableSyn++;
 

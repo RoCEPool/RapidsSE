@@ -63,8 +63,8 @@ void Resolver::vResolve_streamColOrdinal_To_tableColOrdinal
     if (! (m_p_stream = _pSub_Stream(m_pMainCard)) )
       continue;
 
-    i8 iOrdLo = m_p_stream->iGetProperty(C_PPT_OrdLo);
-    i8 iOrdHi = m_p_stream->iGetProperty(C_PPT_OrdHi);
+    i8 iOrdLo = m_p_stream->iGetProperty(C_PPY_OrdLo);
+    i8 iOrdHi = m_p_stream->iGetProperty(C_PPY_OrdHi);
 
     if (! (iStreamColNo >= iOrdLo && iStreamColNo <= iOrdHi) )
       continue;
