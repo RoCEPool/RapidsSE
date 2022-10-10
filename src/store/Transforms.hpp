@@ -24,7 +24,72 @@ namespace STORE
     void vAdd_columnRef_Under_term(void);
     void vConvert_streamColOrdinal_To_tableColOrdinal(void);
 
+    void vAdd_combined(void);
+    void vAdd_scanPred(void);
+    void vAdd_stages(void);
+    void vAdd_tablePtn_To_table(void);
+    void vAdd_tableSyn_To_table(void);
+    void vAppend_indexList_To_scan(void);
+    void vAppend_stream_To_scan(void);
+    void vAssign_predCmp_leftwards(void);
+    void vCalc_OrdinalRangesOf_stream(void);
+    void vChangeAll_scan_To_retrieve(void);
+    void vCompute_coPtnJoinList(void);
+    void vCompute_coPtnPredList(void);
+    void vCompute_crossPtnJoinList(void);
+    void vCompute_ptndJoinSet(void);
+    void vConvertAll_idxColNm_To_streamColOrdinal(void);
+    void vConvert_calc_To_calcBool(void);
+    void vCopy_predCmp_leftwards(void);
+    void vCopy_ptndJoinSet(void);
+    void vCull_filterPred_Of_indexJoin(void);
+    void vCull_markedPred(void);
+    void vCull_sby_SameAs_gby(void);
+    void vDeleteAll_absJoin(void);
+    void vDeleteAll_combined(void);
+    void vDeleteAll_send(void);
+    void vDelete_Empty_filter(void);
+    void vDelete_empty_sub_filter(void);
+    void vEstimate_joinOrder(void);
+    void vEstimate_network(void);
+    void vEstimate_ptndJoins(void);
+    void vExtract_joinOrderSeq(void);
+    void vExtract_joinPredList(void);
+    void vExtract_tableList_From_queryBoard(void);
+    void vForm_joinPred(void);
+    void vGenerate_ptndPermutations(void);
+    void vIndividuate_filter(void);
+    void vInsert_preliminary_indexJoin(void);
+    void vLinearize_stages(void);
+    void vMark_scan_pred_bounds(void);
+    void vMark_scan_pred_ordinals(void);
+    void vPromote_scan_To_indexScan(void);
+    void vRefactor_absJoin_Into_indexJoin(void);
+    void vRemove_invalidPermutations(void);
+    void vSetup_costEst(void);
+    void vSubsume_scan_Under_absJoin(void);
+
   private:
+
+    void vAssignFilterLeftwards(Card_Filter* pCard_filter);
+    void vAssignPredDrillDown(Card_PRED*, Card_Filter* pCard_filter);
+
+    i8   iAssignPredLeft(Card_PRED* pCard_PRED, Card_Filter* pCard_filter);
+    i8   iAssignPredToAbsJoin(Card_AbsJoin* pCard_absJoin, Card_PRED* pCard_PRED);
+    i8   iAssignPredToScan(Card_Scan* pCard_scan, Card_PRED* pCard_PRED);
+
+    void vCopyFilterLeftwards(Card_Filter* pCard_filter);
+    bool bCopyPredDrillDown(Card_PRED*, Card_Filter* pCard_filter);
+    void vCopyPredToExistingFilter(Card_Filter* pCard_filter_existing, Card_PRED* pCard_pred);
+    void vCopyPredToNewFilter(Card_Filter* pCard_filter_new, Card_PRED* pCard_pred);
+
+    void vPredMovesToAbsJoin(Card* pPredCard, Card_AbsJoin* pCard_absJoin);
+    void vPredMovesToScan(Card* pPredCard, Card_Scan* pCard_scan);
+
+    void vMarkPredCardsAsMoved(Card* pPredCard);
+
+    Card_IndexPred*  pTo_IndexPred (Card_AbsJoin* pCard_AbsJoin,
+                                    Card_PredCmp* pCard_PredCmp);
 
     Footer* aFooter(void);
   };
