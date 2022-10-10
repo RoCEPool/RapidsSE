@@ -38,8 +38,12 @@ CardCtl::CardCtl(void)
     m_xaCardCtl[i_Card].m_iPtrDetail = 1;
     m_xaCardCtl[i_Card].m_bPrune     = false;
   }
-  
-  _checkInitialised_(CN_CARDCTL);
+
+  for (i8 i_Tform = 0; i_Tform < OT_ENUMS; i_Tform++) {
+    m_xaTrfCtl[i_Tform].m_bTfmPrint = true;
+  }
+
+   _checkInitialised_(CN_CARDCTL);
 
   vPrintByKind(CK_CARDPTR,true);
 
@@ -330,6 +334,28 @@ void CardCtl::vPrune(i8 i_Card, bool bPrune)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 
   m_xaCardCtl[i_Card].m_bPrune = bPrune;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get bTrfPrint for transform                                                */
+/*----------------------------------------------------------------------------*/
+bool CardCtl::bTfmPrint(i8 i_Tfm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
+
+  bool bTfmPrint = m_xaTrfCtl[i_Tfm].m_bTfmPrint;
+
+  return bTfmPrint;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set bTrfPrint for transform                                                */
+/*----------------------------------------------------------------------------*/
+void CardCtl::vTfmPrint(i8 i_Tfm, bool bTfmPrint)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
+
+  m_xaTrfCtl[i_Tfm].m_bTfmPrint = bTfmPrint;
 }
 
 /*============================================================================*/

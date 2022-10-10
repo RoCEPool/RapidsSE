@@ -6,6 +6,7 @@
 #include "BASE.h"
 
 #include "eCK.h"
+#include "eOT.h"
 
 namespace STORE
 {
@@ -27,10 +28,16 @@ namespace STORE
 
   };
 
+  struct _TfmCtl
+  {
+    bool m_bTfmPrint;       // print transform?
+  };
+
   class CardCtl : public Object
   {
   protected:
     _CardCtl m_xaCardCtl[CK_ENUMS];
+    _TfmCtl  m_xaTrfCtl[OT_ENUMS];
 
   protected:
     // must be last
@@ -68,6 +75,9 @@ namespace STORE
 
     bool bPrune(i8 i_Card);
     void vPrune(i8 i_Card, bool bPrune);
+
+    bool bTfmPrint(i8 i_Tfm);
+    void vTfmPrint(i8 i_Tfm, bool bTfmPrint);
 
   protected:
     Footer* aFooter(void);

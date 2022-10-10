@@ -5,14 +5,18 @@
 
 enum eOT // optimisation transformation
 {
-  /*  */ OT_NONE = 0,
-  /*  */ OT_Cull_sby_SameAs_gby,
+  /* */ OT_NONE = 0,
+  /* */ OT_Cull_sby_SameAs_gby,
+
+  /* */ OT_ENUMS
 };
 
 static Stz* aOT[]
 {
-  /*  0 */ "NONE"_Stz,
-  /*  1 */ "Cull_sby_SameAs_gby"_Stz,
+  /* */ "NONE"_Stz,
+  /* */ "Cull_sby_SameAs_gby"_Stz,
+
+  /* */ "ENUMS"_Stz
 };
 
 /*============================================================================*/
