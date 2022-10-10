@@ -473,8 +473,7 @@ void Task::vDumpOnException(void)
            ,pWord
            ,aWK[pWord->eWord()]
            ,pWord->szWordNm()
-           ,pWord->pCategory() ? pWord->pCategory()->szWordNm()
-                               : ""_Stz
+           ,aWC[pWord->eCategoryEnum()]->azChar()
            );
   vTrace("\n"_Stz);
 
@@ -878,8 +877,7 @@ Word* Task::pEventHandler(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   pWord = m_oDicStack.pLocateRoutine(m_aInxPtr);
   if (pWord &&
-      pWord->pCategory() &&
-      pWord->pCategory()->szWordNm()->bSame("\\handler"_Stz)) {
+      pWord->eCategoryEnum() == WC_HANDLER) {
     pEventHandler = pWord;
     
     return pEventHandler;
@@ -899,8 +897,7 @@ Word* Task::pEventHandler(void)
     pWord = m_oDicStack.pLocateRoutine(aFip);
     
     if (pWord &&
-        pWord->pCategory() &&
-        pWord->pCategory()->szWordNm()->bSame("\\handler"_Stz)) {
+        pWord->eCategoryEnum() == WC_HANDLER) {
       pEventHandler = pWord;
       break;
     }

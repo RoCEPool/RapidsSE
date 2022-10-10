@@ -224,13 +224,11 @@ void Metadata::vListContents(i8 i_Depth, Dic* pDic)
   pDic->vGrabRead();
   
   for (Word* pWord = pDic->pFirstWord(); pWord; pWord = pWord->pNextWord()) {
-    
-    Word* pCategory = pWord->pCategory();
 
     vTrace("%s%s %s\n"_Stz,
            Stz::szTab(i_Depth),
            pWord->szWordNm(),
-           pCategory ? pCategory->szWordNm() : "n/a"_Stz);
+           aWC[pWord->eCategoryEnum()]->azChar());
     
     Object* pObject = pWord->pObject();
     if (pObject && CN_DIC == pObject->eGetClassNo())

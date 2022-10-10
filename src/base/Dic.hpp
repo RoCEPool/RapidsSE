@@ -3,6 +3,9 @@
 /*============================================================================*/
 #pragma once
 
+#include "eWC.h"
+#include "eDK.h"
+
 namespace BASE
 {
   class Dic : public Object
@@ -11,7 +14,7 @@ namespace BASE
     Lock      m_okLock;
   
     s32       m_sDicNm;    // name of this dictionary
-    Word*     m_pDicKind;  // kind of dictionary
+    eDK       m_eDicKind;  // kind of dictionary
   
     SkipListNL* m_pWordSkipList; // skip list of words (ordered by wordNm)
 
@@ -29,16 +32,21 @@ namespace BASE
    ~Dic(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-    
+    static void vDicCompareFp(Dic* pDic);
+    static eWC  eDKToWC(eDK eDicKind);
+    static void vTree(Dic* pDic, i8 iTabs);
+    static eDK  eWCToDK(eWC eWordCtg);
+
+    void  vAddSkipNode(SkipNode* pWord);
     void  vAddWord(Word* pWord);
-    Word* pDicKind(void);
+    eDK   eDicKind(void);
     Stz*  szDicKind(void);
-    void  vDicKind(Word* pDicKind);
+    void  vDicKind(eDK eDicKind);
     Stz*  szDicNm(void);
     void  vDropRead(void);
     void  vDropWrite(void);
     Word* pEachWord(Word* pPrior);
-    Word* pEachWord(Word* pPrior, Word* pCategory);
+    Word* pEachWordWc(Word* pPrior, eWC eCategory);
     Word* pFindWord(Stz* szWordNm);
     Word* pFindWord(Word* pSearchWord, Stz* szWordNm);
     Word* pFindStep(fpSTEPFN fpStepFn);

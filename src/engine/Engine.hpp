@@ -39,6 +39,7 @@ namespace ENGINE
     static void vIgnoreMemoryLeak(void);
     static void vInternalTables(void);
     static void vKillPrev(void);
+    static void vLoadTables(void);
     static void vLowMemoryDiscard(void);
     static void vMungeCheck(void);
     static void vNoMemoryLogging(void);
