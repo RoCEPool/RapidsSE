@@ -78,6 +78,11 @@ CardCtl::CardCtl(void)
 
   vPrintProperties(CK_TERM,false);
 
+
+  vTfmPrint(OT_vLinearize_stages,false);
+  vTfmPrint(OT_vDelete_combines,false);
+  vTfmPrint(OT_vDelete_sends,false);
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 }
 

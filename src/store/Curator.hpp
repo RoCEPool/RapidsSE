@@ -19,9 +19,9 @@ namespace STORE
     void  operator delete(void*);
   
     Curator(Bench* pBench);
-  
    ~Curator(void) noexcept(false);
 
+    void vChangeAll_scan_To_retrieve(void);
   private:
 
     Footer* aFooter(void);

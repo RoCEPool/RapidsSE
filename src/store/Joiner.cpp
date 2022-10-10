@@ -90,6 +90,20 @@ void Joiner::vAppend_preliminary_indexJoin(void)
   vPrintBoard();
 }
 
+/*----------------------------------------------------------------------------*/
+/* delete sends                                                               */
+/*----------------------------------------------------------------------------*/
+void Joiner::vDeleteAll_absJoin(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_JOINER, _FOOTER_);
+
+  vTransformation(OT_vDeleteAll_absJoin);
+  vExplain("Blah"_Stz);
+
+  vRemoveDeleteMains(CK_ABSJOIN);
+
+  vPrintBoard();
+}
 
 /*----------------------------------------------------------------------------*/
 /* form <joinPred>                                                            */

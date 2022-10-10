@@ -136,6 +136,9 @@ void Transformer::vTransform2(void)
   // combine all cards for leading stages of topo ALL PARTITIONS
   m_pStager->vLinearize_stages();
 
+  // delete all <absJoin>
+  m_pJoiner->vDeleteAll_absJoin();
+
   // delete all <combined>
   m_pCombiner->vDelete_combines();
 

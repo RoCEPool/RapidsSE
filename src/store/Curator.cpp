@@ -40,6 +40,26 @@ Curator::~Curator(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* change all scan to retrieve                            *<scan>-><retrieve> */
+/*----------------------------------------------------------------------------*/
+void Curator::vChangeAll_scan_To_retrieve(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_JOINER, _FOOTER_);
+
+  vTransformation(OT_vChangeAll_scan_To_retrieve);
+  vExplain("Blah"_Stz);
+
+  BoardIter xBI(m_pBoard);
+
+  vRemoveDeleteMains(CK_ABSJOIN);
+  while ((m_pMainCard = xBI.pEachMain(CK_SCAN)))
+    m_pMainCard->vCard(CK_RETRIEVE);
+
+  vPrintBoard();
+}
+
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/

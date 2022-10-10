@@ -279,10 +279,17 @@ Card* TransformerTool::pFindMainOf(Card* pGivenCard, Card*& rpParentCard)
 /*----------------------------------------------------------------------------*/
 /* print the board                                                            */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::vPrintBoard()
+void TransformerTool::vPrintBoard(void)
 {
-  if (m_bInteractive)
-    m_pBoard->vPrintBoard(aOT[m_eTranformation],m_sExplain);
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  if (m_pBench->pCardCtl()->bTfmPrint(m_eTranformation)) {
+    if (m_bInteractive)
+      m_pBoard->vPrintBoard(aOT[m_eTranformation], m_sExplain);
+  }
+  else {
+    vTrace("SILENT : %s\n"_Stz,aOT[m_eTranformation]);
+  }
 
   m_sExplain = ""_Stz;
 }
