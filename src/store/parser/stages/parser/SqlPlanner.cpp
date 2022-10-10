@@ -788,19 +788,11 @@ antlrcpp::Any SqlPlanner::visitSelectQuery(sqlParser::SelectQueryContext *pCtx)
   }
 
   if (pCtx->LIMIT()) {
-    i8 iLimit = iCleanInt(pCtx->limit);
+    i8 iLimit = (i8) uCleanInt(pCtx->limit);
     i8 iOffset = -1;
 
-    if (iLimit < 0) {
-      SemanticException::vThrow(EC_INVALID_LIMIT_VALUE);
-    }
-
     if (pCtx->OFFSET()) {
-      iOffset = iCleanInt(pCtx->offset);
-
-      if (iOffset < -1) {
-        SemanticException::vThrow(EC_INVALID_OFFSET_VALUE);
-      }
+      iOffset = (i8) uCleanInt(pCtx->offset);
     }
 
     // Create the limit op
@@ -1005,19 +997,11 @@ antlrcpp::Any SqlPlanner::visitSetQuery(sqlParser::SetQueryContext *pCtx)
     }
 
     if (pCtx->LIMIT()) {
-      i8 iLimit = iCleanInt(pCtx->limit);
+      i8 iLimit = (i8) uCleanInt(pCtx->limit);
       i8 iOffset = -1;
 
-      if (iLimit < 0) {
-        SemanticException::vThrow(EC_INVALID_LIMIT_VALUE);
-      }
-
       if (pCtx->OFFSET()) {
-        iOffset = iCleanInt(pCtx->offset);
-
-        if (iOffset < -1) {
-          SemanticException::vThrow(EC_INVALID_OFFSET_VALUE);
-        }
+        iOffset = (i8) uCleanInt(pCtx->offset);
       }
 
       // Create the limit op
@@ -2465,6 +2449,13 @@ antlrcpp::Any SqlPlanner::visitLikeOp(sqlParser::LikeOpContext *pCtx)
   QueryNode* pPatternExpr   = m_pExprStack->pPop();
   QueryNode* pPredicandExpr = m_pExprStack->pPop();
 
+  // Temporary workaround for backend limitation
+  if (!LiteralExpr::bIsOfType(pPatternExpr)) {
+    delete pPatternExpr;
+    delete pPredicandExpr;
+    SemanticException::vThrow(EC_EXPR_MUST_BE_LITERAL, ": LIKE pattern"_Stz);
+  }
+
   QueryNode* pLikeExpr = LikeExpr::pCreate(pPredicandExpr, pPatternExpr, nullptr);
 
   // Put the LIKE operator back onto the expression stack
@@ -2495,6 +2486,20 @@ antlrcpp::Any SqlPlanner::visitLikeEscapeOp(sqlParser::LikeEscapeOpContext *pCtx
   QueryNode* pEscapeExpr    = m_pExprStack->pPop();
   QueryNode* pPatternExpr   = m_pExprStack->pPop();
   QueryNode* pPredicandExpr = m_pExprStack->pPop();
+
+  // Temporary workaround for backend limitation
+  if (!LiteralExpr::bIsOfType(pPatternExpr)) {
+    delete pPatternExpr;
+    delete pPredicandExpr;
+    delete pEscapeExpr;
+    SemanticException::vThrow(EC_EXPR_MUST_BE_LITERAL, ": LIKE pattern expression"_Stz);
+
+  } else if (!LiteralExpr::bIsOfType(pEscapeExpr)) {
+    delete pPatternExpr;
+    delete pPredicandExpr;
+    delete pEscapeExpr;
+    SemanticException::vThrow(EC_EXPR_MUST_BE_LITERAL, ": LIKE escape expression"_Stz);
+  }
 
   if (pEscapeExpr &&
       Expr::bIsFullyLiteral(pEscapeExpr) &&
@@ -3057,6 +3062,73 @@ i8 SqlPlanner::iCleanInt(std::string& sStr)
   }
 
   return iVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Return an unsigned integer value from an unsigned integer literal token    */
+/*----------------------------------------------------------------------------*/
+u8 SqlPlanner::uCleanInt(sqlParser::SignedIntegerLiteralContext *pCtx)
+{
+  ASSERT(pCtx);
+
+  std::string sStr = pCtx->getText();
+  return uCleanInt(sStr);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Return an unsigned integer value from an unsigned integer literal token    */
+/*----------------------------------------------------------------------------*/
+u8 SqlPlanner::uCleanInt(sqlParser::IntegerLiteralContext *pCtx)
+{
+  ASSERT(pCtx);
+
+  std::string sStr = pCtx->getText();
+  return uCleanInt(sStr);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Return an unsigned integer value from an unsigned integer literal token    */
+/*----------------------------------------------------------------------------*/
+u8 SqlPlanner::uCleanInt(antlr4::Token* pToken)
+{
+  ASSERT(pToken);
+
+  std::string sStr = pToken->getText();
+  return uCleanInt(sStr);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Return an unsigned integer value from an unsigned integer literal token    */
+/*----------------------------------------------------------------------------*/
+u8 SqlPlanner::uCleanInt(std::string& sStr)
+{
+  u8 uVal;
+
+  try {
+    uVal = std::stoull(sStr);
+
+  } catch (std::invalid_argument &e) {
+    SemanticException::vThrow(EC_INVALID_INTEGER_FORMAT,
+                              ": \"%s\""_Stz,
+                              sStr.c_str());
+
+  } catch (std::out_of_range &e) {
+    SemanticException::vThrow(EC_INVALID_INTEGER_FORMAT,
+                              ": Value of out range: \"%s\". Valid range is %lld to %lld"_Stz,
+                              sStr.c_str(), 0, C_INT_MAX);
+  }
+
+  // Because NULL is represented as a bit pattern, we need to restrict the
+  // literal value range a little bit further. Refer to the definitions in
+  // the file Fragments.cpp (specifically C_DATUM_NULL).
+
+  if (uVal > 9223372036854775806) {
+    SemanticException::vThrow(EC_INVALID_INTEGER_FORMAT,
+                              ": Value of out range: \"%s\". Valid range is %lld to %lld"_Stz,
+                              sStr.c_str(), 0, C_INT_MAX);
+  }
+
+  return uVal;
 }
 
 /*----------------------------------------------------------------------------*/

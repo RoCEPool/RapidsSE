@@ -97,13 +97,19 @@ Card::Card(eCK eCard)
 : Object(CN_CARD)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-          
+
+  static i8 iSeqNo = 0;
+
+  MemLib::vZero(m_caRef,sizeof(m_caRef),CN_CARD);
+
   m_eCard    = eCard;
   m_eCatg    = Card::eToECatg(eCard);
   m_iCardNo  = C_UNKNOWN;
-  
+
+  m_iSeqNo   = iSeqNo++;
+
   m_cMark1   = ' ';
-  m_cMark2   = ' ';
+  m_cMark2   = '!';
 
   m_pProperties = nullptr;
   
@@ -111,6 +117,7 @@ Card::Card(eCK eCard)
   
   _checkInitialised_(CN_CARD);
 
+  //vTrace("Card [%02lld] %p\n"_Stz,m_iSeqNo,this);
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
@@ -120,6 +127,8 @@ Card::Card(eCK eCard)
 Card::~Card(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  //vTrace("Card [~%02lld] %p\n"_Stz,m_iSeqNo,this);
 
   for (Card* pCard = pPop(); pCard; pCard = pPop())
     delete pCard;
@@ -189,14 +198,15 @@ bool Card::bIsSub(eCK eCard)
     case CK_AGGELIST:
     case CK_AGGLEVEL:
     case CK_AS:
-                      
+
+    case CK_CALC:
+
     case CK_DIRECTION:
               
     case CK_EBOUND:
     case CK_EXPR:
     case CK_EXPRBOOL:
-    case CK_EXPRCALC:
-              
+
     case CK_FILTELIST:
       
     case CK_GBYELIST:
@@ -295,10 +305,12 @@ eGC Card::eToECatg(eCK eCard)
     case CK_AGGELIST:                    return GC_SUB;
     case CK_AGGLEVEL:                    return GC_SUB;
     case CK_AGGREG:     return GC_MAIN;
+    case CK_AGGREGATES:                  return GC_SUB;
     case CK_AS:                          return GC_SUB;
                                    
     case CK_BOARD:                                      return GC_OTHER;
-      
+
+    case CK_CALC:                        return GC_SUB;
     case CK_CANDINDEX:  return GC_MAIN;
     case CK_COMBINE:    return GC_MAIN;
                                     
@@ -309,8 +321,7 @@ eGC Card::eToECatg(eCK eCard)
     case CK_EXISTS:     return GC_MAIN;
     case CK_EXPR:                        return GC_SUB;
     case CK_EXPRBOOL:                    return GC_SUB;
-    case CK_EXPRCALC:                    return GC_SUB;
-              
+
     case CK_FILTER:     return GC_MAIN;
     case CK_FILTELIST:                   return GC_SUB;
 
@@ -335,7 +346,7 @@ eGC Card::eToECatg(eCK eCard)
     case CK_ON:                          return GC_SUB;
     case CK_OPTION:                      return GC_SUB;
     case CK_ORDAGG:     return GC_MAIN;
-    case CK_OBYELIST:                  return GC_SUB;
+    case CK_OBYELIST:                    return GC_SUB;
               
     case CK_PREDAND:                     return GC_SUB;
     case CK_PREDCMP:                     return GC_SUB;
@@ -356,6 +367,8 @@ eGC Card::eToECatg(eCK eCard)
     case CK_STAGE:      return GC_MAIN;
     case CK_STAGETOPO:                   return GC_SUB;
     case CK_STREAM:                      return GC_SUB;
+    case CK_STREAMCOL:                   return GC_SUB;
+    case CK_STREAMCOLLIST:               return GC_SUB;
     case CK_STREAMELIST:                 return GC_SUB;
     case CK_SUBSET:                      return GC_SUB;
                     
@@ -524,10 +537,13 @@ void Card::vCutSubCard(Card* pSubCard)
 /*----------------------------------------------------------------------------*/
 /* dum card and its sub cards                                                 */
 /*----------------------------------------------------------------------------*/
-void Card::vDump(i8 iDepth)
+void Card::vDump(i8 iDepth, Stz* szTitle)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
+
+  if (szTitle)
+    vTrace("%s:\n"_Stz,szTitle);
+
   s48K sProperties;
   
   if (m_pProperties)
@@ -535,14 +551,20 @@ void Card::vDump(i8 iDepth)
   else
     sProperties = "no properties"_Stz;
   
-  vTrace("%s%lld %s %s { %s }\n"_Stz
+//  vTrace("%s%lld %s %s { %s }\n"_Stz
+//         ,Stz::szTab(iDepth)
+//         ,m_iCardNo
+//         ,szCardNm()
+//         ,aCK[m_eCard]
+//         ,sProperties.szStz()
+//         );
+
+  vTrace("%s%s { %s }\n"_Stz
          ,Stz::szTab(iDepth)
-         ,m_iCardNo
-         ,szCardNm()
-         ,aCK[m_eCard]
+         ,m_caRef
          ,sProperties.szStz()
          );
-  
+
   i8 nSubCards = this->nSubCards();
   for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++)
     pGetSubCard(i_Sub)->vDump(iDepth+1);
@@ -556,7 +578,11 @@ Card* Card::pDupCardAndSubCards(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   Card* pCard_dup = new Card(m_eCard);
-  
+  if (m_pProperties) {
+    pCard_dup->vPropertiesEnsure();
+    pCard_dup->pProperties()->vCopy(m_pProperties);
+  }
+
   i8 nSubCards = this->nSubCards();
   for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
     Card* pSubCard = pGetSubCard(i_SubCard);
@@ -1041,23 +1067,43 @@ void Card::vRemoveSubCard(Card* pCardRemove)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card::vRenumberCards(void)
+void Card::vRenumberSubCards(Card* pParentCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  ListExoIter2_t<Card>* pBoard_I = pNewIter();
 
-  i8 iCardNo = 0;
-  while (pBoard_I->bHasNext()) {
-    Card* pCard = pBoard_I->pNext();
-    
-    pCard->vCardNo(iCardNo++);
-    pCard->vRenumberCards();
+  ListExoIter2_t<Card>* pSubCard_I = pNewIter();
+
+  vRef(pParentCard);
+
+  i8 iSubCardNo = 0;
+  while (pSubCard_I->bHasNext()) {
+    Card* pSubCard = pSubCard_I->pNext();
+
+    pSubCard->vCardNo(iSubCardNo++);
+    pSubCard->vRenumberSubCards(this);
   }
-  
-  delete pBoard_I;
-}
 
+  delete pSubCard_I;
+
+  vRef();
+}
+/*----------------------------------------------------------------------------*/
+//void Card::vRenumberMainCards(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+//
+//  ListExoIter2_t<Card>* pBoard_I = pNewIter();
+//
+//  i8 iCardNo = 0;
+//  while (pBoard_I->bHasNext()) {
+//    Card* pCard = pBoard_I->pNext();
+//
+//    pCard->vCardNo(iCardNo++);
+//    pCard->vRenumberMainCards();
+//  }
+//
+//  delete pBoard_I;
+//}
 /*----------------------------------------------------------------------------*/
 /* get number of sub-cards                                                    */
 /*----------------------------------------------------------------------------*/
@@ -1849,6 +1895,47 @@ void Card::vRank(i8 iRank)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set ref                                                                    */
+/*----------------------------------------------------------------------------*/
+void Card::vRef(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  s4K sPretty;
+
+  sPretty = aCK[m_eCard];
+
+  if (m_pProperties) {
+    s4K sProperties;
+    m_pProperties->vToString(sProperties,true);
+    sPretty.vConcat(": "_Stz);
+    sPretty.vConcat(sProperties);
+  }
+
+  strcat(m_caRef," ");
+  strcat(m_caRef,sPretty.azChar());
+
+  //  vTrace("%s\n"_Stz,m_caRef);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set ref                                                                    */
+/*----------------------------------------------------------------------------*/
+void Card::vRef(Card* pParentCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (pParentCard) {
+    sprintf(m_caRef,"%s.%lld", pParentCard->m_caRef, m_iCardNo);
+  }
+  else {
+    sprintf(m_caRef,"%lld",m_iCardNo);
+  }
+
+//  vTrace("%s\n"_Stz,m_caRef);
+}
+
+/*----------------------------------------------------------------------------*/
 /* evaluate relational op                                                     */
 /*----------------------------------------------------------------------------*/
 eRO Card::eRelOp(void)
@@ -2098,6 +2185,7 @@ eTE Card::eTermEval(void)
   Stz* szTerm = this->szTerm();
   
        if (szTerm->bSame("and"_Stz))     return TE_AND;
+  else if (szTerm->bSame("as"_Stz))      return TE_AS;
   else if (szTerm->bSame("boolean"_Stz)) return TE_BOOLEAN;
   else if (szTerm->bSame("or"_Stz))      return TE_OR;
   else if (szTerm->bSame("type"_Stz))    return TE_TYPE;
@@ -2185,7 +2273,8 @@ void Card::vPrintCard(Ribbon* pRibbon, i8 iDepth, i8 iBelow)
     }
     vPrintDetails(pRibbon,iDepth,bPrune);
   }
-  
+
+  vMark2(' ');
   if (bPrune)
     return;
   
@@ -2216,8 +2305,10 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
     case CK_AGGELIST:                   vPrintProperties(pRibbon,iDepth); break;
     case CK_AGGLEVEL:                   vPrintProperties(pRibbon,iDepth); break;
     case CK_AGGREG:                     vPrintProperties(pRibbon,iDepth); break;
+    case CK_AGGREGATES:                 vPrintProperties(pRibbon,iDepth); break;
     case CK_AS:                         vPrintProperties(pRibbon,iDepth); break;
-                        
+
+    case CK_CALC:                       vPrintProperties(pRibbon,iDepth); break;
     case CK_CANDINDEX:                  vPrintProperties(pRibbon,iDepth); break;
     case CK_COMBINE:                    vPrintProperties(pRibbon,iDepth); break;
                         
@@ -2228,7 +2319,6 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
     case CK_EXISTS:                     vPrintProperties(pRibbon,iDepth); break;
     case CK_EXPR:                       vPrintProperties(pRibbon,iDepth); break;
     case CK_EXPRBOOL:                   vPrintProperties(pRibbon,iDepth); break;
-    case CK_EXPRCALC:                   vPrintProperties(pRibbon,iDepth); break;
 
     case CK_FILTER:                     vPrintProperties(pRibbon,iDepth); break;
     case CK_FILTELIST:                  vPrintProperties(pRibbon,iDepth); break;
@@ -2274,6 +2364,8 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
     case CK_STAGE:                      vPrintProperties(pRibbon,iDepth); break;
     case CK_STAGETOPO:                  vPrintProperties(pRibbon,iDepth); break;
     case CK_STREAM:                     vPrintProperties(pRibbon,iDepth); break;
+    case CK_STREAMCOL:                  vPrintProperties(pRibbon,iDepth); break;
+    case CK_STREAMCOLLIST:              vPrintProperties(pRibbon,iDepth); break;
     case CK_SUBSET:                     vPrintProperties(pRibbon,iDepth); break;
       
     case CK_TABLE:      vTablePrint                     (pRibbon,iDepth); break;
@@ -2508,7 +2600,7 @@ void Card::vStreamElistPrint(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
     Card_As*   pCard_As   = _pCard_As  (pCard_Expr->pFindSubCard(CK_AS));
 
     pRibbon->vSprintRight("%s %c"_Stz
-                          ,pCard_As->szAs()
+                          ,pCard_As ? pCard_As->szAs() : "??AS?"_Stz
                           ,pCard_Type->cTypeShort()
                           );
 

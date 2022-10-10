@@ -41,6 +41,8 @@ C_PROJ_ROOT = "../.."
 C_CLOUD_INIT_SCRIPT = f"{C_PROJ_ROOT}/bamboo/common/aws/cloud-init-downloader.sh"
 C_INSTANCE_NAME_PREFIX = "PerfTest"
 
+C_CLOUD_INIT_LOG_PATH: pathlib.Path = pathlib.Path("/cloud-init-output.log")
+
 
 class JobRunner:
     """Coordinates and runs a job, specified by a job config file"""
@@ -229,6 +231,11 @@ class JobRunner:
         # Start up the necessary AWS hosts
         tags = {"jobResultId": str(job_result_id), "jobId": str(job_id)}
 
+        # Where to copy cloud-init logs if a machine doesn't start.
+        suffix = C_CLOUD_INIT_LOG_PATH.suffix
+        cloudinit_dest_filename = f"{C_CLOUD_INIT_LOG_PATH.name.removesuffix(suffix)}.txt"
+        cloudinit_dest = pathlib.Path(self.result_path) / cloudinit_dest_filename
+
         (self.instance_ids, self.ip_addresses) = \
             ec2.start_instances(self.all_configs.get_hardware().get_instance_type(),
                                 self.all_configs.get_hardware().get_image_id(),
@@ -237,7 +244,9 @@ class JobRunner:
                                 C_INSTANCE_NAME_PREFIX,
                                 C_EC2_BOOT_TIMEOUT_SEC,
                                 self.all_configs.get_hardware().get_use_spot_instances(),
-                                tags)
+                                tags,
+                                cloudinit_src=C_CLOUD_INIT_LOG_PATH,
+                                cloudinit_dest=cloudinit_dest)
 
         assert len(self.instance_ids) > 0
         assert len(self.ip_addresses) > 0

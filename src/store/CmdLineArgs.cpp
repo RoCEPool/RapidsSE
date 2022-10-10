@@ -78,6 +78,7 @@ void CmdLineArgs::vInit(void)
   
   m_xSysArgs.m_iConnectCode  = C_UNKNOWN;
   m_xSysArgs.m_sGridName     = "SEgrid"_Stz;
+  m_xSysArgs.m_sLogFile      = ""_Stz;
   m_xSysArgs.m_sNodeName     = "node"_Stz;
   m_xSysArgs.m_sPageFilePath = "../../tmp/pfile.dat"_Stz;
   m_xSysArgs.m_nPtnsPerNode  = 4;
@@ -250,13 +251,13 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       m_xSysArgs.m_bAddNode = true;
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--address"_Stz)) {
       m_xSysArgs.m_aRegionAddr = (void*)argv[++i_Arg].iToI8();
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--appendTrace"_Stz)) {
       m_xSysArgs.m_bAppendTrace = true;
@@ -275,7 +276,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       m_xSysArgs.m_iClusterID = argv[i_Arg].iToI8();
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--command"_Stz)) {
       m_xSysArgs.m_sCommand = (Stz*)argv[++i_Arg];
@@ -285,7 +286,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       m_xSysArgs.m_bWelcome = false;
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--commands"_Stz)) {
       if(argv[++i_Arg].bContains("--"_Stz))
@@ -298,31 +299,31 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       m_xSysArgs.m_sCommandsDir = (Stz*)argv[i_Arg];
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--condCode"_Stz)) {
       m_xSysArgs.m_iCondCode = argv[++i_Arg].iToI8();
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--config"_Stz)) {
       m_xSysArgs.m_bConfig = true;
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--connectCode"_Stz)) {
       m_xSysArgs.m_iConnectCode = argv[++i_Arg].iToI8();
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--debugIndex"_Stz)) {
       m_xSysArgs.m_bDebugIndex = true;
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--debugMode"_Stz)) {
       m_xSysArgs.m_bDebugMode = true;
@@ -340,43 +341,43 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       m_xSysArgs.m_nDemonSleep = argv[++i_Arg].iToI8();
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--derefMetrics"_Stz)) {
       m_xSysArgs.m_bDerefMetrics = true;
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--developer"_Stz)) {
       m_xSysArgs.m_bDeveloper = true;
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--distJob"_Stz)) {
       m_xSysArgs.m_bDistJob = true;
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--dontFree"_Stz)) {
       m_xSysArgs.m_bDontFree = true;
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--dummyLoop"_Stz)) {
       m_xSysArgs.m_nDummyLoop = argv[++i_Arg].iToI8();
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--dummySleep"_Stz)) {
       m_xSysArgs.m_nDummySleep = argv[++i_Arg].iToI8();
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--dummyThreads"_Stz)) {
       m_xSysArgs.m_nDummyThreads = argv[++i_Arg].iToI8();
@@ -396,26 +397,26 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       m_xSysArgs.m_nEntries = argv[++i_Arg].iToI8();
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     if (szArg->bSame("--events"_Stz)) {
       m_xSysArgs.m_bEvents = true;
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--freeSpecific"_Stz)) {
       m_xSysArgs.m_bFreeSpecific = true;
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--gridName"_Stz)) {
       m_xSysArgs.m_sGridName = (Stz*)argv[++i_Arg];
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--gridTest"_Stz)) {
       m_xSysArgs.m_bGridTest = true;
@@ -452,7 +453,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       }
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (
         argv[i_Arg].bSame("--help"_Stz)
@@ -465,44 +466,66 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       vPrintHelp();
       Process::vExitSuccess();
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--hugepages"_Stz)) {
       m_xSysArgs.m_bHugePages = true;
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--initial"_Stz)) {
       m_xSysArgs.m_bInitial = true;
       m_xSysArgs.m_sInitial = (Stz*)argv[++i_Arg];
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--jobMetrics"_Stz)) {
       m_xSysArgs.m_bJobMetrics = true;
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--jot"_Stz)) {
       vJotDebug(3);
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--killPrev"_Stz)) {
       m_xSysArgs.m_bKillPrev = true;
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--lockTracking"_Stz)) {
       m_xSysArgs.m_bLockTracking = true;
       continue;
     }
-    
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (szArg->bSame("--logFile"_Stz)) {
+      if (m_xSysArgs.m_bStart) {
+        vPrintErrorMarker(argv, i_Arg);
+        vTrace("Incorrect argument: --start with %s\n"_Stz,argv[i_Arg].szStz());
+        return false;
+      }
+      if (m_xSysArgs.m_bStatus) {
+        vPrintErrorMarker(argv, i_Arg);
+        vTrace("Incorrect argument: --status with %s\n"_Stz,argv[i_Arg].szStz());
+        return false;
+      }
+      if (m_xSysArgs.m_bStop) {
+        vPrintErrorMarker(argv, i_Arg);
+        vTrace("Incorrect argument: --stop with %s\n"_Stz,argv[i_Arg].szStz());
+        return false;
+      }
+
+      m_xSysArgs.m_sLogFile = (Stz*)argv[++i_Arg];
+      continue;
+    }
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--lvlLevels"_Stz)) {
       m_xSysArgs.m_nLvlLevels = argv[++i_Arg].iToI8();
@@ -520,7 +543,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       }
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--lvlRatio"_Stz)) {
       m_xSysArgs.m_iLvlRatio = argv[++i_Arg].iToI8();
@@ -538,31 +561,31 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       }
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--maxLoadErrors"_Stz)) {
       m_xSysArgs.m_nMaxLoadErrors = argv[++i_Arg].iToI8();
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--maxReadyLP"_Stz)) {
       m_xSysArgs.m_nMaxReadyLP = argv[++i_Arg].iToI8();
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--metadata"_Stz)) {
       m_xSysArgs.m_bMetadata = true;
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--metricsSleep"_Stz)) {
       m_xSysArgs.m_nMetricsSleep = argv[++i_Arg].iToI8();
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--munged"_Stz)) {
       m_xSysArgs.m_bMunged = true;
@@ -617,37 +640,37 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       m_xSysArgs.m_bNoMunge = true;
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--noprogress"_Stz)) {
       m_xSysArgs.m_bProgress = false;
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--notouch"_Stz)) {
       m_xSysArgs.m_bTouch = false;
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--nowelcome"_Stz)) {
       m_xSysArgs.m_bWelcome = false;
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--operands"_Stz)) {
       m_xSysArgs.m_nOperands = argv[++i_Arg].iToI8();
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--operandYield"_Stz)) {
       m_xSysArgs.m_nOperandYield = argv[++i_Arg].iToI8();
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--optimiserLvl"_Stz)) {
       m_xSysArgs.m_iOptimiserLvl = argv[++i_Arg].iToI8();
@@ -678,10 +701,10 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
           C_MAX_PTNSPERNODE);
         return false;
       }
-      
+
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--periodicSleep"_Stz)) {
       m_xSysArgs.m_nPeriodicSleep = argv[++i_Arg].iToI8();
@@ -693,7 +716,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       m_xSysArgs.m_sPageFilePath = (Stz*)argv[++i_Arg];
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--progress"_Stz)) {
       m_xSysArgs.m_bProgress = true;
@@ -702,29 +725,23 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--prompt"_Stz)) {
-      
+
       if (m_xSysArgs.m_bStop) {
         vPrintErrorMarker(argv, i_Arg);
         vTrace("Incorrect argument: --stop with %s\n"_Stz,argv[i_Arg].szStz());
         return false;
       }
-      
+
       if (m_xSysArgs.m_bStatus) {
         vPrintErrorMarker(argv, i_Arg);
         vTrace("Incorrect argument: --status with %s\n"_Stz,argv[i_Arg].szStz());
         return false;
       }
-      
-      if (m_xSysArgs.m_bSethScript) {
-        vPrintErrorMarker(argv, i_Arg);
-        vTrace("Incorrect argument: --script with %s\n"_Stz,argv[i_Arg].szStz());
-        return false;
-      }
-      
+
       m_xSysArgs.m_bPrompt = true;
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--promptDebug"_Stz)) {
       m_xSysArgs.m_iPromptDebug = argv[++i_Arg].iToI8();
@@ -736,38 +753,38 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       m_xSysArgs.m_sRegionName = (Stz*)argv[++i_Arg];
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--regionPrefix"_Stz)) {
       m_xSysArgs.m_sRegionPrefix = (Stz*)argv[++i_Arg];
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--reload"_Stz)) {
       m_xSysArgs.m_bReload = true;
       m_xSysArgs.m_sReloadFilePath = (Stz*)argv[++i_Arg];
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     //if (argv[iArg]->bSame("--restart"_Stz)) {
     //  m_xSysArgs.m_bRestart = true;
     //  continue;
     //}
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--RLUdiary"_Stz)) {
       m_xSysArgs.m_bRLUDiary = true;
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--RLUTimer"_Stz)) {
       m_xSysArgs.m_bRLUTimer = true;
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--script"_Stz)) {
       if (m_xSysArgs.m_bStop) {
@@ -780,38 +797,33 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
         vTrace("Incorrect argument: --status with %s\n"_Stz,argv[i_Arg].szStz());
         return false;
       }
-      if (m_xSysArgs.m_bPrompt) {
-        vPrintErrorMarker(argv, i_Arg);
-        vTrace("Incorrect argument: --prompt with %s\n"_Stz,argv[i_Arg].szStz());
-        return false;
-      }
       m_xSysArgs.m_bSethScript = true;
       m_xSysArgs.m_bWelcome = false;
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--seprompt"_Stz)) {
       m_xSysArgs.m_bPrompt = true;
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--sen"_Stz)) {
       m_xSysArgs.m_sSenDir = (Stz*)argv[++i_Arg];
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // lock shared memory pages in memory
     if (szArg->bSame("--shmlock"_Stz)) {
       m_xSysArgs.m_bShmLock = true;
       continue;
     }
-        
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--size"_Stz)) {
-      
+
       bool bResult = MagLib::bToBytes((Stz*)argv[++i_Arg], m_xSysArgs.m_iRegionSize);
       if (!bResult) {
         vPrintErrorMarker(argv, i_Arg);
@@ -819,7 +831,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
         vTrace("Usage: --size <no>kb|mb|gb|tb|pb"_Stz);
         return false;
       }
-      
+
       i8 iTotalMemory = MemLib::iGetTotalMemory();
       if (! m_xSysArgs.m_bDeveloper) {
 
@@ -837,20 +849,20 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
           return false;
         }
       }
-      
+
       s32 sMinSize;
       MagLib::vByteMag(C_MIN_SHM_REGION, sMinSize);
-      
+
       s32 sSize;
       MagLib::vByteMag(m_xSysArgs.m_iRegionSize, sSize);
-      
+
       if (m_xSysArgs.m_iRegionSize < C_MIN_SHM_REGION) {
         vTrace("Insufficient region size: %s. At least %s is required\n"_Stz,
               sSize.szStz(),
               sMinSize.szStz());
         return false;
       }
-            
+
       continue;
     }
 
@@ -862,7 +874,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--start"_Stz)) {
-      
+
       if (m_xSysArgs.m_bStop) {
         vPrintErrorMarker(argv, i_Arg);
         vTrace("Incorrect argument: --stop with %s\n"_Stz,argv[i_Arg].szStz());
@@ -873,11 +885,11 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
         vTrace("Incorrect argument: --status with %s\n"_Stz,argv[i_Arg].szStz());
         return false;
       }
-      
+
       m_xSysArgs.m_bStart = true;
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--status"_Stz)) {
       if (m_xSysArgs.m_bStop) {
@@ -895,14 +907,14 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
         vTrace("Incorrect argument: --prompt with %s\n"_Stz,argv[i_Arg].szStz());
         return false;
       }
-      
+
       m_xSysArgs.m_bStatus = true;
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--stop"_Stz)) {
-      
+
       if (m_xSysArgs.m_bStart) {
         vPrintErrorMarker(argv, i_Arg);
         vTrace("Incorrect argument: --start with %s\n"_Stz,argv[i_Arg].szStz());
@@ -918,17 +930,17 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
         vTrace("Incorrect argument: --prompt with %s\n"_Stz,argv[i_Arg].szStz());
         return false;
       }
-      
+
       m_xSysArgs.m_bStop = true;
       continue;
     }
-        
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--sysMetrics"_Stz)) {
       m_xSysArgs.m_bSysMetrics = true;
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--threads"_Stz)) {
       if ( ! StrLib::bIsInteger(argv[++i_Arg].azChar()) ) {
@@ -944,10 +956,10 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
                C_MAX_THREADS);
         return false;
       }
-      
+
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--touch"_Stz)) {
       m_xSysArgs.m_bTouch = true;
@@ -959,19 +971,19 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       m_xSysArgs.m_bTracepoint = true;
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--tracing"_Stz)) {
       m_xSysArgs.m_bTracing = true;
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--unlink"_Stz)) {
       m_xSysArgs.m_bUnlink = true;
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--VBlong"_Stz)) {
       m_xSysArgs.m_bVBlong = true;
@@ -983,7 +995,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       m_xSysArgs.m_bVerbose = true;
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--welcome"_Stz)) {
       m_xSysArgs.m_bWelcome = true;
@@ -998,20 +1010,20 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if ('<' == * szArg->azChar()) {
-      
+
       i8 i_TagArg = i_Arg + 1;
-      
+
       if (i_TagArg >= argc) {
         m_xSysArgs.m_oArgTags.vInsert(szArg);
         continue;
       }
-      
+
       Stz* szTagEqual = argv[i_TagArg];
       if ('=' != * szTagEqual->azChar()) {
         m_xSysArgs.m_oArgTags.vInsert(szArg);
         continue;
       }
-      
+
       // consume <tagNm>
       i_Arg++;
 
@@ -1027,11 +1039,23 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
 
       continue;
     }
-    
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     vPrintErrorMarker(argv, i_Arg);
     vTrace("Unrecognized command argument: %s\n"_Stz,argv[i_Arg].szStz());
     return false;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // if not in prompt mode, log file path should not be given
+  if ( ! m_xSysArgs.m_sLogFile.bIsEmpty() ) {
+
+    if( ! m_xSysArgs.m_bPrompt && ! m_xSysArgs.m_bSethScript)
+    {
+      vTrace("Incorrect argument: --logFile, can only specify log file path with --prompt or --script\n"_Stz);
+      return false;
+    }
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1048,18 +1072,18 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
 
   // if --node was defined just set the m_xSysArgs.m_nBootNodes
   if (i_BootNode) {
-    
+
     // set no. of nodes
     m_xSysArgs.m_nDefinedNodes = i_BootNode;
-    
+
     // some basic cluster validations
-    
+
     // there should be at aleast 2 nodes ina cluster
     // if (m_xSysArgs.m_nBootNodes < 2) {
     //   vTrace("Minimum two nodes should be there in a cluster\n"_Stz);
     //   return false;
     // }
-    
+
     // the current node should have been specfied in the --node
     bool bFound = false;
     for (i8 i_Test = 0; i_Test < m_xSysArgs.m_nDefinedNodes; i_Test++) {
@@ -1075,7 +1099,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
 //      vTrace("Add argument --name with name of this node from the --node definitions\n"_Stz);
 //      return false;
 //    }
-    
+
   } else {
     // add a single node
     // m_xSysArgs.m_nBootNodes = 1;
@@ -1098,21 +1122,219 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       return false;
     }
   }
-  
+
   if (m_xSysArgs.m_oArgTags.bHasName(C_NOSHOW_RECURRING))
     m_xSysArgs.m_oArgTags.vDelete(C_SHOW_RECURRING);
 
   //m_xSysArgs.m_oArgTags.vDumpSet(true);
-  
+
   if (m_xSysArgs.m_oArgTags.bHasName("<bamboo>"_Stz)) {
-    
+
     m_xSysArgs.m_oArgTags.vInsert("<show_command>"_Stz,1);
     //m_xSysArgs.m_oArgTags.vInsert("<show_op_report>"_Stz,1);
 
 //    if (m_xSysArgs.m_iRegionSize < C_8GB)
 //      m_xSysArgs.m_iRegionSize = C_8GB;
   }
-  
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse command line arguments to figure out trace file settings             */
+/*----------------------------------------------------------------------------*/
+bool CmdLineArgs::bParseTraceFileArgs(i8 argc, s256 argv[])
+{
+  for (i8 i_Arg = 1; i_Arg < argc; i_Arg++) {
+
+    Stz *szArg = argv[i_Arg];
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (szArg->bSame("--addNode"_Stz)) {
+      m_xSysArgs.m_bAddNode = true;
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (szArg->bSame("--command"_Stz)) {
+      m_xSysArgs.m_sCommand = (Stz*)argv[++i_Arg];
+      vTrace("command %s\n"_Stz, m_xSysArgs.m_sCommand.azChar());
+      m_xSysArgs.m_bCommand = true;
+      m_xSysArgs.m_bPrompt  = true;
+      m_xSysArgs.m_bWelcome = false;
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (szArg->bSame("--commands"_Stz)) {
+      if(argv[++i_Arg].bContains("--"_Stz))
+      {
+        vPrintErrorMarker(argv, i_Arg);
+        vTrace("Invalid commands argument value: %s\n"_Stz, (Stz*)argv[i_Arg]);
+        vTrace("Usage: --commands <path> (path to commands directory)\n"_Stz);
+        return false;
+      }
+      m_xSysArgs.m_sCommandsDir = (Stz*)argv[i_Arg];
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (szArg->bSame("--developer"_Stz)) {
+      m_xSysArgs.m_bDeveloper = true;
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (szArg->bSame("--logFile"_Stz)) {
+      if (m_xSysArgs.m_bStart) {
+        vPrintErrorMarker(argv, i_Arg);
+        vTrace("Incorrect argument: --start with %s\n"_Stz,argv[i_Arg].szStz());
+        return false;
+      }
+      if (m_xSysArgs.m_bStatus) {
+        vPrintErrorMarker(argv, i_Arg);
+        vTrace("Incorrect argument: --status with %s\n"_Stz,argv[i_Arg].szStz());
+        return false;
+      }
+      if (m_xSysArgs.m_bStop) {
+        vPrintErrorMarker(argv, i_Arg);
+        vTrace("Incorrect argument: --stop with %s\n"_Stz,argv[i_Arg].szStz());
+        return false;
+      }
+
+      m_xSysArgs.m_sLogFile = (Stz*)argv[++i_Arg];
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (szArg->bSame("--name"_Stz) || argv[i_Arg].bSame("--nodeName"_Stz)) {
+      m_xSysArgs.m_sNodeName = (Stz*)argv[++i_Arg];
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (szArg->bSame("--prompt"_Stz)) {
+
+      if (m_xSysArgs.m_bStop) {
+        vPrintErrorMarker(argv, i_Arg);
+        vTrace("Incorrect argument: --stop with %s\n"_Stz,argv[i_Arg].szStz());
+        return false;
+      }
+
+      if (m_xSysArgs.m_bStatus) {
+        vPrintErrorMarker(argv, i_Arg);
+        vTrace("Incorrect argument: --status with %s\n"_Stz,argv[i_Arg].szStz());
+        return false;
+      }
+
+      m_xSysArgs.m_bPrompt = true;
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (szArg->bSame("--start"_Stz)) {
+
+      if (m_xSysArgs.m_bStop) {
+        vPrintErrorMarker(argv, i_Arg);
+        vTrace("Incorrect argument: --stop with %s\n"_Stz,argv[i_Arg].szStz());
+        return false;
+      }
+      if (m_xSysArgs.m_bStatus) {
+        vPrintErrorMarker(argv, i_Arg);
+        vTrace("Incorrect argument: --status with %s\n"_Stz,argv[i_Arg].szStz());
+        return false;
+      }
+
+      m_xSysArgs.m_bStart = true;
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (szArg->bSame("--seprompt"_Stz)) {
+      m_xSysArgs.m_bPrompt = true;
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (szArg->bSame("--status"_Stz)) {
+      if (m_xSysArgs.m_bStop) {
+        vPrintErrorMarker(argv, i_Arg);
+        vTrace("Incorrect argument: --stop with %s\n"_Stz,argv[i_Arg].szStz());
+        return false;
+      }
+      if (m_xSysArgs.m_bStart) {
+        vPrintErrorMarker(argv, i_Arg);
+        vTrace("Incorrect argument: --start with %s\n"_Stz,argv[i_Arg].szStz());
+        return false;
+      }
+      if (m_xSysArgs.m_bPrompt) {
+        vPrintErrorMarker(argv, i_Arg);
+        vTrace("Incorrect argument: --prompt with %s\n"_Stz,argv[i_Arg].szStz());
+        return false;
+      }
+
+      m_xSysArgs.m_bStatus = true;
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (szArg->bSame("--stop"_Stz)) {
+
+      if (m_xSysArgs.m_bStart) {
+        vPrintErrorMarker(argv, i_Arg);
+        vTrace("Incorrect argument: --start with %s\n"_Stz,argv[i_Arg].szStz());
+        return false;
+      }
+      if (m_xSysArgs.m_bStatus) {
+        vPrintErrorMarker(argv, i_Arg);
+        vTrace("Incorrect argument: --status with %s\n"_Stz,argv[i_Arg].szStz());
+        return false;
+      }
+      if (m_xSysArgs.m_bPrompt) {
+        vPrintErrorMarker(argv, i_Arg);
+        vTrace("Incorrect argument: --prompt with %s\n"_Stz,argv[i_Arg].szStz());
+        return false;
+      }
+
+      m_xSysArgs.m_bStop = true;
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (szArg->bSame("--script"_Stz)) {
+      if (m_xSysArgs.m_bStop) {
+        vPrintErrorMarker(argv, i_Arg);
+        vTrace("Incorrect argument: --stop with %s\n"_Stz,argv[i_Arg].szStz());
+        return false;
+      }
+      if (m_xSysArgs.m_bStatus) {
+        vPrintErrorMarker(argv, i_Arg);
+        vTrace("Incorrect argument: --status with %s\n"_Stz,argv[i_Arg].szStz());
+        return false;
+      }
+      m_xSysArgs.m_bSethScript = true;
+      m_xSysArgs.m_bWelcome = false;
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (szArg->bSame("--unlink"_Stz)) {
+      m_xSysArgs.m_bUnlink = true;
+      continue;
+    }
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // if not in prompt mode, log file path should not be given
+  if ( ! m_xSysArgs.m_sLogFile.bIsEmpty() ) {
+
+    if( ! m_xSysArgs.m_bPrompt && ! m_xSysArgs.m_bSethScript)
+    {
+      vTrace("Incorrect argument: --logFile, can only specify log file path with --prompt or --script\n"_Stz);
+      return false;
+    }
+  }
+
   return true;
 }
 
@@ -1148,6 +1370,7 @@ void CmdLineArgs::vPrint(void)
 /*----------------------------------------------------------------------------*/
 void CmdLineArgs::vPrintErrorMarker(s256* argv, i8 i_Arg)
 {
+  s256 sErrorMarker;
   i8 iCount = 0;
   for(i8 i = 0; i < i_Arg; i++)
   {
@@ -1155,14 +1378,14 @@ void CmdLineArgs::vPrintErrorMarker(s256* argv, i8 i_Arg)
   }
   for(i8 i = 0; i < iCount; i++)
   {
-    vTrace(" "_Stz);
+    sErrorMarker.vAppend(' ');
   }
-  vTrace("^"_Stz);
+  sErrorMarker.vAppend('^');
   for(i8 i = 0; i < argv[i_Arg].nLength() - 1; i++)
   {
-    vTrace("~"_Stz);
+    sErrorMarker.vAppend('~');
   }
-  vTrace("\n"_Stz);
+  vTrace("%s\n"_Stz, sErrorMarker.szStz());
 }
 /*----------------------------------------------------------------------------*/
 /* print arguments                                                            */
@@ -1185,9 +1408,10 @@ void CmdLineArgs::vPrintStartupInfo(void)
     vTrace("  Not compiled with MUNGE\n"_Stz);
 #endif
   }
-  
 
-  vTrace("\nArgs:\n"_Stz);
+
+  vTrace("\n"_Stz);
+  vTrace("Args:\n"_Stz);
   
 #ifdef WITH_DEBUG_VERSION
   if (m_xSysArgs.m_bAppendTrace) vTrace("  --appendTrace\n"_Stz);

@@ -36,9 +36,14 @@ namespace Parser
     // Visits all nodes within a StatementMarker subsection
     static GraphNav::eWalkCtrl eStmtSectionVisitor(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg);
 
+    // Returns true if the project/aggregateOp contains a purely literal expression
+    // that can be post-projected.
+    static b1 bHasPostProjectableLiteralColumn(QueryNode* pProjectOp);
+
     // Checks if there are any expressions in sql operators that are in excess
     // of the project list and adds a post project if required
     static void vAddPostProject(void* pContainer, QueryNode* pStatementMarker, PlanNode* pRootNode);
+
   };
 }
 

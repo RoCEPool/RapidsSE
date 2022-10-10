@@ -5,8 +5,10 @@
 ###############################################################################
 
 # Get the relative path to this file.
+#shellcheck disable=SC2155
 readonly DIR=$(dirname "$0")
 readonly COMMON_FN="${DIR}/common.fn"
+#shellcheck disable=SC2155
 readonly SCRIPT_NAME=$(basename "$0")
 
 ###############################################################################
@@ -230,7 +232,7 @@ function collectLogs() {
 
     # Copy some files
     echo "Copying logs from ${nodeName} [host ${host}]"
-    scp    "${SSH_COMMON_OPTIONS[@]}" "${host}:${installDir}/se.log"         "${outputDir}" &>/dev/null || true
+    scp    "${SSH_COMMON_OPTIONS[@]}" "${host}:${installDir}/se*.log"         "${outputDir}" &>/dev/null || true
     scp    "${SSH_COMMON_OPTIONS[@]}" "${host}:${installDir}/version"        "${outputDir}" &>/dev/null || true
     scp    "${SSH_COMMON_OPTIONS[@]}" "${host}:${installDir}/cluster.config" "${outputDir}" &>/dev/null || true
     scp -r "${SSH_COMMON_OPTIONS[@]}" "${host}:${installDir}/tmp"            "${outputDir}" &>/dev/null || true

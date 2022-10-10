@@ -95,6 +95,7 @@ enum eEC : u2 // error codes
   EC_EXPR_IS_LIT_IN_GROUPBY_LIST,   // SQL Compiler Subsystem
   EC_EXPR_MUST_BE_BOOLEAN,          // SQL Compiler Subsystem
   EC_EXPR_MUST_BE_EQUIJOIN,         // SQL Compiler Subsystem
+  EC_EXPR_MUST_BE_LITERAL,          // SQL Compiler Subsystem
   EC_EXPR_NESTED_AGGREGATE,         // SQL Compiler Subsystem
   EC_EXPR_NOT_IN_GROUPBY_LIST,      // SQL Compiler Subsystem
   EC_EXPR_NOT_PROJECTED,            // SQL Compiler Subsystem
@@ -148,6 +149,7 @@ enum eEC : u2 // error codes
   EC_INVALID_SYNTAX,
   EC_INVALID_TIME_FORMAT,           // SQL Compiler Subsystem
   EC_INVALID_TIMESTAMP_FORMAT,      // SQL Compiler Subsystem
+  EC_INVALID_TOKEN,
   EC_INVALID_TYPES,
   EC_INVALID_VALUE,
 
@@ -159,6 +161,7 @@ enum eEC : u2 // error codes
   EC_LOW_MEMORY,
 
   /* _M_ */
+  EC_MAX_INDEX_NAME_LENGTH,
   EC_MAX_INDEXES,
   EC_MAX_COLUMNS,
   EC_MAX_ROW_LENGTH,
@@ -214,6 +217,7 @@ enum eEC : u2 // error codes
   /* _Q_ */
 
   /* _R_ */
+  EC_RESERVED_WORD,
   EC_RESPONSE_PENDING,
 
   /* _S_ */
@@ -353,10 +357,11 @@ static Stz* aEC[] =
   /* EC_EXPR_IS_LIT_IN_GROUPBY_LIST   */ (Stz*)"EC_EXPR_IS_LIT_IN_GROUPBY_LIST",  // SQL Compiler Subsystem
   /* EC_EXPR_MUST_BE_BOOLEAN          */ (Stz*)"EC_EXPR_MUST_BE_BOOLEAN",         // SQL Compiler Subsystem
   /* EC_EXPR_MUST_BE_EQUIJOIN         */ (Stz*)"EC_EXPR_MUST_BE_EQUIJOIN",        // SQL Compiler Subsystem
+  /* EC_EXPR_MUST_BE_LITERAL          */ (Stz*)"EC_EXPR_MUST_BE_LITERAL",         // SQL Compiler Subsystem
   /* EC_EXPR_NESTED_AGGREGATE         */ (Stz*)"EC_EXPR_NESTED_AGGREGATE",        // SQL Compiler Subsystem
   /* EC_EXPR_NOT_IN_GROUPBY_LIST      */ (Stz*)"EC_EXPR_NOT_IN_GROUPBY_LIST",     // SQL Compiler Subsystem
   /* EC_EXPR_NOT_PROJECTED            */ (Stz*)"EC_EXPR_NOT_PROJECTED",           // SQL Compiler Subsystem
-  /* EC_EXPR_TYPE_INCOMPATIBLE        */ (Stz*)"EC_EXPR_TYPE_INCOMPATIBLE",           // SQL Compiler Subsystem
+  /* EC_EXPR_TYPE_INCOMPATIBLE        */ (Stz*)"EC_EXPR_TYPE_INCOMPATIBLE",       // SQL Compiler Subsystem
 
   /* _F_ */
   /* EC_FOLDER_IN_USE                 */ (Stz*)"folder in use",
@@ -406,6 +411,7 @@ static Stz* aEC[] =
   /* EC_INVALID_SYNTAX                */ (Stz*)"invalid syntax",
   /* EC_INVALID_TIME_FORMAT           */ (Stz*)"EC_INVALID_TIME_FORMAT",        // SQL Compiler Subsystem
   /* EC_INVALID_TIMESTAMP_FORMAT      */ (Stz*)"EC_INVALID_TIMESTAMP_FORMAT",   // SQL Compiler Subsystem
+  /* EC_INVALID_TOKEN                 */ (Stz*)"EC_INVALID_TOKEN",
   /* EC_INVALID_TYPES                 */ (Stz*)"EC_INVALID_TYPES",
   /* EC_INVALID_VALUE                 */ (Stz*)"invalid value",
 
@@ -417,6 +423,7 @@ static Stz* aEC[] =
   /* EC_LOW_MEMORY                    */ (Stz*)"low memory",
 
   /* _M_ */
+  /* EC_MAX_INDEX_NAME_LENGTH         */ (Stz*)"max index name length allowed is 31 bytes",
   /* EC_MAX_INDEXES                   */ (Stz*)"max allowed indexes already created",
   /* EC_MAX_COLUMNS                   */ (Stz*)"max 48 columns supported in a table",
   /* EC_MAX_ROW_LENGTH                */ (Stz*)"max row length allowed is 16k bytes",
@@ -471,6 +478,7 @@ static Stz* aEC[] =
   /* _Q_ */
 
   /* _R_ */
+  /* EC_RESERVED_WORD                 */ (Stz*)"definition contains a reserved word",
   /* EC_RESPONSE_PENDING              */ (Stz*)"response pending",
 
   /* _S_ */
@@ -605,10 +613,11 @@ static Stz* aEC2[] = // error code
   /* EC_EXPR_IS_LIT_IN_GROUPBY_LIST   */ (Stz*)"EC_EXPR_IS_LIT_IN_GROUPBY_LIST",    // SQL Compiler Subsystem
   /* EC_EXPR_MUST_BE_BOOLEAN          */ (Stz*)"EC_EXPR_MUST_BE_BOOLEAN",           // SQL Compiler Subsystem
   /* EC_EXPR_MUST_BE_EQUIJOIN         */ (Stz*)"EC_EXPR_MUST_BE_EQUIJOIN",          // SQL Compiler Subsystem
+  /* EC_EXPR_MUST_BE_LITERAL          */ (Stz*)"EC_EXPR_MUST_BE_LITERAL",           // SQL Compiler Subsystem
   /* EC_EXPR_NESTED_AGGREGATE         */ (Stz*)"EC_EXPR_NESTED_AGGREGATE",          // SQL Compiler Subsystem
   /* EC_EXPR_NOT_IN_GROUPBY_LIST      */ (Stz*)"EC_EXPR_NOT_IN_GROUPBY_LIST",       // SQL Compiler Subsystem
   /* EC_EXPR_NOT_PROJECTED            */ (Stz*)"EC_EXPR_NOT_PROJECTED",             // SQL Compiler Subsystem
-  /* EC_EXPR_TYPE_INCOMPATIBLE        */ (Stz*)"EC_EXPR_TYPE_INCOMPATIBLE",             // SQL Compiler Subsystem
+  /* EC_EXPR_TYPE_INCOMPATIBLE        */ (Stz*)"EC_EXPR_TYPE_INCOMPATIBLE",         // SQL Compiler Subsystem
 
   /* _F_ */
   /* EC_FOLDER_IN_USE                 */ (Stz*)"EC_FOLDER_IN_USE",
@@ -658,6 +667,7 @@ static Stz* aEC2[] = // error code
   /* EC_INVALID_SYNTAX                */ (Stz*)"EC_INVALID_SYNTAX",
   /* EC_INVALID_TIME_FORMAT           */ (Stz*)"EC_INVALID_TIME_FORMAT",            // SQL Compiler Subsystem
   /* EC_INVALID_TIMESTAMP_FORMAT      */ (Stz*)"EC_INVALID_TIMESTAMP_FORMAT",       // SQL Compiler Subsystem
+  /* EC_INVALID_TOKEN                 */ (Stz*)"EC_INVALID_TOKEN",
   /* EC_INVALID_TYPES                 */ (Stz*)"EC_INVALID_TYPES",
   /* EC_INVALID_VALUE                 */ (Stz*)"EC_INVALID_VALUE",
 
@@ -669,6 +679,7 @@ static Stz* aEC2[] = // error code
   /* EC_LOW_MEMORY                    */ (Stz*)"EC_LOW_MEMORY",
 
   /* _M_ */
+  /* EC_MAX_INDEX_NAME_LENGTH         */ (Stz*)"EC_MAX_INDEX_NAME_LENGTH",
   /* EC_MAX_INDEXES                   */ (Stz*)"EC_MAX_INDEXES",
   /* EC_MAX_COLUMNS                   */ (Stz*)"EC_MAX_COLUMNS",
   /* EC_MAX_ROW_LENGTH                */ (Stz*)"EC_MAX_ROW_LENGTH",
@@ -723,6 +734,7 @@ static Stz* aEC2[] = // error code
   /* _Q_ */
 
   /* _R_ */
+  /* EC_RESERVED_WORD                 */ (Stz*)"EC_RESERVED_WORD",
   /* EC_RESPONSE_PENDING              */ (Stz*)"EC_RESPONSE_PENDING",
 
   /* _S_ */
@@ -867,6 +879,7 @@ static Stz* aErrorMsg[] =
   /* EC_EXPR_IS_LIT_IN_GROUPBY_LIST   */ (Stz*)"Cannot have a literal expression in the GROUP BY list",    // SQL Compiler Subsystem
   /* EC_EXPR_MUST_BE_BOOLEAN          */ (Stz*)"Predicate expression must have a boolean result",          // SQL Compiler Subsystem
   /* EC_EXPR_MUST_BE_EQUIJOIN         */ (Stz*)"Join predicate expression must be an equi-join and contain an equality comparison",           // SQL Compiler Subsystem
+  /* EC_EXPR_MUST_BE_LITERAL          */ (Stz*)"Expression must be a literal",                             // SQL Compiler Subsystem
   /* EC_EXPR_NESTED_AGGREGATE         */ (Stz*)"Nested aggregate expressions are not permitted",           // SQL Compiler Subsystem
   /* EC_EXPR_NOT_IN_GROUPBY_LIST      */ (Stz*)"Expression does not appear in the GROUP BY list or as part of an aggregate", // SQL Compiler Subsystem
   /* EC_EXPR_NOT_PROJECTED            */ (Stz*)"Invalid expression because it is not being projected",     // SQL Compiler Subsystem
@@ -920,6 +933,7 @@ static Stz* aErrorMsg[] =
   /* EC_INVALID_SYNTAX                */ (Stz*)"invalid syntax",
   /* EC_INVALID_TIME_FORMAT           */ (Stz*)"Invalid time string format. Must be of the form: 'hh:mm:ss'",    // SQL Compiler Subsystem
   /* EC_INVALID_TIMESTAMP_FORMAT      */ (Stz*)"Invalid timestamp string format. Must be of the form: 'YYYY-MM-DD hh:mm:ss[.ffffff]'",    // SQL Compiler Subsystem
+  /* EC_INVALID_TOKEN                 */ (Stz*)"Invalid token",
   /* EC_INVALID_TYPES                 */ (Stz*)"Invalid types in arithmetic/logical/relational operation",
   /* EC_INVALID_VALUE                 */ (Stz*)"invalid value",
 
@@ -931,6 +945,7 @@ static Stz* aErrorMsg[] =
   /* EC_LOW_MEMORY                    */ (Stz*)"low memory",
 
   /* _M_ */
+  /* EC_MAX_INDEX_NAME_LENGTH         */ (Stz*)"max index name length allowed is 31 bytes",
   /* EC_MAX_INDEXES                   */ (Stz*)"max allowed indexes already created",
   /* EC_MAX_COLUMNS                   */ (Stz*)"max 48 columns supported in a table",
   /* EC_MAX_ROW_LENGTH                */ (Stz*)"max row length allowed is 16k bytes",
@@ -984,6 +999,7 @@ static Stz* aErrorMsg[] =
   /* _Q_ */
 
   /* _R_ */
+  /* EC_RESERVED_WORD                 */ (Stz*)"definition contains a reserved word",
   /* EC_RESPONSE_PENDING              */ (Stz*)"response pending",
 
   /* _S_ */

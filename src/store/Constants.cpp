@@ -364,7 +364,8 @@ void Constants::vAddConstantsCpp(void)
   /* 22 */ vAddConstant("EC_INVALID_VALUE"_Stz,      EC_INVALID_VALUE);
                         
   /* 23 */ vAddConstant("EC_LOW_MEMORY"_Stz,         EC_LOW_MEMORY);
-  
+
+  /*    */ vAddConstant("EC_MAX_INDEX_NAME_LENGTH"_Stz,EC_MAX_INDEX_NAME_LENGTH);
   /* 24 */ vAddConstant("EC_MAX_INDEXES"_Stz,        EC_MAX_INDEXES);
   /*    */ vAddConstant("EC_MAX_COLUMNS"_Stz,        EC_MAX_COLUMNS);
   /*    */ vAddConstant("EC_MAX_ROW_LENGTH"_Stz,     EC_MAX_ROW_LENGTH);
@@ -546,6 +547,9 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("C_MAX_FLT_PRECISION"_Stz, C_MAX_FLT_PRECISION);
   /*  0 */ vAddConstant("C_MAX_INT_PRECISION"_Stz, C_MAX_INT_PRECISION);
   /*  0 */ vAddConstant("C_MAX_VCH_PRECISION"_Stz, C_MAX_VCH_PRECISION);
+
+  /*  0 */ vAddConstant("C_MAX_INDEX_NAME_LENGTH"_Stz, C_MAX_INDEX_NAME_LENGTH);
+  /*  0 */ vAddConstant("C_MAX_TABLE_NAME_LENGTH"_Stz, C_MAX_TABLE_NAME_LENGTH);
   
   // NS_ : node state
   /*  0 */ vAddConstant("NS_NONE"_Stz,      NS_NONE);

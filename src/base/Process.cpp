@@ -11,11 +11,6 @@
 #include <signal.h>
 #include <sys/resource.h>
 #include <fstream>
-#include <sys/sysctl.h>
-
-//#include <sys/vmmeter.h>
-//#include <sys/limits.h>
-//#include <vm/vm_param.h>
 
 extern pthread_key_t giTLS_ThreadKey;
 extern pthread_key_t giTLS_TaskKey;
@@ -37,7 +32,7 @@ void Process::vEntry(void)
 /*----------------------------------------------------------------------------*/
 [[ noreturn ]] void Process::vExit(i8 iExitStatus)
 {
-  fprintf(stderr,"Calling exit(%lld)\n",iExitStatus);
+  vTrace("Calling exit(%lld)\n"_Stz,iExitStatus);
   
   vThreadCallStackDump();
 
@@ -49,11 +44,11 @@ void Process::vEntry(void)
 /*----------------------------------------------------------------------------*/
 [[ noreturn ]] void Process::vExitFailure(void)
 {
-  fprintf(stderr,"Process::vExitFailure()\n");
+  vTrace("Process::vExitFailure()\n"_Stz);
   
   vThreadCallStackDump();
 
-  fprintf(stderr,"Calling exit(%lld)\n",(u8)EXIT_FAILURE);
+  vTrace("Calling exit(%lld)\n"_Stz,(u8)EXIT_FAILURE);
 
  
   exit((int)EXIT_FAILURE);
@@ -64,7 +59,7 @@ void Process::vEntry(void)
 /*----------------------------------------------------------------------------*/
 [[ noreturn ]] void Process::vExitStartup(void)
 {
-  fprintf(stderr,"Calling exit(%lld)\n",(i8)EXIT_FAILURE);
+  vTrace("Calling exit(%lld)\n"_Stz,(i8)EXIT_FAILURE);
 
   exit((int)EXIT_FAILURE);
 }
@@ -74,7 +69,7 @@ void Process::vEntry(void)
 /*----------------------------------------------------------------------------*/
 [[ noreturn ]] void Process::vExitSuccess(void)
 {
-  fprintf(stderr,"Calling exit(%lld)\n",(i8)EXIT_SUCCESS);
+  vTrace("Calling exit(%lld)\n"_Stz,(i8)EXIT_SUCCESS);
   
 //  vThreadCallStackDump();
   
@@ -87,11 +82,11 @@ void Process::vEntry(void)
 [[ noreturn ]] void Process::vUnrecoverableError(Stz* szErrorMessage,
                                                  Stz* szInfoText)
 {
-  printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
-  printf("RapidsSE Unrecoverable Error\n");
-  printf("  %s\n",szErrorMessage->azChar());
-  printf("  %s\n",szInfoText->azChar());
-  printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+  vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
+  vTrace("RapidsSE Unrecoverable Error\n"_Stz);
+  vTrace("  %s\n"_Stz,szErrorMessage->azChar());
+  vTrace("  %s\n"_Stz,szInfoText->azChar());
+  vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
 
   vThreadCallStackDump();
 

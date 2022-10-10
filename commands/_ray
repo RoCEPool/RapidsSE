@@ -3,10 +3,34 @@
 /*============================================================================*/
 
 _nation
-/time load nation "/Users/Shared/tpch/SF1/nation.csv" ;
-select * from nation;
 
-di nation;
+load nation "/Users/Shared/rapidsse/tpch/SF1/nation.csv" ;
+
+/*
+/jobTags
+/optimise
+/weave
+/transliterated
+/optimised
+/todo
+select *
+  from nation
+ where N_NATIONKEY > 1
+ order by N_NAME
+;
+*/
+
+
+/jobTags
+/optimise
+/weave
+/transliterated
+/optimised
+select sum(n_nationKey) from nation;
+
+
+
+drop table nation;
 
 /*============================================================================*/
 /* end                                                                        */

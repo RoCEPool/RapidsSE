@@ -8,6 +8,7 @@
 ###############################################################################
 
 # Get the relative path to this file.
+#shellcheck disable=SC2155
 readonly DIR=$(dirname "$0")
 readonly ROOT_DIR="${DIR}/.."
 readonly DBGEN_DIR="${ROOT_DIR}/dbgen"
@@ -15,6 +16,7 @@ readonly DBGEN_EXE="${DBGEN_DIR}/dbgen"
 readonly DISTS="${DBGEN_DIR}/dists.dss"
 
 readonly COMMON_FN="${DIR}/../common.fn"
+#shellcheck disable=SC2155
 readonly SCRIPT_NAME=$(basename "$0")
 
 

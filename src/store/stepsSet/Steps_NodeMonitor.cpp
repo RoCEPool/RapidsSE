@@ -40,6 +40,7 @@ void Step::vNodeMonitorInspectGrid(void)
 
   Grid* pGrid = AM::pGrid();
   pGrid->vGrabRead();
+  bool bGridHealthy = true;
 
   SkipListNL* pNodes = pGrid->pSkipList();
   SkipNode *pCursor;
@@ -57,6 +58,8 @@ void Step::vNodeMonitorInspectGrid(void)
              pNode->eState() == NS_ACTIVE ? "running"_Stz : "not running"_Stz);
 
       if (pNode && (pNode->eState() == NS_INACTIVE)) {
+
+         bGridHealthy = false;
 
        /**
         ** PARTICIPANT JOBS HANDLING TO BE CODED
@@ -132,6 +135,8 @@ void Step::vNodeMonitorInspectGrid(void)
     }
 
   pGrid->vDropRead();
+
+  m_pDataStack->vPushInt(bGridHealthy);
 
   EXIT();
 }

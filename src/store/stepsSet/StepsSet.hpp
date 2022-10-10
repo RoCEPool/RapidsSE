@@ -2144,6 +2144,7 @@ void vDdlLockAssertNone(void);
   void vTagSetAppendStr(void);
   void vTagSetAsStr(void);
   void vTagSetCopy(void);
+  void vTagSetDump(void);
   void vTagSetGet(void);
   void vTagSetGetInt(void);
   void vTagSetGetStr(void);

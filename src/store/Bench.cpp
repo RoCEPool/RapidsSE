@@ -73,28 +73,28 @@ void Bench::vPrintBench(void)
 /*----------------------------------------------------------------------------*/
 /* renumber all cards                                                         */
 /*----------------------------------------------------------------------------*/
-void Bench::vRenumberCards(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
-  
-  ListExoIter2_t<Board>* pBench_I = this->pNewIter();
-
-  while (pBench_I->bHasNext()) {
-    Board* pBoard = pBench_I->pNext();
-    
-    ListExoIter2_t<Card>* pBoard_I = pBoard->pNewIter();
-
-    while (pBoard_I->bHasNext()) {
-      Card* pWorkUnit = pBoard_I->pNext();
-      
-      pWorkUnit->vCardNo(-1);
-      pWorkUnit->vRenumberCards();
-    }
-    delete pBoard_I;
-
-  }
-  delete pBench_I;
-}
+//void Bench::vRenumberMainCards(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+//
+//  ListExoIter2_t<Board>* pBench_I = this->pNewIter();
+//
+//  while (pBench_I->bHasNext()) {
+//    Board* pBoard = pBench_I->pNext();
+//
+//    ListExoIter2_t<Card>* pBoard_I = pBoard->m_pCard_SubSet->pNewIter();
+//
+//    while (pBoard_I->bHasNext()) {
+//      Card* pWorkUnit = pBoard_I->pNext();
+//
+//      pWorkUnit->vCardNo(-1);
+//      pWorkUnit->vRenumberMainCards();
+//    }
+//    delete pBoard_I;
+//
+//  }
+//  delete pBench_I;
+//}
 
 /*============================================================================*/
 /* end                                                                        */

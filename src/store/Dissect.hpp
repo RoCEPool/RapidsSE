@@ -13,6 +13,7 @@
 #include "Card_AggElist.hpp"
 #include "Card_AggLevel.hpp"
 #include "Card_Aggreg.hpp"
+#include "Card_Aggregates.hpp"
 #include "Card_As.hpp"
 
 #include "Card_CandIndex.hpp"
@@ -24,7 +25,7 @@
 #include "Card_EBound.hpp"
 #include "Card_Exists.hpp"
 #include "Card_ExprBool.hpp"
-#include "Card_ExprCalc.hpp"
+#include "Card_Calc.hpp"
 
 #include "Card_Filter.hpp"
 
@@ -149,7 +150,7 @@ namespace STORE
     Card_Expr*      pExpr_b     (Card_RpnTerms* pCard_RpnTerms);
     Card_Expr*      pExpr_c     (Card_RpnTerms* pCard_RpnTerms);
     Card_ExprBool*  pExprBool   (Card_RpnTerms* pCard_RpnTerms);
-    Card_ExprCalc*  pExprCalc   (Card_RpnTerms* pCard_RpnTerms);
+    Card_Calc*  pExprCalc   (Card_RpnTerms* pCard_RpnTerms);
   
     void vPredOr  (Card_ExprBool* pCard_ExprBool,
                    Card_RpnTerms* pCard_RpnTerms);
@@ -170,7 +171,10 @@ namespace STORE
                                   Stz*& szTableNm, Stz*& szIndexNm);
     Stz*           szArgCheckLast(TagSet* pArgTags, i8 i_Last);
     void           vArgCheck     (TagSet* pArgTags, i8 nArgs);
-  
+
+    Stz*           szArgsStz     (TagSet* pArgTags, i8 i_Arg);
+    Card_RpnTerms* pArgsRpnTerms (TagSet* pArgTags, i8 i_Arg);
+
   private:
     Footer* aFooter(void);
   };

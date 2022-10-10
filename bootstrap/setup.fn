@@ -629,7 +629,7 @@ function createConfiguration() {
 function displaySetupWelcome() {
   clear &>/dev/null || { echo; echo; }
 
-  #shellcheck disable=1090
+  #shellcheck disable=SC1090
   source "${VERSION_FILE}"
 
   echo "Welcome to the installation wizard for RapidsSE version ${SE_VERSION_STR}."
@@ -1984,7 +1984,7 @@ function doNodeInstall() {
   trap cleanupNodeInstall EXIT
 
   # Source the config file to include its configuration variables here
-  #shellcheck disable=1090
+  #shellcheck disable=SC1090
   source "${CONFIG_FILE}"
 
   debugPrint "Loaded cluster configuration file ${CONFIG_FILE}. Contents of file:\n$(cat "${CONFIG_FILE}")"

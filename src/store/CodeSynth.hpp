@@ -109,7 +109,10 @@ namespace STORE {
 
     void vSynthLabel(Stz* szOpNm, Stz *sLabel, Stz* sNextLabel);
 
-    void vSynthKeyExists(StreamDef *pStreamDefRht, IndexDef *pIndexDefJ,
+    void vSynthKeyExists(StreamDef *pStreamDefRht, IndexDef *pIndexDefJ, Stz *sFilterExpr,
+                         Stz *sKeyExpr, Stz *sLabel, u8 uSelectColumns, bool bExists);
+
+    void vSynthKeyNotExists(StreamDef *pStreamDefRht, IndexDef *pIndexDefJ,
                          Stz *sFilterExpr, Stz *sKeyExpr, Stz *sLabel, u8 uSelectColumns);
 
     void vSynthLimit(i8 iLimit, Stz *sLabel, Stz *sLabelNext, Stz *sLabelLoop);
@@ -146,6 +149,7 @@ namespace STORE {
     void vGenerateInitVars(void);
 
     void vGenerateKeyExistsFilter(StreamDef* pStreamDef, Stz *sExpr);
+    void vGenerateKeyNotExistsFilter(StreamDef* pStreamDef, Stz *sExpr);
 
     void vGenerateProcessRow(Stz *sLabel);
     void vGenerateProcessRowOrdAgg(Stz *sLabelOrdAgg);

@@ -663,6 +663,19 @@ bool Token::bHasChars(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test for invalid token                                                     */
+/*----------------------------------------------------------------------------*/
+bool Token::bInvalidToken(void)
+{
+  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+
+  if (TN_INVALID == m_eToken)
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this token an arithmetic operator?                                      */
 /*----------------------------------------------------------------------------*/
 bool Token::bIsArithmetic(void)

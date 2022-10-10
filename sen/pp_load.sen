@@ -26,6 +26,7 @@
     stage stageA on origin :
         start
       | pulse once
+      | checkTable $table
       | chunk      $file   // read chunks of file => (seekOffset)
       | rdCsvChunk $file   // (seekOffset) => (csvBuffer)
       | stageB localrobin

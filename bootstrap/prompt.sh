@@ -5,10 +5,12 @@
 ###############################################################################
 
 # Get the relative path to this file.
+#shellcheck disable=SC2155
 readonly DIR=$(dirname "$0")
 readonly ROOT_DIR="${DIR}"
 
 readonly BOOT_FN="${DIR}/boot.fn"
+#shellcheck disable=SC2155
 readonly SCRIPT_NAME=$(basename "$0")
 
 ###############################################################################

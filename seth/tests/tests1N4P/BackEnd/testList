@@ -1,4 +1,4 @@
 //indexJoin.test
 indexScan.test
-unionAll.test
+//unionAll.test
 query6.test

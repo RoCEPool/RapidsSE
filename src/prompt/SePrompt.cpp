@@ -35,7 +35,7 @@ extern BufferPool*   gpBufferPool;
 extern Stz*          gsBuildGitHash;
 extern CmdLineArgs   gxCmdLineArgs;
 extern PromptCatalog gxPromptCatalog;
-
+extern s256          gszTraceFilePath;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -222,8 +222,11 @@ void SePrompt::vPromptLoop(void)
         m_pInput_deputy->vRawInputClear();
 
       m_eInputError = EC_NONE;
-      if (! bReadCommand(m_eInputError))
+      if (! bReadCommand(m_eInputError)) {
+        if (m_eInputError != EC_NONE)
+          vTrace("error: %s\n"_Stz, aErrorMsg[m_eInputError]);
         continue;
+      }
 
       //    Stz* szRaw = szRawInput();
       //    vTrace("SePrompt got command : %s\n"_Stz,szRaw);
@@ -505,8 +508,18 @@ SeDeputy* SePrompt::pFindDeputy(void)
 TokenVec* SePrompt::pInpTknVec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
+
   return m_pInpTknVec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get tag set                                                                */
+/*----------------------------------------------------------------------------*/
+TagSet* SePrompt::pInpTagSet(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+
+  return m_pInpTagSet;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -862,8 +875,9 @@ bool SePrompt::bReadCommand(eEC& eInputError)
 
     vPrintPrompt();
   }
-  
-  vResetExtractedTagSet();
+
+  if (! *this->szToDo()->azChar())
+    vResetExtractedTagSet();
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // read next command
@@ -1042,7 +1056,11 @@ void SePrompt::vReportTrace(void)
   if (! m_oPmtTagSet.bHasName(C_PMT_TRCFILE))
     return;
 
-  i8 iSizeTrace = File::nSize(gpAttachMap->m_sTraceFile);
+  i8 iSizeTrace = 0;
+
+  if( ! gszTraceFilePath.bIsEmpty()) {
+    iSizeTrace = File::nSize(gszTraceFilePath);
+  }
   
   s32 sTrace_magn;
   MagLib::vByteMag(iSizeTrace,sTrace_magn);

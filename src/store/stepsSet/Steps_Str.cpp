@@ -102,10 +102,17 @@ void Step::vStrClip(void)
   // validate length
   i8 iHasLength = sString.nLength();
   
-  if ( iLength < 0 || llabs(iLength) >= iHasLength)
-    vThrow(FK_CHECK,__func__,__FILE__,__LINE__,
-           "Invalid length for: str.clip"_Stz);
-  
+  //if ( iLength < 0 || llabs(iLength) >= iHasLength)
+  //  vThrow(FK_CHECK,__func__,__FILE__,__LINE__,
+  //         "Invalid length for: str.clip"_Stz);
+
+  if (llabs(iLength) >= iHasLength)
+    if (iLength < 0)
+      iLength = - iHasLength;
+    else
+      iLength = iHasLength;
+
+
   char* pStart;
   
   if (iLength > 0)

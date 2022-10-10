@@ -1022,7 +1022,8 @@ void CodeSynth::vSynthInflateRow(Stz* sLabel, Stz* sLabelOrdAgg) {
 /*----------------------------------------------------------------------------*/
 void CodeSynth::vSynthKeyExists(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
                                 Stz* sFilterExpr, Stz* sKeyExpr,
-                                Stz* sLabel, u8 uSelectColumns)
+                                Stz* sLabel, u8 uSelectColumns,
+                                bool bExists)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
 
@@ -1130,7 +1131,10 @@ void CodeSynth::vSynthKeyExists(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate filter
-  vGenerateKeyExistsFilter(pStreamDefRht, sFilterExpr);
+  if (bExists)
+    vGenerateKeyExistsFilter(pStreamDefRht, sFilterExpr);
+  else
+    vGenerateKeyNotExistsFilter(pStreamDefRht, sFilterExpr);
 
   // cleanup
   m_pExprStack->vReset();
@@ -1798,6 +1802,11 @@ void CodeSynth::vGetValue(eDM eDatum, char* sValue, i8& iValue, d8& dValue) {
     case DM_BCD: {
       SN_Bcd snBcd;
       iValue = snBcd.i(&sValue, AM::pFmt());
+    }
+      break;
+    case DM_BOL: {
+      SN_Bol snBol;
+      iValue = snBol.i(&sValue, AM::pFmt());
     }
       break;
     case DM_DTE: {
@@ -3164,6 +3173,11 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
       continue;
     }
 
+    if (pTkn->bIsBoolean()) {
+      vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, eExprKind, DM_BOL);
+      continue;
+    }
+
     if (pTkn->bIsFloat()) {
       vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, eExprKind, DM_FLT);
       continue;
@@ -3972,6 +3986,11 @@ void CodeSynth::vPushLiteral(TypedStack* pExprStack, IntStack* pTypeStack, Token
       sOperation.vSprintCat("(%lld)"_Stz, iValue);
       pExprStack->vPushStz(sOperation);
       break;
+    case DM_BOL:
+      vGetValue(DM_BOL, pTkn->azChars(), iValue, dValue);
+      sOperation.vSprintCat("(%lld)"_Stz, iValue);
+      pExprStack->vPushStz(sOperation);
+      break;
     case DM_DTE:
       vGetValue(DM_DTE, pTkn->azChars(), iValue, dValue);
       sOperation.vSprintCat("(%lld)"_Stz, iValue);
@@ -3979,7 +3998,7 @@ void CodeSynth::vPushLiteral(TypedStack* pExprStack, IntStack* pTypeStack, Token
       break;
     case DM_FLT:
       vGetValue(DM_FLT, pTkn->azChars(), iValue, dValue);
-      sOperation.vSprintCat("(%e)"_Stz, dValue);
+      sOperation.vSprintCat("(%.9e)"_Stz, dValue);
       pExprStack->vPushStz(sOperation);
       break;
     case DM_INT:
@@ -4994,6 +5013,38 @@ void CodeSynth::vGenerateKeyExistsFilter(StreamDef* pStreamDef, Stz* sFilterExpr
   vGenerateExprCode(m_pExprStack, ""_Stz);
 
   StrLib::vAppendString(&m_azCodeCrs, "\n    if (bFilterResult && bFilterResult != C_DATUM_NULL) {");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_iProcessRow = 1;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n    } else { ");
+  StrLib::vAppendString(&m_azCodeCrs, "\n       aCombinedT->m_iProcessRow = 0;");
+  // go to next entry
+  StrLib::vAppendString(&m_azCodeCrs, "\n       // move to next entry");
+  StrLib::vAppendString(&m_azCodeCrs, "\n       aCombinedT->m_aEntIntJ = (struct Ent_int*)aEntBuffer_nextEntry(&aCombinedT->m_aEntBufferJ, aCombinedT->m_aEntIntJ);");
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n       goto L_KeyExistsDeref;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    }");
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate code for keyNotExists filter expression                           */
+/*----------------------------------------------------------------------------*/
+void CodeSynth::vGenerateKeyNotExistsFilter(StreamDef* pStreamDef, Stz* sFilterExpr)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
+
+  // generate the code for the projected expressions
+  vGenerateExpr((char *) sFilterExpr, nullptr, EK_FILTER, pStreamDef);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate stencil cast
+  vGenerateStencilCast();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate code for the expression
+  vGenerateExprCode(m_pExprStack, ""_Stz);
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n    if ( ! bFilterResult && bFilterResult != C_DATUM_NULL) {");
   StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_iProcessRow = 1;");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 

@@ -15,6 +15,7 @@ namespace ENGINE
   
     static void vMainEntry(void);
     static void vPreliminary(void);
+    static bool bTraceStart(void);
     static void vRunCommandLine(void);
     static void vConcluding(void);
 
@@ -55,6 +56,7 @@ namespace ENGINE
     static void vPrintStatus(void);
     static void vPrintTime(void);
     static void vPrintWelcome(void);
+    static void vRollTrace(void);
     static void vSanityCheck(void);
     static void vSignalHandler(int iSignal);
     static void vStartSystem(void);

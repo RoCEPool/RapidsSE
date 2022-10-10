@@ -1211,7 +1211,13 @@ void TokenVec::vVecToString(Stz* szDstStr, i8 iFromTkn, bool bAddSemicolon)
       case TN_INTEGER:
         StrLib::vConcat(szDstStr->azChar(),pToken->szChars()->azChar());
         break;
-        
+
+      case TN_LITERAL:
+        StrLib::vConcat(szDstStr->azChar(),"'");
+        StrLib::vConcat(szDstStr->azChar(),pToken->szChars()->azChar());
+        StrLib::vConcat(szDstStr->azChar(),"'");
+        break;
+
       case TN_NAME:
         StrLib::vConcat(szDstStr->azChar(),pToken->szChars()->azChar());
         break;
