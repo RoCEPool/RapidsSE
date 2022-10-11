@@ -123,10 +123,10 @@ namespace STORE
   protected:
     eBK          m_eBoard;
     eBT          m_eBoardType;
+    Card_Board*  m_pCard_Board;
 
     Optimiser*   m_pOptimiser;
     Bench*       m_pBench;
-    Card_Board*  m_pCard_Board;
 
     b8           m_bBeenCued;
 
@@ -152,92 +152,23 @@ namespace STORE
     void vClearAllMarks(void);
 
     void vDeleteAllCards(void);
-    void vDeleteFromTill(Card* pFrom, Card* pTillBefore);
     void vDuplicateBoard(Board* pBoard_arg);
 
-    Card_Filter* pFindFilterCard(i8 iFilter, Card*& rpMainCard);
     i8    iFindMain(Card* pMainCard);
     Card* pFindMain(eCK eCard);
-    Card* pFindMain(eCK eCard, i8& i_Main);
-    Card* pFindMain(Stz* szCardNm);
-    Card* pFindNextMain(Card* pAfter, eCK eFindCard);
-    Card* pFindNextMain(Card* pAfter, eCK eFindCard, i8& i_Main);
-    Card* pFindPrevMain(Card* pBefore, eCK eFindCard);
-    Card* pFindPrevMain(Card* pBefore, eCK eFindCard, i8& i_Main);
     Card_Table* pFindTableCard(char cTableSyn, Card*& rpMainCard);
 
     Card* pGetMain(i8 i_Main);
-    Card* pGetMain(i8 i_Main, eCK& reCard);
 
     void vInsertMainCard_after(Card* pNewMainCard, Card* pAfterMainCard, bool bRenumber=true);
-    void vInsertMainCard_before(Card* pNewMainCard, Card* pBeforeMainCard, bool bRenumber=true);
 
     i8   nMainCards(void);
 
     void vPinCards(Ribbon* pRibbon, Stz* szTransformation=nullptr, Stz* szExplain=nullptr);
   
     void vPrintBoard(Stz* szCue=nullptr, Stz* szExplain=nullptr);
-    Card* pPriorSubCard(Card*& rpMainCard, eCK eSubCard, i8 i_PriorToMain);
 
     void vRemoveMainCard(Card* pMainCard);
-
-    void vRenumberMainCards(void);
-
-
-    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-
-//    void vRankCandIndex(Card_CandIndex* pCard_CandIndex);
-//
-//    void vResolveFilter              (Card_Filter*  pCard_Filter);
-//    void vResolveJoin                (Card_AbsJoin* pCard_AbsJoin);
-//    void vResolveJoin2               (Card_AbsJoin* pCard_AbsJoin);
-//    void vResolveJoin3               (Card_IndexJoin* pCard_IndexJoin);
-//    void vAResolveJoin               (Card_IndexJoin* pCard_IndexJoin);
-//    void vConvertJoin                (Card_AbsJoin* pCard_AbsJoin);
-
-    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-
-
-//    bool bAdd_CandIndexes            (void);
-//
-//    void vAdd_IndexScan              (void);
-//
-//    void vCull_Filter                (void);
-//
-//    void vCut_CandidateIndexes       (void);
-//
-//    void vCut_PredCmps               (void);
-//
-//    void vCut_Scan                   (void);
-//
-//    bool bFind_Scan_AggGby           (bool bMark);
-//
-//    bool bFind_Scan_Filter           (bool bMark);
-//
-//    void vMark_PredCmps              (void);
-//
-//    void vOrder_ProjectiveStreamDefs (void);
-//
-//    bool bPick_CandidateIndex        (void);
-//
-//    void vRank_CandidateIndexes      (void);
-//
-//    void vReduce_Filter              (void);
-//
-//    void vSimplify_Initial           (void);
-//
-//    //void vResolve_RootStreams        (void);
-//
-//    void vResolve_Filters              (void);
-//
-//
-//    void vResolve_Symbols            (void);
-//
-//    void vAResolve_Joins             (void);
-
-    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-
-    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
 
   private:

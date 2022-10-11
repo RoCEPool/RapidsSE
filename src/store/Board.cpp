@@ -79,7 +79,7 @@ void Board::vAppendMain(Card* pNewMainCard, bool bRenumber)
   m_pCard_Board->vAppend(pNewMainCard);
 
   if (bRenumber)
-    vRenumberMainCards();
+    m_pCard_Board->vRenumberRecursive();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -151,40 +151,6 @@ void Board::vDeleteAllCards(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vDeleteFromTill(Card* pFrom, Card* pTillBefore)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  i8 i_Main = -1;
-  i8 nMainCards = this->nMainCards();
-  for (i_Main = 0; i_Main < nMainCards; i_Main++) {
-    Card* pMainCard = m_pCard_Board->pGet(i_Main);
-    if (pMainCard == pFrom)
-      break;
-  }
-
-  if (i_Main >= nMainCards)
-    return;
-
-  for (;;) {
-
-    nMainCards = this->nMainCards();
-    if (i_Main >= nMainCards)
-      break;
-
-    Card* pDeleteCard = m_pCard_Board->pGet(i_Main);
-
-    if (pDeleteCard == pTillBefore)
-      break;
-
-    m_pCard_Board->vRemove(pDeleteCard);
-    delete pDeleteCard;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Board::vDuplicateBoard(Board* pBoard_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
@@ -221,169 +187,6 @@ Card* Board::pFindMain(eCK eCard)
   Card* pMainCard = m_pCard_Board->pFindSubCard(eCard);
 
   return pMainCard;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card* Board::pFindMain(eCK eCard, i8& i_Main)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
-
-  Card* pMainCard = m_pCard_Board->pFindChild(eCard);
-
-  return pMainCard;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card* Board::pFindMain(Stz* szCardNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-  
-  eCK eCard = Card::eTo_eCK(szCardNm);
-  
-  i8 nMainCards = this->nMainCards();
-  for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
-    Card* pMainCard = pGetMain(i_Main);
-    
-    if (pMainCard->eCard() == eCard)
-      return pMainCard;
-  }
-  
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* find next main card after given arg which is an eFindCard                  */
-/*----------------------------------------------------------------------------*/
-Card* Board::pFindNextMain(Card* pAfter, eCK eFindCard)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  i8 i_Main;
-  Card* pMainCard = pFindNextMain(pAfter,eFindCard,i_Main);
-
-  return pMainCard;
-}
-
-/*----------------------------------------------------------------------------*/
-/* find next main card after given arg which is an eFindCard                  */
-/*----------------------------------------------------------------------------*/
-Card* Board::pFindNextMain(Card* pAfter, eCK eFindCard, i8& i_Main)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  Card* pMainCard = nullptr;
-
-  i8 nMainCards = this->nMainCards();
-  for (i_Main = 0; i_Main < nMainCards; i_Main++) {
-    pMainCard = pGetMain(i_Main);
-
-    if (pMainCard == pAfter)
-      break;
-  }
-
-  if (pMainCard != pAfter)
-    return nullptr;
-
-  // found after
-
-  // get next eCard
-  for (i8 i_TestCard = i_Main + 1; i_TestCard < nMainCards; i_TestCard++) {
-    Card* pTestCard = pGetMain(i_TestCard);
-
-    if (eFindCard == pTestCard->eCard()) {
-      i_Main = i_TestCard;
-      return pTestCard;
-    }
-  }
-
-  i_Main = C_UNKNOWN;
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* find prev main card given given arg which is an eFindCard                  */
-/*----------------------------------------------------------------------------*/
-Card* Board::pFindPrevMain(Card* pBefore, eCK eFindCard)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  i8 i_Main;
-  Card* pMainCard = pFindPrevMain(pBefore, eFindCard, i_Main);
-
-  return pMainCard;
-}
-
-/*----------------------------------------------------------------------------*/
-/* find prev main card given given arg which is an eFindCard                  */
-/*----------------------------------------------------------------------------*/
-Card* Board::pFindPrevMain(Card* pBefore, eCK eFindCard, i8& i_Main)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  Card* pMainCard = nullptr;
-
-  i8 nMainCards = this->nMainCards();
-  for (i_Main = 0; i_Main < nMainCards; i_Main++) {
-    pMainCard = pGetMain(i_Main);
-
-    if (pMainCard == pBefore)
-      break;
-  }
-
-  if (pMainCard != pBefore)
-    return nullptr;
-
-  // found before
-
-  // get prev eCard
-  for (i8 i_TestCard = i_Main-1; i_TestCard >= 0; i_TestCard--) {
-    Card* pTestCard = pGetMain(i_TestCard);
-
-    if (eFindCard == pTestCard->eCard()) {
-      i_Main = i_TestCard;
-      return pTestCard;
-    }
-  }
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* find next main card after given arg which is an eFindCard                  */
-/*----------------------------------------------------------------------------*/
-Card_Filter* Board::pFindFilterCard(i8 iFilter, Card*& rpMainCard)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
-
-  i8 i_FilterSoFar = 0;
-
-  rpMainCard = nullptr;
-
-  i8 nMains = this->nMainCards();
-  for (i8 i_Main = 0; i_Main < nMains; i_Main++) {
-    rpMainCard = pGetMain(i_Main);
-
-    eCK eMainCard = rpMainCard->eCard();
-    if (CK_ABSJOIN == eMainCard) {
-      if (i_FilterSoFar++ != iFilter)
-        continue;
-      Card_Filter* pCard_filter = _pSub_Filter(rpMainCard);
-      return pCard_filter;
-    }
-
-    if (CK_SCAN == eMainCard) {
-      if (i_FilterSoFar++ != iFilter)
-        continue;
-      Card_Filter* pCard_filter = _pSub_Filter(rpMainCard);
-      return pCard_filter;
-    }
-  }
-
-  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -427,23 +230,6 @@ Card* Board::pGetMain(i8 i_Main)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card* Board::pGetMain(i8 i_Main, eCK& reCard)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  Card* pMainCard = m_pCard_Board->pGet(i_Main);
-
-  if (pMainCard)
-    reCard = pMainCard->eCard();
-  else
-    reCard = CK_NONE;
-
-  return pMainCard;
-}
-
-/*----------------------------------------------------------------------------*/
 /* insert new main card after given card                                      */
 /*----------------------------------------------------------------------------*/
 void Board::vInsertMainCard_after(Card* pNewMainCard, Card* pAfterMainCard,
@@ -454,21 +240,7 @@ void Board::vInsertMainCard_after(Card* pNewMainCard, Card* pAfterMainCard,
   m_pCard_Board->vInsertAfter(pNewMainCard,pAfterMainCard);
 
   if (bRenumber)
-    vRenumberMainCards();
-}
-
-/*----------------------------------------------------------------------------*/
-/* insert new main card before given card                                     */
-/*----------------------------------------------------------------------------*/
-void Board::vInsertMainCard_before(Card* pNewMainCard, Card* pBeforeMainCard,
-                                   bool bRenumber)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  m_pCard_Board->vInsertBefore(pNewMainCard,pBeforeMainCard);
-
-  if (bRenumber)
-    vRenumberMainCards();
+    m_pCard_Board->vRenumberRecursive();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -569,7 +341,7 @@ void Board::vPrintBoard(Stz* szCue, Stz* szExplain)
   bool bPrint = true;
   bool bExecuted = false;
 
-  vRenumberMainCards();
+  m_pCard_Board->vRenumberRecursive();
   
   if (! bPrint)
     return;
@@ -671,25 +443,6 @@ L_Exit:
 }
 
 /*----------------------------------------------------------------------------*/
-/* get prior subcard                                                          */
-/*----------------------------------------------------------------------------*/
-Card* Board::pPriorSubCard(Card*& rpMainCard, eCK eSubCard, i8 i_PriorToMain)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  for (i8 i_Main = i_PriorToMain - 1; i_Main >= 0; i_Main--) {
-    rpMainCard = pGetMain(i_Main);
-
-    Card* pSubCard;
-    if ((pSubCard = rpMainCard->pFindSubCard(eSubCard)))
-      return pSubCard;
-  }
-
-  rpMainCard = nullptr;
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Board::vRemoveMainCard(Card* pMainCard)
@@ -697,26 +450,6 @@ void Board::vRemoveMainCard(Card* pMainCard)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
   m_pCard_Board->vRemove(pMainCard);
-}
-
-/*----------------------------------------------------------------------------*/
-/* renumber the cards                                                         */
-/*----------------------------------------------------------------------------*/
-void Board::vRenumberMainCards(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  ListExoIter2_t<Card>* pMainCard_I = m_pCard_Board->pNewIter();
-
-  i8 iMainCardNo = 0;
-  while (pMainCard_I->bHasNext()) {
-    Card* pMainCard = pMainCard_I->pNext();
-
-    pMainCard->vCardNo(iMainCardNo++);
-    pMainCard->vRenumberRecursive();
-  }
-
-  delete pMainCard_I;
 }
 
 

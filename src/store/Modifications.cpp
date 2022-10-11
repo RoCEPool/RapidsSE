@@ -67,7 +67,9 @@ void Modifications::vRenumberMainCards(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  m_pBoard->vRenumberMainCards();
+  //m_pBoard->vRenumberMainCards();
+
+  _board_->vRenumberRecursive();
 }
 
 

@@ -1376,7 +1376,7 @@ void Transforms::vLinearizeAll_stage(void)
   }
 
 
-  m_pBoard->vRenumberMainCards();
+  _board_->vRenumberRecursive();
 
   vSetPrintSubCards(CK_AGGELIST, false);
   vSetPrintSubCards(CK_GBYELIST, false);
