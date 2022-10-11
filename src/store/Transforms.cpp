@@ -761,6 +761,8 @@ void Transforms::vCullAll_scan(void)
   while ((m_pMainCard = xBI.pEachMain(CK_SCAN))) {
     //m_p_table = _pSub_Table(m_pMainCard);
     p_board->vReplaceChildWithItsSubs(m_pMainCard);
+
+    DELETE_CARD(m_pMainCard);
   }
 
   vPrintBoard();

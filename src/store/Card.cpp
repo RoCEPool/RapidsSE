@@ -7,9 +7,6 @@
 #include "Board.hpp"
 #include "PtnDef.hpp"
 
-#include "eST.h"
-#include "eXK.h"
-
 Card* gapCard[C_10K];
 
 /*----------------------------------------------------------------------------*/
@@ -149,7 +146,8 @@ void Card::vCardLeaks(void)
   for (i8 i_Card = 0; i_Card < C_10K; i_Card++) {
     if (gapCard[i_Card]) {
       Card *pLeaked = gapCard[i_Card];
-      vTrace("Card Leak ~%02lld %p\n"_Stz, i_Card, pLeaked);
+      vTrace("Card Leak ~%02lld %p %s:%s\n"_Stz,
+             i_Card, pLeaked, aCK[pLeaked->eCard()], pLeaked->sz());
       vDebugPoint();
     }
   }
