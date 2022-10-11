@@ -174,8 +174,6 @@ namespace STORE
 
     i8   nMainCards(void);
 
-    SubCardIter* pNewMainCardIter(void);
-
     void vPinCards(Ribbon* pRibbon, Stz* szTransformation=nullptr, Stz* szExplain=nullptr);
   
     void vPrintBoard(Stz* szCue=nullptr, Stz* szExplain=nullptr);

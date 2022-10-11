@@ -32,8 +32,6 @@ namespace STORE
     IdxVec*     m_pIdxVec;
     Index*      m_pIndex;
 
-    SubCardIter* m_pMainCardIter;
-
     bool        m_bInteractive;
 
     PermGen*    m_pPermGen;
@@ -114,18 +112,11 @@ namespace STORE
     TransformerTool(eCN eClass, Bench* pBench);
    ~TransformerTool(void) noexcept(false);
 
-    void vBeginIteration(void);
     Board* pBoard(void);
 
     eCK   eDecodeMain(Card* pCard);
 
-    Card* pEachMain(void);
-    Card* pEachMain(eCK eCard);
-    void vEndIteration(void);
     void vExplain(Stz* szExplain);
-
-    Card* pFindMainOf(Card* pSubCard);
-    Card* pFindMainOf(Card* pSubCard, Card*& rpParentCard);
 
     void vPrintBoard(void);
 

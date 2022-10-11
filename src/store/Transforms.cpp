@@ -911,9 +911,9 @@ void Transforms::vDeleteAll_EmptySub_filter(void)
   vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
 
-  vBeginIteration();
+  BoardIter xBI(m_pBoard);
 
-  while (Card *pCard_main = pEachMain()) {
+  while (Card *pCard_main = xBI.pEachMain()) {
 
     Card_Filter* pCard_filter_sub = _pSub_Filter(pCard_main);
     if (! pCard_filter_sub)
@@ -925,8 +925,6 @@ void Transforms::vDeleteAll_EmptySub_filter(void)
     pCard_main->vRemoveChild(pCard_filter_sub);
     delete pCard_filter_sub;
   }
-
-  vEndIteration();
 
   vPrintBoard();
 }
@@ -1265,10 +1263,10 @@ void Transforms::vIndividuate_filter(void)
   vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
 
-  vBeginIteration();
+  BoardIter xBI(m_pBoard);
 
   while (Card_Scan *pCard_scan =
-      _pCard_Scan(pEachMain(CK_SCAN))) {
+      _pCard_Scan(xBI.pEachMain(CK_SCAN))) {
 
     Card_Filter* pCard_filter =
         _pSub_Filter(pCard_scan);
@@ -1280,12 +1278,10 @@ void Transforms::vIndividuate_filter(void)
     m_pBoard->vInsertMainCard_after(pCard_filter,pCard_scan);
   }
 
-  vEndIteration();
-
-  vBeginIteration();
+  xBI.vRestart();
 
   while (Card_IndexJoin *pCard_indexJoin =
-      _pCard_IndexJoin(pEachMain(CK_INDEXJOIN))) {
+      _pCard_IndexJoin(xBI.pEachMain(CK_INDEXJOIN))) {
 
     Card_Filter* pCard_filter =
         _pSub_Filter(pCard_indexJoin);
@@ -1296,10 +1292,6 @@ void Transforms::vIndividuate_filter(void)
     pCard_indexJoin->vRemoveChild(pCard_filter);
     m_pBoard->vInsertMainCard_after(pCard_filter,pCard_indexJoin);
   }
-
-  vEndIteration();
-
-  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1547,9 +1539,9 @@ void Transforms::vRefactorAll_table_Into_join(void)
 
   Card_Board* p_board = m_pBoard->pCard_Board();
 
-  vBeginIteration();
+  BoardIter xBI(m_pBoard);
 
-  while ((m_p_table = _pCard_Table(pEachMain(CK_TABLE)))) {
+  while ((m_p_table = _pCard_Table(xBI.pEachMain(CK_TABLE)))) {
 
     m_p_indexJoin = _pSub_IndexJoin(m_p_table);
     if (! m_p_indexJoin) {
@@ -1568,8 +1560,6 @@ void Transforms::vRefactorAll_table_Into_join(void)
     p_board->vReplace(m_p_table,m_p_indexJoin);
     m_p_indexJoin->vInsert(m_p_table);
   }
-
-  vEndIteration();
 
   vPrintBoard();
 }

@@ -31,8 +31,6 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
 
   m_pPermGen         = nullptr;
 
-  m_pMainCardIter  = nullptr;
-
   m_eMainCard      = CK_NONE;
   m_eNextMain      = CK_NONE;
   m_eStageTopo     = YG_NONE;
@@ -114,8 +112,6 @@ TransformerTool::~TransformerTool(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  delete m_pMainCardIter;
-
   delete m_pPermGen;
 }
 
@@ -123,18 +119,6 @@ TransformerTool::~TransformerTool(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* begin iteration                                                            */
-/*----------------------------------------------------------------------------*/
-void TransformerTool::vBeginIteration(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_);
-
-  RASSERT(! m_pMainCardIter);
-
-  m_pMainCardIter = m_pBoard->pNewMainCardIter();
-}
 
 /*----------------------------------------------------------------------------*/
 /* get board                                                                  */
@@ -179,52 +163,6 @@ eCK TransformerTool::eDecodeMain(Card* pCard)
 }
 
 /*----------------------------------------------------------------------------*/
-/* each main card                                                             */
-/*----------------------------------------------------------------------------*/
-Card* TransformerTool::pEachMain(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_);
-
-  while (m_pMainCardIter->bHasNext()) {
-    Card* pMainCard = m_pMainCardIter->pNext();
-
-    return pMainCard;
-  }
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* each main card which is of given eCard                                     */
-/*----------------------------------------------------------------------------*/
-Card* TransformerTool::pEachMain(eCK eCard)
-{
-  _precondition_(_ADDRESS_, _MAGIC_);
-
-  while (m_pMainCardIter->bHasNext()) {
-    Card* pMainCard = m_pMainCardIter->pNext();
-
-    if (eCard == pMainCard->eCard())
-      return pMainCard;
-  }
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* end iteration                                                              */
-/*----------------------------------------------------------------------------*/
-void TransformerTool::vEndIteration(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_);
-
-  RASSERT(m_pMainCardIter);
-
-  delete m_pMainCardIter;
-  m_pMainCardIter = nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set explain                                                                */
 /*----------------------------------------------------------------------------*/
 void TransformerTool::vExplain(Stz* szExplain)
@@ -232,54 +170,6 @@ void TransformerTool::vExplain(Stz* szExplain)
   _precondition_(_ADDRESS_, _MAGIC_);
 
   m_sExplain = szExplain;
-}
-
-/*----------------------------------------------------------------------------*/
-/* search for parent of given sub card                                        */
-/*----------------------------------------------------------------------------*/
-Card* TransformerTool::pFindMainOf(Card* pGivenCard)
-{
-  _precondition_(_ADDRESS_, _MAGIC_);
-
-  Card *pMainCard = nullptr;
-
-  SubCardIter *pMainCardIter = m_pBoard->pNewMainCardIter();
-
-  while (pMainCardIter->bHasNext()) {
-    pMainCard = pMainCardIter->pNext();
-
-    if (pMainCard->bHasSubCard(pGivenCard))
-      break;
-  }
-
-  delete pMainCardIter;
-
-  return pMainCard;
-}
-
-/*----------------------------------------------------------------------------*/
-/* search for parent of given sub card                                        */
-/*----------------------------------------------------------------------------*/
-Card* TransformerTool::pFindMainOf(Card* pGivenCard, Card*& rpParentCard)
-{
-  _precondition_(_ADDRESS_, _MAGIC_);
-
-  rpParentCard = nullptr;
-
-  Card *pMainCard = nullptr;
-
-  SubCardIter *pMainCardIter = m_pBoard->pNewMainCardIter();
-
-  while (pMainCardIter->bHasNext()) {
-    pMainCard = pMainCardIter->pNext();
-
-    if (pMainCard->bHasSubCard(pGivenCard,rpParentCard))
-      break;
-  }
-
-  delete pMainCardIter;
-
-  return pMainCard;
 }
 
 /*----------------------------------------------------------------------------*/

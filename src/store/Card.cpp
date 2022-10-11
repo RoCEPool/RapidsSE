@@ -125,7 +125,7 @@ void Card::vInit(eCK eCard)
 {
   static i8 iSeqNo = 0;
 
-  MemLib::vZero(m_caGuage, sizeof(m_caGuage), CN_CARD);
+  MemLib::vZero(md_Bearing, sizeof(md_Bearing), CN_CARD);
 
   m_eCard   = eCard;
   m_iCardNo = C_UNKNOWN;
@@ -135,11 +135,11 @@ void Card::vInit(eCK eCard)
 
   m_pProperties = nullptr;
 
-  m_iSeqNo = iSeqNo++;
-  gapCard[m_iSeqNo] = this;
+  md__SeqNo = iSeqNo++;
+  gapCard[md__SeqNo] = this;
 
-//  if (35 == m_iSeqNo) {
-//    vTrace("Card [%02lld] %p\n"_Stz, m_iSeqNo, this);
+//  if (35 == md__SeqNo) {
+//    vTrace("Card [%02lld] %p\n"_Stz, md__SeqNo, this);
 //    vDebugPoint();
 //  }
 }
@@ -152,8 +152,8 @@ Card::~Card(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  //vTrace("Card [~%02lld] %p\n"_Stz,m_iSeqNo,this);
-  gapCard[m_iSeqNo] = nullptr;
+  //vTrace("Card [~%02lld] %p\n"_Stz,md__SeqNo,this);
+  gapCard[md__SeqNo] = nullptr;
 
   for (Card* pCard = pPop(); pCard; pCard = pPop())
     delete pCard;
@@ -481,7 +481,7 @@ void Card::vDump(i8 iDepth, Stz* szTitle)
   if (*szValue()->azChar()) {
     vTrace("%s%s %s { %s }\n"_Stz
         , Stz::szTab(iDepth)
-        , m_caGuage[0] ? m_caGuage : (char*)aCK[m_eCard]
+        , md_Bearing[0] ? md_Bearing : (char*)aCK[m_eCard]
         , szValue()
         , sProperties.szStz()
     );
@@ -489,7 +489,7 @@ void Card::vDump(i8 iDepth, Stz* szTitle)
   else {
     vTrace("%s%s { %s }\n"_Stz
         , Stz::szTab(iDepth)
-        , m_caGuage[0] ? m_caGuage : (char*)aCK[m_eCard]
+        , md_Bearing[0] ? md_Bearing : (char*)aCK[m_eCard]
         , sProperties.szStz()
     );
   }
@@ -886,10 +886,10 @@ void Card::vGuage(void)
     sPretty.vConcat(sProperties);
   }
 
-  strcat(m_caGuage, " ");
-  strcat(m_caGuage, sPretty.azChar());
+  strcat(md_Bearing, " ");
+  strcat(md_Bearing, sPretty.azChar());
 
-  //  vTrace("%s\n"_Stz,m_caGuage);
+  //  vTrace("%s\n"_Stz,md_Bearing);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -900,13 +900,13 @@ void Card::vGuage(Card* pParentCard)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (pParentCard) {
-    sprintf(m_caGuage, "%s.%lld", pParentCard->m_caGuage, m_iCardNo);
+    sprintf(md_Bearing, "%s.%lld", pParentCard->md_Bearing, m_iCardNo);
   }
   else {
-    sprintf(m_caGuage, "%lld", m_iCardNo);
+    sprintf(md_Bearing, "%lld", m_iCardNo);
   }
 
-//  vTrace("%s\n"_Stz,m_caGuage);
+//  vTrace("%s\n"_Stz,md_Bearing);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1094,18 +1094,6 @@ void Card::vMoveToLastChild(Card* pChildCard)
 
   vRemoveChild(pChildCard);
   vAppend(pChildCard);
-}
-
-/*----------------------------------------------------------------------------*/
-/* new a card iterator                                                        */
-/*----------------------------------------------------------------------------*/
-SubCardIter* Card::pNewSubCardIter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  SubCardIter* pCardIter = (SubCardIter*)pNewIter();
-
-  return pCardIter;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -484,18 +484,6 @@ i8 Board::nMainCards(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* new a main card iterator                                                   */
-/*----------------------------------------------------------------------------*/
-SubCardIter* Board::pNewMainCardIter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  SubCardIter* pMainCardIter = m_pCard_Board->pNewSubCardIter();
-
-  return pMainCardIter;
-}
-
-/*----------------------------------------------------------------------------*/
 /* pin board onto given ribbon                                                */
 /*----------------------------------------------------------------------------*/
 void Board::vPinCards(Ribbon* pRibbon, Stz* szTransformation, Stz* szExplain)

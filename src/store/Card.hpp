@@ -128,14 +128,12 @@ namespace STORE
     CardSet(void);
    ~CardSet(void) noexcept(false);
   };
-
-  typedef ListExoIter_t<Card> SubCardIter;
-
+  
   class Card : public Object
-             , public CardSet // ListExo2_t<Card>
+             , public CardSet
   {
   protected:
-    char m_caGuage[256];
+    char md_Bearing[256];
 
     eCK  m_eCard;
     i8   m_iCardNo;
@@ -146,7 +144,7 @@ namespace STORE
 
     TagSet* m_pProperties;
 
-    i8   m_iSeqNo;
+    i8   md__SeqNo;
 
   protected:
     // must be last
@@ -233,8 +231,6 @@ namespace STORE
     void vMark2(i8 iMark2);
     void vMark2(char cMark2);
     void vMoveToLastChild(Card* pChildCard);
-
-    SubCardIter* pNewSubCardIter(void);
 
     void vPrintCard(Ribbon* pRibbon, i8 iDepth, bool& rbPrune);
     void vPrintCard_byCustom(Ribbon* pRibbon, i8 iDepth, Stz* szCustomName);
