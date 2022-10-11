@@ -103,7 +103,7 @@ bool Card_Stream::bContainsPred(Card_PRED* pCard_PRED)
 
   if (CK_TERM == ePredCard) {
     Stz* szTerm = pCard_PRED->sz();
-    if (!szTerm->bIsStreamColOrdinal())
+    if (!szTerm->bIsStreamColOrd())
       return true;
 
     i8 iOrdLo = m_pProperties->iValue(C_PPY_OrdLo);

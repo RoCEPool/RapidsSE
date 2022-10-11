@@ -50,7 +50,7 @@ namespace BASE
     bool  bIsInteger(void);
     bool  bIsSomeFalse(void);
     bool  bIsSomeTrue(void);
-    bool  bIsStreamColOrdinal(void);
+    bool  bIsStreamColOrd(void);
     i8    nLength(void);
     bool  bOneOf(Stz* szArg, ...);
     i8    iOrdinal(void);

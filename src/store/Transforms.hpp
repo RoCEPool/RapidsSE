@@ -48,8 +48,8 @@ namespace STORE
     void vDeleteAll_absJoin(void);
     void vDeleteAll_combined(void);
     void vDeleteAll_send(void);
-    void vDelete_Empty_filter(void);
-    void vDelete_empty_sub_filter(void);
+    void vDeleteAll_Empty_filter(void);
+    void vDeleteAll_EmptySub_filter(void);
     void vEstimate_joinOrder(void);
     void vEstimate_network(void);
     void vEstimate_ptndJoins(void);

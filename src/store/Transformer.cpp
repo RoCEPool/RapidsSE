@@ -171,7 +171,7 @@ void Transformer::vTransform3(void)
   m_pTransforms->vMoveAll_predCmp_To_table();
 
   // delete any <filter> which is effectively empty
-  m_pTransforms->vDelete_Empty_filter();
+  m_pTransforms->vDeleteAll_Empty_filter();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pTransforms->vInsert_indexJoin_IntoAll_table();
@@ -197,16 +197,18 @@ void Transformer::vTransform3(void)
    *
    */
 
+  /*
   m_pTransforms->vAppend_indexList_ToAll_table();
   m_pTransforms->vMark_scan_pred_bounds();
   m_pTransforms->vMark_scan_pred_ordinals();
 
   m_pTransforms->vAdd_scanPred();
   m_pTransforms->vCull_markedPred();
-  //m_pTransforms->vPromote_scan_To_indexScan();
+  m_pTransforms->vPromote_scan_To_indexScan();
+  */
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  m_pTransforms->vDelete_empty_sub_filter();
+  m_pTransforms->vDeleteAll_EmptySub_filter();
 
   m_pTransforms->vRefactorAll_table_Into_join();
 

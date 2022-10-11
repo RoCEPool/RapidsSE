@@ -880,7 +880,7 @@ void Transforms::vDeleteAll_send(void)
 /*----------------------------------------------------------------------------*/
 /* delete any <filter> which is effectively empty                             */
 /*----------------------------------------------------------------------------*/
-void Transforms::vDelete_Empty_filter(void)
+void Transforms::vDeleteAll_Empty_filter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -904,7 +904,7 @@ void Transforms::vDelete_Empty_filter(void)
 /*----------------------------------------------------------------------------*/
 /* delete any <filter> which is effectively empty                             */
 /*----------------------------------------------------------------------------*/
-void Transforms::vDelete_empty_sub_filter(void)
+void Transforms::vDeleteAll_EmptySub_filter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1460,7 +1460,7 @@ void Transforms::vMark_scan_pred_ordinals(void)
       Card_Term* p_term = _pCard_Term(pCard);
 
       Stz* szTerm = p_term->sz();
-      if (!szTerm->bIsStreamColOrdinal())
+      if (!szTerm->bIsStreamColOrd())
         return true;
 
       vTrace("vMark_scan_pred_ordinals:: %s\n"_Stz,p_term->sz());
@@ -1480,8 +1480,8 @@ void Transforms::vMark_scan_pred_ordinals(void)
 
       vTrace("vMark_scan_pred_ordinals:: %lld\n"_Stz,i_IdxCol);
 
-      pCard->vMark1('I');
-      pCard->vMark2(i_IdxCol);
+      p_term->vMark1('I');
+      p_term->vMark2(i_IdxCol);
       return true;
     };
     // - - - - - - - - -

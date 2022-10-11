@@ -24,7 +24,7 @@ load customer "../tpch/sf_0001/customer.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/cue = "vAppend_indexList_ToAll_table"
+/cue = "vAdd_scanPred"
 /transliterated
 /transform
 /transform3

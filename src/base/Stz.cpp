@@ -343,7 +343,7 @@ bool Stz::bIsSomeTrue(void)
 /*----------------------------------------------------------------------------*/
 /* test if this Stz is "$nn"                                                  */
 /*----------------------------------------------------------------------------*/
-bool Stz::bIsStreamColOrdinal(void)
+bool Stz::bIsStreamColOrd(void)
 {
   if (! StrLib::bIsDollar(m_caChar[0]))
     return false;
