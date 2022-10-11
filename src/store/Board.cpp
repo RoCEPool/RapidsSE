@@ -424,7 +424,7 @@ Card_Stream* Board::pFindStreamCard(i8 iStream, Card*& rpMainCard)
 /*----------------------------------------------------------------------------*/
 /* find table card by synonym                                                 */
 /*----------------------------------------------------------------------------*/
-Card_Table* Board::pFindTableCard(char cTableSyn)
+Card_Table* Board::pFindTableCard(char cTableSyn, Card*& rpMainCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
 
@@ -432,13 +432,13 @@ Card_Table* Board::pFindTableCard(char cTableSyn)
 
   i8 nMains = this->nMainCards();
   for (i8 i_Main = 0; i_Main < nMains; i_Main++) {
-    Card* pMainCard = pGetMain(i_Main);
-    eCK eMainCard = pMainCard->eCard();
+    rpMainCard = pGetMain(i_Main);
+    eCK eMainCard = rpMainCard->eCard();
 
     if (CK_TABLE == eMainCard)
-      p_table = _pCard_Table(pMainCard);
+      p_table = _pCard_Table(rpMainCard);
     else
-      p_table = _pSub_Table(pMainCard);
+      p_table = _pSub_Table(rpMainCard);
 
     if (! p_table)
       continue;
