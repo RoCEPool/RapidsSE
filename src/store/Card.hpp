@@ -14,15 +14,13 @@
 #include "eYG.h"
 #include "eXK.h"
 
-#include "Table.hpp"
+#include "CardSet.hpp"
 
+#include "Table.hpp"
 #include "Ribbon.hpp"
-#include "ListExo2_t.hpp"
 
 namespace STORE
 {
-  class Card;
-
   class Card_AbsJoin;
   class Card_AggElist;
   class Card_AggLevel;
@@ -122,13 +120,6 @@ static Stz* C_PPY_TableUsed    = "bTableUsed"_Stz;
 
 namespace STORE
 {
-  class CardSet : public ListExo2_t<Card>
-  {
-  public:
-    CardSet(void);
-   ~CardSet(void) noexcept(false);
-  };
-  
   class Card : public Object
              , public CardSet
   {
@@ -178,6 +169,9 @@ namespace STORE
     void vAddProperty_stz(Stz* szPpyName, Stz* szPpyValue);
     void vAppendDupSubCards(Card* pFromCard);
 
+    void vBearing(void);
+    void vBearing(Card* pParentCard);
+
     eCK  eCard(void);
     void vCard(eCK eCard);
     Stz* szCardNm(void);
@@ -212,8 +206,6 @@ namespace STORE
     Stz* szGetPropertyNm(i8 i_Property);
     Card* pGetChild(i8 i_Child);
     Card* pGetChild(i8 i_Child, eCK& reCard);
-    void vGuage(void);
-    void vGuage(Card* pParentCard);
 
     bool bHasChildWithValue(Stz* szValue);
     bool bHasProperty(Stz* szPpyName);

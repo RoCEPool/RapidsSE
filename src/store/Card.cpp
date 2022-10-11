@@ -1,4 +1,6 @@
-
+/*============================================================================*/
+/* Card.cpp -- Abstract Card                                                  */
+/*============================================================================*/
 
 #include "Card.hpp"
 #include "CardCtl.hpp"
@@ -7,34 +9,6 @@
 
 #include "eST.h"
 #include "eXK.h"
-
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-CardSet::CardSet(void)
-{
-  //_precondition_(_ADDRESS_,_FOOTER_);
-          
-  //_postcondition_(_ADDRESS_,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* destructor                                                                 */
-/*----------------------------------------------------------------------------*/
-CardSet::~CardSet(void) noexcept(false)
-{
-  //_precondition_(_ADDRESS_,_FOOTER_);
-
-  for (Card* pCard = pPop(); pCard; pCard = pPop())
-    delete pCard;
-}
-
-
-
-/*============================================================================*/
-/* Card.cpp -- Abstract Card                                                  */
-/*============================================================================*/
 
 Card* gapCard[C_10K];
 
@@ -325,6 +299,47 @@ void Card::vAppendDupSubCards(Card* pFromCard)
 
     this->vAppend(pSubCard_dup);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* set bearing                                                                */
+/*----------------------------------------------------------------------------*/
+void Card::vBearing(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  s4K sPretty;
+
+  sPretty = aCK[m_eCard];
+
+  if (m_pProperties) {
+    s4K sProperties;
+    m_pProperties->vToString(sProperties,true);
+    sPretty.vConcat(": "_Stz);
+    sPretty.vConcat(sProperties);
+  }
+
+  strcat(md_Bearing, " ");
+  strcat(md_Bearing, sPretty.azChar());
+
+  //  vTrace("%s\n"_Stz,md_Bearing);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set bearing                                                                */
+/*----------------------------------------------------------------------------*/
+void Card::vBearing(Card* pParentCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (pParentCard) {
+    sprintf(md_Bearing, "%s.%lld", pParentCard->md_Bearing, m_iCardNo);
+  }
+  else {
+    sprintf(md_Bearing, "%lld", m_iCardNo);
+  }
+
+//  vTrace("%s\n"_Stz,md_Bearing);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -866,47 +881,6 @@ Card* Card::pGetChild(i8 i_Child, eCK& reCard)
     reCard = CK_NONE;
 
   return pCard;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set guage                                                                  */
-/*----------------------------------------------------------------------------*/
-void Card::vGuage(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  s4K sPretty;
-
-  sPretty = aCK[m_eCard];
-
-  if (m_pProperties) {
-    s4K sProperties;
-    m_pProperties->vToString(sProperties,true);
-    sPretty.vConcat(": "_Stz);
-    sPretty.vConcat(sProperties);
-  }
-
-  strcat(md_Bearing, " ");
-  strcat(md_Bearing, sPretty.azChar());
-
-  //  vTrace("%s\n"_Stz,md_Bearing);
-}
-
-/*----------------------------------------------------------------------------*/
-/* set guage                                                                  */
-/*----------------------------------------------------------------------------*/
-void Card::vGuage(Card* pParentCard)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (pParentCard) {
-    sprintf(md_Bearing, "%s.%lld", pParentCard->md_Bearing, m_iCardNo);
-  }
-  else {
-    sprintf(md_Bearing, "%lld", m_iCardNo);
-  }
-
-//  vTrace("%s\n"_Stz,md_Bearing);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1535,7 +1509,7 @@ void Card::vRenumberSubCards(Card* pParentCard)
 
   ListExoIter2_t<Card>* pSubCard_I = pNewIter();
 
-  vGuage(pParentCard);
+  vBearing(pParentCard);
 
   i8 iSubCardNo = 0;
   while (pSubCard_I->bHasNext()) {
@@ -1547,7 +1521,7 @@ void Card::vRenumberSubCards(Card* pParentCard)
 
   delete pSubCard_I;
 
-  vGuage();
+  vBearing();
 }
 
 /*----------------------------------------------------------------------------*/
