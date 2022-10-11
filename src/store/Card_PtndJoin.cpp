@@ -104,13 +104,13 @@ void Card_PtndJoin::vJoinEst(Card_TableList* p_tableList)
 
       if (p_predCmp->bUsesTable(p_table->cPpy(PPY_TableSyn))) {
         nJoinedBuff += p_table->pGet_tablePtr()->pTable()->pStreamDef()->jTableSize();
-        p_table->vAddProperty_nameOnly(PPY_TableUsed);
+        p_table->vPpy_nameOnly(PPY_TableUsed);
       }
     }
 
   }
 
-  vAddProperty_int(PPY_JoinedBuff,nJoinedBuff);
+  vPpy_int(PPY_JoinedBuff,nJoinedBuff);
 }
 
 /*============================================================================*/

@@ -91,7 +91,7 @@ void Card_Table::vTablePrint(Ribbon* pRibbon, i8 iDepth)
   else
     sName.vCatSprint(" %s"_Stz, szValue());
 
-  vPrintCard_byCustom(pRibbon, iDepth, sName);
+  vPrintCard_byCustomNm(pRibbon, iDepth, sName);
 }
 
 /*============================================================================*/

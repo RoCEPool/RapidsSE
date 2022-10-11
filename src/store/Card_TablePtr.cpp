@@ -100,7 +100,7 @@ void Card_TablePtr::vTable(Table* pTable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vAddProperty_ptr(PPY_Table,pTable);
+  vPpy_ptr(PPY_Table,pTable);
 }
 
 /*----------------------------------------------------------------------------*/

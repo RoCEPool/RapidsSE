@@ -17,6 +17,14 @@ namespace STORE
     CardSet(void);
    ~CardSet(void) noexcept(false);
 
+    i8    iFindChild(Card* pChild);
+    Card* pFindChild(eCK eCard);
+    Card* pFindChild(eCK eCard, i8& i_Child);
+    Card* pFindSubCard(eCK eCard);
+
+    Card* pGetChild(i8 i_Child);
+    Card* pGetChild(i8 i_Child, eCK& reCard);
+
     void vRemoveChild(Card* pChildCard);
     void vRemoveSubCard(Card* pSubCard);
     void vReplaceChildWithItsSubs(Card* pChildCard);

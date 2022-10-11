@@ -146,9 +146,9 @@ namespace STORE
   
     Card(eCK eCard);
     Card(eCK eCard, Stz* szValue);
-    Card(eCK eCard, Stz* szValue, Stz* szPptName, i8 iPptValue);
-    Card(eCK eCard, Stz* szValue, Stz* szPptName, Object* pPptValue);
-    Card(eCK eCard, Stz* szValue, Stz* szPptName, Stz* szPptValue);
+    Card(eCK eCard, Stz* szValue, Stz* szPpyNm, i8 iPptVal);
+    Card(eCK eCard, Stz* szValue, Stz* szPpyNm, Object* pPptVal);
+    Card(eCK eCard, Stz* szValue, Stz* szPpyNm, Stz* szPptVal);
     void vInit(eCK eCard);
 
    ~Card(void) noexcept(false);
@@ -161,11 +161,6 @@ namespace STORE
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
-    void vAddProperty_chr(Stz* szPpyName, char cPpyValue);
-    void vAddProperty_int(Stz* szPpyName, i8 iPpyValue);
-    void vAddProperty_nameOnly(Stz* szPpyName);
-    void vAddProperty_ptr(Stz* szPpyName, Object* pPpyValue);
-    void vAddProperty_stz(Stz* szPpyName, Stz* szPpyValue);
     void vAppendDupSubCards(Card* pFromCard);
 
     void vBearing(void);
@@ -178,29 +173,23 @@ namespace STORE
     void vCardNo(i8 iCardNo);
     i8   nChildCards(void);
     void vClearAllMarks(void);
+    void vCopyProperties(Card* pFrom);
 
-    void vDeleteChildCard(eCK eCard);
-    void vDeleteProperty(Stz* szPptName);
-    void vDeletePropertyRecursively(Stz* szPptName);
+    void vDeleteChild(eCK eCard);
+    void vDeleteProperty(Stz* szPpyNm);
+    void vDeletePropertyRecursive(Stz* szPpyNm);
     void vDump(i8 iDepth=0, Stz* szTitle=nullptr);
     Card* pDupCardAndSubCards(void);
     Card_SubSet* pDupSubCards(void);
 
     bool bEquivalent(Card* pToCard);
 
-    i8    iFindChild(Card* pChild);
-    Card* pFindChild(eCK eCard);
-    Card* pFindChild(eCK eCard, i8& i_Child);
     Card* pFindParent(Card* pSubCard);
-    Card* pFindSubCard(eCK eCard);
-
-    Card* pGetChild(i8 i_Child);
-    Card* pGetChild(i8 i_Child, eCK& reCard);
 
     bool bHasChildWithValue(Stz* szValue);
-    bool bHasProperty(Stz* szPpyName);
-    bool bHasSubCard(Card* pSubCard);
-    bool bHasSubCard(Card* pSubCard, Card*& rpParentCard);
+    bool bHasProperty(Stz* szPpyNm);
+    bool bHasSubRecursive(Card* pSubCard);
+    bool bHasSubRecursive(Card* pSubCard, Card*& rpParent);
     bool bHasValue(void);
 
     bool bIsCard(eCK eCard);
@@ -223,27 +212,34 @@ namespace STORE
     Stz* szPpy(i8 i_Property);
     Stz* szPpy(Stz* szPptNm);
     Stz* szPpyNm(i8 i_Property);
-    void vPrintCard(Ribbon* pRibbon, i8 iDepth, bool& rbPrune);
-    void vPrintCard_byCustom(Ribbon* pRibbon, i8 iDepth, Stz* szCustomName);
+
+    void vPpy_chr(Stz* szPpyNm, char cPpyVal);
+    void vPpy_int(Stz* szPpyNm, i8 iPpyVal);
+    void vPpy_nameOnly(Stz* szPpyNm);
+    void vPpy_ptr(Stz* szPpyNm, Object* pPpyVal);
+    void vPpy_stz(Stz* szPpyNm, Stz* szPpyVal);
+
+    void vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth, bool& rbPrune);
+    void vPrintCard_byCustomNm(Ribbon* pRibbon, i8 iDepth, Stz* szCustomNm);
     void vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth);
     void vPrintCard_bySettings(Ribbon* pRibbon, i8 iDepth);
+    void vPrintChildrenShort(Ribbon* pRibbon, i8 iDepth);
     void vPrintHeader(Ribbon* pRibbon);
     void vPrintName(Ribbon* pRibbon, i8 iDepth, Stz* szCustomName=nullptr);
     void vPrintNameValue(Ribbon* pRibbon, i8 iDepth);
     void vPrintProperties(Ribbon* pRibbon, i8 iDepth);
     void vPrintValue(Ribbon* pRibbon, i8 iDepth);
-    void vPrintSubShort(Ribbon* pRibbon, i8 iDepth);
     i8   nProperties(void);
     eTN  eProperty(i8 i_Property);
     TagSet* pProperties(void);
     void vPropertiesEnsure(void);
 
-    void vRenumberSubCards(Card* pParentCard);
+    void vRenumberRecursive(Card* pParent=nullptr);
 
     Stz* sz(void);
     Stz* szValue(void);
     void vValue(Stz* szValue);
-    void vVisitAllSub(eCK eCard,std::function<bool(Card* pCard)> bfApply);
+    void vVisitRecursive(eCK eCard, std::function<bool(Card* pCard)> bfApply);
 
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~

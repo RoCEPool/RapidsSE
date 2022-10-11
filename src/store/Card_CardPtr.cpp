@@ -63,7 +63,7 @@ void Card_CardPtr::vCard(Card* pCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vAddProperty_ptr(PPY_Card,pCard);
+  vPpy_ptr(PPY_Card,pCard);
 }
 
 

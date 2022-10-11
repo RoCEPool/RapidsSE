@@ -61,7 +61,7 @@ void Card_StageTopo::vStageTopo(eYG  eStageTopo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vAddProperty_int(PPY_StageTopo,eStageTopo);
+  vPpy_int(PPY_StageTopo,eStageTopo);
 }
 
 

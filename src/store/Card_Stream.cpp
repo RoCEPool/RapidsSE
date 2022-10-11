@@ -206,7 +206,7 @@ void Card_Stream::vStreamPrint(Ribbon* pRibbon, i8 iDepth)
     sName.vCatSprint(" $%lld,%lld"_Stz,
                      iPpy(PPY_OrdLo), iPpy(PPY_OrdHi));
 
-  vPrintCard_byCustom(pRibbon,iDepth,sName);
+  vPrintCard_byCustomNm(pRibbon, iDepth, sName);
 }
 
 /*----------------------------------------------------------------------------*/

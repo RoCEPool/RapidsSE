@@ -78,7 +78,7 @@ void Card_IndexPtr::vIndex(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vAddProperty_ptr(PPY_Index,pIndex);
+  vPpy_ptr(PPY_Index,pIndex);
 }
 
 

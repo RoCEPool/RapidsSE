@@ -545,7 +545,7 @@ void Board::vPinCards(Ribbon* pRibbon, Stz* szTransformation, Stz* szExplain)
       pSubRibbon->vNextColumn();
 
     bool bPrune = false;
-    pCard->vPrintCard(pSubRibbon,0,bPrune);
+    pCard->vPrintCardRecursive(pSubRibbon, 0, bPrune);
   }
      
   pRibbon->vPinRibbon(pRibbon->nTitleLines(),0,pSubRibbon);
@@ -713,7 +713,7 @@ void Board::vRenumberMainCards(void)
     Card* pMainCard = pMainCard_I->pNext();
 
     pMainCard->vCardNo(iMainCardNo++);
-    pMainCard->vRenumberSubCards(nullptr);
+    pMainCard->vRenumberRecursive();
   }
 
   delete pMainCard_I;
@@ -1584,7 +1584,7 @@ void Board::vRenumberMainCards(void)
 //
 //    //vPrintBoard();
 //
-//    //pMainCard->vRenumberSubCards(nullptr);
+//    //pMainCard->vRenumberRecursive(nullptr);
 //  }
 //
 //}

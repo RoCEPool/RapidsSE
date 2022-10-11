@@ -39,6 +39,113 @@ CardSet::~CardSet(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* find immediate child-card                                                  */
+/*----------------------------------------------------------------------------*/
+i8 CardSet::iFindChild(Card* pChild)
+{
+  //_precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  i8 nSubCards = nItems();
+  for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
+    Card* pTestCard = pGetChild(i_Sub);
+
+    if (pChild == pTestCard)
+      return i_Sub;
+  }
+
+  return C_UNKNOWN;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find immediate child-card                                                  */
+/*----------------------------------------------------------------------------*/
+Card* CardSet::pFindChild(eCK eCard)
+{
+  //_precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  i8 i_Child;
+
+  Card* pFoundCard = pFindChild(eCard, i_Child);
+
+  return pFoundCard;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find immediate child-card                                                  */
+/*----------------------------------------------------------------------------*/
+Card* CardSet::pFindChild(eCK eCard, i8& i_Child)
+{
+  //_precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card* pFoundCard = nullptr;
+
+  eCK eSubCard;
+  i8 nSubCards = nItems();
+  for (i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card* pSubCard = pGetChild(i_Child, eSubCard);
+
+    if (eCard == pSubCard->eCard()) {
+      pFoundCard = pSubCard;
+      break;
+    }
+  }
+
+  return pFoundCard;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find sub-card                                                              */
+/*----------------------------------------------------------------------------*/
+Card* CardSet::pFindSubCard(eCK eCard)
+{
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  ListExoIter2_t<Card>* pSubCard_I = pNewIter();
+
+  Card* pFoundCard = nullptr;
+  while (pSubCard_I->bHasNext()) {
+    Card* pSubCard = pSubCard_I->pNext();
+
+    if (eCard == pSubCard->eCard()) {
+      pFoundCard = pSubCard;
+      break;
+    }
+
+    pFoundCard = pSubCard->pFindSubCard(eCard);
+    if (pFoundCard)
+      break;
+  }
+
+  delete pSubCard_I;
+
+  return pFoundCard;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card* CardSet::pGetChild(i8 i_Child)
+{
+  Card* pCard = pGet(i_Child);
+  return pCard;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card* CardSet::pGetChild(i8 i_Child, eCK& reCard)
+{
+  Card* pCard = pGet(i_Child);
+
+  if (pCard)
+    reCard = pCard->eCard();
+  else
+    reCard = CK_NONE;
+
+  return pCard;
+}
+
+/*----------------------------------------------------------------------------*/
 /* remove given immediate child card (non-recursive)                          */
 /*----------------------------------------------------------------------------*/
 void CardSet::vRemoveChild(Card* pChildCard)

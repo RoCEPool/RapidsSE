@@ -180,7 +180,7 @@ void Transforms::vAdd_scanPred(void)
 
     // - - - - - - - - -
 
-    m_p_filter->vVisitAllSub(CK_CMPPRED, bfX);
+    m_p_filter->vVisitRecursive(CK_CMPPRED, bfX);
 
   }
 
@@ -333,7 +333,7 @@ void Transforms::vAdd_tableSyn_ToAll_table(void)
     char cTableSyn_actual = cTableSyn;
     if (m_pTable->bIsReplicated())
       cTableSyn_actual += 'A'-'a';
-    m_p_table->vAddProperty_chr(PPY_TableSyn,cTableSyn_actual);
+    m_p_table->vPpy_chr(PPY_TableSyn,cTableSyn_actual);
 
     cTableSyn++;
   }
@@ -441,9 +441,9 @@ void Transforms::vCalc_ordinalRanges_OfAll_stream(void)
 
     // <scan>/<stream>:iOrdLo,iOrdHi
     nStreamCols = m_p_stream->nStreamCols();
-    m_p_stream->vAddProperty_int(PPY_OrdLo,iOrdLo);
+    m_p_stream->vPpy_int(PPY_OrdLo,iOrdLo);
     iOrdHi = iOrdLo + nStreamCols - 1;
-    m_p_stream->vAddProperty_int(PPY_OrdHi,iOrdHi);
+    m_p_stream->vPpy_int(PPY_OrdHi,iOrdHi);
     iOrdLo = iOrdHi + 1;
 
   }
@@ -613,7 +613,7 @@ void Transforms::vCompute_ptndJoinSet(void)
   for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
     m_pChildCard = m_p_ptndJoinSet->pGetChild(i_Child);
     m_pChildCard->vCard(CK_PTNDJOIN);
-    m_pChildCard->vAddProperty_int(PPY_PtndJoin,i_Child);
+    m_pChildCard->vPpy_int(PPY_PtndJoin,i_Child);
   }
 
   if (m_bInteractive)
@@ -948,7 +948,7 @@ void Transforms::vEstimate_joinOrder(void)
   }
 
   m_pBoard_costEst->vAppendMain((m_p_joinOrderSeq = new Card_JoinOrderSeq));
-  m_p_joinOrderSeq->vAddProperty_int(PPY_Network,iLowestNetwork);
+  m_p_joinOrderSeq->vPpy_int(PPY_Network,iLowestNetwork);
 
   xBI.vSet(m_p_permutation_low);
   while ((m_pMainCard = xBI.pEachMain(m_i_Main,m_eMainCard))) {
@@ -984,7 +984,7 @@ void Transforms::vEstimate_network(void)
     eCK eCard = m_pMainCard->eCard();
     if (CK_PERMUTATION == eCard) {
       if (m_p_permutation)
-        m_p_permutation->vAddProperty_int(PPY_Network, nNetwork);
+        m_p_permutation->vPpy_int(PPY_Network, nNetwork);
       m_p_permutation = _pCard_Permutation(m_pMainCard);
 
       m_p_ptndJoin = nullptr;
@@ -996,14 +996,14 @@ void Transforms::vEstimate_network(void)
       if (m_p_ptndJoin) {
         nSentOut += m_p_ptndJoin->iPpy(PPY_JoinedBuff);
         nNetwork += nSentOut;
-        m_p_ptndJoin->vAddProperty_int(PPY_SentOut, nSentOut);
+        m_p_ptndJoin->vPpy_int(PPY_SentOut, nSentOut);
       }
       m_p_ptndJoin = _pCard_PtndJoin(m_pMainCard);
     }
   }
 
   if (m_p_permutation)
-    m_p_permutation->vAddProperty_int(PPY_Network, nNetwork);
+    m_p_permutation->vPpy_int(PPY_Network, nNetwork);
 
   if (m_bInteractive)
     m_pBoard_costEst->vPrintBoard();
@@ -1029,7 +1029,7 @@ void Transforms::vEstimate_ptndJoins(void)
   while ((m_pMainCard = xBI.pEachMain())) {
     eCK eCard = m_pMainCard->eCard();
     if (CK_PERMUTATION == eCard) {
-      m_p_tableList->vDeletePropertyRecursively(PPY_TableUsed);
+      m_p_tableList->vDeletePropertyRecursive(PPY_TableUsed);
       continue;
     }
     if (CK_PTNDJOIN != eCard)
@@ -1223,7 +1223,7 @@ void Transforms::vGenerate_ptndPermutations(void)
 
   while (m_pPermGen->bNextPermutation()) {
     m_pBoard_permute->vAppendMain((m_p_permutation = new Card_Permutation));
-    m_p_permutation->vAddProperty_int(PPY_Permutation,m_pPermGen->nPermutations()-1);
+    m_p_permutation->vPpy_int(PPY_Permutation,m_pPermGen->nPermutations()-1);
 
     RASSERT(0 == m_p_subSet->nChildCards());
     for (i8 i_Item = 0; i_Item < m_pPermGen->nItems(); i_Item++) {
@@ -1234,7 +1234,7 @@ void Transforms::vGenerate_ptndPermutations(void)
       m_p_ptndJoin = _pCard_PtndJoin(m_pChildCard);
       if (! m_p_ptndJoin->bMayFollowAfter(m_p_subSet)) {
         m_pBoard_permute->vAppendMain(new Card_Comment("**DOESN'T FOLLOW**"_Stz));
-        m_p_permutation->vAddProperty_nameOnly(PPY_Invalid);
+        m_p_permutation->vPpy_nameOnly(PPY_Invalid);
         break;
       }
       m_p_subSet->vAppend(m_pChildCard);
@@ -1372,7 +1372,7 @@ void Transforms::vLinearizeAll_stage(void)
     if (YG_ALL_PARTITIONS == m_p_stageTopo->eStageTopo())
       continue;
 
-    m_p_stage->vAddProperty_nameOnly(PPY_Exclude);
+    m_p_stage->vPpy_nameOnly(PPY_Exclude);
   }
 
 
@@ -1408,7 +1408,7 @@ void Transforms::vMark_scan_pred_bounds(void)
   while ( (m_pMainCard = xBI.pEachMain(CK_TABLE)) ) {
     if (! (m_p_filter = m_pMainCard->pSub_filter()) )
       continue;
-    m_p_filter->vVisitAllSub(CK_CMPPRED, bfPredBounds);
+    m_p_filter->vVisitRecursive(CK_CMPPRED, bfPredBounds);
   }
 
   vPrintBoard();
@@ -1473,7 +1473,7 @@ void Transforms::vMark_scan_pred_ordinals(void)
     };
     // - - - - - - - - -
 
-    m_p_filter->vVisitAllSub(CK_TERM,bfPredBounds);
+    m_p_filter->vVisitRecursive(CK_TERM, bfPredBounds);
   }
 
   vPrintBoard();
@@ -1580,7 +1580,7 @@ void Transforms::vRemove_invalidPermutations(void)
     }
 
     if (! m_pMainCard->bHasProperty(PPY_Invalid)) {
-      m_pMainCard->vAddProperty_int(PPY_Permutation,i_Permutation++);
+      m_pMainCard->vPpy_int(PPY_Permutation,i_Permutation++);
       i_Main++;
       continue;
     }
@@ -1639,7 +1639,7 @@ void Transforms::vSubsume_scan_Under_absJoin(void)
 
   BoardIter xBI(m_pBoard);
   while ((m_p_absJoin = _pCard_AbsJoin(xBI.pEachMain(CK_ABSJOIN))))
-    m_p_absJoin->vDeleteChildCard(CK_CALC);
+    m_p_absJoin->vDeleteChild(CK_CALC);
 
   xBI.vRestart();
 
