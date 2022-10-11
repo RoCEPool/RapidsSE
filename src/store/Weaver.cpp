@@ -1373,17 +1373,11 @@ void Weaver::vWeaveOptStmt(Board* pBoard)
 
   RASSERT(BK_QUERY == pBoard->eBoard());
 
-  //vPrintBoardSummary();
-
   m_i_Stage = 0;
   m_i_Op_stage = 0;
   m_sOptStmt = ""_Stz;
   
   m_pBoard = pBoard;
-  
-  //vTrace("Build Pipeline\n"_Stz);
-
-  ListExoIter2_t<Card>* pBoard_I = m_pBoard->pCard_Board()->pNewIter();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -1391,27 +1385,20 @@ void Weaver::vWeaveOptStmt(Board* pBoard)
   vTags();
   vBegin();
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   vStageFirst();
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  while (pBoard_I->bHasNext()) {
-    Card* pCard = pBoard_I->pNext();
-
-    vCard(pCard);
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  BoardIter xBI(m_pBoard);
+  while (Card* pMainCard = xBI.pEachMain())
+    vCard(pMainCard);
 
   vStageLast();
 
-  vEnd();
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  delete pBoard_I;
+  vEnd();
 }
-
 
 /*============================================================================*/
 /* end                                                                        */
