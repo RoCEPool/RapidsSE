@@ -41,6 +41,7 @@ Transforms::~Transforms(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
@@ -117,6 +118,175 @@ void Transforms::vAdd_combined(void)
 
   vSetPrintSubCards(CK_AGGELIST, true);
   vSetPrintSubCards(CK_GBYELIST, true);
+
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Transforms::vAdd_scanPred(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransformation((char*)(__func__));
+  vExplain("Blah"_Stz);
+
+  BoardIter xBI(m_pBoard);
+
+  while ( (m_pMainCard = xBI.pEachMain(CK_TABLE)) ) {
+
+    m_p_filter = m_pMainCard->pSub_filter();
+    if (! m_p_filter)
+      continue;
+
+    m_p_indexList = m_pMainCard->pSub_indexList();
+    if (! m_p_indexList)
+      continue;
+
+    m_p_scanPred = nullptr;
+
+    // - - - - - - - - -
+    auto bfX = [this](Card* pCard) {
+      Card_CmpPred* p_predCmp = _pCard_CmpPred(pCard);
+      if (! ('L' == p_predCmp->cMark1() || 'U' == p_predCmp->cMark1()) )
+        return true;
+
+      if (! this->m_p_scanPred) {
+        m_p_scanPred = new Card_ScanPred;
+        m_p_scan->vAppend(m_p_scanPred);
+      }
+
+      if ('L' == p_predCmp->cMark1()) {
+        m_p_lBound = m_p_scanPred->pSub_lBound();
+        if (! m_p_lBound) {
+          m_p_lBound = new Card_LBound;
+          m_p_scanPred->vInsert(m_p_lBound);
+        }
+        m_p_lBound->vAppend(p_predCmp);
+      }
+      else
+      if ('U' == p_predCmp->cMark1()) {
+        m_p_uBound = m_p_scanPred->pSub_uBound();
+        if (! m_p_uBound) {
+          m_p_uBound = new Card_UBound;
+          m_p_scanPred->vAppend(m_p_uBound);
+        }
+        m_p_uBound->vAppend(p_predCmp);
+      }
+
+      return true;
+    };
+
+    // - - - - - - - - -
+
+    m_p_filter->vVisitAllSub(CK_CMPPRED, bfX);
+
+  }
+
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/* linearize stages                                                           */
+/*----------------------------------------------------------------------------*/
+void Transforms::vAdd_stages(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransformation((char*)(__func__));
+  vExplain("Blah"_Stz);
+
+  i8 iFilter    = 0;
+  i8 iIndexJoin = 0;
+  i8 iOther     = 0;
+  i8 iProject   = 0;
+  i8 iScan      = 0;
+  i8 iSort      = 0;
+  i8 iStage     = 0;
+
+  eYG eStageTopo = YG_NONE;
+  Card_StageTopo* pCard_StageTopo = nullptr;
+
+  BoardIter xBI(m_pBoard);
+  while ( (m_pMainCard = xBI.pEachMain()) ) {
+
+    if (! xBI.bMore())
+      break;
+
+    m_pNextMain = xBI.pNextMain();
+    m_eNextMain = m_pNextMain->eCard();
+    if (CK_STAGE == m_eNextMain)
+      continue;
+
+    switch (eDecodeMain(m_pMainCard)) {
+
+      case CK_FILTER:
+        RASSERT(m_p_filter == m_pMainCard);
+        iFilter++;
+
+        if (CK_INDEXJOIN == m_eNextMain)
+          break;
+
+        m_pChildCard = m_p_stage->pDupCardAndSubCards();
+        m_pBoard->vInsertMainCard_after(m_pChildCard, m_p_filter);
+        xBI.vForward();
+        break;
+
+      case CK_INDEXJOIN:
+        RASSERT(m_p_indexJoin == m_pMainCard);
+        iIndexJoin++;
+
+        if (CK_PROJECT == m_eNextMain || CK_FILTER == m_eNextMain)
+          break;
+
+        m_pDupCard = m_p_stage->pDupCardAndSubCards();
+        m_pBoard->vInsertMainCard_after(m_pDupCard, m_p_indexJoin);
+        xBI.vForward();
+        break;
+
+      case CK_PROJECT:
+        RASSERT(m_p_project == m_pMainCard);
+        iProject++;
+
+        m_pDupCard = m_p_stage->pDupCardAndSubCards();
+        m_pBoard->vInsertMainCard_after(m_pDupCard, m_p_project);
+        xBI.vForward();
+        break;
+
+      case CK_SCAN:
+        RASSERT(m_p_scan == m_pMainCard);
+        iScan++;
+        RASSERT(1 == iScan);
+        break;
+
+      case CK_SORT:
+        RASSERT(m_p_sort == m_pMainCard);
+        iSort++;
+
+        m_pDupCard = m_p_stage->pDupCardAndSubCards();
+        m_pBoard->vInsertMainCard_after(m_pDupCard, m_p_sort);
+        xBI.vForward();
+        break;
+
+      case CK_STAGE:
+        RASSERT(m_p_stage == m_pMainCard);
+        iStage++;
+
+        m_p_stageTopo = m_p_stage->pSub_stageTopo();
+        m_eStageTopo = m_p_stageTopo->eStageTopo();
+        break;
+
+      default:
+        iOther++;
+        break;
+    }
+  }
+
+  i8 i_Stage = 1;
+  xBI.vRestart();
+  while ( (m_p_stage = _pCard_Stage(xBI.pEachMain(CK_STAGE))) )
+    m_p_stage->vRenameStage(i_Stage++);
 
   vPrintBoard();
 }
@@ -306,6 +476,175 @@ void Transforms::vChangeAll_scan_To_retrieve(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Transforms::vCompute_coPtnJoinList(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransformation((char*)(__func__));
+  vExplain("Blah"_Stz);
+
+  vSetupPartitionBoard();
+
+  //--nn--------------==
+  // coPtnJoinList
+
+  m_p_coPtnJoinList = new Card_CoPtnJoinList;
+  m_pBoard_partition->vAppendMain(m_p_coPtnJoinList);
+
+  m_p_coPtnPredList =
+      _pCard_CoPtnPredList(m_pBoard_partition->pFindMain(CK_COPTNPREDLIST));
+
+
+  i8 nChildren = m_p_coPtnPredList->nChildCards();
+  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
+    m_p_coPtnPred =
+        _pCard_CoPtnPred(m_p_coPtnPredList->pGetChild(i_Child));
+
+    m_p_subSet = m_p_coPtnPred->pDupSubCards();
+
+    if (! (m_p_coPtnJoin = m_p_coPtnJoinList->pFind_coPtn_for(m_p_coPtnPred)) ) {
+      m_p_coPtnJoin = new Card_CoPtnJoin;
+      m_p_coPtnJoinList->vAppend(m_p_coPtnJoin);
+    }
+
+    m_p_coPtnJoin->vTransferChildren(m_p_subSet);
+    DELETE_CARD(m_p_subSet);
+  }
+
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Transforms::vCompute_coPtnPredList(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransformation((char*)(__func__));
+  vExplain("Blah"_Stz);
+
+  vSetupPartitionBoard();
+
+  //--nn--------------==
+  // coPptnPredList
+
+  m_p_coPtnPredList = new Card_CoPtnPredList;
+  m_pBoard_partition->vAppendMain(m_p_coPtnPredList);
+
+  m_p_tableList =
+      _pCard_TableList(m_pBoard_partition->pFindMain(CK_TABLELIST));
+  m_p_joinPredList =
+      _pCard_JoinPredList(m_pBoard_partition->pFindMain(CK_JOINPREDLIST));
+
+  i8 nJoinPreds = m_p_joinPredList->nChildCards();
+  for (i8 i_joinPred = 0; i_joinPred < nJoinPreds; i_joinPred++) {
+    m_p_predCmp =
+        _pCard_CmpPred(m_p_joinPredList->pGetChild(i_joinPred));
+
+    if (! m_p_tableList->bPredCmpIsCoPtn(m_p_predCmp))
+      continue;
+
+    m_p_coPtnPred = new Card_CoPtnPred;
+    m_p_coPtnPred->vAppend(m_p_predCmp->pDupCardAndSubCards());
+
+    m_p_coPtnPredList->vAppend(m_p_coPtnPred);
+  }
+
+  m_pCardCtl->vPrintName(CK_COLUMNREF,false);
+  m_pCardCtl->vPrintProperties(CK_COLUMNREF,false);
+
+  //m_pCardCtl->vPrintForm(CK_COPTNJOIN,CP_COMPRESSED);
+  //m_pCardCtl->vPrintForm(CK_CROSSPTNJOIN,CP_COMPRESSED);
+  //m_pCardCtl->vPrintForm(CK_CMPPRED,CP_COMPRESSED);
+
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Transforms::vCompute_crossPtnJoinList(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransformation((char*)(__func__));
+  vExplain("Blah"_Stz);
+
+  vSetupPartitionBoard();
+
+  //--nn--------------==
+  // crossPtnJoinList
+
+  m_p_joinPredList =
+      _pCard_JoinPredList(m_pBoard_partition->pFindMain(CK_JOINPREDLIST));
+
+  m_p_crossPtnJoinList = new Card_CrossPtnJoinList;
+  m_pBoard_partition->vAppendMain(m_p_crossPtnJoinList);
+
+  i8 nChildren = m_p_joinPredList->nChildCards();
+  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
+    m_p_predCmp =
+        _pCard_CmpPred(m_p_joinPredList->pGetChild(i_Child));
+
+    if (m_p_coPtnJoinList->bHasEqPredCmp(m_p_predCmp))
+      continue;
+
+    m_p_crossPtnJoin = new Card_CrossPtnJoin;
+    m_p_crossPtnJoin->vAppend(m_p_predCmp->pDupCardAndSubCards());
+    m_p_crossPtnJoinList->vAppend(m_p_crossPtnJoin);
+  }
+
+//  m_p_comment = new Card_Comment("((TO BE CODED))"_Stz);
+//  m_p_crossPtnJoinList->vAppend(m_p_comment);
+
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Transforms::vCompute_ptndJoinSet(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransformation((char*)(__func__));
+  vExplain("Blah"_Stz);
+
+  vSetupPartitionBoard();
+
+  //--nn--------------==
+  // ptndJoinSet
+
+  m_p_ptndJoinSet = new Card_PtndJoinSet;
+  m_pBoard_partition->vAppendMain(m_p_ptndJoinSet);
+
+  m_p_coPtnJoinList =
+      _pCard_CoPtnJoinList(m_pBoard_partition->pFindMain(CK_COPTNJOINLIST));
+  m_p_subSet = m_p_coPtnJoinList->pDupSubCards();
+  m_p_ptndJoinSet->vTransferChildren(m_p_subSet);
+  DELETE_CARD(m_p_subSet);
+
+  m_p_crossPtnJoinList =
+      _pCard_CrossPtnJoinList(m_pBoard_partition->pFindMain(CK_CROSSPTNJOINLIST));
+  m_p_subSet = m_p_crossPtnJoinList->pDupSubCards();
+  m_p_ptndJoinSet->vTransferChildren(m_p_subSet);
+  DELETE_CARD(m_p_subSet);
+
+  i8 nChildren = m_p_ptndJoinSet->nChildCards();
+  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
+    m_pChildCard = m_p_ptndJoinSet->pGetChild(i_Child);
+    m_pChildCard->vCard(CK_PTNDJOIN);
+    m_pChildCard->vAddProperty_int(C_PPY_PtndJoin,i_Child);
+  }
+
+  if (m_bInteractive)
+    m_pBoard_partition->vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert all <filter> from calc form to calcBool                            */
 /*----------------------------------------------------------------------------*/
 void Transforms::vConvert_calc_OfAll_filter_To_calcBool(void)
@@ -349,6 +688,36 @@ void Transforms::vConvertAll_idxColNm_To_streamColOrd(void)
   }
 
   vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Transforms::vCopy_ptndJoinSet(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransformation((char*)(__func__));
+  vExplain("Blah"_Stz);
+
+  vSetupPermuteBoard();
+
+  m_pBench->pCardCtl()->vNextHorizon(CK_PERMUTATION, true);
+
+  m_p_ptndJoinSet =
+      _pCard_PtndJoinSet(m_pBoard_partition->pFindMain(CK_PTNDJOINSET));
+
+  m_pBoard_permute->vAppendMain(new Card_Comment("PERMUTATIONS"_Stz));
+
+  i8 i_PtdnJoin = 0;
+  m_p_subSet = m_p_ptndJoinSet->pDupSubCards();
+  while ((m_pPoppedCard = m_p_subSet->pPop())) {
+    m_pBoard_permute->vAppendMain(m_pPoppedCard);
+  }
+  DELETE_CARD(m_p_subSet);
+
+  if (m_bInteractive)
+    m_pBoard_permute->vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -398,6 +767,87 @@ void Transforms::vCullAll_scan(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Transforms::vCull_markedPred(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransformation((char*)(__func__));
+  vExplain("Blah"_Stz);
+
+  BoardIter xBI(m_pBoard);
+
+  while ((m_pMainCard = xBI.pEachMain(CK_TABLE))) {
+
+    m_p_filter = m_pMainCard->pSub_filter();
+    if (!m_p_filter)
+      continue;
+
+    m_p_filter->vCullPred('L');
+    m_p_filter->vCullPred('U');
+
+    if (! m_p_filter->bIsEmptyFilter())
+      continue;
+
+    m_pMainCard->vRemoveSubCard(m_p_filter);
+
+    delete m_p_filter;
+    m_p_filter = nullptr;
+  }
+
+  //m_pCardCtl->vPrintForm(CK_STREAM, CP_CARDFORM);
+  m_pCardCtl->vPrintByKind(CK_STREAM, true);
+  m_pCardCtl->vPrintSubCards(CK_STREAM, false);
+
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/* cull <sort> when <sbyElist> is same as <gbyElist>                          */
+/*----------------------------------------------------------------------------*/
+void Transforms::vCull_sby_SameAs_gby(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransformation((char*)(__func__));
+  vExplain("Blah"_Stz);
+
+  BoardIter xBI(m_pBoard);
+
+  while ( (m_p_sort = _pCard_Sort(xBI.pEachMain(CK_SORT))) ) {
+
+    if (! (m_p_aggreg = _pCard_Aggreg(xBI.pPrevMainIf(CK_AGGREG))) )
+      return;
+
+    m_p_gbyElist = m_p_aggreg->pSub_gbyElist();
+    m_p_sbyElist = m_p_sort->pSub_sbyElist();
+
+    if (bRecursivelyTheSame(m_p_gbyElist, m_p_sbyElist)) {
+      xBI.vRemoveDeleteCurr(CK_SORT);
+      break;
+    }
+  }
+
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete sends                                                               */
+/*----------------------------------------------------------------------------*/
+void Transforms::vDeleteAll_absJoin(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransformation((char*)(__func__),false);
+  vExplain("Blah"_Stz);
+
+  vRemoveDeleteMains(CK_ABSJOIN);
+
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
 /* delete combines                                                            */
 /*----------------------------------------------------------------------------*/
 void Transforms::vDeleteAll_combined(void)
@@ -410,6 +860,284 @@ void Transforms::vDeleteAll_combined(void)
   vRemoveDeleteMains(CK_COMBINED);
 
   vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete sends                                                               */
+/*----------------------------------------------------------------------------*/
+void Transforms::vDeleteAll_send(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransformation((char*)(__func__),false);
+  vExplain("Blah"_Stz);
+
+  vRemoveDeleteMains(CK_SEND);
+
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete any <filter> which is effectively empty                             */
+/*----------------------------------------------------------------------------*/
+void Transforms::vDelete_Empty_filter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransformation((char*)(__func__));
+  vExplain("Blah"_Stz);
+
+  BoardIter xBI(m_pBoard);
+
+  while ((m_p_filter = _pCard_Filter(xBI.pEachMain(CK_FILTER)))) {
+    m_p_calcBool = _pSub_CalcBool(m_p_filter);
+
+    if (0 == m_p_calcBool->nChildCards()) {
+      xBI.vRemoveDeleteCurr(CK_FILTER);
+      break;
+    }
+  }
+
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete any <filter> which is effectively empty                             */
+/*----------------------------------------------------------------------------*/
+void Transforms::vDelete_empty_sub_filter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransformation((char*)(__func__));
+  vExplain("Blah"_Stz);
+
+  vBeginIteration();
+
+  while (Card *pCard_main = pEachMain()) {
+
+    Card_Filter* pCard_filter_sub = _pSub_Filter(pCard_main);
+    if (! pCard_filter_sub)
+      continue;
+
+    if (! pCard_filter_sub->bIsEmptyFilter())
+      continue;
+
+    pCard_main->vRemoveChild(pCard_filter_sub);
+    delete pCard_filter_sub;
+  }
+
+  vEndIteration();
+
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Transforms::vEstimate_joinOrder(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransformation((char*)(__func__));
+  vExplain("Blah"_Stz);
+
+  i8 iLowestNetwork = 999999999;
+
+  BoardIter xBI(m_pBoard_costEst);
+
+  while ((m_p_permutation =
+              _pCard_Permutation(xBI.pEachMain(CK_PERMUTATION,m_i_Main)))) {
+    i8 iNetwork = m_p_permutation->iGetProperty(C_PPY_Network);
+    if (iNetwork >= iLowestNetwork)
+      continue;
+    m_p_permutation_low = m_p_permutation;
+    iLowestNetwork = iNetwork;
+  }
+
+  m_pBoard_costEst->vAppendMain((m_p_joinOrderSeq = new Card_JoinOrderSeq));
+  m_p_joinOrderSeq->vAddProperty_int(C_PPY_Network,iLowestNetwork);
+
+  xBI.vSet(m_p_permutation_low);
+  while ((m_pMainCard = xBI.pEachMain(m_i_Main,m_eMainCard))) {
+    if (CK_PTNDJOIN != m_eMainCard)
+      break;
+
+    m_p_ptndJoin = _pCard_PtndJoin(m_pMainCard);
+    m_p_joinOrderSeq->vExtractJoinOrder(m_p_ptndJoin);
+  }
+
+  if (m_bInteractive)
+    m_pBoard_costEst->vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Transforms::vEstimate_network(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransformation((char*)(__func__));
+  vExplain("Blah"_Stz);
+
+  BoardIter xBI(m_pBoard_costEst);
+
+  i8 nNetwork = 0;
+  i8 nSentOut = 0;
+  m_p_permutation = nullptr;
+  m_p_ptndJoin    = nullptr;
+
+  while ((m_pMainCard = xBI.pEachMain())) {
+    eCK eCard = m_pMainCard->eCard();
+    if (CK_PERMUTATION == eCard) {
+      if (m_p_permutation)
+        m_p_permutation->vAddProperty_int(C_PPY_Network, nNetwork);
+      m_p_permutation = _pCard_Permutation(m_pMainCard);
+
+      m_p_ptndJoin = nullptr;
+      nNetwork = 0;
+      nSentOut = 0;
+    }
+    else
+    if (CK_PTNDJOIN == eCard) {
+      if (m_p_ptndJoin) {
+        nSentOut += m_p_ptndJoin->iGetProperty(C_PPY_JoinedBuff);
+        nNetwork += nSentOut;
+        m_p_ptndJoin->vAddProperty_int(C_PPY_SentOut, nSentOut);
+      }
+      m_p_ptndJoin = _pCard_PtndJoin(m_pMainCard);
+    }
+  }
+
+  if (m_p_permutation)
+    m_p_permutation->vAddProperty_int(C_PPY_Network, nNetwork);
+
+  if (m_bInteractive)
+    m_pBoard_costEst->vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Transforms::vEstimate_ptndJoins(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransformation((char*)(__func__));
+  vExplain("Blah"_Stz);
+
+  m_p_tableList =
+      _pCard_TableList(m_pBoard_partition->pFindMain(CK_TABLELIST));
+
+
+  BoardIter xBI(m_pBoard_costEst);
+
+//  while (m_p_ptndJoin = _pCard_PtndJoin(xBI.pEachMain(CK_PTNDJOIN))) {
+  while ((m_pMainCard = xBI.pEachMain())) {
+    eCK eCard = m_pMainCard->eCard();
+    if (CK_PERMUTATION == eCard) {
+      m_p_tableList->vDeletePropertyRecursively(C_PPY_TableUsed);
+      continue;
+    }
+    if (CK_PTNDJOIN != eCard)
+      continue;
+    m_p_ptndJoin = _pCard_PtndJoin(m_pMainCard);
+    m_p_ptndJoin->vJoinEst(m_p_tableList);
+  }
+
+  if (m_bInteractive)
+    m_pBoard_costEst->vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Transforms::vExtract_joinOrderSeq(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransformation((char*)(__func__));
+  vExplain("Blah"_Stz);
+
+  m_pBoard_costEst->vAppendMain((m_p_joinOrderSeq = new Card_JoinOrderSeq));
+
+  BoardIter xBI(m_pBoard_costEst);
+
+  xBI.vSet(m_p_permutation_low);
+  while ((m_pMainCard = xBI.pEachMain(m_i_Main,m_eMainCard))) {
+    if (CK_PTNDJOIN != m_eMainCard)
+      break;
+
+    m_p_ptndJoin = _pCard_PtndJoin(m_pMainCard);
+    m_p_joinOrderSeq->vExtractJoinOrder(m_p_ptndJoin);
+  }
+
+  if (m_bInteractive)
+    m_pBoard_costEst->vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Transforms::vExtract_joinPredList(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransformation((char*)(__func__));
+  vExplain("Blah"_Stz);
+
+  vSetupPartitionBoard();
+
+  //--nn--------------==
+  // joinPredList
+
+  m_p_joinPredList = new Card_JoinPredList;
+  m_pBoard_partition->vAppendMain(m_p_joinPredList);
+
+  BoardIter xBI_query(m_pBoard_query);
+  while ((m_pMainCard = xBI_query.pEachMain(CK_FILTER))) {
+    m_p_calcBool = m_pMainCard->pSub_calcBool();
+    if (!m_p_calcBool)
+      continue;
+
+    m_p_joinPredList->vExtract_joinPredList(m_p_calcBool);
+  }
+
+
+  if (m_bInteractive)
+    m_pBoard_partition->vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Transforms::vExtract_tableList_From_queryBoard(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransformation((char*)(__func__));
+  vExplain("Blah"_Stz);
+
+
+  vSetupPartitionBoard();
+
+  //--nn--------------==
+  // tableList
+
+  BoardIter xBI_query(m_pBoard_query);
+
+  m_p_tableList = new Card_TableList;
+  m_pBoard_partition->vAppendMain(m_p_tableList);
+
+  while ( (m_pMainCard = xBI_query.pEachMain()) ) {
+    if (! (m_p_table = m_pMainCard->pSub_table()))
+      continue;
+
+    m_p_tableList->vAppend(m_p_table->pDupCardAndSubCards());
+  }
+
+
+  m_pBoard_partition->vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -477,6 +1205,100 @@ void Transforms::vFormAll_joinPred_of_indexJoin(void)
   }
 
   vSetPrintSubCards(CK_FILTER, true);
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Transforms::vGenerate_ptndPermutations(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransformation((char*)(__func__));
+  vExplain("Blah"_Stz);
+
+//  PermGen::vTest(4);
+
+  //--nn--------------==
+  // x
+
+
+  m_pPermGen = new PermGen(m_p_ptndJoinSet->nChildCards());
+
+  m_p_subSet = new Card_SubSet;
+
+  while (m_pPermGen->bNextPermutation()) {
+    m_pBoard_permute->vAppendMain((m_p_permutation = new Card_Permutation));
+    m_p_permutation->vAddProperty_int(C_PPY_Permutation,m_pPermGen->nPermutations()-1);
+
+    RASSERT(0 == m_p_subSet->nChildCards());
+    for (i8 i_Item = 0; i_Item < m_pPermGen->nItems(); i_Item++) {
+      i8 i_Child = m_pPermGen->iItem(i_Item);
+      m_pChildCard = m_p_ptndJoinSet->pGetChild(i_Child);
+      m_pBoard_permute->vAppendMain(m_pChildCard->pDupCardAndSubCards());
+
+      m_p_ptndJoin = _pCard_PtndJoin(m_pChildCard);
+      if (! m_p_ptndJoin->bMayFollowAfter(m_p_subSet)) {
+        m_pBoard_permute->vAppendMain(new Card_Comment("**DOESN'T FOLLOW**"_Stz));
+        m_p_permutation->vAddProperty_nameOnly(C_PPY_Invalid);
+        break;
+      }
+      m_p_subSet->vAppend(m_pChildCard);
+    }
+    m_p_subSet->vRemoveAll();
+  }
+
+  DELETE_CARD(m_p_subSet);
+
+  if (m_bInteractive)
+    m_pBoard_permute->vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/* individuate <absJoin>/<filter> as main <filter>                            */
+/*----------------------------------------------------------------------------*/
+void Transforms::vIndividuate_filter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransformation((char*)(__func__));
+  vExplain("Blah"_Stz);
+
+  vBeginIteration();
+
+  while (Card_Scan *pCard_scan =
+      _pCard_Scan(pEachMain(CK_SCAN))) {
+
+    Card_Filter* pCard_filter =
+        _pSub_Filter(pCard_scan);
+
+    if (! pCard_filter)
+      continue;
+
+    pCard_scan->vRemoveChild(pCard_filter);
+    m_pBoard->vInsertMainCard_after(pCard_filter,pCard_scan);
+  }
+
+  vEndIteration();
+
+  vBeginIteration();
+
+  while (Card_IndexJoin *pCard_indexJoin =
+      _pCard_IndexJoin(pEachMain(CK_INDEXJOIN))) {
+
+    Card_Filter* pCard_filter =
+        _pSub_Filter(pCard_indexJoin);
+
+    if (! pCard_filter)
+      continue;
+
+    pCard_indexJoin->vRemoveChild(pCard_filter);
+    m_pBoard->vInsertMainCard_after(pCard_filter,pCard_indexJoin);
+  }
+
+  vEndIteration();
+
   vPrintBoard();
 }
 
@@ -577,307 +1399,6 @@ void Transforms::vLinearizeAll_stage(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* inspect all <filter> and copy <predCmp> to new <scan|absJoin>/<filter>     */
-/*----------------------------------------------------------------------------*/
-void Transforms::vMoveAll_predCmp_To_table(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransformation((char*)(__func__));
-  vExplain("Blah"_Stz);
-
-  BoardIter xBI(m_pBoard);
-
-  while ((m_p_filter = _pCard_Filter(xBI.pEachMain(CK_FILTER))))
-    vCopyFilterLeftwards(m_p_filter);
-
-  vPrintBoard();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Transforms::vSetup_costEst(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransformation((char*)(__func__));
-  vExplain("Blah"_Stz);
-
-  vSetupCostEstBoard();
-
-  m_pBoard_costEst->vDuplicateBoard(m_pBoard_permute);
-
-  while ((m_pMainCard = m_pBoard_costEst->pGetMain(0))) {
-
-    if (CK_PERMUTATION == m_pMainCard->eCard())
-      break;
-
-    m_pBoard_costEst->vRemoveMainCard(m_pMainCard);
-    delete m_pMainCard;
-  }
-
-
-  if (m_bInteractive)
-    m_pBoard_costEst->vPrintBoard();
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Transforms::vEstimate_ptndJoins(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransformation((char*)(__func__));
-  vExplain("Blah"_Stz);
-
-  m_p_tableList =
-      _pCard_TableList(m_pBoard_partition->pFindMain(CK_TABLELIST));
-
-
-  BoardIter xBI(m_pBoard_costEst);
-
-//  while (m_p_ptndJoin = _pCard_PtndJoin(xBI.pEachMain(CK_PTNDJOIN))) {
-  while ((m_pMainCard = xBI.pEachMain())) {
-    eCK eCard = m_pMainCard->eCard();
-    if (CK_PERMUTATION == eCard) {
-      m_p_tableList->vDeletePropertyRecursively(C_PPY_TableUsed);
-      continue;
-    }
-    if (CK_PTNDJOIN != eCard)
-      continue;
-    m_p_ptndJoin = _pCard_PtndJoin(m_pMainCard);
-    m_p_ptndJoin->vJoinEst(m_p_tableList);
-  }
-
-  if (m_bInteractive)
-    m_pBoard_costEst->vPrintBoard();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Transforms::vEstimate_network(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransformation((char*)(__func__));
-  vExplain("Blah"_Stz);
-
-  BoardIter xBI(m_pBoard_costEst);
-
-  i8 nNetwork = 0;
-  i8 nSentOut = 0;
-  m_p_permutation = nullptr;
-  m_p_ptndJoin    = nullptr;
-
-  while ((m_pMainCard = xBI.pEachMain())) {
-    eCK eCard = m_pMainCard->eCard();
-    if (CK_PERMUTATION == eCard) {
-      if (m_p_permutation)
-        m_p_permutation->vAddProperty_int(C_PPY_Network, nNetwork);
-      m_p_permutation = _pCard_Permutation(m_pMainCard);
-
-      m_p_ptndJoin = nullptr;
-      nNetwork = 0;
-      nSentOut = 0;
-    }
-    else
-    if (CK_PTNDJOIN == eCard) {
-      if (m_p_ptndJoin) {
-        nSentOut += m_p_ptndJoin->iGetProperty(C_PPY_JoinedBuff);
-        nNetwork += nSentOut;
-        m_p_ptndJoin->vAddProperty_int(C_PPY_SentOut, nSentOut);
-      }
-      m_p_ptndJoin = _pCard_PtndJoin(m_pMainCard);
-    }
-  }
-
-  if (m_p_permutation)
-    m_p_permutation->vAddProperty_int(C_PPY_Network, nNetwork);
-
-  if (m_bInteractive)
-    m_pBoard_costEst->vPrintBoard();
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Transforms::vEstimate_joinOrder(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransformation((char*)(__func__));
-  vExplain("Blah"_Stz);
-
-  i8 iLowestNetwork = 999999999;
-
-  BoardIter xBI(m_pBoard_costEst);
-
-  while ((m_p_permutation =
-              _pCard_Permutation(xBI.pEachMain(CK_PERMUTATION,m_i_Main)))) {
-    i8 iNetwork = m_p_permutation->iGetProperty(C_PPY_Network);
-    if (iNetwork >= iLowestNetwork)
-      continue;
-    m_p_permutation_low = m_p_permutation;
-    iLowestNetwork = iNetwork;
-  }
-
-  m_pBoard_costEst->vAppendMain((m_p_joinOrderSeq = new Card_JoinOrderSeq));
-  m_p_joinOrderSeq->vAddProperty_int(C_PPY_Network,iLowestNetwork);
-
-  xBI.vSet(m_p_permutation_low);
-  while ((m_pMainCard = xBI.pEachMain(m_i_Main,m_eMainCard))) {
-    if (CK_PTNDJOIN != m_eMainCard)
-      break;
-
-    m_p_ptndJoin = _pCard_PtndJoin(m_pMainCard);
-    m_p_joinOrderSeq->vExtractJoinOrder(m_p_ptndJoin);
-  }
-
-  if (m_bInteractive)
-    m_pBoard_costEst->vPrintBoard();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Transforms::vExtract_joinOrderSeq(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransformation((char*)(__func__));
-  vExplain("Blah"_Stz);
-
-  m_pBoard_costEst->vAppendMain((m_p_joinOrderSeq = new Card_JoinOrderSeq));
-
-  BoardIter xBI(m_pBoard_costEst);
-
-  xBI.vSet(m_p_permutation_low);
-  while ((m_pMainCard = xBI.pEachMain(m_i_Main,m_eMainCard))) {
-    if (CK_PTNDJOIN != m_eMainCard)
-      break;
-
-    m_p_ptndJoin = _pCard_PtndJoin(m_pMainCard);
-    m_p_joinOrderSeq->vExtractJoinOrder(m_p_ptndJoin);
-  }
-
-  if (m_bInteractive)
-    m_pBoard_costEst->vPrintBoard();
-}
-
-/*----------------------------------------------------------------------------*/
-/* delete any <filter> which is effectively empty                             */
-/*----------------------------------------------------------------------------*/
-void Transforms::vDelete_Empty_filter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransformation((char*)(__func__));
-  vExplain("Blah"_Stz);
-
-  BoardIter xBI(m_pBoard);
-
-  while ((m_p_filter = _pCard_Filter(xBI.pEachMain(CK_FILTER)))) {
-    m_p_calcBool = _pSub_CalcBool(m_p_filter);
-
-    if (0 == m_p_calcBool->nChildCards()) {
-      xBI.vRemoveDeleteCurr(CK_FILTER);
-      break;
-    }
-  }
-
-  vPrintBoard();
-}
-
-/*----------------------------------------------------------------------------*/
-/* delete any <filter> which is effectively empty                             */
-/*----------------------------------------------------------------------------*/
-void Transforms::vDelete_empty_sub_filter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransformation((char*)(__func__));
-  vExplain("Blah"_Stz);
-
-  vBeginIteration();
-
-  while (Card *pCard_main = pEachMain()) {
-
-    Card_Filter* pCard_filter_sub = _pSub_Filter(pCard_main);
-    if (! pCard_filter_sub)
-      continue;
-
-    if (! pCard_filter_sub->bIsEmptyFilter())
-      continue;
-
-    pCard_main->vRemoveChild(pCard_filter_sub);
-    delete pCard_filter_sub;
-  }
-
-  vEndIteration();
-
-  vPrintBoard();
-}
-
-/*----------------------------------------------------------------------------*/
-/* individuate <absJoin>/<filter> as main <filter>                            */
-/*----------------------------------------------------------------------------*/
-void Transforms::vIndividuate_filter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransformation((char*)(__func__));
-  vExplain("Blah"_Stz);
-
-  vBeginIteration();
-
-  while (Card_Scan *pCard_scan =
-      _pCard_Scan(pEachMain(CK_SCAN))) {
-
-    Card_Filter* pCard_filter =
-        _pSub_Filter(pCard_scan);
-
-    if (! pCard_filter)
-      continue;
-
-    pCard_scan->vRemoveChild(pCard_filter);
-    m_pBoard->vInsertMainCard_after(pCard_filter,pCard_scan);
-  }
-
-  vEndIteration();
-
-  vBeginIteration();
-
-  while (Card_IndexJoin *pCard_indexJoin =
-      _pCard_IndexJoin(pEachMain(CK_INDEXJOIN))) {
-
-    Card_Filter* pCard_filter =
-        _pSub_Filter(pCard_indexJoin);
-
-    if (! pCard_filter)
-      continue;
-
-    pCard_indexJoin->vRemoveChild(pCard_filter);
-    m_pBoard->vInsertMainCard_after(pCard_filter,pCard_indexJoin);
-  }
-
-  vEndIteration();
-
-  vPrintBoard();
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Transforms::vMark_scan_pred_bounds(void)
@@ -971,20 +1492,47 @@ void Transforms::vMark_scan_pred_ordinals(void)
   vPrintBoard();
 }
 
-
 /*----------------------------------------------------------------------------*/
-/* delete sends                                                               */
+/* inspect all <filter> and copy <predCmp> to new <scan|absJoin>/<filter>     */
 /*----------------------------------------------------------------------------*/
-void Transforms::vDeleteAll_absJoin(void)
+void Transforms::vMoveAll_predCmp_To_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransformation((char*)(__func__),false);
+  vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
 
-  vRemoveDeleteMains(CK_ABSJOIN);
+  BoardIter xBI(m_pBoard);
+
+  while ((m_p_filter = _pCard_Filter(xBI.pEachMain(CK_FILTER))))
+    vCopyFilterLeftwards(m_p_filter);
 
   vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Transforms::vPromote_scan_To_indexScan(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransformation((char*)(__func__));
+  vExplain("Blah"_Stz);
+
+  BoardIter xBI(m_pBoard);
+
+  while ((m_p_scan = _pCard_Scan(xBI.pEachMain(CK_SCAN)))) {
+
+    m_p_scanPred = m_p_scan->pSub_scanPred();
+    if (!m_p_scanPred)
+      continue;
+
+    m_p_scan->vCard(CK_INDEXSCAN);
+  }
+
+  if (m_bInteractive)
+    m_pBoard->vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1027,353 +1575,6 @@ void Transforms::vRefactorAll_table_Into_join(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* each <scan> <absJoin> becomes <absJoin>/<scan>                             */
-/*----------------------------------------------------------------------------*/
-void Transforms::vSubsume_scan_Under_absJoin(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransformation((char*)(__func__));
-  vExplain("Blah"_Stz);
-
-  BoardIter xBI(m_pBoard);
-  while ((m_p_absJoin = _pCard_AbsJoin(xBI.pEachMain(CK_ABSJOIN))))
-    m_p_absJoin->vDeleteChildCard(CK_CALC);
-
-  xBI.vRestart();
-
-  // E <scan>
-  while ((m_p_scan = _pCard_Scan(xBI.pEachMain(CK_SCAN)))) {
-
-    // ? <scan <absJoin>
-    if (! (m_p_absJoin = _pCard_AbsJoin(xBI.pNextMainIf(CK_ABSJOIN))))
-      continue;
-
-    // <absJoin>/<scan>
-    xBI.vRemoveCard(m_p_scan);
-    m_p_absJoin->vAppend(m_p_scan);
-  }
-
-  vPrintBoard();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Transforms::vExtract_tableList_From_queryBoard(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransformation((char*)(__func__));
-  vExplain("Blah"_Stz);
-
-
-  vSetupPartitionBoard();
-
-  //--nn--------------==
-  // tableList
-
-  BoardIter xBI_query(m_pBoard_query);
-
-  m_p_tableList = new Card_TableList;
-  m_pBoard_partition->vAppendMain(m_p_tableList);
-
-  while ( (m_pMainCard = xBI_query.pEachMain()) ) {
-    if (! (m_p_table = m_pMainCard->pSub_table()))
-      continue;
-
-    m_p_tableList->vAppend(m_p_table->pDupCardAndSubCards());
-  }
-
-
-  m_pBoard_partition->vPrintBoard();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Transforms::vExtract_joinPredList(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransformation((char*)(__func__));
-  vExplain("Blah"_Stz);
-
-  vSetupPartitionBoard();
-
-  //--nn--------------==
-  // joinPredList
-
-  m_p_joinPredList = new Card_JoinPredList;
-  m_pBoard_partition->vAppendMain(m_p_joinPredList);
-
-  BoardIter xBI_query(m_pBoard_query);
-  while ((m_pMainCard = xBI_query.pEachMain(CK_FILTER))) {
-    m_p_calcBool = m_pMainCard->pSub_calcBool();
-    if (!m_p_calcBool)
-      continue;
-
-    m_p_joinPredList->vExtract_joinPredList(m_p_calcBool);
-  }
-
-
-  if (m_bInteractive)
-    m_pBoard_partition->vPrintBoard();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Transforms::vCompute_coPtnPredList(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransformation((char*)(__func__));
-  vExplain("Blah"_Stz);
-
-  vSetupPartitionBoard();
-
-  //--nn--------------==
-  // coPptnPredList
-
-  m_p_coPtnPredList = new Card_CoPtnPredList;
-  m_pBoard_partition->vAppendMain(m_p_coPtnPredList);
-
-  m_p_tableList =
-      _pCard_TableList(m_pBoard_partition->pFindMain(CK_TABLELIST));
-  m_p_joinPredList =
-      _pCard_JoinPredList(m_pBoard_partition->pFindMain(CK_JOINPREDLIST));
-
-  i8 nJoinPreds = m_p_joinPredList->nChildCards();
-  for (i8 i_joinPred = 0; i_joinPred < nJoinPreds; i_joinPred++) {
-    m_p_predCmp =
-        _pCard_CmpPred(m_p_joinPredList->pGetChild(i_joinPred));
-
-    if (! m_p_tableList->bPredCmpIsCoPtn(m_p_predCmp))
-      continue;
-
-    m_p_coPtnPred = new Card_CoPtnPred;
-    m_p_coPtnPred->vAppend(m_p_predCmp->pDupCardAndSubCards());
-
-    m_p_coPtnPredList->vAppend(m_p_coPtnPred);
-  }
-
-  m_pCardCtl->vPrintName(CK_COLUMNREF,false);
-  m_pCardCtl->vPrintProperties(CK_COLUMNREF,false);
-
-  //m_pCardCtl->vPrintForm(CK_COPTNJOIN,CP_COMPRESSED);
-  //m_pCardCtl->vPrintForm(CK_CROSSPTNJOIN,CP_COMPRESSED);
-  //m_pCardCtl->vPrintForm(CK_CMPPRED,CP_COMPRESSED);
-
-  if (m_bInteractive)
-    m_pBoard_partition->vPrintBoard();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Transforms::vCompute_coPtnJoinList(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransformation((char*)(__func__));
-  vExplain("Blah"_Stz);
-
-  vSetupPartitionBoard();
-
-  //--nn--------------==
-  // coPtnJoinList
-
-  m_p_coPtnJoinList = new Card_CoPtnJoinList;
-  m_pBoard_partition->vAppendMain(m_p_coPtnJoinList);
-
-  m_p_coPtnPredList =
-      _pCard_CoPtnPredList(m_pBoard_partition->pFindMain(CK_COPTNPREDLIST));
-
-
-  i8 nChildren = m_p_coPtnPredList->nChildCards();
-  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
-    m_p_coPtnPred =
-        _pCard_CoPtnPred(m_p_coPtnPredList->pGetChild(i_Child));
-
-    m_p_subSet = m_p_coPtnPred->pDupSubCards();
-
-    if (! (m_p_coPtnJoin = m_p_coPtnJoinList->pFind_coPtn_for(m_p_coPtnPred)) ) {
-      m_p_coPtnJoin = new Card_CoPtnJoin;
-      m_p_coPtnJoinList->vAppend(m_p_coPtnJoin);
-    }
-
-    m_p_coPtnJoin->vTransferChildren(m_p_subSet);
-    DELETE_CARD(m_p_subSet);
-  }
-
-
-
-  if (m_bInteractive)
-    m_pBoard_partition->vPrintBoard();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Transforms::vCompute_crossPtnJoinList(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransformation((char*)(__func__));
-  vExplain("Blah"_Stz);
-
-  vSetupPartitionBoard();
-
-  //--nn--------------==
-  // crossPtnJoinList
-
-  m_p_joinPredList =
-      _pCard_JoinPredList(m_pBoard_partition->pFindMain(CK_JOINPREDLIST));
-
-  m_p_crossPtnJoinList = new Card_CrossPtnJoinList;
-  m_pBoard_partition->vAppendMain(m_p_crossPtnJoinList);
-
-  i8 nChildren = m_p_joinPredList->nChildCards();
-  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
-    m_p_predCmp =
-        _pCard_CmpPred(m_p_joinPredList->pGetChild(i_Child));
-
-    if (m_p_coPtnJoinList->bHasEqPredCmp(m_p_predCmp))
-      continue;
-
-    m_p_crossPtnJoin = new Card_CrossPtnJoin;
-    m_p_crossPtnJoin->vAppend(m_p_predCmp->pDupCardAndSubCards());
-    m_p_crossPtnJoinList->vAppend(m_p_crossPtnJoin);
-  }
-
-//  m_p_comment = new Card_Comment("((TO BE CODED))"_Stz);
-//  m_p_crossPtnJoinList->vAppend(m_p_comment);
-
-
-  if (m_bInteractive)
-    m_pBoard_partition->vPrintBoard();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Transforms::vCompute_ptndJoinSet(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransformation((char*)(__func__));
-  vExplain("Blah"_Stz);
-
-  vSetupPartitionBoard();
-
-  //--nn--------------==
-  // ptndJoinSet
-
-  m_p_ptndJoinSet = new Card_PtndJoinSet;
-  m_pBoard_partition->vAppendMain(m_p_ptndJoinSet);
-
-  m_p_coPtnJoinList =
-      _pCard_CoPtnJoinList(m_pBoard_partition->pFindMain(CK_COPTNJOINLIST));
-  m_p_subSet = m_p_coPtnJoinList->pDupSubCards();
-  m_p_ptndJoinSet->vTransferChildren(m_p_subSet);
-  DELETE_CARD(m_p_subSet);
-
-  m_p_crossPtnJoinList =
-      _pCard_CrossPtnJoinList(m_pBoard_partition->pFindMain(CK_CROSSPTNJOINLIST));
-  m_p_subSet = m_p_crossPtnJoinList->pDupSubCards();
-  m_p_ptndJoinSet->vTransferChildren(m_p_subSet);
-  DELETE_CARD(m_p_subSet);
-
-  i8 nChildren = m_p_ptndJoinSet->nChildCards();
-  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
-    m_pChildCard = m_p_ptndJoinSet->pGetChild(i_Child);
-    m_pChildCard->vCard(CK_PTNDJOIN);
-    m_pChildCard->vAddProperty_int(C_PPY_PtndJoin,i_Child);
-  }
-
-  if (m_bInteractive)
-    m_pBoard_partition->vPrintBoard();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Transforms::vCopy_ptndJoinSet(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransformation((char*)(__func__));
-  vExplain("Blah"_Stz);
-
-  vSetupPermuteBoard();
-
-  m_pBench->pCardCtl()->vNextHorizon(CK_PERMUTATION, true);
-
-  m_p_ptndJoinSet =
-      _pCard_PtndJoinSet(m_pBoard_partition->pFindMain(CK_PTNDJOINSET));
-
-  m_pBoard_permute->vAppendMain(new Card_Comment("PERMUTATIONS"_Stz));
-
-  i8 i_PtdnJoin = 0;
-  m_p_subSet = m_p_ptndJoinSet->pDupSubCards();
-  while ((m_pPoppedCard = m_p_subSet->pPop())) {
-    m_pBoard_permute->vAppendMain(m_pPoppedCard);
-  }
-  DELETE_CARD(m_p_subSet);
-
-  if (m_bInteractive)
-    m_pBoard_permute->vPrintBoard();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Transforms::vGenerate_ptndPermutations(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransformation((char*)(__func__));
-  vExplain("Blah"_Stz);
-
-//  PermGen::vTest(4);
-
-  //--nn--------------==
-  // x
-
-
-  m_pPermGen = new PermGen(m_p_ptndJoinSet->nChildCards());
-
-  m_p_subSet = new Card_SubSet;
-
-  while (m_pPermGen->bNextPermutation()) {
-    m_pBoard_permute->vAppendMain((m_p_permutation = new Card_Permutation));
-    m_p_permutation->vAddProperty_int(C_PPY_Permutation,m_pPermGen->nPermutations()-1);
-
-    RASSERT(0 == m_p_subSet->nChildCards());
-    for (i8 i_Item = 0; i_Item < m_pPermGen->nItems(); i_Item++) {
-      i8 i_Child = m_pPermGen->iItem(i_Item);
-      m_pChildCard = m_p_ptndJoinSet->pGetChild(i_Child);
-      m_pBoard_permute->vAppendMain(m_pChildCard->pDupCardAndSubCards());
-
-      m_p_ptndJoin = _pCard_PtndJoin(m_pChildCard);
-      if (! m_p_ptndJoin->bMayFollowAfter(m_p_subSet)) {
-        m_pBoard_permute->vAppendMain(new Card_Comment("**DOESN'T FOLLOW**"_Stz));
-        m_p_permutation->vAddProperty_nameOnly(C_PPY_Invalid);
-        break;
-      }
-      m_p_subSet->vAppend(m_pChildCard);
-    }
-    m_p_subSet->vRemoveAll();
-  }
-
-  DELETE_CARD(m_p_subSet);
-
-  if (m_bInteractive)
-    m_pBoard_permute->vPrintBoard();
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Transforms::vRemove_invalidPermutations(void)
@@ -1411,156 +1612,40 @@ void Transforms::vRemove_invalidPermutations(void)
 
   if (m_bInteractive)
     m_pBoard_permute->vPrintBoard();
-
-
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vAdd_scanPred(void)
+void Transforms::vSetup_costEst(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
 
-  BoardIter xBI(m_pBoard);
+  vSetupCostEstBoard();
 
-  while ( (m_pMainCard = xBI.pEachMain(CK_TABLE)) ) {
+  m_pBoard_costEst->vDuplicateBoard(m_pBoard_permute);
 
-    m_p_filter = m_pMainCard->pSub_filter();
-    if (! m_p_filter)
-      continue;
+  while ((m_pMainCard = m_pBoard_costEst->pGetMain(0))) {
 
-    m_p_indexList = m_pMainCard->pSub_indexList();
-    if (! m_p_indexList)
-      continue;
+    if (CK_PERMUTATION == m_pMainCard->eCard())
+      break;
 
-    m_p_scanPred = nullptr;
-
-    // - - - - - - - - -
-    auto bfX = [this](Card* pCard) {
-      Card_CmpPred* p_predCmp = _pCard_CmpPred(pCard);
-      if (! ('L' == p_predCmp->cMark1() || 'U' == p_predCmp->cMark1()) )
-        return true;
-
-      if (! this->m_p_scanPred) {
-        m_p_scanPred = new Card_ScanPred;
-        m_p_scan->vAppend(m_p_scanPred);
-      }
-
-      if ('L' == p_predCmp->cMark1()) {
-        m_p_lBound = m_p_scanPred->pSub_lBound();
-        if (! m_p_lBound) {
-          m_p_lBound = new Card_LBound;
-          m_p_scanPred->vInsert(m_p_lBound);
-        }
-        m_p_lBound->vAppend(p_predCmp);
-      }
-      else
-      if ('U' == p_predCmp->cMark1()) {
-        m_p_uBound = m_p_scanPred->pSub_uBound();
-        if (! m_p_uBound) {
-          m_p_uBound = new Card_UBound;
-          m_p_scanPred->vAppend(m_p_uBound);
-        }
-        m_p_uBound->vAppend(p_predCmp);
-      }
-
-      return true;
-    };
-
-    // - - - - - - - - -
-
-    m_p_filter->vVisitAllSub(CK_CMPPRED, bfX);
-
+    m_pBoard_costEst->vRemoveMainCard(m_pMainCard);
+    delete m_pMainCard;
   }
 
-  vPrintBoard();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Transforms::vCull_markedPred(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransformation((char*)(__func__));
-  vExplain("Blah"_Stz);
-
-  BoardIter xBI(m_pBoard);
-
-  while ((m_pMainCard = xBI.pEachMain(CK_TABLE))) {
-
-    m_p_filter = m_pMainCard->pSub_filter();
-    if (!m_p_filter)
-      continue;
-
-    m_p_filter->vCullPred('L');
-    m_p_filter->vCullPred('U');
-
-    if (! m_p_filter->bIsEmptyFilter())
-      continue;
-
-    m_pMainCard->vRemoveSubCard(m_p_filter);
-
-    delete m_p_filter;
-    m_p_filter = nullptr;
-  }
-
-  //m_pCardCtl->vPrintForm(CK_STREAM, CP_CARDFORM);
-  m_pCardCtl->vPrintByKind(CK_STREAM, true);
-  m_pCardCtl->vPrintSubCards(CK_STREAM, false);
-
-  vPrintBoard();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Transforms::vPromote_scan_To_indexScan(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransformation((char*)(__func__));
-  vExplain("Blah"_Stz);
-
-  BoardIter xBI(m_pBoard);
-
-  while ((m_p_scan = _pCard_Scan(xBI.pEachMain(CK_SCAN)))) {
-
-    m_p_scanPred = m_p_scan->pSub_scanPred();
-    if (!m_p_scanPred)
-      continue;
-
-    m_p_scan->vCard(CK_INDEXSCAN);
-  }
 
   if (m_bInteractive)
-    m_pBoard->vPrintBoard();
+    m_pBoard_costEst->vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
-/* delete sends                                                               */
+/* each <scan> <absJoin> becomes <absJoin>/<scan>                             */
 /*----------------------------------------------------------------------------*/
-void Transforms::vDeleteAll_send(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransformation((char*)(__func__),false);
-  vExplain("Blah"_Stz);
-
-  vRemoveDeleteMains(CK_SEND);
-
-  vPrintBoard();
-}
-
-/*----------------------------------------------------------------------------*/
-/* cull <sort> when <sbyElist> is same as <gbyElist>                          */
-/*----------------------------------------------------------------------------*/
-void Transforms::vCull_sby_SameAs_gby(void)
+void Transforms::vSubsume_scan_Under_absJoin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1568,136 +1653,31 @@ void Transforms::vCull_sby_SameAs_gby(void)
   vExplain("Blah"_Stz);
 
   BoardIter xBI(m_pBoard);
+  while ((m_p_absJoin = _pCard_AbsJoin(xBI.pEachMain(CK_ABSJOIN))))
+    m_p_absJoin->vDeleteChildCard(CK_CALC);
 
-  while ( (m_p_sort = _pCard_Sort(xBI.pEachMain(CK_SORT))) ) {
+  xBI.vRestart();
 
-    if (! (m_p_aggreg = _pCard_Aggreg(xBI.pPrevMainIf(CK_AGGREG))) )
-      return;
+  // E <scan>
+  while ((m_p_scan = _pCard_Scan(xBI.pEachMain(CK_SCAN)))) {
 
-    m_p_gbyElist = m_p_aggreg->pSub_gbyElist();
-    m_p_sbyElist = m_p_sort->pSub_sbyElist();
-
-    if (bRecursivelyTheSame(m_p_gbyElist, m_p_sbyElist)) {
-      xBI.vRemoveDeleteCurr(CK_SORT);
-      break;
-    }
-  }
-
-  vPrintBoard();
-}
-
-/*----------------------------------------------------------------------------*/
-/* linearize stages                                                           */
-/*----------------------------------------------------------------------------*/
-void Transforms::vAdd_stages(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransformation((char*)(__func__));
-  vExplain("Blah"_Stz);
-
-  i8 iFilter    = 0;
-  i8 iIndexJoin = 0;
-  i8 iOther     = 0;
-  i8 iProject   = 0;
-  i8 iScan      = 0;
-  i8 iSort      = 0;
-  i8 iStage     = 0;
-
-  eYG eStageTopo = YG_NONE;
-  Card_StageTopo* pCard_StageTopo = nullptr;
-
-  BoardIter xBI(m_pBoard);
-  while ( (m_pMainCard = xBI.pEachMain()) ) {
-
-    if (! xBI.bMore())
-      break;
-
-    m_pNextMain = xBI.pNextMain();
-    m_eNextMain = m_pNextMain->eCard();
-    if (CK_STAGE == m_eNextMain)
+    // ? <scan <absJoin>
+    if (! (m_p_absJoin = _pCard_AbsJoin(xBI.pNextMainIf(CK_ABSJOIN))))
       continue;
 
-    switch (eDecodeMain(m_pMainCard)) {
-
-      case CK_FILTER:
-        RASSERT(m_p_filter == m_pMainCard);
-        iFilter++;
-
-        if (CK_INDEXJOIN == m_eNextMain)
-          break;
-
-        m_pChildCard = m_p_stage->pDupCardAndSubCards();
-        m_pBoard->vInsertMainCard_after(m_pChildCard, m_p_filter);
-        xBI.vForward();
-        break;
-
-      case CK_INDEXJOIN:
-        RASSERT(m_p_indexJoin == m_pMainCard);
-        iIndexJoin++;
-
-        if (CK_PROJECT == m_eNextMain || CK_FILTER == m_eNextMain)
-          break;
-
-        m_pDupCard = m_p_stage->pDupCardAndSubCards();
-        m_pBoard->vInsertMainCard_after(m_pDupCard, m_p_indexJoin);
-        xBI.vForward();
-        break;
-
-      case CK_PROJECT:
-        RASSERT(m_p_project == m_pMainCard);
-        iProject++;
-
-        m_pDupCard = m_p_stage->pDupCardAndSubCards();
-        m_pBoard->vInsertMainCard_after(m_pDupCard, m_p_project);
-        xBI.vForward();
-        break;
-
-      case CK_SCAN:
-        RASSERT(m_p_scan == m_pMainCard);
-        iScan++;
-        RASSERT(1 == iScan);
-        break;
-
-      case CK_SORT:
-        RASSERT(m_p_sort == m_pMainCard);
-        iSort++;
-
-        m_pDupCard = m_p_stage->pDupCardAndSubCards();
-        m_pBoard->vInsertMainCard_after(m_pDupCard, m_p_sort);
-        xBI.vForward();
-        break;
-
-      case CK_STAGE:
-        RASSERT(m_p_stage == m_pMainCard);
-        iStage++;
-
-        m_p_stageTopo = m_p_stage->pSub_stageTopo();
-        m_eStageTopo = m_p_stageTopo->eStageTopo();
-        break;
-
-      default:
-        iOther++;
-        break;
-    }
+    // <absJoin>/<scan>
+    xBI.vRemoveCard(m_p_scan);
+    m_p_absJoin->vAppend(m_p_scan);
   }
-
-  i8 i_Stage = 1;
-  xBI.vRestart();
-  while ( (m_p_stage = _pCard_Stage(xBI.pEachMain(CK_STAGE))) )
-    m_p_stage->vRenameStage(i_Stage++);
 
   vPrintBoard();
 }
-
-
-
-
 
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
 
 /*----------------------------------------------------------------------------*/
 /* inspect all <filter> and attempt to assign <predCmp> after <scan>/<absJoin>*/
@@ -2011,7 +1991,6 @@ Card_IndexPred* Transforms::pTo_IndexPred(Card_AbsJoin* pCard_AbsJoin,
 
   return pCard_IndexPred;
 }
-
 
 /*============================================================================*/
 /* end                                                                        */
