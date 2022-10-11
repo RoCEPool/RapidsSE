@@ -1616,6 +1616,8 @@ void Transforms::vAppend_stream_To_scan(void)
 
   vPrintBoard();
 
+  vSetPrintByKind(CK_STREAM, true);
+  vSetPrintProperties(CK_STREAM, false);
   vSetPrintSubCards(CK_STREAM, false);
 
 }

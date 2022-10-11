@@ -133,6 +133,8 @@ namespace STORE
     void vRemoveDeleteMains(eCK eCard);
     void vRenumberMainCards(void);
 
+    void vSetPrintByKind(eCK eCard, bool bPrintByKind);
+    void vSetPrintProperties(eCK eCard, bool bPrintProperties);
     void vSetPrintSubCards(eCK eCard, bool bPrintSubCards);
 
     void vTransformation(char* azTranformation, bool bPrintTransformation=true);

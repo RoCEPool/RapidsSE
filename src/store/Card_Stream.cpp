@@ -201,6 +201,7 @@ void Card_Stream::vStreamPrint(Ribbon* pRibbon, i8 iDepth)
 
   s32 sName;
 
+  /*
   if (m_pProperties && C_UNKNOWN != iGetProperty(C_PPY_OrdLo))
     sName.vSprint("%s%lld]%s $%lld,%lld"_Stz
         ,Stz::szDots(iDepth-1)
@@ -221,7 +222,15 @@ void Card_Stream::vStreamPrint(Ribbon* pRibbon, i8 iDepth)
       ,m_cMark1
       ,m_cMark2
   );
+  */
 
+  sName.vSprint("%s%s"_Stz,szCardNm(),nProperties()?" +":"");
+
+  if (bHasProperty(C_PPY_OrdLo))
+    sName.vCatSprint(" $%lld,%lld"_Stz,
+                     iGetProperty(C_PPY_OrdLo), iGetProperty(C_PPY_OrdHi));
+
+  vPrintCard_byCustom(pRibbon,iDepth,sName);
 }
 
 /*----------------------------------------------------------------------------*/
