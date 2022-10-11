@@ -86,8 +86,8 @@ void Card_Table::vTablePrint(Ribbon* pRibbon, i8 iDepth)
   if (0 == iDepth)
     sName.vToUpper();
 
-  if (bHasProperty(C_PPY_TableSyn))
-    sName.vCatSprint(" %c"_Stz, cGetProperty(C_PPY_TableSyn));
+  if (bHasProperty(PPY_TableSyn))
+    sName.vCatSprint(" %c"_Stz, cPpy(PPY_TableSyn));
   else
     sName.vCatSprint(" %s"_Stz, szValue());
 

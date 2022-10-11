@@ -321,6 +321,31 @@ void TransformerTool::vSetupQueryBoard(void)
 /*----------------------------------------------------------------------------*/
 /* step to next main and set member                                           */
 /*----------------------------------------------------------------------------*/
+void TransformerTool::A_vNew_card(eCK eCard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  m_pNewCard = new Card(eCard);
+
+  vSetMember(eCard,m_pNewCard);
+}
+
+/*----------------------------------------------------------------------------*/
+/* step to next main and set member                                           */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::A_vNew_card(eCK eCard, Stz* szValue)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  A_vNew_card(eCard);
+
+  m_pNewCard->vValue(szValue);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* step to next main and set member                                           */
+/*----------------------------------------------------------------------------*/
 bool TransformerTool::I_bEach_mainCard_(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_);

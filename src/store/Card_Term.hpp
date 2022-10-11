@@ -19,7 +19,7 @@ namespace STORE
     Card_Term(Column* pColumn);
    ~Card_Term(void) noexcept(false);
 
-    static void vTableColOrdinal(String* psTableColOrdinal, char cTableSyn,  i8 iTableColNo);
+    static void vTableColOrd(String* psTableColOrdinal, char cTableSyn, i8 iTableColNo);
 
     ePB  eBound(void);
     i8   iIndexColNo(void);

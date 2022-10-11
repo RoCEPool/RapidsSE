@@ -106,8 +106,8 @@ bool Card_Stream::bContainsPred(Card_PRED* pCard_PRED)
     if (!szTerm->bIsStreamColOrd())
       return true;
 
-    i8 iOrdLo = m_pProperties->iValue(C_PPY_OrdLo);
-    i8 iOrdHi = m_pProperties->iValue(C_PPY_OrdHi);
+    i8 iOrdLo = m_pProperties->iValue(PPY_OrdLo);
+    i8 iOrdHi = m_pProperties->iValue(PPY_OrdHi);
 
     i8 iOrd = szTerm->iOrdinal();
     if (iOrd > iOrdHi)
@@ -148,7 +148,7 @@ Card_StreamCol* Card_Stream::pGet_streamCol(i8 i_Col)
 
   Card_StreamColList* pCard_StreamColList = pGet_streamColList();
 
-  i8 iOrdLo = iGetProperty(C_PPY_OrdLo);
+  i8 iOrdLo = iPpy(PPY_OrdLo);
   i8 i_ColNo = i_Col - iOrdLo;
   Card_StreamCol* pCard_StreamCol = pCard_StreamColList->pGet_streamCol(i_ColNo);
 
@@ -202,9 +202,9 @@ void Card_Stream::vStreamPrint(Ribbon* pRibbon, i8 iDepth)
   s32 sName;
   sName.vSprint("%s%s"_Stz,szCardNm(),nProperties()?" +":"");
 
-  if (bHasProperty(C_PPY_OrdLo))
+  if (bHasProperty(PPY_OrdLo))
     sName.vCatSprint(" $%lld,%lld"_Stz,
-                     iGetProperty(C_PPY_OrdLo), iGetProperty(C_PPY_OrdHi));
+                     iPpy(PPY_OrdLo), iPpy(PPY_OrdHi));
 
   vPrintCard_byCustom(pRibbon,iDepth,sName);
 }

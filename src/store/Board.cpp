@@ -408,7 +408,7 @@ Card_Table* Board::pFindTableCard(char cTableSyn, Card*& rpMainCard)
     if (! p_table)
       continue;
 
-    if (cTableSyn == p_table->cGetProperty(C_PPY_TableSyn))
+    if (cTableSyn == p_table->cPpy(PPY_TableSyn))
       return p_table;
   }
 

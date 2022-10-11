@@ -97,26 +97,26 @@ namespace STORE
   class Card_Unique;
 }
 
-static Stz* C_PPY_AggLevel     = "eAggLevel"_Stz;
-static Stz* C_PPY_AggOp        = "bAggOp"_Stz;
-static Stz* C_PPY_Card         = "pCard"_Stz;
-static Stz* C_PPY_DebugOption  = "szDebugOption"_Stz;
-static Stz* C_PPY_Exclude      = "bExclude"_Stz;
-static Stz* C_PPY_Index        = "pIndex"_Stz;
-static Stz* C_PPY_Invalid      = "bInvalid"_Stz;
-static Stz* C_PPY_JoinedBuff   = "nJoinedBuff"_Stz;
-static Stz* C_PPY_Network      = "nNetwork"_Stz;
-static Stz* C_PPY_OrdHi        = "iOrdHi"_Stz;
-static Stz* C_PPY_OrdLo        = "iOrdLo"_Stz;
-static Stz* C_PPY_Permutation  = "i_Permutation"_Stz;
-static Stz* C_PPY_PtndJoin     = "i_PtndJoin"_Stz;
-static Stz* C_PPY_Rank         = "iRank"_Stz;
-static Stz* C_PPY_SendKind     = "eSendKind"_Stz;
-static Stz* C_PPY_SentOut      = "nSentOut"_Stz;
-static Stz* C_PPY_StageTopo    = "eStageTopo"_Stz;
-static Stz* C_PPY_Table        = "pTable"_Stz;
-static Stz* C_PPY_TableSyn     = "cTableSyn"_Stz;
-static Stz* C_PPY_TableUsed    = "bTableUsed"_Stz;
+static Stz* PPY_AggLevel     = "eAggLevel"_Stz;
+static Stz* PPY_AggOp        = "bAggOp"_Stz;
+static Stz* PPY_Card         = "pCard"_Stz;
+static Stz* PPY_DebugOption  = "szDebugOption"_Stz;
+static Stz* PPY_Exclude      = "bExclude"_Stz;
+static Stz* PPY_Index        = "pIndex"_Stz;
+static Stz* PPY_Invalid      = "bInvalid"_Stz;
+static Stz* PPY_JoinedBuff   = "nJoinedBuff"_Stz;
+static Stz* PPY_Network      = "nNetwork"_Stz;
+static Stz* PPY_OrdHi        = "iOrdHi"_Stz;
+static Stz* PPY_OrdLo        = "iOrdLo"_Stz;
+static Stz* PPY_Permutation  = "i_Permutation"_Stz;
+static Stz* PPY_PtndJoin     = "i_PtndJoin"_Stz;
+static Stz* PPY_Rank         = "iRank"_Stz;
+static Stz* PPY_SendKind     = "eSendKind"_Stz;
+static Stz* PPY_SentOut      = "nSentOut"_Stz;
+static Stz* PPY_StageTopo    = "eStageTopo"_Stz;
+static Stz* PPY_Table        = "pTable"_Stz;
+static Stz* PPY_TableSyn     = "cTableSyn"_Stz;
+static Stz* PPY_TableUsed    = "bTableUsed"_Stz;
 
 namespace STORE
 {
@@ -195,15 +195,6 @@ namespace STORE
     Card* pFindParent(Card* pSubCard);
     Card* pFindSubCard(eCK eCard);
 
-    char cGetProperty(i8 i_Property);
-    char cGetProperty(Stz* szPptName);
-    i8   iGetProperty(i8 i_Property);
-    i8   iGetProperty(Stz* szPptName);
-    Object* pGetProperty(i8 i_Property);
-    Object* pGetProperty(Stz* szPptName);
-    Stz* szGetProperty(i8 i_Property);
-    Stz* szGetProperty(Stz* szPptName);
-    Stz* szGetPropertyNm(i8 i_Property);
     Card* pGetChild(i8 i_Child);
     Card* pGetChild(i8 i_Child, eCK& reCard);
 
@@ -224,6 +215,15 @@ namespace STORE
     void vMark2(char cMark2);
     void vMoveToLastChild(Card* pChildCard);
 
+    char cPpy(i8 i_Property);
+    char cPpy(Stz* szPpyNm);
+    i8   iPpy(i8 i_Property);
+    i8   iPpy(Stz* szPpyNm);
+    Object* pPpy(i8 i_Property);
+    Object* pPpy(Stz* szPptNm);
+    Stz* szPpy(i8 i_Property);
+    Stz* szPpy(Stz* szPptNm);
+    Stz* szPpyNm(i8 i_Property);
     void vPrintCard(Ribbon* pRibbon, i8 iDepth, bool& rbPrune);
     void vPrintCard_byCustom(Ribbon* pRibbon, i8 iDepth, Stz* szCustomName);
     void vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth);

@@ -137,6 +137,9 @@ namespace STORE
     void vSetupPermuteBoard(void);
     void vSetupQueryBoard(void);
 
+    void A_vNew_card(eCK eCard);
+    void A_vNew_card(eCK eCard, Stz* szValue);
+
     bool I_bEach_mainCard_(void);
     bool I_bEach_mainCard_(eCK eCard);
 

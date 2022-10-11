@@ -31,6 +31,8 @@ CardMembers::CardMembers(void)
   m_pNextMain      = nullptr;
   m_i_Next         = C_UNKNOWN;
 
+  m_pNewCard       = nullptr;
+
   m_pPoppedCard    = nullptr;
   m_i_Popped       = C_UNKNOWN;
 

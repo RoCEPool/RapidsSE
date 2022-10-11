@@ -86,7 +86,7 @@ Card_Term::~Card_Term(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* form tableColOrdinal from tableSyn and tableColNo                          */
 /*----------------------------------------------------------------------------*/
-void Card_Term::vTableColOrdinal(String* psTableColOrdinal, char cTableSyn,  i8 iTableColNo)
+void Card_Term::vTableColOrd(String* psTableColOrdinal, char cTableSyn, i8 iTableColNo)
 {
   _static_
 

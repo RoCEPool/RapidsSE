@@ -69,7 +69,7 @@ CardCtl::CardCtl(void)
   vPrintProperties(CK_ORPRED, false);
 
   vNextHorizon(CK_STAGE, true);
-  vHorizExclude(CK_STAGE,C_PPY_Exclude);
+  vHorizExclude(CK_STAGE,PPY_Exclude);
   vPrintByKind(CK_STREAMELIST,true);
 
   vPrintByKind(CK_TABLE,true);

@@ -721,14 +721,14 @@ Card* Card::pFindSubCard(eCK eCard)
 /*----------------------------------------------------------------------------*/
 /* get given property                                                         */
 /*----------------------------------------------------------------------------*/
-char Card::cGetProperty(Stz* szPptName)
+char Card::cPpy(Stz* szPpyNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (! m_pProperties)
     return ' ';
 
-  Stz* szValue = m_pProperties->szValue(szPptName);
+  Stz* szValue = m_pProperties->szValue(szPpyNm);
   if (! szValue)
     return ' ';
 
@@ -738,7 +738,7 @@ char Card::cGetProperty(Stz* szPptName)
 /*----------------------------------------------------------------------------*/
 /* get given property                                                         */
 /*----------------------------------------------------------------------------*/
-char Card::cGetProperty(i8 i_Property)
+char Card::cPpy(i8 i_Property)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -755,14 +755,14 @@ char Card::cGetProperty(i8 i_Property)
 /*----------------------------------------------------------------------------*/
 /* get given property                                                         */
 /*----------------------------------------------------------------------------*/
-i8 Card::iGetProperty(Stz* szPptName)
+i8 Card::iPpy(Stz* szPpyNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (! m_pProperties)
     return C_UNKNOWN;
   
-  i8 iValue = m_pProperties->iValue(szPptName);
+  i8 iValue = m_pProperties->iValue(szPpyNm);
   
   return iValue;
 }
@@ -770,7 +770,7 @@ i8 Card::iGetProperty(Stz* szPptName)
 /*----------------------------------------------------------------------------*/
 /* get given property                                                         */
 /*----------------------------------------------------------------------------*/
-i8 Card::iGetProperty(i8 i_Property)
+i8 Card::iPpy(i8 i_Property)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -785,14 +785,14 @@ i8 Card::iGetProperty(i8 i_Property)
 /*----------------------------------------------------------------------------*/
 /* get given property                                                         */
 /*----------------------------------------------------------------------------*/
-Object* Card::pGetProperty(Stz* szPptName)
+Object* Card::pPpy(Stz* szPptNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (! m_pProperties)
     return nullptr;
   
-  Object* pValue = m_pProperties->pValue(szPptName);
+  Object* pValue = m_pProperties->pValue(szPptNm);
   
   return pValue;
 }
@@ -800,7 +800,7 @@ Object* Card::pGetProperty(Stz* szPptName)
 /*----------------------------------------------------------------------------*/
 /* get given property                                                         */
 /*----------------------------------------------------------------------------*/
-Object* Card::pGetProperty(i8 i_Property)
+Object* Card::pPpy(i8 i_Property)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -815,14 +815,14 @@ Object* Card::pGetProperty(i8 i_Property)
 /*----------------------------------------------------------------------------*/
 /* get given property                                                         */
 /*----------------------------------------------------------------------------*/
-Stz* Card::szGetProperty(Stz* szPptName)
+Stz* Card::szPpy(Stz* szPptNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (! m_pProperties)
     return nullptr;
   
-  Stz* szValue = m_pProperties->szValue(szPptName);
+  Stz* szValue = m_pProperties->szValue(szPptNm);
   
   return szValue;
 }
@@ -830,7 +830,7 @@ Stz* Card::szGetProperty(Stz* szPptName)
 /*----------------------------------------------------------------------------*/
 /* get given property                                                         */
 /*----------------------------------------------------------------------------*/
-Stz* Card::szGetProperty(i8 i_Property)
+Stz* Card::szPpy(i8 i_Property)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -845,7 +845,7 @@ Stz* Card::szGetProperty(i8 i_Property)
 /*----------------------------------------------------------------------------*/
 /* get given property name                                                    */
 /*----------------------------------------------------------------------------*/
-Stz* Card::szGetPropertyNm(i8 i_Property)
+Stz* Card::szPpyNm(i8 i_Property)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -1332,8 +1332,8 @@ void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth)
     switch (eTkn) {
 
       case TN_INTEGER: {
-        Stz* szName = szGetPropertyNm(i_Property);
-        i8   iValue = iGetProperty(i_Property);
+        Stz* szName = szPpyNm(i_Property);
+        i8   iValue = iPpy(i_Property);
 
         Stz* szDecode = szDecodeEnum(szName,iValue);
         if (szDecode)
@@ -1347,8 +1347,8 @@ void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth)
       }
 
       case TN_OBJECT: {
-        Stz* szName = szGetPropertyNm(i_Property);
-        Object* pObject = pGetProperty(i_Property);
+        Stz* szName = szPpyNm(i_Property);
+        Object* pObject = pPpy(i_Property);
         pRibbon->vSprintRight("%s->  "_Stz,szName);
         pRibbon->vSprintRight("%p"_Stz,pObject);
         pRibbon->vSprintRight("%s"_Stz,aCN[pObject->eGetClassNo()]);
@@ -1356,8 +1356,8 @@ void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth)
       }
 
       case TN_STRING: {
-        Stz* szName  = szGetPropertyNm(i_Property);
-        Stz* szValue = szGetProperty(i_Property);
+        Stz* szName  = szPpyNm(i_Property);
+        Stz* szValue = szPpy(i_Property);
         if (bPrintPptName)
           pRibbon->vSprintRight("%s=%s"_Stz,szName,szValue);
         else

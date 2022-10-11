@@ -17,8 +17,9 @@ namespace STORE
     Card_TablePtn(Card_Table* p_table);
    ~Card_TablePtn(void) noexcept(false);
 
-  private:
     void vAdd_TablePtn(Card_Table* p_table);
+
+  private:
 
   };
 

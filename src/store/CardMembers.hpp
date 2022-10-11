@@ -20,6 +20,8 @@ namespace STORE
     Card* m_pMainCard;
     i8    m_i_Main;
 
+    Card* m_pNewCard;
+
     Card* m_pNextMain;
     i8    m_i_Next;
 

@@ -49,7 +49,7 @@ Resolver::~Resolver(void) noexcept(false)
 /* resolve $n into $$c.n                                                      */
 /*----------------------------------------------------------------------------*/
 void Resolver::vResolve_streamColOrdinal_To_tableColOrdinal
-                (String* psTableColOrdinal, Stz* szStreamColOrdinal)
+                (String* psTableColOrd, Stz* szStreamColOrdinal)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_RESOLVER, _FOOTER_);
 
@@ -63,8 +63,8 @@ void Resolver::vResolve_streamColOrdinal_To_tableColOrdinal
     if (! (m_p_stream = _pSub_Stream(m_pMainCard)) )
       continue;
 
-    i8 iOrdLo = m_p_stream->iGetProperty(C_PPY_OrdLo);
-    i8 iOrdHi = m_p_stream->iGetProperty(C_PPY_OrdHi);
+    i8 iOrdLo = m_p_stream->iPpy(PPY_OrdLo);
+    i8 iOrdHi = m_p_stream->iPpy(PPY_OrdHi);
 
     if (! (iStreamColNo >= iOrdLo && iStreamColNo <= iOrdHi) )
       continue;
@@ -72,9 +72,9 @@ void Resolver::vResolve_streamColOrdinal_To_tableColOrdinal
     i8 iTableColNo = iStreamColNo - iOrdLo + 1;
 
     m_p_table = _pSub_Table(m_pMainCard);
-    char cTableSyn = m_p_table->cGetProperty(C_PPY_TableSyn);
+    char cTableSyn = m_p_table->cPpy(PPY_TableSyn);
 
-    Card_Term::vTableColOrdinal(psTableColOrdinal, cTableSyn, iTableColNo);
+    Card_Term::vTableColOrd(psTableColOrd, cTableSyn, iTableColNo);
   }
 }
 
