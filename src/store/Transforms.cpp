@@ -1737,7 +1737,7 @@ void Transforms::vAssignPredDrillDown(Card_PRED* pCard_pred, Card_Filter* pCard_
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  i8 iWhichScan = C_UNKNOWN;
+  char cWhichTable = ' ';
 
   eCK eCard = pCard_pred->eCard();
 
@@ -1749,12 +1749,12 @@ void Transforms::vAssignPredDrillDown(Card_PRED* pCard_pred, Card_Filter* pCard_
 
   if (CK_CMPPRED == eCard) {
     pCard_pred->vMark1('?');
-    iWhichScan =
-        iAssignPredLeft(pCard_pred,
+    cWhichTable =
+        cAssignPredLeft(pCard_pred,
                         pCard_filter);
-    if (C_UNKNOWN != iWhichScan) {
+    if (C_UNKNOWN != cWhichTable) {
       pCard_pred->vMark1('@');
-      pCard_pred->vMark2(iWhichScan);
+      pCard_pred->vMark2(cWhichTable);
     }
     return;
   }
@@ -1787,50 +1787,13 @@ void Transforms::vAssignPredDrillDown(Card_PRED* pCard_pred, Card_Filter* pCard_
 /*----------------------------------------------------------------------------*/
 /* inspect <PRED>                                                             */
 /*----------------------------------------------------------------------------*/
-i8 Transforms::iAssignPredLeft(Card_PRED* pCard_PRED, Card_Filter* pCard_filter)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  i8 nAbsJoin = 0;
-  i8 nScan    = 0;
-  i8 iWhichScan = C_UNKNOWN;
-
-  //vTrace("iAssignPredLeft candidate %p\n"_Stz,pCard_PRED);
-  //pCard_PRED->vDump();
-
-  for (i8 i_Main = 0; /* none */ ; i_Main++) {
-    Card *pMainCard = m_pBoard->pGetMain(i_Main);
-
-    if (pMainCard == pCard_filter)
-      return C_UNKNOWN;
-
-    eCK eMainCard = pMainCard->eCard();
-
-    if (CK_SCAN == eMainCard) {
-      nScan++;
-      iWhichScan = iAssignPredToScan(_pCard_Scan(pMainCard), pCard_PRED);
-      if (C_UNKNOWN != iWhichScan)
-        return iWhichScan;
-      continue;
-    }
-
-    // skip over any other card??
-    vTrace("bMovePredLeft skipping mainCard %s\n"_Stz,aCK[eMainCard]);
-  }
-
-  NEVER_REACH;
-}
-
-/*----------------------------------------------------------------------------*/
-/* inspect <PRED>                                                             */
-/*----------------------------------------------------------------------------*/
 char Transforms::cAssignPredLeft(Card_PRED* pCard_PRED, Card_Filter* pCard_filter)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   i8 nAbsJoin = 0;
   i8 nScan    = 0;
-  char cWhichScan = ' ';
+  char cWhichScan = C_UNKNOWN;
 
   //vTrace("iAssignPredLeft candidate %p\n"_Stz,pCard_PRED);
   //pCard_PRED->vDump();
@@ -1846,7 +1809,7 @@ char Transforms::cAssignPredLeft(Card_PRED* pCard_PRED, Card_Filter* pCard_filte
     if (CK_SCAN == eMainCard) {
       nScan++;
       cWhichScan = cAssignPredToTable(_pCard_Scan(pMainCard), pCard_PRED);
-      if (' ' != cWhichScan)
+      if (C_UNKNOWN != cWhichScan)
         return cWhichScan;
       continue;
     }
@@ -1856,24 +1819,6 @@ char Transforms::cAssignPredLeft(Card_PRED* pCard_PRED, Card_Filter* pCard_filte
   }
 
   NEVER_REACH;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-i8 Transforms::iAssignPredToScan(Card_Scan* pCard_scan, Card_PRED* pCard_PRED)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  Card_Stream* pCard_stream = _pSub_Stream(pCard_scan);
-  //pCard_stream->vMark1('#');
-
-  // are all $n of <pred> in this <stream>?
-  if (pCard_stream->bContainsPred(pCard_PRED)) {
-    //pCard_stream->vMark1('@');
-    return pCard_stream->iStream();
-  }
-  return C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1892,7 +1837,7 @@ char Transforms::cAssignPredToTable(Card_Scan* pCard_scan, Card_PRED* pCard_PRED
     return cTableSyn;
   }
 
-  return ' ';
+  return C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/

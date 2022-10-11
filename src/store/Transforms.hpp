@@ -74,9 +74,7 @@ namespace STORE
     void vAssignFilterLeftwards(Card_Filter* pCard_filter);
     void vAssignPredDrillDown(Card_PRED*, Card_Filter* pCard_filter);
 
-    i8   iAssignPredLeft(Card_PRED* pCard_PRED, Card_Filter* pCard_filter);
     char cAssignPredLeft(Card_PRED* pCard_PRED, Card_Filter* pCard_filter);
-    i8   iAssignPredToScan(Card_Scan* pCard_scan, Card_PRED* pCard_PRED);
     char cAssignPredToTable(Card_Scan* pCard_scan, Card_PRED* pCard_PRED);
 
     void vCopyFilterLeftwards(Card_Filter* pCard_filter);
