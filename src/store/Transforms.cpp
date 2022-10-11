@@ -874,8 +874,7 @@ void Transforms::vIndividuate_filter(void)
 
   vEndIteration();
 
-  if (m_bInteractive)
-    m_pBoard->vPrintBoard();
+  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -991,35 +990,40 @@ void Transforms::vDeleteAll_absJoin(void)
 /*----------------------------------------------------------------------------*/
 /* reduce absJoin                                                             */
 /*----------------------------------------------------------------------------*/
-void Transforms::vRefactor_absJoin_Into_indexJoin(void)
+void Transforms::vRefactorAll_table_Into_join(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
 
+  Card_Board* p_board = m_pBoard->pCard_Board();
+
   vBeginIteration();
 
-  while (m_pMainCard = pEachMain(CK_TABLE)) {
+  while ((m_p_table = _pCard_Table(pEachMain(CK_TABLE)))) {
 
+    m_p_indexJoin = _pSub_IndexJoin(m_p_table);
+    if (! m_p_indexJoin) {
 
-    Card_IndexJoin* pCard_indexJoin = _pSub_IndexJoin(m_pMainCard);
-    if (! pCard_indexJoin)
+      m_p_scan = new Card_Scan;
+      m_p_scan->vTransferChildren(m_p_table);
+
+      p_board->vReplace(m_p_table,m_p_scan);
+      m_p_scan->vInsert(m_p_table);
       continue;
+    }
 
-    m_pMainCard->vReplaceChildWithItsSubs(pCard_indexJoin);
-    delete pCard_indexJoin;
+    m_p_table->vRemoveSubCard(m_p_indexJoin);
+    m_p_indexJoin->vTransferChildren(m_p_table);
 
-    Card_Stream* pCard_stream = _pSub_Stream(m_pMainCard);
-    m_pMainCard->vMoveToLastChild(pCard_stream);
-
-    m_pMainCard->vCard(CK_INDEXJOIN);
+    p_board->vReplace(m_p_table,m_p_indexJoin);
+    m_p_indexJoin->vInsert(m_p_table);
   }
 
   vEndIteration();
 
-  if (m_bInteractive)
-    m_pBoard->vPrintBoard();
+  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1579,9 +1583,7 @@ void Transforms::vCull_sby_SameAs_gby(void)
     }
   }
 
-  if (m_bInteractive)
-    m_pBoard->vPrintBoard();
-
+  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/

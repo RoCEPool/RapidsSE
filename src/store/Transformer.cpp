@@ -208,7 +208,7 @@ void Transformer::vTransform3(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pTransforms->vDelete_empty_sub_filter();
 
-  m_pTransforms->vRefactor_absJoin_Into_indexJoin();
+  m_pTransforms->vRefactorAll_table_Into_join();
 
   m_pTransforms->vCull_sby_SameAs_gby();
 

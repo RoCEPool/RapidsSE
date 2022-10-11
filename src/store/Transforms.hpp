@@ -64,7 +64,7 @@ namespace STORE
     void vMark_scan_pred_bounds(void);
     void vMark_scan_pred_ordinals(void);
     void vPromote_scan_To_indexScan(void);
-    void vRefactor_absJoin_Into_indexJoin(void);
+    void vRefactorAll_table_Into_join(void);
     void vRemove_invalidPermutations(void);
     void vCullAll_scan(void);
     void vSetup_costEst(void);
