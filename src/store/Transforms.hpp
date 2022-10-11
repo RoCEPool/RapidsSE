@@ -31,18 +31,18 @@ namespace STORE
     void vAdd_tableSyn_ToAll_table(void);
     void vAppend_indexList_To_scan(void);
     void vAppend_stream_ToAll_table(void);
-    void vAssign_predCmp_leftwards(void);
+    void vAssignAll_predCmp_To_table(void);
     void vCalc_ordinalRanges_OfAll_stream(void);
     void vChangeAll_scan_To_retrieve(void);
     void vCompute_coPtnJoinList(void);
     void vCompute_coPtnPredList(void);
     void vCompute_crossPtnJoinList(void);
     void vCompute_ptndJoinSet(void);
-    void vConvertAll_idxColNm_To_streamColOrdinal(void);
+    void vConvertAll_idxColNm_To_streamColOrd(void);
     void vConvert_calc_OfAll_filter_To_calcBool(void);
-    void vCopy_predCmp_leftwards(void);
+    void vMoveAll_predCmp_To_table(void);
     void vCopy_ptndJoinSet(void);
-    void vCull_filterPred_Of_indexJoin(void);
+    void vCullAll_filterPred_Of_indexJoin(void);
     void vCull_markedPred(void);
     void vCull_sby_SameAs_gby(void);
     void vDeleteAll_absJoin(void);
@@ -56,17 +56,17 @@ namespace STORE
     void vExtract_joinOrderSeq(void);
     void vExtract_joinPredList(void);
     void vExtract_tableList_From_queryBoard(void);
-    void vForm_joinPred(void);
+    void vFormAll_joinPred_of_indexJoin(void);
     void vGenerate_ptndPermutations(void);
     void vIndividuate_filter(void);
-    void vInsert_preliminary_indexJoin(void);
+    void vInsert_indexJoin_IntoAll_table(void);
     void vLinearizeAll_stage(void);
     void vMark_scan_pred_bounds(void);
     void vMark_scan_pred_ordinals(void);
     void vPromote_scan_To_indexScan(void);
     void vRefactor_absJoin_Into_indexJoin(void);
     void vRemove_invalidPermutations(void);
-    void vRemoveAll_scan(void);
+    void vCullAll_scan(void);
     void vSetup_costEst(void);
     void vSubsume_scan_Under_absJoin(void);
 
@@ -76,7 +76,7 @@ namespace STORE
     void vAssignPredDrillDown(Card_PRED*, Card_Filter* pCard_filter);
 
     char cAssignPredLeft(Card_PRED* pCard_PRED, Card_Filter* pCard_filter);
-    char cAssignPredToTable(Card_Scan* pCard_scan, Card_PRED* pCard_PRED);
+    char cAssignPredToTable(Card_Table* pCard_table, Card_PRED* pCard_PRED);
 
     void vCopyFilterLeftwards(Card_Filter* pCard_filter);
     bool bCopyPredDrillDown(Card_PRED*, Card_Filter* pCard_filter);

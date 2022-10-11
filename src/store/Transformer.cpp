@@ -111,7 +111,7 @@ void Transformer::vTransform3(void)
   m_pTransforms->vDeleteAll_send();
 
   // remove *<scan>
-  m_pTransforms->vRemoveAll_scan();
+  m_pTransforms->vCullAll_scan();
 
   // add <tableSyn> to all <table>
   m_pTransforms->vAdd_tableSyn_ToAll_table();
@@ -167,20 +167,20 @@ void Transformer::vTransform3(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // inspect all <filter> and attempt to move <predCmp> after <scan>/<absJoin>
-  m_pTransforms->vAssign_predCmp_leftwards();
-  m_pTransforms->vCopy_predCmp_leftwards();
+  m_pTransforms->vAssignAll_predCmp_To_table();
+  m_pTransforms->vMoveAll_predCmp_To_table();
 
   // delete any <filter> which is effectively empty
   m_pTransforms->vDelete_Empty_filter();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  m_pTransforms->vInsert_preliminary_indexJoin();
-  m_pTransforms->vConvertAll_idxColNm_To_streamColOrdinal();
-  m_pTransforms->vForm_joinPred();
+  m_pTransforms->vInsert_indexJoin_IntoAll_table();
+  m_pTransforms->vConvertAll_idxColNm_To_streamColOrd();
+  m_pTransforms->vFormAll_joinPred_of_indexJoin();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  m_pTransforms->vCull_filterPred_Of_indexJoin();
+  m_pTransforms->vCullAll_filterPred_Of_indexJoin();
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
