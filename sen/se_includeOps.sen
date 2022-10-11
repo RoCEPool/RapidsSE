@@ -136,9 +136,7 @@ assert::stack_0
 
 "j" .verbose
   "OP_jobExit.sen"              include
-  "OP_jobOperators.sen"         include
   "OP_joinOptimisation.sen"     include
-  "OP_jobReport.sen"            include
 
 "k" .verbose
   "OP_keyExists.sen"            include

@@ -224,7 +224,7 @@ eEC JobReport::eNetDissectReport(Job* pJob, Tub* pTub)
 //    pJob = pFindParticipantJobId(tJobId);
 //  }
 //
-  // find the internal jobOperators table
+  // find the internal netDissect table
   Table* pJobNetDissectTable = AM::pTableFind(C_TDEF_JOBNETDISSECT);
   StreamDef* pStreamDef = pJobNetDissectTable->pStreamDef();
 
@@ -432,7 +432,7 @@ eEC JobReport::eNetworkReport(Job* pJob, Tub* pTub)
 //    pJob = pFindParticipantJobId(tJobId);
 //  }
   
-  // find the internal jobOperators table
+  // find the internal jobNetwork table
   Table* pJobNetworkTable = AM::pTableFind(C_TDEF_JOBNETWORK);
   StreamDef* pStreamDef = pJobNetworkTable->pStreamDef();
 
@@ -518,7 +518,7 @@ eEC JobReport::eOperandReport(Job* pJob, Tub* pTub)
 
   i8 iParticipantTsc = pJob->iTscParticipant();
   
-  // find the internal jobOperators table
+  // find the internal jobOpererands table
   Table* pJobOperandsTable = AM::pTableFind(C_TDEF_JOBOPERANDS);
   StreamDef* pStreamDef = pJobOperandsTable->pStreamDef();
 

@@ -14,7 +14,7 @@
   LogicUnit[].intStack@ jobMetrics::jobSet
 
   LogicUnit[].intStack@ intStack.items@ if
-    LogicUnit[].intStack@ intStack.items@ "intStack has %v items" .printf
+    LogicUnit[].intStack@ intStack.items@ "JobMetrics being collected for %v jobs" .printf
   then
 
   begin
@@ -33,7 +33,7 @@
 /*----------------------------------------------------------------------------*/
 : metricsCollectSys
 
-  "collecting sys metrics" .
+  //"collecting sys metrics" .
       
   SysMetrics::new attachmap::addSysMetrics
 ;
@@ -89,8 +89,15 @@ begin
     // collect job metrics
     metricsCollectJob
 
+    sysargs::sysMetrics@ if
+
+      metricsCollectSys
+
+    then
+
+
     // sleep
-    10 thread::sleepMsec
+    sysargs::metricsSleep@ thread::sleepMsec
 
   again
 

@@ -88,25 +88,6 @@
   api::forkChild  api:executeCheck
 
 */
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // C_TDEF_JOBREPORT
-  STD_BOOTFORK_TAG
-  "
-  define table se__jobReport
-  (
-    jobId        INTEGER NOT NULL , // pu
-    subset       INTEGER NOT NULL , // puSet
-    t            INTEGER NOT NULL , // t
-    ft           INTEGER NOT NULL , // ft
-    j            INTEGER NOT NULL , // j
-    fj           INTEGER NOT NULL , // fj
-    groups       INTEGER NOT NULL , // groups
-    responseUS   INTEGER NOT NULL ,
-    magnitude    INTEGER NOT NULL
-
-  ) < internal > = 1 ;
-  "
-  api::forkChild  api:executeCheck
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
