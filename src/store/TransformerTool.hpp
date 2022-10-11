@@ -40,6 +40,8 @@ namespace STORE
     eCK m_eNextMain;
     eYG m_eStageTopo;
 
+    BoardIter* m_pBoardIter;
+
 //    Card* m_pChildCard;
 //    i8    m_i_Child;
 //    Card* m_pDupCard;
@@ -128,13 +130,19 @@ namespace STORE
     void vSetPrintProperties(eCK eCard, bool bPrintProperties);
     void vSetPrintSubCards(eCK eCard, bool bPrintSubCards);
 
-    void vTransformation(char* azTranformation, bool bPrintTransformation=true);
+    void vTransformation(eBK eBoard, char* azTranformation, bool bPrintTransformation=true);
+
 
   protected:
     void vSetupCostEstBoard(void);
     void vSetupPartitionBoard(void);
     void vSetupPermuteBoard(void);
     void vSetupQueryBoard(void);
+
+    bool bI_EachMain(void);
+    bool I_bEachMain(eCK eCard);
+
+    void vSetMember(eCK eCard, Card* pCard);
   };
 }
 

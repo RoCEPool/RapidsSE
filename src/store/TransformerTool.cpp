@@ -35,6 +35,8 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_eNextMain      = CK_NONE;
   m_eStageTopo     = YG_NONE;
 
+  m_pBoardIter     = new BoardIter(m_pBoard);
+
 //  m_pChildCard     = nullptr;
 //  m_i_Child        = C_UNKNOWN;
 //  m_pDupCard       = nullptr;
@@ -112,6 +114,7 @@ TransformerTool::~TransformerTool(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
+  delete m_pBoardIter;
   delete m_pPermGen;
 }
 
@@ -250,9 +253,15 @@ void TransformerTool::vSetPrintSubCards(eCK eCard, bool bPrintSubCards)
 /*----------------------------------------------------------------------------*/
 /* record transformation                                                      */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::vTransformation(char* azTranformation, bool bPrintTransformation)
+void TransformerTool::vTransformation(eBK eBoard,
+                                      char* azTranformation,
+                                      bool bPrintTransformation)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
+
+  RASSERT(eBoard == m_pBoard->eBoard());
+
+  _board_ = m_pBoard->pCard_Board();
 
   m_sTranformation = azTranformation;
   m_bPrintTransformation = bPrintTransformation;
@@ -326,6 +335,100 @@ void TransformerTool::vSetupQueryBoard(void)
 
   m_pBoard_partition = m_pBench->pGetBoard(BK_PARTITION);
   m_pBoard_query     = m_pBench->pGetBoard(BK_QUERY);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* step to next main and set member                                           */
+/*----------------------------------------------------------------------------*/
+bool TransformerTool::bI_EachMain(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  m_pMainCard = m_pBoardIter->pEachMain();
+  if (! m_pMainCard)
+    return false;
+
+  eCK eCard = m_pMainCard->eCard();
+
+  vSetMember(eCard,m_pMainCard);
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* step to next main and set member                                           */
+/*----------------------------------------------------------------------------*/
+bool TransformerTool::I_bEachMain(eCK eCard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  m_pMainCard = m_pBoardIter->pEachMain(eCard);
+  if (! m_pMainCard)
+    return false;
+
+  vSetMember(eCard,m_pMainCard);
+
+  return true;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* set member card                                                            */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::vSetMember(eCK eCard, Card* pCard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  switch (eCard) {
+
+    case CK_ABSJOIN:          *((Card**)&m_p_absJoin)          = pCard; break;
+    case CK_AGGREG:           *((Card**)&m_p_aggreg)           = pCard; break;
+    case CK_CALCBOOL:         *((Card**)&m_p_calcBool)         = pCard; break;
+    case CK_COMBINED:         *((Card**)&m_p_combined)         = pCard; break;
+    case CK_COMMENT:          *((Card**)&m_p_comment)          = pCard; break;
+    case CK_COPTNJOIN:        *((Card**)&m_p_coPtnJoin)        = pCard; break;
+    case CK_COPTNJOINLIST:    *((Card**)&m_p_coPtnJoinList)    = pCard; break;
+    case CK_COPTNPRED:        *((Card**)&m_p_coPtnPred)        = pCard; break;
+    case CK_COPTNPREDLIST:    *((Card**)&m_p_coPtnPredList)    = pCard; break;
+    case CK_CROSSPTNJOIN:     *((Card**)&m_p_crossPtnJoin)     = pCard; break;
+    case CK_CROSSPTNJOINLIST: *((Card**)&m_p_crossPtnJoinList) = pCard; break;
+    case CK_EXPR:             *((Card**)&m_p_expr)             = pCard; break;
+    case CK_FILTER:           *((Card**)&m_p_filter)           = pCard; break;
+    case CK_GBYELIST:         *((Card**)&m_p_gbyElist)         = pCard; break;
+    case CK_IDXCOLLIST:       *((Card**)&m_p_idxColList)       = pCard; break;
+    case CK_INDEXJOIN:        *((Card**)&m_p_indexJoin)        = pCard; break;
+    case CK_INDEXLIST:        *((Card**)&m_p_indexList)        = pCard; break;
+    case CK_INDEXPTR:         *((Card**)&m_p_indexPtr)         = pCard; break;
+    case CK_INDEXSCAN:        *((Card**)&m_p_indexScan)        = pCard; break;
+    case CK_JOINORDER:        *((Card**)&m_p_joinOrder)        = pCard; break;
+    case CK_JOINORDERSEQ:     *((Card**)&m_p_joinOrderSeq)     = pCard; break;
+    case CK_JOINPRED:         *((Card**)&m_p_joinPred)         = pCard; break;
+    case CK_JOINPREDLIST:     *((Card**)&m_p_joinPredList)     = pCard; break;
+    case CK_LBOUND:           *((Card**)&m_p_lBound)           = pCard; break;
+    case CK_PERMUTATION:      *((Card**)&m_p_permutation)      = pCard; break;
+    case CK_CMPPRED:          *((Card**)&m_p_predCmp)          = pCard; break;
+    case CK_PROJECT:          *((Card**)&m_p_project)          = pCard; break;
+    case CK_PTNDJOIN:         *((Card**)&m_p_ptndJoin)         = pCard; break;
+    case CK_PTNDJOINSET:      *((Card**)&m_p_ptndJoinSet)      = pCard; break;
+    case CK_SBYELIST:         *((Card**)&m_p_sbyElist)         = pCard; break;
+    case CK_SCAN:             *((Card**)&m_p_scan)             = pCard; break;
+    case CK_SCANPRED:         *((Card**)&m_p_scanPred)         = pCard; break;
+    case CK_SORT:             *((Card**)&m_p_sort)             = pCard; break;
+    case CK_STAGE:            *((Card**)&m_p_stage)            = pCard; break;
+    case CK_STAGETOPO:        *((Card**)&m_p_stageTopo)        = pCard; break;
+    case CK_STREAM:           *((Card**)&m_p_stream)           = pCard; break;
+    case CK_STREAMCOLLIST:    *((Card**)&m_p_streamColList)    = pCard; break;
+    case CK_SUBSET:           *((Card**)&m_p_subSet)           = pCard; break;
+    case CK_TABLE:            *((Card**)&m_p_table)            = pCard; break;
+    case CK_TABLELIST:        *((Card**)&m_p_tableList)        = pCard; break;
+    case CK_TABLEPTN:         *((Card**)&m_p_tablePtn)         = pCard; break;
+    case CK_TABLEPTR:         *((Card**)&m_p_tablePtr)         = pCard; break;
+    case CK_TERM:             *((Card**)&m_p_term)             = pCard; break;
+    case CK_UBOUND:           *((Card**)&m_p_uBound)           = pCard; break;
+
+    default:
+      NEVER_REACH  }
 }
 
 

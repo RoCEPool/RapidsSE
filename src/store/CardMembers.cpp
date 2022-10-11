@@ -18,6 +18,8 @@ CardMembers::CardMembers(void)
 
   //_checkInitialised_(CN_CardMembers);
 
+  _board_        = nullptr;
+
   m_pChildCard     = nullptr;
   m_i_Child        = C_UNKNOWN;
 
