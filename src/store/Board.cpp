@@ -387,41 +387,6 @@ Card_Filter* Board::pFindFilterCard(i8 iFilter, Card*& rpMainCard)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find next main card after given arg which is an eFindCard                  */
-/*----------------------------------------------------------------------------*/
-Card_Stream* Board::pFindStreamCard(i8 iStream, Card*& rpMainCard)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
-
-  rpMainCard = nullptr;
-
-  i8 nMains = this->nMainCards();
-  for (i8 i_Main = 0; i_Main < nMains; i_Main++) {
-    rpMainCard = pGetMain(i_Main);
-
-    eCK eMainCard = rpMainCard->eCard();
-    if (CK_ABSJOIN == eMainCard) {
-      Card_Scan* pCard_scan = _pSub_Scan(rpMainCard);
-      Card_Stream* pCard_stream = _pSub_Stream(pCard_scan);
-      if (iStream != pCard_stream->iStream())
-        continue;
-
-      return pCard_stream;
-    }
-
-    if (CK_SCAN == eMainCard) {
-      Card_Stream* pCard_stream = _pSub_Stream(rpMainCard);
-      if (iStream != pCard_stream->iStream())
-        continue;
-
-      return pCard_stream;
-    }
-  }
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
 /* find table card by synonym                                                 */
 /*----------------------------------------------------------------------------*/
 Card_Table* Board::pFindTableCard(char cTableSyn, Card*& rpMainCard)

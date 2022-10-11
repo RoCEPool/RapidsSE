@@ -1562,47 +1562,23 @@ void Transforms::vCalc_OrdinalRangesOf_stream(void)
 
   i8 iOrdLo = 1;
   i8 iOrdHi = C_UNKNOWN;
-  char cStream = '0';
-  i8 iStream = 0;
+  i8 nStreamCols = C_UNKNOWN;
 
   BoardIter xBI(m_pBoard);
 
   while ((m_pMainCard = xBI.pEachMain())) {
-
-    if (CK_SCAN == m_pMainCard->eCard()) {
-      m_p_stream = _pSub_Stream(m_pMainCard);
-
-      //m_p_stream->vMark1('#');
-      //m_p_stream->vMark2(cStream++);
-
-      // <scan>/<stream>:iOrdLo,iOrdHi
-      i8 nStreamCols = m_p_stream->nStreamCols();
-      m_p_stream->vAddProperty_int(C_PPY_OrdLo,iOrdLo);
-      iOrdHi = iOrdLo + nStreamCols - 1;
-      m_p_stream->vAddProperty_int(C_PPY_OrdHi,iOrdHi);
-      iOrdLo = iOrdHi + 1;
-      m_p_stream->vAddProperty_int(C_PPY_Stream,iStream++);
-
+    if (CK_SCAN != m_pMainCard->eCard())
       continue;
-    }
 
-    if (CK_ABSJOIN == m_pMainCard->eCard()) {
-      m_p_scan   = _pSub_Scan(m_pMainCard);
-      m_p_stream = _pSub_Stream(m_p_scan);
+    m_p_stream = _pSub_Stream(m_pMainCard);
 
-      //m_p_stream->vMark1('#');
-      //m_p_stream->vMark2(cStream++);
+    // <scan>/<stream>:iOrdLo,iOrdHi
+    nStreamCols = m_p_stream->nStreamCols();
+    m_p_stream->vAddProperty_int(C_PPY_OrdLo,iOrdLo);
+    iOrdHi = iOrdLo + nStreamCols - 1;
+    m_p_stream->vAddProperty_int(C_PPY_OrdHi,iOrdHi);
+    iOrdLo = iOrdHi + 1;
 
-      // <absJoin>/<stream>:iOrdLo,iOrdHi
-      i8 nStreamCols = m_p_stream->nStreamCols();
-      m_p_stream->vAddProperty_int(C_PPY_OrdLo,iOrdLo);
-      iOrdHi = iOrdLo + nStreamCols - 1;
-      m_p_stream->vAddProperty_int(C_PPY_OrdHi,iOrdHi);
-      iOrdLo = iOrdHi + 1;
-      m_p_stream->vAddProperty_int(C_PPY_Stream,iStream++);
-
-      continue;
-    }
   }
 
   vPrintBoard();

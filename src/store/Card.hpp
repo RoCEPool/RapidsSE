@@ -116,7 +116,6 @@ static Stz* C_PPY_Rank         = "iRank"_Stz;
 static Stz* C_PPY_SendKind     = "eSendKind"_Stz;
 static Stz* C_PPY_SentOut      = "nSentOut"_Stz;
 static Stz* C_PPY_StageTopo    = "eStageTopo"_Stz;
-static Stz* C_PPY_Stream       = "iStream"_Stz;
 static Stz* C_PPY_Table        = "pTable"_Stz;
 static Stz* C_PPY_TableSyn     = "cTableSyn"_Stz;
 static Stz* C_PPY_TableUsed    = "bTableUsed"_Stz;

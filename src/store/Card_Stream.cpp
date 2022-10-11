@@ -225,18 +225,6 @@ void Card_Stream::vStreamPrint(Ribbon* pRibbon, i8 iDepth)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get C_PPY_Stream                                                           */
-/*----------------------------------------------------------------------------*/
-i8 Card_Stream::iStream(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  i8 iStream = iGetProperty(C_PPY_Stream);
-
-  return iStream;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get number of stream columns                                               */
 /*----------------------------------------------------------------------------*/
 i8 Card_Stream::nStreamCols(void)
