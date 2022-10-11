@@ -1869,21 +1869,23 @@ bool Transforms::bCopyPredDrillDown(Card_PRED* pCard_pred, Card_Filter* pCard_fi
 
   if ('@' == pCard_pred->cMark1()) {
     Card* pMainCard;
-    i8 iStream = pCard_pred->iMark2();
-    Card_Stream* pCard_stream = m_pBoard->pFindStreamCard(iStream,pMainCard);
+//    i8 iStream = pCard_pred->iMark2();
+//    Card_Stream* pCard_stream = m_pBoard->pFindStreamCard(iStream,pMainCard);
+    char cTableSyn = pCard_pred->cMark2();
+    Card_Table* pCard_table = m_pBoard->pFindTableCard(cTableSyn,pMainCard);
 
     Card_Filter* pCard_filter_existing =
         _pSub_Filter(pMainCard);
 
     if (pCard_filter_existing) {
-      pCard_filter_existing->vMark1(pCard_stream->cMark1());
-      pCard_filter_existing->vMark2(pCard_stream->iMark2());
+      pCard_filter_existing->vMark1(pCard_table->cMark1());
+      pCard_filter_existing->vMark2(pCard_table->cMark2());
       vCopyPredToExistingFilter(pCard_filter_existing,pCard_pred);
     }
     else {
       Card_Filter* pCard_filter_new = new Card_Filter;
-      pCard_filter_new->vMark1(pCard_stream->cMark1());
-      pCard_filter_new->vMark2(pCard_stream->iMark2());
+      pCard_filter_new->vMark1(pCard_table->cMark1());
+      pCard_filter_new->vMark2(pCard_table->cMark2());
       pMainCard->vAppend(pCard_filter_new);
       vCopyPredToNewFilter(pCard_filter_new,pCard_pred);
     }
