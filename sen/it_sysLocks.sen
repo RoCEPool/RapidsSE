@@ -12,8 +12,8 @@
   "
   define table se__sysLocks
   (
-    NodeId            INTEGER NOT NULL ,
-    nodeName          VARCHAR NOT NULL ,
+    thisNodeId        INTEGER NOT NULL ,
+    thisNodeName      VARCHAR NOT NULL ,
 
     nSince            INTEGER NOT NULL ,
     nRefTimer         INTEGER NOT NULL ,

@@ -1,0 +1,32 @@
+/*============================================================================*/
+/* __JM : Job Metrics                                                         */
+/*============================================================================*/
+
+print "Job Metrics";
+
+_lineitem;
+load lineitem "<tpch_dir>/lineitem.<suffix>";
+
+refTmrReset;
+locksReset;
+networkReset;
+metricsCtl sysMetrics enable;
+
+/time /jobMetrics select sum(l_extendedPrice) from lineitem;
+metricsCtl sysMetrics disable;
+
+sysReport;
+
+select * from se__jobMetrics;
+select * from se__jobOperands;
+select * from se__jobOperators;
+
+select * from se__jobNetwork;
+select * from se__jobNetDissect;
+
+select * from se__sysMetrics;
+select * from se__sysLocks;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
