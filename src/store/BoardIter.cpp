@@ -268,7 +268,7 @@ void BoardIter::vRemoveCard(Card* pCard)
     return;
   }
 
-  m_pBoard->vRemoveMainCard(pCard);
+  m_pCard_Board->vRemoveChild(pCard);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -279,7 +279,7 @@ void BoardIter::vRemoveCurr(eCK eCrossCheck)
   _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
 
   RASSERT(eCrossCheck == m_pCurrChild->eCard());
-  m_pBoard->vRemoveMainCard(m_pCurrChild);
+  m_pCard_Board->vRemoveChild(m_pCurrChild);
   m_i_Child--;
   if (m_i_Child < m_pCard_Board->nChildCards())
     m_pCurrChild =  m_pCard_Board->pGetChild(m_i_Child);
@@ -295,7 +295,7 @@ void BoardIter::vRemoveDeleteCurr(eCK eCrossCheck)
   _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
 
   RASSERT(eCrossCheck == m_pCurrChild->eCard());
-  m_pBoard->vRemoveMainCard(m_pCurrChild);
+  m_pCard_Board->vRemoveChild(m_pCurrChild);
   delete m_pCurrChild;
   m_i_Child--;
   if (m_i_Child < m_pCard_Board->nChildCards())

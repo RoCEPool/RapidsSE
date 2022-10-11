@@ -147,11 +147,8 @@ namespace STORE
     CardCtl* pCardCtl(void);
     Card_Board* pCard_Board(void);
 
-    void vClear(void);
-
     void vClearAllMarks(void);
 
-    void vDeleteAllCards(void);
     void vDuplicateBoard(Board* pBoard_arg);
 
     i8    iFindMain(Card* pMainCard);
@@ -163,9 +160,6 @@ namespace STORE
     void vPinCards(Ribbon* pRibbon, Stz* szTransformation=nullptr, Stz* szExplain=nullptr);
   
     void vPrintBoard(Stz* szCue=nullptr, Stz* szExplain=nullptr);
-
-    void vRemoveMainCard(Card* pMainCard);
-
 
   private:
       Footer* aFooter(void);

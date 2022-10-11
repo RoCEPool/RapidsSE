@@ -25,17 +25,8 @@ namespace STORE
 
     static void vRepair(Object* pObject);
 
-    bool bClear   (TokenVec* pTknVec, eOA& reOptAct);
-
-    bool bLoad    (TokenVec* pTknVec, eOA& reOptAct);
-
-    bool bName    (TokenVec* pTknVec, eOA& reOptAct);
-
-    bool bReprint (TokenVec* pTknVec, eOA& reOptAct);
-
     bool bWeave   (TokenVec* pTknVec, eOA& reOptAct);
-    bool bWrite   (TokenVec* pTknVec, eOA& reOptAct);
-  
+
   private:
     Footer* aFooter(void);
   };

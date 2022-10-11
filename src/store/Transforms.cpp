@@ -1585,12 +1585,12 @@ void Transforms::vRemove_invalidPermutations(void)
       continue;
     }
 
-    m_pBoard_permute->vRemoveMainCard(m_pMainCard);
+    _board_->vRemoveChild(m_pMainCard);
     while (i_Main < _board_->nChildCards()) {
       m_pMainCard = _board_->pGetChild(i_Main);
       if (CK_PTNDJOIN != m_pMainCard->eCard() && CK_COMMENT != m_pMainCard->eCard())
         break;
-      m_pBoard_permute->vRemoveMainCard(m_pMainCard);
+      _board_->vRemoveChild(m_pMainCard);
       delete m_pMainCard;
     }
   }
@@ -1618,7 +1618,7 @@ void Transforms::vSetup_costEst(void)
     if (CK_PERMUTATION == m_pMainCard->eCard())
       break;
 
-    m_pBoard_costEst->vRemoveMainCard(m_pMainCard);
+    _board_->vRemoveChild(m_pMainCard);
     delete m_pMainCard;
   }
 

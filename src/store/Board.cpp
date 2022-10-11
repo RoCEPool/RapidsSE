@@ -113,16 +113,6 @@ Card_Board* Board::pCard_Board(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* clear the board                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vClear(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  vDeleteAllCards();
-}
-
-/*----------------------------------------------------------------------------*/
 /* clear all marks                                                            */
 /*----------------------------------------------------------------------------*/
 void Board::vClearAllMarks(void)
@@ -135,17 +125,6 @@ void Board::vClearAllMarks(void)
 
     pMainCard->vClearAllMarks();
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vDeleteAllCards(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-  
-  while (Card* pCard = m_pCard_Board->pPop())
-    delete pCard;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -417,16 +396,6 @@ L_Exit:
     delete pTknVec;
     pTknVec = nullptr;
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vRemoveMainCard(Card* pMainCard)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  m_pCard_Board->vRemove(pMainCard);
 }
 
 
