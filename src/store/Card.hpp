@@ -7,7 +7,6 @@
 
 #include "eAL.h"
 #include "ePB.h"
-#include "eCK.h"
 #include "eGC.h"
 #include "eRO.h"
 #include "eTE.h"
@@ -239,22 +238,9 @@ namespace STORE
     TagSet* pProperties(void);
     void vPropertiesEnsure(void);
 
-    void vRemoveChild(Card* pChildCard);
-    void vRemoveSubCard(Card* pSubCard);
     void vRenumberSubCards(Card* pParentCard);
-    void vReplaceChildWithItsSubs(Card* pChildCard);
-    void vReplaceChild(Card* pChildCard, Card* pWithCard);
 
     Stz* sz(void);
-
-    void vTransferChildren(Card* pFromCard);
-    void vTransferFrom(Card* pCards, Card* pFrom,
-                       Card* pAt=nullptr, bool bAfter=true);
-    void vTransferSubset(Card* pCards, Card* pFrom, Card* pTill,
-                         Card* pAt=nullptr, bool bAfter=true);
-    void vTransferTill(Card* pCards, Card* pTill,
-                       Card* pAt=nullptr, bool bAfter=true);
-
     Stz* szValue(void);
     void vValue(Stz* szValue);
     void vVisitAllSub(eCK eCard,std::function<bool(Card* pCard)> bfApply);

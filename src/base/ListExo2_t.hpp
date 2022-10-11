@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "BASE.h"
+
 namespace BASE { template <class ITEM> class ListExoIter2_t; }
 
 namespace BASE

@@ -1467,38 +1467,6 @@ void Card::vPropertiesEnsure(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* remove given immediate child card (non-recursive)                          */
-/*----------------------------------------------------------------------------*/
-void Card::vRemoveChild(Card* pChildCard)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  vRemove(pChildCard);
-}
-
-/*----------------------------------------------------------------------------*/
-/* remove given subCard (recursive)                                           */
-/*----------------------------------------------------------------------------*/
-void Card::vRemoveSubCard(Card* pSubCard)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  ListExoIter2_t<Card>* pSubCard_I = pNewIter();
-  
-  while (pSubCard_I->bHasNext()) {
-    Card* pTestCard = pSubCard_I->pNext();
-    
-    if (pTestCard == pSubCard) {
-      vRemove(pTestCard);
-      break;
-    }
-    pTestCard->vRemoveSubCard(pSubCard);
-   }
-  
-  delete pSubCard_I;
-}
-
-/*----------------------------------------------------------------------------*/
 /* renumber subCard's                                                         */
 /*----------------------------------------------------------------------------*/
 void Card::vRenumberSubCards(Card* pParentCard)
@@ -1523,33 +1491,6 @@ void Card::vRenumberSubCards(Card* pParentCard)
 }
 
 /*----------------------------------------------------------------------------*/
-/* remove given child card from this card and replace it with its children    */
-/*----------------------------------------------------------------------------*/
-void Card::vReplaceChildWithItsSubs(Card* pChildCard)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card* pAfter = pChildCard;
-
-  while (Card* pSub = pChildCard->pPop()) {
-    vInsertAfter(pSub, pAfter);
-    pAfter = pSub;
-  }
-
-  vRemoveChild(pChildCard);
-}
-
-/*----------------------------------------------------------------------------*/
-/* replace immediate child with given card                                    */
-/*----------------------------------------------------------------------------*/
-void Card::vReplaceChild(Card* pChildCard, Card* pWithCard)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  vReplace(pChildCard, pWithCard);
-}
-
-/*----------------------------------------------------------------------------*/
 /* get card value                                                             */
 /*----------------------------------------------------------------------------*/
 Stz* Card::sz(void)
@@ -1557,109 +1498,6 @@ Stz* Card::sz(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   return m_sValue.szStz();
-}
-
-/*----------------------------------------------------------------------------*/
-/* transfer all child card (incl. sub-cards) from given card set to this card */
-/*----------------------------------------------------------------------------*/
-void Card::vTransferChildren(Card* pFromCard)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  while (Card* pPoppedChildCard = pFromCard->pPop())
-    vAppend(pPoppedChildCard);
-}
-
-/*----------------------------------------------------------------------------*/
-/* transfer cards to this card from given card onwards                        */
-/*----------------------------------------------------------------------------*/
-void Card::vTransferFrom(Card* pCards, Card* pFrom,
-                         Card* pAt, bool bAfter)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  ListExoIter2_t<Card>* pCard_I = pNewIter();
-  
-  bool b = pCard_I->bPositionBefore(pFrom);
-  if (! b) {
-    delete pCard_I;
-    return;
-  }
-  
-  while (pCard_I->bHasNext()) {
-    Card* pCard = pCard_I->pNext();
-    
-    pCard_I->vRemove();
-    
-    if (! pAt)
-      vAppend(pCard);
-    else
-    if (bAfter)
-      vInsertAfter(pAt,pCard);
-    else
-      vInsertBefore(pAt,pCard);
-  }
-
-  delete pCard_I;
-}
-
-/*----------------------------------------------------------------------------*/
-/* transfer subset of cards from given card up till (and including) given card*/
-/*----------------------------------------------------------------------------*/
-void Card::vTransferSubset(Card* pCards, Card* pFrom, Card* pTill,
-                           Card* pAt, bool bAfter)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  ListExoIter2_t<Card>* pCard_I = pNewIter();
-  
-  bool b = pCard_I->bPositionBefore(pFrom);
-  if (! b) {
-    delete pCard_I;
-    return;
-  }
-  
-  while (pCard_I->bHasNext()) {
-    Card* pCard = pCard_I->pNext();
-    
-    pCard_I->vRemove();
-    
-    if (! pAt)
-      vAppend(pCard);
-    else
-    if (bAfter)
-      vInsertAfter(pAt,pCard);
-    else
-      vInsertBefore(pAt,pCard);
-
-    if (pTill == pCard)
-      break;
-  }
-
-  delete pCard_I;
-}
-
-/*----------------------------------------------------------------------------*/
-/* transfer cards to this card up till (and including) given card             */
-/*----------------------------------------------------------------------------*/
-void Card::vTransferTill(Card* pCards, Card* pTill,
-                         Card* pAt, bool bAfter)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  while (Card* pCard = pCards->pPop()) {
-    
-    if (! pAt)
-      vAppend(pCard);
-    else
-    if (bAfter)
-      vInsertAfter(pAt,pCard);
-    else
-      vInsertBefore(pAt,pCard);
-
-    if (pTill == pCard)
-      break;
-  }
 }
 
 /*----------------------------------------------------------------------------*/
