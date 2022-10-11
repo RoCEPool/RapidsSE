@@ -197,7 +197,7 @@ void Transformer::vTransform3(void)
    *
    */
 
-  m_pTransforms->vAppend_indexList_To_scan();
+  m_pTransforms->vAppend_indexList_ToAll_table();
   m_pTransforms->vMark_scan_pred_bounds();
   m_pTransforms->vMark_scan_pred_ordinals();
 

@@ -177,6 +177,27 @@ void Transforms::vAdd_tableSyn_ToAll_table(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Transforms::vAppend_indexList_ToAll_table(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransformation((char*)(__func__));
+  vExplain("Blah"_Stz);
+
+  BoardIter xBI(m_pBoard);
+
+  while ( (m_p_table = _pCard_Table(xBI.pEachMain(CK_TABLE))) ) {
+    m_p_tablePtr = m_p_table->pSub_tablePtr();
+    if ( (m_p_indexList = m_p_tablePtr->pNew_indexList()) )
+      m_p_table->vAppend(m_p_indexList);
+  }
+
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
 /* append <stream> to all <table>                                             */
 /*----------------------------------------------------------------------------*/
 void Transforms::vAppend_stream_ToAll_table(void)
@@ -806,8 +827,7 @@ void Transforms::vDelete_empty_sub_filter(void)
 
   vEndIteration();
 
-  if (m_bInteractive)
-    m_pBoard->vPrintBoard();
+  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -861,29 +881,6 @@ void Transforms::vIndividuate_filter(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vAppend_indexList_To_scan(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransformation((char*)(__func__));
-  vExplain("Blah"_Stz);
-
-  BoardIter xBI(m_pBoard);
-
-  while ( (m_pMainCard = xBI.pEachMain(CK_SCAN)) ) {
-    m_p_table = m_pMainCard->pSub_table();
-    m_p_tablePtr = m_p_table->pSub_tablePtr();
-    if ( (m_p_indexList = m_p_tablePtr->pNew_indexList()) )
-      m_pMainCard->vInsertAfter(m_p_indexList, m_p_table);
-  }
-
-  vPrintBoard();
-
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Transforms::vMark_scan_pred_bounds(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
@@ -901,14 +898,13 @@ void Transforms::vMark_scan_pred_bounds(void)
 
   BoardIter xBI(m_pBoard);
 
-  while ( (m_pMainCard = xBI.pEachMain(CK_SCAN)) ) {
+  while ( (m_pMainCard = xBI.pEachMain(CK_TABLE)) ) {
     if (! (m_p_filter = m_pMainCard->pSub_filter()) )
       continue;
     m_p_filter->vVisitAllSub(CK_CMPPRED, bfPredBounds);
   }
 
-  if (m_bInteractive)
-    m_pBoard->vPrintBoard();
+  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -923,7 +919,7 @@ void Transforms::vMark_scan_pred_ordinals(void)
 
   BoardIter xBI(m_pBoard);
 
-  while ( (m_pMainCard = xBI.pEachMain(CK_SCAN)) ) {
+  while ( (m_pMainCard = xBI.pEachMain(CK_TABLE)) ) {
     if (! (m_p_filter = m_pMainCard->pSub_filter()) )
       continue;
 
@@ -973,9 +969,7 @@ void Transforms::vMark_scan_pred_ordinals(void)
     m_p_filter->vVisitAllSub(CK_TERM,bfPredBounds);
   }
 
-  if (m_bInteractive)
-    m_pBoard->vPrintBoard();
-
+  vPrintBoard();
 }
 
 
@@ -1006,26 +1000,20 @@ void Transforms::vRefactor_absJoin_Into_indexJoin(void)
 
   vBeginIteration();
 
-  while (Card_Scan *p_scan = _pCard_Scan(pEachMain(CK_SCAN))) {
+  while (m_pMainCard = pEachMain(CK_TABLE)) {
 
-    //pCard_absJoin->vDeleteChildCard(CK_CALC);
-    //pCard_absJoin->vDeleteChildCard(CK_FILTER);
 
-//    Card_Scan* pCard_scan = _pSub_Scan(pCard_absJoin);
-//    pCard_absJoin->vReplaceChildWithItsSubs(pCard_scan);
-//    delete pCard_scan;
-
-    Card_IndexJoin* pCard_indexJoin = _pSub_IndexJoin(p_scan);
+    Card_IndexJoin* pCard_indexJoin = _pSub_IndexJoin(m_pMainCard);
     if (! pCard_indexJoin)
       continue;
 
-    p_scan->vReplaceChildWithItsSubs(pCard_indexJoin);
+    m_pMainCard->vReplaceChildWithItsSubs(pCard_indexJoin);
     delete pCard_indexJoin;
 
-    Card_Stream* pCard_stream = _pSub_Stream(p_scan);
-    p_scan->vMoveToLastChild(pCard_stream);
+    Card_Stream* pCard_stream = _pSub_Stream(m_pMainCard);
+    m_pMainCard->vMoveToLastChild(pCard_stream);
 
-    p_scan->vCard(CK_INDEXJOIN);
+    m_pMainCard->vCard(CK_INDEXJOIN);
   }
 
   vEndIteration();
@@ -1435,13 +1423,13 @@ void Transforms::vAdd_scanPred(void)
 
   BoardIter xBI(m_pBoard);
 
-  while ( (m_p_scan = _pCard_Scan(xBI.pEachMain(CK_SCAN))) ) {
+  while ( (m_pMainCard = xBI.pEachMain(CK_TABLE)) ) {
 
-    m_p_filter = m_p_scan->pSub_filter();
+    m_p_filter = m_pMainCard->pSub_filter();
     if (! m_p_filter)
       continue;
 
-    m_p_indexList = m_p_scan->pSub_indexList();
+    m_p_indexList = m_pMainCard->pSub_indexList();
     if (! m_p_indexList)
       continue;
 
@@ -1485,9 +1473,7 @@ void Transforms::vAdd_scanPred(void)
 
   }
 
-  if (m_bInteractive)
-    m_pBoard->vPrintBoard();
-
+  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1502,9 +1488,9 @@ void Transforms::vCull_markedPred(void)
 
   BoardIter xBI(m_pBoard);
 
-  while ((m_p_scan = _pCard_Scan(xBI.pEachMain(CK_SCAN)))) {
+  while ((m_pMainCard = xBI.pEachMain(CK_TABLE))) {
 
-    m_p_filter = m_p_scan->pSub_filter();
+    m_p_filter = m_pMainCard->pSub_filter();
     if (!m_p_filter)
       continue;
 
@@ -1514,7 +1500,7 @@ void Transforms::vCull_markedPred(void)
     if (! m_p_filter->bIsEmptyFilter())
       continue;
 
-    m_p_scan->vRemoveSubCard(m_p_filter);
+    m_pMainCard->vRemoveSubCard(m_p_filter);
 
     delete m_p_filter;
     m_p_filter = nullptr;
@@ -1524,8 +1510,7 @@ void Transforms::vCull_markedPred(void)
   m_pCardCtl->vPrintByKind(CK_STREAM, true);
   m_pCardCtl->vPrintSubCards(CK_STREAM, false);
 
-  if (m_bInteractive)
-    m_pBoard->vPrintBoard();
+  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/

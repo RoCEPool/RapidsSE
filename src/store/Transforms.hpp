@@ -29,7 +29,7 @@ namespace STORE
     void vAdd_stages(void);
     void vAdd_tablePtn_ToAll_table(void);
     void vAdd_tableSyn_ToAll_table(void);
-    void vAppend_indexList_To_scan(void);
+    void vAppend_indexList_ToAll_table(void);
     void vAppend_stream_ToAll_table(void);
     void vAssignAll_predCmp_To_table(void);
     void vCalc_ordinalRanges_OfAll_stream(void);
