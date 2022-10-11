@@ -286,7 +286,6 @@ Ent* IndexTree::aPositionGE(IndexTree* pIndexTree, EntBuffer** ppEntBuffer, Key*
 {
   EntBuffer* pEntBuffer = nullptr;
   Ent* aEnt = nullptr;
-  eKC eCmp;
 
   pEntBuffer = pIndexTree->pPositionH0Buffer(aKey);
   if ( !pEntBuffer )
@@ -309,7 +308,6 @@ Ent* IndexTree::aPositionGT(IndexTree* pIndexTree, EntBuffer** ppEntBuffer, Key*
 {
   EntBuffer* pEntBuffer = nullptr;
   Ent* aEnt = nullptr;
-  eKC eCmp;
 
   pEntBuffer = pIndexTree->pPositionH0Buffer(aKey);
   if ( !pEntBuffer )
@@ -332,7 +330,6 @@ Ent* IndexTree::aPositionLE(IndexTree* pIndexTree, Key* aKey)
 {
   EntBuffer* pEntBuffer = nullptr;
   Ent* aEnt = nullptr;
-  eKC eCmp;
 
   pEntBuffer = pIndexTree->pPositionH0Buffer(aKey);
   if ( !pEntBuffer )
@@ -358,7 +355,6 @@ Ent* IndexTree::aPositionLT(IndexTree* pIndexTree, Key* aKey)
 {
   EntBuffer* pEntBuffer = nullptr;
   Ent* aEnt = nullptr;
-  eKC eCmp;
 
   pEntBuffer = pIndexTree->pPositionH0Buffer(aKey);
   if ( !pEntBuffer )
@@ -1062,15 +1058,11 @@ Ent* IndexTree::aInsertPayloadEntry(EntWrk& xEntWrk, i8 nPayloadBytes)
   
   m_okLock.vGrabWrite();
   
-  Pay* aPay = nullptr;
-  
   xEntWrk.vPayload(true);
   xEntWrk.vPayloadBytes(nPayloadBytes);
   
   byte* ayPayLoad = xEntWrk.ayPayload();
   RndLib::vBytes(ayPayLoad,nPayloadBytes);
-  
-  aPay = xEntWrk.aPay();
 
   if (! m_pRootEntBuffer) {
     EntBuffer* pRootBuffer = pNewRootBuffer();

@@ -139,12 +139,12 @@ void JobMetrics::vCollect(JobId tDistId)
     return;
   }
 
-  vTrace("vCollect: Found Job %04lld.%04lld %p\n"_Stz,tDistId.uNodeId(),tDistId.uJobNo(),pJob);
+  //vTrace("vCollect: Found Job %04lld.%04lld %p\n"_Stz,tDistId.uNodeId(),tDistId.uJobNo(),pJob);
 
   JobMetrics* pJobMetrics = new JobMetrics(pJob->tJobId());
 
   pJobMetrics->vCollect(pJob);
-  pJobMetrics->vPrint();
+  //pJobMetrics->vPrint();
   pJobMetrics->vUpdate(pJob);
 
   pJob->vDropLock();

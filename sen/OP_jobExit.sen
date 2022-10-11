@@ -12,8 +12,6 @@
   params| pJob |
   0 locals| eError |
 
-  "insertJobMetrics" .
-
   AM::DEMON::tEventDemonJobId@ locals| tEventDemonJobId |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

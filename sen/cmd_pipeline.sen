@@ -472,7 +472,8 @@
 /* _ptp beg */  ListedJob[].assertNoRef
 /* _ptp beg */
 /* _ptp beg */   "<jobMetrics>" [job].tagSet@ tagSet.hasName if
-/* _ptp beg */     "PARTICIPANT JOBMETRICS" .
+/* _ptp beg */     "pipeline" "ptpBegin"
+/* _ptp beg */      "_ptp beg" "jobMetrics"                         [job].trace
 /* _ptp beg */   then
 /* _ptp beg */
 /* _ptp beg */  // - - - - - - - - - - - - - -
