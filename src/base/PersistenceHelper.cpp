@@ -5,10 +5,11 @@
 #include "BASE.h"
 #include "Op.hpp"
 #include "Stream.hpp"
+#include "CmdLineArgs.hpp"
 
 extern SizeHeap     gxaSizeHeap[];
 extern ClassCatalog gxClassCatalog;
-
+extern CmdLineArgs  gxCmdLineArgs;
 /*----------------------------------------------------------------------------*/
 /* read all the buffer pool buffers from file                                 */
 /*----------------------------------------------------------------------------*/
@@ -83,14 +84,14 @@ void PersistenceHelper::vWriteHeapBuffers(Heap* pHeap, File* pFile)
 {
   _static_
 
+  i8 iNumPtn = gxCmdLineArgs.m_xSysArgs.m_nPtnsPerNode;
+
   i8 iPtnOfNode = -1;
   if(MY::pOp()) {
     iPtnOfNode = MY::pOp()->pStream()->i_PtnOfNode();
   }
 
   ASSERT(iPtnOfNode >= 0);
-
-  iPtnOfNode++;
 
   Timer oTimer;
   oTimer.vStart();
@@ -100,8 +101,8 @@ void PersistenceHelper::vWriteHeapBuffers(Heap* pHeap, File* pFile)
   for (HeapBuffer* pHeapBuffer = pHeap->pFirstBuffer();
        pHeapBuffer;
        pHeapBuffer = pHeap->pNextBuffer(pHeapBuffer)) {
-
-    if(BitLib::uMaskOffUpper32((u8) pHeapBuffer) % iPtnOfNode == 0) {
+    i8 mod = ((BitLib::uMaskOffUpper32((u8) pHeapBuffer)) / 10000) % iNumPtn;
+    if(mod == iPtnOfNode) {
       bool bResult = pFile->bWriteBytes(pHeapBuffer,C_SIZE_POOL_BUFFER);
       ASSERT(bResult);
     }
