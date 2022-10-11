@@ -162,8 +162,6 @@ namespace STORE
 
     void vInsertMainCard_after(Card* pNewMainCard, Card* pAfterMainCard, bool bRenumber=true);
 
-    i8   nMainCards(void);
-
     void vPinCards(Ribbon* pRibbon, Stz* szTransformation=nullptr, Stz* szExplain=nullptr);
   
     void vPrintBoard(Stz* szCue=nullptr, Stz* szExplain=nullptr);

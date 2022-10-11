@@ -5,6 +5,7 @@
 #include "Board.hpp"
 
 #include "BoardIter.hpp"
+#include "Card_Board.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -23,7 +24,8 @@ BoardIter::BoardIter(Board* pBoard)
 {
   _precondition_(_MAGIC_,CN_BOARDITER,_FOOTER_);
 
-  m_pBoard    = pBoard;
+  m_pBoard = pBoard;
+  m_pCard_Board = m_pBoard->pCard_Board();
 
   _checkInitialised_(CN_BOARDITER);
   
@@ -82,7 +84,7 @@ Card* BoardIter::pEachMain(i8& ri_Main)
   else
     m_i_Child++;
 
-  if (m_i_Child >= m_pBoard->nMainCards()) {
+  if (m_i_Child >= m_pCard_Board->nChildCards()) {
     m_pCurrChild = nullptr;
     ri_Main = C_UNKNOWN;
     return nullptr;
@@ -122,7 +124,7 @@ Card* BoardIter::pEachMain(eCK eCard, i8& ri_Main)
 
   for (;;) {
 
-    if (m_i_Child >= m_pBoard->nMainCards()) {
+    if (m_i_Child >= m_pCard_Board->nChildCards()) {
       m_pCurrChild = nullptr;
       ri_Main = C_UNKNOWN;
       return nullptr;
@@ -153,7 +155,7 @@ Card* BoardIter::pEachMain(i8& ri_Main, eCK& reCard)
   else
     m_i_Child++;
 
-  if (m_i_Child >= m_pBoard->nMainCards()) {
+  if (m_i_Child >= m_pCard_Board->nChildCards()) {
     m_pCurrChild = nullptr;
     ri_Main = C_UNKNOWN;
     reCard = CK_NONE;
@@ -177,7 +179,7 @@ Card* BoardIter::pNextMain(void)
 
   i8 i_Next = m_i_Child + 1;
 
-  if (i_Next >= m_pBoard->nMainCards())
+  if (i_Next >= m_pCard_Board->nChildCards())
     return nullptr;
 
   Card* pNextMain = m_pBoard->pGetMain(i_Next);
@@ -238,7 +240,7 @@ bool BoardIter::bMore(void)
 {
   _precondition_( _MAGIC_, CN_BOARDITER, _FOOTER_);
 
-  if (m_i_Child + 1 < m_pBoard->nMainCards())
+  if (m_i_Child + 1 < m_pCard_Board->nChildCards())
     return true;
 
   return false;
@@ -279,7 +281,7 @@ void BoardIter::vRemoveCurr(eCK eCrossCheck)
   RASSERT(eCrossCheck == m_pCurrChild->eCard());
   m_pBoard->vRemoveMainCard(m_pCurrChild);
   m_i_Child--;
-  if (m_i_Child < m_pBoard->nMainCards())
+  if (m_i_Child < m_pCard_Board->nChildCards())
     m_pCurrChild = m_pBoard->pGetMain(m_i_Child);
   else
     m_pCurrChild = nullptr;
@@ -296,7 +298,7 @@ void BoardIter::vRemoveDeleteCurr(eCK eCrossCheck)
   m_pBoard->vRemoveMainCard(m_pCurrChild);
   delete m_pCurrChild;
   m_i_Child--;
-  if (m_i_Child < m_pBoard->nMainCards())
+  if (m_i_Child < m_pCard_Board->nChildCards())
     m_pCurrChild = m_pBoard->pGetMain(m_i_Child);
   else
     m_pCurrChild = nullptr;

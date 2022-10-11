@@ -62,7 +62,7 @@ void Transforms::vAdd_combined(void)
 
   BoardIter xBI(m_pBoard);
 
-  i8 nMainCards = m_pBoard->nMainCards();
+  i8 nMainCards = _board_->nChildCards();
   while ( (m_pMainCard = xBI.pEachMain()) ) {
 
     m_pNextMain = xBI.pNextMain();
@@ -1571,7 +1571,7 @@ void Transforms::vRemove_invalidPermutations(void)
 
   i8 i_Main = 0;
   i8 i_Permutation = 0;
-  while (i_Main < m_pBoard_permute->nMainCards()) {
+  while (i_Main < _board_->nChildCards()) {
     m_pMainCard = m_pBoard_permute->pGetMain(i_Main);
 
     if (CK_PERMUTATION != m_pMainCard->eCard()) {
@@ -1586,7 +1586,7 @@ void Transforms::vRemove_invalidPermutations(void)
     }
 
     m_pBoard_permute->vRemoveMainCard(m_pMainCard);
-    while (i_Main < m_pBoard_permute->nMainCards()) {
+    while (i_Main < _board_->nChildCards()) {
       m_pMainCard = m_pBoard_permute->pGetMain(i_Main);
       if (CK_PTNDJOIN != m_pMainCard->eCard() && CK_COMMENT != m_pMainCard->eCard())
         break;

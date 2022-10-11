@@ -129,7 +129,7 @@ void Board::vClearAllMarks(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
 
-  i8 nMainCards = this->nMainCards();
+  i8 nMainCards = m_pCard_Board->nItems();;
   for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
     Card *pMainCard = m_pCard_Board->pGet(i_Main);
 
@@ -155,7 +155,7 @@ void Board::vDuplicateBoard(Board* pBoard_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
 
-  for (i8 i_Main_arg = 0; i_Main_arg < pBoard_arg->nMainCards(); i_Main_arg++)
+  for (i8 i_Main_arg = 0; i_Main_arg < pBoard_arg->m_pCard_Board->nItems(); i_Main_arg++)
     vAppendMain(pBoard_arg->pGetMain(i_Main_arg)->pDupCardAndSubCards());
 }
 
@@ -166,7 +166,7 @@ i8 Board::iFindMain(Card* pMainCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
 
-  i8 nMainCards = this->nMainCards();
+  i8 nMainCards = m_pCard_Board->nItems();
   for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
     Card* pTestCard = pGetMain(i_Main);
 
@@ -198,7 +198,7 @@ Card_Table* Board::pFindTableCard(char cTableSyn, Card*& rpMainCard)
 
   Card_Table* p_table = nullptr;
 
-  i8 nMains = this->nMainCards();
+  i8 nMains = m_pCard_Board->nChildCards();
   for (i8 i_Main = 0; i_Main < nMains; i_Main++) {
     rpMainCard = pGetMain(i_Main);
     eCK eMainCard = rpMainCard->eCard();
@@ -244,18 +244,6 @@ void Board::vInsertMainCard_after(Card* pNewMainCard, Card* pAfterMainCard,
 }
 
 /*----------------------------------------------------------------------------*/
-/* get number of cards                                                        */
-/*----------------------------------------------------------------------------*/
-i8 Board::nMainCards(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-  
-  i8 nCards = this->m_pCard_Board->nItems();
-  
-  return nCards;
-}
-
-/*----------------------------------------------------------------------------*/
 /* pin board onto given ribbon                                                */
 /*----------------------------------------------------------------------------*/
 void Board::vPinCards(Ribbon* pRibbon, Stz* szTransformation, Stz* szExplain)
@@ -264,7 +252,7 @@ void Board::vPinCards(Ribbon* pRibbon, Stz* szTransformation, Stz* szExplain)
 
   CardCtl* pCardCtl = m_pOptimiser->pCardCtl();
 
-  if (! nMainCards())
+  if (! m_pCard_Board->nItems())
     return;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
