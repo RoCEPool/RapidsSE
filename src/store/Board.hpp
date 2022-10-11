@@ -164,8 +164,7 @@ namespace STORE
     Card* pFindNextMain(Card* pAfter, eCK eFindCard, i8& i_Main);
     Card* pFindPrevMain(Card* pBefore, eCK eFindCard);
     Card* pFindPrevMain(Card* pBefore, eCK eFindCard, i8& i_Main);
-    Card_Stream* pFindStreamCard(i8 iStream, Card*& rpMainCard);
-    Card_Table* pFindTableCard(char cTableSyn);
+    Card_Table* pFindTableCard(char cTableSyn, Card*& rpMainCard);
 
     Card* pGetMain(i8 i_Main);
     Card* pGetMain(i8 i_Main, eCK& reCard);

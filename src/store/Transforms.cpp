@@ -122,16 +122,166 @@ void Transforms::vAdd_combined(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* delete combines                                                            */
+/* add table partitions <tablePtn> to all <table>                             */
 /*----------------------------------------------------------------------------*/
-void Transforms::vDeleteAll_combined(void)
+void Transforms::vAdd_tablePtn_ToAll_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransformation((char*)(__func__),false);
+  vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
 
-  vRemoveDeleteMains(CK_COMBINED);
+  char cTableSyn = 'a';
+
+  m_pBoard = m_pBench->pGetBoard(BK_QUERY);
+
+  BoardIter xBI(m_pBoard);
+
+  while ( (m_p_table = _pCard_Table(xBI.pEachMain(CK_TABLE)) )) {
+
+    m_p_tablePtn = new Card_TablePtn(m_p_table);
+    m_p_table->vAppend(m_p_tablePtn);
+  }
+
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/* add table synonyms <tableSyn> to all <table>                               */
+/*----------------------------------------------------------------------------*/
+void Transforms::vAdd_tableSyn_ToAll_table(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransformation((char*)(__func__));
+  vExplain("Blah"_Stz);
+
+  char cTableSyn = 'a';
+
+  BoardIter xBI(m_pBoard);
+
+  while ( (m_p_table = _pCard_Table(xBI.pEachMain(CK_TABLE)) )) {
+
+    m_p_tablePtr = _pSub_TablePtr(m_p_table);
+    m_pTable = m_p_tablePtr->pTable();
+
+    char cTableSyn_actual = cTableSyn;
+    if (m_pTable->bIsReplicated())
+      cTableSyn_actual += 'A'-'a';
+    m_p_table->vAddProperty_chr(C_PPY_TableSyn,cTableSyn_actual);
+
+    cTableSyn++;
+  }
+
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Transforms::vAppend_indexList_ToAll_table(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransformation((char*)(__func__));
+  vExplain("Blah"_Stz);
+
+  BoardIter xBI(m_pBoard);
+
+  while ( (m_p_table = _pCard_Table(xBI.pEachMain(CK_TABLE))) ) {
+    m_p_tablePtr = m_p_table->pSub_tablePtr();
+    if ( (m_p_indexList = m_p_tablePtr->pNew_indexList()) )
+      m_p_table->vAppend(m_p_indexList);
+  }
+
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/* append <stream> to all <table>                                             */
+/*----------------------------------------------------------------------------*/
+void Transforms::vAppend_stream_ToAll_table(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransformation((char*)(__func__));
+  vExplain("Blah"_Stz);
+
+  BoardIter xBI(m_pBoard);
+
+  // E <scan>
+  while ((m_p_table = _pCard_Table(xBI.pEachMain(CK_TABLE)))) {
+
+    // ? <scan>/<tablePtr>
+    if (! (m_p_tablePtr = m_p_table->pSub_tablePtr()))
+      continue;
+    // ? <scan>/<tablePtr>:pStreamDef
+    if (! (m_pStreamDef = m_p_tablePtr->pStreamDef()))
+      continue;
+
+    // + <scan>/<stream>
+    m_p_table->vAppend((m_p_stream = new Card_Stream));
+    // + <scan>/<stream>/<streamColList>
+    m_p_stream->vAppend((m_p_streamColList = new Card_StreamColList(m_pStreamDef)));
+  }
+
+  vSetPrintSubCards(CK_STREAM, true);
+
+  vPrintBoard();
+
+  vSetPrintByKind(CK_STREAM, true);
+  vSetPrintProperties(CK_STREAM, false);
+  vSetPrintSubCards(CK_STREAM, false);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* inspect all <filter> and attempt to move <predCmp> after <scan>/<absJoin>  */
+/*----------------------------------------------------------------------------*/
+void Transforms::vAssignAll_predCmp_To_table(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransformation((char*)(__func__));
+  vExplain("Blah"_Stz);
+
+  BoardIter xBI(m_pBoard);
+
+  while ((m_p_filter = _pCard_Filter(xBI.pEachMain(CK_FILTER))))
+    vAssignFilterLeftwards(m_p_filter);
+
+  //vSetPrintSubCards(CK_CMPPRED, true);
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/* calc ordinal ranges                                                        */
+/*----------------------------------------------------------------------------*/
+void Transforms::vCalc_ordinalRanges_OfAll_stream(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransformation((char*)(__func__));
+  vExplain("Blah"_Stz);
+
+  i8 iOrdLo = 1;
+  i8 iOrdHi = C_UNKNOWN;
+  i8 nStreamCols = C_UNKNOWN;
+
+  BoardIter xBI(m_pBoard);
+
+  while ((m_p_table = _pCard_Table(xBI.pEachMain(CK_TABLE)))) {
+
+    m_p_stream = _pSub_Stream(m_p_table);
+
+    // <scan>/<stream>:iOrdLo,iOrdHi
+    nStreamCols = m_p_stream->nStreamCols();
+    m_p_stream->vAddProperty_int(C_PPY_OrdLo,iOrdLo);
+    iOrdHi = iOrdLo + nStreamCols - 1;
+    m_p_stream->vAddProperty_int(C_PPY_OrdHi,iOrdHi);
+    iOrdLo = iOrdHi + 1;
+
+  }
 
   vPrintBoard();
 }
@@ -151,6 +301,295 @@ void Transforms::vChangeAll_scan_To_retrieve(void)
   vRemoveDeleteMains(CK_ABSJOIN);
   while ((m_pMainCard = xBI.pEachMain(CK_SCAN)))
     m_pMainCard->vCard(CK_RETRIEVE);
+
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert all <filter> from calc form to calcBool                            */
+/*----------------------------------------------------------------------------*/
+void Transforms::vConvert_calc_OfAll_filter_To_calcBool(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransformation((char*)(__func__));
+  vExplain("Blah"_Stz);
+
+  BoardIter xBI(m_pBoard);
+
+  while ((m_p_filter = _pCard_Filter(xBI.pEachMain(CK_FILTER))))
+    m_p_filter->vCalc_to_calcBool();
+
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/* markup index columns                                                       */
+/*----------------------------------------------------------------------------*/
+void Transforms::vConvertAll_idxColNm_To_streamColOrd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransformation((char*)(__func__));
+  vExplain("Blah"_Stz);
+
+  m_pBoard->vClearAllMarks();
+
+  BoardIter xBI(m_pBoard);
+
+  while ((m_p_table = _pCard_Table(xBI.pEachMain(CK_TABLE)))) {
+    if (! (m_p_indexJoin = _pSub_IndexJoin(m_p_table)))
+      continue;
+
+    m_p_stream = _pSub_Stream(m_p_table);
+    m_p_streamColList = _pSub_StreamColList(m_p_table);
+    m_p_idxColList = _pSub_IdxColList(m_p_indexJoin);
+
+    m_p_idxColList->vOrdinate(m_p_stream);
+  }
+
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/* inspect all <absJoin>/<filter> and cull predicates                         */
+/*----------------------------------------------------------------------------*/
+void Transforms::vCullAll_filterPred_Of_indexJoin(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransformation((char*)(__func__));
+  vExplain("Blah"_Stz);
+
+  BoardIter xBI(m_pBoard);
+
+  while ((m_p_table = _pCard_Table(xBI.pEachMain(CK_TABLE)))) {
+    if (! (m_p_filter = _pSub_Filter(m_p_table)))
+      continue;
+
+    m_p_calcBool = _pSub_CalcBool(m_p_filter);
+
+    m_p_calcBool->vCullPred('^');
+  }
+
+  //m_pCardCtl->vPrintSubCards(CK_STREAM, true);
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/* cull all <scan>                                                            */
+/*----------------------------------------------------------------------------*/
+void Transforms::vCullAll_scan(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransformation((char*)(__func__),true);
+  vExplain("Blah"_Stz);
+
+  Card_Board* p_board = m_pBoard->pCard_Board();
+
+  BoardIter xBI(m_pBoard);
+  while ((m_pMainCard = xBI.pEachMain(CK_SCAN))) {
+    //m_p_table = _pSub_Table(m_pMainCard);
+    p_board->vReplaceChildWithItsSubs(m_pMainCard);
+  }
+
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete combines                                                            */
+/*----------------------------------------------------------------------------*/
+void Transforms::vDeleteAll_combined(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransformation((char*)(__func__),false);
+  vExplain("Blah"_Stz);
+
+  vRemoveDeleteMains(CK_COMBINED);
+
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/* form <joinPred>                                                            */
+/*----------------------------------------------------------------------------*/
+void Transforms::vFormAll_joinPred_of_indexJoin(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransformation((char*)(__func__));
+  vExplain("Blah"_Stz);
+
+  BoardIter xBI(m_pBoard);
+
+  while ((m_p_table = _pCard_Table(xBI.pEachMain(CK_TABLE)))) {
+    if (! (m_p_filter = _pSub_Filter(m_p_table)))
+      continue;
+
+    m_p_expr     = _pCard_Expr(m_p_filter->pGetChild(0));
+    m_p_calcBool = _pSub_CalcBool(m_p_expr);
+    m_p_predCmp  = _pSub_CmpPred(m_p_calcBool);
+    m_p_term_0   = _pCard_Term(m_p_predCmp->pGetChild(0));
+    m_p_term_1   = _pCard_Term(m_p_predCmp->pGetChild(1));
+
+    // - - - -
+
+    m_p_joinPred = new Card_JoinPred;
+    m_p_indexJoin = _pSub_IndexJoin(m_p_table);
+    m_p_table->vInsertAfter(m_p_joinPred,m_p_indexJoin);
+
+    m_p_term = new Card_Term("BOUND"_Stz);
+    m_p_joinPred->vAppend(m_p_term);
+
+    // - - - -
+
+    // one of {pCard_term_0,pCard_term_1} is $In
+
+    m_p_stream = _pSub_Stream(m_p_table);
+    i8 iStreamOrdLo = m_p_stream->iGetProperty(C_PPY_OrdLo);
+    i8 iStreamOrdHi = m_p_stream->iGetProperty(C_PPY_OrdHi);
+
+    i8 i_iOrdLo_0 = m_p_term_0->iStreamColNo();
+    i8 i_iOrdLo_1 = m_p_term_1->iStreamColNo();
+
+    if (i_iOrdLo_0 >= iStreamOrdLo && i_iOrdLo_0 <= iStreamOrdHi) {
+      m_p_term = new Card_Term("$I1"_Stz);
+      m_p_joinPred->vAppend(m_p_term);
+      m_p_term = new Card_Term(m_p_term_1->sz());
+      m_p_joinPred->vAppend(m_p_term);
+    }
+    else
+    if (i_iOrdLo_1 >= iStreamOrdLo && i_iOrdLo_1 <= iStreamOrdHi) {
+      m_p_term = new Card_Term("$I1"_Stz);
+      m_p_joinPred->vAppend(m_p_term);
+      m_p_term = new Card_Term(m_p_term_1->sz());
+      m_p_joinPred->vAppend(m_p_term);
+    }
+    else {
+      NEVER_REACH
+    }
+
+    m_p_predCmp->vMark1('^');
+    m_p_term = new Card_Term(m_p_predCmp->sz());
+    m_p_joinPred->vAppend(m_p_term);
+  }
+
+  vSetPrintSubCards(CK_FILTER, true);
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/* append preliminary <indexJoin>'s to all <absJoin>                          */
+/*----------------------------------------------------------------------------*/
+void Transforms::vInsert_indexJoin_IntoAll_table(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransformation((char*)(__func__));
+  vExplain("Blah"_Stz);
+
+  m_pBoard->vClearAllMarks();
+
+  BoardIter xBI(m_pBoard);
+
+  while ((m_p_table = _pCard_Table(xBI.pEachMain(CK_TABLE)))) {
+
+    if (! (m_p_filter = m_p_table->pSub_filter()))
+      continue;
+
+    m_p_tablePtr = _pSub_TablePtr(m_p_table);
+    m_pTable = m_p_tablePtr->pTable();
+
+    if (! (m_pIdxVec = m_pTable->pIdxVec()))
+      return;
+
+    i8 nIndexes = m_pIdxVec->nItems();
+    for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
+      m_pIndex = m_pIdxVec->pGet(i_Index);
+
+      m_p_indexJoin = new Card_IndexJoin;
+      m_p_table->vInsertBefore(m_p_indexJoin,m_p_filter);
+
+      m_p_indexPtr = new Card_IndexPtr(m_pIndex);
+      m_p_indexJoin->vAppend(m_p_indexPtr);
+
+      Card_IdxColList* pCard_idxColList = new Card_IdxColList(m_pIndex);
+      m_p_indexJoin->vAppend(pCard_idxColList);
+    }
+  }
+
+  //m_pCardCtl->vPrintFormSubCards(CK_STREAM, CP_DEFAULT, true);
+  vSetPrintSubCards(CK_FILTER, false);
+  vSetPrintSubCards(CK_STREAM, false);
+
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/* linearize stages                                                           */
+/*----------------------------------------------------------------------------*/
+void Transforms::vLinearizeAll_stage(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransformation((char*)(__func__),false);
+  vExplain("Linearize all the stages"_Stz);
+
+  BoardIter xBI(m_pBoard);
+
+  if (! (m_p_stage_a = _pCard_Stage(xBI.pEachMain(CK_STAGE))))
+    goto L_Exit;
+  if (! (m_p_stageTopo_a = m_p_stage_a->pSub_stageTopo()) )
+    goto L_Exit;
+  if (YG_ALL_PARTITIONS != m_p_stageTopo_a->eStageTopo())
+    goto L_Exit;
+
+  while ((m_p_stage_b = _pCard_Stage(xBI.pEachMain(CK_STAGE)))) {
+    if (! (m_p_stageTopo_b = m_p_stage_b->pSub_stageTopo()) )
+      break;
+    if (YG_ALL_PARTITIONS != m_p_stageTopo_b->eStageTopo())
+      break;
+    xBI.vRemoveDeleteCurr(CK_STAGE);
+  }
+
+  L_Exit:
+
+  xBI.vRestart();
+  while ((m_p_stage = _pCard_Stage(xBI.pEachMain(CK_STAGE)))) {
+    if (! (m_p_stageTopo = m_p_stage->pSub_stageTopo()) )
+      continue;
+    if (YG_ALL_PARTITIONS == m_p_stageTopo->eStageTopo())
+      continue;
+
+    m_p_stage->vAddProperty_nameOnly(C_PPY_Exclude);
+  }
+
+
+  m_pBoard->vRenumberMainCards();
+
+  vSetPrintSubCards(CK_AGGELIST, false);
+  vSetPrintSubCards(CK_GBYELIST, false);
+  vSetPrintSubCards(CK_PROJELIST, false);
+
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/* inspect all <filter> and copy <predCmp> to new <scan|absJoin>/<filter>     */
+/*----------------------------------------------------------------------------*/
+void Transforms::vMoveAll_predCmp_To_table(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransformation((char*)(__func__));
+  vExplain("Blah"_Stz);
+
+  BoardIter xBI(m_pBoard);
+
+  while ((m_p_filter = _pCard_Filter(xBI.pEachMain(CK_FILTER))))
+    vCopyFilterLeftwards(m_p_filter);
 
   vPrintBoard();
 }
@@ -182,6 +621,14 @@ void Transforms::vSetup_costEst(void)
   if (m_bInteractive)
     m_pBoard_costEst->vPrintBoard();
 }
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -330,86 +777,6 @@ void Transforms::vExtract_joinOrderSeq(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* inspect all <filter> and attempt to move <predCmp> after <scan>/<absJoin>  */
-/*----------------------------------------------------------------------------*/
-void Transforms::vAssign_predCmp_leftwards(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransformation((char*)(__func__));
-  vExplain("Blah"_Stz);
-
-  BoardIter xBI(m_pBoard);
-
-  while ((m_p_filter = _pCard_Filter(xBI.pEachMain(CK_FILTER))))
-    vAssignFilterLeftwards(m_p_filter);
-
-  //vSetPrintSubCards(CK_CMPPRED, true);
-  vPrintBoard();
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert all <filter> from calc form to calcBool                            */
-/*----------------------------------------------------------------------------*/
-void Transforms::vConvert_calc_To_calcBool(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransformation((char*)(__func__));
-  vExplain("Blah"_Stz);
-
-  BoardIter xBI(m_pBoard);
-
-  while ((m_p_filter = _pCard_Filter(xBI.pEachMain(CK_FILTER))))
-    m_p_filter->vCalc_to_calcBool();
-
-  vPrintBoard();
-}
-
-/*----------------------------------------------------------------------------*/
-/* inspect all <filter> and copy <predCmp> to new <scan|absJoin>/<filter>     */
-/*----------------------------------------------------------------------------*/
-void Transforms::vCopy_predCmp_leftwards(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransformation((char*)(__func__));
-  vExplain("Blah"_Stz);
-
-  BoardIter xBI(m_pBoard);
-
-  while ((m_p_filter = _pCard_Filter(xBI.pEachMain(CK_FILTER))))
-    vCopyFilterLeftwards(m_p_filter);
-
-  vPrintBoard();
-}
-
-/*----------------------------------------------------------------------------*/
-/* inspect all <absJoin>/<filter> and cull predicates                         */
-/*----------------------------------------------------------------------------*/
-void Transforms::vCull_filterPred_Of_indexJoin(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransformation((char*)(__func__));
-  vExplain("Blah"_Stz);
-
-  BoardIter xBI(m_pBoard);
-
-  while ((m_p_scan = _pCard_Scan(xBI.pEachMain(CK_SCAN)))) {
-    if (! (m_p_filter = _pSub_Filter(m_p_scan)))
-      continue;
-
-    m_p_calcBool = _pSub_CalcBool(m_p_filter);
-
-    m_p_calcBool->vCullPred('^');
-  }
-
-  //m_pCardCtl->vPrintSubCards(CK_STREAM, true);
-  vPrintBoard();
-}
-
-/*----------------------------------------------------------------------------*/
 /* delete any <filter> which is effectively empty                             */
 /*----------------------------------------------------------------------------*/
 void Transforms::vDelete_Empty_filter(void)
@@ -460,8 +827,7 @@ void Transforms::vDelete_empty_sub_filter(void)
 
   vEndIteration();
 
-  if (m_bInteractive)
-    m_pBoard->vPrintBoard();
+  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -508,32 +874,7 @@ void Transforms::vIndividuate_filter(void)
 
   vEndIteration();
 
-  if (m_bInteractive)
-    m_pBoard->vPrintBoard();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Transforms::vAppend_indexList_To_scan(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransformation((char*)(__func__));
-  vExplain("Blah"_Stz);
-
-  BoardIter xBI(m_pBoard);
-
-  while ( (m_pMainCard = xBI.pEachMain(CK_SCAN)) ) {
-    m_p_table = m_pMainCard->pSub_table();
-    m_p_tablePtr = m_p_table->pSub_tablePtr();
-    if ( (m_p_indexList = m_p_tablePtr->pNew_indexList()) )
-      m_pMainCard->vInsertAfter(m_p_indexList, m_p_table);
-  }
-
-  if (m_bInteractive)
-    m_pBoard->vPrintBoard();
-
+  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -556,14 +897,13 @@ void Transforms::vMark_scan_pred_bounds(void)
 
   BoardIter xBI(m_pBoard);
 
-  while ( (m_pMainCard = xBI.pEachMain(CK_SCAN)) ) {
+  while ( (m_pMainCard = xBI.pEachMain(CK_TABLE)) ) {
     if (! (m_p_filter = m_pMainCard->pSub_filter()) )
       continue;
     m_p_filter->vVisitAllSub(CK_CMPPRED, bfPredBounds);
   }
 
-  if (m_bInteractive)
-    m_pBoard->vPrintBoard();
+  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -578,7 +918,7 @@ void Transforms::vMark_scan_pred_ordinals(void)
 
   BoardIter xBI(m_pBoard);
 
-  while ( (m_pMainCard = xBI.pEachMain(CK_SCAN)) ) {
+  while ( (m_pMainCard = xBI.pEachMain(CK_TABLE)) ) {
     if (! (m_p_filter = m_pMainCard->pSub_filter()) )
       continue;
 
@@ -628,58 +968,9 @@ void Transforms::vMark_scan_pred_ordinals(void)
     m_p_filter->vVisitAllSub(CK_TERM,bfPredBounds);
   }
 
-  if (m_bInteractive)
-    m_pBoard->vPrintBoard();
-
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* append preliminary <indexJoin>'s to all <absJoin>                          */
-/*----------------------------------------------------------------------------*/
-void Transforms::vInsert_preliminary_indexJoin(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransformation((char*)(__func__));
-  vExplain("Blah"_Stz);
-
-  m_pBoard->vClearAllMarks();
-
-  BoardIter xBI(m_pBoard);
-
-  while ((m_p_scan = _pCard_Scan(xBI.pEachMain(CK_SCAN)))) {
-
-    if (! (m_p_filter = m_p_scan->pSub_filter()))
-      continue;
-
-    m_p_tablePtr = _pSub_TablePtr(m_p_scan);
-    m_pTable = m_p_tablePtr->pTable();
-
-    if (! (m_pIdxVec = m_pTable->pIdxVec()))
-      return;
-
-    i8 nIndexes = m_pIdxVec->nItems();
-    for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
-      m_pIndex = m_pIdxVec->pGet(i_Index);
-
-      m_p_indexJoin = new Card_IndexJoin;
-      m_p_scan->vInsertBefore(m_p_indexJoin,m_p_filter);
-
-      m_p_indexPtr = new Card_IndexPtr(m_pIndex);
-      m_p_indexJoin->vAppend(m_p_indexPtr);
-
-      Card_IdxColList* pCard_idxColList = new Card_IdxColList(m_pIndex);
-      m_p_indexJoin->vAppend(pCard_idxColList);
-    }
-  }
-
-  //m_pCardCtl->vPrintFormSubCards(CK_STREAM, CP_DEFAULT, true);
-  vSetPrintSubCards(CK_FILTER, false);
-  vSetPrintSubCards(CK_STREAM, false);
-
   vPrintBoard();
 }
+
 
 /*----------------------------------------------------------------------------*/
 /* delete sends                                                               */
@@ -697,139 +988,42 @@ void Transforms::vDeleteAll_absJoin(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* form <joinPred>                                                            */
-/*----------------------------------------------------------------------------*/
-void Transforms::vForm_joinPred(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransformation((char*)(__func__));
-  vExplain("Blah"_Stz);
-
-  BoardIter xBI(m_pBoard);
-
-  while ((m_p_scan = _pCard_Scan(xBI.pEachMain(CK_SCAN)))) {
-    if (! (m_p_filter = _pSub_Filter(m_p_scan)))
-      continue;
-
-    m_p_expr     = _pCard_Expr(m_p_filter->pGetChild(0));
-    m_p_calcBool = _pSub_CalcBool(m_p_expr);
-    m_p_predCmp  = _pSub_CmpPred(m_p_calcBool);
-    m_p_term_0   = _pCard_Term(m_p_predCmp->pGetChild(0));
-    m_p_term_1   = _pCard_Term(m_p_predCmp->pGetChild(1));
-
-    // - - - -
-
-    m_p_joinPred = new Card_JoinPred;
-    m_p_indexJoin = _pSub_IndexJoin(m_p_scan);
-    m_p_scan->vInsertAfter(m_p_joinPred,m_p_indexJoin);
-
-    m_p_term = new Card_Term("BOUND"_Stz);
-    m_p_joinPred->vAppend(m_p_term);
-
-    // - - - -
-
-    // one of {pCard_term_0,pCard_term_1} is $In
-
-    m_p_stream = _pSub_Stream(m_p_scan);
-    i8 iStreamOrdLo = m_p_stream->iGetProperty(C_PPY_OrdLo);
-    i8 iStreamOrdHi = m_p_stream->iGetProperty(C_PPY_OrdHi);
-
-    i8 i_iOrdLo_0 = m_p_term_0->iStreamColNo();
-    i8 i_iOrdLo_1 = m_p_term_1->iStreamColNo();
-
-    if (i_iOrdLo_0 >= iStreamOrdLo && i_iOrdLo_0 <= iStreamOrdHi) {
-      m_p_term = new Card_Term("$I1"_Stz);
-      m_p_joinPred->vAppend(m_p_term);
-      m_p_term = new Card_Term(m_p_term_1->sz());
-      m_p_joinPred->vAppend(m_p_term);
-    }
-    else
-    if (i_iOrdLo_1 >= iStreamOrdLo && i_iOrdLo_1 <= iStreamOrdHi) {
-      m_p_term = new Card_Term("$I1"_Stz);
-      m_p_joinPred->vAppend(m_p_term);
-      m_p_term = new Card_Term(m_p_term_1->sz());
-      m_p_joinPred->vAppend(m_p_term);
-    }
-    else {
-      NEVER_REACH
-    }
-
-    m_p_predCmp->vMark1('^');
-    m_p_term = new Card_Term(m_p_predCmp->sz());
-    m_p_joinPred->vAppend(m_p_term);
-  }
-
-  vSetPrintSubCards(CK_FILTER, true);
-  vPrintBoard();
-}
-
-/*----------------------------------------------------------------------------*/
-/* markup index columns                                                       */
-/*----------------------------------------------------------------------------*/
-void Transforms::vConvertAll_idxColNm_To_streamColOrdinal(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransformation((char*)(__func__));
-  vExplain("Blah"_Stz);
-
-  m_pBoard->vClearAllMarks();
-
-  BoardIter xBI(m_pBoard);
-
-  while ((m_p_scan = _pCard_Scan(xBI.pEachMain(CK_SCAN)))) {
-    if (! (m_p_indexJoin = _pSub_IndexJoin(m_p_scan)))
-      continue;
-
-    m_p_stream = _pSub_Stream(m_p_scan);
-    m_p_streamColList = _pSub_StreamColList(m_p_scan);
-    m_p_idxColList = _pSub_IdxColList(m_p_indexJoin);
-
-    m_p_idxColList->vOrdinate(m_p_stream);
-  }
-
-  vPrintBoard();
-}
-
-/*----------------------------------------------------------------------------*/
 /* reduce absJoin                                                             */
 /*----------------------------------------------------------------------------*/
-void Transforms::vRefactor_absJoin_Into_indexJoin(void)
+void Transforms::vRefactorAll_table_Into_join(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
+
+  Card_Board* p_board = m_pBoard->pCard_Board();
 
   vBeginIteration();
 
-  while (Card_Scan *p_scan = _pCard_Scan(pEachMain(CK_SCAN))) {
+  while ((m_p_table = _pCard_Table(pEachMain(CK_TABLE)))) {
 
-    //pCard_absJoin->vDeleteChildCard(CK_CALC);
-    //pCard_absJoin->vDeleteChildCard(CK_FILTER);
+    m_p_indexJoin = _pSub_IndexJoin(m_p_table);
+    if (! m_p_indexJoin) {
 
-//    Card_Scan* pCard_scan = _pSub_Scan(pCard_absJoin);
-//    pCard_absJoin->vReplaceChildWithItsSubs(pCard_scan);
-//    delete pCard_scan;
+      m_p_scan = new Card_Scan;
+      m_p_scan->vTransferChildren(m_p_table);
 
-    Card_IndexJoin* pCard_indexJoin = _pSub_IndexJoin(p_scan);
-    if (! pCard_indexJoin)
+      p_board->vReplace(m_p_table,m_p_scan);
+      m_p_scan->vInsert(m_p_table);
       continue;
+    }
 
-    p_scan->vReplaceChildWithItsSubs(pCard_indexJoin);
-    delete pCard_indexJoin;
+    m_p_table->vRemoveSubCard(m_p_indexJoin);
+    m_p_indexJoin->vTransferChildren(m_p_table);
 
-    Card_Stream* pCard_stream = _pSub_Stream(p_scan);
-    p_scan->vMoveToLastChild(pCard_stream);
-
-    p_scan->vCard(CK_INDEXJOIN);
+    p_board->vReplace(m_p_table,m_p_indexJoin);
+    m_p_indexJoin->vInsert(m_p_table);
   }
 
   vEndIteration();
 
-  if (m_bInteractive)
-    m_pBoard->vPrintBoard();
+  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1233,13 +1427,13 @@ void Transforms::vAdd_scanPred(void)
 
   BoardIter xBI(m_pBoard);
 
-  while ( (m_p_scan = _pCard_Scan(xBI.pEachMain(CK_SCAN))) ) {
+  while ( (m_pMainCard = xBI.pEachMain(CK_TABLE)) ) {
 
-    m_p_filter = m_p_scan->pSub_filter();
+    m_p_filter = m_pMainCard->pSub_filter();
     if (! m_p_filter)
       continue;
 
-    m_p_indexList = m_p_scan->pSub_indexList();
+    m_p_indexList = m_pMainCard->pSub_indexList();
     if (! m_p_indexList)
       continue;
 
@@ -1283,9 +1477,7 @@ void Transforms::vAdd_scanPred(void)
 
   }
 
-  if (m_bInteractive)
-    m_pBoard->vPrintBoard();
-
+  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1300,9 +1492,9 @@ void Transforms::vCull_markedPred(void)
 
   BoardIter xBI(m_pBoard);
 
-  while ((m_p_scan = _pCard_Scan(xBI.pEachMain(CK_SCAN)))) {
+  while ((m_pMainCard = xBI.pEachMain(CK_TABLE))) {
 
-    m_p_filter = m_p_scan->pSub_filter();
+    m_p_filter = m_pMainCard->pSub_filter();
     if (!m_p_filter)
       continue;
 
@@ -1312,7 +1504,7 @@ void Transforms::vCull_markedPred(void)
     if (! m_p_filter->bIsEmptyFilter())
       continue;
 
-    m_p_scan->vRemoveSubCard(m_p_filter);
+    m_pMainCard->vRemoveSubCard(m_p_filter);
 
     delete m_p_filter;
     m_p_filter = nullptr;
@@ -1322,8 +1514,7 @@ void Transforms::vCull_markedPred(void)
   m_pCardCtl->vPrintByKind(CK_STREAM, true);
   m_pCardCtl->vPrintSubCards(CK_STREAM, false);
 
-  if (m_bInteractive)
-    m_pBoard->vPrintBoard();
+  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1392,9 +1583,7 @@ void Transforms::vCull_sby_SameAs_gby(void)
     }
   }
 
-  if (m_bInteractive)
-    m_pBoard->vPrintBoard();
-
+  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1501,208 +1690,6 @@ void Transforms::vAdd_stages(void)
   vPrintBoard();
 }
 
-/*----------------------------------------------------------------------------*/
-/* linearize stages                                                           */
-/*----------------------------------------------------------------------------*/
-void Transforms::vLinearize_stages(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransformation((char*)(__func__),false);
-  vExplain("Linearize all the stages"_Stz);
-
-  BoardIter xBI(m_pBoard);
-
-  if (! (m_p_stage_a = _pCard_Stage(xBI.pEachMain(CK_STAGE))))
-    goto L_Exit;
-  if (! (m_p_stageTopo_a = m_p_stage_a->pSub_stageTopo()) )
-    goto L_Exit;
-  if (YG_ALL_PARTITIONS != m_p_stageTopo_a->eStageTopo())
-    goto L_Exit;
-
-  while ((m_p_stage_b = _pCard_Stage(xBI.pEachMain(CK_STAGE)))) {
-    if (! (m_p_stageTopo_b = m_p_stage_b->pSub_stageTopo()) )
-      break;
-    if (YG_ALL_PARTITIONS != m_p_stageTopo_b->eStageTopo())
-      break;
-    xBI.vRemoveDeleteCurr(CK_STAGE);
-  }
-
-  L_Exit:
-
-  xBI.vRestart();
-  while ((m_p_stage = _pCard_Stage(xBI.pEachMain(CK_STAGE)))) {
-    if (! (m_p_stageTopo = m_p_stage->pSub_stageTopo()) )
-      continue;
-    if (YG_ALL_PARTITIONS == m_p_stageTopo->eStageTopo())
-      continue;
-
-    m_p_stage->vAddProperty_nameOnly(C_PPY_Exclude);
-  }
-
-
-  m_pBoard->vRenumberMainCards();
-
-  vSetPrintSubCards(CK_AGGELIST, false);
-  vSetPrintSubCards(CK_GBYELIST, false);
-  vSetPrintSubCards(CK_PROJELIST, false);
-
-  vPrintBoard();
-}
-
-/*----------------------------------------------------------------------------*/
-/* calc ordinal ranges                                                        */
-/*----------------------------------------------------------------------------*/
-void Transforms::vCalc_OrdinalRangesOf_stream(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransformation((char*)(__func__));
-  vExplain("Blah"_Stz);
-
-  i8 iOrdLo = 1;
-  i8 iOrdHi = C_UNKNOWN;
-  char cStream = '0';
-  i8 iStream = 0;
-
-  BoardIter xBI(m_pBoard);
-
-  while ((m_pMainCard = xBI.pEachMain())) {
-
-    if (CK_SCAN == m_pMainCard->eCard()) {
-      m_p_stream = _pSub_Stream(m_pMainCard);
-
-      //m_p_stream->vMark1('#');
-      //m_p_stream->vMark2(cStream++);
-
-      // <scan>/<stream>:iOrdLo,iOrdHi
-      i8 nStreamCols = m_p_stream->nStreamCols();
-      m_p_stream->vAddProperty_int(C_PPY_OrdLo,iOrdLo);
-      iOrdHi = iOrdLo + nStreamCols - 1;
-      m_p_stream->vAddProperty_int(C_PPY_OrdHi,iOrdHi);
-      iOrdLo = iOrdHi + 1;
-      m_p_stream->vAddProperty_int(C_PPY_Stream,iStream++);
-
-      continue;
-    }
-
-    if (CK_ABSJOIN == m_pMainCard->eCard()) {
-      m_p_scan   = _pSub_Scan(m_pMainCard);
-      m_p_stream = _pSub_Stream(m_p_scan);
-
-      //m_p_stream->vMark1('#');
-      //m_p_stream->vMark2(cStream++);
-
-      // <absJoin>/<stream>:iOrdLo,iOrdHi
-      i8 nStreamCols = m_p_stream->nStreamCols();
-      m_p_stream->vAddProperty_int(C_PPY_OrdLo,iOrdLo);
-      iOrdHi = iOrdLo + nStreamCols - 1;
-      m_p_stream->vAddProperty_int(C_PPY_OrdHi,iOrdHi);
-      iOrdLo = iOrdHi + 1;
-      m_p_stream->vAddProperty_int(C_PPY_Stream,iStream++);
-
-      continue;
-    }
-  }
-
-  vPrintBoard();
-}
-
-/*----------------------------------------------------------------------------*/
-/* append <stream> to all <scan>                                              */
-/*----------------------------------------------------------------------------*/
-void Transforms::vAppend_stream_To_scan(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransformation((char*)(__func__));
-  vExplain("Blah"_Stz);
-
-  BoardIter xBI(m_pBoard);
-
-  // E <scan>
-  while ((m_p_scan = _pCard_Scan(xBI.pEachMain(CK_SCAN)))) {
-
-    // ? <scan>/<tablePtr>
-    if (! (m_p_tablePtr = m_p_scan->pSub_tablePtr()))
-      continue;
-    // ? <scan>/<tablePtr>:pStreamDef
-    if (! (m_pStreamDef = m_p_tablePtr->pStreamDef()))
-      continue;
-
-    // + <scan>/<stream>
-    m_p_scan->vAppend((m_p_stream = new Card_Stream));
-    // + <scan>/<stream>/<streamColList>
-    m_p_stream->vAppend((m_p_streamColList = new Card_StreamColList(m_pStreamDef)));
-  }
-
-  vSetPrintSubCards(CK_STREAM, true);
-
-  vPrintBoard();
-
-  vSetPrintSubCards(CK_STREAM, false);
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* add table partitions <tablePtn> to all <table>                             */
-/*----------------------------------------------------------------------------*/
-void Transforms::vAdd_tablePtn_To_table(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransformation((char*)(__func__));
-  vExplain("Blah"_Stz);
-
-  char cTableSyn = 'a';
-
-  m_pBoard = m_pBench->pGetBoard(BK_QUERY);
-
-  BoardIter xBI(m_pBoard);
-
-  while ( (m_pMainCard = xBI.pEachMain()) ) {
-    if (! (m_p_table = _pSub_Table(m_pMainCard)) )
-      continue;
-
-    m_p_tablePtn = new Card_TablePtn(m_p_table);
-    m_p_table->vAppend(m_p_tablePtn);
-  }
-
-  vPrintBoard();
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* add table synonyms <tableSyn> to all <table>                               */
-/*----------------------------------------------------------------------------*/
-void Transforms::vAdd_tableSyn_To_table(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransformation((char*)(__func__));
-  vExplain("Blah"_Stz);
-
-  char cTableSyn = 'a';
-
-  BoardIter xBI(m_pBoard);
-
-  while ( (m_pMainCard = xBI.pEachMain()) ) {
-    if (! (m_p_table = _pSub_Table(m_pMainCard)) )
-      continue;
-
-    m_p_tablePtr = _pSub_TablePtr(m_p_table);
-    m_pTable = m_p_tablePtr->pTable();
-
-    char cTableSyn_actual = cTableSyn;
-    if (m_pTable->bIsReplicated())
-      cTableSyn_actual += 'A'-'a';
-    m_p_table->vAddProperty_chr(C_PPY_TableSyn,cTableSyn_actual);
-
-    cTableSyn++;
-  }
-
-  vPrintBoard();
-}
 
 
 
@@ -1737,7 +1724,7 @@ void Transforms::vAssignPredDrillDown(Card_PRED* pCard_pred, Card_Filter* pCard_
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  i8 iWhichScan = C_UNKNOWN;
+  char cWhichTable = ' ';
 
   eCK eCard = pCard_pred->eCard();
 
@@ -1749,12 +1736,12 @@ void Transforms::vAssignPredDrillDown(Card_PRED* pCard_pred, Card_Filter* pCard_
 
   if (CK_CMPPRED == eCard) {
     pCard_pred->vMark1('?');
-    iWhichScan =
-        iAssignPredLeft(pCard_pred,
+    cWhichTable =
+        cAssignPredLeft(pCard_pred,
                         pCard_filter);
-    if (C_UNKNOWN != iWhichScan) {
+    if (C_UNKNOWN != cWhichTable) {
       pCard_pred->vMark1('@');
-      pCard_pred->vMark2(iWhichScan);
+      pCard_pred->vMark2(cWhichTable);
     }
     return;
   }
@@ -1787,50 +1774,13 @@ void Transforms::vAssignPredDrillDown(Card_PRED* pCard_pred, Card_Filter* pCard_
 /*----------------------------------------------------------------------------*/
 /* inspect <PRED>                                                             */
 /*----------------------------------------------------------------------------*/
-i8 Transforms::iAssignPredLeft(Card_PRED* pCard_PRED, Card_Filter* pCard_filter)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  i8 nAbsJoin = 0;
-  i8 nScan    = 0;
-  i8 iWhichScan = C_UNKNOWN;
-
-  //vTrace("iAssignPredLeft candidate %p\n"_Stz,pCard_PRED);
-  //pCard_PRED->vDump();
-
-  for (i8 i_Main = 0; /* none */ ; i_Main++) {
-    Card *pMainCard = m_pBoard->pGetMain(i_Main);
-
-    if (pMainCard == pCard_filter)
-      return C_UNKNOWN;
-
-    eCK eMainCard = pMainCard->eCard();
-
-    if (CK_SCAN == eMainCard) {
-      nScan++;
-      iWhichScan = iAssignPredToScan(_pCard_Scan(pMainCard), pCard_PRED);
-      if (C_UNKNOWN != iWhichScan)
-        return iWhichScan;
-      continue;
-    }
-
-    // skip over any other card??
-    vTrace("bMovePredLeft skipping mainCard %s\n"_Stz,aCK[eMainCard]);
-  }
-
-  NEVER_REACH;
-}
-
-/*----------------------------------------------------------------------------*/
-/* inspect <PRED>                                                             */
-/*----------------------------------------------------------------------------*/
 char Transforms::cAssignPredLeft(Card_PRED* pCard_PRED, Card_Filter* pCard_filter)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   i8 nAbsJoin = 0;
-  i8 nScan    = 0;
-  char cWhichScan = ' ';
+  i8 nTable    = 0;
+  char cWhichTable = C_UNKNOWN;
 
   //vTrace("iAssignPredLeft candidate %p\n"_Stz,pCard_PRED);
   //pCard_PRED->vDump();
@@ -1843,11 +1793,11 @@ char Transforms::cAssignPredLeft(Card_PRED* pCard_PRED, Card_Filter* pCard_filte
 
     eCK eMainCard = pMainCard->eCard();
 
-    if (CK_SCAN == eMainCard) {
-      nScan++;
-      cWhichScan = cAssignPredToTable(_pCard_Scan(pMainCard), pCard_PRED);
-      if (' ' != cWhichScan)
-        return cWhichScan;
+    if (CK_TABLE == eMainCard) {
+      nTable++;
+      cWhichTable = cAssignPredToTable(_pCard_Table(pMainCard), pCard_PRED);
+      if (C_UNKNOWN != cWhichTable)
+        return cWhichTable;
       continue;
     }
 
@@ -1861,38 +1811,19 @@ char Transforms::cAssignPredLeft(Card_PRED* pCard_PRED, Card_Filter* pCard_filte
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-i8 Transforms::iAssignPredToScan(Card_Scan* pCard_scan, Card_PRED* pCard_PRED)
+char Transforms::cAssignPredToTable(Card_Table* pCard_table, Card_PRED* pCard_PRED)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  Card_Stream* pCard_stream = _pSub_Stream(pCard_scan);
-  //pCard_stream->vMark1('#');
+  Card_Stream* pCard_stream = _pSub_Stream(pCard_table);
 
   // are all $n of <pred> in this <stream>?
   if (pCard_stream->bContainsPred(pCard_PRED)) {
-    //pCard_stream->vMark1('@');
-    return pCard_stream->iStream();
-  }
-  return C_UNKNOWN;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-char Transforms::cAssignPredToTable(Card_Scan* pCard_scan, Card_PRED* pCard_PRED)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  Card_Stream* pCard_stream = _pSub_Stream(pCard_scan);
-
-  // are all $n of <pred> in this <stream>?
-  if (pCard_stream->bContainsPred(pCard_PRED)) {
-    Card_Table* p_table = _pSub_Table(pCard_scan);
-    char cTableSyn = p_table->cGetProperty(C_PPY_TableSyn);
+    char cTableSyn = pCard_table->cGetProperty(C_PPY_TableSyn);
     return cTableSyn;
   }
 
-  return ' ';
+  return C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1924,21 +1855,23 @@ bool Transforms::bCopyPredDrillDown(Card_PRED* pCard_pred, Card_Filter* pCard_fi
 
   if ('@' == pCard_pred->cMark1()) {
     Card* pMainCard;
-    i8 iStream = pCard_pred->iMark2();
-    Card_Stream* pCard_stream = m_pBoard->pFindStreamCard(iStream,pMainCard);
+//    i8 iStream = pCard_pred->iMark2();
+//    Card_Stream* pCard_stream = m_pBoard->pFindStreamCard(iStream,pMainCard);
+    char cTableSyn = pCard_pred->cMark2();
+    Card_Table* pCard_table = m_pBoard->pFindTableCard(cTableSyn,pMainCard);
 
     Card_Filter* pCard_filter_existing =
         _pSub_Filter(pMainCard);
 
     if (pCard_filter_existing) {
-      pCard_filter_existing->vMark1(pCard_stream->cMark1());
-      pCard_filter_existing->vMark2(pCard_stream->iMark2());
+      pCard_filter_existing->vMark1(pCard_table->cMark1());
+      pCard_filter_existing->vMark2(pCard_table->cMark2());
       vCopyPredToExistingFilter(pCard_filter_existing,pCard_pred);
     }
     else {
       Card_Filter* pCard_filter_new = new Card_Filter;
-      pCard_filter_new->vMark1(pCard_stream->cMark1());
-      pCard_filter_new->vMark2(pCard_stream->iMark2());
+      pCard_filter_new->vMark1(pCard_table->cMark1());
+      pCard_filter_new->vMark2(pCard_table->cMark2());
       pMainCard->vAppend(pCard_filter_new);
       vCopyPredToNewFilter(pCard_filter_new,pCard_pred);
     }

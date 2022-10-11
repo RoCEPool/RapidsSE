@@ -334,7 +334,23 @@ void TransformerTool::vRenumberMainCards(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set card print form                                                        */
+/* set card print by kind                                                     */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::vSetPrintByKind(eCK eCard, bool bPrintByKind)
+{
+  m_pCardCtl->vPrintByKind(eCard,bPrintByKind);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set card print properties                                                  */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::vSetPrintProperties(eCK eCard, bool bPrintProperties)
+{
+  m_pCardCtl->vPrintProperties(eCard,bPrintProperties);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set card print subCards                                                     */
 /*----------------------------------------------------------------------------*/
 void TransformerTool::vSetPrintSubCards(eCK eCard, bool bPrintSubCards)
 {

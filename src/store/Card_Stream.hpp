@@ -30,7 +30,6 @@ namespace STORE
 
     void vOrdinate(String* psOrdinal, Stz* szOrdinal);
 
-    i8 iStream(void);
     i8 nStreamCols(void);
     void vStreamPrint(Ribbon* pRibbon, i8 iDepth);
 
