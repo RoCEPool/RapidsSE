@@ -9,16 +9,6 @@
 /*----------------------------------------------------------------------------*/
 : metricsCtl_action
 
-  <which> "jobMetrics" str.same if
-  
-    <setting> "disable" str.same if
-      AM::jobMetricsDisable
-    else
-    <setting> "enable" str.same if
-      AM::jobMetricsEnable
-    then then
-
-  else
   <which> "sysMetrics" str.same if
 
     <setting> "disable" str.same if
@@ -39,7 +29,7 @@
     then then
 
   else
-  then then then
+  then then
   
   
   true
