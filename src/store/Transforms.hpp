@@ -33,7 +33,6 @@ namespace STORE
     void vAppend_stream_ToAll_table(void);
     void vAssignAll_predCmp_To_table(void);
     void vCalc_ordinalRanges_OfAll_stream(void);
-    void vChangeAll_scan_To_retrieve(void);
     void vCompute_coPtnJoinList(void);
     void vCompute_coPtnPredList(void);
     void vCompute_crossPtnJoinList(void);

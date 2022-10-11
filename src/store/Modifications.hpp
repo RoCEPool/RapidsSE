@@ -21,6 +21,10 @@ namespace STORE
     Modifications(eCN eClassNo, Bench* pBench);
    ~Modifications(void) noexcept(false);
 
+    void vCullAll(eCK eCard);
+    void vDeleteAll(eCK eCard);
+    void vRenumberMainCards(void);
+
   private:
 
     Footer* aFooter(void);

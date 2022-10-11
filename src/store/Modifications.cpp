@@ -34,6 +34,42 @@ Modifications::~Modifications(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* cull all <mainCard> == eCard from <board>                                  */
+/*----------------------------------------------------------------------------*/
+void Modifications::vCullAll(eCK eCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  while (I_bEach_mainCard_(eCard)) {
+    _board_->vReplaceChildWithItsSubs(m_pMainCard);
+    DELETE_CARD(m_pMainCard);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* cull all <mainCard> == eCard from <board>                                  */
+/*----------------------------------------------------------------------------*/
+void Modifications::vDeleteAll(eCK eCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  while (I_bEach_mainCard_(eCard))
+    m_pBoardIter->vRemoveDeleteCurr(eCard);
+
+  vRenumberMainCards();
+}
+
+/*----------------------------------------------------------------------------*/
+/* renumber the main cards                                                    */
+/*----------------------------------------------------------------------------*/
+void Modifications::vRenumberMainCards(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_pBoard->vRenumberMainCards();
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

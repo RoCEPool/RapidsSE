@@ -123,8 +123,6 @@ namespace STORE
     void vPrintBoard(void);
 
     bool bRecursivelyTheSame(Card* p_card_a, Card* p_card_b, i8 iDepth=0, bool bTestL0=false);
-    void vRemoveDeleteMains(eCK eCard);
-    void vRenumberMainCards(void);
 
     void vSetPrintByKind(eCK eCard, bool bPrintByKind);
     void vSetPrintProperties(eCK eCard, bool bPrintProperties);
@@ -139,8 +137,8 @@ namespace STORE
     void vSetupPermuteBoard(void);
     void vSetupQueryBoard(void);
 
-    bool bI_EachMain(void);
-    bool I_bEachMain(eCK eCard);
+    bool I_bEach_mainCard_(void);
+    bool I_bEach_mainCard_(eCK eCard);
 
     void vSetMember(eCK eCard, Card* pCard);
   };

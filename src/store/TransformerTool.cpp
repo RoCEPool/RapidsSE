@@ -206,27 +206,6 @@ bool TransformerTool::bRecursivelyTheSame(Card* p_card_a, Card* p_card_b, i8 iDe
 }
 
 /*----------------------------------------------------------------------------*/
-/* remove and delete all mains of given eCard                                 */
-/*----------------------------------------------------------------------------*/
-void TransformerTool::vRemoveDeleteMains(eCK eCard)
-{
-  BoardIter xBI(m_pBoard);
-
-  while ((m_pMainCard = xBI.pEachMain(eCard)))
-    xBI.vRemoveDeleteCurr(eCard);
-
-  vRenumberMainCards();
-}
-
-/*----------------------------------------------------------------------------*/
-/* renumber the main cards                                                    */
-/*----------------------------------------------------------------------------*/
-void TransformerTool::vRenumberMainCards(void)
-{
-  m_pBoard->vRenumberMainCards();
-}
-
-/*----------------------------------------------------------------------------*/
 /* set card print by kind                                                     */
 /*----------------------------------------------------------------------------*/
 void TransformerTool::vSetPrintByKind(eCK eCard, bool bPrintByKind)
@@ -262,6 +241,7 @@ void TransformerTool::vTransformation(eBK eBoard,
   RASSERT(eBoard == m_pBoard->eBoard());
 
   _board_ = m_pBoard->pCard_Board();
+  m_pBoardIter->vRestart();
 
   m_sTranformation = azTranformation;
   m_bPrintTransformation = bPrintTransformation;
@@ -341,7 +321,7 @@ void TransformerTool::vSetupQueryBoard(void)
 /*----------------------------------------------------------------------------*/
 /* step to next main and set member                                           */
 /*----------------------------------------------------------------------------*/
-bool TransformerTool::bI_EachMain(void)
+bool TransformerTool::I_bEach_mainCard_(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
@@ -359,7 +339,7 @@ bool TransformerTool::bI_EachMain(void)
 /*----------------------------------------------------------------------------*/
 /* step to next main and set member                                           */
 /*----------------------------------------------------------------------------*/
-bool TransformerTool::I_bEachMain(eCK eCard)
+bool TransformerTool::I_bEach_mainCard_(eCK eCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
@@ -426,6 +406,9 @@ void TransformerTool::vSetMember(eCK eCard, Card* pCard)
     case CK_TABLEPTR:         *((Card**)&m_p_tablePtr)         = pCard; break;
     case CK_TERM:             *((Card**)&m_p_term)             = pCard; break;
     case CK_UBOUND:           *((Card**)&m_p_uBound)           = pCard; break;
+
+    case CK_SEND:
+      break;
 
     default:
       NEVER_REACH  }

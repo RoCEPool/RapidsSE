@@ -457,25 +457,6 @@ void Transforms::vCalc_ordinalRanges_OfAll_stream(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* change all scan to retrieve                            *<scan>-><retrieve> */
-/*----------------------------------------------------------------------------*/
-void Transforms::vChangeAll_scan_To_retrieve(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransformation(BK_QUERY,(char*)(__func__));
-  vExplain("Blah"_Stz);
-
-  BoardIter xBI(m_pBoard);
-
-  vRemoveDeleteMains(CK_ABSJOIN);
-  while ((m_pMainCard = xBI.pEachMain(CK_SCAN)))
-    m_pMainCard->vCard(CK_RETRIEVE);
-
-  vPrintBoard();
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Transforms::vCompute_coPtnJoinList(void)
@@ -755,10 +736,12 @@ void Transforms::vCullAll_scan(void)
   vTransformation(BK_QUERY,(char*)(__func__),true);
   vExplain("Blah"_Stz);
 
-  while (I_bEachMain(CK_SCAN)) {
-    _board_->vReplaceChildWithItsSubs(m_pMainCard);
-    DELETE_CARD(m_pMainCard);
-  }
+//  while (I_bEach_mainCard_(CK_SCAN)) {
+//    _board_->vReplaceChildWithItsSubs(m_pMainCard);
+//    DELETE_CARD(m_pMainCard);
+//  }
+
+  vCullAll(CK_SCAN);
 
   vPrintBoard();
 }
@@ -859,7 +842,7 @@ void Transforms::vDeleteAll_absJoin(void)
   vTransformation(BK_QUERY,(char*)(__func__),false);
   vExplain("Blah"_Stz);
 
-  vRemoveDeleteMains(CK_ABSJOIN);
+  vDeleteAll(CK_ABSJOIN);
 
   vPrintBoard();
 }
@@ -874,7 +857,7 @@ void Transforms::vDeleteAll_combined(void)
   vTransformation(BK_QUERY,(char*)(__func__),false);
   vExplain("Blah"_Stz);
 
-  vRemoveDeleteMains(CK_COMBINED);
+  vDeleteAll(CK_COMBINED);
 
   vPrintBoard();
 }
@@ -889,7 +872,7 @@ void Transforms::vDeleteAll_send(void)
   vTransformation(BK_QUERY,(char*)(__func__),false);
   vExplain("Blah"_Stz);
 
-  vRemoveDeleteMains(CK_SEND);
+  vDeleteAll(CK_SEND);
 
   vPrintBoard();
 }
