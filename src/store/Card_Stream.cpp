@@ -200,30 +200,6 @@ void Card_Stream::vStreamPrint(Ribbon* pRibbon, i8 iDepth)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   s32 sName;
-
-  /*
-  if (m_pProperties && C_UNKNOWN != iGetProperty(C_PPY_OrdLo))
-    sName.vSprint("%s%lld]%s $%lld,%lld"_Stz
-        ,Stz::szDots(iDepth-1)
-        ,m_iCardNo
-        ,szCardNm()
-        ,iGetProperty(C_PPY_OrdLo)
-        ,iGetProperty(C_PPY_OrdHi)
-    );
-  else
-    sName.vSprint("%s%lld]%s"_Stz
-        ,Stz::szDots(iDepth-1)
-        ,m_iCardNo
-        ,szCardNm()
-    );
-
-  pRibbon->vSprint("%-18s%c%c"_Stz
-      ,sName.szStz()
-      ,m_cMark1
-      ,m_cMark2
-  );
-  */
-
   sName.vSprint("%s%s"_Stz,szCardNm(),nProperties()?" +":"");
 
   if (bHasProperty(C_PPY_OrdLo))

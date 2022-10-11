@@ -122,16 +122,126 @@ void Transforms::vAdd_combined(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* delete combines                                                            */
+/* add table partitions <tablePtn> to all <table>                             */
 /*----------------------------------------------------------------------------*/
-void Transforms::vDeleteAll_combined(void)
+void Transforms::vAdd_tablePtn_ToAll_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransformation((char*)(__func__),false);
+  vTransformation((char*)(__func__));
   vExplain("Blah"_Stz);
 
-  vRemoveDeleteMains(CK_COMBINED);
+  char cTableSyn = 'a';
+
+  m_pBoard = m_pBench->pGetBoard(BK_QUERY);
+
+  BoardIter xBI(m_pBoard);
+
+  while ( (m_p_table = _pCard_Table(xBI.pEachMain(CK_TABLE)) )) {
+
+    m_p_tablePtn = new Card_TablePtn(m_p_table);
+    m_p_table->vAppend(m_p_tablePtn);
+  }
+
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/* add table synonyms <tableSyn> to all <table>                               */
+/*----------------------------------------------------------------------------*/
+void Transforms::vAdd_tableSyn_ToAll_table(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransformation((char*)(__func__));
+  vExplain("Blah"_Stz);
+
+  char cTableSyn = 'a';
+
+  BoardIter xBI(m_pBoard);
+
+  while ( (m_p_table = _pCard_Table(xBI.pEachMain(CK_TABLE)) )) {
+
+    m_p_tablePtr = _pSub_TablePtr(m_p_table);
+    m_pTable = m_p_tablePtr->pTable();
+
+    char cTableSyn_actual = cTableSyn;
+    if (m_pTable->bIsReplicated())
+      cTableSyn_actual += 'A'-'a';
+    m_p_table->vAddProperty_chr(C_PPY_TableSyn,cTableSyn_actual);
+
+    cTableSyn++;
+  }
+
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/* append <stream> to all <table>                                             */
+/*----------------------------------------------------------------------------*/
+void Transforms::vAppend_stream_ToAll_table(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransformation((char*)(__func__));
+  vExplain("Blah"_Stz);
+
+  BoardIter xBI(m_pBoard);
+
+  // E <scan>
+  while ((m_p_table = _pCard_Table(xBI.pEachMain(CK_TABLE)))) {
+
+    // ? <scan>/<tablePtr>
+    if (! (m_p_tablePtr = m_p_table->pSub_tablePtr()))
+      continue;
+    // ? <scan>/<tablePtr>:pStreamDef
+    if (! (m_pStreamDef = m_p_tablePtr->pStreamDef()))
+      continue;
+
+    // + <scan>/<stream>
+    m_p_table->vAppend((m_p_stream = new Card_Stream));
+    // + <scan>/<stream>/<streamColList>
+    m_p_stream->vAppend((m_p_streamColList = new Card_StreamColList(m_pStreamDef)));
+  }
+
+  vSetPrintSubCards(CK_STREAM, true);
+
+  vPrintBoard();
+
+  vSetPrintByKind(CK_STREAM, true);
+  vSetPrintProperties(CK_STREAM, false);
+  vSetPrintSubCards(CK_STREAM, false);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* calc ordinal ranges                                                        */
+/*----------------------------------------------------------------------------*/
+void Transforms::vCalc_ordinalRanges_OfAll_stream(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransformation((char*)(__func__));
+  vExplain("Blah"_Stz);
+
+  i8 iOrdLo = 1;
+  i8 iOrdHi = C_UNKNOWN;
+  i8 nStreamCols = C_UNKNOWN;
+
+  BoardIter xBI(m_pBoard);
+
+  while ((m_p_table = _pCard_Table(xBI.pEachMain(CK_TABLE)))) {
+
+    m_p_stream = _pSub_Stream(m_p_table);
+
+    // <scan>/<stream>:iOrdLo,iOrdHi
+    nStreamCols = m_p_stream->nStreamCols();
+    m_p_stream->vAddProperty_int(C_PPY_OrdLo,iOrdLo);
+    iOrdHi = iOrdLo + nStreamCols - 1;
+    m_p_stream->vAddProperty_int(C_PPY_OrdHi,iOrdHi);
+    iOrdLo = iOrdHi + 1;
+
+  }
 
   vPrintBoard();
 }
@@ -151,6 +261,109 @@ void Transforms::vChangeAll_scan_To_retrieve(void)
   vRemoveDeleteMains(CK_ABSJOIN);
   while ((m_pMainCard = xBI.pEachMain(CK_SCAN)))
     m_pMainCard->vCard(CK_RETRIEVE);
+
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert all <filter> from calc form to calcBool                            */
+/*----------------------------------------------------------------------------*/
+void Transforms::vConvert_calc_OfAll_filter_To_calcBool(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransformation((char*)(__func__));
+  vExplain("Blah"_Stz);
+
+  BoardIter xBI(m_pBoard);
+
+  while ((m_p_filter = _pCard_Filter(xBI.pEachMain(CK_FILTER))))
+    m_p_filter->vCalc_to_calcBool();
+
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete combines                                                            */
+/*----------------------------------------------------------------------------*/
+void Transforms::vDeleteAll_combined(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransformation((char*)(__func__),false);
+  vExplain("Blah"_Stz);
+
+  vRemoveDeleteMains(CK_COMBINED);
+
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/* linearize stages                                                           */
+/*----------------------------------------------------------------------------*/
+void Transforms::vLinearizeAll_stage(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransformation((char*)(__func__),false);
+  vExplain("Linearize all the stages"_Stz);
+
+  BoardIter xBI(m_pBoard);
+
+  if (! (m_p_stage_a = _pCard_Stage(xBI.pEachMain(CK_STAGE))))
+    goto L_Exit;
+  if (! (m_p_stageTopo_a = m_p_stage_a->pSub_stageTopo()) )
+    goto L_Exit;
+  if (YG_ALL_PARTITIONS != m_p_stageTopo_a->eStageTopo())
+    goto L_Exit;
+
+  while ((m_p_stage_b = _pCard_Stage(xBI.pEachMain(CK_STAGE)))) {
+    if (! (m_p_stageTopo_b = m_p_stage_b->pSub_stageTopo()) )
+      break;
+    if (YG_ALL_PARTITIONS != m_p_stageTopo_b->eStageTopo())
+      break;
+    xBI.vRemoveDeleteCurr(CK_STAGE);
+  }
+
+  L_Exit:
+
+  xBI.vRestart();
+  while ((m_p_stage = _pCard_Stage(xBI.pEachMain(CK_STAGE)))) {
+    if (! (m_p_stageTopo = m_p_stage->pSub_stageTopo()) )
+      continue;
+    if (YG_ALL_PARTITIONS == m_p_stageTopo->eStageTopo())
+      continue;
+
+    m_p_stage->vAddProperty_nameOnly(C_PPY_Exclude);
+  }
+
+
+  m_pBoard->vRenumberMainCards();
+
+  vSetPrintSubCards(CK_AGGELIST, false);
+  vSetPrintSubCards(CK_GBYELIST, false);
+  vSetPrintSubCards(CK_PROJELIST, false);
+
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove all scans                                                            */
+/*----------------------------------------------------------------------------*/
+void Transforms::vRemoveAll_scan(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransformation((char*)(__func__),true);
+  vExplain("Blah"_Stz);
+
+  Card_Board* p_board = m_pBoard->pCard_Board();
+
+  BoardIter xBI(m_pBoard);
+  while ((m_pMainCard = xBI.pEachMain(CK_SCAN))) {
+    //m_p_table = _pSub_Table(m_pMainCard);
+    p_board->vReplaceChildWithItsSubs(m_pMainCard);
+  }
 
   vPrintBoard();
 }
@@ -182,6 +395,14 @@ void Transforms::vSetup_costEst(void)
   if (m_bInteractive)
     m_pBoard_costEst->vPrintBoard();
 }
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -345,24 +566,6 @@ void Transforms::vAssign_predCmp_leftwards(void)
     vAssignFilterLeftwards(m_p_filter);
 
   //vSetPrintSubCards(CK_CMPPRED, true);
-  vPrintBoard();
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert all <filter> from calc form to calcBool                            */
-/*----------------------------------------------------------------------------*/
-void Transforms::vConvert_calc_To_calcBool(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransformation((char*)(__func__));
-  vExplain("Blah"_Stz);
-
-  BoardIter xBI(m_pBoard);
-
-  while ((m_p_filter = _pCard_Filter(xBI.pEachMain(CK_FILTER))))
-    m_p_filter->vCalc_to_calcBool();
-
   vPrintBoard();
 }
 
@@ -1501,186 +1704,6 @@ void Transforms::vAdd_stages(void)
   vPrintBoard();
 }
 
-/*----------------------------------------------------------------------------*/
-/* linearize stages                                                           */
-/*----------------------------------------------------------------------------*/
-void Transforms::vLinearize_stages(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransformation((char*)(__func__),false);
-  vExplain("Linearize all the stages"_Stz);
-
-  BoardIter xBI(m_pBoard);
-
-  if (! (m_p_stage_a = _pCard_Stage(xBI.pEachMain(CK_STAGE))))
-    goto L_Exit;
-  if (! (m_p_stageTopo_a = m_p_stage_a->pSub_stageTopo()) )
-    goto L_Exit;
-  if (YG_ALL_PARTITIONS != m_p_stageTopo_a->eStageTopo())
-    goto L_Exit;
-
-  while ((m_p_stage_b = _pCard_Stage(xBI.pEachMain(CK_STAGE)))) {
-    if (! (m_p_stageTopo_b = m_p_stage_b->pSub_stageTopo()) )
-      break;
-    if (YG_ALL_PARTITIONS != m_p_stageTopo_b->eStageTopo())
-      break;
-    xBI.vRemoveDeleteCurr(CK_STAGE);
-  }
-
-  L_Exit:
-
-  xBI.vRestart();
-  while ((m_p_stage = _pCard_Stage(xBI.pEachMain(CK_STAGE)))) {
-    if (! (m_p_stageTopo = m_p_stage->pSub_stageTopo()) )
-      continue;
-    if (YG_ALL_PARTITIONS == m_p_stageTopo->eStageTopo())
-      continue;
-
-    m_p_stage->vAddProperty_nameOnly(C_PPY_Exclude);
-  }
-
-
-  m_pBoard->vRenumberMainCards();
-
-  vSetPrintSubCards(CK_AGGELIST, false);
-  vSetPrintSubCards(CK_GBYELIST, false);
-  vSetPrintSubCards(CK_PROJELIST, false);
-
-  vPrintBoard();
-}
-
-/*----------------------------------------------------------------------------*/
-/* calc ordinal ranges                                                        */
-/*----------------------------------------------------------------------------*/
-void Transforms::vCalc_OrdinalRangesOf_stream(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransformation((char*)(__func__));
-  vExplain("Blah"_Stz);
-
-  i8 iOrdLo = 1;
-  i8 iOrdHi = C_UNKNOWN;
-  i8 nStreamCols = C_UNKNOWN;
-
-  BoardIter xBI(m_pBoard);
-
-  while ((m_pMainCard = xBI.pEachMain())) {
-    if (CK_SCAN != m_pMainCard->eCard())
-      continue;
-
-    m_p_stream = _pSub_Stream(m_pMainCard);
-
-    // <scan>/<stream>:iOrdLo,iOrdHi
-    nStreamCols = m_p_stream->nStreamCols();
-    m_p_stream->vAddProperty_int(C_PPY_OrdLo,iOrdLo);
-    iOrdHi = iOrdLo + nStreamCols - 1;
-    m_p_stream->vAddProperty_int(C_PPY_OrdHi,iOrdHi);
-    iOrdLo = iOrdHi + 1;
-
-  }
-
-  vPrintBoard();
-}
-
-/*----------------------------------------------------------------------------*/
-/* append <stream> to all <scan>                                              */
-/*----------------------------------------------------------------------------*/
-void Transforms::vAppend_stream_To_scan(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransformation((char*)(__func__));
-  vExplain("Blah"_Stz);
-
-  BoardIter xBI(m_pBoard);
-
-  // E <scan>
-  while ((m_p_scan = _pCard_Scan(xBI.pEachMain(CK_SCAN)))) {
-
-    // ? <scan>/<tablePtr>
-    if (! (m_p_tablePtr = m_p_scan->pSub_tablePtr()))
-      continue;
-    // ? <scan>/<tablePtr>:pStreamDef
-    if (! (m_pStreamDef = m_p_tablePtr->pStreamDef()))
-      continue;
-
-    // + <scan>/<stream>
-    m_p_scan->vAppend((m_p_stream = new Card_Stream));
-    // + <scan>/<stream>/<streamColList>
-    m_p_stream->vAppend((m_p_streamColList = new Card_StreamColList(m_pStreamDef)));
-  }
-
-  vSetPrintSubCards(CK_STREAM, true);
-
-  vPrintBoard();
-
-  vSetPrintByKind(CK_STREAM, true);
-  vSetPrintProperties(CK_STREAM, false);
-  vSetPrintSubCards(CK_STREAM, false);
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* add table partitions <tablePtn> to all <table>                             */
-/*----------------------------------------------------------------------------*/
-void Transforms::vAdd_tablePtn_To_table(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransformation((char*)(__func__));
-  vExplain("Blah"_Stz);
-
-  char cTableSyn = 'a';
-
-  m_pBoard = m_pBench->pGetBoard(BK_QUERY);
-
-  BoardIter xBI(m_pBoard);
-
-  while ( (m_pMainCard = xBI.pEachMain()) ) {
-    if (! (m_p_table = _pSub_Table(m_pMainCard)) )
-      continue;
-
-    m_p_tablePtn = new Card_TablePtn(m_p_table);
-    m_p_table->vAppend(m_p_tablePtn);
-  }
-
-  vPrintBoard();
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* add table synonyms <tableSyn> to all <table>                               */
-/*----------------------------------------------------------------------------*/
-void Transforms::vAdd_tableSyn_To_table(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransformation((char*)(__func__));
-  vExplain("Blah"_Stz);
-
-  char cTableSyn = 'a';
-
-  BoardIter xBI(m_pBoard);
-
-  while ( (m_pMainCard = xBI.pEachMain()) ) {
-    if (! (m_p_table = _pSub_Table(m_pMainCard)) )
-      continue;
-
-    m_p_tablePtr = _pSub_TablePtr(m_p_table);
-    m_pTable = m_p_tablePtr->pTable();
-
-    char cTableSyn_actual = cTableSyn;
-    if (m_pTable->bIsReplicated())
-      cTableSyn_actual += 'A'-'a';
-    m_p_table->vAddProperty_chr(C_PPY_TableSyn,cTableSyn_actual);
-
-    cTableSyn++;
-  }
-
-  vPrintBoard();
-}
 
 
 

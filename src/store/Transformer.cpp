@@ -99,7 +99,7 @@ void Transformer::vTransform3(void)
   // QUERY BOARD -- preliminaries
 
   // combine {{==<stage>}}->{<stage>}
-  m_pTransforms->vLinearize_stages();
+  m_pTransforms->vLinearizeAll_stage();
 
   // delete *<absJoin>
   m_pTransforms->vDeleteAll_absJoin();
@@ -110,20 +110,23 @@ void Transformer::vTransform3(void)
   // delete *<send>
   m_pTransforms->vDeleteAll_send();
 
+  // remove *<scan>
+  m_pTransforms->vRemoveAll_scan();
+
   // add <tableSyn> to all <table>
-  m_pTransforms->vAdd_tableSyn_To_table();
+  m_pTransforms->vAdd_tableSyn_ToAll_table();
 
   // add <tablePtn> to all <table>
-  m_pTransforms->vAdd_tablePtn_To_table();
+  m_pTransforms->vAdd_tablePtn_ToAll_table();
 
   // append <stream> & <streamColList> to all <scan>
-  m_pTransforms->vAppend_stream_To_scan();
+  m_pTransforms->vAppend_stream_ToAll_table();
 
   // calculate /<stream>:iOrdLo,iOrdHi properties
-  m_pTransforms->vCalc_OrdinalRangesOf_stream();
+  m_pTransforms->vCalc_ordinalRanges_OfAll_stream();
 
   // convert all <filter>/<calc> to <filter>/<calcBool>
-  m_pTransforms->vConvert_calc_To_calcBool();
+  m_pTransforms->vConvert_calc_OfAll_filter_To_calcBool();
 
   // each <scan> <absJoin> becomes <absJoin>/<scan>
   //m_pTransforms->vSubsume_scan_Under_absJoin();

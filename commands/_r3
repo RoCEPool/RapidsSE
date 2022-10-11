@@ -24,7 +24,7 @@ load customer "../tpch/sf_0001/customer.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/cue = "vConvert_calc_To_calcBool"
+/cue = "vRemoveAll_scan"
 /transliterated
 /transform
 /transform3
