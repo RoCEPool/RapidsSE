@@ -1806,14 +1806,6 @@ i8 Transforms::iAssignPredLeft(Card_PRED* pCard_PRED, Card_Filter* pCard_filter)
 
     eCK eMainCard = pMainCard->eCard();
 
-    if (CK_ABSJOIN == eMainCard) {
-      nAbsJoin++;
-      iWhichScan = iAssignPredToAbsJoin(_pCard_AbsJoin(pMainCard), pCard_PRED);
-      if (C_UNKNOWN != iWhichScan)
-        return iWhichScan;
-      continue;
-    }
-
     if (CK_SCAN == eMainCard) {
       nScan++;
       iWhichScan = iAssignPredToScan(_pCard_Scan(pMainCard), pCard_PRED);
@@ -1830,22 +1822,40 @@ i8 Transforms::iAssignPredLeft(Card_PRED* pCard_PRED, Card_Filter* pCard_filter)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* inspect <PRED>                                                             */
 /*----------------------------------------------------------------------------*/
-i8 Transforms::iAssignPredToAbsJoin(Card_AbsJoin* pCard_absJoin, Card_PRED* pCard_PRED)
+char Transforms::cAssignPredLeft(Card_PRED* pCard_PRED, Card_Filter* pCard_filter)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  Card_Stream *pCard_stream = _pSub_Stream(pCard_absJoin);
-  //pCard_stream->vMark1('#');
+  i8 nAbsJoin = 0;
+  i8 nScan    = 0;
+  char cWhichScan = ' ';
 
-  // are all $n of <pred> in this <stream>?
-  if (pCard_stream->bContainsPred(pCard_PRED)) {
-    //pCard_stream->vMark1('@');
-    return pCard_stream->iStream();
+  //vTrace("iAssignPredLeft candidate %p\n"_Stz,pCard_PRED);
+  //pCard_PRED->vDump();
+
+  for (i8 i_Main = 0; /* none */ ; i_Main++) {
+    Card *pMainCard = m_pBoard->pGetMain(i_Main);
+
+    if (pMainCard == pCard_filter)
+      return C_UNKNOWN;
+
+    eCK eMainCard = pMainCard->eCard();
+
+    if (CK_SCAN == eMainCard) {
+      nScan++;
+      cWhichScan = cAssignPredToTable(_pCard_Scan(pMainCard), pCard_PRED);
+      if (' ' != cWhichScan)
+        return cWhichScan;
+      continue;
+    }
+
+    // skip over any other card??
+    vTrace("bMovePredLeft skipping mainCard %s\n"_Stz,aCK[eMainCard]);
   }
 
-  return C_UNKNOWN;
+  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1864,6 +1874,25 @@ i8 Transforms::iAssignPredToScan(Card_Scan* pCard_scan, Card_PRED* pCard_PRED)
     return pCard_stream->iStream();
   }
   return C_UNKNOWN;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+char Transforms::cAssignPredToTable(Card_Scan* pCard_scan, Card_PRED* pCard_PRED)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  Card_Stream* pCard_stream = _pSub_Stream(pCard_scan);
+
+  // are all $n of <pred> in this <stream>?
+  if (pCard_stream->bContainsPred(pCard_PRED)) {
+    Card_Table* p_table = _pSub_Table(pCard_scan);
+    char cTableSyn = p_table->cGetProperty(C_PPY_TableSyn);
+    return cTableSyn;
+  }
+
+  return ' ';
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1989,25 +2018,6 @@ void Transforms::vMarkPredCardsAsMoved(Card* pPredCard)
     vMarkPredCardsAsMoved(pSubCard);
   }
 }
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Transforms::vPredMovesToAbsJoin(Card* pPredCard, Card_AbsJoin* pCard_absJoin)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Transforms::vPredMovesToScan(Card* pPredCard, Card_Scan* pCard_scan)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-}
-
 
 /*----------------------------------------------------------------------------*/
 /* convert a calculation into a boolean calculaiton                           */

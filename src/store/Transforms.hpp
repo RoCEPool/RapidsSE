@@ -75,16 +75,14 @@ namespace STORE
     void vAssignPredDrillDown(Card_PRED*, Card_Filter* pCard_filter);
 
     i8   iAssignPredLeft(Card_PRED* pCard_PRED, Card_Filter* pCard_filter);
-    i8   iAssignPredToAbsJoin(Card_AbsJoin* pCard_absJoin, Card_PRED* pCard_PRED);
+    char cAssignPredLeft(Card_PRED* pCard_PRED, Card_Filter* pCard_filter);
     i8   iAssignPredToScan(Card_Scan* pCard_scan, Card_PRED* pCard_PRED);
+    char cAssignPredToTable(Card_Scan* pCard_scan, Card_PRED* pCard_PRED);
 
     void vCopyFilterLeftwards(Card_Filter* pCard_filter);
     bool bCopyPredDrillDown(Card_PRED*, Card_Filter* pCard_filter);
     void vCopyPredToExistingFilter(Card_Filter* pCard_filter_existing, Card_PRED* pCard_pred);
     void vCopyPredToNewFilter(Card_Filter* pCard_filter_new, Card_PRED* pCard_pred);
-
-    void vPredMovesToAbsJoin(Card* pPredCard, Card_AbsJoin* pCard_absJoin);
-    void vPredMovesToScan(Card* pPredCard, Card_Scan* pCard_scan);
 
     void vMarkPredCardsAsMoved(Card* pPredCard);
 
