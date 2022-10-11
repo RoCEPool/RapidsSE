@@ -156,7 +156,7 @@ void Board::vDuplicateBoard(Board* pBoard_arg)
   _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
 
   for (i8 i_Main_arg = 0; i_Main_arg < pBoard_arg->m_pCard_Board->nItems(); i_Main_arg++)
-    vAppendMain(pBoard_arg->pGetMain(i_Main_arg)->pDupCardAndSubCards());
+    vAppendMain( m_pCard_Board->pGetChild(i_Main_arg)->pDupCardAndSubCards());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -168,7 +168,7 @@ i8 Board::iFindMain(Card* pMainCard)
 
   i8 nMainCards = m_pCard_Board->nItems();
   for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
-    Card* pTestCard = pGetMain(i_Main);
+    Card* pTestCard = m_pCard_Board->pGetChild(i_Main);
 
     if (pTestCard == pMainCard)
       return i_Main;
@@ -200,7 +200,7 @@ Card_Table* Board::pFindTableCard(char cTableSyn, Card*& rpMainCard)
 
   i8 nMains = m_pCard_Board->nChildCards();
   for (i8 i_Main = 0; i_Main < nMains; i_Main++) {
-    rpMainCard = pGetMain(i_Main);
+    rpMainCard =  m_pCard_Board->pGetChild(i_Main);
     eCK eMainCard = rpMainCard->eCard();
 
     if (CK_TABLE == eMainCard)
@@ -216,17 +216,6 @@ Card_Table* Board::pFindTableCard(char cTableSyn, Card*& rpMainCard)
   }
 
   return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card* Board::pGetMain(i8 i_Main)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  Card* pMainCard = m_pCard_Board->pGet(i_Main);
-  return pMainCard;
 }
 
 /*----------------------------------------------------------------------------*/

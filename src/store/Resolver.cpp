@@ -137,7 +137,7 @@ void Resolver::vLocateStreams(Card* pMainCard)
   bool bSaw_AbsJoin = false;
 
   for (i8 i_Test = pMainCard->iCardNo(); i_Test >= 0; i_Test--) {
-    Card *pTestCard = m_pBoard->pGetMain(i_Test);
+    Card *pTestCard = m_pBoard->pCard_Board()->pGetChild(i_Test);
 
     if (CK_ABSJOIN == pTestCard->eCard()) {
       bSaw_AbsJoin = true;

@@ -1572,7 +1572,7 @@ void Transforms::vRemove_invalidPermutations(void)
   i8 i_Main = 0;
   i8 i_Permutation = 0;
   while (i_Main < _board_->nChildCards()) {
-    m_pMainCard = m_pBoard_permute->pGetMain(i_Main);
+    m_pMainCard = _board_->pGetChild(i_Main);
 
     if (CK_PERMUTATION != m_pMainCard->eCard()) {
       i_Main++;
@@ -1587,7 +1587,7 @@ void Transforms::vRemove_invalidPermutations(void)
 
     m_pBoard_permute->vRemoveMainCard(m_pMainCard);
     while (i_Main < _board_->nChildCards()) {
-      m_pMainCard = m_pBoard_permute->pGetMain(i_Main);
+      m_pMainCard = _board_->pGetChild(i_Main);
       if (CK_PTNDJOIN != m_pMainCard->eCard() && CK_COMMENT != m_pMainCard->eCard())
         break;
       m_pBoard_permute->vRemoveMainCard(m_pMainCard);
@@ -1613,7 +1613,7 @@ void Transforms::vSetup_costEst(void)
 
   m_pBoard_costEst->vDuplicateBoard(m_pBoard_permute);
 
-  while ((m_pMainCard = m_pBoard_costEst->pGetMain(0))) {
+  while ((m_pMainCard = _board_->pGetChild(0))) {
 
     if (CK_PERMUTATION == m_pMainCard->eCard())
       break;
@@ -1751,7 +1751,7 @@ char Transforms::cAssignPredLeft(Card_PRED* pCard_PRED, Card_Filter* pCard_filte
   //pCard_PRED->vDump();
 
   for (i8 i_Main = 0; /* none */ ; i_Main++) {
-    Card *pMainCard = m_pBoard->pGetMain(i_Main);
+    Card *pMainCard = _board_->pGetChild(i_Main);
 
     if (pMainCard == pCard_filter)
       return C_UNKNOWN;
