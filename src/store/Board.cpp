@@ -70,19 +70,6 @@ Board::~Board(void) noexcept(false)
 
 
 /*----------------------------------------------------------------------------*/
-/* append new main card at end                                                */
-/*----------------------------------------------------------------------------*/
-void Board::vAppendMain(Card* pNewMainCard, bool bRenumber)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  m_pCard_Board->vAppend(pNewMainCard);
-
-  if (bRenumber)
-    m_pCard_Board->vRenumberRecursive();
-}
-
-/*----------------------------------------------------------------------------*/
 /* get board kind                                                             */
 /*----------------------------------------------------------------------------*/
 eBK Board::eBoard(void)
@@ -120,7 +107,7 @@ void Board::vDuplicateBoard(Board* pBoard_arg)
   _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
 
   for (i8 i_Main_arg = 0; i_Main_arg < pBoard_arg->m_pCard_Board->nItems(); i_Main_arg++)
-    vAppendMain( m_pCard_Board->pGetChild(i_Main_arg)->pDupCardAndSubCards());
+    m_pCard_Board->vAppendMain(pBoard_arg->m_pCard_Board->pGetChild(i_Main_arg)->pDupCardAndSubCards());
 }
 
 /*----------------------------------------------------------------------------*/

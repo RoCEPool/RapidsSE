@@ -162,6 +162,7 @@ namespace STORE
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
     void vAppendDupSubCards(Card* pFromCard);
+    void vAppendMain(Card* pNewMainCard, bool bRenumber= true);
 
     void vBearing(void);
     void vBearing(Card* pParentCard);

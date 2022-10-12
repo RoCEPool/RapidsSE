@@ -233,6 +233,19 @@ void Card::vAppendDupSubCards(Card* pFromCard)
 }
 
 /*----------------------------------------------------------------------------*/
+/* append new main card at end                                                */
+/*----------------------------------------------------------------------------*/
+void Card::vAppendMain(Card* pNewMainCard, bool bRenumber)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  vAppend(pNewMainCard);
+
+  if (bRenumber)
+    vRenumberRecursive();
+}
+
+/*----------------------------------------------------------------------------*/
 /* set bearing                                                                */
 /*----------------------------------------------------------------------------*/
 void Card::vBearing(void)

@@ -141,8 +141,6 @@ namespace STORE
     Board(eBK eBoard, eBT eBoardType, Bench* pBench);
    ~Board(void) noexcept(false);
 
-    void vAppendMain(Card* pNewMainCard, bool bRenumber= true);
-
     eBK eBoard(void);
     CardCtl* pCardCtl(void);
     Card_Board* pCard_Board(void);

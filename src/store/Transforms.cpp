@@ -467,7 +467,7 @@ void Transforms::vCompute_coPtnJoinList(void)
   // coPtnJoinList
 
   m_p_coPtnJoinList = new Card_CoPtnJoinList;
-  m_pBoard_partition->vAppendMain(m_p_coPtnJoinList);
+  _board_->vAppendMain(m_p_coPtnJoinList);
 
   m_p_coPtnPredList =
       _pCard_CoPtnPredList(_board_->pFindChild(CK_COPTNPREDLIST));
@@ -508,7 +508,7 @@ void Transforms::vCompute_coPtnPredList(void)
   // coPptnPredList
 
   m_p_coPtnPredList = new Card_CoPtnPredList;
-  m_pBoard_partition->vAppendMain(m_p_coPtnPredList);
+  _board_->vAppendMain(m_p_coPtnPredList);
 
   m_p_tableList =
       _pCard_TableList(_board_->pFindChild(CK_TABLELIST));
@@ -558,7 +558,7 @@ void Transforms::vCompute_crossPtnJoinList(void)
       _pCard_JoinPredList(_board_->pFindChild(CK_JOINPREDLIST));
 
   m_p_crossPtnJoinList = new Card_CrossPtnJoinList;
-  m_pBoard_partition->vAppendMain(m_p_crossPtnJoinList);
+  _board_->vAppendMain(m_p_crossPtnJoinList);
 
   i8 nChildren = m_p_joinPredList->nChildCards();
   for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
@@ -595,7 +595,7 @@ void Transforms::vCompute_ptndJoinSet(void)
   // ptndJoinSet
 
   m_p_ptndJoinSet = new Card_PtndJoinSet;
-  m_pBoard_partition->vAppendMain(m_p_ptndJoinSet);
+  _board_->vAppendMain(m_p_ptndJoinSet);
 
   m_p_coPtnJoinList =
       _pCard_CoPtnJoinList(_board_->pFindChild(CK_COPTNJOINLIST));
@@ -683,12 +683,12 @@ void Transforms::vCopy_ptndJoinSet(void)
   m_p_ptndJoinSet =
       _pCard_PtndJoinSet(_board_->pFindChild(CK_PTNDJOINSET));
 
-  m_pBoard_permute->vAppendMain(new Card_Comment("PERMUTATIONS"_Stz));
+  _board_->vAppendMain(new Card_Comment("PERMUTATIONS"_Stz));
 
   i8 i_PtdnJoin = 0;
   m_p_subSet = m_p_ptndJoinSet->pDupSubCards();
   while ((m_pPoppedCard = m_p_subSet->pPop())) {
-    m_pBoard_permute->vAppendMain(m_pPoppedCard);
+    _board_->vAppendMain(m_pPoppedCard);
   }
   DELETE_CARD(m_p_subSet);
 
@@ -947,7 +947,7 @@ void Transforms::vEstimate_joinOrder(void)
     iLowestNetwork = iNetwork;
   }
 
-  m_pBoard_costEst->vAppendMain((m_p_joinOrderSeq = new Card_JoinOrderSeq));
+  _board_->vAppendMain((m_p_joinOrderSeq = new Card_JoinOrderSeq));
   m_p_joinOrderSeq->vPpy_int(PPY_Network,iLowestNetwork);
 
   xBI.vSet(m_p_permutation_low);
@@ -1052,7 +1052,7 @@ void Transforms::vExtract_joinOrderSeq(void)
   vTransformation(BK_QUERY,(char*)(__func__));
   vExplain("Blah"_Stz);
 
-  m_pBoard_costEst->vAppendMain((m_p_joinOrderSeq = new Card_JoinOrderSeq));
+  _board_->vAppendMain((m_p_joinOrderSeq = new Card_JoinOrderSeq));
 
   BoardIter xBI(m_pBoard_costEst);
 
@@ -1085,7 +1085,7 @@ void Transforms::vExtract_joinPredList(void)
   // joinPredList
 
   m_p_joinPredList = new Card_JoinPredList;
-  m_pBoard_partition->vAppendMain(m_p_joinPredList);
+  _board_->vAppendMain(m_p_joinPredList);
 
   BoardIter xBI_query(m_pBoard_query);
   while ((m_pMainCard = xBI_query.pEachMain(CK_FILTER))) {
@@ -1120,7 +1120,7 @@ void Transforms::vExtract_tableList_From_queryBoard(void)
   BoardIter xBI_query(m_pBoard_query);
 
   m_p_tableList = new Card_TableList;
-  m_pBoard_partition->vAppendMain(m_p_tableList);
+  _board_->vAppendMain(m_p_tableList);
 
   while ( (m_pMainCard = xBI_query.pEachMain()) ) {
     if (! (m_p_table = m_pMainCard->pSub_table()))
@@ -1222,18 +1222,18 @@ void Transforms::vGenerate_ptndPermutations(void)
   m_p_subSet = new Card_SubSet;
 
   while (m_pPermGen->bNextPermutation()) {
-    m_pBoard_permute->vAppendMain((m_p_permutation = new Card_Permutation));
+    _board_->vAppendMain((m_p_permutation = new Card_Permutation));
     m_p_permutation->vPpy_int(PPY_Permutation,m_pPermGen->nPermutations()-1);
 
     RASSERT(0 == m_p_subSet->nChildCards());
     for (i8 i_Item = 0; i_Item < m_pPermGen->nItems(); i_Item++) {
       i8 i_Child = m_pPermGen->iItem(i_Item);
       m_pChildCard = m_p_ptndJoinSet->pGetChild(i_Child);
-      m_pBoard_permute->vAppendMain(m_pChildCard->pDupCardAndSubCards());
+      _board_->vAppendMain(m_pChildCard->pDupCardAndSubCards());
 
       m_p_ptndJoin = _pCard_PtndJoin(m_pChildCard);
       if (! m_p_ptndJoin->bMayFollowAfter(m_p_subSet)) {
-        m_pBoard_permute->vAppendMain(new Card_Comment("**DOESN'T FOLLOW**"_Stz));
+        _board_->vAppendMain(new Card_Comment("**DOESN'T FOLLOW**"_Stz));
         m_p_permutation->vPpy_nameOnly(PPY_Invalid);
         break;
       }
