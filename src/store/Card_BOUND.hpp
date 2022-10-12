@@ -15,8 +15,6 @@ namespace STORE
     Card_BOUND(eCK eCard);
    ~Card_BOUND(void) noexcept(false);
   };
-
-  //Card_BOUND* _pCard_BOUND(void* aAddr);
 }
 
 /*============================================================================*/

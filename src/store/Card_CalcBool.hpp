@@ -25,7 +25,6 @@ namespace STORE
 
   Card_CalcBool* _pCard_CalcBool(void* aAddr);
   bool _bIsCard_CalcBool(void* aAddr);
-  Card_CalcBool* _pSub_CalcBool(Card* pParent);
 }
 
 /*============================================================================*/

@@ -40,8 +40,6 @@ namespace STORE
 
   Card_CmpPred* _pCard_CmpPred(void* aAddr);
   bool _bIsCard_CmpPred(void* aAddr);
-  Card_CmpPred* _pSub_CmpPred(Card* pParent);
-
 }
 
 /*============================================================================*/

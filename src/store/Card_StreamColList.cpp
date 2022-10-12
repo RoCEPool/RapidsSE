@@ -109,7 +109,7 @@ Card_StreamCol* Card_StreamColList::pFind_streamCol(Stz *szColNm, i8& i_StreamCo
     if (CK_STREAMCOL != pSubCard->eCard())
       continue;
 
-    Card_As* pCard_as = _pSub_As(pSubCard);
+    Card_As* pCard_as = pSubCard->pSub_as();
     if (pCard_as->sz()->bSame(szColNm)) {
       pCard_streamCol = _pCard_StreamCol(pSubCard);
       i_StreamColNo = i_Child;

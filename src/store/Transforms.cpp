@@ -712,7 +712,7 @@ void Transforms::vCullAll_filterPred_Of_indexJoin(void)
     if (! (m_p_filter = _pSub_Filter(m_p_table)))
       continue;
 
-    m_p_calcBool = _pSub_CalcBool(m_p_filter);
+    m_p_calcBool = m_p_filter->pSub_calcBool();
 
     m_p_calcBool->vCullPred('^');
   }
@@ -885,7 +885,7 @@ void Transforms::vDeleteAll_Empty_filter(void)
   BoardIter xBI(m_pBoard);
 
   while ((m_p_filter = _pCard_Filter(xBI.pEachMain(CK_FILTER)))) {
-    m_p_calcBool = _pSub_CalcBool(m_p_filter);
+    m_p_calcBool = m_p_filter->pSub_calcBool();
 
     if (0 == m_p_calcBool->nChildCards()) {
       xBI.vRemoveDeleteCurr(CK_FILTER);
@@ -1150,8 +1150,8 @@ void Transforms::vFormAll_joinPred_of_indexJoin(void)
       continue;
 
     m_p_expr     = _pCard_Expr(m_p_filter->pGetChild(0));
-    m_p_calcBool = _pSub_CalcBool(m_p_expr);
-    m_p_predCmp  = _pSub_CmpPred(m_p_calcBool);
+    m_p_calcBool = m_p_expr->pSub_calcBool();
+    m_p_predCmp  = m_p_calcBool->pSub_predCmp();
     m_p_term_0   = _pCard_Term(m_p_predCmp->pGetChild(0));
     m_p_term_1   = _pCard_Term(m_p_predCmp->pGetChild(1));
 
@@ -1675,7 +1675,7 @@ void Transforms::vAssignFilterLeftwards(Card_Filter* pCard_filter)
   //Card_CalcBool* pCard_bool =
   //    _pCard_CalcBool(pCard_filter->pFindSubCard(CK_CALCBOOL));
 
-  Card_CalcBool* pCard_bool = _pSub_CalcBool(pCard_filter);
+  Card_CalcBool* pCard_bool = pCard_filter->pSub_calcBool();
 
   Card_PRED* pCard_pred = static_cast<Card_PRED*>(pCard_bool->pGetChild(0));
 
@@ -1798,7 +1798,7 @@ void Transforms::vCopyFilterLeftwards(Card_Filter* pCard_filter)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  Card_CalcBool* pCard_bool = _pSub_CalcBool(pCard_filter);
+  Card_CalcBool* pCard_bool = pCard_filter->pSub_calcBool();
 
 
   while (pCard_bool->nChildCards()) {
@@ -1816,7 +1816,7 @@ bool Transforms::bCopyPredDrillDown(Card_PRED* pCard_pred, Card_Filter* pCard_fi
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  Card_CalcBool* pCard_calcBool = _pSub_CalcBool(pCard_filter);
+  Card_CalcBool* pCard_calcBool = pCard_filter->pSub_calcBool();
 
   if ('@' == pCard_pred->cMark1()) {
     Card* pMainCard;
@@ -1869,7 +1869,7 @@ void Transforms::vCopyPredToExistingFilter(Card_Filter* pCard_filter_existing, C
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  Card_CalcBool* pCard_calcBool = _pSub_CalcBool(pCard_filter_existing);
+  Card_CalcBool* pCard_calcBool = pCard_filter_existing->pSub_calcBool();
 
   Card* pCard_top = pCard_calcBool->pPop();
 
