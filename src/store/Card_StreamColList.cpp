@@ -21,7 +21,6 @@ __aNewFunction(Card_StreamColList,CN_CARD)
 __vDeleteFunction(Card_StreamColList,CN_CARD)
 
 __bIsCard(STORE,Card_StreamColList,CK_STREAMCOLLIST)
-__pSubFunction_Card(STORE,StreamColList,CK_STREAMCOLLIST)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -98,7 +97,7 @@ Card_StreamCol* Card_StreamColList::pFind_streamCol(Stz *szColNm, i8& i_StreamCo
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_StreamColList* pCard_StreamColList = _pSub_StreamColList(this);
+  Card_StreamColList* pCard_StreamColList = this->pSub_streamColList();
 
   Card_StreamCol* pCard_streamCol = nullptr;
 

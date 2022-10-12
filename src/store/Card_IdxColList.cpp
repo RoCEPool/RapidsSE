@@ -89,7 +89,7 @@ void Card_IdxColList::vOrdinate(Card_Stream* pCard_Stream)
 
   i8 iOrdLo = pCard_Stream->iPpy(PPY_OrdLo);
 
-  Card_StreamColList* pCard_StreamColList = _pSub_StreamColList(pCard_Stream);
+  Card_StreamColList* pCard_StreamColList = pCard_Stream->pSub_streamColList();
 
   i8 nSubCards = this->nChildCards();
   for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {

@@ -150,7 +150,7 @@ Card_Table* CardSet::pFindTableCard(char cTableSyn, Card*& rpMainCard)
     if (CK_TABLE == eMainCard)
       p_table = _pCard_Table(rpMainCard);
     else
-      p_table = _pSub_Table(rpMainCard);
+      p_table = rpMainCard->pSub_table();
 
     if (! p_table)
       continue;

@@ -25,7 +25,6 @@ namespace STORE
 
   Card_TableList* _pCard_TableList(void* aAddr);
   bool _bIsCard_TableList(void* aAddr);
-  Card_TableList* _pSub_TableList(Card* pParent);
 }
 
 /*============================================================================*/

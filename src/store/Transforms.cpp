@@ -657,7 +657,7 @@ void Transforms::vConvertAll_idxColNm_To_streamColOrd(void)
       continue;
 
     m_p_stream = m_p_table->pSub_stream();;
-    m_p_streamColList = _pSub_StreamColList(m_p_table);
+    m_p_streamColList = m_p_table->pSub_streamColList();
     m_p_idxColList = m_p_indexJoin->pSub_idxColList();
 
     m_p_idxColList->vOrdinate(m_p_stream);

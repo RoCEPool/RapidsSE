@@ -23,7 +23,6 @@ namespace STORE
 
   Card_Table* _pCard_Table(void* aAddr);
   bool _bIsCard_Table(void* aAddr);
-  Card_Table* _pSub_Table(Card * pParent);
 }
 
 /*============================================================================*/

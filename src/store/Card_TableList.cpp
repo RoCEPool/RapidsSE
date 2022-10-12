@@ -17,7 +17,6 @@ __aNewFunction(Card_TableList,CN_CARD)
 __vDeleteFunction(Card_TableList,CN_CARD)
 
 __bIsCard(STORE,Card_TableList,CK_TABLELIST)
-__pSubFunction_Card(STORE,TableList,CK_TABLELIST)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
