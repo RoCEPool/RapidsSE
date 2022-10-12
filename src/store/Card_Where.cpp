@@ -13,7 +13,6 @@ __aNewFunction(Card_Where,CN_CARD)
 __vDeleteFunction(Card_Where,CN_CARD)
 
 __bIsCard(STORE,Card_Where,CK_WHERE)
-__pSubFunction_Card(STORE,Where,CK_WHERE)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

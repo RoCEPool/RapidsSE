@@ -22,7 +22,6 @@ namespace STORE
 
   Card_Where* _pCard_Where(void* aAddr);
   bool _bIsCard_Where(void* aAddr);
-  Card_Where* _pSub_Where(Card* pParent);
 }
 
 /*============================================================================*/
