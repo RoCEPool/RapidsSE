@@ -14,7 +14,7 @@
   LogicUnit[].intStack@ jobMetrics::jobSet
 
   LogicUnit[].intStack@ intStack.items@ if
-    LogicUnit[].intStack@ intStack.items@ "JobMetrics being collected for %v jobs" .printf
+    //LogicUnit[].intStack@ intStack.items@ "JobMetrics being collected for %v jobs" .printf
   then
 
   begin
@@ -22,7 +22,7 @@
   while
 
     LogicUnit[].intStack@ intStack.pop to iJob
-    iJob "metricsDemon collecting job metrics for job %v" str.format .
+    //iJob "metricsDemon collecting job metrics for job %v" str.format .
     iJob jobMetrics.collect
 
   repeat
