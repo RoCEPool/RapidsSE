@@ -10,6 +10,7 @@
 namespace STORE
 {
   class Card;
+  class Card_Table;
 
   class CardSet : public ListExo2_t<Card>
   {
@@ -17,10 +18,13 @@ namespace STORE
     CardSet(void);
    ~CardSet(void) noexcept(false);
 
+    i8   nChildCards(void);
+
     i8    iFindChild(Card* pChild);
     Card* pFindChild(eCK eCard);
     Card* pFindChild(eCK eCard, i8& i_Child);
     Card* pFindSubCard(eCK eCard);
+    Card_Table* pFindTableCard(char cTableSyn, Card*& rpMainCard);
 
     Card* pGetChild(i8 i_Child);
     Card* pGetChild(i8 i_Child, eCK& reCard);

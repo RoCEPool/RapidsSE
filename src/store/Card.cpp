@@ -343,18 +343,6 @@ Stz* Card::szCardNm(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get number of child cards                                                  */
-/*----------------------------------------------------------------------------*/
-i8 Card::nChildCards(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  i8 nChildren = nItems();
-
-  return nChildren;
-}
-
-/*----------------------------------------------------------------------------*/
 /* copy properties from given card into this card                             */
 /*----------------------------------------------------------------------------*/
 void Card::vCopyProperties(Card* pFrom)

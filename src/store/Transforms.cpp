@@ -77,14 +77,14 @@ void Transforms::vAdd_combined(void)
         RASSERT(m_p_aggreg == m_pMainCard);
         iAggreg++;
         m_p_combined = new Card_Combined;
-        m_pBoard->vInsertMainCard_after(m_p_combined, m_p_aggreg);
+        _board_->vInsertAfter(m_p_combined, m_p_aggreg);
         break;
 
       case CK_FILTER:
         RASSERT(m_p_filter == m_pMainCard);
         iFilter++;
         m_p_combined = new Card_Combined;
-        m_pBoard->vInsertMainCard_after(m_p_combined, m_p_filter);
+        _board_->vInsertAfter(m_p_combined, m_p_filter);
         break;
 
       case CK_INDEXJOIN:
@@ -93,21 +93,21 @@ void Transforms::vAdd_combined(void)
         if (CK_AGGREG == m_eNextMain || CK_FILTER == m_eNextMain || CK_PROJECT == m_eNextMain)
           break;
         m_p_combined = new Card_Combined;
-        m_pBoard->vInsertMainCard_after(m_p_combined, m_p_indexJoin);
+        _board_->vInsertAfter(m_p_combined, m_p_indexJoin);
         break;
 
       case CK_PROJECT:
         RASSERT(m_p_project == m_pMainCard);
         iProject++;
         m_p_combined = new Card_Combined;
-        m_pBoard->vInsertMainCard_after(m_p_combined, m_p_project);
+        _board_->vInsertAfter(m_p_combined, m_p_project);
         break;
 
       case CK_SORT:
         RASSERT(m_p_sort == m_pMainCard);
         iSort++;
         m_p_combined = new Card_Combined;
-        m_pBoard->vInsertMainCard_after(m_p_combined, m_p_sort);
+        _board_->vInsertAfter(m_p_combined, m_p_sort);
         break;
 
       default:
@@ -229,7 +229,7 @@ void Transforms::vAdd_stages(void)
           break;
 
         m_pChildCard = m_p_stage->pDupCardAndSubCards();
-        m_pBoard->vInsertMainCard_after(m_pChildCard, m_p_filter);
+        _board_->vInsertAfter(m_pChildCard, m_p_filter);
         xBI.vForward();
         break;
 
@@ -241,7 +241,7 @@ void Transforms::vAdd_stages(void)
           break;
 
         m_pDupCard = m_p_stage->pDupCardAndSubCards();
-        m_pBoard->vInsertMainCard_after(m_pDupCard, m_p_indexJoin);
+        _board_->vInsertAfter(m_pDupCard, m_p_indexJoin);
         xBI.vForward();
         break;
 
@@ -250,7 +250,7 @@ void Transforms::vAdd_stages(void)
         iProject++;
 
         m_pDupCard = m_p_stage->pDupCardAndSubCards();
-        m_pBoard->vInsertMainCard_after(m_pDupCard, m_p_project);
+        _board_->vInsertAfter(m_pDupCard, m_p_project);
         xBI.vForward();
         break;
 
@@ -265,7 +265,7 @@ void Transforms::vAdd_stages(void)
         iSort++;
 
         m_pDupCard = m_p_stage->pDupCardAndSubCards();
-        m_pBoard->vInsertMainCard_after(m_pDupCard, m_p_sort);
+        _board_->vInsertAfter(m_pDupCard, m_p_sort);
         xBI.vForward();
         break;
 
@@ -1270,7 +1270,7 @@ void Transforms::vIndividuate_filter(void)
       continue;
 
     pCard_scan->vRemoveChild(pCard_filter);
-    m_pBoard->vInsertMainCard_after(pCard_filter,pCard_scan);
+    _board_->vInsertAfter(pCard_filter,pCard_scan);
   }
 
   xBI.vRestart();
@@ -1285,7 +1285,7 @@ void Transforms::vIndividuate_filter(void)
       continue;
 
     pCard_indexJoin->vRemoveChild(pCard_filter);
-    m_pBoard->vInsertMainCard_after(pCard_filter,pCard_indexJoin);
+    _board_->vInsertAfter(pCard_filter,pCard_indexJoin);
   }
 }
 
@@ -1823,7 +1823,7 @@ bool Transforms::bCopyPredDrillDown(Card_PRED* pCard_pred, Card_Filter* pCard_fi
 //    i8 iStream = pCard_pred->iMark2();
 //    Card_Stream* pCard_stream = m_pBoard->pFindStreamCard(iStream,pMainCard);
     char cTableSyn = pCard_pred->cMark2();
-    Card_Table* pCard_table = m_pBoard->pFindTableCard(cTableSyn,pMainCard);
+    Card_Table* pCard_table = _board_->pFindTableCard(cTableSyn,pMainCard);
 
     Card_Filter* pCard_filter_existing =
         _pSub_Filter(pMainCard);

@@ -171,7 +171,6 @@ namespace STORE
     Stz* szCardNm(void);
     i8   iCardNo(void);
     void vCardNo(i8 iCardNo);
-    i8   nChildCards(void);
     void vClearMarksRecursive(void);
     void vCopyProperties(Card* pFrom);
 

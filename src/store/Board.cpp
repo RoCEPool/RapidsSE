@@ -124,49 +124,6 @@ void Board::vDuplicateBoard(Board* pBoard_arg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find table card by synonym                                                 */
-/*----------------------------------------------------------------------------*/
-Card_Table* Board::pFindTableCard(char cTableSyn, Card*& rpMainCard)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
-
-  Card_Table* p_table = nullptr;
-
-  i8 nMains = m_pCard_Board->nChildCards();
-  for (i8 i_Main = 0; i_Main < nMains; i_Main++) {
-    rpMainCard =  m_pCard_Board->pGetChild(i_Main);
-    eCK eMainCard = rpMainCard->eCard();
-
-    if (CK_TABLE == eMainCard)
-      p_table = _pCard_Table(rpMainCard);
-    else
-      p_table = _pSub_Table(rpMainCard);
-
-    if (! p_table)
-      continue;
-
-    if (cTableSyn == p_table->cPpy(PPY_TableSyn))
-      return p_table;
-  }
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* insert new main card after given card                                      */
-/*----------------------------------------------------------------------------*/
-void Board::vInsertMainCard_after(Card* pNewMainCard, Card* pAfterMainCard,
-                                  bool bRenumber)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  m_pCard_Board->vInsertAfter(pNewMainCard,pAfterMainCard);
-
-  if (bRenumber)
-    m_pCard_Board->vRenumberRecursive();
-}
-
-/*----------------------------------------------------------------------------*/
 /* pin board onto given ribbon                                                */
 /*----------------------------------------------------------------------------*/
 void Board::vPinCards(Ribbon* pRibbon, Stz* szTransformation, Stz* szExplain)

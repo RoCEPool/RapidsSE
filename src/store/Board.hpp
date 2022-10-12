@@ -149,10 +149,6 @@ namespace STORE
 
     void vDuplicateBoard(Board* pBoard_arg);
 
-    Card_Table* pFindTableCard(char cTableSyn, Card*& rpMainCard);
-
-    void vInsertMainCard_after(Card* pNewMainCard, Card* pAfterMainCard, bool bRenumber=true);
-
     void vPinCards(Ribbon* pRibbon, Stz* szTransformation=nullptr, Stz* szExplain=nullptr);
   
     void vPrintBoard(Stz* szCue=nullptr, Stz* szExplain=nullptr);
