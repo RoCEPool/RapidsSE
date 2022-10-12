@@ -294,7 +294,7 @@ void Transforms::vAdd_stages(void)
 /*----------------------------------------------------------------------------*/
 /* add table partitions <tablePtn> to all <table>                             */
 /*----------------------------------------------------------------------------*/
-void Transforms::vAdd_tablePtn_ToAll_table(void)
+void Transforms::vAppend_tablePtn_UnderAll_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -314,7 +314,7 @@ void Transforms::vAdd_tablePtn_ToAll_table(void)
 /*----------------------------------------------------------------------------*/
 /* add table synonyms <tableSyn> to all <table>                               */
 /*----------------------------------------------------------------------------*/
-void Transforms::vAdd_tableSyn_ToAll_table(void)
+void Transforms::vCalc_tableSyn_ForAll_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -365,7 +365,7 @@ void Transforms::vAppend_indexList_ToAll_table(void)
 /*----------------------------------------------------------------------------*/
 /* append <stream> to all <table>                                             */
 /*----------------------------------------------------------------------------*/
-void Transforms::vAppend_stream_ToAll_table(void)
+void Transforms::vAppend_stream_UnderAll_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -403,7 +403,7 @@ void Transforms::vAppend_stream_ToAll_table(void)
 /*----------------------------------------------------------------------------*/
 /* inspect all <filter> and attempt to move <predCmp> after <scan>/<absJoin>  */
 /*----------------------------------------------------------------------------*/
-void Transforms::vAssignAll_predCmp_To_table(void)
+void Transforms::vAssignAll_cmpPred_To_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -422,7 +422,7 @@ void Transforms::vAssignAll_predCmp_To_table(void)
 /*----------------------------------------------------------------------------*/
 /* calc ordinal ranges                                                        */
 /*----------------------------------------------------------------------------*/
-void Transforms::vCalc_ordinalRanges_OfAll_stream(void)
+void Transforms::vCalc_ordinalRanges_ForAll_stream(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -748,7 +748,7 @@ void Transforms::vCullAll_scan(void)
 //  vTransformation(BK_QUERY,(char*)(__func__),true);
 //  vExplain("Blah"_Stz);
 //
-//  Card_Deck* p_board = m_pBoard->pCard_Board();
+//  Card_Deck* p_board = m_pBoard->pCard_Deck();
 //
 //  BoardIter xBI(m_pBoard);
 //  while ((m_pMainCard = xBI.pEachMain(CK_SCAN))) {
@@ -1290,7 +1290,7 @@ void Transforms::vIndividuate_filter(void)
 /*----------------------------------------------------------------------------*/
 /* append preliminary <indexJoin>'s to all <absJoin>                          */
 /*----------------------------------------------------------------------------*/
-void Transforms::vInsert_indexJoin_IntoAll_table(void)
+void Transforms::vInsert_indexJoin_UnderAll_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1344,27 +1344,25 @@ void Transforms::vLinearizeAll_stage(void)
   vTransformation(BK_QUERY,(char*)(__func__),false);
   vExplain("Linearize all the stages"_Stz);
 
-  BoardIter xBI(m_pBoard);
-
-  if (! (m_p_stage_a = _pCard_Stage(xBI.pEachMain(CK_STAGE))))
+  if (! (m_p_stage = _pCard_Stage(m_pBI->pEachMain(CK_STAGE))))
     goto L_Exit;
-  if (! (m_p_stageTopo_a = m_p_stage_a->pSub_stageTopo()) )
+  if (! (m_p_stageTopo = m_p_stage->pSub_stageTopo()) )
     goto L_Exit;
-  if (YG_ALL_PARTITIONS != m_p_stageTopo_a->eStageTopo())
+  if (YG_ALL_PARTITIONS != m_p_stageTopo->eStageTopo())
     goto L_Exit;
 
-  while ((m_p_stage_b = _pCard_Stage(xBI.pEachMain(CK_STAGE)))) {
+  while ((m_p_stage_b = _pCard_Stage(m_pBI->pEachMain(CK_STAGE)))) {
     if (! (m_p_stageTopo_b = m_p_stage_b->pSub_stageTopo()) )
       break;
     if (YG_ALL_PARTITIONS != m_p_stageTopo_b->eStageTopo())
       break;
-    xBI.vRemoveDeleteCurr(CK_STAGE);
+    m_pBI->vRemoveDeleteCurr(CK_STAGE);
   }
 
   L_Exit:
 
-  xBI.vRestart();
-  while ((m_p_stage = _pCard_Stage(xBI.pEachMain(CK_STAGE)))) {
+  m_pBI->vRestart();
+  while ((m_p_stage = _pCard_Stage(m_pBI->pEachMain(CK_STAGE)))) {
     if (! (m_p_stageTopo = m_p_stage->pSub_stageTopo()) )
       continue;
     if (YG_ALL_PARTITIONS == m_p_stageTopo->eStageTopo())
@@ -1480,7 +1478,7 @@ void Transforms::vMark_scan_pred_ordinals(void)
 /*----------------------------------------------------------------------------*/
 /* inspect all <filter> and copy <predCmp> to new <scan|absJoin>/<filter>     */
 /*----------------------------------------------------------------------------*/
-void Transforms::vMoveAll_predCmp_To_table(void)
+void Transforms::vMoveAll_cmpPred_To_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1530,7 +1528,7 @@ void Transforms::vRefactorAll_table_Into_join(void)
   vTransformation(BK_QUERY,(char*)(__func__));
   vExplain("Blah"_Stz);
 
-  Card_Deck* p_board = m_pBoard->pCard_Board();
+  Card_Deck* p_board = m_pBoard->pCard_Deck();
 
   BoardIter xBI(m_pBoard);
 

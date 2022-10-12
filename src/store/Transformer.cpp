@@ -114,16 +114,16 @@ void Transformer::vTransform3(void)
   m_pTransforms->vCullAll_scan();
 
   // add <tableSyn> to all <table>
-  m_pTransforms->vAdd_tableSyn_ToAll_table();
+  m_pTransforms->vCalc_tableSyn_ForAll_table();
 
   // add <tablePtn> to all <table>
-  m_pTransforms->vAdd_tablePtn_ToAll_table();
+  m_pTransforms->vAppend_tablePtn_UnderAll_table();
 
   // append <stream> & <streamColList> to all <scan>
-  m_pTransforms->vAppend_stream_ToAll_table();
+  m_pTransforms->vAppend_stream_UnderAll_table();
 
   // calculate /<stream>:iOrdLo,iOrdHi properties
-  m_pTransforms->vCalc_ordinalRanges_OfAll_stream();
+  m_pTransforms->vCalc_ordinalRanges_ForAll_stream();
 
   // convert all <filter>/<calc> to <filter>/<calcBool>
   m_pTransforms->vConvert_calc_OfAll_filter_To_calcBool();
@@ -167,14 +167,14 @@ void Transformer::vTransform3(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // inspect all <filter> and attempt to move <predCmp> after <scan>/<absJoin>
-  m_pTransforms->vAssignAll_predCmp_To_table();
-  m_pTransforms->vMoveAll_predCmp_To_table();
+  m_pTransforms->vAssignAll_cmpPred_To_table();
+  m_pTransforms->vMoveAll_cmpPred_To_table();
 
   // delete any <filter> which is effectively empty
   m_pTransforms->vDeleteAll_Empty_filter();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  m_pTransforms->vInsert_indexJoin_IntoAll_table();
+  m_pTransforms->vInsert_indexJoin_UnderAll_table();
   m_pTransforms->vConvertAll_idxColNm_To_streamColOrd();
   m_pTransforms->vFormAll_joinPred_of_indexJoin();
 

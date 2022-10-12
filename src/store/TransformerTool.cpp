@@ -35,7 +35,7 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_eNextMain      = CK_NONE;
   m_eStageTopo     = YG_NONE;
 
-  m_pBoardIter     = new BoardIter(m_pBoard);
+  m_pBI = new BoardIter(m_pBoard);
 
   _deck_ = nullptr;
 
@@ -81,10 +81,8 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_p_scanPred         = nullptr;
   m_p_sort             = nullptr;
   m_p_stage            = nullptr;
-  m_p_stage_a          = nullptr;
   m_p_stage_b          = nullptr;
   m_p_stageTopo        = nullptr;
-  m_p_stageTopo_a      = nullptr;
   m_p_stageTopo_b      = nullptr;
   m_p_stream           = nullptr;
   m_p_streamColList    = nullptr;
@@ -112,7 +110,7 @@ TransformerTool::~TransformerTool(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  delete m_pBoardIter;
+  delete m_pBI;
   delete m_pPermGen;
 }
 
@@ -226,8 +224,8 @@ void TransformerTool::vTransformation(eBK eBoard,
 
   RASSERT(eBoard == m_pBoard->eBoard());
 
-  _deck_ = m_pBoard->pCard_Board();
-  m_pBoardIter->vRestart();
+  _deck_ = m_pBoard->pCard_Deck();
+  m_pBI->vRestart();
 
   m_sTranformation = azTranformation;
   m_bPrintTransformation = bPrintTransformation;
@@ -336,7 +334,7 @@ bool TransformerTool::I_bEach_mainCard_(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  m_pMainCard = m_pBoardIter->pEachMain();
+  m_pMainCard = m_pBI->pEachMain();
   if (! m_pMainCard)
     return false;
 
@@ -354,7 +352,7 @@ bool TransformerTool::I_bEach_mainCard_(eCK eCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  m_pMainCard = m_pBoardIter->pEachMain(eCard);
+  m_pMainCard = m_pBI->pEachMain(eCard);
   if (! m_pMainCard)
     return false;
 

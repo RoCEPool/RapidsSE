@@ -122,7 +122,7 @@ namespace STORE
   protected:
     eBK         m_eBoard;
     eBT         m_eBoardType;
-    Card_Deck*  m_pCard_Board;
+    Card_Deck*  m_pCard_Deck;
 
     Optimiser*  m_pOptimiser;
     Bench*      m_pBench;
@@ -142,7 +142,7 @@ namespace STORE
 
     eBK eBoard(void);
     CardCtl* pCardCtl(void);
-    Card_Deck* pCard_Board(void);
+    Card_Deck* pCard_Deck(void);
 
     void vDuplicateBoard(Board* pBoard_arg);
 

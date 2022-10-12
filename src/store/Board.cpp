@@ -38,7 +38,7 @@ Board::Board(eBK eBoard, eBT eBoardType, Bench* pBench)
 
   m_pOptimiser   = m_pBench->pOptimiser();
 
-  m_pCard_Board  = new Card_Deck;
+  m_pCard_Deck  = new Card_Deck;
 
   m_bBeenCued = false;
 
@@ -57,10 +57,10 @@ Board::~Board(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
   if (BT_VIEW == m_eBoardType) {
-    m_pCard_Board->vRemoveAll();
+    m_pCard_Deck->vRemoveAll();
   }
 
-  delete m_pCard_Board;
+  delete m_pCard_Deck;
 }
 
 
@@ -92,11 +92,11 @@ CardCtl* Board::pCardCtl(void)
 /*----------------------------------------------------------------------------*/
 /* get card subSet                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Deck* Board::pCard_Board(void)
+Card_Deck* Board::pCard_Deck(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-  return m_pCard_Board;
+  return m_pCard_Deck;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -106,8 +106,8 @@ void Board::vDuplicateBoard(Board* pBoard_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
 
-  for (i8 i_Main_arg = 0; i_Main_arg < pBoard_arg->m_pCard_Board->nItems(); i_Main_arg++)
-    m_pCard_Board->vAppendMain(pBoard_arg->m_pCard_Board->pGetChild(i_Main_arg)->pDupCardAndSubCards());
+  for (i8 i_Main_arg = 0; i_Main_arg < pBoard_arg->m_pCard_Deck->nItems(); i_Main_arg++)
+    m_pCard_Deck->vAppendMain(pBoard_arg->m_pCard_Deck->pGetChild(i_Main_arg)->pDupCardAndSubCards());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -119,7 +119,7 @@ void Board::vPinCards(Ribbon* pRibbon, Stz* szTransformation, Stz* szExplain)
 
   CardCtl* pCardCtl = m_pOptimiser->pCardCtl();
 
-  if (! m_pCard_Board->nItems())
+  if (! m_pCard_Deck->nItems())
     return;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -196,7 +196,7 @@ void Board::vPrintBoard(Stz* szCue, Stz* szExplain)
   bool bPrint = true;
   bool bExecuted = false;
 
-  m_pCard_Board->vRenumberRecursive();
+  m_pCard_Deck->vRenumberRecursive();
   
   if (! bPrint)
     return;
@@ -401,10 +401,10 @@ L_Exit:
 //  pCard_IndexPred->vAppend(new Card_Term("$L1"_Stz));
 //  pCard_IndexPred->vAppend(new Card_Term("=="_Stz));
 //
-//  m_pCard_Board->vInsertAfter(pIndexJoin,pCard_AbsJoin);
+//  m_pCard_Deck->vInsertAfter(pIndexJoin,pCard_AbsJoin);
 //
 //  Card_Combined* pCard_Combine = new Card_Combined;
-//  m_pCard_Board->vInsertAfter(pCard_Combine,pIndexJoin);
+//  m_pCard_Deck->vInsertAfter(pCard_Combine,pIndexJoin);
 //
 //
 //  // temp hack
@@ -449,10 +449,10 @@ L_Exit:
 //  Card_IndexPred* pCard_IndexPred = pTo_IndexPred(pCard_PredCmp,nullptr);
 //  pIndexJoin->vAppend(pCard_IndexPred);
 //
-//  m_pCard_Board->vInsertAfter(pIndexJoin,pCard_AbsJoin);
+//  m_pCard_Deck->vInsertAfter(pIndexJoin,pCard_AbsJoin);
 //
 //  Card_Combined* pCard_Combine = new Card_Combined;
-//  m_pCard_Board->vInsertAfter(pCard_Combine,pIndexJoin);
+//  m_pCard_Deck->vInsertAfter(pCard_Combine,pIndexJoin);
 //
 //  //delete pCard_PredCmp;
 //
@@ -491,7 +491,7 @@ L_Exit:
 //  pCard_IndexJoin->vInsertAfter(pCard_IndexPred, pCard_IndexPtr);
 //
 //  Card_Combined* pCard_Combine = new Card_Combined;
-//  m_pCard_Board->vInsertAfter(pCard_Combine,pCard_IndexJoin);
+//  m_pCard_Deck->vInsertAfter(pCard_Combine,pCard_IndexJoin);
 //}
 
 /*----------------------------------------------------------------------------*/
@@ -529,7 +529,7 @@ L_Exit:
 //{
 //  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
 //
-//  m_pCard_Board->vRemove(pCard_AbsJoin);
+//  m_pCard_Deck->vRemove(pCard_AbsJoin);
 //
 //  Card_Scan* pCard_Scan = _pCard_Scan(pGetMain(pCard_AbsJoin->iCardNo() - 1));
 //  Card_TablePtr* pCard_TablePtr = _pCard_TablePtr(pCard_Scan->pFindSubCard(CK_TABLEPTR));
@@ -543,9 +543,9 @@ L_Exit:
 //  Index* pIndex = pTable->pIdxVec()->pGet(0);
 //  pIndexJoin->vAppend(new Card_IndexPtr(pIndex));
 //
-//  m_pCard_Board->vInsertAfter(pIndexJoin,pCard_Scan);
+//  m_pCard_Deck->vInsertAfter(pIndexJoin,pCard_Scan);
 //
-//  m_pCard_Board->vRemove(pCard_Scan);
+//  m_pCard_Deck->vRemove(pCard_Scan);
 //  delete pCard_Scan;
 //}
 
@@ -568,7 +568,7 @@ L_Exit:
 //
 //  Card_Scan* pReg_Scan = _pCard_Scan(m_pCardRegs->pCardReg(CK_SCAN));
 //
-//  Table* pTable = this->m_pCard_Board->pTable();
+//  Table* pTable = this->m_pCard_Deck->pTable();
 //
 //  IdxVec* pIdxVec = pTable->pIdxVec();
 //  if (! pIdxVec) {
@@ -582,8 +582,8 @@ L_Exit:
 //    return false;
 //  }
 //
-//  i8 i_Filter = m_pCard_Board->i_Find(pReg_Scan) + 1;
-//  Card_Filter* pCard_Filter = _pCard_Filter(m_pCard_Board->pGet(i_Filter));
+//  i8 i_Filter = m_pCard_Deck->i_Find(pReg_Scan) + 1;
+//  Card_Filter* pCard_Filter = _pCard_Filter(m_pCard_Deck->pGet(i_Filter));
 //
 //  for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
 //    Index* pIndex = pIdxVec->pGet(i_Index);
@@ -593,7 +593,7 @@ L_Exit:
 //    Card_IndexPtr* pCard_Index = new Card_IndexPtr(pIndex);
 //    pCard_CandIndex->vAppend(pCard_Index);
 //
-//    m_pCard_Board->vInsertAfter(pCard_CandIndex,pCard_Filter);
+//    m_pCard_Deck->vInsertAfter(pCard_CandIndex,pCard_Filter);
 //  }
 //
 //  return true;
@@ -615,7 +615,7 @@ L_Exit:
 //  Card_CmpPred* pReg_lbound = m_pCardRegs->pPredCmp_lbound();
 //  Card_CmpPred* pReg_ubound = m_pCardRegs->pPredCmp_ubound();
 //
-//  Index* pIndex = this->m_pCard_Board->pIndex();
+//  Index* pIndex = this->m_pCard_Deck->pIndex();
 //  Card_IndexPtr* pCard_Index = new Card_IndexPtr(pIndex);
 //  pCard_IndexScan->vAppend(pCard_Index);
 //
@@ -690,7 +690,7 @@ L_Exit:
 //  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //
 //
-//  m_pCard_Board->vInsertBefore(pCard_IndexScan,pReg_Scan);
+//  m_pCard_Deck->vInsertBefore(pCard_IndexScan,pReg_Scan);
 //
 //  m_pCardRegs->vCardReg(CK_INDEXSCAN,pCard_IndexScan);
 //
@@ -708,7 +708,7 @@ L_Exit:
 //  if (! pReg_Filter->bCull())
 //    return;
 //
-//  m_pCard_Board->vRemove(pReg_Filter);
+//  m_pCard_Deck->vRemove(pReg_Filter);
 //
 //  delete pReg_Filter;
 //
@@ -723,7 +723,7 @@ L_Exit:
 //{
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 //
-//  m_pCard_Board->vRemoveSubCards(CK_CANDINDEX);
+//  m_pCard_Deck->vRemoveSubCards(CK_CANDINDEX);
 //}
 
 /*----------------------------------------------------------------------------*/
@@ -763,7 +763,7 @@ L_Exit:
 //  Card_Scan* pReg_Scan = _pCard_Scan(m_pCardRegs->pCardReg(CK_SCAN));
 //
 //
-//  m_pCard_Board->vRemove(pReg_Scan);
+//  m_pCard_Deck->vRemove(pReg_Scan);
 //
 //  m_pCardRegs->vCardReg(CK_SCAN,nullptr);
 //  delete pReg_Scan;
@@ -802,7 +802,7 @@ L_Exit:
 //      //vReg_Scan(_pCard_Scan(pTestScan));
 //      m_pCardRegs->vCardReg(CK_SCAN,pTestScan);
 //    Card_TablePtr* pCard_TablePtr = _pCard_TablePtr(pTestScan->pFindSubCard(CK_TABLEPTR));
-//    m_pCard_Board->vTable(pCard_TablePtr->pTable());
+//    m_pCard_Deck->vTable(pCard_TablePtr->pTable());
 //
 //    if (bMark)
 //      //vReg_Filter(_pCard_Filter(pTestFilter));
@@ -828,7 +828,7 @@ L_Exit:
 //
 //  i8 iRank = pCard_CandIndex->iRank();
 //
-//  Index* pIndex = this->m_pCard_Board->pIndex();
+//  Index* pIndex = this->m_pCard_Deck->pIndex();
 //
 //  switch (iRank) {
 //
@@ -962,7 +962,7 @@ L_Exit:
 //
 //  //vReg_CandIndex(pCard_CandIndex);
 //  m_pCardRegs->vCardReg(CK_CANDINDEX,pCard_CandIndex);
-//  m_pCard_Board->vIndex(pCard_CandIndex->pFindSubCard(CK_INDEXPTR)->pIndex());
+//  m_pCard_Deck->vIndex(pCard_CandIndex->pFindSubCard(CK_INDEXPTR)->pIndex());
 //
 //  return true;
 //}
@@ -1087,11 +1087,11 @@ L_Exit:
 //    if (CK_SEND != pSend_3->eCard())
 //      continue;
 //
-//    m_pCard_Board->vRemove(pSend_1);
-//    m_pCard_Board->vRemove(pStage_2);
-//    m_pCard_Board->vRemove(pSend_2);
-//    m_pCard_Board->vRemove(pStage_3);
-//    m_pCard_Board->vRemove(pCombine_3);
+//    m_pCard_Deck->vRemove(pSend_1);
+//    m_pCard_Deck->vRemove(pStage_2);
+//    m_pCard_Deck->vRemove(pSend_2);
+//    m_pCard_Deck->vRemove(pStage_3);
+//    m_pCard_Deck->vRemove(pCombine_3);
 //
 //    delete pSend_1;
 //    delete pStage_2;
@@ -1099,8 +1099,8 @@ L_Exit:
 //    delete pStage_3;
 //    delete pCombine_3;
 //
-//    //m_pCard_Board->vRemove(pFilter_3);
-//    //m_pCard_Board->vInsertAfter(pFilter_3,pScan_2);
+//    //m_pCard_Deck->vRemove(pFilter_3);
+//    //m_pCard_Deck->vInsertAfter(pFilter_3,pScan_2);
 //
 //    break;
 //  }
