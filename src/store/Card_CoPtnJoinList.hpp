@@ -26,7 +26,6 @@ namespace STORE
 
   Card_CoPtnJoinList* _pCard_CoPtnJoinList(void* aAddr);
   bool _bIsCard_CoPtnJoinList(void* aAddr);
-  Card_CoPtnJoinList* _pSub_CoPtnJoinList(Card * pParent);
 }
 
 /*============================================================================*/

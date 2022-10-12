@@ -19,7 +19,6 @@ namespace STORE
 
   Card_Deck* _pCard_Deck(void* aAddr);
   bool _bIsCard_Deck(void* aAddr);
-  Card_Deck* _pSub_Deck(Card * pParent);
 }
 
 /*============================================================================*/

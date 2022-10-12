@@ -1466,6 +1466,19 @@ Card_CalcBool* Card::pSub_calcBool(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_ColumnRef.hpp"
+Card_ColumnRef* Card::pSub_columnRef(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_ColumnRef* p_columnRef =
+      _pCard_ColumnRef(pFindSubCard(CK_COLUMNREF));
+  return p_columnRef;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_Filter.hpp"
 Card_Filter* Card::pSub_filter(void)
 {

@@ -14,7 +14,6 @@ __aNewFunction(Card_CoPtnPred,CN_CARD)
 __vDeleteFunction(Card_CoPtnPred,CN_CARD)
 
 __bIsCard(STORE,Card_CoPtnPred,CK_COPTNPRED)
-__pSubFunction_Card(STORE,CoPtnPred,CK_COPTNPRED)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

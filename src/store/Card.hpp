@@ -33,6 +33,7 @@ namespace STORE
   class Card_CalcBool;
   class Card_CandIndex;
   class Card_CardPtr;
+  class Card_ColumnRef;
   class Card_Combined;
 
   class Card_Debug;
@@ -246,6 +247,7 @@ namespace STORE
 
     Card_As*            pSub_as(void);
     Card_CalcBool*      pSub_calcBool(void);
+    Card_ColumnRef*     pSub_columnRef(void);
     Card_Filter*        pSub_filter(void);
     Card_GbyElist*      pSub_gbyElist(void);
     Card_IdxColList*    pSub_idxColList(void);

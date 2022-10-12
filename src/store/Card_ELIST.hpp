@@ -15,7 +15,6 @@ namespace STORE
    ~Card_ELIST(void) noexcept(false);
 
    Card_StreamColList* pDerive_StreamColList(void);
-
   };
 
   Card_ELIST* _pCard_ELIST(void* aAddr);

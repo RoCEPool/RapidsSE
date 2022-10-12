@@ -14,7 +14,6 @@ __aNewFunction(Card_CrossPtnJoin, CN_CARD)
 __vDeleteFunction(Card_CrossPtnJoin, CN_CARD)
 
 __bIsCard(STORE, Card_CrossPtnJoin, CK_CROSSPTNJOIN)
-__pSubFunction_Card(STORE, CrossPtnJoin, CK_CROSSPTNJOIN)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

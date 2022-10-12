@@ -16,7 +16,6 @@ __aNewFunction(Card_CoPtnJoinList, CN_CARD)
 __vDeleteFunction(Card_CoPtnJoinList, CN_CARD)
 
 __bIsCard(STORE, Card_CoPtnJoinList, CK_COPTNJOINLIST)
-__pSubFunction_Card(STORE, CoPtnJoinList, CK_COPTNJOINLIST)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

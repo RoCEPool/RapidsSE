@@ -13,7 +13,6 @@ __aNewFunction(Card_ColumnRef, CN_CARD)
 __vDeleteFunction(Card_ColumnRef, CN_CARD)
 
 __bIsCard(STORE, Card_ColumnRef, CK_COLUMNREF)
-__pSubFunction_Card(STORE,ColumnRef, CK_COLUMNREF)
 
 
 /*----------------------------------------------------------------------------*/

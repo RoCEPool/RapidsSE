@@ -61,11 +61,11 @@ void Card_JoinPredList::vExtract_joinPredList(Card_CalcBool* p_calcBool)
       return true;
 
     Card_Term* p_term_0 = _pCard_Term(p_predCmp->pGetChild(0));
-    Card_ColumnRef* p_columnRef_0 = _pSub_ColumnRef(p_term_0);
+    Card_ColumnRef* p_columnRef_0 = p_term_0->pSub_columnRef();
     if (! p_columnRef_0)
       return true;
     Card_Term* p_term_1 = _pCard_Term(p_predCmp->pGetChild(1));
-    Card_ColumnRef* p_columnRef_1= _pSub_ColumnRef(p_term_1);
+    Card_ColumnRef* p_columnRef_1= p_term_1->pSub_columnRef();
     if (! p_columnRef_1->bIsColumnRef())
       return true;
 

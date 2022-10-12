@@ -709,7 +709,7 @@ void Transforms::vCullAll_filterPred_Of_indexJoin(void)
   BoardIter xBI(m_pBoard);
 
   while ((m_p_table = _pCard_Table(xBI.pEachMain(CK_TABLE)))) {
-    if (! (m_p_filter = _pSub_Filter(m_p_table)))
+    if (! (m_p_filter = m_p_table->pSub_filter()))
       continue;
 
     m_p_calcBool = m_p_filter->pSub_calcBool();
@@ -910,7 +910,7 @@ void Transforms::vDeleteAll_EmptySub_filter(void)
 
   while (Card *pCard_main = xBI.pEachMain()) {
 
-    Card_Filter* pCard_filter_sub = _pSub_Filter(pCard_main);
+    Card_Filter* pCard_filter_sub = pCard_main->pSub_filter();
     if (! pCard_filter_sub)
       continue;
 
@@ -1146,7 +1146,7 @@ void Transforms::vFormAll_joinPred_of_indexJoin(void)
   BoardIter xBI(m_pBoard);
 
   while ((m_p_table = _pCard_Table(xBI.pEachMain(CK_TABLE)))) {
-    if (! (m_p_filter = _pSub_Filter(m_p_table)))
+    if (! (m_p_filter = m_p_table->pSub_filter()))
       continue;
 
     m_p_expr     = _pCard_Expr(m_p_filter->pGetChild(0));
@@ -1263,8 +1263,7 @@ void Transforms::vIndividuate_filter(void)
   while (Card_Scan *pCard_scan =
       _pCard_Scan(xBI.pEachMain(CK_SCAN))) {
 
-    Card_Filter* pCard_filter =
-        _pSub_Filter(pCard_scan);
+    Card_Filter* pCard_filter =  pCard_scan->pSub_filter();
 
     if (! pCard_filter)
       continue;
@@ -1278,8 +1277,7 @@ void Transforms::vIndividuate_filter(void)
   while (Card_IndexJoin *pCard_indexJoin =
       _pCard_IndexJoin(xBI.pEachMain(CK_INDEXJOIN))) {
 
-    Card_Filter* pCard_filter =
-        _pSub_Filter(pCard_indexJoin);
+    Card_Filter* pCard_filter = pCard_indexJoin->pSub_filter();
 
     if (! pCard_filter)
       continue;
@@ -1825,8 +1823,7 @@ bool Transforms::bCopyPredDrillDown(Card_PRED* pCard_pred, Card_Filter* pCard_fi
     char cTableSyn = pCard_pred->cMark2();
     Card_Table* pCard_table = _deck_->pFindTableCard(cTableSyn, pMainCard);
 
-    Card_Filter* pCard_filter_existing =
-        _pSub_Filter(pMainCard);
+    Card_Filter* pCard_filter_existing = pMainCard->pSub_filter();
 
     if (pCard_filter_existing) {
       pCard_filter_existing->vMark1(pCard_table->cMark1());
