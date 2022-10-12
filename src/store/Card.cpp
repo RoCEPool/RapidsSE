@@ -1687,6 +1687,19 @@ Card_Table* Card::pSub_table(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_TablePtn.hpp"
+Card_TablePtn* Card::pSub_tablePtn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_TablePtn* p_tablePtn =
+      _pCard_TablePtn(pFindSubCard(CK_TABLEPTN));
+  return p_tablePtn;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_TablePtr.hpp"
 Card_TablePtr* Card::pSub_tablePtr(void)
 {

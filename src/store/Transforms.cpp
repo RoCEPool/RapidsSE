@@ -327,7 +327,7 @@ void Transforms::vAdd_tableSyn_ToAll_table(void)
 
   while ( (m_p_table = _pCard_Table(xBI.pEachMain(CK_TABLE)) )) {
 
-    m_p_tablePtr = _pSub_TablePtr(m_p_table);
+    m_p_tablePtr = m_p_table->pSub_tablePtr();
     m_pTable = m_p_tablePtr->pTable();
 
     char cTableSyn_actual = cTableSyn;
@@ -1306,7 +1306,7 @@ void Transforms::vInsert_indexJoin_IntoAll_table(void)
     if (! (m_p_filter = m_p_table->pSub_filter()))
       continue;
 
-    m_p_tablePtr = _pSub_TablePtr(m_p_table);
+    m_p_tablePtr = m_p_table->pSub_tablePtr();
     m_pTable = m_p_tablePtr->pTable();
 
     if (! (m_pIdxVec = m_pTable->pIdxVec()))

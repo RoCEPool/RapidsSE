@@ -87,11 +87,11 @@ bool Card_TableList::bPredCmpIsCoPtn(Card_CmpPred* p_predCmp)
     return true;
 
   Card_Table* p_table_0 = pFind_table(cTableSyn_0);
-  Card_TablePtn* p_tablePtn_0 = _pSub_TablePtn(p_table_0);
+  Card_TablePtn* p_tablePtn_0 = p_table_0->pSub_tablePtn();
   Stz* szTablePtn_0 = p_tablePtn_0->sz();
 
   Card_Table* p_table_1 = pFind_table(cTableSyn_1);
-  Card_TablePtn* p_tablePtn_1 = _pSub_TablePtn(p_table_1);
+  Card_TablePtn* p_tablePtn_1 = p_table_1->pSub_tablePtn();
   Stz* szTablePtn_1 = p_tablePtn_1->sz();
 
   if (szTablePtn_0->bSame(szPredColumnRef_0) && szTablePtn_1->bSame(szPredColumnRef_1))

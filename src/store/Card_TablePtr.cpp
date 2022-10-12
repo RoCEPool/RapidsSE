@@ -21,7 +21,6 @@ __aNewFunction(Card_TablePtr, CN_CARD)
 __vDeleteFunction(Card_TablePtr, CN_CARD)
 
 __bIsCard(STORE, Card_TablePtr, CK_TABLEPTR)
-__pSubFunction_Card(STORE,TablePtr, CK_TABLEPTR)
 
 
 /*----------------------------------------------------------------------------*/
