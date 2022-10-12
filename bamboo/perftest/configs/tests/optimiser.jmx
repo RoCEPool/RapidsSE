@@ -20,7 +20,7 @@ c6idd.16xlarge</stringProp>
           </elementProp>
           <elementProp name="SF" elementType="Argument">
             <stringProp name="Argument.name">SF</stringProp>
-            <stringProp name="Argument.value">100</stringProp>
+            <stringProp name="Argument.value">10</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="QUERY_LOOP_COUNT" elementType="Argument">
