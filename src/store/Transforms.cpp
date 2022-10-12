@@ -300,9 +300,9 @@ void Transforms::vAppend_tablePtn_UnderAll_table(void)
   vTransformation(BK_QUERY,(char*)(__func__));
   vExplain("Blah"_Stz);
 
-  while (M_bEach_main_(CK_TABLE)) {
+  while (I_bEachMain(CK_TABLE)) {
     //m_p_tablePtn = new Card_TablePtn;
-    A_vNew_card(CK_TABLEPTN);
+    N_vNewMember(CK_TABLEPTN);
     m_p_tablePtn->vAdd_TablePtn(m_p_table);
     m_p_table->vAppend(m_p_tablePtn);
   }
@@ -622,18 +622,22 @@ void Transforms::vCompute_ptndJoinSet(void)
 /*----------------------------------------------------------------------------*/
 /* convert all <filter> from calc form to calcBool                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vConvert_calc_OfAll_filter_To_calcBool(void)
+void Transforms::vConvert_calc_OfAll_where_To_calcBool(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__));
   vExplain("Blah"_Stz);
 
-  BoardIter xBI(m_pBoard);
+  while (I_bEachMain(CK_FILTER)) {
+    if (!S_bSearchMember(m_p_filter, CK_CALC))
+      continue;
+    X_calc_To_calcBool();
+    R_vReplaceSub(m_p_filter,m_p_calc,m_p_calcBool);
+    D_vDeleteMember(m_p_calc);
+  }
 
-  while ((m_p_filter = _pCard_Filter(xBI.pEachMain(CK_FILTER))))
-    m_p_filter->vCalc_to_calcBool();
-
+  vEndTransformation();
   vPrintBoard();
 }
 
@@ -730,7 +734,7 @@ void Transforms::vCullAll_scan(void)
   vTransformation(BK_QUERY,(char*)(__func__),true);
   vExplain("Blah"_Stz);
 
-//  while (M_bEach_main_(CK_SCAN)) {
+//  while (I_bEachMain(CK_SCAN)) {
 //    _deck_->vReplaceChildWithItsSubs(m_pMainCard);
 //    DELETE_CARD(m_pMainCard);
 //  }
@@ -872,6 +876,50 @@ void Transforms::vDeleteAll_send(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* linearize board by deleting all duplicate stages                          */
+/*----------------------------------------------------------------------------*/
+void Transforms::vDeleteAll_Duplicate_stage(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransformation(BK_QUERY,(char*)(__func__),false);
+  vExplain("linearize board by deleting all duplicate stages"_Stz);
+
+  _deck_->vDump();
+
+  Card_Stage* p_stage_CURR = nullptr;
+
+  while (I_bEachMain(CK_STAGE)) {
+    if (! p_stage_CURR || !m_p_stage->bEquivalentTo(p_stage_CURR))   {
+      p_stage_CURR = m_p_stage;
+      continue;
+    }
+    I_vRemoveDelete(CK_STAGE);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  m_pM->vRestart();
+  while (I_bEachMain(CK_STAGE)) {
+    if (! (m_p_stageTopo = m_p_stage->pSub_stageTopo()) )
+      continue;
+    if (YG_ALL_PARTITIONS == (eYG) m_p_stageTopo->Y_iVal(P_StageTopo))
+      continue;
+
+    m_p_stage->Y_vSet(P_Exclude);
+  }
+
+  _deck_->vRenumberRecursive();
+
+  vSetPrintSubCards(CK_AGGELIST, false);
+  vSetPrintSubCards(CK_GBYELIST, false);
+  vSetPrintSubCards(CK_PROJELIST, false);
+
+  vEndTransformation();
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
 /* delete any <filter> which is effectively empty                             */
 /*----------------------------------------------------------------------------*/
 void Transforms::vDeleteAll_Empty_filter(void)
@@ -920,50 +968,6 @@ void Transforms::vDeleteAll_EmptySub_filter(void)
     delete pCard_filter_sub;
   }
 
-  vPrintBoard();
-}
-
-/*----------------------------------------------------------------------------*/
-/* linearize board by deleting all duplicate stages                          */
-/*----------------------------------------------------------------------------*/
-void Transforms::vDeleteAll_Duplicate_stage(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransformation(BK_QUERY,(char*)(__func__),false);
-  vExplain("linearize board by deleting all duplicate stages"_Stz);
-
-  _deck_->vDump();
-
-  Card_Stage* p_stage_CURR = nullptr;
-
-  while (M_bEach_main_(CK_STAGE)) {
-    if (! p_stage_CURR || !m_p_stage->bEquivalentTo(p_stage_CURR))   {
-      p_stage_CURR = m_p_stage;
-      continue;
-    }
-    M_vRemoveDelete_main_(CK_STAGE);
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  m_pM->vRestart();
-  while (M_bEach_main_(CK_STAGE)) {
-    if (! (m_p_stageTopo = m_p_stage->pSub_stageTopo()) )
-      continue;
-    if (YG_ALL_PARTITIONS == (eYG) m_p_stageTopo->Y_iVal(P_StageTopo))
-      continue;
-
-    m_p_stage->Y_vSet(P_Exclude);
-  }
-
-  _deck_->vRenumberRecursive();
-
-  vSetPrintSubCards(CK_AGGELIST, false);
-  vSetPrintSubCards(CK_GBYELIST, false);
-  vSetPrintSubCards(CK_PROJELIST, false);
-
-  vEndTransformation();
   vPrintBoard();
 }
 

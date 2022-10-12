@@ -126,7 +126,7 @@ void Transformer::vTransform3(void)
   m_pTransforms->vCalc_ordinalRanges_ForAll_stream();
 
   // convert all <filter>/<calc> to <filter>/<calcBool>
-  m_pTransforms->vConvert_calc_OfAll_filter_To_calcBool();
+  m_pTransforms->vConvert_calc_OfAll_where_To_calcBool();
 
   // each <scan> <absJoin> becomes <absJoin>/<scan>
   //m_pTransforms->vSubsume_scan_Under_absJoin();

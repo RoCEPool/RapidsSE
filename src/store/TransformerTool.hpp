@@ -50,6 +50,7 @@ namespace STORE
 
     Card_AbsJoin*          m_p_absJoin;
     Card_Aggreg*           m_p_aggreg;
+    Card_Calc*             m_p_calc;
     Card_CalcBool*         m_p_calcBool;
     Card_Combined*         m_p_combined;
     Card_Comment*          m_p_comment;
@@ -95,6 +96,7 @@ namespace STORE
     Card_Term*             m_p_term_0;
     Card_Term*             m_p_term_1;
     Card_UBound*           m_p_uBound;
+    Card_Where*            m_p_where;
 
     s256 m_sExplain;
 
@@ -128,14 +130,19 @@ namespace STORE
     void vSetupPermuteBoard(void);
     void vSetupQueryBoard(void);
 
-    void A_vNew_card(eCK eCard);
-    void A_vNew_card(eCK eCard, Stz* szValue);
+    void D_vDeleteMember(eCK eMember);
+    void D_vDeleteMember(Card* pMember);
+    Card* G_pGetMember(eCK eMember);
+    void N_vNewMember(eCK eCard);
+    void N_vNewMember(eCK eCard, Stz* szValue);
+    void U_vSetMember(eCK eCard, Card* pCard);
 
-    bool M_bEach_mainCard_(void);
-    bool M_bEach_main_(eCK eCard);
-    void M_vRemoveDelete_main_(eCK eCrossCheck);
+    bool I_bEachMember(void);
+    bool I_bEachMain(eCK eOfKind);
+    void I_vRemoveDelete(eCK eCrossCheck);
 
-    void vSetMember(eCK eCard, Card* pCard);
+    bool S_bSearchMember(eCK eMember, eCK eForSubCard);
+    bool S_bSearchMember(Card* pMember, eCK eForSubCard);
   };
 }
 

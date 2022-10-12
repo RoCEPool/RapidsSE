@@ -62,30 +62,6 @@ bool Card_Filter::bCull(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* stream                                                                     */
-/*----------------------------------------------------------------------------*/
-void Card_Filter::vCalc_to_calcBool(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  RASSERT(CK_FILTER == eCard());
-
-  RASSERT(1 == nChildCards());
-
-  Card_Expr* pCard_Expr = _pCard_Expr(pGetChild(0));
-  RASSERT(2 == pCard_Expr->nChildCards());
-
-  Card_Type* pCard_Type = _pCard_Type(pCard_Expr->pGet(0));
-  Card_Calc* pCard_Calc = _pCard_Calc(pCard_Expr->pGet(1));
-
-  Card* pCard_CalcBool = pTo_CalcBool(pCard_Calc);
-
-  pCard_Expr->vRemove(pCard_Calc);
-  delete pCard_Calc;
-  pCard_Expr->vAppend(pCard_CalcBool);
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_Filter::vCullPred(char cWithMark)
@@ -205,97 +181,6 @@ bool Card_Filter::bRemoveBound(Card_CmpPred* pCard_PredCmp)
   
   return true;
 }
-
-/*----------------------------------------------------------------------------*/
-/* convert a calculation into a boolean calculaiton                           */
-/*----------------------------------------------------------------------------*/
-Card* Card_Filter::pTo_CalcBool(Card* pCard_Calc)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-  RASSERT(CK_CALC == pCard_Calc->eCard());
-
-  Card_AndPred* pCard_PredAnd = nullptr;
-  Card_CmpPred* pCard_PredCmp = nullptr;
-  Card_OrPred*  pCard_PredOr  = nullptr;
-
-  Card_SubSet*  pCard_SubExpr = new Card_SubSet;
-
-  Card_CalcBool* pCard_CalcBool = new Card_CalcBool;
-
-  while (pCard_Calc->nChildCards()) {
-    Card_Term *pCard_Term = _pCard_Term(pCard_Calc->pPop());
-
-    eTE eTopTerm = pCard_Term->eTermEval();
-    switch (eTopTerm) {
-
-      case TE_AND:
-        RASSERT(2 == pCard_CalcBool->nChildCards());
-        pCard_PredAnd = new Card_AndPred;
-        pCard_PredAnd->vTransferChildren(pCard_CalcBool);
-        RASSERT(0 == pCard_CalcBool->nChildCards());
-        pCard_CalcBool->vAppend(pCard_PredAnd);
-        RASSERT(1 == pCard_CalcBool->nChildCards());
-        pCard_PredAnd = nullptr;
-        delete pCard_Term;
-        break;
-
-      case TE_OR:
-        RASSERT(2 == pCard_CalcBool->nChildCards());
-        pCard_PredOr = new Card_OrPred;
-        pCard_PredOr->vTransferChildren(pCard_CalcBool);
-        RASSERT(0 == pCard_CalcBool->nChildCards());
-        pCard_CalcBool->vAppend(pCard_PredOr);
-        RASSERT(1 == pCard_CalcBool->nChildCards());
-        pCard_PredOr = nullptr;
-        delete pCard_Term;
-        break;
-
-      case TE_COMPARE:
-        RASSERT(pCard_SubExpr->nChildCards() > 0);
-        pCard_PredCmp = new Card_CmpPred;
-        pCard_PredCmp->vValue(pCard_Term->sz());
-        pCard_PredCmp->vTransferChildren(pCard_SubExpr);
-        pCard_CalcBool->vAppend(pCard_PredCmp);
-        pCard_PredCmp = nullptr;
-        delete pCard_Term;
-        break;
-
-      case TE_OTHER:
-        pCard_SubExpr->vAppend(pCard_Term);
-        break;
-
-        // - - - - - - -
-
-      case TE_BOOLEAN:
-        NEVER_REACH;
-        break;
-
-      case TE_TYPE:
-        NEVER_REACH;
-        break;
-
-      case TE_AS:
-        NEVER_REACH;
-        break;
-
-      default:
-        NEVER_REACH;
-        break;
-    }
-  }
-
-  if (pCard_SubExpr->nItems()) {
-    RASSERT(0 == pCard_CalcBool->nChildCards());
-    pCard_PredCmp->vTransferChildren(pCard_SubExpr);
-    RASSERT(1 == pCard_CalcBool->nChildCards());
-    RASSERT(0 == pCard_SubExpr->nChildCards());
-  }
-
-  delete pCard_SubExpr;
-
-  return pCard_CalcBool;
-}
-
 
 /*============================================================================*/
 /* end                                                                        */

@@ -25,6 +25,10 @@ namespace STORE
     void vDeleteAll(eCK eCard);
     void vRenumberMainCards(void);
 
+    void R_vReplaceSub(Card* pInCard, Card* pSub, Card* pWith);
+
+    void X_calc_To_calcBool(void);
+
   private:
 
     Footer* aFooter(void);

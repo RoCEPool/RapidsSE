@@ -47,6 +47,7 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
 
   m_p_absJoin          = nullptr;
   m_p_aggreg           = nullptr;
+  m_p_calc             = nullptr;
   m_p_calcBool         = nullptr;
   m_p_combined         = nullptr;
   m_p_coPtnJoin        = nullptr;
@@ -92,6 +93,7 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_p_term_0           = nullptr;
   m_p_term_1           = nullptr;
   m_p_uBound           = nullptr;
+  m_p_where            = nullptr;
 
   Job* pJob = MY::pJob();
   TagSet* pJobTags = pJob->pJobTags();
@@ -310,77 +312,123 @@ void TransformerTool::vSetupQueryBoard(void)
 /*----------------------------------------------------------------------------*/
 /* step to next main and set member                                           */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::A_vNew_card(eCK eCard)
+void TransformerTool::D_vDeleteMember(eCK eMember)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  Card* pCard = G_pGetMember(eMember);
+  U_vSetMember(eMember, nullptr);
+
+  delete pCard;
+}
+
+/*----------------------------------------------------------------------------*/
+/* step to next main and set member                                           */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::D_vDeleteMember(Card* pMember)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  eCK eMember = pMember->eCard();
+
+  U_vSetMember(eMember, nullptr);
+
+  delete pMember;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get member card                                                            */
+/*----------------------------------------------------------------------------*/
+Card* TransformerTool::G_pGetMember(eCK eMember)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  switch (eMember) {
+
+    case CK_ABSJOIN:          return m_p_absJoin;
+    case CK_AGGREG:           return m_p_aggreg;
+    case CK_CALC:             return m_p_calc;
+    case CK_CALCBOOL:         return m_p_calcBool;
+    case CK_COMBINED:         return m_p_combined;
+    case CK_COMMENT:          return m_p_comment;
+    case CK_COPTNJOIN:        return m_p_coPtnJoin;
+    case CK_COPTNJOINLIST:    return m_p_coPtnJoinList;
+    case CK_COPTNPRED:        return m_p_coPtnPred;
+    case CK_COPTNPREDLIST:    return m_p_coPtnPredList;
+    case CK_CROSSPTNJOIN:     return m_p_crossPtnJoin;
+    case CK_CROSSPTNJOINLIST: return m_p_crossPtnJoinList;
+    case CK_EXPR:             return m_p_expr;
+    case CK_FILTER:           return m_p_filter;
+    case CK_GBYELIST:         return m_p_gbyElist;
+    case CK_IDXCOLLIST:       return m_p_idxColList;
+    case CK_INDEXJOIN:        return m_p_indexJoin;
+    case CK_INDEXLIST:        return m_p_indexList;
+    case CK_INDEXPTR:         return m_p_indexPtr;
+    case CK_INDEXSCAN:        return m_p_indexScan;
+    case CK_JOINORDER:        return m_p_joinOrder;
+    case CK_JOINORDERSEQ:     return m_p_joinOrderSeq;
+    case CK_JOINPRED:         return m_p_joinPred;
+    case CK_JOINPREDLIST:     return m_p_joinPredList;
+    case CK_LBOUND:           return m_p_lBound;
+    case CK_PERMUTATION:      return m_p_permutation;
+    case CK_CMPPRED:          return m_p_predCmp;
+    case CK_PROJECT:          return m_p_project;
+    case CK_PTNDJOIN:         return m_p_ptndJoin;
+    case CK_PTNDJOINSET:      return m_p_ptndJoinSet;
+    case CK_SBYELIST:         return m_p_sbyElist;
+    case CK_SCAN:             return m_p_scan;
+    case CK_SCANPRED:         return m_p_scanPred;
+    case CK_SORT:             return m_p_sort;
+    case CK_STAGE:            return m_p_stage;
+    case CK_STAGETOPO:        return m_p_stageTopo;
+    case CK_STREAM:           return m_p_stream;
+    case CK_STREAMCOLLIST:    return m_p_streamColList;
+    case CK_SUBSET:           return m_p_subSet;
+    case CK_TABLE:            return m_p_table;
+    case CK_TABLELIST:        return m_p_tableList;
+    case CK_TABLEPTN:         return m_p_tablePtn;
+    case CK_TABLEPTR:         return m_p_tablePtr;
+    case CK_TERM:             return m_p_term;
+    case CK_UBOUND:           return m_p_uBound;
+    case CK_WHERE:            return m_p_where;
+
+    case CK_SEND:
+      NEVER_REACH
+      break;
+
+    default:
+      NEVER_REACH
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* step to next main and set member                                           */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::N_vNewMember(eCK eCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
   m_pNewCard = new Card(eCard);
 
-  vSetMember(eCard,m_pNewCard);
+  U_vSetMember(eCard, m_pNewCard);
 }
 
 /*----------------------------------------------------------------------------*/
 /* step to next main and set member                                           */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::A_vNew_card(eCK eCard, Stz* szValue)
+void TransformerTool::N_vNewMember(eCK eCard, Stz* szValue)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  A_vNew_card(eCard);
+  N_vNewMember(eCard);
 
   m_pNewCard->vValue(szValue);
 }
 
-
-/*----------------------------------------------------------------------------*/
-/* step to next main and set member                                           */
-/*----------------------------------------------------------------------------*/
-bool TransformerTool::M_bEach_mainCard_(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_);
-
-  m_pMainCard = m_pM->pEachMain();
-  if (! m_pMainCard)
-    return false;
-
-  eCK eCard = m_pMainCard->eCard();
-
-  vSetMember(eCard,m_pMainCard);
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* step to next main and set member                                           */
-/*----------------------------------------------------------------------------*/
-bool TransformerTool::M_bEach_main_(eCK eCard)
-{
-  _precondition_(_ADDRESS_, _MAGIC_);
-
-  m_pMainCard = m_pM->pEachMain(eCard);
-  if (! m_pMainCard)
-    return false;
-
-  vSetMember(eCard,m_pMainCard);
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* step to next main and set member                                           */
-/*----------------------------------------------------------------------------*/
-void TransformerTool::M_vRemoveDelete_main_(eCK eCrossCheck)
-{
-  _precondition_(_ADDRESS_, _MAGIC_);
-
-  m_pM->vRemoveDeleteCurr(eCrossCheck);
-}
-
-
 /*----------------------------------------------------------------------------*/
 /* set member card                                                            */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::vSetMember(eCK eCard, Card* pCard)
+void TransformerTool::U_vSetMember(eCK eCard, Card* pCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
@@ -388,6 +436,7 @@ void TransformerTool::vSetMember(eCK eCard, Card* pCard)
 
     case CK_ABSJOIN:          *((Card**)&m_p_absJoin)          = pCard; break;
     case CK_AGGREG:           *((Card**)&m_p_aggreg)           = pCard; break;
+    case CK_CALC:             *((Card**)&m_p_calc)             = pCard; break;
     case CK_CALCBOOL:         *((Card**)&m_p_calcBool)         = pCard; break;
     case CK_COMBINED:         *((Card**)&m_p_combined)         = pCard; break;
     case CK_COMMENT:          *((Card**)&m_p_comment)          = pCard; break;
@@ -430,6 +479,7 @@ void TransformerTool::vSetMember(eCK eCard, Card* pCard)
     case CK_TABLEPTR:         *((Card**)&m_p_tablePtr)         = pCard; break;
     case CK_TERM:             *((Card**)&m_p_term)             = pCard; break;
     case CK_UBOUND:           *((Card**)&m_p_uBound)           = pCard; break;
+    case CK_WHERE:            *((Card**)&m_p_where)            = pCard; break;
 
     case CK_SEND:
       break;
@@ -438,6 +488,81 @@ void TransformerTool::vSetMember(eCK eCard, Card* pCard)
       NEVER_REACH  }
 }
 
+/*----------------------------------------------------------------------------*/
+/* step to next main and set member                                           */
+/*----------------------------------------------------------------------------*/
+bool TransformerTool::I_bEachMember(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  m_pMainCard = m_pM->pEachMain();
+  if (! m_pMainCard)
+    return false;
+
+  eCK eCard = m_pMainCard->eCard();
+
+  U_vSetMember(eCard, m_pMainCard);
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* step to next main and set member                                           */
+/*----------------------------------------------------------------------------*/
+bool TransformerTool::I_bEachMain(eCK eOfKind)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  m_pMainCard = m_pM->pEachMain(eOfKind);
+  if (! m_pMainCard)
+    return false;
+
+  U_vSetMember(eOfKind, m_pMainCard);
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* step to next main and set member                                           */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::I_vRemoveDelete(eCK eCrossCheck)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  m_pM->vRemoveDeleteCurr(eCrossCheck);
+}
+
+/*----------------------------------------------------------------------------*/
+/* step to next main and set member                                           */
+/*----------------------------------------------------------------------------*/
+bool TransformerTool::S_bSearchMember(eCK eMember, eCK eForSubCard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  Card* pMember = G_pGetMember(eMember);
+
+  bool b = S_bSearchMember(pMember, eForSubCard);
+
+  return b;
+}
+
+/*----------------------------------------------------------------------------*/
+/* step to next main and set member                                           */
+/*----------------------------------------------------------------------------*/
+bool TransformerTool::S_bSearchMember(Card* pMember, eCK eForSubCard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  Card* pSubCard = pMember->pFindSubCard(eForSubCard);
+  if (! pSubCard) {
+    U_vSetMember(eForSubCard, nullptr);
+    return false;
+  }
+
+  U_vSetMember(eForSubCard, pSubCard);
+
+  return true;
+}
 
 /*============================================================================*/
 /* end                                                                        */

@@ -21,7 +21,6 @@ namespace STORE
   
     bool bCull(void);
     void vCullPred(char cWithMark);
-    void vCalc_to_calcBool(void);
 
     Card_CmpPred* pFindBound(Index* pIndex, ePB eBound);
 
@@ -31,8 +30,6 @@ namespace STORE
 
     void vReduceFilter(void);
     bool bRemoveBound(Card_CmpPred* pCard_PredCmp);
-
-    Card* pTo_CalcBool(Card* pCard_Calc);
 
   };
 
