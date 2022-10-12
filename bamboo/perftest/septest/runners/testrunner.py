@@ -248,6 +248,9 @@ class TestRunner:
         # Copy the metrics to this directory
         self.__copy_remote_metrics_locally()
 
+        # Copy the jmeter logs to this directory
+        self.copy_jmeter_logs()
+
         # Parse the metrics and add them to the results.
         # We look for both *.csv and *.tsv files.
         csv_list = glob.glob(f"{self.artifact_dir}/*.csv")
@@ -289,6 +292,27 @@ class TestRunner:
 
         file_list = os.listdir(self.artifact_dir)
         LOG.debug("Copied the following files from the remote node:\n%s", '\n  '.join(file_list))
+
+    def copy_jmeter_logs(self):
+        """
+        Copies jmeter log files from a remote host to the artifact directory
+        """
+
+        LOG.debug("About to copy jmeter log files from remote node to local directory")
+        src = f"{self.ip_addr}:{self.__remote_log_file_path()}"
+
+        try:
+            ssh.run_scp(src=src, dest=self.artifact_dir, timeout=C_SCP_TIMEOUT_SEC)
+
+        except errors.SshError as e:
+            msg = f"Error while copying jmeter log file from remote path: {src}"
+            raise errors.ClusterError(msg) from e
+
+        except subprocess.TimeoutExpired as e:
+            msg = f"Copying of jmeter log file from remote path at {src} timed out after {e.timeout} seconds: " \
+                  f"\nStdout Output:\n{e.stdout}" \
+                  f"\nStderr Output:\n{e.stderr}"
+            raise errors.ClusterError(msg) from e
 
     def __parse_csv_metrics(self, metric_file: string) -> bool:
         """

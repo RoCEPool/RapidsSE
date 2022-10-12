@@ -112,7 +112,7 @@ class JobRunner:
         self.custom_cluster_config: tempfile.NamedTemporaryFile = None
 
         # The current test that is running, and a lock to protect the changing of this variable
-        self.current_test_runner = None
+        self.current_test_runner: TestRunner = None
         self.test_runner_lock = threading.RLock()
 
         # Is the test ending early due to an abnormality (timeout, crash, etc)?
@@ -169,6 +169,7 @@ class JobRunner:
                     if self.current_test_runner is not None:
                         errmsg = "" if job_timed_out else ""
                         self.current_test_runner.result.set_test_ended(False, False, stderr=errmsg)
+                        self.current_test_runner.copy_jmeter_logs()
                         self.test_results.append(self.current_test_runner.result)
 
         except errors.Ec2InstanceTimeoutError as e:
