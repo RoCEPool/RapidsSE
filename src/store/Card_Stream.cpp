@@ -16,7 +16,6 @@ __aNewFunction(Card_Stream,CN_CARD)
 __vDeleteFunction(Card_Stream,CN_CARD)
 
 __bIsCard(STORE,Card_Stream,CK_STREAM)
-__pSubFunction_Card(STORE,Stream,CK_STREAM)
 
 
 /*----------------------------------------------------------------------------*/

@@ -437,7 +437,7 @@ void Transforms::vCalc_ordinalRanges_OfAll_stream(void)
 
   while ((m_p_table = _pCard_Table(xBI.pEachMain(CK_TABLE)))) {
 
-    m_p_stream = _pSub_Stream(m_p_table);
+    m_p_stream = m_p_table->pSub_stream();
 
     // <scan>/<stream>:iOrdLo,iOrdHi
     nStreamCols = m_p_stream->nStreamCols();
@@ -656,7 +656,7 @@ void Transforms::vConvertAll_idxColNm_To_streamColOrd(void)
     if (! (m_p_indexJoin = m_p_table->pSub_indexJoin()))
       continue;
 
-    m_p_stream = _pSub_Stream(m_p_table);
+    m_p_stream = m_p_table->pSub_stream();;
     m_p_streamColList = _pSub_StreamColList(m_p_table);
     m_p_idxColList = m_p_indexJoin->pSub_idxColList();
 
@@ -1168,7 +1168,7 @@ void Transforms::vFormAll_joinPred_of_indexJoin(void)
 
     // one of {pCard_term_0,pCard_term_1} is $In
 
-    m_p_stream = _pSub_Stream(m_p_table);
+    m_p_stream = m_p_table->pSub_stream();
     i8 iStreamOrdLo = m_p_stream->iPpy(PPY_OrdLo);
     i8 iStreamOrdHi = m_p_stream->iPpy(PPY_OrdHi);
 
@@ -1778,7 +1778,7 @@ char Transforms::cAssignPredToTable(Card_Table* pCard_table, Card_PRED* pCard_PR
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  Card_Stream* pCard_stream = _pSub_Stream(pCard_table);
+  Card_Stream* pCard_stream = pCard_table->pSub_stream();
 
   // are all $n of <pred> in this <stream>?
   if (pCard_stream->bContainsPred(pCard_PRED)) {

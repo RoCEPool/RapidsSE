@@ -60,7 +60,7 @@ void Resolver::vResolve_streamColOrdinal_To_tableColOrdinal
   BoardIter xBI(m_pBoard);
 
   while ( (m_pMainCard = xBI.pEachMain()) ) {
-    if (! (m_p_stream = _pSub_Stream(m_pMainCard)) )
+    if (! (m_p_stream = m_pMainCard->pSub_stream()))
       continue;
 
     i8 iOrdLo = m_p_stream->iPpy(PPY_OrdLo);

@@ -24,10 +24,7 @@ namespace STORE
     bool bIsPred(Card* pArgCard);
 
     bool bReduciblePred(void);
-
   };
-
-  //Card_PRED* _pCard_PRED(void* aAddr);
 }
 
 /*============================================================================*/

@@ -22,7 +22,6 @@ namespace STORE
 
   Card_Scan* _pCard_Scan(void* aAddr);
   bool _bIsCard_Scan(void* aAddr);
-  Card_Scan* _pSub_Scan(Card* pParent);
 }
 
 /*============================================================================*/
