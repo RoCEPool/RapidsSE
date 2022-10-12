@@ -375,7 +375,7 @@ def __create_cluster_experiment_record(cur: typing.Union[psycopg.Cursor[typing.A
        Returns the id of the cluster row created or the matching cluster row found.
     """
 
-    sql = "SELECT clusterId" \
+    sql = "SELECT clusterId " \
           "FROM cluster " \
           "WHERE clusterName = (%s) AND numNodes = (%s) AND ptnsPerNode = (%s) AND " \
           "threadsPerNode = (%s) AND sharedMem = (%s) AND params = (%s) AND isRegrConfig = FALSE"
@@ -697,7 +697,7 @@ def __create_jobresult_record(cur: typing.Union[psycopg.Cursor[typing.Any], psyc
 
     sql = "INSERT INTO jobResults " \
           "(jobId, bambooPlan, bambooBuild, gitHash, gitBranch, invokingUser, " \
-          "abnormalExit, startTime, testsExecuted, testsPassed, testsFailed," \
+          "abnormalExit, startTime, testsExecuted, testsPassed, testsFailed, " \
           "hardwareId, clusterId)" \
           "VALUES (%s, %s, %s, %s, %s, %s, %s, NOW(), %s, %s, %s, %s, %s) " \
           "RETURNING jobResultId"
