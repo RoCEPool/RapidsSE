@@ -7,16 +7,13 @@ print "Job Metrics";
 _lineitem;
 load lineitem "<tpch_dir>/lineitem.<suffix>";
 
-refTmrReset;
-locksReset;
-networkReset;
-metricsCtl sysMetrics enable;
+metricsCtl enable;
+/time /jobMetrics select l_returnflag, l_linestatus, sum(l_extendedPrice) from lineitem group by l_returnflag, l_linestatus;
+metricsCtl disable;
 
-/time /jobMetrics select sum(l_extendedPrice) from lineitem;
-metricsCtl sysMetrics disable;
+sleep 5;
 
 sysReport;
-
 select * from se__jobMetrics;
 select * from se__jobOperands;
 select * from se__jobOperators;
@@ -26,6 +23,14 @@ select * from se__jobNetDissect;
 
 select * from se__sysMetrics;
 select * from se__sysLocks;
+
+select count(*) from se__jobMetrics;
+
+select max(responseUS), avg(responseUS), max(responseUS) from se__jobOperators;
+select max(newRowBuffers) from se__jobOperators;
+
+export se__jobMetrics "../tmp/report.csv";
+//load se__jobReport "../tmp/report.csv";
 
 /*============================================================================*/
 /* end                                                                        */
