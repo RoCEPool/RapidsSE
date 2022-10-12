@@ -139,6 +139,7 @@ namespace STORE
 
     bool I_bEachMember(void);
     bool I_bEachMain(eCK eOfKind);
+    bool I_bEachMain(eCK eOfKind, eCK eThatsHasSub);
     void I_vRemoveDelete(eCK eCrossCheck);
 
     bool S_bSearchMember(eCK eMember, eCK eForSubCard);

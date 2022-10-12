@@ -525,6 +525,27 @@ bool TransformerTool::I_bEachMain(eCK eOfKind)
 /*----------------------------------------------------------------------------*/
 /* step to next main and set member                                           */
 /*----------------------------------------------------------------------------*/
+bool TransformerTool::I_bEachMain(eCK eOfKind, eCK eThatsHasSub)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  while (Card* pMain = m_pM->pEachMain(eOfKind)) {
+    if (Card* pSubCard = pMain->pFindSubCard(eThatsHasSub)) {
+      U_vSetMember(eOfKind, pMain);
+      U_vSetMember(eThatsHasSub, pSubCard);
+      return true;
+    }
+  }
+
+  U_vSetMember(eOfKind, nullptr);
+  U_vSetMember(eThatsHasSub, nullptr);
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* step to next main and set member                                           */
+/*----------------------------------------------------------------------------*/
 void TransformerTool::I_vRemoveDelete(eCK eCrossCheck)
 {
   _precondition_(_ADDRESS_, _MAGIC_);

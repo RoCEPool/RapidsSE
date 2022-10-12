@@ -629,9 +629,7 @@ void Transforms::vConvert_calc_OfAll_where_To_calcBool(void)
   vTransformation(BK_QUERY,(char*)(__func__));
   vExplain("Blah"_Stz);
 
-  while (I_bEachMain(CK_FILTER)) {
-    if (!S_bSearchMember(m_p_filter, CK_CALC))
-      continue;
+  while (I_bEachMain(CK_FILTER,CK_CALC)) {
     X_calc_To_calcBool();
     R_vReplaceSub(m_p_filter,m_p_calc,m_p_calcBool);
     D_vDeleteMember(m_p_calc);
