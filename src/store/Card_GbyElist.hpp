@@ -19,7 +19,6 @@ namespace STORE
 
   Card_GbyElist* _pCard_GbyElist(void* aAddr);
   bool _bIsCard_GbyElist(void* aAddr);
-  Card_GbyElist* _pSub_GbyElist(Card* pParent);
 }
 
 /*============================================================================*/

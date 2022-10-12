@@ -653,12 +653,12 @@ void Transforms::vConvertAll_idxColNm_To_streamColOrd(void)
   BoardIter xBI(m_pBoard);
 
   while ((m_p_table = _pCard_Table(xBI.pEachMain(CK_TABLE)))) {
-    if (! (m_p_indexJoin = _pSub_IndexJoin(m_p_table)))
+    if (! (m_p_indexJoin = m_p_table->pSub_indexJoin()))
       continue;
 
     m_p_stream = _pSub_Stream(m_p_table);
     m_p_streamColList = _pSub_StreamColList(m_p_table);
-    m_p_idxColList = _pSub_IdxColList(m_p_indexJoin);
+    m_p_idxColList = m_p_indexJoin->pSub_idxColList();
 
     m_p_idxColList->vOrdinate(m_p_stream);
   }
@@ -1158,7 +1158,7 @@ void Transforms::vFormAll_joinPred_of_indexJoin(void)
     // - - - -
 
     m_p_joinPred = new Card_JoinPred;
-    m_p_indexJoin = _pSub_IndexJoin(m_p_table);
+    m_p_indexJoin = m_p_table->pSub_indexJoin();
     m_p_table->vInsertAfter(m_p_joinPred,m_p_indexJoin);
 
     m_p_term = new Card_Term("BOUND"_Stz);
@@ -1536,7 +1536,7 @@ void Transforms::vRefactorAll_table_Into_join(void)
 
   while ((m_p_table = _pCard_Table(xBI.pEachMain(CK_TABLE)))) {
 
-    m_p_indexJoin = _pSub_IndexJoin(m_p_table);
+    m_p_indexJoin = m_p_table->pSub_indexJoin();
     if (! m_p_indexJoin) {
 
       m_p_scan = new Card_Scan;

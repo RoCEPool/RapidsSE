@@ -13,7 +13,6 @@ __aNewFunction(Card_GbyElist,CN_CARD)
 __vDeleteFunction(Card_GbyElist,CN_CARD)
 
 __bIsCard(STORE,Card_GbyElist,CK_GBYELIST)
-__pSubFunction_Card(STORE,GbyElist,CK_GBYELIST)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

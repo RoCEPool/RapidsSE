@@ -19,7 +19,6 @@ namespace STORE
 
   Card_IndexJoin* _pCard_IndexJoin(void* aAddr);
   bool _bIsCard_IndexJoin(void* aAddr);
-  Card_IndexJoin* _pSub_IndexJoin(Card* pParent);
 }
 
 /*============================================================================*/

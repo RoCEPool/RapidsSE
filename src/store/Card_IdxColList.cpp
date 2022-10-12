@@ -18,7 +18,6 @@ __aNewFunction(Card_IdxColList,CN_CARD)
 __vDeleteFunction(Card_IdxColList,CN_CARD)
 
 __bIsCard(STORE,Card_IdxColList,CK_IDXCOLLIST)
-__pSubFunction_Card(STORE,IdxColList,CK_IDXCOLLIST)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
