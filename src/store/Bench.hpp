@@ -26,10 +26,7 @@ namespace STORE
     void vAddBoard(Board* pBoard);
     CardCtl* pCardCtl(void);
     Board* pGetBoard(eBK eBoard);
-
     Optimiser* pOptimiser(void);
-
-    void vPrintBench(void);
 
   private:
     Footer* aFooter(void);
