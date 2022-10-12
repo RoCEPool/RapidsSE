@@ -120,14 +120,14 @@ namespace STORE
   class Board : public Object
   {
   protected:
-    eBK          m_eBoard;
-    eBT          m_eBoardType;
+    eBK         m_eBoard;
+    eBT         m_eBoardType;
     Card_Deck*  m_pCard_Board;
 
-    Optimiser*   m_pOptimiser;
-    Bench*       m_pBench;
+    Optimiser*  m_pOptimiser;
+    Bench*      m_pBench;
 
-    b8           m_bBeenCued;
+    b8          m_bBeenCued;
 
   private:
     // must be last
