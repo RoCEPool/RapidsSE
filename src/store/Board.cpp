@@ -113,21 +113,6 @@ Card_Board* Board::pCard_Board(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* clear all marks                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vClearAllMarks(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
-
-  i8 nMainCards = m_pCard_Board->nItems();;
-  for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
-    Card *pMainCard = m_pCard_Board->pGet(i_Main);
-
-    pMainCard->vClearAllMarks();
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Board::vDuplicateBoard(Board* pBoard_arg)
@@ -136,36 +121,6 @@ void Board::vDuplicateBoard(Board* pBoard_arg)
 
   for (i8 i_Main_arg = 0; i_Main_arg < pBoard_arg->m_pCard_Board->nItems(); i_Main_arg++)
     vAppendMain( m_pCard_Board->pGetChild(i_Main_arg)->pDupCardAndSubCards());
-}
-
-/*----------------------------------------------------------------------------*/
-/* find i_Main of given main card                                             */
-/*----------------------------------------------------------------------------*/
-i8 Board::iFindMain(Card* pMainCard)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
-
-  i8 nMainCards = m_pCard_Board->nItems();
-  for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
-    Card* pTestCard = m_pCard_Board->pGetChild(i_Main);
-
-    if (pTestCard == pMainCard)
-      return i_Main;
-  }
-
-  return C_UNKNOWN;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card* Board::pFindMain(eCK eCard)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
-
-  Card* pMainCard = m_pCard_Board->pFindSubCard(eCard);
-
-  return pMainCard;
 }
 
 /*----------------------------------------------------------------------------*/

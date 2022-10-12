@@ -296,7 +296,7 @@ void Card::vCard(eCK eCard)
 /*----------------------------------------------------------------------------*/
 /* clear all marks                                                            */
 /*----------------------------------------------------------------------------*/
-void Card::vClearAllMarks(void)
+void Card::vClearMarksRecursive(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -307,7 +307,7 @@ void Card::vClearAllMarks(void)
   for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
     Card *pSubCard = pGetChild(i_Sub);
 
-    pSubCard->vClearAllMarks();
+    pSubCard->vClearMarksRecursive();
   }
 
 }

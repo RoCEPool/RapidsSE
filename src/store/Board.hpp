@@ -147,12 +147,8 @@ namespace STORE
     CardCtl* pCardCtl(void);
     Card_Board* pCard_Board(void);
 
-    void vClearAllMarks(void);
-
     void vDuplicateBoard(Board* pBoard_arg);
 
-    i8    iFindMain(Card* pMainCard);
-    Card* pFindMain(eCK eCard);
     Card_Table* pFindTableCard(char cTableSyn, Card*& rpMainCard);
 
     void vInsertMainCard_after(Card* pNewMainCard, Card* pAfterMainCard, bool bRenumber=true);

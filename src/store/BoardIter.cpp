@@ -322,7 +322,7 @@ void BoardIter::vSet(Card* pCurrMain)
 {
   _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
 
-  m_i_Child = m_pBoard->iFindMain(pCurrMain);
+  m_i_Child = m_pCard_Board->iFindChild(pCurrMain);
 
   if (C_UNKNOWN == m_i_Child)
     m_pCurrChild = nullptr;

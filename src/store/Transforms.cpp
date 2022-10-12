@@ -470,7 +470,7 @@ void Transforms::vCompute_coPtnJoinList(void)
   m_pBoard_partition->vAppendMain(m_p_coPtnJoinList);
 
   m_p_coPtnPredList =
-      _pCard_CoPtnPredList(m_pBoard_partition->pFindMain(CK_COPTNPREDLIST));
+      _pCard_CoPtnPredList(_board_->pFindChild(CK_COPTNPREDLIST));
 
 
   i8 nChildren = m_p_coPtnPredList->nChildCards();
@@ -511,9 +511,9 @@ void Transforms::vCompute_coPtnPredList(void)
   m_pBoard_partition->vAppendMain(m_p_coPtnPredList);
 
   m_p_tableList =
-      _pCard_TableList(m_pBoard_partition->pFindMain(CK_TABLELIST));
+      _pCard_TableList(_board_->pFindChild(CK_TABLELIST));
   m_p_joinPredList =
-      _pCard_JoinPredList(m_pBoard_partition->pFindMain(CK_JOINPREDLIST));
+      _pCard_JoinPredList(_board_->pFindChild(CK_JOINPREDLIST));
 
   i8 nJoinPreds = m_p_joinPredList->nChildCards();
   for (i8 i_joinPred = 0; i_joinPred < nJoinPreds; i_joinPred++) {
@@ -555,7 +555,7 @@ void Transforms::vCompute_crossPtnJoinList(void)
   // crossPtnJoinList
 
   m_p_joinPredList =
-      _pCard_JoinPredList(m_pBoard_partition->pFindMain(CK_JOINPREDLIST));
+      _pCard_JoinPredList(_board_->pFindChild(CK_JOINPREDLIST));
 
   m_p_crossPtnJoinList = new Card_CrossPtnJoinList;
   m_pBoard_partition->vAppendMain(m_p_crossPtnJoinList);
@@ -598,13 +598,13 @@ void Transforms::vCompute_ptndJoinSet(void)
   m_pBoard_partition->vAppendMain(m_p_ptndJoinSet);
 
   m_p_coPtnJoinList =
-      _pCard_CoPtnJoinList(m_pBoard_partition->pFindMain(CK_COPTNJOINLIST));
+      _pCard_CoPtnJoinList(_board_->pFindChild(CK_COPTNJOINLIST));
   m_p_subSet = m_p_coPtnJoinList->pDupSubCards();
   m_p_ptndJoinSet->vTransferChildren(m_p_subSet);
   DELETE_CARD(m_p_subSet);
 
   m_p_crossPtnJoinList =
-      _pCard_CrossPtnJoinList(m_pBoard_partition->pFindMain(CK_CROSSPTNJOINLIST));
+      _pCard_CrossPtnJoinList(_board_->pFindChild(CK_CROSSPTNJOINLIST));
   m_p_subSet = m_p_crossPtnJoinList->pDupSubCards();
   m_p_ptndJoinSet->vTransferChildren(m_p_subSet);
   DELETE_CARD(m_p_subSet);
@@ -648,7 +648,7 @@ void Transforms::vConvertAll_idxColNm_To_streamColOrd(void)
   vTransformation(BK_QUERY,(char*)(__func__));
   vExplain("Blah"_Stz);
 
-  m_pBoard->vClearAllMarks();
+  _board_->vClearMarksRecursive();
 
   BoardIter xBI(m_pBoard);
 
@@ -681,7 +681,7 @@ void Transforms::vCopy_ptndJoinSet(void)
   m_pBench->pCardCtl()->vNextHorizon(CK_PERMUTATION, true);
 
   m_p_ptndJoinSet =
-      _pCard_PtndJoinSet(m_pBoard_partition->pFindMain(CK_PTNDJOINSET));
+      _pCard_PtndJoinSet(_board_->pFindChild(CK_PTNDJOINSET));
 
   m_pBoard_permute->vAppendMain(new Card_Comment("PERMUTATIONS"_Stz));
 
@@ -1020,7 +1020,7 @@ void Transforms::vEstimate_ptndJoins(void)
   vExplain("Blah"_Stz);
 
   m_p_tableList =
-      _pCard_TableList(m_pBoard_partition->pFindMain(CK_TABLELIST));
+      _pCard_TableList(_board_->pFindChild(CK_TABLELIST));
 
 
   BoardIter xBI(m_pBoard_costEst);
@@ -1299,7 +1299,7 @@ void Transforms::vInsert_indexJoin_IntoAll_table(void)
   vTransformation(BK_QUERY,(char*)(__func__));
   vExplain("Blah"_Stz);
 
-  m_pBoard->vClearAllMarks();
+  _board_->vClearMarksRecursive();
 
   BoardIter xBI(m_pBoard);
 

@@ -172,7 +172,7 @@ namespace STORE
     i8   iCardNo(void);
     void vCardNo(i8 iCardNo);
     i8   nChildCards(void);
-    void vClearAllMarks(void);
+    void vClearMarksRecursive(void);
     void vCopyProperties(Card* pFrom);
 
     void vDeleteChild(eCK eCard);
