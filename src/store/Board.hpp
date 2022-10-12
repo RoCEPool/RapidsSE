@@ -148,7 +148,7 @@ namespace STORE
 
     void vPinCards(Ribbon* pRibbon, Stz* szTransformation=nullptr, Stz* szExplain=nullptr);
   
-    void vPrintBoard(Stz* szCue=nullptr, Stz* szExplain=nullptr);
+    void vPrintBoard(Stz* szCue=nullptr, Stz* szExplain=nullptr, Stz* szShort=nullptr);
 
   private:
       Footer* aFooter(void);

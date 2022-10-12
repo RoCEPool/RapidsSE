@@ -41,7 +41,7 @@ void Modifications::vCullAll(eCK eCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  while (I_bEachMain(eCard)) {
+  while (E_bEachMain(eCard)) {
     _deck_->vReplaceChildWithItsSubs(m_pMainCard);
     DELETE_CARD(m_pMainCard);
   }
@@ -54,7 +54,7 @@ void Modifications::vDeleteAll(eCK eCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  while (I_bEachMain(eCard))
+  while (E_bEachMain(eCard))
     m_pM->vRemoveDeleteCurr(eCard);
 
   vRenumberMainCards();
@@ -75,7 +75,7 @@ void Modifications::vRenumberMainCards(void)
 /*----------------------------------------------------------------------------*/
 /* convert <calc> to <calcBool>                                               */
 /*----------------------------------------------------------------------------*/
-void Modifications::R_vReplaceSub(Card* pInCard, Card* pSub, Card* pWith)
+void Modifications::R_vReplaceSub(Card* pSub, Card* pInCard, Card* pWith)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 

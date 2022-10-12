@@ -183,7 +183,7 @@ void Board::vPinCards(Ribbon* pRibbon, Stz* szTransformation, Stz* szExplain)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vPrintBoard(Stz* szCue, Stz* szExplain)
+void Board::vPrintBoard(Stz* szCue, Stz* szExplain, Stz* szShort)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
@@ -212,6 +212,10 @@ void Board::vPrintBoard(Stz* szCue, Stz* szExplain)
   delete pRibbon;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if (szShort && *szShort->azChar())
+    printf("%s\n",(char*)szShort);
+
   if (! bCue)
     return;
   if (! szCue)

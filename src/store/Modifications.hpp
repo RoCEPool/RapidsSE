@@ -25,7 +25,7 @@ namespace STORE
     void vDeleteAll(eCK eCard);
     void vRenumberMainCards(void);
 
-    void R_vReplaceSub(Card* pInCard, Card* pSub, Card* pWith);
+    void R_vReplaceSub(Card* pSub, Card* pInCard, Card* pWith);
 
     void X_calc_To_calcBool(void);
 

@@ -300,7 +300,7 @@ void Transforms::vAppend_tablePtn_UnderAll_table(void)
   vTransformation(BK_QUERY,(char*)(__func__));
   vExplain("Blah"_Stz);
 
-  while (I_bEachMain(CK_TABLE)) {
+  while (E_bEachMain(CK_TABLE)) {
     //m_p_tablePtn = new Card_TablePtn;
     N_vNewMember(CK_TABLEPTN);
     m_p_tablePtn->vAdd_TablePtn(m_p_table);
@@ -620,20 +620,22 @@ void Transforms::vCompute_ptndJoinSet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert all <filter> from calc form to calcBool                            */
+/* convert each <filter>//<calc> into //<calcBool>                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vConvert_calc_OfAll_where_To_calcBool(void)
+void Transforms::vConvert_calc_OfEach_where_To_calcBool(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__));
-  vExplain("Blah"_Stz);
+  vExplain("convert each <filter>//<calc> into //<calcBool> "_Stz);
 
-  while (I_bEachMain(CK_FILTER,CK_CALC)) {
+  while (E_bEachMain(CK_FILTER, CK_CALC)) {
     X_calc_To_calcBool();
-    R_vReplaceSub(m_p_filter,m_p_calc,m_p_calcBool);
+    R_vReplaceSub(m_p_calc,m_p_filter,m_p_calcBool);
     D_vDeleteMember(m_p_calc);
   }
+
+  vShort("E <where>//<calc> { //<calc> X-> //<calcBool> }"_Stz);
 
   vEndTransformation();
   vPrintBoard();
@@ -732,7 +734,7 @@ void Transforms::vCullAll_scan(void)
   vTransformation(BK_QUERY,(char*)(__func__),true);
   vExplain("Blah"_Stz);
 
-//  while (I_bEachMain(CK_SCAN)) {
+//  while (E_bEachMain(CK_SCAN)) {
 //    _deck_->vReplaceChildWithItsSubs(m_pMainCard);
 //    DELETE_CARD(m_pMainCard);
 //  }
@@ -887,18 +889,18 @@ void Transforms::vDeleteAll_Duplicate_stage(void)
 
   Card_Stage* p_stage_CURR = nullptr;
 
-  while (I_bEachMain(CK_STAGE)) {
+  while (E_bEachMain(CK_STAGE)) {
     if (! p_stage_CURR || !m_p_stage->bEquivalentTo(p_stage_CURR))   {
       p_stage_CURR = m_p_stage;
       continue;
     }
-    I_vRemoveDelete(CK_STAGE);
+    E_vRemoveDelete(CK_STAGE);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   m_pM->vRestart();
-  while (I_bEachMain(CK_STAGE)) {
+  while (E_bEachMain(CK_STAGE)) {
     if (! (m_p_stageTopo = m_p_stage->pSub_stageTopo()) )
       continue;
     if (YG_ALL_PARTITIONS == (eYG) m_p_stageTopo->Y_iVal(P_StageTopo))

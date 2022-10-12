@@ -99,6 +99,7 @@ namespace STORE
     Card_Where*            m_p_where;
 
     s256 m_sExplain;
+    s256 m_sShort;
 
   public:
     void* operator new(size_t);
@@ -121,8 +122,9 @@ namespace STORE
     void vSetPrintProperties(eCK eCard, bool bPrintProperties);
     void vSetPrintSubCards(eCK eCard, bool bPrintSubCards);
 
-    void vTransformation(eBK eBoard, char* azTranformation, bool bPrintTransformation=true);
+    void vShort(Stz* szShort);
 
+    void vTransformation(eBK eBoard, char* azTranformation, bool bPrintTransformation=true);
 
   protected:
     void vSetupCostEstBoard(void);
@@ -137,10 +139,10 @@ namespace STORE
     void N_vNewMember(eCK eCard, Stz* szValue);
     void U_vSetMember(eCK eCard, Card* pCard);
 
-    bool I_bEachMember(void);
-    bool I_bEachMain(eCK eOfKind);
-    bool I_bEachMain(eCK eOfKind, eCK eThatsHasSub);
-    void I_vRemoveDelete(eCK eCrossCheck);
+    bool E_bEachMember(void);
+    bool E_bEachMain(eCK eOfKind);
+    bool E_bEachMain(eCK eOfKind, eCK eSuchSubHas);
+    void E_vRemoveDelete(eCK eCrossCheck);
 
     bool S_bSearchMember(eCK eMember, eCK eForSubCard);
     bool S_bSearchMember(Card* pMember, eCK eForSubCard);

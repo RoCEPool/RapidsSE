@@ -187,13 +187,16 @@ void TransformerTool::vPrintBoard(void)
 
   if (m_bPrintTransformation) {
     if (m_bInteractive)
-      m_pBoard->vPrintBoard(m_sTranformation.szStz(), m_sExplain);
+      m_pBoard->vPrintBoard(m_sTranformation.szStz(),
+                            m_sExplain,
+                            m_sShort);
   }
   else {
     vTrace("SILENT : %s\n"_Stz,m_sTranformation.szStz());
   }
 
   m_sExplain = ""_Stz;
+  m_sShort = ""_Stz;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -218,6 +221,16 @@ void TransformerTool::vSetPrintProperties(eCK eCard, bool bPrintProperties)
 void TransformerTool::vSetPrintSubCards(eCK eCard, bool bPrintSubCards)
 {
   m_pCardCtl->vPrintSubCards(eCard,bPrintSubCards);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set explain                                                                */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::vShort(Stz* szShort)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  m_sShort = szShort;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -491,7 +504,7 @@ void TransformerTool::U_vSetMember(eCK eCard, Card* pCard)
 /*----------------------------------------------------------------------------*/
 /* step to next main and set member                                           */
 /*----------------------------------------------------------------------------*/
-bool TransformerTool::I_bEachMember(void)
+bool TransformerTool::E_bEachMember(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
@@ -509,7 +522,7 @@ bool TransformerTool::I_bEachMember(void)
 /*----------------------------------------------------------------------------*/
 /* step to next main and set member                                           */
 /*----------------------------------------------------------------------------*/
-bool TransformerTool::I_bEachMain(eCK eOfKind)
+bool TransformerTool::E_bEachMain(eCK eOfKind)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
@@ -525,20 +538,20 @@ bool TransformerTool::I_bEachMain(eCK eOfKind)
 /*----------------------------------------------------------------------------*/
 /* step to next main and set member                                           */
 /*----------------------------------------------------------------------------*/
-bool TransformerTool::I_bEachMain(eCK eOfKind, eCK eThatsHasSub)
+bool TransformerTool::E_bEachMain(eCK eOfKind, eCK eSuchSubHas)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
   while (Card* pMain = m_pM->pEachMain(eOfKind)) {
-    if (Card* pSubCard = pMain->pFindSubCard(eThatsHasSub)) {
+    if (Card* pSubCard = pMain->pFindSubCard(eSuchSubHas)) {
       U_vSetMember(eOfKind, pMain);
-      U_vSetMember(eThatsHasSub, pSubCard);
+      U_vSetMember(eSuchSubHas, pSubCard);
       return true;
     }
   }
 
   U_vSetMember(eOfKind, nullptr);
-  U_vSetMember(eThatsHasSub, nullptr);
+  U_vSetMember(eSuchSubHas, nullptr);
 
   return false;
 }
@@ -546,7 +559,7 @@ bool TransformerTool::I_bEachMain(eCK eOfKind, eCK eThatsHasSub)
 /*----------------------------------------------------------------------------*/
 /* step to next main and set member                                           */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::I_vRemoveDelete(eCK eCrossCheck)
+void TransformerTool::E_vRemoveDelete(eCK eCrossCheck)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 

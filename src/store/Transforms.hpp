@@ -38,7 +38,7 @@ namespace STORE
     void vCompute_crossPtnJoinList(void);
     void vCompute_ptndJoinSet(void);
     void vConvertAll_idxColNm_To_streamColOrd(void);
-    void vConvert_calc_OfAll_where_To_calcBool(void);
+    void vConvert_calc_OfEach_where_To_calcBool(void);
     void vCopy_ptndJoinSet(void);
     void vCullAll_filterPred_Of_indexJoin(void);
     void vCullAll_scan(void);
