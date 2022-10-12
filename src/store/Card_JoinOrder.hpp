@@ -22,7 +22,6 @@ namespace STORE
 
   Card_JoinOrder* _pCard_JoinOrder(void* aAddr);
   bool _bIsCard_JoinOrder(void* aAddr);
-  Card_JoinOrder* _pSub_JoinOrder(Card* pParent);
 }
 
 /*============================================================================*/

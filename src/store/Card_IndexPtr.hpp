@@ -26,7 +26,6 @@ namespace STORE
 
   Card_IndexPtr* _pCard_IndexPtr(void* aAddr);
   bool _bIsCard_IndexPtr(void* aAddr);
-  Card_IndexPtr* _pSub_IndexPtr(Card * pParent);
 }
 
 /*============================================================================*/

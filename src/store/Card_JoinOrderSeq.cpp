@@ -20,7 +20,6 @@ __aNewFunction(Card_JoinOrderSeq,CN_CARD)
 __vDeleteFunction(Card_JoinOrderSeq,CN_CARD)
 
 __bIsCard(STORE,Card_JoinOrderSeq,CK_JOINORDERSEQ)
-__pSubFunction_Card(STORE,JoinOrderSeq,CK_JOINORDERSEQ)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
