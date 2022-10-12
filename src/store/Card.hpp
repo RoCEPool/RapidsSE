@@ -27,7 +27,7 @@ namespace STORE
   class Card_Aggregates;
   class Card_As;
 
-  class Card_Board;
+  class Card_Deck;
 
   class Card_Calc;
   class Card_CalcBool;

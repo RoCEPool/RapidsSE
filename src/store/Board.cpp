@@ -38,7 +38,7 @@ Board::Board(eBK eBoard, eBT eBoardType, Bench* pBench)
 
   m_pOptimiser   = m_pBench->pOptimiser();
 
-  m_pCard_Board  = new Card_Board;
+  m_pCard_Board  = new Card_Deck;
 
   m_bBeenCued = false;
 
@@ -92,7 +92,7 @@ CardCtl* Board::pCardCtl(void)
 /*----------------------------------------------------------------------------*/
 /* get card subSet                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Board* Board::pCard_Board(void)
+Card_Deck* Board::pCard_Board(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 

@@ -15,8 +15,6 @@ enum eCK // card kind
   /* */ CK_ANDPRED,
   /* */ CK_AS,
 
-  /* */ CK_BOARD,
-
   /* */ CK_CALC,
   /* */ CK_CALCBOOL,
   /* */ CK_CANDINDEX,
@@ -34,6 +32,7 @@ enum eCK // card kind
   /* */ CK_CROSSPTNPRED,
 
   /* */ CK_DEBUG,
+  /* */ CK_DECK,
   /* */ CK_DIRECTION,
 
   /* */ CK_EBOUND,
@@ -123,8 +122,6 @@ static Stz* aCK[]
   /* */ "CK_ANDPRED"_Stz,      // CK_ANDPRED
   /* */ "CK_AS"_Stz,           // CK_AS
 
-  /* */ "CK_BOARD"_Stz,        // CK_BOARD
-
   /* */ "CK_CALC"_Stz,         // CK_CALC
   /* */ "CK_CALCBOOL"_Stz,     // CK_CALCBOOL
   /* */ "CK_CANDINDEX"_Stz,    // CK_CANDINDEX
@@ -142,6 +139,7 @@ static Stz* aCK[]
   /* */ "CK_CROSSPTNPRED"_Stz, // CK_CROSSPTNPRED
 
   /* */ "CK_DEBUG"_Stz,        // CK_DEBUG
+  /* */ "CK_DECK"_Stz,         // CK_DECK
   /* */ "CK_DIRECTION"_Stz,    // CK_DIRECTION
 
   /* */ "CK_EBOUND"_Stz,       // CK_EBOUND
@@ -231,8 +229,6 @@ static Stz* aCK_short[]
   /* */ "andPred"_Stz,         // CK_ANDPRED
   /* */ "as"_Stz,              // CK_AS
 
-  /* */ "board"_Stz,           // CK_BOARD
-
   /* */ "calc"_Stz,            // CK_CALC
   /* */ "calcBool"_Stz,        // CK_CALCBOOL
   /* */ "candIndex"_Stz,       // CK_CANDINDEX
@@ -250,6 +246,7 @@ static Stz* aCK_short[]
   /* */ "crossPtnPred"_Stz,    // CK_CROSSPTNPRED
 
   /* */ "debug"_Stz,           // CK_DEBUG
+  /* */ "deck"_Stz,            // CK_DECK
   /* */ "direction"_Stz,       // CK_DIRECTION
 
   /* */ "ebound"_Stz,          // CK_EBOUND

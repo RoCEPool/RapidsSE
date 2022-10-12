@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_Board.hpp -- Board                                                    */
+/* Card_Deck.hpp -- Deck of Cards                                             */
 /*============================================================================*/
 #pragma once
 
@@ -7,19 +7,19 @@
 
 namespace STORE
 {
-  class Card_Board : public Card
+  class Card_Deck : public Card
   {  
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Board(void);
-   ~Card_Board(void) noexcept(false);
+    Card_Deck(void);
+   ~Card_Deck(void) noexcept(false);
   };
 
-  Card_Board* _pCard_Board(void* aAddr);
-  bool _bIsCard_Board(void* aAddr);
-  Card_Board* _pSub_Board(Card* pParent);
+  Card_Deck* _pCard_Deck(void* aAddr);
+  bool _bIsCard_Deck(void* aAddr);
+  Card_Deck* _pSub_Deck(Card * pParent);
 }
 
 /*============================================================================*/

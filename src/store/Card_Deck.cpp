@@ -1,25 +1,25 @@
 /*============================================================================*/
-/* Card_Board.cpp -- Board                                                    */
+/* Card_Deck.cpp -- Board                                                    */
 /*============================================================================*/
 
-#include "Card_Board.hpp"
+#include "Card_Deck.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_Board,CK_BOARD)
-__aNewFunction(Card_Board,CN_CARD)
-__vDeleteFunction(Card_Board,CN_CARD)
+__pCastFunction_Card(STORE, Card_Deck, CK_DECK)
+__aNewFunction(Card_Deck, CN_CARD)
+__vDeleteFunction(Card_Deck, CN_CARD)
 
-__bIsCard(STORE,Card_Board,CK_BOARD)
-__pSubFunction_Card(STORE,Board,CK_BOARD)
+__bIsCard(STORE, Card_Deck, CK_DECK)
+__pSubFunction_Card(STORE, Deck, CK_DECK)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Board::Card_Board(void)
-: Card(CK_BOARD)
+Card_Deck::Card_Deck(void)
+: Card(CK_DECK)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -32,7 +32,7 @@ Card_Board::Card_Board(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_Board::~Card_Board(void) noexcept(false)
+Card_Deck::~Card_Deck(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

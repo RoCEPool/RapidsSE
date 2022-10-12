@@ -42,7 +42,7 @@ void Modifications::vCullAll(eCK eCard)
   _precondition_(_ADDRESS_,_MAGIC_);
 
   while (I_bEach_mainCard_(eCard)) {
-    _board_->vReplaceChildWithItsSubs(m_pMainCard);
+    _deck_->vReplaceChildWithItsSubs(m_pMainCard);
     DELETE_CARD(m_pMainCard);
   }
 }
@@ -69,7 +69,7 @@ void Modifications::vRenumberMainCards(void)
 
   //m_pBoard->vRenumberMainCards();
 
-  _board_->vRenumberRecursive();
+  _deck_->vRenumberRecursive();
 }
 
 

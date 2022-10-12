@@ -240,7 +240,7 @@ void TransformerTool::vTransformation(eBK eBoard,
 
   RASSERT(eBoard == m_pBoard->eBoard());
 
-  _board_ = m_pBoard->pCard_Board();
+  _deck_ = m_pBoard->pCard_Board();
   m_pBoardIter->vRestart();
 
   m_sTranformation = azTranformation;

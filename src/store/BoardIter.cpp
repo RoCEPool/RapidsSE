@@ -5,7 +5,7 @@
 #include "Board.hpp"
 
 #include "BoardIter.hpp"
-#include "Card_Board.hpp"
+#include "Card_Deck.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

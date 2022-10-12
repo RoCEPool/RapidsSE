@@ -10,7 +10,7 @@ namespace STORE
   class CardMembers
   {
   protected:
-    Card_Board* _board_;
+    Card_Deck* _deck_;
 
     Card* m_pChildCard;
     i8    m_i_Child;
