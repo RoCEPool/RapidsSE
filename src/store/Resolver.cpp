@@ -63,8 +63,8 @@ void Resolver::vResolve_streamColOrdinal_To_tableColOrdinal
     if (! (m_p_stream = m_pMainCard->pSub_stream()))
       continue;
 
-    i8 iOrdLo = m_p_stream->Y_iVal(PPY_OrdLo);
-    i8 iOrdHi = m_p_stream->Y_iVal(PPY_OrdHi);
+    i8 iOrdLo = m_p_stream->Y_iVal(P_OrdLo);
+    i8 iOrdHi = m_p_stream->Y_iVal(P_OrdHi);
 
     if (! (iStreamColNo >= iOrdLo && iStreamColNo <= iOrdHi) )
       continue;
@@ -72,7 +72,7 @@ void Resolver::vResolve_streamColOrdinal_To_tableColOrdinal
     i8 iTableColNo = iStreamColNo - iOrdLo + 1;
 
     m_p_table = m_pMainCard->pSub_table();
-    char cTableSyn = m_p_table->Y_cVal(PPY_TableSyn);
+    char cTableSyn = m_p_table->Y_cVal(P_TableSyn);
 
     Card_Term::vTableColOrd(psTableColOrd, cTableSyn, iTableColNo);
   }

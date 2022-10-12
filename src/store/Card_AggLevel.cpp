@@ -22,7 +22,7 @@ Card_AggLevel::Card_AggLevel(eAL eAggLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Y_vSet(PPY_AggLevel, (i8)eAggLevel);
+  Y_vSet(P_AggLevel, (i8)eAggLevel);
   
   _checkInitialised_(CN_CARD);
   

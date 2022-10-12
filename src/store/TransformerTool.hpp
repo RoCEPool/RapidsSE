@@ -36,7 +36,6 @@ namespace STORE
 
     eCK m_eMainCard;
     eCK m_eNextMain;
-    eYG m_eStageTopo;
 
     BoardIter* m_pM;
 
@@ -84,9 +83,7 @@ namespace STORE
     Card_ScanPred*         m_p_scanPred;
     Card_Sort*             m_p_sort;
     Card_Stage*            m_p_stage;
-    Card_Stage*            m_p_stage_b;
     Card_StageTopo*        m_p_stageTopo;
-    Card_StageTopo*        m_p_stageTopo_b;
     Card_Stream*           m_p_stream;
     Card_StreamColList*    m_p_streamColList;
     Card_SubSet*           m_p_subSet;

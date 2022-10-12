@@ -46,7 +46,7 @@ i8 Card_CandIndex::iRank(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  i8 iRank = Y_iVal(PPY_Rank);
+  i8 iRank = Y_iVal(P_Rank);
 
   return iRank;
 }
@@ -58,7 +58,7 @@ void Card_CandIndex::vRank(i8 iRank)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Y_vSet(PPY_Rank, iRank);
+  Y_vSet(P_Rank, iRank);
 }
 
 

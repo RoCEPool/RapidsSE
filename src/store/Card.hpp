@@ -98,26 +98,26 @@ namespace STORE
   class Card_Unique;
 }
 
-static Stz* PPY_AggLevel     = "eAggLevel"_Stz;
-static Stz* PPY_AggOp        = "bAggOp"_Stz;
-static Stz* PPY_Card         = "pCard"_Stz;
-static Stz* PPY_DebugOption  = "szDebugOption"_Stz;
-static Stz* PPY_Exclude      = "bExclude"_Stz;
-static Stz* PPY_Index        = "pIndex"_Stz;
-static Stz* PPY_Invalid      = "bInvalid"_Stz;
-static Stz* PPY_JoinedBuff   = "nJoinedBuff"_Stz;
-static Stz* PPY_Network      = "nNetwork"_Stz;
-static Stz* PPY_OrdHi        = "iOrdHi"_Stz;
-static Stz* PPY_OrdLo        = "iOrdLo"_Stz;
-static Stz* PPY_Permutation  = "i_Permutation"_Stz;
-static Stz* PPY_PtndJoin     = "i_PtndJoin"_Stz;
-static Stz* PPY_Rank         = "iRank"_Stz;
-static Stz* PPY_SendKind     = "eSendKind"_Stz;
-static Stz* PPY_SentOut      = "nSentOut"_Stz;
-static Stz* PPY_StageTopo    = "eStageTopo"_Stz;
-static Stz* PPY_Table        = "pTable"_Stz;
-static Stz* PPY_TableSyn     = "cTableSyn"_Stz;
-static Stz* PPY_TableUsed    = "bTableUsed"_Stz;
+static Stz* P_AggLevel     = "eAggLevel"_Stz;
+static Stz* P_AggOp        = "bAggOp"_Stz;
+static Stz* P_Card         = "pCard"_Stz;
+static Stz* P_DebugOption  = "szDebugOption"_Stz;
+static Stz* P_Exclude      = "bExclude"_Stz;
+static Stz* P_Index        = "pIndex"_Stz;
+static Stz* P_Invalid      = "bInvalid"_Stz;
+static Stz* P_JoinedBuff   = "nJoinedBuff"_Stz;
+static Stz* P_Network      = "nNetwork"_Stz;
+static Stz* P_OrdHi        = "iOrdHi"_Stz;
+static Stz* P_OrdLo        = "iOrdLo"_Stz;
+static Stz* P_Permutation  = "i_Permutation"_Stz;
+static Stz* P_PtndJoin     = "i_PtndJoin"_Stz;
+static Stz* P_Rank         = "iRank"_Stz;
+static Stz* P_SendKind     = "eSendKind"_Stz;
+static Stz* P_SentOut      = "nSentOut"_Stz;
+static Stz* P_StageTopo    = "eStageTopo"_Stz;
+static Stz* P_Table        = "pTable"_Stz;
+static Stz* P_TableSyn     = "cTableSyn"_Stz;
+static Stz* P_TableUsed    = "bTableUsed"_Stz;
 
 namespace STORE
 {

@@ -64,7 +64,7 @@ void Card_TablePtn::vAdd_TablePtn(Card_Table* p_table)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  char cTableSyn = p_table->Y_cVal(PPY_TableSyn);
+  char cTableSyn = p_table->Y_cVal(P_TableSyn);
 
   Card_TablePtr* p_tablePtr = p_table->pSub_tablePtr();
   Table* pTable = p_tablePtr->pTable();

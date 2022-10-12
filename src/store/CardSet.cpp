@@ -155,7 +155,7 @@ Card_Table* CardSet::pFindTableCard(char cTableSyn, Card*& rpMainCard)
     if (! p_table)
       continue;
 
-    if (cTableSyn == p_table->Y_cVal(PPY_TableSyn))
+    if (cTableSyn == p_table->Y_cVal(P_TableSyn))
       return p_table;
   }
 

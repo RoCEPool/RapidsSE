@@ -22,7 +22,7 @@ Card_StageTopo::Card_StageTopo(eYG eStageTopo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Y_vSet(PPY_StageTopo, (i8)eStageTopo);
+  Y_vSet(P_StageTopo, (i8)eStageTopo);
   
   _checkInitialised_(CN_CARD);
   

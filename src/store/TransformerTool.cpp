@@ -33,7 +33,6 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
 
   m_eMainCard      = CK_NONE;
   m_eNextMain      = CK_NONE;
-  m_eStageTopo     = YG_NONE;
 
   m_pM = new BoardIter(m_pBoard);
 
@@ -81,9 +80,7 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_p_scanPred         = nullptr;
   m_p_sort             = nullptr;
   m_p_stage            = nullptr;
-  m_p_stage_b          = nullptr;
   m_p_stageTopo        = nullptr;
-  m_p_stageTopo_b      = nullptr;
   m_p_stream           = nullptr;
   m_p_streamColList    = nullptr;
   m_p_subSet           = nullptr;

@@ -287,7 +287,7 @@ Card* Dissector::pCard_Debug(TagSet* pArgTags)
   Stz* szOption = szArgCheckLast(pArgTags,0);
   Card_Debug* pCard_Debug = new Card_Debug;
 
-  pCard_Debug->Y_vSet(PPY_DebugOption, szOption);
+  pCard_Debug->Y_vSet(P_DebugOption, szOption);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -585,7 +585,7 @@ Card* Dissector::pCard_Send(TagSet* pArgTags)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // eSendKind
 
-  pCard_Send->Y_vSet(PPY_SendKind, (i8)eSendKind);
+  pCard_Send->Y_vSet(P_SendKind, (i8)eSendKind);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -889,7 +889,7 @@ Card_Calc* Dissector::pExprCalc(Card_RpnTerms* pCard_RpnTerms)
     }
 
     if (pCard_Term_popped->bIsAggOp())
-      pCard_ExprCalc->Y_vSet(PPY_AggOp);
+      pCard_ExprCalc->Y_vSet(P_AggOp);
 
     pCard_ExprCalc->vAppend(pCard_Term_popped);
   }
