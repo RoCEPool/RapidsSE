@@ -60,7 +60,6 @@ if [ -n "${ARCHIVE_METRICS}" ] && [ "${ARCHIVE_METRICS}" -ne 0 ] && [ "${ARCHIVE
 fi
 
 
-
 # Check the environment:
   # Do we have pyenv setup to virtualise python?
 if [ -f "${PYENV_EXE}" ]; then

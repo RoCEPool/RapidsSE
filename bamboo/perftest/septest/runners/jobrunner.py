@@ -79,6 +79,9 @@ class JobRunner:
         # username. e.g. "craig.mcintyre"
         self.invoking_user: str = invoking_user
 
+        # True if we are running a regression build, or False for a performance experiment
+        self.is_regr: bool = self.all_configs.get_job().get_is_regression()
+
         # Do we want to collect and save the metrics in bamboo afterwards?
         self.archive_metrics = archive_metrics
 
@@ -216,6 +219,7 @@ class JobRunner:
                                                  self.git_hash,
                                                  self.git_branch,
                                                  self.invoking_user,
+                                                 self.is_regr,
                                                  self.tags)
 
         self.job_result_id = job_result_id
