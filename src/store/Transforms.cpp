@@ -274,7 +274,7 @@ void Transforms::vAdd_stages(void)
         iStage++;
 
         m_p_stageTopo = m_p_stage->pSub_stageTopo();
-        m_eStageTopo = m_p_stageTopo->eStageTopo();
+        m_eStageTopo = (eYG)m_p_stageTopo->iPpy(PPY_StageTopo);
         break;
 
       default:
@@ -301,7 +301,7 @@ void Transforms::vAppend_tablePtn_UnderAll_table(void)
   vTransformation(BK_QUERY,(char*)(__func__));
   vExplain("Blah"_Stz);
 
-  while (I_bEach_mainCard_(CK_TABLE)) {
+  while (I_bEach_main_(CK_TABLE)) {
     //m_p_tablePtn = new Card_TablePtn;
     A_vNew_card(CK_TABLEPTN);
     m_p_tablePtn->vAdd_TablePtn(m_p_table);
@@ -731,7 +731,7 @@ void Transforms::vCullAll_scan(void)
   vTransformation(BK_QUERY,(char*)(__func__),true);
   vExplain("Blah"_Stz);
 
-//  while (I_bEach_mainCard_(CK_SCAN)) {
+//  while (I_bEach_main_(CK_SCAN)) {
 //    _deck_->vReplaceChildWithItsSubs(m_pMainCard);
 //    DELETE_CARD(m_pMainCard);
 //  }
@@ -921,6 +921,50 @@ void Transforms::vDeleteAll_EmptySub_filter(void)
     delete pCard_filter_sub;
   }
 
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/* linearize stages by deleting all duplicate stages                          */
+/*----------------------------------------------------------------------------*/
+void Transforms::vDeleteAll_Duplicate_stage(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransformation(BK_QUERY,(char*)(__func__),false);
+  vExplain("Linearize all the stages"_Stz);
+
+  //_deck_->vDump();
+
+  Card_Stage* p_stage_CURR = nullptr;
+
+  while (I_bEach_main_(CK_STAGE)) {
+    if (! p_stage_CURR || !m_p_stage->bEquivalentTo(p_stage_CURR))   {
+      p_stage_CURR = m_p_stage;
+      continue;
+    }
+    I_vRemoveDelete_main_(CK_STAGE);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  m_pBI->vRestart();
+  while (I_bEach_main_(CK_STAGE)) {
+    if (! (m_p_stageTopo = m_p_stage->pSub_stageTopo()) )
+      continue;
+    if (YG_ALL_PARTITIONS == (eYG)m_p_stageTopo->iPpy(PPY_StageTopo))
+      continue;
+
+    m_p_stage->vPpy_nameOnly(PPY_Exclude);
+  }
+
+  _deck_->vRenumberRecursive();
+
+  vSetPrintSubCards(CK_AGGELIST, false);
+  vSetPrintSubCards(CK_GBYELIST, false);
+  vSetPrintSubCards(CK_PROJELIST, false);
+
+  vEndTransformation();
   vPrintBoard();
 }
 
@@ -1330,53 +1374,6 @@ void Transforms::vInsert_indexJoin_UnderAll_table(void)
   //m_pCardCtl->vPrintFormSubCards(CK_STREAM, CP_DEFAULT, true);
   vSetPrintSubCards(CK_FILTER, false);
   vSetPrintSubCards(CK_STREAM, false);
-
-  vPrintBoard();
-}
-
-/*----------------------------------------------------------------------------*/
-/* linearize stages                                                           */
-/*----------------------------------------------------------------------------*/
-void Transforms::vLinearizeAll_stage(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vTransformation(BK_QUERY,(char*)(__func__),false);
-  vExplain("Linearize all the stages"_Stz);
-
-  if (! (m_p_stage = _pCard_Stage(m_pBI->pEachMain(CK_STAGE))))
-    goto L_Exit;
-  if (! (m_p_stageTopo = m_p_stage->pSub_stageTopo()) )
-    goto L_Exit;
-  if (YG_ALL_PARTITIONS != m_p_stageTopo->eStageTopo())
-    goto L_Exit;
-
-  while ((m_p_stage_b = _pCard_Stage(m_pBI->pEachMain(CK_STAGE)))) {
-    if (! (m_p_stageTopo_b = m_p_stage_b->pSub_stageTopo()) )
-      break;
-    if (YG_ALL_PARTITIONS != m_p_stageTopo_b->eStageTopo())
-      break;
-    m_pBI->vRemoveDeleteCurr(CK_STAGE);
-  }
-
-  L_Exit:
-
-  m_pBI->vRestart();
-  while ((m_p_stage = _pCard_Stage(m_pBI->pEachMain(CK_STAGE)))) {
-    if (! (m_p_stageTopo = m_p_stage->pSub_stageTopo()) )
-      continue;
-    if (YG_ALL_PARTITIONS == m_p_stageTopo->eStageTopo())
-      continue;
-
-    m_p_stage->vPpy_nameOnly(PPY_Exclude);
-  }
-
-
-  _deck_->vRenumberRecursive();
-
-  vSetPrintSubCards(CK_AGGELIST, false);
-  vSetPrintSubCards(CK_GBYELIST, false);
-  vSetPrintSubCards(CK_PROJELIST, false);
 
   vPrintBoard();
 }

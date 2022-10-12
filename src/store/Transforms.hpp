@@ -59,7 +59,7 @@ namespace STORE
     void vGenerate_ptndPermutations(void);
     void vIndividuate_filter(void);
     void vInsert_indexJoin_UnderAll_table(void);
-    void vLinearizeAll_stage(void);
+    void vDeleteAll_Duplicate_stage(void);
     void vMark_scan_pred_bounds(void);
     void vMark_scan_pred_ordinals(void);
     void vMoveAll_cmpPred_To_table(void);

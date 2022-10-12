@@ -22,7 +22,7 @@ Card_StageTopo::Card_StageTopo(eYG eStageTopo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vStageTopo(eStageTopo);
+  vPpy_int(PPY_StageTopo,eStageTopo);
   
   _checkInitialised_(CN_CARD);
   
@@ -41,28 +41,6 @@ Card_StageTopo::~Card_StageTopo(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get stage topology                                                         */
-/*----------------------------------------------------------------------------*/
-eYG Card_StageTopo::eStageTopo(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  eYG eStageTopo = (eYG)iPpy(PPY_StageTopo);
-
-  return eStageTopo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set stage topology                                                         */
-/*----------------------------------------------------------------------------*/
-void Card_StageTopo::vStageTopo(eYG  eStageTopo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  vPpy_int(PPY_StageTopo,eStageTopo);
-}
 
 
 /*============================================================================*/

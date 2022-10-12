@@ -182,7 +182,7 @@ namespace STORE
     Card* pDupCardAndSubCards(void);
     Card_SubSet* pDupSubCards(void);
 
-    bool bEquivalent(Card* pToCard);
+    bool bEquivalentTo(Card* pCard_OTHER);
 
     Card* pFindParent(Card* pSubCard);
 

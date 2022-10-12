@@ -162,6 +162,14 @@ eCK TransformerTool::eDecodeMain(Card* pCard)
 }
 
 /*----------------------------------------------------------------------------*/
+/* record transformation                                                      */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::vEndTransformation(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* set explain                                                                */
 /*----------------------------------------------------------------------------*/
 void TransformerTool::vExplain(Stz* szExplain)
@@ -348,7 +356,7 @@ bool TransformerTool::I_bEach_mainCard_(void)
 /*----------------------------------------------------------------------------*/
 /* step to next main and set member                                           */
 /*----------------------------------------------------------------------------*/
-bool TransformerTool::I_bEach_mainCard_(eCK eCard)
+bool TransformerTool::I_bEach_main_(eCK eCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
@@ -359,6 +367,16 @@ bool TransformerTool::I_bEach_mainCard_(eCK eCard)
   vSetMember(eCard,m_pMainCard);
 
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* step to next main and set member                                           */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::I_vRemoveDelete_main_(eCK eCrossCheck)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  m_pBI->vRemoveDeleteCurr(eCrossCheck);
 }
 
 

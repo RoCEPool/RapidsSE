@@ -466,16 +466,23 @@ Card_SubSet* Card::pDupSubCards(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this card equivalent to given arg?                                      */
+/* is this card equivalent to some other card?                                */
 /*----------------------------------------------------------------------------*/
-bool Card::bEquivalent(Card* pToCard)
+bool Card::bEquivalentTo(Card* pCard_OTHER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  TagSet* pProperties_arg = pToCard->pProperties();
-  if (m_pProperties) {
-    if (pProperties_arg) {
-      if (! m_pProperties->bSame(pProperties_arg))
+
+  Card* pCard_THIS = this;
+
+  if (pCard_OTHER->eCard() != pCard_THIS->eCard())
+    return false;
+
+  TagSet* pProperties_THISCARD  = m_pProperties;
+  TagSet* pProperties_OTHERCARD = pCard_OTHER->pProperties();
+
+  if (pProperties_THISCARD) {
+    if (pProperties_OTHERCARD) {
+      if (! pProperties_THISCARD->bSame(pProperties_OTHERCARD))
         return false;
     }
     else {
@@ -483,24 +490,26 @@ bool Card::bEquivalent(Card* pToCard)
     }
   }
   else
-  if (pProperties_arg) {
+  if (pProperties_OTHERCARD) {
     return false;
   }
   else {
     RASSERT(! m_pProperties);
-    RASSERT(! pProperties_arg);
+    RASSERT(! pProperties_OTHERCARD);
   }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  eCK eSubCard;
-  i8 nSubCards = this->nChildCards();
-  for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
-    Card* pSubCard = pGetChild(i_Sub, eSubCard);
+  eCK eChild_THISCARD;
+  i8 nChildren_THISCARD = pCard_THIS->nChildCards();
+  for (i8 i_Child = 0; i_Child < nChildren_THISCARD; i_Child++) {
+    Card* pChild_THISCARD = pCard_THIS->pGetChild(i_Child, eChild_THISCARD);
     
-    Card* pSubCard_arg = pToCard->pFindSubCard(eSubCard);
-    if (! pSubCard_arg)
+    Card* pChild_OTHERCARD = pCard_OTHER->pFindSubCard(eChild_THISCARD);
+    if (! pChild_OTHERCARD)
       return false;
 
-    if (! pSubCard->bEquivalent(pSubCard_arg))
+    if (!pChild_THISCARD->bEquivalentTo(pChild_OTHERCARD))
       return false;
   }
   

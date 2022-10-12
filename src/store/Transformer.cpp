@@ -99,7 +99,7 @@ void Transformer::vTransform3(void)
   // QUERY BOARD -- preliminaries
 
   // combine {{==<stage>}}->{<stage>}
-  m_pTransforms->vLinearizeAll_stage();
+  m_pTransforms->vDeleteAll_Duplicate_stage();
 
   // delete *<absJoin>
   m_pTransforms->vDeleteAll_absJoin();

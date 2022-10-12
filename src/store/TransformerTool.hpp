@@ -112,6 +112,8 @@ namespace STORE
 
     eCK   eDecodeMain(Card* pCard);
 
+    void vEndTransformation(void);
+
     void vExplain(Stz* szExplain);
 
     void vPrintBoard(void);
@@ -133,7 +135,8 @@ namespace STORE
     void A_vNew_card(eCK eCard, Stz* szValue);
 
     bool I_bEach_mainCard_(void);
-    bool I_bEach_mainCard_(eCK eCard);
+    bool I_bEach_main_(eCK eCard);
+    void I_vRemoveDelete_main_(eCK eCrossCheck);
 
     void vSetMember(eCK eCard, Card* pCard);
   };

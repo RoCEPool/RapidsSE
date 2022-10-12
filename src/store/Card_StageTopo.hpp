@@ -15,9 +15,6 @@ namespace STORE
   
     Card_StageTopo(eYG eStageTopo);
    ~Card_StageTopo(void) noexcept(false);
-
-    eYG  eStageTopo(void);
-    void vStageTopo(eYG  eStageTopology);
   };
 
   Card_StageTopo* _pCard_StageTopo(void* aAddr);

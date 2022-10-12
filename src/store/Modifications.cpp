@@ -41,7 +41,7 @@ void Modifications::vCullAll(eCK eCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  while (I_bEach_mainCard_(eCard)) {
+  while (I_bEach_main_(eCard)) {
     _deck_->vReplaceChildWithItsSubs(m_pMainCard);
     DELETE_CARD(m_pMainCard);
   }
@@ -54,7 +54,7 @@ void Modifications::vDeleteAll(eCK eCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  while (I_bEach_mainCard_(eCard))
+  while (I_bEach_main_(eCard))
     m_pBI->vRemoveDeleteCurr(eCard);
 
   vRenumberMainCards();
