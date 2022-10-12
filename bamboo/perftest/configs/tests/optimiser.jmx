@@ -15,7 +15,7 @@ c6idd.16xlarge</stringProp>
         <collectionProp name="Arguments.arguments">
           <elementProp name="JDBC_URL" elementType="Argument">
             <stringProp name="Argument.name">JDBC_URL</stringProp>
-            <stringProp name="Argument.value">${__P(JDBC_URL,jdbc:rapidsse:/opt/rapidsse/bin/rapidsse?extraargs=&quot;--name NODE1 --sen ../sen --commands ../commands --appendTrace&quot;)}</stringProp>
+            <stringProp name="Argument.value">${__P(JDBC_URL,jdbc:rapidsse:/opt/rapidsse/bin/rapidsse?extraargs=&quot;--name NODE1 --sen ../sen --commands ../commands&quot;)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="SF" elementType="Argument">
@@ -240,7 +240,7 @@ c6idd.16xlarge</stringProp>
         <hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="debugMarker" enabled="true">
             <stringProp name="dataSource">SEConnPool</stringProp>
-            <stringProp name="query">print *** Creating tables ***;</stringProp>
+            <stringProp name="query">print &apos;*** Creating tables ***&apos;;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="queryTimeout"></stringProp>
@@ -488,7 +488,7 @@ group by
           </hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="debugMarker" enabled="true">
             <stringProp name="dataSource">SEConnPool</stringProp>
-            <stringProp name="query">print *** Creating indexes ***;</stringProp>
+            <stringProp name="query">print &apos;*** Creating indexes ***&apos;;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="queryTimeout"></stringProp>
@@ -609,7 +609,7 @@ group by
           </hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="debugMarker" enabled="true">
             <stringProp name="dataSource">SEConnPool</stringProp>
-            <stringProp name="query">print *** Preparing TPC-H Data ***;</stringProp>
+            <stringProp name="query">print &apos;*** Preparing TPC-H Data ***&apos;;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="queryTimeout"></stringProp>
@@ -709,7 +709,7 @@ If the --partitionsPerDisk option is given then there are multiple files per dis
           </hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="debugMarker" enabled="true">
             <stringProp name="dataSource">SEConnPool</stringProp>
-            <stringProp name="query">print *** Loading TPC-H Data ***;</stringProp>
+            <stringProp name="query">print &apos;*** Loading TPC-H Data ***&apos;;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="queryTimeout"></stringProp>
@@ -970,7 +970,7 @@ dload lineitem paths
           </hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="debugMarker" enabled="true">
             <stringProp name="dataSource">SEConnPool</stringProp>
-            <stringProp name="query">print *** Validating TPC-H Data ***;</stringProp>
+            <stringProp name="query">print &apos;*** Validating TPC-H Data ***&apos;;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="queryTimeout"></stringProp>
@@ -1233,7 +1233,7 @@ dload lineitem paths
         <hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="debugMarker" enabled="true">
             <stringProp name="dataSource">SEConnPool</stringProp>
-            <stringProp name="query">print *** About to start P1Loop ***;</stringProp>
+            <stringProp name="query">print &apos;*** About to start P1Loop ***&apos;;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="queryTimeout"></stringProp>
@@ -1341,7 +1341,7 @@ end ;</stringProp>
           </hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="debugMarker" enabled="true">
             <stringProp name="dataSource">SEConnPool</stringProp>
-            <stringProp name="query">print *** About to start P3Loop ***;</stringProp>
+            <stringProp name="query">print &apos;*** About to start P3Loop ***&apos;;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="queryTimeout"></stringProp>
@@ -1428,7 +1428,7 @@ create index IxC_CUSTKEY   ON Customer (C_CUSTKEY)   ;</stringProp>
           </hashTree>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="debugMarker" enabled="true">
             <stringProp name="dataSource">SEConnPool</stringProp>
-            <stringProp name="query">print *** About to start P16Loop ***;</stringProp>
+            <stringProp name="query">print &apos;*** About to start P16Loop ***&apos;;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="queryTimeout"></stringProp>
