@@ -10,23 +10,15 @@ namespace STORE
   class CardMembers
   {
   protected:
+
     Card_Deck* _deck_;
 
     Card* m_pChildCard;
-    i8    m_i_Child;
-
     Card* m_pDupCard;
-
     Card* m_pMainCard;
-    i8    m_i_Main;
-
     Card* m_pNewCard;
-
     Card* m_pNextMain;
-    i8    m_i_Next;
-
     Card* m_pPoppedCard;
-    i8    m_i_Popped;
 
     Card_AbsJoin*          m_p_absJoin;
     Card_Aggreg*           m_p_aggreg;

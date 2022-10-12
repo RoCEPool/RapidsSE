@@ -939,7 +939,7 @@ void Transforms::vEstimate_joinOrder(void)
   BoardIter xBI(m_pBoard_costEst);
 
   while ((m_p_permutation =
-              _pCard_Permutation(xBI.pEachMain(CK_PERMUTATION,m_i_Main)))) {
+              _pCard_Permutation(xBI.pEachMain(CK_PERMUTATION)))) {
     i8 iNetwork = m_p_permutation->iPpy(PPY_Network);
     if (iNetwork >= iLowestNetwork)
       continue;
@@ -951,8 +951,8 @@ void Transforms::vEstimate_joinOrder(void)
   m_p_joinOrderSeq->vPpy_int(PPY_Network,iLowestNetwork);
 
   xBI.vSet(m_p_permutation_low);
-  while ((m_pMainCard = xBI.pEachMain(m_i_Main,m_eMainCard))) {
-    if (CK_PTNDJOIN != m_eMainCard)
+  while ((m_pMainCard = xBI.pEachMain())) {
+    if (CK_PTNDJOIN != m_pMainCard->eCard())
       break;
 
     m_p_ptndJoin = _pCard_PtndJoin(m_pMainCard);
@@ -1057,8 +1057,8 @@ void Transforms::vExtract_joinOrderSeq(void)
   BoardIter xBI(m_pBoard_costEst);
 
   xBI.vSet(m_p_permutation_low);
-  while ((m_pMainCard = xBI.pEachMain(m_i_Main,m_eMainCard))) {
-    if (CK_PTNDJOIN != m_eMainCard)
+  while ((m_pMainCard = xBI.pEachMain())) {
+    if (CK_PTNDJOIN != m_pMainCard->eCard())
       break;
 
     m_p_ptndJoin = _pCard_PtndJoin(m_pMainCard);

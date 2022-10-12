@@ -103,20 +103,6 @@ Card* BoardIter::pEachMain(eCK eCard)
 {
   _precondition_( _MAGIC_, CN_BOARDITER, _FOOTER_);
 
-  i8 i_Main;
-
-  Card* pMain = pEachMain(eCard, i_Main);
-
-  return pMain;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card* BoardIter::pEachMain(eCK eCard, i8& ri_Main)
-{
-  _precondition_( _MAGIC_, CN_BOARDITER, _FOOTER_);
-
   if (C_UNKNOWN == m_i_Child)
     m_i_Child = 0;
   else
@@ -126,7 +112,6 @@ Card* BoardIter::pEachMain(eCK eCard, i8& ri_Main)
 
     if (m_i_Child >= m_pCard_Board->nChildCards()) {
       m_pCurrChild = nullptr;
-      ri_Main = C_UNKNOWN;
       return nullptr;
     }
 
@@ -134,40 +119,12 @@ Card* BoardIter::pEachMain(eCK eCard, i8& ri_Main)
 
     eCK eCardMain = m_pCurrChild->eCard();
     if (eCardMain == eCard) {
-      ri_Main = m_i_Child;
       return m_pCurrChild;
     }
     m_i_Child++;
   }
 
   NEVER_REACH
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card* BoardIter::pEachMain(i8& ri_Main, eCK& reCard)
-{
-  _precondition_( _MAGIC_, CN_BOARDITER, _FOOTER_);
-
-  if (C_UNKNOWN == m_i_Child)
-    m_i_Child = 0;
-  else
-    m_i_Child++;
-
-  if (m_i_Child >= m_pCard_Board->nChildCards()) {
-    m_pCurrChild = nullptr;
-    ri_Main = C_UNKNOWN;
-    reCard = CK_NONE;
-    return nullptr;
-  }
-
-  m_pCurrChild =  m_pCard_Board->pGetChild(m_i_Child);
-
-  reCard = m_pCurrChild->eCard();
-  ri_Main = m_i_Child;
-
-  return m_pCurrChild;
 }
 
 /*----------------------------------------------------------------------------*/

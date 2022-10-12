@@ -30,8 +30,6 @@ namespace STORE
     Card* pEachMain(void);
     Card* pEachMain(i8& ri_Main);
     Card* pEachMain(eCK eCard);
-    Card* pEachMain(eCK eCard, i8& ri_Main);
-    Card* pEachMain(i8& ri_Main, eCK& reCard);
 
     Card* pNextMain(void);
     Card* pNextMainIf(eCK eCard);
