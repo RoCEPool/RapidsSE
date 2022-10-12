@@ -102,15 +102,15 @@ void Card_PtndJoin::vJoinEst(Card_TableList* p_tableList)
       Card_CmpPred *p_predCmp =
           _pCard_CmpPred(this->pGetChild(i_PredCmp));
 
-      if (p_predCmp->bUsesTable(p_table->cPpy(PPY_TableSyn))) {
+      if (p_predCmp->bUsesTable(p_table->Y_cVal(PPY_TableSyn))) {
         nJoinedBuff += p_table->pGet_tablePtr()->pTable()->pStreamDef()->jTableSize();
-        p_table->vPpy_nameOnly(PPY_TableUsed);
+        p_table->Y_vSet(PPY_TableUsed);
       }
     }
 
   }
 
-  vPpy_int(PPY_JoinedBuff,nJoinedBuff);
+  Y_vSet(PPY_JoinedBuff, nJoinedBuff);
 }
 
 /*============================================================================*/

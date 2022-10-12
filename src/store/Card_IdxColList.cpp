@@ -87,7 +87,7 @@ void Card_IdxColList::vOrdinate(Card_Stream* pCard_Stream)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  i8 iOrdLo = pCard_Stream->iPpy(PPY_OrdLo);
+  i8 iOrdLo = pCard_Stream->Y_iVal(PPY_OrdLo);
 
   Card_StreamColList* pCard_StreamColList = pCard_Stream->pSub_streamColList();
 

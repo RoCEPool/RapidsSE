@@ -38,7 +38,7 @@ namespace STORE
     eCK m_eNextMain;
     eYG m_eStageTopo;
 
-    BoardIter* m_pBI;
+    BoardIter* m_pM;
 
     Card_Deck* _deck_;
 
@@ -134,9 +134,9 @@ namespace STORE
     void A_vNew_card(eCK eCard);
     void A_vNew_card(eCK eCard, Stz* szValue);
 
-    bool I_bEach_mainCard_(void);
-    bool I_bEach_main_(eCK eCard);
-    void I_vRemoveDelete_main_(eCK eCrossCheck);
+    bool M_bEach_mainCard_(void);
+    bool M_bEach_main_(eCK eCard);
+    void M_vRemoveDelete_main_(eCK eCrossCheck);
 
     void vSetMember(eCK eCard, Card* pCard);
   };

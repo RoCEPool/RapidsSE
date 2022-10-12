@@ -147,7 +147,7 @@ Card_StreamCol* Card_Stream::pGet_streamCol(i8 i_Col)
 
   Card_StreamColList* pCard_StreamColList = pGet_streamColList();
 
-  i8 iOrdLo = iPpy(PPY_OrdLo);
+  i8 iOrdLo = Y_iVal(PPY_OrdLo);
   i8 i_ColNo = i_Col - iOrdLo;
   Card_StreamCol* pCard_StreamCol = pCard_StreamColList->pGet_streamCol(i_ColNo);
 
@@ -203,7 +203,7 @@ void Card_Stream::vStreamPrint(Ribbon* pRibbon, i8 iDepth)
 
   if (bHasProperty(PPY_OrdLo))
     sName.vCatSprint(" $%lld,%lld"_Stz,
-                     iPpy(PPY_OrdLo), iPpy(PPY_OrdHi));
+                     Y_iVal(PPY_OrdLo), Y_iVal(PPY_OrdHi));
 
   vPrintCard_byCustomNm(pRibbon, iDepth, sName);
 }

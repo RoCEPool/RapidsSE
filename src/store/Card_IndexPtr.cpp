@@ -65,7 +65,7 @@ Index* Card_IndexPtr::pIndex(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Index* pIndex = _pIndex(pPpy(PPY_Index));
+  Index* pIndex = _pIndex(Y_pVal(PPY_Index));
 
   return pIndex;
 }
@@ -77,7 +77,7 @@ void Card_IndexPtr::vIndex(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vPpy_ptr(PPY_Index,pIndex);
+  Y_vSet(PPY_Index, pIndex);
 }
 
 

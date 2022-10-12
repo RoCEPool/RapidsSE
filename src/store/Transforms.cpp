@@ -274,7 +274,7 @@ void Transforms::vAdd_stages(void)
         iStage++;
 
         m_p_stageTopo = m_p_stage->pSub_stageTopo();
-        m_eStageTopo = (eYG)m_p_stageTopo->iPpy(PPY_StageTopo);
+        m_eStageTopo = (eYG) m_p_stageTopo->Y_iVal(PPY_StageTopo);
         break;
 
       default:
@@ -301,7 +301,7 @@ void Transforms::vAppend_tablePtn_UnderAll_table(void)
   vTransformation(BK_QUERY,(char*)(__func__));
   vExplain("Blah"_Stz);
 
-  while (I_bEach_main_(CK_TABLE)) {
+  while (M_bEach_main_(CK_TABLE)) {
     //m_p_tablePtn = new Card_TablePtn;
     A_vNew_card(CK_TABLEPTN);
     m_p_tablePtn->vAdd_TablePtn(m_p_table);
@@ -333,7 +333,7 @@ void Transforms::vCalc_tableSyn_ForAll_table(void)
     char cTableSyn_actual = cTableSyn;
     if (m_pTable->bIsReplicated())
       cTableSyn_actual += 'A'-'a';
-    m_p_table->vPpy_chr(PPY_TableSyn,cTableSyn_actual);
+    m_p_table->Y_vSet(PPY_TableSyn, cTableSyn_actual);
 
     cTableSyn++;
   }
@@ -441,9 +441,9 @@ void Transforms::vCalc_ordinalRanges_ForAll_stream(void)
 
     // <scan>/<stream>:iOrdLo,iOrdHi
     nStreamCols = m_p_stream->nStreamCols();
-    m_p_stream->vPpy_int(PPY_OrdLo,iOrdLo);
+    m_p_stream->Y_vSet(PPY_OrdLo, iOrdLo);
     iOrdHi = iOrdLo + nStreamCols - 1;
-    m_p_stream->vPpy_int(PPY_OrdHi,iOrdHi);
+    m_p_stream->Y_vSet(PPY_OrdHi, iOrdHi);
     iOrdLo = iOrdHi + 1;
 
   }
@@ -613,7 +613,7 @@ void Transforms::vCompute_ptndJoinSet(void)
   for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
     m_pChildCard = m_p_ptndJoinSet->pGetChild(i_Child);
     m_pChildCard->vCard(CK_PTNDJOIN);
-    m_pChildCard->vPpy_int(PPY_PtndJoin,i_Child);
+    m_pChildCard->Y_vSet(PPY_PtndJoin, i_Child);
   }
 
   if (m_bInteractive)
@@ -731,7 +731,7 @@ void Transforms::vCullAll_scan(void)
   vTransformation(BK_QUERY,(char*)(__func__),true);
   vExplain("Blah"_Stz);
 
-//  while (I_bEach_main_(CK_SCAN)) {
+//  while (M_bEach_main_(CK_SCAN)) {
 //    _deck_->vReplaceChildWithItsSubs(m_pMainCard);
 //    DELETE_CARD(m_pMainCard);
 //  }
@@ -925,37 +925,37 @@ void Transforms::vDeleteAll_EmptySub_filter(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* linearize stages by deleting all duplicate stages                          */
+/* linearize board by deleting all duplicate stages                          */
 /*----------------------------------------------------------------------------*/
 void Transforms::vDeleteAll_Duplicate_stage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__),false);
-  vExplain("Linearize all the stages"_Stz);
+  vExplain("linearize board by deleting all duplicate stages"_Stz);
 
   //_deck_->vDump();
 
   Card_Stage* p_stage_CURR = nullptr;
 
-  while (I_bEach_main_(CK_STAGE)) {
+  while (M_bEach_main_(CK_STAGE)) {
     if (! p_stage_CURR || !m_p_stage->bEquivalentTo(p_stage_CURR))   {
       p_stage_CURR = m_p_stage;
       continue;
     }
-    I_vRemoveDelete_main_(CK_STAGE);
+    M_vRemoveDelete_main_(CK_STAGE);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  m_pBI->vRestart();
-  while (I_bEach_main_(CK_STAGE)) {
+  m_pM->vRestart();
+  while (M_bEach_main_(CK_STAGE)) {
     if (! (m_p_stageTopo = m_p_stage->pSub_stageTopo()) )
       continue;
-    if (YG_ALL_PARTITIONS == (eYG)m_p_stageTopo->iPpy(PPY_StageTopo))
+    if (YG_ALL_PARTITIONS == (eYG) m_p_stageTopo->Y_iVal(PPY_StageTopo))
       continue;
 
-    m_p_stage->vPpy_nameOnly(PPY_Exclude);
+    m_p_stage->Y_vSet(PPY_Exclude);
   }
 
   _deck_->vRenumberRecursive();
@@ -984,7 +984,7 @@ void Transforms::vEstimate_joinOrder(void)
 
   while ((m_p_permutation =
               _pCard_Permutation(xBI.pEachMain(CK_PERMUTATION)))) {
-    i8 iNetwork = m_p_permutation->iPpy(PPY_Network);
+    i8 iNetwork = m_p_permutation->Y_iVal(PPY_Network);
     if (iNetwork >= iLowestNetwork)
       continue;
     m_p_permutation_low = m_p_permutation;
@@ -992,7 +992,7 @@ void Transforms::vEstimate_joinOrder(void)
   }
 
   _deck_->vAppendMain((m_p_joinOrderSeq = new Card_JoinOrderSeq));
-  m_p_joinOrderSeq->vPpy_int(PPY_Network,iLowestNetwork);
+  m_p_joinOrderSeq->Y_vSet(PPY_Network, iLowestNetwork);
 
   xBI.vSet(m_p_permutation_low);
   while ((m_pMainCard = xBI.pEachMain())) {
@@ -1028,7 +1028,7 @@ void Transforms::vEstimate_network(void)
     eCK eCard = m_pMainCard->eCard();
     if (CK_PERMUTATION == eCard) {
       if (m_p_permutation)
-        m_p_permutation->vPpy_int(PPY_Network, nNetwork);
+        m_p_permutation->Y_vSet(PPY_Network, nNetwork);
       m_p_permutation = _pCard_Permutation(m_pMainCard);
 
       m_p_ptndJoin = nullptr;
@@ -1038,16 +1038,16 @@ void Transforms::vEstimate_network(void)
     else
     if (CK_PTNDJOIN == eCard) {
       if (m_p_ptndJoin) {
-        nSentOut += m_p_ptndJoin->iPpy(PPY_JoinedBuff);
+        nSentOut += m_p_ptndJoin->Y_iVal(PPY_JoinedBuff);
         nNetwork += nSentOut;
-        m_p_ptndJoin->vPpy_int(PPY_SentOut, nSentOut);
+        m_p_ptndJoin->Y_vSet(PPY_SentOut, nSentOut);
       }
       m_p_ptndJoin = _pCard_PtndJoin(m_pMainCard);
     }
   }
 
   if (m_p_permutation)
-    m_p_permutation->vPpy_int(PPY_Network, nNetwork);
+    m_p_permutation->Y_vSet(PPY_Network, nNetwork);
 
   if (m_bInteractive)
     m_pBoard_costEst->vPrintBoard();
@@ -1213,8 +1213,8 @@ void Transforms::vFormAll_joinPred_of_indexJoin(void)
     // one of {pCard_term_0,pCard_term_1} is $In
 
     m_p_stream = m_p_table->pSub_stream();
-    i8 iStreamOrdLo = m_p_stream->iPpy(PPY_OrdLo);
-    i8 iStreamOrdHi = m_p_stream->iPpy(PPY_OrdHi);
+    i8 iStreamOrdLo = m_p_stream->Y_iVal(PPY_OrdLo);
+    i8 iStreamOrdHi = m_p_stream->Y_iVal(PPY_OrdHi);
 
     i8 i_iOrdLo_0 = m_p_term_0->iStreamColNo();
     i8 i_iOrdLo_1 = m_p_term_1->iStreamColNo();
@@ -1267,7 +1267,7 @@ void Transforms::vGenerate_ptndPermutations(void)
 
   while (m_pPermGen->bNextPermutation()) {
     _deck_->vAppendMain((m_p_permutation = new Card_Permutation));
-    m_p_permutation->vPpy_int(PPY_Permutation,m_pPermGen->nPermutations()-1);
+    m_p_permutation->Y_vSet(PPY_Permutation, m_pPermGen->nPermutations() - 1);
 
     RASSERT(0 == m_p_subSet->nChildCards());
     for (i8 i_Item = 0; i_Item < m_pPermGen->nItems(); i_Item++) {
@@ -1278,7 +1278,7 @@ void Transforms::vGenerate_ptndPermutations(void)
       m_p_ptndJoin = _pCard_PtndJoin(m_pChildCard);
       if (! m_p_ptndJoin->bMayFollowAfter(m_p_subSet)) {
         _deck_->vAppendMain(new Card_Comment("**DOESN'T FOLLOW**"_Stz));
-        m_p_permutation->vPpy_nameOnly(PPY_Invalid);
+        m_p_permutation->Y_vSet(PPY_Invalid);
         break;
       }
       m_p_subSet->vAppend(m_pChildCard);
@@ -1573,7 +1573,7 @@ void Transforms::vRemove_invalidPermutations(void)
     }
 
     if (! m_pMainCard->bHasProperty(PPY_Invalid)) {
-      m_pMainCard->vPpy_int(PPY_Permutation,i_Permutation++);
+      m_pMainCard->Y_vSet(PPY_Permutation, i_Permutation++);
       i_Main++;
       continue;
     }
@@ -1777,7 +1777,7 @@ char Transforms::cAssignPredToTable(Card_Table* pCard_table, Card_PRED* pCard_PR
 
   // are all $n of <pred> in this <stream>?
   if (pCard_stream->bContainsPred(pCard_PRED)) {
-    char cTableSyn = pCard_table->cPpy(PPY_TableSyn);
+    char cTableSyn = pCard_table->Y_cVal(PPY_TableSyn);
     return cTableSyn;
   }
 

@@ -87,7 +87,7 @@ Table* Card_TablePtr::pTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Table* pTable = _pTable(pPpy(PPY_Table));
+  Table* pTable = _pTable(Y_pVal(PPY_Table));
 
   return pTable;
 }
@@ -99,7 +99,7 @@ void Card_TablePtr::vTable(Table* pTable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vPpy_ptr(PPY_Table,pTable);
+  Y_vSet(PPY_Table, pTable);
 }
 
 /*----------------------------------------------------------------------------*/

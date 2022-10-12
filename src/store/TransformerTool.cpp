@@ -35,7 +35,7 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_eNextMain      = CK_NONE;
   m_eStageTopo     = YG_NONE;
 
-  m_pBI = new BoardIter(m_pBoard);
+  m_pM = new BoardIter(m_pBoard);
 
   _deck_ = nullptr;
 
@@ -110,7 +110,7 @@ TransformerTool::~TransformerTool(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  delete m_pBI;
+  delete m_pM;
   delete m_pPermGen;
 }
 
@@ -233,7 +233,7 @@ void TransformerTool::vTransformation(eBK eBoard,
   RASSERT(eBoard == m_pBoard->eBoard());
 
   _deck_ = m_pBoard->pCard_Deck();
-  m_pBI->vRestart();
+  m_pM->vRestart();
 
   m_sTranformation = azTranformation;
   m_bPrintTransformation = bPrintTransformation;
@@ -338,11 +338,11 @@ void TransformerTool::A_vNew_card(eCK eCard, Stz* szValue)
 /*----------------------------------------------------------------------------*/
 /* step to next main and set member                                           */
 /*----------------------------------------------------------------------------*/
-bool TransformerTool::I_bEach_mainCard_(void)
+bool TransformerTool::M_bEach_mainCard_(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  m_pMainCard = m_pBI->pEachMain();
+  m_pMainCard = m_pM->pEachMain();
   if (! m_pMainCard)
     return false;
 
@@ -356,11 +356,11 @@ bool TransformerTool::I_bEach_mainCard_(void)
 /*----------------------------------------------------------------------------*/
 /* step to next main and set member                                           */
 /*----------------------------------------------------------------------------*/
-bool TransformerTool::I_bEach_main_(eCK eCard)
+bool TransformerTool::M_bEach_main_(eCK eCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  m_pMainCard = m_pBI->pEachMain(eCard);
+  m_pMainCard = m_pM->pEachMain(eCard);
   if (! m_pMainCard)
     return false;
 
@@ -372,11 +372,11 @@ bool TransformerTool::I_bEach_main_(eCK eCard)
 /*----------------------------------------------------------------------------*/
 /* step to next main and set member                                           */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::I_vRemoveDelete_main_(eCK eCrossCheck)
+void TransformerTool::M_vRemoveDelete_main_(eCK eCrossCheck)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  m_pBI->vRemoveDeleteCurr(eCrossCheck);
+  m_pM->vRemoveDeleteCurr(eCrossCheck);
 }
 
 

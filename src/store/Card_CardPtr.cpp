@@ -51,7 +51,7 @@ Card* Card_CardPtr::pCard(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card* pCard = _pCard(pPpy(PPY_Card));
+  Card* pCard = _pCard(Y_pVal(PPY_Card));
 
   return pCard;
 }
@@ -63,7 +63,7 @@ void Card_CardPtr::vCard(Card* pCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vPpy_ptr(PPY_Card,pCard);
+  Y_vSet(PPY_Card, pCard);
 }
 
 

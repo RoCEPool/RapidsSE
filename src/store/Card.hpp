@@ -203,21 +203,21 @@ namespace STORE
     void vMark2(char cMark2);
     void vMoveToLastChild(Card* pChildCard);
 
-    char cPpy(i8 i_Property);
-    char cPpy(Stz* szPpyNm);
-    i8   iPpy(i8 i_Property);
-    i8   iPpy(Stz* szPpyNm);
-    Object* pPpy(i8 i_Property);
-    Object* pPpy(Stz* szPptNm);
-    Stz* szPpy(i8 i_Property);
-    Stz* szPpy(Stz* szPptNm);
-    Stz* szPpyNm(i8 i_Property);
+    Stz* Y_szNm(i8 i_Property);
+    char Y_cVal(i8 i_Property);
+    char Y_cVal(Stz* szPpyNm);
+    i8   Y_iVal(i8 i_Property);
+    i8   Y_iVal(Stz* szPpyNm);
+    Object* Y_pVal(i8 i_Property);
+    Object* Y_pVal(Stz* szPptNm);
+    Stz* Y_szVal(i8 i_Property);
+    Stz* Y_szVal(Stz* szPptNm);
 
-    void vPpy_chr(Stz* szPpyNm, char cPpyVal);
-    void vPpy_int(Stz* szPpyNm, i8 iPpyVal);
-    void vPpy_nameOnly(Stz* szPpyNm);
-    void vPpy_ptr(Stz* szPpyNm, Object* pPpyVal);
-    void vPpy_stz(Stz* szPpyNm, Stz* szPpyVal);
+    void Y_vSet(Stz* szPpyNm, char cPpyVal);
+    void Y_vSet(Stz* szPpyNm, i8 iPpyVal);
+    void Y_vSet(Stz* szPpyNm);
+    void Y_vSet(Stz* szPpyNm, Object* pPpyVal);
+    void Y_vSet(Stz* szPpyNm, Stz* szPpyVal);
 
     void vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth, bool& rbPrune);
     void vPrintCard_byCustomNm(Ribbon* pRibbon, i8 iDepth, Stz* szCustomNm);
