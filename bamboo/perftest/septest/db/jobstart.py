@@ -395,7 +395,7 @@ def __create_cluster_experiment_record(cur: typing.Union[psycopg.Cursor[typing.A
 
         # This cluster configuration is new. We need to insert a row into the database
         sql = "INSERT INTO cluster (clusterName, numNodes, ptnsPerNode, threadsPerNode, sharedMem, " \
-              "partitions, isRegrConfig) " \
+              "params, isRegrConfig) " \
               "VALUES (%s, %s, %s, %s, %s, %s, %s) RETURNING clusterId"
         data = (cluster_config.get_cluster_name(),
                 cluster_config.get_num_nodes(),
