@@ -818,7 +818,7 @@ void Transforms::vCull_sby_SameAs_gby(void)
     m_p_gbyElist = m_p_aggreg->pSub_gbyElist();
     m_p_sbyElist = m_p_sort->pSub_sbyElist();
 
-    if (bRecursivelyTheSame(m_p_gbyElist, m_p_sbyElist)) {
+    if (m_p_gbyElist->bValuesSameRecursive(m_p_sbyElist)) {
       xBI.vRemoveDeleteCurr(CK_SORT);
       break;
     }

@@ -36,18 +36,6 @@ Card_ELIST::~Card_ELIST(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_ELIST:: bSame(Card_ELIST* pCard_ELIST_a, Card_ELIST* pCard_ELIST_b)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  bool bSame = Card::bCardsSameRecursive(pCard_ELIST_a,pCard_ELIST_b);
-
-  return bSame;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 Card_StreamColList* Card_ELIST::pDerive_StreamColList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

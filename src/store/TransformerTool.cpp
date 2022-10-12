@@ -192,18 +192,6 @@ void TransformerTool::vPrintBoard(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* search for parent of given sub card                                        */
-/*----------------------------------------------------------------------------*/
-bool TransformerTool::bRecursivelyTheSame(Card* p_card_a, Card* p_card_b, i8 iDepth, bool bTestL0)
-{
-  _precondition_(_ADDRESS_, _MAGIC_);
-
-  bool bSame = Card::bCardsSameRecursive(p_card_a, p_card_b,iDepth,bTestL0);
-
-  return bSame;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set card print by kind                                                     */
 /*----------------------------------------------------------------------------*/
 void TransformerTool::vSetPrintByKind(eCK eCard, bool bPrintByKind)

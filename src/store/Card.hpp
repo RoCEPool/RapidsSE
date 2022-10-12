@@ -155,8 +155,6 @@ namespace STORE
 
     static  void vCardLeaks(void);
 
-    static  bool bCardsSameRecursive(Card* pCard_a, Card* pCard_b, i8 iDepth=0, bool bTestL0=false);
-
     static eCK  eTo_eCK(Stz* szCardNm);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
@@ -239,6 +237,7 @@ namespace STORE
     Stz* sz(void);
     Stz* szValue(void);
     void vValue(Stz* szValue);
+    bool bValuesSameRecursive(Card* pCard_b, i8 iDepth= 0, bool bTestL0= false);
     void vVisitRecursive(eCK eCard, std::function<bool(Card* pCard)> bfApply);
 
 

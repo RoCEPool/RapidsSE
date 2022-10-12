@@ -154,41 +154,6 @@ void Card::vCardLeaks(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* are the two cards recursively the same                                     */
-/*----------------------------------------------------------------------------*/
-bool Card::bCardsSameRecursive(Card* pCard_a, Card* pCard_b, i8 iDepth, bool bTestL0)
-{
-  _static_
-
-  if (iDepth || (0 == iDepth && bTestL0)) {
-
-    eCK eCard_a = pCard_a->eCard();
-    eCK eCard_b = pCard_b->eCard();
-
-    if (eCard_a != eCard_b)
-      return false;
-
-    if (CK_TERM == eCard_a)
-      if (!pCard_a->sz()->bSame(pCard_a->sz()))
-        return false;
-  }
-
-  i8 nChildren_a = pCard_a->nChildCards();
-  i8 nChildren_b = pCard_b->nChildCards();
-  if (nChildren_a != nChildren_b)
-    return false;
-
-  for (i8 i_Child = 0; i_Child < nChildren_a; i_Child++) {
-    Card* pChild_a = pCard_a->pGetChild(i_Child);
-    Card* pChild_b = pCard_b->pGetChild(i_Child);
-    if (! bCardsSameRecursive(pChild_a,pChild_b,iDepth,bTestL0))
-      return false;
-  }
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* find eCK by card name                                                      */
 /*----------------------------------------------------------------------------*/
 eCK Card::eTo_eCK(Stz* szCardNm)
@@ -1409,6 +1374,41 @@ void Card::vValue(Stz* szValue)
   //RASSERT(! *m_sValue.azChar());
 
   m_sValue = szValue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* are the two cards recursively the same                                     */
+/*----------------------------------------------------------------------------*/
+bool Card::bValuesSameRecursive(Card* pCard_b, i8 iDepth, bool bTestL0)
+{
+  _static_
+
+  if (iDepth || (0 == iDepth && bTestL0)) {
+
+    eCK eCard_a = this->eCard();
+    eCK eCard_b = pCard_b->eCard();
+
+    if (eCard_a != eCard_b)
+      return false;
+
+    if (CK_TERM == eCard_a)
+      if (!this->sz()->bSame(pCard_b->sz()))
+        return false;
+  }
+
+  i8 nChildren_a = this->nChildCards();
+  i8 nChildren_b = pCard_b->nChildCards();
+  if (nChildren_a != nChildren_b)
+    return false;
+
+  for (i8 i_Child = 0; i_Child < nChildren_a; i_Child++) {
+    Card* pChild_a = this->pGetChild(i_Child);
+    Card* pChild_b = pCard_b->pGetChild(i_Child);
+    if (!pChild_a->bValuesSameRecursive(pChild_b, iDepth, bTestL0))
+      return false;
+  }
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
