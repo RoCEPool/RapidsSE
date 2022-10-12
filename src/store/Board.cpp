@@ -124,24 +124,36 @@ void Board::vPinCards(Ribbon* pRibbon, Stz* szTransformation, Stz* szExplain)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pRibbon->vSprint("\n[Board: %s %s] Query=%s Transformation=%s"_Stz,
+//  pRibbon->vSprint("\n[Board: %s %s] Query=%s Transformation=%s"_Stz,
+//                   aBK[m_eBoard],
+//                   aBT[m_eBoardType],
+//                   m_pOptimiser->szQueryNm(),
+//                   szTransformation ? szTransformation : ""_Stz
+//                   );
+//  if (szExplain && *szExplain->azChar()) {
+//    pRibbon->vSprint("Explanation: %s"_Stz, szExplain);
+//    pRibbon->vTitleLines(2);
+//  }
+//  if (szExplain && *szExplain->azChar()) {
+//    pRibbon->vSprint("Explanation: %s"_Stz, szExplain);
+//    pRibbon->vTitleLines(2);
+//  }
+//
+//  else {
+//    pRibbon->vTitleLines(1);
+//  }
+
+  pRibbon->vSprint("\n[Board: %s %s Query=%s] %s"_Stz,
                    aBK[m_eBoard],
                    aBT[m_eBoardType],
                    m_pOptimiser->szQueryNm(),
-                   szTransformation ? szTransformation : ""_Stz
-                   );
-  if (szExplain && *szExplain->azChar()) {
-    pRibbon->vSprint("Explanation: %s"_Stz, szExplain);
-    pRibbon->vTitleLines(2);
-  }
-  else {
-    pRibbon->vTitleLines(1);
-  }
+                   szExplain ? szExplain : ""_Stz);
+
+  pRibbon->vTitleLines(1);
   pRibbon->vSetBase();
   pRibbon->vFirstColumn();
 
   Ribbon* pSubRibbon = new Ribbon(pCardCtl,this,0);
-  
 
   BoardIter xBI(this);
 

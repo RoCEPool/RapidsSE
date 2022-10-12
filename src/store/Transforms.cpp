@@ -50,7 +50,7 @@ void Transforms::vAdd_combined(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__));
-  vExplain("Blah"_Stz);
+  vExplain("((replace with an explanation))"_Stz);
 
   i8 iAggreg    = 0;
   i8 iIndexJoin = 0;
@@ -130,7 +130,7 @@ void Transforms::vAdd_scanPred(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__));
-  vExplain("Blah"_Stz);
+  vExplain("((replace with an explanation))"_Stz);
 
   BoardIter xBI(m_pBoard);
 
@@ -195,7 +195,7 @@ void Transforms::vAdd_stages(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__));
-  vExplain("Blah"_Stz);
+  vExplain("((replace with an explanation))"_Stz);
 
   i8 iFilter    = 0;
   i8 iIndexJoin = 0;
@@ -298,7 +298,7 @@ void Transforms::vAppend_tablePtn_UnderAll_table(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__));
-  vExplain("Blah"_Stz);
+  vExplain("((replace with an explanation))"_Stz);
 
   while (E_bEachMain(CK_TABLE)) {
     //m_p_tablePtn = new Card_TablePtn;
@@ -318,7 +318,7 @@ void Transforms::vCalc_tableSyn_ForAll_table(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__));
-  vExplain("Blah"_Stz);
+  vExplain("((replace with an explanation))"_Stz);
 
   char cTableSyn = 'a';
 
@@ -348,7 +348,7 @@ void Transforms::vAppend_indexList_ToAll_table(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__));
-  vExplain("Blah"_Stz);
+  vExplain("((replace with an explanation))"_Stz);
 
   BoardIter xBI(m_pBoard);
 
@@ -369,7 +369,7 @@ void Transforms::vAppend_stream_UnderAll_table(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__));
-  vExplain("Blah"_Stz);
+  vExplain("((replace with an explanation))"_Stz);
 
   BoardIter xBI(m_pBoard);
 
@@ -407,7 +407,7 @@ void Transforms::vAssignAll_cmpPred_To_table(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__));
-  vExplain("Blah"_Stz);
+  vExplain("((replace with an explanation))"_Stz);
 
   BoardIter xBI(m_pBoard);
 
@@ -426,7 +426,7 @@ void Transforms::vCalc_ordinalRanges_ForAll_stream(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__));
-  vExplain("Blah"_Stz);
+  vExplain("((replace with an explanation))"_Stz);
 
   i8 iOrdLo = 1;
   i8 iOrdHi = C_UNKNOWN;
@@ -458,7 +458,7 @@ void Transforms::vCompute_coPtnJoinList(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__));
-  vExplain("Blah"_Stz);
+  vExplain("((replace with an explanation))"_Stz);
 
   vSetupPartitionBoard();
 
@@ -499,7 +499,7 @@ void Transforms::vCompute_coPtnPredList(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__));
-  vExplain("Blah"_Stz);
+  vExplain("((replace with an explanation))"_Stz);
 
   vSetupPartitionBoard();
 
@@ -546,7 +546,7 @@ void Transforms::vCompute_crossPtnJoinList(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__));
-  vExplain("Blah"_Stz);
+  vExplain("((replace with an explanation))"_Stz);
 
   vSetupPartitionBoard();
 
@@ -586,7 +586,7 @@ void Transforms::vCompute_ptndJoinSet(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__));
-  vExplain("Blah"_Stz);
+  vExplain("((replace with an explanation))"_Stz);
 
   vSetupPartitionBoard();
 
@@ -629,13 +629,12 @@ void Transforms::vConvert_calc_OfEach_where_To_calcBool(void)
   vTransformation(BK_QUERY,(char*)(__func__));
   vExplain("convert each <filter>//<calc> into //<calcBool> "_Stz);
 
+  vShort("E <where>//<calc> { //<calc> X-> //<calcBool> }"_Stz);
   while (E_bEachMain(CK_FILTER, CK_CALC)) {
     X_calc_To_calcBool();
     R_vReplaceSub(m_p_calc,m_p_filter,m_p_calcBool);
     D_vDeleteMember(m_p_calc);
   }
-
-  vShort("E <where>//<calc> { //<calc> X-> //<calcBool> }"_Stz);
 
   vEndTransformation();
   vPrintBoard();
@@ -649,7 +648,7 @@ void Transforms::vConvertAll_idxColNm_To_streamColOrd(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__));
-  vExplain("Blah"_Stz);
+  vExplain("((replace with an explanation))"_Stz);
 
   _deck_->vClearMarksRecursive();
 
@@ -677,7 +676,7 @@ void Transforms::vCopy_ptndJoinSet(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__));
-  vExplain("Blah"_Stz);
+  vExplain("((replace with an explanation))"_Stz);
 
   vSetupPermuteBoard();
 
@@ -707,7 +706,7 @@ void Transforms::vCullAll_filterPred_Of_indexJoin(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__));
-  vExplain("Blah"_Stz);
+  vExplain("((replace with an explanation))"_Stz);
 
   BoardIter xBI(m_pBoard);
 
@@ -732,7 +731,7 @@ void Transforms::vCullAll_scan(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__),true);
-  vExplain("Blah"_Stz);
+  vExplain("((replace with an explanation))"_Stz);
 
 //  while (E_bEachMain(CK_SCAN)) {
 //    _deck_->vReplaceChildWithItsSubs(m_pMainCard);
@@ -749,7 +748,7 @@ void Transforms::vCullAll_scan(void)
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 //
 //  vTransformation(BK_QUERY,(char*)(__func__),true);
-//  vExplain("Blah"_Stz);
+//  vExplain("((replace with an explanation))"_Stz);
 //
 //  Card_Deck* p_board = m_pBoard->pCard_Deck();
 //
@@ -772,7 +771,7 @@ void Transforms::vCull_markedPred(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__));
-  vExplain("Blah"_Stz);
+  vExplain("((replace with an explanation))"_Stz);
 
   BoardIter xBI(m_pBoard);
 
@@ -809,7 +808,7 @@ void Transforms::vCull_sby_SameAs_gby(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__));
-  vExplain("Blah"_Stz);
+  vExplain("((replace with an explanation))"_Stz);
 
   BoardIter xBI(m_pBoard);
 
@@ -838,7 +837,7 @@ void Transforms::vDeleteAll_absJoin(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__),false);
-  vExplain("Blah"_Stz);
+  vExplain("((replace with an explanation))"_Stz);
 
   vDeleteAll(CK_ABSJOIN);
 
@@ -853,7 +852,7 @@ void Transforms::vDeleteAll_combined(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__),false);
-  vExplain("Blah"_Stz);
+  vExplain("((replace with an explanation))"_Stz);
 
   vDeleteAll(CK_COMBINED);
 
@@ -868,7 +867,7 @@ void Transforms::vDeleteAll_send(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__),false);
-  vExplain("Blah"_Stz);
+  vExplain("((replace with an explanation))"_Stz);
 
   vDeleteAll(CK_SEND);
 
@@ -927,7 +926,7 @@ void Transforms::vDeleteAll_Empty_filter(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__));
-  vExplain("Blah"_Stz);
+  vExplain("((replace with an explanation))"_Stz);
 
   BoardIter xBI(m_pBoard);
 
@@ -951,7 +950,7 @@ void Transforms::vDeleteAll_EmptySub_filter(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__));
-  vExplain("Blah"_Stz);
+  vExplain("((replace with an explanation))"_Stz);
 
   BoardIter xBI(m_pBoard);
 
@@ -979,7 +978,7 @@ void Transforms::vEstimate_joinOrder(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__));
-  vExplain("Blah"_Stz);
+  vExplain("((replace with an explanation))"_Stz);
 
   i8 iLowestNetwork = 999999999;
 
@@ -1018,7 +1017,7 @@ void Transforms::vEstimate_network(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__));
-  vExplain("Blah"_Stz);
+  vExplain("((replace with an explanation))"_Stz);
 
   BoardIter xBI(m_pBoard_costEst);
 
@@ -1064,7 +1063,7 @@ void Transforms::vEstimate_ptndJoins(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__));
-  vExplain("Blah"_Stz);
+  vExplain("((replace with an explanation))"_Stz);
 
   m_p_tableList =
       _pCard_TableList(_deck_->pFindChild(CK_TABLELIST));
@@ -1097,7 +1096,7 @@ void Transforms::vExtract_joinOrderSeq(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__));
-  vExplain("Blah"_Stz);
+  vExplain("((replace with an explanation))"_Stz);
 
   _deck_->vAppendMain((m_p_joinOrderSeq = new Card_JoinOrderSeq));
 
@@ -1124,7 +1123,7 @@ void Transforms::vExtract_joinPredList(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__));
-  vExplain("Blah"_Stz);
+  vExplain("((replace with an explanation))"_Stz);
 
   vSetupPartitionBoard();
 
@@ -1156,7 +1155,7 @@ void Transforms::vExtract_tableList_From_queryBoard(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__));
-  vExplain("Blah"_Stz);
+  vExplain("((replace with an explanation))"_Stz);
 
 
   vSetupPartitionBoard();
@@ -1188,7 +1187,7 @@ void Transforms::vFormAll_joinPred_of_indexJoin(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__));
-  vExplain("Blah"_Stz);
+  vExplain("((replace with an explanation))"_Stz);
 
   BoardIter xBI(m_pBoard);
 
@@ -1256,7 +1255,7 @@ void Transforms::vGenerate_ptndPermutations(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__));
-  vExplain("Blah"_Stz);
+  vExplain("((replace with an explanation))"_Stz);
 
 //  PermGen::vTest(4);
 
@@ -1303,7 +1302,7 @@ void Transforms::vIndividuate_filter(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__));
-  vExplain("Blah"_Stz);
+  vExplain("((replace with an explanation))"_Stz);
 
   BoardIter xBI(m_pBoard);
 
@@ -1342,7 +1341,7 @@ void Transforms::vInsert_indexJoin_UnderAll_table(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__));
-  vExplain("Blah"_Stz);
+  vExplain("((replace with an explanation))"_Stz);
 
   _deck_->vClearMarksRecursive();
 
@@ -1389,7 +1388,7 @@ void Transforms::vMark_scan_pred_bounds(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__));
-  vExplain("Blah"_Stz);
+  vExplain("((replace with an explanation))"_Stz);
 
   auto bfPredBounds = [](Card* pCard) {
     Card_CmpPred* p_predCmp = _pCard_CmpPred(pCard);
@@ -1418,7 +1417,7 @@ void Transforms::vMark_scan_pred_ordinals(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__));
-  vExplain("Blah"_Stz);
+  vExplain("((replace with an explanation))"_Stz);
 
   BoardIter xBI(m_pBoard);
 
@@ -1483,7 +1482,7 @@ void Transforms::vMoveAll_cmpPred_To_table(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__));
-  vExplain("Blah"_Stz);
+  vExplain("((replace with an explanation))"_Stz);
 
   BoardIter xBI(m_pBoard);
 
@@ -1501,7 +1500,7 @@ void Transforms::vPromote_scan_To_indexScan(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__));
-  vExplain("Blah"_Stz);
+  vExplain("((replace with an explanation))"_Stz);
 
   BoardIter xBI(m_pBoard);
 
@@ -1526,7 +1525,7 @@ void Transforms::vRefactorAll_table_Into_join(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__));
-  vExplain("Blah"_Stz);
+  vExplain("((replace with an explanation))"_Stz);
 
   Card_Deck* p_board = m_pBoard->pCard_Deck();
 
@@ -1563,7 +1562,7 @@ void Transforms::vRemove_invalidPermutations(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__));
-  vExplain("Blah"_Stz);
+  vExplain("((replace with an explanation))"_Stz);
 
   i8 i_Main = 0;
   i8 i_Permutation = 0;
@@ -1603,7 +1602,7 @@ void Transforms::vSetup_costEst(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__));
-  vExplain("Blah"_Stz);
+  vExplain("((replace with an explanation))"_Stz);
 
   vSetupCostEstBoard();
 
@@ -1631,7 +1630,7 @@ void Transforms::vSubsume_scan_Under_absJoin(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__));
-  vExplain("Blah"_Stz);
+  vExplain("((replace with an explanation))"_Stz);
 
   BoardIter xBI(m_pBoard);
   while ((m_p_absJoin = _pCard_AbsJoin(xBI.pEachMain(CK_ABSJOIN))))

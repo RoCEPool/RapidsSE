@@ -538,20 +538,20 @@ bool TransformerTool::E_bEachMain(eCK eOfKind)
 /*----------------------------------------------------------------------------*/
 /* step to next main and set member                                           */
 /*----------------------------------------------------------------------------*/
-bool TransformerTool::E_bEachMain(eCK eOfKind, eCK eSuchSubHas)
+bool TransformerTool::E_bEachMain(eCK eOfKind, eCK eSuchHasSub)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
   while (Card* pMain = m_pM->pEachMain(eOfKind)) {
-    if (Card* pSubCard = pMain->pFindSubCard(eSuchSubHas)) {
+    if (Card* pSubCard = pMain->pFindSubCard(eSuchHasSub)) {
       U_vSetMember(eOfKind, pMain);
-      U_vSetMember(eSuchSubHas, pSubCard);
+      U_vSetMember(eSuchHasSub, pSubCard);
       return true;
     }
   }
 
   U_vSetMember(eOfKind, nullptr);
-  U_vSetMember(eSuchSubHas, nullptr);
+  U_vSetMember(eSuchHasSub, nullptr);
 
   return false;
 }
