@@ -165,21 +165,13 @@ void Transformer::vPhase_3_WherePredicates(void)
 
   m_pTransforms->vPhase((Stz*)__func__);
 
-  // convert all <filter>/<calc> to <filter>/<calcBool>
-  m_pTransforms->vConvertAll_where_calc_To_where_calcBool();
+  m_pTransforms->vConvert_where_calc_To_where_calcBool();
 
-  // each <scan> <absJoin> becomes <absJoin>/<scan>
-  //m_pTransforms->vSubsume_scan_Under_absJoin();
+  m_pTransforms->vMark_where_pred_Wrt_table();
 
-  // convert $n to $$c.n
-  //m_pTransforms->vConvert_streamColOrdinal_To_tableColOrdinal();
+  m_pTransforms->vMoveMarked_where_pred_To_table_filter();
 
-  // inspect all <filter> and attempt to move <predCmp> after <scan>/<absJoin>
-  m_pTransforms->vMarkAll_where_pred_Wrt_table();
-  m_pTransforms->vMoveMarked_where_pred_To_table();
-
-  // delete any <filter> which is effectively empty
-  m_pTransforms->vDeleteAllEmpty_where();
+  m_pTransforms->vDeleteEmpty_where();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -192,14 +184,13 @@ void Transformer::vPhase_4_InitialJoin(void)
   m_pTransforms->vPhase((Stz*)__func__);
 
   m_pTransforms->vAddNew_indexJoin_UnderAllJoinable_table();
-  m_pTransforms->vConvertAll_idxCol_name_To_idxCol_ord();
-  m_pTransforms->vAddNew_joinPred_UnderAll_indexJoin();
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  m_pTransforms->vConvertAll_idxCol_name_To_idxCol_ord();
+
+  m_pTransforms->vAddNew_joinPred_UnderAll_indexJoin();
 
   m_pTransforms->vCullAll_filter_pred_Of_indexJoin();
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pTransforms->vDeleteAll_Empty_filter();
 }
 

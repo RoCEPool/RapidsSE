@@ -24,7 +24,7 @@ load customer "../tpch/sf_0001/customer.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/cue = "vCalc_tableSyn_ForAll_table"
+/cue = "vAddNew_indexJoin_UnderAllJoinable_table"
 /transliterated
 /transform
 /transform3
