@@ -125,6 +125,7 @@ void Transforms::vReinstate_combined(void)
   vSetPrintSubCards(CK_AGGELIST, true);
   vSetPrintSubCards(CK_GBYELIST, true);
 
+  vEndTransformation();
   vPrintBoard();
 }
 
@@ -190,6 +191,7 @@ void Transforms::vAdd_scanPred(void)
 
   }
 
+  vEndTransformation();
   vPrintBoard();
 }
 
@@ -293,6 +295,7 @@ void Transforms::vReinstate_stages(void)
   while ( (m_p_stage = _pCard_Stage(xBI.pEachMain(CK_STAGE))) )
     m_p_stage->vRenameStage(i_Stage++);
 
+  vEndTransformation();
   vPrintBoard();
 }
 
@@ -313,6 +316,7 @@ void Transforms::vAddNew_tablePtn_UnderAll_table(void)
     m_p_table->vAppend(m_p_tablePtn);
   }
 
+  vEndTransformation();
   vPrintBoard();
 }
 
@@ -343,6 +347,7 @@ void Transforms::vCalc_tableSyn_ForAll_table(void)
     cTableSyn++;
   }
 
+  vEndTransformation();
   vPrintBoard();
 }
 
@@ -364,6 +369,7 @@ void Transforms::vAppend_indexList_ToAll_table(void)
       m_p_table->vAppend(m_p_indexList);
   }
 
+  vEndTransformation();
   vPrintBoard();
 }
 
@@ -397,6 +403,7 @@ void Transforms::vAddNew_stream_UnderAll_table(void)
 
   vSetPrintSubCards(CK_STREAM, true);
 
+  vEndTransformation();
   vPrintBoard();
 
   vSetPrintByKind(CK_STREAM, true);
@@ -435,6 +442,7 @@ void Transforms::vCalc_ordinalRange_ForAll_stream(void)
 
   }
 
+  vEndTransformation();
   vPrintBoard();
 }
 
@@ -476,6 +484,7 @@ void Transforms::vCompute_coPtnJoinList(void)
     DELETE_CARD(m_p_subSet);
   }
 
+  vEndTransformation();
   vPrintBoard();
 }
 
@@ -523,6 +532,7 @@ void Transforms::vCompute_coPtnPredList(void)
   //m_pCardCtl->vPrintForm(CK_CROSSPTNJOIN,CP_COMPRESSED);
   //m_pCardCtl->vPrintForm(CK_CMPPRED,CP_COMPRESSED);
 
+  vEndTransformation();
   vPrintBoard();
 }
 
@@ -563,6 +573,7 @@ void Transforms::vCompute_crossPtnJoinList(void)
 //  m_p_comment = new Card_Comment("((TO BE CODED))"_Stz);
 //  m_p_crossPtnJoinList->vAppend(m_p_comment);
 
+  vEndTransformation();
   vPrintBoard();
 }
 
@@ -603,6 +614,7 @@ void Transforms::vCompute_ptndJoinSet(void)
     m_pChildCard->Y_vSet(P_PtndJoin, i_Child);
   }
 
+  vEndTransformation();
   vPrintBoard();
 }
 
@@ -651,6 +663,7 @@ void Transforms::vConvertAll_idxCol_name_To_idxCol_ord(void)
     m_p_idxColList->vOrdinate(m_p_stream);
   }
 
+  vEndTransformation();
   vPrintBoard();
 }
 
@@ -680,6 +693,7 @@ void Transforms::vCopy_ptndJoinSet(void)
   }
   DELETE_CARD(m_p_subSet);
 
+  vEndTransformation();
   vPrintBoard();
 }
 
@@ -705,6 +719,7 @@ void Transforms::vCullAll_filter_pred_Of_indexJoin(void)
   }
 
   //m_pCardCtl->vPrintSubCards(CK_STREAM, true);
+  vEndTransformation();
   vPrintBoard();
 }
 
@@ -725,29 +740,9 @@ void Transforms::vCullAll_scan(void)
 
   vCullAll(CK_SCAN);
 
+  vEndTransformation();
   vPrintBoard();
 }
-/*----------------------------------------------------------------------------*/
-//void Transforms::vCullAll_scan(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-//
-//  vTransformation(BK_QUERY,(char*)(__func__),true);
-//  vExplain("((replace with an explanation))"_Stz);
-//
-//  Card_Deck* p_board = m_pBoard->pCard_Deck();
-//
-//  BoardIter xBI(m_pBoard);
-//  while ((m_pMainCard = xBI.pEachMain(CK_SCAN))) {
-//    //m_p_table = _pSub_Table(m_pMainCard);
-//    p_board->vReplaceChildWithItsSubs(m_pMainCard);
-//
-//    DELETE_CARD(m_pMainCard);
-//  }
-//
-//  vPrintBoard();
-//}
-
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
@@ -782,6 +777,7 @@ void Transforms::vCull_markedPred(void)
   m_pCardCtl->vPrintByKind(CK_STREAM, true);
   m_pCardCtl->vPrintSubCards(CK_STREAM, false);
 
+  vEndTransformation();
   vPrintBoard();
 }
 
@@ -811,6 +807,7 @@ void Transforms::vCull_sby_SameAs_gby(void)
     }
   }
 
+  vEndTransformation();
   vPrintBoard();
 }
 
@@ -826,6 +823,7 @@ void Transforms::vDeleteAll_absJoin(void)
 
   vDeleteAll(CK_ABSJOIN);
 
+  vEndTransformation();
   vPrintBoard();
 }
 
@@ -841,6 +839,7 @@ void Transforms::vDeleteAll_combined(void)
 
   vDeleteAll(CK_COMBINED);
 
+  vEndTransformation();
   vPrintBoard();
 }
 
@@ -856,6 +855,7 @@ void Transforms::vDeleteAll_send(void)
 
   vDeleteAll(CK_SEND);
 
+  vEndTransformation();
   vPrintBoard();
 }
 
@@ -924,6 +924,7 @@ void Transforms::vDeleteAllEmpty_where(void)
     }
   }
 
+  vEndTransformation();
   vPrintBoard();
 }
 
@@ -952,6 +953,7 @@ void Transforms::vDeleteAll_Empty_filter(void)
     delete pCard_filter_sub;
   }
 
+  vEndTransformation();
   vPrintBoard();
 }
 
@@ -990,6 +992,7 @@ void Transforms::vEstimate_joinOrder(void)
     m_p_joinOrderSeq->vExtractJoinOrder(m_p_ptndJoin);
   }
 
+  vEndTransformation();
   vPrintBoard();
 }
 
@@ -1035,6 +1038,7 @@ void Transforms::vEstimate_network(void)
   if (m_p_permutation)
     m_p_permutation->Y_vSet(P_Network, nNetwork);
 
+  vEndTransformation();
   vPrintBoard();
 }
 
@@ -1067,6 +1071,7 @@ void Transforms::vEstimate_ptndJoins(void)
     m_p_ptndJoin->vJoinEst(m_p_tableList);
   }
 
+  vEndTransformation();
   vPrintBoard();
 }
 
@@ -1109,6 +1114,7 @@ void Transforms::vExtract_joinOrderSeq(void)
     m_p_joinOrderSeq->vExtractJoinOrder(m_p_ptndJoin);
   }
 
+  vEndTransformation();
   vPrintBoard();
 }
 
@@ -1139,6 +1145,7 @@ void Transforms::vExtract_joinPredList(void)
     m_p_joinPredList->vExtract_joinPredList(m_p_calcBool);
   }
 
+  vEndTransformation();
   vPrintBoard();
 }
 
@@ -1170,6 +1177,7 @@ void Transforms::vExtract_tableList_From_queryBoard(void)
     m_p_tableList->vAppend(m_p_table->pDupCardAndSubCards());
   }
 
+  vEndTransformation();
   vPrintBoard();
 }
 
@@ -1237,6 +1245,8 @@ void Transforms::vAddNew_joinPred_UnderAll_indexJoin(void)
   }
 
   vSetPrintSubCards(CK_FILTER, true);
+
+  vEndTransformation();
   vPrintBoard();
 }
 
@@ -1283,6 +1293,7 @@ void Transforms::vGenerate_ptndPermutations(void)
 
   DELETE_CARD(m_p_subSet);
 
+  vEndTransformation();
   vPrintBoard();
 }
 
@@ -1369,6 +1380,7 @@ void Transforms::vAddNew_indexJoin_UnderAllJoinable_table(void)
   vSetPrintSubCards(CK_FILTER, false);
   vSetPrintSubCards(CK_STREAM, false);
 
+  vEndTransformation();
   vPrintBoard();
 }
 
@@ -1398,6 +1410,7 @@ void Transforms::vMark_scan_pred_bounds(void)
     m_p_filter->vVisitRecursive(CK_CMPPRED, bfPredBounds);
   }
 
+  vEndTransformation();
   vPrintBoard();
 }
 
@@ -1463,6 +1476,7 @@ void Transforms::vMark_scan_pred_ordinals(void)
     m_p_filter->vVisitRecursive(CK_TERM, bfPredBounds);
   }
 
+  vEndTransformation();
   vPrintBoard();
 }
 
@@ -1480,6 +1494,7 @@ void Transforms::vMarkAll_where_pred_Wrt_table(void)
     vMarkPredLeftwards(m_p_calcBool);
 
   //vSetPrintSubCards(CK_CMPPRED, true);
+  vEndTransformation();
   vPrintBoard();
 }
 
@@ -1496,6 +1511,7 @@ void Transforms::vMoveMarked_where_pred_To_table(void)
   while (E_bEachMain(CK_WHERE, CK_BOOLCALC))
     vCopyPredLeftwards(m_p_calcBool);
 
+  vEndTransformation();
   vPrintBoard();
 }
 
@@ -1520,6 +1536,7 @@ void Transforms::vPromote_scan_To_indexScan(void)
     m_p_scan->vCard(CK_INDEXSCAN);
   }
 
+  vEndTransformation();
   vPrintBoard();
 }
 
@@ -1557,6 +1574,7 @@ void Transforms::vConvertAllJoinable_table_Into_indexJoin(void)
     m_p_indexJoin->vInsert(m_p_table);
   }
 
+  vEndTransformation();
   vPrintBoard();
 }
 
@@ -1596,6 +1614,7 @@ void Transforms::vRemove_invalidPermutations(void)
     }
   }
 
+  vEndTransformation();
   vPrintBoard();
 }
 
@@ -1622,6 +1641,7 @@ void Transforms::vSetup_costEst(void)
     delete m_pMainCard;
   }
 
+  vEndTransformation();
   vPrintBoard();
 }
 
@@ -1653,6 +1673,7 @@ void Transforms::vSubsume_scan_Under_absJoin(void)
     m_p_absJoin->vAppend(m_p_scan);
   }
 
+  vEndTransformation();
   vPrintBoard();
 }
 
@@ -1830,7 +1851,6 @@ bool Transforms::bCopyPredDrillDown(Card_PRED* pCard_pred, Card_BoolCalc* p_calc
 
 
     p_calcBool->vRemovePred(pCard_pred);
-    //m_pBoard->vPrintBoard();
 
     return true;
   }

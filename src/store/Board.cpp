@@ -1180,7 +1180,6 @@ void Board::vPrintBoard(TransformerTool* pTransformerTool)
 //    vTrace("Resolving MainCard %lld\n"_Stz,i_Main);
 //    vResolveRecursive(pMainCard);
 //
-//    //vPrintBoard();
 //
 //    //pMainCard->vRenumberRecursive(nullptr);
 //  }
