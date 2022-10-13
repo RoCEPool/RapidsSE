@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Card_CalcBool.cpp -- Boolean Calculation                                   */
+/* Card_BoolCalc.cpp -- Boolean Calculation                                   */
 /*============================================================================*/
 
-#include "Card_CalcBool.hpp"
+#include "Card_BoolCalc.hpp"
 #include "Card_PRED.hpp"
 #include "Card_CmpPred.hpp"
 
@@ -10,17 +10,17 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_CalcBool,CK_CALCBOOL)
-__aNewFunction(Card_CalcBool,CN_CARD)
-__vDeleteFunction(Card_CalcBool,CN_CARD)
+__pCastFunction_Card(STORE, Card_BoolCalc, CK_BOOLCALC)
+__aNewFunction(Card_BoolCalc, CN_CARD)
+__vDeleteFunction(Card_BoolCalc, CN_CARD)
 
-__bIsCard(STORE,Card_CalcBool,CK_CALCBOOL)
+__bIsCard(STORE, Card_BoolCalc, CK_BOOLCALC)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_CalcBool::Card_CalcBool(void)
-: Card(CK_CALCBOOL)
+Card_BoolCalc::Card_BoolCalc(void)
+: Card(CK_BOOLCALC)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
       
@@ -32,7 +32,7 @@ Card_CalcBool::Card_CalcBool(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_CalcBool::~Card_CalcBool(void) noexcept(false)
+Card_BoolCalc::~Card_BoolCalc(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -44,7 +44,7 @@ Card_CalcBool::~Card_CalcBool(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* remove given predicate                                                     */
 /*----------------------------------------------------------------------------*/
-void Card_CalcBool::vCullPred(char cWithMark)
+void Card_BoolCalc::vCullPred(char cWithMark)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_)
 
@@ -61,13 +61,13 @@ void Card_CalcBool::vCullPred(char cWithMark)
 /*----------------------------------------------------------------------------*/
 /* remove given predicate                                                     */
 /*----------------------------------------------------------------------------*/
-void Card_CalcBool::vRemovePred(Card_PRED* pCard_pred)
+void Card_BoolCalc::vRemovePred(Card_PRED* p_pred)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_)
 
-  Card* pParentCard = pFindParent(pCard_pred);
+  Card* pParentCard = pFindParent(p_pred);
 
-  pParentCard->vRemoveSubCard(pCard_pred);
+  pParentCard->vRemoveSubCard(p_pred);
 
   if (CK_ANDPRED == pParentCard->eCard() || CK_ORPRED == pParentCard->eCard()) {
 
@@ -92,29 +92,29 @@ void Card_CalcBool::vRemovePred(Card_PRED* pCard_pred)
 /*----------------------------------------------------------------------------*/
 /* remove given predicate                                                     */
 /*----------------------------------------------------------------------------*/
-bool Card_CalcBool::bCullPred(Card_PRED* pCard_pred, char cWithMark)
+bool Card_BoolCalc::bCullPred(Card_PRED* p_pred, char cWithMark)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_)
 
-  eCK eCard_pred = pCard_pred->eCard();
+  eCK eCard_pred = p_pred->eCard();
 
   if (CK_ANDPRED == eCard_pred) {
-    if (cWithMark == pCard_pred->cMark1()) {
-       vRemovePred(pCard_pred);
+    if (cWithMark == p_pred->cMark1()) {
+       vRemovePred(p_pred);
        return true;
     }
   }
   else
   if (CK_ORPRED == eCard_pred) {
-    if (cWithMark == pCard_pred->cMark1()) {
-      vRemovePred(pCard_pred);
+    if (cWithMark == p_pred->cMark1()) {
+      vRemovePred(p_pred);
       return true;
     }
   }
   else
   if (CK_CMPPRED == eCard_pred) {
-    if (cWithMark == pCard_pred->cMark1()) {
-      vRemovePred(pCard_pred);
+    if (cWithMark == p_pred->cMark1()) {
+      vRemovePred(p_pred);
       return true;
     }
     return false;
@@ -122,9 +122,9 @@ bool Card_CalcBool::bCullPred(Card_PRED* pCard_pred, char cWithMark)
 
   RASSERT (CK_ANDPRED == eCard_pred || CK_ORPRED == eCard_pred);
 
-  i8 nChildren = pCard_pred->nChildCards();
+  i8 nChildren = p_pred->nChildCards();
   for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
-    Card_PRED* pCard_pred_child = static_cast<Card_PRED*>(pCard_pred->pGetChild(i_Child));
+    Card_PRED* pCard_pred_child = static_cast<Card_PRED*>(p_pred->pGetChild(i_Child));
     if (bCullPred(pCard_pred_child,cWithMark))
       return true;
   }

@@ -4,7 +4,7 @@
 
 #include "Card_JoinPredList.hpp"
 
-#include "Card_CalcBool.hpp"
+#include "Card_BoolCalc.hpp"
 #include "Card_ColumnRef.hpp"
 #include "Card_CmpPred.hpp"
 #include "Card_Term.hpp"
@@ -48,7 +48,7 @@ Card_JoinPredList::~Card_JoinPredList(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_JoinPredList::vExtract_joinPredList(Card_CalcBool* p_calcBool)
+void Card_JoinPredList::vExtract_joinPredList(Card_BoolCalc* p_calcBool)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

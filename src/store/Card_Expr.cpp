@@ -8,7 +8,7 @@
 #include "Card_Type.hpp"
 #include "Card_As.hpp"
 #include "Card_Calc.hpp"
-#include "Card_CalcBool.hpp"
+#include "Card_BoolCalc.hpp"
 #include "Card_Direction.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -96,7 +96,7 @@ void Card_Expr::vCullPred(char cWithMark)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_CalcBool* p_calcBool = this->pSub_calcBool();
+  Card_BoolCalc* p_calcBool = this->pSub_calcBool();
   if (! p_calcBool)
     return;
 

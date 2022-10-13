@@ -382,7 +382,7 @@ L_Exit:
 //  Card_Type* pCard_Type = _pCard_Type(pCard_Expr->pGet(0));
 //  Card_Calc* pCard_Calc = _pCard_Calc(pCard_Expr->pGet(1));
 //
-//  Card_CalcBool* pCard_CalcBool = pTo_CalcBool(pCard_Calc);
+//  Card_BoolCalc* pCard_CalcBool = pTo_CalcBool(pCard_Calc);
 //
 //  pCard_Expr->vRemove(pCard_Calc);
 //  delete pCard_Calc;
@@ -459,7 +459,7 @@ L_Exit:
 //  Card_Expr* pCard_Expr = _pCard_Expr(pCard_Filter->pGetChild(0));
 //
 //  Card_Type* pCard_Type = _pCard_Type(pCard_Expr->pGetChild(0));
-//  Card_CalcBool* pCard_CalcBool = _pCard_CalcBool(pCard_Expr->pGetChild(1));
+//  Card_BoolCalc* pCard_CalcBool = _pCard_BoolCalc(pCard_Expr->pGetChild(1));
 //  Card_CmpPred* pCard_PredCmp = _pCard_PredCmp(pCard_CalcBool->pGetChild(0));
 //
 //  Card_IndexPred* pCard_IndexPred = pTo_IndexPred(pCard_PredCmp,nullptr);
@@ -498,7 +498,7 @@ L_Exit:
 //  Card_Expr* pCard_Expr = _pCard_Expr(pCard_Filter->pGetChild(0));
 //
 //  Card_Type* pCard_Type = _pCard_Type(pCard_Expr->pGetChild(0));
-//  Card_CalcBool* pCard_CalcBool = _pCard_CalcBool(pCard_Expr->pGetChild(1));
+//  Card_BoolCalc* pCard_CalcBool = _pCard_BoolCalc(pCard_Expr->pGetChild(1));
 //  Card_CmpPred* pCard_PredCmp = _pCard_PredCmp(pCard_CalcBool->pGetChild(0));
 //
 //  Card_MapSet* pCard_MapSet = _pCard_MapSet(pCard_IndexJoin->pFindSubCard(CK_MAPSET));

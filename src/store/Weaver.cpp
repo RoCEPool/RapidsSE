@@ -544,8 +544,8 @@ void Weaver::vRpnFilter(Stz* szRpnExpr, Card_Filter* pCard_Filter)
 
 
   Card* pCard_test = pCard_Expr->pGet(1);
-  if (CK_CALCBOOL == pCard_test->eCard()) {
-    Card_CalcBool *pCard_CalcBool = _pCard_CalcBool(pCard_test);
+  if (CK_BOOLCALC == pCard_test->eCard()) {
+    Card_BoolCalc *pCard_CalcBool = _pCard_BoolCalc(pCard_test);
     vCalcBool(szRpnExpr, pCard_CalcBool);
   }
   else {
@@ -984,7 +984,7 @@ void Weaver::vExprCalc(Stz* szRpnExpr, Card_Calc* pCard_ExprCalc)
 /*----------------------------------------------------------------------------*/
 /* append <rpnExpr> for <calcBool>                                            */
 /*----------------------------------------------------------------------------*/
-void Weaver::vCalcBool(Stz* szRpnExpr, Card_CalcBool* pCard_CalcBool)
+void Weaver::vCalcBool(Stz* szRpnExpr, Card_BoolCalc* pCard_CalcBool)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 

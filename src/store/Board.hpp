@@ -21,7 +21,7 @@
 #include "Card_Deck.hpp"
 
 #include "Card_Calc.hpp"
-#include "Card_CalcBool.hpp"
+#include "Card_BoolCalc.hpp"
 #include "Card_CandIndex.hpp"
 #include "Card_CardPtr.hpp"
 #include "Card_Combined.hpp"

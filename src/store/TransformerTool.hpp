@@ -51,7 +51,7 @@ namespace STORE
     Card_AbsJoin*          m_p_absJoin;
     Card_Aggreg*           m_p_aggreg;
     Card_Calc*             m_p_calc;
-    Card_CalcBool*         m_p_calcBool;
+    Card_BoolCalc*         m_p_calcBool;
     Card_Combined*         m_p_combined;
     Card_Comment*          m_p_comment;
     Card_CoPtnJoin*        m_p_coPtnJoin;

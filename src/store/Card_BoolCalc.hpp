@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_CalcBool.hpp -- Boolean Calculation                                   */
+/* Card_BoolCalc.hpp -- Boolean Calculation                                   */
 /*============================================================================*/
 #pragma once
 
@@ -7,24 +7,24 @@
 
 namespace STORE
 {
-  class Card_CalcBool : public Card
+  class Card_BoolCalc : public Card
   {  
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_CalcBool(void);
-   ~Card_CalcBool(void) noexcept(false);
+    Card_BoolCalc(void);
+   ~Card_BoolCalc(void) noexcept(false);
 
     void vCullPred(char cWithMark);
-    void vRemovePred(Card_PRED* pCard_pred);
+    void vRemovePred(Card_PRED* p_pred);
 
   private:
-    bool bCullPred(Card_PRED* pCard_pred, char cWithMark);
+    bool bCullPred(Card_PRED* p_pred, char cWithMark);
   };
 
-  Card_CalcBool* _pCard_CalcBool(void* aAddr);
-  bool _bIsCard_CalcBool(void* aAddr);
+  Card_BoolCalc* _pCard_BoolCalc(void* aAddr);
+  bool _bIsCard_BoolCalc(void* aAddr);
 }
 
 /*============================================================================*/

@@ -4,7 +4,7 @@
 
 #include "Card_JoinOrder.hpp"
 
-#include "Card_CalcBool.hpp"
+#include "Card_BoolCalc.hpp"
 #include "Card_ColumnRef.hpp"
 #include "Card_CmpPred.hpp"
 #include "Card_Term.hpp"

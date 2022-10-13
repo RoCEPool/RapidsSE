@@ -97,7 +97,7 @@ void Modifications::X_calc_To_calcBool(void)
 
   Card_SubSet*  pCard_SubExpr = new Card_SubSet;
 
-  N_vNewMember(CK_CALCBOOL);
+  N_vNewMember(CK_BOOLCALC);
 
   while (m_p_calc->nChildCards()) {
     m_p_term = _pCard_Term(m_p_calc->pPop());

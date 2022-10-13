@@ -361,7 +361,7 @@ Card* TransformerTool::G_pGetMember(eCK eMember)
     case CK_ABSJOIN:          return m_p_absJoin;
     case CK_AGGREG:           return m_p_aggreg;
     case CK_CALC:             return m_p_calc;
-    case CK_CALCBOOL:         return m_p_calcBool;
+    case CK_BOOLCALC:         return m_p_calcBool;
     case CK_COMBINED:         return m_p_combined;
     case CK_COMMENT:          return m_p_comment;
     case CK_COPTNJOIN:        return m_p_coPtnJoin;
@@ -450,7 +450,7 @@ void TransformerTool::U_vSetMember(eCK eCard, Card* pCard)
     case CK_ABSJOIN:          *((Card**)&m_p_absJoin)          = pCard; break;
     case CK_AGGREG:           *((Card**)&m_p_aggreg)           = pCard; break;
     case CK_CALC:             *((Card**)&m_p_calc)             = pCard; break;
-    case CK_CALCBOOL:         *((Card**)&m_p_calcBool)         = pCard; break;
+    case CK_BOOLCALC: *((Card**)&m_p_calcBool)         = pCard; break;
     case CK_COMBINED:         *((Card**)&m_p_combined)         = pCard; break;
     case CK_COMMENT:          *((Card**)&m_p_comment)          = pCard; break;
     case CK_COPTNJOIN:        *((Card**)&m_p_coPtnJoin)        = pCard; break;

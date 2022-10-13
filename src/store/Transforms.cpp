@@ -1467,7 +1467,7 @@ void Transforms::vMarkAll_where_pred_Wrt_table(void)
   vExplain("((replace with an explanation))"_Stz);
 
   vShort("E <where>//<calcBool> { ?? }"_Stz);
-  while (E_bEachMain(CK_WHERE,CK_CALCBOOL))
+  while (E_bEachMain(CK_WHERE, CK_BOOLCALC))
     vMarkPredLeftwards(m_p_calcBool);
 
   //vSetPrintSubCards(CK_CMPPRED, true);
@@ -1486,7 +1486,7 @@ void Transforms::vMoveMarked_where_pred_To_table(void)
 
   vShort("E <where>//<calcBool> { ?? }"_Stz);
 
-  while (E_bEachMain(CK_WHERE,CK_CALCBOOL))
+  while (E_bEachMain(CK_WHERE, CK_BOOLCALC))
     vCopyPredLeftwards(m_p_calcBool);
 
   vPrintBoard();
@@ -1662,7 +1662,7 @@ void Transforms::vSubsume_scan_Under_absJoin(void)
 /*----------------------------------------------------------------------------*/
 /* inspect all <filter> and attempt to assign <predCmp> after <scan>/<absJoin>*/
 /*----------------------------------------------------------------------------*/
-void Transforms::vMarkPredLeftwards(Card_CalcBool* p_bool)
+void Transforms::vMarkPredLeftwards(Card_BoolCalc* p_bool)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1782,7 +1782,7 @@ char Transforms::cMovePredToTable(Card_Table* p_table, Card_PRED* p_pred)
 /*----------------------------------------------------------------------------*/
 /* inspect all <filter> and attempt to assign <predCmp> after <scan>/<absJoin>*/
 /*----------------------------------------------------------------------------*/
-void Transforms::vCopyPredLeftwards(Card_CalcBool* p_calcBool)
+void Transforms::vCopyPredLeftwards(Card_BoolCalc* p_calcBool)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1797,7 +1797,7 @@ void Transforms::vCopyPredLeftwards(Card_CalcBool* p_calcBool)
 /*----------------------------------------------------------------------------*/
 /* inspect all <filter> and attempt to move <pred> after <scan>/<absJoin>     */
 /*----------------------------------------------------------------------------*/
-bool Transforms::bCopyPredDrillDown(Card_PRED* pCard_pred, Card_CalcBool* p_calcBool)
+bool Transforms::bCopyPredDrillDown(Card_PRED* pCard_pred, Card_BoolCalc* p_calcBool)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1851,7 +1851,7 @@ void Transforms::vCopyPredToExistingFilter(Card_Filter* pCard_filter_existing, C
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  Card_CalcBool* pCard_calcBool = pCard_filter_existing->pSub_calcBool();
+  Card_BoolCalc* pCard_calcBool = pCard_filter_existing->pSub_calcBool();
 
   Card* pCard_top = pCard_calcBool->pPop();
 
@@ -1874,7 +1874,7 @@ void Transforms::vCopyPredToNewFilter(Card_Filter* pCard_filter_new, Card_PRED* 
 
   Card_Type* pCard_type = new Card_Type("BOOLEAN"_Stz);
   pCard_expr->vAppend(pCard_type);
-  Card_CalcBool* pCard_calcBool = new Card_CalcBool;
+  Card_BoolCalc* pCard_calcBool = new Card_BoolCalc;
   pCard_expr->vAppend(pCard_calcBool);
 
   pCard_calcBool->vAppend(pCard_pred);
