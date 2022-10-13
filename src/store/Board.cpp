@@ -115,7 +115,8 @@ void Board::vDuplicateBoard(Board* pBoard_arg)
 /*----------------------------------------------------------------------------*/
 /* pin board onto given ribbon                                                */
 /*----------------------------------------------------------------------------*/
-void Board::vPinCards(Ribbon* pRibbon, Stz* szTransformation, Stz* szExplain)
+void Board::vPinCards(Ribbon* pRibbon,
+                      i8 iPrintNo, Stz* szTransformation, Stz* szExplain)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
@@ -145,7 +146,8 @@ void Board::vPinCards(Ribbon* pRibbon, Stz* szTransformation, Stz* szExplain)
 //    pRibbon->vTitleLines(1);
 //  }
 
-  pRibbon->vSprint("\n[Board: %s %s Query=%s] %s"_Stz,
+  pRibbon->vSprint("[%02lld Board: %s %s Query=%s] %s"_Stz,
+                   iPrintNo,
                    aBK[m_eBoard],
                    aBT[m_eBoardType],
                    m_pOptimiser->szQueryNm(),
@@ -197,24 +199,26 @@ void Board::vPinCards(Ribbon* pRibbon, Stz* szTransformation, Stz* szExplain)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vPrintBoard(Stz* szPhase,
-                        Stz* szTransformation,
-                        Stz* szExplain,
-                        Stz* szShort)
+void Board::vPrintBoard(TransformerTool* pTransformerTool)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-  
+
+  Stz* szPhase = pTransformerTool->szPhase();
+  Stz* szTransformation = pTransformerTool->szTransformation();
+  Stz* szExplain = pTransformerTool->szExplain();
+  Stz* szShort = pTransformerTool->szShort();
+
   eOA eOptAct = OA_ENTRY;
   TokenVec* pTknVec = nullptr;
-  
+
   L_Entry:
-  
+
   bool bCue   = true;
   bool bPrint = true;
   bool bExecuted = false;
 
   m_pCard_Deck->vRenumberRecursive();
-  
+
   if (! bPrint)
     return;
 
@@ -222,7 +226,7 @@ void Board::vPrintBoard(Stz* szPhase,
 
   Ribbon* pRibbon = new Ribbon(m_pOptimiser->pCardCtl(),this,0);
 
-  vPinCards(pRibbon, szTransformation, szExplain);
+  vPinCards(pRibbon, pTransformerTool->iPrintNoInc(), szTransformation, szExplain);
 
   pRibbon->vPrintRibbon();
 
@@ -249,7 +253,7 @@ void Board::vPrintBoard(Stz* szPhase,
   m_bBeenCued = true;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    
+
   L_Input:
 
   s256 sPrompt;
@@ -259,27 +263,27 @@ void Board::vPrintBoard(Stz* szPhase,
 
   s4K sInput;
   Cue::vGetInput(sPrompt,sInput);
-    
+
   if (! sInput.nLength()) {
     return;
   }
-    
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+
   if (pTknVec) {
     delete pTknVec;
     pTknVec = nullptr;
   }
-  
+
   pTknVec = AM::TOKENISE::pTokeniseSen(sInput);
-  
+
   i8 nTokens = pTknVec->nTokens();
-  
+
   OptimiserFun* pOptFun = nullptr;
-  
+
   if (0 == nTokens)
     goto L_Exit;
-  
+
   if (1 == nTokens)
     pOptFun = gxOptimiserCatalog.pFindFun(pTknVec->pGet(0)->szChars(),
                                           nullptr);
@@ -292,15 +296,15 @@ void Board::vPrintBoard(Stz* szPhase,
     delete pTknVec;
     goto L_Input;
   }
-    
+
   eOptAct = OA_ENTRY;
   bExecuted = pOptFun->m_fpOptFun(m_pOptimiser,pTknVec,eOptAct);
 
   L_Next:
-  
+
   if (! bExecuted)
     goto L_Input;
-  
+
   if (OA_ENTRY == eOptAct)
     goto L_Entry;
   else
@@ -311,25 +315,12 @@ void Board::vPrintBoard(Stz* szPhase,
     return;
   else
     NEVER_REACH;
-  
-L_Exit:
+
+  L_Exit:
   if (pTknVec) {
     delete pTknVec;
     pTknVec = nullptr;
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vPrintBoard(TransformerTool* pTransformerTool)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  vPrintBoard(pTransformerTool->szPhase(),
-              pTransformerTool->szTransformation(),
-              pTransformerTool->szExplain(),
-              pTransformerTool->szShort());
 }
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//

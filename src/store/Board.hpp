@@ -148,13 +148,9 @@ namespace STORE
     void vDuplicateBoard(Board* pBoard_arg);
 
     void vPinCards(Ribbon* pRibbon,
+                   i8 iPrintNo,
                    Stz* szTransformation=nullptr,
                    Stz* szExplain=nullptr);
-  
-    void vPrintBoard(Stz* szPhase=nullptr,
-                     Stz* szTransformation=nullptr,
-                     Stz* szExplain=nullptr,
-                     Stz* szShort=nullptr);
 
     void vPrintBoard(TransformerTool* pTransformerTool);
 

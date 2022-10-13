@@ -55,7 +55,7 @@ namespace BASE
     i8   iChar(void);
     Object* pCtl(void);
 
-    void vDrawH(char cChr);
+    void vDrawH(char cChr, bool bTop=false);
     void vDrawV(i8 i_Line, i8 i_Char, Stz* szBar);
 
     void vFirstColumn(void);

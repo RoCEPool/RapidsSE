@@ -603,8 +603,7 @@ void Transforms::vCompute_ptndJoinSet(void)
     m_pChildCard->Y_vSet(P_PtndJoin, i_Child);
   }
 
-  if (m_bInteractive)
-    m_pBoard_partition->vPrintBoard();
+  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -682,8 +681,7 @@ void Transforms::vCopy_ptndJoinSet(void)
   }
   DELETE_CARD(m_p_subSet);
 
-  if (m_bInteractive)
-    m_pBoard_permute->vPrintBoard();
+  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -993,8 +991,7 @@ void Transforms::vEstimate_joinOrder(void)
     m_p_joinOrderSeq->vExtractJoinOrder(m_p_ptndJoin);
   }
 
-  if (m_bInteractive)
-    m_pBoard_costEst->vPrintBoard();
+  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1039,8 +1036,7 @@ void Transforms::vEstimate_network(void)
   if (m_p_permutation)
     m_p_permutation->Y_vSet(P_Network, nNetwork);
 
-  if (m_bInteractive)
-    m_pBoard_costEst->vPrintBoard();
+  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1072,8 +1068,7 @@ void Transforms::vEstimate_ptndJoins(void)
     m_p_ptndJoin->vJoinEst(m_p_tableList);
   }
 
-  if (m_bInteractive)
-    m_pBoard_costEst->vPrintBoard();
+  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1115,8 +1110,7 @@ void Transforms::vExtract_joinOrderSeq(void)
     m_p_joinOrderSeq->vExtractJoinOrder(m_p_ptndJoin);
   }
 
-  if (m_bInteractive)
-    m_pBoard_costEst->vPrintBoard();
+  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1146,9 +1140,7 @@ void Transforms::vExtract_joinPredList(void)
     m_p_joinPredList->vExtract_joinPredList(m_p_calcBool);
   }
 
-
-  if (m_bInteractive)
-    m_pBoard_partition->vPrintBoard();
+  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1179,8 +1171,7 @@ void Transforms::vExtract_tableList_From_queryBoard(void)
     m_p_tableList->vAppend(m_p_table->pDupCardAndSubCards());
   }
 
-
-  m_pBoard_partition->vPrintBoard();
+  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1293,8 +1284,7 @@ void Transforms::vGenerate_ptndPermutations(void)
 
   DELETE_CARD(m_p_subSet);
 
-  if (m_bInteractive)
-    m_pBoard_permute->vPrintBoard();
+  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1534,8 +1524,7 @@ void Transforms::vPromote_scan_To_indexScan(void)
     m_p_scan->vCard(CK_INDEXSCAN);
   }
 
-  if (m_bInteractive)
-    m_pBoard->vPrintBoard();
+  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1611,8 +1600,7 @@ void Transforms::vRemove_invalidPermutations(void)
     }
   }
 
-  if (m_bInteractive)
-    m_pBoard_permute->vPrintBoard();
+  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1638,9 +1626,7 @@ void Transforms::vSetup_costEst(void)
     delete m_pMainCard;
   }
 
-
-  if (m_bInteractive)
-    m_pBoard_costEst->vPrintBoard();
+  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/

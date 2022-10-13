@@ -118,7 +118,7 @@ Object* Ribbon::pCtl(void)
 /*----------------------------------------------------------------------------*/
 /* draw horizontal line using given char                                      */
 /*----------------------------------------------------------------------------*/
-void Ribbon::vDrawH(char cChr)
+void Ribbon::vDrawH(char cChr, bool bTop)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
 
@@ -127,8 +127,11 @@ void Ribbon::vDrawH(char cChr)
   i8 nTimes = nWidth(0);
 
   pDrawnLine->vPut(0,cChr,nTimes);
-  
-  vAppend(pDrawnLine);
+
+  if (bTop)
+    vInsertBefore(pDrawnLine,pHead());
+  else
+    vAppend(pDrawnLine);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -283,10 +286,13 @@ void Ribbon::vPinRibbon(i8 i_Line, i8 i_Char, Ribbon* pSubRibbon)
 void Ribbon::vPrintRibbon(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
-  
+
+  vDrawH('-',true);
   vDrawH('=');
   
   vTrim();
+
+  vTrace("\n"_Stz);
 
   i8 nLines = nItems();
   for (i8 i_RibbonLine = 0; i_RibbonLine < nLines; i_RibbonLine++) {

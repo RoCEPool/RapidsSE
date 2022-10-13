@@ -24,6 +24,8 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_pCardCtl         = m_pBench->pCardCtl();
   m_bPrintTransformation   = true;
 
+  m_nPrints = 0;
+
   m_pTable           = nullptr;
   m_pStreamDef       = nullptr;
   m_pIdxVec          = nullptr;
@@ -229,6 +231,16 @@ void TransformerTool::vPrintBoard(void)
 
   m_sExplain = ""_Stz;
   m_sShort = ""_Stz;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+i8 TransformerTool::iPrintNoInc(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  return ++ m_nPrints;
 }
 
 /*----------------------------------------------------------------------------*/
