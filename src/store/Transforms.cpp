@@ -780,14 +780,14 @@ void Transforms::vCull_markedPred(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* cull <sort> when <sbyElist> is same as <gbyElist>                          */
+/* remove <sort> if <sbyElist> is the same as the <gbyElist>                  */
 /*----------------------------------------------------------------------------*/
-void Transforms::vCull_sby_SameAs_gby(void)
+void Transforms::vRemove_sort_IfSameAs_gby(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__));
-  vExplain("((replace with an explanation))"_Stz);
+  vExplain("remove <sort> if <sbyElist> is the same as the <gbyElist>"_Stz);
 
   BoardIter xBI(m_pBoard);
 
@@ -1299,14 +1299,14 @@ void Transforms::vGenerate_ptndPermutations(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* individuate <absJoin>/<filter> as main <filter>                            */
+/* individuate <scan/indexJoin>/<filter> as main <filter>                     */
 /*----------------------------------------------------------------------------*/
 void Transforms::vIndividuate_filter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__));
-  vExplain("((replace with an explanation))"_Stz);
+  vExplain("individuate <scan/indexJoin>/<filter> as main <filter>"_Stz);
 
   BoardIter xBI(m_pBoard);
 
@@ -1335,6 +1335,9 @@ void Transforms::vIndividuate_filter(void)
     pCard_indexJoin->vRemoveChild(pCard_filter);
     _deck_->vInsertAfter(pCard_filter, pCard_indexJoin);
   }
+
+  vEndTransformation();
+  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1542,14 +1545,14 @@ void Transforms::vPromote_scan_To_indexScan(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reduce absJoin                                                             */
+/* convert all <table> into either <scan> or <indexJoin>                      */
 /*----------------------------------------------------------------------------*/
-void Transforms::vConvertAllJoinable_table_Into_indexJoin(void)
+void Transforms::vConvertAll_table_To_scan_Or_indexJoin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__));
-  vExplain("((replace with an explanation))"_Stz);
+  vExplain("convert all <table> into either <scan> or <indexJoin>"_Stz);
 
   Card_Deck* p_board = m_pBoard->pCard_Deck();
 

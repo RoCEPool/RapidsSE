@@ -240,8 +240,8 @@ void Board::vPrintBoard(TransformerTool* pTransformerTool)
 
   if (! m_bBeenCued && AM::JOB::bHasTag("<cue>"_Stz)) {
     Stz* szTagCue = AM::JOB::szTagValue("<cue>"_Stz);
-    if (! szTagCue->bSame(szTransformation)) {
-      printf("Transformation %s\n",(char*)szTransformation);
+    if (! szTagCue->bSame(szPhase) && ! szTagCue->bSame(szTransformation)) {
+      printf("%s :: %s\n",(char*)szPhase, (char*)szTransformation);
       return;
     }
   }

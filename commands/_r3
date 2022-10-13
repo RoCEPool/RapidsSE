@@ -24,7 +24,7 @@ load customer "../tpch/sf_0001/customer.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/cue = "vAddNew_indexJoin_UnderAllJoinable_table"
+/cue = "vPhase_7_StreamOrdering"
 /transliterated
 /transform
 /transform3

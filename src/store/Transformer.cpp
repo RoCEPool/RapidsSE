@@ -105,13 +105,13 @@ void Transformer::vTransform3(void)
 
   vPhase_4_InitialJoin();
 
-  wPhase_5_JoinOrdering();
+  vPhase_5_JoinOrdering();
 
-  wPhase_6_IndexScan();
+  vPhase_6_IndexScan();
 
-  wPhase_7_StreamOrdering();
+  vPhase_7_StreamOrdering();
 
-  wPhase_8_FilterRefinement();
+  vPhase_8_FilterRefinement();
 
   vPhase_Z_RestatePipeline();
 
@@ -197,7 +197,7 @@ void Transformer::vPhase_4_InitialJoin(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transformer::wPhase_5_JoinOrdering(void)
+void Transformer::vPhase_5_JoinOrdering(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
@@ -230,13 +230,13 @@ void Transformer::wPhase_5_JoinOrdering(void)
   m_pTransforms->vExtract_joinOrderSeq();
   */
 
-  m_pTransforms->vConvertAllJoinable_table_Into_indexJoin();
+  m_pTransforms->vConvertAll_table_To_scan_Or_indexJoin();
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transformer::wPhase_6_IndexScan(void)
+void Transformer::vPhase_6_IndexScan(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
@@ -266,19 +266,19 @@ void Transformer::wPhase_6_IndexScan(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transformer::wPhase_7_StreamOrdering(void)
+void Transformer::vPhase_7_StreamOrdering(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
   m_pTransforms->vPhase((Stz*)__func__);
 
-  m_pTransforms->vCull_sby_SameAs_gby();
+  m_pTransforms->vRemove_sort_IfSameAs_gby();
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transformer::wPhase_8_FilterRefinement(void)
+void Transformer::vPhase_8_FilterRefinement(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 

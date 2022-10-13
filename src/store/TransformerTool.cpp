@@ -221,10 +221,6 @@ void TransformerTool::vPrintBoard(void)
 
   if (m_bPrintTransformation) {
     if (m_bInteractive)
-//      m_pBoard->vPrintBoard(m_sPhase,
-//                            m_sTranformation.szStz(),
-//                            m_sExplain,
-//                            m_sShort);
       m_pBoard->vPrintBoard(this);
   }
   else {

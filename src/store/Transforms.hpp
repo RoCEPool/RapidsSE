@@ -42,7 +42,7 @@ namespace STORE
     void vCullAll_filter_pred_Of_indexJoin(void);
     void vCullAll_scan(void);
     void vCull_markedPred(void);
-    void vCull_sby_SameAs_gby(void);
+    void vRemove_sort_IfSameAs_gby(void);
     void vDeleteAll_absJoin(void);
     void vDeleteAll_combined(void);
     void vDeleteAll_send(void);
@@ -64,7 +64,7 @@ namespace STORE
     void vMark_scan_pred_ordinals(void);
     void vMoveMarked_where_pred_To_table_filter(void);
     void vPromote_scan_To_indexScan(void);
-    void vConvertAllJoinable_table_Into_indexJoin(void);
+    void vConvertAll_table_To_scan_Or_indexJoin(void);
     void vRemove_invalidPermutations(void);
     void vSetup_costEst(void);
 
