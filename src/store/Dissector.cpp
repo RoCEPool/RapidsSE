@@ -315,7 +315,7 @@ Card* Dissector::pCard_Filter(TagSet* pArgTags)
   
   if (! m_bSawAggOp) {
     delete pCard_RpnTerms;
-    //pCard_Filter->vCard(CK_WHERE);
+    pCard_Filter->vCard(CK_WHERE);
     return pCard_Filter;
   }
   else {

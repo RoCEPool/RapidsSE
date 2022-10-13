@@ -30,7 +30,7 @@ namespace STORE
     void vAppend_tablePtn_UnderAll_table(void);
     void vAppend_indexList_ToAll_table(void);
     void vAppend_stream_UnderAll_table(void);
-    void vAssignAll_cmpPred_To_table(void);
+    void vMarkAll_where_pred_Wrt_table(void);
     void vCalc_ordinalRanges_ForAll_stream(void);
     void vCalc_tableSyn_ForAll_table(void);
     void vCompute_coPtnJoinList(void);
@@ -47,7 +47,7 @@ namespace STORE
     void vDeleteAll_absJoin(void);
     void vDeleteAll_combined(void);
     void vDeleteAll_send(void);
-    void vDeleteAll_Empty_filter(void);
+    void vDeleteAll_Empty_where(void);
     void vDeleteAll_EmptySub_filter(void);
     void vEstimate_joinOrder(void);
     void vEstimate_network(void);
@@ -71,18 +71,18 @@ namespace STORE
 
   private:
 
-    void vAssignFilterLeftwards(Card_Filter* pCard_filter);
-    void vAssignPredDrillDown(Card_PRED*, Card_Filter* pCard_filter);
+    void vMarkPredLeftwards(Card_CalcBool* p_bool);
+    void vMarkPredDrillDown(Card_PRED* p_pred);
 
-    char cAssignPredLeft(Card_PRED* pCard_PRED, Card_Filter* pCard_filter);
-    char cAssignPredToTable(Card_Table* pCard_table, Card_PRED* pCard_PRED);
+    char cMovePredLeftwards(Card_PRED* p_pred);
+    char cMovePredToTable(Card_Table* p_table, Card_PRED* p_pred);
 
-    void vCopyFilterLeftwards(Card_Filter* pCard_filter);
-    bool bCopyPredDrillDown(Card_PRED*, Card_Filter* pCard_filter);
+    void vCopyPredLeftwards(Card_CalcBool* p_calcBool);
+    bool bCopyPredDrillDown(Card_PRED*, Card_CalcBool* p_calcBool);
     void vCopyPredToExistingFilter(Card_Filter* pCard_filter_existing, Card_PRED* pCard_pred);
     void vCopyPredToNewFilter(Card_Filter* pCard_filter_new, Card_PRED* pCard_pred);
 
-    void vMarkPredCardsAsMoved(Card* pPredCard);
+    void vMarkPredAsMoved(Card* pPredCard);
 
     Card_IndexPred*  pTo_IndexPred (Card_AbsJoin* pCard_AbsJoin,
                                     Card_CmpPred* pCard_PredCmp);

@@ -167,11 +167,11 @@ void Transformer::vTransform3(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // inspect all <filter> and attempt to move <predCmp> after <scan>/<absJoin>
-  m_pTransforms->vAssignAll_cmpPred_To_table();
+  m_pTransforms->vMarkAll_where_pred_Wrt_table();
   m_pTransforms->vMoveAll_cmpPred_To_table();
 
   // delete any <filter> which is effectively empty
-  m_pTransforms->vDeleteAll_Empty_filter();
+  m_pTransforms->vDeleteAll_Empty_where();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pTransforms->vInsert_indexJoin_UnderAll_table();
