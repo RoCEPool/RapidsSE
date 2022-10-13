@@ -1,5 +1,9 @@
 This folder contains unique hardware configurations used in the SE performance tests.
 
+It contains sub-folders for performance experiments, where the configuration may be changed
+for any run, and performance regressions, where the configuration is expected to be immutable
+for its lifetime.
+
 Each hardware configuration is known by it's unique file name. It is very important that
 this filename not change once it has been used, as this filename gets saved with the
 performance results and will be used in queries to filter and return particular

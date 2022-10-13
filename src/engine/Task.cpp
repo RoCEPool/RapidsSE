@@ -320,16 +320,16 @@ void Task::vTaskLoop(void)
     catch (Exception xException) {
       
       if (AM::SHOW::bException()) {
-        fprintf(stderr,"\n");
-        fprintf(stderr,
+        vTrace("\n"_Stz);
+        vTrace(
                 // 0         1         2         3
                 // 0123456789012345678901234567890123456789"
                    "@CATCH @CATCH @CATCH @CATCH @CATCH @CATC" // 40
                    "H @CATCH @CATCH @CATCH @CATCH @CATCH @CA" // 80
                    "TCH @CATCH @CATCH @CATCH @CATCH @CATCH" // 120
-                   "\n"
+                   "\n"_Stz
                 );
-        fprintf(stderr,"\n");
+        vTrace("\n"_Stz);
       }
       
       m_xException = xException;
@@ -341,16 +341,16 @@ void Task::vTaskLoop(void)
       vExceptionHandler();
             
       if (AM::SHOW::bException()) {
-        fprintf(stderr,"\n");
-        fprintf(stderr,
+        vTrace("\n"_Stz);
+        vTrace(
                 // 0         1         2         3
                 // 0123456789012345678901234567890123456789"
                   "@RECOVER @RECOVER @RECOVER @RECOVER @REC" // 40
                   "OVER @RECOVER @RECOVER @HANDLER @HANDLER" // 80
                   " @RECOVER @RECOVER @RECOVER @RECOVER" // 120
-                  "\n"
+                  "\n"_Stz
                 );
-        fprintf(stderr,"\n");
+        vTrace("\n"_Stz);
       }
     }
   }
@@ -395,16 +395,16 @@ void Task::vExceptionHandler(void)
   _noPreconditions_
  
   if (AM::SHOW::bException()) {
-    fprintf(stderr,"\n");
-    fprintf(stderr,
+    vTrace("\n"_Stz);
+    vTrace(
             // 0         1         2         3
             // 0123456789012345678901234567890123456789"
               "@HANDLER @HANDLER @HANDLER @HANDLER @HAN" // 40
               "DLER @HANDLER @HANDLER @HANDLER @HANDLER" // 80
               " @HANDLER @HANDLER @HANDLER @HANDLER" // 120
-              "\n"
+              "\n"_Stz
             );
-    fprintf(stderr,"\n");
+    vTrace("\n"_Stz);
   }
   
   vSetSenRecoverContext();
@@ -473,8 +473,7 @@ void Task::vDumpOnException(void)
            ,pWord
            ,aWK[pWord->eWord()]
            ,pWord->szWordNm()
-           ,pWord->pCategory() ? pWord->pCategory()->szWordNm()
-                               : ""_Stz
+           ,aWC[pWord->eCategoryEnum()]->azChar()
            );
   vTrace("\n"_Stz);
 
@@ -878,8 +877,7 @@ Word* Task::pEventHandler(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   pWord = m_oDicStack.pLocateRoutine(m_aInxPtr);
   if (pWord &&
-      pWord->pCategory() &&
-      pWord->pCategory()->szWordNm()->bSame("\\handler"_Stz)) {
+      pWord->eCategoryEnum() == WC_HANDLER) {
     pEventHandler = pWord;
     
     return pEventHandler;
@@ -899,8 +897,7 @@ Word* Task::pEventHandler(void)
     pWord = m_oDicStack.pLocateRoutine(aFip);
     
     if (pWord &&
-        pWord->pCategory() &&
-        pWord->pCategory()->szWordNm()->bSame("\\handler"_Stz)) {
+        pWord->eCategoryEnum() == WC_HANDLER) {
       pEventHandler = pWord;
       break;
     }

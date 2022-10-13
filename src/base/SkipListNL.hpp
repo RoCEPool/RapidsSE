@@ -73,6 +73,10 @@ namespace BASE
                       SkipNode* pSkipNode = nullptr
                      );
 
+    bool bInsertWithNode(void* aObjectInsert,
+                         SkipNode* pSkipNode,
+                         bool bTrace);
+
   
     i8 nItems(void);
   

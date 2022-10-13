@@ -12,7 +12,6 @@ __pCastFunction_Card(STORE,Card_StageTopo,CK_STAGETOPO)
 __aNewFunction(Card_StageTopo,CN_CARD)
 __vDeleteFunction(Card_StageTopo,CN_CARD)
 
-__bIsCard(STORE,Card_StageTopo,CK_STAGETOPO)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

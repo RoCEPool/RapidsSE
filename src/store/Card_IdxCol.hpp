@@ -1,30 +1,23 @@
 /*============================================================================*/
-/* Card_CalcBool.hpp -- Boolean Calculation                                   */
+/* Card_IdxCol.hpp -- Index Column                                            */
 /*============================================================================*/
 #pragma once
 
-#include "Card_PRED.hpp"
+#include "Card.hpp"
 
 namespace STORE
 {
-  class Card_CalcBool : public Card
-  {  
+  class Card_IdxCol : public Card
+  {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_CalcBool(void);
-   ~Card_CalcBool(void) noexcept(false);
-
-    void vCullPred(char cWithMark);
-    void vRemovePred(Card_PRED* pCard_pred);
-
-  private:
-    bool bCullPred(Card_PRED* pCard_pred, char cWithMark);
+    Card_IdxCol(Column* pColumn);
+   ~Card_IdxCol(void) noexcept(false);
   };
 
-  Card_CalcBool* _pCard_CalcBool(void* aAddr);
-  bool _bIsCard_CalcBool(void* aAddr);
+  Card_IdxCol* _pCard_IdxCol(void* aAddr);
 }
 
 /*============================================================================*/

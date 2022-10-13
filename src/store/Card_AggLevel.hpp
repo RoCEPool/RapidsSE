@@ -18,7 +18,6 @@ namespace STORE
   };
 
   Card_AggLevel* _pCard_AggLevel(void* aAddr);
-  bool _bIsCard_AggLevel(void* aAddr);
 }
 
 /*============================================================================*/

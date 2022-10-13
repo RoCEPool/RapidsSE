@@ -22,7 +22,6 @@ namespace STORE
   };
 
   Card_RpnTerms* _pCard_RpnTerms(void* aAddr);
-  bool _bIsCard_RpnTerms(void* aAddr);
 }
 
 /*============================================================================*/

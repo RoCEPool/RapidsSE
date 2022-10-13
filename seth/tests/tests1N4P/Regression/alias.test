@@ -3,7 +3,7 @@
 // Result file: ../queries/alias/results/alias-1.res
 //TODO: ENABLE WHEN JOINS
 /*
-select m_qualitycode as QualCode from manufacturer m join returns r on m.m_mfgkey = r.m_mfgkey where r_returndate >= '2013-12-26 00:00:00' and r_returndate <= '2014-12-31 00:00:00' and m_specialorders = 'Y'order by m.m_mfgkey;
+select m_qualitycode as QualCode from manufacturer m join returnitems r on m.m_mfgkey = r.m_mfgkey where r_returndate >= '2013-12-26 00:00:00' and r_returndate <= '2014-12-31 00:00:00' and m_specialorders = 'Y'order by m.m_mfgkey;
 ordered rows:
   (79)
   (37)
@@ -24,7 +24,7 @@ rows:
 // Result file: ../queries/alias/results/alias-2.res
 //TODO: ENABLE WHEN SUBQUERIES
 /*
-select count(m_qualitycode) as "NumCodesBiggernThan50" from (select m_qualitycode from manufacturer m, returns r where m.m_mfgkey = r.m_mfgkey and cast(m_qualitycode as integer) > 50);
+select count(m_qualitycode) as "NumCodesBiggernThan50" from (select m_qualitycode from manufacturer m, returnitems r where m.m_mfgkey = r.m_mfgkey and cast(m_qualitycode as integer) > 50);
 rows:
   (20)
 */

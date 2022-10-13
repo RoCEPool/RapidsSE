@@ -30,7 +30,7 @@ readonly __BOOT_FN=1
 readonly EXE_DIR="${ROOT_DIR}/bin"
 readonly EXE="${EXE_DIR}/rapidsse"
 
-readonly NOHUP_FILE="${ROOT_DIR}/se.log"
+readonly LOG_FILE="${ROOT_DIR}/se.log"
 readonly PIDFILE="${ROOT_DIR}/${PID_FILENAME}"
 readonly READYFILE="${ROOT_DIR}/${READY_FILENAME}"
 
@@ -313,9 +313,6 @@ function startRemoteNode() {
 
 function startCurrentNode() {
  
-  # Remove the nohup.out file if it exists
-  rm "${NOHUP_FILE}" &>/dev/null
- 
   # Get all of the settings for the current node
   local host
   local port
@@ -385,16 +382,16 @@ function startCurrentNode() {
     echo "Starting RapidsSE on node ${CURRENT_NODE_NAME} [host ${host}]..."
   fi
 
-  echo "Starting SE at $(date +%FT%T)" >> "${NOHUP_FILE}"
+  echo "Starting SE at $(date +%FT%T)" >> "${LOG_FILE}"
 
-  "${startCmd[@]}" >> "${NOHUP_FILE}" 2>&1 & 
+  "${startCmd[@]}" 1>/dev/null 2>> "${LOG_FILE}" &
 
   # get the last pid and save it to a file
   local pid=$!
   echo "${pid}" > "${PIDFILE}"
 
-  echo "[Start script]: RapidsSE started as PID ${pid}." >> "${NOHUP_FILE}"
-  echo "[Start script]: RapidsSE started with the command:   ${startCmd[*]}" >> "${NOHUP_FILE}"
+  echo "[Start script]: RapidsSE started as PID ${pid}." >> "${LOG_FILE}"
+  echo "[Start script]: RapidsSE started with the command:   ${startCmd[*]}" >> "${LOG_FILE}"
 }
 
 
@@ -1272,9 +1269,9 @@ function stopCurrentNode() {
       echo "Stopping RapidsSE on node ${CURRENT_NODE_NAME} [host ${host}]..."
     fi
 
-    echo "Stopping SE at $(date +%FT%T)" >> "${NOHUP_FILE}"
+    echo "Stopping SE at $(date +%FT%T)" >> "${LOG_FILE}"
 
-    "${stopCmd[@]}" >> "${NOHUP_FILE}" 2>&1 &
+    "${stopCmd[@]}" &
 
     
     # Now we wait for the process to stop, periodically checking if the 

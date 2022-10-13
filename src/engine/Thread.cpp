@@ -122,7 +122,7 @@ void* Thread::aEntryPoint_dedicated(void* pArg)
   catch (Exception xException) {
     
         fflush(stderr); fflush(stdout);
-    printf("Thread-level exception caught in func %s() file %s line %d\n",
+    vTrace("Thread-level exception caught in func %s() file %s line %d\n"_Stz,
            __func__,__FILE__,__LINE__);
         fflush(stderr); fflush(stdout);
     xException.vPrint();
@@ -228,7 +228,7 @@ void* Thread::aEntryPoint_dummy(void* pArg)
   catch (Exception xException) {
     
         fflush(stderr); fflush(stdout);
-    printf("Thread-level exception caught in func %s() file %s line %d\n",
+    vTrace("Thread-level exception caught in func %s() file %s line %d\n"_Stz,
            __func__,__FILE__,__LINE__);
         fflush(stderr); fflush(stdout);
     xException.vPrint();

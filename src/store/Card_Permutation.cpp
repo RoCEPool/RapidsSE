@@ -13,7 +13,6 @@ __pCastFunction_Card(STORE,Card_Permutation,CK_PERMUTATION)
 __aNewFunction(Card_Permutation,CN_CARD)
 __vDeleteFunction(Card_Permutation,CN_CARD)
 
-__bIsCard(STORE,Card_Permutation,CK_PERMUTATION)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

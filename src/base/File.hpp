@@ -64,6 +64,7 @@ namespace BASE
     static bool bExists(Stz* szFilePath, bool bWarning=true);
     static bool bModTime(Stz* szFilePath, time_t& tTime);
     static bool bRemove(Stz* szFilePath);
+    static bool bRename(Stz* szOldPath, Stz* szNewPath);
     static void vRepair(Object* pObject);
     static i8   nSize(Stz* szFilePath);
   
@@ -87,6 +88,7 @@ namespace BASE
     bool bOpenRead(Stz* szFilePath);
     bool bOpenWrite(Stz* szFilePath);
     void vPreAllocate(i8 nOffset, i8 nBytes);
+    i8   iPrint(Stz* szFormat, ...);
     void vPrint(va_list args, Stz* aFormat);
     void vPrint(Stz* aFormat,...);
     i8   nReadBytes(void* aDst, i8 nBytes);

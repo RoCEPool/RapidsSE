@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* CardSet.cpp -- Card Set                                                    */
+/* ChildCards.cpp -- Card Set                                                    */
 /*============================================================================*/
 
-#include "CardSet.hpp"
+#include "ChildCards.hpp"
 
 #include "Card.hpp"
 #include "Card_Table.hpp"
@@ -15,7 +15,7 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-CardSet::CardSet(void)
+ChildCards::ChildCards(void)
 {
   //_precondition_(_ADDRESS_,_FOOTER_);
           
@@ -25,7 +25,7 @@ CardSet::CardSet(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-CardSet::~CardSet(void) noexcept(false)
+ChildCards::~ChildCards(void) noexcept(false)
 {
   //_precondition_(_ADDRESS_,_FOOTER_);
 
@@ -41,7 +41,7 @@ CardSet::~CardSet(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get number of child cards                                                  */
 /*----------------------------------------------------------------------------*/
-i8 CardSet::nChildCards(void)
+i8 ChildCards::nChildCards(void)
 {
   //_precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -53,7 +53,7 @@ i8 CardSet::nChildCards(void)
 /*----------------------------------------------------------------------------*/
 /* find immediate child-card                                                  */
 /*----------------------------------------------------------------------------*/
-i8 CardSet::iFindChild(Card* pChild)
+i8 ChildCards::iFindChild(Card* pChild)
 {
   //_precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -71,7 +71,7 @@ i8 CardSet::iFindChild(Card* pChild)
 /*----------------------------------------------------------------------------*/
 /* find immediate child-card                                                  */
 /*----------------------------------------------------------------------------*/
-Card* CardSet::pFindChild(eCK eCard)
+Card* ChildCards::pFindChild(eCK eCard)
 {
   //_precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -85,7 +85,7 @@ Card* CardSet::pFindChild(eCK eCard)
 /*----------------------------------------------------------------------------*/
 /* find immediate child-card                                                  */
 /*----------------------------------------------------------------------------*/
-Card* CardSet::pFindChild(eCK eCard, i8& i_Child)
+Card* ChildCards::pFindChild(eCK eCard, i8& i_Child)
 {
   //_precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -108,7 +108,7 @@ Card* CardSet::pFindChild(eCK eCard, i8& i_Child)
 /*----------------------------------------------------------------------------*/
 /* find sub-card                                                              */
 /*----------------------------------------------------------------------------*/
-Card* CardSet::pFindSubCard(eCK eCard)
+Card* ChildCards::pFindSubCard(eCK eCard)
 {
   //_precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -136,7 +136,7 @@ Card* CardSet::pFindSubCard(eCK eCard)
 /*----------------------------------------------------------------------------*/
 /* find table card by synonym                                                 */
 /*----------------------------------------------------------------------------*/
-Card_Table* CardSet::pFindTableCard(char cTableSyn, Card*& rpMainCard)
+Card_Table* ChildCards::pFindTableCard(char cTableSyn, Card*& rpMainCard)
 {
   //_precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
 
@@ -165,7 +165,7 @@ Card_Table* CardSet::pFindTableCard(char cTableSyn, Card*& rpMainCard)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card* CardSet::pGetChild(i8 i_Child)
+Card* ChildCards::pGetChild(i8 i_Child)
 {
   Card* pCard = pGet(i_Child);
   return pCard;
@@ -174,7 +174,7 @@ Card* CardSet::pGetChild(i8 i_Child)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card* CardSet::pGetChild(i8 i_Child, eCK& reCard)
+Card* ChildCards::pGetChild(i8 i_Child, eCK& reCard)
 {
   Card* pCard = pGet(i_Child);
 
@@ -189,7 +189,7 @@ Card* CardSet::pGetChild(i8 i_Child, eCK& reCard)
 /*----------------------------------------------------------------------------*/
 /* remove given immediate child card (non-recursive)                          */
 /*----------------------------------------------------------------------------*/
-void CardSet::vRemoveChild(Card* pChildCard)
+void ChildCards::vRemoveChild(Card* pChildCard)
 {
 
   vRemove(pChildCard);
@@ -198,7 +198,7 @@ void CardSet::vRemoveChild(Card* pChildCard)
 /*----------------------------------------------------------------------------*/
 /* remove given subCard (recursive)                                           */
 /*----------------------------------------------------------------------------*/
-void CardSet::vRemoveSubCard(Card* pSubCard)
+void ChildCards::vRemoveSubCard(Card* pSubCard)
 {
   //_precondition_(_ADDRESS_,_FOOTER_);
 
@@ -220,7 +220,7 @@ void CardSet::vRemoveSubCard(Card* pSubCard)
 /*----------------------------------------------------------------------------*/
 /* remove given child card from this card and replace it with its children    */
 /*----------------------------------------------------------------------------*/
-void CardSet::vReplaceChildWithItsSubs(Card* pChildCard)
+void ChildCards::vReplaceChildWithItsSubs(Card* pChildCard)
 {
   //_precondition_(_ADDRESS_,_FOOTER_);
 
@@ -237,7 +237,7 @@ void CardSet::vReplaceChildWithItsSubs(Card* pChildCard)
 /*----------------------------------------------------------------------------*/
 /* replace immediate child with given card                                    */
 /*----------------------------------------------------------------------------*/
-void CardSet::vReplaceChild(Card* pChildCard, Card* pWithCard)
+void ChildCards::vReplaceChild(Card* pChildCard, Card* pWithCard)
 {
   //_precondition_(_ADDRESS_,_FOOTER_);
 
@@ -247,7 +247,7 @@ void CardSet::vReplaceChild(Card* pChildCard, Card* pWithCard)
 /*----------------------------------------------------------------------------*/
 /* transfer all child card (incl. sub-cards) from given card set to this card */
 /*----------------------------------------------------------------------------*/
-void CardSet::vTransferChildren(Card* pFromCard)
+void ChildCards::vTransferChildren(Card* pFromCard)
 {
   //_precondition_(_ADDRESS_,_FOOTER_);
 
@@ -258,8 +258,8 @@ void CardSet::vTransferChildren(Card* pFromCard)
 /*----------------------------------------------------------------------------*/
 /* transfer cards to this card from given card onwards                        */
 /*----------------------------------------------------------------------------*/
-void CardSet::vTransferFrom(Card* pCards, Card* pFrom,
-                         Card* pAt, bool bAfter)
+void ChildCards::vTransferFrom(Card* pCards, Card* pFrom,
+                               Card* pAt, bool bAfter)
 {
   //_precondition_(_ADDRESS_,_FOOTER_);
 
@@ -291,8 +291,8 @@ void CardSet::vTransferFrom(Card* pCards, Card* pFrom,
 /*----------------------------------------------------------------------------*/
 /* transfer subset of cards from given card up till (and including) given card*/
 /*----------------------------------------------------------------------------*/
-void CardSet::vTransferSubset(Card* pCards, Card* pFrom, Card* pTill,
-                           Card* pAt, bool bAfter)
+void ChildCards::vTransferSubset(Card* pCards, Card* pFrom, Card* pTill,
+                                 Card* pAt, bool bAfter)
 {
   //_precondition_(_ADDRESS_,_FOOTER_);
 
@@ -327,8 +327,8 @@ void CardSet::vTransferSubset(Card* pCards, Card* pFrom, Card* pTill,
 /*----------------------------------------------------------------------------*/
 /* transfer cards to this card up till (and including) given card             */
 /*----------------------------------------------------------------------------*/
-void CardSet::vTransferTill(Card* pCards, Card* pTill,
-                         Card* pAt, bool bAfter)
+void ChildCards::vTransferTill(Card* pCards, Card* pTill,
+                               Card* pAt, bool bAfter)
 {
   //_precondition_(_ADDRESS_,_FOOTER_);
 

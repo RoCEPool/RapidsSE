@@ -161,6 +161,16 @@
 
   0 locals| errorCode |
 
+  sTableNm str.length C_MAX_TABLE_NAME_LENGTH 1 - > if
+    EC_NO_SUCH_TABLE to errorCode
+
+    // create an exec error infoset
+    errorCode op__execErr
+
+    false
+    exit
+  then
+
   // check in tables folder
   check::folderIsTables not if
     to errorCode
@@ -202,6 +212,16 @@
 
   params| sIndexNm sTableNm |
   0 locals| errorCode |
+
+  sIndexNm str.length C_MAX_INDEX_NAME_LENGTH 1 - > if
+    EC_NO_SUCH_INDEX to errorCode
+
+    // create an exec error infoset
+    errorCode op__execErr
+
+    false
+    exit
+  then
 
   // check in tables folder
   check::folderIsTables not if
@@ -253,6 +273,27 @@
 
   params| sIndexNm sTableNm |
   0 locals| errorCode |
+
+  sTableNm str.length C_MAX_TABLE_NAME_LENGTH 1 - > if
+    EC_NO_SUCH_TABLE to errorCode
+
+    // create an exec error infoset
+    errorCode op__execErr
+
+    false
+    exit
+  then
+
+  sIndexNm str.length C_MAX_INDEX_NAME_LENGTH 1 - > if
+    EC_NO_SUCH_INDEX to errorCode
+
+    // create an exec error infoset
+    errorCode op__execErr
+
+    false
+    exit
+  then
+
 
   // check in tables folder
   check::folderIsTables not if

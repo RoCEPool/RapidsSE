@@ -24,65 +24,66 @@ namespace STORE
     void vAdd_columnRef_Under_term(void);
     void vConvert_streamColOrdinal_To_tableColOrdinal(void);
 
-    void vAdd_combined(void);
+    void vReinstate_combined(void);
     void vAdd_scanPred(void);
-    void vAdd_stages(void);
-    void vAppend_tablePtn_UnderAll_table(void);
+    void vReinstate_stages(void);
+    void vAddNew_tablePtn_UnderAll_table(void);
     void vAppend_indexList_ToAll_table(void);
-    void vAppend_stream_UnderAll_table(void);
-    void vAssignAll_cmpPred_To_table(void);
-    void vCalc_ordinalRanges_ForAll_stream(void);
+    void vAddNew_stream_UnderAll_table(void);
+    void vMarkAll_where_pred_Wrt_table(void);
+    void vCalc_ordinalRange_ForAll_stream(void);
     void vCalc_tableSyn_ForAll_table(void);
     void vCompute_coPtnJoinList(void);
     void vCompute_coPtnPredList(void);
     void vCompute_crossPtnJoinList(void);
     void vCompute_ptndJoinSet(void);
-    void vConvertAll_idxColNm_To_streamColOrd(void);
-    void vConvert_calc_OfEach_where_To_calcBool(void);
+    void vConvertAll_idxCol_name_To_idxCol_ord(void);
+    void vConvertAll_where_calc_To_where_calcBool(void);
     void vCopy_ptndJoinSet(void);
-    void vCullAll_filterPred_Of_indexJoin(void);
+    void vCullAll_filter_pred_Of_indexJoin(void);
     void vCullAll_scan(void);
     void vCull_markedPred(void);
     void vCull_sby_SameAs_gby(void);
     void vDeleteAll_absJoin(void);
     void vDeleteAll_combined(void);
     void vDeleteAll_send(void);
+    void vDeleteAllEmpty_where(void);
     void vDeleteAll_Empty_filter(void);
-    void vDeleteAll_EmptySub_filter(void);
     void vEstimate_joinOrder(void);
     void vEstimate_network(void);
     void vEstimate_ptndJoins(void);
+    void vExpandedForm(void);
     void vExtract_joinOrderSeq(void);
     void vExtract_joinPredList(void);
     void vExtract_tableList_From_queryBoard(void);
-    void vFormAll_joinPred_of_indexJoin(void);
+    void vAddNew_joinPred_UnderAll_indexJoin(void);
     void vGenerate_ptndPermutations(void);
     void vIndividuate_filter(void);
-    void vInsert_indexJoin_UnderAll_table(void);
+    void vAddNew_indexJoin_UnderAllJoinable_table(void);
     void vDeleteAll_Duplicate_stage(void);
     void vMark_scan_pred_bounds(void);
     void vMark_scan_pred_ordinals(void);
-    void vMoveAll_cmpPred_To_table(void);
+    void vMoveMarked_where_pred_To_table(void);
     void vPromote_scan_To_indexScan(void);
-    void vRefactorAll_table_Into_join(void);
+    void vConvertAllJoinable_table_Into_indexJoin(void);
     void vRemove_invalidPermutations(void);
     void vSetup_costEst(void);
     void vSubsume_scan_Under_absJoin(void);
 
   private:
 
-    void vAssignFilterLeftwards(Card_Filter* pCard_filter);
-    void vAssignPredDrillDown(Card_PRED*, Card_Filter* pCard_filter);
+    void vMarkPredLeftwards(Card_BoolCalc* p_bool);
+    void vMarkPredDrillDown(Card_PRED* p_pred);
 
-    char cAssignPredLeft(Card_PRED* pCard_PRED, Card_Filter* pCard_filter);
-    char cAssignPredToTable(Card_Table* pCard_table, Card_PRED* pCard_PRED);
+    char cMovePredLeftwards(Card_PRED* p_pred);
+    char cMovePredToTable(Card_Table* p_table, Card_PRED* p_pred);
 
-    void vCopyFilterLeftwards(Card_Filter* pCard_filter);
-    bool bCopyPredDrillDown(Card_PRED*, Card_Filter* pCard_filter);
+    void vCopyPredLeftwards(Card_BoolCalc* p_calcBool);
+    bool bCopyPredDrillDown(Card_PRED*, Card_BoolCalc* p_calcBool);
     void vCopyPredToExistingFilter(Card_Filter* pCard_filter_existing, Card_PRED* pCard_pred);
-    void vCopyPredToNewFilter(Card_Filter* pCard_filter_new, Card_PRED* pCard_pred);
+    void vCopyPredToNewFilter(Card_Filter* p_filter_new, Card_PRED* p_pred);
 
-    void vMarkPredCardsAsMoved(Card* pPredCard);
+    void vMarkPredAsMoved(Card* pPredCard);
 
     Card_IndexPred*  pTo_IndexPred (Card_AbsJoin* pCard_AbsJoin,
                                     Card_CmpPred* pCard_PredCmp);

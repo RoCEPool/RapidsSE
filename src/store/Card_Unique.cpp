@@ -12,7 +12,6 @@ __pCastFunction_Card(STORE,Card_Unique,CK_UNIQUE)
 __aNewFunction(Card_Unique,CN_CARD)
 __vDeleteFunction(Card_Unique,CN_CARD)
 
-__bIsCard(STORE,Card_Unique,CK_UNIQUE)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

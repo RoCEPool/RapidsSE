@@ -83,6 +83,10 @@ def main() -> int:
             buildrunner.run()
             installer_path = buildrunner.installer_path
 
+            # Don't do the test stage if we don't pass the build stage
+            if not buildrunner.test_result.test_passed:
+                skip_test = True
+
         if skip_test:
             LOG.info("Skipping the test stage")
         else:

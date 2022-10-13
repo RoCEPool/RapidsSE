@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* CardSet.hpp -- Card Set                                                    */
+/* ChildCards.hpp -- Card Set                                                    */
 /*============================================================================*/
 #pragma once
 
@@ -12,11 +12,11 @@ namespace STORE
   class Card;
   class Card_Table;
 
-  class CardSet : public ListExo2_t<Card>
+  class ChildCards : public ListExo2_t<Card>
   {
   public:
-    CardSet(void);
-   ~CardSet(void) noexcept(false);
+    ChildCards(void);
+   ~ChildCards(void) noexcept(false);
 
     i8   nChildCards(void);
 

@@ -4,7 +4,12 @@
 
 #include "BASE.h"
 
+#ifdef WITH_APPLE
 #include <sys/sysctl.h>
+#else
+#include <linux/sysctl.h>
+#endif
+
 #include <sys/time.h>
 
 /*----------------------------------------------------------------------------*/

@@ -13,7 +13,7 @@
 #include "eYG.h"
 #include "eXK.h"
 
-#include "CardSet.hpp"
+#include "ChildCards.hpp"
 
 #include "Table.hpp"
 #include "Ribbon.hpp"
@@ -30,7 +30,7 @@ namespace STORE
   class Card_Deck;
 
   class Card_Calc;
-  class Card_CalcBool;
+  class Card_BoolCalc;
   class Card_CandIndex;
   class Card_CardPtr;
   class Card_ColumnRef;
@@ -51,7 +51,7 @@ namespace STORE
   class Card_Hash;
   class Card_Having;
 
-  class Card_IdxColNm;
+  class Card_IdxCol;
   class Card_IdxColList;
   class Card_IndexPtr;
   class Card_IndexJoin;
@@ -122,7 +122,7 @@ static Stz* P_TableUsed    = "bTableUsed"_Stz;
 namespace STORE
 {
   class Card : public Object
-             , public CardSet
+             , public ChildCards
   {
   protected:
     char md_Bearing[256];
@@ -247,7 +247,8 @@ namespace STORE
   
 
     Card_As*            pSub_as(void);
-    Card_CalcBool*      pSub_calcBool(void);
+    Card_BoolCalc*      pSub_boolCalc(void);
+    Card_Calc*          pSub_calc(void);
     Card_ColumnRef*     pSub_columnRef(void);
     Card_Filter*        pSub_filter(void);
     Card_GbyElist*      pSub_gbyElist(void);
@@ -279,27 +280,6 @@ namespace STORE
 
   Card* _pCard(void* aAddr);
 }
-
-/*----------------------------------------------------------------------------*/
-/* macro for test is class                                                    */
-/*----------------------------------------------------------------------------*/
-#define __bIsCard(SPACENM,CLASSNM,CK) \
-bool SPACENM::_bIs##CLASSNM(void* aAddr) \
-{ \
-  Object* pObject = reinterpret_cast<Object*>(aAddr); \
-  \
-  if (CN_CARD != pObject->eGetClassNo()) \
-    return false; \
-  \
-  Card* pCard = reinterpret_cast<Card*>(aAddr); \
-  \
-  if (CK != pCard->eCard()) \
-    return false; \
-  \
-  return true; \
-} \
-EndDefine
-
 
 /*----------------------------------------------------------------------------*/
 /* RASSERT_CARD macro                                                         */

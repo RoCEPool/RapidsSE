@@ -18,13 +18,12 @@ namespace STORE
     Card_IdxColList(Index* pIndex);
    ~Card_IdxColList(void) noexcept(false);
 
-    Card_IdxColNm* pFind_idxCol(Stz *szColNm, i8& i_IdxColNo);
+    Card_IdxCol* pFind_idxCol(Stz *szColNm, i8& i_IdxColNo);
 
     void vOrdinate(Card_Stream* pCard_Stream);
   };
 
   Card_IdxColList* _pCard_IdxColList(void* aAddr);
-  bool _bIsCard_IdxColList(void* aAddr);
 }
 
 /*============================================================================*/

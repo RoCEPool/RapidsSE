@@ -244,6 +244,17 @@ bool Procedure::bTranslateToPipeline(String* pToPipelineStmt,
   pPrdTxtVec->vInsertToken(i_InsTkn++,"endTag"_Stz,TN_NAME);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // add the <persistentTx> tag into the modified text vector
+
+  if (pWrdTagSet->bHasName(C_TAG_PERSISTENT)) {
+    pPrdTxtVec->vInsertToken(i_InsTkn++,"tag"_Stz,TN_NAME);
+    pPrdTxtVec->vInsertToken(i_InsTkn++,C_TAG_PERSISTENT,TN_NAME);
+    pPrdTxtVec->vInsertToken(i_InsTkn++,"="_Stz,TN_NAME);
+    pPrdTxtVec->vInsertToken(i_InsTkn++,"1"_Stz,TN_NAME);
+    pPrdTxtVec->vInsertToken(i_InsTkn++,"endTag"_Stz,TN_NAME);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add the <lowMemory> tag into the modified text vector
   
   if (pWrdTagSet->bHasName(C_TAG_LOWMEMORY)) {
@@ -323,7 +334,7 @@ Word* Procedure::pFindProcedure(TokenVec* pTokenVec)
   Word* pwMatchedProc = pDicRoot->pFindWord(sProcNm_single);
   
   if (pwMatchedProc) {
-    if (pwMatchedProc->pCategory() != pProcCatg)
+    if (pwMatchedProc->eCategoryEnum() != WC_PROCEDURE)
       return nullptr;
 
     // found procedure which matches token0
@@ -347,7 +358,7 @@ Word* Procedure::pFindProcedure(TokenVec* pTokenVec)
 
   if (pwMatchedProc) {
 
-    if (pwMatchedProc->pCategory() != pProcCatg)
+    if (pwMatchedProc->eCategoryEnum() != WC_PROCEDURE)
       return nullptr;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -383,7 +394,7 @@ Word* Procedure::pFindProcedure(TokenVec* pTokenVec)
   if (! pwMatchedProc)
     return nullptr;
   
-  if (pwMatchedProc->pCategory() != pProcCatg)
+  if (pwMatchedProc->eCategoryEnum() != WC_PROCEDURE)
     return nullptr;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -460,6 +471,7 @@ void Procedure::vParseAndAdd(void)
   Word* pProcCatg = pDicRoot->pFindWord(C_PROCEDURE_CATG);
   
   m_pProcWord = pDicRoot->pFindWord(m_sProcNm);
+//  m_pProcWord->vCategoryEnum(WC_PROCEDURE);
   if (m_pProcWord)
     return;
   
@@ -468,7 +480,8 @@ void Procedure::vParseAndAdd(void)
   
   m_pProcWord = new (pDicRoot) Word(m_sProcNm);
   
-  m_pProcWord->vCategory(pProcCatg);
+  m_pProcWord->vCategoryEnum(pProcCatg->eCategoryEnum());
+//  m_pProcWord->vCategoryEnum(WC_PROCEDURE);
   
   if (! m_pProcWord->pWrdTagSet())
     m_pProcWord->vWrdTagSet(new TagSet);
@@ -857,7 +870,9 @@ void Procedure::vAddProcedureWord(void)
   
   m_pProcWord = new (pDicRoot) Word(m_sProcNm);
   
-  m_pProcWord->vCategory(pProcCatg);
+  m_pProcWord->vCategoryEnum(pProcCatg->eCategoryEnum());
+
+//  m_pProcWord->vCategoryEnum(WC_PROCEDURE);
   
   m_pTagSet = m_pProcWord->pWrdTagSet(true);
 }

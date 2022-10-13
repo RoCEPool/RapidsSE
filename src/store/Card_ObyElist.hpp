@@ -24,7 +24,6 @@ namespace STORE
   };
 
   Card_ObyElist* _pCard_ObyElist(void* aAddr);
-  bool _bIsCard_ObyElist(void* aAddr);
 }
 
 /*============================================================================*/

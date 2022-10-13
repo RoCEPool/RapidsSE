@@ -18,7 +18,6 @@ namespace STORE
   };
 
   Card_Deck* _pCard_Deck(void* aAddr);
-  bool _bIsCard_Deck(void* aAddr);
 }
 
 /*============================================================================*/

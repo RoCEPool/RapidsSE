@@ -108,6 +108,24 @@ i8 SkipNode::iMaxSize(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* init an already existing SkipNode                                          */
+/*----------------------------------------------------------------------------*/
+void SkipNode::vInit(void* pObject, i8 iHeight)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPNODE);
+
+  m_pObject = pObject;
+
+  m_iHeight = iHeight;
+
+  for (i8 i_Level = 0; i_Level < m_iHeight; i_Level++)
+    m_pRight[i_Level] = nullptr;
+
+  for (i8 i_Level = 0; i_Level < C_SKIPLIST_LEVELS; i_Level++)
+    m_caFlag[i_Level] = 0;
+}
+
+/*----------------------------------------------------------------------------*/
 /* calculate maximum size of a skip node                                      */
 /*----------------------------------------------------------------------------*/
 void SkipNode::vResetFlags(void)

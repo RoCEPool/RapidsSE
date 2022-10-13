@@ -8,7 +8,7 @@
 #include "Card_Type.hpp"
 #include "Card_As.hpp"
 #include "Card_Calc.hpp"
-#include "Card_CalcBool.hpp"
+#include "Card_BoolCalc.hpp"
 #include "Card_Direction.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -19,7 +19,6 @@ __pCastFunction_Card(STORE,Card_Expr,CK_EXPR)
 __aNewFunction(Card_Expr,CN_CARD)
 __vDeleteFunction(Card_Expr,CN_CARD)
 
-__bIsCard(STORE,Card_Expr,CK_EXPR)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -96,11 +95,11 @@ void Card_Expr::vCullPred(char cWithMark)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_CalcBool* p_calcBool = this->pSub_calcBool();
-  if (! p_calcBool)
+  Card_BoolCalc* p_boolCalc = this->pSub_boolCalc();
+  if (! p_boolCalc)
     return;
 
-  p_calcBool->vCullPred(cWithMark);
+  p_boolCalc->vCullPred(cWithMark);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -11,7 +11,7 @@
   STD_BOOTFORK_TAG
   "
   define table __listPartitions (
-    partition     INTEGER NOT NULL ,
+    partitionNum  INTEGER NOT NULL ,
     nodeName      VARCHAR NOT NULL
   ) < infoSet > = 1 ;
   "

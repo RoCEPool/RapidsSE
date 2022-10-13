@@ -18,7 +18,6 @@ namespace STORE
   };
 
   Card_AggElist* _pCard_AggElist(void* aAddr);
-  bool _bIsCard_AggElist(void* aAddr);
 }
 
 /*============================================================================*/

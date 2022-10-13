@@ -5,35 +5,16 @@
 " OP_unload.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on EV_M_START ...                                                     INIT */
-/*----------------------------------------------------------------------------*/
-: unload_StartMarker \handler
-
-  EV_M_START_handler
-;
-
-/*----------------------------------------------------------------------------*/
 /* on EV_M_DATAPULSE ...                                                BEGIN */
 /*----------------------------------------------------------------------------*/
 : unload_DataPulse \handler
 
   EV_M_DATAPULSE_handler
-;
 
-/*----------------------------------------------------------------------------*/
-/* on EV_D_CSVBUFFER ...                                                 EACH */
-/*----------------------------------------------------------------------------*/
-: unload_CsvBuffer \handler
+  <filePath> locals| sFilePath |
 
-  EV_D_CSVBUFFER_handler
-;
+  sFilePath unload.toFile
 
-/*----------------------------------------------------------------------------*/
-/* on EV_M_EOS ...                                                        END */
-/*----------------------------------------------------------------------------*/
-: unload_EosMarker \handler
-
-  EV_M_EOS_handler
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -48,10 +29,10 @@
 
   op__topology
 
-  find: unload_CsvBuffer   EV_D_CSVBUFFER [op].handler!
-  find: unload_EosMarker   EV_M_EOS       [op].handler!
+//  find: unload_CsvBuffer   EV_D_CSVBUFFER [op].handler!
+//  find: unload_EosMarker   EV_M_EOS       [op].handler!
   find: unload_DataPulse   EV_M_DATAPULSE [op].handler!
-  find: unload_StartMarker EV_M_START     [op].handler!
+//  find: unload_StartMarker EV_M_START     [op].handler!
 
   op__loop
 
@@ -65,7 +46,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: unload :: unload ;
+cmdSyntax: unload :: unload <filePath> ;
 
 : unload_cmdTags _cmdTags tagCopy: op_tags
   tags{

@@ -16,7 +16,7 @@ namespace STORE
     Card_IndexPtr(Index* pIndex);
    ~Card_IndexPtr(void) noexcept(false);
 
-    Card_IdxColNm* pFind_indexCol(Stz* szColNm, i8& i_IdxCol);
+    Card_IdxCol* pFind_indexCol(Stz* szColNm, i8& i_IdxCol);
 
     Index* pIndex(void);
     void vIndex(Index* pIndex);
@@ -25,7 +25,6 @@ namespace STORE
   };
 
   Card_IndexPtr* _pCard_IndexPtr(void* aAddr);
-  bool _bIsCard_IndexPtr(void* aAddr);
 }
 
 /*============================================================================*/

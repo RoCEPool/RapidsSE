@@ -4,7 +4,7 @@
 
 #include "Card_JoinOrderSeq.hpp"
 
-#include "Card_CalcBool.hpp"
+#include "Card_BoolCalc.hpp"
 #include "Card_ColumnRef.hpp"
 #include "Card_CmpPred.hpp"
 #include "Card_Term.hpp"
@@ -19,7 +19,6 @@ __pCastFunction_Card(STORE,Card_JoinOrderSeq,CK_JOINORDERSEQ)
 __aNewFunction(Card_JoinOrderSeq,CN_CARD)
 __vDeleteFunction(Card_JoinOrderSeq,CN_CARD)
 
-__bIsCard(STORE,Card_JoinOrderSeq,CK_JOINORDERSEQ)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

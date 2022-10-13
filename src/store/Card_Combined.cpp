@@ -13,7 +13,6 @@ __pCastFunction_Card(STORE, Card_Combined, CK_COMBINED)
 __aNewFunction(Card_Combined, CN_CARD)
 __vDeleteFunction(Card_Combined, CN_CARD)
 
-__bIsCard(STORE, Card_Combined, CK_COMBINED)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

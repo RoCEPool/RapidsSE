@@ -19,39 +19,44 @@
   //
 
   // while compiling a new catgWord set that catgWord to be immediate
-  true 
+  true
   senCompiler::current@
   word.immediate!
 
+  input::next find execute senCompiler::current@ word.category!
+
+
   // add code into the catgWord so that when catgWord is used while compiling
   // a target word, the category of the target word is set to be catgWord
-  senCompiler::current@ encode::push
+  senCompiler::current@ word.category@ encode::push
   POSTPONE senCompiler::current@
   POSTPONE word.category!
+
+  //[ senCompiler::current@ word.see ]
 ;
 
 /*----------------------------------------------------------------------------*/
 /* prompt category                                                            */
 /*----------------------------------------------------------------------------*/
-: \prompt \\category ;
+: \prompt \\category WC_PROMPT ;
 
-: prompts \prompt find: \prompt word::ofCatg ;
+: prompts \prompt WC_PROCEDURE word::ofCatg ;
 
 /*----------------------------------------------------------------------------*/
 /* demon category                                                             */
 /*----------------------------------------------------------------------------*/
-: \demon \\category ;
+: \demon \\category WC_DEMON ;
 
-: demons \prompt find: \demon word::ofCatg ;
+: demons \prompt WC_DEMON word::ofCatg ;
 
 /*----------------------------------------------------------------------------*/
 /* folder is used as a kind of word to identify folders                       */
 /*----------------------------------------------------------------------------*/
-: \folder \\category ;
+: \folder \\category WC_FOLDER ;
 
-: isFolder word.category@ find: \folder equal ;
+: isFolder word.category@ WC_FOLDER equal ;
 
-: folders \prompt find: \folder word::ofCatg ;
+: folders \prompt WC_FOLDER word::ofCatg ;
 
 /*----------------------------------------------------------------------------*/
 /* handler category                                                           */
@@ -67,34 +72,34 @@
   [op].handlerExit
 ;
 
-: \handler \\category
+: \handler \\category WC_HANDLER
 
   "_handler_exit" senCompiler::current@ word.exitHook!
 
   POSTPONE _handler_entry
 ;
 
-: handlers \prompt find: \handler word::ofCatg ;
+: handlers \prompt WC_HANDLER word::ofCatg ;
 
 /*----------------------------------------------------------------------------*/
 /* include category                                                           */
 /*----------------------------------------------------------------------------*/
-: \include \\category ;
+: \include \\category WC_INCLUDE ;
 
-: includes \prompt find: \include word::ofCatg ;
+: includes \prompt WC_INCLUDE word::ofCatg ;
 
 /*----------------------------------------------------------------------------*/
 /* operator category                                                          */
 /*----------------------------------------------------------------------------*/
-: \operator \\category ;
+: \operator \\category WC_OPERATOR ;
 
-: operators \prompt find: \operator word::ofCatg ;
-: ops       \prompt find: \operator word::ofCatg ;
+: operators \prompt WC_OPERATOR word::ofCatg ;
+: ops       \prompt WC_OPERATOR word::ofCatg ;
 
 /*----------------------------------------------------------------------------*/
 /* procedure category                                                         */
 /*----------------------------------------------------------------------------*/
-: \procedure \\category ;
+: \procedure \\category WC_PROCEDURE ;
 
 
 

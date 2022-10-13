@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Card_IdxColNm.cpp -- Index Column List                                   */
+/* Card_IdxCol.cpp -- Index Column List                                   */
 /*============================================================================*/
 
-#include "Card_IdxColNm.hpp"
+#include "Card_IdxCol.hpp"
 #include "Card_Term.hpp"
 #include "Column.hpp"
 
@@ -10,17 +10,16 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_IdxColNm, CK_IDXCOLNM)
-__aNewFunction(Card_IdxColNm, CN_CARD)
-__vDeleteFunction(Card_IdxColNm, CN_CARD)
+__pCastFunction_Card(STORE, Card_IdxCol, CK_IDXCOL)
+__aNewFunction(Card_IdxCol, CN_CARD)
+__vDeleteFunction(Card_IdxCol, CN_CARD)
 
-__bIsCard(STORE, Card_IdxColNm, CK_IDXCOLNM)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_IdxColNm::Card_IdxColNm(Column* pColumn)
-: Card(CK_IDXCOLNM)
+Card_IdxCol::Card_IdxCol(Column* pColumn)
+: Card(CK_IDXCOL)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -34,7 +33,7 @@ Card_IdxColNm::Card_IdxColNm(Column* pColumn)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_IdxColNm::~Card_IdxColNm(void) noexcept(false)
+Card_IdxCol::~Card_IdxCol(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

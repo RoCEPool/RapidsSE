@@ -13,7 +13,6 @@ __pCastFunction_Card(STORE,Card_ObyElist,CK_OBYELIST)
 __aNewFunction(Card_ObyElist,CN_CARD)
 __vDeleteFunction(Card_ObyElist,CN_CARD)
 
-__bIsCard(STORE,Card_ObyElist,CK_OBYELIST)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

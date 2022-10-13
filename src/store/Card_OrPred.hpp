@@ -21,7 +21,6 @@ namespace STORE
   };
 
   Card_OrPred* _pCard_OrPred(void* aAddr);
-  bool _bIsCard_OrPred(void* aAddr);
 }
 
 /*============================================================================*/

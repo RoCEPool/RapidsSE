@@ -18,7 +18,6 @@ namespace STORE
   };
 
   Card_CrossPtnJoinList* _pCard_CrossPtnJoinList(void* aAddr);
-  bool _bIsCard_CrossPtnJoinList(void* aAddr);
 }
 
 /*============================================================================*/

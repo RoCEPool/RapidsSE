@@ -15,8 +15,9 @@ enum eCK // card kind
   /* */ CK_ANDPRED,
   /* */ CK_AS,
 
+  /* */ CK_BOOLCALC,
+
   /* */ CK_CALC,
-  /* */ CK_CALCBOOL,
   /* */ CK_CANDINDEX,
   /* */ CK_CARDPTR,
   /* */ CK_CMPPRED,
@@ -48,7 +49,7 @@ enum eCK // card kind
   /* */ CK_HASH,
   /* */ CK_HAVING,
 
-  /* */ CK_IDXCOLNM,
+  /* */ CK_IDXCOL,
   /* */ CK_IDXCOLLIST,
   /* */ CK_INDEXJOIN,
   /* */ CK_INDEXLIST,
@@ -121,8 +122,9 @@ static Stz* aCK[]
   /* */ "CK_ANDPRED"_Stz,      // CK_ANDPRED
   /* */ "CK_AS"_Stz,           // CK_AS
 
+  /* */ "CK_BOOLCALC"_Stz,     // CK_BOOLCALC
+
   /* */ "CK_CALC"_Stz,         // CK_CALC
-  /* */ "CK_CALCBOOL"_Stz,     // CK_CALCBOOL
   /* */ "CK_CANDINDEX"_Stz,    // CK_CANDINDEX
   /* */ "CK_CARDPTR"_Stz,      // CK_CARDPTR
   /* */ "CK_CMPPRED"_Stz,      // CK_CMPPRED
@@ -154,7 +156,7 @@ static Stz* aCK[]
   /* */ "CK_HASH"_Stz,         // CK_HASH
   /* */ "CK_HAVING"_Stz,       // CK_HAVING
 
-  /* */ "CK_IDXCOLNM"_Stz,       // CK_IDXCOLNM
+  /* */ "CK_IDXCOL"_Stz,       // CK_IDXCOL
   /* */ "CK_IDXCOLLIST"_Stz,   // CK_IDXCOLLIST
   /* */ "CK_INDEXJOIN"_Stz,    // CK_INDEXJOIN
   /* */ "CK_INDEXLIST"_Stz,    // CK_INDEXLIST
@@ -227,8 +229,9 @@ static Stz* aCK_short[]
   /* */ "andPred"_Stz,         // CK_ANDPRED
   /* */ "as"_Stz,              // CK_AS
 
+  /* */ "boolCalc"_Stz,        // CK_BOOLCALC
+
   /* */ "calc"_Stz,            // CK_CALC
-  /* */ "calcBool"_Stz,        // CK_CALCBOOL
   /* */ "candIndex"_Stz,       // CK_CANDINDEX
   /* */ "{card}"_Stz,          // CK_CARDPTR
   /* */ "cmpPred"_Stz,         // CK_CMPPRED
@@ -260,7 +263,7 @@ static Stz* aCK_short[]
   /* */ "hash"_Stz,            // CK_HASH
   /* */ "having"_Stz,          // CK_HAVING
 
-  /* */ "idxColNm"_Stz,        // CK_IDXCOLNM
+  /* */ "idxCol"_Stz,          // CK_IDXCOL
   /* */ "idxColList"_Stz,      // CK_IDXCOLLIST
   /* */ "indexJoin"_Stz,       // CK_INDEXJOIN
   /* */ "indexList"_Stz,       // CK_INDEXLIST

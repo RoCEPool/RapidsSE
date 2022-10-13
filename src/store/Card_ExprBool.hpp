@@ -22,7 +22,6 @@ namespace STORE
   };
 
   Card_ExprBool* _pCard_ExprBool(void* aAddr);
-  bool _bIsCard_ExprBool(void* aAddr);
 }
 
 /*============================================================================*/

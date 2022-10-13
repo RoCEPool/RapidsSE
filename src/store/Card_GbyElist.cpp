@@ -12,7 +12,6 @@ __pCastFunction_Card(STORE,Card_GbyElist,CK_GBYELIST)
 __aNewFunction(Card_GbyElist,CN_CARD)
 __vDeleteFunction(Card_GbyElist,CN_CARD)
 
-__bIsCard(STORE,Card_GbyElist,CK_GBYELIST)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

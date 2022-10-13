@@ -18,7 +18,6 @@ namespace STORE
   };
 
   Card_StageTopo* _pCard_StageTopo(void* aAddr);
-  bool _bIsCard_StageTopo(void* aAddr);
 }
 
 /*============================================================================*/

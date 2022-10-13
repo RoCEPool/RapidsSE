@@ -12,7 +12,6 @@ __pCastFunction_Card(STORE,Card_ProjElist,CK_PROJELIST)
 __aNewFunction(Card_ProjElist,CN_CARD)
 __vDeleteFunction(Card_ProjElist,CN_CARD)
 
-__bIsCard(STORE,Card_ProjElist,CK_PROJELIST)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

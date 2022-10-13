@@ -12,7 +12,6 @@ __pCastFunction_Card(STORE, Card_AbsJoin, CK_ABSJOIN)
 __aNewFunction(Card_AbsJoin, CN_CARD)
 __vDeleteFunction(Card_AbsJoin, CN_CARD)
 
-__bIsCard(STORE, Card_AbsJoin, CK_ABSJOIN)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

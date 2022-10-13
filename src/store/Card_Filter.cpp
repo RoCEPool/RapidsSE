@@ -6,7 +6,7 @@
 
 #include "Card_Expr.hpp"
 #include "Card_Calc.hpp"
-#include "Card_CalcBool.hpp"
+#include "Card_BoolCalc.hpp"
 #include "Card_CmpPred.hpp"
 #include "Card_Term.hpp"
 #include "Card_Type.hpp"
@@ -22,7 +22,6 @@ __pCastFunction_Card(STORE,Card_Filter,CK_FILTER)
 __aNewFunction(Card_Filter,CN_CARD)
 __vDeleteFunction(Card_Filter,CN_CARD)
 
-__bIsCard(STORE,Card_Filter,CK_FILTER)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -148,8 +147,8 @@ bool Card_Filter::bIsEmptyFilter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_CalcBool* pCard_calcBool =
-      _pCard_CalcBool(pFindSubCard(CK_CALCBOOL));
+  Card_BoolCalc* pCard_calcBool =
+      _pCard_BoolCalc(pFindSubCard(CK_BOOLCALC));
 
   if (0 == pCard_calcBool->nChildCards())
     return true;

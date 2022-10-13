@@ -21,7 +21,7 @@
 #include "Card_Deck.hpp"
 
 #include "Card_Calc.hpp"
-#include "Card_CalcBool.hpp"
+#include "Card_BoolCalc.hpp"
 #include "Card_CandIndex.hpp"
 #include "Card_CardPtr.hpp"
 #include "Card_Combined.hpp"
@@ -50,7 +50,7 @@
 #include "Card_Hash.hpp"
 #include "Card_Having.hpp"
 
-#include "Card_IdxColNm.hpp"
+#include "Card_IdxCol.hpp"
 #include "Card_IdxColList.hpp"
 #include "Card_IndexPtr.hpp"
 #include "Card_IndexJoin.hpp"

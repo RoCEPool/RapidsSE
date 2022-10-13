@@ -41,6 +41,8 @@ C_PROJ_ROOT = "../.."
 C_CLOUD_INIT_SCRIPT = f"{C_PROJ_ROOT}/bamboo/common/aws/cloud-init-downloader.sh"
 C_INSTANCE_NAME_PREFIX = "PerfTest"
 
+C_CLOUD_INIT_LOG_PATH: pathlib.Path = pathlib.Path("/cloud-init-output.log")
+
 
 class JobRunner:
     """Coordinates and runs a job, specified by a job config file"""
@@ -77,6 +79,9 @@ class JobRunner:
         # username. e.g. "craig.mcintyre"
         self.invoking_user: str = invoking_user
 
+        # True if we are running a regression build, or False for a performance experiment
+        self.is_regr: bool = self.all_configs.get_job().get_is_regression()
+
         # Do we want to collect and save the metrics in bamboo afterwards?
         self.archive_metrics = archive_metrics
 
@@ -107,7 +112,7 @@ class JobRunner:
         self.custom_cluster_config: tempfile.NamedTemporaryFile = None
 
         # The current test that is running, and a lock to protect the changing of this variable
-        self.current_test_runner = None
+        self.current_test_runner: TestRunner = None
         self.test_runner_lock = threading.RLock()
 
         # Is the test ending early due to an abnormality (timeout, crash, etc)?
@@ -164,6 +169,7 @@ class JobRunner:
                     if self.current_test_runner is not None:
                         errmsg = "" if job_timed_out else ""
                         self.current_test_runner.result.set_test_ended(False, False, stderr=errmsg)
+                        self.current_test_runner.copy_jmeter_logs()
                         self.test_results.append(self.current_test_runner.result)
 
         except errors.Ec2InstanceTimeoutError as e:
@@ -214,6 +220,7 @@ class JobRunner:
                                                  self.git_hash,
                                                  self.git_branch,
                                                  self.invoking_user,
+                                                 self.is_regr,
                                                  self.tags)
 
         self.job_result_id = job_result_id
@@ -229,6 +236,11 @@ class JobRunner:
         # Start up the necessary AWS hosts
         tags = {"jobResultId": str(job_result_id), "jobId": str(job_id)}
 
+        # Where to copy cloud-init logs if a machine doesn't start.
+        suffix = C_CLOUD_INIT_LOG_PATH.suffix
+        cloudinit_dest_filename = f"{C_CLOUD_INIT_LOG_PATH.name.removesuffix(suffix)}.txt"
+        cloudinit_dest = pathlib.Path(self.result_path) / cloudinit_dest_filename
+
         (self.instance_ids, self.ip_addresses) = \
             ec2.start_instances(self.all_configs.get_hardware().get_instance_type(),
                                 self.all_configs.get_hardware().get_image_id(),
@@ -237,7 +249,9 @@ class JobRunner:
                                 C_INSTANCE_NAME_PREFIX,
                                 C_EC2_BOOT_TIMEOUT_SEC,
                                 self.all_configs.get_hardware().get_use_spot_instances(),
-                                tags)
+                                tags,
+                                cloudinit_src=C_CLOUD_INIT_LOG_PATH,
+                                cloudinit_dest=cloudinit_dest)
 
         assert len(self.instance_ids) > 0
         assert len(self.ip_addresses) > 0

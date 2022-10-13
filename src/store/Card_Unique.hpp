@@ -18,7 +18,6 @@ namespace STORE
   };
 
   Card_Unique* _pCard_Unique(void* aAddr);
-  bool _bIsCard_Unique(void* aAddr);
 }
 
 /*============================================================================*/

@@ -75,6 +75,8 @@ namespace STORE
     bool bPrune(i8 i_Card);
     void vPrune(i8 i_Card, bool bPrune);
 
+    void vReset(void);
+
     bool bTfmPrint(i8 i_Tfm);
     void vTfmPrint(i8 i_Tfm, bool bTfmPrint);
 

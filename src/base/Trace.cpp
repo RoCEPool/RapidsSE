@@ -19,23 +19,6 @@ void BASE::vTrace(Stz* aFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
-/* report a trace message (and optionally write to file)                      */
-/*----------------------------------------------------------------------------*/
-void BASE::vTraceF(File* pFile, Stz* aFormat, ...)
-{
-  va_list xVarArgs;
-
-  va_start(xVarArgs,aFormat);
-  if (pFile) {
-    AM::vWriteTrace_vargs(pFile,aFormat,xVarArgs);
-  }
-  else {
-    AM::vWriteTrace_vargs(aFormat,xVarArgs);
-  }
-  va_end(xVarArgs);
-}
-
-/*----------------------------------------------------------------------------*/
 /* report a trace message (with margin)                                       */
 /*----------------------------------------------------------------------------*/
 void BASE::vTraceM(Stz* aFormat, ...)

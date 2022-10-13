@@ -36,7 +36,6 @@ namespace STORE
   };
 
   Card_Term* _pCard_Term(void* aAddr);
-  bool _bIsCard_Term(void* aAddr);
 }
 
 /*============================================================================*/
