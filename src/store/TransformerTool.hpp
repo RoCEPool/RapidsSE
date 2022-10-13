@@ -25,6 +25,7 @@ namespace STORE
     i8          m_nPrints;
     s32         m_sPhase;
     s256        m_sTranformation;
+    s256        m_sExplain;
     bool        m_bPrintTransformation;
 
     Table*      m_pTable;
@@ -100,9 +101,6 @@ namespace STORE
     Card_UBound*           m_p_uBound;
     Card_Where*            m_p_where;
 
-    s256 m_sExplain;
-    s256 m_sShort;
-
   public:
     void* operator new(size_t);
     void  operator delete(void*);
@@ -127,9 +125,6 @@ namespace STORE
     void vSetPrintByKind(eCK eCard, bool bPrintByKind);
     void vSetPrintProperties(eCK eCard, bool bPrintProperties);
     void vSetPrintSubCards(eCK eCard, bool bPrintSubCards);
-
-    Stz* szShort(void);
-    void vShort(Stz* szShort);
 
     Stz* szTransformation(void);
     void vTransformation(eBK eBoard, char* azTranformation, bool bPrintTransformation=true);

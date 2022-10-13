@@ -616,7 +616,6 @@ void Transforms::vConvertAll_where_calc_To_where_calcBool(void)
   vTransformation(BK_QUERY,(char*)(__func__));
   vExplain("convert each <filter>//<calc> into //<calcBool> "_Stz);
 
-  vShort("E <where>//<calc> { //<calc> X-> //<calcBool> }"_Stz);
   while (E_bEachMain(CK_WHERE, CK_CALC)) {
     X_calc_To_calcBool();
     R_vReplaceSub(m_p_calc,m_p_where,m_p_calcBool);
@@ -1477,7 +1476,6 @@ void Transforms::vMarkAll_where_pred_Wrt_table(void)
   vTransformation(BK_QUERY,(char*)(__func__));
   vExplain("((replace with an explanation))"_Stz);
 
-  vShort("E <where>//<calcBool> { ?? }"_Stz);
   while (E_bEachMain(CK_WHERE, CK_BOOLCALC))
     vMarkPredLeftwards(m_p_calcBool);
 
@@ -1494,8 +1492,6 @@ void Transforms::vMoveMarked_where_pred_To_table(void)
 
   vTransformation(BK_QUERY,(char*)(__func__));
   vExplain("((replace with an explanation))"_Stz);
-
-  vShort("E <where>//<calcBool> { ?? }"_Stz);
 
   while (E_bEachMain(CK_WHERE, CK_BOOLCALC))
     vCopyPredLeftwards(m_p_calcBool);

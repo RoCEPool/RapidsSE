@@ -230,7 +230,6 @@ void TransformerTool::vPrintBoard(void)
   }
 
   m_sExplain = ""_Stz;
-  m_sShort = ""_Stz;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -265,26 +264,6 @@ void TransformerTool::vSetPrintProperties(eCK eCard, bool bPrintProperties)
 void TransformerTool::vSetPrintSubCards(eCK eCard, bool bPrintSubCards)
 {
   m_pCardCtl->vPrintSubCards(eCard,bPrintSubCards);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get short                                                                  */
-/*----------------------------------------------------------------------------*/
-Stz* TransformerTool::szShort(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_);
-
-  return m_sShort;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set short                                                                  */
-/*----------------------------------------------------------------------------*/
-void TransformerTool::vShort(Stz* szShort)
-{
-  _precondition_(_ADDRESS_, _MAGIC_);
-
-  m_sShort = szShort;
 }
 
 /*----------------------------------------------------------------------------*/

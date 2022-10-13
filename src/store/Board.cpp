@@ -206,7 +206,6 @@ void Board::vPrintBoard(TransformerTool* pTransformerTool)
   Stz* szPhase = pTransformerTool->szPhase();
   Stz* szTransformation = pTransformerTool->szTransformation();
   Stz* szExplain = pTransformerTool->szExplain();
-  Stz* szShort = pTransformerTool->szShort();
 
   eOA eOptAct = OA_ENTRY;
   TokenVec* pTknVec = nullptr;
@@ -233,9 +232,6 @@ void Board::vPrintBoard(TransformerTool* pTransformerTool)
   delete pRibbon;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  if (szShort && *szShort->azChar())
-    printf("%s\n",(char*)szShort);
 
   if (! bCue)
     return;
