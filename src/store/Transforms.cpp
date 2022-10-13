@@ -1177,8 +1177,7 @@ void Transforms::vFormAll_joinPred_of_indexJoin(void)
     if (! (m_p_filter = m_p_table->pSub_filter()))
       continue;
 
-    m_p_expr     = _pCard_Expr(m_p_filter->pGetChild(0));
-    m_p_calcBool = m_p_expr->pSub_boolCalc();
+    m_p_calcBool = m_p_filter->pSub_boolCalc();
     m_p_predCmp  = m_p_calcBool->pSub_predCmp();
     m_p_term_0   = _pCard_Term(m_p_predCmp->pGetChild(0));
     m_p_term_1   = _pCard_Term(m_p_predCmp->pGetChild(1));
@@ -1865,19 +1864,14 @@ void Transforms::vCopyPredToExistingFilter(Card_Filter* pCard_filter_existing, C
 /*----------------------------------------------------------------------------*/
 /* inspect all <filter> and attempt to move <pred> after <scan>/<absJoin>     */
 /*----------------------------------------------------------------------------*/
-void Transforms::vCopyPredToNewFilter(Card_Filter* pCard_filter_new, Card_PRED* pCard_pred)
+void Transforms::vCopyPredToNewFilter(Card_Filter* p_filter_new, Card_PRED* p_pred)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  Card_Expr* pCard_expr = new Card_Expr;
-  pCard_filter_new->vAppend(pCard_expr);
+  Card_BoolCalc* p_calcBool = new Card_BoolCalc;
+  p_filter_new->vAppend(p_calcBool);
 
-  Card_Type* pCard_type = new Card_Type("BOOLEAN"_Stz);
-  pCard_expr->vAppend(pCard_type);
-  Card_BoolCalc* pCard_calcBool = new Card_BoolCalc;
-  pCard_expr->vAppend(pCard_calcBool);
-
-  pCard_calcBool->vAppend(pCard_pred);
+  p_calcBool->vAppend(p_pred);
 }
 
 /*----------------------------------------------------------------------------*/

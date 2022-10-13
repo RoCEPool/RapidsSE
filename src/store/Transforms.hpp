@@ -80,7 +80,7 @@ namespace STORE
     void vCopyPredLeftwards(Card_BoolCalc* p_calcBool);
     bool bCopyPredDrillDown(Card_PRED*, Card_BoolCalc* p_calcBool);
     void vCopyPredToExistingFilter(Card_Filter* pCard_filter_existing, Card_PRED* pCard_pred);
-    void vCopyPredToNewFilter(Card_Filter* pCard_filter_new, Card_PRED* pCard_pred);
+    void vCopyPredToNewFilter(Card_Filter* p_filter_new, Card_PRED* p_pred);
 
     void vMarkPredAsMoved(Card* pPredCard);
 
