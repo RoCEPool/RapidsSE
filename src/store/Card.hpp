@@ -51,7 +51,7 @@ namespace STORE
   class Card_Hash;
   class Card_Having;
 
-  class Card_IdxColNm;
+  class Card_IdxCol;
   class Card_IdxColList;
   class Card_IndexPtr;
   class Card_IndexJoin;

@@ -48,7 +48,7 @@ enum eCK // card kind
   /* */ CK_HASH,
   /* */ CK_HAVING,
 
-  /* */ CK_IDXCOLNM,
+  /* */ CK_IDXCOL,
   /* */ CK_IDXCOLLIST,
   /* */ CK_INDEXJOIN,
   /* */ CK_INDEXLIST,
@@ -154,7 +154,7 @@ static Stz* aCK[]
   /* */ "CK_HASH"_Stz,         // CK_HASH
   /* */ "CK_HAVING"_Stz,       // CK_HAVING
 
-  /* */ "CK_IDXCOLNM"_Stz,       // CK_IDXCOLNM
+  /* */ "CK_IDXCOL"_Stz,       // CK_IDXCOL
   /* */ "CK_IDXCOLLIST"_Stz,   // CK_IDXCOLLIST
   /* */ "CK_INDEXJOIN"_Stz,    // CK_INDEXJOIN
   /* */ "CK_INDEXLIST"_Stz,    // CK_INDEXLIST
@@ -260,7 +260,7 @@ static Stz* aCK_short[]
   /* */ "hash"_Stz,            // CK_HASH
   /* */ "having"_Stz,          // CK_HAVING
 
-  /* */ "idxColNm"_Stz,        // CK_IDXCOLNM
+  /* */ "idxCol"_Stz,          // CK_IDXCOL
   /* */ "idxColList"_Stz,      // CK_IDXCOLLIST
   /* */ "indexJoin"_Stz,       // CK_INDEXJOIN
   /* */ "indexList"_Stz,       // CK_INDEXLIST

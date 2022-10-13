@@ -2,7 +2,7 @@
 /* Card_IdxColList.cpp -- Index Column List                                   */
 /*============================================================================*/
 
-#include "Card_IdxColNm.hpp"
+#include "Card_IdxCol.hpp"
 #include "Card_IdxColList.hpp"
 #include "Card_Stream.hpp"
 #include "Card_StreamCol.hpp"
@@ -35,7 +35,7 @@ Card_IdxColList::Card_IdxColList(Index* pIndex)
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
 
     Column* pColumn = pIndexDef->pGetColumn(i_Col);
-    Card_IdxColNm* pCard_idxCol = new Card_IdxColNm(pColumn);
+    Card_IdxCol* pCard_idxCol = new Card_IdxCol(pColumn);
     vAppend(pCard_idxCol);
   }
   
@@ -57,17 +57,17 @@ Card_IdxColList::~Card_IdxColList(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* find <idxCol> which has given column name                                  */
 /*----------------------------------------------------------------------------*/
-Card_IdxColNm* Card_IdxColList::pFind_idxCol(Stz *szColNm, i8& i_IdxColNo)
+Card_IdxCol* Card_IdxColList::pFind_idxCol(Stz *szColNm, i8& i_IdxColNo)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   i8 nChildren = this->nChildCards();
   for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
     Card *pChildCard = this->pGetChild(i_Child);
-    if (CK_IDXCOLNM != pChildCard->eCard())
+    if (CK_IDXCOL != pChildCard->eCard())
       continue;
 
-    Card_IdxColNm* p_idxCol = _pCard_IdxColNm(pChildCard);
+    Card_IdxCol* p_idxCol = _pCard_IdxCol(pChildCard);
 
     Stz* szIdxColNm = p_idxCol->sz();
     if (szIdxColNm->bSame(szColNm)) {
@@ -93,7 +93,7 @@ void Card_IdxColList::vOrdinate(Card_Stream* pCard_Stream)
 
   i8 nSubCards = this->nChildCards();
   for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
-    Card_IdxColNm* pCard_idxCol = _pCard_IdxColNm(pGetChild(i_Sub));
+    Card_IdxCol* pCard_idxCol = _pCard_IdxCol(pGetChild(i_Sub));
 
     i8 i_StreamColNo = C_UNKNOWN;
     Stz* szColNm = pCard_idxCol->sz();

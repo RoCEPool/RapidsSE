@@ -403,7 +403,7 @@ void Transforms::vAppend_stream_UnderAll_table(void)
 /*----------------------------------------------------------------------------*/
 /* calc ordinal ranges                                                        */
 /*----------------------------------------------------------------------------*/
-void Transforms::vCalc_ordinalRanges_ForAll_stream(void)
+void Transforms::vCalc_ordinalRange_ForAll_stream(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -625,7 +625,7 @@ void Transforms::vConvert_calc_OfEach_where_To_calcBool(void)
 /*----------------------------------------------------------------------------*/
 /* markup index columns                                                       */
 /*----------------------------------------------------------------------------*/
-void Transforms::vConvertAll_idxColNm_To_streamColOrd(void)
+void Transforms::vConvertAll_idxCol_name_To_ordinal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -927,7 +927,7 @@ void Transforms::vDeleteAll_Empty_where(void)
 /*----------------------------------------------------------------------------*/
 /* delete any <filter> which is effectively empty                             */
 /*----------------------------------------------------------------------------*/
-void Transforms::vDeleteAll_EmptySub_filter(void)
+void Transforms::vDeleteAll_Empty_filter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1318,7 +1318,7 @@ void Transforms::vIndividuate_filter(void)
 /*----------------------------------------------------------------------------*/
 /* append preliminary <indexJoin>'s to all <absJoin>                          */
 /*----------------------------------------------------------------------------*/
-void Transforms::vInsert_indexJoin_UnderAll_table(void)
+void Transforms::vInsert_indexJoin_UnderAllJoinable_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1437,7 +1437,7 @@ void Transforms::vMark_scan_pred_ordinals(void)
       vTrace("vMark_scan_pred_ordinals:: %s\n"_Stz,szColNm);
 
       i8 i_IdxCol = C_UNKNOWN;
-      Card_IdxColNm* p_idxCol = p_indexPtr->pFind_indexCol(szColNm, i_IdxCol);
+      Card_IdxCol* p_idxCol = p_indexPtr->pFind_indexCol(szColNm, i_IdxCol);
 
       if (! p_idxCol)
         return true;
@@ -1477,7 +1477,7 @@ void Transforms::vMarkAll_where_pred_Wrt_table(void)
 /*----------------------------------------------------------------------------*/
 /* inspect all <filter> and copy <predCmp> to new <scan|absJoin>/<filter>     */
 /*----------------------------------------------------------------------------*/
-void Transforms::vMoveAll_cmpPred_To_table(void)
+void Transforms::vMoveMarked_where_pred_To_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 

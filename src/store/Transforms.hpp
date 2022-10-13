@@ -31,13 +31,13 @@ namespace STORE
     void vAppend_indexList_ToAll_table(void);
     void vAppend_stream_UnderAll_table(void);
     void vMarkAll_where_pred_Wrt_table(void);
-    void vCalc_ordinalRanges_ForAll_stream(void);
+    void vCalc_ordinalRange_ForAll_stream(void);
     void vCalc_tableSyn_ForAll_table(void);
     void vCompute_coPtnJoinList(void);
     void vCompute_coPtnPredList(void);
     void vCompute_crossPtnJoinList(void);
     void vCompute_ptndJoinSet(void);
-    void vConvertAll_idxColNm_To_streamColOrd(void);
+    void vConvertAll_idxCol_name_To_ordinal(void);
     void vConvert_calc_OfEach_where_To_calcBool(void);
     void vCopy_ptndJoinSet(void);
     void vCullAll_filterPred_Of_indexJoin(void);
@@ -48,7 +48,7 @@ namespace STORE
     void vDeleteAll_combined(void);
     void vDeleteAll_send(void);
     void vDeleteAll_Empty_where(void);
-    void vDeleteAll_EmptySub_filter(void);
+    void vDeleteAll_Empty_filter(void);
     void vEstimate_joinOrder(void);
     void vEstimate_network(void);
     void vEstimate_ptndJoins(void);
@@ -58,11 +58,11 @@ namespace STORE
     void vFormAll_joinPred_of_indexJoin(void);
     void vGenerate_ptndPermutations(void);
     void vIndividuate_filter(void);
-    void vInsert_indexJoin_UnderAll_table(void);
+    void vInsert_indexJoin_UnderAllJoinable_table(void);
     void vDeleteAll_Duplicate_stage(void);
     void vMark_scan_pred_bounds(void);
     void vMark_scan_pred_ordinals(void);
-    void vMoveAll_cmpPred_To_table(void);
+    void vMoveMarked_where_pred_To_table(void);
     void vPromote_scan_To_indexScan(void);
     void vRefactorAll_table_Into_join(void);
     void vRemove_invalidPermutations(void);

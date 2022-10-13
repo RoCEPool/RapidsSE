@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_IdxColNm.hpp -- Index Column                                            */
+/* Card_IdxCol.hpp -- Index Column                                            */
 /*============================================================================*/
 #pragma once
 
@@ -7,18 +7,18 @@
 
 namespace STORE
 {
-  class Card_IdxColNm : public Card
+  class Card_IdxCol : public Card
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_IdxColNm(Column* pColumn);
-   ~Card_IdxColNm(void) noexcept(false);
+    Card_IdxCol(Column* pColumn);
+   ~Card_IdxCol(void) noexcept(false);
   };
 
-  Card_IdxColNm* _pCard_IdxColNm(void* aAddr);
-  bool _bIsCard_IdxColNm(void* aAddr);
+  Card_IdxCol* _pCard_IdxCol(void* aAddr);
+  bool _bIsCard_IdxCol(void* aAddr);
 }
 
 /*============================================================================*/

@@ -123,7 +123,7 @@ void Transformer::vTransform3(void)
   m_pTransforms->vAppend_stream_UnderAll_table();
 
   // calculate /<stream>:iOrdLo,iOrdHi properties
-  m_pTransforms->vCalc_ordinalRanges_ForAll_stream();
+  m_pTransforms->vCalc_ordinalRange_ForAll_stream();
 
   // convert all <filter>/<calc> to <filter>/<calcBool>
   m_pTransforms->vConvert_calc_OfEach_where_To_calcBool();
@@ -168,14 +168,14 @@ void Transformer::vTransform3(void)
 
   // inspect all <filter> and attempt to move <predCmp> after <scan>/<absJoin>
   m_pTransforms->vMarkAll_where_pred_Wrt_table();
-  m_pTransforms->vMoveAll_cmpPred_To_table();
+  m_pTransforms->vMoveMarked_where_pred_To_table();
 
   // delete any <filter> which is effectively empty
   m_pTransforms->vDeleteAll_Empty_where();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  m_pTransforms->vInsert_indexJoin_UnderAll_table();
-  m_pTransforms->vConvertAll_idxColNm_To_streamColOrd();
+  m_pTransforms->vInsert_indexJoin_UnderAllJoinable_table();
+  m_pTransforms->vConvertAll_idxCol_name_To_ordinal();
   m_pTransforms->vFormAll_joinPred_of_indexJoin();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -208,7 +208,7 @@ void Transformer::vTransform3(void)
   */
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  m_pTransforms->vDeleteAll_EmptySub_filter();
+  m_pTransforms->vDeleteAll_Empty_filter();
 
   m_pTransforms->vRefactorAll_table_Into_join();
 
