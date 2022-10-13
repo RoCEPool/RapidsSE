@@ -117,16 +117,16 @@ void Transformer::vTransform3(void)
   m_pTransforms->vCalc_tableSyn_ForAll_table();
 
   // add <tablePtn> to all <table>
-  m_pTransforms->vAppend_tablePtn_UnderAll_table();
+  m_pTransforms->vAddNew_tablePtn_UnderAll_table();
 
   // append <stream> & <streamColList> to all <scan>
-  m_pTransforms->vAppend_stream_UnderAll_table();
+  m_pTransforms->vAddNew_stream_UnderAll_table();
 
   // calculate /<stream>:iOrdLo,iOrdHi properties
   m_pTransforms->vCalc_ordinalRange_ForAll_stream();
 
   // convert all <filter>/<calc> to <filter>/<calcBool>
-  m_pTransforms->vConvert_calc_OfEach_where_To_calcBool();
+  m_pTransforms->vConvertAll_where_calc_To_where_calcBool();
 
   // each <scan> <absJoin> becomes <absJoin>/<scan>
   //m_pTransforms->vSubsume_scan_Under_absJoin();
@@ -171,16 +171,16 @@ void Transformer::vTransform3(void)
   m_pTransforms->vMoveMarked_where_pred_To_table();
 
   // delete any <filter> which is effectively empty
-  m_pTransforms->vDeleteAll_Empty_where();
+  m_pTransforms->vDeleteAllEmpty_where();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  m_pTransforms->vInsert_indexJoin_UnderAllJoinable_table();
-  m_pTransforms->vConvertAll_idxCol_name_To_ordinal();
-  m_pTransforms->vFormAll_joinPred_of_indexJoin();
+  m_pTransforms->vAddNew_indexJoin_UnderAllJoinable_table();
+  m_pTransforms->vConvertAll_idxCol_name_To_idxCol_ord();
+  m_pTransforms->vAddNew_joinPred_UnderAll_indexJoin();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  m_pTransforms->vCullAll_filterPred_Of_indexJoin();
+  m_pTransforms->vCullAll_filter_pred_Of_indexJoin();
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -210,17 +210,17 @@ void Transformer::vTransform3(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_pTransforms->vDeleteAll_Empty_filter();
 
-  m_pTransforms->vRefactorAll_table_Into_join();
+  m_pTransforms->vConvertAllJoinable_table_Into_indexJoin();
 
   m_pTransforms->vCull_sby_SameAs_gby();
 
   m_pTransforms->vIndividuate_filter();
 
-  m_pTransforms->vAdd_stages();
+  m_pTransforms->vReinstate_stages();
 
   m_pCardCtl->vReset();
 
-  m_pTransforms->vAdd_combined();
+  m_pTransforms->vReinstate_combined();
 
   m_pTransforms->vExpandedForm();
 }

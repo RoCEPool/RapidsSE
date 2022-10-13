@@ -45,7 +45,7 @@ Transforms::~Transforms(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vAdd_combined(void)
+void Transforms::vReinstate_combined(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -190,7 +190,7 @@ void Transforms::vAdd_scanPred(void)
 /*----------------------------------------------------------------------------*/
 /* linearize stages                                                           */
 /*----------------------------------------------------------------------------*/
-void Transforms::vAdd_stages(void)
+void Transforms::vReinstate_stages(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -293,7 +293,7 @@ void Transforms::vAdd_stages(void)
 /*----------------------------------------------------------------------------*/
 /* add table partitions <tablePtn> to all <table>                             */
 /*----------------------------------------------------------------------------*/
-void Transforms::vAppend_tablePtn_UnderAll_table(void)
+void Transforms::vAddNew_tablePtn_UnderAll_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -364,7 +364,7 @@ void Transforms::vAppend_indexList_ToAll_table(void)
 /*----------------------------------------------------------------------------*/
 /* append <stream> to all <table>                                             */
 /*----------------------------------------------------------------------------*/
-void Transforms::vAppend_stream_UnderAll_table(void)
+void Transforms::vAddNew_stream_UnderAll_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -604,7 +604,7 @@ void Transforms::vCompute_ptndJoinSet(void)
 /*----------------------------------------------------------------------------*/
 /* convert each <filter>//<calc> into //<calcBool>                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vConvert_calc_OfEach_where_To_calcBool(void)
+void Transforms::vConvertAll_where_calc_To_where_calcBool(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -625,7 +625,7 @@ void Transforms::vConvert_calc_OfEach_where_To_calcBool(void)
 /*----------------------------------------------------------------------------*/
 /* markup index columns                                                       */
 /*----------------------------------------------------------------------------*/
-void Transforms::vConvertAll_idxCol_name_To_ordinal(void)
+void Transforms::vConvertAll_idxCol_name_To_idxCol_ord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -683,7 +683,7 @@ void Transforms::vCopy_ptndJoinSet(void)
 /*----------------------------------------------------------------------------*/
 /* inspect all <absJoin>/<filter> and cull predicates                         */
 /*----------------------------------------------------------------------------*/
-void Transforms::vCullAll_filterPred_Of_indexJoin(void)
+void Transforms::vCullAll_filter_pred_Of_indexJoin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -903,7 +903,7 @@ void Transforms::vDeleteAll_Duplicate_stage(void)
 /*----------------------------------------------------------------------------*/
 /* delete any <filter> which is effectively empty                             */
 /*----------------------------------------------------------------------------*/
-void Transforms::vDeleteAll_Empty_where(void)
+void Transforms::vDeleteAllEmpty_where(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1180,7 +1180,7 @@ void Transforms::vExtract_tableList_From_queryBoard(void)
 /*----------------------------------------------------------------------------*/
 /* form <joinPred>                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vFormAll_joinPred_of_indexJoin(void)
+void Transforms::vAddNew_joinPred_UnderAll_indexJoin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1333,7 +1333,7 @@ void Transforms::vIndividuate_filter(void)
 /*----------------------------------------------------------------------------*/
 /* append preliminary <indexJoin>'s to all <absJoin>                          */
 /*----------------------------------------------------------------------------*/
-void Transforms::vInsert_indexJoin_UnderAllJoinable_table(void)
+void Transforms::vAddNew_indexJoin_UnderAllJoinable_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1535,7 +1535,7 @@ void Transforms::vPromote_scan_To_indexScan(void)
 /*----------------------------------------------------------------------------*/
 /* reduce absJoin                                                             */
 /*----------------------------------------------------------------------------*/
-void Transforms::vRefactorAll_table_Into_join(void)
+void Transforms::vConvertAllJoinable_table_Into_indexJoin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 

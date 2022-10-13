@@ -75,11 +75,11 @@ void Modifications::vRenumberMainCards(void)
 /*----------------------------------------------------------------------------*/
 /* convert <calc> to <calcBool>                                               */
 /*----------------------------------------------------------------------------*/
-void Modifications::R_vReplaceSub(Card* pSub, Card* pInCard, Card* pWith)
+void Modifications::R_vReplaceSub(Card* pSub, Card* pInParent, Card* pWith)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  Card* pParent = pInCard->pFindParent(pSub);
+  Card* pParent = pInParent->pFindParent(pSub);
 
   pParent->vReplaceChild(pSub,pWith);
 }

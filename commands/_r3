@@ -24,7 +24,7 @@ load customer "../tpch/sf_0001/customer.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/cue = "vAppend_tablePtn_UnderAll_table"
+/cue = "vAddNew_tablePtn_UnderAll_table"
 /transliterated
 /transform
 /transform3
