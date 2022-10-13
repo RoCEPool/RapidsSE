@@ -790,9 +790,9 @@ dload lineitem paths
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactIndex_PS_PARTKEY" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactIndex_IxPS_PARTKEY" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">compact index partsupp PS_PARTKEY ;</stringProp>
+              <stringProp name="query">compact index partsupp IxPS_PARTKEY ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
