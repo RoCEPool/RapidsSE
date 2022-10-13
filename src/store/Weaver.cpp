@@ -534,22 +534,15 @@ void Weaver::vRpnFilter(Stz* szRpnExpr, Card_Filter* pCard_Filter)
 
   //pCard_Filter->vDump();
 
-  Card_Expr* pCard_Expr = _pCard_Expr(pCard_Filter->pGet(0));
+  szRpnExpr->vCatSprint(" type BOOLEAN"_Stz);
 
-  Card_Type* pCard_Type = _pCard_Type(pCard_Expr->pGet(0));
-  vType(szRpnExpr,pCard_Type);
-
-//  Card_ExprBool* pCard_ExprBool = _pCard_ExprBool(pCard_Expr->pGet(1));
-//  vExprBool(szRpnExpr,pCard_ExprBool);
-
-
-  Card* pCard_test = pCard_Expr->pGet(1);
+  Card* pCard_test = pCard_Filter->pSub_boolCalc();
   if (CK_BOOLCALC == pCard_test->eCard()) {
     Card_BoolCalc *pCard_CalcBool = _pCard_BoolCalc(pCard_test);
     vCalcBool(szRpnExpr, pCard_CalcBool);
   }
   else {
-    Card_Calc *pCard_Calc = _pCard_Calc(pCard_test);
+    Card_Calc *pCard_Calc = pCard_Filter->pSub_calc();
     vExprCalc(szRpnExpr, pCard_Calc);
   }
 }

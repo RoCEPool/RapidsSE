@@ -1463,13 +1463,26 @@ Card_As* Card::pSub_as(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_BoolCalc.hpp"
-Card_BoolCalc* Card::pSub_calcBool(void)
+Card_BoolCalc* Card::pSub_boolCalc(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_BoolCalc* p_calcBool =
+  Card_BoolCalc* p_boolCalc =
       _pCard_BoolCalc(pFindSubCard(CK_BOOLCALC));
-  return p_calcBool;
+  return p_boolCalc;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_Calc.hpp"
+Card_Calc* Card::pSub_calc(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Calc* p_calc =
+      _pCard_Calc(pFindSubCard(CK_CALC));
+  return p_calc;
 }
 
 /*----------------------------------------------------------------------------*/

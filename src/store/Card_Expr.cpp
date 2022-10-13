@@ -96,11 +96,11 @@ void Card_Expr::vCullPred(char cWithMark)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_BoolCalc* p_calcBool = this->pSub_calcBool();
-  if (! p_calcBool)
+  Card_BoolCalc* p_boolCalc = this->pSub_boolCalc();
+  if (! p_boolCalc)
     return;
 
-  p_calcBool->vCullPred(cWithMark);
+  p_boolCalc->vCullPred(cWithMark);
 }
 
 /*----------------------------------------------------------------------------*/

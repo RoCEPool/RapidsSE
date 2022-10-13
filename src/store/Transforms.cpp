@@ -696,7 +696,7 @@ void Transforms::vCullAll_filterPred_Of_indexJoin(void)
     if (! (m_p_filter = m_p_table->pSub_filter()))
       continue;
 
-    m_p_calcBool = m_p_filter->pSub_calcBool();
+    m_p_calcBool = m_p_filter->pSub_boolCalc();
 
     m_p_calcBool->vCullPred('^');
   }
@@ -913,7 +913,7 @@ void Transforms::vDeleteAll_Empty_where(void)
   BoardIter xBI(m_pBoard);
 
   while ((m_p_where = _pCard_Where(xBI.pEachMain(CK_WHERE)))) {
-    m_p_calcBool = m_p_where->pSub_calcBool();
+    m_p_calcBool = m_p_where->pSub_boolCalc();
 
     if (0 == m_p_calcBool->nChildCards()) {
       xBI.vRemoveDeleteCurr(CK_WHERE);
@@ -1117,7 +1117,7 @@ void Transforms::vExtract_joinPredList(void)
 
   BoardIter xBI_query(m_pBoard_query);
   while ((m_pMainCard = xBI_query.pEachMain(CK_FILTER))) {
-    m_p_calcBool = m_pMainCard->pSub_calcBool();
+    m_p_calcBool = m_pMainCard->pSub_boolCalc();
     if (!m_p_calcBool)
       continue;
 
@@ -1178,7 +1178,7 @@ void Transforms::vFormAll_joinPred_of_indexJoin(void)
       continue;
 
     m_p_expr     = _pCard_Expr(m_p_filter->pGetChild(0));
-    m_p_calcBool = m_p_expr->pSub_calcBool();
+    m_p_calcBool = m_p_expr->pSub_boolCalc();
     m_p_predCmp  = m_p_calcBool->pSub_predCmp();
     m_p_term_0   = _pCard_Term(m_p_predCmp->pGetChild(0));
     m_p_term_1   = _pCard_Term(m_p_predCmp->pGetChild(1));
@@ -1851,7 +1851,7 @@ void Transforms::vCopyPredToExistingFilter(Card_Filter* pCard_filter_existing, C
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  Card_BoolCalc* pCard_calcBool = pCard_filter_existing->pSub_calcBool();
+  Card_BoolCalc* pCard_calcBool = pCard_filter_existing->pSub_boolCalc();
 
   Card* pCard_top = pCard_calcBool->pPop();
 
