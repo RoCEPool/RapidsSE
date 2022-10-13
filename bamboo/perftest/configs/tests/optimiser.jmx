@@ -458,7 +458,7 @@ group by
                   <success>true</success>
                   <label>true</label>
                   <code>false</code>
-                  <message>false</message>
+                  <message>true</message>
                   <threadName>false</threadName>
                   <dataType>false</dataType>
                   <encoding>false</encoding>
@@ -573,7 +573,7 @@ group by
                   <success>true</success>
                   <label>true</label>
                   <code>false</code>
-                  <message>false</message>
+                  <message>true</message>
                   <threadName>false</threadName>
                   <dataType>false</dataType>
                   <encoding>false</encoding>
@@ -665,7 +665,7 @@ If the --partitionsPerDisk option is given then there are multiple files per dis
                     <success>true</success>
                     <label>true</label>
                     <code>false</code>
-                    <message>false</message>
+                    <message>true</message>
                     <threadName>false</threadName>
                     <dataType>false</dataType>
                     <encoding>false</encoding>
@@ -922,7 +922,7 @@ dload lineitem paths
                   <success>true</success>
                   <label>true</label>
                   <code>false</code>
-                  <message>false</message>
+                  <message>true</message>
                   <threadName>false</threadName>
                   <dataType>false</dataType>
                   <encoding>false</encoding>
@@ -1543,7 +1543,7 @@ CREATE INDEX IxS_SUPPKEY ON SUPPLIER(S_SUPPKEY);</stringProp>
                 <success>true</success>
                 <label>true</label>
                 <code>false</code>
-                <message>false</message>
+                <message>true</message>
                 <threadName>false</threadName>
                 <dataType>false</dataType>
                 <encoding>false</encoding>
