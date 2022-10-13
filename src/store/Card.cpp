@@ -18,6 +18,8 @@ __aNewFunction(Card,CN_CARD)
 __vDeleteFunction(Card,CN_CARD)
 __aFooterFunction(Card)
 
+i8 Card::m__iSeqGen { 1 };
+
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
@@ -94,7 +96,6 @@ Card::Card(eCK eCard, Stz* szValue, Stz* szPpyNm, Stz* szPptVal)
 /*----------------------------------------------------------------------------*/
 void Card::vInit(eCK eCard)
 {
-  static i8 iSeqNo = 0;
 
   MemLib::vZero(md_Bearing, sizeof(md_Bearing), CN_CARD);
 
@@ -106,10 +107,13 @@ void Card::vInit(eCK eCard)
 
   m_pProperties = nullptr;
 
-  md__SeqNo = iSeqNo++;
+  md__SeqNo = Card::m__iSeqGen++;
   gapCard[md__SeqNo] = this;
 
-//  if (35 == md__SeqNo) {
+  md__FirstDetected = C_UNKNOWN;
+  md__LeakDetected = C_UNKNOWN;
+
+//  if (11 == md__SeqNo) {
 //    vTrace("Card [%02lld] %p\n"_Stz, md__SeqNo, this);
 //    vDebugPoint();
 //  }
@@ -151,6 +155,42 @@ void Card::vCardLeaks(void)
       vDebugPoint();
     }
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* check for leaks                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vConsistencyCheck(Card* p_deck, i8 iTransformNo)
+{
+  _static_
+
+  for (i8 i_Card = 0; i_Card < m__iSeqGen; i_Card++) {
+    if (! gapCard[i_Card])
+      continue;
+
+    Card* p_cardInQuestion = gapCard[i_Card];
+
+    if (C_UNKNOWN == p_cardInQuestion->md__FirstDetected)
+      p_cardInQuestion->md__FirstDetected = iTransformNo;
+
+    if (p_cardInQuestion == p_deck)
+      continue;
+
+    if (p_deck->pFindParent(p_cardInQuestion))
+      continue;
+
+    if (C_UNKNOWN != p_cardInQuestion->md__LeakDetected)
+      continue;
+
+    p_cardInQuestion->md__LeakDetected = iTransformNo;
+    vTrace("Card leak detected : %04lld %p %s:%s\n"_Stz,
+         i_Card,
+         p_cardInQuestion,
+         aCK[p_cardInQuestion->eCard()],
+         p_cardInQuestion->sz());
+    vDebugPoint();
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/

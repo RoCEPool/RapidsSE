@@ -225,7 +225,7 @@ void Board::vPrintBoard(TransformerTool* pTransformerTool)
 
   Ribbon* pRibbon = new Ribbon(m_pOptimiser->pCardCtl(),this,0);
 
-  vPinCards(pRibbon, pTransformerTool->iPrintNoInc(), szTransformation, szExplain);
+  vPinCards(pRibbon, pTransformerTool->iTransformNoInc(), szTransformation, szExplain);
 
   pRibbon->vPrintRibbon();
 

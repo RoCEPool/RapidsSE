@@ -24,7 +24,7 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_pCardCtl         = m_pBench->pCardCtl();
   m_bPrintTransformation   = true;
 
-  m_nPrints = 0;
+  m_iTransformNo = 0;
 
   m_pTable           = nullptr;
   m_pStreamDef       = nullptr;
@@ -168,6 +168,8 @@ eCK TransformerTool::eDecodeMain(Card* pCard)
 void TransformerTool::vEndTransformation(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
+
+  Card::vConsistencyCheck(_deck_,m_iTransformNo);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -235,11 +237,11 @@ void TransformerTool::vPrintBoard(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-i8 TransformerTool::iPrintNoInc(void)
+i8 TransformerTool::iTransformNoInc(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  return ++ m_nPrints;
+  return ++ m_iTransformNo;
 }
 
 /*----------------------------------------------------------------------------*/

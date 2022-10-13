@@ -38,8 +38,6 @@ Optimiser::Optimiser(TagSet* p_JobTags)
   m_pDrafter     = new Drafter(m_pBench);
   m_pWeaver      = new Weaver(m_pBench);
 
-  m_pPaste   = new Card_SubSet;
-
   _checkInitialised_(CN_OPTIMISER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
@@ -60,8 +58,6 @@ Optimiser::~Optimiser(void) noexcept(false)
   delete m_pWeaver;
 
   delete m_pTransformer;
-
-  delete m_pPaste;
 
   Card::vCardLeaks();
 }
@@ -158,16 +154,6 @@ TagSet* Optimiser::pJobTags(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
   return m_p_JobTags;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get paste buffer                                                          */
-/*----------------------------------------------------------------------------*/
-Card_SubSet* Optimiser::pPaste(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
-
-  return m_pPaste;
 }
 
 /*----------------------------------------------------------------------------*/

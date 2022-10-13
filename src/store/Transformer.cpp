@@ -93,7 +93,7 @@ void Transformer::vTransform3(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMER,_FOOTER_);
 
-  vTrace("Transformer running vTransform2\n"_Stz);
+  //vTrace("Transformer running vTransform3\n"_Stz);
 
   m_pTransforms->vExpandedForm();
 
@@ -147,16 +147,12 @@ void Transformer::vPhase_2_TableAnalysis(void)
 
   m_pTransforms->vPhase((Stz*)__func__);
 
-  // add <tableSyn> to all <table>
   m_pTransforms->vCalc_tableSyn_ForAll_table();
 
-  // add <tablePtn> to all <table>
   m_pTransforms->vAddNew_tablePtn_UnderAll_table();
 
-  // append <stream> & <streamColList> to all <scan>
   m_pTransforms->vAddNew_stream_UnderAll_table();
 
-  // calculate /<stream>:iOrdLo,iOrdHi properties
   m_pTransforms->vCalc_ordinalRange_ForAll_stream();
 }
 

@@ -22,7 +22,7 @@ namespace STORE
     Board*      m_pBoard_query;
     CardCtl*    m_pCardCtl;
 
-    i8          m_nPrints;
+    i8          m_iTransformNo;
     s32         m_sPhase;
     s256        m_sTranformation;
     s256        m_sExplain;
@@ -120,7 +120,6 @@ namespace STORE
     Stz* szPhase(void);
     void vPhase(Stz* szPhase);
     void vPrintBoard(void);
-    i8   iPrintNoInc(void);
 
     void vSetPrintByKind(eCK eCard, bool bPrintByKind);
     void vSetPrintProperties(eCK eCard, bool bPrintProperties);
@@ -128,6 +127,7 @@ namespace STORE
 
     Stz* szTransformation(void);
     void vTransformation(eBK eBoard, char* azTranformation, bool bPrintTransformation=true);
+    i8   iTransformNoInc(void);
 
   protected:
     void vSetupCostEstBoard(void);

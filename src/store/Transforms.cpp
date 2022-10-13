@@ -300,14 +300,14 @@ void Transforms::vReinstate_stages(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add table partitions <tablePtn> to all <table>                             */
+/* add a <tablePtn> under every <table>                                       */
 /*----------------------------------------------------------------------------*/
 void Transforms::vAddNew_tablePtn_UnderAll_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__));
-  vExplain("((replace with an explanation))"_Stz);
+  vExplain("add a <tablePtn> under every <table>"_Stz);
 
   while (E_bEachMain(CK_TABLE)) {
     //m_p_tablePtn = new Card_TablePtn;
@@ -321,14 +321,14 @@ void Transforms::vAddNew_tablePtn_UnderAll_table(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add table synonyms <tableSyn> to all <table>                               */
+/* add a <tableSyn> to all <table>'s                                          */
 /*----------------------------------------------------------------------------*/
 void Transforms::vCalc_tableSyn_ForAll_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__));
-  vExplain("((replace with an explanation))"_Stz);
+  vExplain("add a <tableSyn> to all <table>'s"_Stz);
 
   char cTableSyn = 'a';
 
@@ -374,14 +374,14 @@ void Transforms::vAppend_indexList_ToAll_table(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append <stream> to all <table>                                             */
+/* add a <stream> under every <table>                                         */
 /*----------------------------------------------------------------------------*/
 void Transforms::vAddNew_stream_UnderAll_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__));
-  vExplain("((replace with an explanation))"_Stz);
+  vExplain("add a <stream> under every <table>"_Stz);
 
   BoardIter xBI(m_pBoard);
 
@@ -414,14 +414,14 @@ void Transforms::vAddNew_stream_UnderAll_table(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* calc ordinal ranges                                                        */
+/* calculate the ordinal $low..$high range for each <stream>                  */
 /*----------------------------------------------------------------------------*/
 void Transforms::vCalc_ordinalRange_ForAll_stream(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__));
-  vExplain("((replace with an explanation))"_Stz);
+  vExplain("calculate the ordinal $low..$high range for each <stream>"_Stz);
 
   i8 iOrdLo = 1;
   i8 iOrdHi = C_UNKNOWN;
@@ -724,21 +724,19 @@ void Transforms::vCullAll_filter_pred_Of_indexJoin(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* cull all <scan>                                                            */
+/* replace all <scan>'s with their children                                   */
 /*----------------------------------------------------------------------------*/
 void Transforms::vCullAll_scan(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__),true);
-  vExplain("((replace with an explanation))"_Stz);
+  vExplain("replace all <scan>'s with their children"_Stz);
 
-//  while (E_bEachMain(CK_SCAN)) {
-//    _deck_->vReplaceChildWithItsSubs(m_pMainCard);
-//    DELETE_CARD(m_pMainCard);
-//  }
-
-  vCullAll(CK_SCAN);
+  while (E_bEachMain(CK_SCAN)) {
+    _deck_->vReplaceChildWithItsSubs(m_pMainCard);
+    DELETE_CARD(m_pMainCard);
+  }
 
   vEndTransformation();
   vPrintBoard();
@@ -812,62 +810,65 @@ void Transforms::vCull_sby_SameAs_gby(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* delete sends                                                               */
+/* delete superfluous <absJoin>'s                                             */
 /*----------------------------------------------------------------------------*/
 void Transforms::vDeleteAll_absJoin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__),false);
-  vExplain("((replace with an explanation))"_Stz);
+  vExplain("delete superfluous <absJoin>'s"_Stz);
 
-  vDeleteAll(CK_ABSJOIN);
+  while (E_bEachMain(CK_ABSJOIN))
+    E_vRemoveDelete(CK_ABSJOIN);
 
   vEndTransformation();
   vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
-/* delete combines                                                            */
+/* delete superfluous <combined>'s                                            */
 /*----------------------------------------------------------------------------*/
 void Transforms::vDeleteAll_combined(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__),false);
-  vExplain("((replace with an explanation))"_Stz);
+  vExplain("delete superfluous <combined>'s"_Stz);
 
-  vDeleteAll(CK_COMBINED);
+  while (E_bEachMain(CK_COMBINED))
+    E_vRemoveDelete(CK_COMBINED);
 
   vEndTransformation();
   vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
-/* delete sends                                                               */
+/* delete superfluous <send>'s                                                 */
 /*----------------------------------------------------------------------------*/
 void Transforms::vDeleteAll_send(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__),false);
-  vExplain("((replace with an explanation))"_Stz);
+  vExplain("delete superfluous <send>'s"_Stz);
 
-  vDeleteAll(CK_SEND);
+  while (E_bEachMain(CK_SEND))
+    E_vRemoveDelete(CK_SEND);
 
   vEndTransformation();
   vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
-/* linearize board by deleting all duplicate stages                          */
+/* linearize board by deleting all duplicate <stage>'s                          */
 /*----------------------------------------------------------------------------*/
 void Transforms::vDeleteAll_Duplicate_stage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__),false);
-  vExplain("linearize board by deleting all duplicate stages"_Stz);
+  vExplain("linearize board by deleting all duplicate <stage>'s"_Stz);
 
   //_deck_->vDump();
 

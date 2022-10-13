@@ -100,6 +100,7 @@ bool Card_BoolCalc::bCullPred(Card_PRED* p_pred, char cWithMark)
   if (CK_ANDPRED == eCard_pred) {
     if (cWithMark == p_pred->cMark1()) {
        vRemovePred(p_pred);
+       delete p_pred;
        return true;
     }
   }
@@ -107,6 +108,7 @@ bool Card_BoolCalc::bCullPred(Card_PRED* p_pred, char cWithMark)
   if (CK_ORPRED == eCard_pred) {
     if (cWithMark == p_pred->cMark1()) {
       vRemovePred(p_pred);
+      delete p_pred;
       return true;
     }
   }
@@ -114,6 +116,7 @@ bool Card_BoolCalc::bCullPred(Card_PRED* p_pred, char cWithMark)
   if (CK_CMPPRED == eCard_pred) {
     if (cWithMark == p_pred->cMark1()) {
       vRemovePred(p_pred);
+      delete p_pred;
       return true;
     }
     return false;

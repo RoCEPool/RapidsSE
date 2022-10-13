@@ -29,8 +29,6 @@ namespace STORE
     Transformer* m_pTransformer;
     Drafter*     m_pDrafter;
     Weaver*      m_pWeaver;
-  
-    Card_SubSet* m_pPaste;
 
     // must be last
     Footer m_xFooter;
@@ -62,7 +60,6 @@ namespace STORE
 
     void vTransform(void);
   
-    Card_SubSet* pPaste(void);
     void vPipeSpec(VertexSpec* pUnOptPlineSpec);
     void vPopBoard(void);
     void vPushBoard(Board* pBoard);

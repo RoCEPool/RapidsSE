@@ -137,6 +137,10 @@ namespace STORE
     TagSet* m_pProperties;
 
     i8   md__SeqNo;
+    i8   md__FirstDetected;
+    i8   md__LeakDetected;
+
+    static i8 m__iSeqGen;
 
   protected:
     // must be last
@@ -155,7 +159,9 @@ namespace STORE
 
    ~Card(void) noexcept(false);
 
-    static  void vCardLeaks(void);
+    static void vCardLeaks(void);
+
+    static void vConsistencyCheck(Card* p_deck, i8 iTransformNo);
 
     static eCK  eTo_eCK(Stz* szCardNm);
 
