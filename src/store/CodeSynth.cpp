@@ -3807,7 +3807,6 @@ void CodeSynth::vPushAggCol(TypedStack* pExprStack, TypedStack* pPostStack,
 //                            xRowRef[m_eStencilTo], sColumn.azChar());
 
     vInitAgg(ePreExp);
-
     sOperation.vSprint("_ASSIGN(aCombinedT->m_aiPayload[%lld])"_Stz, i_ColPL);
     m_pInitStack->vPushStr(sOperation);
   } else {
@@ -4542,13 +4541,20 @@ void CodeSynth::vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, e
         else
           sPush.vSprint("_ASSIGN_IFTRUE(aCombinedT->m_aiPayload[%lld])\n"_Stz, i_ColPL);
       }
-      else
-        sPush.vSprint("_ASSIGN(aCombinedT->m_aiPayload[%lld])\n"_Stz, i_ColPL);
+      else {
+        if (pColumn->eColumnType() == CT_VARCHAR)
+          sPush.vSprint("_COPYSTR_PL(aCombinedT->m_aiPayload[%lld])\n"_Stz, i_ColPL);
+        else
+          sPush.vSprint("_ASSIGN(aCombinedT->m_aiPayload[%lld])\n"_Stz, i_ColPL);
+      }
 
       pExprStack->vPushStz(sPush);
 
       if (pPostStack->nValues() > 1) {
-        sPush.vSprint("_ASSIGN(aCombinedT->m_aiPayload[%lld])\n"_Stz, i_ColPL);
+        if (pColumn->eColumnType() == CT_VARCHAR)
+          sPush.vSprint("_COPYSTR_PL(aCombinedT->m_aiPayload[%lld])\n"_Stz, i_ColPL);
+        else
+          sPush.vSprint("_ASSIGN(aCombinedT->m_aiPayload[%lld])\n"_Stz, i_ColPL);
         pPostStack->vPushStz(sPush);
       }
       else

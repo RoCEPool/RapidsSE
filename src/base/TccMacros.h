@@ -99,6 +99,14 @@
     }                                                                       \
   }
 
+#define _COPYSTR_PL(iArg2)                                                  \
+  {                                                                         \
+    iArg1 = *(--paW);                                                       \
+    if (iArg1 != C_DATUM_NULL)    {                                         \
+      iArg2 = (i8)aIndexTree_allotPayStr((void*)aCombinedT->m_aIndexTreePL, (char*)iArg1); \
+    }                                                                       \
+  }
+
 #define _COPYSTR_IFTRUE_PL(iArg3)                                           \
   {                                                                         \
     iArg1 = *(--paW);                                                       \
