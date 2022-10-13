@@ -18,7 +18,6 @@ namespace STORE
   };
 
   Card_ProjElist* _pCard_ProjElist(void* aAddr);
-  bool _bIsCard_ProjElist(void* aAddr);
 }
 
 /*============================================================================*/

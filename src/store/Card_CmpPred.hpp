@@ -39,7 +39,6 @@ namespace STORE
   };
 
   Card_CmpPred* _pCard_CmpPred(void* aAddr);
-  bool _bIsCard_CmpPred(void* aAddr);
 }
 
 /*============================================================================*/

@@ -19,7 +19,6 @@ namespace STORE
   };
 
   Card_Direction* _pCard_Direction(void* aAddr);
-  bool _bIsCard_Direction(void* aAddr);
 }
 
 /*============================================================================*/

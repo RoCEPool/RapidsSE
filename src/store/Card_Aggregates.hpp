@@ -18,7 +18,6 @@ namespace STORE
   };
 
   Card_Aggregates* _pCard_Aggregates(void* aAddr);
-  bool _bIsCard_Aggregates(void* aAddr);
 }
 
 /*============================================================================*/

@@ -13,7 +13,6 @@ __pCastFunction_Card(STORE,Card_StreamCol,CK_STREAMCOL)
 __aNewFunction(Card_StreamCol,CN_CARD)
 __vDeleteFunction(Card_StreamCol,CN_CARD)
 
-__bIsCard(STORE,Card_StreamCol,CK_STREAMCOL)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

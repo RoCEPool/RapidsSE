@@ -18,7 +18,6 @@ namespace STORE
   };
 
   Card_Exists* _pCard_Exists(void* aAddr);
-  bool _bIsCard_Exists(void* aAddr);
 }
 
 /*============================================================================*/

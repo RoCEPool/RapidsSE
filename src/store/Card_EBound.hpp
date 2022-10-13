@@ -18,7 +18,6 @@ namespace STORE
   };
 
   Card_EBound* _pCard_EBound(void* aAddr);
-  bool _bIsCard_EBound(void* aAddr);
 }
 
 /*============================================================================*/

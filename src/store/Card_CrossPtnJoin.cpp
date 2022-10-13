@@ -13,7 +13,6 @@ __pCastFunction_Card(STORE, Card_CrossPtnJoin, CK_CROSSPTNJOIN)
 __aNewFunction(Card_CrossPtnJoin, CN_CARD)
 __vDeleteFunction(Card_CrossPtnJoin, CN_CARD)
 
-__bIsCard(STORE, Card_CrossPtnJoin, CK_CROSSPTNJOIN)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

@@ -18,7 +18,6 @@ namespace STORE
   };
 
   Card_SubSet* _pCard_SubSet(void* aAddr);
-  bool _bIsCard_SubSet(void* aAddr);
 }
 
 /*============================================================================*/

@@ -12,7 +12,6 @@ __pCastFunction_Card(STORE,Card_Aggreg,CK_AGGREG)
 __aNewFunction(Card_Aggreg,CN_CARD)
 __vDeleteFunction(Card_Aggreg,CN_CARD)
 
-__bIsCard(STORE,Card_Aggreg,CK_AGGREG)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

@@ -24,7 +24,6 @@ namespace STORE
   };
 
   Card_BoolCalc* _pCard_BoolCalc(void* aAddr);
-  bool _bIsCard_BoolCalc(void* aAddr);
 }
 
 /*============================================================================*/

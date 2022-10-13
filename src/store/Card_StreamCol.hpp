@@ -20,7 +20,6 @@ namespace STORE
   };
 
   Card_StreamCol* _pCard_StreamCol(void* aAddr);
-  bool _bIsCard_StreamCol(void* aAddr);
 }
 
 /*============================================================================*/

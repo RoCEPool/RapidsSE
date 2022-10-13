@@ -14,7 +14,6 @@ __pCastFunction_Card(STORE,Card_ExprBool,CK_EXPRBOOL)
 __aNewFunction(Card_ExprBool,CN_CARD)
 __vDeleteFunction(Card_ExprBool,CN_CARD)
 
-__bIsCard(STORE,Card_ExprBool,CK_EXPRBOOL)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

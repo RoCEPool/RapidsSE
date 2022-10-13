@@ -21,7 +21,6 @@ namespace STORE
   };
 
   Card_CandIndex* _pCard_CandIndex(void* aAddr);
-  bool _bIsCard_CandIndex(void* aAddr);
 }
 
 /*============================================================================*/

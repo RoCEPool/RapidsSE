@@ -12,7 +12,6 @@ __pCastFunction_Card(STORE,Card_ScanPred,CK_SCANPRED)
 __aNewFunction(Card_ScanPred,CN_CARD)
 __vDeleteFunction(Card_ScanPred,CN_CARD)
 
-__bIsCard(STORE,Card_ScanPred,CK_SCANPRED)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

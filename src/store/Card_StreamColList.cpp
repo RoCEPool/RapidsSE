@@ -20,7 +20,6 @@ __pCastFunction_Card(STORE,Card_StreamColList,CK_STREAMCOLLIST)
 __aNewFunction(Card_StreamColList,CN_CARD)
 __vDeleteFunction(Card_StreamColList,CN_CARD)
 
-__bIsCard(STORE,Card_StreamColList,CK_STREAMCOLLIST)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

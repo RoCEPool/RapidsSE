@@ -22,7 +22,6 @@ namespace STORE
   };
 
   Card_AbsJoin* _pCard_AbsJoin(void* aAddr);
-  bool _bIsCard_AbsJoin(void* aAddr);
 }
 
 /*============================================================================*/

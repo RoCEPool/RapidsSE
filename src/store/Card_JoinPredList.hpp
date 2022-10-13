@@ -22,7 +22,6 @@ namespace STORE
   };
 
   Card_JoinPredList* _pCard_JoinPredList(void* aAddr);
-  bool _bIsCard_JoinPredList(void* aAddr);
 }
 
 /*============================================================================*/

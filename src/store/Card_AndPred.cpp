@@ -14,7 +14,6 @@ __pCastFunction_Card(STORE, Card_AndPred, CK_ANDPRED)
 __aNewFunction(Card_AndPred, CN_CARD)
 __vDeleteFunction(Card_AndPred, CN_CARD)
 
-__bIsCard(STORE, Card_AndPred, CK_ANDPRED)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

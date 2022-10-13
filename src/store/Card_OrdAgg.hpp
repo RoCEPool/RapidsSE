@@ -18,7 +18,6 @@ namespace STORE
   };
 
   Card_OrdAgg* _pCard_OrdAgg(void* aAddr);
-  bool _bIsCard_OrdAgg(void* aAddr);
 }
 
 /*============================================================================*/

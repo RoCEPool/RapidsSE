@@ -12,7 +12,6 @@ __pCastFunction_Card(STORE,Card_IndexJoin,CK_INDEXJOIN)
 __aNewFunction(Card_IndexJoin,CN_CARD)
 __vDeleteFunction(Card_IndexJoin,CN_CARD)
 
-__bIsCard(STORE,Card_IndexJoin,CK_INDEXJOIN)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

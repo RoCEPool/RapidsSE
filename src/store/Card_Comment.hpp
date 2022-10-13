@@ -19,7 +19,6 @@ namespace STORE
   };
 
   Card_Comment* _pCard_Comment(void* aAddr);
-  bool _bIsCard_Comment(void* aAddr);
 }
 
 /*============================================================================*/

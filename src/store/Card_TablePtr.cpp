@@ -20,7 +20,6 @@ __pCastFunction_Card(STORE, Card_TablePtr, CK_TABLEPTR)
 __aNewFunction(Card_TablePtr, CN_CARD)
 __vDeleteFunction(Card_TablePtr, CN_CARD)
 
-__bIsCard(STORE, Card_TablePtr, CK_TABLEPTR)
 
 
 /*----------------------------------------------------------------------------*/

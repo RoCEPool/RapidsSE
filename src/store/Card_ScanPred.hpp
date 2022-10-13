@@ -18,7 +18,6 @@ namespace STORE
   };
 
   Card_ScanPred* _pCard_ScanPred(void* aAddr);
-  bool _bIsCard_ScanPred(void* aAddr);
 }
 
 /*============================================================================*/

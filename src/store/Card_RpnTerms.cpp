@@ -14,7 +14,6 @@ __pCastFunction_Card(STORE,Card_RpnTerms,CK_RPNTERMS)
 __aNewFunction(Card_RpnTerms,CN_CARD)
 __vDeleteFunction(Card_RpnTerms,CN_CARD)
 
-__bIsCard(STORE,Card_RpnTerms,CK_RPNTERMS)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

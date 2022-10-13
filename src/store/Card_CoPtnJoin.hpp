@@ -21,7 +21,6 @@ namespace STORE
   };
 
   Card_CoPtnJoin* _pCard_CoPtnJoin(void* aAddr);
-  bool _bIsCard_CoPtnJoin(void* aAddr);
 }
 
 /*============================================================================*/

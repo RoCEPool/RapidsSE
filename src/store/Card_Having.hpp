@@ -18,7 +18,6 @@ namespace STORE
   };
 
   Card_Having* _pCard_Having(void* aAddr);
-  bool _bIsCard_Having(void* aAddr);
 }
 
 /*============================================================================*/

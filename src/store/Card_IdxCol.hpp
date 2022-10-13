@@ -18,7 +18,6 @@ namespace STORE
   };
 
   Card_IdxCol* _pCard_IdxCol(void* aAddr);
-  bool _bIsCard_IdxCol(void* aAddr);
 }
 
 /*============================================================================*/

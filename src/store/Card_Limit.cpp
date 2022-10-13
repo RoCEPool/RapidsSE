@@ -12,7 +12,6 @@ __pCastFunction_Card(STORE,Card_Limit,CK_LIMIT)
 __aNewFunction(Card_Limit,CN_CARD)
 __vDeleteFunction(Card_Limit,CN_CARD)
 
-__bIsCard(STORE,Card_Limit,CK_LIMIT)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

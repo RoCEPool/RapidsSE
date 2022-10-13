@@ -15,7 +15,6 @@ __pCastFunction_Card(STORE,Card_Stream,CK_STREAM)
 __aNewFunction(Card_Stream,CN_CARD)
 __vDeleteFunction(Card_Stream,CN_CARD)
 
-__bIsCard(STORE,Card_Stream,CK_STREAM)
 
 
 /*----------------------------------------------------------------------------*/

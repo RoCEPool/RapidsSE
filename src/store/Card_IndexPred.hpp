@@ -18,7 +18,6 @@ namespace STORE
   };
 
   Card_IndexPred* _pCard_IndexPred(void* aAddr);
-  bool _bIsCard_IndexPred(void* aAddr);
 }
 
 /*============================================================================*/

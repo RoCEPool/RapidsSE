@@ -13,7 +13,6 @@ __pCastFunction_Card(STORE,Card_CoPtnPred,CK_COPTNPRED)
 __aNewFunction(Card_CoPtnPred,CN_CARD)
 __vDeleteFunction(Card_CoPtnPred,CN_CARD)
 
-__bIsCard(STORE,Card_CoPtnPred,CK_COPTNPRED)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

@@ -18,7 +18,6 @@ namespace STORE
   };
 
   Card_FiltElist* _pCard_FiltElist(void* aAddr);
-  bool _bIsCard_FiltElist(void* aAddr);
 }
 
 /*============================================================================*/

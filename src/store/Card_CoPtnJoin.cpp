@@ -15,7 +15,6 @@ __pCastFunction_Card(STORE, Card_CoPtnJoin, CK_COPTNJOIN)
 __aNewFunction(Card_CoPtnJoin, CN_CARD)
 __vDeleteFunction(Card_CoPtnJoin, CN_CARD)
 
-__bIsCard(STORE, Card_CoPtnJoin, CK_COPTNJOIN)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

@@ -26,7 +26,6 @@ namespace STORE
   };
 
   Card_TablePtr* _pCard_TablePtr(void* aAddr);
-  bool _bIsCard_TablePtr(void* aAddr);
 }
 
 /*============================================================================*/

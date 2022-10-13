@@ -18,7 +18,6 @@ namespace STORE
   };
 
   Card_PtndJoinSet* _pCard_PtndJoinSet(void* aAddr);
-  bool _bIsCard_PtndJoinSet(void* aAddr);
 }
 
 /*============================================================================*/

@@ -18,7 +18,6 @@ namespace STORE
   };
 
   Card_Project* _pCard_Project(void* aAddr);
-  bool _bIsCard_Project(void* aAddr);
 }
 
 /*============================================================================*/

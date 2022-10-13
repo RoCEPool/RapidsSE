@@ -12,8 +12,6 @@ __pCastFunction_Card(STORE, Card_ColumnRef, CK_COLUMNREF)
 __aNewFunction(Card_ColumnRef, CN_CARD)
 __vDeleteFunction(Card_ColumnRef, CN_CARD)
 
-__bIsCard(STORE, Card_ColumnRef, CK_COLUMNREF)
-
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
