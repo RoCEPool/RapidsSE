@@ -952,7 +952,7 @@ dload lineitem paths
             <stringProp name="scriptLanguage">groovy</stringProp>
           </JSR223Sampler>
           <hashTree/>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="validateRowCount" enabled="true">
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="validateRowCount" enabled="false">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">false</boolProp>
           </TransactionController>
