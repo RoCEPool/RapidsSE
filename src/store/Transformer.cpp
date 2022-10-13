@@ -218,7 +218,11 @@ void Transformer::vTransform3(void)
 
   m_pTransforms->vAdd_stages();
 
+  m_pCardCtl->vReset();
+
   m_pTransforms->vAdd_combined();
+
+  m_pTransforms->vExpandedForm();
 }
 
 

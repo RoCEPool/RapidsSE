@@ -236,7 +236,7 @@ void Board::vPrintBoard(Stz* szCue, Stz* szExplain, Stz* szShort)
   if (! m_bBeenCued && AM::JOB::bHasTag("<cue>"_Stz)) {
     Stz* szTagCue = AM::JOB::szTagValue("<cue>"_Stz);
     if (! szTagCue->bSame(szCue)) {
-      printf("%s\n",(char*)szCue);
+      printf("Transformation %s\n",(char*)szCue);
       return;
     }
   }
@@ -249,7 +249,7 @@ void Board::vPrintBoard(Stz* szCue, Stz* szExplain, Stz* szShort)
 
   s256 sPrompt;
 
-  sPrompt.vSprint("%s >> "_Stz,szCue);
+  sPrompt.vSprint("Transformation %s >> "_Stz,szCue);
 
   s4K sInput;
   Cue::vGetInput(sPrompt,sInput);

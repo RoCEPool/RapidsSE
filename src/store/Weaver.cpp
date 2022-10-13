@@ -313,7 +313,7 @@ void Weaver::vArgIndexJoin(Stz* szOpArgs, Card_IndexJoin* pCard_IndexJoin)
   
   // indexJoin : 0) {table} 1) {index} 2) indexPred
 
-  pCard_IndexJoin->vDump();
+  //pCard_IndexJoin->vDump();
 
   s4K sRpnExpr;
 

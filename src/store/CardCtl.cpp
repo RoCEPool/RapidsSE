@@ -22,65 +22,9 @@ CardCtl::CardCtl(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
   
-  for (i8 i_Card = 0; i_Card < CK_ENUMS; i_Card++) {
+  vReset();
 
-    m_xaCardCtl[i_Card].m_bNextHoriz    = false;
-    m_xaCardCtl[i_Card].m_sHorizExclude = "n/a"_Stz;
-
-    m_xaCardCtl[i_Card].m_bPrintByKind     = false;
-    m_xaCardCtl[i_Card].m_bPrintName       = true;
-    m_xaCardCtl[i_Card].m_bPrintValue      = true;
-    m_xaCardCtl[i_Card].m_bPrintProperties = true;
-    m_xaCardCtl[i_Card].m_bPrintPptName    = true;
-    m_xaCardCtl[i_Card].m_bPrintSubCards   = true;
-    m_xaCardCtl[i_Card].m_bPrintSubShort   = false;
-
-    m_xaCardCtl[i_Card].m_iPtrDetail = 1;
-    m_xaCardCtl[i_Card].m_bPrune     = false;
-  }
-
-  m_xaTrfCtl.m_bTfmPrint = true;
-
-
-   _checkInitialised_(CN_CARDCTL);
-
-  vPrintByKind(CK_CARDPTR,true);
-
-  vPrintName(CK_COMMENT,false);
-  vPrintProperties(CK_COMMENT,false);
-
-  vPrintSubShort(CK_COPTNJOIN,true);
-  vPrintSubCards(CK_COPTNJOIN,false);
-  vPrune(CK_COPTNJOIN,true);
-
-  vPrintSubShort(CK_CROSSPTNJOIN,true);
-  vPrintSubCards(CK_CROSSPTNJOIN,false);
-  vPrune(CK_CROSSPTNJOIN,true);
-
-  vPrintByKind(CK_INDEXPTR,true);
-  vPtrDetail(CK_INDEXPTR,0);
-
-  vPrintValue(CK_ANDPRED, false);
-  vPrintProperties(CK_ANDPRED, false);
-
-  vPrintProperties(CK_CMPPRED, false);
-
-  vPrintValue(CK_ORPRED, false);
-  vPrintProperties(CK_ORPRED, false);
-
-  vNextHorizon(CK_STAGE, true);
-  vHorizExclude(CK_STAGE,P_Exclude);
-  vPrintByKind(CK_STREAMELIST,true);
-
-  vPrintByKind(CK_TABLE,true);
-  vPrintValue(CK_TABLE, false);
-  vPrintProperties(CK_TABLE, false);
-
-  vPrintByKind(CK_TABLEPTR,true);
-  vPtrDetail(CK_TABLEPTR,0);
-
-  vPrintProperties(CK_TERM,false);
-
+  _checkInitialised_(CN_CARDCTL);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 }
@@ -338,6 +282,71 @@ void CardCtl::vPrune(i8 i_Card, bool bPrune)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 
   m_xaCardCtl[i_Card].m_bPrune = bPrune;
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+void CardCtl::vReset(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
+
+  for (i8 i_Card = 0; i_Card < CK_ENUMS; i_Card++) {
+
+    m_xaCardCtl[i_Card].m_bNextHoriz    = false;
+    m_xaCardCtl[i_Card].m_sHorizExclude = "n/a"_Stz;
+
+    m_xaCardCtl[i_Card].m_bPrintByKind     = false;
+    m_xaCardCtl[i_Card].m_bPrintName       = true;
+    m_xaCardCtl[i_Card].m_bPrintValue      = true;
+    m_xaCardCtl[i_Card].m_bPrintProperties = true;
+    m_xaCardCtl[i_Card].m_bPrintPptName    = true;
+    m_xaCardCtl[i_Card].m_bPrintSubCards   = true;
+    m_xaCardCtl[i_Card].m_bPrintSubShort   = false;
+
+    m_xaCardCtl[i_Card].m_iPtrDetail = 1;
+    m_xaCardCtl[i_Card].m_bPrune     = false;
+  }
+
+  m_xaTrfCtl.m_bTfmPrint = true;
+
+
+  vPrintByKind(CK_CARDPTR,true);
+
+  vPrintName(CK_COMMENT,false);
+  vPrintProperties(CK_COMMENT,false);
+
+  vPrintSubShort(CK_COPTNJOIN,true);
+  vPrintSubCards(CK_COPTNJOIN,false);
+  vPrune(CK_COPTNJOIN,true);
+
+  vPrintSubShort(CK_CROSSPTNJOIN,true);
+  vPrintSubCards(CK_CROSSPTNJOIN,false);
+  vPrune(CK_CROSSPTNJOIN,true);
+
+  vPrintByKind(CK_INDEXPTR,true);
+  vPtrDetail(CK_INDEXPTR,0);
+
+  vPrintValue(CK_ANDPRED, false);
+  vPrintProperties(CK_ANDPRED, false);
+
+  vPrintProperties(CK_CMPPRED, false);
+
+  vPrintValue(CK_ORPRED, false);
+  vPrintProperties(CK_ORPRED, false);
+
+  vNextHorizon(CK_STAGE, true);
+  vHorizExclude(CK_STAGE,P_Exclude);
+  vPrintByKind(CK_STREAMELIST,true);
+
+  vPrintByKind(CK_TABLE,true);
+  vPrintValue(CK_TABLE, false);
+  vPrintProperties(CK_TABLE, false);
+
+  vPrintByKind(CK_TABLEPTR,true);
+  vPtrDetail(CK_TABLEPTR,0);
+
+  vPrintProperties(CK_TERM,false);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -52,6 +52,7 @@ namespace STORE
     void vEstimate_joinOrder(void);
     void vEstimate_network(void);
     void vEstimate_ptndJoins(void);
+    void vExpandedForm(void);
     void vExtract_joinOrderSeq(void);
     void vExtract_joinPredList(void);
     void vExtract_tableList_From_queryBoard(void);

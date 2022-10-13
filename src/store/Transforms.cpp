@@ -866,7 +866,7 @@ void Transforms::vDeleteAll_Duplicate_stage(void)
   vTransformation(BK_QUERY,(char*)(__func__),false);
   vExplain("linearize board by deleting all duplicate stages"_Stz);
 
-  _deck_->vDump();
+  //_deck_->vDump();
 
   Card_Stage* p_stage_CURR = nullptr;
 
@@ -1068,6 +1068,22 @@ void Transforms::vEstimate_ptndJoins(void)
 
   if (m_bInteractive)
     m_pBoard_costEst->vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/* expanded form                                                              */
+/*----------------------------------------------------------------------------*/
+void Transforms::vExpandedForm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransformation(BK_QUERY,(char*)(__func__));
+  vExplain("((replace with an explanation))"_Stz);
+
+  m_pCardCtl->vReset();
+
+  vEndTransformation();
+  vPrintBoard();
 }
 
 /*----------------------------------------------------------------------------*/
