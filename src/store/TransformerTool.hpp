@@ -25,7 +25,7 @@ namespace STORE
     i8          m_iTransformNo;
     s32         m_sPhase;
     s256        m_sTranformation;
-    s256        m_sExplain;
+    s256        m_sDescription;
     bool        m_bPrintTransformation;
 
     Table*      m_pTable;
@@ -114,8 +114,8 @@ namespace STORE
 
     void vEndTransformation(void);
 
-    Stz* szExplain(void);
-    void vExplain(Stz* szExplain);
+    Stz* szDescription(void);
+    void vDescription(Stz* szDescription);
 
     Stz* szPhase(void);
     void vPhase(Stz* szPhase);

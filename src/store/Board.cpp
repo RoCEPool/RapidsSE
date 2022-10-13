@@ -133,12 +133,12 @@ void Board::vPinCards(Ribbon* pRibbon,
 //                   m_pOptimiser->szQueryNm(),
 //                   szTransformation ? szTransformation : ""_Stz
 //                   );
-//  if (szExplain && *szExplain->azChar()) {
-//    pRibbon->vSprint("Explanation: %s"_Stz, szExplain);
+//  if (szExplain && *szDescription->azChar()) {
+//    pRibbon->vSprint("Explanation: %s"_Stz, szDescription);
 //    pRibbon->vTitleLines(2);
 //  }
-//  if (szExplain && *szExplain->azChar()) {
-//    pRibbon->vSprint("Explanation: %s"_Stz, szExplain);
+//  if (szExplain && *szDescription->azChar()) {
+//    pRibbon->vSprint("Explanation: %s"_Stz, szDescription);
 //    pRibbon->vTitleLines(2);
 //  }
 //
@@ -205,7 +205,7 @@ void Board::vPrintBoard(TransformerTool* pTransformerTool)
 
   Stz* szPhase = pTransformerTool->szPhase();
   Stz* szTransformation = pTransformerTool->szTransformation();
-  Stz* szExplain = pTransformerTool->szExplain();
+  Stz* szExplain = pTransformerTool->szDescription();
 
   eOA eOptAct = OA_ENTRY;
   TokenVec* pTknVec = nullptr;

@@ -173,23 +173,23 @@ void TransformerTool::vEndTransformation(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get explain                                                                */
+/* get description of transformation                                          */
 /*----------------------------------------------------------------------------*/
-Stz* TransformerTool::szExplain(void)
+Stz* TransformerTool::szDescription(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  return m_sExplain;
+  return m_sDescription;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set explain                                                                */
+/* set description of transformation                                          */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::vExplain(Stz* szExplain)
+void TransformerTool::vDescription(Stz* szDescription)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  m_sExplain = szExplain;
+  m_sDescription = szDescription;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -227,7 +227,7 @@ void TransformerTool::vPrintBoard(void)
     vTrace("SILENT : %s\n"_Stz,m_sTranformation.szStz());
   }
 
-  m_sExplain = ""_Stz;
+  m_sDescription = ""_Stz;
 }
 
 /*----------------------------------------------------------------------------*/
