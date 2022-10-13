@@ -69,7 +69,7 @@ void Card_CardPtr::vCard(Card* pCard)
 /*----------------------------------------------------------------------------*/
 /* print {card}                                                               */
 /*----------------------------------------------------------------------------*/
-void Card_CardPtr::vCardPtrPrint(Ribbon* pRibbon, i8 iDepth, Card* pParent)
+void Card_CardPtr::vCardPtrPrint(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -81,11 +81,11 @@ void Card_CardPtr::vCardPtrPrint(Ribbon* pRibbon, i8 iDepth, Card* pParent)
   if (pRibbon->iArea())
     return;
 
-  pCard->vPrintProperties(pRibbon, iDepth, pParent);
+  pCard->vPrintProperties(pRibbon, iDepth);
 
   CardIter xCI(this);
   while (Card *pSubCard = xCI.pEachChild())
-    pSubCard->vPrintProperties(pRibbon, iDepth + 1,pParent);
+    pSubCard->vPrintProperties(pRibbon, iDepth + 1);
 }
 
 

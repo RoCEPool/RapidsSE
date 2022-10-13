@@ -74,7 +74,7 @@ Card_TablePtr* Card_Table::pGet_tablePtr(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Table::vTablePrint(Ribbon* pRibbon, i8 iDepth, Card* pParent)
+void Card_Table::vTablePrint(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -88,7 +88,7 @@ void Card_Table::vTablePrint(Ribbon* pRibbon, i8 iDepth, Card* pParent)
   else
     sName.vCatSprint(" %s"_Stz, szValue());
 
-  vPrintCard_byCustomNm(pRibbon, iDepth, pParent, sName);
+  vPrintCard_byCustomNm(pRibbon, iDepth, sName);
 }
 
 /*============================================================================*/

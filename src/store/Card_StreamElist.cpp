@@ -65,14 +65,14 @@ bool Card_StreamElist::bSimpleDef(void)
 /*----------------------------------------------------------------------------*/
 /* print StreamElist                                                          */
 /*----------------------------------------------------------------------------*/
-void Card_StreamElist::vStreamElistPrint(Ribbon* pRibbon, i8 iDepth, Card* pParent)
+void Card_StreamElist::vStreamElistPrint(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_StreamElist* pCard_StreamElist = _pCard_StreamElist(this);
 
   if (! pCard_StreamElist->bSimpleDef()) {
-    vPrintProperties(pRibbon, iDepth, pParent);
+    vPrintProperties(pRibbon, iDepth);
     return;
   }
 

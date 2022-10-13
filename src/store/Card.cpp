@@ -808,16 +808,27 @@ void Card::vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth, Card* pParent, bool& 
 
   CardCtl* pCardCtl = _pCardCtl(pRibbon->pCtl());
 
+
+  if (m_pLastPrintParent == pParent) {
+    if ('`' == m_cMark1)
+      m_cMark1 = ' ';
+  }
+  else {
+    if (' ' == m_cMark1)
+      m_cMark1 = '`';
+    m_pLastPrintParent = pParent;
+  }
+
+
   if (pCardCtl->bPrintByKind(m_eCard))
-    vPrintCard_byKind(pRibbon, iDepth, pParent);
+    vPrintCard_byKind(pRibbon, iDepth);
   else
-    vPrintCard_bySettings(pRibbon, iDepth, pParent);
+    vPrintCard_bySettings(pRibbon, iDepth);
 
   if (pCardCtl->bPrune(m_eCard))
     rbPrune = true;
   //vMark2(' ');
 
-  m_pLastPrintParent = pParent;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -839,35 +850,35 @@ void Card::vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth, Card* pParent, bool& 
 /*----------------------------------------------------------------------------*/
 /* print card onto given ribbon                                               */
 /*----------------------------------------------------------------------------*/
-void Card::vPrintCard_byCustomNm(Ribbon* pRibbon, i8 iDepth, Card* pParent, Stz* szCustomNm)
+void Card::vPrintCard_byCustomNm(Ribbon* pRibbon, i8 iDepth, Stz* szCustomNm)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   CardCtl* pCardCtl = _pCardCtl(pRibbon->pCtl());
 
   if (pCardCtl->bPrintName(m_eCard))
-    vPrintName(pRibbon, iDepth, pParent, szCustomNm);
+    vPrintName(pRibbon, iDepth, szCustomNm);
   if (pCardCtl->bPrintValue(m_eCard))
-    vPrintValue(pRibbon, iDepth, pParent);
+    vPrintValue(pRibbon, iDepth);
 
   if (pCardCtl->bPrintProperties(m_eCard))
-    vPrintProperties(pRibbon, iDepth, pParent);
+    vPrintProperties(pRibbon, iDepth);
 
   if (pCardCtl->bPrintSubShort(m_eCard))
-    vPrintChildrenShort(pRibbon, iDepth, pParent);
+    vPrintChildrenShort(pRibbon, iDepth);
 }
 
 /*----------------------------------------------------------------------------*/
 /* print card onto given ribbon                                               */
 /*----------------------------------------------------------------------------*/
-void Card::vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth, Card* pParent)
+void Card::vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   switch (m_eCard) {
 
     case CK_CARDPTR:
-      _pCard_CardPtr(this)->vCardPtrPrint(pRibbon, iDepth, pParent);
+      _pCard_CardPtr(this)->vCardPtrPrint(pRibbon, iDepth);
       break;
 
     case CK_INDEXPTR:
@@ -875,15 +886,15 @@ void Card::vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth, Card* pParent)
       break;
 
     case CK_STREAM:
-      _pCard_Stream(this)->vStreamPrint(pRibbon, iDepth, pParent);
+      _pCard_Stream(this)->vStreamPrint(pRibbon, iDepth);
       break;
 
     case CK_STREAMELIST:
-      _pCard_StreamElist(this)->vStreamElistPrint(pRibbon,iDepth, pParent);
+      _pCard_StreamElist(this)->vStreamElistPrint(pRibbon, iDepth);
       break;
 
     case CK_TABLE:
-      _pCard_Table(this)->vTablePrint(pRibbon, iDepth, pParent);
+      _pCard_Table(this)->vTablePrint(pRibbon, iDepth);
       break;
 
     case CK_TABLEPTR:
@@ -891,7 +902,7 @@ void Card::vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth, Card* pParent)
       break;
 
     default:
-      vPrintCard_bySettings(pRibbon, iDepth, pParent);
+      vPrintCard_bySettings(pRibbon, iDepth);
       break;
   }
 }
@@ -899,33 +910,33 @@ void Card::vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth, Card* pParent)
 /*----------------------------------------------------------------------------*/
 /* print card onto given ribbon                                               */
 /*----------------------------------------------------------------------------*/
-void Card::vPrintCard_bySettings(Ribbon* pRibbon, i8 iDepth, Card* pParent)
+void Card::vPrintCard_bySettings(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   CardCtl* pCardCtl = _pCardCtl(pRibbon->pCtl());
 
   if (pCardCtl->bPrintName(m_eCard) && pCardCtl->bPrintValue(m_eCard)) {
-    vPrintNameValue(pRibbon, iDepth, pParent);
+    vPrintNameValue(pRibbon, iDepth);
   }
   else {
     if (pCardCtl->bPrintName(m_eCard))
-      vPrintName(pRibbon, iDepth, pParent);
+      vPrintName(pRibbon, iDepth);
     if (pCardCtl->bPrintValue(m_eCard))
-      vPrintValue(pRibbon, iDepth, pParent);
+      vPrintValue(pRibbon, iDepth);
   }
 
   if (pCardCtl->bPrintProperties(m_eCard))
-    vPrintProperties(pRibbon, iDepth, pParent);
+    vPrintProperties(pRibbon, iDepth);
 
   if (pCardCtl->bPrintSubShort(m_eCard))
-    vPrintChildrenShort(pRibbon, iDepth, pParent);
+    vPrintChildrenShort(pRibbon, iDepth);
 }
 
 /*----------------------------------------------------------------------------*/
 /* print compressed children                                                  */
 /*----------------------------------------------------------------------------*/
-void Card::vPrintChildrenShort(Ribbon* pRibbon, i8 iDepth, Card* pParent)
+void Card::vPrintChildrenShort(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -964,7 +975,7 @@ void Card::vPrintHeader(Ribbon* pRibbon)
 /*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
-void Card::vPrintName(Ribbon* pRibbon, i8 iDepth, Card* pParent, Stz* szCustomName)
+void Card::vPrintName(Ribbon* pRibbon, i8 iDepth, Stz* szCustomName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -1010,7 +1021,7 @@ void Card::vPrintName(Ribbon* pRibbon, i8 iDepth, Card* pParent, Stz* szCustomNa
 /*----------------------------------------------------------------------------*/
 /* print card name and value on single line if possible                       */
 /*----------------------------------------------------------------------------*/
-void Card::vPrintNameValue(Ribbon* pRibbon, i8 iDepth, Card* pParent)
+void Card::vPrintNameValue(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -1060,15 +1071,15 @@ void Card::vPrintNameValue(Ribbon* pRibbon, i8 iDepth, Card* pParent)
     pRibbon->vSprint("%c%c%-18s"_Stz, m_cMark1, m_cMark2, sNameValue.szStz());
   }
   else {
-    vPrintName(pRibbon, iDepth, pParent);
-    vPrintValue(pRibbon, iDepth, pParent);
+    vPrintName(pRibbon, iDepth);
+    vPrintValue(pRibbon, iDepth);
   }
 }
 
 /*----------------------------------------------------------------------------*/
 /* print card properties                                                      */
 /*----------------------------------------------------------------------------*/
-void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth, Card* pParent)
+void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -1131,7 +1142,7 @@ void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth, Card* pParent)
 /*----------------------------------------------------------------------------*/
 /* print value of card                                                        */
 /*----------------------------------------------------------------------------*/
-void Card::vPrintValue(Ribbon* pRibbon, i8 iDepth, Card* pParent)
+void Card::vPrintValue(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
