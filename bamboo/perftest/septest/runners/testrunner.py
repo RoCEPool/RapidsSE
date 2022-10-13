@@ -202,7 +202,7 @@ class TestRunner:
         """
         # Where did we copy the jmeter properties file to?
         jmeter_properties_path = testops.get_remote_jmeter_property_file_path(self.cluster_config)
-        log_file_path = self.__remote_log_file_path()
+        log_file_path = self.__remote_test_log_file_path()
         rapidsse_bin_dir = f"{self.cluster_config.get_dir()}/bin"
 
         # We need to run jmeter from the <install>/bin directory so that the JDBC driver
@@ -234,11 +234,18 @@ class TestRunner:
             self.abnormal_exit = True
             LOG.error(msg)
 
-    def __remote_log_file_path(self):
+    def __remote_test_log_file_path(self):
         """
         Returns the path of the log file that JMeter will produce on the first node.
         """
         remote_path = f"{self.remote_test_dir}/{self.test_name}.log"
+        return remote_path
+
+    def __remote_jmeter_log_file_path(self):
+        """
+        Returns the path of the log file that JMeter will produce on the first node.
+        """
+        remote_path = f"{self.remote_test_dir}/jmeter.log"
         return remote_path
 
     def __collect_metrics(self):
@@ -247,6 +254,9 @@ class TestRunner:
 
         # Copy the metrics to this directory
         self.__copy_remote_metrics_locally()
+
+        # Copy the jmeter logs to this directory
+        self.copy_jmeter_logs()
 
         # Parse the metrics and add them to the results.
         # We look for both *.csv and *.tsv files.
@@ -289,6 +299,44 @@ class TestRunner:
 
         file_list = os.listdir(self.artifact_dir)
         LOG.debug("Copied the following files from the remote node:\n%s", '\n  '.join(file_list))
+
+    def copy_jmeter_logs(self):
+        """
+        Copies test and jmeter log files from a remote host to the artifact directory
+        """
+
+        LOG.debug("About to copy test log file from remote node to local directory")
+        src = f"{self.ip_addr}:{self.__remote_test_log_file_path()}"
+
+        try:
+            ssh.run_scp(src=src, dest=self.artifact_dir, timeout=C_SCP_TIMEOUT_SEC)
+
+        except errors.SshError as e:
+            msg = f"Error while copying jmeter log file from remote path: {src}"
+            raise errors.ClusterError(msg) from e
+
+        except subprocess.TimeoutExpired as e:
+            msg = f"Copying of jmeter log file from remote path at {src} timed out after {e.timeout} seconds: " \
+                  f"\nStdout Output:\n{e.stdout}" \
+                  f"\nStderr Output:\n{e.stderr}"
+            raise errors.ClusterError(msg) from e
+
+        # Now for the jmeter.log file
+        LOG.debug("About to copy jmeter log file from remote node to local directory")
+        src = f"{self.ip_addr}:{self.__remote_jmeter_log_file_path()}"
+
+        try:
+            ssh.run_scp(src=src, dest=self.artifact_dir, timeout=C_SCP_TIMEOUT_SEC)
+
+        except errors.SshError as e:
+            msg = f"Error while copying jmeter log file from remote path: {src}"
+            raise errors.ClusterError(msg) from e
+
+        except subprocess.TimeoutExpired as e:
+            msg = f"Copying of jmeter log file from remote path at {src} timed out after {e.timeout} seconds: " \
+                  f"\nStdout Output:\n{e.stdout}" \
+                  f"\nStderr Output:\n{e.stderr}"
+            raise errors.ClusterError(msg) from e
 
     def __parse_csv_metrics(self, metric_file: string) -> bool:
         """

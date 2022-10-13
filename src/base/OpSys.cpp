@@ -5,9 +5,12 @@
 #include "BASE.h"
 
 #include <sys/utsname.h>
-//#include <sys/unistd.h>
 
+#ifdef WITH_APPLE
 #include <sys/sysctl.h>
+#else
+#include <linux/sysctl.h>
+#endif
 
 static struct utsname gxUtsName;
 

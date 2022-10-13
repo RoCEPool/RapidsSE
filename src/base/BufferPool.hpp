@@ -82,6 +82,8 @@ namespace BASE
     bool bLowMemory(void);
     bool bLowMemoryDist(void);
     void vPoolDump(void);
+    PoolBuffer* pReAllocHeapBuffer(void* aAddress);
+    PoolBuffer* pReAllocOtherBuffer(void *aAddress);
     Stz* szShmNm(void);
     void vTakeBuffers(i8 nSpareBuffers);
     i8   iTotalSpace(void);
@@ -93,6 +95,7 @@ namespace BASE
     void vVerifyPool(void);
   
   private:
+    FreePoolBuffer* pGetFreePoolBufferByAddress(void* aAddress);
     FreePoolBuffer* pPopFreePoolBuffer(void);
     void vPrintProgress(void);
     void vPushFreePoolBuffer(PoolBuffer* pBuffer);

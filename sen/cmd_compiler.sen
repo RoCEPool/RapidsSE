@@ -14,7 +14,7 @@
   sCmdNm series-name "_syntax" str.cat :create
 
   // set the word category to be cmdSyntax:
-  [ senCompiler::current@ encode::push ] senCompiler::current@ word.category!
+  WC_CMDSYNTAX senCompiler::current@ word.category!
 
   // attach a tag set to hold syntax to the word being created
   tagSet::new locals| pSynTags |
@@ -127,7 +127,7 @@
 
   find: _cmdTags locals| pwCmdTagsCatg |
 
-  iterate-words word@ word.category@ pwCmdTagsCatg equal if
+  iterate-words word@ word.category@ WC_CMDTAGS equal if
 
     word@ _cmdTags.aboutLiteOp if
       word@ cmd::synthProc_lliteOp
@@ -197,7 +197,7 @@
 
   find: _cmdTags locals| pwCmdTagsCatg |
 
-  iterate-words word@ word.category@ pwCmdTagsCatg equal if
+  iterate-words word@ word.category@ WC_CMDTAGS equal if
 
     word@ _cmdTags.aboutLiteOp if
       word@ cmd::synthWords_lliteOp
@@ -240,7 +240,7 @@
 
   //find: cmdSyntax: word::ofCatg
 
-  find: cmdSyntax: arrange::wordsOfCatg locals| pProcSet |
+  WC_CMDSYNTAX arrange::wordsOfCatg locals| pProcSet |
 
   0 locals| pwCmdSyntax |
   0 locals| sCmdSyntax  |
@@ -318,7 +318,7 @@
   0 locals| pwCmdTags  |
   0 locals| pCmdTagSet |
 
-  find: _cmdTags arrange::wordsOfCatg locals| pProcSet |
+  WC_CMDTAGS arrange::wordsOfCatg locals| pProcSet |
 
   nullptr locals| pCursor |
   begin
@@ -366,14 +366,14 @@
 /*----------------------------------------------------------------------------*/
 /* show all procedures                                                        */
 /*----------------------------------------------------------------------------*/
-: procedures \prompt find: \procedure word::ofCatg ;
+: procedures \prompt WC_PROCEDURE word::ofCatg ;
 
 /*----------------------------------------------------------------------------*/
 /* show all procedures                                                        */
 /*----------------------------------------------------------------------------*/
 : procs \prompt
 
-  find: \procedure arrange::wordsOfCatg locals| pProcSet |
+  WC_PROCEDURE arrange::wordsOfCatg locals| pProcSet |
 
   nullptr locals| pCursor |
   begin
@@ -446,7 +446,7 @@
 /*----------------------------------------------------------------------------*/
 : procsToFiles \prompt
 
-  find: \procedure arrange::wordsOfCatg locals| pProcSet |
+  WC_PROCEDURE arrange::wordsOfCatg locals| pProcSet |
 
   nullptr locals| pCursor |
   nullptr locals| pTags   |

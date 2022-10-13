@@ -97,7 +97,7 @@ void Exception::vPrint(void)
   
   vSprint(zIntoBuf);
   
-  printf("%s\n",zIntoBuf);
+  vTrace("%s\n"_Stz,zIntoBuf);
   
   //vDebugPoint();
 }

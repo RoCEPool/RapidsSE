@@ -4,8 +4,11 @@
 
 #include "BASE.h"
 #include "TagConstants.h"
+#include "Job.hpp"
+#include "CmdLineArgs.hpp"
 
 extern SizeHeap  gxaSizeHeap[];
+extern CmdLineArgs  gxCmdLineArgs;
 
 bool gbAddrAllocated = false;
 
@@ -78,32 +81,39 @@ void Heaps::vSubSystem(TokenVec* pTokenVec)
 Object* Heaps::pAllocate(eCN eAllocClass, bool bPersistent)
 {
   _static_
-  UNUSED(bPersistent);
 
   Heaps* pHeaps = AM::pHeaps();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+
   eHT eHeap = gxaSizeHeap[eAllocClass].m_eWhichHeap;
-  
+
+  // The Job persistent flag is set via pipeline tag
+  // This causes all allocs as part of this job to use the persistent heap
+  Job* pJob = MY::pJob();
+  if ((pJob && pJob->bPersistent()) || bPersistent) {
+    switch(eHeap) {
+      case HT_T_TINY:   eHeap = HT_P_TINY;   break;
+      case HT_T_SMALL:  eHeap = HT_P_SMALL;  break;
+      case HT_T_MEDIUM: eHeap = HT_P_MEDIUM; break;
+      case HT_T_LARGE:  eHeap = HT_P_LARGE;  break;
+      default: break;
+    }
+  }
+
   Heap* pHeap = pHeaps->pGetHeap(eHeap);
-  
-//  if (bPersistent) {
-//    switch(eHeap) {
-//      case HT_T_TINY:   eHeap = HT_P_TINY;   break;
-//      case HT_T_SMALL:  eHeap = HT_P_SMALL;  break;
-//      case HT_T_MEDIUM: eHeap = HT_P_MEDIUM; break;
-//      case HT_T_LARGE:  eHeap = HT_P_LARGE;  break;
-//      default: break;
-//    }
-//  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Object* pObject = nullptr;
-  
+
   pObject = pHeap->pAllocObject(eAllocClass);
-  
+
+  if (pJob && pJob->bPersistent()) {
+    pObject->vSetPersistent(true);
+  } else {
+    pObject->vSetPersistent(false);
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -142,7 +152,7 @@ void Heaps::vDumpHeaps(void)
 void Heaps::vFree(Object* pObject, bool bPersistent)
 {  
   UNUSED(bPersistent);
-  
+
   eCN eFreeClass = pObject->eGetClassNo();
 
   Heaps* pHeaps = AM::pHeaps();
@@ -249,6 +259,17 @@ void Heaps::vFree(Object* pObject, bool bPersistent)
            ,aCN[eFreeClass]
            );
     RASSERT(eHeap > HT_INVALID && eHeap < HT_ENUMS);
+  }
+
+  // Note: Virtual Heap is ignored for now, even if the Object persistent bit is set.
+  if (pObject->bGetPersistent()) {
+    switch(eHeap) {
+      case HT_T_TINY:   eHeap = HT_P_TINY;   break;
+      case HT_T_SMALL:  eHeap = HT_P_SMALL;  break;
+      case HT_T_MEDIUM: eHeap = HT_P_MEDIUM; break;
+      case HT_T_LARGE:  eHeap = HT_P_LARGE;  break;
+      default: break;
+    }
   }
 
   Heap* pHeap = pHeaps->pGetHeap(eHeap);
@@ -470,15 +491,166 @@ Heap* Heaps::pGetHeap(eHT eHeap)
 /*----------------------------------------------------------------------------*/
 void Heaps::vInit(void)
 {
-  // create the persistent heaps
-  Persistent.m_pTiny   =
-    new Heap(CN_TINYPERSISTENT,  C_SIZE_SMALL_OBJECT,  HT_P_TINY);
-  Persistent.m_pSmall  =
-    new Heap(CN_SMALLPERSISTENT, C_SIZE_SMALL_OBJECT,  HT_P_SMALL);
-  Persistent.m_pMedium =
-    new Heap(CN_MEDIUMPERSISTENT,C_SIZE_MEDIUM_OBJECT, HT_P_MEDIUM);
-  Persistent.m_pLarge  =
-    new Heap(CN_LARGEPERSISTENT, C_SIZE_LARGE_OBJECT,  HT_P_LARGE);
+  if(gxCmdLineArgs.m_xSysArgs.m_bReload)
+  {
+    Timer oTimer;
+    oTimer.vStart();
+    /*
+    Notes:
+      This section is where we load the persistent heaps from file.
+      The file consists of pool buffers and heap buffers. They are
+      C_SIZE_POOL_BUFFER in size.
+
+      We start by opening the file, and reading the header information.
+      The header is of size sizeof(object) + 64 + 64. The last two are
+      pool buffer members.
+
+      The object information tells us the Class type, and the pool buffer
+      member called m_pThis, tells us the address of the buffer when it was
+      written to disk.
+
+      We then search the Buffer Pool free chain for the buffer with the same
+      address. After removing it from the free chain, we copy the header info
+      into the buffer. Next, we read the rest of the info from the file into
+      this buffer.
+
+      At this point we have successfully loaded a PoolBuffer or HeapBuffer from
+      disk. We repeat this till we reach the end of the file.
+
+    */
+    char caObjectHeader[sizeof(Object) + 128];
+    Header* aHeader = (Header*) & caObjectHeader[0];
+    i8 nSizeHeader = sizeof(Object) + 128; // object size + Pool Buffer members
+    i8 nSizeBody = C_SIZE_POOL_BUFFER - nSizeHeader;
+
+    Stz* szFilePath = gxCmdLineArgs.m_xSysArgs.m_sReloadFilePath;
+    File* pFile = new(C_VIA_MALLOC) File(nullptr);
+    bool bResult = pFile->bOpenRead(szFilePath);
+    ASSERT(bResult);
+
+    // Read the Header information to get the address of this pool buffer
+    i8 nBytes = pFile->nReadBytes(aHeader, nSizeHeader);
+    RASSERT(nBytes == nSizeHeader);
+
+    HeapBuffer* pNextBuffer = nullptr;
+
+    while(nBytes != 0)
+    {
+      PoolBuffer* pPoolBufferHeader = reinterpret_cast<PoolBuffer*>(aHeader);
+      void *aBody;
+
+      switch(pPoolBufferHeader->eGetClassNo()) {
+        case CN_TINYPERSISTENT: {
+          PoolBuffer *pBuffer = gpBufferPool->pReAllocOtherBuffer(pPoolBufferHeader->m_pThis);
+
+          MemLib::vCopy(pBuffer, pPoolBufferHeader, nSizeHeader, pPoolBufferHeader->eGetClassNo());
+          aBody = aAdd<void *>(pBuffer, nSizeHeader);
+          nBytes = pFile->nReadBytes(aBody, nSizeBody);
+          RASSERT(nBytes == nSizeBody);
+
+          Persistent.m_pTiny = reinterpret_cast<Heap*>(pBuffer);
+          pNextBuffer = Persistent.m_pTiny->pFirstBuffer();
+
+          break;
+        }
+
+        case CN_SMALLPERSISTENT: {
+          PoolBuffer *pBuffer = gpBufferPool->pReAllocOtherBuffer(pPoolBufferHeader->m_pThis);
+
+          MemLib::vCopy(pBuffer, pPoolBufferHeader, nSizeHeader, pPoolBufferHeader->eGetClassNo());
+          aBody = aAdd<void *>(pBuffer, nSizeHeader);
+          nBytes = pFile->nReadBytes(aBody, nSizeBody);
+          RASSERT(nBytes == nSizeBody);
+
+          Persistent.m_pSmall = reinterpret_cast<Heap*>(pBuffer);
+          pNextBuffer = Persistent.m_pSmall->pFirstBuffer();
+
+          break;
+        }
+
+        case CN_MEDIUMPERSISTENT: {
+          PoolBuffer *pBuffer = gpBufferPool->pReAllocOtherBuffer(pPoolBufferHeader->m_pThis);
+
+          MemLib::vCopy(pBuffer, pPoolBufferHeader, nSizeHeader, pPoolBufferHeader->eGetClassNo());
+          aBody = aAdd<void *>(pBuffer, nSizeHeader);
+          nBytes = pFile->nReadBytes(aBody, nSizeBody);
+          RASSERT(nBytes == nSizeBody);
+
+          Persistent.m_pMedium = reinterpret_cast<Heap*>(pBuffer);
+          pNextBuffer = Persistent.m_pMedium->pFirstBuffer();
+
+          break;
+        }
+
+        case CN_LARGEPERSISTENT: {
+          PoolBuffer *pBuffer = gpBufferPool->pReAllocOtherBuffer(pPoolBufferHeader->m_pThis);
+
+          MemLib::vCopy(pBuffer, pPoolBufferHeader, nSizeHeader, pPoolBufferHeader->eGetClassNo());
+          aBody = aAdd<void *>(pBuffer, nSizeHeader);
+          nBytes = pFile->nReadBytes(aBody, nSizeBody);
+          RASSERT(nBytes == nSizeBody);
+
+          Persistent.m_pLarge = reinterpret_cast<Heap*>(pBuffer);
+          pNextBuffer = Persistent.m_pLarge->pFirstBuffer();
+
+          break;
+        }
+
+        case CN_HEAPBUFFER: {
+
+          // Sanity check that we are correctly reading the HeapBuffers that are part of the chain for the respective heaps.
+          if(pNextBuffer)
+          {
+            RASSERT(pNextBuffer == pPoolBufferHeader->m_pThis);
+          }
+
+          HeapBuffer* pHeapBuffer = (HeapBuffer*)(gpBufferPool->pReAllocHeapBuffer(pPoolBufferHeader->m_pThis));
+
+          MemLib::vCopy(pHeapBuffer, pPoolBufferHeader, nSizeHeader, pPoolBufferHeader->eGetClassNo());
+          aBody = aAdd<void *>(pHeapBuffer, nSizeHeader);
+          nBytes = pFile->nReadBytes(aBody, nSizeBody);
+          RASSERT(nBytes == nSizeBody);
+
+          pNextBuffer = pHeapBuffer->pNextBuffer();
+
+          break;
+        }
+      }
+
+      nBytes = pFile->nReadBytes(aHeader, nSizeHeader);
+    }
+
+    if(pFile->bIsOpen())
+      pFile->vClose();
+    delete pFile;
+
+    RASSERT(Persistent.m_pTiny);
+    Persistent.m_pTiny->vDropLock();
+
+    RASSERT(Persistent.m_pSmall);
+    Persistent.m_pSmall->vDropLock();
+
+    RASSERT(Persistent.m_pMedium);
+    Persistent.m_pMedium->vDropLock();
+
+    RASSERT(Persistent.m_pLarge);
+    Persistent.m_pLarge->vDropLock();
+
+    oTimer.vUpdate();
+    vTrace("Loading of Persistent Heap: %lldms\n"_Stz,oTimer.iMilliseconds());
+
+  } else {
+    // create the persistent heaps
+    Persistent.m_pTiny   =
+        new Heap(CN_TINYPERSISTENT,  C_SIZE_TINY_OBJECT,  HT_P_TINY);
+    Persistent.m_pSmall  =
+        new Heap(CN_SMALLPERSISTENT, C_SIZE_SMALL_OBJECT,  HT_P_SMALL);
+    Persistent.m_pMedium =
+        new Heap(CN_MEDIUMPERSISTENT,C_SIZE_MEDIUM_OBJECT, HT_P_MEDIUM);
+    Persistent.m_pLarge  =
+        new Heap(CN_LARGEPERSISTENT, C_SIZE_LARGE_OBJECT,  HT_P_LARGE);
+  }
+
   // create the transient heaps
   
   Transient.m_pTiny   =

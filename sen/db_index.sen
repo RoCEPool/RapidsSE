@@ -7,14 +7,14 @@
 /*----------------------------------------------------------------------------*/
 /* \index is the category to identify indexes                                 */
 /*----------------------------------------------------------------------------*/
-: \index \\category ;
+: \index \\category WC_INDEX ;
 
 /*----------------------------------------------------------------------------*/
 /* test if word is an index (is of \index category)                           */
 /*----------------------------------------------------------------------------*/
 : word.isaIndex params| pwIndex |
 
-  pwIndex word.category@ find: \index equal
+  pwIndex word.category@ WC_INDEX equal
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -56,7 +56,7 @@
 /*----------------------------------------------------------------------------*/
 : check::nameIsValidIndex params| sIndexNm | ( t | ec f )
 
-  sIndexNm str.length 31 > if
+  sIndexNm str.length C_MAX_INDEX_NAME_LENGTH 1 - > if
     EC_MAX_INDEX_NAME_LENGTH false exit
   then
 
@@ -81,7 +81,7 @@
 
   pwIndex not if EC_NO_SUCH_INDEX false exit then
 
-  pwIndex word.category@ find: \index equal if true exit then
+  pwIndex word.category@ WC_INDEX equal if true exit then
 
   EC_NOT_AN_INDEX false
 ;
@@ -156,13 +156,11 @@
 
   Folder[].isIndexes assert
 
-  find: \index locals| pwIndexCatg |
-
   sIndexNm index::new locals| pIndex |
 
   sIndexNm word::new locals| pwIndex |
 
-  pwIndexCatg pIndex pwIndex word.cppObject!
+  WC_INDEX pIndex pwIndex word.cppObject!
 
   //pwIndex word.see
 

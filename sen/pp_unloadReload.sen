@@ -21,20 +21,22 @@
   STD_PATH_TAG
   "
   procedure unload
-    parameters $Table $File
+    parameters $File
   begin
 
   stage stageA on origin :
-    start | pulse once | stageB
+      start
+    | pulse once
+    | next
 
-  stage stageB on all partitions :
-    scan $Table | stageC
+  stage stageB on all nodes :
+      unload $File
+    | next
 
   stage stageC on origin :
-    wrFile $File | stageD
-
-  stage stageD on origin :
-    sink | stageA
+      output
+    | sink
+    | first
 
   end ;
   "

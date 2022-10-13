@@ -25,7 +25,7 @@ Dic::Dic(Stz* szDicNm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   m_sDicNm   = szDicNm;
-  m_pDicKind = nullptr;
+  m_eDicKind = DK_NONE;
     
   m_pWordSkipList = new SkipListNL(C_UNQIUE_KEY,bWordCompare,vWordPrint);
 
@@ -42,6 +42,32 @@ Dic::~Dic(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   delete m_pWordSkipList;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add an existing SkipNode to this dictionary (used during reload from disk) */
+/*----------------------------------------------------------------------------*/
+void Dic::vAddSkipNode(SkipNode *pSkipNode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
+
+  bool bTrace = false;
+
+  Word* pWord = _pWord(pSkipNode->m_pObject);
+  RASSERT(pWord);
+
+  m_okLock.vGrabWrite();
+
+  bool b = m_pWordSkipList->bInsertWithNode(pWord, pSkipNode, bTrace);
+  RASSERT(b);
+
+  SkipNode* pSkipNodeNewly = m_pWordSkipList->pNewly();
+  RASSERT(pSkipNodeNewly == pSkipNode);
+
+  // This step is probably not needed
+  pWord->m_pSkipNode = pSkipNodeNewly;
+
+  m_okLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -65,6 +91,16 @@ void Dic::vAddWord(Word* pWord)
   
   SkipNode* pSkipNode = m_pWordSkipList->pNewly();
   pWord->m_pSkipNode = pSkipNode;
+
+  // Note: During unload/reload, we need an easy way to figure out whether
+  // a word is part of the table dictionary (which is part of root_dic in AM).
+  // Hence, we use a bit to store this information. This allows us to quickly
+  // reconnect the words and their dictionaries back to the root dic during
+  // a reload operation (while walking the Persistent Tiny Heap).
+  if(m_sDicNm.bSame("tables"_Stz))
+  {
+    pWord->m_bTableBit = true;
+  }
   
   m_okLock.vDropWrite();
   
@@ -72,13 +108,13 @@ void Dic::vAddWord(Word* pWord)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get dictionary kind                                                        */
+/* get dictionary kind (enum)                                                 */
 /*----------------------------------------------------------------------------*/
-Word* Dic::pDicKind(void)
+eDK Dic::eDicKind(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
-  
-  return m_pDicKind;
+
+  return m_eDicKind;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -88,20 +124,17 @@ Stz* Dic::szDicKind(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  if (m_pDicKind)
-    return m_pDicKind->szWordNm();
-  else
-    return "none"_Stz;
+  return aDK[m_eDicKind];
 }
 
 /*----------------------------------------------------------------------------*/
 /* set dictionary kind                                                        */
 /*----------------------------------------------------------------------------*/
-void Dic::vDicKind(Word* pDicKind)
+void Dic::vDicKind(eDK eDicKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
-  
-  m_pDicKind = pDicKind;
+
+  m_eDicKind = eDicKind;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -162,6 +195,110 @@ void Dic::vDump(eCN eClass, Object* pObject, Stz* szTab)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump dictionary                                                            */
+/*----------------------------------------------------------------------------*/
+void Dic::vTree(Dic* pDic, i8 iTabs)
+{
+  vTrace("%sD:%s %s\n"_Stz, Stz::szTab(iTabs),
+         pDic->m_sDicNm.azChar(),
+         aDK[pDic->m_eDicKind]->azChar());
+
+  Word* pWord = nullptr;
+  pWord = pDic->pEachWord(pWord);
+
+  while ( pWord )
+  {
+    vTrace("%sW%d:%s %s  %s\n"_Stz, Stz::szTab(iTabs),
+           pWord->bGetPersistent(),
+           pWord->szWordNm(),
+           aWC[pWord->eCategoryEnum()]->azChar(),
+           pWord->m_pObject ? aCN[pWord->m_pObject->eGetClassNo()]->azChar() : "");
+
+    if(pWord->m_pObject && pWord->m_pObject->eGetClassNo() == CN_DIC)
+    {
+      Dic* pSubDic = _pDic(pWord->m_pObject);
+      Dic::vTree(pSubDic, iTabs+1);
+    }
+
+    pWord = pDic->pEachWord(pWord);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* set SkipList compare function pointer                                      */
+/*----------------------------------------------------------------------------*/
+void Dic::vDicCompareFp(Dic* pDic)
+{
+  _static_
+
+  pDic->m_pWordSkipList->m_fpCompare = bWordCompare;
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert Dictionary Kind to Word Category                                   */
+/*----------------------------------------------------------------------------*/
+eWC Dic::eDKToWC(eDK eDicKind)
+{
+  _static_
+
+  switch(eDicKind)
+  {
+    case DK_NONE:
+      return WC_NONE;
+
+    case DK_CATALOG:
+      return WC_CATALOG;
+
+    case DK_FOLDER:
+      return WC_FOLDER;
+
+    case DK_SCHEMA:
+      return WC_SCHEMA;
+
+    case DK_TABLE:
+      return WC_TABLE;
+
+    case DK_TENANT:
+      return WC_TENANT;
+
+    default:
+      return WC_NONE;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert Word Category to Dictionary Kind                                   */
+/*----------------------------------------------------------------------------*/
+eDK Dic::eWCToDK(eWC eWordCtg)
+{
+  _static_
+
+  switch(eWordCtg)
+  {
+    case WC_NONE:
+      return DK_NONE;
+
+    case WC_CATALOG:
+      return DK_CATALOG;
+
+    case WC_FOLDER:
+      return DK_FOLDER;
+
+    case WC_SCHEMA:
+      return DK_SCHEMA;
+
+    case WC_TABLE:
+      return DK_TABLE;
+
+    case WC_TENANT:
+      return DK_TENANT;
+
+    default:
+      return DK_NONE;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* progressively return each word                                             */
 /*----------------------------------------------------------------------------*/
 Word* Dic::pEachWord(Word* pPrior)
@@ -178,26 +315,25 @@ Word* Dic::pEachWord(Word* pPrior)
 }
 
 /*----------------------------------------------------------------------------*/
-/* progressively return each word which is of given kind                      */
+/* progressively return each word which is of given word category             */
 /*----------------------------------------------------------------------------*/
-Word* Dic::pEachWord(Word* pPrior, Word* pCategory)
+Word* Dic::pEachWordWc(Word* pPrior, eWC eCategory)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
-  
+
   m_okLock.vGrabRead();
-  
+
   Word* pNextWord = pPrior ? pPrior->pNextWord() : pFirstWord();
 
   for ( ; pNextWord; pNextWord = pNextWord->pNextWord()) {
-    
-    if (pNextWord->pCategory() == pCategory) {
+    if (pNextWord->eCategoryEnum() == eCategory) {
       m_okLock.vDropRead();
       return pNextWord;
     }
   }
-  
+
   m_okLock.vDropRead();
-  
+
   return nullptr;
 }
 
@@ -330,9 +466,7 @@ bool Dic::bIsCatalog(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  Word* pKind = pDicKind();
-  
-  if (pKind && pKind->szWordNm()->bSame("\\catalog"_Stz))
+  if (m_eDicKind == DK_CATALOG)
     return true;
   
   return false;
@@ -345,9 +479,7 @@ bool Dic::bIsFolder(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  Word* pKind = pDicKind();
-  
-  if (pKind && pKind->szWordNm()->bSame("\\folder"_Stz))
+  if (m_eDicKind == DK_FOLDER)
     return true;
   
   return false;
@@ -371,10 +503,8 @@ bool Dic::bIsName(Stz* szDicNm)
 bool Dic::bIsSchema(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
-  
-  Word* pKind = pDicKind();
-  
-  if (pKind && pKind->szWordNm()->bSame("\\schema"_Stz))
+
+  if (m_eDicKind == DK_SCHEMA)
     return true;
   
   return false;
@@ -397,9 +527,7 @@ bool Dic::bIsTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  Word* pKind = pDicKind();
-  
-  if (pKind && pKind->szWordNm()->bSame("\\table"_Stz))
+  if (m_eDicKind == DK_TABLE)
     return true;
   
   return false;
@@ -412,9 +540,7 @@ bool Dic::bIsTenant(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  Word* pKind = pDicKind();
-  
-  if (pKind && pKind->szWordNm()->bSame("\\tenant"_Stz))
+  if (m_eDicKind == DK_TENANT)
     return true;
   
   return false;
@@ -452,13 +578,11 @@ void Dic::vListWords(i8 i_Depth, bool bListContents)
   m_okLock.vGrabRead();
   
   for (Word* pWord = pFirstWord(); pWord; pWord = pWord->pNextWord()) {
-    
-    Word* pCategory = pWord->pCategory();
 
     vTrace("%s: %s %s\n"_Stz,
            Stz::szTab(i_Depth),
            pWord->szWordNm(),
-           pCategory ? pCategory->szWordNm() : "n/a"_Stz);
+           aWC[pWord->eCategoryEnum()]->azChar());
     
     if (bListContents) {
       Object* pObject = pWord->pObject();

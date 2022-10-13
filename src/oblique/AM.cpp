@@ -132,6 +132,7 @@ extern CmdLineArgs   gxCmdLineArgs;
 extern AttachMap*    gpAttachMap;
 extern BufferPool*   gpBufferPool;
 extern File*         gpTraceFile;
+extern i8            giTraceFileSize;
 extern Header*       gaSeShmRegion;
 extern Index*        gpReadApiIndex;
 
@@ -2335,7 +2336,7 @@ void AM::SE::vWhereAmI(void)
 {
   _static_
 
-  printf("AM::SE::vWhereAmI()\n");
+  vTrace("AM::SE::vWhereAmI()\n"_Stz);
 
   HeadsUp oHeadsUp((Stz*)__func__);
 
@@ -3395,22 +3396,20 @@ void AM::WORD::vListContents(Word* pWord, i8 i_Depth)
 {
   _static_
   
-  Word* pKind = nullptr;
+  eDK eKind = DK_NONE;
   
   Object* pObject = pWord->pObject();
   if (! pObject)
     return;
-  
-  Word* pCategory = pWord->pCategory();
 
   if (CN_DIC == pObject->eGetClassNo())
-    pKind = ((Dic*)pObject)->pDicKind();
+    eKind = ((Dic*)pObject)->eDicKind();
   
   vTrace("%s%s %s %s\n"_Stz,
          Stz::szTab(i_Depth),
          pWord->szWordNm(),
-         pCategory ? pCategory->szWordNm() : "n/a"_Stz,
-         pKind ? pKind->szWordNm() : "n/a"_Stz
+         aWC[pWord->eCategoryEnum()]->azChar(),
+         aDK[eKind]->azChar()
          );
 
   if (CN_DIC == pObject->eGetClassNo())
@@ -4080,52 +4079,40 @@ void AM::vWriteTrace_vargs(Stz* aFormat, va_list xArgs)
   
   // produce formatted line
   vsnprintf(caFormatted,sizeof(caFormatted) - 3,aFormat->azChar(),xArgs);
-  
+
   // print formatted line
   fprintf(stdout,"%s%s",bLowMem ? "LOW-MEMORY! " : "",caFormatted);
   fflush(stdout);
-  
-  if (gpTraceFile) {
-    gpTraceFile->vSeekEnd();
-    gpTraceFile->vPrint("%s%s"_Stz,bLowMem ? "LOW-MEMORY! " : "",caFormatted);
-    gpTraceFile->vFlush();
-  }
-  
-  StrLib::vStrip(caFormatted,'\n');
-    
-  if (bUseLock)
-    gpAttachMap->vTraceLockDrop();
-}
 
-/*----------------------------------------------------------------------------*/
-/* write to trace file etc                                                    */
-/*----------------------------------------------------------------------------*/
-void AM::vWriteTrace_vargs(File* pFile, Stz* aFormat, va_list xArgs)
-{
-  static char caFormatted[C_1MB] = {'\0'};
-  
-  bool bUseLock = (gpAttachMap ? true : false);
-  bool bLowMem  = AM::MEMORY::bIsRunningLow();
-  
-  if (bUseLock)
-    gpAttachMap->vTraceLockGrab();
-
-  // produce formatted line
-  vsnprintf(caFormatted,sizeof(caFormatted) - 3,aFormat->azChar(),xArgs);
-  
-  // print formatted line
-  fprintf(stdout,"%s%s",bLowMem ? "LOW-MEMORY! " : "",caFormatted);
-  fflush(stdout);
-  
   if (gpTraceFile) {
+    static i8 iBootOptions = 0;
+
+    if( ! iBootOptions )
+      iBootOptions = Engine::eDecodeCommandLine();
+
+    Now spNow;
+
+    // Roll over trace file only if we are SE main
+    if(iBootOptions == BO_START || iBootOptions == BO_START_PROMPT) {
+      // Calculate length of message
+      // Note: the 15 bits at the end is for low memory message that may be added
+      // Save the size of the file instead of syscall for size
+      i8 iMaxLen = giTraceFileSize + strlen(spNow.sz()->azChar()) + strlen(caFormatted) + 15;
+
+      // If the message exceeds the max length of the trace file, roll over
+      if( iMaxLen > C_MAX_LOG_ENTRIES ) {
+        Engine::vRollTrace();
+      }
+    }
+
     gpTraceFile->vSeekEnd();
-    gpTraceFile->vPrint("%s%s"_Stz,bLowMem ? "LOW-MEMORY! " : "",caFormatted);
+    // Note: If this msg format is updated, ensure the max len of the msg is updated in the above
+    // Where we calculate the max msg length
+    i8 nWritten = gpTraceFile->iPrint("[%s] %s%s"_Stz,spNow.sz(),bLowMem ? "LOW-MEMORY! " : "",caFormatted);
     gpTraceFile->vFlush();
-  }
-  
-  if (pFile) {
-    pFile->vPrint("%s"_Stz,caFormatted);
-    pFile->vFlush();
+
+    if(nWritten > 0)
+      giTraceFileSize = giTraceFileSize + nWritten;
   }
   
   StrLib::vStrip(caFormatted,'\n');
@@ -4557,13 +4544,13 @@ InternalTables* AM::pInternalTables(void) {
 
 void AM::vPrintGlobals(void)
 {
-  printf("gxCmdLineArgs     @%p\n",&gxCmdLineArgs);
-  printf("\n");
+  vTrace("gxCmdLineArgs     @%p\n"_Stz,&gxCmdLineArgs);
+  vTrace("\n"_Stz);
 
-  printf("gpAttachMap     @%p : %p\n",&gpAttachMap,  gpAttachMap);
-  printf("gpBufferPool    @%p : %p\n",&gpBufferPool, gpBufferPool);
-  printf("gaSeShmRegion   @%p : %p\n",&gaSeShmRegion,gaSeShmRegion);
-  printf("gpTraceFile     @%p : %p\n",&gpTraceFile,  gpTraceFile);
+  vTrace("gpAttachMap     @%p : %p\n"_Stz,&gpAttachMap,  gpAttachMap);
+  vTrace("gpBufferPool    @%p : %p\n"_Stz,&gpBufferPool, gpBufferPool);
+  vTrace("gaSeShmRegion   @%p : %p\n"_Stz,&gaSeShmRegion,gaSeShmRegion);
+  vTrace("gpTraceFile     @%p : %p\n"_Stz,&gpTraceFile,  gpTraceFile);
 }
 
 Index* AM::pReadApiIndex(void) { return gpReadApiIndex; }

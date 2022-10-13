@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 void Cue::vGetInput(Stz* szPrompt, String* pString)
 {
-  printf("%s",(char*)szPrompt);
+  vTrace("%s"_Stz,(char*)szPrompt);
   
   //fgets(pString->azStr(),(i4)pString->nLength(),stdin);
   
@@ -37,7 +37,7 @@ void Cue::vGetReturn(void)
 /*----------------------------------------------------------------------------*/
 void Cue::vGetReturn(Stz* szPrompt)
 {
-  printf("%s",(char*)szPrompt);
+  vTrace("%s"_Stz,(char*)szPrompt);
   
   s256 sIn;
   fgets(sIn.azChar(),128,stdin);

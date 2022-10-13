@@ -746,7 +746,7 @@ void StrLib::vDump(const char* s, i8 nMax, const char* pSuffix)
   
   *z = '\0';
   
-  printf("%s",caString);
+  vTrace("%s"_Stz,caString);
 }
 
 /*----------------------------------------------------------------------------*/

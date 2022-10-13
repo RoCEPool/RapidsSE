@@ -16,7 +16,7 @@ fi
 # Variable that can be tested to see if we have already sourced this file
 readonly __COMMON_FN=1
 
-#shellcheck disable=2034
+#shellcheck disable=SC2034
 readonly VERSION_FILE="version"
 readonly CONFIG_DEFAULT_VERSION="3"
 
@@ -59,7 +59,7 @@ declare -ra NODE_CFG_MANDATORY_KEYS=( \
   "${NODE_CFG_MEM_KEY}" \
 )
 
-#shellcheck disable=2034
+#shellcheck disable=SC2034
 declare -ra NODE_CFG_ALL_KEYS=( \
   "${NODE_CFG_MANDATORY_KEYS[@]}" \
   "${NODE_CFG_PARAMS_KEY}" \
@@ -325,7 +325,7 @@ function loadClusterConfig() {
     errorExit "Cluster configuration file not found: ${CONFIG_FILE}"
   fi
 
-  #shellcheck disable=1090
+  #shellcheck disable=SC1090
   source "${CONFIG_FILE}" || errorExit "Error sourcing cluster config file: ${CONFIG_FILE}"
 
   # Now check that the configuration is valid.
@@ -423,7 +423,7 @@ function loadNodeName() {
     errorExit "Node name file not found: ${NAME_FILE}"
   fi
 
-  #shellcheck disable=1090
+  #shellcheck disable=SC1090
   source "${NAME_FILE}" || errorExit "Error sourcing node name file: ${NAME_FILE}"
 
   if [ -z "${CURRENT_NODE_NAME:-}" ]; then
@@ -904,7 +904,7 @@ function nodeCfgSetValue() {
   escapedVal="$(escapeDoubleQuotes "${value}")"
 
   # Here be dragons
-  #shellcheck disable=2140
+  #shellcheck disable=SC2140
   eval "${NODE_CFG_PREFIX}${nodeName}"["${key}"]="\"${escapedVal}\""
 
   # We need to include escaped quotes around $value because it may contain strings

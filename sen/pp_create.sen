@@ -114,6 +114,7 @@
   STD_PATH_TAG
   "
   procedure create table
+    tags <persistentTx>
     parameters $tableNm $etc
   begin
 

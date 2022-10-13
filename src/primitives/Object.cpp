@@ -112,8 +112,15 @@ Object* Object::pMemoryCopy(void)
   eCN eClass = this->eGetClassNo();
   i8 nSize   = gxaSizeHeap[eClass].m_nClassSize;
 
+  // Note: When copying a proper object over to an allocated object,
+  // the persistent bit in the header isn't initialized as it is part
+  // of allocate(). Hence, it needs to be saved, and re added to the
+  // copied object.
+
   Object* pCopy = (Operand*)Heaps::pAllocate(eClass);
+  bool bPersistent = pCopy->bGetPersistent();
   MemLib::vCopy(pCopy,this,nSize,eClass);
+  pCopy->vSetPersistent(bPersistent);
 
   //TODO: If Object derives from DataBuffer, we should not overwrite DataBuffer's members
   // when we do a memcpy. Below code extracts the buffer no from the pool buffer that

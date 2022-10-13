@@ -104,6 +104,25 @@ rows:
   (false)
 
 //------------------------------------------------------------------------------
+select dec_col6 from datums where dec_col6 != null;
+rows: 0
+
+select dec_col6 from datums where dec_col6 = null;
+rows: 0
+
+select dec_col6 from datums where dec_col6 > null;
+rows: 0
+
+select dec_col6 from datums where dec_col6 >= null;
+rows: 0
+
+select dec_col6 from datums where dec_col6 < null;
+rows: 0
+
+select dec_col6 from datums where dec_col6 <= null;
+rows: 0
+
+//------------------------------------------------------------------------------
 select dec_col6 from datums order by dec_col6;
 rows:
   (null)
