@@ -95,6 +95,8 @@ void Transformer::vTransform3(void)
 
   vTrace("Transformer running vTransform2\n"_Stz);
 
+  m_pTransforms->vExpandedForm();
+
   vPhase_1_ReducePipeline();
 
   vPhase_2_TableAnalysis();
@@ -123,6 +125,8 @@ void Transformer::vPhase_1_ReducePipeline(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
+  m_pTransforms->vPhase((Stz*)__func__);
+
   m_pTransforms->vDeleteAll_Duplicate_stage();
 
   m_pTransforms->vDeleteAll_absJoin();
@@ -140,6 +144,8 @@ void Transformer::vPhase_1_ReducePipeline(void)
 void Transformer::vPhase_2_TableAnalysis(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
+
+  m_pTransforms->vPhase((Stz*)__func__);
 
   // add <tableSyn> to all <table>
   m_pTransforms->vCalc_tableSyn_ForAll_table();
@@ -160,6 +166,8 @@ void Transformer::vPhase_2_TableAnalysis(void)
 void Transformer::vPhase_3_WherePredicates(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
+
+  m_pTransforms->vPhase((Stz*)__func__);
 
   // convert all <filter>/<calc> to <filter>/<calcBool>
   m_pTransforms->vConvertAll_where_calc_To_where_calcBool();
@@ -185,6 +193,8 @@ void Transformer::vPhase_4_InitialJoin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
+  m_pTransforms->vPhase((Stz*)__func__);
+
   m_pTransforms->vAddNew_indexJoin_UnderAllJoinable_table();
   m_pTransforms->vConvertAll_idxCol_name_To_idxCol_ord();
   m_pTransforms->vAddNew_joinPred_UnderAll_indexJoin();
@@ -203,6 +213,8 @@ void Transformer::vPhase_4_InitialJoin(void)
 void Transformer::wPhase_5_JoinOrdering(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
+
+  m_pTransforms->vPhase((Stz*)__func__);
 
   /*
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -241,6 +253,8 @@ void Transformer::wPhase_6_IndexScan(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
+  m_pTransforms->vPhase((Stz*)__func__);
+
   /*
  *
  *    <scan>       <scan>
@@ -269,6 +283,8 @@ void Transformer::wPhase_7_StreamOrdering(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
+  m_pTransforms->vPhase((Stz*)__func__);
+
   m_pTransforms->vCull_sby_SameAs_gby();
 }
 
@@ -278,6 +294,8 @@ void Transformer::wPhase_7_StreamOrdering(void)
 void Transformer::wPhase_8_FilterRefinement(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
+
+  m_pTransforms->vPhase((Stz*)__func__);
 
   m_pTransforms->vIndividuate_filter();
 }
@@ -289,9 +307,11 @@ void Transformer::vPhase_Z_RestatePipeline(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
+  m_pTransforms->vPhase((Stz*)__func__);
+
   m_pTransforms->vReinstate_stages();
 
- m_pTransforms->vReinstate_combined();
+  m_pTransforms->vReinstate_combined();
 }
 
 /*============================================================================*/

@@ -13,6 +13,8 @@
 
 #include "Card_StreamCol.hpp"
 
+#include "TransformerTool.hpp"
+
 extern OptimiserCatalog gxOptimiserCatalog;
 
 /*----------------------------------------------------------------------------*/
@@ -195,7 +197,10 @@ void Board::vPinCards(Ribbon* pRibbon, Stz* szTransformation, Stz* szExplain)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vPrintBoard(Stz* szCue, Stz* szExplain, Stz* szShort)
+void Board::vPrintBoard(Stz* szPhase,
+                        Stz* szTransformation,
+                        Stz* szExplain,
+                        Stz* szShort)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
@@ -217,7 +222,7 @@ void Board::vPrintBoard(Stz* szCue, Stz* szExplain, Stz* szShort)
 
   Ribbon* pRibbon = new Ribbon(m_pOptimiser->pCardCtl(),this,0);
 
-  vPinCards(pRibbon,szCue,szExplain);
+  vPinCards(pRibbon, szTransformation, szExplain);
 
   pRibbon->vPrintRibbon();
 
@@ -230,13 +235,13 @@ void Board::vPrintBoard(Stz* szCue, Stz* szExplain, Stz* szShort)
 
   if (! bCue)
     return;
-  if (! szCue)
+  if (! szTransformation)
     return;
 
   if (! m_bBeenCued && AM::JOB::bHasTag("<cue>"_Stz)) {
     Stz* szTagCue = AM::JOB::szTagValue("<cue>"_Stz);
-    if (! szTagCue->bSame(szCue)) {
-      printf("Transformation %s\n",(char*)szCue);
+    if (! szTagCue->bSame(szTransformation)) {
+      printf("Transformation %s\n",(char*)szTransformation);
       return;
     }
   }
@@ -249,7 +254,8 @@ void Board::vPrintBoard(Stz* szCue, Stz* szExplain, Stz* szShort)
 
   s256 sPrompt;
 
-  sPrompt.vSprint("Transformation %s >> "_Stz,szCue);
+  sPrompt.vSprint("%s :: %s >> "_Stz,
+                  szPhase, szTransformation);
 
   s4K sInput;
   Cue::vGetInput(sPrompt,sInput);
@@ -313,7 +319,18 @@ L_Exit:
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vPrintBoard(TransformerTool* pTransformerTool)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
+  vPrintBoard(pTransformerTool->szPhase(),
+              pTransformerTool->szTransformation(),
+              pTransformerTool->szExplain(),
+              pTransformerTool->szShort());
+}
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
 //~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ //

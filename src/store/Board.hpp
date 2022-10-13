@@ -115,6 +115,7 @@ namespace STORE
   class Dissector;
   class Drafter;
   class Optimiser;
+  class TransformerTool;
   class Weaver;
 
   class Board : public Object
@@ -146,9 +147,16 @@ namespace STORE
 
     void vDuplicateBoard(Board* pBoard_arg);
 
-    void vPinCards(Ribbon* pRibbon, Stz* szTransformation=nullptr, Stz* szExplain=nullptr);
+    void vPinCards(Ribbon* pRibbon,
+                   Stz* szTransformation=nullptr,
+                   Stz* szExplain=nullptr);
   
-    void vPrintBoard(Stz* szCue=nullptr, Stz* szExplain=nullptr, Stz* szShort=nullptr);
+    void vPrintBoard(Stz* szPhase=nullptr,
+                     Stz* szTransformation=nullptr,
+                     Stz* szExplain=nullptr,
+                     Stz* szShort=nullptr);
+
+    void vPrintBoard(TransformerTool* pTransformerTool);
 
   private:
       Footer* aFooter(void);

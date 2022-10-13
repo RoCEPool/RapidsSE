@@ -169,6 +169,16 @@ void TransformerTool::vEndTransformation(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get explain                                                                */
+/*----------------------------------------------------------------------------*/
+Stz* TransformerTool::szExplain(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  return m_sExplain;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set explain                                                                */
 /*----------------------------------------------------------------------------*/
 void TransformerTool::vExplain(Stz* szExplain)
@@ -176,6 +186,26 @@ void TransformerTool::vExplain(Stz* szExplain)
   _precondition_(_ADDRESS_, _MAGIC_);
 
   m_sExplain = szExplain;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get phase                                                                  */
+/*----------------------------------------------------------------------------*/
+Stz* TransformerTool::szPhase(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  return m_sPhase;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::vPhase(Stz* szPhase)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  m_sPhase = szPhase;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -187,9 +217,11 @@ void TransformerTool::vPrintBoard(void)
 
   if (m_bPrintTransformation) {
     if (m_bInteractive)
-      m_pBoard->vPrintBoard(m_sTranformation.szStz(),
-                            m_sExplain,
-                            m_sShort);
+//      m_pBoard->vPrintBoard(m_sPhase,
+//                            m_sTranformation.szStz(),
+//                            m_sExplain,
+//                            m_sShort);
+      m_pBoard->vPrintBoard(this);
   }
   else {
     vTrace("SILENT : %s\n"_Stz,m_sTranformation.szStz());
@@ -224,13 +256,33 @@ void TransformerTool::vSetPrintSubCards(eCK eCard, bool bPrintSubCards)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set explain                                                                */
+/* get short                                                                  */
+/*----------------------------------------------------------------------------*/
+Stz* TransformerTool::szShort(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  return m_sShort;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set short                                                                  */
 /*----------------------------------------------------------------------------*/
 void TransformerTool::vShort(Stz* szShort)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
   m_sShort = szShort;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get transformation                                                         */
+/*----------------------------------------------------------------------------*/
+Stz* TransformerTool::szTransformation(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  return m_sTranformation;
 }
 
 /*----------------------------------------------------------------------------*/

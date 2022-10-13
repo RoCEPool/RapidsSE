@@ -274,9 +274,6 @@ void Optimiser::vTransform(void)
 
   Board* pBoard = m_pBench->pHead();
 
-  if (bInteractive)
-    pBoard->vPrintBoard();
-
   m_pTransformer->vTransform();
 
    if (bInteractive) {
