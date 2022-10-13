@@ -20,7 +20,7 @@ namespace STORE
     Card* pCard(void);
     void vCard(Card* pCard);
 
-    void vCardPtrPrint(Ribbon* pRibbon, i8 iDepth);
+    void vCardPtrPrint(Ribbon* pRibbon, i8 iDepth, Card* pParent);
   };
 
   Card_CardPtr* _pCard_CardPtr(void* aAddr);

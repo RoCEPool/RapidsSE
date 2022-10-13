@@ -214,16 +214,16 @@ namespace STORE
     void vMark2(char cMark2);
     void vMoveToLastChild(Card* pChildCard);
 
-    void vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth, bool& rbPrune);
-    void vPrintCard_byCustomNm(Ribbon* pRibbon, i8 iDepth, Stz* szCustomNm);
-    void vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth);
-    void vPrintCard_bySettings(Ribbon* pRibbon, i8 iDepth);
-    void vPrintChildrenShort(Ribbon* pRibbon, i8 iDepth);
+    void vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth, Card* pParent, bool& rbPrune);
+    void vPrintCard_byCustomNm(Ribbon* pRibbon, i8 iDepth, Card* pParent, Stz* szCustomNm);
+    void vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth, Card* pParent);
+    void vPrintCard_bySettings(Ribbon* pRibbon, i8 iDepth, Card* pParent);
+    void vPrintChildrenShort(Ribbon* pRibbon, i8 iDepth, Card* pParent);
     void vPrintHeader(Ribbon* pRibbon);
-    void vPrintName(Ribbon* pRibbon, i8 iDepth, Stz* szCustomName=nullptr);
-    void vPrintNameValue(Ribbon* pRibbon, i8 iDepth);
-    void vPrintProperties(Ribbon* pRibbon, i8 iDepth);
-    void vPrintValue(Ribbon* pRibbon, i8 iDepth);
+    void vPrintName(Ribbon* pRibbon, i8 iDepth, Card* pParent, Stz* szCustomName=nullptr);
+    void vPrintNameValue(Ribbon* pRibbon, i8 iDepth, Card* pParent);
+    void vPrintProperties(Ribbon* pRibbon, i8 iDepth, Card* pParent);
+    void vPrintValue(Ribbon* pRibbon, i8 iDepth, Card* pParent);
     i8   nProperties(void);
     eTN  eProperty(i8 i_Property);
     TagSet* pProperties(void);

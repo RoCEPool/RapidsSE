@@ -126,25 +126,6 @@ void Board::vPinCards(Ribbon* pRibbon,
     return;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-//  pRibbon->vSprint("\n[Board: %s %s] Query=%s Transformation=%s"_Stz,
-//                   aBK[m_eBoard],
-//                   aBT[m_eBoardType],
-//                   m_pOptimiser->szQueryNm(),
-//                   szTransformation ? szTransformation : ""_Stz
-//                   );
-//  if (szExplain && *szDescription->azChar()) {
-//    pRibbon->vSprint("Explanation: %s"_Stz, szDescription);
-//    pRibbon->vTitleLines(2);
-//  }
-//  if (szExplain && *szDescription->azChar()) {
-//    pRibbon->vSprint("Explanation: %s"_Stz, szDescription);
-//    pRibbon->vTitleLines(2);
-//  }
-//
-//  else {
-//    pRibbon->vTitleLines(1);
-//  }
 
   pRibbon->vSprint("[%02lld Board: %s %s Query=%s] %s"_Stz,
                    iPrintNo,
@@ -188,7 +169,7 @@ void Board::vPinCards(Ribbon* pRibbon,
       pSubRibbon->vNextColumn();
 
     bool bPrune = false;
-    pCard->vPrintCardRecursive(pSubRibbon, 0, bPrune);
+    pCard->vPrintCardRecursive(pSubRibbon, 0, m_pCard_Deck, bPrune);
   }
      
   pRibbon->vPinRibbon(pRibbon->nTitleLines(),0,pSubRibbon);

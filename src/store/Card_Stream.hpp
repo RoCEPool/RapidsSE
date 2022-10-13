@@ -31,7 +31,7 @@ namespace STORE
     void vOrdinate(String* psOrdinal, Stz* szOrdinal);
 
     i8 nStreamCols(void);
-    void vStreamPrint(Ribbon* pRibbon, i8 iDepth);
+    void vStreamPrint(Ribbon* pRibbon, i8 iDepth, Card* pParent);
 
    };
 

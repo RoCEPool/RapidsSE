@@ -193,7 +193,7 @@ void Card_Stream::vOrdinate(String* psOrdinal, Stz* szOrdinal)
 /*----------------------------------------------------------------------------*/
 /* get number of stream columns                                               */
 /*----------------------------------------------------------------------------*/
-void Card_Stream::vStreamPrint(Ribbon* pRibbon, i8 iDepth)
+void Card_Stream::vStreamPrint(Ribbon* pRibbon, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -204,7 +204,7 @@ void Card_Stream::vStreamPrint(Ribbon* pRibbon, i8 iDepth)
     sName.vCatSprint(" $%lld,%lld"_Stz,
                      Y_iVal(P_OrdLo), Y_iVal(P_OrdHi));
 
-  vPrintCard_byCustomNm(pRibbon, iDepth, sName);
+  vPrintCard_byCustomNm(pRibbon, iDepth, pParent, sName);
 }
 
 /*----------------------------------------------------------------------------*/

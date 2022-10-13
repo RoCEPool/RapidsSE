@@ -18,7 +18,7 @@ namespace STORE
    ~Card_Table(void) noexcept(false);
 
     Card_TablePtr* pGet_tablePtr(void);
-    void vTablePrint(Ribbon* pRibbon, i8 iDepth);
+    void vTablePrint(Ribbon* pRibbon, i8 iDepth, Card* pParent);
   };
 
   Card_Table* _pCard_Table(void* aAddr);
