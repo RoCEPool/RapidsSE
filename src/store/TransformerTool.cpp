@@ -51,14 +51,15 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_p_aggreg           = nullptr;
   m_p_calc             = nullptr;
   m_p_calcBool         = nullptr;
+  m_p_cmpPred          = nullptr;
   m_p_combined         = nullptr;
+  m_p_comment          = nullptr;
   m_p_coPtnJoin        = nullptr;
   m_p_coPtnJoinList    = nullptr;
   m_p_coPtnPred        = nullptr;
   m_p_coPtnPredList    = nullptr;
   m_p_crossPtnJoin     = nullptr;
   m_p_crossPtnJoinList = nullptr;
-  m_p_comment          = nullptr;
   m_p_expr             = nullptr;
   m_p_filter           = nullptr;
   m_p_gbyElist         = nullptr;
@@ -74,7 +75,6 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_p_lBound           = nullptr;
   m_p_permutation      = nullptr;
   m_p_permutation_low  = nullptr;
-  m_p_predCmp          = nullptr;
   m_p_project          = nullptr;
   m_p_ptndJoin         = nullptr;
   m_p_ptndJoinSet      = nullptr;
@@ -448,7 +448,7 @@ Card* TransformerTool::G_pGetMember(eCK eMember)
     case CK_JOINPREDLIST:     return m_p_joinPredList;
     case CK_LBOUND:           return m_p_lBound;
     case CK_PERMUTATION:      return m_p_permutation;
-    case CK_CMPPRED:          return m_p_predCmp;
+    case CK_CMPPRED:          return m_p_cmpPred;
     case CK_PROJECT:          return m_p_project;
     case CK_PTNDJOIN:         return m_p_ptndJoin;
     case CK_PTNDJOINSET:      return m_p_ptndJoinSet;
@@ -537,7 +537,7 @@ void TransformerTool::U_vSetMember(eCK eCard, Card* pCard)
     case CK_JOINPREDLIST:     *((Card**)&m_p_joinPredList)     = pCard; break;
     case CK_LBOUND:           *((Card**)&m_p_lBound)           = pCard; break;
     case CK_PERMUTATION:      *((Card**)&m_p_permutation)      = pCard; break;
-    case CK_CMPPRED:          *((Card**)&m_p_predCmp)          = pCard; break;
+    case CK_CMPPRED:          *((Card**)&m_p_cmpPred)          = pCard; break;
     case CK_PROJECT:          *((Card**)&m_p_project)          = pCard; break;
     case CK_PTNDJOIN:         *((Card**)&m_p_ptndJoin)         = pCard; break;
     case CK_PTNDJOINSET:      *((Card**)&m_p_ptndJoinSet)      = pCard; break;

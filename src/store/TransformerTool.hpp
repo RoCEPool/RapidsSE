@@ -54,6 +54,7 @@ namespace STORE
     Card_Aggreg*           m_p_aggreg;
     Card_Calc*             m_p_calc;
     Card_BoolCalc*         m_p_calcBool;
+    Card_CmpPred*          m_p_cmpPred;
     Card_Combined*         m_p_combined;
     Card_Comment*          m_p_comment;
     Card_CoPtnJoin*        m_p_coPtnJoin;
@@ -77,7 +78,6 @@ namespace STORE
     Card_LBound*           m_p_lBound;
     Card_Permutation*      m_p_permutation;
     Card_Permutation*      m_p_permutation_low;
-    Card_CmpPred*          m_p_predCmp;
     Card_Project*          m_p_project;
     Card_PtndJoin*         m_p_ptndJoin;
     Card_PtndJoinSet*      m_p_ptndJoinSet;

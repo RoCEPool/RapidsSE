@@ -504,14 +504,14 @@ void Transforms::vCompute_coPtnPredList(void)
 
   i8 nJoinPreds = m_p_joinPredList->nChildCards();
   for (i8 i_joinPred = 0; i_joinPred < nJoinPreds; i_joinPred++) {
-    m_p_predCmp =
+    m_p_cmpPred =
         _pCard_CmpPred(m_p_joinPredList->pGetChild(i_joinPred));
 
-    if (! m_p_tableList->bPredCmpIsCoPtn(m_p_predCmp))
+    if (! m_p_tableList->bPredCmpIsCoPtn(m_p_cmpPred))
       continue;
 
     m_p_coPtnPred = new Card_CoPtnPred;
-    m_p_coPtnPred->vAppend(m_p_predCmp->pDupCardAndSubCards());
+    m_p_coPtnPred->vAppend(m_p_cmpPred->pDupCardAndSubCards());
 
     m_p_coPtnPredList->vAppend(m_p_coPtnPred);
   }
@@ -549,14 +549,14 @@ void Transforms::vCompute_crossPtnJoinList(void)
 
   i8 nChildren = m_p_joinPredList->nChildCards();
   for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
-    m_p_predCmp =
+    m_p_cmpPred =
         _pCard_CmpPred(m_p_joinPredList->pGetChild(i_Child));
 
-    if (m_p_coPtnJoinList->bHasEqPredCmp(m_p_predCmp))
+    if (m_p_coPtnJoinList->bHasEqPredCmp(m_p_cmpPred))
       continue;
 
     m_p_crossPtnJoin = new Card_CrossPtnJoin;
-    m_p_crossPtnJoin->vAppend(m_p_predCmp->pDupCardAndSubCards());
+    m_p_crossPtnJoin->vAppend(m_p_cmpPred->pDupCardAndSubCards());
     m_p_crossPtnJoinList->vAppend(m_p_crossPtnJoin);
   }
 
@@ -1191,9 +1191,9 @@ void Transforms::vAddNew_joinPred_UnderAll_indexJoin(void)
       continue;
 
     m_p_calcBool = m_p_filter->pSub_boolCalc();
-    m_p_predCmp  = m_p_calcBool->pSub_predCmp();
-    m_p_term_0   = _pCard_Term(m_p_predCmp->pGetChild(0));
-    m_p_term_1   = _pCard_Term(m_p_predCmp->pGetChild(1));
+    m_p_cmpPred  = m_p_calcBool->pSub_predCmp();
+    m_p_term_0   = _pCard_Term(m_p_cmpPred->pGetChild(0));
+    m_p_term_1   = _pCard_Term(m_p_cmpPred->pGetChild(1));
 
     // - - - -
 
@@ -1232,8 +1232,8 @@ void Transforms::vAddNew_joinPred_UnderAll_indexJoin(void)
       NEVER_REACH
     }
 
-    m_p_predCmp->vMark1('^');
-    m_p_term = new Card_Term(m_p_predCmp->sz());
+    m_p_cmpPred->vMark1('^');
+    m_p_term = new Card_Term(m_p_cmpPred->sz());
     m_p_joinPred->vAppend(m_p_term);
   }
 
