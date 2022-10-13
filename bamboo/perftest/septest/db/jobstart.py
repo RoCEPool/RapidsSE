@@ -403,7 +403,7 @@ def __create_cluster_experiment_record(cur: typing.Union[psycopg.Cursor[typing.A
                 cluster_config.get_threads(),
                 cluster_config.get_shared_mem(),
                 cluster_config.get_params(),
-                True)
+                False)
 
         cur.execute(sql, data)
         row = cur.fetchone()
