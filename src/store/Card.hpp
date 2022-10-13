@@ -125,6 +125,8 @@ namespace STORE
              , public ChildCards
   {
   protected:
+    static i8 m__iSeqGen;
+
     char md_Bearing[256];
 
     eCK  m_eCard;
@@ -136,11 +138,11 @@ namespace STORE
 
     TagSet* m_pProperties;
 
-    i8   md__SeqNo;
-    i8   md__FirstDetected;
-    i8   md__LeakDetected;
+    Card* m_pLastPrintParent;
 
-    static i8 m__iSeqGen;
+    i8    md__SeqNo;
+    i8    md__FirstDetected;
+    i8    md__LeakDetected;
 
   protected:
     // must be last
@@ -201,6 +203,9 @@ namespace STORE
     bool bIsCard(eCK eCard);
     bool bIsValue(Stz* szValue);
 
+    Card* pLastPrintParent(void);
+    void vLastPrintParent(Card* pLastPrintParent);
+
     char cMark1(void);
     void vMark1(char cMark1);
     char cMark2(void);
@@ -208,22 +213,6 @@ namespace STORE
     void vMark2(i8 iMark2);
     void vMark2(char cMark2);
     void vMoveToLastChild(Card* pChildCard);
-
-    Stz* Y_szNm(i8 i_Property);
-    char Y_cVal(i8 i_Property);
-    char Y_cVal(Stz* szPpyNm);
-    i8   Y_iVal(i8 i_Property);
-    i8   Y_iVal(Stz* szPpyNm);
-    Object* Y_pVal(i8 i_Property);
-    Object* Y_pVal(Stz* szPptNm);
-    Stz* Y_szVal(i8 i_Property);
-    Stz* Y_szVal(Stz* szPptNm);
-
-    void Y_vSet(Stz* szPpyNm, char cPpyVal);
-    void Y_vSet(Stz* szPpyNm, i8 iPpyVal);
-    void Y_vSet(Stz* szPpyNm);
-    void Y_vSet(Stz* szPpyNm, Object* pPpyVal);
-    void Y_vSet(Stz* szPpyNm, Stz* szPpyVal);
 
     void vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth, bool& rbPrune);
     void vPrintCard_byCustomNm(Ribbon* pRibbon, i8 iDepth, Stz* szCustomNm);
@@ -247,6 +236,23 @@ namespace STORE
     void vValue(Stz* szValue);
     bool bValuesSameRecursive(Card* pCard_b, i8 iDepth= 0, bool bTestL0= false);
     void vVisitRecursive(eCK eCard, std::function<bool(Card* pCard)> bfApply);
+
+    Stz* Y_szNm(i8 i_Property);
+    char Y_cVal(i8 i_Property);
+    char Y_cVal(Stz* szPpyNm);
+    i8   Y_iVal(i8 i_Property);
+    i8   Y_iVal(Stz* szPpyNm);
+    Object* Y_pVal(i8 i_Property);
+    Object* Y_pVal(Stz* szPptNm);
+    Stz* Y_szVal(i8 i_Property);
+    Stz* Y_szVal(Stz* szPptNm);
+
+    void Y_vSet(Stz* szPpyNm, char cPpyVal);
+    void Y_vSet(Stz* szPpyNm, i8 iPpyVal);
+    void Y_vSet(Stz* szPpyNm);
+    void Y_vSet(Stz* szPpyNm, Object* pPpyVal);
+    void Y_vSet(Stz* szPpyNm, Stz* szPpyVal);
+
 
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
