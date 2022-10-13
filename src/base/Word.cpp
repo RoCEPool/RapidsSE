@@ -31,20 +31,22 @@ void* Word::operator new(size_t, Dic* pDic)
   return pWord;
 }
 
+// Note: Commented out the below function since it may clash with how we use
+// persistent flag with pAllocate() now.
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Word::operator new(size_t, Dic* pDic, bool bPersistent)
-{
-  RASSERT(bPersistent || ! bPersistent);
-  
-  Word* pWord = (Word*)(Heaps::pAllocate(CN_WORD,bPersistent));
-  
-  pWord->m_bPersistent = bPersistent;
-  pWord->m_pDic = pDic;
-  
-  return pWord;
-}
+//void* Word::operator new(size_t, Dic* pDic, bool bPersistent)
+//{
+//  RASSERT(bPersistent || ! bPersistent);
+//
+//  Word* pWord = (Word*)(Heaps::pAllocate(CN_WORD,bPersistent));
+//
+//  pWord->m_bPersistent = bPersistent;
+//  pWord->m_pDic = pDic;
+//
+//  return pWord;
+//}
 
 
 /*----------------------------------------------------------------------------*/
@@ -66,7 +68,7 @@ Word::Word(Stz* szWordNm)
 #endif
   
   m_pSkipNode  = nullptr;
-  
+
   m_sWordNm    = szWordNm;
   
   if (! m_sWordNm.bSame(szWordNm)) {
@@ -75,8 +77,9 @@ Word::Word(Stz* szWordNm)
   
   m_eWord      = WK_COLON;
 
+  m_eWordCategory = AM::pWordRoot() ? AM::pWordRoot()->eCategoryEnum() : WC_NONE;
+
   m_bBreakPt   = false;
-  m_pCategory  = AM::pWordRoot() ? AM::pWordRoot() : this;
   //m_pDic     = pDic;
   m_iEpoch     = AM::iEpoch();
   m_bImmediate = false;
@@ -86,7 +89,7 @@ Word::Word(Stz* szWordNm)
   //m_bPersistent   = false;
   m_iTrace     = 0;
   m_pWrdTagSet = nullptr;
-
+  m_bTableBit   = false;
   m_pCodeBlock  = nullptr; // new CodeBlock(this);
   m_aInxPtr     = nullptr; // aFirstCell();
 
@@ -190,23 +193,23 @@ void Word::vBreakPt(bool bBreakPt)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get word category                                                          */
+/* get word category enum                                                     */
 /*----------------------------------------------------------------------------*/
-Word* Word::pCategory(void)
+eWC Word::eCategoryEnum(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  return m_pCategory;
+
+  return m_eWordCategory;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set word category                                                          */
+/* set word category enum                                                     */
 /*----------------------------------------------------------------------------*/
-void Word::vCategory(Word* pCategory)
+void Word::vCategoryEnum(eWC eCategory)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  m_pCategory = pCategory;
+
+  m_eWordCategory = eCategory;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -224,13 +227,23 @@ void Word::vContentDump(void)
          m_sWordNm.azChar(),
          this,
          aWK[m_eWord]->azChar(),
-         m_pCategory->m_sWordNm.azChar(),
+         aWC[m_eWordCategory]->azChar(),
          m_bImmediate ? "immediate" : "not-immediate",
          m_pCodeBlock->nWspUsed(),
          m_fpIntrinsic,
          pStepWord ? pStepWord->szWordNm() : "<not-found>"_Stz,
          aFirstCell()
          );
+}
+
+/*----------------------------------------------------------------------------*/
+/* set dictionary (Used when loading persistent heaps from disk               */
+/*----------------------------------------------------------------------------*/
+void Word::vDic(Dic* pDic)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+
+  m_pDic = pDic;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -589,6 +602,26 @@ void Word::vResetCodeBlock(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
   m_pCodeBlock->vReset();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the SkipNode                                                           */
+/*----------------------------------------------------------------------------*/
+SkipNode* Word::pSkipNode(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+
+  return m_pSkipNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the table bit                                                          */
+/*----------------------------------------------------------------------------*/
+bool Word::bTableBit(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+
+  return m_bTableBit;
 }
 
 /*----------------------------------------------------------------------------*/

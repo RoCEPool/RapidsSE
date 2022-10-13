@@ -17,13 +17,19 @@
 /*----------------------------------------------------------------------------*/
 : nodeMon_StartMarker \handler
 
+  0 locals| bGridHealthy |
+
   "Node Monitor Demon Started" .boot
 
   begin
 
-    NodeMonitor::InspectGrid
-
-    10000 thread::sleepMsec
+    NodeMonitor::InspectGrid to bGridHealthy
+    bGridHealthy not if
+      false
+      exit
+    else
+      10000 thread::sleepMsec
+    then
 
   again
 

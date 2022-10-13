@@ -60,6 +60,7 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId, TagSet* 
   m_sJobNm   = szJobNm;
 
   m_pObjectTracker = nullptr;
+  m_bPersistentTx = false;
 
   // Before the entire Job is created, check the cmd tag set to see if objectTracker
   // tag is given, to enable object tracking in this job.
@@ -568,6 +569,17 @@ void Job::vEnableObjectTracker(void)
   if(!bObjectTracker()) {
     m_pObjectTracker = new ObjectTracker();
   }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* enable persistence for this job                                            */
+/*----------------------------------------------------------------------------*/
+void Job::vEnablePersistence(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_bPersistentTx = true;
 
 }
 
@@ -1375,6 +1387,16 @@ Job* Job::pParentJob(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* check if Job is a persistent transaction                                   */
+/*----------------------------------------------------------------------------*/
+bool Job::bPersistent(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_bPersistentTx;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get pipeline                                                               */
 /*----------------------------------------------------------------------------*/
 Pipeline* Job::pPipeline(void)
@@ -1490,6 +1512,8 @@ void Job::vPostRecv(void)
   m_okLock.vResetLock();
   m_okLock.vResetStats();
 
+  if(bHasTag(C_TAG_PERSISTENT))
+    vEnablePersistence();
   // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
   // originating job
   m_pExecuteJob  = nullptr;

@@ -21,7 +21,6 @@
     // new and pipe out (StreamDef)  DOES NOT SET StreamDefLft[]??
     Table[] StreamDefOut[].newFromTable
     StreamDefOut[].pipeOut
-
   then
 
   // find the __loadResult table def

@@ -531,7 +531,9 @@ void Step::vJobEnableAllocate(void)
 {
   ENTRY();
 
-  m_pJob->vSetAllocate(true);
+  Job* pJob = pOuterJobOfTask();
+
+  pJob->vSetAllocate(true);
 
   EXIT();
 }
@@ -543,7 +545,9 @@ void Step::vJobEnableObjectTracker(void)
 {
   ENTRY();
 
-  m_pJob->vEnableObjectTracker();
+  Job* pJob = pOuterJobOfTask();
+
+  pJob->vEnableObjectTracker();
 
   EXIT();
 }

@@ -221,7 +221,8 @@ bool BASE::bTraceWith(Stz* szWith)
 /*----------------------------------------------------------------------------*/
 void BASE::vTraceWith(void)
 {
-  vTrace("\nWith:\n"_Stz);
+  vTrace("\n"_Stz);
+  vTrace("With:\n"_Stz);
     
 #ifdef WITH_APPLE
   vTrace("  WITH_APPLE\n"_Stz);

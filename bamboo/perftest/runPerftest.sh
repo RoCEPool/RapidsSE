@@ -20,6 +20,7 @@ GIT_BRANCH="${bamboo_planRepository_branch}"
 # Plan variables (defined in Bamboo)
 JOB_FILE="${bamboo_jobFile}"
 ARCHIVE_METRICS="${bamboo_archiveMetrics}"
+TAGS="${bamboo_tags}"
 
 # Where results and archived files are written out
 RESULT_DIR="${DIR}/results"
@@ -59,6 +60,10 @@ if [ -n "${ARCHIVE_METRICS}" ] && [ "${ARCHIVE_METRICS}" -ne 0 ] && [ "${ARCHIVE
   PARAMS="${PARAMS} --archiveMetrics"
 fi
 
+# Tags are a space separated set of key=value pairs. These should be specified last.
+if [ -n "${TAGS}" ] && [ "${TAGS:-x}" != "x" ]; then
+  PARAMS="${PARAMS} --tags ${TAGS}"
+fi
 
 
 # Check the environment:

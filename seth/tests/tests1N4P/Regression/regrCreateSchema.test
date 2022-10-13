@@ -247,7 +247,7 @@ create table MANUFACTURER (
 );
 success
 
-create table RETURNS (
+create table RETURNITEMS (
   l_orderkey INTEGER NOT NULL,
   l_linenumber INTEGER NOT NULL,
   m_mfgkey INTEGER NOT NULL,
@@ -324,7 +324,7 @@ CLEANUP {
   drop table region;
   mute
   
-  drop table returns;
+  drop table returnitems;
   mute
 
   bye;

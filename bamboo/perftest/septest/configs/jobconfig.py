@@ -26,6 +26,7 @@ class JobConfig:
     """Encapsulates a job config file and hides how it is implemented and parsed."""
 
     C_SECTION = "job"
+    C_ISREGRESSION = "IsRegression"
     C_DURATION = "MaxDuration"
     C_CONTINUEONFAILURE = "ContinueOnTestFailure"
     C_HARDWARECONFIG = "HardwareConfigPath"
@@ -46,11 +47,16 @@ class JobConfig:
         if not self.parser.has_section(self.C_SECTION):
             raise ConfigurationError(f"Config file is missing the [{self.C_SECTION}] header: {path}")
 
+        is_regr = self.get_is_regression()
         duration = self.get_max_duration()
         continue_test_failure = self.get_continue_on_test_failure()
         hw_path_str = self.get_hardware_config_path()
         cluster_path_str = self.get_cluster_config_path()
         test_paths = self.get_test_paths()
+
+        if is_regr is None:
+            msg = f"Config file field {self.C_ISREGRESSION} must be set in file: {path}"
+            raise ConfigurationError(msg)
 
         if duration is None or duration <= 0:
             msg = f"Config file field {self.C_DURATION} must have a positive value in file: {path}"
@@ -76,6 +82,7 @@ class JobConfig:
 
     def __str__(self):
         s = f"<JobConfig>\n" \
+            f"  {self.C_ISREGRESSION} = {self.get_is_regression()}\n" \
             f"  {self.C_DURATION} = {self.get_max_duration()}\n" \
             f"  {self.C_CONTINUEONFAILURE} = {self.get_continue_on_test_failure()}\n" \
             f"  {self.C_TESTPATH}s = [\n    " + \
@@ -85,6 +92,9 @@ class JobConfig:
     def get_job_name(self) -> str:
         """Returns the name of the job file without the last extension"""
         return os.path.basename(self.path).rsplit(sep=".", maxsplit=1)[0]
+
+    def get_is_regression(self) -> bool:
+        return self.parser.getboolean(self.C_SECTION, self.C_ISREGRESSION)
 
     def get_max_duration(self) -> float:
         return self.parser.getfloat(self.C_SECTION, self.C_DURATION)

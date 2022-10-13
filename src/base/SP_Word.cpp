@@ -55,7 +55,7 @@ Stz* SP_Word::sz(Word* pWord)
                   ,pWord->pDic()->szDicNm()
                   ,pWord->szWordNm()
                   
-                  ,pWord->pCategory()->szWordNm()
+                  ,aWC[pWord->eCategoryEnum()]->azChar()
                   
                   ,pWord->bImmediate() ? " immediate" : ""
                   

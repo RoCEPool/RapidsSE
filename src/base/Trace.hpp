@@ -6,7 +6,6 @@
 namespace BASE
 {
   void  vTrace(Stz* szFormat,...);
-  void  vTraceF(File* pFile, Stz* szFormat,...);
   void  vTraceM(Stz* szFormat,...);
 }
 

@@ -97,7 +97,7 @@ void PersistenceHelper::vWritePersistentHeaps(Stz* sFilePath)
 {
   _static_
 
-  File* pFile = new File(nullptr);
+  File* pFile = new(C_VIA_MALLOC) File(nullptr);
   pFile->bOpenWrite(sFilePath);
   
   vTrace("Writing persistent tiny heap\n"_Stz);

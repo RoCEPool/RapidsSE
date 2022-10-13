@@ -18,6 +18,7 @@
 #include "CrvBuffer.hpp"
 #include "TablePtn.hpp"
 #include "Table.hpp"
+#include "ReservedWords.hpp"
 
 extern EnvFlags gxEnvFlags;
 
@@ -388,6 +389,12 @@ eEC IndexDef::eParse(Table* pTable, Stz* szCmd)
   
   pTkn = pTknVec->pNextToken(); dPT();
   m_sIndexNm = pTkn->szChars();
+
+  // Check if the index name is a reserved word
+  if (ReservedWords::bIsAReservedWord(m_sIndexNm)) {
+    eError = EC_RESERVED_WORD;
+    goto L_RETURN;
+  }
   
   // -- -- -- --
   // ON

@@ -16,7 +16,7 @@ rows:
 
 // Source file: ../queries/Stage9/rstage9-14.sql
 // Result file: ../queries/Stage9/results/stage9-14.res
-select count(*), sum(r_credit) from orders join lineitem on o_orderkey = l_orderkey join returns on o_orderkey = returns.l_orderkey join manufacturer on o_orderkey = m_orderkey join shipaddress on o_orderkey = sa_orderkey where o_orderdate >= timestamp '2013-12-01 12:00:00' and o_orderdate <= timestamp '2014-12-31 12:00:00' and o_clerk <> 'red' and o_orderpriority = '1-URGENT';
+select count(*), sum(r_credit) from orders join lineitem on o_orderkey = l_orderkey join returnitems on o_orderkey = returnitems.l_orderkey join manufacturer on o_orderkey = m_orderkey join shipaddress on o_orderkey = sa_orderkey where o_orderdate >= timestamp '2013-12-01 12:00:00' and o_orderdate <= timestamp '2014-12-31 12:00:00' and o_clerk <> 'red' and o_orderpriority = '1-URGENT';
 rows:
   ('cursus diam at pretium aliquet', 'one', 1)
   ('lacus.', 'five', 3)
@@ -101,7 +101,7 @@ rows:
 
 // Source file: ../queries/Stage9/rstage9-15.sql
 // Result file: ../queries/Stage9/results/stage9-15.res
-select r_reason, r_condition, m_qualitycode from returns join manufacturer using (m_mfgkey) where r_returndate >= timestamp '2013-12-01 12:00:00' and r_returndate <= timestamp '2013-12-08 12:00:00' and m_nationkey = 11;
+select r_reason, r_condition, m_qualitycode from returnitems join manufacturer using (m_mfgkey) where r_returndate >= timestamp '2013-12-01 12:00:00' and r_returndate <= timestamp '2013-12-08 12:00:00' and m_nationkey = 11;
 rows:
   (1, 20, 2, 2459, 85, 6053.24, 564.25, 780.48, 'N', 'O', TIMESTAMP '2012-08-02 00:00:00.0', TIMESTAMP '2010-07-05 00:00:00.0', TIMESTAMP '2014-11-23 00:00:00.0', 'TAKE BACK RETURN', 'SHIP', 'bad')
   (1, 35, 1, 2334, 511, 6304.93, 534.77, 34.78, 'A', 'O', TIMESTAMP '2015-05-12 00:00:00.0', TIMESTAMP '2013-07-20 00:00:00.0', TIMESTAMP '2011-06-15 00:00:00.0', 'COLLECT COD', 'SHIP', 'awesome')
@@ -328,7 +328,7 @@ rows:
 
 // Source file: ../queries/Stage9/rstage9-8.sql
 // Result file: ../queries/Stage9/results/stage9-8.res
-select count(*), sum(r_credit) from orders join lineitem on o_orderkey = l_orderkey join returns on o_orderkey = returns.l_orderkey join manufacturer on o_orderkey = m_orderkey join shipaddress on o_orderkey = sa_orderkey where o_orderdate >= timestamp '2013-12-01 12:00:00' and o_orderdate <= timestamp '2014-12-31 12:00:00' and o_clerk <> 'red' and o_orderpriority = '1-URGENT';
+select count(*), sum(r_credit) from orders join lineitem on o_orderkey = l_orderkey join returnitems on o_orderkey = returnitems.l_orderkey join manufacturer on o_orderkey = m_orderkey join shipaddress on o_orderkey = sa_orderkey where o_orderdate >= timestamp '2013-12-01 12:00:00' and o_orderdate <= timestamp '2014-12-31 12:00:00' and o_clerk <> 'red' and o_orderpriority = '1-URGENT';
 rows:
   (1, 6034.66)
 

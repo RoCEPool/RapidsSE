@@ -451,9 +451,11 @@ void Heap::vFreeObject(Object* pObject)
 
   //if (CN_LARGETRANSIENT == eClassNo) {
     
-  if (HT_T_LARGE == gxaSizeHeap[eClassNo].m_eWhichHeap) {
+  if (HT_T_LARGE == gxaSizeHeap[eClassNo].m_eWhichHeap ||
+      HT_P_LARGE == gxaSizeHeap[eClassNo].m_eWhichHeap) {
     
-    RASSERT(CN_LARGETRANSIENT == this->eGetClassNo());
+    RASSERT(CN_LARGETRANSIENT == this->eGetClassNo() ||
+            CN_LARGEPERSISTENT == this->eGetClassNo());
     
     //vTrace("FREE CN_LARGETRANSIENT\n"_Stz);
     

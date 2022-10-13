@@ -526,16 +526,16 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
 
   if (AM::SHOW::bException()) {
 
-    fprintf(stderr,"\n");
-    fprintf(stderr,
+    vTrace("\n"_Stz);
+    vTrace(
             // 0         1         2         3
             // 0123456789012345678901234567890123456789"
               "@THROW @THROW @THROW @THROW @THROW @THRO" // 40
               "W @THROW @THROW @THROW @THROW @THROW @TH" // 80
               "ROW @THROW @THROW @THROW @THROW @THROW"   // 120
-              "\n"
+              "\n"_Stz
             );
-    fprintf(stderr,"\n");
+    vTrace("\n"_Stz);
 
     xException.vPrint();
     

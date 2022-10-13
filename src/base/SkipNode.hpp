@@ -22,7 +22,8 @@ namespace BASE
     
     SkipNode(void);
     SkipNode(void* pObject);
-  
+
+    void vInit(void* pObject, i8 iHeight);
     void vResetFlags(void);
   private:
   

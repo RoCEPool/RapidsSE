@@ -45,6 +45,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
 
     bool   m_bNodeLoss;     // node loss detected
     bool   m_bUpdateParent; // update parent
+    bool   m_bPersistentTx; // persistent job transaction flag
 
     Pipeline* m_pMetricsPipeline;
 
@@ -142,6 +143,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vDropLock(void);
 
     void vEnableObjectTracker(void);
+    void vEnablePersistence(void);
     Job* pEndJob(void);
     void vEndJob(Job* pEndJob);
     Job* pEndedJob(void);
@@ -221,6 +223,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     JobId tParentId(void);
     void vParentId(JobId tParentId);
     Job* pParentJob(void);
+    bool bPersistent(void);
     Pipeline* pPipeline(void);
     void vMetricsPipeline(Pipeline* pPipeline);
     Pipeline* pMetricsPipeline(void);

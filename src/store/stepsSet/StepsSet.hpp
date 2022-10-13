@@ -427,6 +427,7 @@ void vDdlLockAssertNone(void);
   void vDicDelete(void);
   void vDicFirstWord(void);
   void vDicKindGet(void);
+  void vDicKindGetString(void);
   void vDicKindSet(void);
   void vDicLastWord(void);
   void vDicNameFetch(void);
@@ -2416,6 +2417,7 @@ void vDdlLockAssertNone(void);
   void vTxRefRollback(void);
 
   // user
+  void vUnloadToFile(void);
   void vUserName(void);
 
   // vertex
@@ -2437,6 +2439,7 @@ void vDdlLockAssertNone(void);
   void vWordBreakPtStore(void);
   void vWordCategoryFetch(void);
   void vWordCategoryStore(void);
+  void vWordCategoryString(void);
   void vWordDelete(void);
   void vWordDump(void);
   void vWordEmbObject(void);

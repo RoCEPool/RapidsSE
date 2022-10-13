@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* the catalog category                                                       */
 /*----------------------------------------------------------------------------*/
-: \catalog \\category ;
+: \catalog \\category WC_CATALOG ;
 
 /*----------------------------------------------------------------------------*/
 /* pop the catalog folder                                                     */
@@ -32,16 +32,6 @@
 
   Folder[].isCatalogs if true exit then
   EC_NOT_IN_CATALOGS false
-;
-
-/*----------------------------------------------------------------------------*/
-/* check word is a catalog                                                    */
-/*----------------------------------------------------------------------------*/
-: Path[].checkIsCatalog ( word )
-
-  dup word.category@ find: \folder equal not if EC_NOT_A_FOLDER false exit then
-  dup execute dic.kind@ find: \catalog equal if true exit then
-  EC_NOT_A_CATALOG false
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -109,7 +99,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make the catalog
   sCatalogNm folder::makeFolder
-    find: \catalog swap execute dic.kind!
+    DK_CATALOG swap execute dic.kind!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make catalogs folder

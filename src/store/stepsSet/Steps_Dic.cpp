@@ -20,6 +20,7 @@ void Step::vAddSteps_Dic(void)
   vAddStep("dic.delete"_Stz,      &Step::vDicDelete);
   vAddStep("dic.firstWord"_Stz,   &Step::vDicFirstWord);
   vAddStep("dic.kind@"_Stz,       &Step::vDicKindGet);
+  vAddStep("dic.kindString@"_Stz, &Step::vDicKindGetString);
   vAddStep("dic.kind!"_Stz,       &Step::vDicKindSet);
   vAddStep("dic.lastWord"_Stz,    &Step::vDicLastWord);
   vAddStep("dic.name@"_Stz,       &Step::vDicNameFetch);
@@ -59,19 +60,34 @@ void Step::vDicFirstWord(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dic.kind@ -- get dictionary kind                                           */
+/* dic.kind@ -- get dictionary kind (enum)                                    */
 /*----------------------------------------------------------------------------*/
 void Step::vDicKindGet(void)
 {
   ENTRY();
-  
+
   Dic* pDic = _pDic(m_pDataStack->pPopPtr(__func__));
-  
-  Object* pPtrKind;
-  pPtrKind = pDic->pDicKind();
-  
-  m_pDataStack->vPushPtr(pPtrKind);
-  
+
+  eDK eDicKind = pDic->eDicKind();
+
+  m_pDataStack->vPushInt((i8) eDicKind);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* dic.kindString@ -- get dictionary kind string                              */
+/*----------------------------------------------------------------------------*/
+void Step::vDicKindGetString(void)
+{
+  ENTRY();
+
+  Dic* pDic = _pDic(m_pDataStack->pPopPtr(__func__));
+
+  s32 sDicKind = aDK[pDic->eDicKind()];
+
+  m_pDataStack->vPushStr(sDicKind);
+
   EXIT();
 }
 
@@ -81,13 +97,13 @@ void Step::vDicKindGet(void)
 void Step::vDicKindSet(void)
 {
   ENTRY();
-  
+
   Dic* pDic = _pDic(m_pDataStack->pPopPtr(__func__));
 
-  Word* pKind = _pWord(m_pDataStack->pPopPtr(__func__));
-  
-  pDic->vDicKind(pKind);
-  
+  eDK eDicKind = (eDK)m_pDataStack->iPopInt(__func__);
+
+  pDic->vDicKind(eDicKind);
+
   EXIT();
 }
 
