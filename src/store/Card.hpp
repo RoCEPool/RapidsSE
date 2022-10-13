@@ -13,7 +13,7 @@
 #include "eYG.h"
 #include "eXK.h"
 
-#include "CardSet.hpp"
+#include "ChildCards.hpp"
 
 #include "Table.hpp"
 #include "Ribbon.hpp"
@@ -122,7 +122,7 @@ static Stz* P_TableUsed    = "bTableUsed"_Stz;
 namespace STORE
 {
   class Card : public Object
-             , public CardSet
+             , public ChildCards
   {
   protected:
     char md_Bearing[256];
