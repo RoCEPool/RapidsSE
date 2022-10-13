@@ -40,6 +40,17 @@ namespace STORE
 
     void vTransform3(void);
 
+    void vPhase_1_ReducePipeline(void);
+    void vPhase_2_TableAnalysis(void);
+    void vPhase_3_WherePredicates(void);
+    void vPhase_4_InitialJoin(void);
+    void wPhase_5_JoinOrdering(void);
+    void wPhase_6_IndexScan(void);
+    void wPhase_7_StreamOrdering(void);
+    void wPhase_8_FilterRefinement(void);
+
+    void vPhase_Z_RestatePipeline(void);
+
     Footer* aFooter(void);
   };
 

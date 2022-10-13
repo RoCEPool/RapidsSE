@@ -24,13 +24,13 @@ Transformer::Transformer(Bench* pBench)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMER,_FOOTER_);
 
-  m_pBench        = pBench;
-  m_pOptimiser    = m_pBench->pOptimiser();
-  m_pBoard        = nullptr;
+  m_pBench       = pBench;
+  m_pOptimiser   = m_pBench->pOptimiser();
+  m_pBoard       = nullptr;
 
-  m_pCardCtl      = m_pOptimiser->pCardCtl();
+  m_pCardCtl     = m_pOptimiser->pCardCtl();
 
-  m_pTransforms   = nullptr;
+  m_pTransforms  = nullptr;
 
   m_pCurator     = nullptr;
 
@@ -95,23 +95,51 @@ void Transformer::vTransform3(void)
 
   vTrace("Transformer running vTransform2\n"_Stz);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // QUERY BOARD -- preliminaries
+  vPhase_1_ReducePipeline();
 
-  // combine {{==<stage>}}->{<stage>}
+  vPhase_2_TableAnalysis();
+
+  vPhase_3_WherePredicates();
+
+  vPhase_4_InitialJoin();
+
+  wPhase_5_JoinOrdering();
+
+  wPhase_6_IndexScan();
+
+  wPhase_7_StreamOrdering();
+
+  wPhase_8_FilterRefinement();
+
+  vPhase_Z_RestatePipeline();
+
+  m_pTransforms->vExpandedForm();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Transformer::vPhase_1_ReducePipeline(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
+
   m_pTransforms->vDeleteAll_Duplicate_stage();
 
-  // delete *<absJoin>
   m_pTransforms->vDeleteAll_absJoin();
 
-  // delete *<combined>
   m_pTransforms->vDeleteAll_combined();
 
-  // delete *<send>
   m_pTransforms->vDeleteAll_send();
 
-  // remove *<scan>
   m_pTransforms->vCullAll_scan();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Transformer::vPhase_2_TableAnalysis(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
   // add <tableSyn> to all <table>
   m_pTransforms->vCalc_tableSyn_ForAll_table();
@@ -124,6 +152,14 @@ void Transformer::vTransform3(void)
 
   // calculate /<stream>:iOrdLo,iOrdHi properties
   m_pTransforms->vCalc_ordinalRange_ForAll_stream();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Transformer::vPhase_3_WherePredicates(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
   // convert all <filter>/<calc> to <filter>/<calcBool>
   m_pTransforms->vConvertAll_where_calc_To_where_calcBool();
@@ -134,7 +170,39 @@ void Transformer::vTransform3(void)
   // convert $n to $$c.n
   //m_pTransforms->vConvert_streamColOrdinal_To_tableColOrdinal();
 
+  // inspect all <filter> and attempt to move <predCmp> after <scan>/<absJoin>
+  m_pTransforms->vMarkAll_where_pred_Wrt_table();
+  m_pTransforms->vMoveMarked_where_pred_To_table();
 
+  // delete any <filter> which is effectively empty
+  m_pTransforms->vDeleteAllEmpty_where();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Transformer::vPhase_4_InitialJoin(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
+
+  m_pTransforms->vAddNew_indexJoin_UnderAllJoinable_table();
+  m_pTransforms->vConvertAll_idxCol_name_To_idxCol_ord();
+  m_pTransforms->vAddNew_joinPred_UnderAll_indexJoin();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  m_pTransforms->vCullAll_filter_pred_Of_indexJoin();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  m_pTransforms->vDeleteAll_Empty_filter();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Transformer::wPhase_5_JoinOrdering(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
   /*
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -161,41 +229,27 @@ void Transformer::vTransform3(void)
   m_pTransforms->vEstimate_network();
   m_pTransforms->vEstimate_joinOrder();
   m_pTransforms->vExtract_joinOrderSeq();
-*/
+  */
 
+  m_pTransforms->vConvertAllJoinable_table_Into_indexJoin();
+}
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // inspect all <filter> and attempt to move <predCmp> after <scan>/<absJoin>
-  m_pTransforms->vMarkAll_where_pred_Wrt_table();
-  m_pTransforms->vMoveMarked_where_pred_To_table();
-
-  // delete any <filter> which is effectively empty
-  m_pTransforms->vDeleteAllEmpty_where();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  m_pTransforms->vAddNew_indexJoin_UnderAllJoinable_table();
-  m_pTransforms->vConvertAll_idxCol_name_To_idxCol_ord();
-  m_pTransforms->vAddNew_joinPred_UnderAll_indexJoin();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  m_pTransforms->vCullAll_filter_pred_Of_indexJoin();
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Index Scan
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Transformer::wPhase_6_IndexScan(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
   /*
-   *
-   *    <scan>       <scan>
-   *      <table>    <table>
-   *      <stream>   <indexList>
-   *      <filter>   <stream>
-   *                 <filter>
-   *
-   */
+ *
+ *    <scan>       <scan>
+ *      <table>    <table>
+ *      <stream>   <indexList>
+ *      <filter>   <stream>
+ *                 <filter>
+ *
+ */
 
   /*
   m_pTransforms->vAppend_indexList_ToAll_table();
@@ -206,25 +260,39 @@ void Transformer::vTransform3(void)
   m_pTransforms->vCull_markedPred();
   m_pTransforms->vPromote_scan_To_indexScan();
   */
+}
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  m_pTransforms->vDeleteAll_Empty_filter();
-
-  m_pTransforms->vConvertAllJoinable_table_Into_indexJoin();
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Transformer::wPhase_7_StreamOrdering(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
   m_pTransforms->vCull_sby_SameAs_gby();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Transformer::wPhase_8_FilterRefinement(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
   m_pTransforms->vIndividuate_filter();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Transformer::vPhase_Z_RestatePipeline(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
   m_pTransforms->vReinstate_stages();
 
-  m_pCardCtl->vReset();
-
-  m_pTransforms->vReinstate_combined();
-
-  m_pTransforms->vExpandedForm();
+ m_pTransforms->vReinstate_combined();
 }
-
 
 /*============================================================================*/
 /* end                                                                        */
