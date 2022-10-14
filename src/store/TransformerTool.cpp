@@ -5,7 +5,6 @@
 #include "TransformerTool.hpp"
 
 #include "Job.hpp"
-#include "TagSet.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -15,92 +14,51 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  m_pBench           = pBench;
+  m_pBench   = pBench;
+  m_pCardCtl = m_pBench->pCardCtl();
+
   m_pBoard           = m_pBench->pHead();
   m_pBoard_costEst   = nullptr;
   m_pBoard_partition = nullptr;
   m_pBoard_permute   = nullptr;
   m_pBoard_query     = nullptr;
-  m_pCardCtl         = m_pBench->pCardCtl();
-  m_bPrintTransformation   = true;
 
   m_iTransformNo = 0;
-
-  m_pTable           = nullptr;
-  m_pStreamDef       = nullptr;
-  m_pIdxVec          = nullptr;
-  m_pIndex           = nullptr;
-
-  m_pPermGen         = nullptr;
-
-  m_eMainCard      = CK_NONE;
-  m_eNextMain      = CK_NONE;
-
-  m_pM = new BoardIter(m_pBoard);
-
-  _deck_ = nullptr;
-
-  m_pChildCard  = nullptr;
-  m_pDupCard    = nullptr;
-  m_pMainCard   = nullptr;
-  m_pSubsequentMain   = nullptr;
-  m_pNewCard    = nullptr;
-  m_pPoppedCard = nullptr;
-  m_pPriorMain   = nullptr;
-
-  m_p_absJoin          = nullptr;
-  m_p_aggreg           = nullptr;
-  m_p_calc             = nullptr;
-  m_p_calcBool         = nullptr;
-  m_p_cmpPred          = nullptr;
-  m_p_combined         = nullptr;
-  m_p_comment          = nullptr;
-  m_p_coPtnJoin        = nullptr;
-  m_p_coPtnJoinList    = nullptr;
-  m_p_coPtnPred        = nullptr;
-  m_p_coPtnPredList    = nullptr;
-  m_p_crossPtnJoin     = nullptr;
-  m_p_crossPtnJoinList = nullptr;
-  m_p_expr             = nullptr;
-  m_p_filter           = nullptr;
-  m_p_gbyElist         = nullptr;
-  m_p_idxColList       = nullptr;
-  m_p_indexJoin        = nullptr;
-  m_p_indexList        = nullptr;
-  m_p_indexPtr         = nullptr;
-  m_p_indexScan        = nullptr;
-  m_p_joinOrder        = nullptr;
-  m_p_joinOrderSeq     = nullptr;
-  m_p_joinPred         = nullptr;
-  m_p_joinPredList     = nullptr;
-  m_p_lBound           = nullptr;
-  m_p_permutation      = nullptr;
-  m_p_permutation_low  = nullptr;
-  m_p_project          = nullptr;
-  m_p_ptndJoin         = nullptr;
-  m_p_ptndJoinSet      = nullptr;
-  m_p_sbyElist         = nullptr;
-  m_p_scan             = nullptr;
-  m_p_scanPred         = nullptr;
-  m_p_sort             = nullptr;
-  m_p_stage            = nullptr;
-  m_p_stageTopo        = nullptr;
-  m_p_stream           = nullptr;
-  m_p_streamColList    = nullptr;
-  m_p_subSet           = nullptr;
-  m_p_table            = nullptr;
-  m_p_tableList        = nullptr;
-  m_p_tablePtn         = nullptr;
-  m_p_tablePtr         = nullptr;
-  m_p_term             = nullptr;
-  m_p_term_0           = nullptr;
-  m_p_term_1           = nullptr;
-  m_p_uBound           = nullptr;
-  m_p_where            = nullptr;
-
+  m_bPrintTransformation = true;
   Job* pJob = MY::pJob();
   TagSet* pJobTags = pJob->pJobTags();
   m_bInteractive = pJobTags->bHasName("<interactive>"_Stz);
+
+  m_pPermGen = nullptr;
+
+  m_pTable     = nullptr;
+  m_pStreamDef = nullptr;
+  m_pIdxVec    = nullptr;
+  m_pIndex     = nullptr;
+
+  m_pDeck = nullptr;
+
+  m_pCard_child  = nullptr;
+  m_pCard_dup    = nullptr;
+  m_pCard_new    = nullptr;
+  m_pCard_popped = nullptr;
+
+  // the M iterator - - - - - - - - - - - - - - - - - - - - - -
+  m_pM = new BoardIter(m_pBoard);
+
+  m_p_PriorToMain      = nullptr;
+  m_e_PriorToMain      = CK_NONE;
+  m_p_MainCard         = nullptr;
+  m_e_MainCard         = CK_NONE;
+  m_p_SubOfMain        = nullptr;
+  m_e_SubOfMain        = CK_NONE;
+  m_p_SubsequentToMain = nullptr;
+  m_e_SubsequentToMain = CK_NONE;
+
+  m_p_SubMember        = nullptr;
+  m_e_SubMember        = CK_NONE;
+
+  M_vClearMembers();
 
   _postcondition_(_ADDRESS_,_MAGIC_);
 }
@@ -134,13 +92,13 @@ Board* TransformerTool::pBoard(void)
 /*----------------------------------------------------------------------------*/
 /* decode card                                                                */
 /*----------------------------------------------------------------------------*/
-eCK TransformerTool::eDecodeMain(Card* pCard)
+eCK TransformerTool::eDecodeMain(Card* pCard)                                   // TODO: to be deleted
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  m_eMainCard = pCard->eCard();
+  m_e_MainCard = pCard->eCard();
   
-  switch (m_eMainCard) {
+  switch (m_e_MainCard) {
 
     case CK_ABSJOIN:    m_p_absJoin     = _pCard_AbsJoin(pCard);   break;
     case CK_AGGREG:     m_p_aggreg      = _pCard_Aggreg(pCard);    break;
@@ -160,17 +118,7 @@ eCK TransformerTool::eDecodeMain(Card* pCard)
       NEVER_REACH
   }
 
-  return m_eMainCard;
-}
-
-/*----------------------------------------------------------------------------*/
-/* record transformation                                                      */
-/*----------------------------------------------------------------------------*/
-void TransformerTool::vEndTransformation(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_);
-
-  Card::vConsistencyCheck(_deck_,m_iTransformNo);
+  return m_e_MainCard;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -194,7 +142,17 @@ void TransformerTool::vDescription(Stz* szDescription)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get phase                                                                  */
+/* end of transformation                                                      */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::vEndTransformation(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  Card::vConsistencyCheck(m_pDeck, m_iTransformNo);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get transformation phase                                                   */
 /*----------------------------------------------------------------------------*/
 Stz* TransformerTool::szPhase(void)
 {
@@ -204,7 +162,7 @@ Stz* TransformerTool::szPhase(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* set transformation phase                                                   */
 /*----------------------------------------------------------------------------*/
 void TransformerTool::vPhase(Stz* szPhase)
 {
@@ -232,17 +190,7 @@ void TransformerTool::vPrintBoard(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-i8 TransformerTool::iTransformNoInc(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_);
-
-  return ++ m_iTransformNo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set card print by kind                                                     */
+/* set control of card printing by kind                                       */
 /*----------------------------------------------------------------------------*/
 void TransformerTool::vSetPrintByKind(eCK eCard, bool bPrintByKind)
 {
@@ -276,7 +224,7 @@ Stz* TransformerTool::szTransformation(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* record transformation                                                      */
+/* begin and record transformation information                                */
 /*----------------------------------------------------------------------------*/
 void TransformerTool::vTransformation(eBK eBoard,
                                       char* azTranformation,
@@ -286,12 +234,23 @@ void TransformerTool::vTransformation(eBK eBoard,
 
   RASSERT(eBoard == m_pBoard->eBoard());
 
-  _deck_ = m_pBoard->pCard_Deck();
+  m_pDeck = m_pBoard->pCard_Deck();
   m_pM->vRestart();
 
   m_sTranformation = azTranformation;
   m_bPrintTransformation = bPrintTransformation;
 }
+
+/*----------------------------------------------------------------------------*/
+/* get the next transformation number                                         */
+/*----------------------------------------------------------------------------*/
+i8 TransformerTool::iTransformNoInc(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  return ++ m_iTransformNo;
+}
+
 
 
 /*----------------------------------------------------------------------------*/
@@ -365,20 +324,28 @@ void TransformerTool::vSetupQueryBoard(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* step to next main and set member                                           */
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------------*/
+/* delete member of given kind; clear-if registers; update M member to null   */
 /*----------------------------------------------------------------------------*/
 void TransformerTool::D_vDeleteMember(eCK eMember)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  Card* pCard = G_pGetMember(eMember);
-  U_vSetMember(eMember, nullptr);
+  Card* pMember = F_pFetchMember(eMember);
 
-  delete pCard;
+  M_vClearRegistersIf(pMember);
+  U_vUpdateMember(eMember, nullptr);
+
+  DELETE_CARD(pMember);
 }
 
 /*----------------------------------------------------------------------------*/
-/* step to next main and set member                                           */
+/* delete given member; clear-if registers; update M member to null           */
 /*----------------------------------------------------------------------------*/
 void TransformerTool::D_vDeleteMember(Card* pMember)
 {
@@ -386,15 +353,132 @@ void TransformerTool::D_vDeleteMember(Card* pMember)
 
   eCK eMember = pMember->eCard();
 
-  U_vSetMember(eMember, nullptr);
+  M_vClearRegistersIf(pMember);
+  U_vUpdateMember(eMember, nullptr);
 
-  delete pMember;
+  DELETE_CARD(pMember);
 }
 
 /*----------------------------------------------------------------------------*/
-/* get member card                                                            */
+/* step main register next main and update M member                           */
 /*----------------------------------------------------------------------------*/
-Card* TransformerTool::G_pGetMember(eCK eMember)
+bool TransformerTool::E_bEachMain(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  if ((m_p_MainCard = m_pM->pEachMain())) {
+    m_e_MainCard = m_p_MainCard->eCard();
+    U_vUpdateMember(m_e_MainCard, m_p_MainCard);
+    return true;
+  }
+
+  m_e_MainCard = CK_NONE;
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* conditionally step main register to next main and update M member          */
+/*----------------------------------------------------------------------------*/
+bool TransformerTool::E_bEachMain(eCK eOfMainKind)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  if (m_p_MainCard = m_pM->pEachMain(eOfMainKind)) {
+    m_e_MainCard = m_p_MainCard->eCard();
+    U_vUpdateMember(m_e_MainCard, m_p_MainCard);
+    return true;
+  }
+
+  m_e_MainCard = CK_NONE;
+  U_vUpdateMember(eOfMainKind, nullptr);
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* conditionally step main register to next main which has sub and update M   */
+/*----------------------------------------------------------------------------*/
+bool TransformerTool::E_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  while (m_p_MainCard = m_pM->pEachMain(eOfMainKind)) {
+    if (! (m_p_SubOfMain = m_p_MainCard->pFindSubCard(eAndSubKind)))
+      continue;
+
+    m_e_MainCard = m_p_MainCard->eCard();
+    U_vUpdateMember(m_e_MainCard, m_p_MainCard);
+    m_e_SubOfMain = m_p_SubOfMain->eCard();
+    U_vUpdateMember(m_e_SubOfMain, m_p_SubOfMain);
+    return true;
+  }
+
+  m_p_MainCard  = nullptr;
+  m_e_MainCard  = CK_NONE;
+  U_vUpdateMember(eOfMainKind, nullptr);
+  m_p_SubOfMain = nullptr;
+  m_e_SubOfMain = CK_NONE;
+  U_vUpdateMember(eAndSubKind, nullptr);
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* skip over next main ; optionally clear M members and registers             */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::E_vSkipNextMain(bool bClearMembers, bool bClearRegisters)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  m_pM->vForward();
+
+  if (bClearMembers)
+    M_vClearMembers();
+
+  if (bClearRegisters)
+    M_vClearRegisters();
+}
+
+/*----------------------------------------------------------------------------*/
+/* are there more main cards?                                                 */
+/*----------------------------------------------------------------------------*/
+bool TransformerTool::E_bMoreMain(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  if (m_pM->bMore())
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove main card from deck (do not clear M members or registers)           */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::E_vRemoveMain(eCK eCrossCheck)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  m_pM->vRemoveCurr(eCrossCheck);
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove ain card from deck and delete it; clear M member to null            */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::E_vRemoveDeleteMain(eCK eCrossCheck)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  m_pM->vRemoveDeleteCurr(eCrossCheck);
+
+  m_p_MainCard = nullptr;
+  m_e_MainCard = CK_NONE;
+
+  U_vUpdateMember(eCrossCheck, nullptr);
+}
+
+/*----------------------------------------------------------------------------*/
+/* fetch M member by decoding given eMember                                   */
+/*----------------------------------------------------------------------------*/
+Card* TransformerTool::F_pFetchMember(eCK eMember)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
@@ -457,42 +541,286 @@ Card* TransformerTool::G_pGetMember(eCK eMember)
 }
 
 /*----------------------------------------------------------------------------*/
-/* step to next main and set member                                           */
+/* is there a card immediately before current main card?                      */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::N_vNewMember(eCK eCard)
+bool TransformerTool::H_bHasPriorToMain(bool bUpdateMember)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  m_pNewCard = new Card(eCard);
+  if ((m_p_PriorToMain = m_pM->pPrevMain())) {
+    m_e_PriorToMain = m_p_PriorToMain->eCard();
+    if (bUpdateMember)
+      U_vUpdateMember(m_e_PriorToMain, m_p_PriorToMain);
+    return true;
+  }
 
-  U_vSetMember(eCard, m_pNewCard);
+  m_e_PriorToMain = CK_NONE;
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is there a card immediately before current main which is of given kind?    */
+/*----------------------------------------------------------------------------*/
+bool TransformerTool::H_bHasPriorToMainIf(eCK eOfPriorKind, bool bUpdateMember)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  if ((m_p_PriorToMain = m_pM->pPrevMainIf(eOfPriorKind))) {
+    m_e_PriorToMain = m_p_PriorToMain->eCard();
+    if (bUpdateMember)
+      U_vUpdateMember(m_e_PriorToMain, m_p_PriorToMain);
+    return true;
+  }
+
+  m_e_PriorToMain = CK_NONE;
+  if (bUpdateMember)
+    U_vUpdateMember(eOfPriorKind, nullptr);
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is there a card immediately after current main card?                       */
+/*----------------------------------------------------------------------------*/
+bool TransformerTool::H_bHasSubsequentToMain(bool bUpdateMember)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  if ((m_p_SubsequentToMain = m_pM->pNextMain())) {
+    m_e_SubsequentToMain = m_p_SubsequentToMain->eCard();
+    if (bUpdateMember)
+      U_vUpdateMember(m_e_SubsequentToMain, m_p_SubsequentToMain);
+    return true;
+  }
+
+  m_e_SubsequentToMain = CK_NONE;
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is there a card immediately after current main which is of given kind?     */
+/*----------------------------------------------------------------------------*/
+bool TransformerTool::H_bHasSubsequentToMainIf(eCK eOfSubsequentKind, bool bUpdateMember)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  if ((m_p_SubsequentToMain = m_pM->pNextMainIf(eOfSubsequentKind))) {
+    m_e_SubsequentToMain = m_p_SubsequentToMain->eCard();
+    if (bUpdateMember)
+      U_vUpdateMember(m_e_SubsequentToMain, m_p_SubsequentToMain);
+    return true;
+  }
+
+  m_e_SubsequentToMain = CK_NONE;
+  if (bUpdateMember)
+    U_vUpdateMember(eOfSubsequentKind, nullptr);
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* clear the M members                                                        */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::M_vClearMembers(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  m_p_absJoin          = nullptr;
+  m_p_aggreg           = nullptr;
+  m_p_calc             = nullptr;
+  m_p_calcBool         = nullptr;
+  m_p_cmpPred          = nullptr;
+  m_p_combined         = nullptr;
+  m_p_comment          = nullptr;
+  m_p_coPtnJoin        = nullptr;
+  m_p_coPtnJoinList    = nullptr;
+  m_p_coPtnPred        = nullptr;
+  m_p_coPtnPredList    = nullptr;
+  m_p_crossPtnJoin     = nullptr;
+  m_p_crossPtnJoinList = nullptr;
+  m_p_expr             = nullptr;
+  m_p_filter           = nullptr;
+  m_p_gbyElist         = nullptr;
+  m_p_idxColList       = nullptr;
+  m_p_indexJoin        = nullptr;
+  m_p_indexList        = nullptr;
+  m_p_indexPtr         = nullptr;
+  m_p_indexScan        = nullptr;
+  m_p_joinOrder        = nullptr;
+  m_p_joinOrderSeq     = nullptr;
+  m_p_joinPred         = nullptr;
+  m_p_joinPredList     = nullptr;
+  m_p_lBound           = nullptr;
+  m_p_permutation      = nullptr;
+  m_p_permutation_low  = nullptr;
+  m_p_project          = nullptr;
+  m_p_ptndJoin         = nullptr;
+  m_p_ptndJoinSet      = nullptr;
+  m_p_sbyElist         = nullptr;
+  m_p_scan             = nullptr;
+  m_p_scanPred         = nullptr;
+  m_p_sort             = nullptr;
+  m_p_stage            = nullptr;
+  m_p_stageTopo        = nullptr;
+  m_p_stream           = nullptr;
+  m_p_streamColList    = nullptr;
+  m_p_subSet           = nullptr;
+  m_p_table            = nullptr;
+  m_p_tableList        = nullptr;
+  m_p_tablePtn         = nullptr;
+  m_p_tablePtr         = nullptr;
+  m_p_term             = nullptr;
+  m_p_term_0           = nullptr;
+  m_p_term_1           = nullptr;
+  m_p_uBound           = nullptr;
+  m_p_where            = nullptr;
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* clear the M members and registers                                          */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::M_vClearMembersRegisters(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  M_vClearMembers();
+  M_vClearRegisters();
+}
+
+/*----------------------------------------------------------------------------*/
+/* clear the general M registers                                              */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::M_vClearRegisters(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  m_p_PriorToMain      = nullptr;
+  m_e_PriorToMain      = CK_NONE;
+  m_p_MainCard         = nullptr;
+  m_e_MainCard         = CK_NONE;
+  m_p_SubOfMain        = nullptr;
+  m_e_SubOfMain        = CK_NONE;
+  m_p_SubsequentToMain = nullptr;
+  m_e_SubsequentToMain = CK_NONE;
+
+  m_p_SubMember        = nullptr;
+  m_e_SubMember        = CK_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* clear the general M registers if they match given kind                     */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::M_vClearRegistersIf(eCK eCard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  if (eCard == m_e_PriorToMain ||
+       (m_p_PriorToMain && eCard == m_p_PriorToMain->eCard())) {
+    m_p_PriorToMain = nullptr;
+    m_e_PriorToMain = CK_NONE;
+  }
+  if (eCard == m_e_MainCard ||
+       (m_p_MainCard && eCard == m_p_MainCard->eCard())) {
+    m_p_MainCard = nullptr;
+    m_e_MainCard = CK_NONE;
+  }
+  if (eCard == m_e_SubOfMain ||
+       (m_p_SubOfMain && eCard == m_p_SubOfMain->eCard())) {
+    m_p_SubOfMain = nullptr;
+    m_e_SubOfMain = CK_NONE;
+  }
+  if (eCard == m_e_SubsequentToMain ||
+       (m_p_SubsequentToMain && eCard == m_p_SubsequentToMain->eCard())) {
+    m_p_SubsequentToMain = nullptr;
+    m_e_SubsequentToMain = CK_NONE;
+  }
+  if (eCard == m_e_SubMember ||
+       (m_p_SubMember && eCard == m_p_SubMember->eCard())) {
+    m_p_SubMember = nullptr;
+    m_e_SubMember = CK_NONE;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* clear the general M registers if they match given pointer                  */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::M_vClearRegistersIf(Card* pCard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  if (pCard == m_p_PriorToMain) {
+    m_p_PriorToMain = nullptr;
+    m_e_PriorToMain = CK_NONE;
+  }
+  if (pCard == m_p_MainCard) {
+    m_p_MainCard = nullptr;
+    m_e_MainCard = CK_NONE;
+  }
+  if (pCard == m_p_SubOfMain) {
+    m_p_SubOfMain = nullptr;
+    m_e_SubOfMain = CK_NONE;
+  }
+  if (pCard == m_p_SubsequentToMain) {
+    m_p_SubsequentToMain = nullptr;
+    m_e_SubsequentToMain = CK_NONE;
+  }
+  if (pCard == m_p_SubMember) {
+    m_p_SubMember = nullptr;
+    m_e_SubMember = CK_NONE;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* restart the M iterator                                                     */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::M_vRestart(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  m_pM->vRestart();
+
+  M_vClearMembers();
+  M_vClearRegisters();
+}
+
+/*----------------------------------------------------------------------------*/
+/* create a new card and optionally set member                                */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::N_vNewMember(eCK eMember, bool bUpdateMember)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  m_pCard_new = new Card(eMember);
+
+  if (bUpdateMember)
+    U_vUpdateMember(eMember, m_pCard_new);
 }
 
 /*----------------------------------------------------------------------------*/
 /* step to next main and set member                                           */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::N_vNewMember(eCK eCard, Stz* szValue)
+void TransformerTool::N_vNewMember(eCK eMember, Stz* szValue, bool bUpdateMember)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  N_vNewMember(eCard);
+  N_vNewMember(eMember,bUpdateMember);
 
-  m_pNewCard->vValue(szValue);
+  m_pCard_new->vValue(szValue);
 }
 
 /*----------------------------------------------------------------------------*/
-/* set member card                                                            */
+/* update member card                                                         */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::U_vSetMember(eCK eCard, Card* pCard)
+void TransformerTool::U_vUpdateMember(eCK eMember, Card* pCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  switch (eCard) {
+  switch (eMember) {
 
     case CK_ABSJOIN:          *((Card**)&m_p_absJoin)          = pCard; break;
     case CK_AGGREG:           *((Card**)&m_p_aggreg)           = pCard; break;
     case CK_CALC:             *((Card**)&m_p_calc)             = pCard; break;
-    case CK_BOOLCALC: *((Card**)&m_p_calcBool)         = pCard; break;
+    case CK_BOOLCALC:         *((Card**)&m_p_calcBool)         = pCard; break;
     case CK_COMBINED:         *((Card**)&m_p_combined)         = pCard; break;
     case CK_COMMENT:          *((Card**)&m_p_comment)          = pCard; break;
     case CK_COPTNJOIN:        *((Card**)&m_p_coPtnJoin)        = pCard; break;
@@ -540,185 +868,20 @@ void TransformerTool::U_vSetMember(eCK eCard, Card* pCard)
       break;
 
     default:
-      NEVER_REACH  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* step to next main and set member                                           */
-/*----------------------------------------------------------------------------*/
-bool TransformerTool::E_bEachMain(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_);
-
-  m_pMainCard = m_pM->pEachMain();
-  if (! m_pMainCard)
-    return false;
-
-  eCK eCard = m_pMainCard->eCard();
-
-  U_vSetMember(eCard, m_pMainCard);
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* step to next main and set member                                           */
-/*----------------------------------------------------------------------------*/
-bool TransformerTool::E_bEachMain(eCK eOfKind)
-{
-  _precondition_(_ADDRESS_, _MAGIC_);
-
-  m_pMainCard = m_pM->pEachMain(eOfKind);
-  if (! m_pMainCard)
-    return false;
-
-  U_vSetMember(eOfKind, m_pMainCard);
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* step to next main and set member                                           */
-/*----------------------------------------------------------------------------*/
-bool TransformerTool::E_bEachMain(eCK eOfKind, eCK eAndHasSub)
-{
-  _precondition_(_ADDRESS_, _MAGIC_);
-
-  while (Card* pMain = m_pM->pEachMain(eOfKind)) {
-    if (Card* pSubCard = pMain->pFindSubCard(eAndHasSub)) {
-      U_vSetMember(eOfKind, pMain);
-      U_vSetMember(eAndHasSub, pSubCard);
-      return true;
-    }
+      NEVER_REACH
   }
-
-  U_vSetMember(eOfKind, nullptr);
-  U_vSetMember(eAndHasSub, nullptr);
-
-  return false;
 }
 
 /*----------------------------------------------------------------------------*/
-/* are there more children?                                                   */
+/* search for sub of member                                                   */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::E_vSkipNextMain(void)
+bool TransformerTool::S_bSearchForSubMember(eCK eMember, eCK eSubCard, bool bUpdateMember)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  m_pM->vForward();
-}
+  Card* pMember = F_pFetchMember(eMember);
 
-/*----------------------------------------------------------------------------*/
-/* are there more children?                                                   */
-/*----------------------------------------------------------------------------*/
-bool TransformerTool::E_bMoreMain(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_);
-
-  if (m_pM->bMore())
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* step to next main and set member                                           */
-/*----------------------------------------------------------------------------*/
-void TransformerTool::E_vRemoveDeleteMain(eCK eCrossCheck)
-{
-  _precondition_(_ADDRESS_, _MAGIC_);
-
-  m_pM->vRemoveDeleteCurr(eCrossCheck);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool TransformerTool::H_bHasPriorMain(bool bSetMember)
-{
-  _precondition_(_ADDRESS_, _MAGIC_);
-
-  m_pPriorMain = m_pM->pPrevMain();
-  if (! m_pPriorMain)
-    return false;
-
-  if (bSetMember)
-    U_vSetMember(m_pPriorMain->eCard(), m_pPriorMain);
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool TransformerTool::H_bHasPriorMainIf(eCK eOfKind, bool bSetMember)
-{
-  _precondition_(_ADDRESS_, _MAGIC_);
-
-  m_pPriorMain = m_pM->pPrevMainIf(eOfKind);
-  if (! m_pPriorMain)
-    return false;
-
-  if (bSetMember)
-    U_vSetMember(m_pPriorMain->eCard(), m_pPriorMain);
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool TransformerTool::H_bHasSubsequentMain(bool bSetMember)
-{
-  _precondition_(_ADDRESS_, _MAGIC_);
-
-  m_pSubsequentMain = m_pM->pNextMain();
-  if (! m_pSubsequentMain)
-    return false;
-
-  if (bSetMember)
-    U_vSetMember(m_pSubsequentMain->eCard(), m_pSubsequentMain);
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool TransformerTool::H_bHasSubsequentMainIf(eCK eOfKind, bool bSetMember)
-{
-  _precondition_(_ADDRESS_, _MAGIC_);
-
-  m_pSubsequentMain = m_pM->pNextMainIf(eOfKind);
-  if (! m_pSubsequentMain)
-    return false;
-
-  if (bSetMember)
-    U_vSetMember(m_pSubsequentMain->eCard(), m_pSubsequentMain);
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* restart the M iterator                                                     */
-/*----------------------------------------------------------------------------*/
-void TransformerTool::M_vRestart(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_);
-
-  m_pM->vRestart();
-}
-
-/*----------------------------------------------------------------------------*/
-/* step to next main and set member                                           */
-/*----------------------------------------------------------------------------*/
-bool TransformerTool::S_bSearchMember(eCK eMember, eCK eForSubCard)
-{
-  _precondition_(_ADDRESS_, _MAGIC_);
-
-  Card* pMember = G_pGetMember(eMember);
-
-  bool b = S_bSearchMember(pMember, eForSubCard);
+  bool b = S_bSearchForSubMember(pMember, eSubCard, bUpdateMember);
 
   return b;
 }
@@ -726,19 +889,20 @@ bool TransformerTool::S_bSearchMember(eCK eMember, eCK eForSubCard)
 /*----------------------------------------------------------------------------*/
 /* step to next main and set member                                           */
 /*----------------------------------------------------------------------------*/
-bool TransformerTool::S_bSearchMember(Card* pMember, eCK eForSubCard)
+bool TransformerTool::S_bSearchForSubMember(Card* pMember, eCK eSubCard, bool bUpdateMember)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  Card* pSubCard = pMember->pFindSubCard(eForSubCard);
-  if (! pSubCard) {
-    U_vSetMember(eForSubCard, nullptr);
-    return false;
+  if ((m_p_SubMember = pMember->pFindSubCard(eSubCard))) {
+    m_e_SubMember = m_p_SubMember->eCard();
+    if (bUpdateMember)
+      U_vUpdateMember(m_e_SubMember, m_p_SubMember);
+    return true;
   }
 
-  U_vSetMember(eForSubCard, pSubCard);
-
-  return true;
+  if (bUpdateMember)
+    U_vUpdateMember(eSubCard, nullptr);
+  return false;
 }
 
 /*============================================================================*/

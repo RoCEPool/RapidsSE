@@ -59,8 +59,8 @@ void Resolver::vResolve_streamColOrdinal_To_tableColOrdinal
 
   BoardIter xBI(m_pBoard);
 
-  while ( (m_pMainCard = xBI.pEachMain()) ) {
-    if (! (m_p_stream = m_pMainCard->pSub_stream()))
+  while ( (m_p_MainCard = xBI.pEachMain()) ) {
+    if (! (m_p_stream = m_p_MainCard->pSub_stream()))
       continue;
 
     i8 iOrdLo = m_p_stream->Y_iVal(P_OrdLo);
@@ -71,7 +71,7 @@ void Resolver::vResolve_streamColOrdinal_To_tableColOrdinal
 
     i8 iTableColNo = iStreamColNo - iOrdLo + 1;
 
-    m_p_table = m_pMainCard->pSub_table();
+    m_p_table = m_p_MainCard->pSub_table();
     char cTableSyn = m_p_table->Y_cVal(P_TableSyn);
 
     Card_Term::vTableColOrd(psTableColOrd, cTableSyn, iTableColNo);
