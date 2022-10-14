@@ -765,6 +765,8 @@ FreePoolBuffer* BufferPool::pGetFreePoolBufferByAddress(void* aAddress)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
 
+  m_okLock.vGrabWrite();
+
   FreePoolBuffer* pFreeIter = nullptr;
   FreePoolBuffer* pPrevIter = nullptr;
 
@@ -783,10 +785,14 @@ FreePoolBuffer* BufferPool::pGetFreePoolBufferByAddress(void* aAddress)
       m_nFreeCount--;
       m_nAllocCount++;
 
+      m_okLock.vDropWrite();
+
       return pFreeIter;
     }
     pPrevIter = pFreeIter;
   }
+
+  m_okLock.vDropWrite();
 
   return nullptr;
 }
