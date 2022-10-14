@@ -1290,32 +1290,26 @@ void Transforms::vIndividuate_filter(void)
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("individuate <scan|indexJoin>/<filter> as main <filter>"_Stz);
 
-  BoardIter xBI(m_pBoard);
+  while (E_bEachMain(CK_SCAN)) {
 
-  while (Card_Scan *pCard_scan =
-      _pCard_Scan(xBI.pEachMain(CK_SCAN))) {
-
-    Card_Filter* pCard_filter =  pCard_scan->pSub_filter();
-
-    if (! pCard_filter)
+    m_p_filter =  m_p_scan->pSub_filter();
+    if (! m_p_filter)
       continue;
 
-    pCard_scan->vRemoveChild(pCard_filter);
-    _deck_->vInsertAfter(pCard_filter, pCard_scan);
+    m_p_scan->vRemoveChild(m_p_filter);
+    _deck_->vInsertAfter(m_p_filter, m_p_scan);
   }
 
-  xBI.vRestart();
+  M_vRestart();
 
-  while (Card_IndexJoin *pCard_indexJoin =
-      _pCard_IndexJoin(xBI.pEachMain(CK_INDEXJOIN))) {
+  while (E_bEachMain(CK_INDEXJOIN)) {
 
-    Card_Filter* pCard_filter = pCard_indexJoin->pSub_filter();
-
-    if (! pCard_filter)
+    m_p_filter = m_p_indexJoin->pSub_filter();
+    if (! m_p_filter)
       continue;
 
-    pCard_indexJoin->vRemoveChild(pCard_filter);
-    _deck_->vInsertAfter(pCard_filter, pCard_indexJoin);
+    m_p_indexJoin->vRemoveChild(m_p_filter);
+    _deck_->vInsertAfter(m_p_filter, m_p_indexJoin);
   }
 
   vEndTransformation();

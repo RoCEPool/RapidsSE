@@ -641,6 +641,16 @@ void TransformerTool::E_vRemoveDelete(eCK eCrossCheck)
 }
 
 /*----------------------------------------------------------------------------*/
+/* restart the M iterator                                                     */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::M_vRestart(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  m_pM->vRestart();
+}
+
+/*----------------------------------------------------------------------------*/
 /* step to next main and set member                                           */
 /*----------------------------------------------------------------------------*/
 bool TransformerTool::S_bSearchMember(eCK eMember, eCK eForSubCard)

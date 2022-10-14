@@ -138,10 +138,7 @@ namespace STORE
 
     void D_vDeleteMember(eCK eMember);
     void D_vDeleteMember(Card* pMember);
-    Card* G_pGetMember(eCK eMember);
     void N_vNewMember(eCK eCard);
-    void N_vNewMember(eCK eCard, Stz* szValue);
-    void U_vSetMember(eCK eCard, Card* pCard);
 
     bool E_bEachMain(void);
     bool E_bEachMain(eCK eOfKind);
@@ -150,8 +147,16 @@ namespace STORE
     bool E_bPrevMainIf(eCK eOfKind);
     void E_vRemoveDelete(eCK eCrossCheck);
 
+    Card* G_pGetMember(eCK eMember);
+
+    void M_vRestart(void);
+
+    void N_vNewMember(eCK eCard, Stz* szValue);
+
     bool S_bSearchMember(eCK eMember, eCK eForSubCard);
     bool S_bSearchMember(Card* pMember, eCK eForSubCard);
+
+    void U_vSetMember(eCK eCard, Card* pCard);
   };
 }
 
