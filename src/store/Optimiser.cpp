@@ -265,7 +265,7 @@ void Optimiser::vTransform(void)
    if (bInteractive) {
     m_pWeaver->vWeaveOptStmt(pBoard);
     vTrace("%s\n"_Stz,m_pWeaver->szOptStmt());
-    Cue::vGetReturn("$$ The Optimised Pipeline >>"_Stz);
+    Cue::vGetReturn("$$ The Optimised Pipeline >> "_Stz);
   }
 }
 

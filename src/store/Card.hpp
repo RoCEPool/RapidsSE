@@ -119,6 +119,16 @@ static Stz* P_Table        = "pTable"_Stz;
 static Stz* P_TableSyn     = "cTableSyn"_Stz;
 static Stz* P_TableUsed    = "bTableUsed"_Stz;
 
+static char MARK_ASSIGNED   = '@';
+static char MARK_BLANK      = ' ';
+static char MARK_CHANGED    = '`';
+static char MARK_DOWNWARDS  = 'v';
+static char MARK_LEFTWARDS  = '<';
+static char MARK_MANY       = '*';
+static char MARK_MORE       = '+';
+static char MARK_RIGHTWARDS = '>';
+static char MARK_UPWARDS    = '^';
+
 namespace STORE
 {
   class Card : public Object
@@ -208,10 +218,13 @@ namespace STORE
 
     char cMark1(void);
     void vMark1(char cMark1);
+    void vMark1SetIfRecursive(char cIfMark, char cSetTo);
     char cMark2(void);
     i8   iMark2(void);
     void vMark2(i8 iMark2);
     void vMark2(char cMark2);
+    void vMark2SetIfRecursive(char cIfMark, char cSetTo);
+    void vMarkResetRecursive(void);
     void vMoveToLastChild(Card* pChildCard);
 
     void vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth, Card* pParent, bool& rbPrune);

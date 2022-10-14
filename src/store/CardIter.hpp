@@ -12,7 +12,7 @@ namespace STORE
   protected:
     Card*  m_pCard;
     i8     m_i_Child;
-    Card*  m_pCurrChild;
+    Card*  m_pChild;
 
     // must be last
     Footer m_xFooter;
@@ -27,8 +27,9 @@ namespace STORE
 
     i8 i_Child(void);
 
-    Card* pCurrChild(void);
+    Card* pChild(void);
 
+    bool  bEachChild(void);
     Card* pEachChild(void);
     Card* pEachChild(i8& ri_Child);
     Card* pEachChild(eCK eCard);
