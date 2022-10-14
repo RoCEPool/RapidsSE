@@ -14,7 +14,7 @@ namespace STORE
   {
   protected:
 
-    static const bool C_SET_MEMBER = true;
+    static const bool C_UPDATE_MEMBER = true;
     static const bool C_DONT_PRINT = false;
 
     Bench*      m_pBench;
