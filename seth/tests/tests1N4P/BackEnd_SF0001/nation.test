@@ -9,8 +9,8 @@ N_NAME            CHAR(25) NOT NULL,
 N_REGIONKEY       INTEGER NOT NULL,
 N_COMMENT         VARCHAR(152)
 )
-//replicated
-//tableSize 1
+replicated
+tableSize 1
 ;
 success
 
@@ -26,8 +26,8 @@ affected: 0
 load nation "../TPCH/SF_0001/nation.csv";
 success
 
-select count(*) from nation;
-rows: (25)
+//select count(*) from nation;
+//rows: (25)
 
 compactidx nation IxN_NATIONKEY;
 success
