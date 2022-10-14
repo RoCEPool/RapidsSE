@@ -601,7 +601,7 @@ bool TransformerTool::E_bEachMain(eCK eOfKind, eCK eAndHasSub)
 /*----------------------------------------------------------------------------*/
 /* are there more children?                                                   */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::E_vForward(void)
+void TransformerTool::E_vSkipNextMain(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
@@ -611,7 +611,7 @@ void TransformerTool::E_vForward(void)
 /*----------------------------------------------------------------------------*/
 /* are there more children?                                                   */
 /*----------------------------------------------------------------------------*/
-bool TransformerTool::E_bMore(void)
+bool TransformerTool::E_bMoreMain(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
@@ -622,9 +622,19 @@ bool TransformerTool::E_bMore(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* step to next main and set member                                           */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::E_vRemoveDeleteMain(eCK eCrossCheck)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  m_pM->vRemoveDeleteCurr(eCrossCheck);
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool TransformerTool::E_bPrevMain(void)
+bool TransformerTool::H_bHasPriorMain(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
@@ -640,7 +650,7 @@ bool TransformerTool::E_bPrevMain(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool TransformerTool::E_bPrevMainIf(eCK eOfKind)
+bool TransformerTool::H_bHasPriorMainIf(eCK eOfKind)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
@@ -654,13 +664,35 @@ bool TransformerTool::E_bPrevMainIf(eCK eOfKind)
 }
 
 /*----------------------------------------------------------------------------*/
-/* step to next main and set member                                           */
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::E_vRemoveDelete(eCK eCrossCheck)
+bool TransformerTool::H_bHasSubsequentMain(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  m_pM->vRemoveDeleteCurr(eCrossCheck);
+  m_pNextMain = m_pM->pNextMain();
+  if (! m_pNextMain)
+    return false;
+
+  U_vSetMember(m_pNextMain->eCard(),m_pNextMain);
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool TransformerTool::H_bHasSubsequentMainIf(eCK eOfKind)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  m_pNextMain = m_pM->pNextMainIf(eOfKind);
+  if (! m_pNextMain)
+    return false;
+
+  U_vSetMember(m_pNextMain->eCard(),m_pNextMain);
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

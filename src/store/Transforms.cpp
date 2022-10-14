@@ -782,14 +782,14 @@ void Transforms::vRemove_sort_IfSameAs_gby(void)
 
   while (E_bEachMain(CK_SORT)) {
 
-    if (! E_bPrevMainIf(CK_AGGREG))
+    if (!H_bHasPriorMainIf(CK_AGGREG))
       return;
 
     m_p_gbyElist = m_p_aggreg->pSub_gbyElist();
     m_p_sbyElist = m_p_sort->pSub_sbyElist();
 
     if (m_p_gbyElist->bValuesSameRecursive(m_p_sbyElist)) {
-      E_vRemoveDelete(CK_SORT);
+      E_vRemoveDeleteMain(CK_SORT);
       break;
     }
   }
@@ -809,7 +809,7 @@ void Transforms::vDelete_absJoin(void)
   vDescription("delete superfluous <absJoin>'s"_Stz);
 
   while (E_bEachMain(CK_ABSJOIN))
-    E_vRemoveDelete(CK_ABSJOIN);
+    E_vRemoveDeleteMain(CK_ABSJOIN);
 
   vEndTransformation();
   vPrintBoard();
@@ -826,7 +826,7 @@ void Transforms::vDelete_combined(void)
   vDescription("delete superfluous <combined>'s"_Stz);
 
   while (E_bEachMain(CK_COMBINED))
-    E_vRemoveDelete(CK_COMBINED);
+    E_vRemoveDeleteMain(CK_COMBINED);
 
   vEndTransformation();
   vPrintBoard();
@@ -843,7 +843,7 @@ void Transforms::vDelete_send(void)
   vDescription("delete superfluous <send>'s"_Stz);
 
   while (E_bEachMain(CK_SEND))
-    E_vRemoveDelete(CK_SEND);
+    E_vRemoveDeleteMain(CK_SEND);
 
   vEndTransformation();
   vPrintBoard();
@@ -868,7 +868,7 @@ void Transforms::vDelete_Redundant_stage(void)
       p_stage_CURR = m_p_stage;
       continue;
     }
-    E_vRemoveDelete(CK_STAGE);
+    E_vRemoveDeleteMain(CK_STAGE);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -907,7 +907,7 @@ void Transforms::vDelete_Empty_where(void)
     m_p_calcBool = m_p_where->pSub_boolCalc();
 
     if (0 == m_p_calcBool->nChildCards()) {
-      E_vRemoveDelete(CK_WHERE);
+      E_vRemoveDeleteMain(CK_WHERE);
       break;
     }
   }

@@ -143,13 +143,16 @@ namespace STORE
     bool E_bEachMain(void);
     bool E_bEachMain(eCK eOfKind);
     bool E_bEachMain(eCK eOfKind, eCK eAndHasSub);
-    void E_vForward(void);
-    bool E_bMore(void);
-    bool E_bPrevMain(void);
-    bool E_bPrevMainIf(eCK eOfKind);
-    void E_vRemoveDelete(eCK eCrossCheck);
+    bool E_bMoreMain(void);
+    void E_vRemoveDeleteMain(eCK eCrossCheck);
+    void E_vSkipNextMain(void);
 
     Card* G_pGetMember(eCK eMember);
+
+    bool H_bHasPriorMain(void);
+    bool H_bHasPriorMainIf(eCK eOfKind);
+    bool H_bHasSubsequentMain(void);
+    bool H_bHasSubsequentMainIf(eCK eOfKind);
 
     void M_vRestart(void);
 
