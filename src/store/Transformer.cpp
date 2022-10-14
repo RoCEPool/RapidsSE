@@ -127,15 +127,15 @@ void Transformer::vPhase_1_ReducePipeline(void)
 
   m_pTransforms->vPhase((Stz*)__func__);
 
-  m_pTransforms->vDeleteAll_Duplicate_stage();
+  m_pTransforms->vDelete_Redundant_stage();
 
-  m_pTransforms->vDeleteAll_absJoin();
+  m_pTransforms->vDelete_absJoin();
 
-  m_pTransforms->vDeleteAll_combined();
+  m_pTransforms->vDelete_combined();
 
-  m_pTransforms->vDeleteAll_send();
+  m_pTransforms->vDelete_send();
 
-  m_pTransforms->vCullAll_scan();
+  m_pTransforms->vCull_scan_Leaving_table();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -147,11 +147,11 @@ void Transformer::vPhase_2_TableAnalysis(void)
 
   m_pTransforms->vPhase((Stz*)__func__);
 
-  m_pTransforms->vCalc_tableSyn_ForAll_table();
+  m_pTransforms->vAdd_tableSyn_ForAll_table();
 
-  m_pTransforms->vAddNew_tablePtn_UnderAll_table();
+  m_pTransforms->vAdd_tablePtn_UnderAll_table();
 
-  m_pTransforms->vAddNew_stream_UnderAll_table();
+  m_pTransforms->vAdd_stream_UnderAll_table();
 
   m_pTransforms->vCalc_ordinalRange_ForAll_stream();
 }
@@ -169,9 +169,9 @@ void Transformer::vPhase_3_WherePredicates(void)
 
   m_pTransforms->vMark_where_pred_Wrt_table();
 
-  m_pTransforms->vMoveMarked_where_pred_To_table_filter();
+  m_pTransforms->vMove_Marked_where_pred_To_table_filter();
 
-  m_pTransforms->vDeleteEmpty_where();
+  m_pTransforms->vDelete_Empty_where();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -183,15 +183,15 @@ void Transformer::vPhase_4_InitialJoin(void)
 
   m_pTransforms->vPhase((Stz*)__func__);
 
-  m_pTransforms->vAddNew_indexJoin_UnderAllJoinable_table();
+  m_pTransforms->vAdd_indexJoin_UnderAllJoinable_table();
 
-  m_pTransforms->vConvertAll_idxCol_name_To_idxCol_ord();
+  m_pTransforms->vConvert_idxCol_name_To_idxCol_ord();
 
-  m_pTransforms->vAddNew_joinPred_UnderAll_indexJoin();
+  m_pTransforms->vAdd_joinPred_UnderAll_indexJoin();
 
-  m_pTransforms->vCullAll_filter_pred_Of_indexJoin();
+  m_pTransforms->vCull_filter_pred_MovedUpTo_joinPred();
 
-  m_pTransforms->vDeleteAll_Empty_filter();
+  m_pTransforms->vDelete_Empty_filter();
 }
 
 /*----------------------------------------------------------------------------*/

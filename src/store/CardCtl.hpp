@@ -16,6 +16,7 @@ namespace STORE
 
     bool m_bPrintByKind;     // print card by kind (or the following settings...)
     bool m_bPrintName;       // print name of card
+    bool m_bPrintNo;         // print no of card
     bool m_bPrintValue;      // print value of card
     bool m_bPrintProperties; // print properties of card
     bool m_bPrintPptName;    // print name of properties for card?
@@ -58,6 +59,8 @@ namespace STORE
     void vHorizExclude(i8 i_Card, Stz* szHorizExclude);
     bool bPrintName(i8 i_Card);
     void vPrintName(i8 i_Card, bool bPrintName);
+    bool bPrintNo(i8 i_Card);
+    void vPrintNo(i8 i_Card, bool bPrintNo);
     bool bPrintValue(i8 i_Card);
     void vPrintValue(i8 i_Card, bool bPrintValue);
     bool bPrintPptName(i8 i_Card);

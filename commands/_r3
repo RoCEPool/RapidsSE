@@ -24,7 +24,7 @@ load customer "../tpch/sf_0001/customer.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/cue = "vPhase_1_ReducePipeline"
+/cue = "vCull_filter_pred_MovedUpTo_joinPred"
 /transliterated
 /transform
 /transform3

@@ -1002,17 +1002,17 @@ void Card::vPrintName(Ribbon* pRibbon, i8 iDepth, Stz* szCustomName)
     }
   }
   else {
-    if (szCustomName)
-      sName.vSprint("%s%lld]%s"_Stz,
+    if (pCardCtl->bPrintNo(m_eCard))
+      sName.vSprint("%s%lld]"_Stz,
                     Stz::szDots(iDepth - 1),
-                    m_iCardNo,
+                    m_iCardNo);
+    if (szCustomName)
+      sName.vSprintCat("%s"_Stz,
                     szCustomName);
     else
-      sName.vSprint("%s%lld]%s%s"_Stz,
-                    Stz::szDots(iDepth - 1),
-                    m_iCardNo,
-                    szCardNm(),
-                    sHiddenChildren.szStz());
+      sName.vSprintCat("%s%s"_Stz,
+                       szCardNm(),
+                       sHiddenChildren.szStz());
   }
 
   pRibbon->vSprint("%c%c%-18s"_Stz, m_cMark1, m_cMark2, sName.szStz());
@@ -1052,17 +1052,17 @@ void Card::vPrintNameValue(Ribbon* pRibbon, i8 iDepth)
 
   }
   else {
+    if (pCardCtl->bPrintNo(m_eCard))
+      sNameValue.vSprint("%s%lld]"_Stz,
+                    Stz::szDots(iDepth - 1),
+                    m_iCardNo);
     if (bHasValue())
-      sNameValue.vSprint("%s%lld]%s%s %s"_Stz,
-                       Stz::szDots(iDepth - 1),
-                       m_iCardNo,
+      sNameValue.vSprintCat("%s%s %s"_Stz,
                        sName.szStz(),
                        sHiddenChildren.szStz(),
                        szValue());
     else
-      sNameValue.vSprint("%s%lld]%s%s"_Stz,
-                         Stz::szDots(iDepth - 1),
-                         m_iCardNo,
+      sNameValue.vSprintCat("%s%s"_Stz,
                          sName.szStz(),
                          sHiddenChildren.szStz());
   }

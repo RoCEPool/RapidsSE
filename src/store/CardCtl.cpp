@@ -131,6 +131,28 @@ void CardCtl::vPrintName(i8 i_Card, bool bPrintName)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get bPrintName for card                                                    */
+/*----------------------------------------------------------------------------*/
+bool CardCtl::bPrintNo(i8 i_Card)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
+
+  bool bPrintNo = m_xaCardCtl[i_Card].m_bPrintNo;
+
+  return bPrintNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set bPrintName for card                                                    */
+/*----------------------------------------------------------------------------*/
+void CardCtl::vPrintNo(i8 i_Card, bool bPrintNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
+
+  m_xaCardCtl[i_Card].m_bPrintNo = bPrintNo;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get bPrintValue for card                                                   */
 /*----------------------------------------------------------------------------*/
 bool CardCtl::bPrintValue(i8 i_Card)
@@ -298,6 +320,7 @@ void CardCtl::vReset(void)
 
     m_xaCardCtl[i_Card].m_bPrintByKind     = false;
     m_xaCardCtl[i_Card].m_bPrintName       = true;
+    m_xaCardCtl[i_Card].m_bPrintNo         = true;
     m_xaCardCtl[i_Card].m_bPrintValue      = true;
     m_xaCardCtl[i_Card].m_bPrintProperties = true;
     m_xaCardCtl[i_Card].m_bPrintPptName    = true;
@@ -346,6 +369,8 @@ void CardCtl::vReset(void)
   vPrintByKind(CK_TABLEPTR,true);
   vPtrDetail(CK_TABLEPTR,0);
 
+  vPrintName(CK_TERM,false);
+  vPrintNo(CK_TERM,false);
   vPrintProperties(CK_TERM,false);
 }
 
