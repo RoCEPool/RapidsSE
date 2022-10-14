@@ -98,10 +98,11 @@ void PersistenceHelper::vWriteHeapBuffers(Heap* pHeap, File* pFile)
   
   pHeap->vGrabLock();
 
+  i8 nBuffCount = 0;
   for (HeapBuffer* pHeapBuffer = pHeap->pFirstBuffer();
        pHeapBuffer;
-       pHeapBuffer = pHeap->pNextBuffer(pHeapBuffer)) {
-    i8 mod = ((BitLib::uMaskOffUpper32((u8) pHeapBuffer)) / 10000) % iNumPtn;
+       pHeapBuffer = pHeap->pNextBuffer(pHeapBuffer), nBuffCount++) {
+    i8 mod = nBuffCount % iNumPtn;
     if(mod == iPtnOfNode) {
       bool bResult = pFile->bWriteBytes(pHeapBuffer,C_SIZE_POOL_BUFFER);
       ASSERT(bResult);
