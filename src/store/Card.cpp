@@ -1304,6 +1304,23 @@ void Card::vValue(Stz* szValue)
 }
 
 /*----------------------------------------------------------------------------*/
+/* sprint card value                                                          */
+/*----------------------------------------------------------------------------*/
+void Card::vValueSprint(Stz* szFormat, ...)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  s256 sValue;
+
+  va_list xArgs;
+  va_start(xArgs,szFormat);
+  StrLib::vSprint(sValue.azChar(),xArgs,(char*)szFormat);
+  va_end(xArgs);
+
+  vValue(sValue);
+}
+
+/*----------------------------------------------------------------------------*/
 /* are the two cards recursively the same                                     */
 /*----------------------------------------------------------------------------*/
 bool Card::bValuesSameRecursive(Card* pCard_b, i8 iDepth, bool bTestL0)
@@ -1535,6 +1552,23 @@ void Card::Y_vSet(Stz* szPpyNm)
     m_pProperties = new TagSet;
 
   m_pProperties->vReplace(szPpyNm, "yes"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint card property value                                                 */
+/*----------------------------------------------------------------------------*/
+void Card::Y_vSetSprint(Stz* szFormat, ...)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  s256 sPpyValue;
+
+  va_list xArgs;
+  va_start(xArgs,szFormat);
+  StrLib::vSprint(sPpyValue.azChar(),xArgs,(char*)szFormat);
+  va_end(xArgs);
+
+  Y_pVal(sPpyValue);
 }
 
 /*----------------------------------------------------------------------------*/

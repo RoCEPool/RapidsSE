@@ -129,10 +129,9 @@ void Dissector::vStage(i8 i_StageSpec)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-  s32 sRevisedStageNm;
-  Card_Stage::vFormStageNm(sRevisedStageNm,i_StageSpec);
 
-  Card_Stage* pCard_Stage = new Card_Stage(sRevisedStageNm);
+  Card_Stage* pCard_Stage = new Card_Stage;
+  pCard_Stage->vValueSprint("S%02lld"_Stz,i_StageSpec);
 
   Card_StageTopo* pCard_StageTopo = new Card_StageTopo(eStageTopo);
   pCard_Stage->vAppend(pCard_StageTopo);

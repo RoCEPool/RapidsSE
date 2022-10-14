@@ -247,6 +247,7 @@ namespace STORE
     Stz* sz(void);
     Stz* szValue(void);
     void vValue(Stz* szValue);
+    void vValueSprint(Stz* szFormat, ...);
     bool bValuesSameRecursive(Card* pCard_b, i8 iDepth= 0, bool bTestL0= false);
     void vVisitRecursive(eCK eCard, std::function<bool(Card* pCard)> bfApply);
 
@@ -265,6 +266,7 @@ namespace STORE
     void Y_vSet(Stz* szPpyNm);
     void Y_vSet(Stz* szPpyNm, Object* pPpyVal);
     void Y_vSet(Stz* szPpyNm, Stz* szPpyVal);
+    void Y_vSetSprint(Stz* szFormat, ...);
 
 
 

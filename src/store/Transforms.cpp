@@ -196,108 +196,7 @@ void Transforms::vAdd_scanPred(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* linearize stages                                                           */
-/*----------------------------------------------------------------------------*/
-//void Transforms::vReinstate_stages(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-//
-//  vTransformation(BK_QUERY,(char*)(__func__));
-//  vDescription("((replace with an explanation))"_Stz);
-//
-//  i8 iFilter    = 0;
-//  i8 iIndexJoin = 0;
-//  i8 iOther     = 0;
-//  i8 iProject   = 0;
-//  i8 iScan      = 0;
-//  i8 iSort      = 0;
-//  i8 iStage     = 0;
-//
-//  eYG eStageTopo = YG_NONE;
-//  Card_StageTopo* pCard_StageTopo = nullptr;
-//
-//  BoardIter xBI(m_pBoard);
-//  while ( (m_p_MainCard = xBI.pEachMain()) ) {
-//
-//    if (! xBI.bMore())
-//      break;
-//
-//    m_p_SubsequentToMain = xBI.pNextMain();
-//    m_e_SubsequentToMain = m_p_SubsequentToMain->eCard();
-//    if (CK_STAGE == m_e_SubsequentToMain)
-//      continue;
-//
-//    switch (eDecodeMain(m_p_MainCard)) {
-//
-//      case CK_FILTER:
-//        RASSERT(m_p_filter == m_p_MainCard);
-//        iFilter++;
-//
-//        if (CK_INDEXJOIN == m_e_SubsequentToMain)
-//          break;
-//
-//        m_pCard_child = m_p_stage->pDupCardAndSubCards();
-//        m_pDeck->vInsertAfter(m_pCard_child, m_p_filter);
-//        xBI.vForward();
-//        break;
-//
-//      case CK_INDEXJOIN:
-//        RASSERT(m_p_indexJoin == m_p_MainCard);
-//        iIndexJoin++;
-//
-//        if (CK_PROJECT == m_e_SubsequentToMain || CK_FILTER == m_e_SubsequentToMain)
-//          break;
-//
-//        m_pCard_dup = m_p_stage->pDupCardAndSubCards();
-//        m_pDeck->vInsertAfter(m_pCard_dup, m_p_indexJoin);
-//        xBI.vForward();
-//        break;
-//
-//      case CK_PROJECT:
-//        RASSERT(m_p_project == m_p_MainCard);
-//        iProject++;
-//
-//        m_pCard_dup = m_p_stage->pDupCardAndSubCards();
-//        m_pDeck->vInsertAfter(m_pCard_dup, m_p_project);
-//        xBI.vForward();
-//        break;
-//
-//      case CK_SCAN:
-//        RASSERT(m_p_scan == m_p_MainCard);
-//        iScan++;
-//        RASSERT(1 == iScan);
-//        break;
-//
-//      case CK_SORT:
-//        RASSERT(m_p_sort == m_p_MainCard);
-//        iSort++;
-//
-//        m_pCard_dup = m_p_stage->pDupCardAndSubCards();
-//        m_pDeck->vInsertAfter(m_pCard_dup, m_p_sort);
-//        xBI.vForward();
-//        break;
-//
-//      case CK_STAGE:
-//        RASSERT(m_p_stage == m_p_MainCard);
-//        iStage++;
-//
-//        m_p_stageTopo = m_p_stage->pSub_stageTopo();
-//        break;
-//
-//      default:
-//        iOther++;
-//        break;
-//    }
-//  }
-//
-//  i8 i_Stage = 1;
-//  xBI.vRestart();
-//  while ( (m_p_stage = _pCard_Stage(xBI.pEachMain(CK_STAGE))) )
-//    m_p_stage->vRenameStage(i_Stage++);
-//
-//  vEndTransformation();
-//  vPrintBoard();
-//}
+/* reinstate stages                                                           */
 /*----------------------------------------------------------------------------*/
 void Transforms::vReinstate_stages(void)
 {
@@ -320,13 +219,12 @@ void Transforms::vReinstate_stages(void)
 
     m_pCard_dup = m_p_stage->pDupCardAndSubCards();
     m_pDeck->vInsertAfter(m_pCard_dup, m_p_MainCard);
-    //E_vSkipNextMain();
   }
 
   i8 i_Stage = 1;
   M_vRestart();
   while (E_bEachMain(CK_STAGE))
-    m_p_stage->vRenameStage(i_Stage++);
+    m_p_stage->vValueSprint("S%02lld"_Stz,i_Stage++);
 
   vEndTransformation();
   vPrintBoard();
