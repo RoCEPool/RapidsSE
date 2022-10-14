@@ -332,9 +332,7 @@ void Transforms::vAdd_tableSyn_ForAll_table(void)
 
   char cTableSyn = 'a';
 
-  BoardIter xBI(m_pBoard);
-
-  while ( (m_p_table = _pCard_Table(xBI.pEachMain(CK_TABLE)) )) {
+  while (E_bEachMain(CK_TABLE))  {
 
     m_p_tablePtr = m_p_table->pSub_tablePtr();
     m_pTable = m_p_tablePtr->pTable();
@@ -385,10 +383,8 @@ void Transforms::vAdd_stream_UnderAll_table(void)
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("add a <stream> under every <table>"_Stz);
 
-  BoardIter xBI(m_pBoard);
-
   // E <scan>
-  while ((m_p_table = _pCard_Table(xBI.pEachMain(CK_TABLE)))) {
+  while (E_bEachMain(CK_TABLE)) {
 
     // ? <scan>/<tablePtr>
     if (! (m_p_tablePtr = m_p_table->pSub_tablePtr()))
@@ -411,9 +407,7 @@ void Transforms::vAdd_stream_UnderAll_table(void)
   vSetPrintByKind(CK_STREAM, true);
   vSetPrintProperties(CK_STREAM, false);
   vSetPrintSubCards(CK_STREAM, false);
-
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* calculate the ordinal $low..$high range for each <stream>                  */
@@ -429,9 +423,7 @@ void Transforms::vCalc_ordinalRange_ForAll_stream(void)
   i8 iOrdHi = C_UNKNOWN;
   i8 nStreamCols = C_UNKNOWN;
 
-  BoardIter xBI(m_pBoard);
-
-  while ((m_p_table = _pCard_Table(xBI.pEachMain(CK_TABLE)))) {
+  while (E_bEachMain(CK_TABLE)) {
 
     m_p_stream = m_p_table->pSub_stream();
 
