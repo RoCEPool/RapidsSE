@@ -339,10 +339,11 @@ void Transforms::vAdd_tableSyn_ForAll_table(void)
     m_p_tablePtr = m_p_table->pSub_tablePtr();
     m_pTable = m_p_tablePtr->pTable();
 
-    m_p_table->vMark1('`');
+    m_p_table->vMark1(MARK_CHANGED);
     char cTableSyn_actual = cTableSyn;
     if (m_pTable->bIsReplicated())
-      cTableSyn_actual += 'A'-'a';
+      cTableSyn_actual = StrLib::cToUpper(cTableSyn_actual);
+
     m_p_table->Y_vSet(P_TableSyn, cTableSyn_actual);
 
     cTableSyn++;
@@ -441,7 +442,7 @@ void Transforms::vCalc_ordinalRange_ForAll_stream(void)
     m_p_stream->Y_vSet(P_OrdHi, iOrdHi);
     iOrdLo = iOrdHi + 1;
 
-    m_p_stream->vMark1('`');
+    m_p_stream->vMark1(MARK_CHANGED);
   }
 
   vEndTransformation();
@@ -717,7 +718,7 @@ void Transforms::vCull_filter_pred_MovedUpTo_joinPred(void)
 
     m_p_calcBool = m_p_filter->pSub_boolCalc();
 
-    m_p_calcBool->vCullPred('^');
+    m_p_calcBool->vCullPred(MARK_UPWARDS);
   }
 
   //m_pCardCtl->vPrintSubCards(CK_STREAM, true);
@@ -1242,7 +1243,7 @@ void Transforms::vAdd_joinPred_UnderAll_indexJoin(void)
       NEVER_REACH
     }
 
-    m_p_cmpPred->vMark1('^');
+    m_p_cmpPred->vMark1(MARK_UPWARDS);
     m_p_term = new Card_Term(m_p_cmpPred->sz());
     m_p_joinPred->vAppend(m_p_term);
   }
@@ -1549,7 +1550,7 @@ void Transforms::vPromote_scan_To_indexScan(void)
 /*----------------------------------------------------------------------------*/
 /* convert all <table> into either <scan> or <indexJoin>                      */
 /*----------------------------------------------------------------------------*/
-void Transforms::vConvertAll_table_To_scan_Or_indexJoin(void)
+void Transforms::vConvert_table_To_scan_Or_indexJoin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1692,7 +1693,7 @@ void Transforms::vMarkPredDrillDown(Card_PRED* p_pred)
     cWhichTable =
         cMovePredLeftwards(p_pred);
     if (C_UNKNOWN != cWhichTable) {
-      p_pred->vMark1('@');
+      p_pred->vMark1(MARK_ASSIGNED);
       p_pred->vMark2(cWhichTable);
     }
     return;
@@ -1715,7 +1716,7 @@ void Transforms::vMarkPredDrillDown(Card_PRED* p_pred)
     i8 iStream_1 = pSubCard_1->cMark2() - '0';
 
     if (iStream_0 == iStream_1) {
-      p_pred->vMark1('@');
+      p_pred->vMark1(MARK_ASSIGNED);
       p_pred->vMark2(iStream_0);
     }
 
@@ -1800,7 +1801,7 @@ bool Transforms::bCopyPredDrillDown(Card_PRED* pCard_pred, Card_BoolCalc* p_calc
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  if ('@' == pCard_pred->cMark1()) {
+  if (MARK_ASSIGNED == pCard_pred->cMark1()) {
     Card* pMainCard;
 //    i8 iStream = pCard_pred->iMark2();
 //    Card_Stream* pCard_stream = m_pBoard->pFindStreamCard(iStream,pMainCard);

@@ -17,12 +17,12 @@
           </elementProp>
           <elementProp name="SF" elementType="Argument">
             <stringProp name="Argument.name">SF</stringProp>
-            <stringProp name="Argument.value">50</stringProp>
+            <stringProp name="Argument.value">100</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="QUERY_LOOP_COUNT" elementType="Argument">
             <stringProp name="Argument.name">QUERY_LOOP_COUNT</stringProp>
-            <stringProp name="Argument.value">10</stringProp>
+            <stringProp name="Argument.value">3</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
@@ -949,7 +949,7 @@ dload lineitem paths
             <stringProp name="scriptLanguage">groovy</stringProp>
           </JSR223Sampler>
           <hashTree/>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="validateRowCount_SF100" enabled="false">
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="validateRowCount_SF100" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">false</boolProp>
           </TransactionController>
@@ -1195,252 +1195,6 @@ dload lineitem paths
             </ResultCollector>
             <hashTree/>
           </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="validateRowCount_SF50" enabled="true">
-            <boolProp name="TransactionController.includeTimers">false</boolProp>
-            <boolProp name="TransactionController.parent">false</boolProp>
-          </TransactionController>
-          <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="countLineitem" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">SELECT COUNT(*) FROM lineitem;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames">lineitemCount</stringProp>
-            </JDBCSampler>
-            <hashTree>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="assertLineitemCount" enabled="true">
-                <collectionProp name="Asserion.test_strings">
-                  <stringProp name="1135319350">300005811</stringProp>
-                </collectionProp>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                <boolProp name="Assertion.assume_success">false</boolProp>
-                <intProp name="Assertion.test_type">8</intProp>
-                <stringProp name="Assertion.scope">variable</stringProp>
-                <stringProp name="Scope.variable">lineitemCount_1</stringProp>
-              </ResponseAssertion>
-              <hashTree/>
-            </hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="countOrders" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">SELECT COUNT(*) FROM orders;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames">ordersCount</stringProp>
-            </JDBCSampler>
-            <hashTree>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="assertOrdersCount" enabled="true">
-                <collectionProp name="Asserion.test_strings">
-                  <stringProp name="-1716618658">75000000</stringProp>
-                </collectionProp>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                <boolProp name="Assertion.assume_success">false</boolProp>
-                <intProp name="Assertion.test_type">8</intProp>
-                <stringProp name="Assertion.scope">variable</stringProp>
-                <stringProp name="Scope.variable">ordersCount_1</stringProp>
-              </ResponseAssertion>
-              <hashTree/>
-            </hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="countPartsupp" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">SELECT COUNT(*) FROM partsupp;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames">partsuppCount</stringProp>
-            </JDBCSampler>
-            <hashTree>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="assertPartsuppCount" enabled="true">
-                <collectionProp name="Asserion.test_strings">
-                  <stringProp name="1502333820">40000000</stringProp>
-                </collectionProp>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                <boolProp name="Assertion.assume_success">false</boolProp>
-                <intProp name="Assertion.test_type">8</intProp>
-                <stringProp name="Assertion.scope">variable</stringProp>
-                <stringProp name="Scope.variable">partsuppCount_1</stringProp>
-              </ResponseAssertion>
-              <hashTree/>
-            </hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="countPart" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">SELECT COUNT(*) FROM part;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames">partCount</stringProp>
-            </JDBCSampler>
-            <hashTree>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="assertPartCount" enabled="true">
-                <collectionProp name="Asserion.test_strings">
-                  <stringProp name="568870111">10000000</stringProp>
-                </collectionProp>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                <boolProp name="Assertion.assume_success">false</boolProp>
-                <intProp name="Assertion.test_type">8</intProp>
-                <stringProp name="Assertion.scope">variable</stringProp>
-                <stringProp name="Scope.variable">partCount_1</stringProp>
-              </ResponseAssertion>
-              <hashTree/>
-            </hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="countCustomer" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">SELECT COUNT(*) FROM customer;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames">customerCount</stringProp>
-            </JDBCSampler>
-            <hashTree>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="assertCustomerCount" enabled="true">
-                <collectionProp name="Asserion.test_strings">
-                  <stringProp name="-1163753454">7500000</stringProp>
-                </collectionProp>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                <boolProp name="Assertion.assume_success">false</boolProp>
-                <intProp name="Assertion.test_type">8</intProp>
-                <stringProp name="Assertion.scope">variable</stringProp>
-                <stringProp name="Scope.variable">customerCount_1</stringProp>
-              </ResponseAssertion>
-              <hashTree/>
-            </hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="countSupplier" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">SELECT COUNT(*) FROM supplier;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames">supplierCount</stringProp>
-            </JDBCSampler>
-            <hashTree>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="assertSupplierCount" enabled="true">
-                <collectionProp name="Asserion.test_strings">
-                  <stringProp name="1563151643">500000</stringProp>
-                </collectionProp>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                <boolProp name="Assertion.assume_success">false</boolProp>
-                <intProp name="Assertion.test_type">8</intProp>
-                <stringProp name="Assertion.scope">variable</stringProp>
-                <stringProp name="Scope.variable">supplierCount_1</stringProp>
-              </ResponseAssertion>
-              <hashTree/>
-            </hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="countNation" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">SELECT COUNT(*) FROM nation;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames">nationCount</stringProp>
-            </JDBCSampler>
-            <hashTree>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="assertNationCount" enabled="true">
-                <collectionProp name="Asserion.test_strings">
-                  <stringProp name="1603">25</stringProp>
-                </collectionProp>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                <boolProp name="Assertion.assume_success">false</boolProp>
-                <intProp name="Assertion.test_type">8</intProp>
-                <stringProp name="Assertion.scope">variable</stringProp>
-                <stringProp name="Scope.variable">nationCount_1</stringProp>
-              </ResponseAssertion>
-              <hashTree/>
-            </hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="countRegion" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">SELECT COUNT(*) FROM region;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames">regionCount</stringProp>
-            </JDBCSampler>
-            <hashTree>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="assertRegionCount" enabled="true">
-                <collectionProp name="Asserion.test_strings">
-                  <stringProp name="53">5</stringProp>
-                </collectionProp>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-                <boolProp name="Assertion.assume_success">false</boolProp>
-                <intProp name="Assertion.test_type">8</intProp>
-                <stringProp name="Assertion.scope">variable</stringProp>
-                <stringProp name="Scope.variable">regionCount_1</stringProp>
-              </ResponseAssertion>
-              <hashTree/>
-            </hashTree>
-            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
-              <boolProp name="ResultCollector.error_logging">false</boolProp>
-              <objProp>
-                <name>saveConfig</name>
-                <value class="SampleSaveConfiguration">
-                  <time>false</time>
-                  <latency>true</latency>
-                  <timestamp>true</timestamp>
-                  <success>true</success>
-                  <label>true</label>
-                  <code>false</code>
-                  <message>true</message>
-                  <threadName>false</threadName>
-                  <dataType>false</dataType>
-                  <encoding>false</encoding>
-                  <assertions>false</assertions>
-                  <subresults>true</subresults>
-                  <responseData>false</responseData>
-                  <samplerData>false</samplerData>
-                  <xml>false</xml>
-                  <fieldNames>true</fieldNames>
-                  <responseHeaders>false</responseHeaders>
-                  <requestHeaders>false</requestHeaders>
-                  <responseDataOnError>false</responseDataOnError>
-                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
-                  <assertionsResultsToSave>0</assertionsResultsToSave>
-                  <connectTime>true</connectTime>
-                </value>
-              </objProp>
-              <stringProp name="filename">validateRowCount.csv</stringProp>
-            </ResultCollector>
-            <hashTree/>
-          </hashTree>
           <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="false">
             <stringProp name="cacheKey">true</stringProp>
             <stringProp name="filename"></stringProp>
@@ -1452,7 +1206,7 @@ dload lineitem paths
         </hashTree>
         <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="TPC-H Pipeline Queries" enabled="true"/>
         <hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="false">
             <stringProp name="cacheKey">true</stringProp>
             <stringProp name="filename"></stringProp>
             <stringProp name="parameters"></stringProp>
@@ -1460,7 +1214,7 @@ dload lineitem paths
             <stringProp name="scriptLanguage">groovy</stringProp>
           </JSR223Sampler>
           <hashTree/>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P1Loop" enabled="true">
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P1Loop" enabled="false">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
           </LoopController>

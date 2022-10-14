@@ -67,9 +67,9 @@ Card* BoardIter::pEachMain(void)
 
   i8 i_Main;
 
-  m_pCurrChild = pEachMain(i_Main);
+  m_pChild = pEachMain(i_Main);
 
-  return m_pCurrChild;
+  return m_pChild;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -85,15 +85,15 @@ Card* BoardIter::pEachMain(i8& ri_Main)
     m_i_Child++;
 
   if (m_i_Child >= m_pCard_Deck->nChildCards()) {
-    m_pCurrChild = nullptr;
+    m_pChild = nullptr;
     ri_Main = C_UNKNOWN;
     return nullptr;
   }
 
-  m_pCurrChild = m_pCard_Deck->pGetChild(m_i_Child);
+  m_pChild = m_pCard_Deck->pGetChild(m_i_Child);
   ri_Main = m_i_Child;
 
-  return m_pCurrChild;
+  return m_pChild;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -111,15 +111,15 @@ Card* BoardIter::pEachMain(eCK eCard)
   for (;;) {
 
     if (m_i_Child >= m_pCard_Deck->nChildCards()) {
-      m_pCurrChild = nullptr;
+      m_pChild = nullptr;
       return nullptr;
     }
 
-    m_pCurrChild =  m_pCard_Deck->pGetChild(m_i_Child);
+    m_pChild =  m_pCard_Deck->pGetChild(m_i_Child);
 
-    eCK eCardMain = m_pCurrChild->eCard();
+    eCK eCardMain = m_pChild->eCard();
     if (eCardMain == eCard) {
-      return m_pCurrChild;
+      return m_pChild;
     }
     m_i_Child++;
   }
@@ -220,8 +220,8 @@ void BoardIter::vRemoveCard(Card* pCard)
 {
   _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
 
-  if (pCard == m_pCurrChild) {
-    vRemoveCurr(m_pCurrChild->eCard());
+  if (pCard == m_pChild) {
+    vRemoveCurr(m_pChild->eCard());
     return;
   }
 
@@ -235,13 +235,13 @@ void BoardIter::vRemoveCurr(eCK eCrossCheck)
 {
   _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
 
-  RASSERT(eCrossCheck == m_pCurrChild->eCard());
-  m_pCard_Deck->vRemoveChild(m_pCurrChild);
+  RASSERT(eCrossCheck == m_pChild->eCard());
+  m_pCard_Deck->vRemoveChild(m_pChild);
   m_i_Child--;
   if (m_i_Child < m_pCard_Deck->nChildCards())
-    m_pCurrChild =  m_pCard_Deck->pGetChild(m_i_Child);
+    m_pChild =  m_pCard_Deck->pGetChild(m_i_Child);
   else
-    m_pCurrChild = nullptr;
+    m_pChild = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -251,14 +251,14 @@ void BoardIter::vRemoveDeleteCurr(eCK eCrossCheck)
 {
   _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
 
-  RASSERT(eCrossCheck == m_pCurrChild->eCard());
-  m_pCard_Deck->vRemoveChild(m_pCurrChild);
-  delete m_pCurrChild;
+  RASSERT(eCrossCheck == m_pChild->eCard());
+  m_pCard_Deck->vRemoveChild(m_pChild);
+  delete m_pChild;
   m_i_Child--;
   if (m_i_Child < m_pCard_Deck->nChildCards())
-    m_pCurrChild =  m_pCard_Deck->pGetChild(m_i_Child);
+    m_pChild =  m_pCard_Deck->pGetChild(m_i_Child);
   else
-    m_pCurrChild = nullptr;
+    m_pChild = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -269,7 +269,7 @@ void BoardIter::vRestart(void)
   _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
 
   m_i_Child    = C_UNKNOWN;
-  m_pCurrChild = nullptr;
+  m_pChild = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -282,9 +282,9 @@ void BoardIter::vSet(Card* pCurrMain)
   m_i_Child = m_pCard_Deck->iFindChild(pCurrMain);
 
   if (C_UNKNOWN == m_i_Child)
-    m_pCurrChild = nullptr;
+    m_pChild = nullptr;
   else
-    m_pCurrChild = pCurrMain;
+    m_pChild = pCurrMain;
 }
 
 
@@ -296,7 +296,7 @@ void BoardIter::vSet(i8 i_Main, Card* pCurrMain)
   _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
 
   m_i_Child = i_Main;
-  m_pCurrChild = pCurrMain;
+  m_pChild = pCurrMain;
 }
 
 /*============================================================================*/

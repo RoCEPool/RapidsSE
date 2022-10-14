@@ -102,6 +102,8 @@ void Card_IdxColList::vOrdinate(Card_Stream* pCard_Stream)
     s32 sOrdinal;
     sOrdinal.vSprint("$%lld"_Stz,iOrdLo+i_StreamColNo);
     pCard_idxCol->vValue(sOrdinal);
+
+    pCard_idxCol->vMark1(MARK_CHANGED);
   }
 }
 

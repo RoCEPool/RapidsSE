@@ -169,7 +169,7 @@ class JobRunner:
                     if self.current_test_runner is not None:
                         errmsg = "" if job_timed_out else ""
                         self.current_test_runner.result.set_test_ended(False, False, stderr=errmsg)
-                        self.current_test_runner.copy_jmeter_logs()
+                        self.current_test_runner.collect_test_artifacts()
                         self.test_results.append(self.current_test_runner.result)
 
         except errors.Ec2InstanceTimeoutError as e:

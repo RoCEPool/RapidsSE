@@ -230,7 +230,7 @@ void Transformer::vPhase_5_JoinOrdering(void)
   m_pTransforms->vExtract_joinOrderSeq();
   */
 
-  m_pTransforms->vConvertAll_table_To_scan_Or_indexJoin();
+  m_pTransforms->vConvert_table_To_scan_Or_indexJoin();
 }
 
 /*----------------------------------------------------------------------------*/
