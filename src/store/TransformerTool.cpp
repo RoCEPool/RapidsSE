@@ -46,6 +46,7 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_pNextMain   = nullptr;
   m_pNewCard    = nullptr;
   m_pPoppedCard = nullptr;
+  m_pPrevMain   = nullptr;
 
   m_p_absJoin          = nullptr;
   m_p_aggreg           = nullptr;
@@ -595,6 +596,34 @@ bool TransformerTool::E_bEachMain(eCK eOfKind, eCK eAndHasSub)
   U_vSetMember(eAndHasSub, nullptr);
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool TransformerTool::E_bPrevMain(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  m_pPrevMain = m_pM->pPrevMain();
+  if (! m_pPrevMain)
+    return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool TransformerTool::E_bPrevMainIf(eCK eOfKind)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  m_pPrevMain = m_pM->pPrevMainIf(eOfKind);
+  if (! m_pPrevMain)
+    return false;
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

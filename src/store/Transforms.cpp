@@ -1538,9 +1538,7 @@ void Transforms::vConvert_table_To_scan_Or_indexJoin(void)
 
   Card_Deck* p_board = m_pBoard->pCard_Deck();
 
-  BoardIter xBI(m_pBoard);
-
-  while ((m_p_table = _pCard_Table(xBI.pEachMain(CK_TABLE)))) {
+  while (E_bEachMain(CK_TABLE)) {
 
     m_p_indexJoin = m_p_table->pSub_indexJoin();
     if (! m_p_indexJoin) {

@@ -50,6 +50,7 @@ namespace STORE
     Card* m_pNewCard;
     Card* m_pNextMain;
     Card* m_pPoppedCard;
+    Card* m_pPrevMain;
 
     Card_AbsJoin*          m_p_absJoin;
     Card_Aggreg*           m_p_aggreg;
@@ -145,6 +146,8 @@ namespace STORE
     bool E_bEachMain(void);
     bool E_bEachMain(eCK eOfKind);
     bool E_bEachMain(eCK eOfKind, eCK eAndHasSub);
+    bool E_bPrevMain(void);
+    bool E_bPrevMainIf(eCK eOfKind);
     void E_vRemoveDelete(eCK eCrossCheck);
 
     bool S_bSearchMember(eCK eMember, eCK eForSubCard);
