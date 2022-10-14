@@ -342,7 +342,8 @@ void Transforms::vAdd_tableSyn_ForAll_table(void)
     m_p_table->vMark1(MARK_CHANGED);
     char cTableSyn_actual = cTableSyn;
     if (m_pTable->bIsReplicated())
-      cTableSyn_actual += 'A'-'a';
+      cTableSyn_actual = StrLib::cToUpper(cTableSyn_actual);
+
     m_p_table->Y_vSet(P_TableSyn, cTableSyn_actual);
 
     cTableSyn++;
