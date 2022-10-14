@@ -599,6 +599,29 @@ bool TransformerTool::E_bEachMain(eCK eOfKind, eCK eAndHasSub)
 }
 
 /*----------------------------------------------------------------------------*/
+/* are there more children?                                                   */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::E_vForward(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  m_pM->vForward();
+}
+
+/*----------------------------------------------------------------------------*/
+/* are there more children?                                                   */
+/*----------------------------------------------------------------------------*/
+bool TransformerTool::E_bMore(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  if (m_pM->bMore())
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 bool TransformerTool::E_bPrevMain(void)

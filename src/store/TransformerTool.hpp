@@ -143,6 +143,8 @@ namespace STORE
     bool E_bEachMain(void);
     bool E_bEachMain(eCK eOfKind);
     bool E_bEachMain(eCK eOfKind, eCK eAndHasSub);
+    void E_vForward(void);
+    bool E_bMore(void);
     bool E_bPrevMain(void);
     bool E_bPrevMainIf(eCK eOfKind);
     void E_vRemoveDelete(eCK eCrossCheck);
