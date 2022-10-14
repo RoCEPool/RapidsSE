@@ -43,10 +43,10 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_pChildCard  = nullptr;
   m_pDupCard    = nullptr;
   m_pMainCard   = nullptr;
-  m_pNextMain   = nullptr;
+  m_pSubsequentMain   = nullptr;
   m_pNewCard    = nullptr;
   m_pPoppedCard = nullptr;
-  m_pPrevMain   = nullptr;
+  m_pPriorMain   = nullptr;
 
   m_p_absJoin          = nullptr;
   m_p_aggreg           = nullptr;
@@ -634,15 +634,16 @@ void TransformerTool::E_vRemoveDeleteMain(eCK eCrossCheck)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool TransformerTool::H_bHasPriorMain(void)
+bool TransformerTool::H_bHasPriorMain(bool bSetMember)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  m_pPrevMain = m_pM->pPrevMain();
-  if (! m_pPrevMain)
+  m_pPriorMain = m_pM->pPrevMain();
+  if (! m_pPriorMain)
     return false;
 
-  U_vSetMember(m_pPrevMain->eCard(),m_pPrevMain);
+  if (bSetMember)
+    U_vSetMember(m_pPriorMain->eCard(), m_pPriorMain);
 
   return true;
 }
@@ -650,15 +651,16 @@ bool TransformerTool::H_bHasPriorMain(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool TransformerTool::H_bHasPriorMainIf(eCK eOfKind)
+bool TransformerTool::H_bHasPriorMainIf(eCK eOfKind, bool bSetMember)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  m_pPrevMain = m_pM->pPrevMainIf(eOfKind);
-  if (! m_pPrevMain)
+  m_pPriorMain = m_pM->pPrevMainIf(eOfKind);
+  if (! m_pPriorMain)
     return false;
 
-  U_vSetMember(m_pPrevMain->eCard(),m_pPrevMain);
+  if (bSetMember)
+    U_vSetMember(m_pPriorMain->eCard(), m_pPriorMain);
 
   return true;
 }
@@ -666,15 +668,16 @@ bool TransformerTool::H_bHasPriorMainIf(eCK eOfKind)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool TransformerTool::H_bHasSubsequentMain(void)
+bool TransformerTool::H_bHasSubsequentMain(bool bSetMember)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  m_pNextMain = m_pM->pNextMain();
-  if (! m_pNextMain)
+  m_pSubsequentMain = m_pM->pNextMain();
+  if (! m_pSubsequentMain)
     return false;
 
-  U_vSetMember(m_pNextMain->eCard(),m_pNextMain);
+  if (bSetMember)
+    U_vSetMember(m_pSubsequentMain->eCard(), m_pSubsequentMain);
 
   return true;
 }
@@ -682,15 +685,16 @@ bool TransformerTool::H_bHasSubsequentMain(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool TransformerTool::H_bHasSubsequentMainIf(eCK eOfKind)
+bool TransformerTool::H_bHasSubsequentMainIf(eCK eOfKind, bool bSetMember)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  m_pNextMain = m_pM->pNextMainIf(eOfKind);
-  if (! m_pNextMain)
+  m_pSubsequentMain = m_pM->pNextMainIf(eOfKind);
+  if (! m_pSubsequentMain)
     return false;
 
-  U_vSetMember(m_pNextMain->eCard(),m_pNextMain);
+  if (bSetMember)
+    U_vSetMember(m_pSubsequentMain->eCard(), m_pSubsequentMain);
 
   return true;
 }

@@ -71,9 +71,9 @@ void Transforms::vReinstate_combined(void)
   i8 nMainCards = _deck_->nChildCards();
   while ( (m_pMainCard = xBI.pEachMain()) ) {
 
-    m_pNextMain = xBI.pNextMain();
-    if (m_pNextMain)
-      m_eNextMain = m_pNextMain->eCard();
+    m_pSubsequentMain = xBI.pNextMain();
+    if (m_pSubsequentMain)
+      m_eNextMain = m_pSubsequentMain->eCard();
     else
       m_eNextMain = CK_NONE;
 
@@ -222,8 +222,8 @@ void Transforms::vReinstate_stages(void)
     if (! xBI.bMore())
       break;
 
-    m_pNextMain = xBI.pNextMain();
-    m_eNextMain = m_pNextMain->eCard();
+    m_pSubsequentMain = xBI.pNextMain();
+    m_eNextMain = m_pSubsequentMain->eCard();
     if (CK_STAGE == m_eNextMain)
       continue;
 
@@ -782,7 +782,7 @@ void Transforms::vRemove_sort_IfSameAs_gby(void)
 
   while (E_bEachMain(CK_SORT)) {
 
-    if (!H_bHasPriorMainIf(CK_AGGREG))
+    if (!H_bHasPriorMainIf(CK_AGGREG,C_SET_MEMBER))
       return;
 
     m_p_gbyElist = m_p_aggreg->pSub_gbyElist();

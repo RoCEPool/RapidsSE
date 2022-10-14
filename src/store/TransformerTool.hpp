@@ -14,6 +14,8 @@ namespace STORE
   {
   protected:
 
+    static const bool C_SET_MEMBER = true;
+
     Bench*      m_pBench;
     Board*      m_pBoard;
     Board*      m_pBoard_costEst;
@@ -48,9 +50,9 @@ namespace STORE
     Card* m_pDupCard;
     Card* m_pMainCard;
     Card* m_pNewCard;
-    Card* m_pNextMain;
+    Card* m_pSubsequentMain;
     Card* m_pPoppedCard;
-    Card* m_pPrevMain;
+    Card* m_pPriorMain;
 
     Card_AbsJoin*          m_p_absJoin;
     Card_Aggreg*           m_p_aggreg;
@@ -149,10 +151,10 @@ namespace STORE
 
     Card* G_pGetMember(eCK eMember);
 
-    bool H_bHasPriorMain(void);
-    bool H_bHasPriorMainIf(eCK eOfKind);
-    bool H_bHasSubsequentMain(void);
-    bool H_bHasSubsequentMainIf(eCK eOfKind);
+    bool H_bHasPriorMain(bool bSetMember = false);
+    bool H_bHasPriorMainIf(eCK eOfKind, bool bSetMember = false);
+    bool H_bHasSubsequentMain(bool bSetMember = false);
+    bool H_bHasSubsequentMainIf(eCK eOfKind, bool bSetMember = false);
 
     void M_vRestart(void);
 
