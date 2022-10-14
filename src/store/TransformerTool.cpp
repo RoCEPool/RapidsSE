@@ -545,7 +545,7 @@ void TransformerTool::U_vSetMember(eCK eCard, Card* pCard)
 /*----------------------------------------------------------------------------*/
 /* step to next main and set member                                           */
 /*----------------------------------------------------------------------------*/
-bool TransformerTool::E_bEachMember(void)
+bool TransformerTool::E_bEachMain(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 

@@ -645,9 +645,7 @@ void Transforms::vConvert_idxCol_name_To_idxCol_ord(void)
 
   _deck_->vClearMarksRecursive();
 
-  BoardIter xBI(m_pBoard);
-
-  while ((m_p_table = _pCard_Table(xBI.pEachMain(CK_TABLE)))) {
+  while (E_bEachMain(CK_TABLE)) {
     if (! (m_p_indexJoin = m_p_table->pSub_indexJoin()))
       continue;
 
@@ -702,9 +700,7 @@ void Transforms::vCull_filter_pred_MovedUpTo_joinPred(void)
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("remove <table>/<filter>//<pred> that are now <table>/<joinPred>//<pred>"_Stz);
 
-  BoardIter xBI(m_pBoard);
-
-  while ((m_p_table = _pCard_Table(xBI.pEachMain(CK_TABLE)))) {
+  while (E_bEachMain(CK_TABLE)) {
     if (! (m_p_filter = m_p_table->pSub_filter()))
       continue;
 
@@ -909,13 +905,11 @@ void Transforms::vDelete_Empty_where(void)
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("delete <where> if it is effectively empty"_Stz);
 
-  BoardIter xBI(m_pBoard);
-
-  while ((m_p_where = _pCard_Where(xBI.pEachMain(CK_WHERE)))) {
+  while (E_bEachMain(CK_WHERE)) {
     m_p_calcBool = m_p_where->pSub_boolCalc();
 
     if (0 == m_p_calcBool->nChildCards()) {
-      xBI.vRemoveDeleteCurr(CK_WHERE);
+      E_vRemoveDelete(CK_WHERE);
       break;
     }
   }
@@ -934,19 +928,16 @@ void Transforms::vDelete_Empty_filter(void)
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("delete any <table>/<filter> which is effectively empty"_Stz);
 
-  BoardIter xBI(m_pBoard);
-
-  while (Card *pCard_main = xBI.pEachMain()) {
-
-    Card_Filter* pCard_filter_sub = pCard_main->pSub_filter();
-    if (! pCard_filter_sub)
+  while (E_bEachMain()) {
+    m_p_filter = m_pMainCard->pSub_filter();
+    if (! m_p_filter)
       continue;
 
-    if (! pCard_filter_sub->bIsEmptyFilter())
+    if (! m_p_filter->bIsEmptyFilter())
       continue;
 
-    pCard_main->vRemoveChild(pCard_filter_sub);
-    delete pCard_filter_sub;
+    m_pMainCard->vRemoveChild(m_p_filter);
+    DELETE_CARD(m_p_filter);
   }
 
   vEndTransformation();
@@ -1187,9 +1178,7 @@ void Transforms::vAdd_joinPred_UnderAll_indexJoin(void)
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("add a <joinPred> under each <indexJoin>"_Stz);
 
-  BoardIter xBI(m_pBoard);
-
-  while ((m_p_table = _pCard_Table(xBI.pEachMain(CK_TABLE)))) {
+  while (E_bEachMain(CK_TABLE)) {
     if (! (m_p_filter = m_p_table->pSub_filter()))
       continue;
 
@@ -1347,9 +1336,7 @@ void Transforms::vAdd_indexJoin_UnderAllJoinable_table(void)
 
   _deck_->vClearMarksRecursive();
 
-  BoardIter xBI(m_pBoard);
-
-  while ((m_p_table = _pCard_Table(xBI.pEachMain(CK_TABLE)))) {
+  while (E_bEachMain(CK_TABLE)) {
 
     if (! (m_p_filter = m_p_table->pSub_filter()))
       continue;

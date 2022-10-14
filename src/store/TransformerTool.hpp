@@ -142,7 +142,7 @@ namespace STORE
     void N_vNewMember(eCK eCard, Stz* szValue);
     void U_vSetMember(eCK eCard, Card* pCard);
 
-    bool E_bEachMember(void);
+    bool E_bEachMain(void);
     bool E_bEachMain(eCK eOfKind);
     bool E_bEachMain(eCK eOfKind, eCK eAndHasSub);
     void E_vRemoveDelete(eCK eCrossCheck);
