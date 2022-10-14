@@ -780,18 +780,16 @@ void Transforms::vRemove_sort_IfSameAs_gby(void)
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("remove <sort> if <sbyElist> is the same as the <gbyElist>"_Stz);
 
-  BoardIter xBI(m_pBoard);
+  while (E_bEachMain(CK_SORT)) {
 
-  while ( (m_p_sort = _pCard_Sort(xBI.pEachMain(CK_SORT))) ) {
-
-    if (! (m_p_aggreg = _pCard_Aggreg(xBI.pPrevMainIf(CK_AGGREG))) )
+    if (! E_bPrevMainIf(CK_AGGREG))
       return;
 
     m_p_gbyElist = m_p_aggreg->pSub_gbyElist();
     m_p_sbyElist = m_p_sort->pSub_sbyElist();
 
     if (m_p_gbyElist->bValuesSameRecursive(m_p_sbyElist)) {
-      xBI.vRemoveDeleteCurr(CK_SORT);
+      E_vRemoveDelete(CK_SORT);
       break;
     }
   }

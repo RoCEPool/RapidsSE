@@ -609,6 +609,8 @@ bool TransformerTool::E_bPrevMain(void)
   if (! m_pPrevMain)
     return false;
 
+  U_vSetMember(m_pPrevMain->eCard(),m_pPrevMain);
+
   return true;
 }
 
@@ -622,6 +624,8 @@ bool TransformerTool::E_bPrevMainIf(eCK eOfKind)
   m_pPrevMain = m_pM->pPrevMainIf(eOfKind);
   if (! m_pPrevMain)
     return false;
+
+  U_vSetMember(m_pPrevMain->eCard(),m_pPrevMain);
 
   return true;
 }
