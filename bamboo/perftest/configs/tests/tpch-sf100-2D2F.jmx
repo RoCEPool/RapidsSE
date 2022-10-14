@@ -256,9 +256,9 @@ c5ad.8xlarge</stringProp>
   L_TAX           DECIMAL(15,2) NOT NULL,
   L_RETURNFLAG    CHAR(1)       NOT NULL,
   L_LINESTATUS    CHAR(1)       NOT NULL,
-  L_SHIPDATE      TIMESTAMP     NOT NULL,
-  L_COMMITDATE    TIMESTAMP     NOT NULL,
-  L_RECEIPTDATE   TIMESTAMP     NOT NULL,
+  L_SHIPDATE      DATE          NOT NULL,
+  L_COMMITDATE    DATE          NOT NULL,
+  L_RECEIPTDATE   DATE          NOT NULL,
   L_SHIPINSTRUCT  CHAR(25)      NOT NULL,
   L_SHIPMODE      CHAR(10)      NOT NULL,
   L_COMMENT       VARCHAR(44)   NOT NULL
@@ -280,7 +280,7 @@ c5ad.8xlarge</stringProp>
    O_CUSTKEY         INTEGER       NOT NULL,
    O_ORDERSTATUS     CHAR(1)       NOT NULL,
    O_TOTALPRICE      DECIMAL(15,2) NOT NULL,
-   O_ORDERDATE       TIMESTAMP     NOT NULL,
+   O_ORDERDATE       DATE          NOT NULL,
    O_ORDERPRIORITY   CHAR(15)      NOT NULL,
    O_CLERK           CHAR(15)      NOT NULL,
    O_SHIPPRIORITY    INTEGER       NOT NULL,
@@ -1139,7 +1139,7 @@ dload lineitem paths
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="assertLineitemCount" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="-1386995174">600037902</stringProp>
+                  <stringProp name="10754333">600037902</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -1165,7 +1165,7 @@ dload lineitem paths
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="assertOrdersCount" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="711421220">150000000</stringProp>
+                  <stringProp name="579221388">150000000</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -1191,7 +1191,7 @@ dload lineitem paths
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="assertPartsuppCount" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="-419395528">80000000</stringProp>
+                  <stringProp name="-116359432">80000000</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -1217,7 +1217,7 @@ dload lineitem paths
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="assertPartCount" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="-1449450318">20000000</stringProp>
+                  <stringProp name="-1983286850">20000000</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -1243,7 +1243,7 @@ dload lineitem paths
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="assertCustomerCount" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="2101159052">15000000</stringProp>
+                  <stringProp name="711421220">15000000</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
@@ -1269,7 +1269,7 @@ dload lineitem paths
             <hashTree>
               <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="assertSupplierCount" enabled="true">
                 <collectionProp name="Asserion.test_strings">
-                  <stringProp name="1448635039">1000000</stringProp>
+                  <stringProp name="1958013297">1000000</stringProp>
                 </collectionProp>
                 <stringProp name="Assertion.custom_message"></stringProp>
                 <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
