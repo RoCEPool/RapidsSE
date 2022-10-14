@@ -156,6 +156,7 @@ namespace STORE
     void E_vRemoveMain(eCK eCrossCheck);
     void E_vRemoveDeleteMain(eCK eCrossCheck);
     void E_vSkipNextMain(bool bClearMembers=false, bool bClearRegisters=false);
+    void E_vSubsequentToMain(bool bUpdateMember = false);
 
     Card* F_pFetchMember(eCK eMember);
 

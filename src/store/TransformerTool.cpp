@@ -476,6 +476,24 @@ void TransformerTool::E_vRemoveDeleteMain(eCK eCrossCheck)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is there a card immediately after current main card?                       */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::E_vSubsequentToMain(bool bUpdateMember)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  if ((m_p_SubsequentToMain = m_pM->pNextMain())) {
+    m_e_SubsequentToMain = m_p_SubsequentToMain->eCard();
+    if (bUpdateMember)
+      U_vUpdateMember(m_e_SubsequentToMain, m_p_SubsequentToMain);
+    return;
+  }
+
+  m_e_SubsequentToMain = CK_NONE;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* fetch M member by decoding given eMember                                   */
 /*----------------------------------------------------------------------------*/
 Card* TransformerTool::F_pFetchMember(eCK eMember)

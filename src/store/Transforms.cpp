@@ -58,68 +58,24 @@ void Transforms::vReinstate_combined(void)
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("((replace with an explanation))"_Stz);
 
-  i8 iAggreg    = 0;
-  i8 iIndexJoin = 0;
-  i8 iFilter    = 0;
-  i8 iOther     = 0;
-  i8 iProject   = 0;
-  i8 iScan      = 0;
-  i8 iSort      = 0;
+  while (E_bEachMain()) {
 
-  BoardIter xBI(m_pBoard);
+    E_vSubsequentToMain();
+    if (CK_INDEXJOIN == m_e_MainCard && (CK_AGGREG == m_e_SubsequentToMain ||
+                                         CK_FILTER == m_e_SubsequentToMain ||
+                                         CK_PROJECT == m_e_SubsequentToMain))
+      continue;
 
-  i8 nMainCards = m_pDeck->nChildCards();
-  while ( (m_p_MainCard = xBI.pEachMain()) ) {
+    if (! (CK_AGGREG    == m_e_MainCard ||
+           CK_FILTER    == m_e_MainCard ||
+           CK_INDEXJOIN == m_e_MainCard ||
+           CK_PROJECT   == m_e_MainCard ||
+           CK_SORT      == m_e_MainCard))
+      continue;
 
-    m_p_SubsequentToMain = xBI.pNextMain();
-    if (m_p_SubsequentToMain)
-      m_e_SubsequentToMain = m_p_SubsequentToMain->eCard();
-    else
-      m_e_SubsequentToMain = CK_NONE;
-
-    switch (eDecodeMain(m_p_MainCard)) {
-
-      case CK_AGGREG:
-        RASSERT(m_p_aggreg == m_p_MainCard);
-        iAggreg++;
-        m_p_combined = new Card_Combined;
-        m_pDeck->vInsertAfter(m_p_combined, m_p_aggreg);
-        break;
-
-      case CK_FILTER:
-        RASSERT(m_p_filter == m_p_MainCard);
-        iFilter++;
-        m_p_combined = new Card_Combined;
-        m_pDeck->vInsertAfter(m_p_combined, m_p_filter);
-        break;
-
-      case CK_INDEXJOIN:
-        RASSERT(m_p_indexJoin == m_p_MainCard);
-        iIndexJoin++;
-        if (CK_AGGREG == m_e_SubsequentToMain || CK_FILTER == m_e_SubsequentToMain || CK_PROJECT == m_e_SubsequentToMain)
-          break;
-        m_p_combined = new Card_Combined;
-        m_pDeck->vInsertAfter(m_p_combined, m_p_indexJoin);
-        break;
-
-      case CK_PROJECT:
-        RASSERT(m_p_project == m_p_MainCard);
-        iProject++;
-        m_p_combined = new Card_Combined;
-        m_pDeck->vInsertAfter(m_p_combined, m_p_project);
-        break;
-
-      case CK_SORT:
-        RASSERT(m_p_sort == m_p_MainCard);
-        iSort++;
-        m_p_combined = new Card_Combined;
-        m_pDeck->vInsertAfter(m_p_combined, m_p_sort);
-        break;
-
-      default:
-        iOther++;
-        break;
-    }
+    m_p_combined = new Card_Combined;
+    m_pDeck->vInsertAfter(m_p_combined, m_p_MainCard);
+    E_vSkipNextMain();
   }
 
   vSetPrintSubCards(CK_AGGELIST, true);
