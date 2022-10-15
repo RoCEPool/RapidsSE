@@ -260,6 +260,25 @@ void Card::vAppendMain(Card* pNewMainCard, bool bRenumber)
 }
 
 /*----------------------------------------------------------------------------*/
+/* visit all sub-cards of given eToSubs and apply lambda function               */
+/*----------------------------------------------------------------------------*/
+void Card::vApplyRecursive(eCK eToSubs, std::function<bool(Card* pCard)> bfApply)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (eToSubs == m_eCard) {
+    bool bContinue = bfApply(this);
+    if (! bContinue)
+      return;
+  }
+
+  CardIter xCI(this);
+  while (Card* pChildCard = xCI.pEachChild()) {
+    pChildCard->vApplyRecursive(eToSubs, bfApply);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* set bearing                                                                */
 /*----------------------------------------------------------------------------*/
 void Card::vBearing(void)
@@ -1356,25 +1375,6 @@ bool Card::bValuesSameRecursive(Card* pCard_b, i8 iDepth, bool bTestL0)
   }
 
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* visit all sub-cards of given eCard and apply lambda function               */
-/*----------------------------------------------------------------------------*/
-void Card::vVisitRecursive(eCK eCard, std::function<bool(Card* pCard)> bfApply)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  eCK eTest = this->eCard();
-  if (eTest == eCard) {
-    bool b = bfApply(this);
-  }
-
-  i8 nChildren = nChildCards();
-  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
-    Card* pChildCard = pGetChild(i_Child);
-    pChildCard->vVisitRecursive(eCard, bfApply);
-  }
 }
 
 /*----------------------------------------------------------------------------*/

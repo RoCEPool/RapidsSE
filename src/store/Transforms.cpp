@@ -143,7 +143,7 @@ void Transforms::vAdd_scanPred(void)
 
     // - - - - - - - - -
 
-    m_p_filter->vVisitRecursive(CK_CMPPRED, bfX);
+    m_p_filter->vApplyRecursive(CK_CMPPRED, bfX);
 
   }
 
@@ -1285,20 +1285,18 @@ void Transforms::vMark_scan_pred_bounds(void)
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("((replace with an explanation))"_Stz);
 
-  auto bfPredBounds = [](Card* pCard) {
-    Card_CmpPred* p_predCmp = _pCard_CmpPred(pCard);
-    p_predCmp->vMarkBound();
-    return true;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bfMarkPredBounds = [](Card* pCard) {
+    Card_CmpPred* p_cmpPred = _pCard_CmpPred(pCard);
+    p_cmpPred->vMarkBound();
+    return C_CONTINUE_RECURSION;
   };
 
-  // - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  BoardIter xBI(m_pBoard);
-
-  while ( (m_p_MainCard = xBI.pEachMain(CK_TABLE)) ) {
-    if (! (m_p_filter = m_p_MainCard->pSub_filter()) )
-      continue;
-    m_p_filter->vVisitRecursive(CK_CMPPRED, bfPredBounds);
+  while (E_bEachMainWithSub(CK_SCAN,CK_FILTER)) {
+    m_p_filter->vApplyRecursive(CK_CMPPRED, bfMarkPredBounds);
   }
 
   vEndTransformation();
@@ -1364,7 +1362,7 @@ void Transforms::vMark_scan_pred_ordinals(void)
     };
     // - - - - - - - - -
 
-    m_p_filter->vVisitRecursive(CK_TERM, bfPredBounds);
+    m_p_filter->vApplyRecursive(CK_TERM, bfPredBounds);
   }
 
   vEndTransformation();

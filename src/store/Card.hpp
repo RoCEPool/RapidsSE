@@ -131,6 +131,9 @@ static char MARK_UPWARDS    = '^';
 
 namespace STORE
 {
+  static const bool C_CONTINUE_RECURSION  = true;
+  static const bool C_TERMINATE_RECURSION = false;
+
   class Card : public Object
              , public ChildCards
   {
@@ -181,6 +184,7 @@ namespace STORE
 
     void vAppendDupSubCards(Card* pFromCard);
     void vAppendMain(Card* pNewMainCard, bool bRenumber= true);
+    void vApplyRecursive(eCK eToSubs, std::function<bool(Card* pCard)> bfApply);
 
     void vBearing(void);
     void vBearing(Card* pParentCard);
@@ -249,7 +253,6 @@ namespace STORE
     void vValue(Stz* szValue);
     void vValueSprint(Stz* szFormat, ...);
     bool bValuesSameRecursive(Card* pCard_b, i8 iDepth= 0, bool bTestL0= false);
-    void vVisitRecursive(eCK eCard, std::function<bool(Card* pCard)> bfApply);
 
     Stz* Y_szNm(i8 i_Property);
     char Y_cVal(i8 i_Property);

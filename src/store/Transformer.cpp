@@ -256,8 +256,8 @@ void Transformer::vPhase_6_IndexScan(void)
 
   m_pTransforms->vConvert_idxCol_name_Of_scan_To_idxCol_ord();
 
-  /*
   m_pTransforms->vMark_scan_pred_bounds();
+  /*
   m_pTransforms->vMark_scan_pred_ordinals();
 
   m_pTransforms->vAdd_scanPred();

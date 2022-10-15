@@ -24,7 +24,7 @@ load customer "../tpch/sf_0001/customer.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/cue = "vConvert_idxCol_name_Of_scan_To_idxCol_ord"
+/cue = "vMark_scan_pred_bounds"
 /transliterated
 /transform
 /transform3

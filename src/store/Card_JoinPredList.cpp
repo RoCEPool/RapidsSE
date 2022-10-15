@@ -78,7 +78,7 @@ void Card_JoinPredList::vExtract_joinPredList(Card_BoolCalc* p_calcBool)
 
   // - - - - - - - - -
 
-  p_calcBool->vVisitRecursive(CK_CMPPRED, bfExtract);
+  p_calcBool->vApplyRecursive(CK_CMPPRED, bfExtract);
 
 }
 

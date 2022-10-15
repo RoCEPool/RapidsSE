@@ -98,7 +98,7 @@ Card* CardIter::pChild(void)
 /*----------------------------------------------------------------------------*/
 bool CardIter::bEachChild(void)
 {
-  _precondition_( _MAGIC_, CN_BOARDITER, _FOOTER_);
+  _precondition_( _MAGIC_, _FOOTER_);
 
   if (pEachChild())
     return true;
@@ -111,7 +111,7 @@ bool CardIter::bEachChild(void)
 /*----------------------------------------------------------------------------*/
 Card* CardIter::pEachChild(void)
 {
-  _precondition_( _MAGIC_, CN_BOARDITER, _FOOTER_);
+  _precondition_( _MAGIC_, _FOOTER_);
 
   i8 i_Main;
 
@@ -125,7 +125,7 @@ Card* CardIter::pEachChild(void)
 /*----------------------------------------------------------------------------*/
 Card* CardIter::pEachChild(i8& ri_Main)
 {
-  _precondition_( _MAGIC_, CN_BOARDITER, _FOOTER_);
+  _precondition_( _MAGIC_, _FOOTER_);
 
   if (C_UNKNOWN == m_i_Child)
     m_i_Child = 0;
