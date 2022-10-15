@@ -36,7 +36,8 @@ namespace STORE
     void vCompute_coPtnPredList(void);
     void vCompute_crossPtnJoinList(void);
     void vCompute_ptndJoinSet(void);
-    void vConvert_idxCol_name_To_idxCol_ord(void);
+    void vConvert_idxCol_name_Of_scan_To_idxCol_ord(void);
+    void vConvert_idxCol_name_Of_table_To_idxCol_ord(void);
     void vConvert_where_calc_To_where_calcBool(void);
     void vCopy_ptndJoinSet(void);
     void vCull_filter_pred_MovedUpTo_joinPred(void);

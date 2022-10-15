@@ -185,7 +185,7 @@ void Transformer::vPhase_4_InitialJoin(void)
 
   m_pTransforms->vAdd_indexJoin_UnderAllJoinable_table();
 
-  m_pTransforms->vConvert_idxCol_name_To_idxCol_ord();
+  m_pTransforms->vConvert_idxCol_name_Of_table_To_idxCol_ord();
 
   m_pTransforms->vAdd_joinPred_UnderAll_indexJoin();
 
@@ -252,8 +252,11 @@ void Transformer::vPhase_6_IndexScan(void)
  *
  */
 
-/*
   m_pTransforms->vAppend_indexList_ToAll_scan();
+
+  m_pTransforms->vConvert_idxCol_name_Of_scan_To_idxCol_ord();
+
+  /*
   m_pTransforms->vMark_scan_pred_bounds();
   m_pTransforms->vMark_scan_pred_ordinals();
 

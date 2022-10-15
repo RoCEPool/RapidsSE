@@ -239,21 +239,18 @@ void Transforms::vAdd_tableSyn_ForAll_table(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* append <indexList> to <scan>                                               */
 /*----------------------------------------------------------------------------*/
 void Transforms::vAppend_indexList_ToAll_scan(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__));
-  vDescription("((replace with an explanation))"_Stz);
+  vDescription("append <indexList> to <scan>"_Stz);
 
-  BoardIter xBI(m_pBoard);
-
-  while ( (m_p_table = _pCard_Table(xBI.pEachMain(CK_TABLE))) ) {
-    m_p_tablePtr = m_p_table->pSub_tablePtr();
+  while (E_bEachMainWithSub(CK_SCAN,CK_TABLEPTR)) {
     if ( (m_p_indexList = m_p_tablePtr->pNew_indexList()) )
-      m_p_table->vAppend(m_p_indexList);
+      m_p_scan->vAppend(m_p_indexList);
   }
 
   vEndTransformation();
@@ -523,7 +520,28 @@ void Transforms::vConvert_where_calc_To_where_calcBool(void)
 /*----------------------------------------------------------------------------*/
 /* convert the column name in every <idxCol> to a $streamOrdinal              */
 /*----------------------------------------------------------------------------*/
-void Transforms::vConvert_idxCol_name_To_idxCol_ord(void)
+void Transforms::vConvert_idxCol_name_Of_scan_To_idxCol_ord(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTransformation(BK_QUERY,(char*)(__func__));
+  vDescription("convert the column name in every <idxCol> to a $streamOrdinal"_Stz);
+
+  m_pDeck->vClearMarksRecursive();
+
+  while (E_bEachMainWithSub(CK_SCAN,CK_IDXCOLLIST)) {
+    m_p_stream = m_p_scan->pSub_stream();
+    m_p_idxColList->vOrdinate(m_p_stream);
+  }
+
+  vEndTransformation();
+  vPrintBoard();
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert the column name in every <idxCol> to a $streamOrdinal              */
+/*----------------------------------------------------------------------------*/
+void Transforms::vConvert_idxCol_name_Of_table_To_idxCol_ord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
