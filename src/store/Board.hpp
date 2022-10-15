@@ -143,7 +143,7 @@ namespace STORE
 
     eBK eBoard(void);
     CardCtl* pCardCtl(void);
-    Card_Deck* pCard_Deck(void);
+    Card_Deck* pDeck(void);
 
     void vDuplicateBoard(Board* pBoard_arg);
 

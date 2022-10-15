@@ -27,6 +27,8 @@ namespace STORE
 
     void  vApplyMain(eCK eCard, std::function<void(Card* pCard)> vfApply);
 
+    void vChangeBoard(Board* pBoard);
+
     Card* pEachMain(void);
     Card* pEachMain(i8& ri_Main);
     Card* pEachMain(eCK eCard);

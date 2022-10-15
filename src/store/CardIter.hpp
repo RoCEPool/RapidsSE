@@ -25,8 +25,8 @@ namespace STORE
     CardIter(eCN eClass, Card* pCard);
    ~CardIter(void) noexcept(false);
 
+    void vChangeCard(Card* pCard);
     i8 i_Child(void);
-
     Card* pChild(void);
 
     bool  bEachChild(void);

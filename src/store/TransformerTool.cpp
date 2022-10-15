@@ -42,6 +42,7 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_pCard_dup    = nullptr;
   m_pCard_new    = nullptr;
   m_pCard_popped = nullptr;
+  m_pCard_temp   = nullptr;
 
   // the M iterator - - - - - - - - - - - - - - - - - - - - - -
   m_pM = new BoardIter(m_pBoard);
@@ -234,7 +235,7 @@ void TransformerTool::vTransformation(eBK eBoard,
 
   RASSERT(eBoard == m_pBoard->eBoard());
 
-  m_pDeck = m_pBoard->pCard_Deck();
+  m_pDeck = m_pBoard->pDeck();
   m_pM->vRestart();
 
   m_sTranformation = azTranformation;
@@ -256,6 +257,19 @@ i8 TransformerTool::iTransformNoInc(void)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* swap to a different board                                                  */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::vSwapToBoard(eBK eBoard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  m_pBoard = m_pBench->pGetBoard(eBoard);
+  m_pDeck  = m_pBoard->pDeck();
+
+  m_pM->vChangeBoard(m_pBoard);
+}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

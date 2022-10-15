@@ -20,12 +20,12 @@ __aFooterFunction(BoardIter)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 BoardIter::BoardIter(Board* pBoard)
-: CardIter(CN_BOARDITER, pBoard->pCard_Deck())
+: CardIter(CN_BOARDITER, pBoard->pDeck())
 {
   _precondition_(_MAGIC_,CN_BOARDITER,_FOOTER_);
 
   m_pBoard = pBoard;
-  m_pCard_Deck = m_pBoard->pCard_Deck();
+  m_pCard_Deck = m_pBoard->pDeck();
 
   _checkInitialised_(CN_BOARDITER);
   
@@ -56,6 +56,20 @@ void BoardIter::vApplyMain(eCK eCard, std::function<void(Card* pCard)> vfApply)
   while (Card* pCard = pEachMain(eCard))
     vfApply(pCard);
 
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void BoardIter::vChangeBoard(Board* pBoard)
+{
+  _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
+
+  m_pBoard = pBoard;
+
+  vChangeCard(m_pBoard->pDeck());
+
+  vRestart();
 }
 
 /*----------------------------------------------------------------------------*/

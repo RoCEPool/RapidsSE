@@ -1415,7 +1415,7 @@ void Transforms::vConvert_table_To_scan_Or_indexJoin(void)
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("convert all <table> into either <scan> or <indexJoin>"_Stz);
 
-  Card_Deck* p_board = m_pBoard->pCard_Deck();
+  Card_Deck* p_board = m_pBoard->pDeck();
 
   while (E_bEachMain(CK_TABLE)) {
 

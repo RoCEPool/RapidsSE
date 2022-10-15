@@ -14,17 +14,11 @@ namespace STORE
   {
   protected:
 
-    static const bool C_UPDATE_MEMBER = true;
     static const bool C_DONT_PRINT = false;
+    static const bool C_UPDATE_MEMBER = true;
 
     Bench*      m_pBench;
     CardCtl*    m_pCardCtl;
-
-    Board*      m_pBoard;
-    Board*      m_pBoard_costEst;
-    Board*      m_pBoard_partition;
-    Board*      m_pBoard_permute;
-    Board*      m_pBoard_query;
 
     i8          m_iTransformNo;
     bool        m_bPrintTransformation;
@@ -40,12 +34,19 @@ namespace STORE
     IdxVec*     m_pIdxVec;
     Index*      m_pIndex;
 
-    Card_Deck* m_pDeck;
+    Board*      m_pBoard;
+    Card_Deck*  m_pDeck;
+
+    Board*      m_pBoard_costEst;
+    Board*      m_pBoard_partition;
+    Board*      m_pBoard_permute;
+    Board*      m_pBoard_query;
 
     Card* m_pCard_child;
     Card* m_pCard_dup;
     Card* m_pCard_new;
     Card* m_pCard_popped;
+    Card* m_pCard_temp;
 
     // the M iterator - - - - - - - - - - - - - - - - - - - - -
     BoardIter* m_pM;
@@ -141,6 +142,7 @@ namespace STORE
     i8   iTransformNoInc(void);
 
   protected:
+    void vSwapToBoard(eBK eBoard);
     void vSetupCostEstBoard(void);
     void vSetupPartitionBoard(void);
     void vSetupPermuteBoard(void);

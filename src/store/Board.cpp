@@ -94,7 +94,7 @@ CardCtl* Board::pCardCtl(void)
 /*----------------------------------------------------------------------------*/
 /* get card subSet                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Deck* Board::pCard_Deck(void)
+Card_Deck* Board::pDeck(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
