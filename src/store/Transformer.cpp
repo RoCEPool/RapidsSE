@@ -258,7 +258,7 @@ void Transformer::vPhase_6_IndexScan(void)
 
   m_pTransforms->vMark_scan_pred_bounds();
 
-  m_pTransforms->vMark_scan_pred_ordinals();
+  m_pTransforms->vMark_scan_cmpPred_WhichMatchIndex();
  /*
   m_pTransforms->vAdd_scanPred();
   m_pTransforms->vCull_markedPred();

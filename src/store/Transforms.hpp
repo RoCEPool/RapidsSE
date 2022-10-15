@@ -62,7 +62,7 @@ namespace STORE
     void vAdd_indexJoin_UnderAllJoinable_table(void);
     void vDelete_Redundant_stage(void);
     void vMark_scan_pred_bounds(void);
-    void vMark_scan_pred_ordinals(void);
+    void vMark_scan_cmpPred_WhichMatchIndex(void);
     void vMove_Marked_where_pred_To_table_filter(void);
     void vPromote_scan_To_indexScan(void);
     void vConvert_table_To_scan_Or_indexJoin(void);

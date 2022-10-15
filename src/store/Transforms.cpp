@@ -1304,58 +1304,40 @@ void Transforms::vMark_scan_pred_bounds(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* mark the <SCAN>//<filter>//cmpPred> which match index ordinals             */
 /*----------------------------------------------------------------------------*/
-void Transforms::vMark_scan_pred_ordinals(void)
+void Transforms::vMark_scan_cmpPred_WhichMatchIndex(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(BK_QUERY,(char*)(__func__));
-  vDescription("((replace with an explanation))"_Stz);
+  vDescription("mark the <SCAN>//<filter>//cmpPred> which match index ordinals"_Stz);
 
-  BoardIter xBI(m_pBoard);
+  while (E_bEachMainWithSub(CK_SCAN,CK_FILTER)) {
 
-  while ( (m_p_MainCard = xBI.pEachMain(CK_SCAN)) ) {
-    if (! (m_p_filter = m_p_MainCard->pSub_filter()) )
+    if (! (m_p_indexList = m_p_MainCard->pSub_indexList()))
       continue;
-
-    Card_Stream* p_stream = m_p_MainCard->pSub_stream();
-    if (! p_stream)
-      continue;
-
-    Card_IndexList* p_indexList = m_p_MainCard->pSub_indexList();
-    if (! p_indexList)
-      continue;
-
-    Card_IndexPtr* p_indexPtr = _pCard_IndexPtr(p_indexList->pGetChild(0));
-    if (! p_indexPtr)
+    if (! (m_p_indexPtr = _pCard_IndexPtr(m_p_indexList->pGetChild(0))))
       continue;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    auto bfPredBounds = [this,p_stream,p_indexPtr](Card* pCard) {
+    Card_IndexPtr* p_indexPtr = m_p_indexPtr;
+
+    auto bfPredBounds = [this,p_indexPtr](Card* pCard) {
       Card_Term* p_term = _pCard_Term(pCard);
 
       Stz* szTerm = p_term->sz();
       if (!szTerm->bIsStreamColOrd())
         return C_CONTINUE_RECURSION;
 
-      vTrace("vMark_scan_pred_ordinals:: %s\n"_Stz,p_term->sz());
-
-//      this->m_p_streamCol = p_stream->pGet_streamCol(szTerm);
-//      if (! m_p_streamCol)
-//        return C_CONTINUE_RECURSION;
-//
-//      Stz* szColNm = m_p_streamCol->szStreamColNm();
-//      vTrace("vMark_scan_pred_ordinals:: %s\n"_Stz,szColNm);
+      vTrace("vMark_scan_cmpPred_WhichMatchIndex:: %s\n"_Stz,p_term->sz());
 
       i8 i_IdxCol = C_UNKNOWN;
-      m_p_idxCol = p_indexPtr->pFind_indexCol(szTerm, i_IdxCol);
-
-      if (! m_p_idxCol)
+      if (! (m_p_idxCol = m_p_indexPtr->pFind_indexCol(szTerm, i_IdxCol)))
         return C_CONTINUE_RECURSION;
 
-      vTrace("vMark_scan_pred_ordinals:: %lld\n"_Stz,i_IdxCol);
+      vTrace("vMark_scan_cmpPred_WhichMatchIndex:: %lld\n"_Stz,i_IdxCol);
 
       p_term->vMark1('I');
       p_term->vMark2(i_IdxCol);

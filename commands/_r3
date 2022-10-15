@@ -24,7 +24,7 @@ load customer "../tpch/sf_0001/customer.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/cue = "vMark_scan_pred_ordinals"
+/cue = "vMark_scan_cmpPred_WhichMatchIndex"
 /transliterated
 /transform
 /transform3
