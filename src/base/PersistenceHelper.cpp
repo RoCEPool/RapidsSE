@@ -150,6 +150,8 @@ void PersistenceHelper::vWritePersistentHeaps(Stz* sFilePath)
 //  vTrace("Writing persistent large heap\n"_Stz);
   vWriteHeapBuffers(AM::pHeaps()->Persistent.m_pLarge, pFile);
 
+  pFile->vFlush();
+
   pFile->vClose();
   delete pFile;
 

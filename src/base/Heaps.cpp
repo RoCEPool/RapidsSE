@@ -496,16 +496,16 @@ void Heaps::vInit(void)
 {
   if(gxCmdLineArgs.m_xSysArgs.m_bReload) {
     Timer oTimer;
-    if(AM::AM::TRACE::bVerbose(C_VB_BOOT)) {
+//    if(AM::AM::TRACE::bVerbose(C_VB_BOOT)) {
       oTimer.vStart();
-    }
+//    }
 
     vReloadPHeaps();
 
-    if(AM::AM::TRACE::bVerbose(C_VB_BOOT)) {
+//    if(AM::AM::TRACE::bVerbose(C_VB_BOOT)) {
       oTimer.vUpdate();
-      vTrace("Loading of Persistent Heap: %lldms\n"_Stz,oTimer.iMilliseconds());
-    }
+      vTrace("Loading of Persistent Heaps from disk took %lldms\n"_Stz,oTimer.iMilliseconds());
+//    }
   } else {
     // create the persistent heaps
     Persistent.m_pTiny   =
