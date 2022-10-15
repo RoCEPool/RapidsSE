@@ -24,7 +24,7 @@ namespace STORE
     bool        m_bPrintTransformation;
     bool        m_bInteractive;
     s32         m_sPhase;
-    s256        m_sTranformation;
+    s256        m_sTransformation;
     s256        m_sDescription;
 
     PermGen*    m_pPermGen;
@@ -138,11 +138,12 @@ namespace STORE
     void vSetPrintSubCards(eCK eCard, bool bPrintSubCards);
 
     Stz* szTransformation(void);
-    void vTransformation(eBK eBoard, char* azTranformation, bool bPrintTransformation=true);
+    void vTransformation(eBK eBoard, char* azTransformation, bool bPrintTransformation=true);
     i8   iTransformNoInc(void);
 
   protected:
     void vSwapToBoard(eBK eBoard);
+    void vSetupBoard(eBK eBoard);
     void vSetupCostEstBoard(void);
     void vSetupPartitionBoard(void);
     void vSetupPermuteBoard(void);
