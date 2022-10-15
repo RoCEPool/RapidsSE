@@ -61,7 +61,13 @@ void CardCtl::vNextHorizon(i8 i_Card, bool bNextHoriz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 
-  m_xaCardCtl[i_Card].m_bNextHoriz = bNextHoriz;
+  if (i_Card) {
+    m_xaCardCtl[i_Card].m_bNextHoriz = bNextHoriz;
+    return;
+  }
+
+  for (i_Card = 1; i_Card < CK_ENUMS; i_Card++)
+    m_xaCardCtl[i_Card].m_bNextHoriz = bNextHoriz;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -83,7 +89,13 @@ void CardCtl::vPrintByKind(i8 i_Card, bool bPrintByKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 
-  m_xaCardCtl[i_Card].m_bPrintByKind = bPrintByKind;
+  if (i_Card) {
+    m_xaCardCtl[i_Card].m_bPrintByKind = bPrintByKind;
+    return;
+  }
+
+  for (i_Card = 1; i_Card < CK_ENUMS; i_Card++)
+    m_xaCardCtl[i_Card].m_bPrintByKind = bPrintByKind;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -105,7 +117,13 @@ void CardCtl::vHorizExclude(i8 i_Card, Stz* szHorizExclude)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 
-  m_xaCardCtl[i_Card].m_sHorizExclude = szHorizExclude;
+  if (i_Card) {
+    m_xaCardCtl[i_Card].m_sHorizExclude = szHorizExclude;
+    return;
+  }
+
+  for (i_Card = 1; i_Card < CK_ENUMS; i_Card++)
+    m_xaCardCtl[i_Card].m_sHorizExclude = szHorizExclude;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -127,7 +145,13 @@ void CardCtl::vPrintName(i8 i_Card, bool bPrintName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 
-  m_xaCardCtl[i_Card].m_bPrintName = bPrintName;
+  if (i_Card) {
+    m_xaCardCtl[i_Card].m_bPrintName = bPrintName;
+    return;
+  }
+
+  for (i_Card = 1; i_Card < CK_ENUMS; i_Card++)
+    m_xaCardCtl[i_Card].m_bPrintName = bPrintName;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -149,7 +173,13 @@ void CardCtl::vPrintNo(i8 i_Card, bool bPrintNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 
-  m_xaCardCtl[i_Card].m_bPrintNo = bPrintNo;
+  if (i_Card) {
+    m_xaCardCtl[i_Card].m_bPrintNo = bPrintNo;
+    return;
+  }
+
+  for (i_Card = 1; i_Card < CK_ENUMS; i_Card++)
+    m_xaCardCtl[i_Card].m_bPrintNo = bPrintNo;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -171,7 +201,13 @@ void CardCtl::vPrintValue(i8 i_Card, bool bPrintValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 
-  m_xaCardCtl[i_Card].m_bPrintValue = bPrintValue;
+  if (i_Card) {
+    m_xaCardCtl[i_Card].m_bPrintValue = bPrintValue;
+    return;
+  }
+
+  for (i_Card = 1; i_Card < CK_ENUMS; i_Card++)
+    m_xaCardCtl[i_Card].m_bPrintValue = bPrintValue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -193,7 +229,13 @@ void CardCtl::vPrintPptName(i8 i_Card, bool bPrintPptName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 
-  m_xaCardCtl[i_Card].m_bPrintPptName = bPrintPptName;
+  if (i_Card) {
+    m_xaCardCtl[i_Card].m_bPrintPptName = bPrintPptName;
+    return;
+  }
+
+  for (i_Card = 1; i_Card < CK_ENUMS; i_Card++)
+    m_xaCardCtl[i_Card].m_bPrintPptName = bPrintPptName;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -215,7 +257,13 @@ void CardCtl::vPrintProperties(i8 i_Card, bool bPrintProperties)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 
-  m_xaCardCtl[i_Card].m_bPrintProperties = bPrintProperties;
+  if (i_Card) {
+    m_xaCardCtl[i_Card].m_bPrintProperties = bPrintProperties;
+    return;
+  }
+
+  for (i_Card = 1; i_Card < CK_ENUMS; i_Card++)
+    m_xaCardCtl[i_Card].m_bPrintProperties = bPrintProperties;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -237,7 +285,13 @@ void CardCtl::vPrintSubCards(i8 i_Card, bool bPrintSubCards)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 
-  m_xaCardCtl[i_Card].m_bPrintSubCards = bPrintSubCards;
+  if (i_Card) {
+    m_xaCardCtl[i_Card].m_bPrintSubCards = bPrintSubCards;
+    return;
+  }
+
+  for (i_Card = 1; i_Card < CK_ENUMS; i_Card++)
+    m_xaCardCtl[i_Card].m_bPrintSubCards = bPrintSubCards;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -259,7 +313,13 @@ void CardCtl::vPrintSubShort(i8 i_Card, bool bPrintSubShort)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 
-  m_xaCardCtl[i_Card].m_bPrintSubShort = bPrintSubShort;
+  if (i_Card) {
+    m_xaCardCtl[i_Card].m_bPrintSubShort = bPrintSubShort;
+    return;
+  }
+
+  for (i_Card = 1; i_Card < CK_ENUMS; i_Card++)
+    m_xaCardCtl[i_Card].m_bPrintSubShort = bPrintSubShort;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -281,7 +341,13 @@ void CardCtl::vPtrDetail(i8 i_Card, i8 iPtrDetail)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 
-  m_xaCardCtl[i_Card].m_iPtrDetail = iPtrDetail;
+  if (i_Card) {
+    m_xaCardCtl[i_Card].m_iPtrDetail = iPtrDetail;
+    return;
+  }
+
+  for (i_Card = 1; i_Card < CK_ENUMS; i_Card++)
+    m_xaCardCtl[i_Card].m_iPtrDetail = iPtrDetail;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -303,7 +369,13 @@ void CardCtl::vPrune(i8 i_Card, bool bPrune)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 
-  m_xaCardCtl[i_Card].m_bPrune = bPrune;
+  if (i_Card) {
+    m_xaCardCtl[i_Card].m_bPrune = bPrune;
+    return;
+  }
+
+  for (i_Card = 1; i_Card < CK_ENUMS; i_Card++)
+    m_xaCardCtl[i_Card].m_bPrune = bPrune;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -348,7 +420,7 @@ void CardCtl::vReset(void)
   vPrune(CK_CROSSPTNJOIN,true);
 
   vPrintByKind(CK_INDEXPTR,true);
-  vPtrDetail(CK_INDEXPTR,0);
+  vPtrDetail(CK_INDEXPTR,1);
 
   vPrintValue(CK_ANDPRED, false);
   vPrintProperties(CK_ANDPRED, false);
@@ -367,7 +439,7 @@ void CardCtl::vReset(void)
   vPrintProperties(CK_TABLE, false);
 
   vPrintByKind(CK_TABLEPTR,true);
-  vPtrDetail(CK_TABLEPTR,0);
+  vPtrDetail(CK_TABLEPTR,1);
 
   vPrintName(CK_TERM,false);
   vPrintNo(CK_TERM,false);

@@ -432,6 +432,9 @@ void Card::vDump(i8 iDepth, Stz* szTitle)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  if (0 == iDepth)
+    vDebugPoint();
+
   if (szTitle)
     vTrace("%s:\n"_Stz,szTitle);
 

@@ -252,8 +252,8 @@ void Transformer::vPhase_6_IndexScan(void)
  *
  */
 
-  /*
-  m_pTransforms->vAppend_indexList_ToAll_table();
+/*
+  m_pTransforms->vAppend_indexList_ToAll_scan();
   m_pTransforms->vMark_scan_pred_bounds();
   m_pTransforms->vMark_scan_pred_ordinals();
 

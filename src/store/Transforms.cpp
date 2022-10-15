@@ -241,7 +241,7 @@ void Transforms::vAdd_tableSyn_ForAll_table(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vAppend_indexList_ToAll_table(void)
+void Transforms::vAppend_indexList_ToAll_scan(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1438,6 +1438,7 @@ void Transforms::vConvert_table_To_scan_Or_indexJoin(void)
   }
 
   vEndTransformation();
+
   vPrintBoard();
 }
 
