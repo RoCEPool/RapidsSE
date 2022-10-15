@@ -92,9 +92,6 @@ void PersistenceHelper::vWriteHeapBuffers(Heap* pHeap, File* pFile)
   }
 
   ASSERT(iPtnOfNode >= 0);
-
-  Timer oTimer;
-  oTimer.vStart();
   
   pHeap->vGrabLock();
 
@@ -110,12 +107,6 @@ void PersistenceHelper::vWriteHeapBuffers(Heap* pHeap, File* pFile)
   }
   
   pHeap->vDropLock();
-  
-  oTimer.vUpdate();
-  vTrace("Partition %lld took %lldms to write heap buffers of %s\n"_Stz,
-         iPtnOfNode,
-         oTimer.iMilliseconds(),
-         pHeap->szClassNm());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -131,6 +122,9 @@ void PersistenceHelper::vWritePersistentHeaps(Stz* sFilePath)
   }
 
   ASSERT(iPtnOfNode >= 0);
+
+  Timer oTimer;
+  oTimer.vStart();
 
   File* pFile = new(C_VIA_MALLOC) File(nullptr);
   pFile->bOpenWrite(sFilePath);
@@ -158,6 +152,11 @@ void PersistenceHelper::vWritePersistentHeaps(Stz* sFilePath)
 
   pFile->vClose();
   delete pFile;
+
+  oTimer.vUpdate();
+  vTrace("Partition %lld took %lldms to write heap buffers to disk\n"_Stz,
+         iPtnOfNode,
+         oTimer.iMilliseconds());
 }
 
 /*============================================================================*/

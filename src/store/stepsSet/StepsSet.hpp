@@ -2415,6 +2415,7 @@ void vDdlLockAssertNone(void);
   void vTxRefRollback(void);
 
   // user
+  void vUnloadToDisk(void);
   void vUnloadToFile(void);
   void vUserName(void);
 
