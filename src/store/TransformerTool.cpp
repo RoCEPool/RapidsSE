@@ -16,6 +16,8 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
 
   m_pBench   = pBench;
   m_pCardCtl = m_pBench->pCardCtl();
+  m_bTracing = false;
+  m_iTrace   = 0;
 
   m_pBoard           = m_pBench->pHead();
   m_pBoard_costEst   = nullptr;
@@ -138,6 +140,8 @@ void TransformerTool::vEndTransformation(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
+  m_bTracing = false;
+
   Card::vConsistencyCheck(m_pDeck, m_iTransformNo);
 }
 
@@ -250,6 +254,16 @@ i8 TransformerTool::iTransformNoInc(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* is tracing enabled?                                                        */
+/*----------------------------------------------------------------------------*/
+bool TransformerTool::bIsTracing(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  return m_bTracing;
+}
+
+/*----------------------------------------------------------------------------*/
 /* swap to a different board                                                  */
 /*----------------------------------------------------------------------------*/
 void TransformerTool::vSwapToBoard(eBK eBoard)
@@ -337,6 +351,21 @@ void TransformerTool::vSetupQueryBoard(void)
   m_pBoard_query = m_pBench->pGetBoard(BK_QUERY);
   if (!m_pBoard_query)
     m_pBoard_query = new Board(BK_QUERY, BT_ORIGINAL, m_pBench);
+}
+
+/*----------------------------------------------------------------------------*/
+/* is tracing enabled?                                                        */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::vTracing(bool bTracing)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  m_bTracing = bTracing;
+
+  if (m_bTracing) {
+    vTrace("\n\nTracing %s\n"_Stz,m_sTransformation.szStz());
+    m_iTrace = 0;
+  }
 }
 
 

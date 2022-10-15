@@ -57,6 +57,7 @@ void Transforms::vReinstate_combined(void)
 
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("((replace with an explanation))"_Stz);
+  vTracing(false);
 
   while (E_bEachMain()) {
 
@@ -94,6 +95,7 @@ void Transforms::vAdd_scanPred(void)
 
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("((replace with an explanation))"_Stz);
+  vTracing(false);
 
   BoardIter xBI(m_pBoard);
 
@@ -160,6 +162,7 @@ void Transforms::vReinstate_stages(void)
 
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("reinstate stages"_Stz);
+  vTracing(false);
 
   while (E_bEachMain() && H_bHasSubsequentToMain(C_UPDATE_MEMBER))  {
 
@@ -195,6 +198,7 @@ void Transforms::vAdd_tablePtn_UnderAll_table(void)
 
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("add a <tablePtn> under every <table>"_Stz);
+  vTracing(false);
 
   while (E_bEachMain(CK_TABLE)) {
     //m_p_tablePtn = new Card_TablePtn;
@@ -216,6 +220,7 @@ void Transforms::vAdd_tableSyn_ForAll_table(void)
 
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("add a <tableSyn> to all <table>'s"_Stz);
+  vTracing(false);
 
   char cTableSyn = 'a';
 
@@ -247,6 +252,7 @@ void Transforms::vInsert_indexList_ToAll_scan(void)
 
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("append <indexList> to <scan>"_Stz);
+  vTracing(false);
 
   while (E_bEachMainWithSub(CK_SCAN,CK_TABLEPTR)) {
     if ( (m_p_indexList = m_p_tablePtr->pNew_indexList()) ) {
@@ -268,6 +274,7 @@ void Transforms::vAdd_stream_UnderAll_table(void)
 
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("add a <stream> under every <table>"_Stz);
+  vTracing(false);
 
   // E <scan>
   while (E_bEachMain(CK_TABLE)) {
@@ -304,6 +311,7 @@ void Transforms::vCalc_ordinalRange_ForAll_stream(void)
 
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("calculate the ordinal $low..$high range for each <stream>"_Stz);
+  vTracing(false);
 
   i8 iOrdLo = 1;
   i8 iOrdHi = C_UNKNOWN;
@@ -336,6 +344,7 @@ void Transforms::vCompute_coPtnJoinList(void)
 
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("((replace with an explanation))"_Stz);
+  vTracing(false);
 
   vSetupPartitionBoard();
 
@@ -378,6 +387,7 @@ void Transforms::vCompute_coPtnPredList(void)
 
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("((replace with an explanation))"_Stz);
+  vTracing(false);
 
   vSetupPartitionBoard();
 
@@ -426,6 +436,7 @@ void Transforms::vCompute_crossPtnJoinList(void)
 
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("((replace with an explanation))"_Stz);
+  vTracing(false);
 
   vSetupPartitionBoard();
 
@@ -467,6 +478,7 @@ void Transforms::vCompute_ptndJoinSet(void)
 
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("((replace with an explanation))"_Stz);
+  vTracing(false);
 
   vSetupPartitionBoard();
 
@@ -508,6 +520,7 @@ void Transforms::vConvert_where_calc_To_where_calcBool(void)
 
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("convert <where>//<calc> into <where>//<calcBool> "_Stz);
+  vTracing(false);
 
   while (E_bEachMainWithSub(CK_WHERE, CK_CALC)) {
     X_calc_To_calcBool();
@@ -528,6 +541,7 @@ void Transforms::vConvert_idxCol_name_Of_scan_To_idxCol_ord(void)
 
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("convert the column name in every <idxCol> to a $streamOrdinal"_Stz);
+  vTracing(false);
 
   m_pDeck->vClearMarksRecursive();
 
@@ -549,6 +563,7 @@ void Transforms::vConvert_idxCol_name_Of_table_To_idxCol_ord(void)
 
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("convert the column name in every <idxCol> to a $streamOrdinal"_Stz);
+  vTracing(false);
 
   m_pDeck->vClearMarksRecursive();
 
@@ -576,6 +591,7 @@ void Transforms::vCopy_ptndJoinSet(void)
 
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("((replace with an explanation))"_Stz);
+  vTracing(false);
 
   vSetupPermuteBoard();
 
@@ -606,6 +622,7 @@ void Transforms::vCull_filter_pred_MovedUpTo_joinPred(void)
 
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("remove <table>/<filter>//<pred> that are now <table>/<joinPred>//<pred>"_Stz);
+  vTracing(false);
 
   while (E_bEachMain(CK_TABLE)) {
     if (! (m_p_filter = m_p_table->pSub_filter()))
@@ -630,6 +647,7 @@ void Transforms::vCull_scan_Leaving_table(void)
 
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("replace all <scan>'s with their children"_Stz);
+  vTracing(false);
 
   while (E_bEachMain(CK_SCAN)) {
     m_pDeck->vReplaceChildWithItsSubs(m_p_MainCard);
@@ -648,6 +666,7 @@ void Transforms::vCull_markedPred(void)
 
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("((replace with an explanation))"_Stz);
+  vTracing(false);
 
   BoardIter xBI(m_pBoard);
 
@@ -686,6 +705,7 @@ void Transforms::vRemove_sort_IfSameAs_gby(void)
 
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("remove <sort> if <sbyElist> is the same as the <gbyElist>"_Stz);
+  vTracing(false);
 
   while (E_bEachMain(CK_SORT)) {
 
@@ -714,6 +734,7 @@ void Transforms::vDelete_absJoin(void)
 
   vTransformation(BK_QUERY,(char*)(__func__),C_DONT_PRINT);
   vDescription("delete superfluous <absJoin>'s"_Stz);
+  vTracing(false);
 
   while (E_bEachMain(CK_ABSJOIN))
     E_vRemoveDeleteMain(CK_ABSJOIN);
@@ -731,6 +752,7 @@ void Transforms::vDelete_combined(void)
 
   vTransformation(BK_QUERY,(char*)(__func__),C_DONT_PRINT);
   vDescription("delete superfluous <combined>'s"_Stz);
+  vTracing(false);
 
   while (E_bEachMain(CK_COMBINED))
     E_vRemoveDeleteMain(CK_COMBINED);
@@ -748,6 +770,7 @@ void Transforms::vDelete_send(void)
 
   vTransformation(BK_QUERY,(char*)(__func__),C_DONT_PRINT);
   vDescription("delete superfluous <send>'s"_Stz);
+  vTracing(false);
 
   while (E_bEachMain(CK_SEND))
     E_vRemoveDeleteMain(CK_SEND);
@@ -765,6 +788,7 @@ void Transforms::vDelete_Redundant_stage(void)
 
   vTransformation(BK_QUERY,(char*)(__func__),C_DONT_PRINT);
   vDescription("linearize board by deleting all duplicate <stage>'s"_Stz);
+  vTracing(false);
 
   //m_pDeck->vDump();
 
@@ -809,6 +833,7 @@ void Transforms::vDelete_Empty_where(void)
 
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("delete <where> if it is effectively empty"_Stz);
+  vTracing(false);
 
   while (E_bEachMain(CK_WHERE)) {
     m_p_calcBool = m_p_where->pSub_boolCalc();
@@ -829,6 +854,7 @@ void Transforms::vDelete_Empty_where(void)
 void Transforms::vDelete_Empty_filter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+  vTracing(false);
 
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("delete any <table>/<filter> which is effectively empty"_Stz);
@@ -858,6 +884,7 @@ void Transforms::vEstimate_joinOrder(void)
 
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("((replace with an explanation))"_Stz);
+  vTracing(false);
 
   i8 iLowestNetwork = 999999999;
 
@@ -897,6 +924,7 @@ void Transforms::vEstimate_network(void)
 
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("((replace with an explanation))"_Stz);
+  vTracing(false);
 
   BoardIter xBI(m_pBoard_costEst);
 
@@ -943,6 +971,7 @@ void Transforms::vEstimate_ptndJoins(void)
 
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("((replace with an explanation))"_Stz);
+  vTracing(false);
 
   m_p_tableList =
       _pCard_TableList(m_pDeck->pFindChild(CK_TABLELIST));
@@ -976,6 +1005,7 @@ void Transforms::vExpandedForm(void)
 
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("((replace with an explanation))"_Stz);
+  vTracing(false);
 
   m_pCardCtl->vReset();
 
@@ -992,6 +1022,7 @@ void Transforms::vExtract_joinOrderSeq(void)
 
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("((replace with an explanation))"_Stz);
+  vTracing(false);
 
   m_pDeck->vAppendMain((m_p_joinOrderSeq = new Card_JoinOrderSeq));
 
@@ -1019,6 +1050,7 @@ void Transforms::vExtract_joinPredList(void)
 
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("((replace with an explanation))"_Stz);
+  vTracing(false);
 
   vSetupPartitionBoard();
 
@@ -1050,7 +1082,7 @@ void Transforms::vExtract_tableList_From_queryBoard(void)
 
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("((replace with an explanation))"_Stz);
-
+  vTracing(false);
 
   vSetupPartitionBoard();
 
@@ -1082,6 +1114,7 @@ void Transforms::vAdd_joinPred_UnderAll_indexJoin(void)
 
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("add a <joinPred> under each <indexJoin>"_Stz);
+  vTracing(false);
 
   while (E_bEachMain(CK_TABLE)) {
     if (! (m_p_filter = m_p_table->pSub_filter()))
@@ -1155,6 +1188,7 @@ void Transforms::vGenerate_ptndPermutations(void)
 
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("((replace with an explanation))"_Stz);
+  vTracing(false);
 
 //  PermGen::vTest(4);
 
@@ -1202,6 +1236,7 @@ void Transforms::vIndividuate_filter(void)
 
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("individuate <scan|indexJoin>/<filter> as main <filter>"_Stz);
+  vTracing(false);
 
   while (E_bEachMain(CK_SCAN)) {
 
@@ -1238,6 +1273,7 @@ void Transforms::vAdd_indexJoin_UnderAllJoinable_table(void)
 
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("add an <indexJoin> under all <table>'s which are joinable"_Stz);
+  vTracing(false);
 
   m_pDeck->vClearMarksRecursive();
 
@@ -1284,6 +1320,7 @@ void Transforms::vMark_scan_pred_bounds(void)
 
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("((replace with an explanation))"_Stz);
+  vTracing(false);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -1312,6 +1349,7 @@ void Transforms::vMark_scan_cmpPred_WhichMatchIndex(void)
 
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("mark the <SCAN>//<filter>//cmpPred> which match index ordinals"_Stz);
+  vTracing(true);
 
   while (E_bEachMainWithSub(CK_SCAN,CK_FILTER)) {
 
@@ -1331,13 +1369,15 @@ void Transforms::vMark_scan_cmpPred_WhichMatchIndex(void)
       if (!szTerm->bIsStreamColOrd())
         return C_CONTINUE_RECURSION;
 
-      vTrace("vMark_scan_cmpPred_WhichMatchIndex:: %s\n"_Stz,p_term->sz());
+      if (bIsTracing())
+        vTrace("  [%02lld]Checking %s %s\n"_Stz,m_iTrace++,p_term->sz(),p_term->szBearing());
 
       i8 i_IdxCol = C_UNKNOWN;
       if (! (m_p_idxCol = m_p_indexPtr->pFind_indexCol(szTerm, i_IdxCol)))
         return C_CONTINUE_RECURSION;
 
-      vTrace("vMark_scan_cmpPred_WhichMatchIndex:: %lld\n"_Stz,i_IdxCol);
+      if (bIsTracing())
+        vTrace("  [%02lld]Matches i_IdxCol %lld\n"_Stz,m_iTrace++,i_IdxCol);
 
       p_term->vMark1('I');
       p_term->vMark2(i_IdxCol);
@@ -1362,6 +1402,7 @@ void Transforms::vMark_where_pred_Wrt_table(void)
 
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("inspect <where>//<pred> and attempt to find source <table>"_Stz);
+  vTracing(false);
 
   while (E_bEachMainWithSub(CK_WHERE, CK_BOOLCALC))
     vMarkPredLeftwards(m_p_calcBool);
@@ -1380,6 +1421,7 @@ void Transforms::vMove_Marked_where_pred_To_table_filter(void)
 
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("inspect all <where>//<pred> and move <predCmp> to new <table>/<filter>"_Stz);
+  vTracing(false);
 
   while (E_bEachMainWithSub(CK_WHERE, CK_BOOLCALC))
     vCopyPredLeftwards(m_p_calcBool);
@@ -1397,6 +1439,7 @@ void Transforms::vPromote_scan_To_indexScan(void)
 
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("((replace with an explanation))"_Stz);
+  vTracing(false);
 
   BoardIter xBI(m_pBoard);
 
@@ -1422,6 +1465,7 @@ void Transforms::vConvert_table_To_scan_Or_indexJoin(void)
 
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("convert all <table> into either <scan> or <indexJoin>"_Stz);
+  vTracing(false);
 
   Card_Deck* p_board = m_pBoard->pDeck();
 
@@ -1466,6 +1510,7 @@ void Transforms::vRemove_invalidPermutations(void)
 
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("((replace with an explanation))"_Stz);
+  vTracing(false);
 
   i8 i_Main = 0;
   i8 i_Permutation = 0;
@@ -1506,6 +1551,7 @@ void Transforms::vSetup_costEst(void)
 
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("((replace with an explanation))"_Stz);
+  vTracing(false);
 
   vSetupCostEstBoard();
 

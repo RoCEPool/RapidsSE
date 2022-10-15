@@ -186,6 +186,7 @@ namespace STORE
     void vAppendMain(Card* pNewMainCard, bool bRenumber= true);
     void vApplyRecursive(eCK eToSubs, std::function<bool(Card* pCard)> bfApply);
 
+    Stz* szBearing(void);
     void vBearing(void);
     void vBearing(Card* pParentCard);
 

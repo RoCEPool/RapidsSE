@@ -279,6 +279,16 @@ void Card::vApplyRecursive(eCK eToSubs, std::function<bool(Card* pCard)> bfApply
 }
 
 /*----------------------------------------------------------------------------*/
+/* get bearing                                                                */
+/*----------------------------------------------------------------------------*/
+Stz* Card::szBearing(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  return (Stz*)md_Bearing;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set bearing                                                                */
 /*----------------------------------------------------------------------------*/
 void Card::vBearing(void)

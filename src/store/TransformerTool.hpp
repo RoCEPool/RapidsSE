@@ -19,6 +19,8 @@ namespace STORE
 
     Bench*      m_pBench;
     CardCtl*    m_pCardCtl;
+    bool        m_bTracing;
+    i8          m_iTrace;
 
     i8          m_iTransformNo;
     bool        m_bPrintTransformation;
@@ -145,12 +147,16 @@ namespace STORE
     i8   iTransformNoInc(void);
 
   protected:
+    bool bIsTracing(void);
+
     void vSwapToBoard(eBK eBoard);
     void vSetupBoard(eBK eBoard);
     void vSetupCostEstBoard(void);
     void vSetupPartitionBoard(void);
     void vSetupPermuteBoard(void);
     void vSetupQueryBoard(void);
+
+    void vTracing(bool bTracing);
 
     void D_vDeleteMember(eCK eMember);
     void D_vDeleteMember(Card* pMember);
