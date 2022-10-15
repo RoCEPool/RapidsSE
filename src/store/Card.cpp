@@ -985,10 +985,11 @@ void Card::vPrintCard_bySettings(Ribbon* pRibbon, i8 iDepth)
     vPrintNameValue(pRibbon, iDepth);
   }
   else {
-    if (pCardCtl->bPrintName(m_eCard))
+    bool bPrintName = pCardCtl->bPrintName(m_eCard);
+    if (bPrintName)
       vPrintName(pRibbon, iDepth);
     if (pCardCtl->bPrintValue(m_eCard))
-      vPrintValue(pRibbon, iDepth);
+      vPrintValue(pRibbon, iDepth, !bPrintName);
   }
 
   if (pCardCtl->bPrintProperties(m_eCard))
@@ -1207,15 +1208,20 @@ void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 /* print value of card                                                        */
 /*----------------------------------------------------------------------------*/
-void Card::vPrintValue(Ribbon* pRibbon, i8 iDepth)
+void Card::vPrintValue(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (! bHasValue())
     return;
 
-  pRibbon->vSprintRight("  %s"_Stz,szValue());
+  if (bPrintMarks) {
+    pRibbon->vSprintRight("%c%c%18s"_Stz, m_cMark1, m_cMark2, szValue());
 
+  }
+  else {
+    pRibbon->vSprintRight("  %s"_Stz, szValue());
+  }
 }
 
 /*----------------------------------------------------------------------------*/

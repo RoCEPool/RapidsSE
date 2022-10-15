@@ -82,6 +82,7 @@ namespace STORE
     Card_Expr*             m_p_expr;
     Card_Filter*           m_p_filter;
     Card_GbyElist*         m_p_gbyElist;
+    Card_IdxCol*           m_p_idxCol;
     Card_IdxColList*       m_p_idxColList;
     Card_IndexJoin*        m_p_indexJoin;
     Card_IndexList*        m_p_indexList;
@@ -104,6 +105,7 @@ namespace STORE
     Card_Stage*            m_p_stage;
     Card_StageTopo*        m_p_stageTopo;
     Card_Stream*           m_p_stream;
+    Card_StreamCol*        m_p_streamCol;
     Card_StreamColList*    m_p_streamColList;
     Card_SubSet*           m_p_subSet;
     Card_Table*            m_p_table;

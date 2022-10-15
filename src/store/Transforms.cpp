@@ -1315,7 +1315,7 @@ void Transforms::vMark_scan_pred_ordinals(void)
 
   BoardIter xBI(m_pBoard);
 
-  while ( (m_p_MainCard = xBI.pEachMain(CK_TABLE)) ) {
+  while ( (m_p_MainCard = xBI.pEachMain(CK_SCAN)) ) {
     if (! (m_p_filter = m_p_MainCard->pSub_filter()) )
       continue;
 
@@ -1331,36 +1331,38 @@ void Transforms::vMark_scan_pred_ordinals(void)
     if (! p_indexPtr)
       continue;
 
-    // - - - - - - - - -
-    auto bfPredBounds = [p_stream,p_indexPtr](Card* pCard) {
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    auto bfPredBounds = [this,p_stream,p_indexPtr](Card* pCard) {
       Card_Term* p_term = _pCard_Term(pCard);
 
       Stz* szTerm = p_term->sz();
       if (!szTerm->bIsStreamColOrd())
-        return true;
+        return C_CONTINUE_RECURSION;
 
       vTrace("vMark_scan_pred_ordinals:: %s\n"_Stz,p_term->sz());
 
-      Card_StreamCol* p_streamCol = p_stream->pGet_streamCol(szTerm);
-      if (! p_streamCol)
-        return true;
-
-      Stz* szColNm = p_streamCol->szStreamColNm();
-      vTrace("vMark_scan_pred_ordinals:: %s\n"_Stz,szColNm);
+//      this->m_p_streamCol = p_stream->pGet_streamCol(szTerm);
+//      if (! m_p_streamCol)
+//        return C_CONTINUE_RECURSION;
+//
+//      Stz* szColNm = m_p_streamCol->szStreamColNm();
+//      vTrace("vMark_scan_pred_ordinals:: %s\n"_Stz,szColNm);
 
       i8 i_IdxCol = C_UNKNOWN;
-      Card_IdxCol* p_idxCol = p_indexPtr->pFind_indexCol(szColNm, i_IdxCol);
+      m_p_idxCol = p_indexPtr->pFind_indexCol(szTerm, i_IdxCol);
 
-      if (! p_idxCol)
-        return true;
+      if (! m_p_idxCol)
+        return C_CONTINUE_RECURSION;
 
       vTrace("vMark_scan_pred_ordinals:: %lld\n"_Stz,i_IdxCol);
 
       p_term->vMark1('I');
       p_term->vMark2(i_IdxCol);
-      return true;
+      return C_CONTINUE_RECURSION;
     };
-    // - - - - - - - - -
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     m_p_filter->vApplyRecursive(CK_TERM, bfPredBounds);
   }

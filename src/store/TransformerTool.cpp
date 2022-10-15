@@ -675,6 +675,7 @@ void TransformerTool::M_vClearMembers(void)
   m_p_expr             = nullptr;
   m_p_filter           = nullptr;
   m_p_gbyElist         = nullptr;
+  m_p_idxCol           = nullptr;
   m_p_idxColList       = nullptr;
   m_p_indexJoin        = nullptr;
   m_p_indexList        = nullptr;
@@ -697,6 +698,7 @@ void TransformerTool::M_vClearMembers(void)
   m_p_stage            = nullptr;
   m_p_stageTopo        = nullptr;
   m_p_stream           = nullptr;
+  m_p_streamCol        = nullptr;
   m_p_streamColList    = nullptr;
   m_p_subSet           = nullptr;
   m_p_table            = nullptr;

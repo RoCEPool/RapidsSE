@@ -240,7 +240,7 @@ namespace STORE
     void vPrintName(Ribbon* pRibbon, i8 iDepth, Stz* szCustomName=nullptr);
     void vPrintNameValue(Ribbon* pRibbon, i8 iDepth);
     void vPrintProperties(Ribbon* pRibbon, i8 iDepth);
-    void vPrintValue(Ribbon* pRibbon, i8 iDepth);
+    void vPrintValue(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks=false);
     i8   nProperties(void);
     eTN  eProperty(i8 i_Property);
     TagSet* pProperties(void);
