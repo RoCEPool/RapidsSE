@@ -489,11 +489,6 @@ Heap* Heaps::pGetHeap(eHT eHeap)
 
 }
 
-struct _threadArgs {
-  i8 iPtnNo;
-  s256 sPath;
-};
-
 /*----------------------------------------------------------------------------*/
 /* initialise the various heaps                                               */
 /*----------------------------------------------------------------------------*/
@@ -612,18 +607,11 @@ void Heaps::vReloadPHeaps(void)
   i8 nSizeBody = C_SIZE_POOL_BUFFER - nSizeHeader;
 
 
-  // Figure out the name of the first file, which contains the P Heaps.
+  // Get the name of the first file, which contains the P Heaps.
   // Main thread first loads these in, before spawning threads to read
   // the rest of the buffers.
-  Stz* szDirPath = gxCmdLineArgs.m_xSysArgs.m_sReloadFilePath;
-  s256 sBaseFilePath = "";
-  sBaseFilePath.vCatSprint("%s/saveFile_%s_"_Stz,
-                           szDirPath,
-                           gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz());
 
-  s256 szNode0Path = "";
-  szNode0Path.vCatSprint("%s0"_Stz,
-                         sBaseFilePath.szStz());
+  s256 szNode0Path = gxCmdLineArgs.m_xSysArgs.m_sReloadFilePath[0];
 
   File* pFile = new(C_VIA_MALLOC) File(nullptr);
   bool bResult = pFile->bOpenRead(szNode0Path);
@@ -714,15 +702,10 @@ void Heaps::vReloadPHeaps(void)
   // finished their work.
   gxThreadsRemaining.vSetRemaining(iNoPtns);
 
-  _threadArgs oList[iNoPtns];
-
-  // Figure out the file names, and spawn the threads.
+  // Spawn the threads.
   for(i8 i = 0; i < iNoPtns; i++)
   {
-    oList[i].sPath.vCatSprint("%s%lld"_Stz,
-                              sBaseFilePath.szStz(),
-                              i);
-    PsxThd::iSpawnPosixThread(vLoadHeapBuffers, &oList[i]);
+    PsxThd::iSpawnPosixThread(vLoadHeapBuffers, (void*)i);
   }
 
   vTrace("Main thread waiting...\n"_Stz);
@@ -741,10 +724,12 @@ void Heaps::vReloadPHeaps(void)
 /*----------------------------------------------------------------------------*/
 [[noreturn]] void *vLoadHeapBuffers(void *pFuncObj)
 {
-  _threadArgs* oArgs = (_threadArgs*) pFuncObj;
+  i8 iPtnNo = (i8) pFuncObj;
+
+  Stz* szFilePath = gxCmdLineArgs.m_xSysArgs.m_sReloadFilePath[iPtnNo];
 
   if(AM::AM::TRACE::bVerbose(C_VB_BOOT))
-    vTrace("Thread got filepath %s\n"_Stz, oArgs->sPath.szStz());
+    vTrace("Thread got filepath %s\n"_Stz, szFilePath);
 
   char caObjectHeader[sizeof(Object) + 128];
   Header* aHeader = (Header*) & caObjectHeader[0];
@@ -752,10 +737,10 @@ void Heaps::vReloadPHeaps(void)
   i8 nSizeBody = C_SIZE_POOL_BUFFER - nSizeHeader;
 
   File* pFile = new(C_VIA_MALLOC) File(nullptr);
-  bool bResult = pFile->bOpenRead(oArgs->sPath.szStz());
+  bool bResult = pFile->bOpenRead(szFilePath);
   RASSERT(bResult);
 
-  if(oArgs->iPtnNo == 0)
+  if(iPtnNo == 0)
   {
     pFile->vSeek((C_SIZE_POOL_BUFFER * 4));
   }
