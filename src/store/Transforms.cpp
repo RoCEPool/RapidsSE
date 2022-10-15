@@ -241,7 +241,7 @@ void Transforms::vAdd_tableSyn_ForAll_table(void)
 /*----------------------------------------------------------------------------*/
 /* append <indexList> to <scan>                                               */
 /*----------------------------------------------------------------------------*/
-void Transforms::vAppend_indexList_ToAll_scan(void)
+void Transforms::vInsert_indexList_ToAll_scan(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -249,8 +249,10 @@ void Transforms::vAppend_indexList_ToAll_scan(void)
   vDescription("append <indexList> to <scan>"_Stz);
 
   while (E_bEachMainWithSub(CK_SCAN,CK_TABLEPTR)) {
-    if ( (m_p_indexList = m_p_tablePtr->pNew_indexList()) )
-      m_p_scan->vAppend(m_p_indexList);
+    if ( (m_p_indexList = m_p_tablePtr->pNew_indexList()) ) {
+      m_p_scan->vInsertAfter(m_p_indexList,m_p_tablePtr);
+
+    }
   }
 
   vEndTransformation();
@@ -1085,10 +1087,16 @@ void Transforms::vAdd_joinPred_UnderAll_indexJoin(void)
     if (! (m_p_filter = m_p_table->pSub_filter()))
       continue;
 
+    m_p_table->vDump();
+
     m_p_calcBool = m_p_filter->pSub_boolCalc();
     m_p_cmpPred  = m_p_calcBool->pSub_predCmp();
-    m_p_term_0   = _pCard_Term(m_p_cmpPred->pGetChild(0));
-    m_p_term_1   = _pCard_Term(m_p_cmpPred->pGetChild(1));
+    m_pTerm_0    = _pCard_Term(m_p_cmpPred->pGetChild(0));
+    m_pTerm_1    = _pCard_Term(m_p_cmpPred->pGetChild(1));
+
+    if (! m_pTerm_0->bIsStreamColOrdinal() || ! m_pTerm_1->bIsStreamColOrdinal())
+      continue;
+
 
     // - - - -
 
@@ -1107,20 +1115,20 @@ void Transforms::vAdd_joinPred_UnderAll_indexJoin(void)
     i8 iStreamOrdLo = m_p_stream->Y_iVal(P_OrdLo);
     i8 iStreamOrdHi = m_p_stream->Y_iVal(P_OrdHi);
 
-    i8 i_iOrdLo_0 = m_p_term_0->iStreamColNo();
-    i8 i_iOrdLo_1 = m_p_term_1->iStreamColNo();
+    i8 i_iOrdLo_0 = m_pTerm_0->iStreamColNo();
+    i8 i_iOrdLo_1 = m_pTerm_1->iStreamColNo();
 
     if (i_iOrdLo_0 >= iStreamOrdLo && i_iOrdLo_0 <= iStreamOrdHi) {
       m_p_term = new Card_Term("$I1"_Stz);
       m_p_joinPred->vAppend(m_p_term);
-      m_p_term = new Card_Term(m_p_term_1->sz());
+      m_p_term = new Card_Term(m_pTerm_1->sz());
       m_p_joinPred->vAppend(m_p_term);
     }
     else
     if (i_iOrdLo_1 >= iStreamOrdLo && i_iOrdLo_1 <= iStreamOrdHi) {
       m_p_term = new Card_Term("$I1"_Stz);
       m_p_joinPred->vAppend(m_p_term);
-      m_p_term = new Card_Term(m_p_term_1->sz());
+      m_p_term = new Card_Term(m_pTerm_1->sz());
       m_p_joinPred->vAppend(m_p_term);
     }
     else {
@@ -1437,14 +1445,21 @@ void Transforms::vConvert_table_To_scan_Or_indexJoin(void)
 
   while (E_bEachMain(CK_TABLE)) {
 
+    m_p_joinPred = m_p_table->pSub_joinPred();
     m_p_indexJoin = m_p_table->pSub_indexJoin();
-    if (! m_p_indexJoin) {
+
+    if (! m_p_joinPred) {
 
       m_p_scan = new Card_Scan;
       m_p_scan->vTransferChildren(m_p_table);
 
       p_board->vReplace(m_p_table,m_p_scan);
       m_p_scan->vInsert(m_p_table);
+
+      if (m_p_indexJoin) {
+        m_p_scan->vRemoveChild(m_p_indexJoin);
+        DELETE_CARD(m_p_indexJoin);
+      }
       continue;
     }
 

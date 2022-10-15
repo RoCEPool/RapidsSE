@@ -47,19 +47,8 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   // the M iterator - - - - - - - - - - - - - - - - - - - - - -
   m_pM = new BoardIter(m_pBoard);
 
-  m_p_PriorToMain      = nullptr;
-  m_e_PriorToMain      = CK_NONE;
-  m_p_MainCard         = nullptr;
-  m_e_MainCard         = CK_NONE;
-  m_p_SubOfMain        = nullptr;
-  m_e_SubOfMain        = CK_NONE;
-  m_p_SubsequentToMain = nullptr;
-  m_e_SubsequentToMain = CK_NONE;
-
-  m_p_SubMember        = nullptr;
-  m_e_SubMember        = CK_NONE;
-
   M_vClearMembers();
+  M_vClearRegisters();
 
   _postcondition_(_ADDRESS_,_MAGIC_);
 }
@@ -715,8 +704,6 @@ void TransformerTool::M_vClearMembers(void)
   m_p_tablePtn         = nullptr;
   m_p_tablePtr         = nullptr;
   m_p_term             = nullptr;
-  m_p_term_0           = nullptr;
-  m_p_term_1           = nullptr;
   m_p_uBound           = nullptr;
   m_p_where            = nullptr;
 
@@ -751,6 +738,9 @@ void TransformerTool::M_vClearRegisters(void)
 
   m_p_SubMember        = nullptr;
   m_e_SubMember        = CK_NONE;
+
+  m_pTerm_0            = nullptr;
+  m_pTerm_1            = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

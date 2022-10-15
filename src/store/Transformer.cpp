@@ -252,7 +252,7 @@ void Transformer::vPhase_6_IndexScan(void)
  *
  */
 
-  m_pTransforms->vAppend_indexList_ToAll_scan();
+  m_pTransforms->vInsert_indexList_ToAll_scan();
 
   m_pTransforms->vConvert_idxCol_name_Of_scan_To_idxCol_ord();
 

@@ -27,7 +27,7 @@ namespace STORE
     void vAdd_scanPred(void);
     void vReinstate_stages(void);
     void vAdd_tablePtn_UnderAll_table(void);
-    void vAppend_indexList_ToAll_scan(void);
+    void vInsert_indexList_ToAll_scan(void);
     void vAdd_stream_UnderAll_table(void);
     void vMark_where_pred_Wrt_table(void);
     void vCalc_ordinalRange_ForAll_stream(void);

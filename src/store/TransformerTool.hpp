@@ -63,6 +63,9 @@ namespace STORE
     Card* m_p_SubMember;
     eCK   m_e_SubMember;
 
+    Card_Term* m_pTerm_0;
+    Card_Term* m_pTerm_1;
+
     Card_AbsJoin*          m_p_absJoin;
     Card_Aggreg*           m_p_aggreg;
     Card_Calc*             m_p_calc;
@@ -108,8 +111,6 @@ namespace STORE
     Card_TablePtn*         m_p_tablePtn;
     Card_TablePtr*         m_p_tablePtr;
     Card_Term*             m_p_term;
-    Card_Term*             m_p_term_0;
-    Card_Term*             m_p_term_1;
     Card_UBound*           m_p_uBound;
     Card_Where*            m_p_where;
 
