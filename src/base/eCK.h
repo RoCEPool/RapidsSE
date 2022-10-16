@@ -98,7 +98,7 @@ enum eCK // card kind
   /* */ CK_TABLEPTN,
   /* */ CK_TABLEPTR,
   /* */ CK_TERM,
-  /* */ CK_TESTPRED,
+  /* */ CK_TSTPRED,
   /* */ CK_TYPE,
 
   /* */ CK_UBOUND,
@@ -206,7 +206,7 @@ static Stz* aCK[]
   /* */ "CK_TABLEPTN"_Stz,     // CK_TABLEPTN
   /* */ "CK_TABLEPTR"_Stz,     // CK_TABLEPTR
   /* */ "CK_TERM"_Stz,         // CK_TERM
-  /* */ "CK_TESTPRED"_Stz,     // CK_TESTPRED
+  /* */ "CK_TSTPRED"_Stz,      // CK_TSTPRED
   /* */ "CK_TYPE"_Stz,         // CK_TYPE
 
   /* */ "CK_UBOUND"_Stz,       // CK_UBOUND
@@ -314,7 +314,7 @@ static Stz* aCK_short[]
   /* */ "tablePtn"_Stz,        // CK_TABLEPTN
   /* */ "{table}"_Stz,         // CK_TABLEPTR
   /* */ "term"_Stz,            // CK_TERM
-  /* */ "testPred"_Stz,        // CK_TEST
+  /* */ "tstPred"_Stz,         // CK_TSTPRED
   /* */ "type"_Stz,            // CK_TYPE
 
   /* */ "ubound"_Stz,          // CK_UBOUND

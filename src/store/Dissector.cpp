@@ -797,7 +797,7 @@ Card_Expr* Dissector::pExpr_c(Card_RpnTerms* pCard_RpnTerms)
   eTE eTermEval = pCard_Term_popped->eTermEval();
   Stz* szTerm = pCard_Term_popped->sz();
 
-  RASSERT(TE_TYPE == eTermEval);
+  RASSERT(szTerm->bSame("TYPE"_Stz));
   delete pCard_Term_popped;
   pCard_Term_popped = nullptr;
 
@@ -1030,8 +1030,8 @@ Card_Type* Dissector::pType(Card_RpnTerms* pCard_RpnTerms)
   
   // TYPE
   Card_Term* pCard_Term = _pCard_Term(pCard_RpnTerms->pPop());
-  eTE eTermEval = pCard_Term->eTermEval();
-  RASSERT(TE_TYPE == eTermEval);
+  Stz* szTerm = pCard_Term->sz();
+  RASSERT(szTerm->bSame("TYPE"_Stz));
 
   delete pCard_Term;
   pCard_Term = nullptr;

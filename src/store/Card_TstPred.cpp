@@ -1,23 +1,23 @@
 /*============================================================================*/
-/* Card_TestPred.cpp -- Test Predicate                                        */
+/* Card_TstPred.cpp -- Test Predicate                                        */
 /*============================================================================*/
 
-#include "Card_TestPred.hpp"
+#include "Card_TstPred.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_TestPred,CK_TESTPRED)
-__aNewFunction(Card_TestPred,CN_CARD)
-__vDeleteFunction(Card_TestPred,CN_CARD)
+__pCastFunction_Card(STORE, Card_TstPred, CK_TSTPRED)
+__aNewFunction(Card_TstPred, CN_CARD)
+__vDeleteFunction(Card_TstPred, CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_TestPred::Card_TestPred(void)
-: Card(CK_TESTPRED)
+Card_TstPred::Card_TstPred(void)
+: Card(CK_TSTPRED)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -29,7 +29,7 @@ Card_TestPred::Card_TestPred(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_TestPred::~Card_TestPred(void) noexcept(false)
+Card_TstPred::~Card_TstPred(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

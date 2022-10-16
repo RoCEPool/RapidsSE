@@ -308,10 +308,8 @@ eTE Card_Term::eTermEval(void)
   Stz* szTerm = this->sz();
 
        if (szTerm->bSame("and"_Stz))     return TE_AND;
-  else if (szTerm->bSame("as"_Stz))      return TE_AS;
-  else if (szTerm->bSame("boolean"_Stz)) return TE_BOOLEAN;
+  else if (szTerm->bSame("exists"_Stz))  return TE_EXISTS;
   else if (szTerm->bSame("or"_Stz))      return TE_OR;
-  else if (szTerm->bSame("type"_Stz))    return TE_TYPE;
 
   else if (szTerm->bSame("<"_Stz))       return TE_COMPARE;
   else if (szTerm->bSame("<="_Stz))      return TE_COMPARE;

@@ -91,9 +91,10 @@ void Modifications::X_calc_To_calcBool(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  Card_AndPred* pCard_PredAnd = nullptr;
-  Card_CmpPred* pCard_PredCmp = nullptr;
-  Card_OrPred*  pCard_PredOr  = nullptr;
+  Card_AndPred*  p_andPred = nullptr;
+  Card_CmpPred*  p_cmpPred = nullptr;
+  Card_TstPred* p_tstPred = nullptr;
+  Card_OrPred*   p_orPred  = nullptr;
 
   Card_SubSet*  pCard_SubExpr = new Card_SubSet;
 
@@ -107,52 +108,47 @@ void Modifications::X_calc_To_calcBool(void)
 
       case TE_AND:
         RASSERT(2 == m_p_calcBool->nChildCards());
-        pCard_PredAnd = new Card_AndPred;
-        pCard_PredAnd->vTransferChildren(m_p_calcBool);
+        p_andPred = new Card_AndPred;
+        p_andPred->vTransferChildren(m_p_calcBool);
         RASSERT(0 == m_p_calcBool->nChildCards());
-        m_p_calcBool->vAppend(pCard_PredAnd);
+        m_p_calcBool->vAppend(p_andPred);
         RASSERT(1 == m_p_calcBool->nChildCards());
-        pCard_PredAnd = nullptr;
+        p_andPred = nullptr;
         D_vDeleteMember(m_p_term);
         break;
 
       case TE_OR:
         RASSERT(2 == m_p_calcBool->nChildCards());
-        pCard_PredOr = new Card_OrPred;
-        pCard_PredOr->vTransferChildren(m_p_calcBool);
+        p_orPred = new Card_OrPred;
+        p_orPred->vTransferChildren(m_p_calcBool);
         RASSERT(0 == m_p_calcBool->nChildCards());
-        m_p_calcBool->vAppend(pCard_PredOr);
+        m_p_calcBool->vAppend(p_orPred);
         RASSERT(1 == m_p_calcBool->nChildCards());
-        pCard_PredOr = nullptr;
+        p_orPred = nullptr;
         D_vDeleteMember(m_p_term);
         break;
 
       case TE_COMPARE:
         RASSERT(pCard_SubExpr->nChildCards() > 0);
-        pCard_PredCmp = new Card_CmpPred;
-        pCard_PredCmp->vValue(m_p_term->sz());
-        pCard_PredCmp->vTransferChildren(pCard_SubExpr);
-        m_p_calcBool->vAppend(pCard_PredCmp);
-        pCard_PredCmp = nullptr;
+        p_cmpPred = new Card_CmpPred;
+        p_cmpPred->vValue(m_p_term->sz());
+        p_cmpPred->vTransferChildren(pCard_SubExpr);
+        m_p_calcBool->vAppend(p_cmpPred);
+        p_cmpPred = nullptr;
+        D_vDeleteMember(m_p_term);
+        break;
+
+      case TE_EXISTS:
+        p_tstPred = new Card_TstPred;
+        p_tstPred->vValue(m_p_term->sz());
+        p_tstPred->vTransferChildren(pCard_SubExpr);
+        m_p_calcBool->vAppend(p_tstPred);
+        p_tstPred = nullptr;
         D_vDeleteMember(m_p_term);
         break;
 
       case TE_OTHER:
         pCard_SubExpr->vAppend(m_p_term);
-        break;
-
-        // - - - - - - -
-
-      case TE_BOOLEAN:
-        NEVER_REACH;
-        break;
-
-      case TE_TYPE:
-        NEVER_REACH;
-        break;
-
-      case TE_AS:
-        NEVER_REACH;
         break;
 
       default:
@@ -161,9 +157,11 @@ void Modifications::X_calc_To_calcBool(void)
     }
   }
 
+  m_p_calcBool->vDump();
+
   if (pCard_SubExpr->nItems()) {
     RASSERT(0 == m_p_calcBool->nChildCards());
-    pCard_PredCmp->vTransferChildren(pCard_SubExpr);
+    p_cmpPred->vTransferChildren(pCard_SubExpr);
     RASSERT(1 == m_p_calcBool->nChildCards());
     RASSERT(0 == pCard_SubExpr->nChildCards());
   }
