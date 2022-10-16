@@ -368,6 +368,25 @@ void TransformerTool::vTracing(bool bTracing)
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/* conditionally trace                                                        */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::vTracer(Stz* szFormat, ...)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  if (! bIsTracing())
+    return;
+
+  s256 sValue;
+
+  va_list xArgs;
+  va_start(xArgs,szFormat);
+  StrLib::vSprint(sValue.azChar(),xArgs,(char*)szFormat);
+  va_end(xArgs);
+
+  vTrace("  [%02lld] %s"_Stz,m_iTrace++,sValue.szStz());
+}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

@@ -1348,7 +1348,7 @@ void Transforms::vMark_scan_filter_term_WhichMatchIndex(eBK eBoard, bool bTrace)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(eBoard,(char*)(__func__));
-  vDescription("mark the <SCAN>//<filter>//<term> which match index ordinals"_Stz);
+  vDescription("mark <SCAN>//<filter>//<term> ordinals which match index"_Stz);
   vTracing(bTrace);
 
   while (E_bEachMainWithSub(CK_SCAN,CK_FILTER)) {
@@ -1369,16 +1369,14 @@ void Transforms::vMark_scan_filter_term_WhichMatchIndex(eBK eBoard, bool bTrace)
       if (!szTerm->bIsStreamColOrd())
         return C_CONTINUE_RECURSION;
 
-      if (bIsTracing())
-        vTrace("  [%02lld]Checking %s %s\n"_Stz,m_iTrace++,p_term->sz(),p_term->szBearing());
+      vTracer("Checking %s %s\n"_Stz,p_term->sz(),p_term->szBearing());
 
       i8 i_IdxCol = C_UNKNOWN;
       if (! (m_p_idxCol = m_p_indexPtr->pFind_indexCol(szTerm, i_IdxCol)))
         return C_CONTINUE_RECURSION;
 
-      if (bIsTracing())
-        vTrace("  [%02lld]Matches i_IdxCol %lld // marked with I%lld\n"_Stz,
-               m_iTrace++,i_IdxCol,i_IdxCol);
+      vTracer("Matches %s.%lld // marked with I%lld\n"_Stz,
+              m_p_indexPtr->pIndex()->szIndexNm(),i_IdxCol,i_IdxCol);
 
       p_term->vMark1('I');
       p_term->vMark2(i_IdxCol);

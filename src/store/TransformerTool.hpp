@@ -159,6 +159,7 @@ namespace STORE
     void vSetupQueryBoard(void);
 
     void vTracing(bool bTracing);
+    void vTracer(Stz* szFormat, ...);
 
     void D_vDeleteMember(eCK eMember);
     void D_vDeleteMember(Card* pMember);
