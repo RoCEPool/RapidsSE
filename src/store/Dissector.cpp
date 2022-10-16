@@ -64,11 +64,9 @@ void Dissector::vDissectSpec(VertexSpec* pPipeSpec)
   i8 nSubPipelines = pPipeSpec->nItems();
   for (i8 i_SubPipeline = 0; i_SubPipeline < nSubPipelines; i_SubPipeline++) {
     m_pPipeSpec = pPipeSpec->pGet(i_SubPipeline);
-    
     vPipeline();
   }
 
-  
   m_pPipeSpec = pPipeSpec;
   vPipeline();
   

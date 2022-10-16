@@ -142,7 +142,7 @@ void TransformerTool::vEndTransformation(void)
 
   m_bTracing = false;
 
-  Card::vConsistencyCheck(m_pDeck, m_iTransformNo);
+  // UNDO: Card::vConsistencyCheck(m_pDeck, m_iTransformNo);
 }
 
 /*----------------------------------------------------------------------------*/
