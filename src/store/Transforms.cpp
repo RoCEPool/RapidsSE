@@ -1343,12 +1343,12 @@ void Transforms::vMark_scan_pred_bounds(eBK eBoard, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* mark the <SCAN>//<filter>//cmpPred> which match index ordinals             */
 /*----------------------------------------------------------------------------*/
-void Transforms::vMark_scan_cmpPred_WhichMatchIndex(eBK eBoard, bool bTrace)
+void Transforms::vMark_scan_filter_term_WhichMatchIndex(eBK eBoard, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTransformation(eBoard,(char*)(__func__));
-  vDescription("mark the <SCAN>//<filter>//cmpPred> which match index ordinals"_Stz);
+  vDescription("mark the <SCAN>//<filter>//<term> which match index ordinals"_Stz);
   vTracing(bTrace);
 
   while (E_bEachMainWithSub(CK_SCAN,CK_FILTER)) {
@@ -1377,7 +1377,8 @@ void Transforms::vMark_scan_cmpPred_WhichMatchIndex(eBK eBoard, bool bTrace)
         return C_CONTINUE_RECURSION;
 
       if (bIsTracing())
-        vTrace("  [%02lld]Matches i_IdxCol %lld\n"_Stz,m_iTrace++,i_IdxCol);
+        vTrace("  [%02lld]Matches i_IdxCol %lld // marked with I%lld\n"_Stz,
+               m_iTrace++,i_IdxCol,i_IdxCol);
 
       p_term->vMark1('I');
       p_term->vMark2(i_IdxCol);

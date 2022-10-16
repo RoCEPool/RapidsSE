@@ -62,7 +62,7 @@ namespace STORE
     void vAdd_indexJoin_UnderAllJoinable_table(eBK eBoard, bool bTrace);
     void vDelete_Redundant_stage(eBK eBoard, bool bTrace);
     void vMark_scan_pred_bounds(eBK eBoard, bool bTrace);
-    void vMark_scan_cmpPred_WhichMatchIndex(eBK eBoard, bool bTrace);
+    void vMark_scan_filter_term_WhichMatchIndex(eBK eBoard, bool bTrace);
     void vMove_Marked_where_pred_To_table_filter(eBK eBoard, bool bTrace);
     void vPromote_scan_To_indexScan(eBK eBoard, bool bTrace);
     void vConvert_table_To_scan_Or_indexJoin(eBK eBoard, bool bTrace);

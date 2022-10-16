@@ -192,9 +192,11 @@ namespace STORE
     bool S_bSearchForSubMember(eCK eMember, eCK eSubCard, bool bUpdateMember=true);
     bool S_bSearchForSubMember(Card* pMember, eCK eSubCard, bool bUpdateMember=true);
 
-    void U_vUpdateMember(eCK eMember, Card* pCard);
+    void U_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm);
 
     Stz* szT(eCK eMember);
+    Stz* szMemberNm(eCK eMember);
+
   };
 }
 

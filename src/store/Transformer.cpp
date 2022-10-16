@@ -258,7 +258,7 @@ void Transformer::vPhase_6_IndexScan(bool bTrace)
 
   m_pTransforms->vMark_scan_pred_bounds(BK_QUERY,bTrace);
 
-  m_pTransforms->vMark_scan_cmpPred_WhichMatchIndex(BK_QUERY,bTrace);
+  m_pTransforms->vMark_scan_filter_term_WhichMatchIndex(BK_QUERY, true);
  /*
   m_pTransforms->vAdd_scanPred(BK_QUERY,bTrace);
   m_pTransforms->vCull_markedPred(BK_QUERY,bTrace);
