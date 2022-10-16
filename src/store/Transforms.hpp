@@ -42,7 +42,7 @@ namespace STORE
     void vCopy_ptndJoinSet(eBK eBoard, bool bTrace);
     void vCull_filter_pred_MovedUpTo_joinPred(eBK eBoard, bool bTrace);
     void vCull_scan_Leaving_table(eBK eBoard, bool bTrace);
-    void vCull_markedPred(eBK eBoard, bool bTrace);
+    void vCull_Marked_cmpPred(eBK eBoard, bool bTrace);
     void vRemove_sort_IfSameAs_gby(eBK eBoard, bool bTrace);
     void vDelete_absJoin(eBK eBoard, bool bTrace);
     void vDelete_combined(eBK eBoard, bool bTrace);

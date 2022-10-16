@@ -69,6 +69,7 @@ void Transforms::vReinstate_combined(eBK eBoard, bool bTrace)
 
     if (! (CK_AGGREG    == m_e_MainCard ||
            CK_FILTER    == m_e_MainCard ||
+           CK_INDEXSCAN == m_e_MainCard ||
            CK_INDEXJOIN == m_e_MainCard ||
            CK_PROJECT   == m_e_MainCard ||
            CK_SORT      == m_e_MainCard))
@@ -121,6 +122,7 @@ void Transforms::vAdd_scanPred(eBK eBoard, bool bTrace)
           m_p_scanPred->vInsert(m_p_lBound);
         }
         m_pCard_dup = m_p_cmpPred->pDupCardAndSubCards();
+        StrLib::vInsertChar(m_pCard_dup->pGetChild(0)->sz()->azChar()+1,'I');
         m_p_lBound->vAppend(m_pCard_dup);
         vTracer("Added cmpPred as lower-bound %s %s\n"_Stz,m_pCard_dup->sz(),m_pCard_dup->szBearing());
       }
@@ -133,6 +135,7 @@ void Transforms::vAdd_scanPred(eBK eBoard, bool bTrace)
           m_p_scanPred->vAppend(m_p_uBound);
         }
         m_pCard_dup = m_p_cmpPred->pDupCardAndSubCards();
+        StrLib::vInsertChar(m_pCard_dup->pGetChild(0)->sz()->azChar()+1,'I');
         m_p_uBound->vAppend(m_pCard_dup);
         vTracer("Added cmpPred as upper-bound %s %s\n"_Stz,m_pCard_dup->sz(),m_pCard_dup->szBearing());
       }
@@ -657,7 +660,7 @@ void Transforms::vCull_scan_Leaving_table(eBK eBoard, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vCull_markedPred(eBK eBoard, bool bTrace)
+void Transforms::vCull_Marked_cmpPred(eBK eBoard, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -667,7 +670,7 @@ void Transforms::vCull_markedPred(eBK eBoard, bool bTrace)
 
   while (E_bEachMainWithSub(CK_SCAN,CK_FILTER)) {
 
-    vTracer("Culling filter of L & U bounds %s %s\n"_Stz,m_p_filter->sz(),m_p_filter->szBearing());
+    vTracer("Culling <filter> of L & U bounds %s\n"_Stz,m_p_filter->szBearing());
     m_p_filter->vCullPred('L');
     m_p_filter->vCullPred('U');
 
@@ -675,7 +678,7 @@ void Transforms::vCull_markedPred(eBK eBoard, bool bTrace)
     if (! m_p_filter->bIsEmptyFilter())
       continue;
 
-    vTracer("Deleting empty filter %s %s\n"_Stz,m_p_filter->sz(),m_p_filter->szBearing());
+    vTracer("Deleting empty <filter> %s\n"_Stz,m_p_filter->szBearing());
     m_p_MainCard->vRemoveSubCard(m_p_filter);
     DELETE_CARD(m_p_filter);
   }
@@ -1432,14 +1435,8 @@ void Transforms::vPromote_scan_To_indexScan(eBK eBoard, bool bTrace)
   vDescription("((replace with an explanation))"_Stz);
   vTracing(bTrace);
 
-  BoardIter xBI(m_pBoard);
-
-  while ((m_p_scan = _pCard_Scan(xBI.pEachMain(CK_SCAN)))) {
-
-    m_p_scanPred = m_p_scan->pSub_scanPred();
-    if (!m_p_scanPred)
-      continue;
-
+  while (E_bEachMainWithSub(CK_SCAN,CK_SCANPRED)) {
+    vTracer("Morphing <scan> to <indexScan> %s\n"_Stz,m_p_scan->szBearing());
     m_p_scan->vCard(CK_INDEXSCAN);
   }
 
