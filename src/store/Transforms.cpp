@@ -120,8 +120,9 @@ void Transforms::vAdd_scanPred(eBK eBoard, bool bTrace)
           N_vNewMember(CK_LBOUND);
           m_p_scanPred->vInsert(m_p_lBound);
         }
-        m_p_lBound->vAppend(m_p_cmpPred);
-        vTracer("Added m_p_cmpPred as lower-bound %s %s\n"_Stz,m_p_cmpPred->sz(),m_p_cmpPred->szBearing());
+        m_pCard_dup = m_p_cmpPred->pDupCardAndSubCards();
+        m_p_lBound->vAppend(m_pCard_dup);
+        vTracer("Added cmpPred as lower-bound %s %s\n"_Stz,m_pCard_dup->sz(),m_pCard_dup->szBearing());
       }
       else
       if ('U' == m_p_cmpPred->cMark1()) {
@@ -131,8 +132,9 @@ void Transforms::vAdd_scanPred(eBK eBoard, bool bTrace)
           N_vNewMember(CK_UBOUND);
           m_p_scanPred->vAppend(m_p_uBound);
         }
-        m_p_uBound->vAppend(m_p_cmpPred);
-        vTracer("Added m_p_cmpPred as upper-bound %s %s\n"_Stz,m_p_cmpPred->sz(),m_p_cmpPred->szBearing());
+        m_pCard_dup = m_p_cmpPred->pDupCardAndSubCards();
+        m_p_uBound->vAppend(m_pCard_dup);
+        vTracer("Added cmpPred as upper-bound %s %s\n"_Stz,m_pCard_dup->sz(),m_pCard_dup->szBearing());
       }
 
       return C_CONTINUE_RECURSION;
@@ -663,24 +665,19 @@ void Transforms::vCull_markedPred(eBK eBoard, bool bTrace)
   vDescription("((replace with an explanation))"_Stz);
   vTracing(bTrace);
 
-  BoardIter xBI(m_pBoard);
+  while (E_bEachMainWithSub(CK_SCAN,CK_FILTER)) {
 
-  while ((m_p_MainCard = xBI.pEachMain(CK_TABLE))) {
-
-    m_p_filter = m_p_MainCard->pSub_filter();
-    if (!m_p_filter)
-      continue;
-
+    vTracer("Culling filter of L & U bounds %s %s\n"_Stz,m_p_filter->sz(),m_p_filter->szBearing());
     m_p_filter->vCullPred('L');
     m_p_filter->vCullPred('U');
 
+    //m_p_filter->vDump();
     if (! m_p_filter->bIsEmptyFilter())
       continue;
 
+    vTracer("Deleting empty filter %s %s\n"_Stz,m_p_filter->sz(),m_p_filter->szBearing());
     m_p_MainCard->vRemoveSubCard(m_p_filter);
-
-    delete m_p_filter;
-    m_p_filter = nullptr;
+    DELETE_CARD(m_p_filter);
   }
 
   //m_pCardCtl->vPrintForm(CK_STREAM, CP_CARDFORM);

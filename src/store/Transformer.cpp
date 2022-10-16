@@ -260,9 +260,10 @@ void Transformer::vPhase_6_IndexScan(bool bTrace)
 
   m_pTransforms->vMark_scan_filter_term_WhichMatchIndex(BK_QUERY, bTrace);
 
-  m_pTransforms->vAdd_scanPred(BK_QUERY,true);
+  m_pTransforms->vAdd_scanPred(BK_QUERY,bTrace);
+
+  m_pTransforms->vCull_markedPred(BK_QUERY,bTrace);
   /*
-   m_pTransforms->vCull_markedPred(BK_QUERY,bTrace);
    m_pTransforms->vPromote_scan_To_indexScan(BK_QUERY,bTrace);
    */
 }
