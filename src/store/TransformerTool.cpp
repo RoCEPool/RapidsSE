@@ -487,6 +487,42 @@ bool TransformerTool::E_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind)
 }
 
 /*----------------------------------------------------------------------------*/
+/* conditionally step main register to next main which has sub and update M   */
+/*----------------------------------------------------------------------------*/
+bool TransformerTool::E_bEachMainWith2Sub(eCK eOfMainKind,
+                                          eCK eAndSubKind1,
+                                          eCK eAndSubKind2)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  while (m_p_MainCard = m_pM->pEachMain(eOfMainKind)) {
+    if (! (m_p_SubOfMain = m_p_MainCard->pFindSubCard(eAndSubKind1)))
+      continue;
+    if (! (m_p_Sub2OfMain = m_p_MainCard->pFindSubCard(eAndSubKind2)))
+      continue;
+
+    m_e_MainCard = m_p_MainCard->eCard();
+    U_vUpdateMember(m_e_MainCard, m_p_MainCard,__func__);
+    m_e_SubOfMain = m_p_SubOfMain->eCard();
+    U_vUpdateMember(m_e_SubOfMain, m_p_SubOfMain,__func__);
+    m_e_Sub2OfMain = m_p_Sub2OfMain->eCard();
+    U_vUpdateMember(m_e_Sub2OfMain, m_p_Sub2OfMain,__func__);
+    return true;
+  }
+
+  m_p_MainCard  = nullptr;
+  m_e_MainCard  = CK_NONE;
+  U_vUpdateMember(eOfMainKind, nullptr,__func__);
+  m_p_SubOfMain = nullptr;
+  m_e_SubOfMain = CK_NONE;
+  U_vUpdateMember(eAndSubKind1, nullptr,__func__);
+  m_p_Sub2OfMain = nullptr;
+  m_e_Sub2OfMain = CK_NONE;
+  U_vUpdateMember(eAndSubKind2, nullptr,__func__);
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* skip over next main ; optionally clear M members and registers             */
 /*----------------------------------------------------------------------------*/
 void TransformerTool::E_vSkipNextMain(bool bClearMembers, bool bClearRegisters)
@@ -783,6 +819,8 @@ void TransformerTool::M_vClearRegisters(void)
   m_e_MainCard         = CK_NONE;
   m_p_SubOfMain        = nullptr;
   m_e_SubOfMain        = CK_NONE;
+  m_p_Sub2OfMain       = nullptr;
+  m_e_Sub2OfMain       = CK_NONE;
   m_p_SubsequentToMain = nullptr;
   m_e_SubsequentToMain = CK_NONE;
 
@@ -814,6 +852,11 @@ void TransformerTool::M_vClearRegistersIf(eCK eCard)
        (m_p_SubOfMain && eCard == m_p_SubOfMain->eCard())) {
     m_p_SubOfMain = nullptr;
     m_e_SubOfMain = CK_NONE;
+  }
+  if (eCard == m_e_Sub2OfMain ||
+      (m_p_Sub2OfMain && eCard == m_p_Sub2OfMain->eCard())) {
+    m_p_Sub2OfMain = nullptr;
+    m_e_Sub2OfMain = CK_NONE;
   }
   if (eCard == m_e_SubsequentToMain ||
        (m_p_SubsequentToMain && eCard == m_p_SubsequentToMain->eCard())) {

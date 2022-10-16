@@ -59,6 +59,8 @@ namespace STORE
     eCK   m_e_MainCard;
     Card* m_p_SubOfMain;
     eCK   m_e_SubOfMain;
+    Card* m_p_Sub2OfMain;
+    eCK   m_e_Sub2OfMain;
     Card* m_p_SubsequentToMain;
     eCK   m_e_SubsequentToMain;
 
@@ -167,6 +169,7 @@ namespace STORE
     bool E_bEachMain(void);
     bool E_bEachMain(eCK eOfMainKind);
     bool E_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind);
+    bool E_bEachMainWith2Sub(eCK eOfMainKind, eCK eAndSubKind1, eCK eAndSubKind2);
     bool E_bMoreMain(void);
     void E_vRemoveMain(eCK eCrossCheck);
     void E_vRemoveDeleteMain(eCK eCrossCheck);

@@ -97,13 +97,7 @@ void Transforms::vAdd_scanPred(eBK eBoard, bool bTrace)
   vDescription("((replace with an explanation))"_Stz);
   vTracing(bTrace);
 
-  while (E_bEachMainWithSub(CK_SCAN,CK_FILTER)) {
-
-    m_p_indexList = m_p_MainCard->pSub_indexList();
-    if (! m_p_indexList)
-      continue;
-
-    m_p_scanPred = nullptr;
+  while (E_bEachMainWith2Sub(CK_SCAN,CK_FILTER,CK_INDEXLIST)) {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
