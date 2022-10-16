@@ -1349,7 +1349,7 @@ void Transforms::vMark_scan_cmpPred_WhichMatchIndex(void)
 
   vTransformation(BK_QUERY,(char*)(__func__));
   vDescription("mark the <SCAN>//<filter>//cmpPred> which match index ordinals"_Stz);
-  vTracing(true);
+  vTracing(false);
 
   while (E_bEachMainWithSub(CK_SCAN,CK_FILTER)) {
 

@@ -118,6 +118,8 @@ namespace STORE
     Card_UBound*           m_p_uBound;
     Card_Where*            m_p_where;
 
+    s256 m_sT;
+
   public:
     void* operator new(size_t);
     void  operator delete(void*);
@@ -191,6 +193,8 @@ namespace STORE
     bool S_bSearchForSubMember(Card* pMember, eCK eSubCard, bool bUpdateMember=true);
 
     void U_vUpdateMember(eCK eMember, Card* pCard);
+
+    Stz* szT(eCK eMember);
   };
 }
 
