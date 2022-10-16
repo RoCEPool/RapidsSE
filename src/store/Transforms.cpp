@@ -107,36 +107,39 @@ void Transforms::vAdd_scanPred(eBK eBoard, bool bTrace)
       if (! ('L' == m_p_cmpPred->cMark1() || 'U' == m_p_cmpPred->cMark1()) )
         return true;
 
-      if (! this->m_p_scanPred) {
-        //m_p_scanPred = new Card_ScanPred;
+      vTracer("Testing %s\n"_Stz,m_p_cmpPred->szBearing());
+
+      if (! m_p_scanPred) {
         N_vNewMember(CK_SCANPRED);
-        m_p_scan->vAppend(m_p_scanPred);
+        C_vAppendChild(CK_SCAN,CK_SCANPRED);
       }
 
       if ('L' == m_p_cmpPred->cMark1()) {
 
         m_p_lBound = m_p_scanPred->pSub_lBound();
         if (! m_p_lBound) {
-          //m_p_lBound = new Card_LBound;
           N_vNewMember(CK_LBOUND);
-          m_p_scanPred->vInsert(m_p_lBound);
+          C_vAppendChild(CK_SCANPRED,CK_LBOUND);
         }
-        m_pCard_dup = m_p_cmpPred->pDupCardAndSubCards();
+        //m_pCard_dup = m_p_cmpPred->pDupCardAndSubCards();
+        C_vDuplicateMember(CK_CMPPRED);
         StrLib::vInsertChar(m_pCard_dup->pGetChild(0)->sz()->azChar()+1,'I');
-        m_p_lBound->vAppend(m_pCard_dup);
+        //m_p_lBound->vAppend(m_pCard_dup);
+        C_vAppendChild(CK_LBOUND,m_pCard_dup);
         vTracer("Added cmpPred as lower-bound %s %s\n"_Stz,m_pCard_dup->sz(),m_pCard_dup->szBearing());
       }
       else
       if ('U' == m_p_cmpPred->cMark1()) {
         m_p_uBound = m_p_scanPred->pSub_uBound();
         if (! m_p_uBound) {
-          //m_p_uBound = new Card_UBound;
           N_vNewMember(CK_UBOUND);
-          m_p_scanPred->vAppend(m_p_uBound);
+          C_vAppendChild(CK_SCANPRED,CK_UBOUND);
         }
-        m_pCard_dup = m_p_cmpPred->pDupCardAndSubCards();
+        //m_pCard_dup = m_p_cmpPred->pDupCardAndSubCards();
+        C_vDuplicateMember(CK_CMPPRED);
         StrLib::vInsertChar(m_pCard_dup->pGetChild(0)->sz()->azChar()+1,'I');
-        m_p_uBound->vAppend(m_pCard_dup);
+        //m_p_uBound->vAppend(m_pCard_dup);
+        C_vAppendChild(CK_UBOUND,m_pCard_dup);
         vTracer("Added cmpPred as upper-bound %s %s\n"_Stz,m_pCard_dup->sz(),m_pCard_dup->szBearing());
       }
 

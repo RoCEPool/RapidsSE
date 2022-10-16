@@ -395,6 +395,100 @@ void TransformerTool::vTracer(Stz* szFormat, ...)
 
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::C_vAppendChild(eCK eParent, eCK eChild)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  Card* pParent = F_pFetchMember(eParent);
+  Card* pChild  = F_pFetchMember(eChild);
+
+  pParent->vAppend(pChild);
+
+  if (! m_bTracing)
+    return;
+
+  vTrace("  %s\n"_Stz,__func__);
+  vTrace("    parent %s\n"_Stz,pParent->szBearing());
+  vTrace("    child  %s\n"_Stz,pChild->szBearing());
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::C_vAppendChild(eCK eParent, Card* pChild)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  Card* pParent = F_pFetchMember(eParent);
+
+  pParent->vAppend(pChild);
+
+  if (! m_bTracing)
+    return;
+
+  vTrace("  %s\n"_Stz,__func__);
+  vTrace("    parent %s\n"_Stz,pParent->szBearing());
+  vTrace("    child  %s\n"_Stz,pChild->szBearing());
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::C_vDuplicateMember(eCK eMember)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  Card* pMember  = F_pFetchMember(eMember);
+
+  m_pCard_dup = pMember->pDupCardAndSubCards();
+
+  if (! m_bTracing)
+    return;
+
+  vTrace("  %s %s from %s\n"_Stz,
+         __func__,m_pCard_dup->szBearing(),pMember->szBearing());
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::C_vRemoveChild(eCK eParent, eCK eChild)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::C_vRemoveDeleteChild(eCK eParent, eCK eChild)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::C_vRemoveDeleteMain(eCK eMain)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::C_vPromoteChildren(eCK eParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* delete member of given kind; clear-if registers; update M member to null   */
 /*----------------------------------------------------------------------------*/
 void TransformerTool::D_vDeleteMember(eCK eMember)

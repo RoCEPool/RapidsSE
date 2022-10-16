@@ -163,6 +163,14 @@ namespace STORE
     void vTracing(bool bTracing);
     void vTracer(Stz* szFormat, ...);
 
+    void C_vAppendChild(eCK eParent, eCK eChild);
+    void C_vAppendChild(eCK eParent, Card* pChild);
+    void C_vDuplicateMember(eCK eMember);
+    void C_vRemoveChild(eCK eParent, eCK eChild);
+    void C_vRemoveDeleteChild(eCK eParent, eCK eChild);
+    void C_vRemoveDeleteMain(eCK eMain);
+    void C_vPromoteChildren(eCK eParent);
+
     void D_vDeleteMember(eCK eMember);
     void D_vDeleteMember(Card* pMember);
 

@@ -115,6 +115,9 @@ void Card::vInit(eCK eCard)
   md__FirstDetected  = C_UNKNOWN;
   md__LeakDetected   = C_UNKNOWN;
 
+  s32 sBearing;
+  sBearing.vSprint("((new %04lld))"_Stz,md__SeqNo);
+  StrLib::vCopy(md_Bearing,sBearing.azChar());
 //  if (11 == md__SeqNo) {
 //    vTrace("Card [%02lld] %p\n"_Stz, md__SeqNo, this);
 //    vDebugPoint();

@@ -1,0 +1,40 @@
+/*============================================================================*/
+/* _r4_exists -- exists sub_query test                                        */
+/*============================================================================*/
+
+trackMemory;
+
+_lineItem
+create unique index L_idx0 on lineitem(L_ORDERKEY);
+
+_orders
+create unique index O_idx0 on orders(O_ORDERKEY);
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/cue = "vAdd_scanPred"
+/transliterated
+/transform
+/transform3
+/interactive
+/weave
+/weaved
+/pipelineName = "r4_exists"
+select
+  count(*)
+  from orders
+  where exists ( select *
+                   from LineItem
+                  where L_ORDERKEY = O_ORDERKEY )
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+//drop table lineItem;
+//drop table orders;
+
+//memoryLeaks;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

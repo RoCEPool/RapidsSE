@@ -24,7 +24,7 @@ load customer "../tpch/sf_0001/customer.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/cue = "vPhase_Z_RestatePipeline"
+/cue = "vAdd_scanPred"
 /transliterated
 /transform
 /transform3
@@ -42,7 +42,7 @@ select
    and c_custKey  = o_custKey
    and c_mktsegment = 'BUILDING'
 
-   //and o_orderKey < 1000
+   and o_orderKey < 1000
 
  group by l_orderkey,
           o_orderdate,
