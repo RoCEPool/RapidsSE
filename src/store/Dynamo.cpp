@@ -54,10 +54,14 @@ Dynamo::Dynamo(TagSet* p_JobTags)
 Dynamo::~Dynamo(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
-      
-  while (VertexSpec *pVertexSpec = pPop())
+
+  if (MY::pJob()->pJobTags()->bHasName("<CallingOptimiser>"_Stz))
+    vDebugPoint();
+
+  while (VertexSpec *pVertexSpec = pPop()) {
     delete pVertexSpec;
-  
+  }
+
   delete m_pScanner;
 }
 
@@ -109,7 +113,10 @@ VertexSpec* Dynamo::pCompile(Stz* szPipelineStmt)
   m_szPipelineStmt = szPipelineStmt;
   
   m_pScanner = new Scanner(m_szPipelineStmt);
-  
+
+  if (MY::pJob()->pJobTags()->bHasName("<CallingOptimiser>"_Stz))
+    vDebugPoint();
+
   if (! (m_pScanner->pTkn()->bSame("PIPELINE"_Stz) ||
          m_pScanner->pTkn()->bSame("PIPELINELOCAL"_Stz))) {
 
@@ -169,12 +176,18 @@ bool Dynamo::bPass1_collect(void)
     return false;
 
   if (! (pTkn()->bSame("TAG"_Stz) ||
-        pTkn()->bSame("BEGIN"_Stz)))
+         pTkn()->bSame("PARAMS"_Stz) ||
+         pTkn()->bSame("BEGIN"_Stz)))
     return false;
 
   while (pTkn()->bSame("TAG"_Stz))
     if (! bCollectTag())
       return false;
+
+  if (pTkn()->bSame("PARAMS"_Stz))
+    if (! bCollectParams())
+      return false;
+
 
   if (! bCollectBeginEnd())
     return false;
@@ -231,6 +244,26 @@ bool Dynamo::bCollectTag(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   m_p_JobTags->vInsert(sTagNm, sTagValue);
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect params                                                             */
+/*----------------------------------------------------------------------------*/
+bool Dynamo::bCollectParams(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_DYNAMO, _FOOTER_);
+
+  if (!pTkn()->bSame("PARAMS"_Stz))
+    return false;
+  vTokenAccept();
+
+
+  // (tbc)
+
+
+  vTokenAccept();
 
   return true;
 }
