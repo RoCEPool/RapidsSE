@@ -97,13 +97,7 @@ void Transforms::vAdd_scanPred(eBK eBoard, bool bTrace)
   vDescription("((replace with an explanation))"_Stz);
   vTracing(bTrace);
 
-  BoardIter xBI(m_pBoard);
-
-  while ( (m_p_MainCard = xBI.pEachMain(CK_TABLE)) ) {
-
-    m_p_filter = m_p_MainCard->pSub_filter();
-    if (! m_p_filter)
-      continue;
+  while (E_bEachMainWithSub(CK_SCAN,CK_FILTER)) {
 
     m_p_indexList = m_p_MainCard->pSub_indexList();
     if (! m_p_indexList)
@@ -111,41 +105,48 @@ void Transforms::vAdd_scanPred(eBK eBoard, bool bTrace)
 
     m_p_scanPred = nullptr;
 
-    // - - - - - - - - -
-    auto bfX = [this](Card* pCard) {
-      Card_CmpPred* p_predCmp = _pCard_CmpPred(pCard);
-      if (! ('L' == p_predCmp->cMark1() || 'U' == p_predCmp->cMark1()) )
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    auto bfAdd = [this](Card* pCard) {
+      m_p_cmpPred = _pCard_CmpPred(pCard);
+      if (! ('L' == m_p_cmpPred->cMark1() || 'U' == m_p_cmpPred->cMark1()) )
         return true;
 
       if (! this->m_p_scanPred) {
-        m_p_scanPred = new Card_ScanPred;
+        //m_p_scanPred = new Card_ScanPred;
+        N_vNewMember(CK_SCANPRED);
         m_p_scan->vAppend(m_p_scanPred);
       }
 
-      if ('L' == p_predCmp->cMark1()) {
+      if ('L' == m_p_cmpPred->cMark1()) {
+
         m_p_lBound = m_p_scanPred->pSub_lBound();
         if (! m_p_lBound) {
-          m_p_lBound = new Card_LBound;
+          //m_p_lBound = new Card_LBound;
+          N_vNewMember(CK_LBOUND);
           m_p_scanPred->vInsert(m_p_lBound);
         }
-        m_p_lBound->vAppend(p_predCmp);
+        m_p_lBound->vAppend(m_p_cmpPred);
+        vTracer("Added m_p_cmpPred as lower-bound %s %s\n"_Stz,m_p_cmpPred->sz(),m_p_cmpPred->szBearing());
       }
       else
-      if ('U' == p_predCmp->cMark1()) {
+      if ('U' == m_p_cmpPred->cMark1()) {
         m_p_uBound = m_p_scanPred->pSub_uBound();
         if (! m_p_uBound) {
-          m_p_uBound = new Card_UBound;
+          //m_p_uBound = new Card_UBound;
+          N_vNewMember(CK_UBOUND);
           m_p_scanPred->vAppend(m_p_uBound);
         }
-        m_p_uBound->vAppend(p_predCmp);
+        m_p_uBound->vAppend(m_p_cmpPred);
+        vTracer("Added m_p_cmpPred as upper-bound %s %s\n"_Stz,m_p_cmpPred->sz(),m_p_cmpPred->szBearing());
       }
 
-      return true;
+      return C_CONTINUE_RECURSION;
     };
 
-    // - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    m_p_filter->vApplyRecursive(CK_CMPPRED, bfX);
+    m_p_filter->vApplyRecursive(CK_CMPPRED, bfAdd);
 
   }
 
