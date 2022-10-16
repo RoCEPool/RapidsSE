@@ -95,109 +95,109 @@ void Transformer::vTransform3(void)
 
   //vTrace("Transformer running vTransform3\n"_Stz);
 
-  m_pTransforms->vExpandedForm();
+  m_pTransforms->vExpandedForm(BK_QUERY,false);
 
-  vPhase_1_ReducePipeline();
+  vPhase_1_ReducePipeline(false);
 
-  vPhase_2_TableAnalysis();
+  vPhase_2_TableAnalysis(false);
 
-  vPhase_3_WherePredicates();
+  vPhase_3_WherePredicates(false);
 
-  vPhase_4_InitialJoin();
+  vPhase_4_InitialJoin(false);
 
-  vPhase_5_JoinOrdering();
+  vPhase_5_JoinOrdering(false);
 
-  vPhase_6_IndexScan();
+  vPhase_6_IndexScan(false);
 
-  vPhase_7_StreamOrdering();
+  vPhase_7_StreamOrdering(false);
 
-  vPhase_8_FilterRefinement();
+  vPhase_8_FilterRefinement(false);
 
-  vPhase_Z_RestatePipeline();
+  vPhase_Z_RestatePipeline(false);
 
-  m_pTransforms->vExpandedForm();
+  m_pTransforms->vExpandedForm(BK_QUERY,false);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transformer::vPhase_1_ReducePipeline(void)
+void Transformer::vPhase_1_ReducePipeline(bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
   m_pTransforms->vPhase((Stz*)__func__);
 
-  m_pTransforms->vDelete_Redundant_stage();
+  m_pTransforms->vDelete_Redundant_stage(BK_QUERY,bTrace);
 
-  m_pTransforms->vDelete_absJoin();
+  m_pTransforms->vDelete_absJoin(BK_QUERY,bTrace);
 
-  m_pTransforms->vDelete_combined();
+  m_pTransforms->vDelete_combined(BK_QUERY,bTrace);
 
-  m_pTransforms->vDelete_send();
+  m_pTransforms->vDelete_send(BK_QUERY,bTrace);
 
-  m_pTransforms->vCull_scan_Leaving_table();
+  m_pTransforms->vCull_scan_Leaving_table(BK_QUERY,bTrace);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transformer::vPhase_2_TableAnalysis(void)
+void Transformer::vPhase_2_TableAnalysis(bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
   m_pTransforms->vPhase((Stz*)__func__);
 
-  m_pTransforms->vAdd_tableSyn_ForAll_table();
+  m_pTransforms->vAdd_tableSyn_ForAll_table(BK_QUERY,bTrace);
 
-  m_pTransforms->vAdd_tablePtn_UnderAll_table();
+  m_pTransforms->vAdd_tablePtn_UnderAll_table(BK_QUERY,bTrace);
 
-  m_pTransforms->vAdd_stream_UnderAll_table();
+  m_pTransforms->vAdd_stream_UnderAll_table(BK_QUERY,bTrace);
 
-  m_pTransforms->vCalc_ordinalRange_ForAll_stream();
+  m_pTransforms->vCalc_ordinalRange_ForAll_stream(BK_QUERY,bTrace);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transformer::vPhase_3_WherePredicates(void)
+void Transformer::vPhase_3_WherePredicates(bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
   m_pTransforms->vPhase((Stz*)__func__);
 
-  m_pTransforms->vConvert_where_calc_To_where_calcBool();
+  m_pTransforms->vConvert_where_calc_To_where_calcBool(BK_QUERY,bTrace);
 
-  m_pTransforms->vMark_where_pred_Wrt_table();
+  m_pTransforms->vMark_where_pred_Wrt_table(BK_QUERY,bTrace);
 
-  m_pTransforms->vMove_Marked_where_pred_To_table_filter();
+  m_pTransforms->vMove_Marked_where_pred_To_table_filter(BK_QUERY,bTrace);
 
-  m_pTransforms->vDelete_Empty_where();
+  m_pTransforms->vDelete_Empty_where(BK_QUERY,bTrace);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transformer::vPhase_4_InitialJoin(void)
+void Transformer::vPhase_4_InitialJoin(bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
   m_pTransforms->vPhase((Stz*)__func__);
 
-  m_pTransforms->vAdd_indexJoin_UnderAllJoinable_table();
+  m_pTransforms->vAdd_indexJoin_UnderAllJoinable_table(BK_QUERY,bTrace);
 
-  m_pTransforms->vConvert_idxCol_name_Of_table_To_idxCol_ord();
+  m_pTransforms->vConvert_idxCol_name_Of_table_To_idxCol_ord(BK_QUERY,bTrace);
 
-  m_pTransforms->vAdd_joinPred_UnderAll_indexJoin();
+  m_pTransforms->vAdd_joinPred_UnderAll_indexJoin(BK_QUERY,bTrace);
 
-  m_pTransforms->vCull_filter_pred_MovedUpTo_joinPred();
+  m_pTransforms->vCull_filter_pred_MovedUpTo_joinPred(BK_QUERY,bTrace);
 
-  m_pTransforms->vDelete_Empty_filter();
+  m_pTransforms->vDelete_Empty_filter(BK_QUERY,bTrace);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transformer::vPhase_5_JoinOrdering(void)
+void Transformer::vPhase_5_JoinOrdering(bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
@@ -208,35 +208,35 @@ void Transformer::vPhase_5_JoinOrdering(void)
   // PARTITION BOARD
 
   //
-  m_pTransforms->vExtract_tableList_From_queryBoard();
+  m_pTransforms->vExtract_tableList_From_queryBoard(BK_QUERY,bTrace);
 
   // add <term/<columnRef> to all ordinal <term>
-  m_pTransforms->vAdd_columnRef_Under_term();
+  m_pTransforms->vAdd_columnRef_Under_term(BK_QUERY,bTrace);
 
-  m_pTransforms->vExtract_joinPredList();
-  m_pTransforms->vCompute_coPtnPredList();
-  m_pTransforms->vCompute_coPtnJoinList();
-  m_pTransforms->vCompute_crossPtnJoinList();
-  m_pTransforms->vCompute_ptndJoinSet();
+  m_pTransforms->vExtract_joinPredList(BK_QUERY,bTrace);
+  m_pTransforms->vCompute_coPtnPredList(BK_QUERY,bTrace);
+  m_pTransforms->vCompute_coPtnJoinList(BK_QUERY,bTrace);
+  m_pTransforms->vCompute_crossPtnJoinList(BK_QUERY,bTrace);
+  m_pTransforms->vCompute_ptndJoinSet(BK_QUERY,bTrace);
 
-  m_pTransforms->vCopy_ptndJoinSet();
-  m_pTransforms->vGenerate_ptndPermutations();
-  m_pTransforms->vRemove_invalidPermutations();
+  m_pTransforms->vCopy_ptndJoinSet(BK_QUERY,bTrace);
+  m_pTransforms->vGenerate_ptndPermutations(BK_QUERY,bTrace);
+  m_pTransforms->vRemove_invalidPermutations(BK_QUERY,bTrace);
 
-  m_pTransforms->vSetup_costEst();
-  m_pTransforms->vEstimate_ptndJoins();
-  m_pTransforms->vEstimate_network();
-  m_pTransforms->vEstimate_joinOrder();
-  m_pTransforms->vExtract_joinOrderSeq();
+  m_pTransforms->vSetup_costEst(BK_QUERY,bTrace);
+  m_pTransforms->vEstimate_ptndJoins(BK_QUERY,bTrace);
+  m_pTransforms->vEstimate_network(BK_QUERY,bTrace);
+  m_pTransforms->vEstimate_joinOrder(BK_QUERY,bTrace);
+  m_pTransforms->vExtract_joinOrderSeq(BK_QUERY,bTrace);
   */
 
-  m_pTransforms->vConvert_table_To_scan_Or_indexJoin();
+  m_pTransforms->vConvert_table_To_scan_Or_indexJoin(BK_QUERY,bTrace);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transformer::vPhase_6_IndexScan(void)
+void Transformer::vPhase_6_IndexScan(bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
@@ -252,56 +252,56 @@ void Transformer::vPhase_6_IndexScan(void)
  *
  */
 
-  m_pTransforms->vInsert_indexList_ToAll_scan();
+  m_pTransforms->vInsert_indexList_ToAll_scan(BK_QUERY,bTrace);
 
-  m_pTransforms->vConvert_idxCol_name_Of_scan_To_idxCol_ord();
+  m_pTransforms->vConvert_idxCol_name_Of_scan_To_idxCol_ord(BK_QUERY,bTrace);
 
-  m_pTransforms->vMark_scan_pred_bounds();
+  m_pTransforms->vMark_scan_pred_bounds(BK_QUERY,bTrace);
 
-  m_pTransforms->vMark_scan_cmpPred_WhichMatchIndex();
+  m_pTransforms->vMark_scan_cmpPred_WhichMatchIndex(BK_QUERY,bTrace);
  /*
-  m_pTransforms->vAdd_scanPred();
-  m_pTransforms->vCull_markedPred();
-  m_pTransforms->vPromote_scan_To_indexScan();
+  m_pTransforms->vAdd_scanPred(BK_QUERY,bTrace);
+  m_pTransforms->vCull_markedPred(BK_QUERY,bTrace);
+  m_pTransforms->vPromote_scan_To_indexScan(BK_QUERY,bTrace);
   */
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transformer::vPhase_7_StreamOrdering(void)
+void Transformer::vPhase_7_StreamOrdering(bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
   m_pTransforms->vPhase((Stz*)__func__);
 
-  m_pTransforms->vRemove_sort_IfSameAs_gby();
+  m_pTransforms->vRemove_sort_IfSameAs_gby(BK_QUERY,bTrace);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transformer::vPhase_8_FilterRefinement(void)
+void Transformer::vPhase_8_FilterRefinement(bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
   m_pTransforms->vPhase((Stz*)__func__);
 
-  m_pTransforms->vIndividuate_filter();
+  m_pTransforms->vIndividuate_filter(BK_QUERY,bTrace);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transformer::vPhase_Z_RestatePipeline(void)
+void Transformer::vPhase_Z_RestatePipeline(bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
   m_pTransforms->vPhase((Stz*)__func__);
 
-  m_pTransforms->vReinstate_stages();
+  m_pTransforms->vReinstate_stages(BK_QUERY,bTrace);
 
-  m_pTransforms->vReinstate_combined();
+  m_pTransforms->vReinstate_combined(BK_QUERY,bTrace);
 }
 
 /*============================================================================*/

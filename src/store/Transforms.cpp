@@ -51,13 +51,13 @@ Transforms::~Transforms(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vReinstate_combined(void)
+void Transforms::vReinstate_combined(eBK eBoard, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransformation(BK_QUERY,(char*)(__func__));
+  vTransformation(eBoard,(char*)(__func__));
   vDescription("((replace with an explanation))"_Stz);
-  vTracing(false);
+  vTracing(bTrace);
 
   while (E_bEachMain()) {
 
@@ -89,13 +89,13 @@ void Transforms::vReinstate_combined(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vAdd_scanPred(void)
+void Transforms::vAdd_scanPred(eBK eBoard, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransformation(BK_QUERY,(char*)(__func__));
+  vTransformation(eBoard,(char*)(__func__));
   vDescription("((replace with an explanation))"_Stz);
-  vTracing(false);
+  vTracing(bTrace);
 
   BoardIter xBI(m_pBoard);
 
@@ -156,13 +156,13 @@ void Transforms::vAdd_scanPred(void)
 /*----------------------------------------------------------------------------*/
 /* reinstate stages                                                           */
 /*----------------------------------------------------------------------------*/
-void Transforms::vReinstate_stages(void)
+void Transforms::vReinstate_stages(eBK eBoard, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransformation(BK_QUERY,(char*)(__func__));
+  vTransformation(eBoard,(char*)(__func__));
   vDescription("reinstate stages"_Stz);
-  vTracing(false);
+  vTracing(bTrace);
 
   while (E_bEachMain() && H_bHasSubsequentToMain(C_UPDATE_MEMBER))  {
 
@@ -192,13 +192,13 @@ void Transforms::vReinstate_stages(void)
 /*----------------------------------------------------------------------------*/
 /* add a <tablePtn> under every <table>                                       */
 /*----------------------------------------------------------------------------*/
-void Transforms::vAdd_tablePtn_UnderAll_table(void)
+void Transforms::vAdd_tablePtn_UnderAll_table(eBK eBoard, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransformation(BK_QUERY,(char*)(__func__));
+  vTransformation(eBoard,(char*)(__func__));
   vDescription("add a <tablePtn> under every <table>"_Stz);
-  vTracing(false);
+  vTracing(bTrace);
 
   while (E_bEachMain(CK_TABLE)) {
     //m_p_tablePtn = new Card_TablePtn;
@@ -214,13 +214,13 @@ void Transforms::vAdd_tablePtn_UnderAll_table(void)
 /*----------------------------------------------------------------------------*/
 /* add a <tableSyn> to all <table>'s                                          */
 /*----------------------------------------------------------------------------*/
-void Transforms::vAdd_tableSyn_ForAll_table(void)
+void Transforms::vAdd_tableSyn_ForAll_table(eBK eBoard, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransformation(BK_QUERY,(char*)(__func__));
+  vTransformation(eBoard,(char*)(__func__));
   vDescription("add a <tableSyn> to all <table>'s"_Stz);
-  vTracing(false);
+  vTracing(bTrace);
 
   char cTableSyn = 'a';
 
@@ -246,13 +246,13 @@ void Transforms::vAdd_tableSyn_ForAll_table(void)
 /*----------------------------------------------------------------------------*/
 /* append <indexList> to <scan>                                               */
 /*----------------------------------------------------------------------------*/
-void Transforms::vInsert_indexList_ToAll_scan(void)
+void Transforms::vInsert_indexList_ToAll_scan(eBK eBoard, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransformation(BK_QUERY,(char*)(__func__));
+  vTransformation(eBoard,(char*)(__func__));
   vDescription("append <indexList> to <scan>"_Stz);
-  vTracing(false);
+  vTracing(bTrace);
 
   while (E_bEachMainWithSub(CK_SCAN,CK_TABLEPTR)) {
     if ( (m_p_indexList = m_p_tablePtr->pNew_indexList()) ) {
@@ -268,13 +268,13 @@ void Transforms::vInsert_indexList_ToAll_scan(void)
 /*----------------------------------------------------------------------------*/
 /* add a <stream> under every <table>                                         */
 /*----------------------------------------------------------------------------*/
-void Transforms::vAdd_stream_UnderAll_table(void)
+void Transforms::vAdd_stream_UnderAll_table(eBK eBoard, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransformation(BK_QUERY,(char*)(__func__));
+  vTransformation(eBoard,(char*)(__func__));
   vDescription("add a <stream> under every <table>"_Stz);
-  vTracing(false);
+  vTracing(bTrace);
 
   // E <scan>
   while (E_bEachMain(CK_TABLE)) {
@@ -305,13 +305,13 @@ void Transforms::vAdd_stream_UnderAll_table(void)
 /*----------------------------------------------------------------------------*/
 /* calculate the ordinal $low..$high range for each <stream>                  */
 /*----------------------------------------------------------------------------*/
-void Transforms::vCalc_ordinalRange_ForAll_stream(void)
+void Transforms::vCalc_ordinalRange_ForAll_stream(eBK eBoard, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransformation(BK_QUERY,(char*)(__func__));
+  vTransformation(eBoard,(char*)(__func__));
   vDescription("calculate the ordinal $low..$high range for each <stream>"_Stz);
-  vTracing(false);
+  vTracing(bTrace);
 
   i8 iOrdLo = 1;
   i8 iOrdHi = C_UNKNOWN;
@@ -338,13 +338,13 @@ void Transforms::vCalc_ordinalRange_ForAll_stream(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vCompute_coPtnJoinList(void)
+void Transforms::vCompute_coPtnJoinList(eBK eBoard, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransformation(BK_QUERY,(char*)(__func__));
+  vTransformation(eBoard,(char*)(__func__));
   vDescription("((replace with an explanation))"_Stz);
-  vTracing(false);
+  vTracing(bTrace);
 
   vSetupPartitionBoard();
 
@@ -381,13 +381,13 @@ void Transforms::vCompute_coPtnJoinList(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vCompute_coPtnPredList(void)
+void Transforms::vCompute_coPtnPredList(eBK eBoard, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransformation(BK_QUERY,(char*)(__func__));
+  vTransformation(eBoard,(char*)(__func__));
   vDescription("((replace with an explanation))"_Stz);
-  vTracing(false);
+  vTracing(bTrace);
 
   vSetupPartitionBoard();
 
@@ -430,13 +430,13 @@ void Transforms::vCompute_coPtnPredList(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vCompute_crossPtnJoinList(void)
+void Transforms::vCompute_crossPtnJoinList(eBK eBoard, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransformation(BK_QUERY,(char*)(__func__));
+  vTransformation(eBoard,(char*)(__func__));
   vDescription("((replace with an explanation))"_Stz);
-  vTracing(false);
+  vTracing(bTrace);
 
   vSetupPartitionBoard();
 
@@ -472,13 +472,13 @@ void Transforms::vCompute_crossPtnJoinList(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vCompute_ptndJoinSet(void)
+void Transforms::vCompute_ptndJoinSet(eBK eBoard, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransformation(BK_QUERY,(char*)(__func__));
+  vTransformation(eBoard,(char*)(__func__));
   vDescription("((replace with an explanation))"_Stz);
-  vTracing(false);
+  vTracing(bTrace);
 
   vSetupPartitionBoard();
 
@@ -514,13 +514,13 @@ void Transforms::vCompute_ptndJoinSet(void)
 /*----------------------------------------------------------------------------*/
 /* convert <where>//<calc> to <where>//<calcBool>                             */
 /*----------------------------------------------------------------------------*/
-void Transforms::vConvert_where_calc_To_where_calcBool(void)
+void Transforms::vConvert_where_calc_To_where_calcBool(eBK eBoard, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransformation(BK_QUERY,(char*)(__func__));
+  vTransformation(eBoard,(char*)(__func__));
   vDescription("convert <where>//<calc> into <where>//<calcBool> "_Stz);
-  vTracing(false);
+  vTracing(bTrace);
 
   while (E_bEachMainWithSub(CK_WHERE, CK_CALC)) {
     X_calc_To_calcBool();
@@ -535,13 +535,13 @@ void Transforms::vConvert_where_calc_To_where_calcBool(void)
 /*----------------------------------------------------------------------------*/
 /* convert the column name in every <idxCol> to a $streamOrdinal              */
 /*----------------------------------------------------------------------------*/
-void Transforms::vConvert_idxCol_name_Of_scan_To_idxCol_ord(void)
+void Transforms::vConvert_idxCol_name_Of_scan_To_idxCol_ord(eBK eBoard, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransformation(BK_QUERY,(char*)(__func__));
+  vTransformation(eBoard,(char*)(__func__));
   vDescription("convert the column name in every <idxCol> to a $streamOrdinal"_Stz);
-  vTracing(false);
+  vTracing(bTrace);
 
   m_pDeck->vClearMarksRecursive();
 
@@ -557,13 +557,13 @@ void Transforms::vConvert_idxCol_name_Of_scan_To_idxCol_ord(void)
 /*----------------------------------------------------------------------------*/
 /* convert the column name in every <idxCol> to a $streamOrdinal              */
 /*----------------------------------------------------------------------------*/
-void Transforms::vConvert_idxCol_name_Of_table_To_idxCol_ord(void)
+void Transforms::vConvert_idxCol_name_Of_table_To_idxCol_ord(eBK eBoard, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransformation(BK_QUERY,(char*)(__func__));
+  vTransformation(eBoard,(char*)(__func__));
   vDescription("convert the column name in every <idxCol> to a $streamOrdinal"_Stz);
-  vTracing(false);
+  vTracing(bTrace);
 
   m_pDeck->vClearMarksRecursive();
 
@@ -585,13 +585,13 @@ void Transforms::vConvert_idxCol_name_Of_table_To_idxCol_ord(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vCopy_ptndJoinSet(void)
+void Transforms::vCopy_ptndJoinSet(eBK eBoard, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransformation(BK_QUERY,(char*)(__func__));
+  vTransformation(eBoard,(char*)(__func__));
   vDescription("((replace with an explanation))"_Stz);
-  vTracing(false);
+  vTracing(bTrace);
 
   vSetupPermuteBoard();
 
@@ -616,13 +616,13 @@ void Transforms::vCopy_ptndJoinSet(void)
 /*----------------------------------------------------------------------------*/
 /* remove <table>/<filter>//<pred> that are now <table>/<joinPred>//<pred>    */
 /*----------------------------------------------------------------------------*/
-void Transforms::vCull_filter_pred_MovedUpTo_joinPred(void)
+void Transforms::vCull_filter_pred_MovedUpTo_joinPred(eBK eBoard, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransformation(BK_QUERY,(char*)(__func__));
+  vTransformation(eBoard,(char*)(__func__));
   vDescription("remove <table>/<filter>//<pred> that are now <table>/<joinPred>//<pred>"_Stz);
-  vTracing(false);
+  vTracing(bTrace);
 
   while (E_bEachMain(CK_TABLE)) {
     if (! (m_p_filter = m_p_table->pSub_filter()))
@@ -641,13 +641,13 @@ void Transforms::vCull_filter_pred_MovedUpTo_joinPred(void)
 /*----------------------------------------------------------------------------*/
 /* replace all <scan>'s with their children                                   */
 /*----------------------------------------------------------------------------*/
-void Transforms::vCull_scan_Leaving_table(void)
+void Transforms::vCull_scan_Leaving_table(eBK eBoard, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransformation(BK_QUERY,(char*)(__func__));
+  vTransformation(eBoard,(char*)(__func__));
   vDescription("replace all <scan>'s with their children"_Stz);
-  vTracing(false);
+  vTracing(bTrace);
 
   while (E_bEachMain(CK_SCAN)) {
     m_pDeck->vReplaceChildWithItsSubs(m_p_MainCard);
@@ -660,13 +660,13 @@ void Transforms::vCull_scan_Leaving_table(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vCull_markedPred(void)
+void Transforms::vCull_markedPred(eBK eBoard, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransformation(BK_QUERY,(char*)(__func__));
+  vTransformation(eBoard,(char*)(__func__));
   vDescription("((replace with an explanation))"_Stz);
-  vTracing(false);
+  vTracing(bTrace);
 
   BoardIter xBI(m_pBoard);
 
@@ -699,13 +699,13 @@ void Transforms::vCull_markedPred(void)
 /*----------------------------------------------------------------------------*/
 /* remove <sort> if <sbyElist> is the same as the <gbyElist>                  */
 /*----------------------------------------------------------------------------*/
-void Transforms::vRemove_sort_IfSameAs_gby(void)
+void Transforms::vRemove_sort_IfSameAs_gby(eBK eBoard, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransformation(BK_QUERY,(char*)(__func__));
+  vTransformation(eBoard,(char*)(__func__));
   vDescription("remove <sort> if <sbyElist> is the same as the <gbyElist>"_Stz);
-  vTracing(false);
+  vTracing(bTrace);
 
   while (E_bEachMain(CK_SORT)) {
 
@@ -728,13 +728,13 @@ void Transforms::vRemove_sort_IfSameAs_gby(void)
 /*----------------------------------------------------------------------------*/
 /* delete superfluous <absJoin>'s                                             */
 /*----------------------------------------------------------------------------*/
-void Transforms::vDelete_absJoin(void)
+void Transforms::vDelete_absJoin(eBK eBoard, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransformation(BK_QUERY,(char*)(__func__),C_DONT_PRINT);
+  vTransformation(eBoard,(char*)(__func__),C_DONT_PRINT);
   vDescription("delete superfluous <absJoin>'s"_Stz);
-  vTracing(false);
+  vTracing(bTrace);
 
   while (E_bEachMain(CK_ABSJOIN))
     E_vRemoveDeleteMain(CK_ABSJOIN);
@@ -746,13 +746,13 @@ void Transforms::vDelete_absJoin(void)
 /*----------------------------------------------------------------------------*/
 /* delete superfluous <combined>'s                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vDelete_combined(void)
+void Transforms::vDelete_combined(eBK eBoard, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransformation(BK_QUERY,(char*)(__func__),C_DONT_PRINT);
+  vTransformation(eBoard,(char*)(__func__),C_DONT_PRINT);
   vDescription("delete superfluous <combined>'s"_Stz);
-  vTracing(false);
+  vTracing(bTrace);
 
   while (E_bEachMain(CK_COMBINED))
     E_vRemoveDeleteMain(CK_COMBINED);
@@ -764,13 +764,13 @@ void Transforms::vDelete_combined(void)
 /*----------------------------------------------------------------------------*/
 /* delete superfluous <send>'s                                                 */
 /*----------------------------------------------------------------------------*/
-void Transforms::vDelete_send(void)
+void Transforms::vDelete_send(eBK eBoard, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransformation(BK_QUERY,(char*)(__func__),C_DONT_PRINT);
+  vTransformation(eBoard,(char*)(__func__),C_DONT_PRINT);
   vDescription("delete superfluous <send>'s"_Stz);
-  vTracing(false);
+  vTracing(bTrace);
 
   while (E_bEachMain(CK_SEND))
     E_vRemoveDeleteMain(CK_SEND);
@@ -782,13 +782,13 @@ void Transforms::vDelete_send(void)
 /*----------------------------------------------------------------------------*/
 /* linearize board by deleting all duplicate <stage>'s                          */
 /*----------------------------------------------------------------------------*/
-void Transforms::vDelete_Redundant_stage(void)
+void Transforms::vDelete_Redundant_stage(eBK eBoard, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransformation(BK_QUERY,(char*)(__func__),C_DONT_PRINT);
+  vTransformation(eBoard,(char*)(__func__),C_DONT_PRINT);
   vDescription("linearize board by deleting all duplicate <stage>'s"_Stz);
-  vTracing(false);
+  vTracing(bTrace);
 
   //m_pDeck->vDump();
 
@@ -827,13 +827,13 @@ void Transforms::vDelete_Redundant_stage(void)
 /*----------------------------------------------------------------------------*/
 /* delete <where> if it is effectively empty                                  */
 /*----------------------------------------------------------------------------*/
-void Transforms::vDelete_Empty_where(void)
+void Transforms::vDelete_Empty_where(eBK eBoard, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransformation(BK_QUERY,(char*)(__func__));
+  vTransformation(eBoard,(char*)(__func__));
   vDescription("delete <where> if it is effectively empty"_Stz);
-  vTracing(false);
+  vTracing(bTrace);
 
   while (E_bEachMain(CK_WHERE)) {
     m_p_calcBool = m_p_where->pSub_boolCalc();
@@ -851,12 +851,12 @@ void Transforms::vDelete_Empty_where(void)
 /*----------------------------------------------------------------------------*/
 /* delete any <table>/<filter> which is effectively empty                     */
 /*----------------------------------------------------------------------------*/
-void Transforms::vDelete_Empty_filter(void)
+void Transforms::vDelete_Empty_filter(eBK eBoard, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-  vTracing(false);
+  vTracing(bTrace);
 
-  vTransformation(BK_QUERY,(char*)(__func__));
+  vTransformation(eBoard,(char*)(__func__));
   vDescription("delete any <table>/<filter> which is effectively empty"_Stz);
 
   while (E_bEachMain()) {
@@ -878,13 +878,13 @@ void Transforms::vDelete_Empty_filter(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vEstimate_joinOrder(void)
+void Transforms::vEstimate_joinOrder(eBK eBoard, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransformation(BK_QUERY,(char*)(__func__));
+  vTransformation(eBoard,(char*)(__func__));
   vDescription("((replace with an explanation))"_Stz);
-  vTracing(false);
+  vTracing(bTrace);
 
   i8 iLowestNetwork = 999999999;
 
@@ -918,13 +918,13 @@ void Transforms::vEstimate_joinOrder(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vEstimate_network(void)
+void Transforms::vEstimate_network(eBK eBoard, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransformation(BK_QUERY,(char*)(__func__));
+  vTransformation(eBoard,(char*)(__func__));
   vDescription("((replace with an explanation))"_Stz);
-  vTracing(false);
+  vTracing(bTrace);
 
   BoardIter xBI(m_pBoard_costEst);
 
@@ -965,13 +965,13 @@ void Transforms::vEstimate_network(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vEstimate_ptndJoins(void)
+void Transforms::vEstimate_ptndJoins(eBK eBoard, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransformation(BK_QUERY,(char*)(__func__));
+  vTransformation(eBoard,(char*)(__func__));
   vDescription("((replace with an explanation))"_Stz);
-  vTracing(false);
+  vTracing(bTrace);
 
   m_p_tableList =
       _pCard_TableList(m_pDeck->pFindChild(CK_TABLELIST));
@@ -999,13 +999,13 @@ void Transforms::vEstimate_ptndJoins(void)
 /*----------------------------------------------------------------------------*/
 /* expanded form                                                              */
 /*----------------------------------------------------------------------------*/
-void Transforms::vExpandedForm(void)
+void Transforms::vExpandedForm(eBK eBoard, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransformation(BK_QUERY,(char*)(__func__));
+  vTransformation(eBoard,(char*)(__func__));
   vDescription("((replace with an explanation))"_Stz);
-  vTracing(false);
+  vTracing(bTrace);
 
   m_pCardCtl->vReset();
 
@@ -1016,13 +1016,13 @@ void Transforms::vExpandedForm(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vExtract_joinOrderSeq(void)
+void Transforms::vExtract_joinOrderSeq(eBK eBoard, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransformation(BK_QUERY,(char*)(__func__));
+  vTransformation(eBoard,(char*)(__func__));
   vDescription("((replace with an explanation))"_Stz);
-  vTracing(false);
+  vTracing(bTrace);
 
   m_pDeck->vAppendMain((m_p_joinOrderSeq = new Card_JoinOrderSeq));
 
@@ -1044,13 +1044,13 @@ void Transforms::vExtract_joinOrderSeq(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vExtract_joinPredList(void)
+void Transforms::vExtract_joinPredList(eBK eBoard, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransformation(BK_QUERY,(char*)(__func__));
+  vTransformation(eBoard,(char*)(__func__));
   vDescription("((replace with an explanation))"_Stz);
-  vTracing(false);
+  vTracing(bTrace);
 
   vSetupPartitionBoard();
 
@@ -1076,13 +1076,13 @@ void Transforms::vExtract_joinPredList(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vExtract_tableList_From_queryBoard(void)
+void Transforms::vExtract_tableList_From_queryBoard(eBK eBoard, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransformation(BK_QUERY,(char*)(__func__));
+  vTransformation(eBoard,(char*)(__func__));
   vDescription("((replace with an explanation))"_Stz);
-  vTracing(false);
+  vTracing(bTrace);
 
   vSetupPartitionBoard();
 
@@ -1108,13 +1108,13 @@ void Transforms::vExtract_tableList_From_queryBoard(void)
 /*----------------------------------------------------------------------------*/
 /* add a <joinPred> under each <indexJoin>                                    */
 /*----------------------------------------------------------------------------*/
-void Transforms::vAdd_joinPred_UnderAll_indexJoin(void)
+void Transforms::vAdd_joinPred_UnderAll_indexJoin(eBK eBoard, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransformation(BK_QUERY,(char*)(__func__));
+  vTransformation(eBoard,(char*)(__func__));
   vDescription("add a <joinPred> under each <indexJoin>"_Stz);
-  vTracing(false);
+  vTracing(bTrace);
 
   while (E_bEachMain(CK_TABLE)) {
     if (! (m_p_filter = m_p_table->pSub_filter()))
@@ -1182,13 +1182,13 @@ void Transforms::vAdd_joinPred_UnderAll_indexJoin(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vGenerate_ptndPermutations(void)
+void Transforms::vGenerate_ptndPermutations(eBK eBoard, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransformation(BK_QUERY,(char*)(__func__));
+  vTransformation(eBoard,(char*)(__func__));
   vDescription("((replace with an explanation))"_Stz);
-  vTracing(false);
+  vTracing(bTrace);
 
 //  PermGen::vTest(4);
 
@@ -1230,13 +1230,13 @@ void Transforms::vGenerate_ptndPermutations(void)
 /*----------------------------------------------------------------------------*/
 /* individuate <scan|indexJoin>/<filter> as main <filter>                     */
 /*----------------------------------------------------------------------------*/
-void Transforms::vIndividuate_filter(void)
+void Transforms::vIndividuate_filter(eBK eBoard, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransformation(BK_QUERY,(char*)(__func__));
+  vTransformation(eBoard,(char*)(__func__));
   vDescription("individuate <scan|indexJoin>/<filter> as main <filter>"_Stz);
-  vTracing(false);
+  vTracing(bTrace);
 
   while (E_bEachMain(CK_SCAN)) {
 
@@ -1267,13 +1267,13 @@ void Transforms::vIndividuate_filter(void)
 /*----------------------------------------------------------------------------*/
 /* add an <indexJoin> under all <table>'s which are joinable                  */
 /*----------------------------------------------------------------------------*/
-void Transforms::vAdd_indexJoin_UnderAllJoinable_table(void)
+void Transforms::vAdd_indexJoin_UnderAllJoinable_table(eBK eBoard, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransformation(BK_QUERY,(char*)(__func__));
+  vTransformation(eBoard,(char*)(__func__));
   vDescription("add an <indexJoin> under all <table>'s which are joinable"_Stz);
-  vTracing(false);
+  vTracing(bTrace);
 
   m_pDeck->vClearMarksRecursive();
 
@@ -1314,13 +1314,13 @@ void Transforms::vAdd_indexJoin_UnderAllJoinable_table(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vMark_scan_pred_bounds(void)
+void Transforms::vMark_scan_pred_bounds(eBK eBoard, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransformation(BK_QUERY,(char*)(__func__));
+  vTransformation(eBoard,(char*)(__func__));
   vDescription("((replace with an explanation))"_Stz);
-  vTracing(false);
+  vTracing(bTrace);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -1343,13 +1343,13 @@ void Transforms::vMark_scan_pred_bounds(void)
 /*----------------------------------------------------------------------------*/
 /* mark the <SCAN>//<filter>//cmpPred> which match index ordinals             */
 /*----------------------------------------------------------------------------*/
-void Transforms::vMark_scan_cmpPred_WhichMatchIndex(void)
+void Transforms::vMark_scan_cmpPred_WhichMatchIndex(eBK eBoard, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransformation(BK_QUERY,(char*)(__func__));
+  vTransformation(eBoard,(char*)(__func__));
   vDescription("mark the <SCAN>//<filter>//cmpPred> which match index ordinals"_Stz);
-  vTracing(false);
+  vTracing(bTrace);
 
   while (E_bEachMainWithSub(CK_SCAN,CK_FILTER)) {
 
@@ -1396,13 +1396,13 @@ void Transforms::vMark_scan_cmpPred_WhichMatchIndex(void)
 /*----------------------------------------------------------------------------*/
 /* inspect <where>//<pred> and attempt to find source <table>                 */
 /*----------------------------------------------------------------------------*/
-void Transforms::vMark_where_pred_Wrt_table(void)
+void Transforms::vMark_where_pred_Wrt_table(eBK eBoard, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransformation(BK_QUERY,(char*)(__func__));
+  vTransformation(eBoard,(char*)(__func__));
   vDescription("inspect <where>//<pred> and attempt to find source <table>"_Stz);
-  vTracing(false);
+  vTracing(bTrace);
 
   while (E_bEachMainWithSub(CK_WHERE, CK_BOOLCALC))
     vMarkPredLeftwards(m_p_calcBool);
@@ -1415,13 +1415,13 @@ void Transforms::vMark_where_pred_Wrt_table(void)
 /*----------------------------------------------------------------------------*/
 /* inspect all <where>//<pred> and move <predCmp> to new <table>/<filter>     */
 /*----------------------------------------------------------------------------*/
-void Transforms::vMove_Marked_where_pred_To_table_filter(void)
+void Transforms::vMove_Marked_where_pred_To_table_filter(eBK eBoard, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransformation(BK_QUERY,(char*)(__func__));
+  vTransformation(eBoard,(char*)(__func__));
   vDescription("inspect all <where>//<pred> and move <predCmp> to new <table>/<filter>"_Stz);
-  vTracing(false);
+  vTracing(bTrace);
 
   while (E_bEachMainWithSub(CK_WHERE, CK_BOOLCALC))
     vCopyPredLeftwards(m_p_calcBool);
@@ -1433,13 +1433,13 @@ void Transforms::vMove_Marked_where_pred_To_table_filter(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vPromote_scan_To_indexScan(void)
+void Transforms::vPromote_scan_To_indexScan(eBK eBoard, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransformation(BK_QUERY,(char*)(__func__));
+  vTransformation(eBoard,(char*)(__func__));
   vDescription("((replace with an explanation))"_Stz);
-  vTracing(false);
+  vTracing(bTrace);
 
   BoardIter xBI(m_pBoard);
 
@@ -1459,13 +1459,13 @@ void Transforms::vPromote_scan_To_indexScan(void)
 /*----------------------------------------------------------------------------*/
 /* convert all <table> into either <scan> or <indexJoin>                      */
 /*----------------------------------------------------------------------------*/
-void Transforms::vConvert_table_To_scan_Or_indexJoin(void)
+void Transforms::vConvert_table_To_scan_Or_indexJoin(eBK eBoard, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransformation(BK_QUERY,(char*)(__func__));
+  vTransformation(eBoard,(char*)(__func__));
   vDescription("convert all <table> into either <scan> or <indexJoin>"_Stz);
-  vTracing(false);
+  vTracing(bTrace);
 
   Card_Deck* p_board = m_pBoard->pDeck();
 
@@ -1504,13 +1504,13 @@ void Transforms::vConvert_table_To_scan_Or_indexJoin(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vRemove_invalidPermutations(void)
+void Transforms::vRemove_invalidPermutations(eBK eBoard, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransformation(BK_QUERY,(char*)(__func__));
+  vTransformation(eBoard,(char*)(__func__));
   vDescription("((replace with an explanation))"_Stz);
-  vTracing(false);
+  vTracing(bTrace);
 
   i8 i_Main = 0;
   i8 i_Permutation = 0;
@@ -1545,13 +1545,13 @@ void Transforms::vRemove_invalidPermutations(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vSetup_costEst(void)
+void Transforms::vSetup_costEst(eBK eBoard, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vTransformation(BK_QUERY,(char*)(__func__));
+  vTransformation(eBoard,(char*)(__func__));
   vDescription("((replace with an explanation))"_Stz);
-  vTracing(false);
+  vTracing(bTrace);
 
   vSetupCostEstBoard();
 
