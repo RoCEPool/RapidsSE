@@ -95,6 +95,7 @@ void Transformer::vTransform3(void)
 
   //vTrace("Transformer running vTransform3\n"_Stz);
 
+  m_pTransforms->vUsingBoard(BK_QUERY,0);
   m_pTransforms->vExpandedForm(BK_QUERY,false);
 
   vPhase_1_ReducePipeline(false);
@@ -115,6 +116,7 @@ void Transformer::vTransform3(void)
 
   vPhase_Z_RestatePipeline(false);
 
+  m_pTransforms->vUsingBoard(BK_QUERY,0);
   m_pTransforms->vExpandedForm(BK_QUERY,false);
 }
 
@@ -126,6 +128,7 @@ void Transformer::vPhase_1_ReducePipeline(bool bTrace)
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
   m_pTransforms->vPhase((Stz*)__func__);
+  m_pTransforms->vUsingBoard(BK_QUERY,0);
 
   m_pTransforms->vDelete_Redundant_stage(BK_QUERY,bTrace);
 
@@ -146,6 +149,7 @@ void Transformer::vPhase_2_TableAnalysis(bool bTrace)
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
   m_pTransforms->vPhase((Stz*)__func__);
+  m_pTransforms->vUsingBoard(BK_QUERY,0);
 
   m_pTransforms->vAdd_tableSyn_ForAll_table(BK_QUERY,bTrace);
 
@@ -164,6 +168,7 @@ void Transformer::vPhase_3_WherePredicates(bool bTrace)
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
   m_pTransforms->vPhase((Stz*)__func__);
+  m_pTransforms->vUsingBoard(BK_QUERY,0);
 
   m_pTransforms->vConvert_where_calc_To_where_calcBool(BK_QUERY,bTrace);
 
@@ -182,6 +187,7 @@ void Transformer::vPhase_4_InitialJoin(bool bTrace)
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
   m_pTransforms->vPhase((Stz*)__func__);
+  m_pTransforms->vUsingBoard(BK_QUERY,0);
 
   m_pTransforms->vAdd_indexJoin_UnderAllJoinable_table(BK_QUERY,bTrace);
 
@@ -202,6 +208,7 @@ void Transformer::vPhase_5_JoinOrdering(bool bTrace)
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
   m_pTransforms->vPhase((Stz*)__func__);
+  m_pTransforms->vUsingBoard(BK_QUERY,0);
 
   /*
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -241,6 +248,7 @@ void Transformer::vPhase_6_IndexScan(bool bTrace)
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
   m_pTransforms->vPhase((Stz*)__func__);
+  m_pTransforms->vUsingBoard(BK_QUERY,0);
 
   /*
  *
@@ -276,6 +284,7 @@ void Transformer::vPhase_7_StreamOrdering(bool bTrace)
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
   m_pTransforms->vPhase((Stz*)__func__);
+  m_pTransforms->vUsingBoard(BK_QUERY,0);
 
   m_pTransforms->vRemove_sort_IfSameAs_gby(BK_QUERY,bTrace);
 }
@@ -288,6 +297,7 @@ void Transformer::vPhase_8_FilterRefinement(bool bTrace)
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
   m_pTransforms->vPhase((Stz*)__func__);
+  m_pTransforms->vUsingBoard(BK_QUERY,0);
 
   m_pTransforms->vIndividuate_filter(BK_QUERY,bTrace);
 }
@@ -300,6 +310,7 @@ void Transformer::vPhase_Z_RestatePipeline(bool bTrace)
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
   m_pTransforms->vPhase((Stz*)__func__);
+  m_pTransforms->vUsingBoard(BK_QUERY,0);
 
   m_pTransforms->vReinstate_stages(BK_QUERY,bTrace);
 

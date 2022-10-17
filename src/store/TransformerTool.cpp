@@ -19,7 +19,10 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_bTracing = false;
   m_iTrace   = 0;
 
-  m_pBoard           = m_pBench->pHead();
+  m_pBoard  = m_pBench->pHead();
+  m_eBoard  = BK_NONE;
+  m_i_SubBoard = C_UNKNOWN;
+
   m_pBoard_costEst   = nullptr;
   m_pBoard_partition = nullptr;
   m_pBoard_permute   = nullptr;
@@ -228,8 +231,8 @@ void TransformerTool::vTransformation(eBK eBoard,
 
   //RASSERT(eBoard == m_pBoard->eBoard());
 
-  vSetupBoard(eBoard);
-  vSwapToBoard(eBoard);
+  //vSetupBoard(eBoard);
+  vSwapToBoard(BK_NONE);
   //m_pDeck = m_pBoard->pDeck();
   //m_pM->vRestart();
 
@@ -245,6 +248,20 @@ i8 TransformerTool::iTransformNoInc(void)
   _precondition_(_ADDRESS_, _MAGIC_);
 
   return ++ m_iTransformNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set up which board to use                                                  */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::vUsingBoard(eBK eBoard, i8 i_SubBoard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  m_eBoard = eBoard;
+  m_i_SubBoard = i_SubBoard;
+
+  vSetupBoard(m_eBoard);
+  vSwapToBoard(m_eBoard);
 }
 
 
@@ -270,7 +287,7 @@ void TransformerTool::vSwapToBoard(eBK eBoard)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  m_pBoard = m_pBench->pGetBoard(eBoard);
+  m_pBoard = m_pBench->pGetBoard(m_eBoard);
   m_pDeck  = m_pBoard->pDeck();
 
   m_pM->vChangeBoard(m_pBoard);

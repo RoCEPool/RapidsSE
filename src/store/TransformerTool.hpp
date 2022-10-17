@@ -22,6 +22,11 @@ namespace STORE
     bool        m_bTracing;
     i8          m_iTrace;
 
+    Board*      m_pBoard;
+    eBK         m_eBoard;
+    i8          m_i_SubBoard;
+    Card_Deck*  m_pDeck;
+
     i8          m_iTransformNo;
     bool        m_bPrintTransformation;
     bool        m_bInteractive;
@@ -36,8 +41,6 @@ namespace STORE
     IdxVec*     m_pIdxVec;
     Index*      m_pIndex;
 
-    Board*      m_pBoard;
-    Card_Deck*  m_pDeck;
 
     Board*      m_pBoard_costEst;
     Board*      m_pBoard_partition;
@@ -131,7 +134,7 @@ namespace STORE
 
     Board* pBoard(void);
 
-    eCK   eDecodeMain(Card* pCard);
+     eCK  eDecodeMain(Card* pCard);
 
     void vEndTransformation(void);
 
@@ -149,6 +152,8 @@ namespace STORE
     Stz* szTransformation(void);
     void vTransformation(eBK eBoard, char* azTransformation, bool bPrintTransformation=true);
     i8   iTransformNoInc(void);
+
+    void vUsingBoard(eBK eBoard, i8 i_SubBoard);
 
   protected:
     bool bIsTracing(void);
