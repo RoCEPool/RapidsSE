@@ -33,7 +33,7 @@ namespace STORE
     void vDissectSpec(VertexSpec* pPipeSpec);
   
   private:
-    void vPipeline(i8 i_SubPipeline);
+    void vSubPipe(i8 i_SubPipeSpec);
     void vStage(i8 i_StageSpec);
     void vOp(i8 i_OpSpec);
 
@@ -62,16 +62,9 @@ namespace STORE
     Card_ProjElist* pProjElist  (Card_RpnTerms* pCard_RpnTerms);
     Card_SbyElist*  pSbyElist   (Card_RpnTerms* pCard_RpnTerms);
 
-    Card_Expr*      pExpr_c     (Card_RpnTerms* pCard_RpnTerms);
-    Card_Calc*      pExprCalc   (Card_RpnTerms* pCard_RpnTerms);
-  
-    void vPredOr  (Card_ExprBool* pCard_ExprBool,
-                   Card_RpnTerms* pCard_RpnTerms);
-    void vPredAnd (Card_ExprBool* pCard_ExprBool,
-                   Card_RpnTerms* pCard_RpnTerms);
-    void vPredCmp (Card_ExprBool* pCard_ExprBool,
-                   Card_RpnTerms* pCard_RpnTerms);
-  
+    Card_Expr*      pExpr       (Card_RpnTerms* pCard_RpnTerms);
+    Card_Calc*      pCalc       (Card_RpnTerms* pCard_RpnTerms);
+
     Card_As*        pAs       (Card_RpnTerms* pCard_RpnTerms);
     Card_Direction* pDirection(Card_RpnTerms* pCard_RpnTerms);
     Card_Type*      pType     (Card_RpnTerms* pCard_RpnTerms);
