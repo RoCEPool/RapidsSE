@@ -30,6 +30,7 @@ Dissector::Dissector(Bench* pBench)
   m_pBoard        = nullptr;
   
   m_pPipeSpec     = nullptr;
+  m_pDeckSpec     = nullptr;
   m_pStageSpec    = nullptr;
   m_pOpSpec       = nullptr;
   
@@ -64,14 +65,17 @@ void Dissector::vDissectSpec(VertexSpec* pPipeSpec)
   i8 nSubPipelines = pPipeSpec->nItems();
   for (i8 i_SubPipeline = 0; i_SubPipeline < nSubPipelines; i_SubPipeline++) {
     m_pPipeSpec = pPipeSpec->pGet(i_SubPipeline);
+    m_pDeckSpec = m_pPipeSpec->pDeckSpec();
     vSubPipe(i_SubPipeline);
   }
 
   m_pPipeSpec = pPipeSpec;
+  m_pDeckSpec = m_pPipeSpec->pDeckSpec();
   vSubPipe(-1);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+
+  m_pDeckSpec  = nullptr;
   m_pStageSpec = nullptr;
   m_pOpSpec    = nullptr;
   m_bSawAggOp  = false;
@@ -135,6 +139,19 @@ void Dissector::vStage(i8 i_StageSpec)
   pCard_Stage->vAppend(pCard_StageTopo);
 
   m_pBoard->pDeck()->vAppend(pCard_Stage);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // params
+  if (1 == i_StageSpec) {
+    ParamsSpec* pParamsSpec = m_pDeckSpec->pParamsSpec();
+    if (pParamsSpec) {
+      Card_ParamList* p_paramList = new Card_ParamList;
+      m_pBoard->pDeck()->vAppend(p_paramList);
+      Card_Param* p_param = new Card_Param;
+      p_param->vValue(pParamsSpec->pGet(0)->szParamNm());
+      p_paramList->vAppend(p_param);
+    }
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

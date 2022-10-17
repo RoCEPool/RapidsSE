@@ -108,6 +108,7 @@
 #include "Card_Where.hpp"
 
 #include "VertexSpec.hpp"
+#include "DeckSpec.hpp"
 #include "StageSpec.hpp"
 #include "OpSpec.hpp"
 

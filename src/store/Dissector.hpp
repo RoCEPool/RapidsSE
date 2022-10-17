@@ -14,6 +14,7 @@ namespace STORE
   protected:
 
     VertexSpec*  m_pPipeSpec;
+    DeckSpec*    m_pDeckSpec;
     StageSpec*   m_pStageSpec;
     OpSpec*      m_pOpSpec;
 
