@@ -123,6 +123,7 @@ namespace STORE
   {
   protected:
     eBK         m_eBoard;
+    i8          m_i_SubBoard;
     eBT         m_eBoardType;
     Card_Deck*  m_pCard_Deck;
 
@@ -155,8 +156,10 @@ namespace STORE
 
     void vPrintBoard(TransformerTool* pTransformerTool);
 
+    i8 i_SubBoard(void);
+
   private:
-      Footer* aFooter(void);
+    Footer* aFooter(void);
   };
 
   Board* _pBoard(void* aAddr);

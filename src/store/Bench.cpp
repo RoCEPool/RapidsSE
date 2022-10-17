@@ -71,7 +71,7 @@ CardCtl* Bench::pCardCtl(void)
 /*----------------------------------------------------------------------------*/
 /* get board of given kind                                                    */
 /*----------------------------------------------------------------------------*/
-Board* Bench::pGetBoard(eBK eBoard)
+Board* Bench::pGetBoard(eBK eBoard, i8 i_SubBoard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -79,7 +79,8 @@ Board* Bench::pGetBoard(eBK eBoard)
   for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
     Board *pBoard = this->pGet(i_Board);
 
-    if (eBoard == pBoard->eBoard())
+    if (eBoard == pBoard->eBoard() && (C_UNKNOWN == i_SubBoard ||
+                                       i_SubBoard == pBoard->i_SubBoard()))
       return pBoard;
   }
 

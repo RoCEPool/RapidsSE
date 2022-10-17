@@ -25,7 +25,7 @@ namespace STORE
 
     void vAddBoard(Board* pBoard);
     CardCtl* pCardCtl(void);
-    Board* pGetBoard(eBK eBoard);
+    Board* pGetBoard(eBK eBoard, i8 i_SubBoard = C_UNKNOWN);
     Optimiser* pOptimiser(void);
 
   private:

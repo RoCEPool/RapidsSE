@@ -35,6 +35,7 @@ Board::Board(eBK eBoard, eBT eBoardType, Bench* pBench)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
   m_eBoard       = eBoard;
+  m_i_SubBoard   = 0;
   m_eBoardType   = eBoardType;
   m_pBench       = pBench;
 
@@ -127,9 +128,10 @@ void Board::vPinCards(Ribbon* pRibbon,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pRibbon->vSprint("[%02lld Board: %s %s Query=%s] %s"_Stz,
+  pRibbon->vSprint("[%02lld Board: %s[%lld] %s Query=%s] %s"_Stz,
                    iPrintNo,
                    aBK[m_eBoard],
+                   m_i_SubBoard,
                    aBT[m_eBoardType],
                    m_pOptimiser->szQueryNm(),
                    szExplain ? szExplain : ""_Stz);
@@ -298,6 +300,16 @@ void Board::vPrintBoard(TransformerTool* pTransformerTool)
     delete pTknVec;
     pTknVec = nullptr;
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+i8 Board::i_SubBoard(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
+
+  return m_i_SubBoard;
 }
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
