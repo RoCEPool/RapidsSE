@@ -153,9 +153,6 @@ namespace STORE
   protected:
     bool bIsTracing(void);
 
-    void vSwapToBoard(void);
-    void vSetupBoard(eBK eBoard, i8 i_SubBoard);
-
     void vTracing(bool bTracing);
     void vTracer(Stz* szFormat, ...);
 

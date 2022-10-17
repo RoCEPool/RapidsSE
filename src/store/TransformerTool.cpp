@@ -250,8 +250,10 @@ void TransformerTool::vUsingBoard(eBK eBoard, i8 i_SubBoard)
   m_eBoard = eBoard;
   m_i_SubBoard = i_SubBoard;
 
-  vSetupBoard(m_eBoard,i_SubBoard);
-  vSwapToBoard();
+  m_pBoard = m_pBench->pGetBoard(m_eBoard,m_i_SubBoard);
+  m_pDeck  = m_pBoard->pDeck();
+
+  m_pM->vChangeBoard(m_pBoard);
 }
 
 
@@ -268,32 +270,6 @@ bool TransformerTool::bIsTracing(void)
   _precondition_(_ADDRESS_, _MAGIC_);
 
   return m_bTracing;
-}
-
-/*----------------------------------------------------------------------------*/
-/* swap to a different board                                                  */
-/*----------------------------------------------------------------------------*/
-void TransformerTool::vSwapToBoard(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_);
-
-  m_pBoard = m_pBench->pGetBoard(m_eBoard,m_i_SubBoard);
-  m_pDeck  = m_pBoard->pDeck();
-
-  m_pM->vChangeBoard(m_pBoard);
-}
-
-/*----------------------------------------------------------------------------*/
-/* set up board for transformations                                           */
-/*----------------------------------------------------------------------------*/
-void TransformerTool::vSetupBoard(eBK eBoard, i8 i_SubBoard)
-{
-  _precondition_(_ADDRESS_, _MAGIC_);
-
-  m_pBoard = m_pBench->pGetBoard(eBoard, i_SubBoard);
-  m_pDeck  = m_pBoard->pDeck();
-
-  m_pM->vChangeBoard(m_pBoard);
 }
 
 /*----------------------------------------------------------------------------*/
