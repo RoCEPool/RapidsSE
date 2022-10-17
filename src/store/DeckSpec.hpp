@@ -26,10 +26,10 @@ namespace STORE
     DeckSpec(VertexSpec* pVertexSpec);
    ~DeckSpec(void) noexcept(false);
   
-  private:
     ParamsSpec* pParamsSpec(void);
     void vParamsSpec(ParamsSpec* pParamsSpec);
 
+  private:
     Footer* aFooter(void);
   };
 

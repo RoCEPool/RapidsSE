@@ -14,6 +14,7 @@
 #include "Grid.hpp"
 #include "Procedure.hpp"
 #include "DeckSpec.hpp"
+#include "ParamsSpec.hpp"
 
 #include "SP_PipeSpec.hpp"
 #include "SP_Token.hpp"
@@ -42,6 +43,8 @@ Dynamo::Dynamo(TagSet* p_JobTags)
   
   m_pScanner = nullptr;
   m_pCurrVertexSpec = nullptr;
+
+  m_pParamsSpec = nullptr;
   
   _checkInitialised_(CN_DYNAMO);
   
@@ -63,6 +66,8 @@ Dynamo::~Dynamo(void) noexcept(false)
   }
 
   delete m_pScanner;
+
+  delete m_pParamsSpec;
 }
 
 
@@ -258,10 +263,11 @@ bool Dynamo::bCollectParams(void)
   if (!pTkn()->bSame("PARAMS"_Stz))
     return false;
   vTokenAccept();
+                                                  // TODO: add parameter ordinal
+  s32 sParamNm = pTkn()->szChars();
 
-
-  // (tbc)
-
+  m_pParamsSpec = new ParamsSpec;
+  m_pParamsSpec->vAppend(new ParamSpec(sParamNm));
 
   vTokenAccept();
 
@@ -339,6 +345,11 @@ bool Dynamo::bCollectStage(void)
 
   m_pCurrVertexSpec->vAddStageSpec(p_StageSpec);
 
+  if (m_pParamsSpec) {
+
+    m_pCurrVertexSpec->pDeckSpec()->vParamsSpec(m_pParamsSpec);
+    m_pParamsSpec = nullptr;
+  }
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (! bCollectTopology(p_StageSpec))
