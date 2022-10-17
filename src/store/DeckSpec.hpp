@@ -4,6 +4,7 @@
 #pragma once
 
 #include "StageSpec.hpp"
+#include "ParamsSpec.hpp"
 
 namespace STORE
 {
@@ -12,6 +13,8 @@ namespace STORE
   private:
    
     VertexSpec*  m_pVertexSpec; // vertexSpec this deckSpec belongs to
+
+    ParamsSpec*  m_pParamsSpec; // parameter set for stage set
 
     // must be last
     Footer m_xFooter;
@@ -24,9 +27,10 @@ namespace STORE
    ~DeckSpec(void) noexcept(false);
   
   private:
-  
-    Footer* aFooter(void);
+    ParamsSpec* pParamsSpec(void);
+    void vParamsSpec(ParamsSpec* pParamsSpec);
 
+    Footer* aFooter(void);
   };
 
   DeckSpec* _pDeckSpec(void* aAddr);
