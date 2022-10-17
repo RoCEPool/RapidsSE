@@ -140,7 +140,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Board(eBK eBoard, eBT eBoardType, Bench* pBench);
+    Board(eBK eBoard, i8 i_SubBoard, eBT eBoardType, Bench* pBench);
    ~Board(void) noexcept(false);
 
     eBK eBoard(void);

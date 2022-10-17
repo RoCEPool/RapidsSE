@@ -33,7 +33,7 @@ namespace STORE
     void vDissectSpec(VertexSpec* pPipeSpec);
   
   private:
-    void vPipeline(void);
+    void vPipeline(i8 i_SubPipeline);
     void vStage(i8 i_StageSpec);
     void vOp(i8 i_OpSpec);
 

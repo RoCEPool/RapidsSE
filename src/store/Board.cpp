@@ -29,13 +29,13 @@ __aFooterFunction(Board)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Board::Board(eBK eBoard, eBT eBoardType, Bench* pBench)
+Board::Board(eBK eBoard, i8 i_SubBoard, eBT eBoardType, Bench* pBench)
 : Object(CN_BOARD)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
   m_eBoard       = eBoard;
-  m_i_SubBoard   = 0;
+  m_i_SubBoard   = i_SubBoard;
   m_eBoardType   = eBoardType;
   m_pBench       = pBench;
 

@@ -64,11 +64,11 @@ void Dissector::vDissectSpec(VertexSpec* pPipeSpec)
   i8 nSubPipelines = pPipeSpec->nItems();
   for (i8 i_SubPipeline = 0; i_SubPipeline < nSubPipelines; i_SubPipeline++) {
     m_pPipeSpec = pPipeSpec->pGet(i_SubPipeline);
-    vPipeline();
+    vPipeline(i_SubPipeline);
   }
 
   m_pPipeSpec = pPipeSpec;
-  vPipeline();
+  vPipeline(-1);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -84,7 +84,7 @@ void Dissector::vDissectSpec(VertexSpec* pPipeSpec)
 /*----------------------------------------------------------------------------*/
 /* dissect pipeline spec                                                      */
 /*----------------------------------------------------------------------------*/
-void Dissector::vPipeline(void)
+void Dissector::vPipeline(i8 i_SubPipeline)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
     
@@ -101,7 +101,7 @@ void Dissector::vPipeline(void)
   //TagSet* pJobTags = m_pPipeSpec->pJobTags();
   //pJobTags->vDumpSet(true);
 
-  m_pBoard = new Board(BK_QUERY, BT_ORIGINAL,m_pBench);
+  m_pBoard = new Board(BK_QUERY, i_SubPipeline+1, BT_ORIGINAL,m_pBench);
   m_pOptimiser->vQueryNm(szPipelineNm);
 
   
