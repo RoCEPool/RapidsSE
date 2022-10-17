@@ -65,6 +65,8 @@
 #include "Card_JoinPred.hpp"
 #include "Card_JoinPredList.hpp"
 
+#include "Card_KeyExists.hpp"
+
 #include "Card_LBound.hpp"
 #include "Card_Limit.hpp"
 

@@ -62,6 +62,8 @@ enum eCK // card kind
   /* */ CK_JOINPRED,
   /* */ CK_JOINPREDLIST,
 
+  /* */ CK_KEYEXISTS,
+
   /* */ CK_LBOUND,
   /* */ CK_LIMIT,
 
@@ -172,6 +174,8 @@ static Stz* aCK[]
   /* */ "CK_JOINPRED"_Stz,     // CK_JOINPRED
   /* */ "CK_JOINPREDLIST"_Stz, // CK_JOINPREDLIST
 
+  /* */ "CK_KEYEXISTS"_Stz,    // CK_KEYEXISTS
+
   /* */ "CK_LBOUND"_Stz,       // CK_LBOUND
   /* */ "CK_LIMIT"_Stz,        // CK_LIMIT
 
@@ -281,6 +285,8 @@ static Stz* aCK_short[]
   /* */ "joinOrderSeq"_Stz,    // CK_JOINORDERSEQ
   /* */ "joinPred"_Stz,        // CK_JOINPRED
   /* */ "joinPredList"_Stz,    // CK_JOINPREDLIST
+
+  /* */ "keyExists"_Stz,       // CK_KEYEXISTS
 
   /* */ "lbound"_Stz,          // CK_LBOUND
   /* */ "limit"_Stz,           // CK_LIMIT

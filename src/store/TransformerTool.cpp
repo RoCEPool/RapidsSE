@@ -633,6 +633,7 @@ Card* TransformerTool::F_pFetchMember(eCK eMember)
     case CK_JOINORDERSEQ:     return m_p_joinOrderSeq;
     case CK_JOINPRED:         return m_p_joinPred;
     case CK_JOINPREDLIST:     return m_p_joinPredList;
+    case CK_KEYEXISTS:        return m_p_keyExists;
     case CK_LBOUND:           return m_p_lBound;
     case CK_PARAM:            return m_p_param;
     case CK_PARAMLIST:        return m_p_paramList;
@@ -773,6 +774,7 @@ void TransformerTool::M_vClearMembers(void)
   m_p_joinOrderSeq     = nullptr;
   m_p_joinPred         = nullptr;
   m_p_joinPredList     = nullptr;
+  m_p_keyExists        = nullptr;
   m_p_lBound           = nullptr;
   m_p_param            = nullptr;
   m_p_paramList        = nullptr;
@@ -978,6 +980,7 @@ void TransformerTool::U_vUpdateMember(eCK eMember, Card* pCard, const char* asFu
     case CK_JOINORDERSEQ:     *((Card**)&m_p_joinOrderSeq)     = pCard; break;
     case CK_JOINPRED:         *((Card**)&m_p_joinPred)         = pCard; break;
     case CK_JOINPREDLIST:     *((Card**)&m_p_joinPredList)     = pCard; break;
+    case CK_KEYEXISTS:        *((Card**)&m_p_keyExists)        = pCard; break;
     case CK_LBOUND:           *((Card**)&m_p_lBound)           = pCard; break;
     case CK_PARAM:            *((Card**)&m_p_param)            = pCard; break;
     case CK_PARAMLIST:        *((Card**)&m_p_paramList)        = pCard; break;
@@ -1098,6 +1101,7 @@ Stz* TransformerTool::szMemberNm(eCK eMember)
     case CK_JOINORDERSEQ:     return "m_p_joinOrderSeq"_Stz;
     case CK_JOINPRED:         return "m_p_joinPred"_Stz;
     case CK_JOINPREDLIST:     return "m_p_joinPredList"_Stz;
+    case CK_KEYEXISTS:        return "m_p_keyExists"_Stz;
     case CK_LBOUND:           return "m_p_lBound"_Stz;
     case CK_PARAM:            return "m_p_param"_Stz;
     case CK_PARAMLIST:        return "m_p_paramList"_Stz;

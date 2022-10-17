@@ -93,6 +93,7 @@ namespace STORE
     Card_JoinOrderSeq*     m_p_joinOrderSeq;
     Card_JoinPred*         m_p_joinPred;
     Card_JoinPredList*     m_p_joinPredList;
+    Card_KeyExists*        m_p_keyExists;
     Card_LBound*           m_p_lBound;
     Card_Param*            m_p_param;
     Card_ParamList*        m_p_paramList;
