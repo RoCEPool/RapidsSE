@@ -636,10 +636,8 @@ Card* Dissector::pCard_Start(TagSet* pArgTags)
   return nullptr;
 }
 
-
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
 
 /*----------------------------------------------------------------------------*/
 /* collect <agg> terms :                                                      */
@@ -753,7 +751,7 @@ Card_ProjElist* Dissector::pProjElist(Card_RpnTerms* pCard_RpnTerms)
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect <orderBy> terms :                                                  */
+/* collect <sortBy> terms :                                                   */
 /*----------------------------------------------------------------------------*/
 Card_SbyElist* Dissector::pSbyElist(Card_RpnTerms* pCard_RpnTerms)
 {
@@ -796,20 +794,24 @@ Card_Expr* Dissector::pExpr(Card_RpnTerms* pCard_RpnTerms)
   L_TYPE:
 
   // TYPE <type>
-  Card_Term* pCard_Term_popped = pCard_RpnTerms->pPopTerm();
-  eTE eTermEval = pCard_Term_popped->eTermEval();
-  Stz* szTerm = pCard_Term_popped->sz();
+//  Card_Term* pCard_Term_popped = pCard_RpnTerms->pPopTerm();
+//  eTE eTermEval = pCard_Term_popped->eTermEval();
+//  Stz* szTerm = pCard_Term_popped->sz();
+//
+//  RASSERT(szTerm->bSame("TYPE"_Stz));
+//  delete pCard_Term_popped;
+//  pCard_Term_popped = nullptr;
+//
+//  pCard_Term_popped = pCard_RpnTerms->pPopTerm();
+//  Card_Type* pCard_Type = new Card_Type(pCard_Term_popped->sz());
+//  pCard_Expr->vAppend(pCard_Type);
+//
+//  delete pCard_Term_popped;
+//  pCard_Term_popped = nullptr;
 
-  RASSERT(szTerm->bSame("TYPE"_Stz));
-  delete pCard_Term_popped;
-  pCard_Term_popped = nullptr;
-
-  pCard_Term_popped = pCard_RpnTerms->pPopTerm();
-  Card_Type* pCard_Type = new Card_Type(pCard_Term_popped->sz());
+  Card_Type* pCard_Type = pType(pCard_RpnTerms);
   pCard_Expr->vAppend(pCard_Type);
 
-  delete pCard_Term_popped;
-  pCard_Term_popped = nullptr;
 
   // [ AS <as> ]
   Card* pCard_Term_head = pCard_RpnTerms->pHead();
@@ -878,7 +880,7 @@ Card_Calc* Dissector::pCalc(Card_RpnTerms* pCard_RpnTerms)
     //  continue;
     
     if (
-        pCard_Term_popped->bIsValue("AGGREGATES"_Stz)
+           pCard_Term_popped->bIsValue("AGGREGATES"_Stz)
         || pCard_Term_popped->bIsValue("AS"_Stz)
         || pCard_Term_popped->bIsValue("ASC"_Stz)
         || pCard_Term_popped->bIsValue("DESC"_Stz)
@@ -897,11 +899,6 @@ Card_Calc* Dissector::pCalc(Card_RpnTerms* pCard_RpnTerms)
 
   return pCard_ExprCalc;
 }
-
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
 
 
 /*----------------------------------------------------------------------------*/
