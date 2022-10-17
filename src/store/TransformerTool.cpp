@@ -231,7 +231,8 @@ void TransformerTool::vTransformation(const char* azTransformation,
   m_sTransformation = azTransformation;
   m_bPrintTransformation = bPrintTransformation;
 
-  vSwapToBoard(BK_NONE);
+  //vSwapToBoard(BK_NONE);
+  m_pM->vRestart();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -254,8 +255,8 @@ void TransformerTool::vUsingBoard(eBK eBoard, i8 i_SubBoard)
   m_eBoard = eBoard;
   m_i_SubBoard = i_SubBoard;
 
-  vSetupBoard(m_eBoard);
-  vSwapToBoard(m_eBoard);
+  vSetupBoard(m_eBoard,i_SubBoard);
+  vSwapToBoard();
 }
 
 
@@ -277,11 +278,11 @@ bool TransformerTool::bIsTracing(void)
 /*----------------------------------------------------------------------------*/
 /* swap to a different board                                                  */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::vSwapToBoard(eBK eBoard)
+void TransformerTool::vSwapToBoard(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  m_pBoard = m_pBench->pGetBoard(m_eBoard);
+  m_pBoard = m_pBench->pGetBoard(m_eBoard,m_i_SubBoard);
   m_pDeck  = m_pBoard->pDeck();
 
   m_pM->vChangeBoard(m_pBoard);
@@ -290,7 +291,7 @@ void TransformerTool::vSwapToBoard(eBK eBoard)
 /*----------------------------------------------------------------------------*/
 /* set up board for transformations                                           */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::vSetupBoard(eBK eBoard)
+void TransformerTool::vSetupBoard(eBK eBoard, i8 i_SubBoard)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
@@ -305,7 +306,7 @@ void TransformerTool::vSetupBoard(eBK eBoard)
       NEVER_REACH
   }
 
-  m_pBoard = m_pBench->pGetBoard(eBoard);
+  m_pBoard = m_pBench->pGetBoard(eBoard, i_SubBoard);
   m_pDeck  = m_pBoard->pDeck();
 
   m_pBoard_costEst   = m_pBench->pGetBoard(BK_COSTEST);

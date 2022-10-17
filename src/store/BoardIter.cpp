@@ -282,8 +282,8 @@ void BoardIter::vRestart(void)
 {
   _precondition_(_MAGIC_, CN_BOARDITER, _FOOTER_);
 
-  m_i_Child    = C_UNKNOWN;
-  m_pChild = nullptr;
+  m_i_Child = C_UNKNOWN;
+  m_pChild  = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
