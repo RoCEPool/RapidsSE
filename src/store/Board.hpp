@@ -154,6 +154,10 @@ namespace STORE
                    i8 iPrintNo,
                    Stz* szExplain=nullptr);
 
+    void vPinTitle(Ribbon* pRibbon,
+                   i8 iPrintNo,
+                   Stz* szExplain=nullptr);
+
     void vPrintBoard(Stz* szPhase=nullptr,
                      Stz* szTransformation=nullptr,
                      Stz* szDescription=nullptr);
