@@ -23,7 +23,6 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_eBoard  = BK_NONE;
   m_i_SubBoard = C_UNKNOWN;
 
-  m_iTransformNo = 0;
   m_bPrintTransformation = true;
   Job* pJob = MY::pJob();
   TagSet* pJobTags = pJob->pJobTags();
@@ -174,8 +173,7 @@ void TransformerTool::vPrintBoard(void)
     if (m_bInteractive)
       m_pBoard->vPrintBoard(szPhase(),
                             szTransformation(),
-                            szDescription(),
-                            iTransformNoInc());
+                            szDescription());
   }
   else {
     vTrace("SILENT : %s\n"_Stz, m_sTransformation.szStz());
@@ -229,18 +227,10 @@ void TransformerTool::vTransformation(const char* azTransformation,
   m_sTransformation = azTransformation;
   m_bPrintTransformation = bPrintTransformation;
 
+  m_pBoard->vTransformNoInc();
+
   //vSwapToBoard(BK_NONE);
   m_pM->vRestart();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the next transformation number                                         */
-/*----------------------------------------------------------------------------*/
-i8 TransformerTool::iTransformNoInc(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_);
-
-  return ++ m_iTransformNo;
 }
 
 /*----------------------------------------------------------------------------*/

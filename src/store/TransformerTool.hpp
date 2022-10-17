@@ -28,7 +28,6 @@ namespace STORE
     i8          m_i_SubBoard;
     Card_Deck*  m_pDeck;
 
-    i8          m_iTransformNo;
     bool        m_bPrintTransformation;
     bool        m_bInteractive;
     s32         m_sPhase;
@@ -146,7 +145,6 @@ namespace STORE
 
     Stz* szTransformation(void);
     void vTransformation(const char* azTransformation, bool bPrintTransformation=true);
-    i8   iTransformNoInc(void);
 
     void vUsingBoard(eBK eBoard, i8 i_SubBoard);
 

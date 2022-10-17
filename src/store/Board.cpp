@@ -41,6 +41,7 @@ Board::Board(eBK eBoard, i8 i_SubBoard, eBT eBoardType, Bench* pBench)
 
   m_pCard_Deck  = new Card_Deck;
 
+  m_iTransformNo = C_UNKNOWN;
   m_bBeenCued = false;
 
   _checkInitialised_(CN_BOARD);
@@ -115,7 +116,7 @@ void Board::vDuplicateBoard(Board* pBoard_arg)
 /* pin board onto given ribbon                                                */
 /*----------------------------------------------------------------------------*/
 void Board::vPinCards(Ribbon* pRibbon,
-                      i8 iPrintNo, Stz* szTransformation, Stz* szExplain)
+                      i8 iPrintNo, Stz* szDescription)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
@@ -132,7 +133,7 @@ void Board::vPinCards(Ribbon* pRibbon,
                    m_i_SubBoard,
                    aBT[m_eBoardType],
                    m_pOptimiser->szQueryNm(),
-                   szExplain ? szExplain : ""_Stz);
+                   szDescription ? szDescription : ""_Stz);
 
   pRibbon->vTitleLines(1);
   pRibbon->vSetBase();
@@ -182,15 +183,10 @@ void Board::vPinCards(Ribbon* pRibbon,
 /*----------------------------------------------------------------------------*/
 void Board::vPrintBoard(Stz* szPhase,
                         Stz* szTransformation,
-                        Stz* szExplain,
-                        i8 iTransformNo)
+                        Stz* szDescription)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-//  Stz* szPhase = pTransformerTool->szPhase();
-//  Stz* szTransformation = pTransformerTool->szTransformation();
-//  Stz* szExplain = pTransformerTool->szDescription();
-
+  
   eOA eOptAct = OA_ENTRY;
   TokenVec* pTknVec = nullptr;
 
@@ -209,7 +205,7 @@ void Board::vPrintBoard(Stz* szPhase,
 
   Ribbon* pRibbon = new Ribbon(m_pOptimiser->pCardCtl(),this,0);
 
-  vPinCards(pRibbon, iTransformNo, szTransformation, szExplain);
+  vPinCards(pRibbon, m_iTransformNo, szDescription);
 
   pRibbon->vPrintRibbon();
 
@@ -311,6 +307,16 @@ i8 Board::i_SubBoard(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
 
   return m_i_SubBoard;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vTransformNoInc(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
+
+  m_iTransformNo++;
 }
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//

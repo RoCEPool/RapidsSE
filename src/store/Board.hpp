@@ -130,6 +130,7 @@ namespace STORE
     Optimiser*  m_pOptimiser;
     Bench*      m_pBench;
 
+    i8          m_iTransformNo;
     b8          m_bBeenCued;
 
   private:
@@ -151,15 +152,15 @@ namespace STORE
 
     void vPinCards(Ribbon* pRibbon,
                    i8 iPrintNo,
-                   Stz* szTransformation=nullptr,
                    Stz* szExplain=nullptr);
 
     void vPrintBoard(Stz* szPhase=nullptr,
                      Stz* szTransformation=nullptr,
-                     Stz* szExplain=nullptr,
-                     i8 iTransformNo=C_UNKNOWN);
+                     Stz* szDescription=nullptr);
 
     i8 i_SubBoard(void);
+
+    void vTransformNoInc(void);
 
   private:
     Footer* aFooter(void);

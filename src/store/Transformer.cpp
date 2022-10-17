@@ -96,7 +96,7 @@ void Transformer::vTransform3(void)
   //vTrace("Transformer running vTransform3\n"_Stz);
 
   m_pTransforms->vUsingBoard(BK_SUBPIPE, 0);
-  m_pTransforms->vExpandedForm(false);
+  //m_pTransforms->vExpandedForm(false);
 
   vPhase_1_ReducePipeline(false);
 
@@ -117,7 +117,7 @@ void Transformer::vTransform3(void)
   vPhase_Z_RestatePipeline(false);
 
   m_pTransforms->vUsingBoard(BK_SUBPIPE, 0);
-  m_pTransforms->vExpandedForm(false);
+  //m_pTransforms->vExpandedForm(false);
 }
 
 /*----------------------------------------------------------------------------*/
