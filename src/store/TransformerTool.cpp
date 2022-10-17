@@ -172,7 +172,10 @@ void TransformerTool::vPrintBoard(void)
 
   if (m_bPrintTransformation) {
     if (m_bInteractive)
-      m_pBoard->vPrintBoard(this);
+      m_pBoard->vPrintBoard(szPhase(),
+                            szTransformation(),
+                            szDescription(),
+                            iTransformNoInc());
   }
   else {
     vTrace("SILENT : %s\n"_Stz, m_sTransformation.szStz());

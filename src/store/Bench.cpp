@@ -58,6 +58,19 @@ void Bench::vAddBoard(Board* pBoard)
 }
 
 /*----------------------------------------------------------------------------*/
+/* does given board exist?                                                    */
+/*----------------------------------------------------------------------------*/
+bool Bench::bBoardExists(eBK eBoard, i8 i_SubBoard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  if (pGetBoard(eBoard,i_SubBoard))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get card registers                                                         */
 /*----------------------------------------------------------------------------*/
 CardCtl* Bench::pCardCtl(void)
@@ -88,13 +101,30 @@ Board* Bench::pGetBoard(eBK eBoard, i8 i_SubBoard)
 }
 
 /*----------------------------------------------------------------------------*/
-/* print bench                                                                */
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
 Optimiser* Bench::pOptimiser(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
   return m_pOptimiser;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vPrintBoards(eBK eBoard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  for (i8 i_SubBoard = 0;
+       bBoardExists(eBoard, i_SubBoard);
+       i_SubBoard++) {
+
+    Board *pBoard = pGetBoard(eBoard, i_SubBoard);
+
+    pBoard->vPrintBoard();
+  }
 }
 
 /*============================================================================*/

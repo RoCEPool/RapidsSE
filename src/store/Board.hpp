@@ -154,7 +154,10 @@ namespace STORE
                    Stz* szTransformation=nullptr,
                    Stz* szExplain=nullptr);
 
-    void vPrintBoard(TransformerTool* pTransformerTool);
+    void vPrintBoard(Stz* szPhase=nullptr,
+                     Stz* szTransformation=nullptr,
+                     Stz* szExplain=nullptr,
+                     i8 iTransformNo=C_UNKNOWN);
 
     i8 i_SubBoard(void);
 

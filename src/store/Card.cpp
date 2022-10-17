@@ -468,7 +468,7 @@ void Card::vDump(i8 iDepth, Stz* szTitle)
     vDebugPoint();
 
   if (szTitle)
-    vTrace("%s:\n"_Stz,szTitle);
+    vTrace("%s %p:\n"_Stz,szTitle,this);
 
   s48K sProperties;
   

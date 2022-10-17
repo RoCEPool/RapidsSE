@@ -13,8 +13,6 @@
 
 #include "Card_StreamCol.hpp"
 
-#include "TransformerTool.hpp"
-
 extern OptimiserCatalog gxOptimiserCatalog;
 
 /*----------------------------------------------------------------------------*/
@@ -182,13 +180,16 @@ void Board::vPinCards(Ribbon* pRibbon,
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vPrintBoard(TransformerTool* pTransformerTool)
+void Board::vPrintBoard(Stz* szPhase,
+                        Stz* szTransformation,
+                        Stz* szExplain,
+                        i8 iTransformNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-  Stz* szPhase = pTransformerTool->szPhase();
-  Stz* szTransformation = pTransformerTool->szTransformation();
-  Stz* szExplain = pTransformerTool->szDescription();
+//  Stz* szPhase = pTransformerTool->szPhase();
+//  Stz* szTransformation = pTransformerTool->szTransformation();
+//  Stz* szExplain = pTransformerTool->szDescription();
 
   eOA eOptAct = OA_ENTRY;
   TokenVec* pTknVec = nullptr;
@@ -208,7 +209,7 @@ void Board::vPrintBoard(TransformerTool* pTransformerTool)
 
   Ribbon* pRibbon = new Ribbon(m_pOptimiser->pCardCtl(),this,0);
 
-  vPinCards(pRibbon, pTransformerTool->iTransformNoInc(), szTransformation, szExplain);
+  vPinCards(pRibbon, iTransformNo, szTransformation, szExplain);
 
   pRibbon->vPrintRibbon();
 

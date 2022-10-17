@@ -121,24 +121,32 @@ void Transformer::vTransform3(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* apply the reducePipeline set of transformations to all subPipe boards      */
 /*----------------------------------------------------------------------------*/
 void Transformer::vPhase_1_ReducePipeline(bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
   m_pTransforms->vPhase(__func__);
-  m_pTransforms->vUsingBoard(BK_SUBPIPE, 0);
 
-  m_pTransforms->vDelete_Redundant_stage(bTrace);
+  for (i8 i_SubBoard = 0;
+       m_pBench->bBoardExists(BK_SUBPIPE,i_SubBoard);
+       i_SubBoard++) {
 
-  m_pTransforms->vDelete_absJoin(bTrace);
+    m_pTransforms->vUsingBoard(BK_SUBPIPE, i_SubBoard);
 
-  m_pTransforms->vDelete_combined(bTrace);
+    m_pTransforms->vDelete_Redundant_stage(bTrace);
 
-  m_pTransforms->vDelete_send(bTrace);
+    m_pTransforms->vDelete_absJoin(bTrace);
 
-  m_pTransforms->vCull_scan_Leaving_table(bTrace);
+    m_pTransforms->vDelete_combined(bTrace);
+
+    m_pTransforms->vDelete_send(bTrace);
+
+    m_pTransforms->vCull_scan_Leaving_table(bTrace);
+  }
+
+  m_pBench->vPrintBoards(BK_SUBPIPE);
 }
 
 /*----------------------------------------------------------------------------*/

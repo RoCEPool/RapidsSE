@@ -654,6 +654,8 @@ void Transforms::vCull_scan_Leaving_table(bool bTrace)
   vDescription("replace all <scan>'s with their children"_Stz);
   vTracing(bTrace);
 
+  m_pDeck->vDump(0,(Stz*)(__func__));
+
   while (E_bEachMain(CK_SCAN)) {
     m_pDeck->vReplaceChildWithItsSubs(m_p_MainCard);
     DELETE_CARD(m_p_MainCard);
@@ -736,6 +738,8 @@ void Transforms::vDelete_absJoin(bool bTrace)
   vDescription("delete superfluous <absJoin>'s"_Stz);
   vTracing(bTrace);
 
+  m_pDeck->vDump(0,(Stz*)(__func__));
+
   while (E_bEachMain(CK_ABSJOIN))
     E_vRemoveDeleteMain(CK_ABSJOIN);
 
@@ -753,6 +757,8 @@ void Transforms::vDelete_combined(bool bTrace)
   vTransformation((char*)(__func__),C_PRINT_BOARD);
   vDescription("delete superfluous <combined>'s"_Stz);
   vTracing(bTrace);
+
+  m_pDeck->vDump(0,(Stz*)(__func__));
 
   while (E_bEachMain(CK_COMBINED))
     E_vRemoveDeleteMain(CK_COMBINED);
@@ -772,6 +778,8 @@ void Transforms::vDelete_send(bool bTrace)
   vDescription("delete superfluous <send>'s"_Stz);
   vTracing(bTrace);
 
+  m_pDeck->vDump(0,(Stz*)(__func__));
+
   while (E_bEachMain(CK_SEND))
     E_vRemoveDeleteMain(CK_SEND);
 
@@ -790,7 +798,7 @@ void Transforms::vDelete_Redundant_stage(bool bTrace)
   vDescription("linearize board by deleting all duplicate <stage>'s"_Stz);
   vTracing(bTrace);
 
-  m_pDeck->vDump();
+  m_pDeck->vDump(0,(Stz*)(__func__));
 
   Card_Stage* p_stage_CURR = nullptr;
 
