@@ -223,21 +223,15 @@ Stz* TransformerTool::szTransformation(void)
 /*----------------------------------------------------------------------------*/
 /* begin and record transformation information                                */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::vTransformation(eBK eBoard,
-                                      char* azTransformation,
+void TransformerTool::vTransformation(char* azTransformation,
                                       bool bPrintTransformation)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  //RASSERT(eBoard == m_pBoard->eBoard());
-
-  //vSetupBoard(eBoard);
-  vSwapToBoard(BK_NONE);
-  //m_pDeck = m_pBoard->pDeck();
-  //m_pM->vRestart();
-
   m_sTransformation = azTransformation;
   m_bPrintTransformation = bPrintTransformation;
+
+  vSwapToBoard(BK_NONE);
 }
 
 /*----------------------------------------------------------------------------*/

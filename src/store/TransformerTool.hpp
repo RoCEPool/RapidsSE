@@ -150,7 +150,7 @@ namespace STORE
     void vSetPrintSubCards(eCK eCard, bool bPrintSubCards);
 
     Stz* szTransformation(void);
-    void vTransformation(eBK eBoard, char* azTransformation, bool bPrintTransformation=true);
+    void vTransformation(char* azTransformation, bool bPrintTransformation=true);
     i8   iTransformNoInc(void);
 
     void vUsingBoard(eBK eBoard, i8 i_SubBoard);
