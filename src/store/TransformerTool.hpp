@@ -142,7 +142,7 @@ namespace STORE
     void vDescription(Stz* szDescription);
 
     Stz* szPhase(void);
-    void vPhase(Stz* szPhase);
+    void vPhase(const char* szPhase);
     void vPrintBoard(void);
 
     void vSetPrintByKind(eCK eCard, bool bPrintByKind);
@@ -150,7 +150,7 @@ namespace STORE
     void vSetPrintSubCards(eCK eCard, bool bPrintSubCards);
 
     Stz* szTransformation(void);
-    void vTransformation(char* azTransformation, bool bPrintTransformation=true);
+    void vTransformation(const char* azTransformation, bool bPrintTransformation=true);
     i8   iTransformNoInc(void);
 
     void vUsingBoard(eBK eBoard, i8 i_SubBoard);

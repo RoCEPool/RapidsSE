@@ -161,11 +161,11 @@ Stz* TransformerTool::szPhase(void)
 /*----------------------------------------------------------------------------*/
 /* set transformation phase                                                   */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::vPhase(Stz* szPhase)
+void TransformerTool::vPhase(const char* asPhase)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  m_sPhase = szPhase;
+  m_sPhase = asPhase;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -223,7 +223,7 @@ Stz* TransformerTool::szTransformation(void)
 /*----------------------------------------------------------------------------*/
 /* begin and record transformation information                                */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::vTransformation(char* azTransformation,
+void TransformerTool::vTransformation(const char* azTransformation,
                                       bool bPrintTransformation)
 {
   _precondition_(_ADDRESS_, _MAGIC_);

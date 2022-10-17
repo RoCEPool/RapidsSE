@@ -127,7 +127,7 @@ void Transformer::vPhase_1_ReducePipeline(bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
-  m_pTransforms->vPhase((Stz*)__func__);
+  m_pTransforms->vPhase(__func__);
   m_pTransforms->vUsingBoard(BK_QUERY,0);
 
   m_pTransforms->vDelete_Redundant_stage(bTrace);
@@ -148,7 +148,7 @@ void Transformer::vPhase_2_TableAnalysis(bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
-  m_pTransforms->vPhase((Stz*)__func__);
+  m_pTransforms->vPhase(__func__);
   m_pTransforms->vUsingBoard(BK_QUERY,0);
 
   m_pTransforms->vAdd_tableSyn_ForAll_table(bTrace);
@@ -167,7 +167,7 @@ void Transformer::vPhase_3_WherePredicates(bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
-  m_pTransforms->vPhase((Stz*)__func__);
+  m_pTransforms->vPhase(__func__);
   m_pTransforms->vUsingBoard(BK_QUERY,0);
 
   m_pTransforms->vConvert_where_calc_To_where_calcBool(bTrace);
@@ -186,7 +186,7 @@ void Transformer::vPhase_4_InitialJoin(bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
-  m_pTransforms->vPhase((Stz*)__func__);
+  m_pTransforms->vPhase(__func__);
   m_pTransforms->vUsingBoard(BK_QUERY,0);
 
   m_pTransforms->vAdd_indexJoin_UnderAllJoinable_table(bTrace);
@@ -207,7 +207,7 @@ void Transformer::vPhase_5_JoinOrdering(bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
-  m_pTransforms->vPhase((Stz*)__func__);
+  m_pTransforms->vPhase(__func__);
   m_pTransforms->vUsingBoard(BK_QUERY,0);
 
   /*
@@ -247,7 +247,7 @@ void Transformer::vPhase_6_IndexScan(bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
-  m_pTransforms->vPhase((Stz*)__func__);
+  m_pTransforms->vPhase(__func__);
   m_pTransforms->vUsingBoard(BK_QUERY,0);
 
   /*
@@ -282,7 +282,7 @@ void Transformer::vPhase_7_StreamOrdering(bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
-  m_pTransforms->vPhase((Stz*)__func__);
+  m_pTransforms->vPhase(__func__);
   m_pTransforms->vUsingBoard(BK_QUERY,0);
 
   m_pTransforms->vRemove_sort_IfSameAs_gby(bTrace);
@@ -295,7 +295,7 @@ void Transformer::vPhase_8_FilterRefinement(bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
-  m_pTransforms->vPhase((Stz*)__func__);
+  m_pTransforms->vPhase(__func__);
   m_pTransforms->vUsingBoard(BK_QUERY,0);
 
   m_pTransforms->vIndividuate_filter(bTrace);
@@ -308,7 +308,7 @@ void Transformer::vPhase_Z_RestatePipeline(bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
-  m_pTransforms->vPhase((Stz*)__func__);
+  m_pTransforms->vPhase(__func__);
   m_pTransforms->vUsingBoard(BK_QUERY,0);
 
   m_pTransforms->vReinstate_stages(bTrace);
