@@ -461,7 +461,7 @@ bool TransformerTool::E_bEachMain(eCK eOfMainKind)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  if (m_p_MainCard = m_pM->pEachMain(eOfMainKind)) {
+  if ((m_p_MainCard = m_pM->pEachMain(eOfMainKind))) {
     m_e_MainCard = m_p_MainCard->eCard();
     U_vUpdateMember(m_e_MainCard, m_p_MainCard,__func__);
     return true;
@@ -479,7 +479,7 @@ bool TransformerTool::E_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  while (m_p_MainCard = m_pM->pEachMain(eOfMainKind)) {
+  while ((m_p_MainCard = m_pM->pEachMain(eOfMainKind))) {
     if (! (m_p_SubOfMain = m_p_MainCard->pFindSubCard(eAndSubKind)))
       continue;
 
@@ -508,7 +508,7 @@ bool TransformerTool::E_bEachMainWith2Sub(eCK eOfMainKind,
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  while (m_p_MainCard = m_pM->pEachMain(eOfMainKind)) {
+  while ((m_p_MainCard = m_pM->pEachMain(eOfMainKind))) {
     if (! (m_p_SubOfMain = m_p_MainCard->pFindSubCard(eAndSubKind1)))
       continue;
     if (! (m_p_Sub2OfMain = m_p_MainCard->pFindSubCard(eAndSubKind2)))

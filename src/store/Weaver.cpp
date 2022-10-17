@@ -1495,7 +1495,7 @@ void Weaver::vWeaveOptStmt(Board* pBoard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
-  RASSERT(BK_QUERY == pBoard->eBoard());
+  RASSERT(BK_SUBPIPE == pBoard->eBoard());
 
   m_i_Stage = 0;
   m_i_Op_stage = 0;

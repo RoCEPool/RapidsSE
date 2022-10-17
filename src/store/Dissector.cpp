@@ -101,7 +101,7 @@ void Dissector::vPipeline(i8 i_SubPipeline)
   //TagSet* pJobTags = m_pPipeSpec->pJobTags();
   //pJobTags->vDumpSet(true);
 
-  m_pBoard = new Board(BK_QUERY, i_SubPipeline+1, BT_ORIGINAL,m_pBench);
+  m_pBoard = new Board(BK_SUBPIPE, i_SubPipeline + 1, BT_ORIGINAL, m_pBench);
   m_pOptimiser->vQueryNm(szPipelineNm);
 
   

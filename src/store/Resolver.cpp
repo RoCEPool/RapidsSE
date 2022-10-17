@@ -26,7 +26,7 @@ Resolver::Resolver(Bench* pBench)
 
   _checkInitialised_(CN_RESOLVER);
 
-  m_pBoard = m_pBench->pGetBoard(BK_QUERY);
+  m_pBoard = m_pBench->pGetBoard(BK_SUBPIPE);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_RESOLVER,_FOOTER_);
 }
@@ -53,7 +53,7 @@ void Resolver::vResolve_streamColOrdinal_To_tableColOrdinal
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_RESOLVER, _FOOTER_);
 
-  RASSERT(BK_QUERY == m_pBoard->eBoard());
+  RASSERT(BK_SUBPIPE == m_pBoard->eBoard());
 
   i8 iStreamColNo = szStreamColOrdinal->iOrdinal();
 

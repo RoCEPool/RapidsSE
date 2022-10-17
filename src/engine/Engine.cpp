@@ -483,7 +483,7 @@ void Engine::vChangeDirectory(void)
       fprintf(stderr,"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
       fprintf(stderr,"RapidsSE Unrecoverable Error\n");
       fprintf(stderr,"  Unable to change to command dir\n");
-      fprintf(stderr,"  %s\n",gxCmdLineArgs.m_xSysArgs.m_sCommandsDir.szStz());
+      fprintf(stderr,"  %s\n",gxCmdLineArgs.m_xSysArgs.m_sCommandsDir.azChar());
       fprintf(stderr,"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
 
       vThreadCallStackDump();
