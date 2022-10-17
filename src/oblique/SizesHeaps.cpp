@@ -247,6 +247,8 @@
 #include "PermGen.hpp"
 #include "CardIter.hpp"
 #include "Transforms.hpp"
+#include "ParamSpec.hpp"
+#include "ParamsSpec.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -476,6 +478,8 @@ SizeHeap gxaSizeHeap[]
   { CN__P__,                     'P' - ('A' - 1),            HT_INVALID   ,FILL },
   { CN_PAGEFILE,                 sizeof(PageFile),           HT_T_TINY    ,FILL },
   { CN_PAGINGMETRICS,            sizeof(PagingMetrics),      HT_T_LARGE   ,FILL },
+  { CN_PARAMSPEC,                sizeof(ParamSpec),          HT_T_TINY    ,FILL },
+  { CN_PARAMSSPEC,               sizeof(ParamsSpec),         HT_T_TINY    ,FILL },
   { CN_PARCEL,                   sizeof(Parcel),             HT_T_TINY    ,FILL },
   { CN_PATHIDENTIFIER,           sizeof(PathIdentifier),     HT_T_MEDIUM  ,FILL },
   { CN_PATHVEC,                  sizeof(PathVec),            HT_T_MEDIUM  ,FILL },

@@ -218,6 +218,8 @@ enum eCN : u2 // Class Number
   /* */ CN__P__,
   /* */ CN_PAGEFILE,
   /* */ CN_PAGINGMETRICS,
+  /* */ CN_PARAMSPEC,
+  /* */ CN_PARAMSSPEC,
   /* */ CN_PARCEL,
   /* */ CN_PATHIDENTIFIER,
   /* */ CN_PATHVEC,
@@ -483,7 +485,7 @@ static Stz* aCN[]
   /* */ "CODESYNTH"_Stz,            // CN_CODESYNTH
   /* */ "COLUMN"_Stz,               // CN_COLUMN
   /* */ "COMBINED"_Stz,             // CN_COMBINED
-   /* */ "CONDITIONALQUERYNODEITER"_Stz, // CN_CONDITIONALQUERYNODEITER
+  /* */ "CONDITIONALQUERYNODEITER"_Stz, // CN_CONDITIONALQUERYNODEITER
   /* */ "CRVBUFFER"_Stz,            // CN_CRVBUFFER
   /* */ "CRWBUFFER"_Stz,            // CN_CRWBUFFER
   /* */ "CRWTABLEPTN"_Stz,          // CN_CRWTABLEPTN
@@ -527,7 +529,7 @@ static Stz* aCN[]
   /* */ "FIFO"_Stz,                 // CN_FIFO
   /* */ "FILE"_Stz,                 // CN_FILE
   /* */ "FILEMAP"_Stz,              // CN_FILEMAP
-   /* */ "FIPVAL"_Stz,               // CN_FIPVAL
+  /* */ "FIPVAL"_Stz,               // CN_FIPVAL
   /* */ "FLATTEN"_Stz,              // CN_FLATTEN
   /* */ "FLTVAL"_Stz,               // CN_FLTVAL
   /* */ "FORMAT"_Stz,               // CN_FORMAT
@@ -640,6 +642,8 @@ static Stz* aCN[]
   /* */ "_P__"_Stz,                 // CN__P__
   /* */ "PAGEFILE"_Stz,             // CN_PAGEFILE
   /* */ "PAGINGMETRICS"_Stz,        // CN_PAGINGMETRICS
+  /* */ "PARAMSPEC"_Stz,            // CN_PARAMSPEC
+  /* */ "PARAMSSPEC"_Stz,           // CN_PARAMSSPEC
   /* */ "PARCEL"_Stz,               // CN_PARCEL
   /* */ "PATHIDENTIFIER"_Stz,       // CN_PATHIDENTIFIER
   /* */ "PATHVEC"_Stz,              // CN_PATHVEC
