@@ -5742,6 +5742,7 @@ void Task::vAddMunged(Task* )
     "  STD_PATH_TAG\n"
     "  \"\n"
     "  procedure dfload\n"
+    "    tags <persistentTx>\n"
     "    parameters $table $file\n"
     "  begin\n"
     "\n"
