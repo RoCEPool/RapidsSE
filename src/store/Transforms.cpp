@@ -51,7 +51,7 @@ Transforms::~Transforms(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vReinstate_combined(eBK eBoard, bool bTrace)
+void Transforms::vReinstate_combined(bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -90,7 +90,7 @@ void Transforms::vReinstate_combined(eBK eBoard, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vAdd_scanPred(eBK eBoard, bool bTrace)
+void Transforms::vAdd_scanPred(bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -159,7 +159,7 @@ void Transforms::vAdd_scanPred(eBK eBoard, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* reinstate stages                                                           */
 /*----------------------------------------------------------------------------*/
-void Transforms::vReinstate_stages(eBK eBoard, bool bTrace)
+void Transforms::vReinstate_stages(bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -195,7 +195,7 @@ void Transforms::vReinstate_stages(eBK eBoard, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* add a <tablePtn> under every <table>                                       */
 /*----------------------------------------------------------------------------*/
-void Transforms::vAdd_tablePtn_UnderAll_table(eBK eBoard, bool bTrace)
+void Transforms::vAdd_tablePtn_UnderAll_table(bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -217,7 +217,7 @@ void Transforms::vAdd_tablePtn_UnderAll_table(eBK eBoard, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* add a <tableSyn> to all <table>'s                                          */
 /*----------------------------------------------------------------------------*/
-void Transforms::vAdd_tableSyn_ForAll_table(eBK eBoard, bool bTrace)
+void Transforms::vAdd_tableSyn_ForAll_table(bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -249,7 +249,7 @@ void Transforms::vAdd_tableSyn_ForAll_table(eBK eBoard, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* append <indexList> to <scan>                                               */
 /*----------------------------------------------------------------------------*/
-void Transforms::vInsert_indexList_ToAll_scan(eBK eBoard, bool bTrace)
+void Transforms::vInsert_indexList_ToAll_scan(bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -271,7 +271,7 @@ void Transforms::vInsert_indexList_ToAll_scan(eBK eBoard, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* add a <stream> under every <table>                                         */
 /*----------------------------------------------------------------------------*/
-void Transforms::vAdd_stream_UnderAll_table(eBK eBoard, bool bTrace)
+void Transforms::vAdd_stream_UnderAll_table(bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -308,7 +308,7 @@ void Transforms::vAdd_stream_UnderAll_table(eBK eBoard, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* calculate the ordinal $low..$high range for each <stream>                  */
 /*----------------------------------------------------------------------------*/
-void Transforms::vCalc_ordinalRange_ForAll_stream(eBK eBoard, bool bTrace)
+void Transforms::vCalc_ordinalRange_ForAll_stream(bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -341,7 +341,7 @@ void Transforms::vCalc_ordinalRange_ForAll_stream(eBK eBoard, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vCompute_coPtnJoinList(eBK eBoard, bool bTrace)
+void Transforms::vCompute_coPtnJoinList(bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -384,7 +384,7 @@ void Transforms::vCompute_coPtnJoinList(eBK eBoard, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vCompute_coPtnPredList(eBK eBoard, bool bTrace)
+void Transforms::vCompute_coPtnPredList(bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -433,7 +433,7 @@ void Transforms::vCompute_coPtnPredList(eBK eBoard, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vCompute_crossPtnJoinList(eBK eBoard, bool bTrace)
+void Transforms::vCompute_crossPtnJoinList(bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -475,7 +475,7 @@ void Transforms::vCompute_crossPtnJoinList(eBK eBoard, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vCompute_ptndJoinSet(eBK eBoard, bool bTrace)
+void Transforms::vCompute_ptndJoinSet(bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -517,7 +517,7 @@ void Transforms::vCompute_ptndJoinSet(eBK eBoard, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* convert <where>//<calc> to <where>//<calcBool>                             */
 /*----------------------------------------------------------------------------*/
-void Transforms::vConvert_where_calc_To_where_calcBool(eBK eBoard, bool bTrace)
+void Transforms::vConvert_where_calc_To_where_calcBool(bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -538,7 +538,7 @@ void Transforms::vConvert_where_calc_To_where_calcBool(eBK eBoard, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* convert the column name in every <idxCol> to a $streamOrdinal              */
 /*----------------------------------------------------------------------------*/
-void Transforms::vConvert_idxCol_name_Of_scan_To_idxCol_ord(eBK eBoard, bool bTrace)
+void Transforms::vConvert_idxCol_name_Of_scan_To_idxCol_ord(bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -560,7 +560,7 @@ void Transforms::vConvert_idxCol_name_Of_scan_To_idxCol_ord(eBK eBoard, bool bTr
 /*----------------------------------------------------------------------------*/
 /* convert the column name in every <idxCol> to a $streamOrdinal              */
 /*----------------------------------------------------------------------------*/
-void Transforms::vConvert_idxCol_name_Of_table_To_idxCol_ord(eBK eBoard, bool bTrace)
+void Transforms::vConvert_idxCol_name_Of_table_To_idxCol_ord(bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -588,7 +588,7 @@ void Transforms::vConvert_idxCol_name_Of_table_To_idxCol_ord(eBK eBoard, bool bT
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vCopy_ptndJoinSet(eBK eBoard, bool bTrace)
+void Transforms::vCopy_ptndJoinSet(bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -619,7 +619,7 @@ void Transforms::vCopy_ptndJoinSet(eBK eBoard, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* remove <table>/<filter>//<pred> that are now <table>/<joinPred>//<pred>    */
 /*----------------------------------------------------------------------------*/
-void Transforms::vCull_filter_pred_MovedUpTo_joinPred(eBK eBoard, bool bTrace)
+void Transforms::vCull_filter_pred_MovedUpTo_joinPred(bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -644,7 +644,7 @@ void Transforms::vCull_filter_pred_MovedUpTo_joinPred(eBK eBoard, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* replace all <scan>'s with their children                                   */
 /*----------------------------------------------------------------------------*/
-void Transforms::vCull_scan_Leaving_table(eBK eBoard, bool bTrace)
+void Transforms::vCull_scan_Leaving_table(bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -663,7 +663,7 @@ void Transforms::vCull_scan_Leaving_table(eBK eBoard, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vCull_Marked_cmpPred(eBK eBoard, bool bTrace)
+void Transforms::vCull_Marked_cmpPred(bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -697,7 +697,7 @@ void Transforms::vCull_Marked_cmpPred(eBK eBoard, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* remove <sort> if <sbyElist> is the same as the <gbyElist>                  */
 /*----------------------------------------------------------------------------*/
-void Transforms::vRemove_sort_IfSameAs_gby(eBK eBoard, bool bTrace)
+void Transforms::vRemove_sort_IfSameAs_gby(bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -726,7 +726,7 @@ void Transforms::vRemove_sort_IfSameAs_gby(eBK eBoard, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* delete superfluous <absJoin>'s                                             */
 /*----------------------------------------------------------------------------*/
-void Transforms::vDelete_absJoin(eBK eBoard, bool bTrace)
+void Transforms::vDelete_absJoin(bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -744,7 +744,7 @@ void Transforms::vDelete_absJoin(eBK eBoard, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* delete superfluous <combined>'s                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vDelete_combined(eBK eBoard, bool bTrace)
+void Transforms::vDelete_combined(bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -762,7 +762,7 @@ void Transforms::vDelete_combined(eBK eBoard, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* delete superfluous <send>'s                                                 */
 /*----------------------------------------------------------------------------*/
-void Transforms::vDelete_send(eBK eBoard, bool bTrace)
+void Transforms::vDelete_send(bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -780,7 +780,7 @@ void Transforms::vDelete_send(eBK eBoard, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* linearize board by deleting all duplicate <stage>'s                          */
 /*----------------------------------------------------------------------------*/
-void Transforms::vDelete_Redundant_stage(eBK eBoard, bool bTrace)
+void Transforms::vDelete_Redundant_stage(bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -825,7 +825,7 @@ void Transforms::vDelete_Redundant_stage(eBK eBoard, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* delete <where> if it is effectively empty                                  */
 /*----------------------------------------------------------------------------*/
-void Transforms::vDelete_Empty_where(eBK eBoard, bool bTrace)
+void Transforms::vDelete_Empty_where(bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -849,7 +849,7 @@ void Transforms::vDelete_Empty_where(eBK eBoard, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* delete any <table>/<filter> which is effectively empty                     */
 /*----------------------------------------------------------------------------*/
-void Transforms::vDelete_Empty_filter(eBK eBoard, bool bTrace)
+void Transforms::vDelete_Empty_filter(bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
   vTracing(bTrace);
@@ -876,7 +876,7 @@ void Transforms::vDelete_Empty_filter(eBK eBoard, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vEstimate_joinOrder(eBK eBoard, bool bTrace)
+void Transforms::vEstimate_joinOrder(bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -916,7 +916,7 @@ void Transforms::vEstimate_joinOrder(eBK eBoard, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vEstimate_network(eBK eBoard, bool bTrace)
+void Transforms::vEstimate_network(bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -963,7 +963,7 @@ void Transforms::vEstimate_network(eBK eBoard, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vEstimate_ptndJoins(eBK eBoard, bool bTrace)
+void Transforms::vEstimate_ptndJoins(bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -997,7 +997,7 @@ void Transforms::vEstimate_ptndJoins(eBK eBoard, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* expanded form                                                              */
 /*----------------------------------------------------------------------------*/
-void Transforms::vExpandedForm(eBK eBoard, bool bTrace)
+void Transforms::vExpandedForm(bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1014,7 +1014,7 @@ void Transforms::vExpandedForm(eBK eBoard, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vExtract_joinOrderSeq(eBK eBoard, bool bTrace)
+void Transforms::vExtract_joinOrderSeq(bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1042,7 +1042,7 @@ void Transforms::vExtract_joinOrderSeq(eBK eBoard, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vExtract_joinPredList(eBK eBoard, bool bTrace)
+void Transforms::vExtract_joinPredList(bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1074,7 +1074,7 @@ void Transforms::vExtract_joinPredList(eBK eBoard, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vExtract_tableList_From_queryBoard(eBK eBoard, bool bTrace)
+void Transforms::vExtract_tableList_From_queryBoard(bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1106,7 +1106,7 @@ void Transforms::vExtract_tableList_From_queryBoard(eBK eBoard, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* add a <joinPred> under each <indexJoin>                                    */
 /*----------------------------------------------------------------------------*/
-void Transforms::vAdd_joinPred_UnderAll_indexJoin(eBK eBoard, bool bTrace)
+void Transforms::vAdd_joinPred_UnderAll_indexJoin(bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1178,7 +1178,7 @@ void Transforms::vAdd_joinPred_UnderAll_indexJoin(eBK eBoard, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vGenerate_ptndPermutations(eBK eBoard, bool bTrace)
+void Transforms::vGenerate_ptndPermutations(bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1226,7 +1226,7 @@ void Transforms::vGenerate_ptndPermutations(eBK eBoard, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* individuate <scan|indexJoin>/<filter> as main <filter>                     */
 /*----------------------------------------------------------------------------*/
-void Transforms::vIndividuate_filter(eBK eBoard, bool bTrace)
+void Transforms::vIndividuate_filter(bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1263,7 +1263,7 @@ void Transforms::vIndividuate_filter(eBK eBoard, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* add an <indexJoin> under all <table>'s which are joinable                  */
 /*----------------------------------------------------------------------------*/
-void Transforms::vAdd_indexJoin_UnderAllJoinable_table(eBK eBoard, bool bTrace)
+void Transforms::vAdd_indexJoin_UnderAllJoinable_table(bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1307,7 +1307,7 @@ void Transforms::vAdd_indexJoin_UnderAllJoinable_table(eBK eBoard, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vMark_scan_pred_bounds(eBK eBoard, bool bTrace)
+void Transforms::vMark_scan_pred_bounds(bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1336,7 +1336,7 @@ void Transforms::vMark_scan_pred_bounds(eBK eBoard, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* mark the <SCAN>//<filter>//cmpPred> which match index ordinals             */
 /*----------------------------------------------------------------------------*/
-void Transforms::vMark_scan_filter_term_WhichMatchIndex(eBK eBoard, bool bTrace)
+void Transforms::vMark_scan_filter_term_WhichMatchIndex(bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1388,7 +1388,7 @@ void Transforms::vMark_scan_filter_term_WhichMatchIndex(eBK eBoard, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* inspect <where>//<pred> and attempt to find source <table>                 */
 /*----------------------------------------------------------------------------*/
-void Transforms::vMark_where_pred_Wrt_table(eBK eBoard, bool bTrace)
+void Transforms::vMark_where_pred_Wrt_table(bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1407,7 +1407,7 @@ void Transforms::vMark_where_pred_Wrt_table(eBK eBoard, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* inspect all <where>//<pred> and move <predCmp> to new <table>/<filter>     */
 /*----------------------------------------------------------------------------*/
-void Transforms::vMove_Marked_where_pred_To_table_filter(eBK eBoard, bool bTrace)
+void Transforms::vMove_Marked_where_pred_To_table_filter(bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1425,7 +1425,7 @@ void Transforms::vMove_Marked_where_pred_To_table_filter(eBK eBoard, bool bTrace
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vPromote_scan_To_indexScan(eBK eBoard, bool bTrace)
+void Transforms::vPromote_scan_To_indexScan(bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1445,7 +1445,7 @@ void Transforms::vPromote_scan_To_indexScan(eBK eBoard, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* convert all <table> into either <scan> or <indexJoin>                      */
 /*----------------------------------------------------------------------------*/
-void Transforms::vConvert_table_To_scan_Or_indexJoin(eBK eBoard, bool bTrace)
+void Transforms::vConvert_table_To_scan_Or_indexJoin(bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1490,7 +1490,7 @@ void Transforms::vConvert_table_To_scan_Or_indexJoin(eBK eBoard, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vRemove_invalidPermutations(eBK eBoard, bool bTrace)
+void Transforms::vRemove_invalidPermutations(bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1531,7 +1531,7 @@ void Transforms::vRemove_invalidPermutations(eBK eBoard, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vSetup_costEst(eBK eBoard, bool bTrace)
+void Transforms::vSetup_costEst(bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
