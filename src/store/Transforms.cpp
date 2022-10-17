@@ -812,7 +812,7 @@ void Transforms::vDelete_Redundant_stage(bool bTrace)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  m_pM->vRestart();
+  m_pM.vRestart();
   while (E_bEachMain(CK_STAGE)) {
     if (! (m_p_stageTopo = m_p_stage->pSub_stageTopo()) )
       continue;

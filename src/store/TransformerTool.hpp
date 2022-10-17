@@ -51,7 +51,7 @@ namespace STORE
     Card_Term* m_pTerm_1;
 
     // the M iterator - - - - - - - - - - - - - - - - - - - - -
-    BoardIter* m_pM;
+    BoardIter m_pM;
 
     Card* m_p_PriorToMain;
     eCK   m_e_PriorToMain;

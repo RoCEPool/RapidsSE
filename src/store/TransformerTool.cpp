@@ -11,6 +11,7 @@
 /*----------------------------------------------------------------------------*/
 TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
 : Object(eClass)
+, m_pM(nullptr)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -44,7 +45,7 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_pCard_temp   = nullptr;
 
   // the M iterator - - - - - - - - - - - - - - - - - - - - - -
-  m_pM = new BoardIter(m_pBoard);
+  //m_pM = new BoardIter(m_pBoard);
 
   M_vClearMembers();
   M_vClearRegisters();
@@ -59,7 +60,7 @@ TransformerTool::~TransformerTool(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  delete m_pM;
+  //delete m_pM;
   delete m_pPermGen;
 }
 
@@ -229,7 +230,7 @@ void TransformerTool::vTransformation(const char* azTransformation,
 
   m_pBoard->vTransformNoInc();
 
-  m_pM->vRestart();
+  m_pM.vRestart();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -245,7 +246,7 @@ void TransformerTool::vUsingBoard(eBK eBoard, i8 i_SubBoard)
   m_pBoard = m_pBench->pGetBoard(m_eBoard,m_i_SubBoard);
   m_pDeck  = m_pBoard->pDeck();
 
-  m_pM->vChangeBoard(m_pBoard);
+  m_pM.vChangeBoard(m_pBoard);
 }
 
 
@@ -436,7 +437,7 @@ bool TransformerTool::E_bEachMain(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  if ((m_p_MainCard = m_pM->pEachMain())) {
+  if ((m_p_MainCard = m_pM.pEachMain())) {
     m_e_MainCard = m_p_MainCard->eCard();
     U_vUpdateMember(m_e_MainCard, m_p_MainCard,__func__);
     return true;
@@ -453,7 +454,7 @@ bool TransformerTool::E_bEachMain(eCK eOfMainKind)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  if ((m_p_MainCard = m_pM->pEachMain(eOfMainKind))) {
+  if ((m_p_MainCard = m_pM.pEachMain(eOfMainKind))) {
     m_e_MainCard = m_p_MainCard->eCard();
     U_vUpdateMember(m_e_MainCard, m_p_MainCard,__func__);
     return true;
@@ -471,7 +472,7 @@ bool TransformerTool::E_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  while ((m_p_MainCard = m_pM->pEachMain(eOfMainKind))) {
+  while ((m_p_MainCard = m_pM.pEachMain(eOfMainKind))) {
     if (! (m_p_SubOfMain = m_p_MainCard->pFindSubCard(eAndSubKind)))
       continue;
 
@@ -500,7 +501,7 @@ bool TransformerTool::E_bEachMainWith2Sub(eCK eOfMainKind,
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  while ((m_p_MainCard = m_pM->pEachMain(eOfMainKind))) {
+  while ((m_p_MainCard = m_pM.pEachMain(eOfMainKind))) {
     if (! (m_p_SubOfMain = m_p_MainCard->pFindSubCard(eAndSubKind1)))
       continue;
     if (! (m_p_Sub2OfMain = m_p_MainCard->pFindSubCard(eAndSubKind2)))
@@ -534,7 +535,7 @@ void TransformerTool::E_vSkipNextMain(bool bClearMembers, bool bClearRegisters)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  m_pM->vForward();
+  m_pM.vForward();
 
   if (bClearMembers)
     M_vClearMembers();
@@ -550,7 +551,7 @@ bool TransformerTool::E_bMoreMain(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  if (m_pM->bMore())
+  if (m_pM.bMore())
     return true;
 
   return false;
@@ -563,7 +564,7 @@ void TransformerTool::E_vRemoveMain(eCK eCrossCheck)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  m_pM->vRemoveCurr(eCrossCheck);
+  m_pM.vRemoveCurr(eCrossCheck);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -573,7 +574,7 @@ void TransformerTool::E_vRemoveDeleteMain(eCK eCrossCheck)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  m_pM->vRemoveDeleteCurr(eCrossCheck);
+  m_pM.vRemoveDeleteCurr(eCrossCheck);
 
   m_p_MainCard = nullptr;
   m_e_MainCard = CK_NONE;
@@ -588,7 +589,7 @@ void TransformerTool::E_vSubsequentToMain(bool bUpdateMember)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  if ((m_p_SubsequentToMain = m_pM->pNextMain())) {
+  if ((m_p_SubsequentToMain = m_pM.pNextMain())) {
     m_e_SubsequentToMain = m_p_SubsequentToMain->eCard();
     if (bUpdateMember)
       U_vUpdateMember(m_e_SubsequentToMain, m_p_SubsequentToMain,__func__);
@@ -671,7 +672,7 @@ bool TransformerTool::H_bHasPriorToMain(bool bUpdateMember)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  if ((m_p_PriorToMain = m_pM->pPrevMain())) {
+  if ((m_p_PriorToMain = m_pM.pPrevMain())) {
     m_e_PriorToMain = m_p_PriorToMain->eCard();
     if (bUpdateMember)
       U_vUpdateMember(m_e_PriorToMain, m_p_PriorToMain,__func__);
@@ -689,7 +690,7 @@ bool TransformerTool::H_bHasPriorToMainIf(eCK eOfPriorKind, bool bUpdateMember)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  if ((m_p_PriorToMain = m_pM->pPrevMainIf(eOfPriorKind))) {
+  if ((m_p_PriorToMain = m_pM.pPrevMainIf(eOfPriorKind))) {
     m_e_PriorToMain = m_p_PriorToMain->eCard();
     if (bUpdateMember)
       U_vUpdateMember(m_e_PriorToMain, m_p_PriorToMain,__func__);
@@ -710,7 +711,7 @@ bool TransformerTool::H_bHasSubsequentToMain(bool bUpdateMember)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  if ((m_p_SubsequentToMain = m_pM->pNextMain())) {
+  if ((m_p_SubsequentToMain = m_pM.pNextMain())) {
     m_e_SubsequentToMain = m_p_SubsequentToMain->eCard();
     if (bUpdateMember)
       U_vUpdateMember(m_e_SubsequentToMain, m_p_SubsequentToMain,__func__);
@@ -728,7 +729,7 @@ bool TransformerTool::H_bHasSubsequentToMainIf(eCK eOfSubsequentKind, bool bUpda
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  if ((m_p_SubsequentToMain = m_pM->pNextMainIf(eOfSubsequentKind))) {
+  if ((m_p_SubsequentToMain = m_pM.pNextMainIf(eOfSubsequentKind))) {
     m_e_SubsequentToMain = m_p_SubsequentToMain->eCard();
     if (bUpdateMember)
       U_vUpdateMember(m_e_SubsequentToMain, m_p_SubsequentToMain,__func__);
@@ -914,7 +915,7 @@ void TransformerTool::M_vRestart(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  m_pM->vRestart();
+  m_pM.vRestart();
 
   M_vClearMembers();
   M_vClearRegisters();

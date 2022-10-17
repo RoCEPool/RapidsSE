@@ -55,7 +55,7 @@ void Modifications::vDeleteAll(eCK eCard)
   _precondition_(_ADDRESS_,_MAGIC_);
 
   while (E_bEachMain(eCard))
-    m_pM->vRemoveDeleteCurr(eCard);
+    m_pM.vRemoveDeleteCurr(eCard);
 
   vRenumberMainCards();
 }
