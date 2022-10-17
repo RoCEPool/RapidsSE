@@ -187,7 +187,7 @@ void Transformer::vPhase_4_InitialJoin(bool bTrace)
 
   m_pTransforms->vConvert_idxCol_name_Of_table_To_idxCol_ord(BK_QUERY,bTrace);
 
-  m_pTransforms->vAdd_joinPred_UnderAll_indexJoin(BK_QUERY,bTrace);
+  m_pTransforms->vAdd_joinPred_UnderAll_indexJoin(BK_QUERY,true);
 
   m_pTransforms->vCull_filter_pred_MovedUpTo_joinPred(BK_QUERY,bTrace);
 

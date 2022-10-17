@@ -57,9 +57,10 @@ namespace STORE
     void vArgProject  (Stz* szOpArgs,  Card_Project*   pCard_Project);
     void vArgScan     (Stz* szOpArgs,  Card_Scan*      pCard_Scan);
     void vArgSort     (Stz* szOpArgs,  Card_Sort*      pCard_Sort);
- 
+    void vArgWhere    (Stz* szOpArgs,  Card_Where*     pCard_Where);
+
     void vRpnAggreg   (Stz* szRpnExpr, Card_Aggreg*    pCard_Aggreg);
-    void vRpnCombine  (Stz* szRpnExpr, Card_Combined*   pCard_Combine);
+    void vRpnCombined (Stz* szRpnExpr, Card_Combined*  pCard_Combined);
     void vRpnFilter   (Stz* szRpnExpr, Card_Filter*    pCard_Filter);
     void vRpnHaving   (Stz* szRpnExpr, Card_Having*    pCard_Having);
     void vRpnIndexJoin(Stz* szRpnExpr, Card_IndexJoin* pCard_IndexJoin);
@@ -70,15 +71,17 @@ namespace STORE
     void vRpnProject  (Stz* szRpnExpr, Card_Project*   pCard_Project);
     void vRpnScan     (Stz* szRpnExpr, Card_Scan*      pCard_Scan);
     void vRpnSort     (Stz* szRpnExpr, Card_Sort*      pCard_Sort);
+    void vRpnWhere    (Stz* szRpnExpr, Card_Where*     pCard_Where);
 
     void vExpr        (Stz* szRpnExpr, Card_Expr*      pCard_Expr);
     void vExprBool    (Stz* szRpnExpr, Card_ExprBool*  pCard_ExprBool);
     void vExprCalc    (Stz* szRpnExpr, Card_Calc*      pCard_ExprCalc);
     void vCalcBool    (Stz* szRpnExpr, Card_BoolCalc*  pCard_CalcBool);
-    void vPredOr      (Stz* szRpnExpr, Card_OrPred*    pCard_PredOr, i8 i);
+    void vPredOr      (Stz* szRpnExpr, Card_OrPred*    pCard_PredOr,  i8 i);
     void vPredAnd     (Stz* szRpnExpr, Card_AndPred*   pCard_PredAnd, i8 i);
-    void vPredCmp     (Stz* szRpnExpr, Card_CmpPred*   pCard_PredCmp,   i8 i);
-    void vPredOther   (Stz* szRpnExpr, Card*           pCard_Other,     i8 i);
+    void vPredCmp     (Stz* szRpnExpr, Card_CmpPred*   pCard_PredCmp, i8 i);
+    void vPredTst     (Stz* szRpnExpr, Card_TstPred*   pCard_PredTst, i8 i);
+    void vPredOther   (Stz* szRpnExpr, Card*           pCard_Other,   i8 i);
 
     void vPred        (Stz* szRpnExpr, Card_PRED*      pCard_PRED);
     void vPredOr      (Stz* szRpnExpr, Card_OrPred*    pCard_PredOr);

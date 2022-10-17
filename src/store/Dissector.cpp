@@ -305,7 +305,10 @@ Card* Dissector::pCard_Filter(TagSet* pArgTags)
   // filtElist : filter expression list
 
   Card_Expr* pCard_Expr = pExpr_c(pCard_RpnTerms);
-  pCard_Filter->vAppend(pCard_Expr);
+  Card_Calc* pCard_Calc = pCard_Expr->pSub_calc();
+  pCard_Expr->vRemoveSubCard(pCard_Calc);
+  DELETE_CARD(pCard_Expr);
+  pCard_Filter->vAppend(pCard_Calc);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // is it filter or having?

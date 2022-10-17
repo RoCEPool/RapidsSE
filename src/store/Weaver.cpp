@@ -217,6 +217,7 @@ void Weaver::vOp(Card* pCard)
     case CK_PROJECT:    vArgProject  (sOpArgs,_pCard_Project(pCard));   break;
     case CK_SCAN:       vArgScan     (sOpArgs,_pCard_Scan(pCard));      break;
     case CK_SORT:       vArgSort     (sOpArgs,_pCard_Sort(pCard));      break;
+    case CK_WHERE:      vArgWhere    (sOpArgs,_pCard_Where(pCard));    break;
 
     default:
       vTrace("  skipping %s\n"_Stz,aCK[eCard]);
@@ -224,7 +225,9 @@ void Weaver::vOp(Card* pCard)
   }
   
   vTabOp();
-  vConcat("%-9s %s"_Stz,aCK_short[eCard],sOpArgs.szStz());
+  vConcat("%-9s %s"_Stz,
+          CK_WHERE == eCard ? "filter"_Stz : aCK_short[eCard],
+          sOpArgs.szStz());
   vEolOp();
   m_i_Op_stage++;
 }
@@ -266,8 +269,8 @@ void Weaver::vArgCombined(Stz* szOpArgs, Card_Combined* pCard_Combine)
   // 0) combined :
 
   s4K sRpnExpr;
-  
-  vRpnCombine(sRpnExpr,pCard_Combine);
+
+  vRpnCombined(sRpnExpr, pCard_Combine);
 
   szOpArgs->vCatSprint("%s"_Stz,sRpnExpr.szStz());
 }
@@ -447,6 +450,23 @@ void Weaver::vArgSort(Stz* szOpArgs, Card_Sort* pCard_Sort)
 }
 
 /*----------------------------------------------------------------------------*/
+/* weave : where <expr>                                                       */
+/*----------------------------------------------------------------------------*/
+void Weaver::vArgWhere(Stz* szOpArgs, Card_Where* pCard_Where)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
+
+  // filter : 0) filtElist
+
+  s4K sRpnExpr;
+
+  vRpnWhere(sRpnExpr,pCard_Where);
+
+  szOpArgs->vCatSprint("\"%s \""_Stz,sRpnExpr.szStz());
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -517,11 +537,11 @@ void Weaver::vRpnAggreg(Stz* szRpnExpr, Card_Aggreg* pCard_Aggreg)
 /*----------------------------------------------------------------------------*/
 /* expr for combine                                                           */
 /*----------------------------------------------------------------------------*/
-void Weaver::vRpnCombine(Stz* szRpnExpr, Card_Combined* pCard_Combine)
+void Weaver::vRpnCombined(Stz* szRpnExpr, Card_Combined* pCard_Combined)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
-  Card_Term* pCard_Term = _pCard_Term(pCard_Combine->pGet(0));
+  Card_Term* pCard_Term = _pCard_Term(pCard_Combined->pGet(0));
   szRpnExpr->vCatSprint("%s"_Stz,pCard_Term->sz());
 }
 
@@ -928,6 +948,28 @@ void Weaver::vRpnSort(Stz* szRpnExpr, Card_Sort* pCard_Sort)
 
 }
 
+/*----------------------------------------------------------------------------*/
+/* produce <expr> for filter op                                               */
+/*----------------------------------------------------------------------------*/
+void Weaver::vRpnWhere(Stz* szRpnExpr, Card_Where* pCard_Where)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
+
+  //pCard_Filter->vDump();
+
+  szRpnExpr->vCatSprint(" type BOOLEAN"_Stz);
+
+  Card* pCard_test = pCard_Where->pSub_boolCalc();
+  if (CK_BOOLCALC == pCard_test->eCard()) {
+    Card_BoolCalc *pCard_CalcBool = _pCard_BoolCalc(pCard_test);
+    vCalcBool(szRpnExpr, pCard_CalcBool);
+  }
+  else {
+    Card_Calc *pCard_Calc = pCard_Where->pSub_calc();
+    vExprCalc(szRpnExpr, pCard_Calc);
+  }
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -1038,6 +1080,9 @@ void Weaver::vCalcBool(Stz* szRpnExpr, Card_BoolCalc* pCard_CalcBool)
       case CK_CMPPRED:
         vPredCmp(szRpnExpr,_pCard_CmpPred(pSubCard),0);
         break;
+      case CK_TSTPRED:
+        vPredTst(szRpnExpr,_pCard_TstPred(pSubCard),0);
+        break;
       default:
         vPredOther(szRpnExpr,pSubCard,0);
         break;
@@ -1068,6 +1113,9 @@ void Weaver::vPredOr(Stz* szRpnExpr, Card_OrPred* pCard_PredOr, i8 i)
         break;
       case CK_CMPPRED:
         vPredCmp(szRpnExpr,_pCard_CmpPred(pSubCard),0);
+        break;
+      case CK_TSTPRED:
+        vPredTst(szRpnExpr,_pCard_TstPred(pSubCard),0);
         break;
       default:
         vPredOther(szRpnExpr,pSubCard,0);
@@ -1102,6 +1150,9 @@ void Weaver::vPredAnd(Stz* szRpnExpr, Card_AndPred* pCard_PredAnd, i8 i)
       case CK_CMPPRED:
         vPredCmp(szRpnExpr,_pCard_CmpPred(pSubCard),0);
         break;
+      case CK_TSTPRED:
+        vPredTst(szRpnExpr,_pCard_TstPred(pSubCard),0);
+        break;
       default:
         vPredOther(szRpnExpr,pSubCard,0);
         break;
@@ -1135,6 +1186,9 @@ void Weaver::vPredCmp(Stz* szRpnExpr, Card_CmpPred* pCard_PredCmp, i8 i)
       case CK_CMPPRED:
         vPredCmp(szRpnExpr,_pCard_CmpPred(pSubCard),0);
         break;
+      case CK_TSTPRED:
+        vPredTst(szRpnExpr,_pCard_TstPred(pSubCard),0);
+        break;
       default:
         vPredOther(szRpnExpr,pSubCard,0);
         break;
@@ -1144,6 +1198,42 @@ void Weaver::vPredCmp(Stz* szRpnExpr, Card_CmpPred* pCard_PredCmp, i8 i)
   szRpnExpr->vCatSprint(" %s"_Stz,pCard_PredCmp->sz());
 
 }
+
+/*----------------------------------------------------------------------------*/
+/* append <rpnExpr> for <predCmp>                                             */
+/*----------------------------------------------------------------------------*/
+void Weaver::vPredTst(Stz* szRpnExpr, Card_TstPred* pCard_PredTst, i8 i)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
+
+  i8 nSubCards = pCard_PredTst->nItems();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card *pSubCard = pCard_PredTst->pGet(i_Child);
+
+    eCK eSubCard = pSubCard->eCard();
+
+    switch (eSubCard) {
+      case CK_ORPRED:
+        vPredOr(szRpnExpr,_pCard_OrPred(pSubCard),0);
+        break;
+      case CK_ANDPRED:
+        vPredAnd(szRpnExpr,_pCard_AndPred(pSubCard),0);
+        break;
+      case CK_CMPPRED:
+        vPredCmp(szRpnExpr,_pCard_CmpPred(pSubCard),0);
+        break;
+      case CK_TSTPRED:
+        vPredTst(szRpnExpr,_pCard_TstPred(pSubCard),0);
+        break;
+      default:
+        vPredOther(szRpnExpr,pSubCard,0);
+        break;
+    }
+  }
+
+  szRpnExpr->vCatSprint(" %s"_Stz,pCard_PredTst->sz());
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* append <rpnExpr> for <other>                                               */

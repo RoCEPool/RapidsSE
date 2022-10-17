@@ -1114,9 +1114,7 @@ void Transforms::vAdd_joinPred_UnderAll_indexJoin(eBK eBoard, bool bTrace)
   vDescription("add a <joinPred> under each <indexJoin>"_Stz);
   vTracing(bTrace);
 
-  while (E_bEachMain(CK_TABLE)) {
-    if (! (m_p_filter = m_p_table->pSub_filter()))
-      continue;
+  while (E_bEachMainWithSub(CK_TABLE,CK_FILTER)) {
 
     m_p_table->vDump();
 
@@ -1275,10 +1273,7 @@ void Transforms::vAdd_indexJoin_UnderAllJoinable_table(eBK eBoard, bool bTrace)
 
   m_pDeck->vClearMarksRecursive();
 
-  while (E_bEachMain(CK_TABLE)) {
-
-    if (! (m_p_filter = m_p_table->pSub_filter()))
-      continue;
+  while (E_bEachMainWithSub(CK_TABLE,CK_FILTER)) {
 
     m_p_tablePtr = m_p_table->pSub_tablePtr();
     m_pTable = m_p_tablePtr->pTable();
