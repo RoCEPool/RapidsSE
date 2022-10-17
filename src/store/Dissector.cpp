@@ -93,21 +93,17 @@ void Dissector::vSubPipe(i8 i_SubPipeSpec)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
     
   Stz* szPipelineNm;
-
-  Job* pJob = MY::pJob();
-  TagSet* pJobTags = pJob->pJobTags();
-  if (pJobTags->bHasName("<pipelineName>"_Stz))
-    szPipelineNm = pJobTags->szValue("<pipelineName>"_Stz);
+  if (C_UNKNOWN == i_SubPipeSpec)
+    szPipelineNm = "MainQuery"_Stz;
   else
-    szPipelineNm = m_pPipeSpec->szVertexNm();
+    szPipelineNm= m_pPipeSpec->szVertexNm();
 
+  m_pBoard = new Board(szPipelineNm,
+                       BK_SUBPIPE, i_SubPipeSpec + 1,
+                       BT_ORIGINAL,
+                       m_pBench);
 
-  //TagSet* pJobTags = m_pPipeSpec->pJobTags();
-  //pJobTags->vDumpSet(true);
-
-  m_pBoard = new Board(BK_SUBPIPE, i_SubPipeSpec + 1, BT_ORIGINAL, m_pBench);
   m_pOptimiser->vQueryNm(szPipelineNm);
-
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     

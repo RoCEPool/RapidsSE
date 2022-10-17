@@ -27,14 +27,16 @@ __aFooterFunction(Board)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Board::Board(eBK eBoard, i8 i_SubBoard, eBT eBoardType, Bench* pBench)
+Board::Board(Stz* szBoardNm, eBK eBoard, i8 i_SubBoard, eBT eBoardType, Bench* pBench)
 : Object(CN_BOARD)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
+  m_sBoardNm     = szBoardNm;
   m_eBoard       = eBoard;
   m_i_SubBoard   = i_SubBoard;
   m_eBoardType   = eBoardType;
+
   m_pBench       = pBench;
 
   m_pOptimiser   = m_pBench->pOptimiser();
@@ -79,6 +81,26 @@ eBK Board::eBoard(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
   return m_eBoard;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get board name                                                             */
+/*----------------------------------------------------------------------------*/
+Stz* Board::szBoardNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  return m_sBoardNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set board name                                                             */
+/*----------------------------------------------------------------------------*/
+void Board::vBoardNm(Stz* szBoardNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  m_sBoardNm = szBoardNm;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -182,7 +204,7 @@ void Board::vPinCards(Ribbon* pRibbon,
 /* pin board onto given ribbon                                                */
 /*----------------------------------------------------------------------------*/
 void Board::vPinTitle(Ribbon* pRibbon,
-                      i8 iPrintNo, Stz* szDescription)
+                      i8 iTransformNo, Stz* szDescription)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
@@ -193,15 +215,20 @@ void Board::vPinTitle(Ribbon* pRibbon,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pRibbon->vSprint("[%02lld Board: %s[%lld] %s Query=%s] %s"_Stz,
-                   iPrintNo,
+  pRibbon->vSprint("Transform: %02lld of board %s (%s %s [%lld]) Query=%s"_Stz,
+                   iTransformNo,
+                   m_sBoardNm.szStz(),
+
+                   aBT[m_eBoardType],
                    aBK[m_eBoard],
                    m_i_SubBoard,
-                   aBT[m_eBoardType],
-                   m_pOptimiser->szQueryNm(),
-                   szDescription ? szDescription : ""_Stz);
 
-  pRibbon->vTitleLines(1);
+                   m_pOptimiser->szQueryNm());
+
+  pRibbon->vSprint("%s"_Stz,szDescription ? szDescription : ""_Stz);
+
+
+  pRibbon->vTitleLines(2);
   pRibbon->vSetBase();
   pRibbon->vFirstColumn();
 

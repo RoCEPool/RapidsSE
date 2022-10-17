@@ -125,9 +125,11 @@ namespace STORE
   class Board : public Object
   {
   protected:
+    s32         m_sBoardNm;
     eBK         m_eBoard;
     i8          m_i_SubBoard;
     eBT         m_eBoardType;
+
     Card_Deck*  m_pCard_Deck;
 
     Optimiser*  m_pOptimiser;
@@ -144,23 +146,24 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Board(eBK eBoard, i8 i_SubBoard, eBT eBoardType, Bench* pBench);
+    Board(Stz* szBoardNm, eBK eBoard, i8 i_SubBoard, eBT eBoardType, Bench* pBench);
    ~Board(void) noexcept(false);
 
     eBK eBoard(void);
-    CardCtl* pCardCtl(void);
-    Card_Deck* pDeck(void);
+    Stz* szBoardNm(void);
+    void vBoardNm(Stz* szBoardNm);
 
+    CardCtl* pCardCtl(void);
+
+    Card_Deck* pDeck(void);
     void vDuplicateBoard(Board* pBoard_arg);
 
     void vPinCards(Ribbon* pRibbon,
                    i8 iPrintNo,
                    Stz* szExplain=nullptr);
-
     void vPinTitle(Ribbon* pRibbon,
-                   i8 iPrintNo,
+                   i8 iTransformNo,
                    Stz* szExplain=nullptr);
-
     void vPrintBoard(Stz* szPhase=nullptr,
                      Stz* szTransformation=nullptr,
                      Stz* szDescription=nullptr);
