@@ -70,6 +70,8 @@ enum eCK // card kind
   /* */ CK_ORDAGG,
   /* */ CK_ORPRED,
 
+  /* */ CK_PARAM,
+  /* */ CK_PARAMLIST,
   /* */ CK_PERMUTATION,
   /* */ CK_PROJECT,
   /* */ CK_PROJELIST,
@@ -178,6 +180,8 @@ static Stz* aCK[]
   /* */ "CK_ORDAGG"_Stz,       // CK_ORDAGG
   /* */ "CK_ORPRED"_Stz,       // CK_ORPRED
 
+  /* */ "CK_PARAM"_Stz,        // CK_PARAM
+  /* */ "CK_PARAMLIST"_Stz,    // CK_PARAMLIST
   /* */ "CK_PERMUTATION"_Stz,  // CK_PERMUTATION
   /* */ "CK_PROJECT"_Stz,      // CK_PROJECT
   /* */ "CK_PROJELIST"_Stz,    // CK_PROJELIST
@@ -286,6 +290,8 @@ static Stz* aCK_short[]
   /* */ "ordAgg"_Stz,          // CK_ORDAGG
   /* */ "orPred"_Stz,          // CK_ORPRED
 
+  /* */ "param"_Stz,           // CK_PARAM
+  /* */ "paramList"_Stz,       // CK_PARAMLIST
   /* */ "permutation"_Stz,     // CK_PERMUTATION
   /* */ "project"_Stz,         // CK_PROJECT
   /* */ "projElist"_Stz,       // CK_PROJELIST

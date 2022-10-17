@@ -107,23 +107,23 @@ void Modifications::X_calc_To_calcBool(void)
     switch (eTopTerm) {
 
       case TE_AND:
-        RASSERT(2 == m_p_calcBool->nChildCards());
+        RASSERT(2 == m_p_boolCalc->nChildCards());
         p_andPred = new Card_AndPred;
-        p_andPred->vTransferChildren(m_p_calcBool);
-        RASSERT(0 == m_p_calcBool->nChildCards());
-        m_p_calcBool->vAppend(p_andPred);
-        RASSERT(1 == m_p_calcBool->nChildCards());
+        p_andPred->vTransferChildren(m_p_boolCalc);
+        RASSERT(0 == m_p_boolCalc->nChildCards());
+        m_p_boolCalc->vAppend(p_andPred);
+        RASSERT(1 == m_p_boolCalc->nChildCards());
         p_andPred = nullptr;
         D_vDeleteMember(m_p_term);
         break;
 
       case TE_OR:
-        RASSERT(2 == m_p_calcBool->nChildCards());
+        RASSERT(2 == m_p_boolCalc->nChildCards());
         p_orPred = new Card_OrPred;
-        p_orPred->vTransferChildren(m_p_calcBool);
-        RASSERT(0 == m_p_calcBool->nChildCards());
-        m_p_calcBool->vAppend(p_orPred);
-        RASSERT(1 == m_p_calcBool->nChildCards());
+        p_orPred->vTransferChildren(m_p_boolCalc);
+        RASSERT(0 == m_p_boolCalc->nChildCards());
+        m_p_boolCalc->vAppend(p_orPred);
+        RASSERT(1 == m_p_boolCalc->nChildCards());
         p_orPred = nullptr;
         D_vDeleteMember(m_p_term);
         break;
@@ -133,7 +133,7 @@ void Modifications::X_calc_To_calcBool(void)
         p_cmpPred = new Card_CmpPred;
         p_cmpPred->vValue(m_p_term->sz());
         p_cmpPred->vTransferChildren(pCard_SubExpr);
-        m_p_calcBool->vAppend(p_cmpPred);
+        m_p_boolCalc->vAppend(p_cmpPred);
         p_cmpPred = nullptr;
         D_vDeleteMember(m_p_term);
         break;
@@ -142,7 +142,7 @@ void Modifications::X_calc_To_calcBool(void)
         p_tstPred = new Card_TstPred;
         p_tstPred->vValue(m_p_term->sz());
         p_tstPred->vTransferChildren(pCard_SubExpr);
-        m_p_calcBool->vAppend(p_tstPred);
+        m_p_boolCalc->vAppend(p_tstPred);
         p_tstPred = nullptr;
         D_vDeleteMember(m_p_term);
         break;
@@ -157,12 +157,12 @@ void Modifications::X_calc_To_calcBool(void)
     }
   }
 
-  m_p_calcBool->vDump();
+  m_p_boolCalc->vDump();
 
   if (pCard_SubExpr->nItems()) {
-    RASSERT(0 == m_p_calcBool->nChildCards());
+    RASSERT(0 == m_p_boolCalc->nChildCards());
     p_cmpPred->vTransferChildren(pCard_SubExpr);
-    RASSERT(1 == m_p_calcBool->nChildCards());
+    RASSERT(1 == m_p_boolCalc->nChildCards());
     RASSERT(0 == pCard_SubExpr->nChildCards());
   }
 

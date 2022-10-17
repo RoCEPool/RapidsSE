@@ -229,7 +229,6 @@ void TransformerTool::vTransformation(const char* azTransformation,
 
   m_pBoard->vTransformNoInc();
 
-  //vSwapToBoard(BK_NONE);
   m_pM->vRestart();
 }
 
@@ -611,8 +610,9 @@ Card* TransformerTool::F_pFetchMember(eCK eMember)
 
     case CK_ABSJOIN:          return m_p_absJoin;
     case CK_AGGREG:           return m_p_aggreg;
+    case CK_BOOLCALC:         return m_p_boolCalc;
     case CK_CALC:             return m_p_calc;
-    case CK_BOOLCALC:         return m_p_calcBool;
+    case CK_CMPPRED:          return m_p_cmpPred;
     case CK_COMBINED:         return m_p_combined;
     case CK_COMMENT:          return m_p_comment;
     case CK_COPTNJOIN:        return m_p_coPtnJoin;
@@ -634,14 +634,16 @@ Card* TransformerTool::F_pFetchMember(eCK eMember)
     case CK_JOINPRED:         return m_p_joinPred;
     case CK_JOINPREDLIST:     return m_p_joinPredList;
     case CK_LBOUND:           return m_p_lBound;
+    case CK_PARAM:            return m_p_param;
+    case CK_PARAMLIST:        return m_p_paramList;
     case CK_PERMUTATION:      return m_p_permutation;
-    case CK_CMPPRED:          return m_p_cmpPred;
     case CK_PROJECT:          return m_p_project;
     case CK_PTNDJOIN:         return m_p_ptndJoin;
     case CK_PTNDJOINSET:      return m_p_ptndJoinSet;
     case CK_SBYELIST:         return m_p_sbyElist;
     case CK_SCAN:             return m_p_scan;
     case CK_SCANPRED:         return m_p_scanPred;
+    case CK_SEND:             return m_p_send;
     case CK_SORT:             return m_p_sort;
     case CK_STAGE:            return m_p_stage;
     case CK_STAGETOPO:        return m_p_stageTopo;
@@ -656,11 +658,7 @@ Card* TransformerTool::F_pFetchMember(eCK eMember)
     case CK_UBOUND:           return m_p_uBound;
     case CK_WHERE:            return m_p_where;
 
-    case CK_SEND:
-      NEVER_REACH
-      break;
-
-    default:
+   default:
       NEVER_REACH
   }
 }
@@ -751,8 +749,8 @@ void TransformerTool::M_vClearMembers(void)
 
   m_p_absJoin          = nullptr;
   m_p_aggreg           = nullptr;
+  m_p_boolCalc         = nullptr;
   m_p_calc             = nullptr;
-  m_p_calcBool         = nullptr;
   m_p_cmpPred          = nullptr;
   m_p_combined         = nullptr;
   m_p_comment          = nullptr;
@@ -776,6 +774,8 @@ void TransformerTool::M_vClearMembers(void)
   m_p_joinPred         = nullptr;
   m_p_joinPredList     = nullptr;
   m_p_lBound           = nullptr;
+  m_p_param            = nullptr;
+  m_p_paramList        = nullptr;
   m_p_permutation      = nullptr;
   m_p_permutation_low  = nullptr;
   m_p_project          = nullptr;
@@ -784,6 +784,7 @@ void TransformerTool::M_vClearMembers(void)
   m_p_sbyElist         = nullptr;
   m_p_scan             = nullptr;
   m_p_scanPred         = nullptr;
+  m_p_send             = nullptr;
   m_p_sort             = nullptr;
   m_p_stage            = nullptr;
   m_p_stageTopo        = nullptr;
@@ -798,7 +799,6 @@ void TransformerTool::M_vClearMembers(void)
   m_p_term             = nullptr;
   m_p_uBound           = nullptr;
   m_p_where            = nullptr;
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -954,8 +954,9 @@ void TransformerTool::U_vUpdateMember(eCK eMember, Card* pCard, const char* asFu
 
     case CK_ABSJOIN:          *((Card**)&m_p_absJoin)          = pCard; break;
     case CK_AGGREG:           *((Card**)&m_p_aggreg)           = pCard; break;
+    case CK_BOOLCALC:         *((Card**)&m_p_boolCalc)         = pCard; break;
     case CK_CALC:             *((Card**)&m_p_calc)             = pCard; break;
-    case CK_BOOLCALC:         *((Card**)&m_p_calcBool)         = pCard; break;
+    case CK_CMPPRED:          *((Card**)&m_p_cmpPred)          = pCard; break;
     case CK_COMBINED:         *((Card**)&m_p_combined)         = pCard; break;
     case CK_COMMENT:          *((Card**)&m_p_comment)          = pCard; break;
     case CK_COPTNJOIN:        *((Card**)&m_p_coPtnJoin)        = pCard; break;
@@ -967,6 +968,7 @@ void TransformerTool::U_vUpdateMember(eCK eMember, Card* pCard, const char* asFu
     case CK_EXPR:             *((Card**)&m_p_expr)             = pCard; break;
     case CK_FILTER:           *((Card**)&m_p_filter)           = pCard; break;
     case CK_GBYELIST:         *((Card**)&m_p_gbyElist)         = pCard; break;
+    case CK_IDXCOL:           *((Card**)&m_p_idxCol)           = pCard; break;
     case CK_IDXCOLLIST:       *((Card**)&m_p_idxColList)       = pCard; break;
     case CK_INDEXJOIN:        *((Card**)&m_p_indexJoin)        = pCard; break;
     case CK_INDEXLIST:        *((Card**)&m_p_indexList)        = pCard; break;
@@ -977,14 +979,16 @@ void TransformerTool::U_vUpdateMember(eCK eMember, Card* pCard, const char* asFu
     case CK_JOINPRED:         *((Card**)&m_p_joinPred)         = pCard; break;
     case CK_JOINPREDLIST:     *((Card**)&m_p_joinPredList)     = pCard; break;
     case CK_LBOUND:           *((Card**)&m_p_lBound)           = pCard; break;
+    case CK_PARAM:            *((Card**)&m_p_param)            = pCard; break;
+    case CK_PARAMLIST:        *((Card**)&m_p_paramList)        = pCard; break;
     case CK_PERMUTATION:      *((Card**)&m_p_permutation)      = pCard; break;
-    case CK_CMPPRED:          *((Card**)&m_p_cmpPred)          = pCard; break;
     case CK_PROJECT:          *((Card**)&m_p_project)          = pCard; break;
     case CK_PTNDJOIN:         *((Card**)&m_p_ptndJoin)         = pCard; break;
     case CK_PTNDJOINSET:      *((Card**)&m_p_ptndJoinSet)      = pCard; break;
     case CK_SBYELIST:         *((Card**)&m_p_sbyElist)         = pCard; break;
     case CK_SCAN:             *((Card**)&m_p_scan)             = pCard; break;
     case CK_SCANPRED:         *((Card**)&m_p_scanPred)         = pCard; break;
+    case CK_SEND:             *((Card**)&m_p_send)             = pCard; break;
     case CK_SORT:             *((Card**)&m_p_sort)             = pCard; break;
     case CK_STAGE:            *((Card**)&m_p_stage)            = pCard; break;
     case CK_STAGETOPO:        *((Card**)&m_p_stageTopo)        = pCard; break;
@@ -998,9 +1002,6 @@ void TransformerTool::U_vUpdateMember(eCK eMember, Card* pCard, const char* asFu
     case CK_TERM:             *((Card**)&m_p_term)             = pCard; break;
     case CK_UBOUND:           *((Card**)&m_p_uBound)           = pCard; break;
     case CK_WHERE:            *((Card**)&m_p_where)            = pCard; break;
-
-    case CK_SEND:
-      break;
 
     default:
       NEVER_REACH
@@ -1052,62 +1053,6 @@ Stz* TransformerTool::szT(eCK eMember)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-//  switch (eMember) {
-//
-//    case CK_ABSJOIN:          m_sT.vSprint("m_p_absJoin          "_Stz); break;
-//    case CK_AGGREG:           m_sT.vSprint("m_p_aggreg           "_Stz); break;
-//    case CK_CALC:             m_sT.vSprint("m_p_calc             "_Stz); break;
-//    case CK_BOOLCALC:         m_sT.vSprint("m_p_calcBool         "_Stz); break;
-//    case CK_COMBINED:         m_sT.vSprint("m_p_combined         "_Stz); break;
-//    case CK_COMMENT:          m_sT.vSprint("m_p_comment          "_Stz); break;
-//    case CK_COPTNJOIN:        m_sT.vSprint("m_p_coPtnJoin        "_Stz); break;
-//    case CK_COPTNJOINLIST:    m_sT.vSprint("m_p_coPtnJoinList    "_Stz); break;
-//    case CK_COPTNPRED:        m_sT.vSprint("m_p_coPtnPred        "_Stz); break;
-//    case CK_COPTNPREDLIST:    m_sT.vSprint("m_p_coPtnPredList    "_Stz); break;
-//    case CK_CROSSPTNJOIN:     m_sT.vSprint("m_p_crossPtnJoin     "_Stz); break;
-//    case CK_CROSSPTNJOINLIST: m_sT.vSprint("m_p_crossPtnJoinList "_Stz); break;
-//    case CK_EXPR:             m_sT.vSprint("m_p_expr             "_Stz); break;
-//    case CK_FILTER:           m_sT.vSprint("m_p_filter           "_Stz); break;
-//    case CK_GBYELIST:         m_sT.vSprint("m_p_gbyElist         "_Stz); break;
-//    case CK_IDXCOLLIST:       m_sT.vSprint("m_p_idxColList       "_Stz); break;
-//    case CK_INDEXJOIN:        m_sT.vSprint("m_p_indexJoin        "_Stz); break;
-//    case CK_INDEXLIST:        m_sT.vSprint("m_p_indexList        "_Stz); break;
-//    case CK_INDEXPTR:         m_sT.vSprint("m_p_indexPtr         "_Stz); break;
-//    case CK_INDEXSCAN:        m_sT.vSprint("m_p_indexScan        "_Stz); break;
-//    case CK_JOINORDER:        m_sT.vSprint("m_p_joinOrder        "_Stz); break;
-//    case CK_JOINORDERSEQ:     m_sT.vSprint("m_p_joinOrderSeq     "_Stz); break;
-//    case CK_JOINPRED:         m_sT.vSprint("m_p_joinPred         "_Stz); break;
-//    case CK_JOINPREDLIST:     m_sT.vSprint("m_p_joinPredList     "_Stz); break;
-//    case CK_LBOUND:           m_sT.vSprint("m_p_lBound           "_Stz); break;
-//    case CK_PERMUTATION:      m_sT.vSprint("m_p_permutation      "_Stz); break;
-//    case CK_CMPPRED:          m_sT.vSprint("m_p_cmpPred          "_Stz); break;
-//    case CK_PROJECT:          m_sT.vSprint("m_p_project          "_Stz); break;
-//    case CK_PTNDJOIN:         m_sT.vSprint("m_p_ptndJoin         "_Stz); break;
-//    case CK_PTNDJOINSET:      m_sT.vSprint("m_p_ptndJoinSet      "_Stz); break;
-//    case CK_SBYELIST:         m_sT.vSprint("m_p_sbyElist         "_Stz); break;
-//    case CK_SCAN:             m_sT.vSprint("m_p_scan             "_Stz); break;
-//    case CK_SCANPRED:         m_sT.vSprint("m_p_scanPred         "_Stz); break;
-//    case CK_SORT:             m_sT.vSprint("m_p_sort             "_Stz); break;
-//    case CK_STAGE:            m_sT.vSprint("m_p_stage            "_Stz); break;
-//    case CK_STAGETOPO:        m_sT.vSprint("m_p_stageTopo        "_Stz); break;
-//    case CK_STREAM:           m_sT.vSprint("m_p_stream           "_Stz); break;
-//    case CK_STREAMCOLLIST:    m_sT.vSprint("m_p_streamColList    "_Stz); break;
-//    case CK_SUBSET:           m_sT.vSprint("m_p_subSet           "_Stz); break;
-//    case CK_TABLE:            m_sT.vSprint("m_p_table            "_Stz); break;
-//    case CK_TABLELIST:        m_sT.vSprint("m_p_tableList        "_Stz); break;
-//    case CK_TABLEPTN:         m_sT.vSprint("m_p_tablePtn         "_Stz); break;
-//    case CK_TABLEPTR:         m_sT.vSprint("m_p_tablePtr         "_Stz); break;
-//    case CK_TERM:             m_sT.vSprint("m_p_term             "_Stz); break;
-//    case CK_UBOUND:           m_sT.vSprint("m_p_uBound           "_Stz); break;
-//    case CK_WHERE:            m_sT.vSprint("m_p_where            "_Stz); break;
-//
-//    case CK_SEND:
-//      break;
-//
-//    default:
-//      NEVER_REACH
-//  }
-
   Card* pMember = F_pFetchMember(eMember);
   Stz* szMemberNm = this->szMemberNm(eMember);
   if (pMember)
@@ -1130,8 +1075,9 @@ Stz* TransformerTool::szMemberNm(eCK eMember)
 
     case CK_ABSJOIN:          return "m_p_absJoin"_Stz;
     case CK_AGGREG:           return "m_p_aggreg"_Stz;
+    case CK_BOOLCALC:         return "m_p_boolCalc"_Stz;
     case CK_CALC:             return "m_p_calc"_Stz;
-    case CK_BOOLCALC:         return "m_p_calcBool"_Stz;
+    case CK_CMPPRED:          return "m_p_cmpPred"_Stz;
     case CK_COMBINED:         return "m_p_combined"_Stz;
     case CK_COMMENT:          return "m_p_comment"_Stz;
     case CK_COPTNJOIN:        return "m_p_coPtnJoin"_Stz;
@@ -1153,14 +1099,16 @@ Stz* TransformerTool::szMemberNm(eCK eMember)
     case CK_JOINPRED:         return "m_p_joinPred"_Stz;
     case CK_JOINPREDLIST:     return "m_p_joinPredList"_Stz;
     case CK_LBOUND:           return "m_p_lBound"_Stz;
+    case CK_PARAM:            return "m_p_param"_Stz;
+    case CK_PARAMLIST:        return "m_p_paramList"_Stz;
     case CK_PERMUTATION:      return "m_p_permutation"_Stz;
-    case CK_CMPPRED:          return "m_p_cmpPred"_Stz;
     case CK_PROJECT:          return "m_p_project"_Stz;
     case CK_PTNDJOIN:         return "m_p_ptndJoin"_Stz;
     case CK_PTNDJOINSET:      return "m_p_ptndJoinSet"_Stz;
     case CK_SBYELIST:         return "m_p_sbyElist"_Stz;
     case CK_SCAN:             return "m_p_scan"_Stz;
     case CK_SCANPRED:         return "m_p_scanPred"_Stz;
+    case CK_SEND:             return "m_p_send"_Stz;
     case CK_SORT:             return "m_p_sort"_Stz;
     case CK_STAGE:            return "m_p_stage"_Stz;
     case CK_STAGETOPO:        return "m_p_stageTopo"_Stz;

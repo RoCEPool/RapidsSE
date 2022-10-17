@@ -47,6 +47,9 @@ namespace STORE
     Card* m_pCard_popped;
     Card* m_pCard_temp;
 
+    Card_Term* m_pTerm_0;
+    Card_Term* m_pTerm_1;
+
     // the M iterator - - - - - - - - - - - - - - - - - - - - -
     BoardIter* m_pM;
 
@@ -64,13 +67,10 @@ namespace STORE
     Card* m_p_SubMember;
     eCK   m_e_SubMember;
 
-    Card_Term* m_pTerm_0;
-    Card_Term* m_pTerm_1;
-
     Card_AbsJoin*          m_p_absJoin;
     Card_Aggreg*           m_p_aggreg;
+    Card_BoolCalc*         m_p_boolCalc;
     Card_Calc*             m_p_calc;
-    Card_BoolCalc*         m_p_calcBool;
     Card_CmpPred*          m_p_cmpPred;
     Card_Combined*         m_p_combined;
     Card_Comment*          m_p_comment;
@@ -94,6 +94,8 @@ namespace STORE
     Card_JoinPred*         m_p_joinPred;
     Card_JoinPredList*     m_p_joinPredList;
     Card_LBound*           m_p_lBound;
+    Card_Param*            m_p_param;
+    Card_ParamList*        m_p_paramList;
     Card_Permutation*      m_p_permutation;
     Card_Permutation*      m_p_permutation_low;
     Card_Project*          m_p_project;
@@ -102,6 +104,7 @@ namespace STORE
     Card_SbyElist*         m_p_sbyElist;
     Card_Scan*             m_p_scan;
     Card_ScanPred*         m_p_scanPred;
+    Card_Send*             m_p_send;
     Card_Sort*             m_p_sort;
     Card_Stage*            m_p_stage;
     Card_StageTopo*        m_p_stageTopo;

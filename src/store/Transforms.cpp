@@ -529,7 +529,7 @@ void Transforms::vConvert_where_calc_To_where_calcBool(bool bTrace)
 
   while (E_bEachMainWithSub(CK_WHERE, CK_CALC)) {
     X_calc_To_calcBool();
-    R_vReplaceSub(m_p_calc,m_p_where,m_p_calcBool);
+    R_vReplaceSub(m_p_calc, m_p_where, m_p_boolCalc);
     D_vDeleteMember(m_p_calc);
   }
 
@@ -633,9 +633,9 @@ void Transforms::vCull_filter_pred_MovedUpTo_joinPred(bool bTrace)
     if (! (m_p_filter = m_p_table->pSub_filter()))
       continue;
 
-    m_p_calcBool = m_p_filter->pSub_boolCalc();
+    m_p_boolCalc = m_p_filter->pSub_boolCalc();
 
-    m_p_calcBool->vCullPred(MARK_UPWARDS);
+    m_p_boolCalc->vCullPred(MARK_UPWARDS);
   }
 
   //m_pCardCtl->vPrintSubCards(CK_STREAM, true);
@@ -844,9 +844,9 @@ void Transforms::vDelete_Empty_where(bool bTrace)
   vTracing(bTrace);
 
   while (E_bEachMain(CK_WHERE)) {
-    m_p_calcBool = m_p_where->pSub_boolCalc();
+    m_p_boolCalc = m_p_where->pSub_boolCalc();
 
-    if (0 == m_p_calcBool->nChildCards()) {
+    if (0 == m_p_boolCalc->nChildCards()) {
       E_vRemoveDeleteMain(CK_WHERE);
       break;
     }
@@ -1070,11 +1070,11 @@ void Transforms::vExtract_joinPredList(bool bTrace)
 
   BoardIter xBI_query(m_pBoard);
   while ((m_p_MainCard = xBI_query.pEachMain(CK_FILTER))) {
-    m_p_calcBool = m_p_MainCard->pSub_boolCalc();
-    if (!m_p_calcBool)
+    m_p_boolCalc = m_p_MainCard->pSub_boolCalc();
+    if (!m_p_boolCalc)
       continue;
 
-    m_p_joinPredList->vExtract_joinPredList(m_p_calcBool);
+    m_p_joinPredList->vExtract_joinPredList(m_p_boolCalc);
   }
 
   vEndTransformation();
@@ -1128,8 +1128,8 @@ void Transforms::vAdd_joinPred_UnderAll_indexJoin(bool bTrace)
 
     m_p_table->vDump();
 
-    m_p_calcBool = m_p_filter->pSub_boolCalc();
-    m_p_cmpPred  = m_p_calcBool->pSub_predCmp();
+    m_p_boolCalc = m_p_filter->pSub_boolCalc();
+    m_p_cmpPred  = m_p_boolCalc->pSub_predCmp();
     m_pTerm_0    = _pCard_Term(m_p_cmpPred->pGetChild(0));
     m_pTerm_1    = _pCard_Term(m_p_cmpPred->pGetChild(1));
 
@@ -1407,7 +1407,7 @@ void Transforms::vMark_where_pred_Wrt_table(bool bTrace)
   vTracing(bTrace);
 
   while (E_bEachMainWithSub(CK_WHERE, CK_BOOLCALC))
-    vMarkPredLeftwards(m_p_calcBool);
+    vMarkPredLeftwards(m_p_boolCalc);
 
   //vSetPrintSubCards(CK_CMPPRED, true);
   vEndTransformation();
@@ -1426,7 +1426,7 @@ void Transforms::vMove_Marked_where_pred_To_table_filter(bool bTrace)
   vTracing(bTrace);
 
   while (E_bEachMainWithSub(CK_WHERE, CK_BOOLCALC))
-    vCopyPredLeftwards(m_p_calcBool);
+    vCopyPredLeftwards(m_p_boolCalc);
 
   vEndTransformation();
   vPrintBoard();

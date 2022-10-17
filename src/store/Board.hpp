@@ -16,6 +16,7 @@
 #include "Card_AggLevel.hpp"
 #include "Card_Aggreg.hpp"
 #include "Card_Aggregates.hpp"
+#include "Card_AndPred.hpp"
 #include "Card_As.hpp"
 
 #include "Card_Deck.hpp"
@@ -24,6 +25,7 @@
 #include "Card_BoolCalc.hpp"
 #include "Card_CandIndex.hpp"
 #include "Card_CardPtr.hpp"
+#include "Card_CmpPred.hpp"
 #include "Card_Combined.hpp"
 #include "Card_Comment.hpp"
 #include "Card_ColumnRef.hpp"
@@ -66,13 +68,13 @@
 #include "Card_LBound.hpp"
 #include "Card_Limit.hpp"
 
-#include "Card_OrdAgg.hpp"
 #include "Card_ObyElist.hpp"
-
-#include "Card_Permutation.hpp"
-#include "Card_AndPred.hpp"
-#include "Card_CmpPred.hpp"
 #include "Card_OrPred.hpp"
+#include "Card_OrdAgg.hpp"
+
+#include "Card_Param.hpp"
+#include "Card_ParamList.hpp"
+#include "Card_Permutation.hpp"
 #include "Card_Project.hpp"
 #include "Card_ProjElist.hpp"
 #include "Card_PtndJoin.hpp"
