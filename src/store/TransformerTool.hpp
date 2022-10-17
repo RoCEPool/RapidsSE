@@ -42,12 +42,6 @@ namespace STORE
     IdxVec*     m_pIdxVec;
     Index*      m_pIndex;
 
-
-    Board*      m_pBoard_costEst;
-    Board*      m_pBoard_partition;
-    Board*      m_pBoard_permute;
-    Board*      m_pBoard_query;
-
     Card* m_pCard_child;
     Card* m_pCard_dup;
     Card* m_pCard_new;
@@ -161,10 +155,6 @@ namespace STORE
 
     void vSwapToBoard(void);
     void vSetupBoard(eBK eBoard, i8 i_SubBoard);
-    void vSetupCostEstBoard(void);
-    void vSetupPartitionBoard(void);
-    void vSetupPermuteBoard(void);
-    void vSetupQueryBoard(void);
 
     void vTracing(bool bTracing);
     void vTracer(Stz* szFormat, ...);

@@ -351,7 +351,7 @@ void Transforms::vCompute_coPtnJoinList(bool bTrace)
   vDescription("((replace with an explanation))"_Stz);
   vTracing(bTrace);
 
-  vSetupPartitionBoard();
+  //vSetupPartitionBoard();
 
   //--nn--------------==
   // coPtnJoinList
@@ -394,7 +394,7 @@ void Transforms::vCompute_coPtnPredList(bool bTrace)
   vDescription("((replace with an explanation))"_Stz);
   vTracing(bTrace);
 
-  vSetupPartitionBoard();
+  //vSetupPartitionBoard();
 
   //--nn--------------==
   // coPptnPredList
@@ -443,7 +443,7 @@ void Transforms::vCompute_crossPtnJoinList(bool bTrace)
   vDescription("((replace with an explanation))"_Stz);
   vTracing(bTrace);
 
-  vSetupPartitionBoard();
+  //vSetupPartitionBoard();
 
   //--nn--------------==
   // crossPtnJoinList
@@ -485,7 +485,7 @@ void Transforms::vCompute_ptndJoinSet(bool bTrace)
   vDescription("((replace with an explanation))"_Stz);
   vTracing(bTrace);
 
-  vSetupPartitionBoard();
+  //vSetupPartitionBoard();
 
   //--nn--------------==
   // ptndJoinSet
@@ -598,7 +598,7 @@ void Transforms::vCopy_ptndJoinSet(bool bTrace)
   vDescription("((replace with an explanation))"_Stz);
   vTracing(bTrace);
 
-  vSetupPermuteBoard();
+  //vSetupPermuteBoard();
 
   m_pBench->pCardCtl()->vNextHorizon(CK_PERMUTATION, true);
 
@@ -888,7 +888,7 @@ void Transforms::vEstimate_joinOrder(bool bTrace)
 
   i8 iLowestNetwork = 999999999;
 
-  BoardIter xBI(m_pBoard_costEst);
+  BoardIter xBI(m_pBoard);
 
   while ((m_p_permutation =
               _pCard_Permutation(xBI.pEachMain(CK_PERMUTATION)))) {
@@ -926,7 +926,7 @@ void Transforms::vEstimate_network(bool bTrace)
   vDescription("((replace with an explanation))"_Stz);
   vTracing(bTrace);
 
-  BoardIter xBI(m_pBoard_costEst);
+  BoardIter xBI(m_pBoard);
 
   i8 nNetwork = 0;
   i8 nSentOut = 0;
@@ -977,7 +977,7 @@ void Transforms::vEstimate_ptndJoins(bool bTrace)
       _pCard_TableList(m_pDeck->pFindChild(CK_TABLELIST));
 
 
-  BoardIter xBI(m_pBoard_costEst);
+  BoardIter xBI(m_pBoard);
 
 //  while (m_p_ptndJoin = _pCard_PtndJoin(xBI.pEachMain(CK_PTNDJOIN))) {
   while ((m_p_MainCard = xBI.pEachMain())) {
@@ -1026,7 +1026,7 @@ void Transforms::vExtract_joinOrderSeq(bool bTrace)
 
   m_pDeck->vAppendMain((m_p_joinOrderSeq = new Card_JoinOrderSeq));
 
-  BoardIter xBI(m_pBoard_costEst);
+  BoardIter xBI(m_pBoard);
 
   xBI.vSet(m_p_permutation_low);
   while ((m_p_MainCard = xBI.pEachMain())) {
@@ -1052,7 +1052,7 @@ void Transforms::vExtract_joinPredList(bool bTrace)
   vDescription("((replace with an explanation))"_Stz);
   vTracing(bTrace);
 
-  vSetupPartitionBoard();
+  //vSetupPartitionBoard();
 
   //--nn--------------==
   // joinPredList
@@ -1060,7 +1060,7 @@ void Transforms::vExtract_joinPredList(bool bTrace)
   m_p_joinPredList = new Card_JoinPredList;
   m_pDeck->vAppendMain(m_p_joinPredList);
 
-  BoardIter xBI_query(m_pBoard_query);
+  BoardIter xBI_query(m_pBoard);
   while ((m_p_MainCard = xBI_query.pEachMain(CK_FILTER))) {
     m_p_calcBool = m_p_MainCard->pSub_boolCalc();
     if (!m_p_calcBool)
@@ -1084,12 +1084,12 @@ void Transforms::vExtract_tableList_From_queryBoard(bool bTrace)
   vDescription("((replace with an explanation))"_Stz);
   vTracing(bTrace);
 
-  vSetupPartitionBoard();
+  //vSetupPartitionBoard();
 
   //--nn--------------==
   // tableList
 
-  BoardIter xBI_query(m_pBoard_query);
+  BoardIter xBI_query(m_pBoard);
 
   m_p_tableList = new Card_TableList;
   m_pDeck->vAppendMain(m_p_tableList);
@@ -1541,9 +1541,9 @@ void Transforms::vSetup_costEst(bool bTrace)
   vDescription("((replace with an explanation))"_Stz);
   vTracing(bTrace);
 
-  vSetupCostEstBoard();
+  //vSetupCostEstBoard();
 
-  m_pBoard_costEst->vDuplicateBoard(m_pBoard_permute);
+  //m_pBoard_costEst->vDuplicateBoard(m_pBoard);
 
   while ((m_p_MainCard = m_pDeck->pGetChild(0))) {
 

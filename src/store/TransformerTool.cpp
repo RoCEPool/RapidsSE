@@ -23,11 +23,6 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_eBoard  = BK_NONE;
   m_i_SubBoard = C_UNKNOWN;
 
-  m_pBoard_costEst   = nullptr;
-  m_pBoard_partition = nullptr;
-  m_pBoard_permute   = nullptr;
-  m_pBoard_query     = nullptr;
-
   m_iTransformNo = 0;
   m_bPrintTransformation = true;
   Job* pJob = MY::pJob();
@@ -295,74 +290,10 @@ void TransformerTool::vSetupBoard(eBK eBoard, i8 i_SubBoard)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  switch (eBoard) {
-
-    case BK_COSTEST:   vSetupCostEstBoard();   break;
-    case BK_PARTITION: vSetupPartitionBoard(); break;
-    case BK_PERMUTE:   vSetupPermuteBoard();   break;
-    case BK_QUERY:     vSetupQueryBoard();     break;
-
-    default:
-      NEVER_REACH
-  }
-
   m_pBoard = m_pBench->pGetBoard(eBoard, i_SubBoard);
   m_pDeck  = m_pBoard->pDeck();
 
-  m_pBoard_costEst   = m_pBench->pGetBoard(BK_COSTEST);
-  m_pBoard_partition = m_pBench->pGetBoard(BK_PARTITION);
-  m_pBoard_permute   = m_pBench->pGetBoard(BK_PERMUTE);
-  m_pBoard_query     = m_pBench->pGetBoard(BK_QUERY);
-
   m_pM->vChangeBoard(m_pBoard);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void TransformerTool::vSetupCostEstBoard(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_);
-
-  m_pBoard_costEst = m_pBench->pGetBoard(BK_COSTEST);
-  if (!m_pBoard_costEst)
-    m_pBoard_costEst = new Board(BK_COSTEST, BT_ORIGINAL, m_pBench);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void TransformerTool::vSetupPartitionBoard(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_);
-
-  m_pBoard_partition = m_pBench->pGetBoard(BK_PARTITION);
-  if (!m_pBoard_partition)
-    m_pBoard_partition = new Board(BK_PARTITION, BT_ORIGINAL, m_pBench);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void TransformerTool::vSetupPermuteBoard(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_);
-
-  m_pBoard_permute = m_pBench->pGetBoard(BK_PERMUTE);
-  if (!m_pBoard_permute)
-    m_pBoard_permute = new Board(BK_PERMUTE, BT_ORIGINAL, m_pBench);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void TransformerTool::vSetupQueryBoard(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_);
-
-  m_pBoard_query = m_pBench->pGetBoard(BK_QUERY);
-  if (!m_pBoard_query)
-    m_pBoard_query = new Board(BK_QUERY, BT_ORIGINAL, m_pBench);
 }
 
 /*----------------------------------------------------------------------------*/
