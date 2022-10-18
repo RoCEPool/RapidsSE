@@ -69,6 +69,9 @@ namespace STORE
     void vRemove_invalidPermutations(bool bTrace);
     void vSetup_costEst(bool bTrace);
 
+    void vRework_Exists_SubQueries(bool bTrace);
+    void vCopy_Up_SubQueries(bool bTrace);
+
   private:
 
     void vMarkPredLeftwards(Card_BoolCalc* p_bool);

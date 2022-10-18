@@ -104,6 +104,8 @@ void Transformer::vTransform3(void)
 
   vPhase_3_WherePredicates(false);
 
+  vPhase_U_ExistsSubqueries(true);
+
   vPhase_4_InitialJoin(false);
 
   vPhase_5_JoinOrdering(false);
@@ -185,6 +187,22 @@ void Transformer::vPhase_3_WherePredicates(bool bTrace)
   m_pTransforms->vMove_Marked_where_pred_To_table_filter(bTrace);
 
   m_pTransforms->vDelete_Empty_where(bTrace);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Transformer::vPhase_U_ExistsSubqueries(bool bTrace)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
+
+  m_pTransforms->vPhase(__func__);
+  m_pTransforms->vUsingBoard(BK_SUBPIPE, 0);
+
+  m_pTransforms->vRework_Exists_SubQueries(bTrace);
+
+  m_pTransforms->vCopy_Up_SubQueries(bTrace);
+
 }
 
 /*----------------------------------------------------------------------------*/

@@ -1566,6 +1566,55 @@ void Transforms::vSetup_costEst(bool bTrace)
   vPrintBoard();
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Transforms::vRework_Exists_SubQueries(bool bTrace)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransformation(__func__);
+  vDescription("((replace with an explanation))"_Stz);
+  vTracing(bTrace);
+
+  while (E_bEachMainWithSub(CK_WHERE,CK_TSTPRED,"exists"_Stz)) {
+
+    Stz* szSubQueryNm = M.p_tstPred->pGetChild(1)->szValue();
+    vTracer("SubQueryNm: %s\n"_Stz,szSubQueryNm);
+
+    Board* pSubQueryBoard = m_pBench->pGetBoard(szSubQueryNm);
+    if (! pSubQueryBoard) {
+      vTracer("DID NOT FIND Board: %s\n"_Stz,szSubQueryNm);
+      continue;
+    }
+
+    vTracer("Found SubQuery Board: %s\n"_Stz,pSubQueryBoard->szBoardNm());
+
+    M_vPushIter();
+
+    m_pBoard = pSubQueryBoard;
+    m_pDeck  = m_pBoard->pDeck();
+    M.pM.vChangeBoard(m_pBoard);
+
+    while (E_bEachMain())
+      vTracer("SubQuery Main: %s\n"_Stz,M.p_MainCard->szBearing());
+
+    M_vPopIter();
+  }
+
+  vEndTransformation();
+  vPrintBoard();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Transforms::vCopy_Up_SubQueries(bool bTrace)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+}
 
 
 /*----------------------------------------------------------------------------*/

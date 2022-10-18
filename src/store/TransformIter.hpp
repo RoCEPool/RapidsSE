@@ -78,6 +78,7 @@ namespace STORE
     Card_TablePtn *         p_tablePtn;
     Card_TablePtr *         p_tablePtr;
     Card_Term *             p_term;
+    Card_TstPred *          p_tstPred;
     Card_UBound *           p_uBound;
     Card_Where *            p_where;
   } ;

@@ -105,6 +105,7 @@ namespace STORE
     bool E_bEachMain(void);
     bool E_bEachMain(eCK eOfMainKind);
     bool E_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind);
+    bool E_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind, Stz* szSubValue);
     bool E_bEachMainWith2Sub(eCK eOfMainKind, eCK eAndSubKind1, eCK eAndSubKind2);
     bool E_bMoreMain(void);
     void E_vRemoveMain(eCK eCrossCheck);

@@ -499,6 +499,21 @@ bool TransformerTool::E_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind)
 /*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main which has sub and update M   */
 /*----------------------------------------------------------------------------*/
+bool TransformerTool::E_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind, Stz* szSubValue)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  while (E_bEachMainWithSub(eOfMainKind,eAndSubKind)) {
+    if (M.p_SubOfMain->szValue()->bSame(szSubValue))
+      return true;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* conditionally step main register to next main which has sub and update M   */
+/*----------------------------------------------------------------------------*/
 bool TransformerTool::E_bEachMainWith2Sub(eCK eOfMainKind,
                                           eCK eAndSubKind1,
                                           eCK eAndSubKind2)
@@ -661,6 +676,7 @@ Card* TransformerTool::F_pFetchMember(eCK eMember)
     case CK_TABLEPTN:         return M.p_tablePtn;
     case CK_TABLEPTR:         return M.p_tablePtr;
     case CK_TERM:             return M.p_term;
+    case CK_TSTPRED:          return M.p_tstPred;
     case CK_UBOUND:           return M.p_uBound;
     case CK_WHERE:            return M.p_where;
 
@@ -804,6 +820,7 @@ void TransformerTool::M_vClearMembers(void)
   M.p_tablePtn         = nullptr;
   M.p_tablePtr         = nullptr;
   M.p_term             = nullptr;
+  M.p_tstPred          = nullptr;
   M.p_uBound           = nullptr;
   M.p_where            = nullptr;
 }
@@ -1037,6 +1054,7 @@ void TransformerTool::U_vUpdateMember(eCK eMember, Card* pCard, const char* asFu
     case CK_TABLEPTN:         *((Card**)&M.p_tablePtn)         = pCard; break;
     case CK_TABLEPTR:         *((Card**)&M.p_tablePtr)         = pCard; break;
     case CK_TERM:             *((Card**)&M.p_term)             = pCard; break;
+    case CK_TSTPRED:          *((Card**)&M.p_tstPred)          = pCard; break;
     case CK_UBOUND:           *((Card**)&M.p_uBound)           = pCard; break;
     case CK_WHERE:            *((Card**)&M.p_where)            = pCard; break;
 
@@ -1158,6 +1176,7 @@ Stz* TransformerTool::szMemberNm(eCK eMember)
     case CK_TABLEPTN:         return "M.p_tablePtn"_Stz;
     case CK_TABLEPTR:         return "M.p_tablePtr"_Stz;
     case CK_TERM:             return "M.p_term"_Stz;
+    case CK_TSTPRED:          return "M.p_tstPred"_Stz;
     case CK_UBOUND:           return "M.p_uBound"_Stz;
     case CK_WHERE:            return "M.p_where"_Stz;
 
