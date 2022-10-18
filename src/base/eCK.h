@@ -66,6 +66,7 @@ enum eCK // card kind
 
   /* */ CK_LBOUND,
   /* */ CK_LIMIT,
+  /* */ CK_LINKSTO,
 
   /* */ CK_OBYELIST,
   /* */ CK_OPTION,
@@ -178,6 +179,7 @@ static Stz* aCK[]
 
   /* */ "CK_LBOUND"_Stz,       // CK_LBOUND
   /* */ "CK_LIMIT"_Stz,        // CK_LIMIT
+  /* */ "CK_LINKSTO"_Stz,      // CK_LINKSTO
 
   /* */ "CK_OBYELIST"_Stz,     // CK_OBYELIST
   /* */ "CK_OPTION"_Stz,       // CK_OPTION
@@ -290,6 +292,7 @@ static Stz* aCK_short[]
 
   /* */ "lbound"_Stz,          // CK_LBOUND
   /* */ "limit"_Stz,           // CK_LIMIT
+  /* */ "linksTo"_Stz,         // CK_LINKSTO
 
   /* */ "obyElist"_Stz,        // CK_OBYELIST
   /* */ "option"_Stz,          // CK_OPTION

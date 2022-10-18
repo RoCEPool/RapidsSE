@@ -69,6 +69,7 @@
 
 #include "Card_LBound.hpp"
 #include "Card_Limit.hpp"
+#include "Card_LinksTo.hpp"
 
 #include "Card_ObyElist.hpp"
 #include "Card_OrPred.hpp"
