@@ -713,10 +713,10 @@ void Heaps::vReloadPHeaps(void)
     sleep(1);
   } while(gxThreadsRemaining.bIsSet());
 
-  Persistent.m_pTiny->vDropLock();
-  Persistent.m_pSmall->vDropLock();
-  Persistent.m_pMedium->vDropLock();
-  Persistent.m_pLarge->vDropLock();
+  Persistent.m_pTiny->vDropWriteLock();
+  Persistent.m_pSmall->vDropWriteLock();
+  Persistent.m_pMedium->vDropWriteLock();
+  Persistent.m_pLarge->vDropWriteLock();
 }
 
 /*----------------------------------------------------------------------------*/

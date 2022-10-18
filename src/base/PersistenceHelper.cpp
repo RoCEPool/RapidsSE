@@ -71,10 +71,10 @@ void PersistenceHelper::vWriteHeap(Heap* pHeap, File* pFile)
 {
   _static_
 
-  pHeap->vGrabLock();
+  pHeap->vGrabWriteLock();
   bool bResult = pFile->bWriteBytes(pHeap,C_SIZE_POOL_BUFFER);
   ASSERT(bResult);
-  pHeap->vDropLock();
+  pHeap->vDropWriteLock();
 
 }
 /*----------------------------------------------------------------------------*/
@@ -93,7 +93,7 @@ void PersistenceHelper::vWriteHeapBuffers(Heap* pHeap, File* pFile)
 
   ASSERT(iPtnOfNode >= 0);
   
-  pHeap->vGrabLock();
+  pHeap->vGrabReadLock();
 
   i8 nBuffCount = 0;
   for (HeapBuffer* pHeapBuffer = pHeap->pFirstBuffer();
@@ -106,7 +106,7 @@ void PersistenceHelper::vWriteHeapBuffers(Heap* pHeap, File* pFile)
     }
   }
   
-  pHeap->vDropLock();
+  pHeap->vDropReadLock();
 }
 
 /*----------------------------------------------------------------------------*/
