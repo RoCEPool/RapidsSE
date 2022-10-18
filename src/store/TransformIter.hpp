@@ -91,7 +91,8 @@ namespace STORE
   public:
     void* operator new(size_t);
     void  operator delete(void*);
-  
+
+    TransformIter(void);
     TransformIter(eCN eClass);
    ~TransformIter(void) noexcept(false);
 

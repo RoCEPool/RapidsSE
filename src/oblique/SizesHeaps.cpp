@@ -249,6 +249,7 @@
 #include "Transforms.hpp"
 #include "ParamSpec.hpp"
 #include "ParamsSpec.hpp"
+#include "TransformIter.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -661,6 +662,7 @@ SizeHeap gxaSizeHeap[]
   { CN_TRACELOCK,                sizeof(TraceLock),          HT_T_TINY    ,FILL },
   { CN_TRACEMULTILOCK,           sizeof(TraceMultiLock),     HT_T_TINY    ,FILL },
   { CN_TRANSFORMER,              sizeof(Transformer),        HT_T_TINY    ,FILL },
+  { CN_TRANSFORMITER,            sizeof(TransformIter),      HT_T_TINY    ,FILL },
   { CN_TRANSFORMS,               sizeof(Transforms),         HT_T_SMALL   ,FILL },
   { CN_TSPVAL,                   sizeof(TypeValueArea),/*yes*/   HT_INVALID   ,FILL },
   { CN_TUB,                      sizeof(Tub),                HT_T_TINY    ,FILL },
