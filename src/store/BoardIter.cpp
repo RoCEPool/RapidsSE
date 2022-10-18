@@ -19,6 +19,23 @@ __aFooterFunction(BoardIter)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
+BoardIter::BoardIter(void)
+    : CardIter(CN_BOARDITER, nullptr)
+{
+  _precondition_(_MAGIC_,CN_BOARDITER,_FOOTER_);
+
+  m_pBoard = nullptr;
+  m_pCard  = nullptr;
+
+  _checkInitialised_(CN_BOARDITER);
+
+  _postcondition_(_MAGIC_,CN_BOARDITER,_FOOTER_);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
 BoardIter::BoardIter(Board* pBoard)
 : CardIter(CN_BOARDITER, pBoard ? pBoard->pDeck() : nullptr)
 {

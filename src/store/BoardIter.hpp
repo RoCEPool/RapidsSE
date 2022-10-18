@@ -20,7 +20,8 @@ namespace STORE
   public:
     void* operator new(size_t);
     void  operator delete(void*);
-  
+
+    BoardIter(void);
     BoardIter(Board* pBoard);
    ~BoardIter(void) noexcept(false);
 
