@@ -25,11 +25,6 @@ namespace STORE
     bool        m_bTracing;
     i8          m_iTrace;
 
-    Board*      m_pBoard;
-    eBK         m_eBoard;
-    i8          m_i_SubBoard;
-    Card_Deck*  m_pDeck;
-
     bool        m_bPrintTransformation;
     bool        m_bInteractive;
     s32         m_sPhase;
@@ -126,6 +121,7 @@ namespace STORE
     void M_vClearRegistersIf(eCK eCard);
     void M_vClearRegistersIf(Card* pCard);
     void M_vPushIter(void);
+    void M_vPushIter(Board* pBoard);
     void M_vPopIter(void);
     void M_vRestart(void);
 

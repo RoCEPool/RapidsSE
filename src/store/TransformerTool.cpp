@@ -21,10 +21,6 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_bTracing = false;
   m_iTrace   = 0;
 
-  m_pBoard  = m_pBench->pHead();
-  m_eBoard  = BK_NONE;
-  m_i_SubBoard = C_UNKNOWN;
-
   m_bPrintTransformation = true;
   Job* pJob = MY::pJob();
   TagSet* pJobTags = pJob->pJobTags();
@@ -37,7 +33,6 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_pIdxVec    = nullptr;
   m_pIndex     = nullptr;
 
-  m_pDeck = nullptr;
 
   m_pCard_child  = nullptr;
   m_pCard_dup    = nullptr;
@@ -48,6 +43,9 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_pTransformIterList = new TransformIterList;
 
   // the M iterator - - - - - - - - - - - - - - - - - - - - - -
+
+  M.m_pBoard = nullptr;
+  M.m_pDeck = nullptr;
 
   M_vClearMembers();
   M_vClearRegisters();
@@ -80,7 +78,7 @@ Board* TransformerTool::pBoard(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  return m_pBoard;
+  return M.m_pBoard;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -176,7 +174,7 @@ void TransformerTool::vPrintBoard(void)
 
   if (m_bPrintTransformation) {
     if (m_bInteractive)
-      m_pBoard->vPrintBoard(szPhase(),
+      M.m_pBoard->vPrintBoard(szPhase(),
                             szTransformation(),
                             szDescription());
   }
@@ -232,7 +230,7 @@ void TransformerTool::vTransformation(const char* azTransformation,
   m_sTransformation = azTransformation;
   m_bPrintTransformation = bPrintTransformation;
 
-  m_pBoard->vTransformNoInc();
+  M.m_pBoard->vTransformNoInc();
 
   M.pM.vRestart();
 }
@@ -244,13 +242,10 @@ void TransformerTool::vUsingBoard(eBK eBoard, i8 i_SubBoard)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  m_eBoard = eBoard;
-  m_i_SubBoard = i_SubBoard;
+  M.m_pBoard = m_pBench->pGetBoard(eBoard,i_SubBoard);
+  M.m_pDeck  = M.m_pBoard->pDeck();
 
-  m_pBoard = m_pBench->pGetBoard(m_eBoard,m_i_SubBoard);
-  m_pDeck  = m_pBoard->pDeck();
-
-  M.pM.vChangeBoard(m_pBoard);
+  M.pM.vChangeBoard(M.m_pBoard);
 }
 
 
@@ -942,6 +937,28 @@ void TransformerTool::M_vPushIter(void)
 
   m_pTransformIterList->vPush(pTransformIterSave);
 }
+
+/*----------------------------------------------------------------------------*/
+/* push current M iterator onto iter stack                                    */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::M_vPushIter(Board* pBoard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  TransformIter* pTransformIterSave = new TransformIter;
+
+  pTransformIterSave->vCopyFrom(this->aTransformIterMembers());
+
+  m_pTransformIterList->vPush(pTransformIterSave);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  M.m_pBoard = pBoard;
+  M.m_pDeck  = M.m_pBoard->pDeck();
+
+  M.pM.vChangeBoard(M.m_pBoard);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* pop/restore M iterator from iter stack                                     */

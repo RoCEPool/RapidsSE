@@ -26,7 +26,7 @@ Resolver::Resolver(Bench* pBench)
 
   _checkInitialised_(CN_RESOLVER);
 
-  m_pBoard = m_pBench->pGetBoard(BK_SUBPIPE);
+  M.m_pBoard = m_pBench->pGetBoard(BK_SUBPIPE);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_RESOLVER,_FOOTER_);
 }
@@ -53,11 +53,11 @@ void Resolver::vResolve_streamColOrdinal_To_tableColOrdinal
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_RESOLVER, _FOOTER_);
 
-  RASSERT(BK_SUBPIPE == m_pBoard->eBoard());
+  RASSERT(BK_SUBPIPE == M.m_pBoard->eBoard());
 
   i8 iStreamColNo = szStreamColOrdinal->iOrdinal();
 
-  BoardIter xBI(m_pBoard);
+  BoardIter xBI(M.m_pBoard);
 
   while ( (M.p_MainCard = xBI.pEachMain()) ) {
     if (! (M.p_stream = M.p_MainCard->pSub_stream()))
@@ -137,7 +137,7 @@ void Resolver::vLocateStreams(Card* pMainCard)
   bool bSaw_AbsJoin = false;
 
   for (i8 i_Test = pMainCard->iCardNo(); i_Test >= 0; i_Test--) {
-    Card *pTestCard = m_pBoard->pDeck()->pGetChild(i_Test);
+    Card *pTestCard = M.m_pBoard->pDeck()->pGetChild(i_Test);
 
     if (CK_ABSJOIN == pTestCard->eCard()) {
       bSaw_AbsJoin = true;
