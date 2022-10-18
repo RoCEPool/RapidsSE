@@ -107,8 +107,8 @@ Card_StreamCol* Card_StreamColList::pFind_streamCol(Stz *szColNm, i8& i_StreamCo
     if (CK_STREAMCOL != pSubCard->eCard())
       continue;
 
-    Card_As* pCard_as = pSubCard->pSub_as();
-    if (pCard_as->sz()->bSame(szColNm)) {
+    //Card_As* pCard_as = pSubCard->pSub_as();
+    if (pSubCard->bSame(szColNm)) {
       pCard_streamCol = _pCard_StreamCol(pSubCard);
       i_StreamColNo = i_Child;
       break;
@@ -155,19 +155,20 @@ void Card_StreamColList::vPopulate(StreamDef* pStreamDef, Stz* szPrefix_opt)
     Column *pColumn = pStreamDef->pGetColumn(i_Col);
 
     Card_StreamCol *pCard_StreamCol = new Card_StreamCol;
-
     vAppend(pCard_StreamCol);
 
-    Card_As *pCard_As = new Card_As(pColumn);
+    //Card_As *pCard_As = new Card_As(pColumn);
     Card_Type *pCard_Type = new Card_Type(pColumn);
 
     if (szPrefix_opt) {
       s256 sAs;
       sAs.vSprint("%s%s"_Stz,szPrefix_opt,pColumn->szColNm());
-      pCard_As->vValue(sAs);
+      pCard_StreamCol->vValue(sAs);
     }
-
-    pCard_StreamCol->vAppend(pCard_As);
+    else {
+      pCard_StreamCol->vValue(pColumn->szColNm());
+    }
+    //pCard_StreamCol->vAppend(pCard_As);
     pCard_StreamCol->vAppend(pCard_Type);
   }
 }

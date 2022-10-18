@@ -774,7 +774,7 @@ Card* TransformerTool::L_pLocateCard(eCK eCard, Stz* szWithValue, i8 i_After)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  return nulltpr;
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -784,7 +784,7 @@ Card* TransformerTool::L_pLocateCard(eCK eCard, Stz* szWithValue, Card* pAfter)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  return nulltpr;
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1155,7 +1155,7 @@ Card* TransformerTool::R_pResolveCard(eCK eCard, Stz* szWithValue, i8 i_Before)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  return nulltpr;
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1165,7 +1165,7 @@ Card* TransformerTool::R_pResolveCard(eCK eCard, Stz* szWithValue, Card* pBefore
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  return nulltpr;
+  return nullptr;
 }
 
 
