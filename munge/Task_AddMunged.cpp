@@ -8921,6 +8921,7 @@ void Task::vAddMunged(Task* )
     "  STD_PATH_TAG\n"
     "  \"\n"
     "  procedure create index\n"
+    "    tags <persistentTx>\n"
     "    parameters $indexNm $etc\n"
     "  begin\n"
     "\n"

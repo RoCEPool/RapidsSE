@@ -40,6 +40,7 @@
   STD_PATH_TAG
   "
   procedure create index
+    tags <persistentTx>
     parameters $indexNm $etc
   begin
 
