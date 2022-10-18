@@ -108,6 +108,7 @@ static Stz* P_Invalid      = "bInvalid"_Stz;
 static Stz* P_JoinedBuff   = "nJoinedBuff"_Stz;
 static Stz* P_Network      = "nNetwork"_Stz;
 static Stz* P_OrdHi        = "iOrdHi"_Stz;
+static Stz* P_Ordinal      = "szOrdinal"_Stz;
 static Stz* P_OrdLo        = "iOrdLo"_Stz;
 static Stz* P_Permutation  = "i_Permutation"_Stz;
 static Stz* P_PtndJoin     = "i_PtndJoin"_Stz;
@@ -272,7 +273,7 @@ namespace STORE
     void Y_vSet(Stz* szPpyNm);
     void Y_vSet(Stz* szPpyNm, Object* pPpyVal);
     void Y_vSet(Stz* szPpyNm, Stz* szPpyVal);
-    void Y_vSetSprint(Stz* szFormat, ...);
+    void Y_vSetSprint(Stz* szPpyNm, Stz* szFormat, ...);
 
 
 

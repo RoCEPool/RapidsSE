@@ -149,7 +149,7 @@ Card* CardIter::pEachChild(i8& ri_Main)
 /*----------------------------------------------------------------------------*/
 Card* CardIter::pEachChild(eCK eCard)
 {
-  _precondition_( _MAGIC_, CN_BOARDITER, _FOOTER_);
+  _precondition_( _MAGIC_, _FOOTER_);
 
   i8 i_Main;
 
@@ -163,7 +163,7 @@ Card* CardIter::pEachChild(eCK eCard)
 /*----------------------------------------------------------------------------*/
 Card* CardIter::pEachChild(eCK eCard, i8& ri_Main)
 {
-  _precondition_( _MAGIC_, CN_BOARDITER, _FOOTER_);
+  _precondition_( _MAGIC_, _FOOTER_);
 
   if (C_UNKNOWN == m_i_Child)
     m_i_Child = 0;

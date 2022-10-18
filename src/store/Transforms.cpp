@@ -303,8 +303,6 @@ void Transforms::vAdd_stream_UnderAll_table(bool bTrace)
   vPrintBoard();
 
   vSetPrintByKind(CK_STREAM, true);
-  vSetPrintProperties(CK_STREAM, false);
-  vSetPrintSubCards(CK_STREAM, false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -331,13 +329,23 @@ void Transforms::vCalc_ordinalRange_ForAll_stream(bool bTrace)
     M.p_stream->Y_vSet(P_OrdLo, iOrdLo);
     iOrdHi = iOrdLo + nStreamCols - 1;
     M.p_stream->Y_vSet(P_OrdHi, iOrdHi);
-    iOrdLo = iOrdHi + 1;
 
     M.p_stream->vMark1(MARK_CHANGED);
+
+    CardIter xCI(M.p_stream->pSub_streamColList());
+    i8 iOrdinal = iOrdLo;
+    while (Card_StreamCol* p_streamCol =
+             _pCard_StreamCol(xCI.pEachChild(CK_STREAMCOL)))
+      p_streamCol->Y_vSetSprint(P_Ordinal, "$%lld"_Stz, iOrdinal++);
+
+    iOrdLo = iOrdHi + 1;
   }
 
   vEndTransformation();
   vPrintBoard();
+
+  vSetPrintProperties(CK_STREAM, false);
+  vSetPrintSubCards(CK_STREAM, false);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -1592,7 +1592,7 @@ void Card::Y_vSet(Stz* szPpyNm)
 /*----------------------------------------------------------------------------*/
 /* sprint card property value                                                 */
 /*----------------------------------------------------------------------------*/
-void Card::Y_vSetSprint(Stz* szFormat, ...)
+void Card::Y_vSetSprint(Stz* szPpyNm, Stz* szFormat, ...)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -1603,7 +1603,7 @@ void Card::Y_vSetSprint(Stz* szFormat, ...)
   StrLib::vSprint(sPpyValue.azChar(),xArgs,(char*)szFormat);
   va_end(xArgs);
 
-  Y_pVal(sPpyValue);
+  Y_vSet(szPpyNm,sPpyValue);
 }
 
 /*----------------------------------------------------------------------------*/
