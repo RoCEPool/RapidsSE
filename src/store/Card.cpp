@@ -1313,6 +1313,19 @@ void Card::vRenumberRecursive(Card* pParent)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this card's value the same as given arg?                                */
+/*----------------------------------------------------------------------------*/
+bool Card::bSame(Stz* szArg)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (szValue()->bSame(szArg))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get card value                                                             */
 /*----------------------------------------------------------------------------*/
 Stz* Card::sz(void)

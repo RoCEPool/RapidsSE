@@ -327,8 +327,8 @@ Card* Dissector::pOp_Filter(TagSet* pArgTags)
   // TODO: Hacking the missing $P1 of an exists... chat w Alka
 
   if (2 == pCard_Calc->nChildCards() &&
-      pCard_Calc->pGetChild(0)->szValue()->bSame("$1"_Stz) &&
-      pCard_Calc->pGetChild(1)->szValue()->bSame("=="_Stz)) {
+      pCard_Calc->pGetChild(0)->bSame("$1"_Stz) &&
+      pCard_Calc->pGetChild(1)->bSame("=="_Stz)) {
     pCard_Calc->vPush(new Card_Term("$P1"_Stz));
   }
 

@@ -249,6 +249,8 @@ namespace STORE
 
     void vRenumberRecursive(Card* pParent=nullptr);
 
+    bool bSame(Stz* szArg);
+
     Stz* sz(void);
     Stz* szValue(void);
     void vValue(Stz* szValue);
