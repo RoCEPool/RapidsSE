@@ -11,10 +11,10 @@ namespace STORE
 {
   struct _TransformIterMembers
   {
-    BoardIter pM;
+    BoardIter xBI;
 
-    Board*      m_pBoard;
-    Card_Deck*  m_pDeck;
+    Board*      pBoard;
+    Card_Deck*  pDeck;
 
     Card * p_PriorToMain;
     eCK    e_PriorToMain;
