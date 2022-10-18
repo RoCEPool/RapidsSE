@@ -1161,7 +1161,7 @@ bool TransformerTool::R_bResolveCard(eCK eCard, Stz* szWithValue, i8 i_Before)
   for (i8 i_Main = i_Before - 1; i_Main >= 0; i_Main--) {
     Card* pMain = M.pDeck->pGetChild(i_Main);
 
-    if (m_pCard_resolved = pMain->pFindValueRecursive(szWithValue,m_pCard_parent))
+    if (m_pCard_resolved = pMain->pFindValueRecursive(eCard,szWithValue,m_pCard_parent))
       return true;
   }
 

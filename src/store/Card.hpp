@@ -210,6 +210,7 @@ namespace STORE
 
     Card* pFindParent(Card* pSubCard);
     Card* pFindValueRecursive(Stz* szValue, Card*& rpParent, Card* _opaque_=nullptr);
+    Card* pFindValueRecursive(eCK eCard, Stz* szValue, Card*& rpParent, Card* _opaque_=nullptr);
 
     bool bHasChildWithValue(Stz* szValue);
     bool bHasProperty(Stz* szPpyNm);

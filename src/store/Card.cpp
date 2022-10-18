@@ -645,6 +645,31 @@ Card* Card::pFindValueRecursive(Stz* szValue, Card*& rpParent, Card* _pWalkParen
 }
 
 /*----------------------------------------------------------------------------*/
+/* attempt find of value in this pile                                         */
+/*----------------------------------------------------------------------------*/
+Card* Card::pFindValueRecursive(eCK eCard, Stz* szValue, Card*& rpParent, Card* _pWalkParent_)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  vTrace("%s %s\n"_Stz,__func__,md_Bearing);
+
+  if (eCard == m_eCard && bSame(szValue)) {
+    rpParent = _pWalkParent_;
+    return this;
+  }
+
+  i8 nSubCards = this->nChildCards();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    if (Card *pFoundCard = pGetChild(i_Child)->pFindValueRecursive(eCard,szValue, rpParent, this))
+      return pFoundCard;
+  }
+
+  rpParent = nullptr;
+  return nullptr;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* is there an immediate child with given value?                              */
 /*----------------------------------------------------------------------------*/
 bool Card::bHasChildWithValue(Stz* szValue)
