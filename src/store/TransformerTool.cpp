@@ -677,6 +677,7 @@ Card* TransformerTool::G_pGetMember(eCK eMember)
     case CK_STAGE:            return M.p_stage;
     case CK_STAGETOPO:        return M.p_stageTopo;
     case CK_STREAM:           return M.p_stream;
+    case CK_STREAMCOL:        return M.p_streamCol;
     case CK_STREAMCOLLIST:    return M.p_streamColList;
     case CK_SUBSET:           return M.p_subSet;
     case CK_TABLE:            return M.p_table;
@@ -1097,6 +1098,7 @@ void TransformerTool::U_vUpdateMember(eCK eMember, Card* pCard, const char* asFu
     case CK_STAGE:            *((Card**)&M.p_stage)            = pCard; break;
     case CK_STAGETOPO:        *((Card**)&M.p_stageTopo)        = pCard; break;
     case CK_STREAM:           *((Card**)&M.p_stream)           = pCard; break;
+    case CK_STREAMCOL:        *((Card**)&M.p_streamCol)        = pCard; break;
     case CK_STREAMCOLLIST:    *((Card**)&M.p_streamColList)    = pCard; break;
     case CK_SUBSET:           *((Card**)&M.p_subSet)           = pCard; break;
     case CK_TABLE:            *((Card**)&M.p_table)            = pCard; break;
@@ -1161,8 +1163,10 @@ bool TransformerTool::R_bResolveCard(eCK eCard, Stz* szWithValue, i8 i_Before)
   for (i8 i_Main = i_Before - 1; i_Main >= 0; i_Main--) {
     Card* pMain = M.pDeck->pGetChild(i_Main);
 
-    if (m_pCard_resolved = pMain->pFindValueRecursive(eCard,szWithValue,m_pCard_parent))
+    if (m_pCard_resolved = pMain->pFindValueRecursive(eCard,szWithValue,m_pCard_parent)) {
+      U_vUpdateMember(eCard,m_pCard_resolved,__func__);
       return true;
+    }
   }
 
   return false;
@@ -1254,6 +1258,7 @@ Stz* TransformerTool::szMemberNm(eCK eMember)
     case CK_STAGE:            return "M.p_stage"_Stz;
     case CK_STAGETOPO:        return "M.p_stageTopo"_Stz;
     case CK_STREAM:           return "M.p_stream"_Stz;
+    case CK_STREAMCOL:        return "M.p_streamCol"_Stz;
     case CK_STREAMCOLLIST:    return "M.p_streamColList"_Stz;
     case CK_SUBSET:           return "M.p_subSet"_Stz;
     case CK_TABLE:            return "M.p_table"_Stz;
