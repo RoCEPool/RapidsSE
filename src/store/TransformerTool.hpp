@@ -8,6 +8,8 @@
 
 #include "PermGen.hpp"
 
+#include "TransformIter.hpp"
+
 namespace STORE
 {
   class TransformerTool : public Object
