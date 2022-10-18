@@ -124,6 +124,8 @@ namespace STORE
     void M_vClearRegisters(void);
     void M_vClearRegistersIf(eCK eCard);
     void M_vClearRegistersIf(Card* pCard);
+    void M_vPushIter(void);
+    void M_vPopIter(void);
     void M_vRestart(void);
 
     void N_vNewMember(eCK eMember, bool bUpdateMember=true);

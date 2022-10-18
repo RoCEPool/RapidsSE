@@ -4,6 +4,14 @@
 
 #include "TransformIter.hpp"
 
+/*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+__pCastFunction(STORE, TransformIter, CN_TRANSFORMITER)
+__aNewFunction(TransformIter, CN_TRANSFORMITER)
+__vDeleteFunction(TransformIter, CN_TRANSFORMITER)
+__aFooterFunction(TransformIter)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -11,9 +19,7 @@
 TransformIter::TransformIter(void)
 : Object(CN_TRANSFORMITER)
 {
-
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -21,7 +27,6 @@ TransformIter::TransformIter(void)
 TransformIter::TransformIter(eCN eClass)
 : Object (eClass)
 {
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -29,13 +34,32 @@ TransformIter::TransformIter(eCN eClass)
 /*----------------------------------------------------------------------------*/
 TransformIter::~TransformIter(void) noexcept(false)
 {
-
 }
 
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void TransformIter::vCopyFrom(_TransformIterMembers* aFrom)
+{
+  MemLib::vCopy(aTransformIterMembers(),
+                aFrom,
+                sizeof(_TransformIterMembers),
+                CN_TRANSFORMITER);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+_TransformIterMembers* TransformIter::aTransformIterMembers(void)
+{
+  return &M;
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

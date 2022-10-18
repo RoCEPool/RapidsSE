@@ -913,6 +913,35 @@ void TransformerTool::M_vClearRegistersIf(Card* pCard)
 }
 
 /*----------------------------------------------------------------------------*/
+/* push current M iterator onto iter stack                                    */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::M_vPushIter(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  TransformIter* pTransformIterSave = new TransformIter;
+
+  pTransformIterSave->vCopyFrom(this->aTransformIterMembers());
+
+  m_pTransformIterList->vPush(pTransformIterSave);
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop/restore M iterator from iter stack                                     */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::M_vPopIter(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  TransformIter* pTransformIterRestore = m_pTransformIterList->pPop();
+
+  this->vCopyFrom(pTransformIterRestore->aTransformIterMembers());
+
+  delete pTransformIterRestore;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* restart the M iterator                                                     */
 /*----------------------------------------------------------------------------*/
 void TransformerTool::M_vRestart(void)
