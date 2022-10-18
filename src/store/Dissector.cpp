@@ -175,26 +175,26 @@ void Dissector::vOp(i8 i_OpSpec)
   //vTrace("Op %s\n"_Stz,szOpNm);
   //pArgTags->vDumpSet(true);
 
-       if (szOpNm->bSame("abstractJoin"_Stz)) pCard = pCard_AbsJoin  (pArgTags);
-  else if (szOpNm->bSame("aggreg"_Stz))       pCard = pCard_Aggreg   (pArgTags);
-  else if (szOpNm->bSame("combined"_Stz))     pCard = pCard_Combined (pArgTags);
-  else if (szOpNm->bSame("consumeOp"_Stz))    pCard = pCard_Consume  (pArgTags);
-  else if (szOpNm->bSame("debug"_Stz))        pCard = pCard_Debug    (pArgTags);
-  else if (szOpNm->bSame("filter"_Stz))       pCard = pCard_Filter   (pArgTags);
-  else if (szOpNm->bSame("hash"_Stz))         pCard = pCard_Hash     (pArgTags);
-  else if (szOpNm->bSame("indexJoin"_Stz))    pCard = pCard_IndexJoin(pArgTags);
-  else if (szOpNm->bSame("indexScan"_Stz))    pCard = pCard_IndexScan(pArgTags);
-  else if (szOpNm->bSame("limit"_Stz))        pCard = pCard_Limit    (pArgTags);
-  else if (szOpNm->bSame("ordagg"_Stz))       pCard = pCard_OrdAgg   (pArgTags);
-  else if (szOpNm->bSame("orderBy"_Stz))      pCard = pCard_Sort     (pArgTags);
-  else if (szOpNm->bSame("output"_Stz))       pCard = pCard_Output   (pArgTags);
-  else if (szOpNm->bSame("pulse"_Stz))        pCard = pCard_Pulse    (pArgTags);
-  else if (szOpNm->bSame("project"_Stz))      pCard = pCard_Project  (pArgTags);
-  else if (szOpNm->bSame("scan"_Stz))         pCard = pCard_Scan     (pArgTags);
-  else if (szOpNm->bSame("sendSE"_Stz))       pCard = pCard_Send     (pArgTags);
-  else if (szOpNm->bSame("sink"_Stz))         pCard = pCard_Sink     (pArgTags);
-  else if (szOpNm->bSame("sort"_Stz))         pCard = pCard_Sort     (pArgTags);
-  else if (szOpNm->bSame("start"_Stz))        pCard = pCard_Start    (pArgTags);
+       if (szOpNm->bSame("abstractJoin"_Stz)) pCard = pOp_AbsJoin  (pArgTags);
+  else if (szOpNm->bSame("aggreg"_Stz))       pCard = pOp_Aggreg   (pArgTags);
+  else if (szOpNm->bSame("combined"_Stz))     pCard = pOp_Combined (pArgTags);
+  else if (szOpNm->bSame("consumeOp"_Stz))    pCard = pOp_Consume  (pArgTags);
+  else if (szOpNm->bSame("debug"_Stz))        pCard = pOp_Debug    (pArgTags);
+  else if (szOpNm->bSame("filter"_Stz))       pCard = pOp_Filter   (pArgTags);
+  else if (szOpNm->bSame("hash"_Stz))         pCard = pOp_Hash     (pArgTags);
+  else if (szOpNm->bSame("indexJoin"_Stz))    pCard = pOp_IndexJoin(pArgTags);
+  else if (szOpNm->bSame("indexScan"_Stz))    pCard = pOp_IndexScan(pArgTags);
+  else if (szOpNm->bSame("limit"_Stz))        pCard = pOp_Limit    (pArgTags);
+  else if (szOpNm->bSame("ordagg"_Stz))       pCard = pOp_OrdAgg   (pArgTags);
+  else if (szOpNm->bSame("orderBy"_Stz))      pCard = pOp_Sort     (pArgTags);
+  else if (szOpNm->bSame("output"_Stz))       pCard = pOp_Output   (pArgTags);
+  else if (szOpNm->bSame("pulse"_Stz))        pCard = pOp_Pulse    (pArgTags);
+  else if (szOpNm->bSame("project"_Stz))      pCard = pOp_Project  (pArgTags);
+  else if (szOpNm->bSame("scan"_Stz))         pCard = pOp_Scan     (pArgTags);
+  else if (szOpNm->bSame("sendSE"_Stz))       pCard = pOp_Send     (pArgTags);
+  else if (szOpNm->bSame("sink"_Stz))         pCard = pOp_Sink     (pArgTags);
+  else if (szOpNm->bSame("sort"_Stz))         pCard = pOp_Sort     (pArgTags);
+  else if (szOpNm->bSame("start"_Stz))        pCard = pOp_Start    (pArgTags);
   else {
     vTrace("Skipping OpSpec %s\n"_Stz,szOpNm);
     pCard = nullptr;
@@ -207,7 +207,7 @@ void Dissector::vOp(i8 i_OpSpec)
 /*----------------------------------------------------------------------------*/
 /* dissect : abstractJoin <szRpnExpr>                                         */
 /*----------------------------------------------------------------------------*/
-Card* Dissector::pCard_AbsJoin(TagSet* pArgTags)
+Card* Dissector::pOp_AbsJoin(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
 
@@ -228,7 +228,7 @@ Card* Dissector::pCard_AbsJoin(TagSet* pArgTags)
 /*----------------------------------------------------------------------------*/
 /* dissect : aggreg <szRpnExpr : 0) aggElist ; 1) gbyElist>                   */
 /*----------------------------------------------------------------------------*/
-Card* Dissector::pCard_Aggreg(TagSet* pArgTags)
+Card* Dissector::pOp_Aggreg(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
      
@@ -264,7 +264,7 @@ Card* Dissector::pCard_Aggreg(TagSet* pArgTags)
 /*----------------------------------------------------------------------------*/
 /* dissect : combined <iGenerate>                                             */
 /*----------------------------------------------------------------------------*/
-Card* Dissector::pCard_Combined(TagSet* pArgTags)
+Card* Dissector::pOp_Combined(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
       
@@ -278,7 +278,7 @@ Card* Dissector::pCard_Combined(TagSet* pArgTags)
 /*----------------------------------------------------------------------------*/
 /* dissect : consumeOp <nSends>                                               */
 /*----------------------------------------------------------------------------*/
-Card* Dissector::pCard_Consume(TagSet* pArgTags)
+Card* Dissector::pOp_Consume(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
   
@@ -290,7 +290,7 @@ Card* Dissector::pCard_Consume(TagSet* pArgTags)
 /*----------------------------------------------------------------------------*/
 /* dissect : debug <iOption>                                                  */
 /*----------------------------------------------------------------------------*/
-Card* Dissector::pCard_Debug(TagSet* pArgTags)
+Card* Dissector::pOp_Debug(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
     
@@ -307,7 +307,7 @@ Card* Dissector::pCard_Debug(TagSet* pArgTags)
 /*----------------------------------------------------------------------------*/
 /* dissect : filter <szRpnExpr: 0) filtElist>                                 */
 /*----------------------------------------------------------------------------*/
-Card* Dissector::pCard_Filter(TagSet* pArgTags)
+Card* Dissector::pOp_Filter(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
     
@@ -322,6 +322,15 @@ Card* Dissector::pCard_Filter(TagSet* pArgTags)
   pCard_Expr->vRemoveSubCard(pCard_Calc);
   DELETE_CARD(pCard_Expr);
   pCard_Filter->vAppend(pCard_Calc);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // TODO: Hacking the missing $P1 of an exists... chat w Alka
+
+  if (2 == pCard_Calc->nChildCards() &&
+      pCard_Calc->pGetChild(0)->szValue()->bSame("$1"_Stz) &&
+      pCard_Calc->pGetChild(1)->szValue()->bSame("=="_Stz)) {
+    pCard_Calc->vPush(new Card_Term("$P1"_Stz));
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // is it filter or having?
@@ -344,7 +353,7 @@ Card* Dissector::pCard_Filter(TagSet* pArgTags)
 /*----------------------------------------------------------------------------*/
 /* dissect : hash <szRpnExpr : 0) calcExpr>                                   */
 /*----------------------------------------------------------------------------*/
-Card* Dissector::pCard_Hash(TagSet* pArgTags)
+Card* Dissector::pOp_Hash(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
   
@@ -366,7 +375,7 @@ Card* Dissector::pCard_Hash(TagSet* pArgTags)
 /*----------------------------------------------------------------------------*/
 /* dissect : indexJoin <szTblNm> <szIdxNm> <szRpnExpr: 0) idxPred>            */
 /*----------------------------------------------------------------------------*/
-Card* Dissector::pCard_IndexJoin(TagSet* pArgTags)
+Card* Dissector::pOp_IndexJoin(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
 
@@ -415,7 +424,7 @@ Card* Dissector::pCard_IndexJoin(TagSet* pArgTags)
 /*----------------------------------------------------------------------------*/
 /* dissect : indexScan <szTblNm> <szIdxNm> <szRpnExpr: 0) idxPred>            */
 /*----------------------------------------------------------------------------*/
-Card* Dissector::pCard_IndexScan(TagSet* pArgTags)
+Card* Dissector::pOp_IndexScan(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
 
@@ -458,7 +467,7 @@ Card* Dissector::pCard_IndexScan(TagSet* pArgTags)
 /*----------------------------------------------------------------------------*/
 /* dissect : limit <nRows>                                                    */
 /*----------------------------------------------------------------------------*/
-Card* Dissector::pCard_Limit(TagSet* pArgTags)
+Card* Dissector::pOp_Limit(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
 
@@ -477,7 +486,7 @@ Card* Dissector::pCard_Limit(TagSet* pArgTags)
 /*----------------------------------------------------------------------------*/
 /* dissect : ordAgg <szRpnExpr : 0) aggElist>                                 */
 /*----------------------------------------------------------------------------*/
-Card* Dissector::pCard_OrdAgg(TagSet* pArgTags)
+Card* Dissector::pOp_OrdAgg(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
       
@@ -505,7 +514,7 @@ Card* Dissector::pCard_OrdAgg(TagSet* pArgTags)
 /*----------------------------------------------------------------------------*/
 /* dissect : output                                                           */
 /*----------------------------------------------------------------------------*/
-Card* Dissector::pCard_Output(TagSet* pArgTags)
+Card* Dissector::pOp_Output(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
       
@@ -517,7 +526,7 @@ Card* Dissector::pCard_Output(TagSet* pArgTags)
 /*----------------------------------------------------------------------------*/
 /* dissect : pulse <szMode>                                                   */
 /*----------------------------------------------------------------------------*/
-Card* Dissector::pCard_Pulse(TagSet* pArgTags)
+Card* Dissector::pOp_Pulse(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
     
@@ -529,7 +538,7 @@ Card* Dissector::pCard_Pulse(TagSet* pArgTags)
 /*----------------------------------------------------------------------------*/
 /* dissect : project <szRpnExpr : 0) projElist>                               */
 /*----------------------------------------------------------------------------*/
-Card* Dissector::pCard_Project(TagSet* pArgTags)
+Card* Dissector::pOp_Project(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
   
@@ -552,7 +561,7 @@ Card* Dissector::pCard_Project(TagSet* pArgTags)
 /*----------------------------------------------------------------------------*/
 /* dissect : scan [ <szCatalogNm> <szSchemaNm> ] <szTableNm>                  */
 /*----------------------------------------------------------------------------*/
-Card* Dissector::pCard_Scan(TagSet* pArgTags)
+Card* Dissector::pOp_Scan(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
     
@@ -570,7 +579,7 @@ Card* Dissector::pCard_Scan(TagSet* pArgTags)
     NEVER_REACH;
   }
 
-  Card_Scan* pCard_Scan = new Card_Scan;
+  Card_Scan* pOp_Scan = new Card_Scan;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // table
@@ -579,17 +588,17 @@ Card* Dissector::pCard_Scan(TagSet* pArgTags)
   Card_Table* pCard_Table = new Card_Table(szTableNm);
   Card_TablePtr* pCard_TablePtr = new Card_TablePtr(pTable);
   pCard_Table->vAppend(pCard_TablePtr);
-  pCard_Scan->vAppend(pCard_Table);
+  pOp_Scan->vAppend(pCard_Table);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  return pCard_Scan;
+  return pOp_Scan;
 }
 
 /*----------------------------------------------------------------------------*/
 /* dissect : send <eSendKind>                                                 */
 /*----------------------------------------------------------------------------*/
-Card* Dissector::pCard_Send(TagSet* pArgTags)
+Card* Dissector::pOp_Send(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
     
@@ -609,7 +618,7 @@ Card* Dissector::pCard_Send(TagSet* pArgTags)
 /*----------------------------------------------------------------------------*/
 /* dissect : sink                                                             */
 /*----------------------------------------------------------------------------*/
-Card* Dissector::pCard_Sink(TagSet* pArgTags)
+Card* Dissector::pOp_Sink(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
     
@@ -619,7 +628,7 @@ Card* Dissector::pCard_Sink(TagSet* pArgTags)
 /*----------------------------------------------------------------------------*/
 /* dissect : orderBy <szRpnExpr: 0) sbyElist>                                 */
 /*----------------------------------------------------------------------------*/
-Card* Dissector::pCard_Sort(TagSet* pArgTags)
+Card* Dissector::pOp_Sort(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
     
@@ -642,7 +651,7 @@ Card* Dissector::pCard_Sort(TagSet* pArgTags)
 /*----------------------------------------------------------------------------*/
 /* dissect : start                                                            */
 /*----------------------------------------------------------------------------*/
-Card* Dissector::pCard_Start(TagSet* pArgTags)
+Card* Dissector::pOp_Start(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
       
