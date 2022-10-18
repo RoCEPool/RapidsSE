@@ -537,8 +537,8 @@ void Transforms::vConvert_where_calc_To_where_calcBool(bool bTrace)
 
   while (E_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
     X_calc_To_calcBool();
-    R_vReplaceSub(M.p_calc, M.p_where, M.p_boolCalc);
-    D_vDeleteMember(M.p_calc);
+    R_vReplaceSub(M.p_rpnCalc, M.p_where, M.p_boolCalc);
+    D_vDeleteMember(M.p_rpnCalc);
   }
 
   vEndTransformation();
@@ -1670,6 +1670,32 @@ void Transforms::vCopy_Up_SubQueries(bool bTrace)
   vPrintBoard();
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Transforms::vResolve_Parameter_Linkage(bool bTrace)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  vTransformation(__func__);
+  vDescription("((replace with an explanation))"_Stz);
+  vTracing(bTrace);
+
+  while (E_bEachMain(CK_KEYEXISTS)) {
+
+    vTracer("Resolving %s"_Stz,M.p_MainCard->szBearing());
+    if (!P_bPlumbForSubMember(CK_KEYEXISTS,CK_PARAM))
+      continue;
+
+    if (! R_bResolveCard(CK_STREAMCOL,M.p_param->sz(),M.p_keyExists))
+      continue;
+
+    M.p_param->Y_vSet(P_Ordinal,M.p_streamCol->Y_szVal(P_Ordinal));
+  }
+
+  vEndTransformation();
+  vPrintBoard();
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/

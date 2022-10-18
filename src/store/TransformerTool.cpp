@@ -32,11 +32,14 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_pIndex     = nullptr;
 
 
-  m_pCard_child  = nullptr;
-  m_pCard_dup    = nullptr;
-  m_pCard_new    = nullptr;
-  m_pCard_popped = nullptr;
-  m_pCard_temp   = nullptr;
+  m_pCard_child    = nullptr;
+  m_pCard_dup      = nullptr;
+  m_pCard_located  = nullptr;
+  m_pCard_new      = nullptr;
+  m_pCard_parent   = nullptr;
+  m_pCard_popped   = nullptr;
+  m_pCard_resolved = nullptr;
+  m_pCard_temp     = nullptr;
 
   m_pTransformIterList = new TransformIterList;
 
@@ -636,7 +639,6 @@ Card* TransformerTool::G_pGetMember(eCK eMember)
     case CK_ABSJOIN:          return M.p_absJoin;
     case CK_AGGREG:           return M.p_aggreg;
     case CK_BOOLCALC:         return M.p_boolCalc;
-    case CK_RPNCALC:             return M.p_calc;
     case CK_CMPPRED:          return M.p_cmpPred;
     case CK_COMBINED:         return M.p_combined;
     case CK_COMMENT:          return M.p_comment;
@@ -666,6 +668,7 @@ Card* TransformerTool::G_pGetMember(eCK eMember)
     case CK_PROJECT:          return M.p_project;
     case CK_PTNDJOIN:         return M.p_ptndJoin;
     case CK_PTNDJOINSET:      return M.p_ptndJoinSet;
+    case CK_RPNCALC:          return M.p_rpnCalc;
     case CK_SBYELIST:         return M.p_sbyElist;
     case CK_SCAN:             return M.p_scan;
     case CK_SCANPRED:         return M.p_scanPred;
@@ -770,21 +773,21 @@ bool TransformerTool::H_bHasSubsequentToMainIf(eCK eOfSubsequentKind, bool bUpda
 /*----------------------------------------------------------------------------*/
 /* locate card (left-right) after given i_After                               */
 /*----------------------------------------------------------------------------*/
-Card* TransformerTool::L_pLocateCard(eCK eCard, Stz* szWithValue, i8 i_After)
+bool TransformerTool::L_bLocateCard(eCK eCard, Stz* szWithValue, i8 i_After)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  return nullptr;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
 /* locate card (left-right) after given card                                  */
 /*----------------------------------------------------------------------------*/
-Card* TransformerTool::L_pLocateCard(eCK eCard, Stz* szWithValue, Card* pAfter)
+bool TransformerTool::L_bLocateCard(eCK eCard, Stz* szWithValue, Card* pAfter)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  return nullptr;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -797,7 +800,6 @@ void TransformerTool::M_vClearMembers(void)
   M.p_absJoin          = nullptr;
   M.p_aggreg           = nullptr;
   M.p_boolCalc         = nullptr;
-  M.p_calc             = nullptr;
   M.p_cmpPred          = nullptr;
   M.p_combined         = nullptr;
   M.p_comment          = nullptr;
@@ -829,6 +831,7 @@ void TransformerTool::M_vClearMembers(void)
   M.p_project          = nullptr;
   M.p_ptndJoin         = nullptr;
   M.p_ptndJoinSet      = nullptr;
+  M.p_rpnCalc          = nullptr;
   M.p_sbyElist         = nullptr;
   M.p_scan             = nullptr;
   M.p_scanPred         = nullptr;
@@ -1055,7 +1058,6 @@ void TransformerTool::U_vUpdateMember(eCK eMember, Card* pCard, const char* asFu
     case CK_ABSJOIN:          *((Card**)&M.p_absJoin)          = pCard; break;
     case CK_AGGREG:           *((Card**)&M.p_aggreg)           = pCard; break;
     case CK_BOOLCALC:         *((Card**)&M.p_boolCalc)         = pCard; break;
-    case CK_RPNCALC: *((Card**)&M.p_calc)             = pCard; break;
     case CK_CMPPRED:          *((Card**)&M.p_cmpPred)          = pCard; break;
     case CK_COMBINED:         *((Card**)&M.p_combined)         = pCard; break;
     case CK_COMMENT:          *((Card**)&M.p_comment)          = pCard; break;
@@ -1086,6 +1088,7 @@ void TransformerTool::U_vUpdateMember(eCK eMember, Card* pCard, const char* asFu
     case CK_PROJECT:          *((Card**)&M.p_project)          = pCard; break;
     case CK_PTNDJOIN:         *((Card**)&M.p_ptndJoin)         = pCard; break;
     case CK_PTNDJOINSET:      *((Card**)&M.p_ptndJoinSet)      = pCard; break;
+    case CK_RPNCALC:          *((Card**)&M.p_rpnCalc)          = pCard; break;
     case CK_SBYELIST:         *((Card**)&M.p_sbyElist)         = pCard; break;
     case CK_SCAN:             *((Card**)&M.p_scan)             = pCard; break;
     case CK_SCANPRED:         *((Card**)&M.p_scanPred)         = pCard; break;
@@ -1151,21 +1154,34 @@ bool TransformerTool::P_bPlumbForSubMember(Card* pMember, eCK eSubCard, bool bUp
 /*----------------------------------------------------------------------------*/
 /* resolve card (right-left before given i_Before                             */
 /*----------------------------------------------------------------------------*/
-Card* TransformerTool::R_pResolveCard(eCK eCard, Stz* szWithValue, i8 i_Before)
+bool TransformerTool::R_bResolveCard(eCK eCard, Stz* szWithValue, i8 i_Before)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  return nullptr;
+  for (i8 i_Main = i_Before - 1; i_Main >= 0; i_Main--) {
+    Card* pMain = M.pDeck->pGetChild(i_Main);
+
+    if (m_pCard_resolved = pMain->pFindValueRecursive(szWithValue,m_pCard_parent))
+      return true;
+  }
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
 /* resolve card (right-left) before given card                                */
 /*----------------------------------------------------------------------------*/
-Card* TransformerTool::R_pResolveCard(eCK eCard, Stz* szWithValue, Card* pBefore)
+bool TransformerTool::R_bResolveCard(eCK eCard, Stz* szWithValue, Card* pBefore)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  return nullptr;
+  i8 i_Before = M.pDeck->iFindChild(pBefore);
+  if (C_UNKNOWN == i_Before)
+    return false;
+
+  bool b = R_bResolveCard(eCard, szWithValue, i_Before);
+
+  return b;
 }
 
 
@@ -1200,7 +1216,6 @@ Stz* TransformerTool::szMemberNm(eCK eMember)
     case CK_ABSJOIN:          return "M.p_absJoin"_Stz;
     case CK_AGGREG:           return "M.p_aggreg"_Stz;
     case CK_BOOLCALC:         return "M.p_boolCalc"_Stz;
-    case CK_RPNCALC:             return "M.p_calc"_Stz;
     case CK_CMPPRED:          return "M.p_cmpPred"_Stz;
     case CK_COMBINED:         return "M.p_combined"_Stz;
     case CK_COMMENT:          return "M.p_comment"_Stz;
@@ -1230,6 +1245,7 @@ Stz* TransformerTool::szMemberNm(eCK eMember)
     case CK_PROJECT:          return "M.p_project"_Stz;
     case CK_PTNDJOIN:         return "M.p_ptndJoin"_Stz;
     case CK_PTNDJOINSET:      return "M.p_ptndJoinSet"_Stz;
+    case CK_RPNCALC:          return "M.p_rpnCalc"_Stz;
     case CK_SBYELIST:         return "M.p_sbyElist"_Stz;
     case CK_SCAN:             return "M.p_scan"_Stz;
     case CK_SCANPRED:         return "M.p_scanPred"_Stz;

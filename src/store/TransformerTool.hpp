@@ -40,8 +40,11 @@ namespace STORE
 
     Card* m_pCard_child;
     Card* m_pCard_dup;
+    Card* m_pCard_located;
     Card* m_pCard_new;
+    Card* m_pCard_parent;
     Card* m_pCard_popped;
+    Card* m_pCard_resolved;
     Card* m_pCard_temp;
 
     Card_Term* m_pTerm_0;
@@ -117,8 +120,8 @@ namespace STORE
     bool H_bHasSubsequentToMain(bool bUpdateMember = false);
     bool H_bHasSubsequentToMainIf(eCK eOfSubsequentKind, bool bUpdateMember = false);
 
-    Card* L_pLocateCard(eCK eCard, Stz* szWithValue, i8 i_After);
-    Card* L_pLocateCard(eCK eCard, Stz* szWithValue, Card* pAfter);
+    bool L_bLocateCard(eCK eCard, Stz* szWithValue, i8 i_After);
+    bool L_bLocateCard(eCK eCard, Stz* szWithValue, Card* pAfter);
 
     void M_vClearMembers(void);
     void M_vClearMembersRegisters(void);
@@ -133,8 +136,8 @@ namespace STORE
     void N_vNewMember(eCK eMember, bool bUpdateMember=true);
     void N_vNewMember(eCK eMember, Stz* szValue, bool bUpdateMember=true);
 
-    Card* R_pResolveCard(eCK eCard, Stz* szWithValue, i8 i_Before);
-    Card* R_pResolveCard(eCK eCard, Stz* szWithValue, Card* pBefore);
+    bool R_bResolveCard(eCK eCard, Stz* szWithValue, i8 i_Before);
+    bool R_bResolveCard(eCK eCard, Stz* szWithValue, Card* pBefore);
 
     bool P_bPlumbForSubMember(eCK eMember, eCK eSubCard, bool bUpdateMember= true);
     bool P_bPlumbForSubMember(Card* pMember, eCK eSubCard, bool bUpdateMember= true);

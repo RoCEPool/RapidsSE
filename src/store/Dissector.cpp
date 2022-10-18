@@ -318,7 +318,7 @@ Card* Dissector::pOp_Filter(TagSet* pArgTags)
   // filtElist : filter expression list
 
   Card_Expr* pCard_Expr = pExpr(pCard_RpnTerms);
-  Card_RpnCalc* pCard_Calc = pCard_Expr->pSub_calc();
+  Card_RpnCalc* pCard_Calc = pCard_Expr->pSub_rpnCalc();
   pCard_Expr->vRemoveSubCard(pCard_Calc);
   DELETE_CARD(pCard_Expr);
   pCard_Filter->vAppend(pCard_Calc);

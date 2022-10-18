@@ -71,6 +71,7 @@ namespace STORE
 
     void vRework_Exists_SubQueries(bool bTrace);
     void vCopy_Up_SubQueries(bool bTrace);
+    void vResolve_Parameter_Linkage(bool bTrace);
 
   private:
 

@@ -33,7 +33,7 @@ namespace STORE
     Card_AbsJoin *          p_absJoin;
     Card_Aggreg *           p_aggreg;
     Card_BoolCalc *         p_boolCalc;
-    Card_RpnCalc *             p_calc;
+    Card_RpnCalc *             p_rpnCalc;
     Card_CmpPred *          p_cmpPred;
     Card_Combined *         p_combined;
     Card_Comment *          p_comment;

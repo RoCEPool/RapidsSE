@@ -209,6 +209,7 @@ namespace STORE
     bool bEquivalentTo(Card* pCard_OTHER);
 
     Card* pFindParent(Card* pSubCard);
+    Card* pFindValueRecursive(Stz* szValue, Card*& rpParent, Card* _opaque_=nullptr);
 
     bool bHasChildWithValue(Stz* szValue);
     bool bHasProperty(Stz* szPpyNm);
@@ -282,7 +283,6 @@ namespace STORE
 
     Card_As*            pSub_as(void);
     Card_BoolCalc*      pSub_boolCalc(void);
-    Card_RpnCalc*          pSub_calc(void);
     Card_ColumnRef*     pSub_columnRef(void);
     Card_Filter*        pSub_filter(void);
     Card_GbyElist*      pSub_gbyElist(void);
@@ -293,6 +293,7 @@ namespace STORE
     Card_JoinPred*      pSub_joinPred(void);
     Card_LBound*        pSub_lBound(void);
     Card_CmpPred*       pSub_predCmp(void);
+    Card_RpnCalc*       pSub_rpnCalc(void);
     Card_SbyElist*      pSub_sbyElist(void);
     Card_Scan*          pSub_scan(void);
     Card_ScanPred*      pSub_scanPred(void);

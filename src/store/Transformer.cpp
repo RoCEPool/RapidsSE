@@ -203,6 +203,8 @@ void Transformer::vPhase_U_ExistsSubqueries(bool bTrace)
 
   m_pTransforms->vCopy_Up_SubQueries(bTrace);
 
+  m_pTransforms->vResolve_Parameter_Linkage(true);
+
 }
 
 /*----------------------------------------------------------------------------*/

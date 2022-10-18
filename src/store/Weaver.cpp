@@ -562,7 +562,7 @@ void Weaver::vRpnFilter(Stz* szRpnExpr, Card_Filter* pCard_Filter)
     vCalcBool(szRpnExpr, pCard_CalcBool);
   }
   else {
-    Card_RpnCalc *pCard_Calc = pCard_Filter->pSub_calc();
+    Card_RpnCalc *pCard_Calc = pCard_Filter->pSub_rpnCalc();
     vExprCalc(szRpnExpr, pCard_Calc);
   }
 }
@@ -965,7 +965,7 @@ void Weaver::vRpnWhere(Stz* szRpnExpr, Card_Where* pCard_Where)
     vCalcBool(szRpnExpr, pCard_CalcBool);
   }
   else {
-    Card_RpnCalc *pCard_Calc = pCard_Where->pSub_calc();
+    Card_RpnCalc *pCard_Calc = pCard_Where->pSub_rpnCalc();
     vExprCalc(szRpnExpr, pCard_Calc);
   }
 }

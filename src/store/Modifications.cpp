@@ -100,8 +100,8 @@ void Modifications::X_calc_To_calcBool(void)
 
   N_vNewMember(CK_BOOLCALC);
 
-  while (M.p_calc->nChildCards()) {
-    M.p_term = _pCard_Term(M.p_calc->pPop());
+  while (M.p_rpnCalc->nChildCards()) {
+    M.p_term = _pCard_Term(M.p_rpnCalc->pPop());
 
     eTE eTopTerm = M.p_term->eTermEval();
     switch (eTopTerm) {
