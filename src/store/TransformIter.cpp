@@ -9,7 +9,8 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-TransformIter::TransformIter(void)
+TransformIter::TransformIter(eCN eClass)
+: Object (eClass)
 {
 
 }

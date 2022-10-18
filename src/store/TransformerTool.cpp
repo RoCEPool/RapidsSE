@@ -10,7 +10,8 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
-: Object(eClass)
+: TransformIter(eClass)
+//: Object(eClass)
 //, M.pM(nullptr)
 {
   _precondition_(_ADDRESS_,_MAGIC_);

@@ -12,11 +12,10 @@ namespace STORE
 {
   class TransformerTool;
 
-  class TransformIter
+  class TransformIter : public Object
+                      , public ListItem_t<TransformIter>
   {
-    friend class TransformerTool;
-
-  private:
+  public:
     struct {
       BoardIter pM;
 
@@ -87,13 +86,13 @@ namespace STORE
       Card_Term *             p_term;
       Card_UBound *           p_uBound;
       Card_Where *            p_where;
-    };
+    } M;
 
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    TransformIter(void);
+    TransformIter(eCN eClass);
    ~TransformIter(void) noexcept(false);
 
   };
