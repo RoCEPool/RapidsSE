@@ -1,24 +1,24 @@
 /*============================================================================*/
-/* Card_Calc.cpp -- Calculation Predicate                                 */
+/* Card_RpnCalc.cpp -- RPN Calculation Sequence                               */
 /*============================================================================*/
 
-#include "Card_Calc.hpp"
+#include "Card_RpnCalc.hpp"
 #include "Card_Term.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_Calc, CK_CALC)
-__aNewFunction(Card_Calc, CN_CARD)
-__vDeleteFunction(Card_Calc, CN_CARD)
+__pCastFunction_Card(STORE, Card_RpnCalc, CK_RPNCALC)
+__aNewFunction(Card_RpnCalc, CN_CARD)
+__vDeleteFunction(Card_RpnCalc, CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Calc::Card_Calc(void)
-: Card(CK_CALC)
+Card_RpnCalc::Card_RpnCalc(void)
+: Card(CK_RPNCALC)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
       
@@ -30,8 +30,8 @@ Card_Calc::Card_Calc(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Calc::Card_Calc(Column* pColumn)
-: Card(CK_CALC)
+Card_RpnCalc::Card_RpnCalc(Column* pColumn)
+: Card(CK_RPNCALC)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
       
@@ -46,7 +46,7 @@ Card_Calc::Card_Calc(Column* pColumn)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_Calc::~Card_Calc(void) noexcept(false)
+Card_RpnCalc::~Card_RpnCalc(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

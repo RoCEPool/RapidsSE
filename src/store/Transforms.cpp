@@ -527,7 +527,7 @@ void Transforms::vConvert_where_calc_To_where_calcBool(bool bTrace)
   vDescription("convert <where>//<calc> into <where>//<calcBool> "_Stz);
   vTracing(bTrace);
 
-  while (E_bEachMainWithSub(CK_WHERE, CK_CALC)) {
+  while (E_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
     X_calc_To_calcBool();
     R_vReplaceSub(M.p_calc, M.p_where, M.p_boolCalc);
     D_vDeleteMember(M.p_calc);

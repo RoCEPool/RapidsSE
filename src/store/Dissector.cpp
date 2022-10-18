@@ -217,7 +217,7 @@ Card* Dissector::pOp_AbsJoin(TagSet* pArgTags)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // expr : exression list
 
-  Card_Calc* pCard_ExprCalc = pCalc(pCard_RpnTerms);
+  Card_RpnCalc* pCard_ExprCalc = pCalc(pCard_RpnTerms);
   pCard_AbsJoin->vAppend(pCard_ExprCalc);
 
   delete pCard_RpnTerms;
@@ -318,7 +318,7 @@ Card* Dissector::pOp_Filter(TagSet* pArgTags)
   // filtElist : filter expression list
 
   Card_Expr* pCard_Expr = pExpr(pCard_RpnTerms);
-  Card_Calc* pCard_Calc = pCard_Expr->pSub_calc();
+  Card_RpnCalc* pCard_Calc = pCard_Expr->pSub_calc();
   pCard_Expr->vRemoveSubCard(pCard_Calc);
   DELETE_CARD(pCard_Expr);
   pCard_Filter->vAppend(pCard_Calc);
@@ -846,7 +846,7 @@ Card_Expr* Dissector::pExpr(Card_RpnTerms* pCard_RpnTerms)
 
 
   // <calcExpr>
-  Card_Calc* pCard_ExprCalc = pCalc(pCard_RpnTerms);
+  Card_RpnCalc* pCard_ExprCalc = pCalc(pCard_RpnTerms);
   pCard_Expr->vAppend(pCard_ExprCalc);
 
   // [ AS <as> ]
@@ -889,11 +889,11 @@ Card_Expr* Dissector::pExpr(Card_RpnTerms* pCard_RpnTerms)
 /*----------------------------------------------------------------------------*/
 /* collect <predicate>                                                        */
 /*----------------------------------------------------------------------------*/
-Card_Calc* Dissector::pCalc(Card_RpnTerms* pCard_RpnTerms)
+Card_RpnCalc* Dissector::pCalc(Card_RpnTerms* pCard_RpnTerms)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
 
-  Card_Calc* pCard_ExprCalc = new Card_Calc;
+  Card_RpnCalc* pCard_ExprCalc = new Card_RpnCalc;
 
   Card_Term* pCard_Term_popped = nullptr;
   while ( (pCard_Term_popped = _pCard_Term(pCard_RpnTerms->pPop())) ) {

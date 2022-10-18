@@ -29,7 +29,7 @@ namespace STORE
 
   class Card_Deck;
 
-  class Card_Calc;
+  class Card_RpnCalc;
   class Card_BoolCalc;
   class Card_CandIndex;
   class Card_CardPtr;
@@ -281,7 +281,7 @@ namespace STORE
 
     Card_As*            pSub_as(void);
     Card_BoolCalc*      pSub_boolCalc(void);
-    Card_Calc*          pSub_calc(void);
+    Card_RpnCalc*          pSub_calc(void);
     Card_ColumnRef*     pSub_columnRef(void);
     Card_Filter*        pSub_filter(void);
     Card_GbyElist*      pSub_gbyElist(void);

@@ -562,7 +562,7 @@ void Weaver::vRpnFilter(Stz* szRpnExpr, Card_Filter* pCard_Filter)
     vCalcBool(szRpnExpr, pCard_CalcBool);
   }
   else {
-    Card_Calc *pCard_Calc = pCard_Filter->pSub_calc();
+    Card_RpnCalc *pCard_Calc = pCard_Filter->pSub_calc();
     vExprCalc(szRpnExpr, pCard_Calc);
   }
 }
@@ -584,7 +584,7 @@ void Weaver::vRpnHaving(Stz* szRpnExpr, Card_Having* pCard_Having)
 //  Card_ExprBool* pCard_ExprBool = _pCard_ExprBool(pCard_Expr->pGet(1));
 //  vExprBool(szRpnExpr,pCard_ExprBool);
 
-  Card_Calc* pCard_Calc = _pCard_Calc(pCard_Expr->pGet(1));
+  Card_RpnCalc* pCard_Calc = _pCard_RpnCalc(pCard_Expr->pGet(1));
   vExprCalc(szRpnExpr,pCard_Calc);
 
 }
@@ -965,7 +965,7 @@ void Weaver::vRpnWhere(Stz* szRpnExpr, Card_Where* pCard_Where)
     vCalcBool(szRpnExpr, pCard_CalcBool);
   }
   else {
-    Card_Calc *pCard_Calc = pCard_Where->pSub_calc();
+    Card_RpnCalc *pCard_Calc = pCard_Where->pSub_calc();
     vExprCalc(szRpnExpr, pCard_Calc);
   }
 }
@@ -997,8 +997,8 @@ void Weaver::vExpr(Stz* szRpnExpr, Card_Expr* pCard_Expr)
         vAs(szRpnExpr, _pCard_As(pCard));
         break;
         
-      case CK_CALC:
-        vExprCalc(szRpnExpr, _pCard_Calc(pCard));
+      case CK_RPNCALC:
+        vExprCalc(szRpnExpr, _pCard_RpnCalc(pCard));
         break;
 
       case CK_TYPE:
@@ -1029,7 +1029,7 @@ void Weaver::vExprBool(Stz* szRpnExpr, Card_ExprBool* pCard_ExprBool)
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for pCard_ExprCalc                                          */
 /*----------------------------------------------------------------------------*/
-void Weaver::vExprCalc(Stz* szRpnExpr, Card_Calc* pCard_ExprCalc)
+void Weaver::vExprCalc(Stz* szRpnExpr, Card_RpnCalc* pCard_ExprCalc)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
   

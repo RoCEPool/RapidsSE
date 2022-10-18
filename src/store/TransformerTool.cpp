@@ -636,7 +636,7 @@ Card* TransformerTool::G_pGetMember(eCK eMember)
     case CK_ABSJOIN:          return M.p_absJoin;
     case CK_AGGREG:           return M.p_aggreg;
     case CK_BOOLCALC:         return M.p_boolCalc;
-    case CK_CALC:             return M.p_calc;
+    case CK_RPNCALC:             return M.p_calc;
     case CK_CMPPRED:          return M.p_cmpPred;
     case CK_COMBINED:         return M.p_combined;
     case CK_COMMENT:          return M.p_comment;
@@ -1055,7 +1055,7 @@ void TransformerTool::U_vUpdateMember(eCK eMember, Card* pCard, const char* asFu
     case CK_ABSJOIN:          *((Card**)&M.p_absJoin)          = pCard; break;
     case CK_AGGREG:           *((Card**)&M.p_aggreg)           = pCard; break;
     case CK_BOOLCALC:         *((Card**)&M.p_boolCalc)         = pCard; break;
-    case CK_CALC:             *((Card**)&M.p_calc)             = pCard; break;
+    case CK_RPNCALC: *((Card**)&M.p_calc)             = pCard; break;
     case CK_CMPPRED:          *((Card**)&M.p_cmpPred)          = pCard; break;
     case CK_COMBINED:         *((Card**)&M.p_combined)         = pCard; break;
     case CK_COMMENT:          *((Card**)&M.p_comment)          = pCard; break;
@@ -1200,7 +1200,7 @@ Stz* TransformerTool::szMemberNm(eCK eMember)
     case CK_ABSJOIN:          return "M.p_absJoin"_Stz;
     case CK_AGGREG:           return "M.p_aggreg"_Stz;
     case CK_BOOLCALC:         return "M.p_boolCalc"_Stz;
-    case CK_CALC:             return "M.p_calc"_Stz;
+    case CK_RPNCALC:             return "M.p_calc"_Stz;
     case CK_CMPPRED:          return "M.p_cmpPred"_Stz;
     case CK_COMBINED:         return "M.p_combined"_Stz;
     case CK_COMMENT:          return "M.p_comment"_Stz;

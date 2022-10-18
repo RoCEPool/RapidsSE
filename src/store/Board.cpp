@@ -479,7 +479,7 @@ void Board::vTransformNoInc(void)
 //  RASSERT(2 == pCard_Expr->nChildCards());
 //
 //  Card_Type* pCard_Type = _pCard_Type(pCard_Expr->pGet(0));
-//  Card_Calc* pCard_Calc = _pCard_Calc(pCard_Expr->pGet(1));
+//  Card_RpnCalc* pCard_Calc = _pCard_Calc(pCard_Expr->pGet(1));
 //
 //  Card_BoolCalc* pCard_CalcBool = pTo_CalcBool(pCard_Calc);
 //

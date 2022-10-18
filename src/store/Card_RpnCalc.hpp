@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_Calc.hpp -- Calculation Predicate                                     */
+/* Card_RpnCalc.hpp -- RPN Calculation Sequence                               */
 /*============================================================================*/
 #pragma once
 
@@ -7,18 +7,18 @@
 
 namespace STORE
 {
-  class Card_Calc : public Card
+  class Card_RpnCalc : public Card
   {  
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Calc(void);
-    Card_Calc(Column* pColumn);
-   ~Card_Calc(void) noexcept(false);
+    Card_RpnCalc(void);
+    Card_RpnCalc(Column* pColumn);
+   ~Card_RpnCalc(void) noexcept(false);
   };
 
-  Card_Calc* _pCard_Calc(void* aAddr);
+  Card_RpnCalc* _pCard_RpnCalc(void* aAddr);
 }
 
 /*============================================================================*/

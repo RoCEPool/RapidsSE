@@ -17,7 +17,6 @@ enum eCK // card kind
 
   /* */ CK_BOOLCALC,
 
-  /* */ CK_CALC,
   /* */ CK_CANDINDEX,
   /* */ CK_CARDPTR,
   /* */ CK_CMPPRED,
@@ -82,6 +81,7 @@ enum eCK // card kind
   /* */ CK_PTNDJOINSET,
 
   /* */ CK_RBOUND,
+  /* */ CK_RPNCALC,
   /* */ CK_RPNTERMS,
 
   /* */ CK_SBYELIST,
@@ -130,7 +130,6 @@ static Stz* aCK[]
 
   /* */ "CK_BOOLCALC"_Stz,     // CK_BOOLCALC
 
-  /* */ "CK_CALC"_Stz,         // CK_CALC
   /* */ "CK_CANDINDEX"_Stz,    // CK_CANDINDEX
   /* */ "CK_CARDPTR"_Stz,      // CK_CARDPTR
   /* */ "CK_CMPPRED"_Stz,      // CK_CMPPRED
@@ -195,6 +194,7 @@ static Stz* aCK[]
   /* */ "CK_PTNDJOINSET"_Stz,  // CK_PTNDJOINSET
 
   /* */ "CK_RBOUND"_Stz,       // CK_RBOUND
+  /* */ "CK_RPNCALC"_Stz,      // CK_RPNCALC
   /* */ "CK_RPNTERMS"_Stz,     // CK_RPNTERMS
 
   /* */ "CK_SBYELIST"_Stz,     // CK_SBYELIST
@@ -243,7 +243,6 @@ static Stz* aCK_short[]
 
   /* */ "boolCalc"_Stz,        // CK_BOOLCALC
 
-  /* */ "calc"_Stz,            // CK_CALC
   /* */ "candIndex"_Stz,       // CK_CANDINDEX
   /* */ "{card}"_Stz,          // CK_CARDPTR
   /* */ "cmpPred"_Stz,         // CK_CMPPRED
@@ -308,6 +307,7 @@ static Stz* aCK_short[]
   /* */ "ptndJoinSet"_Stz,     // CK_PTNDJOINSET
 
   /* */ "rbound"_Stz,          // CK_RBOUND
+  /* */ "rpnCalc"_Stz,         // CK_RPNCALC
   /* */ "rpnTerms"_Stz,        // CK_RPNTERMS
 
   /* */ "sbyElist"_Stz,        // CK_SBYELIST
