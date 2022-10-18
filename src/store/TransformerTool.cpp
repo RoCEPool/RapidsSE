@@ -310,8 +310,8 @@ void TransformerTool::C_vAppendChild(eCK eParent, eCK eChild)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  Card* pParent = F_pFetchMember(eParent);
-  Card* pChild  = F_pFetchMember(eChild);
+  Card* pParent = G_pGetMember(eParent);
+  Card* pChild  = G_pGetMember(eChild);
 
   pParent->vAppend(pChild);
 
@@ -330,7 +330,7 @@ void TransformerTool::C_vAppendChild(eCK eParent, Card* pChild)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  Card* pParent = F_pFetchMember(eParent);
+  Card* pParent = G_pGetMember(eParent);
 
   pParent->vAppend(pChild);
 
@@ -349,7 +349,7 @@ void TransformerTool::C_vDuplicateMember(eCK eMember)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  Card* pMember  = F_pFetchMember(eMember);
+  Card* pMember  = G_pGetMember(eMember);
 
   m_pCard_dup = pMember->pDupCardAndSubCards();
 
@@ -404,7 +404,7 @@ void TransformerTool::D_vDeleteMember(eCK eMember)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  Card* pMember = F_pFetchMember(eMember);
+  Card* pMember = G_pGetMember(eMember);
 
   M_vClearRegistersIf(pMember);
   U_vUpdateMember(eMember, nullptr,__func__);
@@ -627,7 +627,7 @@ void TransformerTool::E_vSubsequentToMain(bool bUpdateMember)
 /*----------------------------------------------------------------------------*/
 /* fetch M member by decoding given eMember                                   */
 /*----------------------------------------------------------------------------*/
-Card* TransformerTool::F_pFetchMember(eCK eMember)
+Card* TransformerTool::G_pGetMember(eCK eMember)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
@@ -765,6 +765,26 @@ bool TransformerTool::H_bHasSubsequentToMainIf(eCK eOfSubsequentKind, bool bUpda
   if (bUpdateMember)
     U_vUpdateMember(eOfSubsequentKind, nullptr,__func__);
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* locate card (left-right) after given i_After                               */
+/*----------------------------------------------------------------------------*/
+Card* TransformerTool::L_pLocateCard(eCK eCard, Stz* szWithValue, i8 i_After)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  return nulltpr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* locate card (left-right) after given card                                  */
+/*----------------------------------------------------------------------------*/
+Card* TransformerTool::L_pLocateCard(eCK eCard, Stz* szWithValue, Card* pAfter)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  return nulltpr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1098,13 +1118,13 @@ void TransformerTool::U_vUpdateMember(eCK eMember, Card* pCard, const char* asFu
 /*----------------------------------------------------------------------------*/
 /* search for sub of member                                                   */
 /*----------------------------------------------------------------------------*/
-bool TransformerTool::S_bSearchForSubMember(eCK eMember, eCK eSubCard, bool bUpdateMember)
+bool TransformerTool::P_bPlumbForSubMember(eCK eMember, eCK eSubCard, bool bUpdateMember)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  Card* pMember = F_pFetchMember(eMember);
+  Card* pMember = G_pGetMember(eMember);
 
-  bool b = S_bSearchForSubMember(pMember, eSubCard, bUpdateMember);
+  bool b = P_bPlumbForSubMember(pMember, eSubCard, bUpdateMember);
 
   return b;
 }
@@ -1112,7 +1132,7 @@ bool TransformerTool::S_bSearchForSubMember(eCK eMember, eCK eSubCard, bool bUpd
 /*----------------------------------------------------------------------------*/
 /* step to next main and set member                                           */
 /*----------------------------------------------------------------------------*/
-bool TransformerTool::S_bSearchForSubMember(Card* pMember, eCK eSubCard, bool bUpdateMember)
+bool TransformerTool::P_bPlumbForSubMember(Card* pMember, eCK eSubCard, bool bUpdateMember)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
@@ -1129,13 +1149,35 @@ bool TransformerTool::S_bSearchForSubMember(Card* pMember, eCK eSubCard, bool bU
 }
 
 /*----------------------------------------------------------------------------*/
+/* resolve card (right-left before given i_Before                             */
+/*----------------------------------------------------------------------------*/
+Card* TransformerTool::R_pResolveCard(eCK eCard, Stz* szWithValue, i8 i_Before)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  return nulltpr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* resolve card (right-left) before given card                                */
+/*----------------------------------------------------------------------------*/
+Card* TransformerTool::R_pResolveCard(eCK eCard, Stz* szWithValue, Card* pBefore)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  return nulltpr;
+}
+
+
+
+/*----------------------------------------------------------------------------*/
 /* update member card                                                         */
 /*----------------------------------------------------------------------------*/
 Stz* TransformerTool::szT(eCK eMember)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  Card* pMember = F_pFetchMember(eMember);
+  Card* pMember = G_pGetMember(eMember);
   Stz* szMemberNm = this->szMemberNm(eMember);
   if (pMember)
     m_sT.vSprint("%s=%s %s"_Stz,
