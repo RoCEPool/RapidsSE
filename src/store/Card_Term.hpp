@@ -26,6 +26,7 @@ namespace STORE
     bool bIsAggOp(void);
     bool bIsCommaSeparator(void);
     bool bIsIndexColOrdinal(void);
+    bool bIsParamOrdinal(void);
     bool bIsStreamColOrdinal(void);
     bool bIsTableColOrdinal(void);
     eRO  eRelOp(void);
