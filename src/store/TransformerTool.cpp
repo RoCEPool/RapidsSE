@@ -45,8 +45,9 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_pCard_popped = nullptr;
   m_pCard_temp   = nullptr;
 
+  m_pTransformIterList = new TransformIterList;
+
   // the M iterator - - - - - - - - - - - - - - - - - - - - - -
-  //m_pM = new BoardIter(m_pBoard);
 
   M_vClearMembers();
   M_vClearRegisters();
@@ -63,6 +64,8 @@ TransformerTool::~TransformerTool(void) noexcept(false)
 
   //delete m_pM;
   delete m_pPermGen;
+
+  delete m_pTransformIterList;
 }
 
 

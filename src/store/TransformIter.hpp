@@ -6,7 +6,6 @@
 #include "Bench.hpp"
 #include "BoardIter.hpp"
 
-#include "PermGen.hpp"
 
 namespace STORE
 {
