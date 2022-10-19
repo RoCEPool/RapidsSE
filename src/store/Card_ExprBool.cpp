@@ -78,8 +78,8 @@ void Card_ExprBool::vReduceExpr(void)
   //vReducePred(pSubPred);
 
   
-  this->vDump();
-  pCard_PRED->vDump();
+  //this->vDump();
+  //pCard_PRED->vDump();
   
   // the child will only have one subcard
   i8 nChildSubCards = pCard_PRED->nItems();
@@ -89,14 +89,14 @@ void Card_ExprBool::vReduceExpr(void)
   //pCard_PRED_parent->vDump();
   
   Card_PRED* pCard_PRED_kid = (Card_PRED*)pCard_PRED->pPop();
-  pCard_PRED_kid->vDump();
+  //pCard_PRED_kid->vDump();
 
   this->vReplace(pCard_PRED,pCard_PRED_kid);
-  this->vDump();
+  //this->vDump();
 
   delete pCard_PRED;
   
-  this->vDump();
+  //this->vDump();
 
 }
 

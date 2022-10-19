@@ -1,20 +1,24 @@
 /*============================================================================*/
-/* ePY.h -- Priority                                                          */
+/* ePY.h -- Property                                                          */
 /*============================================================================*/
 #pragma once
 
-enum ePY // priority
+enum ePY // property
 {
-  /*  0 */ PY_NONE=0,
-  /*  1 */ PY_LOW,
-  /*  2 */ PY_NORMAL
+  /*   */ PY_NONE=0,
+
+  /*   */ PY_TABLE_NAME,
+
+  /*   */ PY_ENUMS
 };
 
 static Stz* aPY[]
 {
-  /*  0 */ "NONE"_Stz,
-  /*  1 */ "LOW"_Stz,
-  /*  2 */ "NORMAL"_Stz
+  /*   */ "PY_NONE"_Stz,
+
+  /*   */ "PY_TABLE_NAME"_Stz,
+
+  /*   */ "PY_ENUMS"_Stz
 };
 
 /*============================================================================*/

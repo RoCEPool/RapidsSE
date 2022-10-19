@@ -21,6 +21,10 @@ Ppy::Ppy(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PPY,_FOOTER_);
 
+  m_ePpy   = PY_NONE;
+
+  m_eToken = TN_NONE;
+
   m_iValue = C_UNKNOWN;
   m_pValue = nullptr;
 //m_sValue

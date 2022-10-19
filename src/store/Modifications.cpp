@@ -157,7 +157,7 @@ void Modifications::X_calc_To_calcBool(void)
     }
   }
 
-  M.p_boolCalc->vDump();
+  //M.p_boolCalc->vDump();
 
   if (pCard_SubExpr->nItems()) {
     RASSERT(0 == M.p_boolCalc->nChildCards());

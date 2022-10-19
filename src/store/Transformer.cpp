@@ -93,30 +93,24 @@ void Transformer::vTransform3(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMER,_FOOTER_);
 
-  //vTrace("Transformer running vTransform3\n"_Stz);
-
   m_pTransforms->vUsingBoard(BK_SUBPIPE, 0);
-  //m_pTransforms->vExpandedForm(false);
 
-  vPhase_1_ReducePipeline   (C_PRINT_PHASE,C_PRINT_BOARD,C_TRACE_N);
-  vPhase_2_TableAnalysis    (C_PRINT_PHASE,C_PRINT_BOARD,C_TRACE_N);
-  vPhase_3_WherePredicates  (C_PRINT_PHASE,C_PRINT_BOARD,C_TRACE_N);
-  vPhase_U_ExistsSubqueries (C_PRINT_PHASE,C_PRINT_BOARD,C_TRACE_N);
-  vPhase_4_InitialJoin      (C_PRINT_PHASE,C_PRINT_BOARD,C_TRACE_N);
-  vPhase_5_JoinOrdering     (C_PRINT_PHASE,C_PRINT_BOARD,C_TRACE_N);
-  vPhase_6_IndexScan        (C_PRINT_PHASE,C_PRINT_BOARD,C_TRACE_N);
-  vPhase_7_StreamOrdering   (C_PRINT_PHASE,C_PRINT_BOARD,C_TRACE_N);
-  vPhase_8_FilterRefinement (C_PRINT_PHASE,C_PRINT_BOARD,C_TRACE_N);
-  vPhase_Z_RestatePipeline  (C_PRINT_PHASE,C_PRINT_BOARD,C_TRACE_N);
-
-  m_pTransforms->vUsingBoard(BK_SUBPIPE, 0);
-  //m_pTransforms->vExpandedForm(false);
+  vPhase_1_ReducePipeline   (C_PRINT_PHASE,C_QUIET_XFORM,C_TRACE_N);
+  vPhase_2_TableAnalysis    (C_PRINT_PHASE,C_QUIET_XFORM,C_TRACE_N);
+  vPhase_3_WherePredicates  (C_PRINT_PHASE,C_QUIET_XFORM,C_TRACE_N);
+  vPhase_U_ExistsSubqueries (C_PRINT_PHASE,C_QUIET_XFORM,C_TRACE_N);
+  vPhase_4_InitialJoin      (C_PRINT_PHASE,C_QUIET_XFORM,C_TRACE_N);
+  vPhase_5_JoinOrdering     (C_PRINT_PHASE,C_QUIET_XFORM,C_TRACE_N);
+  vPhase_6_IndexScan        (C_PRINT_PHASE,C_QUIET_XFORM,C_TRACE_N);
+  vPhase_7_StreamOrdering   (C_PRINT_PHASE,C_QUIET_XFORM,C_TRACE_N);
+  vPhase_8_FilterRefinement (C_PRINT_PHASE,C_QUIET_XFORM,C_TRACE_N);
+  vPhase_Z_RestatePipeline  (C_PRINT_PHASE,C_QUIET_XFORM,C_TRACE_N);
 }
 
 /*----------------------------------------------------------------------------*/
 /* apply the reducePipeline set of transformations to all subPipe boards      */
 /*----------------------------------------------------------------------------*/
-void Transformer::vPhase_1_ReducePipeline(bool bPrintPhase, bool bPrintBoard, bool bTrace)
+void Transformer::vPhase_1_ReducePipeline(bool bPrintPhase, bool bPrintXform, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
@@ -128,99 +122,98 @@ void Transformer::vPhase_1_ReducePipeline(bool bPrintPhase, bool bPrintBoard, bo
 
     m_pTransforms->vUsingBoard(BK_SUBPIPE, i_SubBoard);
 
-    m_pTransforms->vDelete_Redundant_stage (bPrintBoard,bTrace);
-    m_pTransforms->vDelete_absJoin         (bPrintBoard,bTrace);
-    m_pTransforms->vDelete_combined        (bPrintBoard,bTrace);
-    m_pTransforms->vDelete_send            (bPrintBoard,bTrace);
-    m_pTransforms->vCull_scan_Leaving_table(bPrintBoard,bTrace);
+    m_pTransforms->vDelete_Redundant_stage (bPrintXform,bTrace);
+    m_pTransforms->vDelete_absJoin         (bPrintXform,bTrace);
+    m_pTransforms->vDelete_combined        (bPrintXform,bTrace);
+    m_pTransforms->vDelete_send            (bPrintXform,bTrace);
+    m_pTransforms->vCull_scan_Leaving_table(bPrintXform,bTrace);
   }
 
-  m_pBench->vPrintBoards(BK_SUBPIPE);
+  if (bPrintPhase)
+    m_pBench->vPrintBoards(BK_SUBPIPE);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transformer::vPhase_2_TableAnalysis(bool bPrintPhase, bool bPrintBoard, bool bTrace)
+void Transformer::vPhase_2_TableAnalysis(bool bPrintPhase, bool bPrintXform, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
   m_pTransforms->vPhase(__func__);
   m_pTransforms->vUsingBoard(BK_SUBPIPE, 0);
 
-  m_pTransforms->vAdd_tableSyn_ForAll_table(bPrintBoard,bTrace);
+  m_pTransforms->vAdd_tableSyn_ForAll_table      (bPrintXform,bTrace);
+  m_pTransforms->vAdd_tablePtn_UnderAll_table    (bPrintXform,bTrace);
+  m_pTransforms->vAdd_stream_UnderAll_table      (bPrintXform,bTrace);
+  m_pTransforms->vCalc_ordinalRange_ForAll_stream(bPrintXform,bTrace);
 
-  m_pTransforms->vAdd_tablePtn_UnderAll_table(bPrintBoard,bTrace);
-
-  m_pTransforms->vAdd_stream_UnderAll_table(bPrintBoard,bTrace);
-
-  m_pTransforms->vCalc_ordinalRange_ForAll_stream(bPrintBoard,bTrace);
+  if (bPrintPhase)
+    m_pBench->vPrintBoards(BK_SUBPIPE);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transformer::vPhase_3_WherePredicates(bool bPrintPhase, bool bPrintBoard, bool bTrace)
+void Transformer::vPhase_3_WherePredicates(bool bPrintPhase, bool bPrintXform, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
   m_pTransforms->vPhase(__func__);
   m_pTransforms->vUsingBoard(BK_SUBPIPE, 0);
 
-  m_pTransforms->vConvert_where_calc_To_where_calcBool(bPrintBoard,bTrace);
+  m_pTransforms->vConvert_where_calc_To_where_calcBool  (bPrintXform,bTrace);
+  m_pTransforms->vMark_where_pred_Wrt_table             (bPrintXform,bTrace);
+  m_pTransforms->vMove_Marked_where_pred_To_table_filter(bPrintXform,bTrace);
+  m_pTransforms->vDelete_Empty_where                    (bPrintXform,bTrace);
 
-  m_pTransforms->vMark_where_pred_Wrt_table(bPrintBoard,bTrace);
-
-  m_pTransforms->vMove_Marked_where_pred_To_table_filter(bPrintBoard,bTrace);
-
-  m_pTransforms->vDelete_Empty_where(bPrintBoard,bTrace);
+  if (bPrintPhase)
+    m_pBench->vPrintBoards(BK_SUBPIPE);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transformer::vPhase_U_ExistsSubqueries(bool bPrintPhase, bool bPrintBoard, bool bTrace)
+void Transformer::vPhase_U_ExistsSubqueries(bool bPrintPhase, bool bPrintXform, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
   m_pTransforms->vPhase(__func__);
   m_pTransforms->vUsingBoard(BK_SUBPIPE, 0);
 
-  m_pTransforms->vRework_Exists_SubQueries(bPrintBoard,bTrace);
+  m_pTransforms->vRework_Exists_SubQueries (bPrintXform,bTrace);
+  m_pTransforms->vCopy_Up_SubQueries       (bPrintXform,bTrace);
+  m_pTransforms->vResolve_Parameter_Linkage(bPrintXform,bTrace);
+  m_pTransforms->vResolve_Parameter_Terms  (bPrintXform,C_TRACE_Y);
 
-  m_pTransforms->vCopy_Up_SubQueries(bPrintBoard,bTrace);
-
-  m_pTransforms->vResolve_Parameter_Linkage(bPrintBoard,bTrace);
-
-  m_pTransforms->vResolve_Parameter_Terms(bPrintBoard,C_TRACE_Y);
-
+  if (bPrintPhase)
+    m_pBench->vPrintBoards(BK_SUBPIPE);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transformer::vPhase_4_InitialJoin(bool bPrintPhase, bool bPrintBoard, bool bTrace)
+void Transformer::vPhase_4_InitialJoin(bool bPrintPhase, bool bPrintXform, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
   m_pTransforms->vPhase(__func__);
   m_pTransforms->vUsingBoard(BK_SUBPIPE, 0);
 
-  m_pTransforms->vAdd_indexJoin_UnderAllJoinable_table(bPrintBoard,bTrace);
+  m_pTransforms->vAdd_indexJoin_UnderAllJoinable_table      (bPrintXform,bTrace);
+  m_pTransforms->vConvert_idxCol_name_Of_table_To_idxCol_ord(bPrintXform,bTrace);
+  m_pTransforms->vAdd_joinPred_UnderAll_indexJoin           (bPrintXform,bTrace);
+  m_pTransforms->vCull_filter_pred_MovedUpTo_joinPred       (bPrintXform,bTrace);
+  m_pTransforms->vDelete_Empty_filter                       (bPrintXform,bTrace);
 
-  m_pTransforms->vConvert_idxCol_name_Of_table_To_idxCol_ord(bPrintBoard,bTrace);
-
-  m_pTransforms->vAdd_joinPred_UnderAll_indexJoin(bPrintBoard,bTrace);
-
-  m_pTransforms->vCull_filter_pred_MovedUpTo_joinPred(bPrintBoard,bTrace);
-
-  m_pTransforms->vDelete_Empty_filter(bPrintBoard,bTrace);
+  if (bPrintPhase)
+    m_pBench->vPrintBoards(BK_SUBPIPE);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transformer::vPhase_5_JoinOrdering(bool bPrintPhase, bool bPrintBoard, bool bTrace)
+void Transformer::vPhase_5_JoinOrdering(bool bPrintPhase, bool bPrintXform, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
@@ -232,35 +225,38 @@ void Transformer::vPhase_5_JoinOrdering(bool bPrintPhase, bool bPrintBoard, bool
   // PARTITION BOARD
 
   //
-  m_pTransforms->vExtract_tableList_From_queryBoard(bPrintBoard,bTrace);
+  m_pTransforms->vExtract_tableList_From_queryBoard(bPrintXform,bTrace);
 
   // add <term/<columnRef> to all ordinal <term>
-  m_pTransforms->vAdd_columnRef_Under_term(bPrintBoard,bTrace);
+  m_pTransforms->vAdd_columnRef_Under_term(bPrintXform,bTrace);
 
-  m_pTransforms->vExtract_joinPredList(bPrintBoard,bTrace);
-  m_pTransforms->vCompute_coPtnPredList(bPrintBoard,bTrace);
-  m_pTransforms->vCompute_coPtnJoinList(bPrintBoard,bTrace);
-  m_pTransforms->vCompute_crossPtnJoinList(bPrintBoard,bTrace);
-  m_pTransforms->vCompute_ptndJoinSet(bPrintBoard,bTrace);
+  m_pTransforms->vExtract_joinPredList(bPrintXform,bTrace);
+  m_pTransforms->vCompute_coPtnPredList(bPrintXform,bTrace);
+  m_pTransforms->vCompute_coPtnJoinList(bPrintXform,bTrace);
+  m_pTransforms->vCompute_crossPtnJoinList(bPrintXform,bTrace);
+  m_pTransforms->vCompute_ptndJoinSet(bPrintXform,bTrace);
 
-  m_pTransforms->vCopy_ptndJoinSet(bPrintBoard,bTrace);
-  m_pTransforms->vGenerate_ptndPermutations(bPrintBoard,bTrace);
-  m_pTransforms->vRemove_invalidPermutations(bPrintBoard,bTrace);
+  m_pTransforms->vCopy_ptndJoinSet(bPrintXform,bTrace);
+  m_pTransforms->vGenerate_ptndPermutations(bPrintXform,bTrace);
+  m_pTransforms->vRemove_invalidPermutations(bPrintXform,bTrace);
 
-  m_pTransforms->vSetup_costEst(bPrintBoard,bTrace);
-  m_pTransforms->vEstimate_ptndJoins(bPrintBoard,bTrace);
-  m_pTransforms->vEstimate_network(bPrintBoard,bTrace);
-  m_pTransforms->vEstimate_joinOrder(bPrintBoard,bTrace);
-  m_pTransforms->vExtract_joinOrderSeq(bPrintBoard,bTrace);
+  m_pTransforms->vSetup_costEst(bPrintXform,bTrace);
+  m_pTransforms->vEstimate_ptndJoins(bPrintXform,bTrace);
+  m_pTransforms->vEstimate_network(bPrintXform,bTrace);
+  m_pTransforms->vEstimate_joinOrder(bPrintXform,bTrace);
+  m_pTransforms->vExtract_joinOrderSeq(bPrintXform,bTrace);
   */
 
-  m_pTransforms->vConvert_table_To_scan_Or_indexJoin(bPrintBoard,bTrace);
+  m_pTransforms->vConvert_table_To_scan_Or_indexJoin(bPrintXform,bTrace);
+
+  if (bPrintPhase)
+    m_pBench->vPrintBoards(BK_SUBPIPE);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transformer::vPhase_6_IndexScan(bool bPrintPhase, bool bPrintBoard, bool bTrace)
+void Transformer::vPhase_6_IndexScan(bool bPrintPhase, bool bPrintXform, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
@@ -277,60 +273,65 @@ void Transformer::vPhase_6_IndexScan(bool bPrintPhase, bool bPrintBoard, bool bT
  *
  */
 
-  m_pTransforms->vInsert_indexList_ToAll_scan(bPrintBoard,bTrace);
+  m_pTransforms->vInsert_indexList_ToAll_scan              (bPrintXform,bTrace);
+  m_pTransforms->vConvert_idxCol_name_Of_scan_To_idxCol_ord(bPrintXform,bTrace);
+  m_pTransforms->vMark_scan_pred_bounds                    (bPrintXform,bTrace);
+  m_pTransforms->vMark_scan_filter_term_WhichMatchIndex    (bPrintXform,bTrace);
+  m_pTransforms->vAdd_scanPred                             (bPrintXform,C_TRACE_Y);
+  m_pTransforms->vCull_Marked_cmpPred                      (bPrintXform,bTrace);
+  m_pTransforms->vPromote_scan_To_indexScan                (bPrintXform,bTrace);
 
-  m_pTransforms->vConvert_idxCol_name_Of_scan_To_idxCol_ord(bPrintBoard,bTrace);
-
-  m_pTransforms->vMark_scan_pred_bounds(bPrintBoard,bTrace);
-
-  m_pTransforms->vMark_scan_filter_term_WhichMatchIndex(bPrintBoard,bTrace);
-
-  m_pTransforms->vAdd_scanPred(bPrintBoard,C_TRACE_Y);
-
-  m_pTransforms->vCull_Marked_cmpPred(bPrintBoard,bTrace);
-
-  m_pTransforms->vPromote_scan_To_indexScan(bPrintBoard,bTrace);
+  if (bPrintPhase)
+    m_pBench->vPrintBoards(BK_SUBPIPE);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transformer::vPhase_7_StreamOrdering(bool bPrintPhase, bool bPrintBoard, bool bTrace)
+void Transformer::vPhase_7_StreamOrdering(bool bPrintPhase, bool bPrintXform, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
   m_pTransforms->vPhase(__func__);
   m_pTransforms->vUsingBoard(BK_SUBPIPE, 0);
 
-  m_pTransforms->vRemove_sort_IfSameAs_gby(bPrintBoard,bTrace);
+  m_pTransforms->vRemove_sort_IfSameAs_gby(bPrintXform,bTrace);
+
+  if (bPrintPhase)
+    m_pBench->vPrintBoards(BK_SUBPIPE);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transformer::vPhase_8_FilterRefinement(bool bPrintPhase, bool bPrintBoard, bool bTrace)
+void Transformer::vPhase_8_FilterRefinement(bool bPrintPhase, bool bPrintXform, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
   m_pTransforms->vPhase(__func__);
   m_pTransforms->vUsingBoard(BK_SUBPIPE, 0);
 
-  m_pTransforms->vIndividuate_filter(bPrintBoard,bTrace);
+  m_pTransforms->vIndividuate_filter(bPrintXform,bTrace);
+
+  if (bPrintPhase)
+    m_pBench->vPrintBoards(BK_SUBPIPE);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transformer::vPhase_Z_RestatePipeline(bool bPrintPhase, bool bPrintBoard, bool bTrace)
+void Transformer::vPhase_Z_RestatePipeline(bool bPrintPhase, bool bPrintXform, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
   m_pTransforms->vPhase(__func__);
   m_pTransforms->vUsingBoard(BK_SUBPIPE, 0);
 
-  m_pTransforms->vReinstate_stages(bPrintBoard,bTrace);
+  m_pTransforms->vReinstate_stages  (bPrintXform,bTrace);
+  m_pTransforms->vReinstate_combined(bPrintXform,bTrace);
 
-  m_pTransforms->vReinstate_combined(bPrintBoard,bTrace);
+  if (bPrintPhase)
+    m_pBench->vPrintBoards(BK_SUBPIPE);
 }
 
 /*============================================================================*/

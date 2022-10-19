@@ -5,11 +5,17 @@
 
 #include "BASE.h"
 
+#include "ePY.h"
+
 namespace STORE
 {
   class Ppy : public Object
   {
   private:
+
+    ePY     m_ePpy;
+
+    eTN     m_eToken;
 
     i8      m_iValue;
     Object* m_pValue;

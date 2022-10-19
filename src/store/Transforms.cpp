@@ -225,7 +225,7 @@ void Transforms::vAdd_tableSyn_ForAll_table(bool bPrint, bool bTrace)
   vTransformation(__func__);
   vTracing(bPrint,bTrace);
 
-  M.pDeck->vDump();
+  //M.pDeck->vDump();
 
   char cTableSyn = 'a';
 
@@ -662,7 +662,7 @@ void Transforms::vCull_scan_Leaving_table(bool bPrint, bool bTrace)
   vTransformation(__func__);
   vTracing(bPrint,bTrace);
 
-  M.pDeck->vDump(0,(Stz*)(__func__));
+  //M.pDeck->vDump(0,(Stz*)(__func__));
 
   while (E_bEachMain(CK_SCAN)) {
     M.pDeck->vReplaceChildWithItsSubs(M.p_MainCard);
@@ -743,10 +743,10 @@ void Transforms::vDelete_absJoin(bool bPrint, bool bTrace)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vDescription("delete superfluous <absJoin>'s"_Stz);
-  vTransformation((char*)(__func__),C_PRINT_BOARD);
+  vTransformation((char*)(__func__),C_PRINT_XFORM);
   vTracing(bPrint,bTrace);
 
-  M.pDeck->vDump(0,(Stz*)(__func__));
+  //M.pDeck->vDump(0,(Stz*)(__func__));
 
   while (E_bEachMain(CK_ABSJOIN))
     E_vRemoveDeleteMain(CK_ABSJOIN);
@@ -763,10 +763,10 @@ void Transforms::vDelete_combined(bool bPrint, bool bTrace)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vDescription("delete superfluous <combined>'s"_Stz);
-  vTransformation((char*)(__func__),C_PRINT_BOARD);
+  vTransformation((char*)(__func__),C_PRINT_XFORM);
   vTracing(bPrint,bTrace);
 
-  M.pDeck->vDump(0,(Stz*)(__func__));
+  //M.pDeck->vDump(0,(Stz*)(__func__));
 
   while (E_bEachMain(CK_COMBINED))
     E_vRemoveDeleteMain(CK_COMBINED);
@@ -783,10 +783,10 @@ void Transforms::vDelete_send(bool bPrint, bool bTrace)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vDescription("delete superfluous <send>'s"_Stz);
-  vTransformation((char*)(__func__),C_PRINT_BOARD);
+  vTransformation((char*)(__func__),C_PRINT_XFORM);
   vTracing(bPrint,bTrace);
 
-  M.pDeck->vDump(0,(Stz*)(__func__));
+  //M.pDeck->vDump(0,(Stz*)(__func__));
 
   while (E_bEachMain(CK_SEND))
     E_vRemoveDeleteMain(CK_SEND);
@@ -803,10 +803,10 @@ void Transforms::vDelete_Redundant_stage(bool bPrint, bool bTrace)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vDescription("linearize board by deleting all duplicate <stage>'s"_Stz);
-  vTransformation((char*)(__func__),C_PRINT_BOARD);
+  vTransformation((char*)(__func__),C_PRINT_XFORM);
   vTracing(bPrint,bTrace);
 
-  M.pDeck->vDump(0,(Stz*)(__func__));
+  //M.pDeck->vDump(0,(Stz*)(__func__));
 
   Card_Stage* p_stage_CURR = nullptr;
 
@@ -1134,7 +1134,7 @@ void Transforms::vAdd_joinPred_UnderAll_indexJoin(bool bPrint, bool bTrace)
 
   while (E_bEachMainWithSub(CK_TABLE,CK_FILTER)) {
 
-    M.p_table->vDump();
+    //M.p_table->vDump();
 
     M.p_boolCalc = M.p_filter->pSub_boolCalc();
     M.p_cmpPred  = M.p_boolCalc->pSub_predCmp();
