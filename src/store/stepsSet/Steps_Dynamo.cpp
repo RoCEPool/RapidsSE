@@ -48,7 +48,7 @@ void Step::vDynamoCompile(void)
 {
   ENTRY();
     
-  s4K sPipelineStmt;
+  s16KB sPipelineStmt;
   m_pDataStack->vPopStr(sPipelineStmt,__func__);
       
   Dynamo* pDynamo = (* m_pLogicUnit->m_xpDynamo);

@@ -164,7 +164,7 @@ void SePrompt::vPromptLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
-  s4K sCmd;
+  s16KB sCmd;
 
   //
   // prompt commands are of the form:
