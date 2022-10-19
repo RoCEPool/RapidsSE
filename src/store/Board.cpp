@@ -310,12 +310,11 @@ void Board::vPrintBoard(Stz* szPhase,
 
   if (! bCue)
     return;
-  if (! szTransformation)
-    return;
 
   if (! m_bBeenCued && AM::JOB::bHasTag("<cue>"_Stz)) {
     Stz* szTagCue = AM::JOB::szTagValue("<cue>"_Stz);
-    if (! szTagCue->bSame(szPhase) && ! szTagCue->bSame(szTransformation)) {
+    if (   (! szPhase          || ! szTagCue->bSame(szPhase))
+        && (! szTransformation || ! szTagCue->bSame(szTransformation))) {
       printf("%s :: %s\n",(char*)szPhase, (char*)szTransformation);
       return;
     }

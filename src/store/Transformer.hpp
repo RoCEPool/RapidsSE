@@ -52,6 +52,8 @@ namespace STORE
 
     void vPhase_Z_RestatePipeline (bool bPrintPhase, bool bPrint, bool bTrace);
 
+    bool bPrintBench(bool bPrintPhase, const char* azFuncNm);
+
     Footer* aFooter(void);
   };
 
