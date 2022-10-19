@@ -1,13 +1,13 @@
 /*============================================================================*/
-/* Modifications.hpp --                                                          */
+/* Xlator.hpp --                                                              */
 /*============================================================================*/
 #pragma once
 
-#include "TransformerTool.hpp"
+#include "Accessor.hpp"
 
 namespace STORE
 {
-  class Modifications : public TransformerTool
+  class Xlator : public Accessor
   {
   private:
 
@@ -18,8 +18,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Modifications(eCN eClassNo, Bench* pBench);
-   ~Modifications(void) noexcept(false);
+    Xlator(eCN eClassNo, Bench* pBench);
+   ~Xlator(void) noexcept(false);
 
     void vCullAll(eCK eCard);
     void vDeleteAll(eCK eCard);

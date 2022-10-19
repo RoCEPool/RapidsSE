@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Modifications.cpp --                                                          */
+/* Xlator.cpp --                                                          */
 /*============================================================================*/
 
-#include "Modifications.hpp"
+#include "Xlator.hpp"
 #include "Resolver.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -12,8 +12,8 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Modifications::Modifications(eCN eClassNo, Bench* pBench)
-: TransformerTool(eClassNo, pBench)
+Xlator::Xlator(eCN eClassNo, Bench* pBench)
+: Accessor(eClassNo, pBench)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -23,7 +23,7 @@ Modifications::Modifications(eCN eClassNo, Bench* pBench)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Modifications::~Modifications(void) noexcept(false)
+Xlator::~Xlator(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -37,7 +37,7 @@ Modifications::~Modifications(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* cull all <mainCard> == eCard from <board>                                  */
 /*----------------------------------------------------------------------------*/
-void Modifications::vCullAll(eCK eCard)
+void Xlator::vCullAll(eCK eCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -50,7 +50,7 @@ void Modifications::vCullAll(eCK eCard)
 /*----------------------------------------------------------------------------*/
 /* cull all <mainCard> == eCard from <board>                                  */
 /*----------------------------------------------------------------------------*/
-void Modifications::vDeleteAll(eCK eCard)
+void Xlator::vDeleteAll(eCK eCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -63,7 +63,7 @@ void Modifications::vDeleteAll(eCK eCard)
 /*----------------------------------------------------------------------------*/
 /* renumber the main cards                                                    */
 /*----------------------------------------------------------------------------*/
-void Modifications::vRenumberMainCards(void)
+void Xlator::vRenumberMainCards(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -75,7 +75,7 @@ void Modifications::vRenumberMainCards(void)
 /*----------------------------------------------------------------------------*/
 /* convert <calc> to <calcBool>                                               */
 /*----------------------------------------------------------------------------*/
-void Modifications::R_vReplaceSub(Card* pSub, Card* pInParent, Card* pWith)
+void Xlator::R_vReplaceSub(Card* pSub, Card* pInParent, Card* pWith)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
@@ -87,7 +87,7 @@ void Modifications::R_vReplaceSub(Card* pSub, Card* pInParent, Card* pWith)
 /*----------------------------------------------------------------------------*/
 /* convert <calc> to <calcBool>                                               */
 /*----------------------------------------------------------------------------*/
-void Modifications::X_calc_To_calcBool(void)
+void Xlator::X_calc_To_calcBool(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
