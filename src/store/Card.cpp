@@ -651,7 +651,7 @@ Card* Card::pFindValueRecursive(eCK eCard, Stz* szValue, Card*& rpParent, Card* 
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vTrace("%s `%s`?`%s` %s\n"_Stz,__func__,szValue,sz(),md_Bearing);
+  //vTrace("%s `%s`?`%s` %s\n"_Stz,__func__,szValue,sz(),md_Bearing);
 
   if (eCard == m_eCard && bSame(szValue)) {
     rpParent = _pWalkParent_;

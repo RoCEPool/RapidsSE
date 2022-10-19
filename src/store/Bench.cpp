@@ -131,15 +131,19 @@ Optimiser* Bench::pOptimiser(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vPrintBoards(eBK eBoard)
+void Bench::vPrintBoards(eBK eBoard, i8 i_SubBoard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  for (i8 i_SubBoard = 0;
-       bBoardExists(eBoard, i_SubBoard);
-       i_SubBoard++) {
-
+  if (C_UNKNOWN != i_SubBoard) {
     Board *pBoard = pGetBoard(eBoard, i_SubBoard);
+    pBoard->vPrintBoard();
+    return;
+  }
+
+  for (i8 i_Sub = 0; bBoardExists(eBoard, i_Sub); i_Sub++) {
+
+    Board *pBoard = pGetBoard(eBoard, i_Sub);
 
     pBoard->vPrintBoard();
   }

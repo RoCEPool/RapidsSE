@@ -23,11 +23,14 @@ namespace STORE
     bool        m_bTrace;
     i8          m_iTrace;
 
-    bool        m_bPrintTransformation;
+    bool        m_bPrintPhase;
+    bool        m_bPrintXform;
     bool        m_bInteractive;
+
     s32         m_sPhase;
     s256        m_sTransformation;
     s256        m_sDescription;
+
 
     PermGen*    m_pPermGen;
 
@@ -71,7 +74,7 @@ namespace STORE
     void vDescription(Stz* szDescription);
 
     Stz* szPhase(void);
-    void vPhase(const char* szPhase);
+    void vPhase(bool bPrintPhase, const char* szPhase);
     void vPrintBoard(void);
 
     void vSetPrintByKind(eCK eCard, bool bPrintByKind);
@@ -86,7 +89,7 @@ namespace STORE
   protected:
     bool bIsTracing(void);
 
-    void vTracing(bool bPrint, bool bTrace);
+    void vTracing(bool bPrintXform, bool bTrace);
     void vTracer(Stz* szFormat, ...);
 
     void C_vAppendChild(eCK eParent, eCK eChild);

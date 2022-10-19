@@ -19,7 +19,8 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_bTrace = false;
   m_iTrace   = 0;
 
-  m_bPrintTransformation = true;
+  m_bPrintPhase = false;
+  m_bPrintXform = false;
   Job* pJob = MY::pJob();
   TagSet* pJobTags = pJob->pJobTags();
   m_bInteractive = pJobTags->bHasName("<interactive>"_Stz);
@@ -161,10 +162,11 @@ Stz* TransformerTool::szPhase(void)
 /*----------------------------------------------------------------------------*/
 /* set transformation phase                                                   */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::vPhase(const char* asPhase)
+void TransformerTool::vPhase(bool bPrintPhase, const char* asPhase)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
+  m_bPrintPhase = bPrintPhase;
   m_sPhase = asPhase;
 }
 
@@ -175,17 +177,14 @@ void TransformerTool::vPrintBoard(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  if (m_bPrintTransformation) {
-    if (m_bInteractive)
-      M.pBoard->vPrintBoard(szPhase(),
-                            szTransformation(),
-                            szDescription());
-  }
-  else {
-    vTrace("SILENT : %s\n"_Stz, m_sTransformation.szStz());
-  }
+  if (! m_bPrintXform)
+    return;
 
-  m_sDescription = ""_Stz;
+  M.pBoard->vPrintBoard(szPhase(),
+                        szTransformation(),
+                        szDescription());
+
+  //m_sDescription = ""_Stz;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -231,7 +230,7 @@ void TransformerTool::vTransformation(const char* azTransformation,
   _precondition_(_ADDRESS_, _MAGIC_);
 
   m_sTransformation = azTransformation;
-  m_bPrintTransformation = bPrintTransformation;
+  m_bPrintXform = bPrintTransformation;
 
   M.pBoard->vTransformNoInc();
 
@@ -270,9 +269,11 @@ bool TransformerTool::bIsTracing(void)
 /*----------------------------------------------------------------------------*/
 /* is tracing enabled?                                                        */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::vTracing(bool bPrint, bool bTrace)
+void TransformerTool::vTracing(bool bPrintXform, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
+
+  m_bPrintXform = bPrintXform;
 
   m_bTrace = bTrace;
 
