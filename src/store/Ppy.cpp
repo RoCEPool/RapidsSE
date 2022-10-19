@@ -21,6 +21,10 @@ Ppy::Ppy(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PPY,_FOOTER_);
 
+  m_iValue = C_UNKNOWN;
+  m_pValue = nullptr;
+//m_sValue
+
   _checkInitialised_(CN_PPY);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PPY,_FOOTER_);

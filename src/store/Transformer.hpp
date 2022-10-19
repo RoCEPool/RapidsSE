@@ -40,17 +40,17 @@ namespace STORE
 
     void vTransform3(void);
 
-    void vPhase_1_ReducePipeline  (bool bPrint, bool bTrace);
-    void vPhase_2_TableAnalysis   (bool bPrint, bool bTrace);
-    void vPhase_3_WherePredicates (bool bPrint, bool bTrace);
-    void vPhase_U_ExistsSubqueries(bool bPrint, bool bTrace);
-    void vPhase_4_InitialJoin     (bool bPrint, bool bTrace);
-    void vPhase_5_JoinOrdering    (bool bPrint, bool bTrace);
-    void vPhase_6_IndexScan       (bool bPrint, bool bTrace);
-    void vPhase_7_StreamOrdering  (bool bPrint, bool bTrace);
-    void vPhase_8_FilterRefinement(bool bPrint, bool bTrace);
+    void vPhase_1_ReducePipeline  (bool bPrintPhase, bool bPrintBoard, bool bTrace);
+    void vPhase_2_TableAnalysis   (bool bPrintPhase, bool bPrintBoard, bool bTrace);
+    void vPhase_3_WherePredicates (bool bPrintPhase, bool bPrintBoard, bool bTrace);
+    void vPhase_U_ExistsSubqueries(bool bPrintPhase, bool bPrintBoard, bool bTrace);
+    void vPhase_4_InitialJoin     (bool bPrintPhase, bool bPrintBoard, bool bTrace);
+    void vPhase_5_JoinOrdering    (bool bPrintPhase, bool bPrintBoard, bool bTrace);
+    void vPhase_6_IndexScan       (bool bPrintPhase, bool bPrintBoard, bool bTrace);
+    void vPhase_7_StreamOrdering  (bool bPrintPhase, bool bPrintBoard, bool bTrace);
+    void vPhase_8_FilterRefinement(bool bPrintPhase, bool bPrintBoard, bool bTrace);
 
-    void vPhase_Z_RestatePipeline (bool bPrint, bool bTrace);
+    void vPhase_Z_RestatePipeline (bool bPrintPhase, bool bPrint, bool bTrace);
 
     Footer* aFooter(void);
   };

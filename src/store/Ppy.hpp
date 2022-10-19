@@ -11,6 +11,10 @@ namespace STORE
   {
   private:
 
+    i8      m_iValue;
+    Object* m_pValue;
+    s256    m_sValue;
+
     // must be last
     Footer m_xFooter;
 

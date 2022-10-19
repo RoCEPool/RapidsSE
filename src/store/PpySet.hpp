@@ -12,6 +12,9 @@ namespace STORE
   class PpySet : public Object
   {
   private:
+    static const i8 C_MAX_PPY  = 8;
+    
+    Ppy m_oaPpy[C_MAX_PPY];
 
     // must be last
     Footer m_xFooter;

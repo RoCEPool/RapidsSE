@@ -135,12 +135,17 @@ namespace STORE
 {
   static const bool C_CONTINUE_RECURSION  = true;
   static const bool C_PRINT_BOARD         = true;
+  static const bool C_PRINT_PHASE         = true;
   static const bool C_TRACE_TRANSFORMS    = true;
+  static const bool C_TRACE_Y             = true;
   static const bool C_UPDATE_MEMBER       = true;
 
   static const bool C_DONT_PRINT          = false;
   static const bool C_DONT_TRACE          = false;
+  static const bool C_QUIET_BOARD         = false;
+  static const bool C_QUIET_PHASE         = false;
   static const bool C_TERMINATE_RECURSION = false;
+  static const bool C_TRACE_N             = false;
 
   class Card : public Object
              , public ChildCards
@@ -158,6 +163,7 @@ namespace STORE
     char m_cMark2;
 
     TagSet* m_pProperties;
+    PpySet  m_oPpySet;
 
     Card* m_pLastPrintParent;
 
