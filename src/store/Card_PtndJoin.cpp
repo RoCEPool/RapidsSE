@@ -8,6 +8,8 @@
 #include "Card_Table.hpp"
 #include "Card_TablePtr.hpp"
 #include "Card_TableList.hpp"
+
+#include "Table.hpp"
 #include "StreamDef.hpp"
 
 /*----------------------------------------------------------------------------*/

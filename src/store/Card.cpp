@@ -668,6 +668,29 @@ Card* Card::pFindValueRecursive(eCK eCard, Stz* szValue, Card*& rpParent, Card* 
   return nullptr;
 }
 
+/*----------------------------------------------------------------------------*/
+/* find property recursively within this card                                 */
+/*----------------------------------------------------------------------------*/
+Card* Card::pFindPpyRecursive(Stz* szPpy, eCK eOfCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if ( (CK_NONE == eOfCard || eOfCard == m_eCard)) {
+    if (bHasProperty(szPpy))
+      return this;
+  }
+
+
+  i8 nSubCards = this->nChildCards();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    if (Card *pFoundCard = pGetChild(i_Child)->pFindPpyRecursive(szPpy,eOfCard))
+      return pFoundCard;
+  }
+
+  return nullptr;
+}
+
+
 
 /*----------------------------------------------------------------------------*/
 /* is there an immediate child with given value?                              */

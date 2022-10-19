@@ -40,17 +40,17 @@ namespace STORE
 
     void vTransform3(void);
 
-    void vPhase_1_ReducePipeline(bool bTrace);
-    void vPhase_2_TableAnalysis(bool bTrace);
-    void vPhase_3_WherePredicates(bool bTrace);
-    void vPhase_U_ExistsSubqueries(bool bTrace);
-    void vPhase_4_InitialJoin(bool bTrace);
-    void vPhase_5_JoinOrdering(bool bTrace);
-    void vPhase_6_IndexScan(bool bTrace);
-    void vPhase_7_StreamOrdering(bool bTrace);
-    void vPhase_8_FilterRefinement(bool bTrace);
+    void vPhase_1_ReducePipeline  (bool bPrint, bool bTrace);
+    void vPhase_2_TableAnalysis   (bool bPrint, bool bTrace);
+    void vPhase_3_WherePredicates (bool bPrint, bool bTrace);
+    void vPhase_U_ExistsSubqueries(bool bPrint, bool bTrace);
+    void vPhase_4_InitialJoin     (bool bPrint, bool bTrace);
+    void vPhase_5_JoinOrdering    (bool bPrint, bool bTrace);
+    void vPhase_6_IndexScan       (bool bPrint, bool bTrace);
+    void vPhase_7_StreamOrdering  (bool bPrint, bool bTrace);
+    void vPhase_8_FilterRefinement(bool bPrint, bool bTrace);
 
-    void vPhase_Z_RestatePipeline(bool bTrace);
+    void vPhase_Z_RestatePipeline (bool bPrint, bool bTrace);
 
     Footer* aFooter(void);
   };
