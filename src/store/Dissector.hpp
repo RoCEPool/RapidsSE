@@ -14,6 +14,7 @@ namespace STORE
   protected:
 
     VertexSpec*  m_pPipeSpec;
+    DeckSpec*    m_pDeckSpec;
     StageSpec*   m_pStageSpec;
     OpSpec*      m_pOpSpec;
 
@@ -33,45 +34,38 @@ namespace STORE
     void vDissectSpec(VertexSpec* pPipeSpec);
   
   private:
-    void vPipeline(void);
+    void vSubPipe(i8 i_SubPipeSpec);
     void vStage(i8 i_StageSpec);
     void vOp(i8 i_OpSpec);
 
-    Card* pCard_AbsJoin  (TagSet* pArgTags);
-    Card* pCard_Aggreg   (TagSet* pArgTags);
-    Card* pCard_Combined (TagSet* pArgTags);
-    Card* pCard_Consume  (TagSet* pArgTags);
-    Card* pCard_Debug    (TagSet* pArgTags);
-    Card* pCard_Filter   (TagSet* pArgTags);
-    Card* pCard_Hash     (TagSet* pArgTags);
-    Card* pCard_IndexJoin(TagSet* pArgTags);
-    Card* pCard_IndexScan(TagSet* pArgTags);
-    Card* pCard_Limit    (TagSet* pArgTags);
-    Card* pCard_OrdAgg   (TagSet* pArgTags);
-    Card* pCard_Output   (TagSet* pArgTags);
-    Card* pCard_Pulse    (TagSet* pArgTags);
-    Card* pCard_Project  (TagSet* pArgTags);
-    Card* pCard_Scan     (TagSet* pArgTags);
-    Card* pCard_Send     (TagSet* pArgTags);
-    Card* pCard_Sink     (TagSet* pArgTags);
-    Card* pCard_Sort     (TagSet* pArgTags);
-    Card* pCard_Start    (TagSet* pArgTags);
+    Card* pOp_AbsJoin  (TagSet* pArgTags);
+    Card* pOp_Aggreg   (TagSet* pArgTags);
+    Card* pOp_Combined (TagSet* pArgTags);
+    Card* pOp_Consume  (TagSet* pArgTags);
+    Card* pOp_Debug    (TagSet* pArgTags);
+    Card* pOp_Filter   (TagSet* pArgTags);
+    Card* pOp_Hash     (TagSet* pArgTags);
+    Card* pOp_IndexJoin(TagSet* pArgTags);
+    Card* pOp_IndexScan(TagSet* pArgTags);
+    Card* pOp_Limit    (TagSet* pArgTags);
+    Card* pOp_OrdAgg   (TagSet* pArgTags);
+    Card* pOp_Output   (TagSet* pArgTags);
+    Card* pOp_Pulse    (TagSet* pArgTags);
+    Card* pOp_Project  (TagSet* pArgTags);
+    Card* pOp_Scan     (TagSet* pArgTags);
+    Card* pOp_Send     (TagSet* pArgTags);
+    Card* pOp_Sink     (TagSet* pArgTags);
+    Card* pOp_Sort     (TagSet* pArgTags);
+    Card* pOp_Start    (TagSet* pArgTags);
 
     Card_AggElist*  pAggElist   (Card_RpnTerms* pCard_RpnTerms);
     Card_GbyElist*  pGbyElist   (Card_RpnTerms* pCard_RpnTerms);
     Card_ProjElist* pProjElist  (Card_RpnTerms* pCard_RpnTerms);
     Card_SbyElist*  pSbyElist   (Card_RpnTerms* pCard_RpnTerms);
 
-    Card_Expr*      pExpr_c     (Card_RpnTerms* pCard_RpnTerms);
-    Card_Calc*      pExprCalc   (Card_RpnTerms* pCard_RpnTerms);
-  
-    void vPredOr  (Card_ExprBool* pCard_ExprBool,
-                   Card_RpnTerms* pCard_RpnTerms);
-    void vPredAnd (Card_ExprBool* pCard_ExprBool,
-                   Card_RpnTerms* pCard_RpnTerms);
-    void vPredCmp (Card_ExprBool* pCard_ExprBool,
-                   Card_RpnTerms* pCard_RpnTerms);
-  
+    Card_Expr*      pExpr       (Card_RpnTerms* pCard_RpnTerms);
+    Card_RpnCalc*      pCalc       (Card_RpnTerms* pCard_RpnTerms);
+
     Card_As*        pAs       (Card_RpnTerms* pCard_RpnTerms);
     Card_Direction* pDirection(Card_RpnTerms* pCard_RpnTerms);
     Card_Type*      pType     (Card_RpnTerms* pCard_RpnTerms);

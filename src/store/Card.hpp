@@ -29,7 +29,7 @@ namespace STORE
 
   class Card_Deck;
 
-  class Card_Calc;
+  class Card_RpnCalc;
   class Card_BoolCalc;
   class Card_CandIndex;
   class Card_CardPtr;
@@ -108,6 +108,7 @@ static Stz* P_Invalid      = "bInvalid"_Stz;
 static Stz* P_JoinedBuff   = "nJoinedBuff"_Stz;
 static Stz* P_Network      = "nNetwork"_Stz;
 static Stz* P_OrdHi        = "iOrdHi"_Stz;
+static Stz* P_Ordinal      = "szOrdinal"_Stz;
 static Stz* P_OrdLo        = "iOrdLo"_Stz;
 static Stz* P_Permutation  = "i_Permutation"_Stz;
 static Stz* P_PtndJoin     = "i_PtndJoin"_Stz;
@@ -131,6 +132,9 @@ static char MARK_UPWARDS    = '^';
 
 namespace STORE
 {
+  static const bool C_CONTINUE_RECURSION  = true;
+  static const bool C_TERMINATE_RECURSION = false;
+
   class Card : public Object
              , public ChildCards
   {
@@ -181,7 +185,9 @@ namespace STORE
 
     void vAppendDupSubCards(Card* pFromCard);
     void vAppendMain(Card* pNewMainCard, bool bRenumber= true);
+    void vApplyRecursive(eCK eToSubs, std::function<bool(Card* pCard)> bfApply);
 
+    Stz* szBearing(void);
     void vBearing(void);
     void vBearing(Card* pParentCard);
 
@@ -203,6 +209,8 @@ namespace STORE
     bool bEquivalentTo(Card* pCard_OTHER);
 
     Card* pFindParent(Card* pSubCard);
+    Card* pFindValueRecursive(Stz* szValue, Card*& rpParent, Card* _opaque_=nullptr);
+    Card* pFindValueRecursive(eCK eCard, Stz* szValue, Card*& rpParent, Card* _opaque_=nullptr);
 
     bool bHasChildWithValue(Stz* szValue);
     bool bHasProperty(Stz* szPpyNm);
@@ -236,7 +244,7 @@ namespace STORE
     void vPrintName(Ribbon* pRibbon, i8 iDepth, Stz* szCustomName=nullptr);
     void vPrintNameValue(Ribbon* pRibbon, i8 iDepth);
     void vPrintProperties(Ribbon* pRibbon, i8 iDepth);
-    void vPrintValue(Ribbon* pRibbon, i8 iDepth);
+    void vPrintValue(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks=false);
     i8   nProperties(void);
     eTN  eProperty(i8 i_Property);
     TagSet* pProperties(void);
@@ -244,11 +252,13 @@ namespace STORE
 
     void vRenumberRecursive(Card* pParent=nullptr);
 
+    bool bSame(Stz* szArg);
+
     Stz* sz(void);
     Stz* szValue(void);
     void vValue(Stz* szValue);
+    void vValueSprint(Stz* szFormat, ...);
     bool bValuesSameRecursive(Card* pCard_b, i8 iDepth= 0, bool bTestL0= false);
-    void vVisitRecursive(eCK eCard, std::function<bool(Card* pCard)> bfApply);
 
     Stz* Y_szNm(i8 i_Property);
     char Y_cVal(i8 i_Property);
@@ -265,6 +275,7 @@ namespace STORE
     void Y_vSet(Stz* szPpyNm);
     void Y_vSet(Stz* szPpyNm, Object* pPpyVal);
     void Y_vSet(Stz* szPpyNm, Stz* szPpyVal);
+    void Y_vSetSprint(Stz* szPpyNm, Stz* szFormat, ...);
 
 
 
@@ -273,7 +284,6 @@ namespace STORE
 
     Card_As*            pSub_as(void);
     Card_BoolCalc*      pSub_boolCalc(void);
-    Card_Calc*          pSub_calc(void);
     Card_ColumnRef*     pSub_columnRef(void);
     Card_Filter*        pSub_filter(void);
     Card_GbyElist*      pSub_gbyElist(void);
@@ -284,6 +294,7 @@ namespace STORE
     Card_JoinPred*      pSub_joinPred(void);
     Card_LBound*        pSub_lBound(void);
     Card_CmpPred*       pSub_predCmp(void);
+    Card_RpnCalc*       pSub_rpnCalc(void);
     Card_SbyElist*      pSub_sbyElist(void);
     Card_Scan*          pSub_scan(void);
     Card_ScanPred*      pSub_scanPred(void);

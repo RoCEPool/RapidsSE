@@ -247,6 +247,10 @@
 #include "PermGen.hpp"
 #include "CardIter.hpp"
 #include "Transforms.hpp"
+#include "ParamSpec.hpp"
+#include "ParamsSpec.hpp"
+#include "TransformIter.hpp"
+#include "TransformIterList.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -476,6 +480,8 @@ SizeHeap gxaSizeHeap[]
   { CN__P__,                     'P' - ('A' - 1),            HT_INVALID   ,FILL },
   { CN_PAGEFILE,                 sizeof(PageFile),           HT_T_TINY    ,FILL },
   { CN_PAGINGMETRICS,            sizeof(PagingMetrics),      HT_T_LARGE   ,FILL },
+  { CN_PARAMSPEC,                sizeof(ParamSpec),          HT_T_TINY    ,FILL },
+  { CN_PARAMSSPEC,               sizeof(ParamsSpec),         HT_T_TINY    ,FILL },
   { CN_PARCEL,                   sizeof(Parcel),             HT_T_TINY    ,FILL },
   { CN_PATHIDENTIFIER,           sizeof(PathIdentifier),     HT_T_MEDIUM  ,FILL },
   { CN_PATHVEC,                  sizeof(PathVec),            HT_T_MEDIUM  ,FILL },
@@ -657,6 +663,8 @@ SizeHeap gxaSizeHeap[]
   { CN_TRACELOCK,                sizeof(TraceLock),          HT_T_TINY    ,FILL },
   { CN_TRACEMULTILOCK,           sizeof(TraceMultiLock),     HT_T_TINY    ,FILL },
   { CN_TRANSFORMER,              sizeof(Transformer),        HT_T_TINY    ,FILL },
+  { CN_TRANSFORMITER,            sizeof(TransformIter),      HT_T_TINY    ,FILL },
+  { CN_TRANSFORMITERLIST,        sizeof(TransformIterList),  HT_T_TINY    ,FILL },
   { CN_TRANSFORMS,               sizeof(Transforms),         HT_T_SMALL   ,FILL },
   { CN_TSPVAL,                   sizeof(TypeValueArea),/*yes*/   HT_INVALID   ,FILL },
   { CN_TUB,                      sizeof(Tub),                HT_T_TINY    ,FILL },

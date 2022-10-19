@@ -1,24 +1,31 @@
 /*============================================================================*/
-/* Card_Calc.hpp -- Calculation Predicate                                     */
+/* ParamsSpec.hpp -- Parameters (list) Specification                          */
 /*============================================================================*/
 #pragma once
 
-#include "Card.hpp"
+#include "ParamSpec.hpp"
 
 namespace STORE
 {
-  class Card_Calc : public Card
-  {  
+  class ParamsSpec : public ListNL_t<ParamSpec>
+                   , public ListItem_t<ParamsSpec>
+  {
+  private:
+
+    // must be last
+    Footer m_xFooter;
+
   public:
     void* operator new(size_t);
     void  operator delete(void*);
-  
-    Card_Calc(void);
-    Card_Calc(Column* pColumn);
-   ~Card_Calc(void) noexcept(false);
+
+    ParamsSpec(void);
+   ~ParamsSpec(void) noexcept(false);
+   
+    Footer* aFooter(void);
   };
 
-  Card_Calc* _pCard_Calc(void* aAddr);
+  ParamsSpec* _pParamsSpec(void* aAddr);
 }
 
 /*============================================================================*/

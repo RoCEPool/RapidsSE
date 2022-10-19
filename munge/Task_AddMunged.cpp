@@ -29285,6 +29285,8 @@ void Task::vAddMunged(Task* )
     "\n"
     "  \"_Call_Optimiser\" .\n"
     "\n"
+    "  \"<CallingOptimiser>\" 1 [job].tagSet@ tagSet.appendInt\n"
+    "\n"
     "  Text[] .\n"
     "\n"
     "  Dynamo[].new\n"

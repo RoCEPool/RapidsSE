@@ -24,9 +24,12 @@ namespace STORE
    ~Bench(void) noexcept(false);
 
     void vAddBoard(Board* pBoard);
+    bool bBoardExists(eBK eBoard, i8 i_SubBoard = C_UNKNOWN);
     CardCtl* pCardCtl(void);
-    Board* pGetBoard(eBK eBoard);
+    Board* pGetBoard(eBK eBoard, i8 i_SubBoard = C_UNKNOWN);
+    Board* pGetBoard(Stz* szBoardNm);
     Optimiser* pOptimiser(void);
+    void vPrintBoards(eBK eBoard);
 
   private:
     Footer* aFooter(void);

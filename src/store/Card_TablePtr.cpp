@@ -120,6 +120,11 @@ void Card_TablePtr::vTablePtrPrint(Ribbon* pRibbon, i8 iDepth)
   if (pRibbon->iArea())
     return;
 
+  vPrintName(pRibbon,iDepth);
+
+  if (1 == pCardCtl->iPtrDetail(CK_TABLEPTR))
+    return;
+
   //pCardTablePtr->vPrintPartition(pRibbon);
   PtnDef* pPtnDef = pTable->pPtnDef();
   Column* pColumn = pPtnDef->pGetColumn(0);

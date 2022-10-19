@@ -16,14 +16,16 @@
 #include "Card_AggLevel.hpp"
 #include "Card_Aggreg.hpp"
 #include "Card_Aggregates.hpp"
+#include "Card_AndPred.hpp"
 #include "Card_As.hpp"
 
 #include "Card_Deck.hpp"
 
-#include "Card_Calc.hpp"
+#include "Card_RpnCalc.hpp"
 #include "Card_BoolCalc.hpp"
 #include "Card_CandIndex.hpp"
 #include "Card_CardPtr.hpp"
+#include "Card_CmpPred.hpp"
 #include "Card_Combined.hpp"
 #include "Card_Comment.hpp"
 #include "Card_ColumnRef.hpp"
@@ -63,16 +65,19 @@
 #include "Card_JoinPred.hpp"
 #include "Card_JoinPredList.hpp"
 
+#include "Card_KeyExists.hpp"
+
 #include "Card_LBound.hpp"
 #include "Card_Limit.hpp"
+#include "Card_LinksTo.hpp"
 
-#include "Card_OrdAgg.hpp"
 #include "Card_ObyElist.hpp"
-
-#include "Card_Permutation.hpp"
-#include "Card_AndPred.hpp"
-#include "Card_CmpPred.hpp"
 #include "Card_OrPred.hpp"
+#include "Card_OrdAgg.hpp"
+
+#include "Card_Param.hpp"
+#include "Card_ParamList.hpp"
+#include "Card_Permutation.hpp"
 #include "Card_Project.hpp"
 #include "Card_ProjElist.hpp"
 #include "Card_PtndJoin.hpp"
@@ -97,6 +102,7 @@
 #include "Card_TablePtn.hpp"
 #include "Card_TablePtr.hpp"
 #include "Card_Term.hpp"
+#include "Card_TstPred.hpp"
 #include "Card_Type.hpp"
 
 #include "Card_UBound.hpp"
@@ -105,6 +111,7 @@
 #include "Card_Where.hpp"
 
 #include "VertexSpec.hpp"
+#include "DeckSpec.hpp"
 #include "StageSpec.hpp"
 #include "OpSpec.hpp"
 
@@ -121,13 +128,17 @@ namespace STORE
   class Board : public Object
   {
   protected:
+    s32         m_sBoardNm;
     eBK         m_eBoard;
+    i8          m_i_SubBoard;
     eBT         m_eBoardType;
+
     Card_Deck*  m_pCard_Deck;
 
     Optimiser*  m_pOptimiser;
     Bench*      m_pBench;
 
+    i8          m_iTransformNo;
     b8          m_bBeenCued;
 
   private:
@@ -138,24 +149,34 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Board(eBK eBoard, eBT eBoardType, Bench* pBench);
+    Board(Stz* szBoardNm, eBK eBoard, i8 i_SubBoard, eBT eBoardType, Bench* pBench);
    ~Board(void) noexcept(false);
 
     eBK eBoard(void);
-    CardCtl* pCardCtl(void);
-    Card_Deck* pCard_Deck(void);
+    Stz* szBoardNm(void);
+    void vBoardNm(Stz* szBoardNm);
 
+    CardCtl* pCardCtl(void);
+
+    Card_Deck* pDeck(void);
     void vDuplicateBoard(Board* pBoard_arg);
 
     void vPinCards(Ribbon* pRibbon,
                    i8 iPrintNo,
-                   Stz* szTransformation=nullptr,
                    Stz* szExplain=nullptr);
+    void vPinTitle(Ribbon* pRibbon,
+                   i8 iTransformNo,
+                   Stz* szExplain=nullptr);
+    void vPrintBoard(Stz* szPhase=nullptr,
+                     Stz* szTransformation=nullptr,
+                     Stz* szDescription=nullptr);
 
-    void vPrintBoard(TransformerTool* pTransformerTool);
+    i8 i_SubBoard(void);
+
+    void vTransformNoInc(void);
 
   private:
-      Footer* aFooter(void);
+    Footer* aFooter(void);
   };
 
   Board* _pBoard(void* aAddr);

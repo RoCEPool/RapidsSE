@@ -92,6 +92,9 @@ void Card_IndexPtr::vIndexPtrPrint(Ribbon* pRibbon, i8 iDepth)
     return;
 
   Card_IndexPtr* pCard_IndexPtr = _pCard_IndexPtr(this);
+
+  vPrintName(pRibbon,iDepth);
+
   Index* pIndex = pCard_IndexPtr->pIndex();
   IndexDef* pIndexDef = pIndex->pIndexDef();
   Table* pTable = pIndex->pTable();
@@ -102,6 +105,9 @@ void Card_IndexPtr::vIndexPtrPrint(Ribbon* pRibbon, i8 iDepth)
       ,pIndexDef->bIsUnique()
        ? "unique"_Stz : "not unique"_Stz
   );
+
+  if (1 == pCardCtl->iPtrDetail(CK_INDEXPTR))
+    return;
 
   pRibbon->vSput(FR_NAME,pTable->szTableNm());
 

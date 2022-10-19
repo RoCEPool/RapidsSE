@@ -8,98 +8,51 @@
 
 #include "PermGen.hpp"
 
+#include "TransformIterList.hpp"
+
 namespace STORE
 {
-  class TransformerTool : public Object
+  class TransformerTool : public TransformIter
   {
   protected:
 
-    Bench*      m_pBench;
-    Board*      m_pBoard;
-    Board*      m_pBoard_costEst;
-    Board*      m_pBoard_partition;
-    Board*      m_pBoard_permute;
-    Board*      m_pBoard_query;
-    CardCtl*    m_pCardCtl;
+    static const bool C_DONT_PRINT    = false;
+    static const bool C_PRINT_BOARD   = true;
+    static const bool C_UPDATE_MEMBER = true;
 
-    i8          m_iTransformNo;
-    s32         m_sPhase;
-    s256        m_sTranformation;
-    s256        m_sDescription;
+    Bench*      m_pBench;
+    CardCtl*    m_pCardCtl;
+    bool        m_bTracing;
+    i8          m_iTrace;
+
     bool        m_bPrintTransformation;
+    bool        m_bInteractive;
+    s32         m_sPhase;
+    s256        m_sTransformation;
+    s256        m_sDescription;
+
+    PermGen*    m_pPermGen;
 
     Table*      m_pTable;
     StreamDef*  m_pStreamDef;
     IdxVec*     m_pIdxVec;
     Index*      m_pIndex;
 
-    bool        m_bInteractive;
+    Card* m_pCard_child;
+    Card* m_pCard_dup;
+    Card* m_pCard_located;
+    Card* m_pCard_new;
+    Card* m_pCard_parent;
+    Card* m_pCard_popped;
+    Card* m_pCard_resolved;
+    Card* m_pCard_temp;
 
-    PermGen*    m_pPermGen;
+    Card_Term* m_pTerm_0;
+    Card_Term* m_pTerm_1;
 
-    eCK m_eMainCard;
-    eCK m_eNextMain;
+    TransformIterList* m_pTransformIterList;
 
-    BoardIter* m_pM;
-
-    Card_Deck* _deck_;
-
-    Card* m_pChildCard;
-    Card* m_pDupCard;
-    Card* m_pMainCard;
-    Card* m_pNewCard;
-    Card* m_pNextMain;
-    Card* m_pPoppedCard;
-
-    Card_AbsJoin*          m_p_absJoin;
-    Card_Aggreg*           m_p_aggreg;
-    Card_Calc*             m_p_calc;
-    Card_BoolCalc*         m_p_calcBool;
-    Card_CmpPred*          m_p_cmpPred;
-    Card_Combined*         m_p_combined;
-    Card_Comment*          m_p_comment;
-    Card_CoPtnJoin*        m_p_coPtnJoin;
-    Card_CoPtnJoinList*    m_p_coPtnJoinList;
-    Card_CoPtnPred*        m_p_coPtnPred;
-    Card_CoPtnPredList*    m_p_coPtnPredList;
-    Card_CrossPtnJoin*     m_p_crossPtnJoin;
-    Card_CrossPtnJoinList* m_p_crossPtnJoinList;
-    Card_Expr*             m_p_expr;
-    Card_Filter*           m_p_filter;
-    Card_GbyElist*         m_p_gbyElist;
-    Card_IdxColList*       m_p_idxColList;
-    Card_IndexJoin*        m_p_indexJoin;
-    Card_IndexList*        m_p_indexList;
-    Card_IndexPtr*         m_p_indexPtr;
-    Card_IndexScan*        m_p_indexScan;
-    Card_JoinOrder*        m_p_joinOrder;
-    Card_JoinOrderSeq*     m_p_joinOrderSeq;
-    Card_JoinPred*         m_p_joinPred;
-    Card_JoinPredList*     m_p_joinPredList;
-    Card_LBound*           m_p_lBound;
-    Card_Permutation*      m_p_permutation;
-    Card_Permutation*      m_p_permutation_low;
-    Card_Project*          m_p_project;
-    Card_PtndJoin*         m_p_ptndJoin;
-    Card_PtndJoinSet*      m_p_ptndJoinSet;
-    Card_SbyElist*         m_p_sbyElist;
-    Card_Scan*             m_p_scan;
-    Card_ScanPred*         m_p_scanPred;
-    Card_Sort*             m_p_sort;
-    Card_Stage*            m_p_stage;
-    Card_StageTopo*        m_p_stageTopo;
-    Card_Stream*           m_p_stream;
-    Card_StreamColList*    m_p_streamColList;
-    Card_SubSet*           m_p_subSet;
-    Card_Table*            m_p_table;
-    Card_TableList*        m_p_tableList;
-    Card_TablePtn*         m_p_tablePtn;
-    Card_TablePtr*         m_p_tablePtr;
-    Card_Term*             m_p_term;
-    Card_Term*             m_p_term_0;
-    Card_Term*             m_p_term_1;
-    Card_UBound*           m_p_uBound;
-    Card_Where*            m_p_where;
+    s256 m_sT;
 
   public:
     void* operator new(size_t);
@@ -110,7 +63,7 @@ namespace STORE
 
     Board* pBoard(void);
 
-    eCK   eDecodeMain(Card* pCard);
+     eCK  eDecodeMain(Card* pCard);
 
     void vEndTransformation(void);
 
@@ -118,7 +71,7 @@ namespace STORE
     void vDescription(Stz* szDescription);
 
     Stz* szPhase(void);
-    void vPhase(Stz* szPhase);
+    void vPhase(const char* szPhase);
     void vPrintBoard(void);
 
     void vSetPrintByKind(eCK eCard, bool bPrintByKind);
@@ -126,29 +79,74 @@ namespace STORE
     void vSetPrintSubCards(eCK eCard, bool bPrintSubCards);
 
     Stz* szTransformation(void);
-    void vTransformation(eBK eBoard, char* azTranformation, bool bPrintTransformation=true);
-    i8   iTransformNoInc(void);
+    void vTransformation(const char* azTransformation, bool bPrintTransformation=true);
+
+    void vUsingBoard(eBK eBoard, i8 i_SubBoard);
 
   protected:
-    void vSetupCostEstBoard(void);
-    void vSetupPartitionBoard(void);
-    void vSetupPermuteBoard(void);
-    void vSetupQueryBoard(void);
+    bool bIsTracing(void);
+
+    void vTracing(bool bTracing);
+    void vTracer(Stz* szFormat, ...);
+
+    void C_vAppendChild(eCK eParent, eCK eChild);
+    void C_vAppendChild(eCK eParent, Card* pChild);
+    void C_vDuplicateMember(eCK eMember);
+    void C_vRemoveChild(eCK eParent, eCK eChild);
+    void C_vRemoveDeleteChild(eCK eParent, eCK eChild);
+    void C_vRemoveDeleteMain(eCK eMain);
+    void C_vPromoteChildren(eCK eParent);
 
     void D_vDeleteMember(eCK eMember);
     void D_vDeleteMember(Card* pMember);
+
+    bool E_bEachMain(void);
+    bool E_bEachMain(eCK eOfMainKind);
+    bool E_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind);
+    bool E_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind, Stz* szSubValue);
+    bool E_bEachMainWith2Sub(eCK eOfMainKind, eCK eAndSubKind1, eCK eAndSubKind2);
+    i8   E_i_Main(void);
+    bool E_bMoreMain(void);
+    void E_vRemoveMain(eCK eCrossCheck);
+    void E_vRemoveDeleteMain(eCK eCrossCheck);
+    void E_vSkipNextMain(bool bClearMembers=false, bool bClearRegisters=false);
+    bool E_bSubsequentToMain(bool bUpdateMember = false);
+    void E_vSubsequentToMain(bool bUpdateMember = false);
+
     Card* G_pGetMember(eCK eMember);
-    void N_vNewMember(eCK eCard);
-    void N_vNewMember(eCK eCard, Stz* szValue);
-    void U_vSetMember(eCK eCard, Card* pCard);
 
-    bool E_bEachMember(void);
-    bool E_bEachMain(eCK eOfKind);
-    bool E_bEachMain(eCK eOfKind, eCK eAndHasSub);
-    void E_vRemoveDelete(eCK eCrossCheck);
+    bool H_bHasPriorToMain(bool bUpdateMember = false);
+    bool H_bHasPriorToMainIf(eCK eOfPriorKind, bool bUpdateMember = false);
+    bool H_bHasSubsequentToMain(bool bUpdateMember = false);
+    bool H_bHasSubsequentToMainIf(eCK eOfSubsequentKind, bool bUpdateMember = false);
 
-    bool S_bSearchMember(eCK eMember, eCK eForSubCard);
-    bool S_bSearchMember(Card* pMember, eCK eForSubCard);
+    bool L_bLocateCard(eCK eCard, Stz* szWithValue, i8 i_After);
+    bool L_bLocateCard(eCK eCard, Stz* szWithValue, Card* pAfter);
+
+    void M_vClearMembers(void);
+    void M_vClearMembersRegisters(void);
+    void M_vClearRegisters(void);
+    void M_vClearRegistersIf(eCK eCard);
+    void M_vClearRegistersIf(Card* pCard);
+    void M_vPushIter(void);
+    void M_vPushIter(Board* pBoard);
+    void M_vPopIter(void);
+    void M_vRestart(void);
+
+    void N_vNewMember(eCK eMember, bool bUpdateMember=true);
+    void N_vNewMember(eCK eMember, Stz* szValue, bool bUpdateMember=true);
+
+    bool R_bResolveCard(eCK eCard, Stz* szWithValue, i8 i_Before);
+    bool R_bResolveCard(eCK eCard, Stz* szWithValue, Card* pBefore);
+
+    bool P_bPlumbForSubMember(eCK eMember, eCK eSubCard, bool bUpdateMember= true);
+    bool P_bPlumbForSubMember(Card* pMember, eCK eSubCard, bool bUpdateMember= true);
+
+    void U_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm);
+
+    Stz* szT(eCK eMember);
+    Stz* szMemberNm(eCK eMember);
+
   };
 }
 

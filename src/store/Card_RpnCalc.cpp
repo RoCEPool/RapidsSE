@@ -1,0 +1,56 @@
+/*============================================================================*/
+/* Card_RpnCalc.cpp -- RPN Calculation Sequence                               */
+/*============================================================================*/
+
+#include "Card_RpnCalc.hpp"
+#include "Card_Term.hpp"
+
+/*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+__pCastFunction_Card(STORE, Card_RpnCalc, CK_RPNCALC)
+__aNewFunction(Card_RpnCalc, CN_CARD)
+__vDeleteFunction(Card_RpnCalc, CN_CARD)
+
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Card_RpnCalc::Card_RpnCalc(void)
+: Card(CK_RPNCALC)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+      
+  _checkInitialised_(CN_CARD);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Card_RpnCalc::Card_RpnCalc(Column* pColumn)
+: Card(CK_RPNCALC)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+      
+  Card_Term* pCard_Term = new Card_Term(pColumn);
+  vAppend(pCard_Term);
+  
+  _checkInitialised_(CN_CARD);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+Card_RpnCalc::~Card_RpnCalc(void) noexcept(false)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -52,9 +52,22 @@ void Bench::vAddBoard(Board* pBoard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  RASSERT(! pGetBoard(pBoard->eBoard()));
+  //RASSERT(! pGetBoard(pBoard->eBoard()));
 
   vPush(pBoard);
+}
+
+/*----------------------------------------------------------------------------*/
+/* does given board exist?                                                    */
+/*----------------------------------------------------------------------------*/
+bool Bench::bBoardExists(eBK eBoard, i8 i_SubBoard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  if (pGetBoard(eBoard,i_SubBoard))
+    return true;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -71,7 +84,7 @@ CardCtl* Bench::pCardCtl(void)
 /*----------------------------------------------------------------------------*/
 /* get board of given kind                                                    */
 /*----------------------------------------------------------------------------*/
-Board* Bench::pGetBoard(eBK eBoard)
+Board* Bench::pGetBoard(eBK eBoard, i8 i_SubBoard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -79,7 +92,8 @@ Board* Bench::pGetBoard(eBK eBoard)
   for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
     Board *pBoard = this->pGet(i_Board);
 
-    if (eBoard == pBoard->eBoard())
+    if (eBoard == pBoard->eBoard() && (C_UNKNOWN == i_SubBoard ||
+                                       i_SubBoard == pBoard->i_SubBoard()))
       return pBoard;
   }
 
@@ -87,13 +101,48 @@ Board* Bench::pGetBoard(eBK eBoard)
 }
 
 /*----------------------------------------------------------------------------*/
-/* print bench                                                                */
+/* get board of given name                                                    */
+/*----------------------------------------------------------------------------*/
+Board* Bench::pGetBoard(Stz* szBoardNm)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  i8 nBoards = this->nItems();
+  for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
+    Board *pBoard = this->pGet(i_Board);
+
+    if (pBoard->szBoardNm()->bSame(szBoardNm))
+      return pBoard;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
 Optimiser* Bench::pOptimiser(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
   return m_pOptimiser;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vPrintBoards(eBK eBoard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  for (i8 i_SubBoard = 0;
+       bBoardExists(eBoard, i_SubBoard);
+       i_SubBoard++) {
+
+    Board *pBoard = pGetBoard(eBoard, i_SubBoard);
+
+    pBoard->vPrintBoard();
+  }
 }
 
 /*============================================================================*/

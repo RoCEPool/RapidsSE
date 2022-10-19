@@ -113,7 +113,7 @@ void Optimiser::vDissect(VertexSpec* pm_pUnOptPipeSpec)
   m_pUnOptPipeSpec = pm_pUnOptPipeSpec;
   
   SP_PipeSpec spPipeSpec(m_pUnOptPipeSpec);
-  vTrace("Optimiser: %s\n"_Stz,spPipeSpec.sz());
+  vTrace("Optimiser: \n%s\n"_Stz,spPipeSpec.sz());
       
   m_pDissector->vDissectSpec(m_pUnOptPipeSpec);
 
@@ -235,7 +235,7 @@ Stz* Optimiser::szWeave(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
-  Board* pBoard_query = m_pBench->pGetBoard(BK_QUERY);
+  Board* pBoard_query = m_pBench->pGetBoard(BK_SUBPIPE);
   m_pWeaver->vWeaveOptStmt(pBoard_query);
 
   Stz* szPipeline = m_pWeaver->szOptStmt();

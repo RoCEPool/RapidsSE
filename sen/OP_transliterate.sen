@@ -75,6 +75,8 @@
 
   "_Call_Optimiser" .
 
+  "<CallingOptimiser>" 1 [job].tagSet@ tagSet.appendInt
+
   Text[] .
 
   Dynamo[].new

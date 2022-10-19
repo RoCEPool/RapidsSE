@@ -1,42 +1,25 @@
 /*============================================================================*/
-/* Card_Calc.cpp -- Calculation Predicate                                 */
+/* Card_TstPred.cpp -- Test Predicate                                        */
 /*============================================================================*/
 
-#include "Card_Calc.hpp"
-#include "Card_Term.hpp"
+#include "Card_TstPred.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_Calc, CK_CALC)
-__aNewFunction(Card_Calc, CN_CARD)
-__vDeleteFunction(Card_Calc, CN_CARD)
+__pCastFunction_Card(STORE, Card_TstPred, CK_TSTPRED)
+__aNewFunction(Card_TstPred, CN_CARD)
+__vDeleteFunction(Card_TstPred, CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Calc::Card_Calc(void)
-: Card(CK_CALC)
+Card_TstPred::Card_TstPred(void)
+: Card(CK_TSTPRED)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-      
-  _checkInitialised_(CN_CARD);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Card_Calc::Card_Calc(Column* pColumn)
-: Card(CK_CALC)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-      
-  Card_Term* pCard_Term = new Card_Term(pColumn);
-  vAppend(pCard_Term);
   
   _checkInitialised_(CN_CARD);
   
@@ -46,7 +29,7 @@ Card_Calc::Card_Calc(Column* pColumn)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_Calc::~Card_Calc(void) noexcept(false)
+Card_TstPred::~Card_TstPred(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

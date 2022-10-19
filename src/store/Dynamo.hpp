@@ -9,6 +9,8 @@
 
 namespace STORE
 {
+  class ParamsSpec;
+
   class Dynamo : public ListNL_t<VertexSpec>
   {  
     friend class STORE::VertexSpec;
@@ -24,6 +26,8 @@ namespace STORE
     Scanner*     m_pScanner;         // statement token scanner
  
     VertexSpec*  m_pCurrVertexSpec;  // current/working spec
+
+    ParamsSpec*  m_pParamsSpec;      // set of parameters
     
     // must be last
     Footer m_xFooter;
@@ -59,6 +63,7 @@ namespace STORE
 
     bool bCollectPipeline(void);
     bool bCollectTag(void);
+    bool bCollectParams(void);
     bool bCollectBeginEnd(void);
     bool bCollectSubPipeline(void);
     bool bCollectStage(void);

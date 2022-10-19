@@ -115,6 +115,9 @@ void Card::vInit(eCK eCard)
   md__FirstDetected  = C_UNKNOWN;
   md__LeakDetected   = C_UNKNOWN;
 
+  s32 sBearing;
+  sBearing.vSprint("((%s new %04lld))"_Stz,aCK[m_eCard],md__SeqNo);
+  StrLib::vCopy(md_Bearing,sBearing.azChar());
 //  if (11 == md__SeqNo) {
 //    vTrace("Card [%02lld] %p\n"_Stz, md__SeqNo, this);
 //    vDebugPoint();
@@ -257,6 +260,35 @@ void Card::vAppendMain(Card* pNewMainCard, bool bRenumber)
 
   if (bRenumber)
     vRenumberRecursive();
+}
+
+/*----------------------------------------------------------------------------*/
+/* visit all sub-cards of given eToSubs and apply lambda function               */
+/*----------------------------------------------------------------------------*/
+void Card::vApplyRecursive(eCK eToSubs, std::function<bool(Card* pCard)> bfApply)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (eToSubs == m_eCard) {
+    bool bContinue = bfApply(this);
+    if (! bContinue)
+      return;
+  }
+
+  CardIter xCI(this);
+  while (Card* pChildCard = xCI.pEachChild()) {
+    pChildCard->vApplyRecursive(eToSubs, bfApply);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* get bearing                                                                */
+/*----------------------------------------------------------------------------*/
+Stz* Card::szBearing(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  return (Stz*)md_Bearing;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -432,8 +464,11 @@ void Card::vDump(i8 iDepth, Stz* szTitle)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  if (0 == iDepth)
+    vDebugPoint();
+
   if (szTitle)
-    vTrace("%s:\n"_Stz,szTitle);
+    vTrace("%s %p:\n"_Stz,szTitle,this);
 
   s48K sProperties;
   
@@ -586,6 +621,53 @@ Card* Card::pFindParent(Card* pSubCard)
 
   return nullptr;
 }
+
+/*----------------------------------------------------------------------------*/
+/* attempt find of value in this pile                                         */
+/*----------------------------------------------------------------------------*/
+Card* Card::pFindValueRecursive(Stz* szValue, Card*& rpParent, Card* _pWalkParent_)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (bSame(szValue)) {
+    rpParent = _pWalkParent_;
+    return this;
+  }
+
+  i8 nSubCards = this->nChildCards();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    if (Card *pFoundCard = pGetChild(i_Child)->pFindValueRecursive(szValue, rpParent, this))
+      return pFoundCard;
+  }
+
+  rpParent = nullptr;
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* attempt find of value in this pile                                         */
+/*----------------------------------------------------------------------------*/
+Card* Card::pFindValueRecursive(eCK eCard, Stz* szValue, Card*& rpParent, Card* _pWalkParent_)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  vTrace("%s `%s`?`%s` %s\n"_Stz,__func__,szValue,sz(),md_Bearing);
+
+  if (eCard == m_eCard && bSame(szValue)) {
+    rpParent = _pWalkParent_;
+    return this;
+  }
+
+  i8 nSubCards = this->nChildCards();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    if (Card *pFoundCard = pGetChild(i_Child)->pFindValueRecursive(eCard,szValue, rpParent, this))
+      return pFoundCard;
+  }
+
+  rpParent = nullptr;
+  return nullptr;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* is there an immediate child with given value?                              */
@@ -963,10 +1045,11 @@ void Card::vPrintCard_bySettings(Ribbon* pRibbon, i8 iDepth)
     vPrintNameValue(pRibbon, iDepth);
   }
   else {
-    if (pCardCtl->bPrintName(m_eCard))
+    bool bPrintName = pCardCtl->bPrintName(m_eCard);
+    if (bPrintName)
       vPrintName(pRibbon, iDepth);
     if (pCardCtl->bPrintValue(m_eCard))
-      vPrintValue(pRibbon, iDepth);
+      vPrintValue(pRibbon, iDepth, !bPrintName);
   }
 
   if (pCardCtl->bPrintProperties(m_eCard))
@@ -1185,15 +1268,20 @@ void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 /* print value of card                                                        */
 /*----------------------------------------------------------------------------*/
-void Card::vPrintValue(Ribbon* pRibbon, i8 iDepth)
+void Card::vPrintValue(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (! bHasValue())
     return;
 
-  pRibbon->vSprintRight("  %s"_Stz,szValue());
+  if (bPrintMarks) {
+    pRibbon->vSprintRight("%c%c%18s"_Stz, m_cMark1, m_cMark2, szValue());
 
+  }
+  else {
+    pRibbon->vSprintRight("  %s"_Stz, szValue());
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1272,6 +1360,19 @@ void Card::vRenumberRecursive(Card* pParent)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this card's value the same as given arg?                                */
+/*----------------------------------------------------------------------------*/
+bool Card::bSame(Stz* szArg)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (szValue()->bSame(szArg))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get card value                                                             */
 /*----------------------------------------------------------------------------*/
 Stz* Card::sz(void)
@@ -1301,6 +1402,23 @@ void Card::vValue(Stz* szValue)
   //RASSERT(! *m_sValue.azChar());
 
   m_sValue = szValue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint card value                                                          */
+/*----------------------------------------------------------------------------*/
+void Card::vValueSprint(Stz* szFormat, ...)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  s256 sValue;
+
+  va_list xArgs;
+  va_start(xArgs,szFormat);
+  StrLib::vSprint(sValue.azChar(),xArgs,(char*)szFormat);
+  va_end(xArgs);
+
+  vValue(sValue);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1336,25 +1454,6 @@ bool Card::bValuesSameRecursive(Card* pCard_b, i8 iDepth, bool bTestL0)
   }
 
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* visit all sub-cards of given eCard and apply lambda function               */
-/*----------------------------------------------------------------------------*/
-void Card::vVisitRecursive(eCK eCard, std::function<bool(Card* pCard)> bfApply)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  eCK eTest = this->eCard();
-  if (eTest == eCard) {
-    bool b = bfApply(this);
-  }
-
-  i8 nChildren = nChildCards();
-  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
-    Card* pChildCard = pGetChild(i_Child);
-    pChildCard->vVisitRecursive(eCard, bfApply);
-  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1538,6 +1637,23 @@ void Card::Y_vSet(Stz* szPpyNm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* sprint card property value                                                 */
+/*----------------------------------------------------------------------------*/
+void Card::Y_vSetSprint(Stz* szPpyNm, Stz* szFormat, ...)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  s256 sPpyValue;
+
+  va_list xArgs;
+  va_start(xArgs,szFormat);
+  StrLib::vSprint(sPpyValue.azChar(),xArgs,(char*)szFormat);
+  va_end(xArgs);
+
+  Y_vSet(szPpyNm,sPpyValue);
+}
+
+/*----------------------------------------------------------------------------*/
 /* add given property                                                         */
 /*----------------------------------------------------------------------------*/
 void Card::Y_vSet(Stz* szPpyNm, Object* pPpyVal)
@@ -1600,13 +1716,13 @@ Card_BoolCalc* Card::pSub_boolCalc(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_Calc.hpp"
-Card_Calc* Card::pSub_calc(void)
+#include "Card_RpnCalc.hpp"
+Card_RpnCalc* Card::pSub_rpnCalc(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_Calc* p_calc =
-      _pCard_Calc(pFindSubCard(CK_CALC));
+  Card_RpnCalc* p_calc =
+      _pCard_RpnCalc(pFindSubCard(CK_RPNCALC));
   return p_calc;
 }
 

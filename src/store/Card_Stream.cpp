@@ -147,7 +147,7 @@ Card_StreamCol* Card_Stream::pGet_streamCol(i8 i_Col)
   Card_StreamColList* pCard_StreamColList = pGet_streamColList();
 
   i8 iOrdLo = Y_iVal(P_OrdLo);
-  i8 i_ColNo = i_Col - iOrdLo;
+  i8 i_ColNo = i_Col - iOrdLo + 1;
   Card_StreamCol* pCard_StreamCol = pCard_StreamColList->pGet_streamCol(i_ColNo);
 
   return pCard_StreamCol;

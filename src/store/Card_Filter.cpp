@@ -5,7 +5,7 @@
 #include "Card_Filter.hpp"
 
 #include "Card_Expr.hpp"
-#include "Card_Calc.hpp"
+#include "Card_RpnCalc.hpp"
 #include "Card_BoolCalc.hpp"
 #include "Card_CmpPred.hpp"
 #include "Card_Term.hpp"
@@ -72,12 +72,12 @@ void Card_Filter::vCullPred(char cWithMark)
     Card* pChildCard = pGetChild(i_Child);
 
     eCK eCard = pChildCard->eCard();
-    if (eCard != CK_EXPR)
+    if (eCard != CK_BOOLCALC)
       continue;
 
-    Card_Expr* p_expr = _pCard_Expr(pChildCard);
+    Card_BoolCalc* p_boolCalc = _pCard_BoolCalc(pChildCard);
 
-    p_expr->vCullPred(cWithMark);
+    p_boolCalc->vCullPred(cWithMark);
   }
 }
 

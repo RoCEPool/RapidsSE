@@ -17,7 +17,6 @@ enum eCK // card kind
 
   /* */ CK_BOOLCALC,
 
-  /* */ CK_CALC,
   /* */ CK_CANDINDEX,
   /* */ CK_CARDPTR,
   /* */ CK_CMPPRED,
@@ -62,14 +61,19 @@ enum eCK // card kind
   /* */ CK_JOINPRED,
   /* */ CK_JOINPREDLIST,
 
+  /* */ CK_KEYEXISTS,
+
   /* */ CK_LBOUND,
   /* */ CK_LIMIT,
+  /* */ CK_LINKSTO,
 
   /* */ CK_OBYELIST,
   /* */ CK_OPTION,
   /* */ CK_ORDAGG,
   /* */ CK_ORPRED,
 
+  /* */ CK_PARAM,
+  /* */ CK_PARAMLIST,
   /* */ CK_PERMUTATION,
   /* */ CK_PROJECT,
   /* */ CK_PROJELIST,
@@ -77,6 +81,7 @@ enum eCK // card kind
   /* */ CK_PTNDJOINSET,
 
   /* */ CK_RBOUND,
+  /* */ CK_RPNCALC,
   /* */ CK_RPNTERMS,
 
   /* */ CK_SBYELIST,
@@ -98,6 +103,7 @@ enum eCK // card kind
   /* */ CK_TABLEPTN,
   /* */ CK_TABLEPTR,
   /* */ CK_TERM,
+  /* */ CK_TSTPRED,
   /* */ CK_TYPE,
 
   /* */ CK_UBOUND,
@@ -124,7 +130,6 @@ static Stz* aCK[]
 
   /* */ "CK_BOOLCALC"_Stz,     // CK_BOOLCALC
 
-  /* */ "CK_CALC"_Stz,         // CK_CALC
   /* */ "CK_CANDINDEX"_Stz,    // CK_CANDINDEX
   /* */ "CK_CARDPTR"_Stz,      // CK_CARDPTR
   /* */ "CK_CMPPRED"_Stz,      // CK_CMPPRED
@@ -169,14 +174,19 @@ static Stz* aCK[]
   /* */ "CK_JOINPRED"_Stz,     // CK_JOINPRED
   /* */ "CK_JOINPREDLIST"_Stz, // CK_JOINPREDLIST
 
+  /* */ "CK_KEYEXISTS"_Stz,    // CK_KEYEXISTS
+
   /* */ "CK_LBOUND"_Stz,       // CK_LBOUND
   /* */ "CK_LIMIT"_Stz,        // CK_LIMIT
+  /* */ "CK_LINKSTO"_Stz,      // CK_LINKSTO
 
   /* */ "CK_OBYELIST"_Stz,     // CK_OBYELIST
   /* */ "CK_OPTION"_Stz,       // CK_OPTION
   /* */ "CK_ORDAGG"_Stz,       // CK_ORDAGG
   /* */ "CK_ORPRED"_Stz,       // CK_ORPRED
 
+  /* */ "CK_PARAM"_Stz,        // CK_PARAM
+  /* */ "CK_PARAMLIST"_Stz,    // CK_PARAMLIST
   /* */ "CK_PERMUTATION"_Stz,  // CK_PERMUTATION
   /* */ "CK_PROJECT"_Stz,      // CK_PROJECT
   /* */ "CK_PROJELIST"_Stz,    // CK_PROJELIST
@@ -184,6 +194,7 @@ static Stz* aCK[]
   /* */ "CK_PTNDJOINSET"_Stz,  // CK_PTNDJOINSET
 
   /* */ "CK_RBOUND"_Stz,       // CK_RBOUND
+  /* */ "CK_RPNCALC"_Stz,      // CK_RPNCALC
   /* */ "CK_RPNTERMS"_Stz,     // CK_RPNTERMS
 
   /* */ "CK_SBYELIST"_Stz,     // CK_SBYELIST
@@ -205,6 +216,7 @@ static Stz* aCK[]
   /* */ "CK_TABLEPTN"_Stz,     // CK_TABLEPTN
   /* */ "CK_TABLEPTR"_Stz,     // CK_TABLEPTR
   /* */ "CK_TERM"_Stz,         // CK_TERM
+  /* */ "CK_TSTPRED"_Stz,      // CK_TSTPRED
   /* */ "CK_TYPE"_Stz,         // CK_TYPE
 
   /* */ "CK_UBOUND"_Stz,       // CK_UBOUND
@@ -231,7 +243,6 @@ static Stz* aCK_short[]
 
   /* */ "boolCalc"_Stz,        // CK_BOOLCALC
 
-  /* */ "calc"_Stz,            // CK_CALC
   /* */ "candIndex"_Stz,       // CK_CANDINDEX
   /* */ "{card}"_Stz,          // CK_CARDPTR
   /* */ "cmpPred"_Stz,         // CK_CMPPRED
@@ -276,14 +287,19 @@ static Stz* aCK_short[]
   /* */ "joinPred"_Stz,        // CK_JOINPRED
   /* */ "joinPredList"_Stz,    // CK_JOINPREDLIST
 
+  /* */ "keyExists"_Stz,       // CK_KEYEXISTS
+
   /* */ "lbound"_Stz,          // CK_LBOUND
   /* */ "limit"_Stz,           // CK_LIMIT
+  /* */ "linksTo"_Stz,         // CK_LINKSTO
 
   /* */ "obyElist"_Stz,        // CK_OBYELIST
   /* */ "option"_Stz,          // CK_OPTION
   /* */ "ordAgg"_Stz,          // CK_ORDAGG
   /* */ "orPred"_Stz,          // CK_ORPRED
 
+  /* */ "param"_Stz,           // CK_PARAM
+  /* */ "paramList"_Stz,       // CK_PARAMLIST
   /* */ "permutation"_Stz,     // CK_PERMUTATION
   /* */ "project"_Stz,         // CK_PROJECT
   /* */ "projElist"_Stz,       // CK_PROJELIST
@@ -291,6 +307,7 @@ static Stz* aCK_short[]
   /* */ "ptndJoinSet"_Stz,     // CK_PTNDJOINSET
 
   /* */ "rbound"_Stz,          // CK_RBOUND
+  /* */ "rpnCalc"_Stz,         // CK_RPNCALC
   /* */ "rpnTerms"_Stz,        // CK_RPNTERMS
 
   /* */ "sbyElist"_Stz,        // CK_SBYELIST
@@ -312,6 +329,7 @@ static Stz* aCK_short[]
   /* */ "tablePtn"_Stz,        // CK_TABLEPTN
   /* */ "{table}"_Stz,         // CK_TABLEPTR
   /* */ "term"_Stz,            // CK_TERM
+  /* */ "tstPred"_Stz,         // CK_TSTPRED
   /* */ "type"_Stz,            // CK_TYPE
 
   /* */ "ubound"_Stz,          // CK_UBOUND

@@ -13,7 +13,6 @@ namespace STORE
   {
   private:
     Board* m_pBoard;
-    Card_Deck* m_pCard_Deck;
 
     // must be last
     Footer m_xFooter;
@@ -21,11 +20,14 @@ namespace STORE
   public:
     void* operator new(size_t);
     void  operator delete(void*);
-  
+
+    BoardIter(void);
     BoardIter(Board* pBoard);
    ~BoardIter(void) noexcept(false);
 
     void  vApplyMain(eCK eCard, std::function<void(Card* pCard)> vfApply);
+
+    void vChangeBoard(Board* pBoard);
 
     Card* pEachMain(void);
     Card* pEachMain(i8& ri_Main);

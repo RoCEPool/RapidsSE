@@ -13,8 +13,6 @@
 
 #include "Card_StreamCol.hpp"
 
-#include "TransformerTool.hpp"
-
 extern OptimiserCatalog gxOptimiserCatalog;
 
 /*----------------------------------------------------------------------------*/
@@ -29,19 +27,23 @@ __aFooterFunction(Board)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Board::Board(eBK eBoard, eBT eBoardType, Bench* pBench)
+Board::Board(Stz* szBoardNm, eBK eBoard, i8 i_SubBoard, eBT eBoardType, Bench* pBench)
 : Object(CN_BOARD)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
+  m_sBoardNm     = szBoardNm;
   m_eBoard       = eBoard;
+  m_i_SubBoard   = i_SubBoard;
   m_eBoardType   = eBoardType;
+
   m_pBench       = pBench;
 
   m_pOptimiser   = m_pBench->pOptimiser();
 
   m_pCard_Deck  = new Card_Deck;
 
+  m_iTransformNo = C_UNKNOWN;
   m_bBeenCued = false;
 
   _checkInitialised_(CN_BOARD);
@@ -82,6 +84,26 @@ eBK Board::eBoard(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get board name                                                             */
+/*----------------------------------------------------------------------------*/
+Stz* Board::szBoardNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  return m_sBoardNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set board name                                                             */
+/*----------------------------------------------------------------------------*/
+void Board::vBoardNm(Stz* szBoardNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  m_sBoardNm = szBoardNm;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get card registers                                                         */
 /*----------------------------------------------------------------------------*/
 CardCtl* Board::pCardCtl(void)
@@ -94,7 +116,7 @@ CardCtl* Board::pCardCtl(void)
 /*----------------------------------------------------------------------------*/
 /* get card subSet                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Deck* Board::pCard_Deck(void)
+Card_Deck* Board::pDeck(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
@@ -116,7 +138,7 @@ void Board::vDuplicateBoard(Board* pBoard_arg)
 /* pin board onto given ribbon                                                */
 /*----------------------------------------------------------------------------*/
 void Board::vPinCards(Ribbon* pRibbon,
-                      i8 iPrintNo, Stz* szTransformation, Stz* szExplain)
+                      i8 iPrintNo, Stz* szDescription)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
@@ -127,16 +149,17 @@ void Board::vPinCards(Ribbon* pRibbon,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pRibbon->vSprint("[%02lld Board: %s %s Query=%s] %s"_Stz,
-                   iPrintNo,
-                   aBK[m_eBoard],
-                   aBT[m_eBoardType],
-                   m_pOptimiser->szQueryNm(),
-                   szExplain ? szExplain : ""_Stz);
-
-  pRibbon->vTitleLines(1);
-  pRibbon->vSetBase();
-  pRibbon->vFirstColumn();
+//  pRibbon->vSprint("[%02lld Board: %s[%lld] %s Query=%s] %s"_Stz,
+//                   iPrintNo,
+//                   aBK[m_eBoard],
+//                   m_i_SubBoard,
+//                   aBT[m_eBoardType],
+//                   m_pOptimiser->szQueryNm(),
+//                   szDescription ? szDescription : ""_Stz);
+//
+//  pRibbon->vTitleLines(1);
+//  pRibbon->vSetBase();
+//  pRibbon->vFirstColumn();
 
   Ribbon* pSubRibbon = new Ribbon(pCardCtl,this,0);
 
@@ -178,16 +201,85 @@ void Board::vPinCards(Ribbon* pRibbon,
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* pin board onto given ribbon                                                */
 /*----------------------------------------------------------------------------*/
-void Board::vPrintBoard(TransformerTool* pTransformerTool)
+void Board::vPinTitle(Ribbon* pRibbon,
+                      i8 iTransformNo, Stz* szDescription)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-  Stz* szPhase = pTransformerTool->szPhase();
-  Stz* szTransformation = pTransformerTool->szTransformation();
-  Stz* szExplain = pTransformerTool->szDescription();
+  CardCtl* pCardCtl = m_pOptimiser->pCardCtl();
 
+  if (! m_pCard_Deck->nItems())
+    return;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pRibbon->vSprint("Transform: %02lld of board %s (%s %s [%lld]) Query=%s"_Stz,
+                   iTransformNo,
+                   m_sBoardNm.szStz(),
+
+                   aBT[m_eBoardType],
+                   aBK[m_eBoard],
+                   m_i_SubBoard,
+
+                   m_pOptimiser->szQueryNm());
+
+  pRibbon->vSprint("%s"_Stz,szDescription ? szDescription : ""_Stz);
+
+
+  pRibbon->vTitleLines(2);
+  pRibbon->vSetBase();
+  pRibbon->vFirstColumn();
+
+//  Ribbon* pSubRibbon = new Ribbon(pCardCtl,this,0);
+//
+//  BoardIter xBI(this);
+//
+//  i8 nCount = 0;
+//  while (Card* pCard = xBI.pEachMain()) {
+//    eCK eCard = pCard->eCard();
+//
+//    // skip non-printable horizontal lines
+//    if (pCardCtl->bNextHoriz(eCard) &&
+//        pCard->bHasProperty(pCardCtl->szHorizExclude(eCard))) {
+//
+//      while (Card* pNextMain = xBI.pNextMain()) {
+//        eCK eNextCard = pNextMain->eCard();
+//        if (pCardCtl->bNextHoriz(eNextCard))
+//          break;
+//        xBI.vForward();
+//      }
+//
+//      continue;
+//    }
+//
+//    if (! nCount++)
+//      pSubRibbon->vFirstColumn();
+//    else
+//    if ( pSubRibbon->iChar() && pCardCtl->bNextHoriz(eCard))
+//      pSubRibbon->vNextHorizontal();
+//    else
+//      pSubRibbon->vNextColumn();
+//
+//    bool bPrune = false;
+//    pCard->vPrintCardRecursive(pSubRibbon, 0, m_pCard_Deck, bPrune);
+//  }
+//
+//  pRibbon->vPinRibbon(pRibbon->nTitleLines(),0,pSubRibbon);
+//
+//  delete pSubRibbon;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vPrintBoard(Stz* szPhase,
+                        Stz* szTransformation,
+                        Stz* szDescription)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
   eOA eOptAct = OA_ENTRY;
   TokenVec* pTknVec = nullptr;
 
@@ -206,7 +298,9 @@ void Board::vPrintBoard(TransformerTool* pTransformerTool)
 
   Ribbon* pRibbon = new Ribbon(m_pOptimiser->pCardCtl(),this,0);
 
-  vPinCards(pRibbon, pTransformerTool->iTransformNoInc(), szTransformation, szExplain);
+  vPinTitle(pRibbon, m_iTransformNo, szDescription);
+
+  vPinCards(pRibbon, m_iTransformNo, szDescription);
 
   pRibbon->vPrintRibbon();
 
@@ -300,6 +394,26 @@ void Board::vPrintBoard(TransformerTool* pTransformerTool)
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+i8 Board::i_SubBoard(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
+
+  return m_i_SubBoard;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vTransformNoInc(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
+
+  m_iTransformNo++;
+}
+
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
 //~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ //
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
@@ -365,7 +479,7 @@ void Board::vPrintBoard(TransformerTool* pTransformerTool)
 //  RASSERT(2 == pCard_Expr->nChildCards());
 //
 //  Card_Type* pCard_Type = _pCard_Type(pCard_Expr->pGet(0));
-//  Card_Calc* pCard_Calc = _pCard_Calc(pCard_Expr->pGet(1));
+//  Card_RpnCalc* pCard_Calc = _pCard_Calc(pCard_Expr->pGet(1));
 //
 //  Card_BoolCalc* pCard_CalcBool = pTo_CalcBool(pCard_Calc);
 //

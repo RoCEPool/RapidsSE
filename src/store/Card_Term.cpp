@@ -182,9 +182,28 @@ bool Card_Term::bIsIndexColOrdinal(void)
   char acSecond = szTerm->azChar()[1];
   char acThird  = szTerm->azChar()[2];
 
-  if (   '$' == acFirst
-      && ('I' == acSecond || 'i' == acSecond)
-      && StrLib::bIsDigit(acThird))
+  if ('$' == acFirst && ('I' == acSecond || 'i' == acSecond)
+                     && StrLib::bIsDigit(acThird))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is term a parameter ordinal?  (i.e. $Pn)                                   */
+/*----------------------------------------------------------------------------*/
+bool Card_Term::bIsParamOrdinal(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Stz* szTerm = szValue();
+
+  char acFirst  = szTerm->azChar()[0];
+  char acSecond = szTerm->azChar()[1];
+  char acThird  = szTerm->azChar()[2];
+
+  if ('$' == acFirst && ('P' == acSecond || 'p' == acSecond)
+                     && StrLib::bIsDigit(acThird))
     return true;
   else
     return false;
@@ -202,8 +221,7 @@ bool Card_Term::bIsStreamColOrdinal(void)
   char acFirst  = szTerm->azChar()[0];
   char acSecond = szTerm->azChar()[1];
 
-  if (   '$' == acFirst
-      && StrLib::bIsDigit(acSecond))
+  if ('$' == acFirst && StrLib::bIsDigit(acSecond))
     return true;
   else
     return false;
@@ -224,11 +242,10 @@ bool Card_Term::bIsTableColOrdinal(void)
   char acFourth = szTerm->azChar()[3];
   char acFifth  = szTerm->azChar()[4];
 
-  if (   '$' == acFirst
-      && '$' == acSecond
-      && StrLib::bIsAlpha(acThird)
-      && '.' == acFourth
-      && StrLib::bIsDigit(acFifth))
+  if ('$' == acFirst && '$' == acSecond
+                     && StrLib::bIsAlpha(acThird)
+                     && '.' == acFourth
+                     && StrLib::bIsDigit(acFifth))
     return true;
   else
     return false;
@@ -308,10 +325,8 @@ eTE Card_Term::eTermEval(void)
   Stz* szTerm = this->sz();
 
        if (szTerm->bSame("and"_Stz))     return TE_AND;
-  else if (szTerm->bSame("as"_Stz))      return TE_AS;
-  else if (szTerm->bSame("boolean"_Stz)) return TE_BOOLEAN;
+  else if (szTerm->bSame("exists"_Stz))  return TE_EXISTS;
   else if (szTerm->bSame("or"_Stz))      return TE_OR;
-  else if (szTerm->bSame("type"_Stz))    return TE_TYPE;
 
   else if (szTerm->bSame("<"_Stz))       return TE_COMPARE;
   else if (szTerm->bSame("<="_Stz))      return TE_COMPARE;
