@@ -12,6 +12,7 @@
 .idea/
 /se.ready
 /se*.log
+jmeter.log
 
 # For the Bamboo box
 /TPCH/
