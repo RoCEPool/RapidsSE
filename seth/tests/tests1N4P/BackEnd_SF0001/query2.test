@@ -44,7 +44,7 @@ select s_acctbal, s_name, n_name, p_partkey, p_mfgr, s_address, s_phone, s_comme
       and s_nationkey = n_nationkey
       and n_regionkey = r_regionkey
       and r_name = 'AFRICA' )
-       order by s_acctbal desc, n_name, s_name, p_partkey;
+       order by s_acctbal desc, n_name, s_name, p_partkey limit 100;
 
 verified
    4641.08 | Supplier#000000004 | MOROCCO | 24 | Manufacturer#5 | Bk7ah4CK8SYQTepEmvMkkgMwg | 25-843-787-7479 | riously even requests above the exp
@@ -74,7 +74,7 @@ select s_acctbal, s_name, n_name, p_partkey, p_mfgr, s_address, s_phone, s_comme
       and s_nationkey = n_nationkey
       and n_regionkey = r_regionkey
       and r_name = 'AFRICA' )
-       order by s_acctbal desc, n_name, s_name, p_partkey;
+       order by s_acctbal desc, n_name, s_name, p_partkey limit 100;
 
 pipeline unamed
 begin
@@ -278,6 +278,7 @@ begin
                type VARCHAR as n_name n_name ASC ,
                type VARCHAR as s_name s_name ASC ,
                type INTEGER as p_partkey p_partkey ASC"
+      | limit 100
       | combined 0
       | next
 
@@ -288,12 +289,10 @@ begin
 end ;
 
 rows:
-  (1365.79,'Supplier#000000006','KENYA',56,'Manufacturer#1','tQxuVm7s7CnK','24-696-997-4969',*)
-  (4641.08,'Supplier#000000004','MOROCCO',24,'Manufacturer#5','Bk7ah4CK8SYQTepEmvMkkgMwg','25-843-787-7479',*)
+  (1365.79,'Supplier#000000006','KENYA',56,'Manufacturer#1','tQxuVm7s7CnK','24-696-997-4969', *)
+  (4641.08,'Supplier#000000004','MOROCCO',24,'Manufacturer#5','Bk7ah4CK8SYQTepEmvMkkgMwg','25-843-787-7479', *)
 
 CLEANUP {
   bye;
   mute
 }
-
-

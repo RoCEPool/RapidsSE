@@ -323,6 +323,9 @@ void TablePtn::vAppendBuffer_replicated(DataBuffer *pDataBuffer)
   //vTrace("TablePtn::vAppendBuffer BufferNo:%lld  BucketNo:%lld   Ptn:%lld\n"_Stz,
   //       pDataBuffer->iBufferNo(), iBktNo, pDataBuffer->tLglPtn().iAsI8());
 
+  // reset the logical partition of the buffer
+  pDataBuffer->vLglPtn((LglPtn)0);
+
   Bucket *pBucket = m_pBucketVec->pGet(0);
 
 
