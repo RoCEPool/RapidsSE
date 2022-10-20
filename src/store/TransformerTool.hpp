@@ -7,8 +7,9 @@
 #include "BoardIter.hpp"
 
 #include "PermGen.hpp"
-
 #include "TransformIterList.hpp"
+
+#include "Table.hpp"
 
 namespace STORE
 {
@@ -16,20 +17,20 @@ namespace STORE
   {
   protected:
 
-    static const bool C_DONT_PRINT    = false;
-    static const bool C_PRINT_BOARD   = true;
-    static const bool C_UPDATE_MEMBER = true;
 
     Bench*      m_pBench;
     CardCtl*    m_pCardCtl;
-    bool        m_bTracing;
+    bool        m_bTrace;
     i8          m_iTrace;
 
-    bool        m_bPrintTransformation;
+    bool        m_bPrintPhase;
+    bool        m_bPrintXform;
     bool        m_bInteractive;
+
     s32         m_sPhase;
     s256        m_sTransformation;
     s256        m_sDescription;
+
 
     PermGen*    m_pPermGen;
 
@@ -40,7 +41,9 @@ namespace STORE
 
     Card* m_pCard_child;
     Card* m_pCard_dup;
+    Card* m_pCard_found;
     Card* m_pCard_located;
+    Card* m_pCard_member;
     Card* m_pCard_new;
     Card* m_pCard_parent;
     Card* m_pCard_popped;
@@ -71,7 +74,7 @@ namespace STORE
     void vDescription(Stz* szDescription);
 
     Stz* szPhase(void);
-    void vPhase(const char* szPhase);
+    void vPhase(bool bPrintPhase, const char* szPhase);
     void vPrintBoard(void);
 
     void vSetPrintByKind(eCK eCard, bool bPrintByKind);
@@ -86,7 +89,7 @@ namespace STORE
   protected:
     bool bIsTracing(void);
 
-    void vTracing(bool bTracing);
+    void vTracing(bool bPrintXform, bool bTrace);
     void vTracer(Stz* szFormat, ...);
 
     void C_vAppendChild(eCK eParent, eCK eChild);
@@ -143,6 +146,9 @@ namespace STORE
     bool P_bPlumbForSubMember(Card* pMember, eCK eSubCard, bool bUpdateMember= true);
 
     void U_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm);
+
+    bool Y_bFindPpy(eCK eMember, Stz* szPpy, eCK eOfCard=CK_NONE);
+
 
     Stz* szT(eCK eMember);
     Stz* szMemberNm(eCK eMember);

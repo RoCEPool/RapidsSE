@@ -146,6 +146,7 @@ void Dissector::vStage(i8 i_StageSpec)
       Card_Param* p_param = new Card_Param;
       StrLib::vStrip((char*)pParamsSpec->pGet(0)->szParamNm(),' ');
       p_param->vValue(pParamsSpec->pGet(0)->szParamNm());
+      p_param->Y_vSet(P_ParamOrd,"$P1"_Stz);
       p_paramList->vAppend(p_param);
     }
   }

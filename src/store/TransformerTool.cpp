@@ -16,10 +16,11 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
 
   m_pBench   = pBench;
   m_pCardCtl = m_pBench->pCardCtl();
-  m_bTracing = false;
+  m_bTrace = false;
   m_iTrace   = 0;
 
-  m_bPrintTransformation = true;
+  m_bPrintPhase = false;
+  m_bPrintXform = false;
   Job* pJob = MY::pJob();
   TagSet* pJobTags = pJob->pJobTags();
   m_bInteractive = pJobTags->bHasName("<interactive>"_Stz);
@@ -34,7 +35,9 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
 
   m_pCard_child    = nullptr;
   m_pCard_dup      = nullptr;
+  m_pCard_found    = nullptr;
   m_pCard_located  = nullptr;
+  m_pCard_member   = nullptr;
   m_pCard_new      = nullptr;
   m_pCard_parent   = nullptr;
   m_pCard_popped   = nullptr;
@@ -141,7 +144,7 @@ void TransformerTool::vEndTransformation(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  m_bTracing = false;
+  m_bTrace = false;
 
   // UNDO: Card::vConsistencyCheck(m_pDeck, m_iTransformNo);
 }
@@ -159,10 +162,11 @@ Stz* TransformerTool::szPhase(void)
 /*----------------------------------------------------------------------------*/
 /* set transformation phase                                                   */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::vPhase(const char* asPhase)
+void TransformerTool::vPhase(bool bPrintPhase, const char* asPhase)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
+  m_bPrintPhase = bPrintPhase;
   m_sPhase = asPhase;
 }
 
@@ -173,17 +177,14 @@ void TransformerTool::vPrintBoard(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  if (m_bPrintTransformation) {
-    if (m_bInteractive)
-      M.pBoard->vPrintBoard(szPhase(),
-                            szTransformation(),
-                            szDescription());
-  }
-  else {
-    vTrace("SILENT : %s\n"_Stz, m_sTransformation.szStz());
-  }
+  if (! m_bPrintXform)
+    return;
 
-  m_sDescription = ""_Stz;
+  M.pBoard->vPrintBoard(szPhase(),
+                        szTransformation(),
+                        szDescription());
+
+  //m_sDescription = ""_Stz;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -229,7 +230,7 @@ void TransformerTool::vTransformation(const char* azTransformation,
   _precondition_(_ADDRESS_, _MAGIC_);
 
   m_sTransformation = azTransformation;
-  m_bPrintTransformation = bPrintTransformation;
+  m_bPrintXform = bPrintTransformation;
 
   M.pBoard->vTransformNoInc();
 
@@ -262,19 +263,21 @@ bool TransformerTool::bIsTracing(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  return m_bTracing;
+  return m_bTrace;
 }
 
 /*----------------------------------------------------------------------------*/
 /* is tracing enabled?                                                        */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::vTracing(bool bTracing)
+void TransformerTool::vTracing(bool bPrintXform, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  m_bTracing = bTracing;
+  m_bPrintXform = bPrintXform;
 
-  if (m_bTracing) {
+  m_bTrace = bTrace;
+
+  if (m_bTrace) {
     vTrace("\n\nTracing %s\n"_Stz,m_sTransformation.szStz());
     m_iTrace = 0;
   }
@@ -318,7 +321,7 @@ void TransformerTool::C_vAppendChild(eCK eParent, eCK eChild)
 
   pParent->vAppend(pChild);
 
-  if (! m_bTracing)
+  if (! m_bTrace)
     return;
 
   vTrace("  %s\n"_Stz,__func__);
@@ -337,7 +340,7 @@ void TransformerTool::C_vAppendChild(eCK eParent, Card* pChild)
 
   pParent->vAppend(pChild);
 
-  if (! m_bTracing)
+  if (! m_bTrace)
     return;
 
   vTrace("  %s\n"_Stz,__func__);
@@ -356,7 +359,7 @@ void TransformerTool::C_vDuplicateMember(eCK eMember)
 
   m_pCard_dup = pMember->pDupCardAndSubCards();
 
-  if (! m_bTracing)
+  if (! m_bTrace)
     return;
 
   vTrace("  %s %s from %s\n"_Stz,
@@ -1114,7 +1117,7 @@ void TransformerTool::U_vUpdateMember(eCK eMember, Card* pCard, const char* asFu
       NEVER_REACH
   }
 
-  if (! m_bTracing)
+  if (! m_bTrace)
     return;
 
   vTrace("  %s %s\n"_Stz,asFuncNm,szT(eMember));
@@ -1187,6 +1190,27 @@ bool TransformerTool::R_bResolveCard(eCK eCard, Stz* szWithValue, Card* pBefore)
 
   return b;
 }
+
+
+/*----------------------------------------------------------------------------*/
+/* find sub of member with given property                                     */
+/*----------------------------------------------------------------------------*/
+bool TransformerTool::Y_bFindPpy(eCK eMember, Stz* szPpy, eCK eOfCard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  if (! (m_pCard_member = G_pGetMember(eMember))) {
+    m_pCard_found = nullptr;
+    return false;
+  }
+
+  if (! (m_pCard_found = m_pCard_member->pFindPpyRecursive(szPpy)))
+    return false;
+
+  U_vUpdateMember(m_pCard_found->eCard(), m_pCard_found, __func__);
+  return true;
+}
+
 
 
 

@@ -32,7 +32,6 @@
 #include "eAT.h"
 #include "eDL.h"
 #include "ePD.h"
-#include "ePY.h"
 #include "eRG.h"
 #include "eUF.h"
 #include "eUK.h"
@@ -576,11 +575,6 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("PD_NONE"_Stz,      PD_NONE);
   /*  0 */ vAddConstant("PD_PIPE_IN"_Stz,   PD_PIPE_IN);
   /*  0 */ vAddConstant("PD_PIPE_OUT"_Stz,  PD_PIPE_OUT);
-    
-  // PY_ : priority
-  /*  0 */ vAddConstant("PY_NONE"_Stz,      PY_NONE);
-  /*  0 */ vAddConstant("PY_LOW"_Stz,       PY_LOW);
-  /*  0 */ vAddConstant("PY_NORMAL"_Stz,    PY_NORMAL);
 
   // RG_ : register
   /*  0 */ vAddConstant("dir[0]"_Stz,       RG_DIR0);

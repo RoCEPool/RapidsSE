@@ -651,7 +651,7 @@ Card* Card::pFindValueRecursive(eCK eCard, Stz* szValue, Card*& rpParent, Card* 
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vTrace("%s `%s`?`%s` %s\n"_Stz,__func__,szValue,sz(),md_Bearing);
+  //vTrace("%s `%s`?`%s` %s\n"_Stz,__func__,szValue,sz(),md_Bearing);
 
   if (eCard == m_eCard && bSame(szValue)) {
     rpParent = _pWalkParent_;
@@ -667,6 +667,29 @@ Card* Card::pFindValueRecursive(eCK eCard, Stz* szValue, Card*& rpParent, Card* 
   rpParent = nullptr;
   return nullptr;
 }
+
+/*----------------------------------------------------------------------------*/
+/* find property recursively within this card                                 */
+/*----------------------------------------------------------------------------*/
+Card* Card::pFindPpyRecursive(Stz* szPpy, eCK eOfCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if ( (CK_NONE == eOfCard || eOfCard == m_eCard)) {
+    if (bHasProperty(szPpy))
+      return this;
+  }
+
+
+  i8 nSubCards = this->nChildCards();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    if (Card *pFoundCard = pGetChild(i_Child)->pFindPpyRecursive(szPpy,eOfCard))
+      return pFoundCard;
+  }
+
+  return nullptr;
+}
+
 
 
 /*----------------------------------------------------------------------------*/

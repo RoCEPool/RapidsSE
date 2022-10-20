@@ -251,6 +251,8 @@
 #include "ParamsSpec.hpp"
 #include "TransformIter.hpp"
 #include "TransformIterList.hpp"
+#include "Ppy.hpp"
+#include "PpySet.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -503,6 +505,8 @@ SizeHeap gxaSizeHeap[]
   { CN_PLANOPERAND,          sizeof(PlanOperand),            HT_T_TINY    , FILL },
   { CN_POT,                  sizeof(Pot),                    HT_T_LARGE   , FILL },
   { CN_PORT,                 sizeof(Port),                   HT_T_LARGE   , FILL },
+  { CN_PPY,                  sizeof(Ppy),                    HT_T_TINY    , FILL },
+  { CN_PPYSET,               sizeof(PpySet),                 HT_T_SMALL   , FILL },
   { CN_PREDICATE,            sizeof(Predicate),              HT_T_TINY    , FILL },
   { CN_PREDICATEVEC,         sizeof(PredicateVec),           HT_T_MEDIUM  , FILL },
   { CN_PRIMITIVENODE,        sizeof(PrimitiveNode),          HT_V_TINY    , FILL },

@@ -6,6 +6,8 @@
 #include "Card_Term.hpp"
 #include "Card_ColumnRef.hpp"
 
+#include "Table.hpp"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -130,8 +132,8 @@ bool Card_CmpPred::bOverlapsWith(Card_CmpPred* p_PredCmp_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  this->vDump();
-  p_PredCmp_arg->vDump();
+  //this->vDump();
+  //p_PredCmp_arg->vDump();
 
   Card_ColumnRef* p_columnRef_this_0 = _pCard_ColumnRef(this->pGetChild(0));
   char cTableSyn_this_0 = p_columnRef_this_0->cColumnRef_tableSyn();

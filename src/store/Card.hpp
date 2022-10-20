@@ -14,8 +14,8 @@
 #include "eXK.h"
 
 #include "ChildCards.hpp"
+#include "PpySet.hpp"
 
-#include "Table.hpp"
 #include "Ribbon.hpp"
 
 namespace STORE
@@ -108,8 +108,9 @@ static Stz* P_Invalid      = "bInvalid"_Stz;
 static Stz* P_JoinedBuff   = "nJoinedBuff"_Stz;
 static Stz* P_Network      = "nNetwork"_Stz;
 static Stz* P_OrdHi        = "iOrdHi"_Stz;
-static Stz* P_Ordinal      = "szOrdinal"_Stz;
+static Stz* P_StreamColOrd = "szStreamColOrd"_Stz;
 static Stz* P_OrdLo        = "iOrdLo"_Stz;
+static Stz* P_ParamOrd     = "szParamOrd"_Stz;
 static Stz* P_Permutation  = "i_Permutation"_Stz;
 static Stz* P_PtndJoin     = "i_PtndJoin"_Stz;
 static Stz* P_Rank         = "iRank"_Stz;
@@ -133,7 +134,15 @@ static char MARK_UPWARDS    = '^';
 namespace STORE
 {
   static const bool C_CONTINUE_RECURSION  = true;
+  static const bool C_PRINT_PHASE         = true;
+  static const bool C_PRINT_XFORM         = true;
+  static const bool C_TRACE_Y             = true;
+  static const bool C_UPDATE_MEMBER       = true;
+
+  static const bool C_QUIET_PHASE         = false;
+  static const bool C_QUIET_XFORM         = false;
   static const bool C_TERMINATE_RECURSION = false;
+  static const bool C_TRACE_N             = false;
 
   class Card : public Object
              , public ChildCards
@@ -151,6 +160,7 @@ namespace STORE
     char m_cMark2;
 
     TagSet* m_pProperties;
+    PpySet  m_oPpySet;
 
     Card* m_pLastPrintParent;
 
@@ -211,6 +221,7 @@ namespace STORE
     Card* pFindParent(Card* pSubCard);
     Card* pFindValueRecursive(Stz* szValue, Card*& rpParent, Card* _opaque_=nullptr);
     Card* pFindValueRecursive(eCK eCard, Stz* szValue, Card*& rpParent, Card* _opaque_=nullptr);
+    Card* pFindPpyRecursive(Stz* szPpy, eCK eOfCard=CK_NONE);
 
     bool bHasChildWithValue(Stz* szValue);
     bool bHasProperty(Stz* szPpyNm);

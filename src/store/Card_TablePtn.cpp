@@ -5,6 +5,8 @@
 #include "Card_TablePtn.hpp"
 #include "Card_Table.hpp"
 #include "Card_TablePtr.hpp"
+
+#include "Table.hpp"
 #include "PtnDef.hpp"
 
 /*----------------------------------------------------------------------------*/

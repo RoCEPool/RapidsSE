@@ -369,7 +369,7 @@ void Weaver::vArgLimit(Stz* szOpArgs, Card_Limit* pCard_Limit)
   
   // limit : 0) rows
 
-  pCard_Limit->vDump();
+  //pCard_Limit->vDump();
 
   s4K sRpnExpr;
   

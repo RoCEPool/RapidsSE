@@ -15,7 +15,7 @@ create index S_idx0 on supplier(S_SUPPKEY);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/cue = "vAdd_scanPred"
+/cue = "vPhase_1_ReducePipeline"
 /transliterated
 /transform
 /transform3
