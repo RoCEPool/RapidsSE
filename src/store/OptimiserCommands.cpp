@@ -16,7 +16,7 @@ bool STORE::bOpt_help(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
 {
   gxOptimiserCatalog.vHelp();
   
-  reOptAct = OA_INPUT;
+  reOptAct = OA_INPUT_AGAIN;
   
   return true;
 }
@@ -49,10 +49,14 @@ OptimiserFun __Opt_help_1
 bool STORE::bOpt_weave(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
 {
   vTrace("bOpt_weave\n"_Stz);
-  
-  Drafter* pDrafter = pOptimiser->pDrafter();
-  bool bResult = pDrafter->bWeave(pTknVec,reOptAct);
-  return bResult;
+
+  UNUSED(pTknVec);
+
+  vTrace("%s\n"_Stz,pOptimiser->szWeave());
+
+  //reOptAct = OA_INPUT_AGAIN;
+
+  return true;
 }
 
 OptimiserFun __Opt_weave

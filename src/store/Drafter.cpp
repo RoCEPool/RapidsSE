@@ -74,7 +74,7 @@ bool Drafter::bWeave(TokenVec* pTknVec, eOA& reOptAct)
          ,m_pOptimiser->szWeave()
          );
   
-  reOptAct = OA_INPUT;
+  reOptAct = OA_INPUT_AGAIN;
   
   return true;
 }

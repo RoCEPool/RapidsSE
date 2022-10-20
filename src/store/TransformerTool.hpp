@@ -67,7 +67,7 @@ namespace STORE
 
     Board* pBoard(void);
 
-    bool bCueUser(Stz* szPhase, Stz* szTransformation);
+    eOA eCueUser(Stz* szPhase, Stz* szTransformation= nullptr);
 
     eCK  eDecodeMain(Card* pCard);
 
@@ -79,6 +79,7 @@ namespace STORE
 
     Stz* szPhase(void);
     void vPhase(bool bPrintPhase, const char* szPhase);
+    void vPrintBench(eBK eBoard, i8 i_SubBoard=C_UNKNOWN);
     void vPrintBoard(void);
 
     void vSetPrintByKind(eCK eCard, bool bPrintByKind);
