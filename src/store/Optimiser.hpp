@@ -7,7 +7,6 @@
 
 #include "Bench.hpp"
 #include "CardCtl.hpp"
-#include "Drafter.hpp"
 #include "Transformer.hpp"
 #include "Weaver.hpp"
 
@@ -27,7 +26,6 @@ namespace STORE
     Bench*       m_pBench;
     Dissector*   m_pDissector;
     Transformer* m_pTransformer;
-    Drafter*     m_pDrafter;
     Weaver*      m_pWeaver;
 
     // must be last
@@ -48,10 +46,6 @@ namespace STORE
     CardCtl* pCardCtl(void);
   
     void vDissect(VertexSpec* pm_pUnOptPipeSpec);
-  
-    Drafter* pDrafter(void);
-
-    Board* pHeadBoard(void);
 
     TagSet* pJobTags(void);
 
