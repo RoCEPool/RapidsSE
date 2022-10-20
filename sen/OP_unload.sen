@@ -31,7 +31,7 @@
   1 InfoSet[].colVal@ locals| iPathNo |
   2 InfoSet[].colVal@ locals| iPathOf |
 
-  // print the __path data
+  // unload to disk
   iPathOf iPathNo sPath unload.toDisk
 
   InfoSet[].delete
@@ -52,10 +52,6 @@
 
   op__topology
 
-//  find: unload_CsvBuffer   EV_D_CSVBUFFER [op].handler!
-//  find: unload_EosMarker   EV_M_EOS       [op].handler!
-//  find: unload_DataPulse   EV_M_DATAPULSE [op].handler!
-//  find: unload_StartMarker EV_M_START     [op].handler!
   find: unload_Path  EV_I_PATH  [op].handler!
 
   op__loop
