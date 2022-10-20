@@ -5,6 +5,14 @@
 #include "TransformerTool.hpp"
 
 #include "Job.hpp"
+#include "Cue.hpp"
+
+#include "Optimiser.hpp"
+#include "OptimiserFun.hpp"
+#include "OptimiserCatalog.hpp"
+
+extern OptimiserCatalog gxOptimiserCatalog;
+
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -24,6 +32,7 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   Job* pJob = MY::pJob();
   TagSet* pJobTags = pJob->pJobTags();
   m_bInteractive = pJobTags->bHasName("<interactive>"_Stz);
+  m_bBeenCued = false;
 
   m_pPermGen = nullptr;
 
@@ -83,6 +92,104 @@ Board* TransformerTool::pBoard(void)
   _precondition_(_ADDRESS_, _MAGIC_);
 
   return M.pBoard;
+}
+
+/*----------------------------------------------------------------------------*/
+/* cue user                                                                  */
+/*----------------------------------------------------------------------------*/
+bool TransformerTool::bCueUser(Stz* szPhase, Stz* szTransformation)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  eOA eOptAct = OA_ENTRY;
+  TokenVec* pTknVec = nullptr;
+
+  L_Entry:
+
+  bool bExecuted = false;
+
+  if (! m_bBeenCued && AM::JOB::bHasTag("<cue>"_Stz)) {
+    Stz* szTagCue = AM::JOB::szTagValue("<cue>"_Stz);
+    if (   (! szPhase          || ! szTagCue->bSame(szPhase))
+           && (! szTransformation || ! szTagCue->bSame(szTransformation))) {
+      printf("%s :: %s\n",(char*)szPhase, (char*)szTransformation);
+      return false;
+    }
+  }
+
+  m_bBeenCued = true;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  L_Input:
+
+  s256 sPrompt;
+
+  sPrompt.vSprint("%s :: %s >> "_Stz,
+                  szPhase, szTransformation);
+
+  s4K sInput;
+  Cue::vGetInput(sPrompt,sInput);
+
+  if (! sInput.nLength()) {
+    return false;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if (pTknVec) {
+    delete pTknVec;
+    pTknVec = nullptr;
+  }
+
+  pTknVec = AM::TOKENISE::pTokeniseSen(sInput);
+
+  i8 nTokens = pTknVec->nTokens();
+
+  OptimiserFun* pOptFun = nullptr;
+
+  if (0 == nTokens)
+    goto L_Exit;
+
+  if (1 == nTokens)
+    pOptFun = gxOptimiserCatalog.pFindFun(pTknVec->pGet(0)->szChars(),
+                                          nullptr);
+  else
+    pOptFun = gxOptimiserCatalog.pFindFun(pTknVec->pGet(0)->szChars(),
+                                          pTknVec->pGet(1)->szChars());
+
+  if (! pOptFun) {
+    vTrace("Unknown command\n"_Stz);
+    delete pTknVec;
+    goto L_Input;
+  }
+
+  eOptAct = OA_ENTRY;
+  bExecuted = pOptFun->m_fpOptFun(m_pBench->pOptimiser(),pTknVec,eOptAct);
+
+  L_Next:
+
+  if (! bExecuted)
+    goto L_Input;
+
+  if (OA_ENTRY == eOptAct)
+    goto L_Entry;
+  else
+  if (OA_INPUT == eOptAct)
+    goto L_Input;
+  else
+  if (OA_EXIT == eOptAct)
+    return false;
+  else
+    NEVER_REACH;
+
+  L_Exit:
+  if (pTknVec) {
+    delete pTknVec;
+    pTknVec = nullptr;
+  }
+
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -180,9 +287,15 @@ void TransformerTool::vPrintBoard(void)
   if (! m_bPrintXform)
     return;
 
-  M.pBoard->vPrintBoard(szPhase(),
-                        szTransformation(),
-                        szDescription());
+
+  for (;;) {
+    M.pBoard->vPrintBoard(szPhase(),
+                          szTransformation(),
+                          szDescription());
+
+    if (!bCueUser(szPhase(), szTransformation()))
+      break;
+  }
 
   //m_sDescription = ""_Stz;
 }

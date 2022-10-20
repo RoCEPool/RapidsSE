@@ -285,14 +285,9 @@ void Board::vPrintBoard(Stz* szPhase,
 
   L_Entry:
 
-  bool bCue   = true;
-  bool bPrint = true;
   bool bExecuted = false;
 
   m_pCard_Deck->vRenumberRecursive();
-
-  if (! bPrint)
-    return;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -308,9 +303,7 @@ void Board::vPrintBoard(Stz* szPhase,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (! bCue)
-    return;
-
+  /*
   if (! m_bBeenCued && AM::JOB::bHasTag("<cue>"_Stz)) {
     Stz* szTagCue = AM::JOB::szTagValue("<cue>"_Stz);
     if (   (! szPhase          || ! szTagCue->bSame(szPhase))
@@ -391,6 +384,7 @@ void Board::vPrintBoard(Stz* szPhase,
     delete pTknVec;
     pTknVec = nullptr;
   }
+   */
 }
 
 /*----------------------------------------------------------------------------*/

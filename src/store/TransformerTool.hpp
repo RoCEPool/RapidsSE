@@ -26,6 +26,7 @@ namespace STORE
     bool        m_bPrintPhase;
     bool        m_bPrintXform;
     bool        m_bInteractive;
+    b8          m_bBeenCued;
 
     s32         m_sPhase;
     s256        m_sTransformation;
@@ -66,7 +67,10 @@ namespace STORE
 
     Board* pBoard(void);
 
-     eCK  eDecodeMain(Card* pCard);
+    bool bCueUser(Stz* szPhase, Stz* szTransformation);
+
+    eCK  eDecodeMain(Card* pCard);
+
 
     void vEndTransformation(void);
 
