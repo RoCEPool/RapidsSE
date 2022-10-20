@@ -19,11 +19,11 @@ success
 CREATE INDEX IxN_NATIONKEY ON nation(N_NATIONKEY);
 affected: 0
 
-CREATE INDEX IxN_REGIONKEY ON nation(N_NATIONKEY);
+CREATE INDEX IxN_REGIONKEY ON nation(N_REGIONKEY);
 affected: 0
 
 // load the table
-load nation "../TPCH/SF_0001/nation.csv";
+loadReplicated nation "../TPCH/SF_0001/nation.csv";
 success
 
 //select count(*) from nation;

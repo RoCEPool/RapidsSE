@@ -21,7 +21,7 @@ affected: 0
 
 -----------------------------------------------------------------------
 // load the table
-load region "../TPCH/SF_0001/region.csv";
+loadReplicated region "../TPCH/SF_0001/region.csv";
 success
 
 //select count(*) from region;
