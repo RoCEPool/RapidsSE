@@ -9,6 +9,8 @@
 
 namespace STORE
 {
+  bool bOpt_disable (Optimiser* pOpt, TokenVec* pTknVec, eOA& reAction);
+
   bool bOpt_help    (Optimiser* pOpt, TokenVec* pTknVec, eOA& reAction);
 
   bool bOpt_weave   (Optimiser* pOpt, TokenVec* pTknVec, eOA& reAction);

@@ -33,6 +33,7 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   TagSet* pJobTags = pJob->pJobTags();
   m_bInteractive = pJobTags->bHasName("<interactive>"_Stz);
   m_bBeenCued = false;
+  m_bCueingDisabled = false;
 
   m_pPermGen = nullptr;
 
@@ -103,6 +104,9 @@ eOA TransformerTool::eCueUser(Stz* szPhase, Stz* szTransformation)
 
   TokenVec* pTknVec = nullptr;
 
+  if (m_bCueingDisabled)
+    return OA_CONTINUE_TRANSFORMING;
+
   if (! m_bBeenCued && AM::JOB::bHasTag("<cue>"_Stz)) {
     Stz* szTagCue = AM::JOB::szTagValue("<cue>"_Stz);
     if (   (! szPhase          || ! szTagCue->bSame(szPhase))
@@ -162,6 +166,9 @@ eOA TransformerTool::eCueUser(Stz* szPhase, Stz* szTransformation)
 
   if (OA_INPUT_AGAIN == eOptAct)
     goto L_Input;
+
+  if (OA_DISABLE_CUEING == eOptAct)
+    m_bCueingDisabled = true;
 
   return eOptAct;
 }

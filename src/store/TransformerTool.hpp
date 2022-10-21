@@ -27,6 +27,7 @@ namespace STORE
     bool        m_bPrintXform;
     bool        m_bInteractive;
     b8          m_bBeenCued;
+    b8          m_bCueingDisabled;
 
     s32         m_sPhase;
     s256        m_sTransformation;

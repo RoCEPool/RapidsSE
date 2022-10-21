@@ -10,6 +10,42 @@
 extern OptimiserCatalog gxOptimiserCatalog;
 
 /*----------------------------------------------------------------------------*/
+/* disable                                                                    */
+/*----------------------------------------------------------------------------*/
+bool STORE::bOpt_disable(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
+{
+  vTrace("bOpt_weave\n"_Stz);
+
+  UNUSED(pTknVec);
+
+  reOptAct = OA_DISABLE_CUEING;
+
+  return true;
+}
+
+OptimiserFun __Opt_disable_0
+(
+  "disable"_Stz,      // name of the opt function
+  "disable"_Stz,      // command first word
+  nullptr,            // command second word
+  bOpt_disable,       // function to call
+  0,0,                // spare
+  "disable further cueing"_Stz,
+  "usage???"_Stz
+);
+
+OptimiserFun __Opt_disable_1
+(
+  "disable"_Stz,      // name of the opt function
+  "d"_Stz,            // command first word
+  nullptr,            // command second word
+  bOpt_disable,       // function to call
+  0,0,                // spare
+  "disable further cueing"_Stz,
+  "usage???"_Stz
+);
+
+/*----------------------------------------------------------------------------*/
 /* help                                                                       */
 /*----------------------------------------------------------------------------*/
 bool STORE::bOpt_help(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
@@ -23,7 +59,7 @@ bool STORE::bOpt_help(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
 
 OptimiserFun __Opt_help_0
 (
-  "help"_Stz,         // name of the prompt function
+  "help"_Stz,         // name of the opt function
   "?"_Stz,            // command first word
   nullptr,            // command second word
   bOpt_help,          // function to call
@@ -34,7 +70,7 @@ OptimiserFun __Opt_help_0
 
 OptimiserFun __Opt_help_1
 (
-  "help"_Stz,         // name of the prompt function
+  "help"_Stz,         // name of the opt function
   "help"_Stz,         // command first word
   nullptr,            // command second word
   bOpt_help,          // function to call
@@ -44,7 +80,7 @@ OptimiserFun __Opt_help_1
 );
 
 /*----------------------------------------------------------------------------*/
-/* drafter: weave                                                             */
+/* weave                                                                      */
 /*----------------------------------------------------------------------------*/
 bool STORE::bOpt_weave(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
 {
@@ -59,16 +95,28 @@ bool STORE::bOpt_weave(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
   return true;
 }
 
-OptimiserFun __Opt_weave
+OptimiserFun __Opt_weave_0
 (
-  "weave"_Stz,        // name of the prompt function
+  "weave"_Stz,        // name of the opt function
   "weave"_Stz,        // command first word
   nullptr,            // command second word
-  bOpt_weave,           // function to call
+  bOpt_weave,         // function to call
   0,0,                // spare
   "weave statement from cards"_Stz,
   "usage???"_Stz
 );
+
+OptimiserFun __Opt_weave_1
+(
+  "weave"_Stz,        // name of the opt function
+  "w"_Stz,            // command first word
+  nullptr,            // command second word
+  bOpt_weave,         // function to call
+  0,0,                // spare
+  "weave statement from cards"_Stz,
+  "usage???"_Stz
+);
+
 
 /*============================================================================*/
 /* end                                                                        */
