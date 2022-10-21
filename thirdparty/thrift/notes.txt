@@ -1,0 +1,188 @@
+Notes on Thrift
+===============
+
+MacOS Dependencies:
+-------------------
+1. The package manager Homebrew is required to help install the other dependencies.
+2. The Thrift autoconfigure script requires Bison >= 2.5. The standard bison included
+   with MacOS is 2.3. A newer version can be installed with HomeBrew via the command
+   "brew install bison". You then need to change the $PATH to use this HomeBrew version
+   of bison before the inbuilt MacOS bison. You can do this by adding the following command
+   to your ~/.bash_profile file:
+   export PATH="$(brew --prefix bison)/bin:$PATH"
+3. Thrift depends on the C++ library Boost. It can be installed with "brew install boost".
+   If this is successful then there will be headers in /usr/local/include/boost.
+4. Thrift depends on headers and libraries for openssl. MacOS should provide a version of
+   openssl (libreSsl I believe), but it's headers are not found in the usual /usr/local/include
+   path. Instead the headers are likely found in /usr/local/opt/openssl/include instead and
+   the library in /usr/local/opt/openssl/lib. The build environment will adjust the CPPFLAGS
+   and LD_FLAGS environment variables to also search in these locations.
+
+
+CentOS 7 Dependencies:
+----------------------
+1. The EPEL7 (Extra Packages for Enterprise Linux) repository must be installed in yum as
+   this provides an easier installation for additional packages.
+2. Thrift depends on the C++ library Boost. It can be installed with "sudo yum install boost169-devel".
+   If this is successful then there will be headers in /usr/include/boost169. Note that the default
+   boost package (sudo yum install boost) installs an older version of boost that is less than
+   the 1.56 version that Thrift requires. Additionally, because the headers get installed into a
+   non-default path (/usr/local/boost169 instead of /usr/include/boost) then we need to tell the
+   Thrift configure script where to find these boost libraries.
+3. Thrift depends on headers and libraries for openssl. This can be installed with the command
+   "sudo yum install openssl-devel". If successful, there will be headers found at /usr/include/openssl.
+
+
+Ubuntu 22 Dependencies:
+-----------------------
+1. Thrift depends on the C++ library Boost. It can be installed with "sudo apt-get install libboost-dev".
+   If this is successful then there will be headers in /usr/local/boost.
+3. Thrift depends on headers and libraries for openssl. This can be installed with the command
+   "sudo apt-get install libssl-dev". If successful, there will be headers found at /usr/include/openssl.
+
+
+Configuring Thrift on Mac
+-------------------------
+
+The command below will build thrift and the c++ library only on MacOS.
+
+LD_FLAGS='-L/usr/local/opt/openssl/lib' CPPFLAGS='-I/usr/local/opt/openssl/include' ./configure \
+ --prefix=/Users/craig/Downloads/libthrift \
+ --enable-libs \
+ --disable-tests \
+ --disable-tutorial \
+ --disable-coverage \
+ --disable-shared \
+ --enable-static \
+ --with-cpp \
+ --without-java \
+ --without-kotlin \
+ --without-erlang \
+ --without-nodejs \
+ --without-nodets \
+ --without-lua \
+ --without-python \
+ --without-py3 \
+ --without-php \
+ --without-php_extension \
+ --without-dart \
+ --without-ruby \
+ --without-go \
+ --without-swift \
+ --without-rs \
+ --without-haxe \
+ --without-netstd \
+ --without-d \
+ --without-libevent \
+ --without-qt5
+
+
+Configuring Thrift on CentOS 7
+------------------------------
+
+The command below will build thrift and the c++ library only on CentOS 7.
+
+./configure \
+ --prefix=$(realpath ./../libthrift) \
+ --enable-libs \
+ --disable-tests \
+ --disable-tutorial \
+ --disable-coverage \
+ --disable-shared \
+ --enable-static \
+ --with-cpp \
+ --with-boost=/usr/include/boost169 \
+ --without-java \
+ --without-kotlin \
+ --without-erlang \
+ --without-nodejs \
+ --without-nodets \
+ --without-lua \
+ --without-python \
+ --without-py3 \
+ --without-php \
+ --without-php_extension \
+ --without-dart \
+ --without-ruby \
+ --without-go \
+ --without-swift \
+ --without-rs \
+ --without-haxe \
+ --without-netstd \
+ --without-d \
+ --without-libevent \
+ --without-qt5
+
+
+Configuring Thrift on Ubuntu 22
+-------------------------------
+
+The command below will build thrift and the c++ library only on Ubuntu 22.
+
+./configure \
+ --prefix=$(realpath ./../libthrift) \
+ --enable-libs \
+ --disable-tests \
+ --disable-tutorial \
+ --disable-coverage \
+ --disable-shared \
+ --enable-static \
+ --with-cpp \
+ --without-java \
+ --without-kotlin \
+ --without-erlang \
+ --without-nodejs \
+ --without-nodets \
+ --without-lua \
+ --without-python \
+ --without-py3 \
+ --without-php \
+ --without-php_extension \
+ --without-dart \
+ --without-ruby \
+ --without-go \
+ --without-swift \
+ --without-rs \
+ --without-haxe \
+ --without-netstd \
+ --without-d \
+ --without-libevent \
+ --without-qt5
+
+
+Configuring Thrift on AWS Linux 2
+---------------------------------
+
+The command below will build thrift and the c++ library only on AWS Linux 2.
+
+./configure \
+ --prefix=$(realpath ./../libthrift) \
+ --enable-libs \
+ --disable-tests \
+ --disable-tutorial \
+ --disable-coverage \
+ --disable-shared \
+ --enable-static \
+ --with-cpp \
+ --with-boost=/mnt/disk2/boost_1_80_0 \
+ --without-java \
+ --without-kotlin \
+ --without-erlang \
+ --without-nodejs \
+ --without-nodets \
+ --without-lua \
+ --without-python \
+ --without-py3 \
+ --without-php \
+ --without-php_extension \
+ --without-dart \
+ --without-ruby \
+ --without-go \
+ --without-swift \
+ --without-rs \
+ --without-haxe \
+ --without-netstd \
+ --without-d \
+ --without-libevent \
+ --without-qt5
+

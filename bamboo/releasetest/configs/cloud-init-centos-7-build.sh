@@ -305,7 +305,7 @@ if [ "${OS_DIST}" = "${CENTOS7}" ]; then
 fi
 
 # Need to have
-yum install -y gcc-c++ git git-lfs cmake libuuid-devel unzip
+yum install -y gcc-c++ git git-lfs cmake libuuid-devel unzip openssl-devel
 yum install -y centos-release-scl
 yum install -y devtoolset-11-gcc devtoolset-11-gcc-c++ devtoolset-11-libatomic-devel
 

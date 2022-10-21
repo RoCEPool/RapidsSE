@@ -1,0 +1,274 @@
+#!/bin/bash
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Print an error message to stderr and exit,
+## Params:
+##   $1 : Error message
+##   $2..$n : (optional) other arguments to print.
+
+function errorExit() {
+  >&2 echo -e "ERROR: $*"
+  exit 1
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Checks that the necessary dependencies are installed 
+function checkDependencies() {
+  echo "Checking for Thrift dependencies"
+
+  if   [ "${IS_MACOS}" -eq 1 ];        then checkDependenciesMacOs;
+  elif [ "${IS_CENTOS_7}" -eq 1 ];     then checkDependenciesCentOS7;
+  elif [ "${IS_CENTOS_OTHER}" -eq 1 ]; then checkDependenciesCentOSOther;
+  elif [ "${IS_UBUNTU}" -eq 1 ];       then checkDependenciesUbuntu;
+  elif [ "${IS_AMZNLINUX}" -eq 1 ];    then checkDependenciesAmazonLinux;
+  fi
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Checks that the necessary dependencies are installed on MacOS
+function checkDependenciesMacOs() {
+  # 1. Check for homebrew
+  if ! which brew &>/dev/null; then
+    errorExit "Homebrew is required to install other Thrift pre-requisites"
+  fi
+
+  # 2. Check for Bison >= 2.5
+  if ! which bison &>/dev/null; then
+    errorExit "The Thrift pre-requisite Bison does not appear to be installed. " \
+              "Install with the command \"brew install bison\"."
+  fi
+
+  local bisonVerStr
+  local bisonMajor
+  local bisonMinor
+  bisonVerStr="$(bison -V | head -n 1 | cut -f 4 -d ' ')" || errorExit "Could not extract the bison version number"
+  bisonMajor="$(echo "${bisonVerStr}" | cut -d '.' -f 1)"
+  bisonMinor="$(echo "${bisonVerStr}" | cut -d '.' -f 2)"
+
+  [[ "${bisonMajor}" -lt 2 ]] && errorExit "The Thrift pre-requisite Bison must be version 2.5 or greater. Installed version is ${bisonVerStr}."
+  [[ "${bisonMajor}" -eq 2 && "${bisonMinor}" -lt 5 ]] && errorExit "The Thrift pre-requisite Bison must be version 2.5 or greater. Installed version is ${bisonVerStr}."
+
+  # 3. Check for Boost
+  if [ ! -d /usr/local/include/boost ]; then
+    errorExit "The Thrift pre-requisite Boost does not appear to be installed. " \
+              "Install with the command \"brew install boost\"."
+  fi
+
+  # 4. Check for OpenSSL headers and library
+  if [ ! -d /usr/local/opt/openssl/include ]; then
+    errorExit "The Thrift pre-requisite OpenSSL headers do not appear to be installed."
+  fi
+
+  if [ ! -d /usr/local/opt/openssl/lib ]; then
+    errorExit "The Thrift pre-requisite OpenSSL libraries do not appear to be installed."
+  fi
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Checks that the necessary dependencies are installed on CentOS 7
+function checkDependenciesCentOS7() {
+  # 1. Check for EPEL repository
+  if ! yum repolist | grep -q epel; then
+    errorExit "Homebrew is required to install other Thrift pre-requisites"
+  fi
+
+  # 2. Check for Boost
+  if [ ! -d /usr/include/boost169 ]; then
+    errorExit "The Thrift pre-requisite Boost does not appear to be installed. " \
+              "Install with the command \"sudo yum install boost169-devel\"."
+  fi
+
+  # 3. Check for OpenSSL headers
+  if [ ! -d /usr/include/openssl ]; then
+    errorExit "The Thrift pre-requisite OpenSSL headers do not appear to be installed. " \
+              "Install with the command \"sudo yum install openssl-devel\"."
+  fi
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Checks that the necessary dependencies are installed on CentOS other than v7
+function checkDependenciesCentOSOther() {
+  # 1. Check for EPEL repository
+  if ! yum repolist | grep -q epel; then
+    errorExit "Homebrew is required to install other Thrift pre-requisites"
+  fi
+
+  # 2. Check for Boost
+  if [ ! -d /usr/include/boost ]; then
+    errorExit "The Thrift pre-requisite Boost does not appear to be installed. " \
+              "Install with the command \"sudo yum install boost-devel\"."
+  fi
+
+  # 3. Check for OpenSSL headers
+  if [ ! -d /usr/include/openssl ]; then
+    errorExit "The Thrift pre-requisite OpenSSL headers do not appear to be installed. " \
+              "Install with the command \"sudo yum install openssl-devel\"."
+  fi
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Checks that the necessary dependencies are installed on Ubuntu
+function checkDependenciesUbuntu() {
+  # 1. Check for Boost
+  if [ ! -d /usr/include/boost ]; then
+    errorExit "The Thrift pre-requisite Boost does not appear to be installed. " \
+              "Install with the command \"sudo apt-get install libboost-dev\"."
+  fi
+
+  # 2. Check for OpenSSL headers
+  if [ ! -d /usr/include/openssl ]; then
+    errorExit "The Thrift pre-requisite OpenSSL headers do not appear to be installed. " \
+              "Install with the command \"sudo apt-get install libssl-dev\"."
+  fi
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Checks that the necessary dependencies are installed on AmazonLinux
+function checkDependenciesAmazonLinux() {
+  # 1. Check for Boost
+  if [ ! -d /usr/include/boost169 ]; then
+    errorExit "The Thrift pre-requisite Boost does not appear to be installed. " \
+              "Install with the command \"sudo yum install boost169-devel\"."
+  fi
+
+  # 2. Check for OpenSSL headers
+  if [ ! -d /usr/include/openssl ]; then
+    errorExit "The Thrift pre-requisite OpenSSL headers do not appear to be installed. " \
+              "Install with the command \"sudo yum install openssl-devel\"."
+  fi
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Configure thrift as per the OS we are on
+function runConfigure() {
+  local command
+  local commonOptions=("--prefix=$(realpath .)"
+                       "--enable-libs"
+                       "--disable-tests"
+                       "--disable-tutorial"
+                       "--disable-coverage"
+                       "--disable-shared"
+                       "--enable-static"
+                       "--with-cpp"
+                       "--without-java"
+                       "--without-kotlin"
+                       "--without-erlang"
+                       "--without-nodejs"
+                       "--without-nodets"
+                       "--without-lua"
+                       "--without-python"
+                       "--without-py3"
+                       "--without-php"
+                       "--without-php_extension"
+                       "--without-dart"
+                       "--without-ruby"
+                       "--without-go"
+                       "--without-swift"
+                       "--without-rs"
+                       "--without-haxe"
+                       "--without-netstd"
+                       "--without-d"
+                       "--without-libevent"
+                       "--without-qt5")
+  
+  if   [ "${IS_MACOS}" -eq 1 ]; then 
+    command=("env"
+             "LD_FLAGS=-L/usr/local/opt/openssl/lib"
+             "CPPFLAGS=-I/usr/local/opt/openssl/include"
+             "./configure"
+             "${commonOptions[@]}" )
+    
+  elif [[ "${IS_CENTOS_7}" -eq 1 || "${IS_AMZNLINUX}" -eq 1 ]]; then
+    command=("./configure"
+             "${commonOptions[@]}"
+             "--with-boost=/usr/include/boost169" )
+    
+  elif [[ "${IS_CENTOS_OTHER}" -eq 1 || "${IS_UBUNTU}" -eq 1 ]]; then
+    command=("./configure"
+             "${commonOptions[@]}"
+             "--with-boost" )
+  fi
+
+  # Run in a subshell so we only change the directory temporarily
+  (
+    echo "Configuring Thrift"
+
+    cd "${SRC_DIR}" || exit 1
+
+    local output
+    readonly configureLog="../configure.log"
+
+    if ! output="$("${command[@]}" | tee "${configureLog}" | grep "Building C++ Library")"; then
+      errorExit "Unable to configure Thrift. Refer to the output in the logfile $(realpath ${configureLog})"
+    fi
+
+    # Check if the c++ library is actually being configured
+    [[ "${output}" =~ "yes" ]] || errorExit "Thrift did not configure the c++ library to be built. This is likely due to a missing dependency."
+
+  ) || exit 1
+
+  echo "Configuring Thrift successfully!"
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Main Script follows
+
+# Part 0 - Arguments
+if [ "$#" -ne 1 ]; then
+  errorExit "Script $0 must be called with 1 argument being the path of the untarred thrift source"
+fi
+
+SRC_DIR="$1"
+[ -d "${SRC_DIR}" ] || errorExit "Thrift source directory does not exist: ${SRC_DIR}"
+
+
+# Part 1 - Determine what OS and version we are on.
+
+IS_MACOS=0
+IS_CENTOS_7=0
+IS_CENTOS_OTHER=0
+IS_UBUNTU=0
+IS_AMZNLINUX=0
+
+# Get the OS name. This should be "Darwin" or "Linux"
+OS_NAME="$(uname -s)"
+
+if [ "${OS_NAME}" = "Darwin" ]; then
+  IS_MACOS=1
+
+elif [ "${OS_NAME}" = "Linux" ]; then
+  readonly osRelease="/etc/os-release"
+
+  if [ ! -f "${osRelease}" ]; then
+    errorExit "Cannot determine the OS type because the file ${osRelease} cannot be found."
+  fi
+
+  #shellcheck disable=SC1090
+  source "${osRelease}"
+
+  if [ "${ID}" = "centos" ]; then
+    if [ "${VERSION_ID}" -eq 7 ]; then
+      IS_CENTOS_7=1
+    else
+      IS_CENTOS_OTHER=1
+    fi
+
+  elif [ "${ID}" = "ubuntu" ]; then
+    IS_UBUNTU=1
+
+  elif [ "${ID}" = "amzn" ]; then
+    IS_AMZNLINUX=1
+  fi
+
+else
+  errorExit "Operating system not supported: ${OS_NAME}"
+fi
+
+
+# Part 2 - Check for the necessary dependencies on this machine
+checkDependencies
+
+
+# Part 3 - Configure thrift as per the OS we are on
+runConfigure
