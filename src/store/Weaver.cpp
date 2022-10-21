@@ -320,22 +320,25 @@ void Weaver::vArgIndexJoin(Stz* szOpArgs, Card_IndexJoin* pCard_IndexJoin)
 
   s4K sRpnExpr;
 
-  Card_IndexPtr* pCard_IndexPtr = _pCard_IndexPtr(pCard_IndexJoin->pFindSubCard(CK_INDEXPTR));
+//  Card_IndexPtr* pCard_IndexPtr = _pCard_IndexPtr(pCard_IndexJoin->pFindSubCard(CK_INDEXPTR));
+//
+//  Index* pIndex = pCard_IndexPtr->pIndex();
+//  Stz* szIndexNm = pIndex->szIndexNm();
+//
+//  Card_TablePtr* pCard_TablePtr = _pCard_TablePtr(pCard_IndexJoin->pFindSubCard(CK_TABLEPTR));
+//  Table* pTable = pCard_TablePtr->pTable();
+//  Stz* szTableNm = pTable->szTableNm();
+//
+//  //Card_IndexPred* pCard_IndexPred = _pCard_IndexPred(pCard_IndexJoin->pFindSubCard(CK_INDEXPRED));
 
-  Index* pIndex = pCard_IndexPtr->pIndex();
-  Stz* szIndexNm = pIndex->szIndexNm();
-
-  Card_TablePtr* pCard_TablePtr = _pCard_TablePtr(pCard_IndexJoin->pFindSubCard(CK_TABLEPTR));
-  Table* pTable = pCard_TablePtr->pTable();
-  Stz* szTableNm = pTable->szTableNm();
-
-  //Card_IndexPred* pCard_IndexPred = _pCard_IndexPred(pCard_IndexJoin->pFindSubCard(CK_INDEXPRED));
+  Card_TableNm* p_tableNm = pCard_IndexJoin->pSub_tableNm();
+  Card_IndexNm* p_indexNm = pCard_IndexJoin->pSub_indexNm();
 
   vRpnIndexJoin(sRpnExpr,pCard_IndexJoin);
 
   szOpArgs->vCatSprint("%s %s \"%s \""_Stz
-                       ,szTableNm
-                       ,szIndexNm
+                       ,p_tableNm->szValue()
+                       ,p_indexNm->szValue()
                        ,sRpnExpr.szStz());
 
 }

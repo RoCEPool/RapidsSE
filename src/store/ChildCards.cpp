@@ -238,6 +238,16 @@ Card* ChildCards::pGetChild(i8 i_Child, eCK& reCard)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card* ChildCards::pPopChild(void)
+{
+  Card* pChild = pPop();
+
+  return pChild;
+}
+
+/*----------------------------------------------------------------------------*/
 /* remove given immediate child card (non-recursive)                          */
 /*----------------------------------------------------------------------------*/
 void ChildCards::vRemoveChild(Card* pChildCard)

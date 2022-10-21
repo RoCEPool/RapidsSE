@@ -1308,6 +1308,20 @@ void Transforms::vAdd_indexJoin_UnderAllJoinable_table(bool bPrint, bool bTrace)
 
   while (E_bEachMainWithSub(CK_TABLE,CK_FILTER)) {
 
+    M.p_tableNm = M.p_table->pSub_tableNm();
+    RASSERT(A_bTable(M.p_tableNm->szValue()));
+
+    RASSERT(A_bIndexListOfTable());
+
+    while (M.p_index = _pCard_Index(M.p_indexList->pPopChild())) {
+      M.p_indexJoin = new Card_IndexJoin;
+      M.p_indexJoin->vAppend(M.p_index);
+      M.p_table->vInsertBefore(M.p_indexJoin,M.p_filter);
+    }
+
+    D_vDeleteMember(CK_INDEXLIST);
+
+/*
     M.p_tablePtr = M.p_table->pSub_tablePtr();
     m_pTable = M.p_tablePtr->pTable();
 
@@ -1327,6 +1341,7 @@ void Transforms::vAdd_indexJoin_UnderAllJoinable_table(bool bPrint, bool bTrace)
       Card_IdxColList* pCard_idxColList = new Card_IdxColList(m_pIndex);
       M.p_indexJoin->vAppend(pCard_idxColList);
     }
+    */
   }
 
   //m_pCardCtl->vPrintFormSubCards(CK_STREAM, CP_DEFAULT, true);
