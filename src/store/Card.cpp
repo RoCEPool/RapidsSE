@@ -1947,13 +1947,13 @@ Card_Stream* Card::pSub_stream(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_StreamColList.hpp"
-Card_StreamColList* Card::pSub_streamColList(void)
+#include "Card_StmColList.hpp"
+Card_StmColList* Card::pSub_streamColList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_StreamColList* p_streamColList =
-      _pCard_StreamColList(pFindSubCard(CK_STREAMCOLLIST));
+  Card_StmColList* p_streamColList =
+      _pCard_StmColList(pFindSubCard(CK_STMCOLLIST));
   return p_streamColList;
 }
 

@@ -93,7 +93,7 @@ void Resolver::vResolve(Card* pMainCard, Stz* szTerm,
 
   i_StreamCol = StrLib::iGleanInt(szTerm->azChar()) - 1;
 
-  Card_StreamCol* pCard_StreamCol = nullptr;
+  Card_StmCol* pCard_StreamCol = nullptr;
 
   if (! m_pStream_r) {
     // + one stream

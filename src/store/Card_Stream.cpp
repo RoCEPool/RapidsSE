@@ -126,13 +126,13 @@ bool Card_Stream::bContainsPred(Card_PRED* pCard_PRED)
 /*----------------------------------------------------------------------------*/
 /* is given <pred> within this stream?                                        */
 /*----------------------------------------------------------------------------*/
-Card_StreamCol* Card_Stream::pFind_streamCol(Stz *szColNm)
+Card_StmCol* Card_Stream::pFind_streamCol(Stz *szColNm)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-   Card_StreamColList* pCard_StreamColList = this->pSub_streamColList();
+   Card_StmColList* pCard_StreamColList = this->pSub_streamColList();
 
-  Card_StreamCol* pCard_streamCol = nullptr;
+  Card_StmCol* pCard_streamCol = nullptr;
 
   return pCard_streamCol;
 }
@@ -140,15 +140,15 @@ Card_StreamCol* Card_Stream::pFind_streamCol(Stz *szColNm)
 /*----------------------------------------------------------------------------*/
 /* get a specific <streamCol>                                                 */
 /*----------------------------------------------------------------------------*/
-Card_StreamCol* Card_Stream::pGet_streamCol(i8 i_Col)
+Card_StmCol* Card_Stream::pGet_streamCol(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_StreamColList* pCard_StreamColList = pGet_streamColList();
+  Card_StmColList* pCard_StreamColList = pGet_streamColList();
 
   i8 iOrdLo = Y_iVal(P_OrdLo);
   i8 i_ColNo = i_Col - iOrdLo + 1;
-  Card_StreamCol* pCard_StreamCol = pCard_StreamColList->pGet_streamCol(i_ColNo);
+  Card_StmCol* pCard_StreamCol = pCard_StreamColList->pGet_streamCol(i_ColNo);
 
   return pCard_StreamCol;
 }
@@ -156,13 +156,13 @@ Card_StreamCol* Card_Stream::pGet_streamCol(i8 i_Col)
 /*----------------------------------------------------------------------------*/
 /* get a specific <streamCol> given $n ordinal                                */
 /*----------------------------------------------------------------------------*/
-Card_StreamCol* Card_Stream::pGet_streamCol(Stz* szStreamColOrd)
+Card_StmCol* Card_Stream::pGet_streamCol(Stz* szStreamColOrd)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   i8 i_Col = szStreamColOrd->iOrdinal() - 1;
 
-  Card_StreamCol* p_streamCol = pGet_streamCol(i_Col);
+  Card_StmCol* p_streamCol = pGet_streamCol(i_Col);
 
   return p_streamCol;
 }
@@ -170,12 +170,12 @@ Card_StreamCol* Card_Stream::pGet_streamCol(Stz* szStreamColOrd)
 /*----------------------------------------------------------------------------*/
 /* get <streamColList>                                                       */
 /*----------------------------------------------------------------------------*/
-Card_StreamColList* Card_Stream::pGet_streamColList(void)
+Card_StmColList* Card_Stream::pGet_streamColList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_StreamColList* pCard_StreamColList
-    = _pCard_StreamColList(pFindSubCard(CK_STREAMCOLLIST));
+  Card_StmColList* pCard_StreamColList
+    = _pCard_StmColList(pFindSubCard(CK_STMCOLLIST));
 
   return pCard_StreamColList;
 }
@@ -214,7 +214,7 @@ i8 Card_Stream::nStreamCols(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_StreamColList* pCard_StreamColList = pGet_streamColList();
+  Card_StmColList* pCard_StreamColList = pGet_streamColList();
 
   i8 nStreamCols = pCard_StreamColList->nStreamCols();
 

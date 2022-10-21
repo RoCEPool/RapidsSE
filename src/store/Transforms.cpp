@@ -294,7 +294,7 @@ void Transforms::vAdd_stream_UnderAll_table(bool bPrint, bool bTrace)
     // + <scan>/<stream>
     M.p_table->vAppend((M.p_stream = new Card_Stream));
     // + <scan>/<stream>/<streamColList>
-    M.p_stream->vAppend((M.p_streamColList = new Card_StreamColList(m_pStreamDef)));
+    M.p_stream->vAppend((M.p_stmColList = new Card_StmColList(m_pStreamDef)));
   }
 
   vSetPrintSubCards(CK_STREAM, true);
@@ -334,8 +334,8 @@ void Transforms::vCalc_ordinalRange_ForAll_stream(bool bPrint, bool bTrace)
 
     CardIter xCI(M.p_stream->pSub_streamColList());
     i8 iOrdinal = iOrdLo;
-    while (Card_StreamCol* p_streamCol =
-             _pCard_StreamCol(xCI.pEachChild(CK_STREAMCOL)))
+    while (Card_StmCol* p_streamCol =
+        _pCard_StmCol(xCI.pEachChild(CK_STMCOL)))
       p_streamCol->Y_vSetSprint(P_StreamColOrd, "$%lld"_Stz, iOrdinal++);
 
     iOrdLo = iOrdHi + 1;
@@ -585,7 +585,7 @@ void Transforms::vConvert_idxCol_name_Of_table_To_idxCol_ord(bool bPrint, bool b
       continue;
 
     M.p_stream = M.p_table->pSub_stream();;
-    M.p_streamColList = M.p_table->pSub_streamColList();
+    M.p_stmColList = M.p_table->pSub_streamColList();
     M.p_idxColList = M.p_indexJoin->pSub_idxColList();
 
     M.p_idxColList->vOrdinate(M.p_stream);
@@ -1687,10 +1687,10 @@ void Transforms::vResolve_Parameter_Linkage(bool bPrint, bool bTrace)
     if (!P_bPlumbForSubMember(CK_KEYEXISTS,CK_PARAM))
       continue;
 
-    if (! R_bResolveCard(CK_STREAMCOL,M.p_param->sz(),M.p_keyExists))
+    if (! R_bResolveCard(CK_STMCOL,M.p_param->sz(),M.p_keyExists))
       continue;
 
-    M.p_param->Y_vSet(P_StreamColOrd, M.p_streamCol->Y_szVal(P_StreamColOrd));
+    M.p_param->Y_vSet(P_StreamColOrd, M.p_stmCol->Y_szVal(P_StreamColOrd));
   }
 
   vEndTransformation();

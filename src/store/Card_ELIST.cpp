@@ -4,7 +4,7 @@
 
 #include "Card_ELIST.hpp"
 #include "Card_As.hpp"
-#include "Card_StreamCol.hpp"
+#include "Card_StmCol.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -36,11 +36,11 @@ Card_ELIST::~Card_ELIST(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_StreamColList* Card_ELIST::pDerive_StreamColList(void)
+Card_StmColList* Card_ELIST::pDerive_StreamColList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_StreamColList* pCard_StreamColList = new Card_StreamColList;
+  Card_StmColList* pCard_StreamColList = new Card_StmColList;
 
   eCK eSubCard;
   i8 nSubCards = this->nChildCards();
@@ -50,7 +50,7 @@ Card_StreamColList* Card_ELIST::pDerive_StreamColList(void)
     Card *pCard_Type = pSubCard->pFindSubCard(CK_TYPE);
     Card *pCard_As = pSubCard->pFindSubCard(CK_AS);
 
-    Card_StreamCol* pCard_StreamCol = new Card_StreamCol;
+    Card_StmCol* pCard_StreamCol = new Card_StmCol;
     pCard_StreamColList->vAppend(pCard_StreamCol);
 
     if (pCard_As)

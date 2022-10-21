@@ -85,7 +85,7 @@ namespace STORE
   class Card_Topology;
   class Card_Stream;
   class Card_StreamElist;
-  class Card_StreamColList;
+  class Card_StmColList;
   class Card_SubSet;
 
   class Card_Table;
@@ -311,7 +311,7 @@ namespace STORE
     Card_ScanPred*      pSub_scanPred(void);
     Card_Topology*     pSub_topology(void);
     Card_Stream*        pSub_stream(void);
-    Card_StreamColList* pSub_streamColList(void);
+    Card_StmColList* pSub_streamColList(void);
     Card_Table*         pSub_table(void);
     Card_TablePtn*      pSub_tablePtn(void);
     Card_TablePtr*      pSub_tablePtr(void);

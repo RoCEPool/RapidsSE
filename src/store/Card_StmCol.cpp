@@ -1,24 +1,24 @@
 /*============================================================================*/
-/* Card_StreamCol.cpp -- Stream                                                  */
+/* Card_StmCol.cpp -- Stream Column                                           */
 /*============================================================================*/
 
-#include "Card_StreamCol.hpp"
+#include "Card_StmCol.hpp"
 #include "Card_As.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_StreamCol,CK_STREAMCOL)
-__aNewFunction(Card_StreamCol,CN_CARD)
-__vDeleteFunction(Card_StreamCol,CN_CARD)
+__pCastFunction_Card(STORE, Card_StmCol, CK_STMCOL)
+__aNewFunction(Card_StmCol, CN_CARD)
+__vDeleteFunction(Card_StmCol, CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_StreamCol::Card_StreamCol(void)
-: Card(CK_STREAMCOL)
+Card_StmCol::Card_StmCol(void)
+: Card(CK_STMCOL)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
           
@@ -30,7 +30,7 @@ Card_StreamCol::Card_StreamCol(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_StreamCol::~Card_StreamCol(void) noexcept(false)
+Card_StmCol::~Card_StmCol(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -42,7 +42,7 @@ Card_StreamCol::~Card_StreamCol(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get stream column name                                                     */
 /*----------------------------------------------------------------------------*/
-Stz* Card_StreamCol::szStreamColNm(void)
+Stz* Card_StmCol::szStreamColNm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

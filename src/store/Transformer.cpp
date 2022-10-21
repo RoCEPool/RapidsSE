@@ -129,6 +129,8 @@ void Transformer::vPhase_1_ReducePipeline(bool bPrintPhase, bool bPrintXform, bo
     m_pTransforms->vCull_scan_Leaving_table(bPrintXform,bTrace);
   }
 
+  m_pCardCtl->vReset();
+
   if (bPrintBench(bPrintPhase,__func__))
     m_pTransforms->vPrintBench(BK_SUBPIPE);
 }
@@ -147,6 +149,8 @@ void Transformer::vPhase_2_TableAnalysis(bool bPrintPhase, bool bPrintXform, boo
   m_pTransforms->vAdd_tablePtn_UnderAll_table    (bPrintXform,bTrace);
   m_pTransforms->vAdd_stream_UnderAll_table      (bPrintXform,bTrace);
   m_pTransforms->vCalc_ordinalRange_ForAll_stream(bPrintXform,bTrace);
+
+  m_pCardCtl->vReset();
 
   if (bPrintBench(bPrintPhase,__func__))
     m_pTransforms->vPrintBench(BK_SUBPIPE,0);

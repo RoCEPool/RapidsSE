@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card_StreamCol.hpp"
+#include "Card_StmCol.hpp"
 
 namespace STORE
 {

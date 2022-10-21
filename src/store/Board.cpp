@@ -11,7 +11,7 @@
 #include "OptimiserFun.hpp"
 #include "OptimiserCatalog.hpp"
 
-#include "Card_StreamCol.hpp"
+#include "Card_StmCol.hpp"
 
 extern OptimiserCatalog gxOptimiserCatalog;
 

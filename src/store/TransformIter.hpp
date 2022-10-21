@@ -78,10 +78,10 @@ namespace STORE
     Card_Size *             p_size;
     Card_Sort *             p_sort;
     Card_Stage *            p_stage;
+    Card_StmCol *           p_stmCol;
+    Card_StmColList *       p_stmColList;
     Card_StmColNm *         p_stmColNm;
     Card_Stream *           p_stream;
-    Card_StreamCol *        p_streamCol;
-    Card_StreamColList *    p_streamColList;
     Card_SubSet *           p_subSet;
     Card_Table *            p_table;
     Card_TableList *        p_tableList;

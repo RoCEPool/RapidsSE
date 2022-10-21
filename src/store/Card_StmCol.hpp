@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_StreamCol.hpp -- Stream Column                                        */
+/* Card_StmCol.hpp -- Stream Column                                           */
 /*============================================================================*/
 #pragma once
 
@@ -7,19 +7,19 @@
 
 namespace STORE
 {
-  class Card_StreamCol : public Card
+  class Card_StmCol : public Card
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_StreamCol(void);
-   ~Card_StreamCol(void) noexcept(false);
+    Card_StmCol(void);
+   ~Card_StmCol(void) noexcept(false);
 
     Stz* szStreamColNm(void);
   };
 
-  Card_StreamCol* _pCard_StreamCol(void* aAddr);
+  Card_StmCol* _pCard_StmCol(void* aAddr);
 }
 
 /*============================================================================*/
