@@ -136,6 +136,9 @@ eOA TransformerTool::eCueUser(Stz* szPhase, Stz* szTransformation)
   if (0 == sInput.nLength())
     return OA_CONTINUE_TRANSFORMING;
 
+  if (sInput.nLength() > 1)
+    vDebugPoint();
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   RASSERT(! pTknVec);
@@ -171,38 +174,6 @@ eOA TransformerTool::eCueUser(Stz* szPhase, Stz* szTransformation)
     m_bCueingDisabled = true;
 
   return eOptAct;
-}
-
-/*----------------------------------------------------------------------------*/
-/* decode card                                                                */
-/*----------------------------------------------------------------------------*/
-eCK TransformerTool::eDecodeMain(Card* pCard)                                   // TODO: to be deleted
-{
-  _precondition_(_ADDRESS_, _MAGIC_);
-
-  M.e_MainCard = pCard->eCard();
-  
-  switch (M.e_MainCard) {
-
-    case CK_ABSJOIN:    M.p_absJoin     = _pCard_AbsJoin(pCard);   break;
-    case CK_AGGREG:     M.p_aggreg      = _pCard_Aggreg(pCard);    break;
-    case CK_COMBINED:   M.p_combined    = _pCard_Combined(pCard);   break;
-    case CK_FILTER:     M.p_filter      = _pCard_Filter(pCard);    break;
-    case CK_GBYELIST:   M.p_gbyElist    = _pCard_GbyElist(pCard);  break;
-    case CK_INDEXJOIN:  M.p_indexJoin   = _pCard_IndexJoin(pCard); break;
-    case CK_INDEXSCAN:  M.p_indexScan   = _pCard_IndexScan(pCard); break;
-    case CK_PROJECT:    M.p_project     = _pCard_Project(pCard);   break;
-    case CK_SBYELIST:   M.p_sbyElist    = _pCard_SbyElist(pCard);  break;
-    case CK_SCAN:       M.p_scan        = _pCard_Scan(pCard);      break;
-    case CK_SORT:       M.p_sort        = _pCard_Sort(pCard);      break;
-    case CK_STAGE:      M.p_stage       = _pCard_Stage(pCard);     break;
-    case CK_STAGETOPO:  M.p_stageTopo   = _pCard_StageTopo(pCard); break;
-
-    default:
-      NEVER_REACH
-  }
-
-  return M.e_MainCard;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -280,8 +251,6 @@ void TransformerTool::vPrintBench( eBK eBoard, i8 i_SubBoard)
     if (OA_REPRINT_BOARD != eCueUser(szPhase()))
       break;
   }
-
-  // cue
 }
 
 /*----------------------------------------------------------------------------*/
@@ -301,10 +270,7 @@ void TransformerTool::vPrintBoard(void)
 
     if (OA_REPRINT_BOARD != eCueUser(szPhase(), szTransformation()))
       break;
-
   }
-
-  //m_sDescription = ""_Stz;
 }
 
 /*----------------------------------------------------------------------------*/

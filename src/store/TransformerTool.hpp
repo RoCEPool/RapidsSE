@@ -70,9 +70,6 @@ namespace STORE
 
     eOA eCueUser(Stz* szPhase, Stz* szTransformation= nullptr);
 
-    eCK  eDecodeMain(Card* pCard);
-
-
     void vEndTransformation(void);
 
     Stz* szDescription(void);

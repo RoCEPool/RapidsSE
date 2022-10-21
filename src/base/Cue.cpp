@@ -19,7 +19,9 @@ void Cue::vGetInput(Stz* szPrompt, String* pString)
   size_t iLineCapacity = 0;
 
   getline(&azLine,&iLineCapacity,stdin);
-  
+
+  //printf(">>`%s`<<\n",azLine);
+
   pString->vCopy((Stz*)azLine);
 }
 
