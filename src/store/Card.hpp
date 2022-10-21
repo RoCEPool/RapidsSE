@@ -82,7 +82,7 @@ namespace STORE
   class Card_Send;
   class Card_Sort;
   class Card_Stage;
-  class Card_StageTopo;
+  class Card_Topology;
   class Card_Stream;
   class Card_StreamElist;
   class Card_StreamColList;
@@ -309,7 +309,7 @@ namespace STORE
     Card_SbyElist*      pSub_sbyElist(void);
     Card_Scan*          pSub_scan(void);
     Card_ScanPred*      pSub_scanPred(void);
-    Card_StageTopo*     pSub_stageTopo(void);
+    Card_Topology*     pSub_topology(void);
     Card_Stream*        pSub_stream(void);
     Card_StreamColList* pSub_streamColList(void);
     Card_Table*         pSub_table(void);

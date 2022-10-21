@@ -822,9 +822,9 @@ void Transforms::vDelete_Redundant_stage(bool bPrint, bool bTrace)
 
   M.xBI.vRestart();
   while (E_bEachMain(CK_STAGE)) {
-    if (! (M.p_stageTopo = M.p_stage->pSub_stageTopo()) )
+    if (! (M.p_topology = M.p_stage->pSub_topology()) )
       continue;
-    if (YG_ALL_PARTITIONS == (eYG) M.p_stageTopo->Y_iVal(P_StageTopo))
+    if (YG_ALL_PARTITIONS == (eYG) M.p_topology->Y_iVal(P_StageTopo))
       continue;
 
     M.p_stage->Y_vSet(P_Exclude);

@@ -1921,13 +1921,13 @@ Card_ScanPred* Card::pSub_scanPred(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_StageTopo.hpp"
-Card_StageTopo* Card::pSub_stageTopo(void)
+#include "Card_Topology.hpp"
+Card_Topology* Card::pSub_topology(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_StageTopo* p_stageTopo =
-      _pCard_StageTopo(pFindSubCard(CK_STAGETOPO));
+  Card_Topology* p_stageTopo =
+      _pCard_Topology(pFindSubCard(CK_TOPOLOGY));
   return p_stageTopo;
 }
 

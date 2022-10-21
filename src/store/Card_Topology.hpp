@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_StageTopo.hpp -- Stage Topology                                       */
+/* Card_Topology.hpp -- Stage Topology                                        */
 /*============================================================================*/
 #pragma once
 
@@ -7,17 +7,17 @@
 
 namespace STORE
 {
-  class Card_StageTopo : public Card
+  class Card_Topology : public Card
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_StageTopo(eYG eStageTopo);
-   ~Card_StageTopo(void) noexcept(false);
+    Card_Topology(eYG eStageTopo);
+   ~Card_Topology(void) noexcept(false);
   };
 
-  Card_StageTopo* _pCard_StageTopo(void* aAddr);
+  Card_Topology* _pCard_Topology(void* aAddr);
 }
 
 /*============================================================================*/

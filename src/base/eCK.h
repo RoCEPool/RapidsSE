@@ -98,7 +98,6 @@ enum eCK // card kind
   /* */ CK_SIZE,
   /* */ CK_SORT,
   /* */ CK_STAGE,
-  /* */ CK_STAGETOPO,
   /* */ CK_STMCOLNM,
   /* */ CK_STREAM,
   /* */ CK_STREAMCOL,
@@ -112,6 +111,7 @@ enum eCK // card kind
   /* */ CK_TABLEPTN,
   /* */ CK_TABLEPTR,
   /* */ CK_TERM,
+  /* */ CK_TOPOLOGY,
   /* */ CK_TSTPRED,
   /* */ CK_TYPE,
 
@@ -220,7 +220,6 @@ static Stz* aCK[]
   /* */ "CK_SIZE"_Stz,         // CK_SIZE
   /* */ "CK_SORT"_Stz,         // CK_SORT
   /* */ "CK_STAGE"_Stz,        // CK_STAGE
-  /* */ "CK_STAGETOPO"_Stz,    // CK_STAGETOPO
   /* */ "CK_STMCOLNM"_Stz,     // CK_STMCOLNM
   /* */ "CK_STREAM"_Stz,       // CK_STREAM
   /* */ "CK_STREAMCOL"_Stz,    // CK_STREAMCOL
@@ -234,6 +233,7 @@ static Stz* aCK[]
   /* */ "CK_TABLEPTN"_Stz,     // CK_TABLEPTN
   /* */ "CK_TABLEPTR"_Stz,     // CK_TABLEPTR
   /* */ "CK_TERM"_Stz,         // CK_TERM
+  /* */ "CK_TOPOLOGY"_Stz,    // CK_TOPOLOGY
   /* */ "CK_TSTPRED"_Stz,      // CK_TSTPRED
   /* */ "CK_TYPE"_Stz,         // CK_TYPE
 
@@ -342,7 +342,6 @@ static Stz* aCK_short[]
   /* */ "size"_Stz,            // CK_SIZE
   /* */ "sort"_Stz,            // CK_SORT
   /* */ "stage"_Stz,           // CK_STAGE
-  /* */ "stageTopo"_Stz,       // CK_STAGETOPO
   /* */ "stmColNm"_Stz,        // CK_STMCOLNM
   /* */ "stream"_Stz,          // CK_STREAM
   /* */ "streamCol"_Stz,       // CK_STREAMCOL
@@ -356,6 +355,7 @@ static Stz* aCK_short[]
   /* */ "tablePtn"_Stz,        // CK_TABLEPTN
   /* */ "{table}"_Stz,         // CK_TABLEPTR
   /* */ "term"_Stz,            // CK_TERM
+  /* */ "topology"_Stz,        // CK_TOPOLOGY
   /* */ "tstPred"_Stz,         // CK_TSTPRED
   /* */ "type"_Stz,            // CK_TYPE
 

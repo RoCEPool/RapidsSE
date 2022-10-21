@@ -1,23 +1,23 @@
 /*============================================================================*/
-/* Card_StageTopo.cpp -- Stage Topology                                       */
+/* Card_Topology.cpp -- Stage Topology                                       */
 /*============================================================================*/
 
-#include "Card_StageTopo.hpp"
+#include "Card_Topology.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_StageTopo,CK_STAGETOPO)
-__aNewFunction(Card_StageTopo,CN_CARD)
-__vDeleteFunction(Card_StageTopo,CN_CARD)
+__pCastFunction_Card(STORE, Card_Topology, CK_TOPOLOGY)
+__aNewFunction(Card_Topology, CN_CARD)
+__vDeleteFunction(Card_Topology, CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_StageTopo::Card_StageTopo(eYG eStageTopo)
-: Card(CK_STAGETOPO)
+Card_Topology::Card_Topology(eYG eStageTopo)
+: Card(CK_TOPOLOGY)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -31,7 +31,7 @@ Card_StageTopo::Card_StageTopo(eYG eStageTopo)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_StageTopo::~Card_StageTopo(void) noexcept(false)
+Card_Topology::~Card_Topology(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

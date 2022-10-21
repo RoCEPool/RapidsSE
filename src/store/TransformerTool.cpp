@@ -772,7 +772,6 @@ Card* TransformerTool::G_pGetMember(eCK eMember)
     case CK_SIZE:             return M.p_size;
     case CK_SORT:             return M.p_sort;
     case CK_STAGE:            return M.p_stage;
-    case CK_STAGETOPO:        return M.p_stageTopo;
     case CK_STMCOLNM:         return M.p_stmColNm;
     case CK_STREAM:           return M.p_stream;
     case CK_STREAMCOL:        return M.p_streamCol;
@@ -784,6 +783,7 @@ Card* TransformerTool::G_pGetMember(eCK eMember)
     case CK_TABLEPTN:         return M.p_tablePtn;
     case CK_TABLEPTR:         return M.p_tablePtr;
     case CK_TERM:             return M.p_term;
+    case CK_TOPOLOGY:         return M.p_topology;
     case CK_TSTPRED:          return M.p_tstPred;
     case CK_UBOUND:           return M.p_uBound;
     case CK_WHERE:            return M.p_where;
@@ -945,7 +945,6 @@ void TransformerTool::M_vClearMembers(void)
   M.p_size             = nullptr;
   M.p_sort             = nullptr;
   M.p_stage            = nullptr;
-  M.p_stageTopo        = nullptr;
   M.p_stmColNm         = nullptr;
   M.p_stream           = nullptr;
   M.p_streamCol        = nullptr;
@@ -957,6 +956,7 @@ void TransformerTool::M_vClearMembers(void)
   M.p_tablePtn         = nullptr;
   M.p_tablePtr         = nullptr;
   M.p_term             = nullptr;
+  M.p_topology         = nullptr;
   M.p_tstPred          = nullptr;
   M.p_uBound           = nullptr;
   M.p_where            = nullptr;
@@ -1211,7 +1211,6 @@ void TransformerTool::U_vUpdateMember(eCK eMember, Card* pCard, const char* asFu
     case CK_SIZE:             *((Card**)&M.p_size)             = pCard; break;
     case CK_SORT:             *((Card**)&M.p_sort)             = pCard; break;
     case CK_STAGE:            *((Card**)&M.p_stage)            = pCard; break;
-    case CK_STAGETOPO:        *((Card**)&M.p_stageTopo)        = pCard; break;
     case CK_STMCOLNM:         *((Card**)&M.p_stmColNm)         = pCard; break;
     case CK_STREAM:           *((Card**)&M.p_stream)           = pCard; break;
     case CK_STREAMCOL:        *((Card**)&M.p_streamCol)        = pCard; break;
@@ -1223,6 +1222,7 @@ void TransformerTool::U_vUpdateMember(eCK eMember, Card* pCard, const char* asFu
     case CK_TABLEPTN:         *((Card**)&M.p_tablePtn)         = pCard; break;
     case CK_TABLEPTR:         *((Card**)&M.p_tablePtr)         = pCard; break;
     case CK_TERM:             *((Card**)&M.p_term)             = pCard; break;
+    case CK_TOPOLOGY:         *((Card**)&M.p_topology)         = pCard; break;
     case CK_TSTPRED:          *((Card**)&M.p_tstPred)          = pCard; break;
     case CK_UBOUND:           *((Card**)&M.p_uBound)           = pCard; break;
     case CK_WHERE:            *((Card**)&M.p_where)            = pCard; break;
@@ -1401,7 +1401,6 @@ Stz* TransformerTool::szMemberNm(eCK eMember)
     case CK_SIZE:             return "M.p_size"_Stz;
     case CK_SORT:             return "M.p_sort"_Stz;
     case CK_STAGE:            return "M.p_stage"_Stz;
-    case CK_STAGETOPO:        return "M.p_stageTopo"_Stz;
     case CK_STMCOLNM:         return "M.p_stmColNm"_Stz;
     case CK_STREAM:           return "M.p_stream"_Stz;
     case CK_STREAMCOL:        return "M.p_streamCol"_Stz;
@@ -1413,6 +1412,7 @@ Stz* TransformerTool::szMemberNm(eCK eMember)
     case CK_TABLEPTN:         return "M.p_tablePtn"_Stz;
     case CK_TABLEPTR:         return "M.p_tablePtr"_Stz;
     case CK_TERM:             return "M.p_term"_Stz;
+    case CK_TOPOLOGY:         return "M.p_topology"_Stz;
     case CK_TSTPRED:          return "M.p_tstPred"_Stz;
     case CK_UBOUND:           return "M.p_uBound"_Stz;
     case CK_WHERE:            return "M.p_where"_Stz;

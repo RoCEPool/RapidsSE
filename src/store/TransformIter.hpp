@@ -78,7 +78,6 @@ namespace STORE
     Card_Size *             p_size;
     Card_Sort *             p_sort;
     Card_Stage *            p_stage;
-    Card_StageTopo *        p_stageTopo;
     Card_StmColNm *         p_stmColNm;
     Card_Stream *           p_stream;
     Card_StreamCol *        p_streamCol;
@@ -90,6 +89,7 @@ namespace STORE
     Card_TablePtn *         p_tablePtn;
     Card_TablePtr *         p_tablePtr;
     Card_Term *             p_term;
+    Card_Topology *         p_topology;
     Card_TstPred *          p_tstPred;
     Card_UBound *           p_uBound;
     Card_Where *            p_where;
