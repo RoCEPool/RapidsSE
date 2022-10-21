@@ -95,22 +95,23 @@ void Transformer::vTransform3(void)
 
   m_pTransforms->vUsingBoard(BK_SUBPIPE, 0);
 
-  vPhase_1_ReducePipeline   (C_PRINT_PHASE,C_QUIET_XFORM,C_TRACE_N);
-  vPhase_2_TableAnalysis    (C_PRINT_PHASE,C_QUIET_XFORM,C_TRACE_N);
-  vPhase_3_WherePredicates  (C_PRINT_PHASE,C_QUIET_XFORM,C_TRACE_N);
-  vPhase_U_ExistsSubqueries (C_PRINT_PHASE,C_QUIET_XFORM,C_TRACE_N);
-  vPhase_4_InitialJoin      (C_PRINT_PHASE,C_QUIET_XFORM,C_TRACE_N);
-  vPhase_5_JoinOrdering     (C_PRINT_PHASE,C_QUIET_XFORM,C_TRACE_N);
-  vPhase_6_IndexScan        (C_PRINT_PHASE,C_QUIET_XFORM,C_TRACE_N);
-  vPhase_7_StreamOrdering   (C_PRINT_PHASE,C_QUIET_XFORM,C_TRACE_N);
-  vPhase_8_FilterRefinement (C_PRINT_PHASE,C_QUIET_XFORM,C_TRACE_N);
-  vPhase_Z_RestatePipeline  (C_PRINT_PHASE,C_QUIET_XFORM,C_TRACE_N);
+  vPhase_10_ReducePipeline(C_PRINT_PHASE, C_QUIET_XFORM, C_TRACE_N);
+  vPhase_20_AccessMetadata(C_PRINT_PHASE, C_QUIET_XFORM, C_TRACE_N);
+  vPhase_30_StreamAnalysis(C_PRINT_PHASE, C_QUIET_XFORM, C_TRACE_N);
+  vPhase_40_PredicatePullup(C_PRINT_PHASE, C_QUIET_XFORM, C_TRACE_N);
+  vPhase_50_FlattenExists(C_PRINT_PHASE, C_QUIET_XFORM, C_TRACE_N);
+  vPhase_60_InitialJoin(C_PRINT_PHASE, C_QUIET_XFORM, C_TRACE_N);
+  vPhase_70_JoinOrdering(C_PRINT_PHASE, C_QUIET_XFORM, C_TRACE_N);
+  vPhase_80_IndexScan(C_PRINT_PHASE, C_QUIET_XFORM, C_TRACE_N);
+  vPhase_90_StreamOrdering(C_PRINT_PHASE, C_QUIET_XFORM, C_TRACE_N);
+  vPhase_A0_FilterRefinement(C_PRINT_PHASE, C_QUIET_XFORM, C_TRACE_N);
+  vPhase_Z0_RestatePipeline(C_PRINT_PHASE, C_QUIET_XFORM, C_TRACE_N);
 }
 
 /*----------------------------------------------------------------------------*/
 /* apply the reducePipeline set of transformations to all subPipe boards      */
 /*----------------------------------------------------------------------------*/
-void Transformer::vPhase_1_ReducePipeline(bool bPrintPhase, bool bPrintXform, bool bTrace)
+void Transformer::vPhase_10_ReducePipeline(bool bPrintPhase, bool bPrintXform, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
@@ -138,7 +139,26 @@ void Transformer::vPhase_1_ReducePipeline(bool bPrintPhase, bool bPrintXform, bo
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transformer::vPhase_2_TableAnalysis(bool bPrintPhase, bool bPrintXform, bool bTrace)
+void Transformer::vPhase_20_AccessMetadata(bool bPrintPhase, bool bPrintXform, bool bTrace)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
+
+  m_pTransforms->vPhase(bPrintPhase,__func__);
+  m_pTransforms->vUsingBoard(BK_SUBPIPE, 0);
+
+  m_pTransforms->vAdd_tablePtn_UnderAll_table    (bPrintXform,bTrace);
+  m_pTransforms->vAdd_stream_UnderAll_table      (bPrintXform,bTrace);
+
+  m_pCardCtl->vReset();
+
+  if (bPrintBench(bPrintPhase,__func__))
+    m_pTransforms->vPrintBench(BK_SUBPIPE,0);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Transformer::vPhase_30_StreamAnalysis(bool bPrintPhase, bool bPrintXform, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
@@ -146,8 +166,6 @@ void Transformer::vPhase_2_TableAnalysis(bool bPrintPhase, bool bPrintXform, boo
   m_pTransforms->vUsingBoard(BK_SUBPIPE, 0);
 
   m_pTransforms->vAdd_tableSyn_ForAll_table      (bPrintXform,bTrace);
-  m_pTransforms->vAdd_tablePtn_UnderAll_table    (bPrintXform,bTrace);
-  m_pTransforms->vAdd_stream_UnderAll_table      (bPrintXform,bTrace);
   m_pTransforms->vCalc_ordinalRange_ForAll_stream(bPrintXform,bTrace);
 
   m_pCardCtl->vReset();
@@ -159,7 +177,7 @@ void Transformer::vPhase_2_TableAnalysis(bool bPrintPhase, bool bPrintXform, boo
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transformer::vPhase_3_WherePredicates(bool bPrintPhase, bool bPrintXform, bool bTrace)
+void Transformer::vPhase_40_PredicatePullup(bool bPrintPhase, bool bPrintXform, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
@@ -178,7 +196,7 @@ void Transformer::vPhase_3_WherePredicates(bool bPrintPhase, bool bPrintXform, b
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transformer::vPhase_U_ExistsSubqueries(bool bPrintPhase, bool bPrintXform, bool bTrace)
+void Transformer::vPhase_50_FlattenExists(bool bPrintPhase, bool bPrintXform, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
@@ -197,7 +215,7 @@ void Transformer::vPhase_U_ExistsSubqueries(bool bPrintPhase, bool bPrintXform, 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transformer::vPhase_4_InitialJoin(bool bPrintPhase, bool bPrintXform, bool bTrace)
+void Transformer::vPhase_60_InitialJoin(bool bPrintPhase, bool bPrintXform, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
@@ -217,7 +235,7 @@ void Transformer::vPhase_4_InitialJoin(bool bPrintPhase, bool bPrintXform, bool 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transformer::vPhase_5_JoinOrdering(bool bPrintPhase, bool bPrintXform, bool bTrace)
+void Transformer::vPhase_70_JoinOrdering(bool bPrintPhase, bool bPrintXform, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
@@ -260,7 +278,7 @@ void Transformer::vPhase_5_JoinOrdering(bool bPrintPhase, bool bPrintXform, bool
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transformer::vPhase_6_IndexScan(bool bPrintPhase, bool bPrintXform, bool bTrace)
+void Transformer::vPhase_80_IndexScan(bool bPrintPhase, bool bPrintXform, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
@@ -292,7 +310,7 @@ void Transformer::vPhase_6_IndexScan(bool bPrintPhase, bool bPrintXform, bool bT
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transformer::vPhase_7_StreamOrdering(bool bPrintPhase, bool bPrintXform, bool bTrace)
+void Transformer::vPhase_90_StreamOrdering(bool bPrintPhase, bool bPrintXform, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
@@ -308,7 +326,7 @@ void Transformer::vPhase_7_StreamOrdering(bool bPrintPhase, bool bPrintXform, bo
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transformer::vPhase_8_FilterRefinement(bool bPrintPhase, bool bPrintXform, bool bTrace)
+void Transformer::vPhase_A0_FilterRefinement(bool bPrintPhase, bool bPrintXform, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
@@ -324,15 +342,15 @@ void Transformer::vPhase_8_FilterRefinement(bool bPrintPhase, bool bPrintXform, 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transformer::vPhase_Z_RestatePipeline(bool bPrintPhase, bool bPrintXform, bool bTrace)
+void Transformer::vPhase_Z0_RestatePipeline(bool bPrintPhase, bool bPrintXform, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
   m_pTransforms->vPhase(bPrintPhase,__func__);
   m_pTransforms->vUsingBoard(BK_SUBPIPE, 0);
 
-  m_pTransforms->vReinstate_stages  (bPrintXform,bTrace);
-  m_pTransforms->vReinstate_combined(bPrintXform,bTrace);
+  m_pTransforms->vReinstate_stages  (bPrint, bTrace);
+  m_pTransforms->vReinstate_combined(bPrint, bTrace);
 
   if (bPrintBench(bPrintPhase,__func__))
     m_pTransforms->vPrintBench(BK_SUBPIPE,0);

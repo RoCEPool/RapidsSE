@@ -68,6 +68,9 @@ namespace STORE
     void vConvert_table_To_scan_Or_indexJoin(bool bPrint, bool bTrace);
     void vRemove_invalidPermutations(bool bPrint, bool bTrace);
     void vSetup_costEst(bool bPrint, bool bTrace);
+    void vAccess_IndexMetadata(bool bPrint, bool bTrace);
+    void vAccess_PartitionMetadata(bool bPrint, bool bTrace);
+    void vAccess_StreamMetadata(bool bPrint, bool bTrace);
 
     void vRework_Exists_SubQueries(bool bPrint, bool bTrace);
     void vCopy_Up_SubQueries(bool bPrint, bool bTrace);
