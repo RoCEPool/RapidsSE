@@ -37,11 +37,12 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
 
   m_pPermGen = nullptr;
 
-  m_pTable     = nullptr;
-  m_pStreamDef = nullptr;
+  m_pColumn    = nullptr;
   m_pIdxVec    = nullptr;
   m_pIndex     = nullptr;
-
+  m_pIndexDef  = nullptr;
+  m_pStreamDef = nullptr;
+  m_pTable     = nullptr;
 
   m_pCard_child    = nullptr;
   m_pCard_dup      = nullptr;

@@ -1804,6 +1804,19 @@ Card_IdxColList* Card::pSub_idxColList(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_IdxColNm.hpp"
+Card_IdxColNm* Card::pSub_idxColNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_IdxColNm* p_idxColNm =
+      _pCard_IdxColNm(pFindSubCard(CK_IDXCOLNM));
+  return p_idxColNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_IndexJoin.hpp"
 Card_IndexJoin* Card::pSub_indexJoin(void)
 {
@@ -1825,6 +1838,19 @@ Card_IndexList* Card::pSub_indexList(void)
   Card_IndexList* p_indexList =
       _pCard_IndexList(pFindSubCard(CK_INDEXLIST));
   return p_indexList;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_IndexNm.hpp"
+Card_IndexNm* Card::pSub_indexNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_IndexNm* p_indexNm =
+      _pCard_IndexNm(pFindSubCard(CK_INDEXNM));
+  return p_indexNm;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1968,6 +1994,19 @@ Card_Table* Card::pSub_table(void)
   Card_Table* p_table =
       _pCard_Table(pFindSubCard(CK_TABLE));
   return p_table;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_TableNm.hpp"
+Card_TableNm* Card::pSub_tableNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_TableNm* p_tableNm =
+      _pCard_TableNm(pFindSubCard(CK_TABLENM));
+  return p_tableNm;
 }
 
 /*----------------------------------------------------------------------------*/

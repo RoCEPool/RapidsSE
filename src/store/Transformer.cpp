@@ -95,17 +95,17 @@ void Transformer::vTransform3(void)
 
   m_pTransforms->vUsingBoard(BK_SUBPIPE, 0);
 
-  vPhase_10_ReducePipeline(C_PRINT_PHASE, C_QUIET_XFORM, C_TRACE_N);
-  vPhase_20_AccessMetadata(C_PRINT_PHASE, C_QUIET_XFORM, C_TRACE_N);
-  vPhase_30_StreamAnalysis(C_PRINT_PHASE, C_QUIET_XFORM, C_TRACE_N);
-  vPhase_40_PredicatePullup(C_PRINT_PHASE, C_QUIET_XFORM, C_TRACE_N);
-  vPhase_50_FlattenExists(C_PRINT_PHASE, C_QUIET_XFORM, C_TRACE_N);
-  vPhase_60_InitialJoin(C_PRINT_PHASE, C_QUIET_XFORM, C_TRACE_N);
-  vPhase_70_JoinOrdering(C_PRINT_PHASE, C_QUIET_XFORM, C_TRACE_N);
-  vPhase_80_IndexScan(C_PRINT_PHASE, C_QUIET_XFORM, C_TRACE_N);
-  vPhase_90_StreamOrdering(C_PRINT_PHASE, C_QUIET_XFORM, C_TRACE_N);
+  vPhase_10_ReducePipeline  (C_PRINT_PHASE, C_QUIET_XFORM, C_TRACE_N);
+  vPhase_20_AccessMetadata  (C_PRINT_PHASE, C_QUIET_XFORM, C_TRACE_N);
+  vPhase_30_StreamAnalysis  (C_PRINT_PHASE, C_QUIET_XFORM, C_TRACE_N);
+  vPhase_40_PredicatePullup (C_PRINT_PHASE, C_QUIET_XFORM, C_TRACE_N);
+  vPhase_50_FlattenExists   (C_PRINT_PHASE, C_QUIET_XFORM, C_TRACE_N);
+  vPhase_60_InitialJoin     (C_PRINT_PHASE, C_QUIET_XFORM, C_TRACE_N);
+  vPhase_70_JoinOrdering    (C_PRINT_PHASE, C_QUIET_XFORM, C_TRACE_N);
+  vPhase_80_IndexScan       (C_PRINT_PHASE,   C_PRINT_XFORM, C_TRACE_Y);
+  vPhase_90_StreamOrdering  (C_PRINT_PHASE, C_QUIET_XFORM, C_TRACE_N);
   vPhase_A0_FilterRefinement(C_PRINT_PHASE, C_QUIET_XFORM, C_TRACE_N);
-  vPhase_Z0_RestatePipeline(C_PRINT_PHASE, C_QUIET_XFORM, C_TRACE_N);
+  vPhase_Z0_RestatePipeline (C_PRINT_PHASE, C_QUIET_XFORM, C_TRACE_N);
 }
 
 /*----------------------------------------------------------------------------*/

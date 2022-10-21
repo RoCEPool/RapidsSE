@@ -106,6 +106,57 @@ Card* ChildCards::pFindChild(eCK eCard, i8& i_Child)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find immediate child-card                                                  */
+/*----------------------------------------------------------------------------*/
+Card* ChildCards::pFindChild(eCK eCard, Stz* szValue, i8& i_Child)
+{
+  //_precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card* pFoundCard = nullptr;
+
+  eCK eChildCard;
+  i8 nChildren = nChildCards();
+  for (i_Child = 0; i_Child < nChildren; i_Child++) {
+    Card* pChildCard = pGetChild(i_Child, eChildCard);
+
+    if (eCard == pChildCard->eCard() && pChildCard->bSame(szValue)) {
+      pFoundCard = pChildCard;
+      break;
+    }
+  }
+
+  return pFoundCard;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find immediate child-card                                                  */
+/*----------------------------------------------------------------------------*/
+Card* ChildCards::pFindChildWithSub(eCK eChild, eCK eSub, Stz* szValue, i8& i_Child)
+{
+  //_precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card* pFoundChild = nullptr;
+
+  eCK eChildCard;
+  i8 nChildrenCards = nChildCards();
+  for (i_Child = 0; i_Child < nChildrenCards; i_Child++) {
+    Card* pChildCard = pGetChild(i_Child, eChildCard);
+
+    if (! pChildCard->bIsCard(eChild))
+      continue;
+
+    i8 i_Sub;
+    if (! pChildCard->pFindChild(eSub,szValue,i_Sub))
+      continue;
+
+    pFoundChild = pChildCard;
+    break;
+  }
+
+  return pFoundChild;
+}
+
+/*----------------------------------------------------------------------------*/
 /* find sub-card                                                              */
 /*----------------------------------------------------------------------------*/
 Card* ChildCards::pFindSubCard(eCK eCard)

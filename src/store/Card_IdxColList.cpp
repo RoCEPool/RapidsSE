@@ -23,6 +23,19 @@ __vDeleteFunction(Card_IdxColList,CN_CARD)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
+Card_IdxColList::Card_IdxColList(void)
+    : Card(CK_IDXCOLLIST)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  _checkInitialised_(CN_CARD);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
 Card_IdxColList::Card_IdxColList(Index* pIndex)
 : Card(CK_IDXCOLLIST)
 {

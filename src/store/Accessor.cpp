@@ -85,16 +85,18 @@ bool Accessor::A_bIndex(Stz* szTableNm, Stz* szIndexNm)
 /*----------------------------------------------------------------------------*/
 /* access stream defn of table                                                */
 /*----------------------------------------------------------------------------*/
-void Accessor::A_vIndexListOfTable(void)
+bool Accessor::A_bIndexListOfTable(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
+  M.p_indexList = nullptr;
+
   if (!m_pTable)
-    return;
+    return false;
 
   IdxVec* pIdxVec = m_pTable->pIdxVec();
   if (! pIdxVec)
-    return;
+    return false;
 
   M.p_indexList = new Card_IndexList;
 
@@ -102,16 +104,36 @@ void Accessor::A_vIndexListOfTable(void)
   for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
     Index* pIndex = pIdxVec->pGet(i_Index);
 
-    //M.p_index = new Card_Index();
+    M.p_index = new Card_Index;
+    M.p_indexList->vAppend(M.p_index);
 
-    Card_IndexPtr* pCard_index = new Card_IndexPtr(pIndex);
-    M.p_indexList->vAppend(pCard_index);
+    M.p_indexNm = new Card_IndexNm;
+    M.p_indexNm->vValue(pIndex->szIndexNm());
+    M.p_index->vAppend(M.p_indexNm);
 
-    Card_IdxColList* pCard_idxColList = new Card_IdxColList(pIndex);
-    pCard_index->vAppend(pCard_idxColList);
+    M.p_idxColList = new Card_IdxColList;
+    M.p_index->vAppend(M.p_idxColList);
+
+    m_pIndexDef = pIndex->pIndexDef();
+
+    i8 nColumns = m_pIndexDef->nColumns();
+    for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
+
+      m_pColumn = m_pIndexDef->pGetColumn(i_Col);
+      M.p_idxCol = new Card_IdxCol;
+      M.p_idxCol->vValue(m_pColumn->szColNm());
+
+      M.p_idxColList->vAppend(M.p_idxCol);
+
+      M.p_idxColNm = new Card_IdxColNm;
+      M.p_idxColNm->vValue(m_pColumn->szColNm());
+      M.p_idxCol->vAppend(M.p_idxColNm);
+
+    }
+
   }
 
-
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

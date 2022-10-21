@@ -259,11 +259,18 @@ void Transforms::vInsert_indexList_ToAll_scan(bool bPrint, bool bTrace)
   vTransformation(__func__);
   vTracing(bPrint,bTrace);
 
-  while (E_bEachMainWithSub(CK_SCAN,CK_TABLEPTR)) {
-    if ( (M.p_indexList = M.p_tablePtr->pNew_indexList()) ) {
-      M.p_scan->vInsertAfter(M.p_indexList,M.p_tablePtr);
+  while (E_bEachMainWith2Sub(CK_SCAN,CK_TABLE,CK_TABLENM)) {
 
-    }
+//    if ( (M.p_indexList = M.p_tablePtr->pNew_indexList()) ) {
+//      M.p_scan->vInsertAfter(M.p_indexList,M.p_tablePtr);
+//
+//    }
+
+    RASSERT(A_bTable(M.p_tableNm->szValue()));
+
+    if (A_bIndexListOfTable())
+      M.p_scan->vAppend(M.p_indexList);
+
   }
 
   vEndTransformation();
@@ -1374,14 +1381,16 @@ void Transforms::vMark_scan_filter_term_WhichMatchIndex(bool bPrint, bool bTrace
 
     if (! (M.p_indexList = M.p_MainCard->pSub_indexList()))
       continue;
-    if (! (M.p_indexPtr = _pCard_IndexPtr(M.p_indexList->pGetChild(0))))
+    if (! (M.p_index = _pCard_Index(M.p_indexList->pGetChild(0))))
       continue;
+    if (! (M.p_idxColList = (M.p_index->pSub_idxColList())))
+      continue;
+
+    M.p_idxColList->vDump();
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    Card_IndexPtr* p_indexPtr = M.p_indexPtr;
-
-    auto bfPredBounds = [this,p_indexPtr](Card* pCard) {
+    auto bfPredBounds = [this](Card* pCard) {
       Card_Term* p_term = _pCard_Term(pCard);
 
       Stz* szTerm = p_term->sz();
@@ -1391,11 +1400,13 @@ void Transforms::vMark_scan_filter_term_WhichMatchIndex(bool bPrint, bool bTrace
       vTracer("Checking %s %s\n"_Stz,p_term->sz(),p_term->szBearing());
 
       i8 i_IdxCol = C_UNKNOWN;
-      if (! (M.p_idxCol = M.p_indexPtr->pFind_indexCol(szTerm, i_IdxCol)))
+
+      if (! (M.p_idxCol =
+               _pCard_IdxCol(M.p_idxColList->pFindChild(CK_IDXCOL, szTerm, i_IdxCol))))
         return C_CONTINUE_RECURSION;
 
       vTracer("Matches %s.%lld // marked with I%lld\n"_Stz,
-              M.p_indexPtr->pIndex()->szIndexNm(),i_IdxCol,i_IdxCol);
+              M.p_idxCol->pSub_idxColNm()->szValue(),i_IdxCol,i_IdxCol);
 
       p_term->vMark1('I');
       p_term->vMark2(i_IdxCol);

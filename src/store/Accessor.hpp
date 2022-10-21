@@ -22,7 +22,7 @@ namespace STORE
     bool A_bIndex(Stz* szIndexNm);
     bool A_bIndex(Stz* szTableNm, Stz* szIndexNm);
 
-    void A_vIndexListOfTable(void);
+    bool A_bIndexListOfTable(void);
     void A_vStreamOfTable(void);
     void A_vPartitionOfTable(void);
     void A_vSizeOfTable(void);

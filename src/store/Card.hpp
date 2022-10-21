@@ -53,9 +53,11 @@ namespace STORE
 
   class Card_IdxCol;
   class Card_IdxColList;
+  class Card_IdxColNm;
   class Card_IndexPtr;
   class Card_IndexJoin;
   class Card_IndexList;
+  class Card_IndexNm;
   class Card_IndexPred;
   class Card_IndexScan;
 
@@ -90,6 +92,7 @@ namespace STORE
   class Card_SubSet;
 
   class Card_Table;
+  class Card_TableNm;
   class Card_TablePtn;
   class Card_TablePtr;
   class Card_Term;
@@ -300,8 +303,10 @@ namespace STORE
     Card_Filter*        pSub_filter(void);
     Card_GbyElist*      pSub_gbyElist(void);
     Card_IdxColList*    pSub_idxColList(void);
+    Card_IdxColNm*      pSub_idxColNm(void);
     Card_IndexJoin*     pSub_indexJoin(void);
     Card_IndexList*     pSub_indexList(void);
+    Card_IndexNm*       pSub_indexNm(void);
     Card_IndexPtr*      pSub_indexPtr(void);
     Card_JoinPred*      pSub_joinPred(void);
     Card_LBound*        pSub_lBound(void);
@@ -314,6 +319,7 @@ namespace STORE
     Card_Stream*        pSub_stream(void);
     Card_StmColList*    pSub_streamColList(void);
     Card_Table*         pSub_table(void);
+    Card_TableNm*       pSub_tableNm(void);
     Card_TablePtn*      pSub_tablePtn(void);
     Card_TablePtr*      pSub_tablePtr(void);
     Card_Topology*      pSub_topology(void);

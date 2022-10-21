@@ -36,10 +36,12 @@ namespace STORE
 
     PermGen*    m_pPermGen;
 
-    Table*      m_pTable;
-    StreamDef*  m_pStreamDef;
+    Column*     m_pColumn;
     IdxVec*     m_pIdxVec;
     Index*      m_pIndex;
+    IndexDef*   m_pIndexDef;
+    StreamDef*  m_pStreamDef;
+    Table*      m_pTable;
 
     Card* m_pCard_child;
     Card* m_pCard_dup;

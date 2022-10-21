@@ -349,13 +349,16 @@ void Weaver::vArgIndexScan(Stz* szOpArgs, Card_IndexScan* pCard_IndexScan)
   
   // indexScan : 0) {table} 1) {index} 2) indexPred
 
-  Index* pIndex = pCard_IndexScan->pSub_indexPtr()->pIndex();
+  Card_TableNm* p_tableNm = pCard_IndexScan->pSub_tableNm();
+
+  //Index* pIndex = pCard_IndexScan->pSub_indexPtr()->pIndex();
+
+  Card_IndexNm* p_indexNm = pCard_IndexScan->pSub_indexNm();
   s4K sRpnExpr;
   
   vRpnIndexScan3(sRpnExpr,pCard_IndexScan);
   
-  szOpArgs->vCatSprint("%s %s\n"_Stz,pIndex->pTable()->szTableNm()
-                                         ,pIndex->szIndexNm());
+  szOpArgs->vCatSprint("%s %s\n"_Stz,p_tableNm->szValue(),p_indexNm->szValue());
   szOpArgs->vCatSprint("                \"%s \""_Stz,sRpnExpr.szStz());
 
 }

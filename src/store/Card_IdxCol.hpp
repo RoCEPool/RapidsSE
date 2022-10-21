@@ -12,7 +12,8 @@ namespace STORE
   public:
     void* operator new(size_t);
     void  operator delete(void*);
-  
+
+    Card_IdxCol(void);
     Card_IdxCol(Column* pColumn);
    ~Card_IdxCol(void) noexcept(false);
   };
