@@ -743,6 +743,7 @@ Card* TransformerTool::G_pGetMember(eCK eMember)
     case CK_IDXCOL:           return M.p_idxCol;
     case CK_IDXCOLLIST:       return M.p_idxColList;
     case CK_IDXCOLNM:         return M.p_idxColNm;
+    case CK_INDEX:            return M.p_index;
     case CK_INDEXJOIN:        return M.p_indexJoin;
     case CK_INDEXLIST:        return M.p_indexList;
     case CK_INDEXNM:          return M.p_indexNm;
@@ -915,6 +916,7 @@ void TransformerTool::M_vClearMembers(void)
   M.p_idxCol           = nullptr;
   M.p_idxColList       = nullptr;
   M.p_idxColNm         = nullptr;
+  M.p_index            = nullptr;
   M.p_indexJoin        = nullptr;
   M.p_indexList        = nullptr;
   M.p_indexNm          = nullptr;
@@ -945,10 +947,10 @@ void TransformerTool::M_vClearMembers(void)
   M.p_size             = nullptr;
   M.p_sort             = nullptr;
   M.p_stage            = nullptr;
+  M.p_stmCol           = nullptr;
   M.p_stmColList       = nullptr;
   M.p_stmColNm         = nullptr;
   M.p_stream           = nullptr;
-  M.p_stmCol        = nullptr;
   M.p_subSet           = nullptr;
   M.p_table            = nullptr;
   M.p_tableList        = nullptr;
@@ -1182,6 +1184,7 @@ void TransformerTool::U_vUpdateMember(eCK eMember, Card* pCard, const char* asFu
     case CK_IDXCOL:           *((Card**)&M.p_idxCol)           = pCard; break;
     case CK_IDXCOLLIST:       *((Card**)&M.p_idxColList)       = pCard; break;
     case CK_IDXCOLNM:         *((Card**)&M.p_idxColNm)         = pCard; break;
+    case CK_INDEX:            *((Card**)&M.p_index)            = pCard; break;
     case CK_INDEXJOIN:        *((Card**)&M.p_indexJoin)        = pCard; break;
     case CK_INDEXLIST:        *((Card**)&M.p_indexList)        = pCard; break;
     case CK_INDEXNM:          *((Card**)&M.p_indexNm)          = pCard; break;
@@ -1372,6 +1375,7 @@ Stz* TransformerTool::szMemberNm(eCK eMember)
     case CK_GBYELIST:         return "M.p_gbyElist"_Stz;
     case CK_IDXCOLLIST:       return "M.p_idxColList"_Stz;
     case CK_IDXCOLNM:         return "M.p_idxColNm"_Stz;
+    case CK_INDEX:            return "M.p_index"_Stz;
     case CK_INDEXJOIN:        return "M.p_indexJoin"_Stz;
     case CK_INDEXLIST:        return "M.p_indexList"_Stz;
     case CK_INDEXNM:          return "M.p_indexNm"_Stz;

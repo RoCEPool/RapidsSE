@@ -85,6 +85,38 @@ bool Accessor::A_bIndex(Stz* szTableNm, Stz* szIndexNm)
 /*----------------------------------------------------------------------------*/
 /* access stream defn of table                                                */
 /*----------------------------------------------------------------------------*/
+void Accessor::A_vIndexListOfTable(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  if (!m_pTable)
+    return;
+
+  IdxVec* pIdxVec = m_pTable->pIdxVec();
+  if (! pIdxVec)
+    return;
+
+  M.p_indexList = new Card_IndexList;
+
+  i8 nIndexes = pIdxVec->nItems();
+  for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
+    Index* pIndex = pIdxVec->pGet(i_Index);
+
+    //M.p_index = new Card_Index();
+
+    Card_IndexPtr* pCard_index = new Card_IndexPtr(pIndex);
+    M.p_indexList->vAppend(pCard_index);
+
+    Card_IdxColList* pCard_idxColList = new Card_IdxColList(pIndex);
+    pCard_index->vAppend(pCard_idxColList);
+  }
+
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* access stream defn of table                                                */
+/*----------------------------------------------------------------------------*/
 void Accessor::A_vStreamOfTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
