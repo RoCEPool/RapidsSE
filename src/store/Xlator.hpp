@@ -1,17 +1,15 @@
 /*============================================================================*/
-/* Drafter.hpp --                                                               */
+/* Xlator.hpp --                                                              */
 /*============================================================================*/
 #pragma once
 
-#include "OptimiserTool.hpp"
+#include "Accessor.hpp"
 
 namespace STORE
 {
-  class Drafter : public OptimiserTool
+  class Xlator : public Accessor
   {
   private:
-    Optimiser* m_pOptimiser;
-    CardCtl*   m_pCardCtl;
 
     // must be last
     Footer m_xFooter;
@@ -20,18 +18,21 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Drafter(Bench* pBench);
-   ~Drafter(void) noexcept(false);
+    Xlator(eCN eClassNo, Bench* pBench);
+   ~Xlator(void) noexcept(false);
 
-    static void vRepair(Object* pObject);
+    void vCullAll(eCK eCard);
+    void vDeleteAll(eCK eCard);
+    void vRenumberMainCards(void);
 
-    bool bWeave   (TokenVec* pTknVec, eOA& reOptAct);
+    void R_vReplaceSub(Card* pSub, Card* pInParent, Card* pWith);
+
+    void X_calc_To_calcBool(void);
 
   private:
+
     Footer* aFooter(void);
   };
-
-  Drafter* _pDrafter(void* aAddr);
 }
 
 /*============================================================================*/

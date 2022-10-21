@@ -280,19 +280,14 @@ void Board::vPrintBoard(Stz* szPhase,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
-  eOA eOptAct = OA_ENTRY;
+  eOA eOptAct = OA_REPRINT_BOARD;
   TokenVec* pTknVec = nullptr;
 
   L_Entry:
 
-  bool bCue   = true;
-  bool bPrint = true;
   bool bExecuted = false;
 
   m_pCard_Deck->vRenumberRecursive();
-
-  if (! bPrint)
-    return;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -308,9 +303,7 @@ void Board::vPrintBoard(Stz* szPhase,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (! bCue)
-    return;
-
+  /*
   if (! m_bBeenCued && AM::JOB::bHasTag("<cue>"_Stz)) {
     Stz* szTagCue = AM::JOB::szTagValue("<cue>"_Stz);
     if (   (! szPhase          || ! szTagCue->bSame(szPhase))
@@ -367,7 +360,7 @@ void Board::vPrintBoard(Stz* szPhase,
     goto L_Input;
   }
 
-  eOptAct = OA_ENTRY;
+  eOptAct = OA_REPRINT_BOARD;
   bExecuted = pOptFun->m_fpOptFun(m_pOptimiser,pTknVec,eOptAct);
 
   L_Next:
@@ -375,13 +368,13 @@ void Board::vPrintBoard(Stz* szPhase,
   if (! bExecuted)
     goto L_Input;
 
-  if (OA_ENTRY == eOptAct)
+  if (OA_REPRINT_BOARD == eOptAct)
     goto L_Entry;
   else
-  if (OA_INPUT == eOptAct)
+  if (OA_INPUT_AGAIN == eOptAct)
     goto L_Input;
   else
-  if (OA_EXIT == eOptAct)
+  if (OA_CONTINUE_TRANSFORMING == eOptAct)
     return;
   else
     NEVER_REACH;
@@ -391,6 +384,7 @@ void Board::vPrintBoard(Stz* szPhase,
     delete pTknVec;
     pTknVec = nullptr;
   }
+   */
 }
 
 /*----------------------------------------------------------------------------*/

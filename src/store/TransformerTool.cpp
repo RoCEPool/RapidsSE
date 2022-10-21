@@ -5,6 +5,14 @@
 #include "TransformerTool.hpp"
 
 #include "Job.hpp"
+#include "Cue.hpp"
+
+#include "Optimiser.hpp"
+#include "OptimiserFun.hpp"
+#include "OptimiserCatalog.hpp"
+
+extern OptimiserCatalog gxOptimiserCatalog;
+
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -24,6 +32,8 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   Job* pJob = MY::pJob();
   TagSet* pJobTags = pJob->pJobTags();
   m_bInteractive = pJobTags->bHasName("<interactive>"_Stz);
+  m_bBeenCued = false;
+  m_bCueingDisabled = false;
 
   m_pPermGen = nullptr;
 
@@ -83,6 +93,84 @@ Board* TransformerTool::pBoard(void)
   _precondition_(_ADDRESS_, _MAGIC_);
 
   return M.pBoard;
+}
+
+/*----------------------------------------------------------------------------*/
+/* cue user                                                                  */
+/*----------------------------------------------------------------------------*/
+eOA TransformerTool::eCueUser(Stz* szPhase, Stz* szTransformation)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  TokenVec* pTknVec = nullptr;
+
+  if (m_bCueingDisabled)
+    return OA_CONTINUE_TRANSFORMING;
+
+  if (! m_bBeenCued && AM::JOB::bHasTag("<cue>"_Stz)) {
+    Stz* szTagCue = AM::JOB::szTagValue("<cue>"_Stz);
+    if (   (! szPhase          || ! szTagCue->bSame(szPhase))
+        && (! szTransformation || ! szTagCue->bSame(szTransformation))) {
+      //printf("%s :: %s\n",(char*)szPhase, (char*)szTransformation);
+      return OA_CONTINUE_TRANSFORMING;
+    }
+  }
+
+  m_bBeenCued = true;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  s256 sPrompt;
+  if (szPhase && szTransformation)
+    sPrompt.vSprint("%s :: %s >> "_Stz,szPhase, szTransformation);
+  else if (szPhase)
+    sPrompt.vSprint("%s >> "_Stz,szPhase, szTransformation);
+  else
+    sPrompt.vSprint(">> "_Stz,szPhase);
+
+  L_Input:
+
+  s4K sInput;
+  Cue::vGetInput(sPrompt,sInput);
+
+  if (0 == sInput.nLength())
+    return OA_CONTINUE_TRANSFORMING;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  RASSERT(! pTknVec);
+  pTknVec = AM::TOKENISE::pTokeniseSen(sInput);
+  i8 nTokens = pTknVec->nTokens();
+
+  if (0 == nTokens)
+    return OA_CONTINUE_TRANSFORMING;
+
+  OptimiserFun* pOptFun = nullptr;
+  if (1 == nTokens)
+    pOptFun = gxOptimiserCatalog.pFindFun(pTknVec->pGet(0)->szChars(),
+                                          nullptr);
+  else
+    pOptFun = gxOptimiserCatalog.pFindFun(pTknVec->pGet(0)->szChars(),
+                                          pTknVec->pGet(1)->szChars());
+  if (! pOptFun) {
+    vTrace("Unknown command\n"_Stz);
+    delete pTknVec;
+    goto L_Input;
+  }
+
+  eOA eOptAct = OA_CONTINUE_TRANSFORMING;
+  bool bExecuted = pOptFun->m_fpOptFun(m_pBench->pOptimiser(),pTknVec,eOptAct);
+
+  delete pTknVec;
+  pTknVec = nullptr;
+
+  if (OA_INPUT_AGAIN == eOptAct)
+    goto L_Input;
+
+  if (OA_DISABLE_CUEING == eOptAct)
+    m_bCueingDisabled = true;
+
+  return eOptAct;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -171,6 +259,32 @@ void TransformerTool::vPhase(bool bPrintPhase, const char* asPhase)
 }
 
 /*----------------------------------------------------------------------------*/
+/* print all bards of bench                                                   */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::vPrintBench( eBK eBoard, i8 i_SubBoard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  for (;;) {
+    if (C_UNKNOWN != i_SubBoard) {
+      Board *pBoard = m_pBench->pGetBoard(eBoard, i_SubBoard);
+      pBoard->vPrintBoard(szPhase());
+    }
+    else {
+      for (i8 i_Sub = 0; m_pBench->bBoardExists(eBoard, i_Sub); i_Sub++) {
+        Board *pBoard = m_pBench->pGetBoard(eBoard, i_Sub);
+        pBoard->vPrintBoard(szPhase());
+      }
+    }
+
+    if (OA_REPRINT_BOARD != eCueUser(szPhase()))
+      break;
+  }
+
+  // cue
+}
+
+/*----------------------------------------------------------------------------*/
 /* print the board                                                            */
 /*----------------------------------------------------------------------------*/
 void TransformerTool::vPrintBoard(void)
@@ -180,9 +294,15 @@ void TransformerTool::vPrintBoard(void)
   if (! m_bPrintXform)
     return;
 
-  M.pBoard->vPrintBoard(szPhase(),
-                        szTransformation(),
-                        szDescription());
+  for (;;) {
+    M.pBoard->vPrintBoard(szPhase(),
+                          szTransformation(),
+                          szDescription());
+
+    if (OA_REPRINT_BOARD != eCueUser(szPhase(), szTransformation()))
+      break;
+
+  }
 
   //m_sDescription = ""_Stz;
 }

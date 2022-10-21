@@ -223,7 +223,6 @@
 #include "PagingMetrics.hpp"
 #include "Action.hpp"
 #include "CardCtl.hpp"
-#include "Drafter.hpp"
 #include "Vertex.hpp"
 #include "SubCall.hpp"
 #include "SubReturn.hpp"
@@ -348,7 +347,6 @@ SizeHeap gxaSizeHeap[]
   { CN_DICSTACK,                 sizeof(DicStack),               HT_T_TINY    , FILL },
   { CN_DIR,                      sizeof(Dir),                    HT_T_TINY    , FILL },
   { CN_DISSECTOR,                sizeof(Dissector),              HT_T_TINY    , FILL },
-  { CN_DRAFTER,                  sizeof(Drafter),                HT_T_TINY    , FILL },
   { CN_DTEVAL,                   sizeof(TypeValueArea),/*yes*/   HT_INVALID   , FILL },
   { CN_DYNAMO,                   sizeof(Dynamo),                 HT_T_TINY    , FILL },
 

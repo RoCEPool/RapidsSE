@@ -35,7 +35,6 @@ Optimiser::Optimiser(TagSet* p_JobTags)
 
   m_pDissector   = new Dissector(m_pBench);
   m_pTransformer = new Transformer(m_pBench);
-  m_pDrafter     = new Drafter(m_pBench);
   m_pWeaver      = new Weaver(m_pBench);
 
   _checkInitialised_(CN_OPTIMISER);
@@ -53,11 +52,10 @@ Optimiser::~Optimiser(void) noexcept(false)
   delete m_pCardCtl;
   
   delete m_pBench;
-  delete m_pDissector;
-  delete m_pDrafter;
-  delete m_pWeaver;
 
+  delete m_pDissector;
   delete m_pTransformer;
+  delete m_pWeaver;
 
   Card::vCardLeaks();
 }
@@ -122,28 +120,6 @@ void Optimiser::vDissect(VertexSpec* pm_pUnOptPipeSpec)
   //vTransform();
 
   return;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get drafter                                                                */
-/*----------------------------------------------------------------------------*/
-Drafter* Optimiser::pDrafter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
-
-  return m_pDrafter;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get top board                                                              */
-/*----------------------------------------------------------------------------*/
-Board* Optimiser::pHeadBoard(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
-
-  Board* pBoard = m_pBench->pHead();
-
-  return pBoard;
 }
 
 /*----------------------------------------------------------------------------*/

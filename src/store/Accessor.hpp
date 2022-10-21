@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Modifications.hpp --                                                          */
+/* Accessor.hpp --                                                            */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class Modifications : public TransformerTool
+  class Accessor : public TransformerTool
   {
   private:
 
@@ -17,17 +17,9 @@ namespace STORE
   public:
     void* operator new(size_t);
     void  operator delete(void*);
-  
-    Modifications(eCN eClassNo, Bench* pBench);
-   ~Modifications(void) noexcept(false);
 
-    void vCullAll(eCK eCard);
-    void vDeleteAll(eCK eCard);
-    void vRenumberMainCards(void);
-
-    void R_vReplaceSub(Card* pSub, Card* pInParent, Card* pWith);
-
-    void X_calc_To_calcBool(void);
+    Accessor(eCN eClassNo, Bench* pBench);
+   ~Accessor(void) noexcept(false);
 
   private:
 
