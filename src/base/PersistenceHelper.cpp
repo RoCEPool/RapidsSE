@@ -65,6 +65,48 @@ void PersistenceHelper::vWriteBuffers(Stz* sFilePath)
 }
 
 /*----------------------------------------------------------------------------*/
+/* disk write speed test                                                      */
+/*----------------------------------------------------------------------------*/
+void PersistenceHelper::vWriteDiskTest(Stz* sFilePath, i8 iNoOfGb)
+{
+  _static_
+
+  char *azBuffer = new char [C_SIZE_POOL_BUFFER];
+  for(i8 i = 0; i<C_SIZE_POOL_BUFFER; i++)
+    azBuffer[i] = 0;
+//  MemLib::vSet(&azBuffer, 0x00, sizeof(azBuffer),CN_NONE);
+
+  Timer oTimer;
+  oTimer.vStart();
+
+  i8 iPtnOfNode = -1;
+  if(MY::pOp()) {
+    iPtnOfNode = MY::pOp()->pStream()->i_PtnOfNode();
+  }
+
+  File* pFile = new(C_VIA_MALLOC) File(nullptr);
+  pFile->bOpenWrite(sFilePath);
+
+  for (i8 nBuffCount = 0;
+       (nBuffCount/1000) <= iNoOfGb;
+       nBuffCount++) {
+      bool bResult = pFile->bWriteBytes(azBuffer,C_SIZE_POOL_BUFFER);
+      ASSERT(bResult);
+  }
+
+  pFile->vFlush();
+
+  pFile->vClose();
+  delete pFile;
+
+  oTimer.vUpdate();
+  vTrace("Partition %lld took %lldms to write heap buffers to disk\n"_Stz,
+         iPtnOfNode,
+         oTimer.iMilliseconds());
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* write given heap to file                                                   */
 /*----------------------------------------------------------------------------*/
 void PersistenceHelper::vWriteHeap(Heap* pHeap, File* pFile)
