@@ -60,7 +60,6 @@
 #include "Card_IndexList.hpp"
 #include "Card_IndexNm.hpp"
 #include "Card_IndexPred.hpp"
-#include "Card_IndexPtr.hpp"
 #include "Card_IndexScan.hpp"
 
 #include "Card_JoinOrder.hpp"

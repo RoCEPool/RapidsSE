@@ -1029,10 +1029,6 @@ void Card::vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth)
       _pCard_CardPtr(this)->vCardPtrPrint(pRibbon, iDepth);
       break;
 
-    case CK_INDEXPTR:
-      _pCard_IndexPtr(this)->vIndexPtrPrint(pRibbon, iDepth);
-      break;
-
     case CK_STREAM:
       _pCard_Stream(this)->vStreamPrint(pRibbon, iDepth);
       break;
@@ -1851,19 +1847,6 @@ Card_IndexNm* Card::pSub_indexNm(void)
   Card_IndexNm* p_indexNm =
       _pCard_IndexNm(pFindSubCard(CK_INDEXNM));
   return p_indexNm;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-#include "Card_IndexPtr.hpp"
-Card_IndexPtr* Card::pSub_indexPtr(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_IndexPtr* p_indexPtr =
-      _pCard_IndexPtr(pFindSubCard(CK_INDEXPTR));
-  return p_indexPtr;
 }
 
 /*----------------------------------------------------------------------------*/

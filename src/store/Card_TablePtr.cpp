@@ -4,7 +4,6 @@
 
 #include "Card_TablePtr.hpp"
 
-#include "Card_IndexPtr.hpp"
 #include "Card_IdxColList.hpp"
 #include "Card_IndexList.hpp"
 
@@ -52,35 +51,6 @@ Card_TablePtr::~Card_TablePtr(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_IndexList* Card_TablePtr::pNew_indexList(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Table* pTable = this->pTable();
-
-  IdxVec* pIdxVec = pTable->pIdxVec();
-  if (! pIdxVec)
-    return nullptr;
-
-  Card_IndexList* p_indexList = new Card_IndexList;
-
-  i8 nIndexes = pIdxVec->nItems();
-  for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
-    Index* pIndex = pIdxVec->pGet(i_Index);
-
-    Card_IndexPtr* pCard_index = new Card_IndexPtr(pIndex);
-    p_indexList->vAppend(pCard_index);
-
-    Card_IdxColList* pCard_idxColList = new Card_IdxColList(pIndex);
-    pCard_index->vAppend(pCard_idxColList);
-  }
-
-  return p_indexList;
-}
 
 /*----------------------------------------------------------------------------*/
 /* return table                                                               */

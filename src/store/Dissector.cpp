@@ -406,8 +406,17 @@ Card* Dissector::pOp_IndexJoin(TagSet* pArgTags)
   // index
 
   Index* pIndex = pTable->pFindIndex(szIndexNm);
-  Card_IndexPtr* pCard_Index = new Card_IndexPtr(pIndex);
-  pCard_IndexJoin->vAppend(pCard_Index);
+
+  Card_Index* p_index = new Card_Index;
+  Card_IndexNm* p_indexNm = new Card_IndexNm;
+  p_index->vAppend(p_indexNm);
+  p_indexNm->vValue(pIndex->szIndexNm());
+
+
+
+
+
+  pCard_IndexJoin->vAppend(p_index);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // index predicate????
@@ -449,8 +458,11 @@ Card* Dissector::pOp_IndexScan(TagSet* pArgTags)
   // index
 
   Index* pIndex = pTable->pFindIndex(szIndexNm);
-  Card_IndexPtr* pCard_Index = new Card_IndexPtr(pIndex);
-  pCard_IndexScan->vAppend(pCard_Index);
+
+  Card_Index* p_index = new Card_Index;
+  Card_IndexNm* p_indexNm = new Card_IndexNm;
+  p_index->vAppend(p_indexNm);
+  p_indexNm->vValue(pIndex->szIndexNm());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // index predicate????

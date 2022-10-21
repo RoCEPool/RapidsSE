@@ -52,7 +52,6 @@ namespace STORE
     Card_IndexJoin *        p_indexJoin;
     Card_IndexList *        p_indexList;
     Card_IndexNm *          p_indexNm;
-    Card_IndexPtr *         p_indexPtr;
     Card_IndexScan *        p_indexScan;
     Card_JoinOrder *        p_joinOrder;
     Card_JoinOrderSeq *     p_joinOrderSeq;

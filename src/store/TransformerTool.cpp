@@ -748,7 +748,6 @@ Card* TransformerTool::G_pGetMember(eCK eMember)
     case CK_INDEXJOIN:        return M.p_indexJoin;
     case CK_INDEXLIST:        return M.p_indexList;
     case CK_INDEXNM:          return M.p_indexNm;
-    case CK_INDEXPTR:         return M.p_indexPtr;
     case CK_INDEXSCAN:        return M.p_indexScan;
     case CK_JOINORDER:        return M.p_joinOrder;
     case CK_JOINORDERSEQ:     return M.p_joinOrderSeq;
@@ -921,8 +920,7 @@ void TransformerTool::M_vClearMembers(void)
   M.p_indexJoin        = nullptr;
   M.p_indexList        = nullptr;
   M.p_indexNm          = nullptr;
-  M.p_indexPtr         = nullptr;
-  M.p_indexScan        = nullptr;
+   M.p_indexScan        = nullptr;
   M.p_joinOrder        = nullptr;
   M.p_joinOrderSeq     = nullptr;
   M.p_joinPred         = nullptr;
@@ -1189,7 +1187,6 @@ void TransformerTool::U_vUpdateMember(eCK eMember, Card* pCard, const char* asFu
     case CK_INDEXJOIN:        *((Card**)&M.p_indexJoin)        = pCard; break;
     case CK_INDEXLIST:        *((Card**)&M.p_indexList)        = pCard; break;
     case CK_INDEXNM:          *((Card**)&M.p_indexNm)          = pCard; break;
-    case CK_INDEXPTR:         *((Card**)&M.p_indexPtr)         = pCard; break;
     case CK_INDEXSCAN:        *((Card**)&M.p_indexScan)        = pCard; break;
     case CK_JOINORDER:        *((Card**)&M.p_joinOrder)        = pCard; break;
     case CK_JOINORDERSEQ:     *((Card**)&M.p_joinOrderSeq)     = pCard; break;
@@ -1380,8 +1377,7 @@ Stz* TransformerTool::szMemberNm(eCK eMember)
     case CK_INDEXJOIN:        return "M.p_indexJoin"_Stz;
     case CK_INDEXLIST:        return "M.p_indexList"_Stz;
     case CK_INDEXNM:          return "M.p_indexNm"_Stz;
-    case CK_INDEXPTR:         return "M.p_indexPtr"_Stz;
-    case CK_INDEXSCAN:        return "M.p_indexScan"_Stz;
+     case CK_INDEXSCAN:        return "M.p_indexScan"_Stz;
     case CK_JOINORDER:        return "M.p_joinOrder"_Stz;
     case CK_JOINORDERSEQ:     return "M.p_joinOrderSeq"_Stz;
     case CK_JOINPRED:         return "M.p_joinPred"_Stz;
