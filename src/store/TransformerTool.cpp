@@ -756,6 +756,7 @@ Card* TransformerTool::G_pGetMember(eCK eMember)
     case CK_LBOUND:           return M.p_lBound;
     case CK_PARAM:            return M.p_param;
     case CK_PARAMLIST:        return M.p_paramList;
+    case CK_PARTITION:        return M.p_partition;
     case CK_PERMUTATION:      return M.p_permutation;
     case CK_PROJECT:          return M.p_project;
     case CK_PTNCOL:           return M.p_ptnCol;
@@ -768,6 +769,7 @@ Card* TransformerTool::G_pGetMember(eCK eMember)
     case CK_SCAN:             return M.p_scan;
     case CK_SCANPRED:         return M.p_scanPred;
     case CK_SEND:             return M.p_send;
+    case CK_SIZE:             return M.p_size;
     case CK_SORT:             return M.p_sort;
     case CK_STAGE:            return M.p_stage;
     case CK_STAGETOPO:        return M.p_stageTopo;
@@ -926,6 +928,7 @@ void TransformerTool::M_vClearMembers(void)
   M.p_lBound           = nullptr;
   M.p_param            = nullptr;
   M.p_paramList        = nullptr;
+  M.p_partition        = nullptr;
   M.p_permutation      = nullptr;
   M.p_permutation_low  = nullptr;
   M.p_project          = nullptr;
@@ -939,6 +942,7 @@ void TransformerTool::M_vClearMembers(void)
   M.p_scan             = nullptr;
   M.p_scanPred         = nullptr;
   M.p_send             = nullptr;
+  M.p_size             = nullptr;
   M.p_sort             = nullptr;
   M.p_stage            = nullptr;
   M.p_stageTopo        = nullptr;
@@ -1191,6 +1195,7 @@ void TransformerTool::U_vUpdateMember(eCK eMember, Card* pCard, const char* asFu
     case CK_LBOUND:           *((Card**)&M.p_lBound)           = pCard; break;
     case CK_PARAM:            *((Card**)&M.p_param)            = pCard; break;
     case CK_PARAMLIST:        *((Card**)&M.p_paramList)        = pCard; break;
+    case CK_PARTITION:        *((Card**)&M.p_partition)        = pCard; break;
     case CK_PERMUTATION:      *((Card**)&M.p_permutation)      = pCard; break;
     case CK_PROJECT:          *((Card**)&M.p_project)          = pCard; break;
     case CK_PTNCOL:           *((Card**)&M.p_ptnCol)           = pCard; break;
@@ -1203,6 +1208,7 @@ void TransformerTool::U_vUpdateMember(eCK eMember, Card* pCard, const char* asFu
     case CK_SCAN:             *((Card**)&M.p_scan)             = pCard; break;
     case CK_SCANPRED:         *((Card**)&M.p_scanPred)         = pCard; break;
     case CK_SEND:             *((Card**)&M.p_send)             = pCard; break;
+    case CK_SIZE:             *((Card**)&M.p_size)             = pCard; break;
     case CK_SORT:             *((Card**)&M.p_sort)             = pCard; break;
     case CK_STAGE:            *((Card**)&M.p_stage)            = pCard; break;
     case CK_STAGETOPO:        *((Card**)&M.p_stageTopo)        = pCard; break;
@@ -1379,6 +1385,7 @@ Stz* TransformerTool::szMemberNm(eCK eMember)
     case CK_LBOUND:           return "M.p_lBound"_Stz;
     case CK_PARAM:            return "M.p_param"_Stz;
     case CK_PARAMLIST:        return "M.p_paramList"_Stz;
+    case CK_PARTITION:        return "M.p_partition"_Stz;
     case CK_PERMUTATION:      return "M.p_permutation"_Stz;
     case CK_PROJECT:          return "M.p_project"_Stz;
     case CK_PTNCOL:           return "M.p_project"_Stz;
@@ -1391,6 +1398,7 @@ Stz* TransformerTool::szMemberNm(eCK eMember)
     case CK_SCAN:             return "M.p_scan"_Stz;
     case CK_SCANPRED:         return "M.p_scanPred"_Stz;
     case CK_SEND:             return "M.p_send"_Stz;
+    case CK_SIZE:             return "M.p_size"_Stz;
     case CK_SORT:             return "M.p_sort"_Stz;
     case CK_STAGE:            return "M.p_stage"_Stz;
     case CK_STAGETOPO:        return "M.p_stageTopo"_Stz;

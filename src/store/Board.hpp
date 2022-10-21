@@ -79,6 +79,7 @@
 
 #include "Card_Param.hpp"
 #include "Card_ParamList.hpp"
+#include "Card_Partition.hpp"
 #include "Card_Permutation.hpp"
 #include "Card_Project.hpp"
 #include "Card_ProjElist.hpp"
@@ -95,6 +96,7 @@
 #include "Card_Scan.hpp"
 #include "Card_ScanPred.hpp"
 #include "Card_Send.hpp"
+#include "Card_Size.hpp"
 #include "Card_Sort.hpp"
 #include "Card_Stage.hpp"
 #include "Card_StageTopo.hpp"

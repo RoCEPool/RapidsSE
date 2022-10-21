@@ -61,6 +61,7 @@ namespace STORE
     Card_LBound *           p_lBound;
     Card_Param *            p_param;
     Card_ParamList *        p_paramList;
+    Card_Partition *        p_partition;
     Card_Permutation *      p_permutation;
     Card_Permutation *      p_permutation_low;
     Card_Project *          p_project;
@@ -74,6 +75,7 @@ namespace STORE
     Card_Scan *             p_scan;
     Card_ScanPred *         p_scanPred;
     Card_Send *             p_send;
+    Card_Size *             p_size;
     Card_Sort *             p_sort;
     Card_Stage *            p_stage;
     Card_StageTopo *        p_stageTopo;

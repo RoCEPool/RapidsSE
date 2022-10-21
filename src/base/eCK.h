@@ -76,6 +76,7 @@ enum eCK // card kind
 
   /* */ CK_PARAM,
   /* */ CK_PARAMLIST,
+  /* */ CK_PARTITION,
   /* */ CK_PERMUTATION,
   /* */ CK_PROJECT,
   /* */ CK_PROJELIST,
@@ -94,6 +95,7 @@ enum eCK // card kind
   /* */ CK_SCANPRED,
   /* */ CK_SEND,
   /* */ CK_SENDKIND,
+  /* */ CK_SIZE,
   /* */ CK_SORT,
   /* */ CK_STAGE,
   /* */ CK_STAGETOPO,
@@ -106,9 +108,9 @@ enum eCK // card kind
 
   /* */ CK_TABLE,
   /* */ CK_TABLELIST,
+  /* */ CK_TABLENM,
   /* */ CK_TABLEPTN,
   /* */ CK_TABLEPTR,
-  /* */ CK_TABLENM,
   /* */ CK_TERM,
   /* */ CK_TSTPRED,
   /* */ CK_TYPE,
@@ -196,6 +198,7 @@ static Stz* aCK[]
 
   /* */ "CK_PARAM"_Stz,        // CK_PARAM
   /* */ "CK_PARAMLIST"_Stz,    // CK_PARAMLIST
+  /* */ "CK_PARTITION"_Stz,    // CK_PARTITION
   /* */ "CK_PERMUTATION"_Stz,  // CK_PERMUTATION
   /* */ "CK_PROJECT"_Stz,      // CK_PROJECT
   /* */ "CK_PROJELIST"_Stz,    // CK_PROJELIST
@@ -214,6 +217,7 @@ static Stz* aCK[]
   /* */ "CK_SCANPRED"_Stz,     // CK_SCANPRED
   /* */ "CK_SEND"_Stz,         // CK_SEND
   /* */ "CK_SENDKIND"_Stz,     // CK_SENDKIND
+  /* */ "CK_SIZE"_Stz,         // CK_SIZE
   /* */ "CK_SORT"_Stz,         // CK_SORT
   /* */ "CK_STAGE"_Stz,        // CK_STAGE
   /* */ "CK_STAGETOPO"_Stz,    // CK_STAGETOPO
@@ -316,6 +320,7 @@ static Stz* aCK_short[]
 
   /* */ "param"_Stz,           // CK_PARAM
   /* */ "paramList"_Stz,       // CK_PARAMLIST
+  /* */ "partition"_Stz,       // CK_PARTITION
   /* */ "permutation"_Stz,     // CK_PERMUTATION
   /* */ "project"_Stz,         // CK_PROJECT
   /* */ "projElist"_Stz,       // CK_PROJELIST
@@ -334,13 +339,13 @@ static Stz* aCK_short[]
   /* */ "scanPred"_Stz,        // CK_SCANPRED
   /* */ "sendSE"_Stz,          // CK_SEND
   /* */ "sendKind"_Stz,        // CK_SENDKIND
+  /* */ "size"_Stz,            // CK_SIZE
   /* */ "sort"_Stz,            // CK_SORT
   /* */ "stage"_Stz,           // CK_STAGE
   /* */ "stageTopo"_Stz,       // CK_STAGETOPO
   /* */ "stmColNm"_Stz,        // CK_STMCOLNM
   /* */ "stream"_Stz,          // CK_STREAM
   /* */ "streamCol"_Stz,       // CK_STREAMCOL
-  /* */ "streamColList"_Stz,   // CK_STREAMCOLLIST
   /* */ "streamColList"_Stz,   // CK_STREAMCOLLIST
   /* */ "streamElist"_Stz,     // CK_STREAMELIST
   /* */ "subSet"_Stz,          // CK_SUBSET
