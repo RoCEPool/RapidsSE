@@ -4,6 +4,8 @@
 
 #include "Accessor.hpp"
 
+#include "PtnDef.hpp"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -119,17 +121,40 @@ void Accessor::A_vPartitionOfTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
+  char cTableSyn = M.p_table->Y_cVal(P_TableSyn);
+
+  PtnDef* pPtnDef = m_pTable->pPtnDef();
+  Column* pPtnColumn = pPtnDef->pGetColumn(0);
+
+  StreamDef* pStreamDef = m_pTable->pStreamDef();
+  Column* pStmColumn = pStreamDef->pFindColumn(pPtnColumn->szColNm());
+  i8 iStmColNo = pStmColumn->iColumnNo();
+  s32 sTablePtn;
+  sTablePtn.vSprint("$$%c.%lld"_Stz, cTableSyn, iStmColNo + 1);
 }
 
 /*----------------------------------------------------------------------------*/
-/* access partition of table                                                  */
+/* access size of table                                                       */
 /*----------------------------------------------------------------------------*/
 void Accessor::A_vSizeOfTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-}
+  if (! m_pTable) {
+    vTrace("A: m_pTable not set\n"_Stz);
+    return;
+  }
+  if (! M.p_table) {
+    vTrace("A: M.p_table not set\n"_Stz);
+    return;
+  }
 
+  i8 jTableSize = m_pTable->pStreamDef()->jTableSize();
+
+  M.p_size = new Card_Size;
+  s32 sSize(jTableSize);
+  M.p_size->vValue(sSize);
+}
 
 /*============================================================================*/
 /* end                                                                        */
