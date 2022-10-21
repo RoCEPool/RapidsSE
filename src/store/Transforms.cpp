@@ -282,8 +282,15 @@ void Transforms::vAdd_stream_UnderAll_table(bool bPrint, bool bTrace)
   vTracing(bPrint,bTrace);
 
   // E <scan>
-  while (E_bEachMain(CK_TABLE)) {
+  while (E_bEachMainWithSub(CK_TABLE,CK_TABLENM)) {
 
+    RASSERT(A_bTable(M.p_tableNm->szValue()));
+    A_vStreamOfTable();
+
+    M.p_table->vAppend(M.p_stream);
+
+
+    /*
     // ? <scan>/<tablePtr>
     if (! (M.p_tablePtr = M.p_table->pSub_tablePtr()))
       continue;
@@ -295,6 +302,7 @@ void Transforms::vAdd_stream_UnderAll_table(bool bPrint, bool bTrace)
     M.p_table->vAppend((M.p_stream = new Card_Stream));
     // + <scan>/<stream>/<streamColList>
     M.p_stream->vAppend((M.p_stmColList = new Card_StmColList(m_pStreamDef)));
+    */
   }
 
   vSetPrintSubCards(CK_STREAM, true);

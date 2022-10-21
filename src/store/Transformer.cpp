@@ -150,7 +150,6 @@ void Transformer::vPhase_20_AccessMetadata(bool bPrintPhase, bool bPrintXform, b
   m_pTransforms->vAdd_stream_UnderAll_table      (bPrintXform,bTrace);
 
   m_pCardCtl->vReset();
-
   if (bPrintBench(bPrintPhase,__func__))
     m_pTransforms->vPrintBench(BK_SUBPIPE,0);
 }
@@ -349,8 +348,8 @@ void Transformer::vPhase_Z0_RestatePipeline(bool bPrintPhase, bool bPrintXform, 
   m_pTransforms->vPhase(bPrintPhase,__func__);
   m_pTransforms->vUsingBoard(BK_SUBPIPE, 0);
 
-  m_pTransforms->vReinstate_stages  (bPrint, bTrace);
-  m_pTransforms->vReinstate_combined(bPrint, bTrace);
+  m_pTransforms->vReinstate_stages  (bPrintXform, bTrace);
+  m_pTransforms->vReinstate_combined(bPrintXform, bTrace);
 
   if (bPrintBench(bPrintPhase,__func__))
     m_pTransforms->vPrintBench(BK_SUBPIPE,0);

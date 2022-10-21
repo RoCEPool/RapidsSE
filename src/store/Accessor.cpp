@@ -96,6 +96,7 @@ void Accessor::A_vStreamOfTable(void)
 
   M.p_stream = new Card_Stream;
   M.p_stmColList = new Card_StmColList;
+  M.p_stream->vAppend(M.p_stmColList);
 
   i8 nCols = m_pStreamDef->nColumns();
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
@@ -106,6 +107,7 @@ void Accessor::A_vStreamOfTable(void)
     M.p_stmColList->vAppend(M.p_stmCol);
 
     M.p_stmColNm = new Card_StmColNm();
+    M.p_stmColNm->vValue(pColumn->szColNm());
     M.p_stmCol->vAppend(M.p_stmColNm);
 
     Card_Type *pCard_Type = new Card_Type(pColumn);
