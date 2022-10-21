@@ -21,15 +21,13 @@ begin
   stage stageMarker33102 on all partitions :
     scan rapidsse public lineitem
     | hash "type INTEGER L_PARTKEY"
+    | combined 0
     | next hashcast
   stage stageMarker33105 on all partitions :
     //scan rapidsse public part
     //| abstractJoin " 1  "
     indexJoin part IxP_PARTKEY "bound $I1 L_PARTKEY =="
-    | combined 0
-    | next
-  stage stageMarker33108 on all partitions :
-    filter " type BOOLEAN  $2 $17 ==  $11 DATE '1995-09-01'  >=  and  $11 DATE '1995-10-01'  <  and  "
+    | filter " type BOOLEAN  $2 $17 ==  $11 DATE '1995-09-01'  >=  and  $11 DATE '1995-10-01'  <  and  "
     | project " type DECIMAL )  $6 1.  $7 -  *  sum  , type DECIMAL )  }  }  $21 'PROMO%'  6 matchLeading WHEN  $6 1.  $7 -  * THEN  0.  ELSE  ENDIF  CASE  sum  "
     | combined 0
     | next
