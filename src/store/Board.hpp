@@ -54,10 +54,12 @@
 
 #include "Card_IdxCol.hpp"
 #include "Card_IdxColList.hpp"
-#include "Card_IndexPtr.hpp"
+#include "Card_IdxColNm.hpp"
 #include "Card_IndexJoin.hpp"
 #include "Card_IndexList.hpp"
+#include "Card_IndexNm.hpp"
 #include "Card_IndexPred.hpp"
+#include "Card_IndexPtr.hpp"
 #include "Card_IndexScan.hpp"
 
 #include "Card_JoinOrder.hpp"
@@ -80,6 +82,9 @@
 #include "Card_Permutation.hpp"
 #include "Card_Project.hpp"
 #include "Card_ProjElist.hpp"
+#include "Card_PtnCol.hpp"
+#include "Card_PtnColList.hpp"
+#include "Card_PtnColNm.hpp"
 #include "Card_PtndJoin.hpp"
 #include "Card_PtndJoinSet.hpp"
 
@@ -93,12 +98,14 @@
 #include "Card_Sort.hpp"
 #include "Card_Stage.hpp"
 #include "Card_StageTopo.hpp"
+#include "Card_StmColNm.hpp"
 #include "Card_Stream.hpp"
 #include "Card_StreamElist.hpp"
 #include "Card_SubSet.hpp"
 
 #include "Card_Table.hpp"
 #include "Card_TableList.hpp"
+#include "Card_TableNm.hpp"
 #include "Card_TablePtn.hpp"
 #include "Card_TablePtr.hpp"
 #include "Card_Term.hpp"

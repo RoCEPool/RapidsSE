@@ -50,8 +50,10 @@ enum eCK // card kind
 
   /* */ CK_IDXCOL,
   /* */ CK_IDXCOLLIST,
+  /* */ CK_IDXCOLNM,
   /* */ CK_INDEXJOIN,
   /* */ CK_INDEXLIST,
+  /* */ CK_INDEXNM,
   /* */ CK_INDEXPRED,
   /* */ CK_INDEXPTR,
   /* */ CK_INDEXSCAN,
@@ -77,6 +79,9 @@ enum eCK // card kind
   /* */ CK_PERMUTATION,
   /* */ CK_PROJECT,
   /* */ CK_PROJELIST,
+  /* */ CK_PTNCOL,
+  /* */ CK_PTNCOLLIST,
+  /* */ CK_PTNCOLNM,
   /* */ CK_PTNDJOIN,
   /* */ CK_PTNDJOINSET,
 
@@ -92,6 +97,7 @@ enum eCK // card kind
   /* */ CK_SORT,
   /* */ CK_STAGE,
   /* */ CK_STAGETOPO,
+  /* */ CK_STMCOLNM,
   /* */ CK_STREAM,
   /* */ CK_STREAMCOL,
   /* */ CK_STREAMCOLLIST,
@@ -102,6 +108,7 @@ enum eCK // card kind
   /* */ CK_TABLELIST,
   /* */ CK_TABLEPTN,
   /* */ CK_TABLEPTR,
+  /* */ CK_TABLENM,
   /* */ CK_TERM,
   /* */ CK_TSTPRED,
   /* */ CK_TYPE,
@@ -163,8 +170,10 @@ static Stz* aCK[]
 
   /* */ "CK_IDXCOL"_Stz,       // CK_IDXCOL
   /* */ "CK_IDXCOLLIST"_Stz,   // CK_IDXCOLLIST
+  /* */ "CK_IDXCOLNM"_Stz,     // CK_IDXCOLNM
   /* */ "CK_INDEXJOIN"_Stz,    // CK_INDEXJOIN
   /* */ "CK_INDEXLIST"_Stz,    // CK_INDEXLIST
+  /* */ "CK_INDEXNM"_Stz,      // CK_INDEXNM
   /* */ "CK_INDEXPRED"_Stz,    // CK_INDEXPRED
   /* */ "CK_INDEXPTR"_Stz,     // CK_INDEXPTR
   /* */ "CK_INDEXSCAN"_Stz,    // CK_INDEXSCAN
@@ -190,6 +199,9 @@ static Stz* aCK[]
   /* */ "CK_PERMUTATION"_Stz,  // CK_PERMUTATION
   /* */ "CK_PROJECT"_Stz,      // CK_PROJECT
   /* */ "CK_PROJELIST"_Stz,    // CK_PROJELIST
+  /* */ "CK_PTNCOL"_Stz,       // CK_PTNCOL
+  /* */ "CK_PTNCOLLIST"_Stz,   // CK_PTNCOLLIST
+  /* */ "CK_PTNCOLNM"_Stz,     // CK_PTNCOLNM
   /* */ "CK_PTNDJOIN"_Stz,     // CK_PTNDJOIN
   /* */ "CK_PTNDJOINSET"_Stz,  // CK_PTNDJOINSET
 
@@ -205,6 +217,7 @@ static Stz* aCK[]
   /* */ "CK_SORT"_Stz,         // CK_SORT
   /* */ "CK_STAGE"_Stz,        // CK_STAGE
   /* */ "CK_STAGETOPO"_Stz,    // CK_STAGETOPO
+  /* */ "CK_STMCOLNM"_Stz,     // CK_STMCOLNM
   /* */ "CK_STREAM"_Stz,       // CK_STREAM
   /* */ "CK_STREAMCOL"_Stz,    // CK_STREAMCOL
   /* */ "CK_STREAMCOLLIST"_Stz,// CK_STREAMCOLLIST
@@ -213,6 +226,7 @@ static Stz* aCK[]
 
   /* */ "CK_TABLE"_Stz,        // CK_TABLE
   /* */ "CK_TABLELIST"_Stz,    // CK_TABLELIST
+  /* */ "CK_TABLENM"_Stz,      // CK_TABLENM
   /* */ "CK_TABLEPTN"_Stz,     // CK_TABLEPTN
   /* */ "CK_TABLEPTR"_Stz,     // CK_TABLEPTR
   /* */ "CK_TERM"_Stz,         // CK_TERM
@@ -276,8 +290,10 @@ static Stz* aCK_short[]
 
   /* */ "idxCol"_Stz,          // CK_IDXCOL
   /* */ "idxColList"_Stz,      // CK_IDXCOLLIST
+  /* */ "idxColNm"_Stz,        // CK_IDXCOLNM
   /* */ "indexJoin"_Stz,       // CK_INDEXJOIN
   /* */ "indexList"_Stz,       // CK_INDEXLIST
+  /* */ "indexNm"_Stz,         // CK_INDEXNM
   /* */ "indexPred"_Stz,       // CK_INDEXPRED
   /* */ "{index}"_Stz,         // CK_INDEXPTR
   /* */ "indexScan"_Stz,       // CK_INDEXSCAN
@@ -303,6 +319,9 @@ static Stz* aCK_short[]
   /* */ "permutation"_Stz,     // CK_PERMUTATION
   /* */ "project"_Stz,         // CK_PROJECT
   /* */ "projElist"_Stz,       // CK_PROJELIST
+  /* */ "ptnCol"_Stz,          // CK_PTNCOL
+  /* */ "ptnColList"_Stz,      // CK_PTNCOLLIST
+  /* */ "ptnColNm"_Stz,        // CK_PTNCOLNM
   /* */ "ptndJoin"_Stz,        // CK_PTNDJOIN
   /* */ "ptndJoinSet"_Stz,     // CK_PTNDJOINSET
 
@@ -318,14 +337,17 @@ static Stz* aCK_short[]
   /* */ "sort"_Stz,            // CK_SORT
   /* */ "stage"_Stz,           // CK_STAGE
   /* */ "stageTopo"_Stz,       // CK_STAGETOPO
+  /* */ "stmColNm"_Stz,        // CK_STMCOLNM
   /* */ "stream"_Stz,          // CK_STREAM
   /* */ "streamCol"_Stz,       // CK_STREAMCOL
+  /* */ "streamColList"_Stz,   // CK_STREAMCOLLIST
   /* */ "streamColList"_Stz,   // CK_STREAMCOLLIST
   /* */ "streamElist"_Stz,     // CK_STREAMELIST
   /* */ "subSet"_Stz,          // CK_SUBSET
 
   /* */ "table"_Stz,           // CK_TABLE
   /* */ "tableList"_Stz,       // CK_TABLELIST
+  /* */ "tableNm"_Stz,         // CK_TABLENM
   /* */ "tablePtn"_Stz,        // CK_TABLEPTN
   /* */ "{table}"_Stz,         // CK_TABLEPTR
   /* */ "term"_Stz,            // CK_TERM

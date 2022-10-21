@@ -33,7 +33,6 @@ namespace STORE
     Card_AbsJoin *          p_absJoin;
     Card_Aggreg *           p_aggreg;
     Card_BoolCalc *         p_boolCalc;
-    Card_RpnCalc *             p_rpnCalc;
     Card_CmpPred *          p_cmpPred;
     Card_Combined *         p_combined;
     Card_Comment *          p_comment;
@@ -48,8 +47,10 @@ namespace STORE
     Card_GbyElist *         p_gbyElist;
     Card_IdxCol *           p_idxCol;
     Card_IdxColList *       p_idxColList;
+    Card_IdxColNm *         p_idxColNm;
     Card_IndexJoin *        p_indexJoin;
     Card_IndexList *        p_indexList;
+    Card_IndexNm *          p_indexNm;
     Card_IndexPtr *         p_indexPtr;
     Card_IndexScan *        p_indexScan;
     Card_JoinOrder *        p_joinOrder;
@@ -63,8 +64,12 @@ namespace STORE
     Card_Permutation *      p_permutation;
     Card_Permutation *      p_permutation_low;
     Card_Project *          p_project;
+    Card_PtnCol *           p_ptnCol;
+    Card_PtnColList *       p_ptnColList;
+    Card_PtnColNm *         p_ptnColNm;
     Card_PtndJoin *         p_ptndJoin;
     Card_PtndJoinSet *      p_ptndJoinSet;
+    Card_RpnCalc *          p_rpnCalc;
     Card_SbyElist *         p_sbyElist;
     Card_Scan *             p_scan;
     Card_ScanPred *         p_scanPred;
@@ -72,12 +77,14 @@ namespace STORE
     Card_Sort *             p_sort;
     Card_Stage *            p_stage;
     Card_StageTopo *        p_stageTopo;
+    Card_StmColNm *         p_stmColNm;
     Card_Stream *           p_stream;
     Card_StreamCol *        p_streamCol;
     Card_StreamColList *    p_streamColList;
     Card_SubSet *           p_subSet;
     Card_Table *            p_table;
     Card_TableList *        p_tableList;
+    Card_TableNm *          p_tableNm;
     Card_TablePtn *         p_tablePtn;
     Card_TablePtr *         p_tablePtr;
     Card_Term *             p_term;
