@@ -1921,14 +1921,14 @@ Card_ScanPred* Card::pSub_scanPred(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_Topology.hpp"
-Card_Topology* Card::pSub_topology(void)
+#include "Card_Size.hpp"
+Card_Size* Card::pSub_size(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_Topology* p_stageTopo =
-      _pCard_Topology(pFindSubCard(CK_TOPOLOGY));
-  return p_stageTopo;
+  Card_Size* p_size =
+      _pCard_Size(pFindSubCard(CK_SIZE));
+  return p_size;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1994,6 +1994,19 @@ Card_TablePtr* Card::pSub_tablePtr(void)
   Card_TablePtr* p_tablePtr =
       _pCard_TablePtr(pFindSubCard(CK_TABLEPTR));
   return p_tablePtr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_Topology.hpp"
+Card_Topology* Card::pSub_topology(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Topology* p_stageTopo =
+      _pCard_Topology(pFindSubCard(CK_TOPOLOGY));
+  return p_stageTopo;
 }
 
 /*----------------------------------------------------------------------------*/

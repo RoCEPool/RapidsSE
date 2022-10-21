@@ -79,6 +79,7 @@ namespace STORE
   class Card_SbyElist;
   class Card_Scan;
   class Card_ScanPred;
+  class Card_Size;
   class Card_Send;
   class Card_Sort;
   class Card_Stage;
@@ -309,12 +310,13 @@ namespace STORE
     Card_SbyElist*      pSub_sbyElist(void);
     Card_Scan*          pSub_scan(void);
     Card_ScanPred*      pSub_scanPred(void);
-    Card_Topology*     pSub_topology(void);
+    Card_Size*          pSub_size(void);
     Card_Stream*        pSub_stream(void);
-    Card_StmColList* pSub_streamColList(void);
+    Card_StmColList*    pSub_streamColList(void);
     Card_Table*         pSub_table(void);
     Card_TablePtn*      pSub_tablePtn(void);
     Card_TablePtr*      pSub_tablePtr(void);
+    Card_Topology*      pSub_topology(void);
     Card_UBound*        pSub_uBound(void);
 
   private:
