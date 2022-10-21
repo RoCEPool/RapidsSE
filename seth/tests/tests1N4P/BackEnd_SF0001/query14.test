@@ -12,6 +12,57 @@ select 100.00 * sum(case when p_type like 'PROMO%' then l_extendedprice*(1-l_dis
 
 */
 
+//------------------------------------------------------------------------------
+// Pipeline Generated
+//------------------------------------------------------------------------------
+
+/*
+EXPLAIN STAGE TRANSLITERATE
+select 100.00 * sum(case when p_type like 'PROMO%' then l_extendedprice*(1-l_discount) else 0
+     end) / sum(l_extendedprice * (1 - l_discount)) as promo_revenue
+     from lineitem, part
+     where l_partkey = p_partkey
+     and l_shipdate >= '1995-09-01'
+     and l_shipdate < '1995-10-01';
+
+ pipeline unamed
+ begin
+   stage stageStart on origin :
+     start
+     | pulse once
+     | stageMarker3014
+   stage stageMarker3014 on all partitions :
+     scan rapidsse public LineItem
+     | stageMarker3017 broadcast
+   stage stageMarker3017 on all partitions :
+     scan rapidsse public part
+     | abstractJoin "CROSS true  "
+     | stageMarker3020
+   stage stageMarker3020 on all partitions :
+     filter " type BOOLEAN  $2 $17 ==  $11 DATE ''1995-09-01''  >=  and  $11 DATE ''1995-10-01''  <  and  "
+     | project " type DECIMAL )  $6 1.00  $7 -  *  sum  , type DECIMAL )  } type DECIMAL }  $21 ''PROMO%''  6 matchLeading  WHEN  $6 1.00  $7 -  *  THEN  0.00  ELSE  ENDIF  CASE  sum  "
+     | combined 0
+     | stageMarker3023
+   stage stageMarker3023 on all nodes :
+     project " type DECIMAL )  $1 sum  , type DECIMAL )  $2 sum  "
+     | combined 0
+     | stageMarker3125
+   stage stageMarker3125 on origin :
+     project " type DECIMAL )  $1 sum  , type DECIMAL )  $2 sum  "
+     | combined 0
+     | stageMarker3026
+   stage stageMarker3026 on origin :
+     project " type DECIMAL as promo_revenue 100.00  $2 *  $1 /  "
+     | combined 0
+     | stageLast
+   stage stageLast on origin :
+     output
+     | sink
+     | stageStart
+ end ; 
+
+*/
+
 pipeline unamed
 begin
   stage stageStart on origin :
