@@ -1510,6 +1510,15 @@ void Transforms::vPromote_scan_To_indexScan(bool bPrint, bool bTrace)
     M.p_comment->vValue("- - - - - - - - - "_Stz);
   }
 
+  M_vRestart();
+  while (E_bEachMainWithSub(CK_INDEXSCAN,CK_INDEXLIST)) {
+
+    M.p_indexScan->vReplaceChildWithItsSubs(M.p_indexList);
+
+    DELETE_CARD((M.p_indexList));
+  }
+
+
   vEndTransformation();
   vPrintBoard();
 }
