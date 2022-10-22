@@ -82,8 +82,6 @@ void Transforms::vP10_T10_Delete_Redundant_stage(bool bPrint, bool bTrace)
     M.p_stage->Y_vSet(P_Exclude);
   }
 
-  M.pDeck->vRenumberRecursive();
-
   vEndTransformation();
   vPrintBoard();
 }

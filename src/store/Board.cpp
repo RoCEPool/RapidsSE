@@ -287,8 +287,6 @@ void Board::vPrintBoard(Stz* szPhase,
 
   bool bExecuted = false;
 
-  m_pCard_Deck->vRenumberRecursive();
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Ribbon* pRibbon = new Ribbon(m_pOptimiser->pCardCtl(),this,0);

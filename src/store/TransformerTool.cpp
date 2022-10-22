@@ -208,6 +208,8 @@ void TransformerTool::vEndTransformation(void)
 
   m_bTrace = false;
 
+  M.pDeck->vRenumberRecursive();
+
   // UNDO: Card::vConsistencyCheck(m_pDeck, m_iTransformNo);
 }
 
