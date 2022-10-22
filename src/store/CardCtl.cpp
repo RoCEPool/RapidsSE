@@ -295,6 +295,26 @@ void CardCtl::vPrintSubCards(i8 i_Card, bool bPrintSubCards)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set bPrintSubCards for card                                                */
+/*----------------------------------------------------------------------------*/
+void CardCtl::vPrintSubCards(bool bPrintSubCards, ...)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
+
+  va_list args;
+  va_start(args,bPrintSubCards);
+
+  for (;;) {
+    eCK e_Card = va_arg(args, eCK);
+    if (e_Card == CK_NONE || e_Card == CK_ENUMS)
+      break;
+    m_xaCardCtl[e_Card].m_bPrintSubCards = bPrintSubCards;
+  }
+
+  va_end(args);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get bPrintSubShort for card                                                */
 /*----------------------------------------------------------------------------*/
 bool CardCtl::bPrintSubShort(i8 i_Card)

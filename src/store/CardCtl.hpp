@@ -69,6 +69,7 @@ namespace STORE
     void vPrintProperties(i8 i_Card, bool bPrintProperties);
     bool bPrintSubCards(i8 i_Card);
     void vPrintSubCards(i8 i_Card, bool bPrintSubCards);
+    void vPrintSubCards(bool bPrintSubCards, ...);
     bool bPrintSubShort(i8 i_Card);
     void vPrintSubShort(i8 i_Card, bool bPrintSubShort);
 

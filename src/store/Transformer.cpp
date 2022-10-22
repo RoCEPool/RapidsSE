@@ -131,8 +131,9 @@ void Transformer::vPhase_10_ReducePipeline(bool bPrintPhase, bool bPrintXform, b
   }
 
   m_pCardCtl->vReset();
-  m_pCardCtl->vPrintSubCards(CK_AGGELIST,false);
-  m_pCardCtl->vPrintSubCards(CK_GBYELIST,false);
+  //m_pCardCtl->vPrintSubCards(CK_AGGELIST,false);
+  //m_pCardCtl->vPrintSubCards(CK_GBYELIST,false);
+  m_pCardCtl->vPrintSubCards(false,CK_AGGELIST,CK_GBYELIST,0);
 
   if (bPrintBench(bPrintPhase,__func__))
     m_pTransforms->vPrintBench(BK_SUBPIPE);
