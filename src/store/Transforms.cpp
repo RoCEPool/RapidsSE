@@ -308,7 +308,6 @@ void Transforms::vP30_T10_Calc_ordinalRange_ForAll_stream(bool bPrint, bool bTra
     CardIter xCI(M.p_stream->pSub_stmColList());
     i8 iOrdinal = iOrdLo;
     while (M.p_stmCol = _pCard_StmCol(xCI.pEachChild(CK_STMCOL))) {
-      M.p_stmCol->Y_vSetSprint(P_StmColOrd, "$%lld"_Stz, iOrdinal);
       M.p_stmColOrd = new Card_StmColOrd;
       M.p_stmColOrd->vValueSprint("$%lld"_Stz, iOrdinal);
       M.p_stmCol->vAppend(M.p_stmColOrd);
@@ -529,8 +528,6 @@ void Transforms::vP50_T30_Resolve_Parameter_Linkage(bool bPrint, bool bTrace)
 
     if (! R_bResolveCard(CK_STMCOL,M.p_param->sz(),M.p_keyExists))
       continue;
-
-    M.p_param->Y_vSet(P_StmColOrd, M.p_stmCol->Y_szVal(P_StmColOrd));
 
     M.p_stmColOrd = M.p_stmCol->pSub_stmColOrd();
     M.p_stmColOrd->vValue(M.p_stmColOrd->szValue());

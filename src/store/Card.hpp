@@ -106,7 +106,6 @@ static Stz* P_Invalid      = "bInvalid"_Stz;
 static Stz* P_JoinedBuff   = "nJoinedBuff"_Stz;
 static Stz* P_Network      = "nNetwork"_Stz;
 static Stz* P_OrdHi        = "iOrdHi"_Stz;
-static Stz* P_StmColOrd    = "szStmColOrd"_Stz;
 static Stz* P_OrdLo        = "iOrdLo"_Stz;
 static Stz* P_ParamOrd     = "szParamOrd"_Stz;
 static Stz* P_Permutation  = "i_Permutation"_Stz;
