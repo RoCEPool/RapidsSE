@@ -309,7 +309,7 @@ void Transforms::vP30_T10_Calc_ordinalRange_ForAll_stream(bool bPrint, bool bTra
     i8 iOrdinal = iOrdLo;
     while (Card_StmCol* p_streamCol =
         _pCard_StmCol(xCI.pEachChild(CK_STMCOL)))
-      p_streamCol->Y_vSetSprint(P_StreamColOrd, "$%lld"_Stz, iOrdinal++);
+      p_streamCol->Y_vSetSprint(P_StmColOrd, "$%lld"_Stz, iOrdinal++);
 
     iOrdLo = iOrdHi + 1;
   }
@@ -526,7 +526,7 @@ void Transforms::vP50_T30_Resolve_Parameter_Linkage(bool bPrint, bool bTrace)
     if (! R_bResolveCard(CK_STMCOL,M.p_param->sz(),M.p_keyExists))
       continue;
 
-    M.p_param->Y_vSet(P_StreamColOrd, M.p_stmCol->Y_szVal(P_StreamColOrd));
+    M.p_param->Y_vSet(P_StmColOrd, M.p_stmCol->Y_szVal(P_StmColOrd));
   }
 
   vEndTransformation();
@@ -559,7 +559,7 @@ void Transforms::vP50_T40_Resolve_Parameter_Terms(bool bPrint, bool bTrace)
       if (! Y_bFindPpy(CK_PARAMLIST,P_ParamOrd,CK_PARAM))
         continue;
 
-      M.p_term->vValue(M.p_param->Y_szVal(P_StreamColOrd));
+      M.p_term->vValue(M.p_param->Y_szVal(P_StmColOrd));
     }
   }
 
