@@ -113,7 +113,8 @@ void Transforms::vAdd_scanPred(bool bPrint, bool bTrace)
 
       if (! M.p_bounds) {
         N_vNewMember(CK_BOUNDS);
-        C_vAppendChild(CK_SCAN,CK_BOUNDS);
+        //C_vAppendChild(CK_SCAN,CK_BOUNDS);
+        M.p_scan->vInsertBefore(M.p_bounds,M.p_filter);
       }
 
       if ('L' == M.p_cmpPred->cMark1()) {
@@ -1515,6 +1516,7 @@ void Transforms::vConvert_table_To_scan_Or_indexJoin(bool bPrint, bool bTrace)
 
     M.p_bounds = M.p_table->pSub_bounds();
     M.p_indexJoin = M.p_table->pSub_indexJoin();
+    M.p_index = M.p_table->pSub_index();
 
     if (! M.p_bounds) {
 
@@ -1536,6 +1538,11 @@ void Transforms::vConvert_table_To_scan_Or_indexJoin(bool bPrint, bool bTrace)
 
     p_board->vReplace(M.p_table,M.p_indexJoin);
     M.p_indexJoin->vInsert(M.p_table);
+
+    M.p_indexJoin->vRemoveSubCard(M.p_index);
+    M.p_indexJoin->vInsertAfter(M.p_index,M.p_bounds);
+
+
   }
 
   vEndTransformation();

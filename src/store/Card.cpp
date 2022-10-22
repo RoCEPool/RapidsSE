@@ -1826,6 +1826,19 @@ Card_IdxColNm* Card::pSub_idxColNm(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_Index.hpp"
+Card_Index* Card::pSub_index(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Index* p_index =
+      _pCard_Index(pFindSubCard(CK_INDEX));
+  return p_index;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_IndexJoin.hpp"
 Card_IndexJoin* Card::pSub_indexJoin(void)
 {
