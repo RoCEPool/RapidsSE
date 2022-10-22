@@ -33,6 +33,7 @@ namespace STORE
     Card_AbsJoin *          p_absJoin;
     Card_Aggreg *           p_aggreg;
     Card_BoolCalc *         p_boolCalc;
+    Card_Bounds *           p_bounds;
     Card_CmpPred *          p_cmpPred;
     Card_Combined *         p_combined;
     Card_Comment *          p_comment;
@@ -55,7 +56,6 @@ namespace STORE
     Card_IndexScan *        p_indexScan;
     Card_JoinOrder *        p_joinOrder;
     Card_JoinOrderSeq *     p_joinOrderSeq;
-    Card_Bounds *         p_joinPred;
     Card_JoinPredList *     p_joinPredList;
     Card_KeyExists *        p_keyExists;
     Card_LBound *           p_lBound;
@@ -73,7 +73,6 @@ namespace STORE
     Card_RpnCalc *          p_rpnCalc;
     Card_SbyElist *         p_sbyElist;
     Card_Scan *             p_scan;
-    Card_ScanPred *         p_scanPred;
     Card_Send *             p_send;
     Card_Size *             p_size;
     Card_Sort *             p_sort;

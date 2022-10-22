@@ -731,6 +731,7 @@ Card* TransformerTool::G_pGetMember(eCK eMember)
     case CK_ABSJOIN:          return M.p_absJoin;
     case CK_AGGREG:           return M.p_aggreg;
     case CK_BOOLCALC:         return M.p_boolCalc;
+    case CK_BOUNDS:           return M.p_bounds;
     case CK_CMPPRED:          return M.p_cmpPred;
     case CK_COMBINED:         return M.p_combined;
     case CK_COMMENT:          return M.p_comment;
@@ -753,7 +754,6 @@ Card* TransformerTool::G_pGetMember(eCK eMember)
     case CK_INDEXSCAN:        return M.p_indexScan;
     case CK_JOINORDER:        return M.p_joinOrder;
     case CK_JOINORDERSEQ:     return M.p_joinOrderSeq;
-    case CK_BOUNDS:         return M.p_joinPred;
     case CK_JOINPREDLIST:     return M.p_joinPredList;
     case CK_KEYEXISTS:        return M.p_keyExists;
     case CK_LBOUND:           return M.p_lBound;
@@ -770,7 +770,6 @@ Card* TransformerTool::G_pGetMember(eCK eMember)
     case CK_RPNCALC:          return M.p_rpnCalc;
     case CK_SBYELIST:         return M.p_sbyElist;
     case CK_SCAN:             return M.p_scan;
-    case CK_SCANPRED:         return M.p_scanPred;
     case CK_SEND:             return M.p_send;
     case CK_SIZE:             return M.p_size;
     case CK_SORT:             return M.p_sort;
@@ -902,6 +901,7 @@ void TransformerTool::M_vClearMembers(void)
   M.p_absJoin          = nullptr;
   M.p_aggreg           = nullptr;
   M.p_boolCalc         = nullptr;
+  M.p_bounds           = nullptr;
   M.p_cmpPred          = nullptr;
   M.p_combined         = nullptr;
   M.p_comment          = nullptr;
@@ -921,10 +921,9 @@ void TransformerTool::M_vClearMembers(void)
   M.p_indexJoin        = nullptr;
   M.p_indexList        = nullptr;
   M.p_indexNm          = nullptr;
-   M.p_indexScan        = nullptr;
+  M.p_indexScan        = nullptr;
   M.p_joinOrder        = nullptr;
   M.p_joinOrderSeq     = nullptr;
-  M.p_joinPred         = nullptr;
   M.p_joinPredList     = nullptr;
   M.p_keyExists        = nullptr;
   M.p_lBound           = nullptr;
@@ -942,7 +941,6 @@ void TransformerTool::M_vClearMembers(void)
   M.p_rpnCalc          = nullptr;
   M.p_sbyElist         = nullptr;
   M.p_scan             = nullptr;
-  M.p_scanPred         = nullptr;
   M.p_send             = nullptr;
   M.p_size             = nullptr;
   M.p_sort             = nullptr;
@@ -1168,6 +1166,7 @@ void TransformerTool::U_vUpdateMember(eCK eMember, Card* pCard, const char* asFu
     case CK_ABSJOIN:          *((Card**)&M.p_absJoin)          = pCard; break;
     case CK_AGGREG:           *((Card**)&M.p_aggreg)           = pCard; break;
     case CK_BOOLCALC:         *((Card**)&M.p_boolCalc)         = pCard; break;
+    case CK_BOUNDS:           *((Card**)&M.p_bounds)           = pCard; break;
     case CK_CMPPRED:          *((Card**)&M.p_cmpPred)          = pCard; break;
     case CK_COMBINED:         *((Card**)&M.p_combined)         = pCard; break;
     case CK_COMMENT:          *((Card**)&M.p_comment)          = pCard; break;
@@ -1190,7 +1189,6 @@ void TransformerTool::U_vUpdateMember(eCK eMember, Card* pCard, const char* asFu
     case CK_INDEXSCAN:        *((Card**)&M.p_indexScan)        = pCard; break;
     case CK_JOINORDER:        *((Card**)&M.p_joinOrder)        = pCard; break;
     case CK_JOINORDERSEQ:     *((Card**)&M.p_joinOrderSeq)     = pCard; break;
-    case CK_BOUNDS: *((Card**)&M.p_joinPred)         = pCard; break;
     case CK_JOINPREDLIST:     *((Card**)&M.p_joinPredList)     = pCard; break;
     case CK_KEYEXISTS:        *((Card**)&M.p_keyExists)        = pCard; break;
     case CK_LBOUND:           *((Card**)&M.p_lBound)           = pCard; break;
@@ -1207,12 +1205,11 @@ void TransformerTool::U_vUpdateMember(eCK eMember, Card* pCard, const char* asFu
     case CK_RPNCALC:          *((Card**)&M.p_rpnCalc)          = pCard; break;
     case CK_SBYELIST:         *((Card**)&M.p_sbyElist)         = pCard; break;
     case CK_SCAN:             *((Card**)&M.p_scan)             = pCard; break;
-    case CK_SCANPRED:         *((Card**)&M.p_scanPred)         = pCard; break;
     case CK_SEND:             *((Card**)&M.p_send)             = pCard; break;
     case CK_SIZE:             *((Card**)&M.p_size)             = pCard; break;
     case CK_SORT:             *((Card**)&M.p_sort)             = pCard; break;
     case CK_STAGE:            *((Card**)&M.p_stage)            = pCard; break;
-    case CK_STMCOL:           *((Card**)&M.p_stmCol)        = pCard; break;
+    case CK_STMCOL:           *((Card**)&M.p_stmCol)           = pCard; break;
     case CK_STMCOLLIST:       *((Card**)&M.p_stmColList)       = pCard; break;
     case CK_STMCOLNM:         *((Card**)&M.p_stmColNm)         = pCard; break;
     case CK_STREAM:           *((Card**)&M.p_stream)           = pCard; break;
@@ -1358,6 +1355,7 @@ Stz* TransformerTool::szMemberNm(eCK eMember)
     case CK_ABSJOIN:          return "M.p_absJoin"_Stz;
     case CK_AGGREG:           return "M.p_aggreg"_Stz;
     case CK_BOOLCALC:         return "M.p_boolCalc"_Stz;
+    case CK_BOUNDS:           return "M.p_bounds"_Stz;
     case CK_CMPPRED:          return "M.p_cmpPred"_Stz;
     case CK_COMBINED:         return "M.p_combined"_Stz;
     case CK_COMMENT:          return "M.p_comment"_Stz;
@@ -1376,10 +1374,9 @@ Stz* TransformerTool::szMemberNm(eCK eMember)
     case CK_INDEXJOIN:        return "M.p_indexJoin"_Stz;
     case CK_INDEXLIST:        return "M.p_indexList"_Stz;
     case CK_INDEXNM:          return "M.p_indexNm"_Stz;
-     case CK_INDEXSCAN:        return "M.p_indexScan"_Stz;
+    case CK_INDEXSCAN:        return "M.p_indexScan"_Stz;
     case CK_JOINORDER:        return "M.p_joinOrder"_Stz;
     case CK_JOINORDERSEQ:     return "M.p_joinOrderSeq"_Stz;
-    case CK_BOUNDS:         return "M.p_joinPred"_Stz;
     case CK_JOINPREDLIST:     return "M.p_joinPredList"_Stz;
     case CK_KEYEXISTS:        return "M.p_keyExists"_Stz;
     case CK_LBOUND:           return "M.p_lBound"_Stz;
@@ -1396,7 +1393,6 @@ Stz* TransformerTool::szMemberNm(eCK eMember)
     case CK_RPNCALC:          return "M.p_rpnCalc"_Stz;
     case CK_SBYELIST:         return "M.p_sbyElist"_Stz;
     case CK_SCAN:             return "M.p_scan"_Stz;
-    case CK_SCANPRED:         return "M.p_scanPred"_Stz;
     case CK_SEND:             return "M.p_send"_Stz;
     case CK_SIZE:             return "M.p_size"_Stz;
     case CK_SORT:             return "M.p_sort"_Stz;

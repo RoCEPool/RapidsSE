@@ -98,6 +98,8 @@ void Transforms::vAdd_scanPred(bool bPrint, bool bTrace)
   vTransformation(__func__);
   vTracing(bPrint,bTrace);
 
+  M.p_bounds = nullptr;
+
   while (E_bEachMainWith2Sub(CK_SCAN,CK_FILTER,CK_INDEXLIST)) {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -109,17 +111,17 @@ void Transforms::vAdd_scanPred(bool bPrint, bool bTrace)
 
       vTracer("Testing %s\n"_Stz,M.p_cmpPred->szBearing());
 
-      if (! M.p_scanPred) {
-        N_vNewMember(CK_SCANPRED);
-        C_vAppendChild(CK_SCAN,CK_SCANPRED);
+      if (! M.p_bounds) {
+        N_vNewMember(CK_BOUNDS);
+        C_vAppendChild(CK_SCAN,CK_BOUNDS);
       }
 
       if ('L' == M.p_cmpPred->cMark1()) {
 
-        M.p_lBound = M.p_scanPred->pSub_lBound();
+        M.p_lBound = M.p_bounds->pSub_lBound();
         if (! M.p_lBound) {
           N_vNewMember(CK_LBOUND);
-          C_vAppendChild(CK_SCANPRED,CK_LBOUND);
+          C_vAppendChild(CK_BOUNDS,CK_LBOUND);
         }
         //m_pCard_dup = M.p_cmpPred->pDupCardAndSubCards();
         C_vDuplicateMember(CK_CMPPRED);
@@ -130,10 +132,10 @@ void Transforms::vAdd_scanPred(bool bPrint, bool bTrace)
       }
       else
       if ('U' == M.p_cmpPred->cMark1()) {
-        M.p_uBound = M.p_scanPred->pSub_uBound();
+        M.p_uBound = M.p_bounds->pSub_uBound();
         if (! M.p_uBound) {
           N_vNewMember(CK_UBOUND);
-          C_vAppendChild(CK_SCANPRED,CK_UBOUND);
+          C_vAppendChild(CK_BOUNDS,CK_UBOUND);
         }
         //m_pCard_dup = M.p_cmpPred->pDupCardAndSubCards();
         C_vDuplicateMember(CK_CMPPRED);
@@ -1164,12 +1166,12 @@ void Transforms::vAdd_joinPred_UnderAll_indexJoin(bool bPrint, bool bTrace)
 
     // - - - -
 
-    M.p_joinPred = new Card_Bounds;
+    M.p_bounds = new Card_Bounds;
     M.p_indexJoin = M.p_table->pSub_indexJoin();
-    M.p_table->vInsertAfter(M.p_joinPred,M.p_indexJoin);
+    M.p_table->vInsertAfter(M.p_bounds, M.p_indexJoin);
 
     M.p_term = new Card_Term("BOUND"_Stz);
-    M.p_joinPred->vAppend(M.p_term);
+    M.p_bounds->vAppend(M.p_term);
 
     // - - - -
 
@@ -1184,16 +1186,16 @@ void Transforms::vAdd_joinPred_UnderAll_indexJoin(bool bPrint, bool bTrace)
 
     if (i_iOrdLo_0 >= iStreamOrdLo && i_iOrdLo_0 <= iStreamOrdHi) {
       M.p_term = new Card_Term("$I1"_Stz);
-      M.p_joinPred->vAppend(M.p_term);
+      M.p_bounds->vAppend(M.p_term);
       M.p_term = new Card_Term(m_pTerm_1->sz());
-      M.p_joinPred->vAppend(M.p_term);
+      M.p_bounds->vAppend(M.p_term);
     }
     else
     if (i_iOrdLo_1 >= iStreamOrdLo && i_iOrdLo_1 <= iStreamOrdHi) {
       M.p_term = new Card_Term("$I1"_Stz);
-      M.p_joinPred->vAppend(M.p_term);
+      M.p_bounds->vAppend(M.p_term);
       M.p_term = new Card_Term(m_pTerm_1->sz());
-      M.p_joinPred->vAppend(M.p_term);
+      M.p_bounds->vAppend(M.p_term);
     }
     else {
       NEVER_REACH
@@ -1201,7 +1203,7 @@ void Transforms::vAdd_joinPred_UnderAll_indexJoin(bool bPrint, bool bTrace)
 
     M.p_cmpPred->vMark1(MARK_UPWARDS);
     M.p_term = new Card_Term(M.p_cmpPred->sz());
-    M.p_joinPred->vAppend(M.p_term);
+    M.p_bounds->vAppend(M.p_term);
   }
 
   vSetPrintSubCards(CK_FILTER, true);
@@ -1487,7 +1489,7 @@ void Transforms::vPromote_scan_To_indexScan(bool bPrint, bool bTrace)
   vTransformation(__func__);
   vTracing(bPrint,bTrace);
 
-  while (E_bEachMainWithSub(CK_SCAN,CK_SCANPRED)) {
+  while (E_bEachMainWithSub(CK_SCAN,CK_BOUNDS)) {
     vTracer("Morphing <scan> to <indexScan> %s\n"_Stz,M.p_scan->szBearing());
     M.p_scan->vCard(CK_INDEXSCAN);
   }
@@ -1511,10 +1513,10 @@ void Transforms::vConvert_table_To_scan_Or_indexJoin(bool bPrint, bool bTrace)
 
   while (E_bEachMain(CK_TABLE)) {
 
-    M.p_joinPred = M.p_table->pSub_bounds();
+    M.p_bounds = M.p_table->pSub_bounds();
     M.p_indexJoin = M.p_table->pSub_indexJoin();
 
-    if (! M.p_joinPred) {
+    if (! M.p_bounds) {
 
       M.p_scan = new Card_Scan;
       M.p_scan->vTransferChildren(M.p_table);

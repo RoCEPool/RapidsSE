@@ -25,17 +25,19 @@ namespace STORE
   class Card_AggLevel;
   class Card_Aggreg;
   class Card_Aggregates;
+  class Card_AndPred;
   class Card_As;
 
-  class Card_Deck;
-
-  class Card_RpnCalc;
   class Card_BoolCalc;
+  class Card_Bounds;
+
   class Card_CandIndex;
+  class Card_CmpPred;
   class Card_ColumnRef;
   class Card_Combined;
 
   class Card_Debug;
+  class Card_Deck;
   class Card_Direction;
 
   class Card_EBound;
@@ -59,21 +61,18 @@ namespace STORE
   class Card_IndexPred;
   class Card_IndexScan;
 
-  class Card_Bounds;
-
   class Card_LBound;
   class Card_Limit;
 
   class Card_OrdAgg;
+  class Card_OrPred;
   class Card_ObyElist;
 
-  class Card_AndPred;
-  class Card_CmpPred;
-  class Card_OrPred;
   class Card_Project;
   class Card_ProjElist;
 
   class Card_RBound;
+  class Card_RpnCalc;
   class Card_RpnTerms;
 
   class Card_SbyElist;
@@ -83,15 +82,14 @@ namespace STORE
   class Card_Send;
   class Card_Sort;
   class Card_Stage;
-  class Card_Topology;
   class Card_Stream;
-  class Card_StreamElist;
   class Card_StmColList;
   class Card_SubSet;
 
   class Card_TableNm;
   class Card_TablePtn;
   class Card_Term;
+  class Card_Topology;
   class Card_Type;
 
   class Card_UBound;
@@ -292,6 +290,7 @@ namespace STORE
 
     Card_As*            pSub_as(void);
     Card_BoolCalc*      pSub_boolCalc(void);
+    Card_Bounds*        pSub_bounds(void);
     Card_ColumnRef*     pSub_columnRef(void);
     Card_Filter*        pSub_filter(void);
     Card_GbyElist*      pSub_gbyElist(void);
@@ -300,13 +299,11 @@ namespace STORE
     Card_IndexJoin*     pSub_indexJoin(void);
     Card_IndexList*     pSub_indexList(void);
     Card_IndexNm*       pSub_indexNm(void);
-    Card_Bounds*      pSub_bounds(void);
     Card_LBound*        pSub_lBound(void);
     Card_CmpPred*       pSub_predCmp(void);
     Card_RpnCalc*       pSub_rpnCalc(void);
     Card_SbyElist*      pSub_sbyElist(void);
     Card_Scan*          pSub_scan(void);
-    Card_ScanPred*      pSub_scanPred(void);
     Card_Size*          pSub_size(void);
     Card_Stream*        pSub_stream(void);
     Card_StmColList*    pSub_streamColList(void);

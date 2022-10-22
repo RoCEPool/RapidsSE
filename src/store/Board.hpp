@@ -93,7 +93,6 @@
 
 #include "Card_SbyElist.hpp"
 #include "Card_Scan.hpp"
-#include "Card_ScanPred.hpp"
 #include "Card_Send.hpp"
 #include "Card_Size.hpp"
 #include "Card_Sort.hpp"

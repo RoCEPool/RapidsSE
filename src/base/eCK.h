@@ -91,7 +91,6 @@ enum eCK // card kind
 
   /* */ CK_SBYELIST,
   /* */ CK_SCAN,
-  /* */ CK_SCANPRED,
   /* */ CK_SEND,
   /* */ CK_SENDKIND,
   /* */ CK_SIZE,
@@ -210,7 +209,6 @@ static Stz* aCK[]
 
   /* */ "CK_SBYELIST"_Stz,     // CK_SBYELIST
   /* */ "CK_SCAN"_Stz,         // CK_SCAN
-  /* */ "CK_SCANPRED"_Stz,     // CK_SCANPRED
   /* */ "CK_SEND"_Stz,         // CK_SEND
   /* */ "CK_SENDKIND"_Stz,     // CK_SENDKIND
   /* */ "CK_SIZE"_Stz,         // CK_SIZE
@@ -329,7 +327,6 @@ static Stz* aCK_short[]
 
   /* */ "sbyElist"_Stz,        // CK_SBYELIST
   /* */ "scan"_Stz,            // CK_SCAN
-  /* */ "scanPred"_Stz,        // CK_SCANPRED
   /* */ "sendSE"_Stz,          // CK_SEND
   /* */ "sendKind"_Stz,        // CK_SENDKIND
   /* */ "size"_Stz,            // CK_SIZE
