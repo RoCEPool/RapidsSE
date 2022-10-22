@@ -103,7 +103,7 @@ void Card_PtndJoin::vJoinEst(Card_TableList* p_tableList)
       Card_CmpPred *p_predCmp =
           _pCard_CmpPred(this->pGetChild(i_PredCmp));
 
-      if (p_predCmp->bUsesTable(p_table->Y_cVal(P_TableSyn))) {
+      if (p_predCmp->bUsesTable(p_table->cValue())) {
         nJoinedBuff += p_table->pSub_size()->szValue()->iToI8();
         p_table->Y_vSet(P_TableUsed);
       }

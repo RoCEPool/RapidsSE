@@ -241,8 +241,6 @@ void Transforms::vAdd_tableSyn_ForAll_table(bool bPrint, bool bTrace)
     if (m_pTable->bIsReplicated())
       cTableSyn_actual = StrLib::cToUpper(cTableSyn_actual);
 
-    M.p_table->Y_vSet(P_TableSyn, cTableSyn_actual);
-
     M.p_table->vValueSprint("%c"_Stz,cTableSyn_actual);
 
     cTableSyn++;
@@ -1888,7 +1886,7 @@ char Transforms::cMovePredToTable(Card_Table* p_table, Card_PRED* p_pred)
 
   // are all $n of <pred> in this <stream>?
   if (p_stream->bContainsPred(p_pred)) {
-    char cTableSyn = p_table->Y_cVal(P_TableSyn);
+    char cTableSyn = p_table->cValue();
     return cTableSyn;
   }
 

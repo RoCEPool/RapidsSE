@@ -116,7 +116,6 @@ static Stz* P_Rank         = "iRank"_Stz;
 static Stz* P_SendKind     = "eSendKind"_Stz;
 static Stz* P_SentOut      = "nSentOut"_Stz;
 static Stz* P_StageTopo    = "eStageTopo"_Stz;
-static Stz* P_TableSyn     = "cTableSyn"_Stz;
 static Stz* P_TableUsed    = "bTableUsed"_Stz;
 
 static char MARK_ASSIGNED   = '@';

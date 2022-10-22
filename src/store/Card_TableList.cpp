@@ -56,7 +56,7 @@ Card_Table* Card_TableList::pFind_table(char cSyn)
       continue;
 
     Card_Table* p_table = _pCard_Table(pChildCard);
-    char cTableSyn = p_table->Y_cVal(P_TableSyn);
+    char cTableSyn = p_table->cValue();
     if (cTableSyn == cSyn)
       return p_table;
   }

@@ -206,7 +206,7 @@ Card_Table* ChildCards::pFindTableCard(char cTableSyn, Card*& rpMainCard)
     if (! p_table)
       continue;
 
-    if (cTableSyn == p_table->Y_cVal(P_TableSyn))
+    if (cTableSyn == p_table->cValue())
       return p_table;
   }
 
