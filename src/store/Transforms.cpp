@@ -1169,7 +1169,8 @@ void Transforms::vAdd_joinPred_UnderAll_indexJoin(bool bPrint, bool bTrace)
 
     M.p_bounds = new Card_Bounds;
     M.p_indexJoin = M.p_table->pSub_indexJoin();
-    M.p_table->vInsertAfter(M.p_bounds, M.p_indexJoin);
+    M.p_stream = M.p_table->pSub_stream();
+    M.p_table->vInsertAfter(M.p_bounds, M.p_stream);
 
     M.p_term = new Card_Term("BOUND"_Stz);
     M.p_bounds->vAppend(M.p_term);
@@ -1321,7 +1322,8 @@ void Transforms::vAdd_indexJoin_UnderAllJoinable_table(bool bPrint, bool bTrace)
     while (M.p_index = _pCard_Index(M.p_indexList->pPopChild())) {
       M.p_indexJoin = new Card_IndexJoin;
       M.p_indexJoin->vAppend(M.p_index);
-      M.p_table->vInsertBefore(M.p_indexJoin,M.p_filter);
+      //M.p_table->vInsertBefore(M.p_indexJoin,M.p_filter);
+      M.p_table->vAppend(M.p_indexJoin);
     }
 
     D_vDeleteMember(CK_INDEXLIST);
