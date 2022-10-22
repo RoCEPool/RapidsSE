@@ -273,9 +273,12 @@ void Transforms::vInsert_indexList_ToAll_scan(bool bPrint, bool bTrace)
 
     RASSERT(A_bTable(M.p_tableNm->szValue()));
 
-    if (A_bIndexListOfTable())
-      M.p_scan->vAppend(M.p_indexList);
+    if (A_bIndexListOfTable()) {
+      M.p_comment = new Card_Comment("= = = = = = = = = "_Stz);
+      M.p_scan->vAppend(M.p_comment);
 
+      M.p_scan->vAppend(M.p_indexList);
+    }
   }
 
   vEndTransformation();
@@ -1323,6 +1326,8 @@ void Transforms::vAdd_indexJoin_UnderAllJoinable_table(bool bPrint, bool bTrace)
       M.p_indexJoin = new Card_IndexJoin;
       M.p_indexJoin->vAppend(M.p_index);
       //M.p_table->vInsertBefore(M.p_indexJoin,M.p_filter);
+      M.p_comment = new Card_Comment("= = = = = = = = = "_Stz);
+      M.p_table->vAppend(M.p_comment);
       M.p_table->vAppend(M.p_indexJoin);
     }
 
@@ -1497,6 +1502,14 @@ void Transforms::vPromote_scan_To_indexScan(bool bPrint, bool bTrace)
     M.p_scan->vCard(CK_INDEXSCAN);
   }
 
+  M_vRestart();
+  while (E_bEachMain(CK_INDEXSCAN)) {
+
+    i8 i_Child;
+    M.p_comment = _pCard_Comment(M.p_indexScan->pFindChild(CK_COMMENT,i_Child));
+    M.p_comment->vValue("- - - - - - - - - "_Stz);
+  }
+
   vEndTransformation();
   vPrintBoard();
 }
@@ -1542,10 +1555,33 @@ void Transforms::vConvert_table_To_scan_Or_indexJoin(bool bPrint, bool bTrace)
     M.p_indexJoin->vInsert(M.p_table);
 
     M.p_indexJoin->vRemoveSubCard(M.p_index);
-    M.p_indexJoin->vInsertAfter(M.p_index,M.p_bounds);
+    M.p_indexJoin->vAppend(M.p_index);
 
 
   }
+
+  M_vRestart();
+  while (E_bEachMain(CK_SCAN)) {
+
+    i8 i_Child;
+    M.p_comment = _pCard_Comment(M.p_scan->pFindChild(CK_COMMENT,i_Child));
+
+    if (i_Child == M.p_scan->nChildCards() - 1) {
+      M.p_scan->vRemoveChild(M.p_comment);
+      DELETE_CARD(M.p_comment);
+    }
+
+  }
+
+  M_vRestart();
+  while (E_bEachMain(CK_INDEXJOIN)) {
+
+    i8 i_Child;
+    M.p_comment = _pCard_Comment(M.p_indexJoin->pFindChild(CK_COMMENT,i_Child));
+    M.p_comment->vValue("- - - - - - - - - "_Stz);
+  }
+
+
 
   vEndTransformation();
 

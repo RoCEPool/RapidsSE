@@ -405,6 +405,10 @@ void CardCtl::vReset(void)
 
   m_xaTrfCtl.m_bTfmPrint = true;
 
+  vPrintValue(CK_ANDPRED, false);
+  vPrintProperties(CK_ANDPRED, false);
+
+  vPrintProperties(CK_CMPPRED, false);
 
   vPrintName(CK_COMMENT,false);
   vPrintProperties(CK_COMMENT,false);
@@ -416,11 +420,6 @@ void CardCtl::vReset(void)
   vPrintSubShort(CK_CROSSPTNJOIN,true);
   vPrintSubCards(CK_CROSSPTNJOIN,false);
   vPrune(CK_CROSSPTNJOIN,true);
-
-  vPrintValue(CK_ANDPRED, false);
-  vPrintProperties(CK_ANDPRED, false);
-
-  vPrintProperties(CK_CMPPRED, false);
 
   vPrintValue(CK_ORPRED, false);
   vPrintProperties(CK_ORPRED, false);

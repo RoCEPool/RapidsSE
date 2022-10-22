@@ -101,7 +101,7 @@ void Transformer::vTransform3(void)
   vPhase_40_PredicatePullup (C_PRINT_PHASE, C_QUIET_XFORM, C_TRACE_N);
   vPhase_50_FlattenExists   (C_PRINT_PHASE, C_QUIET_XFORM, C_TRACE_N);
   vPhase_60_InitialJoin     (C_PRINT_PHASE,   C_PRINT_XFORM, C_TRACE_Y);
-  vPhase_70_JoinOrdering    (C_PRINT_PHASE, C_QUIET_XFORM, C_TRACE_N);
+  vPhase_70_JoinOrdering    (C_PRINT_PHASE,   C_PRINT_XFORM, C_TRACE_Y);
   vPhase_80_IndexScan       (C_PRINT_PHASE,   C_PRINT_XFORM, C_TRACE_Y);
   vPhase_90_StreamOrdering  (C_PRINT_PHASE, C_QUIET_XFORM, C_TRACE_N);
   vPhase_A0_FilterRefinement(C_PRINT_PHASE, C_QUIET_XFORM, C_TRACE_N);
@@ -131,6 +131,8 @@ void Transformer::vPhase_10_ReducePipeline(bool bPrintPhase, bool bPrintXform, b
   }
 
   m_pCardCtl->vReset();
+  m_pCardCtl->vPrintSubCards(CK_AGGELIST,false);
+  m_pCardCtl->vPrintSubCards(CK_GBYELIST,false);
 
   if (bPrintBench(bPrintPhase,__func__))
     m_pTransforms->vPrintBench(BK_SUBPIPE);
@@ -150,7 +152,6 @@ void Transformer::vPhase_20_AccessMetadata(bool bPrintPhase, bool bPrintXform, b
   m_pTransforms->vAdd_tablePtn_UnderAll_table    (bPrintXform,bTrace);
   m_pTransforms->vAdd_stream_UnderAll_table      (bPrintXform,bTrace);
 
-  m_pCardCtl->vReset();
   if (bPrintBench(bPrintPhase,__func__))
     m_pTransforms->vPrintBench(BK_SUBPIPE,0);
 }
@@ -165,9 +166,7 @@ void Transformer::vPhase_30_StreamAnalysis(bool bPrintPhase, bool bPrintXform, b
   m_pTransforms->vPhase(bPrintPhase,__func__);
   m_pTransforms->vUsingBoard(BK_SUBPIPE, 0);
 
- m_pTransforms->vCalc_ordinalRange_ForAll_stream(bPrintXform,bTrace);
-
-  m_pCardCtl->vReset();
+  m_pTransforms->vCalc_ordinalRange_ForAll_stream(bPrintXform,bTrace);
 
   if (bPrintBench(bPrintPhase,__func__))
     m_pTransforms->vPrintBench(BK_SUBPIPE,0);
