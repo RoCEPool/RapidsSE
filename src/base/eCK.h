@@ -18,7 +18,6 @@ enum eCK // card kind
   /* */ CK_BOOLCALC,
 
   /* */ CK_CANDINDEX,
-  /* */ CK_CARDPTR,
   /* */ CK_CMPPRED,
   /* */ CK_COLUMNREF,
   /* */ CK_COMBINED,
@@ -139,7 +138,6 @@ static Stz* aCK[]
   /* */ "CK_BOOLCALC"_Stz,     // CK_BOOLCALC
 
   /* */ "CK_CANDINDEX"_Stz,    // CK_CANDINDEX
-  /* */ "CK_CARDPTR"_Stz,      // CK_CARDPTR
   /* */ "CK_CMPPRED"_Stz,      // CK_CMPPRED
   /* */ "CK_COLUMNREF"_Stz,    // CK_COLUMNREF
   /* */ "CK_COMBINED"_Stz,     // CK_COMBINED
@@ -260,7 +258,6 @@ static Stz* aCK_short[]
   /* */ "boolCalc"_Stz,        // CK_BOOLCALC
 
   /* */ "candIndex"_Stz,       // CK_CANDINDEX
-  /* */ "{card}"_Stz,          // CK_CARDPTR
   /* */ "cmpPred"_Stz,         // CK_CMPPRED
   /* */ "columnRef"_Stz,       // CK_COLUMNREF
   /* */ "combined"_Stz,        // CK_COMBINED

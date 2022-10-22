@@ -32,7 +32,6 @@ namespace STORE
   class Card_RpnCalc;
   class Card_BoolCalc;
   class Card_CandIndex;
-  class Card_CardPtr;
   class Card_ColumnRef;
   class Card_Combined;
 

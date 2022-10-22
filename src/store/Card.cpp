@@ -1025,10 +1025,6 @@ void Card::vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth)
 
   switch (m_eCard) {
 
-    case CK_CARDPTR:
-      _pCard_CardPtr(this)->vCardPtrPrint(pRibbon, iDepth);
-      break;
-
     case CK_STREAM:
       _pCard_Stream(this)->vStreamPrint(pRibbon, iDepth);
       break;

@@ -24,7 +24,6 @@
 #include "Card_RpnCalc.hpp"
 #include "Card_BoolCalc.hpp"
 #include "Card_CandIndex.hpp"
-#include "Card_CardPtr.hpp"
 #include "Card_CmpPred.hpp"
 #include "Card_Combined.hpp"
 #include "Card_Comment.hpp"

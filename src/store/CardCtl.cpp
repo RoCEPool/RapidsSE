@@ -406,8 +406,6 @@ void CardCtl::vReset(void)
   m_xaTrfCtl.m_bTfmPrint = true;
 
 
-  vPrintByKind(CK_CARDPTR,true);
-
   vPrintName(CK_COMMENT,false);
   vPrintProperties(CK_COMMENT,false);
 
