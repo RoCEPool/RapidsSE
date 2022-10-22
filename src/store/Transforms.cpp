@@ -1511,7 +1511,7 @@ void Transforms::vConvert_table_To_scan_Or_indexJoin(bool bPrint, bool bTrace)
 
   while (E_bEachMain(CK_TABLE)) {
 
-    M.p_joinPred = M.p_table->pSub_joinPred();
+    M.p_joinPred = M.p_table->pSub_bounds();
     M.p_indexJoin = M.p_table->pSub_indexJoin();
 
     if (! M.p_joinPred) {

@@ -1735,14 +1735,27 @@ Card_BoolCalc* Card::pSub_boolCalc(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_RpnCalc.hpp"
-Card_RpnCalc* Card::pSub_rpnCalc(void)
+#include "Card_Bounds.hpp"
+Card_Bounds* Card::pSub_bounds(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_RpnCalc* p_calc =
-      _pCard_RpnCalc(pFindSubCard(CK_RPNCALC));
-  return p_calc;
+  Card_Bounds* p_bounds =
+      _pCard_Bounds(pFindSubCard(CK_BOUNDS));
+  return p_bounds;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_CmpPred.hpp"
+Card_CmpPred* Card::pSub_predCmp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_CmpPred* p_predCmp =
+      _pCard_CmpPred(pFindSubCard(CK_CMPPRED));
+  return p_predCmp;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1852,19 +1865,6 @@ Card_IndexNm* Card::pSub_indexNm(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_Bounds.hpp"
-Card_Bounds* Card::pSub_joinPred(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_Bounds* p_joinPred =
-      _pCard_Bounds(pFindSubCard(CK_BOUNDS));
-  return p_joinPred;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 #include "Card_LBound.hpp"
 Card_LBound* Card::pSub_lBound(void)
 {
@@ -1878,14 +1878,14 @@ Card_LBound* Card::pSub_lBound(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_CmpPred.hpp"
-Card_CmpPred* Card::pSub_predCmp(void)
+#include "Card_RpnCalc.hpp"
+Card_RpnCalc* Card::pSub_rpnCalc(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_CmpPred* p_predCmp =
-      _pCard_CmpPred(pFindSubCard(CK_CMPPRED));
-  return p_predCmp;
+  Card_RpnCalc* p_calc =
+      _pCard_RpnCalc(pFindSubCard(CK_RPNCALC));
+  return p_calc;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -300,7 +300,7 @@ namespace STORE
     Card_IndexJoin*     pSub_indexJoin(void);
     Card_IndexList*     pSub_indexList(void);
     Card_IndexNm*       pSub_indexNm(void);
-    Card_Bounds*      pSub_joinPred(void);
+    Card_Bounds*      pSub_bounds(void);
     Card_LBound*        pSub_lBound(void);
     Card_CmpPred*       pSub_predCmp(void);
     Card_RpnCalc*       pSub_rpnCalc(void);
