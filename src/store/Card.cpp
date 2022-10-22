@@ -1029,10 +1029,6 @@ void Card::vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth)
       _pCard_Stream(this)->vStreamPrint(pRibbon, iDepth);
       break;
 
-    case CK_STREAMELIST:
-      _pCard_StreamElist(this)->vStreamElistPrint(pRibbon, iDepth);
-      break;
-
     case CK_TABLE:
       _pCard_Table(this)->vTablePrint(pRibbon, iDepth);
       break;

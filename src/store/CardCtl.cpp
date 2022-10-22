@@ -427,7 +427,6 @@ void CardCtl::vReset(void)
 
   vNextHorizon(CK_STAGE, true);
   vHorizExclude(CK_STAGE,P_Exclude);
-  vPrintByKind(CK_STREAMELIST,true);
 
   vPrintByKind(CK_TABLE,true);
   vPrintValue(CK_TABLE, false);

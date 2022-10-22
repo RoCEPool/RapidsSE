@@ -100,7 +100,6 @@ namespace STORE
 
 static Stz* P_AggLevel     = "eAggLevel"_Stz;
 static Stz* P_AggOp        = "bAggOp"_Stz;
-static Stz* P_Card         = "pCard"_Stz;
 static Stz* P_DebugOption  = "szDebugOption"_Stz;
 static Stz* P_Exclude      = "bExclude"_Stz;
 static Stz* P_Invalid      = "bInvalid"_Stz;

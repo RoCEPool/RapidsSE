@@ -17,8 +17,6 @@ namespace STORE
     Card_Stream(void);
    ~Card_Stream(void) noexcept(false);
 
-    void vApplyOrder(Card_Stream* pCard_Stream_src);
-
     bool bContainsOrdinal(Stz* szOrd);
     bool bContainsPred(Card_PRED* pCard_PRED);
 

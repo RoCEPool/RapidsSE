@@ -5,7 +5,6 @@
 #include "Card_PtnColList.hpp"
 #include "Card_Expr.hpp"
 #include "Card_ObyElist.hpp"
-#include "Card_StreamElist.hpp"
 #include "Card_AggElist.hpp"
 
 #include "Card_StmCol.hpp"

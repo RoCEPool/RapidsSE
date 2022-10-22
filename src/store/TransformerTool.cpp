@@ -108,26 +108,28 @@ eOA TransformerTool::eCueUser(Stz* szPhase, Stz* szTransformation)
   if (m_bCueingDisabled)
     return OA_CONTINUE_TRANSFORMING;
 
+  s256 sPrompt;
+  if (szPhase && szTransformation)
+    sPrompt.vSprint("%s :: %s"_Stz,szPhase, szTransformation);
+  else if (szPhase)
+    sPrompt.vSprint("%s"_Stz,szPhase, szTransformation);
+  else
+    sPrompt.vSprint(""_Stz,szPhase);
+
   if (! m_bBeenCued && AM::JOB::bHasTag("<cue>"_Stz)) {
     Stz* szTagCue = AM::JOB::szTagValue("<cue>"_Stz);
     if (   (! szPhase          || ! szTagCue->bSame(szPhase))
         && (! szTransformation || ! szTagCue->bSame(szTransformation))) {
-      //printf("%s :: %s\n",(char*)szPhase, (char*)szTransformation);
+      printf("%s\n",sPrompt.azChar());
       return OA_CONTINUE_TRANSFORMING;
     }
   }
 
+  sPrompt.vConcat(" >> "_Stz);
+
   m_bBeenCued = true;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  s256 sPrompt;
-  if (szPhase && szTransformation)
-    sPrompt.vSprint("%s :: %s >> "_Stz,szPhase, szTransformation);
-  else if (szPhase)
-    sPrompt.vSprint("%s >> "_Stz,szPhase, szTransformation);
-  else
-    sPrompt.vSprint(">> "_Stz,szPhase);
 
   L_Input:
 

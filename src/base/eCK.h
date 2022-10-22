@@ -101,7 +101,6 @@ enum eCK // card kind
   /* */ CK_STMCOLLIST,
   /* */ CK_STMCOLNM,
   /* */ CK_STREAM,
-  /* */ CK_STREAMELIST,
   /* */ CK_SUBSET,
 
   /* */ CK_TABLE,
@@ -221,7 +220,6 @@ static Stz* aCK[]
   /* */ "CK_STMCOLLIST"_Stz,   // CK_STMCOLLIST
   /* */ "CK_STMCOLNM"_Stz,     // CK_STMCOLNM
   /* */ "CK_STREAM"_Stz,       // CK_STREAM
-  /* */ "CK_STREAMELIST"_Stz,  // CK_STREAMELIST
   /* */ "CK_SUBSET"_Stz,       // CK_SUBSET
 
   /* */ "CK_TABLE"_Stz,        // CK_TABLE
@@ -341,7 +339,6 @@ static Stz* aCK_short[]
   /* */ "stmColList"_Stz,      // CK_STMCOLLIST
   /* */ "stmColNm"_Stz,        // CK_STMCOLNM
   /* */ "stream"_Stz,          // CK_STREAM
-  /* */ "streamElist"_Stz,     // CK_STREAMELIST
   /* */ "subSet"_Stz,          // CK_SUBSET
 
   /* */ "table"_Stz,           // CK_TABLE

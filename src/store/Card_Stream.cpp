@@ -5,7 +5,6 @@
 #include "Card_Stream.hpp"
 #include "Card_Expr.hpp"
 #include "Card_ObyElist.hpp"
-#include "Card_StreamElist.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -41,54 +40,6 @@ Card_Stream::~Card_Stream(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* apply the order of given arg to this stream                                */
-/*----------------------------------------------------------------------------*/
-void Card_Stream::vApplyOrder(Card_Stream* pCard_Stream_src)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  Card_ObyElist* pCard_ObyElist_src =
-    _pCard_ObyElist(pCard_Stream_src->pFindSubCard(CK_OBYELIST));
-  if (! pCard_ObyElist_src)
-    return;
-  i8 nOrderExprs_src = pCard_ObyElist_src->nItems();
-
-  Card_StreamElist* pCard_StreamElist_dst =
-    _pCard_StreamElist(this->pFindSubCard(CK_STREAMELIST));
-  if (! pCard_StreamElist_dst)
-    return;
-  i8 nStreamExprs_dst = pCard_StreamElist_dst->nItems();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  Card_ObyElist* pCard_ObyElist_dst = nullptr;
-
-  for (i8 i_Expr = 0; i_Expr < nOrderExprs_src; i_Expr++) {
-    if (i_Expr >= nStreamExprs_dst)
-      break;
-    
-    Card_Expr* pCard_Expr_src =
-      _pCard_Expr(pCard_ObyElist_src->pGetChild(i_Expr));
-    Card_Expr* pCard_Expr_tst =
-      _pCard_Expr(pCard_StreamElist_dst->pGetChild(i_Expr));
-
-    if (!pCard_Expr_tst->bEquivalentTo(pCard_Expr_src))
-      break;
-
-    if (! pCard_ObyElist_dst)
-      pCard_ObyElist_dst = new Card_ObyElist;
-    
-    Card_Expr* pCard_Expr_dst =
-      _pCard_Expr(pCard_Expr_src->pDupCardAndSubCards());
-
-    pCard_ObyElist_dst->vAppend(pCard_Expr_dst);
-  }
-  
-  if (pCard_ObyElist_dst)
-    this->vAppend(pCard_ObyElist_dst);
-}
 
 /*----------------------------------------------------------------------------*/
 /* is given <pred> within this stream?                                        */
