@@ -51,7 +51,7 @@ Transforms::~Transforms(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vReinstate_combined(bool bPrint, bool bTrace)
+void Transforms::vPZ0_T20_Reinstate_combined(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -90,7 +90,7 @@ void Transforms::vReinstate_combined(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vAdd_scanPred(bool bPrint, bool bTrace)
+void Transforms::vP80_T50_Add_scanPred(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -162,7 +162,7 @@ void Transforms::vAdd_scanPred(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* reinstate stages                                                           */
 /*----------------------------------------------------------------------------*/
-void Transforms::vReinstate_stages(bool bPrint, bool bTrace)
+void Transforms::vPZ0_T10_Reinstate_stages(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -198,7 +198,7 @@ void Transforms::vReinstate_stages(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* add a <tablePtn> under every <table>                                       */
 /*----------------------------------------------------------------------------*/
-void Transforms::vAdd_tablePtn_UnderAll_table(bool bPrint, bool bTrace)
+void Transforms::vP20_T20_Add_tablePtn_UnderAll_table(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -223,7 +223,7 @@ void Transforms::vAdd_tablePtn_UnderAll_table(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* add a <tableSyn> to all <table>'s                                          */
 /*----------------------------------------------------------------------------*/
-void Transforms::vAdd_tableSyn_ForAll_table(bool bPrint, bool bTrace)
+void Transforms::vP20_T10_Add_tableSyn_ForAll_table(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -256,7 +256,7 @@ void Transforms::vAdd_tableSyn_ForAll_table(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* append <indexList> to <scan>                                               */
 /*----------------------------------------------------------------------------*/
-void Transforms::vInsert_indexList_ToAll_scan(bool bPrint, bool bTrace)
+void Transforms::vP80_T10_Insert_indexList_ToAll_scan(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -288,7 +288,7 @@ void Transforms::vInsert_indexList_ToAll_scan(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* add a <stream> under every <table>                                         */
 /*----------------------------------------------------------------------------*/
-void Transforms::vAdd_stream_UnderAll_table(bool bPrint, bool bTrace)
+void Transforms::vP20_T30_Add_stream_UnderAll_table(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -331,7 +331,7 @@ void Transforms::vAdd_stream_UnderAll_table(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* calculate the ordinal $low..$high range for each <stream>                  */
 /*----------------------------------------------------------------------------*/
-void Transforms::vCalc_ordinalRange_ForAll_stream(bool bPrint, bool bTrace)
+void Transforms::vP30_T10_Calc_ordinalRange_ForAll_stream(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -374,7 +374,7 @@ void Transforms::vCalc_ordinalRange_ForAll_stream(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vCompute_coPtnJoinList(bool bPrint, bool bTrace)
+void Transforms::vP70_T30_Compute_coPtnJoinList(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -417,7 +417,7 @@ void Transforms::vCompute_coPtnJoinList(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vCompute_coPtnPredList(bool bPrint, bool bTrace)
+void Transforms::vP70_T20_Compute_coPtnPredList(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -466,7 +466,7 @@ void Transforms::vCompute_coPtnPredList(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vCompute_crossPtnJoinList(bool bPrint, bool bTrace)
+void Transforms::vP70_T40_Compute_crossPtnJoinList(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -508,7 +508,7 @@ void Transforms::vCompute_crossPtnJoinList(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vCompute_ptndJoinSet(bool bPrint, bool bTrace)
+void Transforms::vP70_T50_Compute_ptndJoinSet(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -550,7 +550,7 @@ void Transforms::vCompute_ptndJoinSet(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* convert <where>//<calc> to <where>//<calcBool>                             */
 /*----------------------------------------------------------------------------*/
-void Transforms::vConvert_where_calc_To_where_calcBool(bool bPrint, bool bTrace)
+void Transforms::vP40_T10_Convert_where_calc_To_where_calcBool(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -571,7 +571,7 @@ void Transforms::vConvert_where_calc_To_where_calcBool(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* convert the column name in every <idxCol> to a $streamOrdinal              */
 /*----------------------------------------------------------------------------*/
-void Transforms::vConvert_idxCol_name_Of_scan_To_idxCol_ord(bool bPrint, bool bTrace)
+void Transforms::vP80_T20_Convert_idxCol_name_Of_scan_To_idxCol_ord(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -593,7 +593,7 @@ void Transforms::vConvert_idxCol_name_Of_scan_To_idxCol_ord(bool bPrint, bool bT
 /*----------------------------------------------------------------------------*/
 /* convert the column name in every <idxCol> to a $streamOrdinal              */
 /*----------------------------------------------------------------------------*/
-void Transforms::vConvert_idxCol_name_Of_table_To_idxCol_ord(bool bPrint, bool bTrace)
+void Transforms::vP60_T20_Convert_idxCol_name_Of_table_To_idxCol_ord(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -621,7 +621,7 @@ void Transforms::vConvert_idxCol_name_Of_table_To_idxCol_ord(bool bPrint, bool b
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vCopy_ptndJoinSet(bool bPrint, bool bTrace)
+void Transforms::vP70_T60_Copy_ptndJoinSet(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -652,7 +652,7 @@ void Transforms::vCopy_ptndJoinSet(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* remove <table>/<filter>//<pred> that are now <table>/<joinPred>//<pred>    */
 /*----------------------------------------------------------------------------*/
-void Transforms::vCull_filter_pred_MovedUpTo_joinPred(bool bPrint, bool bTrace)
+void Transforms::vP60_T40_Cull_filter_pred_MovedUpTo_joinPred(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -677,7 +677,7 @@ void Transforms::vCull_filter_pred_MovedUpTo_joinPred(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* replace all <scan>'s with their children                                   */
 /*----------------------------------------------------------------------------*/
-void Transforms::vCull_scan_Leaving_table(bool bPrint, bool bTrace)
+void Transforms::vP10_T50_Cull_scan_Leaving_table(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -698,7 +698,7 @@ void Transforms::vCull_scan_Leaving_table(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vCull_Marked_cmpPred(bool bPrint, bool bTrace)
+void Transforms::vP80_T60_Cull_Marked_cmpPred(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -732,7 +732,7 @@ void Transforms::vCull_Marked_cmpPred(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* remove <sort> if <sbyElist> is the same as the <gbyElist>                  */
 /*----------------------------------------------------------------------------*/
-void Transforms::vRemove_sort_IfSameAs_gby(bool bPrint, bool bTrace)
+void Transforms::vP90_T10_Remove_sort_IfSameAs_gby(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -761,7 +761,7 @@ void Transforms::vRemove_sort_IfSameAs_gby(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* delete superfluous <absJoin>'s                                             */
 /*----------------------------------------------------------------------------*/
-void Transforms::vDelete_absJoin(bool bPrint, bool bTrace)
+void Transforms::vP10_T20_Delete_absJoin(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -781,7 +781,7 @@ void Transforms::vDelete_absJoin(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* delete superfluous <combined>'s                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vDelete_combined(bool bPrint, bool bTrace)
+void Transforms::vP10_T30_Delete_combined(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -801,7 +801,7 @@ void Transforms::vDelete_combined(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* delete superfluous <send>'s                                                 */
 /*----------------------------------------------------------------------------*/
-void Transforms::vDelete_send(bool bPrint, bool bTrace)
+void Transforms::vP10_T40_Delete_send(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -821,7 +821,7 @@ void Transforms::vDelete_send(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* linearize board by deleting all duplicate <stage>'s                          */
 /*----------------------------------------------------------------------------*/
-void Transforms::vDelete_Redundant_stage(bool bPrint, bool bTrace)
+void Transforms::vP10_T10_Delete_Redundant_stage(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -866,7 +866,7 @@ void Transforms::vDelete_Redundant_stage(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* delete <where> if it is effectively empty                                  */
 /*----------------------------------------------------------------------------*/
-void Transforms::vDelete_Empty_where(bool bPrint, bool bTrace)
+void Transforms::vP40_T40_Delete_Empty_where(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -890,7 +890,7 @@ void Transforms::vDelete_Empty_where(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* delete any <table>/<filter> which is effectively empty                     */
 /*----------------------------------------------------------------------------*/
-void Transforms::vDelete_Empty_filter(bool bPrint, bool bTrace)
+void Transforms::vP60_T50_Delete_Empty_filter(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -917,7 +917,7 @@ void Transforms::vDelete_Empty_filter(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vEstimate_joinOrder(bool bPrint, bool bTrace)
+void Transforms::vP70_T96_Estimate_joinOrder(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -957,7 +957,7 @@ void Transforms::vEstimate_joinOrder(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vEstimate_network(bool bPrint, bool bTrace)
+void Transforms::vP70_T94_Estimate_network(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1004,7 +1004,7 @@ void Transforms::vEstimate_network(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vEstimate_ptndJoins(bool bPrint, bool bTrace)
+void Transforms::vP70_T92_Estimate_ptndJoins(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1036,26 +1036,9 @@ void Transforms::vEstimate_ptndJoins(bool bPrint, bool bTrace)
 }
 
 /*----------------------------------------------------------------------------*/
-/* expanded form                                                              */
-/*----------------------------------------------------------------------------*/
-void Transforms::vExpandedForm(bool bPrint, bool bTrace)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  vDescription("((replace with an explanation))"_Stz);
-  vTransformation(__func__);
-  vTracing(bPrint,bTrace);
-
-  m_pCardCtl->vReset();
-
-  vEndTransformation();
-  vPrintBoard();
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vExtract_joinOrderSeq(bool bPrint, bool bTrace)
+void Transforms::vP70_T98_Extract_joinOrderSeq(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1083,7 +1066,7 @@ void Transforms::vExtract_joinOrderSeq(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vExtract_joinPredList(bool bPrint, bool bTrace)
+void Transforms::vP70_T10_Extract_joinPredList(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1115,7 +1098,7 @@ void Transforms::vExtract_joinPredList(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vExtract_tableList_From_queryBoard(bool bPrint, bool bTrace)
+void Transforms::vP70_T00_Extract_tableList_From_queryBoard(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1147,7 +1130,7 @@ void Transforms::vExtract_tableList_From_queryBoard(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* add a <joinPred> under each <indexJoin>                                    */
 /*----------------------------------------------------------------------------*/
-void Transforms::vAdd_joinPred_UnderAll_indexJoin(bool bPrint, bool bTrace)
+void Transforms::vP60_T30_Add_joinPred_UnderAll_indexJoin(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1220,7 +1203,7 @@ void Transforms::vAdd_joinPred_UnderAll_indexJoin(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vGenerate_ptndPermutations(bool bPrint, bool bTrace)
+void Transforms::vP70_T70_Generate_ptndPermutations(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1268,7 +1251,7 @@ void Transforms::vGenerate_ptndPermutations(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* individuate <scan|indexJoin>/<filter> as main <filter>                     */
 /*----------------------------------------------------------------------------*/
-void Transforms::vIndividuate_filter(bool bPrint, bool bTrace)
+void Transforms::vPA0_T10_Individuate_filter(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1305,7 +1288,7 @@ void Transforms::vIndividuate_filter(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* add an <indexJoin> under all <table>'s which are joinable                  */
 /*----------------------------------------------------------------------------*/
-void Transforms::vAdd_indexJoin_UnderAllJoinable_table(bool bPrint, bool bTrace)
+void Transforms::vP60_T10_Add_indexJoin_UnderAllJoinable_table(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1367,7 +1350,7 @@ void Transforms::vAdd_indexJoin_UnderAllJoinable_table(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vMark_scan_pred_bounds(bool bPrint, bool bTrace)
+void Transforms::vP80_T30_Mark_scan_pred_bounds(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1396,7 +1379,7 @@ void Transforms::vMark_scan_pred_bounds(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* mark the <SCAN>//<filter>//cmpPred> which match index ordinals             */
 /*----------------------------------------------------------------------------*/
-void Transforms::vMark_scan_filter_term_WhichMatchIndex(bool bPrint, bool bTrace)
+void Transforms::vP80_T40_Mark_scan_filter_term_WhichMatchIndex(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1452,7 +1435,7 @@ void Transforms::vMark_scan_filter_term_WhichMatchIndex(bool bPrint, bool bTrace
 /*----------------------------------------------------------------------------*/
 /* inspect <where>//<pred> and attempt to find source <table>                 */
 /*----------------------------------------------------------------------------*/
-void Transforms::vMark_where_pred_Wrt_table(bool bPrint, bool bTrace)
+void Transforms::vP40_T20_Mark_where_pred_Wrt_table(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1471,7 +1454,7 @@ void Transforms::vMark_where_pred_Wrt_table(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* inspect all <where>//<pred> and move <predCmp> to new <table>/<filter>     */
 /*----------------------------------------------------------------------------*/
-void Transforms::vMove_Marked_where_pred_To_table_filter(bool bPrint, bool bTrace)
+void Transforms::vP40_T30_Move_Marked_where_pred_To_table_filter(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1489,7 +1472,7 @@ void Transforms::vMove_Marked_where_pred_To_table_filter(bool bPrint, bool bTrac
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vPromote_scan_To_indexScan(bool bPrint, bool bTrace)
+void Transforms::vP80_T70_Promote_scan_To_indexScan(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1526,7 +1509,7 @@ void Transforms::vPromote_scan_To_indexScan(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* convert all <table> into either <scan> or <indexJoin>                      */
 /*----------------------------------------------------------------------------*/
-void Transforms::vConvert_table_To_scan_Or_indexJoin(bool bPrint, bool bTrace)
+void Transforms::vP70_T99_Convert_table_To_scan_Or_indexJoin(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1600,7 +1583,7 @@ void Transforms::vConvert_table_To_scan_Or_indexJoin(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vRemove_invalidPermutations(bool bPrint, bool bTrace)
+void Transforms::vP70_T80_Remove_invalidPermutations(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1641,7 +1624,7 @@ void Transforms::vRemove_invalidPermutations(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vSetup_costEst(bool bPrint, bool bTrace)
+void Transforms::vP70_T90_Setup_costEst(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1669,7 +1652,7 @@ void Transforms::vSetup_costEst(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vRework_Exists_SubQueries(bool bPrint, bool bTrace)
+void Transforms::vP50_T10_Rework_Exists_SubQueries(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -1720,7 +1703,7 @@ void Transforms::vRework_Exists_SubQueries(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vCopy_Up_SubQueries(bool bPrint, bool bTrace)
+void Transforms::vP50_T20_Copy_Up_SubQueries(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -1765,7 +1748,7 @@ void Transforms::vCopy_Up_SubQueries(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vResolve_Parameter_Linkage(bool bPrint, bool bTrace)
+void Transforms::vP50_T30_Resolve_Parameter_Linkage(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -1792,7 +1775,7 @@ void Transforms::vResolve_Parameter_Linkage(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vResolve_Parameter_Terms(bool bPrint, bool bTrace)
+void Transforms::vP50_T40_Resolve_Parameter_Terms(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 

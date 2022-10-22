@@ -123,16 +123,14 @@ void Transformer::vPhase_10_ReducePipeline(bool bPrintPhase, bool bPrintXform, b
 
     m_pTransforms->vUsingBoard(BK_SUBPIPE, i_SubBoard);
 
-    m_pTransforms->vDelete_Redundant_stage (bPrintXform,bTrace);
-    m_pTransforms->vDelete_absJoin         (bPrintXform,bTrace);
-    m_pTransforms->vDelete_combined        (bPrintXform,bTrace);
-    m_pTransforms->vDelete_send            (bPrintXform,bTrace);
-    m_pTransforms->vCull_scan_Leaving_table(bPrintXform,bTrace);
+    m_pTransforms->vP10_T10_Delete_Redundant_stage(bPrintXform, bTrace);
+    m_pTransforms->vP10_T20_Delete_absJoin(bPrintXform, bTrace);
+    m_pTransforms->vP10_T30_Delete_combined(bPrintXform, bTrace);
+    m_pTransforms->vP10_T40_Delete_send(bPrintXform, bTrace);
+    m_pTransforms->vP10_T50_Cull_scan_Leaving_table(bPrintXform, bTrace);
   }
 
   m_pCardCtl->vReset();
-  //m_pCardCtl->vPrintSubCards(CK_AGGELIST,false);
-  //m_pCardCtl->vPrintSubCards(CK_GBYELIST,false);
   m_pCardCtl->vPrintSubCards(false,CK_AGGELIST,CK_GBYELIST,0);
 
   if (bPrintBench(bPrintPhase,__func__))
@@ -149,9 +147,9 @@ void Transformer::vPhase_20_AccessMetadata(bool bPrintPhase, bool bPrintXform, b
   m_pTransforms->vPhase(bPrintPhase,__func__);
   m_pTransforms->vUsingBoard(BK_SUBPIPE, 0);
 
-  m_pTransforms->vAdd_tableSyn_ForAll_table      (bPrintXform,bTrace);
-  m_pTransforms->vAdd_tablePtn_UnderAll_table    (bPrintXform,bTrace);
-  m_pTransforms->vAdd_stream_UnderAll_table      (bPrintXform,bTrace);
+  m_pTransforms->vP20_T10_Add_tableSyn_ForAll_table(bPrintXform, bTrace);
+  m_pTransforms->vP20_T20_Add_tablePtn_UnderAll_table(bPrintXform, bTrace);
+  m_pTransforms->vP20_T30_Add_stream_UnderAll_table(bPrintXform, bTrace);
 
   if (bPrintBench(bPrintPhase,__func__))
     m_pTransforms->vPrintBench(BK_SUBPIPE,0);
@@ -167,7 +165,7 @@ void Transformer::vPhase_30_StreamAnalysis(bool bPrintPhase, bool bPrintXform, b
   m_pTransforms->vPhase(bPrintPhase,__func__);
   m_pTransforms->vUsingBoard(BK_SUBPIPE, 0);
 
-  m_pTransforms->vCalc_ordinalRange_ForAll_stream(bPrintXform,bTrace);
+  m_pTransforms->vP30_T10_Calc_ordinalRange_ForAll_stream(bPrintXform, bTrace);
 
   if (bPrintBench(bPrintPhase,__func__))
     m_pTransforms->vPrintBench(BK_SUBPIPE,0);
@@ -183,10 +181,10 @@ void Transformer::vPhase_40_PredicatePullup(bool bPrintPhase, bool bPrintXform, 
   m_pTransforms->vPhase(bPrintPhase,__func__);
   m_pTransforms->vUsingBoard(BK_SUBPIPE, 0);
 
-  m_pTransforms->vConvert_where_calc_To_where_calcBool  (bPrintXform,bTrace);
-  m_pTransforms->vMark_where_pred_Wrt_table             (bPrintXform,bTrace);
-  m_pTransforms->vMove_Marked_where_pred_To_table_filter(bPrintXform,bTrace);
-  m_pTransforms->vDelete_Empty_where                    (bPrintXform,bTrace);
+  m_pTransforms->vP40_T10_Convert_where_calc_To_where_calcBool  (bPrintXform, bTrace);
+  m_pTransforms->vP40_T20_Mark_where_pred_Wrt_table             (bPrintXform, bTrace);
+  m_pTransforms->vP40_T30_Move_Marked_where_pred_To_table_filter(bPrintXform, bTrace);
+  m_pTransforms->vP40_T40_Delete_Empty_where                    (bPrintXform, bTrace);
 
   if (bPrintBench(bPrintPhase,__func__))
     m_pTransforms->vPrintBench(BK_SUBPIPE,0);
@@ -202,10 +200,10 @@ void Transformer::vPhase_50_FlattenExists(bool bPrintPhase, bool bPrintXform, bo
   m_pTransforms->vPhase(bPrintPhase,__func__);
   m_pTransforms->vUsingBoard(BK_SUBPIPE, 0);
 
-  m_pTransforms->vRework_Exists_SubQueries (bPrintXform,bTrace);
-  m_pTransforms->vCopy_Up_SubQueries       (bPrintXform,bTrace);
-  m_pTransforms->vResolve_Parameter_Linkage(bPrintXform,bTrace);
-  m_pTransforms->vResolve_Parameter_Terms  (bPrintXform,bTrace);
+  m_pTransforms->vP50_T10_Rework_Exists_SubQueries(bPrintXform, bTrace);
+  m_pTransforms->vP50_T20_Copy_Up_SubQueries(bPrintXform, bTrace);
+  m_pTransforms->vP50_T30_Resolve_Parameter_Linkage(bPrintXform, bTrace);
+  m_pTransforms->vP50_T40_Resolve_Parameter_Terms(bPrintXform, bTrace);
 
   if (bPrintBench(bPrintPhase,__func__))
     m_pTransforms->vPrintBench(BK_SUBPIPE,0);
@@ -221,11 +219,11 @@ void Transformer::vPhase_60_InitialJoin(bool bPrintPhase, bool bPrintXform, bool
   m_pTransforms->vPhase(bPrintPhase,__func__);
   m_pTransforms->vUsingBoard(BK_SUBPIPE, 0);
 
-  m_pTransforms->vAdd_indexJoin_UnderAllJoinable_table      (bPrintXform,bTrace);
-  m_pTransforms->vConvert_idxCol_name_Of_table_To_idxCol_ord(bPrintXform,bTrace);
-  m_pTransforms->vAdd_joinPred_UnderAll_indexJoin           (bPrintXform,bTrace);
-  m_pTransforms->vCull_filter_pred_MovedUpTo_joinPred       (bPrintXform,bTrace);
-  m_pTransforms->vDelete_Empty_filter                       (bPrintXform,bTrace);
+  m_pTransforms->vP60_T10_Add_indexJoin_UnderAllJoinable_table(bPrintXform, bTrace);
+  m_pTransforms->vP60_T20_Convert_idxCol_name_Of_table_To_idxCol_ord(bPrintXform, bTrace);
+  m_pTransforms->vP60_T30_Add_joinPred_UnderAll_indexJoin(bPrintXform, bTrace);
+  m_pTransforms->vP60_T40_Cull_filter_pred_MovedUpTo_joinPred(bPrintXform, bTrace);
+  m_pTransforms->vP60_T50_Delete_Empty_filter(bPrintXform, bTrace);
 
   if (bPrintBench(bPrintPhase,__func__))
     m_pTransforms->vPrintBench(BK_SUBPIPE,0);
@@ -241,34 +239,34 @@ void Transformer::vPhase_70_JoinOrdering(bool bPrintPhase, bool bPrintXform, boo
   m_pTransforms->vPhase(bPrintPhase,__func__);
   m_pTransforms->vUsingBoard(BK_SUBPIPE, 0);
 
-  /*
+/*
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // PARTITION BOARD
 
   //
-  m_pTransforms->vExtract_tableList_From_queryBoard(bPrintXform,bTrace);
+  m_pTransforms->vP70_T00_Extract_tableList_From_queryBoard(bPrintXform, bTrace);
 
   // add <term/<columnRef> to all ordinal <term>
-  m_pTransforms->vAdd_columnRef_Under_term(bPrintXform,bTrace);
+  //m_pTransforms->vAdd_columnRef_Under_term(bPrintXform,bTrace);
 
-  m_pTransforms->vExtract_joinPredList(bPrintXform,bTrace);
-  m_pTransforms->vCompute_coPtnPredList(bPrintXform,bTrace);
-  m_pTransforms->vCompute_coPtnJoinList(bPrintXform,bTrace);
-  m_pTransforms->vCompute_crossPtnJoinList(bPrintXform,bTrace);
-  m_pTransforms->vCompute_ptndJoinSet(bPrintXform,bTrace);
+  m_pTransforms->vP70_T10_Extract_joinPredList(bPrintXform, bTrace);
+  m_pTransforms->vP70_T20_Compute_coPtnPredList(bPrintXform, bTrace);
+  m_pTransforms->vP70_T30_Compute_coPtnJoinList(bPrintXform, bTrace);
+  m_pTransforms->vP70_T40_Compute_crossPtnJoinList(bPrintXform, bTrace);
+  m_pTransforms->vP70_T50_Compute_ptndJoinSet(bPrintXform, bTrace);
 
-  m_pTransforms->vCopy_ptndJoinSet(bPrintXform,bTrace);
-  m_pTransforms->vGenerate_ptndPermutations(bPrintXform,bTrace);
-  m_pTransforms->vRemove_invalidPermutations(bPrintXform,bTrace);
+  m_pTransforms->vP70_T60_Copy_ptndJoinSet(bPrintXform, bTrace);
+  m_pTransforms->vP70_T70_Generate_ptndPermutations(bPrintXform, bTrace);
+  m_pTransforms->vP70_T80_Remove_invalidPermutations(bPrintXform, bTrace);
 
-  m_pTransforms->vSetup_costEst(bPrintXform,bTrace);
-  m_pTransforms->vEstimate_ptndJoins(bPrintXform,bTrace);
-  m_pTransforms->vEstimate_network(bPrintXform,bTrace);
-  m_pTransforms->vEstimate_joinOrder(bPrintXform,bTrace);
-  m_pTransforms->vExtract_joinOrderSeq(bPrintXform,bTrace);
-  */
+  m_pTransforms->vP70_T90_Setup_costEst(bPrintXform, bTrace);
+  m_pTransforms->vP70_T92_Estimate_ptndJoins(bPrintXform, bTrace);
+  m_pTransforms->vP70_T94_Estimate_network(bPrintXform, bTrace);
+  m_pTransforms->vP70_T96_Estimate_joinOrder(bPrintXform, bTrace);
+  m_pTransforms->vP70_T98_Extract_joinOrderSeq(bPrintXform, bTrace);
+*/
 
-  m_pTransforms->vConvert_table_To_scan_Or_indexJoin(bPrintXform,bTrace);
+  m_pTransforms->vP70_T99_Convert_table_To_scan_Or_indexJoin(bPrintXform, bTrace);
 
   if (bPrintBench(bPrintPhase,__func__))
     m_pTransforms->vPrintBench(BK_SUBPIPE,0);
@@ -294,13 +292,13 @@ void Transformer::vPhase_80_IndexScan(bool bPrintPhase, bool bPrintXform, bool b
  *
  */
 
-  m_pTransforms->vInsert_indexList_ToAll_scan              (bPrintXform,bTrace);
-  m_pTransforms->vConvert_idxCol_name_Of_scan_To_idxCol_ord(bPrintXform,bTrace);
-  m_pTransforms->vMark_scan_pred_bounds                    (bPrintXform,bTrace);
-  m_pTransforms->vMark_scan_filter_term_WhichMatchIndex    (bPrintXform,bTrace);
-  m_pTransforms->vAdd_scanPred                             (bPrintXform,bTrace);
-  m_pTransforms->vCull_Marked_cmpPred                      (bPrintXform,bTrace);
-  m_pTransforms->vPromote_scan_To_indexScan                (bPrintXform,bTrace);
+  m_pTransforms->vP80_T10_Insert_indexList_ToAll_scan(bPrintXform, bTrace);
+  m_pTransforms->vP80_T20_Convert_idxCol_name_Of_scan_To_idxCol_ord(bPrintXform, bTrace);
+  m_pTransforms->vP80_T30_Mark_scan_pred_bounds(bPrintXform, bTrace);
+  m_pTransforms->vP80_T40_Mark_scan_filter_term_WhichMatchIndex(bPrintXform, bTrace);
+  m_pTransforms->vP80_T50_Add_scanPred(bPrintXform, bTrace);
+  m_pTransforms->vP80_T60_Cull_Marked_cmpPred(bPrintXform, bTrace);
+  m_pTransforms->vP80_T70_Promote_scan_To_indexScan(bPrintXform, bTrace);
 
   if (bPrintBench(bPrintPhase,__func__))
     m_pTransforms->vPrintBench(BK_SUBPIPE,0);
@@ -316,7 +314,7 @@ void Transformer::vPhase_90_StreamOrdering(bool bPrintPhase, bool bPrintXform, b
   m_pTransforms->vPhase(bPrintPhase,__func__);
   m_pTransforms->vUsingBoard(BK_SUBPIPE, 0);
 
-  m_pTransforms->vRemove_sort_IfSameAs_gby(bPrintXform,bTrace);
+  m_pTransforms->vP90_T10_Remove_sort_IfSameAs_gby(bPrintXform, bTrace);
 
   if (bPrintBench(bPrintPhase,__func__))
     m_pTransforms->vPrintBench(BK_SUBPIPE,0);
@@ -332,7 +330,7 @@ void Transformer::vPhase_A0_FilterRefinement(bool bPrintPhase, bool bPrintXform,
   m_pTransforms->vPhase(bPrintPhase,__func__);
   m_pTransforms->vUsingBoard(BK_SUBPIPE, 0);
 
-  m_pTransforms->vIndividuate_filter(bPrintXform,bTrace);
+  m_pTransforms->vPA0_T10_Individuate_filter(bPrintXform, bTrace);
 
   if (bPrintBench(bPrintPhase,__func__))
     m_pTransforms->vPrintBench(BK_SUBPIPE,0);
@@ -348,8 +346,8 @@ void Transformer::vPhase_Z0_RestatePipeline(bool bPrintPhase, bool bPrintXform, 
   m_pTransforms->vPhase(bPrintPhase,__func__);
   m_pTransforms->vUsingBoard(BK_SUBPIPE, 0);
 
-  m_pTransforms->vReinstate_stages  (bPrintXform, bTrace);
-  m_pTransforms->vReinstate_combined(bPrintXform, bTrace);
+  m_pTransforms->vPZ0_T10_Reinstate_stages(bPrintXform, bTrace);
+  m_pTransforms->vPZ0_T20_Reinstate_combined(bPrintXform, bTrace);
 
   if (bPrintBench(bPrintPhase,__func__))
     m_pTransforms->vPrintBench(BK_SUBPIPE,0);
