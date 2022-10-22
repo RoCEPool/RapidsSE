@@ -150,6 +150,7 @@ namespace STORE
     bool P_bPlumbForSubMember(eCK eMember, eCK eSubCard, bool bUpdateMember= true);
     bool P_bPlumbForSubMember(Card* pMember, eCK eSubCard, bool bUpdateMember= true);
     bool F_bPlumbForSubValue(eCK eMember, eCK eSub, Stz* szValue, bool bUpdateMember= true);
+    bool F_bPlumbForSubValue(Card* pMember, eCK eSub, Stz* szValue, bool bUpdateMember= true);
 
     void U_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm);
 

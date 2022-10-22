@@ -1254,7 +1254,7 @@ bool TransformerTool::P_bPlumbForSubMember(eCK eMember, eCK eSubCard, bool bUpda
 }
 
 /*----------------------------------------------------------------------------*/
-/* step to next main and set member                                           */
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
 bool TransformerTool::P_bPlumbForSubMember(Card* pMember, eCK eSubCard, bool bUpdateMember)
 {
@@ -1271,6 +1271,43 @@ bool TransformerTool::P_bPlumbForSubMember(Card* pMember, eCK eSubCard, bool bUp
     U_vUpdateMember(eSubCard, nullptr,__func__);
   return false;
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool TransformerTool::F_bPlumbForSubValue(eCK eMember, eCK eSub, Stz* szValue, bool bUpdateMember)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  Card* pMember = G_pGetMember(eMember);
+
+  bool b = F_bPlumbForSubValue(pMember, eSub, szValue, bUpdateMember);
+
+  return b;
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool TransformerTool::F_bPlumbForSubValue(Card* pMember, eCK eSubCard, Stz* szValue, bool bUpdateMember)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  if ((M.p_SubMember = pMember->pFindSubCard(eSubCard))) {
+    if (M.p_SubMember->bSame(szValue)) {
+      M.e_SubMember = M.p_SubMember->eCard();
+      if (bUpdateMember)
+        U_vUpdateMember(M.e_SubMember, M.p_SubMember, __func__);
+      return true;
+    }
+  }
+
+  if (bUpdateMember)
+    U_vUpdateMember(eSubCard, nullptr,__func__);
+  return false;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* resolve card (right-left before given i_Before                             */
