@@ -177,7 +177,7 @@ void Accessor::A_vPartitionOfTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  char cTableSyn = M.p_table->Y_cVal(P_TableSyn);
+  char cTableSyn = M.p_table->cValue();
 
   PtnDef* pPtnDef = m_pTable->pPtnDef();
   Column* pPtnColumn = pPtnDef->pGetColumn(0);

@@ -146,6 +146,7 @@ void Transformer::vPhase_20_AccessMetadata(bool bPrintPhase, bool bPrintXform, b
   m_pTransforms->vPhase(bPrintPhase,__func__);
   m_pTransforms->vUsingBoard(BK_SUBPIPE, 0);
 
+  m_pTransforms->vAdd_tableSyn_ForAll_table      (bPrintXform,bTrace);
   m_pTransforms->vAdd_tablePtn_UnderAll_table    (bPrintXform,bTrace);
   m_pTransforms->vAdd_stream_UnderAll_table      (bPrintXform,bTrace);
 
@@ -164,8 +165,7 @@ void Transformer::vPhase_30_StreamAnalysis(bool bPrintPhase, bool bPrintXform, b
   m_pTransforms->vPhase(bPrintPhase,__func__);
   m_pTransforms->vUsingBoard(BK_SUBPIPE, 0);
 
-  m_pTransforms->vAdd_tableSyn_ForAll_table      (bPrintXform,bTrace);
-  m_pTransforms->vCalc_ordinalRange_ForAll_stream(bPrintXform,bTrace);
+ m_pTransforms->vCalc_ordinalRange_ForAll_stream(bPrintXform,bTrace);
 
   m_pCardCtl->vReset();
 

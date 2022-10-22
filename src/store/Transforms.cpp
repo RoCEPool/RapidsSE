@@ -243,6 +243,8 @@ void Transforms::vAdd_tableSyn_ForAll_table(bool bPrint, bool bTrace)
 
     M.p_table->Y_vSet(P_TableSyn, cTableSyn_actual);
 
+    M.p_table->vValueSprint("%c"_Stz,cTableSyn_actual);
+
     cTableSyn++;
   }
 

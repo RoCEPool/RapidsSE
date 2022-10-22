@@ -264,6 +264,7 @@ namespace STORE
     bool bSame(Stz* szArg);
 
     Stz* sz(void);
+    char cValue(void);
     Stz* szValue(void);
     void vValue(Stz* szValue);
     void vValueSprint(Stz* szFormat, ...);
