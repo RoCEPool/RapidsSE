@@ -84,10 +84,6 @@ void Transforms::vP10_T10_Delete_Redundant_stage(bool bPrint, bool bTrace)
 
   M.pDeck->vRenumberRecursive();
 
-  vSetPrintSubCards(CK_AGGELIST, false);
-  vSetPrintSubCards(CK_GBYELIST, false);
-  vSetPrintSubCards(CK_PROJELIST, false);
-
   vEndTransformation();
   vPrintBoard();
 }
@@ -272,7 +268,6 @@ void Transforms::vP20_T30_Add_stream_UnderAll_table(bool bPrint, bool bTrace)
     */
   }
 
-  vSetPrintSubCards(CK_STREAM, true);
 
   vEndTransformation();
   vPrintBoard();
@@ -324,8 +319,6 @@ void Transforms::vP30_T10_Calc_ordinalRange_ForAll_stream(bool bPrint, bool bTra
   vEndTransformation();
   vPrintBoard();
 
-  vSetPrintProperties(CK_STREAM, false);
-  vSetPrintSubCards(CK_STREAM, false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -368,7 +361,6 @@ void Transforms::vP40_T20_Mark_where_pred_Wrt_table(bool bPrint, bool bTrace)
   while (E_bEachMainWithSub(CK_WHERE, CK_BOOLCALC))
     vMarkPredLeftwards(M.p_boolCalc);
 
-  //vSetPrintSubCards(CK_CMPPRED, true);
   vEndTransformation();
   vPrintBoard();
 }
@@ -636,10 +628,6 @@ void Transforms::vP60_T10_Add_indexJoin_UnderAllJoinable_table(bool bPrint, bool
     */
   }
 
-  //m_pCardCtl->vPrintFormSubCards(CK_STREAM, CP_DEFAULT, true);
-  vSetPrintSubCards(CK_FILTER, false);
-  vSetPrintSubCards(CK_STREAM, false);
-
   vEndTransformation();
   vPrintBoard();
 }
@@ -739,8 +727,6 @@ void Transforms::vP60_T30_Add_joinPred_UnderAll_indexJoin(bool bPrint, bool bTra
     M.p_bounds->vAppend(M.p_term);
   }
 
-  vSetPrintSubCards(CK_FILTER, true);
-
   vEndTransformation();
   vPrintBoard();
 }
@@ -765,7 +751,6 @@ void Transforms::vP60_T40_Cull_filter_pred_MovedUpTo_joinPred(bool bPrint, bool 
     M.p_boolCalc->vCullPred(MARK_UPWARDS);
   }
 
-  //m_pCardCtl->vPrintSubCards(CK_STREAM, true);
   vEndTransformation();
   vPrintBoard();
 }
@@ -1406,10 +1391,7 @@ void Transforms::vP70_T99_Convert_table_To_scan_Or_indexJoin(bool bPrint, bool b
     M.p_comment->vValue("- - - - - - - - - "_Stz);
   }
 
-
-
   vEndTransformation();
-
   vPrintBoard();
 }
 
@@ -1656,10 +1638,6 @@ void Transforms::vP80_T60_Cull_Marked_cmpPred(bool bPrint, bool bTrace)
     DELETE_CARD(M.p_filter);
   }
 
-  //m_pCardCtl->vPrintForm(CK_STREAM, CP_CARDFORM);
-  m_pCardCtl->vPrintByKind(CK_STREAM, true);
-  m_pCardCtl->vPrintSubCards(CK_STREAM, false);
-
   vEndTransformation();
   vPrintBoard();
 }
@@ -1695,7 +1673,6 @@ void Transforms::vP80_T70_Promote_scan_To_indexScan(bool bPrint, bool bTrace)
 
     DELETE_CARD((M.p_indexList));
   }
-
 
   vEndTransformation();
   vPrintBoard();
@@ -1849,9 +1826,6 @@ void Transforms::vPZ0_T20_Reinstate_combined(bool bPrint, bool bTrace)
     M.pDeck->vInsertAfter(M.p_combined, M.p_MainCard);
     E_vSkipNextMain();
   }
-
-  vSetPrintSubCards(CK_AGGELIST, true);
-  vSetPrintSubCards(CK_GBYELIST, true);
 
   vEndTransformation();
   vPrintBoard();
