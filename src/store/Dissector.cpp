@@ -398,9 +398,10 @@ Card* Dissector::pOp_IndexJoin(TagSet* pArgTags)
   
   Table* pTable = AM::pTableFind(szTableNm);
   Card_Table* pCard_Table = new Card_Table;
-  Card_TablePtr* pCard_TablePtr = new Card_TablePtr(pTable);
-  pCard_Table->vAppend(pCard_TablePtr);
   pCard_IndexJoin->vAppend(pCard_Table);
+
+  Card_TableNm* pCard_TableNm = new Card_TableNm;
+  pCard_Table->vAppend(pCard_TableNm);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // index
