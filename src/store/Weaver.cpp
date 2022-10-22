@@ -602,7 +602,7 @@ void Weaver::vRpnIndexJoin(Stz* szRpnExpr, Card_IndexJoin* pCard_IndexJoin)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
-  Card_JoinPred* pCard_joinPred = pCard_IndexJoin->pSub_joinPred();
+  Card_Bounds* pCard_joinPred = pCard_IndexJoin->pSub_joinPred();
   if (pCard_joinPred) {
     i8 nSubs = pCard_joinPred->nChildCards();
     for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {

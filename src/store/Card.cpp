@@ -1852,13 +1852,13 @@ Card_IndexNm* Card::pSub_indexNm(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_JoinPred.hpp"
-Card_JoinPred* Card::pSub_joinPred(void)
+#include "Card_Bounds.hpp"
+Card_Bounds* Card::pSub_joinPred(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_JoinPred* p_joinPred =
-      _pCard_JoinPred(pFindSubCard(CK_JOINPRED));
+  Card_Bounds* p_joinPred =
+      _pCard_Bounds(pFindSubCard(CK_BOUNDS));
   return p_joinPred;
 }
 

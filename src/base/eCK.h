@@ -16,6 +16,7 @@ enum eCK // card kind
   /* */ CK_AS,
 
   /* */ CK_BOOLCALC,
+  /* */ CK_BOUNDS,
 
   /* */ CK_CANDINDEX,
   /* */ CK_CMPPRED,
@@ -59,7 +60,6 @@ enum eCK // card kind
 
   /* */ CK_JOINORDER,
   /* */ CK_JOINORDERSEQ,
-  /* */ CK_JOINPRED,
   /* */ CK_JOINPREDLIST,
 
   /* */ CK_KEYEXISTS,
@@ -135,6 +135,7 @@ static Stz* aCK[]
   /* */ "CK_AS"_Stz,           // CK_AS
 
   /* */ "CK_BOOLCALC"_Stz,     // CK_BOOLCALC
+  /* */ "CK_BOUNDS"_Stz,       // CK_BOUNDS
 
   /* */ "CK_CANDINDEX"_Stz,    // CK_CANDINDEX
   /* */ "CK_CMPPRED"_Stz,      // CK_CMPPRED
@@ -178,7 +179,6 @@ static Stz* aCK[]
 
   /* */ "CK_JOINORDER"_Stz,    // CK_JOINORDER
   /* */ "CK_JOINORDERSEQ"_Stz, // CK_JOINORDERSEQ
-  /* */ "CK_JOINPRED"_Stz,     // CK_JOINPRED
   /* */ "CK_JOINPREDLIST"_Stz, // CK_JOINPREDLIST
 
   /* */ "CK_KEYEXISTS"_Stz,    // CK_KEYEXISTS
@@ -254,6 +254,7 @@ static Stz* aCK_short[]
   /* */ "as"_Stz,              // CK_AS
 
   /* */ "boolCalc"_Stz,        // CK_BOOLCALC
+  /* */ "bounds"_Stz,          // CK_BOUNDS
 
   /* */ "candIndex"_Stz,       // CK_CANDINDEX
   /* */ "cmpPred"_Stz,         // CK_CMPPRED
@@ -297,7 +298,6 @@ static Stz* aCK_short[]
 
   /* */ "joinOrder"_Stz,       // CK_JOINORDER
   /* */ "joinOrderSeq"_Stz,    // CK_JOINORDERSEQ
-  /* */ "joinPred"_Stz,        // CK_JOINPRED
   /* */ "joinPredList"_Stz,    // CK_JOINPREDLIST
 
   /* */ "keyExists"_Stz,       // CK_KEYEXISTS

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_JoinPred.hpp -- Join Predicate                                        */
+/* Card_Bounds.hpp -- Join Predicate                                        */
 /*============================================================================*/
 #pragma once
 
@@ -7,17 +7,17 @@
 
 namespace STORE
 {
-  class Card_JoinPred : public Card
+  class Card_Bounds : public Card
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_JoinPred(void);
-   ~Card_JoinPred(void) noexcept(false);
+    Card_Bounds(void);
+   ~Card_Bounds(void) noexcept(false);
   };
 
-  Card_JoinPred* _pCard_JoinPred(void* aAddr);
+  Card_Bounds* _pCard_Bounds(void* aAddr);
 }
 
 /*============================================================================*/

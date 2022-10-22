@@ -1,23 +1,23 @@
 /*============================================================================*/
-/* Card_JoinPred.cpp -- Join Predicate                                        */
+/* Card_Bounds.cpp -- Join Predicate                                        */
 /*============================================================================*/
 
-#include "Card_JoinPred.hpp"
+#include "Card_Bounds.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_JoinPred,CK_JOINPRED)
-__aNewFunction(Card_JoinPred,CN_CARD)
-__vDeleteFunction(Card_JoinPred,CN_CARD)
+__pCastFunction_Card(STORE, Card_Bounds, CK_BOUNDS)
+__aNewFunction(Card_Bounds, CN_CARD)
+__vDeleteFunction(Card_Bounds, CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_JoinPred::Card_JoinPred(void)
-: Card(CK_JOINPRED)
+Card_Bounds::Card_Bounds(void)
+: Card(CK_BOUNDS)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -29,7 +29,7 @@ Card_JoinPred::Card_JoinPred(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_JoinPred::~Card_JoinPred(void) noexcept(false)
+Card_Bounds::~Card_Bounds(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

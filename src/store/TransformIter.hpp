@@ -55,7 +55,7 @@ namespace STORE
     Card_IndexScan *        p_indexScan;
     Card_JoinOrder *        p_joinOrder;
     Card_JoinOrderSeq *     p_joinOrderSeq;
-    Card_JoinPred *         p_joinPred;
+    Card_Bounds *         p_joinPred;
     Card_JoinPredList *     p_joinPredList;
     Card_KeyExists *        p_keyExists;
     Card_LBound *           p_lBound;

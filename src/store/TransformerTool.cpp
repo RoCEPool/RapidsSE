@@ -753,7 +753,7 @@ Card* TransformerTool::G_pGetMember(eCK eMember)
     case CK_INDEXSCAN:        return M.p_indexScan;
     case CK_JOINORDER:        return M.p_joinOrder;
     case CK_JOINORDERSEQ:     return M.p_joinOrderSeq;
-    case CK_JOINPRED:         return M.p_joinPred;
+    case CK_BOUNDS:         return M.p_joinPred;
     case CK_JOINPREDLIST:     return M.p_joinPredList;
     case CK_KEYEXISTS:        return M.p_keyExists;
     case CK_LBOUND:           return M.p_lBound;
@@ -1190,7 +1190,7 @@ void TransformerTool::U_vUpdateMember(eCK eMember, Card* pCard, const char* asFu
     case CK_INDEXSCAN:        *((Card**)&M.p_indexScan)        = pCard; break;
     case CK_JOINORDER:        *((Card**)&M.p_joinOrder)        = pCard; break;
     case CK_JOINORDERSEQ:     *((Card**)&M.p_joinOrderSeq)     = pCard; break;
-    case CK_JOINPRED:         *((Card**)&M.p_joinPred)         = pCard; break;
+    case CK_BOUNDS: *((Card**)&M.p_joinPred)         = pCard; break;
     case CK_JOINPREDLIST:     *((Card**)&M.p_joinPredList)     = pCard; break;
     case CK_KEYEXISTS:        *((Card**)&M.p_keyExists)        = pCard; break;
     case CK_LBOUND:           *((Card**)&M.p_lBound)           = pCard; break;
@@ -1379,7 +1379,7 @@ Stz* TransformerTool::szMemberNm(eCK eMember)
      case CK_INDEXSCAN:        return "M.p_indexScan"_Stz;
     case CK_JOINORDER:        return "M.p_joinOrder"_Stz;
     case CK_JOINORDERSEQ:     return "M.p_joinOrderSeq"_Stz;
-    case CK_JOINPRED:         return "M.p_joinPred"_Stz;
+    case CK_BOUNDS:         return "M.p_joinPred"_Stz;
     case CK_JOINPREDLIST:     return "M.p_joinPredList"_Stz;
     case CK_KEYEXISTS:        return "M.p_keyExists"_Stz;
     case CK_LBOUND:           return "M.p_lBound"_Stz;

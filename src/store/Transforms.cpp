@@ -1164,7 +1164,7 @@ void Transforms::vAdd_joinPred_UnderAll_indexJoin(bool bPrint, bool bTrace)
 
     // - - - -
 
-    M.p_joinPred = new Card_JoinPred;
+    M.p_joinPred = new Card_Bounds;
     M.p_indexJoin = M.p_table->pSub_indexJoin();
     M.p_table->vInsertAfter(M.p_joinPred,M.p_indexJoin);
 

@@ -59,7 +59,7 @@ namespace STORE
   class Card_IndexPred;
   class Card_IndexScan;
 
-  class Card_JoinPred;
+  class Card_Bounds;
 
   class Card_LBound;
   class Card_Limit;
@@ -300,7 +300,7 @@ namespace STORE
     Card_IndexJoin*     pSub_indexJoin(void);
     Card_IndexList*     pSub_indexList(void);
     Card_IndexNm*       pSub_indexNm(void);
-    Card_JoinPred*      pSub_joinPred(void);
+    Card_Bounds*      pSub_joinPred(void);
     Card_LBound*        pSub_lBound(void);
     Card_CmpPred*       pSub_predCmp(void);
     Card_RpnCalc*       pSub_rpnCalc(void);
