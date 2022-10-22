@@ -1957,13 +1957,26 @@ Card_Stream* Card::pSub_stream(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_StmColList.hpp"
-Card_StmColList* Card::pSub_streamColList(void)
+Card_StmColList* Card::pSub_stmColList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_StmColList* p_streamColList =
       _pCard_StmColList(pFindSubCard(CK_STMCOLLIST));
   return p_streamColList;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_StmColOrd.hpp"
+Card_StmColOrd* Card::pSub_stmColOrd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_StmColOrd* p_streamColOrd =
+      _pCard_StmColOrd(pFindSubCard(CK_STMCOLORD));
+  return p_streamColOrd;
 }
 
 /*----------------------------------------------------------------------------*/

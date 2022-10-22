@@ -305,11 +305,15 @@ void Transforms::vP30_T10_Calc_ordinalRange_ForAll_stream(bool bPrint, bool bTra
 
     M.p_stream->vMark1(MARK_CHANGED);
 
-    CardIter xCI(M.p_stream->pSub_streamColList());
+    CardIter xCI(M.p_stream->pSub_stmColList());
     i8 iOrdinal = iOrdLo;
-    while (Card_StmCol* p_streamCol =
-        _pCard_StmCol(xCI.pEachChild(CK_STMCOL)))
-      p_streamCol->Y_vSetSprint(P_StmColOrd, "$%lld"_Stz, iOrdinal++);
+    while (M.p_stmCol = _pCard_StmCol(xCI.pEachChild(CK_STMCOL))) {
+      M.p_stmCol->Y_vSetSprint(P_StmColOrd, "$%lld"_Stz, iOrdinal);
+      M.p_stmColOrd = new Card_StmColOrd;
+      M.p_stmColOrd->vValueSprint("$%lld"_Stz, iOrdinal);
+      M.p_stmCol->vAppend(M.p_stmColOrd);
+      iOrdinal++;
+    }
 
     iOrdLo = iOrdHi + 1;
   }
@@ -527,6 +531,10 @@ void Transforms::vP50_T30_Resolve_Parameter_Linkage(bool bPrint, bool bTrace)
       continue;
 
     M.p_param->Y_vSet(P_StmColOrd, M.p_stmCol->Y_szVal(P_StmColOrd));
+
+    M.p_stmColOrd = M.p_stmCol->pSub_stmColOrd();
+    M.p_stmColOrd->vValue(M.p_stmColOrd->szValue());
+    M.p_param->vAppend(M.p_stmColOrd);
   }
 
   vEndTransformation();
@@ -559,7 +567,8 @@ void Transforms::vP50_T40_Resolve_Parameter_Terms(bool bPrint, bool bTrace)
       if (! Y_bFindPpy(CK_PARAMLIST,P_ParamOrd,CK_PARAM))
         continue;
 
-      M.p_term->vValue(M.p_param->Y_szVal(P_StmColOrd));
+      M.p_stmColOrd = M.p_param->pSub_stmColOrd();
+      M.p_term->vValue(M.p_stmColOrd->szValue());
     }
   }
 
@@ -648,7 +657,7 @@ void Transforms::vP60_T20_Convert_idxCol_name_Of_table_To_idxCol_ord(bool bPrint
       continue;
 
     M.p_stream = M.p_table->pSub_stream();;
-    M.p_stmColList = M.p_table->pSub_streamColList();
+    M.p_stmColList = M.p_table->pSub_stmColList();
     M.p_idxColList = M.p_indexJoin->pSub_idxColList();
 
     M.p_idxColList->vOrdinate(M.p_stream);

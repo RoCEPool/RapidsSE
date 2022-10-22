@@ -81,7 +81,7 @@ Card_StmCol* Card_Stream::pFind_streamCol(Stz *szColNm)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-   Card_StmColList* pCard_StreamColList = this->pSub_streamColList();
+   Card_StmColList* pCard_StreamColList = this->pSub_stmColList();
 
   Card_StmCol* pCard_streamCol = nullptr;
 

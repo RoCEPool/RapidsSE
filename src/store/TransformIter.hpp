@@ -80,6 +80,7 @@ namespace STORE
     Card_StmCol *           p_stmCol;
     Card_StmColList *       p_stmColList;
     Card_StmColNm *         p_stmColNm;
+    Card_StmColOrd *        p_stmColOrd;
     Card_Stream *           p_stream;
     Card_SubSet *           p_subSet;
     Card_Table *            p_table;

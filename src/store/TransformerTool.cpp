@@ -779,6 +779,7 @@ Card* TransformerTool::G_pGetMember(eCK eMember)
     case CK_STMCOL:           return M.p_stmCol;
     case CK_STMCOLLIST:       return M.p_stmColList;
     case CK_STMCOLNM:         return M.p_stmColNm;
+    case CK_STMCOLORD:        return M.p_stmColOrd;
     case CK_STREAM:           return M.p_stream;
     case CK_SUBSET:           return M.p_subSet;
     case CK_TABLE:            return M.p_table;
@@ -950,6 +951,7 @@ void TransformerTool::M_vClearMembers(void)
   M.p_stmCol           = nullptr;
   M.p_stmColList       = nullptr;
   M.p_stmColNm         = nullptr;
+  M.p_stmColOrd        = nullptr;
   M.p_stream           = nullptr;
   M.p_subSet           = nullptr;
   M.p_table            = nullptr;
@@ -1214,6 +1216,7 @@ void TransformerTool::U_vUpdateMember(eCK eMember, Card* pCard, const char* asFu
     case CK_STMCOL:           *((Card**)&M.p_stmCol)           = pCard; break;
     case CK_STMCOLLIST:       *((Card**)&M.p_stmColList)       = pCard; break;
     case CK_STMCOLNM:         *((Card**)&M.p_stmColNm)         = pCard; break;
+    case CK_STMCOLORD:        *((Card**)&M.p_stmColOrd)        = pCard; break;
     case CK_STREAM:           *((Card**)&M.p_stream)           = pCard; break;
     case CK_SUBSET:           *((Card**)&M.p_subSet)           = pCard; break;
     case CK_TABLE:            *((Card**)&M.p_table)            = pCard; break;
@@ -1402,6 +1405,7 @@ Stz* TransformerTool::szMemberNm(eCK eMember)
     case CK_STMCOL:           return "M.p_stmCol"_Stz;
     case CK_STMCOLLIST:       return "M.p_stmColList"_Stz;
     case CK_STMCOLNM:         return "M.p_stmColNm"_Stz;
+    case CK_STMCOLORD:        return "M.p_stmColOrd"_Stz;
     case CK_STREAM:           return "M.p_stream"_Stz;
     case CK_SUBSET:           return "M.p_subSet"_Stz;
     case CK_TABLE:            return "M.p_table"_Stz;

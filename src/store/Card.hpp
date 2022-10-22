@@ -85,6 +85,7 @@ namespace STORE
   class Card_Stage;
   class Card_Stream;
   class Card_StmColList;
+  class Card_StmColOrd;
   class Card_SubSet;
 
   class Card_TableNm;
@@ -308,7 +309,8 @@ namespace STORE
     Card_Scan*          pSub_scan(void);
     Card_Size*          pSub_size(void);
     Card_Stream*        pSub_stream(void);
-    Card_StmColList*    pSub_streamColList(void);
+    Card_StmColList*    pSub_stmColList(void);
+    Card_StmColOrd*     pSub_stmColOrd(void);
     Card_Table*         pSub_table(void);
     Card_TableNm*       pSub_tableNm(void);
     Card_TablePtn*      pSub_tablePtn(void);

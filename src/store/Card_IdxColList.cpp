@@ -103,7 +103,7 @@ void Card_IdxColList::vOrdinate(Card_Stream* pCard_Stream)
 
   i8 iOrdLo = pCard_Stream->Y_iVal(P_OrdLo);
 
-  Card_StmColList* pCard_StreamColList = pCard_Stream->pSub_streamColList();
+  Card_StmColList* pCard_StreamColList = pCard_Stream->pSub_stmColList();
 
   i8 nSubCards = this->nChildCards();
   for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
