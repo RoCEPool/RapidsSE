@@ -1041,10 +1041,6 @@ void Card::vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth)
       _pCard_Table(this)->vTablePrint(pRibbon, iDepth);
       break;
 
-    case CK_TABLEPTR:
-      _pCard_TablePtr(this)->vTablePtrPrint(pRibbon, iDepth);
-      break;
-
     default:
       vPrintCard_bySettings(pRibbon, iDepth);
       break;
@@ -2003,19 +1999,6 @@ Card_TablePtn* Card::pSub_tablePtn(void)
   Card_TablePtn* p_tablePtn =
       _pCard_TablePtn(pFindSubCard(CK_TABLEPTN));
   return p_tablePtn;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-#include "Card_TablePtr.hpp"
-Card_TablePtr* Card::pSub_tablePtr(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_TablePtr* p_tablePtr =
-      _pCard_TablePtr(pFindSubCard(CK_TABLEPTR));
-  return p_tablePtr;
 }
 
 /*----------------------------------------------------------------------------*/

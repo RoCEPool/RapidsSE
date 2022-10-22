@@ -451,9 +451,10 @@ Card* Dissector::pOp_IndexScan(TagSet* pArgTags)
 
   Table* pTable = AM::pTableFind(szTableNm);
   Card_Table* pCard_Table = new Card_Table;
-  Card_TablePtr* pCard_TablePtr = new Card_TablePtr(pTable);
-  pCard_Table->vAppend(pCard_TablePtr);
   pCard_IndexScan->vAppend(pCard_Table);
+
+  Card_TableNm* pCard_TableNm = new Card_TableNm;
+  pCard_Table->vAppend(pCard_TableNm);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // index
@@ -603,9 +604,7 @@ Card* Dissector::pOp_Scan(TagSet* pArgTags)
   Card_Table* pCard_Table = new Card_Table(szTableNm);
   Card_TableNm* pCard_TableNm = new Card_TableNm;
   pCard_TableNm->vValue(szTableNm);
-  Card_TablePtr* pCard_TablePtr = new Card_TablePtr(pTable);
   pCard_Table->vAppend(pCard_TableNm);
-  pCard_Table->vAppend(pCard_TablePtr);
   pOp_Scan->vAppend(pCard_Table);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

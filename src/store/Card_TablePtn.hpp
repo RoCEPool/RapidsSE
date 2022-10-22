@@ -14,10 +14,7 @@ namespace STORE
     void  operator delete(void*);
   
     Card_TablePtn(void);
-    Card_TablePtn(Card_Table* p_table);
    ~Card_TablePtn(void) noexcept(false);
-
-    void vAdd_TablePtn(Card_Table* p_table);
 
   private:
 

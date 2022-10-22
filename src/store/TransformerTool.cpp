@@ -782,7 +782,6 @@ Card* TransformerTool::G_pGetMember(eCK eMember)
     case CK_TABLELIST:        return M.p_tableList;
     case CK_TABLENM:          return M.p_tableNm;
     case CK_TABLEPTN:         return M.p_tablePtn;
-    case CK_TABLEPTR:         return M.p_tablePtr;
     case CK_TERM:             return M.p_term;
     case CK_TOPOLOGY:         return M.p_topology;
     case CK_TSTPRED:          return M.p_tstPred;
@@ -955,7 +954,6 @@ void TransformerTool::M_vClearMembers(void)
   M.p_tableList        = nullptr;
   M.p_tableNm          = nullptr;
   M.p_tablePtn         = nullptr;
-  M.p_tablePtr         = nullptr;
   M.p_term             = nullptr;
   M.p_topology         = nullptr;
   M.p_tstPred          = nullptr;
@@ -1221,7 +1219,6 @@ void TransformerTool::U_vUpdateMember(eCK eMember, Card* pCard, const char* asFu
     case CK_TABLELIST:        *((Card**)&M.p_tableList)        = pCard; break;
     case CK_TABLENM:          *((Card**)&M.p_tableNm)          = pCard; break;
     case CK_TABLEPTN:         *((Card**)&M.p_tablePtn)         = pCard; break;
-    case CK_TABLEPTR:         *((Card**)&M.p_tablePtr)         = pCard; break;
     case CK_TERM:             *((Card**)&M.p_term)             = pCard; break;
     case CK_TOPOLOGY:         *((Card**)&M.p_topology)         = pCard; break;
     case CK_TSTPRED:          *((Card**)&M.p_tstPred)          = pCard; break;
@@ -1411,7 +1408,6 @@ Stz* TransformerTool::szMemberNm(eCK eMember)
     case CK_TABLELIST:        return "M.p_tableList"_Stz;
     case CK_TABLENM:          return "M.p_tableNm"_Stz;
     case CK_TABLEPTN:         return "M.p_tablePtn"_Stz;
-    case CK_TABLEPTR:         return "M.p_tablePtr"_Stz;
     case CK_TERM:             return "M.p_term"_Stz;
     case CK_TOPOLOGY:         return "M.p_topology"_Stz;
     case CK_TSTPRED:          return "M.p_tstPred"_Stz;

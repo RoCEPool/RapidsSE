@@ -187,6 +187,9 @@ void Accessor::A_vPartitionOfTable(void)
   i8 iStmColNo = pStmColumn->iColumnNo();
   s32 sTablePtn;
   sTablePtn.vSprint("$$%c.%lld"_Stz, cTableSyn, iStmColNo + 1);
+
+  M.p_tablePtn = new Card_TablePtn;
+  M.p_tablePtn->vValue(sTablePtn);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -109,7 +109,6 @@ enum eCK // card kind
   /* */ CK_TABLELIST,
   /* */ CK_TABLENM,
   /* */ CK_TABLEPTN,
-  /* */ CK_TABLEPTR,
   /* */ CK_TERM,
   /* */ CK_TOPOLOGY,
   /* */ CK_TSTPRED,
@@ -231,7 +230,6 @@ static Stz* aCK[]
   /* */ "CK_TABLELIST"_Stz,    // CK_TABLELIST
   /* */ "CK_TABLENM"_Stz,      // CK_TABLENM
   /* */ "CK_TABLEPTN"_Stz,     // CK_TABLEPTN
-  /* */ "CK_TABLEPTR"_Stz,     // CK_TABLEPTR
   /* */ "CK_TERM"_Stz,         // CK_TERM
   /* */ "CK_TOPOLOGY"_Stz,    // CK_TOPOLOGY
   /* */ "CK_TSTPRED"_Stz,      // CK_TSTPRED
@@ -353,7 +351,6 @@ static Stz* aCK_short[]
   /* */ "tableList"_Stz,       // CK_TABLELIST
   /* */ "tableNm"_Stz,         // CK_TABLENM
   /* */ "tablePtn"_Stz,        // CK_TABLEPTN
-  /* */ "{table}"_Stz,         // CK_TABLEPTR
   /* */ "term"_Stz,            // CK_TERM
   /* */ "topology"_Stz,        // CK_TOPOLOGY
   /* */ "tstPred"_Stz,         // CK_TSTPRED

@@ -203,10 +203,13 @@ void Transforms::vAdd_tablePtn_UnderAll_table(bool bPrint, bool bTrace)
   vTransformation(__func__);
   vTracing(bPrint,bTrace);
 
-  while (E_bEachMain(CK_TABLE)) {
-    //M.p_tablePtn = new Card_TablePtn;
-    N_vNewMember(CK_TABLEPTN);
-    M.p_tablePtn->vAdd_TablePtn(M.p_table);
+  while (E_bEachMainWithSub(CK_TABLE,CK_TABLENM)) {
+
+    RASSERT(A_bTable(M.p_tableNm->sz()));
+    A_vPartitionOfTable();
+
+    //N_vNewMember(CK_TABLEPTN);
+    //M.p_tablePtn->vAdd_TablePtn(M.p_table);
     M.p_table->vAppend(M.p_tablePtn);
   }
 
@@ -229,10 +232,9 @@ void Transforms::vAdd_tableSyn_ForAll_table(bool bPrint, bool bTrace)
 
   char cTableSyn = 'a';
 
-  while (E_bEachMain(CK_TABLE))  {
+  while (E_bEachMainWithSub(CK_TABLE,CK_TABLENM))  {
 
-    M.p_tablePtr = M.p_table->pSub_tablePtr();
-    m_pTable = M.p_tablePtr->pTable();
+    RASSERT(A_bTable(M.p_tableNm->sz()));
 
     M.p_table->vMark1(MARK_CHANGED);
     char cTableSyn_actual = cTableSyn;

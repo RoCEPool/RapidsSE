@@ -429,9 +429,9 @@ void Weaver::vArgScan(Stz* szOpArgs, Card_Scan* pCard_Scan)
   
   vRpnScan(sRpnExpr,pCard_Scan);
 
-  Table* pTable = pCard_Scan->pSub_tablePtr()->pTable();
+  Card_TableNm* p_tableNm = pCard_Scan->pSub_tableNm();
   
-  Stz* szTableNm = pTable->szTableNm();
+  Stz* szTableNm = p_tableNm->szValue();
   //m_i_Op_stage++;
   
   szOpArgs->vCatSprint("%s"_Stz,szTableNm);

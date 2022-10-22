@@ -109,7 +109,6 @@
 #include "Card_TableList.hpp"
 #include "Card_TableNm.hpp"
 #include "Card_TablePtn.hpp"
-#include "Card_TablePtr.hpp"
 #include "Card_Term.hpp"
 #include "Card_TstPred.hpp"
 #include "Card_Type.hpp"

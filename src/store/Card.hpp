@@ -90,10 +90,8 @@ namespace STORE
   class Card_StmColList;
   class Card_SubSet;
 
-  class Card_Table;
   class Card_TableNm;
   class Card_TablePtn;
-  class Card_TablePtr;
   class Card_Term;
   class Card_Type;
 
@@ -106,7 +104,6 @@ static Stz* P_AggOp        = "bAggOp"_Stz;
 static Stz* P_Card         = "pCard"_Stz;
 static Stz* P_DebugOption  = "szDebugOption"_Stz;
 static Stz* P_Exclude      = "bExclude"_Stz;
-static Stz* P_Index        = "pIndex"_Stz;
 static Stz* P_Invalid      = "bInvalid"_Stz;
 static Stz* P_JoinedBuff   = "nJoinedBuff"_Stz;
 static Stz* P_Network      = "nNetwork"_Stz;
@@ -120,7 +117,6 @@ static Stz* P_Rank         = "iRank"_Stz;
 static Stz* P_SendKind     = "eSendKind"_Stz;
 static Stz* P_SentOut      = "nSentOut"_Stz;
 static Stz* P_StageTopo    = "eStageTopo"_Stz;
-static Stz* P_Table        = "pTable"_Stz;
 static Stz* P_TableSyn     = "cTableSyn"_Stz;
 static Stz* P_TableUsed    = "bTableUsed"_Stz;
 
@@ -319,7 +315,6 @@ namespace STORE
     Card_Table*         pSub_table(void);
     Card_TableNm*       pSub_tableNm(void);
     Card_TablePtn*      pSub_tablePtn(void);
-    Card_TablePtr*      pSub_tablePtr(void);
     Card_Topology*      pSub_topology(void);
     Card_UBound*        pSub_uBound(void);
 
