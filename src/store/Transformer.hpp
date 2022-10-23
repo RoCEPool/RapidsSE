@@ -7,8 +7,6 @@
 
 #include "Transforms.hpp"
 
-#include "Curator.hpp"
-
 namespace STORE
 {
   class Transformer : public OptimiserTool
@@ -19,7 +17,7 @@ namespace STORE
 
     Transforms*  m_pTransforms;
 
-    Curator*     m_pCurator;
+    TagSet*      m_pJobTags;
 
     b8           m_bInteractive;
 

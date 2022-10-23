@@ -240,7 +240,6 @@
 #include "PayStr.hpp"
 #include "PayStrBuffer.hpp"
 #include "Resolver.hpp"
-#include "Curator.hpp"
 #include "Transformer.hpp"
 #include "BoardIter.hpp"
 #include "PermGen.hpp"
@@ -331,7 +330,6 @@ SizeHeap gxaSizeHeap[]
   { CN_CRWTOROW,                 sizeof(CrwToRow),           HT_T_TINY    ,FILL },
   { CN_CSVBUFFER,                sizeof(CsvBuffer),          HT_T_LARGE   ,FILL },
   { CN_CSVMETA,                  sizeof(CsvMeta),            HT_T_TINY    , FILL },
-  { CN_CURATOR,                  sizeof(Curator),            HT_T_SMALL   , FILL },
 
   { CN__D__,                     'D' - ('A' - 1),               HT_INVALID   , FILL },
   { CN_DATATRANSIENT,            sizeof(Heap), /*correct*/   HT_INVALID   ,    FILL },

@@ -68,7 +68,6 @@ enum eCN : u2 // Class Number
   /* */ CN_CRWTOROW,
   /* */ CN_CSVBUFFER,
   /* */ CN_CSVMETA,
-  /* */ CN_CURATOR,
 
   /* */ CN__D__,
   /* */ CN_DATATRANSIENT,
@@ -495,7 +494,6 @@ static Stz* aCN[]
   /* */ "CRWTOROW"_Stz,             // CN_CRWTOROW
   /* */ "CSVBUFFER"_Stz,            // CN_CSVBUFFER
   /* */ "CSVMETA"_Stz,              // CN_CSVMETA
-  /* */ "CURATOR"_Stz,              // CN_CURATOR
 
   /* */ "_D__"_Stz,                 // CN__D__
   /* */ "DATATRANSIENT"_Stz,        // CN_DATATRANSIENT

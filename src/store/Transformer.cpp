@@ -8,7 +8,7 @@
 #include "Job.hpp"
 
 /*----------------------------------------------------------------------------*/
-/*-- LifeCycle ---------------------------------------------------------------*/
+/*-- LifeCycle --------------------------Ï-------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 __pCastFunction(STORE,Transformer,CN_TRANSFORMER)
@@ -30,11 +30,12 @@ Transformer::Transformer(Bench* pBench)
 
   m_pCardCtl     = m_pOptimiser->pCardCtl();
 
-  m_pTransforms  = nullptr;
+  m_pTransforms  = new Transforms(m_pBench);
 
-  m_pCurator     = nullptr;
+  Job* pJob = MY::pJob();
+  m_pJobTags     = pJob->pJobTags();
 
-  m_bInteractive = false;
+  m_bInteractive = m_pJobTags->bHasName("<interactive>"_Stz);
 
   _checkInitialised_(CN_TRANSFORMER);
   
@@ -49,8 +50,6 @@ Transformer::~Transformer(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMER,_FOOTER_);
 
   delete m_pTransforms;
-
-  delete m_pCurator;
 }
 
 
@@ -65,18 +64,10 @@ void Transformer::vTransform(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMER,_FOOTER_);
 
-  Job* pJob = MY::pJob();
-  TagSet* pJobTags = pJob->pJobTags();
-
-  m_pTransforms  = new Transforms(m_pBench);
-  m_pCurator     = new Curator(m_pBench);
-
-  m_bInteractive = pJobTags->bHasName("<interactive>"_Stz);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  if (pJobTags->bHasName("<transform3>"_Stz)) vTransform3();
-  else vTransform3();
+  if (m_pJobTags->bHasName("<transform3>"_Stz))
+    vTransform3();
+  else
+    vTransform3();
 }
 
 
