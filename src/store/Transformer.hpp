@@ -21,7 +21,6 @@ namespace STORE
 
     Curator*     m_pCurator;
 
-
     b8           m_bInteractive;
 
     // must be last
@@ -53,6 +52,8 @@ namespace STORE
 
     void vPhase_Z0_RestatePipeline (bool bPrintPhase, bool bPrint, bool bTrace);
 
+    void vEndPhase(void);
+    void vPhase(eBK eBoard, i8 i_SubBoard, bool bPrintPhase, const char* azPhase);
     bool bPrintBench(bool bPrintPhase, const char* azFuncNm);
 
     Footer* aFooter(void);

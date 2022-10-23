@@ -163,6 +163,7 @@ namespace STORE
     void vBoardNm(Stz* szBoardNm);
 
     CardCtl* pCardCtl(void);
+    void vClearMarks(void);
 
     Card_Deck* pDeck(void);
     void vDuplicateBoard(Board* pBoard_arg);

@@ -80,6 +80,22 @@ CardCtl* Bench::pCardCtl(void)
   return m_pOptimiser->pCardCtl();
 }
 
+/*----------------------------------------------------------------------------*/
+/* clear marks                                                                */
+/*----------------------------------------------------------------------------*/
+void Bench::vClearMarks(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  i8 nBoards = this->nItems();
+  for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
+    Board *pBoard = this->pGet(i_Board);
+
+    pBoard->vClearMarks();
+  }
+}
+
+
 
 /*----------------------------------------------------------------------------*/
 /* get board of given kind                                                    */

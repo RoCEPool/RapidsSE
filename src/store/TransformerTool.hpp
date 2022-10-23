@@ -30,7 +30,7 @@ namespace STORE
     b8          m_bCueingDisabled;
 
     s32         m_sPhase;
-    s256        m_sTransformation;
+    s256        m_sTransform;
     s256        m_sDescription;
 
 
@@ -72,22 +72,24 @@ namespace STORE
 
     eOA eCueUser(Stz* szPhase, Stz* szTransformation= nullptr);
 
-    void vEndTransformation(void);
+    void vEndTransform(void);
 
     Stz* szDescription(void);
     void vDescription(Stz* szDescription);
 
     Stz* szPhase(void);
-    void vPhase(bool bPrintPhase, const char* szPhase);
+    void vPhase(const char* szPhase);
     void vPrintBench(eBK eBoard, i8 i_SubBoard=C_UNKNOWN);
     void vPrintBoard(void);
+    bool bPrintPhase(void);
+    void vPrintPhase(bool bPrintPhase);
 
     void vSetPrintByKind(eCK eCard, bool bPrintByKind);
     void vSetPrintProperties(eCK eCard, bool bPrintProperties);
     void vSetPrintSubCards(eCK eCard, bool bPrintSubCards);
 
     Stz* szTransformation(void);
-    void vTransformation(const char* azTransformation, bool bPrintTransformation=true);
+    void vTransform(const char* azTransformation, bool bPrintTransformation=true);
 
     void vUsingBoard(eBK eBoard, i8 i_SubBoard);
 

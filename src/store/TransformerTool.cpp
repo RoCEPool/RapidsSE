@@ -202,7 +202,7 @@ void TransformerTool::vDescription(Stz* szDescription)
 /*----------------------------------------------------------------------------*/
 /* end of transformation                                                      */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::vEndTransformation(void)
+void TransformerTool::vEndTransform(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
@@ -226,11 +226,10 @@ Stz* TransformerTool::szPhase(void)
 /*----------------------------------------------------------------------------*/
 /* set transformation phase                                                   */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::vPhase(bool bPrintPhase, const char* asPhase)
+void TransformerTool::vPhase(const char* asPhase)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  m_bPrintPhase = bPrintPhase;
   m_sPhase = asPhase;
 }
 
@@ -287,6 +286,26 @@ void TransformerTool::vSetPrintByKind(eCK eCard, bool bPrintByKind)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get print phase                                                            */
+/*----------------------------------------------------------------------------*/
+bool TransformerTool::bPrintPhase(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  return m_bPrintPhase;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set print phase                                                            */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::vPrintPhase(bool bPrintPhase)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  m_bPrintPhase = bPrintPhase;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set card print properties                                                  */
 /*----------------------------------------------------------------------------*/
 void TransformerTool::vSetPrintProperties(eCK eCard, bool bPrintProperties)
@@ -309,18 +328,18 @@ Stz* TransformerTool::szTransformation(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  return m_sTransformation;
+  return m_sTransform;
 }
 
 /*----------------------------------------------------------------------------*/
 /* begin and record transformation information                                */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::vTransformation(const char* azTransformation,
-                                      bool bPrintTransformation)
+void TransformerTool::vTransform(const char* azTransformation,
+                                 bool bPrintTransformation)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  m_sTransformation = azTransformation;
+  m_sTransform = azTransformation;
   m_bPrintXform = bPrintTransformation;
 
   M.pBoard->vTransformNoInc();
@@ -369,7 +388,7 @@ void TransformerTool::vTracing(bool bPrintXform, bool bTrace)
   m_bTrace = bTrace;
 
   if (m_bTrace) {
-    vTrace("\n\nTracing %s\n"_Stz,m_sTransformation.szStz());
+    vTrace("\n\nTracing %s\n"_Stz, m_sTransform.szStz());
     m_iTrace = 0;
   }
 }
