@@ -31,6 +31,7 @@ namespace STORE
    ~Transformer(void) noexcept(false);
 
     void vTransform(void);
+    Transforms* pTransforms(void);
 
   private:
 

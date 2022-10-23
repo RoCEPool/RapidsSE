@@ -154,7 +154,11 @@ void Board::vPinBanners(Ribbon* pRibbon)
   pRibbon->vDrawH('-',true);
   pRibbon->vDrawH('=');
 
-  pRibbon->vPutTextRight("XyZ"_Stz,1);
+  Stz* szPhase = m_pBench->pOptimiser()->pTransformer()->pTransforms()->szPhase();
+  Stz* szXfrom = m_pBench->pOptimiser()->pTransformer()->pTransforms()->szTransformation();
+
+  pRibbon->vPutTextRight(szPhase,1);
+  pRibbon->vPutTextRight(szXfrom,2);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -250,15 +254,6 @@ void Board::vPrintBoard(Stz* szPhase,
                         Stz* szDescription)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-  
-  eOA eOptAct = OA_REPRINT_BOARD;
-  TokenVec* pTknVec = nullptr;
-
-  L_Entry:
-
-  bool bExecuted = false;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Ribbon* pRibbon = new Ribbon(m_pOptimiser->pCardCtl(),this);
 
@@ -271,91 +266,6 @@ void Board::vPrintBoard(Stz* szPhase,
   pRibbon->vPrintRibbon();
 
   delete pRibbon;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  /*
-  if (! m_bBeenCued && AM::JOB::bHasTag("<cue>"_Stz)) {
-    Stz* szTagCue = AM::JOB::szTagValue("<cue>"_Stz);
-    if (   (! szPhase          || ! szTagCue->bSame(szPhase))
-        && (! szTransformation || ! szTagCue->bSame(szTransformation))) {
-      printf("%s :: %s\n",(char*)szPhase, (char*)szTransformation);
-      return;
-    }
-  }
-
-  m_bBeenCued = true;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  L_Input:
-
-  s256 sPrompt;
-
-  sPrompt.vSprint("%s :: %s >> "_Stz,
-                  szPhase, szTransformation);
-
-  s4K sInput;
-  Cue::vGetInput(sPrompt,sInput);
-
-  if (! sInput.nLength()) {
-    return;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  if (pTknVec) {
-    delete pTknVec;
-    pTknVec = nullptr;
-  }
-
-  pTknVec = AM::TOKENISE::pTokeniseSen(sInput);
-
-  i8 nTokens = pTknVec->nTokens();
-
-  OptimiserFun* pOptFun = nullptr;
-
-  if (0 == nTokens)
-    goto L_Exit;
-
-  if (1 == nTokens)
-    pOptFun = gxOptimiserCatalog.pFindFun(pTknVec->pGet(0)->szChars(),
-                                          nullptr);
-  else
-    pOptFun = gxOptimiserCatalog.pFindFun(pTknVec->pGet(0)->szChars(),
-                                          pTknVec->pGet(1)->szChars());
-
-  if (! pOptFun) {
-    vTrace("Unknown command\n"_Stz);
-    delete pTknVec;
-    goto L_Input;
-  }
-
-  eOptAct = OA_REPRINT_BOARD;
-  bExecuted = pOptFun->m_fpOptFun(m_pOptimiser,pTknVec,eOptAct);
-
-  L_Next:
-
-  if (! bExecuted)
-    goto L_Input;
-
-  if (OA_REPRINT_BOARD == eOptAct)
-    goto L_Entry;
-  else
-  if (OA_INPUT_AGAIN == eOptAct)
-    goto L_Input;
-  else
-  if (OA_CONTINUE_TRANSFORMING == eOptAct)
-    return;
-  else
-    NEVER_REACH;
-
-  L_Exit:
-  if (pTknVec) {
-    delete pTknVec;
-    pTknVec = nullptr;
-  }
-   */
 }
 
 /*----------------------------------------------------------------------------*/

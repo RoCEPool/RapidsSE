@@ -53,7 +53,8 @@ namespace STORE
     void vQueryNm(Stz* szQueryNm);
 
     void vTransform(void);
-  
+    Transformer* pTransformer(void);
+
     void vPipeSpec(VertexSpec* pUnOptPlineSpec);
     void vPopBoard(void);
     void vPushBoard(Board* pBoard);
