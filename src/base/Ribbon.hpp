@@ -20,9 +20,9 @@ namespace BASE
     Object* m_pSurface;
 
     i8 m_nTitleLines;  // number of title lines
-    i8 m_nMaxAcross;   // maximum number of physical columns across
+    i8 m_nMaxAcross;   // maximum number of physical lanes across
 
-    i8 m_i_Base; // base line for physical columns
+    i8 m_i_Base; // base line for physical lanes
     i8 m_i_Lane; // current logical lane/column
     i8 m_i_Line; // current working line
     i8 m_i_Char; // current working char
@@ -43,10 +43,10 @@ namespace BASE
     Ribbon(Object* pCtl, Object* pSurface, i8 nMaxAcross=C_RIBBON_ACROSS);
    ~Ribbon(void) noexcept(false);
 
-    i8   iBase(void);
+    i8   i_Base(void);
     void vBase(void);
 
-    i8   iChar(void);
+    i8   i_Char(void);
     Object* pCtl(void);
 
     void vDrawH(char cChr, bool bTop=false);
@@ -58,7 +58,7 @@ namespace BASE
     void vFmt(eFR e_Fmt, Stz* szFmt);
     void vFmtDefaults(void);
 
-    i8   iLine(void);
+    i8   i_Line(void);
 
     void vNextHeat(void);
     void vNextLane(void);
@@ -76,15 +76,15 @@ namespace BASE
     void vTitleLines(void);
     void vTrim(void);
 
-    i8   nWidth(i8 i_FromLine);
+    i8   nRibbonWidth(i8 i_FromLine);
 
   private:
     void vAddLine(void);
-    void vCheckLines(i8 i_Line);
     void vInitTabs(i8 i_Start, i8 nEach);
     void vPutText(i8 i_Line, i8 i_Char, Stz* szText);
     void vPutTextLeft(i8 i_Line, i8 i_Char, Stz* szText);
     void vPutTextRight(i8 i_Line, i8 i_Char, Stz* szText);
+    void vSufficientLines(i8 i_Line);
 
     Footer* aFooter(void);
   };

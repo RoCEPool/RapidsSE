@@ -22334,7 +22334,7 @@ void Task::vAddMunged(Task* )
     "  #include \\\"../src/primitives/BaseTypes_tcc.h\\\"\n"
     "  #include \\\"../src/base/TccStuff.h\\\"\n"
     "\n"
-    "  void vNeverReach(i8 iLine);\n"
+    "  void vNeverReach(i8 i_Line);\n"
     "  #define NEVER_REACH vNeverReach(__LINE__)\n"
     "\n"
     "  static const i8 C_DATUM_NULL = -9223372036854775807;\n"

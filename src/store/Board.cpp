@@ -196,7 +196,7 @@ void Board::vPinCards(Ribbon* pRibbon,
     if (! nCount++)
       pSubRibbon->vFirstLane();
     else
-    if ( pSubRibbon->iChar() && pCardCtl->bNextHoriz(eCard))
+    if (pSubRibbon->i_Char() && pCardCtl->bNextHoriz(eCard))
       pSubRibbon->vNextHeat();
     else
       pSubRibbon->vNextLane();
@@ -205,7 +205,7 @@ void Board::vPinCards(Ribbon* pRibbon,
     pCard->vPrintCardRecursive(pSubRibbon, 0, m_pCard_Deck, bPrune);
   }
 
-  pRibbon->vPinSubRibbon(pRibbon->iBase(), 0, pSubRibbon);
+  pRibbon->vPinSubRibbon(pRibbon->i_Base(), 0, pSubRibbon);
   
   delete pSubRibbon;
 }

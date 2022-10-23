@@ -64,7 +64,7 @@ Ribbon::~Ribbon(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get base line for physical columns                                         */
 /*----------------------------------------------------------------------------*/
-i8 Ribbon::iBase(void)
+i8 Ribbon::i_Base(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
 
@@ -84,7 +84,7 @@ void Ribbon::vBase(void)
 /*----------------------------------------------------------------------------*/
 /* get current char                                                           */
 /*----------------------------------------------------------------------------*/
-i8 Ribbon::iChar(void)
+i8 Ribbon::i_Char(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
 
@@ -110,7 +110,7 @@ void Ribbon::vDrawH(char cChr, bool bTop)
 
   RibbonLine* pDrawnLine = new RibbonLine;
   
-  i8 nTimes = nWidth(0);
+  i8 nTimes = nRibbonWidth(0);
 
   pDrawnLine->vPut(0,cChr,nTimes);
 
@@ -184,7 +184,7 @@ void Ribbon::vFmtDefaults(void)
 /*----------------------------------------------------------------------------*/
 /* get current line                                                           */
 /*----------------------------------------------------------------------------*/
-i8 Ribbon::iLine(void)
+i8 Ribbon::i_Line(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
 
@@ -371,7 +371,7 @@ void Ribbon::vTrim(void)
 /*----------------------------------------------------------------------------*/
 /* calc width of ribbon                                                       */
 /*----------------------------------------------------------------------------*/
-i8 Ribbon::nWidth(i8 i_FromLine)
+i8 Ribbon::nRibbonWidth(i8 i_FromLine)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
 
@@ -406,23 +406,6 @@ void Ribbon::vAddLine(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* check sufficient lines                                                     */
-/*----------------------------------------------------------------------------*/
-void Ribbon::vCheckLines(i8 i_Line)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
-
-  i8 nLines = nItems();
-
-  if (i_Line + 1 <= nLines)
-    return;
-  
-  i8 nToAdd = (i_Line + 1) - nLines;
-  while (nToAdd--)
-    vAddLine();
-}
-
-/*----------------------------------------------------------------------------*/
 /* set columns tabs                                                           */
 /*----------------------------------------------------------------------------*/
 void Ribbon::vInitTabs(i8 i_Start, i8 nEach)
@@ -442,8 +425,8 @@ void Ribbon::vInitTabs(i8 i_Start, i8 nEach)
 void Ribbon::vPutText(i8 i_Line, i8 i_Char, Stz* szText)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
-  
-  vCheckLines(i_Line);
+
+  vSufficientLines(i_Line);
   
   RibbonLine* pRibbonLine = pGet(i_Line);
 
@@ -456,8 +439,8 @@ void Ribbon::vPutText(i8 i_Line, i8 i_Char, Stz* szText)
 void Ribbon::vPutTextLeft(i8 i_Line, i8 i_Char, Stz* szText)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
-  
-  vCheckLines(i_Line);
+
+  vSufficientLines(i_Line);
   
   RibbonLine* pRibbonLine = pGet(i_Line);
 
@@ -475,12 +458,30 @@ void Ribbon::vPutTextRight(i8 i_Line, i8 i_Char, Stz* szText)
 
   StrLib::vSprint(zRightText,m_sRightFormat.szStz(),szText);
 
-  vCheckLines(i_Line);
+  vSufficientLines(i_Line);
   
   RibbonLine* pRibbonLine = pGet(i_Line);
 
   pRibbonLine->vPut(i_Char,(Stz*)zRightText);
 }
+
+/*----------------------------------------------------------------------------*/
+/* check sufficient lines                                                     */
+/*----------------------------------------------------------------------------*/
+void Ribbon::vSufficientLines(i8 i_Line)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
+
+  i8 nLines = nItems();
+
+  if (i_Line + 1 <= nLines)
+    return;
+
+  i8 nToAdd = (i_Line + 1) - nLines;
+  while (nToAdd--)
+    vAddLine();
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

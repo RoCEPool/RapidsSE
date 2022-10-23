@@ -872,7 +872,7 @@ void Step::vSqlCompilerParser(void)
     pPlanRoot = pPlanner->plan(sSqlStatement.szStz(), pGraphTemplate);
 
   } catch (Parser::SyntaxException& e) {
-    //vTrace("SyntaxException at %lld:%lld : %s\n"_Stz, e.iLine(), e.iColumn(), e.szError());
+    //vTrace("SyntaxException at %lld:%lld : %s\n"_Stz, e.i_Line(), e.iColumn(), e.szError());
     InfoSet* pInfoSet = _pInfoSet(*m_pLogicUnit->m_xpInfoSet);
     Grid* pGrid = AM::pGrid();
     Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,

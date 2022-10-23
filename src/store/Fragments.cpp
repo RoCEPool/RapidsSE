@@ -50,7 +50,7 @@ void Fragments::vAppendPreliminary(char *azStr) {
 
   char* azFrag = (char*)
       "\n"
-      "\n  void vNeverReach(i8 iLine);"
+      "\n  void vNeverReach(i8 i_Line);"
       "\n  #define NEVER_REACH vNeverReach(__LINE__)"
       "\n"
       "\n  typedef char i1;"
