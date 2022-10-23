@@ -19,16 +19,14 @@ namespace BASE
     Object* m_pCtl;
     Object* m_pSurface;
 
+    i8 m_nTitleLines;  // number of title lines
+    i8 m_nMaxAcross;   // maximum number of physical columns across
 
     i8 m_i_Base; // base line for physical columns
+    i8 m_i_Lane; // current logical lane/column
     i8 m_i_Line; // current working line
     i8 m_i_Char; // current working char
 
-    i8 m_i_Column_logical;  // logical column number
-    i8 m_i_Column_physical; // physical column number
-
-    i8 m_nTitleLines;  // number of title lines
-    i8 m_nMaxAcross;   // maximum number of physical columns across
     IntSet* m_pTabSet; // column tabs
 
     s32 m_saFmt[FR_ENUMS];
@@ -54,7 +52,7 @@ namespace BASE
     void vDrawH(char cChr, bool bTop=false);
     void vDrawV(i8 i_Line, i8 i_Char, Stz* szBar);
 
-    void vFirstColumn(void);
+    void vFirstLane(void);
 
     Stz* szFmt(eFR e_Fmt);
     void vFmt(eFR e_Fmt, Stz* szFmt);
@@ -62,11 +60,11 @@ namespace BASE
 
     i8   iLine(void);
 
-    void vNextColumn(void);
-    void vNextHorizontal(void);
+    void vNextHeat(void);
+    void vNextLane(void);
     void vNextLine(void);
 
-    void vPinRibbon(i8 i_Line, i8 i_Char, Ribbon* pSubRibbon);
+    void vPinSubRibbon(i8 i_Line, i8 i_Char, Ribbon* pSubRibbon);
     void vPrintRibbon(void);
 
     void vSprint(Stz* szFormat, ...);

@@ -169,7 +169,7 @@ void Board::vPinCards(Ribbon* pRibbon,
 //
 //  pRibbon->vTitleLines(1);
 //  pRibbon->vSetBase();
-//  pRibbon->vFirstColumn();
+//  pRibbon->vFirstLane();
 
   Ribbon* pSubRibbon = new Ribbon(pCardCtl,this);
 
@@ -194,18 +194,18 @@ void Board::vPinCards(Ribbon* pRibbon,
     }
 
     if (! nCount++)
-      pSubRibbon->vFirstColumn();
+      pSubRibbon->vFirstLane();
     else
     if ( pSubRibbon->iChar() && pCardCtl->bNextHoriz(eCard))
-      pSubRibbon->vNextHorizontal();
+      pSubRibbon->vNextHeat();
     else
-      pSubRibbon->vNextColumn();
+      pSubRibbon->vNextLane();
 
     bool bPrune = false;
     pCard->vPrintCardRecursive(pSubRibbon, 0, m_pCard_Deck, bPrune);
   }
-     
-  pRibbon->vPinRibbon(pRibbon->iBase(),0,pSubRibbon);
+
+  pRibbon->vPinSubRibbon(pRibbon->iBase(), 0, pSubRibbon);
   
   delete pSubRibbon;
 }
@@ -241,7 +241,7 @@ void Board::vPinTitle(Ribbon* pRibbon,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pRibbon->vBase();
-  pRibbon->vFirstColumn();
+  pRibbon->vFirstLane();
 }
 
 /*----------------------------------------------------------------------------*/
