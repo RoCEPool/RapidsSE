@@ -15,50 +15,103 @@ select c_name, c_custkey, o_orderkey, o_orderdate, o_totalprice, sum(l_quantity)
      group by c_name, c_custkey, o_orderkey, o_orderdate, o_totalprice
      order by o_totalprice desc, o_orderdate;
 
+// changed 300 to 100 for SF0001
+select c_name, c_custkey, o_orderkey, o_orderdate, o_totalprice, sum(l_quantity)
+     from customer, orders, lineitem
+     where o_orderkey in (
+     select l_orderkey
+     from lineitem
+     group by l_orderkey having
+     sum(l_quantity) > 100 )
+     and c_custkey = o_custkey
+     and o_orderkey = l_orderkey
+     group by c_name, c_custkey, o_orderkey, o_orderdate, o_totalprice
+     order by c_custkey ;
 */
 
 
-
-
-  // Q18_0 create inner table
-  create table q18_inner (l_orderkey integer, quantity decimal(15,2));
-  success;
+//------------------------------------------------------------------------------
+// Pipeline Generated
+//------------------------------------------------------------------------------
 
 /*
-  create table tempTable as
-  select
-    l_orderkey,
-    sum(l_quantity)
-  from
-    lineitem
-  group by
-    l_orderkey
-  having
-    sum(l_quantity) > 180;
-*/
 
-pipeline unnamed
+EXPLAIN STAGE TRANSLITERATE
+select c_name, c_custkey, o_orderkey, o_orderdate, o_totalprice, sum(l_quantity)
+     from customer, orders, lineitem
+     where o_orderkey in (
+     select l_orderkey
+     from lineitem
+     group by l_orderkey having
+     sum(l_quantity) > 100 )
+     and c_custkey = o_custkey
+     and o_orderkey = l_orderkey
+     group by c_name, c_custkey, o_orderkey, o_orderdate, o_totalprice
+     order by o_totalprice desc, o_orderdate;
+
+pipeline unamed
 begin
+  pipeline __subquery0003
+  begin
+    stage stageStart on origin :
+      start
+      | pulse once
+      | stageMarker1264
+    stage stageMarker1264 on all partitions :
+      scan rapidsse public LineItem
+      | aggreg " groupBy  type INTEGER as l_orderkey $1 aggregates  type INTEGER $K1 , type DECIMAL )  $5 sum  "
+      | combined 0
+      | stageMarker1267
+    stage stageMarker1267 on all nodes :
+      aggreg " groupBy  type INTEGER as l_orderkey $1 aggregates  type INTEGER $K1 , type DECIMAL )  $2 sum  "
+      | combined 0
+      | stageMarker1294
+    stage stageMarker1294 on origin :
+      aggreg " groupBy  type INTEGER as l_orderkey $1 aggregates  type INTEGER $K1 , type DECIMAL )  $2 sum  "
+      | filter " type BOOLEAN  $2 100.00  >  "
+      | combined 0
+      | stageMarker1270
+    stage stageMarker1270 on origin :
+      project " type INTEGER as l_orderkey $1 "
+      | combined 0
+      | stageMarker1273
+    stage stageMarker1273 on origin :
+
+      stageLast
+    stage stageLast on origin :
+      output
+      | sink
+      | stageStart
+  end
+
   stage stageStart on origin :
     start
     | pulse once
-    | stageMarker1427
-  stage stageMarker1427 on all partitions :
-    scan rapidsse public lineitem
-    | aggreg 0 " type INTEGER as l_orderkey $1 , type DECIMAL )  $5 sum  groupBy  type INTEGER as l_orderkey $1 "
-    | stageMarker1430
-  stage stageMarker1430 on all nodes :
-    aggreg 0 " type INTEGER as l_orderkey $1 , type DECIMAL )  $2 sum  groupBy  type INTEGER as l_orderkey $1 "
-    | stageMarker1433
-  stage stageMarker1433 on origin :
-    aggreg 0 " type INTEGER as l_orderkey $1 , type DECIMAL )  $2 sum  groupBy  type INTEGER as l_orderkey $1 "
-    | filter 1 " type BOOLEAN  $2 180  >  "
-    | toBktRow q18_inner
-    | toNstRow
-    | toBktCrw
-    | stageC hashcast
-  stage stageC on all partitions :
-    insert q18_inner
+    | stageMarker1276
+  stage stageMarker1276 on all partitions :
+    scan rapidsse public customer
+    | stageMarker1279 broadcast
+  stage stageMarker1279 on all partitions :
+    scan rapidsse public orders
+    | abstractJoin "CROSS true  "
+    | stageMarker1282 broadcast
+  stage stageMarker1282 on all partitions :
+    scan rapidsse public LineItem
+    | abstractJoin "CROSS true  "
+    | stageMarker1285
+  stage stageMarker1285 on all partitions :
+    filter " type BOOLEAN  }  __subquery0003  #1  $9 in  $1 $10 ==  and  $9 $18 ==  and  "
+    | aggreg " groupBy  type VARCHAR as c_name $2 , type INTEGER as c_custkey $1 , type INTEGER as o_orderkey $9 , type DATE as o_orderdate $13 , type DECIMAL as o_totalprice $12 aggregates  type VARCHAR $K1 , type INTEGER $K2 , type INTEGER $K3 , type DATE $K4 , type DECIMAL $K5 , type DECIMAL )  $22 sum  "
+    | combined 0
+    | stageMarker1288
+  stage stageMarker1288 on all nodes :
+    aggreg " groupBy  type VARCHAR as c_name $1 , type INTEGER as c_custkey $2 , type INTEGER as o_orderkey $3 , type DATE as o_orderdate $4 , type DECIMAL as o_totalprice $5 aggregates  type VARCHAR $K1 , type INTEGER $K2 , type INTEGER $K3 , type DATE $K4 , type DECIMAL $K5 , type DECIMAL )  $6 sum  "
+    | combined 0
+    | stageMarker1291
+  stage stageMarker1291 on origin :
+    aggreg " groupBy  type VARCHAR as c_name $1 , type INTEGER as c_custkey $2 , type INTEGER as o_orderkey $3 , type DATE as o_orderdate $4 , type DECIMAL as o_totalprice $5 aggregates  type VARCHAR $K1 , type INTEGER $K2 , type INTEGER $K3 , type DATE $K4 , type DECIMAL $K5 , type DECIMAL )  $6 sum  "
+    | sort " type DECIMAL as o_totalprice $5 DESC  , type DATE as o_orderdate $4 ASC  "
+    | combined 0
     | stageLast
   stage stageLast on origin :
     output
@@ -66,46 +119,281 @@ begin
     | stageStart
 end ;
 
+*/
 
 pipeline unnamed
-begin
-  stage stageStart on origin :
-    start
-    | pulse once
-    | stageMarker1427
-  stage stageMarker1427 on all partitions :
-    scan rapidsse public lineitem
-    | aggreg 0 " type INTEGER as l_orderkey $1 , type DECIMAL )  $5 sum  groupBy  type INTEGER as l_orderkey $1 "
-    | stageMarker1430
-  stage stageMarker1430 on all nodes :
-    aggreg 0 " type INTEGER as l_orderkey $1 , type DECIMAL )  $2 sum  groupBy  type INTEGER as l_orderkey $1 "
-    | stageMarker1433
-  stage stageMarker1433 on origin :
-    aggreg 0 " type INTEGER as l_orderkey $1 , type DECIMAL )  $2 sum  groupBy  type INTEGER as l_orderkey $1 "
-    | filter 1 " type BOOLEAN  $2 300  >  "
-       | stageLast
-     stage stageLast on origin :
-       output
-       | sink
-       | stageStart
-   end ;
+ begin
+   stage stageStart on origin :
+     start
+     | pulse once
+     | next
 
-  select
-    c_custkey,
-    o_orderkey,
-    sum(tempTable.sum)
-  from
-    customer,
-    orders,
-    tempTable
-  where
-    c_custkey = o_custkey
-    and o_orderkey = tempTable.l_orderkey
-  group by
-    c_custkey,
-    o_orderkey
-  limit 100;
+   stage stageMarker1264 on all partitions :
+      indexscan lineitem IxL_ORDERKEY "lbound $I1 0 >="
+     | ordAgg " ordgroupBy  type INTEGER as L_ORDERKEY L_ORDERKEY aggregates  type INTEGER as L_ORDERKEY $K1 , type DECIMAL as SUM_QTY )  L_QUANTITY sum  "
+     | filter  " type BOOLEAN  SUM_QTY 100.00  >  "
+     | combined 0
+     | next broadcast
 
+   stage stageMarker1279 on all partitions :
+     indexJoin orders IxO_ORDERKEY "bound $I1 $L1 =="
+     | project "type INTEGER as O_CUSTKEY J1_O_CUSTKEY ,
+                type INTEGER as O_ORDERKEY J1_O_ORDERKEY ,
+                type DATE as O_ORDERDATE J1_O_ORDERDATE ,
+                type DECIMAL as O_TOTALPRICE J1_O_TOTALPRICE ,
+                type DECIMAL as SUM_QTY SUM_QTY "
+     | combined 0
+     | next
+
+   stage stageMarker1276 on all partitions :
+     indexJoin customer IxC_CUSTKEY "bound $I1 $L1 =="
+     | project "type VARCHAR as C_NAME J1_C_NAME ,
+                type INTEGER as C_CUSTKEY J1_C_CUSTKEY ,
+                type INTEGER as O_ORDERKEY O_ORDERKEY ,
+                type DATE as O_ORDERDATE O_ORDERDATE ,
+                type DECIMAL as O_TOTALPRICE O_TOTALPRICE ,
+                type DECIMAL as SUM_QTY SUM_QTY "
+     | combined 0
+     | next
+
+   stage stageMarker1285 on all partitions :
+     aggreg " groupBy  type VARCHAR as C_NAME C_NAME ,
+                        type INTEGER as C_CUSTKEY C_CUSTKEY ,
+                        type INTEGER as O_ORDERKEY O_ORDERKEY ,
+                        type DATE as O_ORDERDATE O_ORDERDATE ,
+                        type DECIMAL as O_TOTALPRICE O_TOTALPRICE
+                        aggregates
+                        type VARCHAR as C_NAME $K1 ,
+                        type INTEGER as C_CUSTKEY $K2 ,
+                        type INTEGER as O_ORDERKEY $K3 ,
+                        type DATE as O_ORDERDATE $K4 ,
+                        type DECIMAL as O_TOTALPRICE $K5 ,
+                        type DECIMAL as SUM_QTY ) SUM_QTY sum  "
+     | combined 0
+     | next
+
+   stage stageMarker1288 on all nodes :
+     aggreg " groupBy  type VARCHAR as C_NAME C_NAME ,
+                             type INTEGER as C_CUSTKEY C_CUSTKEY ,
+                             type INTEGER as O_ORDERKEY O_ORDERKEY ,
+                             type DATE as O_ORDERDATE O_ORDERDATE ,
+                             type DECIMAL as O_TOTALPRICE O_TOTALPRICE
+                             aggregates
+                             type VARCHAR as C_NAME $K1 ,
+                             type INTEGER as C_CUSTKEY $K2 ,
+                             type INTEGER as O_ORDERKEY $K3 ,
+                             type DATE as O_ORDERDATE $K4 ,
+                             type DECIMAL as O_TOTALPRICE $K5 ,
+                             type DECIMAL as SUM_QTY ) SUM_QTY sum  "
+     | combined 0
+     | next
+
+   stage stageMarker1291 on origin :
+     aggreg " groupBy  type VARCHAR as C_NAME C_NAME ,
+                             type INTEGER as C_CUSTKEY C_CUSTKEY ,
+                             type INTEGER as O_ORDERKEY O_ORDERKEY ,
+                             type DATE as O_ORDERDATE O_ORDERDATE ,
+                             type DECIMAL as O_TOTALPRICE O_TOTALPRICE
+                             aggregates
+                             type VARCHAR as C_NAME $K1 ,
+                             type INTEGER as C_CUSTKEY $K2 ,
+                             type INTEGER as O_ORDERKEY $K3 ,
+                             type DATE as O_ORDERDATE $K4 ,
+                             type DECIMAL as O_TOTALPRICE $K5 ,
+                             type DECIMAL as SUM_QTY ) SUM_QTY sum  "
+     | combined 0
+     | next
+
+   stage stageMarker1291 on origin :
+     sort " type DECIMAL as O_TOTALPRICE O_TOTALPRICE ASC  , type DATE as O_ORDERDATE O_ORDERDATE ASC  "
+     //| limit 100
+     | combined 0
+     | next
+
+   stage stageLast on origin :
+     output
+     | sink
+     | first
+ end ;
+
+contains rows:
+
+ ('Customer#000000109',109,109, DATE '1992-02-22',1156.67,102.00)
+ ('Customer#000000110',110,1310,DATE '1994-05-27',1521.47,110.00)
+ ('Customer#000000104',104,854, DATE '1996-09-23',2170.42,137.00)
+ ('Customer#000000096',96,996,  DATE '1994-04-21',2721.08,117.00)
+ ('Customer#000000042',42,42,   DATE '1995-05-08',2726.45,137.00)
+ ('Customer#000000060',60,60,   DATE '1993-02-25',2749.87,103.00)
+ ('Customer#000000081',81,1431, DATE '1993-05-16',3098.62,167.00)
+ ('Customer#000000010',10,1360, DATE '1997-01-12',3537.48,133.00)
+ ('Customer#000000044',44,644,  DATE '1994-09-09',4826.38,107.00)
+ ('Customer#000000099',99,699,  DATE '1995-09-30',5636.84,110.00)
+ ('Customer#000000128',128,1028,DATE '1996-03-12',6384.72,142.00)
+ ('Customer#000000049',49,499,  DATE '1994-04-30',6525.18,132.00)
+ ('Customer#000000033',33,633,  DATE '1996-08-20',6633.85,133.00)
+ ('Customer#000000061',61,1111, DATE '1995-02-17',6719.14,141.00)
+ ('Customer#000000030',30,1380, DATE '1996-06-21',7352.98,103.00)
+ ('Customer#000000062',62,362,  DATE '1994-07-05',7714.98,150.00)
+ ('Customer#000000040',40,1390, DATE '1996-04-20',7866.49,123.00)
+ ('Customer#000000058',58,1108, DATE '1994-06-18',8209.35,124.00)
+ ('Customer#000000084',84,384,  DATE '1997-01-26',8588.61,118.00)
+ ('Customer#000000065',65,65,   DATE '1998-03-28',8649.81,113.00)
+ ('Customer#000000028',28,1378, DATE '1993-11-08',9183.33,112.00)
+ ('Customer#000000087',87,987,  DATE '1996-01-11',13017.17,115.00)
+ ('Customer#000000128',128,278, DATE '1997-12-24',13365.87,108.00)
+ ('Customer#000000014',14,314,  DATE '1992-09-29',13394.58,125.00)
+ ('Customer#000000027',27,1227, DATE '1993-10-18',13424.25,110.00)
+ ('Customer#000000109',109,1159,DATE '1993-08-27',13624.67,156.00)
+ ('Customer#000000144',144,1044,DATE '1998-07-03',14322.76,139.00)
+ ('Customer#000000025',25,175,  DATE '1995-12-15',15157.64,116.00)
+ ('Customer#000000019',19,1219, DATE '1992-05-21',16100.11,105.00)
+ ('Customer#000000104',104,1304,DATE '1997-08-14',16866.72,116.00)
+ ('Customer#000000123',123,1473,DATE '1995-05-23',17438.12,119.00)
+ ('Customer#000000018',18,468,  DATE '1996-04-04',17566.30,147.00)
+ ('Customer#000000007',7,307,   DATE '1995-10-05',17690.25,124.00)
+ ('Customer#000000063',63,813,  DATE '1992-06-03',18705.77,128.00)
+ ('Customer#000000040',40,790,  DATE '1992-06-28',19551.67,115.00)
+ ('Customer#000000103',103,103, DATE '1994-11-17',20890.17,101.00)
+ ('Customer#000000083',83,1283, DATE '1998-02-10',21380.79,120.00)
+ ('Customer#000000132',132,132, DATE '1998-04-21',21920.56,119.00)
+ ('Customer#000000035',35,185,  DATE '1992-04-26',22759.44,132.00)
+ ('Customer#000000070',70,1420, DATE '1995-03-22',23434.01,111.00)
+ ('Customer#000000120',120,120, DATE '1993-05-08',23699.64,128.00)
+ ('Customer#000000059',59,959,  DATE '1997-08-26',23820.21,126.00)
+ ('Customer#000000066',66,1266, DATE '1998-03-23',23874.18,116.00)
+ ('Customer#000000037',37,937,  DATE '1993-09-29',24891.04,133.00)
+ ('Customer#000000100',100,1150,DATE '1996-07-04',25870.88,118.00)
+ ('Customer#000000144',144,144, DATE '1997-05-13',26276.64,148.00)
+ ('Customer#000000018',18,1068, DATE '1992-05-16',26530.32,113.00)
+ ('Customer#000000107',107,1457,DATE '1995-02-21',27651.47,111.00)
+ ('Customer#000000137',137,137, DATE '1995-11-07',28984.07,104.00)
+ ('Customer#000000057',57,1257, DATE '1997-02-03',29448.72,104.00)
+ ('Customer#000000068',68,668,  DATE '1995-08-05',29464.99,102.00)
+ ('Customer#000000129',129,1029,DATE '1993-11-22',29639.90,118.00)
+ ('Customer#000000136',136,586, DATE '1997-09-15',29723.34,106.00)
+ ('Customer#000000072',72,372,  DATE '1996-06-27',29828.57,124.00)
+ ('Customer#000000059',59,359,  DATE '1994-05-29',30155.90,109.00)
+ ('Customer#000000043',43,343,  DATE '1998-04-20',30164.33,115.00)
+ ('Customer#000000078',78,828,  DATE '1995-07-15',30188.56,118.00)
+ ('Customer#000000132',132,732, DATE '1995-12-27',30455.66,149.00)
+ ('Customer#000000103',103,1453,DATE '1997-10-15',30720.30,115.00)
+ ('Customer#000000014',14,1064, DATE '1992-04-05',31477.46,183.00)
+ ('Customer#000000106',106,556, DATE '1994-03-23',31599.39,129.00)
+ ('Customer#000000019',19,169,  DATE '1994-03-10',31899.02,147.00)
+ ('Customer#000000088',88,238,  DATE '1996-07-03',32426.69,134.00)
+ ('Customer#000000003',3,153,   DATE '1994-06-01',32712.15,124.00)
+ ('Customer#000000038',38,1088, DATE '1997-11-26',33219.60,118.00)
+ ('Customer#000000041',41,191,  DATE '1996-10-04',33545.04,122.00)
+ ('Customer#000000084',84,1134, DATE '1997-05-01',33642.91,118.00)
+ ('Customer#000000144',144,294, DATE '1996-06-30',34242.19,117.00)
+ ('Customer#000000107',107,1307,DATE '1997-02-27',34964.44,116.00)
+ ('Customer#000000112',112,1462,DATE '1993-03-25',35147.95,101.00)
+ ('Customer#000000039',39,1089, DATE '1997-12-12',35564.49,144.00)
+ ('Customer#000000103',103,403, DATE '1993-07-31',35608.23,119.00)
+ ('Customer#000000044',44,344,  DATE '1997-05-04',35815.36,107.00)
+ ('Customer#000000086',86,1436, DATE '1997-08-03',36131.89,123.00)
+ ('Customer#000000003',3,303,   DATE '1995-11-07',37286.20,124.00)
+ ('Customer#000000057',57,1407, DATE '1992-01-01',37356.47,109.00)
+ ('Customer#000000011',11,761,  DATE '1997-06-03',37519.81,109.00)
+ ('Customer#000000088',88,838,  DATE '1996-02-18',37579.19,163.00)
+ ('Customer#000000028',28,178,  DATE '1995-09-09',37704.79,107.00)
+
+pipeline unnamed
+ begin
+   stage stageStart on origin :
+     start
+     | pulse once
+     | next
+
+   stage stageMarker1264 on all partitions :
+      indexscan lineitem IxL_ORDERKEY "lbound $I1 0 >="
+     | ordAgg " ordgroupBy  type INTEGER as L_ORDERKEY L_ORDERKEY aggregates  type INTEGER as L_ORDERKEY $K1 , type DECIMAL as SUM_QTY )  L_QUANTITY sum  "
+     | filter  " type BOOLEAN  SUM_QTY 100.00  >  "
+     | combined 0
+     | next broadcast
+
+   stage stageMarker1279 on all partitions :
+     indexJoin orders IxO_ORDERKEY "bound $I1 $L1 =="
+     | project "type INTEGER as O_CUSTKEY J1_O_CUSTKEY ,
+                type INTEGER as O_ORDERKEY J1_O_ORDERKEY ,
+                type DATE as O_ORDERDATE J1_O_ORDERDATE ,
+                type DECIMAL as O_TOTALPRICE J1_O_TOTALPRICE ,
+                type DECIMAL as SUM_QTY SUM_QTY "
+     | combined 0
+     | next
+
+   stage stageMarker1276 on all partitions :
+     indexJoin customer IxC_CUSTKEY "bound $I1 $L1 =="
+     | project "type VARCHAR as C_NAME J1_C_NAME ,
+                type INTEGER as C_CUSTKEY J1_C_CUSTKEY ,
+                type INTEGER as O_ORDERKEY O_ORDERKEY ,
+                type DATE as O_ORDERDATE O_ORDERDATE ,
+                type DECIMAL as O_TOTALPRICE O_TOTALPRICE ,
+                type DECIMAL as SUM_QTY SUM_QTY "
+     | combined 0
+     | next
+
+   stage stageMarker1285 on all partitions :
+     aggreg " groupBy  type VARCHAR as C_NAME C_NAME ,
+                        type INTEGER as C_CUSTKEY C_CUSTKEY ,
+                        type INTEGER as O_ORDERKEY O_ORDERKEY ,
+                        type DATE as O_ORDERDATE O_ORDERDATE ,
+                        type DECIMAL as O_TOTALPRICE O_TOTALPRICE
+                        aggregates
+                        type VARCHAR as C_NAME $K1 ,
+                        type INTEGER as C_CUSTKEY $K2 ,
+                        type INTEGER as O_ORDERKEY $K3 ,
+                        type DATE as O_ORDERDATE $K4 ,
+                        type DECIMAL as O_TOTALPRICE $K5 ,
+                        type DECIMAL as SUM_QTY ) SUM_QTY sum  "
+     | combined 0
+     | next
+
+   stage stageMarker1288 on all nodes :
+     aggreg " groupBy  type VARCHAR as C_NAME C_NAME ,
+                             type INTEGER as C_CUSTKEY C_CUSTKEY ,
+                             type INTEGER as O_ORDERKEY O_ORDERKEY ,
+                             type DATE as O_ORDERDATE O_ORDERDATE ,
+                             type DECIMAL as O_TOTALPRICE O_TOTALPRICE
+                             aggregates
+                             type VARCHAR as C_NAME $K1 ,
+                             type INTEGER as C_CUSTKEY $K2 ,
+                             type INTEGER as O_ORDERKEY $K3 ,
+                             type DATE as O_ORDERDATE $K4 ,
+                             type DECIMAL as O_TOTALPRICE $K5 ,
+                             type DECIMAL as SUM_QTY ) SUM_QTY sum  "
+     | combined 0
+     | next
+
+   stage stageMarker1291 on origin :
+     aggreg " groupBy  type VARCHAR as C_NAME C_NAME ,
+                             type INTEGER as C_CUSTKEY C_CUSTKEY ,
+                             type INTEGER as O_ORDERKEY O_ORDERKEY ,
+                             type DATE as O_ORDERDATE O_ORDERDATE ,
+                             type DECIMAL as O_TOTALPRICE O_TOTALPRICE
+                             aggregates
+                             type VARCHAR as C_NAME $K1 ,
+                             type INTEGER as C_CUSTKEY $K2 ,
+                             type INTEGER as O_ORDERKEY $K3 ,
+                             type DATE as O_ORDERDATE $K4 ,
+                             type DECIMAL as O_TOTALPRICE $K5 ,
+                             type DECIMAL as SUM_QTY ) SUM_QTY sum  "
+     | combined 0
+     | next
+
+   stage stageMarker1291 on origin :
+     sort " type DECIMAL as O_TOTALPRICE O_TOTALPRICE ASC  , type DATE as O_ORDERDATE O_ORDERDATE ASC  "
+     //| limit 100
+     | combined 0
+     | next
+
+   stage stageLast on origin :
+     output
+     | sink
+     | first
+ end ;
+ 
+ rows: 761
 
 CLEANUP {
   bye;
