@@ -29,6 +29,7 @@ Ribbon::Ribbon(Object* pCtl, Object* pSurface, i8 nMaxLanesAcross)
   m_pSurface = pSurface;
 
   m_nMaxLanesAcross = nMaxLanesAcross;
+  m_jRibbonWidth = C_UNKNOWN;
 
   m_nTitleLines = 0;
 
@@ -245,7 +246,11 @@ void Ribbon::vSprintRight(Stz* szFormat, ...)
   StrLib::vSprint(zText,xArgs,(char*)szFormat);
   va_end(xArgs);
 
-  vPutTextRight(m_i_Line++,m_i_Char,(Stz*)zText);
+  char zRightText[1024];
+
+  StrLib::vSprint(zRightText,m_sRightFormat.szStz(),(Stz*)zText);
+
+  vPutText(m_i_Line++,m_i_Char,(Stz*)zRightText);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -313,7 +318,8 @@ i8 Ribbon::nRibbonWidth(i8 i_FromLine)
     if (nWidthLine > nMaxWidth)
       nMaxWidth = nWidthLine;
   }
-  
+
+  m_jRibbonWidth = nMaxWidth;
   return nMaxWidth;
 }
 
@@ -363,7 +369,7 @@ void Ribbon::vPutText(i8 i_Line, i8 i_Char, Stz* szText)
 /*----------------------------------------------------------------------------*/
 /* put some text                                                              */
 /*----------------------------------------------------------------------------*/
-void Ribbon::vPutTextLeft(i8 i_Line, i8 i_Char, Stz* szText)
+void Ribbon::vPutTextRight(Stz* szText, i8 i_Line, i8 i_Char)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
 
@@ -371,25 +377,15 @@ void Ribbon::vPutTextLeft(i8 i_Line, i8 i_Char, Stz* szText)
   
   RibbonLine* pRibbonLine = pGet(i_Line);
 
-  pRibbonLine->vPut(i_Char,szText);
-}
+  i8 i_Right;
+  if (C_UNKNOWN == i_Char) {
+    RASSERT(C_UNKNOWN != m_jRibbonWidth);
+    i_Right = m_jRibbonWidth - StrLib::nSize((char*)szText) + 1;
+  }
+  else
+    i_Right = i_Char;
 
-/*----------------------------------------------------------------------------*/
-/* put some text                                                              */
-/*----------------------------------------------------------------------------*/
-void Ribbon::vPutTextRight(i8 i_Line, i8 i_Char, Stz* szText)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
-
-  char zRightText[1024];
-
-  StrLib::vSprint(zRightText,m_sRightFormat.szStz(),szText);
-
-  vSufficientLines(i_Line);
-  
-  RibbonLine* pRibbonLine = pGet(i_Line);
-
-  pRibbonLine->vPut(i_Char,(Stz*)zRightText);
+  pRibbonLine->vPut(i_Right,szText);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -154,6 +154,7 @@ void Board::vPinBanners(Ribbon* pRibbon)
   pRibbon->vDrawH('-',true);
   pRibbon->vDrawH('=');
 
+  pRibbon->vPutTextRight("XyZ"_Stz,1);
 }
 
 /*----------------------------------------------------------------------------*/

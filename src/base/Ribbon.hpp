@@ -20,7 +20,8 @@ namespace BASE
 
     i8 m_nMaxLanesAcross;  // maximum number of lanes across
 
-    i8 m_nTitleLines;  // number of title lines
+    i8 m_nTitleLines;      // number of title lines
+    i8 m_jRibbonWidth;     // width of ribbon
 
     i8 m_i_Heat; // current horizontal heat/row
     i8 m_i_Lane; // current vertical lane/column
@@ -56,6 +57,8 @@ namespace BASE
 
     void vPinSubRibbon(i8 i_Line, i8 i_Char, Ribbon* pSubRibbon);
     void vPrintRibbon(void);
+    void vPutText(i8 i_Line, i8 i_Char, Stz* szText);
+    void vPutTextRight(Stz* szText, i8 i_Line, i8 i_Char=C_UNKNOWN);
 
     void vSprint(Stz* szFormat, ...);
     void vSprintRight(Stz* szFormat, ...);
@@ -70,9 +73,6 @@ namespace BASE
   private:
     void vAddLine(void);
     void vInitTabs(i8 i_Start, i8 nEach);
-    void vPutText(i8 i_Line, i8 i_Char, Stz* szText);
-    void vPutTextLeft(i8 i_Line, i8 i_Char, Stz* szText);
-    void vPutTextRight(i8 i_Line, i8 i_Char, Stz* szText);
     void vSufficientLines(i8 i_Line);
 
     Footer* aFooter(void);
