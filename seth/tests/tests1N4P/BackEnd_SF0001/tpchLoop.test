@@ -112,6 +112,11 @@ INCLUDE 'query16.test';
 INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------
+LOG 'Running tpch query 19...';
+INCLUDE 'query19.test';
+INCLUDE 'sleep.test';
+
+//------------------------------------------------------------------------------
 // 'truncating tpch tables...';
 INCLUDE 'tpchTruncate.test';
 
