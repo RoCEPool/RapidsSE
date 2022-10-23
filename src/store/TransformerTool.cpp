@@ -236,7 +236,7 @@ void TransformerTool::vPhase(const char* asPhase)
 /*----------------------------------------------------------------------------*/
 /* print all bards of bench                                                   */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::vPrintBench( eBK eBoard, i8 i_SubBoard)
+void TransformerTool::vPrintBench(eBK eBoard, i8 i_SubBoard)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 

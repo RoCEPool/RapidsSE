@@ -55,6 +55,7 @@ namespace STORE
     void vEndPhase(void);
     void vPhase(eBK eBoard, i8 i_SubBoard, bool bPrintPhase, const char* azPhase);
     bool bPrintBench(void);
+    void vPrintBench(eBK eBoard, i8 i_SubBoard=C_UNKNOWN);
 
     Footer* aFooter(void);
   };

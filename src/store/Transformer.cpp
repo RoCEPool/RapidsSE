@@ -130,9 +130,7 @@ void Transformer::vPhase_10_ReducePipeline(bool bPrintPhase, bool bPrintXform, b
   }
 
   vEndPhase();
-
-  if (bPrintBench())
-    m_pTransforms->vPrintBench(BK_SUBPIPE);
+  vPrintBench(BK_SUBPIPE);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -151,9 +149,7 @@ void Transformer::vPhase_20_AccessMetadata(bool bPrintPhase, bool bPrintXform, b
   m_pTransforms->vP20_T30_Add_stream_UnderAll_table(bPrintXform, bTrace);
 
   vEndPhase();
-
-  if (bPrintBench())
-    m_pTransforms->vPrintBench(BK_SUBPIPE,0);
+  vPrintBench(BK_SUBPIPE,0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -168,9 +164,7 @@ void Transformer::vPhase_30_StreamAnalysis(bool bPrintPhase, bool bPrintXform, b
   m_pTransforms->vP30_T10_Calc_ordinalRange_ForAll_stream(bPrintXform, bTrace);
 
   vEndPhase();
-
-  if (bPrintBench())
-    m_pTransforms->vPrintBench(BK_SUBPIPE,0);
+  vPrintBench(BK_SUBPIPE,0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -191,9 +185,7 @@ void Transformer::vPhase_40_PredicatePullup(bool bPrintPhase, bool bPrintXform, 
   m_pTransforms->vP40_T40_Delete_Empty_where                    (bPrintXform, bTrace);
 
   vEndPhase();
-
-  if (bPrintBench())
-    m_pTransforms->vPrintBench(BK_SUBPIPE,0);
+  vPrintBench(BK_SUBPIPE,0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -211,9 +203,7 @@ void Transformer::vPhase_50_FlattenExists(bool bPrintPhase, bool bPrintXform, bo
   m_pTransforms->vP50_T40_Resolve_Parameter_Terms(bPrintXform, bTrace);
 
   vEndPhase();
-
-  if (bPrintBench())
-    m_pTransforms->vPrintBench(BK_SUBPIPE,0);
+  vPrintBench(BK_SUBPIPE,0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -234,9 +224,7 @@ void Transformer::vPhase_60_InitialJoin(bool bPrintPhase, bool bPrintXform, bool
   m_pTransforms->vP60_T50_Delete_Empty_filter(bPrintXform, bTrace);
 
   vEndPhase();
-
-  if (bPrintBench())
-    m_pTransforms->vPrintBench(BK_SUBPIPE,0);
+  vPrintBench(BK_SUBPIPE,0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -280,9 +268,7 @@ void Transformer::vPhase_70_JoinOrdering(bool bPrintPhase, bool bPrintXform, boo
   m_pTransforms->vP70_T99_Convert_table_To_scan_Or_indexJoin(bPrintXform, bTrace);
 
   vEndPhase();
-
-  if (bPrintBench())
-    m_pTransforms->vPrintBench(BK_SUBPIPE,0);
+  vPrintBench(BK_SUBPIPE,0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -316,9 +302,7 @@ void Transformer::vPhase_80_IndexScan(bool bPrintPhase, bool bPrintXform, bool b
   m_pTransforms->vP80_T70_Promote_scan_To_indexScan(bPrintXform, bTrace);
 
   vEndPhase();
-
-  if (bPrintBench())
-    m_pTransforms->vPrintBench(BK_SUBPIPE,0);
+  vPrintBench(BK_SUBPIPE,0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -333,9 +317,7 @@ void Transformer::vPhase_90_StreamOrdering(bool bPrintPhase, bool bPrintXform, b
   m_pTransforms->vP90_T10_Remove_sort_IfSameAs_gby(bPrintXform, bTrace);
 
   vEndPhase();
-
-  if (bPrintBench())
-    m_pTransforms->vPrintBench(BK_SUBPIPE,0);
+  vPrintBench(BK_SUBPIPE,0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -350,9 +332,7 @@ void Transformer::vPhase_A0_FilterRefinement(bool bPrintPhase, bool bPrintXform,
   m_pTransforms->vPA0_T10_Individuate_filter(bPrintXform, bTrace);
 
   vEndPhase();
-
-  if (bPrintBench())
-    m_pTransforms->vPrintBench(BK_SUBPIPE,0);
+  vPrintBench(BK_SUBPIPE,0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -371,9 +351,7 @@ void Transformer::vPhase_Z0_RestatePipeline(bool bPrintPhase, bool bPrintXform, 
   m_pTransforms->vPZ0_T20_Reinstate_combined(bPrintXform, bTrace);
 
   vEndPhase();
-
-  if (bPrintBench())
-    m_pTransforms->vPrintBench(BK_SUBPIPE,0);
+  vPrintBench(BK_SUBPIPE,0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -419,6 +397,17 @@ bool Transformer::bPrintBench(void)
   bool bPrintXform = m_pTransforms->bPrintXform();
   
   return bPrintXform;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Transformer::vPrintBench(eBK eBoard, i8 i_SubBoard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
+
+  if (bPrintBench())
+    m_pTransforms->vPrintBench(eBoard,i_SubBoard);
 }
 
 /*============================================================================*/
