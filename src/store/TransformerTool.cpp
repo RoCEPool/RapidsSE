@@ -35,7 +35,8 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
   m_bBeenCued = false;
   m_bCueingDisabled = false;
 
-  m_pPermGen = nullptr;
+  m_pPermGen   = nullptr;
+  m_cTableSyn  = 'a';
 
   m_pColumn    = nullptr;
   m_pIdxVec    = nullptr;

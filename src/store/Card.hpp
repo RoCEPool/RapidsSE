@@ -126,6 +126,9 @@ static char MARK_MORE       = '+';
 static char MARK_RIGHTWARDS = '>';
 static char MARK_UPWARDS    = '^';
 
+static Stz* SEP_DERIVED    = "- - - - - - - - - "_Stz;
+static Stz* SEP_SCRATCH    = "= = = = = = = = = "_Stz;
+
 namespace STORE
 {
   static const bool C_CONTINUE_RECURSION  = true;

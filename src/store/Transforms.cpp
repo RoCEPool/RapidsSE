@@ -186,20 +186,18 @@ void Transforms::vP20_T10_Add_tableSyn_ForAll_table(bool bPrint, bool bTrace)
 
   //M.pDeck->vDump();
 
-  char cTableSyn = 'a';
-
   while (E_bEachMainWithSub(CK_TABLE,CK_TABLENM))  {
 
     RASSERT(A_bTable(M.p_tableNm->sz()));
 
     M.p_table->vMark1(MARK_CHANGED);
-    char cTableSyn_actual = cTableSyn;
+    char cTableSyn_actual = m_cTableSyn;
     if (m_pTable->bIsReplicated())
       cTableSyn_actual = StrLib::cToUpper(cTableSyn_actual);
 
     M.p_table->vValueSprint("%c"_Stz,cTableSyn_actual);
 
-    cTableSyn++;
+    m_cTableSyn++;
   }
 
   vEndTransform();
@@ -602,7 +600,7 @@ void Transforms::vP60_T10_Add_indexJoin_UnderAllJoinable_table(bool bPrint, bool
       M.p_indexJoin = new Card_IndexJoin;
       M.p_indexJoin->vAppend(M.p_index);
       //M.p_table->vInsertBefore(M.p_indexJoin,M.p_filter);
-      M.p_comment = new Card_Comment("= = = = = = = = = "_Stz);
+      M.p_comment = new Card_Comment(SEP_SCRATCH);
       M.p_table->vAppend(M.p_comment);
       M.p_table->vAppend(M.p_indexJoin);
     }
@@ -1392,7 +1390,7 @@ void Transforms::vP70_T99_Convert_table_To_scan_Or_indexJoin(bool bPrint, bool b
 
     i8 i_Child;
     M.p_comment = _pCard_Comment(M.p_indexJoin->pFindChild(CK_COMMENT,i_Child));
-    M.p_comment->vValue("- - - - - - - - - "_Stz);
+    M.p_comment->vValue(SEP_DERIVED);
   }
 
   vEndTransform();
@@ -1425,7 +1423,7 @@ void Transforms::vP80_T10_Insert_indexList_ToAll_scan(bool bPrint, bool bTrace)
     RASSERT(A_bTable(M.p_tableNm->szValue()));
 
     if (A_bIndexListOfTable()) {
-      M.p_comment = new Card_Comment("= = = = = = = = = "_Stz);
+      M.p_comment = new Card_Comment(SEP_SCRATCH);
       M.p_scan->vAppend(M.p_comment);
 
       M.p_scan->vAppend(M.p_indexList);
@@ -1667,7 +1665,7 @@ void Transforms::vP80_T70_Promote_scan_To_indexScan(bool bPrint, bool bTrace)
 
     i8 i_Child;
     M.p_comment = _pCard_Comment(M.p_indexScan->pFindChild(CK_COMMENT,i_Child));
-    M.p_comment->vValue("- - - - - - - - - "_Stz);
+    M.p_comment->vValue(SEP_DERIVED);
   }
 
   M_vRestart();
