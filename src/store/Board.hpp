@@ -168,6 +168,8 @@ namespace STORE
     Card_Deck* pDeck(void);
     void vDuplicateBoard(Board* pBoard_arg);
 
+    void vPinBanners(Ribbon* pRibbon);
+
     void vPinCards(Ribbon* pRibbon,
                    i8 iPrintNo,
                    Stz* szExplain=nullptr);

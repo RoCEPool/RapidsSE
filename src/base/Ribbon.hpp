@@ -6,7 +6,6 @@
 #include "Object.hpp"
 
 #include "RibbonLine.hpp"
-#include "eFR.h"
 
 namespace BASE
 {
@@ -19,19 +18,18 @@ namespace BASE
     Object* m_pCtl;
     Object* m_pSurface;
 
+    i8 m_nMaxLanesAcross;  // maximum number of lanes across
+
     i8 m_nTitleLines;  // number of title lines
-    i8 m_nMaxAcross;   // maximum number of physical lanes across
 
-    i8 m_i_Base; // base line for physical lanes
-    i8 m_i_Lane; // current logical lane/column
-    i8 m_i_Line; // current working line
-    i8 m_i_Char; // current working char
+    i8 m_i_Heat; // current horizontal heat/row
+    i8 m_i_Lane; // current vertical lane/column
+    i8 m_i_Line; // current ribbon line
+    i8 m_i_Char; // current ribbon char
 
-    IntSet* m_pTabSet; // column tabs
+    IntSet* m_pLaneTabs; // lane tabs
 
-    s32 m_saFmt[FR_ENUMS];
-
-    s32 m_sRightFormat;
+    s32 m_sRightFormat; // format for vSprintRight() based on C_RIBBON_LANE_WIDTH
 
     // must be last
     Footer m_xFooter;    
@@ -40,11 +38,8 @@ namespace BASE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Ribbon(Object* pCtl, Object* pSurface, i8 nMaxAcross=C_RIBBON_ACROSS);
+    Ribbon(Object* pCtl, Object* pSurface, i8 nMaxLanesAcross=C_RIBBON_ACROSS);
    ~Ribbon(void) noexcept(false);
-
-    i8   i_Base(void);
-    void vBase(void);
 
     i8   i_Char(void);
     Object* pCtl(void);
@@ -52,17 +47,12 @@ namespace BASE
     void vDrawH(char cChr, bool bTop=false);
     void vDrawV(i8 i_Line, i8 i_Char, Stz* szBar);
 
-    void vFirstLane(void);
+    i8   i_Heat(void);
+    void vHeatSet(void);
+    void vHeatNext(void);
 
-    Stz* szFmt(eFR e_Fmt);
-    void vFmt(eFR e_Fmt, Stz* szFmt);
-    void vFmtDefaults(void);
-
-    i8   i_Line(void);
-
-    void vNextHeat(void);
-    void vNextLane(void);
-    void vNextLine(void);
+    void vLaneFirst(void);
+    void vLaneNext(void);
 
     void vPinSubRibbon(i8 i_Line, i8 i_Char, Ribbon* pSubRibbon);
     void vPrintRibbon(void);
@@ -71,7 +61,6 @@ namespace BASE
     void vSprintRight(Stz* szFormat, ...);
     Object* pSurface(void);
 
-    Stz* szText(i8 i_Line);
     i8   nTitleLines(void);
     void vTitleLines(void);
     void vTrim(void);

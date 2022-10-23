@@ -147,6 +147,18 @@ void Board::vDuplicateBoard(Board* pBoard_arg)
 /*----------------------------------------------------------------------------*/
 /* pin board onto given ribbon                                                */
 /*----------------------------------------------------------------------------*/
+void Board::vPinBanners(Ribbon* pRibbon)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  pRibbon->vDrawH('-',true);
+  pRibbon->vDrawH('=');
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* pin board onto given ribbon                                                */
+/*----------------------------------------------------------------------------*/
 void Board::vPinCards(Ribbon* pRibbon,
                       i8 iPrintNo, Stz* szDescription)
 {
@@ -156,20 +168,10 @@ void Board::vPinCards(Ribbon* pRibbon,
 
   if (! m_pCard_Deck->nItems())
     return;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-//  pRibbon->vSprint("[%02lld Board: %s[%lld] %s Query=%s] %s"_Stz,
-//                   iPrintNo,
-//                   aBK[m_eBoard],
-//                   m_i_SubBoard,
-//                   aBT[m_eBoardType],
-//                   m_pOptimiser->szQueryNm(),
-//                   szDescription ? szDescription : ""_Stz);
-//
-//  pRibbon->vTitleLines(1);
-//  pRibbon->vSetBase();
-//  pRibbon->vFirstLane();
+  pRibbon->vLaneFirst();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Ribbon* pSubRibbon = new Ribbon(pCardCtl,this);
 
@@ -194,18 +196,18 @@ void Board::vPinCards(Ribbon* pRibbon,
     }
 
     if (! nCount++)
-      pSubRibbon->vFirstLane();
+      pSubRibbon->vLaneFirst();
     else
     if (pSubRibbon->i_Char() && pCardCtl->bNextHoriz(eCard))
-      pSubRibbon->vNextHeat();
+      pSubRibbon->vHeatNext();
     else
-      pSubRibbon->vNextLane();
+      pSubRibbon->vLaneNext();
 
     bool bPrune = false;
     pCard->vPrintCardRecursive(pSubRibbon, 0, m_pCard_Deck, bPrune);
   }
 
-  pRibbon->vPinSubRibbon(pRibbon->i_Base(), 0, pSubRibbon);
+  pRibbon->vPinSubRibbon(pRibbon->i_Heat(), 0, pSubRibbon);
   
   delete pSubRibbon;
 }
@@ -237,11 +239,6 @@ void Board::vPinTitle(Ribbon* pRibbon,
 
   pRibbon->vSprint("%s"_Stz,szDescription ? szDescription : ""_Stz);
   pRibbon->vTitleLines();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  pRibbon->vBase();
-  pRibbon->vFirstLane();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -267,6 +264,8 @@ void Board::vPrintBoard(Stz* szPhase,
   vPinTitle(pRibbon, m_iTransformNo, szDescription);
 
   vPinCards(pRibbon, m_iTransformNo, szDescription);
+
+  vPinBanners(pRibbon);
 
   pRibbon->vPrintRibbon();
 

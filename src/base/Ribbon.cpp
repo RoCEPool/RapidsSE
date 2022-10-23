@@ -18,29 +18,28 @@ __aFooterFunction(Ribbon)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Ribbon::Ribbon(Object* pCtl, Object* pSurface, i8 nMaxAcross)
+Ribbon::Ribbon(Object* pCtl, Object* pSurface, i8 nMaxLanesAcross)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
-  
+
+  m_pLaneTabs = new IntSet(C_RIBBON_MAX_LANES);
+  vInitTabs(0, C_RIBBON_LANE_WIDTH + C_RIBBON_LANE_GAP);
+
   m_pCtl = pCtl;
   m_pSurface = pSurface;
-  
-  m_pTabSet = new IntSet(C_RIBBON_COLUMNS);
-  vInitTabs(0,C_RIBBON_WIDTH + C_RIBBON_GAP);
 
-  m_nMaxAcross  = nMaxAcross;
+  m_nMaxLanesAcross = nMaxLanesAcross;
+
   m_nTitleLines = 0;
 
-  m_i_Base = 0;
+  m_i_Heat = 0;
   m_i_Lane = 0;
   m_i_Line = 0;
-  m_i_Char = m_pTabSet->iInt(m_i_Lane) ;
+  m_i_Char = m_pLaneTabs->iInt(m_i_Lane) ;
 
-  // m_saFmt
-  
+  m_sRightFormat.vSprint("%%%llds"_Stz, C_RIBBON_LANE_WIDTH);
+
   _checkInitialised_(CN_RIBBON);
-  
-  vFmtDefaults();
   
   _postcondition_(_MAGIC_,CN_RIBBON,_FOOTER_);
 }
@@ -54,32 +53,12 @@ Ribbon::~Ribbon(void) noexcept(false)
 
   vDeleteAll();
   
-  delete m_pTabSet;
+  delete m_pLaneTabs;
 }
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get base line for physical columns                                         */
-/*----------------------------------------------------------------------------*/
-i8 Ribbon::i_Base(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
-
-  return m_i_Base;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set base line for physical columns                                         */
-/*----------------------------------------------------------------------------*/
-void Ribbon::vBase(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
-
-  m_i_Base = m_i_Line;
-}
 
 /*----------------------------------------------------------------------------*/
 /* get current char                                                           */
@@ -114,10 +93,13 @@ void Ribbon::vDrawH(char cChr, bool bTop)
 
   pDrawnLine->vPut(0,cChr,nTimes);
 
-  if (bTop)
-    vInsertBefore(pDrawnLine,pHead());
-  else
+  if (bTop) {
+    vInsertBefore(pDrawnLine, pHead());
+    m_nTitleLines++;
+  }
+  else {
     vAppend(pDrawnLine);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -134,101 +116,64 @@ void Ribbon::vDrawV(i8 i_FromLine, i8 i_Char, Stz* szBar)
 }
 
 /*----------------------------------------------------------------------------*/
-/* begin at first column                                                      */
+/* get base line for current heat                                             */
 /*----------------------------------------------------------------------------*/
-void Ribbon::vFirstLane(void)
+i8 Ribbon::i_Heat(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
+
+  return m_i_Heat;
+}
+
+/*----------------------------------------------------------------------------*/
+/* advance to next horizontal heat                                            */
+/*----------------------------------------------------------------------------*/
+void Ribbon::vHeatNext(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
+
+  m_i_Heat = nItems() + 1;
+  m_i_Lane = 0;
+
+  m_i_Line = m_i_Heat;
+  m_i_Char = m_pLaneTabs->iInt(m_i_Lane);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set base line for current heat                                             */
+/*----------------------------------------------------------------------------*/
+void Ribbon::vHeatSet(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
+
+  m_i_Heat = m_i_Line;
+}
+
+/*----------------------------------------------------------------------------*/
+/* begin at first vertical lane                                               */
+/*----------------------------------------------------------------------------*/
+void Ribbon::vLaneFirst(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
 
   m_i_Lane = 0;
-  m_i_Char = m_pTabSet->iInt(m_i_Lane);
-  
-  m_i_Line = m_i_Base;
-  
-  //vPutHeader();
+
+  m_i_Line = m_i_Heat;
+  m_i_Char = m_pLaneTabs->iInt(m_i_Lane);
 }
 
 /*----------------------------------------------------------------------------*/
-/* get a format                                                               */
+/* advance to next vertical lane                                              */
 /*----------------------------------------------------------------------------*/
-Stz* Ribbon::szFmt(eFR i_Fmt)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
-  
-  return m_saFmt[i_Fmt];
-}
-
-/*----------------------------------------------------------------------------*/
-/* set a format                                                               */
-/*----------------------------------------------------------------------------*/
-void Ribbon::vFmt(eFR i_Fmt, Stz* szFmt)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
-  
-  m_saFmt[i_Fmt] = szFmt;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set default formats                                                        */
-/*----------------------------------------------------------------------------*/
-void Ribbon::vFmtDefaults(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
-  
-  m_sRightFormat = "%20s"_Stz;
-  
-  for (i8 i_Fmt = 0; i_Fmt < FR_ENUMS; i_Fmt++)
-    vFmt((eFR)i_Fmt, aFR_format[i_Fmt]);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get current line                                                           */
-/*----------------------------------------------------------------------------*/
-i8 Ribbon::i_Line(void)
+void Ribbon::vLaneNext(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
 
-  return m_i_Line;
-}
+  if (++m_i_Lane >= m_nMaxLanesAcross)
+    vHeatNext();
 
-/*----------------------------------------------------------------------------*/
-/* advance to next horizontal area                                            */
-/*----------------------------------------------------------------------------*/
-void Ribbon::vNextHeat(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
-  
-  m_i_Base = nItems() + 1;
-  m_i_Lane = 0;
-  
-  m_i_Char = m_pTabSet->iInt(m_i_Lane);
-  
-  m_i_Line = m_i_Base;
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* advance to next column                                                     */
-/*----------------------------------------------------------------------------*/
-void Ribbon::vNextLane(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
-
-  if (++m_i_Lane >= m_nMaxAcross)
-    vNextHeat();
-
-  m_i_Line = m_i_Base;
-  m_i_Char = m_pTabSet->iInt(m_i_Lane);
-}
-
-/*----------------------------------------------------------------------------*/
-/* move to next line                                                          */
-/*----------------------------------------------------------------------------*/
-void Ribbon::vNextLine(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
-
-  m_i_Line++;
+  m_i_Line = m_i_Heat;
+  m_i_Char = m_pLaneTabs->iInt(m_i_Lane);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -245,7 +190,6 @@ void Ribbon::vPinSubRibbon(i8 i_Line, i8 i_Char, Ribbon* pSubRibbon)
     RibbonLine* pSubLine = pSubRibbon->pGet(i_RibbonLine);
     
     Stz* szSubText = pSubLine->szText();
-    
     vPutText(i_Line++,i_Char,szSubText);
   }
 }
@@ -257,9 +201,6 @@ void Ribbon::vPrintRibbon(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
 
-  vDrawH('-',true);
-  vDrawH('=');
-  
   vTrim();
 
   vTrace("\n"_Stz);
@@ -287,8 +228,7 @@ void Ribbon::vSprint(Stz* szFormat, ...)
   StrLib::vSprint(zText,xArgs,(char*)szFormat);
   va_end(xArgs);
 
-  vPutText(m_i_Line,m_i_Char,(Stz*)zText);
-  vNextLine();
+  vPutText(m_i_Line++,m_i_Char,(Stz*)zText);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -305,8 +245,7 @@ void Ribbon::vSprintRight(Stz* szFormat, ...)
   StrLib::vSprint(zText,xArgs,(char*)szFormat);
   va_end(xArgs);
 
-  vPutTextRight(m_i_Line,m_i_Char,(Stz*)zText);
-  vNextLine();
+  vPutTextRight(m_i_Line++,m_i_Char,(Stz*)zText);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -317,20 +256,6 @@ Object* Ribbon::pSurface(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
   
   return m_pSurface;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get text at given line                                                     */
-/*----------------------------------------------------------------------------*/
-Stz* Ribbon::szText(i8 i_Line)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
-
-  RibbonLine* pRibbonLine = pGet(i_Line);
-  
-  Stz* szText = pRibbonLine->szText();
-  
-  return szText;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -351,6 +276,8 @@ void Ribbon::vTitleLines(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
 
   m_nTitleLines = m_i_Line;
+
+  vHeatSet();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -382,7 +309,7 @@ i8 Ribbon::nRibbonWidth(i8 i_FromLine)
     RibbonLine* pRibbonLine = pGet(i_Line);
     
     Stz* szText = pRibbonLine->szText();
-    i8 nWidthLine = StrLib::nLengthNonBlank(szText->azChar(),'\0',C_RIBBON_TEXT);
+    i8 nWidthLine = StrLib::nLengthNonBlank(szText->azChar(), '\0', C_RIBBON_MAX_TEXT);
     if (nWidthLine > nMaxWidth)
       nMaxWidth = nWidthLine;
   }
@@ -413,8 +340,8 @@ void Ribbon::vInitTabs(i8 i_Start, i8 nEach)
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
 
   i8 iAt = i_Start;
-  for (i8 i_Col = 0; i_Col < C_RIBBON_COLUMNS; i_Col++) {
-    m_pTabSet->vInt(i_Col,iAt);
+  for (i8 i_Col = 0; i_Col < C_RIBBON_MAX_LANES; i_Col++) {
+    m_pLaneTabs->vInt(i_Col, iAt);
     iAt += nEach;
   }
 }
