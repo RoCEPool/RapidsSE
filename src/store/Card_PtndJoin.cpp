@@ -6,8 +6,8 @@
 #include "Card_SubSet.hpp"
 #include "Card_CmpPred.hpp"
 #include "Card_Table.hpp"
-#include "Card_TablePtr.hpp"
 #include "Card_TableList.hpp"
+#include "Card_Size.hpp"
 
 #include "Table.hpp"
 #include "StreamDef.hpp"
@@ -103,8 +103,8 @@ void Card_PtndJoin::vJoinEst(Card_TableList* p_tableList)
       Card_CmpPred *p_predCmp =
           _pCard_CmpPred(this->pGetChild(i_PredCmp));
 
-      if (p_predCmp->bUsesTable(p_table->Y_cVal(P_TableSyn))) {
-        nJoinedBuff += p_table->pGet_tablePtr()->pTable()->pStreamDef()->jTableSize();
+      if (p_predCmp->bUsesTable(p_table->cValue())) {
+        nJoinedBuff += p_table->pSub_size()->szValue()->iToI8();
         p_table->Y_vSet(P_TableUsed);
       }
     }

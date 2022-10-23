@@ -1025,28 +1025,12 @@ void Card::vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth)
 
   switch (m_eCard) {
 
-    case CK_CARDPTR:
-      _pCard_CardPtr(this)->vCardPtrPrint(pRibbon, iDepth);
-      break;
-
-    case CK_INDEXPTR:
-      _pCard_IndexPtr(this)->vIndexPtrPrint(pRibbon, iDepth);
-      break;
-
     case CK_STREAM:
       _pCard_Stream(this)->vStreamPrint(pRibbon, iDepth);
       break;
 
-    case CK_STREAMELIST:
-      _pCard_StreamElist(this)->vStreamElistPrint(pRibbon, iDepth);
-      break;
-
     case CK_TABLE:
       _pCard_Table(this)->vTablePrint(pRibbon, iDepth);
-      break;
-
-    case CK_TABLEPTR:
-      _pCard_TablePtr(this)->vTablePtrPrint(pRibbon, iDepth);
       break;
 
     default:
@@ -1408,6 +1392,18 @@ Stz* Card::sz(void)
 /*----------------------------------------------------------------------------*/
 /* get card value                                                             */
 /*----------------------------------------------------------------------------*/
+char Card::cValue(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  char c = * m_sValue.azChar();
+
+  return c;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get card value                                                             */
+/*----------------------------------------------------------------------------*/
 Stz* Card::szValue(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -1739,14 +1735,27 @@ Card_BoolCalc* Card::pSub_boolCalc(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_RpnCalc.hpp"
-Card_RpnCalc* Card::pSub_rpnCalc(void)
+#include "Card_Bounds.hpp"
+Card_Bounds* Card::pSub_bounds(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_RpnCalc* p_calc =
-      _pCard_RpnCalc(pFindSubCard(CK_RPNCALC));
-  return p_calc;
+  Card_Bounds* p_bounds =
+      _pCard_Bounds(pFindSubCard(CK_BOUNDS));
+  return p_bounds;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_CmpPred.hpp"
+Card_CmpPred* Card::pSub_predCmp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_CmpPred* p_predCmp =
+      _pCard_CmpPred(pFindSubCard(CK_CMPPRED));
+  return p_predCmp;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1804,6 +1813,32 @@ Card_IdxColList* Card::pSub_idxColList(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_IdxColNm.hpp"
+Card_IdxColNm* Card::pSub_idxColNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_IdxColNm* p_idxColNm =
+      _pCard_IdxColNm(pFindSubCard(CK_IDXCOLNM));
+  return p_idxColNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_Index.hpp"
+Card_Index* Card::pSub_index(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Index* p_index =
+      _pCard_Index(pFindSubCard(CK_INDEX));
+  return p_index;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_IndexJoin.hpp"
 Card_IndexJoin* Card::pSub_indexJoin(void)
 {
@@ -1830,27 +1865,14 @@ Card_IndexList* Card::pSub_indexList(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_IndexPtr.hpp"
-Card_IndexPtr* Card::pSub_indexPtr(void)
+#include "Card_IndexNm.hpp"
+Card_IndexNm* Card::pSub_indexNm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_IndexPtr* p_indexPtr =
-      _pCard_IndexPtr(pFindSubCard(CK_INDEXPTR));
-  return p_indexPtr;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-#include "Card_JoinPred.hpp"
-Card_JoinPred* Card::pSub_joinPred(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_JoinPred* p_joinPred =
-      _pCard_JoinPred(pFindSubCard(CK_JOINPRED));
-  return p_joinPred;
+  Card_IndexNm* p_indexNm =
+      _pCard_IndexNm(pFindSubCard(CK_INDEXNM));
+  return p_indexNm;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1869,14 +1891,14 @@ Card_LBound* Card::pSub_lBound(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_CmpPred.hpp"
-Card_CmpPred* Card::pSub_predCmp(void)
+#include "Card_RpnCalc.hpp"
+Card_RpnCalc* Card::pSub_rpnCalc(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_CmpPred* p_predCmp =
-      _pCard_CmpPred(pFindSubCard(CK_CMPPRED));
-  return p_predCmp;
+  Card_RpnCalc* p_calc =
+      _pCard_RpnCalc(pFindSubCard(CK_RPNCALC));
+  return p_calc;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1908,27 +1930,14 @@ Card_Scan* Card::pSub_scan(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_ScanPred.hpp"
-Card_ScanPred* Card::pSub_scanPred(void)
+#include "Card_Size.hpp"
+Card_Size* Card::pSub_size(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_ScanPred* p_scanPred =
-      _pCard_ScanPred(pFindSubCard(CK_SCANPRED));
-  return p_scanPred;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-#include "Card_StageTopo.hpp"
-Card_StageTopo* Card::pSub_stageTopo(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_StageTopo* p_stageTopo =
-      _pCard_StageTopo(pFindSubCard(CK_STAGETOPO));
-  return p_stageTopo;
+  Card_Size* p_size =
+      _pCard_Size(pFindSubCard(CK_SIZE));
+  return p_size;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1947,14 +1956,27 @@ Card_Stream* Card::pSub_stream(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_StreamColList.hpp"
-Card_StreamColList* Card::pSub_streamColList(void)
+#include "Card_StmColList.hpp"
+Card_StmColList* Card::pSub_stmColList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_StreamColList* p_streamColList =
-      _pCard_StreamColList(pFindSubCard(CK_STREAMCOLLIST));
+  Card_StmColList* p_streamColList =
+      _pCard_StmColList(pFindSubCard(CK_STMCOLLIST));
   return p_streamColList;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_StmColOrd.hpp"
+Card_StmColOrd* Card::pSub_stmColOrd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_StmColOrd* p_streamColOrd =
+      _pCard_StmColOrd(pFindSubCard(CK_STMCOLORD));
+  return p_streamColOrd;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1973,6 +1995,19 @@ Card_Table* Card::pSub_table(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_TableNm.hpp"
+Card_TableNm* Card::pSub_tableNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_TableNm* p_tableNm =
+      _pCard_TableNm(pFindSubCard(CK_TABLENM));
+  return p_tableNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_TablePtn.hpp"
 Card_TablePtn* Card::pSub_tablePtn(void)
 {
@@ -1986,14 +2021,14 @@ Card_TablePtn* Card::pSub_tablePtn(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_TablePtr.hpp"
-Card_TablePtr* Card::pSub_tablePtr(void)
+#include "Card_Topology.hpp"
+Card_Topology* Card::pSub_topology(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_TablePtr* p_tablePtr =
-      _pCard_TablePtr(pFindSubCard(CK_TABLEPTR));
-  return p_tablePtr;
+  Card_Topology* p_stageTopo =
+      _pCard_Topology(pFindSubCard(CK_TOPOLOGY));
+  return p_stageTopo;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -1,29 +1,25 @@
 /*============================================================================*/
-/* Card_CardPtr.cpp -- Card                                                    */
+/* Card_Size.cpp -- Size (of table)                                           */
 /*============================================================================*/
 
-#include "Card_CardPtr.hpp"
-#include "CardIter.hpp"
-
+#include "Card_Size.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_CardPtr, CK_CARDPTR)
-__aNewFunction(Card_CardPtr, CN_CARD)
-__vDeleteFunction(Card_CardPtr, CN_CARD)
+__pCastFunction_Card(STORE,Card_Size,CK_SIZE)
+__aNewFunction(Card_Size,CN_CARD)
+__vDeleteFunction(Card_Size,CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_CardPtr::Card_CardPtr(Card* pCard)
-: Card(CK_CARDPTR)
+Card_Size::Card_Size(void)
+: Card(CK_SIZE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  vCard(pCard);
   
   _checkInitialised_(CN_CARD);
   
@@ -33,59 +29,30 @@ Card_CardPtr::Card_CardPtr(Card* pCard)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_CardPtr::~Card_CardPtr(void) noexcept(false)
+Card_Size::~Card_Size(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* return pCard                                                               */
+/* return typeShort                                                           */
 /*----------------------------------------------------------------------------*/
-Card* Card_CardPtr::pCard(void)
+char Card_Size::cTypeShort(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card* pCard = _pCard(Y_pVal(P_Card));
+  Stz* szType = szValue();
 
-  return pCard;
-}
+  for (i8 i_CT = 0; i_CT < CT_ENUMS; i_CT++) {
+    if (szValue()->bSame(aCT[i_CT]))
+      return cCT_char[i_CT];
+  }
 
-/*----------------------------------------------------------------------------*/
-/* set pCard                                                                  */
-/*----------------------------------------------------------------------------*/
-void Card_CardPtr::vCard(Card* pCard)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Y_vSet(P_Card, pCard);
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* print {card}                                                               */
-/*----------------------------------------------------------------------------*/
-void Card_CardPtr::vCardPtrPrint(Ribbon* pRibbon, i8 iDepth)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_CardPtr* pCard_CardPtr = _pCard_CardPtr(this);
-  Card* pCard = _pCard(pCard_CardPtr->pCard());
-
-  pRibbon->vSput(FR_NAME,pCard->szCardNm());
-
-  if (pRibbon->iArea())
-    return;
-
-  pCard->vPrintProperties(pRibbon, iDepth);
-
-  CardIter xCI(this);
-  while (Card *pSubCard = xCI.pEachChild())
-    pSubCard->vPrintProperties(pRibbon, iDepth + 1);
+  return cCT_char[CT_ENUMS];
 }
 
 

@@ -36,10 +36,12 @@ namespace STORE
 
     PermGen*    m_pPermGen;
 
-    Table*      m_pTable;
-    StreamDef*  m_pStreamDef;
+    Column*     m_pColumn;
     IdxVec*     m_pIdxVec;
     Index*      m_pIndex;
+    IndexDef*   m_pIndexDef;
+    StreamDef*  m_pStreamDef;
+    Table*      m_pTable;
 
     Card* m_pCard_child;
     Card* m_pCard_dup;
@@ -147,6 +149,8 @@ namespace STORE
 
     bool P_bPlumbForSubMember(eCK eMember, eCK eSubCard, bool bUpdateMember= true);
     bool P_bPlumbForSubMember(Card* pMember, eCK eSubCard, bool bUpdateMember= true);
+    bool F_bPlumbForSubValue(eCK eMember, eCK eSub, Stz* szValue, bool bUpdateMember= true);
+    bool F_bPlumbForSubValue(Card* pMember, eCK eSub, Stz* szValue, bool bUpdateMember= true);
 
     void U_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm);
 

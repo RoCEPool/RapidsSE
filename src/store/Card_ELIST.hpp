@@ -4,7 +4,7 @@
 #pragma once
 
 #include "Card.hpp"
-#include "Card_StreamColList.hpp"
+#include "Card_StmColList.hpp"
 
 namespace STORE
 {
@@ -14,7 +14,7 @@ namespace STORE
     Card_ELIST(eCK eCard);
    ~Card_ELIST(void) noexcept(false);
 
-   Card_StreamColList* pDerive_StreamColList(void);
+   Card_StmColList* pDerive_StreamColList(void);
   };
 
   Card_ELIST* _pCard_ELIST(void* aAddr);

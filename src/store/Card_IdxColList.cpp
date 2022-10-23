@@ -5,8 +5,8 @@
 #include "Card_IdxCol.hpp"
 #include "Card_IdxColList.hpp"
 #include "Card_Stream.hpp"
-#include "Card_StreamCol.hpp"
-#include "Card_StreamColList.hpp"
+#include "Card_StmCol.hpp"
+#include "Card_StmColList.hpp"
 #include "Card_Term.hpp"
 
 #include "Table.hpp"
@@ -19,6 +19,19 @@ __pCastFunction_Card(STORE,Card_IdxColList,CK_IDXCOLLIST)
 __aNewFunction(Card_IdxColList,CN_CARD)
 __vDeleteFunction(Card_IdxColList,CN_CARD)
 
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Card_IdxColList::Card_IdxColList(void)
+    : Card(CK_IDXCOLLIST)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  _checkInitialised_(CN_CARD);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -90,7 +103,7 @@ void Card_IdxColList::vOrdinate(Card_Stream* pCard_Stream)
 
   i8 iOrdLo = pCard_Stream->Y_iVal(P_OrdLo);
 
-  Card_StreamColList* pCard_StreamColList = pCard_Stream->pSub_streamColList();
+  Card_StmColList* pCard_StreamColList = pCard_Stream->pSub_stmColList();
 
   i8 nSubCards = this->nChildCards();
   for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
@@ -98,7 +111,7 @@ void Card_IdxColList::vOrdinate(Card_Stream* pCard_Stream)
 
     i8 i_StreamColNo = C_UNKNOWN;
     Stz* szColNm = pCard_idxCol->sz();
-    Card_StreamCol* pCard_streamCol =
+    Card_StmCol* pCard_streamCol =
         pCard_StreamColList->pFind_streamCol(szColNm,i_StreamColNo);
 
     s32 sOrdinal;

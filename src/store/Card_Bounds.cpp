@@ -1,26 +1,26 @@
 /*============================================================================*/
-/* Card_ScanPred.cpp -- Index Predicate                                      */
+/* Card_Bounds.cpp -- Join Predicate                                        */
 /*============================================================================*/
 
-#include "Card_ScanPred.hpp"
+#include "Card_Bounds.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_ScanPred,CK_SCANPRED)
-__aNewFunction(Card_ScanPred,CN_CARD)
-__vDeleteFunction(Card_ScanPred,CN_CARD)
+__pCastFunction_Card(STORE, Card_Bounds, CK_BOUNDS)
+__aNewFunction(Card_Bounds, CN_CARD)
+__vDeleteFunction(Card_Bounds, CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_ScanPred::Card_ScanPred(void)
-: Card_PRED(CK_SCANPRED)
+Card_Bounds::Card_Bounds(void)
+: Card(CK_BOUNDS)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
+  
   _checkInitialised_(CN_CARD);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -29,7 +29,7 @@ Card_ScanPred::Card_ScanPred(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_ScanPred::~Card_ScanPred(void) noexcept(false)
+Card_Bounds::~Card_Bounds(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

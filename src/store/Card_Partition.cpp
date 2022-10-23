@@ -1,27 +1,25 @@
 /*============================================================================*/
-/* Card_StageTopo.cpp -- Stage Topology                                       */
+/* Card_Partition.cpp -- Partition (of table)                                 */
 /*============================================================================*/
 
-#include "Card_StageTopo.hpp"
+#include "Card_Partition.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_StageTopo,CK_STAGETOPO)
-__aNewFunction(Card_StageTopo,CN_CARD)
-__vDeleteFunction(Card_StageTopo,CN_CARD)
+__pCastFunction_Card(STORE,Card_Partition,CK_PARTITION)
+__aNewFunction(Card_Partition,CN_CARD)
+__vDeleteFunction(Card_Partition,CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_StageTopo::Card_StageTopo(eYG eStageTopo)
-: Card(CK_STAGETOPO)
+Card_Partition::Card_Partition(void)
+: Card(CK_PARTITION)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Y_vSet(P_StageTopo, (i8)eStageTopo);
   
   _checkInitialised_(CN_CARD);
   
@@ -31,15 +29,31 @@ Card_StageTopo::Card_StageTopo(eYG eStageTopo)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_StageTopo::~Card_StageTopo(void) noexcept(false)
+Card_Partition::~Card_Partition(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
-
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* return typeShort                                                           */
+/*----------------------------------------------------------------------------*/
+char Card_Partition::cTypeShort(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Stz* szType = szValue();
+
+  for (i8 i_CT = 0; i_CT < CT_ENUMS; i_CT++) {
+    if (szValue()->bSame(aCT[i_CT]))
+      return cCT_char[i_CT];
+  }
+
+  return cCT_char[CT_ENUMS];
+}
 
 
 /*============================================================================*/

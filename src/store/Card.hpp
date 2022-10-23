@@ -25,18 +25,19 @@ namespace STORE
   class Card_AggLevel;
   class Card_Aggreg;
   class Card_Aggregates;
+  class Card_AndPred;
   class Card_As;
 
-  class Card_Deck;
-
-  class Card_RpnCalc;
   class Card_BoolCalc;
+  class Card_Bounds;
+
   class Card_CandIndex;
-  class Card_CardPtr;
+  class Card_CmpPred;
   class Card_ColumnRef;
   class Card_Combined;
 
   class Card_Debug;
+  class Card_Deck;
   class Card_Direction;
 
   class Card_EBound;
@@ -53,45 +54,44 @@ namespace STORE
 
   class Card_IdxCol;
   class Card_IdxColList;
-  class Card_IndexPtr;
+  class Card_IdxColNm;
+  class Card_Index;
   class Card_IndexJoin;
   class Card_IndexList;
+  class Card_IndexNm;
   class Card_IndexPred;
   class Card_IndexScan;
-
-  class Card_JoinPred;
 
   class Card_LBound;
   class Card_Limit;
 
   class Card_OrdAgg;
+  class Card_OrPred;
   class Card_ObyElist;
 
-  class Card_AndPred;
-  class Card_CmpPred;
-  class Card_OrPred;
   class Card_Project;
   class Card_ProjElist;
 
   class Card_RBound;
+  class Card_RpnCalc;
   class Card_RpnTerms;
 
   class Card_SbyElist;
   class Card_Scan;
   class Card_ScanPred;
+  class Card_Size;
   class Card_Send;
   class Card_Sort;
   class Card_Stage;
-  class Card_StageTopo;
   class Card_Stream;
-  class Card_StreamElist;
-  class Card_StreamColList;
+  class Card_StmColList;
+  class Card_StmColOrd;
   class Card_SubSet;
 
-  class Card_Table;
+  class Card_TableNm;
   class Card_TablePtn;
-  class Card_TablePtr;
   class Card_Term;
+  class Card_Topology;
   class Card_Type;
 
   class Card_UBound;
@@ -100,15 +100,12 @@ namespace STORE
 
 static Stz* P_AggLevel     = "eAggLevel"_Stz;
 static Stz* P_AggOp        = "bAggOp"_Stz;
-static Stz* P_Card         = "pCard"_Stz;
 static Stz* P_DebugOption  = "szDebugOption"_Stz;
 static Stz* P_Exclude      = "bExclude"_Stz;
-static Stz* P_Index        = "pIndex"_Stz;
 static Stz* P_Invalid      = "bInvalid"_Stz;
 static Stz* P_JoinedBuff   = "nJoinedBuff"_Stz;
 static Stz* P_Network      = "nNetwork"_Stz;
 static Stz* P_OrdHi        = "iOrdHi"_Stz;
-static Stz* P_StreamColOrd = "szStreamColOrd"_Stz;
 static Stz* P_OrdLo        = "iOrdLo"_Stz;
 static Stz* P_ParamOrd     = "szParamOrd"_Stz;
 static Stz* P_Permutation  = "i_Permutation"_Stz;
@@ -117,8 +114,6 @@ static Stz* P_Rank         = "iRank"_Stz;
 static Stz* P_SendKind     = "eSendKind"_Stz;
 static Stz* P_SentOut      = "nSentOut"_Stz;
 static Stz* P_StageTopo    = "eStageTopo"_Stz;
-static Stz* P_Table        = "pTable"_Stz;
-static Stz* P_TableSyn     = "cTableSyn"_Stz;
 static Stz* P_TableUsed    = "bTableUsed"_Stz;
 
 static char MARK_ASSIGNED   = '@';
@@ -266,6 +261,7 @@ namespace STORE
     bool bSame(Stz* szArg);
 
     Stz* sz(void);
+    char cValue(void);
     Stz* szValue(void);
     void vValue(Stz* szValue);
     void vValueSprint(Stz* szFormat, ...);
@@ -295,26 +291,29 @@ namespace STORE
 
     Card_As*            pSub_as(void);
     Card_BoolCalc*      pSub_boolCalc(void);
+    Card_Bounds*        pSub_bounds(void);
     Card_ColumnRef*     pSub_columnRef(void);
     Card_Filter*        pSub_filter(void);
     Card_GbyElist*      pSub_gbyElist(void);
     Card_IdxColList*    pSub_idxColList(void);
+    Card_IdxColNm*      pSub_idxColNm(void);
+    Card_Index*         pSub_index(void);
     Card_IndexJoin*     pSub_indexJoin(void);
     Card_IndexList*     pSub_indexList(void);
-    Card_IndexPtr*      pSub_indexPtr(void);
-    Card_JoinPred*      pSub_joinPred(void);
+    Card_IndexNm*       pSub_indexNm(void);
     Card_LBound*        pSub_lBound(void);
     Card_CmpPred*       pSub_predCmp(void);
     Card_RpnCalc*       pSub_rpnCalc(void);
     Card_SbyElist*      pSub_sbyElist(void);
     Card_Scan*          pSub_scan(void);
-    Card_ScanPred*      pSub_scanPred(void);
-    Card_StageTopo*     pSub_stageTopo(void);
+    Card_Size*          pSub_size(void);
     Card_Stream*        pSub_stream(void);
-    Card_StreamColList* pSub_streamColList(void);
+    Card_StmColList*    pSub_stmColList(void);
+    Card_StmColOrd*     pSub_stmColOrd(void);
     Card_Table*         pSub_table(void);
+    Card_TableNm*       pSub_tableNm(void);
     Card_TablePtn*      pSub_tablePtn(void);
-    Card_TablePtr*      pSub_tablePtr(void);
+    Card_Topology*      pSub_topology(void);
     Card_UBound*        pSub_uBound(void);
 
   private:

@@ -131,7 +131,7 @@ void Dissector::vStage(i8 i_StageSpec)
   Card_Stage* pCard_Stage = new Card_Stage;
   pCard_Stage->vValueSprint("S%02lld"_Stz,i_StageSpec);
 
-  Card_StageTopo* pCard_StageTopo = new Card_StageTopo(eStageTopo);
+  Card_Topology* pCard_StageTopo = new Card_Topology(eStageTopo);
   pCard_Stage->vAppend(pCard_StageTopo);
 
   m_pBoard->pDeck()->vAppend(pCard_Stage);
@@ -398,16 +398,26 @@ Card* Dissector::pOp_IndexJoin(TagSet* pArgTags)
   
   Table* pTable = AM::pTableFind(szTableNm);
   Card_Table* pCard_Table = new Card_Table;
-  Card_TablePtr* pCard_TablePtr = new Card_TablePtr(pTable);
-  pCard_Table->vAppend(pCard_TablePtr);
   pCard_IndexJoin->vAppend(pCard_Table);
+
+  Card_TableNm* pCard_TableNm = new Card_TableNm;
+  pCard_Table->vAppend(pCard_TableNm);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // index
 
   Index* pIndex = pTable->pFindIndex(szIndexNm);
-  Card_IndexPtr* pCard_Index = new Card_IndexPtr(pIndex);
-  pCard_IndexJoin->vAppend(pCard_Index);
+
+  Card_Index* p_index = new Card_Index;
+  Card_IndexNm* p_indexNm = new Card_IndexNm;
+  p_index->vAppend(p_indexNm);
+  p_indexNm->vValue(pIndex->szIndexNm());
+
+
+
+
+
+  pCard_IndexJoin->vAppend(p_index);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // index predicate????
@@ -441,16 +451,20 @@ Card* Dissector::pOp_IndexScan(TagSet* pArgTags)
 
   Table* pTable = AM::pTableFind(szTableNm);
   Card_Table* pCard_Table = new Card_Table;
-  Card_TablePtr* pCard_TablePtr = new Card_TablePtr(pTable);
-  pCard_Table->vAppend(pCard_TablePtr);
   pCard_IndexScan->vAppend(pCard_Table);
+
+  Card_TableNm* pCard_TableNm = new Card_TableNm;
+  pCard_Table->vAppend(pCard_TableNm);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // index
 
   Index* pIndex = pTable->pFindIndex(szIndexNm);
-  Card_IndexPtr* pCard_Index = new Card_IndexPtr(pIndex);
-  pCard_IndexScan->vAppend(pCard_Index);
+
+  Card_Index* p_index = new Card_Index;
+  Card_IndexNm* p_indexNm = new Card_IndexNm;
+  p_index->vAppend(p_indexNm);
+  p_indexNm->vValue(pIndex->szIndexNm());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // index predicate????
@@ -588,8 +602,9 @@ Card* Dissector::pOp_Scan(TagSet* pArgTags)
   
   Table* pTable = AM::pTableFind(szTableNm);
   Card_Table* pCard_Table = new Card_Table(szTableNm);
-  Card_TablePtr* pCard_TablePtr = new Card_TablePtr(pTable);
-  pCard_Table->vAppend(pCard_TablePtr);
+  Card_TableNm* pCard_TableNm = new Card_TableNm;
+  pCard_TableNm->vValue(szTableNm);
+  pCard_Table->vAppend(pCard_TableNm);
   pOp_Scan->vAppend(pCard_Table);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

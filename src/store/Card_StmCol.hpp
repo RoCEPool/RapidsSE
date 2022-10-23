@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_IndexPtr.hpp -- Index                                                    */
+/* Card_StmCol.hpp -- Stream Column                                           */
 /*============================================================================*/
 #pragma once
 
@@ -7,24 +7,19 @@
 
 namespace STORE
 {
-  class Card_IndexPtr : public Card
+  class Card_StmCol : public Card
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_IndexPtr(Index* pIndex);
-   ~Card_IndexPtr(void) noexcept(false);
+    Card_StmCol(void);
+   ~Card_StmCol(void) noexcept(false);
 
-    Card_IdxCol* pFind_indexCol(Stz* szColNm, i8& i_IdxCol);
-
-    Index* pIndex(void);
-    void vIndex(Index* pIndex);
-
-    void vIndexPtrPrint(Ribbon* pRibbon, i8 iDepth);
+    Stz* szStreamColNm(void);
   };
 
-  Card_IndexPtr* _pCard_IndexPtr(void* aAddr);
+  Card_StmCol* _pCard_StmCol(void* aAddr);
 }
 
 /*============================================================================*/

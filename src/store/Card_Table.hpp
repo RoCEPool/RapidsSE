@@ -17,7 +17,6 @@ namespace STORE
     Card_Table(Stz* szTableNm);
    ~Card_Table(void) noexcept(false);
 
-    Card_TablePtr* pGet_tablePtr(void);
     void vTablePrint(Ribbon* pRibbon, i8 iDepth);
   };
 

@@ -1,29 +1,25 @@
 /*============================================================================*/
-/* Card_CardPtr.hpp -- Card                                                     */
+/* Card_Size.hpp -- Size (of table)                                           */
 /*============================================================================*/
 #pragma once
 
 #include "Card.hpp"
-//#include "Ribbon.hpp"
 
 namespace STORE
 {
-  class Card_CardPtr : public Card
-  {
+  class Card_Size : public Card
+  {  
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_CardPtr(Card* pCard);
-   ~Card_CardPtr(void) noexcept(false);
+    Card_Size(void);
+   ~Card_Size(void) noexcept(false);
 
-    Card* pCard(void);
-    void vCard(Card* pCard);
-
-    void vCardPtrPrint(Ribbon* pRibbon, i8 iDepth);
+    char cTypeShort(void);
   };
 
-  Card_CardPtr* _pCard_CardPtr(void* aAddr);
+  Card_Size* _pCard_Size(void* aAddr);
 }
 
 /*============================================================================*/

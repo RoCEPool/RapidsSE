@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_StageTopo.hpp -- Stage Topology                                       */
+/* Card_StmColOrd.hpp -- Stream Column Ordinal                                */
 /*============================================================================*/
 #pragma once
 
@@ -7,17 +7,17 @@
 
 namespace STORE
 {
-  class Card_StageTopo : public Card
+  class Card_StmColOrd : public Card
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_StageTopo(eYG eStageTopo);
-   ~Card_StageTopo(void) noexcept(false);
+    Card_StmColOrd(void);
+   ~Card_StmColOrd(void) noexcept(false);
   };
 
-  Card_StageTopo* _pCard_StageTopo(void* aAddr);
+  Card_StmColOrd* _pCard_StmColOrd(void* aAddr);
 }
 
 /*============================================================================*/

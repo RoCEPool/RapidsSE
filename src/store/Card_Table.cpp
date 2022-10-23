@@ -4,10 +4,8 @@
 
 #include "Card_Table.hpp"
 
-#include "Card_IndexPtr.hpp"
 #include "Card_IdxColList.hpp"
 #include "Card_IndexList.hpp"
-#include "Card_TablePtr.hpp"
 
 #include "PtnDef.hpp"
 
@@ -62,18 +60,6 @@ Card_Table::~Card_Table(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_TablePtr* Card_Table::pGet_tablePtr(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card_TablePtr* p_tablePtr = _pCard_TablePtr(this->pFindSubCard(CK_TABLEPTR));
-
-  return p_tablePtr;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Card_Table::vTablePrint(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -83,10 +69,8 @@ void Card_Table::vTablePrint(Ribbon* pRibbon, i8 iDepth)
   if (0 == iDepth)
     sName.vToUpper();
 
-  if (bHasProperty(P_TableSyn))
-    sName.vCatSprint(" %c"_Stz, Y_cVal(P_TableSyn));
-  else
-    sName.vCatSprint(" %s"_Stz, szValue());
+  if (bHasValue())
+    sName.vCatSprint(" %c"_Stz, cValue());
 
   vPrintCard_byCustomNm(pRibbon, iDepth, sName);
 }

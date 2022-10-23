@@ -4,7 +4,6 @@
 
 #include "Card_TablePtn.hpp"
 #include "Card_Table.hpp"
-#include "Card_TablePtr.hpp"
 
 #include "Table.hpp"
 #include "PtnDef.hpp"
@@ -32,21 +31,6 @@ Card_TablePtn::Card_TablePtn(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Card_TablePtn::Card_TablePtn(Card_Table* p_table)
-: Card(CK_TABLEPTN)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  _checkInitialised_(CN_CARD);
-
-  vAdd_TablePtn(p_table);
-
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Card_TablePtn::~Card_TablePtn(void) noexcept(false)
@@ -57,30 +41,6 @@ Card_TablePtn::~Card_TablePtn(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* destructor                                                                 */
-/*----------------------------------------------------------------------------*/
-void Card_TablePtn::vAdd_TablePtn(Card_Table* p_table)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  char cTableSyn = p_table->Y_cVal(P_TableSyn);
-
-  Card_TablePtr* p_tablePtr = p_table->pSub_tablePtr();
-  Table* pTable = p_tablePtr->pTable();
-
-  PtnDef* pPtnDef = pTable->pPtnDef();
-  Column* pPtnColumn = pPtnDef->pGetColumn(0);
-
-  StreamDef* pStreamDef = pTable->pStreamDef();
-  Column* pStmColumn = pStreamDef->pFindColumn(pPtnColumn->szColNm());
-  i8 iStmColNo = pStmColumn->iColumnNo();
-  s32 sTablePtn;
-  sTablePtn.vSprint("$$%c.%lld"_Stz, cTableSyn, iStmColNo + 1);
-
-  this->vValue(sTablePtn);
-}
 
 
 /*============================================================================*/

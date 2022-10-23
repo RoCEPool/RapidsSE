@@ -37,11 +37,12 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
 
   m_pPermGen = nullptr;
 
-  m_pTable     = nullptr;
-  m_pStreamDef = nullptr;
+  m_pColumn    = nullptr;
   m_pIdxVec    = nullptr;
   m_pIndex     = nullptr;
-
+  m_pIndexDef  = nullptr;
+  m_pStreamDef = nullptr;
+  m_pTable     = nullptr;
 
   m_pCard_child    = nullptr;
   m_pCard_dup      = nullptr;
@@ -107,26 +108,28 @@ eOA TransformerTool::eCueUser(Stz* szPhase, Stz* szTransformation)
   if (m_bCueingDisabled)
     return OA_CONTINUE_TRANSFORMING;
 
+  s256 sPrompt;
+  if (szPhase && szTransformation)
+    sPrompt.vSprint("%s :: %s"_Stz,szPhase, szTransformation);
+  else if (szPhase)
+    sPrompt.vSprint("%s"_Stz,szPhase, szTransformation);
+  else
+    sPrompt.vSprint(""_Stz,szPhase);
+
   if (! m_bBeenCued && AM::JOB::bHasTag("<cue>"_Stz)) {
     Stz* szTagCue = AM::JOB::szTagValue("<cue>"_Stz);
     if (   (! szPhase          || ! szTagCue->bSame(szPhase))
         && (! szTransformation || ! szTagCue->bSame(szTransformation))) {
-      //printf("%s :: %s\n",(char*)szPhase, (char*)szTransformation);
+      printf("%s\n",sPrompt.azChar());
       return OA_CONTINUE_TRANSFORMING;
     }
   }
 
+  sPrompt.vConcat(" >> "_Stz);
+
   m_bBeenCued = true;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  s256 sPrompt;
-  if (szPhase && szTransformation)
-    sPrompt.vSprint("%s :: %s >> "_Stz,szPhase, szTransformation);
-  else if (szPhase)
-    sPrompt.vSprint("%s >> "_Stz,szPhase, szTransformation);
-  else
-    sPrompt.vSprint(">> "_Stz,szPhase);
 
   L_Input:
 
@@ -204,6 +207,8 @@ void TransformerTool::vEndTransformation(void)
   _precondition_(_ADDRESS_, _MAGIC_);
 
   m_bTrace = false;
+
+  M.pDeck->vRenumberRecursive();
 
   // UNDO: Card::vConsistencyCheck(m_pDeck, m_iTransformNo);
 }
@@ -728,6 +733,7 @@ Card* TransformerTool::G_pGetMember(eCK eMember)
     case CK_ABSJOIN:          return M.p_absJoin;
     case CK_AGGREG:           return M.p_aggreg;
     case CK_BOOLCALC:         return M.p_boolCalc;
+    case CK_BOUNDS:           return M.p_bounds;
     case CK_CMPPRED:          return M.p_cmpPred;
     case CK_COMBINED:         return M.p_combined;
     case CK_COMMENT:          return M.p_comment;
@@ -743,19 +749,19 @@ Card* TransformerTool::G_pGetMember(eCK eMember)
     case CK_IDXCOL:           return M.p_idxCol;
     case CK_IDXCOLLIST:       return M.p_idxColList;
     case CK_IDXCOLNM:         return M.p_idxColNm;
+    case CK_INDEX:            return M.p_index;
     case CK_INDEXJOIN:        return M.p_indexJoin;
     case CK_INDEXLIST:        return M.p_indexList;
     case CK_INDEXNM:          return M.p_indexNm;
-    case CK_INDEXPTR:         return M.p_indexPtr;
     case CK_INDEXSCAN:        return M.p_indexScan;
     case CK_JOINORDER:        return M.p_joinOrder;
     case CK_JOINORDERSEQ:     return M.p_joinOrderSeq;
-    case CK_JOINPRED:         return M.p_joinPred;
     case CK_JOINPREDLIST:     return M.p_joinPredList;
     case CK_KEYEXISTS:        return M.p_keyExists;
     case CK_LBOUND:           return M.p_lBound;
     case CK_PARAM:            return M.p_param;
     case CK_PARAMLIST:        return M.p_paramList;
+    case CK_PARTITION:        return M.p_partition;
     case CK_PERMUTATION:      return M.p_permutation;
     case CK_PROJECT:          return M.p_project;
     case CK_PTNCOL:           return M.p_ptnCol;
@@ -766,22 +772,22 @@ Card* TransformerTool::G_pGetMember(eCK eMember)
     case CK_RPNCALC:          return M.p_rpnCalc;
     case CK_SBYELIST:         return M.p_sbyElist;
     case CK_SCAN:             return M.p_scan;
-    case CK_SCANPRED:         return M.p_scanPred;
     case CK_SEND:             return M.p_send;
+    case CK_SIZE:             return M.p_size;
     case CK_SORT:             return M.p_sort;
     case CK_STAGE:            return M.p_stage;
-    case CK_STAGETOPO:        return M.p_stageTopo;
+    case CK_STMCOL:           return M.p_stmCol;
+    case CK_STMCOLLIST:       return M.p_stmColList;
     case CK_STMCOLNM:         return M.p_stmColNm;
+    case CK_STMCOLORD:        return M.p_stmColOrd;
     case CK_STREAM:           return M.p_stream;
-    case CK_STREAMCOL:        return M.p_streamCol;
-    case CK_STREAMCOLLIST:    return M.p_streamColList;
     case CK_SUBSET:           return M.p_subSet;
     case CK_TABLE:            return M.p_table;
     case CK_TABLELIST:        return M.p_tableList;
     case CK_TABLENM:          return M.p_tableNm;
     case CK_TABLEPTN:         return M.p_tablePtn;
-    case CK_TABLEPTR:         return M.p_tablePtr;
     case CK_TERM:             return M.p_term;
+    case CK_TOPOLOGY:         return M.p_topology;
     case CK_TSTPRED:          return M.p_tstPred;
     case CK_UBOUND:           return M.p_uBound;
     case CK_WHERE:            return M.p_where;
@@ -898,6 +904,7 @@ void TransformerTool::M_vClearMembers(void)
   M.p_absJoin          = nullptr;
   M.p_aggreg           = nullptr;
   M.p_boolCalc         = nullptr;
+  M.p_bounds           = nullptr;
   M.p_cmpPred          = nullptr;
   M.p_combined         = nullptr;
   M.p_comment          = nullptr;
@@ -913,19 +920,19 @@ void TransformerTool::M_vClearMembers(void)
   M.p_idxCol           = nullptr;
   M.p_idxColList       = nullptr;
   M.p_idxColNm         = nullptr;
+  M.p_index            = nullptr;
   M.p_indexJoin        = nullptr;
   M.p_indexList        = nullptr;
   M.p_indexNm          = nullptr;
-  M.p_indexPtr         = nullptr;
   M.p_indexScan        = nullptr;
   M.p_joinOrder        = nullptr;
   M.p_joinOrderSeq     = nullptr;
-  M.p_joinPred         = nullptr;
   M.p_joinPredList     = nullptr;
   M.p_keyExists        = nullptr;
   M.p_lBound           = nullptr;
   M.p_param            = nullptr;
   M.p_paramList        = nullptr;
+  M.p_partition        = nullptr;
   M.p_permutation      = nullptr;
   M.p_permutation_low  = nullptr;
   M.p_project          = nullptr;
@@ -937,22 +944,22 @@ void TransformerTool::M_vClearMembers(void)
   M.p_rpnCalc          = nullptr;
   M.p_sbyElist         = nullptr;
   M.p_scan             = nullptr;
-  M.p_scanPred         = nullptr;
   M.p_send             = nullptr;
+  M.p_size             = nullptr;
   M.p_sort             = nullptr;
   M.p_stage            = nullptr;
-  M.p_stageTopo        = nullptr;
+  M.p_stmCol           = nullptr;
+  M.p_stmColList       = nullptr;
   M.p_stmColNm         = nullptr;
+  M.p_stmColOrd        = nullptr;
   M.p_stream           = nullptr;
-  M.p_streamCol        = nullptr;
-  M.p_streamColList    = nullptr;
   M.p_subSet           = nullptr;
   M.p_table            = nullptr;
   M.p_tableList        = nullptr;
   M.p_tableNm          = nullptr;
   M.p_tablePtn         = nullptr;
-  M.p_tablePtr         = nullptr;
   M.p_term             = nullptr;
+  M.p_topology         = nullptr;
   M.p_tstPred          = nullptr;
   M.p_uBound           = nullptr;
   M.p_where            = nullptr;
@@ -1163,6 +1170,7 @@ void TransformerTool::U_vUpdateMember(eCK eMember, Card* pCard, const char* asFu
     case CK_ABSJOIN:          *((Card**)&M.p_absJoin)          = pCard; break;
     case CK_AGGREG:           *((Card**)&M.p_aggreg)           = pCard; break;
     case CK_BOOLCALC:         *((Card**)&M.p_boolCalc)         = pCard; break;
+    case CK_BOUNDS:           *((Card**)&M.p_bounds)           = pCard; break;
     case CK_CMPPRED:          *((Card**)&M.p_cmpPred)          = pCard; break;
     case CK_COMBINED:         *((Card**)&M.p_combined)         = pCard; break;
     case CK_COMMENT:          *((Card**)&M.p_comment)          = pCard; break;
@@ -1178,19 +1186,19 @@ void TransformerTool::U_vUpdateMember(eCK eMember, Card* pCard, const char* asFu
     case CK_IDXCOL:           *((Card**)&M.p_idxCol)           = pCard; break;
     case CK_IDXCOLLIST:       *((Card**)&M.p_idxColList)       = pCard; break;
     case CK_IDXCOLNM:         *((Card**)&M.p_idxColNm)         = pCard; break;
+    case CK_INDEX:            *((Card**)&M.p_index)            = pCard; break;
     case CK_INDEXJOIN:        *((Card**)&M.p_indexJoin)        = pCard; break;
     case CK_INDEXLIST:        *((Card**)&M.p_indexList)        = pCard; break;
     case CK_INDEXNM:          *((Card**)&M.p_indexNm)          = pCard; break;
-    case CK_INDEXPTR:         *((Card**)&M.p_indexPtr)         = pCard; break;
     case CK_INDEXSCAN:        *((Card**)&M.p_indexScan)        = pCard; break;
     case CK_JOINORDER:        *((Card**)&M.p_joinOrder)        = pCard; break;
     case CK_JOINORDERSEQ:     *((Card**)&M.p_joinOrderSeq)     = pCard; break;
-    case CK_JOINPRED:         *((Card**)&M.p_joinPred)         = pCard; break;
     case CK_JOINPREDLIST:     *((Card**)&M.p_joinPredList)     = pCard; break;
     case CK_KEYEXISTS:        *((Card**)&M.p_keyExists)        = pCard; break;
     case CK_LBOUND:           *((Card**)&M.p_lBound)           = pCard; break;
     case CK_PARAM:            *((Card**)&M.p_param)            = pCard; break;
     case CK_PARAMLIST:        *((Card**)&M.p_paramList)        = pCard; break;
+    case CK_PARTITION:        *((Card**)&M.p_partition)        = pCard; break;
     case CK_PERMUTATION:      *((Card**)&M.p_permutation)      = pCard; break;
     case CK_PROJECT:          *((Card**)&M.p_project)          = pCard; break;
     case CK_PTNCOL:           *((Card**)&M.p_ptnCol)           = pCard; break;
@@ -1201,22 +1209,22 @@ void TransformerTool::U_vUpdateMember(eCK eMember, Card* pCard, const char* asFu
     case CK_RPNCALC:          *((Card**)&M.p_rpnCalc)          = pCard; break;
     case CK_SBYELIST:         *((Card**)&M.p_sbyElist)         = pCard; break;
     case CK_SCAN:             *((Card**)&M.p_scan)             = pCard; break;
-    case CK_SCANPRED:         *((Card**)&M.p_scanPred)         = pCard; break;
     case CK_SEND:             *((Card**)&M.p_send)             = pCard; break;
+    case CK_SIZE:             *((Card**)&M.p_size)             = pCard; break;
     case CK_SORT:             *((Card**)&M.p_sort)             = pCard; break;
     case CK_STAGE:            *((Card**)&M.p_stage)            = pCard; break;
-    case CK_STAGETOPO:        *((Card**)&M.p_stageTopo)        = pCard; break;
+    case CK_STMCOL:           *((Card**)&M.p_stmCol)           = pCard; break;
+    case CK_STMCOLLIST:       *((Card**)&M.p_stmColList)       = pCard; break;
     case CK_STMCOLNM:         *((Card**)&M.p_stmColNm)         = pCard; break;
+    case CK_STMCOLORD:        *((Card**)&M.p_stmColOrd)        = pCard; break;
     case CK_STREAM:           *((Card**)&M.p_stream)           = pCard; break;
-    case CK_STREAMCOL:        *((Card**)&M.p_streamCol)        = pCard; break;
-    case CK_STREAMCOLLIST:    *((Card**)&M.p_streamColList)    = pCard; break;
     case CK_SUBSET:           *((Card**)&M.p_subSet)           = pCard; break;
     case CK_TABLE:            *((Card**)&M.p_table)            = pCard; break;
     case CK_TABLELIST:        *((Card**)&M.p_tableList)        = pCard; break;
     case CK_TABLENM:          *((Card**)&M.p_tableNm)          = pCard; break;
     case CK_TABLEPTN:         *((Card**)&M.p_tablePtn)         = pCard; break;
-    case CK_TABLEPTR:         *((Card**)&M.p_tablePtr)         = pCard; break;
     case CK_TERM:             *((Card**)&M.p_term)             = pCard; break;
+    case CK_TOPOLOGY:         *((Card**)&M.p_topology)         = pCard; break;
     case CK_TSTPRED:          *((Card**)&M.p_tstPred)          = pCard; break;
     case CK_UBOUND:           *((Card**)&M.p_uBound)           = pCard; break;
     case CK_WHERE:            *((Card**)&M.p_where)            = pCard; break;
@@ -1246,7 +1254,7 @@ bool TransformerTool::P_bPlumbForSubMember(eCK eMember, eCK eSubCard, bool bUpda
 }
 
 /*----------------------------------------------------------------------------*/
-/* step to next main and set member                                           */
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
 bool TransformerTool::P_bPlumbForSubMember(Card* pMember, eCK eSubCard, bool bUpdateMember)
 {
@@ -1263,6 +1271,43 @@ bool TransformerTool::P_bPlumbForSubMember(Card* pMember, eCK eSubCard, bool bUp
     U_vUpdateMember(eSubCard, nullptr,__func__);
   return false;
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool TransformerTool::F_bPlumbForSubValue(eCK eMember, eCK eSub, Stz* szValue, bool bUpdateMember)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  Card* pMember = G_pGetMember(eMember);
+
+  bool b = F_bPlumbForSubValue(pMember, eSub, szValue, bUpdateMember);
+
+  return b;
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool TransformerTool::F_bPlumbForSubValue(Card* pMember, eCK eSubCard, Stz* szValue, bool bUpdateMember)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  if ((M.p_SubMember = pMember->pFindSubCard(eSubCard))) {
+    if (M.p_SubMember->bSame(szValue)) {
+      M.e_SubMember = M.p_SubMember->eCard();
+      if (bUpdateMember)
+        U_vUpdateMember(M.e_SubMember, M.p_SubMember, __func__);
+      return true;
+    }
+  }
+
+  if (bUpdateMember)
+    U_vUpdateMember(eSubCard, nullptr,__func__);
+  return false;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* resolve card (right-left before given i_Before                             */
@@ -1352,6 +1397,7 @@ Stz* TransformerTool::szMemberNm(eCK eMember)
     case CK_ABSJOIN:          return "M.p_absJoin"_Stz;
     case CK_AGGREG:           return "M.p_aggreg"_Stz;
     case CK_BOOLCALC:         return "M.p_boolCalc"_Stz;
+    case CK_BOUNDS:           return "M.p_bounds"_Stz;
     case CK_CMPPRED:          return "M.p_cmpPred"_Stz;
     case CK_COMBINED:         return "M.p_combined"_Stz;
     case CK_COMMENT:          return "M.p_comment"_Stz;
@@ -1366,45 +1412,45 @@ Stz* TransformerTool::szMemberNm(eCK eMember)
     case CK_GBYELIST:         return "M.p_gbyElist"_Stz;
     case CK_IDXCOLLIST:       return "M.p_idxColList"_Stz;
     case CK_IDXCOLNM:         return "M.p_idxColNm"_Stz;
+    case CK_INDEX:            return "M.p_index"_Stz;
     case CK_INDEXJOIN:        return "M.p_indexJoin"_Stz;
     case CK_INDEXLIST:        return "M.p_indexList"_Stz;
     case CK_INDEXNM:          return "M.p_indexNm"_Stz;
-    case CK_INDEXPTR:         return "M.p_indexPtr"_Stz;
     case CK_INDEXSCAN:        return "M.p_indexScan"_Stz;
     case CK_JOINORDER:        return "M.p_joinOrder"_Stz;
     case CK_JOINORDERSEQ:     return "M.p_joinOrderSeq"_Stz;
-    case CK_JOINPRED:         return "M.p_joinPred"_Stz;
     case CK_JOINPREDLIST:     return "M.p_joinPredList"_Stz;
     case CK_KEYEXISTS:        return "M.p_keyExists"_Stz;
     case CK_LBOUND:           return "M.p_lBound"_Stz;
     case CK_PARAM:            return "M.p_param"_Stz;
     case CK_PARAMLIST:        return "M.p_paramList"_Stz;
+    case CK_PARTITION:        return "M.p_partition"_Stz;
     case CK_PERMUTATION:      return "M.p_permutation"_Stz;
     case CK_PROJECT:          return "M.p_project"_Stz;
-    case CK_PTNCOL:           return "M.p_project"_Stz;
-    case CK_PTNCOLLIST:       return "M.p_project"_Stz;
-    case CK_PTNCOLNM:         return "M.p_project"_Stz;
+    case CK_PTNCOL:           return "M.p_ptnCol"_Stz;
+    case CK_PTNCOLLIST:       return "M.p_ptnColList"_Stz;
+    case CK_PTNCOLNM:         return "M.p_ptnColNm"_Stz;
     case CK_PTNDJOIN:         return "M.p_ptndJoin"_Stz;
     case CK_PTNDJOINSET:      return "M.p_ptndJoinSet"_Stz;
     case CK_RPNCALC:          return "M.p_rpnCalc"_Stz;
     case CK_SBYELIST:         return "M.p_sbyElist"_Stz;
     case CK_SCAN:             return "M.p_scan"_Stz;
-    case CK_SCANPRED:         return "M.p_scanPred"_Stz;
     case CK_SEND:             return "M.p_send"_Stz;
+    case CK_SIZE:             return "M.p_size"_Stz;
     case CK_SORT:             return "M.p_sort"_Stz;
     case CK_STAGE:            return "M.p_stage"_Stz;
-    case CK_STAGETOPO:        return "M.p_stageTopo"_Stz;
+    case CK_STMCOL:           return "M.p_stmCol"_Stz;
+    case CK_STMCOLLIST:       return "M.p_stmColList"_Stz;
     case CK_STMCOLNM:         return "M.p_stmColNm"_Stz;
+    case CK_STMCOLORD:        return "M.p_stmColOrd"_Stz;
     case CK_STREAM:           return "M.p_stream"_Stz;
-    case CK_STREAMCOL:        return "M.p_streamCol"_Stz;
-    case CK_STREAMCOLLIST:    return "M.p_streamColList"_Stz;
     case CK_SUBSET:           return "M.p_subSet"_Stz;
     case CK_TABLE:            return "M.p_table"_Stz;
     case CK_TABLELIST:        return "M.p_tableList"_Stz;
     case CK_TABLENM:          return "M.p_tableNm"_Stz;
     case CK_TABLEPTN:         return "M.p_tablePtn"_Stz;
-    case CK_TABLEPTR:         return "M.p_tablePtr"_Stz;
     case CK_TERM:             return "M.p_term"_Stz;
+    case CK_TOPOLOGY:         return "M.p_topology"_Stz;
     case CK_TSTPRED:          return "M.p_tstPred"_Stz;
     case CK_UBOUND:           return "M.p_uBound"_Stz;
     case CK_WHERE:            return "M.p_where"_Stz;

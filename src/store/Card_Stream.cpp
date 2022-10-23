@@ -5,7 +5,6 @@
 #include "Card_Stream.hpp"
 #include "Card_Expr.hpp"
 #include "Card_ObyElist.hpp"
-#include "Card_StreamElist.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -43,54 +42,6 @@ Card_Stream::~Card_Stream(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* apply the order of given arg to this stream                                */
-/*----------------------------------------------------------------------------*/
-void Card_Stream::vApplyOrder(Card_Stream* pCard_Stream_src)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  Card_ObyElist* pCard_ObyElist_src =
-    _pCard_ObyElist(pCard_Stream_src->pFindSubCard(CK_OBYELIST));
-  if (! pCard_ObyElist_src)
-    return;
-  i8 nOrderExprs_src = pCard_ObyElist_src->nItems();
-
-  Card_StreamElist* pCard_StreamElist_dst =
-    _pCard_StreamElist(this->pFindSubCard(CK_STREAMELIST));
-  if (! pCard_StreamElist_dst)
-    return;
-  i8 nStreamExprs_dst = pCard_StreamElist_dst->nItems();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  Card_ObyElist* pCard_ObyElist_dst = nullptr;
-
-  for (i8 i_Expr = 0; i_Expr < nOrderExprs_src; i_Expr++) {
-    if (i_Expr >= nStreamExprs_dst)
-      break;
-    
-    Card_Expr* pCard_Expr_src =
-      _pCard_Expr(pCard_ObyElist_src->pGetChild(i_Expr));
-    Card_Expr* pCard_Expr_tst =
-      _pCard_Expr(pCard_StreamElist_dst->pGetChild(i_Expr));
-
-    if (!pCard_Expr_tst->bEquivalentTo(pCard_Expr_src))
-      break;
-
-    if (! pCard_ObyElist_dst)
-      pCard_ObyElist_dst = new Card_ObyElist;
-    
-    Card_Expr* pCard_Expr_dst =
-      _pCard_Expr(pCard_Expr_src->pDupCardAndSubCards());
-
-    pCard_ObyElist_dst->vAppend(pCard_Expr_dst);
-  }
-  
-  if (pCard_ObyElist_dst)
-    this->vAppend(pCard_ObyElist_dst);
-}
-
-/*----------------------------------------------------------------------------*/
 /* is given <pred> within this stream?                                        */
 /*----------------------------------------------------------------------------*/
 bool Card_Stream::bContainsPred(Card_PRED* pCard_PRED)
@@ -126,13 +77,13 @@ bool Card_Stream::bContainsPred(Card_PRED* pCard_PRED)
 /*----------------------------------------------------------------------------*/
 /* is given <pred> within this stream?                                        */
 /*----------------------------------------------------------------------------*/
-Card_StreamCol* Card_Stream::pFind_streamCol(Stz *szColNm)
+Card_StmCol* Card_Stream::pFind_streamCol(Stz *szColNm)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-   Card_StreamColList* pCard_StreamColList = this->pSub_streamColList();
+   Card_StmColList* pCard_StreamColList = this->pSub_stmColList();
 
-  Card_StreamCol* pCard_streamCol = nullptr;
+  Card_StmCol* pCard_streamCol = nullptr;
 
   return pCard_streamCol;
 }
@@ -140,15 +91,15 @@ Card_StreamCol* Card_Stream::pFind_streamCol(Stz *szColNm)
 /*----------------------------------------------------------------------------*/
 /* get a specific <streamCol>                                                 */
 /*----------------------------------------------------------------------------*/
-Card_StreamCol* Card_Stream::pGet_streamCol(i8 i_Col)
+Card_StmCol* Card_Stream::pGet_streamCol(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_StreamColList* pCard_StreamColList = pGet_streamColList();
+  Card_StmColList* pCard_StreamColList = pGet_streamColList();
 
   i8 iOrdLo = Y_iVal(P_OrdLo);
   i8 i_ColNo = i_Col - iOrdLo + 1;
-  Card_StreamCol* pCard_StreamCol = pCard_StreamColList->pGet_streamCol(i_ColNo);
+  Card_StmCol* pCard_StreamCol = pCard_StreamColList->pGet_streamCol(i_ColNo);
 
   return pCard_StreamCol;
 }
@@ -156,13 +107,13 @@ Card_StreamCol* Card_Stream::pGet_streamCol(i8 i_Col)
 /*----------------------------------------------------------------------------*/
 /* get a specific <streamCol> given $n ordinal                                */
 /*----------------------------------------------------------------------------*/
-Card_StreamCol* Card_Stream::pGet_streamCol(Stz* szStreamColOrd)
+Card_StmCol* Card_Stream::pGet_streamCol(Stz* szStreamColOrd)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   i8 i_Col = szStreamColOrd->iOrdinal() - 1;
 
-  Card_StreamCol* p_streamCol = pGet_streamCol(i_Col);
+  Card_StmCol* p_streamCol = pGet_streamCol(i_Col);
 
   return p_streamCol;
 }
@@ -170,12 +121,12 @@ Card_StreamCol* Card_Stream::pGet_streamCol(Stz* szStreamColOrd)
 /*----------------------------------------------------------------------------*/
 /* get <streamColList>                                                       */
 /*----------------------------------------------------------------------------*/
-Card_StreamColList* Card_Stream::pGet_streamColList(void)
+Card_StmColList* Card_Stream::pGet_streamColList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_StreamColList* pCard_StreamColList
-    = _pCard_StreamColList(pFindSubCard(CK_STREAMCOLLIST));
+  Card_StmColList* pCard_StreamColList
+    = _pCard_StmColList(pFindSubCard(CK_STMCOLLIST));
 
   return pCard_StreamColList;
 }
@@ -214,7 +165,7 @@ i8 Card_Stream::nStreamCols(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_StreamColList* pCard_StreamColList = pGet_streamColList();
+  Card_StmColList* pCard_StreamColList = pGet_streamColList();
 
   i8 nStreamCols = pCard_StreamColList->nStreamCols();
 

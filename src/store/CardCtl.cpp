@@ -295,6 +295,26 @@ void CardCtl::vPrintSubCards(i8 i_Card, bool bPrintSubCards)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set bPrintSubCards for card                                                */
+/*----------------------------------------------------------------------------*/
+void CardCtl::vPrintSubCards(bool bPrintSubCards, ...)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
+
+  va_list args;
+  va_start(args,bPrintSubCards);
+
+  for (;;) {
+    eCK e_Card = va_arg(args, eCK);
+    if (e_Card == CK_NONE || e_Card == CK_ENUMS)
+      break;
+    m_xaCardCtl[e_Card].m_bPrintSubCards = bPrintSubCards;
+  }
+
+  va_end(args);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get bPrintSubShort for card                                                */
 /*----------------------------------------------------------------------------*/
 bool CardCtl::bPrintSubShort(i8 i_Card)
@@ -405,8 +425,10 @@ void CardCtl::vReset(void)
 
   m_xaTrfCtl.m_bTfmPrint = true;
 
+  vPrintValue(CK_ANDPRED, false);
+  vPrintProperties(CK_ANDPRED, false);
 
-  vPrintByKind(CK_CARDPTR,true);
+  vPrintProperties(CK_CMPPRED, false);
 
   vPrintName(CK_COMMENT,false);
   vPrintProperties(CK_COMMENT,false);
@@ -419,27 +441,15 @@ void CardCtl::vReset(void)
   vPrintSubCards(CK_CROSSPTNJOIN,false);
   vPrune(CK_CROSSPTNJOIN,true);
 
-  vPrintByKind(CK_INDEXPTR,true);
-  vPtrDetail(CK_INDEXPTR,1);
-
-  vPrintValue(CK_ANDPRED, false);
-  vPrintProperties(CK_ANDPRED, false);
-
-  vPrintProperties(CK_CMPPRED, false);
-
   vPrintValue(CK_ORPRED, false);
   vPrintProperties(CK_ORPRED, false);
 
   vNextHorizon(CK_STAGE, true);
   vHorizExclude(CK_STAGE,P_Exclude);
-  vPrintByKind(CK_STREAMELIST,true);
 
   vPrintByKind(CK_TABLE,true);
   vPrintValue(CK_TABLE, false);
   vPrintProperties(CK_TABLE, false);
-
-  vPrintByKind(CK_TABLEPTR,true);
-  vPtrDetail(CK_TABLEPTR,1);
 
   vPrintName(CK_TERM,false);
   vPrintNo(CK_TERM,false);

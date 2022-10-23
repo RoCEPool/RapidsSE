@@ -1,14 +1,13 @@
 /*============================================================================*/
-/* Card_StreamColList.cpp -- Stream Column List                               */
+/* Card_StmColList.cpp -- Stream Column List                               */
 /*============================================================================*/
 
-#include "Card_StreamColList.hpp"
+#include "Card_StmColList.hpp"
 #include "Card_Expr.hpp"
 #include "Card_ObyElist.hpp"
-#include "Card_StreamElist.hpp"
 #include "Card_AggElist.hpp"
 
-#include "Card_StreamCol.hpp"
+#include "Card_StmCol.hpp"
 #include "Card_As.hpp"
 #include "Card_Type.hpp"
 
@@ -16,16 +15,16 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_StreamColList,CK_STREAMCOLLIST)
-__aNewFunction(Card_StreamColList,CN_CARD)
-__vDeleteFunction(Card_StreamColList,CN_CARD)
+__pCastFunction_Card(STORE, Card_StmColList, CK_STMCOLLIST)
+__aNewFunction(Card_StmColList, CN_CARD)
+__vDeleteFunction(Card_StmColList, CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_StreamColList::Card_StreamColList(void)
-: Card(CK_STREAMCOLLIST)
+Card_StmColList::Card_StmColList(void)
+: Card(CK_STMCOLLIST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
           
@@ -37,8 +36,8 @@ Card_StreamColList::Card_StreamColList(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_StreamColList::Card_StreamColList(StreamDef* pStreamDef, Stz* szPrefix_opt)
-: Card(CK_STREAMCOLLIST)
+Card_StmColList::Card_StmColList(StreamDef* pStreamDef, Stz* szPrefix_opt)
+: Card(CK_STMCOLLIST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -52,8 +51,8 @@ Card_StreamColList::Card_StreamColList(StreamDef* pStreamDef, Stz* szPrefix_opt)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_StreamColList::Card_StreamColList(Card_AggElist* pCard_AggElist)
-: Card(CK_STREAMCOLLIST)
+Card_StmColList::Card_StmColList(Card_AggElist* pCard_AggElist)
+: Card(CK_STMCOLLIST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -67,7 +66,7 @@ Card_StreamColList::Card_StreamColList(Card_AggElist* pCard_AggElist)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_StreamColList::~Card_StreamColList(void) noexcept(false)
+Card_StmColList::~Card_StmColList(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -79,12 +78,12 @@ Card_StreamColList::~Card_StreamColList(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get <streamColList>                                                       */
 /*----------------------------------------------------------------------------*/
-Card_StreamCol* Card_StreamColList::pGet_streamCol(i8 i_StreamColNo)
+Card_StmCol* Card_StmColList::pGet_streamCol(i8 i_StreamColNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_StreamCol *pCard_StreamCol
-      = _pCard_StreamCol(pGetChild(i_StreamColNo));
+  Card_StmCol *pCard_StreamCol
+      = _pCard_StmCol(pGetChild(i_StreamColNo));
 
   return pCard_StreamCol;
 }
@@ -92,24 +91,24 @@ Card_StreamCol* Card_StreamColList::pGet_streamCol(i8 i_StreamColNo)
 /*----------------------------------------------------------------------------*/
 /* is given <pred> within this stream?                                        */
 /*----------------------------------------------------------------------------*/
-Card_StreamCol* Card_StreamColList::pFind_streamCol(Stz *szColNm, i8& i_StreamColNo)
+Card_StmCol* Card_StmColList::pFind_streamCol(Stz *szColNm, i8& i_StreamColNo)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_StreamColList* pCard_StreamColList = this->pSub_streamColList();
+  Card_StmColList* pCard_StreamColList = this->pSub_stmColList();
 
-  Card_StreamCol* pCard_streamCol = nullptr;
+  Card_StmCol* pCard_streamCol = nullptr;
 
   i8 nSubCards = this->nChildCards();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
     Card *pSubCard = this->pGetChild(i_Child);
 
-    if (CK_STREAMCOL != pSubCard->eCard())
+    if (CK_STMCOL != pSubCard->eCard())
       continue;
 
     //Card_As* pCard_as = pSubCard->pSub_as();
     if (pSubCard->bSame(szColNm)) {
-      pCard_streamCol = _pCard_StreamCol(pSubCard);
+      pCard_streamCol = _pCard_StmCol(pSubCard);
       i_StreamColNo = i_Child;
       break;
     }
@@ -122,7 +121,7 @@ Card_StreamCol* Card_StreamColList::pFind_streamCol(Stz *szColNm, i8& i_StreamCo
 /*----------------------------------------------------------------------------*/
 /* pre-pend given prefix to each As                                           */
 /*----------------------------------------------------------------------------*/
-void Card_StreamColList::vPrependToAs(Stz* szPrefix)
+void Card_StmColList::vPrependToAs(Stz* szPrefix)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -130,10 +129,10 @@ void Card_StreamColList::vPrependToAs(Stz* szPrefix)
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
     Card *pSubCard = this->pGetChild(i_Child);
 
-    if (CK_STREAMCOL != pSubCard->eCard())
+    if (CK_STMCOL != pSubCard->eCard())
       continue;
 
-    Card_StreamCol *pCard_StreamCol = _pCard_StreamCol(pSubCard);
+    Card_StmCol *pCard_StreamCol = _pCard_StmCol(pSubCard);
 
     Card_As* pCard_As = _pCard_As(pCard_StreamCol->pFindSubCard(CK_AS));
 
@@ -146,7 +145,7 @@ void Card_StreamColList::vPrependToAs(Stz* szPrefix)
 /*----------------------------------------------------------------------------*/
 /* populate from stream def                                                   */
 /*----------------------------------------------------------------------------*/
-void Card_StreamColList::vPopulate(StreamDef* pStreamDef, Stz* szPrefix_opt)
+void Card_StmColList::vPopulate(StreamDef* pStreamDef, Stz* szPrefix_opt)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -154,7 +153,7 @@ void Card_StreamColList::vPopulate(StreamDef* pStreamDef, Stz* szPrefix_opt)
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     Column *pColumn = pStreamDef->pGetColumn(i_Col);
 
-    Card_StreamCol *pCard_StreamCol = new Card_StreamCol;
+    Card_StmCol *pCard_StreamCol = new Card_StmCol;
     vAppend(pCard_StreamCol);
 
     //Card_As *pCard_As = new Card_As(pColumn);
@@ -176,7 +175,7 @@ void Card_StreamColList::vPopulate(StreamDef* pStreamDef, Stz* szPrefix_opt)
 /*----------------------------------------------------------------------------*/
 /* populate from agg elist                                                    */
 /*----------------------------------------------------------------------------*/
-void Card_StreamColList::vPopulate(Card_AggElist* pCard_AggElist)
+void Card_StmColList::vPopulate(Card_AggElist* pCard_AggElist)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -192,7 +191,7 @@ void Card_StreamColList::vPopulate(Card_AggElist* pCard_AggElist)
     RASSERT(pCard_As);
     RASSERT(pCard_Type);
 
-    Card_StreamCol *pCard_StreamCol = new Card_StreamCol;
+    Card_StmCol *pCard_StreamCol = new Card_StmCol;
 
     vAppend(pCard_StreamCol);
 
@@ -205,7 +204,7 @@ void Card_StreamColList::vPopulate(Card_AggElist* pCard_AggElist)
 /*----------------------------------------------------------------------------*/
 /* get number of stream columns                                               */
 /*----------------------------------------------------------------------------*/
-i8 Card_StreamColList::nStreamCols(void)
+i8 Card_StmColList::nStreamCols(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

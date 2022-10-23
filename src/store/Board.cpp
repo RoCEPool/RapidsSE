@@ -11,7 +11,7 @@
 #include "OptimiserFun.hpp"
 #include "OptimiserCatalog.hpp"
 
-#include "Card_StreamCol.hpp"
+#include "Card_StmCol.hpp"
 
 extern OptimiserCatalog gxOptimiserCatalog;
 
@@ -286,8 +286,6 @@ void Board::vPrintBoard(Stz* szPhase,
   L_Entry:
 
   bool bExecuted = false;
-
-  m_pCard_Deck->vRenumberRecursive();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

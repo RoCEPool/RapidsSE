@@ -16,9 +16,9 @@ enum eCK // card kind
   /* */ CK_AS,
 
   /* */ CK_BOOLCALC,
+  /* */ CK_BOUNDS,
 
   /* */ CK_CANDINDEX,
-  /* */ CK_CARDPTR,
   /* */ CK_CMPPRED,
   /* */ CK_COLUMNREF,
   /* */ CK_COMBINED,
@@ -51,16 +51,15 @@ enum eCK // card kind
   /* */ CK_IDXCOL,
   /* */ CK_IDXCOLLIST,
   /* */ CK_IDXCOLNM,
+  /* */ CK_INDEX,
   /* */ CK_INDEXJOIN,
   /* */ CK_INDEXLIST,
   /* */ CK_INDEXNM,
   /* */ CK_INDEXPRED,
-  /* */ CK_INDEXPTR,
   /* */ CK_INDEXSCAN,
 
   /* */ CK_JOINORDER,
   /* */ CK_JOINORDERSEQ,
-  /* */ CK_JOINPRED,
   /* */ CK_JOINPREDLIST,
 
   /* */ CK_KEYEXISTS,
@@ -76,6 +75,7 @@ enum eCK // card kind
 
   /* */ CK_PARAM,
   /* */ CK_PARAMLIST,
+  /* */ CK_PARTITION,
   /* */ CK_PERMUTATION,
   /* */ CK_PROJECT,
   /* */ CK_PROJELIST,
@@ -91,25 +91,24 @@ enum eCK // card kind
 
   /* */ CK_SBYELIST,
   /* */ CK_SCAN,
-  /* */ CK_SCANPRED,
   /* */ CK_SEND,
   /* */ CK_SENDKIND,
+  /* */ CK_SIZE,
   /* */ CK_SORT,
   /* */ CK_STAGE,
-  /* */ CK_STAGETOPO,
+  /* */ CK_STMCOL,
+  /* */ CK_STMCOLLIST,
   /* */ CK_STMCOLNM,
+  /* */ CK_STMCOLORD,
   /* */ CK_STREAM,
-  /* */ CK_STREAMCOL,
-  /* */ CK_STREAMCOLLIST,
-  /* */ CK_STREAMELIST,
   /* */ CK_SUBSET,
 
   /* */ CK_TABLE,
   /* */ CK_TABLELIST,
-  /* */ CK_TABLEPTN,
-  /* */ CK_TABLEPTR,
   /* */ CK_TABLENM,
+  /* */ CK_TABLEPTN,
   /* */ CK_TERM,
+  /* */ CK_TOPOLOGY,
   /* */ CK_TSTPRED,
   /* */ CK_TYPE,
 
@@ -136,9 +135,9 @@ static Stz* aCK[]
   /* */ "CK_AS"_Stz,           // CK_AS
 
   /* */ "CK_BOOLCALC"_Stz,     // CK_BOOLCALC
+  /* */ "CK_BOUNDS"_Stz,       // CK_BOUNDS
 
   /* */ "CK_CANDINDEX"_Stz,    // CK_CANDINDEX
-  /* */ "CK_CARDPTR"_Stz,      // CK_CARDPTR
   /* */ "CK_CMPPRED"_Stz,      // CK_CMPPRED
   /* */ "CK_COLUMNREF"_Stz,    // CK_COLUMNREF
   /* */ "CK_COMBINED"_Stz,     // CK_COMBINED
@@ -171,16 +170,15 @@ static Stz* aCK[]
   /* */ "CK_IDXCOL"_Stz,       // CK_IDXCOL
   /* */ "CK_IDXCOLLIST"_Stz,   // CK_IDXCOLLIST
   /* */ "CK_IDXCOLNM"_Stz,     // CK_IDXCOLNM
+  /* */ "CK_INDEX"_Stz,        // CK_INDEX
   /* */ "CK_INDEXJOIN"_Stz,    // CK_INDEXJOIN
   /* */ "CK_INDEXLIST"_Stz,    // CK_INDEXLIST
   /* */ "CK_INDEXNM"_Stz,      // CK_INDEXNM
   /* */ "CK_INDEXPRED"_Stz,    // CK_INDEXPRED
-  /* */ "CK_INDEXPTR"_Stz,     // CK_INDEXPTR
   /* */ "CK_INDEXSCAN"_Stz,    // CK_INDEXSCAN
 
   /* */ "CK_JOINORDER"_Stz,    // CK_JOINORDER
   /* */ "CK_JOINORDERSEQ"_Stz, // CK_JOINORDERSEQ
-  /* */ "CK_JOINPRED"_Stz,     // CK_JOINPRED
   /* */ "CK_JOINPREDLIST"_Stz, // CK_JOINPREDLIST
 
   /* */ "CK_KEYEXISTS"_Stz,    // CK_KEYEXISTS
@@ -196,6 +194,7 @@ static Stz* aCK[]
 
   /* */ "CK_PARAM"_Stz,        // CK_PARAM
   /* */ "CK_PARAMLIST"_Stz,    // CK_PARAMLIST
+  /* */ "CK_PARTITION"_Stz,    // CK_PARTITION
   /* */ "CK_PERMUTATION"_Stz,  // CK_PERMUTATION
   /* */ "CK_PROJECT"_Stz,      // CK_PROJECT
   /* */ "CK_PROJELIST"_Stz,    // CK_PROJELIST
@@ -211,25 +210,24 @@ static Stz* aCK[]
 
   /* */ "CK_SBYELIST"_Stz,     // CK_SBYELIST
   /* */ "CK_SCAN"_Stz,         // CK_SCAN
-  /* */ "CK_SCANPRED"_Stz,     // CK_SCANPRED
   /* */ "CK_SEND"_Stz,         // CK_SEND
   /* */ "CK_SENDKIND"_Stz,     // CK_SENDKIND
+  /* */ "CK_SIZE"_Stz,         // CK_SIZE
   /* */ "CK_SORT"_Stz,         // CK_SORT
   /* */ "CK_STAGE"_Stz,        // CK_STAGE
-  /* */ "CK_STAGETOPO"_Stz,    // CK_STAGETOPO
+  /* */ "CK_STMCOL"_Stz,       // CK_STMCOL
+  /* */ "CK_STMCOLLIST"_Stz,   // CK_STMCOLLIST
   /* */ "CK_STMCOLNM"_Stz,     // CK_STMCOLNM
+  /* */ "CK_STMCOLORD"_Stz,    // CK_STMCOLORD
   /* */ "CK_STREAM"_Stz,       // CK_STREAM
-  /* */ "CK_STREAMCOL"_Stz,    // CK_STREAMCOL
-  /* */ "CK_STREAMCOLLIST"_Stz,// CK_STREAMCOLLIST
-  /* */ "CK_STREAMELIST"_Stz,  // CK_STREAMELIST
   /* */ "CK_SUBSET"_Stz,       // CK_SUBSET
 
   /* */ "CK_TABLE"_Stz,        // CK_TABLE
   /* */ "CK_TABLELIST"_Stz,    // CK_TABLELIST
   /* */ "CK_TABLENM"_Stz,      // CK_TABLENM
   /* */ "CK_TABLEPTN"_Stz,     // CK_TABLEPTN
-  /* */ "CK_TABLEPTR"_Stz,     // CK_TABLEPTR
   /* */ "CK_TERM"_Stz,         // CK_TERM
+  /* */ "CK_TOPOLOGY"_Stz,     // CK_TOPOLOGY
   /* */ "CK_TSTPRED"_Stz,      // CK_TSTPRED
   /* */ "CK_TYPE"_Stz,         // CK_TYPE
 
@@ -256,9 +254,9 @@ static Stz* aCK_short[]
   /* */ "as"_Stz,              // CK_AS
 
   /* */ "boolCalc"_Stz,        // CK_BOOLCALC
+  /* */ "bounds"_Stz,          // CK_BOUNDS
 
   /* */ "candIndex"_Stz,       // CK_CANDINDEX
-  /* */ "{card}"_Stz,          // CK_CARDPTR
   /* */ "cmpPred"_Stz,         // CK_CMPPRED
   /* */ "columnRef"_Stz,       // CK_COLUMNREF
   /* */ "combined"_Stz,        // CK_COMBINED
@@ -291,16 +289,15 @@ static Stz* aCK_short[]
   /* */ "idxCol"_Stz,          // CK_IDXCOL
   /* */ "idxColList"_Stz,      // CK_IDXCOLLIST
   /* */ "idxColNm"_Stz,        // CK_IDXCOLNM
+  /* */ "index"_Stz,           // CK_INDEX
   /* */ "indexJoin"_Stz,       // CK_INDEXJOIN
   /* */ "indexList"_Stz,       // CK_INDEXLIST
   /* */ "indexNm"_Stz,         // CK_INDEXNM
   /* */ "indexPred"_Stz,       // CK_INDEXPRED
-  /* */ "{index}"_Stz,         // CK_INDEXPTR
   /* */ "indexScan"_Stz,       // CK_INDEXSCAN
 
   /* */ "joinOrder"_Stz,       // CK_JOINORDER
   /* */ "joinOrderSeq"_Stz,    // CK_JOINORDERSEQ
-  /* */ "joinPred"_Stz,        // CK_JOINPRED
   /* */ "joinPredList"_Stz,    // CK_JOINPREDLIST
 
   /* */ "keyExists"_Stz,       // CK_KEYEXISTS
@@ -316,6 +313,7 @@ static Stz* aCK_short[]
 
   /* */ "param"_Stz,           // CK_PARAM
   /* */ "paramList"_Stz,       // CK_PARAMLIST
+  /* */ "partition"_Stz,       // CK_PARTITION
   /* */ "permutation"_Stz,     // CK_PERMUTATION
   /* */ "project"_Stz,         // CK_PROJECT
   /* */ "projElist"_Stz,       // CK_PROJELIST
@@ -331,26 +329,24 @@ static Stz* aCK_short[]
 
   /* */ "sbyElist"_Stz,        // CK_SBYELIST
   /* */ "scan"_Stz,            // CK_SCAN
-  /* */ "scanPred"_Stz,        // CK_SCANPRED
   /* */ "sendSE"_Stz,          // CK_SEND
   /* */ "sendKind"_Stz,        // CK_SENDKIND
+  /* */ "size"_Stz,            // CK_SIZE
   /* */ "sort"_Stz,            // CK_SORT
   /* */ "stage"_Stz,           // CK_STAGE
-  /* */ "stageTopo"_Stz,       // CK_STAGETOPO
+  /* */ "stmCol"_Stz,          // CK_STMCOL
+  /* */ "stmColList"_Stz,      // CK_STMCOLLIST
   /* */ "stmColNm"_Stz,        // CK_STMCOLNM
+  /* */ "stmColOrd"_Stz,       // CK_STMCOLORD
   /* */ "stream"_Stz,          // CK_STREAM
-  /* */ "streamCol"_Stz,       // CK_STREAMCOL
-  /* */ "streamColList"_Stz,   // CK_STREAMCOLLIST
-  /* */ "streamColList"_Stz,   // CK_STREAMCOLLIST
-  /* */ "streamElist"_Stz,     // CK_STREAMELIST
   /* */ "subSet"_Stz,          // CK_SUBSET
 
   /* */ "table"_Stz,           // CK_TABLE
   /* */ "tableList"_Stz,       // CK_TABLELIST
   /* */ "tableNm"_Stz,         // CK_TABLENM
   /* */ "tablePtn"_Stz,        // CK_TABLEPTN
-  /* */ "{table}"_Stz,         // CK_TABLEPTR
   /* */ "term"_Stz,            // CK_TERM
+  /* */ "topology"_Stz,        // CK_TOPOLOGY
   /* */ "tstPred"_Stz,         // CK_TSTPRED
   /* */ "type"_Stz,            // CK_TYPE
 

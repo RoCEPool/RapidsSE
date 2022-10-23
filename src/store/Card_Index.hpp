@@ -1,30 +1,23 @@
 /*============================================================================*/
-/* Card_StreamElist.hpp -- List of Stream Expressions                         */
+/* Card_Index.hpp -- Index                                                    */
 /*============================================================================*/
 #pragma once
 
-#include "Card_ELIST.hpp"
+#include "Card.hpp"
 
 namespace STORE
 {
-  class Card_StreamElist : public Card_ELIST
-  {  
+  class Card_Index : public Card
+  {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_StreamElist(void);
-    Card_StreamElist(StreamDef* pStreamDef);
-   ~Card_StreamElist(void) noexcept(false);
-    
-    bool bSimpleDef(void);
-    void vStreamElistPrint(Ribbon* pRibbon, i8 iDepth);
-
-  private:
-    void vPopulate(StreamDef* pStreamDef);
+    Card_Index(void);
+   ~Card_Index(void) noexcept(false);
   };
 
-  Card_StreamElist* _pCard_StreamElist(void* aAddr);
+  Card_Index* _pCard_Index(void* aAddr);
 }
 
 /*============================================================================*/

@@ -21,58 +21,66 @@ namespace STORE
     Transforms(Bench* pBench);
    ~Transforms(void) noexcept(false);
 
-    void vAdd_columnRef_Under_term(void);
+    //void vAdd_columnRef_Under_term(bool bPrint, bool bTrace);
 
-    void vReinstate_combined(bool bPrint, bool bTrace);
-    void vAdd_scanPred(bool bPrint, bool bTrace);
-    void vReinstate_stages(bool bPrint, bool bTrace);
-    void vAdd_tablePtn_UnderAll_table(bool bPrint, bool bTrace);
-    void vInsert_indexList_ToAll_scan(bool bPrint, bool bTrace);
-    void vAdd_stream_UnderAll_table(bool bPrint, bool bTrace);
-    void vMark_where_pred_Wrt_table(bool bPrint, bool bTrace);
-    void vCalc_ordinalRange_ForAll_stream(bool bPrint, bool bTrace);
-    void vAdd_tableSyn_ForAll_table(bool bPrint, bool bTrace);
-    void vCompute_coPtnJoinList(bool bPrint, bool bTrace);
-    void vCompute_coPtnPredList(bool bPrint, bool bTrace);
-    void vCompute_crossPtnJoinList(bool bPrint, bool bTrace);
-    void vCompute_ptndJoinSet(bool bPrint, bool bTrace);
-    void vConvert_idxCol_name_Of_scan_To_idxCol_ord(bool bPrint, bool bTrace);
-    void vConvert_idxCol_name_Of_table_To_idxCol_ord(bool bPrint, bool bTrace);
-    void vConvert_where_calc_To_where_calcBool(bool bPrint, bool bTrace);
-    void vCopy_ptndJoinSet(bool bPrint, bool bTrace);
-    void vCull_filter_pred_MovedUpTo_joinPred(bool bPrint, bool bTrace);
-    void vCull_scan_Leaving_table(bool bPrint, bool bTrace);
-    void vCull_Marked_cmpPred(bool bPrint, bool bTrace);
-    void vRemove_sort_IfSameAs_gby(bool bPrint, bool bTrace);
-    void vDelete_absJoin(bool bPrint, bool bTrace);
-    void vDelete_combined(bool bPrint, bool bTrace);
-    void vDelete_send(bool bPrint, bool bTrace);
-    void vDelete_Empty_where(bool bPrint, bool bTrace);
-    void vDelete_Empty_filter(bool bPrint, bool bTrace);
-    void vEstimate_joinOrder(bool bPrint, bool bTrace);
-    void vEstimate_network(bool bPrint, bool bTrace);
-    void vEstimate_ptndJoins(bool bPrint, bool bTrace);
-    void vExpandedForm(bool bPrint, bool bTrace);
-    void vExtract_joinOrderSeq(bool bPrint, bool bTrace);
-    void vExtract_joinPredList(bool bPrint, bool bTrace);
-    void vExtract_tableList_From_queryBoard(bool bPrint, bool bTrace);
-    void vAdd_joinPred_UnderAll_indexJoin(bool bPrint, bool bTrace);
-    void vGenerate_ptndPermutations(bool bPrint, bool bTrace);
-    void vIndividuate_filter(bool bPrint, bool bTrace);
-    void vAdd_indexJoin_UnderAllJoinable_table(bool bPrint, bool bTrace);
-    void vDelete_Redundant_stage(bool bPrint, bool bTrace);
-    void vMark_scan_pred_bounds(bool bPrint, bool bTrace);
-    void vMark_scan_filter_term_WhichMatchIndex(bool bPrint, bool bTrace);
-    void vMove_Marked_where_pred_To_table_filter(bool bPrint, bool bTrace);
-    void vPromote_scan_To_indexScan(bool bPrint, bool bTrace);
-    void vConvert_table_To_scan_Or_indexJoin(bool bPrint, bool bTrace);
-    void vRemove_invalidPermutations(bool bPrint, bool bTrace);
-    void vSetup_costEst(bool bPrint, bool bTrace);
+    void vP10_T10_Delete_Redundant_stage(bool bPrint, bool bTrace);
+    void vP10_T20_Delete_absJoin(bool bPrint, bool bTrace);
+    void vP10_T30_Delete_combined(bool bPrint, bool bTrace);
+    void vP10_T40_Delete_send(bool bPrint, bool bTrace);
+    void vP10_T50_Cull_scan_Leaving_table(bool bPrint, bool bTrace);
 
-    void vRework_Exists_SubQueries(bool bPrint, bool bTrace);
-    void vCopy_Up_SubQueries(bool bPrint, bool bTrace);
-    void vResolve_Parameter_Linkage(bool bPrint, bool bTrace);
-    void vResolve_Parameter_Terms(bool bPrint, bool bTrace);
+    void vP20_T10_Add_tableSyn_ForAll_table(bool bPrint, bool bTrace);
+    void vP20_T20_Add_tablePtn_UnderAll_table(bool bPrint, bool bTrace);
+    void vP20_T30_Add_stream_UnderAll_table(bool bPrint, bool bTrace);
+
+    void vP30_T10_Calc_ordinalRange_ForAll_stream(bool bPrint, bool bTrace);
+
+    void vP40_T10_Convert_where_calc_To_where_calcBool(bool bPrint, bool bTrace);
+    void vP40_T20_Mark_where_pred_Wrt_table(bool bPrint, bool bTrace);
+    void vP40_T30_Move_Marked_where_pred_To_table_filter(bool bPrint, bool bTrace);
+    void vP40_T40_Delete_Empty_where(bool bPrint, bool bTrace);
+
+    void vP50_T10_Rework_Exists_SubQueries(bool bPrint, bool bTrace);
+    void vP50_T20_Copy_Up_SubQueries(bool bPrint, bool bTrace);
+    void vP50_T30_Resolve_Parameter_Linkage(bool bPrint, bool bTrace);
+    void vP50_T40_Resolve_Parameter_Terms(bool bPrint, bool bTrace);
+
+    void vP60_T10_Add_indexJoin_UnderAllJoinable_table(bool bPrint, bool bTrace);
+    void vP60_T20_Convert_idxCol_name_Of_table_To_idxCol_ord(bool bPrint, bool bTrace);
+    void vP60_T30_Add_joinPred_UnderAll_indexJoin(bool bPrint, bool bTrace);
+    void vP60_T40_Cull_filter_pred_MovedUpTo_joinPred(bool bPrint, bool bTrace);
+    void vP60_T50_Delete_Empty_filter(bool bPrint, bool bTrace);
+
+    void vP70_T00_Extract_tableList_From_queryBoard(bool bPrint, bool bTrace);
+    void vP70_T10_Extract_joinPredList(bool bPrint, bool bTrace);
+    void vP70_T20_Compute_coPtnPredList(bool bPrint, bool bTrace);
+    void vP70_T30_Compute_coPtnJoinList(bool bPrint, bool bTrace);
+    void vP70_T40_Compute_crossPtnJoinList(bool bPrint, bool bTrace);
+    void vP70_T50_Compute_ptndJoinSet(bool bPrint, bool bTrace);
+    void vP70_T60_Copy_ptndJoinSet(bool bPrint, bool bTrace);
+    void vP70_T70_Generate_ptndPermutations(bool bPrint, bool bTrace);
+    void vP70_T80_Remove_invalidPermutations(bool bPrint, bool bTrace);
+    void vP70_T90_Setup_costEst(bool bPrint, bool bTrace);
+    void vP70_T92_Estimate_ptndJoins(bool bPrint, bool bTrace);
+    void vP70_T94_Estimate_network(bool bPrint, bool bTrace);
+    void vP70_T96_Estimate_joinOrder(bool bPrint, bool bTrace);
+    void vP70_T98_Extract_joinOrderSeq(bool bPrint, bool bTrace);
+    void vP70_T99_Convert_table_To_scan_Or_indexJoin(bool bPrint, bool bTrace);
+
+    void vP80_T10_Insert_indexList_ToAll_scan(bool bPrint, bool bTrace);
+    void vP80_T20_Convert_idxCol_name_Of_scan_To_idxCol_ord(bool bPrint, bool bTrace);
+    void vP80_T30_Mark_scan_pred_bounds(bool bPrint, bool bTrace);
+    void vP80_T40_Mark_scan_filter_term_WhichMatchIndex(bool bPrint, bool bTrace);
+    void vP80_T50_Add_scanPred(bool bPrint, bool bTrace);
+    void vP80_T60_Cull_Marked_cmpPred(bool bPrint, bool bTrace);
+    void vP80_T70_Promote_scan_To_indexScan(bool bPrint, bool bTrace);
+
+    void vP90_T10_Remove_sort_IfSameAs_gby(bool bPrint, bool bTrace);
+
+    void vPA0_T10_Individuate_filter(bool bPrint, bool bTrace);
+
+    void vPZ0_T10_Reinstate_stages(bool bPrint, bool bTrace);
+    void vPZ0_T20_Reinstate_combined(bool bPrint, bool bTrace);
 
   private:
 
