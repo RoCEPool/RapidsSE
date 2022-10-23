@@ -18,14 +18,12 @@ __aFooterFunction(Ribbon)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Ribbon::Ribbon(Object* pCtl, Object* pSurface, i8 iArea, i8 nMaxAcross)
+Ribbon::Ribbon(Object* pCtl, Object* pSurface, i8 nMaxAcross)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
   
   m_pCtl = pCtl;
   m_pSurface = pSurface;
-
-  m_iArea = iArea;
   
   m_pTabSet = new IntSet(C_RIBBON_COLUMNS);
   vInitTabs(0,C_RIBBON_WIDTH + C_RIBBON_GAP);
@@ -66,16 +64,6 @@ Ribbon::~Ribbon(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get subject area of this (sub)ribbon                                       */
-/*----------------------------------------------------------------------------*/
-i8 Ribbon::iArea(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
-
-  return m_iArea;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get base line for physical columns                                         */
 /*----------------------------------------------------------------------------*/
 i8 Ribbon::iBase(void)
@@ -88,11 +76,11 @@ i8 Ribbon::iBase(void)
 /*----------------------------------------------------------------------------*/
 /* set base line for physical columns                                         */
 /*----------------------------------------------------------------------------*/
-void Ribbon::vBase(i8 iBase)
+void Ribbon::vBase(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
 
-  m_i_Base = iBase;
+  m_i_Base = m_i_Line;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -207,16 +195,6 @@ i8 Ribbon::iLine(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get logical column                                                         */
-/*----------------------------------------------------------------------------*/
-i8 Ribbon::iLogicalColumn(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
-
-  return m_i_Column_logical;
-}
-
-/*----------------------------------------------------------------------------*/
 /* advance to next column                                                     */
 /*----------------------------------------------------------------------------*/
 void Ribbon::vNextColumn(void)
@@ -304,26 +282,6 @@ void Ribbon::vPrintRibbon(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set base line for physical columns                                         */
-/*----------------------------------------------------------------------------*/
-void Ribbon::vSetBase(i8 i_Base)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
-
-  m_i_Base = i_Base;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set base line for physical columns                                         */
-/*----------------------------------------------------------------------------*/
-void Ribbon::vSetBase(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
-
-  m_i_Base = m_i_Line;
-}
-
-/*----------------------------------------------------------------------------*/
 /* sprint at current coord                                                    */
 /*----------------------------------------------------------------------------*/
 void Ribbon::vSprint(Stz* szFormat, ...)
@@ -390,17 +348,19 @@ i8 Ribbon::nTitleLines(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
 
+  RASSERT(m_i_Base == m_nTitleLines);
+
   return m_nTitleLines;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set number of title lines                                                  */
 /*----------------------------------------------------------------------------*/
-void Ribbon::vTitleLines(i8 nTitleLines)
+void Ribbon::vTitleLines(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
 
-  m_nTitleLines = nTitleLines;
+  m_nTitleLines = m_i_Line;
 }
 
 /*----------------------------------------------------------------------------*/

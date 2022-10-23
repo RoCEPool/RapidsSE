@@ -19,8 +19,7 @@ namespace BASE
     Object* m_pCtl;
     Object* m_pSurface;
 
-    i8 m_iArea;  // which subject area is this (sub)ribbon?
-  
+
     i8 m_i_Base; // base line for physical columns
     i8 m_i_Line; // current working line
     i8 m_i_Char; // current working char
@@ -43,14 +42,11 @@ namespace BASE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Ribbon(Object* pCtl, Object* pSurface,
-           i8 iArea, i8 nMaxAcross=C_RIBBON_ACROSS);
+    Ribbon(Object* pCtl, Object* pSurface, i8 nMaxAcross=C_RIBBON_ACROSS);
    ~Ribbon(void) noexcept(false);
 
-    i8   iArea(void);
-  
     i8   iBase(void);
-    void vBase(i8 iBase);
+    void vBase(void);
 
     i8   iChar(void);
     Object* pCtl(void);
@@ -65,8 +61,7 @@ namespace BASE
     void vFmtDefaults(void);
 
     i8   iLine(void);
-    i8   iLogicalColumn(void);
-  
+
     void vNextColumn(void);
     void vNextHorizontal(void);
     void vNextLine(void);
@@ -74,15 +69,13 @@ namespace BASE
     void vPinRibbon(i8 i_Line, i8 i_Char, Ribbon* pSubRibbon);
     void vPrintRibbon(void);
 
-    void vSetBase(void);
-    void vSetBase(i8 i_Base);
     void vSprint(Stz* szFormat, ...);
     void vSprintRight(Stz* szFormat, ...);
     Object* pSurface(void);
 
     Stz* szText(i8 i_Line);
     i8   nTitleLines(void);
-    void vTitleLines(i8 nTitleLines);
+    void vTitleLines(void);
     void vTrim(void);
 
     i8   nWidth(i8 i_FromLine);

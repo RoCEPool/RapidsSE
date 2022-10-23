@@ -171,7 +171,7 @@ void Board::vPinCards(Ribbon* pRibbon,
 //  pRibbon->vSetBase();
 //  pRibbon->vFirstColumn();
 
-  Ribbon* pSubRibbon = new Ribbon(pCardCtl,this,0);
+  Ribbon* pSubRibbon = new Ribbon(pCardCtl,this);
 
   BoardIter xBI(this);
 
@@ -205,7 +205,7 @@ void Board::vPinCards(Ribbon* pRibbon,
     pCard->vPrintCardRecursive(pSubRibbon, 0, m_pCard_Deck, bPrune);
   }
      
-  pRibbon->vPinRibbon(pRibbon->nTitleLines(),0,pSubRibbon);
+  pRibbon->vPinRibbon(pRibbon->iBase(),0,pSubRibbon);
   
   delete pSubRibbon;
 }
@@ -236,9 +236,11 @@ void Board::vPinTitle(Ribbon* pRibbon,
                    m_pOptimiser->szQueryNm());
 
   pRibbon->vSprint("%s"_Stz,szDescription ? szDescription : ""_Stz);
-  pRibbon->vTitleLines(2);
+  pRibbon->vTitleLines();
 
-  pRibbon->vSetBase();
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pRibbon->vBase();
   pRibbon->vFirstColumn();
 }
 
@@ -260,7 +262,7 @@ void Board::vPrintBoard(Stz* szPhase,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Ribbon* pRibbon = new Ribbon(m_pOptimiser->pCardCtl(),this,0);
+  Ribbon* pRibbon = new Ribbon(m_pOptimiser->pCardCtl(),this);
 
   vPinTitle(pRibbon, m_iTransformNo, szDescription);
 
