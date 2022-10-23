@@ -362,6 +362,8 @@ void Transformer::vPhase_Z0_RestatePipeline(bool bPrintPhase, bool bPrintXform, 
 void Transformer::vEndPhase(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
+
+  m_pTransforms->vTransformation("n/a"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

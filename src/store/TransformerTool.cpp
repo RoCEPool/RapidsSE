@@ -342,16 +342,6 @@ void TransformerTool::vSetPrintSubCards(eCK eCard, bool bPrintSubCards)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get transformation                                                         */
-/*----------------------------------------------------------------------------*/
-Stz* TransformerTool::szTransformation(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_);
-
-  return m_sTransform;
-}
-
-/*----------------------------------------------------------------------------*/
 /* begin and record transformation information                                */
 /*----------------------------------------------------------------------------*/
 void TransformerTool::vTransform(const char* azTransformation,
@@ -359,12 +349,32 @@ void TransformerTool::vTransform(const char* azTransformation,
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  m_sTransform = azTransformation;
+  m_sTransformation = azTransformation;
   m_bPrintXform = bPrintTransformation;
 
   M.pBoard->vTransformNoInc();
 
   M.xBI.vRestart();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get transformation                                                         */
+/*----------------------------------------------------------------------------*/
+Stz* TransformerTool::szTransformation(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  return m_sTransformation;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get transformation                                                         */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::vTransformation(Stz* szTransformation)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  m_sTransformation = szTransformation;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -408,7 +418,7 @@ void TransformerTool::vTracing(bool bPrintXform, bool bTrace)
   m_bTrace = bTrace;
 
   if (m_bTrace) {
-    vTrace("\n\nTracing %s\n"_Stz, m_sTransform.szStz());
+    vTrace("\n\nTracing %s\n"_Stz, m_sTransformation.szStz());
     m_iTrace = 0;
   }
 }

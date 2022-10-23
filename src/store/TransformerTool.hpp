@@ -18,7 +18,7 @@ namespace STORE
   protected:
 
     s32         m_sPhase;
-    s256        m_sTransform;
+    s256        m_sTransformation;
     s256        m_sDescription;
 
     Bench*      m_pBench;
@@ -89,8 +89,9 @@ namespace STORE
     void vSetPrintProperties(eCK eCard, bool bPrintProperties);
     void vSetPrintSubCards(eCK eCard, bool bPrintSubCards);
 
-    Stz* szTransformation(void);
     void vTransform(const char* azTransformation, bool bPrintTransformation=true);
+    Stz* szTransformation(void);
+    void vTransformation(Stz* szTransformation);
 
     void vUsingBoard(eBK eBoard, i8 i_SubBoard);
 
