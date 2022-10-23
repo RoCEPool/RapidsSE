@@ -17,6 +17,9 @@ namespace STORE
   {
   protected:
 
+    s32         m_sPhase;
+    s256        m_sTransform;
+    s256        m_sDescription;
 
     Bench*      m_pBench;
     CardCtl*    m_pCardCtl;
@@ -28,10 +31,6 @@ namespace STORE
     bool        m_bInteractive;
     b8          m_bBeenCued;
     b8          m_bCueingDisabled;
-
-    s32         m_sPhase;
-    s256        m_sTransform;
-    s256        m_sDescription;
 
 
     PermGen*    m_pPermGen;
@@ -83,6 +82,8 @@ namespace STORE
     void vPrintBoard(void);
     bool bPrintPhase(void);
     void vPrintPhase(bool bPrintPhase);
+    bool bPrintXform(void);
+    void vPrintXform(bool bPrintXform);
 
     void vSetPrintByKind(eCK eCard, bool bPrintByKind);
     void vSetPrintProperties(eCK eCard, bool bPrintProperties);

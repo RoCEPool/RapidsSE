@@ -306,6 +306,26 @@ void TransformerTool::vPrintPhase(bool bPrintPhase)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get print phase                                                            */
+/*----------------------------------------------------------------------------*/
+bool TransformerTool::bPrintXform(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  return m_bPrintPhase;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set print phase                                                            */
+/*----------------------------------------------------------------------------*/
+void TransformerTool::vPrintXform(bool bPrintXform)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  m_bPrintXform = bPrintXform;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set card print properties                                                  */
 /*----------------------------------------------------------------------------*/
 void TransformerTool::vSetPrintProperties(eCK eCard, bool bPrintProperties)
