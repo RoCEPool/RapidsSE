@@ -78,7 +78,6 @@ namespace BASE
     void vSetBase(i8 i_Base);
     void vSprint(Stz* szFormat, ...);
     void vSprintRight(Stz* szFormat, ...);
-    void vSput(i8 i_Fmt, ...);
     Object* pSurface(void);
 
     Stz* szText(i8 i_Line);

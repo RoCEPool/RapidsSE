@@ -337,7 +337,8 @@ void Ribbon::vSprint(Stz* szFormat, ...)
   StrLib::vSprint(zText,xArgs,(char*)szFormat);
   va_end(xArgs);
 
-  vPutText(m_i_Line++,m_i_Char,(Stz*)zText);
+  vPutText(m_i_Line,m_i_Char,(Stz*)zText);
+  vNextLine();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -354,45 +355,8 @@ void Ribbon::vSprintRight(Stz* szFormat, ...)
   StrLib::vSprint(zText,xArgs,(char*)szFormat);
   va_end(xArgs);
 
-  vPutTextRight(m_i_Line++,m_i_Char,(Stz*)zText);
-}
-
-/*----------------------------------------------------------------------------*/
-/* sprint at current coord                                                    */
-/*----------------------------------------------------------------------------*/
-void Ribbon::vSput(i8 i_Fmt, ...)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
-
-  i8 iJustify = iFR_justify[i_Fmt];
-  
-  char zText[1024];
-  char zRight[1024];
-
-  Stz* szFormat = szFmt((eFR)i_Fmt);
-  
-  va_list xArgs;
-  va_start(xArgs,i_Fmt);
-
-  switch (iJustify) {
-      
-    case C_JUSTIFY_RIGHT:     
-      StrLib::vSprint(zRight,xArgs,(char*)szFormat);
-      StrLib::vSprint(zText,m_sRightFormat.szStz(),zRight);
-      vPutText(m_i_Line++,m_i_Char,(Stz*)zText);
-      break;
-
-    case C_JUSTIFY_CENTRE:
-      //break;
-
-    case C_JUSTIFY_LEFT:
-    default:
-      StrLib::vSprint(zText,xArgs,(char*)szFormat);
-      vPutText(m_i_Line++,m_i_Char,(Stz*)zText);
-      break;
-  }
-    
-  va_end(xArgs);
+  vPutTextRight(m_i_Line,m_i_Char,(Stz*)zText);
+  vNextLine();
 }
 
 /*----------------------------------------------------------------------------*/
