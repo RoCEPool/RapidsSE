@@ -29,13 +29,10 @@ Transformer::Transformer(Bench* pBench)
   m_pBoard       = nullptr;
 
   m_pCardCtl     = m_pOptimiser->pCardCtl();
+  m_pJobTags     = MY::pJob()->pJobTags();
+  m_bInteractive = m_pJobTags->bHasName("<interactive>"_Stz);
 
   m_pTransforms  = new Transforms(m_pBench);
-
-  Job* pJob = MY::pJob();
-  m_pJobTags     = pJob->pJobTags();
-
-  m_bInteractive = m_pJobTags->bHasName("<interactive>"_Stz);
 
   _checkInitialised_(CN_TRANSFORMER);
   

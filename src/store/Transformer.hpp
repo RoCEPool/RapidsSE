@@ -14,12 +14,11 @@ namespace STORE
   private:
 
     CardCtl*     m_pCardCtl;
+    TagSet*      m_pJobTags;
+    b8           m_bInteractive;
 
     Transforms*  m_pTransforms;
 
-    TagSet*      m_pJobTags;
-
-    b8           m_bInteractive;
 
     // must be last
     Footer m_xFooter;

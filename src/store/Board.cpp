@@ -236,49 +236,10 @@ void Board::vPinTitle(Ribbon* pRibbon,
                    m_pOptimiser->szQueryNm());
 
   pRibbon->vSprint("%s"_Stz,szDescription ? szDescription : ""_Stz);
-
-
   pRibbon->vTitleLines(2);
+
   pRibbon->vSetBase();
   pRibbon->vFirstColumn();
-
-//  Ribbon* pSubRibbon = new Ribbon(pCardCtl,this,0);
-//
-//  BoardIter xBI(this);
-//
-//  i8 nCount = 0;
-//  while (Card* pCard = xBI.pEachMain()) {
-//    eCK eCard = pCard->eCard();
-//
-//    // skip non-printable horizontal lines
-//    if (pCardCtl->bNextHoriz(eCard) &&
-//        pCard->bHasProperty(pCardCtl->szHorizExclude(eCard))) {
-//
-//      while (Card* pNextMain = xBI.pNextMain()) {
-//        eCK eNextCard = pNextMain->eCard();
-//        if (pCardCtl->bNextHoriz(eNextCard))
-//          break;
-//        xBI.vForward();
-//      }
-//
-//      continue;
-//    }
-//
-//    if (! nCount++)
-//      pSubRibbon->vFirstColumn();
-//    else
-//    if ( pSubRibbon->iChar() && pCardCtl->bNextHoriz(eCard))
-//      pSubRibbon->vNextHorizontal();
-//    else
-//      pSubRibbon->vNextColumn();
-//
-//    bool bPrune = false;
-//    pCard->vPrintCardRecursive(pSubRibbon, 0, m_pCard_Deck, bPrune);
-//  }
-//
-//  pRibbon->vPinRibbon(pRibbon->nTitleLines(),0,pSubRibbon);
-//
-//  delete pSubRibbon;
 }
 
 /*----------------------------------------------------------------------------*/
