@@ -16,12 +16,8 @@ namespace STORE
     void  operator delete(void*);
 
     Card_IdxColList(void);
-    Card_IdxColList(Index* pIndex);
    ~Card_IdxColList(void) noexcept(false);
 
-    Card_IdxCol* pFind_idxCol(Stz *szColNm, i8& i_IdxColNo);
-
-    void vOrdinate(Card_Stream* pCard_Stream);
   };
 
   Card_IdxColList* _pCard_IdxColList(void* aAddr);

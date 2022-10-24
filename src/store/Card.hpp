@@ -110,7 +110,7 @@ static Stz* P_OrdLo        = "iOrdLo"_Stz;
 static Stz* P_ParamOrd     = "szParamOrd"_Stz;
 static Stz* P_Permutation  = "i_Permutation"_Stz;
 static Stz* P_PtndJoin     = "i_PtndJoin"_Stz;
-static Stz* P_Rank         = "iRank"_Stz;
+static Stz* P_Rank         = "iCandIndex_Rank"_Stz;
 static Stz* P_SendKind     = "eSendKind"_Stz;
 static Stz* P_SentOut      = "nSentOut"_Stz;
 static Stz* P_StageTopo    = "eStageTopo"_Stz;
@@ -304,6 +304,11 @@ namespace STORE
     bool bCmpPred_IsEq(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg);
     bool bCmpPred_OverlapsWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg);
     bool bCmpPred_UsesTable(Card_CmpPred* p_cmpPred, char cTableSyn);
+
+    i8   iCandIndex_Rank(Card_CandIndex* p_candIndex);
+    void vCandIndex_Rank(Card_CandIndex* p_candIndex, i8 iRank);
+
+    void vIdxColList_Ordinate(Card_IdxColList* p_idxColList, Card_Stream* pCard_Stream);
 
     Card_CmpPred* pOrPred_FindBound(Card_OrPred* p_orPred, Index* pIndex, ePB eBound);
     bool bOrPred_HasBounds(Card_OrPred* p_orPred, Index* pIndex);

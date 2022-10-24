@@ -2382,6 +2382,55 @@ bool Card::bCmpPred_UsesTable(Card_CmpPred* p_cmpPred, char cTableSyn)
   return false;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get rank                                                                   */
+/*----------------------------------------------------------------------------*/
+i8 Card::iCandIndex_Rank(Card_CandIndex* p_candIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  i8 iRank = Y_iVal(P_Rank);
+
+  return iRank;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set rank                                                                   */
+/*----------------------------------------------------------------------------*/
+void Card::vCandIndex_Rank(Card_CandIndex* p_candIndex, i8 iRank)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Y_vSet(P_Rank, iRank);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add table and index                                                        */
+/*----------------------------------------------------------------------------*/
+void Card::vIdxColList_Ordinate(Card_IdxColList* p_idxColList, Card_Stream* pCard_Stream)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  i8 iOrdLo = pCard_Stream->Y_iVal(P_OrdLo);
+
+  Card_StmColList* pCard_StreamColList = pCard_Stream->pSub_stmColList();
+
+  i8 nSubCards = this->nChildCards();
+  for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
+    Card_IdxCol* pCard_idxCol = _pCard_IdxCol(pGetChild(i_Sub));
+
+    i8 i_StreamColNo = C_UNKNOWN;
+    Stz* szColNm = pCard_idxCol->sz();
+    Card_StmCol* pCard_streamCol =
+        pCard_StreamColList->pFind_streamCol(szColNm,i_StreamColNo);
+
+    s32 sOrdinal;
+    sOrdinal.vSprint("$%lld"_Stz,iOrdLo+i_StreamColNo);
+    pCard_idxCol->vValue(sOrdinal);
+
+    pCard_idxCol->vMark1(MARK_CHANGED);
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /* find a comparePred which is the eBound of given index                      */

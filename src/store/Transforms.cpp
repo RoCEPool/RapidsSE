@@ -654,7 +654,7 @@ void Transforms::vP60_T20_Convert_idxCol_name_Of_table_To_idxCol_ord(bool bPrint
     M.p_stmColList = M.p_table->pSub_stmColList();
     M.p_idxColList = M.p_indexJoin->pSub_idxColList();
 
-    M.p_idxColList->vOrdinate(M.p_stream);
+    M.p_idxColList->vIdxColList_Ordinate(M.p_idxColList,M.p_stream);
   }
 
   vEndTransform();
@@ -1448,7 +1448,7 @@ void Transforms::vP80_T20_Convert_idxCol_name_Of_scan_To_idxCol_ord(bool bPrint,
 
   while (E_bEachMainWithSub(CK_SCAN,CK_IDXCOLLIST)) {
     M.p_stream = M.p_scan->pSub_stream();
-    M.p_idxColList->vOrdinate(M.p_stream);
+    M.p_idxColList->vIdxColList_Ordinate(M.p_idxColList,M.p_stream);
   }
 
   vEndTransform();
