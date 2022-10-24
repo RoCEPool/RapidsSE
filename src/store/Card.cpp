@@ -2761,8 +2761,11 @@ void Card::vObyElist_Populate(Card_ObyElist* p_obyElist, Index* pIndex)
     pCard_Expr->vAppend(pCard_As);
 
     // exprCalc
-    Card_RpnCalc* pCard_RpnCalc = new Card_RpnCalc(pIdxCol);
+    Card_RpnCalc* pCard_RpnCalc = new Card_RpnCalc;
     pCard_Expr->vAppend(pCard_RpnCalc);
+
+    Card_Term* pCard_Term = new Card_Term(pIdxCol->szColNm());
+    pCard_RpnCalc->vAppend(pCard_Term);
 
   }
 }
