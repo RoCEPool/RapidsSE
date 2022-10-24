@@ -36,6 +36,7 @@ namespace STORE
   class Card_ColumnRef;
   class Card_Combined;
   class Card_CoPtnJoin;
+  class Card_CoPtnJoinList;
   class Card_CoPtnPred;
 
   class Card_Debug;
@@ -320,6 +321,8 @@ namespace STORE
     void vColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef, String* psTableSyn);
 
     bool bCoPtnJoin_CoPtnWith(Card_CoPtnJoin* p_coPtnJoin, Card_CoPtnPred* p_CoPtnPred);
+    Card_CoPtnJoin* pCoPtnJoinList_Find_coPtn_for(Card_CoPtnJoinList* p_coPtnJoinList, Card_CoPtnPred* p_coPtnPred);
+    bool bCoPtnJoinList_HasEqPredCmp(Card_CoPtnJoinList* p_coPtnJoinList, Card_CmpPred* p_predCmp);
 
     void vIdxColList_Ordinate(Card_IdxColList* p_idxColList, Card_Stream* pCard_Stream);
 

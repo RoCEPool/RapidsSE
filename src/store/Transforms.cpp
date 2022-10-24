@@ -931,7 +931,7 @@ void Transforms::vP70_T30_Compute_coPtnJoinList(bool bPrint, bool bTrace)
 
     M.p_subSet = M.p_coPtnPred->pDupSubCards();
 
-    if (! (M.p_coPtnJoin = M.p_coPtnJoinList->pFind_coPtn_for(M.p_coPtnPred)) ) {
+    if (! (M.p_coPtnJoin = M.p_coPtnJoinList->pCoPtnJoinList_Find_coPtn_for(M.p_coPtnJoinList,M.p_coPtnPred)) ) {
       M.p_coPtnJoin = new Card_CoPtnJoin;
       M.p_coPtnJoinList->vAppend(M.p_coPtnJoin);
     }
@@ -971,7 +971,7 @@ void Transforms::vP70_T40_Compute_crossPtnJoinList(bool bPrint, bool bTrace)
     M.p_cmpPred =
         _pCard_CmpPred(M.p_joinPredList->pGetChild(i_Child));
 
-    if (M.p_coPtnJoinList->bHasEqPredCmp(M.p_cmpPred))
+    if (M.p_coPtnJoinList->bCoPtnJoinList_HasEqPredCmp(M.p_coPtnJoinList,M.p_cmpPred))
       continue;
 
     M.p_crossPtnJoin = new Card_CrossPtnJoin;

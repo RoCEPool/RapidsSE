@@ -2492,6 +2492,48 @@ bool Card::bCoPtnJoin_CoPtnWith(Card_CoPtnJoin* p_coPtnJoin, Card_CoPtnPred* p_C
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_CoPtnJoin* Card::pCoPtnJoinList_Find_coPtn_for(Card_CoPtnJoinList* p_coPtnJoinList, Card_CoPtnPred* p_coPtnPred)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  i8 nChildren = nChildCards();
+  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
+    Card_CoPtnJoin* p_coPtnJoin = _pCard_CoPtnJoin(pGetChild(i_Child));
+
+    if (p_coPtnJoin->bCoPtnJoin_CoPtnWith(p_coPtnJoin, p_coPtnPred))
+      return p_coPtnJoin;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card::bCoPtnJoinList_HasEqPredCmp(Card_CoPtnJoinList* p_coPtnJoinList, Card_CmpPred* p_predCmp)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  i8 nChildren_coPtn = this->nChildCards();
+  for (i8 i_Child_coPtn = 0; i_Child_coPtn < nChildren_coPtn; i_Child_coPtn++) {
+    Card_CoPtnJoin* p_coPtnJoin = _pCard_CoPtnJoin(this->pGetChild(i_Child_coPtn));
+
+    i8 nChildren_predCmp = p_coPtnJoin->nChildCards();
+    for (i8 i_Child_predCmp = 0; i_Child_predCmp < nChildren_predCmp; i_Child_predCmp++) {
+      Card_CmpPred *p_predCmp = _pCard_CmpPred(p_coPtnJoin->pGetChild(i_Child_predCmp));
+
+
+      if (p_predCmp->bCmpPred_IsEq(p_predCmp, p_predCmp))
+        return true;
+    }
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* add table and index                                                        */
 /*----------------------------------------------------------------------------*/
 void Card::vIdxColList_Ordinate(Card_IdxColList* p_idxColList, Card_Stream* pCard_Stream)

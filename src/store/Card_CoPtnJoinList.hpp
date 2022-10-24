@@ -19,9 +19,6 @@ namespace STORE
     Card_CoPtnJoinList(void);
    ~Card_CoPtnJoinList(void) noexcept(false);
 
-    Card_CoPtnJoin* pFind_coPtn_for(Card_CoPtnPred* p_CoPtnPred);
-
-    bool bHasEqPredCmp(Card_CmpPred* p_predCmp);
   };
 
   Card_CoPtnJoinList* _pCard_CoPtnJoinList(void* aAddr);
