@@ -1,15 +1,13 @@
 /*============================================================================*/
-/* Card_Expr.cpp -- Typed Expression                                     */
+/* Card_Expr.cpp -- Typed Expression                                          */
 /*============================================================================*/
 
 #include "Card_Expr.hpp"
-#include "Card_ExprBool.hpp"
 
 #include "Card_Type.hpp"
 #include "Card_As.hpp"
 #include "Card_RpnCalc.hpp"
 #include "Card_BoolCalc.hpp"
-#include "Card_Direction.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

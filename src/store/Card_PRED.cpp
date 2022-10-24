@@ -54,16 +54,6 @@ Card_PRED::~Card_PRED(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* concat terms                                                               */
 /*----------------------------------------------------------------------------*/
-void Card_PRED::vConcatTerms(Stz* szTerms)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  vConcatTerms(szTerms,0);
-}
-
-/*----------------------------------------------------------------------------*/
-/* concat terms                                                               */
-/*----------------------------------------------------------------------------*/
 void Card_PRED::vConcatTerms(Stz* szTerms, i8 i_From, i8 i_Till)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
