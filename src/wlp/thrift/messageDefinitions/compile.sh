@@ -36,7 +36,7 @@ COUNTER=0
 for f in ${THRIFT_FILES}
 do
   echo -n "Compiling ${f}... "
-  thrift -r --out "${OUTPUT_DIR}" --gen c_glib "${f}"
+  thrift -r --out "${OUTPUT_DIR}" --gen cpp "${f}"
   echo "Done."
 
   COUNTER="$((COUNTER + 1))"
