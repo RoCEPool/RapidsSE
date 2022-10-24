@@ -62,6 +62,8 @@ namespace STORE
   class Card_IndexPred;
   class Card_IndexScan;
 
+  class Card_JoinOrderSeq;
+
   class Card_LBound;
   class Card_Limit;
 
@@ -72,6 +74,7 @@ namespace STORE
   class Card_PRED;
   class Card_Project;
   class Card_ProjElist;
+  class Card_PtndJoin;
 
   class Card_RBound;
   class Card_RpnCalc;
@@ -309,6 +312,8 @@ namespace STORE
     void vCandIndex_Rank(Card_CandIndex* p_candIndex, i8 iRank);
 
     void vIdxColList_Ordinate(Card_IdxColList* p_idxColList, Card_Stream* pCard_Stream);
+
+    void vJoinOrderSeq_ExtractJoinOrder(Card_PtndJoin* p_PtndJoin);
 
     Card_CmpPred* pOrPred_FindBound(Card_OrPred* p_orPred, Index* pIndex, ePB eBound);
     bool bOrPred_HasBounds(Card_OrPred* p_orPred, Index* pIndex);

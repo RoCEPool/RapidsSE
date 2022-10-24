@@ -2433,6 +2433,36 @@ void Card::vIdxColList_Ordinate(Card_IdxColList* p_idxColList, Card_Stream* pCar
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vJoinOrderSeq_ExtractJoinOrder(Card_PtndJoin* p_PtndJoin)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  eCK eChild;
+
+  for (i8 i_Child = 0; i_Child < p_PtndJoin->nChildCards(); i_Child++) {
+    Card_CmpPred* p_predCmp = _pCard_CmpPred(p_PtndJoin->pGetChild(i_Child));
+
+    for (i8 i_Kid = p_predCmp->nChildCards() - 1; i_Kid >= 0; i_Kid--) {
+      Card *pChild = p_predCmp->pGetChild(i_Kid, eChild);
+      if (CK_COLUMNREF != eChild)
+        continue;
+
+      Card_ColumnRef* p_columnRef = _pCard_ColumnRef(pChild);
+      s32 sTableSyn;
+      p_columnRef->vTableSyn(sTableSyn);
+
+      if (bHasChildWithValue(sTableSyn))
+        continue;
+
+      Card_JoinOrder* p_joinOrder = new Card_JoinOrder(sTableSyn);
+      vAppend(p_joinOrder);
+    }
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* find a comparePred which is the eBound of given index                      */
 /*----------------------------------------------------------------------------*/
 Card_CmpPred* Card::pOrPred_FindBound(Card_OrPred* p_orPred, Index* pIndex, ePB eBound)

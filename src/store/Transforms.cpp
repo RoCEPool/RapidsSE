@@ -1290,7 +1290,7 @@ void Transforms::vP70_T96_Estimate_joinOrder(bool bPrint, bool bTrace)
       break;
 
     M.p_ptndJoin = _pCard_PtndJoin(M.p_MainCard);
-    M.p_joinOrderSeq->vExtractJoinOrder(M.p_ptndJoin);
+    M.p_joinOrderSeq->vJoinOrderSeq_ExtractJoinOrder(M.p_ptndJoin);
   }
 
   vEndTransform();
@@ -1318,7 +1318,7 @@ void Transforms::vP70_T98_Extract_joinOrderSeq(bool bPrint, bool bTrace)
       break;
 
     M.p_ptndJoin = _pCard_PtndJoin(M.p_MainCard);
-    M.p_joinOrderSeq->vExtractJoinOrder(M.p_ptndJoin);
+    M.p_joinOrderSeq->vJoinOrderSeq_ExtractJoinOrder(M.p_ptndJoin);
   }
 
   vEndTransform();
