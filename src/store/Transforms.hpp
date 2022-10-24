@@ -97,9 +97,6 @@ namespace STORE
 
     void vMarkPredAsMoved(Card* pPredCard);
 
-    Card_IndexPred*  pTo_IndexPred (Card_AbsJoin* pCard_AbsJoin,
-                                    Card_CmpPred* pCard_PredCmp);
-
     Footer* aFooter(void);
   };
 

@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "Transforms.hpp"
-#include "Resolver.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -2071,66 +2070,6 @@ void Transforms::vMarkPredAsMoved(Card* pPredCard)
 
     vMarkPredAsMoved(pSubCard);
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert a calculation into a boolean calculaiton                           */
-/*----------------------------------------------------------------------------*/
-Card_IndexPred* Transforms::pTo_IndexPred(Card_AbsJoin* pCard_AbsJoin,
-                                      Card_CmpPred* pCard_PredCmp)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  Card_IndexPred *pCard_IndexPred = new Card_IndexPred;
-
-//  pCard_IndexPred->vAppend(new Card_Term("BOUND"_Stz));
-//  pCard_IndexPred->vAppend(new Card_Term("$I1"_Stz));
-//  pCard_IndexPred->vAppend(new Card_Term("$L1"_Stz));
-//  pCard_IndexPred->vAppend(new Card_Term("=="_Stz));
-
-  Resolver *pResolver = new Resolver(m_pBench);
-
-  pCard_IndexPred->vAppend(new Card_Term("BOUND"_Stz));
-
-  Card_Term *pCard_Term_0 = _pCard_Term(pCard_PredCmp->pGetChild(0));
-  Stz *szTerm_0 = pCard_Term_0->sz();
-  Card_Term *pCard_Term_1 = _pCard_Term(pCard_PredCmp->pGetChild(1));
-  Stz *szTerm_1 = pCard_Term_1->sz();
-
-  s256 sStreamNm_0;
-  s256 sStreamColNm_0;
-  i8   i_StreamColNo_0;
-
-  pResolver->vResolve(pCard_AbsJoin, szTerm_0,
-                      sStreamNm_0, sStreamColNm_0,i_StreamColNo_0);
-
-  s256 sStreamNm_1;
-  s256 sStreamColNm_1;
-  i8   i_StreamColNo_1;
-
-  pResolver->vResolve(pCard_AbsJoin, szTerm_1,
-                      sStreamNm_1, sStreamColNm_1, i_StreamColNo_1);
-
-  s256 sPred_0;
-  s256 sPred_1;
-
-  if (sStreamNm_0.bSame("L"_Stz)) {
-    sPred_0.vSprint("$I%lld"_Stz,i_StreamColNo_1+1);
-    sPred_1.vSprint("$%lld"_Stz,i_StreamColNo_0+1);
-  }
-  else {
-    sPred_0.vSprint("$I%lld"_Stz,i_StreamColNo_0+1);
-    sPred_1.vSprint("$%lld"_Stz,i_StreamColNo_1+1);
-  }
-
-  pCard_IndexPred->vAppend(new Card_Term(sPred_0));
-  pCard_IndexPred->vAppend(new Card_Term(sPred_1));
-
-  pCard_IndexPred->vAppend(new Card_Term(pCard_PredCmp->sz()));
-
-  delete pResolver;
-
-  return pCard_IndexPred;
 }
 
 
