@@ -44,6 +44,7 @@ namespace STORE
   class Card_Direction;
 
   class Card_EBound;
+  class Card_ELIST;
   class Card_Exists;
   class Card_Expr;
   class Card_ExprBool;
@@ -323,6 +324,8 @@ namespace STORE
     bool bCoPtnJoin_CoPtnWith(Card_CoPtnJoin* p_coPtnJoin, Card_CoPtnPred* p_CoPtnPred);
     Card_CoPtnJoin* pCoPtnJoinList_Find_coPtn_for(Card_CoPtnJoinList* p_coPtnJoinList, Card_CoPtnPred* p_coPtnPred);
     bool bCoPtnJoinList_HasEqPredCmp(Card_CoPtnJoinList* p_coPtnJoinList, Card_CmpPred* p_predCmp);
+
+    Card_StmColList* pELIST_DeriveStreamColList(Card_ELIST* p_ELIST);
 
     void vIdxColList_Ordinate(Card_IdxColList* p_idxColList, Card_Stream* pCard_Stream);
 
