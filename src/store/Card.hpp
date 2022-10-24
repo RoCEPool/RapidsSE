@@ -300,6 +300,9 @@ namespace STORE
     void vBoolCalc_CullPred(Card_BoolCalc* p_boolCalc, char cWithMark);
     void vBoolCalc_RemovePred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred);
 
+    i8   iCandIndex_Rank(Card_CandIndex* p_candIndex);
+    void vCandIndex_Rank(Card_CandIndex* p_candIndex, i8 iRank);
+
     void vCmpPred_MarkBound(Card_CmpPred* p_cmpPred);
     bool bCmpPred_CoPtnWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg);
     Card_CmpPred* pCmpPred_FindBound(Card_CmpPred* p_cmpPred, Index* pIndex, ePB eBound);
@@ -308,8 +311,11 @@ namespace STORE
     bool bCmpPred_OverlapsWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg);
     bool bCmpPred_UsesTable(Card_CmpPred* p_cmpPred, char cTableSyn);
 
-    i8   iCandIndex_Rank(Card_CandIndex* p_candIndex);
-    void vCandIndex_Rank(Card_CandIndex* p_candIndex, i8 iRank);
+    bool bColumnRef_IsColumnRef(Card_ColumnRef* p_columnRef);
+    i8   iColumnRef_ColumnOrd(Card_ColumnRef* p_columnRef);
+    char cColumnRef_TableSyn(Card_ColumnRef* p_columnRef);
+    char cColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef);
+    void vColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef, String* psTableSyn);
 
     void vIdxColList_Ordinate(Card_IdxColList* p_idxColList, Card_Stream* pCard_Stream);
 

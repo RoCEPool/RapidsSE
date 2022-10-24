@@ -2195,6 +2195,27 @@ void Card::vBoolCalc_RemovePred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred)
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/* get rank                                                                   */
+/*----------------------------------------------------------------------------*/
+i8 Card::iCandIndex_Rank(Card_CandIndex* p_candIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  i8 iRank = Y_iVal(P_Rank);
+
+  return iRank;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set rank                                                                   */
+/*----------------------------------------------------------------------------*/
+void Card::vCandIndex_Rank(Card_CandIndex* p_candIndex, i8 iRank)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Y_vSet(P_Rank, iRank);
+}
 
 /*----------------------------------------------------------------------------*/
 /* is this predCmp co-partitionable with given arg?                           */
@@ -2276,14 +2297,14 @@ bool Card::bCmpPred_OverlapsWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCm
   //p_PredCmp_arg->vDump();
 
   Card_ColumnRef* p_columnRef_this_0 = _pCard_ColumnRef(this->pGetChild(0));
-  char cTableSyn_this_0 = p_columnRef_this_0->cColumnRef_tableSyn();
+  char cTableSyn_this_0 = p_columnRef_this_0->cColumnRef_TableSyn(p_columnRef_this_0);
   Card_ColumnRef* p_columnRef_this_1 = _pCard_ColumnRef(this->pGetChild(1));
-  char cTableSyn_this_1 = p_columnRef_this_1->cColumnRef_tableSyn();
+  char cTableSyn_this_1 = p_columnRef_this_1->cColumnRef_TableSyn(p_columnRef_this_1);
 
   Card_ColumnRef* p_columnRef_arg_0 = _pCard_ColumnRef(p_PredCmp_arg->pGetChild(0));
-  char cTableSyn_arg_0 = p_columnRef_arg_0->cColumnRef_tableSyn();
+  char cTableSyn_arg_0 = p_columnRef_arg_0->cColumnRef_TableSyn(p_columnRef_arg_0);
   Card_ColumnRef* p_columnRef_arg_1 = _pCard_ColumnRef(p_PredCmp_arg->pGetChild(1));
-  char cTableSyn_arg_1 = p_columnRef_arg_1->cColumnRef_tableSyn();
+  char cTableSyn_arg_1 = p_columnRef_arg_1->cColumnRef_TableSyn(p_columnRef_arg_1);
 
   if (   cTableSyn_this_0 == cTableSyn_arg_0
          || cTableSyn_this_0 == cTableSyn_arg_1
@@ -2316,11 +2337,6 @@ void Card::vCmpPred_MarkBound(Card_CmpPred* p_cmpPred)
 
   vMark1(cBound);
 }
-
-
-
-
-
 
 /*----------------------------------------------------------------------------*/
 /* find a comparePred which is the eBound of given index                      */
@@ -2372,9 +2388,9 @@ bool Card::bCmpPred_UsesTable(Card_CmpPred* p_cmpPred, char cTableSyn)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Card_ColumnRef* p_columnRef_this_0 = _pCard_ColumnRef(this->pGetChild(0));
-  char cTableSyn_this_0 = p_columnRef_this_0->cColumnRef_tableSyn();
+  char cTableSyn_this_0 = p_columnRef_this_0->cColumnRef_TableSyn(p_columnRef_this_0);
   Card_ColumnRef* p_columnRef_this_1 = _pCard_ColumnRef(this->pGetChild(1));
-  char cTableSyn_this_1 = p_columnRef_this_1->cColumnRef_tableSyn();
+  char cTableSyn_this_1 = p_columnRef_this_1->cColumnRef_TableSyn(p_columnRef_this_1);
 
   if (cTableSyn_this_0 == cTableSyn || cTableSyn_this_1 == cTableSyn)
     return true;
@@ -2383,26 +2399,82 @@ bool Card::bCmpPred_UsesTable(Card_CmpPred* p_cmpPred, char cTableSyn)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get rank                                                                   */
+/* is atom a column ordinal?                                                  */
 /*----------------------------------------------------------------------------*/
-i8 Card::iCandIndex_Rank(Card_CandIndex* p_candIndex)
+bool Card::bColumnRef_IsColumnRef(Card_ColumnRef* p_columnRef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  i8 iRank = Y_iVal(P_Rank);
+  Stz* szColumnRef = this->sz();
 
-  return iRank;
+  char cFirst  = szColumnRef->azChar()[0];
+  char cSecond = szColumnRef->azChar()[1];
+  char cThird  = szColumnRef->azChar()[2];
+  char cFourth = szColumnRef->azChar()[3];
+
+  if ('$' == cFirst && '$' == cSecond && '.' == cFourth)
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set rank                                                                   */
+/* get column ordinal of column ref                                           */
 /*----------------------------------------------------------------------------*/
-void Card::vCandIndex_Rank(Card_CandIndex* p_candIndex, i8 iRank)
+i8 Card::iColumnRef_ColumnOrd(Card_ColumnRef* p_columnRef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Y_vSet(P_Rank, iRank);
+  Stz* szColumnRef = this->sz();
+
+  char* azColumnOrd = (szColumnRef->azChar() + 3);
+
+  i8 iColumnOrd = StrLib::iGleanInt(azColumnOrd);
+
+  return iColumnOrd;
 }
+
+/*----------------------------------------------------------------------------*/
+/* get table syn of column ref                                                */
+/*----------------------------------------------------------------------------*/
+char Card::cColumnRef_TableSyn(Card_ColumnRef* p_columnRef)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Stz* szColumnRef = this->sz();
+
+  char cFirst  = szColumnRef->azChar()[0]; // $
+  char cSecond = szColumnRef->azChar()[1]; // $
+  char cThird  = szColumnRef->azChar()[2]; // c
+
+  return cThird;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+char Card::cColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  Stz* szColumnRef = this->sz();
+
+  char cFirst  = szColumnRef->azChar()[0]; // $
+  char cSecond = szColumnRef->azChar()[1]; // $
+  char cThird  = szColumnRef->azChar()[2]; // c
+
+  return cThird;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef, String* psTableSyn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  psTableSyn->vSprint("%c"_Stz, cColumnRef_TableSyn_x(p_columnRef));
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* add table and index                                                        */
@@ -2451,7 +2523,7 @@ void Card::vJoinOrderSeq_ExtractJoinOrder(Card_PtndJoin* p_PtndJoin)
 
       Card_ColumnRef* p_columnRef = _pCard_ColumnRef(pChild);
       s32 sTableSyn;
-      p_columnRef->vTableSyn(sTableSyn);
+      p_columnRef->vColumnRef_TableSyn_x(p_columnRef,sTableSyn);
 
       if (bHasChildWithValue(sTableSyn))
         continue;
