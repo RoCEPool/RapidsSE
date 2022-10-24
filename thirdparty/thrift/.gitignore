@@ -1,4 +1,4 @@
 include/
 lib/
 bin/
-
+configure.log

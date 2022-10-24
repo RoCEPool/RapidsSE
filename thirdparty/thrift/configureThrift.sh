@@ -1,5 +1,8 @@
 #!/bin/bash
 
+readonly DIR="$(dirname "$0")"
+readonly BOOSTDIR="$(realpath "${DIR}/boost_1_80_0")"
+
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Print an error message to stderr and exit,
 ## Params:
@@ -9,6 +12,17 @@
 function errorExit() {
   >&2 echo -e "ERROR: $*"
   exit 1
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Prints a given message if debug mode is turned on (i.e., $DEBUG == 1).
+## Params:
+##  $@ : The arguments to print
+
+function debugPrint() {
+  if [ -n "${DEBUG:-}" ] && [ "${DEBUG}" -eq 1 ]; then
+    echo -e "$*"
+  fi
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -48,13 +62,7 @@ function checkDependenciesMacOs() {
   [[ "${bisonMajor}" -lt 2 ]] && errorExit "The Thrift pre-requisite Bison must be version 2.5 or greater. Installed version is ${bisonVerStr}."
   [[ "${bisonMajor}" -eq 2 && "${bisonMinor}" -lt 5 ]] && errorExit "The Thrift pre-requisite Bison must be version 2.5 or greater. Installed version is ${bisonVerStr}."
 
-  # 3. Check for Boost
-  if [ ! -d /usr/local/include/boost ]; then
-    errorExit "The Thrift pre-requisite Boost does not appear to be installed. " \
-              "Install with the command \"brew install boost\"."
-  fi
-
-  # 4. Check for OpenSSL headers and library
+  # 3. Check for OpenSSL headers and library
   if [ ! -d /usr/local/opt/openssl/include ]; then
     errorExit "The Thrift pre-requisite OpenSSL headers do not appear to be installed."
   fi
@@ -67,18 +75,7 @@ function checkDependenciesMacOs() {
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Checks that the necessary dependencies are installed on CentOS 7
 function checkDependenciesCentOS7() {
-  # 1. Check for EPEL repository
-  if ! yum repolist | grep -q epel; then
-    errorExit "Homebrew is required to install other Thrift pre-requisites"
-  fi
-
-  # 2. Check for Boost
-  if [ ! -d /usr/include/boost169 ]; then
-    errorExit "The Thrift pre-requisite Boost does not appear to be installed. " \
-              "Install with the command \"sudo yum install boost169-devel\"."
-  fi
-
-  # 3. Check for OpenSSL headers
+  # 1. Check for OpenSSL headers
   if [ ! -d /usr/include/openssl ]; then
     errorExit "The Thrift pre-requisite OpenSSL headers do not appear to be installed. " \
               "Install with the command \"sudo yum install openssl-devel\"."
@@ -88,18 +85,7 @@ function checkDependenciesCentOS7() {
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Checks that the necessary dependencies are installed on CentOS other than v7
 function checkDependenciesCentOSOther() {
-  # 1. Check for EPEL repository
-  if ! yum repolist | grep -q epel; then
-    errorExit "Homebrew is required to install other Thrift pre-requisites"
-  fi
-
-  # 2. Check for Boost
-  if [ ! -d /usr/include/boost ]; then
-    errorExit "The Thrift pre-requisite Boost does not appear to be installed. " \
-              "Install with the command \"sudo yum install boost-devel\"."
-  fi
-
-  # 3. Check for OpenSSL headers
+  # 1. Check for OpenSSL headers
   if [ ! -d /usr/include/openssl ]; then
     errorExit "The Thrift pre-requisite OpenSSL headers do not appear to be installed. " \
               "Install with the command \"sudo yum install openssl-devel\"."
@@ -109,13 +95,7 @@ function checkDependenciesCentOSOther() {
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Checks that the necessary dependencies are installed on Ubuntu
 function checkDependenciesUbuntu() {
-  # 1. Check for Boost
-  if [ ! -d /usr/include/boost ]; then
-    errorExit "The Thrift pre-requisite Boost does not appear to be installed. " \
-              "Install with the command \"sudo apt-get install libboost-dev\"."
-  fi
-
-  # 2. Check for OpenSSL headers
+  # 1. Check for OpenSSL headers
   if [ ! -d /usr/include/openssl ]; then
     errorExit "The Thrift pre-requisite OpenSSL headers do not appear to be installed. " \
               "Install with the command \"sudo apt-get install libssl-dev\"."
@@ -126,13 +106,7 @@ function checkDependenciesUbuntu() {
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Checks that the necessary dependencies are installed on AmazonLinux
 function checkDependenciesAmazonLinux() {
-  # 1. Check for Boost
-  if [ ! -d /usr/include/boost169 ]; then
-    errorExit "The Thrift pre-requisite Boost does not appear to be installed. " \
-              "Install with the command \"sudo yum install boost169-devel\"."
-  fi
-
-  # 2. Check for OpenSSL headers
+  # 1. Check for OpenSSL headers
   if [ ! -d /usr/include/openssl ]; then
     errorExit "The Thrift pre-requisite OpenSSL headers do not appear to be installed. " \
               "Install with the command \"sudo yum install openssl-devel\"."
@@ -151,6 +125,7 @@ function runConfigure() {
                        "--disable-shared"
                        "--enable-static"
                        "--with-cpp"
+                       "--with-boost=${BOOSTDIR}"
                        "--without-java"
                        "--without-kotlin"
                        "--without-erlang"
@@ -171,23 +146,16 @@ function runConfigure() {
                        "--without-d"
                        "--without-libevent"
                        "--without-qt5")
-  
-  if   [ "${IS_MACOS}" -eq 1 ]; then 
+
+  if   [ "${IS_MACOS}" -eq 1 ]; then
     command=("env"
              "LD_FLAGS=-L/usr/local/opt/openssl/lib"
              "CPPFLAGS=-I/usr/local/opt/openssl/include"
              "./configure"
              "${commonOptions[@]}" )
-    
-  elif [[ "${IS_CENTOS_7}" -eq 1 || "${IS_AMZNLINUX}" -eq 1 ]]; then
-    command=("./configure"
-             "${commonOptions[@]}"
-             "--with-boost=/usr/include/boost169" )
-    
-  elif [[ "${IS_CENTOS_OTHER}" -eq 1 || "${IS_UBUNTU}" -eq 1 ]]; then
-    command=("./configure"
-             "${commonOptions[@]}"
-             "--with-boost" )
+
+  else
+    command=("./configure" "${commonOptions[@]}")
   fi
 
   # Run in a subshell so we only change the directory temporarily
@@ -199,9 +167,13 @@ function runConfigure() {
     local output
     readonly configureLog="../configure.log"
 
-    if ! output="$("${command[@]}" | tee "${configureLog}" | grep "Building C++ Library")"; then
+    debugPrint "Configure command is:\n${command[*]}"
+
+    if ! "${command[@]}" | tee "${configureLog}"; then
       errorExit "Unable to configure Thrift. Refer to the output in the logfile $(realpath ${configureLog})"
     fi
+
+    output=$(grep "Building C++ Library" "${configureLog}")
 
     # Check if the c++ library is actually being configured
     [[ "${output}" =~ "yes" ]] || errorExit "Thrift did not configure the c++ library to be built. This is likely due to a missing dependency."
@@ -268,7 +240,6 @@ fi
 
 # Part 2 - Check for the necessary dependencies on this machine
 checkDependencies
-
 
 # Part 3 - Configure thrift as per the OS we are on
 runConfigure

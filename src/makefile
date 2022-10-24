@@ -129,17 +129,18 @@ DEPFILES  = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.d, $(SOURCES))
 
 # Include directories
 SRC_INCLUDES := $(shell find . -type d | awk '{print "-I"$$0}')
-THIRDPARTY_INCLUDES := -I../thirdparty -I ../thirdparty/xxhash -I../thirdparty/mersenne -I../thirdparty/antlr/include -I../thirdparty/antlr/generated -I ../thirdparty/tcc/include 
+THIRDPARTY_INCLUDES := -I../thirdparty -I ../thirdparty/xxhash -I../thirdparty/mersenne -I../thirdparty/antlr/include -I../thirdparty/thrift/include -I../thirdparty/antlr/generated -I ../thirdparty/tcc/include
 INCLUDES = $(SRC_INCLUDES) $(THIRDPARTY_INCLUDES)
 
 # Linker libraries
-LIBS = -lpthread -ltcc -ldl -lantlr4-runtime $(strip $(LINUX_LIBS) $(DARWIN_LIBS))
-LIB_DIRS = -L../thirdparty/tcc/lib -L../thirdparty/antlr/lib $(strip $(LINUX_LIB_DIRS) $(DARWIN_LIB_DIRS))
+LIBS = -lpthread -ltcc -ldl -lantlr4-runtime -lthrift $(strip $(LINUX_LIBS) $(DARWIN_LIBS))
+LIB_DIRS = -L../thirdparty/tcc/lib -L../thirdparty/antlr/lib -L../thirdparty/thrift/lib $(strip $(LINUX_LIB_DIRS) $(DARWIN_LIB_DIRS))
 
 # ThirdParty compiled library targets
 ANTLR_LIB := ../thirdparty/antlr/lib/libantlr4-runtime.a
 TCC_LIB := ../thirdparty/tcc/lib/libtcc.a
-COMPILED_LIBS := $(ANTLR_LIB) $(TCC_LIB)
+THRIFT_LIB := ../thirdparty/thrift/lib/libthrift.a
+COMPILED_LIBS := $(ANTLR_LIB) $(TCC_LIB) ${THRIFT_LIB}
 
 # A callable function for defining the file that describes whether a target
 # was built as debug or release.
@@ -288,6 +289,11 @@ $(TCC_LIB) :
 	env
 	+@cd ../thirdparty/tcc && env -u CPPFLAGS -u LDFLAGS $(MAKE)
 
+# Rule for building Thrift
+thrift : $(THRIFT_LIB)
+$(THRIFT_LIB) :
+	+@cd ../thirdparty/thrift && env -u CPPFLAGS -u LDFLAGS $(MAKE)
+
 # Necessary to make some of the above rules run every time.
 FORCE : 
 
@@ -299,6 +305,7 @@ distclean : clean
 	@echo ""
 	+@cd ../thirdparty/antlr && $(MAKE) clean
 	+@cd ../thirdparty/tcc && $(MAKE) clean
+	+@cd ../thirdparty/thrift && $(MAKE) clean
 
 #To remove RapidsSE-generated files only
 clean :
@@ -316,4 +323,4 @@ print-% : ; @echo $* = $($*)
 .SECONDARY :
 
 # List of make targets that don't correlate to files in the filesystem.
-.PHONY : clean distclean FORCE thirdparty antlr tcc version sql buildConfigCheck target release debug post-build main-build pre-build all
+.PHONY : clean distclean FORCE thirdparty antlr tcc thrift version sql buildConfigCheck target release debug post-build main-build pre-build all
