@@ -295,7 +295,7 @@ void Transforms::vP30_T10_Calc_ordinalRange_ForAll_stream(bool bPrint, bool bTra
     M.p_stream = M.p_table->pSub_stream();
 
     // <scan>/<stream>:iOrdLo,iOrdHi
-    nStreamCols = M.p_stream->nStreamCols();
+    nStreamCols = M.p_stream->pSub_stmColList()->nChildCards();
     M.p_stream->Y_vSet(P_OrdLo, iOrdLo);
     iOrdHi = iOrdLo + nStreamCols - 1;
     M.p_stream->Y_vSet(P_OrdHi, iOrdHi);

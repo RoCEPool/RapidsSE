@@ -77,19 +77,6 @@ bool Card_Stream::bContainsPred(Card_PRED* pCard_PRED)
 
 
 /*----------------------------------------------------------------------------*/
-/* get <streamColList>                                                       */
-/*----------------------------------------------------------------------------*/
-Card_StmColList* Card_Stream::pGet_streamColList(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_StmColList* pCard_StreamColList
-    = _pCard_StmColList(pFindSubCard(CK_STMCOLLIST));
-
-  return pCard_StreamColList;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get number of stream columns                                               */
 /*----------------------------------------------------------------------------*/
 void Card_Stream::vStreamPrint(Ribbon* pRibbon, i8 iDepth)
@@ -104,20 +91,6 @@ void Card_Stream::vStreamPrint(Ribbon* pRibbon, i8 iDepth)
                      Y_iVal(P_OrdLo), Y_iVal(P_OrdHi));
 
   vPrintCard_byCustomNm(pRibbon, iDepth, sName);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get number of stream columns                                               */
-/*----------------------------------------------------------------------------*/
-i8 Card_Stream::nStreamCols(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card_StmColList* pCard_StreamColList = pGet_streamColList();
-
-  i8 nStreamCols = pCard_StreamColList->nStreamCols();
-
-  return nStreamCols;
 }
 
 /*============================================================================*/

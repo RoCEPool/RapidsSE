@@ -19,10 +19,6 @@ namespace STORE
 
     bool bContainsPred(Card_PRED* pCard_PRED);
 
-   Card_StmColList* pGet_streamColList(void);
-
-
-    i8 nStreamCols(void);
     void vStreamPrint(Ribbon* pRibbon, i8 iDepth);
 
    };
