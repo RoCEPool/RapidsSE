@@ -16,8 +16,6 @@ namespace STORE
     Card_Type(Stz* szType);
     Card_Type(Column* pColumn);
    ~Card_Type(void) noexcept(false);
-
-    char cTypeShort(void);
   };
 
   Card_Type* _pCard_Type(void* aAddr);
