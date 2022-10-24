@@ -42,7 +42,8 @@ Card_Expr::Card_Expr(Column* pColumn)
   _checkInitialised_(CN_CARD);
   
   // type
-  Card_Type* pCard_Type = new Card_Type(pColumn);
+  Stz* szType = aCT[pColumn->eColumnType()];
+  Card_Type* pCard_Type = new Card_Type(szType);
   vAppend(pCard_Type);
   
   // as

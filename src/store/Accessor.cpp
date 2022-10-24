@@ -164,7 +164,8 @@ void Accessor::A_vStreamOfTable(void)
     M.p_stmColNm->vValue(pColumn->szColNm());
     M.p_stmCol->vAppend(M.p_stmColNm);
 
-    Card_Type *pCard_Type = new Card_Type(pColumn);
+    Stz* szType = aCT[pColumn->eColumnType()];
+    Card_Type *pCard_Type = new Card_Type(szType);
     M.p_stmCol->vAppend(pCard_Type);
   }
 
