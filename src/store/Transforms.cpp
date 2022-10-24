@@ -772,7 +772,7 @@ void Transforms::vP60_T50_Delete_Empty_filter(bool bPrint, bool bTrace)
     if (! M.p_filter)
       continue;
 
-    if (! M.p_filter->bIsEmptyFilter())
+    if (!M.p_filter->bFilter_IsEmptyFilter(M.p_filter))
       continue;
 
     M.p_MainCard->vRemoveChild(M.p_filter);
@@ -845,7 +845,7 @@ void Transforms::vP70_T10_Extract_joinPredList(bool bPrint, bool bTrace)
     if (!M.p_boolCalc)
       continue;
 
-    M.p_joinPredList->vExtract_joinPredList(M.p_boolCalc);
+    M.p_joinPredList->vJoinPredList_Extract(M.p_joinPredList,M.p_boolCalc);
   }
 
   vEndTransform();
@@ -1627,11 +1627,11 @@ void Transforms::vP80_T60_Cull_Marked_cmpPred(bool bPrint, bool bTrace)
   while (E_bEachMainWithSub(CK_SCAN,CK_FILTER)) {
 
     vTracer("Culling <filter> of L & U bounds %s\n"_Stz,M.p_filter->szBearing());
-    M.p_filter->vCullPred('L');
-    M.p_filter->vCullPred('U');
+    M.p_filter->vFilter_CullPred(M.p_filter,'L');
+    M.p_filter->vFilter_CullPred(M.p_filter,'U');
 
     //M.p_filter->vDump();
-    if (! M.p_filter->bIsEmptyFilter())
+    if (! M.p_filter->bFilter_IsEmptyFilter(M.p_filter))
       continue;
 
     vTracer("Deleting empty <filter> %s\n"_Stz,M.p_filter->szBearing());

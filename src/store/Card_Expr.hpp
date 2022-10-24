@@ -16,8 +16,6 @@ namespace STORE
     Card_Expr(void);
     Card_Expr(Column* pColumn);
    ~Card_Expr(void) noexcept(false);
-    
-    void vAsEnsure(void);
   };
 
   Card_Expr* _pCard_Expr(void* aAddr);

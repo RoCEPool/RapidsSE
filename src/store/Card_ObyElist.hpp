@@ -17,10 +17,6 @@ namespace STORE
     Card_ObyElist(void);
     Card_ObyElist(Index* pIndex);
    ~Card_ObyElist(void) noexcept(false);
-    
-    
-  private:
-    void vPopulate(Index* pIndex);
   };
 
   Card_ObyElist* _pCard_ObyElist(void* aAddr);

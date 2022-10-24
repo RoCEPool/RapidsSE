@@ -711,7 +711,7 @@ Card_AggElist* Dissector::pAggElist(Card_RpnTerms* pCard_RpnTerms)
     // TYPE <type> [ AS <as> ] <calc>
     Card_Expr* pCard_Expr = pExpr(pCard_RpnTerms);
     pCard_Expr->vCardNo(++iCardNo);
-    pCard_Expr->vAsEnsure();
+    pCard_Expr->vExpr_AsEnsure(pCard_Expr);
 
     pCard_AggElist->vAppend(pCard_Expr);
   }
@@ -752,7 +752,7 @@ Card_GbyElist* Dissector::pGbyElist(Card_RpnTerms* pCard_RpnTerms)
     // TYPE <type> <calcExpr> [ AS <as> ]
     Card_Expr* pCard_Expr = pExpr(pCard_RpnTerms);
     pCard_Expr->vCardNo(++iCardNo);
-    pCard_Expr->vAsEnsure();
+    pCard_Expr->vExpr_AsEnsure(pCard_Expr);
     
     Card_Direction* pCard_Direction = new Card_Direction(aSD_short[SD_ASC]);
     pCard_Expr->vAppend(pCard_Direction);

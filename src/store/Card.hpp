@@ -67,6 +67,7 @@ namespace STORE
   class Card_IndexScan;
 
   class Card_JoinOrderSeq;
+  class Card_JoinPredList;
 
   class Card_LBound;
   class Card_Limit;
@@ -327,9 +328,18 @@ namespace STORE
 
     Card_StmColList* pELIST_DeriveStreamColList(Card_ELIST* p_ELIST);
 
+    void vExpr_AsEnsure(Card_Expr* p_expr);
+
+    void vFilter_CullPred(Card_Filter* p_filter, char cWithMark);
+    bool bFilter_IsEmptyFilter(Card_Filter* p_filter);
+
     void vIdxColList_Ordinate(Card_IdxColList* p_idxColList, Card_Stream* pCard_Stream);
 
     void vJoinOrderSeq_ExtractJoinOrder(Card_PtndJoin* p_PtndJoin);
+
+    void vJoinPredList_Extract(Card_JoinPredList* p_joinPredList, Card_BoolCalc* p_boolCalc);
+
+    void vObyElist_Populate(Card_ObyElist* p_obyElist, Index* pIndex);
 
     Card_CmpPred* pOrPred_FindBound(Card_OrPred* p_orPred, Index* pIndex, ePB eBound);
     bool bOrPred_HasBounds(Card_OrPred* p_orPred, Index* pIndex);

@@ -2568,6 +2568,61 @@ Card_StmColList* Card::pELIST_DeriveStreamColList(Card_ELIST* p_ELIST)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vExpr_AsEnsure(Card_Expr* p_expr)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_As* pCard_As = _pCard_As(pFindSubCard(CK_AS));
+  if (pCard_As)
+    return;
+
+  s32 sAs;
+  sAs.vSprint("COL_%lld"_Stz,m_iCardNo);
+
+  pCard_As = new Card_As(sAs);
+  vAppend(pCard_As);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vFilter_CullPred(Card_Filter* p_filter, char cWithMark)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  i8 nChildren = nChildCards();
+  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
+    Card* pChildCard = pGetChild(i_Child);
+
+    eCK eCard = pChildCard->eCard();
+    if (eCard != CK_BOOLCALC)
+      continue;
+
+    Card_BoolCalc* p_boolCalc = _pCard_BoolCalc(pChildCard);
+
+    p_boolCalc->vBoolCalc_CullPred(p_boolCalc,cWithMark);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card::bFilter_IsEmptyFilter(Card_Filter* p_filter)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_BoolCalc* pCard_calcBool =
+      _pCard_BoolCalc(pFindSubCard(CK_BOOLCALC));
+
+  if (0 == pCard_calcBool->nChildCards())
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* add table and index                                                        */
 /*----------------------------------------------------------------------------*/
 void Card::vIdxColList_Ordinate(Card_IdxColList* p_idxColList, Card_Stream* pCard_Stream)
@@ -2622,6 +2677,63 @@ void Card::vJoinOrderSeq_ExtractJoinOrder(Card_PtndJoin* p_PtndJoin)
       Card_JoinOrder* p_joinOrder = new Card_JoinOrder(sTableSyn);
       vAppend(p_joinOrder);
     }
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vJoinPredList_Extract(Card_JoinPredList* p_joinPredList, Card_BoolCalc* p_boolCalc)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  auto bfExtract = [this,p_boolCalc](Card *pCard) {
+
+    Card_CmpPred* p_predCmp = _pCard_CmpPred(pCard);
+
+    if (! p_predCmp->sz()->bSame("=="_Stz)) //RAYMOND CAN DO BETTER!
+      return true;
+
+    Card_Term* p_term_0 = _pCard_Term(p_predCmp->pGetChild(0));
+    Card_ColumnRef* p_columnRef_0 = p_term_0->pSub_columnRef();
+    if (! p_columnRef_0)
+      return true;
+    Card_Term* p_term_1 = _pCard_Term(p_predCmp->pGetChild(1));
+    Card_ColumnRef* p_columnRef_1= p_term_1->pSub_columnRef();
+    if (!p_columnRef_1->bColumnRef_IsColumnRef(p_columnRef_1))
+      return true;
+
+    Card_CmpPred* p_predCmp_new = new Card_CmpPred(p_predCmp->sz());
+    p_predCmp_new->vAppend(p_columnRef_0->pDupCardAndSubCards());
+    p_predCmp_new->vAppend(p_columnRef_1->pDupCardAndSubCards());
+
+    this->vAppend(p_predCmp_new);
+
+    return true;
+  };
+
+  // - - - - - - - - -
+
+  p_boolCalc->vApplyRecursive(CK_CMPPRED, bfExtract);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vObyElist_Populate(Card_ObyElist* p_obyElist, Index* pIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  IndexDef* pIndexDef = pIndex->pIndexDef();
+  i8 nIdxCols = pIndexDef->nColumns();
+
+  for (i8 i_IdxCol = 0; i_IdxCol < nIdxCols; i_IdxCol++) {
+
+    Column* pIdxCol = pIndexDef->pGetColumn(i_IdxCol);
+
+    Card_Expr* pCard_Expr = new Card_Expr(pIdxCol);
+    vAppend(pCard_Expr);
   }
 }
 
