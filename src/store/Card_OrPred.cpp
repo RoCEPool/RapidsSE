@@ -40,7 +40,7 @@ Card_OrPred::~Card_OrPred(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* find a comparePred which is the eBound of given index                      */
 /*----------------------------------------------------------------------------*/
-Card_CmpPred* Card_OrPred::pOrPred_FindBound(Index* pIndex, ePB eBound)
+Card_CmpPred* Card::pOrPred_FindBound(Index* pIndex, ePB eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -58,7 +58,7 @@ Card_CmpPred* Card_OrPred::pOrPred_FindBound(Index* pIndex, ePB eBound)
 /*----------------------------------------------------------------------------*/
 /* does orPred have some bound on given index?                                */
 /*----------------------------------------------------------------------------*/
-bool Card_OrPred::bOrPred_HasBounds(Index* pIndex)
+bool Card::bOrPred_HasBounds(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   

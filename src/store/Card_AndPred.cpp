@@ -40,7 +40,7 @@ Card_AndPred::~Card_AndPred(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* find a comparePred which is the eBound of given index                      */
 /*----------------------------------------------------------------------------*/
-Card_CmpPred* Card_AndPred::pAndPred_FindBound(Index* pIndex, ePB eBound)
+Card_CmpPred* Card::pAndPred_FindBound(Index* pIndex, ePB eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -58,7 +58,7 @@ Card_CmpPred* Card_AndPred::pAndPred_FindBound(Index* pIndex, ePB eBound)
 /*----------------------------------------------------------------------------*/
 /* does this andPred have some bound on index?                                */
 /*----------------------------------------------------------------------------*/
-bool Card_AndPred::bAndPred_HasBounds(Index* pIndex)
+bool Card::bAndPred_HasBounds(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   

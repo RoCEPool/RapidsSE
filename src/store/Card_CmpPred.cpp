@@ -59,7 +59,7 @@ Card_CmpPred::~Card_CmpPred(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* is this predCmp co-partitionable with given arg?                           */
 /*----------------------------------------------------------------------------*/
-bool Card_CmpPred::bCmpPred_CoPtnWith(Card_CmpPred* p_PredCmp_arg)
+bool Card::bCmpPred_CoPtnWith(Card_CmpPred* p_PredCmp_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -104,7 +104,7 @@ bool Card_CmpPred::bCmpPred_CoPtnWith(Card_CmpPred* p_PredCmp_arg)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_CmpPred::bCmpPred_IsEq(Card_CmpPred* p_PredCmp_arg)
+bool Card::bCmpPred_IsEq(Card_CmpPred* p_PredCmp_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -128,7 +128,7 @@ bool Card_CmpPred::bCmpPred_IsEq(Card_CmpPred* p_PredCmp_arg)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_CmpPred::bCmpPred_OverlapsWith(Card_CmpPred* p_PredCmp_arg)
+bool Card::bCmpPred_OverlapsWith(Card_CmpPred* p_PredCmp_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -158,7 +158,7 @@ bool Card_CmpPred::bCmpPred_OverlapsWith(Card_CmpPred* p_PredCmp_arg)
 /*----------------------------------------------------------------------------*/
 /* mark the bounds of this <predCmp>                                          */
 /*----------------------------------------------------------------------------*/
-void Card_CmpPred::vCmpPred_MarkBound(void)
+void Card::vCmpPred_MarkBound(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -185,7 +185,7 @@ void Card_CmpPred::vCmpPred_MarkBound(void)
 /*----------------------------------------------------------------------------*/
 /* find a comparePred which is the eBound of given index                      */
 /*----------------------------------------------------------------------------*/
-Card_CmpPred* Card_CmpPred::pCmpPred_FindBound(Index* pIndex, ePB eBound)
+Card_CmpPred* Card::pCmpPred_FindBound(Index* pIndex, ePB eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -199,13 +199,13 @@ Card_CmpPred* Card_CmpPred::pCmpPred_FindBound(Index* pIndex, ePB eBound)
   if (! pCol0->szColNm()->bSame(szTerm0))
     return nullptr;
   
-  return this;
+  return _pCard_CmpPred(this);
 }
 
 /*----------------------------------------------------------------------------*/
 /* is this comparePred a bound on given index?                                */
 /*----------------------------------------------------------------------------*/
-bool Card_CmpPred::bCmpPred_HasBounds(Index* pIndex)
+bool Card::bCmpPred_HasBounds(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -227,7 +227,7 @@ bool Card_CmpPred::bCmpPred_HasBounds(Index* pIndex)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_CmpPred::bCmpPred_UsesTable(char cTableSyn)
+bool Card::bCmpPred_UsesTable(char cTableSyn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

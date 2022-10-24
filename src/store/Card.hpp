@@ -288,6 +288,23 @@ namespace STORE
     void Y_vSetSprint(Stz* szPpyNm, Stz* szFormat, ...);
 
 
+    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+    Card_CmpPred* pOrPred_FindBound(Index* pIndex, ePB eBound);
+    bool bOrPred_HasBounds(Index* pIndex);
+
+    Card_CmpPred* pAndPred_FindBound(Index* pIndex, ePB eBound);
+    bool bAndPred_HasBounds(Index* pIndex);
+
+    void vCmpPred_MarkBound(void);
+    bool bCmpPred_CoPtnWith(Card_CmpPred* p_PredCmp_arg);
+    Card_CmpPred* pCmpPred_FindBound(Index* pIndex, ePB eBound);
+    bool bCmpPred_HasBounds(Index* pIndex);
+    bool bCmpPred_IsEq(Card_CmpPred* p_PredCmp_arg);
+    bool bCmpPred_OverlapsWith(Card_CmpPred* p_PredCmp_arg);
+    bool bCmpPred_UsesTable(char cTableSyn);
+
+
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   
