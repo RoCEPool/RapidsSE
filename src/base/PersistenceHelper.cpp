@@ -71,10 +71,10 @@ void PersistenceHelper::vWriteDiskTest(Stz* sFilePath, i8 iNoOfGb)
 {
   _static_
 
-  char *azBuffer = new char [C_SIZE_POOL_BUFFER];
-  for(i8 i = 0; i<C_SIZE_POOL_BUFFER; i++)
-    azBuffer[i] = 0;
-//  MemLib::vSet(&azBuffer, 0x00, sizeof(azBuffer),CN_NONE);
+  i8 iSize = C_1GB * iNoOfGb;
+  char *azBuffer = new char [iSize];
+  for(i8 i = 0; i < iSize; i++)
+    azBuffer[i] = RndLib::iInteger(0,100);
 
   Timer oTimer;
   oTimer.vStart();
@@ -87,20 +87,24 @@ void PersistenceHelper::vWriteDiskTest(Stz* sFilePath, i8 iNoOfGb)
   File* pFile = new(C_VIA_MALLOC) File(nullptr);
   pFile->bOpenWrite(sFilePath);
 
-  for (i8 nBuffCount = 0;
-       (nBuffCount/1000) <= iNoOfGb;
-       nBuffCount++) {
-      bool bResult = pFile->bWriteBytes(azBuffer,C_SIZE_POOL_BUFFER);
-      ASSERT(bResult);
+  void* pIter = azBuffer;
+
+  for (i8 nBytesWritten = 0;
+       nBytesWritten < iSize;
+       ) {
+    bool bResult = pFile->bWriteBytes(pIter,C_1MB);
+    ASSERT(bResult);
+    nBytesWritten += C_1MB;
+    pIter = aAdd<void *>(pIter, C_1MB);
   }
 
-  pFile->vFlush();
+  pFile->vSync();
 
   pFile->vClose();
   delete pFile;
 
   oTimer.vUpdate();
-  vTrace("Partition %lld took %lldms to write heap buffers to disk\n"_Stz,
+  vTrace("Partition %lld took %lld ms to write to disk\n"_Stz,
          iPtnOfNode,
          oTimer.iMilliseconds());
 
@@ -192,7 +196,7 @@ void PersistenceHelper::vWritePersistentHeaps(Stz* sFilePath)
 //  vTrace("Writing persistent large heap\n"_Stz);
   vWriteHeapBuffers(AM::pHeaps()->Persistent.m_pLarge, pFile);
 
-  pFile->vFlush();
+  pFile->vSync();
 
   pFile->vClose();
   delete pFile;
