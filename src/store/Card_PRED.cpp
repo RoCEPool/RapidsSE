@@ -126,10 +126,10 @@ Card_CmpPred* Card_PRED::pFindBound_pred(Index* pIndex,
   switch (eCard) {
     
     case CK_ORPRED:
-      return _pCard_OrPred(this)->pFindBound_or(pIndex,eBound);
+      return _pCard_OrPred(this)->pOrPred_FindBound(pIndex, eBound);
       
     case CK_ANDPRED:
-      return _pCard_AndPred(this)->pFindBound_and(pIndex,eBound);
+      return _pCard_AndPred(this)->pAndPred_FindBound(pIndex, eBound);
       
     case CK_CMPPRED:
       return _pCard_CmpPred(this)->pCmpPred_FindBound(pIndex, eBound);
@@ -157,10 +157,10 @@ bool Card_PRED::bHasBounds_pred(Index* pIndex)
   switch (eCard) {
     
     case CK_ORPRED:
-      return _pCard_OrPred(this)->bHasBounds_or(pIndex);
+      return _pCard_OrPred(this)->bOrPred_HasBounds(pIndex);
       
     case CK_ANDPRED:
-      return _pCard_AndPred(this)->bHasBounds_and(pIndex);
+      return _pCard_AndPred(this)->bAndPred_HasBounds(pIndex);
       
     case CK_CMPPRED:
       return _pCard_CmpPred(this)->bCmpPred_HasBounds(pIndex);
