@@ -17,20 +17,9 @@ namespace STORE
     Card_Filter(void);
    ~Card_Filter(void) noexcept(false);
 
-    void vToExpr(Stz* szExpr);
-  
-    bool bCull(void);
     void vCullPred(char cWithMark);
 
-    Card_CmpPred* pFindBound(Index* pIndex, ePB eBound);
-
-    bool bHasBounds(Index* pIndex);
-
     bool bIsEmptyFilter(void);
-
-    void vReduceFilter(void);
-    bool bRemoveBound(Card_CmpPred* pCard_PredCmp);
-
   };
 
   Card_Filter* _pCard_Filter(void* aAddr);

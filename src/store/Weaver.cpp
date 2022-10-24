@@ -565,11 +565,11 @@ void Weaver::vRpnFilter(Stz* szRpnExpr, Card_Filter* pCard_Filter)
   Card* pCard_test = pCard_Filter->pSub_boolCalc();
   if (CK_BOOLCALC == pCard_test->eCard()) {
     Card_BoolCalc *pCard_CalcBool = _pCard_BoolCalc(pCard_test);
-    vCalcBool(szRpnExpr, pCard_CalcBool);
+    vBoolCalc(szRpnExpr, pCard_CalcBool);
   }
   else {
     Card_RpnCalc *pCard_Calc = pCard_Filter->pSub_rpnCalc();
-    vExprCalc(szRpnExpr, pCard_Calc);
+    vRpnCalc(szRpnExpr, pCard_Calc);
   }
 }
 
@@ -587,11 +587,8 @@ void Weaver::vRpnHaving(Stz* szRpnExpr, Card_Having* pCard_Having)
   Card_Type* pCard_Type = _pCard_Type(pCard_Expr->pGet(0));
   vType(szRpnExpr,pCard_Type);
 
-//  Card_ExprBool* pCard_ExprBool = _pCard_ExprBool(pCard_Expr->pGet(1));
-//  vExprBool(szRpnExpr,pCard_ExprBool);
-
   Card_RpnCalc* pCard_Calc = _pCard_RpnCalc(pCard_Expr->pGet(1));
-  vExprCalc(szRpnExpr,pCard_Calc);
+  vRpnCalc(szRpnExpr, pCard_Calc);
 
 }
 
@@ -968,11 +965,11 @@ void Weaver::vRpnWhere(Stz* szRpnExpr, Card_Where* pCard_Where)
   Card* pCard_test = pCard_Where->pSub_boolCalc();
   if (CK_BOOLCALC == pCard_test->eCard()) {
     Card_BoolCalc *pCard_CalcBool = _pCard_BoolCalc(pCard_test);
-    vCalcBool(szRpnExpr, pCard_CalcBool);
+    vBoolCalc(szRpnExpr, pCard_CalcBool);
   }
   else {
     Card_RpnCalc *pCard_Calc = pCard_Where->pSub_rpnCalc();
-    vExprCalc(szRpnExpr, pCard_Calc);
+    vRpnCalc(szRpnExpr, pCard_Calc);
   }
 }
 
@@ -1004,7 +1001,7 @@ void Weaver::vExpr(Stz* szRpnExpr, Card_Expr* pCard_Expr)
         break;
         
       case CK_RPNCALC:
-        vExprCalc(szRpnExpr, _pCard_RpnCalc(pCard));
+        vRpnCalc(szRpnExpr, _pCard_RpnCalc(pCard));
         break;
 
       case CK_TYPE:
@@ -1021,30 +1018,18 @@ void Weaver::vExpr(Stz* szRpnExpr, Card_Expr* pCard_Expr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* produce <expr> for pCard_ExprBool                                          */
+/* produce <expr> for pCard_RpnCalc                                          */
 /*----------------------------------------------------------------------------*/
-void Weaver::vExprBool(Stz* szRpnExpr, Card_ExprBool* pCard_ExprBool)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
- 
-  Card_PRED* pCard0 = (Card_PRED*)pCard_ExprBool->pGet(0);
-  vPred(szRpnExpr,pCard0);
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* produce <expr> for pCard_ExprCalc                                          */
-/*----------------------------------------------------------------------------*/
-void Weaver::vExprCalc(Stz* szRpnExpr, Card_RpnCalc* pCard_ExprCalc)
+void Weaver::vRpnCalc(Stz* szRpnExpr, Card_RpnCalc* pCard_RpnCalc)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
   
-  //if (pCard_ExprCalc->bAggOp())
+  //if (pCard_RpnCalc->bAggOp())
   //  szRpnExpr->vConcat(" )"_Stz);
   
-  i8 nSubCards = pCard_ExprCalc->nItems();
+  i8 nSubCards = pCard_RpnCalc->nItems();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card* pCard = pCard_ExprCalc->pGet(i_Child);
+    Card* pCard = pCard_RpnCalc->pGet(i_Child);
     
     eCK eCard = pCard->eCard();
     
@@ -1066,31 +1051,31 @@ void Weaver::vExprCalc(Stz* szRpnExpr, Card_RpnCalc* pCard_ExprCalc)
 /*----------------------------------------------------------------------------*/
 /* append <rpnExpr> for <calcBool>                                            */
 /*----------------------------------------------------------------------------*/
-void Weaver::vCalcBool(Stz* szRpnExpr, Card_BoolCalc* pCard_CalcBool)
+void Weaver::vBoolCalc(Stz* szRpnExpr, Card_BoolCalc* pCard_BoolCalc)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
-  i8 nSubCards = pCard_CalcBool->nItems();
+  i8 nSubCards = pCard_BoolCalc->nItems();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card *pSubCard = pCard_CalcBool->pGet(i_Child);
+    Card *pSubCard = pCard_BoolCalc->pGet(i_Child);
 
     eCK eSubCard = pSubCard->eCard();
 
     switch (eSubCard) {
       case CK_ORPRED:
-        vPredOr(szRpnExpr,_pCard_OrPred(pSubCard),0);
+        vOrPred(szRpnExpr, _pCard_OrPred(pSubCard), 0);
         break;
       case CK_ANDPRED:
-        vPredAnd(szRpnExpr,_pCard_AndPred(pSubCard),0);
+        vAndPred(szRpnExpr, _pCard_AndPred(pSubCard), 0);
         break;
       case CK_CMPPRED:
-        vPredCmp(szRpnExpr,_pCard_CmpPred(pSubCard),0);
+        vCmpPred(szRpnExpr, _pCard_CmpPred(pSubCard), 0);
         break;
       case CK_TSTPRED:
-        vPredTst(szRpnExpr,_pCard_TstPred(pSubCard),0);
+        vTstPred(szRpnExpr, _pCard_TstPred(pSubCard), 0);
         break;
       default:
-        vPredOther(szRpnExpr,pSubCard,0);
+        vOtherPred(szRpnExpr, pSubCard, 0);
         break;
     }
   }
@@ -1100,31 +1085,31 @@ void Weaver::vCalcBool(Stz* szRpnExpr, Card_BoolCalc* pCard_CalcBool)
 /*----------------------------------------------------------------------------*/
 /* append <rpnExpr> for <predOr>                                              */
 /*----------------------------------------------------------------------------*/
-void Weaver::vPredOr(Stz* szRpnExpr, Card_OrPred* pCard_PredOr, i8 i)
+void Weaver::vOrPred(Stz* szRpnExpr, Card_OrPred* pCard_OrPred, i8 i)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
-  i8 nSubCards = pCard_PredOr->nItems();
+  i8 nSubCards = pCard_OrPred->nItems();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card *pSubCard = pCard_PredOr->pGet(i_Child);
+    Card *pSubCard = pCard_OrPred->pGet(i_Child);
 
     eCK eSubCard = pSubCard->eCard();
 
     switch (eSubCard) {
       case CK_ORPRED:
-        vPredOr(szRpnExpr,_pCard_OrPred(pSubCard),0);
+        vOrPred(szRpnExpr, _pCard_OrPred(pSubCard), 0);
         break;
       case CK_ANDPRED:
-        vPredAnd(szRpnExpr,_pCard_AndPred(pSubCard),0);
+        vAndPred(szRpnExpr, _pCard_AndPred(pSubCard), 0);
         break;
       case CK_CMPPRED:
-        vPredCmp(szRpnExpr,_pCard_CmpPred(pSubCard),0);
+        vCmpPred(szRpnExpr, _pCard_CmpPred(pSubCard), 0);
         break;
       case CK_TSTPRED:
-        vPredTst(szRpnExpr,_pCard_TstPred(pSubCard),0);
+        vTstPred(szRpnExpr, _pCard_TstPred(pSubCard), 0);
         break;
       default:
-        vPredOther(szRpnExpr,pSubCard,0);
+        vOtherPred(szRpnExpr, pSubCard, 0);
         break;
     }
   }
@@ -1136,31 +1121,31 @@ void Weaver::vPredOr(Stz* szRpnExpr, Card_OrPred* pCard_PredOr, i8 i)
 /*----------------------------------------------------------------------------*/
 /* append <rpnExpr> for <predAnd>                                             */
 /*----------------------------------------------------------------------------*/
-void Weaver::vPredAnd(Stz* szRpnExpr, Card_AndPred* pCard_PredAnd, i8 i)
+void Weaver::vAndPred(Stz* szRpnExpr, Card_AndPred* pCard_AndPred, i8 i)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
-  i8 nSubCards = pCard_PredAnd->nItems();
+  i8 nSubCards = pCard_AndPred->nItems();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card *pSubCard = pCard_PredAnd->pGet(i_Child);
+    Card *pSubCard = pCard_AndPred->pGet(i_Child);
 
     eCK eSubCard = pSubCard->eCard();
 
     switch (eSubCard) {
       case CK_ORPRED:
-        vPredOr(szRpnExpr,_pCard_OrPred(pSubCard),0);
+        vOrPred(szRpnExpr, _pCard_OrPred(pSubCard), 0);
         break;
       case CK_ANDPRED:
-        vPredAnd(szRpnExpr,_pCard_AndPred(pSubCard),0);
+        vAndPred(szRpnExpr, _pCard_AndPred(pSubCard), 0);
         break;
       case CK_CMPPRED:
-        vPredCmp(szRpnExpr,_pCard_CmpPred(pSubCard),0);
+        vCmpPred(szRpnExpr, _pCard_CmpPred(pSubCard), 0);
         break;
       case CK_TSTPRED:
-        vPredTst(szRpnExpr,_pCard_TstPred(pSubCard),0);
+        vTstPred(szRpnExpr, _pCard_TstPred(pSubCard), 0);
         break;
       default:
-        vPredOther(szRpnExpr,pSubCard,0);
+        vOtherPred(szRpnExpr, pSubCard, 0);
         break;
     }
   }
@@ -1172,79 +1157,79 @@ void Weaver::vPredAnd(Stz* szRpnExpr, Card_AndPred* pCard_PredAnd, i8 i)
 /*----------------------------------------------------------------------------*/
 /* append <rpnExpr> for <predCmp>                                             */
 /*----------------------------------------------------------------------------*/
-void Weaver::vPredCmp(Stz* szRpnExpr, Card_CmpPred* pCard_PredCmp, i8 i)
+void Weaver::vCmpPred(Stz* szRpnExpr, Card_CmpPred* pCard_CmpPred, i8 i)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
-  i8 nSubCards = pCard_PredCmp->nItems();
+  i8 nSubCards = pCard_CmpPred->nItems();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card *pSubCard = pCard_PredCmp->pGet(i_Child);
+    Card *pSubCard = pCard_CmpPred->pGet(i_Child);
 
     eCK eSubCard = pSubCard->eCard();
 
     switch (eSubCard) {
       case CK_ORPRED:
-        vPredOr(szRpnExpr,_pCard_OrPred(pSubCard),0);
+        vOrPred(szRpnExpr, _pCard_OrPred(pSubCard), 0);
         break;
       case CK_ANDPRED:
-        vPredAnd(szRpnExpr,_pCard_AndPred(pSubCard),0);
+        vAndPred(szRpnExpr, _pCard_AndPred(pSubCard), 0);
         break;
       case CK_CMPPRED:
-        vPredCmp(szRpnExpr,_pCard_CmpPred(pSubCard),0);
+        vCmpPred(szRpnExpr, _pCard_CmpPred(pSubCard), 0);
         break;
       case CK_TSTPRED:
-        vPredTst(szRpnExpr,_pCard_TstPred(pSubCard),0);
+        vTstPred(szRpnExpr, _pCard_TstPred(pSubCard), 0);
         break;
       default:
-        vPredOther(szRpnExpr,pSubCard,0);
+        vOtherPred(szRpnExpr, pSubCard, 0);
         break;
     }
   }
 
-  szRpnExpr->vCatSprint(" %s"_Stz,pCard_PredCmp->sz());
+  szRpnExpr->vCatSprint(" %s"_Stz, pCard_CmpPred->sz());
 
 }
 
 /*----------------------------------------------------------------------------*/
 /* append <rpnExpr> for <predCmp>                                             */
 /*----------------------------------------------------------------------------*/
-void Weaver::vPredTst(Stz* szRpnExpr, Card_TstPred* pCard_PredTst, i8 i)
+void Weaver::vTstPred(Stz* szRpnExpr, Card_TstPred* pCard_TstPred, i8 i)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
-  i8 nSubCards = pCard_PredTst->nItems();
+  i8 nSubCards = pCard_TstPred->nItems();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card *pSubCard = pCard_PredTst->pGet(i_Child);
+    Card *pSubCard = pCard_TstPred->pGet(i_Child);
 
     eCK eSubCard = pSubCard->eCard();
 
     switch (eSubCard) {
       case CK_ORPRED:
-        vPredOr(szRpnExpr,_pCard_OrPred(pSubCard),0);
+        vOrPred(szRpnExpr, _pCard_OrPred(pSubCard), 0);
         break;
       case CK_ANDPRED:
-        vPredAnd(szRpnExpr,_pCard_AndPred(pSubCard),0);
+        vAndPred(szRpnExpr, _pCard_AndPred(pSubCard), 0);
         break;
       case CK_CMPPRED:
-        vPredCmp(szRpnExpr,_pCard_CmpPred(pSubCard),0);
+        vCmpPred(szRpnExpr, _pCard_CmpPred(pSubCard), 0);
         break;
       case CK_TSTPRED:
-        vPredTst(szRpnExpr,_pCard_TstPred(pSubCard),0);
+        vTstPred(szRpnExpr, _pCard_TstPred(pSubCard), 0);
         break;
       default:
-        vPredOther(szRpnExpr,pSubCard,0);
+        vOtherPred(szRpnExpr, pSubCard, 0);
         break;
     }
   }
 
-  szRpnExpr->vCatSprint(" %s"_Stz,pCard_PredTst->sz());
+  szRpnExpr->vCatSprint(" %s"_Stz, pCard_TstPred->sz());
 }
 
 
 /*----------------------------------------------------------------------------*/
 /* append <rpnExpr> for <other>                                               */
 /*----------------------------------------------------------------------------*/
-void Weaver::vPredOther(Stz* szRpnExpr, Card* pCard_Other, i8 i)
+void Weaver::vOtherPred(Stz* szRpnExpr, Card* pCard_Other, i8 i)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 

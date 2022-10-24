@@ -74,14 +74,13 @@ namespace STORE
     void vRpnWhere    (Stz* szRpnExpr, Card_Where*     pCard_Where);
 
     void vExpr        (Stz* szRpnExpr, Card_Expr*      pCard_Expr);
-    void vExprBool    (Stz* szRpnExpr, Card_ExprBool*  pCard_ExprBool);
-    void vExprCalc    (Stz* szRpnExpr, Card_RpnCalc*      pCard_ExprCalc);
-    void vCalcBool    (Stz* szRpnExpr, Card_BoolCalc*  pCard_CalcBool);
-    void vPredOr      (Stz* szRpnExpr, Card_OrPred*    pCard_PredOr,  i8 i);
-    void vPredAnd     (Stz* szRpnExpr, Card_AndPred*   pCard_PredAnd, i8 i);
-    void vPredCmp     (Stz* szRpnExpr, Card_CmpPred*   pCard_PredCmp, i8 i);
-    void vPredTst     (Stz* szRpnExpr, Card_TstPred*   pCard_PredTst, i8 i);
-    void vPredOther   (Stz* szRpnExpr, Card*           pCard_Other,   i8 i);
+    void vRpnCalc     (Stz* szRpnExpr, Card_RpnCalc*   pCard_RpnCalc);
+    void vBoolCalc    (Stz* szRpnExpr, Card_BoolCalc*  pCard_BoolCalc);
+    void vOrPred      (Stz* szRpnExpr, Card_OrPred*    pCard_OrPred, i8 i);
+    void vAndPred     (Stz* szRpnExpr, Card_AndPred*   pCard_AndPred, i8 i);
+    void vCmpPred     (Stz* szRpnExpr, Card_CmpPred*   pCard_CmpPred, i8 i);
+    void vTstPred     (Stz* szRpnExpr, Card_TstPred*   pCard_TstPred, i8 i);
+    void vOtherPred   (Stz* szRpnExpr, Card*           pCard_Other, i8 i);
 
     void vPred        (Stz* szRpnExpr, Card_PRED*      pCard_PRED);
     void vPredOr      (Stz* szRpnExpr, Card_OrPred*    pCard_PredOr);

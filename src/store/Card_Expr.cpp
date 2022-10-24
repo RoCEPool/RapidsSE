@@ -52,12 +52,8 @@ Card_Expr::Card_Expr(Column* pColumn)
   vAppend(pCard_As);
 
   // exprCalc
-  Card_RpnCalc* pCard_ExprCalc = new Card_RpnCalc(pColumn);
-  vAppend(pCard_ExprCalc);
-
-  // direction
-  //Card_Direction* pCard_Direction = new Card_Direction(pColumn);
-  //vAppend(pCard_Direction);
+  Card_RpnCalc* pCard_RpnCalc = new Card_RpnCalc(pColumn);
+  vAppend(pCard_RpnCalc);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -88,70 +84,6 @@ void Card_Expr::vAsEnsure(void)
   vAppend(pCard_As);
 }
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_CmpPred* Card_Expr::pFindBound(Index* pIndex, ePB eBound)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  Card_ExprBool* pCard_ExprBool = _pCard_ExprBool(pFindSubCard(CK_EXPRBOOL));
-  
-  Card_CmpPred* pCard_PredCmp =
-    pCard_ExprBool->pFindBound(pIndex,eBound);
- 
-  return pCard_PredCmp;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Card_Expr::bHasBounds(Index* pIndex)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  Card_ExprBool* pCard_ExprBool = _pCard_ExprBool(pFindSubCard(CK_EXPRBOOL));
-  
-  bool bHas = pCard_ExprBool->bHasBounds(pIndex);
-  
-  return bHas;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Expr::vReduceBoolExpr(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  Card_ExprBool* pCard_ExprBool = _pCard_ExprBool(pFindSubCard(CK_EXPRBOOL));
-
-  Card_PRED* pCard_ChildPRED = (Card_PRED*)pCard_ExprBool->pGet(0);
-
-  pCard_ChildPRED->vCullByKids();
-  
-  
-  if (1 == pCard_ChildPRED->nItems()) {
-
-    Card_PRED* pCard_KidPRED = (Card_PRED*)pCard_ChildPRED->pPop();
-
-    pCard_ExprBool->vReplace(pCard_ChildPRED,pCard_KidPRED);
-    delete pCard_ChildPRED;
-    
-    pCard_ChildPRED = pCard_KidPRED;
-  }
-  
-  
-  if (pCard_ChildPRED->nItems())
-    return;
-  
-  pCard_ExprBool->vRemove(pCard_ChildPRED);
-  vRemove(pCard_ExprBool);
-
-  delete pCard_ExprBool;
-  delete pCard_ChildPRED;
-}
-
-/*============================================================================*/
+//*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

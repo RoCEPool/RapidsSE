@@ -18,9 +18,6 @@ namespace STORE
    ~Card_Expr(void) noexcept(false);
     
     void vAsEnsure(void);
-    Card_CmpPred* pFindBound(Index* pIndex, ePB eBound);
-    bool bHasBounds(Index* pIndex);
-    void vReduceBoolExpr(void);
   };
 
   Card_Expr* _pCard_Expr(void* aAddr);
