@@ -30,21 +30,6 @@ Card_ObyElist::Card_ObyElist(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Card_ObyElist::Card_ObyElist(Index* pIndex)
-: Card_ELIST(CK_OBYELIST)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  _checkInitialised_(CN_CARD);
-
-  vObyElist_Populate(this,pIndex);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Card_ObyElist::~Card_ObyElist(void) noexcept(false)

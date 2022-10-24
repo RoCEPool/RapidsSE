@@ -46,7 +46,7 @@ Card_Expr::Card_Expr(Column* pColumn)
   vAppend(pCard_Type);
   
   // as
-  Card_As* pCard_As = new Card_As(pColumn);
+  Card_As* pCard_As = new Card_As(pColumn->szColNm());
   vAppend(pCard_As);
 
   // exprCalc

@@ -29,21 +29,6 @@ Card_IdxCol::Card_IdxCol(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Card_IdxCol::Card_IdxCol(Column* pColumn)
-: Card(CK_IDXCOL)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  _checkInitialised_(CN_CARD);
-
-  vValue(pColumn->szColNm());
-
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Card_IdxCol::~Card_IdxCol(void) noexcept(false)

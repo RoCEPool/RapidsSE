@@ -15,7 +15,6 @@ namespace STORE
     void  operator delete(void*);
   
     Card_ObyElist(void);
-    Card_ObyElist(Index* pIndex);
    ~Card_ObyElist(void) noexcept(false);
   };
 

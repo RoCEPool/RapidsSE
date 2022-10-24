@@ -14,7 +14,6 @@ namespace STORE
     void  operator delete(void*);
 
     Card_IdxCol(void);
-    Card_IdxCol(Column* pColumn);
    ~Card_IdxCol(void) noexcept(false);
   };
 
