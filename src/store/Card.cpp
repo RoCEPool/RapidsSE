@@ -2077,11 +2077,11 @@ Card_CmpPred* Card::pAndPred_FindBound(Card_AndPred* p_andPred, Index* pIndex, e
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_PRED* pSubPred0 = (Card_PRED*)pGet(0);
-  if (Card_CmpPred* pFound = pSubPred0->pFindBound_pred(pIndex,eBound))
+  if (Card_CmpPred* pFound = pSubPred0->pPRED_FindBound(pSubPred0, pIndex, eBound))
     return pFound;
 
   Card_PRED* pSubPred1 = (Card_PRED*)pGet(1);
-  if (Card_CmpPred* pFound = pSubPred1->pFindBound_pred(pIndex,eBound))
+  if (Card_CmpPred* pFound = pSubPred1->pPRED_FindBound(pSubPred1, pIndex, eBound))
     return pFound;
 
   return nullptr;
@@ -2095,11 +2095,11 @@ bool Card::bAndPred_HasBounds(Card_AndPred* p_andPred, Index* pIndex)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_PRED* pSubPred0 = (Card_PRED*)pGet(0);
-  if (pSubPred0->bHasBounds_pred(pIndex))
+  if (pSubPred0->bPRED_HasBounds(pSubPred0, pIndex))
     return true;
 
   Card_PRED* pSubPred1 = (Card_PRED*)pGet(1);
-  if (pSubPred1->bHasBounds_pred(pIndex))
+  if (pSubPred1->bPRED_HasBounds(pSubPred1, pIndex))
     return true;
 
   return false;
@@ -2745,11 +2745,11 @@ Card_CmpPred* Card::pOrPred_FindBound(Card_OrPred* p_orPred, Index* pIndex, ePB 
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_PRED* pSubPred0 = (Card_PRED*)pGet(0);
-  if (Card_CmpPred* pFound = pSubPred0->pFindBound_pred(pIndex,eBound))
+  if (Card_CmpPred* pFound = pSubPred0->pPRED_FindBound(pSubPred0, pIndex, eBound))
     return pFound;
 
   Card_PRED* pSubPred1 = (Card_PRED*)pGet(1);
-  if (Card_CmpPred* pFound = pSubPred1->pFindBound_pred(pIndex,eBound))
+  if (Card_CmpPred* pFound = pSubPred1->pPRED_FindBound(pSubPred1, pIndex, eBound))
     return pFound;
 
   return nullptr;
@@ -2763,16 +2763,228 @@ bool Card::bOrPred_HasBounds(Card_OrPred* p_orPred, Index* pIndex)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_PRED* pSubPred0 = (Card_PRED*)pGet(0);
-  if (pSubPred0->bHasBounds_pred(pIndex))
+  if (pSubPred0->bPRED_HasBounds(pSubPred0,pIndex))
     return true;
 
   Card_PRED* pSubPred1 = (Card_PRED*)pGet(1);
-  if (pSubPred1->bHasBounds_pred(pIndex))
+  if (pSubPred1->bPRED_HasBounds(pSubPred1,pIndex))
     return true;
 
   return false;
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* concat terms                                                               */
+/*----------------------------------------------------------------------------*/
+void Card::vPRED_ConcatTerms(Card_PRED* p_PRED, Stz* szTerms, i8 i_From, i8 i_Till)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (C_UNKNOWN == i_Till)
+    i_Till = nChildCards() - 1;
+
+  for (i8 i_Child = i_From; i_Child <= i_Till; i_Child++) {
+    Card* pChildCard = pGetChild(i_Child);
+    if (CK_TERM != pChildCard->eCard())
+      continue;
+
+    szTerms->vCatSprint(" %s"_Stz, pChildCard->sz());
+  }
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vPRED_CullByKids(Card_PRED* p_PRED)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  i8 nChildCards = nItems();
+  for (i8 i_ChildCard = 0; i_ChildCard < nChildCards; i_ChildCard++) {
+    Card* pCard_Child = pGet(i_ChildCard);
+    if (!bPRED_IsPred(pCard_Child))
+      continue;
+
+    Card_PRED* pCard_ChildPRED = (Card_PRED*)pCard_Child;
+
+    pCard_ChildPRED->vPRED_CullByKids(pCard_ChildPRED);
+
+    if (0 == pCard_ChildPRED->nItems()) {
+
+      vRemove(pCard_ChildPRED);
+      delete pCard_ChildPRED;
+
+      i_ChildCard--;
+      nChildCards--;
+
+      continue;
+    }
+
+    if (1 == pCard_ChildPRED->nItems()) {
+
+      Card_PRED* pCard_KidPRED = (Card_PRED*)pCard_Child->pPop();
+
+      vReplace(pCard_ChildPRED,pCard_KidPRED);
+      delete pCard_ChildPRED;
+
+      continue;
+    }
+
+
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* find a comparePred which is the eBound of given index                      */
+/*----------------------------------------------------------------------------*/
+Card_CmpPred* Card::pPRED_FindBound(Card_PRED* p_PRED, Index* pIndex,
+                                    ePB eBound)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  eCK eCard = this->eCard();
+
+  switch (eCard) {
+
+    case CK_ORPRED:
+      return _pCard_OrPred(this)->pOrPred_FindBound(_pCard_OrPred(this), pIndex, eBound);
+
+    case CK_ANDPRED:
+      return _pCard_AndPred(this)->pAndPred_FindBound(_pCard_AndPred(this), pIndex, eBound);
+
+    case CK_CMPPRED:
+      return _pCard_CmpPred(this)->pCmpPred_FindBound(_pCard_CmpPred(this), pIndex, eBound);
+
+    default:
+      vTrace("pPRED_FindBound: unexpected eCard %lld %s\n"_Stz
+          ,(i8)eCard
+          ,aCK[eCard]);
+      RASSERT(0);
+      break;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does predicate have some bound wrt given index?                            */
+/*----------------------------------------------------------------------------*/
+bool Card::bPRED_HasBounds(Card_PRED* p_PRED, Index* pIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  eCK eCard = this->eCard();
+
+  switch (eCard) {
+
+    case CK_ORPRED:
+      return _pCard_OrPred(this)->bOrPred_HasBounds(_pCard_OrPred(this),pIndex);
+
+    case CK_ANDPRED:
+      return _pCard_AndPred(this)->bAndPred_HasBounds(_pCard_AndPred(this),pIndex);
+
+    case CK_CMPPRED:
+      return _pCard_CmpPred(this)->bCmpPred_HasBounds(_pCard_CmpPred(this),pIndex);
+
+    default:
+      vTrace("bPRED_HasBounds: unexpected eCard %lld %s\n"_Stz
+          ,(i8)eCard
+          ,aCK[eCard]);
+      RASSERT(0);
+      break;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this card the given kind?                                               */
+/*----------------------------------------------------------------------------*/
+bool Card::bPRED_IsPred(Card* pArgCard)
+{
+  _static_;
+
+  eCK eCard = pArgCard->eCard();
+
+  switch (eCard) {
+    case CK_EXPRBOOL:
+    case CK_ORPRED:
+    case CK_ANDPRED:
+      return true;
+
+    default: return false;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card::bPtndJoin_MayFollowAfter(Card_PtndJoin* p_ptndJoin, Card_SubSet* pPriorPtnJoins_sofar)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  i8 nPtnJoins_sofar = pPriorPtnJoins_sofar->nChildCards();
+  if (! nPtnJoins_sofar)
+    return true;
+
+  for (i8 i_PtnJoin_sofar = 0; i_PtnJoin_sofar < nPtnJoins_sofar; i_PtnJoin_sofar++) {
+    Card_PtndJoin* p_ptndJoin_sofar =
+        _pCard_PtndJoin(pPriorPtnJoins_sofar->pGetChild(i_PtnJoin_sofar));
+
+    i8 nPredCmps_sofar = p_ptndJoin_sofar->nChildCards();
+    for (i8 i_PredCmp_sofar = 0; i_PredCmp_sofar < nPredCmps_sofar; i_PredCmp_sofar++) {
+      Card_CmpPred* p_predCmp_sofar =
+          _pCard_CmpPred(p_ptndJoin_sofar->pGetChild(i_PredCmp_sofar));
+
+      i8 nPredCmps_this = this->nChildCards();
+      for (i8 i_PredCmp_this = 0; i_PredCmp_this < nPredCmps_this; i_PredCmp_this++) {
+        Card_CmpPred *p_predCmp_this =
+            _pCard_CmpPred(this->pGetChild(i_PredCmp_this));
+
+        if (p_predCmp_this->bCmpPred_OverlapsWith(p_predCmp_this,p_predCmp_sofar))
+          return true;
+      }
+
+    }
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vPtndJoin_JoinEst(Card_PtndJoin* p_ptndJoin, Card_TableList* p_tableList)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  i8 nJoinedBuff = 0;
+
+  i8 nTables = p_tableList->nChildCards();
+  for (i8 i_Table = 0; i_Table < nTables; i_Table++) {
+    Card_Table *p_table =
+        _pCard_Table(p_tableList->pGetChild(i_Table));
+
+    if (p_table->bHasProperty(P_TableUsed))
+      continue;
+
+    i8 nPredCmps = this->nChildCards();
+    for (i8 i_PredCmp = 0; i_PredCmp < nPredCmps; i_PredCmp++) {
+      Card_CmpPred *p_predCmp =
+          _pCard_CmpPred(this->pGetChild(i_PredCmp));
+
+      if (p_predCmp->bCmpPred_UsesTable(p_predCmp,p_table->cValue())) {
+        nJoinedBuff += p_table->pSub_size()->szValue()->iToI8();
+        p_table->Y_vSet(P_TableUsed);
+      }
+    }
+
+  }
+
+  Y_vSet(P_JoinedBuff, nJoinedBuff);
+}
 
 /*============================================================================*/
 /* end                                                                        */

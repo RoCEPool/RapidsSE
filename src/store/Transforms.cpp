@@ -1091,7 +1091,7 @@ void Transforms::vP70_T70_Generate_ptndPermutations(bool bPrint, bool bTrace)
       M.pDeck->vAppendMain(m_pCard_child->pDupCardAndSubCards());
 
       M.p_ptndJoin = _pCard_PtndJoin(m_pCard_child);
-      if (! M.p_ptndJoin->bMayFollowAfter(M.p_subSet)) {
+      if (!M.p_ptndJoin->bPtndJoin_MayFollowAfter(M.p_ptndJoin,M.p_subSet)) {
         M.pDeck->vAppendMain(new Card_Comment("**DOESN'T FOLLOW**"_Stz));
         M.p_permutation->Y_vSet(P_Invalid);
         break;
@@ -1203,7 +1203,7 @@ void Transforms::vP70_T92_Estimate_ptndJoins(bool bPrint, bool bTrace)
     if (CK_PTNDJOIN != eCard)
       continue;
     M.p_ptndJoin = _pCard_PtndJoin(M.p_MainCard);
-    M.p_ptndJoin->vJoinEst(M.p_tableList);
+    M.p_ptndJoin->vPtndJoin_JoinEst(M.p_ptndJoin,M.p_tableList);
   }
 
   vEndTransform();

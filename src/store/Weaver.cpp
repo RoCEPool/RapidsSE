@@ -654,7 +654,7 @@ void Weaver::vRpnIndexScan3(Stz* szRpnExpr, Card_IndexScan* p_indexScan)
 
     //szRpnExpr->vCatSprint(" $I%lld"_Stz, p_term->iMark2()+1);
 
-    p_predCmp->vConcatTerms(szRpnExpr,0);
+    p_predCmp->vPRED_ConcatTerms(p_predCmp, szRpnExpr, 0);
 
     szRpnExpr->vCatSprint(" %s"_Stz, p_predCmp->sz());
 
@@ -670,7 +670,7 @@ void Weaver::vRpnIndexScan3(Stz* szRpnExpr, Card_IndexScan* p_indexScan)
 
     //szRpnExpr->vCatSprint(" $I%lld"_Stz, p_term->iMark2()+1);
 
-    p_predCmp->vConcatTerms(szRpnExpr,0);
+    p_predCmp->vPRED_ConcatTerms(p_predCmp, szRpnExpr, 0);
 
     szRpnExpr->vCatSprint(" %s"_Stz, p_predCmp->sz());
 
@@ -695,7 +695,7 @@ void Weaver::vRpnIndexScan2(Stz* szRpnExpr, Card_IndexScan* p_indexScan)
 
     szRpnExpr->vCatSprint(" $I%lld"_Stz, p_term->iMark2()+1);
 
-    p_predCmp->vConcatTerms(szRpnExpr,1);
+    p_predCmp->vPRED_ConcatTerms(p_predCmp, szRpnExpr, 1);
 
     szRpnExpr->vCatSprint(" %s"_Stz, p_predCmp->sz());
 
@@ -711,7 +711,7 @@ void Weaver::vRpnIndexScan2(Stz* szRpnExpr, Card_IndexScan* p_indexScan)
 
     szRpnExpr->vCatSprint(" $I%lld"_Stz, p_term->iMark2()+1);
 
-    p_predCmp->vConcatTerms(szRpnExpr,1);
+    p_predCmp->vPRED_ConcatTerms(p_predCmp, szRpnExpr, 1);
 
     szRpnExpr->vCatSprint(" %s"_Stz, p_predCmp->sz());
 
