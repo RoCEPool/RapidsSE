@@ -126,13 +126,13 @@ Card_CmpPred* Card_PRED::pFindBound_pred(Index* pIndex,
   switch (eCard) {
     
     case CK_ORPRED:
-      return _pCard_OrPred(this)->pOrPred_FindBound(pIndex, eBound);
+      return _pCard_OrPred(this)->pOrPred_FindBound(_pCard_OrPred(this), pIndex, eBound);
       
     case CK_ANDPRED:
-      return _pCard_AndPred(this)->pAndPred_FindBound(pIndex, eBound);
+      return _pCard_AndPred(this)->pAndPred_FindBound(_pCard_AndPred(this), pIndex, eBound);
       
     case CK_CMPPRED:
-      return _pCard_CmpPred(this)->pCmpPred_FindBound(pIndex, eBound);
+      return _pCard_CmpPred(this)->pCmpPred_FindBound(_pCard_CmpPred(this), pIndex, eBound);
 
     default:
       vTrace("pFindBound_pred: unexpected eCard %lld %s\n"_Stz
@@ -157,13 +157,13 @@ bool Card_PRED::bHasBounds_pred(Index* pIndex)
   switch (eCard) {
     
     case CK_ORPRED:
-      return _pCard_OrPred(this)->bOrPred_HasBounds(pIndex);
+      return _pCard_OrPred(this)->bOrPred_HasBounds(_pCard_OrPred(this),pIndex);
       
     case CK_ANDPRED:
-      return _pCard_AndPred(this)->bAndPred_HasBounds(pIndex);
+      return _pCard_AndPred(this)->bAndPred_HasBounds(_pCard_AndPred(this),pIndex);
       
     case CK_CMPPRED:
-      return _pCard_CmpPred(this)->bCmpPred_HasBounds(pIndex);
+      return _pCard_CmpPred(this)->bCmpPred_HasBounds(_pCard_CmpPred(this),pIndex);
 
     default:
       vTrace("bHasBounds_pred: unexpected eCard %lld %s\n"_Stz
@@ -193,22 +193,6 @@ bool Card_PRED::bIsPred(Card* pArgCard)
 
     default: return false;
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Card_PRED::bReduciblePred(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  eCK eCard = this->eCard();
-  i8 nSubCards = nItems();
-  
-  if (1 == nSubCards && (CK_ORPRED == eCard || CK_ANDPRED == eCard))
-    return true;
-
-  return false;
 }
 
 /*============================================================================*/

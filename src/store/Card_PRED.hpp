@@ -21,8 +21,6 @@ namespace STORE
     Card_CmpPred* pFindBound_pred(Index* pIndex, ePB eBound);
     bool bHasBounds_pred (Index* pIndex);
     bool bIsPred(Card* pArgCard);
-
-    bool bReduciblePred(void);
   };
 }
 

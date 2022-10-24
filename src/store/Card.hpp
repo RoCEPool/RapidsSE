@@ -290,19 +290,19 @@ namespace STORE
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
-    Card_CmpPred* pOrPred_FindBound(Index* pIndex, ePB eBound);
-    bool bOrPred_HasBounds(Index* pIndex);
+    Card_CmpPred* pOrPred_FindBound(Card_OrPred* p_orPred, Index* pIndex, ePB eBound);
+    bool bOrPred_HasBounds(Card_OrPred* p_orPred, Index* pIndex);
 
-    Card_CmpPred* pAndPred_FindBound(Index* pIndex, ePB eBound);
-    bool bAndPred_HasBounds(Index* pIndex);
+    Card_CmpPred* pAndPred_FindBound(Card_AndPred* p_andPred, Index* pIndex, ePB eBound);
+    bool bAndPred_HasBounds(Card_AndPred* p_andPred, Index* pIndex);
 
-    void vCmpPred_MarkBound(void);
-    bool bCmpPred_CoPtnWith(Card_CmpPred* p_PredCmp_arg);
-    Card_CmpPred* pCmpPred_FindBound(Index* pIndex, ePB eBound);
-    bool bCmpPred_HasBounds(Index* pIndex);
-    bool bCmpPred_IsEq(Card_CmpPred* p_PredCmp_arg);
-    bool bCmpPred_OverlapsWith(Card_CmpPred* p_PredCmp_arg);
-    bool bCmpPred_UsesTable(char cTableSyn);
+    void vCmpPred_MarkBound(Card_CmpPred* p_cmpPred);
+    bool bCmpPred_CoPtnWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg);
+    Card_CmpPred* pCmpPred_FindBound(Card_CmpPred* p_cmpPred, Index* pIndex, ePB eBound);
+    bool bCmpPred_HasBounds(Card_CmpPred* p_cmpPred, Index* pIndex);
+    bool bCmpPred_IsEq(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg);
+    bool bCmpPred_OverlapsWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg);
+    bool bCmpPred_UsesTable(Card_CmpPred* p_cmpPred, char cTableSyn);
 
 
 

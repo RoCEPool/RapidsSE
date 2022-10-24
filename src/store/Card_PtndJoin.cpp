@@ -71,7 +71,7 @@ bool Card_PtndJoin::bMayFollowAfter(Card_SubSet* pPtnJoins_sofar)
         Card_CmpPred *p_predCmp_this =
             _pCard_CmpPred(this->pGetChild(i_PredCmp_this));
 
-        if (p_predCmp_this->bCmpPred_OverlapsWith(p_predCmp_sofar))
+        if (p_predCmp_this->bCmpPred_OverlapsWith(p_predCmp_this,p_predCmp_sofar))
           return true;
       }
 
@@ -103,7 +103,7 @@ void Card_PtndJoin::vJoinEst(Card_TableList* p_tableList)
       Card_CmpPred *p_predCmp =
           _pCard_CmpPred(this->pGetChild(i_PredCmp));
 
-      if (p_predCmp->bCmpPred_UsesTable(p_table->cValue())) {
+      if (p_predCmp->bCmpPred_UsesTable(p_predCmp,p_table->cValue())) {
         nJoinedBuff += p_table->pSub_size()->szValue()->iToI8();
         p_table->Y_vSet(P_TableUsed);
       }

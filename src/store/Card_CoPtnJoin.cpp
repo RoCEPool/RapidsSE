@@ -51,7 +51,7 @@ bool Card_CoPtnJoin::bCoPtnWith(Card_CoPtnPred* p_CoPtnPred)
   Card_CmpPred* p_predCmp_this = _pCard_CmpPred(this);
   Card_CmpPred* p_predCmp_arg  = _pCard_CmpPred(p_CoPtnPred);
 
-  if (p_predCmp_this->bCmpPred_CoPtnWith(p_predCmp_arg))
+  if (p_predCmp_this->bCmpPred_CoPtnWith(p_predCmp_this, p_predCmp_arg))
     return true;
 
   return false;
