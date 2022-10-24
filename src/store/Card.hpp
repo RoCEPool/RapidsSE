@@ -69,6 +69,7 @@ namespace STORE
   class Card_OrPred;
   class Card_ObyElist;
 
+  class Card_PRED;
   class Card_Project;
   class Card_ProjElist;
 
@@ -78,7 +79,6 @@ namespace STORE
 
   class Card_SbyElist;
   class Card_Scan;
-  class Card_ScanPred;
   class Card_Size;
   class Card_Send;
   class Card_Sort;
@@ -290,11 +290,12 @@ namespace STORE
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
-    Card_CmpPred* pOrPred_FindBound(Card_OrPred* p_orPred, Index* pIndex, ePB eBound);
-    bool bOrPred_HasBounds(Card_OrPred* p_orPred, Index* pIndex);
-
     Card_CmpPred* pAndPred_FindBound(Card_AndPred* p_andPred, Index* pIndex, ePB eBound);
     bool bAndPred_HasBounds(Card_AndPred* p_andPred, Index* pIndex);
+
+    bool bBoolCalc_CullPred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred, char cWithMark);
+    void vBoolCalc_CullPred(Card_BoolCalc* p_boolCalc, char cWithMark);
+    void vBoolCalc_RemovePred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred);
 
     void vCmpPred_MarkBound(Card_CmpPred* p_cmpPred);
     bool bCmpPred_CoPtnWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg);
@@ -303,6 +304,9 @@ namespace STORE
     bool bCmpPred_IsEq(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg);
     bool bCmpPred_OverlapsWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg);
     bool bCmpPred_UsesTable(Card_CmpPred* p_cmpPred, char cTableSyn);
+
+    Card_CmpPred* pOrPred_FindBound(Card_OrPred* p_orPred, Index* pIndex, ePB eBound);
+    bool bOrPred_HasBounds(Card_OrPred* p_orPred, Index* pIndex);
 
 
 

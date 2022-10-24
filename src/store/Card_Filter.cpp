@@ -61,7 +61,7 @@ void Card_Filter::vCullPred(char cWithMark)
 
     Card_BoolCalc* p_boolCalc = _pCard_BoolCalc(pChildCard);
 
-    p_boolCalc->vCullPred(cWithMark);
+    p_boolCalc->vBoolCalc_CullPred(p_boolCalc,cWithMark);
   }
 }
 

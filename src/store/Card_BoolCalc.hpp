@@ -15,12 +15,6 @@ namespace STORE
   
     Card_BoolCalc(void);
    ~Card_BoolCalc(void) noexcept(false);
-
-    void vCullPred(char cWithMark);
-    void vRemovePred(Card_PRED* p_pred);
-
-  private:
-    bool bCullPred(Card_PRED* p_pred, char cWithMark);
   };
 
   Card_BoolCalc* _pCard_BoolCalc(void* aAddr);

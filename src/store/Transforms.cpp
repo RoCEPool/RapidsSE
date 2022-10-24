@@ -749,7 +749,7 @@ void Transforms::vP60_T40_Cull_filter_pred_MovedUpTo_joinPred(bool bPrint, bool 
 
     M.p_boolCalc = M.p_filter->pSub_boolCalc();
 
-    M.p_boolCalc->vCullPred(MARK_UPWARDS);
+    M.p_boolCalc->vBoolCalc_CullPred(M.p_boolCalc,MARK_UPWARDS);
   }
 
   vEndTransform();
@@ -2039,7 +2039,7 @@ bool Transforms::bCopyPredDrillDown(Card_PRED* pCard_pred, Card_BoolCalc* p_calc
     //pCard_stream->vMark1('#');
 
 
-    p_calcBool->vRemovePred(pCard_pred);
+    p_calcBool->vBoolCalc_RemovePred(p_calcBool,pCard_pred);
 
     return true;
   }

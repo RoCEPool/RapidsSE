@@ -2072,42 +2072,6 @@ Stz* Card::szDecodeEnum(Stz* szEnum, i8 iEnum)
 /*----------------------------------------------------------------------------*/
 /* find a comparePred which is the eBound of given index                      */
 /*----------------------------------------------------------------------------*/
-Card_CmpPred* Card::pOrPred_FindBound(Card_OrPred* p_orPred, Index* pIndex, ePB eBound)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_PRED* pSubPred0 = (Card_PRED*)pGet(0);
-  if (Card_CmpPred* pFound = pSubPred0->pFindBound_pred(pIndex,eBound))
-    return pFound;
-
-  Card_PRED* pSubPred1 = (Card_PRED*)pGet(1);
-  if (Card_CmpPred* pFound = pSubPred1->pFindBound_pred(pIndex,eBound))
-    return pFound;
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* does orPred have some bound on given index?                                */
-/*----------------------------------------------------------------------------*/
-bool Card::bOrPred_HasBounds(Card_OrPred* p_orPred, Index* pIndex)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_PRED* pSubPred0 = (Card_PRED*)pGet(0);
-  if (pSubPred0->bHasBounds_pred(pIndex))
-    return true;
-
-  Card_PRED* pSubPred1 = (Card_PRED*)pGet(1);
-  if (pSubPred1->bHasBounds_pred(pIndex))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* find a comparePred which is the eBound of given index                      */
-/*----------------------------------------------------------------------------*/
 Card_CmpPred* Card::pAndPred_FindBound(Card_AndPred* p_andPred, Index* pIndex, ePB eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -2140,6 +2104,97 @@ bool Card::bAndPred_HasBounds(Card_AndPred* p_andPred, Index* pIndex)
 
   return false;
 }
+
+/*----------------------------------------------------------------------------*/
+/* remove given predicate                                                     */
+/*----------------------------------------------------------------------------*/
+bool Card::bBoolCalc_CullPred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred, char cWithMark)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_)
+
+  eCK eCard_pred = p_pred->eCard();
+
+  if (CK_ANDPRED == eCard_pred) {
+    if (cWithMark == p_pred->cMark1()) {
+      vBoolCalc_RemovePred(p_boolCalc,p_pred);
+      delete p_pred;
+      return true;
+    }
+  }
+  else
+  if (CK_ORPRED == eCard_pred) {
+    if (cWithMark == p_pred->cMark1()) {
+      vBoolCalc_RemovePred(p_boolCalc,p_pred);
+      delete p_pred;
+      return true;
+    }
+  }
+  else
+  if (CK_CMPPRED == eCard_pred) {
+    if (cWithMark == p_pred->cMark1()) {
+      vBoolCalc_RemovePred(p_boolCalc,p_pred);
+      delete p_pred;
+      return true;
+    }
+    return false;
+  }
+
+  RASSERT (CK_ANDPRED == eCard_pred || CK_ORPRED == eCard_pred);
+
+  i8 nChildren = p_pred->nChildCards();
+  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
+    Card_PRED* pCard_pred_child = static_cast<Card_PRED*>(p_pred->pGetChild(i_Child));
+    if (bBoolCalc_CullPred(p_boolCalc,pCard_pred_child, cWithMark))
+      return true;
+  }
+
+  return  false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove given predicate                                                     */
+/*----------------------------------------------------------------------------*/
+void Card::vBoolCalc_CullPred(Card_BoolCalc* p_boolCalc, char cWithMark)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_)
+
+  if (! nChildCards())
+    return;
+
+  Card_PRED* pCard_pred = static_cast<Card_PRED*>(pGetChild(0));
+
+  while (pCard_pred && bBoolCalc_CullPred(p_boolCalc, pCard_pred, cWithMark) && nChildCards()) {
+    pCard_pred = static_cast<Card_PRED*>(pGetChild(0));
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove given predicate                                                     */
+/*----------------------------------------------------------------------------*/
+void Card::vBoolCalc_RemovePred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_)
+
+  Card* pParentCard = pFindParent(p_pred);
+
+  pParentCard->vRemoveSubCard(p_pred);
+
+  if (CK_ANDPRED == pParentCard->eCard() || CK_ORPRED == pParentCard->eCard()) {
+
+    if (0 == pParentCard->nChildCards()) {
+      vRemoveSubCard(pParentCard);
+    }
+    else {
+      Card* pSiblingCard = pParentCard->pGetChild(0);
+      Card* pGrandCard = pFindParent((pParentCard));
+      pParentCard->vRemoveSubCard(pSiblingCard);
+      pGrandCard->vReplaceChild(pParentCard, pSiblingCard);
+    }
+
+    delete pParentCard;
+  }
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* is this predCmp co-partitionable with given arg?                           */
@@ -2327,6 +2382,42 @@ bool Card::bCmpPred_UsesTable(Card_CmpPred* p_cmpPred, char cTableSyn)
   return false;
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* find a comparePred which is the eBound of given index                      */
+/*----------------------------------------------------------------------------*/
+Card_CmpPred* Card::pOrPred_FindBound(Card_OrPred* p_orPred, Index* pIndex, ePB eBound)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_PRED* pSubPred0 = (Card_PRED*)pGet(0);
+  if (Card_CmpPred* pFound = pSubPred0->pFindBound_pred(pIndex,eBound))
+    return pFound;
+
+  Card_PRED* pSubPred1 = (Card_PRED*)pGet(1);
+  if (Card_CmpPred* pFound = pSubPred1->pFindBound_pred(pIndex,eBound))
+    return pFound;
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does orPred have some bound on given index?                                */
+/*----------------------------------------------------------------------------*/
+bool Card::bOrPred_HasBounds(Card_OrPred* p_orPred, Index* pIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_PRED* pSubPred0 = (Card_PRED*)pGet(0);
+  if (pSubPred0->bHasBounds_pred(pIndex))
+    return true;
+
+  Card_PRED* pSubPred1 = (Card_PRED*)pGet(1);
+  if (pSubPred1->bHasBounds_pred(pIndex))
+    return true;
+
+  return false;
+}
 
 
 /*============================================================================*/
