@@ -9,7 +9,6 @@ enum eCK // card kind
 
   /* */ CK_ABSJOIN,
   /* */ CK_AGGELIST,
-  /* */ CK_AGGLEVEL,
   /* */ CK_AGGREG,
   /* */ CK_AGGREGATES,
   /* */ CK_ANDPRED,
@@ -65,6 +64,7 @@ enum eCK // card kind
   /* */ CK_KEYEXISTS,
 
   /* */ CK_LBOUND,
+  /* */ CK_LEVEL,
   /* */ CK_LIMIT,
   /* */ CK_LINKSTO,
 
@@ -128,7 +128,6 @@ static Stz* aCK[]
 
   /* */ "CK_ABSJOIN"_Stz,      // CK_ABSJOIN
   /* */ "CK_AGGELIST"_Stz,     // CK_AGGELIST
-  /* */ "CK_AGGLEVEL"_Stz,     // CK_AGGLEVEL
   /* */ "CK_AGGREG"_Stz,       // CK_AGGREG
   /* */ "CK_AGGREGATES"_Stz,   // CK_AGGREGATES
   /* */ "CK_ANDPRED"_Stz,      // CK_ANDPRED
@@ -184,6 +183,7 @@ static Stz* aCK[]
   /* */ "CK_KEYEXISTS"_Stz,    // CK_KEYEXISTS
 
   /* */ "CK_LBOUND"_Stz,       // CK_LBOUND
+  /* */ "CK_LEVEL"_Stz,        // CK_LEVEL
   /* */ "CK_LIMIT"_Stz,        // CK_LIMIT
   /* */ "CK_LINKSTO"_Stz,      // CK_LINKSTO
 
@@ -247,7 +247,6 @@ static Stz* aCK_short[]
 
   /* */ "absJoin"_Stz,         // CK_ABSJOIN
   /* */ "aggElist"_Stz,        // CK_AGGELIST
-  /* */ "aggLevel"_Stz,        // CK_AGGLEVEL
   /* */ "aggreg"_Stz,          // CK_AGGREG
   /* */ "aggregates"_Stz,      // CK_AGGREGATES
   /* */ "andPred"_Stz,         // CK_ANDPRED
@@ -303,6 +302,7 @@ static Stz* aCK_short[]
   /* */ "keyExists"_Stz,       // CK_KEYEXISTS
 
   /* */ "lbound"_Stz,          // CK_LBOUND
+  /* */ "level"_Stz,           // CK_LEVEL
   /* */ "limit"_Stz,           // CK_LIMIT
   /* */ "linksTo"_Stz,         // CK_LINKSTO
 

@@ -22,7 +22,7 @@ namespace STORE
 {
   class Card_AbsJoin;
   class Card_AggElist;
-  class Card_AggLevel;
+  class Card_Level;
   class Card_Aggreg;
   class Card_Aggregates;
   class Card_AndPred;
@@ -126,8 +126,8 @@ static char MARK_MORE       = '+';
 static char MARK_RIGHTWARDS = '>';
 static char MARK_UPWARDS    = '^';
 
-static Stz* SEP_DERIVED    = "- - - - - - - - - "_Stz;
-static Stz* SEP_SCRATCH    = "= = = = = = = = = "_Stz;
+static Stz* SEP_DERIVED    = "+ + + + + + + + + "_Stz;
+static Stz* SEP_SCRATCH    = "? ? ? ? ? ? ? ? ? "_Stz;
 
 namespace STORE
 {

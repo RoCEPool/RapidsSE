@@ -239,7 +239,7 @@ Card* Dissector::pOp_Aggreg(TagSet* pArgTags)
   Card_Aggreg* pCard_Aggreg = new Card_Aggreg;
   
   eAL eAggLevel = m_pStageSpec->eAggegLevel();
-  Card_AggLevel* pCard_AggLevel = new Card_AggLevel(eAggLevel);
+  Card_Level* pCard_AggLevel = new Card_Level(eAggLevel);
   pCard_Aggreg->vAppend(pCard_AggLevel);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -511,7 +511,7 @@ Card* Dissector::pOp_OrdAgg(TagSet* pArgTags)
   Card_OrdAgg* pCard_OrdAgg = new Card_OrdAgg;
   
   eAL eAggLevel = m_pStageSpec->eAggegLevel();
-  Card_AggLevel* pCard_AggLevel = new Card_AggLevel(eAggLevel);
+  Card_Level* pCard_AggLevel = new Card_Level(eAggLevel);
   pCard_OrdAgg->vAppend(pCard_AggLevel);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

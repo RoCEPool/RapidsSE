@@ -1,23 +1,23 @@
 /*============================================================================*/
-/* Card_AggLevel.cpp -- Aggregate Level                                       */
+/* Card_Level.cpp -- Aggregate Level                                       */
 /*============================================================================*/
 
-#include "Card_AggLevel.hpp"
+#include "Card_Level.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_AggLevel,CK_AGGLEVEL)
-__aNewFunction(Card_AggLevel,CN_CARD)
-__vDeleteFunction(Card_AggLevel,CN_CARD)
+__pCastFunction_Card(STORE, Card_Level, CK_LEVEL)
+__aNewFunction(Card_Level, CN_CARD)
+__vDeleteFunction(Card_Level, CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_AggLevel::Card_AggLevel(eAL eAggLevel)
-: Card(CK_AGGLEVEL)
+Card_Level::Card_Level(eAL eAggLevel)
+: Card(CK_LEVEL)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -31,7 +31,7 @@ Card_AggLevel::Card_AggLevel(eAL eAggLevel)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_AggLevel::~Card_AggLevel(void) noexcept(false)
+Card_Level::~Card_Level(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

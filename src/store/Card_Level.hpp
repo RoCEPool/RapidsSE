@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_AggLevel.hpp -- Aggregate Level                                       */
+/* Card_Level.hpp -- Aggregate Level                                       */
 /*============================================================================*/
 #pragma once
 
@@ -7,17 +7,17 @@
 
 namespace STORE
 {
-  class Card_AggLevel : public Card
+  class Card_Level : public Card
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_AggLevel(eAL eAggLevel);
-   ~Card_AggLevel(void) noexcept(false);
+    Card_Level(eAL eAggLevel);
+   ~Card_Level(void) noexcept(false);
   };
 
-  Card_AggLevel* _pCard_AggLevel(void* aAddr);
+  Card_Level* _pCard_Level(void* aAddr);
 }
 
 /*============================================================================*/
