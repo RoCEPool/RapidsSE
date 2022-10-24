@@ -2475,6 +2475,21 @@ void Card::vColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef, String* psTableSyn
   psTableSyn->vSprint("%c"_Stz, cColumnRef_TableSyn_x(p_columnRef));
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card::bCoPtnJoin_CoPtnWith(Card_CoPtnJoin* p_coPtnJoin, Card_CoPtnPred* p_CoPtnPred)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_CmpPred* p_predCmp_this = _pCard_CmpPred(this);
+  Card_CmpPred* p_predCmp_arg  = _pCard_CmpPred(p_CoPtnPred);
+
+  if (p_predCmp_this->bCmpPred_CoPtnWith(p_predCmp_this, p_predCmp_arg))
+    return true;
+
+  return false;
+}
 
 /*----------------------------------------------------------------------------*/
 /* add table and index                                                        */

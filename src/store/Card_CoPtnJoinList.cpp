@@ -52,7 +52,7 @@ Card_CoPtnJoin* Card_CoPtnJoinList::pFind_coPtn_for(Card_CoPtnPred* p_CoPtnPred)
   for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
     Card_CoPtnJoin* p_coPtnJoin = _pCard_CoPtnJoin(pGetChild(i_Child));
 
-    if (p_coPtnJoin->bCoPtnWith(p_CoPtnPred))
+    if (p_coPtnJoin->bCoPtnJoin_CoPtnWith(p_coPtnJoin, p_CoPtnPred))
       return p_coPtnJoin;
   }
 
