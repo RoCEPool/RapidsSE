@@ -17,10 +17,6 @@ namespace STORE
   
     Card_TableList(void);
    ~Card_TableList(void) noexcept(false);
-
-    Card_Table* pFind_table(char cSyn);
-
-    bool bPredCmpIsCoPtn(Card_CmpPred* p_predCmp);
   };
 
   Card_TableList* _pCard_TableList(void* aAddr);

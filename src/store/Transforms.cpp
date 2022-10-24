@@ -881,7 +881,7 @@ void Transforms::vP70_T20_Compute_coPtnPredList(bool bPrint, bool bTrace)
     M.p_cmpPred =
         _pCard_CmpPred(M.p_joinPredList->pGetChild(i_joinPred));
 
-    if (! M.p_tableList->bPredCmpIsCoPtn(M.p_cmpPred))
+    if (! bPredCmpIsCoPtn(M.p_tableList,M.p_cmpPred))
       continue;
 
     M.p_coPtnPred = new Card_CoPtnPred;

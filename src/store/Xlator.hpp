@@ -29,6 +29,10 @@ namespace STORE
 
     void X_calc_To_calcBool(void);
 
+    Card_Table* pFind_table(Card_TableList* p_tableList, char cSyn);
+
+    bool bPredCmpIsCoPtn(Card_TableList* p_tableList, Card_CmpPred* p_predCmp);
+
   private:
 
     Footer* aFooter(void);

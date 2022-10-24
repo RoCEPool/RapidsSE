@@ -169,6 +169,64 @@ void Xlator::X_calc_To_calcBool(void)
   delete pCard_SubExpr;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Table* Xlator::pFind_table(Card_TableList* p_tableList, char cSyn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  i8 nChildren = p_tableList->nChildCards();
+  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
+    Card* pChildCard = p_tableList->pGetChild(i_Child);
+    if (CK_TABLE != pChildCard->eCard())
+      continue;
+
+    Card_Table* p_table = _pCard_Table(pChildCard);
+    char cTableSyn = p_table->cValue();
+    if (cTableSyn == cSyn)
+      return p_table;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Xlator::bPredCmpIsCoPtn(Card_TableList* p_tableList, Card_CmpPred* p_predCmp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  Card_ColumnRef* p_columnRef_0 =
+      _pCard_ColumnRef(p_predCmp->pGetChild(0));
+  Stz* szPredColumnRef_0 = p_columnRef_0->sz();
+
+  Card_ColumnRef* p_columnRef_1 =
+      _pCard_ColumnRef(p_predCmp->pGetChild(1));
+  Stz* szPredColumnRef_1 = p_columnRef_1->sz();
+
+  char cTableSyn_0 = p_columnRef_0->cColumnRef_tableSyn();
+  char cTableSyn_1 = p_columnRef_1->cColumnRef_tableSyn();
+
+  if (StrLib::bIsUpperCase(cTableSyn_0) || StrLib::bIsUpperCase(cTableSyn_1))
+    return true;
+
+  Card_Table* p_table_0 = pFind_table(p_tableList, cTableSyn_0);
+  Card_TablePtn* p_tablePtn_0 = p_table_0->pSub_tablePtn();
+  Stz* szTablePtn_0 = p_tablePtn_0->sz();
+
+  Card_Table* p_table_1 = pFind_table(p_tableList,cTableSyn_1);
+  Card_TablePtn* p_tablePtn_1 = p_table_1->pSub_tablePtn();
+  Stz* szTablePtn_1 = p_tablePtn_1->sz();
+
+  if (szTablePtn_0->bSame(szPredColumnRef_0) && szTablePtn_1->bSame(szPredColumnRef_1))
+    return true;
+
+  return false;
+}
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
