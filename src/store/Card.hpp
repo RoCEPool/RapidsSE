@@ -362,19 +362,19 @@ namespace STORE
 
     Card_StmCol* pStmColList_Find_streamCol(Card_StmColList* p_stmColList, Stz *szColNm, i8& i_StreamColNo);
 
-    ePB  eTerm_Bound(void);
-    i8   iTerm_IndexColNo(void);
-    bool bTerm_IsAggOp(void);
-    bool bTerm_IsCommaSeparator(void);
-    bool bTerm_IsIndexColOrdinal(void);
-    bool bTerm_IsParamOrdinal(void);
-    bool bTerm_IsStreamColOrdinal(void);
-    bool bTerm_IsTableColOrdinal(void);
-    eRO  eTerm_RelOp(void);
-    i8   iTerm_StreamColNo(void);
-    i8   iTerm_TableColNo(void);
-    char cTerm_TableSyn(void);
-    eTE  eTerm_TermEval(void);
+    ePB  eTerm_Bound(Card_Term* p_term);
+    i8   iTerm_IndexColNo(Card_Term* p_term);
+    bool bTerm_IsAggOp(Card_Term* p_term);
+    bool bTerm_IsCommaSeparator(Card_Term* p_term);
+    bool bTerm_IsIndexColOrdinal(Card_Term* p_term);
+    bool bTerm_IsParamOrdinal(Card_Term* p_term);
+    bool bTerm_IsStreamColOrdinal(Card_Term* p_term);
+    bool bTerm_IsTableColOrdinal(Card_Term* p_term);
+    eRO  eTerm_RelOp(Card_Term* p_term);
+    i8   iTerm_StreamColNo(Card_Term* p_term);
+    i8   iTerm_TableColNo(Card_Term* p_term);
+    char cTerm_TableSyn(Card_Term* p_term);
+    eTE  eTerm_TermEval(Card_Term* p_term);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   

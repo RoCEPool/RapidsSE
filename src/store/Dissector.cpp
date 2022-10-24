@@ -703,7 +703,7 @@ Card_AggElist* Dissector::pAggElist(Card_RpnTerms* pCard_RpnTerms)
     }
     
     // SEPARATOR
-    if (pCard_Term_head->bTerm_IsCommaSeparator()) {
+    if (pCard_Term_head->bTerm_IsCommaSeparator(pCard_Term_head)) {
       delete pCard_RpnTerms->pPop();
       continue;
     }
@@ -744,7 +744,7 @@ Card_GbyElist* Dissector::pGbyElist(Card_RpnTerms* pCard_RpnTerms)
     }
 
     // SEPARATOR
-    if (pCard_Term_head->bTerm_IsCommaSeparator()) {
+    if (pCard_Term_head->bTerm_IsCommaSeparator(pCard_Term_head)) {
       delete pCard_RpnTerms->pPop();
       continue;
     }
@@ -776,7 +776,7 @@ Card_ProjElist* Dissector::pProjElist(Card_RpnTerms* pCard_RpnTerms)
   while ( (pCard_Term_head = pCard_RpnTerms->pRpnTerms_HeadTerm(pCard_RpnTerms)) ) {
         
     // SEPARATOR
-    if (pCard_Term_head->bTerm_IsCommaSeparator()) {
+    if (pCard_Term_head->bTerm_IsCommaSeparator(pCard_Term_head)) {
       delete pCard_RpnTerms->pPop();
       continue;
     }
@@ -802,7 +802,7 @@ Card_SbyElist* Dissector::pSbyElist(Card_RpnTerms* pCard_RpnTerms)
   while ( (pCard_Term_head = pCard_RpnTerms->pRpnTerms_HeadTerm(pCard_RpnTerms)) ) {
         
     // SEPARATOR
-    if (pCard_Term_head->bTerm_IsCommaSeparator()) {
+    if (pCard_Term_head->bTerm_IsCommaSeparator(pCard_Term_head)) {
       delete pCard_RpnTerms->pPop();
       continue;
     }
@@ -924,13 +924,13 @@ Card_RpnCalc* Dissector::pCalc(Card_RpnTerms* pCard_RpnTerms)
         || pCard_Term_popped->bIsValue("ASC"_Stz)
         || pCard_Term_popped->bIsValue("DESC"_Stz)
         || pCard_Term_popped->bIsValue("GROUPBY"_Stz)
-        || pCard_Term_popped->bTerm_IsCommaSeparator()
+        || pCard_Term_popped->bTerm_IsCommaSeparator(pCard_Term_popped)
         ) {
       pCard_RpnTerms->vPush(pCard_Term_popped);
       break;
     }
 
-    if (pCard_Term_popped->bTerm_IsAggOp())
+    if (pCard_Term_popped->bTerm_IsAggOp(pCard_Term_popped))
       pCard_ExprCalc->Y_vSet(P_AggOp);
 
     pCard_ExprCalc->vAppend(pCard_Term_popped);

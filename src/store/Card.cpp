@@ -2362,7 +2362,7 @@ Card_CmpPred* Card::pCmpPred_FindBound(Card_CmpPred* p_cmpPred, Index* pIndex, e
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Term* pTerm2 = _pCard_Term(pGet(2));
-  if (eBound != pTerm2->eTerm_Bound())
+  if (eBound != pTerm2->eTerm_Bound(pTerm2))
     return nullptr;
 
   Card_Term* pTerm0 = _pCard_Term(pGet(0));
@@ -2384,7 +2384,7 @@ bool Card::bCmpPred_HasBounds(Card_CmpPred* p_cmpPred, Index* pIndex)
   //Card_Term* pTerm1 = _pCard_Term(pCard_PredCmp->pGet(1));
 
   Card_Term* pTerm2 = _pCard_Term(pGet(2));
-  if (PB_NONE == pTerm2->eTerm_Bound())
+  if (PB_NONE == pTerm2->eTerm_Bound(pTerm2))
     return false;
 
   Card_Term* pTerm0 = _pCard_Term(pGet(0));
@@ -3029,11 +3029,11 @@ Card_Term* Card::pRpnTerms_PopTerm(Card_RpnTerms* p_rpnTerms)
 /*----------------------------------------------------------------------------*/
 /* evaluate bound                                                             */
 /*----------------------------------------------------------------------------*/
-ePB Card::eTerm_Bound(void)
+ePB Card::eTerm_Bound(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  eRO eRelOp = this->eTerm_RelOp();
+  eRO eRelOp = this->eTerm_RelOp(p_term);
 
   switch (eRelOp) {
     case RO_LESS_THAN:     return PB_UBOUND;
@@ -3056,11 +3056,11 @@ ePB Card::eTerm_Bound(void)
 /*----------------------------------------------------------------------------*/
 /* get ordinal index value  (i.e. $In)                                        */
 /*----------------------------------------------------------------------------*/
-i8 Card::iTerm_IndexColNo(void)
+i8 Card::iTerm_IndexColNo(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  RASSERT(bTerm_IsIndexColOrdinal());
+  RASSERT(bTerm_IsIndexColOrdinal(p_term));
 
   i8 i_Ord = StrLib::iGleanInt(szValue()->azChar());
 
@@ -3070,7 +3070,7 @@ i8 Card::iTerm_IndexColNo(void)
 /*----------------------------------------------------------------------------*/
 /* is this atom an aggregate op?                                              */
 /*----------------------------------------------------------------------------*/
-bool Card::bTerm_IsAggOp(void)
+bool Card::bTerm_IsAggOp(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -3090,7 +3090,7 @@ bool Card::bTerm_IsAggOp(void)
 /*----------------------------------------------------------------------------*/
 /* is this term a comma separator?                                            */
 /*----------------------------------------------------------------------------*/
-bool Card::bTerm_IsCommaSeparator(void)
+bool Card::bTerm_IsCommaSeparator(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -3103,7 +3103,7 @@ bool Card::bTerm_IsCommaSeparator(void)
 /*----------------------------------------------------------------------------*/
 /* is term an index-column ordinal?  (i.e. $In)                               */
 /*----------------------------------------------------------------------------*/
-bool Card::bTerm_IsIndexColOrdinal(void)
+bool Card::bTerm_IsIndexColOrdinal(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -3123,7 +3123,7 @@ bool Card::bTerm_IsIndexColOrdinal(void)
 /*----------------------------------------------------------------------------*/
 /* is term a parameter ordinal?  (i.e. $Pn)                                   */
 /*----------------------------------------------------------------------------*/
-bool Card::bTerm_IsParamOrdinal(void)
+bool Card::bTerm_IsParamOrdinal(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -3143,7 +3143,7 @@ bool Card::bTerm_IsParamOrdinal(void)
 /*----------------------------------------------------------------------------*/
 /* is term a stream-column ordinal?  (i.e. $n)                                */
 /*----------------------------------------------------------------------------*/
-bool Card::bTerm_IsStreamColOrdinal(void)
+bool Card::bTerm_IsStreamColOrdinal(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -3161,7 +3161,7 @@ bool Card::bTerm_IsStreamColOrdinal(void)
 /*----------------------------------------------------------------------------*/
 /* is term an table-column ordinal?  (i.e. $$c.n)                             */
 /*----------------------------------------------------------------------------*/
-bool Card::bTerm_IsTableColOrdinal(void)
+bool Card::bTerm_IsTableColOrdinal(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -3185,7 +3185,7 @@ bool Card::bTerm_IsTableColOrdinal(void)
 /*----------------------------------------------------------------------------*/
 /* evaluate relational op                                                     */
 /*----------------------------------------------------------------------------*/
-eRO Card::eTerm_RelOp(void)
+eRO Card::eTerm_RelOp(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -3205,11 +3205,11 @@ eRO Card::eTerm_RelOp(void)
 /*----------------------------------------------------------------------------*/
 /* get stream column number n  (i.e. $n)                                      */
 /*----------------------------------------------------------------------------*/
-i8 Card::iTerm_StreamColNo(void)
+i8 Card::iTerm_StreamColNo(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  RASSERT(bTerm_IsStreamColOrdinal());
+  RASSERT(bTerm_IsStreamColOrdinal(p_term));
 
   i8 i_Col = StrLib::iGleanInt(szValue()->azChar());
 
@@ -3219,11 +3219,11 @@ i8 Card::iTerm_StreamColNo(void)
 /*----------------------------------------------------------------------------*/
 /* get table column number n (i.e. $$c.n)                                     */
 /*----------------------------------------------------------------------------*/
-i8 Card::iTerm_TableColNo(void)
+i8 Card::iTerm_TableColNo(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  RASSERT(bTerm_IsTableColOrdinal());
+  RASSERT(bTerm_IsTableColOrdinal(p_term));
 
   i8 i_Col = StrLib::iGleanInt(szValue()->azChar());
 
@@ -3233,11 +3233,11 @@ i8 Card::iTerm_TableColNo(void)
 /*----------------------------------------------------------------------------*/
 /* get table synonym c (i.e. $$c.n)                                           */
 /*----------------------------------------------------------------------------*/
-char Card::cTerm_TableSyn(void)
+char Card::cTerm_TableSyn(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  RASSERT(bTerm_IsTableColOrdinal());
+  RASSERT(bTerm_IsTableColOrdinal(p_term));
 
   Stz* szTerm = this->sz();
 
@@ -3249,7 +3249,7 @@ char Card::cTerm_TableSyn(void)
 /*----------------------------------------------------------------------------*/
 /* evaluate term                                                              */
 /*----------------------------------------------------------------------------*/
-eTE Card::eTerm_TermEval(void)
+eTE Card::eTerm_TermEval(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
