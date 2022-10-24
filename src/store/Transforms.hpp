@@ -89,7 +89,7 @@ namespace STORE
 
     char cMovePredLeftwards(Card_PRED* p_pred);
     char cMovePredToTable(Card_Table* p_table, Card_PRED* p_pred);
-
+    bool bStreamContainsPred(Card_Stream* p_stream, Card_PRED* pCard_PRED);
     void vCopyPredLeftwards(Card_BoolCalc* p_calcBool);
     bool bCopyPredDrillDown(Card_PRED*, Card_BoolCalc* p_calcBool);
     void vCopyPredToExistingFilter(Card_Filter* pCard_filter_existing, Card_PRED* pCard_pred);

@@ -17,10 +17,7 @@ namespace STORE
     Card_Stream(void);
    ~Card_Stream(void) noexcept(false);
 
-    bool bContainsPred(Card_PRED* pCard_PRED);
-
     void vStreamPrint(Ribbon* pRibbon, i8 iDepth);
-
    };
 
   Card_Stream* _pCard_Stream(void* aAddr);

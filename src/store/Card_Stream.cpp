@@ -41,40 +41,6 @@ Card_Stream::~Card_Stream(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* is given <pred> within this stream?                                        */
-/*----------------------------------------------------------------------------*/
-bool Card_Stream::bContainsPred(Card_PRED* pCard_PRED)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  eCK ePredCard = pCard_PRED->eCard();
-
-  if (CK_TERM == ePredCard) {
-    Stz* szTerm = pCard_PRED->sz();
-    if (!szTerm->bIsStreamColOrd())
-      return true;
-
-    i8 iOrdLo = m_pProperties->iValue(P_OrdLo);
-    i8 iOrdHi = m_pProperties->iValue(P_OrdHi);
-
-    i8 iOrd = szTerm->iOrdinal();
-    if (iOrd > iOrdHi)
-      return false;
-  }
-
-  i8 nSubCards = pCard_PRED->nChildCards();
-  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card *pSubCard = pCard_PRED->pGetChild(i_Child);
-
-    if (! bContainsPred(static_cast<Card_PRED*>(pSubCard)))
-      return false;
-  }
-
-  return true;
-}
-
-
 
 /*----------------------------------------------------------------------------*/
 /* get number of stream columns                                               */
