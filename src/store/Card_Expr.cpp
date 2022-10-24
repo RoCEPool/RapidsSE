@@ -32,32 +32,6 @@ Card_Expr::Card_Expr(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Card_Expr::Card_Expr(Column* pColumn)
-: Card(CK_EXPR)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  _checkInitialised_(CN_CARD);
-  
-  // type
-  Stz* szType = aCT[pColumn->eColumnType()];
-  Card_Type* pCard_Type = new Card_Type(szType);
-  vAppend(pCard_Type);
-  
-  // as
-  Card_As* pCard_As = new Card_As(pColumn->szColNm());
-  vAppend(pCard_As);
-
-  // exprCalc
-  Card_RpnCalc* pCard_RpnCalc = new Card_RpnCalc(pColumn);
-  vAppend(pCard_RpnCalc);
-
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Card_Expr::~Card_Expr(void) noexcept(false)

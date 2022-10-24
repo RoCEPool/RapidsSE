@@ -2748,8 +2748,22 @@ void Card::vObyElist_Populate(Card_ObyElist* p_obyElist, Index* pIndex)
 
     Column* pIdxCol = pIndexDef->pGetColumn(i_IdxCol);
 
-    Card_Expr* pCard_Expr = new Card_Expr(pIdxCol);
+    Card_Expr* pCard_Expr = new Card_Expr;
     vAppend(pCard_Expr);
+
+
+    Stz* szType = aCT[pIdxCol->eColumnType()];
+    Card_Type* pCard_Type = new Card_Type(szType);
+    pCard_Expr->vAppend(pCard_Type);
+
+    // as
+    Card_As* pCard_As = new Card_As(pIdxCol->szColNm());
+    pCard_Expr->vAppend(pCard_As);
+
+    // exprCalc
+    Card_RpnCalc* pCard_RpnCalc = new Card_RpnCalc(pIdxCol);
+    pCard_Expr->vAppend(pCard_RpnCalc);
+
   }
 }
 
