@@ -15,10 +15,6 @@ namespace STORE
 
     Card_AbsJoin(void);
     ~Card_AbsJoin(void) noexcept(false);
-
-
-    bool bIsPredInScope(Card_PRED* pCard_PRED);
-
   };
 
   Card_AbsJoin* _pCard_AbsJoin(void* aAddr);
