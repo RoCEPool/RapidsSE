@@ -16,21 +16,24 @@ THRIFT_VER := thrift-0.17.0
 SRCTARBALL := $(CURRENT_PATH)/$(THRIFT_VER).tar.gz
 SRCDIR     := $(THRIFT_VER)
 
-all : $(LIBTHRIFT)
+all : $(LIBTHRIFT) $(BOOSTDIR)
 
-$(LIBTHRIFT) :
+$(LIBTHRIFT) : $(BOOSTDIR)
 	@echo ""
 	@echo "Compiling 3rd-party library: Thrift"
 	@echo ""
-	@echo "Extracting Boost dependency"
-	@tar xvzf boost_dependency_1_80_0.tar.gz &>/dev/null
 	@echo "Extracting Thrift"
 	@tar xvzf thrift-0.17.0.tar.gz &>/dev/null
 	@./configureThrift.sh $(SRCDIR)
 	@echo "Compiling Thrift"
 	+cd $(SRCDIR) && $(MAKE) && $(MAKE) install
 	@rm -rf $(SRCDIR)
-	@rm -rf $(BOOSTDIR)
+
+$(BOOSTDIR) :
+	@echo "Extracting Boost dependency"
+	@tar xvzf boost_dependency_1_80_0.tar.gz &>/dev/null
+# Note that we cannot clean up the boost directory because it is required to compile
+# the wireline protocol messages.
 
 # Empty rules
 $(INCDIR) :

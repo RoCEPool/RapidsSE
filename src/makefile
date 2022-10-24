@@ -129,7 +129,7 @@ DEPFILES  = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.d, $(SOURCES))
 
 # Include directories
 SRC_INCLUDES := $(shell find . -type d | awk '{print "-I"$$0}')
-THIRDPARTY_INCLUDES := -I../thirdparty -I ../thirdparty/xxhash -I../thirdparty/mersenne -I../thirdparty/antlr/include -I../thirdparty/thrift/include -I../thirdparty/antlr/generated -I ../thirdparty/tcc/include
+THIRDPARTY_INCLUDES := -I../thirdparty -I ../thirdparty/xxhash -I../thirdparty/mersenne -I../thirdparty/antlr/include -I../thirdparty/antlr/generated -I ../thirdparty/tcc/include  -I../thirdparty/thrift/include  -I../thirdparty/thrift/boost_1_80_0
 INCLUDES = $(SRC_INCLUDES) $(THIRDPARTY_INCLUDES)
 
 # Linker libraries
