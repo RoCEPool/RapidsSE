@@ -198,6 +198,8 @@ namespace STORE
 
     static eCK  eTo_eCK(Stz* szCardNm);
 
+    static char cTypeShort(Stz* szType);
+
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
     void vAppendDupSubCards(Card* pFromCard);
