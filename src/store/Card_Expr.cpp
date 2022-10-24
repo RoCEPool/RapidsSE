@@ -91,20 +91,6 @@ void Card_Expr::vAsEnsure(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Expr::vCullPred(char cWithMark)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card_BoolCalc* p_boolCalc = this->pSub_boolCalc();
-  if (! p_boolCalc)
-    return;
-
-  p_boolCalc->vCullPred(cWithMark);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 Card_CmpPred* Card_Expr::pFindBound(Index* pIndex, ePB eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
