@@ -74,49 +74,7 @@ bool Card_Stream::bContainsPred(Card_PRED* pCard_PRED)
   return true;
 }
 
-/*----------------------------------------------------------------------------*/
-/* is given <pred> within this stream?                                        */
-/*----------------------------------------------------------------------------*/
-Card_StmCol* Card_Stream::pFind_streamCol(Stz *szColNm)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-   Card_StmColList* pCard_StreamColList = this->pSub_stmColList();
-
-  Card_StmCol* pCard_streamCol = nullptr;
-
-  return pCard_streamCol;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get a specific <streamCol>                                                 */
-/*----------------------------------------------------------------------------*/
-Card_StmCol* Card_Stream::pGet_streamCol(i8 i_Col)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_StmColList* pCard_StreamColList = pGet_streamColList();
-
-  i8 iOrdLo = Y_iVal(P_OrdLo);
-  i8 i_ColNo = i_Col - iOrdLo + 1;
-  Card_StmCol* pCard_StreamCol = pCard_StreamColList->pGet_streamCol(i_ColNo);
-
-  return pCard_StreamCol;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get a specific <streamCol> given $n ordinal                                */
-/*----------------------------------------------------------------------------*/
-Card_StmCol* Card_Stream::pGet_streamCol(Stz* szStreamColOrd)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  i8 i_Col = szStreamColOrd->iOrdinal() - 1;
-
-  Card_StmCol* p_streamCol = pGet_streamCol(i_Col);
-
-  return p_streamCol;
-}
 
 /*----------------------------------------------------------------------------*/
 /* get <streamColList>                                                       */
@@ -129,16 +87,6 @@ Card_StmColList* Card_Stream::pGet_streamColList(void)
     = _pCard_StmColList(pFindSubCard(CK_STMCOLLIST));
 
   return pCard_StreamColList;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get number of stream columns                                               */
-/*----------------------------------------------------------------------------*/
-void Card_Stream::vOrdinate(String* psOrdinal, Stz* szOrdinal)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  psOrdinal->vCopy(szOrdinal);
 }
 
 /*----------------------------------------------------------------------------*/

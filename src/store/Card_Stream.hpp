@@ -17,16 +17,10 @@ namespace STORE
     Card_Stream(void);
    ~Card_Stream(void) noexcept(false);
 
-    bool bContainsOrdinal(Stz* szOrd);
     bool bContainsPred(Card_PRED* pCard_PRED);
 
-    Card_StmCol*     pFind_streamCol(Stz* szColNm);
+   Card_StmColList* pGet_streamColList(void);
 
-    Card_StmCol*     pGet_streamCol(i8 i_Col);
-    Card_StmCol*     pGet_streamCol(Stz* szStreamColOrd);
-    Card_StmColList* pGet_streamColList(void);
-
-    void vOrdinate(String* psOrdinal, Stz* szOrdinal);
 
     i8 nStreamCols(void);
     void vStreamPrint(Ribbon* pRibbon, i8 iDepth);
