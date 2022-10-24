@@ -2986,6 +2986,30 @@ void Card::vPtndJoin_JoinEst(Card_PtndJoin* p_ptndJoin, Card_TableList* p_tableL
   Y_vSet(P_JoinedBuff, nJoinedBuff);
 }
 
+/*----------------------------------------------------------------------------*/
+/* get head term                                                              */
+/*----------------------------------------------------------------------------*/
+Card_Term* Card::pTerm_HeadTerm(Card_RpnTerms* p_rpnTerms)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Term* pCard_Term = _pCard_Term(pHead());
+
+  return pCard_Term;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop subcard                                                                */
+/*----------------------------------------------------------------------------*/
+Card_Term* Card::pTerm_PopTerm(Card_RpnTerms* p_rpnTerms)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Term* pCard_Term = _pCard_Term(pPop());
+
+  return pCard_Term;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

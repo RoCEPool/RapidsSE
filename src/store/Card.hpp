@@ -354,6 +354,9 @@ namespace STORE
     bool bPtndJoin_MayFollowAfter(Card_PtndJoin* p_ptndJoin, Card_SubSet* pPriorPtnJoins_sofar);
     void vPtndJoin_JoinEst(Card_PtndJoin* p_ptndJoin, Card_TableList* p_tableList);
 
+    Card_Term* pTerm_HeadTerm(Card_RpnTerms* p_rpnTerms);
+    Card_Term* pTerm_PopTerm(Card_RpnTerms* p_rpnTerms);
+
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   
 

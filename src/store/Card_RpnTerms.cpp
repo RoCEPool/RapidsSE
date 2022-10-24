@@ -40,47 +40,6 @@ Card_RpnTerms::~Card_RpnTerms(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* get head term                                                              */
-/*----------------------------------------------------------------------------*/
-Card_Term* Card_RpnTerms::pHeadTerm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_Term* pCard_Term = _pCard_Term(pHead());
-
-  return pCard_Term;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop subcard                                                                */
-/*----------------------------------------------------------------------------*/
-Card_Term* Card_RpnTerms::pPopTerm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_Term* pCard_Term = _pCard_Term(pPop());
-
-  return pCard_Term;
-}
-
-/*----------------------------------------------------------------------------*/
-/* evaluate top term                                                          */
-/*----------------------------------------------------------------------------*/
-eTE Card_RpnTerms::eTopTermEval(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  Card_Term* pCard_Term = _pCard_Term(pHead());
-  
-  if (! pCard_Term)
-    return TE_NONE;
-  
-  eTE eTermEval = pCard_Term->eTermEval();
-  
-  return eTermEval;
-}
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
