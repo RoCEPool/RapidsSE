@@ -2086,7 +2086,7 @@ Stz* Card::szDecodeEnum(Stz* szEnum, i8 iEnum)
 
 
 /*----------------------------------------------------------------------------*/
-/* find a comparePred which is the eBound of given index                      */
+/* find a comparePred which is the eTerm_Bound of given index                      */
 /*----------------------------------------------------------------------------*/
 Card_CmpPred* Card::pAndPred_FindBound(Card_AndPred* p_andPred, Index* pIndex, ePB eBound)
 {
@@ -2355,14 +2355,14 @@ void Card::vCmpPred_MarkBound(Card_CmpPred* p_cmpPred)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find a comparePred which is the eBound of given index                      */
+/* find a comparePred which is the eTerm_Bound of given index                      */
 /*----------------------------------------------------------------------------*/
 Card_CmpPred* Card::pCmpPred_FindBound(Card_CmpPred* p_cmpPred, Index* pIndex, ePB eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Term* pTerm2 = _pCard_Term(pGet(2));
-  if (eBound != pTerm2->eBound())
+  if (eBound != pTerm2->eTerm_Bound())
     return nullptr;
 
   Card_Term* pTerm0 = _pCard_Term(pGet(0));
@@ -2384,7 +2384,7 @@ bool Card::bCmpPred_HasBounds(Card_CmpPred* p_cmpPred, Index* pIndex)
   //Card_Term* pTerm1 = _pCard_Term(pCard_PredCmp->pGet(1));
 
   Card_Term* pTerm2 = _pCard_Term(pGet(2));
-  if (PB_NONE == pTerm2->eBound())
+  if (PB_NONE == pTerm2->eTerm_Bound())
     return false;
 
   Card_Term* pTerm0 = _pCard_Term(pGet(0));
@@ -2754,7 +2754,7 @@ void Card::vObyElist_Populate(Card_ObyElist* p_obyElist, Index* pIndex)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find a comparePred which is the eBound of given index                      */
+/* find a comparePred which is the eTerm_Bound of given index                      */
 /*----------------------------------------------------------------------------*/
 Card_CmpPred* Card::pOrPred_FindBound(Card_OrPred* p_orPred, Index* pIndex, ePB eBound)
 {
@@ -2853,7 +2853,7 @@ void Card::vPRED_CullByKids(Card_PRED* p_PRED)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find a comparePred which is the eBound of given index                      */
+/* find a comparePred which is the eTerm_Bound of given index                      */
 /*----------------------------------------------------------------------------*/
 Card_CmpPred* Card::pPRED_FindBound(Card_PRED* p_PRED, Index* pIndex,
                                     ePB eBound)
@@ -3024,6 +3024,251 @@ Card_Term* Card::pRpnTerms_PopTerm(Card_RpnTerms* p_rpnTerms)
   Card_Term* pCard_Term = _pCard_Term(pPop());
 
   return pCard_Term;
+}
+
+/*----------------------------------------------------------------------------*/
+/* evaluate bound                                                             */
+/*----------------------------------------------------------------------------*/
+ePB Card::eTerm_Bound(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  eRO eRelOp = this->eTerm_RelOp();
+
+  switch (eRelOp) {
+    case RO_LESS_THAN:     return PB_UBOUND;
+    case RO_LESS_EQUAL:    return PB_UBOUND;
+    case RO_EQUAL_TO:      return PB_EBOUND;
+    case RO_GREATER_EQUAL: return PB_LBOUND;
+    case RO_GREATER_THAN:  return PB_LBOUND;
+
+    default:
+      vTrace("%s(%lld): unexpected eTerm_RelOp %lld %s\n"_Stz
+          ,__func__
+          ,(i8)__LINE__
+          ,(i8)eRelOp
+          ,aRO[eRelOp]);
+      RASSERT(0);
+      break;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* get ordinal index value  (i.e. $In)                                        */
+/*----------------------------------------------------------------------------*/
+i8 Card::iTerm_IndexColNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  RASSERT(bTerm_IsIndexColOrdinal());
+
+  i8 i_Ord = StrLib::iGleanInt(szValue()->azChar());
+
+  return i_Ord;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this atom an aggregate op?                                              */
+/*----------------------------------------------------------------------------*/
+bool Card::bTerm_IsAggOp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Stz* szTerm = szValue();
+
+  if (szTerm->bSame("avg"_Stz))      return true;
+  else if (szTerm->bSame("count"_Stz))    return true;
+  else if (szTerm->bSame("countAll"_Stz)) return true;
+  else if (szTerm->bSame("max"_Stz))      return true;
+  else if (szTerm->bSame("min"_Stz))      return true;
+//else if (szTerm->bSame("stddev"_Stz))   return true;
+  else if (szTerm->bSame("sum"_Stz))      return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this term a comma separator?                                            */
+/*----------------------------------------------------------------------------*/
+bool Card::bTerm_IsCommaSeparator(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (szValue()->bSame(","_Stz))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is term an index-column ordinal?  (i.e. $In)                               */
+/*----------------------------------------------------------------------------*/
+bool Card::bTerm_IsIndexColOrdinal(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Stz* szTerm = szValue();
+
+  char acFirst  = szTerm->azChar()[0];
+  char acSecond = szTerm->azChar()[1];
+  char acThird  = szTerm->azChar()[2];
+
+  if ('$' == acFirst && ('I' == acSecond || 'i' == acSecond)
+      && StrLib::bIsDigit(acThird))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is term a parameter ordinal?  (i.e. $Pn)                                   */
+/*----------------------------------------------------------------------------*/
+bool Card::bTerm_IsParamOrdinal(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Stz* szTerm = szValue();
+
+  char acFirst  = szTerm->azChar()[0];
+  char acSecond = szTerm->azChar()[1];
+  char acThird  = szTerm->azChar()[2];
+
+  if ('$' == acFirst && ('P' == acSecond || 'p' == acSecond)
+      && StrLib::bIsDigit(acThird))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is term a stream-column ordinal?  (i.e. $n)                                */
+/*----------------------------------------------------------------------------*/
+bool Card::bTerm_IsStreamColOrdinal(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Stz* szTerm = szValue();
+
+  char acFirst  = szTerm->azChar()[0];
+  char acSecond = szTerm->azChar()[1];
+
+  if ('$' == acFirst && StrLib::bIsDigit(acSecond))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is term an table-column ordinal?  (i.e. $$c.n)                             */
+/*----------------------------------------------------------------------------*/
+bool Card::bTerm_IsTableColOrdinal(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Stz* szTerm = szValue();
+
+  char acFirst  = szTerm->azChar()[0];
+  char acSecond = szTerm->azChar()[1];
+  char acThird  = szTerm->azChar()[2];
+  char acFourth = szTerm->azChar()[3];
+  char acFifth  = szTerm->azChar()[4];
+
+  if ('$' == acFirst && '$' == acSecond
+      && StrLib::bIsAlpha(acThird)
+      && '.' == acFourth
+      && StrLib::bIsDigit(acFifth))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* evaluate relational op                                                     */
+/*----------------------------------------------------------------------------*/
+eRO Card::eTerm_RelOp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Stz* szTerm = this->sz();
+
+  if (szTerm->bSame("<"_Stz))   return RO_LESS_THAN;
+  else if (szTerm->bSame("<="_Stz))  return RO_LESS_EQUAL;
+  else if (szTerm->bSame("="_Stz))   return RO_EQUAL_TO;
+  else if (szTerm->bSame("=="_Stz))  return RO_EQUAL_TO;
+  else if (szTerm->bSame("!="_Stz))  return RO_NOT_EQUAL;
+  else if (szTerm->bSame(">="_Stz))  return RO_GREATER_EQUAL;
+  else if (szTerm->bSame(">"_Stz))   return RO_GREATER_THAN;
+
+  else return RO_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get stream column number n  (i.e. $n)                                      */
+/*----------------------------------------------------------------------------*/
+i8 Card::iTerm_StreamColNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  RASSERT(bTerm_IsStreamColOrdinal());
+
+  i8 i_Col = StrLib::iGleanInt(szValue()->azChar());
+
+  return i_Col;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get table column number n (i.e. $$c.n)                                     */
+/*----------------------------------------------------------------------------*/
+i8 Card::iTerm_TableColNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  RASSERT(bTerm_IsTableColOrdinal());
+
+  i8 i_Col = StrLib::iGleanInt(szValue()->azChar());
+
+  return i_Col;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get table synonym c (i.e. $$c.n)                                           */
+/*----------------------------------------------------------------------------*/
+char Card::cTerm_TableSyn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  RASSERT(bTerm_IsTableColOrdinal());
+
+  Stz* szTerm = this->sz();
+
+  char cSyn = szTerm->azChar()[2];
+
+  return cSyn;
+}
+
+/*----------------------------------------------------------------------------*/
+/* evaluate term                                                              */
+/*----------------------------------------------------------------------------*/
+eTE Card::eTerm_TermEval(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Stz* szTerm = this->sz();
+
+  if (szTerm->bSame("and"_Stz))     return TE_AND;
+  else if (szTerm->bSame("exists"_Stz))  return TE_EXISTS;
+  else if (szTerm->bSame("or"_Stz))      return TE_OR;
+
+  else if (szTerm->bSame("<"_Stz))       return TE_COMPARE;
+  else if (szTerm->bSame("<="_Stz))      return TE_COMPARE;
+  else if (szTerm->bSame("="_Stz))       return TE_COMPARE;
+  else if (szTerm->bSame("=="_Stz))      return TE_COMPARE;
+  else if (szTerm->bSame("!="_Stz))      return TE_COMPARE;
+  else if (szTerm->bSame("<>"_Stz))      return TE_COMPARE;
+  else if (szTerm->bSame(">="_Stz))      return TE_COMPARE;
+  else if (szTerm->bSame(">"_Stz))       return TE_COMPARE;
+
+  else return TE_OTHER;
 }
 
 /*============================================================================*/

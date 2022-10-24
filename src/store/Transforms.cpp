@@ -555,7 +555,7 @@ void Transforms::vP50_T40_Resolve_Parameter_Terms(bool bPrint, bool bTrace)
 
     CardIter xCI(M.p_rpnCalc);
     while ((M.p_term = _pCard_Term(xCI.pEachChild()))) {
-      if (! M.p_term->bIsParamOrdinal())
+      if (!M.p_term->bTerm_IsParamOrdinal())
         continue;
 
       if (! Y_bFindPpy(CK_PARAMLIST,P_ParamOrd,CK_PARAM))
@@ -681,7 +681,7 @@ void Transforms::vP60_T30_Add_joinPred_UnderAll_indexJoin(bool bPrint, bool bTra
     m_pTerm_0    = _pCard_Term(M.p_cmpPred->pGetChild(0));
     m_pTerm_1    = _pCard_Term(M.p_cmpPred->pGetChild(1));
 
-    if (! m_pTerm_0->bIsStreamColOrdinal() || ! m_pTerm_1->bIsStreamColOrdinal())
+    if (!m_pTerm_0->bTerm_IsStreamColOrdinal() || !m_pTerm_1->bTerm_IsStreamColOrdinal())
       continue;
 
 
@@ -703,8 +703,8 @@ void Transforms::vP60_T30_Add_joinPred_UnderAll_indexJoin(bool bPrint, bool bTra
     i8 iStreamOrdLo = M.p_stream->Y_iVal(P_OrdLo);
     i8 iStreamOrdHi = M.p_stream->Y_iVal(P_OrdHi);
 
-    i8 i_iOrdLo_0 = m_pTerm_0->iStreamColNo();
-    i8 i_iOrdLo_1 = m_pTerm_1->iStreamColNo();
+    i8 i_iOrdLo_0 = m_pTerm_0->iTerm_StreamColNo();
+    i8 i_iOrdLo_1 = m_pTerm_1->iTerm_StreamColNo();
 
     if (i_iOrdLo_0 >= iStreamOrdLo && i_iOrdLo_0 <= iStreamOrdHi) {
       M.p_term = new Card_Term("$I1"_Stz);
