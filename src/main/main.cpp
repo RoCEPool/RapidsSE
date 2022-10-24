@@ -32,11 +32,9 @@ extern s256 gi_szaArgv[];
 
 extern i8   giProgressPoint;
 
-//#include <readline/readline.h>
 //#include "wlp/thrift/generated/ErrorResponse_types.h"
 //#include "wlp/thrift/generated/MessageTypes_types.h"
 //#include "thrift/protocol/TCompactProtocol.h"
-//#include "thrift/transport/TTransport.h"
 //#include "thrift/transport/TBufferTransports.h"
 //#include "BufferTransport.hpp"
 //#include "WlpHeader.hpp"
@@ -182,8 +180,10 @@ int main(int argc, char* argv[])
 //  s1M sBuf;
 //  const u8 iBufSize = C_1M;
 //  memset(sBuf.azChar(), 0, iBufSize);
+//
+//  // Serialisation
 //  std::shared_ptr<wlp::BufferTransport> pTransport(new wlp::BufferTransport(sBuf.azChar(), iBufSize));
-//  std::shared_ptr<apache::thrift::protocol::TProtocol> pProtocol(new apache::thrift::protocol::TCompactProtocol(pTransport));
+//  std::shared_ptr<apache::thrift::protocol::TCompactProtocol> pProtocol(new apache::thrift::protocol::TCompactProtocol(pTransport));
 //
 //  ErrorResponse oErrorResponse;
 //  oErrorResponse.__set_errorString("abc"_Stz->azChar());
@@ -192,9 +192,18 @@ int main(int argc, char* argv[])
 //  oErrorResponse.write(pProtocol.get());
 //  pHeader->m_iMsgSize = pTransport->iBytesWritten();
 //
-//
 //  pTransport = nullptr;
 //  pProtocol = nullptr;
+//
+//  // Deserialisation. We know the actual size of the buffer from the header.
+//  pTransport = std::make_shared<wlp::BufferTransport>(sBuf.azChar(), (u8) pHeader->m_iMsgSize);
+//  pProtocol  = std::make_shared<apache::thrift::protocol::TCompactProtocol>(pTransport);
+//
+//  // Skip over the header byte
+//  pTransport->consume(wlp::C_WLPHEADER_SIZE);
+//  ErrorResponse oErrorResponse2;
+//  oErrorResponse2.read(pProtocol.get());
+//  ASSERT(oErrorResponse2.errorString == oErrorResponse.errorString);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

@@ -43,6 +43,22 @@ i8 BufferTransport::iBytesWritten()
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns the number of bytes read from the buffer                           */
+/*----------------------------------------------------------------------------*/
+i8 BufferTransport::iBytesRead()
+{
+  return iBytesWritten();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the number of bytes still to be read or written in the buffer      */
+/*----------------------------------------------------------------------------*/
+i8 BufferTransport::iBytesLeft()
+{
+  return (i8) (m_iLen - m_iNext);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Return whether the transport is "open". This is always open.               */
 /*----------------------------------------------------------------------------*/
 bool BufferTransport::isOpen() const

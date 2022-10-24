@@ -21,10 +21,12 @@ namespace wlp
 
   public:
     BufferTransport(char* pcBuf, u8 iLen);
-    ~BufferTransport();
+    ~BufferTransport() override;
 
     WlpHeader* pAllocHeader(MessageTypes::type eType);
     i8 iBytesWritten();
+    i8 iBytesRead();
+    i8 iBytesLeft();
 
     bool isOpen() const override;
     bool peek() override;
