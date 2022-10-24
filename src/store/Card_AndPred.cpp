@@ -37,42 +37,6 @@ Card_AndPred::~Card_AndPred(void) noexcept(false)
 }
 
 
-/*----------------------------------------------------------------------------*/
-/* find a comparePred which is the eBound of given index                      */
-/*----------------------------------------------------------------------------*/
-Card_CmpPred* Card::pAndPred_FindBound(Index* pIndex, ePB eBound)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  Card_PRED* pSubPred0 = (Card_PRED*)pGet(0);
-  if (Card_CmpPred* pFound = pSubPred0->pFindBound_pred(pIndex,eBound))
-    return pFound;
-
-  Card_PRED* pSubPred1 = (Card_PRED*)pGet(1);
-  if (Card_CmpPred* pFound = pSubPred1->pFindBound_pred(pIndex,eBound))
-    return pFound;
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* does this andPred have some bound on index?                                */
-/*----------------------------------------------------------------------------*/
-bool Card::bAndPred_HasBounds(Index* pIndex)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  Card_PRED* pSubPred0 = (Card_PRED*)pGet(0);
-  if (pSubPred0->bHasBounds_pred(pIndex))
-    return true;
-
-  Card_PRED* pSubPred1 = (Card_PRED*)pGet(1);
-  if (pSubPred1->bHasBounds_pred(pIndex))
-    return true;
-
-  return false;
-}
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

@@ -5,8 +5,10 @@
 #include "Card.hpp"
 #include "CardCtl.hpp"
 #include "Board.hpp"
-#include "PtnDef.hpp"
 #include "CardIter.hpp"
+
+#include "Card_Index.hpp"  // TODO: remove
+#include "Index.hpp"       // TODO: remove
 
 Card* gapCard[C_10K];
 
@@ -2062,6 +2064,270 @@ Stz* Card::szDecodeEnum(Stz* szEnum, i8 iEnum)
 
   return nullptr; //"**unknown**"_Stz;
 }
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------------*/
+/* find a comparePred which is the eBound of given index                      */
+/*----------------------------------------------------------------------------*/
+Card_CmpPred* Card::pOrPred_FindBound(Index* pIndex, ePB eBound)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_PRED* pSubPred0 = (Card_PRED*)pGet(0);
+  if (Card_CmpPred* pFound = pSubPred0->pFindBound_pred(pIndex,eBound))
+    return pFound;
+
+  Card_PRED* pSubPred1 = (Card_PRED*)pGet(1);
+  if (Card_CmpPred* pFound = pSubPred1->pFindBound_pred(pIndex,eBound))
+    return pFound;
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does orPred have some bound on given index?                                */
+/*----------------------------------------------------------------------------*/
+bool Card::bOrPred_HasBounds(Index* pIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_PRED* pSubPred0 = (Card_PRED*)pGet(0);
+  if (pSubPred0->bHasBounds_pred(pIndex))
+    return true;
+
+  Card_PRED* pSubPred1 = (Card_PRED*)pGet(1);
+  if (pSubPred1->bHasBounds_pred(pIndex))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find a comparePred which is the eBound of given index                      */
+/*----------------------------------------------------------------------------*/
+Card_CmpPred* Card::pAndPred_FindBound(Index* pIndex, ePB eBound)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_PRED* pSubPred0 = (Card_PRED*)pGet(0);
+  if (Card_CmpPred* pFound = pSubPred0->pFindBound_pred(pIndex,eBound))
+    return pFound;
+
+  Card_PRED* pSubPred1 = (Card_PRED*)pGet(1);
+  if (Card_CmpPred* pFound = pSubPred1->pFindBound_pred(pIndex,eBound))
+    return pFound;
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does this andPred have some bound on index?                                */
+/*----------------------------------------------------------------------------*/
+bool Card::bAndPred_HasBounds(Index* pIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_PRED* pSubPred0 = (Card_PRED*)pGet(0);
+  if (pSubPred0->bHasBounds_pred(pIndex))
+    return true;
+
+  Card_PRED* pSubPred1 = (Card_PRED*)pGet(1);
+  if (pSubPred1->bHasBounds_pred(pIndex))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this predCmp co-partitionable with given arg?                           */
+/*----------------------------------------------------------------------------*/
+bool Card::bCmpPred_CoPtnWith(Card_CmpPred* p_PredCmp_arg)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_ColumnRef* p_columnRef_this_0 =
+      _pCard_ColumnRef(this->pGetChild(0));
+  Stz* szColumnRef_this_0 = p_columnRef_this_0->sz();
+  char cTableSyn_this_0 = szColumnRef_this_0->cTableSyn();
+
+  Card_ColumnRef* p_columnRef_this_1 =
+      _pCard_ColumnRef(this->pGetChild(1));
+  Stz* szColumnRef_this_1 = p_columnRef_this_1->sz();
+  char cTableSyn_this_1 = szColumnRef_this_1->cTableSyn();
+
+
+  Card_ColumnRef* p_columnRef_arg_0 =
+      _pCard_ColumnRef(p_PredCmp_arg->pGetChild(0));
+  Stz* szColumnRef_arg_0 = p_columnRef_arg_0->sz();
+  char cTableSyn_arg_0 = szColumnRef_arg_0->cTableSyn();
+
+  Card_ColumnRef* p_columnRef_arg_1 =
+      _pCard_ColumnRef(p_PredCmp_arg->pGetChild(1));
+  Stz* szColumnRef_arg_1 = p_columnRef_arg_1->sz();
+  char cTableSyn_arg_1 = szColumnRef_arg_1->cTableSyn();
+
+  bool bAreCoPtn = false;
+
+  if (   cTableSyn_arg_0 == cTableSyn_this_0
+         || cTableSyn_arg_0 == cTableSyn_this_1
+         || cTableSyn_arg_1 == cTableSyn_this_0
+         || cTableSyn_arg_1 == cTableSyn_this_1
+      )
+    bAreCoPtn = true;
+
+  vTrace("(%c,%c) - (%c,%c) are%s co-partitioned\n"_Stz,
+         cTableSyn_this_0,cTableSyn_this_1,
+         cTableSyn_arg_0,cTableSyn_arg_1,
+         bAreCoPtn ? "" : " NOT");
+
+  return bAreCoPtn;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card::bCmpPred_IsEq(Card_CmpPred* p_PredCmp_arg)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_ColumnRef* p_columnRef_this_0 = _pCard_ColumnRef(this->pGetChild(0));
+  Stz* szColumnRef_this_0 = p_columnRef_this_0->sz();
+  Card_ColumnRef* p_columnRef_this_1 = _pCard_ColumnRef(this->pGetChild(1));
+  Stz* szColumnRef_this_1 = p_columnRef_this_1->sz();
+
+  Card_ColumnRef* p_columnRef_arg_0 = _pCard_ColumnRef(p_PredCmp_arg->pGetChild(0));
+  Stz* szColumnRef_arg_0 = p_columnRef_arg_0->sz();
+  Card_ColumnRef* p_columnRef_arg_1 = _pCard_ColumnRef(p_PredCmp_arg->pGetChild(1));
+  Stz* szColumnRef_arg_1 = p_columnRef_arg_1->sz();
+
+  if (szColumnRef_this_0->bSame(szColumnRef_arg_0) &&
+      szColumnRef_this_1->bSame(szColumnRef_arg_1))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card::bCmpPred_OverlapsWith(Card_CmpPred* p_PredCmp_arg)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  //this->vDump();
+  //p_PredCmp_arg->vDump();
+
+  Card_ColumnRef* p_columnRef_this_0 = _pCard_ColumnRef(this->pGetChild(0));
+  char cTableSyn_this_0 = p_columnRef_this_0->cColumnRef_tableSyn();
+  Card_ColumnRef* p_columnRef_this_1 = _pCard_ColumnRef(this->pGetChild(1));
+  char cTableSyn_this_1 = p_columnRef_this_1->cColumnRef_tableSyn();
+
+  Card_ColumnRef* p_columnRef_arg_0 = _pCard_ColumnRef(p_PredCmp_arg->pGetChild(0));
+  char cTableSyn_arg_0 = p_columnRef_arg_0->cColumnRef_tableSyn();
+  Card_ColumnRef* p_columnRef_arg_1 = _pCard_ColumnRef(p_PredCmp_arg->pGetChild(1));
+  char cTableSyn_arg_1 = p_columnRef_arg_1->cColumnRef_tableSyn();
+
+  if (   cTableSyn_this_0 == cTableSyn_arg_0
+         || cTableSyn_this_0 == cTableSyn_arg_1
+         || cTableSyn_this_1 == cTableSyn_arg_0
+         || cTableSyn_this_1 == cTableSyn_arg_1
+      )
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* mark the bounds of this <predCmp>                                          */
+/*----------------------------------------------------------------------------*/
+void Card::vCmpPred_MarkBound(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Stz* szCmp = this->sz();
+
+  char cBound = '?';
+
+  if (szCmp->bSame("<"_Stz))  cBound = 'U';
+  else if (szCmp->bSame("<="_Stz)) cBound = 'U';
+  else if (szCmp->bSame("="_Stz))  cBound = 'E';
+  else if (szCmp->bSame("=="_Stz)) cBound = 'E';
+  else if (szCmp->bSame("!="_Stz)) cBound = 'N';
+  else if (szCmp->bSame(">="_Stz)) cBound = 'L';
+  else if (szCmp->bSame(">"_Stz))  cBound = 'L';
+
+  vMark1(cBound);
+}
+
+
+
+
+
+
+/*----------------------------------------------------------------------------*/
+/* find a comparePred which is the eBound of given index                      */
+/*----------------------------------------------------------------------------*/
+Card_CmpPred* Card::pCmpPred_FindBound(Index* pIndex, ePB eBound)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Term* pTerm2 = _pCard_Term(pGet(2));
+  if (eBound != pTerm2->eBound())
+    return nullptr;
+
+  Card_Term* pTerm0 = _pCard_Term(pGet(0));
+  Stz* szTerm0 = pTerm0->sz();
+  Column* pCol0 = pIndex->pGetColumn(0);
+  if (! pCol0->szColNm()->bSame(szTerm0))
+    return nullptr;
+
+  return _pCard_CmpPred(this);
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this comparePred a bound on given index?                                */
+/*----------------------------------------------------------------------------*/
+bool Card::bCmpPred_HasBounds(Index* pIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  //Card_Term* pTerm1 = _pCard_Term(pCard_PredCmp->pGet(1));
+
+  Card_Term* pTerm2 = _pCard_Term(pGet(2));
+  if (PB_NONE == pTerm2->eBound())
+    return false;
+
+  Card_Term* pTerm0 = _pCard_Term(pGet(0));
+  Stz* szTerm0 = pTerm0->sz();
+  Column* pCol0 = pIndex->pGetColumn(0);
+  if (! pCol0->szColNm()->bSame(szTerm0))
+    return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card::bCmpPred_UsesTable(char cTableSyn)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_ColumnRef* p_columnRef_this_0 = _pCard_ColumnRef(this->pGetChild(0));
+  char cTableSyn_this_0 = p_columnRef_this_0->cColumnRef_tableSyn();
+  Card_ColumnRef* p_columnRef_this_1 = _pCard_ColumnRef(this->pGetChild(1));
+  char cTableSyn_this_1 = p_columnRef_this_1->cColumnRef_tableSyn();
+
+  if (cTableSyn_this_0 == cTableSyn || cTableSyn_this_1 == cTableSyn)
+    return true;
+
+  return false;
+}
+
+
 
 /*============================================================================*/
 /* end                                                                        */
