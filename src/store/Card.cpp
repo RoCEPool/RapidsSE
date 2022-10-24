@@ -2656,7 +2656,7 @@ void Card::vIdxColList_Ordinate(Card_IdxColList* p_idxColList, Card_Stream* pCar
     i8 i_StreamColNo = C_UNKNOWN;
     Stz* szColNm = pCard_idxCol->sz();
     Card_StmCol* pCard_streamCol =
-        pCard_StreamColList->pFind_streamCol(szColNm,i_StreamColNo);
+        pCard_StreamColList->pStmColList_Find_streamCol(pCard_StreamColList, szColNm, i_StreamColNo);
 
     s32 sOrdinal;
     sOrdinal.vSprint("$%lld"_Stz,iOrdLo+i_StreamColNo);
@@ -3005,7 +3005,7 @@ void Card::vPtndJoin_JoinEst(Card_PtndJoin* p_ptndJoin, Card_TableList* p_tableL
 /*----------------------------------------------------------------------------*/
 /* get head term                                                              */
 /*----------------------------------------------------------------------------*/
-Card_Term* Card::pTerm_HeadTerm(Card_RpnTerms* p_rpnTerms)
+Card_Term* Card::pRpnTerms_HeadTerm(Card_RpnTerms* p_rpnTerms)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -3017,7 +3017,7 @@ Card_Term* Card::pTerm_HeadTerm(Card_RpnTerms* p_rpnTerms)
 /*----------------------------------------------------------------------------*/
 /* pop subcard                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Term* Card::pTerm_PopTerm(Card_RpnTerms* p_rpnTerms)
+Card_Term* Card::pRpnTerms_PopTerm(Card_RpnTerms* p_rpnTerms)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

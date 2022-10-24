@@ -92,6 +92,7 @@ namespace STORE
   class Card_Sort;
   class Card_Stage;
   class Card_Stream;
+  class Card_StmCol;
   class Card_StmColList;
   class Card_StmColOrd;
   class Card_SubSet;
@@ -356,8 +357,10 @@ namespace STORE
     bool bPtndJoin_MayFollowAfter(Card_PtndJoin* p_ptndJoin, Card_SubSet* pPriorPtnJoins_sofar);
     void vPtndJoin_JoinEst(Card_PtndJoin* p_ptndJoin, Card_TableList* p_tableList);
 
-    Card_Term* pTerm_HeadTerm(Card_RpnTerms* p_rpnTerms);
-    Card_Term* pTerm_PopTerm(Card_RpnTerms* p_rpnTerms);
+    Card_Term* pRpnTerms_HeadTerm(Card_RpnTerms* p_rpnTerms);
+    Card_Term* pRpnTerms_PopTerm(Card_RpnTerms* p_rpnTerms);
+
+    Card_StmCol* pStmColList_Find_streamCol(Card_StmColList* p_stmColList, Stz *szColNm, i8& i_StreamColNo);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   

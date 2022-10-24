@@ -689,13 +689,13 @@ Card_AggElist* Dissector::pAggElist(Card_RpnTerms* pCard_RpnTerms)
   
   i8 iCardNo = 0;
 
-  Card_Term* pCard_Term_head = pCard_RpnTerms->pTerm_PopTerm(pCard_RpnTerms);
+  Card_Term* pCard_Term_head = pCard_RpnTerms->pRpnTerms_PopTerm(pCard_RpnTerms);
   RASSERT(pCard_Term_head->bIsValue("AGGREGATES"_Stz));
   delete pCard_Term_head;
 
 
 
-  while ( (pCard_Term_head = pCard_RpnTerms->pTerm_HeadTerm(pCard_RpnTerms)) ) {
+  while ( (pCard_Term_head = pCard_RpnTerms->pRpnTerms_HeadTerm(pCard_RpnTerms)) ) {
     
     // GROUPBY
     if (pCard_Term_head->bIsValue("GROUPBY"_Stz)) {
@@ -736,7 +736,7 @@ Card_GbyElist* Dissector::pGbyElist(Card_RpnTerms* pCard_RpnTerms)
   pCard_Term_head = nullptr;
 
   i8 iCardNo = 0;
-  while ( (pCard_Term_head = pCard_RpnTerms->pTerm_HeadTerm(pCard_RpnTerms)) ) {
+  while ( (pCard_Term_head = pCard_RpnTerms->pRpnTerms_HeadTerm(pCard_RpnTerms)) ) {
 
     // GROUPBY
     if (pCard_Term_head->bIsValue("AGGREGATES"_Stz)) {
@@ -773,7 +773,7 @@ Card_ProjElist* Dissector::pProjElist(Card_RpnTerms* pCard_RpnTerms)
   Card_ProjElist* pCard_ProjElist = new Card_ProjElist;
 
   Card_Term* pCard_Term_head = nullptr;
-  while ( (pCard_Term_head = pCard_RpnTerms->pTerm_HeadTerm(pCard_RpnTerms)) ) {
+  while ( (pCard_Term_head = pCard_RpnTerms->pRpnTerms_HeadTerm(pCard_RpnTerms)) ) {
         
     // SEPARATOR
     if (pCard_Term_head->bIsCommaSeparator()) {
@@ -799,7 +799,7 @@ Card_SbyElist* Dissector::pSbyElist(Card_RpnTerms* pCard_RpnTerms)
   Card_SbyElist* pCard_SbyElist = new Card_SbyElist;
 
   Card_Term* pCard_Term_head = nullptr;
-  while ( (pCard_Term_head = pCard_RpnTerms->pTerm_HeadTerm(pCard_RpnTerms)) ) {
+  while ( (pCard_Term_head = pCard_RpnTerms->pRpnTerms_HeadTerm(pCard_RpnTerms)) ) {
         
     // SEPARATOR
     if (pCard_Term_head->bIsCommaSeparator()) {
@@ -833,7 +833,7 @@ Card_Expr* Dissector::pExpr(Card_RpnTerms* pCard_RpnTerms)
   L_TYPE:
 
   // TYPE <type>
-//  Card_Term* pCard_Term_popped = pCard_RpnTerms->pTerm_PopTerm();
+//  Card_Term* pCard_Term_popped = pCard_RpnTerms->pRpnTerms_PopTerm();
 //  eTE eTermEval = pCard_Term_popped->eTermEval();
 //  Stz* szTerm = pCard_Term_popped->sz();
 //
@@ -841,7 +841,7 @@ Card_Expr* Dissector::pExpr(Card_RpnTerms* pCard_RpnTerms)
 //  delete pCard_Term_popped;
 //  pCard_Term_popped = nullptr;
 //
-//  pCard_Term_popped = pCard_RpnTerms->pTerm_PopTerm();
+//  pCard_Term_popped = pCard_RpnTerms->pRpnTerms_PopTerm();
 //  Card_Type* pCard_Type = new Card_Type(pCard_Term_popped->sz());
 //  pCard_Expr->vAppend(pCard_Type);
 //
@@ -893,7 +893,7 @@ Card_Expr* Dissector::pExpr(Card_RpnTerms* pCard_RpnTerms)
 //    Card_Aggregates* pCard_Aggregates = new Card_Aggregates;
 //    pCard_Expr->vAppend(pCard_Aggregates);
 //
-//    pCard_Term_popped = pCard_RpnTerms->pTerm_PopTerm();
+//    pCard_Term_popped = pCard_RpnTerms->pRpnTerms_PopTerm();
 //    delete pCard_Term_popped;
 //
 //    //HACK
@@ -1003,7 +1003,7 @@ Card_Type* Dissector::pType(Card_RpnTerms* pCard_RpnTerms)
   pCard_Term = nullptr;
 
   // column type (e.g. BOOLEAN)
-  Card_Term* pCard_Term_type = pCard_RpnTerms->pTerm_PopTerm(pCard_RpnTerms);
+  Card_Term* pCard_Term_type = pCard_RpnTerms->pRpnTerms_PopTerm(pCard_RpnTerms);
   //eCT eColumn = Column::eColumn(pCard_Term_type->szTerm());
 
   Card_Type* pCard_Type = new Card_Type(pCard_Term_type->sz());
