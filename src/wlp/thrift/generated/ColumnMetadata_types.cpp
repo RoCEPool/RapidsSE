@@ -11,7 +11,7 @@
 
 #include <thrift/TToString.h>
 
-
+#undef NULL
 
 int _kDataTypeValues[] = {
   DataType::NULL,

@@ -18,7 +18,7 @@
 #include <functional>
 #include <memory>
 
-
+#undef NULL
 
 
 struct DataType {
