@@ -1471,7 +1471,7 @@ void Transforms::vP80_T30_Mark_scan_pred_bounds(bool bPrint, bool bTrace)
 
   auto bfMarkPredBounds = [](Card* pCard) {
     Card_CmpPred* p_cmpPred = _pCard_CmpPred(pCard);
-    p_cmpPred->vMarkBound();
+    p_cmpPred->vCmpPred_MarkBound();
     return C_CONTINUE_RECURSION;
   };
 

@@ -75,7 +75,7 @@ bool Card_CoPtnJoinList::bHasEqPredCmp(Card_CmpPred* p_predCmp_arg)
       Card_CmpPred *p_predCmp = _pCard_CmpPred(p_coPtnJoin->pGetChild(i_Child_predCmp));
 
 
-      if (p_predCmp->bIsEq(p_predCmp_arg))
+      if (p_predCmp->bCmpPred_IsEq(p_predCmp_arg))
         return true;
     }
   }

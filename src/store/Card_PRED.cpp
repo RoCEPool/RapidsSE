@@ -132,7 +132,7 @@ Card_CmpPred* Card_PRED::pFindBound_pred(Index* pIndex,
       return _pCard_AndPred(this)->pFindBound_and(pIndex,eBound);
       
     case CK_CMPPRED:
-      return _pCard_CmpPred(this)->pFindBound_compare(pIndex,eBound);
+      return _pCard_CmpPred(this)->pCmpPred_FindBound(pIndex, eBound);
 
     default:
       vTrace("pFindBound_pred: unexpected eCard %lld %s\n"_Stz
@@ -163,7 +163,7 @@ bool Card_PRED::bHasBounds_pred(Index* pIndex)
       return _pCard_AndPred(this)->bHasBounds_and(pIndex);
       
     case CK_CMPPRED:
-      return _pCard_CmpPred(this)->bHasBounds_compare(pIndex);
+      return _pCard_CmpPred(this)->bCmpPred_HasBounds(pIndex);
 
     default:
       vTrace("bHasBounds_pred: unexpected eCard %lld %s\n"_Stz

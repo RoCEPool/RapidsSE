@@ -19,23 +19,17 @@ namespace STORE
     Card_CmpPred(Stz* szCmp);
    ~Card_CmpPred(void) noexcept(false);
 
-    void vMarkBound(void);
+    void vCmpPred_MarkBound(void);
 
+    bool bCmpPred_CoPtnWith(Card_CmpPred* p_PredCmp_arg);
+    Card_CmpPred* pCmpPred_FindBound(Index* pIndex, ePB eBound);
+    bool bCmpPred_HasBounds(Index* pIndex);
 
-    ePB eBound(void);
-    eRO eRelOp(void);
+    bool bCmpPred_IsEq(Card_CmpPred* p_PredCmp_arg);
 
-    bool bCoPtnWith(Card_CmpPred* p_PredCmp_arg);
-    Card_CmpPred* pDup(void);
-    Card_CmpPred* pFindBound_compare(Index* pIndex, ePB eBound);
-    bool bHasBounds_compare(Index* pIndex);
+    bool bCmpPred_OverlapsWith(Card_CmpPred* p_PredCmp_arg);
 
-    bool bIsEq(Card_CmpPred* p_PredCmp_arg);
-
-    bool bOverlapsWith(Card_CmpPred* p_PredCmp_arg);
-
-    bool bIsJoinPred(void);
-    bool bUsesTable(char cTableSyn);
+    bool bCmpPred_UsesTable(char cTableSyn);
   };
 
   Card_CmpPred* _pCard_CmpPred(void* aAddr);

@@ -59,7 +59,7 @@ Card_CmpPred::~Card_CmpPred(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* is this predCmp co-partitionable with given arg?                           */
 /*----------------------------------------------------------------------------*/
-bool Card_CmpPred::bCoPtnWith(Card_CmpPred* p_PredCmp_arg)
+bool Card_CmpPred::bCmpPred_CoPtnWith(Card_CmpPred* p_PredCmp_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -104,7 +104,7 @@ bool Card_CmpPred::bCoPtnWith(Card_CmpPred* p_PredCmp_arg)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_CmpPred::bIsEq(Card_CmpPred* p_PredCmp_arg)
+bool Card_CmpPred::bCmpPred_IsEq(Card_CmpPred* p_PredCmp_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -128,7 +128,7 @@ bool Card_CmpPred::bIsEq(Card_CmpPred* p_PredCmp_arg)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_CmpPred::bOverlapsWith(Card_CmpPred* p_PredCmp_arg)
+bool Card_CmpPred::bCmpPred_OverlapsWith(Card_CmpPred* p_PredCmp_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -158,7 +158,7 @@ bool Card_CmpPred::bOverlapsWith(Card_CmpPred* p_PredCmp_arg)
 /*----------------------------------------------------------------------------*/
 /* mark the bounds of this <predCmp>                                          */
 /*----------------------------------------------------------------------------*/
-void Card_CmpPred::vMarkBound(void)
+void Card_CmpPred::vCmpPred_MarkBound(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -181,61 +181,11 @@ void Card_CmpPred::vMarkBound(void)
 
 
 
-/*----------------------------------------------------------------------------*/
-/* get bound of this compare op                                               */
-/*----------------------------------------------------------------------------*/
-ePB Card_CmpPred::eBound(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  i8 i_LastCard = nItems() - 1;
-  Card_Term* p_term_last = _pCard_Term(pGetChild(i_LastCard));
-
-  ePB eBound = p_term_last->eBound();
-  
-  return eBound;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get relational operator of this compare op                                 */
-/*----------------------------------------------------------------------------*/
-eRO Card_CmpPred::eRelOp(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  i8 i_LastCard = nItems() - 1;
-  Card_Term* p_term_last = _pCard_Term(pGetChild(i_LastCard));
-
-  eRO eRelOp = p_term_last->eRelOp();
-  
-  return eRelOp;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_CmpPred* Card_CmpPred::pDup(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  Card_CmpPred* pComparePred = new Card_CmpPred;
-  
-  i8 nTerms = this->nItems();
-  for (i8 i_Term = 0; i_Term < nTerms; i_Term++) {
-    Card_Term* pCard_Term = _pCard_Term(pGet(i_Term));
-
-    Stz* szTerm = pCard_Term->sz();
-
-    pComparePred->vAppend(new Card_Term(szTerm));
-  }
-  
-  return pComparePred;
-}
 
 /*----------------------------------------------------------------------------*/
 /* find a comparePred which is the eBound of given index                      */
 /*----------------------------------------------------------------------------*/
-Card_CmpPred* Card_CmpPred::pFindBound_compare(Index* pIndex, ePB eBound)
+Card_CmpPred* Card_CmpPred::pCmpPred_FindBound(Index* pIndex, ePB eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -255,7 +205,7 @@ Card_CmpPred* Card_CmpPred::pFindBound_compare(Index* pIndex, ePB eBound)
 /*----------------------------------------------------------------------------*/
 /* is this comparePred a bound on given index?                                */
 /*----------------------------------------------------------------------------*/
-bool Card_CmpPred::bHasBounds_compare(Index* pIndex)
+bool Card_CmpPred::bCmpPred_HasBounds(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -277,7 +227,7 @@ bool Card_CmpPred::bHasBounds_compare(Index* pIndex)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_CmpPred::bUsesTable(char cTableSyn)
+bool Card_CmpPred::bCmpPred_UsesTable(char cTableSyn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -290,19 +240,6 @@ bool Card_CmpPred::bUsesTable(char cTableSyn)
     return true;
 
   return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this <predCmp> usable as a <joinPred>                                  */
-/*----------------------------------------------------------------------------*/
-bool Card_CmpPred::bIsJoinPred(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  if (sz())
-    return false;
-
-  return true;
 }
 
 /*============================================================================*/
