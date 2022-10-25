@@ -16,9 +16,7 @@ namespace STORE
   
     Card_Stream(void);
    ~Card_Stream(void) noexcept(false);
-
-    void vStreamPrint(Ribbon* pRibbon, i8 iDepth);
-   };
+  };
 
   Card_Stream* _pCard_Stream(void* aAddr);
 }
