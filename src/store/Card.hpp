@@ -301,6 +301,8 @@ namespace STORE
     void Y_vSet(Stz* szPpyNm, Stz* szPpyVal);
     void Y_vSetSprint(Stz* szPpyNm, Stz* szFormat, ...);
 
+    void vStream_PrintStream(Card_Stream* p_stream, Ribbon* pRibbon, i8 iDepth);
+    void vTable_PrintTable(Card_Table* p_Table, Ribbon* pRibbon, i8 iDepth);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
@@ -367,11 +369,9 @@ namespace STORE
     Card_Term* pRpnTerms_HeadTerm(Card_RpnTerms* p_rpnTerms);
     Card_Term* pRpnTerms_PopTerm(Card_RpnTerms* p_rpnTerms);
 
-    void vStream_PrintStream(Card_Stream* p_stream, Ribbon* pRibbon, i8 iDepth);
 
     Card_StmCol* pStmColList_Find_streamCol(Card_StmColList* p_stmColList, Stz *szColNm, i8& i_StreamColNo);
 
-    void vTable_PrintTable(Card_Table* p_Table, Ribbon* pRibbon, i8 iDepth);
 
     ePB  eTerm_Bound(Card_Term* p_term);
     i8   iTerm_IndexColNo(Card_Term* p_term);

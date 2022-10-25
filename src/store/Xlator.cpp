@@ -1225,41 +1225,6 @@ Card_StmCol* Xlator::pStmColList_Find_streamCol(Card_StmColList* p_stmColList,
 }
 
 /*----------------------------------------------------------------------------*/
-/* get number of stream columns                                               */
-/*----------------------------------------------------------------------------*/
-void Xlator::vStream_PrintStream(Card_Stream* p_stream, Ribbon* pRibbon, i8 iDepth)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  s32 sName;
-  sName.vSprint("%s%s"_Stz,p_stream->szCardNm(),p_stream->nProperties()?" +":"");
-
-  if (p_stream->bHasProperty(P_OrdLo))
-    sName.vCatSprint(" $%lld,%lld"_Stz,
-                     p_stream->Y_iVal(P_OrdLo), p_stream->Y_iVal(P_OrdHi));
-
-  p_stream->vPrintCard_byCustomNm(pRibbon, iDepth, sName);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xlator::vTable_PrintTable(Card_Table* p_Table, Ribbon* pRibbon, i8 iDepth)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  s32 sName;
-  sName = aCK_short[p_Table->eCard()];
-  if (0 == iDepth)
-    sName.vToUpper();
-
-  if (p_Table->bHasValue())
-    sName.vCatSprint(" %c"_Stz, p_Table->cValue());
-
-  p_Table->vPrintCard_byCustomNm(pRibbon, iDepth, sName);
-}
-
-/*----------------------------------------------------------------------------*/
 /* evaluate bound                                                             */
 /*----------------------------------------------------------------------------*/
 ePB Xlator::eTerm_Bound(Card_Term* p_term)

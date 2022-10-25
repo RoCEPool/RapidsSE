@@ -1718,6 +1718,44 @@ void Card::Y_vSet(Stz* szPpyNm, Stz* szPpyVal)
 
 
 
+
+/*----------------------------------------------------------------------------*/
+/* get number of stream columns                                               */
+/*----------------------------------------------------------------------------*/
+void Card::vStream_PrintStream(Card_Stream* p_stream, Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  s32 sName;
+  sName.vSprint("%s%s"_Stz,szCardNm(),nProperties()?" +":"");
+
+  if (bHasProperty(P_OrdLo))
+    sName.vCatSprint(" $%lld,%lld"_Stz,
+                     Y_iVal(P_OrdLo), Y_iVal(P_OrdHi));
+
+  vPrintCard_byCustomNm(pRibbon, iDepth, sName);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vTable_PrintTable(Card_Table* p_Table, Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  s32 sName;
+  sName = aCK_short[m_eCard];
+  if (0 == iDepth)
+    sName.vToUpper();
+
+  if (bHasValue())
+    sName.vCatSprint(" %c"_Stz, cValue());
+
+  vPrintCard_byCustomNm(pRibbon, iDepth, sName);
+}
+
+
+
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -3074,41 +3112,6 @@ Card_StmCol* Card::pStmColList_Find_streamCol(Card_StmColList* p_stmColList, Stz
   }
 
   return pCard_streamCol;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get number of stream columns                                               */
-/*----------------------------------------------------------------------------*/
-void Card::vStream_PrintStream(Card_Stream* p_stream, Ribbon* pRibbon, i8 iDepth)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  s32 sName;
-  sName.vSprint("%s%s"_Stz,szCardNm(),nProperties()?" +":"");
-
-  if (bHasProperty(P_OrdLo))
-    sName.vCatSprint(" $%lld,%lld"_Stz,
-                     Y_iVal(P_OrdLo), Y_iVal(P_OrdHi));
-
-  vPrintCard_byCustomNm(pRibbon, iDepth, sName);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card::vTable_PrintTable(Card_Table* p_Table, Ribbon* pRibbon, i8 iDepth)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  s32 sName;
-  sName = aCK_short[m_eCard];
-  if (0 == iDepth)
-    sName.vToUpper();
-
-  if (bHasValue())
-    sName.vCatSprint(" %c"_Stz, cValue());
-
-  vPrintCard_byCustomNm(pRibbon, iDepth, sName);
 }
 
 /*----------------------------------------------------------------------------*/
