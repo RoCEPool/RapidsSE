@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-//#define NEW_XLATOR
+#define NEW_XLATOR
 
 #include "BASE.h"
 

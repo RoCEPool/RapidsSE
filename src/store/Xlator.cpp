@@ -229,7 +229,7 @@ bool Xlator::bPredCmpIsCoPtn(Card_TableList* p_tableList, Card_CmpPred* p_predCm
 
 
 /*############################################################################*/
-#ifndef NEW_XLATOR
+#ifdef NEW_XLATOR
 /*############################################################################*/
 
 /*----------------------------------------------------------------------------*/
@@ -240,11 +240,11 @@ Card_CmpPred* Xlator::pAndPred_FindBound(Card_AndPred* p_andPred, Index* pIndex,
   _precondition_(_ADDRESS_,_MAGIC_);
 
   Card_PRED* pSubPred0 = (Card_PRED*)p_andPred->pGet(0);
-  if (Card_CmpPred* pFound = pSubPred0->pPRED_FindBound(pSubPred0, pIndex, eBound))
+  if (Card_CmpPred* pFound = pPRED_FindBound(pSubPred0, pIndex, eBound))
     return pFound;
 
   Card_PRED* pSubPred1 = (Card_PRED*)p_andPred->pGet(1);
-  if (Card_CmpPred* pFound = pSubPred1->pPRED_FindBound(pSubPred1, pIndex, eBound))
+  if (Card_CmpPred* pFound = pPRED_FindBound(pSubPred1, pIndex, eBound))
     return pFound;
 
   return nullptr;
@@ -258,11 +258,11 @@ bool Xlator::bAndPred_HasBounds(Card_AndPred* p_andPred, Index* pIndex)
   _precondition_(_ADDRESS_,_MAGIC_);
 
   Card_PRED* pSubPred0 = (Card_PRED*)p_andPred->pGet(0);
-  if (pSubPred0->bPRED_HasBounds(pSubPred0, pIndex))
+  if (bPRED_HasBounds(pSubPred0, pIndex))
     return true;
 
   Card_PRED* pSubPred1 = (Card_PRED*)p_andPred->pGet(1);
-  if (pSubPred1->bPRED_HasBounds(pSubPred1, pIndex))
+  if (bPRED_HasBounds(pSubPred1, pIndex))
     return true;
 
   return false;
@@ -462,14 +462,14 @@ bool Xlator::bCmpPred_OverlapsWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_Pred
   //p_PredCmp_arg->vDump();
 
   Card_ColumnRef* p_columnRef_this_0 = _pCard_ColumnRef(p_cmpPred->pGetChild(0));
-  char cTableSyn_this_0 = p_columnRef_this_0->cColumnRef_TableSyn(p_columnRef_this_0);
+  char cTableSyn_this_0 = cColumnRef_TableSyn(p_columnRef_this_0);
   Card_ColumnRef* p_columnRef_this_1 = _pCard_ColumnRef(p_cmpPred->pGetChild(1));
-  char cTableSyn_this_1 = p_columnRef_this_1->cColumnRef_TableSyn(p_columnRef_this_1);
+  char cTableSyn_this_1 = cColumnRef_TableSyn(p_columnRef_this_1);
 
   Card_ColumnRef* p_columnRef_arg_0 = _pCard_ColumnRef(p_PredCmp_arg->pGetChild(0));
-  char cTableSyn_arg_0 = p_columnRef_arg_0->cColumnRef_TableSyn(p_columnRef_arg_0);
+  char cTableSyn_arg_0 = cColumnRef_TableSyn(p_columnRef_arg_0);
   Card_ColumnRef* p_columnRef_arg_1 = _pCard_ColumnRef(p_PredCmp_arg->pGetChild(1));
-  char cTableSyn_arg_1 = p_columnRef_arg_1->cColumnRef_TableSyn(p_columnRef_arg_1);
+  char cTableSyn_arg_1 = cColumnRef_TableSyn(p_columnRef_arg_1);
 
   if (   cTableSyn_this_0 == cTableSyn_arg_0
          || cTableSyn_this_0 == cTableSyn_arg_1
@@ -511,7 +511,7 @@ Card_CmpPred* Xlator::pCmpPred_FindBound(Card_CmpPred* p_cmpPred, Index* pIndex,
   _precondition_(_ADDRESS_,_MAGIC_);
 
   Card_Term* pTerm2 = _pCard_Term(p_cmpPred->pGet(2));
-  if (eBound != pTerm2->eTerm_Bound(pTerm2))
+  if (eBound != eTerm_Bound(pTerm2))
     return nullptr;
 
   Card_Term* pTerm0 = _pCard_Term(p_cmpPred->pGet(0));
@@ -533,7 +533,7 @@ bool Xlator::bCmpPred_HasBounds(Card_CmpPred* p_cmpPred, Index* pIndex)
   //Card_Term* pTerm1 = _pCard_Term(pCard_PredCmp->pGet(1));
 
   Card_Term* pTerm2 = _pCard_Term(p_cmpPred->pGet(2));
-  if (PB_NONE == pTerm2->eTerm_Bound(pTerm2))
+  if (PB_NONE == eTerm_Bound(pTerm2))
     return false;
 
   Card_Term* pTerm0 = _pCard_Term(p_cmpPred->pGet(0));
@@ -553,9 +553,9 @@ bool Xlator::bCmpPred_UsesTable(Card_CmpPred* p_cmpPred, char cTableSyn)
   _precondition_(_ADDRESS_,_MAGIC_);
 
   Card_ColumnRef* p_columnRef_this_0 = _pCard_ColumnRef(p_cmpPred->pGetChild(0));
-  char cTableSyn_this_0 = p_columnRef_this_0->cColumnRef_TableSyn(p_columnRef_this_0);
+  char cTableSyn_this_0 = cColumnRef_TableSyn(p_columnRef_this_0);
   Card_ColumnRef* p_columnRef_this_1 = _pCard_ColumnRef(p_cmpPred->pGetChild(1));
-  char cTableSyn_this_1 = p_columnRef_this_1->cColumnRef_TableSyn(p_columnRef_this_1);
+  char cTableSyn_this_1 = cColumnRef_TableSyn(p_columnRef_this_1);
 
   if (cTableSyn_this_0 == cTableSyn || cTableSyn_this_1 == cTableSyn)
     return true;
@@ -650,7 +650,7 @@ bool Xlator::bCoPtnJoin_CoPtnWith(Card_CoPtnJoin* p_coPtnJoin, Card_CoPtnPred* p
   Card_CmpPred* p_predCmp_this = _pCard_CmpPred(this);
   Card_CmpPred* p_predCmp_arg  = _pCard_CmpPred(p_CoPtnPred);
 
-  if (p_predCmp_this->bCmpPred_CoPtnWith(p_predCmp_this, p_predCmp_arg))
+  if (bCmpPred_CoPtnWith(p_predCmp_this, p_predCmp_arg))
     return true;
 
   return false;
@@ -667,7 +667,7 @@ Card_CoPtnJoin* Xlator::pCoPtnJoinList_Find_coPtn_for(Card_CoPtnJoinList* p_coPt
   for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
     Card_CoPtnJoin* p_coPtnJoin = _pCard_CoPtnJoin(p_coPtnJoinList->pGetChild(i_Child));
 
-    if (p_coPtnJoin->bCoPtnJoin_CoPtnWith(p_coPtnJoin, p_coPtnPred))
+    if (bCoPtnJoin_CoPtnWith(p_coPtnJoin, p_coPtnPred))
       return p_coPtnJoin;
   }
 
@@ -690,7 +690,7 @@ bool Xlator::bCoPtnJoinList_HasEqPredCmp(Card_CoPtnJoinList* p_coPtnJoinList, Ca
       Card_CmpPred *p_predCmp = _pCard_CmpPred(p_coPtnJoin->pGetChild(i_Child_predCmp));
 
 
-      if (p_predCmp->bCmpPred_IsEq(p_predCmp, p_predCmp))
+      if (bCmpPred_IsEq(p_predCmp, p_predCmp))
         return true;
     }
   }
@@ -767,7 +767,7 @@ void Xlator::vFilter_CullPred(Card_Filter* p_filter, char cWithMark)
 
     Card_BoolCalc* p_boolCalc = _pCard_BoolCalc(pChildCard);
 
-    p_boolCalc->vBoolCalc_CullPred(p_boolCalc,cWithMark);
+    vBoolCalc_CullPred(p_boolCalc,cWithMark);
   }
 }
 
@@ -805,7 +805,7 @@ void Xlator::vIdxColList_Ordinate(Card_IdxColList* p_idxColList, Card_Stream* pC
     i8 i_StreamColNo = C_UNKNOWN;
     Stz* szColNm = pCard_idxCol->sz();
     Card_StmCol* pCard_streamCol =
-        pCard_StreamColList->pStmColList_Find_streamCol(pCard_StreamColList, szColNm, i_StreamColNo);
+        pStmColList_Find_streamCol(pCard_StreamColList, szColNm, i_StreamColNo);
 
     s32 sOrdinal;
     sOrdinal.vSprint("$%lld"_Stz,iOrdLo+i_StreamColNo);
@@ -835,7 +835,7 @@ void Xlator::vJoinOrderSeq_ExtractJoinOrder(Card_JoinOrderSeq* p_joinOrderSeq,
 
       Card_ColumnRef* p_columnRef = _pCard_ColumnRef(pChild);
       s32 sTableSyn;
-      p_columnRef->vColumnRef_TableSyn_x(p_columnRef,sTableSyn);
+      vColumnRef_TableSyn_x(p_columnRef,sTableSyn);
 
       if (p_joinOrderSeq->bHasChildWithValue(sTableSyn))
         continue;
@@ -853,7 +853,7 @@ void Xlator::vJoinPredList_Extract(Card_JoinPredList* p_joinPredList, Card_BoolC
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  auto bfExtract = [p_joinPredList,p_boolCalc](Card *pCard) {
+  auto bfExtract = [this,p_joinPredList,p_boolCalc](Card *pCard) {
 
     Card_CmpPred* p_predCmp = _pCard_CmpPred(pCard);
 
@@ -866,7 +866,7 @@ void Xlator::vJoinPredList_Extract(Card_JoinPredList* p_joinPredList, Card_BoolC
       return true;
     Card_Term* p_term_1 = _pCard_Term(p_predCmp->pGetChild(1));
     Card_ColumnRef* p_columnRef_1= p_term_1->pSub_columnRef();
-    if (!p_columnRef_1->bColumnRef_IsColumnRef(p_columnRef_1))
+    if (! bColumnRef_IsColumnRef(p_columnRef_1))
       return true;
 
     Card_CmpPred* p_predCmp_new = new Card_CmpPred(p_predCmp->sz());
@@ -928,11 +928,11 @@ Card_CmpPred* Xlator::pOrPred_FindBound(Card_OrPred* p_orPred, Index* pIndex, eP
   _precondition_(_ADDRESS_,_MAGIC_);
 
   Card_PRED* pSubPred0 = (Card_PRED*)p_orPred->pGet(0);
-  if (Card_CmpPred* pFound = pSubPred0->pPRED_FindBound(pSubPred0, pIndex, eBound))
+  if (Card_CmpPred* pFound = pPRED_FindBound(pSubPred0, pIndex, eBound))
     return pFound;
 
   Card_PRED* pSubPred1 = (Card_PRED*)p_orPred->pGet(1);
-  if (Card_CmpPred* pFound = pSubPred1->pPRED_FindBound(pSubPred1, pIndex, eBound))
+  if (Card_CmpPred* pFound = pPRED_FindBound(pSubPred1, pIndex, eBound))
     return pFound;
 
   return nullptr;
@@ -946,11 +946,11 @@ bool Xlator::bOrPred_HasBounds(Card_OrPred* p_orPred, Index* pIndex)
   _precondition_(_ADDRESS_,_MAGIC_);
 
   Card_PRED* pSubPred0 = (Card_PRED*)p_orPred->pGet(0);
-  if (pSubPred0->bPRED_HasBounds(pSubPred0,pIndex))
+  if (bPRED_HasBounds(pSubPred0,pIndex))
     return true;
 
   Card_PRED* pSubPred1 = (Card_PRED*)p_orPred->pGet(1);
-  if (pSubPred1->bPRED_HasBounds(pSubPred1,pIndex))
+  if (bPRED_HasBounds(pSubPred1,pIndex))
     return true;
 
   return false;
@@ -992,7 +992,7 @@ void Xlator::vPRED_CullByKids(Card_PRED* p_PRED)
 
     Card_PRED* pCard_ChildPRED = (Card_PRED*)pCard_Child;
 
-    pCard_ChildPRED->vPRED_CullByKids(pCard_ChildPRED);
+    vPRED_CullByKids(pCard_ChildPRED);
 
     if (0 == pCard_ChildPRED->nItems()) {
 
@@ -1126,7 +1126,7 @@ bool Xlator::bPtndJoin_MayFollowAfter(Card_PtndJoin* p_ptndJoin, Card_SubSet* pP
         Card_CmpPred *p_predCmp_this =
             _pCard_CmpPred(p_ptndJoin->pGetChild(i_PredCmp_this));
 
-        if (p_predCmp_this->bCmpPred_OverlapsWith(p_predCmp_this,p_predCmp_sofar))
+        if (bCmpPred_OverlapsWith(p_predCmp_this,p_predCmp_sofar))
           return true;
       }
 
@@ -1158,7 +1158,7 @@ void Xlator::vPtndJoin_JoinEst(Card_PtndJoin* p_ptndJoin, Card_TableList* p_tabl
       Card_CmpPred *p_predCmp =
           _pCard_CmpPred(p_ptndJoin->pGetChild(i_PredCmp));
 
-      if (p_predCmp->bCmpPred_UsesTable(p_predCmp,p_table->cValue())) {
+      if (bCmpPred_UsesTable(p_predCmp,p_table->cValue())) {
         nJoinedBuff += p_table->pSub_size()->szValue()->iToI8();
         p_table->Y_vSet(P_TableUsed);
       }
@@ -1435,6 +1435,7 @@ eTE Xlator::eTerm_TermEval(Card_Term* p_term)
 
   else return TE_OTHER;
 }
+
 
 /*############################################################################*/
 #endif
