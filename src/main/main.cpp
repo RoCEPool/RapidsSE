@@ -38,6 +38,7 @@ extern i8   giProgressPoint;
 //#include "thrift/transport/TBufferTransports.h"
 //#include "BufferTransport.hpp"
 //#include "WlpHeader.hpp"
+//using namespace com::rapidsdata::wirelineprotocol::messages::v5;
 
 #include "StreamDef.hpp"
 #include "IndexDef.hpp"

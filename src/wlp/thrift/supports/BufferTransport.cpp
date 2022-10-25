@@ -6,6 +6,7 @@
 #include "BufferTransport.hpp"
 
 using namespace wlp;
+using namespace com::rapidsdata::wirelineprotocol::messages::v5;
 
 /*----------------------------------------------------------------------------*/
 /* Constructor                                                                */

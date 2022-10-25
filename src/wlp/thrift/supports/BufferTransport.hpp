@@ -23,7 +23,7 @@ namespace wlp
     BufferTransport(char* pcBuf, u8 iLen);
     ~BufferTransport() override;
 
-    WlpHeader* pAllocHeader(MessageTypes::type eType);
+    WlpHeader* pAllocHeader(com::rapidsdata::wirelineprotocol::messages::v5::MessageTypes::type eType);
     i8 iBytesWritten();
     i8 iBytesRead();
     i8 iBytesLeft();
