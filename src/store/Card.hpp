@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+//#define NEW_XLATOR
+
 #include "BASE.h"
 
 #include "eAL.h"
@@ -302,6 +304,11 @@ namespace STORE
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
+/*############################################################################*/
+#ifndef NEW_XLATOR
+/*############################################################################*/
+
+
     Card_CmpPred* pAndPred_FindBound(Card_AndPred* p_andPred, Index* pIndex, ePB eBound);
     bool bAndPred_HasBounds(Card_AndPred* p_andPred, Index* pIndex);
 
@@ -379,6 +386,10 @@ namespace STORE
     i8   iTerm_TableColNo(Card_Term* p_term);
     char cTerm_TableSyn(Card_Term* p_term);
     eTE  eTerm_TermEval(Card_Term* p_term);
+
+/*############################################################################*/
+#endif
+/*############################################################################*/
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   
