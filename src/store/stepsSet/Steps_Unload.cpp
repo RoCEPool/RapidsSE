@@ -60,13 +60,10 @@ void Step::vUnloadToDisk(void)
                          gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz(),
                          iPtnOfNode);
 
+    PersistenceHelper::vWritePersistentHeaps(sFilePath.szStz());
+//    PersistenceHelper::vWriteDiskTest(sFilePath.szStz(), 16);
 
-//    vTrace("Unloading to %s\n"_Stz, sFilePath.szStz());
-
-//    PersistenceHelper::vWritePersistentHeaps(sFilePath.szStz());
-    PersistenceHelper::vWriteDiskTest(sFilePath.szStz(), 16);
-
-//    vTrace("Successfully unloaded to %s\n"_Stz, sFilePath.szStz());
+    vTrace("Successfully unloaded to %s\n"_Stz, sFilePath.szStz());
   }
 
   EXIT();
