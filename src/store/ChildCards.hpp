@@ -19,6 +19,7 @@ namespace STORE
    ~ChildCards(void) noexcept(false);
 
     i8   nChildCards(void);
+    void vConcatChildren(Stz* szTerms, eCK eChild=CK_NONE);
 
     i8    iFindChild(Card* pChild);
     Card* pFindChild(eCK eCard);

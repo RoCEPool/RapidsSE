@@ -357,7 +357,6 @@ namespace STORE
     Card_CmpPred* pOrPred_FindBound(Card_OrPred* p_orPred, Index* pIndex, ePB eBound);
     bool bOrPred_HasBounds(Card_OrPred* p_orPred, Index* pIndex);
 
-    void vPRED_ConcatTerms(Card_PRED* p_PRED, Stz* szTerms, i8 i_From, i8 i_Till= C_UNKNOWN);
     void vPRED_CullByKids(Card_PRED* p_PRED);
     Card_CmpPred* pPRED_FindBound(Card_PRED* p_PRED, Index* pIndex, ePB eBound);
     bool bPRED_HasBounds (Card_PRED* p_PRED, Index* pIndex);

@@ -2848,27 +2848,6 @@ bool Card::bOrPred_HasBounds(Card_OrPred* p_orPred, Index* pIndex)
   return false;
 }
 
-
-/*----------------------------------------------------------------------------*/
-/* concat terms                                                               */
-/*----------------------------------------------------------------------------*/
-void Card::vPRED_ConcatTerms(Card_PRED* p_PRED, Stz* szTerms, i8 i_From, i8 i_Till)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (C_UNKNOWN == i_Till)
-    i_Till = nChildCards() - 1;
-
-  for (i8 i_Child = i_From; i_Child <= i_Till; i_Child++) {
-    Card* pChildCard = pGetChild(i_Child);
-    if (CK_TERM != pChildCard->eCard())
-      continue;
-
-    szTerms->vCatSprint(" %s"_Stz, pChildCard->sz());
-  }
-}
-
-
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
