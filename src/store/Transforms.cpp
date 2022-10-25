@@ -520,7 +520,7 @@ void Transforms::vP50_T30_Resolve_Parameter_Linkage(bool bPrint, bool bTrace)
   while (E_bEachMain(CK_KEYEXISTS)) {
 
     vTracer("Resolving %s"_Stz,M.p_MainCard->szBearing());
-    if (!P_bPlumbForSubMember(CK_KEYEXISTS,CK_PARAM))
+    if (!F_bPlumbForSubMember(CK_KEYEXISTS, CK_PARAM))
       continue;
 
     if (! R_bResolveCard(CK_STMCOL,M.p_param->sz(),M.p_keyExists))
@@ -555,7 +555,7 @@ void Transforms::vP50_T40_Resolve_Parameter_Terms(bool bPrint, bool bTrace)
 
     CardIter xCI(M.p_rpnCalc);
     while ((M.p_term = _pCard_Term(xCI.pEachChild()))) {
-      if (!Term::Xlate_Term::bTerm_IsParamOrdinal(M.p_term))
+      if (!Term::Xlate_Term::T_bTerm_IsParamOrdinal(M.p_term))
         continue;
 
       if (! Y_bFindPpy(CK_PARAMLIST,P_ParamOrd,CK_PARAM))
@@ -681,8 +681,8 @@ void Transforms::vP60_T30_Add_joinPred_UnderAll_indexJoin(bool bPrint, bool bTra
     m_pTerm_0    = _pCard_Term(M.p_cmpPred->pGetChild(0));
     m_pTerm_1    = _pCard_Term(M.p_cmpPred->pGetChild(1));
 
-    if (!bTerm_IsStreamColOrdinal(m_pTerm_0) ||
-        !bTerm_IsStreamColOrdinal(m_pTerm_1))
+    if (!T_bTerm_IsStreamColOrdinal(m_pTerm_0) ||
+        !T_bTerm_IsStreamColOrdinal(m_pTerm_1))
       continue;
 
 
@@ -704,8 +704,8 @@ void Transforms::vP60_T30_Add_joinPred_UnderAll_indexJoin(bool bPrint, bool bTra
     i8 iStreamOrdLo = M.p_stream->Y_iVal(P_OrdLo);
     i8 iStreamOrdHi = M.p_stream->Y_iVal(P_OrdHi);
 
-    i8 i_iOrdLo_0 = iTerm_StreamColNo(m_pTerm_0);
-    i8 i_iOrdLo_1 = iTerm_StreamColNo(m_pTerm_1);
+    i8 i_iOrdLo_0 = T_iTerm_StreamColNo(m_pTerm_0);
+    i8 i_iOrdLo_1 = T_iTerm_StreamColNo(m_pTerm_1);
 
     if (i_iOrdLo_0 >= iStreamOrdLo && i_iOrdLo_0 <= iStreamOrdHi) {
       M.p_term = new Card_Term("$I1"_Stz);
@@ -1472,7 +1472,7 @@ void Transforms::vP80_T30_Mark_scan_pred_bounds(bool bPrint, bool bTrace)
 
   auto bfMarkPredBounds = [this](Card* pCard) {
     Card_CmpPred* p_cmpPred = _pCard_CmpPred(pCard);
-    vCmpPred_MarkBound(p_cmpPred);
+    T_vCmpPred_MarkBound(p_cmpPred);
     return C_CONTINUE_RECURSION;
   };
 

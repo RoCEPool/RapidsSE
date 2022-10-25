@@ -21,7 +21,7 @@ Term::Xlate_Term::Xlate_Term(eCN eClassNo, Bench* pBench)
 /*----------------------------------------------------------------------------*/
 /* is atom a column ordinal?                                                  */
 /*----------------------------------------------------------------------------*/
-bool Term::Xlate_Term::bColumnRef_IsColumnRef(Card_ColumnRef* p_columnRef)
+bool Term::Xlate_Term::T_bColumnRef_IsColumnRef(Card_ColumnRef* p_columnRef)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -41,7 +41,7 @@ bool Term::Xlate_Term::bColumnRef_IsColumnRef(Card_ColumnRef* p_columnRef)
 /*----------------------------------------------------------------------------*/
 /* get column ordinal of column ref                                           */
 /*----------------------------------------------------------------------------*/
-i8 Term::Xlate_Term::iColumnRef_ColumnOrd(Card_ColumnRef* p_columnRef)
+i8 Term::Xlate_Term::T_iColumnRef_ColumnOrd(Card_ColumnRef* p_columnRef)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -57,7 +57,7 @@ i8 Term::Xlate_Term::iColumnRef_ColumnOrd(Card_ColumnRef* p_columnRef)
 /*----------------------------------------------------------------------------*/
 /* get table syn of column ref                                                */
 /*----------------------------------------------------------------------------*/
-char Term::Xlate_Term::cColumnRef_TableSyn(Card_ColumnRef* p_columnRef)
+char Term::Xlate_Term::T_cColumnRef_TableSyn(Card_ColumnRef* p_columnRef)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -73,7 +73,7 @@ char Term::Xlate_Term::cColumnRef_TableSyn(Card_ColumnRef* p_columnRef)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-char Term::Xlate_Term::cColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef)
+char Term::Xlate_Term::T_cColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   Stz* szColumnRef = p_columnRef->sz();
@@ -88,22 +88,22 @@ char Term::Xlate_Term::cColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Term::Xlate_Term::vColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef, String* psTableSyn)
+void Term::Xlate_Term::T_vColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef, String* psTableSyn)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  psTableSyn->vSprint("%c"_Stz, cColumnRef_TableSyn_x(p_columnRef));
+  psTableSyn->vSprint("%c"_Stz, T_cColumnRef_TableSyn_x(p_columnRef));
 }
 
 
 /*----------------------------------------------------------------------------*/
 /* evaluate bound                                                             */
 /*----------------------------------------------------------------------------*/
-ePB Term::Xlate_Term::Xlate_Term::eTerm_Bound(Card_Term* p_term)
+ePB Term::Xlate_Term::Xlate_Term::T_eTerm_Bound(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  eRO eRelOp = this->eTerm_RelOp(p_term);
+  eRO eRelOp = this->T_eTerm_RelOp(p_term);
 
   switch (eRelOp) {
     case RO_LESS_THAN:     return PB_UBOUND;
@@ -113,7 +113,7 @@ ePB Term::Xlate_Term::Xlate_Term::eTerm_Bound(Card_Term* p_term)
     case RO_GREATER_THAN:  return PB_LBOUND;
 
     default:
-      vTrace("%s(%lld): unexpected eTerm_RelOp %lld %s\n"_Stz
+      vTrace("%s(%lld): unexpected T_eTerm_RelOp %lld %s\n"_Stz
           ,__func__
           ,(i8)__LINE__
           ,(i8)eRelOp
@@ -126,11 +126,11 @@ ePB Term::Xlate_Term::Xlate_Term::eTerm_Bound(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 /* get ordinal index value  (i.e. $In)                                        */
 /*----------------------------------------------------------------------------*/
-i8 Term::Xlate_Term::iTerm_IndexColNo(Card_Term* p_term)
+i8 Term::Xlate_Term::T_iTerm_IndexColNo(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  RASSERT(bTerm_IsIndexColOrdinal(p_term));
+  RASSERT(T_bTerm_IsIndexColOrdinal(p_term));
 
   i8 i_Ord = StrLib::iGleanInt(p_term->szValue()->azChar());
 
@@ -140,7 +140,7 @@ i8 Term::Xlate_Term::iTerm_IndexColNo(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 /* is term an index-column ordinal?  (i.e. $In)                               */
 /*----------------------------------------------------------------------------*/
-bool Term::Xlate_Term::bTerm_IsIndexColOrdinal(Card_Term* p_term)
+bool Term::Xlate_Term::T_bTerm_IsIndexColOrdinal(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -160,7 +160,7 @@ bool Term::Xlate_Term::bTerm_IsIndexColOrdinal(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 /* is term a parameter ordinal?  (i.e. $Pn)                                   */
 /*----------------------------------------------------------------------------*/
-bool Term::Xlate_Term::bTerm_IsParamOrdinal(Card_Term* p_term)
+bool Term::Xlate_Term::T_bTerm_IsParamOrdinal(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -180,7 +180,7 @@ bool Term::Xlate_Term::bTerm_IsParamOrdinal(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 /* is term a stream-column ordinal?  (i.e. $n)                                */
 /*----------------------------------------------------------------------------*/
-bool Term::Xlate_Term::bTerm_IsStreamColOrdinal(Card_Term* p_term)
+bool Term::Xlate_Term::T_bTerm_IsStreamColOrdinal(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -198,7 +198,7 @@ bool Term::Xlate_Term::bTerm_IsStreamColOrdinal(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 /* is term an table-column ordinal?  (i.e. $$c.n)                             */
 /*----------------------------------------------------------------------------*/
-bool Term::Xlate_Term::bTerm_IsTableColOrdinal(Card_Term* p_term)
+bool Term::Xlate_Term::T_bTerm_IsTableColOrdinal(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -222,7 +222,7 @@ bool Term::Xlate_Term::bTerm_IsTableColOrdinal(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 /* evaluate relational op                                                     */
 /*----------------------------------------------------------------------------*/
-eRO Term::Xlate_Term::eTerm_RelOp(Card_Term* p_term)
+eRO Term::Xlate_Term::T_eTerm_RelOp(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -242,11 +242,11 @@ eRO Term::Xlate_Term::eTerm_RelOp(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 /* get stream column number n  (i.e. $n)                                      */
 /*----------------------------------------------------------------------------*/
-i8 Term::Xlate_Term::iTerm_StreamColNo(Card_Term* p_term)
+i8 Term::Xlate_Term::T_iTerm_StreamColNo(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  RASSERT(bTerm_IsStreamColOrdinal(p_term));
+  RASSERT(T_bTerm_IsStreamColOrdinal(p_term));
 
   i8 i_Col = StrLib::iGleanInt(p_term->szValue()->azChar());
 
@@ -256,11 +256,11 @@ i8 Term::Xlate_Term::iTerm_StreamColNo(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 /* get table column number n (i.e. $$c.n)                                     */
 /*----------------------------------------------------------------------------*/
-i8 Term::Xlate_Term::iTerm_TableColNo(Card_Term* p_term)
+i8 Term::Xlate_Term::T_iTerm_TableColNo(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  RASSERT(bTerm_IsTableColOrdinal(p_term));
+  RASSERT(T_bTerm_IsTableColOrdinal(p_term));
 
   i8 i_Col = StrLib::iGleanInt(p_term->szValue()->azChar());
 
@@ -270,11 +270,11 @@ i8 Term::Xlate_Term::iTerm_TableColNo(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 /* get table synonym c (i.e. $$c.n)                                           */
 /*----------------------------------------------------------------------------*/
-char Term::Xlate_Term::cTerm_TableSyn(Card_Term* p_term)
+char Term::Xlate_Term::T_cTerm_TableSyn(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  RASSERT(bTerm_IsTableColOrdinal(p_term));
+  RASSERT(T_bTerm_IsTableColOrdinal(p_term));
 
   Stz* szTerm = p_term->sz();
 
@@ -286,7 +286,7 @@ char Term::Xlate_Term::cTerm_TableSyn(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 /* evaluate term                                                              */
 /*----------------------------------------------------------------------------*/
-eTE Term::Xlate_Term::eTerm_TermEval(Card_Term* p_term)
+eTE Term::Xlate_Term::T_eTerm_TermEval(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -328,7 +328,7 @@ PRED::Xlate_PRED::Xlate_PRED(eCN eClassNo, Bench* pBench)
 /*----------------------------------------------------------------------------*/
 /* concat terms                                                               */
 /*----------------------------------------------------------------------------*/
-void PRED::Xlate_PRED::vPRED_ConcatTerms(Card_PRED* p_PRED, Stz* szTerms, i8 i_From, i8 i_Till)
+void PRED::Xlate_PRED::T_vPRED_ConcatTerms(Card_PRED* p_PRED, Stz* szTerms, i8 i_From, i8 i_Till)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -348,19 +348,19 @@ void PRED::Xlate_PRED::vPRED_ConcatTerms(Card_PRED* p_PRED, Stz* szTerms, i8 i_F
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void PRED::Xlate_PRED::vPRED_CullByKids(Card_PRED* p_PRED)
+void PRED::Xlate_PRED::T_vPRED_CullByKids(Card_PRED* p_PRED)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
   i8 nChildCards = p_PRED->nItems();
   for (i8 i_ChildCard = 0; i_ChildCard < nChildCards; i_ChildCard++) {
     Card* pCard_Child = p_PRED->pGet(i_ChildCard);
-    if (!bPRED_IsPred(pCard_Child))
+    if (!T_bPRED_IsPred(pCard_Child))
       continue;
 
     Card_PRED* pCard_ChildPRED = (Card_PRED*)pCard_Child;
 
-    vPRED_CullByKids(pCard_ChildPRED);
+    T_vPRED_CullByKids(pCard_ChildPRED);
 
     if (0 == pCard_ChildPRED->nItems()) {
 
@@ -388,10 +388,10 @@ void PRED::Xlate_PRED::vPRED_CullByKids(Card_PRED* p_PRED)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find a comparePred which is the eTerm_Bound of given index                 */
+/* find a comparePred which is the T_eTerm_Bound of given index                 */
 /*----------------------------------------------------------------------------*/
-Card_CmpPred* PRED::Xlate_PRED::pPRED_FindBound(Card_PRED* p_PRED, Index* pIndex,
-                                                ePB eBound)
+Card_CmpPred* PRED::Xlate_PRED::T_pPRED_FindBound(Card_PRED* p_PRED, Index* pIndex,
+                                                  ePB eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -400,16 +400,16 @@ Card_CmpPred* PRED::Xlate_PRED::pPRED_FindBound(Card_PRED* p_PRED, Index* pIndex
   switch (eCard) {
 
     case CK_ORPRED:
-      return pOrPred_FindBound(_pCard_OrPred(p_PRED), pIndex, eBound);
+      return T_pOrPred_FindBound(_pCard_OrPred(p_PRED), pIndex, eBound);
 
     case CK_ANDPRED:
-      return pAndPred_FindBound(_pCard_AndPred(p_PRED), pIndex, eBound);
+      return T_pAndPred_FindBound(_pCard_AndPred(p_PRED), pIndex, eBound);
 
     case CK_CMPPRED:
-      return pCmpPred_FindBound(_pCard_CmpPred(p_PRED), pIndex, eBound);
+      return T_pCmpPred_FindBound(_pCard_CmpPred(p_PRED), pIndex, eBound);
 
     default:
-      vTrace("pPRED_FindBound: unexpected eCard %lld %s\n"_Stz
+      vTrace("T_pPRED_FindBound: unexpected eCard %lld %s\n"_Stz
           ,(i8)eCard
           ,aCK[eCard]);
       RASSERT(0);
@@ -422,7 +422,7 @@ Card_CmpPred* PRED::Xlate_PRED::pPRED_FindBound(Card_PRED* p_PRED, Index* pIndex
 /*----------------------------------------------------------------------------*/
 /* does predicate have some bound wrt given index?                            */
 /*----------------------------------------------------------------------------*/
-bool PRED::Xlate_PRED::bPRED_HasBounds(Card_PRED* p_PRED, Index* pIndex)
+bool PRED::Xlate_PRED::T_bPRED_HasBounds(Card_PRED* p_PRED, Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -431,16 +431,16 @@ bool PRED::Xlate_PRED::bPRED_HasBounds(Card_PRED* p_PRED, Index* pIndex)
   switch (eCard) {
 
     case CK_ORPRED:
-      return bOrPred_HasBounds(_pCard_OrPred(p_PRED),pIndex);
+      return T_bOrPred_HasBounds(_pCard_OrPred(p_PRED), pIndex);
 
     case CK_ANDPRED:
-      return bAndPred_HasBounds(_pCard_AndPred(p_PRED),pIndex);
+      return T_bAndPred_HasBounds(_pCard_AndPred(p_PRED), pIndex);
 
     case CK_CMPPRED:
-      return bCmpPred_HasBounds(_pCard_CmpPred(p_PRED),pIndex);
+      return T_bCmpPred_HasBounds(_pCard_CmpPred(p_PRED), pIndex);
 
     default:
-      vTrace("bPRED_HasBounds: unexpected eCard %lld %s\n"_Stz
+      vTrace("T_bPRED_HasBounds: unexpected eCard %lld %s\n"_Stz
           ,(i8)eCard
           ,aCK[eCard]);
       RASSERT(0);
@@ -453,7 +453,7 @@ bool PRED::Xlate_PRED::bPRED_HasBounds(Card_PRED* p_PRED, Index* pIndex)
 /*----------------------------------------------------------------------------*/
 /* is this card the given kind?                                               */
 /*----------------------------------------------------------------------------*/
-bool PRED::Xlate_PRED::bPRED_IsPred(Card* pArgCard)
+bool PRED::Xlate_PRED::T_bPRED_IsPred(Card* pArgCard)
 {
   _static_;
 
@@ -471,18 +471,18 @@ bool PRED::Xlate_PRED::bPRED_IsPred(Card* pArgCard)
 
 
 /*----------------------------------------------------------------------------*/
-/* find a comparePred which is the eTerm_Bound of given index                 */
+/* find a comparePred which is the T_eTerm_Bound of given index                 */
 /*----------------------------------------------------------------------------*/
-Card_CmpPred* PRED::Xlate_PRED::pAndPred_FindBound(Card_AndPred* p_andPred, Index* pIndex, ePB eBound)
+Card_CmpPred* PRED::Xlate_PRED::T_pAndPred_FindBound(Card_AndPred* p_andPred, Index* pIndex, ePB eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
   Card_PRED* pSubPred0 = (Card_PRED*)p_andPred->pGet(0);
-  if (Card_CmpPred* pFound = pPRED_FindBound(pSubPred0, pIndex, eBound))
+  if (Card_CmpPred* pFound = T_pPRED_FindBound(pSubPred0, pIndex, eBound))
     return pFound;
 
   Card_PRED* pSubPred1 = (Card_PRED*)p_andPred->pGet(1);
-  if (Card_CmpPred* pFound = pPRED_FindBound(pSubPred1, pIndex, eBound))
+  if (Card_CmpPred* pFound = T_pPRED_FindBound(pSubPred1, pIndex, eBound))
     return pFound;
 
   return nullptr;
@@ -491,16 +491,16 @@ Card_CmpPred* PRED::Xlate_PRED::pAndPred_FindBound(Card_AndPred* p_andPred, Inde
 /*----------------------------------------------------------------------------*/
 /* does this andPred have some bound on index?                                */
 /*----------------------------------------------------------------------------*/
-bool PRED::Xlate_PRED::bAndPred_HasBounds(Card_AndPred* p_andPred, Index* pIndex)
+bool PRED::Xlate_PRED::T_bAndPred_HasBounds(Card_AndPred* p_andPred, Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
   Card_PRED* pSubPred0 = (Card_PRED*)p_andPred->pGet(0);
-  if (bPRED_HasBounds(pSubPred0, pIndex))
+  if (T_bPRED_HasBounds(pSubPred0, pIndex))
     return true;
 
   Card_PRED* pSubPred1 = (Card_PRED*)p_andPred->pGet(1);
-  if (bPRED_HasBounds(pSubPred1, pIndex))
+  if (T_bPRED_HasBounds(pSubPred1, pIndex))
     return true;
 
   return false;
@@ -508,18 +508,18 @@ bool PRED::Xlate_PRED::bAndPred_HasBounds(Card_AndPred* p_andPred, Index* pIndex
 
 
 /*----------------------------------------------------------------------------*/
-/* find a comparePred which is the eTerm_Bound of given index                 */
+/* find a comparePred which is the T_eTerm_Bound of given index                 */
 /*----------------------------------------------------------------------------*/
-Card_CmpPred* PRED::Xlate_PRED::pOrPred_FindBound(Card_OrPred* p_orPred, Index* pIndex, ePB eBound)
+Card_CmpPred* PRED::Xlate_PRED::T_pOrPred_FindBound(Card_OrPred* p_orPred, Index* pIndex, ePB eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
   Card_PRED* pSubPred0 = (Card_PRED*)p_orPred->pGet(0);
-  if (Card_CmpPred* pFound = pPRED_FindBound(pSubPred0, pIndex, eBound))
+  if (Card_CmpPred* pFound = T_pPRED_FindBound(pSubPred0, pIndex, eBound))
     return pFound;
 
   Card_PRED* pSubPred1 = (Card_PRED*)p_orPred->pGet(1);
-  if (Card_CmpPred* pFound = pPRED_FindBound(pSubPred1, pIndex, eBound))
+  if (Card_CmpPred* pFound = T_pPRED_FindBound(pSubPred1, pIndex, eBound))
     return pFound;
 
   return nullptr;
@@ -528,16 +528,16 @@ Card_CmpPred* PRED::Xlate_PRED::pOrPred_FindBound(Card_OrPred* p_orPred, Index* 
 /*----------------------------------------------------------------------------*/
 /* does orPred have some bound on given index?                                */
 /*----------------------------------------------------------------------------*/
-bool PRED::Xlate_PRED::bOrPred_HasBounds(Card_OrPred* p_orPred, Index* pIndex)
+bool PRED::Xlate_PRED::T_bOrPred_HasBounds(Card_OrPred* p_orPred, Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
   Card_PRED* pSubPred0 = (Card_PRED*)p_orPred->pGet(0);
-  if (bPRED_HasBounds(pSubPred0,pIndex))
+  if (T_bPRED_HasBounds(pSubPred0, pIndex))
     return true;
 
   Card_PRED* pSubPred1 = (Card_PRED*)p_orPred->pGet(1);
-  if (bPRED_HasBounds(pSubPred1,pIndex))
+  if (T_bPRED_HasBounds(pSubPred1, pIndex))
     return true;
 
   return false;
@@ -547,7 +547,7 @@ bool PRED::Xlate_PRED::bOrPred_HasBounds(Card_OrPred* p_orPred, Index* pIndex)
 /*----------------------------------------------------------------------------*/
 /* is this predCmp co-partitionable with given arg?                           */
 /*----------------------------------------------------------------------------*/
-bool PRED::Xlate_PRED::bCmpPred_CoPtnWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg)
+bool PRED::Xlate_PRED::T_bCmpPred_CoPtnWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -592,7 +592,7 @@ bool PRED::Xlate_PRED::bCmpPred_CoPtnWith(Card_CmpPred* p_cmpPred, Card_CmpPred*
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool PRED::Xlate_PRED::bCmpPred_IsEq(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg)
+bool PRED::Xlate_PRED::T_bCmpPred_IsEq(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -616,7 +616,7 @@ bool PRED::Xlate_PRED::bCmpPred_IsEq(Card_CmpPred* p_cmpPred, Card_CmpPred* p_Pr
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool PRED::Xlate_PRED::bCmpPred_OverlapsWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg)
+bool PRED::Xlate_PRED::T_bCmpPred_OverlapsWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -624,14 +624,14 @@ bool PRED::Xlate_PRED::bCmpPred_OverlapsWith(Card_CmpPred* p_cmpPred, Card_CmpPr
   //p_PredCmp_arg->vDump();
 
   Card_ColumnRef* p_columnRef_this_0 = _pCard_ColumnRef(p_cmpPred->pGetChild(0));
-  char cTableSyn_this_0 = cColumnRef_TableSyn(p_columnRef_this_0);
+  char cTableSyn_this_0 = T_cColumnRef_TableSyn(p_columnRef_this_0);
   Card_ColumnRef* p_columnRef_this_1 = _pCard_ColumnRef(p_cmpPred->pGetChild(1));
-  char cTableSyn_this_1 = cColumnRef_TableSyn(p_columnRef_this_1);
+  char cTableSyn_this_1 = T_cColumnRef_TableSyn(p_columnRef_this_1);
 
   Card_ColumnRef* p_columnRef_arg_0 = _pCard_ColumnRef(p_PredCmp_arg->pGetChild(0));
-  char cTableSyn_arg_0 = cColumnRef_TableSyn(p_columnRef_arg_0);
+  char cTableSyn_arg_0 = T_cColumnRef_TableSyn(p_columnRef_arg_0);
   Card_ColumnRef* p_columnRef_arg_1 = _pCard_ColumnRef(p_PredCmp_arg->pGetChild(1));
-  char cTableSyn_arg_1 = cColumnRef_TableSyn(p_columnRef_arg_1);
+  char cTableSyn_arg_1 = T_cColumnRef_TableSyn(p_columnRef_arg_1);
 
   if (   cTableSyn_this_0 == cTableSyn_arg_0
          || cTableSyn_this_0 == cTableSyn_arg_1
@@ -646,7 +646,7 @@ bool PRED::Xlate_PRED::bCmpPred_OverlapsWith(Card_CmpPred* p_cmpPred, Card_CmpPr
 /*----------------------------------------------------------------------------*/
 /* mark the bounds of this <predCmp>                                          */
 /*----------------------------------------------------------------------------*/
-void PRED::Xlate_PRED::vCmpPred_MarkBound(Card_CmpPred* p_cmpPred)
+void PRED::Xlate_PRED::T_vCmpPred_MarkBound(Card_CmpPred* p_cmpPred)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -666,14 +666,14 @@ void PRED::Xlate_PRED::vCmpPred_MarkBound(Card_CmpPred* p_cmpPred)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find a comparePred which is the eTerm_Bound of given index                      */
+/* find a comparePred which is the T_eTerm_Bound of given index                      */
 /*----------------------------------------------------------------------------*/
-Card_CmpPred* PRED::Xlate_PRED::pCmpPred_FindBound(Card_CmpPred* p_cmpPred, Index* pIndex, ePB eBound)
+Card_CmpPred* PRED::Xlate_PRED::T_pCmpPred_FindBound(Card_CmpPred* p_cmpPred, Index* pIndex, ePB eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
   Card_Term* pTerm2 = _pCard_Term(p_cmpPred->pGet(2));
-  if (eBound != eTerm_Bound(pTerm2))
+  if (eBound != T_eTerm_Bound(pTerm2))
     return nullptr;
 
   Card_Term* pTerm0 = _pCard_Term(p_cmpPred->pGet(0));
@@ -688,14 +688,14 @@ Card_CmpPred* PRED::Xlate_PRED::pCmpPred_FindBound(Card_CmpPred* p_cmpPred, Inde
 /*----------------------------------------------------------------------------*/
 /* is this comparePred a bound on given index?                                */
 /*----------------------------------------------------------------------------*/
-bool PRED::Xlate_PRED::bCmpPred_HasBounds(Card_CmpPred* p_cmpPred, Index* pIndex)
+bool PRED::Xlate_PRED::T_bCmpPred_HasBounds(Card_CmpPred* p_cmpPred, Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
   //Card_Term* pTerm1 = _pCard_Term(pCard_PredCmp->pGet(1));
 
   Card_Term* pTerm2 = _pCard_Term(p_cmpPred->pGet(2));
-  if (PB_NONE == eTerm_Bound(pTerm2))
+  if (PB_NONE == T_eTerm_Bound(pTerm2))
     return false;
 
   Card_Term* pTerm0 = _pCard_Term(p_cmpPred->pGet(0));
@@ -710,14 +710,14 @@ bool PRED::Xlate_PRED::bCmpPred_HasBounds(Card_CmpPred* p_cmpPred, Index* pIndex
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool PRED::Xlate_PRED::bCmpPred_UsesTable(Card_CmpPred* p_cmpPred, char cTableSyn)
+bool PRED::Xlate_PRED::T_bCmpPred_UsesTable(Card_CmpPred* p_cmpPred, char cTableSyn)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
   Card_ColumnRef* p_columnRef_this_0 = _pCard_ColumnRef(p_cmpPred->pGetChild(0));
-  char cTableSyn_this_0 = cColumnRef_TableSyn(p_columnRef_this_0);
+  char cTableSyn_this_0 = T_cColumnRef_TableSyn(p_columnRef_this_0);
   Card_ColumnRef* p_columnRef_this_1 = _pCard_ColumnRef(p_cmpPred->pGetChild(1));
-  char cTableSyn_this_1 = cColumnRef_TableSyn(p_columnRef_this_1);
+  char cTableSyn_this_1 = T_cColumnRef_TableSyn(p_columnRef_this_1);
 
   if (cTableSyn_this_0 == cTableSyn || cTableSyn_this_1 == cTableSyn)
     return true;
@@ -824,7 +824,7 @@ void Xlator::X_calc_To_calcBool(void)
   while (M.p_rpnCalc->nChildCards()) {
     M.p_term = _pCard_Term(M.p_rpnCalc->pPop());
 
-    eTE eTopTerm = eTerm_TermEval(M.p_term);
+    eTE eTopTerm = T_eTerm_TermEval(M.p_term);
     switch (eTopTerm) {
 
       case TE_AND:
@@ -927,8 +927,8 @@ bool Xlator::bPredCmpIsCoPtn(Card_TableList* p_tableList, Card_CmpPred* p_predCm
       _pCard_ColumnRef(p_predCmp->pGetChild(1));
   Stz* szPredColumnRef_1 = p_columnRef_1->sz();
 
-  char cTableSyn_0 = cColumnRef_TableSyn(p_columnRef_0);
-  char cTableSyn_1 = cColumnRef_TableSyn(p_columnRef_1);
+  char cTableSyn_0 = T_cColumnRef_TableSyn(p_columnRef_0);
+  char cTableSyn_1 = T_cColumnRef_TableSyn(p_columnRef_1);
 
   if (StrLib::bIsUpperCase(cTableSyn_0) || StrLib::bIsUpperCase(cTableSyn_1))
     return true;
@@ -1072,7 +1072,7 @@ bool Xlator::bCoPtnJoin_CoPtnWith(Card_CoPtnJoin* p_coPtnJoin, Card_CoPtnPred* p
   Card_CmpPred* p_predCmp_this = _pCard_CmpPred(this);
   Card_CmpPred* p_predCmp_arg  = _pCard_CmpPred(p_CoPtnPred);
 
-  if (bCmpPred_CoPtnWith(p_predCmp_this, p_predCmp_arg))
+  if (T_bCmpPred_CoPtnWith(p_predCmp_this, p_predCmp_arg))
     return true;
 
   return false;
@@ -1112,7 +1112,7 @@ bool Xlator::bCoPtnJoinList_HasEqPredCmp(Card_CoPtnJoinList* p_coPtnJoinList, Ca
       Card_CmpPred *p_predCmp = _pCard_CmpPred(p_coPtnJoin->pGetChild(i_Child_predCmp));
 
 
-      if (bCmpPred_IsEq(p_predCmp, p_predCmp))
+      if (T_bCmpPred_IsEq(p_predCmp, p_predCmp))
         return true;
     }
   }
@@ -1257,7 +1257,7 @@ void Xlator::vJoinOrderSeq_ExtractJoinOrder(Card_JoinOrderSeq* p_joinOrderSeq,
 
       Card_ColumnRef* p_columnRef = _pCard_ColumnRef(pChild);
       s32 sTableSyn;
-      vColumnRef_TableSyn_x(p_columnRef,sTableSyn);
+      T_vColumnRef_TableSyn_x(p_columnRef, sTableSyn);
 
       if (p_joinOrderSeq->bHasChildWithValue(sTableSyn))
         continue;
@@ -1288,7 +1288,7 @@ void Xlator::vJoinPredList_Extract(Card_JoinPredList* p_joinPredList, Card_BoolC
       return true;
     Card_Term* p_term_1 = _pCard_Term(p_predCmp->pGetChild(1));
     Card_ColumnRef* p_columnRef_1= p_term_1->pSub_columnRef();
-    if (! bColumnRef_IsColumnRef(p_columnRef_1))
+    if (!T_bColumnRef_IsColumnRef(p_columnRef_1))
       return true;
 
     Card_CmpPred* p_predCmp_new = new Card_CmpPred(p_predCmp->sz());
@@ -1367,7 +1367,7 @@ bool Xlator::bPtndJoin_MayFollowAfter(Card_PtndJoin* p_ptndJoin, Card_SubSet* pP
         Card_CmpPred *p_predCmp_this =
             _pCard_CmpPred(p_ptndJoin->pGetChild(i_PredCmp_this));
 
-        if (bCmpPred_OverlapsWith(p_predCmp_this,p_predCmp_sofar))
+        if (T_bCmpPred_OverlapsWith(p_predCmp_this, p_predCmp_sofar))
           return true;
       }
 
@@ -1399,7 +1399,7 @@ void Xlator::vPtndJoin_JoinEst(Card_PtndJoin* p_ptndJoin, Card_TableList* p_tabl
       Card_CmpPred *p_predCmp =
           _pCard_CmpPred(p_ptndJoin->pGetChild(i_PredCmp));
 
-      if (bCmpPred_UsesTable(p_predCmp,p_table->cValue())) {
+      if (T_bCmpPred_UsesTable(p_predCmp, p_table->cValue())) {
         nJoinedBuff += p_table->pSub_size()->szValue()->iToI8();
         p_table->Y_vSet(P_TableUsed);
       }

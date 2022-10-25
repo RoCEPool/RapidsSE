@@ -126,6 +126,11 @@ namespace STORE
     bool E_bSubsequentToMain(bool bUpdateMember = false);
     void E_vSubsequentToMain(bool bUpdateMember = false);
 
+    bool F_bPlumbForSubMember(eCK eMember, eCK eSubCard, bool bUpdateMember= true);
+    bool F_bPlumbForSubMember(Card* pMember, eCK eSubCard, bool bUpdateMember= true);
+    bool F_bPlumbForSubValue(eCK eMember, eCK eSub, Stz* szValue, bool bUpdateMember= true);
+    bool F_bPlumbForSubValue(Card* pMember, eCK eSub, Stz* szValue, bool bUpdateMember= true);
+
     Card* G_pGetMember(eCK eMember);
 
     bool H_bHasPriorToMain(bool bUpdateMember = false);
@@ -152,10 +157,6 @@ namespace STORE
     bool R_bResolveCard(eCK eCard, Stz* szWithValue, i8 i_Before);
     bool R_bResolveCard(eCK eCard, Stz* szWithValue, Card* pBefore);
 
-    bool P_bPlumbForSubMember(eCK eMember, eCK eSubCard, bool bUpdateMember= true);
-    bool P_bPlumbForSubMember(Card* pMember, eCK eSubCard, bool bUpdateMember= true);
-    bool F_bPlumbForSubValue(eCK eMember, eCK eSub, Stz* szValue, bool bUpdateMember= true);
-    bool F_bPlumbForSubValue(Card* pMember, eCK eSub, Stz* szValue, bool bUpdateMember= true);
 
     void U_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm);
 
