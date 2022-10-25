@@ -555,7 +555,7 @@ void Transforms::vP50_T40_Resolve_Parameter_Terms(bool bPrint, bool bTrace)
 
     CardIter xCI(M.p_rpnCalc);
     while ((M.p_term = _pCard_Term(xCI.pEachChild()))) {
-      if (!bTerm_IsParamOrdinal(M.p_term))
+      if (!Term::Xlate_Term::bTerm_IsParamOrdinal(M.p_term))
         continue;
 
       if (! Y_bFindPpy(CK_PARAMLIST,P_ParamOrd,CK_PARAM))

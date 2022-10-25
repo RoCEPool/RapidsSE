@@ -4,6 +4,727 @@
 
 #include "Xlator.hpp"
 
+using namespace STORE::PRED;
+using namespace STORE::Term;
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Term::Xlate_Term::Xlate_Term(eCN eClassNo, Bench* pBench)
+    : Accessor(eClassNo, pBench)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  _postcondition_(_ADDRESS_,_MAGIC_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* is atom a column ordinal?                                                  */
+/*----------------------------------------------------------------------------*/
+bool Term::Xlate_Term::bColumnRef_IsColumnRef(Card_ColumnRef* p_columnRef)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  Stz* szColumnRef = p_columnRef->sz();
+
+  char cFirst  = szColumnRef->azChar()[0];
+  char cSecond = szColumnRef->azChar()[1];
+  char cThird  = szColumnRef->azChar()[2];
+  char cFourth = szColumnRef->azChar()[3];
+
+  if ('$' == cFirst && '$' == cSecond && '.' == cFourth)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get column ordinal of column ref                                           */
+/*----------------------------------------------------------------------------*/
+i8 Term::Xlate_Term::iColumnRef_ColumnOrd(Card_ColumnRef* p_columnRef)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  Stz* szColumnRef = p_columnRef->sz();
+
+  char* azColumnOrd = (szColumnRef->azChar() + 3);
+
+  i8 iColumnOrd = StrLib::iGleanInt(azColumnOrd);
+
+  return iColumnOrd;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get table syn of column ref                                                */
+/*----------------------------------------------------------------------------*/
+char Term::Xlate_Term::cColumnRef_TableSyn(Card_ColumnRef* p_columnRef)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  Stz* szColumnRef = p_columnRef->sz();
+
+  char cFirst  = szColumnRef->azChar()[0]; // $
+  char cSecond = szColumnRef->azChar()[1]; // $
+  char cThird  = szColumnRef->azChar()[2]; // c
+
+  return cThird;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+char Term::Xlate_Term::cColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  Stz* szColumnRef = p_columnRef->sz();
+
+  char cFirst  = szColumnRef->azChar()[0]; // $
+  char cSecond = szColumnRef->azChar()[1]; // $
+  char cThird  = szColumnRef->azChar()[2]; // c
+
+  return cThird;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Term::Xlate_Term::vColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef, String* psTableSyn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  psTableSyn->vSprint("%c"_Stz, cColumnRef_TableSyn_x(p_columnRef));
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* evaluate bound                                                             */
+/*----------------------------------------------------------------------------*/
+ePB Term::Xlate_Term::Xlate_Term::eTerm_Bound(Card_Term* p_term)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  eRO eRelOp = this->eTerm_RelOp(p_term);
+
+  switch (eRelOp) {
+    case RO_LESS_THAN:     return PB_UBOUND;
+    case RO_LESS_EQUAL:    return PB_UBOUND;
+    case RO_EQUAL_TO:      return PB_EBOUND;
+    case RO_GREATER_EQUAL: return PB_LBOUND;
+    case RO_GREATER_THAN:  return PB_LBOUND;
+
+    default:
+      vTrace("%s(%lld): unexpected eTerm_RelOp %lld %s\n"_Stz
+          ,__func__
+          ,(i8)__LINE__
+          ,(i8)eRelOp
+          ,aRO[eRelOp]);
+      RASSERT(0);
+      break;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* get ordinal index value  (i.e. $In)                                        */
+/*----------------------------------------------------------------------------*/
+i8 Term::Xlate_Term::iTerm_IndexColNo(Card_Term* p_term)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  RASSERT(bTerm_IsIndexColOrdinal(p_term));
+
+  i8 i_Ord = StrLib::iGleanInt(p_term->szValue()->azChar());
+
+  return i_Ord;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is term an index-column ordinal?  (i.e. $In)                               */
+/*----------------------------------------------------------------------------*/
+bool Term::Xlate_Term::bTerm_IsIndexColOrdinal(Card_Term* p_term)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  Stz* szTerm = p_term->szValue();
+
+  char acFirst  = szTerm->azChar()[0];
+  char acSecond = szTerm->azChar()[1];
+  char acThird  = szTerm->azChar()[2];
+
+  if ('$' == acFirst && ('I' == acSecond || 'i' == acSecond)
+      && StrLib::bIsDigit(acThird))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is term a parameter ordinal?  (i.e. $Pn)                                   */
+/*----------------------------------------------------------------------------*/
+bool Term::Xlate_Term::bTerm_IsParamOrdinal(Card_Term* p_term)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  Stz* szTerm = p_term->szValue();
+
+  char acFirst  = szTerm->azChar()[0];
+  char acSecond = szTerm->azChar()[1];
+  char acThird  = szTerm->azChar()[2];
+
+  if ('$' == acFirst && ('P' == acSecond || 'p' == acSecond)
+      && StrLib::bIsDigit(acThird))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is term a stream-column ordinal?  (i.e. $n)                                */
+/*----------------------------------------------------------------------------*/
+bool Term::Xlate_Term::bTerm_IsStreamColOrdinal(Card_Term* p_term)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  Stz* szTerm = p_term->szValue();
+
+  char acFirst  = szTerm->azChar()[0];
+  char acSecond = szTerm->azChar()[1];
+
+  if ('$' == acFirst && StrLib::bIsDigit(acSecond))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is term an table-column ordinal?  (i.e. $$c.n)                             */
+/*----------------------------------------------------------------------------*/
+bool Term::Xlate_Term::bTerm_IsTableColOrdinal(Card_Term* p_term)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  Stz* szTerm = p_term->szValue();
+
+  char acFirst  = szTerm->azChar()[0];
+  char acSecond = szTerm->azChar()[1];
+  char acThird  = szTerm->azChar()[2];
+  char acFourth = szTerm->azChar()[3];
+  char acFifth  = szTerm->azChar()[4];
+
+  if ('$' == acFirst && '$' == acSecond
+      && StrLib::bIsAlpha(acThird)
+      && '.' == acFourth
+      && StrLib::bIsDigit(acFifth))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* evaluate relational op                                                     */
+/*----------------------------------------------------------------------------*/
+eRO Term::Xlate_Term::eTerm_RelOp(Card_Term* p_term)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  Stz* szTerm = p_term->sz();
+
+  if (szTerm->bSame("<"_Stz))   return RO_LESS_THAN;
+  else if (szTerm->bSame("<="_Stz))  return RO_LESS_EQUAL;
+  else if (szTerm->bSame("="_Stz))   return RO_EQUAL_TO;
+  else if (szTerm->bSame("=="_Stz))  return RO_EQUAL_TO;
+  else if (szTerm->bSame("!="_Stz))  return RO_NOT_EQUAL;
+  else if (szTerm->bSame(">="_Stz))  return RO_GREATER_EQUAL;
+  else if (szTerm->bSame(">"_Stz))   return RO_GREATER_THAN;
+
+  else return RO_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get stream column number n  (i.e. $n)                                      */
+/*----------------------------------------------------------------------------*/
+i8 Term::Xlate_Term::iTerm_StreamColNo(Card_Term* p_term)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  RASSERT(bTerm_IsStreamColOrdinal(p_term));
+
+  i8 i_Col = StrLib::iGleanInt(p_term->szValue()->azChar());
+
+  return i_Col;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get table column number n (i.e. $$c.n)                                     */
+/*----------------------------------------------------------------------------*/
+i8 Term::Xlate_Term::iTerm_TableColNo(Card_Term* p_term)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  RASSERT(bTerm_IsTableColOrdinal(p_term));
+
+  i8 i_Col = StrLib::iGleanInt(p_term->szValue()->azChar());
+
+  return i_Col;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get table synonym c (i.e. $$c.n)                                           */
+/*----------------------------------------------------------------------------*/
+char Term::Xlate_Term::cTerm_TableSyn(Card_Term* p_term)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  RASSERT(bTerm_IsTableColOrdinal(p_term));
+
+  Stz* szTerm = p_term->sz();
+
+  char cSyn = szTerm->azChar()[2];
+
+  return cSyn;
+}
+
+/*----------------------------------------------------------------------------*/
+/* evaluate term                                                              */
+/*----------------------------------------------------------------------------*/
+eTE Term::Xlate_Term::eTerm_TermEval(Card_Term* p_term)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  Stz* szTerm = p_term->sz();
+
+  if (szTerm->bSame("and"_Stz))     return TE_AND;
+  else if (szTerm->bSame("exists"_Stz))  return TE_EXISTS;
+  else if (szTerm->bSame("or"_Stz))      return TE_OR;
+
+  else if (szTerm->bSame("<"_Stz))       return TE_COMPARE;
+  else if (szTerm->bSame("<="_Stz))      return TE_COMPARE;
+  else if (szTerm->bSame("="_Stz))       return TE_COMPARE;
+  else if (szTerm->bSame("=="_Stz))      return TE_COMPARE;
+  else if (szTerm->bSame("!="_Stz))      return TE_COMPARE;
+  else if (szTerm->bSame("<>"_Stz))      return TE_COMPARE;
+  else if (szTerm->bSame(">="_Stz))      return TE_COMPARE;
+  else if (szTerm->bSame(">"_Stz))       return TE_COMPARE;
+
+  else return TE_OTHER;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+PRED::Xlate_PRED::Xlate_PRED(eCN eClassNo, Bench* pBench)
+    : Xlate_Term(eClassNo, pBench)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  _postcondition_(_ADDRESS_,_MAGIC_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* concat terms                                                               */
+/*----------------------------------------------------------------------------*/
+void PRED::Xlate_PRED::vPRED_ConcatTerms(Card_PRED* p_PRED, Stz* szTerms, i8 i_From, i8 i_Till)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  if (C_UNKNOWN == i_Till)
+    i_Till = p_PRED->nChildCards() - 1;
+
+  for (i8 i_Child = i_From; i_Child <= i_Till; i_Child++) {
+    Card* pChildCard = p_PRED->pGetChild(i_Child);
+    if (CK_TERM != pChildCard->eCard())
+      continue;
+
+    szTerms->vCatSprint(" %s"_Stz, pChildCard->sz());
+  }
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void PRED::Xlate_PRED::vPRED_CullByKids(Card_PRED* p_PRED)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  i8 nChildCards = p_PRED->nItems();
+  for (i8 i_ChildCard = 0; i_ChildCard < nChildCards; i_ChildCard++) {
+    Card* pCard_Child = p_PRED->pGet(i_ChildCard);
+    if (!bPRED_IsPred(pCard_Child))
+      continue;
+
+    Card_PRED* pCard_ChildPRED = (Card_PRED*)pCard_Child;
+
+    vPRED_CullByKids(pCard_ChildPRED);
+
+    if (0 == pCard_ChildPRED->nItems()) {
+
+      p_PRED->vRemove(pCard_ChildPRED);
+      delete pCard_ChildPRED;
+
+      i_ChildCard--;
+      nChildCards--;
+
+      continue;
+    }
+
+    if (1 == pCard_ChildPRED->nItems()) {
+
+      Card_PRED* pCard_KidPRED = (Card_PRED*)pCard_Child->pPop();
+
+      p_PRED->vReplace(pCard_ChildPRED,pCard_KidPRED);
+      delete pCard_ChildPRED;
+
+      continue;
+    }
+
+
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* find a comparePred which is the eTerm_Bound of given index                 */
+/*----------------------------------------------------------------------------*/
+Card_CmpPred* PRED::Xlate_PRED::pPRED_FindBound(Card_PRED* p_PRED, Index* pIndex,
+                                                ePB eBound)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  eCK eCard = p_PRED->eCard();
+
+  switch (eCard) {
+
+    case CK_ORPRED:
+      return pOrPred_FindBound(_pCard_OrPred(p_PRED), pIndex, eBound);
+
+    case CK_ANDPRED:
+      return pAndPred_FindBound(_pCard_AndPred(p_PRED), pIndex, eBound);
+
+    case CK_CMPPRED:
+      return pCmpPred_FindBound(_pCard_CmpPred(p_PRED), pIndex, eBound);
+
+    default:
+      vTrace("pPRED_FindBound: unexpected eCard %lld %s\n"_Stz
+          ,(i8)eCard
+          ,aCK[eCard]);
+      RASSERT(0);
+      break;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does predicate have some bound wrt given index?                            */
+/*----------------------------------------------------------------------------*/
+bool PRED::Xlate_PRED::bPRED_HasBounds(Card_PRED* p_PRED, Index* pIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  eCK eCard = p_PRED->eCard();
+
+  switch (eCard) {
+
+    case CK_ORPRED:
+      return bOrPred_HasBounds(_pCard_OrPred(p_PRED),pIndex);
+
+    case CK_ANDPRED:
+      return bAndPred_HasBounds(_pCard_AndPred(p_PRED),pIndex);
+
+    case CK_CMPPRED:
+      return bCmpPred_HasBounds(_pCard_CmpPred(p_PRED),pIndex);
+
+    default:
+      vTrace("bPRED_HasBounds: unexpected eCard %lld %s\n"_Stz
+          ,(i8)eCard
+          ,aCK[eCard]);
+      RASSERT(0);
+      break;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this card the given kind?                                               */
+/*----------------------------------------------------------------------------*/
+bool PRED::Xlate_PRED::bPRED_IsPred(Card* pArgCard)
+{
+  _static_;
+
+  eCK eCard = pArgCard->eCard();
+
+  switch (eCard) {
+    case CK_EXPRBOOL:
+    case CK_ORPRED:
+    case CK_ANDPRED:
+      return true;
+
+    default: return false;
+  }
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* find a comparePred which is the eTerm_Bound of given index                 */
+/*----------------------------------------------------------------------------*/
+Card_CmpPred* PRED::Xlate_PRED::pAndPred_FindBound(Card_AndPred* p_andPred, Index* pIndex, ePB eBound)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  Card_PRED* pSubPred0 = (Card_PRED*)p_andPred->pGet(0);
+  if (Card_CmpPred* pFound = pPRED_FindBound(pSubPred0, pIndex, eBound))
+    return pFound;
+
+  Card_PRED* pSubPred1 = (Card_PRED*)p_andPred->pGet(1);
+  if (Card_CmpPred* pFound = pPRED_FindBound(pSubPred1, pIndex, eBound))
+    return pFound;
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does this andPred have some bound on index?                                */
+/*----------------------------------------------------------------------------*/
+bool PRED::Xlate_PRED::bAndPred_HasBounds(Card_AndPred* p_andPred, Index* pIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  Card_PRED* pSubPred0 = (Card_PRED*)p_andPred->pGet(0);
+  if (bPRED_HasBounds(pSubPred0, pIndex))
+    return true;
+
+  Card_PRED* pSubPred1 = (Card_PRED*)p_andPred->pGet(1);
+  if (bPRED_HasBounds(pSubPred1, pIndex))
+    return true;
+
+  return false;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* find a comparePred which is the eTerm_Bound of given index                 */
+/*----------------------------------------------------------------------------*/
+Card_CmpPred* PRED::Xlate_PRED::pOrPred_FindBound(Card_OrPred* p_orPred, Index* pIndex, ePB eBound)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  Card_PRED* pSubPred0 = (Card_PRED*)p_orPred->pGet(0);
+  if (Card_CmpPred* pFound = pPRED_FindBound(pSubPred0, pIndex, eBound))
+    return pFound;
+
+  Card_PRED* pSubPred1 = (Card_PRED*)p_orPred->pGet(1);
+  if (Card_CmpPred* pFound = pPRED_FindBound(pSubPred1, pIndex, eBound))
+    return pFound;
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does orPred have some bound on given index?                                */
+/*----------------------------------------------------------------------------*/
+bool PRED::Xlate_PRED::bOrPred_HasBounds(Card_OrPred* p_orPred, Index* pIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  Card_PRED* pSubPred0 = (Card_PRED*)p_orPred->pGet(0);
+  if (bPRED_HasBounds(pSubPred0,pIndex))
+    return true;
+
+  Card_PRED* pSubPred1 = (Card_PRED*)p_orPred->pGet(1);
+  if (bPRED_HasBounds(pSubPred1,pIndex))
+    return true;
+
+  return false;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* is this predCmp co-partitionable with given arg?                           */
+/*----------------------------------------------------------------------------*/
+bool PRED::Xlate_PRED::bCmpPred_CoPtnWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  Card_ColumnRef* p_columnRef_this_0 =
+      _pCard_ColumnRef(p_cmpPred->pGetChild(0));
+  Stz* szColumnRef_this_0 = p_columnRef_this_0->sz();
+  char cTableSyn_this_0 = szColumnRef_this_0->cTableSyn();
+
+  Card_ColumnRef* p_columnRef_this_1 =
+      _pCard_ColumnRef(p_cmpPred->pGetChild(1));
+  Stz* szColumnRef_this_1 = p_columnRef_this_1->sz();
+  char cTableSyn_this_1 = szColumnRef_this_1->cTableSyn();
+
+
+  Card_ColumnRef* p_columnRef_arg_0 =
+      _pCard_ColumnRef(p_PredCmp_arg->pGetChild(0));
+  Stz* szColumnRef_arg_0 = p_columnRef_arg_0->sz();
+  char cTableSyn_arg_0 = szColumnRef_arg_0->cTableSyn();
+
+  Card_ColumnRef* p_columnRef_arg_1 =
+      _pCard_ColumnRef(p_PredCmp_arg->pGetChild(1));
+  Stz* szColumnRef_arg_1 = p_columnRef_arg_1->sz();
+  char cTableSyn_arg_1 = szColumnRef_arg_1->cTableSyn();
+
+  bool bAreCoPtn = false;
+
+  if (   cTableSyn_arg_0 == cTableSyn_this_0
+         || cTableSyn_arg_0 == cTableSyn_this_1
+         || cTableSyn_arg_1 == cTableSyn_this_0
+         || cTableSyn_arg_1 == cTableSyn_this_1
+      )
+    bAreCoPtn = true;
+
+  vTrace("(%c,%c) - (%c,%c) are%s co-partitioned\n"_Stz,
+         cTableSyn_this_0,cTableSyn_this_1,
+         cTableSyn_arg_0,cTableSyn_arg_1,
+         bAreCoPtn ? "" : " NOT");
+
+  return bAreCoPtn;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool PRED::Xlate_PRED::bCmpPred_IsEq(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  Card_ColumnRef* p_columnRef_this_0 = _pCard_ColumnRef(p_cmpPred->pGetChild(0));
+  Stz* szColumnRef_this_0 = p_columnRef_this_0->sz();
+  Card_ColumnRef* p_columnRef_this_1 = _pCard_ColumnRef(p_cmpPred->pGetChild(1));
+  Stz* szColumnRef_this_1 = p_columnRef_this_1->sz();
+
+  Card_ColumnRef* p_columnRef_arg_0 = _pCard_ColumnRef(p_PredCmp_arg->pGetChild(0));
+  Stz* szColumnRef_arg_0 = p_columnRef_arg_0->sz();
+  Card_ColumnRef* p_columnRef_arg_1 = _pCard_ColumnRef(p_PredCmp_arg->pGetChild(1));
+  Stz* szColumnRef_arg_1 = p_columnRef_arg_1->sz();
+
+  if (szColumnRef_this_0->bSame(szColumnRef_arg_0) &&
+      szColumnRef_this_1->bSame(szColumnRef_arg_1))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool PRED::Xlate_PRED::bCmpPred_OverlapsWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  //this->vDump();
+  //p_PredCmp_arg->vDump();
+
+  Card_ColumnRef* p_columnRef_this_0 = _pCard_ColumnRef(p_cmpPred->pGetChild(0));
+  char cTableSyn_this_0 = cColumnRef_TableSyn(p_columnRef_this_0);
+  Card_ColumnRef* p_columnRef_this_1 = _pCard_ColumnRef(p_cmpPred->pGetChild(1));
+  char cTableSyn_this_1 = cColumnRef_TableSyn(p_columnRef_this_1);
+
+  Card_ColumnRef* p_columnRef_arg_0 = _pCard_ColumnRef(p_PredCmp_arg->pGetChild(0));
+  char cTableSyn_arg_0 = cColumnRef_TableSyn(p_columnRef_arg_0);
+  Card_ColumnRef* p_columnRef_arg_1 = _pCard_ColumnRef(p_PredCmp_arg->pGetChild(1));
+  char cTableSyn_arg_1 = cColumnRef_TableSyn(p_columnRef_arg_1);
+
+  if (   cTableSyn_this_0 == cTableSyn_arg_0
+         || cTableSyn_this_0 == cTableSyn_arg_1
+         || cTableSyn_this_1 == cTableSyn_arg_0
+         || cTableSyn_this_1 == cTableSyn_arg_1
+      )
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* mark the bounds of this <predCmp>                                          */
+/*----------------------------------------------------------------------------*/
+void PRED::Xlate_PRED::vCmpPred_MarkBound(Card_CmpPred* p_cmpPred)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  Stz* szCmp = p_cmpPred->sz();
+
+  char cBound = '?';
+
+  if (szCmp->bSame("<"_Stz))  cBound = 'U';
+  else if (szCmp->bSame("<="_Stz)) cBound = 'U';
+  else if (szCmp->bSame("="_Stz))  cBound = 'E';
+  else if (szCmp->bSame("=="_Stz)) cBound = 'E';
+  else if (szCmp->bSame("!="_Stz)) cBound = 'N';
+  else if (szCmp->bSame(">="_Stz)) cBound = 'L';
+  else if (szCmp->bSame(">"_Stz))  cBound = 'L';
+
+  p_cmpPred->vMark1(cBound);
+}
+
+/*----------------------------------------------------------------------------*/
+/* find a comparePred which is the eTerm_Bound of given index                      */
+/*----------------------------------------------------------------------------*/
+Card_CmpPred* PRED::Xlate_PRED::pCmpPred_FindBound(Card_CmpPred* p_cmpPred, Index* pIndex, ePB eBound)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  Card_Term* pTerm2 = _pCard_Term(p_cmpPred->pGet(2));
+  if (eBound != eTerm_Bound(pTerm2))
+    return nullptr;
+
+  Card_Term* pTerm0 = _pCard_Term(p_cmpPred->pGet(0));
+  Stz* szTerm0 = pTerm0->sz();
+  Column* pCol0 = pIndex->pGetColumn(0);
+  if (! pCol0->szColNm()->bSame(szTerm0))
+    return nullptr;
+
+  return _pCard_CmpPred(this);
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this comparePred a bound on given index?                                */
+/*----------------------------------------------------------------------------*/
+bool PRED::Xlate_PRED::bCmpPred_HasBounds(Card_CmpPred* p_cmpPred, Index* pIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  //Card_Term* pTerm1 = _pCard_Term(pCard_PredCmp->pGet(1));
+
+  Card_Term* pTerm2 = _pCard_Term(p_cmpPred->pGet(2));
+  if (PB_NONE == eTerm_Bound(pTerm2))
+    return false;
+
+  Card_Term* pTerm0 = _pCard_Term(p_cmpPred->pGet(0));
+  Stz* szTerm0 = pTerm0->sz();
+  Column* pCol0 = pIndex->pGetColumn(0);
+  if (! pCol0->szColNm()->bSame(szTerm0))
+    return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool PRED::Xlate_PRED::bCmpPred_UsesTable(Card_CmpPred* p_cmpPred, char cTableSyn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  Card_ColumnRef* p_columnRef_this_0 = _pCard_ColumnRef(p_cmpPred->pGetChild(0));
+  char cTableSyn_this_0 = cColumnRef_TableSyn(p_columnRef_this_0);
+  Card_ColumnRef* p_columnRef_this_1 = _pCard_ColumnRef(p_cmpPred->pGetChild(1));
+  char cTableSyn_this_1 = cColumnRef_TableSyn(p_columnRef_this_1);
+
+  if (cTableSyn_this_0 == cTableSyn || cTableSyn_this_1 == cTableSyn)
+    return true;
+
+  return false;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -13,7 +734,7 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Xlator::Xlator(eCN eClassNo, Bench* pBench)
-: Accessor(eClassNo, pBench)
+: PRED::Xlate_PRED(eClassNo, pBench)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -228,42 +949,6 @@ bool Xlator::bPredCmpIsCoPtn(Card_TableList* p_tableList, Card_CmpPred* p_predCm
 
 
 /*----------------------------------------------------------------------------*/
-/* find a comparePred which is the eTerm_Bound of given index                 */
-/*----------------------------------------------------------------------------*/
-Card_CmpPred* Xlator::pAndPred_FindBound(Card_AndPred* p_andPred, Index* pIndex, ePB eBound)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  Card_PRED* pSubPred0 = (Card_PRED*)p_andPred->pGet(0);
-  if (Card_CmpPred* pFound = pPRED_FindBound(pSubPred0, pIndex, eBound))
-    return pFound;
-
-  Card_PRED* pSubPred1 = (Card_PRED*)p_andPred->pGet(1);
-  if (Card_CmpPred* pFound = pPRED_FindBound(pSubPred1, pIndex, eBound))
-    return pFound;
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* does this andPred have some bound on index?                                */
-/*----------------------------------------------------------------------------*/
-bool Xlator::bAndPred_HasBounds(Card_AndPred* p_andPred, Index* pIndex)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  Card_PRED* pSubPred0 = (Card_PRED*)p_andPred->pGet(0);
-  if (bPRED_HasBounds(pSubPred0, pIndex))
-    return true;
-
-  Card_PRED* pSubPred1 = (Card_PRED*)p_andPred->pGet(1);
-  if (bPRED_HasBounds(pSubPred1, pIndex))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* remove given predicate                                                     */
 /*----------------------------------------------------------------------------*/
 bool Xlator::bBoolCalc_CullPred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred, char cWithMark)
@@ -375,264 +1060,6 @@ void Xlator::vCandIndex_Rank(Card_CandIndex* p_candIndex, i8 iRank)
   _precondition_(_ADDRESS_,_MAGIC_);
 
   p_candIndex->Y_vSet(P_Rank, iRank);
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this predCmp co-partitionable with given arg?                           */
-/*----------------------------------------------------------------------------*/
-bool Xlator::bCmpPred_CoPtnWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  Card_ColumnRef* p_columnRef_this_0 =
-      _pCard_ColumnRef(p_cmpPred->pGetChild(0));
-  Stz* szColumnRef_this_0 = p_columnRef_this_0->sz();
-  char cTableSyn_this_0 = szColumnRef_this_0->cTableSyn();
-
-  Card_ColumnRef* p_columnRef_this_1 =
-      _pCard_ColumnRef(p_cmpPred->pGetChild(1));
-  Stz* szColumnRef_this_1 = p_columnRef_this_1->sz();
-  char cTableSyn_this_1 = szColumnRef_this_1->cTableSyn();
-
-
-  Card_ColumnRef* p_columnRef_arg_0 =
-      _pCard_ColumnRef(p_PredCmp_arg->pGetChild(0));
-  Stz* szColumnRef_arg_0 = p_columnRef_arg_0->sz();
-  char cTableSyn_arg_0 = szColumnRef_arg_0->cTableSyn();
-
-  Card_ColumnRef* p_columnRef_arg_1 =
-      _pCard_ColumnRef(p_PredCmp_arg->pGetChild(1));
-  Stz* szColumnRef_arg_1 = p_columnRef_arg_1->sz();
-  char cTableSyn_arg_1 = szColumnRef_arg_1->cTableSyn();
-
-  bool bAreCoPtn = false;
-
-  if (   cTableSyn_arg_0 == cTableSyn_this_0
-         || cTableSyn_arg_0 == cTableSyn_this_1
-         || cTableSyn_arg_1 == cTableSyn_this_0
-         || cTableSyn_arg_1 == cTableSyn_this_1
-      )
-    bAreCoPtn = true;
-
-  vTrace("(%c,%c) - (%c,%c) are%s co-partitioned\n"_Stz,
-         cTableSyn_this_0,cTableSyn_this_1,
-         cTableSyn_arg_0,cTableSyn_arg_1,
-         bAreCoPtn ? "" : " NOT");
-
-  return bAreCoPtn;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Xlator::bCmpPred_IsEq(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  Card_ColumnRef* p_columnRef_this_0 = _pCard_ColumnRef(p_cmpPred->pGetChild(0));
-  Stz* szColumnRef_this_0 = p_columnRef_this_0->sz();
-  Card_ColumnRef* p_columnRef_this_1 = _pCard_ColumnRef(p_cmpPred->pGetChild(1));
-  Stz* szColumnRef_this_1 = p_columnRef_this_1->sz();
-
-  Card_ColumnRef* p_columnRef_arg_0 = _pCard_ColumnRef(p_PredCmp_arg->pGetChild(0));
-  Stz* szColumnRef_arg_0 = p_columnRef_arg_0->sz();
-  Card_ColumnRef* p_columnRef_arg_1 = _pCard_ColumnRef(p_PredCmp_arg->pGetChild(1));
-  Stz* szColumnRef_arg_1 = p_columnRef_arg_1->sz();
-
-  if (szColumnRef_this_0->bSame(szColumnRef_arg_0) &&
-      szColumnRef_this_1->bSame(szColumnRef_arg_1))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Xlator::bCmpPred_OverlapsWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  //this->vDump();
-  //p_PredCmp_arg->vDump();
-
-  Card_ColumnRef* p_columnRef_this_0 = _pCard_ColumnRef(p_cmpPred->pGetChild(0));
-  char cTableSyn_this_0 = cColumnRef_TableSyn(p_columnRef_this_0);
-  Card_ColumnRef* p_columnRef_this_1 = _pCard_ColumnRef(p_cmpPred->pGetChild(1));
-  char cTableSyn_this_1 = cColumnRef_TableSyn(p_columnRef_this_1);
-
-  Card_ColumnRef* p_columnRef_arg_0 = _pCard_ColumnRef(p_PredCmp_arg->pGetChild(0));
-  char cTableSyn_arg_0 = cColumnRef_TableSyn(p_columnRef_arg_0);
-  Card_ColumnRef* p_columnRef_arg_1 = _pCard_ColumnRef(p_PredCmp_arg->pGetChild(1));
-  char cTableSyn_arg_1 = cColumnRef_TableSyn(p_columnRef_arg_1);
-
-  if (   cTableSyn_this_0 == cTableSyn_arg_0
-         || cTableSyn_this_0 == cTableSyn_arg_1
-         || cTableSyn_this_1 == cTableSyn_arg_0
-         || cTableSyn_this_1 == cTableSyn_arg_1
-      )
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* mark the bounds of this <predCmp>                                          */
-/*----------------------------------------------------------------------------*/
-void Xlator::vCmpPred_MarkBound(Card_CmpPred* p_cmpPred)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  Stz* szCmp = p_cmpPred->sz();
-
-  char cBound = '?';
-
-  if (szCmp->bSame("<"_Stz))  cBound = 'U';
-  else if (szCmp->bSame("<="_Stz)) cBound = 'U';
-  else if (szCmp->bSame("="_Stz))  cBound = 'E';
-  else if (szCmp->bSame("=="_Stz)) cBound = 'E';
-  else if (szCmp->bSame("!="_Stz)) cBound = 'N';
-  else if (szCmp->bSame(">="_Stz)) cBound = 'L';
-  else if (szCmp->bSame(">"_Stz))  cBound = 'L';
-
-  p_cmpPred->vMark1(cBound);
-}
-
-/*----------------------------------------------------------------------------*/
-/* find a comparePred which is the eTerm_Bound of given index                      */
-/*----------------------------------------------------------------------------*/
-Card_CmpPred* Xlator::pCmpPred_FindBound(Card_CmpPred* p_cmpPred, Index* pIndex, ePB eBound)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  Card_Term* pTerm2 = _pCard_Term(p_cmpPred->pGet(2));
-  if (eBound != eTerm_Bound(pTerm2))
-    return nullptr;
-
-  Card_Term* pTerm0 = _pCard_Term(p_cmpPred->pGet(0));
-  Stz* szTerm0 = pTerm0->sz();
-  Column* pCol0 = pIndex->pGetColumn(0);
-  if (! pCol0->szColNm()->bSame(szTerm0))
-    return nullptr;
-
-  return _pCard_CmpPred(this);
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this comparePred a bound on given index?                                */
-/*----------------------------------------------------------------------------*/
-bool Xlator::bCmpPred_HasBounds(Card_CmpPred* p_cmpPred, Index* pIndex)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  //Card_Term* pTerm1 = _pCard_Term(pCard_PredCmp->pGet(1));
-
-  Card_Term* pTerm2 = _pCard_Term(p_cmpPred->pGet(2));
-  if (PB_NONE == eTerm_Bound(pTerm2))
-    return false;
-
-  Card_Term* pTerm0 = _pCard_Term(p_cmpPred->pGet(0));
-  Stz* szTerm0 = pTerm0->sz();
-  Column* pCol0 = pIndex->pGetColumn(0);
-  if (! pCol0->szColNm()->bSame(szTerm0))
-    return false;
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Xlator::bCmpPred_UsesTable(Card_CmpPred* p_cmpPred, char cTableSyn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  Card_ColumnRef* p_columnRef_this_0 = _pCard_ColumnRef(p_cmpPred->pGetChild(0));
-  char cTableSyn_this_0 = cColumnRef_TableSyn(p_columnRef_this_0);
-  Card_ColumnRef* p_columnRef_this_1 = _pCard_ColumnRef(p_cmpPred->pGetChild(1));
-  char cTableSyn_this_1 = cColumnRef_TableSyn(p_columnRef_this_1);
-
-  if (cTableSyn_this_0 == cTableSyn || cTableSyn_this_1 == cTableSyn)
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is atom a column ordinal?                                                  */
-/*----------------------------------------------------------------------------*/
-bool Xlator::bColumnRef_IsColumnRef(Card_ColumnRef* p_columnRef)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  Stz* szColumnRef = p_columnRef->sz();
-
-  char cFirst  = szColumnRef->azChar()[0];
-  char cSecond = szColumnRef->azChar()[1];
-  char cThird  = szColumnRef->azChar()[2];
-  char cFourth = szColumnRef->azChar()[3];
-
-  if ('$' == cFirst && '$' == cSecond && '.' == cFourth)
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get column ordinal of column ref                                           */
-/*----------------------------------------------------------------------------*/
-i8 Xlator::iColumnRef_ColumnOrd(Card_ColumnRef* p_columnRef)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  Stz* szColumnRef = p_columnRef->sz();
-
-  char* azColumnOrd = (szColumnRef->azChar() + 3);
-
-  i8 iColumnOrd = StrLib::iGleanInt(azColumnOrd);
-
-  return iColumnOrd;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get table syn of column ref                                                */
-/*----------------------------------------------------------------------------*/
-char Xlator::cColumnRef_TableSyn(Card_ColumnRef* p_columnRef)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  Stz* szColumnRef = p_columnRef->sz();
-
-  char cFirst  = szColumnRef->azChar()[0]; // $
-  char cSecond = szColumnRef->azChar()[1]; // $
-  char cThird  = szColumnRef->azChar()[2]; // c
-
-  return cThird;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-char Xlator::cColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  Stz* szColumnRef = p_columnRef->sz();
-
-  char cFirst  = szColumnRef->azChar()[0]; // $
-  char cSecond = szColumnRef->azChar()[1]; // $
-  char cThird  = szColumnRef->azChar()[2]; // c
-
-  return cThird;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xlator::vColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef, String* psTableSyn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  psTableSyn->vSprint("%c"_Stz, cColumnRef_TableSyn_x(p_columnRef));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -916,187 +1343,6 @@ void Xlator::vObyElist_Populate(Card_ObyElist* p_obyElist, Index* pIndex)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find a comparePred which is the eTerm_Bound of given index                      */
-/*----------------------------------------------------------------------------*/
-Card_CmpPred* Xlator::pOrPred_FindBound(Card_OrPred* p_orPred, Index* pIndex, ePB eBound)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  Card_PRED* pSubPred0 = (Card_PRED*)p_orPred->pGet(0);
-  if (Card_CmpPred* pFound = pPRED_FindBound(pSubPred0, pIndex, eBound))
-    return pFound;
-
-  Card_PRED* pSubPred1 = (Card_PRED*)p_orPred->pGet(1);
-  if (Card_CmpPred* pFound = pPRED_FindBound(pSubPred1, pIndex, eBound))
-    return pFound;
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* does orPred have some bound on given index?                                */
-/*----------------------------------------------------------------------------*/
-bool Xlator::bOrPred_HasBounds(Card_OrPred* p_orPred, Index* pIndex)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  Card_PRED* pSubPred0 = (Card_PRED*)p_orPred->pGet(0);
-  if (bPRED_HasBounds(pSubPred0,pIndex))
-    return true;
-
-  Card_PRED* pSubPred1 = (Card_PRED*)p_orPred->pGet(1);
-  if (bPRED_HasBounds(pSubPred1,pIndex))
-    return true;
-
-  return false;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* concat terms                                                               */
-/*----------------------------------------------------------------------------*/
-void Xlator::vPRED_ConcatTerms(Card_PRED* p_PRED, Stz* szTerms, i8 i_From, i8 i_Till)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  if (C_UNKNOWN == i_Till)
-    i_Till = p_PRED->nChildCards() - 1;
-
-  for (i8 i_Child = i_From; i_Child <= i_Till; i_Child++) {
-    Card* pChildCard = p_PRED->pGetChild(i_Child);
-    if (CK_TERM != pChildCard->eCard())
-      continue;
-
-    szTerms->vCatSprint(" %s"_Stz, pChildCard->sz());
-  }
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xlator::vPRED_CullByKids(Card_PRED* p_PRED)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  i8 nChildCards = p_PRED->nItems();
-  for (i8 i_ChildCard = 0; i_ChildCard < nChildCards; i_ChildCard++) {
-    Card* pCard_Child = p_PRED->pGet(i_ChildCard);
-    if (!bPRED_IsPred(pCard_Child))
-      continue;
-
-    Card_PRED* pCard_ChildPRED = (Card_PRED*)pCard_Child;
-
-    vPRED_CullByKids(pCard_ChildPRED);
-
-    if (0 == pCard_ChildPRED->nItems()) {
-
-      p_PRED->vRemove(pCard_ChildPRED);
-      delete pCard_ChildPRED;
-
-      i_ChildCard--;
-      nChildCards--;
-
-      continue;
-    }
-
-    if (1 == pCard_ChildPRED->nItems()) {
-
-      Card_PRED* pCard_KidPRED = (Card_PRED*)pCard_Child->pPop();
-
-      p_PRED->vReplace(pCard_ChildPRED,pCard_KidPRED);
-      delete pCard_ChildPRED;
-
-      continue;
-    }
-
-
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* find a comparePred which is the eTerm_Bound of given index                      */
-/*----------------------------------------------------------------------------*/
-Card_CmpPred* Xlator::pPRED_FindBound(Card_PRED* p_PRED, Index* pIndex,
-                                    ePB eBound)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  eCK eCard = p_PRED->eCard();
-
-  switch (eCard) {
-
-    case CK_ORPRED:
-      return pOrPred_FindBound(_pCard_OrPred(p_PRED), pIndex, eBound);
-
-    case CK_ANDPRED:
-      return pAndPred_FindBound(_pCard_AndPred(p_PRED), pIndex, eBound);
-
-    case CK_CMPPRED:
-      return pCmpPred_FindBound(_pCard_CmpPred(p_PRED), pIndex, eBound);
-
-    default:
-      vTrace("pPRED_FindBound: unexpected eCard %lld %s\n"_Stz
-          ,(i8)eCard
-          ,aCK[eCard]);
-      RASSERT(0);
-      break;
-  }
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* does predicate have some bound wrt given index?                            */
-/*----------------------------------------------------------------------------*/
-bool Xlator::bPRED_HasBounds(Card_PRED* p_PRED, Index* pIndex)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  eCK eCard = p_PRED->eCard();
-
-  switch (eCard) {
-
-    case CK_ORPRED:
-      return bOrPred_HasBounds(_pCard_OrPred(p_PRED),pIndex);
-
-    case CK_ANDPRED:
-      return bAndPred_HasBounds(_pCard_AndPred(p_PRED),pIndex);
-
-    case CK_CMPPRED:
-      return bCmpPred_HasBounds(_pCard_CmpPred(p_PRED),pIndex);
-
-    default:
-      vTrace("bPRED_HasBounds: unexpected eCard %lld %s\n"_Stz
-          ,(i8)eCard
-          ,aCK[eCard]);
-      RASSERT(0);
-      break;
-  }
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this card the given kind?                                               */
-/*----------------------------------------------------------------------------*/
-bool Xlator::bPRED_IsPred(Card* pArgCard)
-{
-  _static_;
-
-  eCK eCard = pArgCard->eCard();
-
-  switch (eCard) {
-    case CK_EXPRBOOL:
-    case CK_ORPRED:
-    case CK_ANDPRED:
-      return true;
-
-    default: return false;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 bool Xlator::bPtndJoin_MayFollowAfter(Card_PtndJoin* p_ptndJoin, Card_SubSet* pPriorPtnJoins_sofar)
@@ -1164,29 +1410,6 @@ void Xlator::vPtndJoin_JoinEst(Card_PtndJoin* p_ptndJoin, Card_TableList* p_tabl
   p_ptndJoin->Y_vSet(P_JoinedBuff, nJoinedBuff);
 }
 
-/*----------------------------------------------------------------------------*/
-/* get head term                                                              */
-/*----------------------------------------------------------------------------*/
-Card_Term* Xlator::pRpnTerms_HeadTerm(Card_RpnTerms* p_rpnTerms)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  Card_Term* pCard_Term = _pCard_Term(p_rpnTerms->pHead());
-
-  return pCard_Term;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop subcard                                                                */
-/*----------------------------------------------------------------------------*/
-Card_Term* Xlator::pRpnTerms_PopTerm(Card_RpnTerms* p_rpnTerms)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  Card_Term* pCard_Term = _pCard_Term(p_rpnTerms->pPop());
-
-  return pCard_Term;
-}
 
 /*----------------------------------------------------------------------------*/
 /* is given <pred> within this stream?                                        */
@@ -1217,218 +1440,6 @@ Card_StmCol* Xlator::pStmColList_Find_streamCol(Card_StmColList* p_stmColList,
   }
 
   return pCard_streamCol;
-}
-
-/*----------------------------------------------------------------------------*/
-/* evaluate bound                                                             */
-/*----------------------------------------------------------------------------*/
-ePB Xlator::eTerm_Bound(Card_Term* p_term)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  eRO eRelOp = this->eTerm_RelOp(p_term);
-
-  switch (eRelOp) {
-    case RO_LESS_THAN:     return PB_UBOUND;
-    case RO_LESS_EQUAL:    return PB_UBOUND;
-    case RO_EQUAL_TO:      return PB_EBOUND;
-    case RO_GREATER_EQUAL: return PB_LBOUND;
-    case RO_GREATER_THAN:  return PB_LBOUND;
-
-    default:
-      vTrace("%s(%lld): unexpected eTerm_RelOp %lld %s\n"_Stz
-          ,__func__
-          ,(i8)__LINE__
-          ,(i8)eRelOp
-          ,aRO[eRelOp]);
-      RASSERT(0);
-      break;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* get ordinal index value  (i.e. $In)                                        */
-/*----------------------------------------------------------------------------*/
-i8 Xlator::iTerm_IndexColNo(Card_Term* p_term)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  RASSERT(bTerm_IsIndexColOrdinal(p_term));
-
-  i8 i_Ord = StrLib::iGleanInt(p_term->szValue()->azChar());
-
-  return i_Ord;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is term an index-column ordinal?  (i.e. $In)                               */
-/*----------------------------------------------------------------------------*/
-bool Xlator::bTerm_IsIndexColOrdinal(Card_Term* p_term)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  Stz* szTerm = p_term->szValue();
-
-  char acFirst  = szTerm->azChar()[0];
-  char acSecond = szTerm->azChar()[1];
-  char acThird  = szTerm->azChar()[2];
-
-  if ('$' == acFirst && ('I' == acSecond || 'i' == acSecond)
-      && StrLib::bIsDigit(acThird))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is term a parameter ordinal?  (i.e. $Pn)                                   */
-/*----------------------------------------------------------------------------*/
-bool Xlator::bTerm_IsParamOrdinal(Card_Term* p_term)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  Stz* szTerm = p_term->szValue();
-
-  char acFirst  = szTerm->azChar()[0];
-  char acSecond = szTerm->azChar()[1];
-  char acThird  = szTerm->azChar()[2];
-
-  if ('$' == acFirst && ('P' == acSecond || 'p' == acSecond)
-      && StrLib::bIsDigit(acThird))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is term a stream-column ordinal?  (i.e. $n)                                */
-/*----------------------------------------------------------------------------*/
-bool Xlator::bTerm_IsStreamColOrdinal(Card_Term* p_term)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  Stz* szTerm = p_term->szValue();
-
-  char acFirst  = szTerm->azChar()[0];
-  char acSecond = szTerm->azChar()[1];
-
-  if ('$' == acFirst && StrLib::bIsDigit(acSecond))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is term an table-column ordinal?  (i.e. $$c.n)                             */
-/*----------------------------------------------------------------------------*/
-bool Xlator::bTerm_IsTableColOrdinal(Card_Term* p_term)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  Stz* szTerm = p_term->szValue();
-
-  char acFirst  = szTerm->azChar()[0];
-  char acSecond = szTerm->azChar()[1];
-  char acThird  = szTerm->azChar()[2];
-  char acFourth = szTerm->azChar()[3];
-  char acFifth  = szTerm->azChar()[4];
-
-  if ('$' == acFirst && '$' == acSecond
-      && StrLib::bIsAlpha(acThird)
-      && '.' == acFourth
-      && StrLib::bIsDigit(acFifth))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* evaluate relational op                                                     */
-/*----------------------------------------------------------------------------*/
-eRO Xlator::eTerm_RelOp(Card_Term* p_term)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  Stz* szTerm = p_term->sz();
-
-  if (szTerm->bSame("<"_Stz))   return RO_LESS_THAN;
-  else if (szTerm->bSame("<="_Stz))  return RO_LESS_EQUAL;
-  else if (szTerm->bSame("="_Stz))   return RO_EQUAL_TO;
-  else if (szTerm->bSame("=="_Stz))  return RO_EQUAL_TO;
-  else if (szTerm->bSame("!="_Stz))  return RO_NOT_EQUAL;
-  else if (szTerm->bSame(">="_Stz))  return RO_GREATER_EQUAL;
-  else if (szTerm->bSame(">"_Stz))   return RO_GREATER_THAN;
-
-  else return RO_NONE;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get stream column number n  (i.e. $n)                                      */
-/*----------------------------------------------------------------------------*/
-i8 Xlator::iTerm_StreamColNo(Card_Term* p_term)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  RASSERT(bTerm_IsStreamColOrdinal(p_term));
-
-  i8 i_Col = StrLib::iGleanInt(p_term->szValue()->azChar());
-
-  return i_Col;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get table column number n (i.e. $$c.n)                                     */
-/*----------------------------------------------------------------------------*/
-i8 Xlator::iTerm_TableColNo(Card_Term* p_term)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  RASSERT(bTerm_IsTableColOrdinal(p_term));
-
-  i8 i_Col = StrLib::iGleanInt(p_term->szValue()->azChar());
-
-  return i_Col;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get table synonym c (i.e. $$c.n)                                           */
-/*----------------------------------------------------------------------------*/
-char Xlator::cTerm_TableSyn(Card_Term* p_term)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  RASSERT(bTerm_IsTableColOrdinal(p_term));
-
-  Stz* szTerm = p_term->sz();
-
-  char cSyn = szTerm->azChar()[2];
-
-  return cSyn;
-}
-
-/*----------------------------------------------------------------------------*/
-/* evaluate term                                                              */
-/*----------------------------------------------------------------------------*/
-eTE Xlator::eTerm_TermEval(Card_Term* p_term)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  Stz* szTerm = p_term->sz();
-
-  if (szTerm->bSame("and"_Stz))     return TE_AND;
-  else if (szTerm->bSame("exists"_Stz))  return TE_EXISTS;
-  else if (szTerm->bSame("or"_Stz))      return TE_OR;
-
-  else if (szTerm->bSame("<"_Stz))       return TE_COMPARE;
-  else if (szTerm->bSame("<="_Stz))      return TE_COMPARE;
-  else if (szTerm->bSame("="_Stz))       return TE_COMPARE;
-  else if (szTerm->bSame("=="_Stz))      return TE_COMPARE;
-  else if (szTerm->bSame("!="_Stz))      return TE_COMPARE;
-  else if (szTerm->bSame("<>"_Stz))      return TE_COMPARE;
-  else if (szTerm->bSame(">="_Stz))      return TE_COMPARE;
-  else if (szTerm->bSame(">"_Stz))       return TE_COMPARE;
-
-  else return TE_OTHER;
 }
 
 /*============================================================================*/
