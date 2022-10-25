@@ -4109,7 +4109,7 @@ bool Transforms::bCopyPredDrillDown(Card_PRED* pCard_pred, Card_BoolCalc* p_calc
     //pCard_stream->vMark1('#');
 
 
-    p_calcBool->vBoolCalc_RemovePred(p_calcBool,pCard_pred);
+    vBoolCalc_RemovePred(p_calcBool,pCard_pred);
 
     return true;
   }
