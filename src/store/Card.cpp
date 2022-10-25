@@ -801,6 +801,26 @@ bool Card::bHasValue(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this atom an aggregate op?                                              */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsAggOp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Stz* szTerm = szValue();
+
+  if (szTerm->bSame("avg"_Stz))      return true;
+  else if (szTerm->bSame("count"_Stz))    return true;
+  else if (szTerm->bSame("countAll"_Stz)) return true;
+  else if (szTerm->bSame("max"_Stz))      return true;
+  else if (szTerm->bSame("min"_Stz))      return true;
+//else if (szTerm->bSame("stddev"_Stz))   return true;
+  else if (szTerm->bSame("sum"_Stz))      return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this card the given kind?                                               */
 /*----------------------------------------------------------------------------*/
 bool Card::bIsCard(eCK eCard)
@@ -808,6 +828,19 @@ bool Card::bIsCard(eCK eCard)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (eCard == this->eCard())
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this term a comma separator?                                            */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsCommaSeparator(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (szValue()->bSame(","_Stz))
     return true;
   else
     return false;
@@ -3132,39 +3165,6 @@ i8 Card::iTerm_IndexColNo(Card_Term* p_term)
   i8 i_Ord = StrLib::iGleanInt(szValue()->azChar());
 
   return i_Ord;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this atom an aggregate op?                                              */
-/*----------------------------------------------------------------------------*/
-bool Card::bTerm_IsAggOp(Card_Term* p_term)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Stz* szTerm = szValue();
-
-  if (szTerm->bSame("avg"_Stz))      return true;
-  else if (szTerm->bSame("count"_Stz))    return true;
-  else if (szTerm->bSame("countAll"_Stz)) return true;
-  else if (szTerm->bSame("max"_Stz))      return true;
-  else if (szTerm->bSame("min"_Stz))      return true;
-//else if (szTerm->bSame("stddev"_Stz))   return true;
-  else if (szTerm->bSame("sum"_Stz))      return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this term a comma separator?                                            */
-/*----------------------------------------------------------------------------*/
-bool Card::bTerm_IsCommaSeparator(Card_Term* p_term)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (szValue()->bSame(","_Stz))
-    return true;
-  else
-    return false;
 }
 
 /*----------------------------------------------------------------------------*/

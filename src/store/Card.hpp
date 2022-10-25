@@ -241,7 +241,9 @@ namespace STORE
     bool bHasSubRecursive(Card* pSubCard, Card*& rpParent);
     bool bHasValue(void);
 
+    bool bIsAggOp(void);
     bool bIsCard(eCK eCard);
+    bool bIsCommaSeparator(void);
     bool bIsValue(Stz* szValue);
 
     Card* pLastPrintParent(void);
@@ -374,8 +376,6 @@ namespace STORE
 
     ePB  eTerm_Bound(Card_Term* p_term);
     i8   iTerm_IndexColNo(Card_Term* p_term);
-    bool bTerm_IsAggOp(Card_Term* p_term);
-    bool bTerm_IsCommaSeparator(Card_Term* p_term);
     bool bTerm_IsIndexColOrdinal(Card_Term* p_term);
     bool bTerm_IsParamOrdinal(Card_Term* p_term);
     bool bTerm_IsStreamColOrdinal(Card_Term* p_term);

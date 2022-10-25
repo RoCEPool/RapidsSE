@@ -1266,39 +1266,6 @@ i8 Xlator::iTerm_IndexColNo(Card_Term* p_term)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this atom an aggregate op?                                              */
-/*----------------------------------------------------------------------------*/
-bool Xlator::bTerm_IsAggOp(Card_Term* p_term)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  Stz* szTerm = p_term->szValue();
-
-  if (szTerm->bSame("avg"_Stz))      return true;
-  else if (szTerm->bSame("count"_Stz))    return true;
-  else if (szTerm->bSame("countAll"_Stz)) return true;
-  else if (szTerm->bSame("max"_Stz))      return true;
-  else if (szTerm->bSame("min"_Stz))      return true;
-//else if (szTerm->bSame("stddev"_Stz))   return true;
-  else if (szTerm->bSame("sum"_Stz))      return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this term a comma separator?                                            */
-/*----------------------------------------------------------------------------*/
-bool Xlator::bTerm_IsCommaSeparator(Card_Term* p_term)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  if (p_term->szValue()->bSame(","_Stz))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is term an index-column ordinal?  (i.e. $In)                               */
 /*----------------------------------------------------------------------------*/
 bool Xlator::bTerm_IsIndexColOrdinal(Card_Term* p_term)
