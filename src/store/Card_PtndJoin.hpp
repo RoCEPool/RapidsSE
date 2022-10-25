@@ -7,8 +7,6 @@
 
 namespace STORE
 {
-  class Card_TableList;
-
   class Card_PtndJoin : public Card
   {
   public:

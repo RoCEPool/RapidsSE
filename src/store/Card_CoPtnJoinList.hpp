@@ -18,7 +18,6 @@ namespace STORE
   
     Card_CoPtnJoinList(void);
    ~Card_CoPtnJoinList(void) noexcept(false);
-
   };
 
   Card_CoPtnJoinList* _pCard_CoPtnJoinList(void* aAddr);

@@ -15,7 +15,6 @@ namespace STORE
   
     Card_CandIndex(void);
    ~Card_CandIndex(void) noexcept(false);
-
   };
 
   Card_CandIndex* _pCard_CandIndex(void* aAddr);

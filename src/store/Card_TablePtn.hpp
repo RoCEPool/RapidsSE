@@ -15,9 +15,6 @@ namespace STORE
   
     Card_TablePtn(void);
    ~Card_TablePtn(void) noexcept(false);
-
-  private:
-
   };
 
   Card_TablePtn* _pCard_TablePtn(void* aAddr);

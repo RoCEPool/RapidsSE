@@ -7,8 +7,6 @@
 
 namespace STORE
 {
-  class Card_CmpPred;
-
   class Card_PRED : public Card
   {  
   public:

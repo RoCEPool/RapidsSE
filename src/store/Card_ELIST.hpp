@@ -13,7 +13,6 @@ namespace STORE
   public:
     Card_ELIST(eCK eCard);
    ~Card_ELIST(void) noexcept(false);
-
   };
 
   Card_ELIST* _pCard_ELIST(void* aAddr);

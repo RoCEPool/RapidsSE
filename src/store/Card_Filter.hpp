@@ -16,7 +16,6 @@ namespace STORE
   
     Card_Filter(void);
    ~Card_Filter(void) noexcept(false);
-
   };
 
   Card_Filter* _pCard_Filter(void* aAddr);

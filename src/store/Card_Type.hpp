@@ -14,7 +14,7 @@ namespace STORE
     void  operator delete(void*);
   
     Card_Type(Stz* szType);
-    ~Card_Type(void) noexcept(false);
+   ~Card_Type(void) noexcept(false);
   };
 
   Card_Type* _pCard_Type(void* aAddr);

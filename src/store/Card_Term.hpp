@@ -13,12 +13,10 @@ namespace STORE
   public:
     void* operator new(size_t);
     void  operator delete(void*);
-  
-    Card_Term(Stz* szTerm);
-    Card_Term(Token* pTkn);
-    Card_Term(Column* pColumn);
-   ~Card_Term(void) noexcept(false);
 
+    Card_Term(void);
+    Card_Term(Stz* szTerm);
+   ~Card_Term(void) noexcept(false);
   };
 
   Card_Term* _pCard_Term(void* aAddr);

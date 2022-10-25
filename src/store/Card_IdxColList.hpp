@@ -7,8 +7,6 @@
 
 namespace STORE
 {
-  class Card_Stream;
-
   class Card_IdxColList : public Card
   {
   public:
@@ -17,7 +15,6 @@ namespace STORE
 
     Card_IdxColList(void);
    ~Card_IdxColList(void) noexcept(false);
-
   };
 
   Card_IdxColList* _pCard_IdxColList(void* aAddr);

@@ -1126,7 +1126,9 @@ Card_RpnTerms* Dissector::pArgsRpnTerms(TagSet* pArgTags, i8 i_Arg)
 Card_RpnTerms* Dissector::pToRpnTerms(Stz* szRpnExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
-  
+
+  s4K sString;
+
   Card_RpnTerms* pCard_RpnTerms = new Card_RpnTerms;
     
   TokenVec* pTokenVec = AM::TOKENISE::pTokeniseSen(szRpnExpr);
@@ -1135,8 +1137,15 @@ Card_RpnTerms* Dissector::pToRpnTerms(Stz* szRpnExpr)
   for (i8 i_Tkn = 0; i_Tkn < nTokens; i_Tkn++) {
     Token* pToken = pTokenVec->pGet(i_Tkn);
     
-    //Card_Term* pCard_Term = new Card_Term(pToken->szChars());
-    Card_Term* pCard_Term = new Card_Term(pToken);
+    Card_Term* pCard_Term = new Card_Term;
+
+    if (pToken->eToken() == TN_STRING) {
+      sString.vSprint("'%s'"_Stz, pToken->szChars());
+      pCard_Term->vValue(sString);
+    }
+    else {
+      pCard_Term->vValue(pToken->szChars());
+    }
 
     pCard_RpnTerms->vAppend(pCard_Term);
   }
