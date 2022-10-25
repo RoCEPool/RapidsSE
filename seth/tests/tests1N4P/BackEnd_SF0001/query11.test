@@ -18,16 +18,107 @@ select ps_partkey, sum(ps_supplycost * ps_availqty) as value
 
 */
 
-select l_orderkey,
-    sum(l_extendedprice*(1-l_discount)) as revenue,
-    o_orderdate,
-    o_shippriority
-    from orders, lineitem
-    where l_orderkey = o_orderkey
-    and o_orderdate < DATE '1995-03-15'
-    and l_shipdate > DATE '1995-03-15'
-    group by l_orderkey, o_orderdate, o_shippriority;
-rows: 701
+/*
+
+// CHANGED GERMANY TO IRAQ for SF0001 dataset
+
+EXPLAIN STAGE TRANSLITERATE
+select ps_partkey, sum(ps_supplycost * ps_availqty) as value
+    from partsupp, supplier, nation
+    where ps_suppkey = s_suppkey
+    and s_nationkey = n_nationkey
+    and n_name = 'IRAQ'
+    group by ps_partkey having sum(ps_supplycost * ps_availqty) > (
+    select sum(ps_supplycost * ps_availqty) * 0.0000010000
+    from partsupp, supplier, nation
+    where ps_suppkey = s_suppkey
+    and s_nationkey = n_nationkey
+    and n_name = 'IRAQ' )
+    order by value desc;
+
+
+pipeline unamed
+begin
+  pipeline __subquery0003
+  begin
+    stage stageStart on origin :
+      start
+      | pulse once
+      | stageMarker4605
+    stage stageMarker4605 on all partitions :
+      scan rapidsse public partsupp
+      | stageMarker4608 broadcast
+    stage stageMarker4608 on all partitions :
+      scan rapidsse public supplier
+      | abstractJoin "CROSS true  "
+      | stageMarker4611 broadcast
+    stage stageMarker4611 on all partitions :
+      scan rapidsse public nation
+      | abstractJoin "CROSS true  "
+      | stageMarker4614
+    stage stageMarker4614 on all partitions :
+      filter " type BOOLEAN  $2 $6 ==  $9 $13 ==  and  $14 ''GERMANY''  ==  and  "
+      | project " type DECIMAL )  $4 $3 casttype DECIMAL CAST  *  sum  "
+      | combined 0
+      | stageMarker4617
+    stage stageMarker4617 on all nodes :
+      project " type DECIMAL )  $1 sum  "
+      | combined 0
+      | stageMarker4744
+    stage stageMarker4744 on origin :
+      project " type DECIMAL )  $1 sum  "
+      | combined 0
+      | stageMarker4620
+    stage stageMarker4620 on origin :
+      project " type DECIMAL $1 0.0000010000  *  "
+      | combined 0
+      | stageMarker4623
+    stage stageMarker4623 on origin :
+
+      stageLast
+    stage stageLast on origin :
+      output
+      | sink
+      | stageStart
+  end
+
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker4626
+  stage stageMarker4626 on all partitions :
+    scan rapidsse public partsupp
+    | stageMarker4629 broadcast
+  stage stageMarker4629 on all partitions :
+    scan rapidsse public supplier
+    | abstractJoin "CROSS true  "
+    | stageMarker4632 broadcast
+  stage stageMarker4632 on all partitions :
+    scan rapidsse public nation
+    | abstractJoin "CROSS true  "
+    | stageMarker4635
+  stage stageMarker4635 on all partitions :
+    filter " type BOOLEAN  $2 $6 ==  $9 $13 ==  and  $14 ''GERMANY''  ==  and  "
+    | aggreg " groupBy  type INTEGER as ps_partkey $1 aggregates  type INTEGER $K1 , type DECIMAL )  $4 $3 casttype DECIMAL CAST  *  sum  "
+    | combined 0
+    | stageMarker4638
+  stage stageMarker4638 on all nodes :
+    aggreg " groupBy  type INTEGER as ps_partkey $1 aggregates  type INTEGER $K1 , type DECIMAL )  $2 sum  "
+    | combined 0
+    | stageMarker4641
+  stage stageMarker4641 on origin :
+    aggreg " groupBy  type INTEGER as ps_partkey $1 aggregates  type INTEGER $K1 , type DECIMAL as value )  $2 sum  "
+    | filter " type BOOLEAN  $2 __subquery0003  >  "
+    | sort " type DECIMAL $2 DESC  "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+*/
 
 CLEANUP {
   bye;
