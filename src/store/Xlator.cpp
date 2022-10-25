@@ -233,17 +233,17 @@ bool Xlator::bPredCmpIsCoPtn(Card_TableList* p_tableList, Card_CmpPred* p_predCm
 /*############################################################################*/
 
 /*----------------------------------------------------------------------------*/
-/* find a comparePred which is the eTerm_Bound of given index                      */
+/* find a comparePred which is the eTerm_Bound of given index                 */
 /*----------------------------------------------------------------------------*/
 Card_CmpPred* Xlator::pAndPred_FindBound(Card_AndPred* p_andPred, Index* pIndex, ePB eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_PRED* pSubPred0 = (Card_PRED*)pGet(0);
+  Card_PRED* pSubPred0 = (Card_PRED*)p_andPred->pGet(0);
   if (Card_CmpPred* pFound = pSubPred0->pPRED_FindBound(pSubPred0, pIndex, eBound))
     return pFound;
 
-  Card_PRED* pSubPred1 = (Card_PRED*)pGet(1);
+  Card_PRED* pSubPred1 = (Card_PRED*)p_andPred->pGet(1);
   if (Card_CmpPred* pFound = pSubPred1->pPRED_FindBound(pSubPred1, pIndex, eBound))
     return pFound;
 
@@ -257,11 +257,11 @@ bool Xlator::bAndPred_HasBounds(Card_AndPred* p_andPred, Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_PRED* pSubPred0 = (Card_PRED*)pGet(0);
+  Card_PRED* pSubPred0 = (Card_PRED*)p_andPred->pGet(0);
   if (pSubPred0->bPRED_HasBounds(pSubPred0, pIndex))
     return true;
 
-  Card_PRED* pSubPred1 = (Card_PRED*)pGet(1);
+  Card_PRED* pSubPred1 = (Card_PRED*)p_andPred->pGet(1);
   if (pSubPred1->bPRED_HasBounds(pSubPred1, pIndex))
     return true;
 
@@ -321,13 +321,15 @@ void Xlator::vBoolCalc_CullPred(Card_BoolCalc* p_boolCalc, char cWithMark)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_)
 
-  if (! nChildCards())
+  if (! p_boolCalc->nChildCards())
     return;
 
-  Card_PRED* pCard_pred = static_cast<Card_PRED*>(pGetChild(0));
+  Card_PRED* pCard_pred = static_cast<Card_PRED*>(p_boolCalc->pGetChild(0));
 
-  while (pCard_pred && bBoolCalc_CullPred(p_boolCalc, pCard_pred, cWithMark) && nChildCards()) {
-    pCard_pred = static_cast<Card_PRED*>(pGetChild(0));
+  while (pCard_pred &&
+         bBoolCalc_CullPred(p_boolCalc, pCard_pred, cWithMark) &&
+         p_boolCalc->nChildCards()) {
+    pCard_pred = static_cast<Card_PRED*>(p_boolCalc->pGetChild(0));
   }
 }
 
@@ -338,18 +340,18 @@ void Xlator::vBoolCalc_RemovePred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_)
 
-  Card* pParentCard = pFindParent(p_pred);
+  Card* pParentCard = p_boolCalc->pFindParent(p_pred);
 
   pParentCard->vRemoveSubCard(p_pred);
 
   if (CK_ANDPRED == pParentCard->eCard() || CK_ORPRED == pParentCard->eCard()) {
 
     if (0 == pParentCard->nChildCards()) {
-      vRemoveSubCard(pParentCard);
+      p_boolCalc->vRemoveSubCard(pParentCard);
     }
     else {
       Card* pSiblingCard = pParentCard->pGetChild(0);
-      Card* pGrandCard = pFindParent((pParentCard));
+      Card* pGrandCard = p_boolCalc->pFindParent((pParentCard));
       pParentCard->vRemoveSubCard(pSiblingCard);
       pGrandCard->vReplaceChild(pParentCard, pSiblingCard);
     }
@@ -365,7 +367,7 @@ i8 Xlator::iCandIndex_Rank(Card_CandIndex* p_candIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  i8 iRank = Y_iVal(P_Rank);
+  i8 iRank = p_candIndex->Y_iVal(P_Rank);
 
   return iRank;
 }
@@ -377,7 +379,7 @@ void Xlator::vCandIndex_Rank(Card_CandIndex* p_candIndex, i8 iRank)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Y_vSet(P_Rank, iRank);
+  p_candIndex->Y_vSet(P_Rank, iRank);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -388,12 +390,12 @@ bool Xlator::bCmpPred_CoPtnWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Card_ColumnRef* p_columnRef_this_0 =
-      _pCard_ColumnRef(this->pGetChild(0));
+      _pCard_ColumnRef(p_cmpPred->pGetChild(0));
   Stz* szColumnRef_this_0 = p_columnRef_this_0->sz();
   char cTableSyn_this_0 = szColumnRef_this_0->cTableSyn();
 
   Card_ColumnRef* p_columnRef_this_1 =
-      _pCard_ColumnRef(this->pGetChild(1));
+      _pCard_ColumnRef(p_cmpPred->pGetChild(1));
   Stz* szColumnRef_this_1 = p_columnRef_this_1->sz();
   char cTableSyn_this_1 = szColumnRef_this_1->cTableSyn();
 
@@ -432,9 +434,9 @@ bool Xlator::bCmpPred_IsEq(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_ColumnRef* p_columnRef_this_0 = _pCard_ColumnRef(this->pGetChild(0));
+  Card_ColumnRef* p_columnRef_this_0 = _pCard_ColumnRef(p_cmpPred->pGetChild(0));
   Stz* szColumnRef_this_0 = p_columnRef_this_0->sz();
-  Card_ColumnRef* p_columnRef_this_1 = _pCard_ColumnRef(this->pGetChild(1));
+  Card_ColumnRef* p_columnRef_this_1 = _pCard_ColumnRef(p_cmpPred->pGetChild(1));
   Stz* szColumnRef_this_1 = p_columnRef_this_1->sz();
 
   Card_ColumnRef* p_columnRef_arg_0 = _pCard_ColumnRef(p_PredCmp_arg->pGetChild(0));
@@ -459,9 +461,9 @@ bool Xlator::bCmpPred_OverlapsWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_Pred
   //this->vDump();
   //p_PredCmp_arg->vDump();
 
-  Card_ColumnRef* p_columnRef_this_0 = _pCard_ColumnRef(this->pGetChild(0));
+  Card_ColumnRef* p_columnRef_this_0 = _pCard_ColumnRef(p_cmpPred->pGetChild(0));
   char cTableSyn_this_0 = p_columnRef_this_0->cColumnRef_TableSyn(p_columnRef_this_0);
-  Card_ColumnRef* p_columnRef_this_1 = _pCard_ColumnRef(this->pGetChild(1));
+  Card_ColumnRef* p_columnRef_this_1 = _pCard_ColumnRef(p_cmpPred->pGetChild(1));
   char cTableSyn_this_1 = p_columnRef_this_1->cColumnRef_TableSyn(p_columnRef_this_1);
 
   Card_ColumnRef* p_columnRef_arg_0 = _pCard_ColumnRef(p_PredCmp_arg->pGetChild(0));
@@ -486,7 +488,7 @@ void Xlator::vCmpPred_MarkBound(Card_CmpPred* p_cmpPred)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Stz* szCmp = this->sz();
+  Stz* szCmp = p_cmpPred->sz();
 
   char cBound = '?';
 
@@ -498,7 +500,7 @@ void Xlator::vCmpPred_MarkBound(Card_CmpPred* p_cmpPred)
   else if (szCmp->bSame(">="_Stz)) cBound = 'L';
   else if (szCmp->bSame(">"_Stz))  cBound = 'L';
 
-  vMark1(cBound);
+  p_cmpPred->vMark1(cBound);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -508,11 +510,11 @@ Card_CmpPred* Xlator::pCmpPred_FindBound(Card_CmpPred* p_cmpPred, Index* pIndex,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_Term* pTerm2 = _pCard_Term(pGet(2));
+  Card_Term* pTerm2 = _pCard_Term(p_cmpPred->pGet(2));
   if (eBound != pTerm2->eTerm_Bound(pTerm2))
     return nullptr;
 
-  Card_Term* pTerm0 = _pCard_Term(pGet(0));
+  Card_Term* pTerm0 = _pCard_Term(p_cmpPred->pGet(0));
   Stz* szTerm0 = pTerm0->sz();
   Column* pCol0 = pIndex->pGetColumn(0);
   if (! pCol0->szColNm()->bSame(szTerm0))
@@ -530,11 +532,11 @@ bool Xlator::bCmpPred_HasBounds(Card_CmpPred* p_cmpPred, Index* pIndex)
 
   //Card_Term* pTerm1 = _pCard_Term(pCard_PredCmp->pGet(1));
 
-  Card_Term* pTerm2 = _pCard_Term(pGet(2));
+  Card_Term* pTerm2 = _pCard_Term(p_cmpPred->pGet(2));
   if (PB_NONE == pTerm2->eTerm_Bound(pTerm2))
     return false;
 
-  Card_Term* pTerm0 = _pCard_Term(pGet(0));
+  Card_Term* pTerm0 = _pCard_Term(p_cmpPred->pGet(0));
   Stz* szTerm0 = pTerm0->sz();
   Column* pCol0 = pIndex->pGetColumn(0);
   if (! pCol0->szColNm()->bSame(szTerm0))
@@ -550,9 +552,9 @@ bool Xlator::bCmpPred_UsesTable(Card_CmpPred* p_cmpPred, char cTableSyn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_ColumnRef* p_columnRef_this_0 = _pCard_ColumnRef(this->pGetChild(0));
+  Card_ColumnRef* p_columnRef_this_0 = _pCard_ColumnRef(p_cmpPred->pGetChild(0));
   char cTableSyn_this_0 = p_columnRef_this_0->cColumnRef_TableSyn(p_columnRef_this_0);
-  Card_ColumnRef* p_columnRef_this_1 = _pCard_ColumnRef(this->pGetChild(1));
+  Card_ColumnRef* p_columnRef_this_1 = _pCard_ColumnRef(p_cmpPred->pGetChild(1));
   char cTableSyn_this_1 = p_columnRef_this_1->cColumnRef_TableSyn(p_columnRef_this_1);
 
   if (cTableSyn_this_0 == cTableSyn || cTableSyn_this_1 == cTableSyn)
@@ -560,6 +562,11 @@ bool Xlator::bCmpPred_UsesTable(Card_CmpPred* p_cmpPred, char cTableSyn)
 
   return false;
 }
+
+/*############################################################################*/
+#endif
+#if 0
+/*############################################################################*/
 
 /*----------------------------------------------------------------------------*/
 /* is atom a column ordinal?                                                  */
