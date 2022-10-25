@@ -711,7 +711,7 @@ Card_AggElist* Dissector::pAggElist(Card_RpnTerms* pCard_RpnTerms)
     // TYPE <type> [ AS <as> ] <calc>
     Card_Expr* pCard_Expr = pExpr(pCard_RpnTerms);
     pCard_Expr->vCardNo(++iCardNo);
-    pCard_Expr->vExpr_AsEnsure(pCard_Expr);
+    vAsEnsure(pCard_Expr);
 
     pCard_AggElist->vAppend(pCard_Expr);
   }
@@ -752,7 +752,7 @@ Card_GbyElist* Dissector::pGbyElist(Card_RpnTerms* pCard_RpnTerms)
     // TYPE <type> <calcExpr> [ AS <as> ]
     Card_Expr* pCard_Expr = pExpr(pCard_RpnTerms);
     pCard_Expr->vCardNo(++iCardNo);
-    pCard_Expr->vExpr_AsEnsure(pCard_Expr);
+    vAsEnsure(pCard_Expr);
     
     Card_Direction* pCard_Direction = new Card_Direction(aSD_short[SD_ASC]);
     pCard_Expr->vAppend(pCard_Direction);
@@ -966,6 +966,25 @@ Card_As* Dissector::pAs(Card_RpnTerms* pCard_RpnTerms)
 
   return pCard_As;
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Dissector::vAsEnsure(Card_Expr* p_expr)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
+
+  Card_As* pCard_As = _pCard_As(p_expr->pFindSubCard(CK_AS));
+  if (pCard_As)
+    return;
+
+  s32 sAs;
+  sAs.vSprint("COL_%lld"_Stz,p_expr->iCardNo());
+
+  pCard_As = new Card_As(sAs);
+  p_expr->vAppend(pCard_As);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* collect <sortDirn> terms :                                                 */

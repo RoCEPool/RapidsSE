@@ -58,19 +58,20 @@ namespace STORE
     Card* pOp_Sort     (TagSet* pArgTags);
     Card* pOp_Start    (TagSet* pArgTags);
 
-    Card_AggElist*  pAggElist   (Card_RpnTerms* pCard_RpnTerms);
-    Card_GbyElist*  pGbyElist   (Card_RpnTerms* pCard_RpnTerms);
-    Card_ProjElist* pProjElist  (Card_RpnTerms* pCard_RpnTerms);
-    Card_SbyElist*  pSbyElist   (Card_RpnTerms* pCard_RpnTerms);
+    Card_AggElist*  pAggElist    (Card_RpnTerms* pCard_RpnTerms);
+    Card_GbyElist*  pGbyElist    (Card_RpnTerms* pCard_RpnTerms);
+    Card_ProjElist* pProjElist   (Card_RpnTerms* pCard_RpnTerms);
+    Card_SbyElist*  pSbyElist    (Card_RpnTerms* pCard_RpnTerms);
 
-    Card_Expr*      pExpr       (Card_RpnTerms* pCard_RpnTerms);
-    Card_RpnCalc*      pCalc       (Card_RpnTerms* pCard_RpnTerms);
+    Card_Expr*      pExpr        (Card_RpnTerms* pCard_RpnTerms);
+    Card_RpnCalc*   pCalc        (Card_RpnTerms* pCard_RpnTerms);
 
-    Card_As*        pAs       (Card_RpnTerms* pCard_RpnTerms);
-    Card_Direction* pDirection(Card_RpnTerms* pCard_RpnTerms);
-    Card_Type*      pType     (Card_RpnTerms* pCard_RpnTerms);
+    Card_As*        pAs          (Card_RpnTerms* pCard_RpnTerms);
+    void            vAsEnsure    (Card_Expr* p_expr);
+    Card_Direction* pDirection   (Card_RpnTerms* pCard_RpnTerms);
+    Card_Type*      pType        (Card_RpnTerms* pCard_RpnTerms);
 
-    Card_RpnTerms* pToRpnTerms(Stz* szRpnExpr);
+    Card_RpnTerms* pToRpnTerms   (Stz* szRpnExpr);
   
     i8             iArgCheckLast (TagSet* pArgTags, i8 i_Last);
     Card_RpnTerms* pArgCheckLast (TagSet* pArgTags, i8 i_Last);

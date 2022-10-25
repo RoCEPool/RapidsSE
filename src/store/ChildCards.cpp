@@ -58,7 +58,7 @@ void ChildCards::vConcatChildren(Stz* szTerms, eCK eChild)
   //_precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   i8 nChildren = nChildCards();
-  for (i8 i_Child = 0; i_Child <= nChildren; i_Child++) {
+  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
     Card* pChildCard = pGetChild(i_Child);
     if (CK_NONE == eChild || eChild == pChildCard->eCard())
       szTerms->vCatSprint(" %s"_Stz, pChildCard->sz());
