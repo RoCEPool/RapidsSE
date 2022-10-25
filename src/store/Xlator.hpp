@@ -76,7 +76,7 @@ namespace STORE
 
     void vIdxColList_Ordinate(Card_IdxColList* p_idxColList, Card_Stream* pCard_Stream);
 
-    void vJoinOrderSeq_ExtractJoinOrder(Card_PtndJoin* p_PtndJoin);
+    void vJoinOrderSeq_ExtractJoinOrder(Card_JoinOrderSeq* p_joinOrderSeq, Card_PtndJoin* p_PtndJoin);
 
     void vJoinPredList_Extract(Card_JoinPredList* p_joinPredList, Card_BoolCalc* p_boolCalc);
 
