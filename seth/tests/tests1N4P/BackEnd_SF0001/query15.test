@@ -71,7 +71,7 @@ begin
 end ;
 
 
-create table revenue (supplier_no integer, total_revenue decimal);
+//create table revenue (supplier_no integer, total_revenue decimal);
 
 EXPLAIN STAGE TRANSLITERATE
   select s_suppkey, s_name, s_address, s_phone, total_revenue

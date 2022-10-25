@@ -468,7 +468,7 @@ TypedStack* CodeSynth::pSynthAggGby(Stz *sProjectExpr, Stz *sLabel, Stz *sLabelL
   vGenerateProcessRow(sLabelLoop);
 
   // generate the expression code
-  vGenerateExpr((char *) sProjectExpr, pPostStack, EK_AGGGBY, m_pStreamDefLft);
+  vGenerateExpr((char *) sProjectExpr, pPostStack, EK_AGGGBY, m_pStreamDefLft, ""_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // populate payload key
@@ -523,7 +523,7 @@ void CodeSynth::vSynthFilter(Stz* sFilterExpr, Stz* sLabel, Stz* sLabelPrev, Stz
   vGenerateInitStub("FILTER-OP"_Stz, sLabel);
 
   // generate the code for the projected expressions
-  vGenerateExpr((char *) sFilterExpr, nullptr, EK_FILTER, m_pStreamDefLft);
+  vGenerateExpr((char *) sFilterExpr, nullptr, EK_FILTER, m_pStreamDefLft, sLabelLoop);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate stencil cast
@@ -565,7 +565,7 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ, 
   vGenerateInitStub("INDEXJOIN-OP"_Stz, sLabel);
 
   // generate the code for the index join expr
-  vGenerateExpr((char *) sJoinExpr, nullptr, EK_INDEXJOIN, m_pStreamDefLft, &bLeftOuterJoin);
+  vGenerateExpr((char *) sJoinExpr, nullptr, EK_INDEXJOIN, m_pStreamDefLft, ""_Stz, &bLeftOuterJoin);
 
   sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayT;"_Stz, xRowRef[m_eStencilFrom], xRowRef[m_eStencilFrom].m_szInclude);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
@@ -754,7 +754,7 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ, 
     // generate the code for the projected expressions
     eSR eStencilFrom = m_eStencilFrom;
     m_eStencilFrom = SR_TJ;
-    vGenerateExpr((char *) sFilterExpr, nullptr, EK_FILTER, m_pStreamDefOut);
+    vGenerateExpr((char *) sFilterExpr, nullptr, EK_FILTER, m_pStreamDefOut, sLabelNext);
     m_eStencilFrom = eStencilFrom;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -825,7 +825,7 @@ void CodeSynth::vSynthIndexScan(Stz* sIndexScanExpr, Stz* sLabel,
 
 
   // generate the code for the index scan expr
-  vGenerateExpr((char *) sIndexScanExpr, nullptr, EK_INDEXSCAN, m_pStreamDefLft);
+  vGenerateExpr((char *) sIndexScanExpr, nullptr, EK_INDEXSCAN, m_pStreamDefLft, ""_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // do we have a lower bound ?
@@ -1141,7 +1141,7 @@ void CodeSynth::vSynthKeyExists(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
   m_eStencilFrom = m_eStencilTo;
 
   // generate the code for the key expression
-  vGenerateExpr((char *) sKeyExpr, nullptr, EK_INDEXJOIN, m_pStreamDefLft);
+  vGenerateExpr((char *) sKeyExpr, nullptr, EK_INDEXJOIN, m_pStreamDefLft, ""_Stz);
   m_eStencilFrom = eStencilFrom;
 
   StrLib::vAppendString(&m_azCodeCrs,"\n");
@@ -1319,7 +1319,7 @@ void CodeSynth::vSynthOrdAgg(Stz *sProjectExpr, Stz *sLabel, Stz *sLabelNext, St
   pPostStack = new TypedStack(KK_DATA_STACK);
 
   // generate the expression code
-  vGenerateExpr((char *) sProjectExpr, pPostStack, EK_AGGORD, m_pStreamDefLft);
+  vGenerateExpr((char *) sProjectExpr, pPostStack, EK_AGGORD, m_pStreamDefLft, ""_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate ordered gby
@@ -1352,7 +1352,7 @@ TypedStack* CodeSynth::pSynthPrjAgg(Stz *sProjectExpr, Stz *sLabel, Stz *sLabelL
   pPostStack = new TypedStack(KK_DATA_STACK);
 
   // generate the expression code
-  vGenerateExpr((char *) sProjectExpr, pPostStack, EK_AGGREG, m_pStreamDefLft);
+  vGenerateExpr((char *) sProjectExpr, pPostStack, EK_AGGREG, m_pStreamDefLft, ""_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate code for peoject aggregates
@@ -1381,7 +1381,7 @@ bool CodeSynth::bSynthPrjExp(Stz *sProjectExpr, Stz *sLabel, Stz *sLabelNext, St
   vGenerateInitStub("PROJECT-OP"_Stz, sLabel);
 
   // generate the code for the projected expressions
-  vGenerateExpr((char *) sProjectExpr, nullptr, EK_PROJECT, m_pStreamDefLft);
+  vGenerateExpr((char *) sProjectExpr, nullptr, EK_PROJECT, m_pStreamDefLft, ""_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the cast to stencil
@@ -1434,7 +1434,7 @@ void CodeSynth::vSynthSort(Stz *sProjectExpr, Stz *sLabel, Stz *sLabelLoop) {
   vGenerateStencilCast();
 
   // generate the expression code
-  vGenerateExpr((char *) sProjectExpr, nullptr, EK_SORT, m_pStreamDefLft);
+  vGenerateExpr((char *) sProjectExpr, nullptr, EK_SORT, m_pStreamDefLft, ""_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate processRow check
@@ -1491,7 +1491,7 @@ void CodeSynth::vSynthTop(Stz* sKeyExpr, i8 iTopCount, Stz* sLabel, Stz* sLabelL
     vGenerateProcessRow("L_AdvanceNextRow"_Stz);
 
   // generate the code for the projected expressions
-  vGenerateExpr((char *) sKeyExpr, nullptr, EK_TOP, m_pStreamDefLft);
+  vGenerateExpr((char *) sKeyExpr, nullptr, EK_TOP, m_pStreamDefLft, ""_Stz);
 
   // populate the TOP payload key
   vPayloadKey(m_pExprStack);
@@ -1815,7 +1815,7 @@ void CodeSynth::vGenerateStencilCast(TypedStack* pInitStack) {
                     xRowRef[m_eStencilFrom].m_szInclude);
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
       StrLib::vAppendString(&m_azCodeCrs, "\n    szStrArea = aCombinedT->m_racStrAreaAgg;");
-
+      //StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_racStrAreaAgg = aCombinedT->m_racStrAreaAggSav;");
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // initialize aggregate ProjectRow
       StrLib::vAppendString(&m_azCodeCrs, "\n    if ( aCombinedT->m_iProjectInit == 0 ) {");
@@ -2019,6 +2019,21 @@ void CodeSynth::vOrdAggGby(Stz* sLabelNext, Stz* sLabelLoop) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate processRow check
   vGenerateProcessRow(sLabelLoop);
+/*
+  StrLib::vAppendString(&m_azCodeCrs, "\n    if (!aCombinedT->m_iProcessRow) {");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    if ( aCombinedT->m_iOrdAggDone ) {");
+  StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iProcessRow = 1;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iHasOrdAggRow = 0;");
+  sCopy.vSprint("\n      goto %s;"_Stz, sLabelNext);
+  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+  StrLib::vAppendString(&m_azCodeCrs, "\n      } else {");
+  StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iProcessRow = 1;");
+  sCopy.vSprint("\n      goto %s;"_Stz, sLabelLoop);
+  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+  StrLib::vAppendString(&m_azCodeCrs, "\n    }");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    }");
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
+*/
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if all done
@@ -2868,7 +2883,7 @@ void CodeSynth::vInitAgg(ePE ePreExp)
 /* convert postfix to expr macros                                             */
 /*----------------------------------------------------------------------------*/
 void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind,
-                              StreamDef* pStreamDef, bool *pbLeftOuter) {
+                              StreamDef* pStreamDef, Stz* sLabelNext, bool *pbLeftOuter) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
@@ -3463,6 +3478,15 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // <> operator
+    if (pTkn->bSame("<>"_Stz)) {
+      s4K sOperation;
+      sOperation.vSprintCat("_FILTERCHECK(%s)"_Stz, sLabelNext);
+      pExprStack->vPushStz(sOperation);
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // relational operator ?
     if (pTkn->bIsRelational()) {
 
@@ -3669,7 +3693,7 @@ void CodeSynth::vSynthAllocPotRow(TypedStack* pPostStack, Stz* sHashExpr, bool b
     vGenerateProcessRow(sLabelNext);
 
   // generate the code for the hash expression
-  vGenerateExpr((char *) sHashExpr, nullptr, EK_HASH, m_pStreamDefLft);
+  vGenerateExpr((char *) sHashExpr, nullptr, EK_HASH, m_pStreamDefLft, ""_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate code for the hash expression
@@ -4511,6 +4535,7 @@ void CodeSynth::vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, e
       else
         sPush.vSprint("_ASSIGN(p%s->%s)\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
 
+
       if (ePreExp == PE_NONE) {
         m_pInitStack->vPushStz(sPush);
       }
@@ -5203,7 +5228,7 @@ void CodeSynth::vGenerateKeyExistsFilter(StreamDef* pStreamDef, Stz* sFilterExpr
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
   // generate the code for the projected expressions
-  vGenerateExpr((char *) sFilterExpr, nullptr, EK_FILTER, pStreamDef);
+  vGenerateExpr((char *) sFilterExpr, nullptr, EK_FILTER, pStreamDef, ""_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate stencil cast
@@ -5235,7 +5260,7 @@ void CodeSynth::vGenerateKeyNotExistsFilter(StreamDef* pStreamDef, Stz* sFilterE
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
   // generate the code for the projected expressions
-  vGenerateExpr((char *) sFilterExpr, nullptr, EK_FILTER, pStreamDef);
+  vGenerateExpr((char *) sFilterExpr, nullptr, EK_FILTER, pStreamDef, ""_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate stencil cast
