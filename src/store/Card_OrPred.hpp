@@ -15,7 +15,6 @@ namespace STORE
   
     Card_OrPred(void);
    ~Card_OrPred(void) noexcept(false);
-    
   };
 
   Card_OrPred* _pCard_OrPred(void* aAddr);

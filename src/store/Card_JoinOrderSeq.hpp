@@ -7,8 +7,6 @@
 
 namespace STORE
 {
-  class Card_PtndJoin;
-
   class Card_JoinOrderSeq : public Card
   {
   public:
@@ -17,7 +15,6 @@ namespace STORE
   
     Card_JoinOrderSeq(void);
    ~Card_JoinOrderSeq(void) noexcept(false);
-
   };
 
   Card_JoinOrderSeq* _pCard_JoinOrderSeq(void* aAddr);

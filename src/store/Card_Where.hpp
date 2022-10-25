@@ -16,8 +16,6 @@ namespace STORE
   
     Card_Where(void);
    ~Card_Where(void) noexcept(false);
-
-    bool bIsPredInScope(Card_PRED* pCard_PRED);
   };
 
   Card_Where* _pCard_Where(void* aAddr);

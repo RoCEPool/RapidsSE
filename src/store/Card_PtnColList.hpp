@@ -7,8 +7,6 @@
 
 namespace STORE
 {
-  class Card_AggElist;
-
   class Card_PtnColList : public Card
   {
   public:

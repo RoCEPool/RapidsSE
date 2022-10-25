@@ -103,7 +103,7 @@ void Xlator::X_calc_To_calcBool(void)
   while (M.p_rpnCalc->nChildCards()) {
     M.p_term = _pCard_Term(M.p_rpnCalc->pPop());
 
-    eTE eTopTerm = M.p_term->eTermEval();
+    eTE eTopTerm = M.p_term->eTerm_TermEval(M.p_term);
     switch (eTopTerm) {
 
       case TE_AND:

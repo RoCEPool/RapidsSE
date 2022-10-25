@@ -15,8 +15,6 @@ namespace STORE
   
     Card_Size(void);
    ~Card_Size(void) noexcept(false);
-
-    char cTypeShort(void);
   };
 
   Card_Size* _pCard_Size(void* aAddr);

@@ -15,8 +15,6 @@ namespace STORE
   
     Card_Partition(void);
    ~Card_Partition(void) noexcept(false);
-
-    char cTypeShort(void);
   };
 
   Card_Partition* _pCard_Partition(void* aAddr);

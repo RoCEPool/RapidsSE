@@ -224,6 +224,22 @@ eCK Card::eTo_eCK(Stz* szCardNm)
   return CK_NONE;
 }
 
+/*----------------------------------------------------------------------------*/
+/* return typeShort                                                           */
+/*----------------------------------------------------------------------------*/
+char Card::cTypeShort(Stz* szType)
+{
+  _static_
+
+  for (i8 i_CT = 0; i_CT < CT_ENUMS; i_CT++) {
+    if (szType->bSame(aCT[i_CT]))
+      return cCT_char[i_CT];
+  }
+
+  return cCT_char[CT_ENUMS];
+}
+
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -1028,11 +1044,11 @@ void Card::vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth)
   switch (m_eCard) {
 
     case CK_STREAM:
-      _pCard_Stream(this)->vStreamPrint(pRibbon, iDepth);
+      _pCard_Stream(this)->vStream_PrintStream(_pCard_Stream(this), pRibbon, iDepth);
       break;
 
     case CK_TABLE:
-      _pCard_Table(this)->vTablePrint(pRibbon, iDepth);
+      _pCard_Table(this)->vTable_PrintTable(_pCard_Table(this),pRibbon, iDepth);
       break;
 
     default:
@@ -2070,18 +2086,18 @@ Stz* Card::szDecodeEnum(Stz* szEnum, i8 iEnum)
 
 
 /*----------------------------------------------------------------------------*/
-/* find a comparePred which is the eBound of given index                      */
+/* find a comparePred which is the eTerm_Bound of given index                      */
 /*----------------------------------------------------------------------------*/
 Card_CmpPred* Card::pAndPred_FindBound(Card_AndPred* p_andPred, Index* pIndex, ePB eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_PRED* pSubPred0 = (Card_PRED*)pGet(0);
-  if (Card_CmpPred* pFound = pSubPred0->pFindBound_pred(pIndex,eBound))
+  if (Card_CmpPred* pFound = pSubPred0->pPRED_FindBound(pSubPred0, pIndex, eBound))
     return pFound;
 
   Card_PRED* pSubPred1 = (Card_PRED*)pGet(1);
-  if (Card_CmpPred* pFound = pSubPred1->pFindBound_pred(pIndex,eBound))
+  if (Card_CmpPred* pFound = pSubPred1->pPRED_FindBound(pSubPred1, pIndex, eBound))
     return pFound;
 
   return nullptr;
@@ -2095,11 +2111,11 @@ bool Card::bAndPred_HasBounds(Card_AndPred* p_andPred, Index* pIndex)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_PRED* pSubPred0 = (Card_PRED*)pGet(0);
-  if (pSubPred0->bHasBounds_pred(pIndex))
+  if (pSubPred0->bPRED_HasBounds(pSubPred0, pIndex))
     return true;
 
   Card_PRED* pSubPred1 = (Card_PRED*)pGet(1);
-  if (pSubPred1->bHasBounds_pred(pIndex))
+  if (pSubPred1->bPRED_HasBounds(pSubPred1, pIndex))
     return true;
 
   return false;
@@ -2339,14 +2355,14 @@ void Card::vCmpPred_MarkBound(Card_CmpPred* p_cmpPred)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find a comparePred which is the eBound of given index                      */
+/* find a comparePred which is the eTerm_Bound of given index                      */
 /*----------------------------------------------------------------------------*/
 Card_CmpPred* Card::pCmpPred_FindBound(Card_CmpPred* p_cmpPred, Index* pIndex, ePB eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Term* pTerm2 = _pCard_Term(pGet(2));
-  if (eBound != pTerm2->eBound())
+  if (eBound != pTerm2->eTerm_Bound(pTerm2))
     return nullptr;
 
   Card_Term* pTerm0 = _pCard_Term(pGet(0));
@@ -2368,7 +2384,7 @@ bool Card::bCmpPred_HasBounds(Card_CmpPred* p_cmpPred, Index* pIndex)
   //Card_Term* pTerm1 = _pCard_Term(pCard_PredCmp->pGet(1));
 
   Card_Term* pTerm2 = _pCard_Term(pGet(2));
-  if (PB_NONE == pTerm2->eBound())
+  if (PB_NONE == pTerm2->eTerm_Bound(pTerm2))
     return false;
 
   Card_Term* pTerm0 = _pCard_Term(pGet(0));
@@ -2534,6 +2550,95 @@ bool Card::bCoPtnJoinList_HasEqPredCmp(Card_CoPtnJoinList* p_coPtnJoinList, Card
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_StmColList* Card::pELIST_DeriveStreamColList(Card_ELIST* p_ELIST)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_StmColList* pCard_StreamColList = new Card_StmColList;
+
+  eCK eSubCard;
+  i8 nSubCards = this->nChildCards();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card *pSubCard = pGetChild(i_Child, eSubCard);
+
+    Card *pCard_Type = pSubCard->pFindSubCard(CK_TYPE);
+    Card *pCard_As = pSubCard->pFindSubCard(CK_AS);
+
+    Card_StmCol* pCard_StreamCol = new Card_StmCol;
+    pCard_StreamColList->vAppend(pCard_StreamCol);
+
+    if (pCard_As)
+      pCard_StreamCol->vAppend(pCard_As->pDupCardAndSubCards());
+    else {
+      s32 sAs;
+      sAs.vSprint("$%lld"_Stz,i_Child + 1);
+      pCard_As = new Card_As(sAs);
+      pCard_StreamCol->vAppend(pCard_As);
+    }
+    pCard_StreamCol->vAppend(pCard_Type->pDupCardAndSubCards());
+  }
+
+  return pCard_StreamColList;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vExpr_AsEnsure(Card_Expr* p_expr)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_As* pCard_As = _pCard_As(pFindSubCard(CK_AS));
+  if (pCard_As)
+    return;
+
+  s32 sAs;
+  sAs.vSprint("COL_%lld"_Stz,m_iCardNo);
+
+  pCard_As = new Card_As(sAs);
+  vAppend(pCard_As);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vFilter_CullPred(Card_Filter* p_filter, char cWithMark)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  i8 nChildren = nChildCards();
+  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
+    Card* pChildCard = pGetChild(i_Child);
+
+    eCK eCard = pChildCard->eCard();
+    if (eCard != CK_BOOLCALC)
+      continue;
+
+    Card_BoolCalc* p_boolCalc = _pCard_BoolCalc(pChildCard);
+
+    p_boolCalc->vBoolCalc_CullPred(p_boolCalc,cWithMark);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card::bFilter_IsEmptyFilter(Card_Filter* p_filter)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_BoolCalc* pCard_calcBool =
+      _pCard_BoolCalc(pFindSubCard(CK_BOOLCALC));
+
+  if (0 == pCard_calcBool->nChildCards())
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* add table and index                                                        */
 /*----------------------------------------------------------------------------*/
 void Card::vIdxColList_Ordinate(Card_IdxColList* p_idxColList, Card_Stream* pCard_Stream)
@@ -2551,7 +2656,7 @@ void Card::vIdxColList_Ordinate(Card_IdxColList* p_idxColList, Card_Stream* pCar
     i8 i_StreamColNo = C_UNKNOWN;
     Stz* szColNm = pCard_idxCol->sz();
     Card_StmCol* pCard_streamCol =
-        pCard_StreamColList->pFind_streamCol(szColNm,i_StreamColNo);
+        pCard_StreamColList->pStmColList_Find_streamCol(pCard_StreamColList, szColNm, i_StreamColNo);
 
     s32 sOrdinal;
     sOrdinal.vSprint("$%lld"_Stz,iOrdLo+i_StreamColNo);
@@ -2592,18 +2697,92 @@ void Card::vJoinOrderSeq_ExtractJoinOrder(Card_PtndJoin* p_PtndJoin)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find a comparePred which is the eBound of given index                      */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vJoinPredList_Extract(Card_JoinPredList* p_joinPredList, Card_BoolCalc* p_boolCalc)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  auto bfExtract = [this,p_boolCalc](Card *pCard) {
+
+    Card_CmpPred* p_predCmp = _pCard_CmpPred(pCard);
+
+    if (! p_predCmp->sz()->bSame("=="_Stz)) //RAYMOND CAN DO BETTER!
+      return true;
+
+    Card_Term* p_term_0 = _pCard_Term(p_predCmp->pGetChild(0));
+    Card_ColumnRef* p_columnRef_0 = p_term_0->pSub_columnRef();
+    if (! p_columnRef_0)
+      return true;
+    Card_Term* p_term_1 = _pCard_Term(p_predCmp->pGetChild(1));
+    Card_ColumnRef* p_columnRef_1= p_term_1->pSub_columnRef();
+    if (!p_columnRef_1->bColumnRef_IsColumnRef(p_columnRef_1))
+      return true;
+
+    Card_CmpPred* p_predCmp_new = new Card_CmpPred(p_predCmp->sz());
+    p_predCmp_new->vAppend(p_columnRef_0->pDupCardAndSubCards());
+    p_predCmp_new->vAppend(p_columnRef_1->pDupCardAndSubCards());
+
+    this->vAppend(p_predCmp_new);
+
+    return true;
+  };
+
+  // - - - - - - - - -
+
+  p_boolCalc->vApplyRecursive(CK_CMPPRED, bfExtract);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vObyElist_Populate(Card_ObyElist* p_obyElist, Index* pIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  IndexDef* pIndexDef = pIndex->pIndexDef();
+  i8 nIdxCols = pIndexDef->nColumns();
+
+  for (i8 i_IdxCol = 0; i_IdxCol < nIdxCols; i_IdxCol++) {
+
+    Column* pIdxCol = pIndexDef->pGetColumn(i_IdxCol);
+
+    Card_Expr* pCard_Expr = new Card_Expr;
+    vAppend(pCard_Expr);
+
+
+    Stz* szType = aCT[pIdxCol->eColumnType()];
+    Card_Type* pCard_Type = new Card_Type(szType);
+    pCard_Expr->vAppend(pCard_Type);
+
+    // as
+    Card_As* pCard_As = new Card_As(pIdxCol->szColNm());
+    pCard_Expr->vAppend(pCard_As);
+
+    // exprCalc
+    Card_RpnCalc* pCard_RpnCalc = new Card_RpnCalc;
+    pCard_Expr->vAppend(pCard_RpnCalc);
+
+    Card_Term* pCard_Term = new Card_Term(pIdxCol->szColNm());
+    pCard_RpnCalc->vAppend(pCard_Term);
+
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* find a comparePred which is the eTerm_Bound of given index                      */
 /*----------------------------------------------------------------------------*/
 Card_CmpPred* Card::pOrPred_FindBound(Card_OrPred* p_orPred, Index* pIndex, ePB eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_PRED* pSubPred0 = (Card_PRED*)pGet(0);
-  if (Card_CmpPred* pFound = pSubPred0->pFindBound_pred(pIndex,eBound))
+  if (Card_CmpPred* pFound = pSubPred0->pPRED_FindBound(pSubPred0, pIndex, eBound))
     return pFound;
 
   Card_PRED* pSubPred1 = (Card_PRED*)pGet(1);
-  if (Card_CmpPred* pFound = pSubPred1->pFindBound_pred(pIndex,eBound))
+  if (Card_CmpPred* pFound = pSubPred1->pPRED_FindBound(pSubPred1, pIndex, eBound))
     return pFound;
 
   return nullptr;
@@ -2617,16 +2796,532 @@ bool Card::bOrPred_HasBounds(Card_OrPred* p_orPred, Index* pIndex)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_PRED* pSubPred0 = (Card_PRED*)pGet(0);
-  if (pSubPred0->bHasBounds_pred(pIndex))
+  if (pSubPred0->bPRED_HasBounds(pSubPred0,pIndex))
     return true;
 
   Card_PRED* pSubPred1 = (Card_PRED*)pGet(1);
-  if (pSubPred1->bHasBounds_pred(pIndex))
+  if (pSubPred1->bPRED_HasBounds(pSubPred1,pIndex))
     return true;
 
   return false;
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* concat terms                                                               */
+/*----------------------------------------------------------------------------*/
+void Card::vPRED_ConcatTerms(Card_PRED* p_PRED, Stz* szTerms, i8 i_From, i8 i_Till)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (C_UNKNOWN == i_Till)
+    i_Till = nChildCards() - 1;
+
+  for (i8 i_Child = i_From; i_Child <= i_Till; i_Child++) {
+    Card* pChildCard = pGetChild(i_Child);
+    if (CK_TERM != pChildCard->eCard())
+      continue;
+
+    szTerms->vCatSprint(" %s"_Stz, pChildCard->sz());
+  }
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vPRED_CullByKids(Card_PRED* p_PRED)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  i8 nChildCards = nItems();
+  for (i8 i_ChildCard = 0; i_ChildCard < nChildCards; i_ChildCard++) {
+    Card* pCard_Child = pGet(i_ChildCard);
+    if (!bPRED_IsPred(pCard_Child))
+      continue;
+
+    Card_PRED* pCard_ChildPRED = (Card_PRED*)pCard_Child;
+
+    pCard_ChildPRED->vPRED_CullByKids(pCard_ChildPRED);
+
+    if (0 == pCard_ChildPRED->nItems()) {
+
+      vRemove(pCard_ChildPRED);
+      delete pCard_ChildPRED;
+
+      i_ChildCard--;
+      nChildCards--;
+
+      continue;
+    }
+
+    if (1 == pCard_ChildPRED->nItems()) {
+
+      Card_PRED* pCard_KidPRED = (Card_PRED*)pCard_Child->pPop();
+
+      vReplace(pCard_ChildPRED,pCard_KidPRED);
+      delete pCard_ChildPRED;
+
+      continue;
+    }
+
+
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* find a comparePred which is the eTerm_Bound of given index                      */
+/*----------------------------------------------------------------------------*/
+Card_CmpPred* Card::pPRED_FindBound(Card_PRED* p_PRED, Index* pIndex,
+                                    ePB eBound)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  eCK eCard = this->eCard();
+
+  switch (eCard) {
+
+    case CK_ORPRED:
+      return _pCard_OrPred(this)->pOrPred_FindBound(_pCard_OrPred(this), pIndex, eBound);
+
+    case CK_ANDPRED:
+      return _pCard_AndPred(this)->pAndPred_FindBound(_pCard_AndPred(this), pIndex, eBound);
+
+    case CK_CMPPRED:
+      return _pCard_CmpPred(this)->pCmpPred_FindBound(_pCard_CmpPred(this), pIndex, eBound);
+
+    default:
+      vTrace("pPRED_FindBound: unexpected eCard %lld %s\n"_Stz
+          ,(i8)eCard
+          ,aCK[eCard]);
+      RASSERT(0);
+      break;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does predicate have some bound wrt given index?                            */
+/*----------------------------------------------------------------------------*/
+bool Card::bPRED_HasBounds(Card_PRED* p_PRED, Index* pIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  eCK eCard = this->eCard();
+
+  switch (eCard) {
+
+    case CK_ORPRED:
+      return _pCard_OrPred(this)->bOrPred_HasBounds(_pCard_OrPred(this),pIndex);
+
+    case CK_ANDPRED:
+      return _pCard_AndPred(this)->bAndPred_HasBounds(_pCard_AndPred(this),pIndex);
+
+    case CK_CMPPRED:
+      return _pCard_CmpPred(this)->bCmpPred_HasBounds(_pCard_CmpPred(this),pIndex);
+
+    default:
+      vTrace("bPRED_HasBounds: unexpected eCard %lld %s\n"_Stz
+          ,(i8)eCard
+          ,aCK[eCard]);
+      RASSERT(0);
+      break;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this card the given kind?                                               */
+/*----------------------------------------------------------------------------*/
+bool Card::bPRED_IsPred(Card* pArgCard)
+{
+  _static_;
+
+  eCK eCard = pArgCard->eCard();
+
+  switch (eCard) {
+    case CK_EXPRBOOL:
+    case CK_ORPRED:
+    case CK_ANDPRED:
+      return true;
+
+    default: return false;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card::bPtndJoin_MayFollowAfter(Card_PtndJoin* p_ptndJoin, Card_SubSet* pPriorPtnJoins_sofar)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  i8 nPtnJoins_sofar = pPriorPtnJoins_sofar->nChildCards();
+  if (! nPtnJoins_sofar)
+    return true;
+
+  for (i8 i_PtnJoin_sofar = 0; i_PtnJoin_sofar < nPtnJoins_sofar; i_PtnJoin_sofar++) {
+    Card_PtndJoin* p_ptndJoin_sofar =
+        _pCard_PtndJoin(pPriorPtnJoins_sofar->pGetChild(i_PtnJoin_sofar));
+
+    i8 nPredCmps_sofar = p_ptndJoin_sofar->nChildCards();
+    for (i8 i_PredCmp_sofar = 0; i_PredCmp_sofar < nPredCmps_sofar; i_PredCmp_sofar++) {
+      Card_CmpPred* p_predCmp_sofar =
+          _pCard_CmpPred(p_ptndJoin_sofar->pGetChild(i_PredCmp_sofar));
+
+      i8 nPredCmps_this = this->nChildCards();
+      for (i8 i_PredCmp_this = 0; i_PredCmp_this < nPredCmps_this; i_PredCmp_this++) {
+        Card_CmpPred *p_predCmp_this =
+            _pCard_CmpPred(this->pGetChild(i_PredCmp_this));
+
+        if (p_predCmp_this->bCmpPred_OverlapsWith(p_predCmp_this,p_predCmp_sofar))
+          return true;
+      }
+
+    }
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vPtndJoin_JoinEst(Card_PtndJoin* p_ptndJoin, Card_TableList* p_tableList)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  i8 nJoinedBuff = 0;
+
+  i8 nTables = p_tableList->nChildCards();
+  for (i8 i_Table = 0; i_Table < nTables; i_Table++) {
+    Card_Table *p_table =
+        _pCard_Table(p_tableList->pGetChild(i_Table));
+
+    if (p_table->bHasProperty(P_TableUsed))
+      continue;
+
+    i8 nPredCmps = this->nChildCards();
+    for (i8 i_PredCmp = 0; i_PredCmp < nPredCmps; i_PredCmp++) {
+      Card_CmpPred *p_predCmp =
+          _pCard_CmpPred(this->pGetChild(i_PredCmp));
+
+      if (p_predCmp->bCmpPred_UsesTable(p_predCmp,p_table->cValue())) {
+        nJoinedBuff += p_table->pSub_size()->szValue()->iToI8();
+        p_table->Y_vSet(P_TableUsed);
+      }
+    }
+
+  }
+
+  Y_vSet(P_JoinedBuff, nJoinedBuff);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get head term                                                              */
+/*----------------------------------------------------------------------------*/
+Card_Term* Card::pRpnTerms_HeadTerm(Card_RpnTerms* p_rpnTerms)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Term* pCard_Term = _pCard_Term(pHead());
+
+  return pCard_Term;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop subcard                                                                */
+/*----------------------------------------------------------------------------*/
+Card_Term* Card::pRpnTerms_PopTerm(Card_RpnTerms* p_rpnTerms)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Term* pCard_Term = _pCard_Term(pPop());
+
+  return pCard_Term;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of stream columns                                               */
+/*----------------------------------------------------------------------------*/
+void Card::vStream_PrintStream(Card_Stream* p_stream, Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  s32 sName;
+  sName.vSprint("%s%s"_Stz,szCardNm(),nProperties()?" +":"");
+
+  if (bHasProperty(P_OrdLo))
+    sName.vCatSprint(" $%lld,%lld"_Stz,
+                     Y_iVal(P_OrdLo), Y_iVal(P_OrdHi));
+
+  vPrintCard_byCustomNm(pRibbon, iDepth, sName);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vTable_PrintTable(Card_Table* p_Table, Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  s32 sName;
+  sName = aCK_short[m_eCard];
+  if (0 == iDepth)
+    sName.vToUpper();
+
+  if (bHasValue())
+    sName.vCatSprint(" %c"_Stz, cValue());
+
+  vPrintCard_byCustomNm(pRibbon, iDepth, sName);
+}
+
+/*----------------------------------------------------------------------------*/
+/* evaluate bound                                                             */
+/*----------------------------------------------------------------------------*/
+ePB Card::eTerm_Bound(Card_Term* p_term)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  eRO eRelOp = this->eTerm_RelOp(p_term);
+
+  switch (eRelOp) {
+    case RO_LESS_THAN:     return PB_UBOUND;
+    case RO_LESS_EQUAL:    return PB_UBOUND;
+    case RO_EQUAL_TO:      return PB_EBOUND;
+    case RO_GREATER_EQUAL: return PB_LBOUND;
+    case RO_GREATER_THAN:  return PB_LBOUND;
+
+    default:
+      vTrace("%s(%lld): unexpected eTerm_RelOp %lld %s\n"_Stz
+          ,__func__
+          ,(i8)__LINE__
+          ,(i8)eRelOp
+          ,aRO[eRelOp]);
+      RASSERT(0);
+      break;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* get ordinal index value  (i.e. $In)                                        */
+/*----------------------------------------------------------------------------*/
+i8 Card::iTerm_IndexColNo(Card_Term* p_term)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  RASSERT(bTerm_IsIndexColOrdinal(p_term));
+
+  i8 i_Ord = StrLib::iGleanInt(szValue()->azChar());
+
+  return i_Ord;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this atom an aggregate op?                                              */
+/*----------------------------------------------------------------------------*/
+bool Card::bTerm_IsAggOp(Card_Term* p_term)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Stz* szTerm = szValue();
+
+  if (szTerm->bSame("avg"_Stz))      return true;
+  else if (szTerm->bSame("count"_Stz))    return true;
+  else if (szTerm->bSame("countAll"_Stz)) return true;
+  else if (szTerm->bSame("max"_Stz))      return true;
+  else if (szTerm->bSame("min"_Stz))      return true;
+//else if (szTerm->bSame("stddev"_Stz))   return true;
+  else if (szTerm->bSame("sum"_Stz))      return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this term a comma separator?                                            */
+/*----------------------------------------------------------------------------*/
+bool Card::bTerm_IsCommaSeparator(Card_Term* p_term)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (szValue()->bSame(","_Stz))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is term an index-column ordinal?  (i.e. $In)                               */
+/*----------------------------------------------------------------------------*/
+bool Card::bTerm_IsIndexColOrdinal(Card_Term* p_term)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Stz* szTerm = szValue();
+
+  char acFirst  = szTerm->azChar()[0];
+  char acSecond = szTerm->azChar()[1];
+  char acThird  = szTerm->azChar()[2];
+
+  if ('$' == acFirst && ('I' == acSecond || 'i' == acSecond)
+      && StrLib::bIsDigit(acThird))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is term a parameter ordinal?  (i.e. $Pn)                                   */
+/*----------------------------------------------------------------------------*/
+bool Card::bTerm_IsParamOrdinal(Card_Term* p_term)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Stz* szTerm = szValue();
+
+  char acFirst  = szTerm->azChar()[0];
+  char acSecond = szTerm->azChar()[1];
+  char acThird  = szTerm->azChar()[2];
+
+  if ('$' == acFirst && ('P' == acSecond || 'p' == acSecond)
+      && StrLib::bIsDigit(acThird))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is term a stream-column ordinal?  (i.e. $n)                                */
+/*----------------------------------------------------------------------------*/
+bool Card::bTerm_IsStreamColOrdinal(Card_Term* p_term)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Stz* szTerm = szValue();
+
+  char acFirst  = szTerm->azChar()[0];
+  char acSecond = szTerm->azChar()[1];
+
+  if ('$' == acFirst && StrLib::bIsDigit(acSecond))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is term an table-column ordinal?  (i.e. $$c.n)                             */
+/*----------------------------------------------------------------------------*/
+bool Card::bTerm_IsTableColOrdinal(Card_Term* p_term)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Stz* szTerm = szValue();
+
+  char acFirst  = szTerm->azChar()[0];
+  char acSecond = szTerm->azChar()[1];
+  char acThird  = szTerm->azChar()[2];
+  char acFourth = szTerm->azChar()[3];
+  char acFifth  = szTerm->azChar()[4];
+
+  if ('$' == acFirst && '$' == acSecond
+      && StrLib::bIsAlpha(acThird)
+      && '.' == acFourth
+      && StrLib::bIsDigit(acFifth))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* evaluate relational op                                                     */
+/*----------------------------------------------------------------------------*/
+eRO Card::eTerm_RelOp(Card_Term* p_term)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Stz* szTerm = this->sz();
+
+  if (szTerm->bSame("<"_Stz))   return RO_LESS_THAN;
+  else if (szTerm->bSame("<="_Stz))  return RO_LESS_EQUAL;
+  else if (szTerm->bSame("="_Stz))   return RO_EQUAL_TO;
+  else if (szTerm->bSame("=="_Stz))  return RO_EQUAL_TO;
+  else if (szTerm->bSame("!="_Stz))  return RO_NOT_EQUAL;
+  else if (szTerm->bSame(">="_Stz))  return RO_GREATER_EQUAL;
+  else if (szTerm->bSame(">"_Stz))   return RO_GREATER_THAN;
+
+  else return RO_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get stream column number n  (i.e. $n)                                      */
+/*----------------------------------------------------------------------------*/
+i8 Card::iTerm_StreamColNo(Card_Term* p_term)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  RASSERT(bTerm_IsStreamColOrdinal(p_term));
+
+  i8 i_Col = StrLib::iGleanInt(szValue()->azChar());
+
+  return i_Col;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get table column number n (i.e. $$c.n)                                     */
+/*----------------------------------------------------------------------------*/
+i8 Card::iTerm_TableColNo(Card_Term* p_term)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  RASSERT(bTerm_IsTableColOrdinal(p_term));
+
+  i8 i_Col = StrLib::iGleanInt(szValue()->azChar());
+
+  return i_Col;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get table synonym c (i.e. $$c.n)                                           */
+/*----------------------------------------------------------------------------*/
+char Card::cTerm_TableSyn(Card_Term* p_term)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  RASSERT(bTerm_IsTableColOrdinal(p_term));
+
+  Stz* szTerm = this->sz();
+
+  char cSyn = szTerm->azChar()[2];
+
+  return cSyn;
+}
+
+/*----------------------------------------------------------------------------*/
+/* evaluate term                                                              */
+/*----------------------------------------------------------------------------*/
+eTE Card::eTerm_TermEval(Card_Term* p_term)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Stz* szTerm = this->sz();
+
+  if (szTerm->bSame("and"_Stz))     return TE_AND;
+  else if (szTerm->bSame("exists"_Stz))  return TE_EXISTS;
+  else if (szTerm->bSame("or"_Stz))      return TE_OR;
+
+  else if (szTerm->bSame("<"_Stz))       return TE_COMPARE;
+  else if (szTerm->bSame("<="_Stz))      return TE_COMPARE;
+  else if (szTerm->bSame("="_Stz))       return TE_COMPARE;
+  else if (szTerm->bSame("=="_Stz))      return TE_COMPARE;
+  else if (szTerm->bSame("!="_Stz))      return TE_COMPARE;
+  else if (szTerm->bSame("<>"_Stz))      return TE_COMPARE;
+  else if (szTerm->bSame(">="_Stz))      return TE_COMPARE;
+  else if (szTerm->bSame(">"_Stz))       return TE_COMPARE;
+
+  else return TE_OTHER;
+}
 
 /*============================================================================*/
 /* end                                                                        */

@@ -7,8 +7,6 @@
 
 namespace STORE
 {
-  class Card_Stream;
-
   class Card_TableList : public Card
   {
   public:

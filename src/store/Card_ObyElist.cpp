@@ -30,21 +30,6 @@ Card_ObyElist::Card_ObyElist(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Card_ObyElist::Card_ObyElist(Index* pIndex)
-: Card_ELIST(CK_OBYELIST)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  _checkInitialised_(CN_CARD);
-  
-  vPopulate(pIndex);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Card_ObyElist::~Card_ObyElist(void) noexcept(false)
@@ -55,25 +40,6 @@ Card_ObyElist::~Card_ObyElist(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_ObyElist::vPopulate(Index* pIndex)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  IndexDef* pIndexDef = pIndex->pIndexDef();
-  i8 nIdxCols = pIndexDef->nColumns();
-  
-  for (i8 i_IdxCol = 0; i_IdxCol < nIdxCols; i_IdxCol++) {
-
-    Column* pIdxCol = pIndexDef->pGetColumn(i_IdxCol);
-
-    Card_Expr* pCard_Expr = new Card_Expr(pIdxCol);
-    vAppend(pCard_Expr);
-  }
-}
 
 /*============================================================================*/
 /* end                                                                        */

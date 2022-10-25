@@ -29,21 +29,6 @@ Card_As::Card_As(Stz* szAs)
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Card_As::Card_As(Column* pColumn)
-: Card(CK_AS)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  vValue(pColumn->szColNm());
-    
-  _checkInitialised_(CN_CARD);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Card_As::~Card_As(void) noexcept(false)

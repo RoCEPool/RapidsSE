@@ -28,22 +28,6 @@ Card_RpnCalc::Card_RpnCalc(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Card_RpnCalc::Card_RpnCalc(Column* pColumn)
-: Card(CK_RPNCALC)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-      
-  Card_Term* pCard_Term = new Card_Term(pColumn);
-  vAppend(pCard_Term);
-  
-  _checkInitialised_(CN_CARD);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Card_RpnCalc::~Card_RpnCalc(void) noexcept(false)

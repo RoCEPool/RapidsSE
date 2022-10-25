@@ -42,23 +42,6 @@ Card_Stream::~Card_Stream(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 
-/*----------------------------------------------------------------------------*/
-/* get number of stream columns                                               */
-/*----------------------------------------------------------------------------*/
-void Card_Stream::vStreamPrint(Ribbon* pRibbon, i8 iDepth)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  s32 sName;
-  sName.vSprint("%s%s"_Stz,szCardNm(),nProperties()?" +":"");
-
-  if (bHasProperty(P_OrdLo))
-    sName.vCatSprint(" $%lld,%lld"_Stz,
-                     Y_iVal(P_OrdLo), Y_iVal(P_OrdHi));
-
-  vPrintCard_byCustomNm(pRibbon, iDepth, sName);
-}
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

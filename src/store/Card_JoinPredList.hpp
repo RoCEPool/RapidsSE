@@ -7,8 +7,6 @@
 
 namespace STORE
 {
-  class Card_Stream;
-
   class Card_JoinPredList : public Card
   {
   public:
@@ -17,8 +15,6 @@ namespace STORE
   
     Card_JoinPredList(void);
    ~Card_JoinPredList(void) noexcept(false);
-
-    void vExtract_joinPredList(Card_BoolCalc* p_calcBool);
   };
 
   Card_JoinPredList* _pCard_JoinPredList(void* aAddr);

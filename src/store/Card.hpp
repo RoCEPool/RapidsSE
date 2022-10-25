@@ -44,6 +44,7 @@ namespace STORE
   class Card_Direction;
 
   class Card_EBound;
+  class Card_ELIST;
   class Card_Exists;
   class Card_Expr;
   class Card_ExprBool;
@@ -66,6 +67,7 @@ namespace STORE
   class Card_IndexScan;
 
   class Card_JoinOrderSeq;
+  class Card_JoinPredList;
 
   class Card_LBound;
   class Card_Limit;
@@ -90,10 +92,12 @@ namespace STORE
   class Card_Sort;
   class Card_Stage;
   class Card_Stream;
+  class Card_StmCol;
   class Card_StmColList;
   class Card_StmColOrd;
   class Card_SubSet;
 
+  class Card_TableList;
   class Card_TableNm;
   class Card_TablePtn;
   class Card_Term;
@@ -194,6 +198,8 @@ namespace STORE
     static void vConsistencyCheck(Card* p_deck, i8 iTransformNo);
 
     static eCK  eTo_eCK(Stz* szCardNm);
+
+    static char cTypeShort(Stz* szType);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
@@ -324,14 +330,55 @@ namespace STORE
     Card_CoPtnJoin* pCoPtnJoinList_Find_coPtn_for(Card_CoPtnJoinList* p_coPtnJoinList, Card_CoPtnPred* p_coPtnPred);
     bool bCoPtnJoinList_HasEqPredCmp(Card_CoPtnJoinList* p_coPtnJoinList, Card_CmpPred* p_predCmp);
 
+    Card_StmColList* pELIST_DeriveStreamColList(Card_ELIST* p_ELIST);
+
+    void vExpr_AsEnsure(Card_Expr* p_expr);
+
+    void vFilter_CullPred(Card_Filter* p_filter, char cWithMark);
+    bool bFilter_IsEmptyFilter(Card_Filter* p_filter);
+
     void vIdxColList_Ordinate(Card_IdxColList* p_idxColList, Card_Stream* pCard_Stream);
 
     void vJoinOrderSeq_ExtractJoinOrder(Card_PtndJoin* p_PtndJoin);
 
+    void vJoinPredList_Extract(Card_JoinPredList* p_joinPredList, Card_BoolCalc* p_boolCalc);
+
+    void vObyElist_Populate(Card_ObyElist* p_obyElist, Index* pIndex);
+
     Card_CmpPred* pOrPred_FindBound(Card_OrPred* p_orPred, Index* pIndex, ePB eBound);
     bool bOrPred_HasBounds(Card_OrPred* p_orPred, Index* pIndex);
 
+    void vPRED_ConcatTerms(Card_PRED* p_PRED, Stz* szTerms, i8 i_From, i8 i_Till= C_UNKNOWN);
+    void vPRED_CullByKids(Card_PRED* p_PRED);
+    Card_CmpPred* pPRED_FindBound(Card_PRED* p_PRED, Index* pIndex, ePB eBound);
+    bool bPRED_HasBounds (Card_PRED* p_PRED, Index* pIndex);
+    static bool bPRED_IsPred(Card* pArgCard);
 
+    bool bPtndJoin_MayFollowAfter(Card_PtndJoin* p_ptndJoin, Card_SubSet* pPriorPtnJoins_sofar);
+    void vPtndJoin_JoinEst(Card_PtndJoin* p_ptndJoin, Card_TableList* p_tableList);
+
+    Card_Term* pRpnTerms_HeadTerm(Card_RpnTerms* p_rpnTerms);
+    Card_Term* pRpnTerms_PopTerm(Card_RpnTerms* p_rpnTerms);
+
+    void vStream_PrintStream(Card_Stream* p_stream, Ribbon* pRibbon, i8 iDepth);
+
+    Card_StmCol* pStmColList_Find_streamCol(Card_StmColList* p_stmColList, Stz *szColNm, i8& i_StreamColNo);
+
+    void vTable_PrintTable(Card_Table* p_Table, Ribbon* pRibbon, i8 iDepth);
+
+    ePB  eTerm_Bound(Card_Term* p_term);
+    i8   iTerm_IndexColNo(Card_Term* p_term);
+    bool bTerm_IsAggOp(Card_Term* p_term);
+    bool bTerm_IsCommaSeparator(Card_Term* p_term);
+    bool bTerm_IsIndexColOrdinal(Card_Term* p_term);
+    bool bTerm_IsParamOrdinal(Card_Term* p_term);
+    bool bTerm_IsStreamColOrdinal(Card_Term* p_term);
+    bool bTerm_IsTableColOrdinal(Card_Term* p_term);
+    eRO  eTerm_RelOp(Card_Term* p_term);
+    i8   iTerm_StreamColNo(Card_Term* p_term);
+    i8   iTerm_TableColNo(Card_Term* p_term);
+    char cTerm_TableSyn(Card_Term* p_term);
+    eTE  eTerm_TermEval(Card_Term* p_term);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   

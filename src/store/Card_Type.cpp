@@ -27,21 +27,6 @@ Card_Type::Card_Type(Stz* szType)
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Card_Type::Card_Type(Column* pColumn)
-: Card(CK_TYPE)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  vValue(aCT[pColumn->eColumnType()]);
-  
-  _checkInitialised_(CN_CARD);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Card_Type::~Card_Type(void) noexcept(false)
@@ -52,23 +37,6 @@ Card_Type::~Card_Type(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* return typeShort                                                           */
-/*----------------------------------------------------------------------------*/
-char Card_Type::cTypeShort(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Stz* szType = szValue();
-
-  for (i8 i_CT = 0; i_CT < CT_ENUMS; i_CT++) {
-    if (szValue()->bSame(aCT[i_CT]))
-      return cCT_char[i_CT];
-  }
-
-  return cCT_char[CT_ENUMS];
-}
 
 
 /*============================================================================*/

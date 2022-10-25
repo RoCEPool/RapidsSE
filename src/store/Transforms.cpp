@@ -555,7 +555,7 @@ void Transforms::vP50_T40_Resolve_Parameter_Terms(bool bPrint, bool bTrace)
 
     CardIter xCI(M.p_rpnCalc);
     while ((M.p_term = _pCard_Term(xCI.pEachChild()))) {
-      if (! M.p_term->bIsParamOrdinal())
+      if (!M.p_term->bTerm_IsParamOrdinal(M.p_term))
         continue;
 
       if (! Y_bFindPpy(CK_PARAMLIST,P_ParamOrd,CK_PARAM))
@@ -681,7 +681,8 @@ void Transforms::vP60_T30_Add_joinPred_UnderAll_indexJoin(bool bPrint, bool bTra
     m_pTerm_0    = _pCard_Term(M.p_cmpPred->pGetChild(0));
     m_pTerm_1    = _pCard_Term(M.p_cmpPred->pGetChild(1));
 
-    if (! m_pTerm_0->bIsStreamColOrdinal() || ! m_pTerm_1->bIsStreamColOrdinal())
+    if (!m_pTerm_0->bTerm_IsStreamColOrdinal(m_pTerm_0) ||
+        !m_pTerm_1->bTerm_IsStreamColOrdinal(m_pTerm_1))
       continue;
 
 
@@ -703,8 +704,8 @@ void Transforms::vP60_T30_Add_joinPred_UnderAll_indexJoin(bool bPrint, bool bTra
     i8 iStreamOrdLo = M.p_stream->Y_iVal(P_OrdLo);
     i8 iStreamOrdHi = M.p_stream->Y_iVal(P_OrdHi);
 
-    i8 i_iOrdLo_0 = m_pTerm_0->iStreamColNo();
-    i8 i_iOrdLo_1 = m_pTerm_1->iStreamColNo();
+    i8 i_iOrdLo_0 = m_pTerm_0->iTerm_StreamColNo(m_pTerm_0);
+    i8 i_iOrdLo_1 = m_pTerm_1->iTerm_StreamColNo(m_pTerm_1);
 
     if (i_iOrdLo_0 >= iStreamOrdLo && i_iOrdLo_0 <= iStreamOrdHi) {
       M.p_term = new Card_Term("$I1"_Stz);
@@ -772,7 +773,7 @@ void Transforms::vP60_T50_Delete_Empty_filter(bool bPrint, bool bTrace)
     if (! M.p_filter)
       continue;
 
-    if (! M.p_filter->bIsEmptyFilter())
+    if (!M.p_filter->bFilter_IsEmptyFilter(M.p_filter))
       continue;
 
     M.p_MainCard->vRemoveChild(M.p_filter);
@@ -845,7 +846,7 @@ void Transforms::vP70_T10_Extract_joinPredList(bool bPrint, bool bTrace)
     if (!M.p_boolCalc)
       continue;
 
-    M.p_joinPredList->vExtract_joinPredList(M.p_boolCalc);
+    M.p_joinPredList->vJoinPredList_Extract(M.p_joinPredList,M.p_boolCalc);
   }
 
   vEndTransform();
@@ -1091,7 +1092,7 @@ void Transforms::vP70_T70_Generate_ptndPermutations(bool bPrint, bool bTrace)
       M.pDeck->vAppendMain(m_pCard_child->pDupCardAndSubCards());
 
       M.p_ptndJoin = _pCard_PtndJoin(m_pCard_child);
-      if (! M.p_ptndJoin->bMayFollowAfter(M.p_subSet)) {
+      if (!M.p_ptndJoin->bPtndJoin_MayFollowAfter(M.p_ptndJoin,M.p_subSet)) {
         M.pDeck->vAppendMain(new Card_Comment("**DOESN'T FOLLOW**"_Stz));
         M.p_permutation->Y_vSet(P_Invalid);
         break;
@@ -1203,7 +1204,7 @@ void Transforms::vP70_T92_Estimate_ptndJoins(bool bPrint, bool bTrace)
     if (CK_PTNDJOIN != eCard)
       continue;
     M.p_ptndJoin = _pCard_PtndJoin(M.p_MainCard);
-    M.p_ptndJoin->vJoinEst(M.p_tableList);
+    M.p_ptndJoin->vPtndJoin_JoinEst(M.p_ptndJoin,M.p_tableList);
   }
 
   vEndTransform();
@@ -1627,11 +1628,11 @@ void Transforms::vP80_T60_Cull_Marked_cmpPred(bool bPrint, bool bTrace)
   while (E_bEachMainWithSub(CK_SCAN,CK_FILTER)) {
 
     vTracer("Culling <filter> of L & U bounds %s\n"_Stz,M.p_filter->szBearing());
-    M.p_filter->vCullPred('L');
-    M.p_filter->vCullPred('U');
+    M.p_filter->vFilter_CullPred(M.p_filter,'L');
+    M.p_filter->vFilter_CullPred(M.p_filter,'U');
 
     //M.p_filter->vDump();
-    if (! M.p_filter->bIsEmptyFilter())
+    if (! M.p_filter->bFilter_IsEmptyFilter(M.p_filter))
       continue;
 
     vTracer("Deleting empty <filter> %s\n"_Stz,M.p_filter->szBearing());

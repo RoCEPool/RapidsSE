@@ -7,9 +7,7 @@
 
 namespace STORE
 {
-  class Card_Stream;
-
-  class Card_JoinOrder : public Card
+   class Card_JoinOrder : public Card
   {
   public:
     void* operator new(size_t);
