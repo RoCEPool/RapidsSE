@@ -103,7 +103,7 @@ void Xlator::X_calc_To_calcBool(void)
   while (M.p_rpnCalc->nChildCards()) {
     M.p_term = _pCard_Term(M.p_rpnCalc->pPop());
 
-    eTE eTopTerm = M.p_term->eTerm_TermEval(M.p_term);
+    eTE eTopTerm = eTerm_TermEval(M.p_term);
     switch (eTopTerm) {
 
       case TE_AND:
@@ -206,8 +206,8 @@ bool Xlator::bPredCmpIsCoPtn(Card_TableList* p_tableList, Card_CmpPred* p_predCm
       _pCard_ColumnRef(p_predCmp->pGetChild(1));
   Stz* szPredColumnRef_1 = p_columnRef_1->sz();
 
-  char cTableSyn_0 = p_columnRef_0->cColumnRef_TableSyn(p_columnRef_0);
-  char cTableSyn_1 = p_columnRef_1->cColumnRef_TableSyn(p_columnRef_1);
+  char cTableSyn_0 = cColumnRef_TableSyn(p_columnRef_0);
+  char cTableSyn_1 = cColumnRef_TableSyn(p_columnRef_1);
 
   if (StrLib::bIsUpperCase(cTableSyn_0) || StrLib::bIsUpperCase(cTableSyn_1))
     return true;
