@@ -11,7 +11,7 @@
 
 #include <thrift/TToString.h>
 
-
+namespace com { namespace rapidsdata { namespace wirelineprotocol { namespace messages { namespace v5 {
 
 int _kMessageTypesValues[] = {
   MessageTypes::ProtocolCompatibleRequest,
@@ -110,4 +110,4 @@ std::string to_string(const MessageTypes::type& val) {
   }
 }
 
-
+}}}}} // namespace

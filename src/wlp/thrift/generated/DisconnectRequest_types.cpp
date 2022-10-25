@@ -11,7 +11,7 @@
 
 #include <thrift/TToString.h>
 
-
+namespace com { namespace rapidsdata { namespace wirelineprotocol { namespace messages { namespace v5 {
 
 
 DisconnectRequest::~DisconnectRequest() noexcept {
@@ -81,4 +81,4 @@ void DisconnectRequest::printTo(std::ostream& out) const {
   out << ")";
 }
 
-
+}}}}} // namespace

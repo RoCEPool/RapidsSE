@@ -19,7 +19,7 @@
 #include <memory>
 
 
-
+namespace com { namespace rapidsdata { namespace wirelineprotocol { namespace messages { namespace v5 {
 
 class TunnelSupportedResponse;
 
@@ -54,6 +54,6 @@ void swap(TunnelSupportedResponse &a, TunnelSupportedResponse &b);
 
 std::ostream& operator<<(std::ostream& out, const TunnelSupportedResponse& obj);
 
-
+}}}}} // namespace
 
 #endif

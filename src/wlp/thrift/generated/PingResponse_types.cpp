@@ -11,7 +11,7 @@
 
 #include <thrift/TToString.h>
 
-
+namespace com { namespace rapidsdata { namespace wirelineprotocol { namespace messages { namespace v5 {
 
 
 PingResponse::~PingResponse() noexcept {
@@ -81,4 +81,4 @@ void PingResponse::printTo(std::ostream& out) const {
   out << ")";
 }
 
-
+}}}}} // namespace

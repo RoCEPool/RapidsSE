@@ -20,7 +20,7 @@
 #include "ColumnValue_types.h"
 
 
-
+namespace com { namespace rapidsdata { namespace wirelineprotocol { namespace messages { namespace v5 {
 
 class Row;
 
@@ -36,9 +36,9 @@ class Row : public virtual ::apache::thrift::TBase {
   }
 
   virtual ~Row() noexcept;
-  std::vector< ::ColumnValue>  columns;
+  std::vector< ::com::rapidsdata::wirelineprotocol::messages::v5::ColumnValue>  columns;
 
-  void __set_columns(const std::vector< ::ColumnValue> & val);
+  void __set_columns(const std::vector< ::com::rapidsdata::wirelineprotocol::messages::v5::ColumnValue> & val);
 
   bool operator == (const Row & rhs) const
   {
@@ -98,6 +98,6 @@ void swap(RowDataResponse &a, RowDataResponse &b);
 
 std::ostream& operator<<(std::ostream& out, const RowDataResponse& obj);
 
-
+}}}}} // namespace
 
 #endif

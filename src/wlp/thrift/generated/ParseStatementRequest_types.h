@@ -19,7 +19,7 @@
 #include <memory>
 
 
-
+namespace com { namespace rapidsdata { namespace wirelineprotocol { namespace messages { namespace v5 {
 
 class ParseStatementRequest;
 
@@ -74,6 +74,6 @@ void swap(ParseStatementRequest &a, ParseStatementRequest &b);
 
 std::ostream& operator<<(std::ostream& out, const ParseStatementRequest& obj);
 
-
+}}}}} // namespace
 
 #endif

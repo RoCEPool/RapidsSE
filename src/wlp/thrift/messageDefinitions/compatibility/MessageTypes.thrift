@@ -1,5 +1,6 @@
 
 namespace java com.rapidsdata.wirelineprotocol.messages.compatibility
+namespace cpp  com.rapidsdata.wirelineprotocol.messages.compatibility
 
 // All messages from client to server have an odd numbered type.
 // All messages from server to client have an even numbered type.

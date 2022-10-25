@@ -11,7 +11,7 @@
 
 #include <thrift/TToString.h>
 
-
+namespace com { namespace rapidsdata { namespace wirelineprotocol { namespace messages { namespace v5 {
 
 
 QueryExecuteRequest::~QueryExecuteRequest() noexcept {
@@ -196,4 +196,4 @@ void QueryExecuteRequest::printTo(std::ostream& out) const {
   out << ")";
 }
 
-
+}}}}} // namespace

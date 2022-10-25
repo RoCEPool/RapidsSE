@@ -18,8 +18,8 @@
 #include <functional>
 #include <memory>
 
-#undef NULL
 
+namespace com { namespace rapidsdata { namespace wirelineprotocol { namespace messages { namespace v5 {
 
 struct DataType {
   enum type {
@@ -154,6 +154,6 @@ void swap(ColumnMetadata &a, ColumnMetadata &b);
 
 std::ostream& operator<<(std::ostream& out, const ColumnMetadata& obj);
 
-
+}}}}} // namespace
 
 #endif

@@ -19,7 +19,7 @@
 #include <memory>
 
 
-
+namespace com { namespace rapidsdata { namespace wirelineprotocol { namespace messages { namespace v5 {
 
 class ClearTextTunnelRequest;
 
@@ -54,6 +54,6 @@ void swap(ClearTextTunnelRequest &a, ClearTextTunnelRequest &b);
 
 std::ostream& operator<<(std::ostream& out, const ClearTextTunnelRequest& obj);
 
-
+}}}}} // namespace
 
 #endif

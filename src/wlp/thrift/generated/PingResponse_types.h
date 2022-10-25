@@ -19,7 +19,7 @@
 #include <memory>
 
 
-
+namespace com { namespace rapidsdata { namespace wirelineprotocol { namespace messages { namespace v5 {
 
 class PingResponse;
 
@@ -54,6 +54,6 @@ void swap(PingResponse &a, PingResponse &b);
 
 std::ostream& operator<<(std::ostream& out, const PingResponse& obj);
 
-
+}}}}} // namespace
 
 #endif

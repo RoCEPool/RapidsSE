@@ -19,7 +19,7 @@
 #include <memory>
 
 
-
+namespace com { namespace rapidsdata { namespace wirelineprotocol { namespace messages { namespace v5 {
 
 class QueryProgressRequest;
 
@@ -66,6 +66,6 @@ void swap(QueryProgressRequest &a, QueryProgressRequest &b);
 
 std::ostream& operator<<(std::ostream& out, const QueryProgressRequest& obj);
 
-
+}}}}} // namespace
 
 #endif

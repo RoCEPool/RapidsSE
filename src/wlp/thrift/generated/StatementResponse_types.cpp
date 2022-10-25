@@ -11,7 +11,7 @@
 
 #include <thrift/TToString.h>
 
-
+namespace com { namespace rapidsdata { namespace wirelineprotocol { namespace messages { namespace v5 {
 
 int _kAffectedVerbValues[] = {
   AffectedVerb::SELECTED,
@@ -258,4 +258,4 @@ void StatementResponse::printTo(std::ostream& out) const {
   out << ")";
 }
 
-
+}}}}} // namespace

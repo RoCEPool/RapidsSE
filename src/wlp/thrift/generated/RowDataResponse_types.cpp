@@ -11,14 +11,14 @@
 
 #include <thrift/TToString.h>
 
-
+namespace com { namespace rapidsdata { namespace wirelineprotocol { namespace messages { namespace v5 {
 
 
 Row::~Row() noexcept {
 }
 
 
-void Row::__set_columns(const std::vector< ::ColumnValue> & val) {
+void Row::__set_columns(const std::vector< ::com::rapidsdata::wirelineprotocol::messages::v5::ColumnValue> & val) {
   this->columns = val;
 }
 std::ostream& operator<<(std::ostream& out, const Row& obj)
@@ -92,7 +92,7 @@ uint32_t Row::write(::apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeFieldBegin("columns", ::apache::thrift::protocol::T_LIST, 1);
   {
     xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>(this->columns.size()));
-    std::vector< ::ColumnValue> ::const_iterator _iter5;
+    std::vector< ::com::rapidsdata::wirelineprotocol::messages::v5::ColumnValue> ::const_iterator _iter5;
     for (_iter5 = this->columns.begin(); _iter5 != this->columns.end(); ++_iter5)
     {
       xfer += (*_iter5).write(oprot);
@@ -237,4 +237,4 @@ void RowDataResponse::printTo(std::ostream& out) const {
   out << ")";
 }
 
-
+}}}}} // namespace

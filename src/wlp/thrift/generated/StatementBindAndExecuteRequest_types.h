@@ -20,7 +20,7 @@
 #include "ColumnValue_types.h"
 
 
-
+namespace com { namespace rapidsdata { namespace wirelineprotocol { namespace messages { namespace v5 {
 
 class StatementBindAndExecuteRequest;
 
@@ -40,13 +40,13 @@ class StatementBindAndExecuteRequest : public virtual ::apache::thrift::TBase {
 
   virtual ~StatementBindAndExecuteRequest() noexcept;
   std::string preparedStatementName;
-  std::vector< ::ColumnValue>  bindableValues;
+  std::vector< ::com::rapidsdata::wirelineprotocol::messages::v5::ColumnValue>  bindableValues;
 
   _StatementBindAndExecuteRequest__isset __isset;
 
   void __set_preparedStatementName(const std::string& val);
 
-  void __set_bindableValues(const std::vector< ::ColumnValue> & val);
+  void __set_bindableValues(const std::vector< ::com::rapidsdata::wirelineprotocol::messages::v5::ColumnValue> & val);
 
   bool operator == (const StatementBindAndExecuteRequest & rhs) const
   {
@@ -74,6 +74,6 @@ void swap(StatementBindAndExecuteRequest &a, StatementBindAndExecuteRequest &b);
 
 std::ostream& operator<<(std::ostream& out, const StatementBindAndExecuteRequest& obj);
 
-
+}}}}} // namespace
 
 #endif

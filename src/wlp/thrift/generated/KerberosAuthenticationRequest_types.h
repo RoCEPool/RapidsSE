@@ -19,7 +19,7 @@
 #include <memory>
 
 
-
+namespace com { namespace rapidsdata { namespace wirelineprotocol { namespace messages { namespace v5 {
 
 class KerberosAuthenticationRequest;
 
@@ -66,6 +66,6 @@ void swap(KerberosAuthenticationRequest &a, KerberosAuthenticationRequest &b);
 
 std::ostream& operator<<(std::ostream& out, const KerberosAuthenticationRequest& obj);
 
-
+}}}}} // namespace
 
 #endif

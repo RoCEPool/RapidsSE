@@ -11,7 +11,7 @@
 
 #include <thrift/TToString.h>
 
-
+namespace com { namespace rapidsdata { namespace wirelineprotocol { namespace messages { namespace v5 {
 
 int _kIntervalTypeValues[] = {
   IntervalType::YEAR_MONTH,
@@ -1409,4 +1409,4 @@ void ColumnValue::printTo(std::ostream& out) const {
   out << ")";
 }
 
-
+}}}}} // namespace

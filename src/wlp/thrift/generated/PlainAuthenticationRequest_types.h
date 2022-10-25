@@ -19,7 +19,7 @@
 #include <memory>
 
 
-
+namespace com { namespace rapidsdata { namespace wirelineprotocol { namespace messages { namespace v5 {
 
 class PlainAuthenticationRequest;
 
@@ -66,6 +66,6 @@ void swap(PlainAuthenticationRequest &a, PlainAuthenticationRequest &b);
 
 std::ostream& operator<<(std::ostream& out, const PlainAuthenticationRequest& obj);
 
-
+}}}}} // namespace
 
 #endif

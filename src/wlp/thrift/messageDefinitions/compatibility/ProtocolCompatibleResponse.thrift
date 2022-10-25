@@ -1,5 +1,6 @@
 
 namespace java com.rapidsdata.wirelineprotocol.messages.compatibility
+namespace cpp  com.rapidsdata.wirelineprotocol.messages.compatibility
 
 // Sent from the server to the client to indicate that the server can support the version of
 // the wire line protocol that the client is requesting.

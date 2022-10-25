@@ -19,7 +19,7 @@
 #include <memory>
 
 
-
+namespace com { namespace rapidsdata { namespace wirelineprotocol { namespace messages { namespace v5 {
 
 class SessionChangeRequest;
 
@@ -86,6 +86,6 @@ void swap(SessionChangeRequest &a, SessionChangeRequest &b);
 
 std::ostream& operator<<(std::ostream& out, const SessionChangeRequest& obj);
 
-
+}}}}} // namespace
 
 #endif

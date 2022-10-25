@@ -19,7 +19,7 @@
 #include <memory>
 
 
-
+namespace com { namespace rapidsdata { namespace wirelineprotocol { namespace messages { namespace v5 {
 
 struct MessageTypes {
   enum type {
@@ -68,6 +68,6 @@ std::ostream& operator<<(std::ostream& out, const MessageTypes::type& val);
 
 std::string to_string(const MessageTypes::type& val);
 
-
+}}}}} // namespace
 
 #endif

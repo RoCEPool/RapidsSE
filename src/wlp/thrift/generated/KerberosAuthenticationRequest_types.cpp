@@ -11,7 +11,7 @@
 
 #include <thrift/TToString.h>
 
-
+namespace com { namespace rapidsdata { namespace wirelineprotocol { namespace messages { namespace v5 {
 
 
 KerberosAuthenticationRequest::~KerberosAuthenticationRequest() noexcept {
@@ -128,4 +128,4 @@ void KerberosAuthenticationRequest::printTo(std::ostream& out) const {
   out << ")";
 }
 
-
+}}}}} // namespace

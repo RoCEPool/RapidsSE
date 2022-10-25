@@ -11,7 +11,7 @@
 
 #include <thrift/TToString.h>
 
-
+namespace com { namespace rapidsdata { namespace wirelineprotocol { namespace messages { namespace v5 {
 
 
 SessionDataResponse::~SessionDataResponse() noexcept {
@@ -105,4 +105,4 @@ void SessionDataResponse::printTo(std::ostream& out) const {
   out << ")";
 }
 
-
+}}}}} // namespace

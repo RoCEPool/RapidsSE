@@ -19,7 +19,7 @@
 #include <memory>
 
 
-
+namespace com { namespace rapidsdata { namespace wirelineprotocol { namespace messages { namespace v5 {
 
 struct AffectedVerb {
   enum type {
@@ -121,6 +121,6 @@ void swap(StatementResponse &a, StatementResponse &b);
 
 std::ostream& operator<<(std::ostream& out, const StatementResponse& obj);
 
-
+}}}}} // namespace
 
 #endif

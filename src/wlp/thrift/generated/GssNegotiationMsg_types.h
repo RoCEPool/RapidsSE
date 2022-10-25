@@ -19,7 +19,7 @@
 #include <memory>
 
 
-
+namespace com { namespace rapidsdata { namespace wirelineprotocol { namespace messages { namespace v5 {
 
 class GssNegotiationMsg;
 
@@ -60,6 +60,6 @@ void swap(GssNegotiationMsg &a, GssNegotiationMsg &b);
 
 std::ostream& operator<<(std::ostream& out, const GssNegotiationMsg& obj);
 
-
+}}}}} // namespace
 
 #endif

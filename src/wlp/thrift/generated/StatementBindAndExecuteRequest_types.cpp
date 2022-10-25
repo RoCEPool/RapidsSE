@@ -11,7 +11,7 @@
 
 #include <thrift/TToString.h>
 
-
+namespace com { namespace rapidsdata { namespace wirelineprotocol { namespace messages { namespace v5 {
 
 
 StatementBindAndExecuteRequest::~StatementBindAndExecuteRequest() noexcept {
@@ -22,7 +22,7 @@ void StatementBindAndExecuteRequest::__set_preparedStatementName(const std::stri
   this->preparedStatementName = val;
 }
 
-void StatementBindAndExecuteRequest::__set_bindableValues(const std::vector< ::ColumnValue> & val) {
+void StatementBindAndExecuteRequest::__set_bindableValues(const std::vector< ::com::rapidsdata::wirelineprotocol::messages::v5::ColumnValue> & val) {
   this->bindableValues = val;
 __isset.bindableValues = true;
 }
@@ -110,7 +110,7 @@ uint32_t StatementBindAndExecuteRequest::write(::apache::thrift::protocol::TProt
     xfer += oprot->writeFieldBegin("bindableValues", ::apache::thrift::protocol::T_LIST, 2);
     {
       xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>(this->bindableValues.size()));
-      std::vector< ::ColumnValue> ::const_iterator _iter5;
+      std::vector< ::com::rapidsdata::wirelineprotocol::messages::v5::ColumnValue> ::const_iterator _iter5;
       for (_iter5 = this->bindableValues.begin(); _iter5 != this->bindableValues.end(); ++_iter5)
       {
         xfer += (*_iter5).write(oprot);
@@ -150,4 +150,4 @@ void StatementBindAndExecuteRequest::printTo(std::ostream& out) const {
   out << ")";
 }
 
-
+}}}}} // namespace

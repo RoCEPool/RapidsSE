@@ -19,7 +19,7 @@
 #include <memory>
 
 
-
+namespace com { namespace rapidsdata { namespace wirelineprotocol { namespace messages { namespace v5 {
 
 class ClosePreparedStatementResponse;
 
@@ -60,6 +60,6 @@ void swap(ClosePreparedStatementResponse &a, ClosePreparedStatementResponse &b);
 
 std::ostream& operator<<(std::ostream& out, const ClosePreparedStatementResponse& obj);
 
-
+}}}}} // namespace
 
 #endif

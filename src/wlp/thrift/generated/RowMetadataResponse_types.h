@@ -20,7 +20,7 @@
 #include "ColumnMetadata_types.h"
 
 
-
+namespace com { namespace rapidsdata { namespace wirelineprotocol { namespace messages { namespace v5 {
 
 class RowMetadataResponse;
 
@@ -37,12 +37,12 @@ class RowMetadataResponse : public virtual ::apache::thrift::TBase {
 
   virtual ~RowMetadataResponse() noexcept;
   int32_t numColumns;
-  std::vector< ::ColumnMetadata>  columns;
+  std::vector< ::com::rapidsdata::wirelineprotocol::messages::v5::ColumnMetadata>  columns;
   bool isBoundedResult;
 
   void __set_numColumns(const int32_t val);
 
-  void __set_columns(const std::vector< ::ColumnMetadata> & val);
+  void __set_columns(const std::vector< ::com::rapidsdata::wirelineprotocol::messages::v5::ColumnMetadata> & val);
 
   void __set_isBoundedResult(const bool val);
 
@@ -72,6 +72,6 @@ void swap(RowMetadataResponse &a, RowMetadataResponse &b);
 
 std::ostream& operator<<(std::ostream& out, const RowMetadataResponse& obj);
 
-
+}}}}} // namespace
 
 #endif

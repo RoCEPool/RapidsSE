@@ -11,7 +11,7 @@
 
 #include <thrift/TToString.h>
 
-
+namespace com { namespace rapidsdata { namespace wirelineprotocol { namespace messages { namespace v5 {
 
 
 RowMetadataResponse::~RowMetadataResponse() noexcept {
@@ -22,7 +22,7 @@ void RowMetadataResponse::__set_numColumns(const int32_t val) {
   this->numColumns = val;
 }
 
-void RowMetadataResponse::__set_columns(const std::vector< ::ColumnMetadata> & val) {
+void RowMetadataResponse::__set_columns(const std::vector< ::com::rapidsdata::wirelineprotocol::messages::v5::ColumnMetadata> & val) {
   this->columns = val;
 }
 
@@ -126,7 +126,7 @@ uint32_t RowMetadataResponse::write(::apache::thrift::protocol::TProtocol* oprot
   xfer += oprot->writeFieldBegin("columns", ::apache::thrift::protocol::T_LIST, 2);
   {
     xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>(this->columns.size()));
-    std::vector< ::ColumnMetadata> ::const_iterator _iter5;
+    std::vector< ::com::rapidsdata::wirelineprotocol::messages::v5::ColumnMetadata> ::const_iterator _iter5;
     for (_iter5 = this->columns.begin(); _iter5 != this->columns.end(); ++_iter5)
     {
       xfer += (*_iter5).write(oprot);
@@ -171,4 +171,4 @@ void RowMetadataResponse::printTo(std::ostream& out) const {
   out << ")";
 }
 
-
+}}}}} // namespace

@@ -11,7 +11,7 @@
 
 #include <thrift/TToString.h>
 
-#undef NULL
+namespace com { namespace rapidsdata { namespace wirelineprotocol { namespace messages { namespace v5 {
 
 int _kDataTypeValues[] = {
   DataType::NULL,
@@ -318,4 +318,4 @@ void ColumnMetadata::printTo(std::ostream& out) const {
   out << ")";
 }
 
-
+}}}}} // namespace

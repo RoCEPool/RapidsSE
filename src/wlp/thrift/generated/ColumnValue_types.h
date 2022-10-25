@@ -19,7 +19,7 @@
 #include <memory>
 
 
-
+namespace com { namespace rapidsdata { namespace wirelineprotocol { namespace messages { namespace v5 {
 
 struct IntervalType {
   enum type {
@@ -584,6 +584,6 @@ void swap(ColumnValue &a, ColumnValue &b);
 
 std::ostream& operator<<(std::ostream& out, const ColumnValue& obj);
 
-
+}}}}} // namespace
 
 #endif

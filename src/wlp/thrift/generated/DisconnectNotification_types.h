@@ -19,7 +19,7 @@
 #include <memory>
 
 
-
+namespace com { namespace rapidsdata { namespace wirelineprotocol { namespace messages { namespace v5 {
 
 class DisconnectNotification;
 
@@ -68,6 +68,6 @@ void swap(DisconnectNotification &a, DisconnectNotification &b);
 
 std::ostream& operator<<(std::ostream& out, const DisconnectNotification& obj);
 
-
+}}}}} // namespace
 
 #endif
