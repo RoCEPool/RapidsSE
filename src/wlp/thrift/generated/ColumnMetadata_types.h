@@ -21,6 +21,8 @@
 
 namespace com { namespace rapidsdata { namespace wirelineprotocol { namespace messages { namespace v5 {
 
+#undef NULL
+
 struct DataType {
   enum type {
     NULL = 0,

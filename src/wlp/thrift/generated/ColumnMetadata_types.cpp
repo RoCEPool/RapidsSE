@@ -13,6 +13,8 @@
 
 namespace com { namespace rapidsdata { namespace wirelineprotocol { namespace messages { namespace v5 {
 
+#undef NULL
+
 int _kDataTypeValues[] = {
   DataType::NULL,
   DataType::BOOLEAN,
