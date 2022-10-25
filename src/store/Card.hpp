@@ -3,8 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-#define NEW_XLATOR
-
 #include "BASE.h"
 
 #include "eAL.h"
@@ -49,7 +47,6 @@ namespace STORE
   class Card_ELIST;
   class Card_Exists;
   class Card_Expr;
-  class Card_ExprBool;
 
   class Card_Filter;
 
