@@ -17,7 +17,7 @@ __aFooterFunction(Transforms)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Transforms::Transforms(Bench* pBench)
-: Xlator(CN_TRANSFORMS, pBench)
+: TransformerTool(CN_TRANSFORMS, pBench)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -187,7 +187,7 @@ void Transforms::vP20_T10_Add_tableSyn_ForAll_table(bool bPrint, bool bTrace)
 
   while (E_bEachMainWithSub(CK_TABLE,CK_TABLENM))  {
 
-    RASSERT(A_bTable(M.p_tableNm->sz()));
+    m_pTable = A_pAccess_Table(M.p_tableNm->sz());
 
     M.p_table->vMark1(MARK_CHANGED);
     char cTableSyn_actual = m_cTableSyn;
@@ -216,8 +216,8 @@ void Transforms::vP20_T20_Add_tablePtn_UnderAll_table(bool bPrint, bool bTrace)
 
   while (E_bEachMainWithSub(CK_TABLE,CK_TABLENM)) {
 
-    RASSERT(A_bTable(M.p_tableNm->sz()));
-    A_vPartitionOfTable();
+    m_pTable = A_pAccess_Table(M.p_tableNm->sz());
+    M.p_tablePtn = A_pProduce_tablePtn_ofTable(m_pTable,m_cTableSyn);
 
     //N_vNewMember(CK_TABLEPTN);
     //M.p_tablePtn->vAdd_TablePtn(M.p_table);
@@ -242,8 +242,8 @@ void Transforms::vP20_T30_Add_stream_UnderAll_table(bool bPrint, bool bTrace)
   // E <scan>
   while (E_bEachMainWithSub(CK_TABLE,CK_TABLENM)) {
 
-    RASSERT(A_bTable(M.p_tableNm->szValue()));
-    A_vStreamOfTable();
+    m_pTable = A_pAccess_Table(M.p_tableNm->sz());
+    M.p_stream = A_pProduce_stream_ofTable(m_pTable);
 
     M.p_table->vAppend(M.p_stream);
 
@@ -304,7 +304,7 @@ void Transforms::vP30_T10_Calc_ordinalRange_ForAll_stream(bool bPrint, bool bTra
 
     CardIter xCI(M.p_stream->pSub_stmColList());
     i8 iOrdinal = iOrdLo;
-    while (M.p_stmCol = _pCard_StmCol(xCI.pEachChild(CK_STMCOL))) {
+    while ((M.p_stmCol = _pCard_StmCol(xCI.pEachChild(CK_STMCOL)))) {
       M.p_stmColOrd = new Card_StmColOrd;
       M.p_stmColOrd->vValueSprint("$%lld"_Stz, iOrdinal);
       M.p_stmCol->vAppend(M.p_stmColOrd);
@@ -336,7 +336,7 @@ void Transforms::vP40_T10_Convert_where_calc_To_where_calcBool(bool bPrint, bool
   vTracing(bPrint,bTrace);
 
   while (E_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
-    X_vCalc_To_calcBool();
+    M.p_boolCalc = X_pConvert_rpnCalc_To_boolCalc(M.p_rpnCalc);
     X_vSubCard_ReplaceSub(M.p_rpnCalc, M.p_where, M.p_boolCalc);
     D_vDeleteMember(M.p_rpnCalc);
   }
@@ -591,11 +591,11 @@ void Transforms::vP60_T10_Add_indexJoin_UnderAllJoinable_table(bool bPrint, bool
   while (E_bEachMainWithSub(CK_TABLE,CK_FILTER)) {
 
     M.p_tableNm = M.p_table->pSub_tableNm();
-    RASSERT(A_bTable(M.p_tableNm->szValue()));
+    m_pTable = A_pAccess_Table(M.p_tableNm->sz());
 
-    RASSERT(A_bIndexListOfTable());
+    M.p_indexList = A_pProduce_indexList_ofTable(m_pTable);
 
-    while (M.p_index = _pCard_Index(M.p_indexList->pPopChild())) {
+    while ((M.p_index = _pCard_Index(M.p_indexList->pPopChild()))) {
       M.p_indexJoin = new Card_IndexJoin;
       M.p_indexJoin->vAppend(M.p_index);
       //M.p_table->vInsertBefore(M.p_indexJoin,M.p_filter);
@@ -605,28 +605,6 @@ void Transforms::vP60_T10_Add_indexJoin_UnderAllJoinable_table(bool bPrint, bool
     }
 
     D_vDeleteMember(CK_INDEXLIST);
-
-/*
-    M.p_tablePtr = M.p_table->pSub_tablePtr();
-    m_pTable = M.p_tablePtr->pTable();
-
-    if (! (m_pIdxVec = m_pTable->pIdxVec()))
-      return;
-
-    i8 nIndexes = m_pIdxVec->nItems();
-    for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
-      m_pIndex = m_pIdxVec->pGet(i_Index);
-
-      M.p_indexJoin = new Card_IndexJoin;
-      M.p_table->vInsertBefore(M.p_indexJoin,M.p_filter);
-
-      M.p_indexPtr = new Card_IndexPtr(m_pIndex);
-      M.p_indexJoin->vAppend(M.p_indexPtr);
-
-      Card_IdxColList* pCard_idxColList = new Card_IdxColList(m_pIndex);
-      M.p_indexJoin->vAppend(pCard_idxColList);
-    }
-    */
   }
 
   vEndTransform();
@@ -1420,9 +1398,9 @@ void Transforms::vP80_T10_Insert_indexList_ToAll_scan(bool bPrint, bool bTrace)
 //
 //    }
 
-    RASSERT(A_bTable(M.p_tableNm->szValue()));
+    m_pTable = A_pAccess_Table(M.p_tableNm->sz());
 
-    if (A_bIndexListOfTable()) {
+    if ((M.p_indexList = A_pProduce_indexList_ofTable(m_pTable))) {
       M.p_comment = new Card_Comment(SEP_SCRATCH);
       M.p_scan->vAppend(M.p_comment);
 

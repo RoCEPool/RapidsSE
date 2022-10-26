@@ -1,51 +1,43 @@
 /*============================================================================*/
-/* Xlator.hpp --                                                              */
+/* TransformBase.hpp --                                                       */
 /*============================================================================*/
 #pragma once
 
-#include "TransformerTool.hpp"
+#include "Bench.hpp"
+#include "BoardIter.hpp"
+
 
 namespace STORE
 {
-  class Xlator : public TransformerTool
+  class Table;
+
+  class TransformBase : public Object
   {
-  private:
+  public:
 
     // must be last
     Footer m_xFooter;
 
+
   public:
     void* operator new(size_t);
     void  operator delete(void*);
-  
-    Xlator(eCN eClassNo, Bench* pBench);
-   ~Xlator(void) noexcept(false);
 
-    void vCullAll(eCK eCard);
-    void vDeleteAll(eCK eCard);
-    void vRenumberMainCards(void);
+    TransformBase(eCN eClass);
+   ~TransformBase(void) noexcept(false);
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    Table* A_pAccess_Table(Stz* szTableNm);
 
-    bool A_bTable(Stz* szTableNm);
-    bool A_bIndex(Stz* szIndexNm);
-    bool A_bIndex(Stz* szTableNm, Stz* szIndexNm);
-
-    bool A_bIndexListOfTable(void);
-    void A_vStreamOfTable(void);
-    void A_vPartitionOfTable(void);
-    void A_vSizeOfTable(void);
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    Card_IndexList* A_pProduce_indexList_ofTable(Table* pTable);
+    Card_Size*      A_pProduce_size_ofTable(Table* pTable);
+    Card_Stream*    A_pProduce_stream_ofTable(Table* pTable);
+    Card_TablePtn*  A_pProduce_tablePtn_ofTable(Table* pTable, char cTableSyn);
 
     bool T_bColumnRef_IsColumnRef(Card_ColumnRef* p_columnRef);
     i8   T_iColumnRef_ColumnOrd(Card_ColumnRef* p_columnRef);
     char T_cColumnRef_TableSyn(Card_ColumnRef* p_columnRef);
     char T_cColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef);
     void T_vColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef, String* psTableSyn);
-
 
     ePB  T_eTerm_Bound(Card_Term* p_term);
     i8   T_iTerm_IndexColNo(Card_Term* p_term);
@@ -78,17 +70,15 @@ namespace STORE
     bool T_bCmpPred_OverlapsWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg);
     bool T_bCmpPred_UsesTable(Card_CmpPred* p_cmpPred, char cTableSyn);
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     bool X_bBoolCalc_CullPred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred, char cWithMark);
     void X_vBoolCalc_CullPred(Card_BoolCalc* p_boolCalc, char cWithMark);
     void X_vBoolCalc_RemovePred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred);
 
-    void X_vCalc_To_calcBool(void);
-
     i8   X_iCandIndex_Rank(Card_CandIndex* p_candIndex);
     void X_vCandIndex_Rank(Card_CandIndex* p_candIndex, i8 iRank);
+
+    Card_BoolCalc* X_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc);
 
     bool X_bCoPtnJoin_CoPtnWith(Card_CoPtnJoin* p_coPtnJoin, Card_CoPtnPred* p_CoPtnPred);
     Card_CoPtnJoin* X_pCoPtnJoinList_Find_coPtn_for(Card_CoPtnJoinList* p_coPtnJoinList, Card_CoPtnPred* p_coPtnPred);
@@ -117,10 +107,10 @@ namespace STORE
     Card_Table* X_pTableList_FindTable(Card_TableList* p_tableList, char cSyn);
     bool X_bTableList_PredCmpIsCoPtn(Card_TableList* p_tableList, Card_CmpPred* p_predCmp);
 
-private:
 
     Footer* aFooter(void);
   };
+
 }
 
 /*============================================================================*/

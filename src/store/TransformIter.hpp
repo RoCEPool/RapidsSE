@@ -6,6 +6,7 @@
 #include "Bench.hpp"
 #include "BoardIter.hpp"
 
+#include "TransformBase.hpp"
 
 namespace STORE
 {
@@ -94,7 +95,7 @@ namespace STORE
     Card_Where *            p_where;
   } ;
 
-  class TransformIter : public Object
+  class TransformIter : public TransformBase
                       , public ListItem_t<TransformIter>
   {
   public:
