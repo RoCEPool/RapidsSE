@@ -17,7 +17,7 @@ __aFooterFunction(Transforms)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Transforms::Transforms(Bench* pBench)
-: Xlator(CN_TRANSFORMS, pBench)
+: TransformerTool(CN_TRANSFORMS, pBench)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
