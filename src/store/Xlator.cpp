@@ -742,7 +742,7 @@ void Xlator::X_vSubCard_ReplaceSub(Card* pSub, Card* pInParent, Card* pWith)
 /*----------------------------------------------------------------------------*/
 /* convert <calc> to <calcBool>                                               */
 /*----------------------------------------------------------------------------*/
-Card_BoolCalc* Xlator::X_pConvert_calc_To_calcBool(void)
+Card_BoolCalc* Xlator::X_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 

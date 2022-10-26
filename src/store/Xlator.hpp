@@ -73,7 +73,7 @@ namespace STORE
     void X_vBoolCalc_CullPred(Card_BoolCalc* p_boolCalc, char cWithMark);
     void X_vBoolCalc_RemovePred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred);
 
-    Card_BoolCalc* X_pConvert_calc_To_calcBool(void);
+    Card_BoolCalc* X_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc);
 
     i8   X_iCandIndex_Rank(Card_CandIndex* p_candIndex);
     void X_vCandIndex_Rank(Card_CandIndex* p_candIndex, i8 iRank);

@@ -336,7 +336,7 @@ void Transforms::vP40_T10_Convert_where_calc_To_where_calcBool(bool bPrint, bool
   vTracing(bPrint,bTrace);
 
   while (E_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
-    M.p_boolCalc = X_pConvert_calc_To_calcBool();
+    M.p_boolCalc = X_pConvert_rpnCalc_To_boolCalc(M.p_rpnCalc);
     X_vSubCard_ReplaceSub(M.p_rpnCalc, M.p_where, M.p_boolCalc);
     D_vDeleteMember(M.p_rpnCalc);
   }
