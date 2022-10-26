@@ -24,6 +24,10 @@ namespace STORE
 
     void X_vFilter_CullPred(Card_Filter* p_filter, char cWithMark);
 
+    void X_vIdxColList_Ordinate(Card_IdxColList* p_idxColList, Card_Stream* pCard_Stream);
+
+    void X_vSubCard_ReplaceSub(Card* pSub, Card* pInParent, Card* pWith);
+
     // must be last
     Footer m_xFooter;
 

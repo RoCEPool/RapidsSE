@@ -213,6 +213,47 @@ void Xmodify::X_vFilter_CullPred(Card_Filter* p_filter, char cWithMark)
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/* add table and index                                                        */
+/*----------------------------------------------------------------------------*/
+void Xmodify::X_vIdxColList_Ordinate(Card_IdxColList* p_idxColList, Card_Stream* pCard_Stream)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  i8 iOrdLo = pCard_Stream->Y_iVal(P_OrdLo);
+
+  Card_StmColList* pCard_StreamColList = pCard_Stream->pSub_stmColList();
+
+  i8 nSubCards = p_idxColList->nChildCards();
+  for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
+    Card_IdxCol* pCard_idxCol = _pCard_IdxCol(p_idxColList->pGetChild(i_Sub));
+
+    i8 i_StreamColNo = C_UNKNOWN;
+    Stz* szColNm = pCard_idxCol->sz();
+    Card_StmCol* pCard_streamCol =
+        X_pStmColList_Find_streamCol(pCard_StreamColList, szColNm, i_StreamColNo);
+
+    s32 sOrdinal;
+    sOrdinal.vSprint("$%lld"_Stz,iOrdLo+i_StreamColNo);
+    pCard_idxCol->vValue(sOrdinal);
+
+    pCard_idxCol->vMark1(MARK_CHANGED);
+  }
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* convert <calc> to <calcBool>                                               */
+/*----------------------------------------------------------------------------*/
+void Xmodify::X_vSubCard_ReplaceSub(Card* pSub, Card* pInParent, Card* pWith)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  Card* pParent = pInParent->pFindParent(pSub);
+
+  pParent->vReplaceChild(pSub,pWith);
+}
+
 
 /*============================================================================*/
 /* end                                                                        */
