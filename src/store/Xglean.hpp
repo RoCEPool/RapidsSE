@@ -26,6 +26,9 @@ namespace STORE
     char G_cTerm_TableSyn(Card_Term* p_term);
     eTE  G_eTerm_TermEval(Card_Term* p_term);
 
+    i8   X_iCandIndex_Rank(Card_CandIndex* p_candIndex);
+    void X_vCandIndex_Rank(Card_CandIndex* p_candIndex, i8 iRank);
+
 
     // must be last
     Footer m_xFooter;

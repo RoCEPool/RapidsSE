@@ -28,36 +28,12 @@ namespace STORE
 
 
 
-    void T_vPRED_CullByKids(Card_PRED* p_PRED);
-    Card_CmpPred* T_pPRED_FindBound(Card_PRED* p_PRED, Index* pIndex, ePB eBound);
-
-    Card_CmpPred* T_pOrPred_FindBound(Card_OrPred* p_orPred, Index* pIndex, ePB eBound);
-
-    Card_CmpPred* T_pAndPred_FindBound(Card_AndPred* p_andPred, Index* pIndex, ePB eBound);
-
-    void T_vCmpPred_MarkBound(Card_CmpPred* p_cmpPred);
-    bool T_bCmpPred_CoPtnWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg);
-    Card_CmpPred* T_pCmpPred_FindBound(Card_CmpPred* p_cmpPred, Index* pIndex, ePB eBound);
-    bool T_bCmpPred_IsEq(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg);
-    bool T_bCmpPred_OverlapsWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg);
-    bool T_bCmpPred_UsesTable(Card_CmpPred* p_cmpPred, char cTableSyn);
 
 
-    bool X_bBoolCalc_CullPred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred, char cWithMark);
-    void X_vBoolCalc_CullPred(Card_BoolCalc* p_boolCalc, char cWithMark);
-    void X_vBoolCalc_RemovePred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred);
-
-    i8   X_iCandIndex_Rank(Card_CandIndex* p_candIndex);
-    void X_vCandIndex_Rank(Card_CandIndex* p_candIndex, i8 iRank);
 
 
-    bool X_bCoPtnJoin_CoPtnWith(Card_CoPtnJoin* p_coPtnJoin, Card_CoPtnPred* p_CoPtnPred);
-    Card_CoPtnJoin* X_pCoPtnJoinList_Find_coPtn_for(Card_CoPtnJoinList* p_coPtnJoinList, Card_CoPtnPred* p_coPtnPred);
-    bool X_bCoPtnJoinList_HasEqPredCmp(Card_CoPtnJoinList* p_coPtnJoinList, Card_CmpPred* p_predCmp);
 
-    Card_StmColList* X_pELIST_DeriveStreamColList(Card_ELIST* p_ELIST);
 
-    void X_vFilter_CullPred(Card_Filter* p_filter, char cWithMark);
 
     void X_vIdxColList_Ordinate(Card_IdxColList* p_idxColList, Card_Stream* pCard_Stream);
 
@@ -67,15 +43,12 @@ namespace STORE
 
     void X_vObyElist_Populate(Card_ObyElist* p_obyElist, Index* pIndex);
 
-    bool X_bPtndJoin_MayFollowAfter(Card_PtndJoin* p_ptndJoin, Card_SubSet* pPriorPtnJoins_sofar);
     void X_vPtndJoin_JoinEst(Card_PtndJoin* p_ptndJoin, Card_TableList* p_tableList);
 
-    Card_StmCol* X_pStmColList_Find_streamCol(Card_StmColList* p_stmColList, Stz *szColNm, i8& i_StreamColNo);
 
     void X_vSubCard_ReplaceSub(Card* pSub, Card* pInParent, Card* pWith);
 
-    Card_Table* X_pTableList_FindTable(Card_TableList* p_tableList, char cSyn);
-    bool X_bTableList_PredCmpIsCoPtn(Card_TableList* p_tableList, Card_CmpPred* p_predCmp);
+
 
 
     Footer* aFooter(void);

@@ -97,6 +97,28 @@ void Xglean::G_vColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef, String* psTabl
 
 
 
+/*----------------------------------------------------------------------------*/
+/* get rank                                                                   */
+/*----------------------------------------------------------------------------*/
+i8 Xglean::X_iCandIndex_Rank(Card_CandIndex* p_candIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  i8 iRank = p_candIndex->Y_iVal(P_Rank);
+
+  return iRank;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set rank                                                                   */
+/*----------------------------------------------------------------------------*/
+void Xglean::X_vCandIndex_Rank(Card_CandIndex* p_candIndex, i8 iRank)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  p_candIndex->Y_vSet(P_Rank, iRank);
+}
+
 
 
 /*----------------------------------------------------------------------------*/

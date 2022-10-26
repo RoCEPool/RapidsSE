@@ -256,6 +256,40 @@ Card_BoolCalc* Xcreate::X_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
   return p_boolCalc;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_StmColList* Xcreate::X_pELIST_DeriveStreamColList(Card_ELIST* p_ELIST)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  Card_StmColList* pCard_StreamColList = new Card_StmColList;
+
+  eCK eSubCard;
+  i8 nSubCards = p_ELIST->nChildCards();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card *pSubCard = p_ELIST->pGetChild(i_Child, eSubCard);
+
+    Card *pCard_Type = pSubCard->pFindSubCard(CK_TYPE);
+    Card *pCard_As = pSubCard->pFindSubCard(CK_AS);
+
+    Card_StmCol* pCard_StreamCol = new Card_StmCol;
+    pCard_StreamColList->vAppend(pCard_StreamCol);
+
+    if (pCard_As)
+      pCard_StreamCol->vAppend(pCard_As->pDupCardAndSubCards());
+    else {
+      s32 sAs;
+      sAs.vSprint("$%lld"_Stz,i_Child + 1);
+      pCard_As = new Card_As(sAs);
+      pCard_StreamCol->vAppend(pCard_As);
+    }
+    pCard_StreamCol->vAppend(pCard_Type->pDupCardAndSubCards());
+  }
+
+  return pCard_StreamColList;
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

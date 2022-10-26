@@ -20,6 +20,8 @@ namespace STORE
 
     Card_BoolCalc*  X_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc);
 
+    Card_StmColList* X_pELIST_DeriveStreamColList(Card_ELIST* p_ELIST);
+
     // must be last
     Footer m_xFooter;
 
