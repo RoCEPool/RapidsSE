@@ -17,7 +17,7 @@ __aFooterFunction(Xreshape)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Xreshape::Xreshape(eCN eClass)
-: Xbase(eClass)
+: Xaccess(eClass)
 {
 }
 
@@ -39,17 +39,6 @@ Xreshape::~Xreshape(void) noexcept(false)
 
 
 
-/*----------------------------------------------------------------------------*/
-/* access table                                                               */
-/*----------------------------------------------------------------------------*/
-Table* Xreshape::A_pAccess_Table(Stz* szTableNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  Table* pTable = AM::pTableFind(szTableNm);
-
-  return pTable;
-}
 
 /*----------------------------------------------------------------------------*/
 /* produce composite <indexList> of table                                     */

@@ -3,14 +3,14 @@
 /*============================================================================*/
 #pragma once
 
-#include "Xbase.hpp"
+#include "Xaccess.hpp"
 
 
 namespace STORE
 {
   class Table;
 
-  class Xreshape : public Xbase
+  class Xreshape : public Xaccess
   {
   public:
 
@@ -24,8 +24,6 @@ namespace STORE
 
     Xreshape(eCN eClass);
    ~Xreshape(void) noexcept(false);
-
-    Table* A_pAccess_Table(Stz* szTableNm);
 
     Card_IndexList* A_pProduce_indexList_ofTable(Table* pTable);
     Card_Size*      A_pProduce_size_ofTable(Table* pTable);
