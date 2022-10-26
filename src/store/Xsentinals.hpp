@@ -6,7 +6,7 @@
 #include "Bench.hpp"
 #include "BoardIter.hpp"
 
-#include "Xreshape.hpp"
+#include "Xderive.hpp"
 
 namespace STORE
 {
@@ -95,7 +95,7 @@ namespace STORE
     Card_Where *            p_where;
   } ;
 
-  class Xsentinals : public Xreshape
+  class Xsentinals : public Xderive
                    , public ListItem_t<Xsentinals>
   {
   public:

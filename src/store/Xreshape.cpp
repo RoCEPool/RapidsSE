@@ -17,8 +17,8 @@ __aFooterFunction(Xreshape)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Xreshape::Xreshape(eCN eClass)
-: Xderive(eClass)
+Xreshape::Xreshape(eCN eClass, Bench* pBench)
+: Xgearing(eClass,pBench)
 {
 }
 

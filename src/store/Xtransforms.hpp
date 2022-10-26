@@ -1,13 +1,13 @@
 /*============================================================================*/
-/* Transforms.hpp --                                                          */
+/* Xtransforms.hpp --                                                          */
 /*============================================================================*/
 #pragma once
 
-#include "Xgearing.hpp"
+#include "Xreshape.hpp"
 
 namespace STORE
 {
-  class Transforms : public Xgearing
+  class Xtransforms : public Xreshape
   {
   private:
 
@@ -18,12 +18,13 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Transforms(Bench* pBench);
-   ~Transforms(void) noexcept(false);
+    Xtransforms(Bench* pBench);
+   ~Xtransforms(void) noexcept(false);
 
     //void vAdd_columnRef_Under_term(bool bPrint, bool bTrace);
 
     void vH10_T10_Delete_Redundant_stage(bool bPrint, bool bTrace);
+    void vH10_T15_Hide_Ignorable_stage(bool bPrint, bool bTrace);
     void vH10_T20_Delete_absJoin(bool bPrint, bool bTrace);
     void vH10_T30_Delete_combined(bool bPrint, bool bTrace);
     void vH10_T40_Delete_send(bool bPrint, bool bTrace);
@@ -100,7 +101,7 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  Transforms* _pTransforms(void* aAddr);
+  Xtransforms* _pXtransforms(void* aAddr);
 }
 /*============================================================================*/
 /* end                                                                        */

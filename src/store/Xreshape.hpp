@@ -3,18 +3,19 @@
 /*============================================================================*/
 #pragma once
 
-#include "Xderive.hpp"
+#include "Xgearing.hpp"
 
 
 namespace STORE
 {
   class Table;
 
-  class Xreshape : public Xderive
+  class Xreshape : public Xgearing
   {
   public:
 
     void vR_H10_T10_Delete_Redundant_stage(void);
+    void vR_H10_T15_Hide_Ignorable_stage(void);
     void vR_H10_T20_Delete_absJoin(void);
     void vR_H10_T30_Delete_combined(void);
     void vR_H10_T40_Delete_send(void);
@@ -70,7 +71,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    Xreshape(eCN eClass);
+    Xreshape(eCN eClass, Bench* pBench);
    ~Xreshape(void) noexcept(false);
 
     Footer* aFooter(void);

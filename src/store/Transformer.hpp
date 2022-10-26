@@ -5,7 +5,7 @@
 
 #include "OptimiserTool.hpp"
 
-#include "Transforms.hpp"
+#include "Xtransforms.hpp"
 
 namespace STORE
 {
@@ -17,7 +17,7 @@ namespace STORE
     TagSet*      m_pJobTags;
     b8           m_bInteractive;
 
-    Transforms*  m_pTransforms;
+    Xtransforms*  m_pTransforms;
 
 
     // must be last
@@ -31,7 +31,7 @@ namespace STORE
    ~Transformer(void) noexcept(false);
 
     void vTransform(void);
-    Transforms* pTransforms(void);
+    Xtransforms* pTransforms(void);
 
   private:
 

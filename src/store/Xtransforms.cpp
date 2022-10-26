@@ -1,23 +1,23 @@
 /*============================================================================*/
-/* Transforms.cpp --                                                          */
+/* Xtransforms.cpp --                                                          */
 /*============================================================================*/
 
-#include "Transforms.hpp"
+#include "Xtransforms.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Transforms,CN_TRANSFORMS)
-__aNewFunction(Transforms,CN_TRANSFORMS)
-__vDeleteFunction(Transforms,CN_TRANSFORMS)
-__aFooterFunction(Transforms)
+__pCastFunction(STORE, Xtransforms, CN_TRANSFORMS)
+__aNewFunction(Xtransforms, CN_TRANSFORMS)
+__vDeleteFunction(Xtransforms, CN_TRANSFORMS)
+__aFooterFunction(Xtransforms)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Transforms::Transforms(Bench* pBench)
-: Xgearing(CN_TRANSFORMS, pBench)
+Xtransforms::Xtransforms(Bench* pBench)
+: Xreshape(CN_TRANSFORMS, pBench)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -29,7 +29,7 @@ Transforms::Transforms(Bench* pBench)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Transforms::~Transforms(void) noexcept(false)
+Xtransforms::~Xtransforms(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -49,7 +49,7 @@ Transforms::~Transforms(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* linearize board by deleting all duplicate <stage>'s                        */
 /*----------------------------------------------------------------------------*/
-void Transforms::vH10_T10_Delete_Redundant_stage(bool bPrint, bool bTrace)
+void Xtransforms::vH10_T10_Delete_Redundant_stage(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -69,9 +69,23 @@ void Transforms::vH10_T10_Delete_Redundant_stage(bool bPrint, bool bTrace)
     E_vRemoveDeleteMain(CK_STAGE);
   }
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  vEndTransform();
+  vPrintBoard();
+}
 
-  M.xBI.vRestart();
+/*----------------------------------------------------------------------------*/
+/* lhide ignorable <stage>'s                                                  */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vH10_T15_Hide_Ignorable_stage(bool bPrint, bool bTrace)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vDescription("hide ignorable <stage>'s"_Stz);
+  vTransform((char *) (__func__), C_PRINT_XFORM);
+  vTracing(bPrint,bTrace);
+
+  //M.pDeck->vDump(0,(Stz*)(__func__));
+
   while (E_bEachMain(CK_STAGE)) {
     if (! (M.p_topology = M.p_stage->pSub_topology()) )
       continue;
@@ -88,7 +102,7 @@ void Transforms::vH10_T10_Delete_Redundant_stage(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* delete superfluous <absJoin>'s                                             */
 /*----------------------------------------------------------------------------*/
-void Transforms::vH10_T20_Delete_absJoin(bool bPrint, bool bTrace)
+void Xtransforms::vH10_T20_Delete_absJoin(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -108,7 +122,7 @@ void Transforms::vH10_T20_Delete_absJoin(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* delete superfluous <combined>'s                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vH10_T30_Delete_combined(bool bPrint, bool bTrace)
+void Xtransforms::vH10_T30_Delete_combined(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -128,7 +142,7 @@ void Transforms::vH10_T30_Delete_combined(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* delete superfluous <send>'s                                                */
 /*----------------------------------------------------------------------------*/
-void Transforms::vH10_T40_Delete_send(bool bPrint, bool bTrace)
+void Xtransforms::vH10_T40_Delete_send(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -148,7 +162,7 @@ void Transforms::vH10_T40_Delete_send(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* replace all <scan>'s with their children                                   */
 /*----------------------------------------------------------------------------*/
-void Transforms::vH10_T50_Cull_scan_Leaving_table(bool bPrint, bool bTrace)
+void Xtransforms::vH10_T50_Cull_scan_Leaving_table(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -175,7 +189,7 @@ void Transforms::vH10_T50_Cull_scan_Leaving_table(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* add a <tableSyn> to all <table>'s                                          */
 /*----------------------------------------------------------------------------*/
-void Transforms::vH20_T10_Add_tableSyn_ForAll_table(bool bPrint, bool bTrace)
+void Xtransforms::vH20_T10_Add_tableSyn_ForAll_table(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -206,7 +220,7 @@ void Transforms::vH20_T10_Add_tableSyn_ForAll_table(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* add a <tablePtn> under every <table>                                       */
 /*----------------------------------------------------------------------------*/
-void Transforms::vH20_T20_Add_tablePtn_UnderAll_table(bool bPrint, bool bTrace)
+void Xtransforms::vH20_T20_Add_tablePtn_UnderAll_table(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -231,7 +245,7 @@ void Transforms::vH20_T20_Add_tablePtn_UnderAll_table(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* add a <stream> under every <table>                                         */
 /*----------------------------------------------------------------------------*/
-void Transforms::vH20_T30_Add_stream_UnderAll_table(bool bPrint, bool bTrace)
+void Xtransforms::vH20_T30_Add_stream_UnderAll_table(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -278,7 +292,7 @@ void Transforms::vH20_T30_Add_stream_UnderAll_table(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* calculate the ordinal $low..$high range for each <stream>                  */
 /*----------------------------------------------------------------------------*/
-void Transforms::vH30_T10_Calc_ordinalRange_ForAll_stream(bool bPrint, bool bTrace)
+void Xtransforms::vH30_T10_Calc_ordinalRange_ForAll_stream(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -327,7 +341,7 @@ void Transforms::vH30_T10_Calc_ordinalRange_ForAll_stream(bool bPrint, bool bTra
 /*----------------------------------------------------------------------------*/
 /* convert <where>//<calc> to <where>//<calcBool>                             */
 /*----------------------------------------------------------------------------*/
-void Transforms::vH40_T10_Convert_where_calc_To_where_calcBool(bool bPrint, bool bTrace)
+void Xtransforms::vH40_T10_Convert_where_calc_To_where_calcBool(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -348,7 +362,7 @@ void Transforms::vH40_T10_Convert_where_calc_To_where_calcBool(bool bPrint, bool
 /*----------------------------------------------------------------------------*/
 /* inspect <where>//<pred> and attempt to find source <table>                 */
 /*----------------------------------------------------------------------------*/
-void Transforms::vH40_T20_Mark_where_pred_Wrt_table(bool bPrint, bool bTrace)
+void Xtransforms::vH40_T20_Mark_where_pred_Wrt_table(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -366,7 +380,7 @@ void Transforms::vH40_T20_Mark_where_pred_Wrt_table(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* inspect all <where>//<pred> and move <predCmp> to new <table>/<filter>     */
 /*----------------------------------------------------------------------------*/
-void Transforms::vH40_T30_Move_Marked_where_pred_To_table_filter(bool bPrint, bool bTrace)
+void Xtransforms::vH40_T30_Move_Marked_where_pred_To_table_filter(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -384,7 +398,7 @@ void Transforms::vH40_T30_Move_Marked_where_pred_To_table_filter(bool bPrint, bo
 /*----------------------------------------------------------------------------*/
 /* delete <where> if it is effectively empty                                  */
 /*----------------------------------------------------------------------------*/
-void Transforms::vH40_T40_Delete_Empty_where(bool bPrint, bool bTrace)
+void Xtransforms::vH40_T40_Delete_Empty_where(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -413,7 +427,7 @@ void Transforms::vH40_T40_Delete_Empty_where(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vH50_T10_Rework_Exists_SubQueries(bool bPrint, bool bTrace)
+void Xtransforms::vH50_T10_Rework_Exists_SubQueries(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -464,7 +478,7 @@ void Transforms::vH50_T10_Rework_Exists_SubQueries(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vH50_T20_Copy_Up_SubQueries(bool bPrint, bool bTrace)
+void Xtransforms::vH50_T20_Copy_Up_SubQueries(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -509,7 +523,7 @@ void Transforms::vH50_T20_Copy_Up_SubQueries(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vH50_T30_Resolve_Parameter_Linkage(bool bPrint, bool bTrace)
+void Xtransforms::vH50_T30_Resolve_Parameter_Linkage(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -538,7 +552,7 @@ void Transforms::vH50_T30_Resolve_Parameter_Linkage(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vH50_T40_Resolve_Parameter_Terms(bool bPrint, bool bTrace)
+void Xtransforms::vH50_T40_Resolve_Parameter_Terms(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -578,7 +592,7 @@ void Transforms::vH50_T40_Resolve_Parameter_Terms(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* add an <indexJoin> under all <table>'s which are joinable                  */
 /*----------------------------------------------------------------------------*/
-void Transforms::vH60_T10_Add_indexJoin_UnderAllJoinable_table(bool bPrint, bool bTrace)
+void Xtransforms::vH60_T10_Add_indexJoin_UnderAllJoinable_table(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -614,7 +628,7 @@ void Transforms::vH60_T10_Add_indexJoin_UnderAllJoinable_table(bool bPrint, bool
 /*----------------------------------------------------------------------------*/
 /* convert the column name in every <idxCol> to a $streamOrdinal              */
 /*----------------------------------------------------------------------------*/
-void Transforms::vH60_T20_Convert_idxCol_name_Of_table_To_idxCol_ord(bool bPrint, bool bTrace)
+void Xtransforms::vH60_T20_Convert_idxCol_name_Of_table_To_idxCol_ord(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -642,7 +656,7 @@ void Transforms::vH60_T20_Convert_idxCol_name_Of_table_To_idxCol_ord(bool bPrint
 /*----------------------------------------------------------------------------*/
 /* add a <joinPred> under each <indexJoin>                                    */
 /*----------------------------------------------------------------------------*/
-void Transforms::vH60_T30_Add_joinPred_UnderAll_indexJoin(bool bPrint, bool bTrace)
+void Xtransforms::vH60_T30_Add_joinPred_UnderAll_indexJoin(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -714,7 +728,7 @@ void Transforms::vH60_T30_Add_joinPred_UnderAll_indexJoin(bool bPrint, bool bTra
 /*----------------------------------------------------------------------------*/
 /* remove <table>/<filter>//<pred> that are now <table>/<joinPred>//<pred>    */
 /*----------------------------------------------------------------------------*/
-void Transforms::vH60_T40_Cull_filter_pred_MovedUpTo_joinPred(bool bPrint, bool bTrace)
+void Xtransforms::vH60_T40_Cull_filter_pred_MovedUpTo_joinPred(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -738,7 +752,7 @@ void Transforms::vH60_T40_Cull_filter_pred_MovedUpTo_joinPred(bool bPrint, bool 
 /*----------------------------------------------------------------------------*/
 /* delete any <table>/<filter> which is effectively empty                     */
 /*----------------------------------------------------------------------------*/
-void Transforms::vH60_T50_Delete_Empty_filter(bool bPrint, bool bTrace)
+void Xtransforms::vH60_T50_Delete_Empty_filter(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -770,7 +784,7 @@ void Transforms::vH60_T50_Delete_Empty_filter(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vH70_T00_Extract_tableList_From_queryBoard(bool bPrint, bool bTrace)
+void Xtransforms::vH70_T00_Extract_tableList_From_queryBoard(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -802,7 +816,7 @@ void Transforms::vH70_T00_Extract_tableList_From_queryBoard(bool bPrint, bool bT
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vH70_T10_Extract_joinPredList(bool bPrint, bool bTrace)
+void Xtransforms::vH70_T10_Extract_joinPredList(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -834,7 +848,7 @@ void Transforms::vH70_T10_Extract_joinPredList(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vH70_T20_Compute_coPtnPredList(bool bPrint, bool bTrace)
+void Xtransforms::vH70_T20_Compute_coPtnPredList(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -883,7 +897,7 @@ void Transforms::vH70_T20_Compute_coPtnPredList(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vH70_T30_Compute_coPtnJoinList(bool bPrint, bool bTrace)
+void Xtransforms::vH70_T30_Compute_coPtnJoinList(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -926,7 +940,7 @@ void Transforms::vH70_T30_Compute_coPtnJoinList(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vH70_T40_Compute_crossPtnJoinList(bool bPrint, bool bTrace)
+void Xtransforms::vH70_T40_Compute_crossPtnJoinList(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -968,7 +982,7 @@ void Transforms::vH70_T40_Compute_crossPtnJoinList(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vH70_T50_Compute_ptndJoinSet(bool bPrint, bool bTrace)
+void Xtransforms::vH70_T50_Compute_ptndJoinSet(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1010,7 +1024,7 @@ void Transforms::vH70_T50_Compute_ptndJoinSet(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vH70_T60_Copy_ptndJoinSet(bool bPrint, bool bTrace)
+void Xtransforms::vH70_T60_Copy_ptndJoinSet(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1041,7 +1055,7 @@ void Transforms::vH70_T60_Copy_ptndJoinSet(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vH70_T70_Generate_ptndPermutations(bool bPrint, bool bTrace)
+void Xtransforms::vH70_T70_Generate_ptndPermutations(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1089,7 +1103,7 @@ void Transforms::vH70_T70_Generate_ptndPermutations(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vH70_T80_Remove_invalidPermutations(bool bPrint, bool bTrace)
+void Xtransforms::vH70_T80_Remove_invalidPermutations(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1130,7 +1144,7 @@ void Transforms::vH70_T80_Remove_invalidPermutations(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vH70_T90_Setup_costEst(bool bPrint, bool bTrace)
+void Xtransforms::vH70_T90_Setup_costEst(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1158,7 +1172,7 @@ void Transforms::vH70_T90_Setup_costEst(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vH70_T92_Estimate_ptndJoins(bool bPrint, bool bTrace)
+void Xtransforms::vH70_T92_Estimate_ptndJoins(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1192,7 +1206,7 @@ void Transforms::vH70_T92_Estimate_ptndJoins(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vH70_T94_Estimate_network(bool bPrint, bool bTrace)
+void Xtransforms::vH70_T94_Estimate_network(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1239,7 +1253,7 @@ void Transforms::vH70_T94_Estimate_network(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vH70_T96_Estimate_joinOrder(bool bPrint, bool bTrace)
+void Xtransforms::vH70_T96_Estimate_joinOrder(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1279,7 +1293,7 @@ void Transforms::vH70_T96_Estimate_joinOrder(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vH70_T98_Extract_joinOrderSeq(bool bPrint, bool bTrace)
+void Xtransforms::vH70_T98_Extract_joinOrderSeq(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1307,7 +1321,7 @@ void Transforms::vH70_T98_Extract_joinOrderSeq(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* convert all <table> into either <scan> or <indexJoin>                      */
 /*----------------------------------------------------------------------------*/
-void Transforms::vH70_T99_Convert_table_To_scan_Or_indexJoin(bool bPrint, bool bTrace)
+void Xtransforms::vH70_T99_Convert_table_To_scan_Or_indexJoin(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1383,7 +1397,7 @@ void Transforms::vH70_T99_Convert_table_To_scan_Or_indexJoin(bool bPrint, bool b
 /*----------------------------------------------------------------------------*/
 /* append <indexList> to <scan>                                               */
 /*----------------------------------------------------------------------------*/
-void Transforms::vH80_T10_Insert_indexList_ToAll_scan(bool bPrint, bool bTrace)
+void Xtransforms::vH80_T10_Insert_indexList_ToAll_scan(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1415,7 +1429,7 @@ void Transforms::vH80_T10_Insert_indexList_ToAll_scan(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* convert the column name in every <idxCol> to a $streamOrdinal              */
 /*----------------------------------------------------------------------------*/
-void Transforms::vH80_T20_Convert_idxCol_name_Of_scan_To_idxCol_ord(bool bPrint, bool bTrace)
+void Xtransforms::vH80_T20_Convert_idxCol_name_Of_scan_To_idxCol_ord(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1438,7 +1452,7 @@ void Transforms::vH80_T20_Convert_idxCol_name_Of_scan_To_idxCol_ord(bool bPrint,
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vH80_T30_Mark_scan_pred_bounds(bool bPrint, bool bTrace)
+void Xtransforms::vH80_T30_Mark_scan_pred_bounds(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1467,7 +1481,7 @@ void Transforms::vH80_T30_Mark_scan_pred_bounds(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* mark the <SCAN>//<filter>//cmpPred> which match index ordinals             */
 /*----------------------------------------------------------------------------*/
-void Transforms::vH80_T40_Mark_scan_filter_term_WhichMatchIndex(bool bPrint, bool bTrace)
+void Xtransforms::vH80_T40_Mark_scan_filter_term_WhichMatchIndex(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1523,7 +1537,7 @@ void Transforms::vH80_T40_Mark_scan_filter_term_WhichMatchIndex(bool bPrint, boo
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vH80_T50_Add_scanPred(bool bPrint, bool bTrace)
+void Xtransforms::vH80_T50_Add_scanPred(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1595,7 +1609,7 @@ void Transforms::vH80_T50_Add_scanPred(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vH80_T60_Cull_Marked_cmpPred(bool bPrint, bool bTrace)
+void Xtransforms::vH80_T60_Cull_Marked_cmpPred(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1625,7 +1639,7 @@ void Transforms::vH80_T60_Cull_Marked_cmpPred(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vH80_T70_Promote_scan_To_indexScan(bool bPrint, bool bTrace)
+void Xtransforms::vH80_T70_Promote_scan_To_indexScan(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1666,7 +1680,7 @@ void Transforms::vH80_T70_Promote_scan_To_indexScan(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* remove <sort> if <sbyElist> is the same as the <gbyElist>                  */
 /*----------------------------------------------------------------------------*/
-void Transforms::vH90_T10_Remove_sort_IfSameAs_gby(bool bPrint, bool bTrace)
+void Xtransforms::vH90_T10_Remove_sort_IfSameAs_gby(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1700,7 +1714,7 @@ void Transforms::vH90_T10_Remove_sort_IfSameAs_gby(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* individuate <scan|indexJoin>/<filter> as main <filter>                     */
 /*----------------------------------------------------------------------------*/
-void Transforms::vHA0_T10_Individuate_filter(bool bPrint, bool bTrace)
+void Xtransforms::vHA0_T10_Individuate_filter(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1742,7 +1756,7 @@ void Transforms::vHA0_T10_Individuate_filter(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* reinstate stages                                                           */
 /*----------------------------------------------------------------------------*/
-void Transforms::vHZ0_T10_Reinstate_stages(bool bPrint, bool bTrace)
+void Xtransforms::vHZ0_T10_Reinstate_stages(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1778,7 +1792,7 @@ void Transforms::vHZ0_T10_Reinstate_stages(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vHZ0_T20_Reinstate_combined(bool bPrint, bool bTrace)
+void Xtransforms::vHZ0_T20_Reinstate_combined(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1820,7 +1834,7 @@ void Transforms::vHZ0_T20_Reinstate_combined(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* inspect all <filter> and attempt to assign <predCmp> after <scan>/<absJoin>*/
 /*----------------------------------------------------------------------------*/
-void Transforms::vMarkPredLeftwards(Card_BoolCalc* p_bool)
+void Xtransforms::vMarkPredLeftwards(Card_BoolCalc* p_bool)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1832,7 +1846,7 @@ void Transforms::vMarkPredLeftwards(Card_BoolCalc* p_bool)
 /*----------------------------------------------------------------------------*/
 /* inspect all <filter> and attempt to move <pred> after <scan>/<absJoin>     */
 /*----------------------------------------------------------------------------*/
-void Transforms::vMarkPredDrillDown(Card_PRED* p_pred)
+void Xtransforms::vMarkPredDrillDown(Card_PRED* p_pred)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1885,7 +1899,7 @@ void Transforms::vMarkPredDrillDown(Card_PRED* p_pred)
 /*----------------------------------------------------------------------------*/
 /* inspect <PRED>                                                             */
 /*----------------------------------------------------------------------------*/
-char Transforms::cMovePredLeftwards(Card_PRED* p_pred)
+char Xtransforms::cMovePredLeftwards(Card_PRED* p_pred)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1922,7 +1936,7 @@ char Transforms::cMovePredLeftwards(Card_PRED* p_pred)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-char Transforms::cMovePredToTable(Card_Table* p_table, Card_PRED* p_pred)
+char Xtransforms::cMovePredToTable(Card_Table* p_table, Card_PRED* p_pred)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1940,7 +1954,7 @@ char Transforms::cMovePredToTable(Card_Table* p_table, Card_PRED* p_pred)
 /*----------------------------------------------------------------------------*/
 /* is given <pred> within this stream?                                        */
 /*----------------------------------------------------------------------------*/
-bool Transforms::bStreamContainsPred(Card_Stream* p_stream, Card_PRED* pCard_PRED)
+bool Xtransforms::bStreamContainsPred(Card_Stream* p_stream, Card_PRED* pCard_PRED)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 
@@ -1974,7 +1988,7 @@ bool Transforms::bStreamContainsPred(Card_Stream* p_stream, Card_PRED* pCard_PRE
 /*----------------------------------------------------------------------------*/
 /* inspect all <filter> and attempt to assign <predCmp> after <scan>/<absJoin>*/
 /*----------------------------------------------------------------------------*/
-void Transforms::vCopyPredLeftwards(Card_BoolCalc* p_calcBool)
+void Xtransforms::vCopyPredLeftwards(Card_BoolCalc* p_calcBool)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1989,7 +2003,7 @@ void Transforms::vCopyPredLeftwards(Card_BoolCalc* p_calcBool)
 /*----------------------------------------------------------------------------*/
 /* inspect all <filter> and attempt to move <pred> after <scan>/<absJoin>     */
 /*----------------------------------------------------------------------------*/
-bool Transforms::bCopyPredDrillDown(Card_PRED* pCard_pred, Card_BoolCalc* p_calcBool)
+bool Xtransforms::bCopyPredDrillDown(Card_PRED* pCard_pred, Card_BoolCalc* p_calcBool)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -2038,7 +2052,7 @@ bool Transforms::bCopyPredDrillDown(Card_PRED* pCard_pred, Card_BoolCalc* p_calc
 /*----------------------------------------------------------------------------*/
 /* inspect all <filter> and attempt to move <pred> after <scan>/<absJoin>     */
 /*----------------------------------------------------------------------------*/
-void Transforms::vCopyPredToExistingFilter(Card_Filter* pCard_filter_existing, Card_PRED* pCard_pred)
+void Xtransforms::vCopyPredToExistingFilter(Card_Filter* pCard_filter_existing, Card_PRED* pCard_pred)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -2056,7 +2070,7 @@ void Transforms::vCopyPredToExistingFilter(Card_Filter* pCard_filter_existing, C
 /*----------------------------------------------------------------------------*/
 /* inspect all <filter> and attempt to move <pred> after <scan>/<absJoin>     */
 /*----------------------------------------------------------------------------*/
-void Transforms::vCopyPredToNewFilter(Card_Filter* p_filter_new, Card_PRED* p_pred)
+void Xtransforms::vCopyPredToNewFilter(Card_Filter* p_filter_new, Card_PRED* p_pred)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -2069,7 +2083,7 @@ void Transforms::vCopyPredToNewFilter(Card_Filter* p_filter_new, Card_PRED* p_pr
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transforms::vMarkPredAsMoved(Card* pPredCard)
+void Xtransforms::vMarkPredAsMoved(Card* pPredCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 

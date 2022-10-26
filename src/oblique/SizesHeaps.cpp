@@ -243,7 +243,7 @@
 #include "BoardIter.hpp"
 #include "PermGen.hpp"
 #include "CardIter.hpp"
-#include "Transforms.hpp"
+#include "Xtransforms.hpp"
 #include "ParamSpec.hpp"
 #include "ParamsSpec.hpp"
 #include "Xsentinals.hpp"
@@ -663,7 +663,7 @@ SizeHeap gxaSizeHeap[]
   { CN_TRANSFORMER,              sizeof(Transformer),            HT_T_TINY    , FILL },
   { CN_TRANSFORMITER,            sizeof(Xsentinals),             HT_T_TINY    , FILL },
   { CN_TRANSFORMITERLIST,        sizeof(TransformIterList),      HT_T_TINY    , FILL },
-  { CN_TRANSFORMS,               sizeof(Transforms),             HT_T_SMALL   , FILL },
+  { CN_TRANSFORMS,               sizeof(Xtransforms),            HT_T_SMALL   , FILL },
   { CN_TSPVAL,                   sizeof(TypeValueArea),/*yes*/   HT_INVALID   , FILL },
   { CN_TUB,                      sizeof(Tub),                    HT_T_TINY    , FILL },
   { CN_TX,                       sizeof(Tx),                     HT_T_TINY    , FILL },
@@ -673,7 +673,7 @@ SizeHeap gxaSizeHeap[]
   { CN_UNITINT,                  sizeof(UnitInt),                HT_T_TINY    , FILL },
   { CN_UT_SKIPLIST,              sizeof(UT_SkipList),            HT_T_LARGE   , FILL },
 
-  { CN__V__,                     'V' - ('A' - 1),     HT_INVALID   , FILL },
+  { CN__V__,                     'V' - ('A' - 1),                HT_INVALID   , FILL },
   { CN_VERBOSE,                  sizeof(Verbose),     HT_T_TINY    , FILL },
   { CN_VERTEX,                   sizeof(Vertex),      HT_T_SMALL   , FILL },
   { CN_VERTEXSPEC,               sizeof(VertexSpec),  HT_T_TINY    , FILL },

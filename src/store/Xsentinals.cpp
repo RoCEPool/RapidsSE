@@ -16,7 +16,7 @@ __aFooterFunction(Xsentinals)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Xsentinals::Xsentinals(void)
-: Xreshape(CN_TRANSFORMITER)
+: Xderive(CN_TRANSFORMITER)
 {
 }
 
@@ -24,7 +24,7 @@ Xsentinals::Xsentinals(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Xsentinals::Xsentinals(eCN eClass)
-: Xreshape (eClass)
+: Xderive (eClass)
 {
 }
 

@@ -3,7 +3,7 @@
 /*============================================================================*/
 
 #include "Transformer.hpp"
-#include "Transforms.hpp"
+#include "Xtransforms.hpp"
 #include "Optimiser.hpp"
 #include "Job.hpp"
 
@@ -32,7 +32,7 @@ Transformer::Transformer(Bench* pBench)
   m_pJobTags     = MY::pJob()->pJobTags();
   m_bInteractive = m_pJobTags->bHasName("<interactive>"_Stz);
 
-  m_pTransforms  = new Transforms(m_pBench);
+  m_pTransforms  = new Xtransforms(m_pBench);
 
   _checkInitialised_(CN_TRANSFORMER);
   
@@ -70,7 +70,7 @@ void Transformer::vTransform(void)
 /*----------------------------------------------------------------------------*/
 /* transforms                                                                 */
 /*----------------------------------------------------------------------------*/
-Transforms* Transformer::pTransforms(void)
+Xtransforms* Transformer::pTransforms(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMER,_FOOTER_);
 
@@ -122,6 +122,7 @@ void Transformer::vHand_10_ReducePipeline(bool bPrintHand, bool bPrintXform, boo
     m_pTransforms->vUsingBoard(BK_SUBPIPE, i_SubBoard);
 
     m_pTransforms->vH10_T10_Delete_Redundant_stage(bPrintXform, bTrace);
+    m_pTransforms->vH10_T15_Hide_Ignorable_stage(bPrintXform, bTrace);
     m_pTransforms->vH10_T20_Delete_absJoin(bPrintXform, bTrace);
     m_pTransforms->vH10_T30_Delete_combined(bPrintXform, bTrace);
     m_pTransforms->vH10_T40_Delete_send(bPrintXform, bTrace);
