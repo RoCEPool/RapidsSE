@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* TransformerTool.hpp --                                                       */
+/* Xgearing.hpp --                                                       */
 /*============================================================================*/
 #pragma once
 
@@ -14,7 +14,7 @@
 
 namespace STORE
 {
-  class TransformerTool : public Xregs
+  class Xgearing : public Xregs
   {
   protected:
 
@@ -66,8 +66,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    TransformerTool(eCN eClass, Bench* pBench);
-   ~TransformerTool(void) noexcept(false);
+    Xgearing(eCN eClass, Bench* pBench);
+   ~Xgearing(void) noexcept(false);
 
     Board* pBoard(void);
 

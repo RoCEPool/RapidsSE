@@ -127,7 +127,7 @@ namespace STORE
   class Dissector;
   class Drafter;
   class Optimiser;
-  class TransformerTool;
+  class Xgearing;
   class Weaver;
 
   class Board : public Object
