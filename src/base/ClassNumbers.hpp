@@ -219,6 +219,7 @@ enum eCN : u2 // Class Number
   /* */ CN_PARCEL,
   /* */ CN_PATHIDENTIFIER,
   /* */ CN_PATHVEC,
+  /* */ CN_PAYLOADOBJ,
   /* */ CN_PAYSTR,
   /* */ CN_PAYSTRBUFFER,
   /* */ CN_PERMIT,
