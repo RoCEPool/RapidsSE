@@ -66,6 +66,8 @@ void Xtransforms::vH10_T10_Delete_Redundant_stage(bool bPrint, bool bTrace)
       p_stage_CURR = M.p_stage;
       continue;
     }
+
+    vREPLACE_WITH_RESHAPE();
     E_vRemoveDeleteMain(CK_STAGE);
   }
 
@@ -92,6 +94,7 @@ void Xtransforms::vH10_T15_Hide_Ignorable_stage(bool bPrint, bool bTrace)
     if (YG_ALL_PARTITIONS == (eYG) M.p_topology->Y_iVal(P_StageTopo))
       continue;
 
+    vREPLACE_WITH_RESHAPE();
     M.p_stage->Y_vSet(P_Exclude);
   }
 
@@ -112,8 +115,10 @@ void Xtransforms::vH10_T20_Delete_absJoin(bool bPrint, bool bTrace)
 
   //M.pDeck->vDump(0,(Stz*)(__func__));
 
-  while (E_bEachMain(CK_ABSJOIN))
+  while (E_bEachMain(CK_ABSJOIN)) {
+    vREPLACE_WITH_RESHAPE();
     E_vRemoveDeleteMain(CK_ABSJOIN);
+  }
 
   vEndTransform();
   vPrintBoard();
@@ -132,10 +137,12 @@ void Xtransforms::vH10_T30_Delete_combined(bool bPrint, bool bTrace)
 
   //M.pDeck->vDump(0,(Stz*)(__func__));
 
-  while (E_bEachMain(CK_COMBINED))
+  while (E_bEachMain(CK_COMBINED)) {
+    vREPLACE_WITH_RESHAPE();
     E_vRemoveDeleteMain(CK_COMBINED);
+  }
 
-  vEndTransform();
+    vEndTransform();
   vPrintBoard();
 }
 
@@ -152,9 +159,10 @@ void Xtransforms::vH10_T40_Delete_send(bool bPrint, bool bTrace)
 
   //M.pDeck->vDump(0,(Stz*)(__func__));
 
-  while (E_bEachMain(CK_SEND))
+  while (E_bEachMain(CK_SEND)) {
+    vREPLACE_WITH_RESHAPE();
     E_vRemoveDeleteMain(CK_SEND);
-
+  }
   vEndTransform();
   vPrintBoard();
 }
@@ -173,6 +181,7 @@ void Xtransforms::vH10_T50_Cull_scan_Leaving_table(bool bPrint, bool bTrace)
   //M.pDeck->vDump(0,(Stz*)(__func__));
 
   while (E_bEachMain(CK_SCAN)) {
+    vREPLACE_WITH_RESHAPE();
     M.pDeck->vReplaceChildWithItsSubs(M.p_MainCard);
     DELETE_CARD(M.p_MainCard);
   }
@@ -201,6 +210,7 @@ void Xtransforms::vH20_T10_Add_tableSyn_ForAll_table(bool bPrint, bool bTrace)
 
   while (E_bEachMainWithSub(CK_TABLE,CK_TABLENM))  {
 
+    vREPLACE_WITH_RESHAPE();
     m_pTable = A_pAccess_Table(M.p_tableNm->sz());
 
     M.p_table->vMark1(MARK_CHANGED);
@@ -230,6 +240,7 @@ void Xtransforms::vH20_T20_Add_tablePtn_UnderAll_table(bool bPrint, bool bTrace)
 
   while (E_bEachMainWithSub(CK_TABLE,CK_TABLENM)) {
 
+    vREPLACE_WITH_RESHAPE();
     m_pTable = A_pAccess_Table(M.p_tableNm->sz());
     M.p_tablePtn = A_pProduce_tablePtn_ofTable(m_pTable,m_cTableSyn);
 
@@ -256,6 +267,7 @@ void Xtransforms::vH20_T30_Add_stream_UnderAll_table(bool bPrint, bool bTrace)
   // E <scan>
   while (E_bEachMainWithSub(CK_TABLE,CK_TABLENM)) {
 
+    vREPLACE_WITH_RESHAPE();
     m_pTable = A_pAccess_Table(M.p_tableNm->sz());
     M.p_stream = A_pProduce_stream_ofTable(m_pTable);
 
@@ -306,6 +318,8 @@ void Xtransforms::vH30_T10_Calc_ordinalRange_ForAll_stream(bool bPrint, bool bTr
 
   while (E_bEachMain(CK_TABLE)) {
 
+    vREPLACE_WITH_RESHAPE();
+
     M.p_stream = M.p_table->pSub_stream();
 
     // <scan>/<stream>:iOrdLo,iOrdHi
@@ -350,6 +364,9 @@ void Xtransforms::vH40_T10_Convert_where_calc_To_where_calcBool(bool bPrint, boo
   vTracing(bPrint,bTrace);
 
   while (E_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
+
+    vREPLACE_WITH_RESHAPE();
+
     M.p_boolCalc = X_pConvert_rpnCalc_To_boolCalc(M.p_rpnCalc);
     X_vSubCard_ReplaceSub(M.p_rpnCalc, M.p_where, M.p_boolCalc);
     D_vDeleteMember(M.p_rpnCalc);
@@ -370,8 +387,10 @@ void Xtransforms::vH40_T20_Mark_where_pred_Wrt_table(bool bPrint, bool bTrace)
   vTransform(__func__);
   vTracing(bPrint,bTrace);
 
-  while (E_bEachMainWithSub(CK_WHERE, CK_BOOLCALC))
+  while (E_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+    vREPLACE_WITH_RESHAPE();
     vMarkPredLeftwards(M.p_boolCalc);
+  }
 
   vEndTransform();
   vPrintBoard();
@@ -388,9 +407,10 @@ void Xtransforms::vH40_T30_Move_Marked_where_pred_To_table_filter(bool bPrint, b
   vTransform(__func__);
   vTracing(bPrint,bTrace);
 
-  while (E_bEachMainWithSub(CK_WHERE, CK_BOOLCALC))
+  while (E_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+    vREPLACE_WITH_RESHAPE();
     vCopyPredLeftwards(M.p_boolCalc);
-
+  }
   vEndTransform();
   vPrintBoard();
 }
@@ -407,6 +427,7 @@ void Xtransforms::vH40_T40_Delete_Empty_where(bool bPrint, bool bTrace)
   vTracing(bPrint,bTrace);
 
   while (E_bEachMain(CK_WHERE)) {
+    vREPLACE_WITH_RESHAPE();
     M.p_boolCalc = M.p_where->pSub_boolCalc();
 
     if (0 == M.p_boolCalc->nChildCards()) {
@@ -454,6 +475,8 @@ void Xtransforms::vH50_T10_Rework_Exists_SubQueries(bool bPrint, bool bTrace)
 
     if (E_bEachMain(CK_STAGE)) {
       vTracer("SubQuery Stage: %s\n"_Stz, M.p_stage->szBearing());
+
+      vREPLACE_WITH_RESHAPE();
 
       N_vNewMember(CK_KEYEXISTS);
 
@@ -504,6 +527,9 @@ void Xtransforms::vH50_T20_Copy_Up_SubQueries(bool bPrint, bool bTrace)
     vPrintBoard();
 
     if (E_bEachMain(CK_KEYEXISTS)) {
+
+      vREPLACE_WITH_RESHAPE();
+
       m_pCard_temp = M.p_keyExists->pDupCardAndSubCards();
       M_vPopIter();
       M.pDeck->vInsertBefore(m_pCard_temp,M.p_where);
@@ -540,6 +566,8 @@ void Xtransforms::vH50_T30_Resolve_Parameter_Linkage(bool bPrint, bool bTrace)
     if (! R_bResolveCard(CK_STMCOL,M.p_param->sz(),M.p_keyExists))
       continue;
 
+    vREPLACE_WITH_RESHAPE();
+
     M.p_stmColOrd = M.p_stmCol->pSub_stmColOrd();
     M.p_stmColOrd->vValue(M.p_stmColOrd->szValue());
     M.p_param->vAppend(M.p_stmColOrd);
@@ -575,6 +603,8 @@ void Xtransforms::vH50_T40_Resolve_Parameter_Terms(bool bPrint, bool bTrace)
       if (! Y_bFindPpy(CK_PARAMLIST,P_ParamOrd,CK_PARAM))
         continue;
 
+      vREPLACE_WITH_RESHAPE();
+
       M.p_stmColOrd = M.p_param->pSub_stmColOrd();
       M.p_term->vValue(M.p_stmColOrd->szValue());
     }
@@ -603,6 +633,8 @@ void Xtransforms::vH60_T10_Add_indexJoin_UnderAllJoinable_table(bool bPrint, boo
   M.pDeck->vClearMarksRecursive();
 
   while (E_bEachMainWithSub(CK_TABLE,CK_FILTER)) {
+
+    vREPLACE_WITH_RESHAPE();
 
     M.p_tableNm = M.p_table->pSub_tableNm();
     m_pTable = A_pAccess_Table(M.p_tableNm->sz());
@@ -642,6 +674,8 @@ void Xtransforms::vH60_T20_Convert_idxCol_name_Of_table_To_idxCol_ord(bool bPrin
     if (! (M.p_indexJoin = M.p_table->pSub_indexJoin()))
       continue;
 
+    vREPLACE_WITH_RESHAPE();
+
     M.p_stream = M.p_table->pSub_stream();;
     M.p_stmColList = M.p_table->pSub_stmColList();
     M.p_idxColList = M.p_indexJoin->pSub_idxColList();
@@ -677,6 +711,7 @@ void Xtransforms::vH60_T30_Add_joinPred_UnderAll_indexJoin(bool bPrint, bool bTr
         !T_bTerm_IsStreamColOrdinal(m_pTerm_1))
       continue;
 
+    vREPLACE_WITH_RESHAPE();
 
     // - - - -
 
@@ -742,6 +777,8 @@ void Xtransforms::vH60_T40_Cull_filter_pred_MovedUpTo_joinPred(bool bPrint, bool
 
     M.p_boolCalc = M.p_filter->pSub_boolCalc();
 
+    vREPLACE_WITH_RESHAPE();
+
     X_vBoolCalc_CullPred(M.p_boolCalc, MARK_UPWARDS);
   }
 
@@ -767,6 +804,8 @@ void Xtransforms::vH60_T50_Delete_Empty_filter(bool bPrint, bool bTrace)
 
     if (!X_bFilter_IsEmptyFilter(M.p_filter))
       continue;
+
+    vREPLACE_WITH_RESHAPE();
 
     M.p_MainCard->vRemoveChild(M.p_filter);
     DELETE_CARD(M.p_filter);
@@ -806,6 +845,8 @@ void Xtransforms::vH70_T00_Extract_tableList_From_queryBoard(bool bPrint, bool b
     if (! (M.p_table = M.p_MainCard->pSub_table()))
       continue;
 
+    vREPLACE_WITH_RESHAPE();
+
     M.p_tableList->vAppend(M.p_table->pDupCardAndSubCards());
   }
 
@@ -837,6 +878,8 @@ void Xtransforms::vH70_T10_Extract_joinPredList(bool bPrint, bool bTrace)
     M.p_boolCalc = M.p_MainCard->pSub_boolCalc();
     if (!M.p_boolCalc)
       continue;
+
+    vREPLACE_WITH_RESHAPE();
 
     X_vJoinPredList_Extract(M.p_joinPredList, M.p_boolCalc);
   }
@@ -877,18 +920,13 @@ void Xtransforms::vH70_T20_Compute_coPtnPredList(bool bPrint, bool bTrace)
     if (!X_bTableList_PredCmpIsCoPtn(M.p_tableList, M.p_cmpPred))
       continue;
 
+    vREPLACE_WITH_RESHAPE();
+
     M.p_coPtnPred = new Card_CoPtnPred;
     M.p_coPtnPred->vAppend(M.p_cmpPred->pDupCardAndSubCards());
 
     M.p_coPtnPredList->vAppend(M.p_coPtnPred);
   }
-
-  m_pCardCtl->vPrintName(CK_COLUMNREF,false);
-  m_pCardCtl->vPrintProperties(CK_COLUMNREF,false);
-
-  //m_pCardCtl->vPrintForm(CK_COPTNJOIN,CP_COMPRESSED);
-  //m_pCardCtl->vPrintForm(CK_CROSSPTNJOIN,CP_COMPRESSED);
-  //m_pCardCtl->vPrintForm(CK_CMPPRED,CP_COMPRESSED);
 
   vEndTransform();
   vPrintBoard();
@@ -916,6 +954,7 @@ void Xtransforms::vH70_T30_Compute_coPtnJoinList(bool bPrint, bool bTrace)
   M.p_coPtnPredList =
       _pCard_CoPtnPredList(M.pDeck->pFindChild(CK_COPTNPREDLIST));
 
+  vREPLACE_WITH_RESHAPE();
 
   i8 nChildren = M.p_coPtnPredList->nChildCards();
   for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
@@ -964,6 +1003,8 @@ void Xtransforms::vH70_T40_Compute_crossPtnJoinList(bool bPrint, bool bTrace)
     M.p_cmpPred =
         _pCard_CmpPred(M.p_joinPredList->pGetChild(i_Child));
 
+    vREPLACE_WITH_RESHAPE();
+
     if (X_bCoPtnJoinList_HasEqPredCmp(M.p_coPtnJoinList, M.p_cmpPred))
       continue;
 
@@ -994,6 +1035,9 @@ void Xtransforms::vH70_T50_Compute_ptndJoinSet(bool bPrint, bool bTrace)
 
   //--nn--------------==
   // ptndJoinSet
+
+  vREPLACE_WITH_RESHAPE();
+
 
   M.p_ptndJoinSet = new Card_PtndJoinSet;
   M.pDeck->vAppendMain(M.p_ptndJoinSet);
@@ -1034,6 +1078,8 @@ void Xtransforms::vH70_T60_Copy_ptndJoinSet(bool bPrint, bool bTrace)
 
   //vSetupPermuteBoard();
 
+  vREPLACE_WITH_RESHAPE();
+
   m_pBench->pCardCtl()->vNextHorizon(CK_PERMUTATION, true);
 
   M.p_ptndJoinSet =
@@ -1068,6 +1114,7 @@ void Xtransforms::vH70_T70_Generate_ptndPermutations(bool bPrint, bool bTrace)
   //--nn--------------==
   // x
 
+  vREPLACE_WITH_RESHAPE();
 
   m_pPermGen = new PermGen(M.p_ptndJoinSet->nChildCards());
 
@@ -1127,6 +1174,8 @@ void Xtransforms::vH70_T80_Remove_invalidPermutations(bool bPrint, bool bTrace)
       continue;
     }
 
+    vREPLACE_WITH_RESHAPE();
+
     M.pDeck->vRemoveChild(M.p_MainCard);
     while (i_Main < M.pDeck->nChildCards()) {
       M.p_MainCard = M.pDeck->pGetChild(i_Main);
@@ -1160,6 +1209,8 @@ void Xtransforms::vH70_T90_Setup_costEst(bool bPrint, bool bTrace)
 
     if (CK_PERMUTATION == M.p_MainCard->eCard())
       break;
+
+    vREPLACE_WITH_RESHAPE();
 
     M.pDeck->vRemoveChild(M.p_MainCard);
     delete M.p_MainCard;
@@ -1195,6 +1246,9 @@ void Xtransforms::vH70_T92_Estimate_ptndJoins(bool bPrint, bool bTrace)
     }
     if (CK_PTNDJOIN != eCard)
       continue;
+
+    vREPLACE_WITH_RESHAPE();
+
     M.p_ptndJoin = _pCard_PtndJoin(M.p_MainCard);
     X_vPtndJoin_JoinEst(M.p_ptndJoin, M.p_tableList);
   }
@@ -1222,6 +1276,9 @@ void Xtransforms::vH70_T94_Estimate_network(bool bPrint, bool bTrace)
   M.p_ptndJoin    = nullptr;
 
   while ((M.p_MainCard = xBI.pEachMain())) {
+
+    vREPLACE_WITH_RESHAPE();
+
     eCK eCard = M.p_MainCard->eCard();
     if (CK_PERMUTATION == eCard) {
       if (M.p_permutation)
@@ -1310,6 +1367,8 @@ void Xtransforms::vH70_T98_Extract_joinOrderSeq(bool bPrint, bool bTrace)
     if (CK_PTNDJOIN != M.p_MainCard->eCard())
       break;
 
+    vREPLACE_WITH_RESHAPE();
+
     M.p_ptndJoin = _pCard_PtndJoin(M.p_MainCard);
     X_vJoinOrderSeq_ExtractJoinOrder(M.p_joinOrderSeq, M.p_ptndJoin);
   }
@@ -1336,6 +1395,8 @@ void Xtransforms::vH70_T99_Convert_table_To_scan_Or_indexJoin(bool bPrint, bool 
     M.p_bounds = M.p_table->pSub_bounds();
     M.p_indexJoin = M.p_table->pSub_indexJoin();
     M.p_index = M.p_table->pSub_index();
+
+    vREPLACE_WITH_RESHAPE();
 
     if (! M.p_bounds) {
 
@@ -1412,6 +1473,8 @@ void Xtransforms::vH80_T10_Insert_indexList_ToAll_scan(bool bPrint, bool bTrace)
 //
 //    }
 
+    vREPLACE_WITH_RESHAPE();
+
     m_pTable = A_pAccess_Table(M.p_tableNm->sz());
 
     if ((M.p_indexList = A_pProduce_indexList_ofTable(m_pTable))) {
@@ -1441,6 +1504,9 @@ void Xtransforms::vH80_T20_Convert_idxCol_name_Of_scan_To_idxCol_ord(bool bPrint
 
   while (E_bEachMainWithSub(CK_SCAN,CK_IDXCOLLIST)) {
     M.p_stream = M.p_scan->pSub_stream();
+
+    vREPLACE_WITH_RESHAPE();
+
     X_vIdxColList_Ordinate(M.p_idxColList, M.p_stream);
   }
 
@@ -1471,6 +1537,8 @@ void Xtransforms::vH80_T30_Mark_scan_pred_bounds(bool bPrint, bool bTrace)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   while (E_bEachMainWithSub(CK_SCAN,CK_FILTER)) {
+    vREPLACE_WITH_RESHAPE();
+
     M.p_filter->vApplyRecursive(CK_CMPPRED, bfMarkPredBounds);
   }
 
@@ -1526,6 +1594,8 @@ void Xtransforms::vH80_T40_Mark_scan_filter_term_WhichMatchIndex(bool bPrint, bo
     };
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    vREPLACE_WITH_RESHAPE();
 
     M.p_filter->vApplyRecursive(CK_TERM, bfPredBounds);
   }
@@ -1598,6 +1668,8 @@ void Xtransforms::vH80_T50_Add_scanPred(bool bPrint, bool bTrace)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+    vREPLACE_WITH_RESHAPE();
+
     M.p_filter->vApplyRecursive(CK_CMPPRED, bfAdd);
 
   }
@@ -1618,6 +1690,8 @@ void Xtransforms::vH80_T60_Cull_Marked_cmpPred(bool bPrint, bool bTrace)
   vTracing(bPrint,bTrace);
 
   while (E_bEachMainWithSub(CK_SCAN,CK_FILTER)) {
+
+    vREPLACE_WITH_RESHAPE();
 
     vTracer("Culling <filter> of L & U bounds %s\n"_Stz,M.p_filter->szBearing());
     X_vFilter_CullPred(M.p_filter, 'L');
@@ -1649,6 +1723,8 @@ void Xtransforms::vH80_T70_Promote_scan_To_indexScan(bool bPrint, bool bTrace)
 
   while (E_bEachMainWithSub(CK_SCAN,CK_BOUNDS)) {
     vTracer("Morphing <scan> to <indexScan> %s\n"_Stz,M.p_scan->szBearing());
+    vREPLACE_WITH_RESHAPE();
+
     M.p_scan->vCard(CK_INDEXSCAN);
   }
 
@@ -1693,6 +1769,8 @@ void Xtransforms::vH90_T10_Remove_sort_IfSameAs_gby(bool bPrint, bool bTrace)
     if (!H_bHasPriorToMainIf(CK_AGGREG, C_UPDATE_MEMBER))
       return;
 
+    vREPLACE_WITH_RESHAPE();
+
     M.p_gbyElist = M.p_aggreg->pSub_gbyElist();
     M.p_sbyElist = M.p_sort->pSub_sbyElist();
 
@@ -1728,6 +1806,8 @@ void Xtransforms::vHA0_T10_Individuate_filter(bool bPrint, bool bTrace)
     if (! M.p_filter)
       continue;
 
+    vREPLACE_WITH_RESHAPE();
+
     M.p_scan->vRemoveChild(M.p_filter);
     M.pDeck->vInsertAfter(M.p_filter, M.p_scan);
   }
@@ -1739,6 +1819,8 @@ void Xtransforms::vHA0_T10_Individuate_filter(bool bPrint, bool bTrace)
     M.p_filter = M.p_indexJoin->pSub_filter();
     if (! M.p_filter)
       continue;
+
+    vREPLACE_WITH_RESHAPE();
 
     M.p_indexJoin->vRemoveChild(M.p_filter);
     M.pDeck->vInsertAfter(M.p_filter, M.p_indexJoin);
@@ -1775,6 +1857,8 @@ void Xtransforms::vHZ0_T10_Reinstate_stages(bool bPrint, bool bTrace)
     if (CK_INDEXJOIN == M.e_MainCard &&
         (CK_PROJECT == M.e_SubsequentToMain || CK_FILTER == M.e_SubsequentToMain))
       continue;
+
+    vREPLACE_WITH_RESHAPE();
 
     m_pCard_dup = M.p_stage->pDupCardAndSubCards();
     M.pDeck->vInsertAfter(m_pCard_dup, M.p_MainCard);
@@ -1815,6 +1899,8 @@ void Xtransforms::vHZ0_T20_Reinstate_combined(bool bPrint, bool bTrace)
            CK_PROJECT   == M.e_MainCard ||
            CK_SORT      == M.e_MainCard))
       continue;
+
+    vREPLACE_WITH_RESHAPE();
 
     M.p_combined = new Card_Combined;
     M.pDeck->vInsertAfter(M.p_combined, M.p_MainCard);
@@ -2097,6 +2183,15 @@ void Xtransforms::vMarkPredAsMoved(Card* pPredCard)
 
     vMarkPredAsMoved(pSubCard);
   }
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xtransforms::vREPLACE_WITH_RESHAPE(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
 }
 
 /*============================================================================*/

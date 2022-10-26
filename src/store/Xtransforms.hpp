@@ -98,6 +98,8 @@ namespace STORE
 
     void vMarkPredAsMoved(Card* pPredCard);
 
+    void vREPLACE_WITH_RESHAPE(void);
+
     Footer* aFooter(void);
   };
 
