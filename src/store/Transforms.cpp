@@ -217,7 +217,7 @@ void Transforms::vP20_T20_Add_tablePtn_UnderAll_table(bool bPrint, bool bTrace)
   while (E_bEachMainWithSub(CK_TABLE,CK_TABLENM)) {
 
     m_pTable = A_pAccess_Table(M.p_tableNm->sz());
-    A_pProduce_tablePtn_ofTable();
+    A_pProduce_tablePtn_ofTable(m_pTable);
 
     //N_vNewMember(CK_TABLEPTN);
     //M.p_tablePtn->vAdd_TablePtn(M.p_table);
@@ -243,7 +243,7 @@ void Transforms::vP20_T30_Add_stream_UnderAll_table(bool bPrint, bool bTrace)
   while (E_bEachMainWithSub(CK_TABLE,CK_TABLENM)) {
 
     m_pTable = A_pAccess_Table(M.p_tableNm->sz());
-    A_pProduce_stream_ofTable();
+    A_pProduce_stream_ofTable(m_pTable);
 
     M.p_table->vAppend(M.p_stream);
 
@@ -593,7 +593,7 @@ void Transforms::vP60_T10_Add_indexJoin_UnderAllJoinable_table(bool bPrint, bool
     M.p_tableNm = M.p_table->pSub_tableNm();
     m_pTable = A_pAccess_Table(M.p_tableNm->sz());
 
-    RASSERT(A_pProduce_indexList_ofTable());
+    RASSERT(A_pProduce_indexList_ofTable(m_pTable));
 
     while (M.p_index = _pCard_Index(M.p_indexList->pPopChild())) {
       M.p_indexJoin = new Card_IndexJoin;
@@ -1400,7 +1400,7 @@ void Transforms::vP80_T10_Insert_indexList_ToAll_scan(bool bPrint, bool bTrace)
 
     m_pTable = A_pAccess_Table(M.p_tableNm->sz());
 
-    if (A_pProduce_indexList_ofTable()) {
+    if (A_pProduce_indexList_ofTable(m_pTable)) {
       M.p_comment = new Card_Comment(SEP_SCRATCH);
       M.p_scan->vAppend(M.p_comment);
 

@@ -39,9 +39,9 @@ Xlator::~Xlator(void) noexcept(false)
 
 
 /*----------------------------------------------------------------------------*/
-/* produce <indexList> of table                                               */
+/* produce composite <indexList> of table                                     */
 /*----------------------------------------------------------------------------*/
-Card_IndexList* Xlator::A_pProduce_indexList_ofTable(void)
+Card_IndexList* Xlator::A_pProduce_indexList_ofTable(Table* pTable)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
@@ -95,7 +95,7 @@ Card_IndexList* Xlator::A_pProduce_indexList_ofTable(void)
 /*----------------------------------------------------------------------------*/
 /* produce <size> of table                                                    */
 /*----------------------------------------------------------------------------*/
-Card_Size* Xlator::A_pProduce_size_ofTable(void)
+Card_Size* Xlator::A_pProduce_size_ofTable(Table* pTable)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -118,9 +118,9 @@ Card_Size* Xlator::A_pProduce_size_ofTable(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* produce <stream> of table                                                  */
+/* produce composite <stream> of table                                        */
 /*----------------------------------------------------------------------------*/
-Card_Stream* Xlator::A_pProduce_stream_ofTable(void)
+Card_Stream* Xlator::A_pProduce_stream_ofTable(Table* pTable)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -156,7 +156,7 @@ Card_Stream* Xlator::A_pProduce_stream_ofTable(void)
 /*----------------------------------------------------------------------------*/
 /* produce <tablePtn> of table                                                */
 /*----------------------------------------------------------------------------*/
-Card_TablePtn* Xlator::A_pProduce_tablePtn_ofTable(void)
+Card_TablePtn* Xlator::A_pProduce_tablePtn_ofTable(Table* pTable)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
