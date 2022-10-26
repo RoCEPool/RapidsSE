@@ -32,44 +32,6 @@ Xlator::~Xlator(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* cull all <mainCard> == eCard from <board>                                  */
-/*----------------------------------------------------------------------------*/
-void Xlator::vCullAll(eCK eCard)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  while (E_bEachMain(eCard)) {
-    M.pDeck->vReplaceChildWithItsSubs(M.p_MainCard);
-    DELETE_CARD(M.p_MainCard);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* cull all <mainCard> == eCard from <board>                                  */
-/*----------------------------------------------------------------------------*/
-void Xlator::vDeleteAll(eCK eCard)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  while (E_bEachMain(eCard))
-    M.xBI.vRemoveDeleteCurr(eCard);
-
-  vRenumberMainCards();
-}
-
-/*----------------------------------------------------------------------------*/
-/* renumber the main cards                                                    */
-/*----------------------------------------------------------------------------*/
-void Xlator::vRenumberMainCards(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  //m_pBoard->vRenumberMainCards();
-
-  M.pDeck->vRenumberRecursive();
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A */
@@ -79,7 +41,7 @@ void Xlator::vRenumberMainCards(void)
 /*----------------------------------------------------------------------------*/
 /* access table                                                               */
 /*----------------------------------------------------------------------------*/
-bool Xlator::A_bTable(Stz* szTableNm)
+bool Xlator::A_bAccess_Table(Stz* szTableNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -94,7 +56,7 @@ bool Xlator::A_bTable(Stz* szTableNm)
 /*----------------------------------------------------------------------------*/
 /* access index of table                                                      */
 /*----------------------------------------------------------------------------*/
-bool Xlator::A_bIndex(Stz* szIndexNm)
+bool Xlator::A_bAccess_IndexOfTable(Stz* szIndexNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -109,21 +71,22 @@ bool Xlator::A_bIndex(Stz* szIndexNm)
 /*----------------------------------------------------------------------------*/
 /* access index of table                                                      */
 /*----------------------------------------------------------------------------*/
-bool Xlator::A_bIndex(Stz* szTableNm, Stz* szIndexNm)
+bool Xlator::A_bAccess_IndexOfTable(Stz* szTableNm, Stz* szIndexNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  if (!A_bTable(szTableNm))
+  if (!A_bAccess_Table(szTableNm))
     return false;
-  if (!A_bIndex(szIndexNm))
+  if (!A_bAccess_IndexOfTable(szIndexNm))
     return false;
+
   return true;
 }
 
 /*----------------------------------------------------------------------------*/
 /* access stream defn of table                                                */
 /*----------------------------------------------------------------------------*/
-bool Xlator::A_bIndexListOfTable(void)
+bool Xlator::A_bAccess_IndexListOfTable(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
@@ -177,7 +140,7 @@ bool Xlator::A_bIndexListOfTable(void)
 /*----------------------------------------------------------------------------*/
 /* access stream defn of table                                                */
 /*----------------------------------------------------------------------------*/
-void Xlator::A_vStreamOfTable(void)
+void Xlator::A_vAccess_StreamOfTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -212,7 +175,7 @@ void Xlator::A_vStreamOfTable(void)
 /*----------------------------------------------------------------------------*/
 /* access partition of table                                                  */
 /*----------------------------------------------------------------------------*/
-void Xlator::A_vPartitionOfTable(void)
+void Xlator::A_vAccess_PartitionOfTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -234,7 +197,7 @@ void Xlator::A_vPartitionOfTable(void)
 /*----------------------------------------------------------------------------*/
 /* access size of table                                                       */
 /*----------------------------------------------------------------------------*/
-void Xlator::A_vSizeOfTable(void)
+void Xlator::A_vAccess_SizeOfTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 

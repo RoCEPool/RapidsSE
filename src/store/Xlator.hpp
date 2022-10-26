@@ -21,21 +21,17 @@ namespace STORE
     Xlator(eCN eClassNo, Bench* pBench);
    ~Xlator(void) noexcept(false);
 
-    void vCullAll(eCK eCard);
-    void vDeleteAll(eCK eCard);
-    void vRenumberMainCards(void);
-
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    bool A_bTable(Stz* szTableNm);
-    bool A_bIndex(Stz* szIndexNm);
-    bool A_bIndex(Stz* szTableNm, Stz* szIndexNm);
+    bool A_bAccess_Table(Stz* szTableNm);
+    bool A_bAccess_IndexOfTable(Stz* szIndexNm);
+    bool A_bAccess_IndexOfTable(Stz* szTableNm, Stz* szIndexNm);
 
-    bool A_bIndexListOfTable(void);
-    void A_vStreamOfTable(void);
-    void A_vPartitionOfTable(void);
-    void A_vSizeOfTable(void);
+    bool A_bAccess_IndexListOfTable(void);
+    void A_vAccess_PartitionOfTable(void);
+    void A_vAccess_StreamOfTable(void);
+    void A_vAccess_SizeOfTable(void);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

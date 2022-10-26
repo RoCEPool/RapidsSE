@@ -187,7 +187,7 @@ void Transforms::vP20_T10_Add_tableSyn_ForAll_table(bool bPrint, bool bTrace)
 
   while (E_bEachMainWithSub(CK_TABLE,CK_TABLENM))  {
 
-    RASSERT(A_bTable(M.p_tableNm->sz()));
+    RASSERT(A_bAccess_Table(M.p_tableNm->sz()));
 
     M.p_table->vMark1(MARK_CHANGED);
     char cTableSyn_actual = m_cTableSyn;
@@ -216,8 +216,8 @@ void Transforms::vP20_T20_Add_tablePtn_UnderAll_table(bool bPrint, bool bTrace)
 
   while (E_bEachMainWithSub(CK_TABLE,CK_TABLENM)) {
 
-    RASSERT(A_bTable(M.p_tableNm->sz()));
-    A_vPartitionOfTable();
+    RASSERT(A_bAccess_Table(M.p_tableNm->sz()));
+    A_vAccess_PartitionOfTable();
 
     //N_vNewMember(CK_TABLEPTN);
     //M.p_tablePtn->vAdd_TablePtn(M.p_table);
@@ -242,8 +242,8 @@ void Transforms::vP20_T30_Add_stream_UnderAll_table(bool bPrint, bool bTrace)
   // E <scan>
   while (E_bEachMainWithSub(CK_TABLE,CK_TABLENM)) {
 
-    RASSERT(A_bTable(M.p_tableNm->szValue()));
-    A_vStreamOfTable();
+    RASSERT(A_bAccess_Table(M.p_tableNm->szValue()));
+    A_vAccess_StreamOfTable();
 
     M.p_table->vAppend(M.p_stream);
 
@@ -591,9 +591,9 @@ void Transforms::vP60_T10_Add_indexJoin_UnderAllJoinable_table(bool bPrint, bool
   while (E_bEachMainWithSub(CK_TABLE,CK_FILTER)) {
 
     M.p_tableNm = M.p_table->pSub_tableNm();
-    RASSERT(A_bTable(M.p_tableNm->szValue()));
+    RASSERT(A_bAccess_Table(M.p_tableNm->szValue()));
 
-    RASSERT(A_bIndexListOfTable());
+    RASSERT(A_bAccess_IndexListOfTable());
 
     while (M.p_index = _pCard_Index(M.p_indexList->pPopChild())) {
       M.p_indexJoin = new Card_IndexJoin;
@@ -1420,9 +1420,9 @@ void Transforms::vP80_T10_Insert_indexList_ToAll_scan(bool bPrint, bool bTrace)
 //
 //    }
 
-    RASSERT(A_bTable(M.p_tableNm->szValue()));
+    RASSERT(A_bAccess_Table(M.p_tableNm->szValue()));
 
-    if (A_bIndexListOfTable()) {
+    if (A_bAccess_IndexListOfTable()) {
       M.p_comment = new Card_Comment(SEP_SCRATCH);
       M.p_scan->vAppend(M.p_comment);
 
