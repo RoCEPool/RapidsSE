@@ -25,28 +25,14 @@ namespace STORE
     Xreshape(eCN eClass);
    ~Xreshape(void) noexcept(false);
 
-    Card_IndexList* A_pProduce_indexList_ofTable(Table* pTable);
-    Card_Size*      A_pProduce_size_ofTable(Table* pTable);
-    Card_Stream*    A_pProduce_stream_ofTable(Table* pTable);
-    Card_TablePtn*  A_pProduce_tablePtn_ofTable(Table* pTable, char cTableSyn);
 
     bool T_bColumnRef_IsColumnRef(Card_ColumnRef* p_columnRef);
-    i8   T_iColumnRef_ColumnOrd(Card_ColumnRef* p_columnRef);
-    char T_cColumnRef_TableSyn(Card_ColumnRef* p_columnRef);
-    char T_cColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef);
-    void T_vColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef, String* psTableSyn);
 
-    ePB  T_eTerm_Bound(Card_Term* p_term);
-    i8   T_iTerm_IndexColNo(Card_Term* p_term);
     bool T_bTerm_IsIndexColOrdinal(Card_Term* p_term);
     bool T_bTerm_IsParamOrdinal(Card_Term* p_term);
     bool T_bTerm_IsStreamColOrdinal(Card_Term* p_term);
     bool T_bTerm_IsTableColOrdinal(Card_Term* p_term);
-    eRO  T_eTerm_RelOp(Card_Term* p_term);
-    i8   T_iTerm_StreamColNo(Card_Term* p_term);
-    i8   T_iTerm_TableColNo(Card_Term* p_term);
-    char T_cTerm_TableSyn(Card_Term* p_term);
-    eTE  T_eTerm_TermEval(Card_Term* p_term);
+
 
     void T_vPRED_CullByKids(Card_PRED* p_PRED);
     Card_CmpPred* T_pPRED_FindBound(Card_PRED* p_PRED, Index* pIndex, ePB eBound);
@@ -75,7 +61,6 @@ namespace STORE
     i8   X_iCandIndex_Rank(Card_CandIndex* p_candIndex);
     void X_vCandIndex_Rank(Card_CandIndex* p_candIndex, i8 iRank);
 
-    Card_BoolCalc* X_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc);
 
     bool X_bCoPtnJoin_CoPtnWith(Card_CoPtnJoin* p_coPtnJoin, Card_CoPtnPred* p_CoPtnPred);
     Card_CoPtnJoin* X_pCoPtnJoinList_Find_coPtn_for(Card_CoPtnJoinList* p_coPtnJoinList, Card_CoPtnPred* p_coPtnPred);

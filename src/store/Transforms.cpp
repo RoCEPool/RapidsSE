@@ -682,8 +682,8 @@ void Transforms::vP60_T30_Add_joinPred_UnderAll_indexJoin(bool bPrint, bool bTra
     i8 iStreamOrdLo = M.p_stream->Y_iVal(P_OrdLo);
     i8 iStreamOrdHi = M.p_stream->Y_iVal(P_OrdHi);
 
-    i8 i_iOrdLo_0 = T_iTerm_StreamColNo(m_pTerm_0);
-    i8 i_iOrdLo_1 = T_iTerm_StreamColNo(m_pTerm_1);
+    i8 i_iOrdLo_0 = G_iTerm_StreamColNo(m_pTerm_0);
+    i8 i_iOrdLo_1 = G_iTerm_StreamColNo(m_pTerm_1);
 
     if (i_iOrdLo_0 >= iStreamOrdLo && i_iOrdLo_0 <= iStreamOrdHi) {
       M.p_term = new Card_Term("$I1"_Stz);

@@ -834,7 +834,7 @@ Card_Expr* Dissector::pExpr(Card_RpnTerms* pCard_RpnTerms)
 
   // TYPE <type>
 //  Card_Term* pCard_Term_popped = pCard_RpnTerms->pRpnTerms_PopTerm();
-//  eTE eTermEval = pCard_Term_popped->T_eTerm_TermEval();
+//  eTE eTermEval = pCard_Term_popped->G_eTerm_TermEval();
 //  Stz* szTerm = pCard_Term_popped->sz();
 //
 //  RASSERT(szTerm->bSame("TYPE"_Stz));
