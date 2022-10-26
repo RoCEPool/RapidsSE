@@ -4,24 +4,10 @@
 
 #include "Xlator.hpp"
 
-using namespace STORE::PRED;
-using namespace STORE::Term;
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Term::Xlate_Term::Xlate_Term(eCN eClassNo, Bench* pBench)
-    : Accessor(eClassNo, pBench)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  _postcondition_(_ADDRESS_,_MAGIC_);
-}
-
 /*----------------------------------------------------------------------------*/
 /* is atom a column ordinal?                                                  */
 /*----------------------------------------------------------------------------*/
-bool Term::Xlate_Term::T_bColumnRef_IsColumnRef(Card_ColumnRef* p_columnRef)
+bool Xlator::T_bColumnRef_IsColumnRef(Card_ColumnRef* p_columnRef)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -41,7 +27,7 @@ bool Term::Xlate_Term::T_bColumnRef_IsColumnRef(Card_ColumnRef* p_columnRef)
 /*----------------------------------------------------------------------------*/
 /* get column ordinal of column ref                                           */
 /*----------------------------------------------------------------------------*/
-i8 Term::Xlate_Term::T_iColumnRef_ColumnOrd(Card_ColumnRef* p_columnRef)
+i8 Xlator::T_iColumnRef_ColumnOrd(Card_ColumnRef* p_columnRef)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -57,7 +43,7 @@ i8 Term::Xlate_Term::T_iColumnRef_ColumnOrd(Card_ColumnRef* p_columnRef)
 /*----------------------------------------------------------------------------*/
 /* get table syn of column ref                                                */
 /*----------------------------------------------------------------------------*/
-char Term::Xlate_Term::T_cColumnRef_TableSyn(Card_ColumnRef* p_columnRef)
+char Xlator::T_cColumnRef_TableSyn(Card_ColumnRef* p_columnRef)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -73,7 +59,7 @@ char Term::Xlate_Term::T_cColumnRef_TableSyn(Card_ColumnRef* p_columnRef)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-char Term::Xlate_Term::T_cColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef)
+char Xlator::T_cColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   Stz* szColumnRef = p_columnRef->sz();
@@ -88,7 +74,7 @@ char Term::Xlate_Term::T_cColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Term::Xlate_Term::T_vColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef, String* psTableSyn)
+void Xlator::T_vColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef, String* psTableSyn)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -99,7 +85,7 @@ void Term::Xlate_Term::T_vColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef, Stri
 /*----------------------------------------------------------------------------*/
 /* evaluate bound                                                             */
 /*----------------------------------------------------------------------------*/
-ePB Term::Xlate_Term::Xlate_Term::T_eTerm_Bound(Card_Term* p_term)
+ePB Xlator::T_eTerm_Bound(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -126,7 +112,7 @@ ePB Term::Xlate_Term::Xlate_Term::T_eTerm_Bound(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 /* get ordinal index value  (i.e. $In)                                        */
 /*----------------------------------------------------------------------------*/
-i8 Term::Xlate_Term::T_iTerm_IndexColNo(Card_Term* p_term)
+i8 Xlator::T_iTerm_IndexColNo(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -140,7 +126,7 @@ i8 Term::Xlate_Term::T_iTerm_IndexColNo(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 /* is term an index-column ordinal?  (i.e. $In)                               */
 /*----------------------------------------------------------------------------*/
-bool Term::Xlate_Term::T_bTerm_IsIndexColOrdinal(Card_Term* p_term)
+bool Xlator::T_bTerm_IsIndexColOrdinal(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -160,7 +146,7 @@ bool Term::Xlate_Term::T_bTerm_IsIndexColOrdinal(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 /* is term a parameter ordinal?  (i.e. $Pn)                                   */
 /*----------------------------------------------------------------------------*/
-bool Term::Xlate_Term::T_bTerm_IsParamOrdinal(Card_Term* p_term)
+bool Xlator::T_bTerm_IsParamOrdinal(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -180,7 +166,7 @@ bool Term::Xlate_Term::T_bTerm_IsParamOrdinal(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 /* is term a stream-column ordinal?  (i.e. $n)                                */
 /*----------------------------------------------------------------------------*/
-bool Term::Xlate_Term::T_bTerm_IsStreamColOrdinal(Card_Term* p_term)
+bool Xlator::T_bTerm_IsStreamColOrdinal(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -198,7 +184,7 @@ bool Term::Xlate_Term::T_bTerm_IsStreamColOrdinal(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 /* is term an table-column ordinal?  (i.e. $$c.n)                             */
 /*----------------------------------------------------------------------------*/
-bool Term::Xlate_Term::T_bTerm_IsTableColOrdinal(Card_Term* p_term)
+bool Xlator::T_bTerm_IsTableColOrdinal(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -222,7 +208,7 @@ bool Term::Xlate_Term::T_bTerm_IsTableColOrdinal(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 /* evaluate relational op                                                     */
 /*----------------------------------------------------------------------------*/
-eRO Term::Xlate_Term::T_eTerm_RelOp(Card_Term* p_term)
+eRO Xlator::T_eTerm_RelOp(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -242,7 +228,7 @@ eRO Term::Xlate_Term::T_eTerm_RelOp(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 /* get stream column number n  (i.e. $n)                                      */
 /*----------------------------------------------------------------------------*/
-i8 Term::Xlate_Term::T_iTerm_StreamColNo(Card_Term* p_term)
+i8 Xlator::T_iTerm_StreamColNo(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -256,7 +242,7 @@ i8 Term::Xlate_Term::T_iTerm_StreamColNo(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 /* get table column number n (i.e. $$c.n)                                     */
 /*----------------------------------------------------------------------------*/
-i8 Term::Xlate_Term::T_iTerm_TableColNo(Card_Term* p_term)
+i8 Xlator::T_iTerm_TableColNo(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -270,7 +256,7 @@ i8 Term::Xlate_Term::T_iTerm_TableColNo(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 /* get table synonym c (i.e. $$c.n)                                           */
 /*----------------------------------------------------------------------------*/
-char Term::Xlate_Term::T_cTerm_TableSyn(Card_Term* p_term)
+char Xlator::T_cTerm_TableSyn(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -286,7 +272,7 @@ char Term::Xlate_Term::T_cTerm_TableSyn(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 /* evaluate term                                                              */
 /*----------------------------------------------------------------------------*/
-eTE Term::Xlate_Term::T_eTerm_TermEval(Card_Term* p_term)
+eTE Xlator::T_eTerm_TermEval(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -315,20 +301,9 @@ eTE Term::Xlate_Term::T_eTerm_TermEval(Card_Term* p_term)
 
 
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-PRED::Xlate_PRED::Xlate_PRED(eCN eClassNo, Bench* pBench)
-    : Xlate_Term(eClassNo, pBench)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  _postcondition_(_ADDRESS_,_MAGIC_);
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void PRED::Xlate_PRED::T_vPRED_CullByKids(Card_PRED* p_PRED)
+void Xlator::T_vPRED_CullByKids(Card_PRED* p_PRED)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -370,7 +345,7 @@ void PRED::Xlate_PRED::T_vPRED_CullByKids(Card_PRED* p_PRED)
 /*----------------------------------------------------------------------------*/
 /* find a comparePred which is the T_eTerm_Bound of given index                 */
 /*----------------------------------------------------------------------------*/
-Card_CmpPred* PRED::Xlate_PRED::T_pPRED_FindBound(Card_PRED* p_PRED, Index* pIndex,
+Card_CmpPred* Xlator::T_pPRED_FindBound(Card_PRED* p_PRED, Index* pIndex,
                                                   ePB eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
@@ -402,7 +377,7 @@ Card_CmpPred* PRED::Xlate_PRED::T_pPRED_FindBound(Card_PRED* p_PRED, Index* pInd
 /*----------------------------------------------------------------------------*/
 /* does predicate have some bound wrt given index?                            */
 /*----------------------------------------------------------------------------*/
-bool PRED::Xlate_PRED::T_bPRED_HasBounds(Card_PRED* p_PRED, Index* pIndex)
+bool Xlator::T_bPRED_HasBounds(Card_PRED* p_PRED, Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -433,7 +408,7 @@ bool PRED::Xlate_PRED::T_bPRED_HasBounds(Card_PRED* p_PRED, Index* pIndex)
 /*----------------------------------------------------------------------------*/
 /* is this card the given kind?                                               */
 /*----------------------------------------------------------------------------*/
-bool PRED::Xlate_PRED::T_bPRED_IsPred(Card* pArgCard)
+bool Xlator::T_bPRED_IsPred(Card* pArgCard)
 {
   _static_;
 
@@ -453,7 +428,7 @@ bool PRED::Xlate_PRED::T_bPRED_IsPred(Card* pArgCard)
 /*----------------------------------------------------------------------------*/
 /* find a comparePred which is the T_eTerm_Bound of given index                 */
 /*----------------------------------------------------------------------------*/
-Card_CmpPred* PRED::Xlate_PRED::T_pAndPred_FindBound(Card_AndPred* p_andPred, Index* pIndex, ePB eBound)
+Card_CmpPred* Xlator::T_pAndPred_FindBound(Card_AndPred* p_andPred, Index* pIndex, ePB eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -471,7 +446,7 @@ Card_CmpPred* PRED::Xlate_PRED::T_pAndPred_FindBound(Card_AndPred* p_andPred, In
 /*----------------------------------------------------------------------------*/
 /* does this andPred have some bound on index?                                */
 /*----------------------------------------------------------------------------*/
-bool PRED::Xlate_PRED::T_bAndPred_HasBounds(Card_AndPred* p_andPred, Index* pIndex)
+bool Xlator::T_bAndPred_HasBounds(Card_AndPred* p_andPred, Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -490,7 +465,7 @@ bool PRED::Xlate_PRED::T_bAndPred_HasBounds(Card_AndPred* p_andPred, Index* pInd
 /*----------------------------------------------------------------------------*/
 /* find a comparePred which is the T_eTerm_Bound of given index                 */
 /*----------------------------------------------------------------------------*/
-Card_CmpPred* PRED::Xlate_PRED::T_pOrPred_FindBound(Card_OrPred* p_orPred, Index* pIndex, ePB eBound)
+Card_CmpPred* Xlator::T_pOrPred_FindBound(Card_OrPred* p_orPred, Index* pIndex, ePB eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -508,7 +483,7 @@ Card_CmpPred* PRED::Xlate_PRED::T_pOrPred_FindBound(Card_OrPred* p_orPred, Index
 /*----------------------------------------------------------------------------*/
 /* does orPred have some bound on given index?                                */
 /*----------------------------------------------------------------------------*/
-bool PRED::Xlate_PRED::T_bOrPred_HasBounds(Card_OrPred* p_orPred, Index* pIndex)
+bool Xlator::T_bOrPred_HasBounds(Card_OrPred* p_orPred, Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -527,7 +502,7 @@ bool PRED::Xlate_PRED::T_bOrPred_HasBounds(Card_OrPred* p_orPred, Index* pIndex)
 /*----------------------------------------------------------------------------*/
 /* is this predCmp co-partitionable with given arg?                           */
 /*----------------------------------------------------------------------------*/
-bool PRED::Xlate_PRED::T_bCmpPred_CoPtnWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg)
+bool Xlator::T_bCmpPred_CoPtnWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -572,7 +547,7 @@ bool PRED::Xlate_PRED::T_bCmpPred_CoPtnWith(Card_CmpPred* p_cmpPred, Card_CmpPre
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool PRED::Xlate_PRED::T_bCmpPred_IsEq(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg)
+bool Xlator::T_bCmpPred_IsEq(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -596,7 +571,7 @@ bool PRED::Xlate_PRED::T_bCmpPred_IsEq(Card_CmpPred* p_cmpPred, Card_CmpPred* p_
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool PRED::Xlate_PRED::T_bCmpPred_OverlapsWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg)
+bool Xlator::T_bCmpPred_OverlapsWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -626,7 +601,7 @@ bool PRED::Xlate_PRED::T_bCmpPred_OverlapsWith(Card_CmpPred* p_cmpPred, Card_Cmp
 /*----------------------------------------------------------------------------*/
 /* mark the bounds of this <predCmp>                                          */
 /*----------------------------------------------------------------------------*/
-void PRED::Xlate_PRED::T_vCmpPred_MarkBound(Card_CmpPred* p_cmpPred)
+void Xlator::T_vCmpPred_MarkBound(Card_CmpPred* p_cmpPred)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -648,7 +623,7 @@ void PRED::Xlate_PRED::T_vCmpPred_MarkBound(Card_CmpPred* p_cmpPred)
 /*----------------------------------------------------------------------------*/
 /* find a comparePred which is the T_eTerm_Bound of given index                      */
 /*----------------------------------------------------------------------------*/
-Card_CmpPred* PRED::Xlate_PRED::T_pCmpPred_FindBound(Card_CmpPred* p_cmpPred, Index* pIndex, ePB eBound)
+Card_CmpPred* Xlator::T_pCmpPred_FindBound(Card_CmpPred* p_cmpPred, Index* pIndex, ePB eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -668,7 +643,7 @@ Card_CmpPred* PRED::Xlate_PRED::T_pCmpPred_FindBound(Card_CmpPred* p_cmpPred, In
 /*----------------------------------------------------------------------------*/
 /* is this comparePred a bound on given index?                                */
 /*----------------------------------------------------------------------------*/
-bool PRED::Xlate_PRED::T_bCmpPred_HasBounds(Card_CmpPred* p_cmpPred, Index* pIndex)
+bool Xlator::T_bCmpPred_HasBounds(Card_CmpPred* p_cmpPred, Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -690,7 +665,7 @@ bool PRED::Xlate_PRED::T_bCmpPred_HasBounds(Card_CmpPred* p_cmpPred, Index* pInd
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool PRED::Xlate_PRED::T_bCmpPred_UsesTable(Card_CmpPred* p_cmpPred, char cTableSyn)
+bool Xlator::T_bCmpPred_UsesTable(Card_CmpPred* p_cmpPred, char cTableSyn)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -714,7 +689,7 @@ bool PRED::Xlate_PRED::T_bCmpPred_UsesTable(Card_CmpPred* p_cmpPred, char cTable
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Xlator::Xlator(eCN eClassNo, Bench* pBench)
-: PRED::Xlate_PRED(eClassNo, pBench)
+: Accessor(eClassNo, pBench)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
