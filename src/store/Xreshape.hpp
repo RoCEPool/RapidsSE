@@ -1,17 +1,16 @@
 /*============================================================================*/
-/* TransformBase.hpp --                                                       */
+/* Xreshape.hpp --                                                       */
 /*============================================================================*/
 #pragma once
 
-#include "Bench.hpp"
-#include "BoardIter.hpp"
+#include "Xbase.hpp"
 
 
 namespace STORE
 {
   class Table;
 
-  class TransformBase : public Object
+  class Xreshape : public Xbase
   {
   public:
 
@@ -23,8 +22,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    TransformBase(eCN eClass);
-   ~TransformBase(void) noexcept(false);
+    Xreshape(eCN eClass);
+   ~Xreshape(void) noexcept(false);
 
     Table* A_pAccess_Table(Stz* szTableNm);
 

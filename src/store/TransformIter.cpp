@@ -17,7 +17,7 @@ __aFooterFunction(TransformIter)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 TransformIter::TransformIter(void)
-: TransformBase(CN_TRANSFORMITER)
+: Xreshape(CN_TRANSFORMITER)
 {
 }
 
@@ -25,7 +25,7 @@ TransformIter::TransformIter(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 TransformIter::TransformIter(eCN eClass)
-: TransformBase (eClass)
+: Xreshape (eClass)
 {
 }
 
