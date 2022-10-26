@@ -22,8 +22,6 @@ namespace STORE
    ~Xlator(void) noexcept(false);
 
 
-    Card_BoolCalc* X_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc);
-
 
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

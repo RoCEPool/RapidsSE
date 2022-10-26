@@ -75,9 +75,10 @@ namespace STORE
     void X_vBoolCalc_CullPred(Card_BoolCalc* p_boolCalc, char cWithMark);
     void X_vBoolCalc_RemovePred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred);
 
-
     i8   X_iCandIndex_Rank(Card_CandIndex* p_candIndex);
     void X_vCandIndex_Rank(Card_CandIndex* p_candIndex, i8 iRank);
+
+    Card_BoolCalc* X_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc);
 
     bool X_bCoPtnJoin_CoPtnWith(Card_CoPtnJoin* p_coPtnJoin, Card_CoPtnPred* p_CoPtnPred);
     Card_CoPtnJoin* X_pCoPtnJoinList_Find_coPtn_for(Card_CoPtnJoinList* p_coPtnJoinList, Card_CoPtnPred* p_coPtnPred);
