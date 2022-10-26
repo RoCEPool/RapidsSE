@@ -3,14 +3,14 @@
 /*============================================================================*/
 #pragma once
 
-#include "Xaccess.hpp"
+#include "Xglean.hpp"
 
 
 namespace STORE
 {
   class Table;
 
-  class Xreshape : public Xaccess
+  class Xreshape : public Xglean
   {
   public:
 

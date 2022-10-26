@@ -19,6 +19,8 @@ __aFooterFunction(Xaccess)
 Xaccess::Xaccess(eCN eClass)
 : Xbase(eClass)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -26,6 +28,8 @@ Xaccess::Xaccess(eCN eClass)
 /*----------------------------------------------------------------------------*/
 Xaccess::~Xaccess(void) noexcept(false)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
 }
 
 
@@ -50,7 +54,6 @@ Table* Xaccess::A_pAccess_Table(Stz* szTableNm)
 
   return pTable;
 }
-
 
 /*============================================================================*/
 /* end                                                                        */

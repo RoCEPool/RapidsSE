@@ -17,7 +17,7 @@ __aFooterFunction(Xreshape)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Xreshape::Xreshape(eCN eClass)
-: Xaccess(eClass)
+: Xglean(eClass)
 {
 }
 
