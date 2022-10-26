@@ -39,20 +39,20 @@ Xlator::~Xlator(void) noexcept(false)
 
 
 /*----------------------------------------------------------------------------*/
-/* access stream defn of table                                                */
+/* produce <indexList> of table                                               */
 /*----------------------------------------------------------------------------*/
-bool Xlator::A_bAccess_IndexListOfTable(void)
+Card_IndexList* Xlator::A_pProduce_indexList_ofTable(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
   M.p_indexList = nullptr;
 
   if (!m_pTable)
-    return false;
+    return nullptr;
 
   IdxVec* pIdxVec = m_pTable->pIdxVec();
   if (! pIdxVec)
-    return false;
+    return nullptr;
 
   M.p_indexList = new Card_IndexList;
 
@@ -89,18 +89,43 @@ bool Xlator::A_bAccess_IndexListOfTable(void)
 
   }
 
-  return true;
+  return M.p_indexList;
 }
 
 /*----------------------------------------------------------------------------*/
-/* access stream defn of table                                                */
+/* produce <size> of table                                                    */
 /*----------------------------------------------------------------------------*/
-void Xlator::A_vAccess_StreamOfTable(void)
+Card_Size* Xlator::A_pProduce_size_ofTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  if (! m_pTable) {
+    vTrace("A: m_pTable not set\n"_Stz);
+    return nullptr;
+  }
+  if (! M.p_table) {
+    vTrace("A: M.p_table not set\n"_Stz);
+    return nullptr;
+  }
+
+  i8 jTableSize = m_pTable->pStreamDef()->jTableSize();
+
+  M.p_size = new Card_Size;
+  s32 sSize(jTableSize);
+  M.p_size->vValue(sSize);
+
+  return M.p_size;
+}
+
+/*----------------------------------------------------------------------------*/
+/* produce <stream> of table                                                  */
+/*----------------------------------------------------------------------------*/
+Card_Stream* Xlator::A_pProduce_stream_ofTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
   if (!m_pTable)
-    return;
+    return nullptr;
 
   m_pStreamDef = m_pTable->pStreamDef();
 
@@ -125,12 +150,13 @@ void Xlator::A_vAccess_StreamOfTable(void)
     M.p_stmCol->vAppend(pCard_Type);
   }
 
+  return M.p_stream;
 }
 
 /*----------------------------------------------------------------------------*/
-/* access partition of table                                                  */
+/* produce <tablePtn> of table                                                */
 /*----------------------------------------------------------------------------*/
-void Xlator::A_vAccess_PartitionOfTable(void)
+Card_TablePtn* Xlator::A_pProduce_tablePtn_ofTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -147,30 +173,10 @@ void Xlator::A_vAccess_PartitionOfTable(void)
 
   M.p_tablePtn = new Card_TablePtn;
   M.p_tablePtn->vValue(sTablePtn);
+
+  return M.p_tablePtn;
 }
 
-/*----------------------------------------------------------------------------*/
-/* access size of table                                                       */
-/*----------------------------------------------------------------------------*/
-void Xlator::A_vAccess_SizeOfTable(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  if (! m_pTable) {
-    vTrace("A: m_pTable not set\n"_Stz);
-    return;
-  }
-  if (! M.p_table) {
-    vTrace("A: M.p_table not set\n"_Stz);
-    return;
-  }
-
-  i8 jTableSize = m_pTable->pStreamDef()->jTableSize();
-
-  M.p_size = new Card_Size;
-  s32 sSize(jTableSize);
-  M.p_size->vValue(sSize);
-}
 
 
 /*----------------------------------------------------------------------------*/

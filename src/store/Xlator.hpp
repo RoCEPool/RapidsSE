@@ -24,10 +24,10 @@ namespace STORE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    bool A_bAccess_IndexListOfTable(void);
-    void A_vAccess_PartitionOfTable(void);
-    void A_vAccess_StreamOfTable(void);
-    void A_vAccess_SizeOfTable(void);
+    Card_IndexList* A_pProduce_indexList_ofTable(void);
+    Card_Size*      A_pProduce_size_ofTable(void);
+    Card_Stream*    A_pProduce_stream_ofTable(void);
+    Card_TablePtn*  A_pProduce_tablePtn_ofTable(void);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
