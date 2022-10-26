@@ -18,7 +18,7 @@ namespace STORE
   {
   protected:
 
-    s32         m_sPhase;
+    s32         m_sHand;
     s256        m_sTransformation;
     s256        m_sDescription;
 
@@ -27,7 +27,7 @@ namespace STORE
     bool        m_bTrace;
     i8          m_iTrace;
 
-    bool        m_bPrintPhase;
+    bool        m_bPrintHand;
     bool        m_bPrintXform;
     bool        m_bInteractive;
     b8          m_bBeenCued;
@@ -71,19 +71,19 @@ namespace STORE
 
     Board* pBoard(void);
 
-    eOA eCueUser(Stz* szPhase, Stz* szTransformation= nullptr);
+    eOA eCueUser(Stz* szHand, Stz* szTransformation= nullptr);
 
     void vEndTransform(void);
 
     Stz* szDescription(void);
     void vDescription(Stz* szDescription);
 
-    Stz* szPhase(void);
-    void vPhase(const char* szPhase);
+    Stz* szHand(void);
+    void vHand(const char* asHand);
     void vPrintBench(eBK eBoard, i8 i_SubBoard=C_UNKNOWN);
     void vPrintBoard(void);
-    bool bPrintPhase(void);
-    void vPrintPhase(bool bPrintPhase);
+    bool bPrintHand(void);
+    void vPrintHand(bool bPrintHand);
     bool bPrintXform(void);
     void vPrintXform(bool bPrintXform);
 

@@ -147,13 +147,13 @@ Optimiser* Bench::pOptimiser(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vPrintBoards(const char* azPhase, eBK eBoard, i8 i_SubBoard)
+void Bench::vPrintBoards(const char* azHand, eBK eBoard, i8 i_SubBoard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
   if (C_UNKNOWN != i_SubBoard) {
     Board *pBoard = pGetBoard(eBoard, i_SubBoard);
-    pBoard->vPrintBoard((Stz*)azPhase);
+    pBoard->vPrintBoard((Stz*)azHand);
     return;
   }
 
@@ -161,7 +161,7 @@ void Bench::vPrintBoards(const char* azPhase, eBK eBoard, i8 i_SubBoard)
 
     Board *pBoard = pGetBoard(eBoard, i_Sub);
 
-    pBoard->vPrintBoard((Stz*)azPhase);
+    pBoard->vPrintBoard((Stz*)azHand);
   }
 }
 

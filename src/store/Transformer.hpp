@@ -51,7 +51,7 @@ namespace STORE
     void vHand_Z0_RestatePipeline (bool bPrintHand, bool bPrint, bool bTrace);
 
     void vEndHand(void);
-    void vHand(eBK eBoard, i8 i_SubBoard, bool bPrintHand, const char* azPhase);
+    void vHand(eBK eBoard, i8 i_SubBoard, bool bPrintHand, const char* azHand);
     bool bPrintBench(void);
     void vPrintBench(eBK eBoard, i8 i_SubBoard=C_UNKNOWN);
 

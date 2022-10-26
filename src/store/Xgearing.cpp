@@ -27,7 +27,7 @@ Xgearing::Xgearing(eCN eClass, Bench* pBench)
   m_bTrace = false;
   m_iTrace   = 0;
 
-  m_bPrintPhase = false;
+  m_bPrintHand = false;
   m_bPrintXform = false;
   Job* pJob = MY::pJob();
   TagSet* pJobTags = pJob->pJobTags();
@@ -100,7 +100,7 @@ Board* Xgearing::pBoard(void)
 /*----------------------------------------------------------------------------*/
 /* cue user                                                                  */
 /*----------------------------------------------------------------------------*/
-eOA Xgearing::eCueUser(Stz* szPhase, Stz* szTransformation)
+eOA Xgearing::eCueUser(Stz* szHand, Stz* szTransformation)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -110,16 +110,16 @@ eOA Xgearing::eCueUser(Stz* szPhase, Stz* szTransformation)
     return OA_CONTINUE_TRANSFORMING;
 
   s256 sPrompt;
-  if (szPhase && szTransformation)
-    sPrompt.vSprint("%s :: %s"_Stz,szPhase, szTransformation);
-  else if (szPhase)
-    sPrompt.vSprint("%s"_Stz,szPhase, szTransformation);
+  if (szHand && szTransformation)
+    sPrompt.vSprint("%s :: %s"_Stz, szHand, szTransformation);
+  else if (szHand)
+    sPrompt.vSprint("%s"_Stz, szHand, szTransformation);
   else
-    sPrompt.vSprint(""_Stz,szPhase);
+    sPrompt.vSprint(""_Stz, szHand);
 
   if (! m_bBeenCued && AM::JOB::bHasTag("<cue>"_Stz)) {
     Stz* szTagCue = AM::JOB::szTagValue("<cue>"_Stz);
-    if (   (! szPhase          || ! szTagCue->bSame(szPhase))
+    if (   (! szHand || ! szTagCue->bSame(szHand))
         && (! szTransformation || ! szTagCue->bSame(szTransformation))) {
       printf("%s\n",sPrompt.azChar());
       return OA_CONTINUE_TRANSFORMING;
@@ -217,21 +217,21 @@ void Xgearing::vEndTransform(void)
 /*----------------------------------------------------------------------------*/
 /* get transformation phase                                                   */
 /*----------------------------------------------------------------------------*/
-Stz* Xgearing::szPhase(void)
+Stz* Xgearing::szHand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  return m_sPhase;
+  return m_sHand;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set transformation phase                                                   */
 /*----------------------------------------------------------------------------*/
-void Xgearing::vPhase(const char* asPhase)
+void Xgearing::vHand(const char* asHand)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  m_sPhase = asPhase;
+  m_sHand = asHand;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -244,16 +244,16 @@ void Xgearing::vPrintBench(eBK eBoard, i8 i_SubBoard)
   for (;;) {
     if (C_UNKNOWN != i_SubBoard) {
       Board *pBoard = m_pBench->pGetBoard(eBoard, i_SubBoard);
-      pBoard->vPrintBoard(szPhase());
+      pBoard->vPrintBoard(szHand());
     }
     else {
       for (i8 i_Sub = 0; m_pBench->bBoardExists(eBoard, i_Sub); i_Sub++) {
         Board *pBoard = m_pBench->pGetBoard(eBoard, i_Sub);
-        pBoard->vPrintBoard(szPhase());
+        pBoard->vPrintBoard(szHand());
       }
     }
 
-    if (OA_REPRINT_BOARD != eCueUser(szPhase()))
+    if (OA_REPRINT_BOARD != eCueUser(szHand()))
       break;
   }
 }
@@ -269,11 +269,11 @@ void Xgearing::vPrintBoard(void)
     return;
 
   for (;;) {
-    M.pBoard->vPrintBoard(szPhase(),
+    M.pBoard->vPrintBoard(szHand(),
                           szTransformation(),
                           szDescription());
 
-    if (OA_REPRINT_BOARD != eCueUser(szPhase(), szTransformation()))
+    if (OA_REPRINT_BOARD != eCueUser(szHand(), szTransformation()))
       break;
   }
 }
@@ -289,21 +289,21 @@ void Xgearing::vSetPrintByKind(eCK eCard, bool bPrintByKind)
 /*----------------------------------------------------------------------------*/
 /* get print phase                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xgearing::bPrintPhase(void)
+bool Xgearing::bPrintHand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  return m_bPrintPhase;
+  return m_bPrintHand;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set print phase                                                            */
 /*----------------------------------------------------------------------------*/
-void Xgearing::vPrintPhase(bool bPrintPhase)
+void Xgearing::vPrintHand(bool bPrintHand)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  m_bPrintPhase = bPrintPhase;
+  m_bPrintHand = bPrintHand;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -313,7 +313,7 @@ bool Xgearing::bPrintXform(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  return m_bPrintPhase;
+  return m_bPrintHand;
 }
 
 /*----------------------------------------------------------------------------*/
