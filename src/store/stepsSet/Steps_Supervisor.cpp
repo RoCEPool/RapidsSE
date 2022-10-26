@@ -112,6 +112,7 @@ void Step::vSupervisorCollectInfo(void)
       + sizeof(xHeartbeat.m_iNodeId)
       + sizeof(xHeartbeat.m_acAddr)
       + sizeof(xHeartbeat.m_iPort)
+      + sizeof(xHeartbeat.m_iWLPort)
       + sizeof(xHeartbeat.xStoreHeartbeat)
       + sizeof(xHeartbeat.xBaseHeartbeat)
       + sizeof(xHeartbeat.m_iChecksum)
@@ -131,7 +132,8 @@ void Step::vSupervisorCollectInfo(void)
     xHeartbeat.m_iNodeId = AM::pGrid()->iThisNodeId();
     strncpy(xHeartbeat.m_acAddr, pNode->szIPAddr()->azChar(), sizeof(xHeartbeat.m_acAddr) - 1);
     xHeartbeat.m_acAddr[sizeof(xHeartbeat.m_acAddr) - 1] = 0;
-    xHeartbeat.m_iPort = pNode->iPortNo();
+    xHeartbeat.m_iPort   = pNode->iPortNo();
+    xHeartbeat.m_iWLPort = pNode->iWLPortNo();
     //printf("Hello, My addr:%s and port:%lld\n", pNode->szIPAddr()->azChar(), pNode->iPortNo());
   }
 

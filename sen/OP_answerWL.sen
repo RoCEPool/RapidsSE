@@ -105,12 +105,12 @@
 
   0 locals| nConns |
 
-  "Answer Demon Started" .boot
+  "AnswerWL Demon Started" .boot
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // get the listening port of this node
-  [grid].thisNodeNo@ [grid].findNodeByNo node.port to iPort
+  [grid].thisNodeNo@ [grid].findNodeByNo node.portWL to iPort
 
   //[args].verbose if
   //  iPort "Waiting for connections on port %v" .printf

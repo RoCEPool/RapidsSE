@@ -335,9 +335,8 @@ namespace OBLIQUE
       static Node* pGetThisNode(void);
       static i8   iGetNthNodeId(i8 i_Node);
       static i8   nKnownNodes(void);
-      static void vNodeDetected(i8 iNodeId, Stz* szNodeNm,
-                                Stz* szIPAddr, i8 iPortNo,
-                                Stz* pszRegionNm);
+      static void vNodeDetected(i8 iNodeId, Stz* szNodeNm, Stz* szIPAddr,
+                                i8 iPortNo, i8 iWLPortNo, Stz* pszRegionNm);
       static i8   iThisNodeId(void);
     };
   

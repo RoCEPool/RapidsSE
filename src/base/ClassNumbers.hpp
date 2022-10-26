@@ -637,6 +637,7 @@ static Stz* aCN[]
   /* */ "PARCEL"_Stz,               // CN_PARCEL
   /* */ "PATHIDENTIFIER"_Stz,       // CN_PATHIDENTIFIER
   /* */ "PATHVEC"_Stz,              // CN_PATHVEC
+  /* */ "PAYLOADOBJ"_Stz,           // CN_PAYLOADOBJ
   /* */ "PAYSTR"_Stz,               // CN_PATHSTR
   /* */ "PAYSTRBUFFER"_Stz,         // CN_PATHSTRBUFFER
   /* */ "PERMIT"_Stz,               // CN_PERMIT

@@ -1273,6 +1273,7 @@ void vDdlLockAssertNone(void);
   void vNodeId(void);
   void vNodePartitions(void);
   void vNodePort(void);
+  void vNodePortWL(void);
   void vNodeRecvSocketStore(void);
   void vNodeRecvSocketFetch(void);
   void vNodeSendSocketStore(void);

@@ -20,7 +20,8 @@ namespace STORE
     s32 m_sRegionNm;   // name of shared memory region
     i8  m_nPtnsInNode; // degree of parallelism
     s32 m_sIPAddr;     // ip address of node
-    i8  m_iPortNo;     // port number of node
+    i8  m_iPortNo;     // internal port number of node
+    i8  m_iWLPortNo;   // wireline port number of node
     i8 m_nRetry;       // number of retries to connect
   
     eNS m_eState;      // node state
@@ -47,7 +48,7 @@ namespace STORE
     void  operator delete(void*);
     
     Node(i8 iNodeId, Stz* szNodeNm, i8 nPtnsInNode,
-         Stz* szIPAddr, i8 iPortNo, Stz* szRegionNm);
+         Stz* szIPAddr, i8 iPortNo, i8 iWLPortNo, Stz* szRegionNm);
     ~Node(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -72,6 +73,7 @@ namespace STORE
     Stz* szNodeNm(void);
   
     i8   iPortNo(void);
+    i8   iWLPortNo(void);
     i8   nPtnsInNode(void);
     void vPutHeartbeat(const Heartbeat& xHeartbeat);
 
