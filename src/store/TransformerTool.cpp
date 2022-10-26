@@ -18,7 +18,7 @@ extern OptimiserCatalog gxOptimiserCatalog;
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
-: TransformIter(eClass)
+: Xregs(eClass)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -1126,9 +1126,9 @@ void TransformerTool::M_vPushIter(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  TransformIter* pTransformIterSave = new TransformIter;
+  Xregs* pTransformIterSave = new Xregs;
 
-  pTransformIterSave->vCopyFrom(this->aTransformIterMembers());
+  pTransformIterSave->vCopyFrom(this->aXregs());
 
   m_pTransformIterList->vPush(pTransformIterSave);
 }
@@ -1140,9 +1140,9 @@ void TransformerTool::M_vPushIter(Board* pBoard)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  TransformIter* pTransformIterSave = new TransformIter;
+  Xregs* pTransformIterSave = new Xregs;
 
-  pTransformIterSave->vCopyFrom(this->aTransformIterMembers());
+  pTransformIterSave->vCopyFrom(this->aXregs());
 
   m_pTransformIterList->vPush(pTransformIterSave);
 
@@ -1162,9 +1162,9 @@ void TransformerTool::M_vPopIter(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
-  TransformIter* pTransformIterRestore = m_pTransformIterList->pPop();
+  Xregs* pTransformIterRestore = m_pTransformIterList->pPop();
 
-  this->vCopyFrom(pTransformIterRestore->aTransformIterMembers());
+  this->vCopyFrom(pTransformIterRestore->aXregs());
 
   delete pTransformIterRestore;
 }

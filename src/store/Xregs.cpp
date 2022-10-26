@@ -1,22 +1,21 @@
 /*============================================================================*/
-/* TransformIter.cpp --                                                       */
+/* Xregs.cpp --                                                       */
 /*============================================================================*/
 
-#include "TransformIter.hpp"
+#include "Xregs.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, TransformIter, CN_TRANSFORMITER)
-__aNewFunction(TransformIter, CN_TRANSFORMITER)
-__vDeleteFunction(TransformIter, CN_TRANSFORMITER)
-__aFooterFunction(TransformIter)
+__aNewFunction(Xregs, CN_TRANSFORMITER)
+__vDeleteFunction(Xregs, CN_TRANSFORMITER)
+__aFooterFunction(Xregs)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-TransformIter::TransformIter(void)
+Xregs::Xregs(void)
 : Xreshape(CN_TRANSFORMITER)
 {
 }
@@ -24,7 +23,7 @@ TransformIter::TransformIter(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-TransformIter::TransformIter(eCN eClass)
+Xregs::Xregs(eCN eClass)
 : Xreshape (eClass)
 {
 }
@@ -32,7 +31,7 @@ TransformIter::TransformIter(eCN eClass)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-TransformIter::~TransformIter(void) noexcept(false)
+Xregs::~Xregs(void) noexcept(false)
 {
 }
 
@@ -44,18 +43,18 @@ TransformIter::~TransformIter(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void TransformIter::vCopyFrom(_TransformIterMembers* aFrom)
+void Xregs::vCopyFrom(_Xregs* aFrom)
 {
-  MemLib::vCopy(aTransformIterMembers(),
+  MemLib::vCopy(aXregs(),
                 aFrom,
-                sizeof(_TransformIterMembers),
+                sizeof(_Xregs),
                 CN_TRANSFORMITER);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-_TransformIterMembers* TransformIter::aTransformIterMembers(void)
+_Xregs* Xregs::aXregs(void)
 {
   return &M;
 }

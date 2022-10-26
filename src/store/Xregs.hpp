@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* TransformIter.hpp --                                                       */
+/* Xregs.hpp --                                                       */
 /*============================================================================*/
 #pragma once
 
@@ -10,7 +10,7 @@
 
 namespace STORE
 {
-  struct _TransformIterMembers
+  struct _Xregs
   {
     BoardIter xBI;
 
@@ -95,11 +95,11 @@ namespace STORE
     Card_Where *            p_where;
   } ;
 
-  class TransformIter : public Xreshape
-                      , public ListItem_t<TransformIter>
+  class Xregs : public Xreshape
+              , public ListItem_t<Xregs>
   {
   public:
-    _TransformIterMembers M;
+    _Xregs M;
 
     // must be last
     Footer m_xFooter;
@@ -109,20 +109,16 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    TransformIter(void);
-    TransformIter(eCN eClass);
-   ~TransformIter(void) noexcept(false);
+    Xregs(void);
+    Xregs(eCN eClass);
+   ~Xregs(void) noexcept(false);
 
-    void vCopyFrom(_TransformIterMembers* aTransformIterMembers);
+    void vCopyFrom(_Xregs* aTransformIterMembers);
 
-    _TransformIterMembers* aTransformIterMembers(void);
+    _Xregs* aXregs(void);
 
     Footer* aFooter(void);
   };
-
-
-  TransformIter* _pTransformIter(void* aAddr);
-
 }
 
 /*============================================================================*/

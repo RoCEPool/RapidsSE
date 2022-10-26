@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "TransformIter.hpp"
+#include "Xregs.hpp"
 
 namespace STORE
 {
-  class TransformIterList : public ListNL_t<TransformIter>
+  class TransformIterList : public ListNL_t<Xregs>
   {
   public:
 

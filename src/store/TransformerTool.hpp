@@ -14,7 +14,7 @@
 
 namespace STORE
 {
-  class TransformerTool : public TransformIter
+  class TransformerTool : public Xregs
   {
   protected:
 

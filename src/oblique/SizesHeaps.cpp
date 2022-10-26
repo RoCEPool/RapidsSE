@@ -246,7 +246,7 @@
 #include "Transforms.hpp"
 #include "ParamSpec.hpp"
 #include "ParamsSpec.hpp"
-#include "TransformIter.hpp"
+#include "Xregs.hpp"
 #include "TransformIterList.hpp"
 #include "Ppy.hpp"
 #include "PpySet.hpp"
@@ -651,27 +651,27 @@ SizeHeap gxaSizeHeap[]
   { CN_TINYTRANSIENT,            sizeof(Heap),/*correct*/    HT_INVALID   ,FILL },
   { CN_TINYVIRTUAL,              sizeof(Heap),/*correct*/    HT_INVALID   ,FILL },
   { CN_TMEVAL,                   sizeof(TypeValueArea),/*yes*/   HT_INVALID   ,FILL },
-  { CN_TOKEN,                    sizeof(Token),              HT_T_TINY    ,FILL },
-  { CN_TOKENVEC,                 sizeof(TokenVec),           HT_T_LARGE   ,FILL },
-  { CN_TOKEYHSHROW,              sizeof(ToKeyHshRow),        HT_T_MEDIUM  ,FILL },
-  { CN_TOLGLPTNCRW,              sizeof(ToLglPtnCrw),        HT_T_LARGE   ,FILL },
-  { CN_TOLGLPTNNST,              sizeof(ToLglPtnNst),        HT_T_MEDIUM  ,FILL },
-  { CN_TOLGLPTNROW,              sizeof(ToLglPtnRow),        HT_T_LARGE   ,FILL },
-  { CN_TOTUP,                    sizeof(Totup),              HT_T_MEDIUM  ,FILL },
-  { CN_TRACELOCK,                sizeof(TraceLock),          HT_T_TINY    ,FILL },
-  { CN_TRACEMULTILOCK,           sizeof(TraceMultiLock),     HT_T_TINY    ,FILL },
-  { CN_TRANSFORMER,              sizeof(Transformer),        HT_T_TINY    ,FILL },
-  { CN_TRANSFORMITER,            sizeof(TransformIter),      HT_T_TINY    ,FILL },
-  { CN_TRANSFORMITERLIST,        sizeof(TransformIterList),  HT_T_TINY    ,FILL },
-  { CN_TRANSFORMS,               sizeof(Transforms),         HT_T_SMALL   ,FILL },
-  { CN_TSPVAL,                   sizeof(TypeValueArea),/*yes*/   HT_INVALID   ,FILL },
-  { CN_TUB,                      sizeof(Tub),                HT_T_TINY    ,FILL },
-  { CN_TX,                       sizeof(Tx),                 HT_T_TINY    ,FILL },
-  { CN_TXSET,                    sizeof(TxSet),              HT_T_TINY    ,FILL },
+  { CN_TOKEN,                    sizeof(Token),                  HT_T_TINY    , FILL },
+  { CN_TOKENVEC,                 sizeof(TokenVec),               HT_T_LARGE   , FILL },
+  { CN_TOKEYHSHROW,              sizeof(ToKeyHshRow),            HT_T_MEDIUM  , FILL },
+  { CN_TOLGLPTNCRW,              sizeof(ToLglPtnCrw),            HT_T_LARGE   , FILL },
+  { CN_TOLGLPTNNST,              sizeof(ToLglPtnNst),            HT_T_MEDIUM  , FILL },
+  { CN_TOLGLPTNROW,              sizeof(ToLglPtnRow),            HT_T_LARGE   , FILL },
+  { CN_TOTUP,                    sizeof(Totup),                  HT_T_MEDIUM  , FILL },
+  { CN_TRACELOCK,                sizeof(TraceLock),              HT_T_TINY    , FILL },
+  { CN_TRACEMULTILOCK,           sizeof(TraceMultiLock),         HT_T_TINY    , FILL },
+  { CN_TRANSFORMER,              sizeof(Transformer),            HT_T_TINY    , FILL },
+  { CN_TRANSFORMITER,            sizeof(Xregs),                  HT_T_TINY    , FILL },
+  { CN_TRANSFORMITERLIST,        sizeof(TransformIterList),      HT_T_TINY    , FILL },
+  { CN_TRANSFORMS,               sizeof(Transforms),             HT_T_SMALL   , FILL },
+  { CN_TSPVAL,                   sizeof(TypeValueArea),/*yes*/   HT_INVALID   , FILL },
+  { CN_TUB,                      sizeof(Tub),                    HT_T_TINY    , FILL },
+  { CN_TX,                       sizeof(Tx),                     HT_T_TINY    , FILL },
+  { CN_TXSET,                    sizeof(TxSet),                  HT_T_TINY    , FILL },
 
-  { CN__U__,                     'U' - ('A' - 1),            HT_INVALID   ,FILL },
-  { CN_UNITINT,                  sizeof(UnitInt),     HT_T_TINY    , FILL },
-  { CN_UT_SKIPLIST,              sizeof(UT_SkipList), HT_T_LARGE   , FILL },
+  { CN__U__,                     'U' - ('A' - 1),                HT_INVALID   , FILL },
+  { CN_UNITINT,                  sizeof(UnitInt),                HT_T_TINY    , FILL },
+  { CN_UT_SKIPLIST,              sizeof(UT_SkipList),            HT_T_LARGE   , FILL },
 
   { CN__V__,                     'V' - ('A' - 1),     HT_INVALID   , FILL },
   { CN_VERBOSE,                  sizeof(Verbose),     HT_T_TINY    , FILL },
