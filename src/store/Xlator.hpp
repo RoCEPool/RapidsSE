@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "Accessor.hpp"
+#include "TransformerTool.hpp"
 
 namespace STORE
 {
-  class Xlator : public Accessor
+  class Xlator : public TransformerTool
   {
   private:
 
