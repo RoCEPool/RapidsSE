@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Xregs.hpp --                                                       */
+/* Xcogs.hpp --                                                       */
 /*============================================================================*/
 #pragma once
 
@@ -10,7 +10,7 @@
 
 namespace STORE
 {
-  struct _Xregs
+  struct _Xcogs
   {
     BoardIter xBI;
 
@@ -95,27 +95,26 @@ namespace STORE
     Card_Where *            p_where;
   } ;
 
-  class Xregs : public Xreshape
-              , public ListItem_t<Xregs>
+  class Xcogs : public Xreshape
+              , public ListItem_t<Xcogs>
   {
   public:
-    _Xregs M;
+    _Xcogs M;
 
     // must be last
     Footer m_xFooter;
-
-
+    
   public:
     void* operator new(size_t);
     void  operator delete(void*);
 
-    Xregs(void);
-    Xregs(eCN eClass);
-   ~Xregs(void) noexcept(false);
+    Xcogs(void);
+    Xcogs(eCN eClass);
+   ~Xcogs(void) noexcept(false);
 
-    void vCopyFrom(_Xregs* aTransformIterMembers);
+    void vCopyFrom(_Xcogs* aTransformIterMembers);
 
-    _Xregs* aXregs(void);
+    _Xcogs* aXregs(void);
 
     Footer* aFooter(void);
   };

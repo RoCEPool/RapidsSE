@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "Xregs.hpp"
+#include "Xcogs.hpp"
 
 namespace STORE
 {
-  class TransformIterList : public ListNL_t<Xregs>
+  class TransformIterList : public ListNL_t<Xcogs>
   {
   public:
 

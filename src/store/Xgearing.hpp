@@ -14,7 +14,7 @@
 
 namespace STORE
 {
-  class Xgearing : public Xregs
+  class Xgearing : public Xcogs
   {
   protected:
 
