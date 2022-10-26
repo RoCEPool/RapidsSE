@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Xglean.hpp --                                                       */
+/* Xextract.hpp --                                                       */
 /*============================================================================*/
 #pragma once
 
@@ -9,7 +9,7 @@ namespace STORE
 {
   class Table;
 
-  class Xglean : public Xaccess
+  class Xextract : public Xaccess
   {
   public:
 
@@ -34,8 +34,8 @@ namespace STORE
     Footer m_xFooter;
 
   public:
-    Xglean(eCN eClass);
-   ~Xglean(void) noexcept(false);
+    Xextract(eCN eClass);
+   ~Xextract(void) noexcept(false);
 
     Footer* aFooter(void);
   };

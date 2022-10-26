@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Xglean.cpp --                                                       */
+/* Xextract.cpp --                                                       */
 /*============================================================================*/
 
-#include "Xglean.hpp"
+#include "Xextract.hpp"
 
 #include "Table.hpp"
 #include "PtnDef.hpp"
@@ -11,12 +11,12 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__aFooterFunction(Xglean)
+__aFooterFunction(Xextract)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Xglean::Xglean(eCN eClass)
+Xextract::Xextract(eCN eClass)
 : Xaccess(eClass)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
@@ -26,7 +26,7 @@ Xglean::Xglean(eCN eClass)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Xglean::~Xglean(void) noexcept(false)
+Xextract::~Xextract(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -41,7 +41,7 @@ Xglean::~Xglean(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get column ordinal of column ref                                           */
 /*----------------------------------------------------------------------------*/
-i8 Xglean::G_iColumnRef_ColumnOrd(Card_ColumnRef* p_columnRef)
+i8 Xextract::G_iColumnRef_ColumnOrd(Card_ColumnRef* p_columnRef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -57,7 +57,7 @@ i8 Xglean::G_iColumnRef_ColumnOrd(Card_ColumnRef* p_columnRef)
 /*----------------------------------------------------------------------------*/
 /* get table syn of column ref                                                */
 /*----------------------------------------------------------------------------*/
-char Xglean::G_cColumnRef_TableSyn(Card_ColumnRef* p_columnRef)
+char Xextract::G_cColumnRef_TableSyn(Card_ColumnRef* p_columnRef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -73,7 +73,7 @@ char Xglean::G_cColumnRef_TableSyn(Card_ColumnRef* p_columnRef)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-char Xglean::G_cColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef)
+char Xextract::G_cColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
   Stz* szColumnRef = p_columnRef->sz();
@@ -88,7 +88,7 @@ char Xglean::G_cColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xglean::G_vColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef, String* psTableSyn)
+void Xextract::G_vColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef, String* psTableSyn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -100,7 +100,7 @@ void Xglean::G_vColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef, String* psTabl
 /*----------------------------------------------------------------------------*/
 /* get rank                                                                   */
 /*----------------------------------------------------------------------------*/
-i8 Xglean::X_iCandIndex_Rank(Card_CandIndex* p_candIndex)
+i8 Xextract::X_iCandIndex_Rank(Card_CandIndex* p_candIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -112,7 +112,7 @@ i8 Xglean::X_iCandIndex_Rank(Card_CandIndex* p_candIndex)
 /*----------------------------------------------------------------------------*/
 /* set rank                                                                   */
 /*----------------------------------------------------------------------------*/
-void Xglean::X_vCandIndex_Rank(Card_CandIndex* p_candIndex, i8 iRank)
+void Xextract::X_vCandIndex_Rank(Card_CandIndex* p_candIndex, i8 iRank)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -124,7 +124,7 @@ void Xglean::X_vCandIndex_Rank(Card_CandIndex* p_candIndex, i8 iRank)
 /*----------------------------------------------------------------------------*/
 /* evaluate bound                                                             */
 /*----------------------------------------------------------------------------*/
-ePB Xglean::G_eTerm_Bound(Card_Term* p_term)
+ePB Xextract::G_eTerm_Bound(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -151,7 +151,7 @@ ePB Xglean::G_eTerm_Bound(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 /* get ordinal index value  (i.e. $In)                                        */
 /*----------------------------------------------------------------------------*/
-i8 Xglean::G_iTerm_IndexColNo(Card_Term* p_term)
+i8 Xextract::G_iTerm_IndexColNo(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -163,7 +163,7 @@ i8 Xglean::G_iTerm_IndexColNo(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 /* evaluate relational op                                                     */
 /*----------------------------------------------------------------------------*/
-eRO Xglean::G_eTerm_RelOp(Card_Term* p_term)
+eRO Xextract::G_eTerm_RelOp(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -183,7 +183,7 @@ eRO Xglean::G_eTerm_RelOp(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 /* get stream column number n  (i.e. $n)                                      */
 /*----------------------------------------------------------------------------*/
-i8 Xglean::G_iTerm_StreamColNo(Card_Term* p_term)
+i8 Xextract::G_iTerm_StreamColNo(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -195,7 +195,7 @@ i8 Xglean::G_iTerm_StreamColNo(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 /* get table column number n (i.e. $$c.n)                                     */
 /*----------------------------------------------------------------------------*/
-i8 Xglean::G_iTerm_TableColNo(Card_Term* p_term)
+i8 Xextract::G_iTerm_TableColNo(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -207,7 +207,7 @@ i8 Xglean::G_iTerm_TableColNo(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 /* get table synonym c (i.e. $$c.n)                                           */
 /*----------------------------------------------------------------------------*/
-char Xglean::G_cTerm_TableSyn(Card_Term* p_term)
+char Xextract::G_cTerm_TableSyn(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -221,7 +221,7 @@ char Xglean::G_cTerm_TableSyn(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 /* evaluate term                                                              */
 /*----------------------------------------------------------------------------*/
-eTE Xglean::G_eTerm_TermEval(Card_Term* p_term)
+eTE Xextract::G_eTerm_TermEval(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 

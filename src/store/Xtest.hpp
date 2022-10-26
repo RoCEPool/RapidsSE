@@ -3,13 +3,13 @@
 /*============================================================================*/
 #pragma once
 
-#include "Xglean.hpp"
+#include "Xextract.hpp"
 
 namespace STORE
 {
   class Table;
 
-  class Xtest : public Xglean
+  class Xtest : public Xextract
   {
   public:
 

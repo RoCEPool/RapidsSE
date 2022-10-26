@@ -16,7 +16,7 @@ __aFooterFunction(Xtest)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Xtest::Xtest(eCN eClass)
-: Xglean(eClass)
+: Xextract(eClass)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 

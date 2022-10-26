@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Xcogs.hpp --                                                       */
+/* Xsentinals.hpp --                                                       */
 /*============================================================================*/
 #pragma once
 
@@ -10,7 +10,7 @@
 
 namespace STORE
 {
-  struct _Xcogs
+  struct _Xsentinels
   {
     BoardIter xBI;
 
@@ -95,11 +95,11 @@ namespace STORE
     Card_Where *            p_where;
   } ;
 
-  class Xcogs : public Xreshape
-              , public ListItem_t<Xcogs>
+  class Xsentinals : public Xreshape
+                   , public ListItem_t<Xsentinals>
   {
   public:
-    _Xcogs M;
+    _Xsentinels M;
 
     // must be last
     Footer m_xFooter;
@@ -108,13 +108,13 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    Xcogs(void);
-    Xcogs(eCN eClass);
-   ~Xcogs(void) noexcept(false);
+    Xsentinals(void);
+    Xsentinals(eCN eClass);
+   ~Xsentinals(void) noexcept(false);
 
-    void vCopyFrom(_Xcogs* aTransformIterMembers);
+    void vCopyFrom(_Xsentinels* aTransformIterMembers);
 
-    _Xcogs* aXregs(void);
+    _Xsentinels* aXregs(void);
 
     Footer* aFooter(void);
   };

@@ -1,21 +1,21 @@
 /*============================================================================*/
-/* Xcogs.cpp --                                                       */
+/* Xsentinals.cpp --                                                       */
 /*============================================================================*/
 
-#include "Xcogs.hpp"
+#include "Xsentinals.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__aNewFunction(Xcogs, CN_TRANSFORMITER)
-__vDeleteFunction(Xcogs, CN_TRANSFORMITER)
-__aFooterFunction(Xcogs)
+__aNewFunction(Xsentinals, CN_TRANSFORMITER)
+__vDeleteFunction(Xsentinals, CN_TRANSFORMITER)
+__aFooterFunction(Xsentinals)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Xcogs::Xcogs(void)
+Xsentinals::Xsentinals(void)
 : Xreshape(CN_TRANSFORMITER)
 {
 }
@@ -23,7 +23,7 @@ Xcogs::Xcogs(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Xcogs::Xcogs(eCN eClass)
+Xsentinals::Xsentinals(eCN eClass)
 : Xreshape (eClass)
 {
 }
@@ -31,7 +31,7 @@ Xcogs::Xcogs(eCN eClass)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Xcogs::~Xcogs(void) noexcept(false)
+Xsentinals::~Xsentinals(void) noexcept(false)
 {
 }
 
@@ -43,18 +43,18 @@ Xcogs::~Xcogs(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xcogs::vCopyFrom(_Xcogs* aFrom)
+void Xsentinals::vCopyFrom(_Xsentinels* aFrom)
 {
   MemLib::vCopy(aXregs(),
                 aFrom,
-                sizeof(_Xcogs),
+                sizeof(_Xsentinels),
                 CN_TRANSFORMITER);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-_Xcogs* Xcogs::aXregs(void)
+_Xsentinels* Xsentinals::aXregs(void)
 {
   return &M;
 }

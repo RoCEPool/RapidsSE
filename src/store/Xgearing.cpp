@@ -18,7 +18,7 @@ extern OptimiserCatalog gxOptimiserCatalog;
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Xgearing::Xgearing(eCN eClass, Bench* pBench)
-: Xcogs(eClass)
+: Xsentinals(eClass)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1126,7 +1126,7 @@ void Xgearing::M_vPushIter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  Xcogs* pTransformIterSave = new Xcogs;
+  Xsentinals* pTransformIterSave = new Xsentinals;
 
   pTransformIterSave->vCopyFrom(this->aXregs());
 
@@ -1140,7 +1140,7 @@ void Xgearing::M_vPushIter(Board* pBoard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  Xcogs* pTransformIterSave = new Xcogs;
+  Xsentinals* pTransformIterSave = new Xsentinals;
 
   pTransformIterSave->vCopyFrom(this->aXregs());
 
@@ -1162,7 +1162,7 @@ void Xgearing::M_vPopIter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  Xcogs* pTransformIterRestore = m_pTransformIterList->pPop();
+  Xsentinals* pTransformIterRestore = m_pTransformIterList->pPop();
 
   this->vCopyFrom(pTransformIterRestore->aXregs());
 
