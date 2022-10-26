@@ -11,6 +11,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+__aFooterFunction(Xreshape)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -43,7 +44,7 @@ Xreshape::~Xreshape(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Table* Xreshape::A_pAccess_Table(Stz* szTableNm)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   Table* pTable = AM::pTableFind(szTableNm);
 
@@ -55,7 +56,7 @@ Table* Xreshape::A_pAccess_Table(Stz* szTableNm)
 /*----------------------------------------------------------------------------*/
 Card_IndexList* Xreshape::A_pProduce_indexList_ofTable(Table* pTable)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   if (!pTable)
     return nullptr;
@@ -105,7 +106,7 @@ Card_IndexList* Xreshape::A_pProduce_indexList_ofTable(Table* pTable)
 /*----------------------------------------------------------------------------*/
 Card_Size* Xreshape::A_pProduce_size_ofTable(Table* pTable)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   if (! pTable) {
     vTrace("A: m_pTable not set\n"_Stz);
@@ -127,7 +128,7 @@ Card_Size* Xreshape::A_pProduce_size_ofTable(Table* pTable)
 /*----------------------------------------------------------------------------*/
 Card_Stream* Xreshape::A_pProduce_stream_ofTable(Table* pTable)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   if (!pTable)
     return nullptr;
@@ -163,7 +164,7 @@ Card_Stream* Xreshape::A_pProduce_stream_ofTable(Table* pTable)
 /*----------------------------------------------------------------------------*/
 Card_TablePtn* Xreshape::A_pProduce_tablePtn_ofTable(Table* pTable, char cTableSyn)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   PtnDef* pPtnDef = pTable->pPtnDef();
   Column* pPtnColumn = pPtnDef->pGetColumn(0);
@@ -192,7 +193,7 @@ Card_TablePtn* Xreshape::A_pProduce_tablePtn_ofTable(Table* pTable, char cTableS
 /*----------------------------------------------------------------------------*/
 bool Xreshape::T_bColumnRef_IsColumnRef(Card_ColumnRef* p_columnRef)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   Stz* szColumnRef = p_columnRef->sz();
 
@@ -212,7 +213,7 @@ bool Xreshape::T_bColumnRef_IsColumnRef(Card_ColumnRef* p_columnRef)
 /*----------------------------------------------------------------------------*/
 i8 Xreshape::T_iColumnRef_ColumnOrd(Card_ColumnRef* p_columnRef)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   Stz* szColumnRef = p_columnRef->sz();
 
@@ -228,7 +229,7 @@ i8 Xreshape::T_iColumnRef_ColumnOrd(Card_ColumnRef* p_columnRef)
 /*----------------------------------------------------------------------------*/
 char Xreshape::T_cColumnRef_TableSyn(Card_ColumnRef* p_columnRef)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   Stz* szColumnRef = p_columnRef->sz();
 
@@ -244,7 +245,7 @@ char Xreshape::T_cColumnRef_TableSyn(Card_ColumnRef* p_columnRef)
 /*----------------------------------------------------------------------------*/
 char Xreshape::T_cColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
   Stz* szColumnRef = p_columnRef->sz();
 
   char cFirst  = szColumnRef->azChar()[0]; // $
@@ -259,7 +260,7 @@ char Xreshape::T_cColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef)
 /*----------------------------------------------------------------------------*/
 void Xreshape::T_vColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef, String* psTableSyn)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   psTableSyn->vSprint("%c"_Stz, T_cColumnRef_TableSyn_x(p_columnRef));
 }
@@ -270,7 +271,7 @@ void Xreshape::T_vColumnRef_TableSyn_x(Card_ColumnRef* p_columnRef, String* psTa
 /*----------------------------------------------------------------------------*/
 ePB Xreshape::T_eTerm_Bound(Card_Term* p_term)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   eRO eRelOp = this->T_eTerm_RelOp(p_term);
 
@@ -297,7 +298,7 @@ ePB Xreshape::T_eTerm_Bound(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 i8 Xreshape::T_iTerm_IndexColNo(Card_Term* p_term)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   RASSERT(T_bTerm_IsIndexColOrdinal(p_term));
 
@@ -311,7 +312,7 @@ i8 Xreshape::T_iTerm_IndexColNo(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 bool Xreshape::T_bTerm_IsIndexColOrdinal(Card_Term* p_term)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   Stz* szTerm = p_term->szValue();
 
@@ -331,7 +332,7 @@ bool Xreshape::T_bTerm_IsIndexColOrdinal(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 bool Xreshape::T_bTerm_IsParamOrdinal(Card_Term* p_term)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   Stz* szTerm = p_term->szValue();
 
@@ -351,7 +352,7 @@ bool Xreshape::T_bTerm_IsParamOrdinal(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 bool Xreshape::T_bTerm_IsStreamColOrdinal(Card_Term* p_term)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   Stz* szTerm = p_term->szValue();
 
@@ -369,7 +370,7 @@ bool Xreshape::T_bTerm_IsStreamColOrdinal(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 bool Xreshape::T_bTerm_IsTableColOrdinal(Card_Term* p_term)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   Stz* szTerm = p_term->szValue();
 
@@ -393,7 +394,7 @@ bool Xreshape::T_bTerm_IsTableColOrdinal(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 eRO Xreshape::T_eTerm_RelOp(Card_Term* p_term)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   Stz* szTerm = p_term->sz();
 
@@ -413,7 +414,7 @@ eRO Xreshape::T_eTerm_RelOp(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 i8 Xreshape::T_iTerm_StreamColNo(Card_Term* p_term)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   RASSERT(T_bTerm_IsStreamColOrdinal(p_term));
 
@@ -427,7 +428,7 @@ i8 Xreshape::T_iTerm_StreamColNo(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 i8 Xreshape::T_iTerm_TableColNo(Card_Term* p_term)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   RASSERT(T_bTerm_IsTableColOrdinal(p_term));
 
@@ -441,7 +442,7 @@ i8 Xreshape::T_iTerm_TableColNo(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 char Xreshape::T_cTerm_TableSyn(Card_Term* p_term)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   RASSERT(T_bTerm_IsTableColOrdinal(p_term));
 
@@ -457,7 +458,7 @@ char Xreshape::T_cTerm_TableSyn(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 eTE Xreshape::T_eTerm_TermEval(Card_Term* p_term)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   Stz* szTerm = p_term->sz();
 
@@ -488,7 +489,7 @@ eTE Xreshape::T_eTerm_TermEval(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 void Xreshape::T_vPRED_CullByKids(Card_PRED* p_PRED)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   i8 nChildCards = p_PRED->nItems();
   for (i8 i_ChildCard = 0; i_ChildCard < nChildCards; i_ChildCard++) {
@@ -531,7 +532,7 @@ void Xreshape::T_vPRED_CullByKids(Card_PRED* p_PRED)
 Card_CmpPred* Xreshape::T_pPRED_FindBound(Card_PRED* p_PRED, Index* pIndex,
                                           ePB eBound)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   eCK eCard = p_PRED->eCard();
 
@@ -562,7 +563,7 @@ Card_CmpPred* Xreshape::T_pPRED_FindBound(Card_PRED* p_PRED, Index* pIndex,
 /*----------------------------------------------------------------------------*/
 bool Xreshape::T_bPRED_HasBounds(Card_PRED* p_PRED, Index* pIndex)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   eCK eCard = p_PRED->eCard();
 
@@ -613,7 +614,7 @@ bool Xreshape::T_bPRED_IsPred(Card* pArgCard)
 /*----------------------------------------------------------------------------*/
 Card_CmpPred* Xreshape::T_pAndPred_FindBound(Card_AndPred* p_andPred, Index* pIndex, ePB eBound)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   Card_PRED* pSubPred0 = (Card_PRED*)p_andPred->pGet(0);
   if (Card_CmpPred* pFound = T_pPRED_FindBound(pSubPred0, pIndex, eBound))
@@ -631,7 +632,7 @@ Card_CmpPred* Xreshape::T_pAndPred_FindBound(Card_AndPred* p_andPred, Index* pIn
 /*----------------------------------------------------------------------------*/
 bool Xreshape::T_bAndPred_HasBounds(Card_AndPred* p_andPred, Index* pIndex)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   Card_PRED* pSubPred0 = (Card_PRED*)p_andPred->pGet(0);
   if (T_bPRED_HasBounds(pSubPred0, pIndex))
@@ -650,7 +651,7 @@ bool Xreshape::T_bAndPred_HasBounds(Card_AndPred* p_andPred, Index* pIndex)
 /*----------------------------------------------------------------------------*/
 Card_CmpPred* Xreshape::T_pOrPred_FindBound(Card_OrPred* p_orPred, Index* pIndex, ePB eBound)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   Card_PRED* pSubPred0 = (Card_PRED*)p_orPred->pGet(0);
   if (Card_CmpPred* pFound = T_pPRED_FindBound(pSubPred0, pIndex, eBound))
@@ -668,7 +669,7 @@ Card_CmpPred* Xreshape::T_pOrPred_FindBound(Card_OrPred* p_orPred, Index* pIndex
 /*----------------------------------------------------------------------------*/
 bool Xreshape::T_bOrPred_HasBounds(Card_OrPred* p_orPred, Index* pIndex)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   Card_PRED* pSubPred0 = (Card_PRED*)p_orPred->pGet(0);
   if (T_bPRED_HasBounds(pSubPred0, pIndex))
@@ -687,7 +688,7 @@ bool Xreshape::T_bOrPred_HasBounds(Card_OrPred* p_orPred, Index* pIndex)
 /*----------------------------------------------------------------------------*/
 bool Xreshape::T_bCmpPred_CoPtnWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   Card_ColumnRef* p_columnRef_this_0 =
       _pCard_ColumnRef(p_cmpPred->pGetChild(0));
@@ -732,7 +733,7 @@ bool Xreshape::T_bCmpPred_CoPtnWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_Pre
 /*----------------------------------------------------------------------------*/
 bool Xreshape::T_bCmpPred_IsEq(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   Card_ColumnRef* p_columnRef_this_0 = _pCard_ColumnRef(p_cmpPred->pGetChild(0));
   Stz* szColumnRef_this_0 = p_columnRef_this_0->sz();
@@ -756,7 +757,7 @@ bool Xreshape::T_bCmpPred_IsEq(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_
 /*----------------------------------------------------------------------------*/
 bool Xreshape::T_bCmpPred_OverlapsWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_PredCmp_arg)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   //this->vDump();
   //p_PredCmp_arg->vDump();
@@ -786,7 +787,7 @@ bool Xreshape::T_bCmpPred_OverlapsWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_
 /*----------------------------------------------------------------------------*/
 void Xreshape::T_vCmpPred_MarkBound(Card_CmpPred* p_cmpPred)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   Stz* szCmp = p_cmpPred->sz();
 
@@ -808,7 +809,7 @@ void Xreshape::T_vCmpPred_MarkBound(Card_CmpPred* p_cmpPred)
 /*----------------------------------------------------------------------------*/
 Card_CmpPred* Xreshape::T_pCmpPred_FindBound(Card_CmpPred* p_cmpPred, Index* pIndex, ePB eBound)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   Card_Term* pTerm2 = _pCard_Term(p_cmpPred->pGet(2));
   if (eBound != T_eTerm_Bound(pTerm2))
@@ -828,7 +829,7 @@ Card_CmpPred* Xreshape::T_pCmpPred_FindBound(Card_CmpPred* p_cmpPred, Index* pIn
 /*----------------------------------------------------------------------------*/
 bool Xreshape::T_bCmpPred_HasBounds(Card_CmpPred* p_cmpPred, Index* pIndex)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   //Card_Term* pTerm1 = _pCard_Term(pCard_PredCmp->pGet(1));
 
@@ -850,7 +851,7 @@ bool Xreshape::T_bCmpPred_HasBounds(Card_CmpPred* p_cmpPred, Index* pIndex)
 /*----------------------------------------------------------------------------*/
 bool Xreshape::T_bCmpPred_UsesTable(Card_CmpPred* p_cmpPred, char cTableSyn)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   Card_ColumnRef* p_columnRef_this_0 = _pCard_ColumnRef(p_cmpPred->pGetChild(0));
   char cTableSyn_this_0 = T_cColumnRef_TableSyn(p_columnRef_this_0);
@@ -874,7 +875,7 @@ bool Xreshape::T_bCmpPred_UsesTable(Card_CmpPred* p_cmpPred, char cTableSyn)
 /*----------------------------------------------------------------------------*/
 void Xreshape::X_vSubCard_ReplaceSub(Card* pSub, Card* pInParent, Card* pWith)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   Card* pParent = pInParent->pFindParent(pSub);
 
@@ -886,7 +887,7 @@ void Xreshape::X_vSubCard_ReplaceSub(Card* pSub, Card* pInParent, Card* pWith)
 /*----------------------------------------------------------------------------*/
 Card_Table* Xreshape::X_pTableList_FindTable(Card_TableList* p_tableList, char cSyn)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   i8 nChildren = p_tableList->nChildCards();
   for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
@@ -908,7 +909,7 @@ Card_Table* Xreshape::X_pTableList_FindTable(Card_TableList* p_tableList, char c
 /*----------------------------------------------------------------------------*/
 bool Xreshape::X_bTableList_PredCmpIsCoPtn(Card_TableList* p_tableList, Card_CmpPred* p_predCmp)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   Card_ColumnRef* p_columnRef_0 =
       _pCard_ColumnRef(p_predCmp->pGetChild(0));
@@ -944,7 +945,7 @@ bool Xreshape::X_bTableList_PredCmpIsCoPtn(Card_TableList* p_tableList, Card_Cmp
 /*----------------------------------------------------------------------------*/
 bool Xreshape::X_bBoolCalc_CullPred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred, char cWithMark)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   eCK eCard_pred = p_pred->eCard();
 
@@ -990,7 +991,7 @@ bool Xreshape::X_bBoolCalc_CullPred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred
 /*----------------------------------------------------------------------------*/
 void Xreshape::X_vBoolCalc_CullPred(Card_BoolCalc* p_boolCalc, char cWithMark)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   if (! p_boolCalc->nChildCards())
     return;
@@ -1009,7 +1010,7 @@ void Xreshape::X_vBoolCalc_CullPred(Card_BoolCalc* p_boolCalc, char cWithMark)
 /*----------------------------------------------------------------------------*/
 void Xreshape::X_vBoolCalc_RemovePred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   Card* pParentCard = p_boolCalc->pFindParent(p_pred);
 
@@ -1036,7 +1037,7 @@ void Xreshape::X_vBoolCalc_RemovePred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pr
 /*----------------------------------------------------------------------------*/
 i8 Xreshape::X_iCandIndex_Rank(Card_CandIndex* p_candIndex)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   i8 iRank = p_candIndex->Y_iVal(P_Rank);
 
@@ -1048,7 +1049,7 @@ i8 Xreshape::X_iCandIndex_Rank(Card_CandIndex* p_candIndex)
 /*----------------------------------------------------------------------------*/
 void Xreshape::X_vCandIndex_Rank(Card_CandIndex* p_candIndex, i8 iRank)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   p_candIndex->Y_vSet(P_Rank, iRank);
 }
@@ -1058,7 +1059,7 @@ void Xreshape::X_vCandIndex_Rank(Card_CandIndex* p_candIndex, i8 iRank)
 /*----------------------------------------------------------------------------*/
 Card_BoolCalc* Xreshape::X_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   Card_AndPred* p_andPred = nullptr;
   Card_CmpPred* p_cmpPred = nullptr;
@@ -1146,7 +1147,7 @@ Card_BoolCalc* Xreshape::X_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
 /*----------------------------------------------------------------------------*/
 bool Xreshape::X_bCoPtnJoin_CoPtnWith(Card_CoPtnJoin* p_coPtnJoin, Card_CoPtnPred* p_CoPtnPred)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   Card_CmpPred* p_predCmp_this = _pCard_CmpPred(this);
   Card_CmpPred* p_predCmp_arg  = _pCard_CmpPred(p_CoPtnPred);
@@ -1162,7 +1163,7 @@ bool Xreshape::X_bCoPtnJoin_CoPtnWith(Card_CoPtnJoin* p_coPtnJoin, Card_CoPtnPre
 /*----------------------------------------------------------------------------*/
 Card_CoPtnJoin* Xreshape::X_pCoPtnJoinList_Find_coPtn_for(Card_CoPtnJoinList* p_coPtnJoinList, Card_CoPtnPred* p_coPtnPred)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   i8 nChildren = p_coPtnJoinList->nChildCards();
   for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
@@ -1180,7 +1181,7 @@ Card_CoPtnJoin* Xreshape::X_pCoPtnJoinList_Find_coPtn_for(Card_CoPtnJoinList* p_
 /*----------------------------------------------------------------------------*/
 bool Xreshape::X_bCoPtnJoinList_HasEqPredCmp(Card_CoPtnJoinList* p_coPtnJoinList, Card_CmpPred* p_predCmp)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   i8 nChildren_coPtn = p_coPtnJoinList->nChildCards();
   for (i8 i_Child_coPtn = 0; i_Child_coPtn < nChildren_coPtn; i_Child_coPtn++) {
@@ -1204,7 +1205,7 @@ bool Xreshape::X_bCoPtnJoinList_HasEqPredCmp(Card_CoPtnJoinList* p_coPtnJoinList
 /*----------------------------------------------------------------------------*/
 Card_StmColList* Xreshape::X_pELIST_DeriveStreamColList(Card_ELIST* p_ELIST)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   Card_StmColList* pCard_StreamColList = new Card_StmColList;
 
@@ -1238,7 +1239,7 @@ Card_StmColList* Xreshape::X_pELIST_DeriveStreamColList(Card_ELIST* p_ELIST)
 /*----------------------------------------------------------------------------*/
 void Xreshape::X_vFilter_CullPred(Card_Filter* p_filter, char cWithMark)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   i8 nChildren = p_filter->nChildCards();
   for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
@@ -1259,7 +1260,7 @@ void Xreshape::X_vFilter_CullPred(Card_Filter* p_filter, char cWithMark)
 /*----------------------------------------------------------------------------*/
 bool Xreshape::X_bFilter_IsEmptyFilter(Card_Filter* p_filter)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   Card_BoolCalc* pCard_calcBool =
       _pCard_BoolCalc(p_filter->pFindSubCard(CK_BOOLCALC));
@@ -1275,7 +1276,7 @@ bool Xreshape::X_bFilter_IsEmptyFilter(Card_Filter* p_filter)
 /*----------------------------------------------------------------------------*/
 void Xreshape::X_vIdxColList_Ordinate(Card_IdxColList* p_idxColList, Card_Stream* pCard_Stream)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   i8 iOrdLo = pCard_Stream->Y_iVal(P_OrdLo);
 
@@ -1304,7 +1305,7 @@ void Xreshape::X_vIdxColList_Ordinate(Card_IdxColList* p_idxColList, Card_Stream
 void Xreshape::X_vJoinOrderSeq_ExtractJoinOrder(Card_JoinOrderSeq* p_joinOrderSeq,
                                                 Card_PtndJoin* p_PtndJoin)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   eCK eChild;
 
@@ -1334,7 +1335,7 @@ void Xreshape::X_vJoinOrderSeq_ExtractJoinOrder(Card_JoinOrderSeq* p_joinOrderSe
 /*----------------------------------------------------------------------------*/
 void Xreshape::X_vJoinPredList_Extract(Card_JoinPredList* p_joinPredList, Card_BoolCalc* p_boolCalc)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   auto bfExtract = [this,p_joinPredList,p_boolCalc](Card *pCard) {
 
@@ -1372,7 +1373,7 @@ void Xreshape::X_vJoinPredList_Extract(Card_JoinPredList* p_joinPredList, Card_B
 /*----------------------------------------------------------------------------*/
 void Xreshape::X_vObyElist_Populate(Card_ObyElist* p_obyElist, Index* pIndex)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   IndexDef* pIndexDef = pIndex->pIndexDef();
   i8 nIdxCols = pIndexDef->nColumns();
@@ -1408,7 +1409,7 @@ void Xreshape::X_vObyElist_Populate(Card_ObyElist* p_obyElist, Index* pIndex)
 /*----------------------------------------------------------------------------*/
 bool Xreshape::X_bPtndJoin_MayFollowAfter(Card_PtndJoin* p_ptndJoin, Card_SubSet* pPriorPtnJoins_sofar)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   i8 nPtnJoins_sofar = pPriorPtnJoins_sofar->nChildCards();
   if (! nPtnJoins_sofar)
@@ -1443,7 +1444,7 @@ bool Xreshape::X_bPtndJoin_MayFollowAfter(Card_PtndJoin* p_ptndJoin, Card_SubSet
 /*----------------------------------------------------------------------------*/
 void Xreshape::X_vPtndJoin_JoinEst(Card_PtndJoin* p_ptndJoin, Card_TableList* p_tableList)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   i8 nJoinedBuff = 0;
 
@@ -1479,7 +1480,7 @@ Card_StmCol* Xreshape::X_pStmColList_Find_streamCol(Card_StmColList* p_stmColLis
                                                     Stz *szColNm,
                                                     i8& i_StreamColNo)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   Card_StmColList* pCard_StreamColList = p_stmColList->pSub_stmColList();
 
