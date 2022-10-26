@@ -24,6 +24,7 @@ namespace STORE
     TransformBase(eCN eClass);
    ~TransformBase(void) noexcept(false);
 
+    Table* A_pAccess_Table(Stz* szTableNm);
 
     Footer* aFooter(void);
   };

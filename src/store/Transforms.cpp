@@ -187,7 +187,7 @@ void Transforms::vP20_T10_Add_tableSyn_ForAll_table(bool bPrint, bool bTrace)
 
   while (E_bEachMainWithSub(CK_TABLE,CK_TABLENM))  {
 
-    RASSERT(A_pAccess_Table(M.p_tableNm->sz()));
+    m_pTable = A_pAccess_Table(M.p_tableNm->sz());
 
     M.p_table->vMark1(MARK_CHANGED);
     char cTableSyn_actual = m_cTableSyn;
@@ -216,7 +216,7 @@ void Transforms::vP20_T20_Add_tablePtn_UnderAll_table(bool bPrint, bool bTrace)
 
   while (E_bEachMainWithSub(CK_TABLE,CK_TABLENM)) {
 
-    RASSERT(A_pAccess_Table(M.p_tableNm->sz()));
+    m_pTable = A_pAccess_Table(M.p_tableNm->sz());
     A_vAccess_PartitionOfTable();
 
     //N_vNewMember(CK_TABLEPTN);
@@ -242,7 +242,7 @@ void Transforms::vP20_T30_Add_stream_UnderAll_table(bool bPrint, bool bTrace)
   // E <scan>
   while (E_bEachMainWithSub(CK_TABLE,CK_TABLENM)) {
 
-    RASSERT(A_pAccess_Table(M.p_tableNm->szValue()));
+    m_pTable = A_pAccess_Table(M.p_tableNm->sz());
     A_vAccess_StreamOfTable();
 
     M.p_table->vAppend(M.p_stream);
@@ -591,7 +591,7 @@ void Transforms::vP60_T10_Add_indexJoin_UnderAllJoinable_table(bool bPrint, bool
   while (E_bEachMainWithSub(CK_TABLE,CK_FILTER)) {
 
     M.p_tableNm = M.p_table->pSub_tableNm();
-    RASSERT(A_pAccess_Table(M.p_tableNm->szValue()));
+    m_pTable = A_pAccess_Table(M.p_tableNm->sz());
 
     RASSERT(A_bAccess_IndexListOfTable());
 
@@ -605,28 +605,6 @@ void Transforms::vP60_T10_Add_indexJoin_UnderAllJoinable_table(bool bPrint, bool
     }
 
     D_vDeleteMember(CK_INDEXLIST);
-
-/*
-    M.p_tablePtr = M.p_table->pSub_tablePtr();
-    m_pTable = M.p_tablePtr->pTable();
-
-    if (! (m_pIdxVec = m_pTable->pIdxVec()))
-      return;
-
-    i8 nIndexes = m_pIdxVec->nItems();
-    for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
-      m_pIndex = m_pIdxVec->pGet(i_Index);
-
-      M.p_indexJoin = new Card_IndexJoin;
-      M.p_table->vInsertBefore(M.p_indexJoin,M.p_filter);
-
-      M.p_indexPtr = new Card_IndexPtr(m_pIndex);
-      M.p_indexJoin->vAppend(M.p_indexPtr);
-
-      Card_IdxColList* pCard_idxColList = new Card_IdxColList(m_pIndex);
-      M.p_indexJoin->vAppend(pCard_idxColList);
-    }
-    */
   }
 
   vEndTransform();
@@ -1420,7 +1398,7 @@ void Transforms::vP80_T10_Insert_indexList_ToAll_scan(bool bPrint, bool bTrace)
 //
 //    }
 
-    RASSERT(A_pAccess_Table(M.p_tableNm->szValue()));
+    m_pTable = A_pAccess_Table(M.p_tableNm->sz());
 
     if (A_bAccess_IndexListOfTable()) {
       M.p_comment = new Card_Comment(SEP_SCRATCH);

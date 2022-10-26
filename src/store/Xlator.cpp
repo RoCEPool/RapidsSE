@@ -39,51 +39,6 @@ Xlator::~Xlator(void) noexcept(false)
 
 
 /*----------------------------------------------------------------------------*/
-/* access table                                                               */
-/*----------------------------------------------------------------------------*/
-Table* Xlator::A_pAccess_Table(Stz* szTableNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  m_pTable = AM::pTableFind(szTableNm);
-
-  if (m_pTable)
-    return m_pTable;
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* access index of table                                                      */
-/*----------------------------------------------------------------------------*/
-bool Xlator::A_bAccess_IndexOfTable(Stz* szIndexNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  m_pIndex = m_pTable->pFindIndex(szIndexNm);
-
-  if (m_pIndex)
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* access index of table                                                      */
-/*----------------------------------------------------------------------------*/
-bool Xlator::A_bAccess_IndexOfTable(Stz* szTableNm, Stz* szIndexNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  if (!A_pAccess_Table(szTableNm))
-    return false;
-  if (!A_bAccess_IndexOfTable(szIndexNm))
-    return false;
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* access stream defn of table                                                */
 /*----------------------------------------------------------------------------*/
 bool Xlator::A_bAccess_IndexListOfTable(void)

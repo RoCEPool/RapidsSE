@@ -24,10 +24,6 @@ namespace STORE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    Table* A_pAccess_Table(Stz* szTableNm);
-    bool A_bAccess_IndexOfTable(Stz* szIndexNm);
-    bool A_bAccess_IndexOfTable(Stz* szTableNm, Stz* szIndexNm);
-
     bool A_bAccess_IndexListOfTable(void);
     void A_vAccess_PartitionOfTable(void);
     void A_vAccess_StreamOfTable(void);
