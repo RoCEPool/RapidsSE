@@ -654,7 +654,7 @@ void Weaver::vRpnIndexScan3(Stz* szRpnExpr, Card_IndexScan* p_indexScan)
 
     //szRpnExpr->vCatSprint(" $I%lld"_Stz, p_term->iMark2()+1);
 
-    p_predCmp->vPRED_ConcatTerms(p_predCmp, szRpnExpr, 0);
+    p_predCmp->vConcatChildren(szRpnExpr,CK_TERM);
 
     szRpnExpr->vCatSprint(" %s"_Stz, p_predCmp->sz());
 
@@ -670,202 +670,13 @@ void Weaver::vRpnIndexScan3(Stz* szRpnExpr, Card_IndexScan* p_indexScan)
 
     //szRpnExpr->vCatSprint(" $I%lld"_Stz, p_term->iMark2()+1);
 
-    p_predCmp->vPRED_ConcatTerms(p_predCmp, szRpnExpr, 0);
+    p_predCmp->vConcatChildren(szRpnExpr,CK_TERM);
 
     szRpnExpr->vCatSprint(" %s"_Stz, p_predCmp->sz());
 
   }
 
 }
-/*----------------------------------------------------------------------------*/
-void Weaver::vRpnIndexScan2(Stz* szRpnExpr, Card_IndexScan* p_indexScan)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
-
-  Card_CmpPred* p_predCmp;
-  Card_Term*    p_term;
-
-  Card_LBound* p_lBound = p_indexScan->pSub_lBound();
-  if (p_lBound) {
-    szRpnExpr->vConcat(" LBOUND"_Stz);
-
-    p_predCmp = p_lBound->pSub_predCmp();
-
-    p_term = _pCard_Term(p_predCmp->pGetChild(0));
-
-    szRpnExpr->vCatSprint(" $I%lld"_Stz, p_term->iMark2()+1);
-
-    p_predCmp->vPRED_ConcatTerms(p_predCmp, szRpnExpr, 1);
-
-    szRpnExpr->vCatSprint(" %s"_Stz, p_predCmp->sz());
-
-  }
-
-  Card_UBound* p_uBound = p_indexScan->pSub_uBound();
-  if (p_uBound) {
-    szRpnExpr->vConcat(" UBOUND"_Stz);
-
-    p_predCmp = p_uBound->pSub_predCmp();
-
-    p_term = _pCard_Term(p_predCmp->pGetChild(0));
-
-    szRpnExpr->vCatSprint(" $I%lld"_Stz, p_term->iMark2()+1);
-
-    p_predCmp->vPRED_ConcatTerms(p_predCmp, szRpnExpr, 1);
-
-    szRpnExpr->vCatSprint(" %s"_Stz, p_predCmp->sz());
-
-  }
-
-}
-
-/*----------------------------------------------------------------------------*/
-void Weaver::vRpnIndexScan(Stz* szRpnExpr, Card_IndexScan* pCard_IndexScan)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
-  
-  Card_CmpPred* pCard_PredCmp;
-  Card_Term* pCard_Term;
-  Stz* szTerm;
-  
-  //pCard_IndexScan->vDump();
-  
-  // lower bound
-  
-  Card_LBound* pCard_LBound
-    = _pCard_LBound(pCard_IndexScan->pFindSubCard(CK_LBOUND));
-  
-  if (pCard_LBound) {
-    szRpnExpr->vConcat(" LBOUND"_Stz);
-    
-    pCard_PredCmp = _pCard_CmpPred(pCard_LBound->pGet(0));
-
-    pCard_Term = _pCard_Term(pCard_PredCmp->pGet(0));
-    szTerm = pCard_Term->sz();
-    szRpnExpr->vConcat(" $I1"_Stz);
-
-    pCard_Term = _pCard_Term(pCard_PredCmp->pGet(1));
-    szTerm = pCard_Term->sz();
-    szRpnExpr->vConcat(" "_Stz);
-    szRpnExpr->vConcat(szTerm);
-
-    pCard_Term = _pCard_Term(pCard_PredCmp->pGet(2));
-    szTerm = pCard_Term->sz();
-    szRpnExpr->vConcat(" "_Stz);
-    szRpnExpr->vConcat(szTerm);
-  }
-  
-  // upper bound
-  
-  Card_UBound* pCard_UBound
-    = _pCard_UBound(pCard_IndexScan->pFindSubCard(CK_UBOUND));
-  
-  if (pCard_UBound) {
-    szRpnExpr->vConcat(" UBOUND"_Stz);
-    
-    pCard_PredCmp = _pCard_CmpPred(pCard_UBound->pGet(0));
-
-    pCard_Term = _pCard_Term(pCard_PredCmp->pGet(0));
-    szTerm = pCard_Term->sz();
-    szRpnExpr->vConcat(" $I1"_Stz);
-
-    pCard_Term = _pCard_Term(pCard_PredCmp->pGet(1));
-    szTerm = pCard_Term->sz();
-    szRpnExpr->vConcat(" "_Stz);
-    szRpnExpr->vConcat(szTerm);
-
-    pCard_Term = _pCard_Term(pCard_PredCmp->pGet(2));
-    szTerm = pCard_Term->sz();
-    szRpnExpr->vConcat(" "_Stz);
-    szRpnExpr->vConcat(szTerm);
-  }
-  
-  // range bound
-
-  Card_RBound* pCard_RBound
-    = _pCard_RBound(pCard_IndexScan->pFindSubCard(CK_RBOUND));
-  
-  if (pCard_RBound) {
-    szRpnExpr->vConcat(" LBOUND"_Stz);
-    
-    pCard_PredCmp = _pCard_CmpPred(pCard_RBound->pGet(0));
-
-    pCard_Term = _pCard_Term(pCard_PredCmp->pGet(0));
-    szTerm = pCard_Term->sz();
-    szRpnExpr->vConcat(" $I1"_Stz);
-
-    pCard_Term = _pCard_Term(pCard_PredCmp->pGet(1));
-    szTerm = pCard_Term->sz();
-    szRpnExpr->vConcat(" "_Stz);
-    szRpnExpr->vConcat(szTerm);
-
-    pCard_Term = _pCard_Term(pCard_PredCmp->pGet(2));
-    szTerm = pCard_Term->sz();
-    szRpnExpr->vConcat(" "_Stz);
-    szRpnExpr->vConcat(szTerm);
-    
-    szRpnExpr->vConcat( " UBOUND"_Stz);
-    
-    pCard_PredCmp = _pCard_CmpPred(pCard_RBound->pGet(1));
-
-    pCard_Term = _pCard_Term(pCard_PredCmp->pGet(0));
-    szTerm = pCard_Term->sz();
-    szRpnExpr->vConcat(" $I1"_Stz);
-
-    pCard_Term = _pCard_Term(pCard_PredCmp->pGet(1));
-    szTerm = pCard_Term->sz();
-    szRpnExpr->vConcat(" "_Stz);
-    szRpnExpr->vConcat(szTerm);
-
-    pCard_Term = _pCard_Term(pCard_PredCmp->pGet(2));
-    szTerm = pCard_Term->sz();
-    szRpnExpr->vConcat(" "_Stz);
-    szRpnExpr->vConcat(szTerm);
-  }
-
-  Card_EBound* pCard_EBound
-    = _pCard_EBound(pCard_IndexScan->pFindSubCard(CK_EBOUND));
-  
-  if (pCard_EBound) {
-    pCard_PredCmp = _pCard_CmpPred(pCard_EBound->pGet(0));
-    
-    szRpnExpr->vConcat(" LBOUND"_Stz);
-    
-    pCard_Term = _pCard_Term(pCard_PredCmp->pGet(0));
-    szTerm = pCard_Term->sz();
-    szRpnExpr->vConcat(" $I1"_Stz);
-
-    pCard_Term = _pCard_Term(pCard_PredCmp->pGet(1));
-    szTerm = pCard_Term->sz();
-    szRpnExpr->vConcat(" "_Stz);
-    szRpnExpr->vConcat(szTerm);
-
-//    pCard_Term = _pCard_Term(pCard_PredCmp->pGet(2));
-//    szTerm = pCard_Term->sz();
-//    szRpnExpr->vConcat(" "_Stz);
-//    szRpnExpr->vConcat(szTerm);
-    szRpnExpr->vConcat(" >="_Stz);
-
-    szRpnExpr->vConcat( " UBOUND"_Stz);
-
-    pCard_Term = _pCard_Term(pCard_PredCmp->pGet(0));
-    szTerm = pCard_Term->sz();
-    szRpnExpr->vConcat(" $I1"_Stz);
-
-    pCard_Term = _pCard_Term(pCard_PredCmp->pGet(1));
-    szTerm = pCard_Term->sz();
-    szRpnExpr->vConcat(" "_Stz);
-    szRpnExpr->vConcat(szTerm);
-
-//    pCard_Term = _pCard_Term(pCard_PredCmp->pGet(2));
-//    szTerm = pCard_Term->sz();
-//    szRpnExpr->vConcat(" "_Stz);
-//    szRpnExpr->vConcat(szTerm);
-    szRpnExpr->vConcat(" <="_Stz);
-  }
-
-}
-
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for limit op                                                */
 /*----------------------------------------------------------------------------*/

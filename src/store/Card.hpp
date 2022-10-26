@@ -47,7 +47,6 @@ namespace STORE
   class Card_ELIST;
   class Card_Exists;
   class Card_Expr;
-  class Card_ExprBool;
 
   class Card_Filter;
 
@@ -120,7 +119,7 @@ static Stz* P_OrdLo        = "iOrdLo"_Stz;
 static Stz* P_ParamOrd     = "szParamOrd"_Stz;
 static Stz* P_Permutation  = "i_Permutation"_Stz;
 static Stz* P_PtndJoin     = "i_PtndJoin"_Stz;
-static Stz* P_Rank         = "iCandIndex_Rank"_Stz;
+static Stz* P_Rank         = "X_iCandIndex_Rank"_Stz;
 static Stz* P_SendKind     = "eSendKind"_Stz;
 static Stz* P_SentOut      = "nSentOut"_Stz;
 static Stz* P_StageTopo    = "eStageTopo"_Stz;
@@ -239,7 +238,9 @@ namespace STORE
     bool bHasSubRecursive(Card* pSubCard, Card*& rpParent);
     bool bHasValue(void);
 
+    bool bIsAggOp(void);
     bool bIsCard(eCK eCard);
+    bool bIsCommaSeparator(void);
     bool bIsValue(Stz* szValue);
 
     Card* pLastPrintParent(void);
@@ -299,8 +300,15 @@ namespace STORE
     void Y_vSet(Stz* szPpyNm, Stz* szPpyVal);
     void Y_vSetSprint(Stz* szPpyNm, Stz* szFormat, ...);
 
+    void vStream_PrintStream(Card_Stream* p_stream, Ribbon* pRibbon, i8 iDepth);
+    void vTable_PrintTable(Card_Table* p_Table, Ribbon* pRibbon, i8 iDepth);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+/*############################################################################*/
+#ifndef NEW_XLATOR
+/*############################################################################*/
+
 
     Card_CmpPred* pAndPred_FindBound(Card_AndPred* p_andPred, Index* pIndex, ePB eBound);
     bool bAndPred_HasBounds(Card_AndPred* p_andPred, Index* pIndex);
@@ -348,7 +356,6 @@ namespace STORE
     Card_CmpPred* pOrPred_FindBound(Card_OrPred* p_orPred, Index* pIndex, ePB eBound);
     bool bOrPred_HasBounds(Card_OrPred* p_orPred, Index* pIndex);
 
-    void vPRED_ConcatTerms(Card_PRED* p_PRED, Stz* szTerms, i8 i_From, i8 i_Till= C_UNKNOWN);
     void vPRED_CullByKids(Card_PRED* p_PRED);
     Card_CmpPred* pPRED_FindBound(Card_PRED* p_PRED, Index* pIndex, ePB eBound);
     bool bPRED_HasBounds (Card_PRED* p_PRED, Index* pIndex);
@@ -360,16 +367,12 @@ namespace STORE
     Card_Term* pRpnTerms_HeadTerm(Card_RpnTerms* p_rpnTerms);
     Card_Term* pRpnTerms_PopTerm(Card_RpnTerms* p_rpnTerms);
 
-    void vStream_PrintStream(Card_Stream* p_stream, Ribbon* pRibbon, i8 iDepth);
 
     Card_StmCol* pStmColList_Find_streamCol(Card_StmColList* p_stmColList, Stz *szColNm, i8& i_StreamColNo);
 
-    void vTable_PrintTable(Card_Table* p_Table, Ribbon* pRibbon, i8 iDepth);
 
     ePB  eTerm_Bound(Card_Term* p_term);
     i8   iTerm_IndexColNo(Card_Term* p_term);
-    bool bTerm_IsAggOp(Card_Term* p_term);
-    bool bTerm_IsCommaSeparator(Card_Term* p_term);
     bool bTerm_IsIndexColOrdinal(Card_Term* p_term);
     bool bTerm_IsParamOrdinal(Card_Term* p_term);
     bool bTerm_IsStreamColOrdinal(Card_Term* p_term);
@@ -379,6 +382,10 @@ namespace STORE
     i8   iTerm_TableColNo(Card_Term* p_term);
     char cTerm_TableSyn(Card_Term* p_term);
     eTE  eTerm_TermEval(Card_Term* p_term);
+
+/*############################################################################*/
+#endif
+/*############################################################################*/
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   

@@ -1292,13 +1292,13 @@ void TransformerTool::U_vUpdateMember(eCK eMember, Card* pCard, const char* asFu
 /*----------------------------------------------------------------------------*/
 /* search for sub of member                                                   */
 /*----------------------------------------------------------------------------*/
-bool TransformerTool::P_bPlumbForSubMember(eCK eMember, eCK eSubCard, bool bUpdateMember)
+bool TransformerTool::F_bPlumbForSubMember(eCK eMember, eCK eSubCard, bool bUpdateMember)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
   Card* pMember = G_pGetMember(eMember);
 
-  bool b = P_bPlumbForSubMember(pMember, eSubCard, bUpdateMember);
+  bool b = F_bPlumbForSubMember(pMember, eSubCard, bUpdateMember);
 
   return b;
 }
@@ -1306,7 +1306,7 @@ bool TransformerTool::P_bPlumbForSubMember(eCK eMember, eCK eSubCard, bool bUpda
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool TransformerTool::P_bPlumbForSubMember(Card* pMember, eCK eSubCard, bool bUpdateMember)
+bool TransformerTool::F_bPlumbForSubMember(Card* pMember, eCK eSubCard, bool bUpdateMember)
 {
   _precondition_(_ADDRESS_, _MAGIC_);
 
