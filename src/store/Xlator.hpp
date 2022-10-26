@@ -28,6 +28,18 @@ namespace STORE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+    bool A_bTable(Stz* szTableNm);
+    bool A_bIndex(Stz* szIndexNm);
+    bool A_bIndex(Stz* szTableNm, Stz* szIndexNm);
+
+    bool A_bIndexListOfTable(void);
+    void A_vStreamOfTable(void);
+    void A_vPartitionOfTable(void);
+    void A_vSizeOfTable(void);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
     bool T_bColumnRef_IsColumnRef(Card_ColumnRef* p_columnRef);
     i8   T_iColumnRef_ColumnOrd(Card_ColumnRef* p_columnRef);
     char T_cColumnRef_TableSyn(Card_ColumnRef* p_columnRef);

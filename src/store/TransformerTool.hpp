@@ -10,6 +10,7 @@
 #include "TransformIterList.hpp"
 
 #include "Table.hpp"
+#include "PtnDef.hpp"
 
 namespace STORE
 {
