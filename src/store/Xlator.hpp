@@ -24,10 +24,6 @@ namespace STORE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    Card_IndexList* A_pProduce_indexList_ofTable(Table* pTable);
-    Card_Size*      A_pProduce_size_ofTable(Table* pTable);
-    Card_Stream*    A_pProduce_stream_ofTable(Table* pTable);
-    Card_TablePtn*  A_pProduce_tablePtn_ofTable(Table* pTable);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
