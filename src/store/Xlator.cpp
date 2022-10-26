@@ -41,16 +41,16 @@ Xlator::~Xlator(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* access table                                                               */
 /*----------------------------------------------------------------------------*/
-bool Xlator::A_bAccess_Table(Stz* szTableNm)
+Table* Xlator::A_pAccess_Table(Stz* szTableNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
   m_pTable = AM::pTableFind(szTableNm);
 
   if (m_pTable)
-    return true;
+    return m_pTable;
 
-  return false;
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -75,7 +75,7 @@ bool Xlator::A_bAccess_IndexOfTable(Stz* szTableNm, Stz* szIndexNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  if (!A_bAccess_Table(szTableNm))
+  if (!A_pAccess_Table(szTableNm))
     return false;
   if (!A_bAccess_IndexOfTable(szIndexNm))
     return false;

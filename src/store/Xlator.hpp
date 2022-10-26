@@ -24,7 +24,7 @@ namespace STORE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    bool A_bAccess_Table(Stz* szTableNm);
+    Table* A_pAccess_Table(Stz* szTableNm);
     bool A_bAccess_IndexOfTable(Stz* szIndexNm);
     bool A_bAccess_IndexOfTable(Stz* szTableNm, Stz* szIndexNm);
 

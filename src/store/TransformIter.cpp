@@ -17,7 +17,7 @@ __aFooterFunction(TransformIter)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 TransformIter::TransformIter(void)
-: Object(CN_TRANSFORMITER)
+: TransformBase(CN_TRANSFORMITER)
 {
 }
 
@@ -25,7 +25,7 @@ TransformIter::TransformIter(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 TransformIter::TransformIter(eCN eClass)
-: Object (eClass)
+: TransformBase (eClass)
 {
 }
 
