@@ -351,6 +351,19 @@ void Xreshape::vR_H60_T30_Add_joinPred_UnderAll_indexJoin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+
+  //M.p_table->vDump();
+
+  M.p_boolCalc = M.p_filter->pSub_boolCalc();
+  M.p_cmpPred  = M.p_boolCalc->pSub_predCmp();
+  m_pTerm_0    = _pCard_Term(M.p_cmpPred->pGetChild(0));
+  m_pTerm_1    = _pCard_Term(M.p_cmpPred->pGetChild(1));
+
+  if (!T_bTerm_IsStreamColOrdinal(m_pTerm_0) ||
+      !T_bTerm_IsStreamColOrdinal(m_pTerm_1))
+    return;
+
+
   // - - - -
 
   M.p_bounds = new Card_Bounds;

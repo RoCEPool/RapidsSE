@@ -564,18 +564,6 @@ void Xtransforms::vH60_T30_Add_joinPred_UnderAll_indexJoin(bool bPrint, bool bTr
   vTracing(bPrint,bTrace);
 
   while (G_bEachMainWithSub(CK_TABLE, CK_FILTER)) {
-
-    //M.p_table->vDump();
-
-    M.p_boolCalc = M.p_filter->pSub_boolCalc();
-    M.p_cmpPred  = M.p_boolCalc->pSub_predCmp();
-    m_pTerm_0    = _pCard_Term(M.p_cmpPred->pGetChild(0));
-    m_pTerm_1    = _pCard_Term(M.p_cmpPred->pGetChild(1));
-
-    if (!T_bTerm_IsStreamColOrdinal(m_pTerm_0) ||
-        !T_bTerm_IsStreamColOrdinal(m_pTerm_1))
-      continue;
-
     vR_H60_T30_Add_joinPred_UnderAll_indexJoin();
   }
 
@@ -1184,23 +1172,12 @@ void Xtransforms::vHA0_T10_Individuate_filter(bool bPrint, bool bTrace)
   vTransform(__func__);
   vTracing(bPrint,bTrace);
 
-  while (G_bEachMain(CK_SCAN)) {
-
-    M.p_filter =  M.p_scan->pSub_filter();
-    if (! M.p_filter)
-      continue;
-
+  while (G_bEachMainWithSub(CK_SCAN,CK_FILTER)) {
     vR_HA0_T10_Individuate_filter();
   }
 
   G_vRestart();
-
-  while (G_bEachMain(CK_INDEXJOIN)) {
-
-    M.p_filter = M.p_indexJoin->pSub_filter();
-    if (! M.p_filter)
-      continue;
-
+  while (G_bEachMainWithSub(CK_INDEXJOIN,CK_FILTER)) {
     vR_HA0_T10_Individuate_filter_b();
   }
 
