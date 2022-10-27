@@ -47,7 +47,7 @@ Xtransforms::~Xtransforms(void) noexcept(false)
 /*============================================================================*/
 
 /*----------------------------------------------------------------------------*/
-/* linearize board by deleting all duplicate <stage>'s                        */
+/* linearize board by deleting all redundant <stage>'s                        */
 /*----------------------------------------------------------------------------*/
 void Xtransforms::vH10_T10_Delete_Redundant_stage(bool bPrint, bool bTrace)
 {
@@ -59,11 +59,11 @@ void Xtransforms::vH10_T10_Delete_Redundant_stage(bool bPrint, bool bTrace)
 
   //M.pDeck->vDump(0,(Stz*)(__func__));
 
-  Card_Stage* p_stage_CURR = nullptr;
+  Card_Stage* p_stage_PRIOR = nullptr;
 
   while (G_bEachMain(CK_STAGE)) {
-    if (! p_stage_CURR || !M.p_stage->bEquivalentTo(p_stage_CURR))   {
-      p_stage_CURR = M.p_stage;
+    if (! T_bStage_IsRedundant(M.p_stage,p_stage_PRIOR))   {
+      p_stage_PRIOR = M.p_stage;
       continue;
     }
 

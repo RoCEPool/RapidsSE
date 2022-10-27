@@ -464,6 +464,22 @@ bool Xtest::T_bPtndJoin_MayFollowAfter(Card_PtndJoin* p_ptndJoin, Card_SubSet* p
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Xtest::T_bStage_IsRedundant(Card_Stage* p_stage, Card_Stage* p_prior)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  if (! p_prior)
+    return false;
+
+  if (p_stage->bEquivalentTo(p_prior))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is given <pred> within this stream?                                        */
 /*----------------------------------------------------------------------------*/
 Card_StmCol* Xtest::T_pStmColList_Find_streamCol(Card_StmColList* p_stmColList,

@@ -40,6 +40,8 @@ namespace STORE
 
     bool T_bPtndJoin_MayFollowAfter(Card_PtndJoin* p_ptndJoin, Card_SubSet* pPriorPtnJoins_sofar);
 
+    bool T_bStage_IsRedundant(Card_Stage* p_stage, Card_Stage* p_prior);
+
     Card_StmCol* T_pStmColList_Find_streamCol(Card_StmColList* p_stmColList, Stz *szColNm, i8& i_StreamColNo);
 
     Card_Table*  T_pTableList_FindTable(Card_TableList* p_tableList, char cSyn);
