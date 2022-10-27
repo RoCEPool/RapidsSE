@@ -85,8 +85,6 @@ void Xtransforms::vH10_T15_Hide_Ignorable_stage(bool bPrint, bool bTrace)
   vTransform((char *) (__func__), C_PRINT_XFORM);
   vTracing(bPrint,bTrace);
 
-  //M.pDeck->vDump(0,(Stz*)(__func__));
-
   while (G_bEachMain(CK_STAGE)) {
     vR_H10_T15_Hide_Ignorable_stage();
   }
@@ -105,8 +103,6 @@ void Xtransforms::vH10_T20_Delete_absJoin(bool bPrint, bool bTrace)
   vDescription("delete superfluous <absJoin>'s"_Stz);
   vTransform((char *) (__func__), C_PRINT_XFORM);
   vTracing(bPrint,bTrace);
-
-  //M.pDeck->vDump(0,(Stz*)(__func__));
 
   while (G_bEachMain(CK_ABSJOIN)) {
     vR_H10_T20_Delete_absJoin();
@@ -127,8 +123,6 @@ void Xtransforms::vH10_T30_Delete_combined(bool bPrint, bool bTrace)
   vTransform((char *) (__func__), C_PRINT_XFORM);
   vTracing(bPrint,bTrace);
 
-  //M.pDeck->vDump(0,(Stz*)(__func__));
-
   while (G_bEachMain(CK_COMBINED)) {
     vR_H10_T30_Delete_combined();
   }
@@ -148,8 +142,6 @@ void Xtransforms::vH10_T40_Delete_send(bool bPrint, bool bTrace)
   vTransform((char *) (__func__), C_PRINT_XFORM);
   vTracing(bPrint,bTrace);
 
-  //M.pDeck->vDump(0,(Stz*)(__func__));
-
   while (G_bEachMain(CK_SEND)) {
     vR_H10_T40_Delete_send();
   }
@@ -168,8 +160,6 @@ void Xtransforms::vH10_T50_Cull_scan_Leaving_table(bool bPrint, bool bTrace)
   vDescription("replace all <scan>'s with their children"_Stz);
   vTransform(__func__);
   vTracing(bPrint,bTrace);
-
-  //M.pDeck->vDump(0,(Stz*)(__func__));
 
   while (G_bEachMain(CK_SCAN)) {
     vR_H10_T50_Cull_scan_Leaving_table();
@@ -194,8 +184,6 @@ void Xtransforms::vH20_T10_Add_tableSyn_ForAll_table(bool bPrint, bool bTrace)
   vDescription("add a <tableSyn> to all <table>'s"_Stz);
   vTransform(__func__);
   vTracing(bPrint,bTrace);
-
-  //M.pDeck->vDump();
 
   while (G_bEachMainWithSub(CK_TABLE, CK_TABLENM))  {
     vR_H20_T10_Add_tableSyn_ForAll_table();
@@ -276,7 +264,7 @@ void Xtransforms::vH30_T20_Calc_ordinalRange_ForAll_stream(bool bPrint, bool bTr
 /*----------------------------------------------------------------------------*/
 /* convert <where>//<calc> to <where>//<calcBool>                             */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH40_T10_Convert_where_rpnCalc_To_calcBool(bool bPrint, bool bTrace)
+void Xtransforms::vH40_T10_Convert_where_rpnCalc_To_boolCalc(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -285,7 +273,7 @@ void Xtransforms::vH40_T10_Convert_where_rpnCalc_To_calcBool(bool bPrint, bool b
   vTracing(bPrint,bTrace);
 
   while (G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
-    vR_H40_T10_Convert_where_rpnCalc_To_calcBool();
+    vR_H40_T10_Convert_where_rpnCalc_To_boolCalc();
   }
 
   vEndTransform();
@@ -516,8 +504,6 @@ void Xtransforms::vH60_T10_Add_indexJoin_UnderAllFiltered_table(bool bPrint, boo
   vTransform(__func__);
   vTracing(bPrint,bTrace);
 
-  //M.pDeck->vClearMarksRecursive();
-
   while (G_bEachMainWithSub(CK_TABLE, CK_FILTER)) {
     vR_H60_T10_Add_indexJoin_UnderFiltered_table();
   }
@@ -536,8 +522,6 @@ void Xtransforms::vH60_T20_Convert_idxCol_name_OfAll_table_To_ordinal(bool bPrin
   vDescription("convert the column name in every <idxCol> to a $streamOrdinal"_Stz);
   vTransform(__func__);
   vTracing(bPrint,bTrace);
-
-  //M.pDeck->vClearMarksRecursive();
 
   while (G_bEachMainWithSub(CK_TABLE,CK_INDEXJOIN)) {
     vR_H60_T20_Convert_idxCol_name_Of_table_To_ordinal();
@@ -998,8 +982,6 @@ void Xtransforms::vH80_T20_Convert_idxCol_name_Of_scan_To_idxCol_ord(bool bPrint
   vTransform(__func__);
   vTracing(bPrint,bTrace);
 
-  M.pDeck->vClearMarksRecursive();
-
   while (G_bEachMainWithSub(CK_SCAN, CK_IDXCOLLIST)) {
     vR_H80_T20_Convert_idxCol_name_Of_scan_To_idxCol_ord();
   }
@@ -1057,8 +1039,6 @@ void Xtransforms::vH80_T50_Add_scanPred(bool bPrint, bool bTrace)
   vTransform(__func__);
   vTracing(bPrint,bTrace);
 
-  M.p_bounds = nullptr;
-
   while (G_bEachMainWith2Sub(CK_SCAN, CK_FILTER, CK_INDEXLIST)) {
     vR_H80_T50_Add_scanPred();
   }
@@ -1098,7 +1078,7 @@ void Xtransforms::vH80_T70_Promote_scan_To_indexScan(bool bPrint, bool bTrace)
   vTracing(bPrint,bTrace);
 
   while (G_bEachMainWithSub(CK_SCAN, CK_BOUNDS)) {
-    vTracer("Morphing <scan> to <indexScan> %s\n"_Stz,M.p_scan->szBearing());
+    //vTracer("Morphing <scan> to <indexScan> %s\n"_Stz,M.p_scan->szBearing());
     vR_H80_T70_Promote_scan_To_indexScan();
   }
 
@@ -1134,7 +1114,7 @@ void Xtransforms::vH90_T10_Remove_sort_IfSameAs_gby(bool bPrint, bool bTrace)
 
   while (G_bEachMain(CK_SORT)) {
 
-    if (!G_bHasPriorToMainIf(CK_AGGREG, C_UPDATE_MEMBER))
+    if (! G_bHasPriorToMainIf(CK_AGGREG, C_UPDATE_MEMBER))
       return;
 
     M.p_gbyElist = M.p_aggreg->pSub_gbyElist();
@@ -1168,12 +1148,12 @@ void Xtransforms::vHA0_T10_Individuate_filter(bool bPrint, bool bTrace)
   vTracing(bPrint,bTrace);
 
   while (G_bEachMainWithSub(CK_SCAN,CK_FILTER)) {
-    vR_HA0_T10_Individuate_filter();
+    vR_HA0_T10_Individuate_scan_filter();
   }
 
   G_vRestart();
   while (G_bEachMainWithSub(CK_INDEXJOIN,CK_FILTER)) {
-    vR_HA0_T10_Individuate_filter_b();
+    vR_HA0_T10_Individuate_indexJoin_filter_b();
   }
 
   vEndTransform();
@@ -1197,17 +1177,6 @@ void Xtransforms::vHZ0_T10_Reinstate_stages(bool bPrint, bool bTrace)
   vTracing(bPrint,bTrace);
 
   while (G_bEachMain() && G_bHasSubsequentToMain(C_UPDATE_MEMBER))  {
-
-    if (CK_STAGE == M.e_MainCard || CK_STAGE == M.e_SubsequentToMain)
-      continue;
-
-    if (CK_FILTER == M.e_MainCard && CK_INDEXJOIN == M.e_SubsequentToMain)
-      continue;
-
-    if (CK_INDEXJOIN == M.e_MainCard &&
-        (CK_PROJECT == M.e_SubsequentToMain || CK_FILTER == M.e_SubsequentToMain))
-      continue;
-
     vR_HZ0_T10_Reinstate_stages();
   }
 
@@ -1232,23 +1201,8 @@ void Xtransforms::vHZ0_T20_Reinstate_combined(bool bPrint, bool bTrace)
   vTracing(bPrint,bTrace);
 
   while (G_bEachMain()) {
-
     G_vSubsequentToMain();
-    if (CK_INDEXJOIN == M.e_MainCard && (CK_AGGREG == M.e_SubsequentToMain ||
-                                         CK_FILTER == M.e_SubsequentToMain ||
-                                         CK_PROJECT == M.e_SubsequentToMain))
-      continue;
-
-    if (! (CK_AGGREG    == M.e_MainCard ||
-           CK_FILTER    == M.e_MainCard ||
-           CK_INDEXSCAN == M.e_MainCard ||
-           CK_INDEXJOIN == M.e_MainCard ||
-           CK_PROJECT   == M.e_MainCard ||
-           CK_SORT      == M.e_MainCard))
-      continue;
-
     vR_HZ0_T20_Reinstate_combined();
-
     G_vSkipNextMain();
   }
 
@@ -1260,7 +1214,6 @@ void Xtransforms::vHZ0_T20_Reinstate_combined(bool bPrint, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
 
 
 /*----------------------------------------------------------------------------*/

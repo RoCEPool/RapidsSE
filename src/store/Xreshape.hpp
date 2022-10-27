@@ -24,7 +24,7 @@ namespace STORE
     void vR_H20_T20_Add_tablePtn_UnderAll_table(void);
     void vR_H30_T10_Add_stream_UnderAll_table(void);
     void vR_H30_T20_Calc_ordinalRange_ForAll_stream(void);
-    void vR_H40_T10_Convert_where_rpnCalc_To_calcBool(void);
+    void vR_H40_T10_Convert_where_rpnCalc_To_boolCalc(void);
     void vR_H40_T20_Mark_where_pred_Wrt_table(void);
     void vR_H40_T30_Move_Marked_where_pred_To_table_filter(void);
     void vR_H40_T40_Delete_Empty_where(void);
@@ -64,8 +64,8 @@ namespace STORE
     void vR_H80_T70_Promote_scan_To_indexScan_b(void);
     void vR_H80_T70_Promote_scan_To_indexScan_c(void);
     void vR_H90_T10_Remove_sort_IfSameAs_gby(void);
-    void vR_HA0_T10_Individuate_filter(void);
-    void vR_HA0_T10_Individuate_filter_b(void);
+    void vR_HA0_T10_Individuate_scan_filter(void);
+    void vR_HA0_T10_Individuate_indexJoin_filter_b(void);
     void vR_HZ0_T10_Reinstate_stages(void);
     void vR_HZ0_T20_Reinstate_combined(void);
 

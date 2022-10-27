@@ -36,7 +36,7 @@ namespace STORE
 
     void vH30_T20_Calc_ordinalRange_ForAll_stream(bool bPrint, bool bTrace);
 
-    void vH40_T10_Convert_where_rpnCalc_To_calcBool(bool bPrint, bool bTrace);
+    void vH40_T10_Convert_where_rpnCalc_To_boolCalc(bool bPrint, bool bTrace);
     void vH40_T20_Mark_where_pred_Wrt_table(bool bPrint, bool bTrace);
     void vH40_T30_Move_Marked_where_pred_To_table_filter(bool bPrint, bool bTrace);
     void vH40_T40_Delete_Empty_where(bool bPrint, bool bTrace);

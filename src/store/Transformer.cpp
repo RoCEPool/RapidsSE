@@ -181,7 +181,7 @@ void Transformer::vHand_40_PredicatePullup(bool bPrintHand, bool bPrintXform, bo
   m_pCardCtl->vPrintProperties(CK_STREAM, false);
   m_pCardCtl->vPrintSubCards(CK_STREAM, false);
 
-  m_pTransforms->vH40_T10_Convert_where_rpnCalc_To_calcBool     (bPrintXform, bTrace);
+  m_pTransforms->vH40_T10_Convert_where_rpnCalc_To_boolCalc(bPrintXform, bTrace);
   m_pTransforms->vH40_T20_Mark_where_pred_Wrt_table             (bPrintXform, bTrace);
   m_pTransforms->vH40_T30_Move_Marked_where_pred_To_table_filter(bPrintXform, bTrace);
   m_pTransforms->vH40_T40_Delete_Empty_where                    (bPrintXform, bTrace);

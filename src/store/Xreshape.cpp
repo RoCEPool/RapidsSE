@@ -195,7 +195,7 @@ void Xreshape::vR_H30_T20_Calc_ordinalRange_ForAll_stream(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H40_T10_Convert_where_rpnCalc_To_calcBool(void)
+void Xreshape::vR_H40_T10_Convert_where_rpnCalc_To_boolCalc(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -978,6 +978,8 @@ void Xreshape::vR_H80_T50_Add_scanPred(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  M.p_bounds = nullptr;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   auto bfAdd = [this](Card* pCard) {
@@ -1107,7 +1109,7 @@ void Xreshape::vR_H90_T10_Remove_sort_IfSameAs_gby(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_HA0_T10_Individuate_filter(void)
+void Xreshape::vR_HA0_T10_Individuate_scan_filter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1118,7 +1120,7 @@ void Xreshape::vR_HA0_T10_Individuate_filter(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_HA0_T10_Individuate_filter_b(void)
+void Xreshape::vR_HA0_T10_Individuate_indexJoin_filter_b(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1139,6 +1141,17 @@ void Xreshape::vR_HZ0_T10_Reinstate_stages(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  if (CK_STAGE == M.e_MainCard || CK_STAGE == M.e_SubsequentToMain)
+    return;
+
+  if (CK_FILTER == M.e_MainCard && CK_INDEXJOIN == M.e_SubsequentToMain)
+    return;
+
+  if (CK_INDEXJOIN == M.e_MainCard &&
+      (CK_PROJECT == M.e_SubsequentToMain || CK_FILTER == M.e_SubsequentToMain))
+    return;
+
+
   m_pCard_dup = M.p_stage->pDupCardAndSubCards();
   M.pDeck->vInsertAfter(m_pCard_dup, M.p_MainCard);
 }
@@ -1150,12 +1163,22 @@ void Xreshape::vR_HZ0_T20_Reinstate_combined(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  if (CK_INDEXJOIN == M.e_MainCard && (CK_AGGREG == M.e_SubsequentToMain ||
+                                       CK_FILTER == M.e_SubsequentToMain ||
+                                       CK_PROJECT == M.e_SubsequentToMain))
+    return;
+
+  if (! (CK_AGGREG    == M.e_MainCard ||
+         CK_FILTER    == M.e_MainCard ||
+         CK_INDEXSCAN == M.e_MainCard ||
+         CK_INDEXJOIN == M.e_MainCard ||
+         CK_PROJECT   == M.e_MainCard ||
+         CK_SORT      == M.e_MainCard))
+    return;
+
   M.p_combined = new Card_Combined;
   M.pDeck->vInsertAfter(M.p_combined, M.p_MainCard);
 }
-
-
-
 
 /*============================================================================*/
 /* end                                                                        */
