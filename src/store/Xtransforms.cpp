@@ -1626,10 +1626,7 @@ void Xtransforms::vHA0_T10_Individuate_filter(bool bPrint, bool bTrace)
     if (! M.p_filter)
       continue;
 
-    vREPLACE_WITH_RESHAPE();
-
-    M.p_scan->vRemoveChild(M.p_filter);
-    M.pDeck->vInsertAfter(M.p_filter, M.p_scan);
+    vR_HA0_T10_Individuate_filter();
   }
 
   M_vRestart();
@@ -1640,10 +1637,7 @@ void Xtransforms::vHA0_T10_Individuate_filter(bool bPrint, bool bTrace)
     if (! M.p_filter)
       continue;
 
-    vREPLACE_WITH_RESHAPE();
-
-    M.p_indexJoin->vRemoveChild(M.p_filter);
-    M.pDeck->vInsertAfter(M.p_filter, M.p_indexJoin);
+    vR_HA0_T10_Individuate_filter_b();
   }
 
   vEndTransform();
