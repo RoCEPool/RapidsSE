@@ -193,6 +193,14 @@
     AM::DEMON::tConnectDemonJobId!
   then
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // spawn answer demon for wireline (WL) Adaptor
+  STD_DEMONFORK_TAG answerWL_procText api::forkDemon not if
+    "Error Code %v" .printf
+  else
+    AM::DEMON::tAnswerWLDemonJobId!
+  then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

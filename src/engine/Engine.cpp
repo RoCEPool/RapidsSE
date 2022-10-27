@@ -1840,6 +1840,8 @@ void Engine::vStartSystem(void)
   // mark attachmap to be ready for connections
   gpAttachMap->vAttachMapState(C_READY);
 
+  // TODO: Spawn the wireline answer daemon here to start accepting connections from clients
+
   while (! AM::SYSTEM::bReady())
     sleep(1);
 

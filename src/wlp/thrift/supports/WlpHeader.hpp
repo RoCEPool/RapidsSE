@@ -3,9 +3,8 @@
 /*============================================================================*/
 
 #pragma once
-//#include "BASE.h"
 
-namespace wlp
+namespace WLP
 {
   union WlpHeader {
     struct {
@@ -17,5 +16,5 @@ namespace wlp
     i8 m_iAsI8;
   };
 
-  const i8 C_WLPHEADER_SIZE = 8;
+  static const i8 C_WLPHEADER_SIZE = 8;
 }

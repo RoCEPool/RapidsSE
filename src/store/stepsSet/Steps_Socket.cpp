@@ -63,6 +63,7 @@ void Step::vAddSteps_Socket(void)
   vAddStep("Socket[].object@"_Stz,   &Step::vSocketObjectFetch);
   vAddStep("Socket[].object@\\clear"_Stz, &Step::vSocketObjectFetchClear);
   vAddStep("Socket[].recvObject"_Stz,&Step::vSocketRecvObject);
+  vAddStep("Socket[].recvWLMsg"_Stz, &Step::vSocketRecvWLMsg);
   vAddStep("Socket[].sendObject"_Stz,&Step::vSocketSendObject);
   vAddStep("Socket[].set"_Stz,       &Step::vSocketSet);
   vAddStep("Socket[].success@"_Stz,  &Step::vSocketSuccessFetch);
@@ -288,6 +289,24 @@ void Step::vSocketRecvObject(void)
   
   pSocket->vReceivedObject(pReceivedObject);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Socket[].recvWLMsg: recv wireline message from a socket                    */
+/*----------------------------------------------------------------------------*/
+void Step::vSocketRecvWLMsg(void)
+{
+  ENTRY();
+
+  Socket* pSocket = *m_pLogicUnit->m_xpSocket;
+
+  RASSERT(! pSocket->pReceivedObject());
+
+  Object* pReceivedObject = pSocket->pRecvWLMsg();
+
+  pSocket->vReceivedObject(pReceivedObject);
+
   EXIT();
 }
 

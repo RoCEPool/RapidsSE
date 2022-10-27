@@ -7,15 +7,17 @@ namespace WLP
 {  
   class PayloadObj : public Object
   {
-  private:
+  public:
     static const i8 C_MAX_PAYLOAD_BYTES = C_1M;
+
+  private:
     i8   m_nPayloadBytes;
     char m_caPayload[C_MAX_PAYLOAD_BYTES];
-  
+
     Footer m_xFooter;
-    
+
    public:
-    
+
     void* operator new(size_t);
     void  operator delete(void*);
     

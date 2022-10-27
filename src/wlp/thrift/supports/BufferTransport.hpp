@@ -10,7 +10,7 @@
 #include "WlpHeader.hpp"
 
 
-namespace wlp
+namespace WLP
 {
   class BufferTransport : public apache::thrift::transport::TTransport
   {

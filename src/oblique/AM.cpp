@@ -265,6 +265,24 @@ JobId AM::DEMON::tAnswerDemonJobId(void) {
 }
 
 /*----------------------------------------------------------------------------*/
+/* set jobId of the answer wireline demon in AM                               */
+/*----------------------------------------------------------------------------*/
+void AM::DEMON::vAnswerWLDemonJobId(JobId tJobId) {
+  _static_
+
+  gpAttachMap->m_tAnswerWLDemonJobId = tJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get jobId of the answer wireline demon in AM                               */
+/*----------------------------------------------------------------------------*/
+JobId AM::DEMON::tAnswerWLDemonJobId(void) {
+  _static_
+
+  return gpAttachMap->m_tAnswerWLDemonJobId;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set jobId of the collect demon in AM                                       */
 /*----------------------------------------------------------------------------*/
 void AM::DEMON::vCollectDemonJobId(JobId tJobId) {

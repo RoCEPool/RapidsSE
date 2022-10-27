@@ -16,6 +16,9 @@ void Step::vAddSteps_AM(void)
   vAddStep("AM::DEMON::tAnswerDemonJobId@"_Stz,    &Step::vAM_AnswerDemonJobIdFetch);
   vAddStep("AM::DEMON::tAnswerDemonJobId!"_Stz,    &Step::vAM_AnswerDemonJobIdStore);
 
+  vAddStep("AM::DEMON::tAnswerWLDemonJobId@"_Stz,  &Step::vAM_AnswerWLDemonJobIdFetch);
+  vAddStep("AM::DEMON::tAnswerWLDemonJobId!"_Stz,  &Step::vAM_AnswerWLDemonJobIdStore);
+
   vAddStep("AM::DEMON::tCollectDemonJobId@"_Stz,   &Step::vAM_CollectDemonJobIdFetch);
   vAddStep("AM::DEMON::tCollectDemonJobId!"_Stz,   &Step::vAM_CollectDemonJobIdStore);
 
@@ -106,6 +109,33 @@ void Step::vAM_AnswerDemonJobIdStore(void)
 
   JobId tJobId = m_pDataStack->iPopInt(__func__);
   AM::DEMON::vAnswerDemonJobId(tJobId);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AM::DEMON::tAnswerWLDemonJobId@ -- fetch AnswerWLDemon JobId               */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_AnswerWLDemonJobIdFetch(void)
+{
+  ENTRY();
+
+  JobId tJobId = AM::DEMON::tAnswerWLDemonJobId();
+
+  m_pDataStack->vPushInt(tJobId.iAsI8());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AM::DEMON::tAnswerWLDemonJobId! -- store the AnswerWLDemon JobId           */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_AnswerWLDemonJobIdStore(void)
+{
+  ENTRY();
+
+  JobId tJobId = m_pDataStack->iPopInt(__func__);
+  AM::DEMON::vAnswerWLDemonJobId(tJobId);
 
   EXIT();
 }

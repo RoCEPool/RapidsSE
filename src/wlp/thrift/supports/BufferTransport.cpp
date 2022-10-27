@@ -5,7 +5,7 @@
 #include "BASE.h"
 #include "BufferTransport.hpp"
 
-using namespace wlp;
+using namespace WLP;
 using namespace com::rapidsdata::wirelineprotocol::messages::v5;
 
 /*----------------------------------------------------------------------------*/

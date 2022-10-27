@@ -63,6 +63,8 @@ public:
   // AM
   void vAM_AnswerDemonJobIdFetch(void);
   void vAM_AnswerDemonJobIdStore(void);
+  void vAM_AnswerWLDemonJobIdFetch(void);
+  void vAM_AnswerWLDemonJobIdStore(void);
   void vAM_CollectDemonJobIdFetch(void);
   void vAM_CollectDemonJobIdStore(void);
   void vAM_ConnectorDemonJobIdFetch(void);
@@ -1825,6 +1827,7 @@ void vDdlLockAssertNone(void);
   void vSocketObjectFetchClear(void);
   void vSocketNew(void);
   void vSocketRecvObject(void);
+  void vSocketRecvWLMsg(void);
   void vSocketSendObject(void);
   void vSocketSet(void);
   void vSocketSuccessFetch(void);

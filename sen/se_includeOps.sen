@@ -27,6 +27,7 @@ assert::stack_0
   "OP_analyzeIndex.sen"         include
   "OP_analyzeTable.sen"         include
   "OP_answerSE.sen"             include
+  "OP_answerWL.sen"             include
 
 "b" .verbose
 
@@ -222,6 +223,7 @@ assert::stack_0
   "OP_reapCtl.sen"              include
   "OP_recurring.sen"            include
   "OP_recvSE.sen"               include
+  "OP_recvWL.sen"               include
   "OP_refTmrReset.sen"          include
   "OP_reload.sen"               include
   "OP_removeNode.sen"           include

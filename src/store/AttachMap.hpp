@@ -93,6 +93,7 @@ namespace STORE
     Word*         m_pWordRoot;
 
     JobId         m_tAnswerDemonJobId;
+    JobId         m_tAnswerWLDemonJobId;
     JobId         m_tCollectDemonJobId;
     JobId         m_tConnectorDemonJobId;
     JobId         m_tEventDemonJobId;

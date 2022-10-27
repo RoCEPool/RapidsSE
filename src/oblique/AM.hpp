@@ -280,6 +280,9 @@ namespace OBLIQUE
       static void  vAnswerDemonJobId(JobId tJobId);
       static JobId tAnswerDemonJobId(void);
 
+      static void  vAnswerWLDemonJobId(JobId tJobId);
+      static JobId tAnswerWLDemonJobId(void);
+
       static void  vCollectDemonJobId(JobId tJobId);
       static JobId tCollectDemonJobId(void);
 

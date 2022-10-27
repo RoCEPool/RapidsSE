@@ -73,6 +73,9 @@ assert::stack_0
   "dp_connectorSE.sen"      include
   "dp_receiverSE.sen"       include
 
+  "dp_answerWL.sen"         include
+  "dp_receiverWL.sen"       include
+
   "se_includeOps.sen"       include
 
 "se_boot 3" .verbose
@@ -162,7 +165,7 @@ cmd::fillOut_allCmds
   "it_verifyIndex.sen"      include
   "it_verifyTable.sen"      include
 
-  
+
   "job_startSystem.sen"     include // last last
 
 .\n

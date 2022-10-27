@@ -11,6 +11,7 @@
 #include "RejectJob.hpp"
 #include "eSY.h"
 #include "Port.hpp"
+#include "WlpHeader.hpp"
 
 namespace BASE
 {
@@ -23,6 +24,7 @@ namespace BASE
     char    m_caObjectHeader[sizeof(Object) + 64];
     Header* m_aHeader;
     Object* m_pObject;
+    WLP::WlpHeader* m_pWlpHeader;
   
     RejectJob* m_pRejectJob;
     void*      m_aLowBuff;  // low memory read area
@@ -40,16 +42,21 @@ namespace BASE
     Object* pReceivedObject(void);
     void    vReceivedObject(Object* pReceivedObject);
     Object* pRecvObject(void);
+    Object* pRecvWLMsg(void);
 
     bool bSendObject(Object* pObject, SysCall& SysCall, eSY eSendWhy);//=SY_NONE);
+    bool bSendWLMsg(Object* pObject, SysCall& SysCall, eSY eSendWhy);//=SY_NONE);
 
   private:
   
     bool    bHeaderRecv(void);
+    bool    bWLHeaderRecv(void);
     void    vJobRecv_lowmem(Job* pJob);
     Marker* pMarkerRecv(void);
     Object* pObjectRecv(eCN eClass);
     Object* pObjectRecv_lowmem(eCN eClass);
+    Object* pWLMsgRecv();
+    Object* pWLMsgRecv_lowmem();
 
     Footer* aFooter(void);
   };
