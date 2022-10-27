@@ -208,7 +208,7 @@ void Xreshape::vR_H40_T20_Mark_where_pred_Wrt_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vMarkPredLeftwards(M.p_boolCalc,M.pDeck);
+  vPullUp_MarkPredLeftwards(M.p_boolCalc, M.pDeck);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -218,7 +218,7 @@ void Xreshape::vR_H40_T30_Move_Marked_where_pred_To_table_filter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vCopyPredLeftwards(M.p_boolCalc,M.pDeck);
+  vPullUp_CopyPredLeftwards(M.p_boolCalc, M.pDeck);
 }
 
 /*----------------------------------------------------------------------------*/
