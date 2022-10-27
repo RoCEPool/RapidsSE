@@ -1054,20 +1054,9 @@ void Xtransforms::vH80_T30_Mark_scan_pred_bounds(bool bPrint, bool bTrace)
   vTransform(__func__);
   vTracing(bPrint,bTrace);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  auto bfMarkPredBounds = [this](Card* pCard) {
-    Card_CmpPred* p_cmpPred = _pCard_CmpPred(pCard);
-    T_vCmpPred_MarkBound(p_cmpPred);
-    return C_CONTINUE_RECURSION;
-  };
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   while (E_bEachMainWithSub(CK_SCAN,CK_FILTER)) {
-    vREPLACE_WITH_RESHAPE();
-
-    M.p_filter->vApplyRecursive(CK_CMPPRED, bfMarkPredBounds);
+    vR_H80_T30_Mark_scan_pred_bounds();
   }
 
   vEndTransform();

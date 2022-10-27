@@ -889,6 +889,18 @@ void Xreshape::vR_H80_T20_Convert_idxCol_name_Of_scan_To_idxCol_ord(void)
 void Xreshape::vR_H80_T30_Mark_scan_pred_bounds(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bfMarkPredBounds = [this](Card* pCard) {
+    Card_CmpPred* p_cmpPred = _pCard_CmpPred(pCard);
+    T_vCmpPred_MarkBound(p_cmpPred);
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  M.p_filter->vApplyRecursive(CK_CMPPRED, bfMarkPredBounds);
 }
 
 /*----------------------------------------------------------------------------*/
