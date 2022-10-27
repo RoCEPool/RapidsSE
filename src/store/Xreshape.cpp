@@ -862,6 +862,15 @@ void Xreshape::vR_H70_T99_Convert_table_To_scan_Or_indexJoin_c(void)
 void Xreshape::vR_H80_T10_Insert_indexList_ToAll_scan(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  m_pTable = A_pAccess_Table(M.p_tableNm->sz());
+
+  if ((M.p_indexList = A_pProduce_indexList_ofTable(m_pTable))) {
+    M.p_comment = new Card_Comment(SEP_SCRATCH);
+    M.p_scan->vAppend(M.p_comment);
+
+    M.p_scan->vAppend(M.p_indexList);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -870,6 +879,8 @@ void Xreshape::vR_H80_T10_Insert_indexList_ToAll_scan(void)
 void Xreshape::vR_H80_T20_Convert_idxCol_name_Of_scan_To_idxCol_ord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  X_vIdxColList_Ordinate(M.p_idxColList, M.p_stream);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -902,6 +913,19 @@ void Xreshape::vR_H80_T50_Add_scanPred(void)
 void Xreshape::vR_H80_T60_Cull_Marked_cmpPred(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vTracer("Culling <filter> of L & U bounds %s\n"_Stz,M.p_filter->szBearing());
+  X_vFilter_CullPred(M.p_filter, 'L');
+  X_vFilter_CullPred(M.p_filter, 'U');
+
+  //M.p_filter->vDump();
+  if (!X_bFilter_IsEmptyFilter(M.p_filter))
+    return;
+
+  vTracer("Deleting empty <filter> %s\n"_Stz,M.p_filter->szBearing());
+  M.p_MainCard->vRemoveSubCard(M.p_filter);
+  DELETE_CARD(M.p_filter);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -910,6 +934,31 @@ void Xreshape::vR_H80_T60_Cull_Marked_cmpPred(void)
 void Xreshape::vR_H80_T70_Promote_scan_To_indexScan(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  M.p_scan->vCard(CK_INDEXSCAN);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H80_T70_Promote_scan_To_indexScan_b(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  i8 i_Child;
+  M.p_comment = _pCard_Comment(M.p_indexScan->pFindChild(CK_COMMENT,i_Child));
+  M.p_comment->vValue(SEP_DERIVED);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H80_T70_Promote_scan_To_indexScan_c(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  M.p_indexScan->vReplaceChildWithItsSubs(M.p_indexList);
+  DELETE_CARD((M.p_indexList));
 }
 
 /*----------------------------------------------------------------------------*/

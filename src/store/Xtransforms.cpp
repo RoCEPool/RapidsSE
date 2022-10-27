@@ -1011,22 +1011,7 @@ void Xtransforms::vH80_T10_Insert_indexList_ToAll_scan(bool bPrint, bool bTrace)
   vTracing(bPrint,bTrace);
 
   while (E_bEachMainWith2Sub(CK_SCAN,CK_TABLE,CK_TABLENM)) {
-
-//    if ( (M.p_indexList = M.p_tablePtr->pNew_indexList()) ) {
-//      M.p_scan->vInsertAfter(M.p_indexList,M.p_tablePtr);
-//
-//    }
-
-    vREPLACE_WITH_RESHAPE();
-
-    m_pTable = A_pAccess_Table(M.p_tableNm->sz());
-
-    if ((M.p_indexList = A_pProduce_indexList_ofTable(m_pTable))) {
-      M.p_comment = new Card_Comment(SEP_SCRATCH);
-      M.p_scan->vAppend(M.p_comment);
-
-      M.p_scan->vAppend(M.p_indexList);
-    }
+    vR_H80_T10_Insert_indexList_ToAll_scan();
   }
 
   vEndTransform();
@@ -1049,9 +1034,8 @@ void Xtransforms::vH80_T20_Convert_idxCol_name_Of_scan_To_idxCol_ord(bool bPrint
   while (E_bEachMainWithSub(CK_SCAN,CK_IDXCOLLIST)) {
     M.p_stream = M.p_scan->pSub_stream();
 
-    vREPLACE_WITH_RESHAPE();
+    vR_H80_T20_Convert_idxCol_name_Of_scan_To_idxCol_ord();
 
-    X_vIdxColList_Ordinate(M.p_idxColList, M.p_stream);
   }
 
   vEndTransform();
@@ -1234,20 +1218,7 @@ void Xtransforms::vH80_T60_Cull_Marked_cmpPred(bool bPrint, bool bTrace)
   vTracing(bPrint,bTrace);
 
   while (E_bEachMainWithSub(CK_SCAN,CK_FILTER)) {
-
-    vREPLACE_WITH_RESHAPE();
-
-    vTracer("Culling <filter> of L & U bounds %s\n"_Stz,M.p_filter->szBearing());
-    X_vFilter_CullPred(M.p_filter, 'L');
-    X_vFilter_CullPred(M.p_filter, 'U');
-
-    //M.p_filter->vDump();
-    if (!X_bFilter_IsEmptyFilter(M.p_filter))
-      continue;
-
-    vTracer("Deleting empty <filter> %s\n"_Stz,M.p_filter->szBearing());
-    M.p_MainCard->vRemoveSubCard(M.p_filter);
-    DELETE_CARD(M.p_filter);
+    vR_H80_T60_Cull_Marked_cmpPred();
   }
 
   vEndTransform();
@@ -1267,25 +1238,17 @@ void Xtransforms::vH80_T70_Promote_scan_To_indexScan(bool bPrint, bool bTrace)
 
   while (E_bEachMainWithSub(CK_SCAN,CK_BOUNDS)) {
     vTracer("Morphing <scan> to <indexScan> %s\n"_Stz,M.p_scan->szBearing());
-    vREPLACE_WITH_RESHAPE();
-
-    M.p_scan->vCard(CK_INDEXSCAN);
+    vR_H80_T70_Promote_scan_To_indexScan();
   }
 
   M_vRestart();
   while (E_bEachMain(CK_INDEXSCAN)) {
-
-    i8 i_Child;
-    M.p_comment = _pCard_Comment(M.p_indexScan->pFindChild(CK_COMMENT,i_Child));
-    M.p_comment->vValue(SEP_DERIVED);
+    vR_H80_T70_Promote_scan_To_indexScan_b();
   }
 
   M_vRestart();
   while (E_bEachMainWithSub(CK_INDEXSCAN,CK_INDEXLIST)) {
-
-    M.p_indexScan->vReplaceChildWithItsSubs(M.p_indexList);
-
-    DELETE_CARD((M.p_indexList));
+    vR_H80_T70_Promote_scan_To_indexScan_c();
   }
 
   vEndTransform();

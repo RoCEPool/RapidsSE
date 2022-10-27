@@ -61,6 +61,8 @@ namespace STORE
     void vR_H80_T50_Add_scanPred(void);
     void vR_H80_T60_Cull_Marked_cmpPred(void);
     void vR_H80_T70_Promote_scan_To_indexScan(void);
+    void vR_H80_T70_Promote_scan_To_indexScan_b(void);
+    void vR_H80_T70_Promote_scan_To_indexScan_c(void);
     void vR_H90_T10_Remove_sort_IfSameAs_gby(void);
     void vR_HA0_T10_Individuate_filter(void);
     void vR_HA0_T10_Individuate_filter_b(void);
