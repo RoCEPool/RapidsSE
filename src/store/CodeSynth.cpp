@@ -632,9 +632,18 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ, 
   // generate code for the key expression
   vGenerateExprCode(m_pExprStack, ""_Stz);
 
-  // position at entry greater than equal to the join key (lbound)
-  StrLib::vAppendString(&m_azCodeCrs, "\n    // position at entry >= join key (lbound)");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_aEntIntJ = (struct Ent_int *)aIndexTree_positionGE(aCombinedT->m_aIndexTreeJ, &aCombinedT->m_aEntBufferJ, aCombinedT->m_aEntKeyJ);");
+  // position at entry
+  if (m_pExprStack->nValues()) {
+    // position at entry greater than equal to the join key (lbound)
+    StrLib::vAppendString(&m_azCodeCrs, "\n    // position at entry >= join key (lbound)");
+    StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_aEntIntJ = (struct Ent_int *)aIndexTree_positionGE(aCombinedT->m_aIndexTreeJ, &aCombinedT->m_aEntBufferJ, aCombinedT->m_aEntKeyJ);");
+  }
+  else {
+    // cross join - position at beginning of the index
+    StrLib::vAppendString(&m_azCodeCrs, "\n    // position at beginning of the index");
+    StrLib::vAppendString(&m_azCodeCrs,
+                          "\n    aCombinedT->m_aEntIntJ =  (struct Ent_int*)aIndexTree_begin(aCombinedT->m_aIndexTreeJ, &aCombinedT->m_aEntBufferJ);");
+  }
 
   // did we find the entry ?
   StrLib::vAppendString(&m_azCodeCrs, "\n");
@@ -666,46 +675,58 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ, 
   StrLib::vAppendString(&m_azCodeCrs, "\n    if (aCombinedT->m_bTrace)");
   StrLib::vAppendString(&m_azCodeCrs, "\n      vEntWrk_print(aCombinedT->m_aEntWrkJ, aCombinedT->m_aIndexDefJ);");
 
-  // find the upper bound entry
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    // find the upper bound entry");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_aEntUpperJ = aIndexTree_positionLE(aCombinedT->m_aIndexTreeJ, aCombinedT->m_aEntKeyJ);");
+  // not cross join ?
+  if (m_pExprStack->nValues()) {
+    // find the upper bound entry
+    StrLib::vAppendString(&m_azCodeCrs, "\n");
+    StrLib::vAppendString(&m_azCodeCrs, "\n    // find the upper bound entry");
+    StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_aEntUpperJ = aIndexTree_positionLE(aCombinedT->m_aIndexTreeJ, aCombinedT->m_aEntKeyJ);");
+  }
 
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n L_IndexJoinDeref:");
   StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_iProcessRow = 1;");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
-  // check reached upper bound
-  StrLib::vAppendString(&m_azCodeCrs, "\n    if (aCombinedT->m_aEntIntJ == aCombinedT->m_aEntUpperJ) {");
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-  if (bLeftOuterJoin) {
-    StrLib::vAppendString(&m_azCodeCrs, "\n      if (aCombinedT->m_iJoinedRows == 0) {");
+  //
+  if (m_pExprStack->nValues()) {
+    // check reached upper bound
+    StrLib::vAppendString(&m_azCodeCrs, "\n    if (aCombinedT->m_aEntIntJ == aCombinedT->m_aEntUpperJ) {");
     StrLib::vAppendString(&m_azCodeCrs, "\n");
-    StrLib::vAppendString(&m_azCodeCrs, "\n        aCombinedT->m_iProcessRow = 1;");
-    StrLib::vAppendString(&m_azCodeCrs, "\n        iLeftOuterRow = 1;");
-    StrLib::vAppendString(&m_azCodeCrs, "\n");
+    if (bLeftOuterJoin) {
+      StrLib::vAppendString(&m_azCodeCrs, "\n      if (aCombinedT->m_iJoinedRows == 0) {");
+      StrLib::vAppendString(&m_azCodeCrs, "\n");
+      StrLib::vAppendString(&m_azCodeCrs, "\n        aCombinedT->m_iProcessRow = 1;");
+      StrLib::vAppendString(&m_azCodeCrs, "\n        iLeftOuterRow = 1;");
+      StrLib::vAppendString(&m_azCodeCrs, "\n");
 
-    vGenerateAssignLft(uSelectColumns, "    "_Stz);
-    vGenerateAssignRht(uSelectColumns, "    "_Stz);
-    vGenerateGoto(sLabelNext, "    "_Stz);
+      vGenerateAssignLft(uSelectColumns, "    "_Stz);
+      vGenerateAssignRht(uSelectColumns, "    "_Stz);
+      vGenerateGoto(sLabelNext, "    "_Stz);
 
-    StrLib::vAppendString(&m_azCodeCrs, "\n      }");
-    StrLib::vAppendString(&m_azCodeCrs, "\n      else {");
+      StrLib::vAppendString(&m_azCodeCrs, "\n      }");
+      StrLib::vAppendString(&m_azCodeCrs, "\n      else {");
+      StrLib::vAppendString(&m_azCodeCrs, "\n");
+      //StrLib::vAppendString(&m_azCodeCrs, "\n        iJoinedRows = 0;");
+      StrLib::vAppendString(&m_azCodeCrs, "\n        aCombinedT->m_iProcessRow = 0;");
+      StrLib::vAppendString(&m_azCodeCrs, "\n        goto L_AdvanceNextRow;");
+      StrLib::vAppendString(&m_azCodeCrs, "\n");
+      StrLib::vAppendString(&m_azCodeCrs, "\n      }");
+    } else {
+      //StrLib::vAppendString(&m_azCodeCrs, "\n      iJoinedRows = 0;");
+      StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iProcessRow = 0;");
+      StrLib::vAppendString(&m_azCodeCrs, "\n      goto L_AdvanceNextRow;");
+    }
+    StrLib::vAppendString(&m_azCodeCrs, "\n    }");
     StrLib::vAppendString(&m_azCodeCrs, "\n");
-    //StrLib::vAppendString(&m_azCodeCrs, "\n        iJoinedRows = 0;");
-    StrLib::vAppendString(&m_azCodeCrs, "\n        aCombinedT->m_iProcessRow = 0;");
-    StrLib::vAppendString(&m_azCodeCrs, "\n        goto L_AdvanceNextRow;");
-    StrLib::vAppendString(&m_azCodeCrs, "\n");
-    StrLib::vAppendString(&m_azCodeCrs, "\n      }");
   }
   else {
-    //StrLib::vAppendString(&m_azCodeCrs, "\n      iJoinedRows = 0;");
+    StrLib::vAppendString(&m_azCodeCrs, "\n    if ( ! aCombinedT->m_aEntIntJ) {");
     StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iProcessRow = 0;");
     StrLib::vAppendString(&m_azCodeCrs, "\n      goto L_AdvanceNextRow;");
+    StrLib::vAppendString(&m_azCodeCrs, "\n    }");
+    StrLib::vAppendString(&m_azCodeCrs, "\n");
   }
-  StrLib::vAppendString(&m_azCodeCrs, "\n    }");
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
 
   //StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_iJoinedRows++;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    aHeadLineSav = aHeadLine;");
@@ -2890,6 +2911,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
   eDM eExprType = DM_UNK;
 
   bool bIndexJoin = false;
+  bool bAssignJoin = false;
   bool bLowerBound = false;
   bool bUpperBound = false;
 
@@ -3492,7 +3514,8 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
       // skip == op if indexJoin expr
       if (bIndexJoin) {
-        RASSERT(pTkn->bSame("=="_Stz));
+        if (pTkn->bSame("=="_Stz))
+          bAssignJoin = true;
         continue;
       }
 
@@ -3545,7 +3568,8 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
   if (pExprStack == pPostStack)
     pExprStack = m_pExprStack;
 
-  vPushAssignCol(pExprStack, pPostStack, eExprKind, ePreExp, i_Col+iGkyCols, i_ColPL, i_DupCtr);
+  if ( !bIndexJoin || (bIndexJoin && bAssignJoin))
+    vPushAssignCol(pExprStack, pPostStack, eExprKind, ePreExp, i_Col+iGkyCols, i_ColPL, i_DupCtr);
 
 /*
 #ifdef WITH_DEBUG_VERSION

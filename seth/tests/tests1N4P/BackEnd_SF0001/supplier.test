@@ -20,6 +20,9 @@ success
 create index IxS_SUPPKEY on supplier (S_SUPPKEY);
 affected: 0
 
+create index IxS_NATIONKEY on supplier (S_NATIONKEY);
+affected: 0
+
 -----------------------------------------------------------------------
 // load the table
 load supplier "../TPCH/SF_0001/supplier.csv";
