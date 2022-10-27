@@ -138,7 +138,7 @@ void Xtransforms::vH10_T30_Delete_combined(bool bPrint, bool bTrace)
     vR_H10_T30_Delete_combined();
   }
 
-    vEndTransform();
+  vEndTransform();
   vPrintBoard();
 }
 
@@ -230,9 +230,14 @@ void Xtransforms::vH20_T20_Add_tablePtn_UnderAll_table(bool bPrint, bool bTrace)
 }
 
 /*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*                                                   Stream Analysis Hand 30 */
+/*============================================================================*/
+
+/*----------------------------------------------------------------------------*/
 /* add a <stream> under every <table>                                         */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH20_T30_Add_stream_UnderAll_table(bool bPrint, bool bTrace)
+void Xtransforms::vH30_T10_Add_stream_UnderAll_table(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -242,7 +247,7 @@ void Xtransforms::vH20_T30_Add_stream_UnderAll_table(bool bPrint, bool bTrace)
 
   // E <scan>
   while (G_bEachMainWithSub(CK_TABLE, CK_TABLENM)) {
-    vR_H20_T30_Add_stream_UnderAll_table();
+    vR_H30_T10_Add_stream_UnderAll_table();
   }
 
   vEndTransform();
@@ -250,14 +255,9 @@ void Xtransforms::vH20_T30_Add_stream_UnderAll_table(bool bPrint, bool bTrace)
 }
 
 /*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*                                                   Stream Analysis Hand 30 */
-/*============================================================================*/
-
-/*----------------------------------------------------------------------------*/
 /* calculate the ordinal $low..$high range for each <stream>                  */
 /*----------------------------------------------------------------------------*/
-void Xtransforms::vH30_T10_Calc_ordinalRange_ForAll_stream(bool bPrint, bool bTrace)
+void Xtransforms::vH30_T20_Calc_ordinalRange_ForAll_stream(bool bPrint, bool bTrace)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -268,7 +268,7 @@ void Xtransforms::vH30_T10_Calc_ordinalRange_ForAll_stream(bool bPrint, bool bTr
   while (G_bEachMain(CK_TABLE)) {
     M.p_stream = M.p_table->pSub_stream();
 
-    vR_H30_T10_Calc_ordinalRange_ForAll_stream();
+    vR_H30_T20_Calc_ordinalRange_ForAll_stream();
   }
 
   vEndTransform();

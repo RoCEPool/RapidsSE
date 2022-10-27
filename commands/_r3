@@ -24,7 +24,7 @@ load customer "../tpch/sf_0001/customer.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/cue = "vHand_10_ReducePipeline"
+/cue = "vHand_10_CondensePipeline"
 /transliterated
 /transform
 /transform3

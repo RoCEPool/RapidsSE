@@ -11,8 +11,8 @@ namespace STORE
 {
   struct _CardCtl
   {
-    bool m_bNextHoriz;       // print card on new horizontal line
-    s32  m_sHorizExclude;    // has this property for horizontal non-print
+    bool m_bHeatNext;        // print card on new horizontal heat/row
+    s32  m_sHideHeat;        // has this property for horizontal non-print
 
     bool m_bPrintByKind;     // print card by kind (or the following settings...)
     bool m_bPrintName;       // print name of card
@@ -23,9 +23,7 @@ namespace STORE
     bool m_bPrintSubCards;   // print the subcards of this card?
     bool m_bPrintSubShort;   //   or compressed print of subcards of this card?
 
-    i8   m_iPtrDetail;       // ptr print detail
     bool m_bPrune;           // prune sub-card printing at this point
-
   };
 
   struct _TfmCtl
@@ -73,16 +71,10 @@ namespace STORE
     bool bPrintSubShort(i8 i_Card);
     void vPrintSubShort(i8 i_Card, bool bPrintSubShort);
 
-    i8   iPtrDetail(i8 i_Card);
-    void vPtrDetail(i8 i_Card, i8 iPtrDetail);
-
     bool bPrune(i8 i_Card);
     void vPrune(i8 i_Card, bool bPrune);
 
     void vReset(void);
-
-    bool bTfmPrint(i8 i_Tfm);
-    void vTfmPrint(i8 i_Tfm, bool bTfmPrint);
 
   protected:
     Footer* aFooter(void);

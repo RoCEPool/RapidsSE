@@ -49,7 +49,7 @@ bool CardCtl::bNextHoriz(i8 i_Card)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 
-  bool bNextHoriz = m_xaCardCtl[i_Card].m_bNextHoriz;
+  bool bNextHoriz = m_xaCardCtl[i_Card].m_bHeatNext;
 
   return bNextHoriz;
 }
@@ -62,12 +62,12 @@ void CardCtl::vNextHorizon(i8 i_Card, bool bNextHoriz)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 
   if (i_Card) {
-    m_xaCardCtl[i_Card].m_bNextHoriz = bNextHoriz;
+    m_xaCardCtl[i_Card].m_bHeatNext = bNextHoriz;
     return;
   }
 
   for (i_Card = 1; i_Card < CK_ENUMS; i_Card++)
-    m_xaCardCtl[i_Card].m_bNextHoriz = bNextHoriz;
+    m_xaCardCtl[i_Card].m_bHeatNext = bNextHoriz;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -105,7 +105,7 @@ Stz* CardCtl::szHorizExclude(i8 i_Card)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 
-  Stz* szHorizExclude = m_xaCardCtl[i_Card].m_sHorizExclude;
+  Stz* szHorizExclude = m_xaCardCtl[i_Card].m_sHideHeat;
 
   return szHorizExclude;
 }
@@ -118,12 +118,12 @@ void CardCtl::vHorizExclude(i8 i_Card, Stz* szHorizExclude)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 
   if (i_Card) {
-    m_xaCardCtl[i_Card].m_sHorizExclude = szHorizExclude;
+    m_xaCardCtl[i_Card].m_sHideHeat = szHorizExclude;
     return;
   }
 
   for (i_Card = 1; i_Card < CK_ENUMS; i_Card++)
-    m_xaCardCtl[i_Card].m_sHorizExclude = szHorizExclude;
+    m_xaCardCtl[i_Card].m_sHideHeat = szHorizExclude;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -343,34 +343,6 @@ void CardCtl::vPrintSubShort(i8 i_Card, bool bPrintSubShort)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get iPtrDetail for card                                                    */
-/*----------------------------------------------------------------------------*/
-i8 CardCtl::iPtrDetail(i8 i_Card)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
-
-  i8 iPtrDetail = m_xaCardCtl[i_Card].m_iPtrDetail;
-
-  return iPtrDetail;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set iPtrDetail for card                                                    */
-/*----------------------------------------------------------------------------*/
-void CardCtl::vPtrDetail(i8 i_Card, i8 iPtrDetail)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
-
-  if (i_Card) {
-    m_xaCardCtl[i_Card].m_iPtrDetail = iPtrDetail;
-    return;
-  }
-
-  for (i_Card = 1; i_Card < CK_ENUMS; i_Card++)
-    m_xaCardCtl[i_Card].m_iPtrDetail = iPtrDetail;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get bPrintSubShort for card                                                */
 /*----------------------------------------------------------------------------*/
 bool CardCtl::bPrune(i8 i_Card)
@@ -407,8 +379,8 @@ void CardCtl::vReset(void)
 
   for (i8 i_Card = 0; i_Card < CK_ENUMS; i_Card++) {
 
-    m_xaCardCtl[i_Card].m_bNextHoriz    = false;
-    m_xaCardCtl[i_Card].m_sHorizExclude = "n/a"_Stz;
+    m_xaCardCtl[i_Card].m_bHeatNext = false;
+    m_xaCardCtl[i_Card].m_sHideHeat = "n/a"_Stz;
 
     m_xaCardCtl[i_Card].m_bPrintByKind     = false;
     m_xaCardCtl[i_Card].m_bPrintName       = true;
@@ -419,7 +391,6 @@ void CardCtl::vReset(void)
     m_xaCardCtl[i_Card].m_bPrintSubCards   = true;
     m_xaCardCtl[i_Card].m_bPrintSubShort   = false;
 
-    m_xaCardCtl[i_Card].m_iPtrDetail = 1;
     m_xaCardCtl[i_Card].m_bPrune     = false;
   }
 
@@ -445,7 +416,7 @@ void CardCtl::vReset(void)
   vPrintProperties(CK_ORPRED, false);
 
   vNextHorizon(CK_STAGE, true);
-  vHorizExclude(CK_STAGE,P_Exclude);
+  vHorizExclude(CK_STAGE, P_HideHeat);
 
   vPrintByKind(CK_TABLE,true);
   vPrintValue(CK_TABLE, false);
@@ -454,28 +425,6 @@ void CardCtl::vReset(void)
   vPrintName(CK_TERM,false);
   vPrintNo(CK_TERM,false);
   vPrintProperties(CK_TERM,false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get bTrfPrint for transform                                                */
-/*----------------------------------------------------------------------------*/
-bool CardCtl::bTfmPrint(i8 i_Tfm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
-
-  bool bTfmPrint = m_xaTrfCtl.m_bTfmPrint;
-
-  return bTfmPrint;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set bTrfPrint for transform                                                */
-/*----------------------------------------------------------------------------*/
-void CardCtl::vTfmPrint(i8 i_Tfm, bool bTfmPrint)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
-
-  m_xaTrfCtl.m_bTfmPrint = bTfmPrint;
 }
 
 /*============================================================================*/

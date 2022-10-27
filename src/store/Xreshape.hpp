@@ -22,8 +22,8 @@ namespace STORE
     void vR_H10_T50_Cull_scan_Leaving_table(void);
     void vR_H20_T10_Add_tableSyn_ForAll_table(void);
     void vR_H20_T20_Add_tablePtn_UnderAll_table(void);
-    void vR_H20_T30_Add_stream_UnderAll_table(void);
-    void vR_H30_T10_Calc_ordinalRange_ForAll_stream(void);
+    void vR_H30_T10_Add_stream_UnderAll_table(void);
+    void vR_H30_T20_Calc_ordinalRange_ForAll_stream(void);
     void vR_H40_T10_Convert_where_rpnCalc_To_calcBool(void);
     void vR_H40_T20_Mark_where_pred_Wrt_table(void);
     void vR_H40_T30_Move_Marked_where_pred_To_table_filter(void);

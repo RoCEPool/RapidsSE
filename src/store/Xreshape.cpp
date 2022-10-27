@@ -56,7 +56,7 @@ void Xreshape::vR_H10_T15_Hide_Ignorable_stage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  M.p_stage->Y_vSet(P_Exclude);
+  M.p_stage->Y_vSet(P_HideHeat);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -142,7 +142,7 @@ void Xreshape::vR_H20_T20_Add_tablePtn_UnderAll_table(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H20_T30_Add_stream_UnderAll_table(void)
+void Xreshape::vR_H30_T10_Add_stream_UnderAll_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -160,7 +160,7 @@ void Xreshape::vR_H20_T30_Add_stream_UnderAll_table(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H30_T10_Calc_ordinalRange_ForAll_stream(void)
+void Xreshape::vR_H30_T20_Calc_ordinalRange_ForAll_stream(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 

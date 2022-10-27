@@ -90,8 +90,8 @@ void Transformer::vTransform3(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMER,_FOOTER_);
 
-  vHand_10_ReducePipeline  (C_PRINT_HAND, C_PRINT_XFORM, C_TRACE_N);
-  vHand_20_AccessMetadata  (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
+  vHand_10_CondensePipeline(C_PRINT_HAND, C_PRINT_XFORM, C_TRACE_N);
+  vHand_20_TableAnalysis   (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
   vHand_30_StreamAnalysis  (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
   vHand_40_PredicatePullup (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
   vHand_50_FlattenExists   (C_PRINT_HAND, C_QUIET_XFORM, C_TRACE_N);
@@ -106,7 +106,7 @@ void Transformer::vTransform3(void)
 /*----------------------------------------------------------------------------*/
 /* apply the reducePipeline set of transformations to all subPipe boards      */
 /*----------------------------------------------------------------------------*/
-void Transformer::vHand_10_ReducePipeline(bool bPrintHand, bool bPrintXform, bool bTrace)
+void Transformer::vHand_10_CondensePipeline(bool bPrintHand, bool bPrintXform, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
@@ -136,7 +136,7 @@ void Transformer::vHand_10_ReducePipeline(bool bPrintHand, bool bPrintXform, boo
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Transformer::vHand_20_AccessMetadata(bool bPrintHand, bool bPrintXform, bool bTrace)
+void Transformer::vHand_20_TableAnalysis(bool bPrintHand, bool bPrintXform, bool bTrace)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMER, _FOOTER_);
 
@@ -146,7 +146,6 @@ void Transformer::vHand_20_AccessMetadata(bool bPrintHand, bool bPrintXform, boo
 
   m_pTransforms->vH20_T10_Add_tableSyn_ForAll_table(bPrintXform, bTrace);
   m_pTransforms->vH20_T20_Add_tablePtn_UnderAll_table(bPrintXform, bTrace);
-  m_pTransforms->vH20_T30_Add_stream_UnderAll_table(bPrintXform, bTrace);
 
   vEndHand();
   vPrintBench(BK_SUBPIPE,0);
@@ -163,7 +162,8 @@ void Transformer::vHand_30_StreamAnalysis(bool bPrintHand, bool bPrintXform, boo
 
   m_pTransforms->vSetPrintByKind(CK_STREAM, true);
 
-  m_pTransforms->vH30_T10_Calc_ordinalRange_ForAll_stream(bPrintXform, bTrace);
+  m_pTransforms->vH30_T10_Add_stream_UnderAll_table(bPrintXform, bTrace);
+  m_pTransforms->vH30_T20_Calc_ordinalRange_ForAll_stream(bPrintXform, bTrace);
 
   vEndHand();
   vPrintBench(BK_SUBPIPE,0);

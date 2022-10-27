@@ -32,9 +32,9 @@ namespace STORE
 
     void vH20_T10_Add_tableSyn_ForAll_table(bool bPrint, bool bTrace);
     void vH20_T20_Add_tablePtn_UnderAll_table(bool bPrint, bool bTrace);
-    void vH20_T30_Add_stream_UnderAll_table(bool bPrint, bool bTrace);
+    void vH30_T10_Add_stream_UnderAll_table(bool bPrint, bool bTrace);
 
-    void vH30_T10_Calc_ordinalRange_ForAll_stream(bool bPrint, bool bTrace);
+    void vH30_T20_Calc_ordinalRange_ForAll_stream(bool bPrint, bool bTrace);
 
     void vH40_T10_Convert_where_calc_To_where_calcBool(bool bPrint, bool bTrace);
     void vH40_T20_Mark_where_pred_Wrt_table(bool bPrint, bool bTrace);
