@@ -92,6 +92,11 @@ INCLUDE 'query10.test';
 INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------
+LOG 'Running tpch query 11...';
+INCLUDE 'query11.test';
+INCLUDE 'sleep.test';
+
+//------------------------------------------------------------------------------
 LOG 'Running tpch query 12...';
 INCLUDE 'query12.test';
 INCLUDE 'sleep.test';
