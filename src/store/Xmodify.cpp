@@ -1,0 +1,536 @@
+/*============================================================================*/
+/* Xmodify.cpp --                                                       */
+/*============================================================================*/
+
+#include "Xmodify.hpp"
+
+
+/*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+__aFooterFunction(Xmodify)
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Xmodify::Xmodify(eCN eClass)
+: Xcreate(eClass)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+Xmodify::~Xmodify(void) noexcept(false)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xmodify::T_vPRED_CullByKids(Card_PRED* p_PRED)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  i8 nChildCards = p_PRED->nItems();
+  for (i8 i_ChildCard = 0; i_ChildCard < nChildCards; i_ChildCard++) {
+    Card* pCard_Child = p_PRED->pGet(i_ChildCard);
+    if (!T_bPRED_IsPred(pCard_Child))
+      continue;
+
+    Card_PRED* pCard_ChildPRED = (Card_PRED*)pCard_Child;
+
+    T_vPRED_CullByKids(pCard_ChildPRED);
+
+    if (0 == pCard_ChildPRED->nItems()) {
+
+      p_PRED->vRemove(pCard_ChildPRED);
+      delete pCard_ChildPRED;
+
+      i_ChildCard--;
+      nChildCards--;
+
+      continue;
+    }
+
+    if (1 == pCard_ChildPRED->nItems()) {
+
+      Card_PRED* pCard_KidPRED = (Card_PRED*)pCard_Child->pPop();
+
+      p_PRED->vReplace(pCard_ChildPRED,pCard_KidPRED);
+      delete pCard_ChildPRED;
+
+      continue;
+    }
+
+
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* mark the bounds of this <predCmp>                                          */
+/*----------------------------------------------------------------------------*/
+void Xmodify::T_vCmpPred_MarkBound(Card_CmpPred* p_cmpPred)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  Stz* szCmp = p_cmpPred->sz();
+
+  char cBound = '?';
+
+  if (szCmp->bSame("<"_Stz))  cBound = 'U';
+  else if (szCmp->bSame("<="_Stz)) cBound = 'U';
+  else if (szCmp->bSame("="_Stz))  cBound = 'E';
+  else if (szCmp->bSame("=="_Stz)) cBound = 'E';
+  else if (szCmp->bSame("!="_Stz)) cBound = 'N';
+  else if (szCmp->bSame(">="_Stz)) cBound = 'L';
+  else if (szCmp->bSame(">"_Stz))  cBound = 'L';
+
+  p_cmpPred->vMark1(cBound);
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove given predicate                                                     */
+/*----------------------------------------------------------------------------*/
+bool Xmodify::X_bBoolCalc_CullPred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred, char cWithMark)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  eCK eCard_pred = p_pred->eCard();
+
+  if (CK_ANDPRED == eCard_pred) {
+    if (cWithMark == p_pred->cMark1()) {
+      X_vBoolCalc_RemovePred(p_boolCalc, p_pred);
+      delete p_pred;
+      return true;
+    }
+  }
+  else
+  if (CK_ORPRED == eCard_pred) {
+    if (cWithMark == p_pred->cMark1()) {
+      X_vBoolCalc_RemovePred(p_boolCalc, p_pred);
+      delete p_pred;
+      return true;
+    }
+  }
+  else
+  if (CK_CMPPRED == eCard_pred) {
+    if (cWithMark == p_pred->cMark1()) {
+      X_vBoolCalc_RemovePred(p_boolCalc, p_pred);
+      delete p_pred;
+      return true;
+    }
+    return false;
+  }
+
+  RASSERT (CK_ANDPRED == eCard_pred || CK_ORPRED == eCard_pred);
+
+  i8 nChildren = p_pred->nChildCards();
+  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
+    Card_PRED* pCard_pred_child = static_cast<Card_PRED*>(p_pred->pGetChild(i_Child));
+    if (X_bBoolCalc_CullPred(p_boolCalc, pCard_pred_child, cWithMark))
+      return true;
+  }
+
+  return  false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove given predicate                                                     */
+/*----------------------------------------------------------------------------*/
+void Xmodify::X_vBoolCalc_CullPred(Card_BoolCalc* p_boolCalc, char cWithMark)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  if (! p_boolCalc->nChildCards())
+    return;
+
+  Card_PRED* pCard_pred = static_cast<Card_PRED*>(p_boolCalc->pGetChild(0));
+
+  while (pCard_pred &&
+         X_bBoolCalc_CullPred(p_boolCalc, pCard_pred, cWithMark) &&
+         p_boolCalc->nChildCards()) {
+    pCard_pred = static_cast<Card_PRED*>(p_boolCalc->pGetChild(0));
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove given predicate                                                     */
+/*----------------------------------------------------------------------------*/
+void Xmodify::X_vBoolCalc_RemovePred(Card_BoolCalc* p_boolCalc, Card_PRED* p_pred)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  Card* pParentCard = p_boolCalc->pFindParent(p_pred);
+
+  pParentCard->vRemoveSubCard(p_pred);
+
+  if (CK_ANDPRED == pParentCard->eCard() || CK_ORPRED == pParentCard->eCard()) {
+
+    if (0 == pParentCard->nChildCards()) {
+      p_boolCalc->vRemoveSubCard(pParentCard);
+    }
+    else {
+      Card* pSiblingCard = pParentCard->pGetChild(0);
+      Card* pGrandCard = p_boolCalc->pFindParent((pParentCard));
+      pParentCard->vRemoveSubCard(pSiblingCard);
+      pGrandCard->vReplaceChild(pParentCard, pSiblingCard);
+    }
+
+    delete pParentCard;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xmodify::X_vFilter_CullPred(Card_Filter* p_filter, char cWithMark)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  i8 nChildren = p_filter->nChildCards();
+  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
+    Card* pChildCard = p_filter->pGetChild(i_Child);
+
+    eCK eCard = pChildCard->eCard();
+    if (eCard != CK_BOOLCALC)
+      continue;
+
+    Card_BoolCalc* p_boolCalc = _pCard_BoolCalc(pChildCard);
+
+    X_vBoolCalc_CullPred(p_boolCalc, cWithMark);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* add table and index                                                        */
+/*----------------------------------------------------------------------------*/
+void Xmodify::X_vIdxColList_Ordinate(Card_IdxColList* p_idxColList, Card_Stream* pCard_Stream)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  i8 iOrdLo = pCard_Stream->Y_iVal(P_OrdLo);
+
+  Card_StmColList* pCard_StreamColList = pCard_Stream->pSub_stmColList();
+
+  i8 nSubCards = p_idxColList->nChildCards();
+  for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
+    Card_IdxCol* pCard_idxCol = _pCard_IdxCol(p_idxColList->pGetChild(i_Sub));
+
+    i8 i_StreamColNo = C_UNKNOWN;
+    Stz* szColNm = pCard_idxCol->sz();
+    Card_StmCol* pCard_streamCol =
+        X_pStmColList_Find_streamCol(pCard_StreamColList, szColNm, i_StreamColNo);
+
+    s32 sOrdinal;
+    sOrdinal.vSprint("$%lld"_Stz,iOrdLo+i_StreamColNo);
+    pCard_idxCol->vValue(sOrdinal);
+
+    pCard_idxCol->vMark1(MARK_CHANGED);
+  }
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* convert <calc> to <calcBool>                                               */
+/*----------------------------------------------------------------------------*/
+void Xmodify::X_vSubCard_ReplaceSub(Card* pSub, Card* pInParent, Card* pWith)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  Card* pParent = pInParent->pFindParent(pSub);
+
+  pParent->vReplaceChild(pSub,pWith);
+}
+
+
+
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Predicate Pull-Up -------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* inspect all <filter> and attempt to assign <predCmp> after <scan>/<absJoin>*/
+/*----------------------------------------------------------------------------*/
+void Xmodify::vMarkPredLeftwards(Card_BoolCalc* p_bool, Card_Deck* p_deck)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  Card_PRED* p_pred = static_cast<Card_PRED*>(p_bool->pGetChild(0));
+
+  vMarkPredDrillDown(p_pred,p_deck);
+}
+
+/*----------------------------------------------------------------------------*/
+/* inspect all <filter> and attempt to move <pred> after <scan>/<absJoin>     */
+/*----------------------------------------------------------------------------*/
+void Xmodify::vMarkPredDrillDown(Card_PRED* p_pred, Card_Deck* p_deck)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  char cWhichTable = ' ';
+
+  eCK eCard = p_pred->eCard();
+
+
+  if (CK_ORPRED == eCard) {
+    p_pred->vMark1('|');
+    return;
+  }
+
+  if (CK_CMPPRED == eCard) {
+    p_pred->vMark1('?');
+    cWhichTable =
+        cMovePredLeftwards(p_pred,p_deck);
+    if (C_UNKNOWN != cWhichTable) {
+      p_pred->vMark1(MARK_ASSIGNED);
+      p_pred->vMark2(cWhichTable);
+    }
+    return;
+  }
+
+  i8 nSubCards = p_pred->nChildCards();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card *pSubCard = p_pred->pGetChild(i_Child);
+
+    vMarkPredDrillDown(static_cast<Card_PRED *>(pSubCard),p_deck);
+  }
+
+
+  if (CK_ANDPRED == eCard) {
+    p_pred->vMark1('&');
+    Card *pSubCard_0 = p_pred->pGetChild(0);
+    i8 iStream_0 = pSubCard_0->cMark2() - '0';
+
+    Card *pSubCard_1 = p_pred->pGetChild(1);
+    i8 iStream_1 = pSubCard_1->cMark2() - '0';
+
+    if (iStream_0 == iStream_1) {
+      p_pred->vMark1(MARK_ASSIGNED);
+      p_pred->vMark2(iStream_0);
+    }
+
+    return;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* inspect <PRED>                                                             */
+/*----------------------------------------------------------------------------*/
+char Xmodify::cMovePredLeftwards(Card_PRED* p_pred, Card_Deck* p_deck)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  i8 nAbsJoin = 0;
+  i8 nTable    = 0;
+  char cWhichTable = C_UNKNOWN;
+
+  //vTrace("iAssignPredLeft candidate %p\n"_Stz,p_pred);
+  //p_pred->vDump();
+
+  for (i8 i_Main = 0; /* none */ ; i_Main++) {
+    Card *pMainCard = p_deck->pGetChild(i_Main);
+
+    if (CK_WHERE == pMainCard->eCard())
+      return C_UNKNOWN;
+
+    eCK eMainCard = pMainCard->eCard();
+
+    if (CK_TABLE == eMainCard) {
+      nTable++;
+      cWhichTable = cMovePredToTable(_pCard_Table(pMainCard), p_pred);
+      if (C_UNKNOWN != cWhichTable)
+        return cWhichTable;
+      continue;
+    }
+
+    // skip over any other card??
+    vTrace("bMovePredLeft skipping mainCard %s\n"_Stz,aCK[eMainCard]);
+  }
+
+  NEVER_REACH;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+char Xmodify::cMovePredToTable(Card_Table* p_table, Card_PRED* p_pred)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  Card_Stream* p_stream = p_table->pSub_stream();
+
+  // are all $n of <pred> in this <stream>?
+  if (bStreamContainsPred(p_stream,p_pred)) {
+    char cTableSyn = p_table->cValue();
+    return cTableSyn;
+  }
+
+  return C_UNKNOWN;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is given <pred> within this stream?                                        */
+/*----------------------------------------------------------------------------*/
+bool Xmodify::bStreamContainsPred(Card_Stream* p_stream, Card_PRED* pCard_PRED)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  eCK ePredCard = pCard_PRED->eCard();
+
+  if (CK_TERM == ePredCard) {
+    Stz* szTerm = pCard_PRED->sz();
+    if (!szTerm->bIsStreamColOrd())
+      return true;
+
+    i8 iOrdLo = p_stream->Y_iVal(P_OrdLo);
+    i8 iOrdHi = p_stream->Y_iVal(P_OrdHi);
+
+    i8 iOrd = szTerm->iOrdinal();
+    if (iOrd > iOrdHi)
+      return false;
+  }
+
+  i8 nSubCards = pCard_PRED->nChildCards();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card *pSubCard = pCard_PRED->pGetChild(i_Child);
+
+    if (! bStreamContainsPred(p_stream,static_cast<Card_PRED*>(pSubCard)))
+      return false;
+  }
+
+  return true;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* inspect all <filter> and attempt to assign <predCmp> after <scan>/<absJoin>*/
+/*----------------------------------------------------------------------------*/
+void Xmodify::vCopyPredLeftwards(Card_BoolCalc* p_calcBool, Card_Deck* p_deck)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  while (p_calcBool->nChildCards()) {
+    Card_PRED* p_pred = static_cast<Card_PRED*>(p_calcBool->pGetChild(0));
+    bool bSubRemoved = bCopyPredDrillDown(p_pred,p_calcBool,p_deck);
+    if (! bSubRemoved)
+      break;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* inspect all <filter> and attempt to move <pred> after <scan>/<absJoin>     */
+/*----------------------------------------------------------------------------*/
+bool Xmodify::bCopyPredDrillDown(Card_PRED* pCard_pred, Card_BoolCalc* p_calcBool, Card_Deck* p_deck)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  if (MARK_ASSIGNED == pCard_pred->cMark1()) {
+    Card* pMainCard;
+//    i8 iStream = pCard_pred->iMark2();
+//    Card_Stream* pCard_stream = m_pBoard->pFindStreamCard(iStream,pMainCard);
+    char cTableSyn = pCard_pred->cMark2();
+    Card_Table* pCard_table = p_deck->pFindTableCard(cTableSyn, pMainCard);
+
+    Card_Filter* pCard_filter_existing = pMainCard->pSub_filter();
+
+    if (pCard_filter_existing) {
+      pCard_filter_existing->vMark1(pCard_table->cMark1());
+      pCard_filter_existing->vMark2(pCard_table->cMark2());
+      vCopyPredToExistingFilter(pCard_filter_existing,pCard_pred);
+    }
+    else {
+      Card_Filter* pCard_filter_new = new Card_Filter;
+      pCard_filter_new->vMark1(pCard_table->cMark1());
+      pCard_filter_new->vMark2(pCard_table->cMark2());
+      pMainCard->vAppend(pCard_filter_new);
+      vCopyPredToNewFilter(pCard_filter_new,pCard_pred);
+    }
+
+    //pCard_stream->vMark1('#');
+
+
+    X_vBoolCalc_RemovePred(p_calcBool, pCard_pred);
+
+    return true;
+  }
+
+  i8 nSubCards = pCard_pred->nChildCards();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card *pSubCard = pCard_pred->pGetChild(i_Child);
+
+    bool bRemoved = bCopyPredDrillDown(static_cast<Card_PRED *>(pSubCard), p_calcBool,p_deck);
+    if (bRemoved)
+      return true;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* inspect all <filter> and attempt to move <pred> after <scan>/<absJoin>     */
+/*----------------------------------------------------------------------------*/
+void Xmodify::vCopyPredToExistingFilter(Card_Filter* pCard_filter_existing, Card_PRED* pCard_pred)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  Card_BoolCalc* pCard_calcBool = pCard_filter_existing->pSub_boolCalc();
+
+  Card* pCard_top = pCard_calcBool->pPop();
+
+  Card_AndPred* pCard_predAnd = new Card_AndPred;
+  pCard_predAnd->vAppend(pCard_top);
+  pCard_predAnd->vAppend(pCard_pred);
+
+  pCard_calcBool->vAppend(pCard_predAnd);
+}
+
+/*----------------------------------------------------------------------------*/
+/* inspect all <filter> and attempt to move <pred> after <scan>/<absJoin>     */
+/*----------------------------------------------------------------------------*/
+void Xmodify::vCopyPredToNewFilter(Card_Filter* p_filter_new, Card_PRED* p_pred)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  Card_BoolCalc* p_calcBool = new Card_BoolCalc;
+  p_filter_new->vAppend(p_calcBool);
+
+  p_calcBool->vAppend(p_pred);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xmodify::vMarkPredAsMoved(Card* pPredCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  i8 nSubCards = pPredCard->nChildCards();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card *pSubCard = pPredCard->pGetChild(i_Child);
+
+    //eCK eSubCard = pSubCard->eCard();
+
+    // mark the
+
+    vMarkPredAsMoved(pSubCard);
+  }
+}
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

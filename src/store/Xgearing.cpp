@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* TransformerTool.cpp --                                                     */
+/* Xgearing.cpp --                                                     */
 /*============================================================================*/
 
-#include "TransformerTool.hpp"
+#include "Xgearing.hpp"
 
 #include "Job.hpp"
 #include "Cue.hpp"
@@ -17,17 +17,17 @@ extern OptimiserCatalog gxOptimiserCatalog;
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
-: TransformIter(eClass)
+Xgearing::Xgearing(eCN eClass, Bench* pBench)
+: Xsentinals(eClass)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   m_pBench   = pBench;
   m_pCardCtl = m_pBench->pCardCtl();
   m_bTrace = false;
   m_iTrace   = 0;
 
-  m_bPrintPhase = false;
+  m_bPrintHand = false;
   m_bPrintXform = false;
   Job* pJob = MY::pJob();
   TagSet* pJobTags = pJob->pJobTags();
@@ -58,6 +58,10 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
 
   m_pTransformIterList = new TransformIterList;
 
+  m_iOrdLo = 1;
+  m_iOrdHi = C_UNKNOWN;
+  m_nStreamCols = C_UNKNOWN;
+
   // the M iterator - - - - - - - - - - - - - - - - - - - - - -
 
   M.pBoard = nullptr;
@@ -72,9 +76,9 @@ TransformerTool::TransformerTool(eCN eClass, Bench* pBench)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-TransformerTool::~TransformerTool(void) noexcept(false)
+Xgearing::~Xgearing(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   //delete m_pM;
   delete m_pPermGen;
@@ -90,9 +94,9 @@ TransformerTool::~TransformerTool(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get board                                                                  */
 /*----------------------------------------------------------------------------*/
-Board* TransformerTool::pBoard(void)
+Board* Xgearing::pBoard(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   return M.pBoard;
 }
@@ -100,9 +104,9 @@ Board* TransformerTool::pBoard(void)
 /*----------------------------------------------------------------------------*/
 /* cue user                                                                  */
 /*----------------------------------------------------------------------------*/
-eOA TransformerTool::eCueUser(Stz* szPhase, Stz* szTransformation)
+eOA Xgearing::eCueUser(Stz* szHand, Stz* szTransformation)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   TokenVec* pTknVec = nullptr;
 
@@ -110,18 +114,21 @@ eOA TransformerTool::eCueUser(Stz* szPhase, Stz* szTransformation)
     return OA_CONTINUE_TRANSFORMING;
 
   s256 sPrompt;
-  if (szPhase && szTransformation)
-    sPrompt.vSprint("%s :: %s"_Stz,szPhase, szTransformation);
-  else if (szPhase)
-    sPrompt.vSprint("%s"_Stz,szPhase, szTransformation);
+  if (szHand && szTransformation)
+    sPrompt.vSprint("%s :: %s"_Stz, szHand, szTransformation);
+  else if (szHand)
+    sPrompt.vSprint("%s"_Stz, szHand, szTransformation);
   else
-    sPrompt.vSprint(""_Stz,szPhase);
+    sPrompt.vSprint(""_Stz, szHand);
 
   if (! m_bBeenCued && AM::JOB::bHasTag("<cue>"_Stz)) {
     Stz* szTagCue = AM::JOB::szTagValue("<cue>"_Stz);
-    if (   (! szPhase          || ! szTagCue->bSame(szPhase))
-        && (! szTransformation || ! szTagCue->bSame(szTransformation))) {
-      printf("%s\n",sPrompt.azChar());
+    if (szTagCue->bSame(szHand) && szTransformation) {
+      printf("%s\n", sPrompt.azChar());
+      return OA_CONTINUE_TRANSFORMING;
+    }
+    if ( szTransformation && (! szTagCue->bSame(szTransformation))) {
+      printf("%s\n", sPrompt.azChar());
       return OA_CONTINUE_TRANSFORMING;
     }
   }
@@ -183,9 +190,9 @@ eOA TransformerTool::eCueUser(Stz* szPhase, Stz* szTransformation)
 /*----------------------------------------------------------------------------*/
 /* get description of transformation                                          */
 /*----------------------------------------------------------------------------*/
-Stz* TransformerTool::szDescription(void)
+Stz* Xgearing::szDescription(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   return m_sDescription;
 }
@@ -193,9 +200,9 @@ Stz* TransformerTool::szDescription(void)
 /*----------------------------------------------------------------------------*/
 /* set description of transformation                                          */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::vDescription(Stz* szDescription)
+void Xgearing::vDescription(Stz* szDescription)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   m_sDescription = szDescription;
 }
@@ -203,9 +210,9 @@ void TransformerTool::vDescription(Stz* szDescription)
 /*----------------------------------------------------------------------------*/
 /* end of transformation                                                      */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::vEndTransform(void)
+void Xgearing::vEndTransform(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   m_bTrace = false;
 
@@ -217,43 +224,43 @@ void TransformerTool::vEndTransform(void)
 /*----------------------------------------------------------------------------*/
 /* get transformation phase                                                   */
 /*----------------------------------------------------------------------------*/
-Stz* TransformerTool::szPhase(void)
+Stz* Xgearing::szHand(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  return m_sPhase;
+  return m_sHand;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set transformation phase                                                   */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::vPhase(const char* asPhase)
+void Xgearing::vHand(const char* asHand)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  m_sPhase = asPhase;
+  m_sHand = asHand;
 }
 
 /*----------------------------------------------------------------------------*/
 /* print all bards of bench                                                   */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::vPrintBench(eBK eBoard, i8 i_SubBoard)
+void Xgearing::vPrintBench(eBK eBoard, i8 i_SubBoard)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   for (;;) {
     if (C_UNKNOWN != i_SubBoard) {
       Board *pBoard = m_pBench->pGetBoard(eBoard, i_SubBoard);
-      pBoard->vPrintBoard(szPhase());
+      pBoard->vPrintBoard(szHand());
     }
     else {
       for (i8 i_Sub = 0; m_pBench->bBoardExists(eBoard, i_Sub); i_Sub++) {
         Board *pBoard = m_pBench->pGetBoard(eBoard, i_Sub);
-        pBoard->vPrintBoard(szPhase());
+        pBoard->vPrintBoard(szHand());
       }
     }
 
-    if (OA_REPRINT_BOARD != eCueUser(szPhase()))
+    if (OA_REPRINT_BOARD != eCueUser(szHand()))
       break;
   }
 }
@@ -261,19 +268,19 @@ void TransformerTool::vPrintBench(eBK eBoard, i8 i_SubBoard)
 /*----------------------------------------------------------------------------*/
 /* print the board                                                            */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::vPrintBoard(void)
+void Xgearing::vPrintBoard(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   if (! m_bPrintXform)
     return;
 
   for (;;) {
-    M.pBoard->vPrintBoard(szPhase(),
+    M.pBoard->vPrintBoard(szHand(),
                           szTransformation(),
                           szDescription());
 
-    if (OA_REPRINT_BOARD != eCueUser(szPhase(), szTransformation()))
+    if (OA_REPRINT_BOARD != eCueUser(szHand(), szTransformation()))
       break;
   }
 }
@@ -281,7 +288,7 @@ void TransformerTool::vPrintBoard(void)
 /*----------------------------------------------------------------------------*/
 /* set control of card printing by kind                                       */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::vSetPrintByKind(eCK eCard, bool bPrintByKind)
+void Xgearing::vSetPrintByKind(eCK eCard, bool bPrintByKind)
 {
   m_pCardCtl->vPrintByKind(eCard,bPrintByKind);
 }
@@ -289,39 +296,39 @@ void TransformerTool::vSetPrintByKind(eCK eCard, bool bPrintByKind)
 /*----------------------------------------------------------------------------*/
 /* get print phase                                                            */
 /*----------------------------------------------------------------------------*/
-bool TransformerTool::bPrintPhase(void)
+bool Xgearing::bPrintHand(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  return m_bPrintPhase;
+  return m_bPrintHand;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set print phase                                                            */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::vPrintPhase(bool bPrintPhase)
+void Xgearing::vPrintHand(bool bPrintHand)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  m_bPrintPhase = bPrintPhase;
+  m_bPrintHand = bPrintHand;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get print phase                                                            */
 /*----------------------------------------------------------------------------*/
-bool TransformerTool::bPrintXform(void)
+bool Xgearing::bPrintXform(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  return m_bPrintPhase;
+  return m_bPrintHand;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set print phase                                                            */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::vPrintXform(bool bPrintXform)
+void Xgearing::vPrintXform(bool bPrintXform)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   m_bPrintXform = bPrintXform;
 }
@@ -329,7 +336,7 @@ void TransformerTool::vPrintXform(bool bPrintXform)
 /*----------------------------------------------------------------------------*/
 /* set card print properties                                                  */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::vSetPrintProperties(eCK eCard, bool bPrintProperties)
+void Xgearing::vSetPrintProperties(eCK eCard, bool bPrintProperties)
 {
   m_pCardCtl->vPrintProperties(eCard,bPrintProperties);
 }
@@ -337,7 +344,7 @@ void TransformerTool::vSetPrintProperties(eCK eCard, bool bPrintProperties)
 /*----------------------------------------------------------------------------*/
 /* set card print subCards                                                     */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::vSetPrintSubCards(eCK eCard, bool bPrintSubCards)
+void Xgearing::vSetPrintSubCards(eCK eCard, bool bPrintSubCards)
 {
   m_pCardCtl->vPrintSubCards(eCard,bPrintSubCards);
 }
@@ -345,10 +352,10 @@ void TransformerTool::vSetPrintSubCards(eCK eCard, bool bPrintSubCards)
 /*----------------------------------------------------------------------------*/
 /* begin and record transformation information                                */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::vTransform(const char* azTransformation,
-                                 bool bPrintTransformation)
+void Xgearing::vTransform(const char* azTransformation,
+                          bool bPrintTransformation)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   m_sTransformation = azTransformation;
   m_bPrintXform = bPrintTransformation;
@@ -361,9 +368,9 @@ void TransformerTool::vTransform(const char* azTransformation,
 /*----------------------------------------------------------------------------*/
 /* get transformation                                                         */
 /*----------------------------------------------------------------------------*/
-Stz* TransformerTool::szTransformation(void)
+Stz* Xgearing::szTransformation(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   return m_sTransformation;
 }
@@ -371,9 +378,9 @@ Stz* TransformerTool::szTransformation(void)
 /*----------------------------------------------------------------------------*/
 /* get transformation                                                         */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::vTransformation(Stz* szTransformation)
+void Xgearing::vTransformation(Stz* szTransformation)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   m_sTransformation = szTransformation;
 }
@@ -381,9 +388,9 @@ void TransformerTool::vTransformation(Stz* szTransformation)
 /*----------------------------------------------------------------------------*/
 /* set up which board to use                                                  */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::vUsingBoard(eBK eBoard, i8 i_SubBoard)
+void Xgearing::vUsingBoard(eBK eBoard, i8 i_SubBoard)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   M.pBoard = m_pBench->pGetBoard(eBoard,i_SubBoard);
   M.pDeck  = M.pBoard->pDeck();
@@ -400,9 +407,9 @@ void TransformerTool::vUsingBoard(eBK eBoard, i8 i_SubBoard)
 /*----------------------------------------------------------------------------*/
 /* is tracing enabled?                                                        */
 /*----------------------------------------------------------------------------*/
-bool TransformerTool::bIsTracing(void)
+bool Xgearing::bIsTracing(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   return m_bTrace;
 }
@@ -410,9 +417,9 @@ bool TransformerTool::bIsTracing(void)
 /*----------------------------------------------------------------------------*/
 /* is tracing enabled?                                                        */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::vTracing(bool bPrintXform, bool bTrace)
+void Xgearing::vTracing(bool bPrintXform, bool bTrace)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   m_bPrintXform = bPrintXform;
 
@@ -427,9 +434,9 @@ void TransformerTool::vTracing(bool bPrintXform, bool bTrace)
 /*----------------------------------------------------------------------------*/
 /* conditionally trace                                                        */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::vTracer(Stz* szFormat, ...)
+void Xgearing::vTracer(Stz* szFormat, ...)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   if (! bIsTracing())
     return;
@@ -453,9 +460,9 @@ void TransformerTool::vTracer(Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::C_vAppendChild(eCK eParent, eCK eChild)
+void Xgearing::C_vAppendChild(eCK eParent, eCK eChild)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   Card* pParent = G_pGetMember(eParent);
   Card* pChild  = G_pGetMember(eChild);
@@ -473,9 +480,9 @@ void TransformerTool::C_vAppendChild(eCK eParent, eCK eChild)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::C_vAppendChild(eCK eParent, Card* pChild)
+void Xgearing::C_vAppendChild(eCK eParent, Card* pChild)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   Card* pParent = G_pGetMember(eParent);
 
@@ -492,9 +499,9 @@ void TransformerTool::C_vAppendChild(eCK eParent, Card* pChild)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::C_vDuplicateMember(eCK eMember)
+void Xgearing::C_vDuplicateMember(eCK eMember)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   Card* pMember  = G_pGetMember(eMember);
 
@@ -510,36 +517,36 @@ void TransformerTool::C_vDuplicateMember(eCK eMember)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::C_vRemoveChild(eCK eParent, eCK eChild)
+void Xgearing::C_vRemoveChild(eCK eParent, eCK eChild)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::C_vRemoveDeleteChild(eCK eParent, eCK eChild)
+void Xgearing::C_vRemoveDeleteChild(eCK eParent, eCK eChild)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::C_vRemoveDeleteMain(eCK eMain)
+void Xgearing::C_vRemoveDeleteMain(eCK eMain)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::C_vPromoteChildren(eCK eParent)
+void Xgearing::C_vPromoteChildren(eCK eParent)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
 }
 
@@ -547,9 +554,9 @@ void TransformerTool::C_vPromoteChildren(eCK eParent)
 /*----------------------------------------------------------------------------*/
 /* delete member of given kind; clear-if registers; update M member to null   */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::D_vDeleteMember(eCK eMember)
+void Xgearing::D_vDeleteMember(eCK eMember)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   Card* pMember = G_pGetMember(eMember);
 
@@ -562,9 +569,9 @@ void TransformerTool::D_vDeleteMember(eCK eMember)
 /*----------------------------------------------------------------------------*/
 /* delete given member; clear-if registers; update M member to null           */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::D_vDeleteMember(Card* pMember)
+void Xgearing::D_vDeleteMember(Card* pMember)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   eCK eMember = pMember->eCard();
 
@@ -577,9 +584,9 @@ void TransformerTool::D_vDeleteMember(Card* pMember)
 /*----------------------------------------------------------------------------*/
 /* step main register next main and update M member                           */
 /*----------------------------------------------------------------------------*/
-bool TransformerTool::E_bEachMain(void)
+bool Xgearing::E_bEachMain(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   if ((M.p_MainCard = M.xBI.pEachMain())) {
     M.e_MainCard = M.p_MainCard->eCard();
@@ -594,9 +601,9 @@ bool TransformerTool::E_bEachMain(void)
 /*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main and update M member          */
 /*----------------------------------------------------------------------------*/
-bool TransformerTool::E_bEachMain(eCK eOfMainKind)
+bool Xgearing::E_bEachMain(eCK eOfMainKind)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   if ((M.p_MainCard = M.xBI.pEachMain(eOfMainKind))) {
     M.e_MainCard = M.p_MainCard->eCard();
@@ -612,9 +619,9 @@ bool TransformerTool::E_bEachMain(eCK eOfMainKind)
 /*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main which has sub and update M   */
 /*----------------------------------------------------------------------------*/
-bool TransformerTool::E_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind)
+bool Xgearing::E_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   while ((M.p_MainCard = M.xBI.pEachMain(eOfMainKind))) {
     if (! (M.p_SubOfMain = M.p_MainCard->pFindSubCard(eAndSubKind)))
@@ -639,9 +646,9 @@ bool TransformerTool::E_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind)
 /*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main which has sub and update M   */
 /*----------------------------------------------------------------------------*/
-bool TransformerTool::E_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind, Stz* szSubValue)
+bool Xgearing::E_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind, Stz* szSubValue)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   while (E_bEachMainWithSub(eOfMainKind,eAndSubKind)) {
     if (M.p_SubOfMain->szValue()->bSame(szSubValue))
@@ -654,11 +661,11 @@ bool TransformerTool::E_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind, Stz* 
 /*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main which has sub and update M   */
 /*----------------------------------------------------------------------------*/
-bool TransformerTool::E_bEachMainWith2Sub(eCK eOfMainKind,
-                                          eCK eAndSubKind1,
-                                          eCK eAndSubKind2)
+bool Xgearing::E_bEachMainWith2Sub(eCK eOfMainKind,
+                                   eCK eAndSubKind1,
+                                   eCK eAndSubKind2)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   while ((M.p_MainCard = M.xBI.pEachMain(eOfMainKind))) {
     if (! (M.p_SubOfMain = M.p_MainCard->pFindSubCard(eAndSubKind1)))
@@ -690,9 +697,9 @@ bool TransformerTool::E_bEachMainWith2Sub(eCK eOfMainKind,
 /*----------------------------------------------------------------------------*/
 /* skip over next main ; optionally clear M members and registers             */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::E_vSkipNextMain(bool bClearMembers, bool bClearRegisters)
+void Xgearing::E_vSkipNextMain(bool bClearMembers, bool bClearRegisters)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   M.xBI.vForward();
 
@@ -706,9 +713,9 @@ void TransformerTool::E_vSkipNextMain(bool bClearMembers, bool bClearRegisters)
 /*----------------------------------------------------------------------------*/
 /* are there more main cards?                                                 */
 /*----------------------------------------------------------------------------*/
-bool TransformerTool::E_bMoreMain(void)
+bool Xgearing::E_bMoreMain(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   if (M.xBI.bMore())
     return true;
@@ -719,9 +726,9 @@ bool TransformerTool::E_bMoreMain(void)
 /*----------------------------------------------------------------------------*/
 /* remove main card from deck (do not clear M members or registers)           */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::E_vRemoveMain(eCK eCrossCheck)
+void Xgearing::E_vRemoveMain(eCK eCrossCheck)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   M.xBI.vRemoveCurr(eCrossCheck);
 }
@@ -729,9 +736,9 @@ void TransformerTool::E_vRemoveMain(eCK eCrossCheck)
 /*----------------------------------------------------------------------------*/
 /* remove ain card from deck and delete it; clear M member to null            */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::E_vRemoveDeleteMain(eCK eCrossCheck)
+void Xgearing::E_vRemoveDeleteMain(eCK eCrossCheck)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   M.xBI.vRemoveDeleteCurr(eCrossCheck);
 
@@ -744,9 +751,9 @@ void TransformerTool::E_vRemoveDeleteMain(eCK eCrossCheck)
 /*----------------------------------------------------------------------------*/
 /* is there a card immediately after current main card?                       */
 /*----------------------------------------------------------------------------*/
-bool TransformerTool::E_bSubsequentToMain(bool bUpdateMember)
+bool Xgearing::E_bSubsequentToMain(bool bUpdateMember)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   if ((M.p_SubsequentToMain = M.xBI.pNextMain())) {
     M.e_SubsequentToMain = M.p_SubsequentToMain->eCard();
@@ -762,9 +769,9 @@ bool TransformerTool::E_bSubsequentToMain(bool bUpdateMember)
 /*----------------------------------------------------------------------------*/
 /* is there a card immediately after current main card?                       */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::E_vSubsequentToMain(bool bUpdateMember)
+void Xgearing::E_vSubsequentToMain(bool bUpdateMember)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   bool b = E_bSubsequentToMain(bUpdateMember);
   UNUSED(b);
@@ -774,9 +781,9 @@ void TransformerTool::E_vSubsequentToMain(bool bUpdateMember)
 /*----------------------------------------------------------------------------*/
 /* fetch M member by decoding given eMember                                   */
 /*----------------------------------------------------------------------------*/
-Card* TransformerTool::G_pGetMember(eCK eMember)
+Card* Xgearing::G_pGetMember(eCK eMember)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   switch (eMember) {
 
@@ -850,9 +857,9 @@ Card* TransformerTool::G_pGetMember(eCK eMember)
 /*----------------------------------------------------------------------------*/
 /* is there a card immediately before current main card?                      */
 /*----------------------------------------------------------------------------*/
-bool TransformerTool::H_bHasPriorToMain(bool bUpdateMember)
+bool Xgearing::H_bHasPriorToMain(bool bUpdateMember)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   if ((M.p_PriorToMain = M.xBI.pPrevMain())) {
     M.e_PriorToMain = M.p_PriorToMain->eCard();
@@ -868,9 +875,9 @@ bool TransformerTool::H_bHasPriorToMain(bool bUpdateMember)
 /*----------------------------------------------------------------------------*/
 /* is there a card immediately before current main which is of given kind?    */
 /*----------------------------------------------------------------------------*/
-bool TransformerTool::H_bHasPriorToMainIf(eCK eOfPriorKind, bool bUpdateMember)
+bool Xgearing::H_bHasPriorToMainIf(eCK eOfPriorKind, bool bUpdateMember)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   if ((M.p_PriorToMain = M.xBI.pPrevMainIf(eOfPriorKind))) {
     M.e_PriorToMain = M.p_PriorToMain->eCard();
@@ -889,9 +896,9 @@ bool TransformerTool::H_bHasPriorToMainIf(eCK eOfPriorKind, bool bUpdateMember)
 /*----------------------------------------------------------------------------*/
 /* is there a card immediately after current main card?                       */
 /*----------------------------------------------------------------------------*/
-bool TransformerTool::H_bHasSubsequentToMain(bool bUpdateMember)
+bool Xgearing::H_bHasSubsequentToMain(bool bUpdateMember)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   if ((M.p_SubsequentToMain = M.xBI.pNextMain())) {
     M.e_SubsequentToMain = M.p_SubsequentToMain->eCard();
@@ -907,9 +914,9 @@ bool TransformerTool::H_bHasSubsequentToMain(bool bUpdateMember)
 /*----------------------------------------------------------------------------*/
 /* is there a card immediately after current main which is of given kind?     */
 /*----------------------------------------------------------------------------*/
-bool TransformerTool::H_bHasSubsequentToMainIf(eCK eOfSubsequentKind, bool bUpdateMember)
+bool Xgearing::H_bHasSubsequentToMainIf(eCK eOfSubsequentKind, bool bUpdateMember)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   if ((M.p_SubsequentToMain = M.xBI.pNextMainIf(eOfSubsequentKind))) {
     M.e_SubsequentToMain = M.p_SubsequentToMain->eCard();
@@ -927,9 +934,9 @@ bool TransformerTool::H_bHasSubsequentToMainIf(eCK eOfSubsequentKind, bool bUpda
 /*----------------------------------------------------------------------------*/
 /* locate card (left-right) after given i_After                               */
 /*----------------------------------------------------------------------------*/
-bool TransformerTool::L_bLocateCard(eCK eCard, Stz* szWithValue, i8 i_After)
+bool Xgearing::L_bLocateCard(eCK eCard, Stz* szWithValue, i8 i_After)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   return false;
 }
@@ -937,9 +944,9 @@ bool TransformerTool::L_bLocateCard(eCK eCard, Stz* szWithValue, i8 i_After)
 /*----------------------------------------------------------------------------*/
 /* locate card (left-right) after given card                                  */
 /*----------------------------------------------------------------------------*/
-bool TransformerTool::L_bLocateCard(eCK eCard, Stz* szWithValue, Card* pAfter)
+bool Xgearing::L_bLocateCard(eCK eCard, Stz* szWithValue, Card* pAfter)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   return false;
 }
@@ -947,9 +954,9 @@ bool TransformerTool::L_bLocateCard(eCK eCard, Stz* szWithValue, Card* pAfter)
 /*----------------------------------------------------------------------------*/
 /* clear the M members                                                        */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::M_vClearMembers(void)
+void Xgearing::M_vClearMembers(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   M.p_absJoin          = nullptr;
   M.p_aggreg           = nullptr;
@@ -1018,9 +1025,9 @@ void TransformerTool::M_vClearMembers(void)
 /*----------------------------------------------------------------------------*/
 /* clear the M members and registers                                          */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::M_vClearMembersRegisters(void)
+void Xgearing::M_vClearMembersRegisters(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   M_vClearMembers();
   M_vClearRegisters();
@@ -1029,9 +1036,9 @@ void TransformerTool::M_vClearMembersRegisters(void)
 /*----------------------------------------------------------------------------*/
 /* clear the general M registers                                              */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::M_vClearRegisters(void)
+void Xgearing::M_vClearRegisters(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   M.p_PriorToMain      = nullptr;
   M.e_PriorToMain      = CK_NONE;
@@ -1054,9 +1061,9 @@ void TransformerTool::M_vClearRegisters(void)
 /*----------------------------------------------------------------------------*/
 /* clear the general M registers if they match given kind                     */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::M_vClearRegistersIf(eCK eCard)
+void Xgearing::M_vClearRegistersIf(eCK eCard)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   if (eCard == M.e_PriorToMain ||
        (M.p_PriorToMain && eCard == M.p_PriorToMain->eCard())) {
@@ -1093,9 +1100,9 @@ void TransformerTool::M_vClearRegistersIf(eCK eCard)
 /*----------------------------------------------------------------------------*/
 /* clear the general M registers if they match given pointer                  */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::M_vClearRegistersIf(Card* pCard)
+void Xgearing::M_vClearRegistersIf(Card* pCard)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   if (pCard == M.p_PriorToMain) {
     M.p_PriorToMain = nullptr;
@@ -1122,13 +1129,13 @@ void TransformerTool::M_vClearRegistersIf(Card* pCard)
 /*----------------------------------------------------------------------------*/
 /* push current M iterator onto iter stack                                    */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::M_vPushIter(void)
+void Xgearing::M_vPushIter(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  TransformIter* pTransformIterSave = new TransformIter;
+  Xsentinals* pTransformIterSave = new Xsentinals;
 
-  pTransformIterSave->vCopyFrom(this->aTransformIterMembers());
+  pTransformIterSave->vCopyFrom(this->aXregs());
 
   m_pTransformIterList->vPush(pTransformIterSave);
 }
@@ -1136,13 +1143,13 @@ void TransformerTool::M_vPushIter(void)
 /*----------------------------------------------------------------------------*/
 /* push current M iterator onto iter stack                                    */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::M_vPushIter(Board* pBoard)
+void Xgearing::M_vPushIter(Board* pBoard)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  TransformIter* pTransformIterSave = new TransformIter;
+  Xsentinals* pTransformIterSave = new Xsentinals;
 
-  pTransformIterSave->vCopyFrom(this->aTransformIterMembers());
+  pTransformIterSave->vCopyFrom(this->aXregs());
 
   m_pTransformIterList->vPush(pTransformIterSave);
 
@@ -1158,13 +1165,13 @@ void TransformerTool::M_vPushIter(Board* pBoard)
 /*----------------------------------------------------------------------------*/
 /* pop/restore M iterator from iter stack                                     */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::M_vPopIter(void)
+void Xgearing::M_vPopIter(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  TransformIter* pTransformIterRestore = m_pTransformIterList->pPop();
+  Xsentinals* pTransformIterRestore = m_pTransformIterList->pPop();
 
-  this->vCopyFrom(pTransformIterRestore->aTransformIterMembers());
+  this->vCopyFrom(pTransformIterRestore->aXregs());
 
   delete pTransformIterRestore;
 }
@@ -1173,9 +1180,9 @@ void TransformerTool::M_vPopIter(void)
 /*----------------------------------------------------------------------------*/
 /* restart the M iterator                                                     */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::M_vRestart(void)
+void Xgearing::M_vRestart(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   M.xBI.vRestart();
 
@@ -1186,9 +1193,9 @@ void TransformerTool::M_vRestart(void)
 /*----------------------------------------------------------------------------*/
 /* create a new card and optionally set member                                */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::N_vNewMember(eCK eMember, bool bUpdateMember)
+void Xgearing::N_vNewMember(eCK eMember, bool bUpdateMember)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   m_pCard_new = new Card(eMember);
 
@@ -1199,9 +1206,9 @@ void TransformerTool::N_vNewMember(eCK eMember, bool bUpdateMember)
 /*----------------------------------------------------------------------------*/
 /* step to next main and set member                                           */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::N_vNewMember(eCK eMember, Stz* szValue, bool bUpdateMember)
+void Xgearing::N_vNewMember(eCK eMember, Stz* szValue, bool bUpdateMember)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   N_vNewMember(eMember,bUpdateMember);
 
@@ -1211,9 +1218,9 @@ void TransformerTool::N_vNewMember(eCK eMember, Stz* szValue, bool bUpdateMember
 /*----------------------------------------------------------------------------*/
 /* update member card                                                         */
 /*----------------------------------------------------------------------------*/
-void TransformerTool::U_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
+void Xgearing::U_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   switch (eMember) {
 
@@ -1292,9 +1299,9 @@ void TransformerTool::U_vUpdateMember(eCK eMember, Card* pCard, const char* asFu
 /*----------------------------------------------------------------------------*/
 /* search for sub of member                                                   */
 /*----------------------------------------------------------------------------*/
-bool TransformerTool::F_bPlumbForSubMember(eCK eMember, eCK eSubCard, bool bUpdateMember)
+bool Xgearing::F_bPlumbForSubMember(eCK eMember, eCK eSubCard, bool bUpdateMember)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   Card* pMember = G_pGetMember(eMember);
 
@@ -1306,9 +1313,9 @@ bool TransformerTool::F_bPlumbForSubMember(eCK eMember, eCK eSubCard, bool bUpda
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool TransformerTool::F_bPlumbForSubMember(Card* pMember, eCK eSubCard, bool bUpdateMember)
+bool Xgearing::F_bPlumbForSubMember(Card* pMember, eCK eSubCard, bool bUpdateMember)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   if ((M.p_SubMember = pMember->pFindSubCard(eSubCard))) {
     M.e_SubMember = M.p_SubMember->eCard();
@@ -1325,9 +1332,9 @@ bool TransformerTool::F_bPlumbForSubMember(Card* pMember, eCK eSubCard, bool bUp
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool TransformerTool::F_bPlumbForSubValue(eCK eMember, eCK eSub, Stz* szValue, bool bUpdateMember)
+bool Xgearing::F_bPlumbForSubValue(eCK eMember, eCK eSub, Stz* szValue, bool bUpdateMember)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   Card* pMember = G_pGetMember(eMember);
 
@@ -1340,9 +1347,9 @@ bool TransformerTool::F_bPlumbForSubValue(eCK eMember, eCK eSub, Stz* szValue, b
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool TransformerTool::F_bPlumbForSubValue(Card* pMember, eCK eSubCard, Stz* szValue, bool bUpdateMember)
+bool Xgearing::F_bPlumbForSubValue(Card* pMember, eCK eSubCard, Stz* szValue, bool bUpdateMember)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   if ((M.p_SubMember = pMember->pFindSubCard(eSubCard))) {
     if (M.p_SubMember->bSame(szValue)) {
@@ -1362,9 +1369,9 @@ bool TransformerTool::F_bPlumbForSubValue(Card* pMember, eCK eSubCard, Stz* szVa
 /*----------------------------------------------------------------------------*/
 /* resolve card (right-left before given i_Before                             */
 /*----------------------------------------------------------------------------*/
-bool TransformerTool::R_bResolveCard(eCK eCard, Stz* szWithValue, i8 i_Before)
+bool Xgearing::R_bResolveCard(eCK eCard, Stz* szWithValue, i8 i_Before)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   for (i8 i_Main = i_Before - 1; i_Main >= 0; i_Main--) {
     Card* pMain = M.pDeck->pGetChild(i_Main);
@@ -1381,9 +1388,9 @@ bool TransformerTool::R_bResolveCard(eCK eCard, Stz* szWithValue, i8 i_Before)
 /*----------------------------------------------------------------------------*/
 /* resolve card (right-left) before given card                                */
 /*----------------------------------------------------------------------------*/
-bool TransformerTool::R_bResolveCard(eCK eCard, Stz* szWithValue, Card* pBefore)
+bool Xgearing::R_bResolveCard(eCK eCard, Stz* szWithValue, Card* pBefore)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   i8 i_Before = M.pDeck->iFindChild(pBefore);
   if (C_UNKNOWN == i_Before)
@@ -1398,9 +1405,9 @@ bool TransformerTool::R_bResolveCard(eCK eCard, Stz* szWithValue, Card* pBefore)
 /*----------------------------------------------------------------------------*/
 /* find sub of member with given property                                     */
 /*----------------------------------------------------------------------------*/
-bool TransformerTool::Y_bFindPpy(eCK eMember, Stz* szPpy, eCK eOfCard)
+bool Xgearing::Y_bFindPpy(eCK eMember, Stz* szPpy, eCK eOfCard)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   if (! (m_pCard_member = G_pGetMember(eMember))) {
     m_pCard_found = nullptr;
@@ -1420,9 +1427,9 @@ bool TransformerTool::Y_bFindPpy(eCK eMember, Stz* szPpy, eCK eOfCard)
 /*----------------------------------------------------------------------------*/
 /* update member card                                                         */
 /*----------------------------------------------------------------------------*/
-Stz* TransformerTool::szT(eCK eMember)
+Stz* Xgearing::szT(eCK eMember)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   Card* pMember = G_pGetMember(eMember);
   Stz* szMemberNm = this->szMemberNm(eMember);
@@ -1438,9 +1445,9 @@ Stz* TransformerTool::szT(eCK eMember)
 /*----------------------------------------------------------------------------*/
 /* update member card                                                         */
 /*----------------------------------------------------------------------------*/
-Stz* TransformerTool::szMemberNm(eCK eMember)
+Stz* Xgearing::szMemberNm(eCK eMember)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   switch (eMember) {
 

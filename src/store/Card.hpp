@@ -141,7 +141,7 @@ static Stz* SEP_SCRATCH    = "? ? ? ? ? ? ? ? ? "_Stz;
 namespace STORE
 {
   static const bool C_CONTINUE_RECURSION  = true;
-  static const bool C_PRINT_PHASE         = true;
+  static const bool C_PRINT_HAND         = true;
   static const bool C_PRINT_XFORM         = true;
   static const bool C_TRACE_Y             = true;
   static const bool C_UPDATE_MEMBER       = true;

@@ -1,16 +1,16 @@
 /*============================================================================*/
-/* TransformIter.hpp --                                                       */
+/* Xsentinals.hpp --                                                       */
 /*============================================================================*/
 #pragma once
 
 #include "Bench.hpp"
 #include "BoardIter.hpp"
 
-#include "TransformBase.hpp"
+#include "Xderive.hpp"
 
 namespace STORE
 {
-  struct _TransformIterMembers
+  struct _Xsentinels
   {
     BoardIter xBI;
 
@@ -95,34 +95,29 @@ namespace STORE
     Card_Where *            p_where;
   } ;
 
-  class TransformIter : public TransformBase
-                      , public ListItem_t<TransformIter>
+  class Xsentinals : public Xderive
+                   , public ListItem_t<Xsentinals>
   {
   public:
-    _TransformIterMembers M;
+    _Xsentinels M;
 
     // must be last
     Footer m_xFooter;
-
 
   public:
     void* operator new(size_t);
     void  operator delete(void*);
 
-    TransformIter(void);
-    TransformIter(eCN eClass);
-   ~TransformIter(void) noexcept(false);
+    Xsentinals(void);
+    Xsentinals(eCN eClass);
+   ~Xsentinals(void) noexcept(false);
 
-    void vCopyFrom(_TransformIterMembers* aTransformIterMembers);
+    void vCopyFrom(_Xsentinels* aTransformIterMembers);
 
-    _TransformIterMembers* aTransformIterMembers(void);
+    _Xsentinels* aXregs(void);
 
     Footer* aFooter(void);
   };
-
-
-  TransformIter* _pTransformIter(void* aAddr);
-
 }
 
 /*============================================================================*/

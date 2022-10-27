@@ -5,7 +5,7 @@
 
 #include "OptimiserTool.hpp"
 
-#include "Transforms.hpp"
+#include "Xtransforms.hpp"
 
 namespace STORE
 {
@@ -17,7 +17,7 @@ namespace STORE
     TagSet*      m_pJobTags;
     b8           m_bInteractive;
 
-    Transforms*  m_pTransforms;
+    Xtransforms*  m_pTransforms;
 
 
     // must be last
@@ -31,27 +31,27 @@ namespace STORE
    ~Transformer(void) noexcept(false);
 
     void vTransform(void);
-    Transforms* pTransforms(void);
+    Xtransforms* pTransforms(void);
 
   private:
 
     void vTransform3(void);
 
-    void vPhase_10_ReducePipeline  (bool bPrintPhase, bool bPrintXform, bool bTrace);
-    void vPhase_20_AccessMetadata  (bool bPrintPhase, bool bPrintXform, bool bTrace);
-    void vPhase_30_StreamAnalysis  (bool bPrintPhase, bool bPrintXform, bool bTrace);
-    void vPhase_40_PredicatePullup (bool bPrintPhase, bool bPrintXform, bool bTrace);
-    void vPhase_50_FlattenExists   (bool bPrintPhase, bool bPrintXform, bool bTrace);
-    void vPhase_60_InitialJoin     (bool bPrintPhase, bool bPrintXform, bool bTrace);
-    void vPhase_70_JoinOrdering    (bool bPrintPhase, bool bPrintXform, bool bTrace);
-    void vPhase_80_IndexScan       (bool bPrintPhase, bool bPrintXform, bool bTrace);
-    void vPhase_90_StreamOrdering  (bool bPrintPhase, bool bPrintXform, bool bTrace);
-    void vPhase_A0_FilterRefinement(bool bPrintPhase, bool bPrintXform, bool bTrace);
+    void vHand_10_ReducePipeline  (bool bPrintHand, bool bPrintXform, bool bTrace);
+    void vHand_20_AccessMetadata  (bool bPrintHand, bool bPrintXform, bool bTrace);
+    void vHand_30_StreamAnalysis  (bool bPrintHand, bool bPrintXform, bool bTrace);
+    void vHand_40_PredicatePullup (bool bPrintHand, bool bPrintXform, bool bTrace);
+    void vHand_50_FlattenExists   (bool bPrintHand, bool bPrintXform, bool bTrace);
+    void vHand_60_InitialJoin     (bool bPrintHand, bool bPrintXform, bool bTrace);
+    void vHand_70_JoinOrdering    (bool bPrintHand, bool bPrintXform, bool bTrace);
+    void vHand_80_IndexScan       (bool bPrintHand, bool bPrintXform, bool bTrace);
+    void vHand_90_StreamOrdering  (bool bPrintHand, bool bPrintXform, bool bTrace);
+    void vHand_A0_FilterRefinement(bool bPrintHand, bool bPrintXform, bool bTrace);
 
-    void vPhase_Z0_RestatePipeline (bool bPrintPhase, bool bPrint, bool bTrace);
+    void vHand_Z0_RestatePipeline (bool bPrintHand, bool bPrint, bool bTrace);
 
-    void vEndPhase(void);
-    void vPhase(eBK eBoard, i8 i_SubBoard, bool bPrintPhase, const char* azPhase);
+    void vEndHand(void);
+    void vHand(eBK eBoard, i8 i_SubBoard, bool bPrintHand, const char* azHand);
     bool bPrintBench(void);
     void vPrintBench(eBK eBoard, i8 i_SubBoard=C_UNKNOWN);
 

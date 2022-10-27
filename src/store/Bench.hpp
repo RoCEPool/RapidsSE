@@ -30,7 +30,7 @@ namespace STORE
     Board* pGetBoard(eBK eBoard, i8 i_SubBoard = C_UNKNOWN);
     Board* pGetBoard(Stz* szBoardNm);
     Optimiser* pOptimiser(void);
-    void vPrintBoards(const char* azFuncNm, eBK eBoard, i8 i_SubBoard = C_UNKNOWN);
+    void vPrintBoards(const char* azHand, eBK eBoard, i8 i_SubBoard = C_UNKNOWN);
 
   private:
     Footer* aFooter(void);

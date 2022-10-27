@@ -1,38 +1,37 @@
 /*============================================================================*/
-/* TransformIter.cpp --                                                       */
+/* Xsentinals.cpp --                                                       */
 /*============================================================================*/
 
-#include "TransformIter.hpp"
+#include "Xsentinals.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, TransformIter, CN_TRANSFORMITER)
-__aNewFunction(TransformIter, CN_TRANSFORMITER)
-__vDeleteFunction(TransformIter, CN_TRANSFORMITER)
-__aFooterFunction(TransformIter)
+__aNewFunction(Xsentinals, CN_TRANSFORMITER)
+__vDeleteFunction(Xsentinals, CN_TRANSFORMITER)
+__aFooterFunction(Xsentinals)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-TransformIter::TransformIter(void)
-: TransformBase(CN_TRANSFORMITER)
+Xsentinals::Xsentinals(void)
+: Xderive(CN_TRANSFORMITER)
 {
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-TransformIter::TransformIter(eCN eClass)
-: TransformBase (eClass)
+Xsentinals::Xsentinals(eCN eClass)
+: Xderive (eClass)
 {
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-TransformIter::~TransformIter(void) noexcept(false)
+Xsentinals::~Xsentinals(void) noexcept(false)
 {
 }
 
@@ -44,18 +43,18 @@ TransformIter::~TransformIter(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void TransformIter::vCopyFrom(_TransformIterMembers* aFrom)
+void Xsentinals::vCopyFrom(_Xsentinels* aFrom)
 {
-  MemLib::vCopy(aTransformIterMembers(),
+  MemLib::vCopy(aXregs(),
                 aFrom,
-                sizeof(_TransformIterMembers),
+                sizeof(_Xsentinels),
                 CN_TRANSFORMITER);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-_TransformIterMembers* TransformIter::aTransformIterMembers(void)
+_Xsentinels* Xsentinals::aXregs(void)
 {
   return &M;
 }
