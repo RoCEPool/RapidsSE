@@ -182,7 +182,7 @@ Card_BoolCalc* Xcreate::X_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
 
   Card_SubSet*  pCard_SubExpr = new Card_SubSet;
 
-  //N_vNewMember(CK_BOOLCALC);
+  //G_vNewMember(CK_BOOLCALC);
   Card_BoolCalc* p_boolCalc = new Card_BoolCalc;
 
   while (p_rpnCalc->nChildCards()) {

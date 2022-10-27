@@ -198,7 +198,7 @@ void Xreshape::vR_H40_T10_Convert_where_calc_To_where_calcBool(void)
 
   M.p_boolCalc = X_pConvert_rpnCalc_To_boolCalc(M.p_rpnCalc);
   X_vSubCard_ReplaceSub(M.p_rpnCalc, M.p_where, M.p_boolCalc);
-  D_vDeleteMember(M.p_rpnCalc);
+  G_vDeleteMember(M.p_rpnCalc);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -245,14 +245,14 @@ void Xreshape::vR_H50_T10_Rework_Exists_SubQueries(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  N_vNewMember(CK_KEYEXISTS);
+  G_vNewMember(CK_KEYEXISTS);
 
   M.pDeck->vInsertAfter(M.p_keyExists,M.p_stage);
-  RASSERT(E_bEachMain());
+  RASSERT(G_bEachMain());
 
-  while (E_bSubsequentToMain(C_UPDATE_MEMBER)) {
+  while (G_bSubsequentToMain(C_UPDATE_MEMBER)) {
     M.pDeck->vRemove(M.p_SubsequentToMain);
-    C_vAppendChild(CK_KEYEXISTS, M.p_SubsequentToMain);
+    G_vAppendChild(CK_KEYEXISTS, M.p_SubsequentToMain);
   }
 
 }
@@ -265,10 +265,10 @@ void Xreshape::vR_H50_T20_Copy_Up_SubQueries(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   m_pCard_temp = M.p_keyExists->pDupCardAndSubCards();
-  M_vPopIter();
+  G_vPopIter();
   M.pDeck->vInsertBefore(m_pCard_temp,M.p_where);
   M.p_tstPred->vMark1(MARK_LEFTWARDS);
-  E_vSkipNextMain();
+  G_vSkipNextMain();
   //vPrintBoard();
 
 }
@@ -324,7 +324,7 @@ void Xreshape::vR_H60_T10_Add_indexJoin_UnderAllJoinable_table(void)
     M.p_table->vAppend(M.p_indexJoin);
   }
 
-  D_vDeleteMember(CK_INDEXLIST);
+  G_vDeleteMember(CK_INDEXLIST);
 
 }
 
@@ -955,8 +955,8 @@ void Xreshape::vR_H80_T50_Add_scanPred(void)
     vTracer("Testing %s\n"_Stz,M.p_cmpPred->szBearing());
 
     if (! M.p_bounds) {
-      N_vNewMember(CK_BOUNDS);
-      //C_vAppendChild(CK_SCAN,CK_BOUNDS);
+      G_vNewMember(CK_BOUNDS);
+      //G_vAppendChild(CK_SCAN,CK_BOUNDS);
       M.p_scan->vInsertBefore(M.p_bounds,M.p_filter);
     }
 
@@ -964,28 +964,28 @@ void Xreshape::vR_H80_T50_Add_scanPred(void)
 
       M.p_lBound = M.p_bounds->pSub_lBound();
       if (! M.p_lBound) {
-        N_vNewMember(CK_LBOUND);
-        C_vAppendChild(CK_BOUNDS,CK_LBOUND);
+        G_vNewMember(CK_LBOUND);
+        G_vAppendChild(CK_BOUNDS, CK_LBOUND);
       }
       //m_pCard_dup = M.p_cmpPred->pDupCardAndSubCards();
-      C_vDuplicateMember(CK_CMPPRED);
+      G_vDuplicateMember(CK_CMPPRED);
       StrLib::vInsertChar(m_pCard_dup->pGetChild(0)->sz()->azChar()+1,'I');
       //M.p_lBound->vAppend(m_pCard_dup);
-      C_vAppendChild(CK_LBOUND,m_pCard_dup);
+      G_vAppendChild(CK_LBOUND, m_pCard_dup);
       vTracer("Added cmpPred as lower-bound %s %s\n"_Stz,m_pCard_dup->sz(),m_pCard_dup->szBearing());
     }
     else
     if ('U' == M.p_cmpPred->cMark1()) {
       M.p_uBound = M.p_bounds->pSub_uBound();
       if (! M.p_uBound) {
-        N_vNewMember(CK_UBOUND);
-        C_vAppendChild(CK_BOUNDS,CK_UBOUND);
+        G_vNewMember(CK_UBOUND);
+        G_vAppendChild(CK_BOUNDS, CK_UBOUND);
       }
       //m_pCard_dup = M.p_cmpPred->pDupCardAndSubCards();
-      C_vDuplicateMember(CK_CMPPRED);
+      G_vDuplicateMember(CK_CMPPRED);
       StrLib::vInsertChar(m_pCard_dup->pGetChild(0)->sz()->azChar()+1,'I');
       //M.p_uBound->vAppend(m_pCard_dup);
-      C_vAppendChild(CK_UBOUND,m_pCard_dup);
+      G_vAppendChild(CK_UBOUND, m_pCard_dup);
       vTracer("Added cmpPred as upper-bound %s %s\n"_Stz,m_pCard_dup->sz(),m_pCard_dup->szBearing());
     }
 

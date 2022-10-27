@@ -67,8 +67,8 @@ Xgearing::Xgearing(eCN eClass, Bench* pBench)
   M.pBoard = nullptr;
   M.pDeck = nullptr;
 
-  M_vClearMembers();
-  M_vClearRegisters();
+  G_vClearMembers();
+  G_vClearRegisters();
 
   _postcondition_(_ADDRESS_,_MAGIC_);
 }
@@ -460,7 +460,7 @@ void Xgearing::vTracer(Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xgearing::C_vAppendChild(eCK eParent, eCK eChild)
+void Xgearing::G_vAppendChild(eCK eParent, eCK eChild)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -480,7 +480,7 @@ void Xgearing::C_vAppendChild(eCK eParent, eCK eChild)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xgearing::C_vAppendChild(eCK eParent, Card* pChild)
+void Xgearing::G_vAppendChild(eCK eParent, Card* pChild)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -499,7 +499,7 @@ void Xgearing::C_vAppendChild(eCK eParent, Card* pChild)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xgearing::C_vDuplicateMember(eCK eMember)
+void Xgearing::G_vDuplicateMember(eCK eMember)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -517,7 +517,7 @@ void Xgearing::C_vDuplicateMember(eCK eMember)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xgearing::C_vRemoveChild(eCK eParent, eCK eChild)
+void Xgearing::G_vRemoveChild(eCK eParent, eCK eChild)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -526,7 +526,7 @@ void Xgearing::C_vRemoveChild(eCK eParent, eCK eChild)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xgearing::C_vRemoveDeleteChild(eCK eParent, eCK eChild)
+void Xgearing::G_vRemoveDeleteChild(eCK eParent, eCK eChild)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -535,7 +535,7 @@ void Xgearing::C_vRemoveDeleteChild(eCK eParent, eCK eChild)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xgearing::C_vRemoveDeleteMain(eCK eMain)
+void Xgearing::G_vRemoveDeleteMain(eCK eMain)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -544,7 +544,7 @@ void Xgearing::C_vRemoveDeleteMain(eCK eMain)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xgearing::C_vPromoteChildren(eCK eParent)
+void Xgearing::G_vPromoteChildren(eCK eParent)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -554,14 +554,14 @@ void Xgearing::C_vPromoteChildren(eCK eParent)
 /*----------------------------------------------------------------------------*/
 /* delete member of given kind; clear-if registers; update M member to null   */
 /*----------------------------------------------------------------------------*/
-void Xgearing::D_vDeleteMember(eCK eMember)
+void Xgearing::G_vDeleteMember(eCK eMember)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   Card* pMember = G_pGetMember(eMember);
 
-  M_vClearRegistersIf(pMember);
-  U_vUpdateMember(eMember, nullptr,__func__);
+  G_vClearRegistersIf(pMember);
+  G_vUpdateMember(eMember, nullptr, __func__);
 
   DELETE_CARD(pMember);
 }
@@ -569,14 +569,14 @@ void Xgearing::D_vDeleteMember(eCK eMember)
 /*----------------------------------------------------------------------------*/
 /* delete given member; clear-if registers; update M member to null           */
 /*----------------------------------------------------------------------------*/
-void Xgearing::D_vDeleteMember(Card* pMember)
+void Xgearing::G_vDeleteMember(Card* pMember)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   eCK eMember = pMember->eCard();
 
-  M_vClearRegistersIf(pMember);
-  U_vUpdateMember(eMember, nullptr,__func__);
+  G_vClearRegistersIf(pMember);
+  G_vUpdateMember(eMember, nullptr, __func__);
 
   DELETE_CARD(pMember);
 }
@@ -584,13 +584,13 @@ void Xgearing::D_vDeleteMember(Card* pMember)
 /*----------------------------------------------------------------------------*/
 /* step main register next main and update M member                           */
 /*----------------------------------------------------------------------------*/
-bool Xgearing::E_bEachMain(void)
+bool Xgearing::G_bEachMain(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   if ((M.p_MainCard = M.xBI.pEachMain())) {
     M.e_MainCard = M.p_MainCard->eCard();
-    U_vUpdateMember(M.e_MainCard, M.p_MainCard,__func__);
+    G_vUpdateMember(M.e_MainCard, M.p_MainCard, __func__);
     return true;
   }
 
@@ -601,25 +601,25 @@ bool Xgearing::E_bEachMain(void)
 /*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main and update M member          */
 /*----------------------------------------------------------------------------*/
-bool Xgearing::E_bEachMain(eCK eOfMainKind)
+bool Xgearing::G_bEachMain(eCK eOfMainKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   if ((M.p_MainCard = M.xBI.pEachMain(eOfMainKind))) {
     M.e_MainCard = M.p_MainCard->eCard();
-    U_vUpdateMember(M.e_MainCard, M.p_MainCard,__func__);
+    G_vUpdateMember(M.e_MainCard, M.p_MainCard, __func__);
     return true;
   }
 
   M.e_MainCard = CK_NONE;
-  U_vUpdateMember(eOfMainKind, nullptr,__func__);
+  G_vUpdateMember(eOfMainKind, nullptr, __func__);
   return false;
 }
 
 /*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main which has sub and update M   */
 /*----------------------------------------------------------------------------*/
-bool Xgearing::E_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind)
+bool Xgearing::G_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -628,29 +628,29 @@ bool Xgearing::E_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind)
       continue;
 
     M.e_MainCard = M.p_MainCard->eCard();
-    U_vUpdateMember(M.e_MainCard, M.p_MainCard,__func__);
+    G_vUpdateMember(M.e_MainCard, M.p_MainCard, __func__);
     M.e_SubOfMain = M.p_SubOfMain->eCard();
-    U_vUpdateMember(M.e_SubOfMain, M.p_SubOfMain,__func__);
+    G_vUpdateMember(M.e_SubOfMain, M.p_SubOfMain, __func__);
     return true;
   }
 
   M.p_MainCard  = nullptr;
   M.e_MainCard  = CK_NONE;
-  U_vUpdateMember(eOfMainKind, nullptr,__func__);
+  G_vUpdateMember(eOfMainKind, nullptr, __func__);
   M.p_SubOfMain = nullptr;
   M.e_SubOfMain = CK_NONE;
-  U_vUpdateMember(eAndSubKind, nullptr,__func__);
+  G_vUpdateMember(eAndSubKind, nullptr, __func__);
   return false;
 }
 
 /*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main which has sub and update M   */
 /*----------------------------------------------------------------------------*/
-bool Xgearing::E_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind, Stz* szSubValue)
+bool Xgearing::G_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind, Stz* szSubValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  while (E_bEachMainWithSub(eOfMainKind,eAndSubKind)) {
+  while (G_bEachMainWithSub(eOfMainKind, eAndSubKind)) {
     if (M.p_SubOfMain->szValue()->bSame(szSubValue))
       return true;
   }
@@ -661,7 +661,7 @@ bool Xgearing::E_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind, Stz* szSubVa
 /*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main which has sub and update M   */
 /*----------------------------------------------------------------------------*/
-bool Xgearing::E_bEachMainWith2Sub(eCK eOfMainKind,
+bool Xgearing::G_bEachMainWith2Sub(eCK eOfMainKind,
                                    eCK eAndSubKind1,
                                    eCK eAndSubKind2)
 {
@@ -674,46 +674,46 @@ bool Xgearing::E_bEachMainWith2Sub(eCK eOfMainKind,
       continue;
 
     M.e_MainCard = M.p_MainCard->eCard();
-    U_vUpdateMember(M.e_MainCard, M.p_MainCard,__func__);
+    G_vUpdateMember(M.e_MainCard, M.p_MainCard, __func__);
     M.e_SubOfMain = M.p_SubOfMain->eCard();
-    U_vUpdateMember(M.e_SubOfMain, M.p_SubOfMain,__func__);
+    G_vUpdateMember(M.e_SubOfMain, M.p_SubOfMain, __func__);
     M.e_Sub2OfMain = M.p_Sub2OfMain->eCard();
-    U_vUpdateMember(M.e_Sub2OfMain, M.p_Sub2OfMain,__func__);
+    G_vUpdateMember(M.e_Sub2OfMain, M.p_Sub2OfMain, __func__);
     return true;
   }
 
   M.p_MainCard  = nullptr;
   M.e_MainCard  = CK_NONE;
-  U_vUpdateMember(eOfMainKind, nullptr,__func__);
+  G_vUpdateMember(eOfMainKind, nullptr, __func__);
   M.p_SubOfMain = nullptr;
   M.e_SubOfMain = CK_NONE;
-  U_vUpdateMember(eAndSubKind1, nullptr,__func__);
+  G_vUpdateMember(eAndSubKind1, nullptr, __func__);
   M.p_Sub2OfMain = nullptr;
   M.e_Sub2OfMain = CK_NONE;
-  U_vUpdateMember(eAndSubKind2, nullptr,__func__);
+  G_vUpdateMember(eAndSubKind2, nullptr, __func__);
   return false;
 }
 
 /*----------------------------------------------------------------------------*/
 /* skip over next main ; optionally clear M members and registers             */
 /*----------------------------------------------------------------------------*/
-void Xgearing::E_vSkipNextMain(bool bClearMembers, bool bClearRegisters)
+void Xgearing::G_vSkipNextMain(bool bClearMembers, bool bClearRegisters)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   M.xBI.vForward();
 
   if (bClearMembers)
-    M_vClearMembers();
+    G_vClearMembers();
 
   if (bClearRegisters)
-    M_vClearRegisters();
+    G_vClearRegisters();
 }
 
 /*----------------------------------------------------------------------------*/
 /* are there more main cards?                                                 */
 /*----------------------------------------------------------------------------*/
-bool Xgearing::E_bMoreMain(void)
+bool Xgearing::G_bMoreMain(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -726,7 +726,7 @@ bool Xgearing::E_bMoreMain(void)
 /*----------------------------------------------------------------------------*/
 /* remove main card from deck (do not clear M members or registers)           */
 /*----------------------------------------------------------------------------*/
-void Xgearing::E_vRemoveMain(eCK eCrossCheck)
+void Xgearing::G_vRemoveMain(eCK eCrossCheck)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -745,20 +745,20 @@ void Xgearing::E_vRemoveDeleteMain(eCK eCrossCheck)
   M.p_MainCard = nullptr;
   M.e_MainCard = CK_NONE;
 
-  U_vUpdateMember(eCrossCheck, nullptr,__func__);
+  G_vUpdateMember(eCrossCheck, nullptr, __func__);
 }
 
 /*----------------------------------------------------------------------------*/
 /* is there a card immediately after current main card?                       */
 /*----------------------------------------------------------------------------*/
-bool Xgearing::E_bSubsequentToMain(bool bUpdateMember)
+bool Xgearing::G_bSubsequentToMain(bool bUpdateMember)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   if ((M.p_SubsequentToMain = M.xBI.pNextMain())) {
     M.e_SubsequentToMain = M.p_SubsequentToMain->eCard();
     if (bUpdateMember)
-      U_vUpdateMember(M.e_SubsequentToMain, M.p_SubsequentToMain,__func__);
+      G_vUpdateMember(M.e_SubsequentToMain, M.p_SubsequentToMain, __func__);
     return true;
   }
 
@@ -769,11 +769,11 @@ bool Xgearing::E_bSubsequentToMain(bool bUpdateMember)
 /*----------------------------------------------------------------------------*/
 /* is there a card immediately after current main card?                       */
 /*----------------------------------------------------------------------------*/
-void Xgearing::E_vSubsequentToMain(bool bUpdateMember)
+void Xgearing::G_vSubsequentToMain(bool bUpdateMember)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  bool b = E_bSubsequentToMain(bUpdateMember);
+  bool b = G_bSubsequentToMain(bUpdateMember);
   UNUSED(b);
 }
 
@@ -857,14 +857,14 @@ Card* Xgearing::G_pGetMember(eCK eMember)
 /*----------------------------------------------------------------------------*/
 /* is there a card immediately before current main card?                      */
 /*----------------------------------------------------------------------------*/
-bool Xgearing::H_bHasPriorToMain(bool bUpdateMember)
+bool Xgearing::G_bHasPriorToMain(bool bUpdateMember)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   if ((M.p_PriorToMain = M.xBI.pPrevMain())) {
     M.e_PriorToMain = M.p_PriorToMain->eCard();
     if (bUpdateMember)
-      U_vUpdateMember(M.e_PriorToMain, M.p_PriorToMain,__func__);
+      G_vUpdateMember(M.e_PriorToMain, M.p_PriorToMain, __func__);
     return true;
   }
 
@@ -875,20 +875,20 @@ bool Xgearing::H_bHasPriorToMain(bool bUpdateMember)
 /*----------------------------------------------------------------------------*/
 /* is there a card immediately before current main which is of given kind?    */
 /*----------------------------------------------------------------------------*/
-bool Xgearing::H_bHasPriorToMainIf(eCK eOfPriorKind, bool bUpdateMember)
+bool Xgearing::G_bHasPriorToMainIf(eCK eOfPriorKind, bool bUpdateMember)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   if ((M.p_PriorToMain = M.xBI.pPrevMainIf(eOfPriorKind))) {
     M.e_PriorToMain = M.p_PriorToMain->eCard();
     if (bUpdateMember)
-      U_vUpdateMember(M.e_PriorToMain, M.p_PriorToMain,__func__);
+      G_vUpdateMember(M.e_PriorToMain, M.p_PriorToMain, __func__);
     return true;
   }
 
   M.e_PriorToMain = CK_NONE;
   if (bUpdateMember)
-    U_vUpdateMember(eOfPriorKind, nullptr,__func__);
+    G_vUpdateMember(eOfPriorKind, nullptr, __func__);
 
   return false;
 }
@@ -896,14 +896,14 @@ bool Xgearing::H_bHasPriorToMainIf(eCK eOfPriorKind, bool bUpdateMember)
 /*----------------------------------------------------------------------------*/
 /* is there a card immediately after current main card?                       */
 /*----------------------------------------------------------------------------*/
-bool Xgearing::H_bHasSubsequentToMain(bool bUpdateMember)
+bool Xgearing::G_bHasSubsequentToMain(bool bUpdateMember)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   if ((M.p_SubsequentToMain = M.xBI.pNextMain())) {
     M.e_SubsequentToMain = M.p_SubsequentToMain->eCard();
     if (bUpdateMember)
-      U_vUpdateMember(M.e_SubsequentToMain, M.p_SubsequentToMain,__func__);
+      G_vUpdateMember(M.e_SubsequentToMain, M.p_SubsequentToMain, __func__);
     return true;
   }
 
@@ -914,27 +914,27 @@ bool Xgearing::H_bHasSubsequentToMain(bool bUpdateMember)
 /*----------------------------------------------------------------------------*/
 /* is there a card immediately after current main which is of given kind?     */
 /*----------------------------------------------------------------------------*/
-bool Xgearing::H_bHasSubsequentToMainIf(eCK eOfSubsequentKind, bool bUpdateMember)
+bool Xgearing::G_bHasSubsequentToMainIf(eCK eOfSubsequentKind, bool bUpdateMember)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   if ((M.p_SubsequentToMain = M.xBI.pNextMainIf(eOfSubsequentKind))) {
     M.e_SubsequentToMain = M.p_SubsequentToMain->eCard();
     if (bUpdateMember)
-      U_vUpdateMember(M.e_SubsequentToMain, M.p_SubsequentToMain,__func__);
+      G_vUpdateMember(M.e_SubsequentToMain, M.p_SubsequentToMain, __func__);
     return true;
   }
 
   M.e_SubsequentToMain = CK_NONE;
   if (bUpdateMember)
-    U_vUpdateMember(eOfSubsequentKind, nullptr,__func__);
+    G_vUpdateMember(eOfSubsequentKind, nullptr, __func__);
   return false;
 }
 
 /*----------------------------------------------------------------------------*/
 /* locate card (left-right) after given i_After                               */
 /*----------------------------------------------------------------------------*/
-bool Xgearing::L_bLocateCard(eCK eCard, Stz* szWithValue, i8 i_After)
+bool Xgearing::G_bLocateCard(eCK eCard, Stz* szWithValue, i8 i_After)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -944,7 +944,7 @@ bool Xgearing::L_bLocateCard(eCK eCard, Stz* szWithValue, i8 i_After)
 /*----------------------------------------------------------------------------*/
 /* locate card (left-right) after given card                                  */
 /*----------------------------------------------------------------------------*/
-bool Xgearing::L_bLocateCard(eCK eCard, Stz* szWithValue, Card* pAfter)
+bool Xgearing::G_bLocateCard(eCK eCard, Stz* szWithValue, Card* pAfter)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -954,7 +954,7 @@ bool Xgearing::L_bLocateCard(eCK eCard, Stz* szWithValue, Card* pAfter)
 /*----------------------------------------------------------------------------*/
 /* clear the M members                                                        */
 /*----------------------------------------------------------------------------*/
-void Xgearing::M_vClearMembers(void)
+void Xgearing::G_vClearMembers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1025,18 +1025,18 @@ void Xgearing::M_vClearMembers(void)
 /*----------------------------------------------------------------------------*/
 /* clear the M members and registers                                          */
 /*----------------------------------------------------------------------------*/
-void Xgearing::M_vClearMembersRegisters(void)
+void Xgearing::G_vClearMembersRegisters(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  M_vClearMembers();
-  M_vClearRegisters();
+  G_vClearMembers();
+  G_vClearRegisters();
 }
 
 /*----------------------------------------------------------------------------*/
 /* clear the general M registers                                              */
 /*----------------------------------------------------------------------------*/
-void Xgearing::M_vClearRegisters(void)
+void Xgearing::G_vClearRegisters(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1061,7 +1061,7 @@ void Xgearing::M_vClearRegisters(void)
 /*----------------------------------------------------------------------------*/
 /* clear the general M registers if they match given kind                     */
 /*----------------------------------------------------------------------------*/
-void Xgearing::M_vClearRegistersIf(eCK eCard)
+void Xgearing::G_vClearRegistersIf(eCK eCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1100,7 +1100,7 @@ void Xgearing::M_vClearRegistersIf(eCK eCard)
 /*----------------------------------------------------------------------------*/
 /* clear the general M registers if they match given pointer                  */
 /*----------------------------------------------------------------------------*/
-void Xgearing::M_vClearRegistersIf(Card* pCard)
+void Xgearing::G_vClearRegistersIf(Card* pCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1129,7 +1129,7 @@ void Xgearing::M_vClearRegistersIf(Card* pCard)
 /*----------------------------------------------------------------------------*/
 /* push current M iterator onto iter stack                                    */
 /*----------------------------------------------------------------------------*/
-void Xgearing::M_vPushIter(void)
+void Xgearing::G_vPushIter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1143,7 +1143,7 @@ void Xgearing::M_vPushIter(void)
 /*----------------------------------------------------------------------------*/
 /* push current M iterator onto iter stack                                    */
 /*----------------------------------------------------------------------------*/
-void Xgearing::M_vPushIter(Board* pBoard)
+void Xgearing::G_vPushIter(Board* pBoard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1165,7 +1165,7 @@ void Xgearing::M_vPushIter(Board* pBoard)
 /*----------------------------------------------------------------------------*/
 /* pop/restore M iterator from iter stack                                     */
 /*----------------------------------------------------------------------------*/
-void Xgearing::M_vPopIter(void)
+void Xgearing::G_vPopIter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1180,37 +1180,37 @@ void Xgearing::M_vPopIter(void)
 /*----------------------------------------------------------------------------*/
 /* restart the M iterator                                                     */
 /*----------------------------------------------------------------------------*/
-void Xgearing::M_vRestart(void)
+void Xgearing::G_vRestart(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   M.xBI.vRestart();
 
-  M_vClearMembers();
-  M_vClearRegisters();
+  G_vClearMembers();
+  G_vClearRegisters();
 }
 
 /*----------------------------------------------------------------------------*/
 /* create a new card and optionally set member                                */
 /*----------------------------------------------------------------------------*/
-void Xgearing::N_vNewMember(eCK eMember, bool bUpdateMember)
+void Xgearing::G_vNewMember(eCK eMember, bool bUpdateMember)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   m_pCard_new = new Card(eMember);
 
   if (bUpdateMember)
-    U_vUpdateMember(eMember, m_pCard_new,__func__);
+    G_vUpdateMember(eMember, m_pCard_new, __func__);
 }
 
 /*----------------------------------------------------------------------------*/
 /* step to next main and set member                                           */
 /*----------------------------------------------------------------------------*/
-void Xgearing::N_vNewMember(eCK eMember, Stz* szValue, bool bUpdateMember)
+void Xgearing::G_vNewMember(eCK eMember, Stz* szValue, bool bUpdateMember)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  N_vNewMember(eMember,bUpdateMember);
+  G_vNewMember(eMember, bUpdateMember);
 
   m_pCard_new->vValue(szValue);
 }
@@ -1218,7 +1218,7 @@ void Xgearing::N_vNewMember(eCK eMember, Stz* szValue, bool bUpdateMember)
 /*----------------------------------------------------------------------------*/
 /* update member card                                                         */
 /*----------------------------------------------------------------------------*/
-void Xgearing::U_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
+void Xgearing::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1299,13 +1299,13 @@ void Xgearing::U_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
 /*----------------------------------------------------------------------------*/
 /* search for sub of member                                                   */
 /*----------------------------------------------------------------------------*/
-bool Xgearing::F_bPlumbForSubMember(eCK eMember, eCK eSubCard, bool bUpdateMember)
+bool Xgearing::G_bPlumbForSubMember(eCK eMember, eCK eSubCard, bool bUpdateMember)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   Card* pMember = G_pGetMember(eMember);
 
-  bool b = F_bPlumbForSubMember(pMember, eSubCard, bUpdateMember);
+  bool b = G_bPlumbForSubMember(pMember, eSubCard, bUpdateMember);
 
   return b;
 }
@@ -1313,32 +1313,32 @@ bool Xgearing::F_bPlumbForSubMember(eCK eMember, eCK eSubCard, bool bUpdateMembe
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xgearing::F_bPlumbForSubMember(Card* pMember, eCK eSubCard, bool bUpdateMember)
+bool Xgearing::G_bPlumbForSubMember(Card* pMember, eCK eSubCard, bool bUpdateMember)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   if ((M.p_SubMember = pMember->pFindSubCard(eSubCard))) {
     M.e_SubMember = M.p_SubMember->eCard();
     if (bUpdateMember)
-      U_vUpdateMember(M.e_SubMember, M.p_SubMember,__func__);
+      G_vUpdateMember(M.e_SubMember, M.p_SubMember, __func__);
     return true;
   }
 
   if (bUpdateMember)
-    U_vUpdateMember(eSubCard, nullptr,__func__);
+    G_vUpdateMember(eSubCard, nullptr, __func__);
   return false;
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xgearing::F_bPlumbForSubValue(eCK eMember, eCK eSub, Stz* szValue, bool bUpdateMember)
+bool Xgearing::G_bPlumbForSubValue(eCK eMember, eCK eSub, Stz* szValue, bool bUpdateMember)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   Card* pMember = G_pGetMember(eMember);
 
-  bool b = F_bPlumbForSubValue(pMember, eSub, szValue, bUpdateMember);
+  bool b = G_bPlumbForSubValue(pMember, eSub, szValue, bUpdateMember);
 
   return b;
 
@@ -1347,21 +1347,21 @@ bool Xgearing::F_bPlumbForSubValue(eCK eMember, eCK eSub, Stz* szValue, bool bUp
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xgearing::F_bPlumbForSubValue(Card* pMember, eCK eSubCard, Stz* szValue, bool bUpdateMember)
+bool Xgearing::G_bPlumbForSubValue(Card* pMember, eCK eSub, Stz* szValue, bool bUpdateMember)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  if ((M.p_SubMember = pMember->pFindSubCard(eSubCard))) {
+  if ((M.p_SubMember = pMember->pFindSubCard(eSub))) {
     if (M.p_SubMember->bSame(szValue)) {
       M.e_SubMember = M.p_SubMember->eCard();
       if (bUpdateMember)
-        U_vUpdateMember(M.e_SubMember, M.p_SubMember, __func__);
+        G_vUpdateMember(M.e_SubMember, M.p_SubMember, __func__);
       return true;
     }
   }
 
   if (bUpdateMember)
-    U_vUpdateMember(eSubCard, nullptr,__func__);
+    G_vUpdateMember(eSub, nullptr, __func__);
   return false;
 }
 
@@ -1369,7 +1369,7 @@ bool Xgearing::F_bPlumbForSubValue(Card* pMember, eCK eSubCard, Stz* szValue, bo
 /*----------------------------------------------------------------------------*/
 /* resolve card (right-left before given i_Before                             */
 /*----------------------------------------------------------------------------*/
-bool Xgearing::R_bResolveCard(eCK eCard, Stz* szWithValue, i8 i_Before)
+bool Xgearing::G_bResolveCard(eCK eCard, Stz* szWithValue, i8 i_Before)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1377,7 +1377,7 @@ bool Xgearing::R_bResolveCard(eCK eCard, Stz* szWithValue, i8 i_Before)
     Card* pMain = M.pDeck->pGetChild(i_Main);
 
     if (m_pCard_resolved = pMain->pFindValueRecursive(eCard,szWithValue,m_pCard_parent)) {
-      U_vUpdateMember(eCard,m_pCard_resolved,__func__);
+      G_vUpdateMember(eCard, m_pCard_resolved, __func__);
       return true;
     }
   }
@@ -1388,7 +1388,7 @@ bool Xgearing::R_bResolveCard(eCK eCard, Stz* szWithValue, i8 i_Before)
 /*----------------------------------------------------------------------------*/
 /* resolve card (right-left) before given card                                */
 /*----------------------------------------------------------------------------*/
-bool Xgearing::R_bResolveCard(eCK eCard, Stz* szWithValue, Card* pBefore)
+bool Xgearing::G_bResolveCard(eCK eCard, Stz* szWithValue, Card* pBefore)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1396,7 +1396,7 @@ bool Xgearing::R_bResolveCard(eCK eCard, Stz* szWithValue, Card* pBefore)
   if (C_UNKNOWN == i_Before)
     return false;
 
-  bool b = R_bResolveCard(eCard, szWithValue, i_Before);
+  bool b = G_bResolveCard(eCard, szWithValue, i_Before);
 
   return b;
 }
@@ -1405,7 +1405,7 @@ bool Xgearing::R_bResolveCard(eCK eCard, Stz* szWithValue, Card* pBefore)
 /*----------------------------------------------------------------------------*/
 /* find sub of member with given property                                     */
 /*----------------------------------------------------------------------------*/
-bool Xgearing::Y_bFindPpy(eCK eMember, Stz* szPpy, eCK eOfCard)
+bool Xgearing::G_bFindPpy(eCK eMember, Stz* szPpy, eCK eOfCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -1417,7 +1417,7 @@ bool Xgearing::Y_bFindPpy(eCK eMember, Stz* szPpy, eCK eOfCard)
   if (! (m_pCard_found = m_pCard_member->pFindPpyRecursive(szPpy)))
     return false;
 
-  U_vUpdateMember(m_pCard_found->eCard(), m_pCard_found, __func__);
+  G_vUpdateMember(m_pCard_found->eCard(), m_pCard_found, __func__);
   return true;
 }
 

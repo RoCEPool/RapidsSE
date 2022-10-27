@@ -61,7 +61,7 @@ void Xtransforms::vH10_T10_Delete_Redundant_stage(bool bPrint, bool bTrace)
 
   Card_Stage* p_stage_CURR = nullptr;
 
-  while (E_bEachMain(CK_STAGE)) {
+  while (G_bEachMain(CK_STAGE)) {
     if (! p_stage_CURR || !M.p_stage->bEquivalentTo(p_stage_CURR))   {
       p_stage_CURR = M.p_stage;
       continue;
@@ -87,7 +87,7 @@ void Xtransforms::vH10_T15_Hide_Ignorable_stage(bool bPrint, bool bTrace)
 
   //M.pDeck->vDump(0,(Stz*)(__func__));
 
-  while (E_bEachMain(CK_STAGE)) {
+  while (G_bEachMain(CK_STAGE)) {
     if (! (M.p_topology = M.p_stage->pSub_topology()) )
       continue;
     if (YG_ALL_PARTITIONS == (eYG) M.p_topology->Y_iVal(P_StageTopo))
@@ -113,7 +113,7 @@ void Xtransforms::vH10_T20_Delete_absJoin(bool bPrint, bool bTrace)
 
   //M.pDeck->vDump(0,(Stz*)(__func__));
 
-  while (E_bEachMain(CK_ABSJOIN)) {
+  while (G_bEachMain(CK_ABSJOIN)) {
     vR_H10_T20_Delete_absJoin();
    }
 
@@ -134,7 +134,7 @@ void Xtransforms::vH10_T30_Delete_combined(bool bPrint, bool bTrace)
 
   //M.pDeck->vDump(0,(Stz*)(__func__));
 
-  while (E_bEachMain(CK_COMBINED)) {
+  while (G_bEachMain(CK_COMBINED)) {
     vR_H10_T30_Delete_combined();
   }
 
@@ -155,7 +155,7 @@ void Xtransforms::vH10_T40_Delete_send(bool bPrint, bool bTrace)
 
   //M.pDeck->vDump(0,(Stz*)(__func__));
 
-  while (E_bEachMain(CK_SEND)) {
+  while (G_bEachMain(CK_SEND)) {
     vR_H10_T40_Delete_send();
   }
 
@@ -176,7 +176,7 @@ void Xtransforms::vH10_T50_Cull_scan_Leaving_table(bool bPrint, bool bTrace)
 
   //M.pDeck->vDump(0,(Stz*)(__func__));
 
-  while (E_bEachMain(CK_SCAN)) {
+  while (G_bEachMain(CK_SCAN)) {
     vR_H10_T50_Cull_scan_Leaving_table();
   }
 
@@ -202,7 +202,7 @@ void Xtransforms::vH20_T10_Add_tableSyn_ForAll_table(bool bPrint, bool bTrace)
 
   //M.pDeck->vDump();
 
-  while (E_bEachMainWithSub(CK_TABLE,CK_TABLENM))  {
+  while (G_bEachMainWithSub(CK_TABLE, CK_TABLENM))  {
     vR_H20_T10_Add_tableSyn_ForAll_table();
   }
 
@@ -221,7 +221,7 @@ void Xtransforms::vH20_T20_Add_tablePtn_UnderAll_table(bool bPrint, bool bTrace)
   vTransform(__func__);
   vTracing(bPrint,bTrace);
 
-  while (E_bEachMainWithSub(CK_TABLE,CK_TABLENM)) {
+  while (G_bEachMainWithSub(CK_TABLE, CK_TABLENM)) {
     vR_H20_T20_Add_tablePtn_UnderAll_table();
   }
 
@@ -241,7 +241,7 @@ void Xtransforms::vH20_T30_Add_stream_UnderAll_table(bool bPrint, bool bTrace)
   vTracing(bPrint,bTrace);
 
   // E <scan>
-  while (E_bEachMainWithSub(CK_TABLE,CK_TABLENM)) {
+  while (G_bEachMainWithSub(CK_TABLE, CK_TABLENM)) {
     vR_H20_T30_Add_stream_UnderAll_table();
   }
 
@@ -265,7 +265,7 @@ void Xtransforms::vH30_T10_Calc_ordinalRange_ForAll_stream(bool bPrint, bool bTr
   vTransform(__func__);
   vTracing(bPrint,bTrace);
 
-  while (E_bEachMain(CK_TABLE)) {
+  while (G_bEachMain(CK_TABLE)) {
     M.p_stream = M.p_table->pSub_stream();
 
     vR_H30_T10_Calc_ordinalRange_ForAll_stream();
@@ -291,7 +291,7 @@ void Xtransforms::vH40_T10_Convert_where_calc_To_where_calcBool(bool bPrint, boo
   vTransform(__func__);
   vTracing(bPrint,bTrace);
 
-  while (E_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
+  while (G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
     vR_H40_T10_Convert_where_calc_To_where_calcBool();
   }
 
@@ -310,7 +310,7 @@ void Xtransforms::vH40_T20_Mark_where_pred_Wrt_table(bool bPrint, bool bTrace)
   vTransform(__func__);
   vTracing(bPrint,bTrace);
 
-  while (E_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+  while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
     vR_H40_T20_Mark_where_pred_Wrt_table();
   }
 
@@ -329,7 +329,7 @@ void Xtransforms::vH40_T30_Move_Marked_where_pred_To_table_filter(bool bPrint, b
   vTransform(__func__);
   vTracing(bPrint,bTrace);
 
-  while (E_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
+  while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
     vR_H40_T30_Move_Marked_where_pred_To_table_filter();
   }
   vEndTransform();
@@ -347,7 +347,7 @@ void Xtransforms::vH40_T40_Delete_Empty_where(bool bPrint, bool bTrace)
   vTransform(__func__);
   vTracing(bPrint,bTrace);
 
-  while (E_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
+  while (G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
     vR_H40_T40_Delete_Empty_where();
    }
 
@@ -371,7 +371,7 @@ void Xtransforms::vH50_T10_Rework_Exists_SubQueries(bool bPrint, bool bTrace)
   vTransform(__func__);
   vTracing(bPrint,bTrace);
 
-  while (E_bEachMainWithSub(CK_WHERE,CK_TSTPRED,"exists"_Stz)) {
+  while (G_bEachMainWithSub(CK_WHERE, CK_TSTPRED, "exists"_Stz)) {
 
     Stz* szSubQueryNm = M.p_tstPred->pGetChild(1)->szValue();
     vTracer("SubQueryNm: %s\n"_Stz,szSubQueryNm);
@@ -384,18 +384,18 @@ void Xtransforms::vH50_T10_Rework_Exists_SubQueries(bool bPrint, bool bTrace)
 
     vTracer("Found SubQuery Board: %s\n"_Stz,pSubQueryBoard->szBoardNm());
 
-    M_vPushIter(pSubQueryBoard);
+    G_vPushIter(pSubQueryBoard);
 
     vPrintBoard();
 
-    if (E_bEachMain(CK_STAGE)) {
+    if (G_bEachMain(CK_STAGE)) {
       vTracer("SubQuery Stage: %s\n"_Stz, M.p_stage->szBearing());
 
       vR_H50_T10_Rework_Exists_SubQueries();
     }
     vPrintBoard();
 
-    M_vPopIter();
+    G_vPopIter();
   }
 
   vEndTransform();
@@ -414,7 +414,7 @@ void Xtransforms::vH50_T20_Copy_Up_SubQueries(bool bPrint, bool bTrace)
   vTransform(__func__);
   vTracing(bPrint,bTrace);
 
-  while (E_bEachMainWithSub(CK_WHERE,CK_TSTPRED,"exists"_Stz)) {
+  while (G_bEachMainWithSub(CK_WHERE, CK_TSTPRED, "exists"_Stz)) {
 
     Stz* szSubQueryNm = M.p_tstPred->pGetChild(1)->szValue();
     vTracer("SubQueryNm: %s\n"_Stz,szSubQueryNm);
@@ -427,17 +427,17 @@ void Xtransforms::vH50_T20_Copy_Up_SubQueries(bool bPrint, bool bTrace)
 
     vTracer("Found SubQuery Board: %s\n"_Stz,pSubQueryBoard->szBoardNm());
 
-    M_vPushIter(pSubQueryBoard);
+    G_vPushIter(pSubQueryBoard);
 
     vPrintBoard();
 
-    if (E_bEachMain(CK_KEYEXISTS)) {
+    if (G_bEachMain(CK_KEYEXISTS)) {
 
       vR_H50_T20_Copy_Up_SubQueries();
 
     }
     else {
-      M_vPopIter();
+      G_vPopIter();
     }
   }
 
@@ -456,13 +456,13 @@ void Xtransforms::vH50_T30_Resolve_Parameter_Linkage(bool bPrint, bool bTrace)
   vTransform(__func__);
   vTracing(bPrint,bTrace);
 
-  while (E_bEachMain(CK_KEYEXISTS)) {
+  while (G_bEachMain(CK_KEYEXISTS)) {
 
     vTracer("Resolving %s"_Stz,M.p_MainCard->szBearing());
-    if (!F_bPlumbForSubMember(CK_KEYEXISTS, CK_PARAM))
+    if (!G_bPlumbForSubMember(CK_KEYEXISTS, CK_PARAM))
       continue;
 
-    if (! R_bResolveCard(CK_STMCOL,M.p_param->sz(),M.p_keyExists))
+    if (!G_bResolveCard(CK_STMCOL, M.p_param->sz(), M.p_keyExists))
       continue;
 
     vR_H50_T30_Resolve_Parameter_Linkage();
@@ -483,7 +483,7 @@ void Xtransforms::vH50_T40_Resolve_Parameter_Terms(bool bPrint, bool bTrace)
   vTransform(__func__);
   vTracing(bPrint,bTrace);
 
-  while (E_bEachMainWith2Sub(CK_KEYEXISTS,CK_PARAMLIST,CK_RPNCALC)) {
+  while (G_bEachMainWith2Sub(CK_KEYEXISTS, CK_PARAMLIST, CK_RPNCALC)) {
 
     vTracer("Resolving Terms\n  %s\n  %s  \n"_Stz,
             M.p_keyExists->szBearing(),
@@ -495,7 +495,7 @@ void Xtransforms::vH50_T40_Resolve_Parameter_Terms(bool bPrint, bool bTrace)
       if (!T_bTerm_IsParamOrdinal(M.p_term))
         continue;
 
-      if (! Y_bFindPpy(CK_PARAMLIST,P_ParamOrd,CK_PARAM))
+      if (!G_bFindPpy(CK_PARAMLIST, P_ParamOrd, CK_PARAM))
         continue;
 
       vR_H50_T40_Resolve_Parameter_Terms();
@@ -524,7 +524,7 @@ void Xtransforms::vH60_T10_Add_indexJoin_UnderAllJoinable_table(bool bPrint, boo
 
   M.pDeck->vClearMarksRecursive();
 
-  while (E_bEachMainWithSub(CK_TABLE,CK_FILTER)) {
+  while (G_bEachMainWithSub(CK_TABLE, CK_FILTER)) {
     vR_H60_T10_Add_indexJoin_UnderAllJoinable_table();
   }
 
@@ -545,7 +545,7 @@ void Xtransforms::vH60_T20_Convert_idxCol_name_Of_table_To_idxCol_ord(bool bPrin
 
   M.pDeck->vClearMarksRecursive();
 
-  while (E_bEachMain(CK_TABLE)) {
+  while (G_bEachMain(CK_TABLE)) {
     if (! (M.p_indexJoin = M.p_table->pSub_indexJoin()))
       continue;
 
@@ -567,7 +567,7 @@ void Xtransforms::vH60_T30_Add_joinPred_UnderAll_indexJoin(bool bPrint, bool bTr
   vTransform(__func__);
   vTracing(bPrint,bTrace);
 
-  while (E_bEachMainWithSub(CK_TABLE,CK_FILTER)) {
+  while (G_bEachMainWithSub(CK_TABLE, CK_FILTER)) {
 
     //M.p_table->vDump();
 
@@ -598,7 +598,7 @@ void Xtransforms::vH60_T40_Cull_filter_pred_MovedUpTo_joinPred(bool bPrint, bool
   vTransform(__func__);
   vTracing(bPrint,bTrace);
 
-  while (E_bEachMain(CK_TABLE)) {
+  while (G_bEachMain(CK_TABLE)) {
     if (! (M.p_filter = M.p_table->pSub_filter()))
       continue;
 
@@ -622,7 +622,7 @@ void Xtransforms::vH60_T50_Delete_Empty_filter(bool bPrint, bool bTrace)
   vTransform(__func__);
   vTracing(bPrint,bTrace);
 
-  while (E_bEachMain()) {
+  while (G_bEachMain()) {
     M.p_filter = M.p_MainCard->pSub_filter();
     if (! M.p_filter)
       continue;
@@ -973,7 +973,7 @@ void Xtransforms::vH70_T99_Convert_table_To_scan_Or_indexJoin(bool bPrint, bool 
   vTransform(__func__);
   vTracing(bPrint,bTrace);
 
-  while (E_bEachMain(CK_TABLE)) {
+  while (G_bEachMain(CK_TABLE)) {
 
     M.p_bounds = M.p_table->pSub_bounds();
     M.p_indexJoin = M.p_table->pSub_indexJoin();
@@ -982,13 +982,13 @@ void Xtransforms::vH70_T99_Convert_table_To_scan_Or_indexJoin(bool bPrint, bool 
     vR_H70_T99_Convert_table_To_scan_Or_indexJoin();
   }
 
-  M_vRestart();
-  while (E_bEachMain(CK_SCAN)) {
+  G_vRestart();
+  while (G_bEachMain(CK_SCAN)) {
     vR_H70_T99_Convert_table_To_scan_Or_indexJoin_b();
   }
 
-  M_vRestart();
-  while (E_bEachMain(CK_INDEXJOIN)) {
+  G_vRestart();
+  while (G_bEachMain(CK_INDEXJOIN)) {
     vR_H70_T99_Convert_table_To_scan_Or_indexJoin_c();
   }
 
@@ -1012,7 +1012,7 @@ void Xtransforms::vH80_T10_Insert_indexList_ToAll_scan(bool bPrint, bool bTrace)
   vTransform(__func__);
   vTracing(bPrint,bTrace);
 
-  while (E_bEachMainWith2Sub(CK_SCAN,CK_TABLE,CK_TABLENM)) {
+  while (G_bEachMainWith2Sub(CK_SCAN, CK_TABLE, CK_TABLENM)) {
     vR_H80_T10_Insert_indexList_ToAll_scan();
   }
 
@@ -1033,7 +1033,7 @@ void Xtransforms::vH80_T20_Convert_idxCol_name_Of_scan_To_idxCol_ord(bool bPrint
 
   M.pDeck->vClearMarksRecursive();
 
-  while (E_bEachMainWithSub(CK_SCAN,CK_IDXCOLLIST)) {
+  while (G_bEachMainWithSub(CK_SCAN, CK_IDXCOLLIST)) {
     M.p_stream = M.p_scan->pSub_stream();
 
     vR_H80_T20_Convert_idxCol_name_Of_scan_To_idxCol_ord();
@@ -1055,7 +1055,7 @@ void Xtransforms::vH80_T30_Mark_scan_pred_bounds(bool bPrint, bool bTrace)
   vTransform(__func__);
   vTracing(bPrint,bTrace);
 
-  while (E_bEachMainWithSub(CK_SCAN,CK_FILTER)) {
+  while (G_bEachMainWithSub(CK_SCAN, CK_FILTER)) {
     vR_H80_T30_Mark_scan_pred_bounds();
   }
 
@@ -1074,7 +1074,7 @@ void Xtransforms::vH80_T40_Mark_scan_filter_term_WhichMatchIndex(bool bPrint, bo
   vTransform(__func__);
   vTracing(bPrint,bTrace);
 
-  while (E_bEachMainWithSub(CK_SCAN,CK_FILTER)) {
+  while (G_bEachMainWithSub(CK_SCAN, CK_FILTER)) {
 
     if (! (M.p_indexList = M.p_MainCard->pSub_indexList()))
       continue;
@@ -1105,7 +1105,7 @@ void Xtransforms::vH80_T50_Add_scanPred(bool bPrint, bool bTrace)
 
   M.p_bounds = nullptr;
 
-  while (E_bEachMainWith2Sub(CK_SCAN,CK_FILTER,CK_INDEXLIST)) {
+  while (G_bEachMainWith2Sub(CK_SCAN, CK_FILTER, CK_INDEXLIST)) {
     vR_H80_T50_Add_scanPred();
   }
 
@@ -1124,7 +1124,7 @@ void Xtransforms::vH80_T60_Cull_Marked_cmpPred(bool bPrint, bool bTrace)
   vTransform(__func__);
   vTracing(bPrint,bTrace);
 
-  while (E_bEachMainWithSub(CK_SCAN,CK_FILTER)) {
+  while (G_bEachMainWithSub(CK_SCAN, CK_FILTER)) {
     vR_H80_T60_Cull_Marked_cmpPred();
   }
 
@@ -1143,18 +1143,18 @@ void Xtransforms::vH80_T70_Promote_scan_To_indexScan(bool bPrint, bool bTrace)
   vTransform(__func__);
   vTracing(bPrint,bTrace);
 
-  while (E_bEachMainWithSub(CK_SCAN,CK_BOUNDS)) {
+  while (G_bEachMainWithSub(CK_SCAN, CK_BOUNDS)) {
     vTracer("Morphing <scan> to <indexScan> %s\n"_Stz,M.p_scan->szBearing());
     vR_H80_T70_Promote_scan_To_indexScan();
   }
 
-  M_vRestart();
-  while (E_bEachMain(CK_INDEXSCAN)) {
+  G_vRestart();
+  while (G_bEachMain(CK_INDEXSCAN)) {
     vR_H80_T70_Promote_scan_To_indexScan_b();
   }
 
-  M_vRestart();
-  while (E_bEachMainWithSub(CK_INDEXSCAN,CK_INDEXLIST)) {
+  G_vRestart();
+  while (G_bEachMainWithSub(CK_INDEXSCAN, CK_INDEXLIST)) {
     vR_H80_T70_Promote_scan_To_indexScan_c();
   }
 
@@ -1178,9 +1178,9 @@ void Xtransforms::vH90_T10_Remove_sort_IfSameAs_gby(bool bPrint, bool bTrace)
   vTransform(__func__);
   vTracing(bPrint,bTrace);
 
-  while (E_bEachMain(CK_SORT)) {
+  while (G_bEachMain(CK_SORT)) {
 
-    if (!H_bHasPriorToMainIf(CK_AGGREG, C_UPDATE_MEMBER))
+    if (!G_bHasPriorToMainIf(CK_AGGREG, C_UPDATE_MEMBER))
       return;
 
     M.p_gbyElist = M.p_aggreg->pSub_gbyElist();
@@ -1213,7 +1213,7 @@ void Xtransforms::vHA0_T10_Individuate_filter(bool bPrint, bool bTrace)
   vTransform(__func__);
   vTracing(bPrint,bTrace);
 
-  while (E_bEachMain(CK_SCAN)) {
+  while (G_bEachMain(CK_SCAN)) {
 
     M.p_filter =  M.p_scan->pSub_filter();
     if (! M.p_filter)
@@ -1222,9 +1222,9 @@ void Xtransforms::vHA0_T10_Individuate_filter(bool bPrint, bool bTrace)
     vR_HA0_T10_Individuate_filter();
   }
 
-  M_vRestart();
+  G_vRestart();
 
-  while (E_bEachMain(CK_INDEXJOIN)) {
+  while (G_bEachMain(CK_INDEXJOIN)) {
 
     M.p_filter = M.p_indexJoin->pSub_filter();
     if (! M.p_filter)
@@ -1253,7 +1253,7 @@ void Xtransforms::vHZ0_T10_Reinstate_stages(bool bPrint, bool bTrace)
   vTransform(__func__);
   vTracing(bPrint,bTrace);
 
-  while (E_bEachMain() && H_bHasSubsequentToMain(C_UPDATE_MEMBER))  {
+  while (G_bEachMain() && G_bHasSubsequentToMain(C_UPDATE_MEMBER))  {
 
     if (CK_STAGE == M.e_MainCard || CK_STAGE == M.e_SubsequentToMain)
       continue;
@@ -1269,8 +1269,8 @@ void Xtransforms::vHZ0_T10_Reinstate_stages(bool bPrint, bool bTrace)
   }
 
   i8 i_Stage = 1;
-  M_vRestart();
-  while (E_bEachMain(CK_STAGE))
+  G_vRestart();
+  while (G_bEachMain(CK_STAGE))
     M.p_stage->vValueSprint("S%02lld"_Stz,i_Stage++);
 
   vEndTransform();
@@ -1288,9 +1288,9 @@ void Xtransforms::vHZ0_T20_Reinstate_combined(bool bPrint, bool bTrace)
   vTransform(__func__);
   vTracing(bPrint,bTrace);
 
-  while (E_bEachMain()) {
+  while (G_bEachMain()) {
 
-    E_vSubsequentToMain();
+    G_vSubsequentToMain();
     if (CK_INDEXJOIN == M.e_MainCard && (CK_AGGREG == M.e_SubsequentToMain ||
                                          CK_FILTER == M.e_SubsequentToMain ||
                                          CK_PROJECT == M.e_SubsequentToMain))
@@ -1306,7 +1306,7 @@ void Xtransforms::vHZ0_T20_Reinstate_combined(bool bPrint, bool bTrace)
 
     vR_HZ0_T20_Reinstate_combined();
 
-    E_vSkipNextMain();
+    G_vSkipNextMain();
   }
 
   vEndTransform();
