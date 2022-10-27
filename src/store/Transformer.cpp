@@ -161,6 +161,8 @@ void Transformer::vHand_30_StreamAnalysis(bool bPrintHand, bool bPrintXform, boo
 
   vHand(BK_SUBPIPE, 0, bPrintHand, __func__);
 
+  m_pTransforms->vSetPrintByKind(CK_STREAM, true);
+
   m_pTransforms->vH30_T10_Calc_ordinalRange_ForAll_stream(bPrintXform, bTrace);
 
   vEndHand();

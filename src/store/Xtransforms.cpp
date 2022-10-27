@@ -203,18 +203,7 @@ void Xtransforms::vH20_T10_Add_tableSyn_ForAll_table(bool bPrint, bool bTrace)
   //M.pDeck->vDump();
 
   while (E_bEachMainWithSub(CK_TABLE,CK_TABLENM))  {
-
-    vREPLACE_WITH_RESHAPE();
-    m_pTable = A_pAccess_Table(M.p_tableNm->sz());
-
-    M.p_table->vMark1(MARK_CHANGED);
-    char cTableSyn_actual = m_cTableSyn;
-    if (m_pTable->bIsReplicated())
-      cTableSyn_actual = StrLib::cToUpper(cTableSyn_actual);
-
-    M.p_table->vValueSprint("%c"_Stz,cTableSyn_actual);
-
-    m_cTableSyn++;
+    vR_H20_T10_Add_tableSyn_ForAll_table();
   }
 
   vEndTransform();
@@ -233,14 +222,7 @@ void Xtransforms::vH20_T20_Add_tablePtn_UnderAll_table(bool bPrint, bool bTrace)
   vTracing(bPrint,bTrace);
 
   while (E_bEachMainWithSub(CK_TABLE,CK_TABLENM)) {
-
-    vREPLACE_WITH_RESHAPE();
-    m_pTable = A_pAccess_Table(M.p_tableNm->sz());
-    M.p_tablePtn = A_pProduce_tablePtn_ofTable(m_pTable,m_cTableSyn);
-
-    //N_vNewMember(CK_TABLEPTN);
-    //M.p_tablePtn->vAdd_TablePtn(M.p_table);
-    M.p_table->vAppend(M.p_tablePtn);
+    vR_H20_T20_Add_tablePtn_UnderAll_table();
   }
 
   vEndTransform();
@@ -260,34 +242,11 @@ void Xtransforms::vH20_T30_Add_stream_UnderAll_table(bool bPrint, bool bTrace)
 
   // E <scan>
   while (E_bEachMainWithSub(CK_TABLE,CK_TABLENM)) {
-
-    vREPLACE_WITH_RESHAPE();
-    m_pTable = A_pAccess_Table(M.p_tableNm->sz());
-    M.p_stream = A_pProduce_stream_ofTable(m_pTable);
-
-    M.p_table->vAppend(M.p_stream);
-
-
-    /*
-    // ? <scan>/<tablePtr>
-    if (! (M.p_tablePtr = M.p_table->pSub_tablePtr()))
-      continue;
-    // ? <scan>/<tablePtr>:pStreamDef
-    if (! (m_pStreamDef = M.p_tablePtr->pStreamDef()))
-      continue;
-
-    // + <scan>/<stream>
-    M.p_table->vAppend((M.p_stream = new Card_Stream));
-    // + <scan>/<stream>/<streamColList>
-    M.p_stream->vAppend((M.p_stmColList = new Card_StmColList(m_pStreamDef)));
-    */
+    vR_H20_T30_Add_stream_UnderAll_table();
   }
-
 
   vEndTransform();
   vPrintBoard();
-
-  vSetPrintByKind(CK_STREAM, true);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -111,6 +111,18 @@ void Xreshape::vR_H10_T50_Cull_scan_Leaving_table(void)
 void Xreshape::vR_H20_T10_Add_tableSyn_ForAll_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  m_pTable = A_pAccess_Table(M.p_tableNm->sz());
+
+  M.p_table->vMark1(MARK_CHANGED);
+  char cTableSyn_actual = m_cTableSyn;
+  if (m_pTable->bIsReplicated())
+    cTableSyn_actual = StrLib::cToUpper(cTableSyn_actual);
+
+  M.p_table->vValueSprint("%c"_Stz,cTableSyn_actual);
+
+  m_cTableSyn++;
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -119,6 +131,12 @@ void Xreshape::vR_H20_T10_Add_tableSyn_ForAll_table(void)
 void Xreshape::vR_H20_T20_Add_tablePtn_UnderAll_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  m_pTable = A_pAccess_Table(M.p_tableNm->sz());
+
+  M.p_tablePtn = A_pProduce_tablePtn_ofTable(m_pTable,m_cTableSyn);
+
+  M.p_table->vAppend(M.p_tablePtn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -127,7 +145,17 @@ void Xreshape::vR_H20_T20_Add_tablePtn_UnderAll_table(void)
 void Xreshape::vR_H20_T30_Add_stream_UnderAll_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  m_pTable = A_pAccess_Table(M.p_tableNm->sz());
+  M.p_stream = A_pProduce_stream_ofTable(m_pTable);
+
+  M.p_table->vAppend(M.p_stream);
 }
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*                                                   Stream Analysis Hand 30 */
+/*============================================================================*/
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
