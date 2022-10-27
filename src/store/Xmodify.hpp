@@ -28,6 +28,23 @@ namespace STORE
 
     void X_vSubCard_ReplaceSub(Card* pSub, Card* pInParent, Card* pWith);
 
+
+    // predicate pull-up
+    void vMarkPredLeftwards(Card_BoolCalc* p_bool, Card_Deck* p_deck);
+    void vMarkPredDrillDown(Card_PRED* p_pred, Card_Deck* p_deck);
+
+    char cMovePredLeftwards(Card_PRED* p_pred, Card_Deck* p_deck);
+    char cMovePredToTable(Card_Table* p_table, Card_PRED* p_pred);
+    bool bStreamContainsPred(Card_Stream* p_stream, Card_PRED* pCard_PRED);
+    void vCopyPredLeftwards(Card_BoolCalc* p_calcBool, Card_Deck* p_deck);
+    bool bCopyPredDrillDown(Card_PRED*, Card_BoolCalc* p_calcBool, Card_Deck* p_deck);
+    void vCopyPredToExistingFilter(Card_Filter* pCard_filter_existing, Card_PRED* pCard_pred);
+    void vCopyPredToNewFilter(Card_Filter* p_filter_new, Card_PRED* p_pred);
+
+    void vMarkPredAsMoved(Card* pPredCard);
+
+
+
     // must be last
     Footer m_xFooter;
 

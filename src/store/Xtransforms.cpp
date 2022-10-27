@@ -266,6 +266,8 @@ void Xtransforms::vH30_T10_Calc_ordinalRange_ForAll_stream(bool bPrint, bool bTr
   vTracing(bPrint,bTrace);
 
   while (E_bEachMain(CK_TABLE)) {
+    M.p_stream = M.p_table->pSub_stream();
+
     vR_H30_T10_Calc_ordinalRange_ForAll_stream();
   }
 
@@ -1035,7 +1037,6 @@ void Xtransforms::vH80_T20_Convert_idxCol_name_Of_scan_To_idxCol_ord(bool bPrint
     M.p_stream = M.p_scan->pSub_stream();
 
     vR_H80_T20_Convert_idxCol_name_Of_scan_To_idxCol_ord();
-
   }
 
   vEndTransform();
@@ -1053,7 +1054,6 @@ void Xtransforms::vH80_T30_Mark_scan_pred_bounds(bool bPrint, bool bTrace)
   vDescription("((replace with an explanation))"_Stz);
   vTransform(__func__);
   vTracing(bPrint,bTrace);
-
 
   while (E_bEachMainWithSub(CK_SCAN,CK_FILTER)) {
     vR_H80_T30_Mark_scan_pred_bounds();
@@ -1085,36 +1085,7 @@ void Xtransforms::vH80_T40_Mark_scan_filter_term_WhichMatchIndex(bool bPrint, bo
 
     M.p_idxColList->vDump();
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    auto bfPredBounds = [this](Card* pCard) {
-      Card_Term* p_term = _pCard_Term(pCard);
-
-      Stz* szTerm = p_term->sz();
-      if (!szTerm->bIsStreamColOrd())
-        return C_CONTINUE_RECURSION;
-
-      vTracer("Checking %s %s\n"_Stz,p_term->sz(),p_term->szBearing());
-
-      i8 i_IdxCol = C_UNKNOWN;
-
-      if (! (M.p_idxCol =
-                 _pCard_IdxCol(M.p_idxColList->pFindChild(CK_IDXCOL, szTerm, i_IdxCol))))
-        return C_CONTINUE_RECURSION;
-
-      vTracer("Matches %s.%lld // marked with I%lld\n"_Stz,
-              M.p_idxCol->pSub_idxColNm()->szValue(),i_IdxCol,i_IdxCol);
-
-      p_term->vMark1('I');
-      p_term->vMark2(i_IdxCol);
-      return C_CONTINUE_RECURSION;
-    };
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    vREPLACE_WITH_RESHAPE();
-
-    M.p_filter->vApplyRecursive(CK_TERM, bfPredBounds);
+    vR_H80_T40_Mark_scan_filter_term_WhichMatchIndex();
   }
 
   vEndTransform();
@@ -1135,60 +1106,7 @@ void Xtransforms::vH80_T50_Add_scanPred(bool bPrint, bool bTrace)
   M.p_bounds = nullptr;
 
   while (E_bEachMainWith2Sub(CK_SCAN,CK_FILTER,CK_INDEXLIST)) {
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    auto bfAdd = [this](Card* pCard) {
-      M.p_cmpPred = _pCard_CmpPred(pCard);
-      if (! ('L' == M.p_cmpPred->cMark1() || 'U' == M.p_cmpPred->cMark1()) )
-        return true;
-
-      vTracer("Testing %s\n"_Stz,M.p_cmpPred->szBearing());
-
-      if (! M.p_bounds) {
-        N_vNewMember(CK_BOUNDS);
-        //C_vAppendChild(CK_SCAN,CK_BOUNDS);
-        M.p_scan->vInsertBefore(M.p_bounds,M.p_filter);
-      }
-
-      if ('L' == M.p_cmpPred->cMark1()) {
-
-        M.p_lBound = M.p_bounds->pSub_lBound();
-        if (! M.p_lBound) {
-          N_vNewMember(CK_LBOUND);
-          C_vAppendChild(CK_BOUNDS,CK_LBOUND);
-        }
-        //m_pCard_dup = M.p_cmpPred->pDupCardAndSubCards();
-        C_vDuplicateMember(CK_CMPPRED);
-        StrLib::vInsertChar(m_pCard_dup->pGetChild(0)->sz()->azChar()+1,'I');
-        //M.p_lBound->vAppend(m_pCard_dup);
-        C_vAppendChild(CK_LBOUND,m_pCard_dup);
-        vTracer("Added cmpPred as lower-bound %s %s\n"_Stz,m_pCard_dup->sz(),m_pCard_dup->szBearing());
-      }
-      else
-      if ('U' == M.p_cmpPred->cMark1()) {
-        M.p_uBound = M.p_bounds->pSub_uBound();
-        if (! M.p_uBound) {
-          N_vNewMember(CK_UBOUND);
-          C_vAppendChild(CK_BOUNDS,CK_UBOUND);
-        }
-        //m_pCard_dup = M.p_cmpPred->pDupCardAndSubCards();
-        C_vDuplicateMember(CK_CMPPRED);
-        StrLib::vInsertChar(m_pCard_dup->pGetChild(0)->sz()->azChar()+1,'I');
-        //M.p_uBound->vAppend(m_pCard_dup);
-        C_vAppendChild(CK_UBOUND,m_pCard_dup);
-        vTracer("Added cmpPred as upper-bound %s %s\n"_Stz,m_pCard_dup->sz(),m_pCard_dup->szBearing());
-      }
-
-      return C_CONTINUE_RECURSION;
-    };
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    vREPLACE_WITH_RESHAPE();
-
-    M.p_filter->vApplyRecursive(CK_CMPPRED, bfAdd);
-
+    vR_H80_T50_Add_scanPred();
   }
 
   vEndTransform();

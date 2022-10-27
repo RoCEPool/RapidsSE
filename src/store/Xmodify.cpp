@@ -255,6 +255,282 @@ void Xmodify::X_vSubCard_ReplaceSub(Card* pSub, Card* pInParent, Card* pWith)
 }
 
 
+
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Predicate Pull-Up -------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* inspect all <filter> and attempt to assign <predCmp> after <scan>/<absJoin>*/
+/*----------------------------------------------------------------------------*/
+void Xmodify::vMarkPredLeftwards(Card_BoolCalc* p_bool, Card_Deck* p_deck)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  Card_PRED* p_pred = static_cast<Card_PRED*>(p_bool->pGetChild(0));
+
+  vMarkPredDrillDown(p_pred,p_deck);
+}
+
+/*----------------------------------------------------------------------------*/
+/* inspect all <filter> and attempt to move <pred> after <scan>/<absJoin>     */
+/*----------------------------------------------------------------------------*/
+void Xmodify::vMarkPredDrillDown(Card_PRED* p_pred, Card_Deck* p_deck)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  char cWhichTable = ' ';
+
+  eCK eCard = p_pred->eCard();
+
+
+  if (CK_ORPRED == eCard) {
+    p_pred->vMark1('|');
+    return;
+  }
+
+  if (CK_CMPPRED == eCard) {
+    p_pred->vMark1('?');
+    cWhichTable =
+        cMovePredLeftwards(p_pred,p_deck);
+    if (C_UNKNOWN != cWhichTable) {
+      p_pred->vMark1(MARK_ASSIGNED);
+      p_pred->vMark2(cWhichTable);
+    }
+    return;
+  }
+
+  i8 nSubCards = p_pred->nChildCards();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card *pSubCard = p_pred->pGetChild(i_Child);
+
+    vMarkPredDrillDown(static_cast<Card_PRED *>(pSubCard),p_deck);
+  }
+
+
+  if (CK_ANDPRED == eCard) {
+    p_pred->vMark1('&');
+    Card *pSubCard_0 = p_pred->pGetChild(0);
+    i8 iStream_0 = pSubCard_0->cMark2() - '0';
+
+    Card *pSubCard_1 = p_pred->pGetChild(1);
+    i8 iStream_1 = pSubCard_1->cMark2() - '0';
+
+    if (iStream_0 == iStream_1) {
+      p_pred->vMark1(MARK_ASSIGNED);
+      p_pred->vMark2(iStream_0);
+    }
+
+    return;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* inspect <PRED>                                                             */
+/*----------------------------------------------------------------------------*/
+char Xmodify::cMovePredLeftwards(Card_PRED* p_pred, Card_Deck* p_deck)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  i8 nAbsJoin = 0;
+  i8 nTable    = 0;
+  char cWhichTable = C_UNKNOWN;
+
+  //vTrace("iAssignPredLeft candidate %p\n"_Stz,p_pred);
+  //p_pred->vDump();
+
+  for (i8 i_Main = 0; /* none */ ; i_Main++) {
+    Card *pMainCard = p_deck->pGetChild(i_Main);
+
+    if (CK_WHERE == pMainCard->eCard())
+      return C_UNKNOWN;
+
+    eCK eMainCard = pMainCard->eCard();
+
+    if (CK_TABLE == eMainCard) {
+      nTable++;
+      cWhichTable = cMovePredToTable(_pCard_Table(pMainCard), p_pred);
+      if (C_UNKNOWN != cWhichTable)
+        return cWhichTable;
+      continue;
+    }
+
+    // skip over any other card??
+    vTrace("bMovePredLeft skipping mainCard %s\n"_Stz,aCK[eMainCard]);
+  }
+
+  NEVER_REACH;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+char Xmodify::cMovePredToTable(Card_Table* p_table, Card_PRED* p_pred)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  Card_Stream* p_stream = p_table->pSub_stream();
+
+  // are all $n of <pred> in this <stream>?
+  if (bStreamContainsPred(p_stream,p_pred)) {
+    char cTableSyn = p_table->cValue();
+    return cTableSyn;
+  }
+
+  return C_UNKNOWN;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is given <pred> within this stream?                                        */
+/*----------------------------------------------------------------------------*/
+bool Xmodify::bStreamContainsPred(Card_Stream* p_stream, Card_PRED* pCard_PRED)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  eCK ePredCard = pCard_PRED->eCard();
+
+  if (CK_TERM == ePredCard) {
+    Stz* szTerm = pCard_PRED->sz();
+    if (!szTerm->bIsStreamColOrd())
+      return true;
+
+    i8 iOrdLo = p_stream->Y_iVal(P_OrdLo);
+    i8 iOrdHi = p_stream->Y_iVal(P_OrdHi);
+
+    i8 iOrd = szTerm->iOrdinal();
+    if (iOrd > iOrdHi)
+      return false;
+  }
+
+  i8 nSubCards = pCard_PRED->nChildCards();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card *pSubCard = pCard_PRED->pGetChild(i_Child);
+
+    if (! bStreamContainsPred(p_stream,static_cast<Card_PRED*>(pSubCard)))
+      return false;
+  }
+
+  return true;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* inspect all <filter> and attempt to assign <predCmp> after <scan>/<absJoin>*/
+/*----------------------------------------------------------------------------*/
+void Xmodify::vCopyPredLeftwards(Card_BoolCalc* p_calcBool, Card_Deck* p_deck)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  while (p_calcBool->nChildCards()) {
+    Card_PRED* p_pred = static_cast<Card_PRED*>(p_calcBool->pGetChild(0));
+    bool bSubRemoved = bCopyPredDrillDown(p_pred,p_calcBool,p_deck);
+    if (! bSubRemoved)
+      break;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* inspect all <filter> and attempt to move <pred> after <scan>/<absJoin>     */
+/*----------------------------------------------------------------------------*/
+bool Xmodify::bCopyPredDrillDown(Card_PRED* pCard_pred, Card_BoolCalc* p_calcBool, Card_Deck* p_deck)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  if (MARK_ASSIGNED == pCard_pred->cMark1()) {
+    Card* pMainCard;
+//    i8 iStream = pCard_pred->iMark2();
+//    Card_Stream* pCard_stream = m_pBoard->pFindStreamCard(iStream,pMainCard);
+    char cTableSyn = pCard_pred->cMark2();
+    Card_Table* pCard_table = p_deck->pFindTableCard(cTableSyn, pMainCard);
+
+    Card_Filter* pCard_filter_existing = pMainCard->pSub_filter();
+
+    if (pCard_filter_existing) {
+      pCard_filter_existing->vMark1(pCard_table->cMark1());
+      pCard_filter_existing->vMark2(pCard_table->cMark2());
+      vCopyPredToExistingFilter(pCard_filter_existing,pCard_pred);
+    }
+    else {
+      Card_Filter* pCard_filter_new = new Card_Filter;
+      pCard_filter_new->vMark1(pCard_table->cMark1());
+      pCard_filter_new->vMark2(pCard_table->cMark2());
+      pMainCard->vAppend(pCard_filter_new);
+      vCopyPredToNewFilter(pCard_filter_new,pCard_pred);
+    }
+
+    //pCard_stream->vMark1('#');
+
+
+    X_vBoolCalc_RemovePred(p_calcBool, pCard_pred);
+
+    return true;
+  }
+
+  i8 nSubCards = pCard_pred->nChildCards();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card *pSubCard = pCard_pred->pGetChild(i_Child);
+
+    bool bRemoved = bCopyPredDrillDown(static_cast<Card_PRED *>(pSubCard), p_calcBool,p_deck);
+    if (bRemoved)
+      return true;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* inspect all <filter> and attempt to move <pred> after <scan>/<absJoin>     */
+/*----------------------------------------------------------------------------*/
+void Xmodify::vCopyPredToExistingFilter(Card_Filter* pCard_filter_existing, Card_PRED* pCard_pred)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  Card_BoolCalc* pCard_calcBool = pCard_filter_existing->pSub_boolCalc();
+
+  Card* pCard_top = pCard_calcBool->pPop();
+
+  Card_AndPred* pCard_predAnd = new Card_AndPred;
+  pCard_predAnd->vAppend(pCard_top);
+  pCard_predAnd->vAppend(pCard_pred);
+
+  pCard_calcBool->vAppend(pCard_predAnd);
+}
+
+/*----------------------------------------------------------------------------*/
+/* inspect all <filter> and attempt to move <pred> after <scan>/<absJoin>     */
+/*----------------------------------------------------------------------------*/
+void Xmodify::vCopyPredToNewFilter(Card_Filter* p_filter_new, Card_PRED* p_pred)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  Card_BoolCalc* p_calcBool = new Card_BoolCalc;
+  p_filter_new->vAppend(p_calcBool);
+
+  p_calcBool->vAppend(p_pred);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xmodify::vMarkPredAsMoved(Card* pPredCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  i8 nSubCards = pPredCard->nChildCards();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card *pSubCard = pPredCard->pGetChild(i_Child);
+
+    //eCK eSubCard = pSubCard->eCard();
+
+    // mark the
+
+    vMarkPredAsMoved(pSubCard);
+  }
+}
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
