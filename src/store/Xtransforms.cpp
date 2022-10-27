@@ -1113,18 +1113,9 @@ void Xtransforms::vH90_T10_Remove_sort_IfSameAs_gby(bool bPrint, bool bTrace)
   vTracing(bPrint,bTrace);
 
   while (G_bEachMain(CK_SORT)) {
-
     if (! G_bHasPriorToMainIf(CK_AGGREG, C_UPDATE_MEMBER))
-      return;
-
-    M.p_gbyElist = M.p_aggreg->pSub_gbyElist();
-    M.p_sbyElist = M.p_sort->pSub_sbyElist();
-
-    // TODO: needs to be a T_ test
-    if (M.p_gbyElist->bValuesSameRecursive(M.p_sbyElist)) {
-      vR_H90_T10_Remove_sort_IfSameAs_gby();
       break;
-    }
+    vR_H90_T10_Remove_sort_IfSameAs_gby();
   }
 
   vEndTransform();

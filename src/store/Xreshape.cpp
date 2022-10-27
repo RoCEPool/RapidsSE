@@ -672,7 +672,6 @@ void Xreshape::vR_H70_T90_Setup_costEst(void)
     if (CK_PERMUTATION == M.p_MainCard->eCard())
       break;
 
-
     M.pDeck->vRemoveChild(M.p_MainCard);
     delete M.p_MainCard;
   }
@@ -1097,6 +1096,13 @@ void Xreshape::vR_H80_T70_Promote_scan_To_indexScan_c(void)
 void Xreshape::vR_H90_T10_Remove_sort_IfSameAs_gby(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  M.p_gbyElist = M.p_aggreg->pSub_gbyElist();
+  M.p_sbyElist = M.p_sort->pSub_sbyElist();
+
+  // TODO: needs to be a T_ test
+  if (! M.p_gbyElist->bValuesSameRecursive(M.p_sbyElist))
+    return;
 
   G_vRemoveDeleteMain(CK_SORT);
 }
