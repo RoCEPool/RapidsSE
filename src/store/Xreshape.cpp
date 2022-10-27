@@ -186,18 +186,20 @@ void Xreshape::vR_H30_T10_Calc_ordinalRange_ForAll_stream(void)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-/*                                                  Predicate Pulluo Hand 40 */
+/*                                                   Predicate Pullup Hand 40 */
 /*============================================================================*/
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xreshape::vR_H40_T10_Convert_where_calc_To_where_calcBool(void)
+void Xreshape::vR_H40_T10_Convert_where_rpnCalc_To_calcBool(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   M.p_boolCalc = X_pConvert_rpnCalc_To_boolCalc(M.p_rpnCalc);
-  X_vSubCard_ReplaceSub(M.p_rpnCalc, M.p_where, M.p_boolCalc);
+
+  M.p_where->vReplaceSubCard(M.p_rpnCalc,M.p_boolCalc);
+
   G_vDeleteMember(M.p_rpnCalc);
 }
 
@@ -218,7 +220,7 @@ void Xreshape::vR_H40_T30_Move_Marked_where_pred_To_table_filter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  vPullUp_CopyPredLeftwards(M.p_boolCalc, M.pDeck);
+  vPullUp_MovePredLeftwards(M.p_boolCalc, M.pDeck);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -339,7 +341,7 @@ void Xreshape::vR_H60_T20_Convert_idxCol_name_Of_table_To_idxCol_ord(void)
   M.p_stmColList = M.p_table->pSub_stmColList();
   M.p_idxColList = M.p_indexJoin->pSub_idxColList();
 
-  X_vIdxColList_Ordinate(M.p_idxColList, M.p_stream);
+  M_vIdxColList_Ordinate(M.p_idxColList, M.p_stream);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -400,7 +402,7 @@ void Xreshape::vR_H60_T40_Cull_filter_pred_MovedUpTo_joinPred(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  X_vBoolCalc_CullPred(M.p_boolCalc, MARK_UPWARDS);
+  M_vBoolCalc_CullPred(M.p_boolCalc, MARK_UPWARDS);
 
 }
 
@@ -878,7 +880,7 @@ void Xreshape::vR_H80_T20_Convert_idxCol_name_Of_scan_To_idxCol_ord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  X_vIdxColList_Ordinate(M.p_idxColList, M.p_stream);
+  M_vIdxColList_Ordinate(M.p_idxColList, M.p_stream);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -892,7 +894,7 @@ void Xreshape::vR_H80_T30_Mark_scan_pred_bounds(void)
 
   auto bfMarkPredBounds = [this](Card* pCard) {
     Card_CmpPred* p_cmpPred = _pCard_CmpPred(pCard);
-    T_vCmpPred_MarkBound(p_cmpPred);
+    M_vCmpPred_MarkBound(p_cmpPred);
     return C_CONTINUE_RECURSION;
   };
 
@@ -1005,8 +1007,8 @@ void Xreshape::vR_H80_T60_Cull_Marked_cmpPred(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   vTracer("Culling <filter> of L & U bounds %s\n"_Stz,M.p_filter->szBearing());
-  X_vFilter_CullPred(M.p_filter, 'L');
-  X_vFilter_CullPred(M.p_filter, 'U');
+  M_vFilter_CullPred(M.p_filter, 'L');
+  M_vFilter_CullPred(M.p_filter, 'U');
 
   //M.p_filter->vDump();
   if (!X_bFilter_IsEmptyFilter(M.p_filter))

@@ -1418,6 +1418,19 @@ void Card::vRenumberRecursive(Card* pParent)
 }
 
 /*----------------------------------------------------------------------------*/
+/* replace subCard                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vReplaceSubCard(Card* pSub, Card* pWith)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card* pParent = pFindParent(pSub);
+
+  pParent->vReplaceChild(pSub,pWith);
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this card's value the same as given arg?                                */
 /*----------------------------------------------------------------------------*/
 bool Card::bSame(Stz* szArg)

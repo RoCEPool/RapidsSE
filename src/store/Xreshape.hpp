@@ -24,7 +24,7 @@ namespace STORE
     void vR_H20_T20_Add_tablePtn_UnderAll_table(void);
     void vR_H20_T30_Add_stream_UnderAll_table(void);
     void vR_H30_T10_Calc_ordinalRange_ForAll_stream(void);
-    void vR_H40_T10_Convert_where_calc_To_where_calcBool(void);
+    void vR_H40_T10_Convert_where_rpnCalc_To_calcBool(void);
     void vR_H40_T20_Mark_where_pred_Wrt_table(void);
     void vR_H40_T30_Move_Marked_where_pred_To_table_filter(void);
     void vR_H40_T40_Delete_Empty_where(void);

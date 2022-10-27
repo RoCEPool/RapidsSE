@@ -273,6 +273,7 @@ namespace STORE
     void vPropertiesEnsure(void);
 
     void vRenumberRecursive(Card* pParent=nullptr);
+    void vReplaceSubCard(Card* pSub, Card* pWith);
 
     bool bSame(Stz* szArg);
 

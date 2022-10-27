@@ -292,7 +292,7 @@ void Xtransforms::vH40_T10_Convert_where_calc_To_where_calcBool(bool bPrint, boo
   vTracing(bPrint,bTrace);
 
   while (G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
-    vR_H40_T10_Convert_where_calc_To_where_calcBool();
+    vR_H40_T10_Convert_where_rpnCalc_To_calcBool();
   }
 
   vEndTransform();
