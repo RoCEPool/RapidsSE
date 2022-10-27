@@ -46,7 +46,7 @@ void Xreshape::vR_H10_T10_Delete_Redundant_stage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  E_vRemoveDeleteMain(CK_STAGE);
+  G_vRemoveDeleteMain(CK_STAGE);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -66,7 +66,7 @@ void Xreshape::vR_H10_T20_Delete_absJoin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  E_vRemoveDeleteMain(CK_ABSJOIN);
+  G_vRemoveDeleteMain(CK_ABSJOIN);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -76,7 +76,7 @@ void Xreshape::vR_H10_T30_Delete_combined(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  E_vRemoveDeleteMain(CK_COMBINED);
+  G_vRemoveDeleteMain(CK_COMBINED);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -86,7 +86,7 @@ void Xreshape::vR_H10_T40_Delete_send(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  E_vRemoveDeleteMain(CK_SEND);
+  G_vRemoveDeleteMain(CK_SEND);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -229,7 +229,7 @@ void Xreshape::vR_H40_T40_Delete_Empty_where(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   if (0 == M.p_boolCalc->nChildCards()) {
-    E_vRemoveDeleteMain(CK_WHERE);
+    G_vRemoveDeleteMain(CK_WHERE);
   }
 }
 
@@ -1063,7 +1063,7 @@ void Xreshape::vR_H90_T10_Remove_sort_IfSameAs_gby(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  E_vRemoveDeleteMain(CK_SORT);
+  G_vRemoveDeleteMain(CK_SORT);
 }
 
 /*----------------------------------------------------------------------------*/

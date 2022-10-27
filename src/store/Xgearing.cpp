@@ -515,43 +515,6 @@ void Xgearing::G_vDuplicateMember(eCK eMember)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xgearing::G_vRemoveChild(eCK eParent, eCK eChild)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xgearing::G_vRemoveDeleteChild(eCK eParent, eCK eChild)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xgearing::G_vRemoveDeleteMain(eCK eMain)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Xgearing::G_vPromoteChildren(eCK eParent)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-}
-
-
-/*----------------------------------------------------------------------------*/
 /* delete member of given kind; clear-if registers; update M member to null   */
 /*----------------------------------------------------------------------------*/
 void Xgearing::G_vDeleteMember(eCK eMember)
@@ -736,7 +699,7 @@ void Xgearing::G_vRemoveMain(eCK eCrossCheck)
 /*----------------------------------------------------------------------------*/
 /* remove ain card from deck and delete it; clear M member to null            */
 /*----------------------------------------------------------------------------*/
-void Xgearing::E_vRemoveDeleteMain(eCK eCrossCheck)
+void Xgearing::G_vRemoveDeleteMain(eCK eCrossCheck)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 

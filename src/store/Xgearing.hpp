@@ -111,10 +111,6 @@ namespace STORE
     void G_vAppendChild(eCK eParent, eCK eChild);
     void G_vAppendChild(eCK eParent, Card* pChild);
     void G_vDuplicateMember(eCK eMember);
-    void G_vRemoveChild(eCK eParent, eCK eChild);
-    void G_vRemoveDeleteChild(eCK eParent, eCK eChild);
-    void G_vRemoveDeleteMain(eCK eMain);
-    void G_vPromoteChildren(eCK eParent);
 
     void G_vDeleteMember(eCK eMember);
     void G_vDeleteMember(Card* pMember);
@@ -127,7 +123,7 @@ namespace STORE
     i8   G_i_Main(void);
     bool G_bMoreMain(void);
     void G_vRemoveMain(eCK eCrossCheck);
-    void E_vRemoveDeleteMain(eCK eCrossCheck);
+    void G_vRemoveDeleteMain(eCK eCrossCheck);
     void G_vSkipNextMain(bool bClearMembers=false, bool bClearRegisters=false);
     bool G_bSubsequentToMain(bool bUpdateMember = false);
     void G_vSubsequentToMain(bool bUpdateMember = false);
