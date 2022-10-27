@@ -81,7 +81,7 @@ void Xderive::X_vJoinOrderSeq_ExtractJoinOrder(Card_JoinOrderSeq* p_joinOrderSeq
 
       Card_ColumnRef* p_columnRef = _pCard_ColumnRef(pChild);
       s32 sTableSyn;
-      G_vColumnRef_TableSyn_x(p_columnRef, sTableSyn);
+      E_vColumnRef_TableSyn_x(p_columnRef, sTableSyn);
 
       if (p_joinOrderSeq->bHasChildWithValue(sTableSyn))
         continue;

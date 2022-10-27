@@ -92,7 +92,7 @@ Card_BoolCalc* Xcreate::C_pConvert_rpnCalc_To_boolCalc(Card_RpnCalc* p_rpnCalc)
   while (p_rpnCalc->nChildCards()) {
     Card_Term* p_term = _pCard_Term(p_rpnCalc->pPop());
 
-    eTE eTopTerm = G_eTerm_TermEval(p_term);
+    eTE eTopTerm = E_eTerm_TermEval(p_term);
     switch (eTopTerm) {
 
       case TE_AND:
