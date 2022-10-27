@@ -543,6 +543,11 @@ void Xreshape::vR_H70_T99_Convert_table_To_scan_Or_indexJoin(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*                                                        Index Scan Hand 80 */
+/*============================================================================*/
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Xreshape::vR_H80_T10_Insert_indexList_ToAll_scan(void)
@@ -615,11 +620,19 @@ void Xreshape::vR_HA0_T10_Individuate_filter(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*                                                  Restate Pipeline Hand Z0 */
+/*============================================================================*/
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Xreshape::vR_HZ0_T10_Reinstate_stages(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  m_pCard_dup = M.p_stage->pDupCardAndSubCards();
+  M.pDeck->vInsertAfter(m_pCard_dup, M.p_MainCard);\
 }
 
 /*----------------------------------------------------------------------------*/
@@ -628,6 +641,9 @@ void Xreshape::vR_HZ0_T10_Reinstate_stages(void)
 void Xreshape::vR_HZ0_T20_Reinstate_combined(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  M.p_combined = new Card_Combined;
+  M.pDeck->vInsertAfter(M.p_combined, M.p_MainCard);
 }
 
 

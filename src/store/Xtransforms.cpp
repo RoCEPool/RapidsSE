@@ -1678,10 +1678,7 @@ void Xtransforms::vHZ0_T10_Reinstate_stages(bool bPrint, bool bTrace)
         (CK_PROJECT == M.e_SubsequentToMain || CK_FILTER == M.e_SubsequentToMain))
       continue;
 
-    vREPLACE_WITH_RESHAPE();
-
-    m_pCard_dup = M.p_stage->pDupCardAndSubCards();
-    M.pDeck->vInsertAfter(m_pCard_dup, M.p_MainCard);
+    vR_HZ0_T10_Reinstate_stages();
   }
 
   i8 i_Stage = 1;
@@ -1720,10 +1717,8 @@ void Xtransforms::vHZ0_T20_Reinstate_combined(bool bPrint, bool bTrace)
            CK_SORT      == M.e_MainCard))
       continue;
 
-    vREPLACE_WITH_RESHAPE();
+    vR_HZ0_T20_Reinstate_combined();
 
-    M.p_combined = new Card_Combined;
-    M.pDeck->vInsertAfter(M.p_combined, M.p_MainCard);
     E_vSkipNextMain();
   }
 
