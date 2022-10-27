@@ -458,14 +458,14 @@ bool Xmodify::bPullUp_CopyPredDrillDown(Card_PRED* pCard_pred,
     if (pCard_filter_existing) {
       pCard_filter_existing->vMark1(pCard_table->cMark1());
       pCard_filter_existing->vMark2(pCard_table->cMark2());
-      vPullUp_CopyPredToExistingFilter(pCard_filter_existing, pCard_pred);
+      vPullUp_CopyPredToFilter(pCard_filter_existing, pCard_pred);
     }
     else {
       Card_Filter* pCard_filter_new = new Card_Filter;
       pCard_filter_new->vMark1(pCard_table->cMark1());
       pCard_filter_new->vMark2(pCard_table->cMark2());
       pMainCard->vAppend(pCard_filter_new);
-      vPullUp_CopyPredToNewFilter(pCard_filter_new, pCard_pred);
+      vPullUp_CopyPredToFilter(pCard_filter_new, pCard_pred);
     }
 
     //pCard_stream->vMark1('#');
@@ -486,6 +486,19 @@ bool Xmodify::bPullUp_CopyPredDrillDown(Card_PRED* pCard_pred,
   }
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* inspect all <filter> and attempt to move <pred> after <scan>/<absJoin>     */
+/*----------------------------------------------------------------------------*/
+void Xmodify::vPullUp_CopyPredToFilter(Card_Filter* p_filter, Card_PRED* p_pred)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  if (p_filter->nChildCards())
+    vPullUp_CopyPredToExistingFilter(p_filter,p_pred);
+  else
+    vPullUp_CopyPredToNewFilter(p_filter,p_pred);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -41,6 +41,7 @@ namespace STORE
     bool bPullUp_CopyPredDrillDown(Card_PRED*, Card_BoolCalc* p_calcBool, Card_Deck* p_deck);
     void vPullUp_CopyPredToExistingFilter(Card_Filter* p_filter_existing, Card_PRED* pCard_pred);
     void vPullUp_CopyPredToNewFilter(Card_Filter* p_filter_new, Card_PRED* p_pred);
+    void vPullUp_CopyPredToFilter(Card_Filter* p_filter, Card_PRED* p_pred);
 
     // must be last
     Footer m_xFooter;
