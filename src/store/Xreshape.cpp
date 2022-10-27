@@ -476,7 +476,7 @@ void Xreshape::vR_H70_T30_Compute_coPtnJoinList(void)
 
     M.p_subSet = M.p_coPtnPred->pDupSubCards();
 
-    if (! (M.p_coPtnJoin = X_pCoPtnJoinList_Find_coPtn_for(M.p_coPtnJoinList, M.p_coPtnPred)) ) {
+    if (! (M.p_coPtnJoin = T_pCoPtnJoinList_Find_coPtn_for(M.p_coPtnJoinList, M.p_coPtnPred)) ) {
       M.p_coPtnJoin = new Card_CoPtnJoin;
       M.p_coPtnJoinList->vAppend(M.p_coPtnJoin);
     }
@@ -506,7 +506,7 @@ void Xreshape::vR_H70_T40_Compute_crossPtnJoinList(void)
         _pCard_CmpPred(M.p_joinPredList->pGetChild(i_Child));
 
 
-    if (X_bCoPtnJoinList_HasEqPredCmp(M.p_coPtnJoinList, M.p_cmpPred))
+    if (T_bCoPtnJoinList_HasEqPredCmp(M.p_coPtnJoinList, M.p_cmpPred))
       continue;
 
     M.p_crossPtnJoin = new Card_CrossPtnJoin;
@@ -589,7 +589,7 @@ void Xreshape::vR_H70_T70_Generate_ptndPermutations(void)
       M.pDeck->vAppendMain(m_pCard_child->pDupCardAndSubCards());
 
       M.p_ptndJoin = _pCard_PtndJoin(m_pCard_child);
-      if (!X_bPtndJoin_MayFollowAfter(M.p_ptndJoin, M.p_subSet)) {
+      if (!T_bPtndJoin_MayFollowAfter(M.p_ptndJoin, M.p_subSet)) {
         M.pDeck->vAppendMain(new Card_Comment("**DOESN'T FOLLOW**"_Stz));
         M.p_permutation->Y_vSet(P_Invalid);
         break;
@@ -1011,7 +1011,7 @@ void Xreshape::vR_H80_T60_Cull_Marked_cmpPred(void)
   M_vFilter_CullPred(M.p_filter, 'U');
 
   //M.p_filter->vDump();
-  if (!X_bFilter_IsEmptyFilter(M.p_filter))
+  if (!T_bFilter_IsEmpty(M.p_filter))
     return;
 
   vTracer("Deleting empty <filter> %s\n"_Stz,M.p_filter->szBearing());

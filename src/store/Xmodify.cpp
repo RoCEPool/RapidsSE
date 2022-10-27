@@ -188,7 +188,7 @@ void Xmodify::M_vIdxColList_Ordinate(Card_IdxColList* p_idxColList, Card_Stream*
     i8 i_StreamColNo = C_UNKNOWN;
     Stz* szColNm = pCard_idxCol->sz();
     Card_StmCol* pCard_streamCol =
-        X_pStmColList_Find_streamCol(pCard_StreamColList, szColNm, i_StreamColNo);
+        T_pStmColList_Find_streamCol(pCard_StreamColList, szColNm, i_StreamColNo);
 
     s32 sOrdinal;
     sOrdinal.vSprint("$%lld"_Stz,iOrdLo+i_StreamColNo);

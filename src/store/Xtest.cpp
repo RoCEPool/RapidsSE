@@ -57,88 +57,6 @@ bool Xtest::T_bColumnRef_IsColumnRef(Card_ColumnRef* p_columnRef)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is term an index-column ordinal?  (i.e. $In)                               */
-/*----------------------------------------------------------------------------*/
-bool Xtest::T_bTerm_IsIndexColOrdinal(Card_Term* p_term)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  Stz* szTerm = p_term->szValue();
-
-  char acFirst  = szTerm->azChar()[0];
-  char acSecond = szTerm->azChar()[1];
-  char acThird  = szTerm->azChar()[2];
-
-  if ('$' == acFirst && ('I' == acSecond || 'i' == acSecond)
-      && StrLib::bIsDigit(acThird))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is term a parameter ordinal?  (i.e. $Pn)                                   */
-/*----------------------------------------------------------------------------*/
-bool Xtest::T_bTerm_IsParamOrdinal(Card_Term* p_term)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  Stz* szTerm = p_term->szValue();
-
-  char acFirst  = szTerm->azChar()[0];
-  char acSecond = szTerm->azChar()[1];
-  char acThird  = szTerm->azChar()[2];
-
-  if ('$' == acFirst && ('P' == acSecond || 'p' == acSecond)
-      && StrLib::bIsDigit(acThird))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is term a stream-column ordinal?  (i.e. $n)                                */
-/*----------------------------------------------------------------------------*/
-bool Xtest::T_bTerm_IsStreamColOrdinal(Card_Term* p_term)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  Stz* szTerm = p_term->szValue();
-
-  char acFirst  = szTerm->azChar()[0];
-  char acSecond = szTerm->azChar()[1];
-
-  if ('$' == acFirst && StrLib::bIsDigit(acSecond))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is term an table-column ordinal?  (i.e. $$c.n)                             */
-/*----------------------------------------------------------------------------*/
-bool Xtest::T_bTerm_IsTableColOrdinal(Card_Term* p_term)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
-
-  Stz* szTerm = p_term->szValue();
-
-  char acFirst  = szTerm->azChar()[0];
-  char acSecond = szTerm->azChar()[1];
-  char acThird  = szTerm->azChar()[2];
-  char acFourth = szTerm->azChar()[3];
-  char acFifth  = szTerm->azChar()[4];
-
-  if ('$' == acFirst && '$' == acSecond
-      && StrLib::bIsAlpha(acThird)
-      && '.' == acFourth
-      && StrLib::bIsDigit(acFifth))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* does orPred have some bound on given index?                                */
 /*----------------------------------------------------------------------------*/
 bool Xtest::T_bOrPred_HasBounds(Card_OrPred* p_orPred, Index* pIndex)
@@ -155,7 +73,6 @@ bool Xtest::T_bOrPred_HasBounds(Card_OrPred* p_orPred, Index* pIndex)
 
   return false;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* does this andPred have some bound on index?                                */
@@ -196,7 +113,6 @@ bool Xtest::T_bCmpPred_HasBounds(Card_CmpPred* p_cmpPred, Index* pIndex)
 
   return true;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* does predicate have some bound wrt given index?                            */
@@ -279,7 +195,6 @@ Card_CmpPred* Xtest::T_pPRED_FindBound(Card_PRED* p_PRED, Index* pIndex,
 
   return nullptr;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* find a comparePred which is the G_eTerm_Bound of given index                 */
@@ -437,7 +352,6 @@ bool Xtest::T_bCmpPred_OverlapsWith(Card_CmpPred* p_cmpPred, Card_CmpPred* p_Pre
   return false;
 }
 
-
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
@@ -459,7 +373,7 @@ bool Xtest::T_bCmpPred_UsesTable(Card_CmpPred* p_cmpPred, char cTableSyn)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtest::X_bCoPtnJoin_CoPtnWith(Card_CoPtnJoin* p_coPtnJoin, Card_CoPtnPred* p_CoPtnPred)
+bool Xtest::T_bCoPtnJoin_CoPtnWith(Card_CoPtnJoin* p_coPtnJoin, Card_CoPtnPred* p_CoPtnPred)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -475,7 +389,7 @@ bool Xtest::X_bCoPtnJoin_CoPtnWith(Card_CoPtnJoin* p_coPtnJoin, Card_CoPtnPred* 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_CoPtnJoin* Xtest::X_pCoPtnJoinList_Find_coPtn_for(Card_CoPtnJoinList* p_coPtnJoinList, Card_CoPtnPred* p_coPtnPred)
+Card_CoPtnJoin* Xtest::T_pCoPtnJoinList_Find_coPtn_for(Card_CoPtnJoinList* p_coPtnJoinList, Card_CoPtnPred* p_coPtnPred)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -483,7 +397,7 @@ Card_CoPtnJoin* Xtest::X_pCoPtnJoinList_Find_coPtn_for(Card_CoPtnJoinList* p_coP
   for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
     Card_CoPtnJoin* p_coPtnJoin = _pCard_CoPtnJoin(p_coPtnJoinList->pGetChild(i_Child));
 
-    if (X_bCoPtnJoin_CoPtnWith(p_coPtnJoin, p_coPtnPred))
+    if (T_bCoPtnJoin_CoPtnWith(p_coPtnJoin, p_coPtnPred))
       return p_coPtnJoin;
   }
 
@@ -493,7 +407,7 @@ Card_CoPtnJoin* Xtest::X_pCoPtnJoinList_Find_coPtn_for(Card_CoPtnJoinList* p_coP
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtest::X_bCoPtnJoinList_HasEqPredCmp(Card_CoPtnJoinList* p_coPtnJoinList, Card_CmpPred* p_predCmp)
+bool Xtest::T_bCoPtnJoinList_HasEqPredCmp(Card_CoPtnJoinList* p_coPtnJoinList, Card_CmpPred* p_predCmp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -517,7 +431,7 @@ bool Xtest::X_bCoPtnJoinList_HasEqPredCmp(Card_CoPtnJoinList* p_coPtnJoinList, C
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtest::X_bPtndJoin_MayFollowAfter(Card_PtndJoin* p_ptndJoin, Card_SubSet* pPriorPtnJoins_sofar)
+bool Xtest::T_bPtndJoin_MayFollowAfter(Card_PtndJoin* p_ptndJoin, Card_SubSet* pPriorPtnJoins_sofar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -552,9 +466,9 @@ bool Xtest::X_bPtndJoin_MayFollowAfter(Card_PtndJoin* p_ptndJoin, Card_SubSet* p
 /*----------------------------------------------------------------------------*/
 /* is given <pred> within this stream?                                        */
 /*----------------------------------------------------------------------------*/
-Card_StmCol* Xtest::X_pStmColList_Find_streamCol(Card_StmColList* p_stmColList,
-                                                    Stz *szColNm,
-                                                    i8& i_StreamColNo)
+Card_StmCol* Xtest::T_pStmColList_Find_streamCol(Card_StmColList* p_stmColList,
+                                                 Stz *szColNm,
+                                                 i8& i_StreamColNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -583,7 +497,7 @@ Card_StmCol* Xtest::X_pStmColList_Find_streamCol(Card_StmColList* p_stmColList,
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtest::X_bTableList_PredCmpIsCoPtn(Card_TableList* p_tableList, Card_CmpPred* p_predCmp)
+bool Xtest::T_bTableList_PredCmpIsCoPtn(Card_TableList* p_tableList, Card_CmpPred* p_predCmp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -601,11 +515,11 @@ bool Xtest::X_bTableList_PredCmpIsCoPtn(Card_TableList* p_tableList, Card_CmpPre
   if (StrLib::bIsUpperCase(cTableSyn_0) || StrLib::bIsUpperCase(cTableSyn_1))
     return true;
 
-  Card_Table* p_table_0 = X_pTableList_FindTable(p_tableList, cTableSyn_0);
+  Card_Table* p_table_0 = T_pTableList_FindTable(p_tableList, cTableSyn_0);
   Card_TablePtn* p_tablePtn_0 = p_table_0->pSub_tablePtn();
   Stz* szTablePtn_0 = p_tablePtn_0->sz();
 
-  Card_Table* p_table_1 = X_pTableList_FindTable(p_tableList, cTableSyn_1);
+  Card_Table* p_table_1 = T_pTableList_FindTable(p_tableList, cTableSyn_1);
   Card_TablePtn* p_tablePtn_1 = p_table_1->pSub_tablePtn();
   Stz* szTablePtn_1 = p_tablePtn_1->sz();
 
@@ -618,7 +532,7 @@ bool Xtest::X_bTableList_PredCmpIsCoPtn(Card_TableList* p_tableList, Card_CmpPre
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Table* Xtest::X_pTableList_FindTable(Card_TableList* p_tableList, char cSyn)
+Card_Table* Xtest::T_pTableList_FindTable(Card_TableList* p_tableList, char cSyn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -637,11 +551,10 @@ Card_Table* Xtest::X_pTableList_FindTable(Card_TableList* p_tableList, char cSyn
   return nullptr;
 }
 
-
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Xtest::X_bFilter_IsEmptyFilter(Card_Filter* p_filter)
+bool Xtest::T_bFilter_IsEmpty(Card_Filter* p_filter)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -654,6 +567,87 @@ bool Xtest::X_bFilter_IsEmptyFilter(Card_Filter* p_filter)
   return false;
 }
 
+/*----------------------------------------------------------------------------*/
+/* is term an index-column ordinal?  (i.e. $In)                               */
+/*----------------------------------------------------------------------------*/
+bool Xtest::T_bTerm_IsIndexColOrdinal(Card_Term* p_term)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  Stz* szTerm = p_term->szValue();
+
+  char acFirst  = szTerm->azChar()[0];
+  char acSecond = szTerm->azChar()[1];
+  char acThird  = szTerm->azChar()[2];
+
+  if ('$' == acFirst && ('I' == acSecond || 'i' == acSecond)
+      && StrLib::bIsDigit(acThird))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is term a parameter ordinal?  (i.e. $Pn)                                   */
+/*----------------------------------------------------------------------------*/
+bool Xtest::T_bTerm_IsParamOrdinal(Card_Term* p_term)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  Stz* szTerm = p_term->szValue();
+
+  char acFirst  = szTerm->azChar()[0];
+  char acSecond = szTerm->azChar()[1];
+  char acThird  = szTerm->azChar()[2];
+
+  if ('$' == acFirst && ('P' == acSecond || 'p' == acSecond)
+      && StrLib::bIsDigit(acThird))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is term a stream-column ordinal?  (i.e. $n)                                */
+/*----------------------------------------------------------------------------*/
+bool Xtest::T_bTerm_IsStreamColOrdinal(Card_Term* p_term)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  Stz* szTerm = p_term->szValue();
+
+  char acFirst  = szTerm->azChar()[0];
+  char acSecond = szTerm->azChar()[1];
+
+  if ('$' == acFirst && StrLib::bIsDigit(acSecond))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is term an table-column ordinal?  (i.e. $$c.n)                             */
+/*----------------------------------------------------------------------------*/
+bool Xtest::T_bTerm_IsTableColOrdinal(Card_Term* p_term)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  Stz* szTerm = p_term->szValue();
+
+  char acFirst  = szTerm->azChar()[0];
+  char acSecond = szTerm->azChar()[1];
+  char acThird  = szTerm->azChar()[2];
+  char acFourth = szTerm->azChar()[3];
+  char acFifth  = szTerm->azChar()[4];
+
+  if ('$' == acFirst && '$' == acSecond
+      && StrLib::bIsAlpha(acThird)
+      && '.' == acFourth
+      && StrLib::bIsDigit(acFifth))
+    return true;
+  else
+    return false;
+}
 
 /*============================================================================*/
 /* end                                                                        */

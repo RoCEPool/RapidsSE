@@ -627,7 +627,7 @@ void Xtransforms::vH60_T50_Delete_Empty_filter(bool bPrint, bool bTrace)
     if (! M.p_filter)
       continue;
 
-    if (!X_bFilter_IsEmptyFilter(M.p_filter))
+    if (!T_bFilter_IsEmpty(M.p_filter))
       continue;
 
     vR_H60_T50_Delete_Empty_filter();
@@ -735,7 +735,7 @@ void Xtransforms::vH70_T20_Compute_coPtnPredList(bool bPrint, bool bTrace)
     M.p_cmpPred =
         _pCard_CmpPred(M.p_joinPredList->pGetChild(i_joinPred));
 
-    if (!X_bTableList_PredCmpIsCoPtn(M.p_tableList, M.p_cmpPred))
+    if (!T_bTableList_PredCmpIsCoPtn(M.p_tableList, M.p_cmpPred))
       continue;
 
     vR_H70_T20_Compute_coPtnPredList();
