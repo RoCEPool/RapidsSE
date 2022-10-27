@@ -64,8 +64,8 @@ Xderive::~Xderive(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xderive::X_vJoinOrderSeq_ExtractJoinOrder(Card_JoinOrderSeq* p_joinOrderSeq,
-                                                Card_PtndJoin* p_PtndJoin)
+void Xderive::D_vDerive_JoinOrderSeq(Card_JoinOrderSeq* p_joinOrderSeq,
+                                     Card_PtndJoin* p_PtndJoin)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -95,7 +95,7 @@ void Xderive::X_vJoinOrderSeq_ExtractJoinOrder(Card_JoinOrderSeq* p_joinOrderSeq
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xderive::X_vJoinPredList_Extract(Card_JoinPredList* p_joinPredList, Card_BoolCalc* p_boolCalc)
+void Xderive::D_vDerive_JoinPredList(Card_JoinPredList* p_joinPredList, Card_BoolCalc* p_boolCalc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -133,7 +133,7 @@ void Xderive::X_vJoinPredList_Extract(Card_JoinPredList* p_joinPredList, Card_Bo
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xderive::X_vObyElist_Populate(Card_ObyElist* p_obyElist, Index* pIndex)
+void Xderive::D_vDerive_ObyElist(Card_ObyElist* p_obyElist, Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
@@ -169,7 +169,7 @@ void Xderive::X_vObyElist_Populate(Card_ObyElist* p_obyElist, Index* pIndex)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Xderive::X_vPtndJoin_JoinEst(Card_PtndJoin* p_ptndJoin, Card_TableList* p_tableList)
+void Xderive::D_vDerive_PtndJoin(Card_PtndJoin* p_ptndJoin, Card_TableList* p_tableList)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 

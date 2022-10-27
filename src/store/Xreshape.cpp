@@ -439,7 +439,7 @@ void Xreshape::vR_H70_T10_Extract_joinPredList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  X_vJoinPredList_Extract(M.p_joinPredList, M.p_boolCalc);
+  D_vDerive_JoinPredList(M.p_joinPredList, M.p_boolCalc);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -683,7 +683,7 @@ void Xreshape::vR_H70_T92_Estimate_ptndJoins(void)
 
 
     M.p_ptndJoin = _pCard_PtndJoin(M.p_MainCard);
-    X_vPtndJoin_JoinEst(M.p_ptndJoin, M.p_tableList);
+    D_vDerive_PtndJoin(M.p_ptndJoin, M.p_tableList);
   }
 
 }
@@ -760,7 +760,7 @@ void Xreshape::vR_H70_T96_Estimate_joinOrder(void)
       break;
 
     M.p_ptndJoin = _pCard_PtndJoin(M.p_MainCard);
-    X_vJoinOrderSeq_ExtractJoinOrder(M.p_joinOrderSeq, M.p_ptndJoin);
+    D_vDerive_JoinOrderSeq(M.p_joinOrderSeq, M.p_ptndJoin);
   }
 
 }
@@ -783,7 +783,7 @@ void Xreshape::vR_H70_T98_Extract_joinOrderSeq(void)
 
 
     M.p_ptndJoin = _pCard_PtndJoin(M.p_MainCard);
-    X_vJoinOrderSeq_ExtractJoinOrder(M.p_joinOrderSeq, M.p_ptndJoin);
+    D_vDerive_JoinOrderSeq(M.p_joinOrderSeq, M.p_ptndJoin);
   }
 }
 
