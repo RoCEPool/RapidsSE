@@ -56,6 +56,9 @@ void Xreshape::vR_H10_T15_Hide_Ignorable_stage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
+  if (! T_bStage_IsIgnorable(M.p_stage))
+    return;
+
   M.p_stage->Y_vSet(P_HideHeat);
 }
 

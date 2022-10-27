@@ -466,6 +466,25 @@ bool Xtest::T_bPtndJoin_MayFollowAfter(Card_PtndJoin* p_ptndJoin, Card_SubSet* p
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+bool Xtest::T_bStage_IsIgnorable(Card_Stage* p_stage)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  Card_Topology* p_topology = p_stage->pSub_topology();
+
+  if (! p_topology)
+    return false;
+
+  if (YG_ALL_PARTITIONS == p_topology->Y_iVal(P_StageTopo))
+    return false;
+
+  return true;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 bool Xtest::T_bStage_IsRedundant(Card_Stage* p_stage, Card_Stage* p_prior)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);

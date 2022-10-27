@@ -88,11 +88,6 @@ void Xtransforms::vH10_T15_Hide_Ignorable_stage(bool bPrint, bool bTrace)
   //M.pDeck->vDump(0,(Stz*)(__func__));
 
   while (G_bEachMain(CK_STAGE)) {
-    if (! (M.p_topology = M.p_stage->pSub_topology()) )
-      continue;
-    if (YG_ALL_PARTITIONS == (eYG) M.p_topology->Y_iVal(P_StageTopo))
-      continue;
-
     vR_H10_T15_Hide_Ignorable_stage();
   }
 
@@ -275,7 +270,7 @@ void Xtransforms::vH30_T20_Calc_ordinalRange_ForAll_stream(bool bPrint, bool bTr
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-/*                                                  Predicate Pulluo Hand 40 */
+/*                                                  Predicate Pullup Hand 40 */
 /*============================================================================*/
 
 /*----------------------------------------------------------------------------*/
