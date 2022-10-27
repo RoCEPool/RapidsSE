@@ -523,24 +523,7 @@ void Xtransforms::vH60_T10_Add_indexJoin_UnderAllJoinable_table(bool bPrint, boo
   M.pDeck->vClearMarksRecursive();
 
   while (E_bEachMainWithSub(CK_TABLE,CK_FILTER)) {
-
-    vREPLACE_WITH_RESHAPE();
-
-    M.p_tableNm = M.p_table->pSub_tableNm();
-    m_pTable = A_pAccess_Table(M.p_tableNm->sz());
-
-    M.p_indexList = A_pProduce_indexList_ofTable(m_pTable);
-
-    while ((M.p_index = _pCard_Index(M.p_indexList->pPopChild()))) {
-      M.p_indexJoin = new Card_IndexJoin;
-      M.p_indexJoin->vAppend(M.p_index);
-      //M.p_table->vInsertBefore(M.p_indexJoin,M.p_filter);
-      M.p_comment = new Card_Comment(SEP_SCRATCH);
-      M.p_table->vAppend(M.p_comment);
-      M.p_table->vAppend(M.p_indexJoin);
-    }
-
-    D_vDeleteMember(CK_INDEXLIST);
+    vR_H60_T10_Add_indexJoin_UnderAllJoinable_table();
   }
 
   vEndTransform();
@@ -564,13 +547,7 @@ void Xtransforms::vH60_T20_Convert_idxCol_name_Of_table_To_idxCol_ord(bool bPrin
     if (! (M.p_indexJoin = M.p_table->pSub_indexJoin()))
       continue;
 
-    vREPLACE_WITH_RESHAPE();
-
-    M.p_stream = M.p_table->pSub_stream();;
-    M.p_stmColList = M.p_table->pSub_stmColList();
-    M.p_idxColList = M.p_indexJoin->pSub_idxColList();
-
-    X_vIdxColList_Ordinate(M.p_idxColList, M.p_stream);
+    vR_H60_T20_Convert_idxCol_name_Of_table_To_idxCol_ord();
   }
 
   vEndTransform();
@@ -601,49 +578,7 @@ void Xtransforms::vH60_T30_Add_joinPred_UnderAll_indexJoin(bool bPrint, bool bTr
         !T_bTerm_IsStreamColOrdinal(m_pTerm_1))
       continue;
 
-    vREPLACE_WITH_RESHAPE();
-
-    // - - - -
-
-    M.p_bounds = new Card_Bounds;
-    M.p_indexJoin = M.p_table->pSub_indexJoin();
-    M.p_stream = M.p_table->pSub_stream();
-    M.p_table->vInsertAfter(M.p_bounds, M.p_stream);
-
-    M.p_term = new Card_Term("BOUND"_Stz);
-    M.p_bounds->vAppend(M.p_term);
-
-    // - - - -
-
-    // one of {pCard_term_0,pCard_term_1} is $In
-
-    M.p_stream = M.p_table->pSub_stream();
-    i8 iStreamOrdLo = M.p_stream->Y_iVal(P_OrdLo);
-    i8 iStreamOrdHi = M.p_stream->Y_iVal(P_OrdHi);
-
-    i8 i_iOrdLo_0 = G_iTerm_StreamColNo(m_pTerm_0);
-    i8 i_iOrdLo_1 = G_iTerm_StreamColNo(m_pTerm_1);
-
-    if (i_iOrdLo_0 >= iStreamOrdLo && i_iOrdLo_0 <= iStreamOrdHi) {
-      M.p_term = new Card_Term("$I1"_Stz);
-      M.p_bounds->vAppend(M.p_term);
-      M.p_term = new Card_Term(m_pTerm_1->sz());
-      M.p_bounds->vAppend(M.p_term);
-    }
-    else
-    if (i_iOrdLo_1 >= iStreamOrdLo && i_iOrdLo_1 <= iStreamOrdHi) {
-      M.p_term = new Card_Term("$I1"_Stz);
-      M.p_bounds->vAppend(M.p_term);
-      M.p_term = new Card_Term(m_pTerm_1->sz());
-      M.p_bounds->vAppend(M.p_term);
-    }
-    else {
-      NEVER_REACH
-    }
-
-    M.p_cmpPred->vMark1(MARK_UPWARDS);
-    M.p_term = new Card_Term(M.p_cmpPred->sz());
-    M.p_bounds->vAppend(M.p_term);
+    vR_H60_T30_Add_joinPred_UnderAll_indexJoin();
   }
 
   vEndTransform();
@@ -667,9 +602,7 @@ void Xtransforms::vH60_T40_Cull_filter_pred_MovedUpTo_joinPred(bool bPrint, bool
 
     M.p_boolCalc = M.p_filter->pSub_boolCalc();
 
-    vREPLACE_WITH_RESHAPE();
-
-    X_vBoolCalc_CullPred(M.p_boolCalc, MARK_UPWARDS);
+    vR_H60_T40_Cull_filter_pred_MovedUpTo_joinPred();
   }
 
   vEndTransform();
@@ -695,10 +628,7 @@ void Xtransforms::vH60_T50_Delete_Empty_filter(bool bPrint, bool bTrace)
     if (!X_bFilter_IsEmptyFilter(M.p_filter))
       continue;
 
-    vREPLACE_WITH_RESHAPE();
-
-    M.p_MainCard->vRemoveChild(M.p_filter);
-    DELETE_CARD(M.p_filter);
+    vR_H60_T50_Delete_Empty_filter();
   }
 
   vEndTransform();

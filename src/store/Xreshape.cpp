@@ -311,6 +311,23 @@ void Xreshape::vR_H50_T40_Resolve_Parameter_Terms(void)
 void Xreshape::vR_H60_T10_Add_indexJoin_UnderAllJoinable_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  M.p_tableNm = M.p_table->pSub_tableNm();
+  m_pTable = A_pAccess_Table(M.p_tableNm->sz());
+
+  M.p_indexList = A_pProduce_indexList_ofTable(m_pTable);
+
+  while ((M.p_index = _pCard_Index(M.p_indexList->pPopChild()))) {
+    M.p_indexJoin = new Card_IndexJoin;
+    M.p_indexJoin->vAppend(M.p_index);
+    //M.p_table->vInsertBefore(M.p_indexJoin,M.p_filter);
+    M.p_comment = new Card_Comment(SEP_SCRATCH);
+    M.p_table->vAppend(M.p_comment);
+    M.p_table->vAppend(M.p_indexJoin);
+  }
+
+  D_vDeleteMember(CK_INDEXLIST);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -319,6 +336,12 @@ void Xreshape::vR_H60_T10_Add_indexJoin_UnderAllJoinable_table(void)
 void Xreshape::vR_H60_T20_Convert_idxCol_name_Of_table_To_idxCol_ord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  M.p_stream = M.p_table->pSub_stream();;
+  M.p_stmColList = M.p_table->pSub_stmColList();
+  M.p_idxColList = M.p_indexJoin->pSub_idxColList();
+
+  X_vIdxColList_Ordinate(M.p_idxColList, M.p_stream);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -327,6 +350,49 @@ void Xreshape::vR_H60_T20_Convert_idxCol_name_Of_table_To_idxCol_ord(void)
 void Xreshape::vR_H60_T30_Add_joinPred_UnderAll_indexJoin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  // - - - -
+
+  M.p_bounds = new Card_Bounds;
+  M.p_indexJoin = M.p_table->pSub_indexJoin();
+  M.p_stream = M.p_table->pSub_stream();
+  M.p_table->vInsertAfter(M.p_bounds, M.p_stream);
+
+  M.p_term = new Card_Term("BOUND"_Stz);
+  M.p_bounds->vAppend(M.p_term);
+
+  // - - - -
+
+  // one of {pCard_term_0,pCard_term_1} is $In
+
+  M.p_stream = M.p_table->pSub_stream();
+  i8 iStreamOrdLo = M.p_stream->Y_iVal(P_OrdLo);
+  i8 iStreamOrdHi = M.p_stream->Y_iVal(P_OrdHi);
+
+  i8 i_iOrdLo_0 = G_iTerm_StreamColNo(m_pTerm_0);
+  i8 i_iOrdLo_1 = G_iTerm_StreamColNo(m_pTerm_1);
+
+  if (i_iOrdLo_0 >= iStreamOrdLo && i_iOrdLo_0 <= iStreamOrdHi) {
+    M.p_term = new Card_Term("$I1"_Stz);
+    M.p_bounds->vAppend(M.p_term);
+    M.p_term = new Card_Term(m_pTerm_1->sz());
+    M.p_bounds->vAppend(M.p_term);
+  }
+  else
+  if (i_iOrdLo_1 >= iStreamOrdLo && i_iOrdLo_1 <= iStreamOrdHi) {
+    M.p_term = new Card_Term("$I1"_Stz);
+    M.p_bounds->vAppend(M.p_term);
+    M.p_term = new Card_Term(m_pTerm_1->sz());
+    M.p_bounds->vAppend(M.p_term);
+  }
+  else {
+    NEVER_REACH
+  }
+
+  M.p_cmpPred->vMark1(MARK_UPWARDS);
+  M.p_term = new Card_Term(M.p_cmpPred->sz());
+  M.p_bounds->vAppend(M.p_term);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -335,6 +401,9 @@ void Xreshape::vR_H60_T30_Add_joinPred_UnderAll_indexJoin(void)
 void Xreshape::vR_H60_T40_Cull_filter_pred_MovedUpTo_joinPred(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  X_vBoolCalc_CullPred(M.p_boolCalc, MARK_UPWARDS);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -343,7 +412,15 @@ void Xreshape::vR_H60_T40_Cull_filter_pred_MovedUpTo_joinPred(void)
 void Xreshape::vR_H60_T50_Delete_Empty_filter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  M.p_MainCard->vRemoveChild(M.p_filter);
+  DELETE_CARD(M.p_filter);
 }
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*                                                     Join Ordering Hand 70 */
+/*============================================================================*/
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
