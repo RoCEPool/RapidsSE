@@ -163,7 +163,33 @@ void Xreshape::vR_H20_T30_Add_stream_UnderAll_table(void)
 void Xreshape::vR_H30_T10_Calc_ordinalRange_ForAll_stream(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  M.p_stream = M.p_table->pSub_stream();
+
+  // <scan>/<stream>:iOrdLo,iOrdHi
+  m_nStreamCols = M.p_stream->pSub_stmColList()->nChildCards();
+  M.p_stream->Y_vSet(P_OrdLo, m_iOrdLo);
+  m_iOrdHi = m_iOrdLo + m_nStreamCols - 1;
+  M.p_stream->Y_vSet(P_OrdHi, m_iOrdHi);
+
+  M.p_stream->vMark1(MARK_CHANGED);
+
+  CardIter xCI(M.p_stream->pSub_stmColList());
+  i8 iOrdinal = m_iOrdLo;
+  while ((M.p_stmCol = _pCard_StmCol(xCI.pEachChild(CK_STMCOL)))) {
+    M.p_stmColOrd = new Card_StmColOrd;
+    M.p_stmColOrd->vValueSprint("$%lld"_Stz, iOrdinal);
+    M.p_stmCol->vAppend(M.p_stmColOrd);
+    iOrdinal++;
+  }
+
+  m_iOrdLo = m_iOrdHi + 1;
 }
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*                                                  Predicate Pulluo Hand 40 */
+/*============================================================================*/
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

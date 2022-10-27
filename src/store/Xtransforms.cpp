@@ -265,39 +265,12 @@ void Xtransforms::vH30_T10_Calc_ordinalRange_ForAll_stream(bool bPrint, bool bTr
   vTransform(__func__);
   vTracing(bPrint,bTrace);
 
-  i8 iOrdLo = 1;
-  i8 iOrdHi = C_UNKNOWN;
-  i8 nStreamCols = C_UNKNOWN;
-
   while (E_bEachMain(CK_TABLE)) {
-
-    vREPLACE_WITH_RESHAPE();
-
-    M.p_stream = M.p_table->pSub_stream();
-
-    // <scan>/<stream>:iOrdLo,iOrdHi
-    nStreamCols = M.p_stream->pSub_stmColList()->nChildCards();
-    M.p_stream->Y_vSet(P_OrdLo, iOrdLo);
-    iOrdHi = iOrdLo + nStreamCols - 1;
-    M.p_stream->Y_vSet(P_OrdHi, iOrdHi);
-
-    M.p_stream->vMark1(MARK_CHANGED);
-
-    CardIter xCI(M.p_stream->pSub_stmColList());
-    i8 iOrdinal = iOrdLo;
-    while ((M.p_stmCol = _pCard_StmCol(xCI.pEachChild(CK_STMCOL)))) {
-      M.p_stmColOrd = new Card_StmColOrd;
-      M.p_stmColOrd->vValueSprint("$%lld"_Stz, iOrdinal);
-      M.p_stmCol->vAppend(M.p_stmColOrd);
-      iOrdinal++;
-    }
-
-    iOrdLo = iOrdHi + 1;
+    vR_H30_T10_Calc_ordinalRange_ForAll_stream();
   }
 
   vEndTransform();
   vPrintBoard();
-
 }
 
 /*----------------------------------------------------------------------------*/

@@ -58,6 +58,11 @@ namespace STORE
     Card_Term* m_pTerm_0;
     Card_Term* m_pTerm_1;
 
+    i8 m_iOrdLo;
+    i8 m_iOrdHi;
+    i8 m_nStreamCols;
+
+
     TransformIterList* m_pTransformIterList;
 
     s256 m_sT;
