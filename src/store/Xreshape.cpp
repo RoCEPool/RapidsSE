@@ -35,11 +35,28 @@ Xreshape::~Xreshape(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*                                                    Reduce Pipeline Hand 10 */
+/*============================================================================*/
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Xreshape::vR_H10_T10_Delete_Redundant_stage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  E_vRemoveDeleteMain(CK_STAGE);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H10_T15_Hide_Ignorable_stage(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  M.p_stage->Y_vSet(P_Exclude);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -48,6 +65,8 @@ void Xreshape::vR_H10_T10_Delete_Redundant_stage(void)
 void Xreshape::vR_H10_T20_Delete_absJoin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  E_vRemoveDeleteMain(CK_ABSJOIN);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -56,6 +75,8 @@ void Xreshape::vR_H10_T20_Delete_absJoin(void)
 void Xreshape::vR_H10_T30_Delete_combined(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  E_vRemoveDeleteMain(CK_COMBINED);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -64,6 +85,8 @@ void Xreshape::vR_H10_T30_Delete_combined(void)
 void Xreshape::vR_H10_T40_Delete_send(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  E_vRemoveDeleteMain(CK_SEND);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -72,7 +95,15 @@ void Xreshape::vR_H10_T40_Delete_send(void)
 void Xreshape::vR_H10_T50_Cull_scan_Leaving_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  M.pDeck->vReplaceChildWithItsSubs(M.p_scan);
+  DELETE_CARD(M.p_scan);
 }
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*                                                    Access Metadata Hand 20 */
+/*============================================================================*/
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

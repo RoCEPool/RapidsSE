@@ -43,7 +43,7 @@ Xtransforms::~Xtransforms(void) noexcept(false)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-/*                                                   Reduce Pipeline Hand 10 */
+/*                                                    Reduce Pipeline Hand 10 */
 /*============================================================================*/
 
 /*----------------------------------------------------------------------------*/
@@ -67,8 +67,7 @@ void Xtransforms::vH10_T10_Delete_Redundant_stage(bool bPrint, bool bTrace)
       continue;
     }
 
-    vREPLACE_WITH_RESHAPE();
-    E_vRemoveDeleteMain(CK_STAGE);
+    vR_H10_T10_Delete_Redundant_stage();
   }
 
   vEndTransform();
@@ -94,8 +93,7 @@ void Xtransforms::vH10_T15_Hide_Ignorable_stage(bool bPrint, bool bTrace)
     if (YG_ALL_PARTITIONS == (eYG) M.p_topology->Y_iVal(P_StageTopo))
       continue;
 
-    vREPLACE_WITH_RESHAPE();
-    M.p_stage->Y_vSet(P_Exclude);
+    vR_H10_T15_Hide_Ignorable_stage();
   }
 
   vEndTransform();
@@ -116,9 +114,8 @@ void Xtransforms::vH10_T20_Delete_absJoin(bool bPrint, bool bTrace)
   //M.pDeck->vDump(0,(Stz*)(__func__));
 
   while (E_bEachMain(CK_ABSJOIN)) {
-    vREPLACE_WITH_RESHAPE();
-    E_vRemoveDeleteMain(CK_ABSJOIN);
-  }
+    vR_H10_T20_Delete_absJoin();
+   }
 
   vEndTransform();
   vPrintBoard();
@@ -138,8 +135,7 @@ void Xtransforms::vH10_T30_Delete_combined(bool bPrint, bool bTrace)
   //M.pDeck->vDump(0,(Stz*)(__func__));
 
   while (E_bEachMain(CK_COMBINED)) {
-    vREPLACE_WITH_RESHAPE();
-    E_vRemoveDeleteMain(CK_COMBINED);
+    vR_H10_T30_Delete_combined();
   }
 
     vEndTransform();
@@ -160,9 +156,9 @@ void Xtransforms::vH10_T40_Delete_send(bool bPrint, bool bTrace)
   //M.pDeck->vDump(0,(Stz*)(__func__));
 
   while (E_bEachMain(CK_SEND)) {
-    vREPLACE_WITH_RESHAPE();
-    E_vRemoveDeleteMain(CK_SEND);
+    vR_H10_T40_Delete_send();
   }
+
   vEndTransform();
   vPrintBoard();
 }
@@ -181,9 +177,7 @@ void Xtransforms::vH10_T50_Cull_scan_Leaving_table(bool bPrint, bool bTrace)
   //M.pDeck->vDump(0,(Stz*)(__func__));
 
   while (E_bEachMain(CK_SCAN)) {
-    vREPLACE_WITH_RESHAPE();
-    M.pDeck->vReplaceChildWithItsSubs(M.p_MainCard);
-    DELETE_CARD(M.p_MainCard);
+    vR_H10_T50_Cull_scan_Leaving_table();
   }
 
   vEndTransform();
@@ -192,7 +186,7 @@ void Xtransforms::vH10_T50_Cull_scan_Leaving_table(bool bPrint, bool bTrace)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-/*                                                   Access Metadata Hand 20 */
+/*                                                    Access Metadata Hand 20 */
 /*============================================================================*/
 
 /*----------------------------------------------------------------------------*/

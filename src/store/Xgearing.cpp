@@ -119,9 +119,12 @@ eOA Xgearing::eCueUser(Stz* szHand, Stz* szTransformation)
 
   if (! m_bBeenCued && AM::JOB::bHasTag("<cue>"_Stz)) {
     Stz* szTagCue = AM::JOB::szTagValue("<cue>"_Stz);
-    if (   (! szHand || ! szTagCue->bSame(szHand))
-        && (! szTransformation || ! szTagCue->bSame(szTransformation))) {
-      printf("%s\n",sPrompt.azChar());
+    if (szTagCue->bSame(szHand) && szTransformation) {
+      printf("%s\n", sPrompt.azChar());
+      return OA_CONTINUE_TRANSFORMING;
+    }
+    if ( szTransformation && (! szTagCue->bSame(szTransformation))) {
+      printf("%s\n", sPrompt.azChar());
       return OA_CONTINUE_TRANSFORMING;
     }
   }
