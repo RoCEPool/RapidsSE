@@ -6,10 +6,22 @@
 #include "Op.hpp"
 #include "Stream.hpp"
 #include "CmdLineArgs.hpp"
+#include <sys/time.h>
 
 extern SizeHeap     gxaSizeHeap[];
 extern ClassCatalog gxClassCatalog;
 extern CmdLineArgs  gxCmdLineArgs;
+
+static long long milliseconds(void) {
+  struct timeval tv;
+  long long mst;
+
+  gettimeofday(&tv, NULL);
+  mst = ((long long)tv.tv_sec)*1000000;
+  mst += tv.tv_usec;
+  return mst/1000;
+}
+
 /*----------------------------------------------------------------------------*/
 /* read all the buffer pool buffers from file                                 */
 /*----------------------------------------------------------------------------*/
@@ -76,6 +88,9 @@ void PersistenceHelper::vWriteDiskTest(Stz* sFilePath, i8 iNoOfGb)
   for(i8 i = 0; i < iSize; i++)
     azBuffer[i] = RndLib::iInteger(0,100);
 
+  long long start;
+  start = milliseconds();
+
   Timer oTimer;
   oTimer.vStart();
 
@@ -98,7 +113,7 @@ void PersistenceHelper::vWriteDiskTest(Stz* sFilePath, i8 iNoOfGb)
     pIter = aAdd<void *>(pIter, C_1MB);
   }
 
-  pFile->vSync();
+  pFile->vSync();// Try fdatasync()
 
   pFile->vClose();
   delete pFile;
@@ -107,6 +122,10 @@ void PersistenceHelper::vWriteDiskTest(Stz* sFilePath, i8 iNoOfGb)
   vTrace("Partition %lld took %lld ms to write to disk\n"_Stz,
          iPtnOfNode,
          oTimer.iMilliseconds());
+
+  vTrace("New Timer: Partition %lld took %lld ms to write to disk\n"_Stz,
+         iPtnOfNode,
+         (milliseconds() - start));
 
 }
 
@@ -168,6 +187,8 @@ void PersistenceHelper::vWritePersistentHeaps(Stz* sFilePath)
   }
 
   ASSERT(iPtnOfNode >= 0);
+  long long start;
+  start = milliseconds();
 
   Timer oTimer;
   oTimer.vStart();
@@ -205,6 +226,10 @@ void PersistenceHelper::vWritePersistentHeaps(Stz* sFilePath)
   vTrace("Partition %lld took %lldms to write heap buffers to disk\n"_Stz,
          iPtnOfNode,
          oTimer.iMilliseconds());
+
+  vTrace("New Timer: Partition %lld took %lld ms to write heap buffers to disk\n"_Stz,
+         iPtnOfNode,
+         (milliseconds() - start));
 }
 
 /*============================================================================*/
