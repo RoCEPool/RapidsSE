@@ -52,6 +52,8 @@ namespace STORE
     void vR_H70_T96_Estimate_joinOrder(void);
     void vR_H70_T98_Extract_joinOrderSeq(void);
     void vR_H70_T99_Convert_table_To_scan_Or_indexJoin(void);
+    void vR_H70_T99_Convert_table_To_scan_Or_indexJoin_b(void);
+    void vR_H70_T99_Convert_table_To_scan_Or_indexJoin_c(void);
     void vR_H80_T10_Insert_indexList_ToAll_scan(void);
     void vR_H80_T20_Convert_idxCol_name_Of_scan_To_idxCol_ord(void);
     void vR_H80_T30_Mark_scan_pred_bounds(void);

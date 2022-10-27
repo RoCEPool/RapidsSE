@@ -428,6 +428,8 @@ void Xreshape::vR_H60_T50_Delete_Empty_filter(void)
 void Xreshape::vR_H70_T00_Extract_tableList_From_queryBoard(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  M.p_tableList->vAppend(M.p_table->pDupCardAndSubCards());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -436,6 +438,8 @@ void Xreshape::vR_H70_T00_Extract_tableList_From_queryBoard(void)
 void Xreshape::vR_H70_T10_Extract_joinPredList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  X_vJoinPredList_Extract(M.p_joinPredList, M.p_boolCalc);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -444,6 +448,12 @@ void Xreshape::vR_H70_T10_Extract_joinPredList(void)
 void Xreshape::vR_H70_T20_Compute_coPtnPredList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+
+  M.p_coPtnPred = new Card_CoPtnPred;
+  M.p_coPtnPred->vAppend(M.p_cmpPred->pDupCardAndSubCards());
+
+  M.p_coPtnPredList->vAppend(M.p_coPtnPred);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -452,6 +462,29 @@ void Xreshape::vR_H70_T20_Compute_coPtnPredList(void)
 void Xreshape::vR_H70_T30_Compute_coPtnJoinList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  M.p_coPtnJoinList = new Card_CoPtnJoinList;
+  M.pDeck->vAppendMain(M.p_coPtnJoinList);
+
+  M.p_coPtnPredList =
+      _pCard_CoPtnPredList(M.pDeck->pFindChild(CK_COPTNPREDLIST));
+
+  i8 nChildren = M.p_coPtnPredList->nChildCards();
+  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
+    M.p_coPtnPred =
+        _pCard_CoPtnPred(M.p_coPtnPredList->pGetChild(i_Child));
+
+    M.p_subSet = M.p_coPtnPred->pDupSubCards();
+
+    if (! (M.p_coPtnJoin = X_pCoPtnJoinList_Find_coPtn_for(M.p_coPtnJoinList, M.p_coPtnPred)) ) {
+      M.p_coPtnJoin = new Card_CoPtnJoin;
+      M.p_coPtnJoinList->vAppend(M.p_coPtnJoin);
+    }
+
+    M.p_coPtnJoin->vTransferChildren(M.p_subSet);
+    DELETE_CARD(M.p_subSet);
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -460,6 +493,26 @@ void Xreshape::vR_H70_T30_Compute_coPtnJoinList(void)
 void Xreshape::vR_H70_T40_Compute_crossPtnJoinList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  M.p_joinPredList =
+      _pCard_JoinPredList(M.pDeck->pFindChild(CK_JOINPREDLIST));
+
+  M.p_crossPtnJoinList = new Card_CrossPtnJoinList;
+  M.pDeck->vAppendMain(M.p_crossPtnJoinList);
+
+  i8 nChildren = M.p_joinPredList->nChildCards();
+  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
+    M.p_cmpPred =
+        _pCard_CmpPred(M.p_joinPredList->pGetChild(i_Child));
+
+
+    if (X_bCoPtnJoinList_HasEqPredCmp(M.p_coPtnJoinList, M.p_cmpPred))
+      continue;
+
+    M.p_crossPtnJoin = new Card_CrossPtnJoin;
+    M.p_crossPtnJoin->vAppend(M.p_cmpPred->pDupCardAndSubCards());
+    M.p_crossPtnJoinList->vAppend(M.p_crossPtnJoin);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -468,6 +521,28 @@ void Xreshape::vR_H70_T40_Compute_crossPtnJoinList(void)
 void Xreshape::vR_H70_T50_Compute_ptndJoinSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  M.p_ptndJoinSet = new Card_PtndJoinSet;
+  M.pDeck->vAppendMain(M.p_ptndJoinSet);
+
+  M.p_coPtnJoinList =
+      _pCard_CoPtnJoinList(M.pDeck->pFindChild(CK_COPTNJOINLIST));
+  M.p_subSet = M.p_coPtnJoinList->pDupSubCards();
+  M.p_ptndJoinSet->vTransferChildren(M.p_subSet);
+  DELETE_CARD(M.p_subSet);
+
+  M.p_crossPtnJoinList =
+      _pCard_CrossPtnJoinList(M.pDeck->pFindChild(CK_CROSSPTNJOINLIST));
+  M.p_subSet = M.p_crossPtnJoinList->pDupSubCards();
+  M.p_ptndJoinSet->vTransferChildren(M.p_subSet);
+  DELETE_CARD(M.p_subSet);
+
+  i8 nChildren = M.p_ptndJoinSet->nChildCards();
+  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
+    m_pCard_child = M.p_ptndJoinSet->pGetChild(i_Child);
+    m_pCard_child->vCard(CK_PTNDJOIN);
+    m_pCard_child->Y_vSet(P_PtndJoin, i_Child);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -476,6 +551,20 @@ void Xreshape::vR_H70_T50_Compute_ptndJoinSet(void)
 void Xreshape::vR_H70_T60_Copy_ptndJoinSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  m_pBench->pCardCtl()->vNextHorizon(CK_PERMUTATION, true);
+
+  M.p_ptndJoinSet =
+      _pCard_PtndJoinSet(M.pDeck->pFindChild(CK_PTNDJOINSET));
+
+  M.pDeck->vAppendMain(new Card_Comment("PERMUTATIONS"_Stz));
+
+  i8 i_PtdnJoin = 0;
+  M.p_subSet = M.p_ptndJoinSet->pDupSubCards();
+  while ((m_pCard_popped = M.p_subSet->pPop())) {
+    M.pDeck->vAppendMain(m_pCard_popped);
+  }
+  DELETE_CARD(M.p_subSet);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -484,6 +573,34 @@ void Xreshape::vR_H70_T60_Copy_ptndJoinSet(void)
 void Xreshape::vR_H70_T70_Generate_ptndPermutations(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  m_pPermGen = new PermGen(M.p_ptndJoinSet->nChildCards());
+
+  M.p_subSet = new Card_SubSet;
+
+  while (m_pPermGen->bNextPermutation()) {
+    M.pDeck->vAppendMain((M.p_permutation = new Card_Permutation));
+    M.p_permutation->Y_vSet(P_Permutation, m_pPermGen->nPermutations() - 1);
+
+    RASSERT(0 == M.p_subSet->nChildCards());
+    for (i8 i_Item = 0; i_Item < m_pPermGen->nItems(); i_Item++) {
+      i8 i_Child = m_pPermGen->iItem(i_Item);
+      m_pCard_child = M.p_ptndJoinSet->pGetChild(i_Child);
+      M.pDeck->vAppendMain(m_pCard_child->pDupCardAndSubCards());
+
+      M.p_ptndJoin = _pCard_PtndJoin(m_pCard_child);
+      if (!X_bPtndJoin_MayFollowAfter(M.p_ptndJoin, M.p_subSet)) {
+        M.pDeck->vAppendMain(new Card_Comment("**DOESN'T FOLLOW**"_Stz));
+        M.p_permutation->Y_vSet(P_Invalid);
+        break;
+      }
+      M.p_subSet->vAppend(m_pCard_child);
+    }
+    M.p_subSet->vRemoveAll();
+  }
+
+  DELETE_CARD(M.p_subSet);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -492,6 +609,34 @@ void Xreshape::vR_H70_T70_Generate_ptndPermutations(void)
 void Xreshape::vR_H70_T80_Remove_invalidPermutations(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  i8 i_Main = 0;
+  i8 i_Permutation = 0;
+  while (i_Main < M.pDeck->nChildCards()) {
+    M.p_MainCard = M.pDeck->pGetChild(i_Main);
+
+    if (CK_PERMUTATION != M.p_MainCard->eCard()) {
+      i_Main++;
+      continue;
+    }
+
+    if (! M.p_MainCard->bHasProperty(P_Invalid)) {
+      M.p_MainCard->Y_vSet(P_Permutation, i_Permutation++);
+      i_Main++;
+      continue;
+    }
+
+
+    M.pDeck->vRemoveChild(M.p_MainCard);
+    while (i_Main < M.pDeck->nChildCards()) {
+      M.p_MainCard = M.pDeck->pGetChild(i_Main);
+      if (CK_PTNDJOIN != M.p_MainCard->eCard() && CK_COMMENT != M.p_MainCard->eCard())
+        break;
+      M.pDeck->vRemoveChild(M.p_MainCard);
+      delete M.p_MainCard;
+    }
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -500,6 +645,17 @@ void Xreshape::vR_H70_T80_Remove_invalidPermutations(void)
 void Xreshape::vR_H70_T90_Setup_costEst(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  while ((M.p_MainCard = M.pDeck->pGetChild(0))) {
+
+    if (CK_PERMUTATION == M.p_MainCard->eCard())
+      break;
+
+
+    M.pDeck->vRemoveChild(M.p_MainCard);
+    delete M.p_MainCard;
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -508,6 +664,28 @@ void Xreshape::vR_H70_T90_Setup_costEst(void)
 void Xreshape::vR_H70_T92_Estimate_ptndJoins(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  M.p_tableList =
+      _pCard_TableList(M.pDeck->pFindChild(CK_TABLELIST));
+
+
+  BoardIter xBI(M.pBoard);
+
+//  while (M.p_ptndJoin = _pCard_PtndJoin(xBI.pEachMain(CK_PTNDJOIN))) {
+  while ((M.p_MainCard = xBI.pEachMain())) {
+    eCK eCard = M.p_MainCard->eCard();
+    if (CK_PERMUTATION == eCard) {
+      M.p_tableList->vDeletePropertyRecursive(P_TableUsed);
+      continue;
+    }
+    if (CK_PTNDJOIN != eCard)
+      continue;
+
+
+    M.p_ptndJoin = _pCard_PtndJoin(M.p_MainCard);
+    X_vPtndJoin_JoinEst(M.p_ptndJoin, M.p_tableList);
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -516,6 +694,41 @@ void Xreshape::vR_H70_T92_Estimate_ptndJoins(void)
 void Xreshape::vR_H70_T94_Estimate_network(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  BoardIter xBI(M.pBoard);
+
+  i8 nNetwork = 0;
+  i8 nSentOut = 0;
+  M.p_permutation = nullptr;
+  M.p_ptndJoin    = nullptr;
+
+  while ((M.p_MainCard = xBI.pEachMain())) {
+
+
+    eCK eCard = M.p_MainCard->eCard();
+    if (CK_PERMUTATION == eCard) {
+      if (M.p_permutation)
+        M.p_permutation->Y_vSet(P_Network, nNetwork);
+      M.p_permutation = _pCard_Permutation(M.p_MainCard);
+
+      M.p_ptndJoin = nullptr;
+      nNetwork = 0;
+      nSentOut = 0;
+    }
+    else
+    if (CK_PTNDJOIN == eCard) {
+      if (M.p_ptndJoin) {
+        nSentOut += M.p_ptndJoin->Y_iVal(P_JoinedBuff);
+        nNetwork += nSentOut;
+        M.p_ptndJoin->Y_vSet(P_SentOut, nSentOut);
+      }
+      M.p_ptndJoin = _pCard_PtndJoin(M.p_MainCard);
+    }
+  }
+
+  if (M.p_permutation)
+    M.p_permutation->Y_vSet(P_Network, nNetwork);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -524,6 +737,32 @@ void Xreshape::vR_H70_T94_Estimate_network(void)
 void Xreshape::vR_H70_T96_Estimate_joinOrder(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  i8 iLowestNetwork = 999999999;
+
+  BoardIter xBI(M.pBoard);
+
+  while ((M.p_permutation =
+              _pCard_Permutation(xBI.pEachMain(CK_PERMUTATION)))) {
+    i8 iNetwork = M.p_permutation->Y_iVal(P_Network);
+    if (iNetwork >= iLowestNetwork)
+      continue;
+    M.p_permutation_low = M.p_permutation;
+    iLowestNetwork = iNetwork;
+  }
+
+  M.pDeck->vAppendMain((M.p_joinOrderSeq = new Card_JoinOrderSeq));
+  M.p_joinOrderSeq->Y_vSet(P_Network, iLowestNetwork);
+
+  xBI.vSet(M.p_permutation_low);
+  while ((M.p_MainCard = xBI.pEachMain())) {
+    if (CK_PTNDJOIN != M.p_MainCard->eCard())
+      break;
+
+    M.p_ptndJoin = _pCard_PtndJoin(M.p_MainCard);
+    X_vJoinOrderSeq_ExtractJoinOrder(M.p_joinOrderSeq, M.p_ptndJoin);
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -532,6 +771,20 @@ void Xreshape::vR_H70_T96_Estimate_joinOrder(void)
 void Xreshape::vR_H70_T98_Extract_joinOrderSeq(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  M.pDeck->vAppendMain((M.p_joinOrderSeq = new Card_JoinOrderSeq));
+
+  BoardIter xBI(M.pBoard);
+
+  xBI.vSet(M.p_permutation_low);
+  while ((M.p_MainCard = xBI.pEachMain())) {
+    if (CK_PTNDJOIN != M.p_MainCard->eCard())
+      break;
+
+
+    M.p_ptndJoin = _pCard_PtndJoin(M.p_MainCard);
+    X_vJoinOrderSeq_ExtractJoinOrder(M.p_joinOrderSeq, M.p_ptndJoin);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -540,6 +793,62 @@ void Xreshape::vR_H70_T98_Extract_joinOrderSeq(void)
 void Xreshape::vR_H70_T99_Convert_table_To_scan_Or_indexJoin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  if (! M.p_bounds) {
+
+    M.p_scan = new Card_Scan;
+    M.p_scan->vTransferChildren(M.p_table);
+
+    M.pBoard->pDeck()->vReplace(M.p_table,M.p_scan);
+    M.p_scan->vInsert(M.p_table);
+
+    if (M.p_indexJoin) {
+      M.p_scan->vRemoveChild(M.p_indexJoin);
+      DELETE_CARD(M.p_indexJoin);
+    }
+    return;
+  }
+
+  M.p_table->vRemoveSubCard(M.p_indexJoin);
+  M.p_indexJoin->vTransferChildren(M.p_table);
+
+  M.pBoard->pDeck()->vReplace(M.p_table,M.p_indexJoin);
+  M.p_indexJoin->vInsert(M.p_table);
+
+  M.p_indexJoin->vRemoveSubCard(M.p_index);
+  M.p_indexJoin->vAppend(M.p_index);
+
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H70_T99_Convert_table_To_scan_Or_indexJoin_b(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  i8 i_Child;
+  M.p_comment = _pCard_Comment(M.p_scan->pFindChild(CK_COMMENT,i_Child));
+
+  if (i_Child == M.p_scan->nChildCards() - 1) {
+    M.p_scan->vRemoveChild(M.p_comment);
+    DELETE_CARD(M.p_comment);
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Xreshape::vR_H70_T99_Convert_table_To_scan_Or_indexJoin_c(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TRANSFORMS, _FOOTER_);
+
+  i8 i_Child;
+  M.p_comment = _pCard_Comment(M.p_indexJoin->pFindChild(CK_COMMENT,i_Child));
+  M.p_comment->vValue(SEP_DERIVED);
+
 }
 
 /*----------------------------------------------------------------------------*/
