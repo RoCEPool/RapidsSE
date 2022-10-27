@@ -309,8 +309,7 @@ void Xtransforms::vH40_T20_Mark_where_pred_Wrt_table(bool bPrint, bool bTrace)
   vTracing(bPrint,bTrace);
 
   while (E_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    vREPLACE_WITH_RESHAPE();
-    vMarkPredLeftwards(M.p_boolCalc);
+    vR_H40_T20_Mark_where_pred_Wrt_table();
   }
 
   vEndTransform();
@@ -329,8 +328,7 @@ void Xtransforms::vH40_T30_Move_Marked_where_pred_To_table_filter(bool bPrint, b
   vTracing(bPrint,bTrace);
 
   while (E_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
-    vREPLACE_WITH_RESHAPE();
-    vCopyPredLeftwards(M.p_boolCalc);
+    vR_H40_T30_Move_Marked_where_pred_To_table_filter();
   }
   vEndTransform();
   vPrintBoard();
@@ -347,15 +345,9 @@ void Xtransforms::vH40_T40_Delete_Empty_where(bool bPrint, bool bTrace)
   vTransform(__func__);
   vTracing(bPrint,bTrace);
 
-  while (E_bEachMain(CK_WHERE)) {
-    vREPLACE_WITH_RESHAPE();
-    M.p_boolCalc = M.p_where->pSub_boolCalc();
-
-    if (0 == M.p_boolCalc->nChildCards()) {
-      E_vRemoveDeleteMain(CK_WHERE);
-      break;
-    }
-  }
+  while (E_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
+    vR_H40_T40_Delete_Empty_where();
+   }
 
   vEndTransform();
   vPrintBoard();
@@ -397,17 +389,7 @@ void Xtransforms::vH50_T10_Rework_Exists_SubQueries(bool bPrint, bool bTrace)
     if (E_bEachMain(CK_STAGE)) {
       vTracer("SubQuery Stage: %s\n"_Stz, M.p_stage->szBearing());
 
-      vREPLACE_WITH_RESHAPE();
-
-      N_vNewMember(CK_KEYEXISTS);
-
-      M.pDeck->vInsertAfter(M.p_keyExists,M.p_stage);
-      RASSERT(E_bEachMain());
-
-      while (E_bSubsequentToMain(C_UPDATE_MEMBER)) {
-        M.pDeck->vRemove(M.p_SubsequentToMain);
-        C_vAppendChild(CK_KEYEXISTS, M.p_SubsequentToMain);
-      }
+      vR_H50_T10_Rework_Exists_SubQueries();
     }
     vPrintBoard();
 
@@ -449,14 +431,8 @@ void Xtransforms::vH50_T20_Copy_Up_SubQueries(bool bPrint, bool bTrace)
 
     if (E_bEachMain(CK_KEYEXISTS)) {
 
-      vREPLACE_WITH_RESHAPE();
+      vR_H50_T20_Copy_Up_SubQueries();
 
-      m_pCard_temp = M.p_keyExists->pDupCardAndSubCards();
-      M_vPopIter();
-      M.pDeck->vInsertBefore(m_pCard_temp,M.p_where);
-      M.p_tstPred->vMark1(MARK_LEFTWARDS);
-      E_vSkipNextMain();
-      //vPrintBoard();
     }
     else {
       M_vPopIter();
@@ -487,11 +463,7 @@ void Xtransforms::vH50_T30_Resolve_Parameter_Linkage(bool bPrint, bool bTrace)
     if (! R_bResolveCard(CK_STMCOL,M.p_param->sz(),M.p_keyExists))
       continue;
 
-    vREPLACE_WITH_RESHAPE();
-
-    M.p_stmColOrd = M.p_stmCol->pSub_stmColOrd();
-    M.p_stmColOrd->vValue(M.p_stmColOrd->szValue());
-    M.p_param->vAppend(M.p_stmColOrd);
+    vR_H50_T30_Resolve_Parameter_Linkage();
   }
 
   vEndTransform();
@@ -524,10 +496,7 @@ void Xtransforms::vH50_T40_Resolve_Parameter_Terms(bool bPrint, bool bTrace)
       if (! Y_bFindPpy(CK_PARAMLIST,P_ParamOrd,CK_PARAM))
         continue;
 
-      vREPLACE_WITH_RESHAPE();
-
-      M.p_stmColOrd = M.p_param->pSub_stmColOrd();
-      M.p_term->vValue(M.p_stmColOrd->szValue());
+      vR_H50_T40_Resolve_Parameter_Terms();
     }
   }
 

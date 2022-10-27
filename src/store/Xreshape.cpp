@@ -209,6 +209,8 @@ void Xreshape::vR_H40_T10_Convert_where_calc_To_where_calcBool(void)
 void Xreshape::vR_H40_T20_Mark_where_pred_Wrt_table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vMarkPredLeftwards(M.p_boolCalc);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -217,6 +219,8 @@ void Xreshape::vR_H40_T20_Mark_where_pred_Wrt_table(void)
 void Xreshape::vR_H40_T30_Move_Marked_where_pred_To_table_filter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  vCopyPredLeftwards(M.p_boolCalc);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -225,7 +229,16 @@ void Xreshape::vR_H40_T30_Move_Marked_where_pred_To_table_filter(void)
 void Xreshape::vR_H40_T40_Delete_Empty_where(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  if (0 == M.p_boolCalc->nChildCards()) {
+    E_vRemoveDeleteMain(CK_WHERE);
+  }
 }
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*                                                    Flatten Exists Hand 50 */
+/*============================================================================*/
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -233,6 +246,17 @@ void Xreshape::vR_H40_T40_Delete_Empty_where(void)
 void Xreshape::vR_H50_T10_Rework_Exists_SubQueries(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  N_vNewMember(CK_KEYEXISTS);
+
+  M.pDeck->vInsertAfter(M.p_keyExists,M.p_stage);
+  RASSERT(E_bEachMain());
+
+  while (E_bSubsequentToMain(C_UPDATE_MEMBER)) {
+    M.pDeck->vRemove(M.p_SubsequentToMain);
+    C_vAppendChild(CK_KEYEXISTS, M.p_SubsequentToMain);
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -241,6 +265,14 @@ void Xreshape::vR_H50_T10_Rework_Exists_SubQueries(void)
 void Xreshape::vR_H50_T20_Copy_Up_SubQueries(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  m_pCard_temp = M.p_keyExists->pDupCardAndSubCards();
+  M_vPopIter();
+  M.pDeck->vInsertBefore(m_pCard_temp,M.p_where);
+  M.p_tstPred->vMark1(MARK_LEFTWARDS);
+  E_vSkipNextMain();
+  //vPrintBoard();
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -249,6 +281,11 @@ void Xreshape::vR_H50_T20_Copy_Up_SubQueries(void)
 void Xreshape::vR_H50_T30_Resolve_Parameter_Linkage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  M.p_stmColOrd = M.p_stmCol->pSub_stmColOrd();
+  M.p_stmColOrd->vValue(M.p_stmColOrd->szValue());
+  M.p_param->vAppend(M.p_stmColOrd);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -257,7 +294,16 @@ void Xreshape::vR_H50_T30_Resolve_Parameter_Linkage(void)
 void Xreshape::vR_H50_T40_Resolve_Parameter_Terms(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
+
+  M.p_stmColOrd = M.p_param->pSub_stmColOrd();
+  M.p_term->vValue(M.p_stmColOrd->szValue());
+
 }
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*                                                      Initial Join Hand 60 */
+/*============================================================================*/
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

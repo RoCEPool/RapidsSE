@@ -76,6 +76,7 @@ namespace STORE
 
   public:
 
+    // TODO: these belong elsewhere
     void vMarkPredLeftwards(Card_BoolCalc* p_bool);
     void vMarkPredDrillDown(Card_PRED* p_pred);
 
