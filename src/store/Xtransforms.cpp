@@ -1589,13 +1589,12 @@ void Xtransforms::vH90_T10_Remove_sort_IfSameAs_gby(bool bPrint, bool bTrace)
     if (!H_bHasPriorToMainIf(CK_AGGREG, C_UPDATE_MEMBER))
       return;
 
-    vREPLACE_WITH_RESHAPE();
-
     M.p_gbyElist = M.p_aggreg->pSub_gbyElist();
     M.p_sbyElist = M.p_sort->pSub_sbyElist();
 
+    // TODO: needs to be a T_ test
     if (M.p_gbyElist->bValuesSameRecursive(M.p_sbyElist)) {
-      E_vRemoveDeleteMain(CK_SORT);
+      vR_H90_T10_Remove_sort_IfSameAs_gby();
       break;
     }
   }
