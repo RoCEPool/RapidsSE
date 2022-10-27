@@ -134,7 +134,7 @@ void Xreshape::vR_H20_T20_Add_tablePtn_UnderAll_table(void)
 
   m_pTable = A_pAccess_Table(M.p_tableNm->sz());
 
-  M.p_tablePtn = A_pProduce_tablePtn_ofTable(m_pTable,m_cTableSyn);
+  M.p_tablePtn = C_pProduce_tablePtn_ofTable(m_pTable, m_cTableSyn);
 
   M.p_table->vAppend(M.p_tablePtn);
 }
@@ -147,7 +147,7 @@ void Xreshape::vR_H20_T30_Add_stream_UnderAll_table(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
   m_pTable = A_pAccess_Table(M.p_tableNm->sz());
-  M.p_stream = A_pProduce_stream_ofTable(m_pTable);
+  M.p_stream = C_pProduce_stream_ofTable(m_pTable);
 
   M.p_table->vAppend(M.p_stream);
 }
@@ -196,7 +196,7 @@ void Xreshape::vR_H40_T10_Convert_where_rpnCalc_To_calcBool(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRANSFORMS,_FOOTER_);
 
-  M.p_boolCalc = X_pConvert_rpnCalc_To_boolCalc(M.p_rpnCalc);
+  M.p_boolCalc = C_pConvert_rpnCalc_To_boolCalc(M.p_rpnCalc);
 
   M.p_where->vReplaceSubCard(M.p_rpnCalc,M.p_boolCalc);
 
@@ -315,7 +315,7 @@ void Xreshape::vR_H60_T10_Add_indexJoin_UnderAllJoinable_table(void)
   M.p_tableNm = M.p_table->pSub_tableNm();
   m_pTable = A_pAccess_Table(M.p_tableNm->sz());
 
-  M.p_indexList = A_pProduce_indexList_ofTable(m_pTable);
+  M.p_indexList = C_pProduce_indexList_ofTable(m_pTable);
 
   while ((M.p_index = _pCard_Index(M.p_indexList->pPopChild()))) {
     M.p_indexJoin = new Card_IndexJoin;
@@ -865,7 +865,7 @@ void Xreshape::vR_H80_T10_Insert_indexList_ToAll_scan(void)
 
   m_pTable = A_pAccess_Table(M.p_tableNm->sz());
 
-  if ((M.p_indexList = A_pProduce_indexList_ofTable(m_pTable))) {
+  if ((M.p_indexList = C_pProduce_indexList_ofTable(m_pTable))) {
     M.p_comment = new Card_Comment(SEP_SCRATCH);
     M.p_scan->vAppend(M.p_comment);
 
